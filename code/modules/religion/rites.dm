@@ -509,8 +509,6 @@
 	to_chat(user, span_warning("You feel your genes rattled and reshaped. <b>You're becoming something new.</b>"))
 	user.emote("laughs")
 	ADD_TRAIT(user, TRAIT_HOPELESSLY_ADDICTED, "maint_adaptation")
-	//addiction sends some nasty mood effects but we want the maint adaption to be enjoyed like a fine wine
-	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "maint_adaptation", /datum/mood_event/maintenance_adaptation)
 	if(iscarbon(user))
 		var/mob/living/carbon/vomitorium = user
 		vomitorium.vomit()
@@ -656,7 +654,7 @@
 
 /datum/religion_rites/declare_arena/perform_rite(mob/living/user, atom/religious_tool)
 	var/list/filtered = list()
-	for(var/area/unfiltered_area as anything in GLOB.sortedAreas)
+	for(var/area/unfiltered_area as anything in GLOB.areas)
 		if(istype(unfiltered_area, /area/centcom)) //youuu dont need thaaat
 			continue
 		if(!(unfiltered_area.area_flags & HIDDEN_AREA))

@@ -25,7 +25,6 @@
 /obj/machinery/limbgrower/Initialize(mapload)
 	create_reagents(100, OPENCONTAINER)
 	. = ..()
-	AddComponent(/datum/component/plumbing/simple_demand)
 
 	internal_disk.set_data(
 		DATA_IDX_DESIGNS,
@@ -141,6 +140,9 @@
 		to_chat(usr, span_warning("The limb grower is busy. Please wait for completion of previous operation."))
 		return
 
+	if(!(params["active_tab"] in categories))
+		return
+
 	switch(action)
 
 		if("empty_reagent")
@@ -168,7 +170,7 @@
 
 			busy = TRUE
 			use_power(power)
-			flick("limbgrower_fill",src)
+			z_flick("limbgrower_fill",src)
 			icon_state = "limbgrower_idleon"
 			selected_category = params["active_tab"]
 			addtimer(CALLBACK(src, PROC_REF(build_item), consumed_reagents_list), production_speed * production_coefficient)

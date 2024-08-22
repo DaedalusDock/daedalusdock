@@ -64,7 +64,7 @@
 	response_disarm_continuous = "gently scoops and pours aside"
 	response_disarm_simple = "gently scoop and pour aside"
 	emote_see = list("bubbles", "oozes")
-	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/particle_effect/foam)
+	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/particle_effect/fluid/foam)
 
 /mob/living/simple_animal/hostile/retaliate/clown/lube/Initialize(mapload)
 	. = ..()
@@ -288,11 +288,11 @@
 	maxHealth = 500
 	health = 500
 	speed = -2
-	armour_penetration = 20
+	armor_penetration = 20
 	attack_verb_continuous = "steals the girlfriend of"
 	attack_verb_simple = "steal the girlfriend of"
 	attack_sound = 'sound/items/airhorn2.ogg'
-	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/human, /obj/effect/particle_effect/foam, /obj/item/soap)
+	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/human, /obj/effect/particle_effect/fluid/foam, /obj/item/soap)
 
 /mob/living/simple_animal/hostile/retaliate/clown/clownhulk/honcmunculus
 	name = "Honkmunculus"
@@ -315,8 +315,8 @@
 	attack_verb_continuous = "ferociously mauls"
 	attack_verb_simple = "ferociously maul"
 	environment_smash = ENVIRONMENT_SMASH_NONE
-	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/xeno/bodypartless, /obj/effect/particle_effect/foam, /obj/item/soap)
-	attack_reagent = /datum/reagent/peaceborg/confuse
+	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/xeno/bodypartless, /obj/effect/particle_effect/fluid/foam, /obj/item/soap)
+	attack_reagent = /datum/reagent/cryptobiolin
 
 /mob/living/simple_animal/hostile/retaliate/clown/clownhulk/destroyer
 	name = "The Destroyer"
@@ -332,13 +332,13 @@
 	harm_intent_damage = 30
 	melee_damage_lower = 20
 	melee_damage_upper = 40
-	armour_penetration = 30
-	stat_attack = HARD_CRIT
+	armor_penetration = 30
+	stat_attack = UNCONSCIOUS
 	attack_verb_continuous = "acts out divine vengeance on"
 	attack_verb_simple = "act out divine vengeance on"
 	obj_damage = 50
 	environment_smash = ENVIRONMENT_SMASH_RWALLS
-	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/human, /obj/effect/particle_effect/foam, /obj/item/soap)
+	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/human, /obj/effect/particle_effect/fluid/foam, /obj/item/soap)
 
 /mob/living/simple_animal/hostile/retaliate/clown/mutant
 	name = "Unknown"
@@ -399,7 +399,6 @@
 	var/datum/action/cooldown/regurgitate/spit = new(src)
 	spit.Grant(src)
 
-	add_cell_sample()
 	AddComponent(/datum/component/tameable, food_types = list(/obj/item/food/cheesiehonkers, /obj/item/food/cornchips), tame_chance = 30, bonus_tame_chance = 0, after_tame = CALLBACK(src, PROC_REF(tamed)))
 
 
@@ -459,9 +458,6 @@
 	can_buckle = TRUE
 	buckle_lying = 0
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/glutton)
-
-/mob/living/simple_animal/hostile/retaliate/clown/mutant/glutton/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_GLUTTON, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/hostile/retaliate/clown/mutant/glutton/Exited(atom/movable/gone, direction)
 	. = ..()

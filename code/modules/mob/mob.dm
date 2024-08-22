@@ -25,6 +25,7 @@
  * Parent call
  */
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
+	unset_machine()
 	remove_from_mob_list()
 	remove_from_dead_mob_list()
 	remove_from_alive_mob_list()
@@ -46,6 +47,10 @@
 		mind.set_current(null)
 	return ..()
 
+/mob/New()
+	// This needs to happen IMMEDIATELY. I'm sorry :(
+	GenerateTag()
+	return ..()
 
 /**
  * Intialize a mob
@@ -81,6 +86,10 @@
 		AA.onNewMob(src)
 	set_nutrition(rand(NUTRITION_LEVEL_START_MIN, NUTRITION_LEVEL_START_MAX))
 	. = ..()
+
+	if(ispath(ai_controller))
+		ai_controller = new ai_controller(src)
+
 	update_config_movespeed()
 	initialize_actionspeed()
 	update_movespeed(TRUE)
@@ -93,26 +102,100 @@
  * This is simply "mob_"+ a global incrementing counter that goes up for every mob
  */
 /mob/GenerateTag()
+	. = ..()
 	tag = "mob_[next_mob_id++]"
+
+/**
+ * set every hud image in the given category active so other people with the given hud can see it.
+ * Arguments:
+ * * hud_category - the index in our active_hud_list corresponding to an image now being shown.
+ * * update_huds - if FALSE we will just put the hud_category into active_hud_list without actually updating the atom_hud datums subscribed to it
+ * * exclusive_hud - if given a reference to an atom_hud, will just update that hud instead of all global ones attached to that category.
+ * This is because some atom_hud subtypes arent supposed to work via global categories, updating normally would affect all of these which we dont want.
+ */
+/atom/proc/set_hud_image_active(hud_category, update_huds = TRUE, datum/atom_hud/exclusive_hud)
+	if(!istext(hud_category) || !hud_list?[hud_category] || active_hud_list?[hud_category])
+		return FALSE
+
+	LAZYSET(active_hud_list, hud_category, hud_list[hud_category])
+
+	if(ismovable(src))
+		var/atom/movable/AM = src
+		for(var/atom/movable/mimic as anything in AM.get_associated_mimics())
+			mimic.set_hud_image_active(arglist(args))
+
+	if(!update_huds)
+		return TRUE
+
+	if(exclusive_hud)
+		exclusive_hud.add_single_hud_category_on_atom(src, hud_category)
+	else
+		for(var/datum/atom_hud/hud_to_update as anything in GLOB.huds_by_category[hud_category])
+			hud_to_update.add_single_hud_category_on_atom(src, hud_category)
+
+	return TRUE
+
+///sets every hud image in the given category inactive so no one can see it
+/atom/proc/set_hud_image_inactive(hud_category, update_huds = TRUE, datum/atom_hud/exclusive_hud)
+	if(!istext(hud_category))
+		return FALSE
+
+	LAZYREMOVE(active_hud_list, hud_category)
+
+	if(ismovable(src))
+		var/atom/movable/AM = src
+		for(var/atom/movable/mimic as anything in AM.get_associated_mimics())
+			mimic.set_hud_image_active(arglist(args))
+
+	if(!update_huds)
+		return TRUE
+
+	if(exclusive_hud)
+		exclusive_hud.remove_single_hud_category_on_atom(src, hud_category)
+	else
+		for(var/datum/atom_hud/hud_to_update as anything in GLOB.huds_by_category[hud_category])
+			hud_to_update.remove_single_hud_category_on_atom(src, hud_category)
+
+	return TRUE
 
 /**
  * Prepare the huds for this atom
  *
- * Goes through hud_possible list and adds the images to the hud_list variable (if not already
- * cached)
+ * Goes through hud_possible list and adds the images to the hud_list variable (if not already cached)
  */
 /atom/proc/prepare_huds()
+	if(hud_list) // I choose to be lienient about people calling this proc more then once
+		return
+
 	hud_list = list()
+
 	for(var/hud in hud_possible)
 		var/hint = hud_possible[hud]
-		switch(hint)
-			if(HUD_LIST_LIST)
-				hud_list[hud] = list()
-			else
-				var/image/I = image('icons/mob/huds/hud.dmi', src, "")
-				I.appearance_flags = RESET_COLOR|RESET_TRANSFORM
-				hud_list[hud] = I
+		if(hint == HUD_LIST_LIST)
+			hud_list[hud] = list()
 
+		else
+			var/image/I = image(hint, src, "")
+			I.appearance_flags = RESET_COLOR|RESET_TRANSFORM
+			hud_list[hud] = I
+
+		set_hud_image_active(hud, update_huds = FALSE) //by default everything is active. but dont add it to huds to keep control.
+
+/// Update the icon_state of an atom hud image.
+/atom/proc/set_hud_image_vars(hud_key, new_state = null, new_pixel_y = 0)
+	if(isnull(hud_list))
+		return
+
+	var/image/I = hud_list[hud_key]
+	if(isnull(I))
+		return
+
+	I.icon_state = new_state
+	I.pixel_y = new_pixel_y
+
+	if(!isarea(src) && !isturf(src))
+		var/atom/movable/AM = src
+		AM.bound_overlay?.set_hud_image_vars(hud_key, new_state, new_pixel_y)
 /**
  * Return the desc of this mob for a photo
  */
@@ -122,34 +205,37 @@
 /**
  * Show a message to this mob (visual or audible)
  */
-/mob/proc/show_message(msg, type, alt_msg, alt_type, avoid_highlighting = FALSE)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
+/mob/show_message(msg, type, alt_msg, alt_type, avoid_highlighting = FALSE)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
 	if(!client)
 		return
 
 	msg = copytext_char(msg, 1, MAX_MESSAGE_LEN)
 
 	if(type)
-		if(type & MSG_VISUAL && is_blind() )//Vision related
+		if((type & MSG_VISUAL) && is_blind() )//Vision related
 			if(!alt_msg)
 				return
 			else
 				msg = alt_msg
 				type = alt_type
 
-		if(type & MSG_AUDIBLE && !can_hear())//Hearing related
+		if((type & MSG_AUDIBLE) && !can_hear())//Hearing related
 			if(!alt_msg)
 				return
 			else
 				msg = alt_msg
 				type = alt_type
-				if(type & MSG_VISUAL && is_blind())
+				if((type & MSG_VISUAL) && is_blind())
 					return
+
 	// voice muffling
-	if(stat == UNCONSCIOUS || stat == HARD_CRIT)
+	if(stat == UNCONSCIOUS)
 		if(type & MSG_AUDIBLE) //audio
-			to_chat(src, "<I>... You can almost hear something ...</I>")
+			to_chat(src, span_obviousnotice("<I>... You can almost hear something ...</I>"))
 		return
+
 	to_chat(src, msg, avoid_highlighting = avoid_highlighting)
+	return msg
 
 /**
  * Generate a visible message from this atom
@@ -177,6 +263,13 @@
 	if(!islist(ignored_mobs))
 		ignored_mobs = list(ignored_mobs)
 	var/list/hearers = get_hearers_in_view(vision_distance, src) //caches the hearers and then removes ignored mobs.
+
+	#ifdef ZMIMIC_MULTIZ_SPEECH
+	if(blind_message && ismovable(src) && src:bound_overlay)
+		hearers += get_hearers_in_view(vision_distance, src:bound_overlay)
+		hearers -= src:bound_overlay
+	#endif
+
 	hearers -= ignored_mobs
 
 	if(self_message)
@@ -184,7 +277,7 @@
 
 	var/raw_msg = message
 	if(visible_message_flags & EMOTE_MESSAGE)
-		message = "<span class='emote'><b>[src]</b>[separation][message]</span>" //PARIAH EDIT - Better emotes
+		message = "<span class='emote'><b>[src]</b>[separation][message]</span>"
 
 	for(var/mob/M in hearers)
 		if(!M.client)
@@ -207,7 +300,7 @@
 		if(!msg)
 			continue
 
-		if(visible_message_flags & EMOTE_MESSAGE && runechat_prefs_check(M, visible_message_flags) && !M.is_blind())
+		if((visible_message_flags & EMOTE_MESSAGE) && runechat_prefs_check(M, visible_message_flags) && !M.is_blind())
 			M.create_chat_message(src, raw_message = raw_msg, runechat_flags = visible_message_flags)
 
 		M.show_message(msg, msg_type, blind_message, MSG_AUDIBLE)
@@ -232,15 +325,27 @@
  */
 /atom/proc/audible_message(message, deaf_message, hearing_distance = DEFAULT_MESSAGE_RANGE, self_message, audible_message_flags = NONE, separation = " ") //PARIAH EDIT ADDITION - Better emotes
 	var/list/hearers = get_hearers_in_view(hearing_distance, src)
+
+	#ifdef ZMIMIC_MULTIZ_SPEECH
+	if(ismovable(src) && src:bound_overlay)
+		hearers += get_hearers_in_view(hearing_distance, src:bound_overlay)
+		hearers -= src:bound_overlay
+	#endif
+
 	if(self_message)
 		hearers -= src
+
 	var/raw_msg = message
 	if(audible_message_flags & EMOTE_MESSAGE)
 		message = "<span class='emote'><b>[src]</b>[separation][message]</span>" //PARIAH EDIT - Better emotes
-	for(var/mob/M in hearers)
-		if(audible_message_flags & EMOTE_MESSAGE && runechat_prefs_check(M, audible_message_flags) && M.can_hear())
-			M.create_chat_message(src, raw_message = raw_msg, runechat_flags = audible_message_flags)
-		M.show_message(message, MSG_AUDIBLE, deaf_message, MSG_VISUAL)
+	for(var/atom/movable/AM as anything in hearers)
+		if(istype(AM, /obj))
+			continue
+		if(ismob(AM))
+			var/mob/M = AM
+			if(audible_message_flags & EMOTE_MESSAGE && runechat_prefs_check(M, audible_message_flags) && M.can_hear())
+				M.create_chat_message(src, raw_message = raw_msg, runechat_flags = audible_message_flags)
+		AM.show_message(message, MSG_AUDIBLE, deaf_message, MSG_VISUAL)
 
 /**
  * Show a message to all mobs in earshot of this one
@@ -439,6 +544,10 @@
 	set name = "Examine"
 	set category = "IC"
 
+	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(run_examinate), examinify))
+
+/mob/proc/run_examinate(atom/examinify)
+
 	if(isturf(examinify) && !(sight & SEE_TURFS) && !(examinify in view(client ? client.view : world.view, src)))
 		// shift-click catcher may issue examinate() calls for out-of-sight turfs
 		return
@@ -461,16 +570,8 @@
 			client.recent_examines[ref_to_atom] = world.time // set to when we last normal examine'd them
 			addtimer(CALLBACK(src, PROC_REF(clear_from_recent_examines), ref_to_atom), RECENT_EXAMINE_MAX_WINDOW)
 			handle_eye_contact(examinify)
+			broadcast_examine(examinify)
 
-			if(!isobserver(usr) && !(usr == examinify))
-				var/list/can_see_target = viewers(usr)
-				for(var/mob/M as anything in viewers(4, usr))
-					if(!M.client)
-						continue
-					if(M in can_see_target)
-						to_chat(M, span_subtle("\The [usr] looks at \the [examinify]"))
-					else
-						to_chat(M, span_subtle("\The [usr] intently looks at something..."))
 	else
 		result = examinify.examine(src) // if a tree is examined but no client is there to see it, did the tree ever really exist?
 
@@ -485,6 +586,50 @@
 	to_chat(src, "<div class='examine_block'><span class='infoplain'>[result.Join()]</span></div>") //PARIAH EDIT CHANGE
 	SEND_SIGNAL(src, COMSIG_MOB_EXAMINATE, examinify)
 
+/// Tells nearby mobs about our examination.
+/mob/proc/broadcast_examine(atom/examined)
+	if(examined == src)
+		return
+
+	// If TRUE, the usr's view() for the examined object too
+	var/examining_worn_item = FALSE
+	var/loc_str = "at something off in the distance."
+
+	if(isitem(examined))
+		var/obj/item/I = examined
+		if((I.item_flags & IN_STORAGE))
+			if(get(I, /mob/living) == src)
+				loc_str = "inside [p_their()] [I.loc.name]..."
+			else
+				loc_str = "inside [I.loc]..."
+
+		else if(I.loc == src)
+			loc_str = "at [p_their()] [I.name]."
+			examining_worn_item = TRUE
+
+	var/can_see_str = span_subtle("\The [src] looks at [examined].")
+	if(examining_worn_item)
+		can_see_str = span_subtle("\The [src] looks [loc_str]")
+
+	var/cannot_see_str = span_subtle("\The [src] looks [loc_str]")
+
+	var/list/can_see_target = viewers(examined)
+	for(var/mob/M as anything in viewers(4, src))
+		if(!M.client || M.is_blind())
+			continue
+
+		if(examining_worn_item || (M == src) || (M in can_see_target))
+			to_chat(M, can_see_str)
+		else
+			to_chat(M, cannot_see_str)
+
+/mob/living/broadcast_examine(atom/examined)
+	if(stat != CONSCIOUS)
+		return
+	return ..()
+
+/mob/dead/broadcast_examine(atom/examined)
+	return //Observers arent real the government is lying to you
 
 /mob/proc/blind_examine_check(atom/examined_thing)
 	return TRUE //The non-living will always succeed at this check.
@@ -596,25 +741,21 @@
 	set name = "Point To"
 	set category = "Object"
 
-	if(client && !(A in view(client.view, src)))
-		return FALSE
 	if(istype(A, /obj/effect/temp_visual/point))
 		return FALSE
 
-	point_at(A)
+	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(_pointed), A))
 
-	SEND_SIGNAL(src, COMSIG_MOB_POINTED, A)
+/// possibly delayed verb that finishes the pointing process starting in [/mob/verb/pointed()].
+/// either called immediately or in the tick after pointed() was called, as per the [DEFAULT_QUEUE_OR_CALL_VERB()] macro
+/mob/proc/_pointed(atom/pointing_at)
+	if(client && !(pointing_at in view(client.view, src)))
+		return FALSE
+
+	point_at(pointing_at)
+
+	SEND_SIGNAL(src, COMSIG_MOB_POINTED, pointing_at)
 	return TRUE
-
-/**
- * Called by using Activate Held Object with an empty hand/limb
- *
- * Does nothing by default. The intended use is to allow limbs to call their
- * own attack_self procs. It is up to the individual mob to override this
- * parent and actually use it.
- */
-/mob/proc/limb_attack_self()
-	return
 
 ///Can this mob resist (default FALSE)
 /mob/proc/can_resist()
@@ -661,19 +802,14 @@
 	set category = "Object"
 	set src = usr
 
-	if(ismecha(loc))
-		return
+	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(execute_mode)))
 
-	if(incapacitated())
-		return
-
+///proc version to finish /mob/verb/mode() execution. used in case the proc needs to be queued for the tick after its first called
+/mob/proc/execute_mode()
 	var/obj/item/I = get_active_held_item()
 	if(I)
-		I.attack_self(src)
-		update_held_items()
+		usr.client?.Click(I, I.loc)
 		return
-
-	limb_attack_self()
 
 /**
  * Allows you to respawn, abandoning your current mob
@@ -745,7 +881,7 @@
  */
 /mob/Topic(href, href_list)
 	if(href_list["mach_close"])
-		var/t1 = text("window=[href_list["mach_close"]]")
+		var/t1 = "window=[href_list["mach_close"]]"
 		unset_machine()
 		src << browse(null, t1)
 
@@ -822,7 +958,9 @@
 		return FALSE
 	if(notransform)
 		return FALSE
-	if(HAS_TRAIT(src, TRAIT_RESTRAINED))
+	if(HAS_TRAIT(src, TRAIT_ARMS_RESTRAINED))
+		return FALSE
+	if(HAS_TRAIT(src, TRAIT_CANNOTFACE))
 		return FALSE
 	return TRUE
 
@@ -875,7 +1013,6 @@
 /mob/proc/swap_hand()
 	var/obj/item/held_item = get_active_held_item()
 	if(SEND_SIGNAL(src, COMSIG_MOB_SWAP_HANDS, held_item) & COMPONENT_BLOCK_SWAP)
-		to_chat(src, span_warning("Your other hand is too busy holding [held_item]."))
 		return FALSE
 	return TRUE
 
@@ -896,10 +1033,10 @@
 		return mind.grab_ghost(force = force)
 
 ///Notify a ghost that it's body is being cloned
-/mob/proc/notify_ghost_cloning(message = "Someone is trying to revive you. Re-enter your corpse if you want to be revived!", sound = 'sound/effects/genetics.ogg', atom/source = null, flashwindow)
+/mob/proc/notify_ghost_revival(message = "Someone is trying to revive you. Re-enter your corpse if you want to be revived!", sound = 'sound/effects/genetics.ogg', atom/source = null, flashwindow)
 	var/mob/dead/observer/ghost = get_ghost()
 	if(ghost)
-		ghost.notify_cloning(message, sound, source, flashwindow)
+		ghost.notify_revival(message, sound, source, flashwindow)
 		return ghost
 
 /**
@@ -967,8 +1104,14 @@
 
 ///Can the mob interact() with an atom?
 /mob/proc/can_interact_with(atom/A)
+	if(istype(A, /atom/movable/screen))
+		var/atom/movable/screen/screen = A
+		if(screen.hud?.mymob ==src)
+			return TRUE
+
 	if(isAdminGhostAI(src) || Adjacent(A))
 		return TRUE
+
 	var/datum/dna/mob_dna = has_dna()
 	if(mob_dna?.check_mutation(/datum/mutation/human/telekinesis) && tkMaxRangeCheck(src, A))
 		return TRUE
@@ -983,7 +1126,7 @@
 	return ISINRANGE(their_turf.x, our_turf.x - interaction_range, our_turf.x + interaction_range) && ISINRANGE(their_turf.y, our_turf.y - interaction_range, our_turf.y + interaction_range)
 
 ///Can the mob use Topic to interact with machines
-/mob/proc/canUseTopic(atom/movable/M, be_close=FALSE, no_dexterity=FALSE, no_tk=FALSE, need_hands = FALSE, floor_okay=FALSE)
+/mob/proc/canUseTopic(atom/movable/target, flags)
 	return
 
 ///Can this mob use storage
@@ -1022,10 +1165,25 @@
 	return FALSE
 
 
+/mob/update_name(updates)
+	name = get_visible_name()
+	return ..()
+
+/mob/proc/get_visible_name()
+	return name
+
+/// Sets the mob's real name, and normal name if desired.
+/mob/proc/set_real_name(new_name, change_name = TRUE, update_name = TRUE)
+	real_name = new_name
+	if(change_name)
+		name = real_name
+	if(update_name)
+		update_name()
+
 /**
  * Fully update the name of a mob
  *
- * This will update a mob's name, real_name, mind.name, GLOB.data_core records, pda, id and traitor text
+ * This will update a mob's name, real_name, mind.name, SSdatacore records, pda, id and traitor text
  *
  * Calling this proc without an oldname will only update the mob and skip updating the pda, id and records ~Carn
  */
@@ -1044,8 +1202,8 @@
 
 	log_played_names(ckey, newname)
 
-	real_name = newname
-	name = newname
+	set_real_name(newname)
+
 	if(mind)
 		mind.name = newname
 		if(mind.key)
@@ -1068,7 +1226,7 @@
 
 	return TRUE
 
-///Updates GLOB.data_core records with new name , see mob/living/carbon/human
+///Updates SSdatacore records with new name , see mob/living/carbon/human
 /mob/proc/replace_records_name(oldname,newname)
 	return
 
@@ -1130,31 +1288,39 @@
 				return
 			LA.alpha = lighting_alpha
 
-/*
-/mob/proc/sync_ao_plane_alpha()
-	if(!hud_used)
-		return
-	var/datum/preferences/prefs = client?.prefs
-	if(!prefs)
-		return
-
-	var/atom/movable/screen/plane_master/lighting/L = hud_used.plane_masters["[AO_PLANE]"]
-	if (L)
-		L.alpha = prefs.read_preference(/datum/preference/toggle/ambient_occlusion) ? WALL_AO_ALPHA : 0*/
-
-///Update the mouse pointer of the attached client in this mob
+///Update the mouse pointer of the attached client in this mob. Red hot proc!
 /mob/proc/update_mouse_pointer()
+	set waitfor = FALSE
 	if(!client)
 		return
-	client.mouse_pointer_icon = initial(client.mouse_pointer_icon)
-	if(examine_cursor_icon && client.keys_held["Shift"]) //mouse shit is hardcoded, make this non hard-coded once we make mouse modifiers bindable
-		client.mouse_pointer_icon = examine_cursor_icon
-	if(istype(loc, /obj/vehicle/sealed))
-		var/obj/vehicle/sealed/E = loc
-		if(E.mouse_pointer)
-			client.mouse_pointer_icon = E.mouse_pointer
-	if(client.mouse_override_icon)
-		client.mouse_pointer_icon = client.mouse_override_icon
+
+	// First, mouse down icons
+	if((client.mouse_down == TRUE) && client.mouse_down_icon)
+		. = client.mouse_down_icon
+
+	// Second, mouse up icons
+	if(isnull(.) && (client.mouse_down == FALSE) && client.mouse_up_icon)
+		. = client.mouse_up_icon
+
+	// Third, mouse override icons
+	if(isnull(.) && client.mouse_override_icon)
+		. = client.mouse_override_icon
+
+	// Fourth, examine icon
+	if(isnull(.) && examine_cursor_icon && client.keys_held["Shift"])
+		. = examine_cursor_icon
+
+	// Last, the mob decides.
+	if(isnull(.))
+		. = get_mouse_pointer_icon()
+		. ||= 'icons/effects/mouse_pointers/default.dmi'
+
+	if(. != client.mouse_pointer_icon)
+		client.mouse_pointer_icon = .
+
+///Gets the dmi file for the mouse pointer the attached client should use
+/mob/proc/get_mouse_pointer_icon()
+	return
 
 /**
  * Can this mob see in the dark
@@ -1298,7 +1464,7 @@
 	if(!speedies)
 		remove_movespeed_modifier(/datum/movespeed_modifier/equipment_speedmod)
 	else
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/equipment_speedmod, multiplicative_slowdown = speedies)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/equipment_speedmod, slowdown = speedies)
 
 /// Gets the combined speed modification of all worn items
 /// Except base mob type doesnt really wear items
@@ -1343,16 +1509,16 @@
 		datum_flags |= DF_VAR_EDITED
 		return
 
-	var/slowdown_edit = (var_name == NAMEOF(src, cached_multiplicative_slowdown))
+	var/slowdown_edit = (var_name == NAMEOF(src, movement_delay))
 	var/diff
-	if(slowdown_edit && isnum(cached_multiplicative_slowdown) && isnum(var_value))
+	if(slowdown_edit && isnum(movement_delay) && isnum(var_value))
 		remove_movespeed_modifier(/datum/movespeed_modifier/admin_varedit)
-		diff = var_value - cached_multiplicative_slowdown
+		diff = var_value - movement_delay
 
 	. = ..()
 
 	if(. && slowdown_edit && isnum(diff))
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/admin_varedit, multiplicative_slowdown = diff)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/admin_varedit, slowdown = diff)
 
 /mob/proc/set_active_storage(new_active_storage)
 	if(active_storage)
@@ -1442,3 +1608,27 @@
 	set name = "View Skills"
 
 	mind?.print_levels(src)
+
+/// Makes a client temporarily aware of an appearance via and invisible vis contents object.
+/mob/proc/send_appearance(mutable_appearance/appearance)
+	RETURN_TYPE(/atom/movable/screen)
+	if(!hud_used || isnull(appearance))
+		return
+
+	var/atom/movable/screen/container
+	if(isatom(container))
+		container = appearance
+	else
+		container = new()
+		container.appearance = appearance
+
+	hud_used.vis_holder.vis_contents += appearance
+	addtimer(CALLBACK(src, PROC_REF(remove_appearance), appearance), 5 SECONDS, TIMER_DELETE_ME)
+
+	return container
+
+/mob/proc/remove_appearance(atom/movable/appearance)
+	if(!hud_used)
+		return
+
+	hud_used.vis_holder.vis_contents -= appearance

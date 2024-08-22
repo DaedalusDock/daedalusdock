@@ -51,7 +51,6 @@ GLOBAL_LIST_INIT(phobia_regexes, list(
 ))
 
 GLOBAL_LIST_INIT(phobia_mobs, list(
-	"spiders" = typecacheof(list(/mob/living/simple_animal/hostile/giant_spider)),
 	"security" = typecacheof(list(/mob/living/simple_animal/bot/secbot)),
 	"lizards" = typecacheof(list(/mob/living/simple_animal/hostile/lizard)),
 	"skeletons" = typecacheof(list(/mob/living/simple_animal/hostile/skeleton)),
@@ -102,7 +101,6 @@ GLOBAL_LIST_INIT(phobia_mobs, list(
 
 GLOBAL_LIST_INIT(phobia_objs, list(
 	"snakes" = typecacheof(list(
-		/obj/item/rod_of_asclepius,
 		/obj/item/toy/plush/snakeplushie,
 	)),
 	"spiders" = typecacheof(list(/obj/structure/spider)),
@@ -171,9 +169,7 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 	"lizards" = typecacheof(list(
 		/obj/item/clothing/head/lizard,
 		/obj/item/clothing/shoes/cowboy/lizard,
-		/obj/item/food/kebab/tail,
 		/obj/item/organ/tail/lizard,
-		/obj/item/reagent_containers/food/drinks/bottle/lizardwine,
 		/obj/item/toy/plush/lizard_plushie,
 	)),
 
@@ -255,7 +251,6 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 		/obj/item/scalpel,
 		/obj/item/storage/medkit,
 		/obj/item/storage/pill_bottle,
-		/obj/item/surgical_drapes,
 		/obj/item/surgicaldrill,
 		/obj/machinery/atmospherics/components/unary/cryo_cell,
 		/obj/machinery/dna_scannernew,
@@ -278,7 +273,7 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 		/obj/item/clothing/under/rank/rnd/research_director,
 		/obj/item/clothing/under/rank/security/head_of_security,
 		/obj/item/megaphone/command,
-		/obj/item/melee/baton/telescopic,
+		/obj/item/assembly/flash/handheld,
 		/obj/item/stamp/captain,
 		/obj/item/stamp/ce,
 		/obj/item/stamp/centcom,
@@ -487,7 +482,6 @@ GLOBAL_LIST_INIT(phobia_species, list(
 		/datum/species/pod,
 		/datum/species/shadow,
 	)),
-	"anime" = typecacheof(list(/datum/species/human/felinid)),
 	"conspiracies" = typecacheof(list(
 		/datum/species/abductor,
 		/datum/species/lizard,
@@ -502,7 +496,6 @@ GLOBAL_LIST_INIT(phobia_species, list(
 		/datum/species/plasmaman,
 		/datum/species/skeleton,
 	)),
-	"the supernatural" = typecacheof(list(/datum/species/golem/runic)),
 ))
 
 /// Creates a regular expression to match against the given phobia

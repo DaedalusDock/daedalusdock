@@ -176,9 +176,9 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 	fdel(file_name)
 	file(file_name) << json_encode(test_results)
 
-	SSticker.force_ending = TRUE
+	SSticker.end_round()
 	//We have to call this manually because del_text can preceed us, and SSticker doesn't fire in the post game
-	SSticker.standard_reboot()
+	SSticker.declare_completion()
 
 /datum/map_template/unit_tests
 	name = "Unit Tests Zone"

@@ -79,7 +79,7 @@
 		qdel(src)
 
 /obj/effect/anomaly/proc/anomalyNeutralize()
-	new /obj/effect/particle_effect/smoke/bad(loc)
+	new /obj/effect/particle_effect/fluid/smoke/bad(loc)
 
 	if(drops_core)
 		aSignal.forceMove(drop_location())
@@ -164,7 +164,7 @@
 /obj/effect/anomaly/grav/Bump(atom/A)
 	gravShock(A)
 
-/obj/effect/anomaly/grav/Bumped(atom/movable/AM)
+/obj/effect/anomaly/grav/BumpedBy(atom/movable/AM)
 	gravShock(AM)
 
 /obj/effect/anomaly/grav/proc/gravShock(mob/living/A)
@@ -227,7 +227,7 @@
 /obj/effect/anomaly/flux/Bump(atom/A)
 	mobShock(A)
 
-/obj/effect/anomaly/flux/Bumped(atom/movable/AM)
+/obj/effect/anomaly/flux/BumpedBy(atom/movable/AM)
 	mobShock(AM)
 
 /obj/effect/anomaly/flux/proc/mobShock(mob/living/M)
@@ -256,7 +256,7 @@
 	for(var/mob/living/M in range(1,src))
 		do_teleport(M, locate(M.x, M.y, M.z), 4, channel = TELEPORT_CHANNEL_BLUESPACE)
 
-/obj/effect/anomaly/bluespace/Bumped(atom/movable/AM)
+/obj/effect/anomaly/bluespace/BumpedBy(atom/movable/AM)
 	if(isliving(AM))
 		do_teleport(AM, locate(AM.x, AM.y, AM.z), 8, channel = TELEPORT_CHANNEL_BLUESPACE)
 
@@ -268,7 +268,7 @@
 	// Calculate new position (searches through beacons in world)
 	var/obj/item/beacon/chosen
 	var/list/possible = list()
-	for(var/obj/item/beacon/W in GLOB.teleportbeacons)
+	for(var/obj/item/beacon/W as anything in INSTANCES_OF(/obj/item/beacon))
 		possible += W
 
 	if(possible.len > 0)
@@ -386,7 +386,7 @@
 			if(target && !target.stat)
 				O.throw_at(target, 7, 5)
 		else
-			SSexplosions.med_mov_atom += O
+			EX_ACT(O, EXPLODE_HEAVY)
 
 /obj/effect/anomaly/bhole/proc/grav(r, ex_act_force, pull_chance, turf_removal_chance)
 	for(var/t = -r, t < r, t++)
@@ -407,11 +407,11 @@
 			if(O.anchored)
 				switch(ex_act_force)
 					if(EXPLODE_DEVASTATE)
-						SSexplosions.high_mov_atom += O
+						EX_ACT(O, EXPLODE_DEVASTATE)
 					if(EXPLODE_HEAVY)
-						SSexplosions.med_mov_atom += O
+						EX_ACT(O, EXPLODE_HEAVY)
 					if(EXPLODE_LIGHT)
-						SSexplosions.low_mov_atom += O
+						EX_ACT(O, EXPLODE_LIGHT)
 			else
 				step_towards(O,src)
 		for(var/mob/living/M in T.contents)
@@ -419,12 +419,6 @@
 
 	//Damaging the turf
 	if( T && prob(turf_removal_chance) )
-		switch(ex_act_force)
-			if(EXPLODE_DEVASTATE)
-				SSexplosions.highturf += T
-			if(EXPLODE_HEAVY)
-				SSexplosions.medturf += T
-			if(EXPLODE_LIGHT)
-				SSexplosions.lowturf += T
+		EX_ACT(T, ex_act_force)
 
 #undef ANOMALY_MOVECHANCE

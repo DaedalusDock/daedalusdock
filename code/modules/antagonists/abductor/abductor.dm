@@ -88,7 +88,6 @@ GLOBAL_LIST_INIT(possible_abductor_names, list("Alpha","Beta","Gamma","Delta","E
 	. = ..()
 	to_chat(owner.current, span_notice("With the help of your teammate, kidnap and experiment on station crew members!"))
 	to_chat(owner.current, span_notice("[greet_text]"))
-	owner.announce_objectives()
 
 /datum/antagonist/abductor/proc/finalize_abductor()
 	//Equip
@@ -97,7 +96,7 @@ GLOBAL_LIST_INIT(possible_abductor_names, list("Alpha","Beta","Gamma","Delta","E
 	var/obj/item/organ/tongue/abductor/T = H.getorganslot(ORGAN_SLOT_TONGUE)
 	T.mothership = "[team.name]"
 
-	H.real_name = "[team.name] [sub_role]"
+	H.set_real_name("[team.name] [sub_role]")
 	H.equipOutfit(outfit)
 
 	//Teleport to ship
@@ -203,7 +202,7 @@ GLOBAL_LIST_INIT(possible_abductor_names, list("Alpha","Beta","Gamma","Delta","E
 	explanation_text = "Experiment on [target_amount] humans."
 
 /datum/objective/experiment/check_completion()
-	for(var/obj/machinery/abductor/experiment/E in GLOB.machines)
+	for(var/obj/machinery/abductor/experiment/E in INSTANCES_OF(/obj/machinery/abductor/console))
 		if(!istype(team, /datum/team/abductor_team))
 			return FALSE
 		var/datum/team/abductor_team/T = team

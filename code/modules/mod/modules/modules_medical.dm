@@ -16,6 +16,7 @@
 	complexity = 2
 	use_power_cost = DEFAULT_CHARGE_DRAIN
 	incompatible_modules = list(/obj/item/mod/module/health_analyzer)
+	required_slots = list(ITEM_SLOT_GLOVES)
 	cooldown_time = 0.5 SECONDS
 	tgui_id = "health_analyzer"
 	/// Scanning mode, changes how we scan something.
@@ -69,6 +70,7 @@
 	complexity = 1
 	idle_power_cost = DEFAULT_CHARGE_DRAIN * 0.3
 	incompatible_modules = list(/obj/item/mod/module/quick_carry, /obj/item/mod/module/constructor)
+	required_slots = list(ITEM_SLOT_GLOVES)
 
 /obj/item/mod/module/quick_carry/on_suit_activation()
 	ADD_TRAIT(mod.wearer, TRAIT_QUICK_CARRY, MOD_TRAIT)
@@ -101,6 +103,7 @@
 	active_power_cost = DEFAULT_CHARGE_DRAIN * 0.3
 	device = /obj/item/reagent_containers/syringe/mod
 	incompatible_modules = list(/obj/item/mod/module/injector)
+	required_slots = list(ITEM_SLOT_GLOVES)
 	cooldown_time = 0.5 SECONDS
 
 /obj/item/reagent_containers/syringe/mod
@@ -127,6 +130,7 @@
 	complexity = 2
 	use_power_cost = DEFAULT_CHARGE_DRAIN
 	incompatible_modules = list(/obj/item/mod/module/organ_thrower, /obj/item/mod/module/microwave_beam)
+	required_slots = list(ITEM_SLOT_GLOVES)
 	cooldown_time = 0.5 SECONDS
 	var/max_organs = 5
 	var/organ_list = list()
@@ -186,26 +190,16 @@
 		organ = null
 		return
 	var/mob/living/carbon/human/organ_receiver = target
-	var/succeed = FALSE
-	if(organ_receiver.surgeries.len)
-		for(var/datum/surgery/procedure as anything in organ_receiver.surgeries)
-			if(procedure.location != organ.zone)
-				continue
-			if(!istype(procedure, /datum/surgery/organ_manipulation))
-				continue
-			var/datum/surgery_step/surgery_step = procedure.get_surgery_step()
-			if(!istype(surgery_step, /datum/surgery_step/manipulate_organs))
-				continue
-			succeed = TRUE
-			break
-	if(succeed)
-		var/list/organs_to_boot_out = organ_receiver.getorganslot(organ.slot)
-		for(var/obj/item/organ/organ_evacced as anything in organs_to_boot_out)
-			if(organ_evacced.organ_flags & ORGAN_UNREMOVABLE)
-				continue
-			organ_evacced.Remove(target)
-			organ_evacced.forceMove(get_turf(target))
-		organ.Insert(target)
+	var/obj/item/bodypart/BP = organ_receiver.get_bodypart(organ.zone)
+	if(!BP)
+		organ.forceMove(drop_location())
+		organ = null
+		return
+
+	if(BP.cavity)
+		forceMove(BP)
+		BP.add_cavity_item(organ)
 	else
 		organ.forceMove(drop_location())
+
 	organ = null

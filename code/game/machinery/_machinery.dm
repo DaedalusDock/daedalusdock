@@ -116,7 +116,6 @@
 		//AREA_USAGE_EQUIP,AREA_USAGE_ENVIRON or AREA_USAGE_LIGHT
 	///A combination of factors such as having power, not being broken and so on. Boolean.
 	var/is_operational = TRUE
-	var/wire_compatible = FALSE
 
 	var/list/component_parts = null //list of all the parts used to build it, if made from certain kinds of frames.
 
@@ -126,6 +125,8 @@
 	var/obj/item/disk/data/inserted_disk = null
 	/// Used for data management.
 	var/obj/item/disk/data/selected_disk = null
+	/// Can insert a disk into this machine
+	var/has_disk_slot = FALSE
 
 	var/panel_open = FALSE
 	var/state_open = FALSE
@@ -161,7 +162,7 @@
 
 	/// Linked Network Terminal
 	var/obj/machinery/power/data_terminal/netjack
-	/// Network ID, automatically generated when `generate_netid` is true on definition.
+	/// Network ID, see network_flags for autopopulation info.
 	var/net_id
 	/// General purpose 'master' ID for slave machines.
 	var/master_id
@@ -173,11 +174,15 @@
 	///Used by SSairmachines for optimizing scrubbers and vent pumps.
 	COOLDOWN_DECLARE(hibernating)
 
+GLOBAL_REAL_VAR(machinery_default_armor) = list()
 /obj/machinery/Initialize(mapload)
 	if(!armor)
-		armor = list(MELEE = 25, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
+		armor = machinery_default_armor
+
 	. = ..()
-	GLOB.machines += src
+
+	SETUP_SMOOTHING()
+	QUEUE_SMOOTH(src)
 
 	if(ispath(circuit, /obj/item/circuitboard))
 		circuit = new circuit(src)
@@ -189,17 +194,23 @@
 	if(occupant_typecache)
 		occupant_typecache = typecacheof(occupant_typecache)
 
-	if((resistance_flags & INDESTRUCTIBLE) && component_parts){ // This is needed to prevent indestructible machinery still blowing up. If an explosion occurs on the same tile as the indestructible machinery without the PREVENT_CONTENTS_EXPLOSION_1 flag, /datum/controller/subsystem/explosions/proc/propagate_blastwave will call ex_act on all movable atoms inside the machine, including the circuit board and component parts. However, if those parts get deleted, the entire machine gets deleted, allowing for INDESTRUCTIBLE machines to be destroyed. (See #62164 for more info)
+
+	/*
+	 * This is needed to prevent indestructible machinery still blowing up.
+	 * If an explosion occurs on the same tile as the indestructible machinery without the PREVENT_CONTENTS_EXPLOSION_1 flag,
+	 * /datum/controller/subsystem/explosions/proc/propagate_blastwave will call ex_act on all movable atoms inside the machine,
+	 * including the circuit board and component parts. However, if those parts get deleted, the entire machine gets deleted,
+	 * allowing for INDESTRUCTIBLE machines to be destroyed. (See tgstation#62164 for more info)
+	 */
+	if((resistance_flags & INDESTRUCTIBLE) && component_parts)
 		flags_1 |= PREVENT_CONTENTS_EXPLOSION_1
-	}
 
 	if(network_flags & NETWORK_FLAG_GEN_ID)
-		net_id = SSnetworks.get_next_HID()//Just going to parasite this.
+		net_id = SSpackets.generate_net_id(src)
 
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/LateInitialize()
-	. = ..()
 	power_change()
 	if(use_power == NO_POWER_USE)
 		return
@@ -210,7 +221,6 @@
 		link_to_jack()
 
 /obj/machinery/Destroy()
-	GLOB.machines.Remove(src)
 	end_processing()
 	dump_inventory_contents()
 	QDEL_LIST(component_parts)
@@ -585,34 +595,6 @@
 
 	return TRUE // If we passed all of those checks, woohoo! We can interact with this machine.
 
-/obj/machinery/proc/check_nap_violations()
-	if(!SSeconomy.full_ancap)
-		return TRUE
-	if(!occupant || state_open)
-		return TRUE
-	var/mob/living/occupant_mob = occupant
-	var/obj/item/card/id/occupant_id = occupant_mob.get_idcard(TRUE)
-	if(!occupant_id)
-		say("[market_verb] NAP Violation: No ID card found.")
-		nap_violation(occupant_mob)
-		return FALSE
-	var/datum/bank_account/insurance = occupant_id.registered_account
-	if(!insurance)
-		say("[market_verb] NAP Violation: No bank account found.")
-		nap_violation(occupant_mob)
-		return FALSE
-	if(!insurance.adjust_money(-fair_market_price))
-		say("[market_verb] NAP Violation: Unable to pay.")
-		nap_violation(occupant_mob)
-		return FALSE
-	var/datum/bank_account/department_account = SSeconomy.department_accounts_by_id[payment_department]
-	if(department_account)
-		department_account.adjust_money(fair_market_price)
-	return TRUE
-
-/obj/machinery/proc/nap_violation(mob/violator)
-	return
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 /obj/machinery/attack_hand(mob/living/user, list/modifiers)
@@ -620,14 +602,14 @@
 	if(.)
 		return
 
-	if(LAZYACCESS(modifiers, RIGHT_CLICK) && inserted_disk) //grumble grumble click code grumble grumble
-		var/obj/item/disk/disk = eject_disk(user)
-		if(disk)
-			user.visible_message(
-				span_notice("You remove [disk] from [src]."),
-				span_notice("A floppy disk ejects from [src].")
-			)
-		return TRUE
+	if(iscarbon(user))
+		var/brainloss = user.getBrainLoss()
+		if(brainloss > 120)
+			visible_message(span_warning("\The [user] stares cluelessly at \the [src]."))
+			return TRUE
+		if(prob(min(brainloss, 30)))
+			to_chat(user, span_warning("You momentarily forget how to use \the [src]."))
+			return TRUE
 
 //Return a non FALSE value to interrupt attack_hand propagation to subtypes.
 /obj/machinery/interact(mob/user, special_state)
@@ -645,7 +627,7 @@
 	..()
 	if(!can_interact(usr))
 		return TRUE
-	if(!usr.canUseTopic(src))
+	if(!usr.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return TRUE
 	add_fingerprint(usr)
 	update_last_used(usr)
@@ -658,7 +640,7 @@
 		return attack_hand(user)
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)
-	var/damage = take_damage(4, BRUTE, MELEE, 1)
+	var/damage = take_damage(4, BRUTE, BLUNT, 1)
 	user.visible_message(span_danger("[user] smashes [src] with [user.p_their()] paws[damage ? "." : ", without leaving a mark!"]"), null, null, COMBAT_MESSAGE_RANGE)
 
 /obj/machinery/attack_hulk(mob/living/carbon/user)
@@ -702,7 +684,7 @@
 	if(.)
 		return
 
-	if(internal_disk && istype(weapon, /obj/item/disk/data))
+	if(has_disk_slot && istype(weapon, /obj/item/disk/data))
 		insert_disk(user, weapon)
 		return TRUE
 
@@ -712,7 +694,22 @@
 	. = ..()
 	if(.)
 		return
+
 	update_last_used(user)
+
+/obj/machinery/attack_hand_secondary(mob/user, list/modifiers)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
+	if(inserted_disk)
+		var/obj/item/disk/disk = eject_disk(user)
+		if(disk)
+			user.visible_message(
+				span_notice("You remove [disk] from [src]."),
+				span_notice("A floppy disk ejects from [src].")
+			)
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/tool_act(mob/living/user, obj/item/tool, tool_type)
 	if(SEND_SIGNAL(user, COMSIG_TRY_USE_MACHINE, src) & COMPONENT_CANT_USE_MACHINE_TOOLS)
@@ -825,11 +822,11 @@
 
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += occupant
+			EX_ACT(occupant, EXPLODE_DEVASTATE)
 		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += occupant
+			EX_ACT(occupant, EXPLODE_HEAVY)
 		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += occupant
+			EX_ACT(occupant, EXPLODE_LIGHT)
 
 /obj/machinery/handle_atom_del(atom/deleting_atom)
 	if(deleting_atom == occupant)
@@ -985,18 +982,20 @@
 /obj/machinery/examine(mob/user)
 	. = ..()
 	if(machine_stat & BROKEN)
-		. += span_notice("It looks broken and non-functional.")
+		. += span_alert("It looks broken, it likely will not operate.")
+
 	if(!(resistance_flags & INDESTRUCTIBLE))
 		if(resistance_flags & ON_FIRE)
-			. += span_warning("It's on fire!")
+			. += span_alert("FIRE!!")
+
 		var/healthpercent = (atom_integrity/max_integrity) * 100
 		switch(healthpercent)
 			if(50 to 99)
-				. += "It looks slightly damaged."
+				. += span_notice("It looks slightly damaged.")
 			if(25 to 50)
-				. += "It appears heavily damaged."
+				. += span_alert("It appears heavily damaged.")
 			if(0 to 25)
-				. += span_warning("It's falling apart!")
+				. += span_alert("It appears to be barely in one piece.")
 
 /obj/machinery/examine_more(mob/user)
 	. = ..()
@@ -1041,7 +1040,7 @@
 	dropped_atom.pixel_y = -8 + (round( . / 3)*8)
 
 /obj/machinery/rust_heretic_act()
-	take_damage(500, BRUTE, MELEE, 1)
+	take_damage(500, BRUTE, BLUNT, 1)
 
 /obj/machinery/vv_edit_var(vname, vval)
 	if(vname == NAMEOF(src, occupant))

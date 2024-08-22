@@ -14,7 +14,7 @@ The areas used here are STRICTLY on the CC Z level.
 	name = "CentCom"
 	icon = 'icons/area/areas_centcom.dmi'
 	icon_state = "centcom"
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 	requires_power = FALSE
 	has_gravity = STANDARD_GRAVITY
 	area_flags = UNIQUE_AREA | NOTELEPORT
@@ -87,8 +87,7 @@ The areas used here are STRICTLY on the CC Z level.
 /area/centcom/central_command_areas/supplypod
 	name = "Supplypod Facility"
 	icon_state = "supplypod"
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 
 /area/centcom/central_command_areas/supplypod/pod_storage
 	name = "Supplypod Storage"
@@ -131,7 +130,7 @@ The areas used here are STRICTLY on the CC Z level.
 /area/centcom/tdome
 	name = "Thunderdome"
 	icon_state = "thunder"
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 	requires_power = FALSE
 	has_gravity = STANDARD_GRAVITY
 	flags_1 = NONE
@@ -139,14 +138,12 @@ The areas used here are STRICTLY on the CC Z level.
 /area/centcom/tdome/arena
 	name = "Thunderdome Arena"
 	icon_state = "thunder"
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 
 /area/centcom/tdome/arena_source
 	name = "Thunderdome Arena Template"
 	icon_state = "thunder"
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 
 /area/centcom/tdome/tdome1
 	name = "Thunderdome (Team 1)"
@@ -171,12 +168,11 @@ The areas used here are STRICTLY on the CC Z level.
 /area/centcom/wizard_station
 	name = "Wizard's Den"
 	icon_state = "wizards_den"
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 	requires_power = FALSE
 	has_gravity = STANDARD_GRAVITY
 	area_flags = UNIQUE_AREA | NOTELEPORT
 	flags_1 = NONE
-	network_root_id = "MAGIC_NET"
 
 //Abductors
 /area/centcom/abductor_ship
@@ -184,11 +180,9 @@ The areas used here are STRICTLY on the CC Z level.
 	icon_state = "abductor_ship"
 	requires_power = FALSE
 	area_flags = UNIQUE_AREA | NOTELEPORT
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 	has_gravity = STANDARD_GRAVITY
 	flags_1 = NONE
-	network_root_id = "ALIENS"
 
 //Syndicates
 /area/centcom/syndicate_mothership
@@ -199,35 +193,34 @@ The areas used here are STRICTLY on the CC Z level.
 	area_flags = UNIQUE_AREA | NOTELEPORT
 	flags_1 = NONE
 	ambience_index = AMBIENCE_DANGER
-	network_root_id = SYNDICATE_NETWORK_ROOT
 
 /area/centcom/syndicate_mothership/control
 	name = "Syndicate Control Room"
 	icon_state = "syndie-control"
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 
 /area/centcom/syndicate_mothership/expansion_bombthreat
 	name = "Syndicate Ordnance Laboratory"
 	icon_state = "syndie-elite"
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 	ambience_index = AMBIENCE_ENGI
 
 /area/centcom/syndicate_mothership/expansion_bioterrorism
 	name = "Syndicate Bio-Weapon Laboratory"
 	icon_state = "syndie-elite"
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 	ambience_index = AMBIENCE_MEDICAL
 
 /area/centcom/syndicate_mothership/expansion_chemicalwarfare
 	name = "Syndicate Chemical Weapon Manufacturing Plant"
 	icon_state = "syndie-elite"
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 	ambience_index = AMBIENCE_REEBE
 
 /area/centcom/syndicate_mothership/expansion_fridgerummage
 	name = "Syndicate Perishables and Foodstuffs Storage"
 	icon_state = "syndie-elite"
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 
 /area/centcom/syndicate_mothership/elite_squad
 	name = "Syndicate Elite Squad"
@@ -238,8 +231,7 @@ The areas used here are STRICTLY on the CC Z level.
 	name = "Capture the Flag"
 	icon_state = "ctf"
 	requires_power = FALSE
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 	has_gravity = STANDARD_GRAVITY
 	flags_1 = NONE
 
@@ -293,7 +285,7 @@ The areas used here are STRICTLY on the CC Z level.
 	max_ambience_cooldown = 220 SECONDS
 
 /area/centcom/asteroid/nearstation
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 	ambience_index = AMBIENCE_RUINS
 	always_unpowered = FALSE
 	requires_power = TRUE

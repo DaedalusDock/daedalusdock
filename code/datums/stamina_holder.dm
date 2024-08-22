@@ -28,7 +28,7 @@
 	return ..()
 
 /datum/stamina_container/process(delta_time)
-	if(delta_time && is_regenerating)
+	if(delta_time && is_regenerating && !HAS_TRAIT(parent, TRAIT_HALOPERIDOL))
 		current = min(current + (regen_rate*delta_time), maximum)
 	if(delta_time && decrement)
 		current = max(current + (decrement*delta_time), 0)
@@ -59,6 +59,8 @@
 ///Adjust stamina by an amount.
 /datum/stamina_container/proc/adjust(amt as num, forced)
 	if(!amt)
+		return
+	if(amt < 0 && HAS_TRAIT_FROM(parent, TRAIT_INCAPACITATED, STAMINA))
 		return
 	///Our parent might want to fuck with these numbers
 	var/modify = parent.pre_stamina_change(amt, forced)

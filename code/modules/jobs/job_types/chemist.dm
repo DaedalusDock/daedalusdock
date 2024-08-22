@@ -13,8 +13,6 @@
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(
-		/datum/employer/contractor,
-		/datum/employer/ananke,
 		/datum/employer/aether
 	)
 
@@ -26,20 +24,16 @@
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_MED
 
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 
-	bounty_types = CIV_JOB_CHEM
 	departments_list = list(
 		/datum/job_department/medical,
 	)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/chemistry, /obj/item/ph_booklet)
-
 	mail_goodies = list(
 		/obj/item/reagent_containers/glass/bottle/flash_powder = 15,
-		/obj/item/reagent_containers/glass/bottle/exotic_stabilizer = 5,
 		/obj/item/reagent_containers/glass/bottle/leadacetate = 5,
 		/obj/item/paper/secretrecipe = 1
 	)
@@ -58,8 +52,7 @@
 	ears = /obj/item/radio/headset/headset_med
 	glasses = /obj/item/clothing/glasses/science
 	shoes = /obj/item/clothing/shoes/sneakers/white
-	l_pocket = /obj/item/reagent_containers/glass/bottle/random_buffer
-	r_pocket = /obj/item/reagent_containers/dropper
+	r_pocket = /obj/item/reagent_containers/syringe
 
 	backpack = /obj/item/storage/backpack/chemistry
 	satchel = /obj/item/storage/backpack/satchel/chem

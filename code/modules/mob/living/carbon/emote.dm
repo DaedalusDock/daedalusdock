@@ -70,8 +70,16 @@
 /datum/emote/living/carbon/moan
 	key = "moan"
 	key_third_person = "moans"
-	message = "moans!"
-	message_mime = "appears to moan!"
+	message = "moans."
+	message_mime = "appears to moan."
+	message_param = "moans %t."
+	emote_type = EMOTE_AUDIBLE
+
+/datum/emote/living/carbon/grunt
+	key = "grunt"
+	key_third_person = "grunts"
+	message = "grunts."
+	message_param = "grunts %t."
 	emote_type = EMOTE_AUDIBLE
 
 /datum/emote/living/carbon/noogie

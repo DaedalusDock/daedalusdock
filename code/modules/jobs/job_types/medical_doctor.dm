@@ -2,7 +2,7 @@
 	title = JOB_MEDICAL_DOCTOR
 	description = "Save lives, run around the station looking for victims, \
 		scan everyone in sight"
-	department_head = list(JOB_CHIEF_MEDICAL_OFFICER)
+	department_head = list(JOB_MEDICAL_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 5
 	spawn_positions = 3
@@ -12,7 +12,6 @@
 
 	employers = list(
 		/datum/employer/aether,
-		/datum/employer/contractor
 	)
 
 	outfits = list(
@@ -23,11 +22,10 @@
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_MED
 
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 
-	bounty_types = CIV_JOB_MED
 	departments_list = list(
 		/datum/job_department/medical,
 		)
@@ -35,11 +33,10 @@
 	family_heirlooms = list(/obj/item/storage/medkit/ancient/heirloom)
 
 	mail_goodies = list(
-		/obj/item/healthanalyzer/advanced = 15,
 		/obj/item/scalpel/advanced = 6,
 		/obj/item/retractor/advanced = 6,
 		/obj/item/cautery/advanced = 6,
-		/obj/item/reagent_containers/glass/bottle/formaldehyde = 6,
+		/obj/item/reagent_containers/glass/bottle/space_cleaner = 6,
 		/obj/effect/spawner/random/medical/organs = 5,
 		/obj/effect/spawner/random/medical/memeorgans = 1
 	)
@@ -48,11 +45,11 @@
 
 
 /datum/outfit/job/doctor
-	name = "Medical Doctor"
+	name = JOB_MEDICAL_DOCTOR
 	jobtype = /datum/job/doctor
 
 	id_trim = /datum/id_trim/job/medical_doctor
-	uniform = /obj/item/clothing/under/rank/medical/scrubs/blue
+	uniform = /obj/item/clothing/under/rank/medical/doctor
 	suit = /obj/item/clothing/suit/toggle/labcoat/md
 	suit_store = /obj/item/flashlight/pen
 	belt = /obj/item/modular_computer/tablet/pda/medical
@@ -69,7 +66,7 @@
 	skillchips = list(/obj/item/skillchip/entrails_reader)
 
 /datum/outfit/job/doctor/plasmaman
-	name = "Medical Doctor (Plasmaman)"
+	name = JOB_MEDICAL_DOCTOR + " (Plasmaman)"
 
 	uniform = /obj/item/clothing/under/plasmaman/medical
 	gloves = /obj/item/clothing/gloves/color/plasmaman/white
@@ -78,7 +75,7 @@
 	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/doctor/mod
-	name = "Medical Doctor (MODsuit)"
+	name = JOB_MEDICAL_DOCTOR + " (MODsuit)"
 
 	suit_store = /obj/item/tank/internals/oxygen
 	back = /obj/item/mod/control/pre_equipped/medical
@@ -86,3 +83,5 @@
 	mask = /obj/item/clothing/mask/breath/medical
 	r_pocket = /obj/item/flashlight/pen
 	internals_slot = ITEM_SLOT_SUITSTORE
+	backpack_contents = null
+	box = null

@@ -13,7 +13,18 @@
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	invisibility = INVISIBILITY_LIGHTING
 
+	/// List of all turfs currently inside this area. Acts as a filtered bersion of area.contents
+	/// For faster lookup (area.contents is actually a filtered loop over world)
+	/// Semi fragile, but it prevents stupid so I think it's worth it
+	var/list/turf/contained_turfs = list()
+	/// Contained turfs is a MASSIVE list, so rather then adding/removing from it each time we have a problem turf
+	/// We should instead store a list of turfs to REMOVE from it, then hook into a getter for it
+	/// There is a risk of this and contained_turfs leaking, so a subsystem will run it down to 0 incrementally if it gets too large
+	var/list/turf/turfs_to_uncontain = list()
+
 	var/area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+
+	var/holomap_color = null
 
 	///A var for whether the area allows for detecting fires/etc. Disabled or enabled at a fire alarm.
 	var/fire_detect = TRUE
@@ -38,18 +49,14 @@
 	/// If a room is too big it doesn't have beauty.
 	var/beauty_threshold = 150
 
-	/// For space, the asteroid, lavaland, etc. Used with blueprints or with weather to determine if we are adding a new area (vs editing a station room)
+	/// Used by ghosts to grant new powers. See /datum/component/spook_factor
+	var/spook_level
+
+	/// For space, the asteroid, etc. Used with blueprints or with weather to determine if we are adding a new area (vs editing a station room)
 	var/outdoors = FALSE
 
 	/// Size of the area in open turfs, only calculated for indoors areas.
 	var/areasize = 0
-
-	/// Bonus mood for being in this area
-	var/mood_bonus = 0
-	/// Mood message for being here, only shows up if mood_bonus != 0
-	var/mood_message = "This area is pretty nice!"
-	/// Does the mood bonus require a trait?
-	var/mood_trait
 
 	///Will objects this area be needing power?
 	var/requires_power = TRUE
@@ -74,7 +81,7 @@
 	///The background droning loop that plays 24/7
 	var/ambient_buzz = 'sound/ambience/shipambience.ogg'
 	///The volume of the ambient buzz
-	var/ambient_buzz_vol = 35
+	var/ambient_buzz_vol = 50
 	///Used to decide what the minimum time between ambience is
 	var/min_ambience_cooldown = 30 SECONDS
 	///Used to decide what the maximum time between ambience is
@@ -94,11 +101,6 @@
 
 	///This datum, if set, allows terrain generation behavior to be ran on Initialize()
 	var/datum/map_generator/map_generator
-
-	/// Default network root for this area aka station, lavaland, etc
-	var/network_root_id = null
-	/// Area network id when you want to find all devices hooked up to this area
-	var/network_area_id = null
 
 	///Used to decide what kind of reverb the area makes sound have
 	var/sound_environment = SOUND_ENVIRONMENT_NONE
@@ -126,19 +128,15 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * The returned list of turfs is sorted by name
  */
 /proc/process_teleport_locs()
-	for(var/V in GLOB.sortedAreas)
-		var/area/AR = V
+	for(var/area/AR in get_sorted_areas())
 		if(istype(AR, /area/shuttle) || AR.area_flags & NOTELEPORT)
 			continue
 		if(GLOB.teleportlocs[AR.name])
 			continue
-		if (!AR.contents.len)
+		if (!AR.has_contained_turfs())
 			continue
-		var/turf/picked = AR.contents[1]
-		if (picked && is_station_level(picked.z))
+		if (is_station_level(AR.z))
 			GLOB.teleportlocs[AR.name] = AR
-
-	sortTim(GLOB.teleportlocs, GLOBAL_PROC_REF(cmp_text_asc))
 
 /**
  * Called when an area loads
@@ -150,6 +148,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	// rather than waiting for atoms to initialize.
 	if (area_flags & UNIQUE_AREA)
 		GLOB.areas_by_type[type] = src
+	GLOB.areas += src
 	power_usage = new /list(AREA_USAGE_LEN) // Some atoms would like to use power in Initialize()
 	alarm_manager = new(src) //Just in case. Apparently.
 	return ..()
@@ -163,37 +162,33 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * returns INITIALIZE_HINT_LATELOAD
  */
 /area/Initialize(mapload)
-	icon_state = ""
+	icon = null
 	if(!ambientsounds)
 		ambientsounds = GLOB.ambience_assoc[ambience_index]
 
 	if((area_flags & AREA_USES_STARLIGHT) && CONFIG_GET(flag/starlight))
 		base_lighting_alpha = 0
 		base_lighting_color = null
-		static_lighting = TRUE
+		area_lighting = AREA_LIGHTING_DYNAMIC
 
-	if(requires_power)
-		luminosity = 0
-	else
+	if(!requires_power)
 		power_light = TRUE
 		power_equip = TRUE
 		power_environ = TRUE
 
-		if(static_lighting)
+	switch(area_lighting)
+		if(AREA_LIGHTING_DYNAMIC)
 			luminosity = 0
+
+		if(AREA_LIGHTING_STATIC)
+			if(isnull(base_lighting_color) || base_lighting_alpha == 0)
+				stack_trace("Area of type [type] is set to be statically lit, but has invalid base lighting data. This has been automatically replaced with fullbright.")
+				base_lighting_color = COLOR_WHITE
+				base_lighting_alpha = 255
 
 	. = ..()
 
-	if(!static_lighting)
-		blend_mode = BLEND_MULTIPLY
-
 	reg_in_areas_in_z()
-
-	if(!mapload)
-		if(!network_root_id)
-			network_root_id = STATION_NETWORK_ROOT // default to station root because this might be created with a blueprint
-		SSnetworks.assign_area_network_id(src)
-
 	update_base_lighting()
 
 	return INITIALIZE_HINT_LATELOAD
@@ -211,15 +206,33 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		var/list/turfs = list()
 		for(var/turf/T in contents)
 			turfs += T
-		map_generator.generate_terrain(turfs)
+		map_generator.generate_terrain(turfs, src)
 
 /area/proc/test_gen()
 	if(map_generator)
 		var/list/turfs = list()
 		for(var/turf/T in contents)
 			turfs += T
-		map_generator.generate_terrain(turfs)
+		map_generator.generate_terrain(turfs, src)
 
+/area/proc/get_contained_turfs()
+	if(length(turfs_to_uncontain))
+		cannonize_contained_turfs()
+	return contained_turfs
+
+/// Ensures that the contained_turfs list properly represents the turfs actually inside us
+/area/proc/cannonize_contained_turfs()
+	// This is massively suboptimal for LARGE removal lists
+	// Try and keep the mass removal as low as you can. We'll do this by ensuring
+	// We only actually add to contained turfs after large changes (Also the management subsystem)
+	// Do your damndest to keep turfs out of /area/space as a stepping stone
+	// That sucker gets HUGE and will make this take actual tens of seconds if you stuff turfs_to_uncontain
+	contained_turfs -= turfs_to_uncontain
+	turfs_to_uncontain = list()
+
+/// Returns TRUE if we have contained turfs, FALSE otherwise
+/area/proc/has_contained_turfs()
+	return length(contained_turfs) - length(turfs_to_uncontain) > 0
 
 /**
  * Register this area as belonging to a z level
@@ -227,7 +240,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * Ensures the item is added to the SSmapping.areas_in_z list for this z
  */
 /area/proc/reg_in_areas_in_z()
-	if(!length(contents))
+	if(!has_contained_turfs())
 		return
 	var/list/areas_in_z = SSmapping.areas_in_z
 	update_areasize()
@@ -281,23 +294,6 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	//Lockdown airlocks
 	for(var/obj/machinery/door/door in src)
 		close_and_lock_door(door)
-
-/**
- * Update the icon state of the area
- *
- * Im not sure what the heck this does, somethign to do with weather being able to set icon
- * states on areas?? where the heck would that even display?
- */
-/area/update_icon_state()
-	var/weather_icon
-	for(var/V in SSweather.processing)
-		var/datum/weather/W = V
-		if(W.stage != END_STAGE && (src in W.impacted_areas))
-			W.update_areas()
-			weather_icon = TRUE
-	if(!weather_icon)
-		icon_state = null
-	return ..()
 
 /**
  * Update the icon of the area (overridden to always be null for space
@@ -398,46 +394,19 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * If the area has ambience, then it plays some ambience music to the ambience channel
  */
 /area/Entered(atom/movable/arrived, area/old_area)
+	SHOULD_CALL_PARENT(FALSE)
 	set waitfor = FALSE
 	SEND_SIGNAL(src, COMSIG_AREA_ENTERED, arrived, old_area)
 
+	if(ismob(arrived))
+		var/mob/M = arrived
+		M.update_ambience_area(src)
+
 	if(!arrived.important_recursive_contents?[RECURSIVE_CONTENTS_AREA_SENSITIVE])
 		return
+
 	for(var/atom/movable/recipient as anything in arrived.important_recursive_contents[RECURSIVE_CONTENTS_AREA_SENSITIVE])
 		SEND_SIGNAL(recipient, COMSIG_ENTER_AREA, src)
-
-	if(!isliving(arrived))
-		return
-
-	var/mob/living/L = arrived
-	if(!L.ckey)
-		return
-
-	if(old_area)
-		L.UnregisterSignal(old_area, COMSIG_AREA_POWER_CHANGE)
-	L.RegisterSignal(src, COMSIG_AREA_POWER_CHANGE, TYPE_PROC_REF(/mob, refresh_looping_ambience))
-
-	if(ambient_buzz != old_area.ambient_buzz)
-		L.refresh_looping_ambience()
-
-///Tries to play looping ambience to the mobs.
-/mob/proc/refresh_looping_ambience()
-	SIGNAL_HANDLER
-
-	var/area/my_area = get_area(src)
-
-	if(!(client?.prefs.toggles & SOUND_SHIP_AMBIENCE) || !my_area.ambient_buzz)
-		SEND_SOUND(src, sound(null, repeat = 0, wait = 0, channel = CHANNEL_BUZZ))
-		return
-
-	//Station ambience is dependant on a functioning and charged APC. (Lavaland always has it's ambience.)
-	if(!is_mining_level(my_area.z) && ((!my_area.apc || !my_area.apc.operating || !my_area.apc.cell?.charge && my_area.requires_power)))
-		SEND_SOUND(src, sound(null, repeat = 0, wait = 0, channel = CHANNEL_BUZZ))
-		return
-
-	else
-		SEND_SOUND(src, sound(my_area.ambient_buzz, repeat = 1, wait = 0, volume = my_area.ambient_buzz_vol, channel = CHANNEL_BUZZ))
-
 
 /**
  * Called when an atom exits an area
@@ -445,6 +414,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * Sends signals COMSIG_AREA_EXITED and COMSIG_EXIT_AREA (to a list of atoms)
  */
 /area/Exited(atom/movable/gone, direction)
+	SHOULD_CALL_PARENT(FALSE)
 	SEND_SIGNAL(src, COMSIG_AREA_EXITED, gone, direction)
 
 	if(!gone.important_recursive_contents?[RECURSIVE_CONTENTS_AREA_SENSITIVE])
@@ -475,7 +445,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	always_unpowered = FALSE
 	area_flags &= ~VALID_TERRITORY
 	area_flags &= ~BLOBS_ALLOWED
-	addSorted()
+	require_area_resort()
 /**
  * Set the area size of the area
  *
@@ -486,7 +456,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	if(outdoors)
 		return FALSE
 	areasize = 0
-	for(var/turf/open/T in contents)
+	for(var/turf/open/T in get_contained_turfs())
 		areasize++
 
 /**
@@ -517,3 +487,9 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 	for(var/datum/listener in airalarms + firealarms + firedoors)
 		SEND_SIGNAL(listener, COMSIG_FIRE_ALERT, code)
+
+/// Adjusts the spook level and sends out a signal
+/area/proc/adjust_spook_level(adj)
+	var/old = spook_level
+	spook_level += adj
+	SEND_SIGNAL(src, AREA_SPOOK_LEVEL_CHANGED, src, old)

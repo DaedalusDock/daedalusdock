@@ -9,10 +9,9 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 
 /mob/dead/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED_1
-	tag = "mob_[next_mob_id++]"
+	initialized = TRUE
 	add_to_mob_list()
 
 	prepare_huds()
@@ -25,13 +24,6 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 
 /mob/dead/canUseStorage()
 	return FALSE
-
-/mob/dead/abstract_move(atom/destination)
-	var/turf/old_turf = get_turf(src)
-	var/turf/new_turf = get_turf(destination)
-	if (old_turf?.z != new_turf?.z)
-		on_changed_z_level(old_turf, new_turf)
-	return ..()
 
 /mob/dead/get_status_tab_items()
 	. = ..()
@@ -119,5 +111,5 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 	..()
 	update_z(new_turf?.z)
 
-/mob/dead/can_smell(intensity)
+/mob/dead/can_smell()
 	return FALSE

@@ -64,8 +64,7 @@
 		if(EXPLODE_DEVASTATE)
 			if(prob(80))
 				if(!length(baseturfs) || !ispath(baseturfs[baseturfs.len-1], /turf/open/floor))
-					ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
-					ReplaceWithLattice()
+					TryScrapeToLattice()
 				else
 					ScrapeAway(2, flags = CHANGETURF_INHERIT_AIR)
 			else if(prob(50))
@@ -84,21 +83,22 @@
 				new floor_tile(src)
 				make_plating(TRUE)
 		else if(prob(30))
-			ReplaceWithLattice()
+			TryScrapeToLattice()
 
 /turf/open/floor/engine/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
 
-/turf/open/floor/engine/attack_hand(mob/user, list/modifiers)
+/turf/open/floor/engine/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
 	if(.)
 		return
-	user.Move_Pulled(src)
+	if(!isliving(user))
+		return
+	user.move_grabbed_atoms_towards(src)
 
 //air filled floors; used in atmos pressure chambers
 
 /turf/open/floor/engine/n2o
-	article = "an"
 	name = "\improper N2O floor"
 	initial_gas = ATMOSTANK_NITROUSOXIDE
 
@@ -115,12 +115,10 @@
 	initial_gas = ATMOSTANK_OXYGEN
 
 /turf/open/floor/engine/n2
-	article = "an"
 	name = "\improper N2 floor"
 	initial_gas = ATMOSTANK_NITROGEN
 
 /turf/open/floor/engine/h2
-	article = "an"
 	name = "\improper H2 floor"
 	initial_gas = ATMOSTANK_HYDROGEN
 

@@ -7,7 +7,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	full_w_class = WEIGHT_CLASS_TINY
 
-	throw_speed = 3
 	throw_range = 7
 	stamina_damage = 0
 	stamina_cost = 0
@@ -20,6 +19,9 @@
 	cost = 250
 	source = /datum/robot_energy_storage/medical
 	merge_type = /obj/item/stack/medical
+
+	/// A sound to play on use
+	var/use_sound
 	/// How long it takes to apply it to yourself
 	var/self_delay = 5 SECONDS
 	/// How long it takes to apply it to someone else
@@ -30,8 +32,6 @@
 	var/heal_brute
 	/// How much burn we heal per application
 	var/heal_burn
-	/// How much we reduce bleeding per application on cut wounds
-	var/stop_bleeding
 	/// How much sanitization to apply to burn wounds on application
 	var/sanitization
 	/// How much we add to flesh_healing for burn wounds on application
@@ -45,17 +45,21 @@
 /obj/item/stack/medical/proc/try_heal(mob/living/patient, mob/user, silent = FALSE)
 	if(!patient.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
 		return
+
 	if(patient == user)
 		if(!silent)
 			user.visible_message(span_notice("[user] starts to apply [src] on [user.p_them()]self..."), span_notice("You begin applying [src] on yourself..."))
 		if(!do_after(user, patient, self_delay, DO_PUBLIC, extra_checks=CALLBACK(patient, TYPE_PROC_REF(/mob/living, try_inject), user, null, INJECT_TRY_SHOW_ERROR_MESSAGE), display = src))
-
 			return
+
 	else if(other_delay)
 		if(!silent)
 			user.visible_message(span_notice("[user] starts to apply [src] on [patient]."), span_notice("You begin applying [src] on [patient]..."))
 		if(!do_after(user, patient, other_delay, DO_PUBLIC, extra_checks=CALLBACK(patient, TYPE_PROC_REF(/mob/living, try_inject), user, null, INJECT_TRY_SHOW_ERROR_MESSAGE), display = src))
 			return
+
+	if(use_sound)
+		playsound(loc, use_sound, 50)
 
 	if(heal(patient, user))
 		log_combat(user, patient, "healed", src.name)
@@ -68,24 +72,29 @@
 	if(patient.stat == DEAD)
 		to_chat(user, span_warning("[patient] is dead! You can not help [patient.p_them()]."))
 		return
+
 	if(isanimal(patient) && heal_brute) // only brute can heal
 		var/mob/living/simple_animal/critter = patient
 		if (!critter.healable)
 			to_chat(user, span_warning("You cannot use [src] on [patient]!"))
 			return FALSE
+
 		else if (critter.health == critter.maxHealth)
 			to_chat(user, span_notice("[patient] is at full health."))
 			return FALSE
+
 		user.visible_message("<span class='infoplain'><span class='green'>[user] applies [src] on [patient].</span></span>", "<span class='infoplain'><span class='green'>You apply [src] on [patient].</span></span>")
 		patient.heal_bodypart_damage((heal_brute * 0.5))
 		return TRUE
+
 	if(iscarbon(patient))
 		return heal_carbon(patient, user, heal_brute, heal_burn)
+
 	to_chat(user, span_warning("You can't heal [patient] with [src]!"))
 
 /// The healing effects on a carbon patient. Since we have extra details for dealing with bodyparts, we get our own fancy proc. Still returns TRUE on success and FALSE on fail
 /obj/item/stack/medical/proc/heal_carbon(mob/living/carbon/C, mob/user, brute, burn)
-	var/obj/item/bodypart/affecting = C.get_bodypart(check_zone(user.zone_selected))
+	var/obj/item/bodypart/affecting = C.get_bodypart(deprecise_zone(user.zone_selected), TRUE)
 	if(!affecting) //Missing limb?
 		to_chat(user, span_warning("[C] doesn't have \a [parse_zone(user.zone_selected)]!"))
 		return FALSE
@@ -98,8 +107,7 @@
 			span_infoplain(span_green("You apply [src] on [C]'s [parse_zone(affecting.body_zone)]."))
 		)
 		var/previous_damage = affecting.get_damage()
-		if(affecting.heal_damage(brute, burn))
-			C.update_damage_overlays()
+		affecting.heal_damage(brute, burn)
 		post_heal_effects(max(previous_damage - affecting.get_damage(), 0), C, user)
 		return TRUE
 	to_chat(user, span_warning("[C]'s [parse_zone(affecting.body_zone)] can not be healed with [src]!"))
@@ -116,71 +124,39 @@
 	icon_state = "brutepack"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	heal_brute = 40
+	heal_brute = 15
 	self_delay = 4 SECONDS
 	other_delay = 2 SECONDS
-	grind_results = list(/datum/reagent/medicine/c2/libital = 10)
+	grind_results = list(/datum/reagent/medicine/bicaridine = 10)
 	merge_type = /obj/item/stack/medical/bruise_pack
 
 /obj/item/stack/medical/bruise_pack/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is bludgeoning [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return (BRUTELOSS)
 
-/obj/item/stack/medical/gauze
+/obj/item/stack/gauze
 	name = "medical gauze"
 	desc = "A roll of elastic cloth, perfect for stabilizing all kinds of wounds, from cuts and burns, to broken bones. "
 	gender = PLURAL
 	singular_name = "medical gauze"
 	icon_state = "gauze"
-	self_delay = 5 SECONDS
-	other_delay = 2 SECONDS
+	icon = 'icons/obj/stack_medical.dmi'
+	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	max_amount = 12
 	amount = 6
 	grind_results = list(/datum/reagent/cellulose = 2)
-	custom_price = PAYCHECK_ASSISTANT * 2
-	absorption_rate = 0.125
-	absorption_capacity = 5
-	splint_factor = 0.7
+	custom_price = PAYCHECK_ASSISTANT * 0.5
+	absorption_capacity = 50
+	absorption_rate_modifier = 0.5
+
 	burn_cleanliness_bonus = 0.35
-	merge_type = /obj/item/stack/medical/gauze
+	merge_type = /obj/item/stack/gauze
 
-// gauze is only relevant for wounds, which are handled in the wounds themselves
-/obj/item/stack/medical/gauze/try_heal(mob/living/M, mob/user, silent)
-	var/obj/item/bodypart/limb = M.get_bodypart(check_zone(user.zone_selected))
-	if(!limb)
-		to_chat(user, span_notice("There's nothing there to bandage!"))
-		return
-	if(!LAZYLEN(limb.wounds))
-		to_chat(user, span_notice("There's no wounds that require bandaging on [user==M ? "your" : "[M]'s"] [limb.plaintext_zone]!")) // good problem to have imo
-		return
-
-	var/gauzeable_wound = FALSE
-
-	for(var/datum/wound/W in limb.wounds)
-		if(W.bleeding())
-			gauzeable_wound = TRUE
-			break
-
-
-	if(!gauzeable_wound)
-		to_chat(user, span_notice("There's no wounds that require bandaging on [user==M ? "your" : "[M]'s"] [limb.plaintext_zone]!")) // good problem to have imo
-		return
-
-	if(limb.current_gauze && (limb.current_gauze.absorption_capacity * 0.8 > absorption_capacity)) // ignore if our new wrap is < 20% better than the current one, so someone doesn't bandage it 5 times in a row
-		to_chat(user, span_warning("The bandage currently on [user==M ? "your" : "[M]'s"] [limb.plaintext_zone] is still in good condition!"))
-		return
-
-	user.visible_message(span_warning("[user] begins wrapping the wounds on [M]'s [limb.plaintext_zone] with [src]..."), span_warning("You begin wrapping the wounds on [user == M ? "your" : "[M]'s"] [limb.plaintext_zone] with [src]..."))
-	if(!do_after(user, M, (user == M ? self_delay : other_delay), DO_PUBLIC, display = src))
-		return
-
-	user.visible_message("<span class='infoplain'><span class='green'>[user] applies [src] to [M]'s [limb.plaintext_zone].</span></span>", "<span class='infoplain'><span class='green'>You bandage the wounds on [user == M ? "your" : "[M]'s"] [limb.plaintext_zone].</span></span>")
-	limb.apply_gauze(src)
-
-/obj/item/stack/medical/gauze/twelve
+/obj/item/stack/gauze/twelve
 	amount = 12
 
-/obj/item/stack/medical/gauze/attackby(obj/item/I, mob/user, params)
+/obj/item/stack/gauze/attackby(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_WIRECUTTER || (I.sharpness & SHARP_EDGED))
 		if(get_amount() < 2)
 			to_chat(user, span_warning("You need at least two gauzes to do this!"))
@@ -197,62 +173,83 @@
 	else
 		return ..()
 
-/obj/item/stack/medical/gauze/suicide_act(mob/living/user)
+/obj/item/stack/gauze/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] begins tightening [src] around [user.p_their()] neck! It looks like [user.p_they()] forgot how to use medical supplies!"))
 	return OXYLOSS
 
-/obj/item/stack/medical/gauze/improvised
+///Absorb an incoming bleed amount, return the amount we failed to absorb.
+/obj/item/stack/proc/absorb_blood(bleed_amt, mob/living/carbon/owner)
+	if(!bleed_amt)
+		return 0
+
+	add_blood_DNA(owner.get_blood_dna_list())
+	if(!absorption_capacity)
+		return null
+
+	absorption_capacity = absorption_capacity - bleed_amt
+	if(absorption_capacity < 0)
+		. = absorption_capacity * -1 // Blood we failed to absorb
+		var/obj/item/bodypart/BP = loc
+		to_chat(BP.owner, span_danger("The blood spills out from underneath \the [singular_name] on your [BP.plaintext_zone]!"))
+		absorption_capacity = 0
+	else
+		return 0 //Absorbed all blood, and bandage is still good.
+
+/obj/item/stack/gauze/improvised
 	name = "improvised gauze"
 	singular_name = "improvised gauze"
 	desc = "A roll of cloth roughly cut from something that does a decent job of stabilizing wounds, but less efficiently so than real medical gauze."
-	self_delay = 6 SECONDS
-	other_delay = 3 SECONDS
-	splint_factor = 0.85
 	burn_cleanliness_bonus = 0.7
-	absorption_rate = 0.075
-	absorption_capacity = 4
-	merge_type = /obj/item/stack/medical/gauze/improvised
+	absorption_capacity = 20
+	absorption_rate_modifier = 0.8
 
-	/*
-	The idea is for the following medical devices to work like a hybrid of the old brute packs and tend wounds,
-	they heal a little at a time, have reduced healing density and does not allow for rapid healing while in combat.
-	However they provice graunular control of where the healing is directed, this makes them better for curing work-related cuts and scrapes.
+	merge_type = /obj/item/stack/gauze/improvised
 
-	The interesting limb targeting mechanic is retained and i still believe they will be a viable choice, especially when healing others in the field.
-	 */
-
+/// Sutures close small cut or puncture wounds.
 /obj/item/stack/medical/suture
 	name = "suture"
-	desc = "Basic sterile sutures used to seal up cuts and lacerations and stop bleeding."
+	desc = "Basic sterile sutures used to seal up cuts and stop bleeding."
 	gender = PLURAL
 	singular_name = "suture"
 	icon_state = "suture"
-	self_delay = 3 SECONDS
-	other_delay = 1 SECONDS
+	self_delay = 8 SECONDS
+	other_delay = 5 SECONDS
 	amount = 10
 	max_amount = 10
 	repeating = TRUE
-	heal_brute = 10
-	stop_bleeding = 0.6
 	grind_results = list(/datum/reagent/medicine/spaceacillin = 2)
 	merge_type = /obj/item/stack/medical/suture
+	use_sound = 'sound/effects/sneedle.ogg'
 
-/obj/item/stack/medical/suture/emergency
-	name = "emergency suture"
-	desc = "A value pack of cheap sutures, not very good at repairing damage, but still decent at stopping bleeding."
-	heal_brute = 5
-	amount = 5
-	max_amount = 5
-	merge_type = /obj/item/stack/medical/suture/emergency
+/obj/item/stack/medical/suture/heal_carbon(mob/living/carbon/C, mob/user, brute, burn)
+	var/obj/item/bodypart/affecting = C.get_bodypart(deprecise_zone(user.zone_selected), TRUE)
+	if(!affecting) //Missing limb?
+		to_chat(user, span_warning("[C] doesn't have \a [parse_zone(user.zone_selected)]!"))
+		return FALSE
 
-/obj/item/stack/medical/suture/medicated
-	name = "medicated suture"
-	icon_state = "suture_purp"
-	desc = "A suture infused with drugs that speed up wound healing of the treated laceration."
-	heal_brute = 15
-	stop_bleeding = 0.75
-	grind_results = list(/datum/reagent/medicine/polypyr = 1)
-	merge_type = /obj/item/stack/medical/suture/medicated
+	if(!IS_ORGANIC_LIMB(affecting)) //Limb must be organic to be healed - RR
+		to_chat(user, span_warning("[src] won't work on a robotic limb!"))
+		return FALSE
+
+	var/wound_desc
+	for(var/datum/wound/W as anything in shuffle(affecting.wounds))
+		if(W.wound_type != WOUND_CUT && W.wound_type != WOUND_PIERCE)
+			continue
+		if(W.damage <= 15)
+			wound_desc = W.desc
+			W.heal_damage(15)
+			affecting.update_damage()
+			break
+
+	if(!wound_desc)
+		to_chat(user, span_warning("You can't find any wounds you can stitch shut."))
+		return FALSE
+
+	if(user == C)
+		user.visible_message(span_notice("[user] stitches the [wound_desc] on [user.p_their()] [affecting.plaintext_zone] shut."))
+	else
+		user.visible_message(span_notice("[user] stitches the [wound_desc] on [C]'s [affecting.plaintext_zone] shut."))
+	return TRUE
 
 /obj/item/stack/medical/ointment
 	name = "ointment"
@@ -270,7 +267,7 @@
 	heal_burn = 5
 	flesh_regeneration = 2.5
 	sanitization = 0.25
-	grind_results = list(/datum/reagent/medicine/c2/lenturi = 10)
+	grind_results = list(/datum/reagent/medicine/kelotane = 10)
 	merge_type = /obj/item/stack/medical/ointment
 
 /obj/item/stack/medical/ointment/suicide_act(mob/living/user)
@@ -379,7 +376,7 @@
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 
-	amount = 1
+	amount = 6
 	self_delay = 20
 	grind_results = list(/datum/reagent/bone_dust = 10, /datum/reagent/carbon = 10)
 	novariants = TRUE
@@ -398,7 +395,7 @@
 		C.visible_message(span_suicide("[C] screws up like an idiot and still dies anyway!"))
 		return (BRUTELOSS)
 
-	C.emote("scream")
+	C.emote("agony")
 
 	for(var/i in C.bodyparts)
 		var/obj/item/bodypart/bone = i
@@ -406,8 +403,8 @@
 	use(1)
 	return (BRUTELOSS)
 
-/obj/item/stack/medical/bone_gel/four
-	amount = 4
+/obj/item/stack/medical/bone_gel/twelve
+	amount = 12
 
 /obj/item/stack/medical/poultice
 	name = "mourning poultices"

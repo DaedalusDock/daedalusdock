@@ -7,11 +7,9 @@
 	slot = ORGAN_SLOT_EYES
 	gender = PLURAL
 
-	healing_factor = STANDARD_ORGAN_HEALING
 	decay_factor = STANDARD_ORGAN_DECAY
-	maxHealth = 0.5 * STANDARD_ORGAN_THRESHOLD //half the normal health max since we go blind at 30, a permanent blindness at 50 therefore makes sense unless medicine is administered
-	high_threshold = 0.3 * STANDARD_ORGAN_THRESHOLD //threshold at 30
-	low_threshold = 0.2 * STANDARD_ORGAN_THRESHOLD //threshold at 20
+	maxHealth = 45
+	relative_size = 5
 
 	low_threshold_passed = "<span class='info'>Distant objects become somewhat less tangible.</span>"
 	high_threshold_passed = "<span class='info'>Everything starts to look a lot less clear.</span>"
@@ -50,6 +48,17 @@
 	refresh(TRUE)
 	if(eye_owner.has_dna())
 		eye_owner.update_eyes()
+	if(damaged)
+		eye_owner.become_blind(EYE_DAMAGE)
+	if(damage > maxHealth * low_threshold)
+		var/obj/item/clothing/glasses/eyewear = eye_owner.glasses
+		var/has_prescription_glasses = istype(eyewear) && eyewear.vision_correction
+
+		if(has_prescription_glasses)
+			return
+
+		var/severity = damage > 30 ? 2 : 1
+		eye_owner.overlay_fullscreen("eye_damage", /atom/movable/screen/fullscreen/impaired, severity)
 
 /obj/item/organ/eyes/proc/refresh(update_sight = TRUE)
 	if(ishuman(owner))
@@ -149,16 +158,20 @@
 	eye_color_left = initial(eye_color_left)
 	eye_color_right = initial(eye_color_right)
 
-/obj/item/organ/eyes/on_life(delta_time, times_fired)
+/obj/item/organ/eyes/check_damage_thresholds(mob/organ_owner)
 	. = ..()
-	var/mob/living/carbon/eye_owner = owner
-	//various degrees of "oh fuck my eyes", from "point a laser at your eye" to "staring at the Sun" intensities
-	if(damage > 20)
-		damaged = TRUE
-		if((organ_flags & ORGAN_FAILING))
-			eye_owner.become_blind(EYE_DAMAGE)
+	var/mob/living/carbon/eye_owner = organ_owner
+	// Can't be a switch, these are non-constant :(
+	if(. == high_threshold_passed)
+		if(damaged)
 			return
+		eye_owner?.become_blind(EYE_DAMAGE)
+		damaged = TRUE
+		return
 
+	else if(. == low_threshold_passed)
+		if(!eye_owner)
+			return
 		var/obj/item/clothing/glasses/eyewear = eye_owner.glasses
 		var/has_prescription_glasses = istype(eyewear) && eyewear.vision_correction
 
@@ -169,11 +182,15 @@
 		eye_owner.overlay_fullscreen("eye_damage", /atom/movable/screen/fullscreen/impaired, severity)
 		return
 
-	//called once since we don't want to keep clearing the screen of eye damage for people who are below 20 damage
-	if(damaged)
-		damaged = FALSE
-		eye_owner.clear_fullscreen("eye_damage")
-		eye_owner.cure_blind(EYE_DAMAGE)
+	else if(. == low_threshold_cleared)
+		eye_owner?.clear_fullscreen("eye_damage")
+		return
+
+	else if(. == high_threshold_cleared)
+		if(damaged)
+			damaged = FALSE
+			eye_owner?.cure_blind(EYE_DAMAGE)
+		return
 
 /obj/item/organ/eyes/night_vision
 	name = "shadow eyes"
@@ -221,8 +238,16 @@
 	name = "robotic eyes"
 	icon_state = "cybernetic_eyeballs"
 	desc = "Your vision is augmented."
-	status = ORGAN_ROBOTIC
 	organ_flags = ORGAN_SYNTHETIC
+
+	///Incase the eyes are removed before the timer expires
+	var/emp_timer
+
+/obj/item/organ/eyes/robotic/Remove(mob/living/carbon/eye_owner, special)
+	if(emp_timer)
+		deltimer(emp_timer)
+		remove_malfunction()
+	..()
 
 /obj/item/organ/eyes/robotic/emp_act(severity)
 	. = ..()
@@ -232,6 +257,12 @@
 		return
 	to_chat(owner, span_warning("Static obfuscates your vision!"))
 	owner.flash_act(visual = 1)
+	owner.add_client_colour(/datum/client_colour/malfunction)
+	emp_timer = addtimer(CALLBACK(src, PROC_REF(remove_malfunction)), 10 SECONDS, TIMER_STOPPABLE)
+
+/obj/item/organ/eyes/robotic/proc/remove_malfunction()
+	owner.remove_client_colour(/datum/client_colour/malfunction)
+	emp_timer = null
 
 /obj/item/organ/eyes/robotic/basic
 	name = "basic robotic eyes"
@@ -504,7 +535,7 @@
 
 
 /obj/effect/abstract/eye_lighting
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	var/obj/item/organ/eyes/robotic/glow/parent
 
 
@@ -541,12 +572,6 @@
 	desc = "These eyes seem to stare back no matter the direction you look at it from."
 	eye_icon_state = "flyeyes"
 	icon_state = "eyeballs-fly"
-
-/obj/item/organ/eyes/skrell
-	name = "amphibian eyes"
-	desc = "Large black orbs."
-	eye_icon_state = "skrelleyes"
-	icon_state = "eyeballs-skrell"
 
 /obj/item/organ/eyes/fly/Insert(mob/living/carbon/eye_owner, special = FALSE)
 	. = ..()
@@ -594,11 +619,12 @@
 	var/lums = owner_turf.get_lumcount()
 	if(lums > 0.5) //we allow a little more than usual so we can produce light from the adapted eyes
 		to_chat(owner, span_danger("Your eyes! They burn in the light!"))
-		applyOrganDamage(10) //blind quickly
+		applyOrganDamage(10, updating_health = FALSE) //blind quickly
 		playsound(owner, 'sound/machines/grill/grillsizzle.ogg', 50)
 	else
-		applyOrganDamage(-10) //heal quickly
-	. = ..()
+		applyOrganDamage(-10, updating_health = FALSE) //heal quickly
+		. = TRUE
+	return ..() || .
 
 /obj/item/organ/eyes/night_vision/maintenance_adapted/Remove(mob/living/carbon/unadapted, special = FALSE)
 	//remove lighting

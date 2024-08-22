@@ -69,6 +69,9 @@
 #define MC_CHARGE "CHARGE"
 #define MC_AI "AI"
 
+/// Modular Computer Autorun file
+#define MC_AUTORUN_FILE "autorun"
+
 //NTNet stuff, for modular computers
 									// NTNet module-configuration values. Do not change these. If you need to add another use larger number (5..6..7 etc)
 #define NTNET_SOFTWAREDOWNLOAD 1 // Downloads of software from NTNet
@@ -228,6 +231,7 @@
 #define DCAT_MISC "Miscellaneous"
 #define DCAT_SILICON "Silicons"
 #define DCAT_MINING "Mining Tools"
+#define DCAT_PAINTER "Painters"
 
 // Design categories for the mechfab
 #define DCAT_CYBORG "Cyborg"

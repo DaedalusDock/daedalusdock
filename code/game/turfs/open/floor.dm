@@ -10,10 +10,9 @@
 	clawfootstep = FOOTSTEP_HARD_CLAW
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 	flags_1 = NO_SCREENTIPS_1
-
-	turf_flags = CAN_BE_DIRTY_1 ///PARIAH EDIT - Overriden in modular_pariah\modules\decay_subsystem\code\decay_turf_handling.dm
-	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_OPEN_FLOOR)
-	canSmoothWith = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_OPEN_FLOOR)
+	turf_flags = CAN_BE_DIRTY_1 | IS_SOLID
+	smoothing_groups = SMOOTH_GROUP_TURF_OPEN + SMOOTH_GROUP_OPEN_FLOOR
+	canSmoothWith = SMOOTH_GROUP_TURF_OPEN + SMOOTH_GROUP_OPEN_FLOOR
 
 	heat_capacity = 10000
 	tiled_dirt = TRUE
@@ -54,19 +53,12 @@
 		burnt = TRUE
 	if(mapload && prob(33))
 		MakeDirty()
-	if(is_station_level(z))
-		GLOB.station_turfs += src
 
 /turf/open/floor/proc/setup_broken_states()
 	return list("damaged1", "damaged2", "damaged3", "damaged4", "damaged5")
 
 /turf/open/floor/proc/setup_burnt_states()
 	return list("floorscorched1", "floorscorched2")
-
-/turf/open/floor/Destroy()
-	if(is_station_level(z))
-		GLOB.station_turfs -= src
-	return ..()
 
 /turf/open/floor/update_overlays()
 	. = ..()
@@ -105,8 +97,7 @@
 			switch(rand(1, 3))
 				if(1)
 					if(!length(baseturfs) || !ispath(baseturfs[baseturfs.len-1], /turf/open/floor))
-						ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
-						ReplaceWithLattice()
+						TryScrapeToLattice()
 					else
 						ScrapeAway(2, flags = CHANGETURF_INHERIT_AIR)
 					if(prob(33))
@@ -125,6 +116,9 @@
 			if (prob(50))
 				src.break_tile()
 				src.hotspot_expose(1000,CELL_VOLUME)
+
+	if(prob(33) && istype(src, /turf/open/floor)) //ChangeTurf can change us into space during ScrapeAway()
+		shake_animation()
 
 /turf/open/floor/is_shielded()
 	for(var/obj/structure/A in contents)
@@ -250,7 +244,7 @@
 			if(prob(70))
 				sheer = TRUE
 			else if(prob(50) && (/turf/open/space in baseturfs))
-				ReplaceWithLattice()
+				TryScrapeToLattice()
 	if(sheer)
 		if(has_tile())
 			remove_tile(null, TRUE, TRUE, TRUE)

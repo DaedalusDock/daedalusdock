@@ -1,16 +1,16 @@
 /obj/item/melee/energy
 	icon = 'icons/obj/transforming_energy.dmi'
 	max_integrity = 200
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 30)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 30)
 	attack_verb_continuous = list("hits", "taps", "pokes")
 	attack_verb_simple = list("hit", "tap", "poke")
 	resistance_flags = FIRE_PROOF
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 3
 	light_power = 1
 	light_on = FALSE
 	stealthy_audio = TRUE
-	w_class = WEIGHT_CLASS_SMALL
+	w_class = WEIGHT_CLASS_NORMAL
 
 	/// The color of this energy based sword, for use in editing the icon_state.
 	var/sword_color_icon
@@ -29,12 +29,20 @@
 	/// The heat given off when active.
 	var/active_heat = 3500
 
+	var/datum/effect_system/spark_spread/spark_system
+	COOLDOWN_DECLARE(spark_cd)
+
 /obj/item/melee/energy/Initialize(mapload)
 	. = ..()
 	make_transformable()
 	AddComponent(/datum/component/butchering, _speed = 5 SECONDS, _butcher_sound = active_hitsound)
 
+	spark_system = new /datum/effect_system/spark_spread()
+	spark_system.set_up(3, 0, src)
+	spark_system.attach(src)
+
 /obj/item/melee/energy/Destroy()
+	QDEL_NULL(spark_system)
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
@@ -66,6 +74,10 @@
 	if(heat)
 		open_flame()
 
+	if(COOLDOWN_FINISHED(src, spark_cd))
+		spark_system.start()
+		COOLDOWN_START(src, spark_cd, rand(2 SECONDS, 4 SECONDS))
+
 /obj/item/melee/energy/ignition_effect(atom/atom, mob/user)
 	if(!heat && !blade_active)
 		return ""
@@ -76,7 +88,7 @@
 		if(carbon_user.wear_mask)
 			in_mouth = ", barely missing [carbon_user.p_their()] nose"
 	. = span_warning("[user] swings [user.p_their()] [name][in_mouth]. [user.p_they(TRUE)] light[user.p_s()] [user.p_their()] [atom.name] in the process.")
-	playsound(loc, hitsound, get_clamped_volume(), TRUE, -1)
+	playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, -1)
 	add_fingerprint(user)
 
 /*
@@ -100,13 +112,14 @@
 			updateEmbedding()
 		heat = active_heat
 		START_PROCESSING(SSobj, src)
+		spark_system.start()
+		COOLDOWN_START(src, spark_cd, rand(2 SECONDS, 4 SECONDS))
 	else
 		if(embedding)
 			disableEmbedding()
 		heat = initial(heat)
 		STOP_PROCESSING(SSobj, src)
 
-	balloon_alert(user, "[name] [active ? "enabled":"disabled"]")
 	playsound(user ? user : src, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 35, TRUE)
 	set_light_on(active)
 	return COMPONENT_NO_DEFAULT_MESSAGE
@@ -122,10 +135,11 @@
 	attack_verb_continuous = list("attacks", "chops", "cleaves", "tears", "lacerates", "cuts")
 	attack_verb_simple = list("attack", "chop", "cleave", "tear", "lacerate", "cut")
 	force = 40
+
 	throwforce = 25
-	throw_speed = 3
 	throw_range = 5
-	armour_penetration = 100
+
+	armor_penetration = 100
 	sharpness = SHARP_EDGED
 	w_class = WEIGHT_CLASS_NORMAL
 	flags_1 = CONDUCT_1
@@ -157,14 +171,15 @@
 	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
 	hitsound = SFX_SWING_HIT
 	force = 3
+
 	throwforce = 5
-	throw_speed = 3
 	throw_range = 5
-	armour_penetration = 35
+
+	armor_penetration = 35
 	block_chance = 50
 	embedding = list("embed_chance" = 75, "impact_pain_mult" = 10)
 
-/obj/item/melee/energy/sword/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/melee/energy/sword/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(blade_active)
 		return ..()
 	return FALSE
@@ -208,7 +223,7 @@
 	active_force = 30
 	sword_color_icon = null // Stops icon from breaking when turned on.
 
-/obj/item/melee/energy/sword/cyborg/saw/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/melee/energy/sword/cyborg/saw/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	return FALSE
 
 // The colored energy swords we all know and love.
@@ -279,26 +294,11 @@
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	force = 30
 	throwforce = 1 // Throwing or dropping the item deletes it.
-	throw_speed = 3
 	throw_range = 1
 	sharpness = SHARP_EDGED
 	heat = 3500
 	w_class = WEIGHT_CLASS_BULKY
 	blade_active = TRUE
-	/// Our linked spark system that emits from our sword.
-	var/datum/effect_system/spark_spread/spark_system
-
-//Most of the other special functions are handled in their own files. aka special snowflake code so kewl
-/obj/item/melee/energy/blade/Initialize(mapload)
-	. = ..()
-	spark_system = new /datum/effect_system/spark_spread()
-	spark_system.set_up(5, 0, src)
-	spark_system.attach(src)
-	START_PROCESSING(SSobj, src)
-
-/obj/item/melee/energy/blade/Destroy()
-	QDEL_NULL(spark_system)
-	return ..()
 
 /obj/item/melee/energy/blade/make_transformable()
 	return FALSE

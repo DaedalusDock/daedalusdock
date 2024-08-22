@@ -29,7 +29,7 @@
 		/obj/item/reagent_containers/syringe/contraband/saturnx,
 		/obj/item/storage/pill_bottle/happy,
 		/obj/item/storage/pill_bottle/lsd,
-		/obj/item/storage/pill_bottle/psicodine,
+		/obj/item/storage/pill_bottle/haloperidol,
 	)
 
 /obj/effect/spawner/random/contraband/permabrig_weapon
@@ -38,7 +38,6 @@
 	loot = list(
 		/obj/item/knife/shiv = 5,
 		/obj/item/knife/shiv/carrot = 5,
-		/obj/item/tailclub = 5, //want to buy makeshift wooden club sprite
 		/obj/item/knife = 3,
 		/obj/item/assembly/flash/handheld = 1,
 		/obj/item/grenade/smokebomb = 1,

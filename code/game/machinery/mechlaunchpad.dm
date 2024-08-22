@@ -16,7 +16,7 @@
 /obj/machinery/mechpad/Initialize(mapload)
 	. = ..()
 	display_name = "Orbital Pad - [get_area_name(src)]"
-	GLOB.mechpad_list += src
+	SET_TRACKING(__TYPE__)
 
 /obj/machinery/mechpad/Destroy()
 	if(connected_console)
@@ -24,7 +24,7 @@
 		connected_console = null
 	for(var/obj/machinery/computer/mechpad/console in consoles)
 		console.mechpads -= src
-	GLOB.mechpad_list -= src
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/machinery/mechpad/screwdriver_act(mob/user, obj/item/tool)

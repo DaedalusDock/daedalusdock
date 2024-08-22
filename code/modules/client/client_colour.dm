@@ -61,6 +61,10 @@
 	if(!ispath(colour_type, /datum/client_colour) || QDELING(src))
 		return
 
+	for(var/datum/client_colour/existing_color as anything in client_colours)
+		if(existing_color.type == colour_type)
+			return
+
 	var/datum/client_colour/colour = new colour_type(src)
 	BINARY_INSERT(colour, client_colours, /datum/client_colour, colour, priority, COMPARE_KEY)
 	if(colour.fade_in)
@@ -188,6 +192,9 @@
 /datum/client_colour/glass_colour/nightmare
 	colour = list(255,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,1, -130,0,0,0) //every color is either red or black
 
+/datum/client_colour/malfunction
+	colour = list(/*R*/ 0,0,0,0, /*G*/ 0,175,0,0, /*B*/ 0,0,0,0, /*A*/ 0,0,0,1, /*C*/0,-130,0,0) // Matrix colors
+
 /datum/client_colour/monochrome
 	colour = list(rgb(77,77,77), rgb(150,150,150), rgb(28,28,28), rgb(0,0,0))
 	priority = PRIORITY_HIGH //we can't see colors anyway!
@@ -212,6 +219,18 @@
 
 /datum/client_colour/rave
 	priority = PRIORITY_LOW
+
+/datum/client_colour/ghostmono
+	colour = list(
+		0.3,0.3,0.3,0,
+		0.3,0.3,0.3,0,
+		0.3,0.3,0.3,0,
+		0.0,0.0,0.0,1,
+	)
+	priority = PRIORITY_ABSOLUTE
+	override = TRUE
+	fade_in = 20
+	fade_out = 20
 
 #undef PRIORITY_ABSOLUTE
 #undef PRIORITY_HIGH

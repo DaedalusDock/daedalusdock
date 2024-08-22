@@ -49,7 +49,7 @@
 		limb_regen = user.regenerate_limb(BODY_ZONE_L_ARM, 1)
 	if(limb_regen)
 		user.visible_message(span_warning("[user]'s missing arm reforms, making a loud, grotesque sound!"), span_userdanger("Your arm regrows, making a loud, crunchy sound and giving you great pain!"), span_hear("You hear organic matter ripping and tearing!"))
-		user.emote("scream")
+		user.emote("agony")
 	var/obj/item/W = new weapon_type(user, silent)
 	user.put_in_hands(W)
 	if(!silent)
@@ -93,9 +93,6 @@
 		H.visible_message(span_warning("[H] casts off [H.p_their()] [suit_name_simple]!"), span_warning("We cast off our [suit_name_simple]."), span_hear("You hear the organic matter ripping and tearing!"))
 		H.temporarilyRemoveItemFromInventory(H.head, TRUE) //The qdel on dropped() takes care of it
 		H.temporarilyRemoveItemFromInventory(H.wear_suit, TRUE)
-		H.update_worn_oversuit()
-		H.update_worn_head()
-		H.update_body_parts()
 
 		if(blood_on_castoff)
 			H.add_splatter_floor()
@@ -112,10 +109,10 @@
 	..()
 
 /datum/action/changeling/suit/sting_action(mob/living/carbon/human/user)
-	if(!user.canUnEquip(user.wear_suit))
+	if(!user.canUnequipItem(user.wear_suit))
 		to_chat(user, span_warning("\the [user.wear_suit] is stuck to your body, you cannot grow a [suit_name_simple] over it!"))
 		return
-	if(!user.canUnEquip(user.head))
+	if(!user.canUnequipItem(user.head))
 		to_chat(user, span_warning("\the [user.head] is stuck on your head, you cannot grow a [helmet_name_simple] over it!"))
 		return
 	..()
@@ -265,7 +262,7 @@
 /obj/item/gun/magic/tentacle/shoot_with_empty_chamber(mob/living/user as mob|obj)
 	to_chat(user, span_warning("The [name] is not ready yet."))
 
-/obj/item/gun/magic/tentacle/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+/obj/item/gun/magic/tentacle/do_fire_gun(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
 	var/obj/projectile/tentacle/tentacle_shot = chambered.loaded_projectile //Gets the actual projectile we will fire
 	tentacle_shot.fire_modifiers = params2list(params)
 	. = ..()
@@ -313,7 +310,7 @@
 
 /obj/projectile/tentacle/fire(setAngle)
 	if(firer)
-		chain = firer.Beam(src, icon_state = "tentacle")
+		chain = firer.Beam(src, icon_state = "tentacle", emissive = FALSE)
 	..()
 
 /obj/projectile/tentacle/proc/reset_throw(mob/living/carbon/human/H)
@@ -326,8 +323,8 @@
 			H.swap_hand()
 		if(H.get_active_held_item())
 			return
-		C.grabbedby(H)
-		C.grippedby(H, instant = TRUE) //instant aggro grab
+
+		H.try_make_grab(C, /datum/grab/normal/aggressive)
 
 /obj/projectile/tentacle/proc/tentacle_stab(mob/living/carbon/human/H, mob/living/carbon/C)
 	if(H.Adjacent(C))
@@ -337,7 +334,7 @@
 				C.apply_damage(I.force, BRUTE, BODY_ZONE_CHEST)
 				H.do_item_attack_animation(C, used_item = I)
 				H.add_mob_blood(C)
-				playsound(get_turf(H),I.hitsound,75,TRUE)
+				playsound(get_turf(H), I.get_hitsound(),75,TRUE)
 				return
 
 /obj/projectile/tentacle/on_hit(atom/target, blocked = FALSE)
@@ -436,16 +433,19 @@
 	if(ismob(loc))
 		loc.visible_message(span_warning("The end of [loc.name]\'s hand inflates rapidly, forming a huge shield-like mass!"), span_warning("We inflate our hand into a strong shield."), span_hear("You hear organic matter ripping and tearing!"))
 
-/obj/item/shield/changeling/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/shield/changeling/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK)
+	. = ..()
+	if(!.)
+		return
+
 	if(remaining_uses < 1)
 		if(ishuman(loc))
 			var/mob/living/carbon/human/H = loc
 			H.visible_message(span_warning("With a sickening crunch, [H] reforms [H.p_their()] shield into an arm!"), span_notice("We assimilate our shield into our body"), "<span class='italics>You hear organic matter ripping and tearing!</span>")
 		qdel(src)
-		return 0
-	else
-		remaining_uses--
-		return ..()
+		return FALSE
+
+	remaining_uses--
 
 
 /***************************************\
@@ -474,7 +474,7 @@
 	item_flags = DROPDEL
 	clothing_flags = STOPSPRESSUREDAMAGE //Not THICKMATERIAL because it's organic tissue, so if somebody tries to inject something into it, it still ends up in your blood. (also balance but muh fluff)
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals/emergency_oxygen, /obj/item/tank/internals/oxygen)
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90) //No armor at all.
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90) //No armor at all.
 	actions_types = list()
 	cell = null
 	show_hud = FALSE
@@ -494,7 +494,7 @@
 /obj/item/clothing/suit/space/changeling/process(delta_time)
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
-		H.reagents.add_reagent(/datum/reagent/medicine/salbutamol, REAGENTS_METABOLISM * (delta_time / SSMOBS_DT))
+		H.reagents.add_reagent(/datum/reagent/medicine/dexalin, 0.2)
 		H.adjust_bodytemperature(temperature_setting - H.bodytemperature) // force changelings to normal temp step mode played badly
 
 /obj/item/clothing/head/helmet/space/changeling
@@ -503,7 +503,7 @@
 	desc = "A covering of pressure and temperature-resistant organic tissue with a glass-like chitin front."
 	item_flags = DROPDEL
 	clothing_flags = STOPSPRESSUREDAMAGE
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90)
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 
 /obj/item/clothing/head/helmet/space/changeling/Initialize(mapload)
@@ -534,7 +534,7 @@
 	icon_state = "lingarmor"
 	item_flags = DROPDEL
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	armor = list(MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 50, BOMB = 10, BIO = 4, FIRE = 90, ACID = 90)
+	armor = list(BLUNT = 40, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 50, BOMB = 10, BIO = 4, FIRE = 90, ACID = 90)
 	flags_inv = HIDEJUMPSUIT
 	cold_protection = 0
 	heat_protection = 0
@@ -551,7 +551,7 @@
 	desc = "A tough, hard covering of black chitin with transparent chitin in front."
 	icon_state = "lingarmorhelmet"
 	item_flags = DROPDEL
-	armor = list(MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 50, BOMB = 10, BIO = 4, FIRE = 90, ACID = 90)
+	armor = list(BLUNT = 40, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 50, BOMB = 10, BIO = 4, FIRE = 90, ACID = 90)
 	flags_inv = HIDEEARS|HIDEHAIR|HIDEEYES|HIDEFACIALHAIR|HIDEFACE|HIDESNOUT
 
 /obj/item/clothing/head/helmet/changeling/Initialize(mapload)

@@ -87,14 +87,6 @@
 	heat_proof = TRUE
 	req_access = list(ACCESS_SYNDICATE)
 
-/obj/machinery/door/airlock/glass/incinerator/syndicatelava_interior
-	name = "Turbine Interior Airlock"
-	id_tag = INCINERATOR_SYNDICATELAVA_AIRLOCK_INTERIOR
-
-/obj/machinery/door/airlock/glass/incinerator/syndicatelava_exterior
-	name = "Turbine Exterior Airlock"
-	id_tag = INCINERATOR_SYNDICATELAVA_AIRLOCK_EXTERIOR
-
 /obj/machinery/door/airlock/command/glass
 	opacity = FALSE
 	glass = TRUE
@@ -214,7 +206,6 @@
 		if(prob(50))
 			radiate()
 		last_event = world.time
-	..()
 
 /obj/machinery/door/airlock/uranium/proc/radiate()
 	radiation_pulse(
@@ -316,6 +307,7 @@
 /obj/machinery/door/airlock/public/glass
 	opacity = FALSE
 	glass = TRUE
+	explosion_block = 0 //:)
 
 /obj/machinery/door/airlock/public/glass/incinerator
 	autoclose = FALSE
@@ -550,8 +542,8 @@
 /obj/machinery/door/airlock/cult/proc/conceal()
 	icon = 'icons/obj/doors/airlocks/station/airlock.dmi'
 	overlays_file = 'icons/obj/doors/airlocks/station/overlays.dmi'
-	name = "airlock"
-	desc = "It opens and closes."
+	name = /obj/machinery/door/airlock::name
+	desc = /obj/machinery/door/airlock::desc
 	stealthy = TRUE
 	update_appearance()
 
@@ -598,7 +590,7 @@
 	desc = "An airlock hastily corrupted by blood magic, it is unusually brittle in this state."
 	normal_integrity = 150
 	damage_deflection = 5
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
 //////////////////////////////////
 /*

@@ -10,7 +10,7 @@
 
 	density = TRUE
 	max_integrity = 300
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 80, ACID = 30)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 80, ACID = 30)
 	layer = OBJ_LAYER
 	circuit = /obj/item/circuitboard/machine/thermomachine
 
@@ -34,6 +34,8 @@
 	var/max_power_rating = 20000
 	///Percentage of power rating to use
 	var/power_setting = 20 // Start at 20 so we don't obliterate the station power supply.
+	/// How much gussy we can store in liters, this is affected by refresh_parts()
+	var/internal_volume = 400
 
 	var/interactive = TRUE // So mapmakers can disable interaction.
 	var/color_index = 1
@@ -73,9 +75,14 @@
 	for(var/obj/item/stock_parts/manipulator/man in component_parts)
 		manip_rating += man.rating
 
-	max_power_rating = initial(max_power_rating) * cap_rating / 2 //more powerful
+	max_power_rating = initial(max_power_rating) * (cap_rating / 2) //more powerful
+	internal_volume = initial(internal_volume) + (200 * bin_rating) //more air
 	heatsink_temperature = initial(heatsink_temperature) / ((manip_rating + bin_rating) / 2) //more efficient
 	set_power_level(power_setting)
+	if(airs[1])
+		airs[1].volume = internal_volume
+	else
+		airs[1] = new /datum/gas_mixture(200)
 
 /obj/machinery/atmospherics/components/unary/thermomachine/update_icon_state()
 	var/colors_to_use = ""

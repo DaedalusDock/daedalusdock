@@ -7,39 +7,98 @@
 		var/mob/Buckled = buckled
 		. = Buckled.lowest_buckled_mob()
 
-///Convert a PRECISE ZONE into the BODY_ZONE
-/proc/check_zone(zone)
-	if(!zone)
-		return BODY_ZONE_CHEST
-	switch(zone)
-		if(BODY_ZONE_PRECISE_EYES)
-			zone = BODY_ZONE_HEAD
-		if(BODY_ZONE_PRECISE_MOUTH)
-			zone = BODY_ZONE_HEAD
-		if(BODY_ZONE_PRECISE_L_HAND)
-			zone = BODY_ZONE_L_ARM
-		if(BODY_ZONE_PRECISE_R_HAND)
-			zone = BODY_ZONE_R_ARM
-		if(BODY_ZONE_PRECISE_L_FOOT)
-			zone = BODY_ZONE_L_LEG
-		if(BODY_ZONE_PRECISE_R_FOOT)
-			zone = BODY_ZONE_R_LEG
+///Takes a zone and returns it's "parent" zone, if it has one.
+/proc/deprecise_zone(precise_zone)
+	switch(precise_zone)
+		if(null)
+			return BODY_ZONE_CHEST
 		if(BODY_ZONE_PRECISE_GROIN)
-			zone = BODY_ZONE_CHEST
-	return zone
+			return BODY_ZONE_CHEST
+		if(BODY_ZONE_PRECISE_EYES)
+			return BODY_ZONE_HEAD
+		if(BODY_ZONE_PRECISE_MOUTH)
+			return BODY_ZONE_HEAD
+		if(BODY_ZONE_PRECISE_R_HAND)
+			return BODY_ZONE_R_ARM
+		if(BODY_ZONE_PRECISE_L_HAND)
+			return BODY_ZONE_L_ARM
+		if(BODY_ZONE_PRECISE_L_FOOT)
+			return BODY_ZONE_L_LEG
+		if(BODY_ZONE_PRECISE_R_FOOT)
+			return BODY_ZONE_R_LEG
+		else
+			return precise_zone
+
+
+GLOBAL_LIST_INIT(bodyzone_accuracy_weights, list(
+	BODY_ZONE_HEAD = 20,
+	BODY_ZONE_CHEST = 70,
+	BODY_ZONE_R_ARM = 25,
+	BODY_ZONE_L_ARM = 25,
+	BODY_ZONE_R_LEG = 25,
+	BODY_ZONE_L_LEG = 25
+))
+
+GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
+	BODY_ZONE_HEAD = 70,
+	BODY_ZONE_CHEST = 5,
+	BODY_ZONE_R_ARM = 15,
+	BODY_ZONE_L_ARM = 15,
+	BODY_ZONE_R_LEG = 15,
+	BODY_ZONE_L_LEG = 15
+))
+
+GLOBAL_LIST_INIT(bodyzone_gurps_mods, list(
+	BODY_ZONE_HEAD = -3,
+	BODY_ZONE_CHEST = 0,
+	BODY_ZONE_R_ARM = -1,
+	BODY_ZONE_L_ARM = -1,
+	BODY_ZONE_R_LEG = -1,
+	BODY_ZONE_L_LEG = -1
+))
 
 /**
  * Return the zone or randomly, another valid zone
  *
- * probability controls the chance it chooses the passed in zone, or another random zone
- * defaults to 80
+ * Do not use this if someone is intentionally trying to hit a specific body part.
+ * Use get_zone_with_miss_chance() for that.
  */
-/proc/ran_zone(zone, probability = 80)
-	if(prob(probability))
-		zone = check_zone(zone)
+/proc/ran_zone(zone, probability = 80, list/weighted_list)
+	if(zone)
+		zone = deprecise_zone(zone)
+		if(prob(probability))
+			return zone
+
+	if(weighted_list)
+		zone = pick_weight(weighted_list)
 	else
-		zone = pick_weight(list(BODY_ZONE_HEAD = 1, BODY_ZONE_CHEST = 1, BODY_ZONE_L_ARM = 4, BODY_ZONE_R_ARM = 4, BODY_ZONE_L_LEG = 4, BODY_ZONE_R_LEG = 4))
+		zone = pick_weight(GLOB.bodyzone_accuracy_weights)
 	return zone
+
+// Emulates targetting a specific body part, and miss chances
+// May return null if missed
+// miss_chance_mod may be negative.
+/proc/get_zone_with_miss_chance(zone, mob/living/carbon/target, miss_chance_mod = 0, ranged_attack, can_truly_miss = TRUE)
+	zone = deprecise_zone(zone)
+
+	if(!ranged_attack)
+		// you cannot miss if your target is prone or restrained
+		if(target.buckled || target.body_position == LYING_DOWN)
+			return zone
+		// if your target is being grabbed aggressively by someone you cannot miss either
+		for(var/obj/item/hand_item/grab/G in target.grabbed_by)
+			if(G.current_grab.stop_move)
+				return zone
+
+
+	var/miss_chance = GLOB.bodyzone_miss_chance[zone]
+	miss_chance = max(miss_chance + miss_chance_mod, 0)
+	if(prob(miss_chance))
+		if(!can_truly_miss || ranged_attack || !prob(miss_chance)) // Ranged attacks cannot ever fully miss.
+			return target.get_random_valid_zone()
+		return null
+	else
+		return zone
 
 /**
  * More or less ran_zone, but only returns bodyzones that the mob /actually/ has.
@@ -63,17 +122,14 @@
 	var/list/limbs = list()
 	for(var/obj/item/bodypart/part as anything in bodyparts)
 		var/limb_zone = part.body_zone //cache the zone since we're gonna check it a ton.
-		if(limb_zone in blacklisted_parts)
+		if(limb_zone in blacklisted_parts || part.is_stump)
 			continue
 		if(even_weights)
 			limbs[limb_zone] = 1
 			continue
-		if(limb_zone == BODY_ZONE_CHEST || limb_zone == BODY_ZONE_HEAD)
-			limbs[limb_zone] = 1
-		else
-			limbs[limb_zone] = 4
+		limbs[limb_zone] = GLOB.bodyzone_accuracy_weights[limb_zone]
 
-	if(base_zone && !(check_zone(base_zone) in limbs))
+	if(base_zone && !(deprecise_zone(base_zone) in limbs))
 		base_zone = null //check if the passed zone is infact valid
 
 	var/chest_blacklisted
@@ -100,19 +156,15 @@
  * This proc is dangerously laggy, avoid it or die
  */
 /proc/stars(phrase, probability = 25)
-	if(probability <= 0)
-		return phrase
-	phrase = html_decode(phrase)
-	var/leng = length(phrase)
-	. = ""
-	var/char = ""
-	for(var/i = 1, i <= leng, i += length(char))
-		char = phrase[i]
-		if(char == " " || !prob(probability))
-			. += char
-		else
-			. += "*"
-	return sanitize(.)
+	if(length(phrase) == 0)
+		return
+
+	var/list/chars = splittext_char(html_decode(phrase), "")
+	for(var/i in 1 to length(chars))
+		if(!prob(probability) || chars[i] == " ")
+			continue
+		chars[i] = "*"
+	return sanitize(jointext(chars, ""))
 
 /**
  * Turn text into complete gibberish!
@@ -230,11 +282,6 @@
 		return TRUE
 	return FALSE
 
-
-/mob/proc/reagent_check(datum/reagent/R, delta_time, times_fired) // utilized in the species code
-	return TRUE
-
-
 /**
  * Fancy notifications for ghosts
  *
@@ -279,7 +326,7 @@
 					A.name = header
 				A.desc = message
 				A.action = action
-				A.target = source
+				A.target_ref = WEAKREF(source)
 				if(!alert_overlay)
 					alert_overlay = new(source)
 					var/icon/size_check = icon(source.icon, source.icon_state)
@@ -301,7 +348,7 @@
  * Heal a robotic body part on a mob
  */
 /proc/item_heal_robotic(mob/living/carbon/human/H, mob/user, brute_heal, burn_heal)
-	var/obj/item/bodypart/affecting = H.get_bodypart(check_zone(user.zone_selected))
+	var/obj/item/bodypart/affecting = H.get_bodypart(deprecise_zone(user.zone_selected))
 	if(affecting && !IS_ORGANIC_LIMB(affecting))
 		var/dam //changes repair text based on how much brute/burn was supplied
 		if(brute_heal > burn_heal)
@@ -309,7 +356,7 @@
 		else
 			dam = 0
 		if((brute_heal > 0 && affecting.brute_dam > 0) || (burn_heal > 0 && affecting.burn_dam > 0))
-			if(affecting.heal_damage(brute_heal, burn_heal, 0, BODYTYPE_ROBOTIC))
+			if(affecting.heal_damage(brute_heal, burn_heal, BODYTYPE_ROBOTIC))
 				H.update_damage_overlays()
 			user.visible_message(span_notice("[user] fixes some of the [dam ? "dents on" : "burnt wires in"] [H]'s [affecting.name]."), \
 			span_notice("You fix some of the [dam ? "dents on" : "burnt wires in"] [H == user ? "your" : "[H]'s"] [affecting.name]."))
@@ -416,6 +463,8 @@
 			colored_message = "(EMOTE) [colored_message]"
 		if(LOG_RADIO_EMOTE)
 			colored_message = "(RADIOEMOTE) [colored_message]"
+		if(LOG_HEALTH)
+			colored_message = "(HEALTH) [colored_message]"
 
 	var/list/timestamped_message = list("\[[time_stamp(format = "YYYY-MM-DD hh:mm:ss")]\] [key_name(src)] [loc_name(src)] (Event #[LAZYLEN(logging[smessage_type])])" = colored_message)
 
@@ -427,7 +476,7 @@
 	..()
 
 ///Can the mob hear
-/mob/proc/can_hear()
+/mob/proc/can_hear(ignore_stat)
 	. = TRUE
 
 /**
@@ -470,5 +519,9 @@
 	return initial(lighting_alpha)
 
 /// Can this mob SMELL THE SMELLY SMELLS?
-/mob/proc/can_smell(intensity)
+/mob/proc/can_smell()
 	return FALSE
+
+//returns the number of size categories between two mob_sizes, rounded. Positive means A is larger than B
+/proc/mob_size_difference(mob_size_A, mob_size_B)
+	return round(log(2, mob_size_A/mob_size_B), 1)

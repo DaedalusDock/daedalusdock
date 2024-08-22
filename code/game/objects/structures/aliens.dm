@@ -12,7 +12,7 @@
 	max_integrity = 100
 
 /obj/structure/alien/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
-	if(damage_flag == MELEE)
+	if(damage_flag == BLUNT)
 		switch(damage_type)
 			if(BRUTE)
 				damage_amount *= 0.25
@@ -59,8 +59,8 @@
 	opacity = TRUE
 	anchored = TRUE
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_ALIEN_RESIN)
-	canSmoothWith = list(SMOOTH_GROUP_ALIEN_RESIN)
+	smoothing_groups = SMOOTH_GROUP_ALIEN_RESIN
+	canSmoothWith = SMOOTH_GROUP_ALIEN_RESIN
 	max_integrity = 200
 	var/resintype = null
 	can_atmos_pass = CANPASS_DENSITY
@@ -86,13 +86,13 @@
 	icon_state = "resin_wall-0"
 	base_icon_state = "resin_wall"
 	resintype = "wall"
-	smoothing_groups = list(SMOOTH_GROUP_ALIEN_RESIN, SMOOTH_GROUP_ALIEN_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_ALIEN_WALLS)
+	smoothing_groups = SMOOTH_GROUP_ALIEN_WALLS + SMOOTH_GROUP_ALIEN_RESIN
+	canSmoothWith = SMOOTH_GROUP_ALIEN_WALLS
 
 /obj/structure/alien/resin/wall/block_superconductivity()
 	return 1
 
-/// meant for one lavaland ruin or anywhere that has simplemobs who can push aside structures
+/// meant for anywhere that has simplemobs who can push aside structures
 /obj/structure/alien/resin/wall/immovable
 	desc = "Dense resin solidified into a wall."
 	move_resist = MOVE_FORCE_VERY_STRONG
@@ -111,8 +111,8 @@
 	opacity = FALSE
 	max_integrity = 160
 	resintype = "membrane"
-	smoothing_groups = list(SMOOTH_GROUP_ALIEN_RESIN, SMOOTH_GROUP_ALIEN_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_ALIEN_WALLS)
+	smoothing_groups = SMOOTH_GROUP_ALIEN_WALLS + SMOOTH_GROUP_ALIEN_RESIN
+	canSmoothWith = SMOOTH_GROUP_ALIEN_WALLS
 
 /obj/structure/alien/resin/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
@@ -142,8 +142,8 @@
 	base_icon_state = "weeds1"
 	max_integrity = 15
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_ALIEN_RESIN, SMOOTH_GROUP_ALIEN_WEEDS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_ALIEN_WEEDS)
+	smoothing_groups = SMOOTH_GROUP_ALIEN_WEEDS + SMOOTH_GROUP_ALIEN_RESIN
+	canSmoothWith = SMOOTH_GROUP_ALIEN_WEEDS + SMOOTH_GROUP_WALLS
 	///the range of the weeds going to be affected by the node
 	var/node_range = NODERANGE
 	///the parent node that will determine if we grow or die

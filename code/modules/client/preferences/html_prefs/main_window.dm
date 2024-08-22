@@ -66,7 +66,7 @@
 	"}
 
 	winshow(user, "preferences_window", TRUE)
-	var/datum/browser/popup = new(user, "preferences_window", "<div align='center'>Character Setup</div>", 640, 770)
+	var/datum/browser/popup = new(user, "preferences_window", "<div align='center'>Character Setup</div>", 1200, 800)
 	popup.set_content(content)
 	popup.open(FALSE)
 	onclose(user, "preferences_window", src)

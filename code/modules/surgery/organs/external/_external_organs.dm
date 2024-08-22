@@ -26,7 +26,10 @@
 
 ///Update our features after something changed our appearance
 /obj/item/organ/proc/mutate_feature(features, mob/living/carbon/human/human)
-	if(!dna_block || !get_global_feature_list())
+	if(!dna_block)
+		return
+
+	if(!get_global_feature_list())
 		CRASH("External organ has no dna block/feature_list implimented!")
 
 	var/list/feature_list = get_global_feature_list()
@@ -56,7 +59,7 @@
 
 		if(ORGAN_COLOR_INHERIT_ALL)
 			mutcolors = ownerlimb.mutcolors.Copy()
-			draw_color = mutcolors["[mutcolor_used]_1"]
+			draw_color = mutcolors["[mutcolor_used]_[mutcolor_index]"]
 
 	color = draw_color
 	return TRUE
@@ -83,7 +86,7 @@
 	dna_block = DNA_HORNS_BLOCK
 
 /obj/item/organ/horns/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+	if(!(human.obscured_slots & HIDEHAIR))
 		return TRUE
 	return FALSE
 
@@ -108,7 +111,7 @@
 	dna_block = DNA_FRILLS_BLOCK
 
 /obj/item/organ/frills/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEEARS))
+	if(!(human.obscured_slots & HIDEEARS))
 		return TRUE
 	return FALSE
 
@@ -199,7 +202,7 @@
 	color_source = ORGAN_COLOR_OVERRIDE
 
 /obj/item/organ/pod_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+	if(!(human.obscured_slots & HIDEHAIR))
 		return TRUE
 	return FALSE
 
@@ -209,31 +212,6 @@
 /obj/item/organ/pod_hair/override_color(rgb_value)
 	var/list/rgb_list = rgb2num(rgb_value)
 	return rgb(255 - rgb_list[1], 255 - rgb_list[2], 255 - rgb_list[3])
-
-//skrell
-/obj/item/organ/headtails
-	///Unremovable is until the features are completely finished
-	organ_flags = ORGAN_UNREMOVABLE | ORGAN_EDIBLE
-	visual = TRUE
-	cosmetic_only = TRUE
-
-	zone = BODY_ZONE_HEAD
-	slot = ORGAN_SLOT_EXTERNAL_HEADTAILS
-	layers = list(BODY_FRONT_LAYER | BODY_ADJ_LAYER)
-	dna_block = DNA_HEADTAILS_BLOCK
-
-	feature_key = "headtails"
-	preference = "feature_headtails"
-
-/obj/item/organ/headtails/can_draw_on_bodypart(mob/living/carbon/human/human)
-	. = TRUE
-	if(human.head && (human.head.flags_inv & HIDEHAIR))
-		return FALSE
-	if(human.wear_mask && (human.wear_mask.flags_inv & HIDEHAIR))
-		return FALSE
-
-/obj/item/organ/headtails/get_global_feature_list()
-	return GLOB.headtails_list
 
 // Teshari head feathers
 /obj/item/organ/teshari_feathers
@@ -254,7 +232,7 @@
 	color_source = ORGAN_COLOR_HAIR
 
 /obj/item/organ/teshari_feathers/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(human.head && (human.head.flags_inv & HIDEHAIR) || human.wear_mask && (human.wear_mask.flags_inv & HIDEHAIR))
+	if(human.obscured_slots & HIDEHAIR)
 		return FALSE
 	return TRUE
 
@@ -279,7 +257,7 @@
 	dna_block = DNA_TESHARI_EARS_BLOCK
 
 /obj/item/organ/teshari_ears/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(human.head && (human.head.flags_inv & HIDEHAIR) || human.wear_mask && (human.wear_mask.flags_inv & HIDEHAIR))
+	if(human.obscured_slots & HIDEHAIR)
 		return FALSE
 	return TRUE
 
@@ -323,7 +301,7 @@
 /obj/item/organ/teshari_body_feathers/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(!human)
 		return TRUE
-	if(human.wear_suit && (human.wear_suit.flags_inv & HIDEJUMPSUIT))
+	if(human.obscured_slots & HIDEJUMPSUIT)
 		return FALSE
 	return TRUE
 
@@ -347,6 +325,8 @@
 		var/state2use = build_icon_state(physique, image_layer)
 
 		for(var/obj/item/bodypart/BP as anything in owner.bodyparts - owner.get_bodypart(BODY_ZONE_CHEST))
+			if(!IS_ORGANIC_LIMB(BP))
+				continue
 			var/mutable_appearance/new_overlay = mutable_appearance(sprite_datum.icon, "[state2use]_[BP.body_zone]", layer = -image_layer)
 			new_overlay.color = mutcolors[bodypart_color_indexes[BP.body_zone]]
 			. += new_overlay
@@ -354,11 +334,17 @@
 /obj/item/organ/teshari_body_feathers/build_cache_key()
 	. = ..()
 	if(ishuman(owner))
-		. += "[!!owner.get_bodypart(BODY_ZONE_CHEST)]"
-		. += "[!!owner.get_bodypart(BODY_ZONE_HEAD)]"
-		. += "[!!owner.get_bodypart(BODY_ZONE_L_ARM)]"
-		. += "[!!owner.get_bodypart(BODY_ZONE_R_ARM)]"
-		. += "[!!owner.get_bodypart(BODY_ZONE_L_LEG)]"
-		. += "[!!owner.get_bodypart(BODY_ZONE_R_LEG)]"
+		var/obj/item/bodypart/BP = owner.get_bodypart(BODY_ZONE_CHEST)
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
+		BP = owner.get_bodypart(BODY_ZONE_HEAD)
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
+		BP = owner.get_bodypart(BODY_ZONE_R_ARM)
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
+		BP = owner.get_bodypart(BODY_ZONE_L_ARM)
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
+		BP = owner.get_bodypart(BODY_ZONE_R_LEG)
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
+		BP = owner.get_bodypart(BODY_ZONE_L_LEG)
+		. += BP ? "[IS_ORGANIC_LIMB(BP)]" : "NOAPPLY"
 	else
 		. += "CHEST_ONLY"

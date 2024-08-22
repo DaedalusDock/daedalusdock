@@ -5,26 +5,29 @@ SUBSYSTEM_DEF(economy)
 	runlevels = RUNLEVEL_GAME
 	///How many paychecks should players start out the round with?
 	var/roundstart_paychecks = 5
-	///How many credits does the in-game economy have in circulation at round start? Divided up by 6 of the 7 department budgets evenly, where cargo starts with nothing.
-	var/budget_pool = 52500
+
+	var/payday_interval = 8 // How many fires between paydays
+
+	/// How many credits to give to each department at round start.
+	var/roundstart_budget_amt = 4000
+
 	var/list/department_id2name = list(
 		ACCOUNT_ENG = ACCOUNT_ENG_NAME,
-		ACCOUNT_SCI = ACCOUNT_SCI_NAME,
 		ACCOUNT_MED = ACCOUNT_MED_NAME,
-		ACCOUNT_SRV = ACCOUNT_SRV_NAME,
 		ACCOUNT_CAR = ACCOUNT_CAR_NAME,
 		ACCOUNT_SEC = ACCOUNT_SEC_NAME,
-		ACCOUNT_STATION_MASTER = ACCOUNT_STATION_MASTER_NAME
+		ACCOUNT_STATION_MASTER = ACCOUNT_STATION_MASTER_NAME,
+		ACCOUNT_GOV = ACCOUNT_GOV_NAME, // THIS IS FOR THE SPECIAL ORDER CONSOLE, NOT THEIR PAYCHECKS!
 	)
+
 	///The station's master account, used for splitting up funds and pooling money.
 	var/datum/bank_account/department/station_master
-	///Used to not spam the payroll announcement
-	var/run_dry = FALSE
-	///Payroll boolean
-	var/payroll_active = TRUE
+
+	/// Govt Bux, for the government supply console
+	var/datum/bank_account/department/government_budget
 
 	///Departmental account datums by ID
-	var/list/department_accounts_by_id = list()
+	var/list/datum/bank_account/department/department_accounts_by_id = list()
 	var/list/generated_accounts = list()
 
 	/**
@@ -40,16 +43,17 @@ SUBSYSTEM_DEF(economy)
 	var/list/bank_accounts_by_id = list()
 	///List of the departmental budget cards in existance.
 	var/list/dep_cards = list()
+
 	/// A var that collects the total amount of credits owned in player accounts on station, reset and recounted on fire()
 	var/station_total = 0
-	/// How many civilain bounties have been completed so far this shift? Affects civilian budget payout values.
-	var/civ_bounty_tracker = 0
+
 	/// Contains the message to send to newscasters about price inflation and earnings, updated on price_update()
 	var/earning_report
 	///The modifier multiplied to the value of bounties paid out.
 	var/bounty_modifier = 1
 	///The modifier multiplied to the value of cargo pack prices.
 	var/pack_price_modifier = 1
+
 	/**
 	 * A list of strings containing a basic transaction history of purchases on the station.
 	 * Added to any time when player accounts purchase something.
@@ -66,16 +70,12 @@ SUBSYSTEM_DEF(economy)
 	var/mail_blocked = FALSE
 
 /datum/controller/subsystem/economy/Initialize(timeofday)
-	///The master account gets 50% of the roundstart budget
-	var/reserved_for_master = round(budget_pool / 2)
-	station_master = new(ACCOUNT_STATION_MASTER, ACCOUNT_STATION_MASTER_NAME, reserved_for_master)
-	department_accounts_by_id[ACCOUNT_STATION_MASTER] = station_master
-	budget_pool = round(budget_pool/2)
+	for(var/dep_id in department_id2name)
+		department_accounts_by_id[dep_id] = new /datum/bank_account/department(dep_id, department_id2name[dep_id], roundstart_budget_amt)
 
-	var/budget_to_hand_out = round(budget_pool / ECON_NUM_DEPARTMENT_ACCOUNTS)
+	department_accounts_by_id[ACCOUNT_GOV].account_balance = 1000
 
-	for(var/dep_id in department_id2name - ACCOUNT_STATION_MASTER)
-		department_accounts_by_id[dep_id] = new /datum/bank_account/department(dep_id, department_id2name[dep_id], budget_to_hand_out)
+	station_master = department_accounts_by_id[ACCOUNT_STATION_MASTER]
 	return ..()
 
 /datum/controller/subsystem/economy/Recover()
@@ -88,58 +88,83 @@ SUBSYSTEM_DEF(economy)
 	if(!times_fired)
 		return
 
-	var/delta_time = wait / (5 MINUTES)
+	if(times_fired %% payday_interval == 0)
+		payday()
 
-	//Split the station budget amongst the departments
-	departmental_payouts()
-
-	///See if we even have enough money to pay these idiots
-	var/required_funds = 0
-	for(var/account in bank_accounts_by_id)
-		var/datum/bank_account/bank_account = bank_accounts_by_id[account]
-		required_funds += round(bank_account.account_job.paycheck * bank_account.payday_modifier)
-
-	if(payroll_active)
-		if(required_funds > station_master.account_balance)
-			if(!run_dry)
-				minor_announce("The station budget appears to have run dry. We regret to inform you that no further wage payments are possible until this situation is rectified.","Payroll Announcement")
-				run_dry = TRUE
-		else
-			if(run_dry)
-				run_dry = FALSE
-			for(var/account in bank_accounts_by_id)
-				var/datum/bank_account/bank_account = bank_accounts_by_id[account]
-				bank_account.payday()
-
-	//price_update() This doesn't need to fire every 5 minutes. The only current use is market crash, which handles it on its own.
-	var/effective_mailcount = round(living_player_count())
-	mail_waiting += clamp(effective_mailcount, 1, MAX_MAIL_PER_MINUTE * delta_time)
+	update_mail()
 	send_fax_paperwork()
 
-/**
- * Departmental income payments are kept static and linear for every department, and paid out once every 5 minutes.
- * Iterates over every department account for the same payment.
- */
-/datum/controller/subsystem/economy/proc/departmental_payouts()
-	var/payout_pool = (station_master.account_balance - ECON_STATION_PAYOUT) < 0 ? station_master.account_balance : ECON_STATION_PAYOUT
-	if(payout_pool < ECON_STATION_PAYOUT_REQUIREMENT)
-		return
+/datum/controller/subsystem/economy/proc/payday()
+	//See if we even have enough money to pay these idiots
+	var/list/dead_people = list()
 
-	var/split = round(payout_pool / (length(department_accounts_by_id) - 1))
+	//Dead people don't get money.
+	for(var/datum/data/record/medical_record in SSdatacore.get_records(DATACORE_RECORDS_STATION)) //dont ask
+		if(medical_record.fields["status"] == "*Deceased*")
+			dead_people += medical_record.fields[DATACORE_NAME]
 
-	for(var/iteration in department_id2name - ACCOUNT_STATION_MASTER)
-		var/datum/bank_account/dept_account = department_accounts_by_id[iteration]
-		if(dept_account.account_balance >= ECON_STATION_PAYOUT_MAX)
+	for(var/datum/job_department/department as anything in SSjob.departments)
+		if(!department.budget_id)
 			continue
 
-		var/real_split = min(ECON_STATION_PAYOUT_MAX - dept_account.account_balance, split)
+		var/datum/bank_account/department_account = department_accounts_by_id[department.budget_id]
+		// How much money we need to be able to give paychecks
+		var/required_funds = 0
+		// The accounts to pay out to
+		var/list/datum/bank_account/to_pay = list()
 
-		if(!dept_account.transfer_money(station_master, real_split))
-			dept_account.transfer_money(station_master, payout_pool)
-			break
+		for(var/account in bank_accounts_by_id)
+			var/datum/bank_account/bank_account = bank_accounts_by_id[account]
+			if(!bank_account.account_job || !(bank_account.account_job in department.department_jobs) || (bank_account.account_holder in dead_people))
+				continue
+
+			required_funds += round(bank_account.account_job.paycheck * bank_account.payday_modifier)
+			to_pay += bank_account
+
+		if(required_funds <= department_account.account_balance)
+			department_account.adjust_money(-required_funds)
+
+			for(var/datum/bank_account/bank_account in to_pay)
+				/// We don't use transfering, because we already know there's enough money.
+				bank_account.payday()
+
+			var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
+			if(!announcer)
+				continue //sucks to suck lmao
+
+			for(var/datum/bank_account/bank_account in to_pay)
+				var/datum/data/record/general/record = SSdatacore.get_record_by_name(bank_account.account_holder, DATACORE_RECORDS_STATION)
+				if(!record)
+					continue
+
+				var/target_id = record.fields[DATACORE_PDA_ID]
+				if(!target_id)
+					continue
+
+				announcer.pda_message(
+					target_id,
+					"Your payroll for this quarter has been processed. A sum of [round(bank_account.account_job.paycheck * bank_account.payday_modifier)] has been deposited into your account.",
+				)
+
 		else
-			payout_pool -= real_split
+			var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
+			if(!announcer)
+				continue //sucks to suck lmao
 
+			for(var/datum/bank_account/bank_account in to_pay)
+				var/datum/data/record/general/record = SSdatacore.get_record_by_name(bank_account.account_holder, DATACORE_RECORDS_STATION)
+				if(!record)
+					continue
+
+				var/target_id = record.fields[DATACORE_PDA_ID]
+				if(!target_id)
+					continue
+
+				announcer.pda_message(target_id, "The company's funding has run dry. Your payment for this quarter has not been processed.")
+
+/datum/controller/subsystem/economy/proc/update_mail()
+	var/effective_mailcount = round(living_player_count())
+	mail_waiting += clamp(effective_mailcount, 1, MAX_MAIL_PER_MINUTE * (wait / (1 MINUTE)))
 
 /**
  * Updates the prices of all station vendors.
@@ -152,7 +177,7 @@ SUBSYSTEM_DEF(economy)
 	if(HAS_TRAIT(src, TRAIT_MARKET_CRASHING))
 		multiplier = 4
 
-	for(var/obj/machinery/vending/V in GLOB.machines)
+	for(var/obj/machinery/vending/V as anything in INSTANCES_OF(/obj/machinery/vending))
 		if(istype(V, /obj/machinery/vending/custom))
 			continue
 		if(!is_station_level(V.z))
@@ -349,3 +374,38 @@ SUBSYSTEM_DEF(economy)
 	spawned_paper.update_appearance()
 
 	return spawned_paper
+
+/// Spawns a given amount of money in optimal stacks at the given location.
+/datum/controller/subsystem/economy/proc/spawn_cash_for_amount(amt, spawn_loc)
+	amt = round(amt) // Don't pass in decimals you twat
+	var/ten_thousands = 0
+	var/thousands = 0
+	var/hundreds = 0
+	var/tens = 0
+	var/ones = 0
+
+	ten_thousands = floor(amt / 10000)
+	amt -= ten_thousands * 10000
+
+	thousands = floor(amt / 1000)
+	amt -= thousands * 1000
+
+	hundreds = floor(amt / 100)
+	amt -= hundreds * 100
+
+	tens = floor(amt / 10)
+	amt -= tens * 10
+
+	ones = amt
+
+	if(ten_thousands)
+		new /obj/item/stack/spacecash/c10000(spawn_loc, ten_thousands)
+	if(thousands)
+		new /obj/item/stack/spacecash/c1000(spawn_loc, thousands)
+	if(hundreds)
+		new /obj/item/stack/spacecash/c100(spawn_loc, hundreds)
+	if(tens)
+		new /obj/item/stack/spacecash/c10(spawn_loc, tens)
+	if(ones)
+		new /obj/item/stack/spacecash/c1(spawn_loc, ones)
+

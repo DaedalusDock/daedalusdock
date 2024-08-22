@@ -5,8 +5,12 @@
 	icon_state = "punchingbag"
 	anchored = TRUE
 	layer = WALL_OBJ_LAYER
-	var/list/hit_sounds = list('sound/weapons/genhit1.ogg', 'sound/weapons/genhit2.ogg', 'sound/weapons/genhit3.ogg',\
-	'sound/weapons/punch1.ogg', 'sound/weapons/punch2.ogg', 'sound/weapons/punch3.ogg', 'sound/weapons/punch4.ogg')
+	var/list/hit_sounds = list(
+		'sound/weapons/genhit1.ogg',
+		'sound/weapons/genhit2.ogg',
+		'sound/weapons/genhit3.ogg',
+		SFX_PUNCH
+	)
 
 /obj/structure/punching_bag/attack_hand(mob/user, list/modifiers)
 	. = ..()
@@ -16,7 +20,6 @@
 	playsound(loc, pick(hit_sounds), 25, TRUE, -1)
 	if(isliving(user))
 		var/mob/living/L = user
-		SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "exercise", /datum/mood_event/exercise)
 		L.apply_status_effect(/datum/status_effect/exercised)
 
 /obj/structure/weightmachine
@@ -43,7 +46,7 @@
 	. = ..()
 	if(.)
 		return
-	if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	if(obj_flags & IN_USE)
 		to_chat(user, span_warning("It's already in use - wait a bit!"))
@@ -63,7 +66,6 @@
 		update_appearance()
 		user.pixel_y = user.base_pixel_y
 		var/finishmessage = pick("You feel stronger!","You feel like you can take on the world!","You feel robust!","You feel indestructible!")
-		SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "exercise", /datum/mood_event/exercise)
 		to_chat(user, finishmessage)
 		user.apply_status_effect(/datum/status_effect/exercised)
 

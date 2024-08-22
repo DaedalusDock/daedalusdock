@@ -12,7 +12,7 @@
 	///Maximum allowed transfer percentage
 	var/max_heat_transfer_rate = 100
 
-/obj/machinery/atmospherics/components/binary/temperature_pump/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/binary/temperature_pump/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)

@@ -1,7 +1,7 @@
 /obj/item/analyzer
 	desc = "A hand-held environmental scanner which reports current gas levels."
 	name = "gas analyzer"
-	custom_price = PAYCHECK_ASSISTANT * 0.9
+	custom_price = PAYCHECK_ASSISTANT * 1.3
 	icon = 'icons/obj/device.dmi'
 	icon_state = "analyzer"
 	inhand_icon_state = "analyzer"
@@ -11,9 +11,10 @@
 	flags_1 = CONDUCT_1
 	item_flags = NOBLUDGEON
 	slot_flags = ITEM_SLOT_BELT
+
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 7
+
 	tool_behaviour = TOOL_ANALYZER
 	custom_materials = list(/datum/material/iron=30, /datum/material/glass=20)
 	grind_results = list(/datum/reagent/mercury = 5, /datum/reagent/iron = 5, /datum/reagent/silicon = 5)
@@ -22,11 +23,6 @@
 	var/barometer_accuracy // 0 is the best accuracy.
 	var/list/last_gasmix_data
 
-/obj/item/analyzer/examine(mob/user)
-	. = ..()
-	. += span_notice("Right-click [src] to open the gas reference.")
-	. += span_notice("Alt-click [src] to activate the barometer function.")
-
 /obj/item/analyzer/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins to analyze [user.p_them()]self with [src]! The display shows that [user.p_theyre()] dead!"))
 	return BRUTELOSS
@@ -34,7 +30,7 @@
 /obj/item/analyzer/AltClick(mob/user) //Barometer output for measuring when the next storm happens
 	..()
 
-	if(user.canUseTopic(src, BE_CLOSE))
+	if(user.canUseTopic(src, USE_CLOSE))
 		if(cooldown)
 			to_chat(user, span_warning("[src]'s barometer function is preparing itself."))
 			return

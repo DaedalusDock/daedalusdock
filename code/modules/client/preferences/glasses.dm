@@ -1,6 +1,8 @@
 /datum/preference/choiced/glasses
+	explanation = "Glasses"
 	savefile_key = "glasses"
 	savefile_identifier = PREFERENCE_CHARACTER
+	priority = PREFERENCE_PRIORITY_QUIRKS
 
 /datum/preference/choiced/glasses/init_possible_values()
 	return GLOB.nearsighted_glasses

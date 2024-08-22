@@ -40,7 +40,7 @@
 	/// The armblade granted to the host of this heart.
 	var/obj/item/light_eater/blade
 
-/obj/item/organ/heart/nightmare/ComponentInitialize()
+/obj/item/organ/heart/nightmare/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
 
@@ -102,11 +102,6 @@
 	owner.visible_message(span_warning("[owner] staggers to [owner.p_their()] feet!"))
 	playsound(owner, 'sound/hallucinations/far_noise.ogg', 50, TRUE)
 	respawn_progress = 0
-
-/obj/item/organ/heart/nightmare/get_availability(datum/species/S)
-	if(istype(S,/datum/species/shadow/nightmare))
-		return TRUE
-	return ..()
 
 #undef HEART_SPECIAL_SHADOWIFY
 #undef HEART_RESPAWN_THRESHHOLD

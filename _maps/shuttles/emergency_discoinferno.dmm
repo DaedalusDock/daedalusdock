@@ -111,10 +111,6 @@
 	},
 /turf/open/floor/mineral/plasma/disco,
 /area/shuttle/escape)
-"v" = (
-/obj/machinery/jukebox/disco/indestructible,
-/turf/open/floor/light/colour_cycle/dancefloor_a,
-/area/shuttle/escape)
 "w" = (
 /obj/machinery/door/airlock/gold,
 /turf/open/floor/wood,
@@ -196,7 +192,6 @@
 /area/shuttle/escape)
 "L" = (
 /obj/structure/table/wood/fancy,
-/obj/item/reagent_containers/food/drinks/bottle/lizardwine,
 /turf/open/floor/wood,
 /area/shuttle/escape)
 "M" = (
@@ -348,7 +343,7 @@ j
 j
 t
 R
-v
+t
 R
 t
 j

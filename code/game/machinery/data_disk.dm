@@ -4,6 +4,7 @@
 	desc = "A disk for storing device data."
 	icon_state = "datadisk0"
 	custom_materials = list(/datum/material/iron =300, /datum/material/glass =100)
+	item_flags = NOBLUDGEON
 	/// How many THIIINGGGS can we store in memory
 	VAR_PROTECTED/storage = 32
 	/// The actual storage of the disk.
@@ -28,7 +29,7 @@
 
 /obj/item/disk/data/examine(mob/user)
 	. = ..()
-	. += "The write-protect tab is set to [read_only ? "protected" : "unprotected"]."
+	. += span_notice("The write-protect tab is set to [read_only ? "protected" : "unprotected"].")
 
 /obj/item/disk/data/update_overlays()
 	. = ..()
@@ -191,6 +192,7 @@
 		/datum/design/board/odysseus_peri,
 		/datum/design/board/gygax_main,
 		/datum/design/board/gygax_peri,
+		/datum/design/board/gygax_targ,
 		/datum/design/board/durand_main,
 		/datum/design/board/durand_peri,
 		/datum/design/board/durand_targ,

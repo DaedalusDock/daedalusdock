@@ -88,15 +88,15 @@ GLOBAL_LIST_INIT(typecache_powerfailure_safe_areas, typecacheof(/area/station/en
 	for(var/i in 1 to length(turfs))
 		var/turf/thing = turfs[i]
 		var/area/old_area = thing.loc
-		newA.contents += thing
-		thing.transfer_area_lighting(old_area, newA)
+
+		thing.change_area(old_area, newA)
 
 	newA.reg_in_areas_in_z()
 
 	for(var/thing2move in oldA.firedoors + oldA.firealarms + oldA.airalarms)
 		thing2move:set_area(get_area(thing2move)) //Dude trust me
 
-	if(!isarea(area_choice) && newA.static_lighting)
+	if(!isarea(area_choice) && (newA.area_lighting == AREA_LIGHTING_DYNAMIC))
 		newA.create_area_lighting_objects()
 
 	SEND_GLOBAL_SIGNAL(COMSIG_AREA_CREATED, newA, oldA, creator)
@@ -105,18 +105,14 @@ GLOBAL_LIST_INIT(typecache_powerfailure_safe_areas, typecacheof(/area/station/en
 
 #undef BP_MAX_ROOM_SIZE
 
-//Repopulates sortedAreas list
-/proc/repopulate_sorted_areas()
-	GLOB.sortedAreas = list()
+/proc/require_area_resort()
+	GLOB.sortedAreas = null
 
-	for(var/area/A in world)
-		GLOB.sortedAreas.Add(A)
-
-	sortTim(GLOB.sortedAreas, GLOBAL_PROC_REF(cmp_name_asc))
-
-/area/proc/addSorted()
-	GLOB.sortedAreas.Add(src)
-	sortTim(GLOB.sortedAreas, GLOBAL_PROC_REF(cmp_name_asc))
+/// Returns a sorted version of GLOB.areas, by name
+/proc/get_sorted_areas()
+	if(!GLOB.sortedAreas)
+		GLOB.sortedAreas = sortTim(GLOB.areas.Copy(), GLOBAL_PROC_REF(cmp_name_asc))
+	return GLOB.sortedAreas
 
 //Takes: Area type as a text string from a variable.
 //Returns: Instance for the area in the world.
@@ -139,14 +135,22 @@ GLOBAL_LIST_INIT(typecache_powerfailure_safe_areas, typecacheof(/area/station/en
 	var/list/areas = list()
 	if(subtypes)
 		var/list/cache = typecacheof(areatype)
-		for(var/area/area_to_check as anything in GLOB.sortedAreas)
+		for(var/area/area_to_check as anything in GLOB.areas)
 			if(cache[area_to_check.type])
 				areas += area_to_check
 	else
-		for(var/area/area_to_check as anything in GLOB.sortedAreas)
+		for(var/area/area_to_check as anything in GLOB.areas)
 			if(area_to_check.type == areatype)
 				areas += area_to_check
 	return areas
+
+/// Iterates over all turfs in the target area and returns the first non-dense one
+/proc/get_first_open_turf_in_area(area/target)
+	if(!target)
+		return
+	for(var/turf/turf in target.get_contained_turfs())
+		if(!turf.density)
+			return turf
 
 //Takes: Area type as text string or as typepath OR an instance of the area.
 //Returns: A list of all turfs in areas of that type of that type in the world.
@@ -158,21 +162,28 @@ GLOBAL_LIST_INIT(typecache_powerfailure_safe_areas, typecacheof(/area/station/en
 		areatype = areatemp.type
 	else if(!ispath(areatype))
 		return null
-
-	var/list/turfs = list()
+	// Pull out the areas
+	var/list/areas_to_pull = list()
 	if(subtypes)
 		var/list/cache = typecacheof(areatype)
-		for(var/area/area_to_check as anything in GLOB.sortedAreas)
+		for(var/area/area_to_check as anything in GLOB.areas)
 			if(!cache[area_to_check.type])
 				continue
-			for(var/turf/turf_in_area in area_to_check)
-				if(target_z == 0 || target_z == turf_in_area.z)
-					turfs += turf_in_area
+			areas_to_pull += area_to_check
 	else
-		for(var/area/area_to_check as anything in GLOB.sortedAreas)
+		for(var/area/area_to_check as anything in GLOB.areas)
 			if(area_to_check.type != areatype)
 				continue
-			for(var/turf/turf_in_area in area_to_check)
-				if(target_z == 0 || target_z == turf_in_area.z)
+			areas_to_pull += area_to_check
+
+	// Now their turfs
+	var/list/turfs = list()
+	for(var/area/pull_from as anything in areas_to_pull)
+		var/list/our_turfs = pull_from.get_contained_turfs()
+		if(target_z == 0)
+			turfs += our_turfs
+		else
+			for(var/turf/turf_in_area as anything in our_turfs)
+				if(target_z == turf_in_area.z)
 					turfs += turf_in_area
 	return turfs

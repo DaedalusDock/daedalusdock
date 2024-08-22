@@ -82,8 +82,6 @@ SUBSYSTEM_DEF(zas)
 	//A reference to the global var
 	var/datum/xgm_gas_data/gas_data
 
-	var/datum/gas_mixture/lavaland_atmos
-
 	///A global cache of unsimulated gas mixture singletons, associative by type.
 	var/list/unsimulated_gas_cache = list()
 
@@ -95,7 +93,6 @@ SUBSYSTEM_DEF(zas)
 	//Geometry updates lists
 	var/list/tiles_to_update = list()
 	var/list/zones_to_update = list()
-	var/list/active_fire_zones = list()
 	var/list/active_hotspots = list()
 	var/list/active_edges = list()
 	var/list/zones_with_sensitive_contents = list()
@@ -147,7 +144,6 @@ SUBSYSTEM_DEF(zas)
 	edges.Cut()
 	tiles_to_update.Cut()
 	zones_to_update.Cut()
-	active_fire_zones.Cut()
 	active_hotspots.Cut()
 	active_edges.Cut()
 
@@ -164,7 +160,6 @@ SUBSYSTEM_DEF(zas)
 	else
 		msg += "TtU: [length(tiles_to_update)] "
 		msg += "ZtU: [length(zones_to_update)] "
-		msg += "AFZ: [length(active_fire_zones)] "
 		msg += "AH: [length(active_hotspots)] "
 		msg += "AE: [length(active_edges)]"
 	return ..()
@@ -175,7 +170,7 @@ SUBSYSTEM_DEF(zas)
 	settings = zas_settings
 	gas_data = xgm_gas_data
 
-	to_chat(world, span_boldannounce("ZAS: Processing Geometry..."))
+	to_chat(world, span_debug("ZAS: Processing Geometry..."))
 
 	var/simulated_turf_count = 0
 
@@ -188,20 +183,17 @@ SUBSYSTEM_DEF(zas)
 
 		CHECK_TICK
 
-	///LAVALAND SETUP
-	fuck_lavaland()
+	to_chat(world, span_debug("ZAS:\n - Total Simulated Turfs: [simulated_turf_count]\n - Total Zones: [zones.len]\n - Total Edges: [edges.len]\n - Total Active Edges: [active_edges.len ? "<span class='danger'>[active_edges.len]</span>" : "None"]\n - Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_count]"))
 
-	to_chat(world, span_boldannounce("ZAS:\n - Total Simulated Turfs: [simulated_turf_count]\n - Total Zones: [zones.len]\n - Total Edges: [edges.len]\n - Total Active Edges: [active_edges.len ? "<span class='danger'>[active_edges.len]</span>" : "None"]\n - Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_count]"))
-
-	to_chat(world, span_boldannounce("ZAS: Geometry processing completed in [(REALTIMEOFDAY - starttime)/10] seconds!"))
+	to_chat(world, span_debug("ZAS: Geometry processing completed in [(REALTIMEOFDAY - starttime)/10] seconds!"))
 
 	if (simulate)
-		to_chat(world, span_boldannounce("ZAS: Firing once..."))
+		to_chat(world, span_debug("ZAS: Firing once..."))
 
 		starttime = REALTIMEOFDAY
 		fire(FALSE, TRUE)
 
-		to_chat(world, span_boldannounce("ZAS: Air settling completed in [(REALTIMEOFDAY - starttime)/10] seconds!"))
+		to_chat(world, span_debug("ZAS: Air settling completed in [(REALTIMEOFDAY - starttime)/10] seconds!"))
 
 	..(timeofday)
 
@@ -209,14 +201,12 @@ SUBSYSTEM_DEF(zas)
 	var/timer = TICK_USAGE_REAL
 	if (!resumed)
 		processing_edges = active_edges.Copy()
-		processing_fires = active_fire_zones.Copy()
 		processing_hotspots = active_hotspots.Copy()
 		processing_exposure = zones_with_sensitive_contents.Copy()
 
 	var/list/curr_tiles = tiles_to_update
 	var/list/curr_defer = deferred
 	var/list/curr_edges = processing_edges
-	var/list/curr_fire = processing_fires
 	var/list/curr_hotspot = processing_hotspots
 	var/list/curr_zones = zones_to_update
 	var/list/curr_zones_again = zones_to_update.Copy()
@@ -335,24 +325,6 @@ SUBSYSTEM_DEF(zas)
 	cached_cost += TICK_USAGE_REAL - timer
 	cost_edges = MC_AVERAGE(cost_edges, TICK_DELTA_TO_MS(cached_cost))
 
-//////////FIRES//////////
-	last_process = "ZONE FIRES"
-	timer = TICK_USAGE_REAL
-	cached_cost = 0
-	while (curr_fire.len)
-		var/zone/Z = curr_fire[curr_fire.len]
-		curr_fire.len--
-
-		Z.process_fire()
-
-		if (no_mc_tick)
-			CHECK_TICK
-		else if (MC_TICK_CHECK)
-			return
-
-	cached_cost += TICK_USAGE_REAL - timer
-	cost_fires= MC_AVERAGE(cost_fires, TICK_DELTA_TO_MS(cached_cost))
-
 //////////HOTSPOTS//////////
 	last_process = "HOTSPOTS"
 	timer = TICK_USAGE_REAL
@@ -423,8 +395,6 @@ SUBSYSTEM_DEF(zas)
 	zones -= z
 	zones_to_update -= z
 	zones_with_sensitive_contents -= z
-	if (processing_zones)
-		processing_zones -= z
 
 ///Checks to see if air can flow between A and B.
 /datum/controller/subsystem/zas/proc/air_blocked(turf/A, turf/B)
@@ -555,15 +525,15 @@ SUBSYSTEM_DEF(zas)
 	E.excited = TRUE
 
 ///Returns the edge between zones A and B.  If one doesn't exist, it creates one. See header for more information
-/datum/controller/subsystem/zas/proc/get_edge(zone/A, datum/B)
+/datum/controller/subsystem/zas/proc/get_edge(zone/A, zone/B) //Note: B can also be a turf.
 	var/connection_edge/edge
 
-	if(B.type == /zone) //Zone-to-zone connection
-		edge = A.edges[B]
-	else //Zone-to-turf connection
+	if(isturf(B)) //Zone-to-turf connection.
 		for(var/turf/T in A.edges)
-			if(B:air ~= T.air) //Operator overloading :)
+			if(B.air.isEqual(T.air)) //Operator overloading :)
 				return A.edges[T]
+	else
+		edge = A.edges[B] //Zone-to-zone connection
 
 	edge ||= create_edge(A,B)
 
@@ -588,81 +558,10 @@ SUBSYSTEM_DEF(zas)
 	if(processing_edges)
 		processing_edges -= E
 
-///Randomizes the lavaland gas mixture, and sets all lavaland unsimmed turfs to it.
-/datum/controller/subsystem/zas/proc/fuck_lavaland()
-	var/list/restricted_gases = list()
-	///No funny gasses allowed
-	for(var/gas in xgm_gas_data.gases)
-		if(xgm_gas_data.flags[gas] & (XGM_GAS_CONTAMINANT|XGM_GAS_FUEL|XGM_GAS_OXIDIZER))
-			restricted_gases |= gas
+/datum/controller/subsystem/zas/StartLoadingMap()
+	. = ..()
+	can_fire = FALSE
 
-	var/list/viable_gases = xgm_gas_data.gases - restricted_gases - GAS_XENON //TODO: add XGM_GAS_DANGEROUS
-	var/datum/gas_mixture/mix_real = new
-	var/list/mix_list = list()
-	var/num_gases = rand(1, 3)
-	var/list/chosen_gases = list()
-	var/target_pressure = rand(HAZARD_LOW_PRESSURE + 10, LAVALAND_EQUIPMENT_EFFECT_PRESSURE - 1)
-	var/temp = rand(BODYTEMP_COLD_DAMAGE_LIMIT + 1, 350)
-	var/pressure_scalar = target_pressure / (LAVALAND_EQUIPMENT_EFFECT_PRESSURE - 1)
-
-	///Choose our gases
-	for(var/iter in 1 to num_gases)
-		chosen_gases += pick_n_take(viable_gases)
-
-	mix_real.gas = chosen_gases
-
-	//Add a spice of Radon
-	for(var/gas in mix_real.gas)
-		mix_real.gas[gas] = 1 //So update values doesn't cull it
-
-	//Radon  sci
-	if(!(GAS_RADON in chosen_gases))
-		chosen_gases += GAS_RADON
-	mix_real.gas[GAS_RADON] = 5
-	num_gases++
-
-	mix_real.temperature = temp
-
-	///This is where the fun begins...
-	var/amount
-	var/gastype
-	while(mix_real.returnPressure() < target_pressure)
-		gastype = pick(chosen_gases)
-
-		amount = rand(5,10)
-		amount *= rand(50, 200) / 100
-		amount *= pressure_scalar
-		amount = CEILING(amount, 0.1)
-
-		mix_real.gas[gastype] += amount
-		AIR_UPDATE_VALUES(mix_real)
-
-	while(mix_real.returnPressure() > target_pressure)
-		mix_real.gas[gastype] -= mix_real.gas[gastype] * 0.1
-		AIR_UPDATE_VALUES(mix_real)
-
-	mix_real.gas[gastype] = FLOOR(mix_real.gas[gastype], 0.1)
-
-	for(var/gas_id in mix_real.gas)
-		mix_list[gas_id] = mix_real.gas[gas_id]
-
-	var/list/lavaland_z_levels = SSmapping.levels_by_trait(ZTRAIT_MINING) //God I hope this is never more than one
-	var/list/lavaland_areas = typecacheof(list(/area/lavaland, /area/icemoon))
-	lavaland_areas[/area/mine] = TRUE
-	lavaland_areas[/area/mine/explored] = TRUE
-
-	for(var/zlev in lavaland_z_levels)
-		for(var/turf/T as anything in block(locate(1,1,zlev), locate(world.maxx, world.maxy, zlev)))
-			if(!T.simulated && lavaland_areas[T.loc])
-				T.initial_gas = mix_list
-				T.temperature = mix_real.temperature
-				T.make_air()
-			CHECK_TICK
-
-	lavaland_atmos = mix_real
-	to_chat(world, span_boldannounce("ZAS: Lavaland contains [num_gases] [num_gases > 1? "gases" : "gas"], with a pressure of [mix_real.returnPressure()] kpa."))
-
-	var/log = "Lavaland atmos contains: "
-	for(var/gas in mix_real.gas)
-		log += "[mix_real.gas[gas]], "
-	log_game(log)
+/datum/controller/subsystem/zas/StopLoadingMap()
+	. = ..()
+	can_fire = TRUE

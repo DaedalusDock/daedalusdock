@@ -266,7 +266,7 @@
 /**
  * Override the say proc if they're mute
  */
-/obj/item/toy/mecha/say()
+/obj/item/toy/mecha/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null, range = 7)
 	if(!quiet)
 		. = ..()
 
@@ -360,7 +360,7 @@
 										span_danger("[src] and [attacker] clash dramatically, causing sparks to fly!"), \
 										span_hear("You hear hard plastic rubbing against hard plastic."), COMBAT_MESSAGE_RANGE)
 				if(5) //both win
-					playsound(attacker, 'sound/weapons/parry.ogg', 20, TRUE)
+					playsound(attacker, 'sound/weapons/block/parry_metal.ogg', 20, TRUE)
 					if(prob(50))
 						attacker_controller.visible_message(span_danger("[src]'s attack deflects off of [attacker]."), \
 											span_danger("[src]'s attack deflects off of [attacker]."), \

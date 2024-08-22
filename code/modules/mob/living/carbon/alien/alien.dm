@@ -32,7 +32,6 @@
 
 	create_internal_organs()
 
-	ADD_TRAIT(src, TRAIT_CAN_STRIP, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_NEVER_WOUNDED, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
@@ -71,14 +70,11 @@
 	else
 		clear_alert(ALERT_XENO_FIRE)
 
-/mob/living/carbon/alien/reagent_check(datum/reagent/R, delta_time, times_fired) //can metabolize all reagents
-	return FALSE
-
 /mob/living/carbon/alien/get_status_tab_items()
 	. = ..()
 	. += "Combat mode: [combat_mode ? "On" : "Off"]"
 
-/mob/living/carbon/alien/getTrail()
+/mob/living/carbon/alien/getTrail(being_dragged)
 	if(getBruteLoss() < 200)
 		return pick (list("xltrails_1", "xltrails2"))
 	else
@@ -124,10 +120,10 @@ Des: Removes all infected images from the alien.
 	new_xeno.setDir(dir)
 	if(numba && unique_name)
 		new_xeno.numba = numba
-		new_xeno.set_name()
+		new_xeno.give_unique_name()
 	if(!alien_name_regex.Find(name))
+		new_xeno.set_real_name(real_name, FALSE)
 		new_xeno.name = name
-		new_xeno.real_name = real_name
 	if(mind)
 		mind.name = new_xeno.real_name
 		mind.transfer_to(new_xeno)

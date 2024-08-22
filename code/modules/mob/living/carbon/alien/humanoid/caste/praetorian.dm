@@ -6,7 +6,7 @@
 	icon_state = "alienp"
 
 /mob/living/carbon/alien/humanoid/royal/praetorian/Initialize(mapload)
-	real_name = name
+	set_real_name(src.name)
 	var/datum/action/cooldown/spell/aoe/repulse/xeno/tail_whip = new(src)
 	tail_whip.Grant(src)
 

@@ -40,6 +40,10 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/atom/movable/screen/throw_icon
 	var/atom/movable/screen/module_store_icon
 
+	// On my way to double the amount of non-inventory hud elements for gunpoint-ing.
+	var/atom/movable/screen/gun_setting_icon
+	var/list/atom/movable/screen/gunpoint_options = list()
+
 	var/list/static_inventory = list() //the screen objects which are static
 	var/list/toggleable_inventory = list() //the screen objects which can be hidden
 	var/list/atom/movable/screen/hotkeybuttons = list() //the buttons that can be used via hotkeys
@@ -80,6 +84,12 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/atom/movable/screen/healthdoll
 	var/atom/movable/screen/wanted/wanted_lvl
 	var/atom/movable/screen/spacesuit
+
+	var/atom/movable/screen/pain/pain
+
+	var/atom/movable/screen/holomap/holomap_container
+	var/atom/movable/screen/progbar_container/use_timer
+	var/atom/movable/screen/vis_holder/vis_holder
 	// subtypes can override this to force a specific UI style
 	var/ui_style
 
@@ -100,7 +110,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	hand_slots = list()
 
 	for(var/mytype in subtypesof(/atom/movable/screen/plane_master)- /atom/movable/screen/plane_master/rendering_plate)
-		var/atom/movable/screen/plane_master/instance = new mytype()
+		var/atom/movable/screen/plane_master/instance = new mytype(null, src)
 		plane_masters["[instance.plane]"] = instance
 		instance.backdrop(mymob)
 
@@ -116,10 +126,18 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 	owner.overlay_fullscreen("see_through_darkness", /atom/movable/screen/fullscreen/see_through_darkness)
 
+	holomap_container = new(null, src)
+	vis_holder = new(null, src)
+
+	RegisterSignal(mymob, COMSIG_VIEWDATA_UPDATE, PROC_REF(on_viewdata_update))
+
+
 /datum/hud/Destroy()
 	if(mymob.hud_used == src)
 		mymob.hud_used = null
 
+	QDEL_LIST_ASSOC_VAL(hand_slots)
+	QDEL_NULL(rest_icon)
 	QDEL_NULL(toggle_palette)
 	QDEL_NULL(palette_down)
 	QDEL_NULL(palette_up)
@@ -130,15 +148,20 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	QDEL_NULL(module_store_icon)
 	QDEL_LIST(static_inventory)
 
+	QDEL_NULL(gun_setting_icon)
+	QDEL_LIST(gunpoint_options)
+
 	inv_slots.Cut()
 	action_intent = null
 	zone_select = null
 	pull_icon = null
+	gun_setting_icon = null
 
 	QDEL_LIST(toggleable_inventory)
 	QDEL_LIST(hotkeybuttons)
 	throw_icon = null
 	QDEL_LIST(infodisplay)
+	QDEL_NULL(vis_holder)
 
 	healths = null
 	stamina = null
@@ -156,8 +179,16 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	mymob = null
 
 	QDEL_NULL(screentip_text)
+	QDEL_NULL(pain)
+	QDEL_NULL(use_timer)
+	QDEL_NULL(holomap_container)
 
 	return ..()
+
+/datum/hud/proc/on_viewdata_update(datum/source, view)
+	SIGNAL_HANDLER
+
+	view_audit_buttons()
 
 /mob/proc/create_mob_hud()
 	if(!client || hud_used)
@@ -237,7 +268,17 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 			if(infodisplay.len)
 				screenmob.client.screen -= infodisplay
 
+	if(pain)
+		screenmob.client.screen += pain
+
+	if(holomap_container)
+		screenmob.client.screen += holomap_container
+
+	if(vis_holder)
+		screenmob.client.screen += vis_holder
+
 	hud_version = display_hud_version
+	update_gunpoint(screenmob)
 	persistent_inventory_update(screenmob)
 	screenmob.update_action_buttons(1)
 	reorganize_alerts(screenmob)
@@ -251,6 +292,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 			show_hud(hud_version, M)
 	else if (viewmob.hud_used)
 		viewmob.hud_used.plane_masters_update()
+		viewmob.show_other_mob_action_buttons(mymob)
 
 	return TRUE
 
@@ -259,7 +301,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	for(var/thing in plane_masters)
 		var/atom/movable/screen/plane_master/PM = plane_masters[thing]
 		PM.backdrop(mymob)
-		mymob.client.screen += PM
+		mymob.canon_client.screen += PM
 
 /datum/hud/human/show_hud(version = 0,mob/viewmob)
 	. = ..()
@@ -281,12 +323,29 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	if(!mymob)
 		return
 
+/datum/hud/proc/update_gunpoint(mob/screenmob)
+	var/mob/living/L = mymob
+	if(!istype(screenmob) || !istype(L))
+		return
+	if(!mymob.hud_used.gun_setting_icon)
+		return
+
+	screenmob.client.screen -= gun_setting_icon
+	screenmob.client.screen -= gunpoint_options
+	if(hud_version != HUD_STYLE_STANDARD)
+		return
+
+	screenmob.client.screen += gun_setting_icon
+	if(L.use_gunpoint || screenmob != L)
+		screenmob.client.screen += gunpoint_options
+
+
 /datum/hud/proc/update_ui_style(new_ui_style)
 	// do nothing if overridden by a subtype or already on that style
 	if (initial(ui_style) || ui_style == new_ui_style)
 		return
 
-	for(var/atom/item in static_inventory + toggleable_inventory + hotkeybuttons + infodisplay + screenoverlays + inv_slots)
+	for(var/atom/item in static_inventory + toggleable_inventory + hotkeybuttons + infodisplay + screenoverlays + inv_slots + gunpoint_options + gun_setting_icon)
 		if (item.icon == ui_style)
 			item.icon = new_ui_style
 
@@ -316,14 +375,13 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	hand_slots = list()
 	var/atom/movable/screen/inventory/hand/hand_box
 	for(var/i in 1 to mymob.held_items.len)
-		hand_box = new /atom/movable/screen/inventory/hand()
+		hand_box = new /atom/movable/screen/inventory/hand(null, src)
 		hand_box.name = mymob.get_held_index_name(i)
 		hand_box.icon = ui_style
 		hand_box.icon_state = "hand_[mymob.held_index_to_dir(i)]"
 		hand_box.screen_loc = ui_hand_position(i)
 		hand_box.held_index = i
 		hand_slots["[i]"] = hand_box
-		hand_box.hud = src
 		static_inventory += hand_box
 		hand_box.update_appearance()
 
@@ -377,7 +435,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 			palette_actions.insert_action(button, palette_actions.index_of(relative_to))
 		if(SCRN_OBJ_FLOATING) // If we don't have it as a define, this is a screen_loc, and we should be floating
 			floating_actions += button
-			var/client/our_client = mymob.client
+			var/client/our_client = mymob.canon_client
 			if(!our_client)
 				position_action(button, button.linked_action.default_button_position)
 				return
@@ -418,13 +476,13 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /// Ensures all of our buttons are properly within the bounds of our client's view, moves them if they're not
 /datum/hud/proc/view_audit_buttons()
-	var/our_view = mymob?.client?.view
+	var/our_view = mymob?.canon_client?.view
 	if(!our_view)
 		return
 	listed_actions.check_against_view()
 	palette_actions.check_against_view()
 	for(var/atom/movable/screen/movable/action_button/floating_button as anything in floating_actions)
-		var/list/current_offsets = screen_loc_to_offset(floating_button.screen_loc)
+		var/list/current_offsets = screen_loc_to_offset(floating_button.screen_loc, our_view)
 		// We set the view arg here, so the output will be properly hemm'd in by our new view
 		floating_button.screen_loc = offset_to_screen_loc(current_offsets[1], current_offsets[2], view = our_view)
 
@@ -534,7 +592,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	return "WEST[coord_col]:[coord_col_offset],NORTH[coord_row]:-[pixel_north_offset]"
 
 /datum/action_group/proc/check_against_view()
-	var/owner_view = owner?.mymob?.client?.view
+	var/owner_view = owner?.mymob?.canon_client?.view
 	if(!owner_view)
 		return
 	// Unlikey as it is, we may have been changed. Want to start from our target position and fail down

@@ -14,7 +14,7 @@
 /// Sprites generated for the antagonists panel
 /datum/asset/spritesheet/antagonists
 	name = "antagonists"
-	_abstract = /datum/asset/spritesheet/antagonists //This ensures it doesn't load unless it's requested.
+	abstract_type = /datum/asset/spritesheet/antagonists //This ensures it doesn't load unless it's requested.
 
 	/// Mapping of spritesheet keys -> icons
 	var/list/antag_icons = list()
@@ -24,7 +24,6 @@
 	var/static/list/non_ruleset_antagonists = list(
 		ROLE_FUGITIVE = /datum/antagonist/fugitive,
 		ROLE_LONE_OPERATIVE = /datum/antagonist/nukeop/lone,
-		ROLE_DRIFTING_CONTRACTOR = /datum/antagonist/contractor,
 	)
 
 	var/list/antagonists = non_ruleset_antagonists.Copy()

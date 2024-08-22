@@ -81,7 +81,7 @@
 	smoothing = _smoothing
 
 	RegisterSignal(target,COMSIG_ATOM_UPDATE_OVERLAYS,PROC_REF(apply_overlay), TRUE)
-	if(target.flags_1 & INITIALIZED_1)
+	if(target.initialized)
 		target.update_appearance(UPDATE_OVERLAYS) //could use some queuing here now maybe.
 	else
 		RegisterSignal(target,COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZE,PROC_REF(late_update_icon), TRUE)
@@ -116,6 +116,7 @@
 		_layer,
 		_dir
 	)
+	pic.plane = _plane
 	pic.color = _color
 	pic.alpha = _alpha
 	return TRUE
@@ -132,7 +133,8 @@
 /datum/element/decal/proc/late_update_icon(atom/source)
 	SIGNAL_HANDLER
 
-	if(source && istype(source))
+	if(istype(source) && !(source.flags_1 & DECAL_INIT_UPDATE_EXPERIENCED_1))
+		source.flags_1 |= DECAL_INIT_UPDATE_EXPERIENCED_1 // I am so sorry, but it saves like 80ms I gotta
 		source.update_appearance(UPDATE_OVERLAYS)
 		UnregisterSignal(source, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZE)
 

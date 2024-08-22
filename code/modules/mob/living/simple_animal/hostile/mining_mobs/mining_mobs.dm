@@ -13,14 +13,12 @@
 	response_harm_simple = "strike"
 	status_flags = 0
 	combat_mode = TRUE
-	var/crusher_loot
 	var/throw_message = "bounces off of"
 	var/fromtendril = FALSE
 	see_in_dark = 8
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
 	mob_size = MOB_SIZE_LARGE
 	var/icon_aggro = null
-	var/crusher_drop_mod = 25
 
 /mob/living/simple_animal/hostile/asteroid/Aggro()
 	..()
@@ -33,30 +31,17 @@
 		return
 	icon_state = icon_living
 
-/mob/living/simple_animal/hostile/asteroid/bullet_act(obj/projectile/P)//Reduces damage from most projectiles to curb off-screen kills
+/mob/living/simple_animal/hostile/asteroid/bullet_act(obj/projectile/P)
 	if(!stat)
 		Aggro()
-	if(P.damage < 30 && P.damage_type != BRUTE)
-		P.damage = (P.damage / 3)
-		visible_message(span_danger("[P] has a reduced effect on [src]!"))
 	..()
 
-/mob/living/simple_animal/hostile/asteroid/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum) //No floor tiling them to death, wiseguy
+/mob/living/simple_animal/hostile/asteroid/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	if(istype(AM, /obj/item))
-		var/obj/item/T = AM
 		if(!stat)
 			Aggro()
-		if(T.throwforce <= 20)
-			visible_message(span_notice("The [T.name] [throw_message] [src.name]!"))
-			return
 	..()
 
 /mob/living/simple_animal/hostile/asteroid/death(gibbed)
 	SSblackbox.record_feedback("tally", "mobs_killed_mining", 1, type)
-	var/datum/status_effect/crusher_damage/C = has_status_effect(/datum/status_effect/crusher_damage)
-	if(C && crusher_loot && prob((C.total_damage/maxHealth) * crusher_drop_mod)) //on average, you'll need to kill 4 creatures before getting the item
-		spawn_crusher_loot()
 	..(gibbed)
-
-/mob/living/simple_animal/hostile/asteroid/proc/spawn_crusher_loot()
-	butcher_results[crusher_loot] = 1

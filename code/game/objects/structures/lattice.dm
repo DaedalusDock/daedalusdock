@@ -6,14 +6,14 @@
 	base_icon_state = "lattice"
 	density = FALSE
 	anchored = TRUE
-	armor = list(MELEE = 50, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 50)
+	armor = list(BLUNT = 50, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 50)
 	max_integrity = 50
 	layer = LATTICE_LAYER //under pipes
 	plane = FLOOR_PLANE
-	obj_flags = CAN_BE_HIT | BLOCK_Z_OUT_DOWN
+	obj_flags = CAN_BE_HIT | BLOCK_Z_FALL
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_LATTICE)
-	canSmoothWith = list(SMOOTH_GROUP_OPEN_FLOOR, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_LATTICE)
+	smoothing_groups = SMOOTH_GROUP_LATTICE
+	canSmoothWith = SMOOTH_GROUP_LATTICE + SMOOTH_GROUP_WALLS + SMOOTH_GROUP_OPEN_FLOOR
 	var/number_of_mats = 1
 	var/build_material = /obj/item/stack/rods
 
@@ -51,6 +51,11 @@
 		new build_material(get_turf(src), number_of_mats)
 	qdel(src)
 
+/obj/structure/lattice/intercept_zImpact(list/falling_movables, levels)
+	. = ..()
+	if(levels == 1 && !istype(src, /obj/structure/lattice/catwalk))
+		. |= FALL_INTERCEPTED | FALL_NO_MESSAGE | FALL_RETAIN_PULL
+
 /obj/structure/lattice/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	if(the_rcd.mode == RCD_FLOORWALL)
 		return list("mode" = RCD_FLOORWALL, "delay" = 0, "cost" = 2)
@@ -77,9 +82,13 @@
 	base_icon_state = "catwalk"
 	number_of_mats = 2
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_OPEN_FLOOR, SMOOTH_GROUP_LATTICE, SMOOTH_GROUP_CATWALK)
-	canSmoothWith = list(SMOOTH_GROUP_CATWALK)
-	obj_flags = CAN_BE_HIT | BLOCK_Z_OUT_DOWN | BLOCK_Z_IN_UP
+	smoothing_groups = SMOOTH_GROUP_CATWALK + SMOOTH_GROUP_LATTICE + SMOOTH_GROUP_OPEN_FLOOR
+	canSmoothWith = SMOOTH_GROUP_CATWALK
+	obj_flags = CAN_BE_HIT | BLOCK_Z_OUT_DOWN | BLOCK_Z_IN_UP | BLOCK_Z_FALL
+
+/obj/structure/lattice/catwalk/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/footstep_override, clawfootstep = FOOTSTEP_CATWALK, heavyfootstep = FOOTSTEP_CATWALK, footstep = FOOTSTEP_CATWALK)
 
 /obj/structure/lattice/catwalk/deconstruction_hints(mob/user)
 	return span_notice("The supporting rods look like they could be <b>cut</b>.")
@@ -105,8 +114,8 @@
 	number_of_mats = 1
 	color = "#5286b9ff"
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_OPEN_FLOOR, SMOOTH_GROUP_LATTICE)
-	canSmoothWith = list(SMOOTH_GROUP_LATTICE)
+	smoothing_groups = SMOOTH_GROUP_LATTICE + SMOOTH_GROUP_OPEN_FLOOR
+	canSmoothWith = SMOOTH_GROUP_LATTICE
 	obj_flags = CAN_BE_HIT | BLOCK_Z_OUT_DOWN | BLOCK_Z_IN_UP
 	resistance_flags = FIRE_PROOF | LAVA_PROOF
 

@@ -1,5 +1,6 @@
 #define LOCKER_FULL -1
 
+DEFINE_INTERACTABLE(/obj/structure/closet)
 /obj/structure/closet
 	name = "closet"
 	desc = "It's a basic storage unit."
@@ -9,7 +10,7 @@
 	drag_slowdown = 1.5 // Same as a prone mob
 	max_integrity = 200
 	integrity_failure = 0.25
-	armor = list(MELEE = 20, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 60)
+	armor = list(BLUNT = 20, PUNCTURE = 10, SLASH = 70, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 60)
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	pass_flags_self = PASSSTRUCTURE|LETPASSCLICKS
 	zmm_flags = ZMM_MANGLE_PLANES
@@ -49,9 +50,9 @@
 	var/mob_storage_capacity = 3 // how many human sized mob/living can fit together inside a closet.
 	var/storage_capacity = 30 //This is so that someone can't pack hundreds of items in a locker/crate then open it in a populated area to crash clients.
 	var/cutting_tool = /obj/item/weldingtool
-	var/open_sound = 'sound/machines/closet_open.ogg'
-	var/close_sound = 'sound/machines/closet_close.ogg'
-	var/open_sound_volume = 35
+	var/open_sound = 'sound/structures/locker_open.ogg'
+	var/close_sound = 'sound/structures/locker_close.ogg'
+	var/open_sound_volume = 50
 	var/close_sound_volume = 50
 	var/material_drop = /obj/item/stack/sheet/iron
 	var/material_drop_amount = 2
@@ -71,8 +72,6 @@
 	var/can_install_electronics = TRUE
 
 /obj/structure/closet/Initialize(mapload)
-	if(mapload && !opened) // if closed, any item at the crate's loc is put in the contents
-		addtimer(CALLBACK(src, PROC_REF(take_contents), TRUE), 0)
 	. = ..()
 	update_appearance()
 	PopulateContents()
@@ -82,6 +81,13 @@
 		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(locker_carbon),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+
+	if(mapload && !opened)
+		return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/closet/LateInitialize()
+	. = ..()
+	take_contents()
 
 //USE THIS TO FILL IT, NOT INITIALIZE OR NEW
 /obj/structure/closet/proc/PopulateContents()
@@ -185,16 +191,12 @@
 /obj/structure/closet/examine(mob/user)
 	. = ..()
 	if(welded)
-		. += span_notice("It's welded shut.")
+		. += span_notice("It is welded shut.")
 	if(anchored)
 		. += span_notice("It is <b>bolted</b> to the ground.")
-	if(opened && cutting_tool == /obj/item/weldingtool)
-		. += span_notice("The parts are <b>welded</b> together.")
-	else if(secure && !opened)
-		. += span_notice("Right-click to [locked ? "unlock" : "lock"].")
 
-	if(HAS_TRAIT(user, TRAIT_SKITTISH) && divable)
-		. += span_notice("If you bump into [p_them()] while running, you will jump inside.")
+	if(opened && ispath(cutting_tool, /obj/item/weldingtool))
+		. += span_notice("The parts are <b>welded</b> together.")
 
 /obj/structure/closet/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()
@@ -207,7 +209,8 @@
 	if(welded || locked)
 		return FALSE
 	if(strong_grab)
-		to_chat(user, span_danger("[pulledby] has an incredibly strong grip on [src], preventing it from opening."))
+		var/obj/item/hand_item/grab/G = grabbed_by[1]
+		to_chat(user, span_danger("[G.assailant] has an incredibly strong grip on [src], preventing it from opening."))
 		return FALSE
 	var/turf/T = get_turf(src)
 	for(var/mob/living/L in T)
@@ -242,13 +245,15 @@
 	var/atom/location = drop_location()
 	if(!location)
 		return
-	for(var/atom/movable/AM in location)
+	for(var/atom/movable/AM as anything in location)
+		if(iseffect(AM))
+			continue
+
 		if(AM != src && insert(AM, mapload) == LOCKER_FULL) // limit reached
 			if(mapload) // Yea, it's a mapping issue. Blame mappers.
 				log_mapping("Closet storage capacity of [type] exceeded on mapload at [AREACOORD(src)]")
 			break
-	for(var/i in reverse_range(location.get_all_contents()))
-		var/atom/movable/thing = i
+	for(var/atom/movable/thing as anything in reverse_range(location.get_all_contents()))
 		thing.atom_storage?.close_all()
 
 /obj/structure/closet/proc/open(mob/living/user, force = FALSE)
@@ -305,7 +310,7 @@
 			for(var/mob/living/M in contents)
 				if(++mobs_stored >= mob_storage_capacity)
 					return FALSE
-		L.stop_pulling()
+		L.release_all_grabs()
 
 	else if(istype(AM, /obj/structure/closet))
 		return FALSE
@@ -481,7 +486,7 @@
 /obj/structure/closet/proc/after_weld(weld_state)
 	return
 
-/obj/structure/closet/MouseDrop_T(atom/movable/O, mob/living/user)
+/obj/structure/closet/MouseDroppedOn(atom/movable/O, mob/living/user)
 	if(!istype(O) || O.anchored || istype(O, /atom/movable/screen))
 		return
 	if(!istype(user) || user.incapacitated() || user.body_position == LYING_DOWN)
@@ -568,7 +573,7 @@
 	set category = "Object"
 	set name = "Toggle Open"
 
-	if(!usr.canUseTopic(src, BE_CLOSE) || !isturf(loc))
+	if(!usr.canUseTopic(src, USE_CLOSE) || !isturf(loc))
 		return
 
 	if(iscarbon(usr) || issilicon(usr) || isdrone(usr))
@@ -631,7 +636,7 @@
 /obj/structure/closet/attack_hand_secondary(mob/user, modifiers)
 	. = ..()
 
-	if(!user.canUseTopic(src, BE_CLOSE) || !isturf(loc))
+	if(!user.canUseTopic(src, USE_CLOSE) || !isturf(loc))
 		return
 
 	if(!opened && secure)
@@ -646,6 +651,7 @@
 			locked = !locked
 			user.visible_message(span_notice("[user] [locked ? null : "un"]locks [src]."),
 							span_notice("You [locked ? null : "un"]lock [src]."))
+			playsound(src, 'sound/machines/click.ogg', 15, 1, -3)
 			update_appearance()
 		else if(!silent)
 			to_chat(user, span_alert("Access Denied."))
@@ -684,15 +690,6 @@
 			else
 				req_access = list()
 				req_access += pick(SSid_access.get_region_access_list(list(REGION_ALL_STATION)))
-
-/obj/structure/closet/contents_explosion(severity, target)
-	switch(severity)
-		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += contents
-		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += contents
-		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += contents
 
 /obj/structure/closet/singularity_act()
 	dump_contents()

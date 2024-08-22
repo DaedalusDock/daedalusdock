@@ -1,4 +1,5 @@
 /obj/item/mod/control/pre_equipped
+	starting_frequency = MODLINK_FREQ_NANOTRASEN
 	/// The skin we apply to the suit, defaults to the default_skin of the theme.
 	var/applied_skin
 	/// The MOD core we apply to the suit.
@@ -16,7 +17,6 @@
 
 /obj/item/mod/control/pre_equipped/standard
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/welding,
 		/obj/item/mod/module/flashlight,
 	)
@@ -24,7 +24,6 @@
 /obj/item/mod/control/pre_equipped/engineering
 	theme = /datum/mod_theme/engineering
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/welding,
 		/obj/item/mod/module/rad_protection,
 		/obj/item/mod/module/flashlight,
@@ -34,7 +33,6 @@
 /obj/item/mod/control/pre_equipped/atmospheric
 	theme = /datum/mod_theme/atmospheric
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/welding,
 		/obj/item/mod/module/rad_protection,
 		/obj/item/mod/module/flashlight,
@@ -45,7 +43,6 @@
 	theme = /datum/mod_theme/advanced
 	applied_cell = /obj/item/stock_parts/cell/super
 	initial_modules = list(
-		/obj/item/mod/module/storage/large_capacity,
 		/obj/item/mod/module/welding,
 		/obj/item/mod/module/rad_protection,
 		/obj/item/mod/module/flashlight,
@@ -65,7 +62,6 @@
 	theme = /datum/mod_theme/mining
 	applied_core = /obj/item/mod/core/plasma
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/gps,
 		/obj/item/mod/module/orebag,
 		/obj/item/mod/module/clamp,
@@ -75,7 +71,6 @@
 /obj/item/mod/control/pre_equipped/medical
 	theme = /datum/mod_theme/medical
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/flashlight,
 		/obj/item/mod/module/health_analyzer,
 		/obj/item/mod/module/quick_carry,
@@ -85,7 +80,6 @@
 	theme = /datum/mod_theme/rescue
 	applied_cell = /obj/item/stock_parts/cell/super
 	initial_modules = list(
-		/obj/item/mod/module/storage/large_capacity,
 		/obj/item/mod/module/flashlight,
 		/obj/item/mod/module/health_analyzer,
 		/obj/item/mod/module/injector,
@@ -95,7 +89,6 @@
 	theme = /datum/mod_theme/research
 	applied_cell = /obj/item/stock_parts/cell/super
 	initial_modules = list(
-		/obj/item/mod/module/storage/large_capacity,
 		/obj/item/mod/module/welding,
 		/obj/item/mod/module/flashlight,
 		/obj/item/mod/module/circuit,
@@ -105,7 +98,6 @@
 /obj/item/mod/control/pre_equipped/security
 	theme = /datum/mod_theme/security
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/magnetic_harness,
 		/obj/item/mod/module/flashlight,
 		/obj/item/mod/module/pepper_shoulders,
@@ -115,7 +107,6 @@
 	theme = /datum/mod_theme/safeguard
 	applied_cell = /obj/item/stock_parts/cell/super
 	initial_modules = list(
-		/obj/item/mod/module/storage/large_capacity,
 		/obj/item/mod/module/magnetic_harness,
 		/obj/item/mod/module/flashlight,
 		/obj/item/mod/module/jetpack,
@@ -126,7 +117,6 @@
 	theme = /datum/mod_theme/magnate
 	applied_cell = /obj/item/stock_parts/cell/hyper
 	initial_modules = list(
-		/obj/item/mod/module/storage/large_capacity,
 		/obj/item/mod/module/hat_stabilizer,
 		/obj/item/mod/module/magnetic_harness,
 		/obj/item/mod/module/jetpack/advanced,
@@ -136,13 +126,13 @@
 /obj/item/mod/control/pre_equipped/cosmohonk
 	theme = /datum/mod_theme/cosmohonk
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/waddle,
 		/obj/item/mod/module/bikehorn,
 	)
 
 /obj/item/mod/control/pre_equipped/traitor
 	theme = /datum/mod_theme/syndicate
+	starting_frequency = MODLINK_FREQ_SYNDICATE
 	applied_cell = /obj/item/stock_parts/cell/super
 	initial_modules = list(
 		/obj/item/mod/module/storage/syndicate,
@@ -155,6 +145,7 @@
 
 /obj/item/mod/control/pre_equipped/traitor_elite
 	theme = /datum/mod_theme/elite
+	starting_frequency = MODLINK_FREQ_SYNDICATE
 	applied_cell = /obj/item/stock_parts/cell/bluespace
 	initial_modules = list(
 		/obj/item/mod/module/storage/syndicate,
@@ -167,6 +158,7 @@
 
 /obj/item/mod/control/pre_equipped/nuclear
 	theme = /datum/mod_theme/syndicate
+	starting_frequency = MODLINK_FREQ_SYNDICATE
 	applied_cell = /obj/item/stock_parts/cell/hyper
 	req_access = list(ACCESS_SYNDICATE)
 	initial_modules = list(
@@ -178,6 +170,7 @@
 
 /obj/item/mod/control/pre_equipped/elite
 	theme = /datum/mod_theme/elite
+	starting_frequency = MODLINK_FREQ_SYNDICATE
 	applied_cell = /obj/item/stock_parts/cell/bluespace
 	req_access = list(ACCESS_SYNDICATE)
 	initial_modules = list(
@@ -201,6 +194,7 @@
 
 /obj/item/mod/control/pre_equipped/enchanted
 	theme = /datum/mod_theme/enchanted
+	starting_frequency = null
 	applied_core = /obj/item/mod/core/infinite
 	initial_modules = list(
 		/obj/item/mod/module/storage/large_capacity,
@@ -210,9 +204,9 @@
 
 /obj/item/mod/control/pre_equipped/prototype
 	theme = /datum/mod_theme/prototype
+	starting_frequency = MODLINK_FREQ_CHARLIE
 	req_access = list(ACCESS_AWAY_GENERAL)
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/welding,
 		/obj/item/mod/module/rad_protection,
 		/obj/item/mod/module/flashlight,
@@ -221,6 +215,7 @@
 
 /obj/item/mod/control/pre_equipped/responsory
 	theme = /datum/mod_theme/responsory
+	starting_frequency = MODLINK_FREQ_CENTCOM
 	applied_cell = /obj/item/stock_parts/cell/hyper
 	req_access = list(ACCESS_CENT_GENERAL)
 	initial_modules = list(
@@ -297,6 +292,7 @@
 
 /obj/item/mod/control/pre_equipped/apocryphal
 	theme = /datum/mod_theme/apocryphal
+	starting_frequency = MODLINK_FREQ_CENTCOM
 	applied_cell = /obj/item/stock_parts/cell/bluespace
 	req_access = list(ACCESS_CENT_SPECOPS)
 	initial_modules = list(
@@ -309,6 +305,7 @@
 
 /obj/item/mod/control/pre_equipped/corporate
 	theme = /datum/mod_theme/corporate
+	starting_frequency = MODLINK_FREQ_CENTCOM
 	applied_core = /obj/item/mod/core/infinite
 	req_access = list(ACCESS_CENT_SPECOPS)
 	initial_modules = list(
@@ -319,6 +316,7 @@
 
 /obj/item/mod/control/pre_equipped/chrono
 	theme = /datum/mod_theme/chrono
+	starting_frequency = null
 	applied_core = /obj/item/mod/core/infinite
 	initial_modules = list(
 		/obj/item/mod/module/eradication_lock,
@@ -327,10 +325,12 @@
 		/obj/item/mod/module/timestopper,
 		/obj/item/mod/module/rewinder,
 		/obj/item/mod/module/tem,
+		/obj/item/mod/module/anomaly_locked/kinesis/plus,
 	)
 
 /obj/item/mod/control/pre_equipped/debug
 	theme = /datum/mod_theme/debug
+	starting_frequency = null
 	applied_core = /obj/item/mod/core/infinite
 	initial_modules = list( //one of every type of module, for testing if they all work correctly
 		/obj/item/mod/module/storage/bluespace,
@@ -344,6 +344,7 @@
 
 /obj/item/mod/control/pre_equipped/administrative
 	theme = /datum/mod_theme/administrative
+	starting_frequency = MODLINK_FREQ_CENTCOM
 	applied_core = /obj/item/mod/core/infinite
 	initial_modules = list(
 		/obj/item/mod/module/storage/bluespace,
@@ -352,43 +353,12 @@
 		/obj/item/mod/module/quick_carry/advanced,
 		/obj/item/mod/module/magboot/advanced,
 		/obj/item/mod/module/jetpack,
-	)
-
-/obj/item/mod/control/pre_equipped/contractor
-	theme = /datum/mod_theme/contractor
-	applied_cell = /obj/item/stock_parts/cell/hyper
-	initial_modules = list(
-		/obj/item/mod/module/storage/syndicate,
-		/obj/item/mod/module/tether,
-		/obj/item/mod/module/flashlight,
-		/obj/item/mod/module/dna_lock,
-		/obj/item/mod/module/magnetic_harness,
-		/obj/item/mod/module/emp_shield,
-	)
-
-/obj/item/mod/control/pre_equipped/contractor/upgraded
-	applied_cell = /obj/item/stock_parts/cell/bluespace
-	initial_modules = list(
-		/obj/item/mod/module/storage/syndicate,
-		/obj/item/mod/module/jetpack,
-		/obj/item/mod/module/dna_lock,
-		/obj/item/mod/module/magnetic_harness,
-		/obj/item/mod/module/baton_holster/preloaded,
-		/obj/item/mod/module/emp_shield,
-	)
-
-/obj/item/mod/control/pre_equipped/contractor/upgraded/adminbus
-	initial_modules = list(
-		/obj/item/mod/module/storage/syndicate,
-		/obj/item/mod/module/jetpack/advanced,
-		/obj/item/mod/module/springlock/contractor/no_complexity,
-		/obj/item/mod/module/baton_holster/preloaded,
-		/obj/item/mod/module/scorpion_hook,
-		/obj/item/mod/module/emp_shield,
+		/obj/item/mod/module/anomaly_locked/kinesis/admin,
 	)
 
 //these exist for the prefs menu
 /obj/item/mod/control/pre_equipped/syndicate_empty
+	starting_frequency = null
 	theme = /datum/mod_theme/syndicate
 
 /obj/item/mod/control/pre_equipped/syndicate_empty/honkerative
@@ -396,8 +366,5 @@
 
 /obj/item/mod/control/pre_equipped/syndicate_empty/elite
 	theme = /datum/mod_theme/elite
-
-/obj/item/mod/control/pre_equipped/syndicate_empty/contractor
-	theme = /datum/mod_theme/contractor
 
 INITIALIZE_IMMEDIATE(/obj/item/mod/control/pre_equipped/syndicate_empty)

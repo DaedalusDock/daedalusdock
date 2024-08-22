@@ -23,20 +23,30 @@ a, button, a:link, a:visited, a:active, .linkOn, .linkOff
 {
 	color: #ffffff;
 	text-decoration: none;
-	background: #3f595e ;
-	border: 1px solid #161616;
+	background: #4d4d4d ;
+	border: 1px solid rgba(255, 183, 0, 0.5);
 	padding: 1px 4px 1px 4px;
 	margin: 0 2px 0 0;
 	cursor: default;
 	white-space: nowrap !important;
 	text-shadow: none !important;
+	-ms-user-select: none;
+	user-select: none;
 }
 
+.dmIcon
+{
+	-ms-interpolation-mode: nearest-neighbor;
+}
 
 a:hover
 {
 	color: #ffffff;
-	background: #aa5f36;
+	background: #aa8136;
+}
+
+a.inlineblock {
+	display: inline-block;
 }
 
 a.white, a.white:link, a.white:visited, a.white:active
@@ -44,7 +54,7 @@ a.white, a.white:link, a.white:visited, a.white:active
 	color: #40628a;
 	text-decoration: none;
 	background: #ffffff;
-	border: 1px solid #161616;
+	border: 1px solid rgba(255, 183, 0, 0.3);
 	padding: 1px 4px 1px 4px;
 	margin: 0 2px 0 0;
 	cursor:default;
@@ -59,15 +69,51 @@ a.white:hover
 .linkOn, a.linkOn:link, a.linkOn:visited, a.linkOn:active, a.linkOn:hover
 {
 	color: #ffffff;
-	background: #aa5f36;
-	border-color: #202020;
+	background: #aa8136;
+	border-color: rgba(255, 183, 0, 0.7);
 }
 
 .linkOff, a.linkOff:link, a.linkOff:visited, a.linkOff:active, a.linkOff:hover
 {
-	color: #ffffff;
+	color: #000000;
 	background: #999999;
 	border-color: #666666;
+}
+
+/* Generic links, use outside of computerPanes*/
+a.genericLink, a.genericLink:visited, a.genericLink:active
+{
+	color: #ffffff;
+	text-decoration: none;
+	background: #3f595e;
+	border: 1px solid #161616;
+	padding: 1px 4px 1px 4px;
+	margin: 0 2px 0 0;
+	cursor: default;
+	white-space: nowrap !important;
+	text-shadow: none !important;
+}
+
+a.genericLink:hover
+{
+	color: #ffffff;
+	background: #aa5f36;
+}
+
+a.rawLink
+{
+	color: inherit;
+	text-decoration: inherit;
+	background: inherit;
+	cursor: pointer;
+	white-space: nowrap !important;
+	text-shadow: inherit !important;
+	border: inherit;
+}
+
+a.rawLink:hover {
+	color: #ffffff;
+	text-decoration: underline;
 }
 
 a.icon, .linkOn.icon, .linkOff.icon
@@ -259,8 +305,10 @@ div.notice
 	padding: 4px;
 	margin: 3px 0;
 	text-align: center;
-	text-shadow: 0 0 5px #FFCC00;
+	text-shadow: 0 0 0.417em #FFCC00;
 	overflow: hidden;
+	font-size: 15px;
+	font-family: monospace;
 }
 
 .computerPaneNested
@@ -270,7 +318,7 @@ div.notice
 	margin: 3px 0;
 	color: #ffffff;
 	overflow: hidden;
-	background-image: inherit;
+	background: none;
 	box-shadow: 0 0 10px #FFCC00
 }
 
@@ -280,7 +328,7 @@ div.notice
 }
 
 .computerText{
-	text-shadow: 0 0 5px #C8C8C8;
+	text-shadow: 0 0 0.417em #C8C8C8;
 	color: #ffffff;
 }
 
@@ -484,8 +532,8 @@ ul.sparse {
 }
 
 .severity img {
-    display: inline-block;
-    vertical-align: middle;
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .codexLore
@@ -509,7 +557,7 @@ ul.sparse {
 
 .dmCodexBody
 {
-	margin-left: 15px;
+	margin: 0px 10px;
 }
 
 .dmCodexBody td
@@ -520,6 +568,11 @@ ul.sparse {
 .dmCodexHeader
 {
 	text-align: center;
+}
+
+.dmCodexFooter
+{
+	margin-top: 10px;
 }
 
 .tooltip {
@@ -565,6 +618,14 @@ span.color_holder_box{
 	border: 1px solid rgba(255, 183, 0, 0.5);
 }
 
+.zebraTable div:nth-child(2n){
+	background-color: #7c5500;
+}
+
+.zebraTable div:nth-child(2n+1){
+	background-color: #533200;
+}
+
 .zebraTable tr:nth-child(even){
 	background-color: #7c5500;
 }
@@ -572,3 +633,76 @@ span.color_holder_box{
 .zebraTable tr:nth-child(odd){
 	background-color: #533200;
 }
+
+.good
+{
+	color: #00ff00;
+}
+
+.mild {
+	color: #e0d000;
+}
+
+.average
+{
+	color: #f09000;
+}
+
+.bad
+{
+	color: #ff0000;
+}
+
+/* Highlights the element on hover. For use with onClick events. */
+.highlighter:hover {
+	/*background-color: #f0c400 !important;*/
+	background-color: #aa8136 !important;
+}
+
+.paragraph {
+	text-indent: 2em;
+}
+
+/* Used for vertical lists of elements. */
+.flexColumn {
+	display: flex;
+	flex-direction: column;
+}
+
+/* Used for horizontal lists of elements. */
+.flexRow {
+	display: flex;
+	flex-direction: row;
+}
+
+/* Standard flex item */
+.flexItem {
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+.consoleInput {
+	position: relative;
+	display: inline-block;
+}
+
+.consoleInput::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: -15px;
+	/* Remove display: inline-block if not required to be on the same line as text etc */
+	display: inline-block;
+	background-color: #606060;
+	vertical-align: top;
+	width: 10px;
+	/* Set height to the line height of .text */
+	height: 24px;
+	animation: blink 1s step-end infinite;
+  }
+
+@keyframes blink {
+	0% { opacity: 1.0; }
+	50% { opacity: 0.0; }
+	100% { opacity: 1.0; }
+  }

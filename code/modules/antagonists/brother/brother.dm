@@ -8,7 +8,6 @@
 	ui_name = "AntagInfoBrother"
 	suicide_cry = "FOR MY BROTHER!!"
 	var/datum/team/brother_team/team
-	antag_moodlet = /datum/mood_event/focused
 
 /datum/antagonist/brother/create_team(datum/team/brother_team/new_team)
 	if(!new_team)
@@ -47,11 +46,15 @@
 	brother2.set_species(/datum/species/moth)
 
 	var/icon/brother1_icon = render_preview_outfit(/datum/outfit/job/quartermaster, brother1)
-	brother1_icon.Blend(icon('icons/effects/blood.dmi', "maskblood"), ICON_OVERLAY)
+	var/icon/blood_overlay = icon('icons/effects/blood.dmi', "maskblood")
+	blood_overlay.Blend(COLOR_HUMAN_BLOOD, ICON_MULTIPLY)
+	brother1_icon.Blend(blood_overlay, ICON_OVERLAY)
 	brother1_icon.Shift(WEST, 8)
 
-	var/icon/brother2_icon = render_preview_outfit(/datum/outfit/job/scientist/consistent, brother2)
-	brother2_icon.Blend(icon('icons/effects/blood.dmi', "uniformblood"), ICON_OVERLAY)
+	var/icon/brother2_icon = render_preview_outfit(/datum/outfit/job/doctor, brother2)
+	blood_overlay = icon('icons/effects/blood.dmi', "uniformblood")
+	blood_overlay.Blend(COLOR_HUMAN_BLOOD, ICON_MULTIPLY)
+	brother2_icon.Blend(blood_overlay, ICON_OVERLAY)
 	brother2_icon.Shift(EAST, 8)
 
 	var/icon/final_icon = brother1_icon
@@ -74,18 +77,24 @@
 			brother_text += ", "
 	return brother_text
 
-/datum/antagonist/brother/proc/give_meeting_area()
-	if(!owner.current || !team || !team.meeting_area)
+/datum/antagonist/brother/apply_innate_effects(mob/living/mob_override)
+	. = ..()
+	var/mob/living/M = mob_override || owner.current
+	if(!M.mind?.current || !team || !team.meeting_area)
 		return
-	to_chat(owner.current, "<span class='infoplain'><B>Your designated meeting area:</B> [team.meeting_area]</span>")
+
 	antag_memory += "<b>Meeting Area</b>: [team.meeting_area]<br>"
 
-/datum/antagonist/brother/greet()
+/datum/antagonist/brother/build_greeting()
+	. = ..()
+	if(!team || !team.meeting_area)
+		return
+
+	. += "<B>Your designated meeting area is:</B> [team.meeting_area]"
+
+/datum/antagonist/brother/greeting_header()
 	var/brother_text = get_brother_names()
-	to_chat(owner.current, span_alertsyndie("You are the [owner.special_role] of [brother_text]."))
-	to_chat(owner.current, "The Syndicate only accepts those that have proven themselves. Prove yourself and prove your [team.member_name]s by completing your objectives together!")
-	owner.announce_objectives()
-	give_meeting_area()
+	return "<u><span style='font-size: 200%'>You are the [owner.special_role] of [brother_text].</span></u>"
 
 /datum/antagonist/brother/proc/finalize_brother()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
@@ -172,21 +181,13 @@
 
 /datum/team/brother_team/proc/forge_brother_objectives()
 	objectives = list()
-	var/is_hijacker = prob(10)
-	for(var/i = 1 to max(1, CONFIG_GET(number/brother_objectives_amount) + (members.len > 2) - is_hijacker))
+	for(var/i = 1 to max(1, CONFIG_GET(number/brother_objectives_amount) + (members.len > 2)))
 		forge_single_objective()
-	if(is_hijacker)
-		if(!locate(/datum/objective/hijack) in objectives)
-			add_objective(new/datum/objective/hijack)
-	else if(!locate(/datum/objective/escape) in objectives)
-		add_objective(new/datum/objective/escape)
 
 /datum/team/brother_team/proc/forge_single_objective()
 	if(prob(50))
 		if(LAZYLEN(active_ais()) && prob(100/GLOB.joined_player_list.len))
 			add_objective(new/datum/objective/destroy, TRUE)
-		else if(prob(30))
-			add_objective(new/datum/objective/maroon, TRUE)
 		else
 			add_objective(new/datum/objective/assassinate, TRUE)
 	else

@@ -1,0 +1,117 @@
+2024-06-02:
+  SyncIt21:
+  - bugfix: Pyrosium now reacts on creation.
+2024-06-03:
+  jlsnow301:
+  - bugfix: Chat settings should no longer bluescreen
+2024-06-05:
+  jlsnow301, Kapu1178:
+  - code_imp: Added DMIcon component for TGUI, a clean way to embed RSC icons.
+  - tweak: Vending machines now use DMIcon, which will be less accurate but much faster.
+2024-06-06:
+  jlsnow301:
+  - bugfix: Fixed a bluescreen in tgui kitchensink (dev tool)
+2024-06-08:
+  /vg/station coders, Kapu1178:
+  - rscadd: Replaced all of the decorative "station map" objects with functioning
+      map viewing monitors that display a miniature version of the map.
+  Kapu1178:
+  - bugfix: Fixed space being 180 kelvin instead of 2.7 kelvin.
+  jlsnow301:
+  - bugfix: Fixed scrollbars on NTOS windows
+2024-06-09:
+  Kapu1178:
+  - bugfix: The "skipped X seconds of silence" message no longer states 10x the duration
+      skipped.
+  - rscadd: Scaled the amount of time it takes to skip silence in tapes slightly.
+  - bugfix: Holomaps are actually visible.
+  - bugfix: West and South facing holomaps are emissive.
+2024-06-10:
+  Kapu1178:
+  - rscadd: Added Honkertron, a russian developer, to the list of the deceased devs
+      in the credits.
+2024-06-11:
+  Kapu1178:
+  - bugfix: Clicking your inactive hand slot while holding an item in your active
+      hand slot no longer outputs "You are unable to equip that!"
+  jlsnow301:
+  - bugfix: Ampcheck UI should work again
+2024-06-12:
+  Kapu1178:
+  - bugfix: You can no longer observe yourself.
+  - bugfix: Observing no longer causes ambience runtimes.
+  - rscdel: Internals tanks no longer automatically get set to the optimal value.
+  - rscadd: You can now examine the items worn or held by someone.
+  Ryan180602:
+  - imageadd: beagle mug
+2024-06-17:
+  Baystation12 Coders:
+  - soundadd: Lockers have a new open/close sound.
+  - soundadd: Backpacks have a new open sound.
+  - soundadd: Medkits have a new open sound.
+  - soundadd: Cigarette cartons have a new open sound.
+  - bugfix: Inserting an item into a storage container no longer plays its drop-to-floor
+      sound.
+  - balance: You can no longer manipulate items within a storage container that is
+      inside another storage container.
+  Kapu1178:
+  - bugfix: Brain damage correctly updates health. It is unlikely this actually caused
+      any bugs, but better safe than sorry.
+  - bugfix: Dead and Unconscious mobs won't broadcast their examine.
+  - bugfix: Mobs now enter cardiac arrest when in the maximum shock stage.
+  francinum:
+  - code_imp: OpenDream is now used in linting. You do not care. Know that we are
+      one step closer to luxury gay space communism.
+  - refactor: Codex entry searching has been outsourced to a local database. This
+      results in outright comical efficiency and speed gains.
+  - code_imp: This is disabled by default on development servers, as it introduces
+      extra initialization time. An override compile flag is available.
+2024-06-18:
+  Kapu1178, Ghommie, Vinylspiders, Mothblocks:
+  - qol: Catwalk floors now display the turf under them. Because they aren't turfs
+      anymore.
+2024-06-19:
+  BarteG44:
+  - qol: Makes the ATM put IDs directly into your hand when you eject them.
+2024-06-25:
+  jlsnow301:
+  - bugfix: Fixed the keybindings UI. You should be able to reassign properly now.
+2024-06-26:
+  BarteG44:
+  - rscadd: Adds the crime scene kit to the forensics crate.
+  Kapu1178:
+  - rscadd: Species with clawed feet play the claw footstep sounds when barefoot.
+  - rscadd: Walking now produces footstep sounds, but quieter.
+  - tweak: Adjusted the sound environment parameters of most of the station.
+  - qol: Added "Mutadone" as a search term for Ryetalyn.
+  - rscdel: Removed Spatial Instability mutation.
+  - bugfix: Fixed cases where weather effects wouldn't go away until you walked into
+      them.
+2024-06-27:
+  Kapu1178:
+  - bugfix: Bloom renders properly
+  Kapu1178, SyncIt21:
+  - balance: Hydroponics trays now hold water significantly longer.
+  - qol: Many actions are safer from specific edge cases. You won't notice a difference.
+2024-06-28:
+  LemonInTheDark, Kapu1178:
+  - refactor: Refactored pathfinding code to be cleaner.
+  - tweak: Bots will no longer take diagonal paths, which looked weird.
+  jlsnow301:
+  - bugfix: The power monitor UI has been changed slightly to give a better UX. You
+      can scroll without losing your place, there's a loading screen, etc.
+2024-06-30:
+  Kapu1178, MrMelbert:
+  - bugfix: You can no longer infinitely spread blood to turfs.
+  - bugfix: Bloody hands are blood colored and not white.
+  - bugfix: Surgery bloodies only the gloves of the surgeon.
+  - bugfix: Wearing gloves correctly prevents disease spread during surgery.
+  - bugfix: Grabs should now properly release... more often.
+  - qol: Surgery attempts will now fail the moment they become impossible, not after
+      the do_after().
+  - qol: More surgeries provide more detailed feedback when a surgery is not a valid
+      option.
+  - rscadd: Improved the logic for getting clothes bloody.
+  - rscadd: Grabs now spread blood.
+  jlsnow301:
+  - bugfix: Fixed the pandemic UI bluescreening on beaker insert

@@ -16,7 +16,7 @@
 	color = "#8BA6E9"
 	taste_description = "brain freeze"
 
-/datum/reagent/blob/cryogenic_poison/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/overmind)
+/datum/reagent/blob/cryogenic_poison/expose_mob(mob/living/exposed_mob, methods, reac_volume, show_message, touch_protection, mob/camera/blob/overmind)
 	. = ..()
 	reac_volume = return_mob_expose_reac_volume(exposed_mob, methods, reac_volume, show_message, touch_protection, overmind)
 	if(exposed_mob.reagents)
@@ -25,9 +25,13 @@
 		exposed_mob.reagents.add_reagent(/datum/reagent/blob/cryogenic_poison, 0.3*reac_volume)
 	exposed_mob.apply_damage(0.2*reac_volume, BRUTE)
 
-/datum/reagent/blob/cryogenic_poison/on_mob_life(mob/living/carbon/exposed_mob, delta_time, times_fired)
-	exposed_mob.adjustBruteLoss(0.5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, FALSE)
-	exposed_mob.adjustFireLoss(0.5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, FALSE)
-	exposed_mob.adjustToxLoss(0.5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, FALSE)
-	. = 1
-	..()
+/datum/reagent/blob/cryogenic_poison/affect_blood(mob/living/carbon/C, removed)
+	C.adjustBruteLoss(1 * removed, FALSE)
+	C.adjustFireLoss(1 * removed, FALSE)
+	C.adjustToxLoss(1* removed, FALSE)
+	return TRUE
+
+/datum/reagent/blob/cryogenic_poison/affect_touch(mob/living/carbon/C, removed)
+	C.bloodstream.add_reagent(/datum/reagent/consumable/frostoil, 0.3*removed)
+	C.bloodstream.add_reagent(/datum/reagent/consumable/ice, 0.3*removed)
+	C.bloodstream.add_reagent(/datum/reagent/blob/cryogenic_poison, 0.3*removed)

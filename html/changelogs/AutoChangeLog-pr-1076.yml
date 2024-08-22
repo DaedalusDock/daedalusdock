@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Fixed an issue that caused the server to fail to restart under rare conditions.

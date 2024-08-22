@@ -15,7 +15,6 @@
 	attack_verb_continuous = list("bashes", "carries")
 	attack_verb_simple = list("bash", "carry")
 	w_class = WEIGHT_CLASS_BULKY
-	throw_speed = 2
 	throw_range = 3
 	custom_materials = list(/datum/material/iron = 7500, /datum/material/glass = 100)
 	var/open = TRUE
@@ -32,6 +31,7 @@
 	return ..()
 
 /obj/item/pet_carrier/Exited(atom/movable/gone, direction)
+	. = ..()
 	if(isliving(gone) && (gone in occupants))
 		var/mob/living/L = gone
 		occupants -= gone
@@ -72,7 +72,7 @@
 	update_appearance()
 
 /obj/item/pet_carrier/AltClick(mob/living/user)
-	if(open || !user.canUseTopic(src, BE_CLOSE))
+	if(open || !user.canUseTopic(src, USE_CLOSE|USE_NEED_HANDS))
 		return
 	locked = !locked
 	to_chat(user, span_notice("You flip the lock switch [locked ? "down" : "up"]."))
@@ -88,19 +88,18 @@
 	if(!open)
 		to_chat(user, span_warning("You need to open [src]'s door!"))
 		return
+
 	if(target.mob_size > max_occupant_weight)
 		if(ishuman(target))
-			var/mob/living/carbon/human/H = target
-			if(isfelinid(H))
-				to_chat(user, span_warning("You'd need a lot of catnip and treats, plus maybe a laser pointer, for that to work."))
-			else
-				to_chat(user, span_warning("Humans, generally, do not fit into pet carriers."))
+			to_chat(user, span_warning("Humans, generally, do not fit into pet carriers."))
 		else
 			to_chat(user, span_warning("You get the feeling [target] isn't meant for a [name]."))
 		return
+
 	if(user == target)
 		to_chat(user, span_warning("Why would you ever do that?"))
 		return
+
 	load_occupant(user, target)
 
 /obj/item/pet_carrier/relaymove(mob/living/user, direction)
@@ -157,7 +156,7 @@
 
 /obj/item/pet_carrier/MouseDrop(atom/over_atom)
 	. = ..()
-	if(isopenturf(over_atom) && usr.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(usr)) && usr.Adjacent(over_atom) && open && occupants.len)
+	if(isopenturf(over_atom) && usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY) && usr.Adjacent(over_atom) && open && occupants.len)
 		usr.visible_message(span_notice("[usr] unloads [src]."), \
 		span_notice("You unload [src] onto [over_atom]."))
 		for(var/V in occupants)

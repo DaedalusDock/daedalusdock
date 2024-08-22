@@ -54,9 +54,10 @@
 		else
 			return user_unbuckle_mob(buckled_mobs[1], user)
 
-/atom/movable/MouseDrop_T(mob/living/M, mob/living/user)
+/atom/movable/MouseDroppedOn(atom/dropped, mob/living/user)
 	. = ..()
-	return mouse_buckle_handling(M, user)
+	if(isliving(dropped))
+		return mouse_buckle_handling(dropped, user)
 
 /**
  * Does some typechecks and then calls user_buckle_mob
@@ -102,17 +103,19 @@
 	if(SEND_SIGNAL(src, COMSIG_MOVABLE_PREBUCKLE, M, force, buckle_mob_flags) & COMPONENT_BLOCK_BUCKLE)
 		return FALSE
 
-	if(M.pulledby)
+	if(LAZYLEN(M.grabbed_by))
 		if(buckle_prevents_pull)
-			M.pulledby.stop_pulling()
-		else if(isliving(M.pulledby))
-			var/mob/living/L = M.pulledby
-			L.reset_pull_offsets(M, TRUE)
+			M.free_from_all_grabs()
+
+		else if(LAZYLEN(grabbed_by))
+			M.reset_pull_offsets(TRUE)
 
 	if(anchored)
 		ADD_TRAIT(M, TRAIT_NO_FLOATING_ANIM, BUCKLED_TRAIT)
+
 	if(!length(buckled_mobs))
 		RegisterSignal(src, COMSIG_MOVABLE_SET_ANCHORED, PROC_REF(on_set_anchored))
+
 	M.set_buckled(src)
 	buckled_mobs |= M
 	M.throw_alert(ALERT_BUCKLED, /atom/movable/screen/alert/buckled)
@@ -122,6 +125,7 @@
 	M.setDir(dir)
 
 	post_buckle_mob(M)
+	M.update_offsets()
 
 	SEND_SIGNAL(src, COMSIG_MOVABLE_BUCKLE, M, force)
 	return TRUE
@@ -148,28 +152,32 @@
 		CRASH("[buckled_mob] called unbuckle_mob() for source while having buckled as [buckled_mob.buckled].")
 	if(!force && !buckled_mob.can_buckle_to)
 		return
+
 	. = buckled_mob
+
 	buckled_mob.set_buckled(null)
 	buckled_mob.set_anchored(initial(buckled_mob.anchored))
 	buckled_mob.clear_alert(ALERT_BUCKLED)
-	buckled_mob.set_glide_size(DELAY_TO_GLIDE_SIZE(buckled_mob.total_multiplicative_slowdown()))
+	buckled_mob.set_glide_size(DELAY_TO_GLIDE_SIZE(buckled_mob.total_slowdown()))
 	buckled_mobs -= buckled_mob
+
 	if(anchored)
 		REMOVE_TRAIT(buckled_mob, TRAIT_NO_FLOATING_ANIM, BUCKLED_TRAIT)
+
 	if(!length(buckled_mobs))
 		UnregisterSignal(src, COMSIG_MOVABLE_SET_ANCHORED)
+
 	SEND_SIGNAL(src, COMSIG_MOVABLE_UNBUCKLE, buckled_mob, force)
 
 	if(can_fall)
-		var/turf/location = buckled_mob.loc
-		if(istype(location) && !buckled_mob.currently_z_moving)
-			location.zFall(buckled_mob)
+		if(!buckled_mob.currently_z_moving)
+			buckled_mob.zFall()
 
 	post_unbuckle_mob(.)
+	buckled_mob.update_offsets()
 
 	if(!QDELETED(buckled_mob) && !buckled_mob.currently_z_moving && isturf(buckled_mob.loc)) // In the case they unbuckled to a flying movable midflight.
-		var/turf/pitfall = buckled_mob.loc
-		pitfall?.zFall(buckled_mob)
+		buckled_mob.zFall()
 
 /atom/movable/proc/on_set_anchored(atom/movable/source, anchorvalue)
 	SIGNAL_HANDLER
@@ -247,7 +255,7 @@
 		return FALSE
 
 	// If the buckle requires restraints, make sure the target is actually restrained.
-	if(buckle_requires_restraints && !HAS_TRAIT(target, TRAIT_RESTRAINED))
+	if(buckle_requires_restraints && !HAS_TRAIT(target, TRAIT_ARMS_RESTRAINED))
 		return FALSE
 
 	//If buckling is forbidden for the target, cancel
@@ -348,7 +356,6 @@
 				span_notice("You unbuckle yourself from [src]."),\
 				span_hear("You hear metal clanking."))
 		add_fingerprint(user)
-		if(isliving(M.pulledby))
-			var/mob/living/L = M.pulledby
-			L.set_pull_offsets(M, L.grab_state)
+
+		update_offsets()
 	return M

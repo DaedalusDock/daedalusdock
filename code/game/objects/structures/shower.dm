@@ -39,7 +39,6 @@
 	create_reagents(reagent_capacity)
 	reagents.add_reagent(reagent_id, reagent_capacity)
 	soundloop = new(src, FALSE)
-	AddComponent(/datum/component/plumbing/simple_demand)
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
@@ -102,7 +101,8 @@
 				current_temperature = SHOWER_NORMAL
 		user.visible_message(span_notice("[user] adjusts the shower with \the [I]."), span_notice("You adjust the shower with \the [I] to [current_temperature] temperature."))
 		user.log_message("has wrenched a shower at [AREACOORD(src)] to [current_temperature].", LOG_ATTACK)
-		add_hiddenprint(user)
+		log_touch(user)
+
 	handle_mist()
 	return TRUE
 
@@ -111,7 +111,7 @@
 	. = ..()
 	if(!on)
 		return
-	var/mutable_appearance/water_falling = mutable_appearance('icons/obj/watercloset.dmi', "water", ABOVE_MOB_LAYER)
+	var/image/water_falling = image('icons/obj/watercloset.dmi', "water", ABOVE_MOB_LAYER)
 	water_falling.color = mix_color_from_reagents(reagents.reagent_list)
 	. += water_falling
 
@@ -146,7 +146,6 @@
 
 /obj/machinery/shower/proc/wash_atom(atom/target)
 	target.wash(CLEAN_RAD | CLEAN_WASH)
-	SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "shower", /datum/mood_event/nice_shower)
 	reagents.expose(target, (TOUCH), SHOWER_EXPOSURE_MULTIPLIER * SHOWER_SPRAY_VOLUME / max(reagents.total_volume, SHOWER_SPRAY_VOLUME))
 	if(isliving(target))
 		check_heat(target)
@@ -159,7 +158,7 @@
 			if(!ismopable(movable_content)) // Mopables will be cleaned anyways by the turf wash above
 				wash_atom(movable_content) // Reagent exposure is handled in wash_atom
 
-		reagents.remove_any(SHOWER_SPRAY_VOLUME)
+		reagents.remove_all(SHOWER_SPRAY_VOLUME)
 		return
 	on = FALSE
 	soundloop.stop()

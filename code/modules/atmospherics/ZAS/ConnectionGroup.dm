@@ -151,14 +151,16 @@ Class Procs:
 			if(!length(close_turfs))
 				continue
 
+
+			if(HAS_TRAIT(M, TRAIT_EXPERIENCING_AIRFLOW))
+				SSairflow.Dequeue(M)
+
 			M.airflow_dest = pick(close_turfs) //Pick a random midpoint to fly towards.
 
-			//Soul code im too scared to touch - Edit, I am no longer too scared to touch it. This used to cause an OOM if an admin bussed too hard.
-			if(M)
-				if(repelled)
-					M.RepelAirflowDest(differential/5)
-				else
-					M.GotoAirflowDest(differential/10)
+			if(repelled)
+				M.RepelAirflowDest(differential/5)
+			else
+				M.GotoAirflowDest(differential/10)
 
 		CHECK_TICK
 

@@ -15,7 +15,8 @@
 	sound_environment = SOUND_AREA_TUNNEL_ENCLOSED
 	forced_ambience = TRUE
 	ambient_buzz = 'sound/ambience/source_corridor2.ogg'
-	ambient_buzz_vol = 20
+	ambient_buzz_vol = 30
+	holomap_color = HOLOMAP_AREACOLOR_MAINTENANCE
 
 //Maintenance - Departmental
 
@@ -220,6 +221,7 @@
 /area/station/maintenance/space_hut
 	name = "\improper Space Hut"
 	icon_state = "spacehut"
+	holomap_color = null
 
 /area/station/maintenance/space_hut/cabin
 	name = "Abandoned Cabin"
@@ -258,6 +260,7 @@
 
 /area/station/hallway
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_HALLWAYS
 
 /area/station/hallway/primary
 	name = "\improper Primary Hallway"
@@ -290,6 +293,14 @@
 /area/station/hallway/primary/central/aft
 	name = "\improper Aft Central Primary Hallway"
 	icon_state = "hallCA"
+
+/area/station/hallway/primary/central/port
+	name = "\improper Port Central Primary Hallway"
+	icon_state = "hallCP"
+
+/area/station/hallway/primary/central/starboard
+	name = "\improper Starboard Central Primary Hallway"
+	icon_state = "hallCS"
 
 /area/station/hallway/primary/upper
 	name = "\improper Upper Central Primary Hallway"
@@ -348,6 +359,7 @@
 	ambientsounds = list('sound/ambience/signal.ogg')
 	airlock_wires = /datum/wires/airlock/command
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 
 /area/station/command/bridge
 	name = "\improper Bridge"
@@ -371,34 +383,38 @@
 /area/station/command/heads_quarters
 
 /area/station/command/heads_quarters/captain
-	name = "\improper Captain's Office"
+	name = "\improper Superintendent's Office"
 	icon_state = "captain"
 	sound_environment = SOUND_AREA_WOODFLOOR
 
 /area/station/command/heads_quarters/captain/private
-	name = "\improper Captain's Quarters"
+	name = "\improper Superintendent's Quarters"
 	icon_state = "captain_private"
 	sound_environment = SOUND_AREA_WOODFLOOR
 
 /area/station/command/heads_quarters/ce
 	name = "\improper Chief Engineer's Office"
 	icon_state = "ce_office"
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/station/command/heads_quarters/cmo
 	name = "\improper Medical Director's Office"
 	icon_state = "cmo_office"
+	holomap_color = HOLOMAP_AREACOLOR_MEDICAL
 
 /area/station/command/heads_quarters/hop
 	name = "\improper Head of Personnel's Office"
 	icon_state = "hop_office"
 
 /area/station/command/heads_quarters/hos
-	name = "\improper Head of Security's Office"
+	name = "\improper Security Marshal's Office"
 	icon_state = "hos_office"
+	holomap_color = HOLOMAP_AREACOLOR_SECURITY
 
 /area/station/command/heads_quarters/rd
 	name = "\improper Research Director's Office"
 	icon_state = "rd_office"
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
 //Command - Teleporters
 
@@ -419,6 +435,7 @@
 	icon_state = "commons"
 	sound_environment = SOUND_AREA_STANDARD_STATION
 	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	holomap_color = HOLOMAP_AREACOLOR_GENERIC_ROOM
 
 /area/station/commons/dorms
 	name = "\improper Dormitories"
@@ -467,9 +484,6 @@
 /area/station/commons/lounge
 	name = "\improper Bar Lounge"
 	icon_state = "lounge"
-	mood_bonus = 5
-	mood_message = "I love being in the bar!"
-	mood_trait = TRAIT_EXTROVERT
 	sound_environment = SOUND_AREA_SMALL_SOFTFLOOR
 
 /area/station/commons/fitness
@@ -542,6 +556,7 @@
 
 /area/station/service
 	airlock_wires = /datum/wires/airlock/service
+	holomap_color = HOLOMAP_AREACOLOR_GENERIC_ROOM
 
 /area/station/service/cafeteria
 	name = "\improper Cafeteria"
@@ -567,9 +582,6 @@
 /area/station/service/bar
 	name = "\improper Bar"
 	icon_state = "bar"
-	mood_bonus = 5
-	mood_message = "I love being in the bar!"
-	mood_trait = TRAIT_EXTROVERT
 	airlock_wires = /datum/wires/airlock/service
 	sound_environment = SOUND_AREA_WOODFLOOR
 
@@ -606,9 +618,6 @@
 /area/station/service/library
 	name = "\improper Library"
 	icon_state = "library"
-	mood_bonus = 5
-	mood_message = "I love being in the library!"
-	mood_trait = TRAIT_INTROVERT
 	area_flags = CULT_PERMITTED | BLOBS_ALLOWED | UNIQUE_AREA
 	sound_environment = SOUND_AREA_LARGE_SOFTFLOOR
 
@@ -640,9 +649,6 @@
 /area/station/service/chapel
 	name = "\improper Chapel"
 	icon_state = "chapel"
-	mood_bonus = 5
-	mood_message = "Being in the chapel brings me peace."
-	mood_trait = TRAIT_SPIRITUAL
 	ambience_index = AMBIENCE_HOLY
 	flags_1 = NONE
 	sound_environment = SOUND_AREA_LARGE_ENCLOSED
@@ -714,6 +720,7 @@
 	ambience_index = AMBIENCE_ENGI
 	airlock_wires = /datum/wires/airlock/engineering
 	sound_environment = SOUND_AREA_LARGE_ENCLOSED
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/station/engineering/engine_smes
 	name = "\improper Engineering SMES"
@@ -830,6 +837,7 @@
 	icon_state = "construction"
 	ambience_index = AMBIENCE_ENGI
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/station/construction/mining/aux_base
 	name = "Auxiliary Base Construction"
@@ -839,6 +847,7 @@
 /area/station/construction/storage_wing
 	name = "\improper Storage Wing"
 	icon_state = "storage_wing"
+	holomap_color = HOLOMAP_AREACOLOR_HALLWAYS
 
 //Solars
 
@@ -849,8 +858,6 @@
 	ambience_index = AMBIENCE_ENGI
 	airlock_wires = /datum/wires/airlock/engineering
 	sound_environment = SOUND_AREA_SPACE
-	base_lighting_alpha = null
-	base_lighting_color = null
 
 /area/station/solars/fore
 	name = "\improper Fore Solar Array"
@@ -938,6 +945,9 @@
 	sound_environment = SOUND_AREA_STANDARD_STATION
 	min_ambience_cooldown = 90 SECONDS
 	max_ambience_cooldown = 180 SECONDS
+	holomap_color = HOLOMAP_AREACOLOR_MEDICAL
+
+	spook_level = SPOOK_AMT_CORPSE * -2 // We can expect like two dudes to be dead in here at all times.
 
 /area/station/medical/abandoned
 	name = "\improper Abandoned Medbay"
@@ -978,6 +988,13 @@
 	name = "\improper Medical Cold Room"
 	icon_state = "kitchen_cold"
 
+/area/station/medical/coldroom/port
+	name = "\improper Port Medical Cold Room "
+
+
+/area/station/medical/coldroom/starboard
+	name = "\improper Starboard Medical Cold "
+
 /area/station/medical/patients_rooms
 	name = "\improper Patients' Rooms"
 	icon_state = "patients"
@@ -985,11 +1002,16 @@
 
 /area/station/medical/patients_rooms/room_a
 	name = "Patient Room A"
-	icon_state = "patients"
+
 
 /area/station/medical/patients_rooms/room_b
 	name = "Patient Room B"
-	icon_state = "patients"
+
+/area/station/medical/patients_rooms/room_c
+	name = "Patient Room C"
+
+/area/station/medical/patients_rooms/room_d
+	name = "Patient Room D"
 
 /area/station/medical/virology
 	name = "Virology"
@@ -1000,6 +1022,9 @@
 	icon_state = "morgue"
 	ambience_index = AMBIENCE_SPOOKY
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
+	lightswitch = FALSE
+
+	spook_level = SPOOK_AMT_CORPSE * -10 // The morgue lays spirits to rest or something
 
 /area/station/medical/chemistry
 	name = "Chemistry"
@@ -1014,6 +1039,10 @@
 	icon_state = "surgery"
 	ambience_index = AMBIENCE_VIROLOGY
 
+/area/station/medical/surgery/prep
+	name = "\improper Pre-Op Prep"
+	icon_state = "surgeryprep"
+
 /area/station/medical/surgery/fore
 	name = "\improper Fore Operating Room"
 	icon_state = "foresurgery"
@@ -1021,6 +1050,14 @@
 /area/station/medical/surgery/aft
 	name = "\improper Aft Operating Room"
 	icon_state = "aftsurgery"
+
+/area/station/medical/surgery/port
+	name = "\improper Port Operating Room"
+	icon_state = "portsurgery"
+
+/area/station/medical/surgery/starboard
+	name = "\improper Starboard Operating Room"
+	icon_state = "starboardsurgery"
 
 /area/station/medical/surgery/theatre
 	name = "\improper Grand Surgery Theatre"
@@ -1040,12 +1077,9 @@
 /area/station/medical/psychology
 	name = "\improper Psychology Office"
 	icon_state = "psychology"
-	mood_bonus = 3
-	mood_message = "I feel at ease here."
 	ambientsounds = list('sound/ambience/aurora_caelus_short.ogg')
 
 //Security
-///When adding a new area to the security areas, make sure to add it to /datum/bounty/item/security/paperwork as well!
 
 /area/station/security
 	name = "Security"
@@ -1053,14 +1087,27 @@
 	ambience_index = AMBIENCE_DANGER
 	airlock_wires = /datum/wires/airlock/security
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_SECURITY
 
 /area/station/security/office
 	name = "\improper Security Office"
 	icon_state = "security"
 
+/area/station/security/office/hall
+	name = "\improper Security Office Hall"
+	icon_state = "security"
+
 /area/station/security/lockers
 	name = "\improper Security Locker Room"
 	icon_state = "securitylockerroom"
+
+/area/station/security/deck
+	name = "\improper Security Observation Deck"
+	icon_state = "security"
+
+/area/station/security/pig
+	name = "\improper Security Pig Pen"
+	icon_state = "security"
 
 /area/station/security/brig
 	name = "\improper Brig"
@@ -1068,6 +1115,10 @@
 
 /area/station/security/holding_cell
 	name = "\improper Holding Cell"
+	icon_state = "holding_cell"
+
+/area/station/security/isolation_cells
+	name = "\improper Isolation Cells"
 	icon_state = "holding_cell"
 
 /area/station/security/medical
@@ -1148,12 +1199,12 @@
 	sound_environment = SOUND_AREA_SMALL_SOFTFLOOR
 
 /area/station/security/detectives_office
-	name = "\improper Detective's Office"
+	name = "\improper Private Investigator's Office"
 	icon_state = "detective"
 	ambientsounds = list('sound/ambience/ambidet1.ogg','sound/ambience/ambidet2.ogg')
+	holomap_color = HOLOMAP_AREACOLOR_HALLWAYS
 
 /area/station/security/detectives_office/private_investigators_office
-	name = "\improper Private Investigator's Office"
 	icon_state = "investigate_office"
 	sound_environment = SOUND_AREA_SMALL_SOFTFLOOR
 
@@ -1184,18 +1235,22 @@
 /area/station/security/checkpoint/supply
 	name = "Security Post - Cargo Bay"
 	icon_state = "checkpoint_supp"
+	holomap_color = HOLOMAP_AREACOLOR_CARGO
 
 /area/station/security/checkpoint/engineering
 	name = "Security Post - Engineering"
 	icon_state = "checkpoint_engi"
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/station/security/checkpoint/medical
 	name = "Security Post - Medbay"
 	icon_state = "checkpoint_med"
+	holomap_color = HOLOMAP_AREACOLOR_MEDICAL
 
 /area/station/security/checkpoint/science
 	name = "Security Post - Science"
 	icon_state = "checkpoint_sci"
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
 /area/station/security/checkpoint/science/research
 	name = "Security Post - Research Division"
@@ -1224,6 +1279,7 @@
 	icon_state = "quart"
 	airlock_wires = /datum/wires/airlock/service
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_CARGO
 
 /area/station/cargo/sorting
 	name = "\improper Delivery Office"
@@ -1275,6 +1331,26 @@
 	name = "\improper Mining Office"
 	icon_state = "mining"
 
+/area/station/cargo/mining/asteroid_magnet
+	name = "\improper Asteroid Magnet"
+	icon_state = "mining"
+	requires_power = TRUE
+	always_unpowered = TRUE
+	holomap_color = null
+
+	area_lighting = AREA_LIGHTING_STATIC
+
+	power_light = FALSE
+	power_equip = FALSE
+	power_environ = FALSE
+	area_flags = NO_ALERTS
+	outdoors = TRUE
+
+	ambient_buzz = null
+	ambience_index = AMBIENCE_SPACE
+	flags_1 = CAN_BE_DIRTY_1
+	sound_environment = SOUND_AREA_SPACE
+
 //Science
 
 /area/station/science
@@ -1282,6 +1358,7 @@
 	icon_state = "science"
 	airlock_wires = /datum/wires/airlock/science
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
 /area/station/science/lobby
 	name = "\improper Science Lobby"
@@ -1319,6 +1396,7 @@
 	name = "\improper Ordnance Test Area"
 	icon_state = "ord_test"
 	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	holomap_color = null
 
 /area/station/science/mixing
 	name = "\improper Ordnance Mixing Lab"
@@ -1381,10 +1459,10 @@
 // Telecommunications Satellite
 
 /area/station/tcommsat
+	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 	ambientsounds = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/ambigen10.ogg', 'sound/ambience/ambitech.ogg',\
 											'sound/ambience/ambitech2.ogg', 'sound/ambience/ambitech3.ogg', 'sound/ambience/ambimystery.ogg')
 	airlock_wires = /datum/wires/airlock/engineering
-	network_root_id = STATION_NETWORK_ROOT // They should of unpluged the router before they left
 
 /area/station/tcommsat/computer
 	name = "\improper Telecomms Control Room"

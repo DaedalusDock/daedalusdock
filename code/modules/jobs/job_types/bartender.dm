@@ -5,12 +5,10 @@
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the head of personnel"
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(
-		/datum/employer/contractor,
-		/datum/employer/priapus
+		/datum/employer/none
 	)
 
 	outfits = list(
@@ -20,9 +18,6 @@
 		),
 	)
 
-	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_STATION_MASTER
-	bounty_types = CIV_JOB_DRINK
 	departments_list = list(
 		/datum/job_department/service,
 	)
@@ -78,7 +73,7 @@
 /datum/outfit/job/bartender/post_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()
 
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	if(H.age < AGE_MINOR)
 		W.registered_age = AGE_MINOR
 		to_chat(H, span_notice("You're not technically old enough to access or serve alcohol, but your ID has been discreetly modified to display your age as [AGE_MINOR]. Try to keep that a secret!"))

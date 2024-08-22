@@ -69,7 +69,9 @@
 	var/list/prints = sniffed.return_fingerprints()
 	if(prints)
 		for(var/mob/living/carbon/to_check as anything in GLOB.carbon_list)
-			if(prints[md5(to_check.dna?.unique_identity)])
+			if(!to_check.has_dna())
+				continue
+			if(prints[to_check.dna.unique_enzymes])
 				possibles |= to_check
 
 	// There are no finger prints on the atom, so nothing to track

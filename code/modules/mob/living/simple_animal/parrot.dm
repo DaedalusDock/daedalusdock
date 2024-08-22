@@ -111,12 +111,7 @@
 /mob/living/simple_animal/parrot/Initialize(mapload)
 	. = ..()
 	if(!ears)
-		var/headset = pick(/obj/item/radio/headset/headset_sec, \
-						/obj/item/radio/headset/headset_eng, \
-						/obj/item/radio/headset/headset_med, \
-						/obj/item/radio/headset/headset_sci, \
-						/obj/item/radio/headset/headset_cargo)
-		ears = new headset(src)
+		ears = new /obj/item/radio/headset/headset_eng(src)
 
 	parrot_sleep_dur = parrot_sleep_max //In case someone decides to change the max without changing the duration var
 
@@ -129,6 +124,11 @@
 
 	AddElement(/datum/element/strippable, GLOB.strippable_parrot_items, TYPE_PROC_REF(/mob/living, should_strip))
 	AddElement(/datum/element/simple_flying)
+
+
+/mob/living/simple_animal/parrot/Destroy()
+	QDEL_NULL(ears)
+	return ..()
 
 /mob/living/simple_animal/parrot/examine(mob/user)
 	. = ..()
@@ -159,7 +159,7 @@
 	. += "Held Item: [held_item]"
 	. += "Combat mode: [combat_mode ? "On" : "Off"]"
 
-/mob/living/simple_animal/parrot/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
+/mob/living/simple_animal/parrot/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc, message_range)
 	. = ..()
 	if(speaker != src && prob(50)) //Dont imitate ourselves
 		if(!radio_freq || prob(10))
@@ -377,7 +377,7 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 	..()
 
 	//Sprite update for when a parrot gets pulled
-	if(pulledby && !stat && parrot_state != PARROT_WANDER)
+	if(LAZYLEN(grabbed_by) && !stat && parrot_state != PARROT_WANDER)
 		if(buckled)
 			buckled.unbuckle_mob(src, TRUE)
 			buckled = null
@@ -641,6 +641,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 			continue
 		if(istype(AM, /obj/item))
 			var/obj/item/I = AM
+			if(I.item_flags & ABSTRACT)
+				continue
 			if(I.w_class < WEIGHT_CLASS_SMALL)
 				item = I
 		else if(iscarbon(AM))
@@ -650,7 +652,7 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 					item = I
 					break
 		if(item)
-			if(!get_path_to(src, item))
+			if(!length(jps_path_to(src, item))) // WHY DO WE DISREGARD THE PATH AHHHHHH
 				item = null
 				continue
 			return item

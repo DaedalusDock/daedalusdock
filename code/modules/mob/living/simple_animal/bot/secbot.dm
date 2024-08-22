@@ -143,6 +143,12 @@
 		playsound(src, 'sound/machines/defib_zap.ogg', 50)
 		visible_message(span_warning("[src] shakes and speeds up!"))
 
+/mob/living/simple_animal/bot/secbot/handle_atom_del(atom/deleting_atom)
+	if(deleting_atom == weapon)
+		weapon = null
+		update_appearance()
+	return ..()
+
 // Variables sent to TGUI
 /mob/living/simple_animal/bot/secbot/ui_data(mob/user)
 	var/list/data = ..()
@@ -251,16 +257,13 @@
 /mob/living/simple_animal/bot/secbot/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
 	if(!(bot_mode_flags & BOT_MODE_ON))
 		return
-	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
+	if(!can_unarmed_attack())
 		return
 	if(!iscarbon(attack_target))
 		return ..()
 	var/mob/living/carbon/carbon_target = attack_target
 	if(!carbon_target.IsParalyzed() || !(security_mode_flags & SECBOT_HANDCUFF_TARGET))
-		if(!check_nap_violations())
-			stun_attack(attack_target, TRUE)
-		else
-			stun_attack(attack_target)
+		stun_attack(attack_target)
 	else if(carbon_target.canBeHandcuffed() && !carbon_target.handcuffed)
 		start_handcuffing(attack_target)
 
@@ -287,9 +290,7 @@
 		return FALSE
 	if(!Adjacent(current_target))
 		return FALSE
-	if(!current_target.handcuffed)
-		current_target.set_handcuffed(new cuff_type(current_target))
-		current_target.update_handcuffed()
+	if(!current_target.handcuffed && current_target.equip_to_slot_if_possible(new cuff_type(current_target), ITEM_SLOT_HANDCUFFED, TRUE, TRUE, null, TRUE))
 		playsound(src, SFX_LAW, 50, FALSE)
 		back_to_idle()
 
@@ -346,11 +347,7 @@
 				back_to_idle()
 				return
 			if(Adjacent(target) && isturf(target.loc)) // if right next to perp
-				if(!check_nap_violations())
-					stun_attack(target, TRUE)
-				else
-					stun_attack(target)
-
+				stun_attack(target)
 				set_anchored(TRUE)
 				return
 
@@ -388,9 +385,6 @@
 				return
 
 			if(target.handcuffed) //no target or target cuffed? back to idle.
-				if(!check_nap_violations())
-					stun_attack(target, TRUE)
-					return
 				back_to_idle()
 				return
 
@@ -516,37 +510,3 @@
 		if(!istype(C) || !C || in_range(src, target))
 			return
 		knockOver(C)
-
-/// Returns false if the current target is unable to pay the fair_market_price for being arrested/detained
-/mob/living/simple_animal/bot/secbot/proc/check_nap_violations()
-	if(!SSeconomy.full_ancap)
-		return TRUE
-	if(!target)
-		return TRUE
-	if(!ishuman(target))
-		return TRUE
-	var/mob/living/carbon/human/human_target = target
-	var/obj/item/card/id/target_id = human_target.get_idcard()
-	if(!target_id)
-		say("Suspect NAP Violation: No ID card found.")
-		nap_violation(target)
-		return FALSE
-	var/datum/bank_account/insurance = target_id.registered_account
-	if(!insurance)
-		say("Suspect NAP Violation: No bank account found.")
-		nap_violation(target)
-		return FALSE
-	var/fair_market_price = (security_mode_flags & SECBOT_HANDCUFF_TARGET ? fair_market_price_detain : fair_market_price_arrest)
-	if(!insurance.adjust_money(-fair_market_price))
-		say("Suspect NAP Violation: Unable to pay.")
-		nap_violation(target)
-		return FALSE
-	var/datum/bank_account/beepsky_department_account = SSeconomy.department_accounts_by_id[payment_department]
-	say("Thank you for your compliance. Your account been charged [fair_market_price] credits.")
-	if(beepsky_department_account)
-		beepsky_department_account.adjust_money(fair_market_price)
-		return TRUE
-
-/// Does nothing
-/mob/living/simple_animal/bot/secbot/proc/nap_violation(mob/violator)
-	return

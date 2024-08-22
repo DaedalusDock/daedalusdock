@@ -151,21 +151,21 @@
 		return FALSE
 	if((check_flags & AB_CHECK_HANDS_BLOCKED) && HAS_TRAIT(owner, TRAIT_HANDS_BLOCKED))
 		if (feedback)
-			owner.balloon_alert(owner, "hands blocked!")
+			to_chat(owner, span_warning("You cannot use [name] without hands!"))
 		return FALSE
 	if((check_flags & AB_CHECK_IMMOBILE) && HAS_TRAIT(owner, TRAIT_IMMOBILIZED))
 		if (feedback)
-			owner.balloon_alert(owner, "can't move!")
+			to_chat(owner, span_warning("You cannot use [name] while immobilized!"))
 		return FALSE
 	if((check_flags & AB_CHECK_LYING) && isliving(owner))
 		var/mob/living/action_owner = owner
 		if(action_owner.body_position == LYING_DOWN)
 			if (feedback)
-				owner.balloon_alert(owner, "must stand up!")
+				to_chat(owner, span_warning("You cannot use [name] while lying down!"))
 			return FALSE
 	if((check_flags & AB_CHECK_CONSCIOUS) && owner.stat != CONSCIOUS)
 		if (feedback)
-			owner.balloon_alert(owner, "unconscious!")
+			to_chat(owner, span_warning("You cannot use [name] while unconscious!"))
 		return FALSE
 	return TRUE
 
@@ -311,7 +311,7 @@
 	var/atom/movable/screen/movable/action_button/button = create_button()
 	SetId(button, viewer)
 
-	button.our_hud = our_hud
+	button.hud = our_hud
 	viewers[our_hud] = button
 	if(viewer.client)
 		viewer.client.screen += button

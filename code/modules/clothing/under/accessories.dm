@@ -36,13 +36,7 @@
 		pixel_y -= 8
 	U.add_overlay(src)
 
-	if (islist(U.armor) || isnull(U.armor)) // This proc can run before /obj/Initialize has run for U and src,
-		U.armor = getArmor(arglist(U.armor)) // we have to check that the armor list has been transformed into a datum before we try to call a proc on it
-																					// This is safe to do as /obj/Initialize only handles setting up the datum if actually needed.
-	if (islist(armor) || isnull(armor))
-		armor = getArmor(arglist(armor))
-
-	U.armor = U.armor.attachArmor(armor)
+	U.setArmor(U.returnArmor().attachArmor(src.returnArmor()))
 
 	if(isliving(user))
 		on_uniform_equip(U, user)
@@ -50,10 +44,10 @@
 	return TRUE
 
 /obj/item/clothing/accessory/proc/detach(obj/item/clothing/under/U, user)
-	if(U.atom_storage && U.atom_storage.real_location?.resolve() == src)
+	if(U.atom_storage && (U.atom_storage.get_real_location() == src))
 		QDEL_NULL(U.atom_storage)
 
-	U.armor = U.armor.detachArmor(armor)
+	U.setArmor(U.returnArmor().detachArmor(src.returnArmor()))
 
 	if(isliving(user))
 		on_uniform_dropped(U, user)
@@ -76,7 +70,7 @@
 	return
 
 /obj/item/clothing/accessory/attack_self_secondary(mob/user)
-	if(initial(above_suit) && user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
+	if(initial(above_suit) && user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		above_suit = !above_suit
 		to_chat(user, "[src] will be worn [above_suit ? "above" : "below"] your suit.")
 		return
@@ -182,7 +176,7 @@
 	icon_state = "cargo"
 
 /obj/item/clothing/accessory/medal/ribbon/cargo
-	name = "\"cargo tech of the shift\" award"
+	name = "\"deckhand of the shift\" award"
 	desc = "An award bestowed only upon those cargotechs who have exhibited devotion to their duty in keeping with the highest traditions of Cargonia."
 
 /obj/item/clothing/accessory/medal/silver
@@ -241,7 +235,7 @@
 	desc = "An eccentric medal made of plasma."
 	icon_state = "plasma"
 	medaltype = "medal-plasma"
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = -10, ACID = 0) //It's made of plasma. Of course it's flammable.
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = -10, ACID = 0) //It's made of plasma. Of course it's flammable.
 	custom_materials = list(/datum/material/plasma=1000)
 
 /obj/item/clothing/accessory/medal/plasma/Initialize(mapload)
@@ -365,30 +359,10 @@
 	desc = "A pin to show off your appreciation for clowns and clowning!"
 	icon_state = "clown_enjoyer_pin"
 
-/obj/item/clothing/accessory/clown_enjoyer_pin/on_uniform_equip(obj/item/clothing/under/U, user)
-	var/mob/living/L = user
-	if(HAS_TRAIT(L, TRAIT_CLOWN_ENJOYER))
-		SEND_SIGNAL(L, COMSIG_ADD_MOOD_EVENT, "clown_enjoyer_pin", /datum/mood_event/clown_enjoyer_pin)
-
-/obj/item/clothing/accessory/clown_enjoyer_pin/on_uniform_dropped(obj/item/clothing/under/U, user)
-	var/mob/living/L = user
-	if(HAS_TRAIT(L, TRAIT_CLOWN_ENJOYER))
-		SEND_SIGNAL(L, COMSIG_CLEAR_MOOD_EVENT, "clown_enjoyer_pin")
-
 /obj/item/clothing/accessory/mime_fan_pin
 	name = "\improper Mime Pin"
 	desc = "A pin to show off your appreciation for mimes and miming!"
 	icon_state = "mime_fan_pin"
-
-/obj/item/clothing/accessory/mime_fan_pin/on_uniform_equip(obj/item/clothing/under/U, user)
-	var/mob/living/L = user
-	if(HAS_TRAIT(L, TRAIT_MIME_FAN))
-		SEND_SIGNAL(L, COMSIG_ADD_MOOD_EVENT, "mime_fan_pin", /datum/mood_event/mime_fan_pin)
-
-/obj/item/clothing/accessory/mime_fan_pin/on_uniform_dropped(obj/item/clothing/under/U, user)
-	var/mob/living/L = user
-	if(HAS_TRAIT(L, TRAIT_MIME_FAN))
-		SEND_SIGNAL(L, COMSIG_CLEAR_MOOD_EVENT, "mime_fan_pin")
 
 ////////////////
 //OONGA BOONGA//
@@ -398,7 +372,7 @@
 	name = "bone talisman"
 	desc = "A hunter's talisman, some say the old gods smile on those who wear it."
 	icon_state = "talisman"
-	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 5, BOMB = 20, BIO = 20, FIRE = 0, ACID = 25)
+	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 5, BOMB = 20, BIO = 20, FIRE = 0, ACID = 25)
 	attachment_slot = null
 
 /obj/item/clothing/accessory/skullcodpiece
@@ -406,7 +380,7 @@
 	desc = "A skull shaped ornament, intended to protect the important things in life."
 	icon_state = "skull"
 	above_suit = TRUE
-	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 5, BOMB = 20, BIO = 20, FIRE = 0, ACID = 25)
+	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 5, BOMB = 20, BIO = 20, FIRE = 0, ACID = 25)
 	attachment_slot = GROIN
 
 /obj/item/clothing/accessory/skilt
@@ -415,7 +389,7 @@
 	icon_state = "skilt"
 	above_suit = TRUE
 	minimize_when_attached = FALSE
-	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 5, BOMB = 20, BIO = 20, FIRE = 0, ACID = 25)
+	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 5, BOMB = 20, BIO = 20, FIRE = 0, ACID = 25)
 	attachment_slot = GROIN
 
 /obj/item/clothing/accessory/allergy_dogtag

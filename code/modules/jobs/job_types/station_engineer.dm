@@ -14,7 +14,6 @@
 
 	employers = list(
 		/datum/employer/daedalus,
-		/datum/employer/contractor
 	)
 
 	outfits = list(
@@ -40,11 +39,10 @@
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_ENG
 
 	liver_traits = list(TRAIT_ENGINEER_METABOLISM)
 
-	bounty_types = CIV_JOB_ENG
 	departments_list = list(
 		/datum/job_department/engineering,
 		)
@@ -71,6 +69,7 @@
 	ears = /obj/item/radio/headset/headset_eng
 	head = /obj/item/clothing/head/hardhat
 	shoes = /obj/item/clothing/shoes/workboots
+	gloves = /obj/item/clothing/gloves/color/yellow
 	l_pocket = /obj/item/modular_computer/tablet/pda/engineering
 	r_pocket = /obj/item/t_scanner
 
@@ -91,11 +90,6 @@
 	mask = /obj/item/clothing/mask/breath
 	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
-/datum/outfit/job/engineer/gloved
-	name = "Station Engineer (Gloves)"
-
-	gloves = /obj/item/clothing/gloves/color/yellow
-
 /datum/outfit/job/engineer/mod
 	name = "Station Engineer (MODsuit)"
 
@@ -104,6 +98,8 @@
 	head = null
 	mask = /obj/item/clothing/mask/breath
 	internals_slot = ITEM_SLOT_SUITSTORE
+	backpack_contents = null
+	box = null
 
 /datum/outfit/job/engineer/enginetech
 	name = "Engine Technician"

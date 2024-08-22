@@ -6,6 +6,7 @@
 
 	name = "air scrubber"
 	desc = "Has a valve and pump attached to it."
+
 	use_power = IDLE_POWER_USE
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
 
@@ -41,10 +42,11 @@
 	///Whether or not this machine can fall asleep. Use a multitool to change.
 	var/can_hibernate = TRUE
 
-/obj/machinery/atmospherics/components/unary/vent_scrubber/New()
+/obj/machinery/atmospherics/components/unary/vent_scrubber/Initialize()
 	if(!id_tag)
-		id_tag = SSnetworks.assign_random_name()
+		id_tag = SSpackets.generate_net_id(src)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	for(var/to_filter in filter_types)
 		if(istext(to_filter))
 			filter_types -= to_filter
@@ -55,6 +57,7 @@
 	SSairmachines.start_processing_machine(src)
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	var/area/scrub_area = get_area(src)
 	if(scrub_area)
 		scrub_area.air_scrub_info -= id_tag
@@ -223,9 +226,6 @@
 	var/datum/gas_mixture/environment = tile.unsafe_return_air() // The proc that calls this proc marks the turf for update!
 	var/datum/gas_mixture/air_contents = airs[1]
 
-	if(air_contents.returnPressure() >= 50 * ONE_ATMOSPHERE)
-		return FALSE
-
 	if(scrubbing) // == SCRUBBING
 		if(length(environment.gas & filter_types))
 			. = TRUE
@@ -252,6 +252,11 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/receive_signal(datum/signal/signal)
 	if(!is_operational || !signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
 		return
+
+	if("status" in signal.data)
+		broadcast_status()
+		return //do not update_appearance
+
 	COOLDOWN_RESET(src, hibernating)
 
 	var/old_quicksucc = quicksucc
@@ -284,14 +289,6 @@
 	if("set_filters" in signal.data)
 		filter_types = list()
 		add_filters(signal.data["set_filters"])
-
-	if("init" in signal.data)
-		name = signal.data["init"]
-		return
-
-	if("status" in signal.data)
-		broadcast_status()
-		return //do not update_appearance
 
 	broadcast_status()
 	update_appearance()

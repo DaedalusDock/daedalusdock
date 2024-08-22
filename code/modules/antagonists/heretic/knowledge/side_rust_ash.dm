@@ -70,5 +70,5 @@
 		CRASH("[type] required a head bodypart, yet did not have one in selected_atoms when it reached cleanup_atoms.")
 
 	// Spill out any brains or stuff before we delete it.
-	ritual_head.drop_organs()
+	ritual_head.drop_contents()
 	return ..()

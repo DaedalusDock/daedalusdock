@@ -1,5 +1,5 @@
 /datum/job/curator
-	title = JOB_CURATOR
+	title = JOB_ARCHIVIST
 	description = "Read and write books and hand them to people, stock \
 		bookshelves, report on station news."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
@@ -10,8 +10,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(
-		/datum/employer/contractor,
-		/datum/employer/priapus
+		/datum/employer/none,
 	)
 
 	outfits = list(
@@ -20,9 +19,6 @@
 			SPECIES_PLASMAMAN = /datum/outfit/job/curator/plasmaman,
 		),
 	)
-
-	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_STATION_MASTER
 
 	departments_list = list(
 		/datum/job_department/service,
@@ -55,7 +51,7 @@
 	accessory = /obj/item/clothing/accessory/pocketprotector/full
 
 /datum/outfit/job/curator/plasmaman
-	name = "Curator (Plasmaman)"
+	name = JOB_ARCHIVIST + " (Plasmaman)"
 
 	uniform = /obj/item/clothing/under/plasmaman/curator
 	gloves = /obj/item/clothing/gloves/color/plasmaman/prototype
@@ -69,4 +65,4 @@
 	if(visualsOnly)
 		return
 
-	H.grant_all_languages(TRUE, TRUE, TRUE, LANGUAGE_CURATOR)
+	H.grant_all_languages(TRUE, TRUE, TRUE, LANGUAGE_ARCHIVIST)

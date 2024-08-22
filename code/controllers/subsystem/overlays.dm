@@ -37,12 +37,16 @@ SUBSYSTEM_DEF(overlays)
 	iconbro.icon = icon
 	return iconbro.appearance
 
-/atom/proc/build_appearance_list(build_overlays)
+/atom/proc/build_appearance_list(list/build_overlays)
 	if (!islist(build_overlays))
 		build_overlays = list(build_overlays)
+	/// Tracks the current index into build_overlays so that we can preserve ordering.
+	var/bo_index = 0
 	for (var/overlay in build_overlays)
+		bo_index++
 		if(!overlay)
 			build_overlays -= overlay
+			bo_index--
 			continue
 		if (istext(overlay))
 #ifdef UNIT_TESTS
@@ -53,37 +57,28 @@ SUBSYSTEM_DEF(overlays)
 				stack_trace("Invalid overlay: Icon object '[icon_file]' [REF(icon)] used in '[src]' [type] is missing icon state [overlay].")
 				continue
 #endif
-			build_overlays -= overlay
-			build_overlays += iconstate2appearance(icon, overlay)
+			// Directly overwrite the list entry, preserving order.
+			build_overlays[bo_index] = iconstate2appearance(icon, overlay)
 		else if(isicon(overlay))
-			build_overlays -= overlay
-			build_overlays += icon2appearance(overlay)
+			// Directly overwrite the list entry, preserving order.
+			build_overlays[bo_index] = icon2appearance(overlay)
 	return build_overlays
 
 /atom/proc/cut_overlays()
-	STAT_START_STOPWATCH
 	overlays = null
 	POST_OVERLAY_CHANGE(src)
-	STAT_STOP_STOPWATCH
-	STAT_LOG_ENTRY(SSoverlays.stats, type)
 
 /atom/proc/cut_overlay(list/remove_overlays)
 	if(!overlays)
 		return
-	STAT_START_STOPWATCH
 	overlays -= build_appearance_list(remove_overlays)
 	POST_OVERLAY_CHANGE(src)
-	STAT_STOP_STOPWATCH
-	STAT_LOG_ENTRY(SSoverlays.stats, type)
 
 /atom/proc/add_overlay(list/add_overlays)
 	if(!overlays)
 		return
-	STAT_START_STOPWATCH
 	overlays += build_appearance_list(add_overlays)
 	POST_OVERLAY_CHANGE(src)
-	STAT_STOP_STOPWATCH
-	STAT_LOG_ENTRY(SSoverlays.stats, type)
 
 /atom/proc/copy_overlays(atom/other, cut_old) //copys our_overlays from another atom
 	if(!other)
@@ -91,7 +86,6 @@ SUBSYSTEM_DEF(overlays)
 			cut_overlays()
 		return
 
-	STAT_START_STOPWATCH
 	var/list/cached_other = other.overlays.Copy()
 	if(cut_old)
 		if(cached_other)
@@ -99,13 +93,9 @@ SUBSYSTEM_DEF(overlays)
 		else
 			overlays = null
 		POST_OVERLAY_CHANGE(src)
-		STAT_STOP_STOPWATCH
-		STAT_LOG_ENTRY(SSoverlays.stats, type)
 	else if(cached_other)
 		overlays += cached_other
 		POST_OVERLAY_CHANGE(src)
-		STAT_STOP_STOPWATCH
-		STAT_LOG_ENTRY(SSoverlays.stats, type)
 
 //TODO: Better solution for these?
 /image/proc/add_overlay(x)
@@ -131,3 +121,15 @@ SUBSYSTEM_DEF(overlays)
 			overlays |= cached_other
 	else if(cut_old)
 		cut_overlays()
+
+/// Recursively removes overlays that do not render to the game plane from an appearance.
+/proc/remove_non_canon_overlays(mutable_appearance/appearance)
+	for(var/mutable_appearance/overlay as anything in appearance.overlays)
+		if(overlay.plane != GAME_PLANE && overlay.plane != FLOAT_PLANE)
+			appearance.overlays -= overlay
+
+		if(length(overlay.overlays))
+			appearance.overlays -= overlay
+			appearance.overlays += .(new /mutable_appearance(overlay))
+
+	return appearance

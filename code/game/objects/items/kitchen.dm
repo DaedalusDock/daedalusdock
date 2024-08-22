@@ -24,17 +24,17 @@
 	force = 4
 	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 5
 	custom_materials = list(/datum/material/iron=80)
 	flags_1 = CONDUCT_1
 	attack_verb_continuous = list("attacks", "stabs", "pokes")
 	attack_verb_simple = list("attack", "stab", "poke")
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	sharpness = SHARP_POINTY
 	var/datum/reagent/forkload //used to eat omelette
-	custom_price = PAYCHECK_PRISONER
+	custom_price = PAYCHECK_ASSISTANT * 0.7
 
 /obj/item/kitchen/fork/Initialize(mapload)
 	. = ..()
@@ -69,7 +69,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
 	custom_materials = list(/datum/material/plastic=80)
-	custom_price = PAYCHECK_PRISONER * 2
+	custom_price = PAYCHECK_ASSISTANT * 0.2
 
 /obj/item/kitchen/fork/plastic/Initialize(mapload)
 	. = ..()
@@ -92,7 +92,7 @@
 	attack_verb_continuous = list("prods", "whiffs", "scratches", "pokes")
 	attack_verb_simple = list("prod", "whiff", "scratch", "poke")
 	sharpness = SHARP_EDGED
-	custom_price = PAYCHECK_PRISONER * 2
+	custom_price = PAYCHECK_ASSISTANT * 0.2
 
 /obj/item/knife/plastic/Initialize(mapload)
 	. = ..()
@@ -106,7 +106,7 @@
 
 	force = 8
 	throwforce = 10
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 7
 	stamina_damage = 40
 	stamina_cost = 15
@@ -116,7 +116,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "whacks")
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
-	custom_price = PAYCHECK_EASY * 1.5
+	custom_price = PAYCHECK_ASSISTANT * 1.5
 	tool_behaviour = TOOL_ROLLINGPIN
 
 /obj/item/kitchen/rollingpin/suicide_act(mob/living/carbon/user)
@@ -131,13 +131,13 @@
 	w_class = WEIGHT_CLASS_TINY
 	flags_1 = CONDUCT_1
 	force = 2
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 5
 	attack_verb_simple = list("whack", "spoon", "tap")
 	attack_verb_continuous = list("whacks", "spoons", "taps")
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	custom_materials = list(/datum/material/iron=120)
-	custom_price = PAYCHECK_PRISONER * 5
+	custom_price = PAYCHECK_ASSISTANT * 0.7
 	tool_behaviour = TOOL_MINING
 	toolspeed = 25 // Literally 25 times worse than the base pickaxe
 
@@ -146,7 +146,7 @@
 	icon_state = "plastic_spoon"
 	force = 0
 	custom_materials = list(/datum/material/plastic=120)
-	custom_price = PAYCHECK_PRISONER * 2
+	custom_price = PAYCHECK_ASSISTANT * 0.2
 	toolspeed = 75 // The plastic spoon takes 5 minutes to dig through a single mineral turf... It's one, continuous, breakable, do_after...
 
 /obj/item/kitchen/spoon/plastic/Initialize(mapload)
@@ -160,7 +160,7 @@
 	w_class = WEIGHT_CLASS_SMALL
 	force = 2
 	custom_materials = list(/datum/material/iron = 80, /datum/material/plastic = 40)
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 5
 	attack_verb_simple = list("smack", "thwack", "slap")
 	attack_verb_continuous = list("smacks", "thwacks", "slaps")

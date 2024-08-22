@@ -170,18 +170,17 @@
 
 /datum/brain_trauma/special/quantum_alignment/proc/try_entangle()
 	//Check for pulled mobs
-	if(ismob(owner.pulling))
-		entangle(owner.pulling)
+	var/list/grabs = owner.active_grabs
+	if(length(grabs))
+		for(var/obj/item/hand_item/grab/G in grabs)
+			entangle(G.affecting)
 		return
+
 	//Check for adjacent mobs
 	for(var/mob/living/L in oview(1, owner))
 		if(owner.Adjacent(L))
 			entangle(L)
 			return
-	//Check for pulled objects
-	if(isobj(owner.pulling))
-		entangle(owner.pulling)
-		return
 
 	//Check main hand
 	var/obj/item/held_item = owner.get_active_held_item()
@@ -384,7 +383,7 @@
 	if(get_dist(owner, beepsky) <= 1)
 		owner.playsound_local(owner, 'sound/weapons/egloves.ogg', 50)
 		owner.visible_message(span_warning("[owner]'s body jerks as if it was shocked."), span_userdanger("You feel the fist of the LAW."))
-		owner.take_bodypart_damage(0,0,rand(40, 70))
+		owner.stamina.adjust(rand(-40, -70))
 		QDEL_NULL(beepsky)
 	if(prob(20) && get_dist(owner, beepsky) <= 8)
 		owner.playsound_local(beepsky, 'sound/voice/beepsky/criminal.ogg', 40)

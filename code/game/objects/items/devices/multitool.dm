@@ -21,9 +21,10 @@
 	force = 5
 	w_class = WEIGHT_CLASS_SMALL
 	tool_behaviour = TOOL_MULTITOOL
+
 	throwforce = 0
 	throw_range = 7
-	throw_speed = 3
+
 	drop_sound = 'sound/items/handling/multitool_drop.ogg'
 	pickup_sound = 'sound/items/handling/multitool_pickup.ogg'
 	custom_materials = list(/datum/material/iron=50, /datum/material/glass=20)
@@ -104,8 +105,8 @@
 		var/atom/movable/screen/plane_master/camera_static/ai_detect_plane = user.hud_used.plane_masters["[CAMERA_STATIC_PLANE]"]
 		ai_detect_plane.alpha = 64
 		var/datum/atom_hud/hud = GLOB.huds[hud_type]
-		if(!hud.hudusers[user])
-			hud.add_hud_to(user)
+		if(!hud.hud_users[user])
+			hud.show_to(user)
 		eye.eye_user = user
 		eye.setLoc(get_turf(src))
 
@@ -114,7 +115,7 @@
 		var/atom/movable/screen/plane_master/camera_static/ai_detect_plane = user.hud_used.plane_masters["[CAMERA_STATIC_PLANE]"]
 		ai_detect_plane.alpha = 255
 		var/datum/atom_hud/hud = GLOB.huds[hud_type]
-		hud.remove_hud_from(user)
+		hud.hide_from(user)
 		if(eye)
 			eye.setLoc(null)
 			eye.eye_user = null

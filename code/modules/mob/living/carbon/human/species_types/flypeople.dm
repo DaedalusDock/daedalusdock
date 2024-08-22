@@ -3,29 +3,23 @@
 	plural_form = "Flypeople"
 	id = SPECIES_FLYPERSON
 	say_mod = "buzzes"
-	species_traits = list(HAS_FLESH, HAS_BONE, TRAIT_ANTENNAE)
+	species_traits = list()
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_CAN_STRIP,
 		TRAIT_CAN_USE_FLIGHT_POTION,
+		TRAIT_ANTENNAE,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_BUG
 	meat = /obj/item/food/meat/slab/human/mutant/fly
-	mutanteyes = /obj/item/organ/eyes/fly
+
 	liked_food = GROSS
 	disliked_food = NONE
 	toxic_food = NONE
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/fly
-	payday_modifier = 0.75
 	job_outfit_type = SPECIES_HUMAN
 
-	mutanttongue = /obj/item/organ/tongue/fly
-	mutantheart = /obj/item/organ/heart/fly
-	mutantlungs = /obj/item/organ/lungs/fly
-	mutantliver = /obj/item/organ/liver/fly
-	mutantstomach = /obj/item/organ/stomach/fly
-	mutantappendix = /obj/item/organ/appendix/fly
 	mutant_organs = list(/obj/item/organ/fly, /obj/item/organ/fly/groin)
 
 	bodypart_overrides = list(
@@ -37,12 +31,17 @@
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/fly,
 	)
 
-/datum/species/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, delta_time, times_fired)
-	if(chem.type == /datum/reagent/toxin/pestkiller)
-		H.adjustToxLoss(3 * REAGENTS_EFFECT_MULTIPLIER * delta_time)
-		H.reagents.remove_reagent(chem.type, REAGENTS_METABOLISM * delta_time)
-		return TRUE
-	..()
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart/fly,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs/fly,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes/fly,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/fly,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach/fly,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix/fly,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver/fly,
+	)
 
 /datum/species/fly/check_species_weakness(obj/item/weapon, mob/living/attacker)
 	if(istype(weapon, /obj/item/melee/flyswatter))
@@ -125,7 +124,6 @@
 
 /obj/item/organ/liver/fly
 	desc = "You have no idea what the hell this is, or how it manages to keep something alive in any capacity."
-	alcohol_tolerance = 0.007 //flies eat vomit, so a lower alcohol tolerance is perfect!
 
 /obj/item/organ/liver/fly/Initialize(mapload)
 	. = ..()

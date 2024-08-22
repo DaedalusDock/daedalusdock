@@ -29,7 +29,7 @@
 /datum/cinematic
 	var/id = CINEMATIC_DEFAULT
 	var/list/watching = list() //List of clients watching this
-	var/list/locked = list() //Who had notransform set during the cinematic
+	var/list/datum/weakref/locked = list() //Who had notransform set during the cinematic
 	var/is_global = FALSE //Global cinematics will override mob-specific ones
 	var/atom/movable/screen/cinematic/screen
 	var/datum/callback/special_callback //For special effects synced with animation (explosions after the countdown etc)
@@ -40,20 +40,20 @@
 	screen = new(src)
 
 /datum/cinematic/Destroy()
-	for(var/CC in watching)
-		if(!CC)
-			continue
-		var/client/C = CC
+	for(var/client/C in watching)
 		C.mob.clear_fullscreen("cinematic")
 		C.screen -= screen
+
 	watching = null
 	QDEL_NULL(screen)
-	QDEL_NULL(special_callback)
-	for(var/MM in locked)
-		if(!MM)
+	special_callback = null
+
+	for(var/datum/weakref/W in locked)
+		var/mob/M = W.resolve()
+		if(!M)
 			continue
-		var/mob/M = MM
 		M.notransform = FALSE
+
 	locked = null
 	return ..()
 
@@ -95,10 +95,11 @@
 	SIGNAL_HANDLER
 
 	if(!M.notransform)
-		locked += M
+		locked += WEAKREF(M)
 		M.notransform = TRUE //Should this be done for non-global cinematics or even at all ?
 	if(!C)
 		return
+
 	watching += C
 	M.overlay_fullscreen("cinematic",/atom/movable/screen/fullscreen/cinematic_backdrop)
 	C.screen += screen

@@ -91,6 +91,8 @@
 
 	update_client_colour()
 	update_mouse_pointer()
+	update_ambience_area(get_area(src))
+
 	if(client)
 		if(client.view_size)
 			client.view_size.resetToDefault() // Resets the client.view in case it was changed.
@@ -111,8 +113,6 @@
 	log_mob_tag("\[[tag]\] NEW OWNER: [key_name(src)]")
 	SEND_SIGNAL(src, COMSIG_MOB_CLIENT_LOGIN, client)
 	client.init_verbs()
-
-	AddElement(/datum/element/weather_listener, /datum/weather/ash_storm, ZTRAIT_ASHSTORM, GLOB.ash_storm_sounds)
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MOB_LOGGED_IN, src)
 

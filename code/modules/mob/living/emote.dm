@@ -105,14 +105,15 @@
 	key = "deathgasp"
 	key_third_person = "deathgasps"
 	message = "seizes up and falls limp, their eyes dead and lifeless..."
-	message_robot = "shudders violently for a moment before falling still, its eyes slowly darkening."
+	message_robot = "gives one shrill beep before falling lifeless."
 	message_AI = "screeches, its screen flickering as its systems slowly halt."
 	message_alien = "lets out a waning guttural screech, and collapses onto the floor..."
 	message_larva = "lets out a sickly hiss of air and falls limply to the floor..."
 	message_monkey = "lets out a faint chimper as it collapses and stops moving..."
 	message_simple = "stops moving..."
+	message_ipc =  "gives one shrill beep before falling lifeless."
 	cooldown = (15 SECONDS)
-	stat_allowed = HARD_CRIT
+	stat_allowed = UNCONSCIOUS
 
 /datum/emote/living/deathgasp/run_emote(mob/user, params, type_override, intentional)
 	var/mob/living/simple_animal/S = user
@@ -123,12 +124,14 @@
 	if(.)
 		if(isliving(user))
 			var/mob/living/L = user
-			if(!L.can_speak_vocal() || L.oxyloss >= 50)
+			if(!L.can_speak_vocal() || L.getOxyLoss() >= 50)
 				return //stop the sound if oxyloss too high/cant speak
 		if(!user.deathsound)
 			if(!ishuman(user))
 				return
-			playsound(user, pick('goon/sounds/voice/death_1.ogg', 'goon/sounds/voice/death_2.ogg'), 100, 0)
+			var/mob/living/carbon/human/H = user
+
+			playsound(H, H.dna?.species.get_deathgasp_sound(H), 100, 0)
 			return
 		playsound(user, user.deathsound, 200, TRUE, TRUE)
 
@@ -192,7 +195,6 @@
 	key_third_person = "gasps"
 	message = "gasps!"
 	emote_type = EMOTE_AUDIBLE
-	stat_allowed = HARD_CRIT
 
 /datum/emote/living/gasp/get_sound(mob/living/user, involuntary)
 	if(!iscarbon(user))
@@ -461,6 +463,7 @@
 	if(.)
 		var/mob/living/L = user
 		COOLDOWN_RESET(L, smell_time)
+		L.handle_smell()
 
 /datum/emote/living/snore
 	key = "snore"
@@ -494,16 +497,11 @@
 	message = "puts their hands on their head and falls to the ground, they surrender%s!"
 	emote_type = EMOTE_AUDIBLE
 
-//PARIAH EDIT - moved combat_indicator.dm in the indicators module
-/*
 /datum/emote/living/surrender/run_emote(mob/user, params, type_override, intentional)
 	. = ..()
 	if(. && isliving(user))
 		var/mob/living/L = user
 		L.Paralyze(200)
-		L.remove_status_effect(/datum/status_effect/grouped/surrender)
-*/
-//PARIAH EDIT END
 
 /datum/emote/living/sway
 	key = "sway"

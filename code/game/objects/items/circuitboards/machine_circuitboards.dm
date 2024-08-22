@@ -586,16 +586,6 @@
 		/obj/item/stack/sheet/glass = 1,
 		/obj/item/vending_refill/donksoft = 1)
 
-/obj/item/circuitboard/machine/bountypad
-	name = "Civilian Bounty Pad (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_GENERIC
-	build_path = /obj/machinery/piratepad/civilian
-	req_components = list(
-		/obj/item/stock_parts/card_reader = 1,
-		/obj/item/stock_parts/scanning_module = 1,
-		/obj/item/stock_parts/micro_laser = 1
-	)
-
 //Medical
 
 /obj/item/circuitboard/machine/chem_dispenser
@@ -606,30 +596,27 @@
 		/obj/item/stock_parts/matter_bin = 2,
 		/obj/item/stock_parts/capacitor = 1,
 		/obj/item/stock_parts/manipulator = 1,
-		/obj/item/stack/sheet/glass = 1,
-		/obj/item/stock_parts/cell = 1)
+		/obj/item/stack/sheet/glass = 1)
 	def_components = list(/obj/item/stock_parts/cell = /obj/item/stock_parts/cell/high)
 	needs_anchored = FALSE
 
-/obj/item/circuitboard/machine/chem_dispenser/fullupgrade
-	build_path = /obj/machinery/chem_dispenser/fullupgrade
+/obj/item/circuitboard/machine/chem_dispenser/mini
+	name = "Mini Chem Dispenser (Machine Board)"
+	build_path = /obj/machinery/chem_dispenser/mini
 	req_components = list(
-		/obj/item/stock_parts/matter_bin/bluespace = 2,
-		/obj/item/stock_parts/capacitor/quadratic = 2,
-		/obj/item/stock_parts/manipulator/femto = 2,
-		/obj/item/stack/sheet/glass = 1,
-		/obj/item/stock_parts/cell/bluespace = 1,
-	)
+		/obj/item/stock_parts/matter_bin = 1,
+		/obj/item/stock_parts/capacitor = 1,
+		/obj/item/stock_parts/manipulator = 1,
+		/obj/item/stack/sheet/glass = 1)
 
-/obj/item/circuitboard/machine/chem_dispenser/mutagensaltpeter
-	build_path = /obj/machinery/chem_dispenser/mutagensaltpeter
+/obj/item/circuitboard/machine/chem_dispenser/big
+	name = "Big Chem Dispenser (Machine Board)"
+	build_path = /obj/machinery/chem_dispenser/big
 	req_components = list(
-		/obj/item/stock_parts/matter_bin/bluespace = 2,
-		/obj/item/stock_parts/capacitor/quadratic = 2,
-		/obj/item/stock_parts/manipulator/femto = 2,
-		/obj/item/stack/sheet/glass = 1,
-		/obj/item/stock_parts/cell/bluespace = 1,
-	)
+		/obj/item/stock_parts/matter_bin = 3,
+		/obj/item/stock_parts/capacitor = 1,
+		/obj/item/stock_parts/manipulator = 1,
+		/obj/item/stack/sheet/glass = 3)
 
 /obj/item/circuitboard/machine/chem_dispenser/abductor
 	name = "Reagent Synthesizer (Abductor Machine Board)"
@@ -640,7 +627,6 @@
 		/obj/item/stock_parts/capacitor/quadratic = 2,
 		/obj/item/stock_parts/manipulator/femto = 2,
 		/obj/item/stack/sheet/glass = 1,
-		/obj/item/stock_parts/cell/bluespace = 1,
 	)
 	needs_anchored = FALSE
 
@@ -651,14 +637,6 @@
 	req_components = list(
 		/obj/item/stock_parts/micro_laser = 1,
 		/obj/item/stack/sheet/glass = 1)
-
-/obj/item/circuitboard/machine/chem_mass_spec
-	name = "High-Performance Liquid Chromatography (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_MEDICAL
-	build_path = /obj/machinery/chem_mass_spec
-	req_components = list(
-	/obj/item/stock_parts/micro_laser = 1,
-	/obj/item/stack/cable_coil = 5)
 
 /obj/item/circuitboard/machine/chem_master
 	name = "ChemMaster 3000 (Machine Board)"
@@ -706,30 +684,6 @@
 	build_path = /obj/machinery/harvester
 	req_components = list(/obj/item/stock_parts/micro_laser = 4)
 
-/obj/item/circuitboard/machine/medical_kiosk
-	name = "Medical Kiosk (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_MEDICAL
-	build_path = /obj/machinery/medical_kiosk
-	var/custom_cost = 10
-	req_components = list(
-		/obj/item/healthanalyzer = 1,
-		/obj/item/stock_parts/scanning_module = 1)
-
-/obj/item/circuitboard/machine/medical_kiosk/multitool_act(mob/living/user)
-	. = ..()
-	var/new_cost = tgui_input_number(user, "New cost for using this medical kiosk", "Pricing", custom_cost, 1000, 10)
-	if(!new_cost || QDELETED(user) || QDELETED(src) || !user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
-		return
-	if(loc != user)
-		to_chat(user, span_warning("You must hold the circuitboard to change its cost!"))
-		return
-	custom_cost = new_cost
-	to_chat(user, span_notice("The cost is now set to [custom_cost]."))
-
-/obj/item/circuitboard/machine/medical_kiosk/examine(mob/user)
-	. = ..()
-	. += "The cost to use this kiosk is set to [custom_cost]."
-
 /obj/item/circuitboard/machine/limbgrower
 	name = "Limb Grower (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
@@ -765,6 +719,7 @@
 	def_components = list(
 		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/medical
 	)
+
 /obj/item/circuitboard/machine/sleeper
 	name = "Sleeper (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
@@ -816,6 +771,25 @@
 	build_path = /obj/machinery/medipen_refiller
 	req_components = list(
 		/obj/item/stock_parts/matter_bin = 1)
+
+/obj/item/circuitboard/machine/bodyscanner
+	name = "Body Scanner (Machine Board)"
+	greyscale_colors = CIRCUIT_COLOR_MEDICAL
+	build_path = /obj/machinery/bodyscanner
+	req_components = list(
+		/obj/item/stock_parts/matter_bin = 1,
+		/obj/item/stock_parts/scanning_module = 1,
+		/obj/item/stock_parts/capacitor = 1
+	)
+
+/obj/item/circuitboard/machine/bodyscanner_console
+	name = "Body Scanner Console (Machine Board)"
+	greyscale_colors = CIRCUIT_COLOR_MEDICAL
+	build_path = /obj/machinery/bodyscanner_console
+	req_components = list(
+		/obj/item/stack/cable_coil = 1,
+		/obj/item/stack/sheet/glass = 1
+	)
 
 /obj/item/circuitboard/machine/cyborgrecharger
 	name = "Cyborg Recharger (Machine Board)"
@@ -920,6 +894,9 @@
 	name = "Departmental Fabricator - Security (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_SECURITY
 	build_path = /obj/machinery/rnd/production/fabricator/department/security
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/security
+	)
 
 /obj/item/circuitboard/machine/recharger
 	name = "Weapon Recharger (Machine Board)"
@@ -945,30 +922,10 @@
 	greyscale_colors = CIRCUIT_COLOR_SERVICE
 	build_path = /obj/machinery/chem_dispenser/drinks
 
-/obj/item/circuitboard/machine/chem_dispenser/drinks/fullupgrade
-	build_path = /obj/machinery/chem_dispenser/drinks/fullupgrade
-	req_components = list(
-		/obj/item/stock_parts/matter_bin/bluespace = 2,
-		/obj/item/stock_parts/capacitor/quadratic = 2,
-		/obj/item/stock_parts/manipulator/femto = 2,
-		/obj/item/stack/sheet/glass = 1,
-		/obj/item/stock_parts/cell/bluespace = 1,
-	)
-
 /obj/item/circuitboard/machine/chem_dispenser/drinks/beer
 	name = "Booze Dispenser (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_SERVICE
 	build_path = /obj/machinery/chem_dispenser/drinks/beer
-
-/obj/item/circuitboard/machine/chem_dispenser/drinks/beer/fullupgrade
-	build_path = /obj/machinery/chem_dispenser/drinks/beer/fullupgrade
-	req_components = list(
-		/obj/item/stock_parts/matter_bin/bluespace = 2,
-		/obj/item/stock_parts/capacitor/quadratic = 2,
-		/obj/item/stock_parts/manipulator/femto = 2,
-		/obj/item/stack/sheet/glass = 1,
-		/obj/item/stock_parts/cell/bluespace = 1,
-	)
 
 /obj/item/circuitboard/machine/chem_master/condi
 	name = "CondiMaster 3000 (Machine Board)"
@@ -1206,17 +1163,6 @@
 		/obj/item/stock_parts/micro_laser = 2,
 		/obj/item/stock_parts/scanning_module = 2
 	)
-
-/obj/item/circuitboard/machine/plumbing_receiver
-	name = "Chemical Recipient (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_MEDICAL
-	build_path = /obj/machinery/plumbing/receiver
-	req_components = list(
-		/obj/item/stack/ore/bluespace_crystal = 1,
-		/obj/item/stock_parts/capacitor = 2,
-		/obj/item/stack/sheet/glass = 1)
-	def_components = list(/obj/item/stack/ore/bluespace_crystal = /obj/item/stack/ore/bluespace_crystal/artificial)
-	needs_anchored = FALSE
 
 /obj/item/circuitboard/machine/skill_station
 	name = "Skill Station (Machine Board)"

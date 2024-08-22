@@ -41,18 +41,6 @@
 	if(!(memory_flags & MEMORY_FLAG_NOLOCATION))
 		extra_info[DETAIL_WHERE] = get_area(victim)
 
-	if(!(memory_flags & MEMORY_FLAG_NOMOOD))
-		var/datum/component/mood/victim_mood_component = current.GetComponent(/datum/component/mood)
-		if(victim_mood_component)
-			victim_mood = victim_mood_component.mood_level
-
-		if(victim == current)
-			story_mood = victim_mood
-		else
-			var/datum/component/mood/memorizer_mood_component = current.GetComponent(/datum/component/mood)
-			if(memorizer_mood_component)
-				story_mood = memorizer_mood_component.mood_level
-
 	extra_info[DETAIL_PROTAGONIST_MOOD] = victim_mood
 
 	var/datum/memory/replaced_memory = memories[memory_type]
@@ -72,8 +60,9 @@
 /datum/mind/proc/build_story_mob(mob/living/target)
 	if(isanimal(target))
 		return "\the [target]"
-	if(target.mind?.assigned_role)
-		return  "\the [lowertext(initial(target.mind?.assigned_role.title))]"
+	if(ishuman(target))
+		var/mob/living/carbon/human/H = target
+		return H.get_face_name()
 	return target
 
 ///returns the story name of anything

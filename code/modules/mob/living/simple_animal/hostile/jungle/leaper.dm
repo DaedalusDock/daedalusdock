@@ -21,7 +21,7 @@
 	base_pixel_x = -16
 	layer = LARGE_MOB_LAYER
 	speed = 10
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	robust_searching = 1
 	var/hopping = FALSE
 	var/hop_cooldown = 0 //Strictly for player controlled leapers
@@ -71,10 +71,6 @@
 	icon = 'icons/effects/tomatodecal.dmi'
 	icon_state = "tomato_floor1"
 
-/obj/effect/decal/cleanable/leaper_sludge/Initialize(mapload, list/datum/disease/diseases)
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_LEAPER, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
 /obj/structure/leaper_bubble
 	name = "leaper bubble"
 	desc = "A floating bubble containing leaper venom. The contents are under a surprising amount of pressure."
@@ -90,10 +86,6 @@
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_LEAPER, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
-/obj/structure/leaper_bubble/ComponentInitialize()
-	. = ..()
 	AddElement(/datum/element/movetype_handler)
 	ADD_TRAIT(src, TRAIT_MOVE_FLOATING, LEAPER_BUBBLE_TRAIT)
 
@@ -127,10 +119,11 @@
 	taste_description = "french cuisine"
 	taste_mult = 1.3
 
-/datum/reagent/toxin/leaper_venom/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+/datum/reagent/toxin/leaper_venom/affect_blood(mob/living/carbon/C, removed)
+	. = ..()
 	if(volume >= 10)
-		M.adjustToxLoss(5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, 0)
-	..()
+		C.adjustToxLoss(5 * removed, 0)
+		return TRUE
 
 /obj/effect/temp_visual/leaper_crush
 	name = "grim tidings"
@@ -147,10 +140,10 @@
 
 /mob/living/simple_animal/hostile/jungle/leaper/Initialize(mapload)
 	. = ..()
+	AddComponent(/datum/component/seethrough_mob)
 	remove_verb(src, /mob/living/verb/pulled)
-	add_cell_sample()
 
-/mob/living/simple_animal/hostile/jungle/leaper/CtrlClickOn(atom/A)
+/mob/living/simple_animal/hostile/jungle/leaper/CtrlClickOn(atom/A, list/params)
 	face_atom(A)
 	GiveTarget(A)
 	if(!isturf(loc))
@@ -215,7 +208,7 @@
 		return
 	hopping = TRUE
 	set_density(FALSE)
-	pass_flags |= PASSMOB
+	add_passmob(REF(src))
 	notransform = TRUE
 	var/turf/new_turf = locate((target.x + rand(-3,3)),(target.y + rand(-3,3)),target.z)
 	if(player_hop)
@@ -229,7 +222,7 @@
 /mob/living/simple_animal/hostile/jungle/leaper/proc/FinishHop()
 	set_density(TRUE)
 	notransform = FALSE
-	pass_flags &= ~PASSMOB
+	remove_passmob(REF(src))
 	hopping = FALSE
 	playsound(src.loc, 'sound/effects/meteorimpact.ogg', 100, TRUE)
 	if(target && AIStatus == AI_ON && projectile_ready && !ckey)
@@ -281,9 +274,5 @@
 			icon_state = "leaper_alert"
 			return
 	icon_state = "leaper"
-
-/mob/living/simple_animal/hostile/jungle/leaper/add_cell_sample()
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_LEAPER, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 #undef PLAYER_HOP_DELAY

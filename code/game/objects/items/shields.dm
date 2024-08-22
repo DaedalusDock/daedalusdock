@@ -2,7 +2,8 @@
 	name = "shield"
 	icon = 'icons/obj/shields.dmi'
 	block_chance = 50
-	armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 70)
+	block_sound = 'sound/weapons/block/block_shield.ogg'
+	armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 70)
 	var/transparent = FALSE // makes beam projectiles pass through the shield
 
 /obj/item/shield/proc/on_shield_block(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK)
@@ -17,7 +18,6 @@
 	slot_flags = ITEM_SLOT_BACK
 	force = 10
 	throwforce = 5
-	throw_speed = 2
 	throw_range = 3
 	w_class = WEIGHT_CLASS_BULKY
 	custom_materials = list(/datum/material/glass=7500, /datum/material/iron=1000)
@@ -27,16 +27,22 @@
 	transparent = TRUE
 	max_integrity = 75
 
-/obj/item/shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+
+/obj/item/shield/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(transparent && (hitby.pass_flags & PASSGLASS))
 		return FALSE
-	if(attack_type == THROWN_PROJECTILE_ATTACK)
-		final_block_chance += 30
-	if(attack_type == LEAP_ATTACK)
-		final_block_chance = 100
 	. = ..()
-	if(.)
-		on_shield_block(owner, hitby, attack_text, damage, attack_type)
+	if(attack_type == THROWN_PROJECTILE_ATTACK)
+		. += 30
+	if(attack_type == LEAP_ATTACK)
+		. += 100
+
+/obj/item/shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text, damage, attack_type, block_success)
+	. = ..()
+	if(!.)
+		return
+
+	on_shield_block(owner, hitby, attack_text, damage, attack_type)
 
 /obj/item/shield/riot/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/melee/baton))
@@ -94,7 +100,7 @@
 /obj/item/shield/riot/roman/fake
 	desc = "Bears an inscription on the inside: <i>\"Romanes venio domus\"</i>. It appears to be a bit flimsy."
 	block_chance = 0
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	max_integrity = 30
 
 /obj/item/shield/riot/roman/shatter(mob/living/carbon/human/owner)
@@ -139,7 +145,7 @@
 	. = embedded_flash.attack_self(user)
 	update_appearance()
 
-/obj/item/shield/riot/flash/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/shield/riot/flash/on_shield_block(mob/living/carbon/human/owner, atom/movable/hitby, attack_text, damage, attack_type)
 	. = ..()
 	if (. && !embedded_flash.burnt_out)
 		embedded_flash.activate()
@@ -196,7 +202,8 @@
 	throw_range = 5
 	force = 3
 	throwforce = 3
-	throw_speed = 3
+	block_chance = -INFINITY
+	block_sound = 'sound/weapons/block/block_energy.ogg' //reflect
 
 	/// Whether the shield is currently extended and protecting the user.
 	var/enabled = FALSE
@@ -218,9 +225,6 @@
 		hitsound_on = hitsound, \
 		clumsy_check = !can_clumsy_use)
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
-
-/obj/item/shield/energy/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	return FALSE
 
 /obj/item/shield/energy/IsReflect()
 	return enabled
@@ -248,7 +252,6 @@
 	slot_flags = null
 	force = 3
 	throwforce = 3
-	throw_speed = 3
 	throw_range = 4
 	w_class = WEIGHT_CLASS_NORMAL
 	/// Whether the shield is extended and protecting the user..
@@ -266,7 +269,7 @@
 		attack_verb_simple_on = list("smack", "strike", "crack", "beat"))
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
-/obj/item/shield/riot/tele/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/shield/riot/tele/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(extended)
 		return ..()
 	return FALSE

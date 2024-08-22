@@ -8,23 +8,28 @@
 	righthand_file = 'icons/mob/inhands/equipment/toolbox_righthand.dmi'
 	flags_1 = CONDUCT_1
 
-	force = 6
+	force = 18
 	throwforce = 10
-	throw_speed = 2
+	throw_speed = 1.5
 	throw_range = 7
 	stamina_damage = 47
 	stamina_cost = 20
 	stamina_critical_chance = 10
+	combat_click_delay = CLICK_CD_MELEE * 2.5
 
+	block_chance = 10
 
 	w_class = WEIGHT_CLASS_BULKY
 	custom_materials = list(/datum/material/iron = 500)
 	attack_verb_continuous = list("robusts")
 	attack_verb_simple = list("robust")
 	hitsound = 'sound/weapons/smash.ogg'
+	block_sound = SFX_BLOCK_BIG_METAL
 	drop_sound = 'sound/items/handling/toolbox_drop.ogg'
 	pickup_sound = 'sound/items/handling/toolbox_pickup.ogg'
 	material_flags = MATERIAL_EFFECTS | MATERIAL_COLOR
+
+	storage_type = /datum/storage/toolbox
 	var/latches = "single_latch"
 	var/has_latches = TRUE
 
@@ -217,14 +222,14 @@
 /obj/item/storage/toolbox/artistic/PopulateContents()
 	new /obj/item/storage/crayons(src)
 	new /obj/item/crowbar(src)
-	new /obj/item/stack/pipe_cleaner_coil/red(src)
-	new /obj/item/stack/pipe_cleaner_coil/yellow(src)
-	new /obj/item/stack/pipe_cleaner_coil/blue(src)
-	new /obj/item/stack/pipe_cleaner_coil/green(src)
-	new /obj/item/stack/pipe_cleaner_coil/pink(src)
-	new /obj/item/stack/pipe_cleaner_coil/orange(src)
-	new /obj/item/stack/pipe_cleaner_coil/cyan(src)
-	new /obj/item/stack/pipe_cleaner_coil/white(src)
+	new /obj/item/stack/cable_coil/red(src)
+	new /obj/item/stack/cable_coil/yellow(src)
+	new /obj/item/stack/cable_coil/blue(src)
+	new /obj/item/stack/cable_coil/green(src)
+	new /obj/item/stack/cable_coil/pink(src)
+	new /obj/item/stack/cable_coil/orange(src)
+	new /obj/item/stack/cable_coil/cyan(src)
+	new /obj/item/stack/cable_coil/white(src)
 
 /obj/item/storage/toolbox/ammo
 	name = "ammo box"

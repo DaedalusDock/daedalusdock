@@ -9,7 +9,7 @@
 	density = FALSE
 	use_power = NO_POWER_USE
 	power_channel = AREA_USAGE_EQUIP
-	req_one_access = list(ACCESS_MEDICAL, ACCESS_HEADS, ACCESS_SECURITY) //used to control clamps
+	req_one_access = list(ACCESS_MEDICAL) //used to control clamps
 	processing_flags = NONE
 /// The mount's defib
 	var/obj/item/defibrillator/defib
@@ -24,7 +24,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 	. = ..()
 	defib = new/obj/item/defibrillator/loaded(src)
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount/loaded, 28)
 
 /obj/machinery/defibrillator_mount/Destroy()
 	if(defib)
@@ -40,7 +40,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 /obj/machinery/defibrillator_mount/examine(mob/user)
 	. = ..()
 	if(defib)
-		. += span_notice("There is a defib unit hooked up. Alt-click to remove it.")
 		if(SSsecurity_level.current_level >= SEC_LEVEL_RED)
 			. += span_notice("Due to a security situation, its locking clamps can be toggled by swiping any ID.")
 		else
@@ -155,7 +154,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 	return TRUE
 
 /obj/machinery/defibrillator_mount/AltClick(mob/living/carbon/user)
-	if(!istype(user) || !user.canUseTopic(src, BE_CLOSE))
+	if(!istype(user) || !user.canUseTopic(src, USE_CLOSE))
 		return
 	if(!defib)
 		to_chat(user, span_warning("It'd be hard to remove a defib unit from a mount that has none."))

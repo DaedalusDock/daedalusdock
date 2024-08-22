@@ -14,35 +14,49 @@
 	//socks
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/socks, GLOB.socks_list)
 	//bodypart accessories (blizzard intensifies)
+
+	//Snowflakes
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails, GLOB.tails_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.ears_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, GLOB.tails_list_human, add_blank = TRUE)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard, GLOB.tails_list_lizard, add_blank = TRUE)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/snouts, GLOB.snouts_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/horns,GLOB.horns_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.ears_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/wings, GLOB.wings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/wings_open, GLOB.wings_open_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines_animated, GLOB.animated_spines_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/caps, GLOB.caps_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
+
+	// Lizadhs
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard, GLOB.tails_list_lizard)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/snouts, GLOB.snouts_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/horns,GLOB.horns_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
+
+	// Moths
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_wings, GLOB.moth_wings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/headtails, GLOB.headtails_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_hair, GLOB.moth_hairstyles_list)
+
+	// Teshari
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_feathers, GLOB.teshari_feathers_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_ears, GLOB.teshari_ears_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_body_feathers, GLOB.teshari_body_feathers_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/teshari, GLOB.teshari_tails_list)
 
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_hair, GLOB.vox_hair_list)
+	//Vox
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_hair, GLOB.vox_hair_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/facial_vox_hair, GLOB.vox_facial_hair_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/vox, GLOB.tails_list_vox)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_snouts, GLOB.vox_snouts_list)
-	//Moths have a whitelist
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_hair, GLOB.moth_hairstyles_list)
+
+	//IPC
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/ipc_screen, GLOB.ipc_screens_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/ipc_antenna, GLOB.ipc_antenna_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_screen, GLOB.saurian_screens_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_tail, GLOB.saurian_tails_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_scutes, GLOB.saurian_scutes_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_antenna, GLOB.saurian_antenna_list, add_blank = TRUE)
 
 	//Species
 	for(var/spath in subtypesof(/datum/species))
@@ -51,8 +65,11 @@
 	sort_list(GLOB.species_list, GLOBAL_PROC_REF(cmp_typepaths_asc))
 
 	//Surgeries
-	for(var/path in subtypesof(/datum/surgery))
-		GLOB.surgeries_list += new path()
+	for(var/datum/surgery_step/path as anything in subtypesof(/datum/surgery_step))
+		if(!isabstract(path))
+			path = new path()
+			GLOB.surgeries_list += path
+
 	sort_list(GLOB.surgeries_list, GLOBAL_PROC_REF(cmp_typepaths_asc))
 
 	// Hair Gradients - Initialise all /datum/sprite_accessory/hair_gradient into an list indexed by gradient-style name
@@ -67,9 +84,32 @@
 	init_keybindings()
 
 	GLOB.emote_list = init_emote_list()
+	GLOB.mod_themes = setup_mod_themes()
+
+	for(var/datum/grab/G as anything in subtypesof(/datum/grab))
+		if(isabstract(G))
+			continue
+		GLOB.all_grabstates[G] = new G
+
+	for(var/path in GLOB.all_grabstates)
+		var/datum/grab/G = GLOB.all_grabstates[path]
+		G.refresh_updown()
 
 	init_crafting_recipes(GLOB.crafting_recipes)
+
 	init_loadout_references()
+	init_augment_references()
+
+	init_magnet_error_codes()
+
+	init_slapcraft_steps()
+	init_slapcraft_recipes()
+
+	init_blood_types()
+
+	init_language_datums()
+
+	init_employers()
 
 /// Inits the crafting recipe list, sorting crafting recipe requirements in the process.
 /proc/init_crafting_recipes(list/crafting_recipes)
@@ -113,7 +153,6 @@ GLOBAL_LIST_INIT(WALLITEMS_INTERIOR, typecacheof(list(
 	/obj/item/radio/intercom,
 	/obj/item/storage/secure/safe,
 	/obj/machinery/airalarm,
-	///obj/machinery/bluespace_vendor,
 	/obj/machinery/newscaster,
 	/obj/machinery/button,
 	/obj/machinery/computer/security/telescreen,
@@ -169,3 +208,65 @@ GLOBAL_LIST_INIT(WALLITEMS_EXTERIOR, typecacheof(list(
 	for(var/category as anything in GLOB.loadout_category_to_subcategory_to_items)
 		for(var/subcategory as anything in GLOB.loadout_category_to_subcategory_to_items[category])
 			GLOB.loadout_category_to_subcategory_to_items[category][subcategory] = sortTim(GLOB.loadout_category_to_subcategory_to_items[category][subcategory], GLOBAL_PROC_REF(cmp_loadout_name))
+
+/proc/init_augment_references()
+	// Here we build the global loadout lists
+	for(var/path in subtypesof(/datum/augment_item))
+		var/datum/augment_item/L = path
+		if(!initial(L.path))
+			continue
+
+		L = new path()
+		GLOB.augment_items[L.type] = L
+
+		if(!GLOB.augment_slot_to_items[L.slot])
+			GLOB.augment_slot_to_items[L.slot] = list()
+			if(!GLOB.augment_categories_to_slots[L.category])
+				GLOB.augment_categories_to_slots[L.category] = list()
+			GLOB.augment_categories_to_slots[L.category] += L.slot
+		GLOB.augment_slot_to_items[L.slot] += L.type
+
+GLOBAL_LIST_INIT(magnet_error_codes, list(
+	MAGNET_ERROR_KEY_BUSY,
+	MAGNET_ERROR_KEY_USED_COORD,
+	MAGNET_ERROR_KEY_COOLDOWN,
+	MAGNET_ERROR_KEY_MOB,
+	MAGNET_ERROR_KEY_NO_COORD
+
+))
+
+/proc/init_magnet_error_codes()
+	var/list/existing_codes = list()
+	var/code
+	for(var/key in GLOB.magnet_error_codes)
+		do
+			code = "[pick(GLOB.alphabet_upper)][rand(1,9)]"
+			if(code in existing_codes)
+				continue
+			else
+				GLOB.magnet_error_codes[key] = code
+				existing_codes += code
+		while(isnull(GLOB.magnet_error_codes[key]))
+
+/proc/init_blood_types()
+	for(var/datum/blood/path as anything in typesof(/datum/blood))
+		if(isabstract(path))
+			continue
+		GLOB.blood_datums[path] = new path()
+
+/proc/init_language_datums()
+	for(var/datum/language/language as anything in subtypesof(/datum/language))
+		if(isabstract(language) || !initial(language.key))
+			continue
+
+		var/datum/language/instance = new language
+		GLOB.all_languages += instance
+		GLOB.language_datum_instances[language] = instance
+
+		if(instance.flags & (LANGUAGE_SELECTABLE_SPEAK | LANGUAGE_SELECTABLE_UNDERSTAND))
+			GLOB.preference_language_types += language
+
+GLOBAL_LIST_EMPTY(employers_by_name)
+/proc/init_employers()
+	for(var/datum/employer/path as anything in subtypesof(/datum/employer))
+		GLOB.employers_by_name[initial(path.name)] = path

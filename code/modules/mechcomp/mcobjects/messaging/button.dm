@@ -9,7 +9,7 @@
 	. = ..()
 	if(.)
 		return
-	flick(icon_down, src)
+	z_flick(icon_down, src)
 	fire(stored_message)
 	log_message("triggered by [key_name(user)]", LOG_MECHCOMP)
 	return TRUE

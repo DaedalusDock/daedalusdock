@@ -38,7 +38,7 @@
 		return
 	collision_ignite(AM)
 
-/mob/living/simple_animal/hostile/guardian/fire/Bumped(atom/movable/AM)
+/mob/living/simple_animal/hostile/guardian/fire/BumpedBy(atom/movable/AM)
 	..()
 	collision_ignite(AM)
 

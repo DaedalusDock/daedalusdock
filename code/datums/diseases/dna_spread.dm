@@ -3,8 +3,8 @@
 	max_stages = 4
 	spread_text = "On contact"
 	spread_flags = DISEASE_SPREAD_BLOOD | DISEASE_SPREAD_CONTACT_SKIN | DISEASE_SPREAD_CONTACT_FLUIDS
-	cure_text = "Mutadone"
-	cures = list(/datum/reagent/medicine/mutadone)
+	cure_text = "Ryetalyn"
+	cures = list(/datum/reagent/medicine/ryetalyn)
 	disease_flags = CAN_CARRY|CAN_RESIST|CURABLE
 	agent = "S4E1 retrovirus"
 	viable_mobtypes = list(/mob/living/carbon/human)
@@ -42,11 +42,11 @@
 			if(DT_PROB(4, delta_time))
 				affected_mob.emote("cough")
 			if(DT_PROB(0.5, delta_time))
-				to_chat(affected_mob, span_danger("Your muscles ache."))
+				affected_mob.pain_message("Your muscles ache.", 1)
 				if(prob(20))
 					affected_mob.take_bodypart_damage(1, updating_health = FALSE)
 			if(DT_PROB(0.5, delta_time))
-				to_chat(affected_mob, span_danger("Your stomach hurts."))
+				affected_mob.apply_pain(1, BODY_ZONE_CHEST, "Your abdomen hurts.")
 				if(prob(20))
 					affected_mob.adjustToxLoss(2, FALSE)
 		if(4)
@@ -59,7 +59,7 @@
 				var/datum/dna/transform_dna = strain_data["dna"]
 
 				transform_dna.transfer_identity(affected_mob, transfer_SE = 1)
-				affected_mob.real_name = affected_mob.dna.real_name
+				affected_mob.set_real_name(affected_mob.dna.real_name)
 				affected_mob.updateappearance(mutcolor_update=1)
 				affected_mob.domutcheck()
 
@@ -70,7 +70,7 @@
 /datum/disease/dnaspread/Destroy()
 	if (original_dna && transformed && affected_mob)
 		original_dna.transfer_identity(affected_mob, transfer_SE = 1)
-		affected_mob.real_name = affected_mob.dna.real_name
+		affected_mob.set_real_name(affected_mob.dna.real_name)
 		affected_mob.updateappearance(mutcolor_update=1)
 		affected_mob.domutcheck()
 

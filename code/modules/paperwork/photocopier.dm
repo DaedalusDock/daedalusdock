@@ -338,7 +338,7 @@
 /obj/machinery/photocopier/proc/do_insertion(obj/item/object, mob/user)
 	object.forceMove(src)
 	to_chat(user, span_notice("You insert [object] into [src]."))
-	flick("photocopier1", src)
+	z_flick("photocopier1", src)
 
 /**
  * Called when someone hits the "remove item" button on the copier UI.
@@ -410,9 +410,9 @@
 		new /obj/effect/decal/cleanable/oil(get_turf(src))
 		toner_cartridge.charges = 0
 
-/obj/machinery/photocopier/MouseDrop_T(mob/target, mob/user)
+/obj/machinery/photocopier/MouseDroppedOn(mob/target, mob/user)
 	check_ass() //Just to make sure that you can re-drag somebody onto it after they moved off.
-	if(!istype(target) || target.anchored || target.buckled || !Adjacent(target) || !user.canUseTopic(src, BE_CLOSE) || target == ass || copier_blocked())
+	if(!istype(target) || target.anchored || target.buckled || !Adjacent(target) || !user.canUseTopic(src, USE_CLOSE) || target == ass || copier_blocked())
 		return
 	add_fingerprint(user)
 	if(target == user)
@@ -465,7 +465,7 @@
 	return TRUE
 
 /**
- * Checks if the copier is deleted, or has something dense at its location. Called in `MouseDrop_T()`
+ * Checks if the copier is deleted, or has something dense at its location. Called in `MouseDroppedOn()`
  */
 /obj/machinery/photocopier/proc/copier_blocked()
 	if(QDELETED(src))

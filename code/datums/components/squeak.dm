@@ -79,8 +79,12 @@
 		else
 			playsound(parent, pick_weight(override_squeak_sounds), volume, TRUE, sound_extra_range, sound_falloff_exponent, falloff_distance = sound_falloff_distance)
 
-/datum/component/squeak/proc/step_squeak()
+/datum/component/squeak/proc/step_squeak(atom/movable/source)
 	SIGNAL_HANDLER
+
+	var/mob/living/carbon/human/owner = source.loc
+	if(CHECK_MOVE_LOOP_FLAGS(owner, MOVEMENT_LOOP_OUTSIDE_CONTROL))
+		return
 
 	if(steps > step_delay)
 		play_squeak()
@@ -133,7 +137,7 @@
 		holder = null
 
 // Disposal pipes related shits
-/datum/component/squeak/proc/disposing_react(datum/source, obj/structure/disposalholder/holder, obj/machinery/disposal/source)
+/datum/component/squeak/proc/disposing_react(datum/source, obj/structure/disposalholder/holder, obj/machinery/disposal/disposal_source)
 	SIGNAL_HANDLER
 
 	//We don't need to worry about unregistering this signal as it will happen for us automaticaly when the holder is qdeleted

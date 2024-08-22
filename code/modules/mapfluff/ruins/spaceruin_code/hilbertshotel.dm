@@ -228,8 +228,8 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	name = "hotel wall"
 	desc = "A wall designed to protect the security of the hotel's guests."
 	icon_state = "hotelwall"
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_HOTEL_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_HOTEL_WALLS)
+	smoothing_groups = SMOOTH_GROUP_CLOSED_TURFS + SMOOTH_GROUP_HOTEL_WALLS
+	canSmoothWith = SMOOTH_GROUP_HOTEL_WALLS
 	explosion_block = INFINITY
 
 /turf/open/indestructible/hotelwood
@@ -351,7 +351,7 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	requires_power = FALSE
 	has_gravity = TRUE
 	area_flags = NOTELEPORT | HIDDEN_AREA
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 	ambientsounds = list('sound/ambience/servicebell.ogg')
 	var/roomnumber = 0
 	var/obj/item/hilbertshotel/parentSphere

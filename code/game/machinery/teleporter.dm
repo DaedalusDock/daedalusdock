@@ -45,7 +45,7 @@
 			break
 	return power_station
 
-/obj/machinery/teleport/hub/Bumped(atom/movable/AM)
+/obj/machinery/teleport/hub/BumpedBy(atom/movable/AM)
 	if(is_centcom_level(z))
 		to_chat(AM, span_warning("You can't use this here!"))
 		return

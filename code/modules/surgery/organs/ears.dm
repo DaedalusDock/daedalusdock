@@ -7,13 +7,12 @@
 	visual = FALSE
 	gender = PLURAL
 
-	healing_factor = STANDARD_ORGAN_HEALING
-	decay_factor = STANDARD_ORGAN_DECAY
-
 	low_threshold_passed = "<span class='info'>Your ears begin to resonate with an internal ring.</span>"
 	now_failing = "<span class='warning'>You are unable to hear at all!</span>"
 	now_fixed = "<span class='info'>Noise slowly begins filling your ears once more.</span>"
 	low_threshold_cleared = "<span class='info'>The ringing in your ears has died down.</span>"
+
+	relative_size = 5
 
 	// `deaf` measures "ticks" of deafness. While > 0, the person is unable
 	// to hear anything.
@@ -30,7 +29,7 @@
 
 /obj/item/organ/ears/on_life(delta_time, times_fired)
 	// only inform when things got worse, needs to happen before we heal
-	if((damage > low_threshold && prev_damage < low_threshold) || (damage > high_threshold && prev_damage < high_threshold))
+	if((damage > (low_threshold * maxHealth) && prev_damage < (low_threshold * maxHealth)) || (damage > (high_threshold * maxHealth) && prev_damage < (high_threshold * maxHealth)))
 		to_chat(owner, span_warning("The ringing in your ears grows louder, blocking out any external noises for a moment."))
 
 	. = ..()
@@ -38,7 +37,7 @@
 	if(HAS_TRAIT_NOT_FROM(owner, TRAIT_DEAF, EAR_DAMAGE))
 		return
 
-	if((organ_flags & ORGAN_FAILING))
+	if((organ_flags & ORGAN_DEAD))
 		deaf = max(deaf, 1) // if we're failing we always have at least 1 deaf stack (and thus deafness)
 	else // only clear deaf stacks if we're not failing
 		deaf = max(deaf - (0.5 * delta_time), 0)
@@ -67,23 +66,25 @@
 	visual = TRUE
 	damage_multiplier = 2
 
-/obj/item/organ/ears/cat/Insert(mob/living/carbon/human/ear_owner, special = 0, drop_if_replaced = TRUE)
+	dna_block = DNA_EARS_BLOCK
+	feature_key = "ears"
+	layers = list(BODY_FRONT_LAYER, BODY_BEHIND_LAYER)
+	color_source = ORGAN_COLOR_HAIR
+
+/obj/item/organ/ears/cat/can_draw_on_bodypart(mob/living/carbon/human/human)
 	. = ..()
-	if(!.)
-		return
+	if(human.head && (human.head.flags_inv & HIDEHAIR) || (human.wear_mask && (human.wear_mask.flags_inv & HIDEHAIR)))
+		return FALSE
 
-	if(istype(ear_owner))
-		color = ear_owner.hair_color
-		ear_owner.dna.features["ears"] = ear_owner.dna.species.mutant_bodyparts["ears"] = "Cat"
-		ear_owner.dna.update_uf_block(DNA_EARS_BLOCK)
-		ear_owner.update_body()
+/obj/item/organ/ears/cat/get_global_feature_list()
+	return GLOB.ears_list
 
-/obj/item/organ/ears/cat/Remove(mob/living/carbon/human/ear_owner,  special = 0)
-	..()
-	if(istype(ear_owner))
-		color = ear_owner.hair_color
-		ear_owner.dna.species.mutant_bodyparts -= "ears"
-		ear_owner.update_body()
+/obj/item/organ/ears/cat/build_overlays(physique, image_dir)
+	. = ..()
+	if(sprite_datum.hasinner)
+		for(var/image_layer in layers)
+			. += image(sprite_datum.icon, "m_earsinner_[sprite_datum.icon_state]_[global.layer2text["[image_layer]"]]", layer = -image_layer)
+
 
 /obj/item/organ/ears/penguin
 	name = "penguin ears"

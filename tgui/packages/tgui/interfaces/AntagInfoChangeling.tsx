@@ -1,4 +1,3 @@
-import { multiline } from 'common/string';
 import { useBackend, useSharedState } from '../backend';
 import { Box, Button, Dimmer, Dropdown, Section, Stack } from '../components';
 import { Window } from '../layouts';
@@ -30,63 +29,53 @@ const storestyle = {
 
 type Objective = {
   count: number;
-  name: string;
   explanation: string;
-}
+  name: string;
+};
 
 type Memory = {
   name: string;
   story: string;
-}
+};
 
 type Info = {
   hive_name: string;
-  stolen_antag_info: string;
   memories: Memory[];
   objectives: Objective[];
+  stolen_antag_info: string;
 };
 
-const ObjectivePrintout = (props, context) => {
-  const { data } = useBackend<Info>(context);
-  const {
-    objectives,
-  } = data;
+const ObjectivePrintout = (props) => {
+  const { data } = useBackend<Info>();
+  const { objectives } = data;
   return (
     <Stack vertical>
-      <Stack.Item bold>
-        Your current objectives:
-      </Stack.Item>
+      <Stack.Item bold>Your current objectives:</Stack.Item>
       <Stack.Item>
-        {!objectives && "None!"
-        || objectives.map(objective => (
-          <Stack.Item key={objective.count}>
-            #{objective.count}: {objective.explanation}
-          </Stack.Item>
-        )) }
+        {(!objectives && 'None!') ||
+          objectives.map((objective) => (
+            <Stack.Item key={objective.count}>
+              #{objective.count}: {objective.explanation}
+            </Stack.Item>
+          ))}
       </Stack.Item>
     </Stack>
   );
 };
 
-const IntroductionSection = (props, context) => {
-  const { act, data } = useBackend<Info>(context);
-  const {
-    hive_name,
-    objectives,
-  } = data;
+const IntroductionSection = (props) => {
+  const { act, data } = useBackend<Info>();
+  const { hive_name, objectives } = data;
   return (
     <Section
       fill
       title="Intro"
-      scrollable={
-        !!objectives && objectives.length > 4
-      }>
+      scrollable={!!objectives && objectives.length > 4}
+    >
       <Stack vertical fill>
         <Stack.Item fontSize="25px">
           You are the Changeling from the
-          <span style={hivestyle}>
-            &ensp;{hive_name}
-          </span>.
+          <span style={hivestyle}>&ensp;{hive_name}</span>.
         </Stack.Item>
         <Stack.Item>
           <ObjectivePrintout />
@@ -96,8 +85,8 @@ const IntroductionSection = (props, context) => {
   );
 };
 
-const AbilitiesSection = (props, context) => {
-  const { data } = useBackend<Info>(context);
+const AbilitiesSection = (props) => {
+  const { data } = useBackend<Info>();
   return (
     <Section fill title="Abilities">
       <Stack fill>
@@ -105,27 +94,19 @@ const AbilitiesSection = (props, context) => {
           <Stack fill vertical>
             <Stack.Item basis={0} textColor="label" grow>
               Your
-              <span style={absorbstyle}>
-                &ensp;Absorb DNA
-              </span> ability
-              allows you to steal the DNA and memories of a victim.
-              Your
-              <span style={absorbstyle}>
-                &ensp;Extract DNA Sting
-              </span> ability
-              also steals the DNA of a victim, and is undetectable, but
-              does not grant you their memories or speech patterns.
+              <span style={absorbstyle}>&ensp;Absorb DNA</span> ability allows
+              you to steal the DNA and memories of a victim. Your
+              <span style={absorbstyle}>&ensp;Extract DNA Sting</span> ability
+              also steals the DNA of a victim, and is undetectable, but does not
+              grant you their memories or speech patterns.
             </Stack.Item>
             <Stack.Divider />
             <Stack.Item basis={0} textColor="label" grow>
               Your
-              <span style={revivestyle}>
-                &ensp;Reviving Stasis
-              </span> ability
+              <span style={revivestyle}>&ensp;Reviving Stasis</span> ability
               allows you to revive. It means nothing short of a complete body
-              destruction can stop you! Obviously, this is loud and
-              so should not be done in front of people you are not
-              planning on silencing.
+              destruction can stop you! Obviously, this is loud and so should
+              not be done in front of people you are not planning on silencing.
             </Stack.Item>
           </Stack>
         </Stack.Item>
@@ -134,24 +115,18 @@ const AbilitiesSection = (props, context) => {
           <Stack fill vertical>
             <Stack.Item basis={0} textColor="label" grow>
               Your
-              <span style={transformstyle}>
-                &ensp;Transform
-              </span> ability
-              allows you to change into the form of those you have
-              collected DNA from, lethally and nonlethally. It will
-              also mimic (NOT REAL CLOTHING) the clothing they were wearing
-              for every slot you have open.
+              <span style={transformstyle}>&ensp;Transform</span> ability allows
+              you to change into the form of those you have collected DNA from,
+              lethally and nonlethally. It will also mimic (NOT REAL CLOTHING)
+              the clothing they were wearing for every slot you have open.
             </Stack.Item>
             <Stack.Divider />
             <Stack.Item basis={0} textColor="label" grow>
               The
-              <span style={storestyle}>
-                &ensp;Cellular Emporium
-              </span> is
-              where you purchase more abilities beyond your starting kit.
-              You have 10 genetic points to spend on abilities and you are
-              able to readapt after absorbing a body, refunding your points
-              for different kits.
+              <span style={storestyle}>&ensp;Cellular Emporium</span> is where
+              you purchase more abilities beyond your starting kit. You have 10
+              genetic points to spend on abilities and you are able to readapt
+              after absorbing a body, refunding your points for different kits.
             </Stack.Item>
           </Stack>
         </Stack.Item>
@@ -160,16 +135,13 @@ const AbilitiesSection = (props, context) => {
   );
 };
 
-const MemoriesSection = (props, context) => {
-  const { act, data } = useBackend<Info>(context);
-  const {
-    memories,
-    stolen_antag_info,
-  } = data;
-  const [
-    selectedMemory,
-    setSelectedMemory,
-  ] = useSharedState(context, "memory", !!memories && memories[0] || null);
+const MemoriesSection = (props) => {
+  const { act, data } = useBackend<Info>();
+  const { memories, stolen_antag_info } = data;
+  const [selectedMemory, setSelectedMemory] = useSharedState(
+    'memory',
+    (!!memories && memories[0]) || null,
+  );
   const memoryMap = {};
   for (const index in memories) {
     const memory = memories[index];
@@ -184,13 +156,15 @@ const MemoriesSection = (props, context) => {
         <Button
           icon="info"
           tooltipPosition="left"
-          tooltip={multiline`
+          tooltip={`
             Absorbing targets allows
             you to collect their memories. They should
             help you impersonate your target!
-          `} />
-      }>
-      {!memories && (
+          `}
+        />
+      }
+    >
+      {(!memories && (
         <Box>
           {!stolen_antag_info && (
             <Dimmer mr="-100%" bold>
@@ -198,55 +172,48 @@ const MemoriesSection = (props, context) => {
             </Dimmer>
           )}
         </Box>
-      ) || (
+      )) || (
         <Stack vertical>
           <Stack.Item>
             <Dropdown
               width="100%"
               selected={selectedMemory?.name}
-              options={
-                memories.map(memory => {
-                  return memory.name;
-                })
-              }
-              onSelected={selected => setSelectedMemory(memoryMap[selected])} />
+              options={memories.map((memory) => {
+                return memory.name;
+              })}
+              onSelected={(selected) => setSelectedMemory(memoryMap[selected])}
+            />
           </Stack.Item>
-          <Stack.Item>
-            {!!selectedMemory && selectedMemory.story}
-          </Stack.Item>
+          <Stack.Item>{!!selectedMemory && selectedMemory.story}</Stack.Item>
         </Stack>
       )}
     </Section>
   );
 };
 
-const VictimPatternsSection = (props, context) => {
-  const { data } = useBackend<Info>(context);
-  const {
-    stolen_antag_info,
-  } = data;
+const VictimPatternsSection = (props) => {
+  const { data } = useBackend<Info>();
+  const { stolen_antag_info } = data;
   return (
     <Section
       fill
       scrollable={!!stolen_antag_info}
-      title="Additional Stolen Information">
-      {!!stolen_antag_info && (
-        stolen_antag_info
-      )}
+      title="Additional Stolen Information"
+    >
+      {!!stolen_antag_info && stolen_antag_info}
     </Section>
   );
 };
 
-export const AntagInfoChangeling = (props, context) => {
-  const { data } = useBackend<Info>(context);
+export const AntagInfoChangeling = (props) => {
+  const { data } = useBackend<Info>();
   return (
-    <Window
-      width={620}
-      height={580}>
+    <Window width={620} height={580}>
       <Window.Content
         style={{
-          "backgroundImage": "none",
-        }}>
+          backgroundImage: 'none',
+        }}
+      >
         <Stack vertical fill>
           <Stack.Item maxHeight={13.2}>
             <IntroductionSection />

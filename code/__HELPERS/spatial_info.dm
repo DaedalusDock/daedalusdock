@@ -37,9 +37,9 @@
 
 /mob/oranges_ear/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED_1
+	initialized = TRUE
 	return INITIALIZE_HINT_NORMAL
 
 /mob/oranges_ear/Destroy(force)
@@ -104,23 +104,17 @@
 
 	var/list/assigned_oranges_ears = SSspatial_grid.assign_oranges_ears(hearables_from_grid)
 
-	var/old_luminosity = center_turf.luminosity
-	center_turf.luminosity = 6 //man if only we had an inbuilt dview()
-
 	//this is the ENTIRE reason all this shit is worth it due to how view() works and can be optimized
 	//view() constructs lists of viewed atoms by default and specifying a specific type of atom to look for limits the lists it constructs to those of that
 	//primitive type and then when the view operation is completed the output is then typechecked to only iterate through objects in view with the same
-	//typepath. by assigning one /mob/oranges_ear to every turf with hearable atoms on it and giving them references to each one means that:
-	//1. view() only constructs lists of atoms with the mob primitive type and
-	//2. the mobs returned by view are fast typechecked to only iterate through /mob/oranges_ear mobs, which guarantees at most one per turf
-	//on a whole this can outperform iterating through all movables in view() by ~2x especially when hearables are a tiny percentage of movables in view
-	for(var/mob/oranges_ear/ear in view(view_radius, center_turf))
+	//typepath. by assigning one /mob/oranges_ear to every turf with hearable atoms on it and giving them references to each one means that
+	//hearers() can be used over view(), which is a huge speed increase.
+	for(var/mob/oranges_ear/ear in hearers(view_radius, center_turf))
 		. += ear.references
 
 	for(var/mob/oranges_ear/remaining_ear as anything in assigned_oranges_ears)//we need to clean up our mess
 		remaining_ear.unassign()
 
-	center_turf.luminosity = old_luminosity
 	return .
 
 /**
@@ -257,13 +251,23 @@
 	return atoms
 
 ///Returns the distance between two atoms
-/proc/get_dist_euclidian(atom/first_location as turf|mob|obj, atom/second_location as turf|mob|obj)
+/proc/get_dist_euclidean(atom/first_location as turf|mob|obj, atom/second_location as turf|mob|obj)
+	if(!first_location.z || !second_location.z)
+		return INFINITY
+
 	var/dx = first_location.x - second_location.x
 	var/dy = first_location.y - second_location.y
 
 	var/dist = sqrt(dx ** 2 + dy ** 2)
 
 	return dist
+
+/// Returns the manhattan distance between two atoms. Returns INFINITY if either are not on a turf, for BYOND get_dist() parity.
+/proc/get_dist_manhattan(atom/A, atom/B)
+	if(!A.z || !B.z)
+		return INFINITY
+
+	return abs(A.x - B.x) + abs(A.y - B.y) + abs(A.z - B.z)
 
 ///Returns a list of turfs around a center based on RANGE_TURFS()
 /proc/circle_range_turfs(center = usr, radius = 3)
@@ -328,15 +332,26 @@
 	if(istype(get_turf))
 		return get_turf
 
-///Returns a list with all the adjacent open turfs. Clears the list of nulls in the end.
+///Returns a list with all the adjacent open turfs.
 /proc/get_adjacent_open_turfs(atom/center)
-	. = list(
-		get_open_turf_in_dir(center, NORTH),
-		get_open_turf_in_dir(center, SOUTH),
-		get_open_turf_in_dir(center, EAST),
-		get_open_turf_in_dir(center, WEST)
-		)
-	list_clear_nulls(.)
+	var/list/hand_back = list()
+	// Inlined get_open_turf_in_dir, just to be fast
+	var/turf/open/new_turf = get_step(center, NORTH)
+	if(istype(new_turf))
+		hand_back += new_turf
+	new_turf = get_step(center, SOUTH)
+
+	if(istype(new_turf))
+		hand_back += new_turf
+	new_turf = get_step(center, EAST)
+
+	if(istype(new_turf))
+		hand_back += new_turf
+	new_turf = get_step(center, WEST)
+
+	if(istype(new_turf))
+		hand_back += new_turf
+	return hand_back
 
 ///Returns a list with all the adjacent areas by getting the adjacent open turfs
 /proc/get_adjacent_open_areas(atom/center)

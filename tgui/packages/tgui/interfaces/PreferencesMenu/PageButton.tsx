@@ -1,20 +1,20 @@
-import { InfernoNode } from "inferno";
-import { Button } from "../../components";
+import { ReactNode } from 'react';
+
+import { Button } from '../../components';
 
 export const PageButton = <P extends unknown>(props: {
-  currentPage: P,
-  page: P,
-  otherActivePages?: P[],
+  children?: ReactNode;
+  currentPage: P;
+  otherActivePages?: P[];
 
-  setPage: (page: P) => void,
+  page: P;
 
-  children?: InfernoNode,
+  setPage: (page: P) => void;
 }) => {
-  const pageIsActive = props.currentPage === props.page
-    || (
-      props.otherActivePages
-        && props.otherActivePages.indexOf(props.currentPage) !== -1
-    );
+  const pageIsActive =
+    props.currentPage === props.page ||
+    (props.otherActivePages &&
+      props.otherActivePages.indexOf(props.currentPage) !== -1);
 
   return (
     <Button

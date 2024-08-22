@@ -51,8 +51,6 @@
 		return FALSE
 	if(EMERGENCY_ESCAPED_OR_ENDGAMED)
 		return FALSE
-	if(ispath(typepath, /datum/round_event/ghost_role) && !(GLOB.ghost_role_flags & GHOSTROLE_MIDROUND_EVENT))
-		return FALSE
 
 	var/datum/game_mode/dynamic/dynamic = SSticker.mode
 	if (istype(dynamic) && dynamic_should_hijack && dynamic.random_event_hijacked != HIJACKED_NOTHING)
@@ -174,8 +172,10 @@
 
 //Do not override this proc, instead use the appropiate procs.
 //This proc will handle the calls to the appropiate procs.
-/datum/round_event/process()
+/datum/round_event/proc/process_event()
+	set waitfor = FALSE
 	SHOULD_NOT_OVERRIDE(TRUE)
+
 	if(!processing)
 		return
 

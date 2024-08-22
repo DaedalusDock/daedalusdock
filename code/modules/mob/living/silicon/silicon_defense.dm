@@ -1,7 +1,3 @@
-
-/mob/living/silicon/grippedby(mob/living/user, instant = FALSE)
-	return //can't upgrade a simple pull into a more aggressive grab.
-
 /mob/living/silicon/get_ear_protection()//no ears
 	return 2
 
@@ -77,8 +73,6 @@
 			visible_message(span_notice("[user] pets [src]."), \
 							span_notice("[user] pets you."), null, null, user)
 			to_chat(user, span_notice("You pet [src]."))
-			SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT_RND, "pet_borg", /datum/mood_event/pet_borg)
-
 
 /mob/living/silicon/attack_drone(mob/living/simple_animal/drone/M)
 	if(M.combat_mode)

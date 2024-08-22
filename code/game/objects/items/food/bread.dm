@@ -72,7 +72,6 @@
 
 /obj/item/food/breadslice/moldy/bacteria/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOLD, CELL_VIRUS_TABLE_GENERIC, rand(2, 4), 25)
 
 
 /obj/item/food/bread/meat
@@ -258,6 +257,9 @@
 	foodtypes = GRAIN
 	venue_value = FOOD_PRICE_CHEAP
 
+	block_chance = 10
+	block_sound = 'sound/weapons/block/parry.ogg'
+
 /obj/item/food/garlicbread
 	name = "garlic bread"
 	desc = "Alas, it is limited."
@@ -292,6 +294,6 @@
 	foodtypes = GRAIN | DAIRY
 	w_class = WEIGHT_CLASS_SMALL
 
-/obj/item/food/butterdog/ComponentInitialize()
+/obj/item/food/butterdog/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/slippery, 80)

@@ -11,8 +11,8 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	light_on = FALSE
 	integrity_failure = 0.5
 	max_integrity = 100
-	armor = list(MELEE = 0, BULLET = 20, LASER = 20, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
+	armor = list(BLUNT = 0, PUNCTURE = 20, SLASH = 0, LASER = 20, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+	light_system = OVERLAY_LIGHT_DIRECTIONAL
 
 	var/bypass_state = FALSE // bypassing the set icon state
 
@@ -58,7 +58,10 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	/// Number of total expansion bays this computer has available.
 	var/max_bays = 0
 
+	/// Is this computer allowed to save imprint information? (truthy), If so, what's the prefix?
+	var/imprint_prefix = FALSE
 	var/saved_identification = null // next two values are the currently imprinted id and job values
+	/// The title of the job saved to this PC. Will often not be a real job, this is for flavor.
 	var/saved_job = null
 
 	/// Allow people with chunky fingers to use?
@@ -153,7 +156,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	if(issilicon(user))
 		return
 
-	if(user.canUseTopic(src, BE_CLOSE))
+	if(user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		var/obj/item/computer_hardware/card_slot/card_slot2 = all_components[MC_CARD2]
 		var/obj/item/computer_hardware/card_slot/card_slot = all_components[MC_CARD]
 		if(card_slot2?.try_eject(user) || card_slot?.try_eject(user))
@@ -168,7 +171,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 		return card_slot.GetAccess()
 	return ..()
 
-/obj/item/modular_computer/GetID()
+/obj/item/modular_computer/GetID(bypass_wallet)
 	var/obj/item/computer_hardware/card_slot/card_slot = all_components[MC_CARD]
 	var/obj/item/computer_hardware/card_slot/card_slot2 = all_components[MC_CARD2]
 
@@ -254,7 +257,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 
 /obj/item/modular_computer/MouseDrop(obj/over_object, src_location, over_location)
 	var/mob/M = usr
-	if((!istype(over_object, /atom/movable/screen)) && usr.canUseTopic(src, BE_CLOSE))
+	if((!istype(over_object, /atom/movable/screen)) && usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return attack_self(M)
 	return ..()
 
@@ -357,27 +360,47 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 
 	// If we have a recharger, enable it automatically. Lets computer without a battery work.
 	var/obj/item/computer_hardware/recharger/recharger = all_components[MC_CHARGE]
-	if(recharger)
-		recharger.enabled = 1
+	// Wake up the network card so it can start accepting packets.
+	var/obj/item/computer_hardware/network_card = all_components[MC_NET]
+	recharger?.enable_changed(TRUE)
+	network_card?.enable_changed(TRUE)
 
-	if(use_power()) // use_power() checks if the PC is powered
-		if(issynth)
-			to_chat(user, span_notice("You send an activation signal to \the [src], turning it on."))
-		else
-			to_chat(user, span_notice("You press the power button and start up \the [src]."))
-		if(looping_sound)
-			soundloop.start()
-		enabled = 1
-		update_appearance()
-		if(user)
-			ui_interact(user)
-		return TRUE
-	else // Unpowered
+	var/obj/item/computer_hardware/hard_drive/hdd = all_components[MC_HDD]
+	var/obj/item/computer_hardware/hard_drive/role/ssd = all_components[MC_HDD_JOB]
+	var/datum/computer_file/data/text/autorun_file = hdd?.find_file_by_name(MC_AUTORUN_FILE)
+	var/autorun_id = autorun_file?.stored_text
+
+
+
+
+	// Final check, can we start up?
+	if(!use_power()) // use_power() checks if the PC is powered
 		if(issynth)
 			to_chat(user, span_warning("You send an activation signal to \the [src] but it does not respond."))
 		else
 			to_chat(user, span_warning("You press the power button but \the [src] does not respond."))
 		return FALSE
+
+	if(issynth)
+		to_chat(user, span_notice("You send an activation signal to \the [src], turning it on."))
+	else
+		to_chat(user, span_notice("You press the power button and start up \the [src]."))
+	if(looping_sound)
+		soundloop.start()
+	enabled = TRUE
+
+	//Start the Autorun program before we pass control to the user
+	if(autorun_id)
+		var/datum/computer_file/program/target_program = hdd?.find_file_by_name(autorun_id)
+		if(!target_program && ssd)
+			target_program = ssd.find_file_by_name(autorun_id)
+		if(istype(target_program))
+			try_run_program(target_program, user, FALSE) //Be quiet about it. Just transparently fail if it doesn't work.
+	update_appearance()
+	if(user)
+		ui_interact(user)
+	return TRUE
+
 
 // Process currently calls handle_power(), may be expanded in future if more things are added.
 /obj/item/modular_computer/process(delta_time)
@@ -481,7 +504,8 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 		data["PC_batterypercent"] = "N/C"
 		data["PC_showbatteryicon"] = battery_module ? 1 : 0
 
-	if(recharger && recharger.enabled && recharger.check_functionality() && recharger.use_power(0))
+	// We don't need to check for enablement as check_functionality does that for us.
+	if(recharger && recharger.check_functionality() && recharger.use_power(0))
 		data["PC_apclinkicon"] = "charging.gif"
 
 	switch(get_ntnet_status())
@@ -540,10 +564,13 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 		return FALSE
 	var/obj/item/computer_hardware/network_card/network_card = all_components[MC_NET]
 
-	return SSnetworks.add_log(text, network_card.network_id, network_card.hardware_id)
+	return SSnetworks.add_log(text, network_card.hardware_id)
 
 /obj/item/modular_computer/proc/shutdown_computer(loud = 1)
 	kill_program(forced = TRUE)
+	// shut down the network card so it doesn't accepting packets while the machine is off.
+	var/obj/item/computer_hardware/network_card = all_components[MC_NET]
+	network_card?.enable_changed(FALSE)
 	for(var/datum/computer_file/program/P in idle_threads)
 		P.kill_program(forced = TRUE)
 		idle_threads.Remove(P)
@@ -551,7 +578,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 		soundloop.stop()
 	if(loud)
 		physical.visible_message(span_notice("\The [src] shuts down."))
-	enabled = 0
+	enabled = FALSE
 	update_appearance()
 
 /obj/item/modular_computer/ui_action_click(mob/user, actiontype)
@@ -591,7 +618,10 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	return TRUE
 
 /obj/item/modular_computer/proc/UpdateDisplay()
-	name = "[saved_identification] ([saved_job])"
+	if(!imprint_prefix)
+		name = initial(name) //No saved ID, no fucked up name.
+		return
+	name = "[imprint_prefix] - [saved_job ? "([saved_job])" : null]"
 
 /obj/item/modular_computer/screwdriver_act(mob/user, obj/item/tool)
 	if(!deconstructable)
@@ -636,15 +666,6 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 		to_chat(user, span_notice("You slot \the [attacking_item] into [src]."))
 		return
 
-	// Scan a photo.
-	if(istype(attacking_item, /obj/item/photo))
-		var/obj/item/computer_hardware/hard_drive/hdd = all_components[MC_HDD]
-		var/obj/item/photo/pic = attacking_item
-		if(hdd)
-			for(var/datum/computer_file/program/messenger/messenger in hdd.stored_files)
-				saved_image = pic.picture
-				messenger.ProcessPhoto()
-		return
 
 	// Insert items into the components
 	for(var/h in all_components)
@@ -707,3 +728,33 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 
 /obj/item/modular_computer/proc/Remove_Messenger()
 	GLOB.TabletMessengers -= src
+
+/obj/item/modular_computer/proc/try_run_program(datum/computer_file/program/runnable, mob/user, loud = TRUE)
+	runnable.computer = src
+
+	if(!runnable.is_supported_by_hardware(hardware_flag, loud, user))
+		return
+
+	// The program is already running. Resume it.
+	if(runnable in idle_threads)
+		runnable.program_state = PROGRAM_STATE_ACTIVE
+		active_program = runnable
+		runnable.alert_pending = FALSE
+		idle_threads.Remove(runnable)
+		update_appearance()
+		return
+
+	if(idle_threads.len > max_idle_programs)
+		if(user)
+			to_chat(user, span_danger("\The [src] displays a \"Maximal CPU load reached. Unable to run another program.\" error."))
+		return
+
+	if(runnable.requires_ntnet && !get_ntnet_status(runnable.requires_ntnet_feature)) // The program requires NTNet connection, but we are not connected to NTNet.
+		if(user)
+			to_chat(user, span_danger("\The [src]'s screen shows \"Unable to connect to NTNet. Please retry. If problem persists contact your system administrator.\" warning."))
+		return
+	if(runnable.run_program(user))
+		active_program = runnable
+		runnable.alert_pending = FALSE
+		update_appearance()
+	return TRUE

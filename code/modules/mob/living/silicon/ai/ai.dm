@@ -179,7 +179,8 @@
 		))
 
 	GLOB.ai_list += src
-	GLOB.shuttle_caller_list += src
+
+	SET_TRACKING(TRACKING_KEY_SHUTTLE_CALLER)
 
 	builtInCamera = new (src)
 	builtInCamera.network = list("ss13")
@@ -215,7 +216,7 @@
 
 /mob/living/silicon/ai/Destroy()
 	GLOB.ai_list -= src
-	GLOB.shuttle_caller_list -= src
+	UNSET_TRACKING(TRACKING_KEY_SHUTTLE_CALLER)
 	SSshuttle.autoEvac()
 	QDEL_NULL(eyeobj) // No AI, no Eye
 	QDEL_NULL(spark_system)
@@ -325,7 +326,7 @@
 
 	// hack to display shuttle timer
 	if(!EMERGENCY_IDLE_OR_RECALLED)
-		var/obj/machinery/computer/communications/C = locate() in GLOB.machines
+		var/obj/machinery/computer/communications/C = locate() in INSTANCES_OF(/obj/machinery/computer/communications)
 		if(C)
 			C.post_status("shuttle")
 
@@ -413,14 +414,14 @@
 			src << browse(last_paper_seen, "window=show_paper")
 	//Carn: holopad requests
 	if(href_list["jump_to_holopad"])
-		var/obj/machinery/holopad/Holopad = locate(href_list["jump_to_holopad"]) in GLOB.machines
+		var/obj/machinery/holopad/Holopad = locate(href_list["jump_to_holopad"]) in INSTANCES_OF(/obj/machinery/holopad)
 		if(Holopad)
 			cam_prev = get_turf(eyeobj)
 			eyeobj.setLoc(Holopad)
 		else
 			to_chat(src, span_notice("Unable to locate the holopad."))
 	if(href_list["project_to_holopad"])
-		var/obj/machinery/holopad/Holopad = locate(href_list["project_to_holopad"]) in GLOB.machines
+		var/obj/machinery/holopad/Holopad = locate(href_list["project_to_holopad"]) in INSTANCES_OF(/obj/machinery/holopad)
 		if(Holopad)
 			lastloc = get_turf(eyeobj)
 			Holopad.attack_ai_secondary(src) //may as well recycle
@@ -447,7 +448,7 @@
 			to_chat(src, "Target is not on or near any active cameras on the station.")
 		return
 	if (href_list["ai_take_control"]) //Mech domination
-		var/obj/vehicle/sealed/mecha/M = locate(href_list["ai_take_control"]) in GLOB.mechas_list
+		var/obj/vehicle/sealed/mecha/M = locate(href_list["ai_take_control"]) in INSTANCES_OF(/obj/vehicle/sealed/mecha)
 		if (!M)
 			return
 
@@ -604,8 +605,8 @@
 				if("Station Member")
 					var/list/personnel_list = list()
 
-					for(var/datum/data/record/record_datum in GLOB.data_core.locked)//Look in data core locked.
-						personnel_list["[record_datum.fields["name"]]: [record_datum.fields["rank"]]"] = record_datum.fields["character_appearance"]//Pull names, rank, and image.
+					for(var/datum/data/record/record_datum in SSdatacore.get_records(DATACORE_RECORDS_LOCKED))//Look in data core locked.
+						personnel_list["[record_datum.fields[DATACORE_NAME]]: [record_datum.fields[DATACORE_RANK]]"] = record_datum.fields[DATACORE_APPEARANCE]//Pull names, rank, and image.
 
 					if(!length(personnel_list))
 						tgui_alert(usr,"No suitable records found. Aborting.")
@@ -789,11 +790,11 @@
 		to_chat(src, "You have been downloaded to a mobile storage device. Remote device connection severed.")
 		to_chat(user, "[span_boldnotice("Transfer successful")]: [name] ([rand(1000,9999)].exe) removed from host terminal and stored within local memory.")
 
-/mob/living/silicon/ai/canUseTopic(atom/movable/M, be_close=FALSE, no_dexterity=FALSE, no_tk=FALSE, need_hands = FALSE, floor_okay=FALSE)
+/mob/living/silicon/ai/canUseTopic(atom/movable/target, flags)
 	if(control_disabled)
 		to_chat(src, span_warning("You can't do that right now!"))
 		return FALSE
-	return can_see(M) && ..() //stop AIs from leaving windows open and using then after they lose vision
+	return can_see(target) && ..() //stop AIs from leaving windows open and using then after they lose vision
 
 /mob/living/silicon/ai/proc/can_see(atom/A)
 	if(isturf(loc)) //AI in core, check if on cameras
@@ -806,7 +807,7 @@
 	return get_dist(src, A) <= max(viewscale[1]*0.5,viewscale[2]*0.5)
 
 /mob/living/silicon/ai/proc/relay_speech(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
-	var/treated_message = lang_treat(speaker, message_language, raw_message, spans, message_mods)
+	var/treated_message = translate_speech(speaker, message_language, raw_message, spans, message_mods, quote = TRUE)
 	var/start = "Relayed Speech: "
 	var/namepart = "[speaker.GetVoice()][speaker.get_alt_name()]"
 	var/hrefpart = "<a href='?src=[REF(src)];track=[html_encode(namepart)]'>"
@@ -1016,14 +1017,14 @@
 	set name = "Move Upwards"
 	set category = "IC"
 
-	if(eyeobj.zMove(UP, z_move_flags = ZMOVE_FEEDBACK))
+	if(zstep(eyeobj, UP, ZMOVE_FEEDBACK))
 		to_chat(src, span_notice("You move upwards."))
 
 /mob/living/silicon/ai/down()
 	set name = "Move Down"
 	set category = "IC"
 
-	if(eyeobj.zMove(DOWN, z_move_flags = ZMOVE_FEEDBACK))
+	if(zstep(eyeobj, DOWN, ZMOVE_FEEDBACK))
 		to_chat(src, span_notice("You move down."))
 
 /// Proc to hook behavior to the changes of the value of [aiRestorePowerRoutine].

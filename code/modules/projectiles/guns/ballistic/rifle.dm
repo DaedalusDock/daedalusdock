@@ -7,39 +7,47 @@
 	worn_icon_state = "moistnugget"
 	mag_type = /obj/item/ammo_box/magazine/internal/boltaction
 	bolt_wording = "bolt"
-	bolt_type = BOLT_TYPE_LOCKING
+	bolt = /datum/gun_bolt/locking
 	semi_auto = FALSE
 	internal_magazine = TRUE
 	fire_sound = 'sound/weapons/gun/rifle/shot.ogg'
 	fire_sound_volume = 90
 	rack_sound = 'sound/weapons/gun/rifle/bolt_out.ogg'
 	bolt_drop_sound = 'sound/weapons/gun/rifle/bolt_in.ogg'
-	tac_reloads = FALSE
+
+	recoil = 1
+	unwielded_recoil = 4
+
+	accuracy_falloff = 2 //Rifles are extremely accurate
+	unwielded_spread_bonus = 50
 
 /obj/item/gun/ballistic/rifle/rack(mob/user = null)
-	if (bolt_locked == FALSE)
+	if (bolt.is_locked == FALSE) // The bolt is closed
 		to_chat(user, span_notice("You open the bolt of \the [src]."))
 		playsound(src, rack_sound, rack_sound_volume, rack_sound_vary)
-		process_chamber(FALSE, FALSE, FALSE)
-		bolt_locked = TRUE
+
+		update_chamber(FALSE, FALSE, FALSE)
+
+		bolt.is_locked = TRUE
 		update_appearance()
 		return
+
 	drop_bolt(user)
 
-/obj/item/gun/ballistic/rifle/can_shoot()
-	if (bolt_locked)
+/obj/item/gun/ballistic/rifle/can_fire()
+	if(bolt.is_locked)
 		return FALSE
 	return ..()
 
 /obj/item/gun/ballistic/rifle/attackby(obj/item/A, mob/user, params)
-	if (!bolt_locked && !istype(A, /obj/item/stack/sheet/cloth))
+	if (!bolt.is_locked && !istype(A, /obj/item/stack/sheet/cloth))
 		to_chat(user, span_notice("The bolt is closed!"))
 		return
 	return ..()
 
 /obj/item/gun/ballistic/rifle/examine(mob/user)
 	. = ..()
-	. += "The bolt is [bolt_locked ? "open" : "closed"]."
+	. += "The bolt is [bolt.is_locked ? "open" : "closed"]."
 
 ///////////////////////
 // BOLT ACTION RIFLE //
@@ -50,7 +58,6 @@
 	desc = "This piece of junk looks like something that could have been used 700 years ago. It feels slightly moist."
 	sawn_desc = "An extremely sawn-off Mosin Nagant, popularly known as an \"Obrez\". \
 		There was probably a reason it wasn't manufactured this short to begin with."
-	weapon_weight = WEAPON_HEAVY
 	icon_state = "moistnugget"
 	inhand_icon_state = "moistnugget"
 	slot_flags = ITEM_SLOT_BACK
@@ -59,6 +66,8 @@
 	knife_x_offset = 27
 	knife_y_offset = 13
 	can_be_sawn_off = TRUE
+	unwielded_spread_bonus = 90
+
 	var/jamming_chance = 20
 	var/unjam_chance = 10
 	var/jamming_increment = 5
@@ -85,7 +94,7 @@
 				return FALSE
 	..()
 
-/obj/item/gun/ballistic/rifle/boltaction/process_fire(mob/user)
+/obj/item/gun/ballistic/rifle/boltaction/do_fire_gun(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	if(can_jam)
 		if(chambered.loaded_projectile)
 			if(prob(jamming_chance))
@@ -96,18 +105,19 @@
 
 /obj/item/gun/ballistic/rifle/boltaction/attackby(obj/item/item, mob/user, params)
 	. = ..()
-	if(can_jam)
-		if(bolt_locked)
-			if(istype(item, /obj/item/gun_maintenance_supplies))
-				if(do_after(user, 10 SECONDS, target = src))
-					user.visible_message(span_notice("[user] finishes maintenance of [src]."))
-					jamming_chance = 10
-					qdel(item)
+	if(!can_jam || !bolt.is_locked)
+		return
+
+	if(istype(item, /obj/item/gun_maintenance_supplies))
+		if(do_after(user, 10 SECONDS, target = src))
+			user.visible_message(span_notice("[user] finishes maintenance of [src]."))
+			jamming_chance = 10
+			qdel(item)
 
 /obj/item/gun/ballistic/rifle/boltaction/blow_up(mob/user)
 	. = FALSE
 	if(chambered?.loaded_projectile)
-		process_fire(user, user, FALSE)
+		do_fire_gun(user, user, FALSE)
 		. = TRUE
 
 /obj/item/gun/ballistic/rifle/boltaction/harpoon
@@ -154,7 +164,7 @@
 	inhand_y_dimension = 64
 	fire_sound = 'sound/weapons/gun/sniper/shot.ogg'
 	mag_type = /obj/item/ammo_box/magazine/internal/boltaction/pipegun
-	initial_caliber = CALIBER_SHOTGUN
+	initial_caliber = CALIBER_12GAUGE
 	alternative_caliber = CALIBER_A762
 	initial_fire_sound = 'sound/weapons/gun/sniper/shot.ogg'
 	alternative_fire_sound = 'sound/weapons/gun/shotgun/shot.ogg'
@@ -167,7 +177,7 @@
 	can_be_sawn_off = FALSE
 	projectile_damage_multiplier = 0.75
 
-/obj/item/gun/ballistic/rifle/boltaction/pipegun/handle_chamber()
+/obj/item/gun/ballistic/rifle/boltaction/pipegun/do_chamber_update()
 	. = ..()
 	do_sparks(1, TRUE, src)
 
@@ -224,7 +234,7 @@
 /obj/item/gun/ballistic/rifle/enchanted/attack_self()
 	return
 
-/obj/item/gun/ballistic/rifle/enchanted/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+/obj/item/gun/ballistic/rifle/enchanted/do_fire_gun(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	. = ..()
 	if(!.)
 		return

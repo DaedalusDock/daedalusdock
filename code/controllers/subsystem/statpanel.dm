@@ -27,6 +27,8 @@ SUBSYSTEM_DEF(statpanels)
 			"Map: [SSmapping.config?.map_name || "Loading..."]",
 			cached ? "Next Map: [cached.map_name]" : null,
 			"Round ID: [GLOB.round_id ? GLOB.round_id : "NULL"]",
+			"Gamemode: [SSticker.get_mode_name()]",
+			"\n",
 			"Time Dilation: [round(SStime_track.time_dilation_current,1)]% AVG:([round(SStime_track.time_dilation_avg_fast,1)]%, [round(SStime_track.time_dilation_avg,1)]%, [round(SStime_track.time_dilation_avg_slow,1)]%)",
 			"Server Time: [time2text(world.timeofday, "hh:mm:ss DD-MM-YYYY")]",
 			"\n",
@@ -241,16 +243,16 @@ SUBSYSTEM_DEF(statpanels)
 		list("CPU:", world.cpu),
 		list("Instances:", "[num2text(world.contents.len, 10)]"),
 		list("World Time:", "[world.time]"),
-		list("Globals:", GLOB.stat_entry(), text_ref(GLOB)),
-		list("[config]:", config.stat_entry(), text_ref(config)),
+		list("Globals:", GLOB.stat_entry(), ref(GLOB)),
+		list("[config]:", config.stat_entry(), ref(config)),
 		list("Byond:", "(FPS:[world.fps]) (TickCount:[world.time/world.tick_lag]) (TickDrift:[round(Master.tickdrift,1)]([round((Master.tickdrift/(world.time/world.tick_lag))*100,0.1)]%)) (Internal Tick Usage: [round(MAPTICK_LAST_INTERNAL_TICK_USAGE,0.1)]%)"),
-		list("Master Controller:", Master.stat_entry(), text_ref(Master)),
-		list("Failsafe Controller:", Failsafe.stat_entry(), text_ref(Failsafe)),
+		list("Master Controller:", Master.stat_entry(), ref(Master)),
+		list("Failsafe Controller:", Failsafe.stat_entry(), ref(Failsafe)),
 		list("","")
 	)
 	for(var/datum/controller/subsystem/sub_system as anything in Master.subsystems)
-		mc_data[++mc_data.len] = list("\[[sub_system.state_letter()]][sub_system.name]", sub_system.stat_entry(), text_ref(sub_system))
-	mc_data[++mc_data.len] = list("Camera Net", "Cameras: [GLOB.cameranet.cameras.len] | Chunks: [GLOB.cameranet.chunks.len]", text_ref(GLOB.cameranet))
+		mc_data[++mc_data.len] = list("\[[sub_system.state_letter()]][sub_system.name]", sub_system.stat_entry(), ref(sub_system))
+	mc_data[++mc_data.len] = list("Camera Net", "Cameras: [GLOB.cameranet.cameras.len] | Chunks: [GLOB.cameranet.chunks.len]", ref(GLOB.cameranet))
 
 ///immediately update the active statpanel tab of the target client
 /datum/controller/subsystem/statpanels/proc/immediate_send_stat_data(client/target)

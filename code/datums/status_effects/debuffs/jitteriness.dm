@@ -15,12 +15,10 @@
 		return FALSE
 
 	RegisterSignal(owner, list(COMSIG_LIVING_POST_FULLY_HEAL, COMSIG_LIVING_DEATH), PROC_REF(remove_jitter))
-	SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, id, /datum/mood_event/jittery)
 	return TRUE
 
 /datum/status_effect/jitter/on_remove()
 	UnregisterSignal(owner, list(COMSIG_LIVING_POST_FULLY_HEAL, COMSIG_LIVING_DEATH))
-	SEND_SIGNAL(owner, COMSIG_CLEAR_MOOD_EVENT, id)
 	// juuust in case, reset our x and y's from our jittering
 	owner.pixel_x = 0
 	owner.pixel_y = 0
@@ -57,5 +55,6 @@
 	var/amplitude = min(4, (jitter_amount / 100) + 1)
 	var/pixel_x_diff = rand(-amplitude, amplitude)
 	var/pixel_y_diff = rand(-amplitude / 3, amplitude / 3)
-	animate(src, pixel_x = pixel_x_diff, pixel_y = pixel_y_diff , time = 0.2 SECONDS, loop = 6, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)
-	animate(pixel_x = -pixel_x_diff , pixel_y = -pixel_y_diff , time = 0.2 SECONDS, flags = ANIMATION_RELATIVE)
+	for(var/atom/movable/AM as anything in get_associated_mimics() + src)
+		animate(AM, pixel_x = pixel_x_diff, pixel_y = pixel_y_diff , time = 0.2 SECONDS, loop = 6, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)
+		animate(pixel_x = -pixel_x_diff , pixel_y = -pixel_y_diff , time = 0.2 SECONDS, flags = ANIMATION_RELATIVE)

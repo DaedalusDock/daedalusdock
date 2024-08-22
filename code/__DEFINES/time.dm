@@ -10,6 +10,7 @@
 ///How many years into the future (or past, if you're into that) the server is
 #define STATION_YEAR_OFFSET 805
 
+
 #define JANUARY 1
 #define FEBRUARY 2
 #define MARCH 3
@@ -54,6 +55,11 @@ When using time2text(), please use "DDD" to find the weekday. Refrain from using
 #define SECOND *10
 #define SECONDS *10
 
+#define MILLISECONDS *0.01
+
+#define DECISECONDS *1 //! The base unit all of these defines are scaled by, because byond uses that as a unit of measurement for some fucking reason
+
+
 #define MINUTE *600
 #define MINUTES *600
 
@@ -64,8 +70,6 @@ When using time2text(), please use "DDD" to find the weekday. Refrain from using
 #define DAYS *864000
 
 #define TICKS *world.tick_lag
-
-#define MILLISECONDS * 0.01
 
 #define DS2TICKS(DS) ((DS)/world.tick_lag)
 

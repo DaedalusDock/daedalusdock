@@ -20,7 +20,7 @@
 	name = "hypospray mk.II"
 	icon_state = "hypo2"
 	icon = 'modular_pariah/modules/hyposprays/icons/hyposprays.dmi'
-	desc = "A new development from DeForest Medical, this hypospray takes 60-unit vials as the drug supply for easy swapping."
+	desc = "An experimental high-capacity refillable auto injector."
 	w_class = WEIGHT_CLASS_TINY
 	var/list/allowed_containers = list(/obj/item/reagent_containers/glass/vial/small)
 	/// Is the hypospray only able to use small vials. Relates to the loaded overlays
@@ -46,10 +46,9 @@
 	var/penetrates = null
 
 /obj/item/hypospray/mkii/cmo
-	name = "hypospray mk.II deluxe"
+	name = "hypospray mk.II"
 	allowed_containers = list(/obj/item/reagent_containers/glass/vial/small, /obj/item/reagent_containers/glass/vial/large)
 	icon_state = "cmo2"
-	desc = "The deluxe hypospray can take larger 120-unit vials. It also acts faster and can deliver more reagents per spray."
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	start_vial = /obj/item/reagent_containers/glass/vial/large/deluxe
 	small_only = FALSE
@@ -64,9 +63,12 @@
 	if(!spawnwithvial)
 		update_appearance()
 		return
+
 	if(start_vial)
 		vial = new start_vial
 		update_appearance()
+
+	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
 
 /obj/item/hypospray/mkii/update_overlays()
 	. = ..()
@@ -82,10 +84,6 @@
 	var/mutable_appearance/chem_loaded = mutable_appearance('modular_pariah/modules/hyposprays/icons/hyposprays.dmi', vial_spritetype)
 	chem_loaded.color = vial.chem_color
 	. += chem_loaded
-
-/obj/item/hypospray/mkii/ComponentInitialize()
-	. = ..()
-	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/hypospray/mkii/update_icon_state()
 	. = ..()
@@ -197,7 +195,7 @@
 		return
 
 	if(iscarbon(injectee))
-		var/obj/item/bodypart/affecting = injectee.get_bodypart(check_zone(user.zone_selected))
+		var/obj/item/bodypart/affecting = injectee.get_bodypart(deprecise_zone(user.zone_selected))
 		if(!affecting)
 			to_chat(user, span_warning("The limb is missing!"))
 			return
@@ -232,7 +230,7 @@
 		if(HYPO_INJECT)
 			vial.reagents.trans_to(injectee, vial.amount_per_transfer_from_this, methods = INJECT)
 		if(HYPO_SPRAY)
-			vial.reagents.trans_to(injectee, vial.amount_per_transfer_from_this, methods = PATCH)
+			vial.reagents.trans_to(injectee, vial.amount_per_transfer_from_this, methods = TOUCH)
 
 	var/long_sound = vial.amount_per_transfer_from_this >= 15
 	playsound(loc, long_sound ? 'modular_pariah/modules/hyposprays/sound/hypospray_long.ogg' : pick('modular_pariah/modules/hyposprays/sound/hypospray.ogg','modular_pariah/modules/hyposprays/sound/hypospray2.ogg'), 50, 1, -1)

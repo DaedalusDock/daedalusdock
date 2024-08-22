@@ -1,10 +1,12 @@
 GLOBAL_LIST_INIT(job_display_order, list(
+	// Management
 	/datum/job/captain,
 	/datum/job/head_of_personnel,
+	///datum/job/bureaucrat,
+	// Security
 	/datum/job/head_of_security,
 	/datum/job/warden,
 	/datum/job/security_officer,
-	/datum/job/detective,
 	/datum/job/prisoner,
 	// Engineeering
 	/datum/job/chief_engineer,
@@ -17,16 +19,12 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/datum/job/chemist,
 	/datum/job/virologist,
 	/datum/job/psychologist,
-	// Science
-	/datum/job/research_director,
-	/datum/job/scientist,
-	/datum/job/roboticist,
-	/datum/job/geneticist,
 	// Supply
 	/datum/job/quartermaster,
 	/datum/job/cargo_technician,
 	/datum/job/shaft_miner,
 	// Other
+	/datum/job/detective,
 	/datum/job/bartender,
 	/datum/job/botanist,
 	/datum/job/cook,
@@ -35,7 +33,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/datum/job/janitor,
 	/datum/job/lawyer,
 	/datum/job/clown,
-	/datum/job/mime,
 	/datum/job/assistant,
 	/datum/job/ai,
 	/datum/job/cyborg
@@ -48,6 +45,9 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/// The description of the job, used for preferences menu.
 	/// Keep it short and useful. Avoid in-jokes, these are for new players.
 	var/description
+
+	/// A string added to the on-join block to tell you how to use your radio.
+	var/radio_help_message = "<b>Prefix your message with :h to speak on your department's radio. To see other prefixes, look closely at your headset.</b>"
 
 	/// Innate skill levels unlocked at roundstart. Based on config.jobs_have_minimal_access config setting, for example with a skeleton crew. Format is list(/datum/skill/foo = SKILL_EXP_NOVICE) with exp as an integer or as per code/_DEFINES/skills.dm
 	var/list/skills
@@ -108,14 +108,12 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	var/exp_granted_type = ""
 
 	var/paycheck = PAYCHECK_MINIMAL
-	var/paycheck_department = ACCOUNT_STATION_MASTER
+	var/paycheck_department = null
 
 	var/list/mind_traits // Traits added to the mind of the mob assigned this job
 
 	///Lazylist of traits added to the liver of the mob assigned this job (used for the classic "cops heal from donuts" reaction, among others)
 	var/list/liver_traits = null
-
-	var/bounty_types = CIV_JOB_BASIC
 
 	/// Goodies that can be received via the mail system.
 	// this is a weighted list.
@@ -146,7 +144,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/// List of family heirlooms this job can get with the family heirloom quirk. List of types.
 	var/list/family_heirlooms
 
-	/// All values = (JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN)
+	/// All values = (JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN)
 	var/job_flags = NONE
 
 	/// Multiplier for general usage of the voice of god.
@@ -230,7 +228,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(head_announce)
 		announce_head(joining_mob, head_announce)
 
-
 //Used for a special check of whether to allow a client to latejoin as this job.
 /datum/job/proc/special_check_latejoin(client/latejoin)
 	return TRUE
@@ -240,12 +237,17 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	return
 
 /mob/living/carbon/human/on_job_equipping(datum/job/equipping, datum/preferences/used_pref)
-	var/datum/bank_account/bank_account = new(real_name, equipping, dna.species.payday_modifier)
-	bank_account.payday(STARTING_PAYCHECKS, TRUE)
+	var/datum/bank_account/bank_account = new(real_name, equipping)
 	account_id = bank_account.account_id
 	bank_account.replaceable = FALSE
 
 	dress_up_as_job(equipping, FALSE, used_pref, TRUE)
+	var/obj/item/storage/wallet/W = wear_id
+	if(istype(W))
+		var/monero = round(equipping.paycheck, 10)
+		SSeconomy.spawn_cash_for_amount(monero, W)
+	else
+		bank_account.payday()
 
 /mob/living/proc/dress_up_as_job(datum/job/equipping, visual_only = FALSE)
 	return
@@ -273,9 +275,11 @@ GLOBAL_LIST_INIT(job_display_order, list(
 
 
 /datum/job/proc/announce_head(mob/living/carbon/human/H, channels) //tells the given channel that the given mob is the new department head. See communications.dm for valid channels.
-	if(H && GLOB.announcement_systems.len)
-		//timer because these should come after the captain announcement
-		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), CALLBACK(pick(GLOB.announcement_systems), TYPE_PROC_REF(/obj/machinery/announcement_system, announce), "NEWHEAD", H.real_name, H.job, channels), 1))
+	if(!H)
+		return
+
+	//timer because these should come after the captain announcement
+	SSshuttle.arrivals?.OnDock(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), CALLBACK(pick(GLOB.announcement_systems), TYPE_PROC_REF(/obj/machinery/announcement_system, announce), "NEWHEAD", H.real_name, H.job, channels), 1))
 
 //If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
 /datum/job/proc/player_old_enough(client/player)
@@ -305,14 +309,12 @@ GLOBAL_LIST_INIT(job_display_order, list(
 		return FALSE
 	return TRUE
 
-/datum/job/proc/radio_help_message(mob/M)
-	to_chat(M, "<b>Prefix your message with :h to speak on your department's radio. To see other prefixes, look closely at your headset.</b>")
-
 /datum/outfit/job
 	name = "Standard Gear"
 
 	var/jobtype = null
-
+	/// If this job uses the Jumpskirt/Jumpsuit pref
+	var/allow_jumpskirt = TRUE
 	uniform = /obj/item/clothing/under/color/grey
 	id = /obj/item/card/id/advanced
 	ears = /obj/item/radio/headset
@@ -321,6 +323,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	shoes = /obj/item/clothing/shoes/sneakers/black
 	box = /obj/item/storage/box/survival
 
+	id_in_wallet = TRUE
 	preload = TRUE // These are used by the prefs ui, and also just kinda could use the extra help at roundstart
 
 	var/backpack = /obj/item/storage/backpack
@@ -347,15 +350,9 @@ GLOBAL_LIST_INIT(job_display_order, list(
 			else
 				back = backpack //Department backpack
 
-	//converts the uniform string into the path we'll wear, whether it's the skirt or regular variant
-	var/holder
-	if(H.jumpsuit_style == PREF_SKIRT)
-		holder = "[uniform]/skirt"
-		if(!text2path(holder))
-			holder = "[uniform]"
-	else
-		holder = "[uniform]"
-	uniform = text2path(holder)
+	/// Handles jumpskirt pref
+	if(allow_jumpskirt && H.jumpsuit_style == PREF_SKIRT)
+		uniform = text2path("[uniform]/skirt") || uniform
 
 	var/client/client = GLOB.directory[ckey(H.mind?.key)]
 
@@ -370,27 +367,40 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(!J)
 		J = SSjob.GetJob(H.job)
 
-	var/obj/item/card/id/card = H.wear_id
+	var/obj/item/card/id/card = H.wear_id.GetID(TRUE)
 	if(istype(card))
 		ADD_TRAIT(card, TRAIT_JOB_FIRST_ID_CARD, ROUNDSTART_TRAIT)
 		shuffle_inplace(card.access) // Shuffle access list to make NTNet passkeys less predictable
+
 		card.registered_name = H.real_name
 		if(H.age)
 			card.registered_age = H.age
+		card.blood_type = H.dna.blood_type
+		card.dna_hash = H.dna.unique_identity
+		card.fingerprint = H.get_fingerprints(TRUE)
 		card.update_label()
 		card.update_icon()
+
 		var/datum/bank_account/B = SSeconomy.bank_accounts_by_id["[H.account_id]"]
 		if(B && B.account_id == H.account_id)
 			card.registered_account = B
 			B.bank_cards += card
+
 		H.sec_hud_set_ID()
+		if(!SSdatacore.finished_setup)
+			card.RegisterSignal(SSdcs, COMSIG_GLOB_DATACORE_READY, TYPE_PROC_REF(/obj/item/card/id, datacore_ready))
+		else
+			spawn(5 SECONDS) //Race condition? I hardly knew her!
+				card.set_icon()
 
 	var/obj/item/modular_computer/tablet/pda/PDA = H.get_item_by_slot(pda_slot)
 	if(istype(PDA))
 		PDA.saved_identification = H.real_name
 		PDA.saved_job = J.title
 		PDA.UpdateDisplay()
-
+		if(H.mind)
+			spawn(-1) //Ssshhh linter don't worry about the lack of a user it's all gonna be okay.
+				PDA.turn_on()
 
 /datum/outfit/job/get_chameleon_disguise_info()
 	var/list/types = ..()
@@ -423,24 +433,15 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	return "Due to extreme staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
 
 
-/// Returns an atom where the mob should spawn in.
+/// Returns either an atom the mob should spawn in, or null, if we have no special overrides.
 /datum/job/proc/get_roundstart_spawn_point()
 	if(random_spawns_possible)
-		if(HAS_TRAIT(SSstation, STATION_TRAIT_RANDOM_ARRIVALS))
-			return get_safe_random_station_turf(typesof(/area/station/hallway)) || get_latejoin_spawn_point()
-		if(HAS_TRAIT(SSstation, STATION_TRAIT_HANGOVER))
-			var/obj/effect/landmark/start/hangover_spawn_point
-			for(var/obj/effect/landmark/start/hangover/hangover_landmark in GLOB.start_landmarks_list)
-				hangover_spawn_point = hangover_landmark
-				if(hangover_landmark.used) //so we can revert to spawning them on top of eachother if something goes wrong
-					continue
-				hangover_landmark.used = TRUE
-				break
-			return hangover_spawn_point || get_latejoin_spawn_point()
+		return get_latejoin_spawn_point()
+
 	if(length(GLOB.jobspawn_overrides[title]))
 		return pick(GLOB.jobspawn_overrides[title])
 
-	return get_latejoin_spawn_point()
+	return null //We don't care where we go. Let Ticker decide for us.
 
 
 /// Handles finding and picking a valid roundstart effect landmark spawn point, in case no uncommon different spawning events occur.
@@ -491,7 +492,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(!player_client)
 		return // Disconnected while checking for the appearance ban.
 
-	var/require_human = CONFIG_GET(flag/enforce_human_authority) && (job.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+	var/require_human = FALSE
 
 	src.job = job.title
 
@@ -512,16 +513,18 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	else
 		var/is_antag = (player_client.mob.mind in GLOB.pre_setup_antags)
 		player_client.prefs.safe_transfer_prefs_to(src, TRUE, is_antag)
+
 		if(require_human && !ishumanbasic(src))
 			set_species(/datum/species/human)
 			dna.species.roundstart_changed = TRUE
 			apply_pref_name(/datum/preference/name/backup_human, player_client)
+
 		if(CONFIG_GET(flag/force_random_names))
 			var/species_type = player_client.prefs.read_preference(/datum/preference/choiced/species)
 			var/datum/species/species = new species_type
 
 			var/gender = player_client.prefs.read_preference(/datum/preference/choiced/gender)
-			real_name = species.random_name(gender, TRUE)
+			set_real_name(species.random_name(gender, TRUE))
 	dna.update_dna_identity()
 
 
@@ -554,8 +557,8 @@ GLOBAL_LIST_INIT(job_display_order, list(
 		if(mmi.brain)
 			mmi.brain.name = "[organic_name]'s brain"
 		if(mmi.brainmob)
-			mmi.brainmob.real_name = organic_name //the name of the brain inside the cyborg is the robotized human's name.
-			mmi.brainmob.name = organic_name
+			mmi.brainmob.set_real_name(organic_name)//the name of the brain inside the cyborg is the robotized human's name.
+
 	// If this checks fails, then the name will have been handled during initialization.
 	if(!GLOB.current_anonymous_theme && player_client.prefs.read_preference(/datum/preference/name/cyborg) != DEFAULT_CYBORG_NAME)
 		apply_pref_name(/datum/preference/name/cyborg, player_client)
@@ -577,3 +580,21 @@ GLOBAL_LIST_INIT(job_display_order, list(
 /datum/job/proc/after_latejoin_spawn(mob/living/spawning)
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_JOB_AFTER_LATEJOIN_SPAWN, src, spawning)
+
+/// Called by SSjob when a player joins the round as this job.
+/datum/job/proc/on_join_message(client/C, job_title_pref)
+	var/job_header = "<u><span style='font-size: 200%'>You are the <span style='color:[selection_color]'>[job_title_pref]</span></span></u>."
+
+	var/job_info = list("<br><br>[description]")
+
+	if(supervisors)
+		job_info += "<br><br>As the <span style='color:[selection_color]'>[job_title_pref == title ? job_title_pref : "[job_title_pref] ([title])"]</span> \
+		you answer directly to [supervisors]. Special circumstances may change this."
+
+	job_info += "<br><br>[radio_help_message]"
+
+	to_chat(C, examine_block("[job_header][jointext(job_info, "")]"))
+
+/// Called by SSjob when a player joins the round as this job.
+/datum/job/proc/on_join_popup(client/C, job_title_pref)
+	return

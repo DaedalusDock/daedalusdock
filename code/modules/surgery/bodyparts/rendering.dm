@@ -6,10 +6,8 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(HAS_TRAIT(owner, TRAIT_HUSK) && IS_ORGANIC_LIMB(src))
-		dmg_overlay_type = "" //no damage overlay shown when husked
 		is_husked = TRUE
 	else
-		dmg_overlay_type = initial(dmg_overlay_type)
 		is_husked = FALSE
 
 	if(variable_color)
@@ -56,6 +54,9 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	SHOULD_CALL_PARENT(TRUE)
 
 	cut_overlays()
+	if(is_stump)
+		return
+
 	dir = SOUTH
 	var/key = json_encode(generate_icon_key())
 	var/list/standing = GLOB.limb_overlays_cache[key]
@@ -114,6 +115,7 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	current_icon = new_icon
 	if(draw_color && (body_zone != BODY_ZONE_L_LEG && body_zone != BODY_ZONE_R_LEG))
 		current_icon.Blend(draw_color, ICON_MULTIPLY)
+
 	if(aux_layer)
 		var/icon/new_aux_icon = icon(chosen_icon, chosen_aux_state)
 		current_aux_icon = new_aux_icon
@@ -147,11 +149,11 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 
 
 	if(dropped)
-		if(dmg_overlay_type)
+		if(icon_dmg_overlay && !is_husked)
 			if(brutestate)
-				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_[brutestate]0", -DAMAGE_LAYER, image_dir)
+				. += image(icon_dmg_overlay, "[body_zone]_[brutestate]0", -DAMAGE_LAYER, image_dir)
 			if(burnstate)
-				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_0[burnstate]", -DAMAGE_LAYER, image_dir)
+				. += image(icon_dmg_overlay, "[body_zone]_0[burnstate]", -DAMAGE_LAYER, image_dir)
 
 
 
@@ -170,8 +172,8 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 
 	if(!is_husked)
 		//Draw external organs like horns and frills
-		for(var/obj/item/organ/visual_organ in cosmetic_organs)
-			if(!dropped && !visual_organ.can_draw_on_bodypart(owner))
+		for(var/obj/item/organ/visual_organ as anything in contained_organs)
+			if(!visual_organ.visual || (!dropped && !visual_organ.can_draw_on_bodypart(owner)))
 				continue
 			//Some externals have multiple layers for background, foreground and between
 			. += visual_organ.get_overlays(limb_gender, image_dir)
@@ -201,7 +203,9 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	if(should_draw_greyscale && draw_color)
 		. += "-[draw_color]"
 
-	for(var/obj/item/organ/O as anything in cosmetic_organs)
+	for(var/obj/item/organ/O as anything in contained_organs)
+		if(!O.visual)
+			continue
 		. += "-[json_encode(O.build_cache_key())]"
 
 	for(var/datum/appearance_modifier/mod as anything in appearance_mods)
@@ -281,14 +285,15 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
 		if(draw_color)
 			new_leg_icon_lower.Blend(draw_color, ICON_MULTIPLY)
 
+		for(var/datum/appearance_modifier/mod as anything in appearance_mods)
+			mod.BlendOnto(new_leg_icon)
+			mod.BlendOnto(new_leg_icon_lower)
+
 		GLOB.masked_leg_icons_cache[icon_cache_key] = list(new_leg_icon, new_leg_icon_lower)
 
 	new_leg_icon = GLOB.masked_leg_icons_cache[icon_cache_key][1]
 	new_leg_icon_lower = GLOB.masked_leg_icons_cache[icon_cache_key][2]
 
-	for(var/datum/appearance_modifier/mod as anything in appearance_mods)
-		mod.BlendOnto(new_leg_icon)
-		mod.BlendOnto(new_leg_icon_lower)
 
 	//this could break layering in oddjob cases, but i'm sure it will work fine most of the time... right?
 	var/mutable_appearance/new_leg_appearance = new(limb_overlay)

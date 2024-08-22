@@ -56,11 +56,3 @@
 		user.put_in_hands(FD.pen)
 		to_chat(user, span_notice("You remove [FD.pen] from [src]."))
 		FD.pen = null
-
-/obj/item/ammo_casing/caseless/foam_dart/riot
-	name = "riot foam dart"
-	desc = "Whose smart idea was it to use toys as crowd control? Ages 18 and up."
-	projectile_type = /obj/projectile/bullet/reusable/foam_dart/riot
-	icon_state = "foamdart_riot"
-	base_icon_state = "foamdart_riot"
-	custom_materials = list(/datum/material/iron = 1125)

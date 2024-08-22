@@ -6,7 +6,7 @@
 	density = TRUE
 	anchored = TRUE
 	resistance_flags = ACID_PROOF
-	armor = list(MELEE = 30, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 100)
+	armor = list(BLUNT = 30, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 100)
 	max_integrity = 200
 	integrity_failure = 0.25
 	var/obj/item/showpiece = null
@@ -322,7 +322,7 @@
 		return
 
 	if(is_locked)
-		to_chat(user, span_warning("The case is shut tight with an old-fashioned physical lock. Maybe you should ask the curator for the key?"))
+		to_chat(user, span_warning("The case is shut tight with an old-fashioned physical lock. Maybe you should ask the archivist for the key?"))
 		return
 
 	if(!added_roundstart)
@@ -380,7 +380,7 @@
 
 /obj/item/key/displaycase
 	name = "display case key"
-	desc = "The key to the curator's display cases."
+	desc = "The key to the archivist's display cases."
 
 /obj/item/showpiece_dummy
 	name = "Cheap replica"
@@ -458,7 +458,7 @@
 			if(!payments_acc)
 				to_chat(usr, span_notice("[src] hasn't been registered yet."))
 				return TRUE
-			if(!usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+			if(!usr.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 				return TRUE
 			if(!potential_acc)
 				to_chat(usr, span_notice("No ID card detected."))
@@ -477,7 +477,7 @@
 				usr.put_in_hands(showpiece)
 				to_chat(usr, span_notice("You purchase [showpiece] for [sale_price] credits."))
 				playsound(src, 'sound/effects/cashregister.ogg', 40, TRUE)
-				flick("[initial(icon_state)]_vend", src)
+				z_flick("[initial(icon_state)]_vend", src)
 				showpiece = null
 				update_appearance()
 				SStgui.update_uis(src)
@@ -514,7 +514,7 @@
 			if(payments_acc != potential_acc.registered_account)
 				to_chat(usr, span_warning("[src] rejects your new price."))
 				return
-			if(!usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+			if(!usr.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 				to_chat(usr, span_warning("You need to get closer!"))
 				return
 			sale_price = new_price_input

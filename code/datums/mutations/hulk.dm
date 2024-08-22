@@ -24,27 +24,30 @@
 	for(var/obj/item/bodypart/part as anything in owner.bodyparts)
 		part.variable_color = "#00aa00"
 	owner.update_body_parts()
-	SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "hulk", /datum/mood_event/hulk)
-	RegisterSignal(owner, COMSIG_HUMAN_EARLY_UNARMED_ATTACK, PROC_REF(on_attack_hand))
+	RegisterSignal(owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK, PROC_REF(on_attack_hand))
 	RegisterSignal(owner, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	RegisterSignal(owner, COMSIG_MOB_CLICKON, PROC_REF(check_swing))
 
 /datum/mutation/human/hulk/proc/on_attack_hand(mob/living/carbon/human/source, atom/target, proximity, modifiers)
 	SIGNAL_HANDLER
 
-	if(!proximity)
-		return
-	if(!source.combat_mode || LAZYACCESS(modifiers, RIGHT_CLICK))
-		return
-	if(target.attack_hulk(owner))
-		if(world.time > (last_scream + scream_delay))
-			last_scream = world.time
-			INVOKE_ASYNC(src, PROC_REF(scream_attack), source)
-		log_combat(source, target, "punched", "hulk powers")
-		source.do_attack_animation(target, ATTACK_EFFECT_SMASH)
-		source.changeNext_move(CLICK_CD_MELEE)
+	if(!source.combat_mode || !proximity || LAZYACCESS(modifiers, RIGHT_CLICK))
+		return NONE
 
+	if(!source.can_unarmed_attack())
 		return COMPONENT_CANCEL_ATTACK_CHAIN
+
+	if(!target.attack_hulk(owner))
+		return NONE
+
+	if(world.time > (last_scream + scream_delay))
+		last_scream = world.time
+		INVOKE_ASYNC(src, PROC_REF(scream_attack), source)
+
+	log_combat(source, target, "punched", "hulk powers")
+	source.do_attack_animation(target, ATTACK_EFFECT_SMASH)
+	source.changeNext_move(CLICK_CD_MELEE)
+	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/mutation/human/hulk/proc/scream_attack(mob/living/carbon/human/source)
 	source.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ), forced="hulk")
@@ -66,6 +69,7 @@
 	if(owner.health < owner.crit_threshold)
 		on_losing(owner)
 		to_chat(owner, span_danger("You suddenly feel very weak."))
+		remove_from_owner()
 
 /datum/mutation/human/hulk/on_losing(mob/living/carbon/human/owner)
 	if(..())
@@ -78,8 +82,7 @@
 	for(var/obj/item/bodypart/part as anything in owner.bodyparts)
 		part.variable_color = null
 	owner.update_body_parts()
-	SEND_SIGNAL(owner, COMSIG_CLEAR_MOOD_EVENT, "hulk")
-	UnregisterSignal(owner, COMSIG_HUMAN_EARLY_UNARMED_ATTACK)
+	UnregisterSignal(owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK)
 	UnregisterSignal(owner, COMSIG_MOB_SAY)
 	UnregisterSignal(owner, COMSIG_MOB_CLICKON)
 
@@ -104,10 +107,11 @@
 		return
 	if(!user.throw_mode || user.get_active_held_item() || user.zone_selected != BODY_ZONE_PRECISE_GROIN)
 		return
-	if(user.grab_state < GRAB_NECK || !iscarbon(user.pulling) || user.buckled || user.incapacitated())
+	var/obj/item/hand_item/grab/G = user.get_active_grab()
+	if(G.current_grab.damage_stage < GRAB_NECK || !iscarbon(G.affecting) || user.buckled || user.incapacitated())
 		return
 
-	var/mob/living/carbon/possible_throwable = user.pulling
+	var/mob/living/carbon/possible_throwable = G.affecting
 	if(!possible_throwable.getorganslot(ORGAN_SLOT_EXTERNAL_TAIL))
 		return
 
@@ -184,9 +188,8 @@
 	var/turf/current_spin_turf = yeeted_person.loc
 	var/turf/intermediate_spin_turf = get_step(yeeted_person, the_hulk.dir) // the diagonal
 	var/turf/next_spin_turf = get_step(the_hulk, the_hulk.dir)
-	var/direction = get_dir(current_spin_turf, intermediate_spin_turf)
 
-	if((isturf(current_spin_turf) && current_spin_turf.Exit(yeeted_person, direction)) && (isturf(next_spin_turf) && next_spin_turf.Enter(yeeted_person)))
+	if(yeeted_person.can_step_into(next_spin_turf))
 		yeeted_person.forceMove(next_spin_turf)
 		yeeted_person.face_atom(the_hulk)
 
@@ -198,7 +201,7 @@
 			continue
 
 		yeeted_person.adjustBruteLoss(step*0.5)
-		playsound(collateral_mob,'sound/weapons/punch1.ogg',50,TRUE)
+		playsound(collateral_mob,SFX_PUNCH,50,TRUE)
 		log_combat(the_hulk, collateral_mob, "has smacked with tail swing victim")
 		log_combat(the_hulk, yeeted_person, "has smacked this person into someone while tail swinging") // i have no idea how to better word this
 

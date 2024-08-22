@@ -1,7 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Stamina regeration
-  - rscadd: Sprinting
-  - rscadd: Stamina damage during combat
-  - rscadd: Goon Softcrit

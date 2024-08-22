@@ -1,5 +1,4 @@
 GLOBAL_LIST_EMPTY(antagonists)
-
 /datum/antagonist
 	///Public name for this antagonist. Appears for player prompts and round-end reports.
 	var/name = "\improper Antagonist"
@@ -19,6 +18,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 	var/list/typecache_datum_blacklist = list()
 	///The define string we use to identify the role for bans/player polls to spawn a random new one in.
 	var/job_rank
+	/// A job path to give if the player is this antagonist at roundstart.
+	var/assign_job
 	///Should replace jobbanned player with ghosts if granted.
 	var/replace_banned = TRUE
 	///List of the objective datums that this role currently has, completing all objectives at round-end will cause this antagonist to greentext.
@@ -143,27 +144,31 @@ GLOBAL_LIST_EMPTY(antagonists)
 	var/datum/action/antag_info/info_button
 	if(!owner)
 		CRASH("[src] ran on_gain() without a mind")
+
 	if(!owner.current)
 		CRASH("[src] ran on_gain() on a mind without a mob")
 	if(ui_name)//in the future, this should entirely replace greet.
 		info_button = new(src)
 		info_button.Grant(owner.current)
 		info_button_ref = WEAKREF(info_button)
-	if(!silent)
-		greet()
-		if(ui_name)
-			to_chat(owner.current, span_boldnotice("For more info, read the panel. you can always come back to it using the button in the top left."))
-			info_button.Trigger()
+
 	apply_innate_effects()
-	give_antag_moodies()
 	RegisterSignal(owner, COMSIG_PRE_MINDSHIELD_IMPLANT, PROC_REF(pre_mindshield))
 	RegisterSignal(owner, COMSIG_MINDSHIELD_IMPLANTED, PROC_REF(on_mindshield))
+
 	if(is_banned(owner.current) && replace_banned)
 		replace_banned_player()
 	else if(owner.current.client?.holder && (CONFIG_GET(flag/auto_deadmin_antagonists) || owner.current.client.prefs?.toggles & DEADMIN_ANTAGONIST))
 		owner.current.client.holder.auto_deadmin()
 	if(!soft_antag && owner.current.stat != DEAD && owner.current.client)
 		owner.current.add_to_current_living_antags()
+
+
+	if(!silent)
+		greet()
+		if(ui_name)
+			to_chat(owner.current, span_boldnotice("For more info, read the panel. you can always come back to it using the button in the top left."))
+			info_button.Trigger()
 
 	SEND_SIGNAL(owner, COMSIG_ANTAGONIST_GAINED, src)
 
@@ -201,14 +206,16 @@ GLOBAL_LIST_EMPTY(antagonists)
 		CRASH("Antag datum with no owner.")
 
 	remove_innate_effects()
-	clear_antag_moodies()
 	LAZYREMOVE(owner.antag_datums, src)
 	if(!LAZYLEN(owner.antag_datums) && !soft_antag)
 		owner.current.remove_from_current_living_antags()
+
 	if(info_button_ref)
 		QDEL_NULL(info_button_ref)
+
 	if(!silent && owner.current)
 		farewell()
+
 	UnregisterSignal(owner, COMSIG_PRE_MINDSHIELD_IMPLANT)
 	UnregisterSignal(owner, COMSIG_MINDSHIELD_IMPLANTED)
 	var/datum/team/team = get_team()
@@ -220,7 +227,7 @@ GLOBAL_LIST_EMPTY(antagonists)
 	var/mob/living/current = owner.current
 	for (var/datum/atom_hud/alternate_appearance/basic/has_antagonist/antag_hud as anything in GLOB.has_antagonist_huds)
 		if (!antag_hud.mobShouldSee(current))
-			antag_hud.remove_hud_from(current)
+			antag_hud.hide_from(current)
 
 	qdel(src)
 
@@ -229,32 +236,36 @@ GLOBAL_LIST_EMPTY(antagonists)
  * Use this proc for playing sounds, sending alerts, or helping to setup non-gameplay influencing aspects of the antagonist type.
  */
 /datum/antagonist/proc/greet()
-	if(!silent)
-		to_chat(owner.current, examine_block(span_big("You are a [src].")))
+	var/list/greeting = "[greeting_header()]<br>[jointext(build_greeting(), "<br>")]"
+
+	if(length(objectives))
+		greeting += "You have the following objectives:<br>"
+
+		var/list/objective_strings = list()
+		var/objective_tally = 0
+		for(var/datum/objective/O as anything in objectives)
+			objective_tally++
+			objective_strings += "<b>[objective_tally].) [O.objective_name]</b>: [O.explanation_text]"
+
+		greeting += jointext(objective_strings, "<br><br>")
+
+	to_chat(owner.current, examine_block(jointext(greeting, "")))
+
+/datum/antagonist/proc/greeting_header()
+	return "<u><span style='font-size: 200%'>You are the [span_alert("[src]")]</span></u>"
+
+/// Builds a list of strings to print out in greet().
+/datum/antagonist/proc/build_greeting()
+	RETURN_TYPE(/list)
+	. = list()
 
 /**
  * Proc that sends fluff or instructional messages to the player when they lose this antag datum.
  * Use this proc for playing sounds, sending alerts, or otherwise informing the player that they're no longer a specific antagonist type.
  */
 /datum/antagonist/proc/farewell()
-	if(!silent)
-		to_chat(owner.current, span_userdanger("You are no longer \the [src]!"))
-
-/**
- * Proc that assigns this antagonist's ascribed moodlet to the player.
- */
-/datum/antagonist/proc/give_antag_moodies()
-	if(!antag_moodlet)
-		return
-	SEND_SIGNAL(owner.current, COMSIG_ADD_MOOD_EVENT, "antag_moodlet", antag_moodlet)
-
-/**
- * Proc that removes this antagonist's ascribed moodlet from the player.
- */
-/datum/antagonist/proc/clear_antag_moodies()
-	if(!antag_moodlet)
-		return
-	SEND_SIGNAL(owner.current, COMSIG_CLEAR_MOOD_EVENT, "antag_moodlet")
+	to_chat(owner.current, span_userdanger("You are no longer \the [src]!"))
+	owner.announce_objectives()
 
 /**
  * Proc that will return the team this antagonist belongs to, when called. Helpful with antagonists that may belong to multiple potential teams in a single round, like families.
@@ -426,7 +437,7 @@ GLOBAL_LIST_EMPTY(antagonists)
 	// Add HUDs that they couldn't see before
 	for (var/datum/atom_hud/alternate_appearance/basic/has_antagonist/antag_hud as anything in GLOB.has_antagonist_huds)
 		if (antag_hud.mobShouldSee(owner.current))
-			antag_hud.add_hud_to(owner.current)
+			antag_hud.show_to(owner.current)
 
 //This one is created by admin tools for custom objectives
 /datum/antagonist/custom

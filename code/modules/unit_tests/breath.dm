@@ -51,38 +51,3 @@
 	//Prep the mob
 	source.toggle_internals(lab_rat)
 	TEST_ASSERT(!lab_rat.internal, "Plasmaman toggle_internals() failed to toggle internals")
-
-/// Tests to make sure ashwalkers can breath from the lavaland air
-/datum/unit_test/breath_sanity_ashwalker
-
-/datum/unit_test/breath_sanity_ashwalker/Run()
-	var/mob/living/carbon/human/species/lizard/ashwalker/lab_rat = allocate(/mob/living/carbon/human/species/lizard/ashwalker)
-
-	//Prep the mob
-	lab_rat.forceMove(run_loc_floor_bottom_left)
-
-	var/turf/open/to_fill = run_loc_floor_bottom_left
-	//Prep the floor
-	to_fill.initial_gas = SSzas.lavaland_atmos.gas
-	to_fill.make_air()
-
-	lab_rat.breathe()
-	var/list/reason
-	if(lab_rat.has_alert(ALERT_NOT_ENOUGH_OXYGEN))
-		if(!to_fill.return_air())
-			return Fail("Assertion Failed: Turf failed to return air. Type: [to_fill.type], Initial Gas: [json_encode(to_fill.initial_gas)]")
-
-		var/datum/gas_mixture/turf_gas = to_fill.return_air()
-		LAZYADD(reason, "Turf mix: [json_encode(turf_gas.gas)] | T: [turf_gas.temperature] | P: [turf_gas.returnPressure()] | Initial Gas: [json_encode(to_fill.initial_gas)]")
-
-		if(lab_rat.loc != to_fill)
-			LAZYADD(reason, "Rat was not located on it's intended turf!")
-
-	if(reason)
-		return Fail("Assertion Failed: [reason.Join(";")]", __FILE__, __LINE__)
-
-/datum/unit_test/breath_sanity_ashwalker/Destroy()
-	//Reset initial_gas to avoid future issues on other tests
-	var/turf/open/to_fill = run_loc_floor_bottom_left
-	to_fill.initial_gas = OPENTURF_DEFAULT_ATMOS
-	return ..()

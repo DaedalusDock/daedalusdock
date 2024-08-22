@@ -9,11 +9,7 @@
 	species_eye_path = 'icons/mob/species/vox/eyes.dmi'
 	species_traits = list(
 		MUTCOLORS,
-		MUTCOLORS2,
-		MUTCOLORS3,
 		EYECOLOR,
-		HAS_FLESH,
-		HAS_BONE,
 		HAIRCOLOR,
 		FACEHAIRCOLOR,
 		NO_UNDERWEAR,
@@ -25,11 +21,7 @@
 		TRAIT_CAN_USE_FLIGHT_POTION,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	mutantlungs = /obj/item/organ/lungs/vox
-	mutantbrain = /obj/item/organ/brain/vox
-	mutantheart = /obj/item/organ/heart/vox
-	mutanteyes = /obj/item/organ/eyes/vox
-	mutantliver = /obj/item/organ/liver/vox
+
 	breathid = "n2"
 	cosmetic_organs = list(
 		/obj/item/organ/snout/vox = "Vox Snout",
@@ -38,10 +30,10 @@
 		/obj/item/organ/tail/vox = "Vox Tail"
 	)
 	liked_food = MEAT | FRIED
-	payday_modifier = 0.75
 	outfit_important_for_life = /datum/outfit/vox
 	species_language_holder = /datum/language_holder/vox
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
+
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/vox,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/vox,
@@ -49,6 +41,21 @@
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/vox,
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/vox,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/vox,
+	)
+
+	robotic_bodyparts = null
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain/vox,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart/vox,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs/vox,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes/vox,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver/vox,
+		ORGAN_SLOT_KIDNEYS = /obj/item/organ/kidneys,
 	)
 
 #define VOX_BODY_COLOR "#C4DB1A" // Also in code\modules\client\preferences\species_features\vox.dm
@@ -81,12 +88,14 @@
 	else
 		equipping.put_in_r_hand(tank)
 
-	equipping.internal = tank
+	equipping.open_internals(tank)
 
 /datum/species/vox/give_important_for_life(mob/living/carbon/human/human_to_equip)
 	. = ..()
-	human_to_equip.internal = human_to_equip.get_item_for_held_index(2)
-	if(!human_to_equip.internal)
+	var/obj/item/I = human_to_equip.get_item_for_held_index(2)
+	if(I)
+		human_to_equip.open_internals(I)
+	else
 		var/obj/item/tank/internals/nitrogen/belt/full/new_tank = new(null)
 		if(human_to_equip.equip_to_slot_or_del(new_tank, ITEM_SLOT_BELT))
 			human_to_equip.internal = human_to_equip.belt
@@ -154,3 +163,6 @@
 	)
 
 	return to_add
+
+/datum/species/vox/get_random_blood_type()
+	return GET_BLOOD_REF(/datum/blood/universal/vox)

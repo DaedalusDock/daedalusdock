@@ -1,11 +1,11 @@
 //This is the lowest supported version, anything below this is completely obsolete and the entire savefile will be wiped.
-#define SAVEFILE_VERSION_MIN 32
+#define SAVEFILE_VERSION_MIN 42
 
 //This is the current version, anything below this will attempt to update (if it's not obsolete)
 // You do not need to raise this if you are adding new values that have sane defaults.
 // Only raise this value when changing the meaning/format/name/layout of an existing value
 // where you would want the updater procs below to run
-#define SAVEFILE_VERSION_MAX 42
+#define SAVEFILE_VERSION_MAX 44
 
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
@@ -42,63 +42,46 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 //if your savefile is 3 months out of date, then 'tough shit'.
 
 /datum/preferences/proc/update_preferences(current_version, savefile/S)
-	if(current_version < 33)
-		toggles |= SOUND_ENDOFROUND
-
-	if(current_version < 34)
-		write_preference(/datum/preference/toggle/auto_fit_viewport, TRUE)
-
-	if(current_version < 35) //makes old keybinds compatible with #52040, sets the new default
-		var/newkey = FALSE
-		for(var/list/key in key_bindings)
-			for(var/bind in key)
-				if(bind == "quick_equipbelt")
-					key -= "quick_equipbelt"
-					key |= "quick_equip_belt"
-
-				if(bind == "bag_equip")
-					key -= "bag_equip"
-					key |= "quick_equip_bag"
-
-				if(bind == "quick_equip_suit_storage")
-					newkey = TRUE
-		if(!newkey && !key_bindings["ShiftQ"])
-			key_bindings["ShiftQ"] = list("quick_equip_suit_storage")
-
-	if(current_version < 36)
-		if(key_bindings["ShiftQ"] == "quick_equip_suit_storage")
-			key_bindings["ShiftQ"] = list("quick_equip_suit_storage")
-
-	if(current_version < 37)
-		if(read_preference(/datum/preference/numeric/fps) == 0)
-			write_preference(GLOB.preference_entries[/datum/preference/numeric/fps], -1)
-
-	if (current_version < 38)
-		var/found_block_movement = FALSE
-
-		for (var/list/key in key_bindings)
-			for (var/bind in key)
-				if (bind == "block_movement")
-					found_block_movement = TRUE
-					break
-			if (found_block_movement)
-				break
-
-		if (!found_block_movement)
-			LAZYADD(key_bindings["Ctrl"], "block_movement")
-
-	if (current_version < 39)
-		LAZYADD(key_bindings["F"], "toggle_combat_mode")
-		LAZYADD(key_bindings["4"], "toggle_combat_mode")
-	if (current_version < 40)
-		LAZYADD(key_bindings["Space"], "hold_throw_mode")
-
-	if (current_version < 41)
-		migrate_preferences_to_tgui_prefs_menu()
+	return
 
 /datum/preferences/proc/update_character(current_version, savefile/savefile)
-	if (current_version < 42)
-		migrate_body_types(savefile)
+	// Job name update 1
+	if(current_version < 44)
+		var/list/migrate_jobs = list(
+			"Head of Security" = JOB_SECURITY_MARSHAL,
+			"Detective" = JOB_DETECTIVE,
+			"Medical Doctor" = JOB_MEDICAL_DOCTOR,
+			"Curator" = JOB_ARCHIVIST,
+			"Cargo Technician" = JOB_DECKHAND,
+		)
+
+		var/list/job_prefs = read_preference(/datum/preference/blob/job_priority)
+		for(var/job in job_prefs)
+			if(job in migrate_jobs)
+				var/old_value = job_prefs[job]
+				job_prefs -= job
+				job_prefs[migrate_jobs[job]] = old_value
+		write_preference(/datum/preference/blob/job_priority, job_prefs)
+
+	return
+
+/// Called when reading preferences if a savefile update is detected. This proc is for
+/// overriding preference datum values before they are sanitized by deserialize()
+/datum/preferences/proc/early_update_character(current_version, savefile/savefile)
+	if(current_version < 43)
+		var/species
+		READ_FILE(savefile["species"], species)
+		if(species == "felinid")
+			write_preference(/datum/preference/choiced/species, SPECIES_HUMAN)
+
+			var/list/augs = read_preference(/datum/preference/blob/augments)
+			var/datum/augment_item/implant/ears = GLOB.augment_items[/datum/augment_item/implant/cat_ears]
+			var/datum/augment_item/implant/tail = GLOB.augment_items[/datum/augment_item/implant/cat_tail]
+			augs[AUGMENT_SLOT_IMPLANTS] = list(
+				ears.type = ears.get_choices()[1],
+				tail.type = tail.get_choices()[1]
+			)
+			write_preference(/datum/preference/blob/augments, augs)
 
 /// checks through keybindings for outdated unbound keys and updates them
 /datum/preferences/proc/check_keybindings()
@@ -204,7 +187,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//Sanitize
 	lastchangelog = sanitize_text(lastchangelog, initial(lastchangelog))
 	default_slot = sanitize_integer(default_slot, 1, max_save_slots, initial(default_slot))
-	toggles = sanitize_integer(toggles, 0, (2**24)-1, initial(toggles))
+	toggles = sanitize_integer(toggles, 0, SHORT_REAL_LIMIT-1, initial(toggles))
 	key_bindings = sanitize_keybindings(key_bindings)
 	favorite_outfits = SANITIZE_LIST(favorite_outfits)
 
@@ -288,6 +271,9 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if(needs_update == -2) //fatal, can't load any data
 		return FALSE
 
+	if(needs_update >= 0)
+		early_update_character(needs_update, S)
+
 	// Read everything into cache
 	for (var/preference_type in GLOB.preference_entries)
 		var/datum/preference/preference = GLOB.preference_entries[preference_type]
@@ -308,8 +294,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	var/mob/dead/new_player/body = parent?.mob
 	if(istype(body))
 		spawn(-1)
-			body.new_player_panel()
-
+			body.npp.open()
 
 	return TRUE
 
@@ -336,12 +321,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			write_preference(preference, preference.serialize(value_cache[preference.type]))
 
 	WRITE_FILE(S["version"] , SAVEFILE_VERSION_MAX) //load_character will sanitize any bad data, so assume up-to-date.)
-
-	// This is the version when the random security department was removed.
-	// When the minimum is higher than that version, it's impossible for someone to have the "Random" department.
-	#if SAVEFILE_VERSION_MIN > 40
-	#warn The prefered_security_department check in code/modules/client/preferences/security_department.dm is no longer necessary.
-	#endif
 
 	//Write prefs
 	WRITE_FILE(S["alt_job_titles"], alt_job_titles)

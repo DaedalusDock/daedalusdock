@@ -13,7 +13,7 @@
 
 	. = ..()
 	var/mob/living/living_parent = parent
-	living_parent.stop_pulling() // was only used on humans previously, may change some other behavior
+	living_parent.release_all_grabs() // was only used on humans previously, may change some other behavior
 	log_riding(living_parent, riding_mob)
 	riding_mob.set_glide_size(living_parent.glide_size)
 	handle_vehicle_offsets(living_parent.dir)
@@ -54,10 +54,10 @@
 	if(living_parent.body_position != STANDING_UP) // if we move while on the ground, the rider falls off
 		. = FALSE
 	// for piggybacks and (redundant?) borg riding, check if the rider is stunned/restrained
-	else if((ride_check_flags & RIDER_NEEDS_ARMS) && (HAS_TRAIT(rider, TRAIT_RESTRAINED) || rider.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB)))
+	else if((ride_check_flags & RIDER_NEEDS_ARMS) && (HAS_TRAIT(rider, TRAIT_ARMS_RESTRAINED) || rider.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB)))
 		. = FALSE
 	// for fireman carries, check if the ridden is stunned/restrained
-	else if((ride_check_flags & CARRIER_NEEDS_ARM) && (HAS_TRAIT(living_parent, TRAIT_RESTRAINED) || living_parent.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB)))
+	else if((ride_check_flags & CARRIER_NEEDS_ARM) && (HAS_TRAIT(living_parent, TRAIT_ARMS_RESTRAINED) || living_parent.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB)))
 		. = FALSE
 
 	if(. || !consequences)
@@ -153,7 +153,7 @@
 			cooldown_action.unset_click_ability(rider, refund_cooldown = TRUE)
 		action.HideFrom(rider)
 
-/datum/component/riding/creature/riding_can_z_move(atom/movable/movable_parent, direction, turf/start, turf/destination, z_move_flags, mob/living/rider)
+/datum/component/riding/creature/riding_can_z_move(atom/movable/movable_parent, direction, turf/start, z_move_flags, mob/living/rider)
 	if(!(z_move_flags & ZMOVE_CAN_FLY_CHECKS))
 		return COMPONENT_RIDDEN_ALLOW_Z_MOVE
 	if(!can_be_driven)
@@ -186,7 +186,7 @@
 
 /datum/component/riding/creature/human/RegisterWithParent()
 	. = ..()
-	RegisterSignal(parent, COMSIG_HUMAN_EARLY_UNARMED_ATTACK, PROC_REF(on_host_unarmed_melee))
+	RegisterSignal(parent, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_host_unarmed_melee))
 	RegisterSignal(parent, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(check_carrier_fall_over))
 
 /datum/component/riding/creature/human/log_riding(mob/living/living_parent, mob/living/rider)
@@ -387,3 +387,25 @@
 	set_vehicle_dir_offsets(NORTH, movable_parent.pixel_x, 0)
 	set_vehicle_dir_offsets(EAST, movable_parent.pixel_x, 0)
 	set_vehicle_dir_offsets(WEST, movable_parent.pixel_x, 0)
+
+/datum/component/riding/creature/hog
+	//FUTURE IDEA: carrot on a stick as a key
+
+/datum/component/riding/creature/hog/handle_specials()
+	. = ..()
+	set_riding_offsets(RIDING_OFFSET_ALL, list(TEXT_NORTH = list(0, 13), TEXT_SOUTH = list(0, 15), TEXT_EAST = list(-2, 12), TEXT_WEST = list(2, 12)))
+	set_vehicle_dir_layer(SOUTH, ABOVE_MOB_LAYER)
+	set_vehicle_dir_layer(NORTH, OBJ_LAYER)
+	set_vehicle_dir_layer(EAST, OBJ_LAYER)
+	set_vehicle_dir_layer(WEST, OBJ_LAYER)
+
+/datum/component/riding/creature/hog/ride_check(mob/living/user, consequences = TRUE)
+	var/mob/living/simple_animal/hostile/retaliate/hog/hog_ridden = parent
+	if(hog_ridden.client)
+		return ..()
+
+	if(prob(15))
+		hog_ridden.flingRider(user)
+		return FALSE
+
+	return ..()

@@ -17,7 +17,7 @@
 	else
 		return
 
-/mob/camera/ai_eye/remote/xenobio/can_z_move(direction, turf/start, turf/destination, z_move_flags = NONE, mob/living/rider)
+/mob/camera/ai_eye/remote/xenobio/can_z_move(direction, turf/start, z_move_flags = NONE, mob/living/rider)
 	. = ..()
 	if(!.)
 		return
@@ -322,17 +322,17 @@
 	..()
 
 //scans slimes
-/mob/living/simple_animal/slime/CtrlClick(mob/user)
+/mob/living/simple_animal/slime/CtrlClick(mob/user, list/params)
 	SEND_SIGNAL(user, COMSIG_XENO_SLIME_CLICK_CTRL, src)
 	..()
 
 //picks up dead monkies
-/mob/living/carbon/human/species/monkey/CtrlClick(mob/user)
+/mob/living/carbon/human/species/monkey/CtrlClick(mob/user, list/params)
 	SEND_SIGNAL(user, COMSIG_XENO_MONKEY_CLICK_CTRL, src)
 	..()
 
 //places monkies
-/turf/open/CtrlClick(mob/user)
+/turf/open/CtrlClick(mob/user, list/params)
 	SEND_SIGNAL(user, COMSIG_XENO_TURF_CLICK_CTRL, src)
 	..()
 

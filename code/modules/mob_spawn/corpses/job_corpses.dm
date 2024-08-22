@@ -16,31 +16,21 @@
 	outfit = /datum/outfit/job/doctor
 	icon_state = "corpsedoctor"
 
-/obj/effect/mob_spawn/corpse/human/geneticist
-	name = "Geneticist"
-	outfit = /datum/outfit/job/geneticist
-	icon_state = "corpsescientist"
-
 /obj/effect/mob_spawn/corpse/human/engineer
 	name = "Engineer"
-	outfit = /datum/outfit/job/engineer/gloved
+	outfit = /datum/outfit/job/engineer
 	icon_state = "corpseengineer"
 
 /obj/effect/mob_spawn/corpse/human/engineer/mod
 	outfit = /datum/outfit/job/engineer/mod
 
 /obj/effect/mob_spawn/corpse/human/clown
-	name = "Clown"
+	name = JOB_CLOWN
 	outfit = /datum/outfit/job/clown
 	icon_state = "corpseclown"
 
-/obj/effect/mob_spawn/corpse/human/scientist
-	name = "Scientist"
-	outfit = /datum/outfit/job/scientist
-	icon_state = "corpsescientist"
-
 /obj/effect/mob_spawn/corpse/human/miner
-	name = "Shaft Miner"
+	name = JOB_PROSPECTOR
 	outfit = /datum/outfit/job/miner
 	icon_state = "corpseminer"
 
@@ -70,7 +60,3 @@
 /obj/effect/mob_spawn/corpse/human/assistant/spanishflu_infection/special(mob/living/spawned_mob)
 	. = ..()
 	spawned_mob.ForceContractDisease(new /datum/disease/fluspanish)
-
-/obj/effect/mob_spawn/corpse/human/bartender
-	name = "Bartender"
-	outfit = /datum/outfit/spacebartender

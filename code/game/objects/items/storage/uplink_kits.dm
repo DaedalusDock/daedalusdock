@@ -145,7 +145,7 @@
 
 		if(KIT_NUKEOPS_METAGAME)
 			new /obj/item/mod/control/pre_equipped/nuclear(src) // 8 tc
-			new /obj/item/gun/ballistic/shotgun/bulldog/unrestricted(src) // 8 tc
+			new /obj/item/gun/ballistic/shotgun/bulldog(src) // 8 tc
 			new /obj/item/implanter/explosive(src) // 2 tc
 			new /obj/item/ammo_box/magazine/m12g(src) // 2 tc
 			new /obj/item/ammo_box/magazine/m12g(src) // 2 tc
@@ -254,110 +254,6 @@
 	new /obj/item/implanter/freedom(src)
 	new /obj/item/stack/telecrystal(src) //The failsafe/self destruct isn't an item we can physically include in the kit, but 1 TC is technically enough to buy the equivalent.
 
-
-/obj/item/storage/box/syndicate/contract_kit
-	name = "Contract Kit"
-	desc = "Supplied to Syndicate contractors."
-	icon_state = "syndiebox"
-	illustration = "writing_syndie"
-	var/list/item_list = list(
-		/obj/item/storage/backpack/duffelbag/syndie/x4,
-		/obj/item/storage/box/syndie_kit/throwing_weapons,
-		/obj/item/gun/syringe/syndicate,
-		/obj/item/pen/edagger,
-		/obj/item/pen/sleepy,
-		/obj/item/flashlight/emp,
-		/obj/item/reagent_containers/syringe/mulligan,
-		/obj/item/clothing/shoes/chameleon/noslip,
-		/obj/item/storage/medkit/tactical,
-		/obj/item/encryptionkey/syndicate,
-		/obj/item/clothing/glasses/thermal/syndi,
-		/obj/item/slimepotion/slime/sentience/nuclear,
-		/obj/item/storage/box/syndie_kit/imp_radio,
-		/obj/item/gun/ballistic/automatic/c20r/toy/unrestricted/riot,
-		/obj/item/reagent_containers/hypospray/medipen/stimulants,
-		/obj/item/storage/box/syndie_kit/imp_freedom,
-		/obj/item/crowbar/power/syndicate,
-		/obj/item/clothing/gloves/tackler/combat/insulated,
-		/obj/item/storage/box/syndie_kit/emp,
-		/obj/item/shield/energy,
-		/obj/item/healthanalyzer/rad_laser
-	)
-
-/obj/item/storage/box/syndicate/contract_kit/PopulateContents()
-	new /obj/item/modular_computer/tablet/syndicate_contract_uplink(src)
-	new /obj/item/storage/box/syndicate/contractor_loadout(src)
-	new /obj/item/melee/baton/telescopic/contractor_baton(src)
-
-	// All about 4 TC or less - some nukeops only items, but fit nicely to the theme.
-	for(var/iteration in 1 to SMALL_ITEM_AMOUNT)
-		var/obj/item/small_item = pick_n_take(item_list)
-		new small_item(src)
-
-	// Paper guide
-	new /obj/item/paper/contractor_guide(src)
-
-/obj/item/storage/box/syndicate/contractor_loadout
-	name = "Standard Loadout"
-	desc = "Supplied to Syndicate contractors, providing their specialised MODSuit and chameleon uniform."
-	icon_state = "syndiebox"
-	illustration = "writing_syndie"
-
-/obj/item/storage/box/syndicate/contractor_loadout/PopulateContents()
-	new /obj/item/mod/control/pre_equipped/contractor(src)
-	new /obj/item/clothing/under/chameleon(src)
-	new /obj/item/clothing/mask/chameleon(src)
-	new /obj/item/storage/fancy/cigarettes/cigpack_syndicate(src)
-	new /obj/item/card/id/advanced/chameleon(src)
-	new /obj/item/lighter(src)
-	new /obj/item/jammer(src)
-
-
-/obj/item/storage/box/syndicate/contract_kit/midround
-	name = "Contract Kit"
-	item_list = list(
-		/obj/item/storage/backpack/duffelbag/syndie/x4,
-		/obj/item/storage/box/syndie_kit/throwing_weapons,
-		/obj/item/gun/syringe/syndicate,
-		/obj/item/pen/edagger,
-		/obj/item/pen/sleepy,
-		/obj/item/flashlight/emp,
-		/obj/item/reagent_containers/syringe/mulligan,
-		/obj/item/storage/medkit/tactical,
-		/obj/item/clothing/glasses/thermal/syndi,
-		/obj/item/slimepotion/slime/sentience/nuclear,
-		/obj/item/storage/box/syndie_kit/imp_radio,
-		/obj/item/gun/ballistic/automatic/c20r/toy/unrestricted/riot,
-		/obj/item/reagent_containers/hypospray/medipen/stimulants,
-		/obj/item/storage/box/syndie_kit/imp_freedom,
-		/obj/item/crowbar/power/syndicate,
-		/obj/item/clothing/gloves/tackler/combat/insulated,
-		/obj/item/storage/box/syndie_kit/emp,
-		/obj/item/shield/energy,
-		/obj/item/healthanalyzer/rad_laser
-	)
-
-/obj/item/storage/box/syndicate/contract_kit/midround/PopulateContents()
-	// All about 4 TC or less - some nukeops only items, but fit nicely to the theme.
-	for(var/iteration in 1 to SMALL_ITEM_AMOUNT)
-		var/obj/item/small_item = pick_n_take(item_list)
-		new small_item(src)
-
-	// Paper guide
-	new /obj/item/paper/contractor_guide/midround(src)
-	new /obj/item/storage/fancy/cigarettes/cigpack_syndicate(src)
-	new /obj/item/lighter(src)
-	new /obj/item/jammer(src)
-
-/obj/item/storage/box/contractor/fulton_extraction
-	name = "Fulton Extraction Kit"
-	icon_state = "syndiebox"
-	illustration = "writing_syndie"
-
-/obj/item/storage/box/contractor/fulton_extraction/PopulateContents()
-	new /obj/item/extraction_pack/contractor(src)
-	new /obj/item/fulton_core(src)
-
 /obj/item/storage/box/syndie_kit
 	name = "box"
 	desc = "A sleek, sturdy box."
@@ -403,13 +299,6 @@
 /obj/item/storage/box/syndie_kit/bioterror/PopulateContents()
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/syringe/bioterror(src)
-
-/obj/item/storage/box/syndie_kit/clownpins
-	name = "ultra hilarious firing pin box"
-
-/obj/item/storage/box/syndie_kit/clownpins/PopulateContents()
-	for(var/i in 1 to 7)
-		new /obj/item/firing_pin/clown/ultra(src)
 
 /obj/item/storage/box/syndie_kit/imp_storage
 	name = "storage implant box"
@@ -465,14 +354,12 @@
 	new /obj/item/reagent_containers/glass/bottle/polonium(src)
 	new /obj/item/reagent_containers/glass/bottle/venom(src)
 	new /obj/item/reagent_containers/glass/bottle/fentanyl(src)
-	new /obj/item/reagent_containers/glass/bottle/formaldehyde(src)
-	new /obj/item/reagent_containers/glass/bottle/spewium(src)
 	new /obj/item/reagent_containers/glass/bottle/cyanide(src)
 	new /obj/item/reagent_containers/glass/bottle/histamine(src)
 	new /obj/item/reagent_containers/glass/bottle/initropidril(src)
 	new /obj/item/reagent_containers/glass/bottle/pancuronium(src)
 	new /obj/item/reagent_containers/glass/bottle/sodium_thiopental(src)
-	new /obj/item/reagent_containers/glass/bottle/coniine(src)
+	new /obj/item/reagent_containers/glass/bottle/lexorin(src)
 	new /obj/item/reagent_containers/glass/bottle/curare(src)
 	new /obj/item/reagent_containers/glass/bottle/amanitin(src)
 	new /obj/item/reagent_containers/syringe(src)

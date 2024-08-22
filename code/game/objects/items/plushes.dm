@@ -24,7 +24,7 @@
 	var/heartbroken = FALSE
 	var/vowbroken = FALSE
 	var/young = FALSE
-///Prevents players from cutting stuffing out of a plushie if true
+	///Prevents players from cutting stuffing out of a plushie if true
 	var/divine = FALSE
 	var/mood_message
 	var/list/love_message
@@ -218,7 +218,6 @@
 	else if(Kisser.partner == src && !plush_child) //the one advancing does not take ownership of the child and we have a one child policy in the toyshop
 		user.visible_message(span_notice("[user] is going to break [Kisser] and [src] by bashing them like that."),
 									span_notice("[Kisser] passionately embraces [src] in your hands. Look away you perv!"))
-		user.client.give_award(/datum/award/achievement/misc/rule8, user)
 		if(plop(Kisser))
 			user.visible_message(span_notice("Something drops at the feet of [user]."),
 							span_notice("The miracle of oh god did that just come out of [src]?!"))
@@ -498,7 +497,7 @@
 
 /obj/item/toy/plush/lizard_plushie
 	name = "lizard plushie"
-	desc = "An adorable stuffed toy that resembles a unathi."
+	desc = "An adorable stuffed toy that resembles a Jinan."
 	icon_state = "map_plushie_lizard"
 	greyscale_config = /datum/greyscale_config/plush_lizard
 	attack_verb_continuous = list("claws", "hisses", "tail slaps")
@@ -510,10 +509,10 @@
 	if(!greyscale_colors)
 		// Generate a random valid lizard color for our plushie friend
 		var/generated_lizard_color = "#" + random_color()
-		var/temp_hsv = RGBtoHSV(generated_lizard_color)
+		var/list/temp_hsv = rgb2hsv(generated_lizard_color)
 
 		// If our color is too dark, use the classic green lizard plush color
-		if(ReadHSV(temp_hsv)[3] < ReadHSV("#7F7F7F")[3])
+		if(temp_hsv[3] < 50)
 			generated_lizard_color = "#66ff33"
 
 		// Set our greyscale colors to the lizard color we made + black eyes
@@ -521,12 +520,12 @@
 
 // Preset lizard plushie that uses the original lizard plush green. (Or close to it)
 /obj/item/toy/plush/lizard_plushie/green
-	desc = "An adorable stuffed toy that resembles a green unathi. This one fills you with nostalgia and soul."
+	desc = "An adorable stuffed toy that resembles a green Jinan. This one fills you with nostalgia and soul."
 	greyscale_colors = "#66ff33#000000"
 
 /obj/item/toy/plush/space_lizard_plushie
 	name = "space lizard plushie"
-	desc = "An adorable stuffed toy that resembles a very determined spacefaring unathi. To infinity and beyond, little guy."
+	desc = "An adorable stuffed toy that resembles a very determined spacefaring Jinan. To infinity and beyond, little guy."
 	icon_state = "plushie_spacelizard"
 	inhand_icon_state = "plushie_spacelizard"
 	// space lizards can't hit people with their tail, it's stuck in their suit
@@ -577,7 +576,7 @@
 	icon_state = "plushie_awake"
 	inhand_icon_state = "plushie_awake"
 
-/obj/item/toy/plush/awakenedplushie/ComponentInitialize()
+/obj/item/toy/plush/awakenedplushie/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/edit_complainer)
 
@@ -595,7 +594,7 @@
 	name = "strange goat plushie"
 	icon_state = "goat"
 	desc = "Despite its cuddly appearance and plush nature, it will beat you up all the same. Goats never change."
-	squeak_override = list('sound/weapons/punch1.ogg'=1)
+	squeak_override = list(SFX_PUNCH=1)
 	/// Whether or not this goat is currently taking in a monsterous doink
 	var/going_hard = FALSE
 	/// Whether or not this goat has been flattened like a funny pancake

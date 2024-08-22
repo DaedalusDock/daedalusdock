@@ -11,42 +11,21 @@
 	var/tank_volume = 1000
 	///The ID of the reagent that the dispenser uses
 	var/reagent_id = /datum/reagent/water
-	///Can you turn this into a plumbing tank?
-	var/can_be_tanked = TRUE
-	///Is this source self-replenishing?
-	var/refilling = FALSE
 
 /obj/structure/reagent_dispensers/Initialize(mapload)
 	. = ..()
-
 	if(icon_state == "water" && SSevents.holidays?[APRIL_FOOLS])
 		icon_state = "water_fools"
-
-/obj/structure/reagent_dispensers/examine(mob/user)
-	. = ..()
-	if(can_be_tanked)
-		. += span_notice("Use a sheet of iron to convert this into a plumbing-compatible tank.")
 
 /obj/structure/reagent_dispensers/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
 	. = ..()
 	if(. && atom_integrity > 0)
-		if(tank_volume && (damage_flag == BULLET || damage_flag == LASER))
+		if(tank_volume && (damage_flag == PUNCTURE || damage_flag == LASER))
 			boom()
 
 /obj/structure/reagent_dispensers/attackby(obj/item/W, mob/user, params)
 	if(W.is_refillable())
 		return FALSE //so we can refill them via their afterattack.
-	if(istype(W, /obj/item/stack/sheet/iron) && can_be_tanked)
-		var/obj/item/stack/sheet/iron/metal_stack = W
-		metal_stack.use(1)
-		var/obj/structure/reagent_dispensers/plumbed/storage/new_tank = new /obj/structure/reagent_dispensers/plumbed/storage(drop_location())
-		new_tank.reagents.maximum_volume = reagents.maximum_volume
-		reagents.trans_to(new_tank, reagents.total_volume)
-		new_tank.name = "stationary [name]"
-		new_tank.update_appearance(UPDATE_OVERLAYS)
-		new_tank.set_anchored(anchored)
-		qdel(src)
-		return FALSE
 	else
 		return ..()
 
@@ -99,8 +78,9 @@
 		icon_state = "fuel_fools"
 
 /obj/structure/reagent_dispensers/fueltank/boom()
-	explosion(src, heavy_impact_range = 1, light_impact_range = 5, flame_range = 5)
+	var/turf/explode_turf = get_turf(src)
 	qdel(src)
+	explosion(explode_turf, heavy_impact_range = 1, light_impact_range = 5, flame_range = 5)
 
 /obj/structure/reagent_dispensers/fueltank/blob_act(obj/structure/blob/B)
 	boom()
@@ -108,7 +88,7 @@
 /obj/structure/reagent_dispensers/fueltank/ex_act()
 	boom()
 
-/obj/structure/reagent_dispensers/fueltank/fire_act(exposed_temperature, exposed_volume)
+/obj/structure/reagent_dispensers/fueltank/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	boom()
 
 /obj/structure/reagent_dispensers/fueltank/zap_act(power, zap_flags)
@@ -151,14 +131,15 @@
 	tank_volume = 5000
 
 /obj/structure/reagent_dispensers/fueltank/large/boom()
+	if(QDELETED(src))
+		return
 	explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 7, flame_range = 12)
 	qdel(src)
 
-/// Wall mounted dispeners, like pepper spray or virus food. Not a normal tank, and shouldn't be able to be turned into a plumbed stationary one.
+/// Wall mounted dispeners, like pepper spray or virus food. Not a normal tank.
 /obj/structure/reagent_dispensers/wall
 	anchored = TRUE
 	density = FALSE
-	can_be_tanked = FALSE
 
 /obj/structure/reagent_dispensers/wall/peppertank
 	name = "pepper spray refiller"
@@ -236,49 +217,3 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/virusfood, 30
 	icon_state = "serving"
 	anchored = TRUE
 	reagent_id = /datum/reagent/consumable/nutraslop
-
-/obj/structure/reagent_dispensers/plumbed
-	name = "stationary water tank"
-	anchored = TRUE
-	icon_state = "water_stationary"
-	desc = "A stationary, plumbed, water tank."
-	can_be_tanked = FALSE
-
-/obj/structure/reagent_dispensers/plumbed/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/plumbing/simple_supply)
-
-/obj/structure/reagent_dispensers/plumbed/wrench_act(mob/living/user, obj/item/tool)
-	. = ..()
-	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
-
-/obj/structure/reagent_dispensers/plumbed/storage
-	name = "stationary storage tank"
-	icon_state = "tank_stationary"
-	reagent_id = null //start empty
-
-/obj/structure/reagent_dispensers/plumbed/storage/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/simple_rotation)
-
-/obj/structure/reagent_dispensers/plumbed/storage/AltClick(mob/user)
-	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
-
-/obj/structure/reagent_dispensers/plumbed/storage/update_overlays()
-	. = ..()
-	if(!reagents)
-		return
-
-	if(!reagents.total_volume)
-		return
-
-	var/mutable_appearance/tank_color = mutable_appearance('icons/obj/chemical_tanks.dmi', "tank_chem_overlay")
-	tank_color.color = mix_color_from_reagents(reagents.reagent_list)
-	. += tank_color
-
-/obj/structure/reagent_dispensers/plumbed/fuel
-	name = "stationary fuel tank"
-	icon_state = "fuel_stationary"
-	desc = "A stationary, plumbed, fuel tank."
-	reagent_id = /datum/reagent/fuel

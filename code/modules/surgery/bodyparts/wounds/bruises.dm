@@ -1,5 +1,6 @@
 /** BRUISES **/
 /datum/wound/bruise
+	pain_factor = 1.25
 	stages = list(
 		"monumental bruise" = 80,
 		"huge bruise" = 50,

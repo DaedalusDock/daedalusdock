@@ -325,7 +325,6 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "aT" = (
-/obj/machinery/computer/operating,
 /turf/open/floor/iron/white/side{
 	dir = 9
 	},
@@ -334,7 +333,6 @@
 /obj/machinery/light/directional/north,
 /obj/machinery/status_display/evac/directional/north,
 /obj/structure/table/optable,
-/obj/item/surgical_drapes,
 /turf/open/floor/iron/white/side{
 	dir = 1
 	},
@@ -740,17 +738,12 @@
 /obj/item/reagent_containers/glass/bottle/epinephrine{
 	pixel_x = 6
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = -3
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /obj/item/reagent_containers/glass/bottle/epinephrine{
 	pixel_x = -3;
 	pixel_y = 8
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = 6;
-	pixel_y = 8
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /obj/item/reagent_containers/syringe/epinephrine{
 	pixel_x = 3;
 	pixel_y = -2
@@ -1774,7 +1767,7 @@
 /obj/effect/turf_decal/bot_white,
 /obj/structure/rack,
 /obj/effect/decal/cleanable/dirt,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/stack/medical/bruise_pack,
 /obj/item/stack/medical/ointment{
 	pixel_x = 5
@@ -1823,21 +1816,21 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/power/smes/engineering,
 /obj/effect/turf_decal/bot,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "dD" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "dE" = (
 /obj/item/radio/intercom/directional/north,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "dF" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "dH" = (
@@ -1869,7 +1862,7 @@
 /obj/machinery/power/terminal{
 	dir = 1
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "dN" = (
@@ -1881,7 +1874,7 @@
 /obj/machinery/power/terminal{
 	dir = 1
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "dQ" = (
@@ -1977,7 +1970,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/power/port_gen/pacman,
 /obj/effect/turf_decal/bot,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "ed" = (
@@ -1985,7 +1978,7 @@
 /obj/machinery/computer/monitor{
 	dir = 1
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "ee" = (

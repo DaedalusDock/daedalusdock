@@ -122,9 +122,10 @@
 /obj/vehicle/ridden/scooter/skateboard/proc/grind()
 	step(src, dir)
 	if(!has_buckled_mobs() || !(locate(/obj/structure/table) in loc.contents) && !(locate(/obj/structure/fluff/tram_rail) in loc.contents))
-		obj_flags = CAN_BE_HIT
+		obj_flags |= CAN_BE_HIT
 		grinding = FALSE
 		icon_state = "[initial(icon_state)]"
+		lose_block_z_out(BLOCK_Z_OUT_DOWN)
 		return
 
 	var/mob/living/skater = buckled_mobs[1]

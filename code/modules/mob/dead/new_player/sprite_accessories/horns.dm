@@ -2,10 +2,6 @@
 	icon = 'icons/mob/mutant_bodyparts.dmi'
 	em_block = TRUE
 
-/datum/sprite_accessory/horns/none
-	name = "None"
-	icon_state = "none"
-
 /datum/sprite_accessory/horns/simple
 	name = "Simple"
 	icon_state = "simple"

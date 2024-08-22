@@ -32,10 +32,11 @@
 	priority_announce("Rampant brand intelligence has been detected aboard [station_name()]. Please stand by. The origin is believed to be \a [source].", sub_title = "Machine Learning Alert")
 
 /datum/round_event/brand_intelligence/start()
-	for(var/obj/machinery/vending/V in GLOB.machines)
+	for(var/obj/machinery/vending/V as anything in INSTANCES_OF(/obj/machinery/vending))
 		if(!is_station_level(V.z))
 			continue
 		vendingMachines.Add(V)
+
 	if(!vendingMachines.len)
 		kill()
 		return
@@ -54,7 +55,9 @@
 			originMachine.visible_message(span_notice("[originMachine] beeps and seems lifeless."))
 		kill()
 		return
-	vendingMachines = remove_nulls_from_list(vendingMachines)
+
+	list_clear_nulls(vendingMachines)
+
 	if(!vendingMachines.len) //if every machine is infected
 		for(var/obj/machinery/vending/upriser in infectedMachines)
 			if(!QDELETED(upriser))

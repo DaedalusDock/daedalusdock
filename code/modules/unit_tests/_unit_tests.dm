@@ -48,6 +48,10 @@
 
 #define TEST_PRE 0
 #define TEST_DEFAULT 1
+/// After most test steps, used for tests that run long so shorter issues can be noticed faster
+#define TEST_LONGER 10
+/// This must be the last test to run due to the inherent nature of the test iterating every single tangible atom in the game
+/// and qdeleting all of them (while taking long sleeps to make sure the garbage collector fires properly) taking a large amount of time.
 #define TEST_DEL_WORLD INFINITY
 
 #ifdef ANSICOLORS
@@ -69,11 +73,14 @@
 #include "achievements.dm"
 #include "anchored_mobs.dm"
 #include "anonymous_themes.dm"
+#include "area_contents.dm"
 #include "atmos_moles_tests.dm"
 #include "autowiki.dm"
+#include "baseturfs.dm"
 #include "bespoke_id.dm"
 #include "binary_insert.dm"
 #include "bloody_footprints.dm"
+#include "bodypart_organ_sanity.dm"
 #include "breath.dm"
 #include "card_mismatch.dm"
 #include "chain_pull_through_space.dm"
@@ -87,6 +94,7 @@
 #include "connect_loc.dm"
 #include "crayons.dm"
 #include "create_and_destroy.dm"
+#include "dcs_get_id_from_elements.dm"
 #include "designs.dm"
 #include "dummy_spawn.dm"
 #include "dynamic_ruleset_sanity.dm"
@@ -96,14 +104,17 @@
 #include "gas_transfer.dm"
 #include "gas_validation.dm"
 #include "get_turf_pixel.dm"
+#include "grabbing.dm"
 #include "greyscale_config.dm"
 #include "heretic_knowledge.dm"
 #include "heretic_rituals.dm"
 #include "holidays.dm"
+#include "hulk.dm"
 #include "hydroponics_extractor_storage.dm"
 #include "hydroponics_harvest.dm"
 #include "hydroponics_self_mutations.dm"
 #include "keybinding_init.dm"
+#include "knockoff_component.dm"
 #include "load_map_security.dm"
 #include "machine_disassembly.dm"
 #include "mapping.dm"
@@ -113,14 +124,13 @@
 #include "mob_spawn.dm"
 #include "modsuit.dm"
 #include "modular_map_loader.dm"
+#include "movement_order_sanity.dm"
 #include "novaflower_burn.dm"
-#include "ntnetwork_tests.dm"
 #include "objectives.dm"
 #include "outfit_sanity.dm"
 #include "paintings.dm"
 #include "pills.dm"
 #include "plantgrowth_tests.dm"
-#include "preference_species.dm"
 #include "preferences.dm"
 #include "projectiles.dm"
 #include "quirks.dm"
@@ -136,9 +146,9 @@
 #include "screenshot_antag_icons.dm"
 #include "screenshot_basic.dm"
 #include "screenshot_humanoids.dm"
-#include "security_officer_distribution.dm"
 #include "serving_tray.dm"
 #include "siunit.dm"
+#include "slapcraft_sanity.dm"
 #include "spawn_humans.dm"
 #include "spawn_mobs.dm"
 #include "species_config_sanity.dm"
@@ -152,13 +162,16 @@
 #include "stomach.dm"
 #include "strippable.dm"
 #include "subsystem_init.dm"
+#include "subsystem_sanity.dm"
 #include "surgeries.dm"
+#include "tape_sanity.dm"
 #include "teleporters.dm"
 #include "tgui_create_message.dm"
 #include "timer_sanity.dm"
 #include "traitor.dm"
 #include "unit_test.dm"
 #include "wizard_loadout.dm"
+#include "wounds.dm"
 #ifdef REFERENCE_TRACKING_DEBUG //Don't try and parse this file if ref tracking isn't turned on. IE: don't parse ref tracking please mr linter
 #include "find_reference_sanity.dm"
 #endif

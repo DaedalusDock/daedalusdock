@@ -3,7 +3,6 @@
 	var/list/datum/display = list(
 		/datum/preference/name/backup_human,
 		/datum/preference/name/clown,
-		/datum/preference/name/mime,
 		/datum/preference/name/cyborg,
 		/datum/preference/name/ai,
 	)

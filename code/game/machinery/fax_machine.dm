@@ -54,7 +54,6 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	icon_state = "fax"
 	idle_power_usage = 10
 	active_power_usage = 100
-	req_one_access = list(ACCESS_HEADS, ACCESS_LAWYER)
 	circuit = /obj/item/circuitboard/machine/fax_machine
 	/// Whether this machine can send faxes
 	var/sending_enabled = TRUE
@@ -509,7 +508,11 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 50)
 		. = FALSE
 	else
-		new /obj/item/holochip(drop_location(), rand(15, 25))
+		if(prob(50))
+			new /obj/item/stack/spacecash/c10(drop_location())
+		else
+			new /obj/item/stack/spacecash/c20(drop_location())
+
 		playsound(src, 'sound/machines/ping.ogg', 60)
 		. = TRUE
 
@@ -529,7 +532,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 	inserted_paper.forceMove(src)
 	LAZYADD(received_paperwork, inserted_paper)
-	flick("fax_send", src)
+	z_flick("fax_send", src)
 	to_chat(user, span_notice("You insert [inserted_paper] into [src], readying it for processing."))
 
 /*
@@ -545,7 +548,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	else
 		to_chat(user, span_notice("You insert [inserted_paper] into [src]."))
 
-	flick("fax_send", src)
+	z_flick("fax_send", src)
 	stored_paper = inserted_paper
 
 /*
@@ -593,7 +596,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		paper.forceMove(drop_location())
 	LAZYREMOVE(received_paperwork, paper)
 	if(!silent)
-		flick("fax_receive", src)
+		z_flick("fax_receive", src)
 		playsound(src, 'sound/machines/ding.ogg', 50)
 		use_power(active_power_usage)
 
@@ -617,7 +620,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		return
 
 	if(!silent)
-		flick("fax_receive", src)
+		z_flick("fax_receive", src)
 		balloon_alert_to_viewers("removed [stored_paper]")
 	if(user && user.CanReach(src))
 		user.put_in_hands(stored_paper)
@@ -637,7 +640,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		return
 
 	if(!silent)
-		flick("fax_receive", src)
+		z_flick("fax_receive", src)
 		balloon_alert_to_viewers("removed [received_paper]")
 	if(user && user.CanReach(src))
 		user.put_in_hands(received_paper)

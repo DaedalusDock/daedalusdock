@@ -93,12 +93,11 @@
 #define ui_palette_scroll_offset(north_offset) ("WEST+1:8,NORTH-[6+north_offset]:28")
 
 //Middle right (status indicators)
-#define ui_healthdoll "EAST-1:28,CENTER-2:17"
+#define ui_healthdoll "EAST-1:28,CENTER-1:19"
 #define ui_health "EAST-1:28,CENTER-1:19"
-#define ui_internal "EAST-1:28,CENTER+1:21"
-#define ui_mood "EAST-1:28,CENTER:21"
-#define ui_spacesuit "EAST-1:28,CENTER-4:14"
-#define ui_stamina "EAST-1:28,CENTER-3:14"
+#define ui_blob_health "EAST-1:28,CENTER+1:21"
+#define ui_spacesuit "EAST-1:28,CENTER-3:14"
+#define ui_stamina "EAST-1:28,CENTER-2:17"
 
 //Pop-up inventory
 #define ui_shoes "WEST+1:8,SOUTH:5"
@@ -203,6 +202,12 @@
 
 //Families
 #define ui_wanted_lvl "NORTH,11"
+
+//Gun buttons
+#define ui_gun1 "EAST-2:26,SOUTH+2:7"
+#define ui_gun2 "EAST-1:28, SOUTH+3:7"
+#define ui_gun3 "EAST-2:26,SOUTH+3:7"
+#define ui_gun_select "EAST-1:28,SOUTH+2:7"
 
 // Defines relating to action button positions
 

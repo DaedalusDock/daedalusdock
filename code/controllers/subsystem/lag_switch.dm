@@ -125,6 +125,15 @@ SUBSYSTEM_DEF(lag_switch)
 			else
 				to_chat(world, span_boldannounce("Footstep sounds have been re-enabled."))
 
+		if(KICK_GUESTS)
+			if (state)
+				to_chat(world, span_boldannounce("Guest connections have been disabled"))
+				for(var/client/C as anything in GLOB.clients)
+					if(C.restricted_mode)
+						qdel(C)
+			else
+				to_chat(world, span_boldannounce("Guest connections have been re-enabled"))
+
 	return TRUE
 
 /// Helper to loop over all measures for mass changes

@@ -79,14 +79,26 @@
 /obj/item/storage/secure/attack_self(mob/user)
 	var/locked = atom_storage.locked
 	user.set_machine(src)
-	var/dat = text("<TT><B>[]</B><BR>\n\nLock Status: []",src, (locked ? "LOCKED" : "UNLOCKED"))
+	var/dat = "<TT><B>[src]</B><BR>\n\nLock Status: [(locked ? "LOCKED" : "UNLOCKED")]"
 	var/message = "Code"
 	if (lock_set == 0)
-		dat += text("<p>\n<b>5-DIGIT PASSCODE NOT SET.<br>ENTER NEW PASSCODE.</b>")
-	message = text("[]", entered_code)
+		dat += "<p>\n<b>5-DIGIT PASSCODE NOT SET.<br>ENTER NEW PASSCODE.</b>"
+	message = entered_code
 	if (!locked)
 		message = "*****"
-	dat += text("<HR>\n>[]<BR>\n<A href='?src=[REF(src)];type=1'>1</A>-<A href='?src=[REF(src)];type=2'>2</A>-<A href='?src=[REF(src)];type=3'>3</A><BR>\n<A href='?src=[REF(src)];type=4'>4</A>-<A href='?src=[REF(src)];type=5'>5</A>-<A href='?src=[REF(src)];type=6'>6</A><BR>\n<A href='?src=[REF(src)];type=7'>7</A>-<A href='?src=[REF(src)];type=8'>8</A>-<A href='?src=[REF(src)];type=9'>9</A><BR>\n<A href='?src=[REF(src)];type=R'>R</A>-<A href='?src=[REF(src)];type=0'>0</A>-<A href='?src=[REF(src)];type=E'>E</A><BR>\n</TT>", message)
+	dat += {"
+<HR>\n>[message]<BR>\n<A href='?src=[REF(src)];type=1'>1</A>
+-<A href='?src=[REF(src)];type=2'>2</A>
+-<A href='?src=[REF(src)];type=3'>3</A><BR>\n
+<A href='?src=[REF(src)];type=4'>4</A>
+-<A href='?src=[REF(src)];type=5'>5</A>
+-<A href='?src=[REF(src)];type=6'>6</A><BR>\n
+<A href='?src=[REF(src)];type=7'>7</A>
+-<A href='?src=[REF(src)];type=8'>8</A>
+-<A href='?src=[REF(src)];type=9'>9</A><BR>\n
+<A href='?src=[REF(src)];type=R'>R</A>
+-<A href='?src=[REF(src)];type=0'>0</A>
+-<A href='?src=[REF(src)];type=E'>E</A><BR>\n</TT>"}
 	user << browse(dat, "window=caselock;size=300x280")
 
 /obj/item/storage/secure/Topic(href, href_list)
@@ -112,7 +124,7 @@
 				entered_code = null
 				atom_storage.hide_contents(usr)
 			else
-				entered_code += text("[]", sanitize_text(href_list["type"]))
+				entered_code += sanitize_text(href_list["type"])
 				if (length(entered_code) > 5)
 					entered_code = "ERROR"
 		add_fingerprint(usr)
@@ -133,11 +145,12 @@
 	desc = "A large briefcase with a digital locking system."
 	force = 8
 	hitsound = SFX_SWING_HIT
-	throw_speed = 2
 	throw_range = 4
 	w_class = WEIGHT_CLASS_BULKY
 	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "whacks")
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
+
+	storage_type = /datum/storage/latched_box
 
 /obj/item/storage/secure/briefcase/PopulateContents()
 	new /obj/item/paper(src)
@@ -188,7 +201,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/item/storage/secure/safe, 32)
 	return attack_self(user)
 
 /obj/item/storage/secure/safe/hos
-	name = "head of security's safe"
+	name = "security marshal's safe"
 
 /**
  * This safe is meant to be damn robust. To break in, you're supposed to get creative, or use acid or an explosion.
@@ -205,7 +218,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/item/storage/secure/safe, 32)
 It is made out of the same material as the station's Black Box and is designed to resist all conventional weaponry. \
 There appears to be a small amount of surface corrosion. It doesn't look like it could withstand much of an explosion."
 	can_hack_open = FALSE
-	armor = list(MELEE = 100, BULLET = 100, LASER = 100, ENERGY = 100, BOMB = 70, BIO = 100, FIRE = 80, ACID = 70)
+	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 70, BIO = 100, FIRE = 80, ACID = 70)
 	max_integrity = 300
 	color = "#ffdd33"
 
@@ -222,4 +235,4 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/item/storage/secure/safe/caps_spare, 32)
 	new /obj/item/card/id/advanced/gold/captains_spare(src)
 
 /obj/item/storage/secure/safe/caps_spare/rust_heretic_act()
-	take_damage(damage_amount = 100, damage_type = BRUTE, damage_flag = MELEE, armour_penetration = 100)
+	take_damage(damage_amount = 100, damage_type = BRUTE, damage_flag = BLUNT, armor_penetration = 100)

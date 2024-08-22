@@ -53,7 +53,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	var/unique_enzymes
 	///Stores the hashed values of traits such as skin tones, hair style, and gender
 	var/unique_identity
-	var/blood_type
+	var/datum/blood/blood_type
 	///The type of mutant race the player is if applicable (i.e. potato-man)
 	var/datum/species/species = new /datum/species/human
 	///first value is mutant color //This comment is older than the average tg player
@@ -152,15 +152,15 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 /datum/dna/proc/check_mutation(mutation_type)
 	return get_mutation(mutation_type)
 
-/datum/dna/proc/remove_all_mutations(list/classes = list(MUT_NORMAL, MUT_EXTRA, MUT_OTHER), mutadone = FALSE)
-	remove_mutation_group(mutations, classes, mutadone)
+/datum/dna/proc/remove_all_mutations(list/classes = list(MUT_NORMAL, MUT_EXTRA, MUT_OTHER), ryetalyn = FALSE)
+	remove_mutation_group(mutations, classes, ryetalyn)
 	scrambled = FALSE
 
-/datum/dna/proc/remove_mutation_group(list/group, list/classes = list(MUT_NORMAL, MUT_EXTRA, MUT_OTHER), mutadone = FALSE)
+/datum/dna/proc/remove_mutation_group(list/group, list/classes = list(MUT_NORMAL, MUT_EXTRA, MUT_OTHER), ryetalyn = FALSE)
 	if(!group)
 		return
 	for(var/datum/mutation/human/HM in group)
-		if((HM.class in classes) && !(HM.mutadone_proof && mutadone))
+		if((HM.class in classes) && !(HM.ryetalyn_proof && ryetalyn))
 			force_lose(HM)
 
 /datum/dna/proc/generate_unique_identity()
@@ -227,8 +227,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_MUSHROOM_CAPS_BLOCK] = construct_block(GLOB.caps_list.Find(features["caps"]), GLOB.caps_list.len)
 	if(features["pod_hair"])
 		L[DNA_POD_HAIR_BLOCK] = construct_block(GLOB.pod_hair_list.Find(features["pod_hair"]), GLOB.pod_hair_list.len)
-	if(features["headtails"])
-		L[DNA_HEADTAILS_BLOCK] = construct_block(GLOB.headtails_list.Find(features["headtails"]), GLOB.headtails_list.len)
 	if(features["teshari_feathers"])
 		L[DNA_TESHARI_FEATHERS_BLOCK] = construct_block(GLOB.teshari_feathers_list.Find(features["teshari_feathers"]), GLOB.teshari_feathers_list.len)
 	if(features["teshari_ears"])
@@ -246,6 +244,11 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_VOX_FACIAL_HAIR_BLOCK] = construct_block(GLOB.vox_facial_hair_list.Find(features["vox_facial_hair"]), GLOB.vox_facial_hair_list.len)
 	if(features["vox_snout"])
 		L[DNA_VOX_SNOUT_BLOCK] = construct_block(GLOB.vox_snouts_list.Find(features["vox_snout"]), GLOB.vox_snouts_list.len)
+
+	if(features["ipc_screen"])
+		L[DNA_IPC_SCREEN_BLOCK] = construct_block(GLOB.ipc_screens_list.Find(features["ipc_screen"]), GLOB.ipc_screens_list.len)
+	if(features["ipc_antenna"])
+		L[DNA_IPC_ANTENNA_BLOCK] = construct_block(GLOB.ipc_antenna_list.Find(features["DNA_IPC_ANTENNA_BLOCK"]), GLOB.ipc_antenna_list.len)
 
 	for(var/blocknum in 1 to DNA_FEATURE_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)
@@ -359,7 +362,9 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		if(DNA_ETHEREAL_COLOR_BLOCK)
 			set_uni_feature_block(blocknumber, sanitize_hexcolor(features["ethcolor"], include_crunch = FALSE))
 		if(DNA_TAIL_BLOCK)
-			set_uni_feature_block(blocknumber, construct_block(GLOB.tails_list.Find(features["tail_lizard"]), GLOB.tails_list.len))
+			set_uni_feature_block(blocknumber, construct_block(GLOB.tails_list.Find(features["tail_cat"]), GLOB.tails_list.len))
+		if(DNA_LIZARD_TAIL_BLOCK)
+			set_uni_feature_block(blocknumber, construct_block(GLOB.tails_list_lizard.Find(features["tail_lizard"]), GLOB.tails_list.len))
 		if(DNA_SNOUT_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.snouts_list.Find(features["snout"]), GLOB.snouts_list.len))
 		if(DNA_HORNS_BLOCK)
@@ -370,18 +375,19 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			set_uni_feature_block(blocknumber, construct_block(GLOB.spines_list.Find(features["spines"]), GLOB.spines_list.len))
 		if(DNA_EARS_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.ears_list.Find(features["ears"]), GLOB.ears_list.len))
+
 		if(DNA_MOTH_WINGS_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.moth_wings_list.Find(features["moth_wings"]), GLOB.moth_wings_list.len))
 		if(DNA_MOTH_ANTENNAE_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.moth_antennae_list.Find(features["moth_antennae"]), GLOB.moth_antennae_list.len))
 		if(DNA_MOTH_MARKINGS_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.moth_markings_list.Find(features["moth_markings"]), GLOB.moth_markings_list.len))
+
 		if(DNA_MUSHROOM_CAPS_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.caps_list.Find(features["caps"]), GLOB.caps_list.len))
 		if(DNA_POD_HAIR_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.pod_hair_list.Find(features["pod_hair"]), GLOB.pod_hair_list.len))
-		if(DNA_HEADTAILS_BLOCK)
-			set_uni_feature_block(blocknumber, construct_block(GLOB.headtails_list.Find(features["headtails"]), GLOB.headtails_list.len))
+
 		if(DNA_TESHARI_FEATHERS_BLOCK)
 			set_uni_feature_block(blocknumber, construct_block(GLOB.teshari_feathers_list.Find(features["teshari_feathers"]), GLOB.teshari_feathers_list.len))
 		if(DNA_TESHARI_EARS_BLOCK)
@@ -414,7 +420,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 /datum/dna/proc/force_lose(datum/mutation/human/HM)
 	if(holder && (HM in mutations))
 		set_se(0, HM)
-		. = HM.on_losing(holder)
+		. = HM.remove_from_owner()
 		update_instability(FALSE)
 		return
 
@@ -492,7 +498,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 /datum/dna/stored/check_mutation(mutation_name)
 	return
 
-/datum/dna/stored/remove_all_mutations(list/classes, mutadone = FALSE)
+/datum/dna/stored/remove_all_mutations(list/classes, ryetalyn = FALSE)
 	return
 
 /datum/dna/stored/remove_mutation_group(list/group)
@@ -525,6 +531,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	current_body_size = desired_size
 
 /mob/proc/set_species(datum/species/mrace, icon_update = 1)
+	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /mob/living/brain/set_species(datum/species/mrace, icon_update = 1)
@@ -546,15 +553,19 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			new_race = mrace
 		else
 			return
-		deathsound = new_race.deathsound
-		dna.species.on_species_loss(src, new_race, pref_load)
+
+		if(dna.species.properly_gained)
+			dna.species.on_species_loss(src, new_race, pref_load)
+
 		var/datum/species/old_species = dna.species
 		dna.species = new_race
 		dna.species.on_species_gain(src, old_species, pref_load)
+
 		if(ishuman(src))
 			qdel(language_holder)
 			var/species_holder = initial(mrace.species_language_holder)
 			language_holder = new species_holder(src)
+
 		update_atom_languages()
 
 /mob/living/carbon/human/set_species(datum/species/mrace, icon_update = TRUE, pref_load = FALSE)
@@ -675,8 +686,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["caps"] = GLOB.caps_list[deconstruct_block(get_uni_feature_block(features, DNA_MUSHROOM_CAPS_BLOCK), GLOB.caps_list.len)]
 	if(dna.features["pod_hair"])
 		dna.features["pod_hair"] = GLOB.pod_hair_list[deconstruct_block(get_uni_feature_block(features, DNA_POD_HAIR_BLOCK), GLOB.pod_hair_list.len)]
-	if(dna.features["headtails"])
-		dna.features["headtails"] = GLOB.headtails_list[deconstruct_block(get_uni_feature_block(features, DNA_HEADTAILS_BLOCK), GLOB.headtails_list.len)]
 	if(dna.features["teshari_feathers"])
 		dna.features["teshari_feathers"] = GLOB.teshari_feathers_list[deconstruct_block(get_uni_feature_block(features, DNA_TESHARI_FEATHERS_BLOCK), GLOB.teshari_feathers_list.len)]
 	if(dna.features["teshari_ears"])
@@ -694,6 +703,20 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["vox_facial_hair"] = GLOB.vox_facial_hair_list[deconstruct_block(get_uni_feature_block(features, DNA_VOX_FACIAL_HAIR_BLOCK), GLOB.vox_facial_hair_list.len)]
 	if(dna.features["vox_snout"])
 		dna.features["vox_snout"] = GLOB.vox_snouts_list[deconstruct_block(get_uni_feature_block(features, DNA_VOX_SNOUT_BLOCK), GLOB.vox_snouts_list.len)]
+
+	if(dna.features["ipc_screen"])
+		dna.features["ipc_screen"] = GLOB.ipc_screens_list[deconstruct_block(get_uni_feature_block(features, DNA_IPC_SCREEN_BLOCK), GLOB.ipc_screens_list.len)]
+	if(dna.features["ipc_antenna"])
+		dna.features["ipc_antenna"] = GLOB.ipc_antenna_list[deconstruct_block(get_uni_feature_block(features, DNA_IPC_ANTENNA_BLOCK), GLOB.ipc_antenna_list.len)]
+
+	if(dna.features["saurian_screen"])
+		dna.features["saurian_screen"] = GLOB.saurian_screens_list[deconstruct_block(get_uni_feature_block(features, DNA_SAURIAN_SCREEN_BLOCK), GLOB.saurian_screens_list.len)]
+	if(dna.features["saurian_tail"])
+		dna.features["saurian_tail"] = GLOB.saurian_tails_list[deconstruct_block(get_uni_feature_block(features, DNA_SAURIAN_TAIL_BLOCK), GLOB.saurian_tails_list.len)]
+	if(dna.features["saurian_scutes"])
+		dna.features["saurian_scutes"] = GLOB.saurian_scutes_list[deconstruct_block(get_uni_feature_block(features, DNA_SAURIAN_SCUTES_BLOCK), GLOB.saurian_scutes_list.len)]
+	if(dna.features["saurian_antenna"])
+		dna.features["saurian_antenna"] = GLOB.saurian_antenna_list[deconstruct_block(get_uni_feature_block(features, DNA_SAURIAN_ANTENNA_BLOCK), GLOB.saurian_antenna_list.len)]
 
 	for(var/obj/item/organ/O as anything in cosmetic_organs)
 		O.mutate_feature(features, src)
@@ -808,7 +831,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			if(HM)
 				HM.scrambled = TRUE
 				if(HM.quality & resilient)
-					HM.mutadone_proof = TRUE
+					HM.ryetalyn_proof = TRUE
 		return TRUE
 
 /mob/living/carbon/proc/random_mutate_unique_identity()
@@ -887,7 +910,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	dna.remove_all_mutations()
 	dna.stability = 100
 	if(prob(max(70-instability,0)))
-		switch(rand(0,10)) //not complete and utter death
+		switch(rand(0,7)) //not complete and utter death
 			if(0)
 				monkeyize()
 			if(1)
@@ -902,14 +925,11 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 				to_chat(src, span_notice("Oh, I actually feel quite alright!")) //you thought
 				physiology.damage_resistance = -20000
 			if(5)
-				to_chat(src, span_notice("Oh, I actually feel quite alright!"))
-				reagents.add_reagent(/datum/reagent/aslimetoxin, 10)
-			if(6)
 				apply_status_effect(/datum/status_effect/go_away)
-			if(7)
+			if(6)
 				to_chat(src, span_notice("Oh, I actually feel quite alright!"))
 				ForceContractDisease(new/datum/disease/decloning()) //slow acting, non-viral clone damage based GBS
-			if(8)
+			if(7)
 				var/list/elligible_organs = list()
 				for(var/obj/item/organ/organ as anything in processing_organs) //make sure we dont get an implant or cavity item
 					elligible_organs += organ
@@ -921,9 +941,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 					O.forceMove(drop_location())
 					if(prob(20))
 						O.animate_atom_living()
-			if(9 to 10)
-				ForceContractDisease(new/datum/disease/gastrolosis())
-				to_chat(src, span_notice("Oh, I actually feel quite alright!"))
 	else
 		switch(rand(0,5))
 			if(0)
@@ -935,14 +952,11 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 				death()
 				petrify(INFINITY)
 			if(3)
-				if(prob(95))
-					var/obj/item/bodypart/BP = get_bodypart(pick(BODY_ZONE_CHEST,BODY_ZONE_HEAD))
-					if(BP)
-						BP.dismember()
-					else
-						gib()
+				var/obj/item/bodypart/BP = get_bodypart(pick(BODY_ZONE_CHEST,BODY_ZONE_HEAD))
+				if(BP)
+					BP.dismember()
 				else
-					set_species(/datum/species/dullahan)
+					gib()
 			if(4)
 				visible_message(span_warning("[src]'s skin melts off!"), span_boldwarning("Your skin melts off!"))
 				spawn_gibs()

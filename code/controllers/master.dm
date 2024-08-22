@@ -246,12 +246,16 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			if (subsystem.flags & SS_NO_INIT || subsystem.initialized) //Don't init SSs with the correspondig flag or if they already are initialzized
 				continue
 			current_initializing_subsystem = subsystem
+
 			if(GLOB.is_debug_server)
 				to_chat(world, span_boldnotice("Initializing [subsystem.name]..."))
+
 			subsystem.Initialize(REALTIMEOFDAY)
 			CHECK_TICK
+
 		current_initializing_subsystem = null
 		init_stage_completed = current_init_stage
+
 		if (!mc_started)
 			mc_started = TRUE
 			if (!current_runlevel)
@@ -384,6 +388,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	while (1)
 		tickdrift = max(0, MC_AVERAGE_FAST(tickdrift, (((REALTIMEOFDAY - init_timeofday) - (world.time - init_time)) / world.tick_lag)))
 		var/starting_tick_usage = TICK_USAGE
+
 		if (init_stage != init_stage_completed)
 			return MC_LOOP_RTN_NEWSTAGES
 		if (processing <= 0)
@@ -507,8 +512,6 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 		sleep(world.tick_lag * (processing * sleep_delta))
 
 
-
-
 // This is what decides if something should run.
 /datum/controller/master/proc/CheckQueue(list/subsystemstocheck)
 	. = 0 //so the mc knows if we runtimed
@@ -549,6 +552,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 					break
 			if(!enter_queue)
 				SS.hibernating = TRUE
+				SS.update_nextfire()
 				continue
 
 		SS.enqueue()

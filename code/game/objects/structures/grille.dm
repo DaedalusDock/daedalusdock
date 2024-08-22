@@ -14,12 +14,12 @@
 	can_atmos_pass = CANPASS_ALWAYS
 	flags_1 = CONDUCT_1
 	//pressure_resistance = 5*ONE_ATMOSPHERE
-	armor = list(MELEE = 50, BULLET = 70, LASER = 70, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 0, ACID = 0)
+	armor = list(BLUNT = 50, PUNCTURE = 70, SLASH = 90, LASER = 70, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 0, ACID = 0)
 	max_integrity = 50
 	integrity_failure = 0.4
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_GRILLE)
-	canSmoothWith = list(SMOOTH_GROUP_GRILLE)
+	smoothing_groups = SMOOTH_GROUP_GRILLE
+	canSmoothWith = SMOOTH_GROUP_GRILLE
 	var/rods_type = /obj/item/stack/rods
 	var/rods_amount = 2
 	var/rods_broken = TRUE
@@ -98,7 +98,7 @@
 			return TRUE
 	return FALSE
 
-/obj/structure/grille/Bumped(atom/movable/AM)
+/obj/structure/grille/BumpedBy(atom/movable/AM)
 	if(!ismob(AM))
 		return
 	var/mob/M = AM
@@ -109,7 +109,7 @@
 	if(!.)
 		return
 	if(!shock(user, 70) && !QDELETED(src)) //Last hit still shocks but shouldn't deal damage to the grille
-		take_damage(rand(5,10), BRUTE, MELEE, 1)
+		take_damage(rand(5,10), BRUTE, BLUNT, 1)
 
 /obj/structure/grille/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
@@ -131,24 +131,27 @@
 	user.visible_message(span_warning("[user] hits [src]."), null, null, COMBAT_MESSAGE_RANGE)
 	log_combat(user, src, "hit")
 	if(!shock(user, 70))
-		take_damage(rand(5,10), BRUTE, MELEE, 1)
+		take_damage(rand(5,10), BRUTE, BLUNT, 1)
 
 /obj/structure/grille/attack_alien(mob/living/user, list/modifiers)
 	user.do_attack_animation(src)
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.visible_message(span_warning("[user] mangles [src]."), null, null, COMBAT_MESSAGE_RANGE)
 	if(!shock(user, 70))
-		take_damage(20, BRUTE, MELEE, 1)
+		take_damage(20, BRUTE, BLUNT, 1)
 
 /obj/structure/grille/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()
 	if(!. && istype(mover, /obj/projectile))
 		return prob(30)
 
-/obj/structure/grille/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller)
-	. = !density
-	if(caller)
-		. = . || (caller.pass_flags & PASSGRILLE)
+/obj/structure/grille/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	if(!density)
+		return TRUE
+
+	if(pass_info.pass_flags & PASSGRILLE)
+		return TRUE
+	return FALSE
 
 /obj/structure/grille/wirecutter_act(mob/living/user, obj/item/tool)
 	add_fingerprint(user)
@@ -172,7 +175,7 @@
 
 /obj/structure/grille/attackby(obj/item/W, mob/user, params)
 	user.changeNext_move(CLICK_CD_MELEE)
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 	if(istype(W, /obj/item/stack/rods) && broken)
 		if(shock(user, 90))
 			return
@@ -221,7 +224,8 @@
 		rods_amount = 1
 		rods_broken = FALSE
 		var/obj/R = new rods_type(drop_location(), rods_broken)
-		transfer_fingerprints_to(R)
+		if(!QDELING(R))
+			transfer_fingerprints_to(R)
 		smoothing_flags = NONE
 		update_appearance()
 

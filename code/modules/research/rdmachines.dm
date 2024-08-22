@@ -7,6 +7,8 @@
 	icon = 'icons/obj/machines/research.dmi'
 	density = TRUE
 	use_power = IDLE_POWER_USE
+	has_disk_slot = TRUE
+
 	var/busy = FALSE
 	var/hacked = FALSE
 	var/disabled = FALSE
@@ -52,10 +54,10 @@
 	return default_deconstruction_crowbar(tool)
 
 /obj/machinery/rnd/screwdriver_act(mob/living/user, obj/item/tool)
-	return default_deconstruction_screwdriver(user, "[initial(icon_state)]_t", initial(icon_state), tool)
+	return default_deconstruction_screwdriver(user, initial(icon_state), initial(icon_state), tool)
 
 /obj/machinery/rnd/screwdriver_act_secondary(mob/living/user, obj/item/tool)
-	return default_deconstruction_screwdriver(user, "[initial(icon_state)]_t", initial(icon_state), tool)
+	return default_deconstruction_screwdriver(user, initial(icon_state), initial(icon_state), tool)
 
 /obj/machinery/rnd/multitool_act(mob/living/user, obj/item/tool)
 	if(panel_open)

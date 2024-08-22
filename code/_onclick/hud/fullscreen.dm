@@ -112,6 +112,11 @@
 	layer = BLIND_LAYER
 	plane = FULLSCREEN_PLANE
 
+/atom/movable/screen/fullscreen/blind/blinder
+	icon_state = "blackerimageoverlay"
+	layer = BLIND_LAYER + 0.01
+	plane = FULLSCREEN_PLANE
+
 /atom/movable/screen/fullscreen/curse
 	icon_state = "curse"
 	layer = CURSE_LAYER
@@ -201,6 +206,7 @@
 	plane = LIGHTING_PLANE
 	blend_mode = BLEND_ADD
 	show_when_dead = TRUE
+	alpha = 64 //Spooky darkness
 
 /atom/movable/screen/fullscreen/bluespace_overlay
 	icon = 'icons/effects/effects.dmi'

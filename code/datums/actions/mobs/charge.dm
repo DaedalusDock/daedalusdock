@@ -114,7 +114,7 @@
 	var/turf/target_turf = get_turf(charge_target)
 	if(!target_turf)
 		return
-	new /obj/effect/temp_visual/dragon_swoop/bubblegum(target_turf)
+	new /obj/effect/temp_visual/dragon_swoop(target_turf)
 	var/obj/effect/temp_visual/decoy/D = new /obj/effect/temp_visual/decoy(charger.loc, charger)
 	animate(D, alpha = 0, color = "#FF0000", transform = matrix()*2, time = 3)
 
@@ -141,10 +141,11 @@
 			continue
 		if(next_turf.Adjacent(charger) && (iswallturf(next_turf) || ismineralturf(next_turf)))
 			if(!isanimal(charger))
-				SSexplosions.medturf += next_turf
+				EX_ACT(next_turf, EXPLODE_HEAVY)
 				continue
 			next_turf.attack_animal(charger)
 			continue
+
 		for(var/obj/object in next_turf.contents)
 			if(!object.Adjacent(charger))
 				continue
@@ -153,7 +154,7 @@
 			if(!object.density || object.IsObscured())
 				continue
 			if(!isanimal(charger))
-				SSexplosions.med_mov_atom += target
+				EX_ACT(object, EXPLODE_HEAVY)
 				break
 			object.attack_animal(charger)
 			break
@@ -163,9 +164,9 @@
 	if(owner == target)
 		return
 	if(isturf(target))
-		SSexplosions.medturf += target
-	if(isobj(target) && target.density)
-		SSexplosions.med_mov_atom += target
+		EX_ACT(target, EXPLODE_HEAVY)
+	else if(isobj(target) && target.density)
+		EX_ACT(target, EXPLODE_HEAVY)
 
 	INVOKE_ASYNC(src, PROC_REF(DestroySurroundings), source)
 	hit_target(source, target, charge_damage)
@@ -225,75 +226,15 @@
 	for(var/i in 0 to 2)
 		do_charge(owner, target_atom, charge_delay - 2 * i, charge_past)
 
-/datum/action/cooldown/mob_cooldown/charge/hallucination_charge
-	name = "Hallucination Charge"
-	button_icon = 'icons/effects/bubblegum.dmi'
-	button_icon_state = "smack ya one"
-	desc = "Allows you to create hallucinations that charge around your target."
-	cooldown_time = 2 SECONDS
-	charge_delay = 0.6 SECONDS
-	/// The damage the hallucinations in our charge do
-	var/hallucination_damage = 15
-	/// Check to see if we are enraged, enraged ability does more
-	var/enraged = FALSE
-	/// Check to see if we should spawn blood
-	var/spawn_blood = FALSE
+/obj/effect/temp_visual/dragon_swoop
+	name = "certain death"
+	desc = "Don't just stand there, move!"
+	icon = 'icons/effects/96x96.dmi'
+	icon_state = "landing"
+	layer = BELOW_MOB_LAYER
+	plane = GAME_PLANE
+	pixel_x = -32
+	pixel_y = -32
+	color = "#FF0000"
+	duration = 10
 
-/datum/action/cooldown/mob_cooldown/charge/hallucination_charge/charge_sequence(atom/movable/charger, atom/target_atom, delay, past)
-	if(!enraged)
-		hallucination_charge(target_atom, 6, 8, 0, 6, TRUE)
-		StartCooldown(cooldown_time * 0.5)
-		return
-	for(var/i in 0 to 2)
-		hallucination_charge(target_atom, 4, 9 - 2 * i, 0, 4, TRUE)
-	for(var/i in 0 to 2)
-		do_charge(owner, target_atom, charge_delay - 2 * i, charge_past)
-
-/datum/action/cooldown/mob_cooldown/charge/hallucination_charge/do_charge(atom/movable/charger, atom/target_atom, delay, past)
-	. = ..()
-	if(charger != owner)
-		qdel(charger)
-
-/datum/action/cooldown/mob_cooldown/charge/hallucination_charge/proc/hallucination_charge(atom/target_atom, clone_amount, delay, past, radius, use_self)
-	var/starting_angle = rand(1, 360)
-	if(!radius)
-		return
-	var/angle_difference = 360 / clone_amount
-	var/self_placed = FALSE
-	for(var/i = 1 to clone_amount)
-		var/angle = (starting_angle + angle_difference * i)
-		var/turf/place = locate(target_atom.x + cos(angle) * radius, target_atom.y + sin(angle) * radius, target_atom.z)
-		if(!place)
-			continue
-		if(use_self && !self_placed)
-			owner.forceMove(place)
-			self_placed = TRUE
-			continue
-		var/mob/living/simple_animal/hostile/megafauna/bubblegum/hallucination/our_clone = new /mob/living/simple_animal/hostile/megafauna/bubblegum/hallucination(place)
-		our_clone.appearance = owner.appearance
-		our_clone.name = "[owner]'s hallucination"
-		our_clone.alpha = 127.5
-		our_clone.move_through_mob = owner
-		our_clone.spawn_blood = spawn_blood
-		INVOKE_ASYNC(src, PROC_REF(do_charge), our_clone, target_atom, delay, past)
-	if(use_self)
-		do_charge(owner, target_atom, delay, past)
-
-/datum/action/cooldown/mob_cooldown/charge/hallucination_charge/hit_target(atom/movable/source, atom/A, damage_dealt)
-	var/applied_damage = charge_damage
-	if(source != owner)
-		applied_damage = hallucination_damage
-	. = ..(source, A, applied_damage)
-
-/datum/action/cooldown/mob_cooldown/charge/hallucination_charge/hallucination_surround
-	name = "Surround Target"
-	button_icon = 'icons/turf/walls/legacy/wall.dmi'
-	button_icon_state = "wall-0"
-	desc = "Allows you to create hallucinations that charge around your target."
-	charge_delay = 0.6 SECONDS
-	charge_past = 2
-
-/datum/action/cooldown/mob_cooldown/charge/hallucination_charge/hallucination_surround/charge_sequence(atom/movable/charger, atom/target_atom, delay, past)
-	for(var/i in 0 to 4)
-		hallucination_charge(target_atom, 2, 8, 2, 2, FALSE)
-		do_charge(owner, target_atom, charge_delay, charge_past)

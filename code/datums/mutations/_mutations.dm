@@ -62,8 +62,8 @@
 	var/chromosome_name
 	/// Has the chromosome been modified
 	var/modified = FALSE //ugly but we really don't want chromosomes and on_acquiring to overlap and apply double the powers
-	/// Is this mutation mutadone proof
-	var/mutadone_proof = FALSE
+	/// Is this mutation ryetalyn proof
+	var/ryetalyn_proof = FALSE
 
 	//Chromosome stuff - set to -1 to prevent people from changing it. Example: It'd be a waste to decrease cooldown on mutism
 	/// genetic stability coeff
@@ -124,12 +124,19 @@
 /datum/mutation/human/proc/on_life(delta_time, times_fired)
 	return
 
-/datum/mutation/human/proc/on_losing(mob/living/carbon/human/owner)
+/datum/mutation/human/proc/remove_from_owner()
+	. = on_losing(owner)
+	qdel(src)
+
+/datum/mutation/human/proc/on_losing()
 	if(!istype(owner) || !(owner.dna.mutations.Remove(src)))
 		return TRUE
+
 	. = FALSE
+
 	if(text_lose_indication && owner.stat != DEAD)
 		to_chat(owner, text_lose_indication)
+
 	if(visual_indicators.len)
 		var/list/mut_overlay = list()
 		if(owner.overlays_standing[layer_used])
@@ -138,11 +145,6 @@
 		mut_overlay.Remove(get_visual_indicator())
 		owner.overlays_standing[layer_used] = mut_overlay
 		owner.apply_overlay(layer_used)
-	if(power_path)
-		// Any powers we made are linked to our mutation datum,
-		// so deleting ourself will also delete it and remove it
-		// ...Why don't all mutations delete on loss? Not sure.
-		qdel(src)
 
 /mob/living/carbon/proc/update_mutations_overlay()
 	return
@@ -190,7 +192,7 @@
 	synchronizer_coeff = mutation_to_copy.synchronizer_coeff
 	power_coeff = mutation_to_copy.power_coeff
 	energy_coeff = mutation_to_copy.energy_coeff
-	mutadone_proof = mutation_to_copy.mutadone_proof
+	ryetalyn_proof = mutation_to_copy.ryetalyn_proof
 	can_chromosome = mutation_to_copy.can_chromosome
 	valid_chrom_list = mutation_to_copy.valid_chrom_list
 
@@ -199,7 +201,7 @@
 	synchronizer_coeff = initial(synchronizer_coeff)
 	power_coeff = initial(power_coeff)
 	energy_coeff = initial(energy_coeff)
-	mutadone_proof = initial(mutadone_proof)
+	ryetalyn_proof = initial(ryetalyn_proof)
 	can_chromosome = initial(can_chromosome)
 	chromosome_name = null
 

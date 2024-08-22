@@ -18,9 +18,10 @@
 	name = "Round + Light"
 	icon_state = "roundlight"
 
-/datum/sprite_accessory/vox_snouts/vox
+/datum/sprite_accessory/vox_snouts
 	icon = 'icons/mob/species/vox/vox_snouts.dmi'
+	em_block = TRUE
+
+/datum/sprite_accessory/vox_snouts/vox
 	name = "Vox Snout"
 	icon_state = "vox"
-	em_block = TRUE
-	color_src = MUTCOLORS2

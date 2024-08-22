@@ -64,10 +64,10 @@
 
 /obj/item/organ/body_egg/alien_embryo/egg_process()
 	if(stage == 6 && prob(50))
-		for(var/datum/surgery/S in owner.surgeries)
-			if(S.location == BODY_ZONE_CHEST && istype(S.get_surgery_step(), /datum/surgery_step/manipulate_organs))
-				AttemptGrow(0)
-				return
+		var/obj/item/bodypart/chest = owner.get_bodypart(BODY_ZONE_CHEST)
+		if(chest.how_open() == SURGERY_DEENCASED)
+			AttemptGrow(0)
+			return
 		AttemptGrow()
 
 

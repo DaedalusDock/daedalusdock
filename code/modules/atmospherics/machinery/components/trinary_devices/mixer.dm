@@ -22,7 +22,7 @@
 	var/last_power_draw = 0
 
 
-/obj/machinery/atmospherics/components/trinary/mixer/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/trinary/mixer/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
@@ -49,8 +49,8 @@
 	var/on_state = on && nodes[1] && nodes[2] && nodes[3] && is_operational
 	icon_state = "mixer_[on_state ? "on" : "off"]-[set_overlay_offset(piping_layer)][flipped ? "_f" : ""]"
 
-/obj/machinery/atmospherics/components/trinary/mixer/New()
-	..()
+/obj/machinery/atmospherics/components/trinary/mixer/Initialize()
+	. = ..()
 	var/datum/gas_mixture/air3 = airs[3]
 	air3.volume = 300
 	airs[3] = air3

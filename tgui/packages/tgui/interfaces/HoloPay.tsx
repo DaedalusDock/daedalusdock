@@ -1,5 +1,17 @@
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Dropdown, Icon, NoticeBox, RestrictedInput, Section, Stack, Table, TextArea, Tooltip } from '../components';
+import {
+  Box,
+  Button,
+  Dropdown,
+  Icon,
+  NoticeBox,
+  RestrictedInput,
+  Section,
+  Stack,
+  Table,
+  TextArea,
+  Tooltip,
+} from '../components';
 import { Window } from '../layouts';
 
 type HoloPayData = {
@@ -11,7 +23,7 @@ type HoloPayData = {
   name: string;
   owner: string;
   shop_logo: string;
-  user: { name: string; balance: number };
+  user: { balance: number; name: string };
 };
 
 const COPYRIGHT_SCROLLER = `Nanotrasen (c) 2525-2562. All sales final.
@@ -19,10 +31,10 @@ Use of departmental funds is prohibited. For more information, visit
 the Head of Personnel. All rights reserved. All trademarks are property
 of their respective owners.`;
 
-export const HoloPay = (_, context) => {
-  const { data } = useBackend<HoloPayData>(context);
+export const HoloPay = (_) => {
+  const { data } = useBackend<HoloPayData>();
   const { owner } = data;
-  const [setupMode, setSetupMode] = useLocalState(context, 'setupMode', false);
+  const [setupMode, setSetupMode] = useLocalState('setupMode', false);
   // User clicked the "Setup" or "Done" button.
   const onClick = () => {
     setSetupMode(!setupMode);
@@ -55,8 +67,8 @@ export const HoloPay = (_, context) => {
 /**
  * Displays the current user's bank information (if any)
  */
-const AccountDisplay = (_, context) => {
-  const { data } = useBackend<HoloPayData>(context);
+const AccountDisplay = (_) => {
+  const { data } = useBackend<HoloPayData>();
   const { user } = data;
   if (!user) {
     return <NoticeBox>Error! No account detected.</NoticeBox>;
@@ -87,13 +99,13 @@ const AccountDisplay = (_, context) => {
  * Displays the payment processor. This is the main display.
  * Shows icon, name, payment button.
  */
-const TerminalDisplay = (props, context) => {
-  const { act, data } = useBackend<HoloPayData>(context);
+const TerminalDisplay = (props) => {
+  const { act, data } = useBackend<HoloPayData>();
   const { description, force_fee, name, owner, user, shop_logo } = data;
   const { onClick } = props;
   const is_owner = owner === user?.name;
-  const cannot_pay
-    = is_owner || !user || user?.balance < 1 || user?.balance < force_fee;
+  const cannot_pay =
+    is_owner || !user || user?.balance < 1 || user?.balance < force_fee;
   const decodedName = name.replace(/&#(\d+);/g, (_, dec) => {
     return String.fromCharCode(dec);
   });
@@ -104,10 +116,12 @@ const TerminalDisplay = (props, context) => {
         is_owner && (
           <Button icon="edit" onClick={onClick}>
             Setup
-          </Button>)
+          </Button>
+        )
       }
       fill
-      title="Terminal">
+      title="Terminal"
+    >
       <Stack fill vertical>
         <Stack.Item align="center">
           <Icon color="good" name={shop_logo} size="5" />
@@ -153,12 +167,10 @@ const TerminalDisplay = (props, context) => {
           )}
         </Stack.Item>
         <Stack.Item>
-          {/* @ts-ignore */}
           <marquee scrollamount="2">
             <Box color="darkgray" fontSize="8px">
               {COPYRIGHT_SCROLLER}
             </Box>
-            {/* @ts-ignore */}
           </marquee>
         </Stack.Item>
       </Stack>
@@ -169,8 +181,8 @@ const TerminalDisplay = (props, context) => {
 /**
  * User has clicked "setup" button. Changes vars on the holopay.
  */
-const SetupDisplay = (props, context) => {
-  const { act, data } = useBackend<HoloPayData>(context);
+const SetupDisplay = (props) => {
+  const { act, data } = useBackend<HoloPayData>();
   const { available_logos = [], force_fee, max_fee, name, shop_logo } = data;
   const { onClick } = props;
   const decodedName = name.replace(/&#(\d+);/g, (_, dec) => {
@@ -185,13 +197,15 @@ const SetupDisplay = (props, context) => {
           onClick={() => {
             act('done');
             onClick();
-          }}>
+          }}
+        >
           Done
         </Button>
       }
       fill
       scrollable
-      title="Settings">
+      title="Settings"
+    >
       <Stack fill vertical>
         <Stack.Item>
           <Box bold color="label">

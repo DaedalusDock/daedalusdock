@@ -207,7 +207,7 @@
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/iron = 50, /datum/material/glass = 50)
 	build_path = /obj/item/airlock_painter
-	category = list(DCAT_MISC_TOOL)
+	category = list(DCAT_PAINTER)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
 /datum/design/airlock_painter/decal
@@ -216,7 +216,7 @@
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/iron = 50, /datum/material/glass = 50)
 	build_path = /obj/item/airlock_painter/decal
-	category = list(DCAT_MISC_TOOL)
+	category = list(DCAT_PAINTER)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
 /datum/design/airlock_painter/decal/tile
@@ -225,8 +225,18 @@
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/iron = 50, /datum/material/glass = 50)
 	build_path = /obj/item/airlock_painter/decal/tile
-	category = list(DCAT_MISC_TOOL)
+	category = list(DCAT_PAINTER)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
+
+/datum/design/paint_sprayer
+	name = "Paint Sprayer"
+	id = "paint_sprayer"
+	build_type = AUTOLATHE | FABRICATOR
+	materials = list(/datum/material/iron = 50, /datum/material/glass = 50)
+	build_path = /obj/item/paint_sprayer
+	category = list(DCAT_PAINTER)
+	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
+
 
 /datum/design/emergency_oxygen
 	name = "Emergency Oxygen Tank"
@@ -484,6 +494,15 @@
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/iron = 4000, /datum/material/glass = 1000)
 	build_path = /obj/item/scalpel
+	category = list(DCAT_MEDICAL)
+	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
+
+/datum/design/fixovein
+	name = "Vascular Recoupler"
+	id = "vascroup"
+	build_type = AUTOLATHE | FABRICATOR
+	materials = list(/datum/material/iron = 4000, /datum/material/glass = 1500, /datum/material/silver = 500)
+	build_path = /obj/item/fixovein
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
@@ -994,24 +1013,6 @@
 	category = list(DCAT_MISC_TOOL)
 	maxstack = 5
 	mapload_design_flags = DESIGN_FAB_CIV
-
-/datum/design/petridish
-	name = "Petri Dish"
-	id = "petri_dish"
-	build_type = FABRICATOR | AUTOLATHE
-	materials = list(/datum/material/glass = 500)
-	build_path = /obj/item/petri_dish
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_MEDICAL
-
-/datum/design/swab
-	name = "Sterile Swab"
-	id = "swab"
-	build_type = FABRICATOR  | AUTOLATHE
-	materials = list(/datum/material/plastic = 200)
-	build_path = /obj/item/swab
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_OMNI | DESIGN_FAB_MEDICAL
 
 /datum/design/chisel
 	name = "Chisel"

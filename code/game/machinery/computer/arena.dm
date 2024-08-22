@@ -65,6 +65,11 @@
 /obj/machinery/computer/arena/Initialize(mapload, obj/item/circuitboard/C)
 	. = ..()
 	LoadDefaultArenas()
+	SET_TRACKING(__TYPE__)
+
+/obj/machinery/computer/arena/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
 
 /**
  * Loads the arenas from config directory.
@@ -210,7 +215,7 @@
 	set_doors(closed = TRUE)
 
 /obj/machinery/computer/arena/proc/get_spawn(team)
-	for(var/obj/machinery/arena_spawn/A in GLOB.machines)
+	for(var/obj/machinery/arena_spawn/A as anything in INSTANCES_OF(/obj/machinery/arena_spawn))
 		if(A.arena_id == arena_id && A.team == team)
 			return A
 
@@ -244,7 +249,7 @@
 
 
 /obj/machinery/computer/arena/proc/set_doors(closed = FALSE)
-	for(var/obj/machinery/door/poddoor/D in GLOB.machines) //I really dislike pathing of these
+	for(var/obj/machinery/door/poddoor/D in INSTANCES_OF(/obj/machinery/door)) //I really dislike pathing of these
 		if(D.id != arena_id)
 			continue
 		if(closed)
@@ -372,6 +377,14 @@
 	/// only exist to cut down on glob.machines lookups, do not modify
 	var/obj/machinery/computer/arena/_controller
 
+/obj/machinery/arena_spawn/Initialize(mapload)
+	. = ..()
+	SET_TRACKING(__TYPE__)
+
+/obj/machinery/arena_spawn/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
+
 /obj/machinery/arena_spawn/red
 	name = "Red Team Spawnpoint"
 	color = "red"
@@ -385,7 +398,7 @@
 /obj/machinery/arena_spawn/proc/get_controller()
 	if(_controller && !QDELETED(_controller) && _controller.arena_id == arena_id)
 		return _controller
-	for(var/obj/machinery/computer/arena/A in GLOB.machines)
+	for(var/obj/machinery/computer/arena/A in INSTANCES_OF(/obj/machinery/computer/arena))
 		if(A.arena_id == arena_id)
 			_controller = A
 			return _controller

@@ -35,11 +35,10 @@
 	slot_flags = ITEM_SLOT_BELT
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
-	throw_speed = 3
 	throw_range = 5
 	custom_materials = list(/datum/material/iron=500)
 	breakouttime = 1 MINUTES
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	custom_price = PAYCHECK_HARD * 0.35
 	///Sound that plays when starting to put handcuffs on someone
 	var/cuffsound = 'sound/weapons/handcuffs.ogg'
@@ -66,10 +65,11 @@
 			playsound(loc, cuffsound, 30, TRUE, -2)
 			log_combat(user, C, "attempted to handcuff")
 			if(do_after(user, C, 30, timed_action_flags = IGNORE_SLOWDOWNS|DO_PUBLIC, display = src) && C.canBeHandcuffed())
-				if(iscyborg(user))
-					apply_cuffs(C, user, TRUE)
-				else
-					apply_cuffs(C, user)
+				if(!apply_cuffs(C, user, iscyborg(user)))
+					to_chat(user, span_warning("You fail to handcuff [C]!"))
+					log_combat(user, C, "failed to handcuff")
+					return
+
 				C.visible_message(span_notice("[user] handcuffs [C]."), \
 									span_userdanger("[user] handcuffs you."))
 				SSblackbox.record_feedback("tally", "handcuffs", 1, type)
@@ -79,7 +79,7 @@
 				to_chat(user, span_warning("You fail to handcuff [C]!"))
 				log_combat(user, C, "failed to handcuff")
 		else
-			to_chat(user, span_warning("[C] doesn't have two hands..."))
+			to_chat(user, span_warning("You cannot handcuff [C]."))
 
 /**
  * This handles handcuffing people
@@ -94,7 +94,7 @@
 	if(target.handcuffed)
 		return
 
-	if(!user.temporarilyRemoveItemFromInventory(src) && !dispense)
+	if(!dispense && !user.temporarilyRemoveItemFromInventory(src))
 		return
 
 	var/obj/item/restraints/handcuffs/cuffs = src
@@ -103,11 +103,16 @@
 	else if(dispense)
 		cuffs = new type()
 
-	target.equip_to_slot(cuffs, ITEM_SLOT_HANDCUFFED)
+	if(!target.equip_to_slot_if_possible(cuffs, ITEM_SLOT_HANDCUFFED, cuffs != src, TRUE, null, TRUE))
+		if(!QDELETED(cuffs))
+			if(!user.put_in_hands(cuffs))
+				forceMove(user.drop_location())
+		return FALSE
 
 	if(trashtype && !dispense)
 		qdel(src)
-	return
+
+	return TRUE
 
 /**
  * # Alien handcuffs
@@ -144,21 +149,6 @@
 	custom_materials = list(/datum/material/iron=150, /datum/material/glass=75)
 	breakouttime = 30 SECONDS
 	cuffsound = 'sound/weapons/cablecuff.ogg'
-
-/obj/item/restraints/handcuffs/cable/Initialize(mapload)
-	. = ..()
-
-	var/static/list/hovering_item_typechecks = list(
-		/obj/item/stack/rods = list(
-			SCREENTIP_CONTEXT_LMB = "Craft wired rod",
-		),
-
-		/obj/item/stack/sheet/iron = list(
-			SCREENTIP_CONTEXT_LMB = "Craft bola",
-		),
-	)
-
-	AddElement(/datum/element/contextual_screentip_item_typechecks, hovering_item_typechecks)
 
 /**
  * # Sinew restraints
@@ -222,36 +212,6 @@
 */
 /obj/item/restraints/handcuffs/cable/white
 	color = null
-
-/obj/item/restraints/handcuffs/cable/attackby(obj/item/I, mob/user, params) //Slapcrafting
-	if(istype(I, /obj/item/stack/rods))
-		var/obj/item/stack/rods/R = I
-		if (R.use(1))
-			var/obj/item/wirerod/W = new /obj/item/wirerod
-			remove_item_from_storage(user)
-			user.put_in_hands(W)
-			to_chat(user, span_notice("You wrap [src] around the top of [I]."))
-			qdel(src)
-		else
-			to_chat(user, span_warning("You need one rod to make a wired rod!"))
-			return
-	else if(istype(I, /obj/item/stack/sheet/iron))
-		var/obj/item/stack/sheet/iron/M = I
-		if(M.get_amount() < 6)
-			to_chat(user, span_warning("You need at least six iron sheets to make good enough weights!"))
-			return
-		to_chat(user, span_notice("You begin to apply [I] to [src]..."))
-		if(do_after(user, src, 3.5 SECONDS, DO_PUBLIC, display = src))
-			if(M.get_amount() < 6 || !M)
-				return
-			var/obj/item/restraints/legcuffs/bola/S = new /obj/item/restraints/legcuffs/bola
-			M.use(6)
-			user.put_in_hands(S)
-			to_chat(user, span_notice("You make some weights out of [I] and tie them to [src]."))
-			remove_item_from_storage(user)
-			qdel(src)
-	else
-		return ..()
 
 /**
  * # Zipties

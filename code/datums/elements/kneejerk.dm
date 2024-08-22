@@ -1,6 +1,5 @@
 /// An element which enables certain items to tap people on their knees to measure brain health
 /datum/element/kneejerk
-	element_flags = ELEMENT_DETACH
 
 /datum/element/kneejerk/Attach(datum/target)
 	. = ..()
@@ -23,7 +22,7 @@
 	if((user.zone_selected == BODY_ZONE_L_LEG || user.zone_selected == BODY_ZONE_R_LEG) && LAZYACCESS(modifiers, RIGHT_CLICK) && target.buckled)
 		tap_knee(source, target, user)
 
-		return COMPONENT_SKIP_ATTACK
+		return COMPONENT_SKIP_ATTACK_STEP
 
 /datum/element/kneejerk/proc/tap_knee(obj/item/item, mob/living/target, mob/living/user)
 	var/selected_zone = user.zone_selected

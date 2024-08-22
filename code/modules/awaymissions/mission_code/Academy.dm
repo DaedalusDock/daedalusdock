@@ -250,7 +250,7 @@
 			//Destroy Equipment
 			T.visible_message(span_userdanger("Everything [user] is holding and wearing disappears!"))
 			for(var/obj/item/I in user)
-				if(istype(I, /obj/item/implant))
+				if(istype(I, /obj/item/implant) || (I.item_flags & ABSTRACT))
 					continue
 				qdel(I)
 		if(5)
@@ -377,7 +377,7 @@
 	spell_requirements = NONE
 	spell_max_level = 0 //cannot be improved
 
-	smoke_type = /datum/effect_system/smoke_spread
+	smoke_type = /datum/effect_system/fluid_spread/smoke
 	smoke_amt = 2
 
 	var/datum/weakref/summon_weakref
@@ -410,7 +410,7 @@
 	icon_state = "1"
 	color = rgb(0,0,255)
 
-/obj/structure/ladder/unbreakable/rune/ComponentInitialize()
+/obj/structure/ladder/unbreakable/rune/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
 

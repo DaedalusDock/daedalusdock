@@ -16,7 +16,7 @@
 			This can be done an unlimited amount of times. Some Syndicate areas and devices can only be accessed \
 			with these cards."
 	item = /obj/item/card/id/advanced/chameleon
-	cost = 2
+	cost = 1
 
 /datum/uplink_item/stealthy_tools/agent_card_advanced
 	name = "Advanced Agent Identification Card"
@@ -134,3 +134,10 @@
 	var/datum/round_event_control/event = locate(/datum/round_event_control/grid_check) in SSevents.control
 	event.runEvent()
 	return source //For log icon
+
+/datum/uplink_item/stealthy_tools/voice_changer
+	name = "Voice Changer"
+	desc = "This voice-modulation device will dynamically disguise your voice to that of whoever is listed on your identification card, \
+		via incredibly complex algorithms. Discretely fits inside most gasmasks, and can be removed with wirecutters."
+	item = /obj/item/voice_changer
+	cost = 1

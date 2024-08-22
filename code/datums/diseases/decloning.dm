@@ -3,12 +3,12 @@
 	name = "Cellular Degeneration"
 	max_stages = 5
 	stage_prob = 0.5
-	cure_text = "Rezadone or death."
+	cure_text = "Omnizine or death."
 	agent = "Severe Genetic Damage"
 	viable_mobtypes = list(/mob/living/carbon/human)
 	desc = @"If left untreated the subject will [REDACTED]!"
 	severity = "Dangerous!"
-	cures = list(/datum/reagent/medicine/rezadone)
+	cures = list(/datum/reagent/medicine/omnizine)
 	disease_flags = CAN_CARRY|CAN_RESIST
 	spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
 	process_dead = TRUE
@@ -58,7 +58,7 @@
 			if(DT_PROB(5, delta_time))
 				affected_mob.adjustCloneLoss(5, FALSE)
 				affected_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2, 170)
-			if(affected_mob.cloneloss >= 100)
+			if(affected_mob.getCloneLoss() >= 100)
 				affected_mob.visible_message(span_danger("[affected_mob] skin turns to dust!"), span_boldwarning("Your skin turns to dust!"))
 				affected_mob.dust()
 				return FALSE

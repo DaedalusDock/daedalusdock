@@ -9,7 +9,7 @@
 	var/group
 
 	/// Whether or not to allow numbers in the person's name
-	var/allow_numbers = FALSE
+	var/allow_numbers = TRUE
 
 	/// If the highest priority job matches this, will prioritize this name in the UI
 	var/relevant_job
@@ -37,8 +37,8 @@
 
 	if(istype(user, /mob/dead/new_player))
 		var/mob/dead/new_player/player = user
-		player.new_player_panel()
-
+		if(player.npp.active_tab == "game")
+			player.npp.change_tab("game") // Reload name
 	return .
 
 /datum/preference/name/get_button(datum/preferences/prefs)
@@ -52,8 +52,7 @@
 	savefile_key = "real_name"
 
 /datum/preference/name/real_name/apply_to_human(mob/living/carbon/human/target, value)
-	target.real_name = value
-	target.name = value
+	target.set_real_name(value)
 
 /datum/preference/name/real_name/create_informed_default_value(datum/preferences/preferences)
 	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
@@ -91,22 +90,12 @@
 /datum/preference/name/clown
 	savefile_key = "clown_name"
 
-	explanation = "Clown Name"
+	explanation = "Entertainer Name"
 	group = "fun"
 	relevant_job = /datum/job/clown
 
 /datum/preference/name/clown/create_default_value()
 	return pick(GLOB.clown_names)
-
-/datum/preference/name/mime
-	savefile_key = "mime_name"
-
-	explanation = "Mime Name"
-	group = "fun"
-	relevant_job = /datum/job/mime
-
-/datum/preference/name/mime/create_default_value()
-	return pick(GLOB.mime_names)
 
 /datum/preference/name/cyborg
 	savefile_key = "cyborg_name"

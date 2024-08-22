@@ -43,6 +43,7 @@ The console is located at computer/gulag_teleporter.dm
 /obj/machinery/gulag_teleporter/Destroy()
 	if(linked_reclaimer)
 		linked_reclaimer.linked_teleporter = null
+		linked_reclaimer = null
 	return ..()
 
 /obj/machinery/gulag_teleporter/interact(mob/user)
@@ -145,7 +146,7 @@ The console is located at computer/gulag_teleporter.dm
 				else
 					W.forceMove(src)
 
-/obj/machinery/gulag_teleporter/proc/handle_prisoner(obj/item/id, datum/data/record/R)
+/obj/machinery/gulag_teleporter/proc/handle_prisoner(obj/item/id, datum/data/record/security/R)
 	if(!ishuman(occupant))
 		return
 	strip_occupant()
@@ -160,7 +161,7 @@ The console is located at computer/gulag_teleporter.dm
 	if(id)
 		prisoner.equip_to_appropriate_slot(id, qdel_on_fail = TRUE)
 	if(R)
-		R.fields["criminal"] = "Incarcerated"
+		R.set_criminal_status(CRIMINAL_INCARCERATED)
 
 	use_power(active_power_usage)
 

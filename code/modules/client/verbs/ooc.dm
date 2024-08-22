@@ -73,12 +73,17 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 	mob.log_talk(raw_msg, LOG_OOC)
 
 	var/keyname = key
+	if(restricted_mode)
+		keyname = "*GUEST* [keyname]"
+
 	if(prefs.unlock_content)
 		if(prefs.toggles & MEMBER_PUBLIC)
 			keyname = "<font color='[prefs.read_preference(/datum/preference/color/ooc_color) || GLOB.normal_ooc_colour]'>[icon2html('icons/ui_icons/chat/member_content.dmi', world, "blag")][keyname]</font>"
+
 	if(prefs.hearted)
 		var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/chat)
 		keyname = "[sheet.icon_tag("emoji-heart")][keyname]"
+
 	//The linkify span classes and linkify=TRUE below make ooc text get clickable chat href links if you pass in something resembling a url
 	for(var/client/receiver as anything in GLOB.clients)
 		if(!receiver.prefs) // Client being created or deleted. Despite all, this can be null.
@@ -87,6 +92,7 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 			continue
 		if(holder?.fakekey in receiver.prefs.ignoring)
 			continue
+
 		var/avoid_highlight = receiver == src
 		if(holder)
 			if(!holder.fakekey || receiver.holder)

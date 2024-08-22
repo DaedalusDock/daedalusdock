@@ -1,6 +1,6 @@
 /obj/item/grenade/syndieminibomb
+	name = "grenade"
 	desc = "A syndicate manufactured explosive used to sow destruction and chaos."
-	name = "syndicate minibomb"
 	icon = 'icons/obj/grenade.dmi'
 	icon_state = "syndicate"
 	inhand_icon_state = "flashbang"
@@ -19,7 +19,7 @@
 	qdel(src)
 
 /obj/item/grenade/syndieminibomb/concussion
-	name = "HE Grenade"
+	name = "HE grenade"
 	desc = "A compact shrapnel grenade meant to devastate nearby organisms and cause some damage in the process. Pull pin and throw opposite direction."
 	icon_state = "concussion"
 	ex_heavy = 2

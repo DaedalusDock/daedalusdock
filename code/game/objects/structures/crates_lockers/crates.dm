@@ -89,9 +89,8 @@
 	to_chat(user, span_notice("You tear the manifest off of [src]."))
 	playsound(src, 'sound/items/poster_ripped.ogg', 75, TRUE)
 
-	manifest.forceMove(loc)
-	if(ishuman(user))
-		user.put_in_hands(manifest)
+	if(!user.put_in_hands(manifest))
+		manifest.forceMove(loc.drop_location())
 	manifest = null
 	update_appearance()
 
@@ -108,22 +107,6 @@
 	open_sound_volume = 25
 	close_sound_volume = 50
 	can_install_electronics = FALSE
-
-/obj/structure/closet/crate/maint
-
-/obj/structure/closet/crate/maint/Initialize(mapload)
-	..()
-	return INITIALIZE_HINT_QDEL
-
-/obj/structure/closet/crate/maint/PopulateContents()
-	. = ..()
-	new /obj/effect/spawner/random/structure/crate_empty(loc)
-	for(var/i in 1 to rand(2,6))
-		new /obj/effect/spawner/random/maintenance(src)
-
-/obj/structure/closet/crate/trashcart/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,3), 15)
 
 /obj/structure/closet/crate/trashcart/filled
 
@@ -202,7 +185,6 @@
 	new /obj/item/reagent_containers/blood/o_plus(src)
 	new /obj/item/reagent_containers/blood/lizard(src)
 	new /obj/item/reagent_containers/blood/ethereal(src)
-	new /obj/item/reagent_containers/blood/skrell(src)
 	for(var/i in 1 to 3)
 		new /obj/item/reagent_containers/blood/random(src)
 

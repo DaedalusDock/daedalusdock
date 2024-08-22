@@ -16,8 +16,6 @@
 /datum/mutation/human/honorbound/on_acquiring(mob/living/carbon/human/owner)
 	if(..())
 		return
-	//moodlet
-	SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "honorbound", /datum/mood_event/honorbound)
 	//checking spells cast by honorbound
 	RegisterSignal(owner, COMSIG_MOB_CAST_SPELL, PROC_REF(spell_check))
 	RegisterSignal(owner, COMSIG_MOB_FIRED_GUN, PROC_REF(staff_check))
@@ -33,7 +31,6 @@
 	RegisterSignal(owner, COMSIG_MOB_CLICKON, PROC_REF(attack_honor))
 
 /datum/mutation/human/honorbound/on_losing(mob/living/carbon/human/owner)
-	SEND_SIGNAL(owner, COMSIG_CLEAR_MOOD_EVENT, "honorbound")
 	UnregisterSignal(owner, list(
 		COMSIG_PARENT_ATTACKBY,
 		COMSIG_ATOM_HULK_ATTACK,
@@ -103,7 +100,7 @@
 	//THE UNREADY (Applies over ANYTHING else!)
 	if(honorbound_human == target_creature)
 		return TRUE //oh come on now
-	if(target_creature.IsSleeping() || target_creature.IsUnconscious() || HAS_TRAIT(target_creature, TRAIT_RESTRAINED))
+	if(target_creature.IsSleeping() || target_creature.IsUnconscious() || HAS_TRAIT(target_creature, TRAIT_ARMS_RESTRAINED))
 		to_chat(honorbound_human, span_warning("There is no honor in attacking the <b>unready</b>."))
 		return FALSE
 	//THE JUST (Applies over guilt except for med, so you best be careful!)
@@ -192,14 +189,12 @@
 		if(SCHOOL_NECROMANCY, SCHOOL_FORBIDDEN)
 			to_chat(user, span_userdanger("[GLOB.deity] is enraged by your use of forbidden magic!"))
 			lightningbolt(user)
-			SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "honorbound", /datum/mood_event/banished)
 			user.dna.remove_mutation(/datum/mutation/human/honorbound)
 			user.mind.holy_role = NONE
 			to_chat(user, span_userdanger("You have been excommunicated! You are no longer holy!"))
 		else
 			to_chat(user, span_userdanger("[GLOB.deity] is angered by your use of [school] magic!"))
 			lightningbolt(user)
-			SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "honorbound", /datum/mood_event/holy_smite)//permanently lose your moodlet after this
 
 /datum/action/cooldown/spell/pointed/declare_evil
 	name = "Declare Evil"

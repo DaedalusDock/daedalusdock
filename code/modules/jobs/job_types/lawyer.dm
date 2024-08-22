@@ -10,7 +10,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(
-		/datum/employer/contractor,
+		/datum/employer/none
 	)
 
 	outfits = list(
@@ -27,9 +27,6 @@
 			SPECIES_VOX = /datum/outfit/job/lawyer/prosecutor,
 		),
 	)
-
-	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_STATION_MASTER
 
 	mind_traits = list(TRAIT_DONUT_LOVER)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)
@@ -50,7 +47,6 @@
 	id_trim = /datum/id_trim/job/lawyer
 	uniform = /obj/item/clothing/under/rank/civilian/lawyer/black
 	belt = /obj/item/modular_computer/tablet/pda/lawyer
-	ears = /obj/item/radio/headset/headset_srvsec
 	shoes = /obj/item/clothing/shoes/laceup
 	l_pocket = /obj/item/laser_pointer
 	r_pocket = /obj/item/clothing/accessory/lawyers_badge

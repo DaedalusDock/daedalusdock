@@ -32,32 +32,35 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define PREVENT_CLICK_UNDER_1 (1<<5)
 ///specifies that this atom is a hologram that isnt real
 #define HOLOGRAM_1 (1<<6)
-/// Prevents mobs from getting chainshocked by teslas and the supermatter
-#define SHOCKED_1 (1<<7)
-///Whether /atom/Initialize() has already run for the object
-#define INITIALIZED_1 (1<<8)
 /// was this spawned by an admin? used for stat tracking stuff.
-#define ADMIN_SPAWNED_1 (1<<9)
+#define ADMIN_SPAWNED_1 (1<<7)
 /// should not get harmed if this gets caught by an explosion?
-#define PREVENT_CONTENTS_EXPLOSION_1 (1<<10)
+#define PREVENT_CONTENTS_EXPLOSION_1 (1<<8)
 /// Should this object be paintable with very dark colors?
-#define ALLOW_DARK_PAINTS_1 (1<<11)
+#define ALLOW_DARK_PAINTS_1 (1<<9)
 /// Should this object be unpaintable?
-#define UNPAINTABLE_1 (1<<12)
+#define UNPAINTABLE_1 (1<<10)
 /// Is the thing currently spinning?
-#define IS_SPINNING_1 (1<<13)
-#define IS_ONTOP_1 (1<<14)
-#define SUPERMATTER_IGNORES_1 (1<<15)
+#define IS_SPINNING_1 (1<<11)
+#define IS_ONTOP_1 (1<<12)
+#define SUPERMATTER_IGNORES_1 (1<<13)
 /// If a turf can be made dirty at roundstart. This is also used in areas.
-#define CAN_BE_DIRTY_1 (1<<16)
+#define CAN_BE_DIRTY_1 (1<<14)
 /// Should we use the initial icon for display? Mostly used by overlay only objects
-#define HTML_USE_INITAL_ICON_1 (1<<17)
+#define HTML_USE_INITAL_ICON_1 (1<<15)
 /// Can players recolor this in-game via vendors (and maybe more if support is added)?
-#define IS_PLAYER_COLORABLE_1 (1<<18)
+#define IS_PLAYER_COLORABLE_1 (1<<16)
 /// Whether or not this atom has contextual screentips when hovered OVER
-#define HAS_CONTEXTUAL_SCREENTIPS_1 (1<<19)
+#define HAS_CONTEXTUAL_SCREENTIPS_1 (1<<17)
 // Whether or not this atom is storing contents for a disassociated storage object
-#define HAS_DISASSOCIATED_STORAGE_1 (1<<20)
+#define HAS_DISASSOCIATED_STORAGE_1 (1<<18)
+// Atom has similar priority to border objects when doing Bump() calculations.
+#define BUMP_PRIORITY_1 (1<<19)
+/// If this atom has experienced a decal element "init finished" sourced appearance update
+/// We use this to ensure stacked decals don't double up appearance updates for no rasin
+/// Flag as an optimization, don't make this a trait without profiling
+/// Yes I know this is a stupid flag, no you can't take him from me ~LemonInTheDark
+#define DECAL_INIT_UPDATE_EXPERIENCED_1 (1<<20)
 
 //OH YEAH BABY FLAGS_2 HERE WE GO
 ///Plasma Contamination
@@ -110,28 +113,26 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define FLORA_ALLOWED (1<<3)
 /// If mobs can be spawned by natural random generation
 #define MOB_SPAWN_ALLOWED (1<<4)
-/// If megafauna can be spawned by natural random generation
-#define MEGAFAUNA_SPAWN_ALLOWED (1<<5)
 /// Are you forbidden from teleporting to the area? (centcom, mobs, wizard, hand teleporter)
-#define NOTELEPORT (1<<6)
+#define NOTELEPORT (1<<5)
 /// Hides area from player Teleport function.
-#define HIDDEN_AREA (1<<7)
+#define HIDDEN_AREA (1<<6)
 /// If false, loading multiple maps with this area type will create multiple instances.
-#define UNIQUE_AREA (1<<8)
+#define UNIQUE_AREA (1<<7)
 /// If people are allowed to suicide in it. Mostly for OOC stuff like minigames
-#define BLOCK_SUICIDE (1<<9)
+#define BLOCK_SUICIDE (1<<8)
 /// Can the Xenobio management console transverse this area by default?
-#define XENOBIOLOGY_COMPATIBLE (1<<10)
+#define XENOBIOLOGY_COMPATIBLE (1<<9)
 /// If Abductors are unable to teleport in with their observation console
-#define ABDUCTOR_PROOF (1<<11)
+#define ABDUCTOR_PROOF (1<<10)
 /// If an area should be hidden from power consoles, power/atmosphere alerts, etc.
-#define NO_ALERTS (1<<12)
+#define NO_ALERTS (1<<11)
 /// If blood cultists can draw runes or build structures on this AREA.
-#define CULT_PERMITTED (1<<13)
+#define CULT_PERMITTED (1<<12)
 ///Whther this area is iluminated by starlight
-#define AREA_USES_STARLIGHT (1<<14)
+#define AREA_USES_STARLIGHT (1<<13)
 /// If engravings are persistent in this area
-#define PERSISTENT_ENGRAVINGS (1<<15)
+#define PERSISTENT_ENGRAVINGS (1<<14)
 /*
 	These defines are used specifically with the atom/pass_flags bitmask
 	the atom/checkpass() proc uses them (tables will call movable atom checkpass(PASSTABLE) for example)

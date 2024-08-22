@@ -15,7 +15,7 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = 300, /datum/material/glass = 300)
-	light_system = MOVABLE_LIGHT //Used as a flash here.
+	light_system = OVERLAY_LIGHT //Used as a flash here.
 	light_outer_range = FLASH_LIGHT_RANGE
 	light_color = COLOR_WHITE
 	light_power = FLASH_LIGHT_POWER
@@ -168,20 +168,20 @@
 				// Did we try to flash them from behind?
 				if(deviation == DEVIATION_FULL)
 					// Headrevs can use a tacticool leaning technique so that they don't have to worry about facing for their conversions.
-					to_chat(user, span_notice("You use the tacticool tier, lean over the shoulder technique to blind [flashed] with a flash!"))
+					to_chat(user, span_notice("You use the tacticool tech, lean over the shoulder technique to blind [flashed] with a flash!"))
 					deviation = DEVIATION_PARTIAL
 				// Convert them. Terribly.
 				terrible_conversion_proc(flashed, user)
 				visible_message(span_danger("[user] blinds [flashed] with the flash!"), span_userdanger("[user] blinds you with the flash!"))
 			//easy way to make sure that you can only long stun someone who is facing in your direction
-			flashed.Disorient((7 SECONDS * (1-(deviation*0.5))), 70, paralyze = 2 SECONDS)
+			flashed.Disorient((7 SECONDS * (1-(deviation*0.5))), 90 * (1-(deviation*0.5)), paralyze = 4 SECONDS)
 		else if(user)
 			visible_message(span_warning("[user] fails to blind [flashed] with the flash!"), span_danger("[user] fails to blind you with the flash!"))
 		else
 			to_chat(flashed, span_danger("[src] fails to blind you!"))
 
 	else
-		flashed.Disorient(7 SECONDS * (1-(deviation*0.5)), paralyze = 2 SECONDS)
+		flashed.Disorient(7 SECONDS * (1-(deviation*0.5)), 90 * (1-(deviation*0.5)), paralyze = 4 SECONDS)
 
 /**
  * Handles the directionality of the attack
@@ -255,8 +255,9 @@
 /obj/item/assembly/flash/attack_self(mob/living/carbon/user, flag = 0, emp = 0)
 	if(holder)
 		return FALSE
-	if(!AOE_flash(user = user))
-		return FALSE
+	if(AOE_flash(user = user))
+		user.changeNext_move(CLICK_CD_MELEE)
+
 
 /obj/item/assembly/flash/emp_act(severity)
 	. = ..()
@@ -290,6 +291,9 @@
 	if(victim.stat != CONSCIOUS)
 		to_chat(aggressor, span_warning("They must be conscious before you can convert [victim.p_them()]!"))
 		return
+	if(!victim.mind || victim.mind.has_antag_datum(/datum/antagonist/rev) || victim.mind.has_antag_datum(/datum/antagonist/rev/head))
+		return
+
 	//If this proc fires the mob must be a revhead
 	var/datum/antagonist/rev/head/converter = aggressor.mind.has_antag_datum(/datum/antagonist/rev/head)
 	if(converter.add_revolutionary(victim.mind))
@@ -297,8 +301,7 @@
 			victim.say("You son of a bitch! I'm in.", forced = "That son of a bitch! They're in.")
 		times_used -- //Flashes less likely to burn out for headrevs when used for conversion
 	else
-		to_chat(aggressor, span_warning("This mind seems resistant to the flash!"))
-
+		to_chat(aggressor, span_warning("[victim.p_they(TRUE)] [victim.p_are()] unwilling to revolt!"))
 
 /obj/item/assembly/flash/cyborg
 

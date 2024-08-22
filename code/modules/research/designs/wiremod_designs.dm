@@ -218,11 +218,6 @@
 	id = "comp_split"
 	build_path = /obj/item/circuit_component/split
 
-/datum/design/component/pull
-	name = "Pull Component"
-	id = "comp_pull"
-	build_path = /obj/item/circuit_component/pull
-
 /datum/design/component/soundemitter
 	name = "Sound Emitter Component"
 	id = "comp_soundemitter"
@@ -302,16 +297,6 @@
 	name = "Module Component"
 	id = "comp_module"
 	build_path = /obj/item/circuit_component/module
-
-/datum/design/component/ntnet_receive
-	name = "NTNet Receiver"
-	id = "comp_ntnet_receive"
-	build_path = /obj/item/circuit_component/ntnet_receive
-
-/datum/design/component/ntnet_send
-	name = "NTNet Transmitter"
-	id = "comp_ntnet_send"
-	build_path = /obj/item/circuit_component/ntnet_send
 
 /datum/design/component/list_literal
 	name = "List Literal Component"

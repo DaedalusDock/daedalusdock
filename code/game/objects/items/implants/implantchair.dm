@@ -90,7 +90,7 @@
 	var/obj/item/I = new implant_type
 	if(istype(I, /obj/item/implant))
 		var/obj/item/implant/P = I
-		if(P.implant(M))
+		if(P.implant(M, body_zone = BODY_ZONE_CHEST))
 			visible_message(span_warning("[M] is implanted by [src]."))
 			return TRUE
 	else if(istype(I, /obj/item/organ))
@@ -143,7 +143,7 @@
 		to_chat(user, span_warning("[src]'s door won't budge!"))
 
 
-/obj/machinery/implantchair/MouseDrop_T(mob/target, mob/user)
+/obj/machinery/implantchair/MouseDroppedOn(mob/target, mob/user)
 	if(user.stat || !Adjacent(user) || !user.Adjacent(target) || !isliving(target) || !ISADVANCEDTOOLUSER(user))
 		return
 	if(isliving(user))
@@ -171,7 +171,6 @@
 	if(!istype(H))
 		return FALSE
 	H.set_species(/datum/species/human, 1)//lizards go home
-	purrbation_remove(H)//remove cats
 	H.dna.remove_all_mutations()//hulks out
 	return TRUE
 

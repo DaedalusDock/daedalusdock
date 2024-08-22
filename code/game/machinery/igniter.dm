@@ -6,7 +6,7 @@
 	base_icon_state = "igniter"
 	plane = FLOOR_PLANE
 	max_integrity = 300
-	armor = list(MELEE = 50, BULLET = 30, LASER = 70, ENERGY = 50, BOMB = 20, BIO = 0, FIRE = 100, ACID = 70)
+	armor = list(BLUNT = 50, PUNCTURE = 30, SLASH = 90, LASER = 70, ENERGY = 50, BOMB = 20, BIO = 0, FIRE = 100, ACID = 70)
 	resistance_flags = FIRE_PROOF
 	var/id = null
 	var/on = FALSE
@@ -16,9 +16,6 @@
 
 /obj/machinery/igniter/incinerator_atmos
 	id = INCINERATOR_ATMOS_IGNITER
-
-/obj/machinery/igniter/incinerator_syndicatelava
-	id = INCINERATOR_SYNDICATELAVA_IGNITER
 
 /obj/machinery/igniter/on
 	on = TRUE
@@ -43,7 +40,12 @@
 
 /obj/machinery/igniter/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	icon_state = "igniter[on]"
+
+/obj/machinery/igniter/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
 
 /obj/machinery/igniter/update_icon_state()
 	icon_state = "[base_icon_state][(machine_stat & NOPOWER) ? 0 : on]"
@@ -73,11 +75,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/sparker, 26)
 
 /obj/machinery/sparker/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	spark_system = new /datum/effect_system/spark_spread
 	spark_system.set_up(2, 1, src)
 	spark_system.attach(src)
 
 /obj/machinery/sparker/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	QDEL_NULL(spark_system)
 	return ..()
 

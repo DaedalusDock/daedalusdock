@@ -28,6 +28,6 @@
 			_mechanics_text = jointext(material_info, null)
 		)
 
-		items |= entry.name
+		items += entry
 
 	return ..()

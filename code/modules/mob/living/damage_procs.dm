@@ -168,7 +168,7 @@
 /mob/living/proc/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE, required_status)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
-	bruteloss = clamp((bruteloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
+	bruteloss = clamp((bruteloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth)
 	if(updating_health)
 		updatehealth()
 	return amount
@@ -179,20 +179,21 @@
 /mob/living/proc/adjustOxyLoss(amount, updating_health = TRUE, forced = FALSE)
 	if(!forced && (status_flags & GODMODE))
 		return
+	if(amount < 0 && oxyloss == 0) //Micro optimize the life loop primarily. Dont call updatehealth if we didnt do shit.
+		return
+
 	. = oxyloss
-	oxyloss = clamp((oxyloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
+	oxyloss = clamp((oxyloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth)
 	if(updating_health)
 		updatehealth()
-
 
 /mob/living/proc/setOxyLoss(amount, updating_health = TRUE, forced = FALSE)
 	if(!forced && status_flags & GODMODE)
 		return
 	. = oxyloss
-	oxyloss = amount
+	oxyloss = clamp(amount, 0, maxHealth)
 	if(updating_health)
 		updatehealth()
-
 
 /mob/living/proc/getToxLoss()
 	return toxloss
@@ -200,7 +201,7 @@
 /mob/living/proc/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
-	toxloss = clamp((toxloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
+	toxloss = clamp((toxloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth)
 	if(updating_health)
 		updatehealth()
 	return amount
@@ -219,7 +220,7 @@
 /mob/living/proc/adjustFireLoss(amount, updating_health = TRUE, forced = FALSE)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
-	fireloss = clamp((fireloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
+	fireloss = clamp((fireloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth)
 	if(updating_health)
 		updatehealth()
 	return amount
@@ -230,7 +231,7 @@
 /mob/living/proc/adjustCloneLoss(amount, updating_health = TRUE, forced = FALSE)
 	if(!forced && ( (status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NOCLONELOSS)) )
 		return FALSE
-	cloneloss = clamp((cloneloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
+	cloneloss = clamp((cloneloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth)
 	if(updating_health)
 		updatehealth()
 	return amount
@@ -243,13 +244,16 @@
 		updatehealth()
 	return amount
 
-/mob/living/proc/adjustOrganLoss(slot, amount, maximum)
+/mob/living/proc/adjustOrganLoss(slot, amount, maximum, updating_health)
 	return
 
 /mob/living/proc/setOrganLoss(slot, amount, maximum)
 	return
 
 /mob/living/proc/getOrganLoss(slot)
+	return
+
+/mob/living/proc/getBrainLoss()
 	return
 
 /mob/living/proc/setStaminaLoss(amount, updating_health = TRUE, forced = FALSE)
@@ -260,10 +264,8 @@
  *
  * needs to return amount healed in order to calculate things like tend wounds xp gain
  */
-/mob/living/proc/heal_bodypart_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE, required_status)
+/mob/living/proc/heal_bodypart_damage(brute = 0, burn = 0, updating_health = TRUE, required_status)
 	. = (adjustBruteLoss(-brute, FALSE) + adjustFireLoss(-burn, FALSE)) //zero as argument for no instant health update
-	if(stamina)
-		stack_trace("heal_bodypart_damage tried to heal stamina!")
 	if(updating_health)
 		updatehealth()
 
@@ -301,3 +303,27 @@
 		if(!amount)
 			break
 	. -= amount //if there's leftover healing, remove it from what we return
+
+
+/mob/living/proc/adjustPain(amount, updating_health = TRUE)
+	if(((status_flags & GODMODE)))
+		return FALSE
+	return adjustBruteLoss(amount, updating_health = updating_health)
+
+/mob/living/proc/getPain()
+	return 0
+
+/**
+ * Applies pain to a mob.
+ *
+ * Arguments:
+ * * amount - amount to apply
+ * * def_zone - Body zone to adjust the pain of. If null, will be divided amongst all bodyparts
+ * * message - A to_chat() to play if the target hasn't had one in a while.
+ * * ignore_cd - Ignores the message cooldown.
+ * * updating_health - Should this proc call updatehealth()?
+ *
+ * * Returns TRUE if pain changed.
+ */
+/mob/living/proc/apply_pain(amount, def_zone, message, ignore_cd, updating_health = TRUE)
+	return adjustPain(amount, updating_health)

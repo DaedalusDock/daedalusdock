@@ -77,7 +77,7 @@
 		if(transformed_antag_datum)
 			new_mob.mind.add_antag_datum(transformed_antag_datum)
 		new_mob.name = affected_mob.real_name
-		new_mob.real_name = new_mob.name
+		new_mob.set_real_name(new_mob.name)
 		qdel(affected_mob)
 
 /datum/disease/transformation/proc/replace_banned_player(mob/living/new_mob) // This can run well after the mob has been transferred, so need a handle on the new mob to kill it if needed.
@@ -322,17 +322,17 @@
 			if(DT_PROB(2.5, delta_time))
 				affected_mob.emote("smile")
 			if(DT_PROB(10, delta_time))
-				affected_mob.reagents.add_reagent_list(list(/datum/reagent/pax = 5))
+				affected_mob.reagents.add_reagent(/datum/reagent/medicine/haloperidol, 5)
 		if(3)
 			if(DT_PROB(2.5, delta_time))
 				affected_mob.emote("smile")
 			if(DT_PROB(10, delta_time))
-				affected_mob.reagents.add_reagent_list(list(/datum/reagent/pax = 5))
+				affected_mob.reagents.add_reagent(/datum/reagent/medicine/haloperidol, 5)
 		if(4)
 			if(DT_PROB(2.5, delta_time))
 				affected_mob.emote("smile")
 			if(DT_PROB(10, delta_time))
-				affected_mob.reagents.add_reagent_list(list(/datum/reagent/pax = 5))
+				affected_mob.reagents.add_reagent(/datum/reagent/medicine/haloperidol, 5)
 			if(DT_PROB(1, delta_time))
 				var/obj/item/held_item = affected_mob.get_active_held_item()
 				if(held_item)

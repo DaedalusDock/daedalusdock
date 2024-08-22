@@ -73,15 +73,15 @@
 /obj/item/udder/Initialize(mapload, udder_mob, on_generate_callback, reagent_produced_typepath = /datum/reagent/consumable/milk)
 	src.udder_mob = udder_mob
 	src.on_generate_callback = on_generate_callback
-	create_reagents(size, REAGENT_HOLDER_ALIVE)
+	create_reagents(size)
 	src.reagent_produced_typepath = reagent_produced_typepath
 	initial_conditions()
 	. = ..()
 
 /obj/item/udder/Destroy()
-	. = ..()
 	STOP_PROCESSING(SSobj, src)
 	udder_mob = null
+	return ..()
 
 /obj/item/udder/process(delta_time)
 	if(udder_mob.stat != DEAD)
@@ -122,49 +122,23 @@
 		to_chat(user, span_warning("The udder is dry. Wait a bit longer..."))
 
 /**
- * # gutlunch udder subtype
- *
- * Used by gutlunches, and generates healing reagents instead of milk on eating gibs instead of a process. Starts empty!
- * Female gutlunches (ahem, guthens if you will) make babies when their udder is full under processing, instead of milk generation
- */
-/obj/item/udder/gutlunch
-	name = "nutrient sac"
-
-/obj/item/udder/gutlunch/initial_conditions()
-	if(!udder_mob)
-		return
-	if(udder_mob.gender == FEMALE)
-		START_PROCESSING(SSobj, src)
-	RegisterSignal(udder_mob, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(on_mob_attacking))
-
-/obj/item/udder/gutlunch/process(delta_time)
-	var/mob/living/simple_animal/hostile/asteroid/gutlunch/gutlunch = udder_mob
-	if(reagents.total_volume != reagents.maximum_volume)
-		return
-	if(gutlunch.make_babies())
-		reagents.clear_reagents()
-		//usually this would be a callback but this is a specifically gutlunch feature so fuck it, gutlunch specific proccall
-		gutlunch.regenerate_icons(reagents.total_volume, reagents.maximum_volume)
-
-/**
- * signal called on parent attacking an atom
+ * Slug "udders". I'm so sorry it has to be this way
 */
-/obj/item/udder/gutlunch/proc/on_mob_attacking(mob/living/simple_animal/hostile/gutlunch, atom/target)
+/obj/item/udder/slug
+	name = "slime gland"
+
+/obj/item/udder/slug/initial_conditions()
+	. = ..()
+	RegisterSignal(udder_mob, COMSIG_MOVABLE_MOVED, PROC_REF(on_slug_move))
+
+/obj/item/udder/slug/proc/on_slug_move()
 	SIGNAL_HANDLER
 
-	if(is_type_in_typecache(target, gutlunch.wanted_objects)) //we eats
-		generate()
-		gutlunch.visible_message(span_notice("[udder_mob] slurps up [target]."))
-		qdel(target)
-	return COMPONENT_HOSTILE_NO_ATTACK //there is no longer a target to attack
-
-/obj/item/udder/gutlunch/generate()
-	var/made_something = FALSE
-	if(prob(60))
-		reagents.add_reagent(/datum/reagent/consumable/cream, rand(2, 5))
-		made_something = TRUE
-	if(prob(45))
-		reagents.add_reagent(/datum/reagent/medicine/salglu_solution, rand(2,5))
-		made_something = TRUE
-	if(made_something && on_generate_callback)
-		on_generate_callback.Invoke(reagents.total_volume, reagents.maximum_volume)
+	if (reagents.total_volume <= 0)
+		return //no slime :(
+	var/turf/slug_turf = get_turf(udder_mob)
+	if(!slug_turf)
+		return
+	slug_turf.wash(CLEAN_SCRUB)
+	reagents.expose(slug_turf, TOUCH, 5)
+	reagents.remove_all(5)

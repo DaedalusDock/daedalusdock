@@ -9,22 +9,21 @@
 	var/base_state = "left"
 	max_integrity = 150 //If you change this, consider changing ../door/window/brigdoor/ max_integrity at the bottom of this .dm file
 	integrity_failure = 0
-	armor = list(MELEE = 20, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 10, BIO = 100, FIRE = 70, ACID = 100)
+	armor = list(BLUNT = 20, PUNCTURE = 50, SLASH = 90, LASER = 50, ENERGY = 50, BOMB = 10, BIO = 100, FIRE = 70, ACID = 100)
 	visible = FALSE
 	flags_1 = ON_BORDER_1
 	opacity = FALSE
 	pass_flags_self = PASSGLASS
 	can_atmos_pass = CANPASS_PROC
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_REQUIRES_SILICON | INTERACT_MACHINE_OPEN
-	network_id = NETWORK_DOOR_AIRLOCKS
 	set_dir_on_move = FALSE
 	auto_dir_align = FALSE
+
 	var/obj/item/electronics/airlock/electronics = null
 	var/reinf = 0
 	var/shards = 2
 	var/rods = 2
 	var/cable = 1
-	var/list/debris = list()
 
 /obj/machinery/door/window/Initialize(mapload, set_dir, unres_sides)
 	. = ..()
@@ -34,12 +33,6 @@
 	if(LAZYLEN(req_access))
 		icon_state = "[icon_state]"
 		base_state = icon_state
-	for(var/i in 1 to shards)
-		debris += new /obj/item/shard(src)
-	if(rods)
-		debris += new /obj/item/stack/rods(src, rods)
-	if(cable)
-		debris += new /obj/item/stack/cable_coil(src, cable)
 
 	if(unres_sides)
 		//remove unres_sides from directions it can't be bumped from
@@ -54,23 +47,17 @@
 	src.unres_sides = unres_sides
 	update_appearance(UPDATE_ICON)
 
-	RegisterSignal(src, COMSIG_COMPONENT_NTNET_RECEIVE, PROC_REF(ntnet_receive))
-
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
+
 	zas_update_loc()
 	become_atmos_sensitive()
 
-/obj/machinery/door/window/ComponentInitialize()
-	. = ..()
-	AddComponent(/datum/component/ntnet_interface)
-
 /obj/machinery/door/window/Destroy()
 	set_density(FALSE)
-	QDEL_LIST(debris)
 	if(atom_integrity == 0)
 		playsound(src, SFX_SHATTER, 70, TRUE)
 	electronics = null
@@ -124,7 +111,7 @@
 	if(!density && autoclose) //did someone change state while we slept?
 		close()
 
-/obj/machinery/door/window/Bumped(atom/movable/AM)
+/obj/machinery/door/window/BumpedBy(atom/movable/AM)
 	if(operating || !density)
 		return
 	if(!ismob(AM))
@@ -183,8 +170,8 @@
 		return ZONE_BLOCKED
 
 //used in the AStar algorithm to determinate if the turf the door is on is passable
-/obj/machinery/door/window/CanAStarPass(obj/item/card/id/ID, to_dir)
-	return !density || (dir != to_dir) || (check_access(ID) && hasPower())
+/obj/machinery/door/window/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	return !density || (dir != to_dir) || (check_access_list(pass_info.access) && hasPower() && !pass_info.no_id)
 
 /obj/machinery/door/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
 	SIGNAL_HANDLER
@@ -217,6 +204,7 @@
 	icon_state ="[base_state]open"
 	sleep(10)
 	set_density(FALSE)
+	update_appearance(UPDATE_ICON_STATE)
 	update_freelook_sight()
 
 	if(operating == 1) //emag again
@@ -238,6 +226,7 @@
 	icon_state = base_state
 
 	set_density(TRUE)
+	update_appearance(UPDATE_ICON_STATE)
 	update_freelook_sight()
 	sleep(10)
 
@@ -254,11 +243,17 @@
 
 /obj/machinery/door/window/deconstruct(disassembled = TRUE)
 	if(!(flags_1 & NODECONSTRUCT_1) && !disassembled)
-		for(var/obj/fragment in debris)
-			fragment.forceMove(get_turf(src))
-			transfer_fingerprints_to(fragment)
-			debris -= fragment
+		for(var/i in 1 to shards)
+			drop_debris(new /obj/item/shard(src))
+		if(rods)
+			drop_debris(new /obj/item/stack/rods(src, rods))
+		if(cable)
+			drop_debris(new /obj/item/stack/cable_coil(src, cable))
 	qdel(src)
+
+/obj/machinery/door/window/proc/drop_debris(obj/item/debris)
+	debris.forceMove(loc)
+	transfer_fingerprints_to(debris)
 
 /obj/machinery/door/window/narsie_act()
 	add_atom_colour("#7D1919", FIXED_COLOUR_PRIORITY)
@@ -267,7 +262,7 @@
 	if((exposed_temperature > T0C + (reinf ? 1600 : 800)))
 		take_damage(round(exposed_temperature / 200), BURN, 0, 0)
 
-/obj/machinery/door/window/fire_act(exposed_temperature, exposed_volume)
+/obj/machinery/door/window/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	take_damage(round(exposed_temperature / 200), BURN, 0, 0)
 
 /obj/structure/window/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
@@ -291,7 +286,7 @@
 	if(!operating && density && !(obj_flags & EMAGGED))
 		obj_flags |= EMAGGED
 		operating = TRUE
-		flick("[base_state]spark", src)
+		z_flick("[base_state]spark", src)
 		playsound(src, SFX_SPARKS, 75, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		sleep(6)
 		operating = FALSE
@@ -305,7 +300,7 @@
 	if(density || operating)
 		to_chat(user, span_warning("You need to open the door to access the maintenance panel!"))
 		return
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 	tool.play_tool_sound(src)
 	panel_open = !panel_open
 	to_chat(user, span_notice("You [panel_open ? "open" : "close"] the maintenance panel."))
@@ -317,7 +312,7 @@
 		return
 	if(!panel_open || density || operating)
 		return
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 	user.visible_message(span_notice("[user] removes the electronics from the [name]."), \
 	span_notice("You start to remove electronics from the [name]..."))
 	if(!tool.use_tool(src, user, 40, volume=50))
@@ -364,7 +359,7 @@
 /obj/machinery/door/window/interact(mob/user) //for sillycones
 	try_to_activate_door(user)
 
-/obj/machinery/door/window/try_to_activate_door(mob/user, access_bypass = FALSE)
+/obj/machinery/door/window/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
 	if (..())
 		autoclose = FALSE
 
@@ -385,39 +380,11 @@
 /obj/machinery/door/window/do_animate(animation)
 	switch(animation)
 		if("opening")
-			flick("[base_state]opening", src)
+			z_flick("[base_state]opening", src)
 		if("closing")
-			flick("[base_state]closing", src)
+			z_flick("[base_state]closing", src)
 		if("deny")
-			flick("[base_state]deny", src)
-
-/obj/machinery/door/window/check_access_ntnet(datum/netdata/data)
-	return !requiresID() || ..()
-
-/obj/machinery/door/window/proc/ntnet_receive(datum/source, datum/netdata/data)
-	SIGNAL_HANDLER
-
-	// Check if the airlock is powered.
-	if(!hasPower())
-		return
-
-	// Handle received packet.
-	var/command = data.data["data"]
-	var/command_value = data.data["data_secondary"]
-	switch(command)
-		if("open")
-			if(command_value == "on" && !density)
-				return
-
-			if(command_value == "off" && density)
-				return
-
-			if(density)
-				INVOKE_ASYNC(src, PROC_REF(open))
-			else
-				INVOKE_ASYNC(src, PROC_REF(close))
-		if("touch")
-			INVOKE_ASYNC(src, PROC_REF(open_and_close))
+			z_flick("[base_state]deny", src)
 
 /obj/machinery/door/window/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	switch(the_rcd.mode)

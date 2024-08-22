@@ -6,12 +6,12 @@
 	icon = 'icons/obj/atmospherics/pipes/disposal.dmi'
 	anchored = TRUE
 	density = FALSE
-	obj_flags = CAN_BE_HIT | ON_BLUEPRINTS
+	obj_flags = CAN_BE_HIT
 	dir = NONE // dir will contain dominant direction for junction pipes
 	max_integrity = 200
-	armor = list(MELEE = 25, BULLET = 10, LASER = 10, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
+	armor = list(BLUNT = 25, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
 	layer = DISPOSAL_PIPE_LAYER // slightly lower than wires and other pipes
-	damage_deflection = 10
+	damage_deflection = 5
 	var/dpdir = NONE // bitmask of pipe directions
 	var/initialize_dirs = NONE // bitflags of pipe directions added on init, see \code\_DEFINES\pipe_construction.dm
 	var/flip_type // If set, the pipe is flippable and becomes this type when flipped
@@ -42,6 +42,9 @@
 			dpdir |= turn(dir, 180)
 
 	AddElement(/datum/element/undertile, TRAIT_T_RAY_VISIBLE)
+	if(isturf(loc))
+		var/turf/turf_loc = loc
+		turf_loc.add_blueprints_preround(src)
 
 // pipe is deleted
 // ensure if holder is present, it is expelled
@@ -79,6 +82,20 @@
 	var/obj/structure/disposalholder/H2 = locate() in P
 	if(H2 && !H2.active)
 		H.merge(H2)
+
+	if(prob(5) && (locate(/mob/living) in H))
+		var/list/mobs = list()
+
+		for(var/mob/living/L in H)
+			mobs += L
+
+		var/message = pick("CLUNK!", "CLONK!", "CLANK!", "BANG!")
+		audible_message(span_hear("[icon2html(src, hearers(src) | mobs)] [message]"))
+		playsound(src, 'sound/effects/clang.ogg', 50, FALSE, FALSE)
+
+		for(var/mob/living/L as anything in mobs)
+			var/armor = L.run_armor_check(attack_flag = BLUNT, silent = TRUE)
+			L.apply_damage(5, BRUTE, blocked = armor, spread_damage = TRUE)
 
 	H.forceMove(P)
 	return P

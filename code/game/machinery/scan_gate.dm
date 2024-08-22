@@ -8,13 +8,11 @@
 
 #define SCANGATE_HUMAN "human"
 #define SCANGATE_LIZARD "lizard"
-#define SCANGATE_FELINID "felinid"
 #define SCANGATE_FLY "fly"
 #define SCANGATE_PLASMAMAN "plasma"
 #define SCANGATE_MOTH "moth"
 #define SCANGATE_JELLY "jelly"
 #define SCANGATE_POD "pod"
-#define SCANGATE_GOLEM "golem"
 #define SCANGATE_ZOMBIE "zombie"
 #define SCANGATE_TESHARI "teshari"
 
@@ -126,9 +124,10 @@
 			if(ishuman(M))
 				var/mob/living/carbon/human/H = M
 				var/perpname = H.get_face_name(H.get_id_name())
-				var/datum/data/record/R = find_record("name", perpname, GLOB.data_core.security)
-				if(!R || (R.fields["criminal"] == "*Arrest*"))
+				var/datum/data/record/security/R = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_SECURITY)
+				if(!R || (R.fields[DATACORE_CRIMINAL_STATUS] == CRIMINAL_WANTED))
 					beep = TRUE
+
 		if(SCANGATE_MINDSHIELD)
 			if(HAS_TRAIT(M, TRAIT_MINDSHIELD))
 				beep = TRUE
@@ -146,8 +145,6 @@
 						scan_species = /datum/species/lizard
 					if(SCANGATE_FLY)
 						scan_species = /datum/species/fly
-					if(SCANGATE_FELINID)
-						scan_species = /datum/species/human/felinid
 					if(SCANGATE_PLASMAMAN)
 						scan_species = /datum/species/plasmaman
 					if(SCANGATE_MOTH)
@@ -156,8 +153,6 @@
 						scan_species = /datum/species/jelly
 					if(SCANGATE_POD)
 						scan_species = /datum/species/pod
-					if(SCANGATE_GOLEM)
-						scan_species = /datum/species/golem
 					if(SCANGATE_ZOMBIE)
 						scan_species = /datum/species/zombie
 					if(SCANGATE_TESHARI)
@@ -278,12 +273,10 @@
 
 #undef SCANGATE_HUMAN
 #undef SCANGATE_LIZARD
-#undef SCANGATE_FELINID
 #undef SCANGATE_FLY
 #undef SCANGATE_PLASMAMAN
 #undef SCANGATE_MOTH
 #undef SCANGATE_JELLY
 #undef SCANGATE_POD
-#undef SCANGATE_GOLEM
 #undef SCANGATE_ZOMBIE
 #undef SCANGATE_TESHARI

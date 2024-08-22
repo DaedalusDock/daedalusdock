@@ -6,7 +6,7 @@
 	SIGNAL_HANDLER
 
 	var/datum/hud/H = user.hud_used
-	var/atom/movable/screen/craft/C = new()
+	var/atom/movable/screen/craft/C = new(null, H)
 	C.icon = H.ui_style
 	H.static_inventory += C
 	CL.screen += C
@@ -121,6 +121,14 @@
 	for(var/atom/movable/AM in range(radius_range, a))
 		if((AM.flags_1 & HOLOGRAM_1) || (blacklist && (AM.type in blacklist)))
 			continue
+		if(istype(AM, /obj/item/bodypart))
+			var/obj/item/bodypart/BP = AM
+			if(BP.owner)
+				continue
+		if(istype(AM, /obj/item/organ))
+			var/obj/item/organ/O = AM
+			if(O.owner)
+				continue
 		. += AM
 
 
@@ -160,6 +168,14 @@
 	var/list/present_qualities = list()
 
 	for(var/obj/item/contained_item in source.contents)
+		if(istype(contained_item, /obj/item/bodypart))
+			var/obj/item/bodypart/BP = contained_item
+			if(BP.owner)
+				continue
+		if(istype(contained_item, /obj/item/organ))
+			var/obj/item/organ/O = contained_item
+			if(O.owner)
+				continue
 		if(contained_item.atom_storage)
 			for(var/obj/item/subcontained_item in contained_item.contents)
 				available_tools[subcontained_item.type] = TRUE
@@ -274,7 +290,6 @@
 						if(RG.volume > amt)
 							RG.volume -= amt
 							data = RG.data
-							RC.reagents.conditional_update(RC)
 							RG = locate(RG.type) in Deletion
 							RG.volume = amt
 							RG.data += data
@@ -283,7 +298,6 @@
 							surroundings -= RC
 							amt -= RG.volume
 							RC.reagents.reagent_list -= RG
-							RC.reagents.conditional_update(RC)
 							RGNT = locate(RG.type) in Deletion
 							RGNT.volume += RG.volume
 							RGNT.data += RG.data

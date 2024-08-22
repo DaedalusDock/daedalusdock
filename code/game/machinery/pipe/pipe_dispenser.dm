@@ -185,7 +185,7 @@
 
 
 //Allow you to drag-drop disposal pipes and transit tubes into it
-/obj/machinery/pipedispenser/disposal/MouseDrop_T(obj/structure/pipe, mob/usr)
+/obj/machinery/pipedispenser/disposal/MouseDroppedOn(obj/structure/pipe, mob/usr)
 	if(!usr.incapacitated())
 		return
 

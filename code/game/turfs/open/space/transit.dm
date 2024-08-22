@@ -7,11 +7,6 @@
 	explosion_block = INFINITY
 	z_flags = NONE
 
-/turf/open/space/transit/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	. = ..()
-	underlay_appearance.icon_state = "speedspace_ns_[get_transit_state(asking_turf)]"
-	underlay_appearance.transform = turn(matrix(), get_transit_angle(asking_turf))
-
 /turf/open/space/transit/south
 	dir = SOUTH
 

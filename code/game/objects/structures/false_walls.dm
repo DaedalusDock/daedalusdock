@@ -14,8 +14,8 @@
 	opacity = TRUE
 	max_integrity = 100
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	smoothing_groups = SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS
+	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
 	can_be_unanchored = FALSE
 	can_atmos_pass = CANPASS_PROC
 	rad_insulation = RAD_MEDIUM_INSULATION
@@ -34,9 +34,6 @@
 
 	//These are set by the material, do not touch!!!
 	var/material_color
-	var/shiny_wall
-
-	var/shiny_stripe
 	var/stripe_icon
 	//Ok you can touch vars again :)
 
@@ -116,19 +113,10 @@
 	if(density && !opening)
 		color = wall_paint || material_color
 
-		if(shiny_wall)
-			var/image/shine = image(icon, "shine-[smoothing_junction]")
-			shine.appearance_flags = RESET_COLOR
-			new_overlays += shine
-
 		var/image/smoothed_stripe = image(stripe_icon, icon_state)
 		smoothed_stripe.appearance_flags = RESET_COLOR
 		smoothed_stripe.color = stripe_paint || material_color
 		new_overlays += smoothed_stripe
-		if(shiny_stripe)
-			var/image/stripe_shine = image(stripe_icon, "shine-[smoothing_junction]")
-			stripe_shine.appearance_flags = RESET_COLOR
-			new_overlays += stripe_shine
 
 		var/neighbor_stripe = NONE
 		if(!neighbor_typecache)
@@ -136,7 +124,9 @@
 
 		for(var/cardinal in GLOB.cardinals)
 			var/turf/step_turf = get_step(src, cardinal)
-			if(!can_area_smooth(step_turf))
+			var/can_area_smooth
+			CAN_AREAS_SMOOTH(src, step_turf, can_area_smooth)
+			if(isnull(can_area_smooth))
 				continue
 			for(var/atom/movable/movable_thing as anything in step_turf)
 				if(neighbor_typecache[movable_thing.type])
@@ -148,10 +138,6 @@
 			neighb_stripe_overlay.appearance_flags = RESET_COLOR
 			neighb_stripe_overlay.color = stripe_paint || material_color
 			new_overlays += neighb_stripe_overlay
-			if(shiny_wall)
-				var/image/shine = image('icons/turf/walls/neighbor_stripe.dmi', "shine-[smoothing_junction]")
-				shine.appearance_flags = RESET_COLOR
-				new_overlays += shine
 
 		overlays = new_overlays
 		//And letting anything else that may want to render on the wall to work (ie components)
@@ -220,14 +206,11 @@
 
 	if(reinf_mat_ref)
 		icon = plating_mat_ref.reinforced_wall_icon
-		shiny_wall = plating_mat_ref.wall_shine & WALL_SHINE_REINFORCED
 		material_color = plating_mat_ref.wall_color
 	else
 		icon = plating_mat_ref.wall_icon
-		shiny_wall = plating_mat_ref.wall_shine & WALL_SHINE_PLATING
 		material_color = plating_mat_ref.wall_color
 
-	shiny_stripe = plating_mat_ref.wall_shine & WALL_SHINE_PLATING
 	stripe_icon = plating_mat_ref.wall_stripe_icon
 
 	plating_material = plating_mat
@@ -236,9 +219,12 @@
 	if(reinf_material)
 		name = "reinforced [plating_mat_ref.name] [plating_mat_ref.wall_name]"
 		desc = "It seems to be a section of hull reinforced with [reinf_mat_ref.name] and plated with [plating_mat_ref.name]."
+		explosion_block = initial(explosion_block) * 2
 	else
 		name = "[plating_mat_ref.name] [plating_mat_ref.wall_name]"
 		desc = "It seems to be a section of hull plated with [plating_mat_ref.name]."
+		explosion_block = initial(explosion_block)
+
 	matset_name = name
 
 	if(update_appearance)
@@ -388,13 +374,13 @@
 	desc = "A light-weight titanium wall used in shuttles."
 	icon = 'icons/turf/walls/metal_wall.dmi'
 	plating_material = /datum/material/titanium
-	smoothing_groups = list(SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_SHUTTLE_PARTS)
+	smoothing_groups = SMOOTH_GROUP_WALLS
+	canSmoothWith = SMOOTH_GROUP_SHUTTLE_PARTS + SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
 
 /obj/structure/falsewall/plastitanium
 	name = "wall"
 	desc = "An evil wall of plasma and titanium."
 	icon = 'icons/turf/walls/metal_wall.dmi'
 	plating_material = /datum/material/alloy/plastitanium
-	smoothing_groups = list(SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_SHUTTLE_PARTS)
+	smoothing_groups = SMOOTH_GROUP_WALLS
+	canSmoothWith = SMOOTH_GROUP_SHUTTLE_PARTS + SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS

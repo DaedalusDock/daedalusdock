@@ -65,7 +65,7 @@
 	// Let's remove any humans in our atoms list that aren't a sac target
 	for(var/mob/living/carbon/human/sacrifice in atoms)
 		// If the mob's not in soft crit or worse, or isn't one of the sacrifices, remove it from the list
-		if(sacrifice.stat < SOFT_CRIT || !(sacrifice in heretic_datum.sac_targets))
+		if(sacrifice.stat == CONSCIOUS || !(sacrifice in heretic_datum.sac_targets))
 			atoms -= sacrifice
 
 	// Finally, return TRUE if we have a target in the list
@@ -124,7 +124,7 @@
 
 	// First target, any command.
 	for(var/datum/mind/head_mind as anything in shuffle(valid_targets))
-		if(head_mind.assigned_role?.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+		if(head_mind.assigned_role?.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER)
 			final_targets += head_mind
 			valid_targets -= head_mind
 			break
@@ -188,7 +188,7 @@
 
 	to_chat(user, span_hypnophrase("Your patrons accepts your offer."))
 
-	if(sacrifice.mind?.assigned_role?.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+	if(sacrifice.mind?.assigned_role?.departments_bitflags & (DEPARTMENT_BITFLAG_MANAGEMENT))
 		heretic_datum.knowledge_points++
 		heretic_datum.high_value_sacrifices++
 
@@ -223,8 +223,8 @@
 	var/turf/destination = get_turf(destination_landmark)
 
 	sac_target.visible_message(span_danger("[sac_target] begins to shudder violenty as dark tendrils begin to drag them into thin air!"))
-	sac_target.set_handcuffed(new /obj/item/restraints/handcuffs/energy/cult(sac_target))
-	sac_target.update_handcuffed()
+
+	sac_target.equip_to_slot_if_possible(new /obj/item/restraints/handcuffs/energy/cult(sac_target), ITEM_SLOT_HANDCUFFED, TRUE, TRUE, null, TRUE)
 	sac_target.adjustOrganLoss(ORGAN_SLOT_BRAIN, 85, 150)
 	sac_target.do_jitter_animation()
 	log_combat(heretic_mind.current, sac_target, "sacrificed")
@@ -304,10 +304,8 @@
 	// About how long should the helgrasp last? (1 metab a tick = helgrasp_time / 2 ticks (so, 1 minute = 60 seconds = 30 ticks))
 	var/helgrasp_time = 1 MINUTES
 
-	sac_target.reagents?.add_reagent(/datum/reagent/inverse/helgrasp/heretic, helgrasp_time / 20)
+	sac_target.reagents?.add_reagent(/datum/reagent/helgrasp/heretic, helgrasp_time / 20)
 	sac_target.apply_necropolis_curse(CURSE_BLINDING | CURSE_GRASPING)
-
-	SEND_SIGNAL(sac_target, COMSIG_ADD_MOOD_EVENT, "shadow_realm", /datum/mood_event/shadow_realm)
 
 	sac_target.flash_act()
 	sac_target.blur_eyes(15)
@@ -359,8 +357,7 @@
 	UnregisterSignal(sac_target, COMSIG_LIVING_DEATH)
 	sac_target.remove_status_effect(/datum/status_effect/necropolis_curse)
 	sac_target.remove_status_effect(/datum/status_effect/unholy_determination)
-	sac_target.reagents?.del_reagent(/datum/reagent/inverse/helgrasp/heretic)
-	SEND_SIGNAL(sac_target, COMSIG_CLEAR_MOOD_EVENT, "shadow_realm")
+	sac_target.reagents?.del_reagent(/datum/reagent/helgrasp/heretic)
 
 	// Wherever we end up, we sure as hell won't be able to explain
 	sac_target.adjust_timed_status_effect(40 SECONDS, /datum/status_effect/speech/slurring/heretic)
@@ -437,10 +434,6 @@
 	sac_target.set_timed_status_effect(1 MINUTES, /datum/status_effect/dizziness, only_if_higher = TRUE)
 	sac_target.AdjustKnockdown(80)
 	sac_target.stamina.adjust(-120)
-
-	// Glad i'm outta there, though!
-	SEND_SIGNAL(sac_target, COMSIG_ADD_MOOD_EVENT, "shadow_realm_survived", /datum/mood_event/shadow_realm_live)
-	SEND_SIGNAL(sac_target, COMSIG_ADD_MOOD_EVENT, "shadow_realm_survived_sadness", /datum/mood_event/shadow_realm_live_sad)
 
 	// Could use a little pick-me-up...
 	sac_target.reagents?.add_reagent(/datum/reagent/medicine/atropine, 8)

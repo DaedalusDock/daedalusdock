@@ -11,7 +11,6 @@
 	name = "holographic energy sword"
 	desc = "May the force be with you. Sorta."
 	damtype = STAMINA
-	throw_speed = 2
 	block_chance = 0
 	throwforce = 0
 	embedding = null
@@ -93,21 +92,19 @@
 		if(user.transferItemToLoc(W, drop_location()))
 			visible_message(span_warning("[user] dunks [W] into \the [src]!"))
 
-/obj/structure/holohoop/attack_hand(mob/living/user, list/modifiers)
+/obj/structure/holohoop/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
 	. = ..()
-	if(.)
+	if(!isliving(victim))
 		return
-	if(user.pulling && isliving(user.pulling))
-		var/mob/living/L = user.pulling
-		if(user.grab_state < GRAB_AGGRESSIVE)
-			to_chat(user, span_warning("You need a better grip to do that!"))
-			return
-		L.forceMove(loc)
-		L.Paralyze(100)
-		visible_message(span_danger("[user] dunks [L] into \the [src]!"))
-		user.stop_pulling()
-	else
-		..()
+	var/mob/living/L = victim
+	if(grab.current_grab.damage_stage < 1)
+		to_chat(user, span_warning("You need a better grip to do that!"))
+		return TRUE
+	L.forceMove(loc)
+	L.Paralyze(100)
+	visible_message(span_danger("[user] dunks [L] into \the [src]!"))
+	user.release_grabs(L)
+	return TRUE
 
 /obj/structure/holohoop/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	if (isitem(AM) && !istype(AM,/obj/projectile))

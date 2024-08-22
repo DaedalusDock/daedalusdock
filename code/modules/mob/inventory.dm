@@ -47,6 +47,12 @@
 	return has_hand_for_held_index(active_hand_index)
 
 
+/// Returns the first available empty held index
+/mob/proc/get_empty_held_index()
+	for(var/i in 1 to length(held_items))
+		if(isnull(held_items[i]))
+			return i
+
 //Finds the first available (null) index OR all available (null) indexes in held_items based on a side.
 //Lefts: 1, 3, 5, 7...
 //Rights:2, 4, 6, 8...
@@ -98,9 +104,8 @@
 
 //Checks if we're holding an item of type: typepath
 /mob/proc/is_holding_item_of_type(typepath)
-	if(locate(typepath) in held_items)
-		return TRUE
-	return FALSE
+	return locate(typepath) in held_items
+
 
 //Checks if we're holding a tool that has given quality
 //Returns the tool that has the best version of this quality
@@ -138,37 +143,70 @@
 
 
 //Returns if a certain item can be equipped to a certain slot.
-// Currently invalid for two-handed items - call obj/item/mob_can_equip() instead.
 /mob/proc/can_equip(obj/item/I, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE)
 	return FALSE
 
-/mob/proc/can_put_in_hand(I, hand_index)
-	if(hand_index > held_items.len)
-		return FALSE
-	if(!put_in_hand_check(I))
-		return FALSE
-	if(!has_hand_for_held_index(hand_index))
-		return FALSE
-	return !held_items[hand_index]
+/mob/proc/can_put_in_hand(obj/item/I, hand_index)
+	return FALSE
+
+/// A helper for picking up an item.
+/mob/proc/pickup_item(obj/item/I, hand_index = active_hand_index, ignore_anim = FALSE)
+	if(QDELETED(I))
+		return
+
+	if(!can_put_in_hand(I, hand_index))
+		return
+
+	//If the item is in a storage item, take it out
+	var/was_in_storage = I.item_flags & IN_STORAGE
+	if(was_in_storage && !I.loc.atom_storage?.attempt_remove(I, src, user = src))
+		return
+
+	if(QDELETED(src)) //moving it out of the storage destroyed it.
+		return
+
+	if(I.throwing)
+		I.throwing.finalize(FALSE)
+
+	if(I.loc == src)
+		if(!I.allow_attack_hand_drop(src) || !temporarilyRemoveItemFromInventory(I))
+			return
+
+	I.pickup(src)
+	. = put_in_hand(I, hand_index, ignore_anim = ignore_anim || was_in_storage)
+
+	if(!.)
+		stack_trace("Somehow, someway, pickup_item failed put_in_hand().")
+		dropItemToGround(I, silent = TRUE)
 
 /mob/proc/put_in_hand(obj/item/I, hand_index, forced = FALSE, ignore_anim = TRUE)
-	if(hand_index == null || (!forced && !can_put_in_hand(I, hand_index)))
+	if(hand_index == null)
+		return FALSE
+
+	if(!forced && !can_put_in_hand(I, hand_index))
 		return FALSE
 
 	if(isturf(I.loc) && !ignore_anim)
 		I.do_pickup_animation(src)
+
 	if(get_item_for_held_index(hand_index))
 		dropItemToGround(get_item_for_held_index(hand_index), force = TRUE)
+
 	I.forceMove(src)
 	held_items[hand_index] = I
 	I.plane = ABOVE_HUD_PLANE
 	I.equipped(src, ITEM_SLOT_HANDS)
+
 	if(QDELETED(I)) // this is here because some ABSTRACT items like slappers and circle hands could be moved from hand to hand then delete, which meant you'd have a null in your hand until you cleared it (say, by dropping it)
 		held_items[hand_index] = null
 		return FALSE
-	if(I.pulledby)
-		I.pulledby.stop_pulling()
+
+	if(LAZYLEN(I.grabbed_by))
+		I.free_from_all_grabs()
+
 	update_held_items()
+	if(hand_index == active_hand_index)
+		update_mouse_pointer()
 	I.pixel_x = I.base_pixel_x
 	I.pixel_y = I.base_pixel_y
 	return hand_index
@@ -181,14 +219,30 @@
 /mob/proc/put_in_r_hand(obj/item/I)
 	return put_in_hand(I, get_empty_held_index_for_side(RIGHT_HANDS))
 
-/mob/proc/put_in_hand_check(obj/item/I)
-	return FALSE //nonliving mobs don't have hands
+/mob/living/can_put_in_hand(obj/item/I, hand_index)
+	if(!istype(I))
+		return FALSE
 
-/mob/living/put_in_hand_check(obj/item/I)
-	if(istype(I) && ((mobility_flags & MOBILITY_PICKUP) || (I.item_flags & ABSTRACT)) \
-		&& !(SEND_SIGNAL(src, COMSIG_LIVING_TRY_PUT_IN_HAND, I) & COMPONENT_LIVING_CANT_PUT_IN_HAND))
-		return TRUE
-	return FALSE
+	if(hand_index > held_items.len)
+		return FALSE
+
+	if(!((mobility_flags & MOBILITY_PICKUP) || (I.item_flags & ABSTRACT)))
+		return FALSE
+
+	if(SEND_SIGNAL(src, COMSIG_LIVING_TRY_PUT_IN_HAND, I) & COMPONENT_LIVING_CANT_PUT_IN_HAND)
+		return FALSE
+
+	if(!has_hand_for_held_index(hand_index))
+		return FALSE
+
+	return !held_items[hand_index]
+
+/mob/living/carbon/human/can_put_in_hand(obj/item/I, hand_index)
+	. = ..()
+	if(!.)
+		return
+
+	return dna.species.can_equip(I, ITEM_SLOT_HANDS, TRUE, src)
 
 //Puts the item into our active hand if possible. returns TRUE on success.
 /mob/proc/put_in_active_hand(obj/item/I, forced = FALSE, ignore_animation = TRUE)
@@ -250,24 +304,45 @@
 	for(var/obj/item/I in held_items)
 		. |= dropItemToGround(I)
 
-//Here lie drop_from_inventory and before_item_take, already forgotten and not missed.
-
-/mob/proc/canUnEquip(obj/item/I, force)
-	if(!I)
-		return TRUE
-	if(HAS_TRAIT(I, TRAIT_NODROP) && !force)
-		return FALSE
-	return TRUE
-
 /mob/proc/putItemFromInventoryInHandIfPossible(obj/item/I, hand_index, force_removal = FALSE)
 	if(!can_put_in_hand(I, hand_index))
 		return FALSE
 	if(!temporarilyRemoveItemFromInventory(I, force_removal))
 		return FALSE
 	I.remove_item_from_storage(src)
-	if(!put_in_hand(I, hand_index))
+	if(!pickup_item(I, hand_index, ignore_anim = TRUE))
 		qdel(I)
 		CRASH("Assertion failure: putItemFromInventoryInHandIfPossible") //should never be possible
+	return TRUE
+
+/// Switches the items inside of two hand indexes.
+/mob/proc/swapHeldIndexes(index_A, index_B)
+	if(index_A == index_B)
+		return
+	var/obj/item/item_A = get_item_for_held_index(index_A)
+	var/obj/item/item_B = get_item_for_held_index(index_B)
+
+	var/failed_uh_oh_abort = FALSE
+	if(!(item_A || item_B))
+		return
+	if(item_A && !temporarilyRemoveItemFromInventory(item_A))
+		failed_uh_oh_abort = TRUE
+	if(item_B && !temporarilyRemoveItemFromInventory(item_B))
+		failed_uh_oh_abort = TRUE
+
+	if((item_A && !put_in_hand(item_A, index_B)) || (item_B && !put_in_hand(item_B, index_A)))
+		failed_uh_oh_abort = TRUE
+
+	if(failed_uh_oh_abort)
+		if(item_A)
+			temporarilyRemoveItemFromInventory(item_A)
+		if(item_B)
+			temporarilyRemoveItemFromInventory(item_B)
+		if(item_A)
+			put_in_hand(item_A, index_A)
+		if(item_B)
+			put_in_hand(item_B, index_B)
+		return FALSE
 	return TRUE
 
 //The following functions are the same save for one small difference
@@ -275,48 +350,56 @@
 /**
  * Used to drop an item (if it exists) to the ground.
  * * Will pass as TRUE is successfully dropped, or if there is no item to drop.
- * * Will pass FALSE if the item can not be dropped due to TRAIT_NODROP via doUnEquip()
+ * * Will pass FALSE if the item can not be dropped due to TRAIT_NODROP via tryUnequipItem()
  * If the item can be dropped, it will be forceMove()'d to the ground and the turf's Entered() will be called.
 */
-/mob/proc/dropItemToGround(obj/item/I, force = FALSE, silent = FALSE, invdrop = TRUE)
-	. = doUnEquip(I, force, drop_location(), FALSE, invdrop = invdrop, silent = silent)
+/mob/proc/dropItemToGround(obj/item/I, force = FALSE, silent = FALSE, invdrop = TRUE, animate = TRUE)
+	. = tryUnequipItem(I, force, drop_location(), FALSE, invdrop = invdrop, silent = silent)
 	if(!. || !I) //ensure the item exists and that it was dropped properly.
 		return
+
 	if(!(I.item_flags & NO_PIXEL_RANDOM_DROP))
 		I.pixel_x = I.base_pixel_x + rand(-6, 6)
 		I.pixel_y = I.base_pixel_y + rand(-6, 6)
-	I.do_drop_animation(src)
+
+	if(animate)
+		I.do_drop_animation(src)
 
 //for when the item will be immediately placed in a loc other than the ground. Supports shifting the item's x and y from click modifiers.
-/mob/proc/transferItemToLoc(obj/item/I, newloc = null, force = FALSE, silent = TRUE, list/user_click_modifiers)
-	. = doUnEquip(I, force, newloc, FALSE, silent = silent)
-	if(. && user_click_modifiers)
+/mob/proc/transferItemToLoc(obj/item/I, newloc = null, force = FALSE, silent = TRUE, list/user_click_modifiers, animate = TRUE)
+	. = tryUnequipItem(I, force, newloc, FALSE, silent = silent)
+	if(!.)
+		return
+
+	if(user_click_modifiers)
 		//Center the icon where the user clicked.
 		if(!LAZYACCESS(user_click_modifiers, ICON_X) || !LAZYACCESS(user_click_modifiers, ICON_Y))
 			return
 		//Clamp it so that the icon never moves more than 16 pixels in either direction (thus leaving the location)
 		I.pixel_x = clamp(text2num(LAZYACCESS(user_click_modifiers, ICON_X)) - 16, -(world.icon_size/2), world.icon_size/2)
 		I.pixel_y = clamp(text2num(LAZYACCESS(user_click_modifiers, ICON_Y)) - 16, -(world.icon_size/2), world.icon_size/2)
-	I.do_drop_animation(src)
+
+	if(animate)
+		I.do_drop_animation(src)
 
 //visibly unequips I but it is NOT MOVED AND REMAINS IN SRC
 //item MUST BE FORCEMOVE'D OR QDEL'D
 /mob/proc/temporarilyRemoveItemFromInventory(obj/item/I, force = FALSE, idrop = TRUE)
-	if(I.item_flags & ABSTRACT)
+	if((I.item_flags & ABSTRACT) && !force)
 		return //Do nothing. Abstract items shouldn't end up in inventories and doing this triggers various odd side effects.
-	return doUnEquip(I, force, null, TRUE, idrop, silent = TRUE)
+	return tryUnequipItem(I, force, null, TRUE, idrop, silent = TRUE)
 
 //DO NOT CALL THIS PROC
 //use one of the above 3 helper procs
 //you may override it, but do not modify the args
-/mob/proc/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE) //Force overrides TRAIT_NODROP for things like wizarditis and admin undress.
+/mob/proc/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE) //Force overrides TRAIT_NODROP for things like wizarditis and admin undress.
 													//Use no_move if the item is just gonna be immediately moved afterward
 													//Invdrop is used to prevent stuff in pockets dropping. only set to false if it's going to immediately be replaced
 	PROTECTED_PROC(TRUE)
 	if(!I) //If there's nothing to drop, the drop is automatically succesfull. If(unEquip) should generally be used to check for TRAIT_NODROP.
 		return TRUE
 
-	if(HAS_TRAIT(I, TRAIT_NODROP) && !force)
+	if(!force && !canUnequipItem(I, newloc, no_move, invdrop, silent))
 		return FALSE
 
 	if((SEND_SIGNAL(I, COMSIG_ITEM_PRE_UNEQUIP, force, newloc, no_move, invdrop, silent) & COMPONENT_ITEM_BLOCK_UNEQUIP) && !force)
@@ -326,20 +409,35 @@
 	if(hand_index)
 		held_items[hand_index] = null
 		update_held_items()
+
 	if(I)
 		if(client)
 			client.screen -= I
+
 		I.layer = initial(I.layer)
 		I.plane = initial(I.plane)
 		I.appearance_flags &= ~NO_CLIENT_COLOR
+
 		if(!no_move && !(I.item_flags & DROPDEL)) //item may be moved/qdel'd immedietely, don't bother moving it
 			if (isnull(newloc))
 				I.moveToNullspace()
 			else
 				I.forceMove(newloc)
+
 		I.dropped(src, silent)
+
 	SEND_SIGNAL(I, COMSIG_ITEM_POST_UNEQUIP, force, newloc, no_move, invdrop, silent)
 	SEND_SIGNAL(src, COMSIG_MOB_UNEQUIPPED_ITEM, I, force, newloc, no_move, invdrop, silent)
+	return TRUE
+
+/// Test if an item can be dropped, core to tryUnequipItem()
+/mob/proc/canUnequipItem(obj/item/I, newloc, no_move, invdrop, silent)
+	if(isnull(I))
+		return TRUE
+
+	if(HAS_TRAIT(I, TRAIT_NODROP))
+		return FALSE
+
 	return TRUE
 
 /**
@@ -348,8 +446,10 @@
  * Argument(s):
  * * Optional - include_pockets (TRUE/FALSE), whether or not to include the pockets and suit storage in the returned list
  */
+/mob/proc/get_equipped_items(include_pockets = FALSE)
+	return
 
-/mob/living/proc/get_equipped_items(include_pockets = FALSE)
+/mob/living/get_equipped_items(include_pockets = FALSE)
 	var/list/items = list()
 	for(var/obj/item/item_contents in contents)
 		if(item_contents.item_flags & IN_INVENTORY)
@@ -379,21 +479,32 @@
 		items -= list(l_store, r_store, s_store)
 	return items
 
+/// Drop all items to the floor.
 /mob/living/proc/unequip_everything()
-	var/list/items = list()
-	items |= get_equipped_items(TRUE)
-	for(var/I in items)
+	for(var/I in get_equipped_items(TRUE))
 		dropItemToGround(I)
 	drop_all_held_items()
 
-///Returns a bitfield of covered item slots.
-/mob/living/carbon/proc/check_obscured_slots(transparent_protection)
-	var/obscured = NONE
-	var/hidden_slots = NONE
+/// Delete all held/equipped items.
+/mob/living/proc/wipe_inventory()
+	for(var/I in get_equipped_items(TRUE) | held_items)
+		qdel(I)
 
-	for(var/obj/item/I in get_all_worn_items()) //This contains nulls
-		hidden_slots |= I.flags_inv
-		if(transparent_protection)
+/// Compiles all flags_inv vars of worn items.
+/mob/living/carbon/proc/update_obscurity()
+	PROTECTED_PROC(TRUE)
+
+	obscured_slots = NONE
+	for(var/obj/item/I in get_all_worn_items())
+		obscured_slots |= I.flags_inv
+
+///Returns a bitfield of covered item slots.
+/mob/living/carbon/proc/check_obscured_slots(transparent_protection, input_slots)
+	var/obscured = NONE
+	var/hidden_slots = !isnull(input_slots) ? input_slots : src.obscured_slots
+
+	if(transparent_protection)
+		for(var/obj/item/I in get_all_worn_items())
 			hidden_slots |= I.transparent_protection
 
 	if(hidden_slots & HIDENECK)
@@ -444,6 +555,10 @@
 	set name = "quick-equip"
 	set hidden = TRUE
 
+	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(execute_quick_equip)))
+
+///proc extender of [/mob/verb/quick_equip] used to make the verb queuable if the server is overloaded
+/mob/proc/execute_quick_equip()
 	var/obj/item/I = get_active_held_item()
 	if(!I)
 		to_chat(src, span_warning("You are not holding anything to equip!"))

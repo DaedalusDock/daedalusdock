@@ -42,6 +42,8 @@
 	var/list/discovered_phones
 	/// The 'common name' of the station. Used in the UI.
 	var/friendly_name = null
+	/// Name 'placard', such as 'Special Hotline', gets appended to the end.
+	var/placard_name
 	/// Do we show netaddrs in the phone UI, or just the names?
 	var/show_netids = FALSE
 
@@ -79,7 +81,7 @@
 ///Recalculate our name.
 /obj/machinery/telephone/proc/recalculate_name()
 	ping_addition = list("user_id"=friendly_name) //Preload this so we can staple this to the ping packet.
-	name = "phone - [friendly_name]"
+	name = "phone - [friendly_name][placard_name ? " - [placard_name]" : null]"
 
 /obj/machinery/telephone/Destroy()
 	if(!QDELETED(handset))
@@ -145,16 +147,16 @@
 		return //Makes no sense.
 	switch(handset_state)
 		if(HANDSET_ONHOOK)//We're taking the phone.
-			icon_state = "phone_answered"
 			playsound(src, 'goon/sounds/phone/pick_up.ogg', 50, extrarange=MEDIUM_RANGE_SOUND_EXTRARANGE)
 			if(state == STATE_ANSWER)// Do we have a call waiting?
 				accept_call()
 			handset_state = HANDSET_OFFHOOK
+			update_icon()
 
 		if(HANDSET_OFFHOOK)//Returning the phone
-			icon_state = "phone"
 			playsound(src, 'goon/sounds/phone/hang_up.ogg', 50, extrarange=MEDIUM_RANGE_SOUND_EXTRARANGE)
 			handset_state = HANDSET_ONHOOK
+			update_icon()
 			if(state == STATE_WAITING)//We aren't doing anything more.
 				return
 			if(active_caller)// Do we have an active call? Ringing or not. If so, drop it.
@@ -164,16 +166,23 @@
 			cleanup_residual_call()
 
 
+
 /obj/machinery/telephone/multitool_act(mob/living/user, obj/item/tool)
-	var/static/list/options_list = list("Rename Station", "Reconnect to terminal", "Toggle Address Display")
+	var/static/list/options_list = list("Set Caller ID", "Set Placard", "Reconnect to terminal", "Toggle Address Display")
 	var/selected = input(user, null, "Reconfigure Station", null) as null|anything in options_list
 	switch(selected)
-		if("Rename Station")
+		if("Set Caller ID")
 			var/new_friendly_name = input(user, "New Name?", "Renaming [friendly_name]", friendly_name) as null|text
 			if(!new_friendly_name)
 				return TOOL_ACT_TOOLTYPE_SUCCESS
 			friendly_name = new_friendly_name
 			recalculate_name()
+
+		if("Set Placard")
+			var/new_placard_name = input(user, "New Placard?", "Re-writing [placard_name]", placard_name) as null|text
+			if(!new_placard_name)
+				return TOOL_ACT_TOOLTYPE_SUCCESS
+			placard_name = new_placard_name
 
 		if("Reconnect to terminal")
 			switch(link_to_jack()) //Just in case something stupid happens to the jack.
@@ -183,14 +192,18 @@
 					to_chat(user, span_warning("Terminal connection conflict, something is already connected!"))
 				if(NETJACK_CONNECT_NOTSAMETURF)
 					to_chat(user, span_boldwarning("Reconnect failed! Your terminal is somehow not on the same tile??? Call a coder!"))
+				if(NETJACK_CONNECT_NOT_FOUND)
+					to_chat(user, span_warning("No terminal found!"))
 				else
 					to_chat(user, span_boldwarning("Reconnect failed, Invalid error code, call a coder!"))
+
 		if("Toggle Address Display")
 			show_netids = !show_netids
 			if(show_netids)
 				to_chat(user, span_notice("You enabled the display of network IDs."))
 			else
 				to_chat(user, span_notice("You disabled the display of network IDs."))
+		//else fall through
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 
@@ -203,7 +216,7 @@
 	if(!COOLDOWN_FINISHED(src,scan_cooldown))
 		return //Chill out, bro.
 	discovered_phones = list() //Trash the existing list.
-	post_signal(create_signal("ping", list("filter"=net_class)))
+	post_signal(create_signal(NET_ADDRESS_PING, list("filter"=net_class)))
 	COOLDOWN_START(src,scan_cooldown,10 SECONDS)
 	sleep(2 SECONDS)
 	updateUsrDialog()
@@ -213,27 +226,27 @@
 	if(. == RECEIVE_SIGNAL_FINISHED)//Handled by default.
 		return
 	//Ping response handled in parent.
-	switch(signal.data["command"])
-		if("ping_reply")//Add new phone to database
+	switch(signal.data[PACKET_CMD])
+		if(NET_COMMAND_PING_REPLY)//Add new phone to database
 			if(signal.data["netclass"] == NETCLASS_P2P_PHONE) //Another phone!
-				discovered_phones[signal.data["s_addr"]]=signal.data["user_id"]
+				discovered_phones[signal.data[PACKET_SOURCE_ADDRESS]]=signal.data["user_id"]
 				return RECEIVE_SIGNAL_FINISHED
 		if("tel_ring")//Incoming ring
 			if(active_caller || handset_state == HANDSET_OFFHOOK)//We're either calling, or about to call, Just tell them to fuck off.
-				post_signal(create_signal(signal.data["s_addr"],list("command"="tel_busy"))) //Busy signal, Reject call.
+				post_signal(create_signal(signal.data[PACKET_SOURCE_ADDRESS],list(PACKET_CMD="tel_busy"))) //Busy signal, Reject call.
 				return RECEIVE_SIGNAL_FINISHED
-			receive_call(list(signal.data["s_addr"],signal.data["caller_id"]))
+			receive_call(list(signal.data[PACKET_SOURCE_ADDRESS],signal.data["caller_id"]))
 			return RECEIVE_SIGNAL_FINISHED
 		if("tel_ready")//Remote side pickup
-			if(active_caller && signal.data["s_addr"] == active_caller[CALLER_NETID])// Ensure the packet is sensible
+			if(active_caller && signal.data[PACKET_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				call_connected()
 				return RECEIVE_SIGNAL_FINISHED
 		if("tel_busy")//Answering station busy
-			if(active_caller && signal.data["s_addr"] == active_caller[CALLER_NETID])// Ensure the packet is sensible
+			if(active_caller && signal.data[PACKET_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				fuck_off_im_busy()
 				return RECEIVE_SIGNAL_FINISHED
 		if("tel_hup")//Remote side hangup
-			if(active_caller && signal.data["s_addr"] == active_caller[CALLER_NETID])// Ensure the packet is sensible
+			if(active_caller && signal.data[PACKET_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				switch(state)
 					if(STATE_ANSWER)
 						drop_call()// Call never connected, just reset.
@@ -505,7 +518,7 @@
  * Audio Data Bullshit
  */
 
-/obj/item/p2p_phone_handset/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list(), sound_loc)
+/obj/item/p2p_phone_handset/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list(), sound_loc, message_range)
 	if(callstation.state != STATE_CONNECTED || speaker == src) //Either disconnected, or we're hearing ourselves.
 		return //This is far cheaper than a range check.
 	var/atom/movable/checked_thing = sound_loc || speaker //If we have a location, we care about that, otherwise we're speaking directly from something.
@@ -535,21 +548,14 @@
 	if(callstation.state != STATE_CONNECTED)
 		return //Still no use bothering if we aren't connected.
 
-	if(HAS_TRAIT(talking_movable, TRAIT_SIGN_LANG)) //Forces Sign Language users to wear the translation gloves to speak over the phone.
-	//If they're holding the phone, they'll always suck. But someone always can hold it for them.
-		var/mob/living/carbon/mute = talking_movable
-		if(istype(mute))
-			if(!HAS_TRAIT(talking_movable, TRAIT_CAN_SIGN_ON_COMMS))
-				return FALSE
-			switch(mute.check_signables_state())
-				if(SIGN_ONE_HAND) // One hand full
-					message = stars(message)
-				if(SIGN_HANDS_FULL to SIGN_CUFFED)
-					return FALSE
 	if(!spans)
 		spans = list(talking_movable.speech_span)
 	if(!language)
 		language = talking_movable.get_selected_language()
+
+	if(istype(language, /datum/language/visual))
+		return
+
 	INVOKE_ASYNC(src, PROC_REF(talk_into_impl), talking_movable, message, channel, spans.Copy(), language, message_mods)
 	return ITALICS | REDUCE_RANGE
 
@@ -577,9 +583,9 @@
 
 	//Bundle up what we care about.
 	var/datum/signal/v_signal = new(src, null, TRANSMISSION_WIRE)
-	v_signal.has_magic_data = TRUE //We're sending a virtual speaker. This packet MUST be discarded.
-	v_signal.data["s_addr"] = null  //(Set by post_signal), Just setting it to null means it's always first in the list.
-	v_signal.data["d_addr"] = callstation.active_caller[CALLER_NETID]
+	v_signal.has_magic_data = MAGIC_DATA_INVIOLABLE //We're sending a virtual speaker. This packet MUST be discarded.
+	v_signal.data[PACKET_SOURCE_ADDRESS] = null  //(Set by post_signal), Just setting it to null means it's always first in the list.
+	v_signal.data[PACKET_DESTINATION_ADDRESS] = callstation.active_caller[CALLER_NETID]
 	v_signal.data["command"] = "tel_voicedata"
 	v_signal.data["virtualspeaker"] = v_speaker //This is a REAL REFERENCE. Packet MUST be discarded.
 	v_signal.data["message"] = message
@@ -619,7 +625,8 @@
 		if(!hearing_movable)//theoretically this should use as anything because it shouldnt be able to get nulls but there are reports that it does.
 			stack_trace("somehow theres a null returned from get_hearers_in_view() in send_speech!")
 			continue
-		hearing_movable.Hear(rendered, v_sig_data["virtualspeaker"], v_sig_data["language"], v_sig_data["message"], radio_bullshit_override, v_sig_data["spans"], v_sig_data["message_mods"], speaker_location())
+
+		hearing_movable.Hear(rendered, v_sig_data["virtualspeaker"], v_sig_data["language"], v_sig_data["message"], radio_bullshit_override, v_sig_data["spans"], v_sig_data["message_mods"], speaker_location(), message_range = INFINITY)
 
 
 #undef STATE_WAITING

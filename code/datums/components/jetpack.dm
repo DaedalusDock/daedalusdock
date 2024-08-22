@@ -67,7 +67,7 @@
 
 /datum/component/jetpack/Destroy()
 	QDEL_NULL(trail)
-	QDEL_NULL(check_on_move)
+	check_on_move = null
 	return ..()
 
 /datum/component/jetpack/proc/setup_trail()
@@ -109,7 +109,7 @@
 		return
 	if(!(user.movement_type & FLOATING) || user.buckled)//You don't want use jet in gravity or while buckled.
 		return
-	if(user.pulledby)//You don't must use jet if someone pull you
+	if(LAZYLEN(user.grabbed_by))//You don't must use jet if someone pull you
 		return
 	if(user.throwing)//You don't must use jet if you thrown
 		return

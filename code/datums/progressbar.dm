@@ -33,7 +33,8 @@
 	goal = goal_number
 	bar_loc = target
 	bar = image('icons/effects/progessbar.dmi', bar_loc, "prog_bar_0")
-	bar.plane = ABOVE_HUD_PLANE
+	bar.plane = GAME_PLANE
+	bar.layer = FLY_LAYER
 	bar.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 	user = User
 
@@ -69,9 +70,7 @@
 		clean_user_client()
 
 	bar_loc = null
-
-	if(bar)
-		QDEL_NULL(bar)
+	bar = null
 
 	return ..()
 
@@ -140,16 +139,18 @@
 	///The progress bar visual element.
 	var/obj/effect/abstract/progbar/bar
 	///The atom who "created" the bar
-	var/atom/owner
+	var/atom/movable/owner
 	///Effectively the number of steps the progress bar will need to do before reaching completion.
 	var/goal = 1
 	///Control check to see if the progress was interrupted before reaching its goal.
 	var/last_progress = 0
 	///Variable to ensure smooth visual stacking on multiple progress bars.
 	var/listindex = 0
+	///Does this qdelete on completion?
+	var/qdel_when_done = TRUE
 
 /datum/world_progressbar/New(atom/movable/_owner, _goal, image/underlay)
-	if(!_owner || !_goal)
+	if(!_owner)
 		return
 
 	owner = _owner
@@ -164,11 +165,14 @@
 
 		underlay.pixel_y += 2
 		underlay.alpha = 200
-		underlay.plane = ABOVE_HUD_PLANE
+		underlay.plane = GAME_PLANE
+		underlay.layer = FLY_LAYER
 		underlay.appearance_flags = APPEARANCE_UI
 		bar.underlays += underlay
 
 	owner:vis_contents += bar
+	if(owner.bound_overlay)
+		owner.bound_overlay.vis_contents += bar
 
 	animate(bar, alpha = 255, time = PROGRESSBAR_ANIMATION_TIME, easing = SINE_EASING)
 
@@ -195,9 +199,11 @@
 	if(last_progress != goal)
 		bar.icon_state = "[bar.icon_state]_fail"
 
-	animate(bar, alpha = 0, time = PROGRESSBAR_ANIMATION_TIME)
-
-	QDEL_IN(src, PROGRESSBAR_ANIMATION_TIME)
+	if(qdel_when_done)
+		animate(bar, alpha = 0, time = PROGRESSBAR_ANIMATION_TIME)
+		QDEL_IN(src, PROGRESSBAR_ANIMATION_TIME)
+	else
+		bar.icon_state = "prog_bar_0"
 
 #undef PROGRESSBAR_ANIMATION_TIME
 #undef PROGRESSBAR_HEIGHT

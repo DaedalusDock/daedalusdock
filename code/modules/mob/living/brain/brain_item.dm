@@ -1,9 +1,13 @@
+#define BRAIN_DAMAGE_THRESHOLDS 10
+#define BRAIN_DECAY_RATE 1
+
 /obj/item/organ/brain
 	name = "brain"
 	desc = "A piece of juicy meat found in a person's head."
 	icon_state = "brain"
 	visual = TRUE
-	throw_speed = 3
+	color_source = ORGAN_COLOR_STATIC
+	draw_color = null
 	throw_range = 5
 	layer = ABOVE_MOB_LAYER
 	zone = BODY_ZONE_HEAD
@@ -16,10 +20,15 @@
 	decay_factor = STANDARD_ORGAN_DECAY * 0.5 //30 minutes of decaying to result in a fully damaged brain, since a fast decay rate would be unfun gameplay-wise
 
 	maxHealth = BRAIN_DAMAGE_DEATH
-	low_threshold = 45
-	high_threshold = 120
+	low_threshold = 0.5
+	high_threshold = 0.75
+	external_damage_modifier = 1 // Takes 100% damage.
 
 	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP)
+
+	var/damage_threshold_value
+	/// How many ticks we can go without oxygen before bad things start happening.
+	var/oxygen_reserve = 6
 
 	var/suicided = FALSE
 	var/mob/living/brain/brainmob = null
@@ -38,35 +47,43 @@
 	/// Maximum skillchip slots available. Do not reference this var directly and instead call get_max_skillchip_slots()
 	var/max_skillchip_slots = 5
 
-/obj/item/organ/brain/Insert(mob/living/carbon/C, special = 0,no_id_transfer = FALSE)
+/obj/item/organ/brain/Initialize(mapload, mob_sprite)
+	. = ..()
+	set_max_health(maxHealth)
+
+/obj/item/organ/brain/PreRevivalInsertion(special)
+	if(owner.mind && owner.mind.has_antag_datum(/datum/antagonist/changeling) && !special) //congrats, you're trapped in a body you don't control
+		return
+
+	if(brainmob)
+		if(owner.key)
+			owner.ghostize()
+
+		if(brainmob.mind)
+			brainmob.mind.transfer_to(owner)
+		else
+			owner.key = brainmob.key
+
+		owner.set_suicide(brainmob.suiciding)
+
+		QDEL_NULL(brainmob)
+
+	else
+		owner.set_suicide(suicided)
+
+/obj/item/organ/brain/Insert(mob/living/carbon/C, special = 0)
 	. = ..()
 	if(!.)
 		return
 
 	name = "brain"
 
-	if(C.mind && C.mind.has_antag_datum(/datum/antagonist/changeling) && !no_id_transfer) //congrats, you're trapped in a body you don't control
+	if(C.mind && C.mind.has_antag_datum(/datum/antagonist/changeling) && !special) //congrats, you're trapped in a body you don't control
 		if(brainmob && !(C.stat == DEAD || (HAS_TRAIT(C, TRAIT_DEATHCOMA))))
 			to_chat(brainmob, span_danger("You can't feel your body! You're still just a brain!"))
 		forceMove(C)
 		C.update_body_parts()
 		return
-
-	if(brainmob)
-		if(C.key)
-			C.ghostize()
-
-		if(brainmob.mind)
-			brainmob.mind.transfer_to(C)
-		else
-			C.key = brainmob.key
-
-		C.set_suicide(brainmob.suiciding)
-
-		QDEL_NULL(brainmob)
-
-	else
-		C.set_suicide(suicided)
 
 	for(var/X in traumas)
 		var/datum/brain_trauma/BT = X
@@ -76,7 +93,7 @@
 	//Update the body's icon so it doesnt appear debrained anymore
 	C.update_body_parts()
 
-/obj/item/organ/brain/Remove(mob/living/carbon/C, special = 0, no_id_transfer = FALSE)
+/obj/item/organ/brain/Remove(mob/living/carbon/C, special = 0)
 	// Delete skillchips first as parent proc sets owner to null, and skillchips need to know the brain's owner.
 	if(!QDELETED(C) && length(skillchips))
 		to_chat(C, span_notice("You feel your skillchips enable emergency power saving mode, deactivating as your brain leaves your body..."))
@@ -92,7 +109,7 @@
 		BT.on_lose(TRUE)
 		BT.owner = null
 
-	if((!gc_destroyed || (owner && !owner.gc_destroyed)) && !no_id_transfer)
+	if((!QDELING(src) || !QDELETED(owner)) && !special)
 		transfer_identity(C)
 	C.update_body_parts()
 
@@ -103,8 +120,7 @@
 	if(!L.mind)
 		return
 	brainmob = new(src)
-	brainmob.name = L.real_name
-	brainmob.real_name = L.real_name
+	brainmob.set_real_name(L.real_name)
 	brainmob.timeofhostdeath = L.timeofdeath
 	brainmob.suiciding = suicided
 	if(L.has_dna())
@@ -123,27 +139,6 @@
 
 	if(istype(O, /obj/item/borg/apparatus/organ_storage))
 		return //Borg organ bags shouldn't be killing brains
-
-	if((organ_flags & ORGAN_FAILING) && O.is_drainable() && O.reagents.has_reagent(/datum/reagent/medicine/mannitol)) //attempt to heal the brain
-		. = TRUE //don't do attack animation.
-		if(brainmob?.health <= HEALTH_THRESHOLD_DEAD) //if the brain is fucked anyway, do nothing
-			to_chat(user, span_warning("[src] is far too damaged, there's nothing else we can do for it!"))
-			return
-
-		if(!O.reagents.has_reagent(/datum/reagent/medicine/mannitol, 10))
-			to_chat(user, span_warning("There's not enough mannitol in [O] to restore [src]!"))
-			return
-
-		user.visible_message(span_notice("[user] starts to pour the contents of [O] onto [src]."), span_notice("You start to slowly pour the contents of [O] onto [src]."))
-		if(!do_after(user, src, 6 SECONDS))
-			to_chat(user, span_warning("You failed to pour [O] onto [src]!"))
-			return
-
-		user.visible_message(span_notice("[user] pours the contents of [O] onto [src], causing it to reform its original shape and turn a slightly brighter shade of pink."), span_notice("You pour the contents of [O] onto [src], causing it to reform its original shape and turn a slightly brighter shade of pink."))
-		var/healby = O.reagents.get_reagent_amount(/datum/reagent/medicine/mannitol)
-		setOrganDamage(damage - healby*2) //heals 2 damage per unit of mannitol, and by using "setorgandamage", we clear the failing variable if that was up
-		O.reagents.clear_reagents()
-		return
 
 	// Cutting out skill chips.
 	if(length(skillchips) && (O.sharpness & SHARP_EDGED))
@@ -186,10 +181,10 @@
 		. += span_info("It's started turning slightly grey. They must not have been able to handle the stress of it all.")
 		return
 	if((brainmob && (brainmob.client || brainmob.get_ghost())) || decoy_override)
-		if(organ_flags & ORGAN_FAILING)
-			. += span_info("It seems to still have a bit of energy within it, but it's rather damaged... You may be able to restore it with some <b>mannitol</b>.")
+		if(organ_flags & ORGAN_DEAD)
+			. += span_info("It seems to still have a bit of energy within it, but it's rather damaged... You may be able to restore it with some <b>alkysine</b>.")
 		else if(damage >= BRAIN_DAMAGE_DEATH*0.5)
-			. += span_info("You can feel the small spark of life still left in this one, but it's got some bruises. You may be able to restore it with some <b>mannitol</b>.")
+			. += span_info("You can feel the small spark of life still left in this one, but it's got some bruises. You may be able to restore it with some <b>alkysine</b>.")
 		else
 			. += span_info("You can feel the small spark of life still left in this one.")
 	else
@@ -242,10 +237,82 @@
 		owner.mind.set_current(null)
 	return ..()
 
+/obj/item/organ/brain/set_max_health(new_health)
+	. = ..()
+	damage_threshold_value = round(maxHealth / BRAIN_DAMAGE_THRESHOLDS)
+
+/obj/item/organ/brain/proc/past_damage_threshold(threshold)
+	return round(damage / damage_threshold_value) > threshold
+
 /obj/item/organ/brain/on_life(delta_time, times_fired)
-	if(damage >= BRAIN_DAMAGE_DEATH) //rip
-		to_chat(owner, span_userdanger("The last spark of life in your brain fizzles out..."))
-		owner.death()
+	handle_damage_effects()
+
+	// Brain damage from low oxygenation or lack of blood.
+	if(!owner.needs_organ(ORGAN_SLOT_HEART))
+		return ..()
+
+	// Brain damage from low oxygenation or lack of blood.
+	// No heart? You are going to have a very bad time. Not 100% lethal because heart transplants should be a thing.
+	var/blood_percent = owner.get_blood_oxygenation()
+	if(blood_percent < BLOOD_CIRC_SURVIVE)
+		if(!CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) || prob(60))
+			oxygen_reserve = max(0, oxygen_reserve-1)
+	else
+		oxygen_reserve = min(initial(oxygen_reserve), oxygen_reserve+1)
+
+	if(!oxygen_reserve) //(hardcrit)
+		if(!(TRAIT_KNOCKEDOUT in organ_traits))
+			add_organ_trait(TRAIT_KNOCKEDOUT)
+			log_health(owner, "Passed out due to brain oxygen reaching zero. BLOOD OXY: [blood_percent]%")
+	else if(TRAIT_KNOCKEDOUT in organ_traits)
+		log_health(owner, "Brain now has enough oxygen.")
+		remove_organ_trait(TRAIT_KNOCKEDOUT)
+
+	var/can_heal = damage && damage < maxHealth && (damage % damage_threshold_value || CHEM_EFFECT_MAGNITUDE(owner, CE_BRAIN_REGEN) || (!past_damage_threshold(3) && owner.chem_effects[CE_STABLE]))
+	var/damprob
+	//Effects of bloodloss
+	switch(blood_percent)
+		if(BLOOD_CIRC_SAFE to INFINITY)
+			if(can_heal)
+				. |= applyOrganDamage(-1, updating_health = FALSE)
+
+		if(BLOOD_CIRC_OKAY to BLOOD_CIRC_SAFE)
+			if(owner.stat == CONSCIOUS && prob(1))
+				to_chat(owner, span_warning("You feel [pick("dizzy","woozy","faint")]..."))
+			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 30 : 60
+			if(!past_damage_threshold(2) && prob(damprob))
+				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+
+		if(BLOOD_CIRC_BAD to BLOOD_CIRC_OKAY)
+			owner.blur_eyes(6)
+			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 40 : 80
+			if(!past_damage_threshold(4) && prob(damprob))
+				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+
+			if(owner.stat == CONSCIOUS && prob(10))
+				log_health(owner, "Passed out due to poor blood oxygenation, random chance.")
+				to_chat(owner, span_warning("You feel extremely [pick("dizzy","woozy","faint")]..."))
+				owner.Unconscious(rand(1,3) SECONDS)
+
+		if(BLOOD_CIRC_SURVIVE to BLOOD_CIRC_BAD)
+			owner.blur_eyes(6)
+			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 60 : 100
+			if(!past_damage_threshold(6) && prob(damprob))
+				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+
+			if(owner.stat == CONSCIOUS && prob(15))
+				log_health(owner, "Passed out due to poor blood oxygenation, random chance.")
+				owner.Unconscious(rand(3,5) SECONDS)
+				to_chat(owner, span_warning("You feel extremely [pick("dizzy","woozy","faint")]..."))
+
+		if(-(INFINITY) to BLOOD_VOLUME_SURVIVE) // Also see heart.dm, being below this point puts you into cardiac arrest.
+			owner.blur_eyes(6)
+			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 80 : 100
+			if(prob(damprob))
+				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+			if(prob(damprob))
+				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+	. = ..()
 
 /obj/item/organ/brain/check_damage_thresholds(mob/M)
 	. = ..()
@@ -253,32 +320,88 @@
 	if(damage <= prev_damage)
 		return
 	damage_delta = damage - prev_damage
-	if(damage > BRAIN_DAMAGE_MILD)
+	if(damage > BRAIN_DAMAGE_SEVERE)
 		if(prob(damage_delta * (1 + max(0, (damage - BRAIN_DAMAGE_MILD)/100)))) //Base chance is the hit damage; for every point of damage past the threshold the chance is increased by 1% //learn how to do your bloody math properly goddamnit
 			gain_trauma_type(BRAIN_TRAUMA_MILD, natural_gain = TRUE)
 
 	var/is_boosted = (owner && HAS_TRAIT(owner, TRAIT_SPECIAL_TRAUMA_BOOST))
-	if(damage > BRAIN_DAMAGE_SEVERE)
+	if(damage > BRAIN_DAMAGE_CRITICAL)
 		if(prob(damage_delta * (1 + max(0, (damage - BRAIN_DAMAGE_SEVERE)/100)))) //Base chance is the hit damage; for every point of damage past the threshold the chance is increased by 1%
 			if(prob(20 + (is_boosted * 30)))
 				gain_trauma_type(BRAIN_TRAUMA_SPECIAL, is_boosted ? TRAUMA_RESILIENCE_SURGERY : null, natural_gain = TRUE)
 			else
 				gain_trauma_type(BRAIN_TRAUMA_SEVERE, natural_gain = TRUE)
 
-	if (owner)
-		if(owner.stat < UNCONSCIOUS) //conscious or soft-crit
-			var/brain_message
-			if(prev_damage < BRAIN_DAMAGE_MILD && damage >= BRAIN_DAMAGE_MILD)
-				brain_message = span_warning("You feel lightheaded.")
-			else if(prev_damage < BRAIN_DAMAGE_SEVERE && damage >= BRAIN_DAMAGE_SEVERE)
-				brain_message = span_warning("You feel less in control of your thoughts.")
-			else if(prev_damage < (BRAIN_DAMAGE_DEATH - 20) && damage >= (BRAIN_DAMAGE_DEATH - 20))
-				brain_message = span_warning("You can feel your mind flickering on and off...")
+	if (owner && damage >= (maxHealth * high_threshold) && prev_damage < (maxHealth * high_threshold))
+		handle_severe_brain_damage()
 
-			if(.)
-				. += "\n[brain_message]"
-			else
-				return brain_message
+/obj/item/organ/brain/proc/handle_severe_brain_damage()
+	set waitfor = FALSE
+	to_chat(owner, span_notice(span_reallybig("<B>Where am I...?</B>")))
+	sleep(5 SECONDS)
+	if (QDELETED(src) || !owner || owner.stat == DEAD || (organ_flags & ORGAN_DEAD))
+		return
+
+	to_chat(owner, span_notice(span_reallybig("<B>What's going on...?</B>")))
+	sleep(10 SECONDS)
+	if (QDELETED(src) || !owner || owner.stat == DEAD || (organ_flags & ORGAN_DEAD))
+		return
+
+	to_chat(owner, span_notice(span_reallybig("<B>What happened...?</B>")))
+	alert(owner, "You have taken massive brain damage! This could affect speech, memory, or any other skill, but provided you've been treated, it shouldn't be permanent.", "Brain Damaged")
+
+/obj/item/organ/brain/proc/handle_damage_effects()
+	if(owner.stat)
+		return
+
+	if(damage > 0 && prob(1))
+		owner.pain_message("Your head feels numb and painful.", 10)
+
+	if(damage >= (maxHealth * low_threshold) && prob(1) && owner.eye_blurry <= 0)
+		to_chat(owner, span_warning("It becomes hard to see for some reason."))
+		owner.blur_eyes(10)
+
+	if(damage >= 0.5*maxHealth && prob(1) && owner.get_active_hand())
+		to_chat(owner, span_danger("Your hand won't respond properly, and you drop what you are holding!"))
+		owner.dropItemToGround(owner.get_active_held_item())
+
+	if(damage >= 0.6*maxHealth)
+		owner.set_slurring_if_lower(10 SECONDS)
+
+	if(damage >= (maxHealth * high_threshold))
+		if(owner.body_position == STANDING_UP)
+			to_chat(owner, span_danger("You black out!"))
+		owner.Unconscious(5 SECOND)
+
+/obj/item/organ/brain/applyOrganDamage(damage_amount, maximum, silent, updating_health = TRUE)
+	. = ..()
+	if(. >= 20) //This probably won't be triggered by oxyloss or mercury. Probably.
+		var/damage_secondary = min(. * 0.2, 20)
+		if (owner)
+			owner.flash_act(visual = TRUE)
+			owner.blur_eyes(.)
+			owner.adjust_confusion(. SECONDS)
+			owner.Unconscious(damage_secondary SECONDS)
+
+/obj/item/organ/brain/getToxLoss()
+	return 0
+
+/obj/item/organ/brain/set_organ_dead(failing)
+	. = ..()
+	if(!.)
+		return
+	if(failing)
+		if(owner)
+			owner.death()
+		else if(brainmob)
+			brainmob.death()
+		return
+	else
+		if(owner)
+			owner.revive()
+		else if(brainmob)
+			brainmob.revive()
+		return
 
 /obj/item/organ/brain/before_organ_replacement(obj/item/organ/replacement)
 	. = ..()
@@ -324,13 +447,13 @@
 	name = "alien brain"
 	desc = "We barely understand the brains of terrestial animals. Who knows what we may find in the brain of such an advanced species?"
 	icon_state = "brain-x"
+	organ_traits = list(TRAIT_CAN_STRIP)
 
 /obj/item/organ/brain/vox
 	name = "cortical stack"
 	desc = "A peculiarly advanced bio-electronic device that seems to hold the memories and identity of a Vox."
 	icon_state = "cortical-stack"
-	status = ORGAN_ROBOTIC
-	organ_flags = ORGAN_SYNTHETIC
+	organ_flags = ORGAN_SYNTHETIC|ORGAN_VITAL
 
 /obj/item/organ/brain/vox/emp_act(severity)
 	. = ..()
@@ -351,10 +474,6 @@
 			owner.adjust_timed_status_effect(10 SECONDS, /datum/status_effect/jitter)
 			owner.adjust_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter)
 			owner.adjust_timed_status_effect(3 SECONDS, /datum/status_effect/confusion)
-
-/obj/item/organ/brain/skrell
-	name = "spongy brain"
-	icon_state = "skrell-brain"
 
 
 ////////////////////////////////////TRAUMAS////////////////////////////////////////
@@ -474,7 +593,35 @@
 /// This proc lets the mob's brain decide what bodypart to attack with in an unarmed strike.
 /obj/item/organ/brain/proc/get_attacking_limb(mob/living/carbon/human/target)
 	var/obj/item/bodypart/arm/active_hand = owner.get_active_hand()
+
 	if(target.body_position == LYING_DOWN && owner.usable_legs)
 		var/obj/item/bodypart/found_bodypart = owner.get_bodypart((active_hand.held_index % 2) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG)
 		return found_bodypart || active_hand
+
 	return active_hand
+
+/obj/item/organ/brain/get_scan_results(tag)
+	. = ..()
+	var/list/traumas = owner.get_traumas()
+	if(!length(traumas))
+		return
+
+	var/list/trauma_text = list()
+
+	for(var/datum/brain_trauma/trauma in traumas)
+		var/trauma_desc = ""
+		switch(trauma.resilience)
+			if(TRAUMA_RESILIENCE_SURGERY)
+				trauma_desc += "severe "
+			if(TRAUMA_RESILIENCE_LOBOTOMY)
+				trauma_desc += "deep-rooted "
+			if(TRAUMA_RESILIENCE_WOUND)
+				trauma_desc += "fracture-derived "
+			if(TRAUMA_RESILIENCE_MAGIC, TRAUMA_RESILIENCE_ABSOLUTE)
+				trauma_desc += "permanent "
+		trauma_desc += trauma.scan_desc
+		trauma_text += trauma_desc
+	. += tag ? "<span style='font-weight: bold; color:#ff9933'>Cerebral traumas detected: [english_list(trauma_text)]</span>" : "Cerebral traumas detected: [english_list(trauma_text)]"
+
+#undef BRAIN_DAMAGE_THRESHOLDS
+#undef BRAIN_DECAY_RATE

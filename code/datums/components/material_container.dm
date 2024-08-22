@@ -65,12 +65,9 @@
 /datum/component/material_container/Destroy(force, silent)
 	materials = null
 	allowed_materials = null
-	if(insertion_check)
-		QDEL_NULL(insertion_check)
-	if(precondition)
-		QDEL_NULL(precondition)
-	if(after_insert)
-		QDEL_NULL(after_insert)
+	insertion_check = null
+	precondition = null
+	after_insert = null
 	return ..()
 
 
@@ -140,7 +137,7 @@
 				to_chat(user, span_warning("[parent] can't hold any more of [I] sheets."))
 				return
 			//split the amount we don't need off
-			INVOKE_ASYNC(stack_to_split, TYPE_PROC_REF(/obj/item/stack, split_stack), user, stack_to_split.amount - sheets_to_insert)
+			INVOKE_ASYNC(stack_to_split, TYPE_PROC_REF(/obj/item/stack, split_stack), user, stack_to_split.amount - sheets_to_insert, user)
 		else
 			to_chat(user, span_warning("[I] contains more materials than [parent] has space to hold."))
 			return

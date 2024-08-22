@@ -189,7 +189,7 @@
 	. = ..()
 	if(!can_interact(user))
 		return
-	if(!user.canUseTopic(src, !issilicon(user)))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 
 	eject_disk(user)
@@ -333,7 +333,7 @@
 		//data["diskMutations"] = tgui_inserted_disk_mutations
 		data["storage"]["disk"] = tgui_inserted_disk_mutations
 		data["diskHasMakeup"] = (LAZYLEN(inserted_disk.read(DATA_IDX_GENE_BUFFER)) > 0)
-		data["diskMakeupBuffer"] = inserted_disk.read(DATA_IDX_GENE_BUFFER).Copy()
+		data["diskMakeupBuffer"] = inserted_disk.read(DATA_IDX_GENE_BUFFER)?.Copy() || list()
 	else
 		data["hasDisk"] = FALSE
 		data["diskCapacity"] = 0

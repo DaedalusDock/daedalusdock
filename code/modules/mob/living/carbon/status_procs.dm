@@ -18,17 +18,13 @@
 		return
 	if(HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA)) //Already in stamcrit
 		return
-	if(absorb_stun(0)) //continuous effect, so we don't want it to increment the stuns absorbed.
-		return
 
 	var/chance = STAMINA_SCALING_STUN_BASE + (STAMINA_SCALING_STUN_SCALER * stamina.current * STAMINA_STUN_THRESHOLD_MODIFIER)
 	if(!prob(chance))
 		return
-	visible_message(
-		span_danger("[src] slumps over, too weak to continue fighting..."),
-		span_userdanger("You're too exhausted to continue fighting..."),
-		span_hear("You hear something hit the floor.")
-	)
+	if(absorb_stun(1))
+		return
+
 	ADD_TRAIT(src, TRAIT_INCAPACITATED, STAMINA)
 	ADD_TRAIT(src, TRAIT_IMMOBILIZED, STAMINA)
 	ADD_TRAIT(src, TRAIT_FLOORED, STAMINA)
@@ -47,7 +43,6 @@
 
 /mob/living/carbon/set_disgust(amount)
 	disgust = clamp(amount, 0, DISGUST_LEVEL_MAXEDOUT)
-
 
 ////////////////////////////////////////TRAUMAS/////////////////////////////////////////
 

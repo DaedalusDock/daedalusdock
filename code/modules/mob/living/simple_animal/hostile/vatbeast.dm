@@ -28,16 +28,12 @@
 	var/datum/action/cooldown/tentacle_slap/slapper = new(src)
 	slapper.Grant(src)
 
-	add_cell_sample()
 	AddComponent(/datum/component/tameable, list(/obj/item/food/fries, /obj/item/food/cheesyfries, /obj/item/food/cornchips, /obj/item/food/carrotfries), tame_chance = 30, bonus_tame_chance = 0, after_tame = CALLBACK(src, PROC_REF(tamed)))
 
 /mob/living/simple_animal/hostile/vatbeast/proc/tamed(mob/living/tamer)
 	buckle_lying = 0
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/vatbeast)
 	faction = list("neutral")
-
-/mob/living/simple_animal/hostile/vatbeast/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_VATBEAST, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /// Ability that allows the owner to slap other mobs a short distance away.
 /// For vatbeats, this ability is shared with the rider.
@@ -55,7 +51,7 @@
 	ranged_mousepointer = 'icons/effects/mouse_pointers/supplypod_target.dmi'
 
 /datum/action/cooldown/tentacle_slap/update_button_name(atom/movable/screen/movable/action_button/button, force)
-	if(button.our_hud.mymob != owner)
+	if(button.hud.mymob != owner)
 		// For buttons given to mobs which are not our owner, give it this alt name
 		button.name = "Command Tentacle Slap"
 		button.desc = "Command your steed to slap a creature with its tentacles."

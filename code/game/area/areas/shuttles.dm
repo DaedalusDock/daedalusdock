@@ -5,7 +5,7 @@
 /area/shuttle
 	name = "Shuttle"
 	requires_power = FALSE
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 	has_gravity = STANDARD_GRAVITY
 	always_unpowered = FALSE
 	// Loading the same shuttle map at a different time will produce distinct area instances.
@@ -68,13 +68,12 @@
 
 /area/shuttle/hunter
 	name = "Hunter Shuttle"
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 
 /area/shuttle/hunter/russian
 	name = "Russian Cargo Hauler"
 	requires_power = TRUE
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 
 ////////////////////////////White Ship////////////////////////////
 
@@ -108,9 +107,7 @@
 /area/shuttle/transit
 	name = "Hyperspace"
 	desc = "Weeeeee"
-	static_lighting = FALSE
-	base_lighting_alpha = 255
-
+	area_lighting = AREA_LIGHTING_STATIC
 
 /area/shuttle/arrival
 	name = "Arrival Shuttle"
@@ -174,8 +171,7 @@
 	name = "Medieval Reality Simulation Dome"
 	icon_state = "shuttlectf"
 	area_flags = NOTELEPORT
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 
 /area/shuttle/escape/arena
 	name = "The Arena"
@@ -232,65 +228,3 @@
 
 /area/shuttle/caravan/freighter3
 	name = "Tiny Freighter"
-
-// ----------- Arena Shuttle
-/area/shuttle/shuttle_arena
-	name = "arena"
-	has_gravity = STANDARD_GRAVITY
-	requires_power = FALSE
-
-/obj/effect/forcefield/arena_shuttle
-	name = "portal"
-	initial_duration = 0
-	var/list/warp_points = list()
-
-/obj/effect/forcefield/arena_shuttle/Initialize(mapload)
-	. = ..()
-	for(var/obj/effect/landmark/shuttle_arena_safe/exit in GLOB.landmarks_list)
-		warp_points += exit
-
-/obj/effect/forcefield/arena_shuttle/Bumped(atom/movable/AM)
-	if(!isliving(AM))
-		return
-
-	var/mob/living/L = AM
-	if(L.pulling && istype(L.pulling, /obj/item/bodypart/head))
-		to_chat(L, span_notice("Your offering is accepted. You may pass."), confidential = TRUE)
-		qdel(L.pulling)
-		var/turf/LA = get_turf(pick(warp_points))
-		L.forceMove(LA)
-		L.hallucination = 0
-		to_chat(L, "<span class='reallybig redtext'>The battle is won. Your bloodlust subsides.</span>", confidential = TRUE)
-		for(var/obj/item/chainsaw/doomslayer/chainsaw in L)
-			qdel(chainsaw)
-		var/obj/item/skeleton_key/key = new(L)
-		L.put_in_hands(key)
-	else
-		to_chat(L, span_warning("You are not yet worthy of passing. Drag a severed head to the barrier to be allowed entry to the hall of champions."), confidential = TRUE)
-
-/obj/effect/landmark/shuttle_arena_safe
-	name = "hall of champions"
-	desc = "For the winners."
-
-/obj/effect/landmark/shuttle_arena_entrance
-	name = "\proper the arena"
-	desc = "A lava filled battlefield."
-
-/obj/effect/forcefield/arena_shuttle_entrance
-	name = "portal"
-	initial_duration = 0
-	var/list/warp_points = list()
-
-/obj/effect/forcefield/arena_shuttle_entrance/Bumped(atom/movable/AM)
-	if(!isliving(AM))
-		return
-
-	if(!warp_points.len)
-		for(var/obj/effect/landmark/shuttle_arena_entrance/S in GLOB.landmarks_list)
-			warp_points |= S
-
-	var/obj/effect/landmark/LA = pick(warp_points)
-	var/mob/living/M = AM
-	M.forceMove(get_turf(LA))
-	to_chat(M, "<span class='reallybig redtext'>You're trapped in a deadly arena! To escape, you'll need to drag a severed head to the escape portals.</span>", confidential = TRUE)
-	M.apply_status_effect(/datum/status_effect/mayhem)

@@ -78,7 +78,10 @@
 					return
 
 /datum/brain_trauma/mild/phobia/handle_hearing(datum/source, list/hearing_args)
-	if(!owner.can_hear() || !COOLDOWN_FINISHED(src, scare_cooldown)) //words can't trigger you if you can't hear them *taps head*
+	var/datum/language/L = hearing_args[HEARING_LANGUAGE]
+	if(!L?.can_receive_language(owner) || !owner.has_language(L))
+		return
+	if(!COOLDOWN_FINISHED(src, scare_cooldown)) //words can't trigger you if you can't hear them *taps head*
 		return
 	if(HAS_TRAIT(owner, TRAIT_FEARLESS))
 		return
@@ -117,7 +120,7 @@
 			owner.set_timed_status_effect(10 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 			owner.say("AAAAH!!", forced = "phobia")
 			if(reason)
-				owner.pointed(reason)
+				owner._pointed(reason)
 		if(3)
 			to_chat(owner, span_warning("You shut your eyes in terror!"))
 			owner.set_timed_status_effect(10 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)

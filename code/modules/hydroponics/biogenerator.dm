@@ -36,11 +36,11 @@
 
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += beaker
+			EX_ACT(beaker, EXPLODE_DEVASTATE)
 		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += beaker
+			EX_ACT(beaker, EXPLODE_HEAVY)
 		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += beaker
+			EX_ACT(beaker, EXPLODE_LIGHT)
 
 /obj/machinery/biogenerator/handle_atom_del(atom/A)
 	..()
@@ -143,7 +143,7 @@
 
 /obj/machinery/biogenerator/AltClick(mob/living/user)
 	. = ..()
-	if(user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK) && can_interact(user))
+	if(user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK) && can_interact(user))
 		eject_beaker(user)
 
 /**
@@ -282,7 +282,7 @@
 
 /obj/machinery/biogenerator/ui_assets(mob/user)
 	return list(
-		get_asset_datum(/datum/asset/spritesheet/research_designs),
+		get_asset_datum(/datum/asset/spritesheet/biogenerator_designs),
 	)
 
 /obj/machinery/biogenerator/ui_interact(mob/user, datum/tgui/ui)

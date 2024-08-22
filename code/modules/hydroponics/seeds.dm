@@ -293,14 +293,14 @@
 		// Heats up the plant's contents by 25 kelvin per 1 unit of nutriment. Mutually exclusive with cooling.
 		if(get_gene(/datum/plant_gene/trait/chem_heating))
 			T.visible_message(span_notice("[T] releases freezing air, consuming its nutriments to heat its contents."))
-			T.reagents.remove_all_type(/datum/reagent/consumable/nutriment, num_nutriment, strict = TRUE)
+			T.reagents.remove_reagent(/datum/reagent/consumable/nutriment, num_nutriment)
 			T.reagents.chem_temp = min(1000, (T.reagents.chem_temp + num_nutriment * 25))
 			T.reagents.handle_reactions()
 			playsound(T.loc, 'sound/effects/wounds/sizzle2.ogg', 5)
 		// Cools down the plant's contents by 5 kelvin per 1 unit of nutriment. Mutually exclusive with heating.
 		else if(get_gene(/datum/plant_gene/trait/chem_cooling))
 			T.visible_message(span_notice("[T] releases a blast of hot air, consuming its nutriments to cool its contents."))
-			T.reagents.remove_all_type(/datum/reagent/consumable/nutriment, num_nutriment, strict = TRUE)
+			T.reagents.remove_reagent(/datum/reagent/consumable/nutriment, num_nutriment)
 			T.reagents.chem_temp = max(3, (T.reagents.chem_temp + num_nutriment * -5))
 			T.reagents.handle_reactions()
 			playsound(T.loc, 'sound/effects/space_wind.ogg', 50)
@@ -459,14 +459,14 @@
 		var/choice = tgui_input_list(usr, "What would you like to change?", "Seed Alteration", list("Plant Name", "Seed Description", "Product Description"))
 		if(isnull(choice))
 			return
-		if(!user.canUseTopic(src, BE_CLOSE))
+		if(!user.canUseTopic(src, USE_CLOSE))
 			return
 		switch(choice)
 			if("Plant Name")
 				var/newplantname = reject_bad_text(tgui_input_text(user, "Write a new plant name", "Plant Name", plantname, 20))
 				if(isnull(newplantname))
 					return
-				if(!user.canUseTopic(src, BE_CLOSE))
+				if(!user.canUseTopic(src, USE_CLOSE))
 					return
 				name = "[lowertext(newplantname)]"
 				plantname = newplantname
@@ -474,7 +474,7 @@
 				var/newdesc = tgui_input_text(user, "Write a new seed description", "Seed Description", desc, 180)
 				if(isnull(newdesc))
 					return
-				if(!user.canUseTopic(src, BE_CLOSE))
+				if(!user.canUseTopic(src, USE_CLOSE))
 					return
 				desc = newdesc
 			if("Product Description")
@@ -483,7 +483,7 @@
 				var/newproductdesc = tgui_input_text(user, "Write a new product description", "Product Description", productdesc, 180)
 				if(isnull(newproductdesc))
 					return
-				if(!user.canUseTopic(src, BE_CLOSE))
+				if(!user.canUseTopic(src, USE_CLOSE))
 					return
 				productdesc = newproductdesc
 

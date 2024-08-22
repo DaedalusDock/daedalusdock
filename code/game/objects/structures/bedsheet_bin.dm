@@ -32,7 +32,6 @@ LINEN BINS
 
 /obj/item/bedsheet/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/surgery_initiator)
 	AddElement(/datum/element/bed_tuckable, 0, 0, 0)
 	if(bedsheet_type == BEDSHEET_DOUBLE)
 		stack_amount *= 2
@@ -171,11 +170,11 @@ LINEN BINS
 	dream_messages = list("authority", "a silvery ID", "healing", "life", "surgery", "a cat", "the medical director")
 
 /obj/item/bedsheet/hos
-	name = "head of security's bedsheet"
+	name = "security marshal's bedsheet"
 	desc = "It is decorated with a shield emblem. While crime doesn't sleep, you do, but you are still THE LAW!"
 	icon_state = "sheethos"
 	inhand_icon_state = "sheethos"
-	dream_messages = list("authority", "a silvery ID", "handcuffs", "a baton", "a flashbang", "sunglasses", "the head of security")
+	dream_messages = list("authority", "a silvery ID", "handcuffs", "a baton", "a flashbang", "sunglasses", "the security marshal")
 
 /obj/item/bedsheet/hop
 	name = "head of personnel's bedsheet"
@@ -223,7 +222,6 @@ LINEN BINS
 	dream_messages = list("a unique ID", "authority", "artillery", "an ending")
 
 /obj/item/bedsheet/syndie
-	name = "syndicate bedsheet"
 	desc = "It has a syndicate emblem and it has an aura of evil."
 	icon_state = "sheetsyndie"
 	inhand_icon_state = "sheetsyndie"
@@ -540,7 +538,7 @@ LINEN BINS
 			icon_state = "linenbin-full"
 	return ..()
 
-/obj/structure/bedsheetbin/fire_act(exposed_temperature, exposed_volume)
+/obj/structure/bedsheetbin/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	if(amount)
 		amount = 0
 		update_appearance()

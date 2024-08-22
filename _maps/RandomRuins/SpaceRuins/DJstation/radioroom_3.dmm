@@ -3,7 +3,7 @@
 /turf/closed/wall,
 /area/ruin/space/djstation)
 "b" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/north,
 /turf/open/floor/iron/cafeteria,
 /area/ruin/space/djstation)
@@ -14,7 +14,7 @@
 /turf/open/floor/iron/cafeteria,
 /area/ruin/space/djstation)
 "g" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/cafeteria,
 /area/ruin/space/djstation)
 "h" = (
@@ -48,17 +48,12 @@
 	},
 /turf/open/floor/iron/cafeteria,
 /area/ruin/space/djstation)
-"A" = (
-/obj/machinery/duct,
-/turf/open/floor/iron/cafeteria,
-/area/ruin/space/djstation)
 "G" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/light/directional/west,
 /turf/open/floor/iron/cafeteria,
 /area/ruin/space/djstation)
 "K" = (
-/obj/machinery/duct,
 /obj/modular_map_root/djstation{
 	key = "quarters"
 	},
@@ -85,11 +80,6 @@
 	listening = 0;
 	name = "Pirate Radio Broadcast Channel"
 	},
-/turf/open/floor/iron/cafeteria,
-/area/ruin/space/djstation)
-"T" = (
-/obj/machinery/light/directional/east,
-/obj/machinery/duct,
 /turf/open/floor/iron/cafeteria,
 /area/ruin/space/djstation)
 "V" = (
@@ -158,8 +148,8 @@ s
 h
 r
 V
-A
-T
+h
+s
 "}
 (6,1,1) = {"
 y
@@ -168,8 +158,8 @@ a
 a
 h
 h
-A
-A
+h
+h
 a
 "}
 (7,1,1) = {"

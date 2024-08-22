@@ -72,7 +72,7 @@
 	custom_materials = list(/datum/material/iron = 4000, /datum/material/glass = 2000, /datum/material/plasma = 2000, /datum/material/uranium = 3000, /datum/material/titanium = 3000)
 	hitsound = 'sound/items/welder.ogg'
 	toolspeed = 0.7
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 1
 	light_color = COLOR_SOFT_RED
 
@@ -154,7 +154,7 @@
 
 	force = 10
 	throwforce = 5
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 5
 	stamina_damage = 5
 	stamina_cost = 5
@@ -197,7 +197,6 @@
 	force = 15
 	w_class = WEIGHT_CLASS_NORMAL
 	throwforce = 9
-	throw_speed = 2
 	throw_range = 5
 	stamina_damage = 5
 	stamina_cost = 5
@@ -219,50 +218,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	toolspeed = 0.5
 
-
-/obj/item/surgical_drapes
-	name = "surgical drapes"
-	desc = "Nanotrasen brand surgical drapes provide optimal safety and infection control."
-	icon = 'icons/obj/surgery.dmi'
-	icon_state = "surgical_drapes"
-	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	inhand_icon_state = "drapes"
-	w_class = WEIGHT_CLASS_TINY
-	attack_verb_continuous = list("slaps")
-	attack_verb_simple = list("slap")
-
-/obj/item/surgical_drapes/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/surgery_initiator)
-
-
-/obj/item/surgical_processor //allows medical cyborgs to scan and initiate advanced surgeries
-	name = "\improper Surgical Processor"
-	desc = "A device for scanning and initiating surgeries from a disk or operating computer."
-	icon = 'icons/obj/device.dmi'
-	icon_state = "spectrometer"
-	item_flags = NOBLUDGEON
-	var/list/advanced_surgeries = list()
-
-/obj/item/surgical_processor/afterattack(obj/item/design_holder, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(istype(design_holder, /obj/item/disk/surgery))
-		to_chat(user, span_notice("You load the surgery protocol from [design_holder] into [src]."))
-		var/obj/item/disk/surgery/surgery_disk = design_holder
-		if(do_after(user, design_holder, 10))
-			advanced_surgeries |= surgery_disk.surgeries
-		return TRUE
-	if(istype(design_holder, /obj/machinery/computer/operating))
-		to_chat(user, span_notice("You copy surgery protocols from [design_holder] into [src]."))
-		var/obj/machinery/computer/operating/OC = design_holder
-		if(do_after(user, design_holder, 10))
-			advanced_surgeries |= OC.advanced_surgeries
-		return TRUE
-	return
-
 /obj/item/scalpel/advanced
 	name = "laser scalpel"
 	desc = "An advanced scalpel which uses laser technology to cut."
@@ -272,7 +227,7 @@
 	hitsound = 'sound/weapons/blade1.ogg'
 	force = 16
 	toolspeed = 0.7
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 1
 	light_color = LIGHT_COLOR_GREEN
 	sharpness = SHARP_EDGED
@@ -358,7 +313,6 @@
 	force = 12
 	w_class = WEIGHT_CLASS_NORMAL
 	throwforce = 6
-	throw_speed = 2
 	throw_range = 5
 	custom_materials = list(/datum/material/iron=8000, /datum/material/titanium=6000)
 	attack_verb_continuous = list("shears", "snips")
@@ -391,7 +345,7 @@
 		candidate_name = tail_snip_candidate.name
 
 	else
-		limb_snip_candidate = patient.get_bodypart(check_zone(user.zone_selected))
+		limb_snip_candidate = patient.get_bodypart(deprecise_zone(user.zone_selected))
 		if(!limb_snip_candidate)
 			to_chat(user, span_warning("[patient] is already missing that limb, what more do you want?"))
 			return
@@ -494,3 +448,12 @@
 			var/chem_name = params["reagent"]
 			var/chem_id = get_chem_id(chem_name)
 			whitelist -= chem_id
+
+/obj/item/fixovein
+	name = "vascular recoupler"
+	desc = "Derived from a Vey-Med design, this miniature 3D printer is used to quickly synthetize and thread new organic tissue during surgical procedures."
+	icon = 'icons/obj/surgery.dmi'
+	icon_state = "fixovein"
+	force = 0
+	throwforce = 1.0
+	w_class = WEIGHT_CLASS_SMALL

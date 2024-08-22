@@ -17,7 +17,6 @@
 	roundend_category = "Heretics"
 	antagpanel_category = "Heretic"
 	ui_name = "AntagInfoHeretic"
-	antag_moodlet = /datum/mood_event/heretics
 	job_rank = ROLE_HERETIC
 	antag_hud_name = "heretic"
 	hijack_speed = 0.5
@@ -337,7 +336,7 @@
 
 	var/num_heads = 0
 	for(var/mob/player in GLOB.alive_player_list)
-		if(player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+		if(player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER)
 			num_heads++
 
 	var/datum/objective/minor_sacrifice/sac_objective = new()
@@ -345,6 +344,7 @@
 	if(num_heads < 2) // They won't get major sacrifice, so bump up minor sacrifice a bit
 		sac_objective.target_amount += 2
 		sac_objective.update_explanation_text()
+
 	objectives += sac_objective
 
 	if(num_heads >= 2)
@@ -391,7 +391,7 @@
  */
 /datum/antagonist/heretic/proc/passive_influence_gain()
 	knowledge_points++
-	if(owner.current.stat <= SOFT_CRIT)
+	if(owner.current.stat == CONSCIOUS)
 		to_chat(owner.current, "[span_hear("You hear a whisper...")] [span_hypnophrase(pick(strings(HERETIC_INFLUENCE_FILE, "drain_message")))]")
 	addtimer(CALLBACK(src, PROC_REF(passive_influence_gain)), passive_gain_timer)
 

@@ -3,6 +3,17 @@ SUBSYSTEM_DEF(security_level)
 	flags = SS_NO_FIRE
 	/// Currently set security level
 	var/current_level = SEC_LEVEL_GREEN
+	var/list/datum/keycard_auth_action/kad_actions
+
+/datum/controller/subsystem/security_level/Initialize(start_timeofday)
+
+	kad_actions = list()
+	for(var/datum/keycard_auth_action/kaa_type as anything in subtypesof(/datum/keycard_auth_action))
+		if(isabstract(kaa_type) || !initial(kaa_type.available_roundstart))
+			continue
+		kad_actions[kaa_type] = new kaa_type
+
+	. = ..()
 
 /**
  * Sets a new security level as our current level

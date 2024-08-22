@@ -9,7 +9,6 @@
 	inhand_icon_state = "syringe_0"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	throw_speed = 3
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron=600, /datum/material/glass=200)
@@ -35,7 +34,7 @@
 	if(!(src && imp))
 		return
 
-	if(imp.implant(target, user))
+	if(imp.implant(target, user, deprecise_zone(user.zone_selected)))
 		if (target == user)
 			to_chat(user, span_notice("You implant yourself."))
 		else
@@ -55,7 +54,7 @@
 	var/new_name = tgui_input_text(user, "What would you like the label to be?", name, max_length = MAX_NAME_LEN)
 	if(user.get_active_held_item() != I)
 		return
-	if(!user.canUseTopic(src, BE_CLOSE))
+	if(!user.canUseTopic(src, USE_CLOSE))
 		return
 	if(new_name)
 		name = "implanter ([new_name])"

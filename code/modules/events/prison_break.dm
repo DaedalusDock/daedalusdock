@@ -1,7 +1,7 @@
 /datum/round_event_control/grey_tide
 	name = "Grey Tide"
 	typepath = /datum/round_event/grey_tide
-	max_occurrences = 2
+	max_occurrences = 1
 	min_players = 5
 
 /datum/round_event/grey_tide
@@ -23,7 +23,7 @@
 	severity = rand(1,3)
 	for(var/i in 1 to severity)
 		var/picked_area = pick_n_take(potential_areas)
-		for(var/area/A in world)
+		for(var/area/A in GLOB.areas)
 			if(istype(A, picked_area))
 				areasToOpen += A
 

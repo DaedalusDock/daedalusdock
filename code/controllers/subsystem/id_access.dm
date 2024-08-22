@@ -166,19 +166,13 @@ SUBSYSTEM_DEF(id_access)
 		),
 		"[ACCESS_HOS]" = list(
 			"regions" = list(REGION_SECURITY),
-			"head" = JOB_HEAD_OF_SECURITY,
+			"head" = JOB_SECURITY_MARSHAL,
 			"templates" = list(),
 			"pdas" = list(),
 		),
 		"[ACCESS_CMO]" = list(
 			"regions" = list(REGION_MEDBAY),
-			"head" = JOB_CHIEF_MEDICAL_OFFICER,
-			"templates" = list(),
-			"pdas" = list(),
-		),
-		"[ACCESS_RD]" = list(
-			"regions" = list(REGION_RESEARCH),
-			"head" = JOB_RESEARCH_DIRECTOR,
+			"head" = JOB_MEDICAL_DIRECTOR,
 			"templates" = list(),
 			"pdas" = list(),
 		),
@@ -248,7 +242,7 @@ SUBSYSTEM_DEF(id_access)
 	desc_by_access["[ACCESS_SECURITY]"] = "Security"
 	desc_by_access["[ACCESS_BRIG]"] = "Holding Cells"
 	desc_by_access["[ACCESS_COURT]"] = "Courtroom"
-	desc_by_access["[ACCESS_FORENSICS]"] = "Forensics"
+	desc_by_access["[ACCESS_FORENSICS]"] = "P.I's Office"
 	desc_by_access["[ACCESS_MEDICAL]"] = "Medical"
 	desc_by_access["[ACCESS_GENETICS]"] = "Genetics Lab"
 	desc_by_access["[ACCESS_MORGUE]"] = "Morgue"
@@ -267,7 +261,7 @@ SUBSYSTEM_DEF(id_access)
 	desc_by_access["[ACCESS_AI_UPLOAD]"] = "AI Chambers"
 	desc_by_access["[ACCESS_TELEPORTER]"] = "Teleporter"
 	desc_by_access["[ACCESS_EVA]"] = "EVA"
-	desc_by_access["[ACCESS_HEADS]"] = "Bridge"
+	desc_by_access["[ACCESS_MANAGEMENT]"] = "Management"
 	desc_by_access["[ACCESS_CAPTAIN]"] = "Captain"
 	desc_by_access["[ACCESS_ALL_PERSONAL_LOCKERS]"] = "Personal Lockers"
 	desc_by_access["[ACCESS_CHAPEL_OFFICE]"] = "Chapel Office"

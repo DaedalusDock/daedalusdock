@@ -1,6 +1,8 @@
 //Defines for atom layers and planes
 //KEEP THESE IN A NICE ACSCENDING ORDER, PLEASE
 
+//#define FLOAT_PLANE -32767 //For easy recordkeeping; this is a byond define.
+
 //NEVER HAVE ANYTHING BELOW THIS PLANE ADJUST IF YOU NEED MORE SPACE
 #define LOWEST_EVER_PLANE -200
 
@@ -26,6 +28,9 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 
 #define GAME_PLANE -6
 
+///Slightly above the game plane but does not catch mouse clicks. Useful for certain visuals that should be clicked through, like seethrough trees
+#define SEETHROUGH_PLANE -5
+
 // PLANE_SPACE layer(s)
 #define SPACE_LAYER 1.8
 
@@ -47,14 +52,17 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 #define DISPOSAL_PIPE_LAYER 2.3
 #define GAS_PIPE_HIDDEN_LAYER 2.35 //layer = initial(layer) + piping_layer / 1000 in atmospherics/update_icon() to determine order of pipe overlap
 #define WIRE_LAYER 2.4
-#define WIRE_BRIDGE_LAYER 2.44
+#define WIRE_KNOT_LAYER 2.44
 #define WIRE_TERMINAL_LAYER 2.45
 #define GAS_SCRUBBER_LAYER 2.46
 #define GAS_PIPE_VISIBLE_LAYER 2.47 //layer = initial(layer) + piping_layer / 1000 in atmospherics/update_icon() to determine order of pipe overlap
 #define GAS_FILTER_LAYER 2.48
 #define GAS_PUMP_LAYER 2.49
+#define BOT_PATH_LAYER 2.491
 #define LOW_OBJ_LAYER 2.5
-///catwalk overlay of /turf/open/floor/plating/catwalk_floor
+/// The lattice of /obj/structure/overfloor_catwalk
+#define CATWALK_LATTICE_LAYER 2.505
+/// The rim of /obj/structure/overfloor_catwalk
 #define CATWALK_LAYER 2.51
 #define LOW_SIGIL_LAYER 2.52
 #define SIGIL_LAYER 2.53
@@ -99,6 +107,7 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 #define MOB_UPPER_LAYER 4.07
 #define HITSCAN_PROJECTILE_LAYER 4.09
 #define ABOVE_MOB_LAYER 4.1
+#define TROLLEY_BARS_LAYER 4.2
 #define WALL_OBJ_LAYER 4.25
 #define EDGED_TURF_LAYER 4.3
 #define ON_EDGED_TURF_LAYER 4.35

@@ -22,22 +22,22 @@
 			return
 
 	var/obj/item/organ/appendix/appendix = owner.getorganslot(ORGAN_SLOT_APPENDIX)
-	if((!appendix && !HAS_TRAIT(owner, TRAIT_NOHUNGER)) || (appendix && ((appendix.organ_flags & ORGAN_FAILING) || (appendix.organ_flags & ORGAN_SYNTHETIC))))
+	if((!appendix && !HAS_TRAIT(owner, TRAIT_NOHUNGER)) || (appendix && ((appendix.organ_flags & ORGAN_DEAD) || (appendix.organ_flags & ORGAN_SYNTHETIC))))
 		replace_appendix(appendix)
 		return
 
 	var/obj/item/organ/liver/liver = owner.getorganslot(ORGAN_SLOT_LIVER)
-	if((!liver && !HAS_TRAIT(owner, TRAIT_NOMETABOLISM)) || (liver && ((liver.damage > liver.high_threshold) || (liver.organ_flags & ORGAN_SYNTHETIC))))
+	if((!liver && !HAS_TRAIT(owner, TRAIT_NOMETABOLISM)) || (liver && ((liver.damage > (liver.high_threshold * liver.maxHealth)) || (liver.organ_flags & ORGAN_SYNTHETIC))))
 		replace_liver(liver)
 		return
 
 	var/obj/item/organ/lungs/lungs = owner.getorganslot(ORGAN_SLOT_LUNGS)
-	if((!lungs && !HAS_TRAIT(owner, TRAIT_NOBREATH)) || (lungs && ((lungs.damage > lungs.high_threshold) || (lungs.organ_flags & ORGAN_SYNTHETIC))))
+	if((!lungs && !HAS_TRAIT(owner, TRAIT_NOBREATH)) || (lungs && ((lungs.damage > (lungs.high_threshold * lungs.maxHealth)) || (lungs.organ_flags & ORGAN_SYNTHETIC))))
 		replace_lungs(lungs)
 		return
 
 	var/obj/item/organ/stomach/stomach = owner.getorganslot(ORGAN_SLOT_STOMACH)
-	if((!stomach && !HAS_TRAIT(owner, TRAIT_NOHUNGER)) || (stomach && ((stomach.damage > stomach.high_threshold) || (stomach.organ_flags & ORGAN_SYNTHETIC))))
+	if((!stomach && !HAS_TRAIT(owner, TRAIT_NOHUNGER)) || (stomach && ((stomach.damage > (stomach.high_threshold * stomach.maxHealth)) || (stomach.organ_flags & ORGAN_SYNTHETIC))))
 		replace_stomach(stomach)
 		return
 
@@ -67,7 +67,7 @@
 		replace_blood()
 		return
 	if(owner.blood_volume < BLOOD_VOLUME_OKAY)
-		owner.blood_volume = BLOOD_VOLUME_NORMAL
+		owner.setBloodVolume(BLOOD_VOLUME_NORMAL)
 		to_chat(owner, span_warning("You feel your blood pulsing within you."))
 		return
 
@@ -97,9 +97,10 @@
 	else
 		to_chat(owner, span_warning("You feel a weird rumble in your bowels..."))
 
-	var/appendix_type = /obj/item/organ/appendix
-	if(owner?.dna?.species?.mutantappendix)
-		appendix_type = owner.dna.species.mutantappendix
+	var/appendix_type = owner?.dna?.species?.organs[ORGAN_SLOT_APPENDIX]
+	if(!appendix_type)
+		return
+
 	var/obj/item/organ/appendix/new_appendix = new appendix_type()
 	new_appendix.Insert(owner)
 
@@ -112,9 +113,10 @@
 	else
 		to_chat(owner, span_warning("You feel a weird rumble in your bowels..."))
 
-	var/liver_type = /obj/item/organ/liver
-	if(owner?.dna?.species?.mutantliver)
-		liver_type = owner.dna.species.mutantliver
+	var/liver_type = owner?.dna?.species?.organs[ORGAN_SLOT_LIVER]
+	if(!liver_type)
+		return
+
 	var/obj/item/organ/liver/new_liver = new liver_type()
 	new_liver.Insert(owner)
 
@@ -127,9 +129,10 @@
 	else
 		to_chat(owner, span_warning("You feel a weird rumble inside your chest..."))
 
-	var/lung_type = /obj/item/organ/lungs
-	if(owner.dna.species && owner.dna.species.mutantlungs)
-		lung_type = owner.dna.species.mutantlungs
+	var/lung_type = owner?.dna?.species?.organs[ORGAN_SLOT_LUNGS]
+	if(!lung_type)
+		return
+
 	var/obj/item/organ/lungs/new_lungs = new lung_type()
 	new_lungs.Insert(owner)
 
@@ -142,9 +145,10 @@
 	else
 		to_chat(owner, span_warning("You feel a weird rumble in your bowels..."))
 
-	var/stomach_type = /obj/item/organ/stomach
-	if(owner?.dna?.species?.mutantstomach)
-		stomach_type = owner.dna.species.mutantstomach
+	var/stomach_type = owner?.dna?.species?.organs[ORGAN_SLOT_STOMACH]
+	if(!stomach_type)
+		return
+
 	var/obj/item/organ/stomach/new_stomach = new stomach_type()
 	new_stomach.Insert(owner)
 
@@ -160,9 +164,10 @@
 	addtimer(CALLBACK(src, PROC_REF(finish_replace_eyes)), rand(100, 200))
 
 /obj/item/organ/heart/gland/heal/proc/finish_replace_eyes()
-	var/eye_type = /obj/item/organ/eyes
-	if(owner.dna.species && owner.dna.species.mutanteyes)
-		eye_type = owner.dna.species.mutanteyes
+	var/eye_type = owner?.dna?.species?.organs[ORGAN_SLOT_EYES]
+	if(!eye_type)
+		return
+
 	var/obj/item/organ/eyes/new_eyes = new eye_type()
 	new_eyes.Insert(owner)
 	owner.visible_message(span_warning("A pair of new eyes suddenly inflates into [owner]'s eye sockets!"), span_userdanger("A pair of new eyes suddenly inflates into your eye sockets!"))
@@ -194,12 +199,15 @@
 	owner.Stun(15)
 	owner.adjustToxLoss(-15, TRUE, TRUE)
 
-	owner.blood_volume = min(BLOOD_VOLUME_NORMAL, owner.blood_volume + 20)
+	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
+		owner.adjustBloodVolume(min(BLOOD_VOLUME_NORMAL - owner.blood_volume), 20)
+
 	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
 		keep_going = TRUE
 
 	if(owner.getToxLoss())
 		keep_going = TRUE
+
 	for(var/datum/reagent/toxin/R in owner.reagents.reagent_list)
 		owner.reagents.remove_reagent(R.type, 4)
 		if(owner.reagents.has_reagent(R.type))

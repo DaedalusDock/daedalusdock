@@ -2,24 +2,22 @@
 	max_slots = 2
 	max_specific_storage = WEIGHT_CLASS_SMALL
 	max_total_storage = 50
-	rustle_sound = FALSE
+	open_sound = null
+	rustle_sound = null
+	close_sound = null
 
 /datum/storage/pockets/attempt_insert(obj/item/to_insert, mob/user, override, force)
 	. = ..()
 	if(!.)
 		return
 
-	var/obj/item/resolve_parent = parent?.resolve()
-	if(!resolve_parent)
-		return
-
 	if(!silent || override)
 		return
 
 	if(quickdraw)
-		to_chat(user, span_notice("You discreetly slip [to_insert] into [resolve_parent]. Right-click [resolve_parent] to remove it."))
+		to_chat(user, span_notice("You discreetly slip [to_insert] into [parent]. Right-click [parent] to remove it."))
 	else
-		to_chat(user, span_notice("You discreetly slip [to_insert] into [resolve_parent]."))
+		to_chat(user, span_notice("You discreetly slip [to_insert] into [parent]."))
 
 /datum/storage/pockets/small
 	max_slots = 1
@@ -94,7 +92,6 @@
 		/obj/item/clothing/mask/cigarette,
 		/obj/item/lighter,
 		/obj/item/match,
-		/obj/item/holochip,
 		/obj/item/toy/crayon),
 		list(/obj/item/screwdriver/power,
 		/obj/item/ammo_casing/caseless/rocket,
@@ -125,7 +122,6 @@
 		/obj/item/clothing/mask/cigarette,
 		/obj/item/lighter,
 		/obj/item/match,
-		/obj/item/holochip,
 		/obj/item/toy/crayon,
 		/obj/item/bikehorn),
 		list(/obj/item/screwdriver/power,

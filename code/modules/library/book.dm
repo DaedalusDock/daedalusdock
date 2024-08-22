@@ -71,7 +71,6 @@
 	icon_state ="book"
 	worn_icon_state = "book"
 	desc = "Crack it open, inhale the musk of its pages, and learn something new."
-	throw_speed = 1
 	throw_range = 5
 	w_class = WEIGHT_CLASS_NORMAL  //upped to three because books are, y'know, pretty big. (and you could hide them inside eachother recursively forever)
 	attack_verb_continuous = list("bashes", "whacks", "educates")
@@ -115,7 +114,6 @@
 	if(!user.can_read(src))
 		return
 	user.visible_message(span_notice("[user] opens a book titled \"[book_data.title]\" and begins reading intently."))
-	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "book_nerd", /datum/mood_event/book_nerd)
 	on_read(user)
 
 /obj/item/book/attackby(obj/item/I, mob/user, params)
@@ -133,12 +131,12 @@
 		var/choice = tgui_input_list(usr, "What would you like to change?", "Book Alteration", list("Title", "Contents", "Author", "Cancel"))
 		if(isnull(choice))
 			return
-		if(!user.canUseTopic(src, BE_CLOSE, literate))
+		if(!user.canUseTopic(src, USE_CLOSE|USE_LITERACY))
 			return
 		switch(choice)
 			if("Title")
 				var/newtitle = reject_bad_text(tgui_input_text(user, "Write a new title", "Book Title", max_length = 30))
-				if(!user.canUseTopic(src, BE_CLOSE, literate))
+				if(!user.canUseTopic(src, USE_CLOSE|USE_LITERACY))
 					return
 				if (length_char(newtitle) > 30)
 					to_chat(user, span_warning("That title won't fit on the cover!"))
@@ -150,7 +148,7 @@
 				book_data.set_title(html_decode(newtitle)) //Don't want to double encode here
 			if("Contents")
 				var/content = tgui_input_text(user, "Write your book's contents (HTML NOT allowed)", "Book Contents", multiline = TRUE)
-				if(!user.canUseTopic(src, BE_CLOSE, literate))
+				if(!user.canUseTopic(src, USE_CLOSE|USE_LITERACY))
 					return
 				if(!content)
 					to_chat(user, span_warning("The content is invalid."))
@@ -158,7 +156,7 @@
 				book_data.set_content(html_decode(content))
 			if("Author")
 				var/author = tgui_input_text(user, "Write the author's name", "Author Name")
-				if(!user.canUseTopic(src, BE_CLOSE, literate))
+				if(!user.canUseTopic(src, USE_CLOSE|USE_LITERACY))
 					return
 				if(!author)
 					to_chat(user, span_warning("The name is invalid."))

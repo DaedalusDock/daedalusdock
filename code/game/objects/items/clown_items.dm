@@ -21,14 +21,13 @@
 	w_class = WEIGHT_CLASS_TINY
 	item_flags = NOBLUDGEON
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 7
 	grind_results = list(/datum/reagent/lye = 10)
 	var/cleanspeed = 3.5 SECONDS //slower than mop
 	force_string = "robust... against germs"
 	var/uses = 100
 
-/obj/item/soap/ComponentInitialize()
+/obj/item/soap/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/slippery, 80)
 
@@ -81,7 +80,7 @@
 /obj/item/soap/omega
 	name = "\improper Omega soap"
 	desc = "The most advanced soap known to mankind. The beginning of the end for germs."
-	grind_results = list(/datum/reagent/consumable/potato_juice = 9, /datum/reagent/consumable/ethanol/lizardwine = 9, /datum/reagent/monkey_powder = 9, /datum/reagent/drug/krokodil = 9, /datum/reagent/toxin/acid/nitracid = 9, /datum/reagent/baldium = 9, /datum/reagent/consumable/ethanol/hooch = 9, /datum/reagent/bluespace = 9, /datum/reagent/drug/pumpup = 9, /datum/reagent/consumable/space_cola = 9)
+	grind_results = list(/datum/reagent/consumable/potato_juice = 9, /datum/reagent/monkey_powder = 9, /datum/reagent/drug/krokodil = 9, /datum/reagent/toxin/acid/nitracid = 9, /datum/reagent/consumable/ethanol/hooch = 9, /datum/reagent/drug/pumpup = 9, /datum/reagent/consumable/space_cola = 9)
 	icon_state = "soapomega"
 	cleanspeed = 0.3 SECONDS //Only the truest of mind soul and body get one of these
 	uses = 800 //In the Greek numeric system, Omega has a value of 800
@@ -100,7 +99,7 @@
 /obj/item/soap/suicide_act(mob/user)
 	user.say(";FFFFFFFFFFFFFFFFUUUUUUUDGE!!", forced="soap suicide")
 	user.visible_message(span_suicide("[user] lifts [src] to [user.p_their()] mouth and gnaws on it furiously, producing a thick froth! [user.p_they(TRUE)]'ll never get that BB gun now!"))
-	new /obj/effect/particle_effect/foam(loc)
+	new /obj/effect/particle_effect/fluid/foam(loc)
 	return (TOXLOSS)
 
 /**
@@ -206,7 +205,6 @@
 	hitsound = null //To prevent tap.ogg playing, as the item lacks of force
 	w_class = WEIGHT_CLASS_TINY
 	slot_flags = ITEM_SLOT_BACK|ITEM_SLOT_BELT
-	throw_speed = 3
 	throw_range = 7
 	attack_verb_continuous = list("HONKS")
 	attack_verb_simple = list("HONK")
@@ -218,13 +216,6 @@
 	var/list/sound_list = list()
 	sound_list[sound_file] = 1
 	AddComponent(/datum/component/squeak, sound_list, 50, falloff_exponent = 20)
-
-/obj/item/bikehorn/attack(mob/living/carbon/M, mob/living/carbon/user)
-	if(user != M && ishuman(user))
-		var/mob/living/carbon/human/H = user
-		if (HAS_TRAIT(H, TRAIT_CLUMSY)) //only clowns can unlock its true powers
-			SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "honk", /datum/mood_event/honk)
-	return ..()
 
 /obj/item/bikehorn/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] solemnly points [src] at [user.p_their()] temple! It looks like [user.p_theyre()] trying to commit suicide!"))

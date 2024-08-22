@@ -15,16 +15,7 @@
 /area/template_noop)
 "r" = (
 /obj/structure/table/wood,
-/obj/item/paint/anycolor{
-	pixel_x = 7
-	},
-/obj/item/paint/anycolor{
-	pixel_x = -5
-	},
-/obj/item/paint/anycolor{
-	pixel_x = 7
-	},
-/obj/item/paint/anycolor{
+/obj/item/paint_sprayer{
 	pixel_x = 7
 	},
 /turf/open/floor/holofloor/carpet,

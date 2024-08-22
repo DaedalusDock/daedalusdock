@@ -16,7 +16,7 @@
 	melee_damage_upper = 10
 	attack_verb_continuous = "punches"
 	attack_verb_simple = "punch"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	del_on_death = TRUE
 	loot = list(/obj/effect/mob_spawn/corpse/human)
 	atmos_requirements = list("min_oxy" = 5, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 1, "min_co2" = 0, "max_co2" = 5, "min_n2" = 0, "max_n2" = 0)
@@ -29,7 +29,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	sentience_type = SENTIENCE_HUMANOID
 	speed = 0
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	robust_searching = TRUE
 	check_friendly_fire = TRUE
 	interaction_flags_atom = INTERACT_ATOM_NO_FINGERPRINT_ATTACK_HAND|INTERACT_ATOM_ATTACK_HAND|INTERACT_ATOM_NO_FINGERPRINT_INTERACT
@@ -151,12 +151,13 @@
 	if(npc_result != "Yes")
 		return
 	face_atom(user)
-	var/obj/item/holochip/cash
-	cash = user.is_holding_item_of_type(/obj/item/holochip)
-	if(!cash || cash.credits < products[item_to_buy])
+
+	var/obj/item/stack/spacecash/cash = user.is_holding_item_of_type(/obj/item/stack/spacecash)
+	if(!cash || cash.get_item_credit_value() < products[item_to_buy])
 		say(nocashphrase)
 		return
-	cash.spend(products[item_to_buy])
+
+	cash.use_cash(products[item_to_buy])
 	item_to_buy = new item_to_buy(get_turf(user))
 	user.put_in_hands(item_to_buy)
 	playsound(src, sell_sound, 50, TRUE)
@@ -213,9 +214,7 @@
  * * user - The mob we put the holochip in hands of
  */
 /mob/living/simple_animal/hostile/retaliate/trader/proc/generate_cash(value, mob/user)
-	var/obj/item/holochip/chip = new /obj/item/holochip(get_turf(user), value)
-	user.put_in_hands(chip)
-
+	SSeconomy.spawn_cash_for_amount(value, get_turf(user))
 /mob/living/simple_animal/hostile/retaliate/trader/mrbones
 	name = "Mr. Bones"
 	desc = "A skeleton merchant, he seems very humerus."
@@ -228,7 +227,6 @@
 		/obj/item/clothing/mask/bandana/skull/black = 50,
 		/obj/item/food/cookie/sugar/spookyskull = 10,
 		/obj/item/instrument/trombone/spectral = 10000,
-		/obj/item/shovel/serrated = 150
 	)
 	wanted_items = list(
 		/obj/item/reagent_containers/food/condiment/milk = 1000,

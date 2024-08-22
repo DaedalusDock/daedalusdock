@@ -33,7 +33,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	greyscale_colors = "#ffff00#000000"
 	density = TRUE
 	volume = 2000
-	armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 80, ACID = 50)
+	armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 80, ACID = 50)
 	max_integrity = 300
 	integrity_failure = 0.4
 	//pressure_resistance = 7 * ONE_ATMOSPHERE
@@ -196,6 +196,11 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	gas_type = GAS_OXYGEN
 	greyscale_config = /datum/greyscale_config/canister/stripe
 	greyscale_colors = "#2786e5#e8fefe"
+
+/obj/machinery/portable_atmospherics/canister/oxygen/cryo
+	name = "cryogenic canister"
+	starter_temp = 80
+	filled = 0.2
 
 /obj/machinery/portable_atmospherics/canister/boron
 	name = "boron canister"
@@ -456,7 +461,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	if(gone == internal_cell)
 		internal_cell = null
 
-/obj/machinery/portable_atmospherics/canister/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armour_penetration = 0)
+/obj/machinery/portable_atmospherics/canister/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armor_penetration = 0)
 	. = ..()
 	if(!. || QDELETED(src))
 		return
@@ -700,7 +705,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 					timer_set = min(maximum_timer_set, timer_set + 10)
 				if("input")
 					var/user_input = tgui_input_number(usr, "Set time to valve toggle", "Canister Timer", timer_set, maximum_timer_set, minimum_timer_set)
-					if(isnull(user_input) || QDELETED(usr) || QDELETED(src) || !usr.canUseTopic(src, BE_CLOSE, FALSE, TRUE))
+					if(isnull(user_input) || QDELETED(usr) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 						return
 					timer_set = user_input
 					log_admin("[key_name(usr)] has activated a prototype valve timer")

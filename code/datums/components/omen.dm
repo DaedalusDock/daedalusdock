@@ -39,10 +39,9 @@
 /datum/component/omen/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(check_accident))
 	RegisterSignal(parent, COMSIG_LIVING_STATUS_KNOCKDOWN, PROC_REF(check_slip))
-	RegisterSignal(parent, COMSIG_ADD_MOOD_EVENT, PROC_REF(check_bless))
 
 /datum/component/omen/UnregisterFromParent()
-	UnregisterSignal(parent, list(COMSIG_LIVING_STATUS_KNOCKDOWN, COMSIG_MOVABLE_MOVED, COMSIG_ADD_MOOD_EVENT))
+	UnregisterSignal(parent, list(COMSIG_LIVING_STATUS_KNOCKDOWN, COMSIG_MOVABLE_MOVED))
 
 /**
  * check_accident() is called each step we take
@@ -72,7 +71,7 @@
 			return
 
 	for(var/turf/the_turf as anything in get_adjacent_open_turfs(living_guy))
-		if(the_turf.zPassOut(living_guy, DOWN) && living_guy.can_z_move(DOWN, the_turf, z_move_flags = ZMOVE_FALL_FLAGS))
+		if(the_turf.CanZPass(living_guy, DOWN, z_move_flags = ZMOVE_FALL_FLAGS) && living_guy.can_z_move(DOWN, the_turf, ZMOVE_FALL_FLAGS))
 			to_chat(living_guy, span_warning("A malevolent force guides you towards the edge..."))
 			living_guy.throw_at(the_turf, 1, 10, force = MOVE_FORCE_EXTREMELY_STRONG)
 			if(!permanent)

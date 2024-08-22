@@ -8,7 +8,7 @@
 	id = "ripley_main"
 	build_path = /obj/item/circuitboard/mecha/ripley/main
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/ripley_peri
 	name = "APLU \"Ripley\" Peripherals Control module"
@@ -16,7 +16,7 @@
 	id = "ripley_peri"
 	build_path = /obj/item/circuitboard/mecha/ripley/peripherals
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/odysseus_main
 	name = "\"Odysseus\" Central Control module"
@@ -24,7 +24,7 @@
 	id = "odysseus_main"
 	build_path = /obj/item/circuitboard/mecha/odysseus/main
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/odysseus_peri
 	name = "\"Odysseus\" Peripherals Control module"
@@ -32,7 +32,7 @@
 	id = "odysseus_peri"
 	build_path = /obj/item/circuitboard/mecha/odysseus/peripherals
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/gygax_main
 	name = "\"Gygax\" Central Control module"
@@ -40,7 +40,7 @@
 	id = "gygax_main"
 	build_path = /obj/item/circuitboard/mecha/gygax/main
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/gygax_peri
 	name = "\"Gygax\" Peripherals Control module"
@@ -48,7 +48,7 @@
 	id = "gygax_peri"
 	build_path = /obj/item/circuitboard/mecha/gygax/peripherals
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/gygax_targ
 	name = "\"Gygax\" Weapons & Targeting Control module"
@@ -56,7 +56,7 @@
 	id = "gygax_targ"
 	build_path = /obj/item/circuitboard/mecha/gygax/targeting
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/durand_main
 	name = "\"Durand\" Central Control module"
@@ -64,7 +64,7 @@
 	id = "durand_main"
 	build_path = /obj/item/circuitboard/mecha/durand/main
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/durand_peri
 	name = "\"Durand\" Peripherals Control module"
@@ -72,7 +72,7 @@
 	id = "durand_peri"
 	build_path = /obj/item/circuitboard/mecha/durand/peripherals
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/durand_targ
 	name = "\"Durand\" Weapons & Targeting Control module"
@@ -80,7 +80,7 @@
 	id = "durand_targ"
 	build_path = /obj/item/circuitboard/mecha/durand/targeting
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/honker_main
 	name = "\"H.O.N.K\" Central Control module"
@@ -88,7 +88,7 @@
 	id = "honker_main"
 	build_path = /obj/item/circuitboard/mecha/honker/main
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/honker_peri
 	name = "\"H.O.N.K\" Peripherals Control module"
@@ -96,7 +96,7 @@
 	id = "honker_peri"
 	build_path = /obj/item/circuitboard/mecha/honker/peripherals
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/honker_targ
 	name = "\"H.O.N.K\" Weapons & Targeting Control module"
@@ -104,7 +104,7 @@
 	id = "honker_targ"
 	build_path = /obj/item/circuitboard/mecha/honker/targeting
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/phazon_main
 	name = "\"Phazon\" Central Control module"
@@ -113,7 +113,7 @@
 	materials = list(/datum/material/glass = 1000, /datum/material/bluespace = 100)
 	build_path = /obj/item/circuitboard/mecha/phazon/main
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/phazon_peri
 	name = "\"Phazon\" Peripherals Control module"
@@ -122,7 +122,7 @@
 	materials = list(/datum/material/glass = 1000, /datum/material/bluespace = 100)
 	build_path = /obj/item/circuitboard/mecha/phazon/peripherals
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/phazon_targ
 	name = "\"Phazon\" Weapons & Targeting Control module"
@@ -131,7 +131,7 @@
 	materials = list(/datum/material/glass = 1000, /datum/material/bluespace = 100)
 	build_path = /obj/item/circuitboard/mecha/phazon/targeting
 	category = list(DCAT_EXOSUIT_MOD)
-	mapload_design_flags = DESIGN_FAB_OMNI
+	mapload_design_flags = NONE
 
 /datum/design/board/clarke_main
 	name = "\"Clarke\" Central Control module"
@@ -245,6 +245,7 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 100
 	category = list(DCAT_MECHA_OBJ)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_laser_heavy
 	name = "Exosuit Weapon (CH-LC \"Solaris\" Laser Cannon)"
@@ -255,6 +256,7 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 100
 	category = list(DCAT_MECHA_OBJ)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_disabler
 	name = "Exosuit Weapon (CH-DS \"Peacemaker\" Disabler)"
@@ -397,6 +399,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/silver=5000)
 	construction_time = 100
 	category = list(DCAT_MECHA_OBJ)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_proj_armor
 	name = "Exosuit Module (Reflective Armor Booster Module)"
@@ -407,6 +410,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/gold=5000)
 	construction_time = 100
 	category = list(DCAT_MECHA_OBJ)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_diamond_drill
 	name = "Exosuit Mining (Diamond Mining Drill)"
@@ -426,17 +430,6 @@
 	build_type = MECHFAB
 	build_path = /obj/item/mecha_parts/mecha_equipment/weapon/energy/plasma
 	materials = list(/datum/material/iron = 8000, /datum/material/glass = 1000, /datum/material/plasma = 2000)
-	construction_time = 100
-	category = list(DCAT_MECHA_OBJ)
-	mapload_design_flags = DESIGN_FAB_ROBOTICS
-
-/datum/design/mecha_kineticgun
-	name = "Exosuit Mining (Proto-kinetic Accelerator)"
-	desc = "An exosuit-mounted mining tool that does increased damage in low pressure. Drawing from an onboard power source allows it to project further than the handheld version."
-	id = "mecha_kineticgun"
-	build_type = MECHFAB
-	build_path = /obj/item/mecha_parts/mecha_equipment/weapon/energy/mecha_kineticgun
-	materials = list(/datum/material/iron = 8000, /datum/material/glass = 1000)
 	construction_time = 100
 	category = list(DCAT_MECHA_OBJ)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS

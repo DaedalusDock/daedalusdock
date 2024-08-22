@@ -2,7 +2,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "nu_loadout"
 
-/datum/preference/blob/loadout/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+/datum/preference/blob/loadout/apply_to_human(mob/living/carbon/human/target, value)
 	return //We handle this in job code.
 
 /datum/preference/blob/loadout/create_default_value()

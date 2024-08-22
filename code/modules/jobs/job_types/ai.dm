@@ -1,27 +1,32 @@
 /datum/job/ai
 	title = JOB_AI
 	description = "Assist the crew, follow your laws, coordinate your cyborgs."
+	radio_help_message = "<b>Prefix your message with :b to speak with cyborgs and other AIs.</b>"
 	auto_deadmin_role_flags = DEADMIN_POSITION_SILICON
 	faction = FACTION_STATION
+
 	total_positions = 1
 	spawn_positions = 1
+
 	supervisors = "your laws"
 	selection_color = "#3f823f"
 	spawn_type = /mob/living/silicon/ai
+
 	req_admin_notify = TRUE
 	minimal_player_age = 30
 	exp_requirements = 180
 	exp_required_type = EXP_TYPE_CREW
 	exp_required_type_department = EXP_TYPE_SILICON
 	exp_granted_type = EXP_TYPE_CREW
+
 	allow_bureaucratic_error = FALSE
 	departments_list = list(
 		/datum/job_department/silicon,
 		)
-	random_spawns_possible = FALSE
-	job_flags = JOB_NEW_PLAYER_JOINABLE | JOB_EQUIP_RANK | JOB_BOLD_SELECT_TEXT
-	var/do_special_check = TRUE
 
+	random_spawns_possible = FALSE
+	job_flags = JOB_NEW_PLAYER_JOINABLE | JOB_EQUIP_RANK
+	var/do_special_check = TRUE
 
 /datum/job/ai/after_spawn(mob/living/spawned, client/player_client)
 	. = ..()
@@ -91,6 +96,3 @@
 
 /datum/job/ai/config_check()
 	return CONFIG_GET(flag/allow_ai)
-
-/datum/job/ai/radio_help_message(mob/M)
-	to_chat(M, "<b>Prefix your message with :b to speak with cyborgs and other AIs.</b>")

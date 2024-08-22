@@ -49,7 +49,6 @@
 	else
 		viewing = FALSE
 	if(viewing)
-		SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "creeping", /datum/mood_event/creeping, obsession.name)
 		total_time_creeping += delta_time SECONDS
 		time_spent_away = 0
 		if(attachedobsessedobj)//if an objective needs to tick down, we can do that since traumas coexist with the antagonist datum
@@ -59,10 +58,6 @@
 
 /datum/brain_trauma/special/obsessed/proc/out_of_view()
 	time_spent_away += 20
-	if(time_spent_away > 1800) //3 minutes
-		SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "creeping", /datum/mood_event/notcreepingsevere, obsession.name)
-	else
-		SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "creeping", /datum/mood_event/notcreeping, obsession.name)
 
 /datum/brain_trauma/special/obsessed/on_lose()
 	..()
@@ -122,8 +117,6 @@
 	var/list/viable_minds = list() //The first list, which excludes hijinks
 	var/list/possible_targets = list() //The second list, which filters out silicons and simplemobs
 	var/static/list/trait_obsessions = list(
-		JOB_MIME = TRAIT_MIME_FAN,
-		JOB_CLOWN = TRAIT_CLOWN_ENJOYER,
 		JOB_CHAPLAIN = TRAIT_SPIRITUAL,
 	) // Jobs and their corresponding quirks
 	var/list/special_pool = list() //The special list, for quirk-based
@@ -135,6 +128,7 @@
 		if(!(player.mind.assigned_role.job_flags & JOB_CREW_MEMBER))
 			continue
 		viable_minds += player.mind
+
 	for(var/datum/mind/possible_target as anything in viable_minds)
 		if(possible_target != owner && ishuman(possible_target.current))
 			var/job = possible_target.assigned_role.title

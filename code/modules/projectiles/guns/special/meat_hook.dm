@@ -33,7 +33,7 @@
 	pass_flags = PASSTABLE
 	damage = 20
 	stamina = 20
-	armour_penetration = 60
+	armor_penetration = 60
 	damage_type = BRUTE
 	hitsound = 'sound/effects/splat.ogg'
 	var/chain
@@ -42,7 +42,7 @@
 
 /obj/projectile/hook/fire(setAngle)
 	if(firer)
-		chain = firer.Beam(src, icon_state = chain_iconstate)
+		chain = firer.Beam(src, icon_state = "chain", emissive = FALSE)
 	..()
 	//TODO: root the firer until the chain returns
 
@@ -96,7 +96,7 @@
 	stamina = 25
 	chain_iconstate = "contractor_chain"
 
-/obj/item/gun/magic/hook/contractor/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+/obj/item/gun/magic/hook/contractor/do_fire_gun(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
 	if(prob(1))
 		user.say("+GET OVER HERE!+", forced = "scorpion hook")
 	return ..()

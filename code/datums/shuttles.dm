@@ -129,10 +129,6 @@
 	port_id = "infiltrator"
 	who_can_purchase = null
 
-/datum/map_template/shuttle/aux_base
-	port_id = "aux_base"
-	who_can_purchase = null
-
 /datum/map_template/shuttle/escape_pod
 	port_id = "escape_pod"
 	who_can_purchase = null
@@ -250,29 +246,6 @@
 	emag_only = TRUE
 	credit_cost = EMAG_LOCKED_SHUTTLE_COST
 
-/datum/map_template/shuttle/emergency/arena
-	suffix = "arena"
-	name = "The Arena"
-	description = "The crew must pass through an otherworldy arena to board this shuttle. Expect massive casualties. The source of the Bloody Signal must be tracked down and eliminated to unlock this shuttle."
-	admin_notes = "RIP AND TEAR."
-	credit_cost = CARGO_CRATE_VALUE * 20
-	/// Whether the arena z-level has been created
-	var/arena_loaded = FALSE
-
-/datum/map_template/shuttle/emergency/arena/prerequisites_met()
-	return SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_BUBBLEGUM]
-
-/datum/map_template/shuttle/emergency/arena/post_load(obj/docking_port/mobile/M)
-	. = ..()
-	if(!arena_loaded)
-		arena_loaded = TRUE
-		var/datum/map_template/arena/arena_template = new()
-		arena_template.load_new_z()
-
-/datum/map_template/arena
-	name = "The Arena"
-	mappath = "_maps/templates/the_arena.dmm"
-
 /datum/map_template/shuttle/emergency/birdboat
 	suffix = "birdboat"
 	name = "Birdboat Station Emergency Shuttle"
@@ -300,7 +273,7 @@
 	We've got fun activities for everyone, an all access cockpit, and no boring security brig! Boo! Play dress up with your friends! \
 	Collect all the bedsheets before your neighbour does! Check if the AI is watching you with our patent pending \"Peeping Tom AI Multitool Detector\" or PEEEEEETUR for short. \
 	Have a fun ride!"
-	admin_notes = "Brig is replaced by anchored greentext book surrounded by lavaland chasms, stationside door has been removed to prevent accidental dropping. No brig."
+	admin_notes = "Brig is replaced by anchored greentext book surrounded by chasms, stationside door has been removed to prevent accidental dropping. No brig."
 	credit_cost = CARGO_CRATE_VALUE * 16
 
 /datum/map_template/shuttle/emergency/cramped
@@ -448,7 +421,7 @@
 /datum/map_template/shuttle/ferry/base
 	suffix = "base"
 	name = "transport ferry"
-	description = "Standard issue Box/Metastation CentCom ferry."
+	description = "Standard issue Box/Theseus CentCom ferry."
 
 /datum/map_template/shuttle/ferry/meat
 	suffix = "meat"
@@ -616,14 +589,6 @@
 	suffix = "kilo"
 	name = "labour shuttle (Kilo)"
 
-/datum/map_template/shuttle/mining_common/meta
-	suffix = "meta"
-	name = "lavaland shuttle (Meta)"
-
-/datum/map_template/shuttle/mining_common/kilo
-	suffix = "kilo"
-	name = "lavaland shuttle (Kilo)"
-
 /datum/map_template/shuttle/arrival/delta
 	suffix = "delta"
 	name = "arrival shuttle (Delta)"
@@ -639,14 +604,6 @@
 /datum/map_template/shuttle/arrival/omega
 	suffix = "omega"
 	name = "arrival shuttle (Omega)"
-
-/datum/map_template/shuttle/aux_base/default
-	suffix = "default"
-	name = "auxilliary base (Default)"
-
-/datum/map_template/shuttle/aux_base/small
-	suffix = "small"
-	name = "auxilliary base (Small)"
 
 /datum/map_template/shuttle/escape_pod/default
 	suffix = "default"

@@ -14,9 +14,6 @@
 /obj/item/clothing/ears/headphones/Initialize()
 	. = ..()
 	update_icon()
-
-/obj/item/clothing/ears/headphones/ComponentInitialize()
-	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/clothing/ears/headphones/update_icon_state()

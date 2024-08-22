@@ -32,7 +32,7 @@
 /obj/structure/transit_tube/station/should_stop_pod(pod, from_dir)
 	return TRUE
 
-/obj/structure/transit_tube/station/Bumped(atom/movable/AM)
+/obj/structure/transit_tube/station/BumpedBy(atom/movable/AM)
 	if(!pod_moving && open_status == STATION_TUBE_OPEN && ismob(AM) && AM.dir == boarding_dir)
 		for(var/obj/structure/transit_tube_pod/pod in loc)
 			if(!pod.moving)
@@ -42,7 +42,7 @@
 
 
 //pod insertion
-/obj/structure/transit_tube/station/MouseDrop_T(obj/structure/c_transit_tube_pod/R, mob/user)
+/obj/structure/transit_tube/station/MouseDroppedOn(obj/structure/c_transit_tube_pod/R, mob/user)
 	if(isliving(user))
 		var/mob/living/L = user
 		if(L.incapacitated())
@@ -64,38 +64,43 @@
 	if(.)
 		return
 	if(!pod_moving)
-		if(user.pulling && isliving(user.pulling))
-			if(open_status == STATION_TUBE_OPEN)
-				var/mob/living/GM = user.pulling
-				if(user.grab_state >= GRAB_AGGRESSIVE)
-					if(GM.buckled || GM.has_buckled_mobs())
-						to_chat(user, span_warning("[GM] is attached to something!"))
-						return
-					for(var/obj/structure/transit_tube_pod/pod in loc)
-						pod.visible_message(span_warning("[user] starts putting [GM] into the [pod]!"))
-						if(do_after(user, src, 15))
-							if(open_status == STATION_TUBE_OPEN && GM && user.grab_state >= GRAB_AGGRESSIVE && user.pulling == GM && !GM.buckled && !GM.has_buckled_mobs())
-								GM.Paralyze(100)
-								src.Bumped(GM)
-						break
-		else
-			for(var/obj/structure/transit_tube_pod/pod in loc)
-				if(!pod.moving && (pod.dir in tube_dirs))
-					if(open_status == STATION_TUBE_CLOSED)
-						open_animation()
+		for(var/obj/structure/transit_tube_pod/pod in loc)
+			if(!pod.moving && (pod.dir in tube_dirs))
+				if(open_status == STATION_TUBE_CLOSED)
+					open_animation()
 
-					else if(open_status == STATION_TUBE_OPEN)
-						if(pod.contents.len && user.loc != pod)
-							user.visible_message(span_notice("[user] starts emptying [pod]'s contents onto the floor."), span_notice("You start emptying [pod]'s contents onto the floor..."))
-							if(do_after(user, src, 10)) //So it doesn't default to close_animation() on fail
-								if(pod && pod.loc == loc)
-									for(var/atom/movable/AM in pod)
-										AM.forceMove(get_turf(user))
+				else if(open_status == STATION_TUBE_OPEN)
+					if(pod.contents.len && user.loc != pod)
+						user.visible_message(span_notice("[user] starts emptying [pod]'s contents onto the floor."), span_notice("You start emptying [pod]'s contents onto the floor..."))
+						if(do_after(user, src, 10)) //So it doesn't default to close_animation() on fail
+							if(pod && pod.loc == loc)
+								for(var/atom/movable/AM in pod)
+									AM.forceMove(get_turf(user))
 
-						else
-							close_animation()
-				break
+					else
+						close_animation()
+			break
 
+/obj/structure/transit_tube/station/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	. = ..()
+	if(!isliving(victim) || pod_moving)
+		return
+
+	if(!(open_status == STATION_TUBE_OPEN))
+		return
+
+	var/mob/living/GM = victim
+	if(grab.current_grab.damage_stage >= GRAB_AGGRESSIVE)
+		if(GM.buckled || GM.has_buckled_mobs())
+			to_chat(user, span_warning("[GM] is attached to something!"))
+			return
+		for(var/obj/structure/transit_tube_pod/pod in loc)
+			pod.visible_message(span_warning("[user] starts putting [GM] into the [pod]!"))
+			if(do_after(user, src, 15))
+				if(open_status == STATION_TUBE_OPEN && GM && grab.current_grab?.damage_stage >= GRAB_AGGRESSIVE && user.is_grabbing(victim) && !GM.buckled && !GM.has_buckled_mobs())
+					GM.Paralyze(100)
+					src.BumpedBy(GM)
+			break
 
 /obj/structure/transit_tube/station/attackby(obj/item/W, mob/user, params)
 	if(W.tool_behaviour == TOOL_CROWBAR)
@@ -249,7 +254,7 @@
 	. = ..()
 	. += span_notice("This station will create a pod for you to ride, no need to wait for one.")
 
-/obj/structure/transit_tube/station/dispenser/Bumped(atom/movable/AM)
+/obj/structure/transit_tube/station/dispenser/BumpedBy(atom/movable/AM)
 	if(!(istype(AM) && AM.dir == boarding_dir) || AM.anchored)
 		return
 	var/obj/structure/transit_tube_pod/dispensed/pod = new(loc)

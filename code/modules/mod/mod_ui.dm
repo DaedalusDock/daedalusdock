@@ -13,6 +13,8 @@
 	data["locked"] = locked
 	data["complexity"] = complexity
 	data["selected_module"] = selected_module?.name
+	data["link_id"] = mod_link.id
+	data["link_call"] = mod_link.get_other()?.id
 	data["wearer_name"] = wearer ? (wearer.get_authentification_name("Unknown") || "Unknown") : "No Occupant"
 	data["wearer_job"] = wearer ? wearer.get_assignment("Unknown", "Unknown", FALSE) : "No Job"
 	data["AI"] = ai?.name
@@ -45,10 +47,13 @@
 	data["ui_theme"] = ui_theme
 	data["control"] = name
 	data["complexity_max"] = complexity_max
-	data["helmet"] = helmet?.name
-	data["chestplate"] = chestplate?.name
-	data["gauntlets"] = gauntlets?.name
-	data["boots"] = boots?.name
+	var/part_info = list()
+	for(var/obj/item/part as anything in get_parts())
+		part_info += list(list(
+			"slot" = english_list(parse_slot_flags(part.slot_flags)),
+			"name" = part.name,
+		))
+	data["parts"] = part_info
 	return data
 
 /obj/item/mod/control/ui_act(action, params)
@@ -66,6 +71,11 @@
 		if("lock")
 			locked = !locked
 			balloon_alert(usr, "[locked ? "locked" : "unlocked"]!")
+		if("call")
+			if(!mod_link.link_call)
+				call_link(usr, mod_link)
+			else
+				mod_link.end_call()
 		if("activate")
 			toggle_activate(usr)
 		if("select")

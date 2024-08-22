@@ -20,6 +20,7 @@
 	gender = PLURAL
 	material_modifier = 0.05 //5%, so that a 50 sheet stack has the effect of 5k materials instead of 100k.
 	max_integrity = 100
+
 	var/list/datum/stack_recipe/recipes
 	var/singular_name
 	var/amount = 1
@@ -36,21 +37,23 @@
 	//NOTE: When adding grind_results, the amounts should be for an INDIVIDUAL ITEM - these amounts will be multiplied by the stack size in on_grind()
 	var/obj/structure/table/tableVariant // we tables now (stores table variant to be built from this stack)
 
-		// The following are all for medical treatment, they're here instead of /stack/medical because sticky tape can be used as a makeshift bandage or splint
+	// The following are all for medical treatment, they're here instead of /stack/medical because sticky tape can be used as a makeshift bandage or splint
 	/// If set and this used as a splint for a broken bone wound, this is used as a multiplier for applicable slowdowns (lower = better) (also for speeding up burn recoveries)
-	var/splint_factor
+	var/splint_slowdown = null
 	/// Like splint_factor but for burns instead of bone wounds. This is a multiplier used to speed up burn recoveries
 	var/burn_cleanliness_bonus
-	/// How much blood flow this stack can absorb if used as a bandage on a cut wound, note that absorption is how much we lower the flow rate, not the raw amount of blood we suck up
-	var/absorption_capacity
-	/// How quickly we lower the blood flow on a cut wound we're bandaging. Expected lifetime of this bandage in seconds is thus absorption_capacity/absorption_rate, or until the cut heals, whichever comes first
-	var/absorption_rate
+
+	/// How much blood this stack can absorb until the owner starts loosing blood again.
+	var/absorption_capacity = 0
+	/// How much this stack reduces blood flow, multiplier
+	var/absorption_rate_modifier = 1
+
 	/// Amount of matter for RCD
 	var/matter_amount = 0
 	/// Does this stack require a unique girder in order to make a wall?
 	var/has_unique_girder = FALSE
 
-/obj/item/stack/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+/obj/item/stack/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1, absorption_capacity)
 	if(new_amount != null)
 		amount = new_amount
 	while(amount > max_amount)
@@ -58,6 +61,9 @@
 		new type(loc, max_amount, FALSE)
 	if(!merge_type)
 		merge_type = type
+
+	if(absorption_capacity)
+		src.absorption_capacity = absorption_capacity
 
 	if(LAZYLEN(mat_override))
 		set_mats_per_unit(mat_override, mat_amt)
@@ -67,6 +73,8 @@
 		set_mats_per_unit(custom_materials, amount ? 1/amount : 1)
 
 	. = ..()
+	// HELLO THIS IS KAPU. THIS IS BROKEN.
+	// BECAUSE ON DAEDALUS ALL MOVABLES CALL LOC.ENTERED(SRC) POST-INITIALIZE, STACKS WILL ALWAYS MERGE.
 	if(merge)
 		for(var/obj/item/stack/item_stack in loc)
 			if(item_stack == src)
@@ -153,22 +161,32 @@
 
 /obj/item/stack/examine(mob/user)
 	. = ..()
+	var/plural = get_amount()>1
 	if(is_cyborg)
 		if(singular_name)
-			. += "There is enough energy for [get_amount()] [singular_name]\s."
+			. += span_notice("There is enough energy for [get_amount()] [singular_name]\s.")
 		else
-			. += "There is enough energy for [get_amount()]."
+			. += span_notice("There is enough energy for [get_amount()].")
 		return
+
 	if(singular_name)
-		if(get_amount()>1)
-			. += "There are [get_amount()] [singular_name]\s in the stack."
+		if(plural)
+			. += span_notice("There are [get_amount()] [singular_name]\s in the stack.")
 		else
-			. += "There is [get_amount()] [singular_name] in the stack."
-	else if(get_amount()>1)
-		. += "There are [get_amount()] in the stack."
+			. += span_notice("There is [get_amount()] [singular_name] in the stack.")
+
+	else if(plural)
+		. += span_notice("There are [get_amount()] in the stack.")
 	else
-		. += "There is [get_amount()] in the stack."
+		. += span_notice("There is [get_amount()] in the stack.")
+
 	. += span_notice("<b>Right-click</b> with an empty hand to take a custom amount.")
+
+	if(absorption_capacity < initial(absorption_capacity))
+		if(absorption_capacity == 0)
+			. += span_alert("[plural ? "They are" : "It is"] drenched in blood, this won't be a suitable bandage.")
+		else
+			. += span_notice("[plural ? "They are" : "It is"] covered in blood.")
 
 /obj/item/stack/proc/get_amount()
 	if(is_cyborg)
@@ -447,6 +465,8 @@
 		return FALSE
 	if(mats_per_unit ~! check.mats_per_unit) // ~! in case of lists this operator checks only keys, but not values
 		return FALSE
+	if(absorption_capacity != check.absorption_capacity)
+		return FALSE
 	if(is_cyborg) // No merging cyborg stacks into other stacks
 		return FALSE
 	if(ismob(loc) && !inhand) // no merging with items that are on the mob
@@ -475,9 +495,13 @@
 		transfer = min(transfer, round((target_stack.source.max_energy - target_stack.source.energy) / target_stack.cost))
 	else
 		transfer = min(transfer, (limit ? limit : target_stack.max_amount) - target_stack.amount)
-	if(pulledby)
-		pulledby.start_pulling(target_stack)
-	target_stack.copy_evidences(src)
+	if(LAZYLEN(grabbed_by))
+		for(var/obj/item/hand_item/grab/G in grabbed_by)
+			var/mob/living/grabber = G.assailant
+			qdel(G)
+			grabber.try_make_grab(target_stack)
+
+	transfer_evidence_to(target_stack)
 	use(transfer, transfer = TRUE, check = FALSE)
 	target_stack.add(transfer)
 	if(target_stack.mats_per_unit != mats_per_unit) // We get the average value of mats_per_unit between two stacks getting merged
@@ -512,12 +536,33 @@
 		merge(hitting)
 	. = ..()
 
+/obj/item/stack/attack(mob/living/M, mob/living/user, params)
+	if(splint_slowdown)
+		return try_splint(M, user)
+
+	if(!user.combat_mode && absorption_capacity && ishuman(M))
+		var/obj/item/bodypart/BP = M.get_bodypart(user.zone_selected, TRUE)
+		if(BP.bandage)
+			to_chat(user, span_warning("[M]'s [BP.plaintext_zone] is already bandaged."))
+			return FALSE
+
+		if(do_after(user, M, 5 SECONDS, DO_PUBLIC, display = src))
+			if(user == M)
+				user.visible_message(span_notice("[user] applies [src] to [user.p_their()] [BP.plaintext_zone]."))
+			else
+				user.visible_message(span_notice("[user] applies [src] to [M]'s [BP.plaintext_zone]."))
+			BP.apply_bandage(src)
+		return
+
+	return ..()
+
+
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/stack/attack_hand(mob/user, list/modifiers)
 	if(user.get_inactive_held_item() == src)
 		if(is_zero_amount(delete_if_zero = TRUE))
 			return
-		return split_stack(user, 1)
+		return split_stack(user, 1, user)
 	else
 		. = ..()
 
@@ -526,15 +571,15 @@
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
 
-	if(is_cyborg || !user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
+	if(is_cyborg || !user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	if(is_zero_amount(delete_if_zero = TRUE))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	var/max = get_amount()
 	var/stackmaterial = tgui_input_number(user, "How many sheets do you wish to take out of this stack?", "Stack Split", max_value = max)
-	if(!stackmaterial || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK, !iscyborg(user)))
+	if(!stackmaterial || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-	split_stack(user, stackmaterial)
+	split_stack(user, stackmaterial, user)
 	to_chat(user, span_notice("You take [stackmaterial] sheets out of the stack."))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
@@ -543,13 +588,15 @@
  * Arguments:
  * - [user][/mob]: The mob splitting the stack.
  * - amount: The number of units to split from this stack.
+ * - spawn_loc: The place to spawn the new stack, accepts null.
  */
-/obj/item/stack/proc/split_stack(mob/user, amount)
+/obj/item/stack/proc/split_stack(mob/user, amount, spawn_loc)
 	if(!use(amount, TRUE, FALSE))
 		return null
-	var/obj/item/stack/F = new type(user? user : drop_location(), amount, FALSE, mats_per_unit)
+
+	var/obj/item/stack/F = new type(spawn_loc, amount, FALSE, mats_per_unit, null, absorption_capacity)
 	. = F
-	F.copy_evidences(src)
+	transfer_evidence_to(F)
 	loc.atom_storage?.refresh_views()
 	if(user)
 		if(!user.put_in_hands(F, merge_stacks = FALSE))
@@ -566,13 +613,6 @@
 			to_chat(user, span_notice("Your [S.name] stack now contains [S.get_amount()] [S.singular_name]\s."))
 	else
 		. = ..()
-
-/obj/item/stack/proc/copy_evidences(obj/item/stack/from)
-	add_blood_DNA(from.return_blood_DNA())
-	add_fingerprint_list(from.return_fingerprints())
-	add_hiddenprint_list(from.return_hiddenprints())
-	fingerprintslast = from.fingerprintslast
-	//TODO bloody overlay
 
 /obj/item/stack/microwave_act(obj/machinery/microwave/M)
 	if(istype(M) && M.dirty < 100)

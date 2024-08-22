@@ -1,18 +1,16 @@
 /datum/job/cargo_technician
-	title = JOB_CARGO_TECHNICIAN
+	title = JOB_DECKHAND
 	description = "Distribute supplies to the departments that ordered them, \
 		collect empty crates, load and unload the supply shuttle, \
 		ship bounty cubes."
-	department_head = list(JOB_HEAD_OF_PERSONNEL) //ORIGINAL
+	department_head = list(JOB_QUARTERMASTER)
 	faction = FACTION_STATION
 	total_positions = 3
 	spawn_positions = 2
-	supervisors = "the quartermaster" //ORIGINAL
 	selection_color = "#15381b"
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(
-		/datum/employer/contractor,
 		/datum/employer/hermes
 	)
 
@@ -24,8 +22,7 @@
 	)
 
 	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_STATION_MASTER
-	bounty_types = CIV_JOB_RANDOM
+	paycheck_department = ACCOUNT_CAR
 	departments_list = list(
 		/datum/job_department/cargo,
 		)
@@ -44,7 +41,7 @@
 
 
 /datum/outfit/job/cargo_tech
-	name = "Cargo Technician"
+	name = JOB_DECKHAND
 	jobtype = /datum/job/cargo_technician
 
 	id_trim = /datum/id_trim/job/cargo_technician
@@ -54,7 +51,7 @@
 	l_hand = /obj/item/export_scanner
 
 /datum/outfit/job/cargo_tech/plasmaman
-	name = "Cargo Technician (Plasmaman)"
+	name = JOB_DECKHAND + " (Plasmaman)"
 
 	uniform = /obj/item/clothing/under/plasmaman/cargo
 	gloves = /obj/item/clothing/gloves/color/plasmaman/cargo
@@ -63,6 +60,6 @@
 	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/cargo_tech/mod
-	name = "Cargo Technician (MODsuit)"
+	name = JOB_DECKHAND + " (MODsuit)"
 
 	back = /obj/item/mod/control/pre_equipped/loader

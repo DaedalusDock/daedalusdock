@@ -7,6 +7,7 @@
 	name = "light floor"
 	desc = "A wired glass tile embedded into the floor. Modify the color with a Multitool."
 	light_outer_range = 5
+	light_power = 0.3
 	icon_state = "light_on-1"
 	floor_tile = /obj/item/stack/tile/light
 	broken_blend = BLEND_OVERLAY
@@ -32,7 +33,7 @@
 
 /turf/open/floor/light/examine(mob/user)
 	. = ..()
-	. += span_notice("There's a <b>small crack</b> on the edge of it.")
+	. += span_notice("It looks like you could <b>pry</b> it up.")
 	. += span_notice("Use a multitool on it to change colors.")
 	. += span_notice("Use a screwdriver to turn it off or on.")
 	if(state) ///check if broken

@@ -1,0 +1,14 @@
+/turf/open/floor/catwalk_floor : /obj/structure/overfloor_catwalk , /turf/open/floor/plating
+/turf/open/floor/catwalk_floor/iron : /obj/structure/overfloor_catwalk/iron , /turf/open/floor/plating
+/turf/open/floor/catwalk_floor/iron_white : /obj/structure/overfloor_catwalk/iron_white , /turf/open/floor/plating
+/turf/open/floor/catwalk_floor/iron_dark : /obj/structure/overfloor_catwalk/iron_dark , /turf/open/floor/plating
+/turf/open/floor/catwalk_floor/flat_white : /obj/structure/overfloor_catwalk/flat_white , /turf/open/floor/plating
+/turf/open/floor/catwalk_floor/iron_smooth : /obj/structure/overfloor_catwalk/iron_smooth , /turf/open/floor/plating
+/turf/open/floor/catwalk_floor/titanium : /obj/structure/overfloor_catwalk/titanium , /turf/open/floor/plating
+/obj/item/stack/tile/catwalk_tile : /obj/item/stack/overfloor_catwalk
+/obj/item/stack/tile/catwalk_tile/iron : /obj/item/stack/overfloor_catwalk/iron
+/obj/item/stack/tile/catwalk_tile/iron_dark : /obj/item/stack/overfloor_catwalk/iron_dark
+/obj/item/stack/tile/catwalk_tile/iron_white : /obj/item/stack/overfloor_catwalk/iron_white
+/obj/item/stack/tile/catwalk_tile/flat_white : /obj/item/stack/overfloor_catwalk/flat_white
+/obj/item/stack/tile/catwalk_tile/iron_smooth : /obj/item/stack/overfloor_catwalk/iron_smooth
+/obj/item/stack/tile/catwalk_tile/sixty : /obj/item/stack/overfloor_catwalk/sixty

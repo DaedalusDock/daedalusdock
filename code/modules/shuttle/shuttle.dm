@@ -317,7 +317,7 @@
 	dheight = 18
 	dwidth = 18
 	dir = 2
-	shuttlekeys = list("whiteship_meta", "whiteship_pubby", "whiteship_box", "whiteship_cere", "whiteship_kilo", "whiteship_donut", "whiteship_delta", "whiteship_tram")
+	shuttlekeys = list("whiteship_meta", "whiteship_pubby", "whiteship_box", "whiteship_cere", "whiteship_kilo", "whiteship_donut", "whiteship_delta")
 
 /// Helper proc that tests to ensure all whiteship templates can spawn at their docking port, and logs their sizes
 /// This should be a unit test, but too much of our other code breaks during shuttle movement, so not yet, not yet.
@@ -622,9 +622,9 @@
 		var/turf/oldT = old_turfs[i]
 		if(!oldT || !istype(oldT.loc, area_type))
 			continue
-		var/area/old_area = oldT.loc
-		underlying_area.contents += oldT
-		oldT.transfer_area_lighting(old_area, underlying_area)
+
+		oldT.change_area(oldT.loc, underlying_area)
+
 		oldT.empty(FALSE)
 
 		// Here we locate the bottommost shuttle boundary and remove all turfs above it
@@ -680,7 +680,7 @@
 	return ripple_turfs
 
 /obj/docking_port/mobile/proc/check_poddoors()
-	for(var/obj/machinery/door/poddoor/shuttledock/pod in GLOB.airlocks)
+	for(var/obj/machinery/door/poddoor/shuttledock/pod in INSTANCES_OF(/obj/machinery/door))
 		pod.check()
 
 /obj/docking_port/mobile/proc/dock_id(id)

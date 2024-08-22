@@ -12,9 +12,7 @@
 	feature_key = "wings"
 
 /obj/item/organ/wings/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!human.wear_suit)
-		return TRUE
-	if(!(human.wear_suit.flags_inv & HIDEJUMPSUIT))
+	if(!(human.obscured_slots & HIDEJUMPSUIT))
 		return TRUE
 	if(human.wear_suit.species_exception && is_type_in_list(src, human.wear_suit.species_exception))
 		return TRUE
@@ -106,7 +104,7 @@
 
 	var/olddir = human.dir
 
-	human.stop_pulling()
+	human.release_all_grabs()
 	if(buckled_obj)
 		buckled_obj.unbuckle_mob(human)
 		step(buckled_obj, olddir)
@@ -181,7 +179,7 @@
 	return GLOB.moth_wings_list
 
 /obj/item/organ/wings/moth/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.wear_suit?.flags_inv & HIDEMUTWINGS))
+	if(!(human.obscured_slots & HIDEMUTWINGS))
 		return TRUE
 	return FALSE
 
@@ -221,7 +219,6 @@
 
 	if(!burnt && human.bodytemperature >= 800 && human.fire_stacks > 0) //do not go into the extremely hot light. you will not survive
 		to_chat(human, span_danger("Your precious wings burn to a crisp!"))
-		SEND_SIGNAL(human, COMSIG_ADD_MOOD_EVENT, "burnt_wings", /datum/mood_event/burnt_wings)
 
 		burn_wings()
 		human.update_body_parts()

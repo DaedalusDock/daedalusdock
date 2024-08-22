@@ -9,7 +9,6 @@
 	inhand_icon_state = "implantcase"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	throw_speed = 2
 	throw_range = 5
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/glass=500)
@@ -29,7 +28,7 @@
 			to_chat(user, span_notice("You scribble illegibly on the side of [src]!"))
 			return
 		var/new_name = tgui_input_text(user, "What would you like the label to be?", name, max_length = MAX_NAME_LEN)
-		if((user.get_active_held_item() != used_item) || !user.canUseTopic(src, BE_CLOSE))
+		if((user.get_active_held_item() != used_item) || !user.canUseTopic(src, USE_CLOSE))
 			return
 		if(new_name)
 			name = "implant case - '[new_name]'"

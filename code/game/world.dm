@@ -34,6 +34,10 @@ GLOBAL_VAR(restart_counter)
  * All atoms in both compiled and uncompiled maps are initialized()
  */
 /world/New()
+#ifdef USE_BYOND_TRACY
+	#warn USE_BYOND_TRACY is enabled
+	init_byond_tracy()
+#endif
 
 	log_world("World loaded at [time_stamp()]!")
 
@@ -90,7 +94,7 @@ GLOBAL_VAR(restart_counter)
 	#endif
 
 /world/proc/InitTgs()
-	TgsNew(new /datum/tgs_event_handler/impl, TGS_SECURITY_TRUSTED)
+	TgsNew(new /datum/tgs_event_handler/impl, TGS_SECURITY_TRUSTED, new /datum/tgs_http_handler/rustg)
 	GLOB.revdata.load_tgs_info()
 
 /world/proc/HandleTestRun()
@@ -102,7 +106,7 @@ GLOBAL_VAR(restart_counter)
 #ifdef UNIT_TESTS
 	cb = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(RunUnitTests))
 #else
-	cb = VARSET_CALLBACK(SSticker, force_ending, TRUE)
+	cb = CALLBACK(SSticker, TYPE_PROC_REF(/datum/controller/subsystem/ticker, end_round))
 #endif
 	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), cb, 10 SECONDS))
 
@@ -132,6 +136,7 @@ GLOBAL_VAR(restart_counter)
 	GLOB.world_game_log = "[GLOB.log_directory]/game.log"
 	GLOB.world_silicon_log = "[GLOB.log_directory]/silicon.log"
 	GLOB.world_tool_log = "[GLOB.log_directory]/tools.log"
+	GLOB.world_graffiti_log = "[GLOB.log_directory]/graffiti.log"
 	GLOB.world_suspicious_login_log = "[GLOB.log_directory]/suspicious_logins.log"
 	GLOB.world_mecha_log = "[GLOB.log_directory]/mecha.log"
 	GLOB.world_virus_log = "[GLOB.log_directory]/virus.log"
@@ -158,6 +163,8 @@ GLOBAL_VAR(restart_counter)
 
 	GLOB.demo_log = "[GLOB.log_directory]/demo.log"
 
+	//Config Error Log must be set later to ensure that we move the files over.
+
 #ifdef UNIT_TESTS
 	GLOB.test_log = "[GLOB.log_directory]/tests.log"
 	start_log(GLOB.test_log)
@@ -183,9 +190,14 @@ GLOBAL_VAR(restart_counter)
 
 	var/latest_changelog = file("[global.config.directory]/../html/changelogs/archive/" + time2text(world.timeofday, "YYYY-MM") + ".yml")
 	GLOB.changelog_hash = fexists(latest_changelog) ? md5(latest_changelog) : 0 //for telling if the changelog has changed recently
+
+	// Okay, we have a properly constructed log directory and we're all clean and safe. Sort the config error log properly.
 	if(fexists(GLOB.config_error_log))
 		fcopy(GLOB.config_error_log, "[GLOB.log_directory]/config_error.log")
 		fdel(GLOB.config_error_log)
+
+	// NOW we can change the write directory handle over.
+	GLOB.config_error_log = "[GLOB.log_directory]/config_error.log"
 
 	if(GLOB.round_id)
 		log_game("Round ID: [GLOB.round_id]")
@@ -300,8 +312,8 @@ GLOBAL_VAR(restart_counter)
 
 	log_world("World rebooted at [time_stamp()]")
 
-	TgsReboot()
-	shutdown_logging() // Past this point, no logging procs can be used, at risk of data loss.
+	shutdown_logging() // Past this point, no logging procs can be used besides log_world() at risk of data loss.
+	TgsReboot() // TGS can decide to kill us right here, so it's important to do it last
 	..()
 
 /world/proc/update_status()
@@ -343,6 +355,37 @@ GLOBAL_VAR(restart_counter)
 	else
 		hub_password = "SORRYNOPASSWORD"
 
+/**
+ * Handles incresing the world's maxx var and intializing the new turfs and assigning them to the global area.
+ * If map_load_z_cutoff is passed in, it will only load turfs up to that z level, inclusive.
+ * This is because maploading will handle the turfs it loads itself.
+ */
+/world/proc/increase_max_x(new_maxx, map_load_z_cutoff = maxz)
+	if(new_maxx <= maxx)
+		return
+	var/old_max = world.maxx
+	maxx = new_maxx
+	if(!map_load_z_cutoff)
+		return
+	var/area/global_area = GLOB.areas_by_type[world.area] // We're guaranteed to be touching the global area, so we'll just do this
+	var/list/to_add = block(
+		locate(old_max + 1, 1, 1),
+		locate(maxx, maxy, map_load_z_cutoff))
+	global_area.contained_turfs += to_add
+
+/world/proc/increase_max_y(new_maxy, map_load_z_cutoff = maxz)
+	if(new_maxy <= maxy)
+		return
+	var/old_maxy = maxy
+	maxy = new_maxy
+	if(!map_load_z_cutoff)
+		return
+	var/area/global_area = GLOB.areas_by_type[world.area] // We're guarenteed to be touching the global area, so we'll just do this
+	var/list/to_add = block(
+		locate(1, old_maxy + 1, 1),
+		locate(maxx, maxy, map_load_z_cutoff))
+	global_area.contained_turfs += to_add
+
 /world/proc/incrementMaxZ()
 	maxz++
 	SSmobs.MaxZChanged()
@@ -371,6 +414,22 @@ GLOBAL_VAR(restart_counter)
 
 /world/proc/on_tickrate_change()
 	SStimer?.reset_buckets()
+
+/world/proc/init_byond_tracy()
+	var/library
+
+	switch (system_type)
+		if (MS_WINDOWS)
+			library = "prof.dll"
+		if (UNIX)
+			library = "libprof.so"
+		else
+			CRASH("Unsupported platform: [system_type]")
+
+	var/init_result = call_ext(library, "init")()
+	if (init_result != "0")
+		CRASH("Error initializing byond-tracy: [init_result]")
+
 
 /world/Profile(command, type, format)
 	if((command & PROFILE_STOP) || !global.config?.loaded || !CONFIG_GET(flag/forbid_all_profiling))

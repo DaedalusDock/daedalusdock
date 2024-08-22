@@ -7,9 +7,9 @@
 	name = "shuttle"
 	icon = 'icons/turf/shuttle.dmi'
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
-	smoothing_groups = list(SMOOTH_GROUP_SHUTTLE_PARTS)
+	smoothing_groups = SMOOTH_GROUP_SHUTTLE_PARTS
 	max_integrity = 500
-	armor = list(MELEE = 100, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70) //default + ignores melee
+	armor = list(BLUNT = 100, PUNCTURE = 40, SLASH = 100, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70) //default + ignores melee
 	can_atmos_pass = CANPASS_DENSITY
 
 /obj/structure/shuttle/engine
@@ -110,7 +110,7 @@
 	icon_state = "propulsion_w"
 	density = FALSE
 	opacity = FALSE
-	smoothing_groups = list()
+	smoothing_groups = null
 
 /obj/structure/shuttle/engine/propulsion/left
 	name = "left propulsion engine"
@@ -156,7 +156,7 @@
 	icon_state = "large_engine_w"
 	density = FALSE
 	opacity = FALSE
-	smoothing_groups = list()
+	smoothing_groups = null
 
 /obj/structure/shuttle/engine/huge
 	name = "engine"
@@ -173,7 +173,7 @@
 	icon_state = "huge_engine_w"
 	density = FALSE
 	opacity = FALSE
-	smoothing_groups = list()
+	smoothing_groups = null
 
 #undef ENGINE_UNWRENCHED
 #undef ENGINE_WRENCHED

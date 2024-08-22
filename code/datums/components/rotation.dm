@@ -75,7 +75,7 @@
 	. = ..()
 
 /datum/component/simple_rotation/Destroy()
-	QDEL_NULL(AfterRotation)
+	AfterRotation = null
 	//Signals + verbs removed via UnRegister
 	. = ..()
 
@@ -85,9 +85,9 @@
 
 /datum/component/simple_rotation/proc/ExamineMessage(datum/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
-	examine_list += span_notice("Alt + Right-click to rotate it clockwise. Alt + Left-click to rotate it counterclockwise.")
-	if(rotation_flags & ROTATION_REQUIRE_WRENCH)
-		examine_list += span_notice("This requires a wrench to be rotated.")
+
+	var/examine_text = "It looks like you can <b>rotate</b> it[rotation_flags & ROTATION_REQUIRE_WRENCH ? " by <b>loosening the bolts</b>" : ""]."
+	examine_list += span_notice(examine_text)
 
 /datum/component/simple_rotation/proc/RotateRight(datum/source, mob/user)
 	SIGNAL_HANDLER
@@ -116,10 +116,12 @@
 	AfterRotation.Invoke(user, degrees)
 
 /datum/component/simple_rotation/proc/CanUserRotate(mob/user, degrees)
-	if(isliving(user) && user.canUseTopic(parent, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
+	if(isliving(user) && user.canUseTopic(parent, USE_CLOSE|USE_DEXTERITY))
 		return TRUE
-	if((rotation_flags & ROTATION_GHOSTS_ALLOWED) && isobserver(user) && CONFIG_GET(flag/ghost_interaction))
-		return TRUE
+	if((rotation_flags & ROTATION_GHOSTS_ALLOWED) && isobserver(user))
+		var/area/A = get_area(parent)
+		if(A?.spook_level >= SPOOK_LEVEL_OBJECT_ROTATION)
+			return TRUE
 	return FALSE
 
 /datum/component/simple_rotation/proc/CanBeRotated(mob/user, degrees)

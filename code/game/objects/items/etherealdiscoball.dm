@@ -55,7 +55,7 @@
 
 /obj/structure/etherealball/proc/DiscoFever()
 	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY)
-	current_color = random_color()
+	current_color = "#[random_color()]"
 	set_light(l_outer_range = range, l_power = power, l_color = current_color)
 	add_atom_colour("#[current_color]", FIXED_COLOUR_PRIORITY)
 	update_appearance()

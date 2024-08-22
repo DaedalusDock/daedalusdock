@@ -16,8 +16,7 @@ Unused icons for new areas are "awaycontent1" ~ "awaycontent30"
 /area/awaymission/beach
 	name = "Beach"
 	icon_state = "away"
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 	base_lighting_color = "#FFFFCC"
 	requires_power = FALSE
 	has_gravity = STANDARD_GRAVITY
@@ -25,8 +24,7 @@ Unused icons for new areas are "awaycontent1" ~ "awaycontent30"
 
 /area/awaymission/errorroom
 	name = "Super Secret Room"
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 
 	has_gravity = STANDARD_GRAVITY
 
@@ -43,12 +41,10 @@ Unused icons for new areas are "awaycontent1" ~ "awaycontent30"
 	has_gravity = FALSE
 
 /area/awaymission/secret/fullbright
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 
 /area/awaymission/secret/powered
 	requires_power = FALSE
 
 /area/awaymission/secret/powered/fullbright
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC

@@ -28,6 +28,7 @@
 /datum/preference/choiced/vox_facial_hair/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["vox_facial_hair"] = value
 
+/* VOX CURRENTLY ONLY HAVE ONE TAIL, THIS IS REDUNDANT
 /datum/preference/choiced/tail_vox
 	explanation = "Tail"
 	savefile_key = "tail_vox"
@@ -37,8 +38,9 @@
 /datum/preference/choiced/tail_vox/init_possible_values()
 	return GLOB.tails_list_vox
 
-/datum/preference/choiced/tail_vox/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences)
+/datum/preference/choiced/tail_vox/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["tail_vox"] = value
+*/
 
 #undef VOX_BODY_COLOR
 #undef VOX_SNOUT_COLOR

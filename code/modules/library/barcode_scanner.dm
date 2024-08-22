@@ -3,7 +3,6 @@
 	icon = 'icons/obj/library.dmi'
 	icon_state ="scanner"
 	desc = "A fabulous tool if you need to scan a barcode."
-	throw_speed = 3
 	throw_range = 5
 	w_class = WEIGHT_CLASS_TINY
 	/// A weakref to our associated computer - Modes 1 to 3 use this

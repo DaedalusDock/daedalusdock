@@ -51,13 +51,22 @@
 		var/datum/dynamic_ruleset/ruleset = _ruleset
 		total_antags += ruleset.assigned.len
 
+	var/ruleset_list = list()
+	for(var/datum/dynamic_ruleset/rule in gamemode.executed_rules)
+		ruleset_list[rule.name] = list(
+			"scaled" = rule.scaled_times,
+			"antags" = rule.assigned.len
+		)
+
 	return list(
 		"roundstart_players" = config.roundstart_players,
 		"threat_level" = gamemode.threat_level,
+		"roundstart budget" = gamemode.initial_round_start_budget,
+		"roundstart budget %" = gamemode.initial_round_start_budget / gamemode.threat_level * 100,
+		"midround budget" = gamemode.mid_round_budget,
 		"snapshot" = list(
 			"antag_percent" = total_antags / config.roundstart_players,
-			"remaining_threat" = gamemode.mid_round_budget,
-			"rulesets" = gamemode.executed_rules.Copy(),
+			"rulesets" = ruleset_list,
 		),
 	)
 
@@ -98,7 +107,9 @@
 			log_world("[count]/[simulations]")
 
 	message_admins("Writing file...")
-	WRITE_FILE(file("[GLOB.log_directory]/dynamic_simulations.json"), json_encode(outputs))
+	if(fexists("data/dynamic_simulations.json"))
+		fdel("data/dynamic_simulations.json")
+	WRITE_FILE(file("data/dynamic_simulations.json"), json_encode(outputs))
 	message_admins("Writing complete.")
 
 /proc/export_dynamic_json_of(ruleset_list)

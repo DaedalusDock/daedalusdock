@@ -1,35 +1,29 @@
 import { BooleanLike } from 'common/react';
+
 import { useBackend } from '../backend';
 import { Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 type Objective = {
   count: number;
-  name: string;
   explanation: string;
-}
+  name: string;
+};
 
 type Info = {
-  objectives: Objective[];
   goal: string;
-  intro: string;
-  honor: BooleanLike;
   hideout: string;
+  honor: BooleanLike;
+  intro: string;
+  objectives: Objective[];
   policy: string;
 };
 
-export const AntagInfoThief = (props, context) => {
-  const { data } = useBackend<Info>(context);
-  const {
-    intro,
-    goal,
-    hideout,
-    policy,
-  } = data;
+export const AntagInfoThief = (props) => {
+  const { data } = useBackend<Info>();
+  const { intro, goal, hideout, policy } = data;
   return (
-    <Window
-      width={620}
-      height={340}>
+    <Window width={620} height={340}>
       <Window.Content>
         <Stack vertical fill>
           <Stack.Item grow>
@@ -38,9 +32,7 @@ export const AntagInfoThief = (props, context) => {
                 <Stack.Item textColor="red" fontSize="20px">
                   {intro}
                 </Stack.Item>
-                <Stack.Item>
-                  {goal}
-                </Stack.Item>
+                <Stack.Item>{goal}</Stack.Item>
                 <Stack.Item>
                   <ObjectivePrintout />
                 </Stack.Item>
@@ -70,23 +62,19 @@ export const AntagInfoThief = (props, context) => {
   );
 };
 
-const ObjectivePrintout = (props, context) => {
-  const { data } = useBackend<Info>(context);
-  const {
-    objectives,
-  } = data;
+const ObjectivePrintout = (props) => {
+  const { data } = useBackend<Info>();
+  const { objectives } = data;
   return (
     <Stack vertical>
-      <Stack.Item bold>
-        These are your heisting goals for today:
-      </Stack.Item>
+      <Stack.Item bold>These are your heisting goals for today:</Stack.Item>
       <Stack.Item>
-        {!objectives && "None!"
-        || objectives.map(objective => (
-          <Stack.Item key={objective.count}>
-            #{objective.count}: {objective.explanation}
-          </Stack.Item>
-        )) }
+        {(!objectives && 'None!') ||
+          objectives.map((objective) => (
+            <Stack.Item key={objective.count}>
+              #{objective.count}: {objective.explanation}
+            </Stack.Item>
+          ))}
       </Stack.Item>
     </Stack>
   );

@@ -199,111 +199,6 @@
 	alert_type = null
 	processing_speed = STATUS_EFFECT_NORMAL_PROCESS
 
-//Hippocratic Oath: Applied when the Rod of Asclepius is activated.
-/datum/status_effect/hippocratic_oath
-	id = "Hippocratic Oath"
-	status_type = STATUS_EFFECT_UNIQUE
-	duration = -1
-	tick_interval = 25
-	alert_type = null
-
-	var/datum/component/aura_healing/aura_healing
-	var/hand
-	var/deathTick = 0
-
-/datum/status_effect/hippocratic_oath/on_apply()
-	var/static/list/organ_healing = list(
-		ORGAN_SLOT_BRAIN = 1.4,
-	)
-
-	aura_healing = owner.AddComponent( \
-		/datum/component/aura_healing, \
-		range = 7, \
-		brute_heal = 1.4, \
-		burn_heal = 1.4, \
-		toxin_heal = 1.4, \
-		suffocation_heal = 1.4, \
-		stamina_heal = 1.4, \
-		clone_heal = 0.4, \
-		simple_heal = 1.4, \
-		organ_healing = organ_healing, \
-		healing_color = "#375637", \
-	)
-
-	//Makes the user passive, it's in their oath not to harm!
-	ADD_TRAIT(owner, TRAIT_PACIFISM, HIPPOCRATIC_OATH_TRAIT)
-	var/datum/atom_hud/H = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
-	H.add_hud_to(owner)
-	return ..()
-
-/datum/status_effect/hippocratic_oath/on_remove()
-	QDEL_NULL(aura_healing)
-	REMOVE_TRAIT(owner, TRAIT_PACIFISM, HIPPOCRATIC_OATH_TRAIT)
-	var/datum/atom_hud/H = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
-	H.remove_hud_from(owner)
-
-/datum/status_effect/hippocratic_oath/get_examine_text()
-	return span_notice("[owner.p_they(TRUE)] seem[owner.p_s()] to have an aura of healing and helpfulness about [owner.p_them()].")
-
-/datum/status_effect/hippocratic_oath/tick()
-	if(owner.stat == DEAD)
-		if(deathTick < 4)
-			deathTick += 1
-		else
-			consume_owner()
-	else
-		if(iscarbon(owner))
-			var/mob/living/carbon/itemUser = owner
-			var/obj/item/heldItem = itemUser.get_item_for_held_index(hand)
-			if(heldItem == null || heldItem.type != /obj/item/rod_of_asclepius) //Checks to make sure the rod is still in their hand
-				var/obj/item/rod_of_asclepius/newRod = new(itemUser.loc)
-				newRod.activated()
-				if(!itemUser.has_hand_for_held_index(hand))
-					//If user does not have the corresponding hand anymore, give them one and return the rod to their hand
-					if(((hand % 2) == 0))
-						var/obj/item/bodypart/L = itemUser.newBodyPart(BODY_ZONE_R_ARM, FALSE, FALSE)
-						if(L.attach_limb(itemUser))
-							itemUser.put_in_hand(newRod, hand, forced = TRUE)
-						else
-							qdel(L)
-							consume_owner() //we can't regrow, abort abort
-							return
-					else
-						var/obj/item/bodypart/L = itemUser.newBodyPart(BODY_ZONE_L_ARM, FALSE, FALSE)
-						if(L.attach_limb(itemUser))
-							itemUser.put_in_hand(newRod, hand, forced = TRUE)
-						else
-							qdel(L)
-							consume_owner() //see above comment
-							return
-					to_chat(itemUser, span_notice("Your arm suddenly grows back with the Rod of Asclepius still attached!"))
-				else
-					//Otherwise get rid of whatever else is in their hand and return the rod to said hand
-					itemUser.put_in_hand(newRod, hand, forced = TRUE)
-					to_chat(itemUser, span_notice("The Rod of Asclepius suddenly grows back out of your arm!"))
-			//Because a servant of medicines stops at nothing to help others, lets keep them on their toes and give them an additional boost.
-			if(itemUser.health < itemUser.maxHealth)
-				new /obj/effect/temp_visual/heal(get_turf(itemUser), "#375637")
-			itemUser.adjustBruteLoss(-1.5, FALSE)
-			itemUser.adjustFireLoss(-1.5, FALSE)
-			itemUser.adjustToxLoss(-1.5, FALSE, forced = TRUE) //Because Slime People are people too
-			itemUser.adjustOxyLoss(-1.5, FALSE)
-			itemUser.stamina.adjust(1.5)
-			itemUser.adjustOrganLoss(ORGAN_SLOT_BRAIN, -1.5)
-			itemUser.adjustCloneLoss(-0.5, FALSE) //Becasue apparently clone damage is the bastion of all health
-
-/datum/status_effect/hippocratic_oath/proc/consume_owner()
-	owner.visible_message(span_notice("[owner]'s soul is absorbed into the rod, relieving the previous snake of its duty."))
-	var/list/chems = list(/datum/reagent/medicine/sal_acid, /datum/reagent/medicine/c2/convermol, /datum/reagent/medicine/oxandrolone)
-	var/mob/living/simple_animal/hostile/retaliate/snake/healSnake = new(owner.loc, pick(chems))
-	healSnake.name = "Asclepius's Snake"
-	healSnake.real_name = "Asclepius's Snake"
-	healSnake.desc = "A mystical snake previously trapped upon the Rod of Asclepius, now freed of its burden. Unlike the average snake, its bites contain chemicals with minor healing properties."
-	new /obj/effect/decal/cleanable/ash(owner.loc)
-	new /obj/item/rod_of_asclepius(owner.loc)
-	qdel(owner)
-
-
 /datum/status_effect/good_music
 	id = "Good Music"
 	alert_type = null
@@ -316,7 +211,6 @@
 		owner.adjust_timed_status_effect(-4 SECONDS, /datum/status_effect/dizziness)
 		owner.adjust_timed_status_effect(-4 SECONDS, /datum/status_effect/jitter)
 		owner.adjust_timed_status_effect(-1 SECONDS, /datum/status_effect/confusion)
-		SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "goodmusic", /datum/mood_event/goodmusic)
 
 /atom/movable/screen/alert/status_effect/regenerative_core
 	name = "Regenerative Core Tendrils"
@@ -487,7 +381,7 @@
 	damage = 0,
 	attack_text = "the attack",
 	attack_type = MELEE_ATTACK,
-	armour_penetration = 0,
+	armor_penetration = 0,
 )
 	SIGNAL_HANDLER
 
@@ -496,7 +390,7 @@
 
 	var/obj/effect/floating_blade/to_remove = blades[1]
 
-	playsound(get_turf(source), 'sound/weapons/parry.ogg', 100, TRUE)
+	playsound(get_turf(source), 'sound/weapons/block/parry_metal.ogg', 100, TRUE)
 	source.visible_message(
 		span_warning("[to_remove] orbiting [source] snaps in front of [attack_text], blocking it before vanishing!"),
 		span_warning("[to_remove] orbiting you snaps in front of [attack_text], blocking it before vanishing!"),
@@ -614,7 +508,7 @@
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_speed_boost, update = TRUE)
 
 /datum/movespeed_modifier/status_speed_boost
-	multiplicative_slowdown = -1
+	slowdown = -1
 
 ///this buff provides a max health buff and a heal.
 /datum/status_effect/limited_buff/health_buff

@@ -6,7 +6,6 @@
 	worn_icon_state = "pen"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	throw_speed = 3
 	throw_range = 5
 	w_class = WEIGHT_CLASS_TINY
 
@@ -34,17 +33,20 @@
 			else
 				M.dna.add_mutation(HM, MUT_EXTRA)
 		if(fields)
-			if(fields["name"] && fields["UE"] && fields["blood_type"])
-				M.real_name = fields["name"]
+			if(fields[DATACORE_NAME] && fields["UE"] && fields[DATACORE_BLOOD_TYPE])
+				M.set_real_name(fields[DATACORE_NAME])
 				M.dna.unique_enzymes = fields["UE"]
-				M.name = M.real_name
-				M.dna.blood_type = fields["blood_type"]
+				M.dna.blood_type = fields[DATACORE_BLOOD_TYPE]
+
 			if(fields["UI"]) //UI+UE
 				M.dna.unique_identity = merge_text(M.dna.unique_identity, fields["UI"])
+
 			if(fields["UF"])
 				M.dna.unique_features = merge_text(M.dna.unique_features, fields["UF"])
+
 			if(fields["UI"] || fields["UF"])
 				M.updateappearance(mutcolor_update=1, mutations_overlay_update=1)
+
 		log_attack("[log_msg] [loc_name(user)]")
 		return TRUE
 	return FALSE
@@ -374,14 +376,6 @@
 	name = "\improper DNA injector (Anti-Shock Touch)"
 	remove_mutations = list(/datum/mutation/human/shock)
 
-/obj/item/dnainjector/spatialinstability
-	name = "\improper DNA injector (Spatial Instability)"
-	add_mutations = list(/datum/mutation/human/badblink)
-
-/obj/item/dnainjector/antispatialinstability
-	name = "\improper DNA injector (Anti-Spatial Instability)"
-	remove_mutations = list(/datum/mutation/human/badblink)
-
 /obj/item/dnainjector/acidflesh
 	name = "\improper DNA injector (Acid Flesh)"
 	add_mutations = list(/datum/mutation/human/acidflesh)
@@ -490,17 +484,16 @@
 			else
 				M.dna.add_mutation(mutation, MUT_OTHER, endtime)
 		if(fields)
-			if(fields["name"] && fields["UE"] && fields["blood_type"])
+			if(fields[DATACORE_NAME] && fields["UE"] && fields[DATACORE_BLOOD_TYPE])
 				if(!M.dna.previous["name"])
 					M.dna.previous["name"] = M.real_name
 				if(!M.dna.previous["UE"])
 					M.dna.previous["UE"] = M.dna.unique_enzymes
 				if(!M.dna.previous["blood_type"])
 					M.dna.previous["blood_type"] = M.dna.blood_type
-				M.real_name = fields["name"]
+				M.set_real_name( fields[DATACORE_NAME])
 				M.dna.unique_enzymes = fields["UE"]
-				M.name = M.real_name
-				M.dna.blood_type = fields["blood_type"]
+				M.dna.blood_type = fields[DATACORE_BLOOD_TYPE]
 				M.dna.temporary_mutations[UE_CHANGED] = endtime
 			if(fields["UI"]) //UI+UE
 				if(!M.dna.previous["UI"])

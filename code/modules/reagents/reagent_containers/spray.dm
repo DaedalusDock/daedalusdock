@@ -12,7 +12,6 @@
 	slot_flags = ITEM_SLOT_BELT
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
-	throw_speed = 3
 	throw_range = 7
 	var/stream_mode = FALSE //whether we use the more focused mode
 	var/current_range = 3 //the range of tiles the sprayer will reach.
@@ -187,14 +186,6 @@
 		user.visible_message(span_suicide("[user] decided life was worth living."))
 		return MANUAL_SUICIDE_NONLETHAL
 
-//spray tan
-/obj/item/reagent_containers/spray/spraytan
-	name = "spray tan"
-	volume = 50
-	desc = "Gyaro brand spray tan. Do not spray near eyes or other orifices."
-	list_reagents = list(/datum/reagent/spraytan = 50)
-
-
 //pepperspray
 /obj/item/reagent_containers/spray/pepper
 	name = "pepperspray"
@@ -236,7 +227,6 @@
 	volume = 10
 	list_reagents = list(/datum/reagent/water = 10)
 
-///Subtype used for the lavaland clown ruin.
 /obj/item/reagent_containers/spray/waterflower/superlube
 	name = "clown flower"
 	desc = "A delightly devilish flower... you got a feeling where this is going."
@@ -322,7 +312,7 @@
 		..(the_targets[i], user)
 
 /obj/item/reagent_containers/spray/chemsprayer/bioterror
-	list_reagents = list(/datum/reagent/toxin/sodium_thiopental = 100, /datum/reagent/toxin/coniine = 100, /datum/reagent/toxin/venom = 100, /datum/reagent/consumable/condensedcapsaicin = 100, /datum/reagent/toxin/initropidril = 100, /datum/reagent/toxin/polonium = 100)
+	list_reagents = list(/datum/reagent/toxin/sodium_thiopental = 100, /datum/reagent/toxin/lexorin = 100, /datum/reagent/toxin/venom = 100, /datum/reagent/consumable/condensedcapsaicin = 100, /datum/reagent/toxin/initropidril = 100, /datum/reagent/toxin/polonium = 100)
 
 
 /obj/item/reagent_containers/spray/chemsprayer/janitor
@@ -397,7 +387,7 @@
 						"Blue" = "sprayer_med_blue")
 
 /obj/item/reagent_containers/spray/medical/AltClick(mob/user)
-	if(unique_reskin && !current_skin && user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY))
+	if(unique_reskin && !current_skin && user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		reskin_obj(user)
 
 /obj/item/reagent_containers/spray/medical/reskin_obj(mob/M)
@@ -410,9 +400,3 @@
 		if("sprayer_med_blue")
 			inhand_icon_state = "sprayer_med_blue"
 	M.update_held_items()
-
-/obj/item/reagent_containers/spray/hercuri
-	name = "medical spray (hercuri)"
-	desc = "A medical spray bottle.This one contains hercuri, a medicine used to negate the effects of dangerous high-temperature environments. Careful not to freeze the patient!"
-	icon_state = "sprayer_large"
-	list_reagents = list(/datum/reagent/medicine/c2/hercuri = 100)

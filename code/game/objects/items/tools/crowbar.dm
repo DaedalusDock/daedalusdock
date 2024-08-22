@@ -1,22 +1,27 @@
 /obj/item/crowbar
-	name = "pocket crowbar"
-	desc = "A small crowbar. This handy tool is useful for lots of things, such as prying floor tiles or opening unpowered doors."
+	name = "crowbar"
+	desc = "A steel crowbar for gaining entry into places you should not be."
 	icon = 'icons/obj/tools.dmi'
-	icon_state = "crowbar"
+	icon_state = "crowbar_large"
 	lefthand_file = 'icons/mob/inhands/equipment/tools_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/tools_righthand.dmi'
+	inhand_icon_state = "crowbar"
+	worn_icon_state = "crowbar"
+
 	usesound = 'sound/items/crowbar.ogg'
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
 
-	force = 7
+	force = 14
 	throwforce = 7
+	throw_range = 5
+
 	stamina_damage = 35
 	stamina_cost = 12
 	stamina_critical_chance = 10
 
-	w_class = WEIGHT_CLASS_SMALL
-	custom_materials = list(/datum/material/iron=50)
+	w_class = WEIGHT_CLASS_NORMAL
+	custom_materials = list(/datum/material/iron=70)
 	drop_sound = 'sound/items/handling/crowbar_drop.ogg'
 	pickup_sound = 'sound/items/handling/crowbar_pickup.ogg'
 
@@ -24,7 +29,7 @@
 	attack_verb_simple = list("attack", "bash", "batter", "bludgeon", "whack")
 	tool_behaviour = TOOL_CROWBAR
 	toolspeed = 1
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	var/force_opens = FALSE
 
 /obj/item/crowbar/suicide_act(mob/user)
@@ -32,9 +37,17 @@
 	playsound(loc, 'sound/weapons/genhit.ogg', 50, TRUE, -1)
 	return (BRUTELOSS)
 
+/obj/item/crowbar/get_misssound()
+	return pick('sound/weapons/swing/swing_crowbar.ogg', 'sound/weapons/swing/swing_crowbar2.ogg', 'sound/weapons/swing/swing_crowbar3.ogg')
+
 /obj/item/crowbar/red
 	icon_state = "crowbar_red"
 	force = 8
+
+/obj/item/crowbar/red/suicide_act(mob/user)
+	user.visible_message(span_suicide("[user]'s body turns limp and collapses to the ground as [user.p_they()] smashes [user.p_their()] head in with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
+	playsound(loc, 'sound/health/flatline.ogg', 50, FALSE, -1)
+	return (BRUTELOSS)
 
 /obj/item/crowbar/abductor
 	name = "alien crowbar"
@@ -47,32 +60,30 @@
 	toolspeed = 0.1
 
 
-/obj/item/crowbar/large
-	name = "crowbar"
-	desc = "It's a big crowbar. It doesn't fit in your pockets, because it's big."
-	force = 12
-	w_class = WEIGHT_CLASS_NORMAL
-	throw_speed = 3
-	throw_range = 3
-	custom_materials = list(/datum/material/iron=70)
-	icon_state = "crowbar_large"
-	inhand_icon_state = "crowbar"
-	worn_icon_state = "crowbar"
-	toolspeed = 0.7
+/obj/item/crowbar/pocket
+	name = "compact crowbar"
+	desc = "A small steel crowbar."
+	force = 10
+	w_class = WEIGHT_CLASS_SMALL
+	throw_range = 7
+	custom_materials = list(/datum/material/iron=50)
+	icon_state = "crowbar"
+	toolspeed = 1.7
 
-/obj/item/crowbar/large/heavy //from space ruin
+/obj/item/crowbar/heavy //from space ruin
 	name = "heavy crowbar"
-	desc = "It's a big crowbar. It doesn't fit in your pockets, because it's big. It feels oddly heavy.."
+	desc = "It feels oddly heavy.."
 	force = 20
+	throw_range = 3
 	icon_state = "crowbar_powergame"
 
-/obj/item/crowbar/large/old
+/obj/item/crowbar/old
 	name = "old crowbar"
-	desc = "It's an old crowbar. Much larger than the pocket sized ones, carrying a lot more heft. They don't make 'em like they used to."
+	desc = "It's an old crowbar. They don't make 'em like they used to."
 	throwforce = 10
-	throw_speed = 2
+	throw_speed = 1.5
 
-/obj/item/crowbar/large/old/Initialize()
+/obj/item/crowbar/old/Initialize()
 	. = ..()
 	if(prob(50))
 		icon_state = "crowbar_powergame"
@@ -115,7 +126,6 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/crowbar/power/syndicate
-	name = "Syndicate jaws of life"
 	desc = "A re-engineered copy of Daedalus' standard jaws of life. Can be used to force open airlocks in its crowbar configuration."
 	icon_state = "jaws_syndie"
 	toolspeed = 0.5

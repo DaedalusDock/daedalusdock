@@ -8,7 +8,6 @@
 	loot = list(
 		/obj/item/mod/module/springlock = 2,
 		/obj/item/mod/module/visor/rave = 2,
-		/obj/item/mod/module/tanner = 1,
 		/obj/item/mod/module/balloon = 1,
 		/obj/item/mod/module/paper_dispenser = 1,
 		/obj/item/mod/module/hat_stabilizer = 2,

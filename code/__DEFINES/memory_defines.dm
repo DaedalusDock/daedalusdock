@@ -36,22 +36,20 @@
 //Flags for memories
 ///this memory doesn't have a location, emit that
 #define MEMORY_FLAG_NOLOCATION (1<<0)
-///this memory's protagonist for one reason or another doesn't have a mood, emit that
-#define MEMORY_FLAG_NOMOOD	(1<<1)
 ///this memory shouldn't include the station name (example: revolution memory)
-#define MEMORY_FLAG_NOSTATIONNAME	(1<<2)
+#define MEMORY_FLAG_NOSTATIONNAME	(1<<1)
 ///this memory is REALLY shit and should never be saved in persistence, basically apply this to all quirks.
-#define MEMORY_FLAG_NOPERSISTENCE	(1<<3)
+#define MEMORY_FLAG_NOPERSISTENCE	(1<<2)
 ///this memory has already been engraved, and cannot be selected for engraving again.
-#define MEMORY_FLAG_ALREADY_USED	(1<<4)
+#define MEMORY_FLAG_ALREADY_USED	(1<<3)
 ///this memory requires the target not to be blind.
-#define MEMORY_CHECK_BLINDNESS (1<<5)
+#define MEMORY_CHECK_BLINDNESS (1<<4)
 ///this memory requires the target not to be deaf.
-#define MEMORY_CHECK_DEAFNESS (1<<6)
+#define MEMORY_CHECK_DEAFNESS (1<<5)
 ///this memory requires the target not to be both deaf and blind.
 #define MEMORY_CHECK_BLIND_AND_DEAF (MEMORY_CHECK_BLINDNESS|MEMORY_CHECK_DEAFNESS)
 ///this memory can be memorized by unconscious people.
-#define MEMORY_SKIP_UNCONSCIOUS (1<<8)
+#define MEMORY_SKIP_UNCONSCIOUS (1<<6)
 
 // These defines are for what notable event happened. they correspond to the json lists related to the memory
 /// A memory of completing a surgery.
@@ -110,7 +108,7 @@
 *
  * ideally these eventually get moved off this system... though engraving your bank account is so HILARIOUSLY dumb so maybe leave that one
  */
-///your memorized code
+///your memorized bank account
 #define MEMORY_ACCOUNT "account"
 ///your memorized drug
 #define MEMORY_QUIRK_DRUG "quirk_drug"
@@ -149,6 +147,7 @@
 #define DETAIL_HIGHFIVE_TYPE "HIGHFIVE_TYPE"
 #define DETAIL_BOMB_TYPE "BOMB_TYPE"
 #define DETAIL_ACCOUNT_ID "ACCOUNT_ID"
+#define DETAIL_ACCOUNT_PIN "ACCOUNT_PIN"
 #define DETAIL_KISSER "KISSER"
 #define DETAIL_FOOD "FOOD"
 #define DETAIL_DRINK "DRINK"

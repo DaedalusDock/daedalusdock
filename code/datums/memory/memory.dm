@@ -52,18 +52,12 @@
 		/mob/living/simple_animal/hostile/retaliate/bat,
 		/mob/living/simple_animal/hostile/retaliate/goat,
 		/mob/living/simple_animal/hostile/killertomato,
-		/mob/living/simple_animal/hostile/giant_spider,
-		/mob/living/simple_animal/hostile/giant_spider/hunter,
 		/mob/living/simple_animal/hostile/blob/blobbernaut/independent,
 		/mob/living/simple_animal/hostile/carp/ranged,
 		/mob/living/simple_animal/hostile/carp/ranged/chaos,
 		/mob/living/simple_animal/hostile/asteroid/basilisk/watcher,
-		/mob/living/simple_animal/hostile/asteroid/goliath/beast,
 		/mob/living/simple_animal/hostile/headcrab,
 		/mob/living/simple_animal/hostile/morph,
-		/mob/living/basic/stickman,
-		/mob/living/basic/stickman/dog,
-		/mob/living/simple_animal/hostile/megafauna/dragon/lesser,
 		/mob/living/simple_animal/hostile/gorilla,
 		/mob/living/simple_animal/parrot,
 		/mob/living/simple_animal/pet/dog/corgi,
@@ -100,26 +94,6 @@
 	var/list/story_mood_sentences = strings(MEMORY_FILE, action + "_moods")
 	///Moods the mob can express e.g. "chuckles" "looks disinterested"
 	var/list/story_moods
-
-
-
-	var/victim_mood = extra_info[DETAIL_PROTAGONIST_MOOD]
-
-	if(victim_mood != MOODLESS_MEMORY) //How the victim felt when it all happend.
-		switch(victim_mood)
-			if(MOOD_LEVEL_SAD4 to MOOD_LEVEL_SAD2)
-				story_moods = strings(MEMORY_FILE, "sad")
-				if("[action]_sad" in GLOB.string_cache[MEMORY_FILE])
-					story_moods += strings(MEMORY_FILE, "[action]_sad")
-			if(MOOD_LEVEL_SAD2 to MOOD_LEVEL_HAPPY2)
-				story_moods = strings(MEMORY_FILE, "neutral")
-				if("[action]_neutral" in GLOB.string_cache[MEMORY_FILE])
-					story_moods += strings(MEMORY_FILE, "[action]_neutral")
-			if(MOOD_LEVEL_HAPPY2 to MOOD_LEVEL_HAPPY4)
-				story_moods = strings(MEMORY_FILE, "happy")
-				if("[action]_happy" in GLOB.string_cache[MEMORY_FILE])
-					story_moods += strings(MEMORY_FILE, "[action]_happy")
-
 
 
 	//storybuilding

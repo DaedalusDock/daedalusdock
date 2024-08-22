@@ -7,7 +7,6 @@
 	inhand_icon_state = "cone"
 	force = 1
 	throwforce = 3
-	throw_speed = 2
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 	attack_verb_continuous = list("warns", "cautions", "smashes")
@@ -16,7 +15,7 @@
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 
-/obj/item/clothing/head/cone/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/clothing/head/cone/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = src.alpha)

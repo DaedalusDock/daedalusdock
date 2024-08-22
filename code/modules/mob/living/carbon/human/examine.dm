@@ -128,7 +128,7 @@
 	if (length(status_examines))
 		. += status_examines
 
-	var/appears_dead = FALSE
+	var/appears_dead = isobserver(user)
 	var/adjacent = get_dist(user, src) <= 1
 	if(stat != CONSCIOUS || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
 		if(!adjacent)
@@ -298,7 +298,8 @@
 				if(HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
 					msg += "[t_He] [t_is] barely conscious.\n"
 
-		if(getorgan(/obj/item/organ/brain))
+
+		if(stat != DEAD && getorgan(/obj/item/organ/brain))
 			if(ai_controller?.ai_status == AI_STATUS_ON)
 				msg += "[span_deadsay("[t_He] do[t_es]n't appear to be [t_him]self.")]\n"
 			else if(!key)

@@ -602,7 +602,7 @@
 
 /obj/item/organ/brain/get_scan_results(tag)
 	. = ..()
-	var/list/traumas = owner.get_traumas()
+	var/list/traumas = owner?.get_traumas()
 	if(!length(traumas))
 		return
 

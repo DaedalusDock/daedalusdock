@@ -221,7 +221,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	if(!cosmetic_only)
 		if((organ_flags & ORGAN_VITAL) && !special && !(organ_owner.status_flags & GODMODE) && organ_owner.needs_organ(slot))
-			organ_owner.death()
+			organ_owner.death(cause_of_death = "Brain removal")
 		organ_owner.processing_organs -= src
 		START_PROCESSING(SSobj, src)
 

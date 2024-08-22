@@ -47,7 +47,7 @@
 	. = ..()
 
 	if(!controller.blackboard[hunting_target_key]) //Target is gone for some reason. forget about this task!
-		controller[hunting_target_key] = null
+		controller.vars[hunting_target_key] = null //This is icky but our behaviour system is also out of date enough that I Ain't Touching it.
 		finish_action(controller, FALSE, hunting_target_key)
 		return
 

@@ -22,10 +22,13 @@
 #pragma InvalidRange error
 #pragma InvalidSetStatement error
 #pragma InvalidOverride error
+#pragma InvalidIndexOperation error
 #pragma DanglingVarType error
 #pragma MissingInterpolatedExpression error
 #pragma AmbiguousResourcePath error
-
+#pragma SuspiciousSwitchCase error
+// Ex. proc(1 = "a", 2 = "b"), etc.
+#pragma PointlessPositionalArgument error
 
 // NOTE: The next few pragmas are for OpenDream's experimental type checker
 // This feature is still in development, elevating these pragmas outside of local testing is discouraged
@@ -43,6 +46,5 @@
 #pragma EmptyProc disabled
 // NOTE: Only checks for unsafe accesses like "client.foobar" and doesn't consider if the client was already null-checked earlier in the proc
 #pragma UnsafeClientAccess disabled
-#pragma SuspiciousSwitchCase error
 #pragma AssignmentInConditional error
 #pragma PickWeightedSyntax disabled

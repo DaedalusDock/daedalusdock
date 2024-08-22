@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Mobs with active players no longer show as catatonic

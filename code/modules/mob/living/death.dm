@@ -77,14 +77,19 @@
 	tod = stationtime2text()
 
 	// tgchat displays doc strings with formatting, so we do stupid shit instead
-	var/death_message = list(
+	var/list/death_message = list(
 		"<div style='text-align:center'>[span_statsbad("<span style='font-size: 300%;font-style: normal'>You Died</span>")]</div>",
 		"<div style='text-align:center'>[span_statsbad("<span style='font-size: 200%;font-style: normal'>Cause of Death: [cause_of_death]</span>")]</div>",
 		"<hr>",
 		span_obviousnotice("Your story may not be over yet. You are able to be resuscitated as long as your brain was not destroyed, and you have not been dead for 10 minutes."),
-	).Join("")
+	)
 
-	death_message = examine_block(death_message)
+	if(ishuman(src))
+		death_message.Insert(3, "<div style='text-align:center'><i>[button_element(src, "Click here to see stats", "show_death_stats=1")]</i></div>")
+		var/mob/living/carbon/human/H = src
+		H.time_of_death_stats = H.get_bodyscanner_data()
+
+	death_message = examine_block(jointext(death_message, ""))
 	to_chat(src, death_message)
 
 	var/turf/T = get_turf(src)

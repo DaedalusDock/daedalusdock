@@ -194,7 +194,7 @@
 	ranged_cooldown = world.time + ranged_cooldown_time
 	fire_stream()
 
-/mob/living/simple_animal/hostile/space_dragon/death(gibbed)
+/mob/living/simple_animal/hostile/space_dragon/death(gibbed, cause_of_death = "Unknown")
 	empty_contents()
 	if(!objective_complete)
 		destroy_rifts()

@@ -28,7 +28,7 @@
 			if(DT_PROB(1, delta_time))
 				to_chat(affected_mob, span_danger("Your stomach stings painfully."))
 				if(prob(20))
-					affected_mob.adjustToxLoss(2)
+					affected_mob.adjustToxLoss(2, cause_of_death = "Beesease")
 		if(4)
 			if(DT_PROB(5, delta_time))
 				affected_mob.visible_message(span_danger("[affected_mob] buzzes."), \

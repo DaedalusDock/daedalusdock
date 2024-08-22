@@ -53,7 +53,7 @@
 	OpenFire()
 	return TRUE
 
-/mob/living/simple_animal/hostile/asteroid/hivelord/death(gibbed)
+/mob/living/simple_animal/hostile/asteroid/hivelord/death(gibbed, cause_of_death = "Unknown")
 	mouse_opacity = MOUSE_OPACITY_ICON
 	..(gibbed)
 

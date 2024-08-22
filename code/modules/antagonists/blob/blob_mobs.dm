@@ -196,7 +196,7 @@
 	if(!key)
 		notify_ghosts("\A [src] has been created in \the [get_area(src)].", source = src, action = NOTIFY_ORBIT, flashwindow = FALSE, header = "Blob Zombie Created")
 
-/mob/living/simple_animal/hostile/blob/blobspore/death(gibbed)
+/mob/living/simple_animal/hostile/blob/blobspore/death(gibbed, cause_of_death = "Unknown")
 	// On death, create a small smoke of harmful gas (s-Acid)
 	var/datum/effect_system/fluid_spread/smoke/chem/S = new
 	var/turf/location = get_turf(src)
@@ -334,8 +334,8 @@
 		melee_damage_upper = initial(melee_damage_upper)
 		attack_verb_continuous = initial(attack_verb_continuous)
 
-/mob/living/simple_animal/hostile/blob/blobbernaut/death(gibbed)
-	..(gibbed)
+/mob/living/simple_animal/hostile/blob/blobbernaut/death(gibbed, cause_of_death = "Unknown")
+	..()
 	if(factory)
 		factory.naut = null //remove this naut from its factory
 		factory.max_integrity = initial(factory.max_integrity)

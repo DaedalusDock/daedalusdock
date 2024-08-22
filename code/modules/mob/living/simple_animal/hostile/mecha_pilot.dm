@@ -246,7 +246,7 @@
 
 
 
-/mob/living/simple_animal/hostile/syndicate/mecha_pilot/death(gibbed)
+/mob/living/simple_animal/hostile/syndicate/mecha_pilot/death(gibbed, cause_of_death = "Unknown")
 	if(mecha)
 		mecha.aimob_exit_mech(src)
 	..()

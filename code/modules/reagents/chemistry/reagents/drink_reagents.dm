@@ -98,7 +98,7 @@
 
 
 /datum/reagent/consumable/poisonberryjuice/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(1 * removed, 0)
+	C.adjustToxLoss(1 * removed, 0, cause_of_death = "Poison berry juice")
 	. = TRUE
 
 /datum/reagent/consumable/watermelonjuice

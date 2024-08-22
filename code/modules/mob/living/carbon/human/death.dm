@@ -20,7 +20,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 	else
 		new /obj/effect/decal/remains/human(loc)
 
-/mob/living/carbon/human/death(gibbed)
+/mob/living/carbon/human/death(gibbed, cause_of_death = "Unknown")
 	if(stat == DEAD)
 		return
 

@@ -76,7 +76,7 @@
 		memory_saved = TRUE
 	..()
 
-/mob/living/carbon/human/species/monkey/punpun/death(gibbed)
+/mob/living/carbon/human/species/monkey/punpun/death(gibbed, cause_of_death = "Unknown")
 	if(!memory_saved)
 		Write_Memory(TRUE, gibbed)
 	..()

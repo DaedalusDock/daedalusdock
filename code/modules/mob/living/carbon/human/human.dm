@@ -966,7 +966,7 @@
 
 	return ..()
 
-/mob/living/carbon/human/updatehealth()
+/mob/living/carbon/human/updatehealth(cause_of_death)
 	. = ..()
 	dna?.species.spec_updatehealth(src)
 

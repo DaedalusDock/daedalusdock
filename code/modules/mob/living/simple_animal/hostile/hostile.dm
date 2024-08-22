@@ -367,7 +367,7 @@
 
 //////////////END HOSTILE MOB TARGETTING AND AGGRESSION////////////
 
-/mob/living/simple_animal/hostile/death(gibbed)
+/mob/living/simple_animal/hostile/death(gibbed, cause_of_death = "Unknown")
 	LoseTarget()
 	..(gibbed)
 

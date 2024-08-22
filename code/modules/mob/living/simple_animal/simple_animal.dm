@@ -227,12 +227,12 @@
 	if(access_card)
 		. += "There appears to be [icon2html(access_card, user)] \a [access_card] pinned to [p_them()]."
 
-/mob/living/simple_animal/update_stat()
+/mob/living/simple_animal/update_stat(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)
 		if(health <= 0)
-			death()
+			death(cause_of_death = cause_of_death)
 		else
 			set_stat(CONSCIOUS)
 	med_hud_set_status()
@@ -444,7 +444,7 @@
 		for(var/i in loot)
 			new i(loc)
 
-/mob/living/simple_animal/death(gibbed)
+/mob/living/simple_animal/death(gibbed, cause_of_death = "Unknown")
 	if(nest)
 		nest.spawned_mobs -= src
 		nest = null

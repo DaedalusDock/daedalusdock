@@ -383,7 +383,7 @@
 				if(mob.reagents)
 					mob.reagents.add_reagent(/datum/reagent/toxin/plasma, 5)
 		else
-			mob.adjustToxLoss(5)
+			mob.adjustToxLoss(5, cause_of_death = "Blight")
 	for(var/obj/structure/spacevine/vine in victim) //Fucking with botanists, the ability.
 		vine.add_atom_colour("#823abb", TEMPORARY_COLOUR_PRIORITY)
 		new /obj/effect/temp_visual/revenant(vine.loc)

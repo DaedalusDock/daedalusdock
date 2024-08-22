@@ -294,7 +294,7 @@
 		return
 	owner.adjustBruteLoss(0.1)
 	owner.adjustFireLoss(0.1)
-	owner.adjustToxLoss(0.2, TRUE, TRUE)
+	owner.adjustToxLoss(0.2, TRUE, TRUE, cause_of_death = "His wrath")
 
 /datum/status_effect/cultghost //is a cult ghost and can't use manifest runes
 	id = "cult_ghost"

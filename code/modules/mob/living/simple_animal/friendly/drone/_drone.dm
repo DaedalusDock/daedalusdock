@@ -234,7 +234,7 @@
 		return client.holder.auto_deadmin()
 	return ..()
 
-/mob/living/simple_animal/drone/death(gibbed)
+/mob/living/simple_animal/drone/death(gibbed, cause_of_death = "Unknown")
 	..(gibbed)
 	if(internal_storage)
 		dropItemToGround(internal_storage)

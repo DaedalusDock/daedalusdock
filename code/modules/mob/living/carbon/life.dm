@@ -234,7 +234,7 @@
 	//PLASMA
 	if(Plasma_partialpressure > safe_plas_max)
 		var/ratio = breath.gas[GAS_PLASMA]/safe_plas_max * 10
-		adjustToxLoss(clamp(ratio, MIN_TOXIC_GAS_DAMAGE, MAX_TOXIC_GAS_DAMAGE))
+		adjustToxLoss(clamp(ratio, MIN_TOXIC_GAS_DAMAGE, MAX_TOXIC_GAS_DAMAGE), cause_of_death ="Plasma poisoning")
 		throw_alert(ALERT_TOO_MUCH_PLASMA, /atom/movable/screen/alert/too_much_plas)
 	else
 		clear_alert(ALERT_TOO_MUCH_PLASMA)
@@ -596,7 +596,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || !needs_organ(ORGAN_SLOT_LIVER))
 		return
 
-	adjustToxLoss(0.6 * delta_time, TRUE,  TRUE)
+	adjustToxLoss(0.6 * delta_time, TRUE, TRUE, cause_of_death = "Lack of a liver")
 	if(DT_PROB(2, delta_time))
 		vomit(50, TRUE, FALSE, 1, TRUE, harm = FALSE, purge_ratio = 1)
 

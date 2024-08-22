@@ -124,7 +124,7 @@
 		our_color = pick(carp_colors)
 		set_greyscale(colors=list(carp_colors[our_color]))
 
-/mob/living/simple_animal/hostile/carp/death(gibbed)
+/mob/living/simple_animal/hostile/carp/death(gibbed, cause_of_death = "Unknown")
 	if(shiny)
 		QDEL_NULL(particles)
 	return ..()
@@ -284,7 +284,7 @@
 	ADD_TRAIT(src, TRAIT_CAN_STRIP, INNATE_TRAIT) //carp can take the disk off the captain
 	ADD_TRAIT(src, TRAIT_CAN_USE_NUKE, INNATE_TRAIT) //carp SMART
 
-/mob/living/simple_animal/hostile/carp/cayenne/death(gibbed)
+/mob/living/simple_animal/hostile/carp/cayenne/death(gibbed, cause_of_death = "Unknown")
 	if(disky)
 		disky.forceMove(drop_location())
 		disky = null

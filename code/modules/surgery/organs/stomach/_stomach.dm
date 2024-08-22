@@ -52,7 +52,7 @@
 		human_owner.clear_alert(ALERT_NUTRITION)
 	return ..()
 
-/obj/item/organ/stomach/set_organ_dead(failing)
+/obj/item/organ/stomach/set_organ_dead(failing, cause_of_death)
 	. = ..()
 	if(!.)
 		return

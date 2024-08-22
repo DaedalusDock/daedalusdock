@@ -614,7 +614,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_TOXIN]'>[germ_message]</span>" : germ_message
 
 	// Add more info if Technetium is in their blood
-	if(owner.has_reagent(/datum/reagent/technetium))
+	if(owner?.has_reagent(/datum/reagent/technetium))
 		. += tag ? "<span style='font-weight: bold; color:#E42426'> organ is [round((damage/maxHealth)*100, 1)]% damaged.</span>" : "[round((damage/maxHealth)*100, 1)]"
 	else if(damage > high_threshold)
 		. +=  tag ? "<span style='font-weight: bold; color:#ff9933'>Severely Damaged</span>" : "Severely Damaged"

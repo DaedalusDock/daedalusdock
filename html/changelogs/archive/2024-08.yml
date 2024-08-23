@@ -59,3 +59,7 @@
   - qol: You no longer goofily swap with others trying to move in the same direction
       as you if you're not faster than them
   - code_imp: Moved mobswap check logic into a separate proc and made it more readable
+2024-08-23:
+  Kapu1178:
+  - bugfix: Fixed an issue that caused the server to fail to restart under rare conditions.
+  - bugfix: Mobs with active players no longer show as catatonic

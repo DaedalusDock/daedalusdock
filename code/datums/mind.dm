@@ -91,6 +91,11 @@
 	///List of objective-specific equipment that couldn't properly be given to the mind
 	var/list/failed_special_equipment
 
+	///The cooldown for dreams.
+	COOLDOWN_DECLARE(dream_cooldown)
+	/// A lazylist of dream types we have fully experienced
+	var/list/finished_dream_types
+
 /datum/mind/New(_key)
 	key = _key
 	martial_art = default_martial_art

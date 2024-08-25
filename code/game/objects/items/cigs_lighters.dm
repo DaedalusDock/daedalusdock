@@ -801,6 +801,9 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/lighter/attack_self(mob/living/user)
 	if(!user.is_holding(src))
 		return ..()
+
+	user.changeNext_move(CLICK_CD_RAPID)
+
 	if(lit)
 		set_lit(FALSE)
 		if(fancy)
@@ -816,6 +819,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		return
 
 	set_lit(TRUE)
+
 	if(fancy)
 		user.visible_message(
 			span_notice("Without even breaking stride, [user] flips open and lights [src] in one smooth movement."),
@@ -845,7 +849,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	switch(result.outcome)
 		if(FAILURE, CRIT_FAILURE)
 			user.apply_damage(5, BURN, user.get_active_hand())
-			to_chat(user, result.create_tooltip("You burn yourself while lighting the lighter!"))
+			to_chat(user, result.create_tooltip("Your eagerness to ignite [src] in a stylish fashion has shrouded your care. Your finger is bathed in the flame for a brief moment."))
 		if(SUCCESS, CRIT_SUCCESS)
 			to_chat(user, result.create_tooltip("After a few attempts, you manage to light [src]."))
 	user.visible_message(span_notice("After a few attempts, [user] manages to light [src]."))

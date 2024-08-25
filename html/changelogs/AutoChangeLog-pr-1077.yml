@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Private Investigator's unsavory dreams.
+  - bugfix: Brute and Burn are no longer healed while sleeping.

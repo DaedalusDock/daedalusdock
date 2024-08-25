@@ -1,17 +1,16 @@
-/mob/living/carbon/proc/handle_dreams()
-	if(prob(10) && !dreaming)
-		dream()
+/// The classic random dream of various words that might form a cohesive narrative, but usually wont
+/datum/dream/random
+	weight = 1000
 
-/mob/living/carbon/proc/dream()
-	set waitfor = FALSE
-	var/list/dream_fragments = list()
+/datum/dream/random/GenerateDream(mob/living/carbon/dreamer)
 	var/list/custom_dream_nouns = list()
 	var/fragment = ""
 
-	for(var/obj/item/bedsheet/sheet in loc)
+	for(var/obj/item/bedsheet/sheet in dreamer.loc)
 		custom_dream_nouns += sheet.dream_messages
 
-	dream_fragments += "you see"
+	. = list()
+	. += "you see"
 
 	//Subject
 	if(custom_dream_nouns.len && prob(90))
@@ -19,13 +18,13 @@
 	else
 		fragment += pick(GLOB.dream_strings)
 
-	if(prob(50))
+	if(prob(50)) //Replace the adjective space with an adjective, or just get rid of it
 		fragment = replacetext(fragment, "%ADJECTIVE%", pick(GLOB.adjectives))
 	else
 		fragment = replacetext(fragment, "%ADJECTIVE% ", "")
 	if(findtext(fragment, "%A% "))
 		fragment = "\a [replacetext(fragment, "%A% ", "")]"
-	dream_fragments += fragment
+	. += fragment
 
 	//Verb
 	fragment = ""
@@ -36,10 +35,11 @@
 	else
 		fragment += "will "
 		fragment += pick(GLOB.verbs)
-	dream_fragments += fragment
+	. += fragment
 
 	if(prob(25))
-		dream_sequence(dream_fragments)
+		for(var/dream_fragment in .)
+			.[dream_fragment] = rand(1 SECOND, 3 SECONDS)
 		return
 
 	//Object
@@ -51,19 +51,7 @@
 		fragment = replacetext(fragment, "%ADJECTIVE% ", "")
 	if(findtext(fragment, "%A% "))
 		fragment = "\a [replacetext(fragment, "%A% ", "")]"
-	dream_fragments += fragment
+	. += fragment
 
-	dreaming = TRUE
-	dream_sequence(dream_fragments)
-
-/mob/living/carbon/proc/dream_sequence(list/dream_fragments)
-	if(stat != UNCONSCIOUS)
-		dreaming = FALSE
-		return
-	var/next_message = dream_fragments[1]
-	dream_fragments.Cut(1,2)
-	to_chat(src, span_obviousnotice("<i>... [next_message] ...</i>"))
-	if(LAZYLEN(dream_fragments))
-		addtimer(CALLBACK(src, PROC_REF(dream_sequence), dream_fragments), rand(10,30))
-	else
-		dreaming = FALSE
+	for(var/dream_fragment in .)
+		.[dream_fragment] = rand(1 SECOND, 3 SECONDS)

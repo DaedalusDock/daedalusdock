@@ -91,6 +91,7 @@ GLOBAL_VAR_INIT(fresh_ghost_adjectives, __fresh_ghost_adjectives())
 		set_suicide(body.suiciding) // Transfer whether they committed suicide.
 
 		gender = body.gender
+		died_as_name = body.died_as_name
 
 		// Pick a name
 		if(body.mind && body.mind.name)

@@ -96,7 +96,7 @@
 	var/mob/dead/observer/O = src
 	if(isobserver(src) && O.deadchat_name)
 		display_name = "[O.deadchat_name]"
-		if(real_name != died_as_name)
+		if(died_as_name && (real_name != died_as_name))
 			name_append = " (died as [died_as_name])"
 	else
 		if(mind?.name)

@@ -23,7 +23,7 @@
 	. = ..()
 	affected_carbon.remove_status_effect(/datum/status_effect/high_blood_pressure)
 	affected_carbon.set_disgust(affected_carbon.disgust * 0.5) //half their disgust to help
-	affected_carbon.stats?.remove_skill_modifier(-1, /datum/rpg_skill/willpower, SKILL_SOURCE_OPIOD_WITHDRAWL)
+	affected_carbon.stats?.remove_skill_modifier(/datum/rpg_skill/willpower, SKILL_SOURCE_OPIOD_WITHDRAWL)
 
 ///Stimulants
 
@@ -74,7 +74,7 @@
 
 /datum/addiction/alcohol/end_withdrawal(mob/living/carbon/affected_carbon)
 	. = ..()
-	affected_carbon.stats?.remove_skill_modifier(-2, /datum/rpg_skill/handicraft, SKILL_SOURCE_ALCHOHOL_WITHDRAWL)
+	affected_carbon.stats?.remove_skill_modifier(/datum/rpg_skill/handicraft, SKILL_SOURCE_ALCHOHOL_WITHDRAWL)
 
 /datum/addiction/hallucinogens
 	name = "hallucinogen"
@@ -258,4 +258,4 @@
 
 /datum/addiction/nicotine/end_withdrawal(mob/living/carbon/affected_carbon)
 	. = ..()
-	affected_carbon.stats?.remove_skill_modifier(-2, /datum/rpg_skill/handicraft, SKILL_SOURCE_NICOTINE_WITHDRAWL)
+	affected_carbon.stats?.remove_skill_modifier(/datum/rpg_skill/handicraft, SKILL_SOURCE_NICOTINE_WITHDRAWL)

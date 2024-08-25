@@ -3,6 +3,10 @@ GLOBAL_LIST_EMPTY(ghost_images_robust) //this is a list of all ghost images as a
 
 GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 
+GLOBAL_VAR_INIT(ghost_adjectives, __ghost_adjectives())
+GLOBAL_VAR_INIT(ghost_synonyms, __ghost_synonyms())
+GLOBAL_VAR_INIT(fresh_ghost_adjectives, __fresh_ghost_adjectives())
+
 /mob/dead/observer
 	name = "ghost"
 	desc = "It's a g-g-g-g-ghooooost!" //jinkies!
@@ -24,12 +28,25 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	light_on = FALSE
 	shift_to_open_context_menu = FALSE
 	simulated = FALSE
+
 	var/can_reenter_corpse
 	var/datum/hud/living/carbon/hud = null // hud
 	var/bootime = 0
-	var/started_as_observer //This variable is set to 1 when you enter the game as an observer.
-							//If you died in the game and are a ghost - this will remain as null.
-							//Note that this is not a reliable way to determine if admins started as observers, since they change mobs a lot.
+
+	/// Prefixed adjective to the ghost's name
+	var/ghost_adjective = ""
+	/// name = "[ghost_adjective] [ghost_term] of [real_name]"
+	var/ghost_term = ""
+
+	//This variable is set to 1 when you enter the game as an observer.
+	//If you died in the game and are a ghost - this will remain false.
+	//Note that this is not a reliable way to determine if admins started as observers, since they change mobs a lot.
+	var/started_as_observer = FALSE
+	/// Was this ghost spawned using the admin ghost command.
+	var/admin_ghost = FALSE
+	#warn TODO
+	var/exorcised = FALSE
+
 	var/atom/movable/following = null
 	var/fun_verbs = 0
 
@@ -48,8 +65,9 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	var/datum/spawners_menu/spawners_menu
 	var/datum/minigames_menu/minigames_menu
 
-/mob/dead/observer/Initialize(mapload, started_as_observer = FALSE)
+/mob/dead/observer/Initialize(mapload, started_as_observer = FALSE, admin_ghost = FALSE)
 	src.started_as_observer = started_as_observer
+	src.admin_ghost = admin_ghost
 
 	set_invisibility(GLOB.observer_default_invisibility)
 
@@ -59,27 +77,42 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 		/mob/dead/observer/proc/tray_view,
 		/mob/dead/observer/proc/open_minigames_menu))
 
+	ghost_term = pick(GLOB.ghost_synonyms)
+	ghost_adjective = pick(GLOB.ghost_adjectives)
+
 	var/turf/T
 	var/mob/body = loc
+	var/mind_or_body_name
+
 	if(ismob(body))
 		T = get_turf(body) //Where is the body located?
 
+		mind = body.mind //we don't transfer the mind but we keep a reference to it.
+		set_suicide(body.suiciding) // Transfer whether they committed suicide.
+
 		gender = body.gender
+
+		// Pick a name
 		if(body.mind && body.mind.name)
 			if(body.mind.ghostname)
-				name = body.mind.ghostname
+				mind_or_body_name = body.mind.ghostname
 			else
-				name = body.mind.name
+				mind_or_body_name = body.mind.name
 		else
 			if(body.real_name)
-				name = body.real_name
+				mind_or_body_name = body.real_name
 			else
-				name = random_unique_name(gender)
+				mind_or_body_name = random_unique_name(gender)
 
-		mind = body.mind //we don't transfer the mind but we keep a reference to it.
+		// If they actually died in round, copy their body.
+		if(!(started_as_observer || admin_ghost))
+			set_ghost_appearance(body)
+			ghost_adjective = pick(GLOB.fresh_ghost_adjectives)
 
-		set_suicide(body.suiciding) // Transfer whether they committed suicide.
-		set_ghost_appearance(body)
+	if(!mind_or_body_name) //To prevent nameless ghosts
+		mind_or_body_name = random_unique_name(gender)
+
+	set_real_name(mind_or_body_name)
 
 	if(!T || is_secret_level(T.z))
 		var/list/turfs = get_area_turfs(/area/shuttle/arrival)
@@ -89,10 +122,6 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 			T = SSmapping.get_station_center()
 
 	abstract_move(T)
-
-	if(!name) //To prevent nameless ghosts
-		name = random_unique_name(gender)
-	real_name = name
 
 	if(!fun_verbs)
 		remove_verb(src, /mob/dead/observer/verb/boo)
@@ -129,16 +158,6 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 		)
 		AddComponent(/datum/component/spooky_powers, powers)
 
-/mob/dead/observer/get_photo_description(obj/item/camera/camera)
-	if(!invisibility || camera.see_ghosts)
-		return "You can also see a g-g-g-g-ghooooost!"
-
-/mob/dead/observer/narsie_act()
-	var/old_color = color
-	color = "#960000"
-	animate(src, color = old_color, time = 10, flags = ANIMATION_PARALLEL)
-	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_atom_colour)), 10)
-
 /mob/dead/observer/Destroy()
 	if(data_huds_on)
 		remove_data_huds()
@@ -150,6 +169,37 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	QDEL_NULL(spawners_menu)
 	QDEL_NULL(minigames_menu)
 	return ..()
+
+/mob/dead/observer/get_photo_description(obj/item/camera/camera)
+	if(!invisibility || camera.see_ghosts)
+		return "You can also see a g-g-g-g-ghooooost!"
+
+/mob/dead/observer/narsie_act()
+	var/old_color = color
+	color = "#960000"
+	animate(src, color = old_color, time = 10, flags = ANIMATION_PARALLEL)
+	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_atom_colour)), 10)
+
+/mob/dead/observer/get_visible_name()
+	return "[ghost_adjective] [ghost_term] of [real_name]"
+
+/mob/dead/observer/update_name(updates)
+	. = ..()
+	deadchat_name = name
+
+/// Adds or removes the monochrome filter based on certain traits.
+/mob/dead/observer/proc/update_monochrome()
+	if(admin_ghost || started_as_observer)
+		remove_client_colour(/datum/client_colour/ghostmono)
+		return
+
+	if(exorcised || client?.prefs?.read_preference(/datum/preference/toggle/monochrome_ghost) == FALSE) // Null != false
+		remove_client_colour(/datum/client_colour/ghostmono)
+		return
+
+	add_client_colour(/datum/client_colour/ghostmono)
+
+/mob/dead/observer/proc/exorcise()
 
 /*
  * Increase the brightness of a color by calculating the average distance between the R, G and B values,
@@ -211,17 +261,13 @@ Works together with spawning an observer, noted above.
 				ethereal_heart.stop_crystalization_process(crystal_fella) //stops the crystallization process
 
 	stop_sound_channel(CHANNEL_HEARTBEAT) //Stop heartbeat sounds because You Are A Ghost Now
-	var/mob/dead/observer/ghost = new(src) // Transfer safety to observer spawning proc.
+	var/mob/dead/observer/ghost = new(src, FALSE, admin_ghost) // Transfer safety to observer spawning proc.
 	SStgui.on_transfer(src, ghost) // Transfer NanoUIs.
 	ghost.can_reenter_corpse = can_reenter_corpse
 	ghost.key = key
 	ghost.client?.init_verbs()
 	if(!can_reenter_corpse)// Disassociates observer mind from the body mind
 		ghost.mind = null
-
-	if(!admin_ghost)
-		if(!ghost.client?.prefs || ghost.client.prefs.read_preference(/datum/preference/toggle/monochrome_ghost))
-			ghost.add_client_colour(/datum/client_colour/ghostmono)
 
 	return ghost
 
@@ -701,6 +747,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		to_chat(src, span_notice("Gas scan enabled."))
 		gas_scan = TRUE
 
+#warn move to admin verbs
 /mob/dead/observer/verb/restore_ghost_appearance()
 	set name = "Restore Ghost Character"
 	set desc = "Sets your deadchat name and ghost appearance to your \
@@ -713,7 +760,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		deadchat_name = real_name
 		if(mind)
 			mind.ghostname = real_name
-		name = real_name
+		set_real_name(real_name)
 		client.prefs.apply_prefs_to(template)
 
 	set_ghost_appearance(template)
@@ -984,3 +1031,30 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 /mob/dead/observer/hear_location()
 	return observetarget || orbit_target || ..()
+
+/proc/__ghost_synonyms()
+	return list(
+		"ghost",
+		"spirit",
+		"phantom",
+	)
+
+/proc/__ghost_adjectives()
+	return list(
+		"fleeting",
+		"wayward",
+		"weak",
+		"fading",
+		"ephemeral",
+		"passing",
+		"wandering",
+		"restful",
+	)
+
+/proc/__fresh_ghost_adjectives()
+	return list(
+		"restless",
+		"troubled",
+		"unruly",
+		"disturbed",
+	)

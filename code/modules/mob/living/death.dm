@@ -72,6 +72,7 @@
 	set_stat(DEAD)
 	unset_machine()
 
+	died_as_name = name
 	timeofdeath = world.time
 	tod = stationtime2text()
 	var/turf/T = get_turf(src)

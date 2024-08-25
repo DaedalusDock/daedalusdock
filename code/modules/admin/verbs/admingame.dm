@@ -146,6 +146,18 @@
 	usr << browse(body, "window=adminplayeropts-[REF(M)];size=550x515")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Player Panel") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
+/datum/admins/proc/check_death_info(mob/living/carbon/human/H in GLOB.mob_list)
+	set category = "Admin.Game"
+	set name = "Show Death Info"
+
+	if(!check_rights())
+		return
+
+	if(!ishuman(H))
+		return
+
+	H.show_death_stats(usr)
+
 /client/proc/cmd_admin_godmode(mob/M in GLOB.mob_list)
 	set category = "Admin.Game"
 	set name = "Godmode"

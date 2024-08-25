@@ -188,6 +188,11 @@ GLOBAL_VAR_INIT(fresh_ghost_adjectives, __fresh_ghost_adjectives())
 	. = ..()
 	deadchat_name = name
 
+/// Helper for setting can_reenter_corpse to FALSE
+/mob/dead/observer/proc/unset_reenter_corpse()
+	can_reenter_corpse = FALSE
+	mind = null
+
 /// Adds or removes the monochrome filter based on certain traits.
 /mob/dead/observer/proc/update_monochrome()
 	if(admin_ghost || started_as_observer)
@@ -200,7 +205,20 @@ GLOBAL_VAR_INIT(fresh_ghost_adjectives, __fresh_ghost_adjectives())
 
 	add_client_colour(/datum/client_colour/ghostmono)
 
-/mob/dead/observer/proc/exorcise()
+/// Exorcise the ghost.
+/mob/dead/observer/proc/exorcise(mob/living/priest)
+	exorcised = TRUE
+
+	unset_reenter_corpse()
+	update_monochrome()
+	qdel(GetComponent(/datum/component/spooky_powers))
+
+	ghost_adjective = pick(GLOB.ghost_adjectives)
+	update_appearance(UPDATE_NAME)
+	set_ghost_appearance(null)
+
+	if(priest)
+		deadchat_broadcast("'s restless spirit has been put to rest by [priest.name].", real_name, priest, message_type = DEADCHAT_ANNOUNCEMENT)
 
 /*
  * Increase the brightness of a color by calculating the average distance between the R, G and B values,
@@ -264,11 +282,10 @@ Works together with spawning an observer, noted above.
 	stop_sound_channel(CHANNEL_HEARTBEAT) //Stop heartbeat sounds because You Are A Ghost Now
 	var/mob/dead/observer/ghost = new(src, FALSE, admin_ghost) // Transfer safety to observer spawning proc.
 	SStgui.on_transfer(src, ghost) // Transfer NanoUIs.
-	ghost.can_reenter_corpse = can_reenter_corpse
 	ghost.key = key
 	ghost.client?.init_verbs()
-	if(!can_reenter_corpse)// Disassociates observer mind from the body mind
-		ghost.mind = null
+	if(!can_reenter_corpse)
+		ghost.unset_reenter_corpse()
 
 	return ghost
 
@@ -392,13 +409,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(response != "DNR")
 		return
 
-	can_reenter_corpse = FALSE
 	// Update med huds
 	var/mob/living/carbon/current = mind.current
 	current.med_hud_set_status()
-	// Disassociates observer mind from the body mind
-	mind = null
 
+	unset_reenter_corpse()
 	to_chat(src, span_boldnotice("You can no longer be brought back into your body."))
 	return TRUE
 

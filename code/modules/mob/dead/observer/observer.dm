@@ -214,6 +214,12 @@ GLOBAL_VAR_INIT(fresh_ghost_adjectives, __fresh_ghost_adjectives())
 	qdel(GetComponent(/datum/component/spooky_powers))
 
 	ghost_adjective = pick(GLOB.ghost_adjectives)
+	verb_say = initial(verb_say)
+	verb_exclaim = initial(verb_exclaim)
+	verb_sing = initial(verb_sing)
+	verb_whisper = initial(verb_whisper)
+	verb_yell = initial(verb_yell)
+
 	update_appearance(UPDATE_NAME)
 	set_ghost_appearance(null)
 

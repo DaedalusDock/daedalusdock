@@ -287,6 +287,11 @@ Works together with spawning an observer, noted above.
 	if(!can_reenter_corpse)
 		ghost.unset_reenter_corpse()
 
+	ghost.verb_say = verb_say
+	ghost.verb_exclaim = verb_exclaim
+	ghost.verb_sing = verb_sing
+	ghost.verb_whisper = verb_whisper
+	ghost.verb_yell = verb_yell
 	return ghost
 
 /mob/living/ghostize(can_reenter_corpse = TRUE, admin_ghost)

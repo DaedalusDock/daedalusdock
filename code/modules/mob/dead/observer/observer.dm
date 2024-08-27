@@ -774,25 +774,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		to_chat(src, span_notice("Gas scan enabled."))
 		gas_scan = TRUE
 
-#warn move to admin verbs
-/mob/dead/observer/verb/restore_ghost_appearance()
-	set name = "Restore Ghost Character"
-	set desc = "Sets your deadchat name and ghost appearance to your \
-		roundstart character."
-	set category = "Ghost"
-
-	var/mob/living/carbon/human/dummy/consistent/template = new
-	if(client?.prefs)
-		var/real_name = client.prefs.read_preference(/datum/preference/name/real_name)
-		deadchat_name = real_name
-		if(mind)
-			mind.ghostname = real_name
-		set_real_name(real_name)
-		client.prefs.apply_prefs_to(template)
-
-	set_ghost_appearance(template)
-	qdel(template)
-
 /mob/dead/observer/proc/set_ghost_appearance(mob/living/to_copy)
 	if(!to_copy || !to_copy.icon)
 		icon = initial(icon)

@@ -50,4 +50,3 @@
 
 /datum/status_effect/skill_mod/on_remove()
 	owner.stats.remove_skill_modifier(skill_path, source)
-

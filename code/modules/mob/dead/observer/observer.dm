@@ -223,6 +223,8 @@ GLOBAL_VAR_INIT(fresh_ghost_adjectives, __fresh_ghost_adjectives())
 	update_appearance(UPDATE_NAME)
 	set_ghost_appearance(null)
 
+	playsound_local(src, 'goon/sounds/ghostrespawn.ogg', 50, FALSE, pressure_affected = FALSE)
+
 	if(priest)
 		deadchat_broadcast("'s restless spirit has been put to rest by [priest.name].", real_name, priest, message_type = DEADCHAT_ANNOUNCEMENT)
 
@@ -288,16 +290,17 @@ Works together with spawning an observer, noted above.
 	stop_sound_channel(CHANNEL_HEARTBEAT) //Stop heartbeat sounds because You Are A Ghost Now
 	var/mob/dead/observer/ghost = new(src, FALSE, admin_ghost) // Transfer safety to observer spawning proc.
 	SStgui.on_transfer(src, ghost) // Transfer NanoUIs.
-	ghost.key = key
-	ghost.client?.init_verbs()
-	if(!can_reenter_corpse)
-		ghost.unset_reenter_corpse()
 
 	ghost.verb_say = verb_say
 	ghost.verb_exclaim = verb_exclaim
 	ghost.verb_sing = verb_sing
 	ghost.verb_whisper = verb_whisper
 	ghost.verb_yell = verb_yell
+	if(!can_reenter_corpse)
+		ghost.exorcise()
+
+	ghost.key = key
+	ghost.client?.init_verbs()
 	return ghost
 
 /mob/living/ghostize(can_reenter_corpse = TRUE, admin_ghost)

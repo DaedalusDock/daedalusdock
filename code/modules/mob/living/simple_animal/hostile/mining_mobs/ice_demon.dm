@@ -77,7 +77,7 @@
 		return
 	adjustHealth(-0.0125 * maxHealth * delta_time)
 
-/mob/living/simple_animal/hostile/asteroid/ice_demon/death(gibbed)
+/mob/living/simple_animal/hostile/asteroid/ice_demon/death(gibbed, cause_of_death = "Unknown")
 	move_force = MOVE_FORCE_DEFAULT
 	move_resist = MOVE_RESIST_DEFAULT
 	pull_force = PULL_FORCE_DEFAULT

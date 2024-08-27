@@ -99,7 +99,7 @@
 		verb_say = pick(speak_emote)
 	return ..()
 
-/mob/living/basic/death(gibbed)
+/mob/living/basic/death(gibbed, cause_of_death = "Unknown")
 	. = ..()
 	if(basic_mob_flags & DEL_ON_DEATH)
 		qdel(src)

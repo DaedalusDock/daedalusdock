@@ -128,7 +128,7 @@
 		mob_size = MOB_SIZE_SMALL
 		speed = 0
 
-/mob/living/simple_animal/hostile/asteroid/fugu/death(gibbed)
+/mob/living/simple_animal/hostile/asteroid/fugu/death(gibbed, cause_of_death = "Unknown")
 	Deflate()
 	..(gibbed)
 

@@ -7,13 +7,13 @@
 	. = ..()
 	handle_emp_damage(delta_time, times_fired)
 
-/mob/living/brain/update_stat()
+/mob/living/brain/update_stat(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 	if(health > HEALTH_THRESHOLD_DEAD)
 		return
 	if(stat != DEAD)
-		death()
+		death(cause_of_death = cause_of_death)
 	var/obj/item/organ/brain/BR
 	if(container?.brain)
 		BR = container.brain

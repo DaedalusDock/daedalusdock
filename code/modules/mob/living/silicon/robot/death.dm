@@ -13,7 +13,7 @@
 /mob/living/silicon/robot/dust_animation()
 	new /obj/effect/temp_visual/dust_animation(loc, "dust-r")
 
-/mob/living/silicon/robot/death(gibbed)
+/mob/living/silicon/robot/death(gibbed, cause_of_death = "Unknown")
 	if(stat == DEAD)
 		return
 	if(!gibbed)

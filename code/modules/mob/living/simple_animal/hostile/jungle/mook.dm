@@ -43,7 +43,7 @@
 		if(mook_moover.attack_state == MOOK_ATTACK_ACTIVE && mook_moover.throwing)
 			return TRUE
 
-/mob/living/simple_animal/hostile/jungle/mook/death()
+/mob/living/simple_animal/hostile/jungle/mook/death(gibbed, cause_of_death = "Unknown")
 	desc = "A deceased primitive. Upon closer inspection, it was suffering from severe cellular degeneration and its garments are machine made..."//Can you guess the twist
 	return ..()
 

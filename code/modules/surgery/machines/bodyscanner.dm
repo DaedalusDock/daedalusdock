@@ -401,7 +401,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 						<strong>Physical Trauma:</strong>
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
-						[get_severity(scan["brute"],TRUE)]
+						[get_damage_severity(scan["brute"],TRUE)]
 					</td>
 				</tr>
 	"}
@@ -412,7 +412,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 						<strong>Burn Severity:</strong>
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
-						[get_severity(scan["burn"],TRUE)]
+						[get_damage_severity(scan["burn"],TRUE)]
 					</td>
 				</tr>
 	"}
@@ -423,7 +423,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 						<strong>Systematic Organ Failure:</strong>
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
-						[get_severity(scan["toxin"],TRUE)]
+						[get_damage_severity(scan["toxin"],TRUE)]
 					</td>
 				</tr>
 	"}
@@ -434,7 +434,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 						<strong>Oxygen Deprivation:</strong>
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
-						[get_severity(scan["oxygen"],TRUE)]
+						[get_damage_severity(scan["oxygen"],TRUE)]
 					</td>
 				</tr>
 	"}
@@ -445,7 +445,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 						<strong>Genetic Damage:</strong>
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
-						[get_severity(scan["genetic"],TRUE)]
+						[get_damage_severity(scan["genetic"],TRUE)]
 					</td>
 				</tr>
 	"}
@@ -553,21 +553,25 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 			. += "<td style='padding-left: 5px;padding-right: 5px'>"
 			if(!(limb["brute_dam"] || limb["burn_dam"]))
 				. += "None</td>"
+			else
 
-			if(limb["brute_dam"])
-				. += {"
-					<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>[capitalize(get_wound_severity(limb["brute_ratio"]))] physical trauma</span><br>
-				"}
-			if(limb["burn_dam"])
-				. += {"
-					<span style='font-weight: bold; color: [COLOR_MEDICAL_BURN]'>[capitalize(get_wound_severity(limb["burn_ratio"]))] burns</span>
-					</td>
-				"}
+				if(limb["brute_dam"])
+					. += {"
+						<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>[capitalize(get_wound_severity(limb["brute_ratio"]))] physical trauma</span><br>
+					"}
+				if(limb["burn_dam"])
+					. += {"
+						<span style='font-weight: bold; color: [COLOR_MEDICAL_BURN]'>[capitalize(get_wound_severity(limb["burn_ratio"]))] burns</span>
+					"}
+
+				. += "</td>"
+
 			. += {"
 				<td style='padding-left: 5px;padding-right: 5px'>
 					<span>[english_list(limb["scan_results"], nothing_text = "&nbsp;")]</span>
 				</td>
 			"}
+
 		. += "</tr>"
 
 	. += "<tr><th colspan='3'><center>Internal Organs</center></th></tr>"
@@ -575,7 +579,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 		. += "<tr><td style='padding-left: 5px;padding-right: 5px'>[organ["name"]]</td>"
 
 		if(organ["damage_percent"])
-			. += "<td style='padding-left: 5px;padding-right: 5px'>[get_severity(organ["damage_percent"], TRUE)]</td>"
+			. += "<td style='padding-left: 5px;padding-right: 5px'>[get_damage_severity(organ["damage_percent"], TRUE)]</td>"
 		else
 			. += "<td style='padding-left: 5px;padding-right: 5px'>None</td>"
 

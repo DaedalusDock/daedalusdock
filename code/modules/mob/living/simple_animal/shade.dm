@@ -41,7 +41,7 @@
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
-/mob/living/simple_animal/shade/death()
+/mob/living/simple_animal/shade/death(gibbed, cause_of_death = "Unknown")
 	if(deathmessage == initial(deathmessage))
 		deathmessage = "lets out a contented sigh as [p_their()] form unwinds."
 	..()

@@ -55,7 +55,7 @@
 	ranged = FALSE
 	return ..()
 
-/mob/living/simple_animal/hostile/asteroid/brimdemon/death()
+/mob/living/simple_animal/hostile/asteroid/brimdemon/death(gibbed, cause_of_death = "Unknown")
 	firing = FALSE
 	cut_overlay("brimdemon_telegraph_dir")
 	move_resist = initial(move_resist)

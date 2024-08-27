@@ -1355,7 +1355,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			. = TRUE
 		if(201 to INFINITY)
 			C.AdjustSleeping(40 * removed)
-			C.adjustToxLoss(2 * removed, 0)
+			C.adjustToxLoss(2 * removed, 0, cause_of_death = "Atomic bomb")
 			. = TRUE
 
 	return ..() || .
@@ -1384,7 +1384,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		if(55 to 200)
 			C.set_timed_status_effect(110 SECONDS * removed, /datum/status_effect/drugginess)
 		if(200 to INFINITY)
-			C.adjustToxLoss(2 * removed, 0)
+			C.adjustToxLoss(2 * removed, 0, cause_of_death = "Gargle blaster")
 			. = TRUE
 
 	return ..() || .
@@ -1484,7 +1484,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 				spawn(-1)
 					C.emote(pick("twitch","giggle"))
 			if(prob(25))
-				C.adjustToxLoss(2 * removed, 0)
+				C.adjustToxLoss(2 * removed, 0, cause_of_death = "Hippie's delight")
 				. = TRUE
 
 	return ..() || .
@@ -1820,7 +1820,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/fernet/affect_ingest(mob/living/carbon/C, removed)
 	if(C.nutrition <= NUTRITION_LEVEL_STARVING)
-		C.adjustToxLoss(1 * removed, 0)
+		C.adjustToxLoss(1 * removed, 0, cause_of_death = "Fernet")
 		. = TRUE
 
 	C.adjust_nutrition(-5 * removed)
@@ -1840,7 +1840,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/fernet_cola/affect_ingest(mob/living/carbon/C, removed)
 	if(C.nutrition <= NUTRITION_LEVEL_STARVING)
-		C.adjustToxLoss(0.5 * removed, 0)
+		C.adjustToxLoss(0.5 * removed, 0, cause_of_death = "Fernet cola")
 	C.adjust_nutrition(-3 * removed)
 	C.overeatduration = 0
 	return ..()
@@ -2064,20 +2064,20 @@ All effects don't start immediately, but rather get worse over time; the rate is
 /datum/reagent/consumable/ethanol/bug_spray/affect_ingest(mob/living/carbon/C, removed)
 	//Bugs should not drink Bug spray.
 	if(ismoth(C) || isflyperson(C))
-		C.adjustToxLoss(1 * removed, 0)
+		C.adjustToxLoss(1 * removed, 0, cause_of_death = "Bug spray")
 		. = TRUE
 	return ..() || .
 
 /datum/reagent/consumable/ethanol/bug_spray/affect_touch(mob/living/carbon/C, removed)
 	//Bugs should not drink Bug spray.
 	if(ismoth(C) || isflyperson(C))
-		C.adjustToxLoss(1 * removed, 0)
+		C.adjustToxLoss(1 * removed, 0, cause_of_death = "Bug spray")
 		return TRUE
 
 /datum/reagent/consumable/ethanol/bug_spray/affect_blood(mob/living/carbon/C, removed)
 	//Bugs should not drink Bug spray.
 	if(ismoth(C) || isflyperson(C))
-		C.adjustToxLoss(3 * removed, 0)
+		C.adjustToxLoss(3 * removed, 0, cause_of_death = "Bug spray")
 		return TRUE
 
 /datum/reagent/consumable/ethanol/bug_spray/on_mob_metabolize(mob/living/carbon/C)

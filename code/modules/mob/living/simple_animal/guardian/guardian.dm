@@ -241,7 +241,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	else
 		return ..()
 
-/mob/living/simple_animal/hostile/guardian/death()
+/mob/living/simple_animal/hostile/guardian/death(gibbed, cause_of_death = "Unknown")
 	drop_all_held_items()
 	..()
 	if(summoner)

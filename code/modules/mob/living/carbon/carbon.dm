@@ -500,14 +500,14 @@
 
 
 //Updates the mob's health from bodyparts and mob damage variables
-/mob/living/carbon/updatehealth()
+/mob/living/carbon/updatehealth(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 
 	set_health(round(maxHealth - getBrainLoss(), DAMAGE_PRECISION))
 	update_damage_hud()
 	update_health_hud()
-	update_stat()
+	update_stat(cause_of_death)
 	SEND_SIGNAL(src, COMSIG_CARBON_HEALTH_UPDATE)
 
 /mob/living/carbon/on_stamina_update()
@@ -772,7 +772,7 @@
 			REMOVE_TRAIT(src, TRAIT_SIXTHSENSE, "near-death")
 
 
-/mob/living/carbon/update_stat()
+/mob/living/carbon/update_stat(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 

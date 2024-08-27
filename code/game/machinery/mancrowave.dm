@@ -7,12 +7,13 @@
 	desc = "A large device with heating coils lining the inner walls."
 	base_icon_state = "mancrowave"
 	icon_state = "mancrowave_open"
-	circuit = /obj/item/circuitboard/machine/sleeper
+	circuit = /obj/item/circuitboard/machine/sleeper/mancrowave
 
 	light_color = LIGHT_COLOR_ORANGE
 
 	possible_chems = null
-
+	has_panel = FALSE
+	rotatable = FALSE
 	/// Automatically start cooking when an occupant enters
 	var/automatic = FALSE
 	/// Automatically eject the occupant on completion.

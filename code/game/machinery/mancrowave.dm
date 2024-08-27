@@ -51,9 +51,9 @@
 
 /obj/machinery/sleeper/mancrowave/refresh_light()
 	if(is_operational && occupant)
-		set_light_on(TRUE)
+		set_light(l_on = TRUE)
 	else
-		set_light_on(FALSE)
+		set_light(l_on = FALSE)
 
 /obj/machinery/sleeper/mancrowave/close_machine(mob/user)
 	. = ..()

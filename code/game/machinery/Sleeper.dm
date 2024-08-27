@@ -18,9 +18,9 @@
 	processing_flags = START_PROCESSING_MANUALLY
 
 	light_color = LIGHT_COLOR_CYAN
-	light_outer_range = 1
+	light_inner_range = 0.1
+	light_outer_range = 1.4
 	light_power = 1
-	light_on = FALSE
 
 	var/efficiency = 1
 	var/min_health = -25
@@ -287,12 +287,11 @@
 	for(var/chem in av_chem)
 		chem_buttons[chem] = pick_n_take(av_chem) //no dupes, allow for random buttons to still be correct
 
-
 /obj/machinery/sleeper/proc/refresh_light()
 	if(is_operational)
-		set_light_on(TRUE)
+		set_light(l_on = TRUE)
 	else
-		set_light_on(FALSE)
+		set_light(l_on = FALSE)
 
 /obj/machinery/sleeper/syndie
 	icon_state = "sleeper_s"

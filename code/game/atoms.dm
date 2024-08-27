@@ -1251,11 +1251,11 @@
 	switch(var_name)
 		if(NAMEOF(src, light_inner_range))
 			if(light_system == COMPLEX_LIGHT)
-				set_light(l_inner_range = var_value)
+				set_light(l_outer_range = light_outer_range, l_inner_range = var_value, )
 				. = TRUE
 		if(NAMEOF(src, light_outer_range))
 			if(light_system == COMPLEX_LIGHT)
-				set_light(l_outer_range = var_value)
+				set_light(l_outer_range = var_value, l_inner_range = light_inner_range)
 			else
 				set_light_range(var_value)
 			. = TRUE
@@ -1272,7 +1272,10 @@
 				set_light_color(var_value)
 			. = TRUE
 		if(NAMEOF(src, light_on))
-			set_light_on(var_value)
+			if(light_system == COMPLEX_LIGHT)
+				set_light(l_on = var_value)
+			else
+				set_light_color(var_value)
 			. = TRUE
 		if(NAMEOF(src, light_flags))
 			set_light_flags(var_value)

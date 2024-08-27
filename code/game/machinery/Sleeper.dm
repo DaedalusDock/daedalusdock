@@ -18,7 +18,7 @@
 	processing_flags = START_PROCESSING_MANUALLY
 
 	light_color = LIGHT_COLOR_CYAN
-	light_inner_range = 1
+	light_outer_range = 1
 	light_power = 1
 	light_on = FALSE
 

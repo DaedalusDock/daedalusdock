@@ -1,12 +1,29 @@
 import { useBackend } from '../backend';
-import { Box, Button, LabeledList, ProgressBar, Section } from '../components';
+import {
+  Box,
+  Button,
+  Dropdown,
+  LabeledList,
+  ProgressBar,
+  Section,
+} from '../components';
 import { Window } from '../layouts';
 
 export const Mancrowave = (props) => {
   const { act, data } = useBackend();
-  const { open, occupant = {}, occupied, on, cook_start, cook_end, now } = data;
+  const {
+    open,
+    occupant = {},
+    occupied,
+    on,
+    cook_start,
+    cook_end,
+    now,
+    cook_options = [],
+    current_setting,
+  } = data;
   return (
-    <Window width={340} height={240}>
+    <Window width={340} height={360}>
       <Window.Content>
         <Section
           title={occupant.name ? occupant.name : 'No Occupant'}
@@ -30,7 +47,7 @@ export const Mancrowave = (props) => {
             </LabeledList>
           </>
         </Section>
-        <Section title="Controls">
+        <Section title="Controls" minHeight="200px">
           <>
             <Box mt={1} />
             <LabeledList>
@@ -43,6 +60,18 @@ export const Mancrowave = (props) => {
                 />
               </LabeledList.Item>
             </LabeledList>
+            <Box mt={1} />
+            <Dropdown
+              width="100%"
+              options={Object.keys(cook_options)}
+              selected={current_setting}
+              onSelected={(value) =>
+                act('mancrowave-cook-setting', {
+                  setting: value,
+                })
+              }
+              disabled={!!on}
+            />
             <Box mt={1} />
             <Button
               icon={open ? 'door-open' : 'door-closed'}

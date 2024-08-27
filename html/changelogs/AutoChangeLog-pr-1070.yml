@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Added fail-safe code to kill a mob's brain if the body somehow dies.
-  - bugfix: Added fail-safe code to attempt to prevent lingering grabbed status.
-  - bugfix: Withdrawal effects are properly removed.

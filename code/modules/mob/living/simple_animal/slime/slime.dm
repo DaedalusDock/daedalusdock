@@ -147,7 +147,7 @@
 	..()
 
 
-/mob/living/simple_animal/slime/updatehealth()
+/mob/living/simple_animal/slime/updatehealth(cause_of_death)
 	. = ..()
 	var/mod = 0
 	if(!HAS_TRAIT(src, TRAIT_IGNOREDAMAGESLOWDOWN))

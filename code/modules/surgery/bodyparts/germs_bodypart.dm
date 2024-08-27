@@ -128,5 +128,5 @@ Note that amputating the affected organ does in fact remove the infection from t
 			update_disabled()
 
 		germ_level++
-		if(owner.adjustToxLoss(1, FALSE))
+		if(owner.adjustToxLoss(1, FALSE, cause_of_death = "Necrosis"))
 			return BODYPART_LIFE_UPDATE_HEALTH

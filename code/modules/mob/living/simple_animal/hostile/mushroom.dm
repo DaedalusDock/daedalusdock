@@ -121,7 +121,7 @@
 		UpdateMushroomCap()
 		. = 1
 
-/mob/living/simple_animal/hostile/mushroom/death(gibbed)
+/mob/living/simple_animal/hostile/mushroom/death(gibbed, cause_of_death = "Unknown")
 	..(gibbed)
 	UpdateMushroomCap()
 

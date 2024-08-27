@@ -87,7 +87,7 @@
 	return ..()
 
 
-/mob/living/simple_animal/hostile/bee/death(gibbed)
+/mob/living/simple_animal/hostile/bee/death(gibbed, cause_of_death = "Unknown")
 	if(beehome)
 		beehome.bees -= src
 		beehome = null

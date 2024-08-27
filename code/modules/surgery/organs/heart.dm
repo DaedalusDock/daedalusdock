@@ -93,10 +93,8 @@
 		handle_heartbeat()
 		if(pulse == PULSE_2FAST && prob(1))
 			applyOrganDamage(0.25, updating_health = FALSE)
-			. = TRUE
 		if(pulse == PULSE_THREADY && prob(5))
 			applyOrganDamage(0.35, updating_health = FALSE)
-			. = TRUE
 
 /obj/item/organ/heart/proc/handle_pulse()
 	if(organ_flags & ORGAN_SYNTHETIC)

@@ -601,14 +601,14 @@
 	health = new_value
 
 
-/mob/living/proc/updatehealth()
+/mob/living/proc/updatehealth(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 
 	set_health(maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss())
 	med_hud_set_health()
 	update_health_hud()
-	update_stat()
+	update_stat(cause_of_death)
 
 /mob/living/update_health_hud()
 	var/severity = 0

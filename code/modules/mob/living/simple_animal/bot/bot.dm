@@ -231,7 +231,7 @@
 /mob/living/simple_animal/bot/bee_friendly()
 	return TRUE
 
-/mob/living/simple_animal/bot/death(gibbed)
+/mob/living/simple_animal/bot/death(gibbed, cause_of_death = "Unknown")
 	explode()
 	return ..()
 
@@ -288,7 +288,7 @@
 		new /obj/effect/decal/cleanable/oil(loc)
 	return ..()
 
-/mob/living/simple_animal/bot/updatehealth()
+/mob/living/simple_animal/bot/updatehealth(cause_of_death)
 	..()
 	diag_hud_set_bothealth()
 

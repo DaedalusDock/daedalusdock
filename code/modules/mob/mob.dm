@@ -1258,7 +1258,7 @@
 					break
 				search_pda = 0
 
-/mob/proc/update_stat()
+/mob/proc/update_stat(cause_of_death)
 	return
 
 /mob/proc/update_health_hud()

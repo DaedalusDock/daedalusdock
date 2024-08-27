@@ -12,7 +12,7 @@
 	var/gravity_power_range = 10 //how close the stand must stay to the target to keep the heavy gravity
 
 ///Removes gravity from affected mobs upon guardian death to prevent permanent effects
-/mob/living/simple_animal/hostile/guardian/gravitokinetic/death()
+/mob/living/simple_animal/hostile/guardian/gravitokinetic/death(gibbed, cause_of_death = "Unknown")
 	. = ..()
 	for(var/i in gravito_targets)
 		remove_gravity(i)

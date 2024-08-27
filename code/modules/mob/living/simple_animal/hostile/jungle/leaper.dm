@@ -122,7 +122,7 @@
 /datum/reagent/toxin/leaper_venom/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
 	if(volume >= 10)
-		C.adjustToxLoss(5 * removed, 0)
+		C.adjustToxLoss(5 * removed, 0, cause_of_death = "Leaper venom")
 		return TRUE
 
 /obj/effect/temp_visual/leaper_crush

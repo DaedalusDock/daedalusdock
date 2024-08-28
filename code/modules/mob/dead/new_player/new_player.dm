@@ -60,7 +60,7 @@
 	if(QDELETED(src) || !src.client || (!skip_check && (this_is_like_playing_right != "Yes")))
 		ready = PLAYER_NOT_READY
 		src << browse(null, "window=playersetup") //closes the player setup window
-		npp.open()
+		npp?.open()
 		return FALSE
 
 	var/mob/dead/observer/observer = new(null, TRUE)

@@ -79,8 +79,8 @@
 
 	// tgchat displays doc strings with formatting, so we do stupid shit instead
 	var/list/death_message = list(
-		"<div style='text-align:center'>[span_statsbad("<span style='font-size: 300%;font-style: normal'>You Died</span>")]</div>",
-		"<div style='text-align:center'>[span_statsbad("<span style='font-size: 200%;font-style: normal'>Cause of Death: [cause_of_death]</span>")]</div>",
+		"<div style='text-align:center'><i>[span_statsbad("<span style='font-size: 300%;font-style: normal'>You Died</span>")]</i></div>",
+		"<div style='text-align:center'><i>[span_statsbad("<span style='font-size: 200%;font-style: normal'>Cause of Death: [cause_of_death]</span>")]</i></div>",
 		"<hr>",
 		span_obviousnotice("Your story may not be over yet. You are able to be resuscitated as long as your brain was not destroyed, and you have not been dead for 10 minutes."),
 	)

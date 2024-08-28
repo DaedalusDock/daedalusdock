@@ -223,7 +223,16 @@ GLOBAL_VAR_INIT(fresh_ghost_adjectives, __fresh_ghost_adjectives())
 	update_appearance(UPDATE_NAME)
 	set_ghost_appearance(null)
 
-	playsound_local(src, 'goon/sounds/ghostrespawn.ogg', 50, FALSE, pressure_affected = FALSE)
+	if(client)
+		// tgchat displays doc strings with formatting, so we do stupid shit instead
+		var/list/text = list(
+			"<div style='text-align:center'>[span_statsgood("<span style='font-size: 300%;font-style: normal'>You were laid to rest.</span>")]</div>",
+			"<hr>",
+			span_obviousnotice("Your soul has moved on from the mortal realm, and may no longer interact with it. You may now return to the lobby, and begin anew."),
+		)
+		to_chat(src, examine_block(jointext(text, "")))
+
+		playsound_local(src, 'goon/sounds/ghostrespawn.ogg', 50, FALSE, pressure_affected = FALSE)
 
 	if(priest)
 		deadchat_broadcast("'s restless spirit has been put to rest by [priest.name].", real_name, priest, message_type = DEADCHAT_ANNOUNCEMENT)
@@ -427,8 +436,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	var/mob/living/carbon/current = mind.current
 	current.med_hud_set_status()
 
-	unset_reenter_corpse()
-	to_chat(src, span_boldnotice("You can no longer be brought back into your body."))
+	exorcise()
 	return TRUE
 
 /mob/dead/observer/proc/notify_revival(message, sound, atom/source, flashwindow = TRUE)

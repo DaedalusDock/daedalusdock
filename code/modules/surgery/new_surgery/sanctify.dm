@@ -33,10 +33,17 @@
 	if(ghost)
 		ghost.exorcise()
 
+	// Robots don't understand
+	var/list/exclude = list()
+	for(var/mob/living/carbon/human/H in viewers(world.view, target))
+		if(isipc(H))
+			exclude += H
+
 	status_effect_to_viewers(
 		target,
 		/datum/status_effect/skill_mod/sanctify_corpse,
 		span_statsgood("You feel at peace."),
+		exclude = exclude,
 	)
 
 

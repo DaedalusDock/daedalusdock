@@ -1,5 +1,5 @@
 /proc/status_effect_to_viewers(target, mod_path, message, range = world.view, exclude_mobs)
-	for(var/mob/living/M in viewers(target, range) - exclude_mobs)
+	for(var/mob/living/carbon/human/M in viewers(target, range) - exclude_mobs)
 		if(M.is_blind() || M.stat != CONSCIOUS)
 			continue
 

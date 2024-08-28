@@ -9,6 +9,9 @@
 	max_integrity = 200
 	integrity_failure = 0.5
 
+	/// If true, skip base mirror behaviour.
+	var/magic_mirror = FALSE
+
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 
 /obj/structure/mirror/Initialize(mapload)
@@ -25,6 +28,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 
 	if(!ishuman(user))
 		return TRUE
+
+	if(magic_mirror)
+		return FALSE //Pass control to child proc.
+
 	var/mob/living/carbon/human/hairdresser = user
 
 	//handle facial hair (if necessary)
@@ -124,6 +131,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 	name = "magic mirror"
 	desc = "Turn and face the strange... face."
 	icon_state = "magic_mirror"
+
+	magic_mirror = TRUE
 
 	///Flags this race must have to be selectable with this type of mirror.
 	var/race_flags = MIRROR_MAGIC

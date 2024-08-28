@@ -243,6 +243,7 @@
 #ifdef LOWMEMORYMODE
 #define FORCE_MAP "runtimestation"
 #define FORCE_MAP_DIRECTORY "_maps"
+#warn LOW MEMORY MODE ENABLED.
 #endif
 
 #ifdef DEBUG

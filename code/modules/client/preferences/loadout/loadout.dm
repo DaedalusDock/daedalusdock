@@ -92,7 +92,7 @@
 			return TRUE
 
 		if("color")
-			if(loadout_item.customization_flags & CUSTOMIZE_COLOR)
+			if(!(loadout_item.customization_flags & CUSTOMIZE_COLOR))
 				return
 
 			var/current_color_display = entry.custom_color ? entry.custom_color : "#FFFFFF"

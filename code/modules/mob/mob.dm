@@ -591,6 +591,11 @@
 	if(examined == src)
 		return
 
+	if(isobj(examined))
+		var/obj/examined_obj = examined
+		if(examined_obj.obj_flags & SECRET_EXAMINE)
+			return
+
 	// If TRUE, the usr's view() for the examined object too
 	var/examining_worn_item = FALSE
 	var/loc_str = "at something off in the distance."

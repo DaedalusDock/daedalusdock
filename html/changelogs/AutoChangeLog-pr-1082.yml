@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - qol: Upon death, you will be told exactly what dealt the killing blow. You can
-      click a button to see your health information at time of death.
-  - bugfix: Reduced needless(?) calls to updatehealth(), an expensive proc.

@@ -71,3 +71,8 @@
   - rscadd: Private Investigator's unsavory dreams.
   - bugfix: Brute and Burn are no longer healed while sleeping.
   - bugfix: Fixed space being unlit in some parts of the map.
+2024-08-28:
+  Kapu1178:
+  - qol: Upon death, you will be told exactly what dealt the killing blow. You can
+      click a button to see your health information at time of death.
+  - bugfix: Reduced needless(?) calls to updatehealth(), an expensive proc.

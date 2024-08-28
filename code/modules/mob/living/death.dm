@@ -93,6 +93,8 @@
 	death_message = examine_block(jointext(death_message, ""))
 	to_chat(src, death_message)
 
+	playsound_local(src, 'goon/sounds/revfocus.ogg', 50, vary = FALSE, pressure_affected = FALSE)
+
 	var/turf/T = get_turf(src)
 
 	if(mind && mind.name && mind.active && !istype(T.loc, /area/centcom/ctf))

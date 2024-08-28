@@ -75,7 +75,7 @@
 
 	died_as_name = name
 	timeofdeath = world.time
-	tod = stationtime2text()
+	timeofdeath_as_ingame = stationtime2text()
 
 	// tgchat displays doc strings with formatting, so we do stupid shit instead
 	var/list/death_message = list(
@@ -97,8 +97,10 @@
 
 	var/turf/T = get_turf(src)
 
-	if(mind && mind.name && mind.active && !istype(T.loc, /area/centcom/ctf))
-		deadchat_broadcast(" has died at <b>[get_area_name(T)]</b>.", "<b>[mind.name]</b>", follow_target = src, turf_target = T, message_type=DEADCHAT_DEATHRATTLE)
+	if(mind && mind.name && mind.active)
+		if(!istype(T.loc, /area/centcom/ctf))
+			deadchat_broadcast(" has died at <b>[get_area_name(T)]</b>.", "<b>[mind.name]</b>", follow_target = src, turf_target = T, message_type=DEADCHAT_DEATHRATTLE)
+
 		if(SSlag_switch.measures[DISABLE_DEAD_KEYLOOP] && !client?.holder)
 			to_chat(src, span_deadsay(span_big("Observer freelook is disabled.\nPlease use Orbit, Teleport, and Jump to look around.")))
 			ghostize(TRUE)

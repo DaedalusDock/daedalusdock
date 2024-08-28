@@ -786,15 +786,17 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		gas_scan = TRUE
 
 /mob/dead/observer/proc/set_ghost_appearance(mob/living/to_copy)
-	if(!to_copy || !to_copy.icon)
+	var/mutable_appearance/appearance = to_copy?.mind?.body_appearance || to_copy
+
+	if(!appearance || !appearance.icon)
 		icon = initial(icon)
 		icon_state = "ghost"
 		alpha = 255
 		overlays.Cut()
 	else
-		icon = to_copy.icon
-		icon_state = to_copy.icon_state
-		overlays = to_copy.overlays
+		icon = appearance.icon
+		icon_state = appearance.icon_state
+		overlays = appearance.overlays
 		alpha = 127
 
 /mob/dead/observer/canUseTopic(atom/movable/target, flags)

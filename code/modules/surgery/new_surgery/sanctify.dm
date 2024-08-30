@@ -43,7 +43,7 @@
 		target,
 		/datum/status_effect/skill_mod/sanctify_corpse,
 		span_statsgood("You feel at peace."),
-		exclude = exclude,
+		exclude_mobs = exclude,
 	)
 
 

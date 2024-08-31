@@ -225,4 +225,4 @@
 
 /obj/structure/low_wall/prepainted/marsexec
 	wall_paint = PAINT_WALL_MARS
-	stripe_paint = PAINT_WALL_MARS
+	stripe_paint = PAINT_STRIPE_MARS

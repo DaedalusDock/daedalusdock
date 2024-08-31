@@ -16,7 +16,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 /turf/closed/wall
 	name = "wall"
 	desc = "A huge chunk of iron used to separate rooms."
-	icon = 'icons/turf/walls/solid_wall.dmi'
+	icon = 'icons/turf/walls/bimmer_walls.dmi'
 	icon_state = "wall-0"
 	base_icon_state = "wall"
 

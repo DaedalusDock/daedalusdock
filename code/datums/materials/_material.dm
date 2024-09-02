@@ -53,6 +53,8 @@ Simple datum which is instanced once per type and is used for every object of sa
 	var/reinforced_wall_icon = 'icons/turf/walls/metal_wall.dmi'
 	/// Icon for painted stripes on the walls
 	var/wall_stripe_icon = 'icons/turf/walls/bimmer_stripes.dmi'
+	/// Icon for painted stripes on reinforced walls
+	var/reinforced_wall_stripe_icon = 'icons/turf/walls/bimmer_stripes_low.dmi'
 	/// Icon for painted stripes on the low walls
 	var/low_wall_stripe_icon = 'icons/turf/walls/bimmer_stripes_low.dmi'
 	/// Color of walls constructed with this material as their plating

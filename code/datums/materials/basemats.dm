@@ -280,7 +280,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	wall_icon = 'icons/turf/walls/wood_wall.dmi'
 	wall_stripe_icon = 'icons/turf/walls/wood_wall_stripe.dmi'
 	low_wall_stripe_icon = 'icons/turf/walls/wood_wall_stripe.dmi'
-	wall_color = "#93662C"
+	wall_color = "#38260f"
 	wall_type = /turf/closed/wall/mineral/wood
 	false_wall_type = /obj/structure/falsewall/wood
 

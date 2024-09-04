@@ -11249,6 +11249,7 @@
 	dir = 4
 	},
 /obj/structure/noticeboard/directional/east,
+/obj/machinery/sleeper/mancrowave,
 /turf/open/floor/iron,
 /area/station/medical/surgery/prep)
 "edN" = (

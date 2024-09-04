@@ -9,8 +9,8 @@
 #define PAINT_STRIPE_PRIAPUS PAINT_STRIPE_DAEDALUS
 
 //Mars Executive Outcomes
-#define PAINT_WALL_MARS "#e6b669"
-#define PAINT_STRIPE_MARS "#e24835"
+#define PAINT_WALL_MARS "#caae81"
+#define PAINT_STRIPE_MARS "#6b2525"
 
 //Medical
 #define PAINT_WALL_MEDICAL "#FFFFFF"

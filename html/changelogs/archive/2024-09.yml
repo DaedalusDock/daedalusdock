@@ -1,5 +1,4 @@
-author: Kapu1178
-delete-after: true
-changes:
+2024-09-05:
+  Kapu1178:
   - qol: Added lights to Sleepers and Bodyscanners.
   - bugfix: Fixed a bug that bricked ambience when ghosts orbited non-mobs.

@@ -28,15 +28,14 @@
 		customer_pawn.say(pick(customer_data.found_seat_lines))
 		controller.blackboard[BB_CUSTOMER_MY_SEAT] = WEAKREF(found_seat)
 		attending_venue.linked_seats[found_seat] = customer_pawn
-		finish_action(controller, TRUE)
-		return
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 	// DT_PROB 1.5 is about a 60% chance that the tourist will have vocalised at least once every minute.
 	if(!controller.blackboard[BB_CUSTOMER_SAID_CANT_FIND_SEAT_LINE] || DT_PROB(1.5, delta_time))
 		customer_pawn.say(pick(customer_data.cant_find_seat_lines))
 		controller.blackboard[BB_CUSTOMER_SAID_CANT_FIND_SEAT_LINE] = TRUE
 
-	finish_action(controller, FALSE)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
 /datum/ai_behavior/order_food
 	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT
@@ -58,7 +57,7 @@
 
 	controller.blackboard[BB_CUSTOMER_CURRENT_ORDER] = attending_venue.order_food(customer_pawn, customer_data)
 
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/wait_for_food
 	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT | AI_BEHAVIOR_MOVE_AND_PERFORM
@@ -67,13 +66,12 @@
 /datum/ai_behavior/wait_for_food/perform(delta_time, datum/ai_controller/controller)
 	. = ..()
 	if(controller.blackboard[BB_CUSTOMER_EATING])
-		finish_action(controller, TRUE)
-		return
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 	controller.blackboard[BB_CUSTOMER_PATIENCE] -= delta_time * 10 // Convert delta_time to a SECONDS equivalent.
 	if(controller.blackboard[BB_CUSTOMER_PATIENCE] < 0 || controller.blackboard[BB_CUSTOMER_LEAVING]) // Check if we're leaving because sometthing mightve forced us to
 		finish_action(controller, FALSE)
-		return
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
 	// DT_PROB 1.5 is about a 40% chance that the tourist will have vocalised at least once every minute.
 	if(DT_PROB(0.85, delta_time))
@@ -98,6 +96,7 @@
 			customer.eat_order(I, attending_venue)
 			break
 
+	return BEHAVIOR_PERFORM_COOLDOWN
 
 /datum/ai_behavior/wait_for_food/finish_action(datum/ai_controller/controller, succeeded)
 	. = ..()
@@ -127,4 +126,4 @@
 /datum/ai_behavior/leave_venue/perform(delta_time, datum/ai_controller/controller, venue_key)
 	. = ..()
 	qdel(controller.pawn) //save the world, my final message, goodbye.
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS

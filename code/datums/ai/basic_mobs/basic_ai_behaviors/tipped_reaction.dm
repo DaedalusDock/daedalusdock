@@ -28,7 +28,7 @@
 		seen_message = "[controller.pawn] seems resigned to its fate."
 		self_message = "You resign yourself to your fate."
 	controller.pawn.visible_message(span_notice("[seen_message]"), span_notice("[self_message]"))
-	finish_action(controller, TRUE, tipper_key, reacting_key)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/tipped_reaction/finish_action(datum/ai_controller/controller, succeeded, tipper_key, reacting_key)
 	. = ..()

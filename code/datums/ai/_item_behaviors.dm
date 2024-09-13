@@ -6,11 +6,10 @@
 	var/obj/item/item_pawn = controller.pawn
 	var/mob/item_holder = item_pawn.loc
 	if(!istype(item_holder))
-		finish_action(controller, FALSE) //We're no longer beind held. abort abort!!
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE //We're no longer beind held. abort abort!!
 	item_pawn.visible_message(span_warning("[item_pawn] slips out of the hands of [item_holder]!"))
 	item_holder.dropItemToGround(item_pawn, TRUE)
-	finish_action(controller, TRUE)
-
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 ///This behavior is for obj/items, it is used to move closer to a target and throw themselves towards them.
 /datum/ai_behavior/item_move_close_and_attack
@@ -38,7 +37,8 @@
 	playsound(item_pawn.loc, attack_sound, 100, TRUE)
 	controller.blackboard[throw_count_key]++
 	if(controller.blackboard[throw_count_key] >= max_attempts)
-		finish_action(controller, TRUE, target_key, throw_count_key)
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
+	return BEHAVIOR_PERFORM_COOLDOWN
 
 /datum/ai_behavior/item_move_close_and_attack/finish_action(datum/ai_controller/controller, succeeded, target_key, throw_count_key)
 	. = ..()

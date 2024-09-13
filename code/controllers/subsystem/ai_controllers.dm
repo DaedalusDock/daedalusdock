@@ -28,6 +28,6 @@ SUBSYSTEM_DEF(ai_controllers)
 			continue
 
 		if(!LAZYLEN(ai_controller.current_behaviors))
-			ai_controller.SelectBehaviors(wait * 0.1)
+			ai_controller.ProcessBehaviorSelection(wait * 0.1)
 			if(!LAZYLEN(ai_controller.current_behaviors)) //Still no plan
 				COOLDOWN_START(ai_controller, failed_planning_cooldown, AI_FAILED_PLANNING_COOLDOWN)

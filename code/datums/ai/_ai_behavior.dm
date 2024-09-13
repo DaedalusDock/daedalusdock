@@ -15,8 +15,20 @@
 ///Called by the AI controller when this action is performed
 /datum/ai_behavior/proc/perform(delta_time, datum/ai_controller/controller, ...)
 	controller.behavior_cooldowns[src] = world.time + action_cooldown
-	return
+	return NONE
 
+/// Returns a behavior to perform after this one, or null if continuing this one
+/datum/ai_behavior/proc/next_behavior(datum/ai_controller/controller)
+	return null
+
+/// Returns a numerical value that is essentially a priority for planner behaviors.
+/datum/ai_behavior/proc/score(datum/ai_controller/controller)
+	return BEHAVIOR_SCORE_DEFAULT
+
+/// Returns the delay to use for this behavior in the moment
+/// Override to return a conditional delay
+/datum/ai_behavior/proc/get_cooldown(datum/ai_controller/cooldown_for)
+	return action_cooldown
 
 ///Called when the action is finished. This needs the same args as perform besides the default ones
 /datum/ai_behavior/proc/finish_action(datum/ai_controller/controller, succeeded, ...)

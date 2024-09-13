@@ -13,6 +13,9 @@ multiple modular subtrees with behaviors
 	///Current status of AI (OFF/ON)
 	var/ai_status
 
+	/// The default behavior to execute when there's nothing else to do.
+	var/datum/ai_behavior/default_behavior
+
 	///Current actions being performed by the AI.
 	var/list/current_behaviors
 	///Current actions and their respective last time ran as an assoc list.
@@ -38,12 +41,10 @@ multiple modular subtrees with behaviors
 	///All subtrees this AI has available, will run them in order, so make sure they're in the order you want them to run. On initialization of this type, it will start as a typepath(s) and get converted to references of ai_subtrees found in SSai_controllers when init_subtrees() is called
 	var/list/planning_subtrees
 
-	///The idle behavior this AI performs when it has no actions.
-	var/datum/idle_behavior/idle_behavior = null
-
 	// Movement related things here
 	///Reference to the movement datum we use. Is a type on initialize but becomes a ref afterwards.
 	var/datum/ai_movement/ai_movement = /datum/ai_movement/dumb
+
 	///Cooldown until next movement
 	COOLDOWN_DECLARE(movement_cooldown)
 	///Delay between movements. This is on the controller so we can keep the movement datum singleton
@@ -56,9 +57,6 @@ multiple modular subtrees with behaviors
 /datum/ai_controller/New(atom/new_pawn)
 	change_ai_movement_type(ai_movement)
 	init_subtrees()
-
-	if(idle_behavior)
-		idle_behavior = new idle_behavior()
 
 	PossessPawn(new_pawn)
 
@@ -134,15 +132,14 @@ multiple modular subtrees with behaviors
 	return TRUE
 
 
-///Runs any actions that are currently running
+/// This is called by SSai_behaviors/fire(). It is the core of mob AI.
 /datum/ai_controller/process(delta_time)
 	if(!able_to_run())
 		SSmove_manager.stop_looping(pawn) //stop moving
 		return //this should remove them from processing in the future through event-based stuff.
 
-	if(!LAZYLEN(current_behaviors) && idle_behavior)
-		idle_behavior.perform_idle_behavior(delta_time, src) //Do some stupid shit while we have nothing to do
-		return
+	if(!LAZYLEN(current_behaviors) && default_behavior)
+		queue_behavior(default_behavior)
 
 	if(current_movement_target && get_dist(pawn, current_movement_target) > max_target_distance) //The distance is out of range
 		CancelActions()
@@ -187,7 +184,7 @@ multiple modular subtrees with behaviors
 			return
 
 ///This is where you decide what actions are taken by the AI.
-/datum/ai_controller/proc/SelectBehaviors(delta_time)
+/datum/ai_controller/proc/ProcessBehaviorSelection(delta_time)
 	SHOULD_NOT_SLEEP(TRUE) //Fuck you don't sleep in procs like this.
 	if(!COOLDOWN_FINISHED(src, failed_planning_cooldown))
 		return FALSE
@@ -196,7 +193,7 @@ multiple modular subtrees with behaviors
 
 	if(LAZYLEN(planning_subtrees))
 		for(var/datum/ai_planning_subtree/subtree as anything in planning_subtrees)
-			if(subtree.SelectBehaviors(src, delta_time) == SUBTREE_RETURN_FINISH_PLANNING)
+			if(subtree.ProcessBehaviorSelection(src, delta_time) == SUBTREE_RETURN_FINISH_PLANNING)
 				break
 
 ///This proc handles changing ai status, and starts/stops processing if required.
@@ -241,7 +238,19 @@ multiple modular subtrees with behaviors
 	var/list/stored_arguments = behavior_args[behavior.type]
 	if(stored_arguments)
 		arguments += stored_arguments
-	behavior.perform(arglist(arguments))
+
+	var/process_result = behavior.perform(arglist(arguments))
+	if(process_result & BEHAVIOR_PERFORM_COOLDOWN)
+		behavior_cooldowns[behavior] = world.time + behavior.get_cooldown(src)
+
+	arguments[1] = src // finish_action() does not care about delta time
+	if(process_result & BEHAVIOR_PERFORM_SUCCESS)
+		arguments[2] = TRUE
+		behavior.finish_action(arglist(arguments))
+
+	else if(process_result & BEHAVIOR_PERFORM_FAILURE)
+		arguments[2] = FALSE
+		behavior.finish_action(arglist(arguments))
 
 /datum/ai_controller/proc/CancelActions()
 	if(!LAZYLEN(current_behaviors))

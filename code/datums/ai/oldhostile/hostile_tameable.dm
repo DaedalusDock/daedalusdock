@@ -10,7 +10,7 @@
 		BB_HOSTILE_ATTACK_WORD = "growls",
 	)
 	ai_movement = /datum/ai_movement/basic_avoidance
-	idle_behavior = /datum/idle_behavior/idle_random_walk/hostile_tameable
+	default_behavior = /datum/ai_behavior/idle_random_walk/hostile_tameable
 
 	var/ride_penalty_movement = 1 SECONDS
 
@@ -218,5 +218,5 @@
 		queue_behavior(/datum/ai_behavior/attack)
 
 
-/datum/idle_behavior/idle_random_walk/hostile_tameable
+/datum/ai_behavior/idle_random_walk/hostile_tameable
 	walk_chance = 5

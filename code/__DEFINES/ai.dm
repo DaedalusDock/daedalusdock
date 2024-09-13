@@ -14,6 +14,12 @@
 ///Flags for ai_behavior new()
 #define AI_CONTROLLER_INCOMPATIBLE (1<<0)
 
+//Flags for behavior/perform()
+#define BEHAVIOR_PERFORM_INSTANT (NONE)
+#define BEHAVIOR_PERFORM_COOLDOWN (1<<0)
+#define BEHAVIOR_PERFORM_SUCCESS (1<<1)
+#define BEHAVIOR_PERFORM_FAILURE (1<<2)
+
 ///Does this task require movement from the AI before it can be performed?
 #define AI_BEHAVIOR_REQUIRE_MOVEMENT (1<<0)
 ///Does this task let you perform the action while you move closer? (Things like moving and shooting)
@@ -218,3 +224,6 @@
 #define BB_BASIC_MOB_CURRENT_TARGET "BB_basic_current_target"
 #define BB_BASIC_MOB_CURRENT_TARGET_HIDING_LOCATION "BB_basic_current_target_hiding_location"
 #define BB_TARGETTING_DATUM "targetting_datum"
+
+/// The list of behaviors for the planners to select from. THIS IS ACTUALLY A SUBKEY!! See _behavior_planner.dm
+#define BB_PLANNER_BEHAVIORS "BB_planner_behaviors"

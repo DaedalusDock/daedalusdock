@@ -12,10 +12,9 @@
 
 	//either we can't pick it up, or we'd rather eat it, so stop trying.
 	if(fetch_thing.anchored || !isturf(fetch_thing.loc) || IS_EDIBLE(fetch_thing) || !living_pawn.CanReach(fetch_thing))
-		finish_action(controller, FALSE)
-		return
+		return BEHAVIOR_PERFORM_FAILURE
 
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/fetch/finish_action(datum/ai_controller/controller, success)
 	. = ..()
@@ -33,14 +32,13 @@
 	. = ..()
 	var/obj/item/fetch_target = controller.blackboard[BB_FETCH_TARGET]
 	if(!isturf(fetch_target?.loc) || !isitem(fetch_target)) // someone picked it up, something happened to it, or it wasn't an item anyway
-		finish_action(controller, FALSE)
-		return
+		return BEHAVIOR_PERFORM_FAILURE
 
 	if(in_range(controller.pawn, fetch_target))
 		pickup_item(controller, fetch_target)
-		finish_action(controller, TRUE)
-	else
-		finish_action(controller, FALSE)
+		return BEHAVIOR_PERFORM_SUCCESS
+
+	return BEHAVIOR_PERFORM_FAILURE
 
 /datum/ai_behavior/simple_equip/finish_action(datum/ai_controller/controller, success)
 	. = ..()
@@ -77,10 +75,12 @@
 	. = ..()
 	var/mob/living/return_target = controller.blackboard[BB_FETCH_DELIVER_TO]
 	if(!return_target)
-		finish_action(controller, FALSE)
+		return BEHAVIOR_PERFORM_FAILURE
+
 	if(in_range(controller.pawn, return_target))
-		deliver_item(controller)
-		finish_action(controller, TRUE)
+		return deliver_item(controller)
+
+	return BEHAVIOR_PERFORM_COOLDOWN
 
 /datum/ai_behavior/deliver_item/finish_action(datum/ai_controller/controller, success)
 	. = ..()
@@ -92,8 +92,7 @@
 	var/obj/item/carried_item = controller.blackboard[BB_SIMPLE_CARRY_ITEM]
 	var/atom/movable/return_target = controller.blackboard[BB_FETCH_DELIVER_TO]
 	if(!carried_item || !return_target)
-		finish_action(controller, FALSE)
-		return
+		return BEHAVIOR_PERFORM_FAILURE
 
 	if(ismob(return_target))
 		controller.pawn.visible_message(span_notice("[controller.pawn] delivers [carried_item] at [return_target]'s feet."))
@@ -102,7 +101,7 @@
 
 	carried_item.forceMove(get_turf(return_target))
 	controller.blackboard[BB_SIMPLE_CARRY_ITEM] = null
-	return TRUE
+	return BEHAVIOR_PERFORM_SUCCESS
 
 /// This behavior involves either eating a snack we can reach, or begging someone holding a snack
 /datum/ai_behavior/eat_snack
@@ -112,7 +111,7 @@
 	. = ..()
 	var/obj/item/snack = controller.current_movement_target
 	if(!istype(snack) || !IS_EDIBLE(snack) || !(isturf(snack.loc) || ishuman(snack.loc)))
-		finish_action(controller, FALSE)
+		return BEHAVIOR_PERFORM_FAILURE
 
 	var/mob/living/living_pawn = controller.pawn
 	if(!in_range(living_pawn, snack))
@@ -124,8 +123,9 @@
 		living_pawn.manual_emote("stares at [snack.loc]'s [snack.name] with a sad puppy-face.")
 
 	if(QDELETED(snack)) // we ate it!
-		finish_action(controller, TRUE)
+		return BEHAVIOR_PERFORM_SUCCESS
 
+	return BEHAVIOR_PERFORM_COOLDOWN
 
 /// This behavior involves either eating a snack we can reach, or begging someone holding a snack
 /datum/ai_behavior/play_dead
@@ -146,7 +146,9 @@
 		simple_pawn.set_density(FALSE)
 
 	if(DT_PROB(10, delta_time))
-		finish_action(controller, TRUE)
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
+
+	return BEHAVIOR_PERFORM_COOLDOWN
 
 /datum/ai_behavior/play_dead/finish_action(datum/ai_controller/controller, succeeded)
 	. = ..()
@@ -174,25 +176,21 @@
 	var/datum/weakref/harass_ref = controller.blackboard[BB_DOG_HARASS_TARGET]
 	var/atom/movable/harass_target = harass_ref.resolve()
 	if(!harass_target || !can_see(living_pawn, harass_target, length=AI_DOG_VISION_RANGE))
-		finish_action(controller, FALSE)
-		return
+		return BEHAVIOR_PERFORM_FAILURE
 
 	if(controller.blackboard[BB_DOG_FRIENDS][harass_ref])
 		living_pawn.visible_message(span_danger("[living_pawn] looks sideways at [harass_target] for a moment, then shakes [living_pawn.p_their()] head and ceases aggression."))
-		finish_action(controller, FALSE)
-		return
+		return BEHAVIOR_PERFORM_FAILURE
 
 	var/mob/living/living_target = harass_target
 	if(istype(living_target) && (living_target.stat || HAS_TRAIT(living_target, TRAIT_FAKEDEATH)))
-		finish_action(controller, TRUE)
-		return
+		return BEHAVIOR_PERFORM_SUCCESS
 
 	if(!controller.blackboard[BB_DOG_HARASS_FRUSTRATION])
 		controller.blackboard[BB_DOG_HARASS_FRUSTRATION] = world.time
 	else if(controller.blackboard[BB_DOG_HARASS_FRUSTRATION] + AI_DOG_HARASS_FRUSTRATE_TIME < world.time) // if we haven't actually bit them in a while, give up
 		living_pawn.visible_message(span_danger("[living_pawn] yawns and seems to lose interest in harassing [harass_target]."))
-		finish_action(controller, FALSE)
-		return
+		return BEHAVIOR_PERFORM_FAILURE
 
 	// subtypes of this behavior can change behavior for how eager/averse the pawn is to attack the target as opposed to falling back/making noise/getting help
 	if(in_range(living_pawn, living_target))
@@ -201,6 +199,8 @@
 		living_pawn.manual_emote("[pick("barks", "growls", "stares")] menacingly at [harass_target]!")
 		if(DT_PROB(40, delta_time))
 			playsound(living_pawn, pick('sound/creatures/dog/growl1.ogg', 'sound/creatures/dog/growl2.ogg'), 50, TRUE, -1)
+
+	return BEHAVIOR_PERFORM_COOLDOWN
 
 /datum/ai_behavior/harass/finish_action(datum/ai_controller/controller, succeeded)
 	. = ..()

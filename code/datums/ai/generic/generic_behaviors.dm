@@ -1,27 +1,24 @@
 
 /datum/ai_behavior/resist/perform(delta_time, datum/ai_controller/controller)
-	. = ..()
 	var/mob/living/living_pawn = controller.pawn
 	living_pawn.execute_resist()
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/battle_screech
 	///List of possible screeches the behavior has
 	var/list/screeches
 
 /datum/ai_behavior/battle_screech/perform(delta_time, datum/ai_controller/controller)
-	. = ..()
 	var/mob/living/living_pawn = controller.pawn
 	INVOKE_ASYNC(living_pawn, TYPE_PROC_REF(/mob, emote), pick(screeches))
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 ///Moves to target then finishes
 /datum/ai_behavior/move_to_target
 	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT
 
 /datum/ai_behavior/move_to_target/perform(delta_time, datum/ai_controller/controller)
-	. = ..()
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/break_spine
 	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT
@@ -37,10 +34,10 @@
 	var/mob/living/big_guy = controller.pawn //he was molded by the darkness
 
 	if(batman.stat)
-		finish_action(controller, TRUE, target_key)
+		return BEHAVIOR_PERFORM_FAILURE
 
 	if(get_dist(batman, big_guy) >= give_up_distance)
-		finish_action(controller, FALSE, target_key)
+		return BEHAVIOR_PERFORM_FAILURE
 
 	big_guy.try_make_grab(batman)
 	big_guy.setDir(get_dir(big_guy, batman))
@@ -57,7 +54,7 @@
 	else
 		batman.adjustBruteLoss(150)
 
-	finish_action(controller, TRUE, target_key)
+	return BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/break_spine/finish_action(datum/ai_controller/controller, succeeded, target_key)
 	if(succeeded)
@@ -70,14 +67,12 @@
 
 
 /datum/ai_behavior/use_in_hand/perform(delta_time, datum/ai_controller/controller)
-	. = ..()
 	var/mob/living/pawn = controller.pawn
 	var/obj/item/held = pawn.get_active_held_item()
 	if(!held)
-		finish_action(controller, FALSE)
-		return
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 	pawn.activate_hand()
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 /// Use the currently held item, or unarmed, on a weakref to an object in the world
 /datum/ai_behavior/use_on_object
@@ -100,8 +95,7 @@
 	var/atom/target = target_ref?.resolve()
 
 	if(!target || !pawn.CanReach(target))
-		finish_action(controller, FALSE)
-		return
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
 	pawn.set_combat_mode(FALSE)
 	if(held_item)
@@ -109,7 +103,7 @@
 	else
 		pawn.UnarmedAttack(target, TRUE)
 
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/give
 	required_distance = 1
@@ -129,8 +123,7 @@
 	var/atom/target = target_ref?.resolve()
 
 	if(!target || !pawn.CanReach(target) || !isliving(target))
-		finish_action(controller, FALSE)
-		return
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
 	var/mob/living/living_target = target
 	controller.PauseAi(1.5 SECONDS)
@@ -141,15 +134,15 @@
 	if(!do_after(pawn, living_target, 1 SECONDS))
 		return
 	if(QDELETED(held_item) || QDELETED(living_target))
-		finish_action(controller, FALSE)
-		return
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
+
 	var/pocket_choice = prob(50) ? ITEM_SLOT_RPOCKET : ITEM_SLOT_LPOCKET
 	if(prob(50) && living_target.can_put_in_hand(held_item))
 		living_target.put_in_hand(held_item)
 	else if(held_item.mob_can_equip(living_target, pawn, pocket_choice, TRUE))
 		living_target.equip_to_slot(held_item, pocket_choice)
 
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/consume
 	required_distance = 1
@@ -167,15 +160,19 @@
 	var/datum/weakref/target_ref = controller.blackboard[target_key]
 	var/obj/item/target = target_ref.resolve()
 
+	if(QDELETED(target))
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
+
 	if(!(target in living_pawn.held_items))
 		if(!living_pawn.put_in_hands(target))
-			finish_action(controller, FALSE, target, hunger_timer_key)
-			return
+			return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
 	target.melee_attack_chain(living_pawn, living_pawn)
 
 	if(QDELETED(target) || prob(10)) // Even if we don't finish it all we can randomly decide to be done
-		finish_action(controller, TRUE, null, hunger_timer_key)
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
+
+	return BEHAVIOR_PERFORM_COOLDOWN
 
 /datum/ai_behavior/consume/finish_action(datum/ai_controller/controller, succeeded, target_key, hunger_timer_key)
 	. = ..()
@@ -191,13 +188,18 @@
 	action_cooldown = 5 SECONDS
 
 /datum/ai_behavior/find_and_set/perform(delta_time, datum/ai_controller/controller, set_key, locate_path, search_range)
-	. = ..()
+	if(QDELETED(controller.pawn))
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
+
+	// if(controller.blackboard_key_exists(set_key))
+	// 	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
+
 	var/find_this_thing = search_tactic(controller, locate_path, search_range)
-	if(find_this_thing)
-		controller.blackboard[set_key] = WEAKREF(find_this_thing)
-		finish_action(controller, TRUE)
-	else
-		finish_action(controller, FALSE)
+	if(isnull(find_this_thing))
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
+
+	controller.blackboard[set_key] = WEAKREF(find_this_thing)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/find_and_set/proc/search_tactic(datum/ai_controller/controller, locate_path, search_range)
 	for(var/atom/A as anything in oview(search_range, controller.pawn))
@@ -267,6 +269,8 @@
 			continue
 		living_pawn.dropItemToGround(held)
 
+	return BEHAVIOR_PERFORM_COOLDOWN
+
 /// This behavior involves attacking a target.
 /datum/ai_behavior/attack
 	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT | AI_BEHAVIOR_MOVE_AND_PERFORM
@@ -281,16 +285,15 @@
 	var/datum/weakref/attack_ref = controller.blackboard[BB_ATTACK_TARGET]
 	var/atom/movable/attack_target = attack_ref?.resolve()
 	if(!attack_target || !can_see(living_pawn, attack_target, length=controller.blackboard[BB_VISION_RANGE]))
-		finish_action(controller, FALSE)
-		return
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
 	var/mob/living/living_target = attack_target
 	if(istype(living_target) && (living_target.stat == DEAD))
-		finish_action(controller, TRUE)
-		return
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 	controller.set_move_target(living_target)
 	attack(controller, living_target)
+	return BEHAVIOR_PERFORM_COOLDOWN
 
 /datum/ai_behavior/attack/finish_action(datum/ai_controller/controller, succeeded)
 	. = ..()
@@ -312,20 +315,19 @@
 	. = ..()
 	var/mob/living/living_pawn = controller.pawn
 	if(!istype(living_pawn) || !isturf(living_pawn.loc))
-		return
+		return BEHAVIOR_PERFORM_COOLDOWN
 
 	var/datum/weakref/follow_ref = controller.blackboard[BB_FOLLOW_TARGET]
 	var/atom/movable/follow_target = follow_ref?.resolve()
 	if(!follow_target || get_dist(living_pawn, follow_target) > controller.blackboard[BB_VISION_RANGE])
-		finish_action(controller, FALSE)
-		return
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
 	var/mob/living/living_target = follow_target
 	if(istype(living_target) && (living_target.stat == DEAD))
-		finish_action(controller, TRUE)
-		return
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 	controller.set_move_target(living_target)
+	return BEHAVIOR_PERFORM_COOLDOWN
 
 /datum/ai_behavior/follow/finish_action(datum/ai_controller/controller, succeeded)
 	. = ..()
@@ -338,18 +340,18 @@
 /datum/ai_behavior/perform_emote/perform(delta_time, datum/ai_controller/controller, emote)
 	var/mob/living/living_pawn = controller.pawn
 	if(!istype(living_pawn))
-		return
+		return BEHAVIOR_PERFORM_INSTANT
 	living_pawn.manual_emote(emote)
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/perform_speech
 
 /datum/ai_behavior/perform_speech/perform(delta_time, datum/ai_controller/controller, speech)
 	var/mob/living/living_pawn = controller.pawn
 	if(!istype(living_pawn))
-		return
+		return BEHAVIOR_PERFORM_INSTANT
 	living_pawn.say(speech, forced = "AI Controller")
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_SUCCESS
 
 //song behaviors
 
@@ -368,7 +370,7 @@
 	song.ParseSong(song_lines)
 	song.repeat = 10
 	song.volume = song.max_volume - 10
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/play_instrument
 
@@ -380,7 +382,7 @@
 	var/datum/song/song = song_instrument.song
 
 	song.start_playing(controller.pawn)
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/find_nearby
 
@@ -400,6 +402,7 @@
 
 		possible_targets += thing
 	if(!possible_targets.len)
-		finish_action(controller, FALSE)
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
+
 	controller.blackboard[target_key] = WEAKREF(pick(possible_targets))
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS

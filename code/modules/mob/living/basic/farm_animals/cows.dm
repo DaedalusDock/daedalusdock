@@ -81,7 +81,7 @@
 
 	ai_traits = STOP_MOVING_WHEN_PULLED
 	ai_movement = /datum/ai_movement/basic_avoidance
-	idle_behavior = /datum/idle_behavior/idle_random_walk
+	default_behavior = /datum/ai_behavior/idle_random_walk
 	planning_subtrees = list(
 		/datum/ai_planning_subtree/tip_reaction,
 		/datum/ai_planning_subtree/random_speech/cow,

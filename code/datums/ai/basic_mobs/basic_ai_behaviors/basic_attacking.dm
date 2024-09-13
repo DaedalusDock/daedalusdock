@@ -13,8 +13,7 @@
 	var/datum/targetting_datum/targetting_datum = controller.blackboard[targetting_datum_key]
 
 	if(!targetting_datum.can_attack(basic_mob, target))
-		finish_action(controller, FALSE, target_key)
-		return
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
 	var/hiding_target = targetting_datum.find_hidden_mobs(basic_mob, target) //If this is valid, theyre hidden in something!
 
@@ -25,6 +24,7 @@
 	else
 		basic_mob.melee_attack(target)
 
+	return BEHAVIOR_PERFORM_COOLDOWN
 
 /datum/ai_behavior/basic_melee_attack/finish_action(datum/ai_controller/controller, succeeded, target_key, targetting_datum_key, hiding_location_key)
 	. = ..()
@@ -49,17 +49,20 @@
 
 
 	if(!targetting_datum.can_attack(basic_mob, target))
-		finish_action(controller, FALSE, target_key)
-		return
+		return BEHAVIOR_PERFORM_INSTANT | BEHAVIOR_PERFORM_FAILURE
 
 	var/hiding_target = targetting_datum.find_hidden_mobs(basic_mob, target) //If this is valid, theyre hidden in something!
+	var/final_target = hiding_target || target
 
+	if(!can_see(basic_mob, final_target, required_distance))
+		return BEHAVIOR_PERFORM_INSTANT
+
+	//controller.set_blackboard_key(hiding_location_keym, hiding_target)
 	controller.blackboard[hiding_location_key] = hiding_target
 
-	if(hiding_target) //Shoot it!
-		basic_mob.RangedAttack(hiding_target)
-	else
-		basic_mob.RangedAttack(target)
+	basic_mob.RangedAttack(final_target)
+
+	return BEHAVIOR_PERFORM_COOLDOWN
 
 /datum/ai_behavior/basic_ranged_attack/finish_action(datum/ai_controller/controller, succeeded, target_key, targetting_datum_key, hiding_location_key)
 	. = ..()

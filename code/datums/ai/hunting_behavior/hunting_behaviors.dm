@@ -32,10 +32,10 @@
 				continue
 		if(can_see(living_mob, possible_dinner, 2))
 			controller.blackboard[hunting_target_key] = possible_dinner
-			finish_action(controller, TRUE)
-			return
+			return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
-	finish_action(controller, FALSE)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
+
 /datum/ai_behavior/hunt_target
 	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT
 
@@ -48,8 +48,7 @@
 
 	if(!controller.blackboard[hunting_target_key]) //Target is gone for some reason. forget about this task!
 		controller[hunting_target_key] = null
-		finish_action(controller, FALSE, hunting_target_key)
-		return
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
 	var/mob/living/hunter = controller.pawn
 	var/atom/hunted = controller.blackboard[hunting_target_key]
@@ -62,8 +61,8 @@
 	else // We're hunting an object, and should delete it instead of killing it. Mostly useful for decal bugs like ants or spider webs.
 		hunter.manual_emote("chomps [hunted]!")
 		qdel(hunted)
-	finish_action(controller, TRUE, hunting_target_key, hunting_cooldown_key)
-	return
+
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/hunt_target/finish_action(datum/ai_controller/controller, succeeded, hunting_target_key, hunting_cooldown_key)
 	. = ..()

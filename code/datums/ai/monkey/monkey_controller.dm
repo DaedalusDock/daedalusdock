@@ -27,7 +27,7 @@ have ways of interacting with a specific mob and control it.
 		BB_MONKEY_GUN_WORKED = TRUE,
 		BB_SONG_LINES = MONKEY_SONG,
 	)
-	idle_behavior = /datum/idle_behavior/idle_monkey
+	default_behavior = /datum/ai_behavior/idle_monkey
 
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_crossed),

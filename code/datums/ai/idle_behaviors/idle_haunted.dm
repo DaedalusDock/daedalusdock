@@ -6,7 +6,7 @@
 /datum/ai_behavior/idle_ghost_item/perform(delta_time, datum/ai_controller/controller)
 	var/obj/item/item_pawn = controller.pawn
 	if(ismob(item_pawn.loc)) //Being held. dont teleport
-		return
+		return BEHAVIOR_PERFORM_FAILURE
 
 	if(DT_PROB(teleport_chance, delta_time))
 		playsound(item_pawn.loc, 'sound/items/haunted/ghostitemattack.ogg', 100, TRUE)

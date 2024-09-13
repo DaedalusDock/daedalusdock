@@ -1,13 +1,19 @@
 /datum/ai_behavior/basic_melee_attack
-	action_cooldown = 0.6 SECONDS
-	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT
+	action_cooldown = 0.2 SECONDS // We gotta check unfortunately often because we're in a race condition with nextmove
+	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT //| AI_BEHAVIOR_REQUIRE_REACH | AI_BEHAVIOR_CAN_PLAN_DURING_EXECUTION
+	///do we finish this action after hitting once?
+	var/terminate_after_action = FALSE
 
 /datum/ai_behavior/basic_melee_attack/setup(datum/ai_controller/controller, target_key, targetting_datum_key, hiding_location_key)
 	. = ..()
 	controller.set_move_target(controller.blackboard[hiding_location_key] || controller.blackboard[target_key]) //Hiding location is priority
 
 /datum/ai_behavior/basic_melee_attack/perform(delta_time, datum/ai_controller/controller, target_key, targetting_datum_key, hiding_location_key)
-	. = ..()
+	if (isliving(controller.pawn))
+		var/mob/living/pawn = controller.pawn
+		if (world.time < pawn.next_move)
+			return AI_BEHAVIOR_INSTANT
+
 	var/mob/living/basic/basic_mob = controller.pawn
 	var/atom/target = controller.blackboard[target_key]
 	var/datum/targetting_datum/targetting_datum = controller.blackboard[targetting_datum_key]

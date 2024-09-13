@@ -7,26 +7,32 @@ multiple modular subtrees with behaviors
 /datum/ai_controller
 	///The atom this controller is controlling
 	var/atom/pawn
+
 	///Bitfield of traits for this AI to handle extra behavior
 	var/ai_traits
+	///Current status of AI (OFF/ON)
+	var/ai_status
+
 	///Current actions being performed by the AI.
 	var/list/current_behaviors
 	///Current actions and their respective last time ran as an assoc list.
 	var/list/behavior_cooldowns = list()
-	///Current status of AI (OFF/ON)
-	var/ai_status
 	///Current movement target of the AI, generally set by decision making.
 	var/atom/current_movement_target
+
+
 	///This is a list of variables the AI uses and can be mutated by actions. When an action is performed you pass this list and any relevant keys for the variables it can mutate.
 	var/list/blackboard = list()
 	///Stored arguments for behaviors given during their initial creation
 	var/list/behavior_args = list()
+
 	///Tracks recent pathing attempts, if we fail too many in a row we fail our current plans.
 	var/consecutive_pathing_attempts
 	///Can the AI remain in control if there is a client?
 	var/continue_processing_when_client = FALSE
 	///distance to give up on target
 	var/max_target_distance = 14
+
 	///Cooldown for new plans, to prevent AI from going nuts if it can't think of new plans and looping on end
 	COOLDOWN_DECLARE(failed_planning_cooldown)
 	///All subtrees this AI has available, will run them in order, so make sure they're in the order you want them to run. On initialization of this type, it will start as a typepath(s) and get converted to references of ai_subtrees found in SSai_controllers when init_subtrees() is called
@@ -142,9 +148,7 @@ multiple modular subtrees with behaviors
 		CancelActions()
 		return
 
-	for(var/i in current_behaviors)
-		var/datum/ai_behavior/current_behavior = i
-
+	for(var/datum/ai_behavior/current_behavior as anything in current_behaviors)
 
 		// Convert the current behaviour action cooldown to realtime seconds from deciseconds.current_behavior
 		// Then pick the max of this and the delta_time passed to ai_controller.process()
@@ -155,12 +159,14 @@ multiple modular subtrees with behaviors
 			if(!current_movement_target)
 				stack_trace("[pawn] wants to perform action type [current_behavior.type] which requires movement, but has no current movement target!")
 				return //This can cause issues, so don't let these slide.
+
 			if(current_behavior.required_distance >= get_dist(pawn, current_movement_target)) ///Are we close enough to engage?
 				if(ai_movement.moving_controllers[src] == current_movement_target) //We are close enough, if we're moving stop.
 					ai_movement.stop_moving_towards(src)
 
 				if(behavior_cooldowns[current_behavior] > world.time) //Still on cooldown
 					continue
+
 				ProcessBehavior(action_delta_time, current_behavior)
 				return
 
@@ -172,9 +178,11 @@ multiple modular subtrees with behaviors
 					continue
 				ProcessBehavior(action_delta_time, current_behavior)
 				return
+
 		else //No movement required
 			if(behavior_cooldowns[current_behavior] > world.time) //Still on cooldown
 				continue
+
 			ProcessBehavior(action_delta_time, current_behavior)
 			return
 
@@ -208,6 +216,9 @@ multiple modular subtrees with behaviors
 
 /datum/ai_controller/proc/PauseAi(time)
 	paused_until = world.time + time
+
+/datum/ai_controller/proc/set_move_target(atom/thing)
+	current_movement_target = thing
 
 ///Call this to add a behavior to the stack.
 /datum/ai_controller/proc/queue_behavior(behavior_type, ...)

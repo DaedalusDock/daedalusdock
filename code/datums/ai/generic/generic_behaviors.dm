@@ -23,7 +23,6 @@
 	. = ..()
 	finish_action(controller, TRUE)
 
-
 /datum/ai_behavior/break_spine
 	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT
 	action_cooldown = 0.7 SECONDS
@@ -31,7 +30,7 @@
 
 /datum/ai_behavior/break_spine/setup(datum/ai_controller/controller, target_key)
 	. = ..()
-	controller.current_movement_target = controller.blackboard[target_key]
+	controller.set_move_target(controller.blackboard[target_key])
 
 /datum/ai_behavior/break_spine/perform(delta_time, datum/ai_controller/controller, target_key)
 	var/mob/living/batman = controller.blackboard[target_key]
@@ -91,7 +90,7 @@
 	var/target = target_ref?.resolve()
 	if(!target)
 		return FALSE
-	controller.current_movement_target = target
+	controller.set_move_target(target)
 
 /datum/ai_behavior/use_on_object/perform(delta_time, datum/ai_controller/controller, target_key)
 	. = ..()
@@ -120,7 +119,7 @@
 /datum/ai_behavior/give/setup(datum/ai_controller/controller, target_key)
 	. = ..()
 	var/datum/weakref/target_ref = controller.blackboard[target_key]
-	controller.current_movement_target = target_ref?.resolve()
+	controller.set_move_target(target_ref?.resolve())
 
 /datum/ai_behavior/give/perform(delta_time, datum/ai_controller/controller, target_key)
 	. = ..()
@@ -160,7 +159,7 @@
 /datum/ai_behavior/consume/setup(datum/ai_controller/controller, target_key)
 	. = ..()
 	var/datum/weakref/target_ref = controller.blackboard[target_key]
-	controller.current_movement_target = target_ref?.resolve()
+	controller.set_move_target(target_ref?.resolve())
 
 /datum/ai_behavior/consume/perform(delta_time, datum/ai_controller/controller, target_key, hunger_timer_key)
 	. = ..()
@@ -290,7 +289,7 @@
 		finish_action(controller, TRUE)
 		return
 
-	controller.current_movement_target = living_target
+	controller.set_move_target(living_target)
 	attack(controller, living_target)
 
 /datum/ai_behavior/attack/finish_action(datum/ai_controller/controller, succeeded)
@@ -326,7 +325,7 @@
 		finish_action(controller, TRUE)
 		return
 
-	controller.current_movement_target = living_target
+	controller.set_move_target(living_target)
 
 /datum/ai_behavior/follow/finish_action(datum/ai_controller/controller, succeeded)
 	. = ..()

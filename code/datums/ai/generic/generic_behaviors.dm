@@ -81,8 +81,7 @@
 
 /datum/ai_behavior/use_on_object/setup(datum/ai_controller/controller, target_key)
 	. = ..()
-	var/datum/weakref/target_ref = controller.blackboard[target_key]
-	var/target = target_ref?.resolve()
+	var/target = controller.blackboard[target_key]
 	if(!target)
 		return FALSE
 	controller.set_move_target(target)
@@ -91,8 +90,7 @@
 	. = ..()
 	var/mob/living/pawn = controller.pawn
 	var/obj/item/held_item = pawn.get_item_by_slot(pawn.get_active_hand())
-	var/datum/weakref/target_ref = controller.blackboard[target_key]
-	var/atom/target = target_ref?.resolve()
+	var/atom/target = controller.blackboard[target_key]
 
 	if(!target || !pawn.CanReach(target))
 		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
@@ -112,15 +110,13 @@
 
 /datum/ai_behavior/give/setup(datum/ai_controller/controller, target_key)
 	. = ..()
-	var/datum/weakref/target_ref = controller.blackboard[target_key]
-	controller.set_move_target(target_ref?.resolve())
+	controller.set_move_target(controller.blackboard[target_key])
 
 /datum/ai_behavior/give/perform(delta_time, datum/ai_controller/controller, target_key)
 	. = ..()
 	var/mob/living/pawn = controller.pawn
 	var/obj/item/held_item = pawn.get_item_by_slot(pawn.get_active_hand())
-	var/datum/weakref/target_ref = controller.blackboard[target_key]
-	var/atom/target = target_ref?.resolve()
+	var/atom/target = controller.blackboard[target_key]
 
 	if(!target || !pawn.CanReach(target) || !isliving(target))
 		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
@@ -151,14 +147,12 @@
 
 /datum/ai_behavior/consume/setup(datum/ai_controller/controller, target_key)
 	. = ..()
-	var/datum/weakref/target_ref = controller.blackboard[target_key]
-	controller.set_move_target(target_ref?.resolve())
+	controller.set_move_target(controller.blackboard[target_key])
 
 /datum/ai_behavior/consume/perform(delta_time, datum/ai_controller/controller, target_key, hunger_timer_key)
 	. = ..()
 	var/mob/living/living_pawn = controller.pawn
-	var/datum/weakref/target_ref = controller.blackboard[target_key]
-	var/obj/item/target = target_ref.resolve()
+	var/obj/item/target = controller.blackboard[target_key]
 
 	if(QDELETED(target))
 		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
@@ -177,7 +171,7 @@
 /datum/ai_behavior/consume/finish_action(datum/ai_controller/controller, succeeded, target_key, hunger_timer_key)
 	. = ..()
 	if(succeeded)
-		controller.blackboard[hunger_timer_key] = world.time + rand(12 SECONDS, 60 SECONDS)
+		controller.set_blackboard_key(hunger_timer_key, world.time + rand(12 SECONDS, 60 SECONDS))
 
 /**find and set
  * Finds an item near themselves, sets a blackboard key as it. Very useful for ais that need to use machines or something.
@@ -198,7 +192,7 @@
 	if(isnull(find_this_thing))
 		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
-	controller.blackboard[set_key] = WEAKREF(find_this_thing)
+	controller.set_blackboard_key(set_key, find_this_thing)
 	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/find_and_set/proc/search_tactic(datum/ai_controller/controller, locate_path, search_range)
@@ -282,8 +276,7 @@
 	if(!istype(living_pawn) || !isturf(living_pawn.loc))
 		return
 
-	var/datum/weakref/attack_ref = controller.blackboard[BB_ATTACK_TARGET]
-	var/atom/movable/attack_target = attack_ref?.resolve()
+	var/atom/movable/attack_target = controller.blackboard[BB_ATTACK_TARGET]
 	if(!attack_target || !can_see(living_pawn, attack_target, length=controller.blackboard[BB_VISION_RANGE]))
 		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
@@ -297,7 +290,7 @@
 
 /datum/ai_behavior/attack/finish_action(datum/ai_controller/controller, succeeded)
 	. = ..()
-	controller.blackboard[BB_ATTACK_TARGET] = null
+	controller.set_blackboard_key(BB_ATTACK_TARGET, null)
 
 /// A proc representing when the mob is pushed to actually attack the target. Again, subtypes can be used to represent different attacks from different animals, or it can be some other generic behavior
 /datum/ai_behavior/attack/proc/attack(datum/ai_controller/controller, mob/living/living_target)
@@ -317,8 +310,7 @@
 	if(!istype(living_pawn) || !isturf(living_pawn.loc))
 		return BEHAVIOR_PERFORM_COOLDOWN
 
-	var/datum/weakref/follow_ref = controller.blackboard[BB_FOLLOW_TARGET]
-	var/atom/movable/follow_target = follow_ref?.resolve()
+	var/atom/movable/follow_target = controller.blackboard[BB_FOLLOW_TARGET]
 	if(!follow_target || get_dist(living_pawn, follow_target) > controller.blackboard[BB_VISION_RANGE])
 		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
@@ -331,7 +323,7 @@
 
 /datum/ai_behavior/follow/finish_action(datum/ai_controller/controller, succeeded)
 	. = ..()
-	controller.blackboard[BB_FOLLOW_TARGET] = null
+	controller.set_blackboard_key(BB_FOLLOW_TARGET, null)
 
 
 
@@ -358,10 +350,7 @@
 /datum/ai_behavior/setup_instrument
 
 /datum/ai_behavior/setup_instrument/perform(delta_time, datum/ai_controller/controller, song_instrument_key, song_lines_key)
-	. = ..()
-
-	var/datum/weakref/instrument_ref = controller.blackboard[song_instrument_key]
-	var/obj/item/instrument/song_instrument = instrument_ref.resolve()
+	var/obj/item/instrument/song_instrument = controller.blackboard[song_instrument_key]
 	var/datum/song/song = song_instrument.song
 	var/song_lines = controller.blackboard[song_lines_key]
 
@@ -375,10 +364,7 @@
 /datum/ai_behavior/play_instrument
 
 /datum/ai_behavior/play_instrument/perform(delta_time, datum/ai_controller/controller, song_instrument_key)
-	. = ..()
-
-	var/datum/weakref/instrument_ref = controller.blackboard[song_instrument_key]
-	var/obj/item/instrument/song_instrument = instrument_ref.resolve()
+	var/obj/item/instrument/song_instrument = controller.blackboard[song_instrument_key]
 	var/datum/song/song = song_instrument.song
 
 	song.start_playing(controller.pawn)
@@ -404,5 +390,5 @@
 	if(!possible_targets.len)
 		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
-	controller.blackboard[target_key] = WEAKREF(pick(possible_targets))
+	controller.set_blackboard_key(target_key, pick(possible_targets))
 	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS

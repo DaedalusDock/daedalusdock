@@ -15,7 +15,7 @@
 		if(istype(controller, /datum/ai_controller/monkey)) //What the fuck
 			controller.RegisterSignal(target, COMSIG_PARENT_QDELETING, TYPE_PROC_REF(/datum/ai_controller/monkey,target_del))
 
-	controller.blackboard[BB_MONKEY_PICKUPTARGET] = null
+	controller.set_blackboard_key(BB_MONKEY_PICKUPTARGET, null)
 
 /datum/ai_behavior/monkey_equip/proc/equip_item(datum/ai_controller/controller)
 	var/mob/living/living_pawn = controller.pawn
@@ -36,7 +36,7 @@
 	else if(target.force > best_force)
 		living_pawn.drop_all_held_items()
 		living_pawn.put_in_hands(target)
-		controller.blackboard[BB_MONKEY_BEST_FORCE_FOUND] = target.force
+		controller.set_blackboard_key(BB_MONKEY_BEST_FORCE_FOUND, target.force)
 		return TRUE
 
 	else if(target.slot_flags) //Clothing == top priority
@@ -83,7 +83,7 @@
 
 	victim.visible_message(span_warning("[living_pawn] starts trying to take [target] from [victim]!"), span_danger("[living_pawn] tries to take [target]!"))
 
-	controller.blackboard[BB_MONKEY_PICKPOCKETING] = TRUE
+	controller.set_blackboard_key(BB_MONKEY_PICKPOCKETING, TRUE)
 
 	var/success = FALSE
 
@@ -104,8 +104,8 @@
 
 /datum/ai_behavior/monkey_equip/pickpocket/finish_action(datum/ai_controller/controller, success)
 	. = ..()
-	controller.blackboard[BB_MONKEY_PICKPOCKETING] = FALSE
-	controller.blackboard[BB_MONKEY_PICKUPTARGET] = null
+	controller.set_blackboard_key(BB_MONKEY_PICKPOCKETING, FALSE)
+	controller.set_blackboard_key(BB_MONKEY_PICKUPTARGET, null)
 
 /datum/ai_behavior/monkey_flee
 
@@ -121,7 +121,7 @@
 
 	// flee from anyone who attacked us and we didn't beat down
 	for(var/mob/living/L in view(living_pawn, MONKEY_FLEE_VISION))
-		if(controller.blackboard[BB_MONKEY_ENEMIES][WEAKREF(L)] && L.stat == CONSCIOUS)
+		if(controller.blackboard[BB_MONKEY_ENEMIES][L] && L.stat == CONSCIOUS)
 			target = L
 			break
 
@@ -136,14 +136,12 @@
 
 /datum/ai_behavior/monkey_attack_mob/setup(datum/ai_controller/controller, target_key)
 	. = ..()
-	var/datum/weakref/target_ref = controller.blackboard[target_key]
-	controller.set_move_target(target_ref?.resolve())
+	controller.set_move_target(controller.blackboard[target_key])
 
 /datum/ai_behavior/monkey_attack_mob/perform(delta_time, datum/ai_controller/controller, target_key)
 	. = ..()
 
-	var/datum/weakref/target_ref = controller.blackboard[target_key]
-	var/mob/living/target = target_ref?.resolve()
+	var/mob/living/target = controller.blackboard[target_key]
 	var/mob/living/living_pawn = controller.pawn
 
 	if(!target || target.stat != CONSCIOUS)
@@ -171,7 +169,7 @@
 	. = ..()
 	var/mob/living/living_pawn = controller.pawn
 	SSmove_manager.stop_looping(living_pawn)
-	controller.blackboard[target_key] = null
+	controller.set_blackboard_key(target_key, null)
 
 /// attack using a held weapon otherwise bite the enemy, then if we are angry there is a chance we might calm down a little
 /datum/ai_behavior/monkey_attack_mob/proc/monkey_attack(datum/ai_controller/controller, mob/living/target, delta_time, disarm)
@@ -192,7 +190,7 @@
 	living_pawn.set_combat_mode(TRUE)
 
 	if(isnull(controller.blackboard[BB_MONKEY_GUN_WORKED]))
-		controller.blackboard[BB_MONKEY_GUN_WORKED] = TRUE
+		controller.set_blackboard_key(BB_MONKEY_GUN_WORKED, TRUE)
 
 	// attack with weapon if we have one
 	if(living_pawn.CanReach(target, weapon))
@@ -200,7 +198,7 @@
 			weapon.melee_attack_chain(living_pawn, target)
 		else
 			living_pawn.UnarmedAttack(target, null, disarm ? list("right" = TRUE) : null) //Fake a right click if we're disarmin
-		controller.blackboard[BB_MONKEY_GUN_WORKED] = TRUE // We reset their memory of the gun being 'broken' if they accomplish some other attack
+		controller.set_blackboard_key(BB_MONKEY_GUN_WORKED, TRUE) // We reset their memory of the gun being 'broken' if they accomplish some other attack)
 	else if(weapon)
 		var/atom/real_target = target
 		if(prob(10)) // Artificial miss
@@ -211,27 +209,24 @@
 		if(gun && controller.blackboard[BB_MONKEY_GUN_WORKED] && prob(95))
 			// We attempt to attack even if we can't shoot so we get the effects of pulling the trigger
 			gun.afterattack(real_target, living_pawn, FALSE)
-			controller.blackboard[BB_MONKEY_GUN_WORKED] = can_shoot ? TRUE : prob(80) // Only 20% likely to notice it didn't work
+			controller.set_blackboard_key(BB_MONKEY_GUN_WORKED, can_shoot ? TRUE : prob(80)) // Only 20% likely to notice it didn't work)
 			if(can_shoot)
-				controller.blackboard[BB_MONKEY_GUN_NEURONS_ACTIVATED] = TRUE
+				controller.set_blackboard_key(BB_MONKEY_GUN_NEURONS_ACTIVATED, TRUE)
 		else
 			living_pawn.throw_item(real_target)
-			controller.blackboard[BB_MONKEY_GUN_WORKED] = TRUE // 'worked'
+			controller.set_blackboard_key(BB_MONKEY_GUN_WORKED, TRUE) // 'worked')
 
 	// no de-aggro
 	if(controller.blackboard[BB_MONKEY_AGGRESSIVE])
 		return NONE
 
-	/// mob refs are uids, so this is safe
-	var/datum/weakref/target_ref = WEAKREF(target)
 	if(DT_PROB(MONKEY_HATRED_REDUCTION_PROB, delta_time))
-		controller.blackboard[BB_MONKEY_ENEMIES][target_ref]--
+		controller.add_blackboard_key_assoc(BB_MONKEY_ENEMIES, target, -1)
 
 	// if we are not angry at our target, go back to idle
-	if(controller.blackboard[BB_MONKEY_ENEMIES][target_ref] <= 0)
-		var/list/enemies = controller.blackboard[BB_MONKEY_ENEMIES]
-		enemies.Remove(target_ref)
-		if(controller.blackboard[BB_MONKEY_CURRENT_ATTACK_TARGET] == WEAKREF(target))
+	if(controller.blackboard[BB_MONKEY_ENEMIES][target] <= 0)
+		controller.remove_thing_from_blackboard_key(BB_MONKEY_ENEMIES, target)
+		if(controller.blackboard[BB_MONKEY_CURRENT_ATTACK_TARGET] == target)
 			return BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/disposal_mob
@@ -239,23 +234,19 @@
 
 /datum/ai_behavior/disposal_mob/setup(datum/ai_controller/controller, attack_target_key, disposal_target_key)
 	. = ..()
-	var/datum/weakref/target_ref = controller.blackboard[attack_target_key]
-	controller.set_move_target(target_ref?.resolve())
+	controller.set_move_target(controller.blackboard[attack_target_key])
 
 /datum/ai_behavior/disposal_mob/finish_action(datum/ai_controller/controller, succeeded, attack_target_key, disposal_target_key)
 	. = ..()
-	controller.blackboard[attack_target_key] = null //Reset attack target
-	controller.blackboard[BB_MONKEY_DISPOSING] = FALSE //No longer disposing
-	controller.blackboard[disposal_target_key] = null //No target disposal
+	controller.set_blackboard_key(attack_target_key, null) //Reset attack target)
+	controller.set_blackboard_key(BB_MONKEY_DISPOSING, FALSE) //No longer disposing)
+	controller.set_blackboard_key(disposal_target_key, null) //No target disposal)
 
 /datum/ai_behavior/disposal_mob/perform(delta_time, datum/ai_controller/controller, attack_target_key, disposal_target_key)
-	. = ..()
-
 	if(controller.blackboard[BB_MONKEY_DISPOSING]) //We are disposing, don't do ANYTHING!!!!
 		return BEHAVIOR_PERFORM_COOLDOWN
 
-	var/datum/weakref/target_ref = controller.blackboard[attack_target_key]
-	var/mob/living/target = target_ref?.resolve()
+	var/mob/living/target = controller.blackboard[attack_target_key]
 	var/mob/living/living_pawn = controller.pawn
 
 	controller.set_move_target(target)
@@ -273,8 +264,7 @@
 			living_pawn.try_make_grab(target)
 		return BEHAVIOR_PERFORM_COOLDOWN
 
-	var/datum/weakref/disposal_ref = controller.blackboard[disposal_target_key]
-	var/obj/machinery/disposal/disposal = disposal_ref.resolve()
+	var/obj/machinery/disposal/disposal = controller.blackboard[disposal_target_key]
 	controller.set_move_target(disposal)
 
 	if(isnull(disposal))
@@ -289,12 +279,10 @@
 
 /datum/ai_behavior/disposal_mob/proc/try_disposal_mob(datum/ai_controller/controller, attack_target_key, disposal_target_key)
 	var/mob/living/living_pawn = controller.pawn
-	var/datum/weakref/target_ref = controller.blackboard[attack_target_key]
-	var/mob/living/target = target_ref?.resolve()
-	var/datum/weakref/disposal_ref = controller.blackboard[disposal_target_key]
-	var/obj/machinery/disposal/disposal = disposal_ref?.resolve()
+	var/mob/living/target = controller.blackboard[attack_target_key]
+	var/obj/machinery/disposal/disposal = controller.blackboard[disposal_target_key]
 
-	controller.blackboard[BB_MONKEY_DISPOSING] = TRUE
+	controller.set_blackboard_key(BB_MONKEY_DISPOSING, TRUE)
 
 	if(target && disposal?.stuff_mob_in(target, living_pawn))
 		disposal.flush()
@@ -304,7 +292,7 @@
 /datum/ai_behavior/recruit_monkeys/perform(delta_time, datum/ai_controller/controller)
 	. = ..()
 
-	controller.blackboard[BB_MONKEY_RECRUIT_COOLDOWN] = world.time + MONKEY_RECRUIT_COOLDOWN
+	controller.set_blackboard_key(BB_MONKEY_RECRUIT_COOLDOWN, world.time + MONKEY_RECRUIT_COOLDOWN)
 	var/mob/living/living_pawn = controller.pawn
 
 	for(var/mob/living/L in view(living_pawn, MONKEY_ENEMY_VISION))
@@ -313,11 +301,11 @@
 
 		if(!DT_PROB(MONKEY_RECRUIT_PROB, delta_time))
 			continue
-		var/datum/ai_controller/monkey/monkey_ai = L.ai_controller
-		var/datum/weakref/enemy_ref = controller.blackboard[BB_MONKEY_CURRENT_ATTACK_TARGET]
-		var/list/enemies = L.ai_controller.blackboard[BB_MONKEY_ENEMIES]
-		enemies[enemy_ref] = MONKEY_RECRUIT_HATED_AMOUNT
-		monkey_ai.blackboard[BB_MONKEY_RECRUIT_COOLDOWN] = world.time + MONKEY_RECRUIT_COOLDOWN
+
+		// Recruited a monkey to our side
+		controller.set_blackboard_key(BB_MONKEY_RECRUIT_COOLDOWN, world.time + MONKEY_RECRUIT_COOLDOWN)
+		// Other monkeys now also hate the guy we're currently targeting
+		L.ai_controller.add_blackboard_key_assoc(BB_MONKEY_ENEMIES, controller.blackboard[BB_MONKEY_CURRENT_ATTACK_TARGET], MONKEY_RECRUIT_HATED_AMOUNT)
 
 	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
@@ -325,14 +313,13 @@
 	var/list/enemies = controller.blackboard[enemies_key]
 	var/list/valids = list()
 	for(var/mob/living/possible_enemy in view(MONKEY_ENEMY_VISION, controller.pawn))
-		var/datum/weakref/enemy_ref = WEAKREF(possible_enemy)
-		if(possible_enemy == controller.pawn || (!enemies[enemy_ref] && (!controller.blackboard[BB_MONKEY_AGGRESSIVE] || HAS_AI_CONTROLLER_TYPE(possible_enemy, /datum/ai_controller/monkey)))) //Are they an enemy? (And do we even care?)
+		if(possible_enemy == controller.pawn || (!enemies[possible_enemy] && (!controller.blackboard[BB_MONKEY_AGGRESSIVE] || HAS_AI_CONTROLLER_TYPE(possible_enemy, /datum/ai_controller/monkey)))) //Are they an enemy? (And do we even care?)
 			continue
 		// Weighted list, so the closer they are the more likely they are to be chosen as the enemy
-		valids[enemy_ref] = CEILING(100 / (get_dist(controller.pawn, possible_enemy) || 1), 1)
+		valids[possible_enemy] = CEILING(100 / (get_dist(controller.pawn, possible_enemy) || 1), 1)
 
 	if(!valids.len)
 		return BEHAVIOR_PERFORM_FAILURE
 
-	controller.blackboard[set_key] = pick_weight(valids)
+	controller.set_blackboard_key(set_key, pick_weight(valids))
 	return BEHAVIOR_PERFORM_SUCCESS

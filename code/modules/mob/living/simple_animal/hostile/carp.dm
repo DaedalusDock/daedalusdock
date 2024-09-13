@@ -88,7 +88,7 @@
 	ADD_TRAIT(src, TRAIT_HEALS_FROM_CARP_RIFTS, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
 	if(ai_controller)
-		ai_controller.blackboard[BB_HOSTILE_ATTACK_WORD] = pick(speak_emote)
+		ai_controller.set_blackboard_key(BB_HOSTILE_ATTACK_WORD, pick(speak_emote))
 		if(tamer)
 			tamed(tamer)
 		else

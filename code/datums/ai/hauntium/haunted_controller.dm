@@ -32,9 +32,9 @@
 			haunt_equipper = FALSE
 	if(haunt_equipper)
 		//You have now become one of the victims of the HAAAAUNTTIIIINNGGG OOOOOO~~~
-		blackboard[BB_TO_HAUNT_LIST][WEAKREF(equipper)] += HAUNTED_ITEM_AGGRO_ADDITION
+		add_blackboard_key_assoc(BB_TO_HAUNT_LIST, equipper, HAUNTED_ITEM_AGGRO_ADDITION)
 	else
-		blackboard[BB_LIKES_EQUIPPER] = TRUE
+		set_blackboard_key(BB_LIKES_EQUIPPER, TRUE)
 
 	RegisterSignal(pawn, COMSIG_ITEM_DROPPED, PROC_REF(on_dropped))
 
@@ -43,5 +43,5 @@
 	SIGNAL_HANDLER
 
 	RegisterSignal(pawn, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
-	blackboard[BB_LIKES_EQUIPPER] = FALSE
+	set_blackboard_key(BB_LIKES_EQUIPPER, FALSE)
 	UnregisterSignal(pawn, COMSIG_ITEM_DROPPED)

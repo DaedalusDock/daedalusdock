@@ -1,12 +1,15 @@
 ///Dog specific idle behavior.
+/datum/ai_behavior/idle_dog
+	action_cooldown = 10 SECONDS
+
 /datum/ai_behavior/idle_dog/perform(delta_time, datum/ai_controller/dog/controller)
 	var/mob/living/living_pawn = controller.pawn
 	if(!isturf(living_pawn.loc) || LAZYLEN(living_pawn.grabbed_by))
-		return
+		return BEHAVIOR_PERFORM_SUCCESS
 
 	// if we were just ordered to heel, chill out for a bit
 	if(!COOLDOWN_FINISHED(controller, heel_cooldown))
-		return
+		return BEHAVIOR_PERFORM_SUCCESS
 
 	// if we're just ditzing around carrying something, occasionally print a message so people know we have something
 	if(controller.blackboard[BB_SIMPLE_CARRY_ITEM] && DT_PROB(5, delta_time))

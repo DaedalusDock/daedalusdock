@@ -12,7 +12,7 @@
 	if (isliving(controller.pawn))
 		var/mob/living/pawn = controller.pawn
 		if (world.time < pawn.next_move)
-			return AI_BEHAVIOR_INSTANT
+			return BEHAVIOR_PERFORM_INSTANT
 
 	var/mob/living/basic/basic_mob = controller.pawn
 	var/atom/target = controller.blackboard[target_key]
@@ -23,7 +23,7 @@
 
 	var/hiding_target = targetting_datum.find_hidden_mobs(basic_mob, target) //If this is valid, theyre hidden in something!
 
-	controller.blackboard[hiding_location_key] = hiding_target
+	controller.set_blackboard_key(hiding_location_key, hiding_target)
 
 	if(hiding_target) //Slap it!
 		basic_mob.melee_attack(hiding_target)
@@ -64,7 +64,7 @@
 		return BEHAVIOR_PERFORM_INSTANT
 
 	//controller.set_blackboard_key(hiding_location_keym, hiding_target)
-	controller.blackboard[hiding_location_key] = hiding_target
+	controller.set_blackboard_key(hiding_location_key, hiding_target)
 
 	basic_mob.RangedAttack(final_target)
 

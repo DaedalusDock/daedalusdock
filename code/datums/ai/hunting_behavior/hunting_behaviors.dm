@@ -31,7 +31,7 @@
 			if(living_target.stat == DEAD) //bitch is dead
 				continue
 		if(can_see(living_mob, possible_dinner, 2))
-			controller.blackboard[hunting_target_key] = possible_dinner
+			controller.set_blackboard_key(hunting_target_key, possible_dinner)
 			return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
@@ -67,6 +67,6 @@
 /datum/ai_behavior/hunt_target/finish_action(datum/ai_controller/controller, succeeded, hunting_target_key, hunting_cooldown_key)
 	. = ..()
 	if(succeeded)
-		controller.blackboard[hunting_cooldown_key] = world.time + SUCCESFUL_HUNT_COOLDOWN
+		controller.set_blackboard_key(hunting_cooldown_key, world.time + SUCCESFUL_HUNT_COOLDOWN)
 	else if(hunting_target_key)
-		controller.blackboard[hunting_target_key] = null
+		controller.set_blackboard_key(hunting_target_key, null)

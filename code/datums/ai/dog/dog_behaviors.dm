@@ -22,9 +22,9 @@
 	if(!success) //Don't try again on this item if we failed
 		var/obj/item/target = controller.blackboard[BB_FETCH_TARGET]
 		if(target)
-			controller.blackboard[BB_FETCH_IGNORE_LIST][WEAKREF(target)] = TRUE
-		controller.blackboard[BB_FETCH_TARGET] = null
-		controller.blackboard[BB_FETCH_DELIVER_TO] = null
+			controller.set_blackboard_key_assoc_lazylist(BB_FETCH_IGNORE_LIST, target, TRUE)
+		controller.set_blackboard_key(BB_FETCH_TARGET, null)
+		controller.set_blackboard_key(BB_FETCH_DELIVER_TO, null)
 
 
 /// This is simply a behaviour to pick up a fetch target
@@ -42,16 +42,16 @@
 
 /datum/ai_behavior/simple_equip/finish_action(datum/ai_controller/controller, success)
 	. = ..()
-	controller.blackboard[BB_FETCH_TARGET] = null
+	controller.set_blackboard_key(BB_FETCH_TARGET, null)
 	if(!success)
-		controller.blackboard[BB_FETCH_DELIVER_TO] = null
+		controller.set_blackboard_key(BB_FETCH_DELIVER_TO, null)
 
 /datum/ai_behavior/simple_equip/proc/pickup_item(datum/ai_controller/controller, obj/item/target)
 	var/atom/pawn = controller.pawn
 	drop_item(controller)
 	pawn.visible_message(span_notice("[pawn] picks up [target] in [pawn.p_their()] mouth."))
 	target.forceMove(pawn)
-	controller.blackboard[BB_SIMPLE_CARRY_ITEM] = target
+	controller.set_blackboard_key(BB_SIMPLE_CARRY_ITEM, target)
 	return TRUE
 
 /datum/ai_behavior/simple_equip/proc/drop_item(datum/ai_controller/controller)
@@ -62,7 +62,7 @@
 	var/atom/pawn = controller.pawn
 	pawn.visible_message(span_notice("[pawn] drops [carried_item]."))
 	carried_item.forceMove(get_turf(pawn))
-	controller.blackboard[BB_SIMPLE_CARRY_ITEM] = null
+	controller.set_blackboard_key(BB_SIMPLE_CARRY_ITEM, null)
 	return TRUE
 
 
@@ -84,8 +84,8 @@
 
 /datum/ai_behavior/deliver_item/finish_action(datum/ai_controller/controller, success)
 	. = ..()
-	controller.blackboard[BB_FETCH_TARGET] = null
-	controller.blackboard[BB_FETCH_DELIVER_TO] = null
+	controller.set_blackboard_key(BB_FETCH_TARGET, null)
+	controller.set_blackboard_key(BB_FETCH_DELIVER_TO, null)
 
 /// Actually drop the fetched item to the target
 /datum/ai_behavior/deliver_item/proc/deliver_item(datum/ai_controller/controller)
@@ -100,7 +100,7 @@
 		controller.pawn.visible_message(span_notice("[controller.pawn] delivers [carried_item] to [return_target]."))
 
 	carried_item.forceMove(get_turf(return_target))
-	controller.blackboard[BB_SIMPLE_CARRY_ITEM] = null
+	controller.set_blackboard_key(BB_SIMPLE_CARRY_ITEM, null)
 	return BEHAVIOR_PERFORM_SUCCESS
 
 /// This behavior involves either eating a snack we can reach, or begging someone holding a snack
@@ -138,7 +138,7 @@
 		return
 
 	if(!controller.blackboard[BB_DOG_PLAYING_DEAD])
-		controller.blackboard[BB_DOG_PLAYING_DEAD] = TRUE
+		controller.set_blackboard_key(BB_DOG_PLAYING_DEAD, TRUE)
 		simple_pawn.emote("deathgasp", intentional=FALSE)
 		simple_pawn.icon_state = simple_pawn.icon_dead
 		if(simple_pawn.flip_on_death)
@@ -155,7 +155,7 @@
 	var/mob/living/simple_animal/simple_pawn = controller.pawn
 	if(!istype(simple_pawn) || simple_pawn.stat) // imagine actually dying while playing dead. hell, imagine being the kid waiting for your pup to get back up :(
 		return
-	controller.blackboard[BB_DOG_PLAYING_DEAD] = FALSE
+	controller.set_blackboard_key(BB_DOG_PLAYING_DEAD, FALSE)
 	simple_pawn.visible_message(span_notice("[simple_pawn] springs to [simple_pawn.p_their()] feet, panting excitedly!"))
 	simple_pawn.icon_state = simple_pawn.icon_living
 	if(simple_pawn.flip_on_death)
@@ -168,17 +168,15 @@
 	required_distance = 3
 
 /datum/ai_behavior/harass/perform(delta_time, datum/ai_controller/controller)
-	. = ..()
 	var/mob/living/living_pawn = controller.pawn
 	if(!istype(living_pawn) || !(isturf(living_pawn.loc) || HAS_TRAIT(living_pawn, TRAIT_AI_BAGATTACK)))
-		return
+		return BEHAVIOR_PERFORM_FAILURE
 
-	var/datum/weakref/harass_ref = controller.blackboard[BB_DOG_HARASS_TARGET]
-	var/atom/movable/harass_target = harass_ref.resolve()
+	var/atom/movable/harass_target = controller.blackboard[BB_DOG_HARASS_TARGET]
 	if(!harass_target || !can_see(living_pawn, harass_target, length=AI_DOG_VISION_RANGE))
 		return BEHAVIOR_PERFORM_FAILURE
 
-	if(controller.blackboard[BB_DOG_FRIENDS][harass_ref])
+	if(harass_target in controller.blackboard[BB_FRIENDS_LIST])
 		living_pawn.visible_message(span_danger("[living_pawn] looks sideways at [harass_target] for a moment, then shakes [living_pawn.p_their()] head and ceases aggression."))
 		return BEHAVIOR_PERFORM_FAILURE
 
@@ -187,7 +185,7 @@
 		return BEHAVIOR_PERFORM_SUCCESS
 
 	if(!controller.blackboard[BB_DOG_HARASS_FRUSTRATION])
-		controller.blackboard[BB_DOG_HARASS_FRUSTRATION] = world.time
+		controller.set_blackboard_key(BB_DOG_HARASS_FRUSTRATION, world.time)
 	else if(controller.blackboard[BB_DOG_HARASS_FRUSTRATION] + AI_DOG_HARASS_FRUSTRATE_TIME < world.time) // if we haven't actually bit them in a while, give up
 		living_pawn.visible_message(span_danger("[living_pawn] yawns and seems to lose interest in harassing [harass_target]."))
 		return BEHAVIOR_PERFORM_FAILURE
@@ -204,8 +202,8 @@
 
 /datum/ai_behavior/harass/finish_action(datum/ai_controller/controller, succeeded)
 	. = ..()
-	controller.blackboard[BB_DOG_HARASS_TARGET] = null
-	controller.blackboard[BB_DOG_HARASS_FRUSTRATION] = null
+	controller.set_blackboard_key(BB_DOG_HARASS_TARGET, null)
+	controller.set_blackboard_key(BB_DOG_HARASS_FRUSTRATION, null)
 
 /// A proc representing when the mob is pushed to actually attack the target. Again, subtypes can be used to represent different attacks from different animals, or it can be some other generic behavior
 /datum/ai_behavior/harass/proc/attack(datum/ai_controller/controller, mob/living/living_target)
@@ -213,7 +211,7 @@
 	if(!istype(living_pawn))
 		return
 
-	controller.blackboard[BB_DOG_HARASS_FRUSTRATION] = world.time
+	controller.set_blackboard_key(BB_DOG_HARASS_FRUSTRATION, world.time)
 
 	// make sure the pawn gets some temporary strength boost to actually attack the target instead of pathetically nuzzling them.
 	var/old_melee_lower = living_pawn.melee_damage_lower

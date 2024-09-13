@@ -39,7 +39,7 @@ have ways of interacting with a specific mob and control it.
 	. = ..()
 	if(. & AI_CONTROLLER_INCOMPATIBLE)
 		return
-	blackboard[BB_MONKEY_AGGRESSIVE] = TRUE //Angry cunt
+	set_blackboard_key(BB_MONKEY_AGGRESSIVE, TRUE) //Angry cunt
 
 /datum/ai_controller/monkey/TryPossessPawn(atom/new_pawn)
 	if(!isliving(new_pawn))
@@ -101,7 +101,7 @@ have ways of interacting with a specific mob and control it.
 	var/mob/living/living_pawn = pawn
 
 	if(!locate(/obj/item) in living_pawn.held_items)
-		blackboard[BB_MONKEY_BEST_FORCE_FOUND] = 0
+		set_blackboard_key(BB_MONKEY_BEST_FORCE_FOUND, 0)
 
 	if(blackboard[BB_MONKEY_GUN_NEURONS_ACTIVATED] && (locate(/obj/item/gun) in living_pawn.held_items))
 		// We have a gun, what could we possibly want?
@@ -125,7 +125,7 @@ have ways of interacting with a specific mob and control it.
 	if(!weapon || (weapon in living_pawn.held_items))
 		return FALSE
 
-	blackboard[BB_MONKEY_PICKUPTARGET] = weapon
+	set_blackboard_key(BB_MONKEY_PICKUPTARGET, weapon)
 	set_move_target(weapon)
 	if(pickpocket)
 		queue_behavior(/datum/ai_behavior/monkey_equip/pickpocket)
@@ -135,8 +135,7 @@ have ways of interacting with a specific mob and control it.
 
 ///Reactive events to being hit
 /datum/ai_controller/monkey/proc/retaliate(mob/living/L)
-	var/list/enemies = blackboard[BB_MONKEY_ENEMIES]
-	enemies[WEAKREF(L)] += MONKEY_HATRED_AMOUNT
+	add_blackboard_key_assoc(BB_MONKEY_ENEMIES, L, MONKEY_HATRED_AMOUNT)
 
 /datum/ai_controller/monkey/proc/on_attackby(datum/source, obj/item/I, mob/user)
 	SIGNAL_HANDLER
@@ -219,4 +218,5 @@ have ways of interacting with a specific mob and control it.
 
 /datum/ai_controller/monkey/proc/target_del(target)
 	SIGNAL_HANDLER
-	blackboard[BB_MONKEY_BLACKLISTITEMS] -= target
+	remove_thing_from_blackboard_key(BB_MONKEY_BLACKLISTITEMS, target)
+

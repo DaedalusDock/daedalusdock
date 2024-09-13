@@ -114,7 +114,7 @@
 
 /mob/living/basic/proc/melee_attack(atom/target, put_on_cooldown = FALSE)
 	src.face_atom(target)
-	if (!ignore_cooldown)
+	if (!put_on_cooldown)
 		changeNext_move(melee_attack_cooldown)
 	if(SEND_SIGNAL(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, target) & COMPONENT_HOSTILE_NO_ATTACK)
 		return FALSE //but more importantly return before attack_animal called

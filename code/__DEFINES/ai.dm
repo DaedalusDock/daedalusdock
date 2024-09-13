@@ -1,6 +1,12 @@
 #define GET_AI_BEHAVIOR(behavior_type) SSai_behaviors.ai_behaviors[behavior_type]
 #define HAS_AI_CONTROLLER_TYPE(thing, type) istype(thing?.ai_controller, type)
 
+#ifdef DEBUG_AI
+#define DEBUG_AI_LOG(controller, message) if(controller.debug_focus) { to_chat(world, span_debug("AI DBG: [message]")) }
+#else
+#define DEBUG_AI_LOG(...)
+#endif
+
 #define AI_STATUS_ON 1
 #define AI_STATUS_OFF 2
 
@@ -28,6 +34,8 @@
 #define AI_BEHAVIOR_KEEP_MOVE_TARGET_ON_FINISH (1<<2)
 ///Does finishing this task make the AI stop moving towards the target?
 #define AI_BEHAVIOR_KEEP_MOVING_TOWARDS_TARGET_ON_FINISH (1<<3)
+///Does this behavior NOT block planning?
+#define AI_BEHAVIOR_CAN_PLAN_DURING_EXECUTION (1<<4)
 
 ///AI flags
 #define STOP_MOVING_WHEN_PULLED (1<<0)
@@ -54,6 +62,8 @@
 #define BB_FOOD_TARGET "bb_food_target"
 ///Path we should use next time we use the JPS movement datum
 #define BB_PATH_TO_USE "BB_path_to_use"
+/// Typecache of refs to mobs this mob is friends with, will follow their instructions and won't attack them
+#define BB_FRIENDS_LIST "BB_FRIENDS_LIST"
 
 //for songs
 
@@ -163,9 +173,8 @@
 
 #define BB_SIMPLE_CARRY_ITEM "BB_SIMPLE_CARRY_ITEM"
 #define BB_FETCH_TARGET "BB_FETCH_TARGET"
-#define BB_FETCH_IGNORE_LIST "BB_FETCH_IGNORE_LISTlist"
+#define BB_FETCH_IGNORE_LIST "BB_FETCH_IGNORE_LIST"
 #define BB_FETCH_DELIVER_TO "BB_FETCH_DELIVER_TO"
-#define BB_DOG_FRIENDS "BB_DOG_FRIENDS"
 #define BB_DOG_ORDER_MODE "BB_DOG_ORDER_MODE"
 #define BB_DOG_PLAYING_DEAD "BB_DOG_PLAYING_DEAD"
 #define BB_DOG_HARASS_TARGET "BB_DOG_HARASS_TARGET"

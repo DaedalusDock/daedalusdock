@@ -24,7 +24,14 @@ multiple modular subtrees with behaviors
 	var/atom/current_movement_target
 
 
-	///This is a list of variables the AI uses and can be mutated by actions. When an action is performed you pass this list and any relevant keys for the variables it can mutate.
+	/**
+	 * This is a list of variables the AI uses and can be mutated by actions.
+	 *
+	 * When an action is performed you pass this list and any relevant keys for the variables it can mutate.
+	 *
+	 * DO NOT set values in the blackboard directly, and especially not if you're adding a datum reference to this!
+	 * Use the setters, in _ai_controller_blackboard.dm!!!
+	 */
 	var/list/blackboard = list()
 	///Stored arguments for behaviors given during their initial creation
 	var/list/behavior_args = list()
@@ -53,6 +60,10 @@ multiple modular subtrees with behaviors
 	// The variables below are fucking stupid and should be put into the blackboard at some point.
 	///AI paused time
 	var/paused_until = 0
+
+	#ifdef DEBUG_AI
+	var/debug_focus = FALSE
+	#endif
 
 /datum/ai_controller/New(atom/new_pawn)
 	change_ai_movement_type(ai_movement)
@@ -139,6 +150,9 @@ multiple modular subtrees with behaviors
 		return //this should remove them from processing in the future through event-based stuff.
 
 	if(!LAZYLEN(current_behaviors) && default_behavior)
+		if(behavior_cooldowns[GET_AI_BEHAVIOR(default_behavior)] > world.time)
+			return
+
 		queue_behavior(default_behavior)
 
 	if(current_movement_target && get_dist(pawn, current_movement_target) > max_target_distance) //The distance is out of range
@@ -188,6 +202,7 @@ multiple modular subtrees with behaviors
 	SHOULD_NOT_SLEEP(TRUE) //Fuck you don't sleep in procs like this.
 	if(!COOLDOWN_FINISHED(src, failed_planning_cooldown))
 		return FALSE
+	DEBUG_AI_LOG(src, "Beginning behavior selection")
 
 	LAZYINITLIST(current_behaviors)
 
@@ -195,6 +210,18 @@ multiple modular subtrees with behaviors
 		for(var/datum/ai_planning_subtree/subtree as anything in planning_subtrees)
 			if(subtree.ProcessBehaviorSelection(src, delta_time) == SUBTREE_RETURN_FINISH_PLANNING)
 				break
+
+	DEBUG_AI_LOG(src, "Behavior selection concluded")
+
+///Determines whether the AI can currently make a new plan
+/datum/ai_controller/proc/able_to_plan()
+	. = TRUE
+	if(QDELETED(pawn))
+		return FALSE
+	for(var/datum/ai_behavior/current_behavior as anything in current_behaviors)
+		if(!(current_behavior.behavior_flags & AI_BEHAVIOR_CAN_PLAN_DURING_EXECUTION)) //We have a behavior that blocks planning
+			. = FALSE
+			break
 
 ///This proc handles changing ai status, and starts/stops processing if required.
 /datum/ai_controller/proc/set_ai_status(new_ai_status)
@@ -206,15 +233,18 @@ multiple modular subtrees with behaviors
 		if(AI_STATUS_ON)
 			SSai_controllers.active_ai_controllers += src
 			START_PROCESSING(SSai_behaviors, src)
+			DEBUG_AI_LOG(src, "Processing resumed.")
 		if(AI_STATUS_OFF)
 			STOP_PROCESSING(SSai_behaviors, src)
 			SSai_controllers.active_ai_controllers -= src
 			CancelActions()
+			DEBUG_AI_LOG(src, "Processing paused.")
 
 /datum/ai_controller/proc/PauseAi(time)
 	paused_until = world.time + time
 
 /datum/ai_controller/proc/set_move_target(atom/thing)
+	DEBUG_AI_LOG(src, isnull(thing) ? "Canceled movement plan" : "Moving towards [COORD(thing)]")
 	current_movement_target = thing
 
 ///Call this to add a behavior to the stack.
@@ -222,18 +252,25 @@ multiple modular subtrees with behaviors
 	var/datum/ai_behavior/behavior = GET_AI_BEHAVIOR(behavior_type)
 	if(!behavior)
 		CRASH("Behavior [behavior_type] not found.")
+
 	var/list/arguments = args.Copy()
 	arguments[1] = src
 	if(!behavior.setup(arglist(arguments)))
 		return
+
 	LAZYADD(current_behaviors, behavior)
 	arguments.Cut(1, 2)
+
 	if(length(arguments))
 		behavior_args[behavior_type] = arguments
 	else
 		behavior_args -= behavior_type
 
+	DEBUG_AI_LOG(src, "Queued [behavior_type]")
+
 /datum/ai_controller/proc/ProcessBehavior(delta_time, datum/ai_behavior/behavior)
+	DEBUG_AI_LOG(src, "Running [behavior]")
+
 	var/list/arguments = list(delta_time, src)
 	var/list/stored_arguments = behavior_args[behavior.type]
 	if(stored_arguments)
@@ -247,10 +284,14 @@ multiple modular subtrees with behaviors
 	if(process_result & BEHAVIOR_PERFORM_SUCCESS)
 		arguments[2] = TRUE
 		behavior.finish_action(arglist(arguments))
+		DEBUG_AI_LOG(src, "Succeeded [behavior.type]")
 
 	else if(process_result & BEHAVIOR_PERFORM_FAILURE)
 		arguments[2] = FALSE
 		behavior.finish_action(arglist(arguments))
+		DEBUG_AI_LOG(src, "Failed [behavior.type]")
+	else
+		DEBUG_AI_LOG(src, "Continuing [behavior.type]")
 
 /datum/ai_controller/proc/CancelActions()
 	if(!LAZYLEN(current_behaviors))
@@ -278,7 +319,10 @@ multiple modular subtrees with behaviors
 
 /// Use this proc to define how your controller defines what access the pawn has for the sake of pathfinding, likely pointing to whatever ID slot is relevant
 /datum/ai_controller/proc/get_access()
-	return
+	if(!isliving(pawn))
+		return
+	var/mob/living/living_pawn = pawn
+	return living_pawn.get_idcard()?.GetAccess()
 
 ///Returns the minimum required distance to preform one of our current behaviors. Honestly this should just be cached or something but fuck you
 /datum/ai_controller/proc/get_minimum_distance()

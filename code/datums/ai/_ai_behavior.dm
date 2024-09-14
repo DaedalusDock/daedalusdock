@@ -17,12 +17,17 @@
 	return NONE
 
 /// Returns a behavior to perform after this one, or null if continuing this one
-/datum/ai_behavior/proc/next_behavior(datum/ai_controller/controller)
+/datum/ai_behavior/proc/next_behavior(datum/ai_controller/controller, success)
 	return null
 
 /// Returns a numerical value that is essentially a priority for planner behaviors.
 /datum/ai_behavior/proc/score(datum/ai_controller/controller)
 	return BEHAVIOR_SCORE_DEFAULT
+
+/// Helper for scoring something based on the distance between it and the pawn.
+/datum/ai_behavior/proc/score_distance(datum/ai_controller/controller, atom/target)
+	var/search_radius = controller.target_search_radius
+	return 100 * (search_radius - get_dist_manhattan(get_turf(controller.pawn), get_turf(target))) / search_radius
 
 /// Returns the delay to use for this behavior in the moment
 /// Override to return a conditional delay
@@ -33,8 +38,11 @@
 /datum/ai_behavior/proc/finish_action(datum/ai_controller/controller, succeeded, ...)
 	LAZYREMOVE(controller.current_behaviors, src)
 	controller.behavior_args -= type
+
 	if(behavior_flags & AI_BEHAVIOR_REQUIRE_MOVEMENT) //If this was a movement task, reset our movement target if necessary
 		if(!(behavior_flags & AI_BEHAVIOR_KEEP_MOVE_TARGET_ON_FINISH))
 			controller.set_move_target(null)
 		if(!(behavior_flags & AI_BEHAVIOR_KEEP_MOVING_TOWARDS_TARGET_ON_FINISH))
 			controller.ai_movement.stop_moving_towards(controller)
+
+	next_behavior(controller, succeeded)

@@ -236,3 +236,9 @@
 
 /// The list of behaviors for the planners to select from. THIS IS ACTUALLY A SUBKEY!! See _behavior_planner.dm
 #define BB_PLANNER_BEHAVIORS "BB_planner_behaviors"
+
+#define BB_FLOCK_STARING_ACTIVE "BB_flock_staring"
+#define BB_FLOCK_STARE_TARGET "BB_flock_stare_target"
+#define BB_FLOCK_WANDERING "BB_flock_wandering"
+#define BB_FLOCK_STARE_CD "BB_flock_stare_cooldown"
+#define BB_FLOCK_CONVERT_TARGET "BB_flock_convert_target"

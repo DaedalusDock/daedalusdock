@@ -115,7 +115,7 @@ have ways of interacting with a specific mob and control it.
 	weapon = GetBestWeapon(src, nearby_items, living_pawn.held_items)
 
 	var/pickpocket = FALSE
-	for(var/mob/living/carbon/human/human in oview(5, living_pawn))
+	for(var/mob/living/carbon/human/human in oview(target_search_radius, living_pawn))
 		var/obj/item/held_weapon = GetBestWeapon(src, human.held_items + weapon, living_pawn.held_items)
 		if(held_weapon == weapon) // It's just the same one, not a held one
 			continue

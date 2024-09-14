@@ -6,7 +6,6 @@
 	BB_VENDING_UNTILT_COOLDOWN = 0,
 	BB_VENDING_BUSY_TILTING = FALSE,
 	BB_VENDING_LAST_HIT_SUCCESFUL = FALSE)
-	var/vision_range = 7
 	var/search_for_enemy_cooldown = 2 SECONDS
 
 /datum/ai_controller/vending_machine/TryPossessPawn(atom/new_pawn)
@@ -39,7 +38,7 @@
 	else //Not tilted, try to find target to tilt onto.
 		if(blackboard[BB_VENDING_TILT_COOLDOWN] > world.time)
 			return
-		for(var/mob/living/living_target in oview(vision_range, pawn))
+		for(var/mob/living/living_target in oview(target_search_radius, pawn))
 			if(living_target.stat || living_target.incorporeal_move) //They're already fucked up or incorporeal
 				continue
 			set_blackboard_key(BB_VENDING_CURRENT_TARGET, living_target)

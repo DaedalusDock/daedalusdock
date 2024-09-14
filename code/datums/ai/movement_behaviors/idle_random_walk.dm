@@ -10,3 +10,6 @@
 		living_pawn.Move(get_step(living_pawn, move_dir), move_dir)
 
 	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
+
+/datum/ai_behavior/idle_random_walk/score(datum/ai_controller/controller)
+	return 1

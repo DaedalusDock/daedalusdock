@@ -196,7 +196,7 @@
 	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/find_and_set/proc/search_tactic(datum/ai_controller/controller, locate_path, search_range)
-	for(var/atom/A as anything in oview(search_range, controller.pawn))
+	for(var/atom/A as anything in oview(search_range, controller.target_search_radius))
 		if(!istype(A, locate_path))
 			continue
 

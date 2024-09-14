@@ -42,6 +42,8 @@ multiple modular subtrees with behaviors
 	var/continue_processing_when_client = FALSE
 	///distance to give up on target
 	var/max_target_distance = 14
+	/// The search radius when looking for interesting things.
+	var/target_search_radius = 5
 
 	///Cooldown for new plans, to prevent AI from going nuts if it can't think of new plans and looping on end
 	COOLDOWN_DECLARE(failed_planning_cooldown)
@@ -91,8 +93,10 @@ multiple modular subtrees with behaviors
 		return
 	var/list/temp_subtree_list = list()
 	for(var/subtree in planning_subtrees)
-		var/subtree_instance = SSai_controllers.ai_subtrees[subtree]
+		var/datum/ai_planning_subtree/subtree_instance = SSai_controllers.ai_subtrees[subtree]
 		temp_subtree_list += subtree_instance
+		subtree_instance.setup(src)
+
 	planning_subtrees = temp_subtree_list
 
 ///Proc to move from one pawn to another, this will destroy the target's existing controller.
@@ -239,6 +243,8 @@ multiple modular subtrees with behaviors
 			SSai_controllers.active_ai_controllers -= src
 			CancelActions()
 			DEBUG_AI_LOG(src, "Processing paused.")
+
+	SEND_SIGNAL(src, COMSIG_AI_STATUS_CHANGE, ai_status)
 
 /datum/ai_controller/proc/PauseAi(time)
 	paused_until = world.time + time

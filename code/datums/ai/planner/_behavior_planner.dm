@@ -1,5 +1,4 @@
 /datum/ai_planning_subtree/scored
-	#warn timed behaviors? cooldowns? weirdness
 	var/list/possible_behaviors = list()
 
 /datum/ai_planning_subtree/scored/setup(datum/ai_controller/controller, ...)
@@ -10,7 +9,7 @@
 		if(isnull(behavior))
 			stack_trace("Bad AI behavior: [behavior_type]")
 			continue
-		controller.set_blackboard_key_assoc(BB_PLANNER_BEHAVIORS, behavior, possible_behaviors[behavior_type])
+		controller.set_blackboard_key_assoc(BB_PLANNER_BEHAVIORS, behavior, 0)
 
 /datum/ai_planning_subtree/scored/SelectBehaviors(datum/ai_controller/controller, delta_time)
 	var/list/behavior_cache = controller.blackboard[BB_PLANNER_BEHAVIORS]
@@ -32,10 +31,10 @@
 
 	if(candidate)
 		controller.queue_behavior(candidate.type)
+		return SUBTREE_RETURN_FINISH_PLANNING
 
 /datum/ai_planning_subtree/scored/ProcessBehaviorSelection(datum/ai_controller/controller, delta_time)
-	var/list/behavior_cache = controller.blackboard[BB_PLANNER_BEHAVIORS]
-	for(var/datum/ai_behavior/behavior in behavior_cache)
-		behavior_cache[behavior] = behavior.score(controller)
+	for(var/datum/ai_behavior/behavior in controller.blackboard[BB_PLANNER_BEHAVIORS])
+		controller.set_blackboard_key_assoc(BB_PLANNER_BEHAVIORS, behavior, behavior.score(controller))
 
 	return ..()

@@ -2971,6 +2971,8 @@
 #include "code\modules\flockmind\actions\designate_enemy.dm"
 #include "code\modules\flockmind\actions\designate_turf.dm"
 #include "code\modules\flockmind\actions\gatecrash.dm"
+#include "code\modules\flockmind\actions\ping.dm"
+#include "code\modules\flockmind\actions\radio_blast.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_convert.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_stare.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_wander.dm"

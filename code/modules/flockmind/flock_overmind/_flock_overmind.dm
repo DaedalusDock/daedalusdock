@@ -13,11 +13,14 @@
 		/datum/action/cooldown/flock/designate_tile,
 		/datum/action/cooldown/flock/designate_enemy,
 		/datum/action/cooldown/flock/designate_ignore,
+		/datum/action/cooldown/flock/radio_blast,
+		/datum/action/cooldown/flock/ping,
 	)
 
 /mob/camera/flock/overmind/Initialize(mapload)
 	. = ..()
 	flock = GLOB.debug_flock
+	flock.register_overmind(src)
 	set_real_name("Flockmind [flock.name]")
 
 GLOBAL_DATUM_INIT(debug_flock, /datum/flock, new)

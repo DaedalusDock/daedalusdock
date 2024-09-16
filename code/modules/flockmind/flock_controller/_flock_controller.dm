@@ -4,6 +4,7 @@
 	/// The master of the flock
 	var/mob/camera/flock/overmind/overmind
 
+	/// Cache of images used by notices.
 	var/list/notice_images = list()
 	/// A k:V list of atoms the Overmind has marked for conversion, where the value is TRUE
 	var/list/marked_for_deconstruction = list()
@@ -11,18 +12,25 @@
 	var/list/turf_reservations = list()
 	/// A k:V list of flock mobs to their reserved turf.
 	var/list/turf_reservations_by_flock = list()
+
 	/// The drones
 	var/list/drones = list()
+	/// The traces
+	var/list/traces = list()
 
 	/// A k:v list of mob : details, contains enemy mobs.
 	var/list/enemies = list()
 	/// A k:V list of mob : TRUE, where mob is mobs that ai will ignore.
 	var/list/ignores = list()
 
+	/// A k:V list of client : image, see ping().
+	var/list/active_pings = list()
+
 /datum/flock/New()
 	name = flock_realname(FLOCK_TYPE_OVERMIND)
 	create_hud_images()
 
+/// Reserves a turf, making AI ignore it for the purposes of targetting.
 /datum/flock/proc/reserve_turf(mob/living/simple_animal/flock/user, turf/target)
 	if(turf_reservations_by_flock[user])
 		return FALSE
@@ -35,6 +43,7 @@
 	RegisterSignal(target, COMSIG_TURF_CHANGE, PROC_REF(reserved_turf_change))
 	return TRUE
 
+/// Free a turf from reservation, allowing AI to target it again. override_turf can be given to lookup the user if there isnt a user in this context.
 /datum/flock/proc/free_turf(mob/living/simple_animal/flock/user, turf/override_turf)
 	var/turf/to_free
 	if(user)
@@ -138,6 +147,38 @@
 
 	return marked_for_deconstruction - turf_reservations
 
+/datum/flock/proc/ping(turf/T, mob/camera/flock/pinger)
+	var/message = "System interrupt. Designating new target: [T] in [get_area(T)]."
+	flock_talk(pinger, message, src, TRUE, list("italics"))
+	for(var/mob/camera/flock/ghost_bird in (traces + overmind))
+		if(isnull(ghost_bird.client))
+			continue
+
+		ghost_bird.playsound_local(null, 'goon/sounds/flockmind/ping.ogg', 50, TRUE)
+		#warn debug removed
+		// if(ghost_bird == pinger)
+		// 	continue
+
+		var/image/pointer = image(icon = 'icons/hud/screen1.dmi', icon_state = "arrow_greyscale", loc = ghost_bird)
+		pointer.plane = HUD_PLANE
+		pointer.appearance_flags |= RESET_COLOR
+		pointer.color = "#00ff9dff"
+
+		var/angle = 180 + get_angle(ghost_bird, T)
+		var/matrix/final_matrix = pointer.transform.Scale(2,2)
+		final_matrix = final_matrix.Turn(angle)
+		pointer.transform = final_matrix
+
+		pointer.pixel_x = sin(angle) * -48
+		pointer.pixel_y = cos(angle) * -48
+
+		animate(pointer, time = 3 SECONDS, alpha = 0)
+		ghost_bird.client.images += pointer
+		active_pings[ghost_bird.client] += list(pointer)
+		RegisterSignal(ghost_bird.client, COMSIG_PARENT_QDELETING, PROC_REF(on_client_gone), override = TRUE)
+
+		addtimer(CALLBACK(src, PROC_REF(cleanup_ping_images), ghost_bird.client, pointer), 3 SECONDS)
+
 /datum/flock/proc/reserved_turf_change(datum/source)
 	SIGNAL_HANDLER
 	free_turf(override_turf = source)
@@ -147,6 +188,20 @@
 		UnregisterSignal(unit, list(COMSIG_PARENT_QDELETING, COMSIG_LIVING_DEATH))
 		free_turf(unit)
 		drones -= unit
+
+/datum/flock/proc/cleanup_ping_images(client/C, list/images_to_clean)
+	if(isnull(C))
+		return
+
+	var/list/images = images_to_clean || active_pings[C]
+	C.images -= images
+	if(!length(active_pings[C]))
+		active_pings -= C
+		UnregisterSignal(C, COMSIG_PARENT_QDELETING)
+
+/datum/flock/proc/on_client_gone(client/source)
+	SIGNAL_HANDLER
+	cleanup_ping_images()
 
 /datum/flock/proc/on_unit_death(datum/source)
 	SIGNAL_HANDLER

@@ -11,11 +11,14 @@
 
 	flock_talk(src, message, flock)
 
-/proc/flock_talk(mob/speaker, message, datum/flock/flock, involuntary)
+/proc/flock_talk(mob/speaker, message, datum/flock/flock, involuntary, list/inner_spans)
 
 	message = trim(copytext_char(sanitize(message), 1, MAX_MESSAGE_LEN))
 	if (!message)
 		return
+
+	if(inner_spans)
+		message = attach_spans(message, inner_spans)
 
 	var/used_name = ""
 	var/list/spans = list("flocksay")

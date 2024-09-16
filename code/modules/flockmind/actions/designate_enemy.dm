@@ -1,6 +1,7 @@
 /datum/action/cooldown/flock/designate_enemy
 	name = "Designate Enemy"
 	desc = "Mark or unmark someone as an enemy."
+	button_icon_state = "designate_enemy"
 
 	click_to_activate = TRUE
 	unset_after_click = FALSE

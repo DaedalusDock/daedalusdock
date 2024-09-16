@@ -195,6 +195,7 @@
 
 	var/list/images = images_to_clean || active_pings[C]
 	C.images -= images
+	active_pings[C] -= images
 	if(!length(active_pings[C]))
 		active_pings -= C
 		UnregisterSignal(C, COMSIG_PARENT_QDELETING)

@@ -21,7 +21,7 @@
 	..()
 
 	to_chat(owner, span_notice("You force open all powered doors around you."))
-	playsound(owner, 'goon/sounds/flockmind/flockmind_cast.ogg', 50, TRUE)
+	playsound(owner, 'goon/sounds/flockmind/flockmind_cast.ogg', 50)
 
 	addtimer(CALLBACK(src, PROC_REF(async_open_doors), targets), 1.5 SECONDS)
 	return TRUE

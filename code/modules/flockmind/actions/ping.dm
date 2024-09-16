@@ -2,7 +2,7 @@
 	name = "Ping"
 	desc = "Request attention from other elements of the flock."
 	button_icon_state = "ping"
-	cooldown_time = 0.3 SECONDS
+	cooldown_time = 5 SECONDS
 	click_to_activate = TRUE
 
 /datum/action/cooldown/flock/ping/is_valid_target(atom/cast_on)

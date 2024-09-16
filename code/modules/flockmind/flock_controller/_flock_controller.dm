@@ -107,9 +107,9 @@
 	if(!isliving(ignore))
 		return
 
-	if(!enemies[enemy])
+	if(!enemies[ignore])
 		RegisterSignal(ignore, COMSIG_PARENT_QDELETING, PROC_REF(on_ignore_gone))
-		add_notice(enemy, FLOCK_NOTICE_IGNORE)
+		add_notice(ignore, FLOCK_NOTICE_IGNORE)
 	ignores[ignore] = TRUE
 
 /datum/flock/proc/remove_ignore(atom/movable/ignore, skip_buckled)
@@ -121,7 +121,7 @@
 		return
 
 	ignores -= ignore
-	remove_notice(enemy, FLOCK_NOTICE_IGNORE)
+	remove_notice(ignore, FLOCK_NOTICE_IGNORE)
 	UnregisterSignal(ignore, COMSIG_PARENT_QDELETING)
 
 /datum/flock/proc/add_notice(atom/target, notice_type)

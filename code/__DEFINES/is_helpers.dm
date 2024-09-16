@@ -66,6 +66,8 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define istransparentturf(A) (TURF_IS_MIMICKING(A))
 
+#define isflockturf(A) (istype(A, /turf/open/floor/flock))
+
 //Mobs
 #define isliving(A) (istype(A, /mob/living))
 

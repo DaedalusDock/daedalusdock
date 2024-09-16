@@ -43,7 +43,7 @@ SUBSYSTEM_DEF(pathfinder)
 	return FALSE
 
 /// Pathfind RIGHT NOW!! Returns a list of turfs if a path was found, or FALSE if it could not find a path.
-/datum/controller/subsystem/pathfinder/proc/pathfind_now(atom/movable/caller, atom/end, max_distance = 30, mintargetdist, list/access=null, simulated_only = TRUE, turf/exclude, skip_first=TRUE, diagonal_handling=DIAGONAL_REMOVE_CLUNKY)
+/datum/controller/subsystem/pathfinder/proc/pathfind_now(atom/movable/caller, atom/end, max_distance = 5, mintargetdist, list/access=null, simulated_only = TRUE, turf/exclude, skip_first=TRUE, diagonal_handling=DIAGONAL_REMOVE_CLUNKY)
 	var/datum/pathfind/jps/path = new(caller, end, access, max_distance, mintargetdist, simulated_only, exclude, skip_first, diagonal_handling, null)
 	if(!path.start())
 		return FALSE

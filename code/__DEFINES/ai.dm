@@ -62,6 +62,10 @@
 #define BB_FOOD_TARGET "bb_food_target"
 ///Path we should use next time we use the JPS movement datum
 #define BB_PATH_TO_USE "BB_path_to_use"
+///Max path length we should use next time we use the JPS movement datum
+#define BB_PATH_MAX_LENGTH "BB_path_max_length"
+///Diagonal handling we should use next time we use the JPS movement datum
+#define BB_PATH_DIAGONAL_HANDLING "BB_path_diagonal_handling"
 /// Typecache of refs to mobs this mob is friends with, will follow their instructions and won't attack them
 #define BB_FRIENDS_LIST "BB_FRIENDS_LIST"
 
@@ -242,3 +246,4 @@
 #define BB_FLOCK_WANDERING "BB_flock_wandering"
 #define BB_FLOCK_STARE_CD "BB_flock_stare_cooldown"
 #define BB_FLOCK_CONVERT_TARGET "BB_flock_convert_target"
+#define BB_FLOCK_WANDER_FRUSTRATION "BB_flock_wander_frustration"

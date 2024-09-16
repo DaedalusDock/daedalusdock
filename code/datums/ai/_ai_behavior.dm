@@ -24,6 +24,33 @@
 /datum/ai_behavior/proc/score(datum/ai_controller/controller)
 	return BEHAVIOR_SCORE_DEFAULT
 
+/datum/ai_behavior/proc/get_best_target_by_distance_score(datum/ai_controller/controller, list/targets)
+	if(!length(targets))
+		return null
+
+	var/list/access = controller.get_access()
+	var/best_score = -INFINITY
+	var/atom/ideal_atom = null
+	for(var/atom/A as anything in targets)
+		var/atom_basic_score = score_distance(controller, A)
+		if(atom_basic_score < best_score)
+			continue
+
+		var/list/path = SSpathfinder.pathfind_now(
+			controller.pawn,
+			A,
+			controller.max_target_distance,
+			required_distance,
+			access,
+			HAS_TRAIT(controller.pawn, TRAIT_FREE_FLOAT_MOVEMENT),
+		)
+
+		if(length(path))
+			best_score = atom_basic_score
+			ideal_atom = A
+
+	return ideal_atom
+
 /// Helper for scoring something based on the distance between it and the pawn.
 /datum/ai_behavior/proc/score_distance(datum/ai_controller/controller, atom/target)
 	var/search_radius = controller.target_search_radius

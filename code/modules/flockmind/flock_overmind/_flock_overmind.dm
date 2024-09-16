@@ -11,6 +11,8 @@
 	actions_to_grant = list(
 		/datum/action/cooldown/flock/gatecrash,
 		/datum/action/cooldown/flock/designate_tile,
+		/datum/action/cooldown/flock/designate_enemy,
+		/datum/action/cooldown/flock/designate_ignore,
 	)
 
 /mob/camera/flock/overmind/Initialize(mapload)

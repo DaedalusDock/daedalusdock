@@ -78,9 +78,10 @@
 
 	if(!isliving(enemy))
 		return FALSE
-
+	if(!enemies[enemy])
+		RegisterSignal(enemy, COMSIG_PARENT_QDELETING, PROC_REF(on_enemy_gone))
+		add_notice(enemy, FLOCK_NOTICE_ENEMY)
 	enemies[enemy] = get_area_name(enemy)
-	RegisterSignal(enemy, COMSIG_PARENT_QDELETING, PROC_REF(on_enemy_gone), override = TRUE)
 	return TRUE
 
 /datum/flock/proc/remove_enemy(atom/movable/enemy, skip_buckled)
@@ -93,6 +94,7 @@
 
 	enemies -= enemy
 	UnregisterSignal(enemy, COMSIG_PARENT_QDELETING)
+	remove_notice(enemy, FLOCK_NOTICE_ENEMY)
 	return
 
 /datum/flock/proc/is_mob_ignored(mob/M)
@@ -105,8 +107,10 @@
 	if(!isliving(ignore))
 		return
 
+	if(!enemies[enemy])
+		RegisterSignal(ignore, COMSIG_PARENT_QDELETING, PROC_REF(on_ignore_gone))
+		add_notice(enemy, FLOCK_NOTICE_IGNORE)
 	ignores[ignore] = TRUE
-	RegisterSignal(ignore, COMSIG_PARENT_QDELETING, PROC_REF(on_ignore_gone))
 
 /datum/flock/proc/remove_ignore(atom/movable/ignore, skip_buckled)
 	if(!skip_buckled)
@@ -117,6 +121,7 @@
 		return
 
 	ignores -= ignore
+	remove_notice(enemy, FLOCK_NOTICE_IGNORE)
 	UnregisterSignal(ignore, COMSIG_PARENT_QDELETING)
 
 /datum/flock/proc/add_notice(atom/target, notice_type)
@@ -165,6 +170,20 @@
 	notice_images[FLOCK_NOTICE_PRIORITY] = new /image{
 		icon = 'goon/icons/mob/featherzone.dmi';
 		icon_state = "frontier";
+		plane = ABOVE_LIGHTING_PLANE
+		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+	}
+
+	notice_images[FLOCK_NOTICE_ENEMY] = new /image{
+		icon = 'goon/icons/mob/featherzone.dmi';
+		icon_state = "hazard";
+		plane = ABOVE_LIGHTING_PLANE
+		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+	}
+
+	notice_images[FLOCK_NOTICE_IGNORE] = new /image{
+		icon = 'goon/icons/mob/featherzone.dmi';
+		icon_state = "ignore";
 		plane = ABOVE_LIGHTING_PLANE
 		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
 	}

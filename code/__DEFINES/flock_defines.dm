@@ -5,3 +5,5 @@
 
 #define FLOCK_NOTICE_RESERVED "reserved"
 #define FLOCK_NOTICE_PRIORITY "priority"
+#define FLOCK_NOTICE_ENEMY "enemy"
+#define FLOCK_NOTICE_IGNORE "ignore"

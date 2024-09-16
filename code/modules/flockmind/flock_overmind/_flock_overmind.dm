@@ -1,5 +1,5 @@
 /mob/camera/flock/overmind
-	name = "flockmind"
+	name = "Flockmind"
 	desc = "TODO"
 	icon = 'goon/icons/mob/featherzone.dmi'
 	icon_state ="flockmind"
@@ -10,10 +10,12 @@
 
 	actions_to_grant = list(
 		/datum/action/cooldown/flock/gatecrash,
+		/datum/action/cooldown/flock/designate_tile,
 	)
 
 /mob/camera/flock/overmind/Initialize(mapload)
 	. = ..()
-	set_real_name(flock_realname(FLOCK_TYPE_OVERMIND))
+	flock = GLOB.debug_flock
+	set_real_name("Flockmind [flock.name]")
 
-/mob/camera/flock/overmind
+GLOBAL_DATUM_INIT(debug_flock, /datum/flock, new)

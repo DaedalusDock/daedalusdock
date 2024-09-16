@@ -31,6 +31,8 @@
 
 	/// Flock datum. Can be null.
 	var/datum/flock/flock
+	/// A mob possessing this mob.
+	var/mob/camera/flock/controlled_by
 
 /mob/living/simple_animal/flock/Initialize(mapload)
 	. = ..()
@@ -41,6 +43,7 @@
 	convert_action.Grant(src)
 	set_combat_mode(TRUE)
 	ADD_TRAIT(src, TRAIT_FREE_FLOAT_MOVEMENT, INNATE_TRAIT)
+	flock = GLOB.debug_flock
 
 /mob/living/simple_animal/flock/set_stat(new_stat)
 	. = ..()

@@ -991,3 +991,33 @@ h2.alert {
   border-image-repeat: repeat repeat;
   border-style: solid;
 }
+
+.flocksay {
+  color: #488276;
+}
+
+.flocksay a {
+  color: #488276;
+}
+
+.flocksay a:visited {
+  color: #488276;
+}
+
+.flocksay.sentient {
+  color: white;
+  background-color: #66ad9e;
+}
+
+.flocksay.sentient.flockmind {
+  font-size: 120%;
+}
+
+.flocknpc {
+  color: #869995;
+  font-size: 80%;
+}
+
+.flocksay.ping {
+  font-style: italic;
+}

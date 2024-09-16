@@ -4,7 +4,8 @@
 	/// The master of the flock
 	var/mob/camera/flock/overmind/overmind
 
-	/// A k:V list of atoms to be deconstructed, where the value is TRUE.
+	var/list/notice_images = list()
+	/// A k:V list of atoms the Overmind has marked for conversion, where the value is TRUE
 	var/list/marked_for_deconstruction = list()
 	/// A k:V list of reserved_turf = TRUE.
 	var/list/turf_reservations = list()
@@ -15,6 +16,12 @@
 
 	/// A k:v list of mob : details, contains enemy mobs.
 	var/list/enemies = list()
+	/// A k:V list of mob : TRUE, where mob is mobs that ai will ignore.
+	var/list/ignores = list()
+
+/datum/flock/New()
+	name = flock_realname(FLOCK_TYPE_OVERMIND)
+	create_hud_images()
 
 /datum/flock/proc/reserve_turf(mob/living/simple_animal/flock/user, turf/target)
 	if(turf_reservations_by_flock[user])
@@ -24,6 +31,7 @@
 
 	turf_reservations_by_flock[user] = target
 	turf_reservations[target] = user
+	add_notice(target, FLOCK_NOTICE_RESERVED)
 	RegisterSignal(target, COMSIG_TURF_CHANGE, PROC_REF(reserved_turf_change))
 	return TRUE
 
@@ -38,12 +46,17 @@
 
 		to_free = override_turf
 
+	if(isnull(to_free))
+		return
+
+	remove_notice(to_free, FLOCK_NOTICE_RESERVED)
 	turf_reservations_by_flock -= user
 	turf_reservations -= to_free
+	marked_for_deconstruction -= to_free
 	UnregisterSignal(to_free, COMSIG_TURF_CHANGE)
 
 /datum/flock/proc/is_turf_free(turf/T)
-	return turf_reservations[T]
+	return !turf_reservations[T]
 
 /datum/flock/proc/add_unit(mob/unit)
 	if(istype(unit, /mob/living/simple_animal/flock/drone))
@@ -53,18 +66,71 @@
 /datum/flock/proc/register_overmind(mob/camera/flock_overmind)
 	overmind = flock_overmind
 
-/datum/flock/proc/update_enemy(mob/living/enemy)
-	if(!istype(enemy))
+/datum/flock/proc/is_mob_enemy(mob/M)
+	return enemies[M]
+
+/datum/flock/proc/update_enemy(atom/movable/enemy)
+	if(is_mob_ignored(enemy))
 		return FALSE
 
-	// if(is_mob_ignored(enemy))
-	// 	return FALSE
-
 	for(var/mob/living/L in enemy.buckled_mobs)
-		update_enemy(enemy)
+		update_enemy(L)
+
+	if(!isliving(enemy))
+		return FALSE
 
 	enemies[enemy] = get_area_name(enemy)
+	RegisterSignal(enemy, COMSIG_PARENT_QDELETING, PROC_REF(on_enemy_gone), override = TRUE)
 	return TRUE
+
+/datum/flock/proc/remove_enemy(atom/movable/enemy, skip_buckled)
+	if(!skip_buckled)
+		for(var/mob/living/L in enemy.buckled_mobs)
+			remove_enemy(L)
+
+	if(!isliving(enemy))
+		return
+
+	enemies -= enemy
+	UnregisterSignal(enemy, COMSIG_PARENT_QDELETING)
+	return
+
+/datum/flock/proc/is_mob_ignored(mob/M)
+	return ignores[M]
+
+/datum/flock/proc/add_ignore(atom/movable/ignore)
+	for(var/mob/living/L in ignore.buckled_mobs)
+		add_ignore(L)
+
+	if(!isliving(ignore))
+		return
+
+	ignores[ignore] = TRUE
+	RegisterSignal(ignore, COMSIG_PARENT_QDELETING, PROC_REF(on_ignore_gone))
+
+/datum/flock/proc/remove_ignore(atom/movable/ignore, skip_buckled)
+	if(!skip_buckled)
+		for(var/mob/living/L in ignore.buckled_mobs)
+			add_ignore(L)
+
+	if(!isliving(ignore))
+		return
+
+	ignores -= ignore
+	UnregisterSignal(ignore, COMSIG_PARENT_QDELETING)
+
+/datum/flock/proc/add_notice(atom/target, notice_type)
+	var/image/I = image(notice_images[notice_type], loc = target)
+	target.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/flock, notice_type, I, null, src)
+
+/datum/flock/proc/remove_notice(atom/target, notice_type)
+	target.remove_alt_appearance(notice_type)
+
+/datum/flock/proc/get_priority_turfs(mob/living/simple_animal/flock/bird)
+	if(!length(marked_for_deconstruction))
+		return null
+
+	return marked_for_deconstruction - turf_reservations
 
 /datum/flock/proc/reserved_turf_change(datum/source)
 	SIGNAL_HANDLER
@@ -79,3 +145,26 @@
 /datum/flock/proc/on_unit_death(datum/source)
 	SIGNAL_HANDLER
 	free_unit(source)
+
+/datum/flock/proc/on_enemy_gone(datum/source)
+	SIGNAL_HANDLER
+	remove_enemy(source, TRUE)
+
+/datum/flock/proc/on_ignore_gone(datum/source)
+	SIGNAL_HANDLER
+	remove_ignore(source, TRUE)
+
+/datum/flock/proc/create_hud_images()
+	notice_images[FLOCK_NOTICE_RESERVED] = new /image{
+		icon = 'goon/icons/mob/featherzone.dmi';
+		icon_state = "frontier";
+		plane = ABOVE_LIGHTING_PLANE
+		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+	}
+
+	notice_images[FLOCK_NOTICE_PRIORITY] = new /image{
+		icon = 'goon/icons/mob/featherzone.dmi';
+		icon_state = "frontier";
+		plane = ABOVE_LIGHTING_PLANE
+		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+	}

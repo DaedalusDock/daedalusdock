@@ -186,6 +186,7 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define isaicamera(A) (istype(A, /mob/camera/ai_eye))
 
+#define isflockmob(A) (istype(A, /mob/camera/flock) || istype(A, /mob/living/simple_animal/flock))
 //Objects
 #define isobj(A) istype(A, /obj) //override the byond proc because it returns true on children of /atom/movable that aren't objs
 

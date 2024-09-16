@@ -7,14 +7,20 @@
 	mouse_opacity = MOUSE_OPACITY_ICON
 	invisibility = INVISIBILITY_OBSERVER
 
+	appearance_flags = parent_type::appearance_flags | RESET_COLOR
+	blend_mode = BLEND_ADD
+
 	see_invisible = SEE_INVISIBLE_LIVING
 	see_in_dark = 100
-	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_VISIBLE
+	lighting_alpha = LIGHTING_PLANE_ALPHA_INVISIBLE
+	sight = SEE_TURFS | SEE_MOBS | SEE_OBJS | SEE_SELF
 	// faction = list(ROLE_BLOB)
 	//hud_type = /datum/hud/blob_overmind
 
 	move_on_shuttle = FALSE
 	movement_type = PHASING
+
+	var/datum/flock/flock
 	var/list/actions_to_grant = list()
 
 /mob/camera/flock/Initialize(mapload)
@@ -23,6 +29,8 @@
 	for(var/action_path in actions_to_grant)
 		var/datum/action/action = new action_path
 		action.Grant(src)
+
+	add_client_colour(/datum/client_colour/flockmind)
 
 /mob/camera/flock/Login()
 	. = ..()

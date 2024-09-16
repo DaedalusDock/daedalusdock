@@ -44,3 +44,12 @@
 	while(attempts <= 10 && findname(name))
 
 	return name
+
+/atom/proc/can_flock_convert()
+	return FALSE
+
+/turf/open/floor/can_flock_convert()
+	return TRUE
+
+/turf/open/floor/flock/can_flock_convert()
+	return TRUE

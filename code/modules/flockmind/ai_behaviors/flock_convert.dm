@@ -3,11 +3,26 @@
 /datum/ai_behavior/find_flock_conversion_target/score(datum/ai_controller/controller)
 	return score_distance(controller, get_target(controller))
 
+/datum/ai_behavior/find_flock_conversion_target/score_distance(datum/ai_controller/controller, atom/target)
+	. = ..()
+	var/mob/living/simple_animal/flock/bird = controller.pawn
+	if(bird.flock?.marked_for_deconstruction[target])
+	/*
+	* because the result of scoring is based on max distance,
+	* the score of any given tile is -100 to 0, with 0 being best.
+	* Adding 200 basically allows a tile at twice the max distance to be considered.
+	*/
+		. += 200
+
 /datum/ai_behavior/find_flock_conversion_target/proc/get_target(datum/ai_controller/controller)
 	var/mob/living/simple_animal/flock/bird = controller.pawn
 	var/datum/flock/bird_flock = bird.flock
 
 	var/list/options = list()
+	var/list/priority_turfs = bird_flock?.get_priority_turfs()
+	if(length(priority_turfs))
+		options += priority_turfs
+
 	var/list/turfs = spiral_range_turfs(controller.target_search_radius, bird) & view(controller.target_search_radius, bird)
 	for(var/turf/T in turfs)
 		if(is_valid_target(T, bird_flock))
@@ -32,9 +47,13 @@
 	var/turf/target = get_target(controller)
 	if(!target)
 		return BEHAVIOR_PERFORM_FAILURE
-
 	controller.set_blackboard_key(BB_FLOCK_CONVERT_TARGET, target)
 	controller.set_move_target(target)
+
+	var/mob/living/simple_animal/flock/bird = controller.pawn
+	if(bird.flock)
+		bird.flock.reserve_turf(bird, target)
+
 	return BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/find_flock_conversion_target/next_behavior(datum/ai_controller/controller, success)

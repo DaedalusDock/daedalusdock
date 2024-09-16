@@ -50,6 +50,7 @@
 		return
 
 	remove_notice(to_free, FLOCK_NOTICE_RESERVED)
+	remove_notice(to_free, FLOCK_NOTICE_PRIORITY)
 	turf_reservations_by_flock -= user
 	turf_reservations -= to_free
 	marked_for_deconstruction -= to_free

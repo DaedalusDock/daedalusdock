@@ -58,10 +58,10 @@
 
 /datum/ai_behavior/find_flock_conversion_target/next_behavior(datum/ai_controller/controller, success)
 	if(success)
-		controller.queue_behavior(/datum/ai_behavior/move_to_target)
 		controller.queue_behavior(/datum/ai_behavior/perform_flock_conversion)
 
 /datum/ai_behavior/perform_flock_conversion
+	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT
 
 /datum/ai_behavior/perform_flock_conversion/perform(delta_time, datum/ai_controller/controller, ...)
 	var/mob/living/simple_animal/flock/bird = controller.pawn

@@ -39,7 +39,7 @@
 	var/mob/living/simple_animal/flock/drone/bird = controller.pawn
 
 	if(isnull(controller.blackboard[BB_FLOCK_HEAL_FRUSTRATION]))
-		controller.set_blackboard_key(BB_FLOCK_HEAL_FRUSTRATION)
+		controller.set_blackboard_key(BB_FLOCK_HEAL_FRUSTRATION, world.time + 3 SECONDS)
 
 	if(DOING_INTERACTION(bird, "flock_repair"))
 		return BEHAVIOR_PERFORM_COOLDOWN

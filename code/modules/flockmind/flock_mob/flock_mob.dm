@@ -34,7 +34,7 @@
 	/// A mob possessing this mob.
 	var/mob/camera/flock/controlled_by
 
-/mob/living/simple_animal/flock/Initialize(mapload)
+/mob/living/simple_animal/flock/Initialize(mapload, join_flock)
 	. = ..()
 	update_light_state()
 	RegisterSignal(ai_controller, COMSIG_AI_STATUS_CHANGE, PROC_REF(on_ai_status_change))
@@ -43,7 +43,12 @@
 	convert_action.Grant(src)
 	set_combat_mode(TRUE)
 	ADD_TRAIT(src, TRAIT_FREE_FLOAT_MOVEMENT, INNATE_TRAIT)
-	flock = GLOB.debug_flock
+	flock = join_flock || GLOB.debug_flock
+
+/mob/living/simple_animal/flock/Destroy()
+	flock?.free_unit(src)
+	flock = null
+	return ..()
 
 /mob/living/simple_animal/flock/set_stat(new_stat)
 	. = ..()

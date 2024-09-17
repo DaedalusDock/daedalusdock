@@ -45,3 +45,10 @@ GLOBAL_LIST_INIT(flockdrone_name_nouns, list(
 	"apparatus",
 	"object"
 ))
+
+GLOBAL_LIST_INIT(flock_betrayal_phrases, list(
+	"disregarding attack from ignored target",
+	"turning a blind eye to",
+	"revenge not taken on",
+	"ignoring attack from",
+))

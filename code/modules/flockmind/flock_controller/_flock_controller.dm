@@ -13,6 +13,8 @@
 	/// A k:V list of flock mobs to their reserved turf.
 	var/list/turf_reservations_by_flock = list()
 
+	/// The bits
+	var/list/bits = list()
 	/// The drones
 	var/list/drones = list()
 	/// The traces
@@ -65,20 +67,48 @@
 	marked_for_deconstruction -= to_free
 	UnregisterSignal(to_free, COMSIG_TURF_CHANGE)
 
+/// Returns TRUE if the given turf is not reserved.
 /datum/flock/proc/is_turf_free(turf/T)
 	return !turf_reservations[T]
 
-/datum/flock/proc/add_unit(mob/unit)
-	if(istype(unit, /mob/living/simple_animal/flock/drone))
-		drones += unit
-		RegisterSignal(unit, list(COMSIG_PARENT_QDELETING, COMSIG_LIVING_DEATH), PROC_REF(on_unit_death))
-
-/datum/flock/proc/register_overmind(mob/camera/flock_overmind)
-	overmind = flock_overmind
-
+/// Returns TRUE if the given mob is an enemy.
 /datum/flock/proc/is_mob_enemy(mob/M)
 	return enemies[M]
 
+/// Returns TRUE if the given mob is ignored by the flock.
+/datum/flock/proc/is_mob_ignored(mob/M)
+	return ignores[M]
+
+/datum/flock/proc/add_unit(mob/unit)
+	// if(isflocktrace(unit))
+	// traces += unit
+	// 	return
+
+	if(isflockdrone(unit))
+		drones += unit
+
+	else if(isflockbit(unit))
+		bits += unit
+
+	RegisterSignal(unit, list(COMSIG_PARENT_QDELETING, COMSIG_LIVING_DEATH), PROC_REF(on_unit_death))
+	unit.AddComponent(/datum/component/flock_interest, src)
+
+/datum/flock/proc/free_unit(mob/unit)
+	if(isflockdrone(unit))
+		drones -= unit
+
+	else if(isflockbit(unit))
+		bits -= unit
+
+	UnregisterSignal(unit, list(COMSIG_PARENT_QDELETING, COMSIG_LIVING_DEATH))
+	free_turf(unit)
+	qdel(unit.GetComponent(/datum/component/flock_interest))
+
+/// Sets the flock's overmind
+/datum/flock/proc/register_overmind(mob/camera/flock_overmind)
+	overmind = flock_overmind
+
+/// Updates a mob's enemy status. If they are already an enemy, their entry will be updated with new information.
 /datum/flock/proc/update_enemy(atom/movable/enemy)
 	if(is_mob_ignored(enemy))
 		return FALSE
@@ -106,9 +136,6 @@
 	UnregisterSignal(enemy, COMSIG_PARENT_QDELETING)
 	remove_notice(enemy, FLOCK_NOTICE_ENEMY)
 	return
-
-/datum/flock/proc/is_mob_ignored(mob/M)
-	return ignores[M]
 
 /datum/flock/proc/add_ignore(atom/movable/ignore)
 	for(var/mob/living/L in ignore.buckled_mobs)
@@ -172,6 +199,8 @@
 		pointer.pixel_x = sin(angle) * -48
 		pointer.pixel_y = cos(angle) * -48
 
+		T._AddComponent(list(/datum/component/flock_ping, 5 SECONDS))
+
 		animate(pointer, time = 3 SECONDS, alpha = 0)
 		ghost_bird.client.images += pointer
 		active_pings[ghost_bird.client] += list(pointer)
@@ -182,12 +211,6 @@
 /datum/flock/proc/reserved_turf_change(datum/source)
 	SIGNAL_HANDLER
 	free_turf(override_turf = source)
-
-/datum/flock/proc/free_unit(mob/unit)
-	if(istype(unit, /mob/living/simple_animal/flock/drone))
-		UnregisterSignal(unit, list(COMSIG_PARENT_QDELETING, COMSIG_LIVING_DEATH))
-		free_turf(unit)
-		drones -= unit
 
 /datum/flock/proc/cleanup_ping_images(client/C, list/images_to_clean)
 	if(isnull(C))

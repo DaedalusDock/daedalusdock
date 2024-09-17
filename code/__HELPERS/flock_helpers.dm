@@ -38,8 +38,8 @@
 		switch(flock_type)
 			if(FLOCK_TYPE_DRONE)
 				name = "[pick(GLOB.flockdrone_name_adjectives)] [pick(GLOB.flockdrone_name_nouns)]"
-			// if(FLOCK_TYPE_BIT)
-			// 	name = "[pick(consonants_upper)].[rand(10,99)].[rand(10,99)]"
+			if(FLOCK_TYPE_BIT)
+				name = "[pick(GLOB.consonants_upper)].[rand(10,99)].[rand(10,99)]"
 
 	while(attempts <= 10 && findname(name))
 

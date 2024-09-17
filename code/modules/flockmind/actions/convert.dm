@@ -26,11 +26,6 @@
 
 	return TRUE
 
-/datum/action/cooldown/flock/convert/PreActivate(atom/target)
-	. = ..() // Calls Activate()
-	var/mob/living/simple_animal/flock/bird = owner
-	bird.flock?.free_turf(bird)
-
 /datum/action/cooldown/flock/convert/Activate(atom/target)
 	. = ..()
 	playsound(owner, 'goon/sounds/flockmind/flockdrone_convert.ogg', 30, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE)
@@ -47,10 +42,13 @@
 		bird.flock?.reserve_turf(bird, clicked_atom_turf)
 		if(!do_after(owner, target, 4.5 SECONDS, DO_PUBLIC, interaction_key = "flock_convert"))
 			clicked_atom_turf.vis_contents -= turf_effect
+			bird.flock?.free_turf(bird)
 			return FALSE
 
 		if(!is_valid_target(clicked_atom_turf))
 			return FALSE
+
+		bird.flock?.free_turf(bird)
 		clicked_atom_turf.vis_contents -= turf_effect
 		var/turf/new_turf = clicked_atom_turf.ScrapeAway(1)
 		new_turf.PlaceOnTop(/turf/open/floor/flock)

@@ -15,6 +15,7 @@
 		/datum/action/cooldown/flock/designate_ignore,
 		/datum/action/cooldown/flock/radio_blast,
 		/datum/action/cooldown/flock/ping,
+		/datum/action/cooldown/flock/diffract_drone,
 	)
 
 /mob/camera/flock/overmind/Initialize(mapload)

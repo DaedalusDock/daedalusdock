@@ -16,6 +16,7 @@
 		/datum/action/cooldown/flock/radio_blast,
 		/datum/action/cooldown/flock/ping,
 		/datum/action/cooldown/flock/diffract_drone,
+		/datum/action/cooldown/flock/control_drone,
 	)
 
 /mob/camera/flock/overmind/Initialize(mapload)
@@ -25,3 +26,9 @@
 	set_real_name("Flockmind [flock.name]")
 
 GLOBAL_DATUM_INIT(debug_flock, /datum/flock, new)
+
+/mob/camera/flock/overmind/Logout()
+	. = ..()
+	// If we disconnect, free our homeboy
+	var/datum/action/cooldown/flock/control_drone/control_drone = locate() in actions
+	control_drone?.free_drone()

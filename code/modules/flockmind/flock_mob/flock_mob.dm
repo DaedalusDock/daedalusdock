@@ -12,6 +12,8 @@
 
 	ai_controller = /datum/ai_controller/flock
 
+	initial_language_holder = /datum/language_holder/flock
+
 	minbodytemp = 0
 	maxbodytemp = 1000
 	atmos_requirements = list(
@@ -54,10 +56,22 @@
 	. = ..()
 	switch(stat)
 		if(CONSCIOUS)
-			ADD_TRAIT(src, TRAIT_MOVE_FLOATING, INNATE_TRAIT)
+			ADD_TRAIT(src, TRAIT_MOVE_FLOATING, STAT_TRAIT)
 		else
-			REMOVE_TRAIT(src, TRAIT_MOVE_FLOATING, INNATE_TRAIT)
+			REMOVE_TRAIT(src, TRAIT_MOVE_FLOATING, STAT_TRAIT)
 
+/mob/living/simple_animal/flock/say(message, bubble_type, list/spans, sanitize, datum/language/language, ignore_spam, forced, filterproof, range)
+	. = ..()
+	if(!.)
+		return
+
+	language = GET_LANGUAGE_DATUM(language) || get_selected_language()
+	if(flock && istype(language, /datum/language/flock))
+		flock_talk(src, message, flock, forced)
+
+// changing the default arg value here
+/mob/living/simple_animal/flock/treat_message(message, correct_grammar = FALSE)
+	. = ..()
 
 /// Turn the light on or off, based on if the mob is doing shit or not.
 /mob/living/simple_animal/flock/proc/update_light_state()

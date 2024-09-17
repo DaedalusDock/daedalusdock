@@ -7,6 +7,9 @@
 	///Cooldown between actions performances, defaults to the value of CLICK_CD_MELEE because that seemed like a nice standard for the speed of AI behavior
 	var/action_cooldown = CLICK_CD_MELEE
 
+	/// Behaviors to add upon a successful setup
+	var/list/sub_behaviors
+
 /// Called by the ai controller when first being added. Additional arguments depend on the behavior type.
 /// Return FALSE to cancel
 /datum/ai_behavior/proc/setup(datum/ai_controller/controller, ...)

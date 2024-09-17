@@ -1,5 +1,16 @@
 /datum/ai_behavior/find_flock_conversion_target
 
+/datum/ai_behavior/find_flock_conversion_target/setup(datum/ai_controller/controller, turf/overmind_target)
+	. = ..()
+	if(overmind_target)
+		if(is_valid_target(overmind_target))
+			controller.set_blackboard_key(BB_FLOCK_OVERMIND_CONTROL, TRUE)
+			controller.set_blackboard_key(BB_PATH_MAX_LENGTH, 200)
+		else
+			var/mob/living/simple_animal/flock/drone/bird = controller.pawn
+			bird.say("Invalid conversion target provided by sentient level instruction.")
+			return FALSE
+
 /datum/ai_behavior/find_flock_conversion_target/score(datum/ai_controller/controller)
 	return score_distance(controller, get_target(controller))
 
@@ -43,10 +54,11 @@
 
 	return bird_flock.is_turf_free(T)
 
-/datum/ai_behavior/find_flock_conversion_target/perform(delta_time, datum/ai_controller/controller, ...)
-	var/turf/target = get_target(controller)
+/datum/ai_behavior/find_flock_conversion_target/perform(delta_time, datum/ai_controller/controller, turf/overmind_target)
+	var/turf/target = overmind_target || get_target(controller)
 	if(!target)
 		return BEHAVIOR_PERFORM_FAILURE
+
 	controller.set_blackboard_key(BB_FLOCK_CONVERT_TARGET, target)
 	controller.set_move_target(target)
 
@@ -55,6 +67,12 @@
 		bird.flock.reserve_turf(bird, target)
 
 	return BEHAVIOR_PERFORM_SUCCESS
+
+/datum/ai_behavior/find_flock_conversion_target/finish_action(datum/ai_controller/controller, succeeded, turf/overmind_target)
+	. = ..()
+	if(!succeeded && overmind_target)
+		controller.clear_blackboard_key(BB_PATH_MAX_LENGTH)
+		controller.clear_blackboard_key(BB_FLOCK_OVERMIND_CONTROL)
 
 /datum/ai_behavior/find_flock_conversion_target/next_behavior(datum/ai_controller/controller, success)
 	if(success)
@@ -79,4 +97,13 @@
 
 /datum/ai_behavior/perform_flock_conversion/finish_action(datum/ai_controller/controller, succeeded, ...)
 	. = ..()
+	var/mob/living/simple_animal/flock/drone/bird = controller.pawn
+	bird.flock?.free_turf(bird)
+
 	controller.clear_blackboard_key(BB_FLOCK_CONVERT_TARGET)
+	controller.clear_blackboard_key(BB_PATH_MAX_LENGTH)
+	controller.clear_blackboard_key(BB_FLOCK_OVERMIND_CONTROL)
+
+	if(!succeeded && controller.blackboard[BB_FLOCK_OVERMIND_CONTROL] && !QDELETED(controller.pawn))
+		bird.say("Unable to reach target provided by sentient level instruction, aborting subroutine.", forced = "overmind control action cancelled")
+

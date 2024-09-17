@@ -223,6 +223,10 @@ multiple modular subtrees with behaviors
 	. = TRUE
 	if(QDELETED(pawn))
 		return FALSE
+
+	if(HAS_TRAIT(pawn, TRAIT_AI_DISABLE_PLANNING))
+		return FALSE
+
 	for(var/datum/ai_behavior/current_behavior as anything in current_behaviors)
 		if(!(current_behavior.behavior_flags & AI_BEHAVIOR_CAN_PLAN_DURING_EXECUTION)) //We have a behavior that blocks planning
 			. = FALSE
@@ -274,6 +278,12 @@ multiple modular subtrees with behaviors
 		behavior_args -= behavior_type
 
 	DEBUG_AI_LOG(src, "Queued [behavior_type]")
+
+	if(length(behavior.sub_behaviors))
+		for(var/sub_behavior_type in behavior.sub_behaviors)
+			var/list/sub_args = args.Copy()
+			sub_args[1] = sub_behavior_type
+			queue_behavior(arglist(sub_args))
 
 /datum/ai_controller/proc/ProcessBehavior(delta_time, datum/ai_behavior/behavior)
 	DEBUG_AI_LOG(src, "Running [behavior]")

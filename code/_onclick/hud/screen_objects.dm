@@ -14,6 +14,7 @@
 	speech_span = SPAN_ROBOT
 	vis_flags = VIS_INHERIT_PLANE
 	appearance_flags = APPEARANCE_UI
+	flags_1 = parent_type::flags_1 | NO_SCREENTIPS_1
 	/// A reference to the object in the slot. Grabs or items, generally, but any datum will do.
 	var/datum/weakref/master_ref = null
 	/// A reference to the owner HUD, if any.

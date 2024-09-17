@@ -9,7 +9,7 @@
 	name = flock_name(FLOCK_TYPE_DRONE)
 
 	if(stat == CONSCIOUS)
-		INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, say), pick(GLOB.flockdrone_created_phrases))
+		INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, say), pick(GLOB.flockdrone_created_phrases), null, null, null, null, null, "flock spawn")
 
 	var/datum/action/cooldown/flock/flock_heal/repair = new
 	repair.Grant(src)
@@ -20,8 +20,8 @@
 
 /mob/living/simple_animal/flock/drone/proc/split_into_bits()
 	ai_controller.PauseAi(3 SECONDS)
+	say("\[System notification: drone diffracting.\]", forced = "flock diffract")
 	emote("scream")
-	say("\[System notification: drone diffracting.\]")
 	flock?.free_unit(src)
 
 	var/turf/T = get_turf(src)

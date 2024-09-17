@@ -9,6 +9,22 @@
 
 	return TRUE
 
+/proc/flock_pointer(atom/from, atom/towards)
+	var/image/pointer = image(icon = 'icons/hud/screen1.dmi', icon_state = "arrow_greyscale", loc = from)
+
+	pointer.plane = HUD_PLANE
+	pointer.appearance_flags |= RESET_COLOR
+	pointer.color = "#00ff9dff"
+
+	var/angle = 180 + get_angle(from, towards)
+	var/matrix/final_matrix = pointer.transform.Scale(2,2)
+	final_matrix = final_matrix.Turn(angle)
+	pointer.transform = final_matrix
+
+	pointer.pixel_x = sin(angle) * -48
+	pointer.pixel_y = cos(angle) * -48
+	return pointer
+
 /proc/flock_realname(flock_type)
 	var/attempts = 0
 	var/name = ""

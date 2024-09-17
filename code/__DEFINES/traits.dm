@@ -990,3 +990,5 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// trait that prevents AI controllers from planning detached from ai_status to prevent weird state stuff.
 #define TRAIT_AI_PAUSED "TRAIT_AI_PAUSED"
+/// trait that prevents AI controllers from making new plans, but not executing plans
+#define TRAIT_AI_DISABLE_PLANNING "TRAIT_AI_DISABLE_PLANNING"

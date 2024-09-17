@@ -186,31 +186,24 @@
 		// if(ghost_bird == pinger)
 		// 	continue
 
-		var/image/pointer = image(icon = 'icons/hud/screen1.dmi', icon_state = "arrow_greyscale", loc = ghost_bird)
-		pointer.plane = HUD_PLANE
-		pointer.appearance_flags |= RESET_COLOR
-		pointer.color = "#00ff9dff"
-
-		var/angle = 180 + get_angle(ghost_bird, T)
-		var/matrix/final_matrix = pointer.transform.Scale(2,2)
-		final_matrix = final_matrix.Turn(angle)
-		pointer.transform = final_matrix
-
-		pointer.pixel_x = sin(angle) * -48
-		pointer.pixel_y = cos(angle) * -48
-
-		T._AddComponent(list(/datum/component/flock_ping, 5 SECONDS))
+		var/image/pointer = flock_pointer(ghost_bird, T)
+		//T._AddComponent(list(/datum/component/flock_ping, 5 SECONDS))
 
 		animate(pointer, time = 3 SECONDS, alpha = 0)
-		ghost_bird.client.images += pointer
-		active_pings[ghost_bird.client] += list(pointer)
-		RegisterSignal(ghost_bird.client, COMSIG_PARENT_QDELETING, PROC_REF(on_client_gone), override = TRUE)
-
-		addtimer(CALLBACK(src, PROC_REF(cleanup_ping_images), ghost_bird.client, pointer), 3 SECONDS)
+		add_ping_image(ghost_bird.client, pointer, 3 SECONDS)
 
 /datum/flock/proc/reserved_turf_change(datum/source)
 	SIGNAL_HANDLER
 	free_turf(override_turf = source)
+
+/datum/flock/proc/add_ping_image(client/C, image/ping, duration)
+	if(isnull(C))
+		return
+
+	C.images += ping
+	active_pings[C] += list(ping)
+	RegisterSignal(C, COMSIG_PARENT_QDELETING, PROC_REF(on_client_gone), override = TRUE)
+	addtimer(CALLBACK(src, PROC_REF(cleanup_ping_images), C, ping), 3 SECONDS)
 
 /datum/flock/proc/cleanup_ping_images(client/C, list/images_to_clean)
 	if(isnull(C))

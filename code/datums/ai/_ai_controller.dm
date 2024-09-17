@@ -142,10 +142,11 @@ multiple modular subtrees with behaviors
 
 ///Returns TRUE if the ai controller can actually run at the moment.
 /datum/ai_controller/proc/able_to_run()
+	if(HAS_TRAIT(pawn, TRAIT_AI_PAUSED))
+		return FALSE
 	if(world.time < paused_until)
 		return FALSE
 	return TRUE
-
 
 /// This is called by SSai_behaviors/fire(). It is the core of mob AI.
 /datum/ai_controller/process(delta_time)

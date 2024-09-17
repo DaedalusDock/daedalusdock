@@ -247,3 +247,5 @@
 #define BB_FLOCK_STARE_CD "BB_flock_stare_cooldown"
 #define BB_FLOCK_CONVERT_TARGET "BB_flock_convert_target"
 #define BB_FLOCK_WANDER_FRUSTRATION "BB_flock_wander_frustration"
+#define BB_FLOCK_HEAL_TARGET "BB_flock_heal_target"
+#define BB_FLOCK_HEAL_FRUSTRATION "BB_flock_heal_frustation"

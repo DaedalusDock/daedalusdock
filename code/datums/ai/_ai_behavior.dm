@@ -54,6 +54,8 @@
 /// Helper for scoring something based on the distance between it and the pawn.
 /datum/ai_behavior/proc/score_distance(datum/ai_controller/controller, atom/target)
 	var/search_radius = controller.target_search_radius
+	if(isnull(target))
+		return -INFINITY
 	return 100 * (search_radius - get_dist_manhattan(get_turf(controller.pawn), get_turf(target))) / search_radius
 
 /// Returns the delay to use for this behavior in the moment

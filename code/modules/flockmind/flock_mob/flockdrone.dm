@@ -1,4 +1,5 @@
 /mob/living/simple_animal/flock/drone
+	ai_controller = /datum/ai_controller/flock/drone
 
 /mob/living/simple_animal/flock/drone/Initialize(mapload, join_flock)
 	. = ..()
@@ -10,6 +11,8 @@
 	if(stat == CONSCIOUS)
 		INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, say), pick(GLOB.flockdrone_created_phrases))
 
+	var/datum/action/cooldown/flock/flock_heal/repair = new
+	repair.Grant(src)
 
 /mob/living/simple_animal/flock/drone/death(gibbed, cause_of_death)
 	deathmessage = pick(GLOB.flockdrone_death_phrases)

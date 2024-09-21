@@ -35,7 +35,7 @@
 	create_hud_images()
 
 /datum/flock/ui_state(mob/user)
-	GLOB.flock_state
+	return GLOB.flock_state
 
 /datum/flock/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)

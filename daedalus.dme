@@ -2989,6 +2989,7 @@
 #include "code\modules\flockmind\flock_camera\flock_overmind.dm"
 #include "code\modules\flockmind\flock_camera\flocktrace.dm"
 #include "code\modules\flockmind\flock_controller\_flock_controller.dm"
+#include "code\modules\flockmind\flock_controller\flock_ui.dm"
 #include "code\modules\flockmind\flock_mob\flock_mob.dm"
 #include "code\modules\flockmind\flock_mob\flockbit.dm"
 #include "code\modules\flockmind\flock_mob\flockdrone.dm"

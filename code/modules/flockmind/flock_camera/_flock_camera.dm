@@ -68,6 +68,7 @@ GLOBAL_DATUM_INIT(debug_flock, /datum/flock, new)
 	var/list/data = list()
 	data["name"] = real_name
 	data["area"] = get_area_name(src, TRUE) || "???"
+	data["ref"] = REF(src)
 
 	if(controlling_bird)
 		data["host"] = controlling_bird.real_name

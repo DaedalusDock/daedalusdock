@@ -34,27 +34,6 @@
 	name = flock_realname(FLOCK_TYPE_OVERMIND)
 	create_hud_images()
 
-/datum/flock/ui_state(mob/user)
-	return GLOB.flock_state
-
-/datum/flock/ui_interact(mob/user, datum/tgui/ui)
-	ui = SStgui.try_update_ui(user, src, ui)
-	if(!ui)
-		ui = new(user, src, "FlockPanel")
-		ui.open()
-
-/datum/flock/ui_data(mob/user)
-	var/list/data = list()
-	var/list/drone_info = list()
-	data["drones"] = drone_info
-
-	switch(ui_tab)
-		if(FLOCK_UI_DRONES)
-			for(var/mob/living/simple_animal/flock/drone/bird as anything in drones)
-				drone_info += bird.get_flock_data()
-
-	return data
-
 /// Reserves a turf, making AI ignore it for the purposes of targetting.
 /datum/flock/proc/reserve_turf(mob/living/simple_animal/flock/user, turf/target)
 	if(turf_reservations_by_flock[user])

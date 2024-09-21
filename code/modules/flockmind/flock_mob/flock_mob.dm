@@ -45,7 +45,9 @@
 	convert_action.Grant(src)
 	set_combat_mode(TRUE)
 	ADD_TRAIT(src, TRAIT_FREE_FLOAT_MOVEMENT, INNATE_TRAIT)
+
 	flock = join_flock || GLOB.debug_flock
+	flock?.add_unit(src)
 
 /mob/living/simple_animal/flock/Destroy()
 	flock?.free_unit(src)
@@ -82,6 +84,7 @@
 	data["health"] = getHealthPercent()
 
 	data["area"] = get_area_name(src, TRUE) || "???"
+	data["ref"] = REF(src)
 	return data
 
 /// Turn the light on or off, based on if the mob is doing shit or not.

@@ -1,11 +1,16 @@
 /mob/living/simple_animal/flock/drone
 	ai_controller = /datum/ai_controller/flock/drone
 
+	var/flock_phasing = FALSE
 	/// A mob possessing this mob.
 	var/mob/camera/flock/controlled_by
 
+	var/datum/point_holder/resources
+
 /mob/living/simple_animal/flock/drone/Initialize(mapload, join_flock)
 	. = ..()
+	resources = new
+	resources.add_points(1000000)
 
 	AddComponent(/datum/component/flock_protection, FALSE, TRUE, FALSE, FALSE)
 	set_real_name(flock_realname(FLOCK_TYPE_DRONE))
@@ -19,11 +24,19 @@
 
 /mob/living/simple_animal/flock/drone/Destroy()
 	release_control()
+	QDEL_NULL(resources)
 	return ..()
 
 /mob/living/simple_animal/flock/drone/death(gibbed, cause_of_death)
 	deathmessage = pick(GLOB.flockdrone_death_phrases)
 	return ..()
+
+/mob/living/simple_animal/flock/drone/Life(delta_time, times_fired)
+	. = ..()
+	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))
+		resources.remove_points(1)
+		if(!resources.has_points(1))
+			stop_flockphase()
 
 /mob/living/simple_animal/flock/drone/get_flock_data()
 	var/list/data = ..()
@@ -41,6 +54,84 @@
 	data["task"] = current_behavior_name || "hibernating"
 	return data
 
+
+/mob/living/simple_animal/flock/drone/update_move_intent_slowdown()
+	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))
+		add_movespeed_modifier(/datum/movespeed_modifier/flockphase)
+		remove_movespeed_modifier(MOVESPEED_ID_MOB_WALK_RUN)
+		return
+
+	remove_movespeed_modifier(/datum/movespeed_modifier/flockphase)
+	return ..()
+
+/mob/living/simple_animal/flock/drone/proc/start_flockphase()
+	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))
+		return FALSE
+
+	playsound(src, 'goon/sounds/flockmind/flockdrone_floorrun.ogg', 30, TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
+
+	ADD_TRAIT(src, TRAIT_FLOCKPHASE, INNATE_TRAIT)
+	pass_flags_self |= LETPASSTHROW | PASSFLOCK
+	resize = 0
+	set_density(FALSE)
+	release_all_grabs()
+	update_move_intent_slowdown()
+
+	var/list/color_matrix = list(1,0,0, 0,1,0, 0,0,1, 0.15,0.77,0.66)
+	var/matrix/shrink = matrix().Scale(0)
+	animate(src, color = color_matrix, transform = shrink, time = 0.5 SECONDS, easing = SINE_EASING)
+	return TRUE
+
+/mob/living/simple_animal/flock/drone/proc/stop_flockphase()
+	if(!HAS_TRAIT(src, TRAIT_FLOCKPHASE))
+		return FALSE
+
+
+	playsound(src, 'goon/sounds/flockmind/flockdrone_floorrun.ogg', 30, TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
+
+	REMOVE_TRAIT(src, TRAIT_FLOCKPHASE, INNATE_TRAIT)
+	pass_flags_self &= ~(LETPASSTHROW | PASSFLOCK)
+	resize = initial(resize)
+	set_density(TRUE)
+	update_move_intent_slowdown()
+
+	animate(src, color = null, transform = null, time = 0.5 SECONDS, easing = SINE_EASING)
+
+	if(!isturf(loc))
+		return
+
+	if(istype(loc, /turf/open/floor/flock))
+		var/turf/open/floor/flock/flockfloor = loc
+		flockfloor.turn_off()
+
+	var/turf/turfloc = loc
+	if(turfloc.can_flock_occupy(src))
+		return
+
+	for(var/turf/T in get_adjacent_open_turfs(src))
+		if(!T.can_flock_occupy(src))
+			forceMove(T)
+			break
+
+/mob/living/simple_animal/flock/drone/proc/can_flockphase()
+	if(length(grabbed_by))
+		return FALSE
+
+	if(!resources.has_points())
+		return FALSE
+
+	return TRUE
+
+/mob/living/simple_animal/flock/drone/proc/flockphase_tax()
+	if(!HAS_TRAIT(src, TRAIT_FLOCKPHASE))
+		return FALSE
+
+	resources.remove_points(1)
+	if(!resources.has_points())
+		stop_flockphase()
+		return FALSE
+	return TRUE
+
 /mob/living/simple_animal/flock/drone/proc/take_control(mob/camera/flock/master_bird)
 	if(HAS_TRAIT_FROM(src, TRAIT_AI_DISABLE_PLANNING, FLOCK_CONTROLLED_BY_OVERMIND_SOURCE))
 		to_chat(master_bird, span_alert("This drone is recieving a sentient-level instruction."))
@@ -49,6 +140,8 @@
 	if(controlled_by)
 		to_chat(master_bird, span_alert("This drone is already under another partition's command."))
 		return FALSE
+
+	stop_flockphase()
 
 	controlled_by = master_bird
 	controlled_by.controlling_bird = src

@@ -1,10 +1,17 @@
-/turf/proc/canpass_flock(mob/living/simple_animal/flock/passer)
-	if(density && (!(pass_flags_self & passer.pass_flags)))
+/// A copy of is_blocked_turf(), ignoring flock mobs
+/turf/proc/can_flock_occupy(atom/source_atom)
+	if(density)
 		return FALSE
 
-	var/pass_dir = get_dir(passer, src)
-	for(var/atom/movable/AM as anything in src)
-		if(AM.density && !(AM.CanPass(passer, pass_dir)))
+	for(var/atom/movable/movable_content as anything in contents)
+		// We don't want to block ourselves or consider any ignored atoms.
+		if((movable_content == source_atom) || isflockmob(movable_content))
+			continue
+		// If the thing is dense AND we're including mobs or the thing isn't a mob AND if there's a source atom and
+		// it cannot pass through the thing on the turf,  we consider the turf blocked.
+		if(movable_content.density)
+			if(source_atom && movable_content.CanPass(source_atom, get_dir(src, source_atom)))
+				continue
 			return FALSE
 
 	return TRUE

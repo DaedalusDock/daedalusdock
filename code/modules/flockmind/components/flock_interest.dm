@@ -43,14 +43,7 @@
 	if(!snitch)
 		return
 
-	var/report_name = source
-	if(isflockbit(source))
-		var/mob/M = source
-		report_name = M.real_name
-	else
-		#warn flock structure here
-		//report_name = source:flock_id
-		noop()
+	var/report_name = source.get_flock_id()
 
 	if(flock.is_mob_ignored(attacker))
 		flock_talk(snitch, "Damage sighted on [report_name], [pick(GLOB.flock_betrayal_phrases)] [attacker].")

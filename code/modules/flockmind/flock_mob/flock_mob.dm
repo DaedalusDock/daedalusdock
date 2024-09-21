@@ -5,6 +5,8 @@
 	icon_living = "drone"
 	icon_dead = "drone-dead"
 
+	pass_flags_self = parent_type::pass_flags_self | PASSFLOCK
+
 	light_system = OVERLAY_LIGHT
 	light_color = "#26ffe6"
 	light_power = 0.2
@@ -70,6 +72,9 @@
 // changing the default arg value here
 /mob/living/simple_animal/flock/treat_message(message, correct_grammar = FALSE)
 	. = ..()
+
+/mob/living/simple_animal/flock/get_flock_id()
+	return real_name
 
 /mob/living/simple_animal/flock/proc/get_flock_data()
 	var/list/data = list()

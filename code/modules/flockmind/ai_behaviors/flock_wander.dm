@@ -1,22 +1,23 @@
-/datum/ai_behavior/flock_wander
+/datum/ai_behavior/flock/wander
 	required_distance = 0
 
-/datum/ai_behavior/flock_wander/perform(delta_time, datum/ai_controller/controller, ...)
+/datum/ai_behavior/flock/wander/perform(delta_time, datum/ai_controller/controller, ...)
 	var/turf/destination = get_destination(controller)
 	if(destination)
 		controller.set_move_target(destination)
 		return BEHAVIOR_PERFORM_SUCCESS
 	return BEHAVIOR_PERFORM_FAILURE
 
-/datum/ai_behavior/flock_wander/next_behavior(datum/ai_controller/controller, success)
+/datum/ai_behavior/flock/wander/next_behavior(datum/ai_controller/controller, success)
 	if(success)
 		controller.queue_behavior(/datum/ai_behavior/move_to_target/flock_wander)
 		controller.queue_behavior(/datum/ai_behavior/frustration, BB_FLOCK_WANDER_FRUSTRATION, 3 SECONDS)
 
-/datum/ai_behavior/flock_wander/score(datum/ai_controller/controller)
+/datum/ai_behavior/flock/wander/score(datum/ai_controller/controller)
 	return 1
 
-/datum/ai_behavior/flock_wander/proc/get_destination(datum/ai_controller/controller)
+/datum/ai_behavior/flock/wander/proc/get_destination(datum/ai_controller/controller)
+	var/datum/can_pass_info/info = new()
 	var/turf/start_loc = get_turf(controller.pawn)
 	var/list/options = list()
 
@@ -27,7 +28,10 @@
 		if(isspaceturf(T))
 			continue
 
-		if(!T.canpass_flock(controller.pawn))
+		if(!start_loc.LinkBlockedWithAccess(T, info))
+			continue
+
+		if(!T.can_flock_occupy(controller.pawn))
 			continue
 
 		options += T

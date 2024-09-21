@@ -16,3 +16,4 @@
 	. = ..()
 	set_real_name(flock_realname(FLOCK_TYPE_TRACE))
 	flock.add_unit(src)
+	flock.stat_traces_made++

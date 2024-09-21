@@ -13,11 +13,13 @@
 	var/list/trace_info = list()
 	var/list/enemy_info = list()
 	var/list/vitals_info = list("name" = name)
+	var/list/stats_info = list()
 	data["drones"] = drone_info
-	data["traces"] = trace_info
+	data["partitions"] = trace_info
 	data["vitals"] = vitals_info
 	data["enemies"] = enemy_info
 	data["category"] = ui_tab
+	data["stats"] = stats_info
 	data["category_lengths"] = list(
 		"traces" = length(traces),
 		"drones" = length(drones),
@@ -40,6 +42,17 @@
 				mob_data["area"] = enemies[enemy]
 				mob_data["ref"] = REF(enemy)
 				enemy_info[++enemy_info.len] = mob_data
+
+
+	stats_info[++stats_info.len] = list(name = "Drones realized: ", "value" = stat_drones_made)
+	stats_info[++stats_info.len] = list(name = "Bits formed: ", "value" = stat_bits_made)
+	stats_info[++stats_info.len] = list(name = "Total deaths: ", "value" = stat_deaths)
+	stats_info[++stats_info.len] = list(name = "Resources gianed: ", "value" = stat_resources_gained)
+	stats_info[++stats_info.len] = list(name = "Partitions divided: ", "value" = stat_traces_made)
+	stats_info[++stats_info.len] = list(name = "Tiles converted: ", "value" = stat_tiles_made)
+	stats_info[++stats_info.len] = list(name = "Structures materialized: ", "value" = stat_structures_made)
+	stats_info[++stats_info.len] = list(name = "Highest compute: ", "value" = stat_highest_compute)
+
 	return data
 
 /datum/flock/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)

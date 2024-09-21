@@ -36,6 +36,8 @@
 	/// Flock datum. Can be null.
 	var/datum/flock/flock
 
+	var/datum/point_holder/resources
+
 /mob/living/simple_animal/flock/Initialize(mapload, join_flock)
 	. = ..()
 	update_light_state()
@@ -48,6 +50,9 @@
 
 	flock = join_flock || GLOB.debug_flock
 	flock?.add_unit(src)
+
+	resources = new
+	resources.add_points(1000000)
 
 /mob/living/simple_animal/flock/Destroy()
 	flock?.free_unit(src)
@@ -82,7 +87,7 @@
 	var/list/data = list()
 	data["name"] = real_name
 	data["health"] = getHealthPercent()
-
+	data["resources"] = resources.has_points()
 	data["area"] = get_area_name(src, TRUE) || "???"
 	data["ref"] = REF(src)
 	return data

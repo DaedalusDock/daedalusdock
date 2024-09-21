@@ -5,12 +5,9 @@
 	/// A mob possessing this mob.
 	var/mob/camera/flock/controlled_by
 
-	var/datum/point_holder/resources
-
 /mob/living/simple_animal/flock/drone/Initialize(mapload, join_flock)
 	. = ..()
-	resources = new
-	resources.add_points(1000000)
+	flock?.stat_drones_made++
 
 	AddComponent(/datum/component/flock_protection, FALSE, TRUE, FALSE, FALSE)
 	set_real_name(flock_realname(FLOCK_TYPE_DRONE))

@@ -30,6 +30,16 @@
 
 	var/ui_tab = FLOCK_UI_DRONES
 
+	//* STAT TRACKING *//
+	var/stat_drones_made = 0
+	var/stat_bits_made = 0
+	var/stat_deaths = 0
+	var/stat_resources_gained = 0
+	var/stat_traces_made = 0
+	var/stat_tiles_made = 0
+	var/stat_structures_made = 0
+	var/stat_highest_compute = 0
+
 /datum/flock/New()
 	name = flock_realname(FLOCK_TYPE_OVERMIND)
 	create_hud_images()

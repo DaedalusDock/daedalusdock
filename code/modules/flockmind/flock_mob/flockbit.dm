@@ -7,6 +7,7 @@
 
 /mob/living/simple_animal/flock/bit/Initialize(mapload)
 	. = ..()
+	flock?.stat_bits_made++
 	AddComponent(/datum/component/flock_protection)
 	set_real_name(flock_realname(FLOCK_TYPE_BIT))
 	name = flock_name(FLOCK_TYPE_BIT)

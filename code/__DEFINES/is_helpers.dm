@@ -189,6 +189,7 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 #define isflockmob(A) (istype(A, /mob/camera/flock) || istype(A, /mob/living/simple_animal/flock))
 #define isflockdrone(A) (istype(A, /mob/living/simple_animal/flock/drone))
 #define isflockbit(A) (istype(A, /mob/living/simple_animal/flock/bit))
+#define isflocktrace(A) (istype(A, /mob/camera/flock/trace))
 
 //Objects
 #define isobj(A) istype(A, /obj) //override the byond proc because it returns true on children of /atom/movable that aren't objs

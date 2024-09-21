@@ -13,7 +13,19 @@
 	free_drone()
 
 /datum/action/cooldown/flock/control_drone/is_valid_target(atom/cast_on)
-	return selected_bird ? get_turf(cast_on) : isflockdrone(cast_on)
+	if(selected_bird)
+		return get_turf(cast_on)
+
+	if(!isflockdrone(cast_on))
+		return FALSE
+
+	var/mob/living/simple_animal/flock/drone/bird = cast_on
+	if(HAS_TRAIT_FROM(bird, TRAIT_AI_DISABLE_PLANNING, FLOCK_CONTROLLED_BY_OVERMIND_SOURCE))
+		return FALSE
+
+	if(bird.controlled_by)
+		return FALSE
+	return TRUE
 
 /datum/action/cooldown/flock/control_drone/Activate(atom/target)
 	. = ..()
@@ -25,7 +37,7 @@
 	var/mob/camera/flock/overmind/ghost_bird = owner
 
 	if(isturf(target))
-		selected_bird.ai_controller.queue_behavior(/datum/ai_behavior/find_flock_conversion_target, target)
+		selected_bird.ai_controller.queue_behavior(/datum/ai_behavior/flock/find_conversion_target, target)
 		var/image/pointer = flock_pointer(selected_bird, target)
 
 		animate(pointer, time = 2 SECONDS, alpha = 0)
@@ -38,7 +50,7 @@
 /datum/action/cooldown/flock/control_drone/proc/bind_drone(mob/living/simple_animal/flock/drone/bird)
 	selected_bird = bird
 	RegisterSignal(bird, COMSIG_PARENT_QDELETING, PROC_REF(drone_gone))
-	ADD_TRAIT(bird, TRAIT_AI_DISABLE_PLANNING, ref(src))
+	ADD_TRAIT(bird, TRAIT_AI_DISABLE_PLANNING, FLOCK_CONTROLLED_BY_OVERMIND_SOURCE)
 	bird.ai_controller.CancelActions()
 	bird.say("Suspending automated subroutines pending sentient level instruction.", forced = "overmind taking control")
 
@@ -50,7 +62,7 @@
 		spawn(-1)
 			selected_bird.say("Sentient level instruction suspended, resuming automated subroutines.", forced = "overmind control ended")
 	UnregisterSignal(selected_bird, COMSIG_PARENT_QDELETING)
-	REMOVE_TRAIT(selected_bird, TRAIT_AI_DISABLE_PLANNING, ref(src))
+	REMOVE_TRAIT(selected_bird, TRAIT_AI_DISABLE_PLANNING, FLOCK_CONTROLLED_BY_OVERMIND_SOURCE)
 	selected_bird = null
 	unset_click_ability(owner)
 

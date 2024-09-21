@@ -1,8 +1,9 @@
 /mob/camera/flock
-	name = "flockmind"
-	desc = "TODO"
+	name = "BROKEN VERY BAD"
 	icon = 'goon/icons/mob/featherzone.dmi'
-	icon_state ="flockmind"
+	icon_state = "flockmind"
+	base_icon_state = "flockmind"
+
 	layer = FLY_LAYER
 	mouse_opacity = MOUSE_OPACITY_ICON
 	invisibility = INVISIBILITY_OBSERVER
@@ -23,14 +24,21 @@
 	var/datum/flock/flock
 	var/list/actions_to_grant = list()
 
-/mob/camera/flock/Initialize(mapload)
+	var/mob/living/simple_animal/flock/drone/controlling_bird
+
+/mob/camera/flock/Initialize(mapload, join_flock)
 	. = ..()
+
+	#warn temp
+	flock = join_flock || GLOB.debug_flock
 
 	for(var/action_path in actions_to_grant)
 		var/datum/action/action = new action_path
 		action.Grant(src)
 
 	add_client_colour(/datum/client_colour/flockmind)
+
+GLOBAL_DATUM_INIT(debug_flock, /datum/flock, new)
 
 /mob/camera/flock/Login()
 	. = ..()
@@ -55,3 +63,33 @@
 			registered_z = new_z
 		else
 			registered_z = null
+
+/mob/camera/flock/proc/get_flock_data()
+	var/list/data = list()
+	data["name"] = real_name
+	data["area"] = get_area_name(src, TRUE) || "???"
+
+	if(controlling_bird)
+		data["host"] = controlling_bird.real_name
+		data["health"] = controlling_bird.getHealthPercent()
+	else
+		data["host"] = null
+		data["health"] = 100
+
+	return data
+
+/mob/camera/flock/proc/so_very_sad_death()
+	if(client)
+		to_chat(src, span_alert("You cease to exist."))
+
+	ghostize(FALSE)
+	flock?.free_unit(src)
+
+	invisibility = INVISIBLITY_VISIBLE
+	notransform = TRUE
+	icon_state = "blank"
+	flick("[base_icon_state]-death", src)
+	addtimer(CALLBACK(src, PROC_REF(cleanup)), 2 SECONDS)
+
+/mob/camera/flock/proc/cleanup(datum/source)
+	qdel(src)

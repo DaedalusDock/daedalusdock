@@ -1,6 +1,7 @@
-/datum/ai_behavior/find_flock_conversion_target
+/datum/ai_behavior/flock/find_conversion_target
+	name = "building"
 
-/datum/ai_behavior/find_flock_conversion_target/setup(datum/ai_controller/controller, turf/overmind_target)
+/datum/ai_behavior/flock/find_conversion_target/setup(datum/ai_controller/controller, turf/overmind_target)
 	. = ..()
 	if(overmind_target)
 		if(is_valid_target(overmind_target))
@@ -11,10 +12,10 @@
 			bird.say("Invalid conversion target provided by sentient level instruction.")
 			return FALSE
 
-/datum/ai_behavior/find_flock_conversion_target/score(datum/ai_controller/controller)
+/datum/ai_behavior/flock/find_conversion_target/score(datum/ai_controller/controller)
 	return score_distance(controller, get_target(controller))
 
-/datum/ai_behavior/find_flock_conversion_target/score_distance(datum/ai_controller/controller, atom/target)
+/datum/ai_behavior/flock/find_conversion_target/score_distance(datum/ai_controller/controller, atom/target)
 	. = ..()
 	var/mob/living/simple_animal/flock/bird = controller.pawn
 	if(bird.flock?.marked_for_deconstruction[target])
@@ -25,7 +26,7 @@
 	*/
 		. += 200
 
-/datum/ai_behavior/find_flock_conversion_target/proc/get_target(datum/ai_controller/controller)
+/datum/ai_behavior/flock/find_conversion_target/proc/get_target(datum/ai_controller/controller)
 	var/mob/living/simple_animal/flock/bird = controller.pawn
 	var/datum/flock/bird_flock = bird.flock
 
@@ -41,7 +42,7 @@
 
 	return get_best_target_by_distance_score(controller, options)
 
-/datum/ai_behavior/find_flock_conversion_target/proc/is_valid_target(turf/T, datum/flock/bird_flock)
+/datum/ai_behavior/flock/find_conversion_target/proc/is_valid_target(turf/T, datum/flock/bird_flock)
 	if(isflockturf(T))
 		return FALSE
 
@@ -54,7 +55,7 @@
 
 	return bird_flock.is_turf_free(T)
 
-/datum/ai_behavior/find_flock_conversion_target/perform(delta_time, datum/ai_controller/controller, turf/overmind_target)
+/datum/ai_behavior/flock/find_conversion_target/perform(delta_time, datum/ai_controller/controller, turf/overmind_target)
 	var/turf/target = overmind_target || get_target(controller)
 	if(!target)
 		return BEHAVIOR_PERFORM_FAILURE
@@ -68,20 +69,20 @@
 
 	return BEHAVIOR_PERFORM_SUCCESS
 
-/datum/ai_behavior/find_flock_conversion_target/finish_action(datum/ai_controller/controller, succeeded, turf/overmind_target)
+/datum/ai_behavior/flock/find_conversion_target/finish_action(datum/ai_controller/controller, succeeded, turf/overmind_target)
 	. = ..()
 	if(!succeeded && overmind_target)
 		controller.clear_blackboard_key(BB_PATH_MAX_LENGTH)
 		controller.clear_blackboard_key(BB_FLOCK_OVERMIND_CONTROL)
 
-/datum/ai_behavior/find_flock_conversion_target/next_behavior(datum/ai_controller/controller, success)
+/datum/ai_behavior/flock/find_conversion_target/next_behavior(datum/ai_controller/controller, success)
 	if(success)
-		controller.queue_behavior(/datum/ai_behavior/perform_flock_conversion)
+		controller.queue_behavior(/datum/ai_behavior/flock/perform_conversion)
 
-/datum/ai_behavior/perform_flock_conversion
+/datum/ai_behavior/flock/perform_conversion
 	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT
 
-/datum/ai_behavior/perform_flock_conversion/perform(delta_time, datum/ai_controller/controller, ...)
+/datum/ai_behavior/flock/perform_conversion/perform(delta_time, datum/ai_controller/controller, ...)
 	var/mob/living/simple_animal/flock/bird = controller.pawn
 	var/turf/target = controller.blackboard[BB_FLOCK_CONVERT_TARGET]
 	if(target)
@@ -95,7 +96,7 @@
 
 	return BEHAVIOR_PERFORM_SUCCESS
 
-/datum/ai_behavior/perform_flock_conversion/finish_action(datum/ai_controller/controller, succeeded, ...)
+/datum/ai_behavior/flock/perform_conversion/finish_action(datum/ai_controller/controller, succeeded, ...)
 	. = ..()
 	var/mob/living/simple_animal/flock/drone/bird = controller.pawn
 	bird.flock?.free_turf(bird)

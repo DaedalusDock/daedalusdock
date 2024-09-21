@@ -28,9 +28,32 @@
 	/// A k:V list of client : image, see ping().
 	var/list/active_pings = list()
 
+	var/ui_tab = FLOCK_UI_DRONES
+
 /datum/flock/New()
 	name = flock_realname(FLOCK_TYPE_OVERMIND)
 	create_hud_images()
+
+/datum/flock/ui_state(mob/user)
+	GLOB.flock_state
+
+/datum/flock/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "FlockPanel")
+		ui.open()
+
+/datum/flock/ui_data(mob/user)
+	var/list/data = list()
+	var/list/drone_info = list()
+	data["drones"] = drone_info
+
+	switch(ui_tab)
+		if(FLOCK_UI_DRONES)
+			for(var/mob/living/simple_animal/flock/drone/bird as anything in drones)
+				drone_info += bird.get_flock_data()
+
+	return data
 
 /// Reserves a turf, making AI ignore it for the purposes of targetting.
 /datum/flock/proc/reserve_turf(mob/living/simple_animal/flock/user, turf/target)
@@ -80,9 +103,9 @@
 	return ignores[M]
 
 /datum/flock/proc/add_unit(mob/unit)
-	// if(isflocktrace(unit))
-	// traces += unit
-	// 	return
+	if(isflocktrace(unit))
+		traces += unit
+		return
 
 	if(isflockdrone(unit))
 		drones += unit
@@ -257,6 +280,20 @@
 	notice_images[FLOCK_NOTICE_IGNORE] = new /image{
 		icon = 'goon/icons/mob/featherzone.dmi';
 		icon_state = "ignore";
+		plane = ABOVE_LIGHTING_PLANE
+		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+	}
+
+	notice_images[FLOCK_NOTICE_FLOCKMIND_CONTROL] = new /image{
+		icon = 'goon/icons/mob/featherzone.dmi';
+		icon_state = "flockmind_face";
+		plane = ABOVE_LIGHTING_PLANE
+		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+	}
+
+	notice_images[FLOCK_NOTICE_FLOCKTRACE_CONTROL] = new /image{
+		icon = 'goon/icons/mob/featherzone.dmi';
+		icon_state = "flocktrace_face";
 		plane = ABOVE_LIGHTING_PLANE
 		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
 	}

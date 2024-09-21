@@ -33,8 +33,6 @@
 
 	/// Flock datum. Can be null.
 	var/datum/flock/flock
-	/// A mob possessing this mob.
-	var/mob/camera/flock/controlled_by
 
 /mob/living/simple_animal/flock/Initialize(mapload, join_flock)
 	. = ..()
@@ -72,6 +70,14 @@
 // changing the default arg value here
 /mob/living/simple_animal/flock/treat_message(message, correct_grammar = FALSE)
 	. = ..()
+
+/mob/living/simple_animal/flock/proc/get_flock_data()
+	var/list/data = list()
+	data["name"] = real_name
+	data["health"] = getHealthPercent()
+
+	data["area"] = get_area_name(src, TRUE) || "???"
+	return data
 
 /// Turn the light on or off, based on if the mob is doing shit or not.
 /mob/living/simple_animal/flock/proc/update_light_state()

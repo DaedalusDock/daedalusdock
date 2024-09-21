@@ -1,6 +1,9 @@
 /mob/living/simple_animal/flock/drone
 	ai_controller = /datum/ai_controller/flock/drone
 
+	/// A mob possessing this mob.
+	var/mob/camera/flock/controlled_by
+
 /mob/living/simple_animal/flock/drone/Initialize(mapload, join_flock)
 	. = ..()
 
@@ -14,9 +17,80 @@
 	var/datum/action/cooldown/flock/flock_heal/repair = new
 	repair.Grant(src)
 
+/mob/living/simple_animal/flock/drone/Destroy()
+	release_control()
+	return ..()
+
 /mob/living/simple_animal/flock/drone/death(gibbed, cause_of_death)
 	deathmessage = pick(GLOB.flockdrone_death_phrases)
 	return ..()
+
+/mob/living/simple_animal/flock/drone/get_flock_data()
+	var/list/data = ..()
+	var/current_behavior_name
+
+	if(controlled_by)
+		data["task"] = "controlled"
+		data["controller_ref"] = REF(controlled_by)
+
+	else if((ai_controller.ai_status == AI_ON) && length(ai_controller.current_behaviors))
+		var/datum/ai_behavior/flock/current_task = ai_controller.current_behaviors[1]
+		if(istype(current_task))
+			current_behavior_name = current_task.name
+
+	data["task"] = current_behavior_name || "hibernating"
+	return data
+
+/mob/living/simple_animal/flock/drone/proc/take_control(mob/camera/flock/master_bird)
+	if(HAS_TRAIT_FROM(src, TRAIT_AI_DISABLE_PLANNING, FLOCK_CONTROLLED_BY_OVERMIND_SOURCE))
+		to_chat(master_bird, span_alert("This drone is recieving a sentient-level instruction."))
+		return FALSE
+
+	if(controlled_by)
+		to_chat(master_bird, span_alert("This drone is already under another partition's command."))
+		return FALSE
+
+	controlled_by = master_bird
+	controlled_by.controlling_bird = src
+
+	if(controlled_by.mind)
+		controlled_by.mind.transfer_to(src)
+	else
+		key = controlled_by.key
+
+	if(isflocktrace(controlled_by))
+		flock.add_notice(src, FLOCK_NOTICE_FLOCKTRACE_CONTROL)
+	else
+		flock.add_notice(src, FLOCK_NOTICE_FLOCKMIND_CONTROL)
+
+	to_chat(src, "<span class='flocksay'><b>\[SYSTEM: Control of drone [real_name] established.\]</b></span>")
+	return TRUE
+
+/mob/living/simple_animal/flock/drone/proc/release_control()
+	if(isnull(controlled_by))
+		return
+
+	var/mob/camera/flock/master_bird = controlled_by
+	master_bird = null
+
+	if(flock)
+		flock.remove_notice(src, FLOCK_NOTICE_FLOCKMIND_CONTROL)
+		flock.remove_notice(src, FLOCK_NOTICE_FLOCKTRACE_CONTROL)
+
+	if(isnull(master_bird) && ckey)
+		if(flock)
+			master_bird = new /mob/camera/flock/trace(src, flock)
+		else
+			ghostize(FALSE)
+
+	if(!master_bird)
+		return
+
+	master_bird.forceMove(get_turf(src))
+	if(mind)
+		mind.transfer_to(master_bird)
+
+	flock_talk(null, "Control of [real_name] surrendered.", flock)
 
 /mob/living/simple_animal/flock/drone/proc/split_into_bits()
 	ai_controller.PauseAi(3 SECONDS)

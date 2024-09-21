@@ -1,7 +1,6 @@
 /mob/camera/flock/overmind
 	name = "Flockmind"
 	desc = "TODO"
-	icon = 'goon/icons/mob/featherzone.dmi'
 	icon_state ="flockmind"
 
 	// pass_flags = PASSBLOB
@@ -17,15 +16,13 @@
 		/datum/action/cooldown/flock/ping,
 		/datum/action/cooldown/flock/diffract_drone,
 		/datum/action/cooldown/flock/control_drone,
+		/datum/action/cooldown/flock/control_panel,
 	)
 
-/mob/camera/flock/overmind/Initialize(mapload)
+/mob/camera/flock/overmind/Initialize(mapload, join_flock)
 	. = ..()
-	flock = GLOB.debug_flock
 	flock.register_overmind(src)
 	set_real_name("Flockmind [flock.name]")
-
-GLOBAL_DATUM_INIT(debug_flock, /datum/flock, new)
 
 /mob/camera/flock/overmind/Logout()
 	. = ..()

@@ -371,7 +371,6 @@ const FlockStats = (props) => {
   );
 };
 
-const logger = createLogger('flockdebug');
 export const FlockPanel = (props) => {
   const { act, data } = useBackend();
   const [sortBy, setSortBy] = useLocalState('sortBy', 'resources');

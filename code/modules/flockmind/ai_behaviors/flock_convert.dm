@@ -80,6 +80,7 @@
 		controller.queue_behavior(/datum/ai_behavior/flock/perform_conversion)
 
 /datum/ai_behavior/flock/perform_conversion
+	name = "building"
 	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT
 
 /datum/ai_behavior/flock/perform_conversion/perform(delta_time, datum/ai_controller/controller, ...)

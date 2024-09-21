@@ -87,6 +87,16 @@
 	data["ref"] = REF(src)
 	return data
 
+/mob/living/simple_animal/flock/proc/rally(turf/location)
+	if(!isturf(location))
+		return
+
+	if(ai_controller.ai_status == AI_OFF || ckey)
+		return
+
+	ai_controller.CancelActions()
+	ai_controller.queue_behavior(/datum/ai_behavior/flock/rally, location)
+
 /// Turn the light on or off, based on if the mob is doing shit or not.
 /mob/living/simple_animal/flock/proc/update_light_state()
 	if(stat == DEAD)

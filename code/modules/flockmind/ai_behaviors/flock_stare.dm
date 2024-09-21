@@ -1,4 +1,5 @@
 /datum/ai_behavior/flock/stare
+	name = "analyzing"
 
 /datum/ai_behavior/flock/stare/score(datum/ai_controller/controller)
 	if(controller.behavior_cooldowns[src] > world.time)
@@ -28,6 +29,7 @@
 		return controller.queue_behavior(/datum/ai_behavior/flock/stare_at_bird)
 
 /datum/ai_behavior/flock/stare_at_bird
+	name = "analyzing"
 	action_cooldown = 1 SECOND
 
 /datum/ai_behavior/flock/stare_at_bird/perform(delta_time, datum/ai_controller/controller, ...)

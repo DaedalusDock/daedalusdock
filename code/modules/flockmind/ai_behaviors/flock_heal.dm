@@ -1,4 +1,5 @@
 /datum/ai_behavior/flock/find_heal_target
+	name = "repairing"
 
 /datum/ai_behavior/flock/find_heal_target/score(datum/ai_controller/controller)
 	var/mob/living/simple_animal/flock/drone/bird = controller.pawn
@@ -33,6 +34,7 @@
 		controller.queue_behavior(/datum/ai_behavior/flock/heal)
 
 /datum/ai_behavior/flock/heal
+	name = "repairing"
 	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT
 
 /datum/ai_behavior/flock/heal/perform(delta_time, datum/ai_controller/controller, ...)

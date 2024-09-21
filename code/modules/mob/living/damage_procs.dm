@@ -170,8 +170,9 @@
 
 // here be dragons
 /mob/living/proc/getHealthPercent()
+	var/max = getMaxHealth()
 	var/loss = getBruteLoss() + getFireLoss() + getToxLoss() + getCloneLoss() + getOxyLoss()
-	return ceil((loss / getMaxHealth()) * 100)
+	return ceil((max - loss) / max * 100)
 
 /// Returns the health of the mob while ignoring damage of non-organic (prosthetic) limbs
 /// Used by cryo cells to not permanently imprison those with damage from prosthetics,

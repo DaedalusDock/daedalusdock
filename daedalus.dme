@@ -2980,6 +2980,7 @@
 #include "code\modules\flockmind\ai_behaviors\_flock_behavior_base.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_convert.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_heal.dm"
+#include "code\modules\flockmind\ai_behaviors\flock_rally.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_stare.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_wander.dm"
 #include "code\modules\flockmind\components\flock_interest.dm"

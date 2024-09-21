@@ -1,4 +1,5 @@
 /datum/ai_behavior/flock/wander
+	name = "wandering"
 	required_distance = 0
 
 /datum/ai_behavior/flock/wander/perform(delta_time, datum/ai_controller/controller, ...)

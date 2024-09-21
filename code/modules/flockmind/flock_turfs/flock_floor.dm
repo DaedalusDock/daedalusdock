@@ -5,10 +5,10 @@
 	base_icon_state = "floor"
 
 	light_color = "#19b299"
-	light_power = 0.5
-	light_inner_range = 0.1
-	light_outer_range = 0.8
+	light_power = 0.4
+	light_outer_range = 4
 	light_on = FALSE
+	light_system = OVERLAY_LIGHT
 
 	var/datum/flock/flock
 	var/health = 50
@@ -87,7 +87,7 @@
 		return
 
 	is_on = TRUE
-	set_light(l_on = TRUE)
+	set_light_on(FALSE)
 	update_appearance(UPDATE_ICON_STATE)
 
 /turf/open/floor/flock/proc/turn_off()
@@ -95,5 +95,5 @@
 		return
 
 	is_on = FALSE
-	set_light(l_on = FALSE)
+	set_light_on(TRUE)
 	update_appearance(UPDATE_ICON_STATE)

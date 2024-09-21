@@ -9,7 +9,7 @@
 /datum/ai_movement/jps/start_moving_towards(datum/ai_controller/controller, atom/current_movement_target, min_distance)
 	. = ..()
 	var/atom/movable/moving = controller.pawn
-	var/delay = controller.movement_delay
+	var/delay = controller.get_movement_delay()
 	var/max_path_length_override = controller.blackboard[BB_PATH_MAX_LENGTH]
 	var/diagonal_handling_override = controller.blackboard[BB_PATH_DIAGONAL_HANDLING]
 

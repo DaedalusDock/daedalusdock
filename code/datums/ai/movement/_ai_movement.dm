@@ -60,7 +60,7 @@
 		qdel(source) //stop moving
 		return MOVELOOP_SKIP_STEP
 
-	source.delay = controller.movement_delay
+	source.delay = controller.get_movement_delay()
 
 	if(allowed_to_move(source))
 		return NONE

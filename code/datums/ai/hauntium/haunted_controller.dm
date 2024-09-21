@@ -1,6 +1,6 @@
 
 /datum/ai_controller/haunted
-	movement_delay = 0.4 SECONDS
+	non_mob_movement_delay = 0.4 SECONDS
 	blackboard = list(
 		BB_TO_HAUNT_LIST = list(),
 		BB_LIKES_EQUIPPER = FALSE,

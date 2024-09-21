@@ -20,7 +20,7 @@
 	response_disarm_simple = "gently push aside"
 	emote_taunt = list("gnashes")
 	taunt_chance = 30
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 25
 	health = 25
 	search_objects = 1

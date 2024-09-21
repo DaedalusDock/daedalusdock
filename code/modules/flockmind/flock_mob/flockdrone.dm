@@ -54,16 +54,6 @@
 	data["task"] = current_behavior_name || "hibernating"
 	return data
 
-
-/mob/living/simple_animal/flock/drone/update_move_intent_slowdown()
-	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))
-		add_movespeed_modifier(/datum/movespeed_modifier/flockphase)
-		remove_movespeed_modifier(MOVESPEED_ID_MOB_WALK_RUN)
-		return
-
-	remove_movespeed_modifier(/datum/movespeed_modifier/flockphase)
-	return ..()
-
 /mob/living/simple_animal/flock/drone/proc/start_flockphase()
 	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))
 		return FALSE
@@ -75,7 +65,7 @@
 	resize = 0
 	set_density(FALSE)
 	release_all_grabs()
-	update_move_intent_slowdown()
+	add_movespeed_modifier(/datum/movespeed_modifier/flockphase)
 
 	var/list/color_matrix = list(1,0,0, 0,1,0, 0,0,1, 0.15,0.77,0.66)
 	var/matrix/shrink = matrix().Scale(0)
@@ -93,7 +83,7 @@
 	pass_flags_self &= ~(LETPASSTHROW | PASSFLOCK)
 	resize = initial(resize)
 	set_density(TRUE)
-	update_move_intent_slowdown()
+	remove_movespeed_modifier(/datum/movespeed_modifier/flockphase)
 
 	animate(src, color = null, transform = null, time = 0.5 SECONDS, easing = SINE_EASING)
 

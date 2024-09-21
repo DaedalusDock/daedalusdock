@@ -16,13 +16,6 @@
 	COOLDOWN_DECLARE(heel_cooldown)
 	COOLDOWN_DECLARE(command_cooldown)
 
-
-/datum/ai_controller/dog/process(delta_time)
-	if(ismob(pawn))
-		var/mob/living/living_pawn = pawn
-		movement_delay = living_pawn.movement_delay
-	return ..()
-
 /datum/ai_controller/dog/TryPossessPawn(atom/new_pawn)
 	if(!isliving(new_pawn))
 		return AI_CONTROLLER_INCOMPATIBLE

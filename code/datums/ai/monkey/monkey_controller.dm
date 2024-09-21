@@ -5,7 +5,6 @@ have ways of interacting with a specific mob and control it.
 ///OOK OOK OOK
 
 /datum/ai_controller/monkey
-	movement_delay = 0.4 SECONDS
 	planning_subtrees = list(
 		/datum/ai_planning_subtree/generic_resist,
 		/datum/ai_planning_subtree/monkey_combat,
@@ -45,7 +44,6 @@ have ways of interacting with a specific mob and control it.
 	if(!isliving(new_pawn))
 		return AI_CONTROLLER_INCOMPATIBLE
 
-	var/mob/living/living_pawn = new_pawn
 	AddComponent(/datum/component/connect_loc_behalf, new_pawn, loc_connections)
 	RegisterSignal(new_pawn, COMSIG_PARENT_ATTACKBY, PROC_REF(on_attackby))
 	RegisterSignal(new_pawn, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_attack_hand))
@@ -58,9 +56,6 @@ have ways of interacting with a specific mob and control it.
 	RegisterSignal(new_pawn, COMSIG_LIVING_TRY_SYRINGE, PROC_REF(on_try_syringe))
 	RegisterSignal(new_pawn, COMSIG_ATOM_HULK_ATTACK, PROC_REF(on_attack_hulk))
 	RegisterSignal(new_pawn, COMSIG_CARBON_CUFF_ATTEMPTED, PROC_REF(on_attempt_cuff))
-	RegisterSignal(new_pawn, COMSIG_MOB_MOVESPEED_UPDATED, PROC_REF(update_movespeed))
-
-	movement_delay = living_pawn.movement_delay
 	return ..() //Run parent at end
 
 /datum/ai_controller/monkey/UnpossessPawn(destroy)
@@ -211,10 +206,6 @@ have ways of interacting with a specific mob and control it.
 	// chance of monkey retaliation
 	if(prob(MONKEY_CUFF_RETALIATION_PROB))
 		retaliate(user)
-
-/datum/ai_controller/monkey/proc/update_movespeed(mob/living/pawn)
-	SIGNAL_HANDLER
-	movement_delay = pawn.movement_delay
 
 /datum/ai_controller/monkey/proc/target_del(target)
 	SIGNAL_HANDLER

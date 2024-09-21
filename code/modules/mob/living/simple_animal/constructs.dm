@@ -14,7 +14,7 @@
 	response_harm_simple = "punch"
 	speak_chance = 1
 	icon = 'icons/mob/cult.dmi'
-	speed = 0
+	move_delay_modifier = 0
 	combat_mode = TRUE
 	stop_automated_movement = 1
 	status_flags = CANPUSH
@@ -140,7 +140,7 @@
 	melee_damage_upper = 25
 	attack_verb_continuous = "smashes their armored gauntlet into"
 	attack_verb_simple = "smash your armored gauntlet into"
-	speed = 2.5
+	move_delay_modifier = 2.5
 	environment_smash = ENVIRONMENT_SMASH_WALLS
 	attack_sound = 'sound/weapons/punch3.ogg'
 	status_flags = 0

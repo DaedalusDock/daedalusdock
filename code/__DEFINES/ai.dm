@@ -68,7 +68,9 @@
 #define BB_PATH_DIAGONAL_HANDLING "BB_path_diagonal_handling"
 /// Typecache of refs to mobs this mob is friends with, will follow their instructions and won't attack them
 #define BB_FRIENDS_LIST "BB_FRIENDS_LIST"
-
+/// World.time of the last movement + the pawn's movement delay
+#define BB_NEXT_MOVE_TIME "BB_NEXT_MOVE_TIME"
+s
 //for songs
 
 ///song instrument blackboard, set by instrument subtrees

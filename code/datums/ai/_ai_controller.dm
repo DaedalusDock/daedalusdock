@@ -6,7 +6,7 @@ multiple modular subtrees with behaviors
 
 /datum/ai_controller
 	///The atom this controller is controlling
-	var/atom/pawn
+	var/atom/movable/pawn
 
 	///Bitfield of traits for this AI to handle extra behavior
 	var/ai_traits
@@ -56,8 +56,8 @@ multiple modular subtrees with behaviors
 
 	///Cooldown until next movement
 	COOLDOWN_DECLARE(movement_cooldown)
-	///Delay between movements. This is on the controller so we can keep the movement datum singleton
-	var/movement_delay = 0.1 SECONDS
+	/// Movement delay used by NON MOBS, use get_movement_delay()
+	var/non_mob_movement_delay = 0.4 SECONDS
 
 	// The variables below are fucking stupid and should be put into the blackboard at some point.
 	///AI paused time
@@ -320,6 +320,30 @@ multiple modular subtrees with behaviors
 		if(stored_arguments)
 			arguments += stored_arguments
 		current_behavior.finish_action(arglist(arguments))
+
+/datum/ai_controller/proc/get_movement_delay()
+	if(isliving(pawn))
+		var/mob/living/living_pawn = pawn
+		return living_pawn.movement_delay
+	return non_mob_movement_delay
+
+/datum/ai_controller/proc/MovePawn(...)
+	if(!isturf(pawn.loc))
+		return FALSE
+
+	if(blackboard[BB_NEXT_MOVE_TIME] >= world.time)
+		return FALSE
+
+	var/mob/living/living_pawn = pawn
+	if(isliving(pawn))
+		living_pawn = pawn
+		if(!(living_pawn.mobility_flags & MOBILITY_MOVE))
+			return FALSE
+
+	. = pawn.Move(arglist(args))
+
+	if(.)
+		set_blackboard_key(BB_NEXT_MOVE_TIME, world.time + get_movement_delay())
 
 /datum/ai_controller/proc/on_sentience_gained()
 	SIGNAL_HANDLER

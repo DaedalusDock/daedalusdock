@@ -39,10 +39,24 @@
 /obj/machinery/atmospherics/try_flock_convert(datum/flock/flock, force)
 	return
 
+/obj/structure/window/try_flock_convert(datum/flock/flock, force)
+	var/turf/T = loc
+	..()
+	if(fulltile)
+		return new /obj/structure/window/flock/fulltile(T)
+
+	var/obj/W = new /obj/structure/window/flock(T)
+	W.dir = dir
+	return W
+
 /obj/machinery/door/try_flock_convert(datum/flock/flock, force)
 	var/turf/T = loc
-	qdel(src)
-	new /obj/machinery/door/flock(T)
+	..()
+	return new /obj/machinery/door/flock(T)
+
+/obj/structure/low_wall/try_flock_convert(datum/flock/flock, force)
+	set_material(/datum/material/gnesis, TRUE)
+	return src
 
 /turf/proc/can_flock_convert(force)
 	return FALSE

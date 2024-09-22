@@ -40,8 +40,6 @@
 
 /mob/living/simple_animal/flock/Initialize(mapload, join_flock)
 	. = ..()
-
-	update_light_state()
 	RegisterSignal(ai_controller, COMSIG_AI_STATUS_CHANGE, PROC_REF(on_ai_status_change))
 
 	var/datum/action/cooldown/flock/convert/convert_action = new
@@ -57,6 +55,9 @@
 
 	resources = new
 	resources.add_points(1000000)
+
+	update_health_notice()
+	update_light_state()
 
 /mob/living/simple_animal/flock/Destroy()
 	flock?.free_unit(src)
@@ -84,8 +85,23 @@
 /mob/living/simple_animal/flock/treat_message(message, correct_grammar = FALSE)
 	. = ..()
 
+/mob/living/simple_animal/flock/updatehealth(cause_of_death)
+	. = ..()
+	update_health_notice()
+
 /mob/living/simple_animal/flock/get_flock_id()
 	return real_name
+
+/mob/living/simple_animal/flock/proc/update_health_notice()
+	if(!flock)
+		return
+
+	var/datum/atom_hud/alternate_appearance/basic/flock/notice = get_alt_appearance(FLOCK_NOTICE_HEALTH)
+	if(!notice)
+		notice = flock.add_notice(src, FLOCK_NOTICE_HEALTH)
+
+	var/image/I = notice.image
+	I.icon_state = "hp-[getHealthPercent()]"
 
 /mob/living/simple_animal/flock/proc/get_flock_data()
 	var/list/data = list()

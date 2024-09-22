@@ -9,6 +9,7 @@
 #define FLOCK_NOTICE_IGNORE "ignore"
 #define FLOCK_NOTICE_FLOCKTRACE_CONTROL "flocktrace_control"
 #define FLOCK_NOTICE_FLOCKMIND_CONTROL "flockmind_control"
+#define FLOCK_NOTICE_HEALTH "flock_health"
 
 #define FLOCK_UI_DRONES "drones"
 #define FLOCK_UI_TRACES "traces"

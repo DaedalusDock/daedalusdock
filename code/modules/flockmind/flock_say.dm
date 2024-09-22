@@ -11,7 +11,7 @@
 
 	flock_talk(src, message, flock)
 
-/proc/flock_talk(mob/speaker, message, datum/flock/flock, involuntary, list/inner_spans)
+/proc/flock_talk(atom/speaker, message, datum/flock/flock, involuntary, list/inner_spans)
 
 	message = trim(copytext_char(sanitize(message), 1, MAX_MESSAGE_LEN))
 	if (!message)
@@ -22,6 +22,10 @@
 
 	var/used_name = ""
 	var/list/spans = list("flocksay")
+
+	var/mob/mob_speaker
+	if(ismob(speaker))
+		mob_speaker = speaker
 
 	// Get spans
 	if(istype(speaker, /mob/camera/flock))
@@ -39,7 +43,7 @@
 		spans += "italics"
 
 	// Get name
-	if(isnull(speaker))
+	if(isnull(mob_speaker))
 		used_name = "\[SYSTEM\]"
 
 	else if(istype(speaker, /mob/living/simple_animal/flock/drone))

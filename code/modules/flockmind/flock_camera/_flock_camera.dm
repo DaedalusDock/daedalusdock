@@ -29,7 +29,6 @@
 /mob/camera/flock/Initialize(mapload, join_flock)
 	. = ..()
 
-	#warn temp
 	flock = join_flock || GLOB.debug_flock
 
 	for(var/action_path in actions_to_grant)
@@ -38,6 +37,7 @@
 
 	add_client_colour(/datum/client_colour/flockmind)
 
+#warn temp
 GLOBAL_DATUM_INIT(debug_flock, /datum/flock, new)
 
 /mob/camera/flock/Login()
@@ -52,6 +52,28 @@ GLOBAL_DATUM_INIT(debug_flock, /datum/flock, new)
 /mob/camera/flock/Logout()
 	update_z(null)
 	return ..()
+
+/mob/camera/flock/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
+
+	if(!href_list["origin"])
+		return
+
+	var/atom/movable/origin = locate(href_list["origin"])
+	if(QDELETED(origin))
+		return
+
+	if (isflockdrone(origin))
+		var/mob/living/simple_animal/flock/drone/other_bird = origin
+		if (other_bird.flock != flock)
+			return
+
+	forceMove(get_turf(origin))
+
+	if (href_list["ping"])
+		origin.AddComponent(/datum/component/flock_ping)
 
 /mob/camera/flock/proc/update_z(new_z) // 1+ to register, null to unregister
 	if (registered_z != new_z)

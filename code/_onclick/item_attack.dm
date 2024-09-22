@@ -261,6 +261,7 @@
 	)
 
 	log_combat(user, src, "attacked ([damage] damage)", attacking_item)
+	return damage
 
 /area/attacked_by(obj/item/attacking_item, mob/living/user)
 	CRASH("areas are NOT supposed to have attacked_by() called on them!")

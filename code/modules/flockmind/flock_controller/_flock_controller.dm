@@ -198,7 +198,7 @@
 
 /datum/flock/proc/add_notice(atom/target, notice_type)
 	var/image/I = image(notice_images[notice_type], loc = target)
-	target.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/flock, notice_type, I, null, src)
+	return target.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/flock, notice_type, I, null, src)
 
 /datum/flock/proc/remove_notice(atom/target, notice_type)
 	target.remove_alt_appearance(notice_type)
@@ -271,41 +271,56 @@
 	notice_images[FLOCK_NOTICE_RESERVED] = new /image{
 		icon = 'goon/icons/mob/featherzone.dmi';
 		icon_state = "frontier";
-		plane = ABOVE_LIGHTING_PLANE
+		plane = ABOVE_LIGHTING_PLANE;
 		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+		alpha = 80;
 	}
 
 	notice_images[FLOCK_NOTICE_PRIORITY] = new /image{
 		icon = 'goon/icons/mob/featherzone.dmi';
 		icon_state = "frontier";
-		plane = ABOVE_LIGHTING_PLANE
+		plane = ABOVE_LIGHTING_PLANE;
 		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+		alpha = 180;
 	}
 
 	notice_images[FLOCK_NOTICE_ENEMY] = new /image{
 		icon = 'goon/icons/mob/featherzone.dmi';
 		icon_state = "hazard";
-		plane = ABOVE_LIGHTING_PLANE
+		pixel_y = 16;
+		plane = ABOVE_LIGHTING_PLANE;
 		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
 	}
 
 	notice_images[FLOCK_NOTICE_IGNORE] = new /image{
 		icon = 'goon/icons/mob/featherzone.dmi';
 		icon_state = "ignore";
-		plane = ABOVE_LIGHTING_PLANE
+		pixel_y = 16;
+		plane = ABOVE_LIGHTING_PLANE;
 		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
 	}
 
 	notice_images[FLOCK_NOTICE_FLOCKMIND_CONTROL] = new /image{
 		icon = 'goon/icons/mob/featherzone.dmi';
 		icon_state = "flockmind_face";
-		plane = ABOVE_LIGHTING_PLANE
+		pixel_y = 16;
+		plane = ABOVE_LIGHTING_PLANE;
 		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
 	}
 
 	notice_images[FLOCK_NOTICE_FLOCKTRACE_CONTROL] = new /image{
 		icon = 'goon/icons/mob/featherzone.dmi';
 		icon_state = "flocktrace_face";
-		plane = ABOVE_LIGHTING_PLANE
+		pixel_y = 16;
+		plane = ABOVE_LIGHTING_PLANE;
+		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+	}
+
+	notice_images[FLOCK_NOTICE_HEALTH] = new /image{
+		icon = 'goon/icons/mob/featherzone.dmi';
+		icon_state = "hp-100";
+		pixel_x = 10;
+		pixel_y = 16;
+		plane = ABOVE_LIGHTING_PLANE;
 		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
 	}

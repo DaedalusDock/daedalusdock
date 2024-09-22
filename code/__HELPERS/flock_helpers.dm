@@ -67,3 +67,11 @@
 	while(attempts <= 10 && findname(name))
 
 	return name
+
+/proc/animate_flockpass(atom/thing)
+	var/list/color_matrix = list(1,0,0, 0,1,0, 0,0,1, 0.15,0.77,0.66)
+	var/matrix/shrink = thing.transform.Scale(0.4)
+	var/old_transform = thing.transform
+
+	animate(thing, color = color_matrix, transform = shrink, time = 3, easing=BOUNCE_EASING)
+	animate(color = null, transform = old_transform, time = 3, easing=BOUNCE_EASING)

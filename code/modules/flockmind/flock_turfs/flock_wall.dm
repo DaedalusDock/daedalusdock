@@ -1,8 +1,8 @@
 /turf/closed/wall/flock
 	name = "TEMP"
 	icon = 'goon/icons/mob/featherzone.dmi'
-	icon_state = "floor"
-	base_icon_state = "floor"
+	icon_state = "0"
+	base_icon_state = "0"
 
 	light_color = "#19b299"
 	light_power = 0.5

@@ -185,9 +185,9 @@
 
 	var/list/new_color = list(1,0,0, 0,1,0, 0,0,1, 0.15,0.77,0.66)
 	color = null
-	animate(src, color=new_color, alpha = 0, time = 0.1 SECONDS)
+	animate(src, color=new_color, alpha = 0, time = 0.5 SECONDS)
 
-	addtimer(CALLBACK(src, PROC_REF(finish_splitting)), 0.1 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(finish_splitting)), 0.5 SECONDS)
 
 /mob/living/simple_animal/flock/drone/proc/finish_splitting()
 	qdel(src)

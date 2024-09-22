@@ -13,6 +13,9 @@
 	/// A k:V list of flock mobs to their reserved turf.
 	var/list/turf_reservations_by_flock = list()
 
+	var/list/claimed_floors = list()
+	var/list/claimed_walls = list()
+
 	/// The bits
 	var/list/bits = list()
 	/// The drones
@@ -43,6 +46,26 @@
 /datum/flock/New()
 	name = flock_realname(FLOCK_TYPE_OVERMIND)
 	create_hud_images()
+
+/datum/flock/proc/convert_turf(turf/T)
+	if(isnull(T))
+		return
+
+	free_turf(T)
+	T = flock_convert_turf(T, src)
+
+	if(isnull(T))
+		return
+
+	playsound(T, 'sound/items/deconstruct.ogg', 30, TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
+
+	if(iswallturf(T))
+		claimed_walls += T
+	else
+		claimed_floors += T
+
+	T.AddComponent(/datum/component/flock_interest, src)
+	SEND_SIGNAL(T, COMSIG_TURF_CLAIMED_BY_FLOCK, src)
 
 /// Reserves a turf, making AI ignore it for the purposes of targetting.
 /datum/flock/proc/reserve_turf(mob/living/simple_animal/flock/user, turf/target)

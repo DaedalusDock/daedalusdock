@@ -45,13 +45,13 @@
 			bird.flock?.free_turf(bird)
 			return FALSE
 
+		bird.flock?.free_turf(bird)
+		clicked_atom_turf.vis_contents -= turf_effect
+
 		if(!is_valid_target(clicked_atom_turf))
 			return FALSE
 
-		bird.flock?.free_turf(bird)
-		clicked_atom_turf.vis_contents -= turf_effect
-		var/turf/new_turf = clicked_atom_turf.ScrapeAway(1)
-		new_turf.PlaceOnTop(/turf/open/floor/flock)
+		flock_convert_turf(target, bird.flock)
 		return TRUE
 
 	return FALSE

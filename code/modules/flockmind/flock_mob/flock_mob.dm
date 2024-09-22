@@ -40,13 +40,17 @@
 
 /mob/living/simple_animal/flock/Initialize(mapload, join_flock)
 	. = ..()
+
 	update_light_state()
 	RegisterSignal(ai_controller, COMSIG_AI_STATUS_CHANGE, PROC_REF(on_ai_status_change))
 
 	var/datum/action/cooldown/flock/convert/convert_action = new
 	convert_action.Grant(src)
+
 	set_combat_mode(TRUE)
+
 	ADD_TRAIT(src, TRAIT_FREE_FLOAT_MOVEMENT, INNATE_TRAIT)
+	ADD_TRAIT(src, TRAIT_FLOCK_THING, INNATE_TRAIT)
 
 	flock = join_flock || GLOB.debug_flock
 	flock?.add_unit(src)

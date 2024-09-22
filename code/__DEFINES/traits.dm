@@ -998,3 +998,4 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define FLOCK_CONTROLLED_BY_OVERMIND_SOURCE "FLOCK_CONTROLLED_BY_OVERMIND_SOURCE"
 
 #define TRAIT_FLOCKPHASE "TRAIT_FLOCKPHASE"
+#define TRAIT_FLOCK_THING "TRAIT_FLOCK_THING"

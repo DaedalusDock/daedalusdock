@@ -50,7 +50,7 @@
 	ADD_TRAIT(src, TRAIT_FREE_FLOAT_MOVEMENT, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_FLOCK_THING, INNATE_TRAIT)
 
-	flock = join_flock || GLOB.debug_flock
+	flock = join_flock || get_default_flock()
 	flock?.add_unit(src)
 
 	resources = new

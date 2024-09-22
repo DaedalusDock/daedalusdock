@@ -1,3 +1,10 @@
+/proc/get_default_flock()
+	var/static/datum/flock/flock
+	if(isnull(flock))
+		flock = new
+
+	return flock
+
 /datum/flock
 	var/name = "BAD FLOCK"
 

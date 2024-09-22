@@ -29,16 +29,13 @@
 /mob/camera/flock/Initialize(mapload, join_flock)
 	. = ..()
 
-	flock = join_flock || GLOB.debug_flock
+	flock = join_flock || get_default_flock()
 
 	for(var/action_path in actions_to_grant)
 		var/datum/action/action = new action_path
 		action.Grant(src)
 
 	add_client_colour(/datum/client_colour/flockmind)
-
-#warn temp
-GLOBAL_DATUM_INIT(debug_flock, /datum/flock, new)
 
 /mob/camera/flock/Login()
 	. = ..()

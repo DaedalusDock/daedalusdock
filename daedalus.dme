@@ -2997,6 +2997,7 @@
 #include "code\modules\flockmind\flock_mob\flockbit.dm"
 #include "code\modules\flockmind\flock_mob\flockdrone.dm"
 #include "code\modules\flockmind\flock_structure\_flock_structure.dm"
+#include "code\modules\flockmind\flock_structure\flock_door.dm"
 #include "code\modules\flockmind\flock_turfs\flock_floor.dm"
 #include "code\modules\flockmind\flock_turfs\flock_wall.dm"
 #include "code\modules\flufftext\Hallucination.dm"

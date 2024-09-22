@@ -39,6 +39,11 @@
 /obj/machinery/atmospherics/try_flock_convert(datum/flock/flock, force)
 	return
 
+/obj/machinery/door/try_flock_convert(datum/flock/flock, force)
+	var/turf/T = loc
+	qdel(src)
+	new /obj/machinery/door/flock(T)
+
 /turf/proc/can_flock_convert(force)
 	return FALSE
 

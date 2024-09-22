@@ -85,8 +85,6 @@
 
 #define AIRLOCK_DENY_ANIMATION_TIME (0.6 SECONDS) /// The amount of time for the airlock deny animation to show
 
-#define DOOR_CLOSE_WAIT 60 /// Time before a door closes, if not overridden
-
 #define DOOR_VISION_DISTANCE 11 ///The maximum distance a door will see out to
 
 /obj/machinery/door/airlock
@@ -95,16 +93,19 @@
 	icon = 'icons/obj/doors/airlocks/station/airlock.dmi'
 	icon_state = "closed"
 
+	flags_1 = HTML_USE_INITAL_ICON_1
+	rad_insulation = RAD_MEDIUM_INSULATION
+
 	max_integrity = 300
 
 	var/normal_integrity = AIRLOCK_INTEGRITY_N
 	integrity_failure = 0.25
 	damage_deflection = AIRLOCK_DAMAGE_DEFLECTION_N
+
 	autoclose = TRUE
 	secondsElectrified = MACHINE_NOT_ELECTRIFIED //How many seconds remain until the door is no longer electrified. -1/MACHINE_ELECTRIFIED_PERMANENT = permanently electrified until someone fixes it.
 
 	assemblytype = /obj/structure/door_assembly
-	normalspeed = 1
 	explosion_block = 1
 	hud_possible = list(DIAG_AIRLOCK_HUD = 'icons/mob/huds/hud.dmi')
 	zmm_flags = ZMM_MANGLE_PLANES
@@ -115,6 +116,9 @@
 	align_to_windows = TRUE
 	door_align_type = /obj/machinery/door/airlock
 
+	///what airlock assembly mineral plating was applied to
+	var/previous_airlock = /obj/structure/door_assembly
+
 	var/security_level = 0 //How much are wires secured
 	var/aiControlDisabled = AI_WIRE_NORMAL //If 1, AI control is disabled until the AI hacks back in and disables the lock. If 2, the AI has bypassed the lock. If -1, the control is enabled but the AI had bypassed it earlier, so if it is disabled again the AI would have no trouble getting back in.
 	var/hackProof = FALSE // if true, this door can't be hacked by the AI
@@ -124,18 +128,14 @@
 	var/lights = TRUE // bolt lights show by default
 	var/aiDisabledIdScanner = FALSE
 	var/aiHacking = FALSE
-	var/closeOtherId //Cyclelinking for airlocks that aren't on the same x or y coord as the target.
-	var/obj/machinery/door/airlock/closeOther
-	var/list/obj/machinery/door/airlock/close_others = list()
-	var/obj/item/electronics/airlock/electronics
-	COOLDOWN_DECLARE(shockCooldown)
-	var/obj/item/note //Any papers pinned to the airlock
-	/// The seal on the airlock
-	var/obj/item/seal
+
 	var/detonated = FALSE
 	var/abandoned = FALSE
 	var/cutAiWire = FALSE
 	var/autoname = FALSE
+	var/superspeed = FALSE
+
+	// Sounds
 	var/doorOpen = 'sound/machines/doors/airlock_open.ogg'
 	var/doorClose = 'sound/machines/doors/airlock_close.ogg'
 	var/doorDeni = 'sound/machines/deniedbeep.ogg' // i'm thinkin' Deni's
@@ -144,28 +144,41 @@
 	var/noPower = 'sound/machines/doorclick.ogg'
 	var/forcedOpen = 'sound/machines/doors/airlock_open_force.ogg'
 	var/forcedClosed = 'sound/machines/doors/airlock_close_force.ogg'
-	var/previous_airlock = /obj/structure/door_assembly //what airlock assembly mineral plating was applied to
 
+	// Appearance stuff
 	var/stripe_overlays = 'icons/obj/doors/airlocks/station/airlock_stripe.dmi'
 	var/color_overlays = 'icons/obj/doors/airlocks/station/airlock_color.dmi'
 	var/glass_fill_overlays = 'icons/obj/doors/airlocks/station/glass_overlays.dmi'
 	var/overlays_file = 'icons/obj/doors/airlocks/station/overlays.dmi'
 	var/note_overlay_file = 'icons/obj/doors/airlocks/station/note_overlays.dmi' //Used for papers and photos pinned to the airlock
-
 	var/has_fill_overlays = TRUE
 
+	// Paint
 	var/airlock_paint
 	var/stripe_paint
 
+	// Cycle linking
 	var/cyclelinkeddir = 0
+	/// Cyclelinking for airlocks that aren't on the same x or y coord as the target.
+	var/closeOtherId //Cyclelinking for airlocks that aren't on the same x or y coord as the target.
+	/// TRUE means the door will automatically close the next time it's opened.
+	var/delayed_close_requested = FALSE
 	var/obj/machinery/door/airlock/cyclelinkedairlock
+	var/obj/machinery/door/airlock/closeOther
+	var/list/obj/machinery/door/airlock/close_others = list()
+
+	/// Electronics ref
+	var/obj/item/electronics/airlock/electronics
+
 	var/shuttledocked = 0
-	var/delayed_close_requested = FALSE // TRUE means the door will automatically close the next time it's opened.
 	var/air_tight = FALSE //TRUE means density will be set as soon as the door begins to close
 	var/prying_so_hard = FALSE
 
-	flags_1 = HTML_USE_INITAL_ICON_1
-	rad_insulation = RAD_MEDIUM_INSULATION
+	COOLDOWN_DECLARE(shockCooldown)
+	/// Paper pinned to the airlock
+	var/obj/item/note
+	/// The seal on the airlock
+	var/obj/item/seal
 
 /obj/machinery/door/airlock/Initialize(mapload)
 	. = ..()
@@ -1143,7 +1156,7 @@
 		playsound(src, forcedOpen, 45, TRUE) //PARIAH STATION EDIT - aesthetics/airlock module
 
 	if(autoclose)
-		autoclose_in(normalspeed ? 8 SECONDS : 1.5 SECONDS)
+		autoclose_in(superspeed ? 1.5 SECONDS : autoclose_delay)
 
 	if(!density)
 		return TRUE
@@ -1195,11 +1208,11 @@
 		if(!hasPower() || wires.is_cut(WIRE_BOLTS))
 			return
 
-	var/dangerous_close = !safe || force_crush
+	var/dangerous_close = !dont_close_on_dense_objects || force_crush
 	if(!dangerous_close)
 		for(var/atom/movable/M in get_turf(src))
 			if(M.density && M != src) //something is blocking the door
-				autoclose_in(DOOR_CLOSE_WAIT)
+				autoclose_in()
 				return
 	if(forced < 2)
 		if(obj_flags & EMAGGED)
@@ -1330,7 +1343,7 @@
 	// Must be powered and have working AI wire.
 	if(canAIControl(src) && !machine_stat)
 		locked = FALSE //For airlocks that were bolted open.
-		safe = FALSE //DOOR CRUSH
+		dont_close_on_dense_objects = FALSE //DOOR CRUSH
 		close()
 		bolt() //Bolt it!
 		set_electrified(MACHINE_ELECTRIFIED_PERMANENT)  //Shock it!
@@ -1344,7 +1357,7 @@
 		unbolt()
 		set_electrified(MACHINE_NOT_ELECTRIFIED)
 		open()
-		safe = TRUE
+		dont_close_on_dense_objects = TRUE
 
 
 /obj/machinery/door/airlock/proc/on_break()
@@ -1481,8 +1494,8 @@
 	data["emergency"] = emergency // access
 	data["locked"] = locked // bolted
 	data["lights"] = lights // bolt lights
-	data["safe"] = safe // safeties
-	data["speed"] = normalspeed // safe speed
+	data["safe"] = dont_close_on_dense_objects // safeties
+	data["speed"] = !superspeed // safe speed
 	data["welded"] = welded // welded
 	data["opened"] = !density // opened
 
@@ -1546,10 +1559,10 @@
 			update_appearance()
 			. = TRUE
 		if("safe-toggle")
-			safe = !safe
+			dont_close_on_dense_objects = !dont_close_on_dense_objects
 			. = TRUE
 		if("speed-toggle")
-			normalspeed = !normalspeed
+			superspeed = !superspeed
 			. = TRUE
 		if("open-close")
 			user_toggle_open(usr)

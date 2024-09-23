@@ -69,8 +69,10 @@
 	switch(stat)
 		if(CONSCIOUS)
 			ADD_TRAIT(src, TRAIT_MOVE_FLOATING, STAT_TRAIT)
+			REMOVE_TRAIT(src, TRAIT_NO_FLOATING_ANIM, STAT_TRAIT)
 		else
 			REMOVE_TRAIT(src, TRAIT_MOVE_FLOATING, STAT_TRAIT)
+			ADD_TRAIT(src, TRAIT_NO_FLOATING_ANIM, STAT_TRAIT)
 
 /mob/living/simple_animal/flock/say(message, bubble_type, list/spans, sanitize, datum/language/language, ignore_spam, forced, filterproof, range)
 	. = ..()
@@ -88,6 +90,10 @@
 /mob/living/simple_animal/flock/updatehealth(cause_of_death)
 	. = ..()
 	update_health_notice()
+
+/mob/living/simple_animal/flock/death(gibbed, cause_of_death)
+	. = ..()
+	flock.remove_notice(src, FLOCK_NOTICE_HEALTH)
 
 /mob/living/simple_animal/flock/get_flock_id()
 	return real_name

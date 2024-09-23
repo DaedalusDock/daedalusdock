@@ -25,7 +25,10 @@
 	return ..()
 
 /mob/living/simple_animal/flock/drone/death(gibbed, cause_of_death)
-	deathmessage = pick(GLOB.flockdrone_death_phrases)
+	stop_flockphase()
+	say(pick(GLOB.flockdrone_death_phrases))
+	if(flock)
+		flock_talk(null, "Connection to drone [real_name] lost.", flock)
 	return ..()
 
 /mob/living/simple_animal/flock/drone/Life(delta_time, times_fired)

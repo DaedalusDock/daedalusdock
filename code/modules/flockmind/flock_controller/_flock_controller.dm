@@ -132,17 +132,20 @@
 	else if(isflockbit(unit))
 		bits += unit
 
-	RegisterSignal(unit, list(COMSIG_PARENT_QDELETING, COMSIG_LIVING_DEATH), PROC_REF(on_unit_death))
 	unit.AddComponent(/datum/component/flock_interest, src)
 
 /datum/flock/proc/free_unit(mob/unit)
 	if(isflockdrone(unit))
+		var/mob/living/simple_animal/flock/drone/bird = unit
+		bird.flock = null
 		drones -= unit
 
 	else if(isflockbit(unit))
+		var/mob/living/simple_animal/flock/bit/bitty_bird = unit
+		bitty_bird.flock = null
 		bits -= unit
 
-	UnregisterSignal(unit, list(COMSIG_PARENT_QDELETING, COMSIG_LIVING_DEATH))
+	remove_notice(unit, FLOCK_NOTICE_HEALTH)
 	free_turf(unit)
 	qdel(unit.GetComponent(/datum/component/flock_interest))
 

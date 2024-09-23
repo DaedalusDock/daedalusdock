@@ -144,8 +144,14 @@ multiple modular subtrees with behaviors
 /datum/ai_controller/proc/able_to_run()
 	if(HAS_TRAIT(pawn, TRAIT_AI_PAUSED))
 		return FALSE
+
 	if(world.time < paused_until)
 		return FALSE
+
+	if(isliving(pawn))
+		var/mob/living/living_pawn = pawn
+		if(IS_DEAD_OR_INCAP(living_pawn))
+			return FALSE
 	return TRUE
 
 /// This is called by SSai_behaviors/fire(). It is the core of mob AI.

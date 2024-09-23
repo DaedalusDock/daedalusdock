@@ -15,8 +15,8 @@
 	see_in_dark = 100
 	lighting_alpha = LIGHTING_PLANE_ALPHA_INVISIBLE
 	sight = SEE_TURFS | SEE_MOBS | SEE_OBJS | SEE_SELF
-	// faction = list(ROLE_BLOB)
-	//hud_type = /datum/hud/blob_overmind
+
+	initial_language_holder = /datum/language_holder/flock
 
 	move_on_shuttle = FALSE
 	movement_type = PHASING

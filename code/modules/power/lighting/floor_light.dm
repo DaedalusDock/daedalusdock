@@ -10,6 +10,7 @@
 	fitting = "bulb"
 
 	overlay_icon = null
+	align_with_wall = FALSE
 
 	status = LIGHT_EMPTY
 	start_with_cell = FALSE

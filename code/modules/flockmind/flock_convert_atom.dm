@@ -58,6 +58,12 @@
 	set_material(/datum/material/gnesis, TRUE)
 	return src
 
+/obj/machinery/light/try_flock_convert(datum/flock/flock, force)
+	var/obj/L = new /obj/machinery/light/flock(loc)
+	L.setDir(dir)
+	qdel(src)
+	return L
+
 /obj/machinery/light/floor/try_flock_convert(datum/flock/flock, force)
 	. = new /obj/machinery/light/floor/has_bulb/flock(loc)
 	qdel(src)
@@ -69,4 +75,7 @@
 	return TRUE
 
 /turf/open/floor/flock/can_flock_convert(force)
+	return TRUE
+
+/turf/closed/wall/can_flock_convert(force)
 	return TRUE

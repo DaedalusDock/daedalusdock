@@ -11,6 +11,29 @@
 
 	flock_talk(src, message, flock)
 
+/mob/camera/flock/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods, atom/sound_loc, message_range)
+	. = ..()
+
+	var/translated_message = translate_speech(speaker, message_language, raw_message, spans, message_mods)
+
+	// Create map text prior to modifying message for goonchat
+	if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && (client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs) || ismob(speaker)))
+		create_chat_message(speaker, message_language, translated_message, spans, sound_loc = sound_loc)
+
+	// A little hack, if the speaker is a flock drone from our flock, we just assume we heard their message in flocksay too.
+	// So we wont output their message.
+	if(isflockdrone(speaker))
+		var/mob/living/simple_animal/flock/drone/bird = speaker
+		if(bird.flock == flock)
+			return
+
+	// Recompose the message, because it's scrambled by default
+	message = compose_message(speaker, message_language, translated_message, radio_freq, spans, message_mods)
+	to_chat(src,
+		html = "[message]",
+		avoid_highlighting = speaker == src
+	)
+
 /proc/flock_talk(atom/speaker, message, datum/flock/flock, involuntary, list/inner_spans)
 
 	message = trim(copytext_char(sanitize(message), 1, MAX_MESSAGE_LEN))

@@ -47,6 +47,8 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	var/rigged = FALSE
 	/// Is the bulb removable
 	var/removable_bulb = TRUE
+	/// Is it pixel shifted onto walls?
+	var/align_with_wall = TRUE
 	///Cell reference
 	var/obj/item/stock_parts/cell/cell
 	///If true, this fixture generates a very weak cell at roundstart
@@ -160,6 +162,25 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 		. += mutable_appearance(overlay_icon, "[base_state]_nightshift")
 		return
 	. += mutable_appearance(overlay_icon, base_state)
+
+/obj/machinery/light/setDir(ndir)
+	. = ..()
+	if(!align_with_wall)
+		return
+
+	switch(dir)
+		if(NORTH)
+			pixel_y = 21
+			pixel_x = 0
+		if(SOUTH)
+			pixel_y = 0
+			pixel_x = 0
+		if(EAST)
+			pixel_x = 10
+			pixel_y = 0
+		if(WEST)
+			pixel_x = -10
+			pixel_y = 0
 
 //PARIAH EDIT ADDITION
 #define LIGHT_ON_DELAY_UPPER 3 SECONDS

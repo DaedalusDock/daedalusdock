@@ -41,7 +41,7 @@
 
 /obj/structure/window/try_flock_convert(datum/flock/flock, force)
 	var/turf/T = loc
-	..()
+	qdel(src)
 	if(fulltile)
 		return new /obj/structure/window/flock/fulltile(T)
 
@@ -51,12 +51,16 @@
 
 /obj/machinery/door/try_flock_convert(datum/flock/flock, force)
 	var/turf/T = loc
-	..()
+	qdel(src)
 	return new /obj/machinery/door/flock(T)
 
 /obj/structure/low_wall/try_flock_convert(datum/flock/flock, force)
 	set_material(/datum/material/gnesis, TRUE)
 	return src
+
+/obj/machinery/light/floor/try_flock_convert(datum/flock/flock, force)
+	. = new /obj/machinery/light/floor/has_bulb/flock(loc)
+	qdel(src)
 
 /turf/proc/can_flock_convert(force)
 	return FALSE

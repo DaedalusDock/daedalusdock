@@ -102,6 +102,8 @@
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 
 	var/machine_stat = NONE
+
+	/// This is for automatic power consumption.
 	var/use_power = IDLE_POWER_USE
 		//0 = dont use power
 		//1 = use idle_power_usage

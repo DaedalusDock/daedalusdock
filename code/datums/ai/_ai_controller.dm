@@ -124,6 +124,7 @@ multiple modular subtrees with behaviors
 		set_ai_status(AI_STATUS_ON)
 
 	RegisterSignal(pawn, COMSIG_MOB_LOGIN, PROC_REF(on_sentience_gained))
+	RegisterSignal(pawn, COMSIG_MOB_STATCHANGE, PROC_REF(on_stat_change))
 
 ///Abstract proc for initializing the pawn to the new controller
 /datum/ai_controller/proc/TryPossessPawn(atom/new_pawn)
@@ -131,7 +132,7 @@ multiple modular subtrees with behaviors
 
 ///Proc for deinitializing the pawn to the old controller
 /datum/ai_controller/proc/UnpossessPawn(destroy)
-	UnregisterSignal(pawn, list(COMSIG_MOB_LOGIN, COMSIG_MOB_LOGOUT))
+	UnregisterSignal(pawn, list(COMSIG_MOB_LOGIN, COMSIG_MOB_LOGOUT, COMSIG_MOB_STATCHANGE))
 	if(ai_movement.moving_controllers[src])
 		ai_movement.stop_moving_towards(src)
 	pawn.ai_controller = null
@@ -363,6 +364,17 @@ multiple modular subtrees with behaviors
 	UnregisterSignal(pawn, COMSIG_MOB_LOGOUT)
 	set_ai_status(AI_STATUS_ON) //Can't do anything while player is connected
 	RegisterSignal(pawn, COMSIG_MOB_LOGIN, PROC_REF(on_sentience_gained))
+
+/datum/ai_controller/proc/on_stat_change(datum/source, new_stat, old_stat)
+	SIGNAL_HANDLER
+
+	switch(new_stat)
+		if(CONSCIOUS)
+			REMOVE_TRAIT(pawn, TRAIT_AI_PAUSED, STAT_TRAIT)
+			REMOVE_TRAIT(pawn, TRAIT_AI_DISABLE_PLANNING, STAT_TRAIT)
+		else
+			ADD_TRAIT(pawn, TRAIT_AI_PAUSED, STAT_TRAIT)
+			ADD_TRAIT(pawn, TRAIT_AI_DISABLE_PLANNING, STAT_TRAIT)
 
 /// Use this proc to define how your controller defines what access the pawn has for the sake of pathfinding, likely pointing to whatever ID slot is relevant
 /datum/ai_controller/proc/get_access()

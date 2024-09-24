@@ -24,3 +24,7 @@
 
 /datum/movespeed_modifier/status_effect/disorient
 	slowdown = 1
+
+// technically not a status effect but like, close enough
+/datum/movespeed_modifier/status_effect/drowsy
+	slowdown = 4

@@ -9,9 +9,9 @@
 
 	if(!!. != !!drowsyness)
 		if(drowsyness)
-			add_movespeed_modifier(/datum/movespeed_modifier/drowsy)
+			add_movespeed_modifier(/datum/movespeed_modifier/status_effect/drowsy)
 		else
-			remove_movespeed_modifier(/datum/movespeed_modifier/drowsy)
+			remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/drowsy)
 /**
  * Adds passed value to the drowsyness of a mob
  */

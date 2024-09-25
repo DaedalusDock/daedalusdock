@@ -36,6 +36,7 @@
 		action.Grant(src)
 
 	add_client_colour(/datum/client_colour/flockmind)
+	ADD_TRAIT(src, TRAIT_HEAR_THROUGH_WALLS, INNATE_TRAIT)
 
 /mob/camera/flock/Login()
 	. = ..()

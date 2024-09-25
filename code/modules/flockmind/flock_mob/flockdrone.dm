@@ -9,6 +9,8 @@
 	. = ..()
 	flock?.stat_drones_made++
 
+	ADD_TRAIT(src, TRAIT_IMPORTANT_SPEAKER, INNATE_TRAIT)
+
 	AddComponent(/datum/component/flock_protection, FALSE, TRUE, FALSE, FALSE)
 	set_real_name(flock_realname(FLOCK_TYPE_DRONE))
 	name = flock_name(FLOCK_TYPE_DRONE)

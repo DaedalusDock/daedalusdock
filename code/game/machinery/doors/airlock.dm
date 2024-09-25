@@ -1294,7 +1294,7 @@
 
 /obj/machinery/door/airlock/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
 	//Airlock is passable if it is open (!density), bot has access, and is not bolted shut or powered off)
-	return !density || (check_access_list(pass_info.access) && !locked && hasPower() && !pass_info.no_id)
+	return !density || (!locked && !pass_info.no_id && check_access_list(pass_info.access) && hasPower())
 
 /obj/machinery/door/airlock/emag_act(mob/user, obj/item/card/emag/doorjack/D)
 	if(!operating && density && hasPower() && !(obj_flags & EMAGGED))

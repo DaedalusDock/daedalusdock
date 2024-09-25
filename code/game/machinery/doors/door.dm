@@ -5,10 +5,13 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	icon = 'icons/obj/doors/Doorint.dmi'
 	icon_state = "door1"
 	base_icon_state = "door"
+	layer = OPEN_DOOR_LAYER
 	opacity = TRUE
 	density = TRUE
 	move_resist = MOVE_FORCE_VERY_STRONG
-	layer = OPEN_DOOR_LAYER
+
+	can_astar_pass = CANASTARPASS_ALWAYS_PROC
+
 	power_channel = AREA_USAGE_ENVIRON
 	pass_flags_self = PASSDOORS
 	max_integrity = 350
@@ -269,6 +272,20 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	// Snowflake handling for PASSGLASS.
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return !opacity
+
+/obj/machinery/door/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	. = ..()
+	if(.)
+		return
+
+	if(locked)
+		return FALSE
+
+	var/mob/M = pass_info.caller_ref?.resolve()
+	if(isnull(M))
+		return
+
+	return allowed(M)
 
 /obj/machinery/door/proc/bumpopen(mob/user)
 	if(operating || !can_open_with_hands)

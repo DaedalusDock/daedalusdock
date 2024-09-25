@@ -31,12 +31,21 @@
 	if(!length(targets))
 		return null
 
+	var/turf/pawn_turf = get_turf(controller.pawn)
+	var/atom/movable/pawn = controller.pawn
 	var/list/access = controller.get_access()
+
 	var/best_score = -INFINITY
 	var/atom/ideal_atom = null
+
 	for(var/atom/A as anything in targets)
 		var/atom_basic_score = score_distance(controller, A)
 		if(atom_basic_score < best_score)
+			continue
+
+		if(pawn.CanReach(A))
+			best_score = atom_basic_score
+			ideal_atom = A
 			continue
 
 		var/list/path = SSpathfinder.pathfind_now(

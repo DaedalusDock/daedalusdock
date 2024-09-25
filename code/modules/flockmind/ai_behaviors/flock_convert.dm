@@ -46,8 +46,7 @@
 	if(isflockturf(T))
 		return FALSE
 
-	#warn TEMP: NO WALLS YET
-	if(!isfloorturf(T))
+	if(!T.can_flock_convert())
 		return FALSE
 
 	if(isnull(bird_flock))

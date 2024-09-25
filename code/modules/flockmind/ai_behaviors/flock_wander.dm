@@ -18,7 +18,7 @@
 	return 1
 
 /datum/ai_behavior/flock/wander/proc/get_destination(datum/ai_controller/controller)
-	var/datum/can_pass_info/info = new()
+	var/datum/can_pass_info/info = new(controller.pawn, controller.get_access())
 	var/turf/start_loc = get_turf(controller.pawn)
 	var/list/options = list()
 
@@ -29,7 +29,7 @@
 		if(isspaceturf(T))
 			continue
 
-		if(!start_loc.LinkBlockedWithAccess(T, info))
+		if(start_loc.LinkBlockedWithAccess(T, info))
 			continue
 
 		if(!T.can_flock_occupy(controller.pawn))
@@ -52,6 +52,7 @@
 			return T
 
 /datum/ai_behavior/move_to_target/flock_wander
+	required_distance = 0
 
 /datum/ai_behavior/move_to_target/flock_wander/setup(datum/ai_controller/controller, ...)
 	. = ..()

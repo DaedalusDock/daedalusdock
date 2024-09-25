@@ -31,30 +31,34 @@
 	playsound(owner, 'goon/sounds/flockmind/flockdrone_convert.ogg', 30, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE)
 
 	var/turf/clicked_atom_turf = get_turf(target)
-	var/mob/living/simple_animal/flock/bird = owner
 
-	if(istype(clicked_atom_turf, /turf/open/floor))
-		clicked_atom_turf.vis_contents += turf_effect
-		turf_effect.icon_state = "spawn-floor-loop"
-		flick("spawn-floor", turf_effect)
-		owner.face_atom(clicked_atom_turf)
-
-		bird.flock?.reserve_turf(bird, clicked_atom_turf)
-		if(!do_after(owner, target, 4.5 SECONDS, DO_PUBLIC, interaction_key = "flock_convert"))
-			clicked_atom_turf.vis_contents -= turf_effect
-			bird.flock?.free_turf(bird)
-			return FALSE
-
-		bird.flock?.free_turf(bird)
-		clicked_atom_turf.vis_contents -= turf_effect
-
-		if(!is_valid_target(clicked_atom_turf))
-			return FALSE
-
-		flock_convert_turf(target, bird.flock)
-		return TRUE
+	if(isfloorturf(clicked_atom_turf) || iswallturf(clicked_atom_turf))
+		return convert_turf(clicked_atom_turf)
 
 	return FALSE
+
+/datum/action/cooldown/flock/convert/proc/convert_turf(turf/T)
+	var/mob/living/simple_animal/flock/bird = owner
+
+	T.vis_contents += turf_effect
+	turf_effect.icon_state = "spawn-floor-loop"
+	flick("spawn-floor", turf_effect)
+	owner.face_atom(T)
+
+	bird.flock?.reserve_turf(bird, T)
+	if(!do_after(owner, T, 4.5 SECONDS, DO_PUBLIC, interaction_key = "flock_convert"))
+		T.vis_contents -= turf_effect
+		bird.flock?.free_turf(bird)
+		return FALSE
+
+	bird.flock?.free_turf(bird)
+	T.vis_contents -= turf_effect
+
+	if(!is_valid_target(T))
+		return FALSE
+
+	flock_convert_turf(T, bird.flock)
+	return TRUE
 
 /obj/effect/abstract/flock_conversion
 	icon = 'goon/icons/mob/featherzone.dmi'

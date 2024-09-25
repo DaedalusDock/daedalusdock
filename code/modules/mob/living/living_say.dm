@@ -360,6 +360,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 	var/list/the_dead = list()
 
+	#warn flock cant properly hear through walls
 	if(client) //client is so that ghosts don't have to listen to mice
 		for(var/mob/player_mob as anything in GLOB.player_list)
 			if(QDELETED(player_mob)) //Some times nulls and deleteds stay in this list. This is a workaround to prevent ic chat breaking for everyone when they do.
@@ -377,6 +378,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 			listening |= player_mob
 			the_dead[player_mob] = TRUE
+			#warn why is this here
 
 	var/rendered = compose_message(src, message_language, message, null, spans, message_mods)
 	for(var/atom/movable/listening_movable as anything in listening)

@@ -1,8 +1,8 @@
 /turf/closed/wall/flock
-	name = "TEMP"
-	icon = 'goon/icons/mob/featherzone.dmi'
-	icon_state = "0"
-	base_icon_state = "0"
+	name = "weird wall"
+	icon = 'goon/icons/turf/flock.dmi'
+	icon_state = "flock0"
+	base_icon_state = "flock"
 
 	pathing_pass_method = TURF_PATHING_PASS_PROC
 
@@ -12,8 +12,23 @@
 	light_outer_range = 0.8
 	light_on = FALSE
 
+	plating_material = /datum/material/gnesis
+	use_matset_name = FALSE
+
+	uses_integrity = TRUE
+	max_integrity = 250
+
 	var/datum/flock/flock
-	var/health = 50
+
+/turf/closed/wall/flock/atom_break(damage_flag)
+	. = ..()
+	ScrapeAway()
+
+/turf/closed/wall/flock/attacked_by(obj/item/attacking_item, mob/living/user)
+	. = ..()
+	if(!.)
+		return
+	//playsound here?
 
 /turf/closed/wall/flock/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
 	. = ..()

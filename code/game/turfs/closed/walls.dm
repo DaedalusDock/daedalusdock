@@ -64,6 +64,8 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	var/rusted
 	/// Material Set Name
 	var/matset_name
+	/// Should the material name be used?
+	var/use_matset_name = TRUE
 
 	var/list/dent_decals
 
@@ -85,11 +87,15 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	return FALSE
 
 /turf/closed/wall/update_name()
-	. = ..()
+	if(!use_matset_name)
+		return
+
 	if(rusted)
 		name = "rusted "+ matset_name
 	else
 		name = matset_name
+
+	return ..()
 
 /turf/closed/wall/Initialize(mapload)
 	color = null // Remove the color that was set for mapping clarity
@@ -248,7 +254,6 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	else
 		name = "[plating_mat_ref.name] [plating_mat_ref.wall_name]"
 		desc = "It seems to be a section of hull plated with [plating_mat_ref.name]."
-	matset_name = name
 
 	if(update_appearance)
 		update_appearance()

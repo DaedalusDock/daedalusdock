@@ -8,6 +8,8 @@
 	integrity_modifier = 0.2
 
 	wall_type = /turf/closed/wall/flock
+	wall_icon = 'goon/icons/turf/flock.dmi'
+	wall_stripe_icon = null
 	wall_color = "#1bdebd"
 
 /datum/material/gnesis_glass

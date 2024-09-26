@@ -298,7 +298,6 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/parallax_layer)
 				continue
 
 			var/mutable_appearance/texture_overlay = mutable_appearance(icon, icon_state)
-			texture_overlay.transform = matrix(1, 0, x*PARALLAX_ICON_SIZE, 0, 1, y*PARALLAX_ICON_SIZE)
 			texture_overlay.pixel_x += PARALLAX_ICON_SIZE * x
 			texture_overlay.pixel_y += PARALLAX_ICON_SIZE * y
 			new_overlays += texture_overlay

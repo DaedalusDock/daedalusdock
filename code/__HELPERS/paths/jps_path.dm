@@ -406,10 +406,9 @@
 
 	/// These are generally cheaper than looping contents so they go first
 	switch(destination_turf.pathing_pass_method)
-		// This is already assumed to be true
-		//if(TURF_PATHING_PASS_DENSITY)
-		//	if(destination_turf.density)
-		//		return TRUE
+		if(TURF_PATHING_PASS_DENSITY)
+			if(destination_turf.density)
+				return TRUE
 		if(TURF_PATHING_PASS_PROC)
 			if(!destination_turf.CanAStarPass(actual_dir, pass_info))
 				return TRUE

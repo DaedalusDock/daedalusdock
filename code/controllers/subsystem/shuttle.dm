@@ -399,9 +399,6 @@ SUBSYSTEM_DEF(shuttle)
 	var/security_num = seclevel2num(get_security_level())
 	switch(security_num)
 		if(SEC_LEVEL_GREEN)
-			if(emergency.timeLeft(1) < emergency_call_time)
-				return
-		if(SEC_LEVEL_BLUE)
 			if(emergency.timeLeft(1) < emergency_call_time * 0.5)
 				return
 		else

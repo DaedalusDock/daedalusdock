@@ -37,8 +37,10 @@
 
 /atom/movable/screen/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
-	if(istype(hud_owner))
-		hud = hud_owner
+	if(isnull(hud_owner)) //some screens set their hud owners on /new, this prevents overriding them with null post atoms init
+		return
+
+	set_new_hud(hud_owner)
 
 /atom/movable/screen/Destroy()
 	master_ref = null
@@ -54,10 +56,6 @@
 
 	SEND_SIGNAL(src, COMSIG_CLICK, location, control, params, usr)
 
-/atom/movable/screen/proc/can_usr_use(mob/user)
-	. = TRUE
-	if(private_screen && (hud?.mymob != user))
-		return FALSE
 
 /atom/movable/screen/examine(mob/user)
 	return list()
@@ -65,8 +63,29 @@
 /atom/movable/screen/orbit()
 	return
 
+/atom/movable/screen/proc/can_usr_use(mob/user)
+	. = TRUE
+	if(private_screen && (hud?.mymob != user))
+		return FALSE
+
+///setter used to set our new hud
+/atom/movable/screen/proc/set_new_hud(datum/hud/hud_owner)
+	if(hud)
+		UnregisterSignal(hud, COMSIG_PARENT_QDELETING)
+
+	if(isnull(hud_owner))
+		hud = null
+		return
+
+	hud = hud_owner
+	RegisterSignal(hud, COMSIG_PARENT_QDELETING, PROC_REF(on_hud_delete))
+
 /atom/movable/screen/proc/component_click(atom/movable/screen/component_button/component, params)
 	return
+
+/atom/movable/screen/proc/on_hud_delete(datum/source)
+	SIGNAL_HANDLER
+	set_new_hud(hud_owner = null)
 
 /atom/movable/screen/text
 	icon = null

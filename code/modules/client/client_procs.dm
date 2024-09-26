@@ -533,6 +533,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	//Clear the credits browser if it's left over the from the previous round
 	clear_credits()
 
+	//Open to moving this: Pull the player's discord link if one exists:
+	discord_read_linked_id()
+
 	view_size = new(src, getScreenSize(prefs.read_preference(/datum/preference/toggle/widescreen)))
 	view_size.resetFormat()
 	view_size.setZoomMode()

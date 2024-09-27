@@ -211,7 +211,10 @@
 		icon = plating_mat_ref.wall_icon
 		material_color = plating_mat_ref.wall_color
 
-	stripe_icon = plating_mat_ref.wall_stripe_icon
+	if(reinf_mat_ref)
+		stripe_icon = plating_mat_ref.reinforced_wall_stripe_icon
+	else
+		stripe_icon = plating_mat_ref.wall_stripe_icon
 
 	plating_material = plating_mat
 	reinf_material = reinf_mat

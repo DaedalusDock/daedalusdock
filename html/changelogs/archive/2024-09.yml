@@ -6,3 +6,6 @@
   Spyroshark:
   - rscadd: mugs now show reagents inside them.
   - bugfix: the iconic Beagle Mug now displays it's icon properly when empty.
+2024-09-27:
+  Kapu1178:
+  - bugfix: Minor visual issue with TGUI buttons.

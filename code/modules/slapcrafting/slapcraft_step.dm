@@ -191,7 +191,7 @@
 /datum/slapcraft_step/proc/play_perform_sound(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
 	if(!insert_item || !item.drop_sound)
 		return
-	playsound(assembly, item.drop_sound, DROP_SOUND_VOLUME, ignore_walls = FALSE)
+	playsound(assembly, item.drop_sound, DROP_SOUND_VOLUME)
 
 // Procs to generate strings for description steps.
 /// Makes a description for the step.

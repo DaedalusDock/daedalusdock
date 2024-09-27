@@ -104,7 +104,7 @@
 		var/turf/T = get_turf(holder.my_atom)
 		///special size for anti cult effect
 		var/effective_size = round(created_volume/48)
-		playsound(T, 'sound/effects/pray.ogg', 80, FALSE, effective_size)
+		playsound(T, 'sound/effects/pray.ogg', 80, FALSE, effective_size, ignore_walls = 'sound/effects/pray.ogg')
 		for(var/mob/living/simple_animal/revenant/R in get_hearers_in_view(7,T))
 			var/deity
 			if(GLOB.deity)
@@ -338,7 +338,7 @@
 		return
 	holder.remove_reagent(/datum/reagent/sonic_powder, created_volume*3)
 	var/location = get_turf(holder.my_atom)
-	playsound(location, 'sound/effects/bang.ogg', 25, TRUE)
+	playsound(location, 'sound/effects/bang.ogg', 25, TRUE, ignore_walls = 'sound/effects/bang.ogg')
 	for(var/mob/living/carbon/C in get_hearers_in_view(created_volume/3, location))
 		C.soundbang_act(1, 100, rand(0, 5))
 
@@ -348,7 +348,7 @@
 
 /datum/chemical_reaction/sonic_powder_deafen/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/location = get_turf(holder.my_atom)
-	playsound(location, 'sound/effects/bang.ogg', 25, TRUE)
+	playsound(location, 'sound/effects/bang.ogg', 25, TRUE, ignore_walls = 'sound/effects/bang.ogg')
 	for(var/mob/living/carbon/C in get_hearers_in_view(created_volume/10, location))
 		C.soundbang_act(1, 100, rand(0, 5))
 

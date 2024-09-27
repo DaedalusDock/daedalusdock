@@ -396,7 +396,8 @@
 		icon_state = "[icon_state]_[saber_color]"
 
 	balloon_alert(user, "[active ? "flicked out":"pushed in"] [src]")
-	playsound(user ? user : src, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 20, TRUE)
+	var/sound_played = active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg'
+	playsound(user ? user : src, sound_played, 20, TRUE, ignore_walls = sound_played)
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 // Copied from /obj/item/melee/energy/sword/attackby
@@ -1544,16 +1545,16 @@ GLOBAL_LIST_EMPTY(intento_players)
 		to_chat(user, span_notice("You flip \the [src]."))
 		flick("groan_tube_flip", src)
 		if(flipped)
-			playsound(loc, groan_sounds[GROAN_AAAU], 50, FALSE, 3)
+			playsound(loc, groan_sounds[GROAN_AAAU], 50, FALSE, 3, ignore_walls = groan_sounds[GROAN_AAAU])
 			say("AAAUUU")
 		else
-			playsound(loc, groan_sounds[GROAN_UUUA], 50, FALSE, 3)
+			playsound(loc, groan_sounds[GROAN_UUUA], 50, FALSE, 3, ignore_walls = groan_sounds[GROAN_UUUA])
 			say("UUAAAA")
 
 		flipped = !flipped
 		COOLDOWN_START(src, groan_cooldown, cooldown_time)
 		return
-	..()
+	return ..()
 
 #undef GROAN_AAAU
 #undef GROAN_UUUA

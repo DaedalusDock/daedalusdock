@@ -227,9 +227,8 @@
 			continue
 
 		ghost_bird.playsound_local(null, 'goon/sounds/flockmind/ping.ogg', 50, TRUE)
-		#warn debug removed
-		// if(ghost_bird == pinger)
-		// 	continue
+		if(ghost_bird == pinger)
+			continue
 
 		var/image/pointer = flock_pointer(ghost_bird, T)
 		//T._AddComponent(list(/datum/component/flock_ping, 5 SECONDS))

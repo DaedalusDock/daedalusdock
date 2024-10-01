@@ -70,6 +70,9 @@
 	if(allow_flockpass)
 		return isflockdrone(mover)
 
+/obj/structure/flock/try_flock_convert(datum/flock/flock, force)
+	return
+
 /obj/structure/flock/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
 	if(.)

@@ -6,6 +6,9 @@
 
 #define SEE_INVISIBLE_LIVING 25
 
+#define INVISIBILITY_FLOCK 30
+#define SEE_INVISIBLE_FLOCK 30
+
 //#define SEE_INVISIBLE_LEVEL_ONE 35 //currently unused
 //#define INVISIBILITY_LEVEL_ONE 35 //currently unused
 

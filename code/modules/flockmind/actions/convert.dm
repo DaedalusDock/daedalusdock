@@ -41,8 +41,13 @@
 	var/mob/living/simple_animal/flock/bird = owner
 
 	T.vis_contents += turf_effect
-	turf_effect.icon_state = "spawn-floor-loop"
-	flick("spawn-floor", turf_effect)
+	if(iswallturf(T))
+		turf_effect.icon_state = "spawn-wall-loop"
+		flick("spawn-wall", turf_effect)
+	else
+		turf_effect.icon_state = "spawn-floor-loop"
+		flick("spawn-floor", turf_effect)
+
 	owner.face_atom(T)
 
 	bird.flock?.reserve_turf(bird, T)

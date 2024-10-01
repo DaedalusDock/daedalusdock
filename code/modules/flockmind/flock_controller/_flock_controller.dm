@@ -44,7 +44,7 @@
 	var/ui_tab = FLOCK_UI_DRONES
 
 	/// The total amount of computational power available, before whats being used.
-	var/datum/point_holder/compute = 0
+	var/datum/point_holder/compute
 	/// The computational power being used.
 	var/used_compute = 0
 	/// The maximum amount of traces allowed.
@@ -65,7 +65,10 @@
 
 /datum/flock/New()
 	name = flock_realname(FLOCK_TYPE_OVERMIND)
+
+	compute = new
 	create_hud_images()
+
 
 // Called by gamemode code
 /datum/flock/process(delta_time)

@@ -68,7 +68,8 @@
 /obj/effect/abstract/flock_conversion
 	icon = 'goon/icons/mob/featherzone.dmi'
 	icon_state = "blank"
-	layer = ABOVE_OPEN_TURF_LAYER
+	layer = ABOVE_NORMAL_TURF_LAYER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
+	appearance_flags = parent_type::appearance_flags | RESET_COLOR
 	vis_flags = parent_type::vis_flags | VIS_INHERIT_LAYER

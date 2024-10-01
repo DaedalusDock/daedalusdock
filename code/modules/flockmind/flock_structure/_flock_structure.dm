@@ -35,7 +35,7 @@
 
 	COOLDOWN_DECLARE(scream_cd)
 
-/obj/structure/flock/Initialize(mapload, join_flock)
+/obj/structure/flock/Initialize(mapload, datum/flock/join_flock)
 	. = ..()
 
 	spawn_time = world.time
@@ -113,7 +113,7 @@
 /obj/structure/flock/process(delta_time)
 	if(spawn_time + build_time <= world.time)
 		finish_building()
-		return_analyzable_air
+		return
 
 /// Called when an object finishes construction
 /obj/structure/flock/proc/finish_building()

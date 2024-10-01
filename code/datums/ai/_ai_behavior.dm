@@ -31,7 +31,6 @@
 	if(!length(targets))
 		return null
 
-	var/turf/pawn_turf = get_turf(controller.pawn)
 	var/atom/movable/pawn = controller.pawn
 	var/list/access = controller.get_access()
 

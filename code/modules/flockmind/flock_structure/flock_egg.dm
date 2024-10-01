@@ -1,5 +1,4 @@
 /obj/structure/flock/egg
-	icon = 'icons/misc/featherzone.dmi'
 	icon_state = "egg"
 	name = "glowing doodad"
 	desc = "Some sort of small machine. It looks like its getting ready for something."
@@ -22,9 +21,9 @@
 	new /mob/living/simple_animal/flock/drone(get_turf(src), flock)
 
 
-/obj/structure/flock/egg
+/obj/structure/flock/egg/bit
 	flock_id = "Secondary Second-Stage Assembler"
 
-/obj/structure/flock/egg/spawn_mobs()
+/obj/structure/flock/egg/bit/spawn_mobs()
 	for(var/i in 1 to 3)
 		new /mob/living/simple_animal/flock/bit(get_turf(src), flock)

@@ -18,6 +18,7 @@
 #define ROLE_THIEF "Thief"
 #define ROLE_TRAITOR "Traitor"
 #define ROLE_WIZARD "Wizard"
+#define ROLE_FLOCK "Flock"
 
 // Midround roles
 #define ROLE_ABDUCTOR "Abductor"

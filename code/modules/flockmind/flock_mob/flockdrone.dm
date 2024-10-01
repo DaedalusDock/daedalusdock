@@ -1,7 +1,7 @@
 /mob/living/simple_animal/flock/drone
 	ai_controller = /datum/ai_controller/flock/drone
 
-	compute_provided = FLOCK_DRONE_COMPUTE
+	compute_provided = FLOCK_COMPUTE_COST_DRONE
 	var/flock_phasing = FALSE
 	/// A mob possessing this mob.
 	var/mob/camera/flock/controlled_by

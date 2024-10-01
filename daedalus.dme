@@ -2977,6 +2977,7 @@
 #include "code\modules\flockmind\actions\diffract_drone.dm"
 #include "code\modules\flockmind\actions\gatecrash.dm"
 #include "code\modules\flockmind\actions\heal.dm"
+#include "code\modules\flockmind\actions\partition_mind.dm"
 #include "code\modules\flockmind\actions\ping.dm"
 #include "code\modules\flockmind\actions\radio_blast.dm"
 #include "code\modules\flockmind\ai_behaviors\_flock_behavior_base.dm"

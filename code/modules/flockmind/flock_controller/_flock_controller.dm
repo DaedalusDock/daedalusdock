@@ -47,6 +47,8 @@
 	var/datum/point_holder/compute = 0
 	/// The computational power being used.
 	var/used_compute = 0
+	/// The maximum amount of traces allowed.
+	var/max_traces = 0
 
 	// Did the flock lose?
 	var/flock_game_over = FALSE
@@ -176,7 +178,7 @@
 		var/mob/living/simple_animal/flock/bit/bitty_bird = unit
 		bitty_bird.flock = null
 		bits -= unit
-		remove_mob_compute(bird.compute_provided)
+		remove_mob_compute(bitty_bird.compute_provided)
 
 	remove_notice(unit, FLOCK_NOTICE_HEALTH)
 	free_turf(unit)
@@ -442,7 +444,7 @@
 		ghostbird.so_very_sad_death()
 
 	// Free units
-	for(var/mob/living/flock/bird as anything in (bits + drones))
+	for(var/mob/living/simple_animal/flock/bird as anything in (bits + drones))
 		free_unit(bird)
 
 	// Remove ignores

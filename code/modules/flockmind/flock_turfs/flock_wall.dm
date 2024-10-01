@@ -18,8 +18,6 @@
 	uses_integrity = TRUE
 	max_integrity = 250
 
-	var/datum/flock/flock
-
 /turf/closed/wall/flock/atom_break(damage_flag)
 	. = ..()
 	ScrapeAway()

@@ -14,3 +14,6 @@
 #define FLOCK_UI_DRONES "drones"
 #define FLOCK_UI_TRACES "traces"
 #define FLOCK_UI_ENEMIES "enemies"
+
+#define FLOCK_COMPUTE_FLOCKTRACE 100
+#define FLOCK_COMPUTE_DRONE 10

@@ -12,6 +12,8 @@
 		/datum/action/cooldown/flock/ping,
 	)
 
+	var/compute_provided = -FLOCK_COMPUTE_FLOCKTRACE
+
 /mob/camera/flock/trace/Initialize(mapload, join_flock)
 	. = ..()
 	set_real_name(flock_realname(FLOCK_TYPE_TRACE))

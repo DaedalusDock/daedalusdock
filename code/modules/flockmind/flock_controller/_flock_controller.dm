@@ -23,6 +23,9 @@
 	var/list/claimed_floors = list()
 	var/list/claimed_walls = list()
 
+	/// Every structure we've built.
+	var/list/structures = list()
+
 	/// The bits
 	var/list/bits = list()
 	/// The drones
@@ -40,6 +43,14 @@
 
 	var/ui_tab = FLOCK_UI_DRONES
 
+	/// The total amount of computational power available, before whats being used.
+	var/datum/point_holder/compute = 0
+	/// The computational power being used.
+	var/used_compute = 0
+
+	// Did the flock lose?
+	var/flock_game_over = FALSE
+
 	//* STAT TRACKING *//
 	var/stat_drones_made = 0
 	var/stat_bits_made = 0
@@ -54,6 +65,14 @@
 	name = flock_realname(FLOCK_TYPE_OVERMIND)
 	create_hud_images()
 
+// Called by gamemode code
+/datum/flock/process(delta_time)
+	if(flock_game_over)
+		return
+
+	stat_highest_compute = max(stat_highest_compute, compute.has_points())
+
+/// Convert a turf and claim it for the flock.
 /datum/flock/proc/convert_turf(turf/T)
 	if(isnull(T))
 		return
@@ -124,6 +143,9 @@
 /datum/flock/proc/add_unit(mob/unit)
 	if(isflocktrace(unit))
 		traces += unit
+
+		var/mob/camera/flock/trace/ghostbird = unit
+		compute.adjust_points(ghostbird.compute_provided)
 		return
 
 	if(isflockdrone(unit))
@@ -134,20 +156,67 @@
 
 	unit.AddComponent(/datum/component/flock_interest, src)
 
+	var/mob/living/simple_animal/flock/bird = unit
+	new_mob_compute(bird.compute_provided)
+
 /datum/flock/proc/free_unit(mob/unit)
-	if(isflockdrone(unit))
+	if(isflocktrace(unit))
+		var/mob/camera/flock/trace/ghostbird = unit
+		ghostbird.flock = null
+		traces -= unit
+		remove_mob_compute(ghostbird.compute_provided)
+
+	else if(isflockdrone(unit))
 		var/mob/living/simple_animal/flock/drone/bird = unit
 		bird.flock = null
 		drones -= unit
+		remove_mob_compute(bird.compute_provided)
 
 	else if(isflockbit(unit))
 		var/mob/living/simple_animal/flock/bit/bitty_bird = unit
 		bitty_bird.flock = null
 		bits -= unit
+		remove_mob_compute(bird.compute_provided)
 
 	remove_notice(unit, FLOCK_NOTICE_HEALTH)
 	free_turf(unit)
 	qdel(unit.GetComponent(/datum/component/flock_interest))
+
+	consider_game_over()
+
+/datum/flock/proc/add_structure(obj/structure/flock/struct)
+	structures += struct
+	struct.flock = src
+	struct.AddComponent(/datum/component/flock_interest, src)
+	compute.adjust_points(struct.compute_provided)
+
+/datum/flock/proc/free_structure(obj/structure/flock/struct)
+	structures -= struct
+	qdel(struct.GetComponent(/datum/component/flock_interest))
+	struct.flock = null
+	compute.adjust_points(-struct.compute_provided)
+
+/// Wrapper for handling compute alongside used_compute for new mobs
+/datum/flock/proc/new_mob_compute(num)
+	if(num < 0)
+		used_compute += abs(num)
+	else
+		compute.adjust_points(num)
+
+/// Wrapper for handling compute alongside used_compute for mobs leaving the flock
+/datum/flock/proc/remove_mob_compute(num)
+	if(num < 0)
+		used_compute -= abs(num)
+	else
+		compute.adjust_points(-num)
+
+/// Returns the amount of available compute, or zero
+/datum/flock/proc/available_compute()
+	return max(compute.has_points() - used_compute, 0)
+
+/// Returns TRUE if the flock has the required compute
+/datum/flock/proc/can_afford(amt)
+	return amt <= available_compute()
 
 /// Sets the flock's overmind
 /datum/flock/proc/register_overmind(mob/camera/flock_overmind)
@@ -333,3 +402,53 @@
 		plane = ABOVE_LIGHTING_PLANE;
 		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
 	}
+
+/// Ends the flock if it is unable to continue spreading.
+/datum/flock/proc/consider_game_over()
+	if(flock_game_over)
+		return
+
+	if(length(drones))
+		return
+
+	if(locate(/obj/structure/flock/egg, structures) || locate(/obj/structure/flock/rift, structures))
+		return
+
+	game_over()
+
+/datum/flock/proc/game_over(completely_destroy = TRUE)
+	// Cleanup any pings
+	for(var/client/C in active_pings)
+		cleanup_ping_images(C)
+
+	// Cleanup turf claims
+	for(var/turf/T as anything in turf_reservations)
+		free_turf(override_turf = T)
+
+	claimed_floors.Cut()
+	claimed_walls.Cut()
+
+	// Extra lives
+	if(!completely_destroy)
+		return
+
+	flock_game_over = TRUE
+
+	// Kill overmind
+	overmind?.so_very_sad_death() // Overmind can be null here if it died outside of game_over().
+
+	// Kill traces
+	for(var/mob/camera/flock/trace/ghostbird as anything in traces)
+		ghostbird.so_very_sad_death()
+
+	// Free units
+	for(var/mob/living/flock/bird as anything in (bits + drones))
+		free_unit(bird)
+
+	// Remove ignores
+	for(var/mob/M as anything in ignores)
+		remove_ignore(M, TRUE)
+
+	// Remove enemies
+	for(var/mob/M as anything in enemies)
+		remove_enemy(M, TRUE)

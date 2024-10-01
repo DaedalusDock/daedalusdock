@@ -10,13 +10,11 @@
 	light_on = FALSE
 	light_system = OVERLAY_LIGHT
 
-	var/datum/flock/flock
 	var/health = 50
 	var/is_on = FALSE
 
-/turf/open/floor/flock/Initialize(mapload, join_flock)
+/turf/open/floor/flock/Initialize(mapload)
 	. = ..()
-	flock = join_flock
 	AddComponent(/datum/component/flock_protection, FALSE, TRUE, FALSE, FALSE)
 
 /turf/open/floor/flock/get_flock_id()

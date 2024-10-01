@@ -114,3 +114,13 @@
 
 /mob/camera/flock/proc/cleanup(datum/source)
 	qdel(src)
+
+/mob/camera/flock/vv_edit_var(var_name, var_value)
+	switch(var_name)
+		if(NAMEOF(src, compute_provided))
+			flock?.compute.adjust_points(-compute_provided)
+			..()
+			flock?.compute.adjust_points(compute_provided)
+			return TRUE
+
+	return ..()

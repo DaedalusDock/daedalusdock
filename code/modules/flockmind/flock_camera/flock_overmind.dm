@@ -29,3 +29,11 @@
 	// If we disconnect, free our homeboy
 	var/datum/action/cooldown/flock/control_drone/control_drone = locate() in actions
 	control_drone?.free_drone()
+
+/mob/camera/flock/overmind/so_very_sad_death()
+	var/datum/flock/old_flock = flock
+	flock = null
+	old_flock?.overmind = null
+	old_flock.game_over()
+	. = ..()
+

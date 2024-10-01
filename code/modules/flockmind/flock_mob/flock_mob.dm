@@ -38,6 +38,8 @@
 
 	var/datum/point_holder/resources
 
+	var/compute_provided = 0
+
 /mob/living/simple_animal/flock/Initialize(mapload, join_flock)
 	. = ..()
 	RegisterSignal(ai_controller, COMSIG_AI_STATUS_CHANGE, PROC_REF(on_ai_status_change))
@@ -54,7 +56,7 @@
 	flock?.add_unit(src)
 
 	resources = new
-	resources.add_points(1000000)
+	resources.adjust_points(1000000)
 
 	update_health_notice()
 	update_light_state()
@@ -143,3 +145,13 @@
 /mob/living/simple_animal/flock/proc/on_ai_status_change(datum/ai_controller/source, ai_status)
 	SIGNAL_HANDLER
 	update_light_state()
+
+/mob/living/simple_animal/flock/vv_edit_var(var_name, var_value)
+	switch(var_name)
+		if(NAMEOF(src, compute_provided))
+			flock?.compute.adjust_points(-compute_provided)
+			..()
+			flock?.compute.adjust_points(compute_provided)
+			return TRUE
+
+	return ..()

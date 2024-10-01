@@ -19,8 +19,14 @@
 
 	var/datum/flock/flock
 
+	var/flock_id
+
 	/// How much juice it takes to construct
 	var/resource_cost = 0
+	/// How long it takes to build
+	var/build_time = 0
+	/// world.time this was created at
+	var/spawn_time
 	/// How much compute this structure provides to the Flock.
 	var/compute_provided = 0
 
@@ -31,8 +37,11 @@
 
 /obj/structure/flock/Initialize(mapload, join_flock)
 	. = ..()
+
+	spawn_time = world.time
+
 	if(join_flock)
-		flock = join_flock
+		join_flock.add_structure(src)
 		AddComponent(/datum/component/flock_object, join_flock)
 
 	var/static/list/loc_connections = list(
@@ -40,8 +49,16 @@
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
+	if(build_time)
+		START_PROCESSING(SSobj, src)
+
+/obj/structure/flock/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	flock?.free_structure(src)
+	return ..()
+
 /obj/structure/flock/get_flock_id()
-	return "the [name]"
+	return "the [flock_id]"
 
 /obj/structure/flock/deconstruct(disassembled)
 	visible_message(span_alert("[src] dissolves into nothingness."))
@@ -91,6 +108,17 @@
 
 	var/image/I = notice.image
 	I.icon_state = "hp-[get_integrity_percentage()]"
+
+
+/obj/structure/flock/process(delta_time)
+	if(spawn_time + build_time <= world.time)
+		finish_building()
+		return_analyzable_air
+
+/// Called when an object finishes construction
+/obj/structure/flock/proc/finish_building()
+	SHOULD_CALL_PARENT(TRUE)
+	STOP_PROCESSING(SSobj, src)
 
 /obj/structure/flock/proc/on_crossed(atom/source, atom/movable/crosser)
 	SIGNAL_HANDLER

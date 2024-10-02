@@ -331,7 +331,7 @@
 
 /obj/machinery/door/airlock/bumpopen(mob/living/user) //Airlocks now zap you when you 'bump' them open when they're electrified. --NeoFite
 	if(!issilicon(usr))
-		if(isElectrified() && shock(user, 100))
+		if(isElectrified() && shock(user, 100, user.get_empty_held_index() ? SHOCK_HANDS : SHOCK_USE_AVG_SIEMENS))
 			return
 		else if(user.hallucinating() && iscarbon(user) && prob(1) && !operating)
 			var/mob/living/carbon/C = user
@@ -408,16 +408,19 @@
 // shock user with probability prb (if all connections & power are working)
 // returns TRUE if shocked, FALSE otherwise
 // The preceding comment was borrowed from the grille's shock script
-/obj/machinery/door/airlock/proc/shock(mob/living/user, prb)
+/obj/machinery/door/airlock/proc/shock(mob/living/user, prb, shock_flags = SHOCK_HANDS)
 	if(!istype(user) || !hasPower()) // unpowered, no shock
 		return FALSE
+
 	if(!COOLDOWN_FINISHED(src, shockCooldown))
 		return FALSE //Already shocked someone recently?
+
 	if(!prob(prb))
 		return FALSE //you lucked out, no shock for you
+
 	do_sparks(5, TRUE, src)
-	var/check_range = TRUE
-	if(electrocute_mob(user, get_area(src), src, 1, check_range))
+
+	if(electrocute_mob(user, get_area(src), src, 1, TRUE, shock_flags = shock_flags))
 		COOLDOWN_START(src, shockCooldown, 1 SECONDS)
 		return TRUE
 	else

@@ -102,7 +102,7 @@
 	if(!ismob(AM))
 		return
 	var/mob/M = AM
-	shock(M, 70)
+	shock(M, 70, M.get_empty_held_index() ? SHOCK_HANDS : SHOCK_USE_AVG_SIEMENS)
 
 /obj/structure/grille/attack_animal(mob/user, list/modifiers)
 	. = ..()
@@ -244,7 +244,7 @@
 // shock user with probability prb (if all connections & power are working)
 // returns 1 if shocked, 0 otherwise
 
-/obj/structure/grille/proc/shock(mob/user, prb)
+/obj/structure/grille/proc/shock(mob/user, prb, shock_flags = SHOCK_HANDS)
 	if(!anchored || broken) // anchored/broken grilles are never connected
 		return FALSE
 	if(!prob(prb))
@@ -254,7 +254,7 @@
 	var/turf/T = get_turf(src)
 	var/obj/structure/cable/C = T.get_cable_node()
 	if(C)
-		if(electrocute_mob(user, C, src, 1, TRUE))
+		if(electrocute_mob(user, C, src, 1, TRUE, shock_flags = shock_flags))
 			var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
 			s.set_up(3, 1, src)
 			s.start()

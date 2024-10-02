@@ -54,7 +54,7 @@
 		if(active)
 			flock.remove_compute_influence(compute_provided)
 			set_active(FALSE)
-			compute = 0
+			compute_provided = 0
 
 	if(!active)
 		if(charge.has_points())

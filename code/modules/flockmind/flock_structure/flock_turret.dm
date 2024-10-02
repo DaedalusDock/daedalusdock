@@ -11,7 +11,7 @@
 	active_compute_cost = 50
 
 	var/range = 8
-	var/projectile_type = /obj/projectile/bullet
+	var/projectile_type = /obj/projectile/bullet/dart/piercing/gnesis
 
 	var/mob/current_target
 
@@ -117,3 +117,16 @@
 	SIGNAL_HANDLER
 
 	set_target(null)
+
+/obj/projectile/bullet/dart/piercing/gnesis
+	name = "barbed crystalline spike"
+	desc = "A hollow teal crystal, like some sort of weird alien syringe. It has a barbed tip. Nasty!"
+
+	embedding = list(
+		embed_chance = 25,
+		ignore_throwspeed_threshold = TRUE,
+		fall_chance = 1
+	)
+
+/obj/projectile/bullet/dart/piercing/gnesis/inject_hit_target(mob/living/carbon/hit)
+	return // Don't instantly dump the payload, slowly inject it.

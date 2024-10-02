@@ -1,7 +1,7 @@
 /// Completely generic resource handler
 /datum/point_holder
 	VAR_PRIVATE/max_points = INFINITY
-	VAR_PRIVATE/points
+	VAR_PRIVATE/points = 0
 
 /datum/point_holder/proc/has_points(atleast)
 	if(points >= atleast)

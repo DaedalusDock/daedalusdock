@@ -12,6 +12,7 @@
 	light_power = 0.2
 	light_outer_range = 2
 
+	faction = list(FACTION_FLOCK)
 	ai_controller = /datum/ai_controller/flock
 
 	initial_language_holder = /datum/language_holder/flock

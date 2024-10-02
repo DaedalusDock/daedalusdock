@@ -42,6 +42,7 @@
 
 /mob/camera/flock/overmind/get_status_tab_items()
 	. = ..()
+	. += ""
 	. += "Total Compute: [flock.compute.has_points()]"
 	. += "Used Compute: [flock.used_compute]"
 	. += "Available Compute: [flock.available_compute()]"

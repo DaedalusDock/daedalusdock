@@ -138,7 +138,7 @@
 		finish_building()
 		return
 
-/obj/structure/flock/sentinel/proc/set_active(new_state)
+/obj/structure/flock/proc/set_active(new_state)
 	if(active == new_state)
 		return
 

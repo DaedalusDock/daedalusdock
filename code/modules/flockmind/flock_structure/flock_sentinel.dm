@@ -75,9 +75,7 @@
 
 	// Select target
 	var/mob/target
-	for(var/mob/living/L as mob in view(range, src))
-		if(!isliving(L))
-			continue
+	for(var/mob/living/L in viewers(range, src))
 
 		if(HAS_TRAIT(L, TRAIT_SHOCKED_BY_SENTINEL) || !flock.is_mob_enemy(L))
 			continue
@@ -112,7 +110,7 @@
 	for(var/i in 1 to 3)
 		end_of_chain = TRUE
 
-		for(var/mob/M as mob in view(2, get_turf(previous_hit)))
+		for(var/mob/living/M in viewers(2, get_turf(previous_hit)))
 			if((M in hit_mobs) || !flock.is_mob_enemy(M))
 				continue
 

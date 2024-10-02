@@ -201,6 +201,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_TESLA_SHOCKIMMUNE "tesla_shock_immunity"
 // Is this atom being actively shocked? Used to prevent repeated shocks.
 #define TRAIT_BEING_SHOCKED "shocked"
+/// The above but for the flock sentinel
+#define TRAIT_SHOCKED_BY_SENTINEL "shocked_by_flock_sentinel"
 /// You cannot ENTER cardiac arrest.
 #define TRAIT_STABLEHEART "stable_heart"
 /// Prevents you from leaving your corpse

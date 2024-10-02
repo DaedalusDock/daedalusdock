@@ -86,7 +86,7 @@
 		if(!isliving(L))
 			continue
 
-		if(!flock.is_mob_enemy(L))
+		if(HAS_TRAIT(L, TRAIT_SHOCKED_BY_SENTINEL) || !flock.is_mob_enemy(L))
 			continue
 
 		if(L.stat != CONSCIOUS || L.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB))
@@ -103,6 +103,8 @@
 	charge.adjust_points(-100)
 
 	tesla_zap_target(src, target, TESLA_MOB_DAMAGE_TO_POWER(damage_per_zap))
+	addtimer(TRAIT_CALLBACK_REMOVE(target, TRAIT_SHOCKED_BY_SENTINEL, ref(src)), 2 SECONDS)
+
 	target.visible_message(
 		span_danger("<b>[target]</b> is struck by a bolt of energy arcing off of <b>[src]</b>."),
 		blind_message = span_hear("You hear a loud electrical crackle."),

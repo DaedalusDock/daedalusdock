@@ -397,12 +397,21 @@
 		var/list/covered_slots = bitfield_to_list(I.body_parts_covered)
 		var/coeff = I.siemens_coefficient
 		for(var/bit in covered_slots)
+			if(ARMS & bit)
+				bit = ARMS
+			else if(LEGS & bit)
+				bit = LEGS
+			else if(FEET & bit)
+				bit = FEET
+			else if(HANDS & bit)
+				bit = HANDS
+
 			if(zones["[bit]"] > coeff)
 				zones["[bit]"] = coeff
 
 	var/sum = (zones["[HEAD]"] * 0.1) + (zones["[CHEST]"] * 0.5) + (zones["[ARMS]"] * 0.15) + (zones["[LEGS]"] * 0.15) + (zones["[HANDS]"] * 0.05) + (zones["[FEET]"] * 0.05)
 
-	return CEILING(sum / length(zones), 0.01)
+	return CEILING(sum, 0.01)
 
 /mob/living/carbon/proc/share_blood_on_touch(mob/living/carbon/human/who_touched_us)
 	return

@@ -18,7 +18,12 @@
 	if(!clicked_atom_turf)
 		return FALSE
 
-	if(!owner.CanReach(clicked_atom_turf))
+	// This breaks pathfinding :(
+	// if(!owner.CanReach(clicked_atom_turf))
+	// 	return FALSE
+
+	// So instead:
+	if(get_dist(owner, clicked_atom_turf) > 1)
 		return FALSE
 
 	if(!clicked_atom_turf.can_flock_convert())

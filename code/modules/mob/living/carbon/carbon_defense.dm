@@ -382,12 +382,12 @@
 /// Returns an average siemen's coeffecient of the user's worn items
 /mob/living/carbon/proc/get_average_siemens_coeff()
 	var/list/zones = list(
-		HEAD = 1,
-		CHEST = 1,
-		ARMS = 1,
-		LEGS = 1,
-		HANDS = 1,
-		FEET = 1,
+		"[HEAD]" = 1,
+		"[CHEST]" = 1,
+		"[ARMS]" = 1,
+		"[LEGS]" = 1,
+		"[HANDS]" = 1,
+		"[FEET]" = 1,
 	)
 
 	for(var/obj/item/I in get_all_worn_items(FALSE))
@@ -397,10 +397,10 @@
 		var/list/covered_slots = bitfield_to_list(I.body_parts_covered)
 		var/coeff = I.siemens_coefficient
 		for(var/bit in covered_slots)
-			if(zones[bit] > coeff)
-				zones[bit] = coeff
+			if(zones["[bit]"] > coeff)
+				zones["[bit]"] = coeff
 
-	var/sum = (zones[HEAD] * 0.1) + (zones[CHEST] * 0.5) + (zones[ARMS] * 0.15) + (zones[LEGS] * 0.15) + (zones[HANDS] * 0.05) + (zones[FEET] * 0.05)
+	var/sum = (zones["[HEAD]"] * 0.1) + (zones["[CHEST]"] * 0.5) + (zones["[ARMS]"] * 0.15) + (zones["[LEGS]"] * 0.15) + (zones["[HANDS]"] * 0.05) + (zones["[FEET]"] * 0.05)
 
 	return CEILING(sum / length(zones), 0.01)
 

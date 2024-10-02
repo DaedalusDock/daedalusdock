@@ -3008,6 +3008,7 @@
 #include "code\modules\flockmind\flock_structure\flock_rift.dm"
 #include "code\modules\flockmind\flock_structure\flock_sentinel.dm"
 #include "code\modules\flockmind\flock_structure\flock_tealprint.dm"
+#include "code\modules\flockmind\flock_structure\flock_turret.dm"
 #include "code\modules\flockmind\flock_structure\flock_window.dm"
 #include "code\modules\flockmind\flock_turfs\flock_floor.dm"
 #include "code\modules\flockmind\flock_turfs\flock_wall.dm"

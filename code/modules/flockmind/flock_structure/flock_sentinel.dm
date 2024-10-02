@@ -6,11 +6,13 @@
 /obj/structure/flock/sentinel
 	name = "glowing pylon"
 	desc = "A glowing pylon of sorts, faint sparks are jumping inside of it."
+	flock_desc = "A charged pylon, capable of sending disorienting arcs of electricity at enemies. Consumes 20 compute."
 	icon_state = "sentinel"
 
 	max_integrity = 80
 
 	flock_id = "Sentinel"
+	active_compute_cost = 20
 
 	/// Attacks require charging
 	var/datum/point_holder/charge = 0
@@ -22,11 +24,6 @@
 	var/range = 4
 	/// Damage per zap.
 	var/damage_per_zap = 5
-
-	/// Whether or not the turret is active. The state of the Flock can change this.
-	var/active = FALSE
-	/// The compute cost while active
-	var/active_compute_cost = 20
 
 /obj/structure/flock/sentinel/Initialize(mapload, joinflock)
 	. = ..()
@@ -45,16 +42,12 @@
 		return PROCESS_KILL
 
 	// Check if the flock can continue to run the sentinel
-	if(flock.can_afford(active_compute_cost))
-		if(!active)
-			compute_provided = -active_compute_cost
-			flock.add_compute_influence(compute_provided)
-			set_active(TRUE)
-	else
-		if(active)
-			flock.remove_compute_influence(compute_provided)
+	if(active)
+		if(flock.available_compute() < 0)
 			set_active(FALSE)
-			compute_provided = 0
+	else
+		if(flock.can_afford(active_compute_cost))
+			set_active(TRUE)
 
 	if(!active)
 		if(charge.has_points())
@@ -148,10 +141,6 @@
 	else
 		icon_state = "sentinel"
 	return ..()
-
-/obj/structure/flock/sentinel/proc/set_active(new_state)
-	active = new_state
-	update_appearance(UPDATE_ICON_STATE)
 
 #undef NOT_CHARGED
 #undef LOSING_CHARGE

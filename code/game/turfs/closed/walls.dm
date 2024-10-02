@@ -255,6 +255,8 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 		name = "[plating_mat_ref.name] [plating_mat_ref.wall_name]"
 		desc = "It seems to be a section of hull plated with [plating_mat_ref.name]."
 
+	matset_name = name
+
 	if(update_appearance)
 		update_appearance()
 

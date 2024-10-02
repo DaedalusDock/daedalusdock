@@ -14,16 +14,20 @@
 	var/list/enemy_info = list()
 	var/list/vitals_info = list("name" = name)
 	var/list/stats_info = list()
+	var/list/structure_info = list()
+
 	data["drones"] = drone_info
 	data["partitions"] = trace_info
 	data["vitals"] = vitals_info
 	data["enemies"] = enemy_info
+	data["structures"] = structure_info
 	data["category"] = ui_tab
 	data["stats"] = stats_info
 	data["category_lengths"] = list(
 		"traces" = length(traces),
 		"drones" = length(drones),
-		"enemies" = length(enemies)
+		"enemies" = length(enemies),
+		"structures" = length(structures),
 	)
 
 	switch(ui_tab)
@@ -43,6 +47,9 @@
 				mob_data["ref"] = REF(enemy)
 				enemy_info[++enemy_info.len] = mob_data
 
+		if(FLOCK_UI_STRUCTURES)
+			for(var/obj/structure/flock/struct as anything in structures)
+				structure_info[++structure_info.len] = struct.get_flock_data()
 
 	stats_info[++stats_info.len] = list(name = "Drones realized: ", "value" = stat_drones_made)
 	stats_info[++stats_info.len] = list(name = "Bits formed: ", "value" = stat_bits_made)

@@ -1,6 +1,8 @@
 /obj/structure/flock/rift
 	name = "glowing portal thingymabob"
 	desc = "That doesn't look human."
+	flock_desc = "The rift through which your Flock will enter this world."
+	flock_id = "Entry Rift"
 	icon_state = "rift"
 
 	density = FALSE
@@ -34,7 +36,7 @@
 
 	// Spawn sentinels
 	var/sentinel_count = 0
-	for(var/turf/open/floor/flock/T in candidate_turfs)
+	for(var/turf/open/floor/flock/T in convertable_turfs)
 		if(!T.can_flock_occupy())
 			continue
 

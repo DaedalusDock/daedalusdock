@@ -255,6 +255,8 @@ const FlockStructures = (props) => {
                 <Section height="100%">
                   {structure.compute > 0 &&
                     'Compute provided: ' + structure.compute}
+                  {structure.compute < 0 &&
+                    'Compute cost: ' + structure.compute}
                 </Section>
               </Stack.Item>
               {/* buttons */}

@@ -20,5 +20,10 @@
 /obj/machinery/door/flock/allowed(mob/M)
 	return isflockmob(M)
 
+/obj/machinery/door/flock/do_animate(animation)
+	. = ..()
+	if(animation == "deny")
+		playsound(src, 'goon/sounds/flockmind/flockdrone_door_deny.ogg', 50, TRUE, -2)
+
 /obj/machinery/door/flock/try_flock_convert(datum/flock/flock, force)
 	return

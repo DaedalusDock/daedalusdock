@@ -20,15 +20,25 @@
 	var/datum/flock/flock
 
 	var/flock_id
+	/// Shown in the flockmind UI
+	var/flock_desc
 
 	/// How much juice it takes to construct
 	var/resource_cost = 0
 	/// How long it takes to build
 	var/build_time = 0
+	/// Is the tealprint cancellable
+	var/cancellable = TRUE
+
 	/// world.time this was created at
 	var/spawn_time
 	/// How much compute this structure provides to the Flock.
 	var/compute_provided = 0
+
+	/// Whether or not the turret is active. The state of the Flock can change this.
+	var/active = FALSE
+	/// The compute cost while active
+	var/active_compute_cost = 0
 
 	/// Allows flockdrones to pass through.
 	var/allow_flockpass = TRUE
@@ -59,7 +69,16 @@
 	return ..()
 
 /obj/structure/flock/get_flock_id()
-	return "the [flock_id]"
+	return flock_id
+
+/obj/structure/flock/proc/get_flock_data()
+	. = list()
+	.["ref"] = ref(src)
+	.["name"] = flock_id
+	.["health"] = get_integrity_percentage()
+	.["compute"] = active ? -active_compute_cost : compute_provided
+	.["desc"] = flock_desc
+	.["area"] = get_area_name(src, TRUE) || "???"
 
 /obj/structure/flock/deconstruct(disassembled)
 	visible_message(span_alert("[src] dissolves into nothingness."))
@@ -118,6 +137,19 @@
 	if(spawn_time + build_time <= world.time)
 		finish_building()
 		return
+
+/obj/structure/flock/sentinel/proc/set_active(new_state)
+	if(active == new_state)
+		return
+
+	active = new_state
+	update_appearance(UPDATE_ICON_STATE)
+	if(active)
+		flock.remove_compute_influence(compute_provided)
+		flock.add_compute_influence(-active_compute_cost)
+	else
+		flock.remove_compute_influence(-active_compute_cost)
+		flock.add_compute_influence(compute_provided)
 
 /// Called when an object finishes construction
 /obj/structure/flock/proc/finish_building()

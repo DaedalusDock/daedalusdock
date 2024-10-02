@@ -65,10 +65,9 @@
 
 /**
  * Retrieves the atom's current damage as a percentage where `100%` is `100`.
- * If `use_raw_values` is `TRUE`, uses the raw var values instead of the `get_*` proc results.
  */
 /atom/proc/get_integrity_percentage()
-	return ceil((get_integrity_lost())/max_integrity * 100)
+	return ceil((get_integrity())/max_integrity * 100)
 
 /atom/proc/get_integrity_lost()
 	return max_integrity - get_integrity()

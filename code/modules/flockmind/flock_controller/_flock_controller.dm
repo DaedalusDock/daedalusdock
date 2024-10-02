@@ -41,8 +41,7 @@
 	/// A k:V list of client : image, see ping().
 	var/list/active_pings = list()
 
-	var/ui_tab = FLOCK_UI_DRONES
-
+	var/list/datum/flock_unlockable/unlockables
 	/// The total amount of computational power available, before whats being used.
 	var/datum/point_holder/compute
 	/// The computational power being used.
@@ -50,8 +49,12 @@
 	/// The maximum amount of traces allowed.
 	var/max_traces = 0
 
+	var/flock_started = FALSE
 	// Did the flock lose?
 	var/flock_game_over = FALSE
+
+	/// Current UI tab, saves on data sending.
+	var/ui_tab = FLOCK_UI_DRONES
 
 	//* STAT TRACKING *//
 	var/stat_drones_made = 0
@@ -69,6 +72,11 @@
 	compute = new
 	create_hud_images()
 
+	unlockables = list()
+	for(var/datum/flock_unlockable/unlockable as anything in typesof(/datum/flock_unlockable))
+		if(isabstract(unlockable))
+			continue
+		unlockables += new unlockable
 
 // Called by gamemode code
 /datum/flock/process(delta_time)
@@ -76,6 +84,14 @@
 		return
 
 	stat_highest_compute = max(stat_highest_compute, compute.has_points())
+
+/// Called after everything is setup, and clients are in control of their mobs.
+/datum/flock/proc/start()
+	if(flock_started)
+		return
+
+	flock_started = TRUE
+	refresh_unlockables()
 
 /// Convert a turf and claim it for the flock.
 /datum/flock/proc/convert_turf(turf/T)
@@ -200,7 +216,13 @@
 	structures -= struct
 	qdel(struct.GetComponent(/datum/component/flock_interest))
 	struct.flock = null
-	remove_compute_influence(-struct.compute_provided)
+	if(struct.active)
+		remove_compute_influence(-struct.active_compute_cost)
+	else
+		remove_compute_influence(struct.compute_provided)
+
+/datum/flock/proc/create_structure(turf/location, structure_type)
+	new /obj/structure/flock/tealprint(location, structure_type)
 
 /// Wrapper for handling compute alongside used_compute for new mobs
 /datum/flock/proc/add_compute_influence(num)
@@ -209,6 +231,8 @@
 	else
 		compute.adjust_points(num)
 
+	refresh_unlockables()
+
 /// Wrapper for handling compute alongside used_compute for mobs leaving the flock
 /datum/flock/proc/remove_compute_influence(num)
 	if(num < 0)
@@ -216,13 +240,26 @@
 	else
 		compute.adjust_points(-num)
 
-/// Returns the amount of available compute, or zero
+	refresh_unlockables()
+
+/datum/flock/proc/refresh_unlockables()
+	PRIVATE_PROC(TRUE)
+	if(!flock_started)
+		return
+
+	var/new_total = compute.has_points()
+	var/new_available = available_compute()
+
+	for(var/datum/flock_unlockable/unlockable as anything in unlockables)
+		unlockable.refresh_lock_status(src, new_total, new_available)
+
+/// Returns the amount of available compute. Can return negative if over budget.
 /datum/flock/proc/available_compute()
-	return max(compute.has_points() - used_compute, 0)
+	return compute.has_points() - used_compute
 
 /// Returns TRUE if the flock has the required compute
 /datum/flock/proc/can_afford(amt)
-	return amt <= available_compute()
+	return amt <= max(available_compute(), 0)
 
 /// Sets the flock's overmind
 /datum/flock/proc/register_overmind(mob/camera/flock_overmind)

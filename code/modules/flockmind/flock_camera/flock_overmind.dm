@@ -29,11 +29,22 @@
 	flock.register_overmind(src)
 	set_real_name("Flockmind [flock.name]")
 
+/mob/camera/flock/overmind/Login()
+	. = ..()
+	#warn remove this when the gamemode is set up
+	flock.start()
+
 /mob/camera/flock/overmind/Logout()
 	. = ..()
 	// If we disconnect, free our homeboy
 	var/datum/action/cooldown/flock/control_drone/control_drone = locate() in actions
 	control_drone?.free_drone()
+
+/mob/camera/flock/overmind/get_status_tab_items()
+	. = ..()
+	. += "Total Compute: [flock.compute.has_points()]"
+	. += "Used Compute: [flock.used_compute]"
+	. += "Available Compute: [flock.available_compute()]"
 
 /mob/camera/flock/overmind/so_very_sad_death()
 	var/datum/flock/old_flock = flock

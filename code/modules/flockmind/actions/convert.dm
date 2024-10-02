@@ -18,7 +18,7 @@
 	if(!clicked_atom_turf)
 		return FALSE
 
-	if(!owner.Adjacent(clicked_atom_turf))
+	if(!owner.CanReach(clicked_atom_turf))
 		return FALSE
 
 	if(!clicked_atom_turf.can_flock_convert())

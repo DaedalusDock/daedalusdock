@@ -362,5 +362,5 @@
 	// Why would bees pay attention to drones?
 	return TRUE
 
-/mob/living/simple_animal/drone/electrocute_act(shock_damage, siemens_coeff, flags = NONE, stun_multiplier = 1)
+/mob/living/simple_animal/drone/electrocute_act(shock_damage, siemens_coeff, flags = SHOCK_HANDS, stun_multiplier = 1)
 	return FALSE //So they don't die trying to fix wiring

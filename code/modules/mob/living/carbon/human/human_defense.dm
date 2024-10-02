@@ -514,19 +514,12 @@
 
 
 ///Calculates the siemens coeff based on clothing and species, can also restart hearts.
-/mob/living/carbon/human/electrocute_act(shock_damage, siemens_coeff = 1, flags = NONE, stun_multiplier = 1)
+/mob/living/carbon/human/electrocute_act(shock_damage, siemens_coeff = 1, flags = SHOCK_HANDS, stun_multiplier = 1)
 	//Calculates the siemens coeff based on clothing. Completely ignores the arguments
-	if(flags & SHOCK_TESLA) //I hate this entire block. This gets the siemens_coeff for tesla shocks
-		if(gloves && gloves.siemens_coefficient <= 0)
-			siemens_coeff -= 0.5
-		if(wear_suit)
-			if(wear_suit.siemens_coefficient == -1)
-				siemens_coeff -= 1
-			else if(wear_suit.siemens_coefficient <= 0)
-				siemens_coeff -= 0.95
-		siemens_coeff = max(siemens_coeff, 0)
+	if(flags & SHOCK_USE_AVG_SIEMENS)
+		siemens_coeff = get_average_siemens_coeff()
 
-	else if(!(flags & SHOCK_NOGLOVES)) //This gets the siemens_coeff for all non tesla shocks
+	else if((flags & SHOCK_HANDS)) //This gets the siemens_coeff for all non tesla shocks
 		if(gloves)
 			siemens_coeff *= gloves.siemens_coefficient
 

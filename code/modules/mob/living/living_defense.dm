@@ -353,10 +353,10 @@
 	return TRUE
 
 ///As the name suggests, this should be called to apply electric shocks.
-/mob/living/proc/electrocute_act(shock_damage, siemens_coeff = 1, flags = NONE, stun_multiplier = 1)
+/mob/living/proc/electrocute_act(shock_damage, siemens_coeff = 1, flags = SHOCK_HANDS, stun_multiplier = 1)
 	SEND_SIGNAL(src, COMSIG_LIVING_ELECTROCUTE_ACT, shock_damage, siemens_coeff, flags)
 	shock_damage *= siemens_coeff
-	if((flags & SHOCK_TESLA) && HAS_TRAIT(src, TRAIT_TESLA_SHOCKIMMUNE))
+	if((flags & SHOCK_USE_AVG_SIEMENS) && HAS_TRAIT(src, TRAIT_TESLA_SHOCKIMMUNE))
 		return FALSE
 
 	if(HAS_TRAIT(src, TRAIT_SHOCKIMMUNE))

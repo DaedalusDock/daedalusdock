@@ -79,7 +79,7 @@
 		return
 	return ..()
 
-/mob/living/silicon/electrocute_act(shock_damage, siemens_coeff = 1, flags = NONE, stun_multiplier = 1)
+/mob/living/silicon/electrocute_act(shock_damage, siemens_coeff = 1, flags = SHOCK_HANDS, stun_multiplier = 1)
 	if(buckled_mobs)
 		for(var/mob/living/M in buckled_mobs)
 			unbuckle_mob(M)

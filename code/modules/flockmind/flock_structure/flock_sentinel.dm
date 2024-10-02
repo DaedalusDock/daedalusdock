@@ -47,15 +47,14 @@
 	// Check if the flock can continue to run the sentinel
 	if(flock.can_afford(active_compute_cost))
 		if(!active)
-			compute = -active_compute_cost
-			flock.add_compute_influence(compute)
+			compute_provided = -active_compute_cost
+			flock.add_compute_influence(compute_provided)
 			set_active(TRUE)
 	else
 		if(active)
-			flock.remove_compute_influence(compute)
+			flock.remove_compute_influence(compute_provided)
 			set_active(FALSE)
-
-		compute = 0
+			compute = 0
 
 	if(!active)
 		if(charge.has_points())

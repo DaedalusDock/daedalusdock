@@ -74,7 +74,7 @@
 
 ///Handles the doors closing
 /obj/machinery/computer/vaultcontroller/proc/cycle_close(obj/machinery/door/airlock/A)
-	A.safe = FALSE //Make sure its forced closed, always
+	A.dont_close_on_dense_objects = FALSE //Make sure its forced closed, always
 	A.unbolt()
 	A.close()
 	A.bolt()

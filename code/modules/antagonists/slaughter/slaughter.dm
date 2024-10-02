@@ -17,7 +17,7 @@
 	icon_state = "imp"
 	icon_living = "imp"
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	speed = 1
+	move_delay_modifier = 1
 	combat_mode = TRUE
 	stop_automated_movement = TRUE
 	status_flags = CANPUSH

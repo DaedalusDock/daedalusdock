@@ -17,7 +17,7 @@
 	ranged_cooldown_time = 5 SECONDS
 	vision_range = 9
 	retreat_distance = 2
-	speed = 3
+	move_delay_modifier = 3
 	move_to_delay = 5
 	maxHealth = 250
 	health = 250

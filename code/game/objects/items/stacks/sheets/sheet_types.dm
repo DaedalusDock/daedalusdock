@@ -853,3 +853,11 @@ new /datum/stack_recipe("paper frame door", /obj/structure/mineral_door/paperfra
 	amount = 20
 /obj/item/stack/sheet/hauntium/five
 	amount = 5
+
+#warn gnesis sprite
+/obj/item/stack/sheet/gnesis
+	name = "wafer"
+	material_flags = MATERIAL_EFFECTS | MATERIAL_COLOR
+	mats_per_unit = list(/datum/material/gnesis = MINERAL_MATERIAL_AMOUNT)
+	material_type = /datum/material/gnesis
+	merge_type = /obj/item/stack/sheet/gnesis

@@ -28,7 +28,7 @@
 	move_resist = MOVE_FORCE_STRONG
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	sentience_type = SENTIENCE_HUMANOID
-	speed = 0
+	move_delay_modifier = 0
 	stat_attack = UNCONSCIOUS
 	robust_searching = TRUE
 	check_friendly_fire = TRUE

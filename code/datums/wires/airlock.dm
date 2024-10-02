@@ -80,9 +80,9 @@
 	status += "The door bolts [A.locked ? "have fallen!" : "look up."]"
 	status += "The test light is [A.hasPower() ? "on" : "off"]."
 	status += "The AI connection light is [A.aiControlDisabled || (A.obj_flags & EMAGGED) ? "off" : "on"]."
-	status += "The check wiring light is [A.safe ? "off" : "on"]."
+	status += "The check wiring light is [A.dont_close_on_dense_objects ? "off" : "on"]."
 	status += "The timer is powered [A.autoclose ? "on" : "off"]."
-	status += "The speed light is [A.normalspeed ? "on" : "off"]."
+	status += "The speed light is [!A.superspeed ? "on" : "off"]."
 	status += "The emergency light is [A.emergency ? "on" : "off"]."
 	return status
 
@@ -126,11 +126,11 @@
 				A.set_electrified(MACHINE_DEFAULT_ELECTRIFY_TIME, usr)
 			A.shock(usr, 100)
 		if(WIRE_SAFETY)
-			A.safe = !A.safe
+			A.dont_close_on_dense_objects = !A.dont_close_on_dense_objects
 			if(!A.density)
 				A.close()
 		if(WIRE_TIMING)
-			A.normalspeed = !A.normalspeed
+			A.superspeed = !A.superspeed
 		if(WIRE_LIGHT)
 			A.lights = !A.lights
 			A.update_appearance()
@@ -181,7 +181,7 @@
 					A.set_electrified(MACHINE_ELECTRIFIED_PERMANENT, usr)
 				A.shock(usr, 100)
 		if(WIRE_SAFETY) // Cut to disable safeties, mend to re-enable.
-			A.safe = mend
+			A.dont_close_on_dense_objects = mend
 		if(WIRE_TIMING) // Cut to disable auto-close, mend to re-enable.
 			A.autoclose = mend
 			if(A.autoclose && !A.density)

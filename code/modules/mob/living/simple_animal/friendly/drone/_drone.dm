@@ -26,7 +26,7 @@
 	minbodytemp = 0
 	maxbodytemp = 0
 	wander = 0
-	speed = 0
+	move_delay_modifier = 0
 	healable = 0
 	density = FALSE
 	pass_flags = PASSTABLE | PASSMOB
@@ -362,5 +362,5 @@
 	// Why would bees pay attention to drones?
 	return TRUE
 
-/mob/living/simple_animal/drone/electrocute_act(shock_damage, source, siemens_coeff, flags = NONE)
+/mob/living/simple_animal/drone/electrocute_act(shock_damage, siemens_coeff, flags = SHOCK_HANDS, stun_multiplier = 1)
 	return FALSE //So they don't die trying to fix wiring

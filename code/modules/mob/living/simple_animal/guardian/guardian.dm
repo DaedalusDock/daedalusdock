@@ -22,7 +22,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	icon_state = "magicbase"
 	icon_living = "magicbase"
 	icon_dead = "magicbase"
-	speed = 0
+	move_delay_modifier = 0
 	combat_mode = TRUE
 	stop_automated_movement = 1
 	attack_sound = SFX_PUNCH

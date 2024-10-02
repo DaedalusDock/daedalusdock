@@ -1,7 +1,7 @@
 /obj/projectile/bullet/dart
 	name = "dart"
 	icon_state = "cbbolt"
-	damage = 6
+	damage = 1
 	embedding = null
 	shrapnel_type = null
 	var/inject_flags = null
@@ -16,17 +16,20 @@
 		if(blocked != 100) // not completely blocked
 			if(M.can_inject(target_zone = def_zone, injection_flags = inject_flags)) // Pass the hit zone to see if it can inject by whether it hit the head or the body.
 				..()
-				reagents.trans_to(M, reagents.total_volume, methods = INJECT)
+				inject_hit_target(M)
 				return BULLET_ACT_HIT
 			else
 				blocked = 100
-				target.visible_message(span_danger("\The [src] is deflected!"), \
-									   span_userdanger("You are protected against \the [src]!"))
+				target.visible_message(span_danger("[src] hits <b>[target]</b> and falls to the ground."))
 
 	..(target, blocked)
 	reagents.flags &= ~(NO_REACT)
 	reagents.handle_reactions()
 	return BULLET_ACT_HIT
+
+/// Called by on_hit if the target passes can_inject()
+/obj/projectile/bullet/dart/proc/inject_hit_target(mob/living/carbon/hit)
+	reagents.trans_to(hit, reagents.total_volume, methods = INJECT)
 
 /obj/projectile/bullet/dart/metalfoam/Initialize(mapload)
 	. = ..()
@@ -50,14 +53,12 @@
 	inject_flags = INJECT_CHECK_PENETRATE_THICK
 
 /obj/projectile/bullet/dart/haloperidol
-	damage = 0
 
 /obj/projectile/bullet/dart/haloperidol/Initialize(mapload)
 	. = ..()
 	reagents.add_reagent(/datum/reagent/medicine/haloperidol, 10)
 
 /obj/projectile/bullet/dart/ryetalyn
-	damage = 0
 
 /obj/projectile/bullet/dart/ryetalyn/Initialize(mapload)
 	. = ..()

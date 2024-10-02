@@ -16,7 +16,7 @@
 	combat_mode = TRUE
 	maxHealth = 100
 	health = 100
-	speed = 0
+	move_delay_modifier = 0
 	harm_intent_damage = 8
 	melee_damage_lower = 10
 	melee_damage_upper = 10
@@ -37,7 +37,7 @@
 	icon_dead = null
 	icon_gib = "syndicate_gib"
 	turns_per_move = 5
-	speed = 0
+	move_delay_modifier = 0
 	stat_attack = UNCONSCIOUS
 	robust_searching = 1
 	vision_range = 3

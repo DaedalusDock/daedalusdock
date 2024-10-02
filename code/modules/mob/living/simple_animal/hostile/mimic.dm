@@ -9,7 +9,7 @@
 	response_help_simple = "touch"
 	response_disarm_continuous = "pushes"
 	response_disarm_simple = "push"
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 250
 	health = 250
 	gender = NEUTER

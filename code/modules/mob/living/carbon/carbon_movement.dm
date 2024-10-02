@@ -78,3 +78,23 @@
 			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/limbless, slowdown = limbless_slowdown)
 		else
 			remove_movespeed_modifier(/datum/movespeed_modifier/limbless)
+
+
+/mob/living/carbon/proc/update_move_intent_slowdown()
+	var/modifier
+	if(m_intent == MOVE_INTENT_WALK)
+		modifier = /datum/movespeed_modifier/config_walk_run/walk
+	else if(m_intent == MOVE_INTENT_RUN)
+		modifier =  /datum/movespeed_modifier/config_walk_run/run
+	else
+		modifier = /datum/movespeed_modifier/config_walk_run/sprint
+	add_movespeed_modifier(modifier)
+
+/mob/living/carbon/update_config_movespeed()
+	update_move_intent_slowdown()
+	return ..()
+
+/mob/living/carbon/set_move_intent(new_state)
+	. = ..()
+	update_move_intent_slowdown()
+

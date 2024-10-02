@@ -310,7 +310,7 @@
 	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
 	var/power = our_seed.potency * rate
 	if(prob(power))
-		target_carbon.electrocute_act(round(power), our_plant, 1, SHOCK_NOGLOVES)
+		target_carbon.electrocute_act(round(power), 1, NONE)
 
 /*
  * Recharges every cell the person is holding for a bit based on plant potency.

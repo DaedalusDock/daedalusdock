@@ -16,7 +16,7 @@
 	glass = FALSE
 	sub_door = TRUE
 	explosion_block = 1
-	safe = FALSE
+	dont_close_on_dense_objects = FALSE
 	layer = BELOW_OPEN_DOOR_LAYER
 	closingLayer = CLOSED_FIREDOOR_LAYER
 	assemblytype = /obj/structure/firelock_frame

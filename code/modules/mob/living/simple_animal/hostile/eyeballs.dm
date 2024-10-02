@@ -11,7 +11,7 @@
 	obj_damage = 10
 	melee_damage_lower = 8
 	melee_damage_upper = 12
-	speed = 0
+	move_delay_modifier = 0
 	gender = NEUTER
 	mob_biotypes = MOB_ORGANIC
 	response_help_continuous = "pets"

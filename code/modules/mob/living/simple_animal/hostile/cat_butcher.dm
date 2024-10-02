@@ -8,7 +8,7 @@
 	icon_gib = "syndicate_gib"
 	speak_chance = 0
 	turns_per_move = 5
-	speed = 0
+	move_delay_modifier = 0
 	stat_attack = UNCONSCIOUS
 	robust_searching = 1
 	maxHealth = 100

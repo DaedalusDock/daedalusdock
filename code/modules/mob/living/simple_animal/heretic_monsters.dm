@@ -14,7 +14,7 @@
 	response_harm_simple = "tears"
 	speak_emote = list("screams")
 	speak_chance = 1
-	speed = 0
+	move_delay_modifier = 0
 	combat_mode = TRUE
 	stop_automated_movement = TRUE
 	AIStatus = AI_OFF

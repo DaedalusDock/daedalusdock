@@ -9,7 +9,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	mouse_opacity = MOUSE_OPACITY_ICON
 	speak_emote = list("telepathically cries")
-	speed = 2
+	move_delay_modifier = 2
 	move_to_delay = 2
 	projectiletype = /obj/projectile/temp/basilisk/ice
 	projectilesound = 'sound/weapons/pierce.ogg'

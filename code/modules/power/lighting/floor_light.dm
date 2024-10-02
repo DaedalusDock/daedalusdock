@@ -10,6 +10,7 @@
 	fitting = "bulb"
 
 	overlay_icon = null
+	align_with_wall = FALSE
 
 	status = LIGHT_EMPTY
 	start_with_cell = FALSE
@@ -31,8 +32,15 @@
 
 /obj/machinery/light/floor/update_icon_state()
 	. = ..()
-	if(status == LIGHT_OK)
-		icon_state = on ? "floor" : "floor-off"
+	switch(status)
+		if(LIGHT_OK)
+			icon_state = base_state
+		if(LIGHT_EMPTY)
+			icon_state = "[base_state]-empty"
+		if(LIGHT_BURNED)
+			icon_state = "[base_state]-burned"
+		if(LIGHT_BROKEN)
+			icon_state = "[base_state]-broken"
 
 /obj/machinery/light/floor/deconstruct(disassembled = TRUE)
 	SHOULD_CALL_PARENT(FALSE)

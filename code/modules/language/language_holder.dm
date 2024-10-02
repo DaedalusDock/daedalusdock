@@ -368,20 +368,6 @@ Key procs
 	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
 							/datum/language/voltaic = list(LANGUAGE_ATOM))
 
-/datum/language_holder/golem
-	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-								/datum/language/terrum = list(LANGUAGE_ATOM))
-	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-							/datum/language/terrum = list(LANGUAGE_ATOM))
-
-/datum/language_holder/golem/runic
-	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-								/datum/language/terrum = list(LANGUAGE_ATOM),
-								/datum/language/narsie = list(LANGUAGE_ATOM))
-	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-							/datum/language/terrum = list(LANGUAGE_ATOM),
-							/datum/language/narsie = list(LANGUAGE_ATOM))
-
 /datum/language_holder/fly
 	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
 								/datum/language/buzzwords = list(LANGUAGE_ATOM))
@@ -433,3 +419,12 @@ Key procs
 /datum/language_holder/universal/New()
 	..()
 	grant_all_languages()
+
+/datum/language_holder/flock
+	understood_languages = list(
+		/datum/language/common = list(LANGUAGE_ATOM),
+		/datum/language/flock = list(LANGUAGE_ATOM),
+	)
+	spoken_languages = list(
+		/datum/language/flock = list(LANGUAGE_ATOM),
+	)

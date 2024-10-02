@@ -353,24 +353,23 @@
 	return TRUE
 
 ///As the name suggests, this should be called to apply electric shocks.
-/mob/living/proc/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)
-	SEND_SIGNAL(src, COMSIG_LIVING_ELECTROCUTE_ACT, shock_damage, source, siemens_coeff, flags)
+/mob/living/proc/electrocute_act(shock_damage, siemens_coeff = 1, flags = NONE, stun_multiplier = 1)
+	SEND_SIGNAL(src, COMSIG_LIVING_ELECTROCUTE_ACT, shock_damage, siemens_coeff, flags)
 	shock_damage *= siemens_coeff
 	if((flags & SHOCK_TESLA) && HAS_TRAIT(src, TRAIT_TESLA_SHOCKIMMUNE))
 		return FALSE
+
 	if(HAS_TRAIT(src, TRAIT_SHOCKIMMUNE))
 		return FALSE
+
 	if(shock_damage < 1)
 		return FALSE
+
 	if(!(flags & SHOCK_ILLUSION))
 		adjustFireLoss(shock_damage)
 	else
 		stamina.adjust(-shock_damage)
-	visible_message(
-		span_danger("[src] was shocked by \the [source]!"), \
-		span_userdanger("You feel a powerful shock coursing through your body!"), \
-		span_hear("You hear a heavy electrical crack.") \
-	)
+
 	return shock_damage
 
 /mob/living/emp_act(severity)

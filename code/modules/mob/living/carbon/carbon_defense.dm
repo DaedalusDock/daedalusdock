@@ -344,10 +344,11 @@
 		organ.emp_act(severity)
 
 ///Adds to the parent by also adding functionality to propagate shocks through pulling and doing some fluff effects.
-/mob/living/carbon/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)
+/mob/living/carbon/electrocute_act(shock_damage, siemens_coeff = 1, flags = NONE, stun_multiplier = 1)
 	. = ..()
 	if(!.)
 		return
+
 	//Propagation through pulling, fireman carry
 	if(!(flags & SHOCK_ILLUSION))
 		if(undergoing_cardiac_arrest() && resuscitate())
@@ -355,32 +356,28 @@
 
 		var/list/shocking_queue = list()
 		shocking_queue += get_all_grabbed_movables()
-		shocking_queue -= source
 
-		if(iscarbon(buckled) && source != buckled)
+		if(iscarbon(buckled))
 			shocking_queue += buckled
+
 		for(var/mob/living/carbon/carried in buckled_mobs)
-			if(source != carried)
-				shocking_queue += carried
+			shocking_queue += carried
+
 		//Found our victims, now lets shock them all
 		for(var/victim in shocking_queue)
 			var/mob/living/carbon/C = victim
-			C.electrocute_act(shock_damage*0.75, src, 1, flags)
+			C.electrocute_act(shock_damage*0.75, 1, flags)
+
 	//Stun
 	var/should_stun = (!(flags & SHOCK_TESLA) || siemens_coeff > 0.5) && !(flags & SHOCK_NOSTUN)
 	if(should_stun)
-		Paralyze(40)
-	//Jitter and other fluff.
-	do_jitter_animation(300)
-	adjust_timed_status_effect(20 SECONDS, /datum/status_effect/jitter)
-	adjust_timed_status_effect(4 SECONDS, /datum/status_effect/speech/stutter)
-	addtimer(CALLBACK(src, PROC_REF(secondary_shock), should_stun), 2 SECONDS)
-	return shock_damage
+		var/stun_coeff = (flags & SHOCK_ILLUSION) ? rand(3, 6) : (shock_damage / 5)
+		var/stun_duration = (min(stun_coeff, 10) SECONDS) * stun_multiplier
+		Disorient(4 SECONDS + stun_duration, 100, FALSE, paralyze = stun_duration, overstam = TRUE, stack_status = FALSE)
 
-///Called slightly after electrocute act to apply a secondary stun.
-/mob/living/carbon/proc/secondary_shock(should_stun)
-	if(should_stun)
-		Paralyze(60)
+	//Fluff
+	adjust_timed_status_effect(4 SECONDS, /datum/status_effect/speech/stutter)
+	return shock_damage
 
 /mob/living/carbon/proc/share_blood_on_touch(mob/living/carbon/human/who_touched_us)
 	return

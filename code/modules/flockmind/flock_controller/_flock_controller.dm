@@ -150,7 +150,7 @@
 		traces += unit
 
 		var/mob/camera/flock/trace/ghostbird = unit
-		compute.adjust_points(ghostbird.compute_provided)
+		add_compute_influence(ghostbird.compute_provided)
 		return
 
 	if(isflockdrone(unit))
@@ -162,26 +162,27 @@
 	unit.AddComponent(/datum/component/flock_interest, src)
 
 	var/mob/living/simple_animal/flock/bird = unit
-	new_mob_compute(bird.compute_provided)
+	add_compute_influence(bird.compute_provided)
 
 /datum/flock/proc/free_unit(mob/unit)
 	if(isflocktrace(unit))
 		var/mob/camera/flock/trace/ghostbird = unit
 		ghostbird.flock = null
 		traces -= unit
-		remove_mob_compute(ghostbird.compute_provided)
+		remove_compute_influence(ghostbird.compute_provided)
+		return
 
 	else if(isflockdrone(unit))
 		var/mob/living/simple_animal/flock/drone/bird = unit
 		bird.flock = null
 		drones -= unit
-		remove_mob_compute(bird.compute_provided)
+		remove_compute_influence(bird.compute_provided)
 
 	else if(isflockbit(unit))
 		var/mob/living/simple_animal/flock/bit/bitty_bird = unit
 		bitty_bird.flock = null
 		bits -= unit
-		remove_mob_compute(bitty_bird.compute_provided)
+		remove_compute_influence(bitty_bird.compute_provided)
 
 	remove_notice(unit, FLOCK_NOTICE_HEALTH)
 	free_turf(unit)
@@ -193,23 +194,23 @@
 	structures += struct
 	struct.flock = src
 	struct.AddComponent(/datum/component/flock_interest, src)
-	compute.adjust_points(struct.compute_provided)
+	add_compute_influence(struct.compute_provided)
 
 /datum/flock/proc/free_structure(obj/structure/flock/struct)
 	structures -= struct
 	qdel(struct.GetComponent(/datum/component/flock_interest))
 	struct.flock = null
-	compute.adjust_points(-struct.compute_provided)
+	remove_compute_influence(-struct.compute_provided)
 
 /// Wrapper for handling compute alongside used_compute for new mobs
-/datum/flock/proc/new_mob_compute(num)
+/datum/flock/proc/add_compute_influence(num)
 	if(num < 0)
 		used_compute += abs(num)
 	else
 		compute.adjust_points(num)
 
 /// Wrapper for handling compute alongside used_compute for mobs leaving the flock
-/datum/flock/proc/remove_mob_compute(num)
+/datum/flock/proc/remove_compute_influence(num)
 	if(num < 0)
 		used_compute -= abs(num)
 	else
@@ -355,7 +356,7 @@
 		icon = 'goon/icons/mob/featherzone.dmi';
 		icon_state = "frontier";
 		plane = ABOVE_LIGHTING_PLANE;
-		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE | RESET_TRANSFORM;
 		alpha = 80;
 	}
 
@@ -363,7 +364,7 @@
 		icon = 'goon/icons/mob/featherzone.dmi';
 		icon_state = "frontier";
 		plane = ABOVE_LIGHTING_PLANE;
-		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE | RESET_TRANSFORM;
 		alpha = 180;
 	}
 
@@ -372,7 +373,7 @@
 		icon_state = "hazard";
 		pixel_y = 16;
 		plane = ABOVE_LIGHTING_PLANE;
-		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE | RESET_TRANSFORM;
 	}
 
 	notice_images[FLOCK_NOTICE_IGNORE] = new /image{
@@ -380,7 +381,7 @@
 		icon_state = "ignore";
 		pixel_y = 16;
 		plane = ABOVE_LIGHTING_PLANE;
-		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE | RESET_TRANSFORM;
 	}
 
 	notice_images[FLOCK_NOTICE_FLOCKMIND_CONTROL] = new /image{
@@ -388,7 +389,7 @@
 		icon_state = "flockmind_face";
 		pixel_y = 16;
 		plane = ABOVE_LIGHTING_PLANE;
-		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE | RESET_TRANSFORM;
 	}
 
 	notice_images[FLOCK_NOTICE_FLOCKTRACE_CONTROL] = new /image{
@@ -396,7 +397,7 @@
 		icon_state = "flocktrace_face";
 		pixel_y = 16;
 		plane = ABOVE_LIGHTING_PLANE;
-		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE | RESET_TRANSFORM;
 	}
 
 	notice_images[FLOCK_NOTICE_HEALTH] = new /image{
@@ -405,7 +406,7 @@
 		pixel_x = 10;
 		pixel_y = 16;
 		plane = ABOVE_LIGHTING_PLANE;
-		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE;
+		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE | RESET_TRANSFORM;
 	}
 
 /// Ends the flock if it is unable to continue spreading.

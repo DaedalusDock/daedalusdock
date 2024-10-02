@@ -40,6 +40,7 @@
 
 	spawn_time = world.time
 
+	join_flock ||= get_default_flock()
 	if(join_flock)
 		join_flock.add_structure(src)
 		AddComponent(/datum/component/flock_object, join_flock)

@@ -160,11 +160,11 @@
 			return
 
 		for(var/mob/living/guinea_pig as anything in parent_as_movable.buckled_mobs)
-			guinea_pig.electrocute_act(round(live_cable.powernet.avail / ELECTRIC_BUCKLE_SHOCK_STRENGTH_DIVISOR), parent_as_movable)
+			guinea_pig.electrocute_act(round(live_cable.powernet.avail / ELECTRIC_BUCKLE_SHOCK_STRENGTH_DIVISOR))
 			break
 	else
 		for(var/mob/living/guinea_pig as anything in parent_as_movable.buckled_mobs)
-			guinea_pig.electrocute_act(shock_damage, parent_as_movable)
+			guinea_pig.electrocute_act(shock_damage)
 			break
 
 	parent_as_movable.visible_message(span_danger("The electric chair went off!"), span_hear("You hear a deep sharp shock!"))
@@ -184,7 +184,7 @@
 
 		for(var/mob/living/guinea_pig as anything in parent_as_movable.buckled_mobs)
 			var/shock_damage = round(live_cable.powernet.avail / ELECTRIC_BUCKLE_SHOCK_STRENGTH_DIVISOR)
-			guinea_pig.electrocute_act(shock_damage, parent_as_movable)
+			guinea_pig.electrocute_act(shock_damage)
 			break
 
 /datum/component/electrified_buckle/proc/toggle_shock_loop()

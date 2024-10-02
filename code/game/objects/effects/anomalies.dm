@@ -233,7 +233,7 @@
 /obj/effect/anomaly/flux/proc/mobShock(mob/living/M)
 	if(canshock && istype(M))
 		canshock = FALSE
-		M.electrocute_act(shockdamage, name, flags = SHOCK_NOGLOVES)
+		M.electrocute_act(shockdamage, flags = SHOCK_NOGLOVES)
 
 /obj/effect/anomaly/flux/detonate()
 	if(explosive)

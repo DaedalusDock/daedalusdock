@@ -2230,6 +2230,12 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/get_blood_print()
 	return BLOOD_PRINT_PAWS
 
+/mob/living/zap_act(power, zap_flags)
+	..()
+	var/shock_damage = (zap_flags & ZAP_MOB_DAMAGE) ? TESLA_POWER_TO_MOB_DAMAGE(power) : 0
+	electrocute_act(shock_damage, 1, SHOCK_TESLA | ((zap_flags & ZAP_MOB_STUN) ? NONE : SHOCK_NOSTUN))
+	return power * 0.66
+
 /// Proc for giving a mob a new 'friend', generally used for AI control and targeting. Returns false if already friends.
 /mob/living/proc/befriend(mob/living/new_friend)
 	SHOULD_CALL_PARENT(TRUE)

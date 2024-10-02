@@ -104,7 +104,7 @@
 		)
 
 	else
-		to_zap.electrocute_act(bolt_energy, "Lightning Bolt", flags = SHOCK_NOGLOVES)
+		to_zap.electrocute_act(bolt_energy, flags = SHOCK_NOGLOVES)
 
 	if(bounces >= 1)
 		var/mob/living/carbon/to_zap_next = get_target(to_zap)

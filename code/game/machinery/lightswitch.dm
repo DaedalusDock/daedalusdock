@@ -120,7 +120,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 		return ..()
 
 	if(has_wires)
-		if(user.electrocute_act(10, src))
+		if(user.electrocute_act(10))
 			return TRUE
 
 	new /obj/item/wallframe/light_switch(get_turf(user))

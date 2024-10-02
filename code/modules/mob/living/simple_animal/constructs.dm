@@ -120,7 +120,7 @@
 /mob/living/simple_animal/hostile/construct/narsie_act()
 	return
 
-/mob/living/simple_animal/hostile/construct/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)
+/mob/living/simple_animal/hostile/construct/electrocute_act(shock_damage, siemens_coeff = 1, flags = NONE, stun_multiplier = 1)
 	return 0
 
 /////////////////Juggernaut///////////////

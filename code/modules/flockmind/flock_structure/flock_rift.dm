@@ -33,9 +33,15 @@
 			flock_convert_turf(T)
 
 	// Spawn sentinels
-	// var/sentinel_count = 0
-	// for(var/turf/open/floor/flock/T in candidate_turfs)
-	// 	if(!T.can_flock_occupy())
+	var/sentinel_count = 0
+	for(var/turf/open/floor/flock/T in candidate_turfs)
+		if(!T.can_flock_occupy())
+			continue
+
+		new /obj/structure/flock/sentinel(T, flock)
+		sentinel_count++
+		if(sentinel_count == 2)
+			break
 
 	// Spread contents
 	var/turf/turfloc = get_turf(src)

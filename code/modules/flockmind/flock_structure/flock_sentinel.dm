@@ -10,7 +10,7 @@
 
 	max_integrity = 80
 
-	var/datum/proximity_monitor/advanced/flock_sentinel/proxmon
+	flock_id = "Sentinel"
 
 	/// Attacks require charging
 	var/datum/point_holder/charge = 0

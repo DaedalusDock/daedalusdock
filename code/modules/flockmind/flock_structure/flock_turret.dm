@@ -122,11 +122,17 @@
 	name = "barbed crystalline spike"
 	desc = "A hollow teal crystal, like some sort of weird alien syringe. It has a barbed tip. Nasty!"
 
-	embedding = list(
-		embed_chance = 25,
-		ignore_throwspeed_threshold = TRUE,
-		fall_chance = 1
-	)
+/obj/projectile/bullet/dart/piercing/gnesis/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/toxin/gnesis, 2)
 
-/obj/projectile/bullet/dart/piercing/gnesis/inject_hit_target(mob/living/carbon/hit)
-	return // Don't instantly dump the payload, slowly inject it.
+	// commented out until i rewrite embedding :)
+	// embedding = list(
+	// 	embed_chance = 25,
+	// 	ignore_throwspeed_threshold = TRUE,
+	// 	fall_chance = 1
+	// )
+
+// commented out until i rewrite embedding :)
+// /obj/projectile/bullet/dart/piercing/gnesis/inject_hit_target(mob/living/carbon/hit)
+// 	return // Don't instantly dump the payload, slowly inject it.

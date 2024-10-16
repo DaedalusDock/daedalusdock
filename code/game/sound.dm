@@ -43,6 +43,8 @@
 		CRASH("playsound(): source is an area")
 	if(isnull(vol))
 		CRASH("Playsound received a null volume, this is probably wrong!")
+	if(islist(soundin))
+		CRASH("Playsound received a list, this is unsupported")
 
 	var/turf/turf_source = get_turf(source)
 

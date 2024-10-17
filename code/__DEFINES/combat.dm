@@ -92,7 +92,7 @@
 //slowdown when in softcrit. Note that crawling slowdown will also apply at the same time!
 #define SOFTCRIT_ADD_SLOWDOWN 3
 //slowdown when crawling
-#define CRAWLING_ADD_SLOWDOWN 6
+#define CRAWLING_ADD_SLOWDOWN 8
 
 //Attack types for checking shields/hit reactions
 #define MELEE_ATTACK 1

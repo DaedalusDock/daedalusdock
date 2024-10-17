@@ -12,7 +12,7 @@
 	supports_variations_flags = CLOTHING_VOX_VARIATION | CLOTHING_DIGITIGRADE_VARIATION
 
 	permeability_coefficient = 0.5
-	slowdown = SHOES_SLOWDOWN
+	slowdown = 0
 	strip_delay = 1 SECONDS
 
 	var/offset = 0

@@ -95,6 +95,14 @@
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = /atom/movable/screen/alert/status_effect/holdup
 
+/datum/status_effect/holdup/on_apply()
+	. = ..()
+	owner.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/holdup)
+
+/datum/status_effect/holdup/on_remove()
+	. = ..()
+	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/holdup)
+
 /atom/movable/screen/alert/status_effect/holdup
 	name = "Holding Up"
 	desc = "You're currently pointing a gun at someone."

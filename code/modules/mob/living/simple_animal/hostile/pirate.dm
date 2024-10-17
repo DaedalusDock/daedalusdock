@@ -11,7 +11,7 @@
 	turns_per_move = 5
 	response_help_continuous = "pushes"
 	response_help_simple = "push"
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 100
 	health = 100
 	harm_intent_damage = 5
@@ -53,7 +53,7 @@
 	icon_dead = "piratespace_dead"
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
-	speed = 1
+	move_delay_modifier = 1
 
 /mob/living/simple_animal/hostile/pirate/melee/space/Initialize(mapload)
 	. = ..()
@@ -92,7 +92,7 @@
 	icon_dead = "piratespaceranged_dead"
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
-	speed = 1
+	move_delay_modifier = 1
 
 /mob/living/simple_animal/hostile/pirate/ranged/space/Initialize(mapload)
 	. = ..()

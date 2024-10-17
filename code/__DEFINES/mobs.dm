@@ -352,10 +352,10 @@
 
 ///Flags used by the flags parameter of electrocute act.
 
-///Makes it so that the shock doesn't take gloves into account.
-#define SHOCK_NOGLOVES (1 << 0)
-///Used when the shock is from a tesla bolt.
-#define SHOCK_TESLA (1 << 1)
+/// The shock is applied by hands, check gloves siemen coeff
+#define SHOCK_HANDS (1 << 0)
+/// Shock damage is reduced by the average siemen's coeff
+#define SHOCK_USE_AVG_SIEMENS (1 << 4)
 ///Used when an illusion shocks something. Makes the shock deal stamina damage and not trigger certain secondary effects.
 #define SHOCK_ILLUSION (1 << 2)
 ///The shock doesn't stun.

@@ -70,8 +70,8 @@
 /mob/living/basic/cow/proc/set_tip_react_blackboard(mob/living/carbon/tipper)
 	if(!HAS_TRAIT_FROM(src, TRAIT_IMMOBILIZED, TIPPED_OVER) || !ai_controller)
 		return
-	ai_controller.blackboard[BB_BASIC_MOB_TIP_REACTING] = TRUE
-	ai_controller.blackboard[BB_BASIC_MOB_TIPPER] = tipper
+	ai_controller.set_blackboard_key(BB_BASIC_MOB_TIP_REACTING, TRUE)
+	ai_controller.set_blackboard_key(BB_BASIC_MOB_TIPPER, tipper)
 
 /datum/ai_controller/basic_controller/cow
 	blackboard = list(
@@ -81,7 +81,7 @@
 
 	ai_traits = STOP_MOVING_WHEN_PULLED
 	ai_movement = /datum/ai_movement/basic_avoidance
-	idle_behavior = /datum/idle_behavior/idle_random_walk
+	default_behavior = /datum/ai_behavior/idle_random_walk
 	planning_subtrees = list(
 		/datum/ai_planning_subtree/tip_reaction,
 		/datum/ai_planning_subtree/random_speech/cow,

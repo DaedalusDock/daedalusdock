@@ -1,4 +1,3 @@
-#define DOOR_CLOSE_WAIT 60 ///Default wait until doors autoclose
 DEFINE_INTERACTABLE(/obj/machinery/door)
 /obj/machinery/door
 	name = "door"
@@ -6,10 +5,13 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	icon = 'icons/obj/doors/Doorint.dmi'
 	icon_state = "door1"
 	base_icon_state = "door"
+	layer = OPEN_DOOR_LAYER
 	opacity = TRUE
 	density = TRUE
 	move_resist = MOVE_FORCE_VERY_STRONG
-	layer = OPEN_DOOR_LAYER
+
+	can_astar_pass = CANASTARPASS_ALWAYS_PROC
+
 	power_channel = AREA_USAGE_ENVIRON
 	pass_flags_self = PASSDOORS
 	max_integrity = 350
@@ -30,16 +32,20 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	var/operating = FALSE
 	var/glass = FALSE
 	var/welded = FALSE
-	var/normalspeed = 1
 	var/heat_proof = FALSE // For rglass-windowed airlocks and firedoors
 	var/emergency = FALSE // Emergency access override
 	var/sub_door = FALSE // true if it's meant to go under another door.
 	var/closingLayer = CLOSED_DOOR_LAYER
-	var/autoclose = FALSE //does it automatically close after some time
-	var/safe = TRUE //whether the door detects things and mobs in its way and reopen or crushes them.
+
+	/// Does the door automatically close
+	var/autoclose = FALSE
+	/// How long it takes for the door to automatically close after being opened
+	var/autoclose_delay = 15 SECONDS
+
+	/// Whether the door detects things and mobs in its way and reopen or crushes them.
+	var/dont_close_on_dense_objects = TRUE
 	var/locked = FALSE //whether the door is bolted or not.
 	var/assemblytype //the type of door frame to drop during deconstruction
-	var/datum/effect_system/spark_spread/spark_system
 	var/real_explosion_block //ignore this, just use explosion_block
 	var/red_alert_access = FALSE //if TRUE, this door will always open on red alert
 	var/unres_sides = 0 //Unrestricted sides. A bitflag for which direction (if any) can open the door with no access
@@ -55,6 +61,9 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 
 	///Sound to play when knocked on
 	var/knock_sound = 'goon/sounds/Door_Metal_Knock_1.ogg'
+
+	/// Sparks caused by damage and such
+	var/datum/effect_system/spark_spread/spark_system
 
 /obj/machinery/door/Initialize(mapload)
 	. = ..()
@@ -264,6 +273,20 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return !opacity
 
+/obj/machinery/door/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	. = ..()
+	if(.)
+		return
+
+	if(locked)
+		return FALSE
+
+	var/mob/M = pass_info.caller_ref?.resolve()
+	if(isnull(M))
+		return
+
+	return allowed(M)
+
 /obj/machinery/door/proc/bumpopen(mob/user)
 	if(operating || !can_open_with_hands)
 		return
@@ -455,7 +478,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	zas_update_loc()
 	update_freelook_sight()
 	if(autoclose)
-		autoclose_in(DOOR_CLOSE_WAIT)
+		autoclose_in()
 	return 1
 
 /obj/machinery/door/proc/close()
@@ -463,11 +486,11 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		return TRUE
 	if(operating || welded)
 		return
-	if(safe)
+	if(dont_close_on_dense_objects)
 		for(var/atom/movable/M in get_turf(src))
 			if(M.density && M != src) //something is blocking the door
 				if(autoclose)
-					autoclose_in(DOOR_CLOSE_WAIT)
+					autoclose_in()
 				return
 
 	operating = TRUE
@@ -488,7 +511,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	if(!can_crush)
 		return TRUE
 
-	if(safe)
+	if(dont_close_on_dense_objects)
 		CheckForMobs()
 	else
 		crush()
@@ -524,7 +547,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	if(!QDELETED(src) && !density && !operating && !locked && !welded && autoclose)
 		close()
 
-/obj/machinery/door/proc/autoclose_in(wait)
+/obj/machinery/door/proc/autoclose_in(wait = autoclose_delay)
 	addtimer(CALLBACK(src, PROC_REF(autoclose)), wait, TIMER_UNIQUE | TIMER_NO_HASH_WAIT | TIMER_OVERRIDE)
 
 /obj/machinery/door/proc/requiresID()
@@ -572,7 +595,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 /obj/machinery/door/power_change()
 	. = ..()
 	if(. && !(machine_stat & NOPOWER))
-		autoclose_in(DOOR_CLOSE_WAIT)
+		autoclose_in()
 
 /obj/machinery/door/zap_act(power, zap_flags)
 	zap_flags &= ~ZAP_OBJ_DAMAGE
@@ -584,4 +607,3 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	add_fingerprint(user)
 	user?.animate_interact(src, INTERACT_GENERIC)
 
-#undef DOOR_CLOSE_WAIT

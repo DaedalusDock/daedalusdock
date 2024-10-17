@@ -7,7 +7,7 @@
 	var/obj/item/item_pawn = controller.pawn
 	var/mob/item_holder = item_pawn.loc
 	if(!istype(item_holder))
-		finish_action(controller, FALSE) //We're no longer beind held. abort abort!!
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 	item_pawn.visible_message(span_warning("[item_pawn] slips out of the hands of [item_holder]!"))
 	item_holder.dropItemToGround(item_pawn, TRUE)
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS

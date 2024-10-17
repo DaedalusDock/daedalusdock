@@ -6,8 +6,9 @@ SUBSYSTEM_DEF(mobs)
 	wait = 2 SECONDS
 
 	var/list/currentrun = list()
-	var/static/list/clients_by_zlevel[][]
+	var/static/list/clients_by_zlevel[][] = list(list())
 	var/static/list/dead_players_by_zlevel[][] = list(list()) // Needs to support zlevel 1 here, MaxZChanged only happens when z2 is created and new_players can login before that.
+	var/static/list/flock_cameras_by_zlevel[][]= list(list())
 	var/static/list/cubemonkeys = list()
 	var/static/list/cheeserats = list()
 
@@ -19,11 +20,15 @@ SUBSYSTEM_DEF(mobs)
 	if (!islist(clients_by_zlevel))
 		clients_by_zlevel = new /list(world.maxz,0)
 		dead_players_by_zlevel = new /list(world.maxz,0)
+		flock_cameras_by_zlevel = new /list(world.maxz, 0)
+
 	while (clients_by_zlevel.len < world.maxz)
 		clients_by_zlevel.len++
 		clients_by_zlevel[clients_by_zlevel.len] = list()
 		dead_players_by_zlevel.len++
 		dead_players_by_zlevel[dead_players_by_zlevel.len] = list()
+		flock_cameras_by_zlevel.len++
+		flock_cameras_by_zlevel[flock_cameras_by_zlevel.len] = list()
 
 /datum/controller/subsystem/mobs/fire(resumed = FALSE)
 	if (!resumed)

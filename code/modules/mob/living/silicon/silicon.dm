@@ -410,6 +410,11 @@
 /mob/living/silicon/rust_heretic_act()
 	adjustBruteLoss(500)
 
+/mob/living/silicon/zap_act(power, zap_flags)
+	. = ..()
+	if((zap_flags & ZAP_MOB_STUN) && (zap_flags & ZAP_MOB_DAMAGE))
+		emp_act(EMP_LIGHT)
+
 /mob/living/silicon/on_floored_start()
 	return // Silicons are always standing by default.
 

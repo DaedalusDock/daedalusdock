@@ -558,3 +558,16 @@
 	pixel_x = rand(0, 13)
 	pixel_y = rand(0, 13)
 	animate(src, alpha = 0, duration, easing = EASE_IN)
+
+/obj/effect/temp_visual/mook_dust
+	name = "dust"
+	desc = "It's just a dust cloud!"
+	icon = 'icons/mob/jungle/mook.dmi'
+	icon_state = "mook_leap_cloud"
+	layer = BELOW_MOB_LAYER
+	plane = GAME_PLANE
+	pixel_x = -16
+	base_pixel_x = -16
+	pixel_y = -16
+	base_pixel_y = -16
+	duration = 10

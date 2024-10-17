@@ -11,7 +11,7 @@
 	response_help_simple = "pass through"
 	combat_mode = TRUE
 	healable = 0
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 40
 	health = 40
 	harm_intent_damage = 10

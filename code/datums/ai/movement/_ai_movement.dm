@@ -10,7 +10,7 @@
 /datum/ai_movement/proc/start_moving_towards(datum/ai_controller/controller, atom/current_movement_target, min_distance)
 	SHOULD_CALL_PARENT(TRUE)
 	controller.consecutive_pathing_attempts = 0
-	controller.blackboard[BB_CURRENT_MIN_MOVE_DISTANCE] = min_distance
+	controller.set_blackboard_key(BB_CURRENT_MIN_MOVE_DISTANCE, min_distance)
 	moving_controllers[controller] = current_movement_target
 
 /datum/ai_movement/proc/stop_moving_towards(datum/ai_controller/controller)
@@ -60,7 +60,7 @@
 		qdel(source) //stop moving
 		return MOVELOOP_SKIP_STEP
 
-	source.delay = controller.movement_delay
+	source.delay = controller.get_movement_delay()
 
 	if(allowed_to_move(source))
 		return NONE

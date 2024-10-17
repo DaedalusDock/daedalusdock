@@ -154,6 +154,8 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define PASSITEM (1<<12)
 /// Do not intercept click attempts during Adjacent() checks. See [turf/proc/ClickCross].
 #define LETPASSCLICKS (1<<13)
+/// Pass through flock objects and mobs
+#define PASSFLOCK (1<<14)
 
 //Movement Types
 #define GROUND (1<<0)
@@ -187,10 +189,18 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define ZAP_GENERATES_POWER (1<<5)
 /// Zaps with this flag will generate less power through tesla coils
 #define ZAP_LOW_POWER_GEN (1<<6)
+#define ZAP_NO_COOLDOWN (1<<7)
 
-#define ZAP_DEFAULT_FLAGS ZAP_MOB_STUN | ZAP_MOB_DAMAGE | ZAP_OBJ_DAMAGE
+#define ZAP_DEFAULT_FLAGS ZAP_MOB_STUN | ZAP_MOB_DAMAGE | ZAP_OBJ_DAMAGE | ZAP_NO_COOLDOWN
+#define ZAP_ENERGYBALL_FLAGS ((ZAP_DEFAULT_FLAGS) &~ ZAP_NO_COOLDOWN)
 #define ZAP_FUSION_FLAGS ZAP_OBJ_DAMAGE | ZAP_MOB_DAMAGE | ZAP_MOB_STUN
 #define ZAP_SUPERMATTER_FLAGS ZAP_GENERATES_POWER
+
+/// Convert a power value to mob damage
+#define TESLA_MOB_DAMAGE_COEFF 600
+#define TESLA_POWER_TO_MOB_DAMAGE(power) floor(power / TESLA_MOB_DAMAGE_COEFF)
+/// Convert a desired damage value into the required power amount
+#define TESLA_MOB_DAMAGE_TO_POWER(desired_damage) floor(desired_damage * TESLA_MOB_DAMAGE_COEFF)
 
 //EMP protection
 #define EMP_PROTECT_SELF (1<<0)

@@ -16,7 +16,7 @@
 	response_disarm_continuous = "pushes"
 	response_disarm_simple = "push"
 
-	speed = -1
+	move_delay_modifier = -1
 	maxHealth = 50000
 	health = 50000
 	healable = 0

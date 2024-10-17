@@ -171,6 +171,10 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 			return list(LEG_LEFT, FOOT_LEFT)
 		if(BODY_ZONE_R_LEG)
 			return list(LEG_RIGHT, FOOT_RIGHT)
+		if(BODY_ZONE_PRECISE_L_HAND)
+			return list(HAND_RIGHT)
+		if(BODY_ZONE_PRECISE_R_HAND)
+			return list(HAND_LEFT)
 
 //Turns a Body_parts_covered bitfield into a list of organ/limb names.
 //(I challenge you to find a use for this) -I found a use for it!! | So did I!.

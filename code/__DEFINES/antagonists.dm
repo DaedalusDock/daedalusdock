@@ -155,6 +155,8 @@ GLOBAL_LIST_INIT(ai_employers, list(
 #define FACTION_SYNDICATE "syndicate"
 ///all the employers that are nanotrasen
 #define FACTION_NANOTRASEN "nanotrasen"
+///flock mobs
+#define FACTION_FLOCK "flock"
 
 #define UPLINK_THEME_SYNDICATE "syndicate"
 

@@ -39,7 +39,8 @@
 			if(trigger)
 				burn_out()
 		else
-			use_power = ACTIVE_POWER_USE
+			if(use_power != NO_POWER_USE)
+				use_power = ACTIVE_POWER_USE
 			set_light(l_outer_range = OR, l_inner_range = IR, l_power = PO, l_falloff_curve = FC, l_color = CO)
 			if(play_sound)
 				playsound(src.loc, 'modular_pariah/modules/aesthetics/lights/sound/light_on.ogg', 65, 1)

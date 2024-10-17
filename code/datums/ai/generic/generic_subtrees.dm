@@ -8,8 +8,7 @@
  * * BB_SONG_LINES - not set by this subtree, is the song loaded into the song datum.
  */
 /datum/ai_planning_subtree/generic_play_instrument/SelectBehaviors(datum/ai_controller/controller, delta_time)
-	var/datum/weakref/player_ref = controller.blackboard[BB_SONG_INSTRUMENT]
-	var/obj/item/instrument/song_player = player_ref?.resolve()
+	var/obj/item/instrument/song_player = controller.blackboard[BB_SONG_INSTRUMENT]
 
 	if(!song_player)
 		controller.queue_behavior(/datum/ai_behavior/find_and_set/in_hands, BB_SONG_INSTRUMENT, /obj/item/instrument)
@@ -49,13 +48,12 @@
 /datum/ai_planning_subtree/generic_hunger/SelectBehaviors(datum/ai_controller/controller, delta_time)
 	//inits the blackboard timer
 	if(!controller.blackboard[BB_NEXT_HUNGRY])
-		controller.blackboard[BB_NEXT_HUNGRY] = world.time + rand(0, 30 SECONDS)
+		controller.set_blackboard_key(BB_NEXT_HUNGRY, world.time + rand(0, 30 SECONDS))
 
 	if(world.time < controller.blackboard[BB_NEXT_HUNGRY])
 		return
 
-	var/datum/weakref/food_ref = controller.blackboard[BB_FOOD_TARGET]
-	if(!food_ref?.resolve())
+	if(!controller.blackboard[BB_FOOD_TARGET])
 		controller.queue_behavior(/datum/ai_behavior/find_and_set/edible, BB_FOOD_TARGET, /obj/item, 2)
 		return
 

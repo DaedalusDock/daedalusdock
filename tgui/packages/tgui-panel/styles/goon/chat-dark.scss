@@ -1006,3 +1006,28 @@ em {
   text-shadow: 0 0 0.1em #8a8888;
   font-style: italic;
 }
+
+.flocksay {
+  color: #6fbbac;
+}
+
+.flocksay a {
+  color: #6dc0af;
+}
+
+.flocksay a:visited {
+  color: #6ec2b1;
+}
+
+.flocksay.sentient {
+  color: #111;
+  background-color: #82dbc8;
+}
+
+.flocksay.sentient.flockmind {
+  font-size: 120%;
+}
+
+.flocknpc {
+  color: #afc9c3;
+}

@@ -226,7 +226,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 /obj/machinery/camera/proc/shock(mob/living/user)
 	if(!istype(user))
 		return
-	user.electrocute_act(10, src)
+	user.electrocute_act(10)
 
 /obj/machinery/camera/singularity_pull(S, current_size)
 	if (status && current_size >= STAGE_FIVE) // If the singulo is strong enough to pull anchored objects and the camera is still active, turn off the camera as it gets ripped off the wall.

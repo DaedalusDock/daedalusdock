@@ -19,6 +19,9 @@
 #define AUGMENT_SLOT_STOMACH		"Stomach"
 #define AUGMENT_SLOT_EYES			"Eyes"
 #define AUGMENT_SLOT_TONGUE			"Tongue"
+#define AUGMENT_SLOT_FLUFF_HEAD		"Minor Head Augment"
+#define AUGMENT_SLOT_FLUFF_CHEST	"Minor Chest Augment"
+#define AUGMENT_SLOT_FLUFF_GROIN	"Minor Groin Augment"
 
 //Implants
 #define AUGMENT_CATEGORY_IMPLANTS "Implants"

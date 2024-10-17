@@ -1,4 +1,3 @@
-author: Kapu1178
-delete-after: true
-changes:
+2024-10-17:
+  Kapu1178:
   - bugfix: Fixed rare instances of client crashes

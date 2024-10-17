@@ -261,7 +261,12 @@ SUBSYSTEM_DEF(ticker)
 		toggle_ooc(FALSE) // Turn it off
 
 	CHECK_TICK
-	GLOB.start_landmarks_list = shuffle(GLOB.start_landmarks_list) //Shuffle the order of spawn points so they dont always predictably spawn bottom-up and right-to-left
+
+	//Shuffle the order of spawn points so they dont always predictably spawn bottom-up and right-to-left
+	GLOB.start_landmarks_list = shuffle(GLOB.start_landmarks_list)
+	for(var/name in GLOB.start_landmarks_by_name)
+		GLOB.start_landmarks_by_name[name] = shuffle(GLOB.start_landmarks_by_name[name])
+
 	create_characters() //Create player characters
 	collect_minds()
 	equip_characters()
@@ -311,8 +316,7 @@ SUBSYSTEM_DEF(ticker)
 	send2adminchat("Server", "Round [GLOB.round_id ? "#[GLOB.round_id]:" : "of"] [SSticker.get_mode_name()] has started[allmins.len ? ".":" with no active admins online!"]")
 	setup_done = TRUE
 
-	for(var/i in GLOB.start_landmarks_list)
-		var/obj/effect/landmark/start/S = i
+	for(var/obj/effect/landmark/start/S as anything in GLOB.start_landmarks_list)
 		if(istype(S)) //we can not runtime here. not in this important of a proc.
 			S.after_round_start()
 		else

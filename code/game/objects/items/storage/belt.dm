@@ -15,7 +15,12 @@
 	attack_verb_continuous = list("whips", "lashes", "disciplines")
 	attack_verb_simple = list("whip", "lash", "discipline")
 	max_integrity = 300
+
 	equip_sound = 'sound/items/equip/toolbelt_equip.ogg'
+	equip_delay_self = EQUIP_DELAY_BELT
+	equip_delay_other = EQUIP_DELAY_BELT * 1.5
+	strip_delay = EQUIP_DELAY_BELT * 1.5
+
 	var/content_overlays = FALSE //If this is true, the belt will gain overlays based on what it's holding
 
 /obj/item/storage/belt/suicide_act(mob/living/carbon/user)

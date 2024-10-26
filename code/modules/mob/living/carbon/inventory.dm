@@ -143,7 +143,7 @@
 		item.update_action_buttons(UPDATE_BUTTON_STATUS)
 	return item.equipped(src, slot, initial)
 
-/mob/living/carbon/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+/mob/living/carbon/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE)
 	. = ..() //Sets the default return value to what the parent returns.
 	if(!. || !I) //We don't want to set anything to null if the parent returned 0.
 		return

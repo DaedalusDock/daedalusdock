@@ -745,21 +745,21 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(ITEM_SLOT_MASK)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
 				return FALSE
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_NECK)
 			return TRUE
 
 		if(ITEM_SLOT_BACK)
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_OCLOTHING)
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_GLOVES)
 			if(H.num_hands < 2)
 				return FALSE
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_FEET)
 			if(H.num_legs < 2)
@@ -771,7 +771,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 						to_chat(H, span_warning("The footwear around here isn't compatible with your feet!"))
 					return FALSE
 
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_BELT)
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_CHEST)
@@ -781,7 +781,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					to_chat(H, span_warning("You need a jumpsuit before you can attach this [I.name]!"))
 				return FALSE
 
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_EYES)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
@@ -791,22 +791,22 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			if(E?.no_glasses)
 				return FALSE
 
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_HEAD)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
 				return FALSE
 
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_EARS)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
 				return FALSE
 
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_ICLOTHING)
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_ID)
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_CHEST)
@@ -815,7 +815,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					to_chat(H, span_warning("You need a jumpsuit before you can attach this [I.name]!"))
 				return FALSE
 
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_LPOCKET)
 			if(HAS_TRAIT(I, TRAIT_NODROP)) //Pockets aren't visible, so you can't move TRAIT_NODROP items into them.
@@ -898,9 +898,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/equip_delay_self_check(obj/item/I, mob/living/carbon/human/H, bypass_equip_delay_self)
 	if(!I.equip_delay_self || bypass_equip_delay_self)
 		return TRUE
-	H.visible_message(span_notice("[H] start putting on [I]..."), span_notice("You start putting on [I]..."))
-	return do_after(H, H, I.equip_delay_self)
 
+	H.visible_message(
+		span_notice("[H] start putting on [I]..."),
+		span_notice("You start putting on [I]...")
+	)
+	return do_after(H, H, I.equip_delay_self, DO_PUBLIC, display = I)
 
 /// Equips the necessary species-relevant gear before putting on the rest of the uniform.
 /datum/species/proc/pre_equip_species_outfit(datum/outfit/O, mob/living/carbon/human/equipping, visuals_only = FALSE)

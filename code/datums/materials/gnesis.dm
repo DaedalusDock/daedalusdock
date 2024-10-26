@@ -7,6 +7,7 @@
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	integrity_modifier = 0.2
 
+	sheet_type = /obj/item/stack/sheet/gnesis
 	wall_type = /turf/closed/wall/flock
 	wall_icon = 'goon/icons/turf/flock.dmi'
 	wall_stripe_icon = null

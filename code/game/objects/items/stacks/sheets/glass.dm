@@ -261,7 +261,8 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	. += GLOB.plastitaniumglass_recipes
 
 /obj/item/stack/sheet/gnesis_glass
-	name = "transculent wafer"
+	name = "transculent wafers"
+	singular_name = "transculent wafer"
 	desc = "A shimmering, translucent block of weird alien computer crystal stuff."
 	mats_per_unit = list(/datum/material/gnesis_glass=MINERAL_MATERIAL_AMOUNT)
 	material_type = /datum/material/gnesis_glass

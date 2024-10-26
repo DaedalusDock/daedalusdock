@@ -12,6 +12,11 @@ SUBSYSTEM_DEF(ai_controllers)
 	///List of all ai controllers currently running
 	var/list/active_ai_controllers = list()
 
+	/// The average tick cost of all active AI, calculated on fire.
+	var/our_cost
+	/// The tick cost of all currently processed AI, being summed together
+	var/summing_cost
+
 /datum/controller/subsystem/ai_controllers/Initialize(timeofday)
 	setup_subtrees()
 	return ..()
@@ -23,6 +28,10 @@ SUBSYSTEM_DEF(ai_controllers)
 		ai_subtrees[subtree_type] = subtree
 
 /datum/controller/subsystem/ai_controllers/fire(resumed)
+	if(!resumed)
+		summing_cost = 0
+
+	var/timer = TICK_USAGE_REAL
 	for(var/datum/ai_controller/ai_controller as anything in active_ai_controllers)
 		if(!COOLDOWN_FINISHED(ai_controller, failed_planning_cooldown))
 			continue
@@ -33,3 +42,12 @@ SUBSYSTEM_DEF(ai_controllers)
 		ai_controller.ProcessBehaviorSelection(wait * 0.1)
 		if(!LAZYLEN(ai_controller.current_behaviors)) //Still no plan
 			COOLDOWN_START(ai_controller, failed_planning_cooldown, AI_FAILED_PLANNING_COOLDOWN)
+
+		if(MC_TICK_CHECK)
+			break
+
+	summing_cost += TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer)
+	if(MC_TICK_CHECK)
+		return
+
+	our_cost = MC_AVERAGE(our_cost, summing_cost)

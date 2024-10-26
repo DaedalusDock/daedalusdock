@@ -56,7 +56,8 @@
 	C.silent = FALSE
 	C.remove_status_effect(/datum/status_effect/dizziness)
 	C.disgust = 0
-	C.drowsyness = 0
+	C.set_drowsyness(0)
+
 	// Remove all speech related status effects
 	for(var/effect in typesof(/datum/status_effect/speech))
 		C.remove_status_effect(effect)

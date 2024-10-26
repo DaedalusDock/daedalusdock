@@ -87,12 +87,50 @@
 
 	minimum_break_damage = 30
 
+	/// Used for inventory procs
+	var/hand_side
 	var/fingerprints = ""
 
 /obj/item/bodypart/arm/update_limb(dropping_limb, is_creating)
 	. = ..()
 	if(is_creating && owner?.has_dna())
 		fingerprints = md5(owner.dna.unique_identity)
+
+/obj/item/bodypart/arm/on_life(delta_time, times_fired, stam_heal)
+	. = ..()
+	// Splinted, exit
+	if(splint)
+		return
+
+	// Not broken or dislocated, exit
+	if(!(bodypart_flags & (BP_BROKEN_BONES|BP_DISLOCATED)))
+		return
+
+	var/obj/target_item
+	if(hand_side == LEFT_HANDS)
+		target_item = owner.get_item_for_held_index(1)
+	else
+		target_item = owner.get_item_for_held_index(2)
+
+	if(isnull(target_item) || !owner.canUnequipItem(target_item))
+		return
+
+	var/zone_name = parse_zone(aux_zone)
+
+	if(IS_ORGANIC_LIMB(src))
+		if(bodypart_flags & BP_NO_PAIN)
+			owner.visible_message(span_alert("<b>[owner]</b> drops what [owner.p_they()] [p_are()] holding in [owner.p_their()] [zone_name]."))
+			owner.dropItemToGround(target_item)
+			return
+
+		owner.apply_pain(30, src, "A sharp pain in your [plaintext_zone] forces you to drop your [target_item]!", TRUE, FALSE)
+		owner.dropItemToGround(target_item)
+		return . | BODYPART_LIFE_UPDATE_HEALTH_HUD
+
+	else
+		owner.visible_message(span_alert("<b>[owner]</b>'s [zone_name] malfunctions, dropping what [owner.p_they()] [p_are()] holding.."))
+		owner.dropItemToGround(target_item)
+		return
 
 /obj/item/bodypart/arm/left
 	name = "left arm"
@@ -114,6 +152,8 @@
 	bodypart_trait_source = LEFT_ARM_TRAIT
 	amputation_point = "left shoulder"
 	joint_name = "left elbow"
+
+	hand_side = LEFT_HANDS
 
 
 /obj/item/bodypart/arm/left/set_owner(new_owner)
@@ -198,6 +238,8 @@
 	can_be_disabled = TRUE
 	amputation_point = "right shoulder"
 	joint_name = "right elbow"
+
+	hand_side = RIGHT_HANDS
 
 /obj/item/bodypart/arm/right/set_owner(new_owner)
 	. = ..()

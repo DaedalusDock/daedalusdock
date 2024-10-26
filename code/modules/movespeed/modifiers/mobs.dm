@@ -25,9 +25,11 @@
 
 /datum/movespeed_modifier/shock
 	slowdown = 3
+	blacklisted_movetypes = FLOATING
 
 /datum/movespeed_modifier/asystole
 	slowdown = 10
+	blacklisted_movetypes = FLOATING
 
 /datum/movespeed_modifier/equipment_speedmod
 	variable = TRUE
@@ -116,6 +118,7 @@
 /datum/movespeed_modifier/living_exhaustion
 	slowdown = STAMINA_EXHAUSTION_MOVESPEED_SLOWDOWN
 	flags = IGNORE_NOSLOW
+
 /datum/movespeed_modifier/carbon_crawling
 	slowdown = CRAWLING_ADD_SLOWDOWN
 	flags = IGNORE_NOSLOW

@@ -7,7 +7,7 @@
 	siemens_coefficient = 0
 
 	clothing_traits = list(TRAIT_NO_SLIP_WATER)
-	slowdown = SHOES_SLOWDOWN+1
+	slowdown = parent_type::slowdown + 1 // Slower than normal
 	strip_delay = 30
 	equip_delay_other = 50
 	resistance_flags = NONE

@@ -698,7 +698,7 @@
 	if(isethereal(C))
 		C.blood_volume += 2 * removed
 	else if(prob(20)) //lmao at the newbs who eat energy bars
-		C.electrocute_act(rand(5,10), "Liquid Electricity in their body", 1, SHOCK_NOGLOVES) //the shock is coming from inside the house
+		C.electrocute_act(rand(5,10), 1, NONE) //the shock is coming from inside the house
 		playsound(C, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
 /datum/reagent/consumable/astrotame

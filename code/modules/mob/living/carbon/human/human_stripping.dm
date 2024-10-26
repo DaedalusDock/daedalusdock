@@ -84,6 +84,13 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	key = STRIPPABLE_ITEM_FEET
 	item_slot = ITEM_SLOT_FEET
 
+/datum/strippable_item/mob_item_slot/feet/start_unequip_mob(obj/item/item, mob/source, mob/user, strip_delay)
+	if(ishuman(source))
+		var/mob/living/carbon/human/victim = source
+		if(victim.body_position == STANDING_UP)
+			strip_delay += 3 SECONDS
+	return ..()
+
 /datum/strippable_item/mob_item_slot/feet/get_alternate_action(atom/source, mob/user)
 	var/obj/item/clothing/shoes/shoes = get_item(source)
 	if (!istype(shoes) || !shoes.can_be_tied)

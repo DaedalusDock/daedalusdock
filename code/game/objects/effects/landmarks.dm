@@ -24,14 +24,30 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	GLOB.landmarks_list -= src
 	return ..()
 
+/// Helper for getting start landmarks.
+/proc/get_start_landmark_for(landmark_key, exclude_used = FALSE)
+	// High prio landmarks completely ignore the used var for some reason.
+	if(length(GLOB.high_priority_spawns[landmark_key]))
+		return pick(GLOB.high_priority_spawns[landmark_key])
+
+	for(var/obj/effect/landmark/start/point in GLOB.start_landmarks_by_name[landmark_key])
+		if(exclude_used && point.used)
+			continue
+
+		return point
+
 /obj/effect/landmark/start
 	name = "start"
 	icon = 'icons/mob/autogen_landmarks.dmi'
 	icon_state = "x"
 	anchored = TRUE
 	layer = MOB_LAYER
-	var/jobspawn_override = FALSE
+
+	/// If TRUE, this will be used over other landmarks first.
+	var/high_priority = FALSE
+	/// Does what it says on the tin.
 	var/delete_after_roundstart = TRUE
+	/// Tracks if this spawn has been used or not.
 	var/used = FALSE
 
 /obj/effect/landmark/start/proc/after_round_start()
@@ -41,15 +57,15 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 /obj/effect/landmark/start/Initialize(mapload)
 	. = ..()
 	GLOB.start_landmarks_list += src
-	if(jobspawn_override)
-		LAZYADDASSOCLIST(GLOB.jobspawn_overrides, name, src)
-	if(name != "start")
-		tag = "start*[name]"
+	LAZYADD(GLOB.start_landmarks_by_name[name], src)
+	if(high_priority)
+		LAZYADD(GLOB.high_priority_spawns[name], src)
 
 /obj/effect/landmark/start/Destroy()
 	GLOB.start_landmarks_list -= src
-	if(jobspawn_override)
-		LAZYREMOVEASSOC(GLOB.jobspawn_overrides, name, src)
+	LAZYREMOVE(GLOB.start_landmarks_by_name[name], src)
+	if(high_priority)
+		LAZYREMOVE(GLOB.high_priority_spawns[name], src)
 	return ..()
 
 // START LANDMARKS FOLLOW. Don't change the names unless
@@ -59,7 +75,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = JOB_ASSISTANT //icon_state is case sensitive. why are all of these capitalized? because fuck you that's why
 
 /obj/effect/landmark/start/assistant/override
-	jobspawn_override = TRUE
+	high_priority = TRUE
 	delete_after_roundstart = FALSE
 
 /obj/effect/landmark/start/prisoner
@@ -192,38 +208,6 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "ai_spawn"
 	primary_ai = FALSE
 	latejoin_active = FALSE
-
-//Department Security spawns
-
-/obj/effect/landmark/start/depsec
-	name = "department_sec"
-	icon_state = "Security Officer"
-	/// What department this spawner is for
-	var/department
-
-/obj/effect/landmark/start/depsec/Initialize(mapload)
-	. = ..()
-	LAZYADDASSOCLIST(GLOB.department_security_spawns, department, src)
-
-/obj/effect/landmark/start/depsec/Destroy()
-	LAZYREMOVEASSOC(GLOB.department_security_spawns, department, src)
-	return ..()
-
-/obj/effect/landmark/start/depsec/supply
-	name = "supply_sec"
-	department = SEC_DEPT_SUPPLY
-
-/obj/effect/landmark/start/depsec/medical
-	name = "medical_sec"
-	department = SEC_DEPT_MEDICAL
-
-/obj/effect/landmark/start/depsec/engineering
-	name = "engineering_sec"
-	department = SEC_DEPT_ENGINEERING
-
-/obj/effect/landmark/start/depsec/science
-	name = "science_sec"
-	department = SEC_DEPT_SCIENCE
 
 //Antagonist spawns
 

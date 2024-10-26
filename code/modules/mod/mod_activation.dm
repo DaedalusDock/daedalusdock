@@ -100,7 +100,7 @@
 			wearer.transferItemToLoc(overslot, part, force = TRUE)
 			RegisterSignal(part, COMSIG_ATOM_EXITED, PROC_REF(on_overslot_exit))
 
-	if(wearer.equip_to_slot_if_possible(part, part.slot_flags, qdel_on_fail = FALSE, disable_warning = TRUE))
+	if(wearer.equip_to_slot_if_possible(part, part.slot_flags, qdel_on_fail = FALSE, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
 		ADD_TRAIT(part, TRAIT_NODROP, MOD_TRAIT)
 		if(!user)
 			return TRUE
@@ -132,7 +132,7 @@
 	if(part_datum.overslotting)
 		UnregisterSignal(part, COMSIG_ATOM_EXITED)
 		var/obj/item/overslot = part_datum.overslotting
-		if(!QDELING(wearer) && !wearer.equip_to_slot_if_possible(overslot, overslot.slot_flags, qdel_on_fail = FALSE, disable_warning = TRUE))
+		if(!QDELING(wearer) && !wearer.equip_to_slot_if_possible(overslot, overslot.slot_flags, qdel_on_fail = FALSE, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
 			wearer.dropItemToGround(overslot, force = TRUE, silent = TRUE)
 		part_datum.overslotting = null
 

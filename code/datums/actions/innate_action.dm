@@ -75,7 +75,7 @@
 	return do_ability(caller, clicked_on, params2list(params))
 
 /// Actually goes through and does the click ability
-/datum/action/innate/proc/do_ability(mob/living/caller, atom/clicked_on)
+/datum/action/innate/proc/do_ability(mob/living/caller, atom/clicked_on, list/params)
 	return FALSE
 
 /datum/action/innate/Remove(mob/removed_from)

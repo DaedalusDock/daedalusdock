@@ -2,7 +2,10 @@
 	desc = "A pair of yellow rubber boots, designed to prevent slipping on wet surfaces."
 	name = "galoshes"
 	icon_state = "galoshes"
+
 	permeability_coefficient = 0.01
+	siemens_coefficient = 0
+
 	clothing_traits = list(TRAIT_NO_SLIP_WATER)
 	slowdown = parent_type::slowdown + 1 // Slower than normal
 	strip_delay = 30

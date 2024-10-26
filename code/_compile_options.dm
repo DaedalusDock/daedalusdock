@@ -112,6 +112,9 @@
 /// Force codex SQLite generation and loading despite being a debug server.
 //#define FORCE_CODEX_DATABASE 1
 
+/// Enable DEBUG_AI_LOG
+#define DEBUG_AI
+
 /////////////////////// REFERENCE TRACKING
 
 ///Used to find the sources of harddels, quite laggy, don't be surpised if it freezes your client for a good while
@@ -162,7 +165,7 @@
 /////////////////////// MISC PERFORMANCE
 
 //uncomment this to load centcom and runtime station and thats it.
-// #define LOWMEMORYMODE
+#define LOWMEMORYMODE
 
 //uncomment to enable the spatial grid debug proc.
 // #define SPATIAL_GRID_ZLEVEL_STATS

@@ -146,3 +146,6 @@
 	slowdown = 3
 	id = MOVESPEED_ID_MOB_ATMOS_AFFLICTION
 	variable = TRUE
+
+/datum/movespeed_modifier/flockphase
+	slowdown = -0.4

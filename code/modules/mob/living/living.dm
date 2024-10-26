@@ -400,18 +400,6 @@
 /mob/living/proc/calculate_affecting_pressure(pressure)
 	return pressure
 
-/mob/living/proc/getMaxHealth()
-	return maxHealth
-
-/mob/living/proc/setMaxHealth(newMaxHealth)
-	maxHealth = newMaxHealth
-
-/// Returns the health of the mob while ignoring damage of non-organic (prosthetic) limbs
-/// Used by cryo cells to not permanently imprison those with damage from prosthetics,
-/// as they cannot be healed through chemicals.
-/mob/living/proc/get_organic_health()
-	return health
-
 // MOB PROCS //END
 
 /mob/living/proc/mob_sleep()
@@ -1782,9 +1770,11 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				ADD_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
+
 		if(UNCONSCIOUS)
 			cure_blind(UNCONSCIOUS_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_DEAF, STAT_TRAIT)
+
 		if(DEAD)
 			remove_from_dead_mob_list()
 			add_to_alive_mob_list()
@@ -2239,3 +2229,33 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /mob/living/proc/get_blood_print()
 	return BLOOD_PRINT_PAWS
+
+/mob/living/zap_act(power, zap_flags)
+	..()
+	var/shock_damage = (zap_flags & ZAP_MOB_DAMAGE) ? TESLA_POWER_TO_MOB_DAMAGE(power) : 0
+	electrocute_act(shock_damage, 1, SHOCK_USE_AVG_SIEMENS | ((zap_flags & ZAP_MOB_STUN) ? NONE : SHOCK_NOSTUN))
+	return power * 0.66
+
+/// Proc for giving a mob a new 'friend', generally used for AI control and targeting. Returns false if already friends.
+/mob/living/proc/befriend(mob/living/new_friend)
+	SHOULD_CALL_PARENT(TRUE)
+	var/friend_ref = REF(new_friend)
+	if (faction.Find(friend_ref))
+		return FALSE
+	faction |= friend_ref
+	ai_controller?.insert_blackboard_key_lazylist(BB_FRIENDS_LIST, new_friend)
+
+	SEND_SIGNAL(src, COMSIG_LIVING_BEFRIENDED, new_friend)
+	return TRUE
+
+/// Proc for removing a friend you added with the proc 'befriend'. Returns true if you removed a friend.
+/mob/living/proc/unfriend(mob/living/old_friend)
+	SHOULD_CALL_PARENT(TRUE)
+	var/friend_ref = REF(old_friend)
+	if (!faction.Find(friend_ref))
+		return FALSE
+	faction -= friend_ref
+	ai_controller?.remove_thing_from_blackboard_key(BB_FRIENDS_LIST, old_friend)
+
+	SEND_SIGNAL(src, COMSIG_LIVING_UNFRIENDED, old_friend)
+	return TRUE

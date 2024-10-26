@@ -4858,7 +4858,6 @@
 	dir = 4
 	},
 /obj/machinery/newscaster/directional/south,
-/obj/effect/landmark/start/depsec/engineering,
 /obj/item/radio/intercom/directional/west,
 /obj/effect/turf_decal/tile/red/anticorner/contrasted{
 	dir = 8
@@ -11835,7 +11834,6 @@
 /obj/machinery/power/apc/auto_name/directional/east,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/landmark/start/depsec/supply,
 /obj/structure/cable/yellow{
 	icon_state = "8"
 	},
@@ -17501,7 +17499,6 @@
 "gxl" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/landmark/start/depsec/engineering,
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 8
 	},
@@ -33329,7 +33326,6 @@
 /area/station/commons/vacant_room/office)
 "mzd" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/landmark/start/depsec/supply,
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
@@ -34658,7 +34654,6 @@
 /obj/structure/reagent_dispensers/wall/peppertank/directional/east,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/landmark/start/depsec/supply,
 /turf/open/floor/iron,
 /area/station/security/checkpoint/supply)
 "mUP" = (
@@ -36746,7 +36741,6 @@
 /obj/structure/chair{
 	dir = 4
 	},
-/obj/effect/landmark/start/depsec/engineering,
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 8
 	},
@@ -38885,7 +38879,6 @@
 	department = "Security";
 	departmentType = 3
 	},
-/obj/effect/landmark/start/depsec/supply,
 /turf/open/floor/iron,
 /area/station/security/checkpoint/supply)
 "owe" = (
@@ -41939,7 +41932,6 @@
 /area/station/maintenance/starboard/greater)
 "pCM" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/landmark/start/depsec/engineering,
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
@@ -43145,7 +43137,6 @@
 /obj/structure/chair/office{
 	dir = 1
 	},
-/obj/effect/landmark/start/depsec/engineering,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
 	},
@@ -51222,7 +51213,6 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
 	},
-/obj/effect/landmark/start/depsec/supply,
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
@@ -57351,7 +57341,6 @@
 	dir = 1
 	},
 /obj/machinery/power/apc/auto_name/directional/south,
-/obj/effect/landmark/start/depsec/engineering,
 /obj/effect/turf_decal/tile/red/half/contrasted,
 /obj/structure/cable/yellow{
 	icon_state = "1"

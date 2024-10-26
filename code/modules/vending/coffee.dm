@@ -7,8 +7,8 @@
 	panel_type = "panel9"
 	products = list(
 		/obj/item/reagent_containers/food/drinks/coffee = 6,
-		/obj/item/reagent_containers/food/drinks/mug/tea = 6,
-		/obj/item/reagent_containers/food/drinks/mug/coco = 3
+		/obj/item/reagent_containers/glass/mug/tea = 6,
+		/obj/item/reagent_containers/glass/mug/coco = 3
 	)
 	contraband = list(
 		/obj/item/reagent_containers/food/drinks/ice = 12

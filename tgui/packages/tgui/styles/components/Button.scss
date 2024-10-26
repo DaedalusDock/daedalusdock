@@ -33,14 +33,14 @@ $bg-map: colors.$bg-map !default;
       background-color 0ms;
   }
 
-  &:focus {
+  &:active {
     transition:
       color 100ms,
       background-color 100ms;
   }
 
   &:hover,
-  &:focus {
+  &:active {
     background-color: lighten($color, 30%);
     color: $text-color;
   }

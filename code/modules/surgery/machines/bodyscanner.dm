@@ -6,6 +6,11 @@
 	dir = EAST
 	density = TRUE
 
+	light_color = LIGHT_COLOR_VIVID_GREEN
+	light_inner_range = 0.1
+	light_outer_range = 1.4
+	light_power = 1
+
 	var/obj/machinery/bodyscanner_console/linked_console
 
 /obj/machinery/bodyscanner/Initialize(mapload)
@@ -84,6 +89,16 @@
 	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	eject_occupant(user)
+
+/obj/machinery/bodyscanner/set_is_operational(new_value)
+	. = ..()
+	refresh_light()
+
+/obj/machinery/bodyscanner/proc/refresh_light()
+	if(is_operational)
+		set_light(l_on = TRUE)
+	else
+		set_light(l_on = FALSE)
 
 /obj/machinery/bodyscanner/proc/eject_occupant(mob/user, resisted)
 	if(!occupant)

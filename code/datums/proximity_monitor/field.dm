@@ -64,6 +64,7 @@
 			return
 		field_turfs += new_turf
 		setup_field_turf(new_turf)
+
 	for(var/turf/new_turf as anything in edge_turfs - old_edge_turfs)
 		if(QDELETED(src))
 			return

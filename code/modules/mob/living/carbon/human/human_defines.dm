@@ -101,3 +101,5 @@
 
 	///A lazylist of preference-applied appearance mods present on this human. Type:Instance
 	var/list/appearance_mods
+
+	var/list/time_of_death_stats

@@ -1,4 +1,4 @@
-/mob/living/silicon/ai/death(gibbed)
+/mob/living/silicon/ai/death(gibbed, cause_of_death = "Unknown")
 	if(stat == DEAD)
 		return
 

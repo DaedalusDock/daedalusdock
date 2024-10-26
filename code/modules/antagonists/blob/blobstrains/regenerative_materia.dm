@@ -26,7 +26,7 @@
 
 /datum/reagent/blob/regenerative_materia/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
-	C.adjustToxLoss(1 * removed, FALSE)
+	C.adjustToxLoss(1 * removed, FALSE, "Regenerative materia")
 	C.hal_screwyhud = SCREWYHUD_HEALTHY //fully healed, honest
 	return TRUE
 

@@ -501,7 +501,7 @@
 
 /obj/item/shockpaddles/proc/shock_pulling(dmg, mob/H)
 	for(var/mob/living/M in H.recursively_get_all_grabbers())
-		if(M.electrocute_act(dmg, H))
+		if(M.electrocute_act(dmg))
 			M.visible_message(span_danger("[M] is electrocuted by [M.p_their()] contact with [H]!"))
 			M.emote("scream")
 

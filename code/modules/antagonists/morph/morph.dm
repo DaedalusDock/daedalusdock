@@ -138,7 +138,7 @@
 
 	update_med_hud()
 
-/mob/living/simple_animal/hostile/morph/death(gibbed)
+/mob/living/simple_animal/hostile/morph/death(gibbed, cause_of_death = "Unknown")
 	if(morphed)
 		visible_message(span_warning("[src] twists and dissolves into a pile of green flesh!"), \
 						span_userdanger("Your skin ruptures! Your flesh breaks apart! No disguise can ward off de--"))

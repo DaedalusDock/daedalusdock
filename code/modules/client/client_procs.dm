@@ -600,6 +600,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	QDEL_NULL(view_size)
 	QDEL_NULL(void)
 	QDEL_NULL(tooltips)
+	QDEL_NULL(parallax_master)
+	QDEL_LIST(parallax_layers_cached)
+	parallax_layers = null
 	seen_messages = null
 	Master.UpdateTickRate()
 	..() //Even though we're going to be hard deleted there are still some things that want to know the destroy is happening
@@ -1170,6 +1173,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=looc")
 				if("Me")
 					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=me")
+	calculate_move_dir()
 
 /client/proc/change_view(new_size)
 	if (isnull(new_size))

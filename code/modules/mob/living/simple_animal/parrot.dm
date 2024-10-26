@@ -138,7 +138,7 @@
 		else
 			. += pick("This parrot is no more.","This is a late parrot.","This is an ex-parrot.")
 
-/mob/living/simple_animal/parrot/death(gibbed)
+/mob/living/simple_animal/parrot/death(gibbed, cause_of_death = "Unknown")
 	if(held_item)
 		held_item.forceMove(drop_location())
 		held_item = null
@@ -923,7 +923,7 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 		memory_saved = TRUE
 	..()
 
-/mob/living/simple_animal/parrot/poly/death(gibbed)
+/mob/living/simple_animal/parrot/poly/death(gibbed, cause_of_death = "Unknown")
 	if(!memory_saved)
 		Write_Memory(TRUE)
 	if(rounds_survived == longest_survival || rounds_survived == longest_deathstreak || prob(0.666))

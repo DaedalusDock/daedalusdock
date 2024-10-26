@@ -116,13 +116,9 @@
 	if(now_pushing)
 		return TRUE
 
-	var/they_can_move = TRUE
-	var/their_combat_mode = FALSE
 
 	if(isliving(M))
 		var/mob/living/L = M
-		their_combat_mode = L.combat_mode
-		they_can_move = L.mobility_flags & MOBILITY_MOVE
 		//Also spread diseases
 		for(var/thing in diseases)
 			var/datum/disease/D = thing
@@ -154,23 +150,7 @@
 		return TRUE
 
 	if(!M.buckled && !M.has_buckled_mobs())
-		var/mob_swap = FALSE
-		var/too_strong = (M.move_resist > move_force) //can't swap with immovable objects unless they help us
-		if(!they_can_move) //we have to physically move them
-			if(!too_strong)
-				mob_swap = TRUE
-		else
-			//You can swap with the person you are dragging on grab intent, and restrained people in most cases
-			if(is_grabbing(M) && !too_strong)
-				mob_swap = TRUE
-			else if(
-				!(HAS_TRAIT(M, TRAIT_NOMOBSWAP) || HAS_TRAIT(src, TRAIT_NOMOBSWAP))&&\
-				((HAS_TRAIT(M, TRAIT_ARMS_RESTRAINED) && !too_strong) || !their_combat_mode) &&\
-				(HAS_TRAIT(src, TRAIT_ARMS_RESTRAINED) || !combat_mode)
-			)
-				mob_swap = TRUE
-
-		if(mob_swap)
+		if(can_mobswap_with(M))
 			//switch our position with M
 			if(loc && !loc.MultiZAdjacent(M.loc))
 				return TRUE
@@ -212,6 +192,46 @@
 		if(!istype(M, /obj/item/clothing))
 			if(I.try_block_attack(M, src, "the push", 0, LEAP_ATTACK)) //close enough?
 				return TRUE
+
+/mob/living/proc/can_mobswap_with(mob/other)
+	if (HAS_TRAIT(other, TRAIT_NOMOBSWAP) || HAS_TRAIT(src, TRAIT_NOMOBSWAP))
+		return FALSE
+
+	var/they_can_move = TRUE
+	var/their_combat_mode = FALSE
+
+	if(isliving(other))
+		var/mob/living/other_living = other
+		their_combat_mode = other_living.combat_mode
+		they_can_move = other_living.mobility_flags & MOBILITY_MOVE
+
+	var/too_strong = other.move_resist > move_force
+
+	// They cannot move, see if we can push through them
+	if (!they_can_move)
+		return !too_strong
+
+	// We are pulling them and can move through
+	if (is_grabbing(other) && !too_strong)
+		return TRUE
+
+	// If we're in combat mode and not restrained we don't try to pass through people
+	if (combat_mode && !HAS_TRAIT(src, TRAIT_ARMS_RESTRAINED))
+		return FALSE
+
+	// Nor can we pass through non-restrained people in combat mode (or if they're restrained but still too strong for us)
+	if (their_combat_mode && (!HAS_TRAIT(other, TRAIT_ARMS_RESTRAINED) || too_strong))
+		return FALSE
+
+	if (isnull(other.client) || isnull(client))
+		return TRUE
+
+	// If both of us are trying to move in the same direction, let the fastest one through first
+	if (client.intended_direction == other.client.intended_direction)
+		return movement_delay < other.movement_delay
+
+	// Else, sure, let us pass
+	return TRUE
 
 /mob/living/get_photo_description(obj/item/camera/camera)
 	var/list/mob_details = list()
@@ -379,18 +399,6 @@
 //affects them once clothing is factored in. ~Errorage
 /mob/living/proc/calculate_affecting_pressure(pressure)
 	return pressure
-
-/mob/living/proc/getMaxHealth()
-	return maxHealth
-
-/mob/living/proc/setMaxHealth(newMaxHealth)
-	maxHealth = newMaxHealth
-
-/// Returns the health of the mob while ignoring damage of non-organic (prosthetic) limbs
-/// Used by cryo cells to not permanently imprison those with damage from prosthetics,
-/// as they cannot be healed through chemicals.
-/mob/living/proc/get_organic_health()
-	return health
 
 // MOB PROCS //END
 
@@ -581,14 +589,14 @@
 	health = new_value
 
 
-/mob/living/proc/updatehealth()
+/mob/living/proc/updatehealth(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 
 	set_health(maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss())
 	med_hud_set_health()
 	update_health_hud()
-	update_stat()
+	update_stat(cause_of_death)
 
 /mob/living/update_health_hud()
 	var/severity = 0
@@ -1762,9 +1770,11 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				ADD_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
+
 		if(UNCONSCIOUS)
 			cure_blind(UNCONSCIOUS_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_DEAF, STAT_TRAIT)
+
 		if(DEAD)
 			remove_from_dead_mob_list()
 			add_to_alive_mob_list()
@@ -2219,3 +2229,33 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /mob/living/proc/get_blood_print()
 	return BLOOD_PRINT_PAWS
+
+/mob/living/zap_act(power, zap_flags)
+	..()
+	var/shock_damage = (zap_flags & ZAP_MOB_DAMAGE) ? TESLA_POWER_TO_MOB_DAMAGE(power) : 0
+	electrocute_act(shock_damage, 1, SHOCK_USE_AVG_SIEMENS | ((zap_flags & ZAP_MOB_STUN) ? NONE : SHOCK_NOSTUN))
+	return power * 0.66
+
+/// Proc for giving a mob a new 'friend', generally used for AI control and targeting. Returns false if already friends.
+/mob/living/proc/befriend(mob/living/new_friend)
+	SHOULD_CALL_PARENT(TRUE)
+	var/friend_ref = REF(new_friend)
+	if (faction.Find(friend_ref))
+		return FALSE
+	faction |= friend_ref
+	ai_controller?.insert_blackboard_key_lazylist(BB_FRIENDS_LIST, new_friend)
+
+	SEND_SIGNAL(src, COMSIG_LIVING_BEFRIENDED, new_friend)
+	return TRUE
+
+/// Proc for removing a friend you added with the proc 'befriend'. Returns true if you removed a friend.
+/mob/living/proc/unfriend(mob/living/old_friend)
+	SHOULD_CALL_PARENT(TRUE)
+	var/friend_ref = REF(old_friend)
+	if (!faction.Find(friend_ref))
+		return FALSE
+	faction -= friend_ref
+	ai_controller?.remove_thing_from_blackboard_key(BB_FRIENDS_LIST, old_friend)
+
+	SEND_SIGNAL(src, COMSIG_LIVING_UNFRIENDED, old_friend)
+	return TRUE

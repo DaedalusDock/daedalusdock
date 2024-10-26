@@ -1,0 +1,11 @@
+2024-09-05:
+  Kapu1178:
+  - qol: Added lights to Sleepers and Bodyscanners.
+  - bugfix: Fixed a bug that bricked ambience when ghosts orbited non-mobs.
+2024-09-06:
+  Spyroshark:
+  - rscadd: mugs now show reagents inside them.
+  - bugfix: the iconic Beagle Mug now displays it's icon properly when empty.
+2024-09-27:
+  Kapu1178:
+  - bugfix: Minor visual issue with TGUI buttons.

@@ -59,3 +59,13 @@
 	color = PAINT_WALL_COMMAND
 	wall_paint = PAINT_WALL_COMMAND
 	stripe_paint = PAINT_STRIPE_COMMAND
+
+/turf/closed/wall/prepainted/mars
+	color = PAINT_WALL_MARS
+	wall_paint = PAINT_WALL_MARS
+	stripe_paint = PAINT_STRIPE_MARS
+
+/turf/closed/wall/r_wall/prepainted/mars
+	color = PAINT_WALL_MARS
+	wall_paint = PAINT_WALL_MARS
+	stripe_paint = PAINT_STRIPE_MARS

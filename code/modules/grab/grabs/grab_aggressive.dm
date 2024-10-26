@@ -16,21 +16,21 @@
 
 	break_chance_table = list(5, 20, 40, 80, 100)
 
-/datum/grab/normal/aggressive/apply_unique_grab_effects(obj/item/hand_item/grab/G)
+/datum/grab/normal/aggressive/apply_unique_grab_effects(atom/movable/affecting)
 	. = ..()
-	if(!isliving(G.affecting))
+	if(!isliving(affecting))
 		return
 
-	var/mob/living/L = G.affecting
-	RegisterSignal(G.affecting, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(target_bodyposition_change))
+	var/mob/living/L = affecting
+	RegisterSignal(L, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(target_bodyposition_change))
 
 	if(L.body_position == LYING_DOWN)
 		ADD_TRAIT(L, TRAIT_FLOORED, AGGRESSIVE_GRAB)
 
-/datum/grab/normal/aggressive/remove_unique_grab_effects(obj/item/hand_item/grab/G)
+/datum/grab/normal/aggressive/remove_unique_grab_effects(atom/movable/affecting)
 	. = ..()
-	UnregisterSignal(G.affecting, COMSIG_LIVING_SET_BODY_POSITION)
-	REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, AGGRESSIVE_GRAB)
+	UnregisterSignal(affecting, COMSIG_LIVING_SET_BODY_POSITION)
+	REMOVE_TRAIT(affecting, TRAIT_FLOORED, AGGRESSIVE_GRAB)
 
 /datum/grab/normal/aggressive/proc/target_bodyposition_change(mob/living/source)
 	if(source.body_position == LYING_DOWN)

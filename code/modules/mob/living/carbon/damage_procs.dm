@@ -76,7 +76,7 @@
 		heal_overall_damage(0, abs(amount), required_status ? required_status : BODYTYPE_ORGANIC, updating_health)
 	return amount
 
-/mob/living/carbon/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE)
+/mob/living/carbon/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE, cause_of_death = "Systemic organ failure")
 	if(!amount)
 		return
 	var/heal = amount < 0
@@ -120,10 +120,7 @@
 		else if(amount <= 0)
 			break
 
-		amount -= O.applyOrganDamage(amount, silent = TRUE, updating_health = FALSE)
-
-	if(updating_health)
-		updatehealth()
+		amount -= O.applyOrganDamage(amount, silent = TRUE, cause_of_death = cause_of_death)
 
 /mob/living/carbon/getToxLoss()
 	for(var/obj/item/organ/O as anything in processing_organs)

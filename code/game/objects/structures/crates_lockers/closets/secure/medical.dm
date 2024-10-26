@@ -82,17 +82,13 @@
 	new /obj/item/defibrillator/compact/loaded(src)
 	new /obj/item/assembly/flash/handheld(src)
 	new /obj/item/reagent_containers/hypospray/cmo(src)
-	new /obj/item/autosurgeon/organ/cmo(src)
-	new /obj/item/clothing/neck/petcollar(src)
-	new /obj/item/pet_carrier(src)
 	new /obj/item/wallframe/defib_mount(src)
 	new /obj/item/circuitboard/machine/fabricator/department/medical(src)
 	new /obj/item/storage/photo_album/cmo(src)
 	new /obj/item/storage/lockbox/medal/med(src)
 	new /obj/item/gun/ballistic/rifle/tranqrifle(src)
-	new /obj/item/ammo_box/magazine/tranq_rifle(src)
 	new /obj/item/ammo_box/magazine/tranq_rifle/ryetalyn(src)
-
+	new /obj/item/ammo_box/magazine/tranq_rifle/ryetalyn(src)
 
 /obj/structure/closet/secure_closet/animal
 	name = "animal control"

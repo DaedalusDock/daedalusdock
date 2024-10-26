@@ -40,7 +40,7 @@
 			new /obj/effect/temp_visual/revenant(affected_mob.loc)
 		if(stagedamage < stage)
 			stagedamage++
-			affected_mob.adjustToxLoss(1 * stage * delta_time, FALSE) //should, normally, do about 30 toxin damage.
+			affected_mob.adjustToxLoss(1 * stage * delta_time, FALSE, cause_of_death = "Wasted away") //should, normally, do about 30 toxin damage.
 			new /obj/effect/temp_visual/revenant(affected_mob.loc)
 		if(DT_PROB(25, delta_time))
 			affected_mob.stamina.adjust(-stage)

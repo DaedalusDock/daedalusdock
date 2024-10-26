@@ -13,3 +13,17 @@
   - balance: Haloperidol's residual sleeping effect has been capped at 3 minutes.
   - balance: Haloperidol is 20% as effective to sleeping targets.
   - bugfix: Catwalks are now anchored.
+2024-07-20:
+  Kapu1178:
+  - bugfix: Field of View is ACTUALLY black.
+2024-07-23:
+  Kapu1178:
+  - bugfix: You no longer receive temperature flavortext while dead.
+  - bugfix: The Medical Director now has Robotics access
+  - bugfix: General Practitioners now have Robotics access during skeleton crew.
+  - balance: Jetpacks no longer provide a massive movespeed boost.
+  - bugfix: Deaf players can no longer hear ambience.
+2024-07-31:
+  Kapu1178:
+  - bugfix: O Positive and O Negative blood types are no longer named "AB+" and "AB-"
+      respectively.

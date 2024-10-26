@@ -144,7 +144,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if (z_flags & Z_MIMIC_BELOW)
 		setup_zmimic(mapload)
 
-	if (light_power && light_outer_range)
+	if (light_power && light_outer_range && light_system == COMPLEX_LIGHT)
 		update_light()
 
 	if (opacity)

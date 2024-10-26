@@ -16,7 +16,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 /turf/closed/wall
 	name = "wall"
 	desc = "A huge chunk of iron used to separate rooms."
-	icon = 'icons/turf/walls/solid_wall.dmi'
+	icon = 'icons/turf/walls/bimmer_walls.dmi'
 	icon_state = "wall-0"
 	base_icon_state = "wall"
 
@@ -35,7 +35,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 
 	rcd_memory = RCD_MEMORY_WALL
 
-	color = "#57575c" //To display in mapping softwares
+	color = /datum/material/iron::wall_color //To display in mapping softwares
 
 	///lower numbers are harder. Used to determine the probability of a hulk smashing through.
 	var/hardness = 40
@@ -64,6 +64,8 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	var/rusted
 	/// Material Set Name
 	var/matset_name
+	/// Should the material name be used?
+	var/use_matset_name = TRUE
 
 	var/list/dent_decals
 
@@ -85,11 +87,15 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	return FALSE
 
 /turf/closed/wall/update_name()
-	. = ..()
+	if(!use_matset_name)
+		return
+
 	if(rusted)
 		name = "rusted "+ matset_name
 	else
 		name = matset_name
+
+	return ..()
 
 /turf/closed/wall/Initialize(mapload)
 	color = null // Remove the color that was set for mapping clarity
@@ -237,7 +243,10 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 		material_color = plating_mat_ref.wall_color
 		explosion_block = initial(explosion_block)
 
-	stripe_icon = plating_mat_ref.wall_stripe_icon
+	if(reinf_mat_ref)
+		stripe_icon = plating_mat_ref.reinforced_wall_stripe_icon
+	else
+		stripe_icon = plating_mat_ref.wall_stripe_icon
 
 	plating_material = plating_mat
 	reinf_material = reinf_mat
@@ -248,6 +257,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	else
 		name = "[plating_mat_ref.name] [plating_mat_ref.wall_name]"
 		desc = "It seems to be a section of hull plated with [plating_mat_ref.name]."
+
 	matset_name = name
 
 	if(update_appearance)

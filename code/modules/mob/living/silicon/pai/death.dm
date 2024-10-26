@@ -1,4 +1,4 @@
-/mob/living/silicon/pai/death(gibbed)
+/mob/living/silicon/pai/death(gibbed, cause_of_death = "Unknown")
 	if(stat == DEAD)
 		return
 	set_stat(DEAD)

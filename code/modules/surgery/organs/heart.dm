@@ -47,6 +47,7 @@
 		return
 
 	owner.med_hud_set_health()
+	update_movespeed()
 
 /obj/item/organ/heart/Remove(mob/living/carbon/heartless, special = 0)
 	..()
@@ -59,11 +60,22 @@
 	pulse = PULSE_NORM
 	update_appearance(UPDATE_ICON_STATE)
 	owner?.med_hud_set_health()
+	update_movespeed()
 
 /obj/item/organ/heart/proc/Stop()
 	pulse = PULSE_NONE
 	update_appearance(UPDATE_ICON_STATE)
 	owner?.med_hud_set_health()
+	update_movespeed()
+
+/obj/item/organ/heart/proc/update_movespeed()
+	if(isnull(owner))
+		return
+
+	if(is_working() || !owner.needs_organ(ORGAN_SLOT_HEART))
+		owner.remove_movespeed_modifier(/datum/movespeed_modifier/asystole)
+	else
+		owner.add_movespeed_modifier(/datum/movespeed_modifier/asystole)
 
 /obj/item/organ/heart/proc/stop_if_unowned()
 	if(!owner)
@@ -93,10 +105,8 @@
 		handle_heartbeat()
 		if(pulse == PULSE_2FAST && prob(1))
 			applyOrganDamage(0.25, updating_health = FALSE)
-			. = TRUE
 		if(pulse == PULSE_THREADY && prob(5))
 			applyOrganDamage(0.35, updating_health = FALSE)
-			. = TRUE
 
 /obj/item/organ/heart/proc/handle_pulse()
 	if(organ_flags & ORGAN_SYNTHETIC)

@@ -11,7 +11,7 @@
 	var/gas_type = GAS_OXYGEN
 	var/on = FALSE
 	var/stabilizers = FALSE
-	var/full_speed = TRUE // If the jetpack will have a speedboost in space/nograv or not
+	var/full_speed = FALSE // If the jetpack will have a speedboost in space/nograv or not
 	var/datum/callback/get_mover
 	var/datum/callback/check_on_move
 

@@ -198,7 +198,7 @@
 		if(!IS_ORGANIC_LIMB(burn_limb))
 			robo_parts += burn_limb
 
-	burn_human.adjustToxLoss(15)
+	burn_human.adjustToxLoss(15, cause_of_death = "Liquid plasma")
 	burn_human.adjustFireLoss(25)
 	if(plasma_parts.len)
 		var/obj/item/bodypart/burn_limb = pick(plasma_parts) //using the above-mentioned list to get a choice of limbs

@@ -352,10 +352,10 @@
 
 ///Flags used by the flags parameter of electrocute act.
 
-///Makes it so that the shock doesn't take gloves into account.
-#define SHOCK_NOGLOVES (1 << 0)
-///Used when the shock is from a tesla bolt.
-#define SHOCK_TESLA (1 << 1)
+/// The shock is applied by hands, check gloves siemen coeff
+#define SHOCK_HANDS (1 << 0)
+/// Shock damage is reduced by the average siemen's coeff
+#define SHOCK_USE_AVG_SIEMENS (1 << 4)
 ///Used when an illusion shocks something. Makes the shock deal stamina damage and not trigger certain secondary effects.
 #define SHOCK_ILLUSION (1 << 2)
 ///The shock doesn't stun.
@@ -418,8 +418,6 @@
 #define AGE_MINOR 20  //legal age of space drinking and smoking
 #define WIZARD_AGE_MIN 30 //youngest a wizard can be
 #define APPRENTICE_AGE_MIN 29 //youngest an apprentice can be
-#define SHOES_SLOWDOWN 0 //How much shoes slow you down by default. Negative values speed you up
-#define SHOES_SPEED_SLIGHT  SHOES_SLOWDOWN - 1 // slightest speed boost to movement
 #define POCKET_STRIP_DELAY (4 SECONDS) //time taken to search somebody's pockets
 #define DOOR_CRUSH_DAMAGE 15 //the amount of damage that airlocks deal when they crush you
 

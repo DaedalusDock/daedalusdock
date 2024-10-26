@@ -1,4 +1,4 @@
-/mob/living/simple_animal/slime/death(gibbed)
+/mob/living/simple_animal/slime/death(gibbed, cause_of_death = "Unknown")
 	if(stat == DEAD)
 		return
 	if(!gibbed)

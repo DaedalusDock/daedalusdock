@@ -1,4 +1,4 @@
-/mob/living/carbon/alien/humanoid/death(gibbed)
+/mob/living/carbon/alien/humanoid/death(gibbed, cause_of_death = "Unknown")
 	if(stat == DEAD)
 		return
 
@@ -8,7 +8,7 @@
 	status_flags |= CANPUSH
 
 //When the alien queen dies, all others must pay the price for letting her die.
-/mob/living/carbon/alien/humanoid/royal/queen/death(gibbed)
+/mob/living/carbon/alien/humanoid/royal/queen/death(gibbed, cause_of_death = "Unknown")
 	if(stat == DEAD)
 		return
 

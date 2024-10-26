@@ -16,7 +16,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 /turf/closed/wall
 	name = "wall"
 	desc = "A huge chunk of iron used to separate rooms."
-	icon = 'icons/turf/walls/solid_wall.dmi'
+	icon = 'icons/turf/walls/bimmer_walls.dmi'
 	icon_state = "wall-0"
 	base_icon_state = "wall"
 
@@ -35,7 +35,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 
 	rcd_memory = RCD_MEMORY_WALL
 
-	color = "#57575c" //To display in mapping softwares
+	color = /datum/material/iron::wall_color //To display in mapping softwares
 
 	///lower numbers are harder. Used to determine the probability of a hulk smashing through.
 	var/hardness = 40
@@ -237,7 +237,10 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 		material_color = plating_mat_ref.wall_color
 		explosion_block = initial(explosion_block)
 
-	stripe_icon = plating_mat_ref.wall_stripe_icon
+	if(reinf_mat_ref)
+		stripe_icon = plating_mat_ref.reinforced_wall_stripe_icon
+	else
+		stripe_icon = plating_mat_ref.wall_stripe_icon
 
 	plating_material = plating_mat
 	reinf_material = reinf_mat

@@ -44,7 +44,7 @@
 /obj/machinery/door/airlock/hatch{
 	id_tag = "caravansyndicate3_bolt_port";
 	name = "External Airlock";
-	normalspeed = 0;
+	superspeed = 1;
 	req_access_txt = "150"
 	},
 /obj/docking_port/mobile{
@@ -371,7 +371,7 @@
 /obj/machinery/door/airlock/hatch{
 	id_tag = "caravansyndicate3_bolt_starboard";
 	name = "External Airlock";
-	normalspeed = 0;
+	superspeed = 1;
 	req_access_txt = "150"
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{

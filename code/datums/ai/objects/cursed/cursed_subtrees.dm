@@ -2,11 +2,10 @@
 	var/obj/item/item_pawn = controller.pawn
 
 	//make sure we have a target
-	var/datum/weakref/target_ref = controller.blackboard[BB_ITEM_TARGET]
-	var/mob/living/carbon/curse_target = target_ref?.resolve()
+	var/mob/living/carbon/curse_target = controller.blackboard[BB_ITEM_TARGET]
 
 	if(curse_target && get_dist(curse_target, item_pawn) > ITEM_AGGRO_VIEW_RANGE)
-		controller.blackboard[BB_ITEM_TARGET] = null
+		controller.set_blackboard_key(BB_ITEM_TARGET, null)
 		return
 
 	if(!curse_target)

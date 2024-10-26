@@ -5,7 +5,7 @@
 	icon_living = "hog"
 	icon_dead = "hog_dead"
 	icon_gib = "brownbear_gib"
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 80
 	health = 80
 	harm_intent_damage = 5

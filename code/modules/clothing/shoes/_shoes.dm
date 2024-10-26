@@ -13,7 +13,10 @@
 
 	permeability_coefficient = 0.5
 	slowdown = SHOES_SLOWDOWN
-	strip_delay = 1 SECONDS
+
+	equip_delay_self = EQUIP_DELAY_SHOES
+	equip_delay_other = EQUIP_DELAY_SHOES * 1.5
+	strip_delay = EQUIP_DELAY_SHOES // In stripping code, if the mob is standing, it adds additional time.
 
 	var/offset = 0
 	var/equipped_before_drop = FALSE

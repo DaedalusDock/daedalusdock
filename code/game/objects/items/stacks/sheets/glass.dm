@@ -266,6 +266,7 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	desc = "A shimmering, translucent block of weird alien computer crystal stuff."
 	mats_per_unit = list(/datum/material/gnesis_glass=MINERAL_MATERIAL_AMOUNT)
 	material_type = /datum/material/gnesis_glass
+	merge_type = /obj/item/stack/sheet/gnesis_glass
 
 /obj/item/shard
 	name = "shard"

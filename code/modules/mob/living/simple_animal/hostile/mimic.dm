@@ -9,7 +9,7 @@
 	response_help_simple = "touch"
 	response_disarm_continuous = "pushes"
 	response_disarm_simple = "push"
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 250
 	health = 250
 	gender = NEUTER
@@ -91,7 +91,7 @@
 	..()
 	icon_state = initial(icon_state)
 
-/mob/living/simple_animal/hostile/mimic/crate/death()
+/mob/living/simple_animal/hostile/mimic/crate/death(gibbed, cause_of_death = "Unknown")
 	var/obj/structure/closet/crate/C = new(get_turf(src))
 	// Put loot in crate
 	for(var/obj/O in src)
@@ -124,7 +124,7 @@ GLOBAL_LIST_INIT(mimic_blacklist, list(/obj/structure/table, /obj/structure/cabl
 	for(var/mob/living/M in contents) //a fix for animated statues from the flesh to stone spell
 		death()
 
-/mob/living/simple_animal/hostile/mimic/copy/death()
+/mob/living/simple_animal/hostile/mimic/copy/death(gibbed, cause_of_death = "Unknown")
 	for(var/atom/movable/M in src)
 		M.forceMove(get_turf(src))
 	..()
@@ -314,7 +314,7 @@ GLOBAL_LIST_INIT(mimic_blacklist, list(/obj/structure/table, /obj/structure/cabl
 		return
 	toggle_open()
 
-/mob/living/simple_animal/hostile/mimic/xenobio/death()
+/mob/living/simple_animal/hostile/mimic/xenobio/death(gibbed, cause_of_death = "Unknown")
 	var/obj/structure/closet/crate/C = new(get_turf(src))
 	// Put loot in crate
 	for(var/atom/movable/AM in src)

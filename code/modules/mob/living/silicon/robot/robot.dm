@@ -572,7 +572,7 @@
 		return FALSE
 	return ..()
 
-/mob/living/silicon/robot/updatehealth()
+/mob/living/silicon/robot/updatehealth(cause_of_death)
 	..()
 	if(!model.breakable_modules)
 		return
@@ -654,12 +654,12 @@
 
 	sync_lighting_plane_alpha()
 
-/mob/living/silicon/robot/update_stat()
+/mob/living/silicon/robot/update_stat(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)
 		if(health <= -maxHealth) //die only once
-			death()
+			death(cause_of_death = cause_of_death)
 			toggle_headlamp(1)
 			return
 		if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT) || IsStun() || IsKnockdown() || IsParalyzed())

@@ -62,7 +62,7 @@
 	else
 		icon_state = initial(icon_state)
 
-/mob/living/simple_animal/hostile/hivebot/death(gibbed)
+/mob/living/simple_animal/hostile/hivebot/death(gibbed, cause_of_death = "Unknown")
 	do_sparks(3, TRUE, src)
 	..(TRUE)
 

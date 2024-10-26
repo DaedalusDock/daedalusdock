@@ -158,6 +158,7 @@
 #include "spell_mindswap.dm"
 #include "spell_names.dm"
 #include "spell_shapeshift.dm"
+#include "spell_timestop.dm"
 #include "stack_singular_name.dm"
 #include "stomach.dm"
 #include "strippable.dm"

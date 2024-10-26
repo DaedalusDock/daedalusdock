@@ -112,7 +112,7 @@
  * search_step() is the workhorse of pathfinding. It'll do the searching logic, and will slowly build up a path
  * returns TRUE if everything is stable, FALSE if the pathfinding logic has failed, and we need to abort
  */
-/datum/pathfind/jps/search_step()
+/datum/pathfind/jps/search_step(tick_check = TRUE)
 	. = ..()
 	if(!.)
 		return .
@@ -133,7 +133,7 @@
 			diag_scan_spec(current_turf, scan_direction, current_processed_node)
 
 		// Stable, we'll just be back later
-		if(TICK_CHECK)
+		if(tick_check && TICK_CHECK)
 			return TRUE
 
 	return TRUE
@@ -406,10 +406,9 @@
 
 	/// These are generally cheaper than looping contents so they go first
 	switch(destination_turf.pathing_pass_method)
-		// This is already assumed to be true
-		//if(TURF_PATHING_PASS_DENSITY)
-		//	if(destination_turf.density)
-		//		return TRUE
+		if(TURF_PATHING_PASS_DENSITY)
+			if(destination_turf.density)
+				return TRUE
 		if(TURF_PATHING_PASS_PROC)
 			if(!destination_turf.CanAStarPass(actual_dir, pass_info))
 				return TRUE

@@ -43,6 +43,8 @@
 		CRASH("playsound(): source is an area")
 	if(isnull(vol))
 		CRASH("Playsound received a null volume, this is probably wrong!")
+	if(islist(soundin))
+		CRASH("Playsound received a list, this is unsupported")
 
 	var/turf/turf_source = get_turf(source)
 
@@ -56,7 +58,7 @@
 	var/maxdistance = SOUND_RANGE + extrarange
 	var/source_z = turf_source.z
 
-	var/list/listeners = SSmobs.clients_by_zlevel[source_z].Copy()
+	var/list/listeners = SSmobs.cliented_living_mobs_by_zlevel[source_z].Copy()
 
 	// Listeners that are hearing through a wall or out of view. They will hear a much quieter sound.
 	var/list/partial_listeners
@@ -73,10 +75,10 @@
 	if(ignore_walls == TRUE)
 
 		if(above_turf && istransparentturf(above_turf))
-			listeners += SSmobs.clients_by_zlevel[above_turf.z]
+			listeners += SSmobs.cliented_living_mobs_by_zlevel[above_turf.z]
 
 		if(below_turf && istransparentturf(turf_source))
-			listeners += SSmobs.clients_by_zlevel[below_turf.z]
+			listeners += SSmobs.cliented_living_mobs_by_zlevel[below_turf.z]
 
 	else //these sounds don't carry through walls
 		listeners = get_hearers_in_view(maxdistance, turf_source)
@@ -89,18 +91,21 @@
 
 		// If we have a partial sound to play, generate the list of partial listeners.
 		if(partial_sound)
-			partial_listeners = SSmobs.clients_by_zlevel[source_z].Copy()
+			partial_listeners = SSmobs.cliented_living_mobs_by_zlevel[source_z].Copy()
 
 			if(above_turf && istransparentturf(above_turf))
-				partial_listeners += SSmobs.clients_by_zlevel[above_turf.z]
+				partial_listeners += SSmobs.cliented_living_mobs_by_zlevel[above_turf.z]
 
 			if(below_turf && istransparentturf(turf_source))
-				partial_listeners += SSmobs.clients_by_zlevel[below_turf.z]
+				partial_listeners += SSmobs.cliented_living_mobs_by_zlevel[below_turf.z]
 
 			partial_listeners -= listeners
-			partial_listeners -= SSmobs.dead_players_by_zlevel[source_z]
 
-	for(var/mob/listening_mob in listeners | SSmobs.dead_players_by_zlevel[source_z])//observers always hear through walls
+	listeners |= SSmobs.dead_players_by_zlevel[source_z]
+	if(length(SSmobs.flock_cameras_by_zlevel[source_z]))
+		listeners |= SSmobs.flock_cameras_by_zlevel[source_z]
+
+	for(var/mob/listening_mob in listeners)//observers always hear through walls
 		if(get_dist(listening_mob, turf_source) <= maxdistance)
 			if(listening_mob.playsound_local(turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, S, maxdistance, falloff_distance, 1, use_reverb))
 				. += listening_mob

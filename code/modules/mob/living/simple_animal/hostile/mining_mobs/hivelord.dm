@@ -12,7 +12,7 @@
 	ranged = 1
 	vision_range = 5
 	aggro_vision_range = 9
-	speed = 3
+	move_delay_modifier = 3
 	maxHealth = 75
 	health = 75
 	harm_intent_damage = 5
@@ -53,7 +53,7 @@
 	OpenFire()
 	return TRUE
 
-/mob/living/simple_animal/hostile/asteroid/hivelord/death(gibbed)
+/mob/living/simple_animal/hostile/asteroid/hivelord/death(gibbed, cause_of_death = "Unknown")
 	mouse_opacity = MOUSE_OPACITY_ICON
 	..(gibbed)
 
@@ -71,7 +71,7 @@
 	friendly_verb_continuous = "buzzes near"
 	friendly_verb_simple = "buzz near"
 	vision_range = 10
-	speed = 3
+	move_delay_modifier = 3
 	maxHealth = 1
 	health = 1
 	harm_intent_damage = 5

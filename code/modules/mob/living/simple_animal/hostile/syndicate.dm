@@ -26,7 +26,7 @@
 	sentience_type = SENTIENCE_HUMANOID
 	speak_chance = 0
 	turns_per_move = 5
-	speed = 0
+	move_delay_modifier = 0
 	stat_attack = UNCONSCIOUS
 	robust_searching = 1
 	maxHealth = 100
@@ -59,7 +59,7 @@
 	health = 170
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
-	speed = 1
+	move_delay_modifier = 1
 
 /mob/living/simple_animal/hostile/syndicate/space/Initialize(mapload)
 	. = ..()
@@ -94,7 +94,7 @@
 	health = 170
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
-	speed = 1
+	move_delay_modifier = 1
 	projectile_deflect_chance = 50
 
 /mob/living/simple_animal/hostile/syndicate/melee/space/Initialize(mapload)
@@ -146,7 +146,7 @@
 	health = 170
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
-	speed = 1
+	move_delay_modifier = 1
 	projectile_deflect_chance = 50
 
 /mob/living/simple_animal/hostile/syndicate/melee/sword/space/Initialize(mapload)
@@ -193,7 +193,7 @@
 	health = 170
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
-	speed = 1
+	move_delay_modifier = 1
 
 /mob/living/simple_animal/hostile/syndicate/ranged/space/Initialize(mapload)
 	. = ..()
@@ -226,7 +226,7 @@
 	health = 170
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
-	speed = 1
+	move_delay_modifier = 1
 
 /mob/living/simple_animal/hostile/syndicate/ranged/smg/space/Initialize(mapload)
 	. = ..()
@@ -256,7 +256,7 @@
 	health = 170
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
-	speed = 1
+	move_delay_modifier = 1
 
 /mob/living/simple_animal/hostile/syndicate/ranged/shotgun/space/Initialize(mapload)
 	. = ..()

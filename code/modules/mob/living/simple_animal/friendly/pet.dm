@@ -62,7 +62,7 @@
 			collar_type = "[initial(collar_type)]"
 		regenerate_icons()
 
-/mob/living/simple_animal/pet/death(gibbed)
+/mob/living/simple_animal/pet/death(gibbed, cause_of_death = "Unknown")
 	. = ..()
 	if(collar_type)
 		collar_type = "[initial(collar_type)]_dead"

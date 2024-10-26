@@ -9,6 +9,7 @@
 	pixel_x = -64
 	pixel_y = -64
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+
 	var/list/immune = list() // the one who creates the timestop is immune, which includes wizards and the dead slime you murdered to make this chronofield
 	var/turf/target
 	var/freezerange = 2
@@ -57,6 +58,7 @@
 	channelled = TRUE
 
 /datum/proximity_monitor/advanced/timestop
+	edge_is_a_field = TRUE
 	var/list/immune = list()
 	var/list/frozen_things = list()
 	var/list/frozen_mobs = list() //cached separately for processing
@@ -73,7 +75,7 @@
 	src.immune = immune
 	src.antimagic_flags = antimagic_flags
 	src.channelled = channelled
-	recalculate_field()
+	recalculate_field(full_recalc = TRUE)
 	START_PROCESSING(SSfastprocess, src)
 
 /datum/proximity_monitor/advanced/timestop/Destroy()
@@ -203,7 +205,7 @@
 	frozen_mobs += L
 	L.Stun(20, ignore_canstun = TRUE)
 	ADD_TRAIT(L, TRAIT_MUTE, TIMESTOP_TRAIT)
-	SSmove_manager.stop_looping(src) //stops them mid pathing even if they're stunimmune //This is really dumb
+	SSmove_manager.stop_looping(L) //stops them mid pathing even if they're stunimmune //This is really dumb
 	if(isanimal(L))
 		var/mob/living/simple_animal/S = L
 		S.toggle_ai(AI_OFF)

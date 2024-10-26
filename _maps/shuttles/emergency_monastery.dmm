@@ -1825,7 +1825,7 @@
 /area/shuttle/escape)
 "zP" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/food/drinks/mug/tea,
+/obj/item/reagent_containers/glass/mug/tea,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "zQ" = (

@@ -18,7 +18,7 @@
 	animate_movement = SLIDE_STEPS
 	health = 50
 	maxHealth = 50
-	speed = 3
+	move_delay_modifier = 3
 	damage_coeff = list(BRUTE = 0.5, BURN = 0.7, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0)
 	combat_mode = TRUE //No swapping
 	buckle_lying = 0

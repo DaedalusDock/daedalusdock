@@ -1,0 +1,2 @@
+/obj/effect/landmark/start/depsec/@SUBTYPES : @DELETE
+/obj/effect/landmark/start/depsec : @DELETE

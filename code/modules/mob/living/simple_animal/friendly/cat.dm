@@ -130,7 +130,7 @@
 		children += baby
 		return baby
 
-/mob/living/simple_animal/pet/cat/runtime/death()
+/mob/living/simple_animal/pet/cat/runtime/death(gibbed, cause_of_death = "Unknown")
 	if(!memory_saved)
 		Write_Memory(TRUE)
 	..()

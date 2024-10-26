@@ -162,6 +162,24 @@
 	return TRUE
 
 
+/mob/living/proc/getMaxHealth()
+	return maxHealth
+
+/mob/living/proc/setMaxHealth(newMaxHealth)
+	maxHealth = newMaxHealth
+
+// here be dragons
+/mob/living/proc/getHealthPercent()
+	var/max = getMaxHealth()
+	var/loss = getBruteLoss() + getFireLoss() + getToxLoss() + getCloneLoss() + getOxyLoss()
+	return ceil((max - loss) / max * 100)
+
+/// Returns the health of the mob while ignoring damage of non-organic (prosthetic) limbs
+/// Used by cryo cells to not permanently imprison those with damage from prosthetics,
+/// as they cannot be healed through chemicals.
+/mob/living/proc/get_organic_health()
+	return health
+
 /mob/living/proc/getBruteLoss()
 	return bruteloss
 
@@ -198,12 +216,12 @@
 /mob/living/proc/getToxLoss()
 	return toxloss
 
-/mob/living/proc/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE)
+/mob/living/proc/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE, cause_of_death = "Systemic organ failure")
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	toxloss = clamp((toxloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth)
 	if(updating_health)
-		updatehealth()
+		updatehealth(cause_of_death = cause_of_death)
 	return amount
 
 /mob/living/proc/setToxLoss(amount, updating_health = TRUE, forced = FALSE)

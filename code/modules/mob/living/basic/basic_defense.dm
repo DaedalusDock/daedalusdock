@@ -177,13 +177,13 @@
 	..()
 
 
-/mob/living/basic/update_stat()
+/mob/living/basic/update_stat(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 
 	if(stat != DEAD)
 		if(health <= 0)
-			death()
+			death(cause_of_death = cause_of_death)
 		else
 			set_stat(CONSCIOUS)
 

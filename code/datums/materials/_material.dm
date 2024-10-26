@@ -48,11 +48,15 @@ Simple datum which is instanced once per type and is used for every object of sa
 	var/obj/item/shard_type
 
 	///Icon for walls which are plated with this material
-	var/wall_icon = 'icons/turf/walls/solid_wall.dmi'
+	var/wall_icon = 'icons/turf/walls/bimmer_walls.dmi'
 	///Icon for reinforced walls which are plated with this material
 	var/reinforced_wall_icon = 'icons/turf/walls/metal_wall.dmi'
 	/// Icon for painted stripes on the walls
-	var/wall_stripe_icon = 'icons/turf/walls/wall_stripe.dmi'
+	var/wall_stripe_icon = 'icons/turf/walls/bimmer_stripes.dmi'
+	/// Icon for painted stripes on reinforced walls
+	var/reinforced_wall_stripe_icon = 'icons/turf/walls/bimmer_stripes_low.dmi'
+	/// Icon for painted stripes on the low walls
+	var/low_wall_stripe_icon = 'icons/turf/walls/bimmer_stripes_low.dmi'
 	/// Color of walls constructed with this material as their plating
 	var/wall_color
 	/// Type of the wall this material makes when its used as a plating, null means can't make a wall out of it.

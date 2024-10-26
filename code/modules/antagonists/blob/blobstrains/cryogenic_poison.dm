@@ -28,7 +28,7 @@
 /datum/reagent/blob/cryogenic_poison/affect_blood(mob/living/carbon/C, removed)
 	C.adjustBruteLoss(1 * removed, FALSE)
 	C.adjustFireLoss(1 * removed, FALSE)
-	C.adjustToxLoss(1* removed, FALSE)
+	C.adjustToxLoss(1* removed, FALSE, cause_of_death = "Cryogenic poison")
 	return TRUE
 
 /datum/reagent/blob/cryogenic_poison/affect_touch(mob/living/carbon/C, removed)

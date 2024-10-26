@@ -56,7 +56,8 @@
 	C.silent = FALSE
 	C.remove_status_effect(/datum/status_effect/dizziness)
 	C.disgust = 0
-	C.drowsyness = 0
+	C.set_drowsyness(0)
+
 	// Remove all speech related status effects
 	for(var/effect in typesof(/datum/status_effect/speech))
 		C.remove_status_effect(effect)
@@ -438,7 +439,7 @@
 
 	holder.remove_reagent(/datum/reagent/toxin/mindbreaker, 5)
 
-	C.adjustToxLoss(3 * removed, updating_health = FALSE) // It used to be incredibly deadly due to an oversight. Not anymore!
+	C.adjustToxLoss(3 * removed, updating_health = FALSE, cause_of_death = "Synaptizine") // It used to be incredibly deadly due to an oversight. Not anymore!
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 70)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 10)
 	return TRUE
@@ -818,7 +819,7 @@
 		C.visible_message("<span class='nicegreen'>A rubbery liquid coats [C]'s burns.") //we're avoiding using the phrases "burnt flesh" and "burnt skin" here because carbies could be a skeleton or a golem or something
 
 /datum/reagent/medicine/synthflesh/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(1 * removed)
+	C.adjustToxLoss(1 * removed, cause_of_death = "Synthflesh poisoning")
 	return TRUE
 
 /datum/reagent/medicine/atropine
@@ -957,7 +958,7 @@
 	return ..()
 
 /datum/reagent/medicine/ipecac/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(5 * removed, 0)
+	C.adjustToxLoss(5 * removed, 0, cause_of_death = "Ipecac")
 	. = TRUE
 
 /datum/reagent/medicine/activated_charcoal

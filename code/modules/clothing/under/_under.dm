@@ -4,14 +4,23 @@
 	worn_icon = 'icons/mob/clothing/under/default.dmi'
 	fallback_colors = list(list(15, 17), list(10, 19), list(15, 10))
 	fallback_icon_state = "under"
+
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	permeability_coefficient = 0.9
 	slot_flags = ITEM_SLOT_ICLOTHING
+
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 	equip_sound = 'sound/items/equip/jumpsuit_equip.ogg'
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
+
+	equip_delay_self = EQUIP_DELAY_UNDERSUIT
+	equip_delay_other = EQUIP_DELAY_UNDERSUIT * 1.5
+	strip_delay = EQUIP_DELAY_UNDERSUIT * 1.5
+
 	limb_integrity = 30
+
 	/// The variable containing the flags for how the woman uniform cropping is supposed to interact with the sprite.
 	var/female_sprite_flags = FEMALE_UNIFORM_FULL
 	var/has_sensor = HAS_SENSORS // For the crew computer

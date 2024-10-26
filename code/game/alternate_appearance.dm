@@ -1,17 +1,17 @@
 GLOBAL_LIST_EMPTY(active_alternate_appearances)
 
+/atom/proc/get_alt_appearance(key)
+	return alternate_appearances?[key]
+
 /atom/proc/remove_alt_appearance(key)
-	if(alternate_appearances)
-		for(var/K in alternate_appearances)
-			var/datum/atom_hud/alternate_appearance/AA = alternate_appearances[K]
-			if(AA.appearance_key == key)
-				AA.remove_atom_from_hud(src)
-				break
+	var/datum/atom_hud/alternate_appearance/AA = alternate_appearances?[key]
+	if(AA)
+		AA.remove_atom_from_hud(src)
 
 /atom/proc/add_alt_appearance(type, key, ...)
 	if(!type || !key)
 		return
-	if(alternate_appearances && alternate_appearances[key])
+	if(alternate_appearances?[key])
 		return
 	if(!ispath(type, /datum/atom_hud/alternate_appearance))
 		CRASH("Invalid type passed in: [type]")
@@ -125,7 +125,7 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 
 /datum/atom_hud/alternate_appearance/basic/remove_atom_from_hud(atom/A)
 	. = ..()
-	A.hud_list -= appearance_key
+	LAZYREMOVE(A.hud_list, appearance_key)
 	A.set_hud_image_inactive(appearance_key)
 	if(. && !QDELETED(src))
 		qdel(src)

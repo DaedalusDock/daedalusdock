@@ -24,6 +24,3 @@
 // Custom types that we define don't get a unique id, but this is useful for identifying
 // types that don't normally have a way to run istype() on them.
 #define TYPEID(thing) copytext(REF(thing), 4, 6)
-
-#warn move this
-#define ARC_DAMAGE_TO_POWER(desired_damage) (desired_damage * 25000)

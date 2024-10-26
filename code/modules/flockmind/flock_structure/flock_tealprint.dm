@@ -30,10 +30,6 @@
 	if(!initial(building_type.cancellable))
 		return
 
-	#warn flockcache
-	// if (currentmats > 0)
-	// 	var/obj/item/flockcache/cache = new(get_turf(src))
-	// 	cache.resources = currentmats
 	flock_talk(src, "Tealprint dematerializing", flock)
 	playsound(src, 'goon/sounds/flockmind/flockdrone_door_deny.ogg', 30, TRUE, extrarange = -10)
 	return ..()

@@ -260,7 +260,6 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	. = ..()
 	. += GLOB.plastitaniumglass_recipes
 
-#warn gnesis sprite
 /obj/item/stack/sheet/gnesis_glass
 	name = "transculent wafer"
 	desc = "A shimmering, translucent block of weird alien computer crystal stuff."

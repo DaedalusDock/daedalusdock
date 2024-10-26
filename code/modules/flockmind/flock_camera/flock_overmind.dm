@@ -31,7 +31,7 @@
 
 /mob/camera/flock/overmind/Login()
 	. = ..()
-	#warn remove this when the gamemode is set up
+	//remove this when the gamemode is set up
 	flock.start()
 
 /mob/camera/flock/overmind/Logout()

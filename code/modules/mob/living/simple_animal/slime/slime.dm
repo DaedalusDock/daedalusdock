@@ -239,7 +239,7 @@
 			Feedon(Food)
 	return ..()
 
-/mob/living/simple_animal/slime/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+/mob/living/simple_animal/slime/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE)
 	return
 
 /mob/living/simple_animal/slime/try_make_grab(atom/movable/target, grab_type)

@@ -412,12 +412,12 @@ again.
 
 /obj/effect/spawner/structure/window/prepainted/marsexec
 	name = "reinforced window spawner (mars executive paint)"
-	spawn_list = list(/obj/structure/low_wall/prepainted/daedalus, /obj/structure/window/fulltile)
+	spawn_list = list(/obj/structure/low_wall/prepainted/marsexec, /obj/structure/window/fulltile)
 
 /obj/effect/spawner/structure/window/reinforced/prepainted/marsexec
 	name = "window spawner (mars executive paint)"
-	spawn_list = list(/obj/structure/low_wall/prepainted/daedalus, /obj/structure/window/reinforced/fulltile)
+	spawn_list = list(/obj/structure/low_wall/prepainted/marsexec, /obj/structure/window/reinforced/fulltile)
 
 /obj/effect/spawner/structure/window/reinforced/tinted/prepainted/marsexec
 	name = "tinted reinforced window spawner (mars executive paint)"
-	spawn_list = list(/obj/structure/low_wall/prepainted/daedalus, /obj/structure/window/reinforced/tinted/fulltile)
+	spawn_list = list(/obj/structure/low_wall/prepainted/marsexec, /obj/structure/window/reinforced/tinted/fulltile)

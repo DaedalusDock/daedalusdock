@@ -20,6 +20,10 @@
 	flock.add_unit(src)
 	flock.stat_traces_made++
 
+/mob/camera/flock/trace/Destroy()
+	flock?.free_unit(src)
+	return ..()
+
 /mob/camera/flock/trace/vv_edit_var(var_name, var_value)
 	switch(var_name)
 		if(NAMEOF(src, compute_provided))

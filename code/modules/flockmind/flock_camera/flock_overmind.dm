@@ -29,6 +29,10 @@
 	flock.register_overmind(src)
 	set_real_name("Flockmind [flock.name]")
 
+/mob/camera/flock/overmind/Destroy()
+	flock?.overmind = null // This shouldnt really happen
+	return ..()
+
 /mob/camera/flock/overmind/Login()
 	. = ..()
 	//remove this when the gamemode is set up

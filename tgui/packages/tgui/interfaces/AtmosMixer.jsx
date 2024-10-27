@@ -60,7 +60,7 @@ export const AtmosMixer = (props) => {
                 minValue={0}
                 maxValue={100}
                 stepPixelSize={2}
-                onDrag={(e, value) =>
+                onDrag={(value) =>
                   act('node1', {
                     concentration: value,
                   })
@@ -76,7 +76,7 @@ export const AtmosMixer = (props) => {
                 minValue={0}
                 maxValue={100}
                 stepPixelSize={2}
-                onDrag={(e, value) =>
+                onDrag={(value) =>
                   act('node2', {
                     concentration: value,
                   })

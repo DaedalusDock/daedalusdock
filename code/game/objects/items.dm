@@ -158,6 +158,8 @@ DEFINE_INTERACTABLE(/obj/item)
 	var/weak_against_armor = null
 	///What objects the suit storage can store
 	var/list/allowed = null
+	/// Flags for equipping/unequipping items, only applies to self manipulation.
+	var/equip_self_flags = EQUIP_ALLOW_MOVEMENT | EQUIP_SLOWDOWN
 	///In deciseconds, how long an item takes to equip; counts only for normal clothing slots, not pockets etc.
 	var/equip_delay_self = 0
 	///In deciseconds, how long an item takes to put on another person

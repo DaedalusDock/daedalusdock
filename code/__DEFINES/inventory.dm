@@ -240,6 +240,8 @@ GLOBAL_LIST_INIT(security_wintercoat_allowed, typecacheof(list(
 #define EQUIP_DELAY_OVERSUIT (7 SECONDS)
 /// Delay base for things like coats that are trivially removed or put on.
 #define EQUIP_DELAY_COAT (2 SECONDS)
+/// Delay base for masks
+#define EQUIP_DELAY_MASK (1 SECONDS)
 /// Delay base for back-worn objects.
 #define EQUIP_DELAY_BACK (2 SECONDS)
 /// Delay base for belts.
@@ -248,3 +250,9 @@ GLOBAL_LIST_INIT(security_wintercoat_allowed, typecacheof(list(
 #define EQUIP_DELAY_GLOVES (1 SECONDS)
 /// Delay base for shoes.
 #define EQUIP_DELAY_SHOES (1 SECONDS)
+
+// Flags for self equipping items
+/// Allow movement during equip/unequip
+#define EQUIP_ALLOW_MOVEMENT (1<<0)
+/// Apply a slowdown when equipping or unequipping.
+#define EQUIP_SLOWDOWN (1<<1)

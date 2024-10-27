@@ -28,6 +28,10 @@
 
 	storage_type = /datum/storage/backpack
 
+	equip_delay_self = EQUIP_DELAY_BACK
+	equip_delay_other = EQUIP_DELAY_BACK * 1.5
+	strip_delay = EQUIP_DELAY_BACK * 1.5
+
 /obj/item/storage/backpack/Initialize()
 	. = ..()
 	atom_storage.max_slots = 21

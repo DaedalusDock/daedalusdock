@@ -10,7 +10,7 @@
 	friendly_verb_continuous = "growls at"
 	friendly_verb_simple = "growl at"
 	speak_emote = list("growls")
-	speed = 3
+	move_delay_modifier = 3
 	move_to_delay = 8
 	maxHealth = 300
 	health = 300
@@ -52,7 +52,7 @@
 	adjustHealth(-0.0125 * maxHealth * delta_time)
 	aggressive_message_said = FALSE
 
-/mob/living/simple_animal/hostile/asteroid/polarbear/death(gibbed)
+/mob/living/simple_animal/hostile/asteroid/polarbear/death(gibbed, cause_of_death = "Unknown")
 	move_force = MOVE_FORCE_DEFAULT
 	move_resist = MOVE_RESIST_DEFAULT
 	pull_force = PULL_FORCE_DEFAULT

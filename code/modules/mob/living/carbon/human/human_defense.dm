@@ -514,33 +514,32 @@
 
 
 ///Calculates the siemens coeff based on clothing and species, can also restart hearts.
-/mob/living/carbon/human/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)
+/mob/living/carbon/human/electrocute_act(shock_damage, siemens_coeff = 1, flags = SHOCK_HANDS, stun_multiplier = 1)
 	//Calculates the siemens coeff based on clothing. Completely ignores the arguments
-	if(flags & SHOCK_TESLA) //I hate this entire block. This gets the siemens_coeff for tesla shocks
-		if(gloves && gloves.siemens_coefficient <= 0)
-			siemens_coeff -= 0.5
-		if(wear_suit)
-			if(wear_suit.siemens_coefficient == -1)
-				siemens_coeff -= 1
-			else if(wear_suit.siemens_coefficient <= 0)
-				siemens_coeff -= 0.95
-		siemens_coeff = max(siemens_coeff, 0)
-	else if(!(flags & SHOCK_NOGLOVES)) //This gets the siemens_coeff for all non tesla shocks
+	if(flags & SHOCK_USE_AVG_SIEMENS)
+		siemens_coeff = get_average_siemens_coeff()
+
+	else if((flags & SHOCK_HANDS)) //This gets the siemens_coeff for all non tesla shocks
 		if(gloves)
 			siemens_coeff *= gloves.siemens_coefficient
+
 	siemens_coeff *= physiology.siemens_coeff
 	siemens_coeff *= dna.species.siemens_coeff
+
 	. = ..()
+
 	//Don't go further if the shock was blocked/too weak.
 	if(!.)
 		return
+
 	//Note we both check that the user is in cardiac arrest and can actually heartattack
 	//If they can't, they're missing their heart and this would runtime
 	if(undergoing_cardiac_arrest() && !(flags & SHOCK_ILLUSION))
-		if(shock_damage * siemens_coeff >= 1 && prob(25))
+		if(shock_damage >= 1 && prob(25))
 			var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
-			if(heart.Restart() && stat != CONSCIOUS)
-				to_chat(src, span_notice("You feel your heart beating again!"))
+			if(heart.Restart() && stat != DEAD)
+				to_chat(src, span_obviousnotice("You feel your heart beating again!"))
+
 	electrocution_animation(40)
 
 /mob/living/carbon/human/emp_act(severity)

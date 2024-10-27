@@ -48,7 +48,7 @@
 			if(DT_PROB(0.5, delta_time))
 				affected_mob.apply_pain(1, BODY_ZONE_CHEST, "Your abdomen hurts.")
 				if(prob(20))
-					affected_mob.adjustToxLoss(2, FALSE)
+					affected_mob.adjustToxLoss(2, FALSE, cause_of_death = "Retrovirus")
 		if(4)
 			if(!transformed && !carrier)
 				//Save original dna for when the disease is cured.

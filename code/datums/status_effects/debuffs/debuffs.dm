@@ -141,9 +141,14 @@
 	. = ..()
 	if(!.)
 		return
+
 	if(!HAS_TRAIT(owner, TRAIT_SLEEPIMMUNE))
 		ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 		tick_interval = -1
+
+	if(owner.mind)
+		COOLDOWN_START(owner.mind, dream_cooldown, 5 SECONDS) // You need to sleep for atleast 5 seconds to begin dreaming.
+
 	ADD_TRAIT(owner, TRAIT_DEAF, TRAIT_STATUS_EFFECT(id))
 	RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_SLEEPIMMUNE), PROC_REF(on_owner_insomniac))
 	RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_SLEEPIMMUNE), PROC_REF(on_owner_sleepy))
@@ -170,30 +175,27 @@
 	tick_interval = initial(tick_interval)
 
 /datum/status_effect/incapacitating/sleeping/tick()
-	if(owner.maxHealth)
-		var/health_ratio = owner.health / owner.maxHealth
-		var/healing = -0.2
+	var/healing = -0.2
+	if(isturf(owner.loc))
 		if((locate(/obj/structure/bed) in owner.loc))
 			healing -= 0.3
 		else if((locate(/obj/structure/table) in owner.loc))
 			healing -= 0.1
-		for(var/obj/item/bedsheet/bedsheet in range(owner.loc,0))
-			if(bedsheet.loc != owner.loc) //bedsheets in your backpack/neck don't give you comfort
-				continue
+
+		if((locate(/obj/structure/table) in owner.loc))
 			healing -= 0.1
-			break //Only count the first bedsheet
-		if(health_ratio > 0.8)
-			owner.adjustBruteLoss(healing)
-			owner.adjustFireLoss(healing)
-			owner.adjustToxLoss(healing * 0.5, TRUE, TRUE)
-		owner.stamina.adjust(-healing)
+
+	if(owner.getToxLoss() >= 20)
+		owner.adjustToxLoss(healing * 0.5, TRUE, TRUE)
+
+	owner.stamina.adjust(-healing)
 
 	// Drunkenness gets reduced by 0.3% per tick (6% per 2 seconds)
 	owner.set_drunk_effect(owner.get_drunk_amount() * 0.997)
 
 	if(iscarbon(owner))
 		var/mob/living/carbon/carbon_owner = owner
-		carbon_owner.handle_dreams()
+		carbon_owner.try_dream()
 
 	if(prob(2) && owner.health > owner.crit_threshold)
 		owner.emote("snore")
@@ -294,7 +296,7 @@
 		return
 	owner.adjustBruteLoss(0.1)
 	owner.adjustFireLoss(0.1)
-	owner.adjustToxLoss(0.2, TRUE, TRUE)
+	owner.adjustToxLoss(0.2, TRUE, TRUE, cause_of_death = "His wrath")
 
 /datum/status_effect/cultghost //is a cult ghost and can't use manifest runes
 	id = "cult_ghost"

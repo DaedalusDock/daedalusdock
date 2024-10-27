@@ -237,11 +237,20 @@
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(attacked_obj)
-	attacked_obj.attacked_by(src, user)
+	return attacked_obj.attacked_by(src, user)
 
 /// The equivalent of the standard version of [/obj/item/proc/attack] but for /turf targets.
 /obj/item/proc/attack_turf(turf/attacked_turf, mob/living/user, params)
-	return
+	if(!attacked_turf.uses_integrity)
+		return
+
+	if(item_flags & NOBLUDGEON)
+		return
+
+	// This probably needs to be changed later on, but it should work for now because only flock walls use integrity.
+	user.changeNext_move(CLICK_CD_MELEE)
+	user.do_attack_animation(attacked_turf)
+	return attacked_turf.attacked_by(src, user)
 
 /// Called from [/obj/item/proc/attack_atom] and [/obj/item/proc/attack] if the attack succeeds
 /atom/proc/attacked_by(obj/item/attacking_item, mob/living/user)
@@ -261,6 +270,7 @@
 	)
 
 	log_combat(user, src, "attacked ([damage] damage)", attacking_item)
+	return damage
 
 /area/attacked_by(obj/item/attacking_item, mob/living/user)
 	CRASH("areas are NOT supposed to have attacked_by() called on them!")

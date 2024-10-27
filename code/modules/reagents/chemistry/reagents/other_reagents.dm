@@ -384,7 +384,7 @@
 	color = pick(potential_colors)
 
 /datum/reagent/hair_dye/affect_ingest(mob/living/carbon/C, removed) //What the fuck is wrong with you
-	C.adjustToxLoss(2 * removed, FALSE)
+	C.adjustToxLoss(2 * removed, FALSE, cause_of_death = "Ingesting hair dye")
 	return ..() || TRUE
 
 /datum/reagent/hair_dye/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=FALSE)
@@ -408,7 +408,7 @@
 
 /datum/reagent/plantnutriment/affect_blood(mob/living/carbon/C, removed)
 	if(prob(tox_prob *2))
-		C.adjustToxLoss(1 * removed, 0)
+		C.adjustToxLoss(1 * removed, 0, cause_of_death = "Plant nutriment poisoning")
 		. = TRUE
 
 /datum/reagent/plantnutriment/eznutriment
@@ -574,7 +574,7 @@
 
 /datum/reagent/technetium/affect_blood(mob/living/carbon/C, removed)
 	if(!(current_cycle % 8))
-		C.adjustToxLoss(5 * removed, FALSE)
+		C.adjustToxLoss(5 * removed, FALSE, cause_of_death = "Technetium 99 poisoning")
 		. = TRUE
 
 /datum/reagent/helgrasp
@@ -655,7 +655,7 @@
 			drinker.blood_volume += 3 * removed
 	else
 		drinker.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
-		drinker.adjustToxLoss(2 * removed, FALSE)
+		drinker.adjustToxLoss(2 * removed, FALSE, cause_of_death = "The devil")
 		drinker.adjustFireLoss(2 * removed, FALSE)
 		drinker.adjustOxyLoss(2 * removed, FALSE)
 		drinker.adjustBruteLoss(2 * removed, FALSE)
@@ -740,7 +740,7 @@
 			C.blood_volume += 3 * removed
 	else  // Will deal about 90 damage when 50 units are thrown
 		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
-		C.adjustToxLoss(1 * removed, 0)
+		C.adjustToxLoss(1 * removed, 0, cause_of_death = "The devil")
 		C.adjustFireLoss(1 * removed, 0)
 		C.adjustOxyLoss(1 * removed, 0)
 		C.adjustBruteLoss(1 * removed, 0)
@@ -1114,7 +1114,7 @@
 		C.remove_status_effect(/datum/status_effect/jitter)
 
 /datum/reagent/medicine/changelingadrenaline/overdose_process(mob/living/carbon/C)
-	C.adjustToxLoss(0.2, 0)
+	C.adjustToxLoss(0.2, 0, cause_of_death = "Changeling adrenaline overdose")
 	return TRUE
 
 /datum/reagent/medicine/changelinghaste
@@ -1133,7 +1133,7 @@
 		C.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/changelinghaste)
 
 /datum/reagent/medicine/changelinghaste/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(0.2, 0)
+	C.adjustToxLoss(0.2, 0, cause_of_death = "Changeling haste")
 	return TRUE
 
 /datum/reagent/gold

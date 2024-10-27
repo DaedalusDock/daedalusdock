@@ -91,7 +91,7 @@
 				else
 					D.set_electrified(MACHINE_NOT_ELECTRIFIED, usr)
 			if(specialfunctions & SAFE)
-				D.safe = !D.safe
+				D.dont_close_on_dense_objects = !D.dont_close_on_dense_objects
 
 	for(var/D in open_or_close)
 		INVOKE_ASYNC(D, doors_need_closing ? TYPE_PROC_REF(/obj/machinery/door/airlock, close) : TYPE_PROC_REF(/obj/machinery/door/airlock, open))

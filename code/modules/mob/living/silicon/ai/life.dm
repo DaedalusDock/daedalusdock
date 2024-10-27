@@ -53,20 +53,20 @@
 		if(POWER_REQ_ALL)
 			return !T || !A || ((!A.power_equip || isspaceturf(T)) && !is_type_in_list(loc, list(/obj/item, /obj/vehicle/sealed/mecha)))
 
-/mob/living/silicon/ai/updatehealth()
+/mob/living/silicon/ai/updatehealth(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 	set_health(maxHealth - getOxyLoss() - getToxLoss() - getBruteLoss() - getFireLoss())
-	update_stat()
+	update_stat(cause_of_death)
 	diag_hud_set_health()
 	disconnect_shell()
 
-/mob/living/silicon/ai/update_stat()
+/mob/living/silicon/ai/update_stat(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)
 		if(health <= HEALTH_THRESHOLD_DEAD)
-			death()
+			death(cause_of_death = cause_of_death)
 			return
 		else if(stat >= UNCONSCIOUS)
 			set_stat(CONSCIOUS)

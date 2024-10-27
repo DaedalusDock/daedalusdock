@@ -16,3 +16,6 @@
 
 /datum/movespeed_modifier/sphere
 	slowdown = -0.5
+
+/datum/movespeed_modifier/equipping
+	slowdown = 1.5

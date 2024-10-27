@@ -48,7 +48,6 @@
 	if(empty)
 		return
 	var/static/items_inside = list(
-		/obj/item/healthanalyzer/wound = 1,
 		/obj/item/stack/gauze = 1,
 		/obj/item/stack/medical/suture = 1,
 		/obj/item/stack/medical/ointment = 1,

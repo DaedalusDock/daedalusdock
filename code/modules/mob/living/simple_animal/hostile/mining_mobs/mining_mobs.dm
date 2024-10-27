@@ -42,6 +42,6 @@
 			Aggro()
 	..()
 
-/mob/living/simple_animal/hostile/asteroid/death(gibbed)
+/mob/living/simple_animal/hostile/asteroid/death(gibbed, cause_of_death = "Unknown")
 	SSblackbox.record_feedback("tally", "mobs_killed_mining", 1, type)
 	..(gibbed)

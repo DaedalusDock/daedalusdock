@@ -102,6 +102,8 @@
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 
 	var/machine_stat = NONE
+
+	/// This is for automatic power consumption.
 	var/use_power = IDLE_POWER_USE
 		//0 = dont use power
 		//1 = use idle_power_usage
@@ -1016,11 +1018,13 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 /obj/machinery/zap_act(power, zap_flags)
 	if(prob(85) && (zap_flags & ZAP_MACHINE_EXPLOSIVE) && !(resistance_flags & INDESTRUCTIBLE))
 		explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 4, flame_range = 2, adminlog = FALSE, smoke = FALSE)
+
 	else if(zap_flags & ZAP_OBJ_DAMAGE)
 		take_damage(power * 0.0005, BURN, ENERGY)
 		if(prob(40))
 			emp_act(EMP_LIGHT)
 		power -= power * 0.0005
+
 	return ..()
 
 /obj/machinery/Exited(atom/movable/gone, direction)

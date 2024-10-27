@@ -388,3 +388,39 @@
 		grinded = I
 		return
 	to_chat(user, span_warning("You can't grind this!"))
+
+//TRUE MUGS for REAL MUG FANS !!!
+/obj/item/reagent_containers/glass/mug
+	name = "mug"
+	desc = "A generic porcelain mug, ready to hold your warm beverage."
+	icon = 'icons/obj/drinks.dmi'
+	icon_state = "tea_empty"
+	inhand_icon_state = "coffee"
+	fill_icon_state = "mug"
+	fill_icon_thresholds = list(0, 40, 80, 100)
+	volume = 30
+
+/obj/item/reagent_containers/glass/mug/Initialize(mapload)
+	. = ..()
+	update_appearance()
+
+/obj/item/reagent_containers/glass/mug/tea
+	name = "Duke Purple tea"
+	list_reagents = list(/datum/reagent/consumable/tea = 30)
+
+/obj/item/reagent_containers/glass/mug/coco
+	name = "Duke Purple tea"
+	list_reagents = list(/datum/reagent/consumable/hot_coco = 15, /datum/reagent/consumable/sugar = 5)
+
+/obj/item/reagent_containers/glass/mug/brit
+	name = "mug"
+	desc = "A mug with the british flag emblazoned on it."
+	icon = 'icons/obj/drinks.dmi'
+	icon_state = "britcup"
+
+/obj/item/reagent_containers/glass/mug/beagle
+	name = "beagle mug"
+	desc = "A mug, shaped like the head of a claymation beagle. What will they think of next?"
+	icon = 'icons/obj/drinks.dmi'
+	icon_state = "beaglemug"
+	fill_icon_state = null //it's not the right perspective to see inside. Don't blame me, we stole the sprite from baystation!

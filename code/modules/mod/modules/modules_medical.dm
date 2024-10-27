@@ -1,7 +1,6 @@
 //Medical modules for MODsuits
 
 #define HEALTH_SCAN "Health"
-#define WOUND_SCAN "Wound"
 #define CHEM_SCAN "Chemical"
 
 ///Health Analyzer - Gives the user a ranged health analyzer and their health status in the panel.
@@ -22,7 +21,7 @@
 	/// Scanning mode, changes how we scan something.
 	var/mode = HEALTH_SCAN
 	/// List of all scanning modes.
-	var/static/list/modes = list(HEALTH_SCAN, WOUND_SCAN, CHEM_SCAN)
+	var/static/list/modes = list(HEALTH_SCAN, CHEM_SCAN)
 
 /obj/item/mod/module/health_analyzer/add_ui_data()
 	. = ..()
@@ -42,8 +41,6 @@
 	switch(mode)
 		if(HEALTH_SCAN)
 			healthscan(mod.wearer, target)
-		if(WOUND_SCAN)
-			woundscan(mod.wearer, target)
 		if(CHEM_SCAN)
 			chemscan(mod.wearer, target)
 	drain_power(use_power_cost)
@@ -58,7 +55,6 @@
 			mode = value
 
 #undef HEALTH_SCAN
-#undef WOUND_SCAN
 #undef CHEM_SCAN
 
 ///Quick Carry - Lets the user carry bodies quicker.

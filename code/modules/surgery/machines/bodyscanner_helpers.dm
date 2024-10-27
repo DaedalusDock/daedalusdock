@@ -55,7 +55,7 @@
 		for(var/datum/reagent/R in reagents.reagent_list)
 			var/list/reagent = list()
 			reagent["name"] = R.name
-			reagent["quantity"] = round(R.volume, 1)
+			reagent["quantity"] = round(R.volume, 0.1)
 			reagent["visible"] = !(R.chemical_flags & (REAGENT_INVISIBLE))
 			reagent["overdosed"] = R.overdosed
 			.["reagents"] += list(reagent)
@@ -89,7 +89,7 @@
 	.["blind"] = HAS_TRAIT(src, TRAIT_BLIND)
 	.["genetic_instability"] = !!GetComponent(/datum/component/genetic_damage)
 
-/obj/machinery/bodyscanner_console/proc/get_severity(amount, tag = FALSE)
+/proc/get_damage_severity(amount, tag = FALSE)
 	if(!amount)
 		return "none"
 

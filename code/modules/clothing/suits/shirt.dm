@@ -4,6 +4,10 @@
 	icon_state = "ianshirt"
 	inhand_icon_state = "ianshirt"
 
+	equip_delay_self = EQUIP_DELAY_UNDERSUIT
+	equip_delay_other = EQUIP_DELAY_UNDERSUIT * 1.5
+	strip_delay = EQUIP_DELAY_UNDERSUIT * 1.5
+
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 	///How many times has this shirt been washed? (In an ideal world this is just the determinant of the transform matrix.)
 	var/wash_count = 0

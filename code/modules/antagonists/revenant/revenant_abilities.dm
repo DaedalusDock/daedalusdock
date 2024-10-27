@@ -252,7 +252,7 @@
 			continue
 		to_shock.Beam(human_mob, icon_state = "purple_lightning", time = 0.5 SECONDS)
 		if(!human_mob.can_block_magic(antimagic_flags))
-			human_mob.electrocute_act(shock_damage, to_shock, flags = SHOCK_NOGLOVES)
+			human_mob.electrocute_act(shock_damage, flags = NONE)
 
 		do_sparks(4, FALSE, human_mob)
 		playsound(human_mob, 'sound/machines/defib_zap.ogg', 50, TRUE, -1)
@@ -383,7 +383,7 @@
 				if(mob.reagents)
 					mob.reagents.add_reagent(/datum/reagent/toxin/plasma, 5)
 		else
-			mob.adjustToxLoss(5)
+			mob.adjustToxLoss(5, cause_of_death = "Blight")
 	for(var/obj/structure/spacevine/vine in victim) //Fucking with botanists, the ability.
 		vine.add_atom_colour("#823abb", TEMPORARY_COLOUR_PRIORITY)
 		new /obj/effect/temp_visual/revenant(vine.loc)

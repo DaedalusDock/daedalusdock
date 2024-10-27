@@ -43,7 +43,7 @@
 		/obj/item/reagent_containers/food/drinks/bottle/small = 15
 	)
 	contraband = list(
-		/obj/item/reagent_containers/food/drinks/mug/tea = 12,
+		/obj/item/reagent_containers/glass/mug/tea = 12,
 		/obj/item/reagent_containers/food/drinks/bottle/fernet = 5,
 	)
 	premium = list(

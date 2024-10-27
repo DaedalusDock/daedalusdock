@@ -34,7 +34,7 @@
 	health = 320
 	damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 1, CLONE = 1, STAMINA = 0.5, OXY = 1)
 	combat_mode = TRUE
-	speed = 0
+	move_delay_modifier = 0
 	movement_type = FLYING
 	attack_verb_continuous = "chomps"
 	attack_verb_simple = "chomp"
@@ -194,7 +194,7 @@
 	ranged_cooldown = world.time + ranged_cooldown_time
 	fire_stream()
 
-/mob/living/simple_animal/hostile/space_dragon/death(gibbed)
+/mob/living/simple_animal/hostile/space_dragon/death(gibbed, cause_of_death = "Unknown")
 	empty_contents()
 	if(!objective_complete)
 		destroy_rifts()

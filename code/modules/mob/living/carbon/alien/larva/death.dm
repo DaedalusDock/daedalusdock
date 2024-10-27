@@ -1,4 +1,4 @@
-/mob/living/carbon/alien/larva/death(gibbed)
+/mob/living/carbon/alien/larva/death(gibbed, cause_of_death = "Unknown")
 	if(stat == DEAD)
 		return
 

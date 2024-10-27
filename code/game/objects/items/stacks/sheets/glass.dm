@@ -260,6 +260,14 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	. = ..()
 	. += GLOB.plastitaniumglass_recipes
 
+/obj/item/stack/sheet/gnesis_glass
+	name = "transculent wafers"
+	singular_name = "transculent wafer"
+	desc = "A shimmering, translucent block of weird alien computer crystal stuff."
+	mats_per_unit = list(/datum/material/gnesis_glass=MINERAL_MATERIAL_AMOUNT)
+	material_type = /datum/material/gnesis_glass
+	merge_type = /obj/item/stack/sheet/gnesis_glass
+
 /obj/item/shard
 	name = "shard"
 	desc = "A nasty looking shard of glass."
@@ -403,3 +411,15 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	icon_prefix = "plastitanium"
 	weld_material = /obj/item/stack/sheet/plastitaniumglass
 	craft_time = 14 SECONDS
+
+/obj/item/shard/gnesis_glass
+	name = "bright shard"
+	desc = "A nasty looking shard of titanium infused glass."
+	color = "#1bdebd"
+	force = 7
+	throwforce = 12
+
+	custom_materials = list(/datum/material/gnesis_glass=MINERAL_MATERIAL_AMOUNT)
+	weld_material = /obj/item/stack/sheet/gnesis_glass
+	craft_time = 7 SECONDS
+

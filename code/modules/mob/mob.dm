@@ -591,6 +591,11 @@
 	if(examined == src)
 		return
 
+	if(isobj(examined))
+		var/obj/examined_obj = examined
+		if(examined_obj.obj_flags & SECRET_EXAMINE)
+			return
+
 	// If TRUE, the usr's view() for the examined object too
 	var/examining_worn_item = FALSE
 	var/loc_str = "at something off in the distance."
@@ -1258,7 +1263,7 @@
 					break
 				search_pda = 0
 
-/mob/proc/update_stat()
+/mob/proc/update_stat(cause_of_death)
 	return
 
 /mob/proc/update_health_hud()
@@ -1608,3 +1613,27 @@
 	set name = "View Skills"
 
 	mind?.print_levels(src)
+
+/// Makes a client temporarily aware of an appearance via and invisible vis contents object.
+/mob/proc/send_appearance(mutable_appearance/appearance)
+	RETURN_TYPE(/atom/movable/screen)
+	if(!hud_used || isnull(appearance))
+		return
+
+	var/atom/movable/screen/container
+	if(isatom(container))
+		container = appearance
+	else
+		container = new()
+		container.appearance = appearance
+
+	hud_used.vis_holder.vis_contents += appearance
+	addtimer(CALLBACK(src, PROC_REF(remove_appearance), appearance), 5 SECONDS, TIMER_DELETE_ME)
+
+	return container
+
+/mob/proc/remove_appearance(atom/movable/appearance)
+	if(!hud_used)
+		return
+
+	hud_used.vis_holder.vis_contents -= appearance

@@ -61,6 +61,7 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 		// add_overlay does a bunch of generic stuff, like creating a new list for overlays,
 		// queueing compile, cloning appearance, etc etc etc that is not necessary here.
 		overlays += global.fullbright_overlay
+		luminosity = TRUE
 
 	return INITIALIZE_HINT_NORMAL
 

@@ -13,7 +13,7 @@
 	custom_materials = list(/datum/material/iron=2000)
 	clumsy_check = FALSE
 	fire_sound = 'sound/items/syringeproj.ogg'
-	mag_type = /obj/item/ammo_box/magazine/tranq_rifle
+	mag_type = /obj/item/ammo_box/magazine/tranq_rifle/ryetalyn
 	internal_magazine = FALSE
 	empty_alarm = FALSE
 	hidden_chambered = TRUE

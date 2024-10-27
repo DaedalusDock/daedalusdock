@@ -19,11 +19,11 @@
 	value = DISPENSER_REAGENT_VALUE
 
 /datum/reagent/ammonia/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(removed * 1.5, FALSE)
+	C.adjustToxLoss(removed * 1.5, FALSE, cause_of_death = "Ingesting ammonia")
 	return TRUE
 
 /datum/reagent/ammonia/overdose_process(mob/living/carbon/C)
-	C.adjustToxLoss(0.5, FALSE)
+	C.adjustToxLoss(0.5, FALSE, cause_of_death = "Ingesting ALOT of ammonia")
 	return TRUE
 
 /datum/reagent/carbon
@@ -280,7 +280,7 @@
 		mytray.adjust_weedlevel(-rand(1,4))
 
 /datum/reagent/fluorine/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(0.5*removed, 0)
+	C.adjustToxLoss(0.5*removed, 0, cause_of_death = "Ammonia poisoning")
 	. = TRUE
 
 //This is intended to a be a scarce reagent to gate certain drugs and toxins with. Do not put in a synthesizer. Renewable sources of this reagent should be inefficient.
@@ -338,7 +338,7 @@
 
 
 /datum/reagent/chlorine/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(3 * removed, FALSE)
+	C.adjustToxLoss(3 * removed, FALSE, cause_of_death = "Chlorine poisoning")
 	. = TRUE
 
 /datum/reagent/calcium

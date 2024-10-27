@@ -9,7 +9,6 @@
 	max_integrity = 200
 	resistance_flags = FIRE_PROOF
 	interaction_flags_machine = INTERACT_MACHINE_OPEN | INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON
-	obj_flags = CAN_BE_HIT | USES_TGUI
 
 	var/datum/gas_mixture/air_contents // internal reservoir
 	var/full_pressure = FALSE
@@ -300,9 +299,6 @@
 		return ..()
 
 // handle machine interaction
-
-/obj/machinery/disposal/bin/ui_state(mob/user)
-	return GLOB.notcontained_state
 
 /obj/machinery/disposal/bin/ui_interact(mob/user, datum/tgui/ui)
 	if(machine_stat & BROKEN)

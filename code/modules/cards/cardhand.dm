@@ -5,6 +5,7 @@
 	icon_state = "none"
 	w_class = WEIGHT_CLASS_TINY
 	worn_icon_state = "card"
+	obj_flags = parent_type::obj_flags | SECRET_EXAMINE
 
 /obj/item/toy/cards/cardhand/Initialize(mapload, list/cards_to_combine = list())
 	. = ..()

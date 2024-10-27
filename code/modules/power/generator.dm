@@ -5,7 +5,6 @@
 	icon_state = "teg"
 	density = TRUE
 	use_power = NO_POWER_USE
-	obj_flags = USES_TGUI
 	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT
 	zmm_flags = ZMM_MANGLE_PLANES
 

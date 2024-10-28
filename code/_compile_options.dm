@@ -268,3 +268,6 @@
 #define GC_FAILURE_HARD_LOOKUP
 #endif
 
+#ifdef LOWMEMORYMODE
+#warn LOWMEMORYMODE is enabled!
+#endif

@@ -5,11 +5,10 @@
 
 	if(isprojectile(hitby))
 		var/obj/projectile/P = hitby
-		if(P.starting != get_turf(defender))
+		if(P.starting != defender_turf)
 			attack_dir = REVERSE_DIR(angle2dir(P.Angle))
 
 	else if(isitem(hitby))
-		var/obj/item/weapon = hitby
 		if(ismob(hitby.loc))
 			attack_dir = get_dir(defender, hitby.loc)
 		else

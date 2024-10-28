@@ -229,7 +229,7 @@
 	else
 		return ..()
 
-/obj/item/staff/bostaff/get_block_chance(atom/movable/hitby, damage, attack_type, armor_penetration)
-	if(wielded)
-		return ..()
-	return FALSE
+/obj/item/staff/bostaff/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
+	if(!wielded)
+		return FALSE
+	return ..()

@@ -138,10 +138,10 @@
 	else
 		user.stamina.adjust(-25)
 
-/obj/item/dualsaber/get_block_chance(atom/movable/hitby, damage, attack_type, armor_penetration)
-	if(wielded)
-		return ..()
-	return FALSE
+/obj/item/dualsaber/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
+	if(!wielded)
+		return FALSE
+	return ..()
 
 /obj/item/dualsaber/process()
 	if(!wielded)

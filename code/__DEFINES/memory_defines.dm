@@ -1,3 +1,4 @@
+#define NOTES_CUSTOM "Custom"
 #define NOTES_BANK_ACCOUNT "Bank"
 #define NOTES_ANTAG "Antag"
 #define NOTES_TRAITS "Traits"

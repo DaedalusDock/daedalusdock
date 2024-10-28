@@ -37,7 +37,7 @@
 	var/active = FALSE
 
 	/// A k:v list of note type : contents
-	VAR_PRIVATE/list/notes = list()
+	VAR_PRIVATE/list/notes = list(NOTES_CUSTOM = "")
 	///reference to the note panel tgui
 	var/datum/note_panel/note_panel
 
@@ -904,7 +904,7 @@
 	if(!note_key)
 		return
 
-	if(isnull(content))
+	if(isnull(content) && (note_key != NOTES_CUSTOM))
 		notes -= note_key
 		return
 

@@ -1581,7 +1581,7 @@
 	. = ..()
 
 /datum/note_panel/ui_state(mob/user)
-	return GLOB.always_state
+	return GLOB.notes_state
 
 /datum/note_panel/ui_close()
 	qdel(src)
@@ -1589,17 +1589,12 @@
 /datum/note_panel/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "NotePanel", )
+		ui = new(user, src, "NotePanel")
 		ui.open()
 
 /datum/note_panel/ui_data(mob/user)
 	var/list/data = list()
-	var/list/memories = list(
-		list(
-			"name" = "Custom",
-			"content" = holder.prefs.custom_note
-		)
-	)
+	var/list/memories = list()
 
 	var/list/user_memories = user?.mind.get_notes()
 	for(var/memory_key in user_memories)
@@ -1615,7 +1610,7 @@
 
 	switch(action)
 		if("UpdateNote")
-			ui.user.client.prefs.custom_note = params["newnote"]
+			mind_reference.set_note(NOTES_CUSTOM, params["newnote"])
 			return TRUE
 
 /mob/verb/view_skills()

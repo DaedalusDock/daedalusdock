@@ -64,7 +64,6 @@
 
 /datum/action/changeling/absorb_dna/proc/absorb_memories(mob/living/carbon/human/target)
 	var/datum/mind/suckedbrain = target.mind
-
 	var/datum/antagonist/changeling/changeling = owner.mind.has_antag_datum(/datum/antagonist/changeling)
 
 	for(var/datum/antagonist/antagonist_datum as anything in suckedbrain.antag_datums)

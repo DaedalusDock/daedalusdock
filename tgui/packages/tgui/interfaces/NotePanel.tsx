@@ -7,8 +7,8 @@ type NoteData = {
 };
 
 type Note = {
-  content: String;
-  name: String;
+  content: string;
+  name: string;
 };
 
 export const NotePanel = (props) => {

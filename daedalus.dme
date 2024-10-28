@@ -4470,6 +4470,7 @@
 #include "code\modules\tgui\states\new_player.dm"
 #include "code\modules\tgui\states\not_incapacitated.dm"
 #include "code\modules\tgui\states\notcontained.dm"
+#include "code\modules\tgui\states\notes.dm"
 #include "code\modules\tgui\states\observer.dm"
 #include "code\modules\tgui\states\paicard.dm"
 #include "code\modules\tgui\states\physical.dm"

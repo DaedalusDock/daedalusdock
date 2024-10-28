@@ -42,12 +42,10 @@
 	force = old_force
 	throwforce = old_throwforce
 
-/obj/item/ceremonial_blade/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
-	if(attack_type != MELEE_ATTACK || !ishuman(hitby.loc))
-		return FALSE
-	return ..()
-
 /obj/item/ceremonial_blade/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+	if(attack_type != MELEE_ATTACK || !ishuman(hitby.loc))
+		return ..()
+
 	. = ..()
 	if(HAS_TRAIT(hitby.loc, TRAIT_SPARRING))
 		//becomes 30 block

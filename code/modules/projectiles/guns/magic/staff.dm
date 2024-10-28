@@ -182,7 +182,7 @@
 	. = ..()
 	AddComponent(/datum/component/butchering, 15, 125, 0, hitsound)
 
-/obj/item/gun/magic/staff/spellblade/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
+/obj/item/gun/magic/staff/spellblade/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(attack_type == PROJECTILE_ATTACK)
 		return FALSE
 

@@ -76,9 +76,9 @@
 	. = ..()
 	AddComponent(/datum/component/butchering, 30, 95, 5) //fast and effective, but as a sword, it might damage the results.
 
-/obj/item/melee/sabre/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
+/obj/item/melee/sabre/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(attack_type == PROJECTILE_ATTACK)
-		return FALSE
+		return FALSE //Don't bring a sword to a gunfight
 	return ..()
 
 /obj/item/melee/sabre/on_exit_storage(datum/storage/container)

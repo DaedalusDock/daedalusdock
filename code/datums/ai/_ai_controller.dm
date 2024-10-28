@@ -161,52 +161,42 @@ multiple modular subtrees with behaviors
 		SSmove_manager.stop_looping(pawn) //stop moving
 		return //this should remove them from processing in the future through event-based stuff.
 
-	if(!LAZYLEN(current_behaviors) && default_behavior)
-		if(behavior_cooldowns[GET_AI_BEHAVIOR(default_behavior)] > world.time)
-			return
-
-		queue_behavior(default_behavior)
-
-	if(current_movement_target && get_dist(pawn, current_movement_target) > max_target_distance) //The distance is out of range
-		CancelActions()
-		return
-
 	for(var/datum/ai_behavior/current_behavior as anything in current_behaviors)
 
 		// Convert the current behaviour action cooldown to realtime seconds from deciseconds.current_behavior
-		// Then pick the max of this and the delta_time passed to ai_controller.process()
-		// Action cooldowns cannot happen faster than delta_time, so delta_time should be the value used in this scenario.
-		var/action_delta_time = max(current_behavior.action_cooldown * 0.1, delta_time)
+		// Then pick the max of this and the seconds_per_tick passed to ai_controller.process()
+		// Action cooldowns cannot happen faster than seconds_per_tick, so seconds_per_tick should be the value used in this scenario.
+		var/action_seconds_per_tick = max(current_behavior.get_cooldown(src) * 0.1, delta_time)
 
-		if(current_behavior.behavior_flags & AI_BEHAVIOR_REQUIRE_MOVEMENT) //Might need to move closer
-			if(!current_movement_target)
-				stack_trace("[pawn] wants to perform action type [current_behavior.type] which requires movement, but has no current movement target!")
-				return //This can cause issues, so don't let these slide.
-
-			if(current_behavior.required_distance >= get_dist(pawn, current_movement_target)) ///Are we close enough to engage?
-				if(ai_movement.moving_controllers[src] == current_movement_target) //We are close enough, if we're moving stop.
-					ai_movement.stop_moving_towards(src)
-
-				if(behavior_cooldowns[current_behavior] > world.time) //Still on cooldown
-					continue
-
-				ProcessBehavior(action_delta_time, current_behavior)
-				return
-
-			else if(ai_movement.moving_controllers[src] != current_movement_target) //We're too far, if we're not already moving start doing it.
-				ai_movement.start_moving_towards(src, current_movement_target, current_behavior.required_distance) //Then start moving
-
-			if(current_behavior.behavior_flags & AI_BEHAVIOR_MOVE_AND_PERFORM) //If we can move and perform then do so.
-				if(behavior_cooldowns[current_behavior] > world.time) //Still on cooldown
-					continue
-				ProcessBehavior(action_delta_time, current_behavior)
-				return
-
-		else //No movement required
+		if(!(current_behavior.behavior_flags & AI_BEHAVIOR_REQUIRE_MOVEMENT))
 			if(behavior_cooldowns[current_behavior] > world.time) //Still on cooldown
 				continue
+			ProcessBehavior(action_seconds_per_tick, current_behavior)
+			return
 
-			ProcessBehavior(action_delta_time, current_behavior)
+		if(isnull(current_movement_target))
+			fail_behavior(current_behavior)
+			return
+
+		///Stops pawns from performing such actions that should require the target to be adjacent.
+		var/atom/movable/moving_pawn = pawn
+		var/can_reach = !(current_behavior.behavior_flags & AI_BEHAVIOR_REQUIRE_REACH) || moving_pawn.CanReach(current_movement_target)
+		if(can_reach && current_behavior.required_distance >= get_dist(moving_pawn, current_movement_target)) ///Are we close enough to engage?
+			if(ai_movement.moving_controllers[src] == current_movement_target) //We are close enough, if we're moving stop.
+				ai_movement.stop_moving_towards(src)
+
+			if(behavior_cooldowns[current_behavior] > world.time) //Still on cooldown
+				continue
+			ProcessBehavior(action_seconds_per_tick, current_behavior)
+			return
+
+		if(ai_movement.moving_controllers[src] != current_movement_target) //We're too far, if we're not already moving start doing it.
+			ai_movement.start_moving_towards(src, current_movement_target, current_behavior.required_distance) //Then start moving
+
+		if(current_behavior.behavior_flags & AI_BEHAVIOR_MOVE_AND_PERFORM) //If we can move and perform then do so.
+			if(behavior_cooldowns[current_behavior] > world.time) //Still on cooldown
+				continue
+			ProcessBehavior(action_seconds_per_tick, current_behavior)
 			return
 
 ///This is where you decide what actions are taken by the AI.
@@ -320,13 +310,15 @@ multiple modular subtrees with behaviors
 /datum/ai_controller/proc/CancelActions()
 	if(!LAZYLEN(current_behaviors))
 		return
-	for(var/i in current_behaviors)
-		var/datum/ai_behavior/current_behavior = i
-		var/list/arguments = list(src, FALSE)
-		var/list/stored_arguments = behavior_args[current_behavior.type]
-		if(stored_arguments)
-			arguments += stored_arguments
-		current_behavior.finish_action(arglist(arguments))
+	for(var/datum/ai_behavior/current_behavior as anything in current_behaviors)
+		fail_behavior(current_behavior)
+
+/datum/ai_controller/proc/fail_behavior(datum/ai_behavior/current_behavior)
+	var/list/arguments = list(src, FALSE)
+	var/list/stored_arguments = behavior_args[current_behavior.type]
+	if(stored_arguments)
+		arguments += stored_arguments
+	current_behavior.finish_action(arglist(arguments))
 
 /datum/ai_controller/proc/get_movement_delay()
 	if(isliving(pawn))

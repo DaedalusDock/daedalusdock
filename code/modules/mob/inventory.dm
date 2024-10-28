@@ -660,7 +660,14 @@
 		span_notice("[src] starts to put on [I]..."),
 		span_notice("You start to put on [I]...")
 	)
-	return do_after(src, src, I.equip_delay_self, DO_PUBLIC, display = I)
+
+	. = I.do_equip_wait(src)
+
+	if(.)
+		visible_message(
+			span_notice("[src] puts on [I]."),
+			span_notice("You put on [I].")
+		)
 
 /mob/living/carbon/human/unequip_delay_self_check(obj/item/I)
 	if(!I.equip_delay_self || is_holding(I))
@@ -668,6 +675,31 @@
 
 	visible_message(
 		span_notice("[src] starts to take off [I]..."),
-		span_notice("You start to take off [I]...")
+		span_notice("You start to take off [I]..."),
 	)
-	return do_after(src, src, I.equip_delay_self, DO_PUBLIC, display = I)
+
+	. = I.do_equip_wait(src)
+
+	if(.)
+		visible_message(
+			span_notice("[src] takes off [I]."),
+			span_notice("You takes off [I].")
+		)
+
+/// Called by equip_delay_self and unequip_delay_self.
+/obj/item/proc/do_equip_wait(mob/living/L)
+	var/flags = DO_PUBLIC
+	if(equip_self_flags & EQUIP_ALLOW_MOVEMENT)
+		flags |= IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE
+
+	if(equip_self_flags & EQUIP_SLOWDOWN)
+		L.add_movespeed_modifier(/datum/movespeed_modifier/equipping)
+
+	ADD_TRAIT(L, TRAIT_EQUIPPING_OR_UNEQUIPPING, ref(src))
+
+	. = do_after(L, L, equip_delay_self, flags, display = src)
+
+	REMOVE_TRAIT(L, TRAIT_EQUIPPING_OR_UNEQUIPPING, ref(src))
+
+	if(!HAS_TRAIT(L, TRAIT_EQUIPPING_OR_UNEQUIPPING))
+		L.remove_movespeed_modifier(/datum/movespeed_modifier/equipping)

@@ -36,8 +36,6 @@
 			limb_owner.bleed(rand(20, 40))
 		stump = create_stump()
 
-	limb_owner.mind?.add_memory(MEMORY_DISMEMBERED, list(DETAIL_LOST_LIMB = src, DETAIL_PROTAGONIST = limb_owner), story_value = STORY_VALUE_AMAZING)
-
 	// At this point the limb has been removed from it's parent mob.
 	limb_owner.apply_pain(60, body_zone, "OH GOD MY [uppertext(plaintext_zone)]!!!", TRUE)
 	drop_limb()

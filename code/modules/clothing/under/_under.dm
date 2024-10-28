@@ -15,6 +15,7 @@
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 
+	equip_self_flags = NONE
 	equip_delay_self = EQUIP_DELAY_UNDERSUIT
 	equip_delay_other = EQUIP_DELAY_UNDERSUIT * 1.5
 	strip_delay = EQUIP_DELAY_UNDERSUIT * 1.5

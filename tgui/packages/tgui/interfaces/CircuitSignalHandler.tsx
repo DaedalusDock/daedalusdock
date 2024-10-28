@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, KeyboardEvent } from 'react';
 
 import { useBackend } from '../backend';
 import { Box, Button, Dropdown, Input, Section, Stack } from '../components';
@@ -93,7 +93,7 @@ export class CircuitSignalHandler extends Component<
                             responseList.splice(index, 1);
                             this.setState({ parameterList });
                           }}
-                          onEnter={(e, value) => {
+                          onChange={(e, value) => {
                             const param = responseList[index];
                             param.name = value;
                             this.setState({ parameterList });
@@ -142,7 +142,7 @@ export class CircuitSignalHandler extends Component<
                             param.datatype = type;
                             this.setState({ parameterList });
                           }}
-                          onEnter={(e, value) => {
+                          onChange={(e, value) => {
                             const param = parameterList[index];
                             param.name = value;
                             this.setState({ parameterList });
@@ -194,7 +194,7 @@ export class CircuitSignalHandler extends Component<
 type EntryProps = {
   current_option: string;
   name: string;
-  onEnter: (e: MouseEvent, value: string) => any;
+  onChange: (e: KeyboardEvent<HTMLInputElement>, value: string) => any;
   onRemove: (e: MouseEvent) => any;
   onSetOption?: (type: string) => any;
   options?: string[];
@@ -203,7 +203,7 @@ type EntryProps = {
 const Entry = (props: EntryProps) => {
   const {
     onRemove,
-    onEnter,
+    onChange,
     onSetOption,
     name,
     current_option,
@@ -215,7 +215,7 @@ const Entry = (props: EntryProps) => {
     <Stack.Item {...rest}>
       <Stack>
         <Stack.Item grow>
-          <Input placeholder="Name" value={name} onChange={onEnter} fluid />
+          <Input placeholder="Name" value={name} onChange={onChange} fluid />
         </Stack.Item>
         <Stack.Item>
           {(options.length && (

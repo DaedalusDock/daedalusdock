@@ -24,12 +24,6 @@
 	C.adjust_nutrition(nutriment_factor * removed)
 	return ..()
 
-/datum/reagent/consumable/on_mob_metabolize(mob/living/carbon/C, class)
-	if(!(class == CHEM_INGEST) || HAS_TRAIT(C, TRAIT_AGEUSIA))
-		return
-	if(quality >= DRINK_FANTASTIC)
-		C.mind?.add_memory(MEMORY_DRINK, list(DETAIL_DRINK = src), story_value = STORY_VALUE_OKAY)
-
 /datum/reagent/consumable/nutriment
 	name = "Nutriment"
 	description = "All the vitamins, minerals, and carbohydrates the body needs in pure forC."

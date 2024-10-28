@@ -1,8 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - tweak: Adjusted base movement speed values
-  - rscadd: You now move significantly slower while undergoing cardiac arrest
-  - rscadd: You are now slowed down while holding someone at gunpoint.
-  - rscadd: You are now slowed down while drowsy.
-  - rscadd: You will drop items you're holding in a broken or dislocated arm.

@@ -1,6 +1,0 @@
-author: Bimmers
-delete-after: true
-changes:
-  - rscadd: Added a new wall sprite
-  - tweak: Adjusted Theseus
-  - code_imp: Updated how spawning is handled

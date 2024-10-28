@@ -1,9 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - bugfix: Magic Mirrors no longer require you to change your hair before anything
-      else.
-  - rscadd: White gloves are available in the loadout, and can be recolored to match
-      your style.
-  - bugfix: Examining playing cards in your hand will no longer spill the beans to
-      those around you.

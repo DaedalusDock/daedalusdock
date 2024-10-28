@@ -28,3 +28,11 @@
   - qol: The stun duration of electrocution scales with damage.
   - qol: Galoshes now have a siemens coeff of 0.
   - balance: Removed the secondary stun from electrocution.
+2024-10-28:
+  francinum:
+  - bugfix: Magic Mirrors no longer require you to change your hair before anything
+      else.
+  - rscadd: White gloves are available in the loadout, and can be recolored to match
+      your style.
+  - bugfix: Examining playing cards in your hand will no longer spill the beans to
+      those around you.

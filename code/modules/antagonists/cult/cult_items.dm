@@ -285,7 +285,7 @@ Striking a noncultist, however, will tear their flesh."}
 /datum/action/innate/cult/spin2win/proc/stop_spinning()
 	sword.spinning = FALSE
 	sword.block_chance = 50
-	sword.block_chance = 45
+	sword.block_angle = 45
 	sword.slowdown -= 1.5
 	sleep(sword.spin_cooldown)
 	holder?.update_mob_action_buttons()

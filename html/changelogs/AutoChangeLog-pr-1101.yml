@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscdel: Memories and prison tattoos
+  - rscadd: Custom and automatically populated notes, use the Notes verb!

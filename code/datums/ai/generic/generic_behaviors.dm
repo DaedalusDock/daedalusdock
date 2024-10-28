@@ -157,7 +157,7 @@
 	if(QDELETED(target))
 		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
-	if(!(target in living_pawn.held_items))
+	if(!(living_pawn.is_holding(target)))
 		if(!living_pawn.put_in_hands(target))
 			return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
@@ -255,7 +255,6 @@
 /datum/ai_behavior/drop_item
 
 /datum/ai_behavior/drop_item/perform(delta_time, datum/ai_controller/controller)
-	. = ..()
 	var/mob/living/living_pawn = controller.pawn
 	var/obj/item/best_held = GetBestWeapon(controller, null, living_pawn.held_items)
 	for(var/obj/item/held as anything in living_pawn.held_items)
@@ -263,7 +262,7 @@
 			continue
 		living_pawn.dropItemToGround(held)
 
-	return BEHAVIOR_PERFORM_COOLDOWN
+	return BEHAVIOR_PERFORM_SUCCESS
 
 /// This behavior involves attacking a target.
 /datum/ai_behavior/attack

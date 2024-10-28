@@ -113,7 +113,7 @@
 //#define FORCE_CODEX_DATABASE 1
 
 /// Enable DEBUG_AI_LOG
-#define DEBUG_AI
+// #define DEBUG_AI
 
 /////////////////////// REFERENCE TRACKING
 
@@ -270,4 +270,8 @@
 
 #ifdef LOWMEMORYMODE
 #warn LOWMEMORYMODE is enabled!
+#endif
+
+#ifdef DEBUG_AI
+#warn DEBUG_AI is enabled!
 #endif

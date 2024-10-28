@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Added directionality to blocking attacks. Currently, all items that can
+      block are able to block only directly infront of you.
+  - bugfix: Fixed multiple bugs with blocking.

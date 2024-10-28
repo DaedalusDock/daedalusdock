@@ -7,6 +7,10 @@
 	equip_delay_other = 40
 	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_VOX_VARIATION
 
+	equip_delay_self = EQUIP_DELAY_MASK
+	equip_delay_other = EQUIP_DELAY_MASK * 1.5
+	strip_delay = EQUIP_DELAY_MASK * 1.5
+
 	var/modifies_speech = FALSE
 	var/mask_adjusted = FALSE
 	var/adjusted_flags = null

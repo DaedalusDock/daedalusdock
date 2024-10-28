@@ -1,0 +1,6 @@
+author: jlsnow301, san7890, SyncIt, Kashargul
+delete-after: true
+changes:
+  - bugfix: Fixed tgui text input being essentially unusable.
+  - bugfix: Fixed the Age TGUI input not allowing for values that arent the min or
+      max age.

@@ -447,6 +447,9 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 */
 #define TRAIT_DONUT_LOVER "donut_lover"
 
+/// Equipping or unequipping an item
+#define TRAIT_EQUIPPING_OR_UNEQUIPPING "equipping_or_unequipping"
+
 /// `do_teleport` will not allow this atom to teleport
 #define TRAIT_NO_TELEPORT "no-teleport"
 

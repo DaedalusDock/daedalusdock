@@ -85,7 +85,7 @@
 		return null
 
 /obj/proc/updateUsrDialog()
-	if((obj_flags & IN_USE) && !(obj_flags & USES_TGUI))
+	if((obj_flags & IN_USE))
 		var/is_in_use = FALSE
 		var/list/nearby = viewers(1, src)
 		for(var/mob/M in nearby)

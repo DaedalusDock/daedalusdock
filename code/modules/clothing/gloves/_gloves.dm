@@ -12,6 +12,7 @@
 	attack_verb_continuous = list("challenges")
 	attack_verb_simple = list("challenge")
 
+	equip_delay_self = EQUIP_ALLOW_MOVEMENT
 	equip_delay_self = EQUIP_DELAY_GLOVES
 	equip_delay_other = EQUIP_DELAY_GLOVES + (3 SECONDS)
 	strip_delay = EQUIP_DELAY_GLOVES + (3 SECONDS)

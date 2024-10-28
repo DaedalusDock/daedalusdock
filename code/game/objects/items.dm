@@ -726,6 +726,9 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /// Checks if this item can block an incoming attack.
 /obj/item/proc/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
+	if(wielder.body_position == LYING_DOWN)
+		return TRUE
+
 	var/angle = get_relative_attack_angle(wielder, hitby)
 	if(angle <= block_angle)
 		return TRUE

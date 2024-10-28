@@ -28,12 +28,9 @@
 	max_integrity = 75
 
 
-/obj/item/shield/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
+/obj/item/shield/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(transparent && (hitby.pass_flags & PASSGLASS))
 		return FALSE
-	return ..()
-
-/obj/item/shield/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	. = ..()
 	if(attack_type == THROWN_PROJECTILE_ATTACK)
 		. += 30
@@ -272,10 +269,10 @@
 		attack_verb_simple_on = list("smack", "strike", "crack", "beat"))
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
-/obj/item/shield/riot/tele/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
-	if(!extended)
-		return FALSE
-	return ..()
+/obj/item/shield/riot/tele/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+	if(extended)
+		return ..()
+	return FALSE
 
 /*
  * Signal proc for [COMSIG_TRANSFORMING_ON_TRANSFORM].

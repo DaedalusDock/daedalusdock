@@ -780,7 +780,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 
 /obj/item/highfrequencyblade/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if((attack_type == PROJECTILE_ATTACK) && wielded)
-		return 100
+		return TRUE
 
 	. = ..()
 

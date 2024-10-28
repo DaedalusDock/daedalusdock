@@ -214,10 +214,10 @@
 /obj/item/grenade/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	var/obj/projectile/hit_projectile = hitby
 	if(!istype(hitby))
-		return 0
+		return FALSE
 
 	if(damage && attack_type == PROJECTILE_ATTACK && hit_projectile.damage_type != STAMINA && prob(15))
-		return 100
+		return TRUE
 
 /obj/item/grenade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK, block_success = TRUE)
 	. = ..()

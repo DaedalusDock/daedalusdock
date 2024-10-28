@@ -248,7 +248,7 @@
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	menu_description = "A sharp claymore which provides a low chance of blocking incoming melee attacks. Can be worn on the back or belt."
 
-/obj/item/nullrod/claymore/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
+/obj/item/nullrod/claymore/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(attack_type == PROJECTILE_ATTACK)
 		return FALSE
 	return ..()

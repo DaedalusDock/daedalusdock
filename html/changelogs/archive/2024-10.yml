@@ -36,3 +36,17 @@
       your style.
   - bugfix: Examining playing cards in your hand will no longer spill the beans to
       those around you.
+2024-10-29:
+  Kapu1178:
+  - rscdel: Memories and prison tattoos
+  - rscadd: Custom and automatically populated notes, use the Notes verb!
+  - tweak: Blocking is no longer directional while prone.
+  - bugfix: Monkeys will now eat food again, and not get stuck until something punches
+      them in the face.
+  - rscadd: Added directionality to blocking attacks. Currently, all items that can
+      block are able to block only directly infront of you.
+  - bugfix: Fixed multiple bugs with blocking.
+  jlsnow301, san7890, SyncIt, Kashargul:
+  - bugfix: Fixed tgui text input being essentially unusable.
+  - bugfix: Fixed the Age TGUI input not allowing for values that arent the min or
+      max age.

@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Monkeys will now eat food again, and not get stuck until something punches
-      them in the face.

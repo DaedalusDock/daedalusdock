@@ -1,23 +1,29 @@
 /// Returns an angle between 0 and 180, where 0 is the attacker is directly infront of the defender, 180 for directly behind.
 /proc/get_relative_attack_angle(mob/living/carbon/human/defender, atom/movable/hitby)
-	var/attack_dir = defender.dir // Default to the defender's dir so that the attack angle is 0 by default
+	/// Null is the value that will consider angles to match the defender's dir
+	var/attack_angle = null
+
 	var/turf/defender_turf = get_turf(defender)
+	var/turf/attack_turf = get_turf(hitby)
+	var/attack_dir = get_dir(defender_turf, attack_turf)
 
 	if(isprojectile(hitby))
 		var/obj/projectile/P = hitby
 		if(P.starting != defender_turf)
-			attack_dir = REVERSE_DIR(angle2dir(P.Angle))
+			attack_angle = REVERSE_ANGLE(P.Angle)
 
 	else if(isitem(hitby))
 		if(ismob(hitby.loc))
-			attack_dir = get_dir(defender, hitby.loc)
+			attack_angle = dir2angle(get_dir(defender, get_turf(hitby.loc)))
 		else
-			attack_dir = get_dir(defender, hitby)
+			attack_angle = dir2angle(attack_dir)
 
 	else
-		attack_dir = get_dir(defender, hitby)
+		attack_angle = dir2angle(attack_dir)
 
-	var/attack_angle = dir2angle(attack_dir) || 0 // If attack_dir == 0, dir2angle returns null
+	if(attack_angle == null)
+		return 0
+
 	var/facing_angle = dir2angle(defender.dir) || 0
 	var/delta = abs(attack_angle - facing_angle)
 	if(delta > 180)

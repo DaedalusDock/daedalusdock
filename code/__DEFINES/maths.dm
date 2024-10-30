@@ -123,6 +123,9 @@
 /// Gets shift x that would be required the bitflag (1<<x)
 #define TOBITSHIFT(bit) (round(log(2, bit), 1))
 
+/// Reverse an angle. 45 -> 225, 0 -> 180, etc
+#define REVERSE_ANGLE(angle) (floor((angle) + 180) % 360)
+
 // Will filter out extra rotations and negative rotations
 // E.g: 540 becomes 180. -180 becomes 180.
 #define SIMPLIFY_DEGREES(degrees) (MODULUS((degrees), 360))

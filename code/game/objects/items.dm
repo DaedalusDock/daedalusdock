@@ -706,8 +706,13 @@ DEFINE_INTERACTABLE(/obj/item)
 	var/sig_return = SEND_SIGNAL(src, COMSIG_ITEM_CHECK_BLOCK)
 	var/block_result = sig_return & COMPONENT_CHECK_BLOCK_BLOCKED
 
+	var/attack_armor_pen = 0
+	if(isitem(hitby))
+		var/obj/item/hitby_item = hitby
+		attack_armor_pen = hitby_item.armor_penetration
+
 	if(!block_result && can_block_attack(wielder, hitby, attack_type))
-		block_result = prob(get_block_chance(wielder, hitby, damage, attack_type, armor_penetration))
+		block_result = prob(get_block_chance(wielder, hitby, damage, attack_type, attack_armor_pen))
 
 	var/list/reaction_args = args.Copy()
 	if(block_result)

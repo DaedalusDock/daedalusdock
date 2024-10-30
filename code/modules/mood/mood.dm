@@ -40,17 +40,10 @@
 	mob_parent = mob_to_make_moody
 
 	RegisterSignal(mob_to_make_moody, COMSIG_MOB_HUD_CREATED, PROC_REF(modify_hud))
-	RegisterSignal(mob_to_make_moody, COMSIG_ENTER_AREA, PROC_REF(check_area_mood))
-	RegisterSignal(mob_to_make_moody, COMSIG_EXIT_AREA, PROC_REF(exit_area))
 	RegisterSignal(mob_to_make_moody, COMSIG_LIVING_REVIVE, PROC_REF(on_revive))
 	RegisterSignal(mob_to_make_moody, COMSIG_MOB_STATCHANGE, PROC_REF(handle_mob_death))
 	RegisterSignal(mob_to_make_moody, COMSIG_PARENT_QDELETING, PROC_REF(clear_parent_ref))
 
-	var/area/our_area = get_area(mob_to_make_moody)
-	if(our_area)
-		check_area_mood(mob_to_make_moody, our_area)
-
-	mob_to_make_moody.become_area_sensitive(MOOD_DATUM_TRAIT)
 	if(mob_to_make_moody.hud_used)
 		modify_hud()
 		var/datum/hud/hud = mob_to_make_moody.hud_used
@@ -60,27 +53,12 @@
 	SIGNAL_HANDLER
 
 	unmodify_hud()
-	mob_parent.lose_area_sensitivity(MOOD_DATUM_TRAIT)
-	UnregisterSignal(mob_parent, list(COMSIG_MOB_HUD_CREATED, COMSIG_ENTER_AREA, COMSIG_EXIT_AREA, COMSIG_LIVING_REVIVE, COMSIG_MOB_STATCHANGE, COMSIG_QDELETING))
-	var/area/our_area = get_area(mob_parent)
-	if(our_area)
-		UnregisterSignal(our_area, COMSIG_AREA_BEAUTY_UPDATED)
-
-	mob_parent = null
+	UnregisterSignal(mob_parent, list(COMSIG_MOB_HUD_CREATED, COMSIG_ENTER_AREA, COMSIG_EXIT_AREA, COMSIG_LIVING_REVIVE, COMSIG_MOB_STATCHANGE, COMSIG_PARENT_QDELETING))
 
 /datum/mood/Destroy(force)
 	STOP_PROCESSING(SSmood, src)
 	QDEL_LIST_ASSOC_VAL(mood_events)
 	return ..()
-
-/datum/mood/process(seconds_per_tick)
-	// 0.416% is 15 successes / 3600 seconds. Calculated with 2 minute
-	// mood runtime, so 50% average uptime across the hour.
-	if(HAS_TRAIT(mob_parent, TRAIT_DEPRESSION) && SPT_PROB(0.416, seconds_per_tick))
-		add_mood_event("depression", /datum/mood_event/depression)
-
-	if(HAS_TRAIT(mob_parent, TRAIT_JOLLY) && SPT_PROB(0.416, seconds_per_tick))
-		add_mood_event("jolly", /datum/mood_event/jolly)
 
 /datum/mood/proc/handle_mob_death(datum/source)
 	SIGNAL_HANDLER
@@ -93,27 +71,27 @@
 
 /// Handles mood given by nutrition
 /datum/mood/proc/update_nutrition_moodlets()
-	if(HAS_TRAIT(mob_parent, TRAIT_NOHUNGER))
-		clear_mood_event(MOOD_CATEGORY_NUTRITION)
-		return FALSE
+	// if(HAS_TRAIT(mob_parent, TRAIT_NOHUNGER))
+	// 	clear_mood_event(MOOD_CATEGORY_NUTRITION)
+	// 	return FALSE
 
-	if(HAS_TRAIT(mob_parent, TRAIT_FAT) && !HAS_TRAIT(mob_parent, TRAIT_VORACIOUS))
-		add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/fat)
-		return TRUE
+	// if(HAS_TRAIT(mob_parent, TRAIT_FAT))
+	// 	add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/fat)
+	// 	return TRUE
 
-	switch(mob_parent.nutrition)
-		if(NUTRITION_LEVEL_FULL to INFINITY)
-			add_mood_event(MOOD_CATEGORY_NUTRITION, HAS_TRAIT(mob_parent, TRAIT_VORACIOUS) ? /datum/mood_event/wellfed : /datum/mood_event/too_wellfed)
-		if(NUTRITION_LEVEL_WELL_FED to NUTRITION_LEVEL_FULL)
-			add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/wellfed)
-		if( NUTRITION_LEVEL_FED to NUTRITION_LEVEL_WELL_FED)
-			add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/fed)
-		if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_FED)
-			clear_mood_event(MOOD_CATEGORY_NUTRITION)
-		if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_HUNGRY)
-			add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/hungry)
-		if(0 to NUTRITION_LEVEL_STARVING)
-			add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/starving)
+	// switch(mob_parent.nutrition)
+	// 	if(NUTRITION_LEVEL_FULL to INFINITY)
+	// 		add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/too_wellfed)
+	// 	if(NUTRITION_LEVEL_WELL_FED to NUTRITION_LEVEL_FULL)
+	// 		add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/wellfed)
+	// 	if( NUTRITION_LEVEL_FED to NUTRITION_LEVEL_WELL_FED)
+	// 		add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/fed)
+	// 	if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_FED)
+	// 		clear_mood_event(MOOD_CATEGORY_NUTRITION)
+	// 	if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_HUNGRY)
+	// 		add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/hungry)
+	// 	if(0 to NUTRITION_LEVEL_STARVING)
+	// 		add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/starving)
 
 	return TRUE
 
@@ -207,23 +185,31 @@
 	var/old_mood_level = mood_level
 
 	switch(mood)
-		if (-INFINITY to MOOD_SAD4)
+		if (-INFINITY to MOOD_LEVEL_SAD4)
 			mood_level = MOOD_LEVEL_SAD4
-		if (MOOD_SAD4 to MOOD_SAD3)
+
+		if (MOOD_LEVEL_SAD4+1 to MOOD_LEVEL_SAD3)
 			mood_level = MOOD_LEVEL_SAD3
-		if (MOOD_SAD3 to MOOD_SAD2)
+
+		if (MOOD_LEVEL_SAD3+1 to MOOD_LEVEL_SAD2)
 			mood_level = MOOD_LEVEL_SAD2
-		if (MOOD_SAD2 to MOOD_SAD1)
+
+		if (MOOD_LEVEL_SAD2+1 to MOOD_LEVEL_SAD1)
 			mood_level = MOOD_LEVEL_SAD1
-		if (MOOD_SAD1 to MOOD_HAPPY1)
+
+		if (MOOD_LEVEL_SAD1+1 to MOOD_LEVEL_HAPPY1-1)
 			mood_level = MOOD_LEVEL_NEUTRAL
-		if (MOOD_HAPPY1 to MOOD_HAPPY2)
+
+		if (MOOD_LEVEL_HAPPY1 to MOOD_LEVEL_HAPPY2-1)
 			mood_level = MOOD_LEVEL_HAPPY1
-		if (MOOD_HAPPY2 to MOOD_HAPPY3)
+
+		if (MOOD_LEVEL_HAPPY2 to MOOD_LEVEL_HAPPY3-1)
 			mood_level = MOOD_LEVEL_HAPPY2
-		if (MOOD_HAPPY3 to MOOD_HAPPY4)
+
+		if (MOOD_LEVEL_HAPPY3 to MOOD_LEVEL_HAPPY4-1)
 			mood_level = MOOD_LEVEL_HAPPY3
-		if (MOOD_HAPPY4 to INFINITY)
+
+		if (MOOD_LEVEL_HAPPY4 to INFINITY)
 			mood_level = MOOD_LEVEL_HAPPY4
 
 	if(mood_level > old_mood_level)
@@ -272,8 +258,8 @@
 	mood_screen_object = new
 	mood_screen_object.color = "#4b96c4"
 	hud.infodisplay += mood_screen_object
-	RegisterSignal(hud, COMSIG_QDELETING, PROC_REF(unmodify_hud))
-	RegisterSignal(mood_screen_object, COMSIG_SCREEN_ELEMENT_CLICK, PROC_REF(hud_click))
+	RegisterSignal(hud, COMSIG_PARENT_QDELETING, PROC_REF(unmodify_hud))
+	RegisterSignal(mood_screen_object, COMSIG_CLICK, PROC_REF(hud_click))
 
 /// Removes the mood HUD object
 /datum/mood/proc/unmodify_hud(datum/source)
@@ -315,17 +301,15 @@
 		for(var/category in mood_events)
 			var/datum/mood_event/event = mood_events[category]
 			switch(event.mood_change)
-				if(-INFINITY to MOOD_SAD2)
+				if(-INFINITY to MOOD_LEVEL_SAD2)
 					msg += span_boldwarning(event.description + "\n")
-				if(MOOD_SAD2 to MOOD_SAD1)
+				if(MOOD_LEVEL_SAD2+1 to MOOD_LEVEL_SAD1)
 					msg += span_warning(event.description + "\n")
-				if(MOOD_SAD1 to MOOD_NEUTRAL)
+				if(MOOD_LEVEL_SAD1+1 to MOOD_LEVEL_HAPPY1-1)
 					msg += span_grey(event.description + "\n")
-				if(MOOD_NEUTRAL to MOOD_HAPPY1)
+				if(MOOD_LEVEL_HAPPY1 to MOOD_LEVEL_HAPPY2-1)
 					msg += span_info(event.description + "\n")
-				if(MOOD_HAPPY1 to MOOD_HAPPY2)
-					msg += span_nicegreen(event.description + "\n")
-				if(MOOD_HAPPY2 to INFINITY)
+				if(MOOD_LEVEL_HAPPY2 to INFINITY)
 					msg += span_boldnicegreen(event.description + "\n")
 	else
 		msg += "[span_grey("I feel indifferent.")]\n"

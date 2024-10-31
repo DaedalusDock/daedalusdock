@@ -1,8 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: The majority of items now have equip and unequip delays.
-  - rscadd: Unequipping someone else's shoes takes much longer if they are standing
-      up.
-  - code_imp: Added support for unequip delays, does not cover all cases, will be
-      buggy.

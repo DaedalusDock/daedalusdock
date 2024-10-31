@@ -113,7 +113,7 @@
 //#define FORCE_CODEX_DATABASE 1
 
 /// Enable DEBUG_AI_LOG
-#define DEBUG_AI
+// #define DEBUG_AI
 
 /////////////////////// REFERENCE TRACKING
 
@@ -165,7 +165,7 @@
 /////////////////////// MISC PERFORMANCE
 
 //uncomment this to load centcom and runtime station and thats it.
-#define LOWMEMORYMODE
+// #define LOWMEMORYMODE
 
 //uncomment to enable the spatial grid debug proc.
 // #define SPATIAL_GRID_ZLEVEL_STATS
@@ -268,3 +268,10 @@
 #define GC_FAILURE_HARD_LOOKUP
 #endif
 
+#ifdef LOWMEMORYMODE
+#warn LOWMEMORYMODE is enabled!
+#endif
+
+#ifdef DEBUG_AI
+#warn DEBUG_AI is enabled!
+#endif

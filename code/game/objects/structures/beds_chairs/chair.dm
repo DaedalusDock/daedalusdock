@@ -368,7 +368,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 /obj/item/chair/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	. = ..()
 	if(prob(50) && ((attack_type == UNARMED_ATTACK) || (attack_type == LEAP_ATTACK)))
-		return TRUE
+		return 100
 
 /obj/item/chair/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
 	if(do_message)

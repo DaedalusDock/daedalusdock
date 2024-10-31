@@ -320,7 +320,7 @@
 
 /datum/flock/proc/add_notice(atom/target, notice_type)
 	var/image/I = image(notice_images[notice_type], loc = target)
-	return target.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/flock, notice_type, I, null, src)
+	return target.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/flock, notice_type, I, NONE, src)
 
 /datum/flock/proc/remove_notice(atom/target, notice_type)
 	target.remove_alt_appearance(notice_type)

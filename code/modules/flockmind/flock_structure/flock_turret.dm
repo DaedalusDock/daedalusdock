@@ -11,6 +11,7 @@
 	active_compute_cost = 50
 
 	var/range = 8
+	var/projectile_count = 4
 	var/projectile_type = /obj/projectile/bullet/dart/piercing/gnesis
 
 	var/mob/current_target
@@ -54,7 +55,7 @@
 
 	fire()
 
-/obj/structure/flock/gnesis_turret/proc/fire(bullets = 4)
+/obj/structure/flock/gnesis_turret/proc/fire(bullets = src.projectile_count)
 	if(isnull(current_target))
 		return
 

@@ -64,13 +64,7 @@
 
 /datum/action/changeling/absorb_dna/proc/absorb_memories(mob/living/carbon/human/target)
 	var/datum/mind/suckedbrain = target.mind
-
 	var/datum/antagonist/changeling/changeling = owner.mind.has_antag_datum(/datum/antagonist/changeling)
-
-	for(var/memory_type in suckedbrain.memories)
-		var/datum/memory/stolen_memory = suckedbrain.memories[memory_type]
-		changeling.stolen_memories[stolen_memory.name] = stolen_memory.generate_story(STORY_CHANGELING_ABSORB)
-	suckedbrain.wipe_memory()
 
 	for(var/datum/antagonist/antagonist_datum as anything in suckedbrain.antag_datums)
 		var/list/all_objectives = antagonist_datum.objectives.Copy()

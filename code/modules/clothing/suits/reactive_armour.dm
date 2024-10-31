@@ -67,7 +67,7 @@
 	update_icon()
 	add_fingerprint(user)
 
-/obj/item/clothing/suit/armor/reactive/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+/obj/item/clothing/suit/armor/reactive/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
 	if(!active)
 		return FALSE
 

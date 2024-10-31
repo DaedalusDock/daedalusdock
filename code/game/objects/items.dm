@@ -158,6 +158,8 @@ DEFINE_INTERACTABLE(/obj/item)
 	var/weak_against_armor = null
 	///What objects the suit storage can store
 	var/list/allowed = null
+	/// Flags for equipping/unequipping items, only applies to self manipulation.
+	var/equip_self_flags = EQUIP_ALLOW_MOVEMENT | EQUIP_SLOWDOWN
 	///In deciseconds, how long an item takes to equip; counts only for normal clothing slots, not pockets etc.
 	var/equip_delay_self = 0
 	///In deciseconds, how long an item takes to put on another person
@@ -237,6 +239,9 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	/// The baseline chance to block **ANY** attack, projectiles included
 	var/block_chance = 0
+	/// The angle infront of the defender that is a valid block range.
+	var/block_angle = 45 // Infront and infront + sides, but not direct sides
+
 	/// The type of effect to create on a successful block
 	var/obj/effect/temp_visual/block_effect = /obj/effect/temp_visual/block
 
@@ -701,7 +706,13 @@ DEFINE_INTERACTABLE(/obj/item)
 	var/sig_return = SEND_SIGNAL(src, COMSIG_ITEM_CHECK_BLOCK)
 	var/block_result = sig_return & COMPONENT_CHECK_BLOCK_BLOCKED
 
-	block_result ||= prob(get_block_chance(wielder, hitby, damage, attack_type, armor_penetration))
+	var/attack_armor_pen = 0
+	if(isitem(hitby))
+		var/obj/item/hitby_item = hitby
+		attack_armor_pen = hitby_item.armor_penetration
+
+	if(!block_result && can_block_attack(wielder, hitby, attack_type))
+		block_result = prob(get_block_chance(wielder, hitby, damage, attack_type, attack_armor_pen))
 
 	var/list/reaction_args = args.Copy()
 	if(block_result)
@@ -717,6 +728,17 @@ DEFINE_INTERACTABLE(/obj/item)
 		block_feedback(wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
 
 	return block_result
+
+/// Checks if this item can block an incoming attack.
+/obj/item/proc/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
+	if(wielder.body_position == LYING_DOWN)
+		return TRUE
+
+	var/angle = get_relative_attack_angle(wielder, hitby)
+	if(angle <= block_angle)
+		return TRUE
+
+	return FALSE
 
 /// Returns a number to feed into prob() to determine if the attack was blocked.
 /obj/item/proc/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)

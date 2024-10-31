@@ -77,7 +77,7 @@
 /// Use the currently held item, or unarmed, on a weakref to an object in the world
 /datum/ai_behavior/use_on_object
 	required_distance = 1
-	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT
+	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT | AI_BEHAVIOR_REQUIRE_REACH
 
 /datum/ai_behavior/use_on_object/setup(datum/ai_controller/controller, target_key)
 	. = ..()
@@ -105,7 +105,7 @@
 
 /datum/ai_behavior/give
 	required_distance = 1
-	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT
+	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT | AI_BEHAVIOR_REQUIRE_REACH
 
 
 /datum/ai_behavior/give/setup(datum/ai_controller/controller, target_key)
@@ -142,7 +142,7 @@
 
 /datum/ai_behavior/consume
 	required_distance = 1
-	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT
+	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT | AI_BEHAVIOR_REQUIRE_REACH
 	action_cooldown = 2 SECONDS
 
 /datum/ai_behavior/consume/setup(datum/ai_controller/controller, target_key)
@@ -157,7 +157,7 @@
 	if(QDELETED(target))
 		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
-	if(!(target in living_pawn.held_items))
+	if(!(living_pawn.is_holding(target)))
 		if(!living_pawn.put_in_hands(target))
 			return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
@@ -255,7 +255,6 @@
 /datum/ai_behavior/drop_item
 
 /datum/ai_behavior/drop_item/perform(delta_time, datum/ai_controller/controller)
-	. = ..()
 	var/mob/living/living_pawn = controller.pawn
 	var/obj/item/best_held = GetBestWeapon(controller, null, living_pawn.held_items)
 	for(var/obj/item/held as anything in living_pawn.held_items)
@@ -263,11 +262,11 @@
 			continue
 		living_pawn.dropItemToGround(held)
 
-	return BEHAVIOR_PERFORM_COOLDOWN
+	return BEHAVIOR_PERFORM_SUCCESS
 
 /// This behavior involves attacking a target.
 /datum/ai_behavior/attack
-	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT | AI_BEHAVIOR_MOVE_AND_PERFORM
+	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT | AI_BEHAVIOR_MOVE_AND_PERFORM | AI_BEHAVIOR_REQUIRE_REACH
 	required_distance = 1
 
 /datum/ai_behavior/attack/perform(delta_time, datum/ai_controller/controller)

@@ -20,3 +20,7 @@
 /datum/loadout_item/gloves/diamondring
 	path = /obj/item/clothing/gloves/ring/diamond
 	cost = 4
+
+/datum/loadout_item/gloves/white
+	path = /obj/item/clothing/gloves/color/white
+	customization_flags = CUSTOMIZE_NAME_DESC_COLOR

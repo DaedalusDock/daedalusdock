@@ -1,24 +1,24 @@
 //nutrition
 /datum/mood_event/fat
-	description = "<B>I'm so fat...</B>"
+	description = "<B>FATASS</B>"
 	mood_change = MOOD_LEVEL_SAD2
 
 /datum/mood_event/too_wellfed
-	description = "I've eaten too much."
+	description = "You have eaten too much."
 	mood_change = 0
 
 /datum/mood_event/wellfed
-	description = "I've eaten plenty."
+	description = "You are well fed."
 	mood_change = MOOD_LEVEL_HAPPY2
 
 /datum/mood_event/fed
-	description = "I have recently had some food."
+	description = "You have recently eaten."
 	mood_change = MOOD_LEVEL_HAPPY1
 
 /datum/mood_event/hungry
-	description = "I'm getting a bit hungry."
+	description = "You getting a rather hungry."
 	mood_change = MOOD_LEVEL_SAD1
 
 /datum/mood_event/starving
-	description = "I'm starving!"
+	description = "You are beginning to starve."
 	mood_change = MOOD_LEVEL_SAD2

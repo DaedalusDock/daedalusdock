@@ -50,3 +50,6 @@
   - bugfix: Fixed tgui text input being essentially unusable.
   - bugfix: Fixed the Age TGUI input not allowing for values that arent the min or
       max age.
+2024-10-31:
+  Kapu1178:
+  - bugfix: Fixed armor penetration not being factored into block chance.

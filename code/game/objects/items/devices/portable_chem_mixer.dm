@@ -133,14 +133,6 @@
 			return
 	return
 
-/obj/item/storage/portable_chem_mixer/MouseDrop(obj/over_object)
-	. = ..()
-	if(ismob(loc))
-		var/mob/M = loc
-		if(!M.incapacitated() && istype(over_object, /atom/movable/screen/inventory/hand))
-			var/atom/movable/screen/inventory/hand/H = over_object
-			M.putItemFromInventoryInHandIfPossible(src, H.held_index)
-
 /obj/item/storage/portable_chem_mixer/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

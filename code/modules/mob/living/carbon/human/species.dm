@@ -748,7 +748,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_NECK)
-			return TRUE
+			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_BACK)
 			return H.equip_delay_self_check(I, bypass_equip_delay_self)

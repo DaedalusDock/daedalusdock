@@ -19,7 +19,7 @@
 	if(proximity_check)
 		return proximity_check
 
-	if(!Adjacent(usr) || !over.Adjacent(usr) && !istype(over, /atom/movable/screen))
+	if(!istype(over, /atom/movable/screen) && (!Adjacent(usr) || !over.Adjacent(usr)))
 		return // should stop you from dragging through windows
 
 	over.MouseDroppedOn(src, usr, params2list(params))

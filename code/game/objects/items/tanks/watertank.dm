@@ -89,13 +89,6 @@
 	else
 		return ..()
 
-/obj/item/watertank/MouseDrop(obj/over_object)
-	var/mob/M = loc
-	if(istype(M) && istype(over_object, /atom/movable/screen/inventory/hand))
-		var/atom/movable/screen/inventory/hand/H = over_object
-		M.putItemFromInventoryInHandIfPossible(src, H.held_index)
-	return ..()
-
 /obj/item/watertank/attackby(obj/item/attacking_item, mob/user, params)
 	if(attacking_item == noz)
 		remove_noz()

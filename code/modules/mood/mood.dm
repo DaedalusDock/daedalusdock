@@ -35,8 +35,6 @@
 		qdel(src)
 		return
 
-	START_PROCESSING(SSmood, src)
-
 	mob_parent = mob_to_make_moody
 
 	RegisterSignal(mob_to_make_moody, COMSIG_MOB_HUD_CREATED, PROC_REF(modify_hud))
@@ -56,7 +54,6 @@
 	UnregisterSignal(mob_parent, list(COMSIG_MOB_HUD_CREATED, COMSIG_ENTER_AREA, COMSIG_EXIT_AREA, COMSIG_LIVING_REVIVE, COMSIG_MOB_STATCHANGE, COMSIG_PARENT_QDELETING))
 
 /datum/mood/Destroy(force)
-	STOP_PROCESSING(SSmood, src)
 	QDEL_LIST_ASSOC_VAL(mood_events)
 	return ..()
 
@@ -71,27 +68,27 @@
 
 /// Handles mood given by nutrition
 /datum/mood/proc/update_nutrition_moodlets()
-	// if(HAS_TRAIT(mob_parent, TRAIT_NOHUNGER))
-	// 	clear_mood_event(MOOD_CATEGORY_NUTRITION)
-	// 	return FALSE
+	if(HAS_TRAIT(mob_parent, TRAIT_NOHUNGER))
+		clear_mood_event(MOOD_CATEGORY_NUTRITION)
+		return FALSE
 
-	// if(HAS_TRAIT(mob_parent, TRAIT_FAT))
-	// 	add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/fat)
-	// 	return TRUE
+	if(HAS_TRAIT(mob_parent, TRAIT_FAT))
+		add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/fat)
+		return TRUE
 
-	// switch(mob_parent.nutrition)
-	// 	if(NUTRITION_LEVEL_FULL to INFINITY)
-	// 		add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/too_wellfed)
-	// 	if(NUTRITION_LEVEL_WELL_FED to NUTRITION_LEVEL_FULL)
-	// 		add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/wellfed)
-	// 	if( NUTRITION_LEVEL_FED to NUTRITION_LEVEL_WELL_FED)
-	// 		add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/fed)
-	// 	if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_FED)
-	// 		clear_mood_event(MOOD_CATEGORY_NUTRITION)
-	// 	if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_HUNGRY)
-	// 		add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/hungry)
-	// 	if(0 to NUTRITION_LEVEL_STARVING)
-	// 		add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/starving)
+	switch(mob_parent.nutrition)
+		if(NUTRITION_LEVEL_FULL to INFINITY)
+			add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/too_wellfed)
+		if(NUTRITION_LEVEL_WELL_FED to NUTRITION_LEVEL_FULL)
+			add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/wellfed)
+		if( NUTRITION_LEVEL_FED to NUTRITION_LEVEL_WELL_FED)
+			add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/fed)
+		if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_FED)
+			clear_mood_event(MOOD_CATEGORY_NUTRITION)
+		if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_HUNGRY)
+			add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/hungry)
+		if(0 to NUTRITION_LEVEL_STARVING)
+			add_mood_event(MOOD_CATEGORY_NUTRITION, /datum/mood_event/starving)
 
 	return TRUE
 
@@ -169,6 +166,9 @@
 	if(QDELETED(mob_parent)) //don't bother updating their mood if they're about to be salty anyway. (in other words, we're about to be destroyed too anyway.)
 		return
 
+	if(mob_parent.stat != CONSCIOUS)
+		return
+
 	mood = 0
 	shown_mood = 0
 
@@ -225,7 +225,25 @@
 		return
 
 	mood_screen_object.cut_overlays()
-	mood_screen_object.color = initial(mood_screen_object.color)
+
+	if(mob_parent.stat != CONSCIOUS)
+		mood_screen_object.color = "#4b96c4"
+		mood_screen_object.icon_state = "mood0"
+		return
+
+	switch(mood_level)
+		if (MOOD_LEVEL_HAPPY4)
+			mood_screen_object.color = "#2eeb9a"
+		if (MOOD_LEVEL_HAPPY1, MOOD_LEVEL_HAPPY2, MOOD_LEVEL_HAPPY3)
+			mood_screen_object.color = "#86d656"
+		if (MOOD_LEVEL_NEUTRAL)
+			mood_screen_object.color = "#4b96c4"
+		if (MOOD_LEVEL_SAD1)
+			mood_screen_object.color = "#dfa65b"
+		if (MOOD_LEVEL_SAD2, MOOD_LEVEL_SAD3)
+			mood_screen_object.color = "#f38943"
+		if (MOOD_LEVEL_SAD4)
+			mood_screen_object.color = "#f15d36"
 
 	// lets see if we have an special icons to show instead of the normal mood levels
 	var/list/conflicting_moodies = list()
@@ -255,8 +273,7 @@
 	SIGNAL_HANDLER
 
 	var/datum/hud/hud = mob_parent.hud_used
-	mood_screen_object = new
-	mood_screen_object.color = "#4b96c4"
+	mood_screen_object = new(null, hud)
 	hud.infodisplay += mood_screen_object
 	RegisterSignal(hud, COMSIG_PARENT_QDELETING, PROC_REF(unmodify_hud))
 	RegisterSignal(mood_screen_object, COMSIG_CLICK, PROC_REF(hud_click))
@@ -282,39 +299,41 @@
 
 /// Prints the users mood, sanity, and moodies to chat
 /datum/mood/proc/print_mood(mob/user)
-	var/msg = "[span_info("<EM>Current feelings:</EM>")]\n"
+	var/list/msg = list("[span_info("<EM>Current feelings:</EM>")]")
+
+	if(mob_parent.stat != CONSCIOUS)
+		msg += span_grey("I am asleep.")
+		to_chat(user, examine_block(jointext(msg, "<br>")))
+		return
 
 	switch(mood_level)
 		if(MOOD_LEVEL_SAD4)
-			msg += "[span_boldwarning("I wish I was dead.")]\n"
+			msg += span_alert("<b>I wish I was dead.</b>")
 		if(MOOD_LEVEL_SAD2, MOOD_LEVEL_SAD3)
-			msg += "[span_warning("I am stressed out.")]\n"
+			msg += span_alert("I am stressed out.")
 		if(MOOD_LEVEL_NEUTRAL)
-			msg += "[span_grey("I feel indifferent.")]\n"
+			msg += span_grey("I feel indifferent.")
 		if(MOOD_LEVEL_HAPPY2, MOOD_LEVEL_HAPPY3)
-			msg += "[span_nicegreen("Everything is going to be okay.")]\n"
+			msg += span_nicegreen("Everything is going to be okay.")
 		if(MOOD_LEVEL_HAPPY4)
-			msg += "[span_boldnicegreen("I am loving life!")]\n"
+			msg += span_boldnicegreen("I love life!")
 
-	msg += "[span_notice("Current feelings:")]\n"//All moodlets
 	if(mood_events.len)
 		for(var/category in mood_events)
 			var/datum/mood_event/event = mood_events[category]
 			switch(event.mood_change)
 				if(-INFINITY to MOOD_LEVEL_SAD2)
-					msg += span_boldwarning(event.description + "\n")
+					msg += span_alert("<b>[event.description]</b>")
 				if(MOOD_LEVEL_SAD2+1 to MOOD_LEVEL_SAD1)
-					msg += span_warning(event.description + "\n")
+					msg += span_alert(event.description)
 				if(MOOD_LEVEL_SAD1+1 to MOOD_LEVEL_HAPPY1-1)
-					msg += span_grey(event.description + "\n")
+					msg += span_grey(event.description)
 				if(MOOD_LEVEL_HAPPY1 to MOOD_LEVEL_HAPPY2-1)
-					msg += span_info(event.description + "\n")
+					msg += span_info(event.description)
 				if(MOOD_LEVEL_HAPPY2 to INFINITY)
-					msg += span_boldnicegreen(event.description + "\n")
-	else
-		msg += "[span_grey("I feel indifferent.")]\n"
+					msg += span_boldnicegreen(event.description)
 
-	to_chat(user, examine_block(msg))
+	to_chat(user, examine_block(jointext(msg, "\n")))
 
 /// Called when parent is ahealed.
 /datum/mood/proc/on_revive(datum/source, full_heal)

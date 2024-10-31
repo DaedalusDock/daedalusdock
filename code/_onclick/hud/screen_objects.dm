@@ -1053,3 +1053,4 @@
 	name = "mood"
 	icon_state = "mood5"
 	screen_loc = ui_mood
+	color = "#4b96c4"

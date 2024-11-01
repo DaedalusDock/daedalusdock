@@ -1,5 +1,4 @@
-author: Kapu1178
-delete-after: true
-changes:
+2024-11-01:
+  Kapu1178:
   - bugfix: Fixed unequip delay affecting Storage and Pockets.
   - bugfix: Fixed being able to bypass unequip delay by using click-drag.

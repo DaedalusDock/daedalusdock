@@ -530,6 +530,10 @@
 		if (!do_after(src, target, 3 SECONDS, DO_PUBLIC, extra_checks = CALLBACK(src, PROC_REF(can_perform_cpr), target)))
 			break
 
+		visible_message(
+			span_notice("[src] pushes down on [target.name]'s chest!"),
+		)
+
 		var/datum/roll_result/result = stat_roll(6, /datum/rpg_skill/skirmish)
 		switch(result.outcome)
 			if(CRIT_SUCCESS)
@@ -546,10 +550,6 @@
 				var/obj/item/bodypart/chest/chest = target.get_bodypart(BODY_ZONE_CHEST)
 				if(chest.break_bones(TRUE))
 					to_chat(src, result.create_tooltip("Your strength betrays you as you shatter [target.name]'s [chest.encased]."))
-
-		visible_message(
-			span_notice("[src] pushes down on [target.name]'s chest!"),
-		)
 
 		log_combat(src, target, "CPRed")
 

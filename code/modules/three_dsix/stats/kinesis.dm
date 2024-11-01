@@ -1,10 +1,11 @@
-/datum/rpg_stat/motorics
-	name = "Motorics"
+/datum/rpg_stat/kinesis
+	name = "kinesis"
 	desc = ""
 
 	value = STATS_BASELINE_VALUE
+	sound = 'sound/three_dsix/kinesis.ogg'
 
-/datum/rpg_stat/motorics/get(mob/living/user)
+/datum/rpg_stat/kinesis/get(mob/living/user)
 	. = ..()
 	if(!iscarbon(user))
 		return

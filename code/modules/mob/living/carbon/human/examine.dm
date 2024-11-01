@@ -374,11 +374,12 @@
 
 	var/possible_invisible_damage = getToxLoss() > 20 || getBrainLoss()
 
-	if((possible_invisible_damage || length(fucked_reasons) || visible_bodyparts >= 3))
+	if(!length(get_missing_limbs()) && (possible_invisible_damage || length(fucked_reasons) || visible_bodyparts >= 3))
 		var/datum/roll_result/result = living_user.stat_roll(15, /datum/rpg_skill/anatomia)
 		switch(result.outcome)
 			if(SUCCESS, CRIT_SUCCESS)
 				spawn(0)
+					result.do_skill_sound(living_user)
 					if(possible_invisible_damage && living_user.stats.cooldown_finished("found_invisible_damage_[REF(src)]"))
 						to_chat(living_user, result.create_tooltip("Something is not right, this person is not well. You can feel it in your very core."))
 						living_user.stats.set_cooldown("found_invisible_damage_[REF(src)]", INFINITY) // Never again

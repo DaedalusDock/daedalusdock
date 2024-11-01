@@ -1338,10 +1338,12 @@ DEFINE_INTERACTABLE(/obj/item)
 		var/datum/roll_result/result = user.stat_roll(7, /datum/rpg_skill/handicraft)
 		switch(result.outcome)
 			if(CRIT_SUCCESS)
-				to_chat(user, result.create_tooltip("A swift execution. A job well done. (Tool usage time reduced)"))
+				result.do_skill_sound(user)
+				to_chat(user, result.create_tooltip("A swift execution. A job well done."))
 				delay = delay * 0.25
 
-		user.stats.set_cooldown("use_tool", max(delay, 5 SECONDS))
+
+		user.stats.set_cooldown("use_tool", max(delay, 10 SECONDS))
 
 	// Play tool sound at the beginning of tool usage.
 	play_tool_sound(target, volume)

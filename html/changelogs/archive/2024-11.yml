@@ -2,3 +2,11 @@
   Kapu1178:
   - bugfix: Fixed unequip delay affecting Storage and Pockets.
   - bugfix: Fixed being able to bypass unequip delay by using click-drag.
+2024-11-02:
+  Kapu1178:
+  - bugfix: When attacking with an item, the defender's Skirmish skill is now accounted
+      for.
+  - bugfix: When attacking while unarmed, the defender's Skirmish skill is now accounted
+      for.
+  - bugfix: When shoving, the defender's Skirmish skill is now considered.
+  - balance: Reduced chance to disarm when shoving.

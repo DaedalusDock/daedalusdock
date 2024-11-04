@@ -748,7 +748,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_NECK)
-			return TRUE
+			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_BACK)
 			return H.equip_delay_self_check(I, bypass_equip_delay_self)
@@ -1050,7 +1050,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// Set damage and find hit bodypart using weighted rng
 	var/target_zone = deprecise_zone(user.zone_selected)
 	var/bodyzone_modifier = GLOB.bodyzone_gurps_mods[target_zone]
-	var/roll = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) ? user.stat_roll(10, /datum/rpg_skill/skirmish, bodyzone_modifier, -7).outcome : SUCCESS
+	var/roll = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) ? user.stat_roll(10, /datum/rpg_skill/skirmish, bodyzone_modifier, -7, target).outcome : SUCCESS
 	// If we succeeded, hit the target area.
 	var/attacking_zone = (roll >= SUCCESS) ? target_zone : target.get_random_valid_zone()
 	var/obj/item/bodypart/affecting

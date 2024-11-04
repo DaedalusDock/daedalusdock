@@ -346,7 +346,8 @@
 	if(item_index)
 		user.swapHeldIndexes(item_index, held_index)
 	else
-		user.putItemFromInventoryInHandIfPossible(dropping, held_index)
+		user.putItemFromInventoryInHandIfPossible(dropping, held_index, use_unequip_delay = TRUE)
+		I.add_fingerprint(user)
 	return TRUE
 
 /atom/movable/screen/close

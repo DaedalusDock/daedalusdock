@@ -304,12 +304,14 @@
 	for(var/obj/item/I in held_items)
 		. |= dropItemToGround(I)
 
-/mob/proc/putItemFromInventoryInHandIfPossible(obj/item/I, hand_index, force_removal = FALSE)
+/mob/proc/putItemFromInventoryInHandIfPossible(obj/item/I, hand_index, force_removal = FALSE, use_unequip_delay = FALSE)
 	if(!can_put_in_hand(I, hand_index))
 		return FALSE
-	if(!temporarilyRemoveItemFromInventory(I, force_removal))
+	if(!temporarilyRemoveItemFromInventory(I, force_removal, use_unequip_delay = use_unequip_delay))
 		return FALSE
+
 	I.remove_item_from_storage(src)
+
 	if(!pickup_item(I, hand_index, ignore_anim = TRUE))
 		qdel(I)
 		CRASH("Assertion failure: putItemFromInventoryInHandIfPossible") //should never be possible
@@ -417,7 +419,8 @@
 	if((SEND_SIGNAL(I, COMSIG_ITEM_PRE_UNEQUIP, force, newloc, no_move, invdrop, silent) & COMPONENT_ITEM_BLOCK_UNEQUIP) && !force)
 		return FALSE
 
-	if(use_unequip_delay && !unequip_delay_self_check(I))
+	var/static/list/exclude_from_unequip_delay = list(null, ITEM_SLOT_RPOCKET, ITEM_SLOT_LPOCKET, ITEM_SLOT_SUITSTORE, ITEM_SLOT_BACKPACK, ITEM_SLOT_HANDS)
+	if(use_unequip_delay && !(get_slot_by_item(I) in exclude_from_unequip_delay) && !unequip_delay_self_check(I))
 		return FALSE
 
 	var/hand_index = get_held_index_of_item(I)
@@ -683,7 +686,7 @@
 	if(.)
 		visible_message(
 			span_notice("[src] takes off [I]."),
-			span_notice("You takes off [I].")
+			span_notice("You take off [I].")
 		)
 
 /// Called by equip_delay_self and unequip_delay_self.

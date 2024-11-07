@@ -55,6 +55,7 @@
 
 /datum/mood/Destroy(force)
 	QDEL_LIST_ASSOC_VAL(mood_events)
+	mob_parent = null
 	return ..()
 
 /datum/mood/proc/handle_mob_death(datum/source)

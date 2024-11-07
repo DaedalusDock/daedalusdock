@@ -33,6 +33,7 @@
 	QDEL_NULL(z_eye)
 	QDEL_NULL(stamina)
 	QDEL_NULL(stats)
+	QDEL_NULL(mob_mood)
 
 	for(var/datum/status_effect/effect as anything in status_effects)
 		// The status effect calls on_remove when its mob is deleted

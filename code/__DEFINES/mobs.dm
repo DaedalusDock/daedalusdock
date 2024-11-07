@@ -31,6 +31,17 @@
 #define BLOOD_CIRC_BAD 60
 #define BLOOD_CIRC_SURVIVE 30
 
+// Mood levels
+#define MOOD_LEVEL_HAPPY4 20
+#define MOOD_LEVEL_HAPPY3 15
+#define MOOD_LEVEL_HAPPY2 10
+#define MOOD_LEVEL_HAPPY1 5
+#define MOOD_LEVEL_NEUTRAL 0
+#define MOOD_LEVEL_SAD1 -5
+#define MOOD_LEVEL_SAD2 -10
+#define MOOD_LEVEL_SAD3 -15
+#define MOOD_LEVEL_SAD4 -20
+
 // Values for flash_pain()
 #define PAIN_SMALL "weakest_pain"
 #define PAIN_MEDIUM "weak_pain"

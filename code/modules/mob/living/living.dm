@@ -6,14 +6,19 @@
 	register_init_signals()
 	if(unique_name)
 		give_unique_name()
+
 	var/datum/atom_hud/data/human/medical/advanced/medhud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	medhud.add_atom_to_hud(src)
+
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
 		diag_hud.add_atom_to_hud(src)
+
 	faction += "[REF(src)]"
 	GLOB.mob_living_list += src
 	SSpoints_of_interest.make_point_of_interest(src)
 	voice_type = pick(voice_type2sound)
+	mob_mood = new(src)
+
 	AddElement(/datum/element/movetype_handler)
 	gravity_setup()
 
@@ -28,6 +33,7 @@
 	QDEL_NULL(z_eye)
 	QDEL_NULL(stamina)
 	QDEL_NULL(stats)
+	QDEL_NULL(mob_mood)
 
 	for(var/datum/status_effect/effect as anything in status_effects)
 		// The status effect calls on_remove when its mob is deleted
@@ -680,6 +686,7 @@
 
 	if(.)
 		qdel(GetComponent(/datum/component/spook_factor))
+		mob_mood?.add_mood_event("revival", /datum/mood_event/revival)
 
 	// The signal is called after everything else so components can properly check the updated values
 	SEND_SIGNAL(src, COMSIG_LIVING_REVIVE, full_heal, admin_revive)
@@ -1770,6 +1777,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				ADD_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
+				mob_mood?.update_mood_icon()
 
 		if(UNCONSCIOUS)
 			cure_blind(UNCONSCIOUS_TRAIT)
@@ -1784,6 +1792,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if(CONSCIOUS)
 			if(. >= UNCONSCIOUS)
 				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
+				mob_mood?.update_mood()
 			REMOVE_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
@@ -1919,7 +1928,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /// Sets the mob's hunger levels to a safe overall level. Useful for TRAIT_NOHUNGER species changes.
 /mob/living/proc/set_safe_hunger_level()
 	// Nutrition reset and alert clearing.
-	nutrition = NUTRITION_LEVEL_FED
+	set_nutrition(NUTRITION_LEVEL_FED)
 	clear_alert(ALERT_NUTRITION)
 	satiety = 0
 
@@ -2259,3 +2268,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 	SEND_SIGNAL(src, COMSIG_LIVING_UNFRIENDED, old_friend)
 	return TRUE
+
+/mob/living/set_nutrition(change)
+	. = ..()
+	mob_mood?.update_nutrition_moodlets()

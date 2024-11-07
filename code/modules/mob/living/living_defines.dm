@@ -25,6 +25,8 @@ DEFINE_INTERACTABLE(/mob/living)
 	var/datum/stats/stats
 	///The holder for stamina handling
 	var/datum/stamina_container/stamina
+	/// Mood datum, can be null.
+	var/datum/mood/mob_mood
 
 	//Damage related vars, NOTE: THESE SHOULD ONLY BE MODIFIED BY PROCS
 	VAR_PROTECTED/bruteloss = 0 //!Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)

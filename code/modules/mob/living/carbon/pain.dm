@@ -180,6 +180,20 @@
 		shock_stage = max(shock_stage + 1, SHOCK_TIER_4 + 1)
 
 	var/pain = getPain()
+
+	// Pain mood adjustment
+	if(pain == 0)
+		mob_mood?.clear_mood_event("pain")
+	else
+		if(pain >= PAIN_AMT_AGONIZING)
+			mob_mood.add_mood_event("pain", /datum/mood_event/pain_four)
+		else if(pain >= PAIN_AMT_MEDIUM)
+			mob_mood.add_mood_event("pain", /datum/mood_event/pain_three)
+		else if(pain >= PAIN_AMT_LOW)
+			mob_mood.add_mood_event("pain", /datum/mood_event/pain_two)
+		else
+			mob_mood.add_mood_event("pain", /datum/mood_event/pain_one)
+
 	if(pain >= max(SHOCK_MIN_PAIN_TO_BEGIN, shock_stage * 0.8))
 		// A chance to fight through the pain.
 		if((shock_stage >= SHOCK_TIER_3) && stat == CONSCIOUS && !heart_attack_gaming && stats.cooldown_finished("shrug_off_pain"))

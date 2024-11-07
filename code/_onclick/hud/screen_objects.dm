@@ -57,7 +57,6 @@
 
 	SEND_SIGNAL(src, COMSIG_CLICK, location, control, params, usr)
 
-
 /atom/movable/screen/examine(mob/user)
 	return list()
 
@@ -1050,3 +1049,9 @@
 /atom/movable/screen/vis_holder
 	icon = ""
 	invisibility = INVISIBILITY_MAXIMUM
+
+/atom/movable/screen/mood
+	name = "mood"
+	icon_state = "mood5"
+	screen_loc = ui_mood
+	color = "#4b96c4"

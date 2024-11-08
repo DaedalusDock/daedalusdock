@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Added a simple mood system. It tracks good and bad events, and is not
-      visible to other players.

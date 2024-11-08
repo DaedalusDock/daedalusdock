@@ -10,3 +10,7 @@
       for.
   - bugfix: When shoving, the defender's Skirmish skill is now considered.
   - balance: Reduced chance to disarm when shoving.
+2024-11-08:
+  Kapu1178:
+  - rscadd: Added a simple mood system. It tracks good and bad events, and is not
+      visible to other players.

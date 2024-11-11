@@ -270,6 +270,9 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Stops all slipping and sliding from ocurring
 #define TRAIT_NO_SLIP_ALL "noslip_all"
 
+/// Invoking a Miracle rune
+#define TRAIT_INVOKING_MIRACLE "invokingmiracle"
+
 #define TRAIT_NODEATH "nodeath"
 #define TRAIT_NOHARDCRIT "nohardcrit"
 #define TRAIT_NOSOFTCRIT "nosoftcrit"

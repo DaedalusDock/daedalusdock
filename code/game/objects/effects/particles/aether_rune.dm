@@ -11,10 +11,10 @@
 	fade = 1 SECONDS
 
 	scale = list(1.5, 1.5)
-	grow = list(-0.05, -0.05)
+	grow = list(-0.04, -0.04)
 
 	color = 0
-	color_change = 0.1
+	color_change = 0.05
 	gradient = list("#4dffb5","#1f4d39")
 
 	position = generator(GEN_CIRCLE, 42, 46, UNIFORM_RAND)

@@ -31,6 +31,16 @@
 
 	var/invoking = RUNE_INVOKING_IDLE
 
+	var/obj/effect/abstract/particle_holder/particle_holder
+
+/obj/effect/aether_rune/Initialize(mapload)
+	. = ..()
+	particle_holder = new(src, /particles/rune)
+	particle_holder.appearance_flags |= RESET_COLOR | RESET_TRANSFORM
+	particle_holder.pixel_x = 32
+	particle_holder.pixel_y = 32
+	particle_holder.particles.spawning = 0
+
 /obj/effect/aether_rune/Destroy(force)
 	touching_rune = null
 	try_cancel_invoke(RUNE_FAIL_GRACEFUL)
@@ -73,6 +83,7 @@
 	blackboard.Cut()
 
 	color = initial(color)
+	particle_holder.particles.spawning = 0
 	animate(src, transform = matrix()) // Interrupt the existing transform animation
 
 /// Attempt to invoke the rune.
@@ -111,12 +122,19 @@
 	set waitfor = FALSE
 
 	invoking = RUNE_INVOKING_ACTIVE
-	SpinAnimation(3 SECONDS, clockwise = FALSE)
 	color = active_color
+	particle_holder.particles.spawning = initial(particle_holder.particles.spawning)
 
+	visible_message(span_statsgood("[src] erupts with an eerie glow, and begins to spin."))
 	var/mob/living/user = blackboard[RUNE_BB_INVOKER]
 
 	playsound(user, 'sound/magic/magic_block_mind.ogg', 50, TRUE)
+
+	var/time = 0
+	for(var/phrase in invocation_phrases)
+		time += invocation_phrases[phrase]
+
+	SpinAnimation(time, clockwise = FALSE)
 
 	var/next_phrase_time = 1
 	var/next_phrase_index = 1
@@ -144,6 +162,7 @@
 /// Finish invoking a rune.
 /obj/effect/aether_rune/proc/succeed_invoke()
 	playsound(src, 'sound/magic/voidblink.ogg', 50, TRUE)
+	visible_message(span_statsbad("[src] stops moving, and dulls in color."))
 	invoke_success_visual_effect()
 	wipe_state()
 
@@ -170,6 +189,7 @@
 	effect.appearance = appearance
 	effect.plane = GAME_PLANE
 	effect.layer = FLY_LAYER
+	effect.appearance_flags |= RESET_COLOR
 	effect.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	effect.pixel_x = 0
 	effect.pixel_y = 0

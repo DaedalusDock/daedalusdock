@@ -18,4 +18,5 @@
 	gradient = list("#4dffb5","#1f4d39")
 
 	position = generator(GEN_CIRCLE, 42, 46, UNIFORM_RAND)
+	velocity = generator(GEN_CIRCLE, 1, 1, NORMAL_RAND)
 	drift = generator(GEN_VECTOR, list(0, 0.15), list(0, 0.2), NORMAL_RAND)

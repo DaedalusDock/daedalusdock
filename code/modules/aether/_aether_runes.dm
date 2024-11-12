@@ -77,11 +77,20 @@
 		return TRUE
 
 /obj/effect/aether_rune/proc/wipe_state()
+	SHOULD_CALL_PARENT(TRUE)
+
 	invoking = RUNE_INVOKING_IDLE
+
+	// Clear signals
 	remove_tome(blackboard[RUNE_BB_TOME])
 	remove_invoker(blackboard[RUNE_BB_INVOKER])
+	var/mob/mob_target = blackboard[RUNE_BB_TARGET_MOB]
+	if(mob_target)
+		unregister_target_mob(mob_target)
+
 	blackboard.Cut()
 
+	// Reset visual appearance
 	color = initial(color)
 	particle_holder.particles.spawning = 0
 	animate(src, transform = matrix()) // Interrupt the existing transform animation
@@ -106,6 +115,9 @@
 	if(length(touching_rune) < required_helpers)
 		return FALSE
 
+	if(!blackboard[RUNE_BB_TARGET_MOB])
+		return FALSE
+
 	var/mob/living/user = blackboard[RUNE_BB_INVOKER]
 	if(!user?.can_speak_vocal())
 		return FALSE
@@ -114,8 +126,15 @@
 
 /// Called before any other step of invoking, sets up state.
 /obj/effect/aether_rune/proc/pre_invoke(mob/living/user, obj/item/book/tome)
+	SHOULD_CALL_PARENT(TRUE)
+
 	set_invoker(user)
 	set_tome(tome)
+
+	var/target_mob = find_target_mob()
+	if(target_mob)
+		blackboard[RUNE_BB_TARGET_MOB] = target_mob
+		register_target_mob(target_mob)
 
 /// Begin invoking a rune.
 /obj/effect/aether_rune/proc/begin_invoke()
@@ -200,6 +219,19 @@
 	animate(effect, alpha = 0, time = 0.2 SECONDS, flags = ANIMATION_PARALLEL)
 
 	QDEL_IN(effect, 0.2 SECONDS)
+
+/// Gets a mob that is in the center of the rune.
+/obj/effect/aether_rune/proc/find_target_mob()
+	var/mob/living/carbon/human/H = locate() in loc
+	return H
+
+/// Registers a target, overridable if you override get_target().
+/obj/effect/aether_rune/proc/register_target_mob(mob/living/carbon/human/target)
+	RegisterSignal(target, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING), PROC_REF(target_moved_or_deleted))
+
+/// Clear the target's signals
+/obj/effect/aether_rune/proc/unregister_target_mob(target)
+	UnregisterSignal(target, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING))
 
 /// Registers a mob as attempting to invoke this rune.
 /obj/effect/aether_rune/proc/register_helper(mob/living/L)
@@ -338,3 +370,15 @@
 
 	try_cancel_invoke(RUNE_FAIL_TOME_GONE, source)
 
+
+/// Handle the target being moved.
+/obj/effect/aether_rune/proc/target_moved_or_deleted(datum/source)
+	SIGNAL_HANDLER
+
+	var/mob/target = source
+	if(QDELETED(target))
+		try_cancel_invoke(RUNE_FAIL_GRACEFUL)
+		return
+
+	if(target.loc != loc)
+		try_cancel_invoke(RUNE_FAIL_TARGET_MOB_MOVED)

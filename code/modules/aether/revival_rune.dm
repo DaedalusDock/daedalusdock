@@ -1,8 +1,7 @@
 /obj/effect/aether_rune/revival
 
-/obj/effect/aether_rune/revival/pre_invoke(mob/living/user, obj/item/book/tome)
-	. = ..()
-	for(var/mob/living/carbon/human/H in get_turf(src))
+/obj/effect/aether_rune/revival/find_target_mob()
+	for(var/mob/living/carbon/human/H in loc)
 		if(H.stat != DEAD)
 			continue
 
@@ -10,20 +9,10 @@
 		if(!B)
 			continue
 
-		set_revival_target(H)
-		break
-
-/obj/effect/aether_rune/revival/can_invoke()
-	. = ..()
-	if(!.)
-		return
-
-	var/mob/living/carbon/human/H = blackboard[RUNE_BB_REVIVAL_TARGET]
-	if(QDELETED(H))
-		return FALSE
+		return H
 
 /obj/effect/aether_rune/revival/succeed_invoke()
-	var/mob/living/carbon/human/H = blackboard[RUNE_BB_REVIVAL_TARGET]
+	var/mob/living/carbon/human/H = blackboard[RUNE_BB_TARGET_MOB]
 	var/obj/item/organ/brain/B = H.getorganslot(ORGAN_SLOT_BRAIN)
 	B.applyOrganDamage(-INFINITY)
 	B.set_organ_dead(FALSE)
@@ -45,13 +34,27 @@
 
 	return ..()
 
-/obj/effect/aether_rune/revival/proc/set_revival_target(mob/living/L)
-	blackboard[RUNE_BB_REVIVAL_TARGET] = L
-	RegisterSignal(L, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING, COMSIG_MOB_STATCHANGE), PROC_REF(clear_revival_target))
+/obj/effect/aether_rune/revival/register_target_mob(target)
+	RegisterSignal(target, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING), PROC_REF(clear_revival_target))
+	RegisterSignal(target, COMSIG_MOB_STATCHANGE, PROC_REF(target_stat_change))
+
+/obj/effect/aether_rune/revival/unregister_target_mob(target)
+	UnregisterSignal(target, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING, COMSIG_MOB_STATCHANGE))
 
 /obj/effect/aether_rune/revival/proc/clear_revival_target(datum/source)
 	SIGNAL_HANDLER
 
+	var/mob/M = source
 	if(QDELETED(source))
 		try_cancel_invoke(RUNE_FAIL_GRACEFUL)
-	UnregisterSignal(source, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING, COMSIG_MOB_STATCHANGE))
+		return
+
+	if(M.loc != loc)
+		try_cancel_invoke(RUNE_FAIL_TARGET_MOB_MOVED, source)
+
+/obj/effect/aether_rune/revival/proc/target_stat_change(datum/source)
+	SIGNAL_HANDLER
+
+	var/mob/living/L = source
+	if(L.stat != DEAD)
+		try_cancel_invoke(RUNE_FAIL_REVIVAL_TARGET_ALIVE, L)

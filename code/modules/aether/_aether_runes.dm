@@ -228,15 +228,19 @@
 /// Gets a mob that is in the center of the rune.
 /obj/effect/aether_rune/proc/find_target_mob()
 	var/mob/living/carbon/human/H = locate() in loc
+	if(H.body_position != LYING_DOWN)
+		return null
+
 	return H
 
 /// Registers a target, overridable if you override get_target().
 /obj/effect/aether_rune/proc/register_target_mob(mob/living/carbon/human/target)
 	RegisterSignal(target, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING), PROC_REF(target_moved_or_deleted))
+	RegisterSignal(target, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(target_stand_up))
 
 /// Clear the target's signals
 /obj/effect/aether_rune/proc/unregister_target_mob(target)
-	UnregisterSignal(target, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING))
+	UnregisterSignal(target, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING))
 
 /// Registers a mob as attempting to invoke this rune.
 /obj/effect/aether_rune/proc/register_helper(mob/living/L)
@@ -390,3 +394,8 @@
 
 	if(target.loc != loc)
 		try_cancel_invoke(RUNE_FAIL_TARGET_MOB_MOVED, target)
+
+/obj/effect/aether_rune/proc/target_stand_up(datum/source)
+	SIGNAL_HANDLER
+
+	try_cancel_invoke(RUNE_FAIL_TARGET_STOOD_UP, source)

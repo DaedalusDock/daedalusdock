@@ -41,6 +41,9 @@
 	particle_holder.pixel_y = 32
 	particle_holder.particles.spawning = 0
 
+	#warn testing only
+	new /obj/item/book(loc)
+
 /obj/effect/aether_rune/Destroy(force)
 	touching_rune = null
 	try_cancel_invoke(RUNE_FAIL_GRACEFUL)
@@ -167,7 +170,7 @@
 
 		if(next_phrase_time <= world.time)
 			if(next_phrase_index > length(invocation_phrases))
-				succeed_invoke()
+				succeed_invoke(blackboard[RUNE_BB_TARGET_MOB])
 				return
 
 			var/phrase = invocation_phrases[next_phrase_index]
@@ -179,7 +182,9 @@
 		sleep(world.tick_lag)
 
 /// Finish invoking a rune.
-/obj/effect/aether_rune/proc/succeed_invoke()
+/obj/effect/aether_rune/proc/succeed_invoke(mob/living/carbon/human/target_mob)
+	SHOULD_CALL_PARENT(TRUE)
+
 	playsound(src, 'sound/magic/voidblink.ogg', 50, TRUE)
 	visible_message(span_statsbad("[src] stops moving, and dulls in color."))
 	invoke_success_visual_effect()
@@ -361,6 +366,9 @@
 
 	var/mob/living/L = source
 	if(!L.get_empty_held_index())
+		L.visible_message(
+			span_warning("[L] removes [L.p_their()] hand from [src]."),
+		)
 		remove_helper(source)
 		try_cancel_invoke(RUNE_FAIL_HELPER_REMOVED_HAND, source)
 
@@ -381,4 +389,4 @@
 		return
 
 	if(target.loc != loc)
-		try_cancel_invoke(RUNE_FAIL_TARGET_MOB_MOVED)
+		try_cancel_invoke(RUNE_FAIL_TARGET_MOB_MOVED, target)

@@ -11,26 +11,25 @@
 
 		return H
 
-/obj/effect/aether_rune/revival/succeed_invoke()
-	var/mob/living/carbon/human/H = blackboard[RUNE_BB_TARGET_MOB]
-	var/obj/item/organ/brain/B = H.getorganslot(ORGAN_SLOT_BRAIN)
+/obj/effect/aether_rune/revival/succeed_invoke(mob/living/carbon/human/target_mob)
+	var/obj/item/organ/brain/B = target_mob.getorganslot(ORGAN_SLOT_BRAIN)
 	B.applyOrganDamage(-INFINITY)
 	B.set_organ_dead(FALSE)
-	H.set_heartattack(FALSE)
-	H.revive()
+	target_mob.set_heartattack(FALSE)
+	target_mob.revive()
 
-	H.visible_message(
-		span_statsgood("Lifeforce floods into [H]'s flesh, briefly turning [H.p_their()] veins a vile green as it crawls through [H.p_them()].")
+	target_mob.visible_message(
+		span_statsgood("Lifeforce floods into [target_mob]'s flesh, briefly turning [target_mob.p_their()] veins a vile green as it crawls through [target_mob.p_them()].")
 	)
 
-	H.Knockdown(10 SECONDS)
-	H.Paralyze(4 SECONDS)
+	target_mob.Knockdown(10 SECONDS)
+	target_mob.Paralyze(4 SECONDS)
 
-	if(H.stat == CONSCIOUS)
+	if(target_mob.stat == CONSCIOUS)
 		spawn(-1)
-			H.emote("gasp")
-			H.manual_emote("coughs up blood onto [loc].")
-			H.add_splatter_floor(loc)
+			target_mob.emote("gasp")
+			target_mob.manual_emote("coughs up blood onto [loc].")
+			target_mob.add_splatter_floor(loc)
 
 	return ..()
 

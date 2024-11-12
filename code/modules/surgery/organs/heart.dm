@@ -60,12 +60,16 @@
 	update_moodlet()
 
 /obj/item/organ/heart/proc/Restart()
+	if(organ_flags & ORGAN_DEAD)
+		return FALSE
+
 	pulse = PULSE_NORM
 	update_appearance(UPDATE_ICON_STATE)
 	update_movespeed()
 	update_moodlet()
 
 	owner?.med_hud_set_health()
+	return TRUE
 
 /obj/item/organ/heart/proc/Stop()
 	pulse = PULSE_NONE

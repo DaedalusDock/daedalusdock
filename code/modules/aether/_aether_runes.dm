@@ -184,6 +184,7 @@
 /// Finish invoking a rune.
 /obj/effect/aether_rune/proc/succeed_invoke(mob/living/carbon/human/target_mob)
 	SHOULD_CALL_PARENT(TRUE)
+	SHOULD_NOT_SLEEP(TRUE)
 
 	playsound(src, 'sound/magic/voidblink.ogg', 50, TRUE)
 	visible_message(span_statsbad("[src] stops moving, and dulls in color."))
@@ -192,6 +193,9 @@
 
 /// Called when invocation fails.
 /obj/effect/aether_rune/proc/fail_invoke(failure_reason = RUNE_FAIL_GRACEFUL, failure_source)
+	SHOULD_CALL_PARENT(TRUE)
+	SHOULD_NOT_SLEEP(TRUE)
+
 	invoking = RUNE_INVOKING_IDLE
 	wipe_state()
 
@@ -317,7 +321,7 @@
 		return
 
 	remove_invoker(blackboard[RUNE_BB_INVOKER])
-	try_cancel_invoke(RUNE_FAIL_HELPER_REMOVED_HAND, source)
+	try_cancel_invoke(RUNE_FAIL_INVOKER_INCAP, source)
 
 /obj/effect/aether_rune/proc/check_invoker_hands(datum/source)
 	SIGNAL_HANDLER

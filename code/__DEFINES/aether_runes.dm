@@ -9,6 +9,7 @@
 /// Graceful fails should have NO SIDE EFFECTS.
 #define RUNE_FAIL_GRACEFUL "graceful_fail"
 
+// ~& Global failure states, handle these always! &~//
 #define RUNE_FAIL_INVOKER_INCAP "invoker_incap"
 /// Helper removed their hand from the rune.
 #define RUNE_FAIL_HELPER_REMOVED_HAND "helper_incap"
@@ -19,6 +20,7 @@
 #define RUNE_FAIL_TOME_GONE "tome_gone"
 /// An item has moved out of the rune.
 #define RUNE_FAIL_TARGET_ITEM_OUT_OF_RUNE "item_out_of_rune"
+
 /// Special failure condition where the revival target was revived mid ritual.
 #define RUNE_FAIL_REVIVAL_TARGET_ALIVE "revival_target_alive"
 

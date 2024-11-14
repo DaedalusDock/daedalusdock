@@ -235,6 +235,9 @@
 	if(H.body_position != LYING_DOWN)
 		return null
 
+	if(isipc(H))
+		return null
+
 	return H
 
 /// Registers a target, overridable if you override get_target().

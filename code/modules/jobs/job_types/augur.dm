@@ -76,12 +76,10 @@
 	chameleon_extras = list(
 		/obj/item/gun/syringe,
 		/obj/item/stamp/cmo,
-		)
-
-	skillchips = list(/obj/item/skillchip/entrails_reader)
+	)
 
 /datum/outfit/job/cmo/plasmaman
-	name = "Medical Director (Plasmaman)"
+	name = JOB_AUGUR + " (Plasmaman)"
 
 	uniform = /obj/item/clothing/under/plasmaman/chief_medical_officer
 	gloves = /obj/item/clothing/gloves/color/plasmaman/white
@@ -90,7 +88,7 @@
 	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/cmo/mod
-	name = "Medical Director (MODsuit)"
+	name = JOB_AUGUR + " (MODsuit)"
 
 	suit_store = /obj/item/tank/internals/oxygen
 	back = /obj/item/mod/control/pre_equipped/rescue

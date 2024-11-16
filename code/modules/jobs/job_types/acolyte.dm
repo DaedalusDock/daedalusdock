@@ -63,7 +63,6 @@
 
 	box = /obj/item/storage/box/survival/medical
 	chameleon_extras = /obj/item/gun/syringe
-	skillchips = list(/obj/item/skillchip/entrails_reader)
 
 /datum/outfit/job/doctor/plasmaman
 	name = JOB_ACOLYTE + " (Plasmaman)"

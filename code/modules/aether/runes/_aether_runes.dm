@@ -41,9 +41,6 @@
 	particle_holder.pixel_y = 32
 	particle_holder.particles.spawning = 0
 
-	#warn testing only
-	new /obj/item/book(loc)
-
 /obj/effect/aether_rune/Destroy(force)
 	touching_rune = null
 	try_cancel_invoke(RUNE_FAIL_GRACEFUL)
@@ -69,8 +66,7 @@
 	if(.)
 		return
 
-	#warn todo: aether tome
-	if(istype(weapon, /obj/item/book))
+	if(istype(weapon, /obj/item/aether_tome))
 		if(invoking != RUNE_INVOKING_IDLE)
 			return TRUE
 
@@ -99,7 +95,7 @@
 	animate(src, transform = matrix()) // Interrupt the existing transform animation
 
 /// Attempt to invoke the rune.
-/obj/effect/aether_rune/proc/try_invoke(mob/living/user, obj/item/book/tome)
+/obj/effect/aether_rune/proc/try_invoke(mob/living/user, /obj/item/aether_tome/tome)
 	pre_invoke(user, tome)
 
 	if(!can_invoke())
@@ -128,7 +124,7 @@
 	return TRUE
 
 /// Called before any other step of invoking, sets up state.
-/obj/effect/aether_rune/proc/pre_invoke(mob/living/user, obj/item/book/tome)
+/obj/effect/aether_rune/proc/pre_invoke(mob/living/user, /obj/item/aether_tome/tome)
 	SHOULD_CALL_PARENT(TRUE)
 
 	set_invoker(user)

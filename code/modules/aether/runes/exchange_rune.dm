@@ -5,7 +5,7 @@
 		unregister_item(item)
 	return ..()
 
-/obj/effect/aether_rune/exchange/pre_invoke(mob/living/user, obj/item/book/tome)
+/obj/effect/aether_rune/exchange/pre_invoke(mob/living/user, /obj/item/aether_tome/tome)
 	. = ..()
 
 	var/list/things = list()

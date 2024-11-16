@@ -162,7 +162,7 @@
 /obj/effect/particle_effect/fluid/smoke/proc/smoke_mob(mob/living/carbon/smoker, seconds_per_tick)
 	SHOULD_CALL_PARENT(TRUE)
 
-	HAS_TRAIT(smoker, TRAIT_AFFECTED_BY_SMOKE_RECENTLY)
+	ADD_TRAIT(smoker, TRAIT_AFFECTED_BY_SMOKE_RECENTLY, ref(src))
 	addtimer(TRAIT_CALLBACK_REMOVE(smoker, TRAIT_AFFECTED_BY_SMOKE_RECENTLY, ref(src)), 1 SECONDS)
 
 /**

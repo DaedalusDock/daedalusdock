@@ -95,7 +95,7 @@
 	animate(src, transform = matrix()) // Interrupt the existing transform animation
 
 /// Attempt to invoke the rune.
-/obj/effect/aether_rune/proc/try_invoke(mob/living/user, /obj/item/aether_tome/tome)
+/obj/effect/aether_rune/proc/try_invoke(mob/living/user, obj/item/aether_tome/tome)
 	pre_invoke(user, tome)
 
 	if(!can_invoke())
@@ -124,7 +124,7 @@
 	return TRUE
 
 /// Called before any other step of invoking, sets up state.
-/obj/effect/aether_rune/proc/pre_invoke(mob/living/user, /obj/item/aether_tome/tome)
+/obj/effect/aether_rune/proc/pre_invoke(mob/living/user, obj/item/aether_tome/tome)
 	SHOULD_CALL_PARENT(TRUE)
 
 	set_invoker(user)

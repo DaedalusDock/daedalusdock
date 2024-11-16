@@ -1,5 +1,5 @@
-/datum/job/chief_medical_officer
-	title = JOB_MEDICAL_DIRECTOR
+/datum/job/augur
+	title = JOB_AUGUR
 	description = "Coordinate doctors and other medbay employees, ensure they \
 		know how to save lives, check for injuries on the crew monitor."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
@@ -49,13 +49,13 @@
 	voice_of_god_power = 1.4 //Command staff has authority
 
 
-/datum/job/chief_medical_officer/get_captaincy_announcement(mob/living/captain)
+/datum/job/augur/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
 
 
 /datum/outfit/job/cmo
 	name = "Medical Director"
-	jobtype = /datum/job/chief_medical_officer
+	jobtype = /datum/job/augur
 
 	id = /obj/item/card/id/advanced/silver
 	id_trim = /datum/id_trim/job/chief_medical_officer

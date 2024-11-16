@@ -1,8 +1,8 @@
-/datum/job/doctor
-	title = JOB_MEDICAL_DOCTOR
+/datum/job/acolyte
+	title = JOB_ACOLYTE
 	description = "Save lives, run around the station looking for victims, \
 		scan everyone in sight"
-	department_head = list(JOB_MEDICAL_DIRECTOR)
+	department_head = list(JOB_AUGUR)
 	faction = FACTION_STATION
 	total_positions = 5
 	spawn_positions = 3
@@ -45,8 +45,8 @@
 
 
 /datum/outfit/job/doctor
-	name = JOB_MEDICAL_DOCTOR
-	jobtype = /datum/job/doctor
+	name = JOB_ACOLYTE
+	jobtype = /datum/job/acolyte
 
 	id_trim = /datum/id_trim/job/medical_doctor
 	uniform = /obj/item/clothing/under/rank/medical/doctor
@@ -66,7 +66,7 @@
 	skillchips = list(/obj/item/skillchip/entrails_reader)
 
 /datum/outfit/job/doctor/plasmaman
-	name = JOB_MEDICAL_DOCTOR + " (Plasmaman)"
+	name = JOB_ACOLYTE + " (Plasmaman)"
 
 	uniform = /obj/item/clothing/under/plasmaman/medical
 	gloves = /obj/item/clothing/gloves/color/plasmaman/white
@@ -75,7 +75,7 @@
 	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/doctor/mod
-	name = JOB_MEDICAL_DOCTOR + " (MODsuit)"
+	name = JOB_ACOLYTE + " (MODsuit)"
 
 	suit_store = /obj/item/tank/internals/oxygen
 	back = /obj/item/mod/control/pre_equipped/medical

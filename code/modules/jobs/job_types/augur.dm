@@ -80,7 +80,23 @@
 		/obj/item/gun/syringe,
 		/obj/item/stamp/cmo,
 		)
+
 	skillchips = list(/obj/item/skillchip/entrails_reader)
+
+#warn make this better
+/datum/outfit/job/cmo/post_equip(mob/living/carbon/human/H, visualsOnly)
+	. = ..()
+	if(visualsOnly)
+		return
+
+	var/list/spell_types = list(
+		/datum/action/cooldown/spell/vanishing_act,
+		/datum/action/cooldown/spell/touch/showstopper,
+	)
+
+	for(var/datum/action/spell as anything in spell_types)
+		spell = new spell
+		spell.Grant(H)
 
 /datum/outfit/job/cmo/plasmaman
 	name = "Medical Director (Plasmaman)"

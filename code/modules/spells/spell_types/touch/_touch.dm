@@ -224,8 +224,10 @@
 	righthand_file = 'icons/mob/inhands/misc/touchspell_righthand.dmi'
 	icon_state = "latexballon"
 	inhand_icon_state = null
+
 	item_flags = NEEDS_PERMIT | ABSTRACT
 	w_class = WEIGHT_CLASS_HUGE
+
 	force = 0
 	throwforce = 0
 	throw_range = 0

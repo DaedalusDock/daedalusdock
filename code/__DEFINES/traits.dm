@@ -476,6 +476,9 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Maybe worth generalizing into a general "is sneaky" / "is stealth" trait in the future.
 #define TRAIT_ALIEN_SNEAK "sneaking_alien"
 
+/// Smoke temporarily cannot affect this mob.
+#define TRAIT_AFFECTED_BY_SMOKE_RECENTLY "affected_by_smoke_recently"
+
 // METABOLISMS
 // Various jobs on the station have historically had better reactions
 // to various drinks and foodstuffs. Security liking donuts is a classic

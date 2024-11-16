@@ -54,22 +54,19 @@
 
 
 /datum/outfit/job/cmo
-	name = "Medical Director"
+	name = JOB_AUGUR
 	jobtype = /datum/job/augur
 
 	id = /obj/item/card/id/advanced/silver
 	id_trim = /datum/id_trim/job/chief_medical_officer
 	uniform = /obj/item/clothing/under/rank/medical/chief_medical_officer
-	backpack_contents = list(
-		/obj/item/assembly/flash/handheld
-	)
 	suit = /obj/item/clothing/suit/toggle/labcoat/cmo
 	suit_store = /obj/item/flashlight/pen/paramedic
 	belt = /obj/item/modular_computer/tablet/pda/heads/cmo
 	ears = /obj/item/radio/headset/heads/cmo
 	shoes = /obj/item/clothing/shoes/sneakers/blue
 	l_pocket = /obj/item/pinpointer/crew
-	l_hand = /obj/item/storage/medkit/surgery
+	l_hand = /obj/item/aether_tome
 
 	backpack = /obj/item/storage/backpack/medic
 	satchel = /obj/item/storage/backpack/satchel/med
@@ -82,21 +79,6 @@
 		)
 
 	skillchips = list(/obj/item/skillchip/entrails_reader)
-
-#warn make this better
-/datum/outfit/job/cmo/post_equip(mob/living/carbon/human/H, visualsOnly)
-	. = ..()
-	if(visualsOnly)
-		return
-
-	var/list/spell_types = list(
-		/datum/action/cooldown/spell/vanishing_act,
-		/datum/action/cooldown/spell/touch/showstopper,
-	)
-
-	for(var/datum/action/spell as anything in spell_types)
-		spell = new spell
-		spell.Grant(H)
 
 /datum/outfit/job/cmo/plasmaman
 	name = "Medical Director (Plasmaman)"

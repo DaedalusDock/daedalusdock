@@ -20,7 +20,7 @@
 	return ..()
 
 /datum/action/cooldown/spell/touch/Remove(mob/living/remove_from)
-	remove_hand(remove_from)
+	remove_hand(remove_from, TRUE)
 	return ..()
 
 // PreActivate is overridden to not check is_valid_target on the caster, as it makes less sense.

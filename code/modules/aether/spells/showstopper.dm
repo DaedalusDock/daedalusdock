@@ -3,6 +3,8 @@
 	desc = "Drain the beating energy of one's heart, taking it for yourself."
 	button_icon_state = "arcane_barrage"
 
+	sound = 'sound/magic/exit_blood.ogg'
+
 	invocation = "Kasyah shach hala"
 	invocation_type = INVOCATION_WHISPER
 	school = SCHOOL_BLOOD
@@ -26,6 +28,10 @@
 
 	badguy.set_heartattack(TRUE)
 	caster.adjustBloodVolume(50)
+
+	if(isturf(badguy.loc))
+		badguy.add_splatter_floor(badguy.loc)
+
 	return TRUE
 
 /obj/item/melee/touch_attack/showstopper

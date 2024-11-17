@@ -121,15 +121,23 @@
 		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
 	)
 
+/datum/species/zombie/infectious/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	. = ..()
+	RegisterSignal(C, COMSIG_MOB_AFTER_APPLY_DAMAGE, PROC_REF(on_take_damage))
+
+/datum/species/zombie/infectious/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
+	. = ..()
+	UnregisterSignal(C, COMSIG_MOB_AFTER_APPLY_DAMAGE)
+
 /datum/species/zombie/infectious/check_roundstart_eligible()
 	return FALSE
 
 /datum/species/zombie/infectious/spec_stun(mob/living/carbon/human/H,amount)
 	. = min(20, amount)
 
-/datum/species/zombie/infectious/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H, spread_damage = FALSE, forced = FALSE, sharpness = NONE, attack_direction = null)
-	. = ..()
-	if(.)
+/datum/species/zombie/infectious/proc/on_take_damage(datum/source, damage_dealt, damagetype, def_zone, blocked, sharpness, attack_direction, attacking_item)
+	SIGNAL_HANDLER
+	if(damage_dealt)
 		COOLDOWN_START(src, regen_cooldown, REGENERATION_DELAY)
 
 /datum/species/zombie/infectious/spec_life(mob/living/carbon/C, delta_time, times_fired)

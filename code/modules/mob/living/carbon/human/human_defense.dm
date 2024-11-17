@@ -131,42 +131,6 @@
 
 	return FALSE
 
-/mob/living/carbon/human/attacked_by(obj/item/I, mob/living/user)
-	var/target_zone = deprecise_zone(user.zone_selected) //our intended target
-
-	var/obj/item/bodypart/affecting = get_bodypart(target_zone)
-	if (!affecting || affecting.is_stump)
-		to_chat(user, span_danger("They do not have a [parse_zone(target_zone)]"))
-		return MOB_ATTACKEDBY_FAIL
-
-	// If we aren't being hit by ourself, roll for accuracy.
-	if(user != src)
-		var/bodyzone_modifier = GLOB.bodyzone_gurps_mods[target_zone]
-		var/roll
-		if(HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER))
-			roll = SUCCESS
-		else
-			roll = user.stat_roll(10, /datum/rpg_skill/skirmish, bodyzone_modifier, -7, src).outcome
-
-		var/hit_zone
-		switch(roll)
-			if(CRIT_FAILURE)
-				visible_message(span_danger("\The [user] swings at [src] with \the [I], narrowly missing!"))
-				return MOB_ATTACKEDBY_MISS
-
-			if(FAILURE)
-				hit_zone = get_random_valid_zone()
-			else
-				hit_zone = target_zone
-
-		affecting = get_bodypart(hit_zone)
-
-	SEND_SIGNAL(I, COMSIG_ITEM_ATTACK_ZONE, src, user, affecting)
-
-	// the attacked_by code varies among species
-	return dna.species.spec_attacked_by(I, user, affecting, src)
-
-
 /mob/living/carbon/human/attack_hulk(mob/living/carbon/human/user)
 	. = ..()
 	if(!.)

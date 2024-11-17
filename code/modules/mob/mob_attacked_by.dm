@@ -36,7 +36,7 @@
 
 		hit_zone_text = affecting.plaintext_zone
 
-	send_item_attack_message(attacking_item, attacker)
+	send_item_attack_message(attacking_item, attacker, hit_zone_text != "body" ? hit_zone_text : null)
 
 	var/attack_flag = attacking_item.get_attack_flag()
 	var/armor_block = min(run_armor_check(

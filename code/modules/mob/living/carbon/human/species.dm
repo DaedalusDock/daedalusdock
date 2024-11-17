@@ -986,17 +986,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	user.do_cpr(target)
 
 /datum/species/proc/grab(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style, list/params)
-	if(target.check_block())
-		target.visible_message(
-			span_warning("[target] blocks [user]'s grab!"),
-			span_userdanger("You block [user]'s grab!"),
-			span_hear("You hear a swoosh!"),
-			COMBAT_MESSAGE_RANGE,
-			user
-		)
-		to_chat(user, span_warning("Your grab at [target] was blocked!"))
-		return FALSE
-
 	if(attacker_style?.grab_act(user,target) == MARTIAL_ATTACK_SUCCESS)
 		return TRUE
 
@@ -1009,13 +998,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// Pacifists can't harm.
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You don't want to harm [target]!"))
-		return FALSE
-
-	// If blocked, bail.
-	if(target.check_block())
-		target.visible_message(span_warning("[target] blocks [user]'s attack!"), \
-						span_userdanger("You block [user]'s attack!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, user)
-		to_chat(user, span_warning("Your attack at [target] was blocked!"))
 		return FALSE
 
 	// If martial arts did something, bail.
@@ -1116,11 +1098,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	return ATTACK_CONTINUE | .
 
 /datum/species/proc/disarm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
-	if(target.check_block())
-		target.visible_message(span_warning("[user]'s shove is blocked by [target]!"), \
-						span_danger("You block [user]'s shove!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, user)
-		to_chat(user, span_warning("Your shove at [target] was blocked!"))
-		return FALSE
 	if(attacker_style?.disarm_act(user,target) == MARTIAL_ATTACK_SUCCESS)
 		user.animate_interact(target, INTERACT_DISARM)
 		return TRUE
@@ -1148,7 +1125,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		return
 	if(M.mind)
 		attacker_style = M.mind.martial_art
-	if((M != H) && M.combat_mode && H.check_shields(M, 0, M.name, attack_type = UNARMED_ATTACK))
+	if((M != H) && M.combat_mode && H.check_block(M, 0, M.name, attack_type = UNARMED_ATTACK))
 		log_combat(M, H, "attempted to touch")
 		H.visible_message(span_warning("[M] attempts to touch [H]!"), \
 						span_danger("[M] attempts to touch you!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, M)
@@ -1177,15 +1154,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/spec_attacked_by(obj/item/I, mob/living/user, obj/item/bodypart/affecting, mob/living/carbon/human/H)
 	// Allows you to put in item-specific reactions based on species
 	if(user != H)
-		if(H.check_shields(I, I.force, "the [I.name]", MELEE_ATTACK, I.armor_penetration))
+		if(H.check_block(I, I.force, "the [I.name]", MELEE_ATTACK, I.armor_penetration))
 			return MOB_ATTACKEDBY_NO_DAMAGE
-
-	if(H.check_block())
-		H.visible_message(
-			span_warning("[H] blocks [I]!"),
-			span_userdanger("You block [I]!")
-		)
-		return MOB_ATTACKEDBY_NO_DAMAGE
 
 	var/hit_area
 	if(!affecting) //Something went wrong. Maybe the limb is missing?

@@ -1,5 +1,5 @@
 /datum/language/aether
-	name = "Aetherbabble"
+	name = "Empyrean"
 	desc = "Placeholder"
 	key = "g"
 	space_chance = 40

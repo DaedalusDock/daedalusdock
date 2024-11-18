@@ -182,13 +182,13 @@
 
 	// Over 81, we will gain constant toxloss
 	if(drunk_value >= 81)
-		owner.adjustToxLoss(1)
+		owner.adjustToxLoss(1, cause_of_death = "Alcohol poisoning")
 		if(owner.stat == CONSCIOUS && prob(5))
 			to_chat(owner, span_warning("Maybe you should lie down for a bit..."))
 
 	// Over 91, we gain even more toxloss, brain damage, and have a chance of dropping into a long sleep
 	if(drunk_value >= 91)
-		owner.adjustToxLoss(1)
+		owner.adjustToxLoss(1, cause_of_death = "Alcohol poisoning")
 		if(owner.stat == CONSCIOUS && prob(20))
 			// Don't put us in a deep sleep if the shuttle's here. QoL, mainly.
 			if(SSshuttle.emergency.mode == SHUTTLE_DOCKED && is_station_level(owner.z))
@@ -200,7 +200,7 @@
 
 	// And finally, over 100 - let's be honest, you shouldn't be alive by now.
 	if(drunk_value >= 101)
-		owner.adjustToxLoss(2)
+		owner.adjustToxLoss(2, cause_of_death = "Alcohol poisoning")
 
 /// Status effect for being fully drunk (not tipsy).
 /atom/movable/screen/alert/status_effect/drunk

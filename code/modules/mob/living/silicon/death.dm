@@ -4,7 +4,7 @@
 /mob/living/silicon/spawn_dust()
 	new /obj/effect/decal/remains/robot(loc)
 
-/mob/living/silicon/death(gibbed)
+/mob/living/silicon/death(gibbed, cause_of_death = "Unknown")
 	if(!gibbed)
 		emote("deathgasp")
 	diag_hud_set_status()

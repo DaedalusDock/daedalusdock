@@ -591,6 +591,11 @@
 	if(examined == src)
 		return
 
+	if(isobj(examined))
+		var/obj/examined_obj = examined
+		if(examined_obj.obj_flags & SECRET_EXAMINE)
+			return
+
 	// If TRUE, the usr's view() for the examined object too
 	var/examining_worn_item = FALSE
 	var/loc_str = "at something off in the distance."
@@ -1258,7 +1263,7 @@
 					break
 				search_pda = 0
 
-/mob/proc/update_stat()
+/mob/proc/update_stat(cause_of_death)
 	return
 
 /mob/proc/update_health_hud()
@@ -1453,7 +1458,7 @@
 
 ///Adjust the nutrition of a mob
 /mob/proc/adjust_nutrition(change) //Honestly FUCK the oldcoders for putting nutrition on /mob someone else can move it up because holy hell I'd have to fix SO many typechecks
-	nutrition = max(0, nutrition + change)
+	set_nutrition(max(0, nutrition + change))
 
 ///Force set the mob nutrition
 /mob/proc/set_nutrition(change) //Seriously fuck you oldcoders.
@@ -1549,25 +1554,25 @@
 	canon_client = null
 
 ///Shows a tgui window with memories
-/mob/verb/memory()
-	set name = "Memories"
+/mob/verb/notes()
+	set name = "Notes"
 	set category = "IC"
-	set desc = "View your character's memories."
+	set desc = "View your notes."
 	if(!mind)
 		var/fail_message = "You have no mind!"
 		if(isobserver(src))
 			fail_message += " You have to be in the current round at some point to have one."
 		to_chat(src, span_warning(fail_message))
 		return
-	if(!mind.memory_panel)
-		mind.memory_panel = new(usr, mind)
-	mind.memory_panel.ui_interact(usr)
+	if(!mind.note_panel)
+		mind.note_panel = new(usr, mind)
+	mind.note_panel.ui_interact(usr)
 
-/datum/memory_panel
+/datum/note_panel
 	var/datum/mind/mind_reference
 	var/client/holder //client of whoever is using this datum
 
-/datum/memory_panel/New(user, mind_reference)//user can either be a client or a mob due to byondcode(tm)
+/datum/note_panel/New(user, mind_reference)//user can either be a client or a mob due to byondcode(tm)
 	if (istype(user, /client))
 		var/client/user_client = user
 		holder = user_client //if its a client, assign it to holder
@@ -1576,32 +1581,42 @@
 		holder = user_mob.client //if its a mob, assign the mob's client to holder
 	src.mind_reference = mind_reference
 
-/datum/memory_panel/Destroy(force)
-	mind_reference.memory_panel = null
+/datum/note_panel/Destroy(force)
+	mind_reference.note_panel = null
 	. = ..()
 
-/datum/memory_panel/ui_state(mob/user)
-	return GLOB.always_state
+/datum/note_panel/ui_state(mob/user)
+	return GLOB.notes_state
 
-/datum/memory_panel/ui_close()
+/datum/note_panel/ui_close()
 	qdel(src)
 
-/datum/memory_panel/ui_interact(mob/user, datum/tgui/ui)
+/datum/note_panel/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "MemoryPanel")
+		ui = new(user, src, "NotePanel")
 		ui.open()
 
-/datum/memory_panel/ui_data(mob/user)
+/datum/note_panel/ui_data(mob/user)
 	var/list/data = list()
 	var/list/memories = list()
 
-	for(var/memory_key in user?.mind.memories)
-		var/datum/memory/memory = user.mind.memories[memory_key]
-		memories += list(list("name" = memory.name, "quality" = memory.story_value))
+	var/list/user_memories = user?.mind.get_notes()
+	for(var/memory_key in user_memories)
+		memories[++memories.len] = list("name" = memory_key, "content" = user_memories[memory_key])
 
 	data["memories"] = memories
 	return data
+
+/datum/note_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
+
+	switch(action)
+		if("UpdateNote")
+			mind_reference.set_note(NOTES_CUSTOM, params["newnote"])
+			return TRUE
 
 /mob/verb/view_skills()
 	set category = "IC"

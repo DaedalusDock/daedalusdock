@@ -169,7 +169,7 @@
 		I.throwing.finalize(FALSE)
 
 	if(I.loc == src)
-		if(!I.allow_attack_hand_drop(src) || !temporarilyRemoveItemFromInventory(I))
+		if(!I.allow_attack_hand_drop(src) || !temporarilyRemoveItemFromInventory(I, use_unequip_delay = TRUE))
 			return
 
 	I.pickup(src)
@@ -304,12 +304,14 @@
 	for(var/obj/item/I in held_items)
 		. |= dropItemToGround(I)
 
-/mob/proc/putItemFromInventoryInHandIfPossible(obj/item/I, hand_index, force_removal = FALSE)
+/mob/proc/putItemFromInventoryInHandIfPossible(obj/item/I, hand_index, force_removal = FALSE, use_unequip_delay = FALSE)
 	if(!can_put_in_hand(I, hand_index))
 		return FALSE
-	if(!temporarilyRemoveItemFromInventory(I, force_removal))
+	if(!temporarilyRemoveItemFromInventory(I, force_removal, use_unequip_delay = use_unequip_delay))
 		return FALSE
+
 	I.remove_item_from_storage(src)
+
 	if(!pickup_item(I, hand_index, ignore_anim = TRUE))
 		qdel(I)
 		CRASH("Assertion failure: putItemFromInventoryInHandIfPossible") //should never be possible
@@ -353,8 +355,8 @@
  * * Will pass FALSE if the item can not be dropped due to TRAIT_NODROP via tryUnequipItem()
  * If the item can be dropped, it will be forceMove()'d to the ground and the turf's Entered() will be called.
 */
-/mob/proc/dropItemToGround(obj/item/I, force = FALSE, silent = FALSE, invdrop = TRUE, animate = TRUE)
-	. = tryUnequipItem(I, force, drop_location(), FALSE, invdrop = invdrop, silent = silent)
+/mob/proc/dropItemToGround(obj/item/I, force = FALSE, silent = FALSE, invdrop = TRUE, animate = TRUE, use_unequip_delay = FALSE)
+	. = tryUnequipItem(I, force, drop_location(), FALSE, invdrop = invdrop, silent = silent, use_unequip_delay = use_unequip_delay)
 	if(!. || !I) //ensure the item exists and that it was dropped properly.
 		return
 
@@ -384,17 +386,29 @@
 
 //visibly unequips I but it is NOT MOVED AND REMAINS IN SRC
 //item MUST BE FORCEMOVE'D OR QDEL'D
-/mob/proc/temporarilyRemoveItemFromInventory(obj/item/I, force = FALSE, idrop = TRUE)
+/mob/proc/temporarilyRemoveItemFromInventory(obj/item/I, force = FALSE, idrop = TRUE, use_unequip_delay = FALSE)
 	if((I.item_flags & ABSTRACT) && !force)
 		return //Do nothing. Abstract items shouldn't end up in inventories and doing this triggers various odd side effects.
-	return tryUnequipItem(I, force, null, TRUE, idrop, silent = TRUE)
+	return tryUnequipItem(I, force, null, TRUE, idrop, silent = TRUE, use_unequip_delay = use_unequip_delay)
 
-//DO NOT CALL THIS PROC
-//use one of the above 3 helper procs
-//you may override it, but do not modify the args
-/mob/proc/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE) //Force overrides TRAIT_NODROP for things like wizarditis and admin undress.
-													//Use no_move if the item is just gonna be immediately moved afterward
-													//Invdrop is used to prevent stuff in pockets dropping. only set to false if it's going to immediately be replaced
+// DO NOT CALL THIS PROC
+// use one of the above 3 helper procs
+// you may override it, but do not modify the args
+// Force overrides TRAIT_NODROP for things like wizarditis and admin undress.
+// Use no_move if the item is just gonna be immediately moved afterward
+// Invdrop is used to prevent stuff in pockets dropping. only set to false if it's going to immediately be replaced
+/**
+ * Do not call this proc. It is called by the 3 helpers above it.
+ * args:
+ * * I - The item to unequip.
+ * * force - If TRUE, it will ignore canEquipItem and rip it off no matter what.
+ * * newloc - The loc the item is being moved to, if any.
+ * * no_move - Set TRUE if the item is being moved afterwards anyway.
+ * * invdrop - Invdrop is used to prevent stuff in pockets dropping. only set to false if it's going to immediately be replaced.
+ * * silent - If TRUE, will not play the item's drop sound.
+ * * use_unequip_delay - If TRUE, will run unequip_delay_self_check()
+*/
+/mob/proc/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE)
 	PROTECTED_PROC(TRUE)
 	if(!I) //If there's nothing to drop, the drop is automatically succesfull. If(unEquip) should generally be used to check for TRAIT_NODROP.
 		return TRUE
@@ -403,6 +417,10 @@
 		return FALSE
 
 	if((SEND_SIGNAL(I, COMSIG_ITEM_PRE_UNEQUIP, force, newloc, no_move, invdrop, silent) & COMPONENT_ITEM_BLOCK_UNEQUIP) && !force)
+		return FALSE
+
+	var/static/list/exclude_from_unequip_delay = list(null, ITEM_SLOT_RPOCKET, ITEM_SLOT_LPOCKET, ITEM_SLOT_SUITSTORE, ITEM_SLOT_BACKPACK, ITEM_SLOT_HANDS)
+	if(use_unequip_delay && !(get_slot_by_item(I) in exclude_from_unequip_delay) && !unequip_delay_self_check(I))
 		return FALSE
 
 	var/hand_index = get_held_index_of_item(I)
@@ -628,3 +646,63 @@
 			A.atom_storage.return_inv(item_stuff)
 			processing_list += item_stuff
 	return processing_list
+
+/// Called when a mob is equipping an item to itself.
+/mob/proc/equip_delay_self_check(obj/item/I, bypass_delay)
+	return TRUE
+
+/// Called when a mob is unequipping an item from itself.
+/mob/proc/unequip_delay_self_check(obj/item/I, bypass_delay)
+	return TRUE
+
+/mob/living/carbon/human/equip_delay_self_check(obj/item/I, bypass_delay)
+	if(!I.equip_delay_self || bypass_delay)
+		return TRUE
+
+	visible_message(
+		span_notice("[src] starts to put on [I]..."),
+		span_notice("You start to put on [I]...")
+	)
+
+	. = I.do_equip_wait(src)
+
+	if(.)
+		visible_message(
+			span_notice("[src] puts on [I]."),
+			span_notice("You put on [I].")
+		)
+
+/mob/living/carbon/human/unequip_delay_self_check(obj/item/I)
+	if(!I.equip_delay_self || is_holding(I))
+		return TRUE
+
+	visible_message(
+		span_notice("[src] starts to take off [I]..."),
+		span_notice("You start to take off [I]..."),
+	)
+
+	. = I.do_equip_wait(src)
+
+	if(.)
+		visible_message(
+			span_notice("[src] takes off [I]."),
+			span_notice("You take off [I].")
+		)
+
+/// Called by equip_delay_self and unequip_delay_self.
+/obj/item/proc/do_equip_wait(mob/living/L)
+	var/flags = DO_PUBLIC
+	if(equip_self_flags & EQUIP_ALLOW_MOVEMENT)
+		flags |= IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE
+
+	if(equip_self_flags & EQUIP_SLOWDOWN)
+		L.add_movespeed_modifier(/datum/movespeed_modifier/equipping)
+
+	ADD_TRAIT(L, TRAIT_EQUIPPING_OR_UNEQUIPPING, ref(src))
+
+	. = do_after(L, L, equip_delay_self, flags, display = src)
+
+	REMOVE_TRAIT(L, TRAIT_EQUIPPING_OR_UNEQUIPPING, ref(src))
+
+	if(!HAS_TRAIT(L, TRAIT_EQUIPPING_OR_UNEQUIPPING))
+		L.remove_movespeed_modifier(/datum/movespeed_modifier/equipping)

@@ -20,7 +20,7 @@
 /// Have nicotine in your blood
 #define SKILL_SOURCE_NICOTINE "Nicotine"
 /// Have a nicotine withdrawl
-#define SKILL_SOURCE_NICOTINE_WITHDRAWL "Nicottine withdrawl"
+#define SKILL_SOURCE_NICOTINE_WITHDRAWL "Nicotine withdrawl"
 /// Opiod Withdrawl
 #define SKILL_SOURCE_OPIOD_WITHDRAWL "Opiod withdrawl"
 /// Alchohol withdrawl

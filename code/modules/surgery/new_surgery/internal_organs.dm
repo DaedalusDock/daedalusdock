@@ -91,7 +91,7 @@
 	var/dam_amt = 2
 
 	dam_amt = 5
-	target.adjustToxLoss(10)
+	target.adjustToxLoss(10, cause_of_death = "A bad surgeon")
 	affected.receive_damage(dam_amt, sharpness = SHARP_EDGED|SHARP_POINTY)
 
 	for(var/obj/item/organ/I in affected.contained_organs)

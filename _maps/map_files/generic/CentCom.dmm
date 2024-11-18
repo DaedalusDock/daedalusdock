@@ -9170,7 +9170,7 @@
 /obj/item/reagent_containers/food/condiment/peppermill{
 	pixel_x = -8
 	},
-/obj/item/reagent_containers/food/drinks/britcup,
+/obj/item/reagent_containers/glass/mug/brit,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/centcom/tdome/observation)
@@ -10265,7 +10265,7 @@
 "Du" = (
 /obj/structure/table/reinforced,
 /obj/machinery/door/firedoor,
-/obj/item/reagent_containers/food/drinks/britcup,
+/obj/item/reagent_containers/glass/mug/brit,
 /obj/structure/window/reinforced{
 	dir = 8
 	},

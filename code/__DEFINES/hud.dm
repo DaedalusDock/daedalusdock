@@ -98,6 +98,7 @@
 #define ui_blob_health "EAST-1:28,CENTER+1:21"
 #define ui_spacesuit "EAST-1:28,CENTER-3:14"
 #define ui_stamina "EAST-1:28,CENTER-2:17"
+#define ui_mood "EAST-1:28,CENTER:21"
 
 //Pop-up inventory
 #define ui_shoes "WEST+1:8,SOUTH:5"

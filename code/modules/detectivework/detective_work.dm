@@ -237,6 +237,7 @@
 			stats.set_cooldown("examine_forensic_analysis", 15 SECONDS)
 			return
 
+	result.do_skill_sound(src)
 	stats.examined_object_weakrefs[WEAKREF(examined)] = TRUE
 	stats.set_cooldown("examine_forensic_analysis", 15 MINUTES)
 

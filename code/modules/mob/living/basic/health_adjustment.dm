@@ -36,7 +36,7 @@
 	else if(damage_coeff[OXY])
 		. = adjust_health(amount * damage_coeff[OXY] * CONFIG_GET(number/damage_multiplier), updating_health, forced)
 
-/mob/living/basic/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE)
+/mob/living/basic/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE, cause_of_death = "Systemic organ failure")
 	if(forced)
 		. = adjust_health(amount * CONFIG_GET(number/damage_multiplier), updating_health, forced)
 	else if(damage_coeff[TOX])

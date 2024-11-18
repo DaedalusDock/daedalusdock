@@ -115,34 +115,6 @@
 	cards = shuffle(cards)
 	playsound(src, 'sound/items/cardshuffle.ogg', 50, TRUE)
 	user.balloon_alert_to_viewers("shuffles the deck")
-	addtimer(CALLBACK(src, PROC_REF(CardgameEvent), user), 60 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE)
-
-/// This checks if nearby mobs are playing a cardgame and triggers a mood and memory
-/obj/item/toy/cards/deck/proc/CardgameEvent(mob/living/dealer)
-	var/card_players = list()
-	for(var/mob/living/carbon/person in viewers(loc, COMBAT_MESSAGE_RANGE))
-		var/obj/item/toy/held_card_item = person.is_holding_item_of_type(/obj/item/toy/singlecard) || person.is_holding_item_of_type(/obj/item/toy/cards/deck) || person.is_holding_item_of_type(/obj/item/toy/cards/cardhand)
-		if(held_card_item)
-			card_players[person] = held_card_item
-
-	if(length(card_players) >= 2) // need at least 2 people to play a cardgame, duh!
-		for(var/mob/living/carbon/player in card_players)
-			var/other_players = english_list(card_players - player)
-			var/obj/item/toy/held_card_item = card_players[player]
-
-			player.mind?.add_memory(
-				MEMORY_PLAYING_CARDS,
-				list(
-					DETAIL_PROTAGONIST = player,
-					DETAIL_PLAYERS = other_players,
-					DETAIL_CARDGAME = cardgame_desc,
-					DETAIL_DEALER = dealer,
-					DETAIL_HELD_CARD_ITEM = held_card_item,
-				),
-				story_value = STORY_VALUE_OKAY,
-				memory_flags = MEMORY_CHECK_BLINDNESS
-			)
-
 
 /obj/item/toy/cards/deck/attack_hand(mob/living/user, list/modifiers, flip_card = FALSE)
 	if(!ishuman(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_DEXTERITY))
@@ -209,17 +181,7 @@
 	if(!throwingdatum?.thrower) // if a mob didn't throw it (need two people to play 52 pickup)
 		return
 
-	var/mob/living/thrower = throwingdatum.thrower
-
 	target.visible_message(span_warning("[target] is forced to play 52 card pickup!"), span_warning("You are forced to play 52 card pickup."))
-	add_memory_in_range(
-		target,
-		7,
-		MEMORY_PLAYING_52_PICKUP,
-		list(DETAIL_PROTAGONIST = thrower, DETAIL_DEUTERAGONIST = target, DETAIL_WHAT_BY = src),
-		story_value = STORY_VALUE_OKAY,
-		memory_flags = MEMORY_CHECK_BLINDNESS
-	)
 
 /*
 || Syndicate playing cards, for pretending you're Gambit and playing poker for the nuke disk. ||

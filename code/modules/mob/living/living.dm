@@ -6,14 +6,19 @@
 	register_init_signals()
 	if(unique_name)
 		give_unique_name()
+
 	var/datum/atom_hud/data/human/medical/advanced/medhud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	medhud.add_atom_to_hud(src)
+
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
 		diag_hud.add_atom_to_hud(src)
+
 	faction += "[REF(src)]"
 	GLOB.mob_living_list += src
 	SSpoints_of_interest.make_point_of_interest(src)
 	voice_type = pick(voice_type2sound)
+	mob_mood = new(src)
+
 	AddElement(/datum/element/movetype_handler)
 	gravity_setup()
 
@@ -28,6 +33,7 @@
 	QDEL_NULL(z_eye)
 	QDEL_NULL(stamina)
 	QDEL_NULL(stats)
+	QDEL_NULL(mob_mood)
 
 	for(var/datum/status_effect/effect as anything in status_effects)
 		// The status effect calls on_remove when its mob is deleted
@@ -400,18 +406,6 @@
 /mob/living/proc/calculate_affecting_pressure(pressure)
 	return pressure
 
-/mob/living/proc/getMaxHealth()
-	return maxHealth
-
-/mob/living/proc/setMaxHealth(newMaxHealth)
-	maxHealth = newMaxHealth
-
-/// Returns the health of the mob while ignoring damage of non-organic (prosthetic) limbs
-/// Used by cryo cells to not permanently imprison those with damage from prosthetics,
-/// as they cannot be healed through chemicals.
-/mob/living/proc/get_organic_health()
-	return health
-
 // MOB PROCS //END
 
 /mob/living/proc/mob_sleep()
@@ -601,14 +595,14 @@
 	health = new_value
 
 
-/mob/living/proc/updatehealth()
+/mob/living/proc/updatehealth(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 
 	set_health(maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss())
 	med_hud_set_health()
 	update_health_hud()
-	update_stat()
+	update_stat(cause_of_death)
 
 /mob/living/update_health_hud()
 	var/severity = 0
@@ -692,6 +686,7 @@
 
 	if(.)
 		qdel(GetComponent(/datum/component/spook_factor))
+		mob_mood?.add_mood_event("revival", /datum/mood_event/revival)
 
 	// The signal is called after everything else so components can properly check the updated values
 	SEND_SIGNAL(src, COMSIG_LIVING_REVIVE, full_heal, admin_revive)
@@ -1782,9 +1777,12 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				ADD_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
+				mob_mood?.update_mood_icon()
+
 		if(UNCONSCIOUS)
 			cure_blind(UNCONSCIOUS_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_DEAF, STAT_TRAIT)
+
 		if(DEAD)
 			remove_from_dead_mob_list()
 			add_to_alive_mob_list()
@@ -1794,6 +1792,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if(CONSCIOUS)
 			if(. >= UNCONSCIOUS)
 				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
+				mob_mood?.update_mood()
 			REMOVE_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
@@ -1929,7 +1928,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /// Sets the mob's hunger levels to a safe overall level. Useful for TRAIT_NOHUNGER species changes.
 /mob/living/proc/set_safe_hunger_level()
 	// Nutrition reset and alert clearing.
-	nutrition = NUTRITION_LEVEL_FED
+	set_nutrition(NUTRITION_LEVEL_FED)
 	clear_alert(ALERT_NUTRITION)
 	satiety = 0
 
@@ -2239,3 +2238,37 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /mob/living/proc/get_blood_print()
 	return BLOOD_PRINT_PAWS
+
+/mob/living/zap_act(power, zap_flags)
+	..()
+	var/shock_damage = (zap_flags & ZAP_MOB_DAMAGE) ? TESLA_POWER_TO_MOB_DAMAGE(power) : 0
+	electrocute_act(shock_damage, 1, SHOCK_USE_AVG_SIEMENS | ((zap_flags & ZAP_MOB_STUN) ? NONE : SHOCK_NOSTUN))
+	return power * 0.66
+
+/// Proc for giving a mob a new 'friend', generally used for AI control and targeting. Returns false if already friends.
+/mob/living/proc/befriend(mob/living/new_friend)
+	SHOULD_CALL_PARENT(TRUE)
+	var/friend_ref = REF(new_friend)
+	if (faction.Find(friend_ref))
+		return FALSE
+	faction |= friend_ref
+	ai_controller?.insert_blackboard_key_lazylist(BB_FRIENDS_LIST, new_friend)
+
+	SEND_SIGNAL(src, COMSIG_LIVING_BEFRIENDED, new_friend)
+	return TRUE
+
+/// Proc for removing a friend you added with the proc 'befriend'. Returns true if you removed a friend.
+/mob/living/proc/unfriend(mob/living/old_friend)
+	SHOULD_CALL_PARENT(TRUE)
+	var/friend_ref = REF(old_friend)
+	if (!faction.Find(friend_ref))
+		return FALSE
+	faction -= friend_ref
+	ai_controller?.remove_thing_from_blackboard_key(BB_FRIENDS_LIST, old_friend)
+
+	SEND_SIGNAL(src, COMSIG_LIVING_UNFRIENDED, old_friend)
+	return TRUE
+
+/mob/living/set_nutrition(change)
+	. = ..()
+	mob_mood?.update_nutrition_moodlets()

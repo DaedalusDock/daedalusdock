@@ -13,7 +13,6 @@
 		/obj/item/healthanalyzer = 4,
 		/obj/item/wrench/medical = 1,
 		/obj/item/stack/sticky_tape/surgical = 3,
-		/obj/item/healthanalyzer/wound = 4,
 		/obj/item/stack/medical/ointment = 2,
 		/obj/item/stack/medical/bruise_pack = 2,
 		/obj/item/stack/medical/bone_gel/twelve = 4

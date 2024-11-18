@@ -250,7 +250,7 @@
 
 	var/list/holding = list(target.get_active_held_item() = 60, target.get_inactive_held_item() = 30)
 
-	var/roll = stat_roll(10, /datum/rpg_skill/skirmish).outcome
+	var/roll = stat_roll(14, /datum/rpg_skill/skirmish, defender = target).outcome
 
 	//Handle unintended consequences
 	for(var/obj/item/I in holding)
@@ -344,10 +344,11 @@
 		organ.emp_act(severity)
 
 ///Adds to the parent by also adding functionality to propagate shocks through pulling and doing some fluff effects.
-/mob/living/carbon/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)
+/mob/living/carbon/electrocute_act(shock_damage, siemens_coeff = 1, flags = SHOCK_HANDS, stun_multiplier = 1)
 	. = ..()
 	if(!.)
 		return
+
 	//Propagation through pulling, fireman carry
 	if(!(flags & SHOCK_ILLUSION))
 		if(undergoing_cardiac_arrest() && resuscitate())
@@ -355,32 +356,62 @@
 
 		var/list/shocking_queue = list()
 		shocking_queue += get_all_grabbed_movables()
-		shocking_queue -= source
 
-		if(iscarbon(buckled) && source != buckled)
+		if(iscarbon(buckled))
 			shocking_queue += buckled
+
 		for(var/mob/living/carbon/carried in buckled_mobs)
-			if(source != carried)
-				shocking_queue += carried
+			shocking_queue += carried
+
 		//Found our victims, now lets shock them all
 		for(var/victim in shocking_queue)
 			var/mob/living/carbon/C = victim
-			C.electrocute_act(shock_damage*0.75, src, 1, flags)
+			C.electrocute_act(shock_damage*0.75, 1, flags)
+
 	//Stun
-	var/should_stun = (!(flags & SHOCK_TESLA) || siemens_coeff > 0.5) && !(flags & SHOCK_NOSTUN)
+	var/should_stun = (!(flags & SHOCK_USE_AVG_SIEMENS) || siemens_coeff > 0.5) && !(flags & SHOCK_NOSTUN)
 	if(should_stun)
-		Paralyze(40)
-	//Jitter and other fluff.
-	do_jitter_animation(300)
-	adjust_timed_status_effect(20 SECONDS, /datum/status_effect/jitter)
+		var/stun_coeff = (flags & SHOCK_ILLUSION) ? rand(3, 6) : (shock_damage / 5)
+		var/stun_duration = (min(stun_coeff, 10) SECONDS) * stun_multiplier
+		Disorient(4 SECONDS + stun_duration, 100, FALSE, paralyze = stun_duration, overstam = TRUE, stack_status = FALSE)
+
+	//Fluff
 	adjust_timed_status_effect(4 SECONDS, /datum/status_effect/speech/stutter)
-	addtimer(CALLBACK(src, PROC_REF(secondary_shock), should_stun), 2 SECONDS)
 	return shock_damage
 
-///Called slightly after electrocute act to apply a secondary stun.
-/mob/living/carbon/proc/secondary_shock(should_stun)
-	if(should_stun)
-		Paralyze(60)
+/// Returns an average siemen's coeffecient of the user's worn items
+/mob/living/carbon/proc/get_average_siemens_coeff()
+	var/list/zones = list(
+		"[HEAD]" = 1,
+		"[CHEST]" = 1,
+		"[ARMS]" = 1,
+		"[LEGS]" = 1,
+		"[HANDS]" = 1,
+		"[FEET]" = 1,
+	)
+
+	for(var/obj/item/I in get_all_worn_items(FALSE))
+		if(I.siemens_coefficient == 1) // we follow thermodynamics here, thank you very much!
+			continue
+
+		var/list/covered_slots = bitfield_to_list(I.body_parts_covered)
+		var/coeff = I.siemens_coefficient
+		for(var/bit in covered_slots)
+			if(ARMS & bit)
+				bit = ARMS
+			else if(LEGS & bit)
+				bit = LEGS
+			else if(FEET & bit)
+				bit = FEET
+			else if(HANDS & bit)
+				bit = HANDS
+
+			if(zones["[bit]"] > coeff)
+				zones["[bit]"] = coeff
+
+	var/sum = (zones["[HEAD]"] * 0.1) + (zones["[CHEST]"] * 0.5) + (zones["[ARMS]"] * 0.15) + (zones["[LEGS]"] * 0.15) + (zones["[HANDS]"] * 0.05) + (zones["[FEET]"] * 0.05)
+
+	return CEILING(sum, 0.01)
 
 /mob/living/carbon/proc/share_blood_on_touch(mob/living/carbon/human/who_touched_us)
 	return

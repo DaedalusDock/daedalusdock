@@ -30,7 +30,7 @@
 			if(DT_PROB(0.5, delta_time))
 				affected_mob.apply_pain(5, BODY_ZONE_CHEST, "Your abdomen hurts.")
 				if(prob(20))
-					affected_mob.adjustToxLoss(1, FALSE)
+					affected_mob.adjustToxLoss(1, FALSE, cause_of_death = "Influenza")
 			if(affected_mob.body_position == LYING_DOWN && DT_PROB(10, delta_time))
 				to_chat(affected_mob, span_notice("You feel better."))
 				stage--
@@ -48,7 +48,7 @@
 			if(DT_PROB(0.5, delta_time))
 				affected_mob.apply_pain(5, BODY_ZONE_CHEST, "Your abdomen hurts.")
 				if(prob(20))
-					affected_mob.adjustToxLoss(1, FALSE)
+					affected_mob.adjustToxLoss(1, FALSE, cause_of_death = "Influenza")
 			if(affected_mob.body_position == LYING_DOWN && DT_PROB(7.5, delta_time))
 				to_chat(affected_mob, span_notice("You feel better."))
 				stage--

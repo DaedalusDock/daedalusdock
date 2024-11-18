@@ -395,6 +395,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 					can_loop = TRUE
 				else
 					step.fail_step(user, target, zone, src)
+					result.do_skill_sound(user)
 
 		else if(!(QDELING(user) || QDELING(target) || QDELING(src)))
 			step.fail_step(user, target, zone, src)

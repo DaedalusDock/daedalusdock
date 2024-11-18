@@ -212,7 +212,6 @@
 		amount_to_heat = amount_to_heat ** (BODYTEMP_FIRE_TEMP_SOFTCAP / owner.bodytemperature)
 
 	victim.adjust_bodytemperature(amount_to_heat)
-	victim.mind?.add_memory(MEMORY_FIRE, list(DETAIL_PROTAGONIST = victim), story_value = STORY_VALUE_OKAY)
 
 #undef BODYTEMP_FIRE_TEMP_SOFTCAP
 /**

@@ -67,14 +67,33 @@
  *
  * Arguments:
  * * gibbed - Was the mob gibbed?
+ * * cod (cause of death) - A string that plainly describes how the mob died.
 */
-/mob/living/proc/death(gibbed)
+/mob/living/proc/death(gibbed, cause_of_death = "Unknown")
 	set_stat(DEAD)
 	unset_machine()
 
 	timeofdeath = world.time
 	tod = stationtime2text()
+
+	// tgchat displays doc strings with formatting, so we do stupid shit instead
+	var/list/death_message = list(
+		"<div style='text-align:center'>[span_statsbad("<span style='font-size: 300%;font-style: normal'>You Died</span>")]</div>",
+		"<div style='text-align:center'>[span_statsbad("<span style='font-size: 200%;font-style: normal'>Cause of Death: [cause_of_death]</span>")]</div>",
+		"<hr>",
+		span_obviousnotice("Your story may not be over yet. You are able to be resuscitated as long as your brain was not destroyed, and you have not been dead for 10 minutes."),
+	)
+
+	if(ishuman(src))
+		death_message.Insert(3, "<div style='text-align:center'><i>[button_element(src, "Click here to see stats", "show_death_stats=1")]</i></div>")
+		var/mob/living/carbon/human/H = src
+		H.time_of_death_stats = H.get_bodyscanner_data()
+
+	death_message = examine_block(jointext(death_message, ""))
+	to_chat(src, death_message)
+
 	var/turf/T = get_turf(src)
+
 	if(mind && mind.name && mind.active && !istype(T.loc, /area/centcom/ctf))
 		deadchat_broadcast(" has died at <b>[get_area_name(T)]</b>.", "<b>[mind.name]</b>", follow_target = src, turf_target = T, message_type=DEADCHAT_DEATHRATTLE)
 		if(SSlag_switch.measures[DISABLE_DEAD_KEYLOOP] && !client?.holder)

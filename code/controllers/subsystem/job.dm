@@ -622,7 +622,7 @@ SUBSYSTEM_DEF(job)
 		var/mob/living/carbon/human/wageslave = equipping
 		var/datum/bank_account/bank = SSeconomy.bank_accounts_by_id["[wageslave.account_id]"]
 
-		wageslave.mind.add_memory(MEMORY_ACCOUNT, list(DETAIL_ACCOUNT_ID = wageslave.account_id, DETAIL_ACCOUNT_PIN = bank.account_pin), story_value = STORY_VALUE_SHIT, memory_flags = MEMORY_FLAG_NOLOCATION)
+		wageslave.mind.set_note(NOTES_BANK_ACCOUNT, list("Account ID: [wageslave.account_id]<br>Account PIN: [bank.account_pin]"))
 		to_chat(player_client, span_obviousnotice("Your bank account pin is: <b>[bank.account_pin]</b>"))
 
 		setup_alt_job_items(wageslave, job, player_client) //PARIAH EDIT ADDITION
@@ -760,8 +760,9 @@ SUBSYSTEM_DEF(job)
 
 /datum/controller/subsystem/job/proc/SendToLateJoin(mob/M, buckle = TRUE)
 	var/atom/destination
-	if(M.mind && !is_unassigned_job(M.mind.assigned_role) && length(GLOB.jobspawn_overrides[M.mind.assigned_role.title])) //We're doing something special today.
-		destination = pick(GLOB.jobspawn_overrides[M.mind.assigned_role.title])
+
+	if(M.mind && !is_unassigned_job(M.mind.assigned_role) && length(GLOB.high_priority_spawns)) //We're doing something special today.
+		destination = pick(GLOB.high_priority_spawns[M.mind.assigned_role.title])
 		destination.JoinPlayerHere(M, FALSE)
 		return TRUE
 

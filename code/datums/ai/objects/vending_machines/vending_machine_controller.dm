@@ -1,12 +1,11 @@
 ///AI controller for vending machine gone rogue, Don't try using this on anything else, it wont work.
 /datum/ai_controller/vending_machine
-	movement_delay = 0.4 SECONDS
+	non_mob_movement_delay = 0.4 SECONDS
 	blackboard = list(BB_VENDING_CURRENT_TARGET = null,
 	BB_VENDING_TILT_COOLDOWN = 0,
 	BB_VENDING_UNTILT_COOLDOWN = 0,
 	BB_VENDING_BUSY_TILTING = FALSE,
 	BB_VENDING_LAST_HIT_SUCCESFUL = FALSE)
-	var/vision_range = 7
 	var/search_for_enemy_cooldown = 2 SECONDS
 
 /datum/ai_controller/vending_machine/TryPossessPawn(atom/new_pawn)
@@ -27,7 +26,7 @@
 	RemoveElement(/datum/element/footstep, FOOTSTEP_OBJ_MACHINE, 1, -6, sound_vary = TRUE)
 	return ..() //Run parent at end
 
-/datum/ai_controller/vending_machine/SelectBehaviors(delta_time)
+/datum/ai_controller/vending_machine/ProcessBehaviorSelection(delta_time)
 	current_behaviors = list()
 	var/obj/machinery/vending/vendor_pawn = pawn
 
@@ -39,10 +38,10 @@
 	else //Not tilted, try to find target to tilt onto.
 		if(blackboard[BB_VENDING_TILT_COOLDOWN] > world.time)
 			return
-		for(var/mob/living/living_target in oview(vision_range, pawn))
+		for(var/mob/living/living_target in oview(target_search_radius, pawn))
 			if(living_target.stat || living_target.incorporeal_move) //They're already fucked up or incorporeal
 				continue
-			blackboard[BB_VENDING_CURRENT_TARGET] = living_target
+			set_blackboard_key(BB_VENDING_CURRENT_TARGET, living_target)
 			queue_behavior(/datum/ai_behavior/vendor_crush, BB_VENDING_CURRENT_TARGET)
 			return
-		blackboard[BB_VENDING_TILT_COOLDOWN] = world.time + search_for_enemy_cooldown
+		set_blackboard_key(BB_VENDING_TILT_COOLDOWN, world.time + search_for_enemy_cooldown)

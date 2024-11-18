@@ -375,10 +375,8 @@
  * force_drop = the slip forces them to drop held items
  */
 /mob/proc/slip(knockdown_amount, obj/slipped_on, lube_flags, paralyze, force_drop = FALSE)
-	mind?.add_memory(MEMORY_SLIPPED, list(DETAIL_WHAT_BY = slipped_on, DETAIL_PROTAGONIST = src), story_value = STORY_VALUE_OKAY)
 	if(mind)
 		SSblackbox.record_feedback("amount", "slips", 1)
-	return
 
 //bodypart selection verbs - Cyberboss
 //8: repeated presses toggles through head - eyes - mouth

@@ -1097,12 +1097,14 @@
 /**
  * Respond to an electric bolt action on our item
  *
- * Default behaviour is to return, we define here to allow for cleaner code later on
+ * Returns an amount of power to use for future shocks.
  */
 /atom/proc/zap_act(power, zap_flags)
-	return
+	ADD_TRAIT(src, TRAIT_BEING_SHOCKED, WAS_SHOCKED)
+	addtimer(TRAIT_CALLBACK_REMOVE(src, TRAIT_BEING_SHOCKED, WAS_SHOCKED), 1 SECONDS, TIMER_UNIQUE|TIMER_NO_HASH_WAIT)
+	return 0
 
-/**
+/**s
  * If someone's trying to dump items onto our atom, where should they be dumped to?
  *
  * Return a loc to place objects, or null to stop dumping.
@@ -1251,11 +1253,11 @@
 	switch(var_name)
 		if(NAMEOF(src, light_inner_range))
 			if(light_system == COMPLEX_LIGHT)
-				set_light(l_inner_range = var_value)
+				set_light(l_outer_range = light_outer_range, l_inner_range = var_value, )
 				. = TRUE
 		if(NAMEOF(src, light_outer_range))
 			if(light_system == COMPLEX_LIGHT)
-				set_light(l_outer_range = var_value)
+				set_light(l_outer_range = var_value, l_inner_range = light_inner_range)
 			else
 				set_light_range(var_value)
 			. = TRUE
@@ -1272,7 +1274,10 @@
 				set_light_color(var_value)
 			. = TRUE
 		if(NAMEOF(src, light_on))
-			set_light_on(var_value)
+			if(light_system == COMPLEX_LIGHT)
+				set_light(l_on = var_value)
+			else
+				set_light_color(var_value)
 			. = TRUE
 		if(NAMEOF(src, light_flags))
 			set_light_flags(var_value)

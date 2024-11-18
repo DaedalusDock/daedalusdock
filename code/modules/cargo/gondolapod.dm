@@ -75,7 +75,7 @@
 	opened = FALSE
 	update_appearance()
 
-/mob/living/simple_animal/pet/gondola/gondolapod/death()
+/mob/living/simple_animal/pet/gondola/gondolapod/death(gibbed, cause_of_death = "Unknown")
 	QDEL_NULL(linked_pod) //Will cause the open() proc for the linked supplypod to be called with the "broken" parameter set to true, meaning that it will dump its contents on death
 	qdel(src)
 	..()

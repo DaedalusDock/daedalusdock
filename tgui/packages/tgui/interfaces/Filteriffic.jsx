@@ -27,7 +27,7 @@ const FilterIntegerEntry = (props) => {
       maxValue={500}
       stepPixelSize={5}
       width="39px"
-      onDrag={(e, value) =>
+      onDrag={(value) =>
         act('modify_filter_value', {
           name: filterName,
           new_data: {
@@ -53,7 +53,7 @@ const FilterFloatEntry = (props) => {
         step={step}
         format={(value) => toFixed(value, numberOfDecimalDigits(step))}
         width="80px"
-        onDrag={(e, value) =>
+        onDrag={(value) =>
           act('transition_filter_value', {
             name: filterName,
             new_data: {

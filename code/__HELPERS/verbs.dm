@@ -48,7 +48,6 @@
 	for(var/thing in verbs_list)
 		var/procpath/verb_to_add = thing
 		output_list[++output_list.len] = list(verb_to_add.category, verb_to_add.name)
-	output_list = url_encode(json_encode(output_list))
 
 	target.stat_panel.send_message("add_verb_list", output_list)
 
@@ -96,6 +95,5 @@
 	for(var/thing in verbs_list)
 		var/procpath/verb_to_remove = thing
 		output_list[++output_list.len] = list(verb_to_remove.category, verb_to_remove.name)
-	output_list = url_encode(json_encode(output_list))
 
 	target.stat_panel.send_message("remove_verb_list", output_list)

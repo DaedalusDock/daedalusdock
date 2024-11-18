@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Martial arts with help verbs now add help verbs again.

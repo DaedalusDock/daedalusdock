@@ -162,6 +162,7 @@
 #include "code\__DEFINES\nupermatter.dm"
 #include "code\__DEFINES\obj_flags.dm"
 #include "code\__DEFINES\packetnet.dm"
+#include "code\__DEFINES\pager_defines.dm"
 #include "code\__DEFINES\pain.dm"
 #include "code\__DEFINES\paint.dm"
 #include "code\__DEFINES\paintings.dm"

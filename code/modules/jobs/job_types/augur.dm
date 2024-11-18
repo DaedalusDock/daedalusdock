@@ -61,8 +61,7 @@
 	id_trim = /datum/id_trim/job/chief_medical_officer
 	uniform = /obj/item/clothing/under/rank/medical/chief_medical_officer
 	suit = /obj/item/clothing/suit/toggle/labcoat/cmo
-	suit_store = /obj/item/flashlight/pen/paramedic
-	belt = /obj/item/modular_computer/tablet/pda/heads/cmo
+	belt = /obj/item/pager/aether
 	ears = /obj/item/radio/headset/heads/cmo
 	shoes = /obj/item/clothing/shoes/sneakers/blue
 	l_pocket = /obj/item/pinpointer/crew
@@ -94,7 +93,6 @@
 	back = /obj/item/mod/control/pre_equipped/rescue
 	suit = null
 	mask = /obj/item/clothing/mask/breath/medical
-	r_pocket = /obj/item/flashlight/pen/paramedic
 	internals_slot = ITEM_SLOT_SUITSTORE
 	backpack_contents = null
 	box = null

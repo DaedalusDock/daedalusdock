@@ -39,6 +39,6 @@
 			return TRUE
 
 		if("UpdateContent")
-			text_content = params["message"]
+			text_content = copytext_char(params["message"], 1, 42)
 			return TRUE
 

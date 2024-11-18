@@ -52,7 +52,7 @@
 	uniform = /obj/item/clothing/under/rank/medical/doctor
 	suit = /obj/item/clothing/suit/toggle/labcoat/md
 	suit_store = /obj/item/flashlight/pen
-	belt = /obj/item/modular_computer/tablet/pda/medical
+	belt = /obj/item/pager/aether
 	ears = /obj/item/radio/headset/headset_med
 	shoes = /obj/item/clothing/shoes/sneakers/white
 	l_hand = /obj/item/storage/medkit/surgery

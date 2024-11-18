@@ -1,24 +1,39 @@
+import { BooleanLike } from 'common/react';
+
 import { useBackend } from '../backend';
-import { BlockQuote, Section } from '../components';
+import { BlockQuote, Button, Flex, Section } from '../components';
 import { Window } from '../layouts';
 
 type PagerContext = {
   messages: [];
+  receiving: BooleanLike;
   the_time: string;
 };
 
 export const Pager = (_) => {
-  const { data } = useBackend<PagerContext>();
-  const { messages, the_time } = data;
+  const { act, data } = useBackend<PagerContext>();
+  const { messages, receiving, the_time } = data;
 
   return (
-    <Window width={450} height={280} title="Pager">
+    <Window width={450} height={320} title="ThinkTronic Pager">
       <Window.Content>
-        <Section fill title={'ThinkDOS Pager | ' + the_time}>
+        <Section height="240px" title={'ThinkDOS 1.04p | ' + the_time}>
           {messages.toReversed().map((message, i) => (
             <BlockQuote key={i}>{message}</BlockQuote>
           ))}
         </Section>
+        <Flex fill justify="center">
+          <Flex.Item>
+            <Button
+              width="120px"
+              selected={receiving}
+              textAlign="center"
+              onClick={() => act('ToggleReceiving')}
+            >
+              {receiving ? 'Receiving' : 'Not Receiving'}
+            </Button>
+          </Flex.Item>
+        </Flex>
       </Window.Content>
     </Window>
   );

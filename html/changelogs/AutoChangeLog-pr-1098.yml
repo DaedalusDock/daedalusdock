@@ -1,4 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - server: Discord account linking no longer hard-requires the panic bunker

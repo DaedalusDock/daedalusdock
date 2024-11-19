@@ -14,3 +14,11 @@
   Kapu1178:
   - rscadd: Added a simple mood system. It tracks good and bad events, and is not
       visible to other players.
+2024-11-19:
+  Kapu1178:
+  - bugfix: Martial arts with help verbs now add help verbs again.
+  Pickle-Coding:
+  - code_imp: Radiation pulses will ask MC if they should continue processing for
+      every turf they iterate through, rather than just every pulse.
+  francinum:
+  - server: Discord account linking no longer hard-requires the panic bunker

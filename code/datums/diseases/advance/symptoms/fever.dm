@@ -26,7 +26,7 @@
 		"Resistance 10" = "Further increases fever intensity.",
 	)
 
-/datum/symptom/fever/Start(datum/pathogen/advance/A)
+/datum/symptom/fever/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -36,7 +36,7 @@
 	if(A.totalResistance() >= 10)
 		power = 2.5
 
-/datum/symptom/fever/Activate(datum/pathogen/advance/A)
+/datum/symptom/fever/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -70,7 +70,8 @@
 		set_body_temp(A.affected_mob, A)
 
 /// remove the body temp change when removing symptom
-/datum/symptom/fever/End(datum/pathogen/advance/A)
+/datum/symptom/fever/on_stop_processing(datum/pathogen/advance/A)
+	. = ..()
 	var/mob/living/carbon/M = A.affected_mob
 	if(M)
 		M.remove_body_temperature_change(FEVER_CHANGE)

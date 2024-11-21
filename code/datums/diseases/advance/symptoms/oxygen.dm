@@ -22,14 +22,14 @@
 		"Resistance 8" = "Additionally regenerates lost blood."
 	)
 
-/datum/symptom/oxygen/Start(datum/pathogen/advance/A)
+/datum/symptom/oxygen/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
 	if(A.totalResistance() >= 8) //blood regeneration
 		regenerate_blood = TRUE
 
-/datum/symptom/oxygen/Activate(datum/pathogen/advance/A)
+/datum/symptom/oxygen/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -56,7 +56,7 @@
 		REMOVE_TRAIT(M, TRAIT_NOBREATH, DISEASE_TRAIT)
 	return TRUE
 
-/datum/symptom/oxygen/End(datum/pathogen/advance/A)
+/datum/symptom/oxygen/on_stop_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

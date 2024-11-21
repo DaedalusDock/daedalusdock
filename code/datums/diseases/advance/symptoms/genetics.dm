@@ -29,7 +29,7 @@
 		"Stealth 5" = "Only activates negative mutations in hosts."
 	)
 
-/datum/symptom/genetic_mutation/Start(datum/pathogen/advance/A)
+/datum/symptom/genetic_mutation/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -43,7 +43,7 @@
 	if(A.totalResistance() >= 14) //one does not simply escape Nurgle's grasp
 		no_reset = TRUE
 
-/datum/symptom/genetic_mutation/Activate(datum/pathogen/advance/A)
+/datum/symptom/genetic_mutation/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -55,7 +55,7 @@
 			to_chat(C, span_warning("[pick("Your skin feels itchy.", "You feel light headed.")]"))
 			C.easy_random_mutate((NEGATIVE | MINOR_NEGATIVE | POSITIVE) - excludemuts, TRUE, TRUE, TRUE, ryetalyn_proof)
 
-/datum/symptom/genetic_mutation/End(datum/pathogen/advance/A)
+/datum/symptom/genetic_mutation/on_stop_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

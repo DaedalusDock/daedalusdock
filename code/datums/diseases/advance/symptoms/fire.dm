@@ -27,7 +27,7 @@
 		"Stealth 4" = "The symptom remains hidden until active.",
 	)
 
-/datum/symptom/fire/Start(datum/pathogen/advance/A)
+/datum/symptom/fire/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -40,7 +40,7 @@
 	if(A.totalTransmittable() >= 8) //burning skin spreads the virus through smoke
 		infective = TRUE
 
-/datum/symptom/fire/Activate(datum/pathogen/advance/A)
+/datum/symptom/fire/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -107,7 +107,7 @@ Bonus
 		"Transmission 8" = "Additionally synthesizes chlorine trifluoride and napalm inside the host. More chemicals are synthesized if the resistance 9 threshold has been met."
 	)
 
-/datum/symptom/alkali/Start(datum/pathogen/advance/A)
+/datum/symptom/alkali/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -120,7 +120,7 @@ Bonus
 	if(A.totalTransmittable() >= 8) //extra chemicals
 		chems = TRUE
 
-/datum/symptom/alkali/Activate(datum/pathogen/advance/A)
+/datum/symptom/alkali/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

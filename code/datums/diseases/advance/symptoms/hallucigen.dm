@@ -25,7 +25,7 @@
 		"Stealth 4" = "The virus mimics positive symptoms.",
 	)
 
-/datum/symptom/hallucigen/Start(datum/pathogen/advance/A)
+/datum/symptom/hallucigen/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -35,7 +35,7 @@
 	if(A.totalStageSpeed() >= 7) //stronger hallucinations
 		power = 2
 
-/datum/symptom/hallucigen/Activate(datum/pathogen/advance/A)
+/datum/symptom/hallucigen/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

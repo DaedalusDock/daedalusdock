@@ -25,7 +25,7 @@
 		"Stage Speed 10" = "Increases the intensity of the cooling even further."
 	)
 
-/datum/symptom/chills/Start(datum/pathogen/advance/A)
+/datum/symptom/chills/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -35,7 +35,7 @@
 	if(A.totalStageSpeed() >= 10)
 		power = 2.5
 
-/datum/symptom/chills/Activate(datum/pathogen/advance/A)
+/datum/symptom/chills/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -69,7 +69,8 @@
 		set_body_temp(A.affected_mob, A)
 
 /// remove the body temp change when removing symptom
-/datum/symptom/chills/End(datum/pathogen/advance/A)
+/datum/symptom/chills/on_stop_processing(datum/pathogen/advance/A)
+	. = ..()
 	var/mob/living/carbon/M = A.affected_mob
 	if(M)
 		M.remove_body_temperature_change(CHILLS_CHANGE)

@@ -18,7 +18,7 @@
 	symptom_delay_min = 25
 	symptom_delay_max = 75
 
-/datum/symptom/disfiguration/Activate(datum/pathogen/advance/A)
+/datum/symptom/disfiguration/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -33,7 +33,7 @@
 			M.visible_message(span_warning("[M]'s face begins to contort..."), span_notice("Your face feels wet and malleable..."))
 
 
-/datum/symptom/disfiguration/End(datum/pathogen/advance/A)
+/datum/symptom/disfiguration/on_stop_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

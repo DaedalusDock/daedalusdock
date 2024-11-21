@@ -24,7 +24,7 @@
 		"Stealth 4" = "The symptom remains hidden until active."
 	)
 
-/datum/symptom/choking/Start(datum/pathogen/advance/A)
+/datum/symptom/choking/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -34,7 +34,7 @@
 	if(A.totalStealth() >= 4)
 		suppress_warning = TRUE
 
-/datum/symptom/choking/Activate(datum/pathogen/advance/A)
+/datum/symptom/choking/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -100,7 +100,7 @@ Bonus
 	)
 
 
-/datum/symptom/asphyxiation/Start(datum/pathogen/advance/A)
+/datum/symptom/asphyxiation/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -109,7 +109,7 @@ Bonus
 	if(A.totalTransmittable() >= 8)
 		power = 2
 
-/datum/symptom/asphyxiation/Activate(datum/pathogen/advance/A)
+/datum/symptom/asphyxiation/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

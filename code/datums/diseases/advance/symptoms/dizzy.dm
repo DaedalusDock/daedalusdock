@@ -24,7 +24,7 @@
 		"Stealth 4" = "The symptom remains hidden until active.",
 	)
 
-/datum/symptom/dizzy/Start(datum/pathogen/advance/A)
+/datum/symptom/dizzy/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -33,7 +33,7 @@
 	if(A.totalTransmittable() >= 6) //druggy
 		power = 2
 
-/datum/symptom/dizzy/Activate(datum/pathogen/advance/A)
+/datum/symptom/dizzy/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

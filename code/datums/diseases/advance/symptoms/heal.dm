@@ -15,14 +15,14 @@
 		"Stealth 4" = "Healing will no longer be visible to onlookers.",
 	)
 
-/datum/symptom/heal/Start(datum/pathogen/advance/A)
+/datum/symptom/heal/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
 	if(A.totalStageSpeed() >= 6) //stronger healing
 		power = 2
 
-/datum/symptom/heal/Activate(datum/pathogen/advance/A)
+/datum/symptom/heal/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -75,7 +75,7 @@
 #define STARLIGHT_CANNOT_HEAL 0
 #define STARLIGHT_MAX_RANGE 2
 
-/datum/symptom/heal/starlight/Start(datum/pathogen/advance/A)
+/datum/symptom/heal/starlight/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -205,7 +205,7 @@
 		"Stage Speed 6" = "Consumed chemicals nourish the host.",
 	)
 
-/datum/symptom/heal/chem/Start(datum/pathogen/advance/A)
+/datum/symptom/heal/chem/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -248,7 +248,7 @@
 		"Stage Speed 10" = "Chemical metabolization is tripled instead of doubled.",
 	)
 
-/datum/symptom/heal/metabolism/Start(datum/pathogen/advance/A)
+/datum/symptom/heal/metabolism/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -288,7 +288,7 @@
 		"Stage Speed 8" = "Doubles healing speed.",
 	)
 
-/datum/symptom/heal/darkness/Start(datum/pathogen/advance/A)
+/datum/symptom/heal/darkness/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -350,7 +350,7 @@
 		"Stage Speed 7" = "Increases healing speed.",
 	)
 
-/datum/symptom/heal/coma/Start(datum/pathogen/advance/A)
+/datum/symptom/heal/coma/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -371,7 +371,7 @@
 		REMOVE_TRAIT(A.affected_mob, TRAIT_NOCRITDAMAGE, DISEASE_TRAIT)
 	return TRUE
 
-/datum/symptom/heal/coma/End(datum/pathogen/advance/A)
+/datum/symptom/heal/coma/on_stop_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -444,7 +444,7 @@
 		"Stage Speed 7" = "Increases healing speed.",
 	)
 
-/datum/symptom/heal/water/Start(datum/pathogen/advance/A)
+/datum/symptom/heal/water/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -508,7 +508,7 @@
 		"Stage Speed 7" = "Increases healing speed.",
 	)
 
-/datum/symptom/heal/plasma/Start(datum/pathogen/advance/A)
+/datum/symptom/heal/plasma/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -578,7 +578,7 @@
 		"Resistance 7" = "Increases healing speed.",
 	)
 
-/datum/symptom/heal/radiation/Start(datum/pathogen/advance/A)
+/datum/symptom/heal/radiation/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

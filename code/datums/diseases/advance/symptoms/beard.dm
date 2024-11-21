@@ -21,7 +21,7 @@
 
 	var/list/beard_order = list("Beard (Jensen)", "Beard (Full)", "Beard (Dwarf)", "Beard (Very Long)")
 
-/datum/symptom/beard/Activate(datum/pathogen/advance/A)
+/datum/symptom/beard/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

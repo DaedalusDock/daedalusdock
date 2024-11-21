@@ -21,14 +21,14 @@
 		"Stealth 4" = "The symptom is less noticeable."
 	)
 
-/datum/symptom/weight_loss/Start(datum/pathogen/advance/A)
+/datum/symptom/weight_loss/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
 	if(A.totalStealth() >= 4) //warn less often
 		base_message_chance = 25
 
-/datum/symptom/weight_loss/Activate(datum/pathogen/advance/A)
+/datum/symptom/weight_loss/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

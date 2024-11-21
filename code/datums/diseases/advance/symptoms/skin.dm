@@ -18,7 +18,7 @@
 	symptom_delay_min = 7
 	symptom_delay_max = 14
 
-/datum/symptom/polyvitiligo/Activate(datum/pathogen/advance/A)
+/datum/symptom/polyvitiligo/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

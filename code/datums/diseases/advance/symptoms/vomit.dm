@@ -27,7 +27,7 @@ and your disease can spread via people walking on vomit.
 		"Stealth 4" = "The symptom remains hidden until active."
 	)
 
-/datum/symptom/vomit/Start(datum/pathogen/advance/A)
+/datum/symptom/vomit/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -38,7 +38,7 @@ and your disease can spread via people walking on vomit.
 	if(A.totalTransmittable() >= 7) //projectile vomit
 		proj_vomit = 5
 
-/datum/symptom/vomit/Activate(datum/pathogen/advance/A)
+/datum/symptom/vomit/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

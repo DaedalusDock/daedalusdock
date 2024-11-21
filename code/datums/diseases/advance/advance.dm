@@ -25,11 +25,13 @@
 	spread_text = "Unknown"
 	viable_mobtypes = list(/mob/living/carbon/human)
 
-	// NEW VARS
-	var/list/properties = list()
-	var/list/symptoms = list() // The symptoms of the disease.
 	var/id = ""
-	var/processing = FALSE
+
+	var/list/properties = list()
+	/// A list of symptom instances.
+	var/list/symptoms = list()
+	/// Set to TRUE on first life process.
+	var/has_started = FALSE
 	var/mutable = TRUE //set to FALSE to prevent most in-game methods of altering the disease via virology
 	var/oldres //To prevent setting new cures unless resistance changes.
 
@@ -80,9 +82,8 @@
 	Refresh()
 
 /datum/pathogen/advance/Destroy()
-	if(processing)
-		for(var/datum/symptom/S in symptoms)
-			S.End(src)
+	for(var/datum/symptom/S as anything in symptoms)
+		RemoveSymptom(S)
 	return ..()
 
 /datum/pathogen/advance/try_infect(mob/living/infectee, make_copy = TRUE)
@@ -91,6 +92,7 @@
 	var/list/advance_diseases = list()
 	for(var/datum/pathogen/advance/P in infectee.diseases)
 		advance_diseases += P
+
 	var/replace_num = advance_diseases.len + 1 - DISEASE_LIMIT //amount of diseases that need to be removed to fit this one
 	if(replace_num > 0)
 		sortTim(advance_diseases, GLOBAL_PROC_REF(cmp_advdisease_resistance_asc))
@@ -113,34 +115,30 @@
 	if(!length(symptoms))
 		return
 
-	if(!processing)
-		processing = TRUE
-		for(var/s in symptoms)
-			var/datum/symptom/symptom_datum = s
-			if(symptom_datum.Start(src)) //this will return FALSE if the symptom is neutered
-				symptom_datum.next_activation = world.time + rand(symptom_datum.symptom_delay_min SECONDS, symptom_datum.symptom_delay_max SECONDS)
+	if(!has_started)
+		has_started = TRUE
+		for(var/datum/symptom/symptom_datum as anything in symptoms)
+			if(symptom_datum.on_start_processing(src)) //this will return FALSE if the symptom is neutered
+				symptom_datum.update_next_activation()
 			symptom_datum.on_stage_change(src)
 
-	for(var/s in symptoms)
-		var/datum/symptom/symptom_datum = s
-		symptom_datum.Activate(src)
-
+	for(var/datum/symptom/symptom_datum as anything in symptoms)
+		symptom_datum.on_process(src)
 
 // Tell symptoms stage changed
 /datum/pathogen/advance/set_stage(new_stage)
-	..()
-	for(var/datum/symptom/S in symptoms)
+	. = ..()
+	for(var/datum/symptom/S as anything in symptoms)
 		S.on_stage_change(src)
 
 // Compares type then ID.
 /datum/pathogen/advance/IsSame(datum/pathogen/advance/D)
-
 	if(!(istype(D, /datum/pathogen/advance)))
 		return FALSE
 
 	return ..()
 
-// Returns the advance disease with a different reference memory.
+// When copying an advance disease, keep in mind it begins from stage 1.
 /datum/pathogen/advance/Copy()
 	var/datum/pathogen/advance/A = ..()
 	QDEL_LIST(A.symptoms)
@@ -205,20 +203,23 @@
 	for(var/i = 1; number_of >= i && possible_symptoms.len; i++)
 		. += pick_n_take(possible_symptoms)
 
-/datum/pathogen/advance/proc/Refresh(new_name = FALSE)
+/// Recaluculate the properties of the disease, and generate a new ID.
+/datum/pathogen/advance/proc/Refresh(autogen_name = FALSE)
 	GenerateProperties()
 	AssignProperties()
-	if(processing && symptoms?.len)
-		for(var/datum/symptom/S in symptoms)
-			S.Start(src)
+
+	if(has_started && length(symptoms))
+		for(var/datum/symptom/S as anything in symptoms)
+			S.on_start_processing(src)
 			S.on_stage_change(src)
+
 	id = null
 
 	var/the_id = get_id()
 	if(!SSpathogens.archive_pathogens[the_id])
 		SSpathogens.archive_pathogens[the_id] = src // So we don't infinite loop
 		SSpathogens.archive_pathogens[the_id] = Copy()
-		if(new_name)
+		if(autogen_name)
 			AssignName()
 
 //Generate disease properties based on the effects. Returns an associated list.
@@ -347,22 +348,25 @@
 			Refresh(TRUE)
 
 // Name the disease.
-/datum/pathogen/advance/proc/AssignName(name = "Unknown")
+/datum/pathogen/advance/proc/AssignName(new_name = "Unknown")
 	var/datum/pathogen/advance/A = SSpathogens.archive_pathogens[get_id()]
-	A.name = name
+	A.name = new_name
+	name = new_name
 
 // Return a unique ID of the disease.
 /datum/pathogen/advance/get_id()
-	if(!id)
-		var/list/L = list()
-		for(var/datum/symptom/S in symptoms)
-			if(S.neutered)
-				L += "[S.id]N"
-			else
-				L += S.id
-		L = sort_list(L) // Sort the list so it doesn't matter which order the symptoms are in.
-		var/result = jointext(L, ":")
-		id = result
+	if(id)
+		return id
+
+	var/list/L = list()
+	for(var/datum/symptom/S as anything in symptoms)
+		if(S.neutered)
+			L += "[S.id] (N)"
+		else
+			L += S.id
+
+	L = sort_list(L) // Sort the list so it doesn't matter which order the symptoms are in.
+	id = jointext(L, ":")
 	return id
 
 
@@ -375,19 +379,21 @@
 	if(symptoms.len >= VIRUS_SYMPTOM_LIMIT)
 		RemoveSymptom(pick(symptoms))
 	symptoms += S
-	S.OnAdd(src)
+	S.on_add_to_pathogen(src)
 
 // Simply removes the symptom.
 /datum/pathogen/advance/proc/RemoveSymptom(datum/symptom/S)
 	symptoms -= S
-	S.OnRemove(src)
+	S.on_remove_from_pathogen(src)
 
 // Neuter a symptom, so it will only affect stats
 /datum/pathogen/advance/proc/NeuterSymptom(datum/symptom/S)
-	if(!S.neutered)
-		S.neutered = TRUE
-		S.name += " (neutered)"
-		S.OnRemove(src)
+	if(S.neutered)
+		return
+
+	S.neutered = TRUE
+	S.name += " (neutered)"
+	S.on_remove_from_pathogen(src)
 
 /*
 
@@ -467,8 +473,7 @@
 		if(!new_name)
 			return
 		D.Refresh()
-		D.AssignName(new_name) //Updates the master copy
-		D.name = new_name //Updates our copy
+		D.AssignName(new_name)
 
 		var/list/targets = list("Random")
 		targets += sort_names(GLOB.human_list)

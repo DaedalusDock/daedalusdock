@@ -23,7 +23,7 @@
 		"Stage Speed 10" = "Causes narcolepsy more often, increasing the chance of the host falling asleep.",
 	)
 
-/datum/symptom/narcolepsy/Start(datum/pathogen/advance/A)
+/datum/symptom/narcolepsy/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -33,7 +33,7 @@
 		symptom_delay_min = 20
 		symptom_delay_max = 45
 
-/datum/symptom/narcolepsy/Activate(datum/pathogen/advance/A)
+/datum/symptom/narcolepsy/on_process(datum/pathogen/advance/A)
 	var/mob/living/M = A.affected_mob
 	switch(A.stage)
 		if(1)

@@ -25,7 +25,7 @@
 		"Stealth 4" = "The symptom remains hidden until active.",
 	)
 
-/datum/symptom/confusion/Start(datum/pathogen/advance/A)
+/datum/symptom/confusion/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -36,11 +36,11 @@
 	if(A.totalStealth() >= 4)
 		suppress_warning = TRUE
 
-/datum/symptom/confusion/End(datum/pathogen/advance/A)
+/datum/symptom/confusion/on_stop_processing(datum/pathogen/advance/A)
 	A.affected_mob.remove_status_effect(/datum/status_effect/confusion)
 	return ..()
 
-/datum/symptom/confusion/Activate(datum/pathogen/advance/A)
+/datum/symptom/confusion/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

@@ -27,7 +27,7 @@
 		"Stealth 4" = "The symptom remains hidden until active.",
 	)
 
-/datum/symptom/cough/Start(datum/pathogen/advance/A)
+/datum/symptom/cough/on_start_processing(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -42,7 +42,7 @@
 	if(A.totalStageSpeed() >= 6) //cough more often
 		symptom_delay_max = 10
 
-/datum/symptom/cough/Activate(datum/pathogen/advance/A)
+/datum/symptom/cough/on_process(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

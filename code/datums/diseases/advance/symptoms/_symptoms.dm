@@ -17,8 +17,8 @@
 	var/level = 0
 	///The severity level of the symptom. Higher is more dangerous.
 	var/severity = 0
-	///The hash tag for our diseases, we will add it up with our other symptoms to get a unique id! ID MUST BE UNIQUE!!!
-	var/id = ""
+	/// A stringified version of the type.
+	VAR_FINAL/id = ""
 	///Base chance of sending warning messages, so it can be modified
 	var/base_message_chance = 10
 	///If the early warnings are suppressed or not
@@ -36,53 +36,59 @@
 	var/naturally_occuring = TRUE
 
 /datum/symptom/New()
-	var/list/S = SSpathogens.symptom_types
-	for(var/i = 1; i <= S.len; i++)
-		if(type == S[i])
-			id = "[i]"
-			return
-	CRASH("We couldn't assign an ID!")
+	id = "[type]"
 
 ///Called when processing of the advance disease that holds this symptom infects a host and upon each Refresh() of that advance disease.
-/datum/symptom/proc/Start(datum/pathogen/advance/A)
+/datum/symptom/proc/on_start_processing(datum/pathogen/advance/A)
+	SHOULD_CALL_PARENT(TRUE)
 	if(neutered)
 		return FALSE
 	return TRUE
 
-///Called when the advance disease is going to be deleted or when the advance disease stops processing.
-/datum/symptom/proc/End(datum/pathogen/advance/A)
+/// Called when the disease has stopped processing, including due to deletion.
+/datum/symptom/proc/on_stop_processing(datum/pathogen/advance/A)
+	SHOULD_CALL_PARENT(TRUE)
 	if(neutered)
 		return FALSE
 	return TRUE
 
-/datum/symptom/proc/Activate(datum/pathogen/advance/A)
+/// Called when the symptom is added to a pathogen.
+/datum/symptom/proc/on_add_to_pathogen(datum/pathogen/advance/A)
+	SHOULD_CALL_PARENT(TRUE)
+
+/// Called when the symptom is removed from a pathogen or neutered.
+/datum/symptom/proc/on_remove_from_pathogen(datum/pathogen/advance/A)
+	SHOULD_CALL_PARENT(TRUE)
+	if(A.has_started)
+		on_stop_processing(A)
+
+/// The process handler. Returns TRUE if the pathogen could process this tick. Reschedules the next activation on success.
+/datum/symptom/proc/on_process(datum/pathogen/advance/A)
 	if(neutered)
 		return FALSE
+
 	if(world.time < next_activation)
 		return FALSE
 	else
-		next_activation = world.time + rand(symptom_delay_min * 10, symptom_delay_max * 10)
+		next_activation = update_next_activation()
 		return TRUE
 
+/// Hook for handling stage changes.
 /datum/symptom/proc/on_stage_change(datum/pathogen/advance/A)
 	if(neutered)
 		return FALSE
 	return TRUE
 
+/// Set the next activation time.
+/datum/symptom/proc/update_next_activation()
+	next_activation = world.time + rand(symptom_delay_min SECONDS, symptom_delay_max SECONDS)
+
+/// Returns a new instance of the symptom.
 /datum/symptom/proc/Copy()
 	var/datum/symptom/new_symp = new type
 	new_symp.name = name
-	new_symp.id = id
 	new_symp.neutered = neutered
 	return new_symp
 
 /datum/symptom/proc/generate_threshold_desc()
-	return
-
-///Overload when a symptom needs to be active before processing, like changing biotypes.
-/datum/symptom/proc/OnAdd(datum/pathogen/advance/A)
-	return
-
-///Overload for running after processing.
-/datum/symptom/proc/OnRemove(datum/pathogen/advance/A)
 	return

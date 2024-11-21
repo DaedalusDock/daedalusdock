@@ -54,11 +54,6 @@
 	message = jointext(split_message, " ")
 	speech_args[SPEECH_MESSAGE] = message
 
-
-/datum/disease/pierrot_throat/Destroy()
-	UnregisterSignal(affected_mob, COMSIG_MOB_SAY)
-	return ..()
-
-/datum/disease/pierrot_throat/remove_disease()
+/datum/disease/pierrot_throat/remove_disease_from_host()
 	UnregisterSignal(affected_mob, COMSIG_MOB_SAY)
 	return ..()

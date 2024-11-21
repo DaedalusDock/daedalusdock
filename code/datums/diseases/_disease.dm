@@ -52,16 +52,25 @@
 
 /datum/disease/Destroy()
 	if(affected_mob)
-		remove_disease()
+		remove_disease_from_host()
 	SSdisease.active_diseases.Remove(src)
 	return ..()
+
+/// Removes the disease from the host mob.
+/datum/disease/proc/remove_disease_from_host()
+	PROTECTED_PROC(TRUE)
+	SHOULD_CALL_PARENT(TRUE)
+
+	LAZYREMOVE(affected_mob.diseases, src) //remove the datum from the list
+	affected_mob.med_hud_set_status()
+	affected_mob = null
 
 /// Attempt to infect a mob with this disease. Currently, only advance diseases can fail this. Returns TRUE on success.
 /datum/disease/proc/try_infect(mob/living/infectee, make_copy = TRUE)
 	force_infect(infectee, make_copy)
 	return TRUE
 
-//Infect a mob with absolutely no safety checks.
+/// Infect a mob with absolutely no safety checks.
 /datum/disease/proc/force_infect(mob/living/infectee, make_copy = TRUE)
 	var/datum/disease/D = make_copy ? Copy() : src
 	LAZYADD(infectee.diseases, D)
@@ -207,10 +216,6 @@
 /datum/disease/proc/GetDiseaseID()
 	return "[type]"
 
-/datum/disease/proc/remove_disease()
-	LAZYREMOVE(affected_mob.diseases, src) //remove the datum from the list
-	affected_mob.med_hud_set_status()
-	affected_mob = null
 
 /**
  * Checks the given typepath against the list of viable mobtypes.

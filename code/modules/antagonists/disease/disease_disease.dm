@@ -16,10 +16,10 @@
 	overmind = null
 	GLOB.sentient_disease_instances -= src
 
-/datum/disease/advance/sentient_disease/remove_disease()
+/datum/disease/advance/sentient_disease/remove_disease_from_host()
 	if(overmind)
 		overmind.remove_infection(src)
-	..()
+	return ..()
 
 /datum/disease/advance/sentient_disease/force_infect(mob/living/infectee, make_copy = TRUE)
 	if(make_copy && overmind && (overmind.disease_template != src))

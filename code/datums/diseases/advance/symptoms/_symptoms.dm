@@ -70,7 +70,7 @@
 	if(world.time < next_activation)
 		return FALSE
 	else
-		next_activation = update_next_activation()
+		update_next_activation()
 		return TRUE
 
 /// Hook for handling stage changes.

@@ -100,8 +100,8 @@
 				competition.force_cure(add_resistance = FALSE)
 			else
 				return FALSE //we are not strong enough to bully our way in
-	infect(infectee, make_copy)
-	return TRUE
+
+	return ..()
 
 
 // Randomly pick a symptom to activate.

@@ -56,13 +56,13 @@
 	SSdisease.active_diseases.Remove(src)
 	return ..()
 
-//add this disease if the host does not already have too many
+/// Attempt to infect a mob with this disease. Currently, only advance diseases can fail this. Returns TRUE on success.
 /datum/disease/proc/try_infect(mob/living/infectee, make_copy = TRUE)
-	infect(infectee, make_copy)
+	force_infect(infectee, make_copy)
 	return TRUE
 
-//add the disease with no checks
-/datum/disease/proc/infect(mob/living/infectee, make_copy = TRUE)
+//Infect a mob with absolutely no safety checks.
+/datum/disease/proc/force_infect(mob/living/infectee, make_copy = TRUE)
 	var/datum/disease/D = make_copy ? Copy() : src
 	LAZYADD(infectee.diseases, D)
 	D.affected_mob = infectee
@@ -158,7 +158,7 @@
 	return TRUE
 
 /datum/disease/proc/IsSame(datum/disease/D)
-	if(istype(D, type))
+	if(GetDiseaseID() == D.GetDiseaseID())
 		return TRUE
 	return FALSE
 

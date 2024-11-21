@@ -4,7 +4,7 @@
 	var/datum/disease/advance/confusion/disease = allocate(/datum/disease/advance/confusion)
 	var/datum/symptom/confusion/confusion = disease.symptoms[1]
 	disease.processing = TRUE
-	disease.update_stage(5)
+	disease.set_stage(5)
 	disease.force_infect(dummy, make_copy = FALSE)
 	confusion.Activate(disease)
 	TEST_ASSERT(dummy.has_status_effect(/datum/status_effect/confusion), "Human is not confused after getting symptom.")

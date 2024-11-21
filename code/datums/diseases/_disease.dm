@@ -103,19 +103,19 @@
 /datum/disease/proc/stage_act(delta_time, times_fired)
 	if(can_cure_affected())
 		if(DT_PROB(cure_chance, delta_time))
-			update_stage(max(stage - 1, 1))
+			set_stage(max(stage - 1, 1))
 
 		if(DT_PROB(cure_chance, delta_time))
 			force_cure()
 			return FALSE
 
 	else if(DT_PROB(stage_prob, delta_time))
-		update_stage(min(stage + 1, max_stages))
+		set_stage(min(stage + 1, max_stages))
 
 	return !affected_mob_is_only_carrier
 
 /// Setter for the stage var
-/datum/disease/proc/update_stage(new_stage)
+/datum/disease/proc/set_stage(new_stage)
 	stage = new_stage
 
 /// Returns TRUE if the affected mob can be cured.

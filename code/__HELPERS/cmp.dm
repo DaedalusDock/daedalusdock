@@ -95,8 +95,8 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 	else
 		return A.layer - B.layer
 
-/proc/cmp_advdisease_resistance_asc(datum/disease/advance/A, datum/disease/advance/B)
-	return A.totalResistance() - B.totalResistance()
+/proc/cmp_advdisease_resistance_asc(datum/pathogen/advance/A, datum/pathogen/advance/B)
+	return A.properties[PATHOGEN_PROP_RESISTANCE] - B.properties[PATHOGEN_PROP_RESISTANCE]
 
 /proc/cmp_quirk_asc(datum/quirk/A, datum/quirk/B)
 	var/a_sign = SIGN(initial(A.quirk_genre) * -1)

@@ -27,7 +27,7 @@
 		advanced_virus = TRUE
 
 	if(!virus_type && !advanced_virus)
-		virus_type = pick(/datum/disease/dnaspread, /datum/disease/advance/flu, /datum/disease/advance/cold, /datum/disease/brainrot, /datum/disease/magnitis)
+		virus_type = pick(/datum/pathogen/advance/flu, /datum/pathogen/advance/cold, /datum/pathogen/brainrot, /datum/pathogen/magnitis)
 
 	for(var/mob/living/carbon/human/H in shuffle(GLOB.alive_mob_list))
 		var/turf/T = get_turf(H)
@@ -48,25 +48,17 @@
 		if(foundAlready)
 			continue
 
-		var/datum/disease/D
+		var/datum/pathogen/D
 		if(!advanced_virus)
-			if(virus_type == /datum/disease/dnaspread) //Dnaspread needs strain_data set to work.
-				if(!H.dna || (HAS_TRAIT(H, TRAIT_BLIND))) //A blindness disease would be the worst.
-					continue
-				D = new virus_type()
-				var/datum/disease/dnaspread/DS = D
-				DS.strain_data["name"] = H.real_name
-				DS.strain_data["UI"] = H.dna.unique_identity
-				DS.strain_data["SE"] = H.dna.mutation_index
-			else
-				D = new virus_type()
+			D = new virus_type()
 		else
-			D = new /datum/disease/advance/random(max_severity, max_severity)
-		D.carrier = TRUE
-		H.ForceContractDisease(D, FALSE, TRUE)
+			D = new /datum/pathogen/advance/random(max_severity, max_severity)
+
+		D.affected_mob_is_only_carrier = TRUE
+		H.try_contract_pathogen(D, FALSE, TRUE)
 
 		if(advanced_virus)
-			var/datum/disease/advance/A = D
+			var/datum/pathogen/advance/A = D
 			var/list/name_symptoms = list() //for feedback
 			for(var/datum/symptom/S in A.symptoms)
 				name_symptoms += S.name

@@ -47,7 +47,7 @@
 	if(LAZYLEN(diseases))
 		var/list/datum/pathogen/diseases_to_add = list()
 		for(var/datum/pathogen/D in diseases)
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+			if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
 				diseases_to_add += D
 		if(LAZYLEN(diseases_to_add))
 			AddComponent(/datum/component/infective, diseases_to_add)

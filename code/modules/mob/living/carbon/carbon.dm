@@ -838,7 +838,7 @@
 
 	for(var/thing in diseases)
 		var/datum/pathogen/D = thing
-		if(D.severity != DISEASE_SEVERITY_POSITIVE)
+		if(D.severity != PATHOGEN_SEVERITY_POSITIVE)
 			D.force_cure(add_resistance = FALSE)
 
 	if(admin_revive)

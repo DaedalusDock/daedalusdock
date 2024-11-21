@@ -2,15 +2,15 @@
 	name = "Unnatural Wasting"
 	max_stages = 5
 	stage_prob = 5
-	spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
+	spread_flags = PATHOGEN_SPREAD_NON_CONTAGIOUS
 	cure_text = "Holy water or extensive rest."
 	spread_text = "A burst of unholy energy"
 	cures = list(/datum/reagent/water/holywater)
 	cure_chance = 30 //higher chance to cure, because revenants are assholes
 	agent = "Unholy Forces"
 	viable_mobtypes = list(/mob/living/carbon/human)
-	disease_flags = DISEASE_CURABLE
-	severity = DISEASE_SEVERITY_HARMFUL
+	disease_flags = PATHOGEN_CURABLE
+	severity = PATHOGEN_SEVERITY_HARMFUL
 	var/stagedamage = 0 //Highest stage reached.
 	var/finalstage = 0 //Because we're spawning off the cure in the final stage, we need to check if we've done the final stage's effects.
 

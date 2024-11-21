@@ -128,12 +128,12 @@
 		//Also spread diseases
 		for(var/thing in diseases)
 			var/datum/pathogen/D = thing
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+			if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
 				L.try_contact_contract_pathogen(D)
 
 		for(var/thing in L.diseases)
 			var/datum/pathogen/D = thing
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+			if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
 				try_contact_contract_pathogen(D)
 
 		//Should stop you pushing a restrained person out of the way

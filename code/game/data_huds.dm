@@ -65,7 +65,7 @@
 	hud_icons = list(GLAND_HUD)
 
 /datum/atom_hud/sentient_disease
-	hud_icons = list(SENTIENT_DISEASE_HUD)
+	hud_icons = list(SENTIENT_PATHOGEN_HUD)
 
 /datum/atom_hud/ai_detector
 	hud_icons = list(AI_DETECT_HUD)
@@ -95,7 +95,7 @@ Medical HUD! Basic mode needs suit sensors on.
 	var/threat
 	var/severity
 	if(HAS_TRAIT(src, TRAIT_DISEASELIKE_SEVERITY_MEDIUM))
-		severity = DISEASE_SEVERITY_MEDIUM
+		severity = PATHOGEN_SEVERITY_MEDIUM
 		threat = get_disease_severity_value(severity)
 
 	for(var/thing in diseases)
@@ -203,19 +203,19 @@ Medical HUD! Basic mode needs suit sensors on.
 		new_state = "huddead"
 	else
 		switch(virus_threat)
-			if(DISEASE_SEVERITY_BIOHAZARD)
+			if(PATHOGEN_SEVERITY_BIOHAZARD)
 				new_state = "hudill5"
-			if(DISEASE_SEVERITY_DANGEROUS)
+			if(PATHOGEN_SEVERITY_DANGEROUS)
 				new_state = "hudill4"
-			if(DISEASE_SEVERITY_HARMFUL)
+			if(PATHOGEN_SEVERITY_HARMFUL)
 				new_state = "hudill3"
-			if(DISEASE_SEVERITY_MEDIUM)
+			if(PATHOGEN_SEVERITY_MEDIUM)
 				new_state = "hudill2"
-			if(DISEASE_SEVERITY_MINOR)
+			if(PATHOGEN_SEVERITY_MINOR)
 				new_state = "hudill1"
-			if(DISEASE_SEVERITY_NONTHREAT)
+			if(PATHOGEN_SEVERITY_NONTHREAT)
 				new_state = "hudill0"
-			if(DISEASE_SEVERITY_POSITIVE)
+			if(PATHOGEN_SEVERITY_POSITIVE)
 				new_state = "hudbuff"
 			if(null)
 				new_state = "hudhealthy"

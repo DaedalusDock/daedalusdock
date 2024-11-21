@@ -227,7 +227,7 @@
 		if(blood_id == C.get_blood_id())//both mobs have the same blood substance
 			if(blood_id == /datum/reagent/blood) //normal blood
 				for(var/datum/pathogen/D as anything in blood_data["viruses"])
-					if((D.spread_flags & DISEASE_SPREAD_SPECIAL) || (D.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
+					if((D.spread_flags & PATHOGEN_SPREAD_SPECIAL) || (D.spread_flags & PATHOGEN_SPREAD_NON_CONTAGIOUS))
 						continue
 					C.try_contract_pathogen(D)
 

@@ -215,10 +215,10 @@
 		for(var/thing in data["viruses"])
 			var/datum/pathogen/strain = thing
 
-			if((strain.spread_flags & DISEASE_SPREAD_SPECIAL) || (strain.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
+			if((strain.spread_flags & PATHOGEN_SPREAD_SPECIAL) || (strain.spread_flags & PATHOGEN_SPREAD_NON_CONTAGIOUS))
 				continue
 
-			if((methods & (TOUCH|VAPOR)) && (strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS))
+			if((methods & (TOUCH|VAPOR)) && (strain.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS))
 				exposed_mob.try_contact_contract_pathogen(strain)
 
 
@@ -229,7 +229,7 @@
 	if(data["viruses"])
 		for(var/datum/pathogen/strain as anything in data["viruses"])
 
-			if((strain.spread_flags & (DISEASE_SPREAD_SPECIAL|DISEASE_SPREAD_NON_CONTAGIOUS)))
+			if((strain.spread_flags & (PATHOGEN_SPREAD_SPECIAL|PATHOGEN_SPREAD_NON_CONTAGIOUS)))
 				continue
 
 			C.try_contract_pathogen(strain)
@@ -247,10 +247,10 @@
 /datum/reagent/blood/affect_touch(mob/living/carbon/C, removed)
 	for(var/datum/pathogen/strain as anything in data?["viruses"])
 
-		if((strain.spread_flags & DISEASE_SPREAD_SPECIAL) || (strain.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
+		if((strain.spread_flags & PATHOGEN_SPREAD_SPECIAL) || (strain.spread_flags & PATHOGEN_SPREAD_NON_CONTAGIOUS))
 			continue
 
-		if(strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+		if(strain.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
 			C.try_contact_contract_pathogen(strain)
 
 /datum/reagent/blood/on_new(list/data)
@@ -307,7 +307,7 @@
 	else if(LAZYLEN(data["viruses"]))
 		var/list/viri_to_add = list()
 		for(var/datum/pathogen/virus in data["viruses"])
-			if(virus.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+			if(virus.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
 				viri_to_add += virus
 		if(LAZYLEN(viri_to_add))
 			bloodsplatter.AddComponent(/datum/component/infective, viri_to_add)

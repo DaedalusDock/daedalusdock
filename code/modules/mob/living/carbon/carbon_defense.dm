@@ -150,12 +150,12 @@
 		. = TRUE
 	for(var/thing in diseases)
 		var/datum/pathogen/D = thing
-		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+		if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
 			user.try_contact_contract_pathogen(D)
 
 	for(var/thing in user.diseases)
 		var/datum/pathogen/D = thing
-		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+		if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
 			try_contact_contract_pathogen(D)
 
 	return . || FALSE
@@ -166,12 +166,12 @@
 	if(try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
 		for(var/thing in diseases)
 			var/datum/pathogen/D = thing
-			if((D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN) && prob(85))
+			if((D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN) && prob(85))
 				user.try_contact_contract_pathogen(D)
 
 	for(var/thing in user.diseases)
 		var/datum/pathogen/D = thing
-		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+		if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
 			try_contact_contract_pathogen(D)
 
 	if(!user.combat_mode)
@@ -181,7 +181,7 @@
 	if(..()) //successful monkey bite.
 		for(var/thing in user.diseases)
 			var/datum/pathogen/D = thing
-			if(D.spread_flags & (DISEASE_SPREAD_SPECIAL | DISEASE_SPREAD_NON_CONTAGIOUS))
+			if(D.spread_flags & (PATHOGEN_SPREAD_SPECIAL | PATHOGEN_SPREAD_NON_CONTAGIOUS))
 				continue
 			try_contract_pathogen(D)
 		return TRUE

@@ -72,11 +72,11 @@
 		if(!ishuman(assailant) || !assailant:gloves)
 			var/mob/living/affecting_mob = affecting
 			for(var/datum/pathogen/D as anything in assailant.diseases)
-				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+				if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
 					affecting_mob.try_contact_contract_pathogen(D)
 
 			for(var/datum/pathogen/D as anything in affecting_mob.diseases)
-				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+				if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
 					assailant.try_contact_contract_pathogen(D)
 
 	/// Setup the effects applied by grab

@@ -30,7 +30,7 @@
 	return D
 
 
-/datum/pathogen/transformation/stage_act(delta_time, times_fired)
+/datum/pathogen/transformation/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -124,7 +124,7 @@
 /datum/pathogen/transformation/jungle_flu/do_disease_transformation(mob/living/carbon/affected_mob)
 	affected_mob.monkeyize()
 
-/datum/pathogen/transformation/jungle_flu/stage_act(delta_time, times_fired)
+/datum/pathogen/transformation/jungle_flu/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -161,7 +161,7 @@
 	bantype = JOB_CYBORG
 
 
-/datum/pathogen/transformation/robot/stage_act(delta_time, times_fired)
+/datum/pathogen/transformation/robot/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -197,7 +197,7 @@
 	bantype = ROLE_ALIEN
 
 
-/datum/pathogen/transformation/xeno/stage_act(delta_time, times_fired)
+/datum/pathogen/transformation/xeno/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -229,7 +229,7 @@
 	new_form = /mob/living/simple_animal/slime/random
 
 
-/datum/pathogen/transformation/slime/stage_act(delta_time, times_fired)
+/datum/pathogen/transformation/slime/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -262,7 +262,7 @@
 	new_form = /mob/living/simple_animal/pet/dog/corgi
 
 
-/datum/pathogen/transformation/corgi/stage_act(delta_time, times_fired)
+/datum/pathogen/transformation/corgi/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -311,7 +311,7 @@
 	new_form = /mob/living/simple_animal/pet/gondola
 
 
-/datum/pathogen/transformation/gondola/stage_act(delta_time, times_fired)
+/datum/pathogen/transformation/gondola/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

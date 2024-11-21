@@ -13,7 +13,7 @@
 	severity = DISEASE_SEVERITY_BIOHAZARD
 	bypasses_immunity = TRUE // TB primarily impacts the lungs; it's also bacterial or fungal in nature; viral immunity should do nothing.
 
-/datum/pathogen/tuberculosis/stage_act(delta_time, times_fired) //it begins
+/datum/pathogen/tuberculosis/on_process(delta_time, times_fired) //it begins
 	. = ..()
 	if(!.)
 		return

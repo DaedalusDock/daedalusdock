@@ -23,7 +23,7 @@
 	..()
 
 
-/datum/pathogen/revblight/stage_act(delta_time, times_fired)
+/datum/pathogen/revblight/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

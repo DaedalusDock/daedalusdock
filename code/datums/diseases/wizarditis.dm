@@ -22,7 +22,7 @@ TARCOL MINTI ZHERI - forcewall
 STI KALY - blind
 */
 
-/datum/pathogen/wizarditis/stage_act(delta_time, times_fired)
+/datum/pathogen/wizarditis/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

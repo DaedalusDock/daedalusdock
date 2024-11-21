@@ -13,7 +13,7 @@
 	severity = DISEASE_SEVERITY_HARMFUL
 
 
-/datum/pathogen/brainrot/stage_act(delta_time, times_fired) //Removed toxloss because damaging diseases are pretty horrible. Last round it killed the entire station because the cure didn't work -- Urist -ACTUALLY Removed rather than commented out, I don't see it returning - RR
+/datum/pathogen/brainrot/on_process(delta_time, times_fired) //Removed toxloss because damaging diseases are pretty horrible. Last round it killed the entire station because the cure didn't work -- Urist -ACTUALLY Removed rather than commented out, I don't see it returning - RR
 	. = ..()
 	if(!.)
 		return

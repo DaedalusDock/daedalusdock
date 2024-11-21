@@ -3,7 +3,7 @@
 	var/mob/living/carbon/affected_mob = null
 	//Flags
 	var/visibility_flags = 0
-	var/disease_flags = DISEASE_CURABLE | DISEASE_RESIST_ON_CURE | DISEASE_NEED_ALL_CURES
+	var/disease_flags = DISEASE_CURABLE | DISEASE_RESIST_ON_CURE | DISEASE_NEED_ALL_CURES | DISEASE_REGRESS_TO_CURE
 	var/spread_flags = DISEASE_SPREAD_AIRBORNE | DISEASE_SPREAD_CONTACT_FLUIDS | DISEASE_SPREAD_CONTACT_SKIN
 
 	//Fluff
@@ -105,22 +105,24 @@
 
 /// Proc to process the disease and decide on whether to advance, cure or make the sympthoms appear.
 /// Returns a boolean on whether to continue acting on the symptoms or not.
-/datum/pathogen/proc/stage_act(delta_time, times_fired)
+/datum/pathogen/proc/on_process(delta_time, times_fired)
 	if(can_cure_affected())
-		if(DT_PROB(cure_chance, delta_time))
-			set_stage(max(stage - 1, 1))
+		if(stage == 1 || !(disease_flags & DISEASE_REGRESS_TO_CURE))
+			if(DT_PROB(cure_chance, delta_time))
+				force_cure()
+				return FALSE
 
-		if(DT_PROB(cure_chance, delta_time))
-			force_cure()
-			return FALSE
+		if(stage > 1 && DT_PROB(cure_chance, delta_time))
+			set_stage(stage - 1)
 
-	else if(DT_PROB(stage_prob, delta_time))
-		set_stage(min(stage + 1, max_stages))
+	else if(stage < max_stages && DT_PROB(stage_prob, delta_time))
+		set_stage(stage + 1)
 
 	return !affected_mob_is_only_carrier
 
-/// Setter for the stage var
+/// Setter for the stage var, returns the old stage.
 /datum/pathogen/proc/set_stage(new_stage)
+	. = stage
 	stage = new_stage
 
 /// Returns TRUE if the affected mob can be cured.

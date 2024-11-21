@@ -13,7 +13,7 @@
 	spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
 	process_dead = TRUE
 
-/datum/pathogen/decloning/stage_act(delta_time, times_fired)
+/datum/pathogen/decloning/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

@@ -26,7 +26,7 @@
 	D.restcure = restcure
 	return D
 
-/datum/pathogen/dna_retrovirus/stage_act(delta_time, times_fired)
+/datum/pathogen/dna_retrovirus/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

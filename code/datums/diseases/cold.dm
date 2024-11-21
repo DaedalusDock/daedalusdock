@@ -10,7 +10,7 @@
 	severity = DISEASE_SEVERITY_NONTHREAT
 
 
-/datum/pathogen/cold/stage_act(delta_time, times_fired)
+/datum/pathogen/cold/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

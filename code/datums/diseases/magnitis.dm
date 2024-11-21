@@ -13,7 +13,7 @@
 	process_dead = TRUE
 
 
-/datum/pathogen/magnitis/stage_act(delta_time, times_fired)
+/datum/pathogen/magnitis/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

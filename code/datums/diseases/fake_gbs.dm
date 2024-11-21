@@ -11,7 +11,7 @@
 	severity = DISEASE_SEVERITY_BIOHAZARD
 
 
-/datum/pathogen/fake_gbs/stage_act(delta_time, times_fired)
+/datum/pathogen/fake_gbs/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

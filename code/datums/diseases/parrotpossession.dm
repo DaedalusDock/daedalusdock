@@ -16,7 +16,7 @@
 	var/mob/living/simple_animal/parrot/poly/ghost/parrot
 
 
-/datum/pathogen/parrot_possession/stage_act(delta_time, times_fired)
+/datum/pathogen/parrot_possession/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

@@ -13,6 +13,8 @@
 #define DISEASE_RESIST_ON_CURE (1<<2)
 /// If present, an affected mob will need every reagent in the cure list to be cured.
 #define DISEASE_NEED_ALL_CURES (1<<3)
+/// A disease will need to regress to stage 1 to cure itself
+#define DISEASE_REGRESS_TO_CURE (1<<4)
 
 //Disease Spread Flags
 #define DISEASE_SPREAD_SPECIAL (1<<0)

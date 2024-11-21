@@ -9,7 +9,7 @@
 	viable_mobtypes = list(/mob/living/carbon/human)
 	severity = DISEASE_SEVERITY_BIOHAZARD
 
-/datum/pathogen/rhumba_beat/stage_act(delta_time, times_fired)
+/datum/pathogen/rhumba_beat/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

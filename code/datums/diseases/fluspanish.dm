@@ -12,7 +12,7 @@
 	severity = DISEASE_SEVERITY_DANGEROUS
 
 
-/datum/pathogen/fluspanish/stage_act(delta_time, times_fired)
+/datum/pathogen/fluspanish/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

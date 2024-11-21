@@ -15,7 +15,7 @@
 	bypasses_immunity = TRUE
 
 
-/datum/pathogen/parasite/stage_act(delta_time, times_fired)
+/datum/pathogen/parasite/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

@@ -12,7 +12,7 @@
 	severity = DISEASE_SEVERITY_MINOR
 
 
-/datum/pathogen/anxiety/stage_act(delta_time, times_fired)
+/datum/pathogen/anxiety/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

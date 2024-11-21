@@ -13,7 +13,7 @@
 	infectable_biotypes = MOB_ORGANIC|MOB_UNDEAD //bees nesting in corpses
 
 
-/datum/pathogen/beesease/stage_act(delta_time, times_fired)
+/datum/pathogen/beesease/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

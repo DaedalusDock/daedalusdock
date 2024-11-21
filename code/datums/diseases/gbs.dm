@@ -11,7 +11,7 @@
 	contraction_chance_modifier = 1
 	severity = DISEASE_SEVERITY_BIOHAZARD
 
-/datum/pathogen/gbs/stage_act(delta_time, times_fired)
+/datum/pathogen/gbs/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

@@ -9,7 +9,7 @@
 	contraction_chance_modifier = 1
 	desc = "If left untreated the subject will die!"
 	severity = "Dangerous!"
-	disease_flags = parent_type::disease_flags & ~(DISEASE_CURABLE)
+	disease_flags = parent_type::disease_flags & ~(DISEASE_CURABLE | DISEASE_REGRESS_TO_CURE)
 	spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
 	visibility_flags = HIDDEN_PANDEMIC
 	required_organs = list(/obj/item/organ/heart)
@@ -22,7 +22,7 @@
 	D.sound = sound
 	return D
 
-/datum/pathogen/heart_failure/stage_act(delta_time, times_fired)
+/datum/pathogen/heart_failure/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

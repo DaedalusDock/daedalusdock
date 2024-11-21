@@ -97,7 +97,7 @@
 
 
 // Randomly pick a symptom to activate.
-/datum/pathogen/advance/stage_act(delta_time, times_fired)
+/datum/pathogen/advance/on_process(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

@@ -68,6 +68,7 @@
 		var/mob/living/living_target = target
 		if(!living_target.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE|inject_flags))
 			return
+
 		if(living_target != user)
 			living_target.visible_message(span_danger("[user] is trying to inject [living_target]!"), \
 									span_userdanger("[user] is trying to inject you!"))
@@ -84,6 +85,9 @@
 			living_target.log_message("injected themselves ([contained]) with [name]", LOG_ATTACK, color="orange")
 		else
 			log_combat(user, living_target, "injected", src, addition="which had [contained]")
+
+		add_trace_DNA(living_target.get_trace_dna())
+
 	reagents.trans_to(target, amount_per_transfer_from_this, transfered_by = user, methods = INJECT)
 	to_chat(user, span_notice("You inject [amount_per_transfer_from_this] units of the solution. The syringe now contains [reagents.total_volume] units."))
 
@@ -105,8 +109,10 @@
 				return SECONDARY_ATTACK_CONTINUE_CHAIN
 			if(reagents.total_volume >= reagents.maximum_volume)
 				return SECONDARY_ATTACK_CONTINUE_CHAIN
+
 		if(living_target.transfer_blood_to(src, drawn_amount))
 			user.visible_message(span_notice("[user] takes a blood sample from [living_target]."))
+			add_trace_DNA(living_target.get_trace_dna())
 		else
 			to_chat(user, span_warning("You are unable to draw any blood from [living_target]!"))
 	else

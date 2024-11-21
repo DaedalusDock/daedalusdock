@@ -15,15 +15,19 @@
 	spread_text = "Unknown"
 	viable_mobtypes = list(/mob/living/carbon/human)
 
-	var/id = ""
+	/// If FALSE, prevent most in-game methods of altering the disease via virology
+	var/mutable = TRUE
 
-	var/list/properties = list()
+	/// A k:v list of properties, see GenerateProperties()
+	VAR_FINAL/list/properties
 	/// A list of symptom instances.
-	var/list/symptoms = list()
+	VAR_FINAL/list/symptoms = list()
 	/// Set to TRUE on first life process.
-	var/has_started = FALSE
-	var/mutable = TRUE //set to FALSE to prevent most in-game methods of altering the disease via virology
-	var/oldres //To prevent setting new cures unless resistance changes.
+	VAR_FINAL/has_started = FALSE
+	/// Keeps track of the old RESISTANCE property so that cures do not change unless the resistance changes
+	VAR_FINAL/oldres
+	/// see get_id()
+	VAR_FINAL/id = ""
 
 	// The order goes from easy to cure to hard to cure. Keep in mind that sentient diseases pick two cures from tier 6 and up, ensure they won't react away in bodies.
 	var/static/list/advance_cures = list(

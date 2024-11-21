@@ -14,8 +14,16 @@
 	reagent_flags = TRANSPARENT
 	custom_price = PAYCHECK_EASY * 0.5
 	sharpness = SHARP_POINTY
+
 	/// Flags used by the injection
 	var/inject_flags = NONE
+
+	/// Tracks if the below lists are populated.
+	var/sterile = FALSE
+	/// Lazylist. If it exists that means the syringe is non-sterile.
+	var/list/dirty_blood_DNA
+	/// Lazylist. Contains disease datums. K:V of disease_id : disease datum.
+	var/list/dirty_diseases
 
 /obj/item/reagent_containers/syringe/Initialize(mapload)
 	. = ..()
@@ -86,7 +94,11 @@
 		else
 			log_combat(user, living_target, "injected", src, addition="which had [contained]")
 
-		add_trace_DNA(living_target.get_trace_dna())
+		contaminate_mob(living_target)
+		// Only show the flavor message once.
+		if(!LAZYLEN(dirty_blood_DNA))
+			user.visible_message(span_subtle("Blood fills [src]'s needle."), vision_distance = 2)
+		contaminate(living_target.get_blood_dna_list(), living_target.diseases)
 
 	reagents.trans_to(target, amount_per_transfer_from_this, transfered_by = user, methods = INJECT)
 	to_chat(user, span_notice("You inject [amount_per_transfer_from_this] units of the solution. The syringe now contains [reagents.total_volume] units."))
@@ -111,8 +123,9 @@
 				return SECONDARY_ATTACK_CONTINUE_CHAIN
 
 		if(living_target.transfer_blood_to(src, drawn_amount))
+			contaminate_mob(living_target)
 			user.visible_message(span_notice("[user] takes a blood sample from [living_target]."))
-			add_trace_DNA(living_target.get_trace_dna())
+			contaminate(living_target.get_blood_dna_list(), living_target.diseases)
 		else
 			to_chat(user, span_warning("You are unable to draw any blood from [living_target]!"))
 	else
@@ -156,11 +169,48 @@
 		filling_overlay.color = mix_color_from_reagents(reagents.reagent_list)
 		. += filling_overlay
 
+	if(!sterile)
+		. += image(icon, "tainted_overlay")
+
 ///Used by update_appearance() and update_overlays()
 /obj/item/reagent_containers/syringe/proc/get_rounded_vol()
 	if(!reagents?.total_volume)
 		return 0
 	return clamp(round((reagents.total_volume / volume * 15), 5), 1, 15)
+
+/// Remove unsterile things.
+/obj/item/reagent_containers/syringe/proc/sterilize()
+	LAZYNULL(dirty_blood_DNA)
+	QDEL_LIST(dirty_diseases)
+	sterile = TRUE
+	update_appearance(UPDATE_OVERLAYS)
+
+/// Contaminates the syringe with the given blood DNA and diseases. Copies the diseases.
+/obj/item/reagent_containers/syringe/proc/contaminate(list/blood_DNA, list/diseases_to_copy)
+	if(!length(blood_DNA))
+		return
+
+	for(var/datum/disease/D in diseases_to_copy)
+		var/id = D.GetDiseaseID()
+		if(dirty_diseases?[id])
+			continue
+
+		LAZYSET(dirty_diseases, id, D.Copy())
+
+	LAZYOR(dirty_blood_DNA, blood_DNA)
+	sterile = FALSE
+	update_appearance(UPDATE_OVERLAYS)
+
+/// Spread the icky bad stuff in the syringe to a mob.
+/obj/item/reagent_containers/syringe/proc/contaminate_mob(mob/living/carbon/human/H)
+	if(sterile || !ishuman(H))
+		return
+
+	for(var/disease_id in dirty_diseases)
+		H.ForceContractDisease(dirty_diseases[disease_id], make_copy = TRUE) // It's probably a good idea to not leave refs to an active disease in the syringe.
+
+	#warn add some kind of bloodborne disease here?
+	H.germ_level = max(H.germ_level, INFECTION_LEVEL_TWO)
 
 /obj/item/reagent_containers/syringe/epinephrine
 	name = "syringe (epinephrine)"

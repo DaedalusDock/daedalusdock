@@ -6,7 +6,7 @@
 	agent = "Consuming Live Parasites"
 	spread_text = "Non-Biological"
 	viable_mobtypes = list(/mob/living/carbon/human)
-	permeability_mod = 1
+	contraction_chance_modifier = 1
 	desc = "If left untreated the subject will passively lose nutrients, and eventually lose their liver."
 	severity = DISEASE_SEVERITY_HARMFUL
 	disease_flags = parent_type::disease_flags & ~(DISEASE_CURABLE)

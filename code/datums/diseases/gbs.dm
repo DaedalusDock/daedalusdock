@@ -8,7 +8,7 @@
 	cure_chance = 7.5 //higher chance to cure, since two reagents are required
 	agent = "Gravitokinetic Bipotential SADS+"
 	viable_mobtypes = list(/mob/living/carbon/human)
-	permeability_mod = 1
+	contraction_chance_modifier = 1
 	severity = DISEASE_SEVERITY_BIOHAZARD
 
 /datum/disease/gbs/stage_act(delta_time, times_fired)

@@ -1,4 +1,6 @@
 /datum/disease
+	/// The mob affected by this disease. Can be null.
+	var/mob/living/carbon/affected_mob = null
 	//Flags
 	var/visibility_flags = 0
 	var/disease_flags = DISEASE_CURABLE | DISEASE_RESIST_ON_CURE | DISEASE_NEED_ALL_CURES
@@ -18,23 +20,35 @@
 	/// The probability of this infection advancing a stage every second the cure is not present.
 	var/stage_prob = 2
 
-	//Other
-	var/list/viable_mobtypes = list() //typepaths of viable mobs
-	var/mob/living/carbon/affected_mob = null
-	var/list/cures = list() //list of cures if the disease has the DISEASE_CURABLE flag, these are reagent ids
-	/// The probability of spreading through the air every second
-	var/infectivity = 41
+	//Cure data
+	/// A list of mob typepaths that can carry this disease.
+	var/list/viable_mobtypes = list()
+	/// A list of reagent typepaths that are cures for the disease.
+	var/list/cures = list()
 	/// The probability of this infection being cured every second the cure is present
 	var/cure_chance = 4
-	var/carrier = FALSE //If our host is only a carrier
-	var/bypasses_immunity = FALSE //Does it skip species virus immunity check? Some things may diseases and not viruses
-	var/permeability_mod = 1
-	var/severity = DISEASE_SEVERITY_NONTHREAT
+
+	//Transmission data
+	/// The probability of spreading through the air every second
+	var/infectivity = 41
+	/// If TRUE, this disease can infact mobs that have the VIRUSIMMUNITY trait.
+	var/bypasses_immunity = FALSE
+	/// A modifier applied to contraction chance.
+	var/contraction_chance_modifier = 1
+	/// A list of organ and bodypart typepaths that are needed for this disease to be contracted.
 	var/list/required_organs = list()
-	var/list/strain_data = list() //dna_spread special bullshit
-	var/infectable_biotypes = MOB_ORGANIC //if the disease can spread on organics, synthetics, or undead
-	var/process_dead = FALSE //if this ticks while the host is dead
-	var/copy_type = null //if this is null, copies will use the type of the instance being copied
+	/// Biotypes that this pathogen can infect.
+	var/infectable_biotypes = MOB_ORGANIC
+	/// If TRUE, stage_act() will be run even if the host is dead.
+	var/process_dead = FALSE
+	/// An optional typepath of disease to provide when Copy() is run.
+	var/copy_type = null
+
+	//Other
+	/// The arbitrary severity of the disease
+	var/severity = DISEASE_SEVERITY_NONTHREAT
+	/// If TRUE, the mob is a carrier only and does not feel the effects of the disease.
+	var/affected_mob_is_only_carrier = FALSE
 
 /datum/disease/Destroy()
 	if(affected_mob)
@@ -78,7 +92,7 @@
 	else if(DT_PROB(stage_prob, delta_time))
 		update_stage(min(stage + 1, max_stages))
 
-	return !carrier
+	return !affected_mob_is_only_carrier
 
 /// Setter for the stage var
 /datum/disease/proc/update_stage(new_stage)
@@ -168,10 +182,9 @@
 		NAMEOF_STATIC(src, infectivity),
 		NAMEOF_STATIC(src, cure_chance),
 		NAMEOF_STATIC(src, bypasses_immunity),
-		NAMEOF_STATIC(src, permeability_mod),
+		NAMEOF_STATIC(src, contraction_chance_modifier),
 		NAMEOF_STATIC(src, severity),
 		NAMEOF_STATIC(src, required_organs),
-		NAMEOF_STATIC(src, strain_data),
 		NAMEOF_STATIC(src, infectable_biotypes),
 		NAMEOF_STATIC(src, process_dead)
 	)

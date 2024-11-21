@@ -22,6 +22,13 @@
 #define DISEASE_SPREAD_CONTACT_SKIN (1<<4)
 #define DISEASE_SPREAD_AIRBORNE (1<<5)
 
+//Disease properties
+#define DISEASE_PROP_RESISTANCE "resistance"
+#define DISEASE_PROP_STEALTH "stealth"
+#define DISEASE_PROP_STAGE_RATE "stage_rate"
+#define DISEASE_PROP_TRANSMITTABLE "transmittable"
+#define DISEASE_PROP_SEVERITY "severity"
+
 //Severity Defines
 /// Diseases that buff, heal, or at least do nothing at all
 #define DISEASE_SEVERITY_POSITIVE "Positive"

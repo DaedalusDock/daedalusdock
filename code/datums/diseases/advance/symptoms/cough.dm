@@ -27,19 +27,19 @@
 		"Stealth 4" = "The symptom remains hidden until active.",
 	)
 
-/datum/symptom/cough/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/cough/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStealth() >= 4)
+	if(properties[DISEASE_PROP_STEALTH] >= 4)
 		suppress_warning = TRUE
-	if(A.totalTransmittable() >= 7)
+	if(properties[DISEASE_PROP_TRANSMITTABLE] >= 7)
 		spread_range = 2
-	if(A.totalResistance() >= 11) //strong enough to drop items
+	if(properties[DISEASE_PROP_RESISTANCE] >= 11) //strong enough to drop items
 		power = 1.5
-	if(A.totalResistance() >= 15) //strong enough to stun (occasionally)
+	if(properties[DISEASE_PROP_RESISTANCE] >= 15) //strong enough to stun (occasionally)
 		power = 2
-	if(A.totalStageSpeed() >= 6) //cough more often
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 6) //cough more often
 		symptom_delay_max = 10
 
 /datum/symptom/cough/on_process(datum/pathogen/advance/A)

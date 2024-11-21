@@ -30,5 +30,5 @@
 		if(chosen_symptom)
 			var/datum/symptom/S = new chosen_symptom
 			A.symptoms += S
-	A.Refresh() //just in case someone already made and named the same disease
+	A.update_properties() //just in case someone already made and named the same disease
 	return A

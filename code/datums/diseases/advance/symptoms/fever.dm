@@ -26,14 +26,14 @@
 		"Resistance 10" = "Further increases fever intensity.",
 	)
 
-/datum/symptom/fever/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/fever/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalResistance() >= 5) //dangerous fever
+	if(properties[DISEASE_PROP_RESISTANCE] >= 5) //dangerous fever
 		power = 1.5
 		unsafe = TRUE
-	if(A.totalResistance() >= 10)
+	if(properties[DISEASE_PROP_RESISTANCE] >= 10)
 		power = 2.5
 
 /datum/symptom/fever/on_process(datum/pathogen/advance/A)

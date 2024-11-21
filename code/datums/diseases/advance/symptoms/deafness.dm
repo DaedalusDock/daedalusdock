@@ -23,13 +23,13 @@
 		"Stealth 4" = "The symptom remains hidden until active.",
 	)
 
-/datum/symptom/deafness/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/deafness/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStealth() >= 4)
+	if(properties[DISEASE_PROP_STEALTH] >= 4)
 		suppress_warning = TRUE
-	if(A.totalResistance() >= 9) //permanent deafness
+	if(properties[DISEASE_PROP_RESISTANCE] >= 9) //permanent deafness
 		power = 2
 
 /datum/symptom/deafness/on_process(datum/pathogen/advance/A)

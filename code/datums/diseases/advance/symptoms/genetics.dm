@@ -29,18 +29,18 @@
 		"Stealth 5" = "Only activates negative mutations in hosts."
 	)
 
-/datum/symptom/genetic_mutation/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/genetic_mutation/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStealth() >= 5) //only give them bad mutations
+	if(properties[DISEASE_PROP_STEALTH] >= 5) //only give them bad mutations
 		excludemuts = POSITIVE
-	if(A.totalStageSpeed() >= 10) //activate dormant mutations more often at around 1.5x the pace
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 10) //activate dormant mutations more often at around 1.5x the pace
 		symptom_delay_min = 20
 		symptom_delay_max = 40
-	if(A.totalResistance() >= 8) //ryetalyn won't save you now
+	if(properties[DISEASE_PROP_RESISTANCE] >= 8) //ryetalyn won't save you now
 		ryetalyn_proof = (NEGATIVE | MINOR_NEGATIVE)
-	if(A.totalResistance() >= 14) //one does not simply escape Nurgle's grasp
+	if(properties[DISEASE_PROP_RESISTANCE] >= 14) //one does not simply escape Nurgle's grasp
 		no_reset = TRUE
 
 /datum/symptom/genetic_mutation/on_process(datum/pathogen/advance/A)

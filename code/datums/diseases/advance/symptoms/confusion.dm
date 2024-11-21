@@ -25,15 +25,15 @@
 		"Stealth 4" = "The symptom remains hidden until active.",
 	)
 
-/datum/symptom/confusion/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/confusion/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalResistance() >= 6)
+	if(properties[DISEASE_PROP_RESISTANCE] >= 6)
 		brain_damage = TRUE
-	if(A.totalTransmittable() >= 6)
+	if(properties[DISEASE_PROP_TRANSMITTABLE] >= 6)
 		power = 1.5
-	if(A.totalStealth() >= 4)
+	if(properties[DISEASE_PROP_STEALTH] >= 4)
 		suppress_warning = TRUE
 
 /datum/symptom/confusion/on_stop_processing(datum/pathogen/advance/A)

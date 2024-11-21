@@ -25,14 +25,14 @@
 		"Stage Speed 10" = "Increases the intensity of the cooling even further."
 	)
 
-/datum/symptom/chills/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/chills/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStageSpeed() >= 5) //dangerous cold
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 5) //dangerous cold
 		power = 1.5
 		unsafe = TRUE
-	if(A.totalStageSpeed() >= 10)
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 10)
 		power = 2.5
 
 /datum/symptom/chills/on_process(datum/pathogen/advance/A)

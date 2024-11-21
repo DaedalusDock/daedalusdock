@@ -24,14 +24,14 @@
 		"Stealth 4" = "The symptom remains hidden until active."
 	)
 
-/datum/symptom/choking/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/choking/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStageSpeed() >= 8)
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 8)
 		symptom_delay_min = 7
 		symptom_delay_max = 24
-	if(A.totalStealth() >= 4)
+	if(properties[DISEASE_PROP_STEALTH] >= 4)
 		suppress_warning = TRUE
 
 /datum/symptom/choking/on_process(datum/pathogen/advance/A)
@@ -100,13 +100,13 @@ Bonus
 	)
 
 
-/datum/symptom/asphyxiation/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/asphyxiation/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStageSpeed() >= 8)
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 8)
 		paralysis = TRUE
-	if(A.totalTransmittable() >= 8)
+	if(properties[DISEASE_PROP_TRANSMITTABLE] >= 8)
 		power = 2
 
 /datum/symptom/asphyxiation/on_process(datum/pathogen/advance/A)

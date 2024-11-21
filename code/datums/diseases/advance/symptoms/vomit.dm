@@ -27,15 +27,15 @@ and your disease can spread via people walking on vomit.
 		"Stealth 4" = "The symptom remains hidden until active."
 	)
 
-/datum/symptom/vomit/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/vomit/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStealth() >= 4)
+	if(properties[DISEASE_PROP_STEALTH] >= 4)
 		suppress_warning = TRUE
-	if(A.totalResistance() >= 7) //blood vomit
+	if(properties[DISEASE_PROP_RESISTANCE] >= 7) //blood vomit
 		vomit_blood = TRUE
-	if(A.totalTransmittable() >= 7) //projectile vomit
+	if(properties[DISEASE_PROP_TRANSMITTABLE] >= 7) //projectile vomit
 		proj_vomit = 5
 
 /datum/symptom/vomit/on_process(datum/pathogen/advance/A)

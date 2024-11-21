@@ -27,17 +27,17 @@
 		"Stealth 3" = "The symptom remains hidden until active."
 	)
 
-/datum/symptom/voice_change/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/voice_change/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStealth() >= 3)
+	if(properties[DISEASE_PROP_STEALTH] >= 3)
 		suppress_warning = TRUE
-	if(A.totalStageSpeed() >= 7) //faster change of voice
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 7) //faster change of voice
 		base_message_chance = 25
 		symptom_delay_min = 25
 		symptom_delay_max = 85
-	if(A.totalTransmittable() >= 14) //random language
+	if(properties[DISEASE_PROP_TRANSMITTABLE] >= 14) //random language
 		scramble_language = TRUE
 
 /datum/symptom/voice_change/on_process(datum/pathogen/advance/A)

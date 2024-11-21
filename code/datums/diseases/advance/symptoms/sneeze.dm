@@ -25,15 +25,15 @@
 		"Stage Speed 17" = "The force of each sneeze catapults the host backwards, potentially stunning and lightly damaging them if they hit a wall or another person mid-flight."
 	)
 
-/datum/symptom/sneeze/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/sneeze/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalTransmittable() >= 9) //longer spread range
+	if(properties[DISEASE_PROP_TRANSMITTABLE] >= 9) //longer spread range
 		spread_range = 6
-	if(A.totalStealth() >= 4)
+	if(properties[DISEASE_PROP_STEALTH] >= 4)
 		suppress_warning = TRUE
-	if(A.totalStageSpeed() >= 17) //Yep, stage speed 17, not stage speed 7. This is a big boy threshold (effect), like the language-scrambling transmission one for the voice change symptom.
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 17) //Yep, stage speed 17, not stage speed 7. This is a big boy threshold (effect), like the language-scrambling transmission one for the voice change symptom.
 		cartoon_sneezing = TRUE //for a really fun time, distribute a disease with this threshold met while the gravity generator is down
 
 /datum/symptom/sneeze/on_process(datum/pathogen/advance/A)

@@ -27,13 +27,13 @@ Bonus
 		"Transmission 8" = "Causes extreme pain to the host, weakening it.",
 	)
 
-/datum/symptom/flesh_eating/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/flesh_eating/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalResistance() >= 7) //extra bleeding
+	if(properties[DISEASE_PROP_RESISTANCE] >= 7) //extra bleeding
 		bleed = TRUE
-	if(A.totalTransmittable() >= 8) //extra stamina damage
+	if(properties[DISEASE_PROP_TRANSMITTABLE] >= 8) //extra stamina damage
 		pain = TRUE
 
 /datum/symptom/flesh_eating/on_process(datum/pathogen/advance/A)
@@ -98,13 +98,13 @@ Bonus
 		"Stealth 5" = "The symptom remains hidden until active.",
 	)
 
-/datum/symptom/flesh_death/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/flesh_death/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStealth() >= 5)
+	if(properties[DISEASE_PROP_STEALTH] >= 5)
 		suppress_warning = TRUE
-	if(A.totalStageSpeed() >= 7) //bleeding and hunger
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 7) //bleeding and hunger
 		chems = TRUE
 
 /datum/symptom/flesh_death/on_process(datum/pathogen/advance/A)

@@ -24,15 +24,15 @@
 		"Transmission 8" = "Purges alcohol in the bloodstream.",
 	)
 
-/datum/symptom/mind_restoration/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/mind_restoration/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalResistance() >= 6) //heal brain damage
+	if(properties[DISEASE_PROP_RESISTANCE] >= 6) //heal brain damage
 		trauma_heal_mild = TRUE
-	if(A.totalResistance() >= 9) //heal severe traumas
+	if(properties[DISEASE_PROP_RESISTANCE] >= 9) //heal severe traumas
 		trauma_heal_severe = TRUE
-	if(A.totalTransmittable() >= 8) //purge alcohol
+	if(properties[DISEASE_PROP_TRANSMITTABLE] >= 8) //purge alcohol
 		purge_alcohol = TRUE
 
 /datum/symptom/mind_restoration/on_process(datum/pathogen/advance/A)

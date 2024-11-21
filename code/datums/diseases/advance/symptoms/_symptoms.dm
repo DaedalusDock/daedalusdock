@@ -1,17 +1,17 @@
-// Symptoms are the effects that engineered advanced diseases do.
+// Symptoms are the effects that engineered advanced pathogens do.
 
 /datum/symptom
 	var/name = ""
 	var/desc = "If you see this something went very wrong." //Basic symptom description
 	///Descriptions of threshold effects
 	var/threshold_descs = list()
-	///How the symptom affects the disease's stealth stat, positive values make it less noticeable
+	///How the symptom affects the pathogen's stealth stat, positive values make it less noticeable
 	var/stealth = 0
-	///How the symptom affects the disease's resistance stat, positive values make it harder to cure
+	///How the symptom affects the pathogen's resistance stat, positive values make it harder to cure
 	var/resistance = 0
-	///How the symptom affects the disease's stage speed stat, positive values cause faster stage progression
+	///How the symptom affects the pathogen's stage speed stat, positive values cause faster stage progression
 	var/stage_speed = 0
-	///How the symptom affects the disease's transmissibility
+	///How the symptom affects the pathogen's transmissibility
 	var/transmittable = 0
 	///The type level of the symptom. Higher is harder to generate.
 	var/level = 0
@@ -38,14 +38,18 @@
 /datum/symptom/New()
 	id = "[type]"
 
-///Called when processing of the advance disease that holds this symptom infects a host and upon each Refresh() of that advance disease.
+/// Update vars based on the pathogen properties.
+/datum/symptom/proc/sync_properties(list/properties)
+	return
+
+///Called when processing of the advance pathogen that holds this symptom infects a host and upon each Refresh() of that advance pathogen.
 /datum/symptom/proc/on_start_processing(datum/pathogen/advance/A)
 	SHOULD_CALL_PARENT(TRUE)
 	if(neutered)
 		return FALSE
 	return TRUE
 
-/// Called when the disease has stopped processing, including due to deletion.
+/// Called when the pathogen has stopped processing, including due to deletion.
 /datum/symptom/proc/on_stop_processing(datum/pathogen/advance/A)
 	SHOULD_CALL_PARENT(TRUE)
 	if(neutered)

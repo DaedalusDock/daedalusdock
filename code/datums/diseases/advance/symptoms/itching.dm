@@ -23,14 +23,14 @@
 		"Stage Speed 7" = "The host will scrath itself when itching, causing superficial damage.",
 	)
 
-/datum/symptom/itching/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/itching/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalTransmittable() >= 6) //itch more often
+	if(properties[DISEASE_PROP_TRANSMITTABLE] >= 6) //itch more often
 		symptom_delay_min = 1
 		symptom_delay_max = 4
-	if(A.totalStageSpeed() >= 7) //scratch
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 7) //scratch
 		scratch = TRUE
 
 /datum/symptom/itching/on_process(datum/pathogen/advance/A)

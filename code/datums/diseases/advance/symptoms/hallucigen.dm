@@ -25,14 +25,14 @@
 		"Stealth 4" = "The virus mimics positive symptoms.",
 	)
 
-/datum/symptom/hallucigen/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/hallucigen/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStealth() >= 4) //fake good symptom messages
+	if(properties[DISEASE_PROP_STEALTH] >= 4) //fake good symptom messages
 		fake_healthy = TRUE
 		base_message_chance = 50
-	if(A.totalStageSpeed() >= 7) //stronger hallucinations
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 7) //stronger hallucinations
 		power = 2
 
 /datum/symptom/hallucigen/on_process(datum/pathogen/advance/A)

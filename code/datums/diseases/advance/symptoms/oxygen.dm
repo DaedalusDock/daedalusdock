@@ -22,11 +22,11 @@
 		"Resistance 8" = "Additionally regenerates lost blood."
 	)
 
-/datum/symptom/oxygen/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/oxygen/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalResistance() >= 8) //blood regeneration
+	if(properties[DISEASE_PROP_RESISTANCE] >= 8) //blood regeneration
 		regenerate_blood = TRUE
 
 /datum/symptom/oxygen/on_process(datum/pathogen/advance/A)

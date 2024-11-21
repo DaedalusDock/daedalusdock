@@ -24,13 +24,13 @@
 		"Stealth 4" = "The symptom remains hidden until active.",
 	)
 
-/datum/symptom/visionloss/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/visionloss/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStealth() >= 4)
+	if(properties[DISEASE_PROP_STEALTH] >= 4)
 		suppress_warning = TRUE
-	if(A.totalResistance() >= 12) //goodbye eyes
+	if(properties[DISEASE_PROP_RESISTANCE] >= 12) //goodbye eyes
 		remove_eyes = TRUE
 
 /datum/symptom/visionloss/on_process(datum/pathogen/advance/A)

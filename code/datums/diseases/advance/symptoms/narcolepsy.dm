@@ -23,13 +23,13 @@
 		"Stage Speed 10" = "Causes narcolepsy more often, increasing the chance of the host falling asleep.",
 	)
 
-/datum/symptom/narcolepsy/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/narcolepsy/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalTransmittable() >= 4) //yawning (mostly just some copy+pasted code from sneezing, with a few tweaks)
+	if(properties[DISEASE_PROP_TRANSMITTABLE] >= 4) //yawning (mostly just some copy+pasted code from sneezing, with a few tweaks)
 		yawning = TRUE
-	if(A.totalStageSpeed() >= 10) //act more often
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 10) //act more often
 		symptom_delay_min = 20
 		symptom_delay_max = 45
 

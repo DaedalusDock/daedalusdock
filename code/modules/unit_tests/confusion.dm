@@ -13,4 +13,4 @@
 
 /datum/pathogen/advance/confusion/New()
 	symptoms += new /datum/symptom/confusion
-	Refresh()
+	..()

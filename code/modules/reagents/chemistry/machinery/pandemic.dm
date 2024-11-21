@@ -91,10 +91,10 @@
 				var/list/this_symptom = list()
 				this_symptom = get_symptom_data(S)
 				this["symptoms"] += list(this_symptom)
-			this["resistance"] = A.totalResistance()
-			this["stealth"] = A.totalStealth()
-			this["stage_speed"] = A.totalStageSpeed()
-			this["transmission"] = A.totalTransmittable()
+			this["resistance"] = A.properties[DISEASE_PROP_RESISTANCE]
+			this["stealth"] = A.properties[DISEASE_PROP_STEALTH]
+			this["stage_speed"] = A.properties[DISEASE_PROP_STAGE_RATE]
+			this["transmission"] = A.properties[DISEASE_PROP_TRANSMITTABLE]
 		this["index"] = index++
 		this["agent"] = D.agent
 		this["description"] = D.desc || "none"

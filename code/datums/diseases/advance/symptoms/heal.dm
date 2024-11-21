@@ -15,11 +15,11 @@
 		"Stealth 4" = "Healing will no longer be visible to onlookers.",
 	)
 
-/datum/symptom/heal/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/heal/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStageSpeed() >= 6) //stronger healing
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 6) //stronger healing
 		power = 2
 
 /datum/symptom/heal/on_process(datum/pathogen/advance/A)
@@ -75,13 +75,13 @@
 #define STARLIGHT_CANNOT_HEAL 0
 #define STARLIGHT_MAX_RANGE 2
 
-/datum/symptom/heal/starlight/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/heal/starlight/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalTransmittable() >= 6)
+	if(properties[DISEASE_PROP_TRANSMITTABLE] >= 6)
 		nearspace_penalty = 1
-	if(A.totalStageSpeed() >= 6)
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 6)
 		power = 2
 
 /datum/symptom/heal/starlight/proc/CanTileHealDirectional(turf/turf_to_check, direction)
@@ -205,13 +205,13 @@
 		"Stage Speed 6" = "Consumed chemicals nourish the host.",
 	)
 
-/datum/symptom/heal/chem/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/heal/chem/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStageSpeed() >= 6)
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 6)
 		food_conversion = TRUE
-	if(A.totalResistance() >= 7)
+	if(properties[DISEASE_PROP_RESISTANCE] >= 7)
 		power = 2
 
 /datum/symptom/heal/chem/Heal(mob/living/M, datum/pathogen/advance/A, actual_power)
@@ -248,13 +248,13 @@
 		"Stage Speed 10" = "Chemical metabolization is tripled instead of doubled.",
 	)
 
-/datum/symptom/heal/metabolism/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/heal/metabolism/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStageSpeed() >= 10)
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 10)
 		triple_metabolism = TRUE
-	if(A.totalStealth() >= 3)
+	if(properties[DISEASE_PROP_STEALTH] >= 3)
 		reduced_hunger = TRUE
 
 /datum/symptom/heal/metabolism/Heal(mob/living/carbon/C, datum/pathogen/advance/A, actual_power)
@@ -288,11 +288,11 @@
 		"Stage Speed 8" = "Doubles healing speed.",
 	)
 
-/datum/symptom/heal/darkness/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/heal/darkness/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStageSpeed() >= 8)
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 8)
 		power = 2
 
 /datum/symptom/heal/darkness/CanHeal(datum/pathogen/advance/A)
@@ -350,15 +350,15 @@
 		"Stage Speed 7" = "Increases healing speed.",
 	)
 
-/datum/symptom/heal/coma/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/heal/coma/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStageSpeed() >= 7)
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 7)
 		power = 1.5
-	if(A.totalResistance() >= 4)
+	if(properties[DISEASE_PROP_RESISTANCE] >= 4)
 		stabilize = TRUE
-	if(A.totalStealth() >= 2)
+	if(properties[DISEASE_PROP_STEALTH] >= 2)
 		deathgasp = TRUE
 
 /datum/symptom/heal/coma/on_stage_change(datum/pathogen/advance/A)  //mostly copy+pasted from the code for self-respiration's TRAIT_NOBREATH stuff
@@ -444,13 +444,13 @@
 		"Stage Speed 7" = "Increases healing speed.",
 	)
 
-/datum/symptom/heal/water/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/heal/water/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStageSpeed() >= 7)
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 7)
 		power = 2
-	if(A.totalResistance() >= 5)
+	if(properties[DISEASE_PROP_RESISTANCE] >= 5)
 		absorption_coeff = 0.25
 
 /datum/symptom/heal/water/CanHeal(datum/pathogen/advance/A)
@@ -508,13 +508,13 @@
 		"Stage Speed 7" = "Increases healing speed.",
 	)
 
-/datum/symptom/heal/plasma/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/heal/plasma/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStageSpeed() >= 7)
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 7)
 		power = 2
-	if(A.totalTransmittable() >= 6)
+	if(properties[DISEASE_PROP_TRANSMITTABLE] >= 6)
 		temp_rate = 4
 
 /datum/symptom/heal/plasma/CanHeal(datum/pathogen/advance/A)
@@ -578,13 +578,13 @@
 		"Resistance 7" = "Increases healing speed.",
 	)
 
-/datum/symptom/heal/radiation/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/heal/radiation/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalResistance() >= 7)
+	if(properties[DISEASE_PROP_RESISTANCE] >= 7)
 		power = 2
-	if(A.totalTransmittable() >= 6)
+	if(properties[DISEASE_PROP_TRANSMITTABLE] >= 6)
 		cellular_damage = TRUE
 
 /datum/symptom/heal/radiation/CanHeal(datum/pathogen/advance/A)

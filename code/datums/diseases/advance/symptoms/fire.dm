@@ -27,17 +27,17 @@
 		"Stealth 4" = "The symptom remains hidden until active.",
 	)
 
-/datum/symptom/fire/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/fire/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStageSpeed() >= 4)
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 4)
 		power = 1.5
-	if(A.totalStageSpeed() >= 8)
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 8)
 		power = 2
-	if(A.totalStealth() >= 4)
+	if(properties[DISEASE_PROP_STEALTH] >= 4)
 		suppress_warning = TRUE
-	if(A.totalTransmittable() >= 8) //burning skin spreads the virus through smoke
+	if(properties[DISEASE_PROP_TRANSMITTABLE] >= 8) //burning skin spreads the virus through smoke
 		infective = TRUE
 
 /datum/symptom/fire/on_process(datum/pathogen/advance/A)
@@ -107,17 +107,17 @@ Bonus
 		"Transmission 8" = "Additionally synthesizes chlorine trifluoride and napalm inside the host. More chemicals are synthesized if the resistance 9 threshold has been met."
 	)
 
-/datum/symptom/alkali/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/alkali/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalResistance() >= 9) //intense but sporadic effect
+	if(properties[DISEASE_PROP_RESISTANCE] >= 9) //intense but sporadic effect
 		power = 2
 		symptom_delay_min = 50
 		symptom_delay_max = 140
-	if(A.totalStageSpeed() >= 8) //serious boom when wet
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 8) //serious boom when wet
 		explosion_power = 2
-	if(A.totalTransmittable() >= 8) //extra chemicals
+	if(properties[DISEASE_PROP_TRANSMITTABLE] >= 8) //extra chemicals
 		chems = TRUE
 
 /datum/symptom/alkali/on_process(datum/pathogen/advance/A)

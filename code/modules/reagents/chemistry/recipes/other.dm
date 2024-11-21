@@ -212,7 +212,7 @@
 	if(B?.data)
 		var/datum/pathogen/advance/D = locate(/datum/pathogen/advance) in B.data["viruses"]
 		if(D)
-			D.Evolve(level_min, level_max)
+			D.evolve(level_min, level_max)
 
 
 /datum/chemical_reaction/mix_virus/mix_virus_2
@@ -279,7 +279,7 @@
 	if(B?.data)
 		var/datum/pathogen/advance/D = locate(/datum/pathogen/advance) in B.data["viruses"]
 		if(D)
-			D.Devolve()
+			D.devolve()
 
 /datum/chemical_reaction/mix_virus/neuter_virus
 	required_reagents = list(/datum/reagent/space_cleaner = 1)
@@ -290,7 +290,7 @@
 	if(B?.data)
 		var/datum/pathogen/advance/D = locate(/datum/pathogen/advance) in B.data["viruses"]
 		if(D)
-			D.Neuter()
+			D.neuter_random_symptom()
 
 
 

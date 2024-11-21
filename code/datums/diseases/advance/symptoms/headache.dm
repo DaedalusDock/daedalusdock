@@ -24,15 +24,15 @@
 		"Stealth 4" = "Reduces headache frequency until later stages.",
 	)
 
-/datum/symptom/headache/on_start_processing(datum/pathogen/advance/A)
+/datum/symptom/headache/sync_properties(list/properties)
 	. = ..()
 	if(!.)
 		return
-	if(A.totalStealth() >= 4)
+	if(properties[DISEASE_PROP_STEALTH] >= 4)
 		base_message_chance = 50
-	if(A.totalStageSpeed() >= 6) //severe pain
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 6) //severe pain
 		power = 2
-	if(A.totalStageSpeed() >= 9) //cluster headaches
+	if(properties[DISEASE_PROP_STAGE_RATE] >= 9) //cluster headaches
 		symptom_delay_min = 30
 		symptom_delay_max = 60
 		power = 3

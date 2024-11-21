@@ -73,15 +73,20 @@
 /// Infect a mob with absolutely no safety checks.
 /datum/pathogen/proc/force_infect(mob/living/infectee, make_copy = TRUE)
 	var/datum/pathogen/D = make_copy ? Copy() : src
+
 	LAZYADD(infectee.diseases, D)
 	D.affected_mob = infectee
 	SSpathogens.active_pathogens += D //Add it to the active diseases list, now that it's actually in a mob and being processed.
 
-	D.after_add()
-	infectee.med_hud_set_status()
+	D.on_infect_mob()
 
 	var/turf/source_turf = get_turf(infectee)
 	log_virus("[key_name(infectee)] was infected by virus: [admin_details()] at [loc_name(source_turf)]")
+
+/// Called by force_infect() upon infecting a mob.
+/datum/pathogen/proc/on_infect_mob()
+	SHOULD_CALL_PARENT(TRUE)
+	infectee.med_hud_set_status()
 
 /// Cure the disease and delete it.
 /datum/pathogen/proc/force_cure(add_resistance = TRUE)
@@ -209,10 +214,6 @@
 			val = L.Copy()
 		D.vars[V] = val
 	return D
-
-/datum/pathogen/proc/after_add()
-	return
-
 
 /datum/pathogen/proc/GetDiseaseID()
 	return "[type]"

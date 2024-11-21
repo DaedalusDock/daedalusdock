@@ -54,6 +54,9 @@
 /obj/item/reagent_containers/syringe/afterattack(atom/target, mob/user, proximity)
 	. = ..()
 
+	if(DOING_INTERACTION(user, ref(src)))
+		return
+
 	if (!try_syringe(target, user, proximity))
 		return
 
@@ -78,9 +81,10 @@
 			return
 
 		if(living_target != user)
-			living_target.visible_message(span_danger("[user] is trying to inject [living_target]!"), \
-									span_userdanger("[user] is trying to inject you!"))
-			if(!do_after(user, living_target, CHEM_INTERACT_DELAY(3 SECONDS, user), DO_PUBLIC, extra_checks = CALLBACK(living_target, TYPE_PROC_REF(/mob/living, try_inject), user, null, INJECT_TRY_SHOW_ERROR_MESSAGE|inject_flags), display = src))
+			living_target.visible_message(
+				span_notice("[user] is trying to inject [living_target]."),
+			)
+			if(!do_after(user, living_target, CHEM_INTERACT_DELAY(3 SECONDS, user), DO_PUBLIC, extra_checks = CALLBACK(living_target, TYPE_PROC_REF(/mob/living, try_inject), user, null, INJECT_TRY_SHOW_ERROR_MESSAGE|inject_flags), interaction_key = ref(src), display = src))
 				return
 			if(!reagents.total_volume)
 				return
@@ -97,8 +101,8 @@
 		contaminate_mob(living_target)
 		// Only show the flavor message once.
 		if(!LAZYLEN(dirty_blood_DNA))
-			user.visible_message(span_subtle("Blood fills [src]'s needle."), vision_distance = 2)
-		contaminate(living_target.get_blood_dna_list(), living_target.pathogens)
+			user.visible_message(span_subtle("Blood fills [src]'s needle."), vision_distance = 1)
+		contaminate(living_target.get_blood_dna_list(), living_target.diseases)
 
 	reagents.trans_to(target, amount_per_transfer_from_this, transfered_by = user, methods = INJECT)
 	to_chat(user, span_notice("You inject [amount_per_transfer_from_this] units of the solution. The syringe now contains [reagents.total_volume] units."))
@@ -125,7 +129,7 @@
 		if(living_target.transfer_blood_to(src, drawn_amount))
 			contaminate_mob(living_target)
 			user.visible_message(span_notice("[user] takes a blood sample from [living_target]."))
-			contaminate(living_target.get_blood_dna_list(), living_target.pathogens)
+			contaminate(living_target.get_blood_dna_list(), living_target.diseases)
 		else
 			to_chat(user, span_warning("You are unable to draw any blood from [living_target]!"))
 	else
@@ -190,15 +194,15 @@
 	if(!length(blood_DNA))
 		return
 
-	for(var/datum/disease/D in pathogens_to_copy)
-		if(!(D.spread_flags & PATHOGEN_SPREAD_BLOOD))
+	for(var/datum/pathogen/P in pathogens_to_copy)
+		if(!(P.spread_flags & PATHOGEN_SPREAD_BLOOD))
 			continue
 
-		var/id = D.get_id()
+		var/id = P.get_id()
 		if(dirty_pathogens?[id])
 			continue
 
-		LAZYSET(dirty_pathogens, id, D.Copy())
+		LAZYSET(dirty_pathogens, id, P.Copy())
 
 	LAZYOR(dirty_blood_DNA, blood_DNA)
 	sterile = FALSE

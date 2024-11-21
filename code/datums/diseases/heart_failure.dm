@@ -1,4 +1,4 @@
-/datum/disease/heart_failure
+/datum/pathogen/heart_failure
 	form = "Condition"
 	name = "Myocardial Infarction"
 	max_stages = 5
@@ -17,12 +17,12 @@
 	var/sound = FALSE
 	var/recorded = FALSE
 
-/datum/disease/heart_failure/Copy()
-	var/datum/disease/heart_failure/D = ..()
+/datum/pathogen/heart_failure/Copy()
+	var/datum/pathogen/heart_failure/D = ..()
 	D.sound = sound
 	return D
 
-/datum/disease/heart_failure/stage_act(delta_time, times_fired)
+/datum/pathogen/heart_failure/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

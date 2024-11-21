@@ -127,12 +127,12 @@
 		var/mob/living/L = M
 		//Also spread diseases
 		for(var/thing in diseases)
-			var/datum/disease/D = thing
+			var/datum/pathogen/D = thing
 			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 				L.ContactContractDisease(D)
 
 		for(var/thing in L.diseases)
-			var/datum/disease/D = thing
+			var/datum/pathogen/D = thing
 			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 				ContactContractDisease(D)
 
@@ -1580,8 +1580,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/get_static_viruses() //used when creating blood and other infective objects
 	if(!LAZYLEN(diseases))
 		return
-	var/list/datum/disease/result = list()
-	for(var/datum/disease/D in diseases)
+	var/list/datum/pathogen/result = list()
+	for(var/datum/pathogen/D in diseases)
 		var/static_virus = D.Copy()
 		result += static_virus
 	return result

@@ -372,12 +372,12 @@
 				var/mob/living/carbon/human/H = mob
 				H.set_haircolor("#1d2953", override = TRUE) //will be reset when blight is cured
 				var/blightfound = FALSE
-				for(var/datum/disease/revblight/blight in H.diseases)
+				for(var/datum/pathogen/revblight/blight in H.diseases)
 					blightfound = TRUE
 					if(blight.stage < 5)
 						blight.stage++
 				if(!blightfound)
-					H.ForceContractDisease(new /datum/disease/revblight(), FALSE, TRUE)
+					H.ForceContractDisease(new /datum/pathogen/revblight(), FALSE, TRUE)
 					to_chat(H, span_revenminor("You feel [pick("suddenly sick", "a surge of nausea", "like your skin is <i>wrong</i>")]."))
 			else
 				if(mob.reagents)

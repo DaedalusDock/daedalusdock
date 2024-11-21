@@ -15,14 +15,14 @@
 		"Stealth 4" = "Healing will no longer be visible to onlookers.",
 	)
 
-/datum/symptom/heal/Start(datum/disease/advance/A)
+/datum/symptom/heal/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
 	if(A.totalStageSpeed() >= 6) //stronger healing
 		power = 2
 
-/datum/symptom/heal/Activate(datum/disease/advance/A)
+/datum/symptom/heal/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -38,10 +38,10 @@
 				Heal(M, A, effectiveness)
 	return
 
-/datum/symptom/heal/proc/CanHeal(datum/disease/advance/A)
+/datum/symptom/heal/proc/CanHeal(datum/pathogen/advance/A)
 	return power
 
-/datum/symptom/heal/proc/Heal(mob/living/M, datum/disease/advance/A, actual_power)
+/datum/symptom/heal/proc/Heal(mob/living/M, datum/pathogen/advance/A, actual_power)
 	return TRUE
 
 /datum/symptom/heal/proc/passive_message_condition(mob/living/M)
@@ -75,7 +75,7 @@
 #define STARLIGHT_CANNOT_HEAL 0
 #define STARLIGHT_MAX_RANGE 2
 
-/datum/symptom/heal/starlight/Start(datum/disease/advance/A)
+/datum/symptom/heal/starlight/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -144,7 +144,7 @@
 	else
 		return current_heal_level
 
-/datum/symptom/heal/starlight/CanHeal(datum/disease/advance/A)
+/datum/symptom/heal/starlight/CanHeal(datum/pathogen/advance/A)
 	var/mob/living/affected_mob = A.affected_mob
 	var/turf/turf_of_mob = get_turf(affected_mob)
 	switch(CanTileHeal(turf_of_mob, FALSE))
@@ -161,7 +161,7 @@
 #undef STARLIGHT_CANNOT_HEAL
 #undef STARLIGHT_MAX_RANGE
 
-/datum/symptom/heal/starlight/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
+/datum/symptom/heal/starlight/Heal(mob/living/carbon/M, datum/pathogen/advance/A, actual_power)
 	var/heal_amt = actual_power
 	if(M.getToxLoss() && prob(5))
 		to_chat(M, span_notice("Your skin tingles as the starlight seems to heal you."))
@@ -205,7 +205,7 @@
 		"Stage Speed 6" = "Consumed chemicals nourish the host.",
 	)
 
-/datum/symptom/heal/chem/Start(datum/disease/advance/A)
+/datum/symptom/heal/chem/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -214,7 +214,7 @@
 	if(A.totalResistance() >= 7)
 		power = 2
 
-/datum/symptom/heal/chem/Heal(mob/living/M, datum/disease/advance/A, actual_power)
+/datum/symptom/heal/chem/Heal(mob/living/M, datum/pathogen/advance/A, actual_power)
 	for(var/datum/reagent/R in M.reagents.reagent_list) //Not just toxins!
 		M.reagents.remove_reagent(R.type, actual_power)
 		if(food_conversion)
@@ -248,7 +248,7 @@
 		"Stage Speed 10" = "Chemical metabolization is tripled instead of doubled.",
 	)
 
-/datum/symptom/heal/metabolism/Start(datum/disease/advance/A)
+/datum/symptom/heal/metabolism/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -257,7 +257,7 @@
 	if(A.totalStealth() >= 3)
 		reduced_hunger = TRUE
 
-/datum/symptom/heal/metabolism/Heal(mob/living/carbon/C, datum/disease/advance/A, actual_power)
+/datum/symptom/heal/metabolism/Heal(mob/living/carbon/C, datum/pathogen/advance/A, actual_power)
 	if(!istype(C))
 		return
 	var/metabolic_boost = triple_metabolism ? 2 : 1
@@ -288,14 +288,14 @@
 		"Stage Speed 8" = "Doubles healing speed.",
 	)
 
-/datum/symptom/heal/darkness/Start(datum/disease/advance/A)
+/datum/symptom/heal/darkness/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
 	if(A.totalStageSpeed() >= 8)
 		power = 2
 
-/datum/symptom/heal/darkness/CanHeal(datum/disease/advance/A)
+/datum/symptom/heal/darkness/CanHeal(datum/pathogen/advance/A)
 	var/mob/living/M = A.affected_mob
 	var/light_amount = 0
 	if(isturf(M.loc)) //else, there's considered to be no light
@@ -304,7 +304,7 @@
 		if(light_amount < SHADOW_SPECIES_LIGHT_THRESHOLD)
 			return power
 
-/datum/symptom/heal/darkness/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
+/datum/symptom/heal/darkness/Heal(mob/living/carbon/M, datum/pathogen/advance/A, actual_power)
 	var/heal_amt = 2 * actual_power
 
 	var/list/parts = M.get_damaged_bodyparts(1,1, BODYTYPE_ORGANIC)
@@ -350,7 +350,7 @@
 		"Stage Speed 7" = "Increases healing speed.",
 	)
 
-/datum/symptom/heal/coma/Start(datum/disease/advance/A)
+/datum/symptom/heal/coma/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -361,7 +361,7 @@
 	if(A.totalStealth() >= 2)
 		deathgasp = TRUE
 
-/datum/symptom/heal/coma/on_stage_change(datum/disease/advance/A)  //mostly copy+pasted from the code for self-respiration's TRAIT_NOBREATH stuff
+/datum/symptom/heal/coma/on_stage_change(datum/pathogen/advance/A)  //mostly copy+pasted from the code for self-respiration's TRAIT_NOBREATH stuff
 	. = ..()
 	if(!.)
 		return FALSE
@@ -371,7 +371,7 @@
 		REMOVE_TRAIT(A.affected_mob, TRAIT_NOCRITDAMAGE, DISEASE_TRAIT)
 	return TRUE
 
-/datum/symptom/heal/coma/End(datum/disease/advance/A)
+/datum/symptom/heal/coma/End(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -379,7 +379,7 @@
 		uncoma()
 	REMOVE_TRAIT(A.affected_mob, TRAIT_NOCRITDAMAGE, DISEASE_TRAIT)
 
-/datum/symptom/heal/coma/CanHeal(datum/disease/advance/A)
+/datum/symptom/heal/coma/CanHeal(datum/pathogen/advance/A)
 	var/mob/living/M = A.affected_mob
 	if(HAS_TRAIT(M, TRAIT_DEATHCOMA))
 		return power
@@ -407,7 +407,7 @@
 	M.cure_fakedeath("regenerative_coma")
 
 
-/datum/symptom/heal/coma/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
+/datum/symptom/heal/coma/Heal(mob/living/carbon/M, datum/pathogen/advance/A, actual_power)
 	var/heal_amt = 4 * actual_power
 
 	var/list/parts = M.get_damaged_bodyparts(1,1)
@@ -444,7 +444,7 @@
 		"Stage Speed 7" = "Increases healing speed.",
 	)
 
-/datum/symptom/heal/water/Start(datum/disease/advance/A)
+/datum/symptom/heal/water/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -453,7 +453,7 @@
 	if(A.totalResistance() >= 5)
 		absorption_coeff = 0.25
 
-/datum/symptom/heal/water/CanHeal(datum/disease/advance/A)
+/datum/symptom/heal/water/CanHeal(datum/pathogen/advance/A)
 	. = 0
 	var/mob/living/M = A.affected_mob
 	if(M.fire_stacks < 0)
@@ -466,7 +466,7 @@
 		M.reagents.remove_reagent(/datum/reagent/water, 0.5 * absorption_coeff)
 		. += power * 0.5
 
-/datum/symptom/heal/water/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
+/datum/symptom/heal/water/Heal(mob/living/carbon/M, datum/pathogen/advance/A, actual_power)
 	var/heal_amt = 2 * actual_power
 
 	var/list/parts = M.get_damaged_bodyparts(1,1, BODYTYPE_ORGANIC) //more effective on burns
@@ -508,7 +508,7 @@
 		"Stage Speed 7" = "Increases healing speed.",
 	)
 
-/datum/symptom/heal/plasma/Start(datum/disease/advance/A)
+/datum/symptom/heal/plasma/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -517,7 +517,7 @@
 	if(A.totalTransmittable() >= 6)
 		temp_rate = 4
 
-/datum/symptom/heal/plasma/CanHeal(datum/disease/advance/A)
+/datum/symptom/heal/plasma/CanHeal(datum/pathogen/advance/A)
 	var/mob/living/M = A.affected_mob
 	var/datum/gas_mixture/environment = M.loc.unsafe_return_air()
 
@@ -528,7 +528,7 @@
 	if(M.reagents.has_reagent(/datum/reagent/toxin/plasma, needs_metabolizing = TRUE))
 		. += power * 0.75 //Determines how much the symptom heals if injected or ingested
 
-/datum/symptom/heal/plasma/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
+/datum/symptom/heal/plasma/Heal(mob/living/carbon/M, datum/pathogen/advance/A, actual_power)
 	var/heal_amt = 4 * actual_power
 
 	if(prob(5))
@@ -578,7 +578,7 @@
 		"Resistance 7" = "Increases healing speed.",
 	)
 
-/datum/symptom/heal/radiation/Start(datum/disease/advance/A)
+/datum/symptom/heal/radiation/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -587,10 +587,10 @@
 	if(A.totalTransmittable() >= 6)
 		cellular_damage = TRUE
 
-/datum/symptom/heal/radiation/CanHeal(datum/disease/advance/A)
+/datum/symptom/heal/radiation/CanHeal(datum/pathogen/advance/A)
 	return HAS_TRAIT(A.affected_mob, TRAIT_IRRADIATED) ? power : 0
 
-/datum/symptom/heal/radiation/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
+/datum/symptom/heal/radiation/Heal(mob/living/carbon/M, datum/pathogen/advance/A, actual_power)
 	var/heal_amt = actual_power
 
 	if(cellular_damage)

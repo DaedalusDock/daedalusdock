@@ -213,7 +213,7 @@
 	. = ..()
 	if(data?["viruses"])
 		for(var/thing in data["viruses"])
-			var/datum/disease/strain = thing
+			var/datum/pathogen/strain = thing
 
 			if((strain.spread_flags & DISEASE_SPREAD_SPECIAL) || (strain.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
 				continue
@@ -227,7 +227,7 @@
 		return
 
 	if(data["viruses"])
-		for(var/datum/disease/strain as anything in data["viruses"])
+		for(var/datum/pathogen/strain as anything in data["viruses"])
 
 			if((strain.spread_flags & (DISEASE_SPREAD_SPECIAL|DISEASE_SPREAD_NON_CONTAGIOUS)))
 				continue
@@ -245,7 +245,7 @@
 		C.adjustBloodVolume(round(removed, 0.1))
 
 /datum/reagent/blood/affect_touch(mob/living/carbon/C, removed)
-	for(var/datum/disease/strain as anything in data?["viruses"])
+	for(var/datum/pathogen/strain as anything in data?["viruses"])
 
 		if((strain.spread_flags & DISEASE_SPREAD_SPECIAL) || (strain.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
 			continue
@@ -273,16 +273,16 @@
 			// Stop issues with the list changing during mixing.
 			var/list/to_mix = list()
 
-			for(var/datum/disease/advance/AD in mix1)
+			for(var/datum/pathogen/advance/AD in mix1)
 				to_mix += AD
-			for(var/datum/disease/advance/AD in mix2)
+			for(var/datum/pathogen/advance/AD in mix2)
 				to_mix += AD
 
-			var/datum/disease/advance/AD = Advance_Mix(to_mix)
+			var/datum/pathogen/advance/AD = Advance_Mix(to_mix)
 			if(AD)
 				var/list/preserve = list(AD)
 				for(var/D in data["viruses"])
-					if(!istype(D, /datum/disease/advance))
+					if(!istype(D, /datum/pathogen/advance))
 						preserve += D
 				data["viruses"] = preserve
 	return 1
@@ -291,7 +291,7 @@
 	. = list()
 	if(data && data["viruses"])
 		for(var/thing in data["viruses"])
-			var/datum/disease/D = thing
+			var/datum/pathogen/D = thing
 			. += D
 
 /datum/reagent/blood/expose_turf(turf/exposed_turf, reac_volume)//splash the blood all over the place
@@ -306,7 +306,7 @@
 		bloodsplatter = new(exposed_turf, data["viruses"])
 	else if(LAZYLEN(data["viruses"]))
 		var/list/viri_to_add = list()
-		for(var/datum/disease/virus in data["viruses"])
+		for(var/datum/pathogen/virus in data["viruses"])
 			if(virus.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
 				viri_to_add += virus
 		if(LAZYLEN(viri_to_add))
@@ -825,7 +825,7 @@
 		return
 
 	for(var/thing in exposed_mob.diseases)
-		var/datum/disease/infection = thing
+		var/datum/pathogen/infection = thing
 		if(infection.GetDiseaseID() in data)
 			infection.force_cure()
 	LAZYOR(exposed_mob.disease_resistances, data)
@@ -834,7 +834,7 @@
 	if(!islist(data))
 		return
 	for(var/thing in C.diseases)
-		var/datum/disease/infection = thing
+		var/datum/pathogen/infection = thing
 		if(infection.GetDiseaseID() in data)
 			infection.force_cure()
 	LAZYOR(C.disease_resistances, data)
@@ -855,7 +855,7 @@
 		cached_data = list()
 	else
 		cached_data = data
-	cached_data |= "[/datum/disease/tuberculosis]"
+	cached_data |= "[/datum/pathogen/tuberculosis]"
 	src.data = cached_data
 
 /datum/reagent/barbers_aid
@@ -1044,15 +1044,15 @@
 	metabolization_rate = INFINITY
 
 /datum/reagent/fungalspores/affect_ingest(mob/living/carbon/C, removed)
-	C.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
+	C.ForceContractDisease(new /datum/pathogen/tuberculosis(), FALSE, TRUE)
 	return ..()
 
 /datum/reagent/fungalspores/affect_blood(mob/living/carbon/C, removed)
-	C.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
+	C.ForceContractDisease(new /datum/pathogen/tuberculosis(), FALSE, TRUE)
 
 /datum/reagent/fungalspores/affect_touch(mob/living/carbon/C, removed)
 	if(prob(min(volume,100)*(1 - C.get_permeability_protection())))
-		C.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
+		C.ForceContractDisease(new /datum/pathogen/tuberculosis(), FALSE, TRUE)
 
 
 #define CRYO_SPEED_PREFACTOR 0.4

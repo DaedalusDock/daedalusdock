@@ -1,4 +1,4 @@
-/datum/disease/cold
+/datum/pathogen/cold
 	name = "The Cold"
 	max_stages = 3
 	cure_text = "Rest & Spaceacillin"
@@ -10,7 +10,7 @@
 	severity = DISEASE_SEVERITY_NONTHREAT
 
 
-/datum/disease/cold/stage_act(delta_time, times_fired)
+/datum/pathogen/cold/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -38,8 +38,8 @@
 				to_chat(affected_mob, span_danger("Your throat feels sore."))
 			if(DT_PROB(0.5, delta_time))
 				to_chat(affected_mob, span_danger("Mucous runs down the back of your throat."))
-			if(DT_PROB(0.25, delta_time) && !LAZYFIND(affected_mob.disease_resistances, /datum/disease/flu))
-				var/datum/disease/Flu = new /datum/disease/flu()
+			if(DT_PROB(0.25, delta_time) && !LAZYFIND(affected_mob.disease_resistances, /datum/pathogen/flu))
+				var/datum/pathogen/Flu = new /datum/pathogen/flu()
 				affected_mob.ForceContractDisease(Flu, FALSE, TRUE)
 				force_cure()
 				return FALSE

@@ -1,4 +1,4 @@
-/datum/disease/beesease
+/datum/pathogen/beesease
 	name = "Beesease"
 	form = "Infection"
 	max_stages = 4
@@ -13,7 +13,7 @@
 	infectable_biotypes = MOB_ORGANIC|MOB_UNDEAD //bees nesting in corpses
 
 
-/datum/disease/beesease/stage_act(delta_time, times_fired)
+/datum/pathogen/beesease/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

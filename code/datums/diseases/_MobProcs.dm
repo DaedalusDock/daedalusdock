@@ -1,13 +1,13 @@
 
-/mob/living/proc/HasDisease(datum/disease/D)
+/mob/living/proc/HasDisease(datum/pathogen/D)
 	for(var/thing in diseases)
-		var/datum/disease/DD = thing
+		var/datum/pathogen/DD = thing
 		if(D.IsSame(DD))
 			return TRUE
 	return FALSE
 
 
-/mob/living/proc/CanContractDisease(datum/disease/D)
+/mob/living/proc/CanContractDisease(datum/pathogen/D)
 	if(stat == DEAD && !D.process_dead)
 		return FALSE
 
@@ -26,13 +26,13 @@
 	return TRUE
 
 
-/mob/living/proc/ContactContractDisease(datum/disease/D)
+/mob/living/proc/ContactContractDisease(datum/pathogen/D)
 	if(!CanContractDisease(D))
 		return FALSE
 	D.try_infect(src)
 
 
-/mob/living/carbon/ContactContractDisease(datum/disease/D, target_zone)
+/mob/living/carbon/ContactContractDisease(datum/pathogen/D, target_zone)
 	if(!CanContractDisease(D))
 		return FALSE
 
@@ -107,11 +107,11 @@
 	if(passed)
 		D.try_infect(src)
 
-/mob/living/proc/AirborneContractDisease(datum/disease/D, force_spread)
+/mob/living/proc/AirborneContractDisease(datum/pathogen/D, force_spread)
 	if( ((D.spread_flags & DISEASE_SPREAD_AIRBORNE) || force_spread) && prob((50*D.contraction_chance_modifier) - 1))
 		ForceContractDisease(D)
 
-/mob/living/carbon/AirborneContractDisease(datum/disease/D, force_spread)
+/mob/living/carbon/AirborneContractDisease(datum/pathogen/D, force_spread)
 	if(internal)
 		return
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))
@@ -120,7 +120,7 @@
 
 
 //Proc to use when you 100% want to try to infect someone (ignoreing protective clothing and such), as long as they aren't immune
-/mob/living/proc/ForceContractDisease(datum/disease/D, make_copy = TRUE, del_on_fail = FALSE)
+/mob/living/proc/ForceContractDisease(datum/pathogen/D, make_copy = TRUE, del_on_fail = FALSE)
 	if(!CanContractDisease(D))
 		if(del_on_fail)
 			qdel(D)
@@ -132,7 +132,7 @@
 	return TRUE
 
 
-/mob/living/carbon/human/CanContractDisease(datum/disease/D)
+/mob/living/carbon/human/CanContractDisease(datum/pathogen/D)
 	if(dna)
 		if(HAS_TRAIT(src, TRAIT_VIRUSIMMUNE) && !D.bypasses_immunity)
 			return FALSE

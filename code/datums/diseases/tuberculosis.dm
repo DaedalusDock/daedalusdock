@@ -1,4 +1,4 @@
-/datum/disease/tuberculosis
+/datum/pathogen/tuberculosis
 	form = "Disease"
 	name = "Fungal tuberculosis"
 	max_stages = 5
@@ -13,7 +13,7 @@
 	severity = DISEASE_SEVERITY_BIOHAZARD
 	bypasses_immunity = TRUE // TB primarily impacts the lungs; it's also bacterial or fungal in nature; viral immunity should do nothing.
 
-/datum/disease/tuberculosis/stage_act(delta_time, times_fired) //it begins
+/datum/pathogen/tuberculosis/stage_act(delta_time, times_fired) //it begins
 	. = ..()
 	if(!.)
 		return

@@ -16,11 +16,11 @@
 	level = 5
 	severity = 0
 
-/datum/symptom/undead_adaptation/OnAdd(datum/disease/advance/A)
+/datum/symptom/undead_adaptation/OnAdd(datum/pathogen/advance/A)
 	A.process_dead = TRUE
 	A.infectable_biotypes |= MOB_UNDEAD
 
-/datum/symptom/undead_adaptation/OnRemove(datum/disease/advance/A)
+/datum/symptom/undead_adaptation/OnRemove(datum/pathogen/advance/A)
 	A.process_dead = FALSE
 	A.infectable_biotypes &= ~MOB_UNDEAD
 
@@ -42,9 +42,9 @@
 	level = 5
 	severity = 0
 
-/datum/symptom/inorganic_adaptation/OnAdd(datum/disease/advance/A)
+/datum/symptom/inorganic_adaptation/OnAdd(datum/pathogen/advance/A)
 	A.infectable_biotypes |= MOB_MINERAL //Mineral covers plasmamen and golems.
 
-/datum/symptom/inorganic_adaptation/OnRemove(datum/disease/advance/A)
+/datum/symptom/inorganic_adaptation/OnRemove(datum/pathogen/advance/A)
 	A.infectable_biotypes &= ~MOB_MINERAL
 

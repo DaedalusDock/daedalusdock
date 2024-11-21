@@ -27,7 +27,7 @@ Bonus
 		"Transmission 8" = "Causes extreme pain to the host, weakening it.",
 	)
 
-/datum/symptom/flesh_eating/Start(datum/disease/advance/A)
+/datum/symptom/flesh_eating/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -36,7 +36,7 @@ Bonus
 	if(A.totalTransmittable() >= 8) //extra stamina damage
 		pain = TRUE
 
-/datum/symptom/flesh_eating/Activate(datum/disease/advance/A)
+/datum/symptom/flesh_eating/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -49,7 +49,7 @@ Bonus
 			to_chat(M, span_userdanger("[pick("You cringe as a violent pain takes over your body.", "It feels like your body is eating itself inside out.", "IT HURTS.")]"))
 			Flesheat(M, A)
 
-/datum/symptom/flesh_eating/proc/Flesheat(mob/living/M, datum/disease/advance/A)
+/datum/symptom/flesh_eating/proc/Flesheat(mob/living/M, datum/pathogen/advance/A)
 	var/get_damage = rand(15,25) * power
 	M.take_overall_damage(brute = get_damage, required_status = BODYTYPE_ORGANIC)
 	if(pain)
@@ -98,7 +98,7 @@ Bonus
 		"Stealth 5" = "The symptom remains hidden until active.",
 	)
 
-/datum/symptom/flesh_death/Start(datum/disease/advance/A)
+/datum/symptom/flesh_death/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -107,7 +107,7 @@ Bonus
 	if(A.totalStageSpeed() >= 7) //bleeding and hunger
 		chems = TRUE
 
-/datum/symptom/flesh_death/Activate(datum/disease/advance/A)
+/datum/symptom/flesh_death/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -121,7 +121,7 @@ Bonus
 				to_chat(M, span_userdanger("[pick("You feel your muscles weakening.", "Some of your skin detaches itself.", "You feel sandy.")]"))
 			Flesh_death(M, A)
 
-/datum/symptom/flesh_death/proc/Flesh_death(mob/living/M, datum/disease/advance/A)
+/datum/symptom/flesh_death/proc/Flesh_death(mob/living/M, datum/pathogen/advance/A)
 	var/get_damage = rand(6,10)
 	M.take_overall_damage(brute = get_damage, required_status = BODYTYPE_ORGANIC)
 	if(chems)

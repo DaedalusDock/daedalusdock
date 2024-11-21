@@ -1,4 +1,4 @@
-/datum/disease/fake_gbs
+/datum/pathogen/fake_gbs
 	name = "GBS"
 	max_stages = 5
 	spread_text = "On contact"
@@ -11,7 +11,7 @@
 	severity = DISEASE_SEVERITY_BIOHAZARD
 
 
-/datum/disease/fake_gbs/stage_act(delta_time, times_fired)
+/datum/pathogen/fake_gbs/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

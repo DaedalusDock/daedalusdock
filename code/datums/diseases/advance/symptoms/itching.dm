@@ -23,7 +23,7 @@
 		"Stage Speed 7" = "The host will scrath itself when itching, causing superficial damage.",
 	)
 
-/datum/symptom/itching/Start(datum/disease/advance/A)
+/datum/symptom/itching/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -33,7 +33,7 @@
 	if(A.totalStageSpeed() >= 7) //scratch
 		scratch = TRUE
 
-/datum/symptom/itching/Activate(datum/disease/advance/A)
+/datum/symptom/itching/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

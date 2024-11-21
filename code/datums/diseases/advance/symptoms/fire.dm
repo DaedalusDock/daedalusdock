@@ -27,7 +27,7 @@
 		"Stealth 4" = "The symptom remains hidden until active.",
 	)
 
-/datum/symptom/fire/Start(datum/disease/advance/A)
+/datum/symptom/fire/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -40,7 +40,7 @@
 	if(A.totalTransmittable() >= 8) //burning skin spreads the virus through smoke
 		infective = TRUE
 
-/datum/symptom/fire/Activate(datum/disease/advance/A)
+/datum/symptom/fire/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -60,14 +60,14 @@
 			to_chat(M, span_userdanger("Your skin erupts into an inferno!"))
 			M.emote("scream")
 
-/datum/symptom/fire/proc/Firestacks_stage_4(mob/living/M, datum/disease/advance/A)
+/datum/symptom/fire/proc/Firestacks_stage_4(mob/living/M, datum/pathogen/advance/A)
 	M.adjust_fire_stacks(1 * power)
 	M.take_overall_damage(burn = 3 * power, required_status = BODYTYPE_ORGANIC)
 	if(infective)
 		A.airborne_spread(2, FALSE)
 	return 1
 
-/datum/symptom/fire/proc/Firestacks_stage_5(mob/living/M, datum/disease/advance/A)
+/datum/symptom/fire/proc/Firestacks_stage_5(mob/living/M, datum/pathogen/advance/A)
 	M.adjust_fire_stacks(3 * power)
 	M.take_overall_damage(burn = 5 * power, required_status = BODYTYPE_ORGANIC)
 	if(infective)
@@ -107,7 +107,7 @@ Bonus
 		"Transmission 8" = "Additionally synthesizes chlorine trifluoride and napalm inside the host. More chemicals are synthesized if the resistance 9 threshold has been met."
 	)
 
-/datum/symptom/alkali/Start(datum/disease/advance/A)
+/datum/symptom/alkali/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -120,7 +120,7 @@ Bonus
 	if(A.totalTransmittable() >= 8) //extra chemicals
 		chems = TRUE
 
-/datum/symptom/alkali/Activate(datum/disease/advance/A)
+/datum/symptom/alkali/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -146,7 +146,7 @@ Bonus
 			to_chat(M, span_userdanger("Your skin erupts into an inferno!"))
 			M.emote("scream")
 
-/datum/symptom/alkali/proc/Alkali_fire_stage_4(mob/living/M, datum/disease/advance/A)
+/datum/symptom/alkali/proc/Alkali_fire_stage_4(mob/living/M, datum/pathogen/advance/A)
 	var/get_stacks = 6 * power
 	M.adjust_fire_stacks(get_stacks)
 	M.take_overall_damage(burn = get_stacks / 2, required_status = BODYTYPE_ORGANIC)
@@ -154,7 +154,7 @@ Bonus
 		M.reagents.add_reagent(/datum/reagent/clf3, 2 * power)
 	return 1
 
-/datum/symptom/alkali/proc/Alkali_fire_stage_5(mob/living/M, datum/disease/advance/A)
+/datum/symptom/alkali/proc/Alkali_fire_stage_5(mob/living/M, datum/pathogen/advance/A)
 	var/get_stacks = 8 * power
 	M.adjust_fire_stacks(get_stacks)
 	M.take_overall_damage(burn = get_stacks, required_status = BODYTYPE_ORGANIC)

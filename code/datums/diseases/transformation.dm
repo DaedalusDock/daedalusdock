@@ -1,4 +1,4 @@
-/datum/disease/transformation
+/datum/pathogen/transformation
 	name = "Transformation"
 	max_stages = 5
 	spread_text = "Acute"
@@ -19,8 +19,8 @@
 	var/bantype
 	var/transformed_antag_datum //Do we add a specific antag datum once the transformation is complete?
 
-/datum/disease/transformation/Copy()
-	var/datum/disease/transformation/D = ..()
+/datum/pathogen/transformation/Copy()
+	var/datum/pathogen/transformation/D = ..()
 	D.stage1 = stage1.Copy()
 	D.stage2 = stage2.Copy()
 	D.stage3 = stage3.Copy()
@@ -30,7 +30,7 @@
 	return D
 
 
-/datum/disease/transformation/stage_act(delta_time, times_fired)
+/datum/pathogen/transformation/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -52,7 +52,7 @@
 			do_disease_transformation(affected_mob)
 
 
-/datum/disease/transformation/proc/do_disease_transformation(mob/living/affected_mob)
+/datum/pathogen/transformation/proc/do_disease_transformation(mob/living/affected_mob)
 	if(istype(affected_mob, /mob/living/carbon) && affected_mob.stat != DEAD)
 		if(length(stage5))
 			to_chat(affected_mob, pick(stage5))
@@ -80,7 +80,7 @@
 		new_mob.set_real_name(new_mob.name)
 		qdel(affected_mob)
 
-/datum/disease/transformation/proc/replace_banned_player(mob/living/new_mob) // This can run well after the mob has been transferred, so need a handle on the new mob to kill it if needed.
+/datum/pathogen/transformation/proc/replace_banned_player(mob/living/new_mob) // This can run well after the mob has been transferred, so need a handle on the new mob to kill it if needed.
 	set waitfor = FALSE
 
 	var/list/mob/dead/observer/candidates = poll_candidates_for_mob("Do you want to play as [affected_mob.real_name]?", bantype, bantype, 5 SECONDS, affected_mob)
@@ -97,7 +97,7 @@
 			new_mob.ghostize(can_reenter_corpse = FALSE)
 			new_mob.key = null
 
-/datum/disease/transformation/jungle_flu
+/datum/pathogen/transformation/jungle_flu
 	name = "Jungle Flu"
 	cure_text = "Death."
 	cures = list(/datum/reagent/medicine/adminordrazine)
@@ -121,10 +121,10 @@
 					"<span class='warning'>You have a craving for bananas.</span>", "<span class='warning'>Your mind feels clouded.</span>")
 	stage5 = list("<span class='warning'>You feel like monkeying around.</span>")
 
-/datum/disease/transformation/jungle_flu/do_disease_transformation(mob/living/carbon/affected_mob)
+/datum/pathogen/transformation/jungle_flu/do_disease_transformation(mob/living/carbon/affected_mob)
 	affected_mob.monkeyize()
 
-/datum/disease/transformation/jungle_flu/stage_act(delta_time, times_fired)
+/datum/pathogen/transformation/jungle_flu/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -141,7 +141,7 @@
 			if(DT_PROB(1.5, delta_time))
 				affected_mob.say(pick("Eeek, ook ook!", "Eee-eeek!", "Eeee!", "Ungh, ungh."), forced = "jungle fever")
 
-/datum/disease/transformation/robot
+/datum/pathogen/transformation/robot
 
 	name = "Robotic Transformation"
 	cure_text = "An injection of copper."
@@ -161,7 +161,7 @@
 	bantype = JOB_CYBORG
 
 
-/datum/disease/transformation/robot/stage_act(delta_time, times_fired)
+/datum/pathogen/transformation/robot/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -178,7 +178,7 @@
 				affected_mob.say(pick("beep, beep!", "Boop bop boop beep.", "kkkiiiill mmme", "I wwwaaannntt tttoo dddiiieeee..."), forced = "robotic transformation")
 
 
-/datum/disease/transformation/xeno
+/datum/pathogen/transformation/xeno
 
 	name = "Xenomorph Transformation"
 	cure_text = "Spaceacillin & Glycerol"
@@ -197,7 +197,7 @@
 	bantype = ROLE_ALIEN
 
 
-/datum/disease/transformation/xeno/stage_act(delta_time, times_fired)
+/datum/pathogen/transformation/xeno/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -212,7 +212,7 @@
 				affected_mob.say(pick("You look delicious.", "Going to... devour you...", "Hsssshhhhh!"), forced = "xenomorph transformation")
 
 
-/datum/disease/transformation/slime
+/datum/pathogen/transformation/slime
 	name = "Advanced Mutation Transformation"
 	cure_text = "frost oil"
 	cures = list(/datum/reagent/consumable/frostoil)
@@ -229,7 +229,7 @@
 	new_form = /mob/living/simple_animal/slime/random
 
 
-/datum/disease/transformation/slime/stage_act(delta_time, times_fired)
+/datum/pathogen/transformation/slime/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -246,7 +246,7 @@
 					human.set_species(/datum/species/jelly/slime)
 
 
-/datum/disease/transformation/corgi
+/datum/pathogen/transformation/corgi
 	name = "The Barkening"
 	cure_text = "Death"
 	cures = list(/datum/reagent/medicine/adminordrazine)
@@ -262,7 +262,7 @@
 	new_form = /mob/living/simple_animal/pet/dog/corgi
 
 
-/datum/disease/transformation/corgi/stage_act(delta_time, times_fired)
+/datum/pathogen/transformation/corgi/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -275,7 +275,7 @@
 				affected_mob.say(pick("Bark!", "AUUUUUU"), forced = "corgi transformation")
 
 
-/datum/disease/transformation/morph
+/datum/pathogen/transformation/morph
 	name = "Gluttony's Blessing"
 	cure_text = "Nothing"
 	cures = list(/datum/reagent/consumable/nothing)
@@ -293,7 +293,7 @@
 	infectable_biotypes = MOB_ORGANIC|MOB_MINERAL|MOB_UNDEAD //magic!
 	transformed_antag_datum = /datum/antagonist/morph
 
-/datum/disease/transformation/gondola
+/datum/pathogen/transformation/gondola
 	name = "Gondola Transformation"
 	cure_text = "Condensed Capsaicin, ingested or injected." //getting pepper sprayed doesn't help
 	cures = list(/datum/reagent/consumable/condensedcapsaicin) //beats the hippie crap right out of your system
@@ -311,7 +311,7 @@
 	new_form = /mob/living/simple_animal/pet/gondola
 
 
-/datum/disease/transformation/gondola/stage_act(delta_time, times_fired)
+/datum/pathogen/transformation/gondola/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

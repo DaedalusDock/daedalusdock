@@ -9,14 +9,14 @@
 
 /obj/item/organ/heart/gland/viral/activate()
 	to_chat(owner, span_warning("You feel sick."))
-	var/datum/disease/advance/A = random_virus(pick(2,6),6)
+	var/datum/pathogen/advance/A = random_virus(pick(2,6),6)
 	A.affected_mob_is_only_carrier = TRUE
 	owner.ForceContractDisease(A, FALSE, TRUE)
 
 /obj/item/organ/heart/gland/viral/proc/random_virus(max_symptoms, max_level)
 	if(max_symptoms > VIRUS_SYMPTOM_LIMIT)
 		max_symptoms = VIRUS_SYMPTOM_LIMIT
-	var/datum/disease/advance/A = new /datum/disease/advance()
+	var/datum/pathogen/advance/A = new /datum/pathogen/advance()
 	var/list/datum/symptom/possible_symptoms = list()
 	for(var/symptom in subtypesof(/datum/symptom))
 		var/datum/symptom/S = symptom

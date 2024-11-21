@@ -22,14 +22,14 @@
 		"Resistance 8" = "Additionally regenerates lost blood."
 	)
 
-/datum/symptom/oxygen/Start(datum/disease/advance/A)
+/datum/symptom/oxygen/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
 	if(A.totalResistance() >= 8) //blood regeneration
 		regenerate_blood = TRUE
 
-/datum/symptom/oxygen/Activate(datum/disease/advance/A)
+/datum/symptom/oxygen/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -45,7 +45,7 @@
 				to_chat(M, span_notice("[pick("Your lungs feel great.", "You realize you haven't been breathing.", "You don't feel the need to breathe.")]"))
 	return
 
-/datum/symptom/oxygen/on_stage_change(datum/disease/advance/A)
+/datum/symptom/oxygen/on_stage_change(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return FALSE
@@ -56,7 +56,7 @@
 		REMOVE_TRAIT(M, TRAIT_NOBREATH, DISEASE_TRAIT)
 	return TRUE
 
-/datum/symptom/oxygen/End(datum/disease/advance/A)
+/datum/symptom/oxygen/End(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

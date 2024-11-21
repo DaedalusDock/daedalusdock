@@ -1,4 +1,4 @@
-/datum/disease/flu
+/datum/pathogen/flu
 	name = "The Flu"
 	max_stages = 3
 	spread_text = "Airborne"
@@ -12,7 +12,7 @@
 	severity = DISEASE_SEVERITY_MINOR
 
 
-/datum/disease/flu/stage_act(delta_time, times_fired)
+/datum/pathogen/flu/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

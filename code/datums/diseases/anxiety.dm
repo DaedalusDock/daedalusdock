@@ -1,4 +1,4 @@
-/datum/disease/anxiety
+/datum/pathogen/anxiety
 	name = "Severe Anxiety"
 	form = "Infection"
 	max_stages = 4
@@ -12,7 +12,7 @@
 	severity = DISEASE_SEVERITY_MINOR
 
 
-/datum/disease/anxiety/stage_act(delta_time, times_fired)
+/datum/pathogen/anxiety/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

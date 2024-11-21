@@ -20,7 +20,7 @@
 	symptom_delay_min = 25
 	symptom_delay_max = 50
 
-/datum/symptom/youth/Activate(datum/disease/advance/A)
+/datum/symptom/youth/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

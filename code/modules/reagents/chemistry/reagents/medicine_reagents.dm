@@ -72,7 +72,7 @@
 	for(var/obj/item/organ/organ as anything in C.processing_organs)
 		organ.setOrganDamage(0)
 	for(var/thing in C.diseases)
-		var/datum/disease/D = thing
+		var/datum/pathogen/D = thing
 		if(D.severity == DISEASE_SEVERITY_POSITIVE)
 			continue
 		D.force_cure()

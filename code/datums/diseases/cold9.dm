@@ -1,4 +1,4 @@
-/datum/disease/cold9
+/datum/pathogen/cold9
 	name = "The Cold"
 	max_stages = 3
 	spread_text = "On contact"
@@ -11,7 +11,7 @@
 	severity = DISEASE_SEVERITY_HARMFUL
 
 
-/datum/disease/cold9/stage_act(delta_time, times_fired)
+/datum/pathogen/cold9/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

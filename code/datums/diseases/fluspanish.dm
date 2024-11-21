@@ -1,4 +1,4 @@
-/datum/disease/fluspanish
+/datum/pathogen/fluspanish
 	name = "Spanish inquisition Flu"
 	max_stages = 3
 	spread_text = "Airborne"
@@ -12,7 +12,7 @@
 	severity = DISEASE_SEVERITY_DANGEROUS
 
 
-/datum/disease/fluspanish/stage_act(delta_time, times_fired)
+/datum/pathogen/fluspanish/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

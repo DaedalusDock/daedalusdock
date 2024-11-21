@@ -510,7 +510,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		ADD_TRAIT(C, X, SPECIES_TRAIT)
 
 	if(TRAIT_VIRUSIMMUNE in inherent_traits)
-		for(var/datum/disease/A in C.diseases)
+		for(var/datum/pathogen/A in C.diseases)
 			A.force_cure(add_resistance = FALSE)
 
 	if(TRAIT_TOXIMMUNE in inherent_traits)

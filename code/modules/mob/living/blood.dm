@@ -228,7 +228,7 @@
 			if(blood_id == /datum/reagent/blood) //normal blood
 				if(blood_data["viruses"])
 					for(var/thing in blood_data["viruses"])
-						var/datum/disease/D = thing
+						var/datum/pathogen/D = thing
 						if((D.spread_flags & DISEASE_SPREAD_SPECIAL) || (D.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
 							continue
 						C.ForceContractDisease(D)
@@ -253,7 +253,7 @@
 		blood_data["viruses"] = list()
 
 		for(var/thing in diseases)
-			var/datum/disease/D = thing
+			var/datum/pathogen/D = thing
 			blood_data["viruses"] += D.Copy()
 
 		blood_data["blood_DNA"] = dna.unique_enzymes

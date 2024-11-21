@@ -24,7 +24,7 @@
 		"Stealth 4" = "The symptom remains hidden until active.",
 	)
 
-/datum/symptom/visionloss/Start(datum/disease/advance/A)
+/datum/symptom/visionloss/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -33,7 +33,7 @@
 	if(A.totalResistance() >= 12) //goodbye eyes
 		remove_eyes = TRUE
 
-/datum/symptom/visionloss/Activate(datum/disease/advance/A)
+/datum/symptom/visionloss/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

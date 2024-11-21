@@ -1,4 +1,4 @@
-/datum/disease/revblight
+/datum/pathogen/revblight
 	name = "Unnatural Wasting"
 	max_stages = 5
 	stage_prob = 5
@@ -14,7 +14,7 @@
 	var/stagedamage = 0 //Highest stage reached.
 	var/finalstage = 0 //Because we're spawning off the cure in the final stage, we need to check if we've done the final stage's effects.
 
-/datum/disease/revblight/force_cure(add_resistance = TRUE)
+/datum/pathogen/revblight/force_cure(add_resistance = TRUE)
 	if(affected_mob)
 		affected_mob.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, "#1d2953")
 		if(affected_mob.dna && affected_mob.dna.species)
@@ -23,7 +23,7 @@
 	..()
 
 
-/datum/disease/revblight/stage_act(delta_time, times_fired)
+/datum/pathogen/revblight/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

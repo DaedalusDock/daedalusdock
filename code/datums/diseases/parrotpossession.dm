@@ -1,4 +1,4 @@
-/datum/disease/parrot_possession
+/datum/pathogen/parrot_possession
 	name = "Parrot Possession"
 	max_stages = 1
 	spread_text = "Paranormal"
@@ -16,7 +16,7 @@
 	var/mob/living/simple_animal/parrot/poly/ghost/parrot
 
 
-/datum/disease/parrot_possession/stage_act(delta_time, times_fired)
+/datum/pathogen/parrot_possession/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -29,7 +29,7 @@
 		affected_mob.say(pick(parrot.speech_buffer), forced = "parrot possession")
 
 
-/datum/disease/parrot_possession/force_cure(add_resistance = TRUE)
+/datum/pathogen/parrot_possession/force_cure(add_resistance = TRUE)
 	if(parrot && parrot.loc == affected_mob)
 		parrot.forceMove(affected_mob.drop_location())
 		affected_mob.visible_message(span_danger("[parrot] is violently driven out of [affected_mob]!"), span_userdanger("[parrot] bursts out of your chest!"))

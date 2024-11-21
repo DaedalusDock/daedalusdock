@@ -107,11 +107,11 @@
 
 	return forensics.add_blood_DNA(dna)
 
-/obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
+/obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/pathogen/diseases)
 	. = ..()
 	transfer_blood = rand(2, 4)
 
-/turf/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
+/turf/add_blood_DNA(list/blood_dna, list/datum/pathogen/diseases)
 	var/obj/effect/decal/cleanable/blood/splatter/B = locate() in src
 	if(!B)
 		B = new /obj/effect/decal/cleanable/blood/splatter(src, diseases)
@@ -119,7 +119,7 @@
 	if(!QDELETED(B))
 		return B.add_blood_DNA(blood_dna) //give blood info to the blood decal.
 
-/mob/living/carbon/human/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
+/mob/living/carbon/human/add_blood_DNA(list/blood_dna, list/datum/pathogen/diseases)
 	return add_blood_DNA_to_items(blood_dna)
 
 /// Adds blood DNA to certain slots the mob is wearing

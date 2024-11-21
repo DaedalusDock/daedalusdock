@@ -149,12 +149,12 @@
 	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_HAND, user, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		. = TRUE
 	for(var/thing in diseases)
-		var/datum/disease/D = thing
+		var/datum/pathogen/D = thing
 		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 			user.ContactContractDisease(D)
 
 	for(var/thing in user.diseases)
-		var/datum/disease/D = thing
+		var/datum/pathogen/D = thing
 		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 			ContactContractDisease(D)
 
@@ -165,12 +165,12 @@
 
 	if(try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
 		for(var/thing in diseases)
-			var/datum/disease/D = thing
+			var/datum/pathogen/D = thing
 			if((D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN) && prob(85))
 				user.ContactContractDisease(D)
 
 	for(var/thing in user.diseases)
-		var/datum/disease/D = thing
+		var/datum/pathogen/D = thing
 		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 			ContactContractDisease(D)
 
@@ -180,7 +180,7 @@
 
 	if(..()) //successful monkey bite.
 		for(var/thing in user.diseases)
-			var/datum/disease/D = thing
+			var/datum/pathogen/D = thing
 			if(D.spread_flags & (DISEASE_SPREAD_SPECIAL | DISEASE_SPREAD_NON_CONTAGIOUS))
 				continue
 			ForceContractDisease(D)

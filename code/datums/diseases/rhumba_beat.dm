@@ -1,4 +1,4 @@
-/datum/disease/rhumba_beat
+/datum/pathogen/rhumba_beat
 	name = "The Rhumba Beat"
 	max_stages = 5
 	spread_text = "On contact"
@@ -9,7 +9,7 @@
 	viable_mobtypes = list(/mob/living/carbon/human)
 	severity = DISEASE_SEVERITY_BIOHAZARD
 
-/datum/disease/rhumba_beat/stage_act(delta_time, times_fired)
+/datum/pathogen/rhumba_beat/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

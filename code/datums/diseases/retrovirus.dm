@@ -1,4 +1,4 @@
-/datum/disease/dna_retrovirus
+/datum/pathogen/dna_retrovirus
 	name = "Retrovirus"
 	max_stages = 4
 	spread_text = "Contact"
@@ -13,7 +13,7 @@
 	stage_prob = 1
 	var/restcure = 0
 
-/datum/disease/dna_retrovirus/New()
+/datum/pathogen/dna_retrovirus/New()
 	..()
 	agent = "Virus class [pick("A","B","C","D","E","F")][pick("A","B","C","D","E","F")]-[rand(50,300)]"
 	if(prob(40))
@@ -21,12 +21,12 @@
 	else
 		restcure = 1
 
-/datum/disease/dna_retrovirus/Copy()
-	var/datum/disease/dna_retrovirus/D = ..()
+/datum/pathogen/dna_retrovirus/Copy()
+	var/datum/pathogen/dna_retrovirus/D = ..()
 	D.restcure = restcure
 	return D
 
-/datum/disease/dna_retrovirus/stage_act(delta_time, times_fired)
+/datum/pathogen/dna_retrovirus/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

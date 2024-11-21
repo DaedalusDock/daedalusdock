@@ -1,4 +1,4 @@
-/datum/disease
+/datum/pathogen
 	/// The mob affected by this disease. Can be null.
 	var/mob/living/carbon/affected_mob = null
 	//Flags
@@ -50,14 +50,14 @@
 	/// If TRUE, the mob is a carrier only and does not feel the effects of the disease.
 	var/affected_mob_is_only_carrier = FALSE
 
-/datum/disease/Destroy()
+/datum/pathogen/Destroy()
 	if(affected_mob)
 		remove_disease_from_host()
-	SSdisease.active_diseases.Remove(src)
+	SSpathogens.active_pathogens.Remove(src)
 	return ..()
 
 /// Removes the disease from the host mob.
-/datum/disease/proc/remove_disease_from_host()
+/datum/pathogen/proc/remove_disease_from_host()
 	PROTECTED_PROC(TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -66,16 +66,16 @@
 	affected_mob = null
 
 /// Attempt to infect a mob with this disease. Currently, only advance diseases can fail this. Returns TRUE on success.
-/datum/disease/proc/try_infect(mob/living/infectee, make_copy = TRUE)
+/datum/pathogen/proc/try_infect(mob/living/infectee, make_copy = TRUE)
 	force_infect(infectee, make_copy)
 	return TRUE
 
 /// Infect a mob with absolutely no safety checks.
-/datum/disease/proc/force_infect(mob/living/infectee, make_copy = TRUE)
-	var/datum/disease/D = make_copy ? Copy() : src
+/datum/pathogen/proc/force_infect(mob/living/infectee, make_copy = TRUE)
+	var/datum/pathogen/D = make_copy ? Copy() : src
 	LAZYADD(infectee.diseases, D)
 	D.affected_mob = infectee
-	SSdisease.active_diseases += D //Add it to the active diseases list, now that it's actually in a mob and being processed.
+	SSpathogens.active_pathogens += D //Add it to the active diseases list, now that it's actually in a mob and being processed.
 
 	D.after_add()
 	infectee.med_hud_set_status()
@@ -84,7 +84,7 @@
 	log_virus("[key_name(infectee)] was infected by virus: [admin_details()] at [loc_name(source_turf)]")
 
 /// Cure the disease and delete it.
-/datum/disease/proc/force_cure(add_resistance = TRUE)
+/datum/pathogen/proc/force_cure(add_resistance = TRUE)
 	if(affected_mob)
 		if(add_resistance && (disease_flags & DISEASE_RESIST_ON_CURE))
 			LAZYOR(affected_mob.disease_resistances, GetDiseaseID())
@@ -95,12 +95,12 @@
 	return TRUE
 
 /// Return a string for admin logging uses, should describe the disease in detail
-/datum/disease/proc/admin_details()
+/datum/pathogen/proc/admin_details()
 	return "[src.name] : [src.type]"
 
 /// Proc to process the disease and decide on whether to advance, cure or make the sympthoms appear.
 /// Returns a boolean on whether to continue acting on the symptoms or not.
-/datum/disease/proc/stage_act(delta_time, times_fired)
+/datum/pathogen/proc/stage_act(delta_time, times_fired)
 	if(can_cure_affected())
 		if(DT_PROB(cure_chance, delta_time))
 			set_stage(max(stage - 1, 1))
@@ -115,11 +115,11 @@
 	return !affected_mob_is_only_carrier
 
 /// Setter for the stage var
-/datum/disease/proc/set_stage(new_stage)
+/datum/pathogen/proc/set_stage(new_stage)
 	stage = new_stage
 
 /// Returns TRUE if the affected mob can be cured.
-/datum/disease/proc/can_cure_affected()
+/datum/pathogen/proc/can_cure_affected()
 	if(!(disease_flags & DISEASE_CURABLE))
 		return FALSE
 
@@ -132,7 +132,7 @@
 		return FALSE
 
 /// Attempt to spread to nearby mobs through the air.
-/datum/disease/proc/airborne_spread(force_spread = 0, check_mob_spreadability = TRUE)
+/datum/pathogen/proc/airborne_spread(force_spread = 0, check_mob_spreadability = TRUE)
 	if(!affected_mob)
 		return
 
@@ -169,13 +169,13 @@
 			return FALSE
 		end = Temp
 
-/datum/disease/proc/IsSame(datum/disease/D)
+/datum/pathogen/proc/IsSame(datum/pathogen/D)
 	if(GetDiseaseID() == D.GetDiseaseID())
 		return TRUE
 	return FALSE
 
 
-/datum/disease/proc/Copy()
+/datum/pathogen/proc/Copy()
 	//note that stage is not copied over - the copy starts over at stage 1
 	var/static/list/copy_vars = list(
 		NAMEOF_STATIC(src, name),
@@ -201,7 +201,7 @@
 		NAMEOF_STATIC(src, process_dead)
 	)
 
-	var/datum/disease/D = copy_type ? new copy_type() : new type()
+	var/datum/pathogen/D = copy_type ? new copy_type() : new type()
 	for(var/V in copy_vars)
 		var/val = vars[V]
 		if(islist(val))
@@ -210,11 +210,11 @@
 		D.vars[V] = val
 	return D
 
-/datum/disease/proc/after_add()
+/datum/pathogen/proc/after_add()
 	return
 
 
-/datum/disease/proc/GetDiseaseID()
+/datum/pathogen/proc/GetDiseaseID()
 	return "[type]"
 
 
@@ -227,7 +227,7 @@
  * Arguments:
  * * mob_type - Type path to check against the viable_mobtypes list.
  */
-/datum/disease/proc/is_viable_mobtype(mob_type)
+/datum/pathogen/proc/is_viable_mobtype(mob_type)
 	for(var/viable_type in viable_mobtypes)
 		if(ispath(mob_type, viable_type))
 			return TRUE

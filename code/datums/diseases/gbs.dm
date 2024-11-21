@@ -1,4 +1,4 @@
-/datum/disease/gbs
+/datum/pathogen/gbs
 	name = "GBS"
 	max_stages = 4
 	spread_text = "On contact"
@@ -11,7 +11,7 @@
 	contraction_chance_modifier = 1
 	severity = DISEASE_SEVERITY_BIOHAZARD
 
-/datum/disease/gbs/stage_act(delta_time, times_fired)
+/datum/pathogen/gbs/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

@@ -19,7 +19,7 @@
 	symptom_delay_min = 45
 	symptom_delay_max = 90
 
-/datum/symptom/shedding/Activate(datum/disease/advance/A)
+/datum/symptom/shedding/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

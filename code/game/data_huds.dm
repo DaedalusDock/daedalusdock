@@ -99,7 +99,7 @@ Medical HUD! Basic mode needs suit sensors on.
 		threat = get_disease_severity_value(severity)
 
 	for(var/thing in diseases)
-		var/datum/disease/D = thing
+		var/datum/pathogen/D = thing
 		if(!(D.visibility_flags & HIDDEN_SCANNER))
 			if(!threat || get_disease_severity_value(D.severity) > threat) //a buffing virus gets an icon
 				threat = get_disease_severity_value(D.severity)

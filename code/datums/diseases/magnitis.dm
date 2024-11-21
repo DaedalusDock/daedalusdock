@@ -1,4 +1,4 @@
-/datum/disease/magnitis
+/datum/pathogen/magnitis
 	name = "Magnitis"
 	max_stages = 4
 	spread_text = "Airborne"
@@ -13,7 +13,7 @@
 	process_dead = TRUE
 
 
-/datum/disease/magnitis/stage_act(delta_time, times_fired)
+/datum/pathogen/magnitis/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

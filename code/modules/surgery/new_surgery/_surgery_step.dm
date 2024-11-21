@@ -153,11 +153,11 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 
 		// Transmit diseases if no gloves.
 		if(IS_ORGANIC_LIMB(affected) && !human_user?.gloves)
-			for(var/datum/disease/D as anything in user.diseases)
+			for(var/datum/pathogen/D as anything in user.diseases)
 				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 					target.ContactContractDisease(D)
 
-			for(var/datum/disease/D as anything in target.diseases)
+			for(var/datum/pathogen/D as anything in target.diseases)
 				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 					user.ContactContractDisease(D)
 

@@ -1010,7 +1010,7 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 /mob/living/simple_animal/parrot/poly/ghost/proc/Possess(mob/living/carbon/human/H)
 	if(!ishuman(H))
 		return
-	var/datum/disease/parrot_possession/P = new
+	var/datum/pathogen/parrot_possession/P = new
 	P.parrot = src
 	forceMove(H)
 	H.ForceContractDisease(P, FALSE)

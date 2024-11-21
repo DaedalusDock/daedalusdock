@@ -27,7 +27,7 @@
 		advanced_virus = TRUE
 
 	if(!virus_type && !advanced_virus)
-		virus_type = pick(/datum/disease/advance/flu, /datum/disease/advance/cold, /datum/disease/brainrot, /datum/disease/magnitis)
+		virus_type = pick(/datum/pathogen/advance/flu, /datum/pathogen/advance/cold, /datum/pathogen/brainrot, /datum/pathogen/magnitis)
 
 	for(var/mob/living/carbon/human/H in shuffle(GLOB.alive_mob_list))
 		var/turf/T = get_turf(H)
@@ -48,17 +48,17 @@
 		if(foundAlready)
 			continue
 
-		var/datum/disease/D
+		var/datum/pathogen/D
 		if(!advanced_virus)
 			D = new virus_type()
 		else
-			D = new /datum/disease/advance/random(max_severity, max_severity)
+			D = new /datum/pathogen/advance/random(max_severity, max_severity)
 
 		D.affected_mob_is_only_carrier = TRUE
 		H.ForceContractDisease(D, FALSE, TRUE)
 
 		if(advanced_virus)
-			var/datum/disease/advance/A = D
+			var/datum/pathogen/advance/A = D
 			var/list/name_symptoms = list() //for feedback
 			for(var/datum/symptom/S in A.symptoms)
 				name_symptoms += S.name

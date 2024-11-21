@@ -16,7 +16,7 @@
 
  */
 
-/datum/disease/advance
+/datum/pathogen/advance
 	name = "Unknown" // We will always let our Virologist name our disease.
 	desc = "An engineered disease which can contain a multitude of symptoms."
 	form = "Advanced Disease" // Will let med-scanners know that this disease was engineered.
@@ -76,26 +76,26 @@
 
  */
 
-/datum/disease/advance/New()
+/datum/pathogen/advance/New()
 	Refresh()
 
-/datum/disease/advance/Destroy()
+/datum/pathogen/advance/Destroy()
 	if(processing)
 		for(var/datum/symptom/S in symptoms)
 			S.End(src)
 	return ..()
 
-/datum/disease/advance/try_infect(mob/living/infectee, make_copy = TRUE)
+/datum/pathogen/advance/try_infect(mob/living/infectee, make_copy = TRUE)
 	//see if we are more transmittable than enough diseases to replace them
 	//diseases replaced in this way do not confer immunity
 	var/list/advance_diseases = list()
-	for(var/datum/disease/advance/P in infectee.diseases)
+	for(var/datum/pathogen/advance/P in infectee.diseases)
 		advance_diseases += P
 	var/replace_num = advance_diseases.len + 1 - DISEASE_LIMIT //amount of diseases that need to be removed to fit this one
 	if(replace_num > 0)
 		sortTim(advance_diseases, GLOBAL_PROC_REF(cmp_advdisease_resistance_asc))
 		for(var/i in 1 to replace_num)
-			var/datum/disease/advance/competition = advance_diseases[i]
+			var/datum/pathogen/advance/competition = advance_diseases[i]
 			if(totalTransmittable() > competition.totalResistance())
 				competition.force_cure(add_resistance = FALSE)
 			else
@@ -105,7 +105,7 @@
 
 
 // Randomly pick a symptom to activate.
-/datum/disease/advance/stage_act(delta_time, times_fired)
+/datum/pathogen/advance/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -127,22 +127,22 @@
 
 
 // Tell symptoms stage changed
-/datum/disease/advance/set_stage(new_stage)
+/datum/pathogen/advance/set_stage(new_stage)
 	..()
 	for(var/datum/symptom/S in symptoms)
 		S.on_stage_change(src)
 
 // Compares type then ID.
-/datum/disease/advance/IsSame(datum/disease/advance/D)
+/datum/pathogen/advance/IsSame(datum/pathogen/advance/D)
 
-	if(!(istype(D, /datum/disease/advance)))
+	if(!(istype(D, /datum/pathogen/advance)))
 		return FALSE
 
 	return ..()
 
 // Returns the advance disease with a different reference memory.
-/datum/disease/advance/Copy()
-	var/datum/disease/advance/A = ..()
+/datum/pathogen/advance/Copy()
+	var/datum/pathogen/advance/A = ..()
 	QDEL_LIST(A.symptoms)
 	for(var/datum/symptom/S in symptoms)
 		A.symptoms += S.Copy()
@@ -154,7 +154,7 @@
 	return A
 
 //Describe this disease to an admin in detail (for logging)
-/datum/disease/advance/admin_details()
+/datum/pathogen/advance/admin_details()
 	var/list/name_symptoms = list()
 	for(var/datum/symptom/S in symptoms)
 		name_symptoms += S.name
@@ -167,26 +167,26 @@
  */
 
 // Mix the symptoms of two diseases (the src and the argument)
-/datum/disease/advance/proc/Mix(datum/disease/advance/D)
+/datum/pathogen/advance/proc/Mix(datum/pathogen/advance/D)
 	if(!(IsSame(D)))
 		var/list/possible_symptoms = shuffle(D.symptoms)
 		for(var/datum/symptom/S in possible_symptoms)
 			AddSymptom(S.Copy())
 
-/datum/disease/advance/proc/HasSymptom(datum/symptom/S)
+/datum/pathogen/advance/proc/HasSymptom(datum/symptom/S)
 	for(var/datum/symptom/symp in symptoms)
 		if(symp.type == S.type)
 			return TRUE
 	return FALSE
 
 // Will generate new unique symptoms, use this if there are none. Returns a list of symptoms that were generated.
-/datum/disease/advance/proc/GenerateSymptoms(level_min, level_max, amount_get = 0)
+/datum/pathogen/advance/proc/GenerateSymptoms(level_min, level_max, amount_get = 0)
 
 	. = list() // Symptoms we generated.
 
 	// Generate symptoms. By default, we only choose non-deadly symptoms.
 	var/list/possible_symptoms = list()
-	for(var/symp in SSdisease.list_symptoms)
+	for(var/symp in SSpathogens.symptom_types)
 		var/datum/symptom/S = new symp
 		if(S.naturally_occuring && S.level >= level_min && S.level <= level_max)
 			if(!HasSymptom(S))
@@ -205,7 +205,7 @@
 	for(var/i = 1; number_of >= i && possible_symptoms.len; i++)
 		. += pick_n_take(possible_symptoms)
 
-/datum/disease/advance/proc/Refresh(new_name = FALSE)
+/datum/pathogen/advance/proc/Refresh(new_name = FALSE)
 	GenerateProperties()
 	AssignProperties()
 	if(processing && symptoms?.len)
@@ -215,14 +215,14 @@
 	id = null
 
 	var/the_id = GetDiseaseID()
-	if(!SSdisease.archive_diseases[the_id])
-		SSdisease.archive_diseases[the_id] = src // So we don't infinite loop
-		SSdisease.archive_diseases[the_id] = Copy()
+	if(!SSpathogens.archive_pathogens[the_id])
+		SSpathogens.archive_pathogens[the_id] = src // So we don't infinite loop
+		SSpathogens.archive_pathogens[the_id] = Copy()
 		if(new_name)
 			AssignName()
 
 //Generate disease properties based on the effects. Returns an associated list.
-/datum/disease/advance/proc/GenerateProperties()
+/datum/pathogen/advance/proc/GenerateProperties()
 	properties = list("resistance" = 0, "stealth" = 0, "stage_rate" = 0, "transmittable" = 0, "severity" = 0)
 
 	for(var/datum/symptom/S in symptoms)
@@ -234,7 +234,7 @@
 			properties["severity"] = max(properties["severity"], S.severity) // severity is based on the highest severity non-neutered symptom
 
 // Assign the properties that are in the list.
-/datum/disease/advance/proc/AssignProperties()
+/datum/pathogen/advance/proc/AssignProperties()
 
 	if(properties?.len)
 		if(properties["stealth"] >= 2)
@@ -261,7 +261,7 @@
 
 
 // Assign the spread type and give it the correct description.
-/datum/disease/advance/proc/SetSpread(spread_id)
+/datum/pathogen/advance/proc/SetSpread(spread_id)
 	switch(spread_id)
 		if(DISEASE_SPREAD_NON_CONTAGIOUS)
 			spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
@@ -282,7 +282,7 @@
 			spread_flags = DISEASE_SPREAD_BLOOD | DISEASE_SPREAD_CONTACT_FLUIDS | DISEASE_SPREAD_CONTACT_SKIN | DISEASE_SPREAD_AIRBORNE
 			spread_text = "Airborne"
 
-/datum/disease/advance/proc/SetSeverity(level_sev)
+/datum/pathogen/advance/proc/SetSeverity(level_sev)
 
 	switch(level_sev)
 
@@ -305,7 +305,7 @@
 
 
 // Will generate a random cure, the more resistance the symptoms have, the harder the cure.
-/datum/disease/advance/proc/GenerateCure()
+/datum/pathogen/advance/proc/GenerateCure()
 	if(properties?.len)
 		var/res = clamp(properties["resistance"] - (symptoms.len / 2), 1, advance_cures.len)
 		if(res == oldres)
@@ -317,7 +317,7 @@
 		cure_text = D.name
 
 // Randomly generate a symptom, has a chance to lose or gain a symptom.
-/datum/disease/advance/proc/Evolve(min_level, max_level, ignore_mutable = FALSE)
+/datum/pathogen/advance/proc/Evolve(min_level, max_level, ignore_mutable = FALSE)
 	if(!mutable && !ignore_mutable)
 		return
 	var/list/generated_symptoms = GenerateSymptoms(min_level, max_level, 1)
@@ -327,7 +327,7 @@
 		Refresh(TRUE)
 
 // Randomly remove a symptom.
-/datum/disease/advance/proc/Devolve(ignore_mutable = FALSE)
+/datum/pathogen/advance/proc/Devolve(ignore_mutable = FALSE)
 	if(!mutable && !ignore_mutable)
 		return
 	if(length(symptoms) > 1)
@@ -337,7 +337,7 @@
 			Refresh(TRUE)
 
 // Randomly neuter a symptom.
-/datum/disease/advance/proc/Neuter(ignore_mutable = FALSE)
+/datum/pathogen/advance/proc/Neuter(ignore_mutable = FALSE)
 	if(!mutable && !ignore_mutable)
 		return
 	if(length(symptoms))
@@ -347,12 +347,12 @@
 			Refresh(TRUE)
 
 // Name the disease.
-/datum/disease/advance/proc/AssignName(name = "Unknown")
-	var/datum/disease/advance/A = SSdisease.archive_diseases[GetDiseaseID()]
+/datum/pathogen/advance/proc/AssignName(name = "Unknown")
+	var/datum/pathogen/advance/A = SSpathogens.archive_pathogens[GetDiseaseID()]
 	A.name = name
 
 // Return a unique ID of the disease.
-/datum/disease/advance/GetDiseaseID()
+/datum/pathogen/advance/GetDiseaseID()
 	if(!id)
 		var/list/L = list()
 		for(var/datum/symptom/S in symptoms)
@@ -367,7 +367,7 @@
 
 
 // Add a symptom, if it is over the limit we take a random symptom away and add the new one.
-/datum/disease/advance/proc/AddSymptom(datum/symptom/S)
+/datum/pathogen/advance/proc/AddSymptom(datum/symptom/S)
 
 	if(HasSymptom(S))
 		return
@@ -378,12 +378,12 @@
 	S.OnAdd(src)
 
 // Simply removes the symptom.
-/datum/disease/advance/proc/RemoveSymptom(datum/symptom/S)
+/datum/pathogen/advance/proc/RemoveSymptom(datum/symptom/S)
 	symptoms -= S
 	S.OnRemove(src)
 
 // Neuter a symptom, so it will only affect stats
-/datum/disease/advance/proc/NeuterSymptom(datum/symptom/S)
+/datum/pathogen/advance/proc/NeuterSymptom(datum/symptom/S)
 	if(!S.neutered)
 		S.neutered = TRUE
 		S.name += " (neutered)"
@@ -399,7 +399,7 @@
 /proc/Advance_Mix(list/D_list)
 	var/list/diseases = list()
 
-	for(var/datum/disease/advance/A in D_list)
+	for(var/datum/pathogen/advance/A in D_list)
 		diseases += A.Copy()
 
 	if(!diseases.len)
@@ -413,14 +413,14 @@
 
 		i++
 
-		var/datum/disease/advance/D1 = pick(diseases)
+		var/datum/pathogen/advance/D1 = pick(diseases)
 		diseases -= D1
 
-		var/datum/disease/advance/D2 = pick(diseases)
+		var/datum/pathogen/advance/D2 = pick(diseases)
 		D2.Mix(D1)
 
 	// Should be only 1 entry left, but if not let's only return a single entry
-	var/datum/disease/advance/to_return = pick(diseases)
+	var/datum/pathogen/advance/to_return = pick(diseases)
 	to_return.Refresh(TRUE)
 	return to_return
 
@@ -428,7 +428,7 @@
 	if(data)
 		var/list/preserve = list()
 		if(istype(data) && data["viruses"])
-			for(var/datum/disease/A in data["viruses"])
+			for(var/datum/pathogen/A in data["viruses"])
 				preserve += A.Copy()
 			R.data = data.Copy()
 		if(preserve.len)
@@ -441,12 +441,12 @@
 
 	var/i = VIRUS_SYMPTOM_LIMIT
 
-	var/datum/disease/advance/D = new()
+	var/datum/pathogen/advance/D = new()
 	D.symptoms = list()
 
 	var/list/symptoms = list()
 	symptoms += "Done"
-	symptoms += SSdisease.list_symptoms.Copy()
+	symptoms += SSpathogens.symptom_types.Copy()
 	do
 		if(user)
 			var/symptom = tgui_input_list(user, "Choose a symptom to add ([i] remaining)", "Choose a Symptom", sort_list(symptoms, GLOBAL_PROC_REF(cmp_typepaths_asc)))
@@ -499,14 +499,14 @@
 		log_virus("[key_name(user)] has triggered a custom virus outbreak of [D.admin_details()] in [H]!")
 
 
-/datum/disease/advance/proc/totalStageSpeed()
+/datum/pathogen/advance/proc/totalStageSpeed()
 	return properties["stage_rate"]
 
-/datum/disease/advance/proc/totalStealth()
+/datum/pathogen/advance/proc/totalStealth()
 	return properties["stealth"]
 
-/datum/disease/advance/proc/totalResistance()
+/datum/pathogen/advance/proc/totalResistance()
 	return properties["resistance"]
 
-/datum/disease/advance/proc/totalTransmittable()
+/datum/pathogen/advance/proc/totalTransmittable()
 	return properties["transmittable"]

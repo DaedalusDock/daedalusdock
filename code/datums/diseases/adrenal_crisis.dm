@@ -1,4 +1,4 @@
-/datum/disease/adrenal_crisis
+/datum/pathogen/adrenal_crisis
 	form = "Condition"
 	name = "Adrenal Crisis"
 	max_stages = 2
@@ -13,7 +13,7 @@
 	visibility_flags = HIDDEN_PANDEMIC
 	bypasses_immunity = TRUE
 
-/datum/disease/adrenal_crisis/stage_act(delta_time, times_fired)
+/datum/pathogen/adrenal_crisis/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

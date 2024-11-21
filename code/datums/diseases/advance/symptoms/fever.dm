@@ -26,7 +26,7 @@
 		"Resistance 10" = "Further increases fever intensity.",
 	)
 
-/datum/symptom/fever/Start(datum/disease/advance/A)
+/datum/symptom/fever/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -36,7 +36,7 @@
 	if(A.totalResistance() >= 10)
 		power = 2.5
 
-/datum/symptom/fever/Activate(datum/disease/advance/A)
+/datum/symptom/fever/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -53,9 +53,9 @@
  * Sets the body temp change to the mob based on the stage and resistance of the disease
  * arguments:
  * * mob/living/M The mob to apply changes to
- * * datum/disease/advance/A The disease applying the symptom
+ * * datum/pathogen/advance/A The disease applying the symptom
  */
-/datum/symptom/fever/proc/set_body_temp(mob/living/M, datum/disease/advance/A)
+/datum/symptom/fever/proc/set_body_temp(mob/living/M, datum/pathogen/advance/A)
 	if(unsafe) // when unsafe the fever can cause heat damage
 		M.add_body_temperature_change(FEVER_CHANGE, 6 * power * A.stage)
 	else
@@ -64,13 +64,13 @@
 		M.add_body_temperature_change(FEVER_CHANGE, min(6 * power * A.stage, change_limit))
 
 /// Update the body temp change based on the new stage
-/datum/symptom/fever/on_stage_change(datum/disease/advance/A)
+/datum/symptom/fever/on_stage_change(datum/pathogen/advance/A)
 	. = ..()
 	if(.)
 		set_body_temp(A.affected_mob, A)
 
 /// remove the body temp change when removing symptom
-/datum/symptom/fever/End(datum/disease/advance/A)
+/datum/symptom/fever/End(datum/pathogen/advance/A)
 	var/mob/living/carbon/M = A.affected_mob
 	if(M)
 		M.remove_body_temperature_change(FEVER_CHANGE)

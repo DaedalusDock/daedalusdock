@@ -32,11 +32,11 @@
 	///A neutered symptom has no effect, and only affects statistics.
 	var/neutered = FALSE
 	var/list/thresholds
-	///If this symptom can appear from /datum/disease/advance/GenerateSymptoms()
+	///If this symptom can appear from /datum/pathogen/advance/GenerateSymptoms()
 	var/naturally_occuring = TRUE
 
 /datum/symptom/New()
-	var/list/S = SSdisease.list_symptoms
+	var/list/S = SSpathogens.symptom_types
 	for(var/i = 1; i <= S.len; i++)
 		if(type == S[i])
 			id = "[i]"
@@ -44,18 +44,18 @@
 	CRASH("We couldn't assign an ID!")
 
 ///Called when processing of the advance disease that holds this symptom infects a host and upon each Refresh() of that advance disease.
-/datum/symptom/proc/Start(datum/disease/advance/A)
+/datum/symptom/proc/Start(datum/pathogen/advance/A)
 	if(neutered)
 		return FALSE
 	return TRUE
 
 ///Called when the advance disease is going to be deleted or when the advance disease stops processing.
-/datum/symptom/proc/End(datum/disease/advance/A)
+/datum/symptom/proc/End(datum/pathogen/advance/A)
 	if(neutered)
 		return FALSE
 	return TRUE
 
-/datum/symptom/proc/Activate(datum/disease/advance/A)
+/datum/symptom/proc/Activate(datum/pathogen/advance/A)
 	if(neutered)
 		return FALSE
 	if(world.time < next_activation)
@@ -64,7 +64,7 @@
 		next_activation = world.time + rand(symptom_delay_min * 10, symptom_delay_max * 10)
 		return TRUE
 
-/datum/symptom/proc/on_stage_change(datum/disease/advance/A)
+/datum/symptom/proc/on_stage_change(datum/pathogen/advance/A)
 	if(neutered)
 		return FALSE
 	return TRUE
@@ -80,9 +80,9 @@
 	return
 
 ///Overload when a symptom needs to be active before processing, like changing biotypes.
-/datum/symptom/proc/OnAdd(datum/disease/advance/A)
+/datum/symptom/proc/OnAdd(datum/pathogen/advance/A)
 	return
 
 ///Overload for running after processing.
-/datum/symptom/proc/OnRemove(datum/disease/advance/A)
+/datum/symptom/proc/OnRemove(datum/pathogen/advance/A)
 	return

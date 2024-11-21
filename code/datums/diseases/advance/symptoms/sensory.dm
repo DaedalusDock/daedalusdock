@@ -24,7 +24,7 @@
 		"Transmission 8" = "Purges alcohol in the bloodstream.",
 	)
 
-/datum/symptom/mind_restoration/Start(datum/disease/advance/A)
+/datum/symptom/mind_restoration/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -35,7 +35,7 @@
 	if(A.totalTransmittable() >= 8) //purge alcohol
 		purge_alcohol = TRUE
 
-/datum/symptom/mind_restoration/Activate(datum/disease/advance/A)
+/datum/symptom/mind_restoration/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -84,7 +84,7 @@
 	symptom_delay_min = 1
 	symptom_delay_max = 1
 
-/datum/symptom/sensory_restoration/Activate(datum/disease/advance/A)
+/datum/symptom/sensory_restoration/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

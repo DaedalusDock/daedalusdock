@@ -1,4 +1,4 @@
-/datum/disease/parasite
+/datum/pathogen/parasite
 	form = "Parasite"
 	name = "Parasitic Infection"
 	max_stages = 4
@@ -15,7 +15,7 @@
 	bypasses_immunity = TRUE
 
 
-/datum/disease/parasite/stage_act(delta_time, times_fired)
+/datum/pathogen/parasite/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return

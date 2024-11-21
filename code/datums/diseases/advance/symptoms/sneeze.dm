@@ -25,7 +25,7 @@
 		"Stage Speed 17" = "The force of each sneeze catapults the host backwards, potentially stunning and lightly damaging them if they hit a wall or another person mid-flight."
 	)
 
-/datum/symptom/sneeze/Start(datum/disease/advance/A)
+/datum/symptom/sneeze/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -36,7 +36,7 @@
 	if(A.totalStageSpeed() >= 17) //Yep, stage speed 17, not stage speed 7. This is a big boy threshold (effect), like the language-scrambling transmission one for the voice change symptom.
 		cartoon_sneezing = TRUE //for a really fun time, distribute a disease with this threshold met while the gravity generator is down
 
-/datum/symptom/sneeze/Activate(datum/disease/advance/A)
+/datum/symptom/sneeze/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

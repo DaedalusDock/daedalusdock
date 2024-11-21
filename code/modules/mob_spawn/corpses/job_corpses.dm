@@ -51,12 +51,12 @@
 
 /obj/effect/mob_spawn/corpse/human/assistant/beesease_infection/special(mob/living/spawned_mob)
 	. = ..()
-	spawned_mob.ForceContractDisease(new /datum/disease/beesease)
+	spawned_mob.ForceContractDisease(new /datum/pathogen/beesease)
 
 /obj/effect/mob_spawn/corpse/human/assistant/brainrot_infection/special(mob/living/spawned_mob)
 	. = ..()
-	spawned_mob.ForceContractDisease(new /datum/disease/brainrot)
+	spawned_mob.ForceContractDisease(new /datum/pathogen/brainrot)
 
 /obj/effect/mob_spawn/corpse/human/assistant/spanishflu_infection/special(mob/living/spawned_mob)
 	. = ..()
-	spawned_mob.ForceContractDisease(new /datum/disease/fluspanish)
+	spawned_mob.ForceContractDisease(new /datum/pathogen/fluspanish)

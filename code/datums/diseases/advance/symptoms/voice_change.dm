@@ -27,7 +27,7 @@
 		"Stealth 3" = "The symptom remains hidden until active."
 	)
 
-/datum/symptom/voice_change/Start(datum/disease/advance/A)
+/datum/symptom/voice_change/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -40,7 +40,7 @@
 	if(A.totalTransmittable() >= 14) //random language
 		scramble_language = TRUE
 
-/datum/symptom/voice_change/Activate(datum/disease/advance/A)
+/datum/symptom/voice_change/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -58,7 +58,7 @@
 					H.add_blocked_language(subtypesof(/datum/language) - current_language, LANGUAGE_VOICECHANGE)
 					H.grant_language(current_language, TRUE, TRUE, LANGUAGE_VOICECHANGE)
 
-/datum/symptom/voice_change/End(datum/disease/advance/A)
+/datum/symptom/voice_change/End(datum/pathogen/advance/A)
 	..()
 	if(ishuman(A.affected_mob))
 		var/mob/living/carbon/human/H = A.affected_mob

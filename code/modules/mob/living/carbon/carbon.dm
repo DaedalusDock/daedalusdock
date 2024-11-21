@@ -837,7 +837,7 @@
 		organ.set_organ_dead(FALSE)
 
 	for(var/thing in diseases)
-		var/datum/disease/D = thing
+		var/datum/pathogen/D = thing
 		if(D.severity != DISEASE_SEVERITY_POSITIVE)
 			D.force_cure(add_resistance = FALSE)
 

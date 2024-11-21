@@ -24,7 +24,7 @@
 		"Stealth 4" = "Reduces headache frequency until later stages.",
 	)
 
-/datum/symptom/headache/Start(datum/disease/advance/A)
+/datum/symptom/headache/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -37,7 +37,7 @@
 		symptom_delay_max = 60
 		power = 3
 
-/datum/symptom/headache/Activate(datum/disease/advance/A)
+/datum/symptom/headache/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return

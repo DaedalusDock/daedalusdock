@@ -24,7 +24,7 @@
 		"Stealth 4" = "The symptom remains hidden until active."
 	)
 
-/datum/symptom/choking/Start(datum/disease/advance/A)
+/datum/symptom/choking/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -34,7 +34,7 @@
 	if(A.totalStealth() >= 4)
 		suppress_warning = TRUE
 
-/datum/symptom/choking/Activate(datum/disease/advance/A)
+/datum/symptom/choking/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -55,11 +55,11 @@
 			Choke(M, A)
 			M.emote("gasp")
 
-/datum/symptom/choking/proc/Choke_stage_3_4(mob/living/M, datum/disease/advance/A)
+/datum/symptom/choking/proc/Choke_stage_3_4(mob/living/M, datum/pathogen/advance/A)
 	M.adjustOxyLoss(rand(6,13))
 	return 1
 
-/datum/symptom/choking/proc/Choke(mob/living/M, datum/disease/advance/A)
+/datum/symptom/choking/proc/Choke(mob/living/M, datum/pathogen/advance/A)
 	M.adjustOxyLoss(rand(10,18))
 	return 1
 
@@ -100,7 +100,7 @@ Bonus
 	)
 
 
-/datum/symptom/asphyxiation/Start(datum/disease/advance/A)
+/datum/symptom/asphyxiation/Start(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -109,7 +109,7 @@ Bonus
 	if(A.totalTransmittable() >= 8)
 		power = 2
 
-/datum/symptom/asphyxiation/Activate(datum/disease/advance/A)
+/datum/symptom/asphyxiation/Activate(datum/pathogen/advance/A)
 	. = ..()
 	if(!.)
 		return
@@ -128,19 +128,19 @@ Bonus
 				Asphyxiate_death(M, A)
 	return
 
-/datum/symptom/asphyxiation/proc/Asphyxiate_stage_3_4(mob/living/M, datum/disease/advance/A)
+/datum/symptom/asphyxiation/proc/Asphyxiate_stage_3_4(mob/living/M, datum/pathogen/advance/A)
 	var/get_damage = rand(10,15) * power
 	M.adjustOxyLoss(get_damage)
 	return 1
 
-/datum/symptom/asphyxiation/proc/Asphyxiate(mob/living/M, datum/disease/advance/A)
+/datum/symptom/asphyxiation/proc/Asphyxiate(mob/living/M, datum/pathogen/advance/A)
 	var/get_damage = rand(15,21) * power
 	M.adjustOxyLoss(get_damage)
 	if(paralysis)
 		M.reagents.add_reagent_list(list(/datum/reagent/toxin/pancuronium = 3, /datum/reagent/toxin/sodium_thiopental = 3))
 	return 1
 
-/datum/symptom/asphyxiation/proc/Asphyxiate_death(mob/living/M, datum/disease/advance/A)
+/datum/symptom/asphyxiation/proc/Asphyxiate_death(mob/living/M, datum/pathogen/advance/A)
 	var/get_damage = rand(25,35) * power
 	M.adjustOxyLoss(get_damage)
 	M.adjustOrganLoss(ORGAN_SLOT_BRAIN, get_damage/2)

@@ -86,7 +86,7 @@
 /// Called by force_infect() upon infecting a mob.
 /datum/pathogen/proc/on_infect_mob()
 	SHOULD_CALL_PARENT(TRUE)
-	infectee.med_hud_set_status()
+	affected_mob.med_hud_set_status()
 
 /// Cure the disease and delete it.
 /datum/pathogen/proc/force_cure(add_resistance = TRUE)

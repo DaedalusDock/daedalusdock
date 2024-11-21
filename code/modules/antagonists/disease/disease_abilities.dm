@@ -191,7 +191,7 @@ new /datum/disease_ability/symptom/powerful/youth
 	host.emote("cough")
 	if(host.CanSpreadAirborneDisease()) //don't spread germs if they covered their mouth
 		var/datum/disease/advance/sentient_disease/disease_datum = our_disease.hosts[host]
-		disease_datum.spread(2)
+		disease_datum.airborne_spread(2)
 	return TRUE
 
 /datum/disease_ability/action/sneeze

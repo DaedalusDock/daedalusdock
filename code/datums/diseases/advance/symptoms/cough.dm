@@ -55,8 +55,7 @@
 				to_chat(M, span_warning("[pick("You swallow excess mucus.", "You lightly cough.")]"))
 		else
 			M.emote("cough")
-			if(M.CanSpreadAirborneDisease())
-				A.spread(spread_range)
+			A.airborne_spread(spread_range)
 			if(power >= 1.5)
 				var/obj/item/I = M.get_active_held_item()
 				if(I && I.w_class == WEIGHT_CLASS_TINY)

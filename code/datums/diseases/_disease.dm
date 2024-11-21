@@ -111,28 +111,30 @@
 	if(!. || ((disease_flags & DISEASE_NEED_ALL_CURES) && (. < cures.len)))
 		return FALSE
 
-//Airborne spreading
-/datum/disease/proc/spread(force_spread = 0)
+/// Attempt to spread to nearby mobs through the air.
+/datum/disease/proc/airborne_spread(force_spread = 0, check_mob_spreadability = TRUE)
 	if(!affected_mob)
+		return
+
+	if(!isturf(affected_mob.loc))
 		return
 
 	if(!(spread_flags & DISEASE_SPREAD_AIRBORNE) && !force_spread)
 		return
 
+	if(check_mob_spreadability && !affected_mob.CanSpreadAirborneDisease())
+		return
+
 	if(affected_mob.reagents.has_reagent(/datum/reagent/medicine/spaceacillin) || (affected_mob.satiety > 0 && prob(affected_mob.satiety/10)))
 		return
 
-	var/spread_range = 2
-
-	if(force_spread)
-		spread_range = force_spread
-
 	var/turf/T = affected_mob.loc
-	if(istype(T))
-		for(var/mob/living/carbon/C in oview(spread_range, affected_mob))
-			var/turf/V = get_turf(C)
-			if(disease_air_spread_walk(T, V))
-				C.AirborneContractDisease(src, force_spread)
+	var/spread_range = force_spread || 2
+
+	for(var/mob/living/carbon/C in oview(spread_range, affected_mob))
+		var/turf/V = get_turf(C)
+		if(disease_air_spread_walk(T, V))
+			C.AirborneContractDisease(src, force_spread)
 
 /proc/disease_air_spread_walk(turf/start, turf/end)
 	if(!start || !end)

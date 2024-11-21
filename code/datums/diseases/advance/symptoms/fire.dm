@@ -64,14 +64,14 @@
 	M.adjust_fire_stacks(1 * power)
 	M.take_overall_damage(burn = 3 * power, required_status = BODYTYPE_ORGANIC)
 	if(infective)
-		A.spread(2)
+		A.airborne_spread(2, FALSE)
 	return 1
 
 /datum/symptom/fire/proc/Firestacks_stage_5(mob/living/M, datum/disease/advance/A)
 	M.adjust_fire_stacks(3 * power)
 	M.take_overall_damage(burn = 5 * power, required_status = BODYTYPE_ORGANIC)
 	if(infective)
-		A.spread(4)
+		A.airborne_spread(4, FALSE)
 	return 1
 
 /*

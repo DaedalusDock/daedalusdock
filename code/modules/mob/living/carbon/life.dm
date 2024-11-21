@@ -307,7 +307,7 @@
 	for(var/thing in diseases)
 		var/datum/disease/D = thing
 		if(DT_PROB(D.infectivity, delta_time))
-			D.spread()
+			D.airborne_spread()
 
 		if(stat != DEAD || D.process_dead)
 			D.stage_act(delta_time, times_fired)

@@ -826,7 +826,7 @@
 
 	for(var/thing in exposed_mob.diseases)
 		var/datum/pathogen/infection = thing
-		if(infection.GetDiseaseID() in data)
+		if(infection.get_id() in data)
 			infection.force_cure()
 	LAZYOR(exposed_mob.disease_resistances, data)
 
@@ -835,7 +835,7 @@
 		return
 	for(var/thing in C.diseases)
 		var/datum/pathogen/infection = thing
-		if(infection.GetDiseaseID() in data)
+		if(infection.get_id() in data)
 			infection.force_cure()
 	LAZYOR(C.disease_resistances, data)
 

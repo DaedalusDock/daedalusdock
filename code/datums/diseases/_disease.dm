@@ -92,7 +92,7 @@
 /datum/pathogen/proc/force_cure(add_resistance = TRUE)
 	if(affected_mob)
 		if(add_resistance && (disease_flags & DISEASE_RESIST_ON_CURE))
-			LAZYOR(affected_mob.disease_resistances, GetDiseaseID())
+			LAZYOR(affected_mob.disease_resistances, get_id())
 
 		log_virus("[key_name(affected_mob)] was cured from virus: [admin_details()] at [loc_name(get_turf(affected_mob))]")
 
@@ -175,7 +175,7 @@
 		end = Temp
 
 /datum/pathogen/proc/IsSame(datum/pathogen/D)
-	if(GetDiseaseID() == D.GetDiseaseID())
+	if(get_id() == D.get_id())
 		return TRUE
 	return FALSE
 
@@ -215,7 +215,7 @@
 		D.vars[V] = val
 	return D
 
-/datum/pathogen/proc/GetDiseaseID()
+/datum/pathogen/proc/get_id()
 	return "[type]"
 
 

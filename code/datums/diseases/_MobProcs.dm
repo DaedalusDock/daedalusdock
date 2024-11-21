@@ -15,7 +15,7 @@
 	if(HAS_TRAIT(src, TRAIT_VIRUSIMMUNE) && !D.bypasses_immunity)
 		return FALSE
 
-	if(D.GetDiseaseID() in disease_resistances)
+	if(D.get_id() in disease_resistances)
 		return FALSE
 
 	if(!(D.infectable_biotypes & mob_biotypes))

@@ -214,7 +214,7 @@
 			S.on_stage_change(src)
 	id = null
 
-	var/the_id = GetDiseaseID()
+	var/the_id = get_id()
 	if(!SSpathogens.archive_pathogens[the_id])
 		SSpathogens.archive_pathogens[the_id] = src // So we don't infinite loop
 		SSpathogens.archive_pathogens[the_id] = Copy()
@@ -348,11 +348,11 @@
 
 // Name the disease.
 /datum/pathogen/advance/proc/AssignName(name = "Unknown")
-	var/datum/pathogen/advance/A = SSpathogens.archive_pathogens[GetDiseaseID()]
+	var/datum/pathogen/advance/A = SSpathogens.archive_pathogens[get_id()]
 	A.name = name
 
 // Return a unique ID of the disease.
-/datum/pathogen/advance/GetDiseaseID()
+/datum/pathogen/advance/get_id()
 	if(!id)
 		var/list/L = list()
 		for(var/datum/symptom/S in symptoms)

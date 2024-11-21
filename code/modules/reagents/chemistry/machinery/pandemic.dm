@@ -66,7 +66,7 @@
 /obj/machinery/computer/pandemic/proc/get_virus_id_by_index(index)
 	var/datum/pathogen/D = get_by_index("viruses", index)
 	if(D)
-		return D.GetDiseaseID()
+		return D.get_id()
 
 /obj/machinery/computer/pandemic/proc/get_viruses_data(datum/reagent/blood/B)
 	. = list()
@@ -81,7 +81,7 @@
 		this["name"] = D.name
 		if(istype(D, /datum/pathogen/advance))
 			var/datum/pathogen/advance/A = D
-			var/disease_name = SSpathogens.get_disease_name(A.GetDiseaseID())
+			var/disease_name = SSpathogens.get_disease_name(A.get_id())
 			this["can_rename"] = ((disease_name == "Unknown") && A.mutable)
 			this["name"] = disease_name
 			this["is_adv"] = TRUE

@@ -18,7 +18,7 @@ SUBSYSTEM_DEF(pathogens)
 	var/list/all_common_pathogens = subtypesof(/datum/pathogen) - typesof(/datum/pathogen/advance)
 	for(var/common_pathogen_type in all_common_pathogens)
 		var/datum/pathogen/prototype = new common_pathogen_type()
-		archive_pathogens[prototype.GetDiseaseID()] = prototype
+		archive_pathogens[prototype.get_id()] = prototype
 	return ..()
 
 /datum/controller/subsystem/pathogens/stat_entry(msg)

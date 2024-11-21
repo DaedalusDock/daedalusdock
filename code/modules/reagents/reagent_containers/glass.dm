@@ -43,10 +43,10 @@
 			var/mob/living/carbon/carbon_drinker = M
 			var/list/diseases = carbon_drinker.get_static_viruses()
 			if(LAZYLEN(diseases))
-				var/list/datum/disease/diseases_to_add = list()
+				var/list/datum/pathogen/diseases_to_add = list()
 				for(var/d in diseases)
-					var/datum/disease/malady = d
-					if(malady.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+					var/datum/pathogen/malady = d
+					if(malady.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
 						diseases_to_add += malady
 				if(LAZYLEN(diseases_to_add))
 					AddComponent(/datum/component/infective, diseases_to_add)

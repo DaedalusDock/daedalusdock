@@ -64,24 +64,24 @@
 		return B.data[thing][index]
 
 /obj/machinery/computer/pandemic/proc/get_virus_id_by_index(index)
-	var/datum/disease/D = get_by_index("viruses", index)
+	var/datum/pathogen/D = get_by_index("viruses", index)
 	if(D)
-		return D.GetDiseaseID()
+		return D.get_id()
 
 /obj/machinery/computer/pandemic/proc/get_viruses_data(datum/reagent/blood/B)
 	. = list()
 	var/list/V = B.get_diseases()
 	var/index = 1
 	for(var/virus in V)
-		var/datum/disease/D = virus
+		var/datum/pathogen/D = virus
 		if(!istype(D) || D.visibility_flags & HIDDEN_PANDEMIC)
 			continue
 
 		var/list/this = list()
 		this["name"] = D.name
-		if(istype(D, /datum/disease/advance))
-			var/datum/disease/advance/A = D
-			var/disease_name = SSdisease.get_disease_name(A.GetDiseaseID())
+		if(istype(D, /datum/pathogen/advance))
+			var/datum/pathogen/advance/A = D
+			var/disease_name = SSpathogens.get_disease_name(A.get_id())
 			this["can_rename"] = ((disease_name == "Unknown") && A.mutable)
 			this["name"] = disease_name
 			this["is_adv"] = TRUE
@@ -91,10 +91,10 @@
 				var/list/this_symptom = list()
 				this_symptom = get_symptom_data(S)
 				this["symptoms"] += list(this_symptom)
-			this["resistance"] = A.totalResistance()
-			this["stealth"] = A.totalStealth()
-			this["stage_speed"] = A.totalStageSpeed()
-			this["transmission"] = A.totalTransmittable()
+			this["resistance"] = A.properties[PATHOGEN_PROP_RESISTANCE]
+			this["stealth"] = A.properties[PATHOGEN_PROP_STEALTH]
+			this["stage_speed"] = A.properties[PATHOGEN_PROP_STAGE_RATE]
+			this["transmission"] = A.properties[PATHOGEN_PROP_TRANSMITTABLE]
 		this["index"] = index++
 		this["agent"] = D.agent
 		this["description"] = D.desc || "none"
@@ -124,7 +124,7 @@
 	var/list/resistances = B.data["resistances"]
 	for(var/id in resistances)
 		var/list/this = list()
-		var/datum/disease/D = SSdisease.archive_diseases[id]
+		var/datum/pathogen/D = SSpathogens.archive_pathogens[id]
 		if(D)
 			this["id"] = id
 			this["name"] = D.name
@@ -202,7 +202,7 @@
 			. = TRUE
 		if("rename_disease")
 			var/id = get_virus_id_by_index(text2num(params["index"]))
-			var/datum/disease/advance/A = SSdisease.archive_diseases[id]
+			var/datum/pathogen/advance/A = SSpathogens.archive_pathogens[id]
 			if(!A.mutable)
 				return
 			if(A)
@@ -215,7 +215,7 @@
 			if (wait)
 				return
 			var/id = get_virus_id_by_index(text2num(params["index"]))
-			var/datum/disease/advance/A = SSdisease.archive_diseases[id]
+			var/datum/pathogen/advance/A = SSpathogens.archive_pathogens[id]
 			if(!istype(A) || !A.mutable)
 				to_chat(usr, span_warning("ERROR: Cannot replicate virus strain."))
 				return
@@ -237,7 +237,7 @@
 				return
 			use_power(active_power_usage)
 			var/id = params["index"]
-			var/datum/disease/D = SSdisease.archive_diseases[id]
+			var/datum/pathogen/D = SSpathogens.archive_pathogens[id]
 			var/obj/item/reagent_containers/glass/bottle/B = new(drop_location())
 			B.name = "[D.name] vaccine bottle"
 			B.reagents.add_reagent(/datum/reagent/vaccine, 15, list(id))

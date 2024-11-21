@@ -168,7 +168,7 @@
 
 	var/obj/item/food/meat/slab/allmeat[meat_produced]
 	var/obj/item/stack/sheet/animalhide/skin
-	var/list/datum/disease/diseases = mob_occupant.get_static_viruses()
+	var/list/datum/pathogen/diseases = mob_occupant.get_static_viruses()
 
 	if(ishuman(occupant))
 		var/mob/living/carbon/human/gibee = occupant
@@ -209,7 +209,7 @@
 	qdel(mob_occupant)
 	addtimer(CALLBACK(src, PROC_REF(make_meat), skin, allmeat, meat_produced, gibtype, diseases), gibtime)
 
-/obj/machinery/gibber/proc/make_meat(obj/item/stack/sheet/animalhide/skin, list/obj/item/food/meat/slab/allmeat, meat_produced, gibtype, list/datum/disease/diseases)
+/obj/machinery/gibber/proc/make_meat(obj/item/stack/sheet/animalhide/skin, list/obj/item/food/meat/slab/allmeat, meat_produced, gibtype, list/datum/pathogen/diseases)
 	playsound(src.loc, 'sound/effects/splat.ogg', 50, TRUE)
 	operating = FALSE
 	var/turf/T = get_turf(src)

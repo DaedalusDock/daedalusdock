@@ -9,7 +9,7 @@
 	permeability_mod = 1
 	desc = "If left untreated the subject will suffer from lethargy, dizziness and periodic loss of conciousness."
 	severity = DISEASE_SEVERITY_MEDIUM
-	disease_flags = CAN_CARRY|CAN_RESIST
+	disease_flags = parent_type::disease_flags & ~(DISEASE_CURABLE)
 	spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
 	visibility_flags = HIDDEN_PANDEMIC
 	bypasses_immunity = TRUE

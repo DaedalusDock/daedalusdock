@@ -1,7 +1,7 @@
 /datum/disease
 	//Flags
 	var/visibility_flags = 0
-	var/disease_flags = CURABLE|CAN_CARRY|CAN_RESIST
+	var/disease_flags = DISEASE_CURABLE | DISEASE_RESIST_ON_CURE | DISEASE_NEED_ALL_CURES
 	var/spread_flags = DISEASE_SPREAD_AIRBORNE | DISEASE_SPREAD_CONTACT_FLUIDS | DISEASE_SPREAD_CONTACT_SKIN
 
 	//Fluff
@@ -21,7 +21,7 @@
 	//Other
 	var/list/viable_mobtypes = list() //typepaths of viable mobs
 	var/mob/living/carbon/affected_mob = null
-	var/list/cures = list() //list of cures if the disease has the CURABLE flag, these are reagent ids
+	var/list/cures = list() //list of cures if the disease has the DISEASE_CURABLE flag, these are reagent ids
 	/// The probability of spreading through the air every second
 	var/infectivity = 41
 	/// The probability of this infection being cured every second the cure is present
@@ -31,17 +31,16 @@
 	var/permeability_mod = 1
 	var/severity = DISEASE_SEVERITY_NONTHREAT
 	var/list/required_organs = list()
-	var/needs_all_cures = TRUE
 	var/list/strain_data = list() //dna_spread special bullshit
 	var/infectable_biotypes = MOB_ORGANIC //if the disease can spread on organics, synthetics, or undead
 	var/process_dead = FALSE //if this ticks while the host is dead
 	var/copy_type = null //if this is null, copies will use the type of the instance being copied
 
 /datum/disease/Destroy()
-	. = ..()
 	if(affected_mob)
 		remove_disease()
 	SSdisease.active_diseases.Remove(src)
+	return ..()
 
 //add this disease if the host does not already have too many
 /datum/disease/proc/try_infect(mob/living/infectee, make_copy = TRUE)
@@ -68,12 +67,12 @@
 
 ///Proc to process the disease and decide on whether to advance, cure or make the sympthoms appear. Returns a boolean on whether to continue acting on the symptoms or not.
 /datum/disease/proc/stage_act(delta_time, times_fired)
-	if(has_cure())
+	if(can_cure_affected())
 		if(DT_PROB(cure_chance, delta_time))
 			update_stage(max(stage - 1, 1))
 
-		if(disease_flags & CURABLE && DT_PROB(cure_chance, delta_time))
-			cure()
+		if(DT_PROB(cure_chance, delta_time))
+			force_cure()
 			return FALSE
 
 	else if(DT_PROB(stage_prob, delta_time))
@@ -81,19 +80,21 @@
 
 	return !carrier
 
-
+/// Setter for the stage var
 /datum/disease/proc/update_stage(new_stage)
 	stage = new_stage
 
-/datum/disease/proc/has_cure()
-	if(!(disease_flags & CURABLE))
+/// Returns TRUE if the affected mob can be cured.
+/datum/disease/proc/can_cure_affected()
+	if(!(disease_flags & DISEASE_CURABLE))
 		return FALSE
 
 	. = cures.len
 	for(var/C_id in cures)
 		if(!affected_mob.reagents.has_reagent(C_id))
 			.--
-	if(!. || (needs_all_cures && . < cures.len))
+
+	if(!. || ((disease_flags & DISEASE_NEED_ALL_CURES) && (. < cures.len)))
 		return FALSE
 
 //Airborne spreading
@@ -133,11 +134,14 @@
 		end = Temp
 
 
-/datum/disease/proc/cure(add_resistance = TRUE)
+/// Cure the disease and delete it.
+/datum/disease/proc/force_cure(add_resistance = TRUE)
 	if(affected_mob)
-		if(add_resistance && (disease_flags & CAN_RESIST))
+		if(add_resistance && (disease_flags & DISEASE_RESIST_ON_CURE))
 			LAZYOR(affected_mob.disease_resistances, GetDiseaseID())
+
 	qdel(src)
+	return TRUE
 
 /datum/disease/proc/IsSame(datum/disease/D)
 	if(istype(D, type))
@@ -147,10 +151,30 @@
 
 /datum/disease/proc/Copy()
 	//note that stage is not copied over - the copy starts over at stage 1
-	var/static/list/copy_vars = list("name", "visibility_flags", "disease_flags", "spread_flags", "form", "desc", "agent", "spread_text",
-									"cure_text", "max_stages", "stage_prob", "viable_mobtypes", "cures", "infectivity", "cure_chance",
-									"bypasses_immunity", "permeability_mod", "severity", "required_organs", "needs_all_cures", "strain_data",
-									"infectable_biotypes", "process_dead")
+	var/static/list/copy_vars = list(
+		NAMEOF_STATIC(src, name),
+		NAMEOF_STATIC(src, visibility_flags),
+		NAMEOF_STATIC(src, disease_flags),
+		NAMEOF_STATIC(src, spread_flags),
+		NAMEOF_STATIC(src, form),
+		NAMEOF_STATIC(src, desc),
+		NAMEOF_STATIC(src, agent),
+		NAMEOF_STATIC(src, spread_text),
+		NAMEOF_STATIC(src, cure_text),
+		NAMEOF_STATIC(src, max_stages),
+		NAMEOF_STATIC(src, stage_prob),
+		NAMEOF_STATIC(src, viable_mobtypes),
+		NAMEOF_STATIC(src, cures),
+		NAMEOF_STATIC(src, infectivity),
+		NAMEOF_STATIC(src, cure_chance),
+		NAMEOF_STATIC(src, bypasses_immunity),
+		NAMEOF_STATIC(src, permeability_mod),
+		NAMEOF_STATIC(src, severity),
+		NAMEOF_STATIC(src, required_organs),
+		NAMEOF_STATIC(src, strain_data),
+		NAMEOF_STATIC(src, infectable_biotypes),
+		NAMEOF_STATIC(src, process_dead)
+	)
 
 	var/datum/disease/D = copy_type ? new copy_type() : new type()
 	for(var/V in copy_vars)

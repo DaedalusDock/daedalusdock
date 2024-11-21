@@ -41,7 +41,7 @@
 				to_chat(affected_mob, span_danger("You feel angry."))
 			if(restcure && affected_mob.body_position == LYING_DOWN && DT_PROB(16, delta_time))
 				to_chat(affected_mob, span_notice("You feel better."))
-				cure()
+				force_cure()
 				return FALSE
 		if(2)
 			if(DT_PROB(4, delta_time))
@@ -55,7 +55,7 @@
 				to_chat(affected_mob, span_danger("Your stomach churns."))
 			if(restcure && affected_mob.body_position == LYING_DOWN && DT_PROB(10, delta_time))
 				to_chat(affected_mob, span_notice("You feel better."))
-				cure()
+				force_cure()
 				return FALSE
 		if(3)
 			if(DT_PROB(5, delta_time))
@@ -70,7 +70,7 @@
 						scramble_dna(affected_mob, 0, 0, 1, rand(15,45))
 			if(restcure && affected_mob.body_position == LYING_DOWN && DT_PROB(10, delta_time))
 				to_chat(affected_mob, span_notice("You feel better."))
-				cure()
+				force_cure()
 				return FALSE
 		if(4)
 			if(DT_PROB(37, delta_time))
@@ -83,5 +83,5 @@
 						scramble_dna(affected_mob, 0, 0, 1, rand(50,75))
 			if(restcure && affected_mob.body_position == LYING_DOWN && DT_PROB(2.5, delta_time))
 				to_chat(affected_mob, span_notice("You feel better."))
-				cure()
+				force_cure()
 				return FALSE

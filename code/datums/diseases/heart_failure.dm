@@ -9,7 +9,7 @@
 	permeability_mod = 1
 	desc = "If left untreated the subject will die!"
 	severity = "Dangerous!"
-	disease_flags = CAN_CARRY|CAN_RESIST
+	disease_flags = parent_type::disease_flags & ~(DISEASE_CURABLE)
 	spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
 	visibility_flags = HIDDEN_PANDEMIC
 	required_organs = list(/obj/item/organ/heart)
@@ -28,7 +28,7 @@
 		return
 
 	if(!affected_mob.can_heartattack())
-		cure()
+		force_cure()
 		return FALSE
 
 	switch(stage)
@@ -64,6 +64,6 @@
 					span_userdanger("You feel a terrible pain in your chest, as if your heart has stopped!"))
 			affected_mob.stamina.adjust(-60)
 			affected_mob.set_heartattack(TRUE)
-			cure()
+			force_cure()
 			SSblackbox.record_feedback("amount", "heartattacks", 1)
 			return FALSE

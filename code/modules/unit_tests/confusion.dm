@@ -8,7 +8,7 @@
 	disease.infect(dummy, make_copy = FALSE)
 	confusion.Activate(disease)
 	TEST_ASSERT(dummy.has_status_effect(/datum/status_effect/confusion), "Human is not confused after getting symptom.")
-	disease.cure()
+	disease.force_cure()
 	TEST_ASSERT(!dummy.has_status_effect(/datum/status_effect/confusion), "Human is still confused after curing confusion.")
 
 /datum/disease/advance/confusion/New()

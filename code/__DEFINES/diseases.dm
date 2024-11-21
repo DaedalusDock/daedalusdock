@@ -7,11 +7,14 @@
 #define HIDDEN_PANDEMIC (1<<1)
 
 //Disease Flags
-#define CURABLE (1<<0)
-#define CAN_CARRY (1<<1)
-#define CAN_RESIST (1<<2)
+/// If present, the disease can be cured either randomly over time or reagents.
+#define DISEASE_CURABLE (1<<0)
+/// If present, when the disease is cured, it will be added to the mob's resistances.
+#define DISEASE_RESIST_ON_CURE (1<<2)
+/// If present, an affected mob will need every reagent in the cure list to be cured.
+#define DISEASE_NEED_ALL_CURES (1<<3)
 
-//Spread Flags
+//Disease Spread Flags
 #define DISEASE_SPREAD_SPECIAL (1<<0)
 #define DISEASE_SPREAD_NON_CONTAGIOUS (1<<1)
 #define DISEASE_SPREAD_BLOOD (1<<2)

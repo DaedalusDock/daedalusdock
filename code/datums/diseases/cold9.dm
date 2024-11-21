@@ -29,7 +29,7 @@
 				to_chat(affected_mob, span_danger("You feel stiff."))
 			if(DT_PROB(0.05, delta_time))
 				to_chat(affected_mob, span_notice("You feel better."))
-				cure()
+				force_cure()
 				return FALSE
 		if(3)
 			affected_mob.adjust_bodytemperature(-10 * delta_time)

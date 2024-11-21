@@ -9,13 +9,13 @@
 	cure_chance = 30 //higher chance to cure, because revenants are assholes
 	agent = "Unholy Forces"
 	viable_mobtypes = list(/mob/living/carbon/human)
-	disease_flags = CURABLE
+	disease_flags = DISEASE_CURABLE
 	permeability_mod = 1
 	severity = DISEASE_SEVERITY_HARMFUL
 	var/stagedamage = 0 //Highest stage reached.
 	var/finalstage = 0 //Because we're spawning off the cure in the final stage, we need to check if we've done the final stage's effects.
 
-/datum/disease/revblight/cure()
+/datum/disease/revblight/force_cure(add_resistance = TRUE)
 	if(affected_mob)
 		affected_mob.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, "#1d2953")
 		if(affected_mob.dna && affected_mob.dna.species)
@@ -31,7 +31,7 @@
 
 	if(!finalstage)
 		if(affected_mob.body_position == LYING_DOWN && DT_PROB(3 * stage, delta_time))
-			cure()
+			force_cure()
 			return FALSE
 		if(DT_PROB(1.5 * stage, delta_time))
 			to_chat(affected_mob, span_revennotice("You suddenly feel [pick("sick and tired", "disoriented", "tired and confused", "nauseated", "faint", "dizzy")]..."))
@@ -65,4 +65,4 @@
 					affected_mob.set_haircolor("#1d2953", override = TRUE)
 				affected_mob.visible_message(span_warning("[affected_mob] looks terrifyingly gaunt..."), span_revennotice("You suddenly feel like your skin is <i>wrong</i>..."))
 				affected_mob.add_atom_colour("#1d2953", TEMPORARY_COLOUR_PRIORITY)
-				addtimer(CALLBACK(src, PROC_REF(cure)), 10 SECONDS)
+				addtimer(CALLBACK(src, PROC_REF(force_cure)), 10 SECONDS)

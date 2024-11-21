@@ -9,7 +9,7 @@
 	desc = @"If left untreated the subject will [REDACTED]!"
 	severity = "Dangerous!"
 	cures = list(/datum/reagent/medicine/omnizine)
-	disease_flags = CAN_CARRY|CAN_RESIST
+	disease_flags = parent_type::disease_flags & ~(DISEASE_CURABLE)
 	spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
 	process_dead = TRUE
 
@@ -19,7 +19,7 @@
 		return
 
 	if(affected_mob.stat == DEAD)
-		cure()
+		force_cure()
 		return FALSE
 
 	switch(stage)

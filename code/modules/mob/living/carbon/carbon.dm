@@ -839,7 +839,7 @@
 	for(var/thing in diseases)
 		var/datum/disease/D = thing
 		if(D.severity != DISEASE_SEVERITY_POSITIVE)
-			D.cure(FALSE)
+			D.force_cure(add_resistance = FALSE)
 
 	if(admin_revive)
 		suiciding = FALSE

@@ -98,7 +98,7 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 				message_admins("[key_name_admin(holder)] has cured all diseases.")
 				for(var/thing in SSdisease.active_diseases)
 					var/datum/disease/D = thing
-					D.cure(0)
+					D.force_cure(add_resistance = FALSE)
 		if("list_bombers")
 			var/dat = "<B>Bombing List</B><HR>"
 			for(var/l in GLOB.bombers)

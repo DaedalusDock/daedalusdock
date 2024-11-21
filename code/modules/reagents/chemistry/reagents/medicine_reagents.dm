@@ -75,7 +75,7 @@
 		var/datum/disease/D = thing
 		if(D.severity == DISEASE_SEVERITY_POSITIVE)
 			continue
-		D.cure()
+		D.force_cure()
 	. = TRUE
 
 /datum/reagent/medicine/adminordrazine/quantum_heal

@@ -97,7 +97,7 @@
 		for(var/i in 1 to replace_num)
 			var/datum/disease/advance/competition = advance_diseases[i]
 			if(totalTransmittable() > competition.totalResistance())
-				competition.cure(FALSE)
+				competition.force_cure(add_resistance = FALSE)
 			else
 				return FALSE //we are not strong enough to bully our way in
 	infect(infectee, make_copy)

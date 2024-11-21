@@ -3,7 +3,7 @@
 	max_stages = 1
 	spread_text = "Paranormal"
 	spread_flags = DISEASE_SPREAD_SPECIAL
-	disease_flags = CURABLE
+	disease_flags = parent_type::disease_flags & ~(DISEASE_RESIST_ON_CURE)
 	cure_text = "Holy Water."
 	cures = list(/datum/reagent/water/holywater)
 	cure_chance = 10
@@ -22,14 +22,14 @@
 		return
 
 	if(QDELETED(parrot) || parrot.loc != affected_mob)
-		cure()
+		force_cure()
 		return FALSE
 
 	if(length(parrot.speech_buffer) && DT_PROB(parrot.speak_chance, delta_time)) // I'm not going to dive into polycode trying to adjust that probability. Enjoy doubled ghost parrot speach
 		affected_mob.say(pick(parrot.speech_buffer), forced = "parrot possession")
 
 
-/datum/disease/parrot_possession/cure()
+/datum/disease/parrot_possession/force_cure(add_resistance = TRUE)
 	if(parrot && parrot.loc == affected_mob)
 		parrot.forceMove(affected_mob.drop_location())
 		affected_mob.visible_message(span_danger("[parrot] is violently driven out of [affected_mob]!"), span_userdanger("[parrot] bursts out of your chest!"))

@@ -827,7 +827,7 @@
 	for(var/thing in exposed_mob.diseases)
 		var/datum/disease/infection = thing
 		if(infection.GetDiseaseID() in data)
-			infection.cure()
+			infection.force_cure()
 	LAZYOR(exposed_mob.disease_resistances, data)
 
 /datum/reagent/vaccine/affect_blood(mob/living/carbon/C, removed)
@@ -836,7 +836,7 @@
 	for(var/thing in C.diseases)
 		var/datum/disease/infection = thing
 		if(infection.GetDiseaseID() in data)
-			infection.cure()
+			infection.force_cure()
 	LAZYOR(C.disease_resistances, data)
 
 

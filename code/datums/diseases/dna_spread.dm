@@ -5,7 +5,6 @@
 	spread_flags = DISEASE_SPREAD_BLOOD | DISEASE_SPREAD_CONTACT_SKIN | DISEASE_SPREAD_CONTACT_FLUIDS
 	cure_text = "Ryetalyn"
 	cures = list(/datum/reagent/medicine/ryetalyn)
-	disease_flags = CAN_CARRY|CAN_RESIST|CURABLE
 	agent = "S4E1 retrovirus"
 	viable_mobtypes = list(/mob/living/carbon/human)
 	var/datum/dna/original_dna = null
@@ -20,11 +19,11 @@
 		return
 
 	if(!affected_mob.dna)
-		cure()
+		force_cure()
 		return FALSE
 
 	if((NOTRANSSTING in affected_mob.dna.species.species_traits) || (NO_DNA_COPY in affected_mob.dna.species.species_traits)) //Only species that can be spread by transformation sting can be spread by the retrovirus
-		cure()
+		force_cure()
 		return FALSE
 
 	if(!strain_data["dna"])

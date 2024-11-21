@@ -9,7 +9,7 @@
 	desc = @"If left untreated the subject will [REDACTED]!"
 	severity = "Dangerous!"
 	cures = list(/datum/reagent/medicine/omnizine)
-	disease_flags = parent_type::disease_flags & ~(PATHOGEN_CURABLE)
+	pathogen_flags = parent_type::pathogen_flags & ~(PATHOGEN_CURABLE)
 	spread_flags = PATHOGEN_SPREAD_NON_CONTAGIOUS
 	process_dead = TRUE
 

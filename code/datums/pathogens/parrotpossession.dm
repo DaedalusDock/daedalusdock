@@ -3,7 +3,7 @@
 	max_stages = 1
 	spread_text = "Paranormal"
 	spread_flags = PATHOGEN_SPREAD_SPECIAL
-	disease_flags = parent_type::disease_flags & ~(PATHOGEN_RESIST_ON_CURE)
+	pathogen_flags = parent_type::pathogen_flags & ~(PATHOGEN_RESIST_ON_CURE)
 	cure_text = "Holy Water."
 	cures = list(/datum/reagent/water/holywater)
 	cure_chance = 10

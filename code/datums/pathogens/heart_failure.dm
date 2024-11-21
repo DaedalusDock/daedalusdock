@@ -9,7 +9,7 @@
 	contraction_chance_modifier = 1
 	desc = "If left untreated the subject will die!"
 	severity = "Dangerous!"
-	disease_flags = parent_type::disease_flags & ~(PATHOGEN_CURABLE | PATHOGEN_REGRESS_TO_CURE)
+	pathogen_flags = parent_type::pathogen_flags & ~(PATHOGEN_CURABLE | PATHOGEN_REGRESS_TO_CURE)
 	spread_flags = PATHOGEN_SPREAD_NON_CONTAGIOUS
 	visibility_flags = HIDDEN_PANDEMIC
 	required_organs = list(/obj/item/organ/heart)

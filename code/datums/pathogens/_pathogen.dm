@@ -3,7 +3,7 @@
 	var/mob/living/carbon/affected_mob = null
 	//Flags
 	var/visibility_flags = 0
-	var/disease_flags = PATHOGEN_CURABLE | PATHOGEN_RESIST_ON_CURE | PATHOGEN_NEED_ALL_CURES | PATHOGEN_REGRESS_TO_CURE
+	var/pathogen_flags = PATHOGEN_CURABLE | PATHOGEN_RESIST_ON_CURE | PATHOGEN_NEED_ALL_CURES | PATHOGEN_REGRESS_TO_CURE
 	var/spread_flags = PATHOGEN_SPREAD_AIRBORNE | PATHOGEN_SPREAD_CONTACT_FLUIDS | PATHOGEN_SPREAD_CONTACT_SKIN
 
 	//Fluff
@@ -91,7 +91,7 @@
 /// Cure the disease and delete it.
 /datum/pathogen/proc/force_cure(add_resistance = TRUE)
 	if(affected_mob)
-		if(add_resistance && (disease_flags & PATHOGEN_RESIST_ON_CURE))
+		if(add_resistance && (pathogen_flags & PATHOGEN_RESIST_ON_CURE))
 			LAZYOR(affected_mob.disease_resistances, get_id())
 
 		log_virus("[key_name(affected_mob)] was cured from virus: [admin_details()] at [loc_name(get_turf(affected_mob))]")
@@ -107,7 +107,7 @@
 /// Returns a boolean on whether to continue acting on the symptoms or not.
 /datum/pathogen/proc/on_process(delta_time, times_fired)
 	if(can_cure_affected())
-		if(stage == 1 || !(disease_flags & PATHOGEN_REGRESS_TO_CURE))
+		if(stage == 1 || !(pathogen_flags & PATHOGEN_REGRESS_TO_CURE))
 			if(DT_PROB(cure_chance, delta_time))
 				force_cure()
 				return FALSE
@@ -127,7 +127,7 @@
 
 /// Returns TRUE if the affected mob can be cured.
 /datum/pathogen/proc/can_cure_affected()
-	if(!(disease_flags & PATHOGEN_CURABLE))
+	if(!(pathogen_flags & PATHOGEN_CURABLE))
 		return FALSE
 
 	. = cures.len
@@ -135,7 +135,7 @@
 		if(!affected_mob.reagents.has_reagent(C_id))
 			.--
 
-	if(!. || ((disease_flags & PATHOGEN_NEED_ALL_CURES) && (. < cures.len)))
+	if(!. || ((pathogen_flags & PATHOGEN_NEED_ALL_CURES) && (. < cures.len)))
 		return FALSE
 
 /// Attempt to spread to nearby mobs through the air.
@@ -187,7 +187,7 @@
 	var/static/list/copy_vars = list(
 		NAMEOF_STATIC(src, name),
 		NAMEOF_STATIC(src, visibility_flags),
-		NAMEOF_STATIC(src, disease_flags),
+		NAMEOF_STATIC(src, pathogen_flags),
 		NAMEOF_STATIC(src, spread_flags),
 		NAMEOF_STATIC(src, form),
 		NAMEOF_STATIC(src, desc),

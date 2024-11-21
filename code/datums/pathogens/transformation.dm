@@ -9,7 +9,7 @@
 	severity = PATHOGEN_SEVERITY_BIOHAZARD
 	stage_prob = 5
 	visibility_flags = HIDDEN_SCANNER|HIDDEN_PANDEMIC
-	disease_flags = parent_type::disease_flags & ~(PATHOGEN_RESIST_ON_CURE)
+	pathogen_flags = parent_type::pathogen_flags & ~(PATHOGEN_RESIST_ON_CURE)
 	var/list/stage1 = list("You feel unremarkable.")
 	var/list/stage2 = list("You feel boring.")
 	var/list/stage3 = list("You feel utterly plain.")
@@ -105,7 +105,7 @@
 	spread_flags = PATHOGEN_SPREAD_NON_CONTAGIOUS
 	viable_mobtypes = list(/mob/living/carbon/human)
 	cure_chance = 0.5
-	disease_flags = parent_type::disease_flags & ~(PATHOGEN_CURABLE)
+	pathogen_flags = parent_type::pathogen_flags & ~(PATHOGEN_CURABLE)
 	desc = "A neutered but still dangerous descendent of the ancient \"Jungle Fever\", victims will eventually genetically backtrack into a primate. \
 	Luckily, once turned the new monkey will not gain the rabies-like rage of the fever."
 	severity = PATHOGEN_SEVERITY_BIOHAZARD

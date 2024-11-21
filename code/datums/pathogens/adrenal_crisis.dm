@@ -8,7 +8,7 @@
 	viable_mobtypes = list(/mob/living/carbon/human)
 	desc = "If left untreated the subject will suffer from lethargy, dizziness and periodic loss of conciousness."
 	severity = PATHOGEN_SEVERITY_MEDIUM
-	disease_flags = parent_type::disease_flags & ~(PATHOGEN_CURABLE)
+	pathogen_flags = parent_type::pathogen_flags & ~(PATHOGEN_CURABLE)
 	spread_flags = PATHOGEN_SPREAD_NON_CONTAGIOUS
 	visibility_flags = HIDDEN_PANDEMIC
 	bypasses_immunity = TRUE

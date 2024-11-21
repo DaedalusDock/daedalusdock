@@ -9,7 +9,7 @@
 	contraction_chance_modifier = 1
 	desc = "If left untreated the subject will passively lose nutrients, and eventually lose their liver."
 	severity = PATHOGEN_SEVERITY_HARMFUL
-	disease_flags = parent_type::disease_flags & ~(PATHOGEN_CURABLE)
+	pathogen_flags = parent_type::pathogen_flags & ~(PATHOGEN_CURABLE)
 	spread_flags = PATHOGEN_SPREAD_NON_CONTAGIOUS
 	required_organs = list(/obj/item/organ/liver)
 	bypasses_immunity = TRUE

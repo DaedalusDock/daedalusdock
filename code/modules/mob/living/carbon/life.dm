@@ -304,8 +304,7 @@
 		updatehealth()
 
 /mob/living/carbon/handle_diseases(delta_time, times_fired)
-	for(var/thing in diseases)
-		var/datum/disease/D = thing
+	for(var/datum/disease/D as anything in diseases)
 		if(DT_PROB(D.infectivity, delta_time))
 			D.airborne_spread()
 

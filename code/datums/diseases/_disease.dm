@@ -81,14 +81,25 @@
 	infectee.med_hud_set_status()
 
 	var/turf/source_turf = get_turf(infectee)
-	log_virus("[key_name(infectee)] was infected by virus: [src.admin_details()] at [loc_name(source_turf)]")
+	log_virus("[key_name(infectee)] was infected by virus: [admin_details()] at [loc_name(source_turf)]")
 
-//Return a string for admin logging uses, should describe the disease in detail
+/// Cure the disease and delete it.
+/datum/disease/proc/force_cure(add_resistance = TRUE)
+	if(affected_mob)
+		if(add_resistance && (disease_flags & DISEASE_RESIST_ON_CURE))
+			LAZYOR(affected_mob.disease_resistances, GetDiseaseID())
+
+		log_virus("[key_name(affected_mob)] was cured from virus: [admin_details()] at [loc_name(get_turf(affected_mob))]")
+
+	qdel(src)
+	return TRUE
+
+/// Return a string for admin logging uses, should describe the disease in detail
 /datum/disease/proc/admin_details()
 	return "[src.name] : [src.type]"
 
-
-///Proc to process the disease and decide on whether to advance, cure or make the sympthoms appear. Returns a boolean on whether to continue acting on the symptoms or not.
+/// Proc to process the disease and decide on whether to advance, cure or make the sympthoms appear.
+/// Returns a boolean on whether to continue acting on the symptoms or not.
 /datum/disease/proc/stage_act(delta_time, times_fired)
 	if(can_cure_affected())
 		if(DT_PROB(cure_chance, delta_time))
@@ -157,16 +168,6 @@
 		if(air_blocked & AIR_BLOCKED) //Don't go through a wall
 			return FALSE
 		end = Temp
-
-
-/// Cure the disease and delete it.
-/datum/disease/proc/force_cure(add_resistance = TRUE)
-	if(affected_mob)
-		if(add_resistance && (disease_flags & DISEASE_RESIST_ON_CURE))
-			LAZYOR(affected_mob.disease_resistances, GetDiseaseID())
-
-	qdel(src)
-	return TRUE
 
 /datum/disease/proc/IsSame(datum/disease/D)
 	if(GetDiseaseID() == D.GetDiseaseID())

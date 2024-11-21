@@ -237,29 +237,28 @@
 // Assign the properties that are in the list.
 /datum/pathogen/advance/proc/AssignProperties()
 
-	if(properties?.len)
-		if(properties["stealth"] >= 2)
-			visibility_flags |= HIDDEN_SCANNER
-		else
-			visibility_flags &= ~HIDDEN_SCANNER
-
-		if(properties["transmittable"]>=11)
-			SetSpread(DISEASE_SPREAD_AIRBORNE)
-		else if(properties["transmittable"]>=7)
-			SetSpread(DISEASE_SPREAD_CONTACT_SKIN)
-		else if(properties["transmittable"]>=3)
-			SetSpread(DISEASE_SPREAD_CONTACT_FLUIDS)
-		else
-			SetSpread(DISEASE_SPREAD_BLOOD)
-
-		contraction_chance_modifier = max(CEILING(0.4 * properties["transmittable"], 1), 1)
-		cure_chance = clamp(7.5 - (0.5 * properties["resistance"]), 5, 10) // can be between 5 and 10
-		stage_prob = max(0.5 * properties["stage_rate"], 1)
-		SetSeverity(properties["severity"])
-		GenerateCure(properties)
-	else
+	if(!length(properties))
 		CRASH("Our properties were empty or null!")
 
+	if(properties["stealth"] >= 2)
+		visibility_flags |= HIDDEN_SCANNER
+	else
+		visibility_flags &= ~HIDDEN_SCANNER
+
+	if(properties["transmittable"]>=11)
+		SetSpread(DISEASE_SPREAD_AIRBORNE)
+	else if(properties["transmittable"]>=7)
+		SetSpread(DISEASE_SPREAD_CONTACT_SKIN)
+	else if(properties["transmittable"]>=3)
+		SetSpread(DISEASE_SPREAD_CONTACT_FLUIDS)
+	else
+		SetSpread(DISEASE_SPREAD_BLOOD)
+
+	contraction_chance_modifier = max(CEILING(0.4 * properties["transmittable"], 1), 1)
+	cure_chance = clamp(7.5 - (0.5 * properties["resistance"]), 5, 10) // can be between 5 and 10
+	stage_prob = max(0.5 * properties["stage_rate"], 1)
+	SetSeverity(properties["severity"])
+	GenerateCure(properties)
 
 // Assign the spread type and give it the correct description.
 /datum/pathogen/advance/proc/SetSpread(spread_id)
@@ -307,20 +306,23 @@
 
 // Will generate a random cure, the more resistance the symptoms have, the harder the cure.
 /datum/pathogen/advance/proc/GenerateCure()
-	if(properties?.len)
-		var/res = clamp(properties["resistance"] - (symptoms.len / 2), 1, advance_cures.len)
-		if(res == oldres)
-			return
-		cures = list(pick(advance_cures[res]))
-		oldres = res
-		// Get the cure name from the cure_id
-		var/datum/reagent/D = SSreagents.chemical_reagents_list[cures[1]]
-		cure_text = D.name
+	if(!length(properties)) // Only happens if the disease is borked
+		return
+
+	var/res = clamp(properties["resistance"] - (symptoms.len / 2), 1, advance_cures.len)
+	if(res == oldres)
+		return
+	cures = list(pick(advance_cures[res]))
+	oldres = res
+	// Get the cure name from the cure_id
+	var/datum/reagent/D = SSreagents.chemical_reagents_list[cures[1]]
+	cure_text = D.name
 
 // Randomly generate a symptom, has a chance to lose or gain a symptom.
 /datum/pathogen/advance/proc/Evolve(min_level, max_level, ignore_mutable = FALSE)
 	if(!mutable && !ignore_mutable)
 		return
+
 	var/list/generated_symptoms = GenerateSymptoms(min_level, max_level, 1)
 	if(length(generated_symptoms))
 		var/datum/symptom/S = pick(generated_symptoms)

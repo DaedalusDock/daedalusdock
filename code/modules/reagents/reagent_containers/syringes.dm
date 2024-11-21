@@ -19,7 +19,7 @@
 	var/inject_flags = NONE
 
 	/// Tracks if the below lists are populated.
-	var/sterile = FALSE
+	var/sterile = TRUE
 	/// Lazylist. If it exists that means the syringe is non-sterile.
 	var/list/dirty_blood_DNA
 	/// Lazylist. Contains disease datums. K:V of disease_id : disease datum.
@@ -82,7 +82,7 @@
 
 		if(living_target != user)
 			living_target.visible_message(
-				span_notice("[user] is trying to inject [living_target]."),
+				span_notice("[user] is trying to inject [living_target] with [src]."),
 			)
 			if(!do_after(user, living_target, CHEM_INTERACT_DELAY(3 SECONDS, user), DO_PUBLIC, extra_checks = CALLBACK(living_target, TYPE_PROC_REF(/mob/living, try_inject), user, null, INJECT_TRY_SHOW_ERROR_MESSAGE|inject_flags), interaction_key = ref(src), display = src))
 				return
@@ -90,10 +90,13 @@
 				return
 			if(living_target.reagents.total_volume >= living_target.reagents.maximum_volume)
 				return
-			living_target.visible_message(span_danger("[user] injects [living_target] with the syringe!"), \
-							span_userdanger("[user] injects you with the syringe!"))
+
+			living_target.visible_message(
+				span_notice("[user] injects [living_target] with [src]."),
+			)
 
 		if (living_target == user)
+			living_target.visible_message(span_notice("[user] injects [user.p_them()]self with [src]."))
 			living_target.log_message("injected themselves ([contained]) with [name]", LOG_ATTACK, color="orange")
 		else
 			log_combat(user, living_target, "injected", src, addition="which had [contained]")
@@ -105,7 +108,7 @@
 		contaminate(living_target.get_blood_dna_list(), living_target.diseases)
 
 	reagents.trans_to(target, amount_per_transfer_from_this, transfered_by = user, methods = INJECT)
-	to_chat(user, span_notice("You inject [amount_per_transfer_from_this] units of the solution. The syringe now contains [reagents.total_volume] units."))
+	to_chat(user, span_obviousnotice("You inject [amount_per_transfer_from_this] units of the solution. \The [src] now contains [reagents.total_volume] units."))
 
 /obj/item/reagent_containers/syringe/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
 	if (!try_syringe(target, user, proximity_flag))
@@ -119,31 +122,34 @@
 		var/mob/living/living_target = target
 		var/drawn_amount = reagents.maximum_volume - reagents.total_volume
 		if(target != user)
-			target.visible_message(span_danger("[user] is trying to take a blood sample from [target]!"), \
-							span_userdanger("[user] is trying to take a blood sample from you!"))
-			if(!do_after(user, target, CHEM_INTERACT_DELAY(3 SECONDS, user), DO_PUBLIC, extra_checks = CALLBACK(living_target, TYPE_PROC_REF(/mob/living, try_inject), user, null, INJECT_TRY_SHOW_ERROR_MESSAGE|inject_flags), display = src))
+			target.visible_message(
+				span_notice("[user] is trying to take a blood sample from [target]."),
+			)
+
+			if(!do_after(user, target, CHEM_INTERACT_DELAY(3 SECONDS, user), DO_PUBLIC, extra_checks = CALLBACK(living_target, TYPE_PROC_REF(/mob/living, try_inject), user, null, INJECT_TRY_SHOW_ERROR_MESSAGE|inject_flags), interaction_key = ref(src), display = src))
 				return SECONDARY_ATTACK_CONTINUE_CHAIN
 			if(reagents.total_volume >= reagents.maximum_volume)
 				return SECONDARY_ATTACK_CONTINUE_CHAIN
 
+		var/target_str = living_target == user ? "[user.p_them()]self" : "[living_target]"
 		if(living_target.transfer_blood_to(src, drawn_amount))
 			contaminate_mob(living_target)
-			user.visible_message(span_notice("[user] takes a blood sample from [living_target]."))
+			user.visible_message(span_notice("[user] takes a blood sample from [target_str] with [src]."))
 			contaminate(living_target.get_blood_dna_list(), living_target.diseases)
 		else
-			to_chat(user, span_warning("You are unable to draw any blood from [living_target]!"))
+			to_chat(user, span_warning("You are unable to draw any blood from [target_str]."))
 	else
 		if(!target.reagents.total_volume)
 			to_chat(user, span_warning("[target] is empty!"))
 			return SECONDARY_ATTACK_CONTINUE_CHAIN
 
 		if(!target.is_drawable(user))
-			to_chat(user, span_warning("You cannot directly remove reagents from [target]!"))
+			to_chat(user, span_warning("You cannot directly remove reagents from [target]."))
 			return SECONDARY_ATTACK_CONTINUE_CHAIN
 
 		var/trans = target.reagents.trans_to(src, amount_per_transfer_from_this, transfered_by = user) // transfer from, transfer to - who cares?
 
-		to_chat(user, span_notice("You fill [src] with [trans] units of the solution. It now contains [reagents.total_volume] units."))
+		to_chat(user, span_obviousnotice("You fill [src] with [trans] units of the solution. It now contains [reagents.total_volume] units."))
 	playsound(src, 'sound/effects/syringe_extract.ogg', 50)
 	return SECONDARY_ATTACK_CONTINUE_CHAIN
 

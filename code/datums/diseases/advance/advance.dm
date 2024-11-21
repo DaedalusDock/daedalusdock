@@ -138,9 +138,7 @@
 	if(!(istype(D, /datum/disease/advance)))
 		return FALSE
 
-	if(GetDiseaseID() != D.GetDiseaseID())
-		return FALSE
-	return TRUE
+	return ..()
 
 // Returns the advance disease with a different reference memory.
 /datum/disease/advance/Copy()

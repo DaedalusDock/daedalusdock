@@ -277,7 +277,7 @@
 			//Cold
 			var/datum/pathogen/D = new /datum/pathogen/cold()
 			T.visible_message(span_userdanger("[user] looks a little under the weather!"))
-			user.ForceContractDisease(D, FALSE, TRUE)
+			user.try_contract_pathogen(D, FALSE, TRUE)
 		if(10)
 			//Nothing
 			T.visible_message(span_userdanger("Nothing seems to happen."))

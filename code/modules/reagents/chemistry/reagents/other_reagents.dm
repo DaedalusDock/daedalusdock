@@ -219,7 +219,7 @@
 				continue
 
 			if((methods & (TOUCH|VAPOR)) && (strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS))
-				exposed_mob.ContactContractDisease(strain)
+				exposed_mob.try_contact_contract_pathogen(strain)
 
 
 /datum/reagent/blood/affect_blood(mob/living/carbon/C, removed)
@@ -232,7 +232,7 @@
 			if((strain.spread_flags & (DISEASE_SPREAD_SPECIAL|DISEASE_SPREAD_NON_CONTAGIOUS)))
 				continue
 
-			C.ForceContractDisease(strain)
+			C.try_contract_pathogen(strain)
 
 	if(!(C.get_blood_id() == /datum/reagent/blood))
 		return
@@ -251,7 +251,7 @@
 			continue
 
 		if(strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
-			C.ContactContractDisease(strain)
+			C.try_contact_contract_pathogen(strain)
 
 /datum/reagent/blood/on_new(list/data)
 	. = ..()
@@ -1044,15 +1044,15 @@
 	metabolization_rate = INFINITY
 
 /datum/reagent/fungalspores/affect_ingest(mob/living/carbon/C, removed)
-	C.ForceContractDisease(new /datum/pathogen/tuberculosis(), FALSE, TRUE)
+	C.try_contract_pathogen(new /datum/pathogen/tuberculosis(), FALSE, TRUE)
 	return ..()
 
 /datum/reagent/fungalspores/affect_blood(mob/living/carbon/C, removed)
-	C.ForceContractDisease(new /datum/pathogen/tuberculosis(), FALSE, TRUE)
+	C.try_contract_pathogen(new /datum/pathogen/tuberculosis(), FALSE, TRUE)
 
 /datum/reagent/fungalspores/affect_touch(mob/living/carbon/C, removed)
 	if(prob(min(volume,100)*(1 - C.get_permeability_protection())))
-		C.ForceContractDisease(new /datum/pathogen/tuberculosis(), FALSE, TRUE)
+		C.try_contract_pathogen(new /datum/pathogen/tuberculosis(), FALSE, TRUE)
 
 
 #define CRYO_SPEED_PREFACTOR 0.4

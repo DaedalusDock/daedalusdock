@@ -1013,6 +1013,6 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 	var/datum/pathogen/parrot_possession/P = new
 	P.parrot = src
 	forceMove(H)
-	H.ForceContractDisease(P, FALSE)
+	H.try_contract_pathogen(P, FALSE)
 	parrot_interest = null
 	H.visible_message(span_danger("[src] dive bombs into [H]'s chest and vanishes!"), span_userdanger("[src] dive bombs into your chest, vanishing! This can't be good!"))

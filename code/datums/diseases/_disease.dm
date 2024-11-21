@@ -142,7 +142,7 @@
 	if(!(spread_flags & DISEASE_SPREAD_AIRBORNE) && !force_spread)
 		return
 
-	if(check_mob_spreadability && !affected_mob.CanSpreadAirborneDisease())
+	if(check_mob_spreadability && !affected_mob.can_spread_airborne_pathogens())
 		return
 
 	if(affected_mob.reagents.has_reagent(/datum/reagent/medicine/spaceacillin) || (affected_mob.satiety > 0 && prob(affected_mob.satiety/10)))
@@ -154,7 +154,7 @@
 	for(var/mob/living/carbon/C in oview(spread_range, affected_mob))
 		var/turf/V = get_turf(C)
 		if(disease_air_spread_walk(T, V))
-			C.AirborneContractDisease(src, force_spread)
+			C.try_airborne_contract_pathogen(src, force_spread)
 
 /proc/disease_air_spread_walk(turf/start, turf/end)
 	if(!start || !end)

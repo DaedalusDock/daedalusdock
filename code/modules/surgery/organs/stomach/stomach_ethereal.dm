@@ -100,7 +100,7 @@
 
 		if(prob(10)) //chance of developing heart disease to dissuade overcharging oneself
 			var/datum/pathogen/D = new /datum/pathogen/heart_failure
-			carbon.ForceContractDisease(D)
+			carbon.try_contract_pathogen(D)
 			to_chat(carbon, span_userdanger("You're pretty sure you just felt your heart stop for a second there.."))
 			carbon.playsound_local(carbon, 'sound/effects/singlebeat.ogg', 100, 0)
 

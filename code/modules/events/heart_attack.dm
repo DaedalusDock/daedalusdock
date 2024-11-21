@@ -20,5 +20,5 @@
 	if(LAZYLEN(heart_attack_contestants))
 		var/mob/living/carbon/human/winner = pick_weight(heart_attack_contestants)
 		var/datum/pathogen/D = new /datum/pathogen/heart_failure()
-		winner.ForceContractDisease(D, FALSE, TRUE)
+		winner.try_contract_pathogen(D, FALSE, TRUE)
 		announce_to_ghosts(winner)

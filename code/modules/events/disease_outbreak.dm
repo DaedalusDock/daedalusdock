@@ -55,7 +55,7 @@
 			D = new /datum/pathogen/advance/random(max_severity, max_severity)
 
 		D.affected_mob_is_only_carrier = TRUE
-		H.ForceContractDisease(D, FALSE, TRUE)
+		H.try_contract_pathogen(D, FALSE, TRUE)
 
 		if(advanced_virus)
 			var/datum/pathogen/advance/A = D

@@ -73,11 +73,11 @@
 			var/mob/living/affecting_mob = affecting
 			for(var/datum/pathogen/D as anything in assailant.diseases)
 				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-					affecting_mob.ContactContractDisease(D)
+					affecting_mob.try_contact_contract_pathogen(D)
 
 			for(var/datum/pathogen/D as anything in affecting_mob.diseases)
 				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-					assailant.ContactContractDisease(D)
+					assailant.try_contact_contract_pathogen(D)
 
 	/// Setup the effects applied by grab
 	current_grab.update_stage_effects(src, null)

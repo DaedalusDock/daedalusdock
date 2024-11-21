@@ -482,15 +482,15 @@
 				var/found = FALSE
 				if(!is_station_level(H.z))
 					continue
-				if(!H.HasDisease(D))
-					found = H.ForceContractDisease(D)
+				if(!H.has_pathogen(D))
+					found = H.try_contract_pathogen(D)
 					break
 				if(!found)
 					to_chat(user, "Could not find a valid target for the disease.")
 		else
 			H = target
 			if(istype(H) && D.infectable_biotypes & H.mob_biotypes)
-				H.ForceContractDisease(D)
+				H.try_contract_pathogen(D)
 			else
 				to_chat(user, "Target could not be infected. Check mob biotype compatibility or resistances.")
 				return

@@ -40,7 +40,7 @@
 				to_chat(affected_mob, span_danger("Mucous runs down the back of your throat."))
 			if(DT_PROB(0.25, delta_time) && !LAZYFIND(affected_mob.disease_resistances, /datum/pathogen/flu))
 				var/datum/pathogen/Flu = new /datum/pathogen/flu()
-				affected_mob.ForceContractDisease(Flu, FALSE, TRUE)
+				affected_mob.try_contract_pathogen(Flu, FALSE, TRUE)
 				force_cure()
 				return FALSE
 			if((affected_mob.body_position == LYING_DOWN && DT_PROB(12.5, delta_time)) || DT_PROB(0.005, delta_time))  //changed FROM prob(5) until sleeping is fixed

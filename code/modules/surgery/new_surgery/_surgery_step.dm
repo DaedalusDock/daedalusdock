@@ -155,11 +155,11 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 		if(IS_ORGANIC_LIMB(affected) && !human_user?.gloves)
 			for(var/datum/pathogen/D as anything in user.diseases)
 				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-					target.ContactContractDisease(D)
+					target.try_contact_contract_pathogen(D)
 
 			for(var/datum/pathogen/D as anything in target.diseases)
 				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-					user.ContactContractDisease(D)
+					user.try_contact_contract_pathogen(D)
 
 		if(pain_given && !(affected.bodypart_flags & BP_NO_PAIN) && target.stat == CONSCIOUS)
 			target.apply_pain(pain_given, affected.body_zone, ignore_cd = TRUE)

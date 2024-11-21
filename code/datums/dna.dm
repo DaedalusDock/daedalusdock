@@ -928,7 +928,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 				apply_status_effect(/datum/status_effect/go_away)
 			if(6)
 				to_chat(src, span_notice("Oh, I actually feel quite alright!"))
-				ForceContractDisease(new/datum/pathogen/decloning()) //slow acting, non-viral clone damage based GBS
+				try_contract_pathogen(new/datum/pathogen/decloning()) //slow acting, non-viral clone damage based GBS
 			if(7)
 				var/list/elligible_organs = list()
 				for(var/obj/item/organ/organ as anything in processing_organs) //make sure we dont get an implant or cavity item

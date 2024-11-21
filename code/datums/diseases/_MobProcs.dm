@@ -1,20 +1,21 @@
 
-/mob/living/proc/HasDisease(datum/pathogen/D)
-	for(var/thing in diseases)
-		var/datum/pathogen/DD = thing
+/// Returns TRUE if src is afflicted by a copy of the provided pathogen.
+/mob/living/proc/has_pathogen(datum/pathogen/D)
+	for(var/datum/pathogen/DD in diseases)
 		if(D.IsSame(DD))
 			return TRUE
 	return FALSE
 
-
-/mob/living/proc/CanContractDisease(datum/pathogen/D)
+/// Returns TRUE if src can contract the passed pathogen.
+/// Note: This does not mean that the pathogen will be able to be applied to this mob.
+/mob/living/proc/can_contract_pathogen(datum/pathogen/D)
 	if(stat == DEAD && !D.process_dead)
 		return FALSE
 
-	if(D.GetDiseaseID() in disease_resistances)
+	if(HAS_TRAIT(src, TRAIT_VIRUSIMMUNE) && !D.bypasses_immunity)
 		return FALSE
 
-	if(HasDisease(D))
+	if(D.GetDiseaseID() in disease_resistances)
 		return FALSE
 
 	if(!(D.infectable_biotypes & mob_biotypes))
@@ -23,17 +24,36 @@
 	if(!D.is_viable_mobtype(type))
 		return FALSE
 
+	if(has_pathogen(D))
+		return FALSE
+
 	return TRUE
 
+/mob/living/carbon/human/can_contract_pathogen(datum/pathogen/D)
+	for(var/thing in D.required_organs)
+		if(!((locate(thing) in bodyparts) || (locate(thing) in organs)))
+			return FALSE
+	return ..()
 
-/mob/living/proc/ContactContractDisease(datum/pathogen/D)
-	if(!CanContractDisease(D))
+/// Attempt to contract a pathogen. Returns TRUE on infection.
+/mob/living/proc/try_contract_pathogen(datum/pathogen/D, make_copy = TRUE, del_on_fail = FALSE)
+	if(!can_contract_pathogen(D))
+		if(del_on_fail)
+			qdel(D)
 		return FALSE
-	D.try_infect(src)
 
+	if(!D.try_infect(src, make_copy))
+		if(del_on_fail)
+			qdel(D)
+		return FALSE
+	return TRUE
 
-/mob/living/carbon/ContactContractDisease(datum/pathogen/D, target_zone)
-	if(!CanContractDisease(D))
+/// Attempt to contract a disease through touch. Returns TRUE on infection.
+/mob/living/proc/try_contact_contract_pathogen(datum/pathogen/D)
+	return try_contract_pathogen(D)
+
+/mob/living/carbon/try_contact_contract_pathogen(datum/pathogen/D, target_zone)
+	if(!can_contract_pathogen(D))
 		return FALSE
 
 	var/obj/item/clothing/Cl = null
@@ -107,45 +127,26 @@
 	if(passed)
 		D.try_infect(src)
 
-/mob/living/proc/AirborneContractDisease(datum/pathogen/D, force_spread)
-	if( ((D.spread_flags & DISEASE_SPREAD_AIRBORNE) || force_spread) && prob((50*D.contraction_chance_modifier) - 1))
-		ForceContractDisease(D)
+/// Attempt to contract a disease through the air. Returns TRUE on infection.
+/mob/living/proc/try_airborne_contract_pathogen(datum/pathogen/D, even_if_not_airborne = FALSE)
+	if(!(D.spread_flags & DISEASE_SPREAD_AIRBORNE) && !even_if_not_airborne)
+		return FALSE
 
-/mob/living/carbon/AirborneContractDisease(datum/pathogen/D, force_spread)
-	if(internal)
-		return
+	if(prob((50*D.contraction_chance_modifier) - 1))
+		return try_contract_pathogen(D)
+
+/mob/living/carbon/try_airborne_contract_pathogen(datum/pathogen/D, even_if_not_airborne = FALSE)
+	if(internal || external)
+		return FALSE
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))
-		return
-	..()
-
-
-//Proc to use when you 100% want to try to infect someone (ignoreing protective clothing and such), as long as they aren't immune
-/mob/living/proc/ForceContractDisease(datum/pathogen/D, make_copy = TRUE, del_on_fail = FALSE)
-	if(!CanContractDisease(D))
-		if(del_on_fail)
-			qdel(D)
 		return FALSE
-	if(!D.try_infect(src, make_copy))
-		if(del_on_fail)
-			qdel(D)
-		return FALSE
-	return TRUE
-
-
-/mob/living/carbon/human/CanContractDisease(datum/pathogen/D)
-	if(dna)
-		if(HAS_TRAIT(src, TRAIT_VIRUSIMMUNE) && !D.bypasses_immunity)
-			return FALSE
-
-	for(var/thing in D.required_organs)
-		if(!((locate(thing) in bodyparts) || (locate(thing) in organs)))
-			return FALSE
 	return ..()
 
-/mob/living/proc/CanSpreadAirborneDisease()
+/// Returns TRUE if this mob is able to spread airborne pathogens.
+/mob/living/proc/can_spread_airborne_pathogens()
 	return has_mouth() && !is_mouth_covered()
 
-/mob/living/carbon/CanSpreadAirborneDisease()
+/mob/living/carbon/can_spread_airborne_pathogens()
 	if(!has_mouth() || losebreath)
 		return FALSE
 

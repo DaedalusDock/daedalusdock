@@ -231,7 +231,7 @@
 						var/datum/pathogen/D = thing
 						if((D.spread_flags & DISEASE_SPREAD_SPECIAL) || (D.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
 							continue
-						C.ForceContractDisease(D)
+						C.try_contract_pathogen(D)
 				if(!C.dna.blood_type.is_compatible(blood_data["blood_type"]:type))
 					C.reagents.add_reagent(/datum/reagent/toxin, amount * 0.5)
 					return TRUE

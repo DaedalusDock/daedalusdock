@@ -22,3 +22,6 @@
       every turf they iterate through, rather than just every pulse.
   francinum:
   - server: Discord account linking no longer hard-requires the panic bunker
+2024-11-22:
+  Kapu1178:
+  - tweak: Adjusted the color of the "obviousnotice" message type.

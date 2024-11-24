@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - server: Bumped rust_g version to 3.5.0

@@ -1,10 +1,10 @@
 SUBSYSTEM_DEF(sound_cache)
 	name = "Sound Cache"
-	init_order = INIT_ORDER_AO
+	init_order = INIT_ORDER_SOUND_CACHE
 	flags = SS_NO_FIRE
 
 	/// k:v list of file_path : length
-	var/list/sound_lengths = list()
+	VAR_PRIVATE/list/sound_lengths
 
 	/// A list of sounds to cache upon initialize.
 	VAR_PRIVATE/list/sounds_to_precache = list()
@@ -16,14 +16,27 @@ SUBSYSTEM_DEF(sound_cache)
 		to_chat(world, span_boldnotice("Sound Cache: No rust_g detected."))
 		return ..()
 
-	if(length(sounds_to_precache))
-		var/list/lengths = rustg_sound_length_list(sounds_to_precache)
-		precache_errors = lengths[RUSTG_SOUNDLEN_ERRORS]
-		sound_lengths = lengths[RUSTG_SOUNDLEN_SUCCESSES]
+	// Precache ambience sounds
+	for(var/key in GLOB.ambience_assoc)
+		sounds_to_precache |= GLOB.ambience_assoc[key]
+
+	PrecacheSounds()
 
 	return ..()
 
-/// Cache and return a list of sound lengths.
+/datum/controller/subsystem/sound_cache/proc/PrecacheSounds()
+	if(!length(sounds_to_precache))
+		return
+
+	var/list/lengths = rustg_sound_length_list(sounds_to_precache)
+	precache_errors = lengths[RUSTG_SOUNDLEN_ERRORS]
+	sound_lengths = lengths[RUSTG_SOUNDLEN_SUCCESSES]
+	for(var/sound_path in sound_lengths)
+		sound_lengths[sound_path] = text2num(sound_lengths[sound_path])
+
+	sounds_to_precache = null
+
+/// Cache a list of sound lengths.
 /datum/controller/subsystem/sound_cache/proc/cache_sounds(list/paths)
 	var/list/reconstructed = list()
 	reconstructed.len = length(paths)
@@ -32,12 +45,12 @@ SUBSYSTEM_DEF(sound_cache)
 		reconstructed[i] = "[paths[i]]"
 
 	var/list/out = rustg_sound_length_list(paths)
-
-	sound_lengths |= out[RUSTG_SOUNDLEN_SUCCESSES]
-	return out[RUSTG_SOUNDLEN_SUCCESSES]
+	var/list/successes = out[RUSTG_SOUNDLEN_SUCCESSES]
+	for(var/sound_path in successes)
+		sound_lengths[sound_path] = text2num(successes[sound_path])
 
 /// Cache and return a single sound.
-/datum/controller/subsystem/sound_cache/proc/get_or_cache_sound(file_path)
+/datum/controller/subsystem/sound_cache/proc/get_sound_length(file_path)
 	. = 0
 	if(!istext(file_path))
 		if(!isfile(file_path))

@@ -87,6 +87,10 @@
 	if(!ishuman(mob_override))
 		return
 
+	var/datum/pathogen/blood_plague/plague = new /datum/pathogen/blood_plague
+	if(!mob_override.has_pathogen(plague))
+		mob_override.try_contract_pathogen(plague, FALSE, TRUE)
+
 	for(var/datum/action/action as anything in innate_actions)
 		action.Grant(mob_override)
 

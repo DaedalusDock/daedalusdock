@@ -51,6 +51,10 @@
 	var/datum/antagonist/vampire/vamp_datum = user.mind.has_antag_datum(/datum/antagonist/vampire)
 	vamp_datum.thirst_level.remove_points(2)
 
+	if(prob(1)) // A chance to spread the plague!
+		var/datum/pathogen/blood_plague/vampirism = user.has_pathogen(/datum/pathogen/blood_plague)
+		victim.try_contract_pathogen(vampirism)
+
 /datum/action/cooldown/neck_bite/proc/can_bite(mob/living/carbon/human/user, mob/living/carbon/human/victim)
 	if(!owner)
 		return FALSE

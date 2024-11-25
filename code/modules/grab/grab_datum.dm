@@ -244,6 +244,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 			if(old_damage_stage >= GRAB_AGGRESSIVE)
 				REMOVE_TRAIT(affected_movable, TRAIT_AGGRESSIVE_GRAB, trait_source)
 				REMOVE_TRAIT(affected_movable, TRAIT_FLOORED, trait_source)
+				affected_movable.layer -= 0.001
 
 		if(GRAB_AGGRESSIVE)
 			if(old_damage_stage >= GRAB_NECK) // Grab got downgraded.
@@ -252,10 +253,12 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 				ADD_TRAIT(affected_movable, TRAIT_IMMOBILIZED, trait_source)
 				ADD_TRAIT(affected_movable, TRAIT_HANDS_BLOCKED, trait_source)
 				ADD_TRAIT(affected_movable, TRAIT_AGGRESSIVE_GRAB, trait_source)
+				affected_movable.layer += 0.001
 
 		if(GRAB_NECK, GRAB_KILL)
 			if(old_damage_stage < GRAB_AGGRESSIVE)
 				ADD_TRAIT(affected_movable, TRAIT_AGGRESSIVE_GRAB, REF(G))
+				affected_movable.layer += 0.001
 			if(old_damage_stage <= GRAB_AGGRESSIVE)
 				ADD_TRAIT(affected_movable, TRAIT_FLOORED, REF(G))
 				ADD_TRAIT(affected_movable, TRAIT_HANDS_BLOCKED, REF(G))

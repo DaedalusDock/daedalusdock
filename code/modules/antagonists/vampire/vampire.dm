@@ -7,17 +7,36 @@
 
 	/// The thirst!
 	var/datum/point_holder/thirst_level = 0
-	var/thirst_stage = THIRST_STAGE_SATED
+	var/thirst_stage
 
-	var/datum/vampiric_thirst/stage_datum = null
+	var/list/current_states = list()
+	var/list/state_datums
+
+	var/list/innate_actions = list(
+		/datum/action/cooldown/neck_bite,
+	)
 
 /datum/antagonist/vampire/New()
 	. = ..()
 	thirst_level = new()
-	thirst_level.add_points(THIRST_THRESHOLD_FULL)
+	thirst_level.add_points(THIRST_THRESHOLD_SATED)
+	thirst_level.set_max_points(THIRST_THRESHOLD_DEAD)
+
+	state_datums = list(
+		new /datum/vampire_state/bloodlust(src),
+		new /datum/vampire_state/sated(src),
+		new /datum/vampire_state/hungry(src),
+		new /datum/vampire_state/starving(src),
+		new /datum/vampire_state/wasting(src),
+	)
+
+	for(var/datum/action_path as anything in innate_actions)
+		innate_actions -= action_path
+		innate_actions += new action_path
 
 /datum/antagonist/vampire/Destroy()
-	QDEL_NULL(thirst_level)
+	thirst_level = null
+	QDEL_LIST(state_datums)
 	return ..()
 
 /datum/antagonist/vampire/on_gain()
@@ -60,7 +79,19 @@
 			return
 
 	set_thirst_stage(new_stage)
-	stage_datum.tick(src, host)
+
+	for(var/datum/vampire_state/current as anything in current_states)
+		current.tick(host)
+
+/datum/antagonist/vampire/apply_innate_effects(mob/living/mob_override = owner.current)
+	if(!ishuman(mob_override))
+		return
+
+	for(var/datum/action/action as anything in innate_actions)
+		action.Grant(mob_override)
+
+	for(var/datum/vampire_state/state as anything in current_states)
+		state.apply_effects(mob_override)
 
 /// You died cuz you aint suckin' hard enough
 /datum/antagonist/vampire/proc/death_by_thirst(mob/living/carbon/human/host)
@@ -72,7 +103,7 @@
 			continue
 
 		O.germ_level = INFECTION_LEVEL_THREE
-		set_organ_dead(TRUE, "Necrosis")
+		O.set_organ_dead(TRUE)
 
 	thirst_level.remove_points(INFINITY)
 
@@ -83,16 +114,16 @@
 	if(old_stage == thirst_stage)
 		return null
 
-	if(old_stage > thirst_stage)
-		for(var/i in old_stage to thirst_stage+1 step -1)
-			var/datum/vampiric_thirst/higher_stage = GLOB.vampiric_thirst_datums[i]
-			higher_stage.on_regress(src, thirst_stage)
-	else
-		for(var/i in 1 to thirst_stage-1)
-			var/datum/vampiric_thirst/higher_stage = GLOB.vampiric_thirst_datums[i]
-			higher_stage.on_progress(src, thirst_stage)
+	var/mob/living/carbon/human/host = owner.current
 
-	stage_datum = GLOB.vampiric_thirst_datums[thirst_stage]
-	stage_datum.enter_stage(src)
+	var/list/potential_states = state_datums - current_states
+	for(var/datum/vampire_state/current as anything in current_states)
+		if(!current.can_be_active())
+			current.exit_state(host)
+
+	for(var/datum/vampire_state/potential as anything in potential_states)
+		if(potential.can_be_active())
+			current_states += potential
+			potential.enter_state(host)
 
 	return old_stage

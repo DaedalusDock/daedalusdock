@@ -25,3 +25,8 @@
 2024-11-22:
   Kapu1178:
   - tweak: Adjusted the color of the "obviousnotice" message type.
+2024-11-25:
+  Kapu1178:
+  - server: Bumped rust_g version to 3.5.0
+  - bugfix: Ambience works again. Fuck.
+  - bugfix: Ambience sounds will no longer cut each other off in some situations.

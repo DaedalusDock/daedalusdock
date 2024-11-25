@@ -1,4 +1,9 @@
 /obj/effect/aether_rune/exchange
+	invocation_phrases = list(
+		"Ar sha cholo shalotzata" = 3 SECONDS,
+		"Vunahar ma ol'chak chona" = 3 SECONDS,
+		"Hak erevimbok yomrashlo" = 2 SECONDS,
+	)
 
 /obj/effect/aether_rune/exchange/wipe_state()
 	for(var/item in blackboard[RUNE_BB_EXCHANGE_PARTS])

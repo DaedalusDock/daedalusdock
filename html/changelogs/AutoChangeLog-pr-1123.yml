@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Ambience works again. Fuck.
+  - bugfix: Ambience sounds will no longer cut each other off in some situations.

@@ -30,3 +30,6 @@
   - server: Bumped rust_g version to 3.5.0
   - bugfix: Ambience works again. Fuck.
   - bugfix: Ambience sounds will no longer cut each other off in some situations.
+2024-11-26:
+  Kapu1178:
+  - bugfix: Optimized Cleanbots, Firebots, and Medbots.

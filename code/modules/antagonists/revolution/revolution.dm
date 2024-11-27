@@ -273,7 +273,7 @@
 		owner.current.visible_message(span_deconversion_message("The frame beeps contentedly, suppressing the disloyal personality traits from the MMI before initalizing it."), null, null, null, owner.current)
 		to_chat(owner, span_userdanger("The frame's firmware detects and suppresses your unwanted personality traits! You feel more content with the leadership around these parts."))
 
-//blunt trauma deconversions call this through species.dm spec_attacked_by()
+//blunt trauma deconversions
 /datum/antagonist/rev/proc/remove_revolutionary(borged, deconverter)
 	owner.current.log_message("has been deconverted from the revolution by [ismob(deconverter) ? key_name(deconverter) : deconverter]!", LOG_ATTACK, color="#960000")
 	if(borged)

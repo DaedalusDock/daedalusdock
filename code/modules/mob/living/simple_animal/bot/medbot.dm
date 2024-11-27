@@ -375,9 +375,9 @@
 		soft_reset()
 		return
 
-	if(patient && path.len == 0 && (get_dist(src,patient) > 1))
-		path = jps_path_to(src, patient, max_distance=30, access = access_card?.GetAccess())
+	if(patient && path.len == 0 && (get_dist(src,patient) > 1) && mode != BOT_MOVING)
 		mode = BOT_MOVING
+		path = jps_path_to(src, patient, max_distance=30, access = access_card?.GetAccess())
 		if(!path.len) //try to get closer if you can't reach the patient directly
 			path = jps_path_to(src, patient, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
 			if(!path.len) //Do not chase a patient we cannot reach.

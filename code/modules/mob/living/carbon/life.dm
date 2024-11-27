@@ -304,13 +304,12 @@
 		updatehealth()
 
 /mob/living/carbon/handle_diseases(delta_time, times_fired)
-	for(var/thing in diseases)
-		var/datum/disease/D = thing
+	for(var/datum/pathogen/D as anything in diseases)
 		if(DT_PROB(D.infectivity, delta_time))
-			D.spread()
+			D.airborne_spread()
 
 		if(stat != DEAD || D.process_dead)
-			D.stage_act(delta_time, times_fired)
+			D.on_process(delta_time, times_fired)
 
 /mob/living/carbon/handle_mutations(time_since_irradiated, delta_time, times_fired)
 	if(!dna?.temporary_mutations.len)

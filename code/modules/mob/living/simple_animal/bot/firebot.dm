@@ -226,10 +226,9 @@
 		soft_reset()
 		return
 
-	if(target_fire && (get_dist(src, target_fire) > 2))
-
-		path = jps_path_to(src, target_fire, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
+	if(target_fire && (get_dist(src, target_fire) > 2) && mode != BOT_MOVING)
 		mode = BOT_MOVING
+		path = jps_path_to(src, target_fire, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
 		if(!path.len)
 			soft_reset()
 

@@ -167,7 +167,7 @@
 
 /obj/structure/holosign/barrier/medical/proc/CheckHuman(mob/living/carbon/human/sickboi)
 	var/threat = sickboi.check_virus()
-	if(get_disease_severity_value(threat) > get_disease_severity_value(DISEASE_SEVERITY_MINOR))
+	if(get_disease_severity_value(threat) > get_disease_severity_value(PATHOGEN_SEVERITY_MINOR))
 		return FALSE
 	return TRUE
 

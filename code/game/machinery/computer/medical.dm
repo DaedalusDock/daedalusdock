@@ -145,9 +145,9 @@
 					dat += "</table>"
 				if(5)
 					dat += "<CENTER><B>Virus Database</B></CENTER>"
-					for(var/Dt in typesof(/datum/disease/))
-						var/datum/disease/Dis = new Dt(0)
-						if(istype(Dis, /datum/disease/advance))
+					for(var/Dt in typesof(/datum/pathogen/))
+						var/datum/pathogen/Dis = new Dt(0)
+						if(istype(Dis, /datum/pathogen/advance))
 							continue // TODO (tm): Add advance diseases to the virus database which no one uses.
 						if(!Dis.desc)
 							continue
@@ -245,10 +245,10 @@
 
 			else if(href_list["vir"])
 				var/type = text2path(href_list["vir"] || "")
-				if(!ispath(type, /datum/disease))
+				if(!ispath(type, /datum/pathogen))
 					return
 
-				var/datum/disease/disease = new type(0)
+				var/datum/pathogen/disease = new type(0)
 				var/applicable_mob_names = ""
 				for(var/mob/viable_mob as anything in disease.viable_mobtypes)
 					applicable_mob_names += " [initial(viable_mob.name)];"

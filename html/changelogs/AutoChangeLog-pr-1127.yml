@@ -1,0 +1,4 @@
+author: francinum
+delete-after: true
+changes:
+  - bugfix: The server no longer cries about discord linking if there's no DB.

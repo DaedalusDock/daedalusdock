@@ -70,6 +70,9 @@
 /// A trait source when adding traits through unit tests
 #define TRAIT_SOURCE_UNIT_TESTS "unit_tests"
 
+/// Helper to allocate a new object with the implied type (the type of the variable it's assigned to) in the corner of the test room
+#define ALLOCATE_BOTTOM_LEFT(arguments...) allocate(__IMPLIED_TYPE__, run_loc_floor_bottom_left, ##arguments)
+
 #include "achievements.dm"
 #include "anchored_mobs.dm"
 #include "anonymous_themes.dm"
@@ -89,6 +92,13 @@
 #include "closets.dm"
 #include "codex.dm"
 #include "combat.dm"
+#include "combat_blocking.dm"
+#include "combat_cuffs.dm"
+#include "combat_door_click.dm"
+#include "combat_dropper.dm"
+#include "combat_emp_flashlight.dm"
+#include "combat_flash.dm"
+#include "combat_pistol_whip.dm"
 #include "component_tests.dm"
 #include "confusion.dm"
 #include "connect_loc.dm"
@@ -113,6 +123,8 @@
 #include "hydroponics_extractor_storage.dm"
 #include "hydroponics_harvest.dm"
 #include "hydroponics_self_mutations.dm"
+#include "interaction_structures.dm"
+#include "interaction_syringe_gun_load.dm"
 #include "keybinding_init.dm"
 #include "knockoff_component.dm"
 #include "load_map_security.dm"

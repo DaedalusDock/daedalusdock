@@ -1,4 +1,4 @@
-// This is to replace the previous datum/disease/alien_embryo for slightly improved handling and maintainability
+// This is to replace the previous datum/pathogen/alien_embryo for slightly improved handling and maintainability
 // It functions almost identically (see code/datums/diseases/alien_embryo.dm)
 /obj/item/organ/body_egg/alien_embryo
 	name = "alien embryo"

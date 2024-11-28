@@ -275,9 +275,9 @@
 			explosion(get_turf(user), devastation_range = -1, light_impact_range = 2, flame_range = 2, explosion_cause = src)
 		if(9)
 			//Cold
-			var/datum/disease/D = new /datum/disease/cold()
+			var/datum/pathogen/D = new /datum/pathogen/cold()
 			T.visible_message(span_userdanger("[user] looks a little under the weather!"))
-			user.ForceContractDisease(D, FALSE, TRUE)
+			user.try_contract_pathogen(D, FALSE, TRUE)
 		if(10)
 			//Nothing
 			T.visible_message(span_userdanger("Nothing seems to happen."))

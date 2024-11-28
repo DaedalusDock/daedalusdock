@@ -89,10 +89,17 @@
 
 	if(!def_zone)
 		return
+
 	if(damagetype != BURN) //Don't bother if it's not fire.
 		return
+
+	if(isbodypart(def_zone))
+		var/obj/item/bodypart/hitting = def_zone
+		def_zone = hitting.body_zone
+
 	if(!is_hitting_zone(def_zone)) //You didn't hit us! ha!
 		return
+
 	detonate()
 
 /datum/component/explodable/proc/on_equip(datum/source, mob/equipper, slot)

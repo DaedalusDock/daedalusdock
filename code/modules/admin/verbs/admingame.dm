@@ -45,6 +45,10 @@
 			full_version = "[M.client.byond_version].[M.client.byond_build ? M.client.byond_build : "xxx"]"
 		body += "<br>\[<b>Byond version:</b> [full_version]\]<br>"
 		body += "<br><b>Input Mode:</b> [M.client.hotkeys ? "Using Hotkeys" : "Using Classic Input"]<br>"
+		if(isnull(M.client.linked_discord_account))
+			body += "<br><b>Linked Discord ID:</b> <code>MISSING RESPONSE DATUM, HAVE THEY JUST JOINED OR IS SQL DISABLED?</code><br>"
+		else
+			body += "<br><b>Linked Discord ID:</b> <code>[M.client.linked_discord_account.valid ? M.client.linked_discord_account.discord_id : "NONE"]</code><br>"
 
 
 	body += "<br><br>\[ "

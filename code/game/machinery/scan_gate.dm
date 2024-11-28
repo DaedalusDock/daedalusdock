@@ -31,7 +31,7 @@
 	///Which setting is the scanner checking for? See defines in scan_gate.dm for the list.
 	var/scangate_mode = SCANGATE_NONE
 	///Is searching for a disease, what severity is enough to trigger the gate?
-	var/disease_threshold = DISEASE_SEVERITY_MINOR
+	var/disease_threshold = PATHOGEN_SEVERITY_MINOR
 	///If scanning for a specific species, what species is it looking for?
 	var/detect_species = SCANGATE_HUMAN
 	///Flips all scan results for inverse scanning. Signals if scan returns false.

@@ -384,7 +384,6 @@
 	move_delay_modifier = 1
 	melee_damage_lower = 10
 	melee_damage_upper = 15
-	force_threshold = 10 //lots of fat to cushion blows.
 	damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 1, CLONE = 2, STAMINA = 0, OXY = 1)
 	attack_verb_continuous = "slams"
 	attack_verb_simple = "slam"
@@ -399,8 +398,8 @@
 	var/datum/action/cooldown/regurgitate/spit = new(src)
 	spit.Grant(src)
 
+	AddElement(/datum/element/damage_threshold, 10)
 	AddComponent(/datum/component/tameable, food_types = list(/obj/item/food/cheesiehonkers, /obj/item/food/cornchips), tame_chance = 30, bonus_tame_chance = 0, after_tame = CALLBACK(src, PROC_REF(tamed)))
-
 
 /mob/living/simple_animal/hostile/retaliate/clown/mutant/glutton/attacked_by(obj/item/I, mob/living/user)
 	if(!check_edible(I))

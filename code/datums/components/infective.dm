@@ -1,10 +1,10 @@
 /datum/component/infective
-	var/list/datum/disease/diseases //make sure these are the static, non-processing versions!
+	var/list/datum/pathogen/diseases //make sure these are the static, non-processing versions!
 	var/expire_time
 	var/required_clean_types = CLEAN_TYPE_DISEASE
 
 
-/datum/component/infective/Initialize(list/datum/disease/_diseases, expire_in)
+/datum/component/infective/Initialize(list/datum/pathogen/_diseases, expire_in)
 	if(islist(_diseases))
 		diseases = _diseases
 	else
@@ -41,14 +41,14 @@
 	SIGNAL_HANDLER
 
 	for(var/V in diseases)
-		eater.ForceContractDisease(V)
+		eater.try_contract_pathogen(V)
 	try_infect(feeder, BODY_ZONE_L_ARM)
 
 /datum/component/infective/proc/try_infect_drink(datum/source, mob/living/drinker, mob/living/feeder)
 	SIGNAL_HANDLER
 
 	for(var/disease in diseases)
-		drinker.ForceContractDisease(disease)
+		drinker.try_contract_pathogen(disease)
 	var/appendage_zone = feeder.held_items.Find(source)
 	appendage_zone = appendage_zone == 0 ? BODY_ZONE_CHEST : appendage_zone % 2 ? BODY_ZONE_R_ARM : BODY_ZONE_L_ARM
 	try_infect(feeder, appendage_zone)
@@ -99,7 +99,7 @@
 
 	var/old_permeability
 	if(isitem(parent))
-		//if you are putting an infective item on, it obviously will not protect you, so set its permeability high enough that it will never block ContactContractDisease()
+		//if you are putting an infective item on, it obviously will not protect you, so set its permeability high enough that it will never block try_contact_contract_pathogen()
 		var/obj/item/I = parent
 		old_permeability = I.permeability_coefficient
 		I.permeability_coefficient = 1.01
@@ -125,4 +125,4 @@
 
 /datum/component/infective/proc/try_infect(mob/living/L, target_zone)
 	for(var/V in diseases)
-		L.ContactContractDisease(V, target_zone)
+		L.try_contact_contract_pathogen(V, target_zone)

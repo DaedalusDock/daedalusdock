@@ -61,8 +61,14 @@
 	/// The typecache of types which are allowed to merge internal storage
 	var/static/list/merger_typecache
 
+	/// The window filter icon. This is a static because we dont need to hash an icon every fucking process call.
+	var/static/window_icon
+
 /obj/machinery/atmospherics/components/tank/Initialize(mapload)
 	. = ..()
+
+	if(!window_icon)
+		window_icon = icon('icons/obj/atmospherics/stationary_canisters.dmi', "window-bg")
 
 	if(!knob_overlays)
 		knob_overlays = list()
@@ -270,7 +276,7 @@
 	var/list/new_underlays = list()
 	for(var/obj/effect/gas_overlay/gas as anything in air_contents.returnVisuals())
 		var/image/new_underlay = image(gas.icon, icon_state = gas.icon_state, layer = FLOAT_LAYER)
-		new_underlay.filters = alpha_mask_filter(icon = icon(icon, icon_state = "window-bg"))
+		new_underlay.filters = alpha_mask_filter(icon = window_icon)
 		new_underlays += new_underlay
 
 	var/image/foreground = image(icon, icon_state = "window-fg", layer = FLOAT_LAYER)

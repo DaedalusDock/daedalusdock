@@ -576,7 +576,7 @@
 				emote("agony")
 				screamed = TRUE
 
-			if(affecting.name == BODY_ZONE_HEAD && !HAS_TRAIT(src, TRAIT_DISFIGURED))
+			if(affecting.body_zone == BODY_ZONE_HEAD && !HAS_TRAIT(src, TRAIT_DISFIGURED))
 				if(prob(min(acidpwr*acid_volume, 90))) //Applies disfigurement
 					emote("agony")
 					facial_hairstyle = "Shaved"

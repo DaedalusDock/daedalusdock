@@ -1,4 +1,0 @@
-author: Kapu1178, MrMelbert
-delete-after: true
-changes:
-  - code_imp: Significantly rewrote how attacks are handled and damage is applied.

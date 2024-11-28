@@ -47,7 +47,7 @@
 	. = ..()
 
 	if(!controller.blackboard[hunting_target_key]) //Target is gone for some reason. forget about this task!
-		controller.vars[hunting_target_key] = null //This is icky but our behaviour system is also out of date enough that I Ain't Touching it.
+		clear_blackboard_key(hunting_target_key)
 		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
 

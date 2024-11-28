@@ -48,3 +48,4 @@
 #pragma UnsafeClientAccess disabled
 #pragma AssignmentInConditional error
 #pragma PickWeightedSyntax disabled
+#pragma AmbiguousInOrder error

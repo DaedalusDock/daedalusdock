@@ -55,6 +55,7 @@
 
 	selected = replacetext(selected, " (empty)", "")
 
+	// Eventually kill this, It's now redundant.
 	if(selected == "notes, memos, watchlist" && check_rights(R_ADMIN))
 		browse_messages()
 		return

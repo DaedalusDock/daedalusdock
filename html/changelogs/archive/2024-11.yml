@@ -38,3 +38,11 @@
   - code_imp: Significantly rewrote how attacks are handled and damage is applied.
   francinum:
   - bugfix: The server no longer cries about discord linking if there's no DB.
+2024-11-29:
+  Kapu1178:
+  - bugfix: Acid disfigures people again.
+  - bugfix: The server is now 0.000000000000001% faster
+  francinum:
+  - bugfix: Late-515 Compliance fixes.
+  - admin: Notes/Messages Panel Verb.
+  - bugfix: Dynamically generated codex entries show up in search again.

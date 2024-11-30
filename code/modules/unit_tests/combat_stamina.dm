@@ -10,7 +10,7 @@
 
 	click_wrapper(attacker, victim)
 
-	var/expected_loss = attacker.stamina.maximum - 50
+	var/expected_loss = 50
 	var/actual_loss = attacker.stamina.loss
 	TEST_ASSERT_EQUAL(actual_loss, expected_loss, "Attacker didn't lose 50 stamina, lost [actual_loss] instead.")
 
@@ -27,6 +27,6 @@
 
 	click_wrapper(attacker, victim)
 
-	var/expected_loss = victim.stamina.maximum - 50
+	var/expected_loss = 50
 	var/actual_loss = victim.stamina.loss
 	TEST_ASSERT_EQUAL(actual_loss, expected_loss, "Victim didn't lose 50 stamina, lost [actual_loss] instead.")

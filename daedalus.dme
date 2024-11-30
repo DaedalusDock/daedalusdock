@@ -4418,6 +4418,7 @@
 #include "code\modules\surgery\organs\augments_chest.dm"
 #include "code\modules\surgery\organs\augments_eyes.dm"
 #include "code\modules\surgery\organs\augments_internal.dm"
+#include "code\modules\surgery\organs\augments_fluff.dm"
 #include "code\modules\surgery\organs\autosurgeon.dm"
 #include "code\modules\surgery\organs\cell.dm"
 #include "code\modules\surgery\organs\ears.dm"

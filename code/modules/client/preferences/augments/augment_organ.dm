@@ -74,3 +74,23 @@
 /datum/augment_item/organ/tongue/forked
 	name = "Forked"
 	path = /obj/item/organ/tongue/lizard
+
+//FLUFF
+/datum/augment_item/organ/fluff
+
+/datum/augment_item/organ/fluff/head
+	name = "None"
+	slot = AUGMENT_SLOT_FLUFF_HEAD
+
+/datum/augment_item/organ/fluff/head/circadian_conditioner
+	name = "Circadian Conditioner"
+	path = /obj/item/organ/cyberimp/fluff/circadian_conditioner
+
+/datum/augment_item/organ/fluff/chest
+	name = "None"
+	slot = AUGMENT_SLOT_FLUFF_CHEST
+
+/datum/augment_item/organ/fluff/chest/skeletal_bracing
+	name = "Skeletal Bracing"
+	path = /obj/item/organ/cyberimp/fluff/skeletal_bracing
+

@@ -126,7 +126,6 @@
 #define ORGAN_SLOT_EYES "eye_sight"
 #define ORGAN_SLOT_FLUFF_HEAD "fluff_head"
 #define ORGAN_SLOT_FLUFF_CHEST "fluff_chest"
-#define ORGAN_SLOT_FLUFF_GROIN "fluff_groin"
 #define ORGAN_SLOT_HEART "heart"
 #define ORGAN_SLOT_HEART_AID "heartdrive"
 #define ORGAN_SLOT_HUD "eye_hud"

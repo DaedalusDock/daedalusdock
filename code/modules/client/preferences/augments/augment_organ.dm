@@ -83,33 +83,14 @@
 	slot = AUGMENT_SLOT_FLUFF_HEAD
 
 /datum/augment_item/organ/fluff/head/circadian_conditioner
-	name = "Circadnian Conditioner"
+	name = "Circadian Conditioner"
 	path = /obj/item/organ/cyberimp/fluff/circadian_conditioner
 
 /datum/augment_item/organ/fluff/chest
 	name = "None"
 	slot = AUGMENT_SLOT_FLUFF_CHEST
 
-/datum/augment_item/organ/fluff/chest/genetic_backup
-	name = "Genetic Backup"
-	path = /obj/item/organ/cyberimp/fluff/genetic_backup
-
-/datum/augment_item/organ/fluff/chest/emergency_battery
-	name = "Emergency Battery"
-	path = /obj/item/organ/cyberimp/fluff/emergency_battery
-
 /datum/augment_item/organ/fluff/chest/skeletal_bracing
 	name = "Skeletal Bracing"
 	path = /obj/item/organ/cyberimp/fluff/skeletal_bracing
 
-/datum/augment_item/organ/fluff/chest/ultraviolet_shielding
-	name = "Ultraviolet Shield"
-	path = /obj/item/organ/cyberimp/fluff/ultraviolet_shielding
-
-/datum/augment_item/organ/fluff/groin
-	name = "None"
-	slot = AUGMENT_SLOT_FLUFF_GROIN
-
-/datum/augment_item/organ/fluff/groin/recycler_suite
-	name = "Recycler Suite"
-	path = /obj/item/organ/cyberimp/fluff/recycler_suite

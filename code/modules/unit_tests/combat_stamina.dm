@@ -4,7 +4,7 @@
 	var/obj/item/chair/chair = ALLOCATE_BOTTOM_LEFT()
 
 	chair.stamina_cost = 50
-	victim.put_in_active_hand(chair)
+	attacker.put_in_active_hand(chair)
 	attacker.set_combat_mode(TRUE)
 	ADD_TRAIT(attacker, TRAIT_PERFECT_ATTACKER, TRAIT_SOURCE_UNIT_TESTS)
 

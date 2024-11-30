@@ -99,6 +99,7 @@
 #include "combat_emp_flashlight.dm"
 #include "combat_flash.dm"
 #include "combat_pistol_whip.dm"
+#include "combat_stamina.dm"
 #include "component_tests.dm"
 #include "confusion.dm"
 #include "connect_loc.dm"

@@ -2,8 +2,9 @@
 	var/hit_zone = BODY_ZONE_CHEST
 	var/hit_zone_text = "body"
 
+	var/ishuman = ishuman(src)
 	// Humans have miss chance. We dont apply this to living mobs for my sanity, i guess.
-	if(ishuman(src))
+	if(ishuman)
 		var/target_zone = deprecise_zone(attacker.zone_selected) //our REAL intended target
 
 		// Can't hit a bodypart that doesn't exist!
@@ -60,7 +61,7 @@
 	if(damage <= 0)
 		return MOB_ATTACKEDBY_NO_DAMAGE
 
-	if(ishuman(src) || client) // istype(src) is kinda bad, but it's to avoid spamming the blackbox
+	if(ishuman || client) // istype(src) is kinda bad, but it's to avoid spamming the blackbox
 		SSblackbox.record_feedback("nested tally", "item_used_for_combat", 1, list("[attacking_item.force]", "[attacking_item.type]"))
 		SSblackbox.record_feedback("tally", "zone_targeted", 1, parse_zone(deprecise_zone(attacker.zone_selected)))
 
@@ -77,6 +78,16 @@
 	on_take_combat_damage(damage_done, hit_zone, armor_block, attacking_item, attacker)
 	return MOB_ATTACKEDBY_SUCCESS
 
+/mob/living/carbon/human/attacked_by(obj/item/attacking_item, mob/living/attacker)
+	. = ..()
+	if(. != MOB_ATTACKEDBY_SUCCESS)
+		return .
+
+	if(attacking_item.stamina_damage)
+		var/damage = attacking_item.stamina_damage
+		if(prob(attacking_item.stamina_critical_chance))
+			damage *= attacking_item.stamina_critical_modifier
+		stamina.adjust(-damage)
 /**
  * Called when we take damage, used to cause effects such as a blood splatter.
  *

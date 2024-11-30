@@ -1,0 +1,455 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/open/space/basic,
+/area/space)
+"b" = (
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/space)
+"e" = (
+/obj/machinery/button/door/directional/west{
+	name = "Commissary Shutter Control";
+	id = "commissaryshutter";
+	pixel_x = 0;
+	pixel_y = 24
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/turf/open/floor/plating,
+/area/space)
+"f" = (
+/obj/machinery/navbeacon{
+	location = "8-Central-to-Aft";
+	codes_txt = "patrol;next_patrol=8.1-Aft-to-Escape"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "6"
+	},
+/turf/open/floor/iron,
+/area/space)
+"g" = (
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/machinery/light/floor/has_bulb,
+/turf/open/floor/iron,
+/area/space)
+"h" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/holopad,
+/obj/effect/turf_decal/bot,
+/turf/open/floor/iron,
+/area/space)
+"i" = (
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/turf/open/floor/iron,
+/area/space)
+"j" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/table/reinforced,
+/obj/machinery/door/firedoor,
+/obj/machinery/door/poddoor/shutters{
+	name = "Vacant Commissary Shutter";
+	id = "commissaryshutter"
+	},
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/obj/structure/noticeboard/directional/east,
+/turf/open/floor/iron,
+/area/space)
+"k" = (
+/turf/closed/wall/prepainted/medical,
+/area/space)
+"m" = (
+/obj/structure/chair/stool/directional/north,
+/turf/open/floor/iron,
+/area/space)
+"n" = (
+/obj/structure/table,
+/obj/item/paper_bin{
+	pixel_x = -2;
+	pixel_y = 4
+	},
+/obj/item/pen,
+/obj/machinery/newscaster/directional/south,
+/turf/open/floor/iron,
+/area/space)
+"o" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/turf/open/floor/iron,
+/area/space)
+"p" = (
+/obj/structure/rack,
+/obj/item/wrench,
+/obj/item/screwdriver,
+/obj/effect/turf_decal/tile/brown{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/brown{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/neutral,
+/obj/machinery/camera/directional/east{
+	c_tag = "Vacant Commissary"
+	},
+/obj/machinery/power/apc/auto_name/directional/east,
+/obj/structure/cable/yellow{
+	icon_state = "1"
+	},
+/turf/open/floor/iron,
+/area/space)
+"q" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/table,
+/obj/item/stack/package_wrap,
+/obj/item/hand_labeler,
+/obj/effect/turf_decal/tile/brown{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/neutral,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/machinery/button/door/directional/west{
+	name = "Commissary Shutter Control";
+	id = "commissaryshutter"
+	},
+/turf/open/floor/iron,
+/area/space)
+"r" = (
+/turf/closed/wall/prepainted/daedalus,
+/area/space)
+"t" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/stripes/corner,
+/turf/open/floor/iron,
+/area/space)
+"u" = (
+/obj/machinery/door/airlock{
+	name = "Commissary";
+	id_tag = "commissarydoor"
+	},
+/turf/open/floor/iron,
+/area/space)
+"v" = (
+/obj/machinery/airalarm/directional/west,
+/turf/open/floor/iron,
+/area/space)
+"x" = (
+/obj/structure/closet/secure_closet/personal,
+/obj/effect/spawner/random/bureaucracy/briefcase,
+/obj/machinery/light/cold/directional/east,
+/turf/open/floor/iron,
+/area/space)
+"y" = (
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/space)
+"B" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/light/small/directional/south,
+/turf/open/floor/iron,
+/area/space)
+"C" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/light/small/directional/east,
+/obj/structure/cable/yellow{
+	icon_state = "10"
+	},
+/obj/item/radio/intercom/directional/east{
+	pixel_y = 8
+	},
+/turf/open/floor/iron,
+/area/space)
+"D" = (
+/obj/effect/turf_decal/bot,
+/obj/machinery/vending/cigarette,
+/turf/open/floor/iron,
+/area/space)
+"E" = (
+/obj/structure/noticeboard/directional/north,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/space)
+"F" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/camera/directional/south{
+	c_tag = "Central Primary Hallway - Aft-Starboard"
+	},
+/turf/open/floor/iron,
+/area/space)
+"G" = (
+/obj/machinery/navbeacon{
+	location = "10.1-Central-from-Aft";
+	codes_txt = "patrol;next_patrol=10.2-Aft-Port-Corner"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/turf/open/floor/iron,
+/area/space)
+"H" = (
+/obj/effect/turf_decal/delivery,
+/turf/open/floor/iron,
+/area/space)
+"I" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/turf/open/floor/iron,
+/area/space)
+"K" = (
+/obj/effect/turf_decal/delivery,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable/yellow{
+	icon_state = "3"
+	},
+/turf/open/floor/iron,
+/area/space)
+"L" = (
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/machinery/airalarm/directional/north,
+/turf/open/floor/iron,
+/area/space)
+"M" = (
+/obj/item/storage/secure/safe/directional/south,
+/turf/open/floor/plating,
+/area/space)
+"N" = (
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 4
+	},
+/obj/machinery/firealarm/directional/west,
+/turf/open/floor/iron,
+/area/space)
+"O" = (
+/obj/structure/cable/yellow{
+	icon_state = "68"
+	},
+/turf/open/floor/plating,
+/area/space)
+"Q" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable/yellow{
+	icon_state = "33"
+	},
+/turf/open/floor/plating,
+/area/space)
+"R" = (
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/turf/open/floor/iron,
+/area/space)
+"S" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/table/reinforced,
+/obj/machinery/door/firedoor,
+/obj/machinery/door/poddoor/shutters{
+	name = "Vacant Commissary Shutter";
+	id = "commissaryshutter"
+	},
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable/yellow{
+	icon_state = "3"
+	},
+/turf/open/floor/iron,
+/area/space)
+"T" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable/yellow{
+	icon_state = "3"
+	},
+/turf/open/floor/iron,
+/area/space)
+"V" = (
+/obj/machinery/button/door/directional/east{
+	name = "Commissary Door Lock";
+	id = "commissarydoor";
+	specialfunctions = 4;
+	normaldoorcontrol = 1
+	},
+/turf/open/floor/plating,
+/area/space)
+"Y" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/turf/open/floor/iron,
+/area/space)
+"Z" = (
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
+	dir = 1
+	},
+/obj/structure/table,
+/obj/item/stack/sheet/iron/five,
+/obj/item/stack/cable_coil/five,
+/turf/open/floor/iron,
+/area/space)
+
+(1,1,1) = {"
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+"}
+(2,1,1) = {"
+a
+E
+i
+Y
+k
+k
+k
+k
+k
+k
+"}
+(3,1,1) = {"
+a
+y
+G
+Y
+u
+V
+N
+v
+q
+r
+"}
+(4,1,1) = {"
+a
+g
+i
+Y
+r
+r
+e
+I
+Z
+r
+"}
+(5,1,1) = {"
+a
+y
+f
+T
+K
+S
+Q
+h
+n
+r
+"}
+(6,1,1) = {"
+a
+L
+i
+B
+H
+j
+m
+O
+M
+r
+"}
+(7,1,1) = {"
+a
+R
+o
+F
+D
+r
+x
+C
+p
+r
+"}
+(8,1,1) = {"
+a
+b
+i
+t
+r
+r
+r
+r
+r
+r
+"}
+(9,1,1) = {"
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+"}
+(10,1,1) = {"
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+"}

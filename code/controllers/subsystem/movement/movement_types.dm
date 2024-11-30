@@ -116,7 +116,10 @@
 		return
 
 	var/visual_delay = controller.visual_delay
+
+	owner?.processing_move_loop_flags = flags
 	var/result = move() //Result is an enum value. Enums defined in __DEFINES/movement.dm
+	owner?.processing_move_loop_flags = NONE
 
 	SEND_SIGNAL(src, COMSIG_MOVELOOP_POSTPROCESS, result, delay * visual_delay)
 
@@ -320,7 +323,8 @@
 	priority,
 	flags,
 	datum/extra_info,
-	initial_path)
+	initial_path,
+	diagonal_handling)
 	return add_to_loop(moving,
 		subsystem,
 		/datum/move_loop/has_target/jps,
@@ -337,7 +341,8 @@
 		simulated_only,
 		avoid,
 		skip_first,
-		initial_path)
+		initial_path,
+		diagonal_handling)
 
 /datum/move_loop/has_target/jps
 	///How often we're allowed to recalculate our path
@@ -356,6 +361,8 @@
 	var/skip_first
 	///A list for the path we're currently following
 	var/list/movement_path
+	/// Diagonal handling we're using.Uses subsystem default if null.
+	var/diagonal_handling
 	///Cooldown for repathing, prevents spam
 	COOLDOWN_DECLARE(repath_cooldown)
 	///Bool used to determine if we're already making a path in JPS. this prevents us from re-pathing while we're already busy.
@@ -367,7 +374,7 @@
 	. = ..()
 	on_finish_callback = CALLBACK(src, PROC_REF(on_finish_pathing))
 
-/datum/move_loop/has_target/jps/setup(delay, timeout, atom/chasing, repath_delay, max_path_length, minimum_distance, list/access, simulated_only, turf/avoid, skip_first, list/initial_path)
+/datum/move_loop/has_target/jps/setup(delay, timeout, atom/chasing, repath_delay, max_path_length, minimum_distance, list/access, simulated_only, turf/avoid, skip_first, list/initial_path, diagonal_handling)
 	. = ..()
 	if(!.)
 		return
@@ -403,7 +410,7 @@
 	if(!COOLDOWN_FINISHED(src, repath_cooldown))
 		return
 	COOLDOWN_START(src, repath_cooldown, repath_delay)
-	if(SSpathfinder.pathfind(moving, target, max_path_length, minimum_distance, access, simulated_only, avoid, skip_first, on_finish = on_finish_callback))
+	if(SSpathfinder.pathfind(moving, target, max_path_length, minimum_distance, access, simulated_only, avoid, skip_first, diagonal_handling = diagonal_handling, on_finish = on_finish_callback))
 		is_pathing = TRUE
 		SEND_SIGNAL(src, COMSIG_MOVELOOP_JPS_REPATH)
 

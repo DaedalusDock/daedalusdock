@@ -142,7 +142,8 @@
 	if(href_list["eject_id"])
 		if(isnull(inserted_card))
 			return TRUE
-		inserted_card.forceMove(drop_location())
+		if(!usr.put_in_hands(inserted_card))
+			inserted_card.forceMove(drop_location())
 		inserted_card = null
 		playsound(loc, 'sound/machines/cardreader_desert.ogg', 50)
 		updateUsrDialog()

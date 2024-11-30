@@ -38,6 +38,8 @@
 	var/thermic_mod = 1
 	///Allow us to deal with lag by "charging" up our reactions to react faster over a period - this means that the reaction doesn't suddenly mass react - which can cause explosions
 	var/time_deficit
+	/// Tracks if we were overheating last tick or not.
+	var/last_tick_overheating = FALSE
 	///Used to store specific data needed for a reaction, usually used to keep track of things between explosion calls. CANNOT be used as a part of chemical_recipe - those vars are static lookup tables.
 	var/data = list()
 
@@ -199,14 +201,9 @@
 */
 /datum/equilibrium/proc/check_fail_states(step_volume_added)
 	//Are we overheated?
-	if(reaction.is_cold_recipe)
-		if(holder.chem_temp < reaction.overheat_temp && reaction.overheat_temp != NO_OVERHEAT) //This is before the process - this is here so that overly_impure and overheated() share the same code location (and therefore vars) for calls.
-			SSblackbox.record_feedback("tally", "chemical_reaction", 1, "[reaction.type] overheated reaction steps")
-			reaction.overheated(holder, src, step_volume_added)
-	else
-		if(holder.chem_temp > reaction.overheat_temp)
-			SSblackbox.record_feedback("tally", "chemical_reaction", 1, "[reaction.type] overheated reaction steps")
-			reaction.overheated(holder, src, step_volume_added)
+	if(holder.is_reaction_overheating(reaction))
+		SSblackbox.record_feedback("tally", "chemical_reaction", 1, "[reaction.type] overheated reaction steps")
+		reaction.overheated(holder, src, step_volume_added)
 
 	//did we explode?
 	if(!holder.my_atom || holder.reagent_list.len == 0)
@@ -222,7 +219,6 @@
 * Then alters the holder temperature, and calls reaction_step
 * Arguments:
 * * delta_time - the time displacement between the last call and the current, 1 is a standard step
-* * purity_modifier - how much to modify the step's purity by (0 - 1)
 */
 /datum/equilibrium/proc/react_timestep(delta_time)
 	if(to_delete)
@@ -244,7 +240,7 @@
 	//Calculate DeltaT (Deviation of T from optimal)
 	if(!reaction.is_cold_recipe)
 		if (cached_temp < reaction.optimal_temp && cached_temp >= reaction.required_temp)
-			delta_t = (((cached_temp - reaction.required_temp)**reaction.temp_exponent_factor)/((reaction.optimal_temp - reaction.required_temp)**reaction.temp_exponent_factor))
+			delta_t = ((cached_temp - reaction.required_temp) / (reaction.optimal_temp - reaction.required_temp)) ** reaction.temp_exponent_factor
 		else if (cached_temp >= reaction.optimal_temp)
 			delta_t = 1
 		else //too hot
@@ -253,7 +249,7 @@
 			return
 	else
 		if (cached_temp > reaction.optimal_temp && cached_temp <= reaction.required_temp)
-			delta_t = (((reaction.required_temp - cached_temp)**reaction.temp_exponent_factor)/((reaction.required_temp - reaction.optimal_temp)**reaction.temp_exponent_factor))
+			delta_t = ((reaction.required_temp - cached_temp) / (reaction.required_temp - reaction.optimal_temp)) ** reaction.temp_exponent_factor
 		else if (cached_temp <= reaction.optimal_temp)
 			delta_t = 1
 		else //Too cold
@@ -270,28 +266,33 @@
 	delta_t *= speed_mod
 
 	//Now we calculate how much to add - this is normalised to the rate up limiter
-	var/delta_chem_factor = (reaction.rate_up_lim*delta_t)*delta_time//add/remove factor
+	var/delta_chem_factor = reaction.rate_up_lim * delta_t *delta_time //add/remove factor
 	var/total_step_added = 0
 	//keep limited
 	if(delta_chem_factor > step_target_vol)
 		delta_chem_factor = step_target_vol
-	else if (delta_chem_factor < CHEMICAL_VOLUME_MINIMUM)
-		delta_chem_factor = CHEMICAL_VOLUME_MINIMUM
-	//Normalise to multiproducts
-	delta_chem_factor /= product_ratio
-	//delta_chem_factor = round(delta_chem_factor, CHEMICAL_QUANTISATION_LEVEL) // Might not be needed - left here incase testmerge shows that it does. Remove before full commit.
+
+	delta_chem_factor = round(delta_chem_factor / product_ratio, CHEMICAL_VOLUME_ROUNDING)
+	if(delta_chem_factor <= 0)
+		to_delete = TRUE
+		return
 
 	//Calculate how much product to make and how much reactant to remove factors..
-	for(var/reagent in reaction.required_reagents)
-		holder.remove_reagent(reagent, (delta_chem_factor * reaction.required_reagents[reagent]), safety = TRUE)
+	var/required_amount
+	for(var/datum/reagent/requirement as anything in reaction.required_reagents)
+		required_amount = reaction.required_reagents[requirement]
+		if(!holder.remove_reagent(requirement, delta_chem_factor * required_amount))
+			to_delete = TRUE
+			return
 
 	var/step_add
-	for(var/product in reaction.results)
-		//create the products
-		step_add = delta_chem_factor * reaction.results[product]
-		//Default handiling
-		holder.add_reagent(product, step_add, null, cached_temp)
+	for(var/datum/reagent/product as anything in reaction.results)
+		step_add = holder.add_reagent(product, delta_chem_factor * reaction.results[product])
+		if(!step_add)
+			to_delete = TRUE
+			return
 
+		//record amounts created
 		reacted_vol += step_add
 		total_step_added += step_add
 
@@ -308,21 +309,25 @@
 	else //Standard mechanics - heat is relative to the beaker conditions
 		holder.adjust_thermal_energy(heat_energy * SPECIFIC_HEAT_DEFAULT, 0, CHEMICAL_MAXIMUM_TEMPERATURE)
 
+	var/is_overheating = holder.is_reaction_overheating(reaction)
 	//Give a chance of sounds
-	if(prob(5))
-		holder.my_atom.audible_message(span_notice("[icon2html(holder.my_atom, viewers(DEFAULT_MESSAGE_RANGE, src))] [reaction.mix_message]"))
-		if(reaction.mix_sound)
-			playsound(get_turf(holder.my_atom), reaction.mix_sound, 80, TRUE)
+	if(prob(5) || (is_overheating && !last_tick_overheating))
+		holder.reaction_message(reaction)
+
+	last_tick_overheating = is_overheating
 
 	//post reaction checks
 	if(!(check_fail_states(total_step_added)))
 		to_delete = TRUE
 
-	//end reactions faster so plumbing is faster
-	if((step_add >= step_target_vol) && (length(holder.reaction_list == 1)))//length is so that plumbing is faster - but it doesn't disable competitive reactions. Basically, competitive reactions will likely reach their step target at the start, so this will disable that. We want to avoid that. But equally, we do want to full stop a holder from reacting asap so plumbing isn't waiting an tick to resolve.
+	//If the volume of reagents created(total_step_added) >= volume of reagents still to be created(step_target_vol) then end
+	//i.e. we have created all the reagents needed for this reaction
+	//This is only accurate when a single reaction is present and we don't have multiple reactions where
+	//reaction B consumes the products formed from reaction A(which can happen in add_reagent() as it also triggers handle_reactions() which can consume the reagent just added)
+	//because total_step_added will be higher than the actual volume that was created leading to the reaction ending early
+	//and yielding less products than intended
+	if(total_step_added >= step_target_vol && length(holder.reaction_list) == 1)
 		to_delete = TRUE
-
-	holder.update_total()//do NOT recalculate reactions
 
 ///Panic stop a reaction - cleanup should be handled by the next timestep
 /datum/equilibrium/proc/force_clear_reactive_agents()

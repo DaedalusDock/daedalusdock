@@ -324,7 +324,7 @@ SUBSYSTEM_DEF(zcopy)
 
 		// Handle below atoms.
 
-		if (below_turf.lighting_object && !(below_turf.loc:area_has_base_lighting || below_turf.always_lit))
+		if (below_turf.lighting_object && !(below_turf.loc.luminosity || below_turf.always_lit))
 			T.shadower.copy_lighting(below_turf.lighting_object)
 
 		// Add everything below us to the update queue.
@@ -336,6 +336,10 @@ SUBSYSTEM_DEF(zcopy)
 			if (!object.bound_overlay)	// Generate a new overlay if the atom doesn't already have one.
 				object.bound_overlay = new(T)
 				object.bound_overlay.associated_atom = object
+
+				if(length(object.hud_list))
+					object.bound_overlay.copy_huds(object)
+
 				#ifdef ZMIMIC_MULTIZ_SPEECH
 				//This typecheck permits 1 Z-level of hearing
 				if(!istype(object, /atom/movable/openspace/mimic) && HAS_TRAIT(object, TRAIT_HEARING_SENSITIVE))

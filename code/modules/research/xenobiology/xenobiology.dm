@@ -315,7 +315,7 @@
 			return 250
 
 		if(SLIME_ACTIVATE_MAJOR)
-			user.reagents.create_foam(/datum/effect_system/foam_spread,20)
+			user.reagents.create_foam(/datum/effect_system/fluid_spread/foam, 20)
 			user.visible_message(span_danger("Foam spews out from [user]'s skin!"), span_warning("You activate [src], and foam bursts out of your skin!"))
 			return 600
 
@@ -406,7 +406,7 @@
 	switch(activation_type)
 		if(SLIME_ACTIVATE_MINOR)
 			to_chat(user, span_userdanger("You feel something <i>wrong</i> inside you..."))
-			user.ForceContractDisease(new /datum/disease/transformation/slime(), FALSE, TRUE)
+			user.try_contract_pathogen(new /datum/pathogen/transformation/slime(), FALSE, TRUE)
 			return 100
 
 		if(SLIME_ACTIVATE_MAJOR)

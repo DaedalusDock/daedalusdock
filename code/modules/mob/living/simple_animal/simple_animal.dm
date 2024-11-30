@@ -52,8 +52,6 @@
 	///Harm-intent verb in present simple tense.
 	var/response_harm_simple = "hit"
 	var/harm_intent_damage = 3
-	///Minimum force required to deal any damage.
-	var/force_threshold = 0
 	///Maximum amount of stamina damage the mob can be inflicted with total
 	var/max_staminaloss = 200
 
@@ -104,8 +102,8 @@
 	///Set to 1 to allow breaking of crates,lockers,racks,tables; 2 for walls; 3 for Rwalls.
 	var/environment_smash = ENVIRONMENT_SMASH_NONE
 
-	///LETS SEE IF I CAN SET SPEEDS FOR SIMPLE MOBS WITHOUT DESTROYING EVERYTHING. Higher speed is slower, negative speed is faster.
-	var/speed = 1
+	/// See simple_animal_movement.dm
+	var/move_delay_modifier = 1
 
 	///Hot simple_animal baby making vars.
 	var/list/childtype = null
@@ -174,7 +172,7 @@
 		set_real_name(name)
 	if(!loc)
 		stack_trace("Simple animal being instantiated in nullspace")
-	update_simplemob_varspeed()
+	update_simple_move_delay()
 	if(dextrous)
 		AddComponent(/datum/component/personal_crafting)
 		ADD_TRAIT(src, TRAIT_ADVANCEDTOOLUSER, ROUNDSTART_TRAIT)
@@ -227,12 +225,12 @@
 	if(access_card)
 		. += "There appears to be [icon2html(access_card, user)] \a [access_card] pinned to [p_them()]."
 
-/mob/living/simple_animal/update_stat()
+/mob/living/simple_animal/update_stat(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)
 		if(health <= 0)
-			death()
+			death(cause_of_death = cause_of_death)
 		else
 			set_stat(CONSCIOUS)
 	med_hud_set_status()
@@ -245,7 +243,7 @@
  */
 /mob/living/simple_animal/on_stamina_update()
 	. = ..()
-	set_varspeed(initial(speed) + (stamina.loss * 0.06))
+	set_simple_move_delay(initial(move_delay_modifier) + (stamina.loss * 0.06))
 
 /mob/living/simple_animal/proc/handle_automated_action()
 	set waitfor = FALSE
@@ -425,15 +423,6 @@
 		return FALSE
 	return ..()
 
-/mob/living/simple_animal/proc/set_varspeed(var_value)
-	speed = var_value
-	update_simplemob_varspeed()
-
-/mob/living/simple_animal/proc/update_simplemob_varspeed()
-	if(speed == 0)
-		remove_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed)
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed, slowdown = speed)
-
 /mob/living/simple_animal/get_status_tab_items()
 	. = ..()
 	. += ""
@@ -444,7 +433,7 @@
 		for(var/i in loot)
 			new i(loc)
 
-/mob/living/simple_animal/death(gibbed)
+/mob/living/simple_animal/death(gibbed, cause_of_death = "Unknown")
 	if(nest)
 		nest.spawned_mobs -= src
 		nest = null

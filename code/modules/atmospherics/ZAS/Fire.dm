@@ -55,6 +55,9 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	if(create_own_fuel)
 		if(!fuel)
 			fuel = new /obj/effect/decal/cleanable/oil(src)
+			if(QDELETED(fuel))
+				qdel(active_hotspot)
+				return
 			fuel.reagents.add_reagent(/datum/reagent/fuel/oil, create_own_fuel)
 		else
 			fuel.reagents.add_reagent(/datum/reagent/fuel/oil, create_own_fuel)
@@ -304,7 +307,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 		var/fuel_to_remove = GASFUEL_AMOUNT_TO_LIQUID(used_liquid_fuel) //convert back to liquid volume units
 
-		liquid_fuel.reagents.remove_any(fuel_to_remove)
+		liquid_fuel.reagents.remove_all(fuel_to_remove)
 		if(liquid_fuel.reagents.total_volume <= 0.1) //Precision loss kinda fucks with us here so
 			qdel(liquid_fuel)
 

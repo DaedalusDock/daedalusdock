@@ -10,7 +10,7 @@ SUBSYSTEM_DEF(early_assets)
 
 /datum/controller/subsystem/early_assets/Initialize(start_timeofday)
 	for (var/datum/asset/asset_type as anything in subtypesof(/datum/asset))
-		if (initial(asset_type._abstract) == asset_type)
+		if (isabstract(asset_type))
 			continue
 
 		if (!initial(asset_type.early))

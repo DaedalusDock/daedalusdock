@@ -158,6 +158,8 @@ DEFINE_INTERACTABLE(/obj/item)
 	var/weak_against_armor = null
 	///What objects the suit storage can store
 	var/list/allowed = null
+	/// Flags for equipping/unequipping items, only applies to self manipulation.
+	var/equip_self_flags = EQUIP_ALLOW_MOVEMENT | EQUIP_SLOWDOWN
 	///In deciseconds, how long an item takes to equip; counts only for normal clothing slots, not pockets etc.
 	var/equip_delay_self = 0
 	///In deciseconds, how long an item takes to put on another person
@@ -237,6 +239,9 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	/// The baseline chance to block **ANY** attack, projectiles included
 	var/block_chance = 0
+	/// The angle infront of the defender that is a valid block range.
+	var/block_angle = 45 // Infront and infront + sides, but not direct sides
+
 	/// The type of effect to create on a successful block
 	var/obj/effect/temp_visual/block_effect = /obj/effect/temp_visual/block
 
@@ -318,6 +323,26 @@ DEFINE_INTERACTABLE(/obj/item)
 			id.show(usr)
 		else if(usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY|USE_IGNORE_TK|USE_RESTING))
 			id.show(usr)
+		return TRUE
+
+	if(href_list["examine"])
+		var/atom_to_view_check = src
+		if(ismob(loc))
+			atom_to_view_check = loc
+
+		if(!atom_to_view_check && isidcard(src) && istype(loc, /obj/item/storage/wallet))
+			var/obj/item/storage/wallet/W = loc
+			if(W.is_open)
+				atom_to_view_check = W
+				if(ismob(W.loc))
+					atom_to_view_check = W.loc
+
+		var/list/user_view = view(usr)
+		if(!(atom_to_view_check in user_view))
+			to_chat(usr, span_warning("I can no longer see that item."))
+			return TRUE
+
+		usr.run_examinate(src, TRUE)
 		return TRUE
 
 /obj/item/update_icon_state()
@@ -631,7 +656,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		return
 
 	//If the item is in a storage item, take it out
-	loc.atom_storage?.attempt_remove(src, user.loc, silent = TRUE)
+	loc.atom_storage?.attempt_remove(src, user.loc, silent = TRUE, user = src)
 	if(QDELETED(src)) //moving it out of the storage to the floor destroyed it.
 		return
 
@@ -681,7 +706,13 @@ DEFINE_INTERACTABLE(/obj/item)
 	var/sig_return = SEND_SIGNAL(src, COMSIG_ITEM_CHECK_BLOCK)
 	var/block_result = sig_return & COMPONENT_CHECK_BLOCK_BLOCKED
 
-	block_result ||= prob(get_block_chance(wielder, hitby, damage, attack_type, armor_penetration))
+	var/attack_armor_pen = 0
+	if(isitem(hitby))
+		var/obj/item/hitby_item = hitby
+		attack_armor_pen = hitby_item.armor_penetration
+
+	if(!block_result && can_block_attack(wielder, hitby, attack_type))
+		block_result = prob(get_block_chance(wielder, hitby, damage, attack_type, attack_armor_pen))
 
 	var/list/reaction_args = args.Copy()
 	if(block_result)
@@ -697,6 +728,17 @@ DEFINE_INTERACTABLE(/obj/item)
 		block_feedback(wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
 
 	return block_result
+
+/// Checks if this item can block an incoming attack.
+/obj/item/proc/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
+	if(wielder.body_position == LYING_DOWN)
+		return TRUE
+
+	var/angle = get_relative_attack_angle(wielder, hitby)
+	if(angle <= block_angle)
+		return TRUE
+
+	return FALSE
 
 /// Returns a number to feed into prob() to determine if the attack was blocked.
 /obj/item/proc/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
@@ -939,7 +981,8 @@ DEFINE_INTERACTABLE(/obj/item)
 /obj/item/proc/mob_can_equip(mob/living/M, mob/living/equipper, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE)
 	if(!M)
 		return FALSE
-
+	if((item_flags & HAND_ITEM) && slot != ITEM_SLOT_HANDS)
+		return FALSE
 	return M.can_equip(src, slot, disable_warning, bypass_equip_delay_self)
 
 /obj/item/verb/verb_pickup()
@@ -1201,7 +1244,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		if(35 to INFINITY)
 			return "This will take the wind out of your sails."
 
-/obj/item/proc/tooltipContent(list/url_mappings)
+/obj/item/proc/tooltipContent()
 	RETURN_TYPE(/list)
 	. = list()
 	. += desc
@@ -1209,14 +1252,14 @@ DEFINE_INTERACTABLE(/obj/item)
 		return
 	. += "<hr>"
 	if(item_flags & FORCE_STRING_OVERRIDE)
-		. += "<img src='[url_mappings["attack.png"]]'>Lethality: [force_string]<br>"
+		. += "<img src='attack.png'>Lethality: [force_string]<br>"
 	else
-		. += "<img src='[url_mappings["attack.png"]]'>Lethality: [force2text()], type: [damagetype2text()]<br>"
-	. += "<img src='[url_mappings["stamina.png"]]'>Stamina: [staminadamage2text()]<br>"
-	. += "<img src='[url_mappings["stamcost.png"]]'>Stamina Cost: [staminacost2text()]<br>"
+		. += "<img src='attack.png'>Lethality: [force2text()], type: [damagetype2text()]<br>"
+	. += "<img src='stamina.png'>Stamina: [staminadamage2text()]<br>"
+	. += "<img src='stamcost.png'>Stamina Cost: [staminacost2text()]<br>"
 
 /obj/item/proc/openTip(location, control, params, user)
-	var/content = jointext(tooltipContent(get_asset_datum(/datum/asset/simple/namespaced/common).get_url_mappings()), "")
+	var/content = jointext(tooltipContent(), "")
 	openToolTip(user,src,params,title = name,content = content,theme = "")
 
 /obj/item/MouseEntered(location, control, params)
@@ -1291,6 +1334,16 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	delay *= toolspeed * skill_modifier
 
+	if(delay && iscarbon(user) && user.stats.cooldown_finished("use_tool")) // Fuck borgs!!!
+		var/datum/roll_result/result = user.stat_roll(7, /datum/rpg_skill/handicraft)
+		switch(result.outcome)
+			if(CRIT_SUCCESS)
+				result.do_skill_sound(user)
+				to_chat(user, result.create_tooltip("A swift execution. A job well done."))
+				delay = delay * 0.25
+
+
+		user.stats.set_cooldown("use_tool", max(delay, 10 SECONDS))
 
 	// Play tool sound at the beginning of tool usage.
 	play_tool_sound(target, volume)
@@ -1675,7 +1728,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	transform = animation_matrix
 
 	SEND_SIGNAL(src, COMSIG_ATOM_TEMPORARY_ANIMATION_START, 3)
-	// This is instant on byond's end, but to our clients this looks like a quick drop
+
 	animate(src, alpha = old_alpha, pixel_x = old_x, pixel_y = old_y, transform = old_transform, time = 3, easing = CUBIC_EASING)
 
 /atom/movable/proc/do_item_attack_animation(atom/attacked_atom, visual_effect_icon, obj/item/used_item)

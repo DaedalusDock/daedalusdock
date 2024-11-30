@@ -133,7 +133,7 @@
 				continue
 			return TRUE
 
-//Helper for quickly creating a new limb - used by augment code in species.dm spec_attacked_by
+//Helper for quickly creating a new limb - used by augment code in species.dm
 //
 // FUCK YOU AUGMENT CODE - With love, Kapu
 /mob/living/carbon/proc/newBodyPart(zone)

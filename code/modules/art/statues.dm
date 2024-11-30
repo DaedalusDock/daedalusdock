@@ -107,7 +107,7 @@
 	abstract_type = /obj/structure/statue/gold
 
 /obj/structure/statue/gold/hos
-	name = "statue of the head of security"
+	name = "statue of the security marshal"
 	icon_state = "hos"
 
 /obj/structure/statue/gold/hop
@@ -284,7 +284,6 @@
 /obj/item/chisel/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/eyestab)
-	AddElement(/datum/element/wall_engraver)
 	//deals 200 damage to statues, meaning you can actually kill one in ~250 hits
 	AddElement(/datum/element/bane, /mob/living/simple_animal/hostile/statue, damage_multiplier = 40)
 

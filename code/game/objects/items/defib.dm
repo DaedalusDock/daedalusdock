@@ -124,14 +124,6 @@
 		ui_action_click() //checks for this are handled in defibrillator.mount.dm
 	return ..()
 
-/obj/item/defibrillator/MouseDrop(obj/over_object)
-	. = ..()
-	if(ismob(loc))
-		var/mob/M = loc
-		if(!M.incapacitated() && istype(over_object, /atom/movable/screen/inventory/hand))
-			var/atom/movable/screen/inventory/hand/H = over_object
-			M.putItemFromInventoryInHandIfPossible(src, H.held_index)
-
 /obj/item/defibrillator/screwdriver_act(mob/living/user, obj/item/tool)
 	if(cell)
 		cell.update_appearance()
@@ -501,7 +493,7 @@
 
 /obj/item/shockpaddles/proc/shock_pulling(dmg, mob/H)
 	for(var/mob/living/M in H.recursively_get_all_grabbers())
-		if(M.electrocute_act(dmg, H))
+		if(M.electrocute_act(dmg))
 			M.visible_message(span_danger("[M] is electrocuted by [M.p_their()] contact with [H]!"))
 			M.emote("scream")
 

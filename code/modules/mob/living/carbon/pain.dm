@@ -98,7 +98,7 @@
 
 /mob/living/carbon/proc/pain_message(message, amount, ignore_cd)
 	set waitfor = FALSE
-	if(!amount || (stat != CONSCIOUS))
+	if(!amount || (stat != CONSCIOUS) || HAS_TRAIT(src, TRAIT_FAKEDEATH))
 		return FALSE
 
 	. = COOLDOWN_FINISHED(src, pain_cd)
@@ -180,7 +180,47 @@
 		shock_stage = max(shock_stage + 1, SHOCK_TIER_4 + 1)
 
 	var/pain = getPain()
+
+	// Pain mood adjustment
+	if(pain == 0)
+		mob_mood?.clear_mood_event("pain")
+	else
+		if(pain >= PAIN_AMT_AGONIZING)
+			mob_mood.add_mood_event("pain", /datum/mood_event/pain_four)
+		else if(pain >= PAIN_AMT_MEDIUM)
+			mob_mood.add_mood_event("pain", /datum/mood_event/pain_three)
+		else if(pain >= PAIN_AMT_LOW)
+			mob_mood.add_mood_event("pain", /datum/mood_event/pain_two)
+		else
+			mob_mood.add_mood_event("pain", /datum/mood_event/pain_one)
+
 	if(pain >= max(SHOCK_MIN_PAIN_TO_BEGIN, shock_stage * 0.8))
+		// A chance to fight through the pain.
+		if((shock_stage >= SHOCK_TIER_3) && stat == CONSCIOUS && !heart_attack_gaming && stats.cooldown_finished("shrug_off_pain"))
+			var/datum/roll_result/result = stat_roll(12, /datum/rpg_skill/willpower)
+			switch(result.outcome)
+				if(CRIT_SUCCESS)
+					to_chat(src, result.create_tooltip("Pain is temporary, I will not die on this day!"))
+					shock_stage = max(shock_stage - 15, 0)
+					stats.set_cooldown("shrug_off_pain", 180 SECONDS)
+					return
+
+				if(SUCCESS)
+					shock_stage = max(shock_stage - 5, 0)
+					to_chat(src, result.create_tooltip("Not here, not now."))
+					stats.set_cooldown("shrug_off_pain", 180 SECONDS)
+					return
+
+				if(FAILURE)
+					stats.set_cooldown("shrug_off_pain", 30 SECONDS)
+					// Do not return
+
+				if(CRIT_FAILURE)
+					shock_stage = min(shock_stage + 1, SHOCK_MAXIMUM)
+					to_chat(src, result.create_tooltip("I'm going to die here."))
+					stats.set_cooldown("shrug_off_pain", 60 SECONDS)
+					// Do not return
+
 		shock_stage = min(shock_stage + 1, SHOCK_MAXIMUM)
 
 	else if(!heart_attack_gaming)

@@ -4,7 +4,7 @@
  * @license MIT
  */
 
-import { THEME_LIGHT, THEME_DARK } from "./settings/constants";
+import { THEME_DARK, THEME_LIGHT } from './settings/constants';
 
 const COLOR_DARK_BG = '#222020';
 const COLOR_DARK_BG_DARKER = '#171717';
@@ -22,7 +22,7 @@ let setClientThemeTimer = null;
  * There's no way round it. We're essentially changing the skin by hand.
  * It's painful but it works, and is the way Lummox suggested.
  */
-export const setClientTheme = name => {
+export const setClientTheme = (name) => {
   // Transmit once for fast updates and again in a little while in case we won
   // the race against statbrowser init.
   clearInterval(setClientThemeTimer);

@@ -236,7 +236,7 @@
 /obj/item/robot_model/proc/do_transform_delay()
 	var/mob/living/silicon/robot/cyborg = loc
 	sleep(1)
-	flick("[cyborg_base_icon]_transform", cyborg)
+	z_flick("[cyborg_base_icon]_transform", cyborg)
 	cyborg.notransform = TRUE
 	if(locked_transform)
 		cyborg.SetLockdown(TRUE)
@@ -549,7 +549,7 @@
 
 	reagents.expose(our_turf, TOUCH, min(1, 10 / reagents.total_volume))
 	// We use more water doing this then mopping
-	reagents.remove_any(2) //reaction() doesn't use up the reagents
+	reagents.remove_all(2) //reaction() doesn't use up the reagents
 
 /datum/action/toggle_buffer/build_all_button_icons(status_only = FALSE, force = FALSE)
 	if(buffer_on)

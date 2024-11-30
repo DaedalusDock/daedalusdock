@@ -2,7 +2,7 @@
 	title = JOB_VIROLOGIST
 	description = "Study the effects of various diseases and synthesize a \
 		vaccine for them. Engineer beneficial viruses."
-	department_head = list(JOB_CHIEF_MEDICAL_OFFICER)
+	department_head = list(JOB_MEDICAL_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
@@ -14,7 +14,6 @@
 
 	employers = list(
 		/datum/employer/aether,
-		/datum/employer/contractor
 	)
 
 	outfits = list(
@@ -25,11 +24,10 @@
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_MED
 
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 
-	bounty_types = CIV_JOB_VIRO
 	departments_list = list(
 		/datum/job_department/medical,
 		)

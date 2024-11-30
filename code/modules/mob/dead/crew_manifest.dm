@@ -19,7 +19,10 @@
 
 /datum/crew_manifest/ui_data(mob/user)
 	var/list/positions = list()
-	for(var/datum/job_department/department as anything in SSjob.joinable_departments)
+	for(var/datum/job_department/department as anything in SSjob.departments)
+		if(department.is_not_real_department)
+			continue
+
 		var/open = 0
 		var/list/exceptions = list()
 		for(var/datum/job/job as anything in department.department_jobs)
@@ -33,6 +36,19 @@
 		positions[department.department_name] = list("exceptions" = exceptions, "open" = open)
 
 	return list(
-		"manifest" = GLOB.data_core.get_manifest(),
+		"manifest" = SSdatacore.get_manifest(),
 		"positions" = positions
 	)
+
+/proc/show_crew_manifest(mob/user)
+	if(!user.client)
+		return
+	if(world.time < user.client.crew_manifest_delay)
+		return
+
+	user.client.crew_manifest_delay = world.time + (1 SECONDS)
+
+	if(!GLOB.crew_manifest_tgui)
+		GLOB.crew_manifest_tgui = new /datum/crew_manifest(user)
+
+	GLOB.crew_manifest_tgui.ui_interact(user)

@@ -3,7 +3,10 @@ DEFINE_INTERACTABLE(/mob/living)
 	see_invisible = SEE_INVISIBLE_LIVING
 	sight = 0
 	see_in_dark = 2
-	hud_possible = list(HEALTH_HUD,STATUS_HUD,ANTAG_HUD)
+	hud_possible = list(
+		HEALTH_HUD = 'icons/mob/huds/hud.dmi',
+		STATUS_HUD = 'icons/mob/huds/hud.dmi',
+	)
 	//pressure_resistance = 10
 
 	hud_type = /datum/hud/living
@@ -19,16 +22,18 @@ DEFINE_INTERACTABLE(/mob/living)
 	var/health = MAX_LIVING_HEALTH
 
 	/// The container for stats and skills
-	var/datum/gurps_stats/gurps_stats
+	var/datum/stats/stats
 	///The holder for stamina handling
 	var/datum/stamina_container/stamina
+	/// Mood datum, can be null.
+	var/datum/mood/mob_mood
 
 	//Damage related vars, NOTE: THESE SHOULD ONLY BE MODIFIED BY PROCS
-	VAR_PROTECTED/bruteloss = 0 ///Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
-	VAR_PROTECTED/oxyloss = 0 ///Oxygen depravation damage (no air in lungs)
-	VAR_PROTECTED/toxloss = 0 ///Toxic damage caused by being poisoned or radiated
-	VAR_PROTECTED/fireloss = 0 ///Burn damage caused by being way too hot, too cold or burnt.
-	VAR_PROTECTED/cloneloss = 0 ///Damage caused by being cloned or ejected from the cloner early. slimes also deal cloneloss damage to victims
+	VAR_PROTECTED/bruteloss = 0 //!Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
+	VAR_PROTECTED/oxyloss = 0 //!Oxygen depravation damage (no air in lungs)
+	VAR_PROTECTED/toxloss = 0 //!Toxic damage caused by being poisoned or radiated
+	VAR_PROTECTED/fireloss = 0 //!Burn damage caused by being way too hot, too cold or burnt.
+	VAR_PROTECTED/cloneloss = 0 //!Damage caused by being cloned or ejected from the cloner early. slimes also deal cloneloss damage to victims
 
 	var/crit_threshold = HEALTH_THRESHOLD_CRIT /// when the mob goes from "normal" to crit
 	///When the mob enters hard critical state and is fully incapacitated.

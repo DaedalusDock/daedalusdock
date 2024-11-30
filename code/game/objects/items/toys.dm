@@ -520,7 +520,7 @@
 	attack_verb_continuous = list("attacks", "strikes", "hits")
 	attack_verb_simple = list("attack", "strike", "hit")
 
-/obj/item/dualsaber/toy/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+/obj/item/dualsaber/toy/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
 	return FALSE
 
 /obj/item/dualsaber/toy/IsReflect() //Stops Toy Dualsabers from reflecting energy projectiles
@@ -971,7 +971,7 @@
 	toysay = "Any heads of staff?"
 
 /obj/item/toy/figure/cargotech
-	name = "\improper Cargo Technician action figure"
+	name = "\improper" + JOB_DECKHAND + "action figure"
 	icon_state = "cargotech"
 	toysay = "For Cargonia!"
 
@@ -1007,7 +1007,7 @@
 	toysay = "Arf!"
 
 /obj/item/toy/figure/detective
-	name = "\improper Detective action figure"
+	name = "\improper Private Investigator action figure"
 	icon_state = "detective"
 	toysay = "This airlock has grey jumpsuit and insulated glove fibers on it."
 
@@ -1032,7 +1032,7 @@
 	toysay = "Giving out all access!"
 
 /obj/item/toy/figure/hos
-	name = "\improper Head of Security action figure"
+	name = "\improper Security Marshal action figure"
 	icon_state = "hos"
 	toysay = "Go ahead, make my day."
 
@@ -1052,12 +1052,12 @@
 	toysay = "My client is a dirty traitor!"
 
 /obj/item/toy/figure/curator
-	name = "\improper Curator action figure"
+	name = "\improper Archivist action figure"
 	icon_state = "curator"
 	toysay = "One day while..."
 
 /obj/item/toy/figure/md
-	name = "\improper Medical Doctor action figure"
+	name = "\improper " + JOB_MEDICAL_DOCTOR + "action figure"
 	icon_state = "md"
 	toysay = "The patient is already dead!"
 

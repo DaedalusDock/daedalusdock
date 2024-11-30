@@ -33,11 +33,11 @@
 				REMOVE_TRAIT(mule, TRAIT_IMMOBILIZED, MOTOR_LACK_TRAIT)
 
 			if(is_cut(WIRE_MOTOR1))
-				mule.set_varspeed(FAST_MOTOR_SPEED)
+				mule.set_simple_move_delay(FAST_MOTOR_SPEED)
 			else if(is_cut(WIRE_MOTOR2))
-				mule.set_varspeed(AVERAGE_MOTOR_SPEED)
+				mule.set_simple_move_delay(AVERAGE_MOTOR_SPEED)
 			else
-				mule.set_varspeed(SLOW_MOTOR_SPEED)
+				mule.set_simple_move_delay(SLOW_MOTOR_SPEED)
 
 /datum/wires/mulebot/on_pulse(wire)
 	var/mob/living/simple_animal/bot/mulebot/mule = holder
@@ -48,7 +48,7 @@
 			holder.visible_message(span_notice("[icon2html(mule, viewers(holder))] The charge light flickers."))
 		if(WIRE_AVOIDANCE)
 			holder.visible_message(span_notice("[icon2html(mule, viewers(holder))] The external warning lights flash briefly."))
-			flick("[mule.base_icon]1", mule)
+			z_flick("[mule.base_icon]1", mule)
 		if(WIRE_LOADCHECK)
 			holder.visible_message(span_notice("[icon2html(mule, viewers(holder))] The load platform clunks."))
 		if(WIRE_MOTOR1, WIRE_MOTOR2)

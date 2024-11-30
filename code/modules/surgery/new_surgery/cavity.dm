@@ -10,13 +10,16 @@
 /datum/surgery_step/cavity
 	pain_given =40
 	delicate = 1
-	surgery_candidate_flags = SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 	abstract_type = /datum/surgery_step/cavity
 
 /datum/surgery_step/cavity/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_warning("[user]'s hand slips, scraping around inside [target]'s [affected.name] with \the [tool]!"), \
-	span_warning("Your hand slips, scraping around inside [target]'s [affected.name] with \the [tool]!"))
+	user.visible_message(
+		span_warning("[user]'s hand slips, scraping around inside [target]'s [affected.name] with \the [tool]!"),
+		span_warning("Your hand slips, scraping around inside [target]'s [affected.name] with \the [tool]!"),
+		vision_distance = COMBAT_MESSAGE_RANGE
+	)
 	affected.receive_damage(20, sharpness = SHARP_EDGED|SHARP_POINTY)
 	..()
 
@@ -41,12 +44,12 @@
 
 /datum/surgery_step/cavity/make_space/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] starts making some space inside [target]'s [affected.cavity_name] cavity with [tool]."))
+	user.visible_message(span_notice("[user] starts making some space inside [target]'s [affected.cavity_name] cavity with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/cavity/make_space/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] makes some space inside [target]'s [affected.cavity_name] cavity with [tool]."))
+	user.visible_message(span_notice("[user] makes some space inside [target]'s [affected.cavity_name] cavity with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.cavity = TRUE
 	..()
 
@@ -75,13 +78,13 @@
 
 /datum/surgery_step/cavity/close_space/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] starts mending [target]'s [affected.cavity_name] cavity wall with [tool]."))
+	user.visible_message(span_notice("[user] starts mending [target]'s [affected.cavity_name] cavity wall with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 	..()
 
 /datum/surgery_step/cavity/close_space/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] mends [target]'s [affected.cavity_name] cavity walls with [tool]."))
+	user.visible_message(span_notice("[user] mends [target]'s [affected.cavity_name] cavity walls with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.cavity = FALSE
 	..()
 
@@ -130,7 +133,7 @@
 
 /datum/surgery_step/cavity/place_item/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] starts putting [tool] inside [target]'s [affected.cavity_name] cavity."))
+	user.visible_message(span_notice("[user] starts putting [tool] inside [target]'s [affected.cavity_name] cavity."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 	playsound(target.loc, 'sound/effects/squelch1.ogg', 25, 1)
 	..()
@@ -141,7 +144,7 @@
 		return
 	affected.add_cavity_item(tool)
 
-	user.visible_message(span_notice("[user] puts \the [tool] inside [target]'s [affected.cavity_name] cavity."))
+	user.visible_message(span_notice("[user] puts \the [tool] inside [target]'s [affected.cavity_name] cavity."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 	if (tool.w_class == affected.cavity_storage_max_weight && prob(50) && IS_ORGANIC_LIMB(affected) && affected.set_sever_artery(TRUE))
 		to_chat(user, span_warning("You tear some blood vessels trying to fit such a big object in this cavity."))
@@ -174,7 +177,7 @@
 
 /datum/surgery_step/cavity/implant_removal/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] starts poking around inside [target]'s [affected.plaintext_zone] with [tool]."))
+	user.visible_message(span_notice("[user] starts poking around inside [target]'s [affected.plaintext_zone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/cavity/implant_removal/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -213,7 +216,7 @@
 			find_prob +=50
 
 		if (prob(find_prob))
-			user.visible_message(span_notice("[user] takes something out of incision on [target]'s [affected.plaintext_zone] with [tool]."))
+			user.visible_message(span_notice("[user] takes something out of incision on [target]'s [affected.plaintext_zone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 			if(istype(obj, /obj/item/implant))
 				var/obj/item/implant/I = obj
 				I.removed(target)
@@ -226,13 +229,15 @@
 		else
 			user.visible_message(
 				span_notice("[user] removes [tool] from [target]'s [affected.plaintext_zone]."),
-				span_notice("There's something inside [target]'s [affected.plaintext_zone], but you just missed it this time.")
+				span_notice("There's something inside [target]'s [affected.plaintext_zone], but you just missed it this time."),
+				vision_distance = COMBAT_MESSAGE_RANGE
 			)
 
 	else
 		user.visible_message(
 			span_notice("[user] could not find anything inside [target]'s [affected.name], and pulls [tool] out."),
-			span_notice("You could not find anything inside [target]'s [affected.name].")
+			span_notice("You could not find anything inside [target]'s [affected.name]."),
+			vision_distance = COMBAT_MESSAGE_RANGE
 		)
 	..()
 
@@ -243,7 +248,7 @@
 		var/fail_prob = 10
 		fail_prob += 100 - tool_potency(tool)
 		if (prob(fail_prob))
-			user.visible_message(span_warning("Something beeps inside [target]'s [affected.name]!"))
+			user.visible_message(span_warning("Something beeps inside [target]'s [affected.name]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 			playsound(imp.loc, 'sound/items/countdown.ogg', 75, 1, -3)
 			spawn(25)
 				imp.activate()

@@ -140,31 +140,6 @@
 	if(istype(O, /obj/item/borg/apparatus/organ_storage))
 		return //Borg organ bags shouldn't be killing brains
 
-	if(damage > 0 && O.is_drainable() && O.reagents.has_reagent(/datum/reagent/medicine/alkysine)) //attempt to heal the brain
-		. = TRUE //don't do attack animation.
-		if(brainmob?.health <= HEALTH_THRESHOLD_DEAD) //if the brain is fucked anyway, do nothing
-			to_chat(user, span_warning("[src] is far too damaged, there's nothing else we can do for it!"))
-			return
-
-		if(organ_flags & ORGAN_DEAD)
-			if(!O.reagents.has_reagent(/datum/reagent/medicine/alkysine, 10))
-				to_chat(user, span_warning("There's not enough alkysine in [O] to restore [src]!"))
-				return
-
-		user.visible_message(span_notice("[user] starts to pour the contents of [O] onto [src]."), span_notice("You start to slowly pour the contents of [O] onto [src]."))
-		if(!do_after(user, src, 6 SECONDS))
-			to_chat(user, span_warning("You failed to pour [O] onto [src]!"))
-			return
-
-		if(organ_flags & ORGAN_DEAD)
-			user.visible_message(span_notice("[user] pours the contents of [O] onto [src], causing it to reform its original shape and turn a slightly brighter shade of pink."), span_notice("You pour the contents of [O] onto [src], causing it to reform its original shape and turn a slightly brighter shade of pink."))
-		else
-			user.visible_message(span_notice("[user] pours the contents of [O] onto [src]."))
-		var/healby = O.reagents.get_reagent_amount(/datum/reagent/medicine/alkysine)
-		setOrganDamage(damage - healby*2) //heals 2 damage per unit of alkysine, and by using "setorgandamage", we clear the failing variable if that was up
-		O.reagents.clear_reagents()
-		return
-
 	// Cutting out skill chips.
 	if(length(skillchips) && (O.sharpness & SHARP_EDGED))
 		to_chat(user,span_notice("You begin to excise skillchips from [src]."))
@@ -299,20 +274,20 @@
 	switch(blood_percent)
 		if(BLOOD_CIRC_SAFE to INFINITY)
 			if(can_heal)
-				. |= applyOrganDamage(-1, updating_health = FALSE)
+				applyOrganDamage(-1)
 
 		if(BLOOD_CIRC_OKAY to BLOOD_CIRC_SAFE)
 			if(owner.stat == CONSCIOUS && prob(1))
 				to_chat(owner, span_warning("You feel [pick("dizzy","woozy","faint")]..."))
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 30 : 60
 			if(!past_damage_threshold(2) && prob(damprob))
-				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+				applyOrganDamage(BRAIN_DECAY_RATE, cause_of_death = "Hypoxemia")
 
 		if(BLOOD_CIRC_BAD to BLOOD_CIRC_OKAY)
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 40 : 80
 			if(!past_damage_threshold(4) && prob(damprob))
-				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+				applyOrganDamage(BRAIN_DECAY_RATE, cause_of_death = "Hypoxemia")
 
 			if(owner.stat == CONSCIOUS && prob(10))
 				log_health(owner, "Passed out due to poor blood oxygenation, random chance.")
@@ -323,7 +298,7 @@
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 60 : 100
 			if(!past_damage_threshold(6) && prob(damprob))
-				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+				applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE, cause_of_death = "Hypoxemia")
 
 			if(owner.stat == CONSCIOUS && prob(15))
 				log_health(owner, "Passed out due to poor blood oxygenation, random chance.")
@@ -334,9 +309,9 @@
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 80 : 100
 			if(prob(damprob))
-				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+				applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE, cause_of_death = "Hypoxemia")
 			if(prob(damprob))
-				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+				applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE, cause_of_death = "Hypoxemia")
 	. = ..()
 
 /obj/item/organ/brain/check_damage_thresholds(mob/M)
@@ -398,29 +373,18 @@
 			to_chat(owner, span_danger("You black out!"))
 		owner.Unconscious(5 SECOND)
 
-/obj/item/organ/brain/applyOrganDamage(damage_amount, maximum, silent, updating_health = TRUE)
-	updating_health = FALSE // Brainloss isn't apart of tox loss, so never update health here.
-	. = ..()
-	if(. >= 20) //This probably won't be triggered by oxyloss or mercury. Probably.
-		var/damage_secondary = min(. * 0.2, 20)
-		if (owner)
-			owner.flash_act(visual = TRUE)
-			owner.blur_eyes(.)
-			owner.adjust_confusion(. SECONDS)
-			owner.Unconscious(damage_secondary SECONDS)
-
 /obj/item/organ/brain/getToxLoss()
 	return 0
 
-/obj/item/organ/brain/set_organ_dead(failing)
+/obj/item/organ/brain/set_organ_dead(failing, cause_of_death)
 	. = ..()
 	if(!.)
 		return
 	if(failing)
 		if(owner)
-			owner.death()
+			owner.death(cause_of_death = cause_of_death)
 		else if(brainmob)
-			brainmob.death()
+			brainmob.death(cause_of_death = cause_of_death)
 		return
 	else
 		if(owner)
@@ -628,7 +592,7 @@
 
 /obj/item/organ/brain/get_scan_results(tag)
 	. = ..()
-	var/list/traumas = owner.get_traumas()
+	var/list/traumas = owner?.get_traumas()
 	if(!length(traumas))
 		return
 

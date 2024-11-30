@@ -1,0 +1,55 @@
+2024-10-17:
+  Kapu1178:
+  - bugfix: Fixed rare instances of client crashes
+2024-10-27:
+  Bimmers:
+  - rscadd: Added a new wall sprite
+  - tweak: Adjusted Theseus
+  - code_imp: Updated how spawning is handled
+  Kapu1178:
+  - tweak: Adjusted base movement speed values
+  - rscadd: You now move significantly slower while undergoing cardiac arrest
+  - rscadd: You are now slowed down while holding someone at gunpoint.
+  - rscadd: You are now slowed down while drowsy.
+  - rscadd: You will drop items you're holding in a broken or dislocated arm.
+  - rscadd: The majority of items now have equip and unequip delays.
+  - rscadd: Unequipping someone else's shoes takes much longer if they are standing
+      up.
+  - code_imp: Added support for unequip delays, does not cover all cases, will be
+      buggy.
+  Kapu1178, Stonepillars, LeahTheTech, Amylizzle, Cirrial, LemonInTheDark, MrMelbert, ben10omintrix:
+  - rscadd: the code foundation for the Flockmind
+  - refactor: Simple mobs now use the normal movement delay system
+  - refactor: AI Idle behaviors are now the same as normal behaviors
+  - refactor: Rewrote how zap_act() and electrocute_act() work.
+  - bugfix: Fixed niche issues with atom integrity
+  - qol: Siemens coefficients are now signficantly better and can be applied to more
+      than just suits and gloves.
+  - qol: The stun duration of electrocution scales with damage.
+  - qol: Galoshes now have a siemens coeff of 0.
+  - balance: Removed the secondary stun from electrocution.
+2024-10-28:
+  francinum:
+  - bugfix: Magic Mirrors no longer require you to change your hair before anything
+      else.
+  - rscadd: White gloves are available in the loadout, and can be recolored to match
+      your style.
+  - bugfix: Examining playing cards in your hand will no longer spill the beans to
+      those around you.
+2024-10-29:
+  Kapu1178:
+  - rscdel: Memories and prison tattoos
+  - rscadd: Custom and automatically populated notes, use the Notes verb!
+  - tweak: Blocking is no longer directional while prone.
+  - bugfix: Monkeys will now eat food again, and not get stuck until something punches
+      them in the face.
+  - rscadd: Added directionality to blocking attacks. Currently, all items that can
+      block are able to block only directly infront of you.
+  - bugfix: Fixed multiple bugs with blocking.
+  jlsnow301, san7890, SyncIt, Kashargul:
+  - bugfix: Fixed tgui text input being essentially unusable.
+  - bugfix: Fixed the Age TGUI input not allowing for values that arent the min or
+      max age.
+2024-10-31:
+  Kapu1178:
+  - bugfix: Fixed armor penetration not being factored into block chance.

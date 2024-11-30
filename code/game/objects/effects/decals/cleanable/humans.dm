@@ -42,7 +42,7 @@
 	var/drytime = 0
 	var/is_dry = FALSE
 
-/obj/effect/decal/cleanable/blood/Initialize(mapload, list/datum/disease/diseases, list/blood_dna = list("Unknown DNA" = random_blood_type()))
+/obj/effect/decal/cleanable/blood/Initialize(mapload, list/datum/pathogen/diseases, list/blood_dna = list("Unknown DNA" = random_blood_type()))
 	. = ..()
 	if((. == INITIALIZE_HINT_QDEL) || !should_dry)
 		return
@@ -85,6 +85,13 @@
 		if(!is_dry)
 			color = blood_color
 
+/obj/effect/decal/cleanable/blood/attack_hand(mob/living/user, list/modifiers)
+	. = ..()
+	if(ishuman(user) && blood_DNA_length())
+		var/mob/living/carbon/human/H = user
+		H.add_blood_DNA_to_items(return_blood_DNA(), ITEM_SLOT_GLOVES)
+		H.visible_message(span_notice("[user.name] runs [H.p_their()] fingers through [src]."))
+
 /obj/effect/decal/cleanable/blood/proc/get_timer()
 	drytime = world.time + dry_duration
 
@@ -101,7 +108,7 @@
 	else
 		name = dryname
 		desc = drydesc
-		reagents.remove_all_type(/datum/reagent/blood, INFINITY)
+		reagents.remove_reagent(/datum/reagent/blood, INFINITY, , include_subtypes = TRUE)
 		var/list/temp_color = rgb2hsv(color || COLOR_WHITE)
 		color = hsv2rgb(temp_color[1], temp_color[2], max(temp_color[3] - 100, 0))
 		qdel(GetComponent(/datum/component/smell))
@@ -129,7 +136,7 @@
 	reagent_amount = 0
 	icon_state = "floor1-old"
 
-/obj/effect/decal/cleanable/blood/old/Initialize(mapload, list/datum/disease/diseases)
+/obj/effect/decal/cleanable/blood/old/Initialize(mapload, list/datum/pathogen/diseases)
 	add_blood_DNA(list("Non-human DNA" = random_blood_type())) // Needs to happen before ..()
 	. = ..()
 	AddComponent(/datum/component/spook_factor, SPOOK_AMT_BLOOD_SPLATTER)
@@ -203,7 +210,7 @@
 	///Information about the diseases our streaking spawns
 	var/list/streak_diseases
 
-/obj/effect/decal/cleanable/blood/gibs/Initialize(mapload, list/datum/disease/diseases)
+/obj/effect/decal/cleanable/blood/gibs/Initialize(mapload, list/datum/pathogen/diseases)
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_PIPE_EJECTING, PROC_REF(on_pipe_eject))
 	AddComponent(/datum/component/spook_factor, SPOOK_AMT_BLOOD_STREAK)
@@ -295,7 +302,7 @@
 
 	reagent_amount = 0
 
-/obj/effect/decal/cleanable/blood/gibs/old/Initialize(mapload, list/datum/disease/diseases)
+/obj/effect/decal/cleanable/blood/gibs/old/Initialize(mapload, list/datum/pathogen/diseases)
 	. = ..()
 	setDir(pick(1,2,4,8))
 	add_blood_DNA(list("Non-human DNA" = random_blood_type()))
@@ -374,7 +381,7 @@
 
 /obj/effect/decal/cleanable/blood/footprints/Initialize(
 	mapload,
-	list/datum/disease/diseases,
+	list/datum/pathogen/diseases,
 	list/blood_dna = list("Unknown DNA" = random_blood_type()),
 	blood_print
 	)

@@ -106,23 +106,96 @@
 	tag = "mob_[next_mob_id++]"
 
 /**
+ * set every hud image in the given category active so other people with the given hud can see it.
+ * Arguments:
+ * * hud_category - the index in our active_hud_list corresponding to an image now being shown.
+ * * update_huds - if FALSE we will just put the hud_category into active_hud_list without actually updating the atom_hud datums subscribed to it
+ * * exclusive_hud - if given a reference to an atom_hud, will just update that hud instead of all global ones attached to that category.
+ * This is because some atom_hud subtypes arent supposed to work via global categories, updating normally would affect all of these which we dont want.
+ */
+/atom/proc/set_hud_image_active(hud_category, update_huds = TRUE, datum/atom_hud/exclusive_hud)
+	if(!istext(hud_category) || !hud_list?[hud_category] || active_hud_list?[hud_category])
+		return FALSE
+
+	LAZYSET(active_hud_list, hud_category, hud_list[hud_category])
+
+	if(ismovable(src))
+		var/atom/movable/AM = src
+		for(var/atom/movable/mimic as anything in AM.get_associated_mimics())
+			mimic.set_hud_image_active(arglist(args))
+
+	if(!update_huds)
+		return TRUE
+
+	if(exclusive_hud)
+		exclusive_hud.add_single_hud_category_on_atom(src, hud_category)
+	else
+		for(var/datum/atom_hud/hud_to_update as anything in GLOB.huds_by_category[hud_category])
+			hud_to_update.add_single_hud_category_on_atom(src, hud_category)
+
+	return TRUE
+
+///sets every hud image in the given category inactive so no one can see it
+/atom/proc/set_hud_image_inactive(hud_category, update_huds = TRUE, datum/atom_hud/exclusive_hud)
+	if(!istext(hud_category))
+		return FALSE
+
+	LAZYREMOVE(active_hud_list, hud_category)
+
+	if(ismovable(src))
+		var/atom/movable/AM = src
+		for(var/atom/movable/mimic as anything in AM.get_associated_mimics())
+			mimic.set_hud_image_active(arglist(args))
+
+	if(!update_huds)
+		return TRUE
+
+	if(exclusive_hud)
+		exclusive_hud.remove_single_hud_category_on_atom(src, hud_category)
+	else
+		for(var/datum/atom_hud/hud_to_update as anything in GLOB.huds_by_category[hud_category])
+			hud_to_update.remove_single_hud_category_on_atom(src, hud_category)
+
+	return TRUE
+
+/**
  * Prepare the huds for this atom
  *
- * Goes through hud_possible list and adds the images to the hud_list variable (if not already
- * cached)
+ * Goes through hud_possible list and adds the images to the hud_list variable (if not already cached)
  */
 /atom/proc/prepare_huds()
+	if(hud_list) // I choose to be lienient about people calling this proc more then once
+		return
+
 	hud_list = list()
+
 	for(var/hud in hud_possible)
 		var/hint = hud_possible[hud]
-		switch(hint)
-			if(HUD_LIST_LIST)
-				hud_list[hud] = list()
-			else
-				var/image/I = image('icons/mob/huds/hud.dmi', src, "")
-				I.appearance_flags = RESET_COLOR|RESET_TRANSFORM
-				hud_list[hud] = I
+		if(hint == HUD_LIST_LIST)
+			hud_list[hud] = list()
 
+		else
+			var/image/I = image(hint, src, "")
+			I.appearance_flags = RESET_COLOR|RESET_TRANSFORM
+			hud_list[hud] = I
+
+		set_hud_image_active(hud, update_huds = FALSE) //by default everything is active. but dont add it to huds to keep control.
+
+/// Update the icon_state of an atom hud image.
+/atom/proc/set_hud_image_vars(hud_key, new_state = null, new_pixel_y = 0)
+	if(isnull(hud_list))
+		return
+
+	var/image/I = hud_list[hud_key]
+	if(isnull(I))
+		return
+
+	I.icon_state = new_state
+	I.pixel_y = new_pixel_y
+
+	if(!isarea(src) && !isturf(src))
+		var/atom/movable/AM = src
+		AM.bound_overlay?.set_hud_image_vars(hud_key, new_state, new_pixel_y)
 /**
  * Return the desc of this mob for a photo
  */
@@ -518,6 +591,11 @@
 	if(examined == src)
 		return
 
+	if(isobj(examined))
+		var/obj/examined_obj = examined
+		if(examined_obj.obj_flags & SECRET_EXAMINE)
+			return
+
 	// If TRUE, the usr's view() for the examined object too
 	var/examining_worn_item = FALSE
 	var/loc_str = "at something off in the distance."
@@ -549,6 +627,11 @@
 			to_chat(M, can_see_str)
 		else
 			to_chat(M, cannot_see_str)
+
+/mob/living/broadcast_examine(atom/examined)
+	if(stat != CONSCIOUS)
+		return
+	return ..()
 
 /mob/dead/broadcast_examine(atom/examined)
 	return //Observers arent real the government is lying to you
@@ -1105,7 +1188,7 @@
 /**
  * Fully update the name of a mob
  *
- * This will update a mob's name, real_name, mind.name, GLOB.data_core records, pda, id and traitor text
+ * This will update a mob's name, real_name, mind.name, SSdatacore records, pda, id and traitor text
  *
  * Calling this proc without an oldname will only update the mob and skip updating the pda, id and records ~Carn
  */
@@ -1148,7 +1231,7 @@
 
 	return TRUE
 
-///Updates GLOB.data_core records with new name , see mob/living/carbon/human
+///Updates SSdatacore records with new name , see mob/living/carbon/human
 /mob/proc/replace_records_name(oldname,newname)
 	return
 
@@ -1180,7 +1263,7 @@
 					break
 				search_pda = 0
 
-/mob/proc/update_stat()
+/mob/proc/update_stat(cause_of_death)
 	return
 
 /mob/proc/update_health_hud()
@@ -1375,7 +1458,7 @@
 
 ///Adjust the nutrition of a mob
 /mob/proc/adjust_nutrition(change) //Honestly FUCK the oldcoders for putting nutrition on /mob someone else can move it up because holy hell I'd have to fix SO many typechecks
-	nutrition = max(0, nutrition + change)
+	set_nutrition(max(0, nutrition + change))
 
 ///Force set the mob nutrition
 /mob/proc/set_nutrition(change) //Seriously fuck you oldcoders.
@@ -1471,25 +1554,25 @@
 	canon_client = null
 
 ///Shows a tgui window with memories
-/mob/verb/memory()
-	set name = "Memories"
+/mob/verb/notes()
+	set name = "Notes"
 	set category = "IC"
-	set desc = "View your character's memories."
+	set desc = "View your notes."
 	if(!mind)
 		var/fail_message = "You have no mind!"
 		if(isobserver(src))
 			fail_message += " You have to be in the current round at some point to have one."
 		to_chat(src, span_warning(fail_message))
 		return
-	if(!mind.memory_panel)
-		mind.memory_panel = new(usr, mind)
-	mind.memory_panel.ui_interact(usr)
+	if(!mind.note_panel)
+		mind.note_panel = new(usr, mind)
+	mind.note_panel.ui_interact(usr)
 
-/datum/memory_panel
+/datum/note_panel
 	var/datum/mind/mind_reference
 	var/client/holder //client of whoever is using this datum
 
-/datum/memory_panel/New(user, mind_reference)//user can either be a client or a mob due to byondcode(tm)
+/datum/note_panel/New(user, mind_reference)//user can either be a client or a mob due to byondcode(tm)
 	if (istype(user, /client))
 		var/client/user_client = user
 		holder = user_client //if its a client, assign it to holder
@@ -1498,35 +1581,69 @@
 		holder = user_mob.client //if its a mob, assign the mob's client to holder
 	src.mind_reference = mind_reference
 
-/datum/memory_panel/Destroy(force)
-	mind_reference.memory_panel = null
+/datum/note_panel/Destroy(force)
+	mind_reference.note_panel = null
 	. = ..()
 
-/datum/memory_panel/ui_state(mob/user)
-	return GLOB.always_state
+/datum/note_panel/ui_state(mob/user)
+	return GLOB.notes_state
 
-/datum/memory_panel/ui_close()
+/datum/note_panel/ui_close()
 	qdel(src)
 
-/datum/memory_panel/ui_interact(mob/user, datum/tgui/ui)
+/datum/note_panel/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "MemoryPanel")
+		ui = new(user, src, "NotePanel")
 		ui.open()
 
-/datum/memory_panel/ui_data(mob/user)
+/datum/note_panel/ui_data(mob/user)
 	var/list/data = list()
 	var/list/memories = list()
 
-	for(var/memory_key in user?.mind.memories)
-		var/datum/memory/memory = user.mind.memories[memory_key]
-		memories += list(list("name" = memory.name, "quality" = memory.story_value))
+	var/list/user_memories = user?.mind.get_notes()
+	for(var/memory_key in user_memories)
+		memories[++memories.len] = list("name" = memory_key, "content" = user_memories[memory_key])
 
 	data["memories"] = memories
 	return data
+
+/datum/note_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
+
+	switch(action)
+		if("UpdateNote")
+			mind_reference.set_note(NOTES_CUSTOM, params["newnote"])
+			return TRUE
 
 /mob/verb/view_skills()
 	set category = "IC"
 	set name = "View Skills"
 
 	mind?.print_levels(src)
+
+/// Makes a client temporarily aware of an appearance via and invisible vis contents object.
+/mob/proc/send_appearance(mutable_appearance/appearance)
+	RETURN_TYPE(/atom/movable/screen)
+	if(!hud_used || isnull(appearance))
+		return
+
+	var/atom/movable/screen/container
+	if(isatom(container))
+		container = appearance
+	else
+		container = new()
+		container.appearance = appearance
+
+	hud_used.vis_holder.vis_contents += appearance
+	addtimer(CALLBACK(src, PROC_REF(remove_appearance), appearance), 5 SECONDS, TIMER_DELETE_ME)
+
+	return container
+
+/mob/proc/remove_appearance(atom/movable/appearance)
+	if(!hud_used)
+		return
+
+	hud_used.vis_holder.vis_contents -= appearance

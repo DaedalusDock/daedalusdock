@@ -135,60 +135,6 @@
 	possible_destinations = "SBC_corvette_custom;SBC_corvette_bay;syndicate_ne;syndicate_nw;syndicate_n;syndicate_se;syndicate_sw;syndicate_s"
 	req_access = list(ACCESS_SYNDICATE)
 
-/*
- * Summons the SBC Starfury, a large syndicate battlecruiser, in Deep Space.
- * It can be piloted into the station's area.
- */
-/proc/summon_battlecruiser(datum/team/battlecruiser/team)
-
-	var/list/candidates = poll_ghost_candidates("Do you wish to be considered for battlecruiser crew?", ROLE_TRAITOR)
-	shuffle_inplace(candidates)
-
-	var/datum/map_template/ship = SSmapping.map_templates["battlecruiser_starfury.dmm"]
-	var/x = rand(TRANSITIONEDGE, world.maxx - TRANSITIONEDGE - ship.width)
-	var/y = rand(TRANSITIONEDGE, world.maxy - TRANSITIONEDGE - ship.height)
-	var/z = SSmapping.empty_space?.z_value
-	if(isnull(z))
-		CRASH("Battlecruiser found no empty space level to load in!")
-
-	var/turf/battlecruiser_loading_turf = locate(x, y, z)
-	if(!battlecruiser_loading_turf)
-		CRASH("Battlecruiser found no turf to load in!")
-
-	if(!ship.load(battlecruiser_loading_turf))
-		CRASH("Loading battlecruiser ship failed!")
-
-	if(!team)
-		team = new()
-		var/obj/machinery/nuclearbomb/selfdestruct/nuke = locate() in INSTANCES_OF(/obj/machinery/nuclearbomb)
-		if(nuke.r_code == "ADMIN")
-			nuke.r_code = random_nukecode()
-		team.nuke = nuke
-		team.update_objectives()
-
-	for(var/turf/open/spawned_turf as anything in ship.get_affected_turfs(battlecruiser_loading_turf)) //not as anything to filter out closed turfs
-		for(var/obj/effect/mob_spawn/ghost_role/human/syndicate/battlecruiser/spawner in spawned_turf)
-			spawner.antag_team = team
-			if(candidates.len > 0)
-				var/mob/our_candidate = candidates[1]
-				spawner.create(our_candidate)
-				candidates.Splice(1, 2)
-				notify_ghosts(
-					"The battlecruiser has an object of interest: [our_candidate]!",
-					source = our_candidate,
-					action = NOTIFY_ORBIT,
-					header = "Something's Interesting!"
-					)
-			else
-				notify_ghosts(
-					"The battlecruiser has an object of interest: [spawner]!",
-					source = spawner,
-					action = NOTIFY_ORBIT,
-					header="Something's Interesting!"
-					)
-
-	priority_announce("Unidentified armed ship detected near the station.")
-
 /obj/machinery/vending/medical/syndicate_access/cybersun
 	name = "\improper CyberMed ++"
 	desc = "An advanced vendor that dispenses medical drugs, both recreational and medicinal."

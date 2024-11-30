@@ -136,7 +136,7 @@
 	SSmove_manager.stop_looping(src)
 	last_found = world.time
 
-/mob/living/simple_animal/bot/secbot/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)//shocks only make him angry
+/mob/living/simple_animal/bot/secbot/electrocute_act(shock_damage, siemens_coeff = 1, flags = SHOCK_HANDS, stun_multiplier = 1)//shocks only make him angry
 	if(base_speed < initial(base_speed) + 3)
 		base_speed += 3
 		addtimer(VARSET_CALLBACK(src, base_speed, base_speed - 3), 60)
@@ -496,7 +496,7 @@
 	return ..()
 
 /mob/living/simple_animal/bot/secbot/attack_alien(mob/living/carbon/alien/user, list/modifiers)
-	..()
+	. = ..()
 	if(!isalien(target))
 		target = user
 		mode = BOT_HUNT

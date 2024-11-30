@@ -13,10 +13,13 @@
 	layer = WIRE_LAYER //Above hidden pipes, GAS_PIPE_HIDDEN_LAYER
 	anchored = TRUE
 	obj_flags = CAN_BE_HIT
+
 	/// What cable directions does this cable connect to. Uses a 0-255 bitmasking defined in 'globalvars\lists\cables.dm', with translation lists there aswell
 	var/linked_dirs = NONE
 	/// The powernet the cable is connected to
-	var/datum/powernet/powernet
+	var/tmp/datum/powernet/powernet
+	/// If TRUE, auto_propogate_cut_cable() is sleeping
+	var/tmp/awaiting_rebuild = FALSE
 
 /obj/structure/cable/Initialize(mapload)
 	. = ..()
@@ -274,13 +277,30 @@
 
 /obj/structure/cable/proc/get_cable_connections(powernetless_only = FALSE)
 	. = list()
-	var/turf/T = get_turf(src)
+	var/static/list/diagonal_masking_pair = list(NORTH|SOUTH, EAST|WEST)
+	var/turf/T
 	for(var/cable_dir in GLOB.cable_dirs)
 		if(!(linked_dirs & cable_dir))
 			continue
 		var/inverse_cable_dir = GLOB.cable_dirs_to_inverse["[cable_dir]"]
 		var/real_dir = GLOB.cable_dirs_to_real_dirs["[cable_dir]"]
-		var/turf/step_turf = get_step(T, real_dir)
+		// Is it diagonal? Yes? Detour into this special shitty hack.
+		// This is 1:1 copied from baycode, With comments.
+		// Am I being passive aggressive? I think this qualifies as more than that.
+		if(ISDIAGONALDIR(real_dir))
+			for(var/component_pair in diagonal_masking_pair)
+				T = get_step(src, real_dir & component_pair)
+				if(T)
+					// Determine the direction value we need to see.
+					// (real_dir XOR component_pair) will functionally flip the relevant component's parity.
+					// Eg. SOUTHWEST (2,8) XOR (1,2) = NORTHWEST (1,8)
+					// And then we pass this perfectly unusable value into the Obfuscatomat.
+					var/diag_req_dir = GLOB.real_dirs_to_cable_dirs["[real_dir ^ component_pair]"]
+					for(var/obj/structure/cable/diag_cable in T)
+						if(diag_cable.linked_dirs & diag_req_dir)
+							. += diag_cable
+
+		var/turf/step_turf = get_step(src, real_dir)
 		for(var/obj/structure/cable/cable_structure in step_turf)
 			// if cable structure doesn't have a direction inverse to our cable direction, ignore it
 			if(!(cable_structure.linked_dirs & inverse_cable_dir))
@@ -326,11 +346,28 @@
 
 	set_directions(current_links, FALSE)
 
-/obj/structure/cable/proc/auto_propagate_cut_cable(obj/O)
-	if(O && !QDELETED(O))
-		var/datum/powernet/newPN = new()// creates a new powernet...
-		//NOTE: If packets are acting weird during very high SSpackets load (if you somehow manage to overload it to the point that you're losing packets from powernet rebuilds...), start looking here.
-		propagate_network(O, newPN)//... and propagates it to the other side of the cable
+/obj/structure/cable/proc/auto_propagate_cut_cable()
+	set waitfor = FALSE
+	if(awaiting_rebuild)
+		return
+
+	awaiting_rebuild = TRUE
+	var/slept = FALSE
+	while(!QDELETED(src) && SSexplosions.is_exploding())
+		slept = TRUE
+		sleep(world.tick_lag)
+
+	if(QDELETED(src))
+		return
+
+	awaiting_rebuild = FALSE
+
+	//NOTE: If packets are acting weird during very high SSpackets load (if you somehow manage to overload it to the point that you're losing packets from powernet rebuilds...), start looking here.
+	var/datum/powernet/newPN = new()// creates a new powernet...
+	if(slept)
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(propagate_network), src, newPN), 0)
+	else
+		propagate_network(src, newPN)
 
 //Makes a new network for the cable and propgates it. If we already have one, just die
 /obj/structure/cable/proc/propagate_if_no_network()
@@ -360,11 +397,13 @@
 	powernet.remove_cable(src) //remove the cut cable from its powernet
 
 	var/first = TRUE
-	for(var/obj/O in P_list)
+	for(var/obj/structure/cable/cable in P_list)
 		if(first)
 			first = FALSE
 			continue
-		addtimer(CALLBACK(O, PROC_REF(auto_propagate_cut_cable), O), 0) //so we don't rebuild the network X times when singulo/explosion destroys a line of X cables
+		//so we don't rebuild the network X times when singulo/explosion destroys a line of X cables
+		cable.auto_propagate_cut_cable()
+		//addtimer(CALLBACK(O, PROC_REF(auto_propagate_cut_cable), O), 0)
 
 ///////////////////////////////////////////////
 // Cable variants for mapping
@@ -406,7 +445,7 @@
 
 /obj/item/stack/cable_coil
 	name = "cable coil"
-	custom_price = PAYCHECK_PRISONER * 0.8
+	custom_price = PAYCHECK_ASSISTANT * 0.8
 	gender = NEUTER //That's a cable coil sounds better than that's some cable coils
 	icon = 'icons/obj/power.dmi'
 	icon_state = "coil"
@@ -439,6 +478,9 @@
 	usesound = 'sound/items/deconstruct.ogg'
 	cost = 1
 	source = /datum/robot_energy_storage/wire
+
+	/// Handles the click foo.
+	var/datum/cable_click_manager/click_manager
 	/// Previous position stored for purposes of cable laying
 	var/turf/previous_position = null
 	/// Whether we are in a cable laying mode
@@ -452,8 +494,14 @@
 	pixel_y = base_pixel_y + rand(-2, 2)
 	update_appearance()
 
+/obj/item/stack/cable_coil/Destroy(force)
+	QDEL_NULL(click_manager)
+	set_cable_layer_mode(FALSE)
+	return ..()
+
 /obj/item/stack/cable_coil/examine(mob/user)
 	. = ..()
+	. += "<b>Right Click</b> on the floor to enable Advanced Placement."
 	. += "<b>Ctrl+Click</b> to change the layer you are placing on."
 
 /obj/item/stack/cable_coil/update_name()
@@ -468,9 +516,18 @@
 	. = ..()
 	icon_state = "[base_icon_state][amount < 3 ? amount : ""]"
 
-/obj/item/stack/cable_coil/Destroy(force)
+
+/obj/item/stack/cable_coil/equipped(mob/user, slot)
 	. = ..()
-	set_cable_layer_mode(FALSE)
+	if(slot == ITEM_SLOT_HANDS)
+		if(isnull(click_manager))
+			click_manager = new(src)
+
+		click_manager.set_user(user)
+
+/obj/item/stack/cable_coil/dropped()
+	. = ..()
+	click_manager?.set_user(null)
 
 /obj/item/stack/cable_coil/use(used, transfer, check)
 	. = ..()

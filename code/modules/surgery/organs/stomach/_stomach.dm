@@ -52,11 +52,12 @@
 		human_owner.clear_alert(ALERT_NUTRITION)
 	return ..()
 
-/obj/item/organ/stomach/set_organ_dead(failing)
+/obj/item/organ/stomach/set_organ_dead(failing, cause_of_death)
+	. = ..()
 	if(!.)
 		return
 
-	if(organ_flags & ORGAN_DEAD && owner)
+	if((organ_flags & ORGAN_DEAD) && owner)
 		reagents.end_metabolization(owner)
 
 /obj/item/organ/stomach/on_life(delta_time, times_fired)

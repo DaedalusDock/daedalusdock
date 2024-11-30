@@ -85,7 +85,7 @@
 				to_chat(src, span_warning("You are not being carried by anyone!"))
 				return FALSE
 		if("crew_manifest")
-			ai_roster()
+			show_crew_manifest(src)
 		if("door_jack")
 			if(params["jack"] == "jack")
 				if(hacking_cable?.machine)
@@ -119,10 +119,10 @@
 			medHUD = !medHUD
 			if(medHUD)
 				var/datum/atom_hud/med = GLOB.huds[med_hud]
-				med.add_hud_to(src)
+				med.show_to(src)
 			else
 				var/datum/atom_hud/med = GLOB.huds[med_hud]
-				med.remove_hud_from(src)
+				med.hide_from(src)
 		if("newscaster")
 			newscaster.ui_interact(src)
 		if("photography_module")
@@ -136,9 +136,9 @@
 				return FALSE
 			refresh_spam = TRUE
 			if(params["list"] == "medical")
-				medical_records = GLOB.data_core.get_general_records()
+				medical_records = SSdatacore.get_general_records()
 			if(params["list"] == "security")
-				security_records = GLOB.data_core.get_security_records()
+				security_records = SSdatacore.get_security_records()
 			ui.send_full_update()
 			addtimer(CALLBACK(src, PROC_REF(refresh_again)), 3 SECONDS)
 		if("remote_signaler")
@@ -147,10 +147,10 @@
 			secHUD = !secHUD
 			if(secHUD)
 				var/datum/atom_hud/sec = GLOB.huds[sec_hud]
-				sec.add_hud_to(src)
+				sec.show_to(src)
 			else
 				var/datum/atom_hud/sec = GLOB.huds[sec_hud]
-				sec.remove_hud_from(src)
+				sec.hide_from(src)
 		if("universal_translator")
 			if(!languages_granted)
 				grant_all_languages(TRUE, TRUE, TRUE, LANGUAGE_SOFTWARE)

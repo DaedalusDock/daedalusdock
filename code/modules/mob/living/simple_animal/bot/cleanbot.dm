@@ -41,15 +41,14 @@
 	var/static/list/officers_titles = list(
 		JOB_CAPTAIN,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_HEAD_OF_SECURITY,
-		JOB_RESEARCH_DIRECTOR,
+		JOB_SECURITY_MARSHAL,
 	)
 	var/static/list/command_titles = list(
 		JOB_CAPTAIN = "Cpt.",
 		JOB_HEAD_OF_PERSONNEL = "Lt.",
 	)
 	var/static/list/security_titles = list(
-		JOB_HEAD_OF_SECURITY = "Maj.",
+		JOB_SECURITY_MARSHAL = "Maj.",
 		JOB_WARDEN = "Sgt.",
 		JOB_DETECTIVE = "Det.",
 		JOB_SECURITY_OFFICER = "Officer",
@@ -60,15 +59,9 @@
 		JOB_ATMOSPHERIC_TECHNICIAN = "Technician",
 	)
 	var/static/list/medical_titles = list(
-		JOB_CHIEF_MEDICAL_OFFICER = "C.M.O.",
+		JOB_MEDICAL_DIRECTOR = "C.M.O.",
 		JOB_MEDICAL_DOCTOR = "M.D.",
 		JOB_CHEMIST = "Pharm.D.",
-	)
-	var/static/list/research_titles = list(
-		JOB_RESEARCH_DIRECTOR = "Ph.D.",
-		JOB_ROBOTICIST = "M.S.",
-		JOB_SCIENTIST = "B.S.",
-		JOB_GENETICIST = "Gene B.S.",
 	)
 	var/static/list/legal_titles = list(
 		JOB_LAWYER = "Esq.",
@@ -82,7 +75,6 @@
 	)
 	///What ranks are suffixes to the name.
 	var/static/list/suffixes = list(
-		research_titles,
 		medical_titles,
 		legal_titles,
 	)
@@ -250,6 +242,7 @@
 				start_patrol()
 			if(BOT_PATROL)
 				bot_patrol()
+
 	else if(target)
 		if(QDELETED(target) || !isturf(target.loc))
 			target = null
@@ -263,12 +256,13 @@
 				mode = BOT_IDLE
 				return
 
-		if(target && path.len == 0 && (get_dist(src,target) > 1))
-			path = get_path_to(src, target, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
+		if(target && path.len == 0 && (get_dist(src,target) > 1) && mode != BOT_MOVING)
 			mode = BOT_MOVING
+			path = jps_path_to(src, target, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
 			if(length(path) == 0)
 				add_to_ignore(target)
 				target = null
+				mode = BOT_IDLE
 
 		if(path.len > 0 && target)
 			if(!bot_move(path[path.len]))
@@ -387,7 +381,7 @@
 					current_floor.MakeSlippery(TURF_WET_WATER, min_wet_time = 20 SECONDS, wet_time_to_add = 15 SECONDS)
 			else
 				visible_message(span_danger("[src] whirs and bubbles violently, before releasing a plume of froth!"))
-				new /obj/effect/particle_effect/foam(loc)
+				new /obj/effect/particle_effect/fluid/foam(loc)
 
 /mob/living/simple_animal/bot/cleanbot/explode()
 	var/atom/drop_loc = drop_location()

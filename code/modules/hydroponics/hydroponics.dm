@@ -276,9 +276,9 @@
 			// Nutrients deplete at a constant rate, since new nutrients can boost stats far easier.
 			apply_chemicals(lastuser?.resolve())
 			if(self_sustaining)
-				reagents.remove_any(min(0.5, nutridrain))
+				reagents.remove_all(min(0.5, nutridrain))
 			else
-				reagents.remove_any(nutridrain)
+				reagents.remove_all(nutridrain)
 
 			// Lack of nutrients hurts non-weeds
 			if(reagents.total_volume <= 0 && !myseed.get_gene(/datum/plant_gene/trait/plant_type/weed_hardy))
@@ -295,7 +295,7 @@
 
 //Water//////////////////////////////////////////////////////////////////
 			// Drink random amount of water
-			adjust_waterlevel(-rand(1,6) / rating)
+			adjust_waterlevel(-0.4 / rating)
 
 			// If the plant is dry, it loses health pretty fast, unless mushroom
 			if(waterlevel <= 10 && !myseed.get_gene(/datum/plant_gene/trait/plant_type/fungal_metabolism))
@@ -738,20 +738,6 @@
 					myseed.reagents_from_genes()
 					continue
 
-/**
- * Pest Mutation Proc.
- * When a tray is mutated with high pest values, it will spawn spiders.
- * * User - Person who last added chemicals to the tray for logging purposes.
- */
-/obj/machinery/hydroponics/proc/mutatepest(mob/user)
-	if(pestlevel > 5)
-		message_admins("[ADMIN_LOOKUPFLW(user)] last altered a hydro tray's contents which spawned spiderlings")
-		log_game("[key_name(user)] last altered a hydro tray, which spiderlings spawned from.")
-		visible_message(span_warning("The pests seem to behave oddly..."))
-		spawn_atom_to_turf(/obj/structure/spider/spiderling/hunter, src, 3, FALSE)
-	else if(myseed)
-		visible_message(span_warning("The pests seem to behave oddly in [myseed.name] tray, but quickly settle down..."))
-
 /obj/machinery/hydroponics/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
@@ -829,13 +815,17 @@
 				var/water_amt = reagent_source.reagents.get_reagent_amount(/datum/reagent/water) * split / reagent_source.reagents.total_volume
 				H.adjust_waterlevel(round(water_amt))
 				reagent_source.reagents.remove_reagent(/datum/reagent/water, water_amt)
+
 			reagent_source.reagents.trans_to(H.reagents, split, transfered_by = user)
 			lastuser = WEAKREF(user)
+
 			if(IS_EDIBLE(reagent_source) || istype(reagent_source, /obj/item/reagent_containers/pill))
 				qdel(reagent_source)
 				H.update_appearance()
 				return 1
+
 			H.update_appearance()
+
 		if(reagent_source) // If the source wasn't composted and destroyed
 			reagent_source.update_appearance()
 		return 1

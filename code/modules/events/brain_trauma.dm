@@ -1,7 +1,7 @@
 /datum/round_event_control/brain_trauma
 	name = "Spontaneous Brain Trauma"
+	weight = 1 //Fuck off
 	typepath = /datum/round_event/brain_trauma
-	weight = 7
 
 /datum/round_event/brain_trauma
 	fakeable = FALSE

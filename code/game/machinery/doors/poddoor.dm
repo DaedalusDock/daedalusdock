@@ -8,7 +8,7 @@
 	sub_door = TRUE
 	explosion_block = 3
 	heat_proof = TRUE
-	safe = FALSE
+	dont_close_on_dense_objects = FALSE
 	max_integrity = 600
 	armor = list(BLUNT = 50, PUNCTURE = 100, SLASH = 100, LASER = 100, ENERGY = 100, BOMB = 50, BIO = 100, FIRE = 100, ACID = 70)
 	resistance_flags = FIRE_PROOF
@@ -124,10 +124,10 @@
 /obj/machinery/door/poddoor/do_animate(animation)
 	switch(animation)
 		if("opening")
-			flick("opening", src)
+			z_flick("opening", src)
 			playsound(src, 'sound/machines/doors/blastdoor_open.ogg', 60, TRUE)
 		if("closing")
-			flick("closing", src)
+			z_flick("closing", src)
 			playsound(src, 'sound/machines/doors/blastdoor_close.ogg', 60, TRUE)
 
 /obj/machinery/door/poddoor/update_icon_state()

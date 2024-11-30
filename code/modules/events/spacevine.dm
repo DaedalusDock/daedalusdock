@@ -39,7 +39,7 @@
 /datum/round_event_control/spacevine
 	name = "Space Vines"
 	typepath = /datum/round_event/spacevine
-	weight = 15
+	weight = 4
 	max_occurrences = 3
 	min_players = 10
 
@@ -132,11 +132,11 @@
 		return
 	if(prob(TOXICITY_MUTATION_PROB) && istype(crosser) && !isvineimmune(crosser))
 		to_chat(crosser, span_alert("You accidentally touch the vine and feel a strange sensation."))
-		crosser.adjustToxLoss(20)
+		crosser.adjustToxLoss(20, cause_of_death = "Spacevine toxin")
 
 /datum/spacevine_mutation/toxicity/on_eat(obj/structure/spacevine/holder, mob/living/eater)
 	if(!isvineimmune(eater))
-		eater.adjustToxLoss(20)
+		eater.adjustToxLoss(20, cause_of_death = "Spacevine toxin")
 
 /datum/spacevine_mutation/explosive  // JC IT'S A BOMB
 	name = "Explosive"

@@ -1,0 +1,5 @@
+/obj/item/reagent_containers/food/drinks/mug : /obj/item/reagent_containers/glass/mug
+/obj/item/reagent_containers/food/drinks/mug/tea : /obj/item/reagent_containers/glass/mug/tea
+/obj/item/reagent_containers/food/drinks/mug/coco : /obj/item/reagent_containers/glass/mug/coco
+/obj/item/reagent_containers/food/drinks/mug/beagle : /obj/item/reagent_containers/glass/mug/beagle
+/obj/item/reagent_containers/food/drinks/britcup : /obj/item/reagent_containers/glass/mug/brit

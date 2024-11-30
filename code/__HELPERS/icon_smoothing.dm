@@ -226,8 +226,7 @@
 			return ADJ_FOUND
 
 	if(smoothing_flags & SMOOTH_OBJ)
-		for(var/am in target_turf)
-			var/atom/movable/thing = am
+		for(var/atom/movable/thing as anything in target_turf)
 			if(!thing.anchored || isnull(thing.smoothing_groups))
 				continue
 			for(var/target in canSmoothWith)

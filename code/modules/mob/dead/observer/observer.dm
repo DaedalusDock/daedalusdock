@@ -144,7 +144,7 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 		remove_data_huds()
 
 	// Update our old body's medhud since we're abandoning it
-	if(mind?.current)
+	if(isliving(mind?.current))
 		mind.current.med_hud_set_status()
 
 	QDEL_NULL(spawners_menu)
@@ -281,7 +281,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		set_glide_size(glide_size_override)
 	if(NewLoc)
 		abstract_move(NewLoc)
-		update_parallax_contents()
 	else
 		var/turf/destination = get_turf(src)
 
@@ -304,6 +303,12 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/dead/observer/forceMove(atom/destination)
 	abstract_move(destination) // move like the wind
 	return TRUE
+
+/mob/dead/observer/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	. = ..()
+	var/area/new_area = get_area(src)
+	if(new_area != ambience_tracked_area)
+		update_ambience_area(new_area)
 
 /mob/dead/observer/verb/reenter_corpse()
 	set category = "Ghost"
@@ -402,7 +407,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 
 	usr.abstract_move(pick(L))
-	update_parallax_contents()
 
 /mob/dead/observer/verb/follow()
 	set category = "Ghost"
@@ -413,7 +417,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 // This is the ghost's follow verb with an argument
 /mob/dead/observer/proc/ManualFollow(atom/movable/target)
-	if (!istype(target) || !target.z || (is_secret_level(target.z) && !client?.holder))
+	if (!istype(target) || !target.z || target == src || (is_secret_level(target.z) && !client?.holder))
 		return
 
 	var/icon/I = icon(target.icon,target.icon_state,target.dir)
@@ -477,7 +481,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	if(isturf(destination_turf))
 		source_mob.abstract_move(destination_turf)
-		source_mob.update_parallax_contents()
 	else
 		to_chat(source_mob, span_danger("This mob is not located in the game world."))
 
@@ -601,16 +604,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "View Crew Manifest"
 	set category = "Ghost"
 
-	if(!client)
-		return
-	if(world.time < client.crew_manifest_delay)
-		return
-	client.crew_manifest_delay = world.time + (1 SECONDS)
-
-	if(!GLOB.crew_manifest_tgui)
-		GLOB.crew_manifest_tgui = new /datum/crew_manifest(src)
-
-	GLOB.crew_manifest_tgui.ui_interact(src)
+	show_crew_manifest(src)
 
 //this is called when a ghost is drag clicked to something.
 /mob/dead/observer/MouseDrop(atom/over)
@@ -650,12 +644,12 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/dead/observer/proc/show_data_huds()
 	for(var/hudtype in datahuds)
 		var/datum/atom_hud/H = GLOB.huds[hudtype]
-		H.add_hud_to(src)
+		H.show_to(src)
 
 /mob/dead/observer/proc/remove_data_huds()
 	for(var/hudtype in datahuds)
 		var/datum/atom_hud/H = GLOB.huds[hudtype]
-		H.remove_hud_from(src)
+		H.hide_from(src)
 
 /mob/dead/observer/verb/toggle_data_huds()
 	set name = "Toggle Sec/Med/Diag HUD"
@@ -793,6 +787,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		UnregisterSignal(target, COMSIG_MOB_UPDATE_SIGHT)
 		LAZYREMOVE(target.observers, src)
 
+	client?.update_ambience_pref()
+
 /mob/dead/observer/verb/observe()
 	set name = "Observe"
 	set category = "Ghost"
@@ -814,17 +810,23 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if (!isobserver(usr))
 		return
 
+	if(target == usr)
+		return
+
 	var/mob/chosen_target = possible_destinations[target]
 
 	// During the break between opening the input menu and selecting our target, has this become an invalid option?
 	if(!SSpoints_of_interest.is_valid_poi(chosen_target))
 		return
 
-	do_observe(chosen_target)
+	if(!client || client.restricted_mode)
+		ManualFollow(chosen_target)
+	else
+		do_observe(chosen_target)
 
 /mob/dead/observer/proc/do_observe(mob/mob_eye)
 	//Istype so we filter out points of interest that are not mobs
-	if(!client || !istype(mob_eye))
+	if(!client || !istype(mob_eye) || mob_eye == src)
 		return
 
 	if(isnewplayer(mob_eye))
@@ -847,6 +849,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	RegisterSignal(mob_eye, COMSIG_MOB_UPDATE_SIGHT, PROC_REF(on_observing_sight_changed))
 
+	SSambience.remove_ambience_client(client)
 	moveToNullspace()
 
 /mob/dead/observer/proc/on_observing_sight_changed(datum/source)

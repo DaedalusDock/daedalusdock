@@ -143,7 +143,7 @@
 		item.update_action_buttons(UPDATE_BUTTON_STATUS)
 	return item.equipped(src, slot, initial)
 
-/mob/living/carbon/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+/mob/living/carbon/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE)
 	. = ..() //Sets the default return value to what the parent returns.
 	if(!. || !I) //We don't want to set anything to null if the parent returned 0.
 		return
@@ -320,9 +320,13 @@
 
 ///Returns an item that is covering a body_zone (BODY_ZONE_CHEST, etc)
 /mob/living/carbon/proc/get_item_covering_zone(zone)
-	zone = body_zone2cover_flags(zone)
+	var/list/zones = body_zone2cover_flags(zone)
+	var/cover_field = NONE
+	for(var/_zone in zones)
+		cover_field |= _zone
+
 	for(var/obj/item/inv_item in get_all_worn_items())
-		if(zone & inv_item.body_parts_covered)
+		if(cover_field & inv_item.body_parts_covered)
 			return inv_item
 
 /// Update any visuals relating to an item when it's equipped, unequipped, or it's flags_inv changes.

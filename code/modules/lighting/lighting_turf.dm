@@ -53,8 +53,7 @@
 	if (!lighting_object)
 		return FALSE
 
-	return !(luminosity || dynamic_lumcount)
-
+	return !(loc:luminosity || luminosity || dynamic_lumcount)
 
 ///Proc to add movable sources of opacity on the turf and let it handle lighting code.
 /turf/proc/add_opacity_source(atom/movable/new_source)
@@ -81,12 +80,16 @@
 			reconsider_lights()
 		return
 	directional_opacity = NONE
-	for(var/atom/movable/opacity_source as anything in opacity_sources)
-		if(opacity_source.flags_1 & ON_BORDER_1)
-			directional_opacity |= opacity_source.dir
-		else //If fulltile and opaque, then the whole tile blocks view, no need to continue checking.
-			directional_opacity = ALL_CARDINALS
-			break
+	if(opacity_sources)
+		for(var/atom/movable/opacity_source as anything in opacity_sources)
+			if(opacity_source.flags_1 & ON_BORDER_1)
+				directional_opacity |= opacity_source.dir
+			else //If fulltile and opaque, then the whole tile blocks view, no need to continue checking.
+				directional_opacity = ALL_CARDINALS
+				break
+	else
+		for(var/atom/movable/content as anything in contents)
+			SEND_SIGNAL(content, COMSIG_TURF_NO_LONGER_BLOCK_LIGHT)
 	if(. != directional_opacity && (. == ALL_CARDINALS || directional_opacity == ALL_CARDINALS))
 		reconsider_lights() //The lighting system only cares whether the tile is fully concealed from all directions or not.
 
@@ -94,8 +97,8 @@
 ///Transfer the lighting of one area to another
 /turf/proc/transfer_area_lighting(area/old_area, area/new_area)
 	if(SSlighting.initialized)
-		if (new_area.static_lighting != old_area.static_lighting)
-			if (new_area.static_lighting)
+		if (new_area.area_lighting != old_area.area_lighting)
+			if (new_area.area_lighting == AREA_LIGHTING_DYNAMIC)
 				lighting_build_overlay()
 			else
 				lighting_clear_overlay()

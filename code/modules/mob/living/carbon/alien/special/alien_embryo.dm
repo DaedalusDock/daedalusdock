@@ -1,4 +1,4 @@
-// This is to replace the previous datum/disease/alien_embryo for slightly improved handling and maintainability
+// This is to replace the previous datum/pathogen/alien_embryo for slightly improved handling and maintainability
 // It functions almost identically (see code/datums/diseases/alien_embryo.dm)
 /obj/item/organ/body_egg/alien_embryo
 	name = "alien embryo"
@@ -49,10 +49,10 @@
 			if(DT_PROB(2, delta_time))
 				to_chat(owner, span_danger("Your stomach hurts."))
 				if(prob(20))
-					owner.adjustToxLoss(1)
+					owner.adjustToxLoss(1, cause_of_death = "Alien embryo")
 		if(6)
 			to_chat(owner, span_danger("You feel something tearing its way out of your chest..."))
-			owner.adjustToxLoss(5 * delta_time) // Why is this [TOX]?
+			owner.adjustToxLoss(5 * delta_time, cause_of_death = "Alien embryo") // Why is this [TOX]?
 
 /// Controls Xenomorph Embryo growth. If embryo is fully grown (or overgrown), stop the proc. If not, increase the stage by one and if it's not fully grown (stage 6), add a timer to do this proc again after however long the growth time variable is.
 /obj/item/organ/body_egg/alien_embryo/proc/advance_embryo_stage()

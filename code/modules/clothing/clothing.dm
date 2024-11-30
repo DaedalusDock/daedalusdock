@@ -76,18 +76,6 @@
 	if(!icon_state)
 		item_flags |= ABSTRACT
 
-/obj/item/clothing/MouseDrop(atom/over_object)
-	. = ..()
-	var/mob/M = usr
-
-	if(ismecha(M.loc)) // stops inventory actions in a mech
-		return
-
-	if(!M.incapacitated() && loc == M && istype(over_object, /atom/movable/screen/inventory/hand))
-		var/atom/movable/screen/inventory/hand/H = over_object
-		if(M.putItemFromInventoryInHandIfPossible(src, H.held_index))
-			add_fingerprint(usr)
-
 //This code is cursed, moths are cursed, and someday I will destroy it. but today is not that day.
 /obj/item/food/clothing
 	name = "temporary moth clothing snack item"
@@ -311,10 +299,11 @@
 	..()
 	if(!istype(user))
 		return
-	UnregisterSignal(user, COMSIG_MOVABLE_MOVED)
-	for(var/trait in clothing_traits)
-		REMOVE_TRAIT(user, trait, "[CLOTHING_TRAIT] [REF(src)]")
 
+	UnregisterSignal(user, COMSIG_MOVABLE_MOVED)
+
+	for(var/trait in clothing_traits)
+		REMOVE_CLOTHING_TRAIT(user, trait)
 
 	if(LAZYLEN(user_vars_remembered))
 		for(var/variable in user_vars_remembered)
@@ -330,8 +319,10 @@
 	if(slot_flags & slot) //Was equipped to a valid slot for this item?
 		if(iscarbon(user) && LAZYLEN(zones_disabled))
 			RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(bristle), override = TRUE)
+
 		for(var/trait in clothing_traits)
-			ADD_TRAIT(user, trait, "[CLOTHING_TRAIT] [REF(src)]")
+			ADD_CLOTHING_TRAIT(user, trait)
+
 		if (LAZYLEN(user_vars_to_edit))
 			for(var/variable in user_vars_to_edit)
 				if(variable in user.vars)

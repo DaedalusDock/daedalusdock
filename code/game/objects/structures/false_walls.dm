@@ -211,7 +211,10 @@
 		icon = plating_mat_ref.wall_icon
 		material_color = plating_mat_ref.wall_color
 
-	stripe_icon = plating_mat_ref.wall_stripe_icon
+	if(reinf_mat_ref)
+		stripe_icon = plating_mat_ref.reinforced_wall_stripe_icon
+	else
+		stripe_icon = plating_mat_ref.wall_stripe_icon
 
 	plating_material = plating_mat
 	reinf_material = reinf_mat
@@ -219,9 +222,12 @@
 	if(reinf_material)
 		name = "reinforced [plating_mat_ref.name] [plating_mat_ref.wall_name]"
 		desc = "It seems to be a section of hull reinforced with [reinf_mat_ref.name] and plated with [plating_mat_ref.name]."
+		explosion_block = initial(explosion_block) * 2
 	else
 		name = "[plating_mat_ref.name] [plating_mat_ref.wall_name]"
 		desc = "It seems to be a section of hull plated with [plating_mat_ref.name]."
+		explosion_block = initial(explosion_block)
+
 	matset_name = name
 
 	if(update_appearance)

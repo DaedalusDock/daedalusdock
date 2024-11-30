@@ -35,8 +35,9 @@
 
 	if(organ_flags & ORGAN_DEAD)
 		// forced to ensure people don't use it to gain tox as slime person
-		organ_owner.adjustToxLoss(2 * delta_time, updating_health = FALSE, forced = TRUE)
-		return TRUE
+		organ_owner.adjustToxLoss(2 * delta_time, updating_health = FALSE, forced = TRUE, cause_of_death = "Necrotic appendix")
+		return
+
 	else if(inflamation_stage)
 		return inflamation(delta_time)
 
@@ -64,7 +65,7 @@
 				to_chat(organ_owner, span_warning("You feel a stabbing pain in your abdomen!"))
 				organ_owner.adjustOrganLoss(ORGAN_SLOT_APPENDIX, 5)
 				organ_owner.Stun(rand(40, 60))
-				organ_owner.adjustToxLoss(1, updating_health = FALSE, forced = TRUE)
+				organ_owner.adjustToxLoss(1, updating_health = FALSE, forced = TRUE, cause_of_death = "Appendicitis")
 				. = TRUE
 		if(3)
 			if(DT_PROB(0.5, delta_time))

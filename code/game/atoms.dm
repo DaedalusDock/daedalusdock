@@ -19,10 +19,17 @@
 	/// Forensics datum, initialzed when needed.
 	var/tmp/datum/forensics/forensics
 
-	///This atom's HUD (med/sec, etc) images. Associative list.
+	///all of this atom's HUD (med/sec, etc) images. Associative list of the form: list(hud category = hud image or images for that category).
+	///most of the time hud category is associated with a single image, sometimes its associated with a list of images.
+	///not every hud in this list is actually used. for ones available for others to see, look at active_hud_list.
 	var/tmp/list/image/hud_list = null
+	///all of this atom's HUD images which can actually be seen by players with that hud
+	var/tmp/list/image/active_hud_list = null
+	/// A list of atom huds this object is within
+	var/tmp/list/in_atom_huds = null
+
 	///HUD images that this atom can provide.
-	var/tmp/list/hud_possible
+	var/list/hud_possible
 
 	/**
 	 * used to store the different colors on an atom
@@ -300,7 +307,7 @@
 	if(alternate_appearances)
 		for(var/current_alternate_appearance in alternate_appearances)
 			var/datum/atom_hud/alternate_appearance/selected_alternate_appearance = alternate_appearances[current_alternate_appearance]
-			selected_alternate_appearance.remove_from_hud(src)
+			selected_alternate_appearance.remove_atom_from_hud(src)
 
 	if(reagents)
 		QDEL_NULL(reagents)
@@ -316,9 +323,14 @@
 	if(length(overlays))
 		overlays.Cut()
 
-	QDEL_NULL(light)
-	QDEL_NULL(ai_controller)
+	if(light)
+		QDEL_NULL(light)
+
+	if(ai_controller)
+		QDEL_NULL(ai_controller)
+
 	LAZYNULL(managed_overlays)
+
 	if(length(light_sources))
 		light_sources.len = 0
 
@@ -366,7 +378,8 @@
 
 /// Creates our forensics datum
 /atom/proc/create_forensics()
-	ASSERT(isnull(forensics))
+	if(QDELING(src))
+		return
 	forensics = new(src)
 
 /atom/proc/handle_ricochet(obj/projectile/ricocheting_projectile)
@@ -735,7 +748,7 @@
 				if(user.can_see_reagents()) //Show each individual reagent
 					. += span_notice("You see the following reagents:")
 					for(var/datum/reagent/current_reagent as anything in reagents.reagent_list)
-						. += span_notice("* [round(current_reagent.volume, 0.01)] units of [current_reagent.name].")
+						. += span_notice("* [round(current_reagent.volume, CHEMICAL_VOLUME_ROUNDING)] units of [current_reagent.name].")
 
 					if(reagents.is_reacting)
 						. += span_alert("A chemical reaction is taking place.")
@@ -750,6 +763,10 @@
 				. += span_notice("It looks about [reagents.total_volume / reagents.maximum_volume * 100]% full.")
 			else
 				. += span_alert("It looks empty.")
+
+	if(ishuman(user) && !ismovable(loc) && !ismob(src))
+		var/mob/living/carbon/human/human_user = user
+		human_user.forensic_analysis_roll(src)
 
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
 
@@ -894,6 +911,17 @@
 
 /// Handle what happens when your contents are exploded by a bomb
 /atom/proc/contents_explosion(severity, target)
+	for(var/atom/movable/movable_thing as anything in contents)
+		if(QDELETED(movable_thing))
+			continue
+
+		switch(severity)
+			if(EXPLODE_DEVASTATE)
+				EX_ACT(movable_thing, EXPLODE_DEVASTATE)
+			if(EXPLODE_HEAVY)
+				EX_ACT(movable_thing, EXPLODE_HEAVY)
+			if(EXPLODE_LIGHT)
+				EX_ACT(movable_thing, EXPLODE_LIGHT)
 	return //For handling the effects of explosions on contents that would not normally be effected
 
 /**
@@ -1069,12 +1097,14 @@
 /**
  * Respond to an electric bolt action on our item
  *
- * Default behaviour is to return, we define here to allow for cleaner code later on
+ * Returns an amount of power to use for future shocks.
  */
 /atom/proc/zap_act(power, zap_flags)
-	return
+	ADD_TRAIT(src, TRAIT_BEING_SHOCKED, WAS_SHOCKED)
+	addtimer(TRAIT_CALLBACK_REMOVE(src, TRAIT_BEING_SHOCKED, WAS_SHOCKED), 1 SECONDS, TIMER_UNIQUE|TIMER_NO_HASH_WAIT)
+	return 0
 
-/**
+/**s
  * If someone's trying to dump items onto our atom, where should they be dumped to?
  *
  * Return a loc to place objects, or null to stop dumping.
@@ -1089,15 +1119,6 @@
  */
 /atom/proc/handle_atom_del(atom/deleting_atom)
 	SEND_SIGNAL(src, COMSIG_ATOM_CONTENTS_DEL, deleting_atom)
-
-/**
- * called when the turf the atom resides on is ChangeTurfed
- *
- * Default behaviour is to loop through atom contents and call their HandleTurfChange() proc
- */
-/atom/proc/HandleTurfChange(turf/changing_turf)
-	for(var/atom/current_atom as anything in src)
-		current_atom.HandleTurfChange(changing_turf)
 
 /**
  * the vision impairment to give to the mob whose perspective is set to that atom
@@ -1232,11 +1253,11 @@
 	switch(var_name)
 		if(NAMEOF(src, light_inner_range))
 			if(light_system == COMPLEX_LIGHT)
-				set_light(l_inner_range = var_value)
+				set_light(l_outer_range = light_outer_range, l_inner_range = var_value, )
 				. = TRUE
 		if(NAMEOF(src, light_outer_range))
 			if(light_system == COMPLEX_LIGHT)
-				set_light(l_outer_range = var_value)
+				set_light(l_outer_range = var_value, l_inner_range = light_inner_range)
 			else
 				set_light_range(var_value)
 			. = TRUE
@@ -1253,7 +1274,10 @@
 				set_light_color(var_value)
 			. = TRUE
 		if(NAMEOF(src, light_on))
-			set_light_on(var_value)
+			if(light_system == COMPLEX_LIGHT)
+				set_light(l_on = var_value)
+			else
+				set_light_color(var_value)
 			. = TRUE
 		if(NAMEOF(src, light_flags))
 			set_light_flags(var_value)
@@ -2006,18 +2030,19 @@
 			return 0
 
 	var/list/forced_gravity = list()
-	if(SEND_SIGNAL(src, COMSIG_ATOM_HAS_GRAVITY, gravity_turf, forced_gravity))
-		if(!length(forced_gravity))
-			SEND_SIGNAL(gravity_turf, COMSIG_TURF_HAS_GRAVITY, src, forced_gravity)
+	SEND_SIGNAL(src, COMSIG_ATOM_HAS_GRAVITY, gravity_turf, forced_gravity)
+	SEND_SIGNAL(gravity_turf, COMSIG_TURF_HAS_GRAVITY, src, forced_gravity)
+	if(length(forced_gravity))
+		var/positive_grav = max(forced_gravity)
+		var/negative_grav = min(min(forced_gravity), 0) //negative grav needs to be below or equal to 0
 
-		var/max_grav = 0
-		for(var/i in forced_gravity)//our gravity is the strongest return forced gravity we get
-			max_grav = max(max_grav, i)
-		//cut so we can reuse the list, this is ok since forced gravity movers are exceedingly rare compared to all other movement
-		return max_grav
+		//our gravity is sum of the most massive positive and negative numbers returned by the signal
+		//so that adding two forced_gravity elements with an effect size of 1 each doesnt add to 2 gravity
+		//but negative force gravity effects can cancel out positive ones
+
+		return (positive_grav + negative_grav)
 
 	var/area/turf_area = gravity_turf.loc
-
 	return !gravity_turf.force_no_gravity && (turf_area.has_gravity || SSmapping.gravity_by_zlevel[gravity_turf.z])
 
 /**
@@ -2251,16 +2276,14 @@
  * For turfs this will only be used if pathing_pass_method is TURF_PATHING_PASS_PROC
  *
  * Arguments:
- * * access- A list representing what access we have (and thus if we can open things like airlocks or windows to pass through them).
- * * to_dir- What direction we're trying to move in, relevant for things like directional windows that only block movement in certain directions
- * * caller- The movable we're checking pass flags for, if we're making any such checks
- * * no_id: When true, doors with public access will count as impassible
+ * * to_dir - What direction we're trying to move in, relevant for things like directional windows that only block movement in certain directions
+ * * pass_info - Datum that stores info about the thing that's trying to pass us
  *
  * IMPORTANT NOTE: /turf/proc/LinkBlockedWithAccess assumes that overrides of CanAStarPass will always return true if density is FALSE
  * If this is NOT you, ensure you edit your can_astar_pass variable. Check __DEFINES/path.dm
  **/
-/atom/proc/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
-	if(caller && (caller.pass_flags & pass_flags_self))
+/atom/proc/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	if(pass_info && (pass_info.pass_flags & pass_flags_self))
 		return TRUE
 	. = !density
 
@@ -2295,3 +2318,7 @@
 /atom/proc/reset_plane_and_layer()
 	plane = initial(plane)
 	layer = initial(layer)
+
+///returns how much the object blocks an explosion. Used by subtypes.
+/atom/proc/GetExplosionBlock()
+	CRASH("Unimplemented GetExplosionBlock()")

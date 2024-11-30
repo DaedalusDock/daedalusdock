@@ -1,6 +1,6 @@
 /datum/surgery_step/robotics
 	can_infect = 0
-	surgery_candidate_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP
+	surgery_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP
 	abstract_type = /datum/surgery_step/robotics
 
 /datum/surgery_step/robotics/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -11,13 +11,13 @@
 /datum/surgery_step/internal/remove_organ/robotic
 	name = "Remove robotic component"
 	can_infect = 0
-	surgery_candidate_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/internal/replace_organ/robotic
 	name = "Replace robotic component"
 	can_infect = 0
 	robotic_surgery = TRUE
-	surgery_candidate_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 //////////////////////////////////////////////////////////////////
 //	 unscrew robotic limb hatch surgery step
@@ -41,12 +41,12 @@
 
 /datum/surgery_step/robotics/unscrew_hatch/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] starts to [affected.hatch_state == HATCH_CLOSED ? "unscrew" : "screw"] the maintenance hatch on [target]'s [affected.plaintext_zone] with [tool]."))
+	user.visible_message(span_notice("[user] starts to [affected.hatch_state == HATCH_CLOSED ? "unscrew" : "screw"] the maintenance hatch on [target]'s [affected.plaintext_zone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/robotics/unscrew_hatch/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] has [affected.hatch_state == HATCH_CLOSED ? "unscrewed" : "screwed"] the maintenance hatch on [target]'s [affected.plaintext_zone] with \the [tool]."))
+	user.visible_message(span_notice("[user] has [affected.hatch_state == HATCH_CLOSED ? "unscrewed" : "screwed"] the maintenance hatch on [target]'s [affected.plaintext_zone] with \the [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	if(affected.hatch_state == HATCH_CLOSED)
 		affected.hatch_state = HATCH_UNSCREWED
 	else
@@ -55,7 +55,7 @@
 
 /datum/surgery_step/robotics/unscrew_hatch/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_warning("[user]'s [tool.name] slips, failing to [affected.hatch_state == HATCH_CLOSED ? "unscrew" : "screw"] [target]'s [affected.plaintext_zone]."))
+	user.visible_message(span_warning("[user]'s [tool.name] slips, failing to [affected.hatch_state == HATCH_CLOSED ? "unscrew" : "screw"] [target]'s [affected.plaintext_zone]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 //////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@
 
 /datum/surgery_step/robotics/open_hatch/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] starts to [affected.hatch_state == HATCH_UNSCREWED ? "pry open" : "close"] the maintenance hatch on [target]'s [affected.name] with [tool]."))
+	user.visible_message(span_notice("[user] starts to [affected.hatch_state == HATCH_UNSCREWED ? "pry open" : "close"] the maintenance hatch on [target]'s [affected.name] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/robotics/open_hatch/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -95,7 +95,7 @@
 
 /datum/surgery_step/robotics/open_hatch/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_warning("[user]'s [tool.name] slips, failing to [affected.hatch_state == HATCH_UNSCREWED ? "open" : "close"] the hatch on [target]'s [affected.name]."))
+	user.visible_message(span_warning("[user]'s [tool.name] slips, failing to [affected.hatch_state == HATCH_UNSCREWED ? "open" : "close"] the hatch on [target]'s [affected.name]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 //////////////////////////////////////////////////////////////////
@@ -131,17 +131,17 @@
 
 /datum/surgery_step/robotics/repair_brute/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] begins to patch damage to [target]'s [affected.plaintext_zone]'s support structure with [tool]."))
+	user.visible_message(span_notice("[user] begins to patch damage to [target]'s [affected.plaintext_zone]'s support structure with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/robotics/repair_brute/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] finishes patching damage to [target]'s [affected.plaintext_zone] with [tool]."))
+	user.visible_message(span_notice("[user] finishes patching damage to [target]'s [affected.plaintext_zone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/robotics/repair_brute/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_warning("[user]'s [tool.name] slips, damaging the internal structure of [target]'s [affected.plaintext_zone]."))
+	user.visible_message(span_warning("[user]'s [tool.name] slips, damaging the internal structure of [target]'s [affected.plaintext_zone]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.receive_damage(0, rand(5, 10))
 	..()
 
@@ -178,19 +178,19 @@
 
 /datum/surgery_step/robotics/repair_burn/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] begins to splice new cabling into [target]'s [affected.plaintext_zone]."))
+	user.visible_message(span_notice("[user] begins to splice new cabling into [target]'s [affected.plaintext_zone]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/robotics/repair_burn/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] finishes splicing cable into [target]'s [affected.plaintext_zone]."))
+	user.visible_message(span_notice("[user] finishes splicing cable into [target]'s [affected.plaintext_zone]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.heal_damage(0, rand(30,50), BODYTYPE_ROBOTIC)
 	tool.use(2) // We need 3 cable coil, and `handle_post_surgery()` removes 1.
 	..()
 
 /datum/surgery_step/robotics/repair_burn/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_warning("[user] causes a short circuit in [target]'s [affected.plaintext_zone]!"))
+	user.visible_message(span_warning("[user] causes a short circuit in [target]'s [affected.plaintext_zone]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.receive_damage(0, rand(5,10))
 	..()
 
@@ -205,7 +205,7 @@
 	)
 	min_duration = 4 SECONDS
 	max_duration = 6 SECONDS
-	surgery_candidate_flags = SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/robotics/fix_organ_robotic/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
@@ -235,7 +235,7 @@
 		return list(organ, organs[organ])
 
 /datum/surgery_step/robotics/fix_organ_robotic/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message(span_notice("[user] starts mending the damage to [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] mechanisms."))
+	user.visible_message(span_notice("[user] starts mending the damage to [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] mechanisms."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/robotics/fix_organ_robotic/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -243,13 +243,13 @@
 	if(!I || !I.owner == target)
 		return
 
-	user.visible_message(span_notice("[user] repairs [target]'s [I.name] with [tool]."))
+	user.visible_message(span_notice("[user] repairs [target]'s [I.name] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	I.damage = 0
 	..()
 
 /datum/surgery_step/robotics/fix_organ_robotic/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_warning("[user]'s hand slips, gumming up the mechanisms inside of [target]'s [affected.plaintext_zone] with [tool]!"))
+	user.visible_message(span_warning("[user]'s hand slips, gumming up the mechanisms inside of [target]'s [affected.plaintext_zone] with [tool]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.create_wound(WOUND_CUT, 5)
 	for(var/obj/item/organ/I in affected.contained_organs)
 		I.applyOrganDamage(rand(3,5))
@@ -265,7 +265,7 @@
 	)
 	min_duration = 9 SECONDS
 	max_duration = 11 SECONDS
-	surgery_candidate_flags = SURGERY_NO_STUMP | SURGERY_NO_FLESH | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_STUMP | SURGERY_NO_FLESH | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/robotics/detach_organ_robotic/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -283,11 +283,11 @@
 		return list(organ_to_remove,attached_organs[organ_to_remove])
 
 /datum/surgery_step/robotics/detach_organ_robotic/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message(span_notice("[user] starts to decouple [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool]."))
+	user.visible_message(span_notice("[user] starts to decouple [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/robotics/detach_organ_robotic/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message(span_notice("[user] has decoupled [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool]."))
+	user.visible_message(span_notice("[user] has decoupled [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	var/obj/item/organ/I = target.getorganslot((LAZYACCESS(target.surgeries_in_progress, target_zone))[2])
 	if(istype(I))
 		I.cut_away()
@@ -308,7 +308,7 @@
 	)
 	min_duration = 10 SECONDS
 	max_duration = 12 SECONDS
-	surgery_candidate_flags = SURGERY_NO_STUMP | SURGERY_NO_FLESH | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_STUMP | SURGERY_NO_FLESH | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/robotics/attach_organ_robotic/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/list/removable_organs = list()
@@ -326,7 +326,7 @@
 		return list(organ_to_replace, removable_organs[organ_to_replace])
 
 /datum/surgery_step/robotics/attach_organ_robotic/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message(span_notice("[user] begins reattaching [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool]."))
+	user.visible_message(span_notice("[user] begins reattaching [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/robotics/attach_organ_robotic/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -335,7 +335,7 @@
 	if(!O)
 		return
 
-	user.visible_message(span_notice("[user] has reattached [target]'s [O.name] with \the [tool]."))
+	user.visible_message(span_notice("[user] has reattached [target]'s [O.name] with \the [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 	O.organ_flags &= ~ORGAN_CUT_AWAY
 	affected.remove_cavity_item(O)
@@ -343,5 +343,5 @@
 	..()
 
 /datum/surgery_step/robotics/attach_organ_robotic/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message(span_warning("[user]'s hand slips, disconnecting [tool]."))
+	user.visible_message(span_warning("[user]'s hand slips, disconnecting [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()

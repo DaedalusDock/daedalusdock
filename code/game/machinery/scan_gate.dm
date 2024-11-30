@@ -31,7 +31,7 @@
 	///Which setting is the scanner checking for? See defines in scan_gate.dm for the list.
 	var/scangate_mode = SCANGATE_NONE
 	///Is searching for a disease, what severity is enough to trigger the gate?
-	var/disease_threshold = DISEASE_SEVERITY_MINOR
+	var/disease_threshold = PATHOGEN_SEVERITY_MINOR
 	///If scanning for a specific species, what species is it looking for?
 	var/detect_species = SCANGATE_HUMAN
 	///Flips all scan results for inverse scanning. Signals if scan returns false.
@@ -124,9 +124,10 @@
 			if(ishuman(M))
 				var/mob/living/carbon/human/H = M
 				var/perpname = H.get_face_name(H.get_id_name())
-				var/datum/data/record/R = find_record("name", perpname, GLOB.data_core.security)
-				if(!R || (R.fields["criminal"] == CRIMINAL_WANTED))
+				var/datum/data/record/security/R = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_SECURITY)
+				if(!R || (R.fields[DATACORE_CRIMINAL_STATUS] == CRIMINAL_WANTED))
 					beep = TRUE
+
 		if(SCANGATE_MINDSHIELD)
 			if(HAS_TRAIT(M, TRAIT_MINDSHIELD))
 				beep = TRUE

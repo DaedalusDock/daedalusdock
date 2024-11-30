@@ -15,7 +15,12 @@
 	attack_verb_continuous = list("whips", "lashes", "disciplines")
 	attack_verb_simple = list("whip", "lash", "discipline")
 	max_integrity = 300
+
 	equip_sound = 'sound/items/equip/toolbelt_equip.ogg'
+	equip_delay_self = EQUIP_DELAY_BELT
+	equip_delay_other = EQUIP_DELAY_BELT * 1.5
+	strip_delay = EQUIP_DELAY_BELT * 1.5
+
 	var/content_overlays = FALSE //If this is true, the belt will gain overlays based on what it's holding
 
 /obj/item/storage/belt/suicide_act(mob/living/carbon/user)
@@ -813,7 +818,9 @@
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 	atom_storage.max_slots = 1
-	atom_storage.rustle_sound = FALSE
+	atom_storage.rustle_sound = null
+	atom_storage.open_sound = null
+	atom_storage.close_sound = null
 	atom_storage.max_specific_storage = WEIGHT_CLASS_BULKY
 	atom_storage.set_holdable(list(
 		/obj/item/melee/sabre,

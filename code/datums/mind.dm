@@ -36,10 +36,10 @@
 	var/mob/living/current
 	var/active = FALSE
 
-	///a list of /datum/memories. assoc type of memory = memory datum. only one type of memory will be stored, new ones of the same type overriding the last.
-	var/list/memories = list()
-	///reference to the memory panel tgui
-	var/datum/memory_panel/memory_panel
+	/// A k:v list of note type : contents
+	VAR_PRIVATE/list/notes = list(NOTES_CUSTOM = "")
+	///reference to the note panel tgui
+	var/datum/note_panel/note_panel
 
 	/// Job datum indicating the mind's role. This should always exist after initialization, as a reference to a singleton.
 	var/datum/job/assigned_role
@@ -50,12 +50,15 @@
 	var/datum/martial_art/martial_art
 	var/static/default_martial_art = new/datum/martial_art
 	var/miming = FALSE // Mime's vow of silence
+
 	var/list/antag_datums
-	var/antag_hud_icon_state = null //this mind's ANTAG_HUD should have this icon_state
-	var/datum/atom_hud/alternate_appearance/basic/antagonist_hud/antag_hud = null //this mind's antag HUD
+	///this mind's antag HUD
+	var/datum/atom_hud/alternate_appearance/basic/antagonist_hud/antag_hud = null
+
 	var/holy_role = NONE //is this person a chaplain or admin role allowed to use bibles, Any rank besides 'NONE' allows for this.
 
-	var/mob/living/enslaved_to //If this mind's master is another mob
+	///If this mind's master is another mob (i.e. adamantine golems)
+	var/mob/living/enslaved_to
 	var/datum/language_holder/language_holder
 	var/unconvertable = FALSE
 	var/late_joiner = FALSE
@@ -88,6 +91,11 @@
 	///List of objective-specific equipment that couldn't properly be given to the mind
 	var/list/failed_special_equipment
 
+	///The cooldown for dreams.
+	COOLDOWN_DECLARE(dream_cooldown)
+	/// A lazylist of dream types we have fully experienced
+	var/list/finished_dream_types
+
 /datum/mind/New(_key)
 	key = _key
 	martial_art = default_martial_art
@@ -97,8 +105,7 @@
 /datum/mind/Destroy()
 	SSticker.minds -= src
 	QDEL_NULL(antag_hud)
-	QDEL_LIST(memories)
-	QDEL_NULL(memory_panel)
+	QDEL_NULL(note_panel)
 	QDEL_LIST(antag_datums)
 	QDEL_NULL(language_holder)
 	set_current(null)
@@ -160,7 +167,7 @@
 
 	new_character.mind = src //and associate our new body with ourself
 
-	antag_hud = new_character.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/antagonist_hud, "combo_hud", src)
+	antag_hud = new_character.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/antagonist_hud, "combo_hud", current, src)
 
 	for(var/a in antag_datums) //Makes sure all antag datums effects are applied in the new body
 		var/datum/antagonist/A = a
@@ -679,7 +686,6 @@
 					current.dropItemToGround(W, TRUE) //The TRUE forces all items to drop, since this is an admin undress.
 			if("takeuplink")
 				take_uplink()
-				wipe_memory()//Remove any memory they may have had.
 				log_admin("[key_name(usr)] removed [current]'s uplink.")
 			if("crystals")
 				if(check_rights(R_FUN))
@@ -748,8 +754,13 @@
 
 /// Prints the objectives to the mind's owner. If loudly is true, instead open a window.
 /datum/mind/proc/announce_objectives(loudly)
+	set waitfor = FALSE
 	var/obj_count = 1
 	if(!loudly)
+		var/list/objectives = get_all_objectives()
+		if(!length(objectives))
+			return
+
 		to_chat(current, span_notice("Your current objectives:"))
 		for(var/datum/objective/objective as anything in get_all_objectives())
 			to_chat(current, "<B>[objective.objective_name] #[obj_count]</B>: [objective.explanation_text]")
@@ -812,14 +823,6 @@
 	set_assigned_role(SSjob.GetJobType(/datum/job/space_wizard))
 	special_role = ROLE_WIZARD
 	add_antag_datum(/datum/antagonist/wizard)
-
-
-/datum/mind/proc/make_rev()
-	var/datum/antagonist/rev/head/head = new()
-	head.give_flash = TRUE
-	head.give_hud = TRUE
-	add_antag_datum(head)
-	special_role = ROLE_REV_HEAD
 
 /datum/mind/proc/transfer_martial_arts(mob/living/new_character)
 	if(!ishuman(new_character))
@@ -887,6 +890,38 @@
 		CRASH("set_assigned_role called with invalid role: [isnull(new_role) ? "null" : new_role]")
 	. = assigned_role
 	assigned_role = new_role
+
+/// Getter for the memories list
+/datum/mind/proc/get_notes()
+	. = notes
+
+	if(length(antag_datums))
+		for(var/datum/antagonist/antag_datum as anything in antag_datums)
+			notes[NOTES_ANTAG] += antag_datum.antag_memory
+
+/// Setter for memories.
+/datum/mind/proc/set_note(note_key, content)
+	if(!note_key)
+		return
+
+	if(isnull(content) && (note_key != NOTES_CUSTOM))
+		notes -= note_key
+		return
+
+	notes[note_key] = content
+
+/// Append text to a note.
+/datum/mind/proc/append_note(note_key, content)
+	if(!note_key)
+		return
+
+	if(isnull(content))
+		return
+
+	if(!notes[note_key])
+		notes += note_key
+
+	notes[note_key] += content
 
 /mob/dead/new_player/sync_mind()
 	return

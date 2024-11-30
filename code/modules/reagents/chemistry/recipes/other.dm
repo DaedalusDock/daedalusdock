@@ -210,9 +210,9 @@
 /datum/chemical_reaction/mix_virus/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/datum/reagent/blood/B = locate(/datum/reagent/blood) in holder.reagent_list
 	if(B?.data)
-		var/datum/disease/advance/D = locate(/datum/disease/advance) in B.data["viruses"]
+		var/datum/pathogen/advance/D = locate(/datum/pathogen/advance) in B.data["viruses"]
 		if(D)
-			D.Evolve(level_min, level_max)
+			D.evolve(level_min, level_max)
 
 
 /datum/chemical_reaction/mix_virus/mix_virus_2
@@ -277,9 +277,9 @@
 /datum/chemical_reaction/mix_virus/rem_virus/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/datum/reagent/blood/B = locate(/datum/reagent/blood) in holder.reagent_list
 	if(B?.data)
-		var/datum/disease/advance/D = locate(/datum/disease/advance) in B.data["viruses"]
+		var/datum/pathogen/advance/D = locate(/datum/pathogen/advance) in B.data["viruses"]
 		if(D)
-			D.Devolve()
+			D.devolve()
 
 /datum/chemical_reaction/mix_virus/neuter_virus
 	required_reagents = list(/datum/reagent/space_cleaner = 1)
@@ -288,9 +288,9 @@
 /datum/chemical_reaction/mix_virus/neuter_virus/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/datum/reagent/blood/B = locate(/datum/reagent/blood) in holder.reagent_list
 	if(B?.data)
-		var/datum/disease/advance/D = locate(/datum/disease/advance) in B.data["viruses"]
+		var/datum/pathogen/advance/D = locate(/datum/pathogen/advance) in B.data["viruses"]
 		if(D)
-			D.Neuter()
+			D.neuter_random_symptom()
 
 
 
@@ -309,7 +309,7 @@
 	reaction_flags = REACTION_INSTANT
 
 /datum/chemical_reaction/foam/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	holder.create_foam(/datum/effect_system/foam_spread,2*created_volume,notification=span_danger("The solution spews out foam!"))
+	holder.create_foam(/datum/effect_system/fluid_spread/foam, 2*created_volume, notification = span_danger("The solution spews out foam!"))
 
 
 /datum/chemical_reaction/metalfoam
@@ -319,7 +319,7 @@
 
 
 /datum/chemical_reaction/metalfoam/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	holder.create_foam(/datum/effect_system/foam_spread/metal,5*created_volume,1,span_danger("The solution spews out a metallic foam!"))
+	holder.create_foam(/datum/effect_system/fluid_spread/foam/metal, 5*created_volume, /obj/structure/foamedmetal, span_danger("The solution spews out a metallic foam!"))
 
 /datum/chemical_reaction/ironfoam
 	required_reagents = list(/datum/reagent/iron = 3, /datum/reagent/foaming_agent = 1, /datum/reagent/toxin/acid/fluacid = 1)
@@ -328,7 +328,7 @@
 
 
 /datum/chemical_reaction/ironfoam/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	holder.create_foam(/datum/effect_system/foam_spread/metal,5*created_volume,2,span_danger("The solution spews out a metallic foam!"))
+	holder.create_foam(/datum/effect_system/fluid_spread/foam/metal/iron, 5 * created_volume, /obj/structure/foamedmetal/iron, span_danger("The solution spews out a metallic foam!"))
 
 /datum/chemical_reaction/foaming_agent
 	results = list(/datum/reagent/foaming_agent = 1)

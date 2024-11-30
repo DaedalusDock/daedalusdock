@@ -1,18 +1,24 @@
-import { useBackend, useLocalState } from '../backend';
-import { Window } from '../layouts';
-import { Button, Collapsible, LabeledList, NoticeBox, Section, Stack, Tabs, Tooltip } from '../components';
 import { toTitleCase } from 'common/string';
-import { TableCell, TableRow } from '../components/Table';
 
-export const DebugHealth = (props, context) => {
-  const { data } = useBackend<Record<string, any>>(context);
+import { useBackend, useLocalState } from '../backend';
+import {
+  Button,
+  Collapsible,
+  LabeledList,
+  NoticeBox,
+  Section,
+  Stack,
+  Tabs,
+  Tooltip,
+} from '../components';
+import { TableCell, TableRow } from '../components/Table';
+import { Window } from '../layouts';
+
+export const DebugHealth = (props) => {
+  const { data } = useBackend<Record<string, any>>();
 
   const tabs = Object.keys(data);
-  const [currentTab, setCurrentTab] = useLocalState(
-    context,
-    'currentTab',
-    tabs[0]
-  );
+  const [currentTab, setCurrentTab] = useLocalState('currentTab', tabs[0]);
 
   return (
     <Window width={400} height={500}>
@@ -24,7 +30,8 @@ export const DebugHealth = (props, context) => {
                 <Tabs.Tab
                   key={key}
                   selected={currentTab === key}
-                  onClick={() => setCurrentTab(key)}>
+                  onClick={() => setCurrentTab(key)}
+                >
                   {toTitleCase(key)}
                 </Tabs.Tab>
               ))}
@@ -45,7 +52,7 @@ export const DebugHealth = (props, context) => {
   );
 };
 
-const InfoSection = (props: { data: Record<string, any> }, context) => {
+const InfoSection = (props: { data: Record<string, any> }) => {
   const { data } = props;
 
   return (
@@ -63,7 +70,7 @@ const InfoSection = (props: { data: Record<string, any> }, context) => {
   );
 };
 
-const ExpandableSection = (props: { data: Record<string, any> }, context) => {
+const ExpandableSection = (props: { data: Record<string, any> }) => {
   const { data } = props;
 
   return (
@@ -77,7 +84,7 @@ const ExpandableSection = (props: { data: Record<string, any> }, context) => {
   );
 };
 
-const ArrayDisplay = (props: { label: string; items: any[] }) => {
+const ArrayDisplay = (props: { items: any[]; label: string }) => {
   const { label, items = [] } = props;
 
   return (
@@ -120,7 +127,7 @@ const ObjectDisplay = (props: { items: Record<string, any> }) => {
   );
 };
 
-const TooltipButton = (props, context) => {
+const TooltipButton = (props) => {
   const { item } = props;
   const name = item.name || item.Name || item.NAME || 'Unknown';
 
@@ -135,13 +142,14 @@ const TooltipButton = (props, context) => {
             ))}
           </LabeledList>
         </>
-      }>
+      }
+    >
       <Button color="bad">{name}</Button>
     </Tooltip>
   );
 };
 
-const ListItem = (props: { entry: [string, any] }, context) => {
+const ListItem = (props: { entry: [string, any] }) => {
   const {
     entry: [label, value],
   } = props;

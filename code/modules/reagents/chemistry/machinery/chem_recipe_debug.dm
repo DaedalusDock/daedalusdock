@@ -197,7 +197,7 @@
 	var/list/beaker_contents = list()
 	for(var/datum/reagent/reagent as anything in reagents.reagent_list)
 		beaker_contents.len++
-		beaker_contents[length(beaker_contents)] = list("name" = reagent.name, "volume" = round(reagent.volume, 0.01))
+		beaker_contents[length(beaker_contents)] = list("name" = reagent.name, "volume" = round(reagent.volume, CHEMICAL_VOLUME_ROUNDING))
 	data["chamberContents"] = beaker_contents
 
 	var/list/queued_reactions = list()
@@ -322,7 +322,7 @@
 			if(!reagent)
 				say("Could not find [name]")
 				return
-			var/datum/chemical_reaction/reaction = SSreagents.chemical_reactions_list_product_index[reagent.type]
+			var/list/datum/chemical_reaction/reaction = SSreagents.chemical_reactions_list_product_index[reagent.type]
 			if(!reaction)
 				say("Could not find [name] reaction!")
 				return

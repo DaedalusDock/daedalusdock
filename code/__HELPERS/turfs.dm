@@ -192,6 +192,35 @@ Turf and target are separate in case you want to teleport some distance from a t
 	var/y = min(world.maxy, max(1, target_atom.y + dy))
 	return locate(x, y, target_atom.z)
 
+/// returns a turf at the outer edge of a given radius
+/proc/get_random_perimeter_turf(atom/origin, radius)
+	var/turf/origin_turf = get_turf(origin)
+	if(isnull(origin_turf))
+		return null
+
+	if(radius == 0)
+		return origin_turf
+
+	var/upper_x = clamp(origin_turf.x + radius, 1, world.maxx)
+	var/lower_x = clamp(origin_turf.x - radius, 1, world.maxx)
+
+	var/upper_y = clamp(origin_turf.y + radius, 1, world.maxy)
+	var/lower_y = clamp(origin_turf.y - radius, 1, world.maxy)
+
+
+	var/x
+	var/y
+	var/z = origin_turf.z
+
+	if(prob(50))
+		x = pick(lower_x, upper_x)
+		y = rand(lower_y, upper_y)
+	else
+		x = rand(lower_x, upper_x)
+		y = pick(lower_y, upper_y)
+
+	return locate(x, y ,z)
+
 /**
  * Lets the turf this atom's *ICON* appears to inhabit
  * it takes into account:
@@ -257,7 +286,6 @@ Turf and target are separate in case you want to teleport some distance from a t
 	LAZYSET(modifiers, ICON_Y, "[(click_turf_py - click_turf.pixel_y) + ((click_turf_y - click_turf.y) * world.icon_size)]")
 	return click_turf
 
-///Almost identical to the params_to_turf(), but unused (remove?)
 /proc/screen_loc_to_turf(text, turf/origin, client/C)
 	if(!text)
 		return null

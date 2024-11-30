@@ -11,8 +11,8 @@
 	desc = "A bag for storing extra clothes and shoes. This one belongs to the captain."
 
 /obj/item/storage/bag/garment/hos
-	name = "head of security's garment bag"
-	desc = "A bag for storing extra clothes and shoes. This one belongs to the head of security."
+	name = "security marshal's garment bag"
+	desc = "A bag for storing extra clothes and shoes. This one belongs to the security marshal."
 
 /obj/item/storage/bag/garment/hop
 	name = "head of personnel's garment bag"
@@ -61,7 +61,7 @@
 /obj/item/storage/bag/garment/hop/PopulateContents()
 	new /obj/item/clothing/under/rank/civilian/head_of_personnel(src)
 	new /obj/item/clothing/under/rank/civilian/head_of_personnel/skirt(src)
-	new /obj/item/clothing/suit/armor/vest/alt(src)
+	new /obj/item/clothing/suit/armor/vest/ballistic(src)
 	new /obj/item/clothing/glasses/sunglasses(src)
 	new /obj/item/clothing/head/hopcap(src)
 	new /obj/item/clothing/neck/cloak/hop(src)

@@ -2,7 +2,7 @@
 	title = JOB_PARAMEDIC
 	description = "Run around the station looking for patients, respond to \
 		emergencies, give patients a roller bed ride to medbay."
-	department_head = list(JOB_CHIEF_MEDICAL_OFFICER)
+	department_head = list(JOB_MEDICAL_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 2
 	spawn_positions = 2
@@ -12,7 +12,6 @@
 
 	employers = list(
 		/datum/employer/aether,
-		/datum/employer/contractor
 	)
 
 	outfits = list(
@@ -23,11 +22,10 @@
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_MED
 
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 
-	bounty_types = CIV_JOB_MED
 	departments_list = list(
 		/datum/job_department/medical,
 		)

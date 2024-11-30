@@ -4,7 +4,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf
 	icon = 'icons/turf/floors.dmi'
 	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE// Important for interaction with and visualization of openspace.
-	luminosity = 1
+	explosion_block = 1
 
 	// baseturfs can be either a list or a single turf type.
 	// In class definition like here it should always be a single type.
@@ -34,7 +34,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	/// For the station blueprints, images of objects eg: pipes
 	var/tmp/list/image/blueprint_data
-	var/tmp/list/explosion_throw_details
+	/// Contains the throw range for explosions. You won't need this, stop looking at it.
+	var/tmp/explosion_throw_details
 
 	///Lazylist of movable atoms providing opacity sources.
 	var/tmp/list/atom/movable/opacity_sources
@@ -132,21 +133,18 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	QUEUE_SMOOTH(src)
 
-	// visibilityChanged() will never hit any path with side effects during mapload
-	if (!mapload)
-		visibilityChanged()
-		if(length(contents))
-			for(var/atom/movable/AM as anything in src)
-				Entered(AM, null)
+	if (!mapload && length(contents))
+		for(var/atom/movable/AM as anything in src)
+			Entered(AM, null)
 
 	var/area/our_area = loc
-	if(!our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
+	if(!our_area.luminosity && always_lit) //Only provide your own lighting if the area doesn't for you
 		add_overlay(global.fullbright_overlay)
 
 	if (z_flags & Z_MIMIC_BELOW)
 		setup_zmimic(mapload)
 
-	if (light_power && light_outer_range)
+	if (light_power && light_outer_range && light_system == COMPLEX_LIGHT)
 		update_light()
 
 	if (opacity)
@@ -179,8 +177,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			qdel(A)
 		return
 
-	visibilityChanged()
-	QDEL_LIST(blueprint_data)
+	if(blueprint_data)
+		QDEL_LIST(blueprint_data)
 	initialized = FALSE
 
 	///ZAS THINGS
@@ -356,6 +354,15 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		return TRUE
 
 	return FALSE
+
+/turf/attackby_secondary(obj/item/weapon, mob/user, params)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
+	if(weapon.sharpness && try_graffiti(user, weapon))
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
 
 //There's a lot of QDELETED() calls here if someone can figure out how to optimize this but not runtime when something gets deleted by a Bump/CanPass/Cross call, lemme know or go ahead and fix this mess - kevinz000
 /// Test if a movable can enter this turf. Send no_side_effects = TRUE to prevent bumping.
@@ -535,20 +542,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/proc/is_shielded()
 	return
 
-/turf/contents_explosion(severity, target)
-	for(var/thing in contents)
-		var/atom/movable/movable_thing = thing
-		if(QDELETED(movable_thing))
-			continue
-		switch(severity)
-			if(EXPLODE_DEVASTATE)
-				SSexplosions.high_mov_atom += movable_thing
-			if(EXPLODE_HEAVY)
-				SSexplosions.med_mov_atom += movable_thing
-			if(EXPLODE_LIGHT)
-				SSexplosions.low_mov_atom += movable_thing
-
-
 /turf/narsie_act(force, ignore_mobs, probability = 20)
 	. = (prob(probability) || force)
 	for(var/I in src)
@@ -698,14 +691,15 @@ GLOBAL_LIST_EMPTY(station_turfs)
  * * simulated_only: Do we only worry about turfs with simulated atmos, most notably things that aren't space?
  * * no_id: When true, doors with public access will count as impassible
 */
-/turf/proc/reachableAdjacentTurfs(atom/movable/caller, ID, simulated_only, no_id = FALSE)
+/turf/proc/reachableAdjacentTurfs(atom/movable/caller, list/access, simulated_only, no_id = FALSE)
 	. = list()
 
+	var/datum/can_pass_info/pass_info = new(caller, access, no_id)
 	for(var/iter_dir in GLOB.cardinals)
 		var/turf/turf_to_check = get_step(src,iter_dir)
 		if(!turf_to_check || (simulated_only && isspaceturf(turf_to_check)))
 			continue
-		if(turf_to_check.density || LinkBlockedWithAccess(turf_to_check, caller, ID, no_id = no_id))
+		if(turf_to_check.density || LinkBlockedWithAccess(turf_to_check, pass_info))
 			continue
 		. += turf_to_check
 
@@ -717,6 +711,15 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /turf/proc/TakeTemperature(temp)
 	temperature += temp
+
+/// Sets underfloor accessibility
+/turf/proc/update_underfloor_accessibility()
+	underfloor_accessibility = initial(underfloor_accessibility)
+	if(underfloor_accessibility == UNDERFLOOR_HIDDEN)
+		return
+
+	if(locate(/obj/structure/overfloor_catwalk) in src)
+		underfloor_accessibility = UNDERFLOOR_INTERACTABLE
 
 /turf/proc/is_below_sound_pressure()
 	var/datum/gas_mixture/GM = unsafe_return_air()
@@ -740,3 +743,43 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /// Allows for reactions to an area change without inherently requiring change_area() be called (I hate maploading)
 /turf/proc/on_change_area(area/old_area, area/new_area)
 	transfer_area_lighting(old_area, new_area)
+
+//A check to see if graffiti should happen
+/turf/proc/try_graffiti(mob/vandal, obj/item/tool)
+
+	if(!tool.sharpness)
+		return FALSE
+
+	if(!vandal.canUseTopic(src, USE_CLOSE) || !vandal.is_holding(tool))
+		return FALSE
+
+	if(HAS_TRAIT_FROM(src, TRAIT_NOT_ENGRAVABLE, INNATE_TRAIT))
+		to_chat(vandal, span_warning("[src] cannot be engraved!"))
+		return FALSE
+
+	if(HAS_TRAIT_FROM(src, TRAIT_NOT_ENGRAVABLE, TRAIT_GENERIC))
+		to_chat(vandal, span_warning("[src] already has an engraving."))
+		return FALSE
+
+	var/message = stripped_input(vandal, "Enter a message to engrave.", "Engraving", null ,64, TRUE)
+	if(!message)
+		return FALSE
+	if(is_ic_filtered_for_pdas(message))
+		REPORT_CHAT_FILTER_TO_USER(vandal, message)
+
+	if(!vandal.canUseTopic(src, USE_CLOSE) || !vandal.is_holding(tool))
+		return TRUE
+
+	vandal.visible_message(span_warning("\The [vandal] begins carving something into \the [src]."))
+
+	if(!do_after(vandal, src, max(2 SECONDS, length(message)), DO_PUBLIC, display = tool))
+		return TRUE
+
+	if(!vandal.canUseTopic(src, USE_CLOSE) || !vandal.is_holding(tool))
+		return TRUE
+	vandal.visible_message(span_obviousnotice("[vandal] carves some graffiti into [src]."))
+	log_graffiti(message, vandal)
+	AddComponent(/datum/component/engraved, message, TRUE)
+
+
+	return TRUE

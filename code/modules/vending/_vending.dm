@@ -23,7 +23,7 @@
 /datum/data/vending_product
 	name = "generic"
 	///Typepath of the product that is created when this record "sells"
-	var/product_path = null
+	var/atom/movable/product_path = null
 	///How many of this product we currently have
 	var/amount = 0
 	///How many we can store at maximum
@@ -142,9 +142,9 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
 	///Bills we accept?
 	var/obj/item/stack/spacecash/bill
 	///Default price of items if not overridden
-	var/default_price = 25
-	///Default price of premium items if not overridden
-	var/extra_price = 50
+	var/default_price = PAYCHECK_ASSISTANT * 0.4
+	/// Default price ADDED to the default price of premium items if they don't have one set.
+	var/extra_price = PAYCHECK_ASSISTANT * 1.5
 	///Whether our age check is currently functional
 	var/age_restrictions = TRUE
 	/**
@@ -632,7 +632,6 @@ GLOBAL_LIST_EMPTY(vending_products)
 			. = TRUE
 			playsound(L, 'sound/effects/blobattack.ogg', 40, TRUE)
 			playsound(L, 'sound/effects/splat.ogg', 50, TRUE)
-			add_memory_in_range(L, 7, MEMORY_VENDING_CRUSHED, list(DETAIL_PROTAGONIST = L, DETAIL_WHAT_BY = src), story_value = STORY_VALUE_AMAZING, memory_flags = MEMORY_CHECK_BLINDNESS, protagonist_memory_flags = MEMORY_SKIP_UNCONSCIOUS)
 
 	var/matrix/M = matrix()
 	M.Turn(pick(90, 270))
@@ -754,10 +753,10 @@ GLOBAL_LIST_EMPTY(vending_products)
 	if (!Adjacent(user, src))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-/obj/machinery/vending/ui_assets(mob/user)
-	return list(
-		get_asset_datum(/datum/asset/spritesheet/vending),
-	)
+// /obj/machinery/vending/ui_assets(mob/user)
+// 	return list(
+// 		get_asset_datum(/datum/asset/spritesheet/vending),
+// 	)
 
 /obj/machinery/vending/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -777,7 +776,9 @@ GLOBAL_LIST_EMPTY(vending_products)
 			name = R.name,
 			price = R.custom_price || default_price,
 			max_amount = R.max_amount,
-			ref = REF(R)
+			ref = REF(R),
+			icon = initial(R.product_path.icon),
+			icon_state = initial(R.product_path.icon_state)
 		)
 		.["product_records"] += list(data)
 	.["coin_records"] = list()
@@ -788,7 +789,9 @@ GLOBAL_LIST_EMPTY(vending_products)
 			price = R.custom_premium_price || extra_price,
 			max_amount = R.max_amount,
 			ref = REF(R),
-			premium = TRUE
+			premium = TRUE,
+			icon = initial(R.product_path.icon),
+			icon_state = initial(R.product_path.icon_state)
 		)
 		.["coin_records"] += list(data)
 	.["hidden_records"] = list()
@@ -799,7 +802,9 @@ GLOBAL_LIST_EMPTY(vending_products)
 			price = R.custom_premium_price || extra_price,
 			max_amount = R.max_amount,
 			ref = REF(R),
-			premium = TRUE
+			premium = TRUE,
+			icon = initial(R.product_path.icon),
+			icon_state = initial(R.product_path.icon_state)
 		)
 		.["hidden_records"] += list(data)
 
@@ -913,7 +918,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 		return
 	if (R.amount <= 0)
 		say("Sold out of [R.name].")
-		flick(icon_deny,src)
+		z_flick(icon_deny,src)
 		vend_ready = TRUE
 		return
 	if(onstation)
@@ -923,17 +928,17 @@ GLOBAL_LIST_EMPTY(vending_products)
 			C = L.get_idcard(TRUE)
 		if(!C)
 			say("No card found.")
-			flick(icon_deny,src)
+			z_flick(icon_deny,src)
 			vend_ready = TRUE
 			return
 		else if (!C.registered_account)
 			say("No account found.")
-			flick(icon_deny,src)
+			z_flick(icon_deny,src)
 			vend_ready = TRUE
 			return
 		else if(!C.registered_account.account_job)
 			say("Departmental accounts have been blacklisted from personal expenses due to embezzlement.")
-			flick(icon_deny, src)
+			z_flick(icon_deny, src)
 			vend_ready = TRUE
 			return
 		else if(age_restrictions && R.age_restricted && (!C.registered_age || C.registered_age < AGE_MINOR))
@@ -942,7 +947,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 				Radio.set_frequency(FREQ_SECURITY)
 				Radio.talk_into(src, "SECURITY ALERT: Underaged crewmember [usr] recorded attempting to purchase [R.name] in [get_area(src)]. Please watch for substance abuse.", FREQ_SECURITY)
 				GLOB.narcd_underages += usr
-			flick(icon_deny,src)
+			z_flick(icon_deny,src)
 			vend_ready = TRUE
 			return
 
@@ -958,7 +963,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 
 		if(price_to_use && !account.adjust_money(-price_to_use))
 			say("You do not possess the funds to purchase [R.name].")
-			flick(icon_deny,src)
+			z_flick(icon_deny,src)
 			vend_ready = TRUE
 			return
 
@@ -969,6 +974,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 			SSblackbox.record_feedback("amount", "vending_spent", price_to_use)
 			SSeconomy.track_purchase(account, price_to_use, name)
 			log_econ("[price_to_use] credits were inserted into [src] by [account.account_holder] to buy [R].")
+
 	if(last_shopper != REF(usr) || purchase_message_cooldown < world.time)
 		say("Thank you for shopping with [src]!")
 		purchase_message_cooldown = world.time + 5 SECONDS
@@ -976,7 +982,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 		last_shopper = REF(usr)
 	use_power(active_power_usage)
 	if(icon_vend) //Show the vending animation if needed
-		flick(icon_vend,src)
+		z_flick(icon_vend,src)
 	playsound(src, 'sound/machines/machine_vend.ogg', 50, TRUE, extrarange = -3)
 	var/obj/item/vended_item
 	if(!LAZYLEN(R.returned_products)) //always give out free returned stuff first, e.g. to avoid walling a traitor objective in a bag behind paid items
@@ -1255,7 +1261,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 	vend_ready = FALSE
 	if(!id_card || !id_card.registered_account || !id_card.registered_account.account_job)
 		balloon_alert(usr, "no card found")
-		flick(icon_deny, src)
+		z_flick(icon_deny, src)
 		return TRUE
 	var/datum/bank_account/payee = id_card.registered_account
 	for(var/obj/stock in contents)

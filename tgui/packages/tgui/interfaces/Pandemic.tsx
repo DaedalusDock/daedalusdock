@@ -1,6 +1,18 @@
 import { BooleanLike } from '../../common/react';
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Collapsible, Input, LabeledList, NoticeBox, ProgressBar, Section, Stack, Tabs, Tooltip } from '../components';
+import {
+  Box,
+  Button,
+  Collapsible,
+  Input,
+  LabeledList,
+  NoticeBox,
+  ProgressBar,
+  Section,
+  Stack,
+  Tabs,
+  Tooltip,
+} from '../components';
 import { Window } from '../layouts';
 
 type PandemicContext = {
@@ -14,8 +26,8 @@ type PandemicContext = {
 };
 
 type Beaker = {
-  volume: number;
   capacity: number;
+  volume: number;
 };
 
 type Blood = {
@@ -29,19 +41,19 @@ type Resistance = {
 };
 
 type Virus = {
-  name: string;
-  can_rename: BooleanLike;
-  is_adv: BooleanLike;
-  symptoms?: Symptom[];
-  resistance: number;
-  stealth: number;
-  stage_speed: number;
-  transmission: number;
-  index: number;
   agent: string;
-  description: string;
-  spread: string;
+  can_rename: BooleanLike;
   cure: string;
+  description: string;
+  index: number;
+  is_adv: BooleanLike;
+  name: string;
+  resistance: number;
+  spread: string;
+  stage_speed: number;
+  stealth: number;
+  symptoms?: Symptom[];
+  transmission: number;
 };
 
 type VirusDisplayProps = {
@@ -58,15 +70,15 @@ type TabsProps = {
 };
 
 type Symptom = {
-  name: string;
   desc: string;
-  stealth: number;
+  level: number;
+  name: string;
+  neutered: BooleanLike;
   resistance: number;
   stage_speed: number;
-  transmission: number;
-  level: number;
-  neutered: BooleanLike;
+  stealth: number;
   threshold_desc: Threshold[];
+  transmission: number;
 };
 
 type SymptomDisplayProps = {
@@ -78,16 +90,16 @@ type SymptomInfoProps = {
 };
 
 type Threshold = {
-  label: string;
   descr: string;
+  label: string;
 };
 
 type ThresholdDisplayProps = {
   thresholds: Threshold[];
 };
 
-export const Pandemic = (_, context) => {
-  const { data } = useBackend<PandemicContext>(context);
+export const Pandemic = (_) => {
+  const { data } = useBackend<PandemicContext>();
   const { has_beaker, has_blood } = data;
 
   return (
@@ -109,8 +121,8 @@ export const Pandemic = (_, context) => {
 };
 
 /** Displays loaded container info, if it exists */
-const BeakerDisplay = (_, context) => {
-  const { act, data } = useBackend<PandemicContext>(context);
+const BeakerDisplay = (_) => {
+  const { act, data } = useBackend<PandemicContext>();
   const { has_beaker, beaker, has_blood } = data;
   const cant_empty = !has_beaker || !beaker?.volume;
   let content;
@@ -158,15 +170,16 @@ const BeakerDisplay = (_, context) => {
             onClick={() => act('eject_beaker')}
           />
         </>
-      }>
+      }
+    >
       {content}
     </Section>
   );
 };
 
 /** Displays info about the blood type, beaker capacity - volume */
-const BeakerInfoDisplay = (_, context) => {
-  const { data } = useBackend<PandemicContext>(context);
+const BeakerInfoDisplay = (_) => {
+  const { data } = useBackend<PandemicContext>();
   const { beaker, blood } = data;
   if (!beaker || !blood) {
     return <NoticeBox>No beaker loaded</NoticeBox>;
@@ -193,9 +206,9 @@ const BeakerInfoDisplay = (_, context) => {
               minValue={0}
               maxValue={beaker.capacity}
               ranges={{
-                'good': [beaker.capacity * 0.85, beaker.capacity],
-                'average': [beaker.capacity * 0.25, beaker.capacity * 0.85],
-                'bad': [0, beaker.capacity * 0.25],
+                good: [beaker.capacity * 0.85, beaker.capacity],
+                average: [beaker.capacity * 0.25, beaker.capacity * 0.85],
+                bad: [0, beaker.capacity * 0.25],
               }}
             />
           </LabeledList.Item>
@@ -206,8 +219,8 @@ const BeakerInfoDisplay = (_, context) => {
 };
 
 /** If antibodies are present, returns buttons to create vaccines */
-const AntibodyInfoDisplay = (_, context) => {
-  const { act, data } = useBackend<PandemicContext>(context);
+const AntibodyInfoDisplay = (_) => {
+  const { act, data } = useBackend<PandemicContext>();
   const { is_ready, resistances = [] } = data;
   if (!resistances) {
     return <NoticeBox>Nothing detected</NoticeBox>;
@@ -219,29 +232,31 @@ const AntibodyInfoDisplay = (_, context) => {
         {!resistances.length
           ? 'None'
           : resistances.map((resistance) => {
-            return (
-              <Button
-                key={resistance.name}
-                icon="eye-dropper"
-                disabled={!is_ready}
-                tooltip="Creates a vaccine bottle."
-                onClick={() =>
-                  act('create_vaccine_bottle', {
-                    index: resistance.id,
-                  })}>
-                {`${resistance.name}`}
-              </Button>
-            );
-          })}
+              return (
+                <Button
+                  key={resistance.name}
+                  icon="eye-dropper"
+                  disabled={!is_ready}
+                  tooltip="Creates a vaccine bottle."
+                  onClick={() =>
+                    act('create_vaccine_bottle', {
+                      index: resistance.id,
+                    })
+                  }
+                >
+                  {`${resistance.name}`}
+                </Button>
+              );
+            })}
       </LabeledList.Item>
     </LabeledList>
   );
 };
 
 /** Displays info for the loaded blood, if any */
-const SpecimenDisplay = (_, context) => {
-  const { act, data } = useBackend<PandemicContext>(context);
-  const [tab, setTab] = useLocalState(context, 'tab', 0);
+const SpecimenDisplay = (_) => {
+  const { act, data } = useBackend<PandemicContext>();
+  const [tab, setTab] = useLocalState('tab', 0);
   const { is_ready, viruses = [] } = data;
   const virus = viruses[tab];
   const setTabHandler = (index: number) => {
@@ -271,18 +286,19 @@ const SpecimenDisplay = (_, context) => {
               onClick={() =>
                 act('create_culture_bottle', {
                   index: virus.index,
-                })}
+                })
+              }
             />
           </Stack.Item>
         </Stack>
-      }>
+      }
+    >
       <Stack fill vertical>
         <Stack.Item>
           <VirusDisplay virus={virus} />
         </Stack.Item>
         <Stack.Item>
-          {virus?.symptoms
-          && <SymptomDisplay symptoms={virus.symptoms} />}
+          {virus?.symptoms && <SymptomDisplay symptoms={virus.symptoms} />}
         </Stack.Item>
       </Stack>
     </Section>
@@ -292,8 +308,8 @@ const SpecimenDisplay = (_, context) => {
 /** Virus Tab display - changes the tab for virus info
  * Whenever the tab changes, the virus info is updated
  */
-const VirusTabs = (props: TabsProps, context) => {
-  const { data } = useBackend<PandemicContext>(context);
+const VirusTabs = (props: TabsProps) => {
+  const { data } = useBackend<PandemicContext>();
   const { tab, tabHandler } = props;
   const { viruses = [] } = data;
 
@@ -304,7 +320,8 @@ const VirusTabs = (props: TabsProps, context) => {
           <Tabs.Tab
             selected={tab === index}
             onClick={() => tabHandler(index)}
-            key={virus.name}>
+            key={virus.name}
+          >
             {virus.name}
           </Tabs.Tab>
         );
@@ -337,8 +354,8 @@ const VirusDisplay = (props: VirusDisplayProps) => {
 };
 
 /** Displays the description, name and other info for the virus. */
-const VirusTextInfo = (props: VirusInfoProps, context) => {
-  const { act } = useBackend<PandemicContext>(context);
+const VirusTextInfo = (props: VirusInfoProps) => {
+  const { act } = useBackend<PandemicContext>();
   const { virus } = props;
 
   return (
@@ -352,7 +369,8 @@ const VirusTextInfo = (props: VirusInfoProps, context) => {
               act('rename_disease', {
                 index: virus.index,
                 name: value,
-              })}
+              })
+            }
           />
         ) : (
           <Box color="bad">{virus.name}</Box>
@@ -383,14 +401,16 @@ const VirusTraitInfo = (props: VirusInfoProps) => {
         <Tooltip content="Decides the cure complexity.">
           <LabeledList.Item
             color={GetColor(virus.resistance)}
-            label="Resistance">
+            label="Resistance"
+          >
             {virus.resistance}
           </LabeledList.Item>
         </Tooltip>
         <Tooltip content="Symptomic progression.">
           <LabeledList.Item
             color={GetColor(virus.stage_speed)}
-            label="Stage speed">
+            label="Stage speed"
+          >
             {virus.stage_speed}
           </LabeledList.Item>
         </Tooltip>
@@ -402,7 +422,8 @@ const VirusTraitInfo = (props: VirusInfoProps) => {
         <Tooltip content="Decides the spread type.">
           <LabeledList.Item
             color={GetColor(virus.transmission)}
-            label="Transmissibility">
+            label="Transmissibility"
+          >
             {virus.transmission}
           </LabeledList.Item>
         </Tooltip>
@@ -457,14 +478,16 @@ const SymptomTraitInfo = (props: SymptomInfoProps) => {
         <Tooltip content="Decides the cure complexity.">
           <LabeledList.Item
             color={GetColor(symptom.resistance)}
-            label="Resistance">
+            label="Resistance"
+          >
             {symptom.resistance}
           </LabeledList.Item>
         </Tooltip>
         <Tooltip content="Symptomic progression.">
           <LabeledList.Item
             color={GetColor(symptom.stage_speed)}
-            label="Stage Speed">
+            label="Stage Speed"
+          >
             {symptom.stage_speed}
           </LabeledList.Item>
         </Tooltip>
@@ -476,7 +499,8 @@ const SymptomTraitInfo = (props: SymptomInfoProps) => {
         <Tooltip content="Decides the spread type.">
           <LabeledList.Item
             color={GetColor(symptom.transmission)}
-            label="Transmission">
+            label="Transmission"
+          >
             {symptom.transmission}
           </LabeledList.Item>
         </Tooltip>

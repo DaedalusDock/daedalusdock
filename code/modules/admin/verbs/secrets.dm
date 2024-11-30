@@ -96,9 +96,9 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 			var/choice = tgui_alert(usr, "Are you sure you want to cure all disease?",, list("Yes", "Cancel"))
 			if(choice == "Yes")
 				message_admins("[key_name_admin(holder)] has cured all diseases.")
-				for(var/thing in SSdisease.active_diseases)
-					var/datum/disease/D = thing
-					D.cure(0)
+				for(var/thing in SSpathogens.active_pathogens)
+					var/datum/pathogen/D = thing
+					D.force_cure(add_resistance = FALSE)
 		if("list_bombers")
 			var/dat = "<B>Bombing List</B><HR>"
 			for(var/l in GLOB.bombers)
@@ -120,8 +120,8 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 		if("manifest")
 			var/dat = "<B>Showing Crew Manifest.</B><HR>"
 			dat += "<table cellspacing=5><tr><th>Name</th><th>Position</th></tr>"
-			for(var/datum/data/record/t in GLOB.data_core.general)
-				dat += "<tr><td>[t.fields["name"]]</td><td>[t.fields["rank"]][t.fields["rank"] != t.fields["trim"] ? " ([t.fields["trim"]])" : ""]</td></tr>"
+			for(var/datum/data/record/t in SSdatacore.get_records(DATACORE_RECORDS_STATION))
+				dat += "<tr><td>[t.fields[DATACORE_NAME]]</td><td>[t.fields[DATACORE_RANK]][t.fields[DATACORE_RANK] != t.fields[DATACORE_TRIM] ? " ([t.fields[DATACORE_TRIM]])" : ""]</td></tr>"
 			dat += "</table>"
 			holder << browse(dat, "window=manifest;size=440x410")
 		if("dna")
@@ -227,7 +227,7 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 					var/datum/round_event_control/disease_outbreak/DC = locate(/datum/round_event_control/disease_outbreak) in SSevents.control
 					E = DC.runEvent()
 				if("Choose")
-					var/virus = input("Choose the virus to spread", "BIOHAZARD") as null|anything in sort_list(typesof(/datum/disease), GLOBAL_PROC_REF(cmp_typepaths_asc))
+					var/virus = input("Choose the virus to spread", "BIOHAZARD") as null|anything in sort_list(typesof(/datum/pathogen), GLOBAL_PROC_REF(cmp_typepaths_asc))
 					var/datum/round_event_control/disease_outbreak/DC = locate(/datum/round_event_control/disease_outbreak) in SSevents.control
 					var/datum/round_event/disease_outbreak/DO = DC.runEvent()
 					DO.virus_type = virus

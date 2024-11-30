@@ -17,7 +17,7 @@
 	response_harm_simple = "kick"
 	emote_taunt = list("hisses")
 	taunt_chance = 30
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 25
 	health = 25
 	harm_intent_damage = 5
@@ -199,7 +199,7 @@
 	playsound(currentTurf, 'sound/effects/splat.ogg', 50, TRUE)
 
 /mob/living/simple_animal/hostile/retaliate/goose/vomit/proc/vomit_prestart(duration)
-	flick("vomit_start",src)
+	z_flick("vomit_start",src)
 	addtimer(CALLBACK(src, PROC_REF(vomit_start), duration), 13) //13 is the length of the vomit_start animation in gooseloose.dmi
 
 /mob/living/simple_animal/hostile/retaliate/goose/vomit/proc/vomit_start(duration)
@@ -217,7 +217,7 @@
 	vomit_end()
 
 /mob/living/simple_animal/hostile/retaliate/goose/vomit/proc/vomit_end()
-	flick("vomit_end",src)
+	z_flick("vomit_end",src)
 	vomiting = FALSE
 	icon_state = initial(icon_state)
 

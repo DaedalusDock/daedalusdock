@@ -1,4 +1,4 @@
-#define JOBS_PER_COLUMN 17
+#define JOBS_PER_COLUMN 15
 
 /datum/preference_group/category/occupation
 	name = "Occupation"
@@ -44,9 +44,15 @@
 	var/employer = prefs.read_preference(/datum/preference/choiced/employer)
 	employer = SSjob.GetEmployer(employer).type
 
-	. += {"
+	var/datum/preference/choiced/employer/employer_pref = GLOB.preference_entries[/datum/preference/choiced/employer]
+	var/info_button = button_element(prefs, "?", "pref_act=[/datum/preference/choiced/employer];info=1")
 
-		<div style='font-size: 20px;text-align:center;width: 100%'>[GLOB.preference_entries[/datum/preference/choiced/employer]:get_button(prefs)]<HR></div>
+	. += {"
+		<div class='flexColumn' style='justify-content: center;align-items: center; gap:3px; width:100%'>
+		<div class='computerLegend' style='margin: auto'><b>Faction</b></div>
+		<div style='font-size: 20px;text-align:center;width: 100%'>[employer_pref.get_button(prefs)][info_button]</div>
+		<div style='width: 100%'><HR></div>
+		</div>
 	"}
 	// Table within a table for alignment, also allows you to easily add more columns.
 	. += {"
@@ -72,7 +78,7 @@
 		else if(is_too_new)
 			rejection_reason = "\[[is_too_new]]"
 		else if(length(job.employers) && !(employer in job.employers))
-			rejection_reason = "\[INVALID EMPLOYER]"
+			rejection_reason = "\[CHANGE FACTION]"
 
 		var/static/vs_appeaser = "\]\]\]"
 		vs_appeaser = vs_appeaser

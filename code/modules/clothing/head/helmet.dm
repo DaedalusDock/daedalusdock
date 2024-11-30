@@ -12,6 +12,7 @@
 	clothing_flags = SNUG_FIT | STACKABLE_HELMET_EXEMPT
 	flags_cover = HEADCOVERSEYES
 	flags_inv = HIDEHAIR
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	dog_fashion = /datum/dog_fashion/head/helmet
 
@@ -54,7 +55,6 @@
 	inhand_icon_state = "helmetalt"
 	armor = list(BLUNT = 20, PUNCTURE = 60, SLASH = 25, LASER = 10, ENERGY = 10, BOMB = 40, BIO = 0, FIRE = 50, ACID = 50)
 	dog_fashion = null
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/head/helmet/alt/Initialize(mapload)
 	. = ..()
@@ -203,7 +203,7 @@
 	desc = "A british looking helmet."
 	icon_state = "constable"
 	inhand_icon_state = "constable"
-	custom_price = PAYCHECK_HARD * 1.5
+	custom_price = PAYCHECK_ASSISTANT * 4.25
 	worn_y_offset = 4
 
 /obj/item/clothing/head/helmet/swat/nanotrasen
@@ -471,7 +471,7 @@
 		if(prob(10))
 			switch(rand(1,4))
 				if(1) //blood rage
-					magnification.ai_controller.blackboard[BB_MONKEY_AGGRESSIVE] = TRUE
+					magnification.ai_controller.set_blackboard_key(BB_MONKEY_AGGRESSIVE, TRUE)
 				if(2) //brain death
 					magnification.apply_damage(500,BRAIN,BODY_ZONE_HEAD,FALSE,FALSE,FALSE)
 				if(3) //primal gene (gorilla)

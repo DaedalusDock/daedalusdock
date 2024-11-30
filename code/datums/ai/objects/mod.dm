@@ -22,7 +22,7 @@
 	QDEL_NULL(id_card)
 	return ..() //Run parent at end
 
-/datum/ai_controller/mod/SelectBehaviors(delta_time)
+/datum/ai_controller/mod/ProcessBehaviorSelection(delta_time)
 	current_behaviors = list()
 	if(blackboard[BB_MOD_TARGET] && blackboard[BB_MOD_IMPLANT])
 		queue_behavior(/datum/ai_behavior/mod_attach)
@@ -36,13 +36,14 @@
 /datum/ai_behavior/mod_attach/perform(delta_time, datum/ai_controller/controller)
 	. = ..()
 	if(!controller.pawn.Adjacent(controller.blackboard[BB_MOD_TARGET]))
-		return
+		return BEHAVIOR_PERFORM_COOLDOWN
+
 	var/obj/item/implant/mod/implant = controller.blackboard[BB_MOD_IMPLANT]
 	implant.module.attach(controller.blackboard[BB_MOD_TARGET])
-	finish_action(controller, TRUE)
+	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/mod_attach/finish_action(datum/ai_controller/controller, succeeded)
 	. = ..()
-	controller.blackboard[BB_MOD_TARGET] = null
+	controller.set_blackboard_key(BB_MOD_TARGET, null)
 	var/obj/item/implant/mod/implant = controller.blackboard[BB_MOD_IMPLANT]
 	implant.end_recall(succeeded)

@@ -29,12 +29,10 @@
 		mytray.adjust_weedlevel(-rand(1,5))
 	if(chems.has_reagent(type, 3))
 		switch(rand(100))
-			if(66  to 100)
+			if(51 to 100)
 				mytray.mutatespecie()
-			if(33 to 65)
+			if(1 to 50)
 				mytray.mutateweed()
-			if(1   to 32)
-				mytray.mutatepest(user)
 			else
 				if(prob(20))
 					mytray.visible_message(span_warning("Nothing happens..."))
@@ -58,14 +56,15 @@
 	C.silent = FALSE
 	C.remove_status_effect(/datum/status_effect/dizziness)
 	C.disgust = 0
-	C.drowsyness = 0
+	C.set_drowsyness(0)
+
 	// Remove all speech related status effects
 	for(var/effect in typesof(/datum/status_effect/speech))
 		C.remove_status_effect(effect)
 	C.remove_status_effect(/datum/status_effect/jitter)
 	C.hallucination = 0
 	REMOVE_TRAITS_NOT_IN(C, list(SPECIES_TRAIT, ROUNDSTART_TRAIT, ORGAN_TRAIT))
-	C.reagents.remove_all_type(/datum/reagent/toxin, 2 * removed, FALSE, TRUE)
+	C.reagents.remove_reagent(/datum/reagent/toxin, 2 * removed, include_subtypes = TRUE)
 	if(C.blood_volume < BLOOD_VOLUME_NORMAL)
 		C.setBloodVolume(BLOOD_VOLUME_NORMAL)
 
@@ -73,10 +72,10 @@
 	for(var/obj/item/organ/organ as anything in C.processing_organs)
 		organ.setOrganDamage(0)
 	for(var/thing in C.diseases)
-		var/datum/disease/D = thing
-		if(D.severity == DISEASE_SEVERITY_POSITIVE)
+		var/datum/pathogen/D = thing
+		if(D.severity == PATHOGEN_SEVERITY_POSITIVE)
 			continue
-		D.cure()
+		D.force_cure()
 	. = TRUE
 
 /datum/reagent/medicine/adminordrazine/quantum_heal
@@ -440,7 +439,7 @@
 
 	holder.remove_reagent(/datum/reagent/toxin/mindbreaker, 5)
 
-	C.adjustToxLoss(3 * removed, updating_health = FALSE) // It used to be incredibly deadly due to an oversight. Not anymore!
+	C.adjustToxLoss(3 * removed, updating_health = FALSE, cause_of_death = "Synaptizine") // It used to be incredibly deadly due to an oversight. Not anymore!
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 70)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 10)
 	return TRUE
@@ -670,7 +669,7 @@
 
 /datum/reagent/medicine/ryetalyn
 	name = "Ryetalyn"
-	description = "Ryetalyn can cure all genetic abnomalities via a catalytic process."
+	description = "Ryetalyn can cure all genetic mutations and abnormalities via a catalytic process. Known by the brand name \"Mutadone\"."
 	taste_description = "acid"
 	reagent_state = SOLID
 	color = "#004000"
@@ -714,7 +713,11 @@
 	if(C.get_timed_status_effect_duration(/datum/status_effect/jitter) >= 6 SECONDS)
 		C.adjust_timed_status_effect(-6 SECONDS * removed, /datum/status_effect/jitter)
 
-	C.adjust_drowsyness(16 * removed)
+	if(C.stat == CONSCIOUS)
+		C.adjust_drowsyness(16 * removed, up_to = 180)
+	else
+		C.adjust_drowsyness((16 * removed) / 5, up_to = 180)
+
 	C.adjust_timed_status_effect(-3 * removed, /datum/status_effect/drugginess)
 
 	if (C.hallucination >= 5)
@@ -816,7 +819,7 @@
 		C.visible_message("<span class='nicegreen'>A rubbery liquid coats [C]'s burns.") //we're avoiding using the phrases "burnt flesh" and "burnt skin" here because carbies could be a skeleton or a golem or something
 
 /datum/reagent/medicine/synthflesh/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(1 * removed)
+	C.adjustToxLoss(1 * removed, cause_of_death = "Synthflesh poisoning")
 	return TRUE
 
 /datum/reagent/medicine/atropine
@@ -955,7 +958,7 @@
 	return ..()
 
 /datum/reagent/medicine/ipecac/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(5 * removed, 0)
+	C.adjustToxLoss(5 * removed, 0, cause_of_death = "Ipecac")
 	. = TRUE
 
 /datum/reagent/medicine/activated_charcoal

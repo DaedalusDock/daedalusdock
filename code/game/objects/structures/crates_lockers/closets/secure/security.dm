@@ -43,7 +43,7 @@
 	new /obj/item/storage/lockbox/medal/hop(src)
 
 /obj/structure/closet/secure_closet/hos
-	name = "\proper head of security's locker"
+	name = "\proper security marshal's locker"
 	req_access = list(ACCESS_HOS)
 	icon_state = "hos"
 
@@ -52,7 +52,6 @@
 
 	new /obj/item/computer_hardware/hard_drive/role/hos(src)
 	new /obj/item/radio/headset/heads/hos(src)
-	new /obj/item/storage/bag/garment/hos(src)
 	new /obj/item/storage/lockbox/medal/sec(src)
 	new /obj/item/megaphone/sec(src)
 	new /obj/item/holosign_creator/security(src)
@@ -115,31 +114,27 @@
 /obj/structure/closet/secure_closet/security/cargo/PopulateContents()
 	..()
 	new /obj/item/clothing/accessory/armband/cargo(src)
-	new /obj/item/encryptionkey/headset_cargo(src)
 
 /obj/structure/closet/secure_closet/security/engine
 
 /obj/structure/closet/secure_closet/security/engine/PopulateContents()
 	..()
 	new /obj/item/clothing/accessory/armband/engine(src)
-	new /obj/item/encryptionkey/headset_eng(src)
 
 /obj/structure/closet/secure_closet/security/science
 
 /obj/structure/closet/secure_closet/security/science/PopulateContents()
 	..()
 	new /obj/item/clothing/accessory/armband/science(src)
-	new /obj/item/encryptionkey/headset_sci(src)
 
 /obj/structure/closet/secure_closet/security/med
 
 /obj/structure/closet/secure_closet/security/med/PopulateContents()
 	..()
 	new /obj/item/clothing/accessory/armband/medblue(src)
-	new /obj/item/encryptionkey/headset_med(src)
 
 /obj/structure/closet/secure_closet/detective
-	name = "\improper detective's cabinet"
+	name = "\improper investigator's cabinet"
 	req_access = list(ACCESS_FORENSICS)
 	icon_state = "cabinet"
 	resistance_flags = FLAMMABLE
@@ -151,7 +146,6 @@
 /obj/structure/closet/secure_closet/detective/PopulateContents()
 	..()
 	new /obj/item/storage/box/evidence(src)
-	new /obj/item/radio/headset/headset_sec(src)
 	new /obj/item/flashlight/seclite(src)
 	new /obj/item/holosign_creator/security(src)
 	new /obj/item/reagent_containers/spray/pepper(src)
@@ -256,7 +250,7 @@
 /obj/structure/closet/secure_closet/contraband/heads
 	anchored = TRUE
 	name = "Contraband Locker"
-	req_access = list(ACCESS_HEADS)
+	req_access = list(ACCESS_MANAGEMENT)
 
 /obj/structure/closet/secure_closet/armory1
 	name = "armory armor locker"

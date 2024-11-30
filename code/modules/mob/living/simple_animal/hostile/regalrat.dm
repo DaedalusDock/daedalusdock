@@ -306,7 +306,7 @@
 	SSmobs.cheeserats -= src
 	return ..()
 
-/mob/living/simple_animal/hostile/rat/death(gibbed)
+/mob/living/simple_animal/hostile/rat/death(gibbed, cause_of_death = "Unknown")
 	if(!ckey)
 		..(TRUE)
 		if(!gibbed)

@@ -14,6 +14,10 @@
 
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
+	equip_delay_self = 0
+	equip_delay_other = 0
+	strip_delay = 0
+
 /obj/item/clothing/suit/apron/waders
 	name = "horticultural waders"
 	desc = "A pair of heavy duty leather waders, perfect for insulating your soft flesh from spills, soil and thorns."
@@ -33,6 +37,10 @@
 	allowed = list(/obj/item/disk, /obj/item/stamp, /obj/item/reagent_containers/food/drinks/flask, /obj/item/melee, /obj/item/storage/lockbox/medal, /obj/item/assembly/flash/handheld, /obj/item/storage/box/matches, /obj/item/lighter, /obj/item/clothing/mask/cigarette, /obj/item/storage/fancy/cigarettes, /obj/item/tank/internals/emergency_oxygen, /obj/item/tank/internals/plasmaman)
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
+	equip_delay_self = EQUIP_DELAY_COAT
+	equip_delay_other = EQUIP_DELAY_COAT * 1.5
+	strip_delay = EQUIP_DELAY_COAT * 1.5
+
 //Chef
 /obj/item/clothing/suit/toggle/chef
 	name = "chef's apron"
@@ -46,6 +54,11 @@
 
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
+	equip_self_flags = EQUIP_ALLOW_MOVEMENT | EQUIP_SLOWDOWN
+	equip_delay_self = EQUIP_DELAY_COAT
+	equip_delay_other = EQUIP_DELAY_COAT * 1.5
+	strip_delay = EQUIP_DELAY_COAT * 1.5
+
 //Cook
 /obj/item/clothing/suit/apron/chef
 	name = "cook's apron"
@@ -58,31 +71,35 @@
 
 //Detective
 /obj/item/clothing/suit/det_suit
-	name = "trenchcoat"
-	desc = "A 18th-century multi-purpose trenchcoat. Someone who wears this means serious business."
+	name = "rumpled raincoat"
+	desc = "An old tan raincoat that's been poorly taken care of. You've still got one last question..."
 	icon_state = "detective"
 	inhand_icon_state = "det_suit"
 	blood_overlay_type = "coat"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
-	armor = list(BLUNT = 25, PUNCTURE = 10, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 0, BIO = 0, FIRE = 0, ACID = 45)
 	cold_protection = CHEST|GROIN|LEGS|ARMS
 	heat_protection = CHEST|GROIN|LEGS|ARMS
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+
+	equip_self_flags = EQUIP_ALLOW_MOVEMENT | EQUIP_SLOWDOWN
+	equip_delay_self = EQUIP_DELAY_COAT
+	equip_delay_other = EQUIP_DELAY_COAT * 1.5
+	strip_delay = EQUIP_DELAY_COAT * 1.5
 
 /obj/item/clothing/suit/det_suit/Initialize(mapload)
 	. = ..()
 	allowed = GLOB.detective_vest_allowed
 
-/obj/item/clothing/suit/det_suit/dark
-	name = "noir trenchcoat"
-	desc = "A hard-boiled private investigator's dark trenchcoat."
+/obj/item/clothing/suit/det_suit/noir
+	name = "grey trenchcoat"
+	desc = "A large grey trenchcoat for a hard-boiled investigator."
 	icon_state = "noirdet"
 	inhand_icon_state = "greydet"
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
-/obj/item/clothing/suit/det_suit/noir
-	name = "noir suit coat"
-	desc = "A dapper private investigator's dark suit coat."
+/obj/item/clothing/suit/det_suit/dark
+	name = "sleek suit coat"
+	desc = "A dapper dark suit coat."
 	icon_state = "detsuit"
 	inhand_icon_state = "detsuit"
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
@@ -100,6 +117,11 @@
 
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
+	equip_self_flags = EQUIP_ALLOW_MOVEMENT | EQUIP_SLOWDOWN
+	equip_delay_self = EQUIP_DELAY_COAT
+	equip_delay_other = EQUIP_DELAY_COAT * 1.5
+	strip_delay = EQUIP_DELAY_COAT * 1.5
+
 /obj/item/clothing/suit/hazardvest/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands)
@@ -114,6 +136,10 @@
 	blood_overlay_type = "coat"
 	body_parts_covered = CHEST|ARMS
 
+	equip_self_flags = EQUIP_ALLOW_MOVEMENT | EQUIP_SLOWDOWN
+	equip_delay_self = EQUIP_DELAY_COAT
+	equip_delay_other = EQUIP_DELAY_COAT * 1.5
+	strip_delay = EQUIP_DELAY_COAT * 1.5
 
 /obj/item/clothing/suit/toggle/lawyer/purple
 	name = "purple suit jacket"
@@ -155,6 +181,11 @@
 	icon = 'icons/obj/clothing/belts.dmi'
 	greyscale_colors = "#888888"
 
+/obj/item/clothing/suit/security
+	equip_delay_self = EQUIP_DELAY_COAT
+	equip_delay_other = EQUIP_DELAY_COAT * 1.5
+	strip_delay = EQUIP_DELAY_COAT * 1.5
+
 //Security
 /obj/item/clothing/suit/security/officer
 	name = "security officer's jacket"
@@ -171,7 +202,7 @@
 	body_parts_covered = CHEST|ARMS
 
 /obj/item/clothing/suit/security/hos
-	name = "head of security's jacket"
+	name = "security marshal's jacket"
 	desc = "This piece of clothing was specifically designed for asserting superior authority."
 	icon_state = "hosbluejacket"
 	inhand_icon_state = "hosbluejacket"
@@ -212,6 +243,10 @@
 	cold_protection = CHEST|ARMS
 	heat_protection = CHEST|ARMS
 
+	equip_self_flags = EQUIP_ALLOW_MOVEMENT | EQUIP_SLOWDOWN
+	equip_delay_self = EQUIP_DELAY_COAT
+	equip_delay_other = EQUIP_DELAY_COAT * 1.5
+	strip_delay = EQUIP_DELAY_COAT * 1.5
 
 //Robotocist
 
@@ -253,3 +288,8 @@
 	inhand_icon_state = "p_suit"
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 50, ACID = 50)
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION
+
+	equip_self_flags = EQUIP_ALLOW_MOVEMENT | EQUIP_SLOWDOWN
+	equip_delay_self = EQUIP_DELAY_COAT
+	equip_delay_other = EQUIP_DELAY_COAT * 1.5
+	strip_delay = EQUIP_DELAY_COAT * 1.5

@@ -191,7 +191,7 @@
 	var/datum/material/mat_ref = GET_MATERIAL_REF(plating_material)
 
 	material_color = mat_ref.wall_color
-	stripe_icon = mat_ref.wall_stripe_icon
+	stripe_icon = mat_ref.low_wall_stripe_icon
 
 	if(update_appearance)
 		update_appearance()
@@ -222,3 +222,7 @@
 /obj/structure/low_wall/prepainted/daedalus
 	wall_paint = PAINT_WALL_DAEDALUS
 	stripe_paint = PAINT_STRIPE_DAEDALUS
+
+/obj/structure/low_wall/prepainted/marsexec
+	wall_paint = PAINT_WALL_MARS
+	stripe_paint = PAINT_STRIPE_MARS

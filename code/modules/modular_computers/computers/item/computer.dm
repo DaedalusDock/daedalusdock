@@ -61,6 +61,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	/// Is this computer allowed to save imprint information? (truthy), If so, what's the prefix?
 	var/imprint_prefix = FALSE
 	var/saved_identification = null // next two values are the currently imprinted id and job values
+	/// The title of the job saved to this PC. Will often not be a real job, this is for flavor.
 	var/saved_job = null
 
 	/// Allow people with chunky fingers to use?

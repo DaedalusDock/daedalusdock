@@ -1,4 +1,4 @@
-/mob/living/brain/death(gibbed)
+/mob/living/brain/death(gibbed, cause_of_death = "Unknown")
 	if(stat == DEAD)
 		return
 	set_stat(DEAD)

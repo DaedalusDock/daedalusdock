@@ -17,7 +17,7 @@
 		new /obj/item/circuit_component/bot_circuit()
 	), SHELL_CAPACITY_LARGE)
 
-/mob/living/circuit_drone/updatehealth()
+/mob/living/circuit_drone/updatehealth(cause_of_death)
 	. = ..()
 	if(health < 0)
 		gib(no_brain = TRUE, no_organs = TRUE, no_bodyparts = TRUE)

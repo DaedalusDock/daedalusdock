@@ -43,19 +43,14 @@
 /// Adds the fibers of M to our fiber list.
 /atom/proc/add_fibers(mob/living/carbon/human/M)
 	if(istype(M))
-		var/old = 0
 		if(M.gloves && istype(M.gloves, /obj/item/clothing))
 			var/obj/item/clothing/gloves/G = M.gloves
-			old = length(G.return_blood_DNA())
 
-			if(G.transfer_blood > 1) //bloodied gloves transfer blood to touched objects
-				if(add_blood_DNA(G.return_blood_DNA()) && length(G.return_blood_DNA()) > old) //only reduces the bloodiness of our gloves if the item wasn't already bloody
-					G.transfer_blood--
+			if(G.transfer_blood > 1 && add_blood_DNA(G.return_blood_DNA())) //bloodied gloves transfer blood to touched objects
+				G.transfer_blood--
 
-		else if(M.blood_in_hands > 1)
-			old = length(M.return_blood_DNA())
-			if(add_blood_DNA(M.return_blood_DNA()) && length(M.return_blood_DNA()) > old)
-				M.blood_in_hands--
+		else if(M.blood_in_hands > 1 && add_blood_DNA(M.return_blood_DNA()))
+			M.blood_in_hands--
 
 	if(isnull(forensics))
 		create_forensics()
@@ -99,6 +94,7 @@
 
 	forensics.add_trace_DNA(dna)
 
+/// Returns TRUE if new blood dna was added.
 /atom/proc/add_blood_DNA(list/dna) //ASSOC LIST DNA = BLOODTYPE
 	return FALSE
 
@@ -109,43 +105,67 @@
 	if(isnull(forensics))
 		create_forensics()
 
-	forensics.add_blood_DNA(dna)
-	return TRUE
+	return forensics.add_blood_DNA(dna)
 
-/obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
+/obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/pathogen/diseases)
 	. = ..()
 	transfer_blood = rand(2, 4)
 
-/turf/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
+/turf/add_blood_DNA(list/blood_dna, list/datum/pathogen/diseases)
 	var/obj/effect/decal/cleanable/blood/splatter/B = locate() in src
 	if(!B)
 		B = new /obj/effect/decal/cleanable/blood/splatter(src, diseases)
 
 	if(!QDELETED(B))
-		B.add_blood_DNA(blood_dna) //give blood info to the blood decal.
-		return TRUE //we bloodied the floor
+		return B.add_blood_DNA(blood_dna) //give blood info to the blood decal.
 
-/mob/living/carbon/human/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
-	if(wear_suit)
-		wear_suit.add_blood_DNA(blood_dna)
-		update_worn_oversuit()
+/mob/living/carbon/human/add_blood_DNA(list/blood_dna, list/datum/pathogen/diseases)
+	return add_blood_DNA_to_items(blood_dna)
 
-	else if(w_uniform)
-		w_uniform.add_blood_DNA(blood_dna)
-		update_worn_undersuit()
+/// Adds blood DNA to certain slots the mob is wearing
+/mob/living/carbon/human/proc/add_blood_DNA_to_items(
+	list/blood_DNA_to_add,
+	target_flags = ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING|ITEM_SLOT_GLOVES|ITEM_SLOT_HEAD|ITEM_SLOT_MASK,
+)
+	if(QDELING(src))
+		return FALSE
 
-	if(gloves)
-		var/obj/item/clothing/gloves/G = gloves
-		G.add_blood_DNA(blood_dna)
+	if(!length(blood_DNA_to_add))
+		return FALSE
 
-	else if(length(blood_dna))
+	// Don't messy up our jumpsuit if we're got a coat
+	if((obscured_slots & HIDEJUMPSUIT) || ((target_flags & ITEM_SLOT_OCLOTHING) && (wear_suit?.body_parts_covered & CHEST)))
+		target_flags &= ~ITEM_SLOT_ICLOTHING
+
+	var/dirty_hands = !!(target_flags & (ITEM_SLOT_GLOVES|ITEM_SLOT_HANDS))
+	var/dirty_feet = !!(target_flags & ITEM_SLOT_FEET)
+	var/slots_to_bloody = target_flags & ~check_obscured_slots()
+	var/list/all_worn = get_equipped_items()
+
+	for(var/obj/item/thing as anything in all_worn)
+		if(thing.slot_flags & slots_to_bloody)
+			thing.add_blood_DNA(blood_DNA_to_add)
+
+		if(thing.body_parts_covered & HANDS)
+			dirty_hands = FALSE
+
+		if(thing.body_parts_covered & FEET)
+			dirty_feet = FALSE
+
+	if(slots_to_bloody & ITEM_SLOT_HANDS)
+		for(var/obj/item/thing in held_items)
+			thing.add_blood_DNA(blood_DNA_to_add)
+
+	if(dirty_hands || dirty_feet || !length(all_worn))
 		if(isnull(forensics))
 			create_forensics()
-		forensics.add_blood_DNA(blood_dna)
+		forensics.add_blood_DNA(blood_DNA_to_add)
 
-	update_worn_gloves() //handles bloody hands overlays and updating
+		if(dirty_hands)
+			blood_in_hands = max(blood_in_hands, rand(2, 4))
+
+	update_clothing(slots_to_bloody)
 	return TRUE
-
 /*
  * Transfer all forensic evidence from [src] to [transfer_to].
  */
@@ -175,3 +195,58 @@
  */
 /atom/proc/transfer_gunshot_residue_to(atom/transfer_to)
 	transfer_to.add_gunshot_residue(return_gunshot_residue())
+
+/// On examine, players have a chance to find forensic evidence. This can only happen once per object.
+/mob/living/carbon/human/proc/forensic_analysis_roll(atom/examined)
+	if(!stats.cooldown_finished("examine_forensic_analysis"))
+		return
+
+	// Already gotten the good rng on this one
+	if(stats.examined_object_weakrefs[WEAKREF(examined)])
+		return
+
+	if(examined.return_blood_DNA())
+		return // This is kind of obvious
+
+	var/list/fingerprints = examined.return_fingerprints()?.Copy()
+	var/list/trace_dna = examined.return_trace_DNA()?.Copy()
+	var/list/residue = examined.return_gunshot_residue()
+
+	// Exclude our own prints
+	if(length(fingerprints))
+		var/obj/item/bodypart/arm/left_arm = get_bodypart(BODY_ZONE_L_ARM)
+		var/obj/item/bodypart/arm/right_arm = get_bodypart(BODY_ZONE_R_ARM)
+
+		if(left_arm)
+			fingerprints -= get_fingerprints(TRUE, left_arm)
+		if(right_arm)
+			fingerprints -= get_fingerprints(TRUE, right_arm)
+
+	// Exclude our DNA
+	if(length(trace_dna))
+		trace_dna -= get_trace_dna()
+
+	// Do nothing if theres no evidence.
+	if(!(length(fingerprints) || length(trace_dna) || length(residue)))
+		return
+
+	var/datum/roll_result/result = stat_roll(16, /datum/rpg_skill/forensics)
+
+	switch(result.outcome)
+		if(FAILURE, CRIT_FAILURE)
+			stats.set_cooldown("examine_forensic_analysis", 15 SECONDS)
+			return
+
+	result.do_skill_sound(src)
+	stats.examined_object_weakrefs[WEAKREF(examined)] = TRUE
+	stats.set_cooldown("examine_forensic_analysis", 15 MINUTES)
+
+	// Spawn 0 so this displays *after* the examine block.
+	spawn(0)
+		if(length(residue))
+			to_chat(src, result.create_tooltip("A remnant of past events flashes into your mind, the booming crack of a firearm."))
+
+		else if(length(fingerprints) || length(trace_dna))
+			var/text = isitem(examined) ? "someone else has held this item in the past" : "someone else has been here before"
+			to_chat(src, result.create_tooltip("Perhaps it is a stray particle of dust, or a smudge on the surface. Whatever it may be, you are certain [text]."))
+

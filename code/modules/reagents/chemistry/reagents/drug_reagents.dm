@@ -89,6 +89,16 @@
 	C.AdjustImmobilized(-10 * removed)
 	. = TRUE
 
+/datum/reagent/drug/nicotine/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
+	C.stats?.set_skill_modifier(1, /datum/rpg_skill/handicraft, SKILL_SOURCE_NICOTINE)
+
+/datum/reagent/drug/nicotine/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
+	C.stats?.remove_skill_modifier(/datum/rpg_skill/handicraft, SKILL_SOURCE_NICOTINE)
+
 /datum/reagent/drug/nicotine/overdose_process(mob/living/carbon/C)
 	. = ..()
 	APPLY_CHEM_EFFECT(C, CE_PULSE, 2)
@@ -109,7 +119,7 @@
 
 /datum/reagent/drug/krokodil/overdose_process(mob/living/carbon/C)
 	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.25, updating_health = FALSE)
-	C.adjustToxLoss(0.25, 0)
+	C.adjustToxLoss(0.25, 0, cause_of_death = "Krokodil overdose")
 	. = TRUE
 
 /datum/reagent/drug/methamphetamine
@@ -162,7 +172,7 @@
 		C.visible_message(span_danger("[C]'s hands flip out and flail everywhere!"))
 		C.drop_all_held_items()
 
-	C.adjustToxLoss(1, 0)
+	C.adjustToxLoss(1, 0, cause_of_death = "Methamphetamine overdose")
 	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, (rand(5, 10) / 10), updating_health = FALSE)
 	. = TRUE
 
@@ -233,7 +243,7 @@
 		to_chat(C, span_notice("[high_message]"))
 
 	C.stamina.adjust(-18 * removed)
-	C.adjustToxLoss(0.5 * removed, 0)
+	C.adjustToxLoss(0.5 * removed, 0, cause_of_death = "Aransep poisoning")
 	if(prob(30))
 		C.losebreath++
 		C.adjustOxyLoss(1 * removed, 0)
@@ -267,7 +277,7 @@
 
 	if(prob(14))
 		C.losebreath++
-		C.adjustToxLoss(2, 0)
+		C.adjustToxLoss(2, 0, cause_of_death = "Pump-Up")
 		. = TRUE
 
 /datum/reagent/drug/pumpup/overdose_start(mob/living/carbon/C)
@@ -285,7 +295,7 @@
 		C.stamina.adjust(-4)
 
 	if(prob(14))
-		C.adjustToxLoss(2, 0)
+		C.adjustToxLoss(2, 0, cause_of_death = "Pump-Up overdose")
 	return TRUE
 
 /datum/reagent/drug/maint
@@ -336,7 +346,7 @@
 	ADD_TRAIT(C,TRAIT_HARDLY_WOUNDED, type)
 
 /datum/reagent/drug/maint/sludge/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(0.5 * removed, FALSE)
+	C.adjustToxLoss(0.5 * removed, FALSE, cause_of_death = "Sludge poisoning")
 	return TRUE
 
 /datum/reagent/drug/maint/sludge/on_mob_end_metabolize(mob/living/carbon/C, class)
@@ -346,9 +356,9 @@
 
 /datum/reagent/drug/maint/sludge/overdose_process(mob/living/carbon/C)
 	//You will be vomiting so the damage is really for a few ticks before you flush it out of your system
-	C.adjustToxLoss(1, FALSE)
+	C.adjustToxLoss(1, FALSE, cause_of_death = "Sludge overdose")
 	if(prob(10))
-		C.adjustToxLoss(5, FALSE)
+		C.adjustToxLoss(5, FALSE, cause_of_death = "Sludge overdose")
 		C.vomit()
 	return TRUE
 
@@ -371,7 +381,7 @@
 	return TRUE
 
 /datum/reagent/drug/maint/tar/overdose_process(mob/living/carbon/C)
-	C.adjustToxLoss(5, FALSE)
+	C.adjustToxLoss(5, FALSE, cause_of_death = "Tar overdose")
 	C.adjustOrganLoss(ORGAN_SLOT_LIVER, 3, updating_health = FALSE)
 	return TRUE
 

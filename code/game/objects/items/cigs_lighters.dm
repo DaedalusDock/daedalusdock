@@ -324,12 +324,12 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 	var/to_smoke = smoke_all ? (reagents.total_volume * (dragtime / smoketime)) : REAGENTS_METABOLISM
 	if(!istype(user) || ((src != user.wear_mask) && !drag))
-		reagents.remove_any(to_smoke)
+		reagents.remove_all(to_smoke)
 		return
 
 	reagents.expose(user, INJECT, min(to_smoke / reagents.total_volume, 1))
 	if(!reagents.trans_to(user, to_smoke, methods = INJECT))
-		reagents.remove_any(to_smoke)
+		reagents.remove_all(to_smoke)
 
 	if(drag || COOLDOWN_FINISHED(src, smoke_cooldown))
 		new /obj/effect/temp_visual/cig_smoke(drop_location())
@@ -801,6 +801,9 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/lighter/attack_self(mob/living/user)
 	if(!user.is_holding(src))
 		return ..()
+
+	user.changeNext_move(CLICK_CD_RAPID)
+
 	if(lit)
 		set_lit(FALSE)
 		if(fancy)
@@ -816,6 +819,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		return
 
 	set_lit(TRUE)
+
 	if(fancy)
 		user.visible_message(
 			span_notice("Without even breaking stride, [user] flips open and lights [src] in one smooth movement."),
@@ -834,19 +838,21 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		if(gloves.max_heat_protection_temperature)
 			hand_protected = (gloves.max_heat_protection_temperature > 360)
 
-	if(hand_protected || prob(75))
+	if(hand_protected)
 		user.visible_message(
 			span_notice("After a few attempts, [user] manages to light [src]."),
 			span_notice("After a few attempts, you manage to light [src].")
 		)
 		return
 
-	var/hitzone = user.held_index_to_dir(user.active_hand_index) == "r" ? BODY_ZONE_PRECISE_R_HAND : BODY_ZONE_PRECISE_L_HAND
-	user.apply_damage(5, BURN, hitzone)
-	user.visible_message(
-		span_warning("After a few attempts, [user] manages to light [src] - however, [user.p_they()] burn [user.p_their()] finger in the process."),
-		span_warning("You burn yourself while lighting the lighter!")
-	)
+	var/datum/roll_result/result = user.stat_roll(9, /datum/rpg_skill/handicraft)
+	switch(result.outcome)
+		if(FAILURE, CRIT_FAILURE)
+			user.apply_damage(5, BURN, user.get_active_hand())
+			to_chat(user, result.create_tooltip("Your eagerness to ignite [src] in a stylish fashion has shrouded your care. Your finger is bathed in the flame for a brief moment."))
+		if(SUCCESS, CRIT_SUCCESS)
+			to_chat(user, result.create_tooltip("After a few attempts, you manage to light [src]."))
+	user.visible_message(span_notice("After a few attempts, [user] manages to light [src]."))
 
 /obj/item/lighter/attack(mob/living/carbon/M, mob/living/carbon/user)
 	if(lit && M.ignite_mob())
@@ -1075,7 +1081,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 	var/mob/living/carbon/vaper = loc
 	if(!iscarbon(vaper) || src != vaper.wear_mask)
-		reagents.remove_any(REAGENTS_METABOLISM)
+		reagents.remove_all(REAGENTS_METABOLISM)
 		return
 
 	if(reagents.get_reagent_amount(/datum/reagent/fuel))
@@ -1090,7 +1096,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		qdel(src)
 
 	if(!reagents.trans_to(vaper, REAGENTS_METABOLISM, methods = INJECT)) //Going right into the bloodstream
-		reagents.remove_any(REAGENTS_METABOLISM)
+		reagents.remove_all(REAGENTS_METABOLISM)
 
 /obj/item/clothing/mask/vape/process(delta_time)
 	var/mob/living/M = loc
@@ -1111,8 +1117,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	//Time to start puffing those fat vapes, yo.
 	COOLDOWN_START(src, drag_cooldown, dragtime)
 	if(obj_flags & EMAGGED)
-		var/datum/effect_system/smoke_spread/chem/smoke_machine/s = new
-		s.set_up(reagents, 4, 24, loc)
+		var/datum/effect_system/fluid_spread/smoke/chem/smoke_machine/s = new
+		s.set_up(4, location = loc, carry = reagents, efficiency = 24)
 		s.start()
 		if(prob(5)) //small chance for the vape to break and deal damage if it's emagged
 			playsound(get_turf(src), 'sound/effects/pop_expl.ogg', 50, FALSE)
@@ -1125,8 +1131,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			qdel(src)
 			return
 	else if(super)
-		var/datum/effect_system/smoke_spread/chem/smoke_machine/s = new
-		s.set_up(reagents, 1, 24, loc)
+		var/datum/effect_system/fluid_spread/smoke/chem/smoke_machine/s = new
+		s.set_up(1, location = loc, carry = reagents, efficiency = 24)
 		s.start()
 
 	handle_reagents()

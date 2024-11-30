@@ -2,7 +2,7 @@
 /area/misc/survivalpod
 	name = "\improper Emergency Shelter"
 	icon_state = "away"
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 	requires_power = FALSE
 	has_gravity = STANDARD_GRAVITY
 	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
@@ -64,7 +64,7 @@
 			log_admin("[key_name(usr)] activated a bluespace capsule away from the mining level at [AREACOORD(T)]")
 
 		playsound(src, 'sound/effects/phasein.ogg', 100, TRUE)
-		new /obj/effect/particle_effect/smoke(get_turf(src))
+		new /obj/effect/particle_effect/fluid/smoke(get_turf(src))
 		qdel(src)
 
 //Non-default pods

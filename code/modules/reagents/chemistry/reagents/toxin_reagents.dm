@@ -20,7 +20,7 @@
 
 /datum/reagent/toxin/affect_blood(mob/living/carbon/C, removed)
 	if(toxpwr)
-		C.adjustToxLoss(toxpwr * removed, 0)
+		C.adjustToxLoss(toxpwr * removed, 0, cause_of_death = "Poisoning")
 		. = TRUE
 
 /datum/reagent/toxin/amatoxin
@@ -177,7 +177,7 @@
 	. = ..()
 	if(prob(5))
 		to_chat(C, span_danger("Your insides burn!"))
-		C.adjustToxLoss(rand(20, 60), 0)
+		C.adjustToxLoss(rand(20, 60), 0, cause_of_death = "Slime jelly poisoning")
 	else if(prob(30))
 		C.heal_bodypart_damage(5, updating_health = FALSE)
 
@@ -319,12 +319,12 @@
 	. = ..()
 	var/damage = min(round(0.4 * reac_volume, 0.1), 10)
 	if(exposed_mob.mob_biotypes & MOB_PLANT)
-		exposed_mob.adjustToxLoss(damage)
+		exposed_mob.adjustToxLoss(damage, cause_of_death = "Plant-B-Gone")
 	if(!(methods & VAPOR) || !iscarbon(exposed_mob))
 		return
 	var/mob/living/carbon/exposed_carbon = exposed_mob
 	if(!exposed_carbon.wear_mask)
-		exposed_carbon.adjustToxLoss(damage)
+		exposed_carbon.adjustToxLoss(damage, cause_of_death = "Plant-B-Gone")
 
 /datum/reagent/toxin/plantbgone/weedkiller
 	name = "Weed Killer"
@@ -359,13 +359,13 @@
 	. = ..()
 	if(exposed_mob.mob_biotypes & MOB_BUG)
 		var/damage = min(round(0.4*reac_volume, 0.1),10)
-		exposed_mob.adjustToxLoss(damage)
+		exposed_mob.adjustToxLoss(damage, cause_of_death = "Pestkiller")
 
 /datum/reagent/toxin/pestkiller/affect_blood(mob/living/carbon/C, removed)
 	if(!(ismoth(C) || isflyperson(C)))
 		return
 
-	C.adjustToxLoss(3 * removed, FALSE)
+	C.adjustToxLoss(3 * removed, FALSE, cause_of_death = "Pestkiller")
 	return TRUE
 
 /datum/reagent/toxin/pestkiller/affect_touch(mob/living/carbon/C, removed)
@@ -418,8 +418,7 @@
 	reagent_state = SOLID
 	color = "#000067" // rgb: 0, 0, 103
 	toxpwr = 0
-	metabolization_rate = 1.5 * REAGENTS_METABOLISM
-
+	metabolization_rate = 0.3
 
 /datum/reagent/toxin/chloralhydrate/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -431,7 +430,7 @@
 			C.Sleeping(40 * removed)
 		if(51 to INFINITY)
 			C.Sleeping(40 * removed)
-			C.adjustToxLoss(1 * (current_cycle - 50) * removed, 0)
+			C.adjustToxLoss(1 * (current_cycle - 50) * removed, 0, cause_of_death = "Chloral hydrate poisoning")
 			. = TRUE
 
 /datum/reagent/toxin/fakebeer //disguised as normal beer for use by emagged brobots
@@ -453,7 +452,7 @@
 			C.adjust_drowsyness(2 * removed)
 		if(51 to INFINITY)
 			C.Sleeping(40 * removed)
-			C.adjustToxLoss(1 * (current_cycle - 50) * removed, 0)
+			C.adjustToxLoss(1 * (current_cycle - 50) * removed, 0, cause_of_death = "Beer...?")
 
 /datum/reagent/toxin/coffeepowder
 	name = "Coffee Grounds"
@@ -521,7 +520,7 @@
 	if (!HAS_TRAIT(C, TRAIT_IRRADIATED) && SSradiation.can_irradiate_basic(C))
 		C.AddComponent(/datum/component/irradiated)
 	else
-		C.adjustToxLoss(1 * removed, FALSE)
+		C.adjustToxLoss(1 * removed, FALSE, cause_of_death = "Polonium poisoning")
 		return TRUE
 
 /datum/reagent/toxin/histamine
@@ -550,13 +549,13 @@
 			if(4)
 				if(prob(75))
 					to_chat(C, span_danger("You scratch at an itch."))
-					C.adjustBruteLoss(2*removed, 0)
+					C.adjustBruteLoss(2, 0)
 					. = TRUE
 
 /datum/reagent/toxin/histamine/overdose_process(mob/living/carbon/C)
 	C.adjustOxyLoss(2, FALSE)
 	C.adjustBruteLoss(2, FALSE, FALSE, BODYTYPE_ORGANIC)
-	C.adjustToxLoss(2, FALSE)
+	C.adjustToxLoss(2, FALSE, cause_of_death = "Histamine overdose")
 	. = TRUE
 
 /datum/reagent/toxin/venom
@@ -606,7 +605,7 @@
 /datum/reagent/toxin/fentanyl/affect_blood(mob/living/carbon/C, removed)
 	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
 	if(C.getToxLoss() <= 60)
-		C.adjustToxLoss(1 * removed, 0)
+		C.adjustToxLoss(1 * removed, 0, cause_of_death = "Fentanyl")
 	if(current_cycle >= 18)
 		C.Sleeping(40 * removed)
 	return TRUE
@@ -627,7 +626,7 @@
 	if(prob(8))
 		to_chat(C, span_danger("You feel horrendously weak!"))
 		C.Stun(40)
-		C.adjustToxLoss(2 * removed, 0)
+		C.adjustToxLoss(2 * removed, 0, cause_of_death = "Cyanide poisoning")
 
 /datum/reagent/toxin/bad_food
 	name = "Bad Food"
@@ -792,7 +791,7 @@
 
 /datum/reagent/toxin/amanitin/on_mob_end_metabolize(mob/living/carbon/C, class)
 	C.log_message("has taken [delayed_toxin_damage] toxin damage from amanitin toxin", LOG_ATTACK)
-	C.adjustToxLoss(delayed_toxin_damage, FALSE)
+	C.adjustToxLoss(delayed_toxin_damage, FALSE, cause_of_death = "Amanitin")
 	delayed_toxin_damage = 0
 	return TRUE
 
@@ -809,7 +808,7 @@
 /datum/reagent/toxin/lipolicide/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
 	if(C.nutrition <= NUTRITION_LEVEL_STARVING)
-		C.adjustToxLoss(1 * removed, 0)
+		C.adjustToxLoss(1 * removed, 0, cause_of_death = "Lipolicide poisoning")
 		. = TRUE
 	C.adjust_nutrition(-3 * removed) // making the chef more valuable, one meme trap at a time
 	C.overeatduration = 0
@@ -945,7 +944,7 @@
 
 /datum/reagent/toxin/delayed/affect_blood(mob/living/carbon/C, removed)
 	if(current_cycle > delay)
-		C.adjustToxLoss(actual_toxpwr * removed, 0)
+		C.adjustToxLoss(actual_toxpwr * removed, 0, cause_of_death = "Toxin microcapsules")
 		if(prob(10))
 			C.Paralyze(20)
 		. = TRUE

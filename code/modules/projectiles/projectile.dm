@@ -815,8 +815,11 @@
 		var/matrix/matrix = new
 		matrix.Turn(Angle)
 		transform = matrix
+		UPDATE_OO_IF_PRESENT
+
 	if(trajectory)
 		trajectory.set_angle(new_angle)
+
 	if(fired && hitscan && isloc(loc) && (loc != last_angle_set_hitscan_store))
 		last_angle_set_hitscan_store = loc
 		var/datum/point/point_cache = new (src)
@@ -831,6 +834,8 @@
 		var/matrix/matrix = new
 		matrix.Turn(Angle)
 		transform = matrix
+		UPDATE_OO_IF_PRESENT
+
 	if(trajectory)
 		trajectory.set_angle(new_angle)
 
@@ -953,7 +958,8 @@
 	if(!hitscanning && !forcemoved)
 		pixel_x = trajectory.return_px() - trajectory.mpx * trajectory_multiplier * SSprojectiles.global_iterations_per_move
 		pixel_y = trajectory.return_py() - trajectory.mpy * trajectory_multiplier * SSprojectiles.global_iterations_per_move
-		animate(src, pixel_x = trajectory.return_px(), pixel_y = trajectory.return_py(), time = 1, flags = ANIMATION_END_NOW)
+		z_animate(src, pixel_x = trajectory.return_px(), pixel_y = trajectory.return_py(), time = 1, flags = ANIMATION_END_NOW)
+
 	Range()
 
 /obj/projectile/proc/process_homing() //may need speeding up in the future performance wise.
@@ -1102,10 +1108,12 @@
 /obj/projectile/proc/generate_hitscan_tracers(cleanup = TRUE, duration = 3, impacting = TRUE)
 	if(!length(beam_segments))
 		return
+
 	if(tracer_type)
 		var/tempref = REF(src)
 		for(var/datum/point/p in beam_segments)
 			generate_tracer_between_points(p, beam_segments[p], tracer_type, color, duration, hitscan_light_range, hitscan_light_color_override, hitscan_light_intensity, tempref)
+
 	if(muzzle_type && duration > 0)
 		var/datum/point/p = beam_segments[1]
 		var/atom/movable/thing = new muzzle_type
@@ -1115,7 +1123,9 @@
 		thing.transform = matrix
 		thing.color = color
 		thing.set_light(l_inner_range = muzzle_flash_range, l_outer_range = muzzle_flash_range, l_power = muzzle_flash_intensity, l_color = muzzle_flash_color_override || color)
+		thing.update_above()
 		QDEL_IN(thing, duration)
+
 	if(impacting && impact_type && duration > 0)
 		var/datum/point/p = beam_segments[beam_segments[beam_segments.len]]
 		var/atom/movable/thing = new impact_type
@@ -1125,7 +1135,9 @@
 		thing.transform = matrix
 		thing.color = color
 		thing.set_light(l_inner_range = impact_light_range, l_outer_range = impact_light_range, l_power = impact_light_intensity, l_color = impact_light_color_override || color)
+		thing.update_above()
 		QDEL_IN(thing, duration)
+
 	if(cleanup)
 		cleanup_beam_segments()
 

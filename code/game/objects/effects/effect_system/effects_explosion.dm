@@ -54,10 +54,11 @@
 	P.start()
 
 /datum/effect_system/explosion/smoke
+	var/smoke_range = 2
 
 /datum/effect_system/explosion/smoke/proc/create_smoke()
-	var/datum/effect_system/smoke_spread/S = new
-	S.set_up(2, location)
+	var/datum/effect_system/fluid_spread/smoke/transparent/S = new
+	S.set_up(smoke_range, location = location)
 	S.start()
 
 /datum/effect_system/explosion/smoke/start()

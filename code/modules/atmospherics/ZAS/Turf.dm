@@ -335,17 +335,24 @@
 /turf/proc/make_air()
 	if(simulated)
 		air = new/datum/gas_mixture
-		air.temperature = temperature
 		if(initial_gas)
 			air.gas = initial_gas.Copy()
+			air.temperature = temperature
 		AIR_UPDATE_VALUES(air)
 
 	else
-		if(!isnull(air))
+		if(air)
 			return air
 
 		// Grab an existing mixture from the cache
-		var/gas_key = json_encode(initial_gas + temperature)
+		var/gas_key
+		if(isnull(initial_gas))
+			gas_key = "VACUUM_ATMOS"
+		else
+			var/list/initial_gas_copy = initial_gas.Copy()
+			initial_gas_copy["temperature"] = temperature
+			gas_key = json_encode(initial_gas)
+
 		var/datum/gas_mixture/GM = SSzas.unsimulated_gas_cache[gas_key]
 		if(GM)
 			air = GM
@@ -356,7 +363,10 @@
 		air = GM
 		if(!isnull(initial_gas))
 			GM.gas = initial_gas.Copy()
-		GM.temperature = temperature
+			GM.temperature = temperature
+		else
+			GM.temperature = TCMB
+
 		AIR_UPDATE_VALUES(GM)
 		SSzas.unsimulated_gas_cache[gas_key] = air
 
@@ -405,6 +415,15 @@
 		if(open_directions & direct)
 			adjacent_turfs += get_step(src, direct)
 	return length(adjacent_turfs) ? adjacent_turfs : null
+
+/turf/open/space/get_atmos_adjacent_turfs()
+	. = list()
+	for(var/direct in GLOB.cardinals)
+		var/turf/T = get_step(src, direct)
+		var/canpass
+		ATMOS_CANPASS_TURF(canpass, T, src)
+		if(!(canpass & (AIR_BLOCKED)))
+			. += T
 
 /turf/open/return_analyzable_air()
 	return unsafe_return_air()

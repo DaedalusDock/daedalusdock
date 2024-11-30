@@ -111,7 +111,7 @@
 /obj/item/mod/control/proc/delete_link_visual()
 	return delete_link_visual_generic(mod_link)
 
-/obj/item/mod/control/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods, message_range, sound_loc, message_range)
+/obj/item/mod/control/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods, message_range, sound_loc)
 	. = ..()
 	if(speaker != wearer && speaker != ai)
 		return
@@ -280,7 +280,7 @@
 		user.update_worn_neck()
 	return delete_link_visual_generic(mod_link)
 
-/obj/item/clothing/neck/link_scryer/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods, message_range, sound_loc, message_range)
+/obj/item/clothing/neck/link_scryer/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods, message_range, sound_loc)
 	. = ..()
 	if(speaker != loc)
 		return

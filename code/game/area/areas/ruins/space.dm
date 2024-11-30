@@ -18,7 +18,7 @@
 	ambience_index = AMBIENCE_ENGI
 	airlock_wires = /datum/wires/airlock/engineering
 	sound_environment = SOUND_AREA_SPACE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 
 /area/ruin/space/way_home
 	name = "\improper Salvation"
@@ -358,8 +358,7 @@
 	icon_state = "DJ"
 	area_flags = UNIQUE_AREA | AREA_USES_STARLIGHT
 	has_gravity = STANDARD_GRAVITY
-	base_lighting_alpha = null
-	base_lighting_color = null
+	area_lighting = AREA_LIGHTING_DYNAMIC
 
 /area/ruin/space/djstation/service
 	name = "\improper DJ Station Service"

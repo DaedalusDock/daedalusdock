@@ -9,7 +9,10 @@ SUBSYSTEM_DEF(ticker)
 	runlevels = RUNLEVEL_LOBBY | RUNLEVEL_SETUP | RUNLEVEL_GAME
 
 	var/current_state = GAME_STATE_STARTUP //state of current round (used by process()) Use the defines GAME_STATE_* !
-	var/force_ending = 0 //Round was ended by admin intervention
+
+	/// When TRUE, the round will end next tick or has already ended. Use SSticker.end_round() instead. This var is used by non-gamemodes to end the round.
+	VAR_PRIVATE/force_ending = FALSE
+
 	// If true, there is no lobby phase, the game starts immediately.
 	#ifndef LOWMEMORYMODE
 	var/start_immediately = FALSE
@@ -19,6 +22,12 @@ SUBSYSTEM_DEF(ticker)
 	var/setup_done = FALSE //All game setup done including mode post setup and
 
 	var/datum/game_mode/mode = null
+	///The name of the gamemode to show at roundstart. This is here to admins can give fake gamemodes.
+	var/mode_display_name = null
+
+	///All players that are readied up and about to spawn in.
+	var/list/mob/dead/new_player/ready_players
+
 	///Media track for the music played in the lobby
 	var/datum/media/login_music
 	///Media track for the round end music.
@@ -96,11 +105,23 @@ SUBSYSTEM_DEF(ticker)
 
 		GLOB.syndicate_code_response_regex = codeword_match
 
+	if(!GLOB.revolution_code_phrase)
+		GLOB.revolution_code_phrase = generate_code_phrase(return_list=TRUE)
+
+		var/codewords = jointext(GLOB.syndicate_code_phrase, "|")
+		var/regex/codeword_match = new("([codewords])", "ig")
+
+		GLOB.revolution_code_phrase_regex = codeword_match
+
 	start_at = world.time + (CONFIG_GET(number/lobby_countdown) * 10)
 	if(CONFIG_GET(flag/randomize_shift_time))
 		gametime_offset = rand(0, 23) HOURS
 	else if(CONFIG_GET(flag/shift_time_realtime))
 		gametime_offset = world.timeofday
+
+	if(GLOB.is_debug_server)
+		mode = new /datum/game_mode/extended
+
 	return ..()
 
 /datum/controller/subsystem/ticker/fire()
@@ -187,6 +208,7 @@ SUBSYSTEM_DEF(ticker)
 		if(GAME_STATE_SETTING_UP)
 			if(!setup())
 				//setup failed
+				start_immediately = FALSE //If the game failed to start, don't keep trying
 				current_state = GAME_STATE_STARTUP
 				start_at = world.time + (CONFIG_GET(number/lobby_countdown) * 10)
 				timeLeft = null
@@ -194,10 +216,11 @@ SUBSYSTEM_DEF(ticker)
 				SEND_SIGNAL(src, COMSIG_TICKER_ERROR_SETTING_UP)
 
 		if(GAME_STATE_PLAYING)
-			mode.process(wait * 0.1)
+			if(mode.datum_flags & DF_ISPROCESSING)
+				mode.process(wait * 0.1)
 			check_queue()
 
-			if(!roundend_check_paused && mode.check_finished(force_ending) || force_ending)
+			if(force_ending || (!roundend_check_paused && mode.check_finished()))
 				current_state = GAME_STATE_FINISHED
 				toggle_ooc(TRUE) // Turn it on
 				toggle_dooc(TRUE)
@@ -208,28 +231,22 @@ SUBSYSTEM_DEF(ticker)
 
 /datum/controller/subsystem/ticker/proc/setup()
 	to_chat(world, span_boldannounce("Starting game..."))
-	to_chat(world, "<br><hr><br>")
 	var/init_start = world.timeofday
 
-	mode = new /datum/game_mode/dynamic
+	ready_players = list() // This needs to be reset every setup, incase the gamemode fails to start.
+	for(var/i in GLOB.new_player_list)
+		var/mob/dead/new_player/player = i
+		if(player.ready == PLAYER_READY_TO_PLAY && player.mind && player.check_preferences())
+			ready_players.Add(player)
 
-	CHECK_TICK
-	//Configure mode and assign player to special mode stuff
-	var/can_continue = 0
-	can_continue = src.mode.pre_setup() //Choose antagonists
-	CHECK_TICK
-	can_continue = can_continue && SSjob.DivideOccupations() //Distribute jobs
-	CHECK_TICK
+	// Set up gamemode, divide up jobs.
+	if(!initialize_gamemode())
+		return FALSE
 
-	if(!GLOB.Debug2)
-		if(!can_continue)
-			log_game("Game failed pre_setup")
-			QDEL_NULL(mode)
-			to_chat(world, "<B>Error setting up game.</B> Reverting to pre-game lobby.")
-			SSjob.ResetOccupations()
-			return FALSE
-	else
-		message_admins(span_notice("DEBUG: Bypassing prestart checks..."))
+	to_chat(world, span_boldannounce("The gamemode is: [get_mode_name()]."))
+	if(mode_display_name)
+		message_admins("The real gamemode is: [get_mode_name(TRUE)].")
+	to_chat(world, "<br><hr><br>")
 
 	CHECK_TICK
 
@@ -244,12 +261,17 @@ SUBSYSTEM_DEF(ticker)
 		toggle_ooc(FALSE) // Turn it off
 
 	CHECK_TICK
-	GLOB.start_landmarks_list = shuffle(GLOB.start_landmarks_list) //Shuffle the order of spawn points so they dont always predictably spawn bottom-up and right-to-left
+
+	//Shuffle the order of spawn points so they dont always predictably spawn bottom-up and right-to-left
+	GLOB.start_landmarks_list = shuffle(GLOB.start_landmarks_list)
+	for(var/name in GLOB.start_landmarks_by_name)
+		GLOB.start_landmarks_by_name[name] = shuffle(GLOB.start_landmarks_by_name[name])
+
 	create_characters() //Create player characters
 	collect_minds()
 	equip_characters()
 
-	GLOB.data_core.manifest()
+	SSdatacore.generate_manifest()
 
 	transfer_characters() //transfer keys to the new mobs
 
@@ -277,8 +299,10 @@ SUBSYSTEM_DEF(ticker)
 			var/datum/holiday/holiday = SSevents.holidays[holidayname]
 			to_chat(world, "<h4>[holiday.greet()]</h4>")
 
+	//Setup the antags AFTTTTER theyve gotten their jobs
+	mode.setup_antags()
 	PostSetup()
-
+	SSticker.ready_players = null
 	return TRUE
 
 /datum/controller/subsystem/ticker/proc/PostSetup()
@@ -289,11 +313,10 @@ SUBSYSTEM_DEF(ticker)
 
 	var/list/adm = get_admin_counts()
 	var/list/allmins = adm["present"]
-	send2adminchat("Server", "Round [GLOB.round_id ? "#[GLOB.round_id]" : ""] has started[allmins.len ? ".":" with no active admins online!"]")
+	send2adminchat("Server", "Round [GLOB.round_id ? "#[GLOB.round_id]:" : "of"] [SSticker.get_mode_name()] has started[allmins.len ? ".":" with no active admins online!"]")
 	setup_done = TRUE
 
-	for(var/i in GLOB.start_landmarks_list)
-		var/obj/effect/landmark/start/S = i
+	for(var/obj/effect/landmark/start/S as anything in GLOB.start_landmarks_list)
 		if(istype(S)) //we can not runtime here. not in this important of a proc.
 			S.after_round_start()
 		else
@@ -311,6 +334,9 @@ SUBSYSTEM_DEF(ticker)
 			to_chat(iter_human, span_notice("You will gain [round(iter_human.hardcore_survival_score) * 2] hardcore random points if you greentext this round!"))
 		else
 			to_chat(iter_human, span_notice("You will gain [round(iter_human.hardcore_survival_score)] hardcore random points if you survive this round!"))
+
+/datum/controller/subsystem/ticker/proc/end_round()
+	force_ending = TRUE
 
 //These callbacks will fire after roundstart key transfer
 /datum/controller/subsystem/ticker/proc/OnRoundstart(datum/callback/cb)
@@ -356,7 +382,7 @@ SUBSYSTEM_DEF(ticker)
 					player.create_character(spawn_loc)
 			else //PLAYER_NOT_READY
 				//Reload their player panel so they see latejoin instead of ready.
-				player.new_player_panel()
+				player.npp.update()
 
 		CHECK_TICK
 
@@ -369,96 +395,77 @@ SUBSYSTEM_DEF(ticker)
 
 
 /datum/controller/subsystem/ticker/proc/equip_characters()
-	GLOB.security_officer_distribution = decide_security_officer_departments(
-		shuffle(GLOB.new_player_list),
-		shuffle(GLOB.available_depts),
-	)
+	var/mob/dead/new_player/picked_spare_id_candidate = get_captain_or_backup()
+	// This is a bitfield!!!
+	var/departments_without_heads = filter_headless_departments(SSjob.get_necessary_departments())
 
-	var/captainless = TRUE
+	for(var/mob/dead/new_player/new_player_mob as anything in GLOB.new_player_list)
+		if(QDELETED(new_player_mob) || !isliving(new_player_mob.new_character))
+			CHECK_TICK
+			continue
 
-	var/highest_rank = length(SSjob.chain_of_command) + 1
+		var/mob/living/new_player_living = new_player_mob.new_character
+		if(!new_player_living.mind)
+			CHECK_TICK
+			continue
+
+		var/datum/job/player_assigned_role = new_player_living.mind.assigned_role
+		if(player_assigned_role.job_flags & JOB_EQUIP_RANK)
+			SSjob.EquipRank(new_player_living, player_assigned_role, new_player_mob.client)
+
+		player_assigned_role.after_roundstart_spawn(new_player_living, new_player_mob.client)
+
+		if(picked_spare_id_candidate == new_player_mob)
+			var/acting_captain = !is_captain_job(player_assigned_role)
+			SSjob.promote_to_captain(new_player_living, acting_captain)
+			SSshuttle.arrivals?.OnDock(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(priority_announce), player_assigned_role.get_captaincy_announcement(new_player_living), null, null, null, null, FALSE))
+
+		if(departments_without_heads && (player_assigned_role.departments_bitflags & departments_without_heads))
+			departments_without_heads &= ~SSjob.promote_to_department_head(new_player_living, player_assigned_role)
+
+		if((player_assigned_role.job_flags & JOB_ASSIGN_QUIRKS) && ishuman(new_player_living) && CONFIG_GET(flag/roundstart_traits))
+			SSquirks.AssignQuirks(new_player_living, new_player_mob.client)
+
+		CHECK_TICK
+
+/datum/controller/subsystem/ticker/proc/get_captain_or_backup()
 	var/list/spare_id_candidates = list()
-	var/mob/dead/new_player/picked_spare_id_candidate
+	var/datum/job_department/management = SSjob.get_department_type(/datum/job_department/command)
 
 	// Find a suitable player to hold captaincy.
 	for(var/mob/dead/new_player/new_player_mob as anything in GLOB.new_player_list)
 		if(is_banned_from(new_player_mob.ckey, list(JOB_CAPTAIN)))
 			CHECK_TICK
 			continue
+
 		if(!ishuman(new_player_mob.new_character))
 			continue
+
 		var/mob/living/carbon/human/new_player_human = new_player_mob.new_character
 		if(!new_player_human.mind || is_unassigned_job(new_player_human.mind.assigned_role))
 			continue
+
 		// Keep a rolling tally of who'll get the cap's spare ID vault code.
 		// Check assigned_role's priority and curate the candidate list appropriately.
-		var/player_assigned_role = new_player_human.mind.assigned_role.title
-		var/spare_id_priority = SSjob.chain_of_command[player_assigned_role]
-		if(spare_id_priority)
-			if(spare_id_priority < highest_rank)
-				spare_id_candidates.Cut()
-				spare_id_candidates += new_player_mob
-				highest_rank = spare_id_priority
-			else if(spare_id_priority == highest_rank)
-				spare_id_candidates += new_player_mob
+		if(new_player_human.mind.assigned_role.departments_bitflags & management.department_bitflags)
+			spare_id_candidates += new_player_human
+
 		CHECK_TICK
 
 	if(length(spare_id_candidates))
-		picked_spare_id_candidate = pick(spare_id_candidates)
+		return pick(spare_id_candidates)
 
-	for(var/mob/dead/new_player/new_player_mob as anything in GLOB.new_player_list)
-		if(QDELETED(new_player_mob) || !isliving(new_player_mob.new_character))
-			CHECK_TICK
-			continue
-		var/mob/living/new_player_living = new_player_mob.new_character
-		if(!new_player_living.mind)
-			CHECK_TICK
-			continue
-		var/datum/job/player_assigned_role = new_player_living.mind.assigned_role
-		if(player_assigned_role.job_flags & JOB_EQUIP_RANK)
-			SSjob.EquipRank(new_player_living, player_assigned_role, new_player_mob.client)
-		player_assigned_role.after_roundstart_spawn(new_player_living, new_player_mob.client)
-		if(picked_spare_id_candidate == new_player_mob)
-			captainless = FALSE
-			var/acting_captain = !is_captain_job(player_assigned_role)
-			SSjob.promote_to_captain(new_player_living, acting_captain)
-			OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(minor_announce), player_assigned_role.get_captaincy_announcement(new_player_living), ""))
-		if((player_assigned_role.job_flags & JOB_ASSIGN_QUIRKS) && ishuman(new_player_living) && CONFIG_GET(flag/roundstart_traits))
-			SSquirks.AssignQuirks(new_player_living, new_player_mob.client)
-		CHECK_TICK
+/// Removes departments with a head present from the given list, returning the values as bitflags
+/datum/controller/subsystem/ticker/proc/filter_headless_departments(list/departments)
+	. = NONE
 
-	if(captainless)
-		for(var/mob/dead/new_player/new_player_mob as anything in GLOB.new_player_list)
-			var/mob/living/carbon/human/new_player_human = new_player_mob.new_character
-			if(new_player_human)
-				to_chat(new_player_mob, span_notice("Captainship not forced on anyone."))
-			CHECK_TICK
+	for(var/path in departments - /datum/job_department/command)
+		var/datum/job_department/department = SSjob.get_department_type(path)
+		var/datum/job/head_role = SSjob.GetJobType(department.department_head)
+		if(head_role.current_positions == 0)
+			. |= department.department_bitflags
 
-
-/datum/controller/subsystem/ticker/proc/decide_security_officer_departments(
-	list/new_players,
-	list/departments,
-)
-	var/list/officer_mobs = list()
-	var/list/officer_preferences = list()
-
-	for (var/mob/dead/new_player/new_player_mob as anything in new_players)
-		var/mob/living/carbon/human/character = new_player_mob.new_character
-		if (istype(character) && is_security_officer_job(character.mind?.assigned_role))
-			officer_mobs += character
-
-			var/datum/client_interface/client = GET_CLIENT(new_player_mob)
-			var/preference = client?.prefs?.read_preference(/datum/preference/choiced/security_department)
-			officer_preferences += preference
-
-	var/distribution = get_officer_departments(officer_preferences, departments)
-
-	var/list/output = list()
-
-	for (var/index in 1 to officer_mobs.len)
-		output[REF(officer_mobs[index])] = distribution[index]
-
-	return output
+	return .
 
 /datum/controller/subsystem/ticker/proc/transfer_characters()
 	var/list/livings = list()
@@ -487,7 +494,7 @@ SUBSYSTEM_DEF(ticker)
 		for (var/mob/dead/new_player/NP in queued_players)
 			to_chat(NP, span_userdanger("The alive players limit has been released!<br><a href='?src=[REF(NP)];late_join=override'>[html_encode(">>Join Game<<")]</a>"))
 			SEND_SOUND(NP, sound('sound/misc/notice1.ogg'))
-			NP.LateChoices()
+			NP.npp.LateChoices()
 		queued_players.len = 0
 		queue_delay = 0
 		return
@@ -502,7 +509,7 @@ SUBSYSTEM_DEF(ticker)
 				if(next_in_line?.client)
 					to_chat(next_in_line, span_userdanger("A slot has opened! You have approximately 20 seconds to join. <a href='?src=[REF(next_in_line)];late_join=override'>\>\>Join Game\<\<</a>"))
 					SEND_SOUND(next_in_line, sound('sound/misc/notice1.ogg'))
-					next_in_line.LateChoices()
+					next_in_line.npp.LateChoices()
 					return
 				queued_players -= next_in_line //Client disconnected, remove he
 			queue_delay = 0 //No vacancy: restart timer
@@ -766,3 +773,69 @@ SUBSYSTEM_DEF(ticker)
 
 	if(!credits_music)
 		credits_music = login_music
+
+///Generate a list of gamemodes we can play.
+/datum/controller/subsystem/ticker/proc/draft_gamemodes()
+	var/list/datum/game_mode/runnable_modes = list()
+	for(var/path in subtypesof(/datum/game_mode))
+		var/datum/game_mode/M = new path()
+		if(!(M.weight == GAMEMODE_WEIGHT_NEVER) && !M.check_for_errors())
+			runnable_modes[path] = M.weight
+	return runnable_modes
+
+/datum/controller/subsystem/ticker/proc/get_mode_name(bypass_secret)
+	if(!istype(mode))
+		return "Undecided"
+	if(bypass_secret || !mode_display_name)
+		return mode.name
+
+	return mode_display_name
+
+/datum/controller/subsystem/ticker/proc/initialize_gamemode()
+	if(!mode)
+		var/list/datum/game_mode/runnable_modes = draft_gamemodes()
+		if(!runnable_modes.len)
+			message_admins(world, "<B>No viable gamemodes to play.</B> Running Extended.")
+			mode = new /datum/game_mode/extended
+		else
+			mode = pick_weight(runnable_modes)
+			mode = new mode
+
+	else
+		if(istype(mode, /datum/game_mode/extended) && GLOB.is_debug_server)
+			message_admins("Using Extended gamemode during debugging. Use Set Gamemode to change this.")
+
+		var/potential_error = mode.check_for_errors()
+		if(potential_error)
+			if(mode_display_name)
+				message_admins(span_adminnotice("Unable to force secret [get_mode_name(TRUE)]. [potential_error]"))
+				to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
+			else
+				to_chat(world, "<B>Unable to start [get_mode_name(TRUE)].</B> [potential_error] Reverting to pre-game lobby.")
+
+			QDEL_NULL(mode)
+			SSjob.ResetOccupations()
+			return FALSE
+
+	CHECK_TICK
+	//Configure mode and assign player to special mode stuff
+	var/can_continue = 0
+	can_continue = src.mode.execute_roundstart() //Choose antagonists
+	CHECK_TICK
+	can_continue = can_continue && SSjob.DivideOccupations(mode.required_jobs) //Distribute jobs
+	CHECK_TICK
+
+	if(!GLOB.Debug2)
+		if(!can_continue)
+			log_game("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error].")
+			message_admins("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error].")
+			to_chat(world, "<B>Error setting up [get_mode_name(TRUE)].</B> Reverting to pre-game lobby.")
+			mode.on_failed_execute()
+			QDEL_NULL(mode)
+			SSjob.ResetOccupations()
+			return FALSE
+	else
+		message_admins(span_notice("DEBUG: Bypassing prestart checks..."))
+
+	log_game("Gamemode successfully initialized, chose: [mode.name]")
+	return TRUE

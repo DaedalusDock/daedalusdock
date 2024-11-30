@@ -48,9 +48,8 @@
 	move_resist = MOVE_FORCE_OVERPOWERING
 	mob_size = MOB_SIZE_TINY
 	pass_flags = PASSTABLE | PASSGRILLE | PASSMOB
-	speed = 1
+	move_delay_modifier = 1
 	unique_name = TRUE
-	hud_possible = list(ANTAG_HUD)
 	hud_type = /datum/hud/revenant
 
 	var/essence = 75 //The resource, and health, of revenants.
@@ -236,7 +235,7 @@
 /mob/living/simple_animal/revenant/gib()
 	death()
 
-/mob/living/simple_animal/revenant/death()
+/mob/living/simple_animal/revenant/death(gibbed, cause_of_death = "Unknown")
 	if(!revealed || stasis) //Revenants cannot die if they aren't revealed //or are already dead
 		return
 	stasis = TRUE

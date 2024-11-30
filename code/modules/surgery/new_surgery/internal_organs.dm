@@ -4,10 +4,9 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal
 	can_infect = 1
-	blood_level = 1
-	pain_given =40
+	pain_given = 40
 	delicate = 1
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT | SURGERY_BLOODY_GLOVES
 	abstract_type = /datum/surgery_step/internal
 
 //////////////////////////////////////////////////////////////////
@@ -67,7 +66,7 @@
 	if (istype(tool, /obj/item/stack/medical/bruise_pack))
 		tool_name = "the bandaid"
 
-	user.visible_message(span_notice("[user] starts treating damage to [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool_name]."))
+	user.visible_message(span_notice("[user] starts treating damage to [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool_name]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/internal/fix_organ/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -83,16 +82,16 @@
 		return ..()
 
 	O.surgically_fix(user)
-	user.visible_message(span_notice("[user] finishes treating damage to [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool_name]."))
+	user.visible_message(span_notice("[user] finishes treating damage to [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool_name]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/internal/fix_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_warning("[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [tool]!"))
+	user.visible_message(span_warning("[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [tool]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 	var/dam_amt = 2
 
 	dam_amt = 5
-	target.adjustToxLoss(10)
+	target.adjustToxLoss(10, cause_of_death = "A bad surgeon")
 	affected.receive_damage(dam_amt, sharpness = SHARP_EDGED|SHARP_POINTY)
 
 	for(var/obj/item/organ/I in affected.contained_organs)
@@ -112,7 +111,7 @@
 	)
 	min_duration = 90
 	max_duration = 110
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/internal/detach_organ/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -132,11 +131,11 @@
 		return list(organ_to_remove,attached_organs[organ_to_remove])
 
 /datum/surgery_step/internal/detach_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message(span_notice("[user] starts to separate [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool]."))
+	user.visible_message(span_notice("[user] starts to separate [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/internal/detach_organ/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message(span_notice("[user] has separated [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool]."))
+	user.visible_message(span_notice("[user] has separated [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 	var/obj/item/organ/I = target.getorganslot((LAZYACCESS(target.surgeries_in_progress, target_zone))[2])
 	if(istype(I))
@@ -146,11 +145,11 @@
 /datum/surgery_step/internal/detach_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	if(affected.check_artery() & CHECKARTERY_OK)
-		user.visible_message(span_warning("[user]'s hand slips, slicing an artery inside [target]'s [affected.plaintext_zone] with \the [tool]!"))
+		user.visible_message(span_warning("[user]'s hand slips, slicing an artery inside [target]'s [affected.plaintext_zone] with \the [tool]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 		affected.set_sever_artery(TRUE)
 		affected.receive_damage(rand(10,15), sharpness = SHARP_EDGED|SHARP_POINTY)
 	else
-		user.visible_message(span_warning("[user]'s hand slips, slicing up inside [target]'s [affected.plaintext_zone] with \the [tool]!"))
+		user.visible_message(span_warning("[user]'s hand slips, slicing up inside [target]'s [affected.plaintext_zone] with \the [tool]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 		affected.receive_damage(rand(15, 25), sharpness = SHARP_EDGED|SHARP_POINTY)
 	..()
 
@@ -185,7 +184,7 @@
 		return list(organ_to_remove, removable_organs[organ_to_remove])
 
 /datum/surgery_step/internal/remove_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message(span_notice("\The [user] starts removing [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with \the [tool]."))
+	user.visible_message(span_notice("\The [user] starts removing [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with \the [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/internal/remove_organ/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -194,7 +193,7 @@
 	if(!O)
 		return
 
-	user.visible_message(span_notice("[user] has removed [target]'s [O.name] with [tool]."))
+	user.visible_message(span_notice("[user] has removed [target]'s [O.name] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 	if(istype(O) && istype(affected))
 		affected.remove_cavity_item(O)
@@ -205,7 +204,7 @@
 
 /datum/surgery_step/internal/remove_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_warning("[user]'s hand slips, damaging [target]'s [affected.plaintext_zone] with [tool]!"))
+	user.visible_message(span_warning("[user]'s hand slips, damaging [target]'s [affected.plaintext_zone] with [tool]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.receive_damage(20, sharpness = tool.sharpness)
 	..()
 
@@ -241,12 +240,12 @@
 
 /datum/surgery_step/internal/replace_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] starts [robotic_surgery ? "reinstalling" : "transplanting"] [tool] into [target]'s [affected.plaintext_zone]."))
+	user.visible_message(span_notice("[user] starts [robotic_surgery ? "reinstalling" : "transplanting"] [tool] into [target]'s [affected.plaintext_zone]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/internal/replace_organ/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("\The [user] has [robotic_surgery ? "reinstalled" : "transplanted"] [tool] into [target]'s [affected.plaintext_zone]."))
+	user.visible_message(span_notice("\The [user] has [robotic_surgery ? "reinstalled" : "transplanted"] [tool] into [target]'s [affected.plaintext_zone]."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 	var/obj/item/organ/O = tool
 	if(istype(O) && user.transferItemToLoc(O, target))
@@ -258,7 +257,7 @@
 	..()
 
 /datum/surgery_step/internal/replace_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message(span_warning("[user]'s hand slips, damaging \the [tool]!"))
+	user.visible_message(span_warning("[user]'s hand slips, damaging \the [tool]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 	var/obj/item/organ/I = tool
 	if(istype(I))
 		I.applyOrganDamage(rand(3,5))
@@ -277,7 +276,7 @@
 	)
 	min_duration = 100
 	max_duration = 120
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/internal/attach_organ/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
@@ -309,7 +308,7 @@
 	return list(organ_to_replace, attachable_organs[organ_to_replace.name])
 
 /datum/surgery_step/internal/attach_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message(span_warning("[user] begins reattaching [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with \the [tool]."))
+	user.visible_message(span_warning("[user] begins reattaching [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with \the [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/internal/attach_organ/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -318,7 +317,7 @@
 	if(!I)
 		return
 
-	user.visible_message(span_notice("[user] has reattached [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with [tool]."))
+	user.visible_message(span_notice("[user] has reattached [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 	if(istype(I) && affected && deprecise_zone(I.zone) == affected.body_zone && (I in affected.cavity_items))
 		affected.remove_cavity_item(I)
@@ -327,18 +326,26 @@
 
 /datum/surgery_step/internal/attach_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_warning("[user]'s hand slips, damaging the flesh in [target]'s [affected.plaintext_zone] with [tool]!"))
+	user.visible_message(span_warning("[user]'s hand slips, damaging the flesh in [target]'s [affected.plaintext_zone] with [tool]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/internal/brain_revival
 	name = "Brain revival"
 	desc = "Utilizes the incredible power of Alkysine to restore the spark of life."
-	allowed_tools = list(
-		/obj/item/reagent_containers/glass = 100,
-	)
+
 	min_duration = 100
 	max_duration = 150
-	surgery_candidate_flags = SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+
+	surgery_flags = SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT | SURGERY_CANNOT_FAIL
+
+/datum/surgery_step/internal/brain_revival/tool_potency(obj/item/tool)
+	if(!tool.reagents)
+		return 0
+
+	if(!(tool.reagents.flags & (OPENCONTAINER)))
+		return 0
+
+	return 100
 
 /datum/surgery_step/internal/brain_revival/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/BP = ..()
@@ -356,7 +363,7 @@
 	. = FALSE
 
 	var/obj/item/reagent_containers/glass/S = tool
-	if(!S.reagents.has_reagent(/datum/reagent/medicine/alkysine, 10))
+	if(!S.reagents.has_reagent(/datum/reagent/medicine/alkysine, 5))
 		to_chat(user, span_warning("\The [S] doesn't contain enough alkysine!"))
 		return
 
@@ -369,12 +376,11 @@
 
 /datum/surgery_step/internal/brain_revival/begin_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_warning("[user] begins pouring [tool] into [target]'s [affected]..."))
+	user.visible_message(span_warning("[user] begins pouring [tool] into [target]'s [affected]..."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/internal/brain_revival/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	var/obj/item/reagent_containers/glass/beaker/S = tool
-	if(!S.reagents.has_reagent(/datum/reagent/medicine/alkysine, 5))
+	if(!tool.reagents.has_reagent(/datum/reagent/medicine/alkysine, 5))
 		return
 
 	var/obj/item/bodypart/head/head = target.get_bodypart(BODY_ZONE_HEAD)
@@ -382,7 +388,7 @@
 	if(!head || !brain)
 		return
 
-	S.reagents.remove_reagent(/datum/reagent/medicine/alkysine, 5)
+	tool.reagents.remove_reagent(/datum/reagent/medicine/alkysine, 5)
 	brain.setOrganDamage(0)
 	..()
 
@@ -392,19 +398,22 @@
 /datum/surgery_step/internal/treat_necrosis
 	name = "Treat necrosis"
 	desc = "Utilizes the restorative power of even the slightest amount of Peridaxon to restore functionality to an organ."
-	allowed_tools = list(
-		/obj/item/reagent_containers/dropper = 100,
-		/obj/item/reagent_containers/glass/bottle = 75,
-		/obj/item/reagent_containers/glass/beaker = 75,
-		/obj/item/reagent_containers/spray = 50,
-		/obj/item/reagent_containers/glass/bucket = 50,
-	)
+
+	surgery_flags = parent_type::surgery_flags & ~SURGERY_BLOODY_GLOVES
 
 	can_infect = FALSE
-	blood_level = 0
 
 	min_duration = 5 SECONDS
 	max_duration = 6 SECONDS
+
+/datum/surgery_step/internal/treat_necrosis/tool_potency(obj/item/tool)
+	if(!tool.reagents)
+		return 0
+
+	if(!(tool.reagents.flags & OPENCONTAINER))
+		return 0
+
+	return 100
 
 /datum/surgery_step/internal/treat_necrosis/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
@@ -415,10 +424,12 @@
 		if((O.organ_flags & ORGAN_DEAD) && !(O.organ_flags & ORGAN_SYNTHETIC))
 			return affected
 
-
 /datum/surgery_step/internal/treat_necrosis/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	var/obj/item/reagent_containers/container = tool
-	if(!istype(container) || !container.reagents.has_reagent(/datum/reagent/medicine/peridaxon) || !..())
+	if(!..())
+		return FALSE
+
+	if(!tool.reagents.has_reagent(/datum/reagent/medicine/peridaxon))
+		to_chat(user, span_warning("[tool] does not contain any peridaxon."))
 		return FALSE
 
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -429,6 +440,7 @@
 			dead_organs[I.name] = I
 
 	if(!length(dead_organs))
+		to_chat(user, span_warning("[target.name] does not have any dead organs."))
 		return FALSE
 
 	var/obj/item/organ/O
@@ -455,39 +467,50 @@
 /datum/surgery_step/internal/treat_necrosis/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	user.visible_message(
 		span_notice("[user] starts applying medication to the affected tissue in [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with \the [tool]."),
-		span_notice("You start applying medication to the affected tissue in [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with \the [tool].")
+		span_notice("You start applying medication to the affected tissue in [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with \the [tool]."),
+		vision_distance = COMBAT_MESSAGE_RANGE
 	)
 	target.apply_pain(50, target_zone)
 	..()
 
 /datum/surgery_step/internal/treat_necrosis/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/affected = LAZYACCESS(target.surgeries_in_progress, target_zone)[2]
-	var/obj/item/reagent_containers/container = tool
 
-	var/rejuvenate = container.reagents.has_reagent(/datum/reagent/medicine/peridaxon)
-	var/transered_amount = container.reagents.trans_to(target, container.amount_per_transfer_from_this, methods = INJECT)
+	var/transfer_amount
+	if(is_reagent_container(tool))
+		var/obj/item/reagent_containers/container = tool
+		transfer_amount = container.amount_per_transfer_from_this
+	else
+		transfer_amount = tool.reagents.total_volume
+
+	var/rejuvenate = tool.reagents.has_reagent(/datum/reagent/medicine/peridaxon)
+	var/transered_amount = tool.reagents.trans_to(target, transfer_amount, methods = INJECT)
 	if(transered_amount > 0)
 		if(rejuvenate)
 			affected.set_organ_dead(FALSE)
 
 		user.visible_message(
 			span_notice("[user] applies [transered_amount] unit\s of the solution to affected tissue in [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]]."),
-			span_notice("You apply [transered_amount] unit\s of the solution to affected tissue in [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with \the [tool].")
+			span_notice("You apply [transered_amount] unit\s of the solution to affected tissue in [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with \the [tool]."),
+			vision_distance = COMBAT_MESSAGE_RANGE
 		)
 	..()
 
 /datum/surgery_step/internal/treat_necrosis/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 
-	if (!istype(tool, /obj/item/reagent_containers))
-		return
+	var/transfer_amount
+	if(is_reagent_container(tool))
+		var/obj/item/reagent_containers/container = tool
+		transfer_amount = container.amount_per_transfer_from_this
+	else
+		transfer_amount = tool.reagents.total_volume
 
-	var/obj/item/reagent_containers/container = tool
-
-	var/trans = container.reagents.trans_to(target, container.amount_per_transfer_from_this, methods = INJECT)
+	var/trans = tool.reagents.trans_to(target, transfer_amount, methods = INJECT)
 
 	user.visible_message(
 		span_warning("[user]'s hand slips, applying [trans] units of the solution to the wrong place in [target]'s [affected.name] with the [tool]!"),
-		span_warning("Your hand slips, applying [trans] units of the solution to the wrong place in [target]'s [affected.name] with the [tool]!")
+		span_warning("Your hand slips, applying [trans] units of the solution to the wrong place in [target]'s [affected.name] with the [tool]!"),
+		vision_distance = COMBAT_MESSAGE_RANGE
 	)
 	..()

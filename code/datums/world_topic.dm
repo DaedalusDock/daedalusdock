@@ -191,6 +191,7 @@
 /datum/world_topic/status/Run(list/input)
 	. = list()
 	.["version"] = GLOB.game_version
+	.["mode"] = SSticker.get_mode_name()
 	.["respawn"] = config ? !CONFIG_GET(flag/norespawn) : FALSE
 	.["enter"] = !LAZYACCESS(SSlag_switch.measures, DISABLE_NON_OBSJOBS)
 	.["ai"] = CONFIG_GET(flag/allow_ai)

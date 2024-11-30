@@ -428,7 +428,7 @@
 /obj/structure/window/get_dumping_location()
 	return null
 
-/obj/structure/window/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
+/obj/structure/window/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
 	if(!density)
 		return TRUE
 	if(fulltile || (dir == to_dir))

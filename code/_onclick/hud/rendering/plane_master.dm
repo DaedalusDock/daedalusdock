@@ -73,6 +73,7 @@
 	plane = BLACKNESS_PLANE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	blend_mode = BLEND_MULTIPLY
+	blend_mode_override = BLEND_OVERLAY
 	appearance_flags = PLANE_MASTER | NO_CLIENT_COLOR | PIXEL_SCALE
 	//byond internal end
 

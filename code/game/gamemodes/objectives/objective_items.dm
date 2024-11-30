@@ -40,7 +40,6 @@
 	excludefromjob = list(
 		JOB_CAPTAIN,
 		JOB_CHIEF_ENGINEER,
-		JOB_RESEARCH_DIRECTOR,
 	)
 	exists_on_map = TRUE
 
@@ -68,11 +67,9 @@
 	excludefromjob = list(
 		JOB_CAPTAIN,
 		JOB_CHIEF_ENGINEER,
-		JOB_RESEARCH_DIRECTOR,
-		JOB_CHIEF_MEDICAL_OFFICER,
-		JOB_HEAD_OF_SECURITY,
+		JOB_MEDICAL_DIRECTOR,
+		JOB_SECURITY_MARSHAL,
 		JOB_STATION_ENGINEER,
-		JOB_SCIENTIST,
 		JOB_ATMOSPHERIC_TECHNICIAN,
 	)
 	exists_on_map = TRUE
@@ -111,7 +108,7 @@
 /datum/objective_item/steal/low_risk/clown_shoes
 	name = "the clown's shoes"
 	targetitem = /obj/item/clothing/shoes/clown_shoes
-	excludefromjob = list(JOB_CLOWN, JOB_CARGO_TECHNICIAN, JOB_QUARTERMASTER)
+	excludefromjob = list(JOB_CLOWN, JOB_DECKHAND, JOB_QUARTERMASTER)
 
 /datum/objective_item/steal/low_risk/clown_shoes/TargetExists()
 	for(var/mob/player as anything in GLOB.player_list)
@@ -127,7 +124,7 @@
 /datum/objective_item/steal/low_risk/cargo_budget
 	name = "cargo's departmental budget"
 	targetitem = /obj/item/card/id/departmental_budget/car
-	excludefromjob = list(JOB_QUARTERMASTER, JOB_CARGO_TECHNICIAN)
+	excludefromjob = list(JOB_QUARTERMASTER, JOB_DECKHAND)
 	exists_on_map = TRUE
 
 /obj/item/card/id/departmental_budget/car/add_stealing_item_objective()
@@ -145,10 +142,10 @@
 	ADD_STEAL_ITEM(src, /obj/item/gun/energy/laser/captain)
 
 /datum/objective_item/steal/hoslaser
-	name = "the head of security's personal laser gun"
+	name = "the security marshal's personal laser gun"
 	targetitem = /obj/item/gun/energy/e_gun/hos
 	difficulty = 10
-	excludefromjob = list(JOB_HEAD_OF_SECURITY)
+	excludefromjob = list(JOB_SECURITY_MARSHAL)
 	exists_on_map = TRUE
 
 /obj/item/gun/energy/e_gun/hos/add_stealing_item_objective()
@@ -158,7 +155,7 @@
 	name = "a hand teleporter"
 	targetitem = /obj/item/hand_tele
 	difficulty = 5
-	excludefromjob = list(JOB_CAPTAIN, JOB_RESEARCH_DIRECTOR, JOB_HEAD_OF_PERSONNEL)
+	excludefromjob = list(JOB_CAPTAIN, JOB_HEAD_OF_PERSONNEL)
 	exists_on_map = TRUE
 
 /obj/item/hand_tele/add_stealing_item_objective()
@@ -196,10 +193,9 @@
 
 /datum/objective_item/steal/hypo
 	name = "the hypospray"
-	// targetitem = /obj/item/reagent_containers/hypospray/cmo //ORIGINAL
 	targetitem = /obj/item/hypospray/mkii/cmo //PARIAH EDIT
 	difficulty = 5
-	excludefromjob = list(JOB_CHIEF_MEDICAL_OFFICER)
+	excludefromjob = list(JOB_MEDICAL_DIRECTOR)
 	exists_on_map = TRUE
 
 /obj/item/hypospray/mkii/cmo/add_stealing_item_objective() //PARIAH EDIT
@@ -218,21 +214,11 @@
 	name = "a reflector trenchcoat"
 	targetitem = /obj/item/clothing/suit/hooded/ablative
 	difficulty = 3
-	excludefromjob = list(JOB_HEAD_OF_SECURITY, JOB_WARDEN)
+	excludefromjob = list(JOB_SECURITY_MARSHAL, JOB_WARDEN)
 	exists_on_map = TRUE
 
 /obj/item/clothing/suit/hooded/ablative/add_stealing_item_objective()
 	ADD_STEAL_ITEM(src, /obj/item/clothing/suit/hooded/ablative)
-
-/datum/objective_item/steal/reactive
-	name = "the reactive teleport armor"
-	targetitem = /obj/item/clothing/suit/armor/reactive/teleport
-	difficulty = 5
-	excludefromjob = list(JOB_RESEARCH_DIRECTOR)
-	exists_on_map = TRUE
-
-/obj/item/clothing/suit/armor/reactive/teleport/add_stealing_item_objective()
-	ADD_STEAL_ITEM(src, /obj/item/clothing/suit/armor/reactive/teleport)
 
 /datum/objective_item/steal/documents
 	name = "any set of secret documents of any organization"
@@ -257,21 +243,6 @@
 	special_equipment += /obj/item/storage/box/syndie_kit/nuke
 	..()
 
-/datum/objective_item/steal/hdd_extraction
-	name = "the source code for Project Goon from the master R&D server mainframe"
-	targetitem = /obj/item/computer_hardware/hard_drive/cluster/hdd_theft
-	difficulty = 10
-	excludefromjob = list(JOB_RESEARCH_DIRECTOR, JOB_SCIENTIST, JOB_ROBOTICIST, JOB_GENETICIST)
-	exists_on_map = TRUE
-
-/obj/item/computer_hardware/hard_drive/cluster/hdd_theft/add_stealing_item_objective()
-	ADD_STEAL_ITEM(src, /obj/item/computer_hardware/hard_drive/cluster/hdd_theft)
-
-/datum/objective_item/steal/hdd_extraction/New()
-	special_equipment += /obj/item/paper/guides/antag/hdd_extraction
-	return ..()
-
-
 /datum/objective_item/steal/supermatter
 	name = "a sliver of a supermatter crystal"
 	targetitem = /obj/item/nuke_core/supermatter_sliver
@@ -292,7 +263,6 @@
 	difficulty = 3
 	excludefromjob = list(
 		JOB_CHIEF_ENGINEER, JOB_STATION_ENGINEER, JOB_ATMOSPHERIC_TECHNICIAN,
-		JOB_RESEARCH_DIRECTOR, JOB_SCIENTIST, JOB_ROBOTICIST,
 	)
 
 /datum/objective_item/steal/plasma/check_special_completion(obj/item/tank/T)
@@ -333,17 +303,6 @@
 		if(P.picture.has_blueprints) //if the blueprints are in frame
 			return TRUE
 	return FALSE
-
-/datum/objective_item/steal/slime
-	name = "an unused sample of slime extract"
-	targetitem = /obj/item/slime_extract
-	difficulty = 3
-	excludefromjob = list(JOB_RESEARCH_DIRECTOR, JOB_SCIENTIST)
-
-/datum/objective_item/steal/slime/check_special_completion(obj/item/slime_extract/E)
-	if(E.Uses > 0)
-		return 1
-	return 0
 
 /datum/objective_item/steal/blackbox
 	name = "the Blackbox"

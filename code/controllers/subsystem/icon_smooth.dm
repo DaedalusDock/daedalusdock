@@ -39,7 +39,9 @@ SUBSYSTEM_DEF(icon_smooth)
 /datum/controller/subsystem/icon_smooth/Initialize()
 	hibernate_checks = list(
 		NAMEOF(src, smooth_queue),
-		NAMEOF(src, deferred)
+		NAMEOF(src, deferred),
+		NAMEOF(src, blueprint_queue),
+		NAMEOF(src, deferred_by_source)
 	)
 
 	var/list/queue = smooth_queue
@@ -56,10 +58,10 @@ SUBSYSTEM_DEF(icon_smooth)
 	queue = blueprint_queue
 	blueprint_queue = null
 
-	for(var/item in queue)
-		var/atom/movable/movable_item = item
+	for(var/atom/movable/movable_item as anything in queue)
 		if(!isturf(movable_item.loc))
 			continue
+
 		var/turf/item_loc = movable_item.loc
 		item_loc.add_blueprints(movable_item)
 

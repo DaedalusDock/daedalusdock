@@ -66,19 +66,19 @@
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			if(beaker)
-				SSexplosions.high_mov_atom += beaker
+				EX_ACT(beaker, EXPLODE_DEVASTATE)
 			if(bottle)
-				SSexplosions.high_mov_atom += bottle
+				EX_ACT(bottle, EXPLODE_DEVASTATE)
 		if(EXPLODE_HEAVY)
 			if(beaker)
-				SSexplosions.med_mov_atom += beaker
+				EX_ACT(beaker, EXPLODE_HEAVY)
 			if(bottle)
-				SSexplosions.med_mov_atom += bottle
+				EX_ACT(bottle, EXPLODE_HEAVY)
 		if(EXPLODE_LIGHT)
 			if(beaker)
-				SSexplosions.low_mov_atom += beaker
+				EX_ACT(beaker, EXPLODE_LIGHT)
 			if(bottle)
-				SSexplosions.low_mov_atom += bottle
+				EX_ACT(bottle, EXPLODE_LIGHT)
 
 /obj/machinery/chem_master/handle_atom_del(atom/A)
 	..()
@@ -221,7 +221,7 @@
 /obj/machinery/chem_master/ui_data(mob/user)
 	var/list/data = list()
 	data["isBeakerLoaded"] = beaker ? 1 : 0
-	data["beakerCurrentVolume"] = beaker ? round(beaker.reagents.total_volume, 0.01) : null
+	data["beakerCurrentVolume"] = beaker ? round(beaker.reagents.total_volume, CHEMICAL_VOLUME_ROUNDING) : null
 	data["beakerMaxVolume"] = beaker ? beaker.volume : null
 	data["mode"] = mode
 	data["condi"] = condi
@@ -238,13 +238,13 @@
 	var/beaker_contents[0]
 	if(beaker)
 		for(var/datum/reagent/R in beaker.reagents.reagent_list)
-			beaker_contents.Add(list(list("name" = R.name, "id" = ckey(R.name), "volume" = round(R.volume, 0.01)))) // list in a list because Byond merges the first list...
+			beaker_contents.Add(list(list("name" = R.name, "id" = ckey(R.name), "volume" = round(R.volume, CHEMICAL_VOLUME_ROUNDING)))) // list in a list because Byond merges the first list...
 	data["beakerContents"] = beaker_contents
 
 	var/buffer_contents[0]
 	if(reagents.total_volume)
 		for(var/datum/reagent/N in reagents.reagent_list)
-			buffer_contents.Add(list(list("name" = N.name, "id" = ckey(N.name), "volume" = round(N.volume, 0.01)))) // ^
+			buffer_contents.Add(list(list("name" = N.name, "id" = ckey(N.name), "volume" = round(N.volume, CHEMICAL_VOLUME_ROUNDING)))) // ^
 	data["bufferContents"] = buffer_contents
 
 	//Calculated once since it'll never change

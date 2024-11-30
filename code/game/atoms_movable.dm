@@ -403,9 +403,6 @@
 ////////////////////////////////////////
 
 /atom/movable/Move(atom/newloc, direct, glide_size_override = 0, z_movement_flags)
-	if(QDELING(src))
-		CRASH("Illegal Move()! on [type]")
-
 	if(!loc || !newloc)
 		return FALSE
 
@@ -1170,8 +1167,9 @@
 
 	var/matrix/initial_transform = matrix(transform)
 	var/matrix/rotated_transform = transform.Turn(15 * turn_dir)
-	animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff, transform=rotated_transform, time = 1, easing=BACK_EASING|EASE_IN, flags = ANIMATION_PARALLEL)
-	animate(pixel_x = pixel_x - pixel_x_diff, pixel_y = pixel_y - pixel_y_diff, transform=initial_transform, time = 2, easing=SINE_EASING, flags = ANIMATION_PARALLEL)
+	for(var/atom/movable/AM as anything in get_associated_mimics() + src)
+		animate(AM, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff, transform=rotated_transform, time = 1, easing=BACK_EASING|EASE_IN, flags = ANIMATION_PARALLEL)
+		animate(pixel_x = pixel_x - pixel_x_diff, pixel_y = pixel_y - pixel_y_diff, transform=initial_transform, time = 2, easing=SINE_EASING, flags = ANIMATION_PARALLEL)
 
 	attacked_atom.do_hurt_animation()
 

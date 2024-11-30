@@ -52,7 +52,8 @@
 /area/ruin/space/has_grav/hotel/guestroom/room_2)
 "aC" = (
 /obj/machinery/light/small/directional/north,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
 "aE" = (
 /obj/item/kirbyplants{
@@ -307,7 +308,8 @@
 /obj/structure/janitorialcart,
 /obj/item/mop,
 /obj/item/lightreplacer,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/custodial)
 "cV" = (
 /obj/machinery/airalarm/directional/east,
@@ -767,13 +769,15 @@
 /obj/effect/turf_decal/box/white/corners{
 	dir = 4
 	},
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
 "hG" = (
 /obj/effect/turf_decal/box/white/corners{
 	dir = 1
 	},
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
 "hI" = (
 /obj/structure/railing/corner,
@@ -835,7 +839,8 @@
 /turf/open/floor/carpet/blue,
 /area/ruin/space/has_grav/hotel)
 "hZ" = (
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
 "ia" = (
 /obj/machinery/light/directional/south,
@@ -962,7 +967,7 @@
 	dir = 10
 	},
 /obj/structure/table/wood,
-/obj/item/reagent_containers/food/drinks/mug/tea,
+/obj/item/reagent_containers/glass/mug/tea,
 /turf/open/floor/stone,
 /area/ruin/space/has_grav/hotel/bar)
 "iI" = (
@@ -1063,7 +1068,8 @@
 /area/ruin/space/has_grav/hotel/power)
 "jh" = (
 /obj/structure/sign/poster/contraband/random/directional/north,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
 "jo" = (
 /obj/effect/turf_decal/siding/wood{
@@ -1362,7 +1368,8 @@
 /area/ruin/space/has_grav/hotel)
 "lR" = (
 /obj/structure/cable/smart_cable/color/yellow,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel)
 "lV" = (
 /obj/effect/turf_decal/siding/white{
@@ -1378,7 +1385,8 @@
 	},
 /obj/structure/closet/crate,
 /obj/item/clothing/under/syndicate/tacticool,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
 "lZ" = (
 /obj/effect/turf_decal/siding/wood{
@@ -1471,7 +1479,8 @@
 /obj/item/food/grown/tomato,
 /obj/item/food/grown/tomato,
 /obj/item/food/grown/tomato,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
 "mP" = (
 /turf/open/floor/carpet/orange,
@@ -1499,11 +1508,12 @@
 /obj/structure/closet/crate,
 /obj/item/clothing/mask/breath,
 /obj/item/clothing/mask/breath,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
 "mW" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/food/drinks/mug/tea,
+/obj/item/reagent_containers/glass/mug/tea,
 /turf/open/floor/carpet/blue,
 /area/ruin/space/has_grav/hotel)
 "mX" = (
@@ -1769,7 +1779,8 @@
 /obj/item/grenade/chem_grenade/cleaner,
 /obj/item/grenade/chem_grenade/cleaner,
 /obj/item/grenade/chem_grenade/cleaner,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/custodial)
 "qe" = (
 /obj/structure/reagent_dispensers/watertank,
@@ -1822,7 +1833,8 @@
 	pixel_x = 11
 	},
 /obj/item/reagent_containers/spray/cleaner,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/custodial)
 "qI" = (
 /obj/structure/fluff/tram_rail/end{
@@ -1916,7 +1928,8 @@
 /obj/effect/turf_decal/box/white/corners{
 	dir = 8
 	},
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
 "st" = (
 /obj/effect/turf_decal/siding/wood{
@@ -2388,7 +2401,8 @@
 /area/ruin/space/has_grav/hotel/power)
 "xd" = (
 /obj/effect/turf_decal/box/white/corners,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
 "xe" = (
 /obj/structure/sign/poster/random/directional/north,
@@ -2562,7 +2576,8 @@
 /area/ruin/space/has_grav/hotel)
 "yJ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel)
 "yR" = (
 /obj/structure/table/wood,
@@ -2743,7 +2758,8 @@
 /area/template_noop)
 "Ct" = (
 /obj/machinery/light/small/directional/south,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
 "Cu" = (
 /obj/structure/railing,
@@ -3028,7 +3044,7 @@
 	},
 /obj/structure/table/wood/fancy/orange,
 /obj/machinery/light/directional/north,
-/obj/item/reagent_containers/food/drinks/mug/tea,
+/obj/item/reagent_containers/glass/mug/tea,
 /turf/open/floor/carpet/royalblue,
 /area/ruin/space/has_grav/hotel/guestroom/room_4)
 "FB" = (
@@ -3135,7 +3151,7 @@
 /area/ruin/space/has_grav/hotel/guestroom/room_6)
 "Gz" = (
 /obj/structure/table/wood/fancy/royalblue,
-/obj/item/reagent_containers/food/drinks/mug/tea,
+/obj/item/reagent_containers/glass/mug/tea,
 /turf/open/floor/carpet/orange,
 /area/ruin/space/has_grav/hotel/guestroom/room_6)
 "GB" = (
@@ -3334,7 +3350,8 @@
 "Je" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/item/reagent_containers/glass/bucket,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/custodial)
 "Jj" = (
 /obj/effect/turf_decal/loading_area,
@@ -3612,7 +3629,8 @@
 	pixel_x = -25;
 	pixel_y = -25
 	},
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
 "NJ" = (
 /obj/effect/spawner/structure/window/reinforced,
@@ -4266,7 +4284,8 @@
 	pixel_x = -25;
 	pixel_y = 8
 	},
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
 "Vs" = (
 /obj/structure/sign/poster/contraband/random/directional/east,
@@ -4382,7 +4401,8 @@
 "WK" = (
 /obj/structure/rack,
 /obj/item/crowbar/red,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/dock)
 "WL" = (
 /obj/machinery/door/airlock{

@@ -123,7 +123,7 @@
 		antag_fraction += ((1 + ruleset.scaled_times) * ruleset.get_antag_cap(population)) / mode.roundstart_pop_ready
 
 	for(var/i in 1 to max_scale)
-		if(antag_fraction < 0.25)
+		if(antag_fraction < 0.15)
 			scaled_times += 1
 			antag_fraction += get_antag_cap(population) / mode.roundstart_pop_ready // we added new antags, gotta update the %
 
@@ -183,6 +183,10 @@
 /// Usually this does not need to be changed unless you need some specific requirements from your candidates.
 /datum/dynamic_ruleset/proc/trim_candidates()
 	return
+
+/// Returns TRUE if the round should end.
+/datum/dynamic_ruleset/proc/check_finished()
+	return FALSE
 
 /// Set mode result and news report here.
 /// Only called if ruleset is flagged as HIGH_IMPACT_RULESET

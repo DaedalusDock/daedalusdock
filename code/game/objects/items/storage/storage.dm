@@ -2,6 +2,7 @@
 	name = "storage"
 	icon = 'icons/obj/storage.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
+	var/tmp/storage_type = /datum/storage
 	var/rummage_if_nodrop = TRUE
 	/// Should we preload the contents of this type?
 	/// BE CAREFUL, THERE'S SOME REALLY NASTY SHIT IN THIS TYPEPATH
@@ -11,7 +12,7 @@
 /obj/item/storage/Initialize(mapload)
 	. = ..()
 
-	create_storage()
+	create_storage(type = storage_type)
 
 	PopulateContents()
 
@@ -20,15 +21,6 @@
 
 /obj/item/storage/AllowDrop()
 	return FALSE
-
-/obj/item/storage/contents_explosion(severity, target)
-	switch(severity)
-		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += contents
-		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += contents
-		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += contents
 
 /obj/item/storage/canStrip(mob/who)
 	. = ..()
@@ -40,8 +32,6 @@
 		atom_storage.remove_all()
 		return TRUE
 	return ..()
-
-/obj/item/storage/contents_explosion(severity, target)
 
 //Cyberboss says: "USE THIS TO FILL IT, NOT INITIALIZE OR NEW"
 /obj/item/storage/proc/PopulateContents()

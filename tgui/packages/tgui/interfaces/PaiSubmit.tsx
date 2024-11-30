@@ -19,9 +19,9 @@ const PAI_RULES = `You are expected to role play to some degree.
 Keep in mind: Not entering information may lead to you not being
 selected. Press submit to alert pAI cards of your candidacy.`;
 
-export const PaiSubmit = (_, context) => {
-  const { data } = useBackend<CandidateData>(context);
-  const [input, setInput] = useLocalState<CandidateData>(context, 'input', {
+export const PaiSubmit = (_) => {
+  const { data } = useBackend<CandidateData>();
+  const [input, setInput] = useLocalState<CandidateData>('input', {
     comments: data.comments || '',
     description: data.description || '',
     name: data.name || '',
@@ -113,8 +113,8 @@ const InputDisplay = (props) => {
 };
 
 /** Gives the user a submit button */
-const ButtonsDisplay = (props, context) => {
-  const { act } = useBackend<CandidateData>(context);
+const ButtonsDisplay = (props) => {
+  const { act } = useBackend<CandidateData>();
   const { input } = props;
 
   return (
@@ -123,14 +123,16 @@ const ButtonsDisplay = (props, context) => {
         <Stack.Item>
           <Button
             onClick={() => act('save', { candidate: input })}
-            tooltip="Saves your candidate data locally.">
+            tooltip="Saves your candidate data locally."
+          >
             SAVE
           </Button>
         </Stack.Item>
         <Stack.Item>
           <Button
             onClick={() => act('load')}
-            tooltip="Loads saved candidate data, if any.">
+            tooltip="Loads saved candidate data, if any."
+          >
             LOAD
           </Button>
         </Stack.Item>
@@ -139,7 +141,9 @@ const ButtonsDisplay = (props, context) => {
             onClick={() =>
               act('submit', {
                 candidate: input,
-              })}>
+              })
+            }
+          >
             SUBMIT
           </Button>
         </Stack.Item>

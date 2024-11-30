@@ -237,7 +237,7 @@ Primarily used in reagents/reaction_agents
 /datum/reagent/proc/overdose_process(mob/living/carbon/C)
 	SHOULD_NOT_SLEEP(TRUE)
 	APPLY_CHEM_EFFECT(C, CE_TOXIN, 1)
-	C.adjustToxLoss(0.2, FALSE)
+	C.adjustToxLoss(0.2, FALSE, cause_of_death = "Overdose")
 	return TRUE
 
 /// Called when an overdose starts

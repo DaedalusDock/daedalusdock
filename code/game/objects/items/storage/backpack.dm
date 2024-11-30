@@ -26,9 +26,16 @@
 	max_integrity = 300
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
+	storage_type = /datum/storage/backpack
+
+	equip_delay_self = EQUIP_DELAY_BACK
+	equip_delay_other = EQUIP_DELAY_BACK * 1.5
+	strip_delay = EQUIP_DELAY_BACK * 1.5
+
 /obj/item/storage/backpack/Initialize()
 	. = ..()
-	create_storage(max_slots = 21, max_total_storage = 21)
+	atom_storage.max_slots = 21
+	atom_storage.max_total_storage = 21
 
 /*
  * Backpack Types

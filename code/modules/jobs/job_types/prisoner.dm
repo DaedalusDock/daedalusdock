@@ -5,10 +5,9 @@
 	faction = FACTION_STATION
 	total_positions = 0
 	spawn_positions = 2
-	supervisors = "the security team"
 	selection_color = "#bd630a"
 	exp_granted_type = EXP_TYPE_CREW
-	paycheck = PAYCHECK_PRISONER
+	paycheck = PAYCHECK_ZERO //This doesnt actually do anything since prisoners have no department
 
 	outfits = list(
 		"Default" = list(
@@ -53,12 +52,3 @@
 	..()
 	if(prob(1)) // D BOYYYYSSSSS
 		head = /obj/item/clothing/head/beanie/black/dboy
-
-/datum/outfit/job/prisoner/post_equip(mob/living/carbon/human/new_prisoner, visualsOnly)
-	. = ..()
-	if(!length(SSpersistence.prison_tattoos_to_use) || visualsOnly)
-		return
-	var/obj/item/bodypart/tatted_limb = pick(new_prisoner.bodyparts)
-	var/list/tattoo = pick(SSpersistence.prison_tattoos_to_use)
-	tatted_limb.AddComponent(/datum/component/tattoo, tattoo["story"])
-	SSpersistence.prison_tattoos_to_use -= tattoo

@@ -199,6 +199,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_PUSHIMMUNE "push_immunity"
 #define TRAIT_SHOCKIMMUNE "shock_immunity"
 #define TRAIT_TESLA_SHOCKIMMUNE "tesla_shock_immunity"
+// Is this atom being actively shocked? Used to prevent repeated shocks.
+#define TRAIT_BEING_SHOCKED "shocked"
+/// The above but for the flock sentinel
+#define TRAIT_SHOCKED_BY_SENTINEL "shocked_by_flock_sentinel"
 /// You cannot ENTER cardiac arrest.
 #define TRAIT_STABLEHEART "stable_heart"
 /// Prevents you from leaving your corpse
@@ -253,6 +257,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_NO_ADDICTION "no_addiction"
 /// Makes whispers clearly heard from seven tiles away, the full hearing range
 #define TRAIT_GOOD_HEARING "good_hearing"
+/// This mob's speech is heard through walls by dead players/observers even if it has no client. Idk a better name
+#define TRAIT_IMPORTANT_SPEAKER "important_speaker"
 
 // Stops the mob from slipping on water, or banana peels, or pretty much anything that doesn't have [GALOSHES_DONT_HELP] set
 #define TRAIT_NO_SLIP_WATER "NO_SLIP_WATER"
@@ -274,6 +280,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_FEARLESS "fearless"
 /// Ignores darkness for hearing
 #define TRAIT_HEAR_THROUGH_DARKNESS "hear_through_darkness"
+/// Ignores line of sight for the purposes of send_speech()
+#define TRAIT_HEAR_THROUGH_WALLS "hear_through_walls"
 /// These are used for brain-based paralysis, where replacing the limb won't fix it
 #define TRAIT_PARALYSIS_L_ARM "para-l-arm"
 #define TRAIT_PARALYSIS_R_ARM "para-r-arm"
@@ -341,6 +349,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Makes you flashable from any direction
 #define TRAIT_FLASH_SENSITIVE "flash_sensitive"
 #define TRAIT_NAIVE "naive"
+/// always detect storm weathers
+#define TRAIT_DETECT_STORM "detect_storm"
 #define TRAIT_PRIMITIVE "primitive"
 #define TRAIT_GUNFLIP "gunflip"
 /// Increases chance of getting special traumas, makes them harder to cure
@@ -437,6 +447,9 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 */
 #define TRAIT_DONUT_LOVER "donut_lover"
 
+/// Equipping or unequipping an item
+#define TRAIT_EQUIPPING_OR_UNEQUIPPING "equipping_or_unequipping"
+
 /// `do_teleport` will not allow this atom to teleport
 #define TRAIT_NO_TELEPORT "no-teleport"
 
@@ -517,6 +530,11 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_RADSTORM_IMMUNE "radstorm_immune"
 #define TRAIT_VOIDSTORM_IMMUNE "voidstorm_immune"
 #define TRAIT_WEATHER_IMMUNE "weather_immune" //Immune to ALL weather effects.
+
+/// Mob is dreaming
+#define TRAIT_DREAMING "currently_dreaming"
+/// Mob cannot dream
+#define TRAIT_CANNOT_DREAM "unable_to_dream"
 
 //non-mob traits
 /// Used for limb-based paralysis, where replacing the limb will fix it.
@@ -695,7 +713,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define FLIGHTPOTION_TRAIT "flightpotion"
 /// Trait inherited by experimental surgeries
 #define EXPERIMENTAL_SURGERY_TRAIT "experimental_surgery"
-#define DISEASE_TRAIT "disease"
+#define PATHOGEN_TRAIT "disease"
 #define SPECIES_TRAIT "species"
 #define ORGAN_TRAIT "organ"
 /// cannot be removed without admin intervention
@@ -731,6 +749,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define INNATE_TRAIT "innate"
 #define CRIT_HEALTH_TRAIT "crit_health"
 #define OXYLOSS_TRAIT "oxyloss"
+// Trait sorce for "was recently shocked by something"
+#define WAS_SHOCKED "was_shocked"
 #define TURF_TRAIT "turf"
 /// trait associated to being buckled
 #define BUCKLED_TRAIT "buckled"
@@ -862,6 +882,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define EMP_TRAIT "emp"
 /// Given by the operating table
 #define OPTABLE_TRAIT "optable"
+/// Given by dreaming
+#define DREAMING_SOURCE "dreaming"
 
 /**
 * Trait granted by [/mob/living/carbon/Initialize] and
@@ -890,7 +912,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define STATION_TRAIT_UNIQUE_AI "station_trait_unique_ai"
 #define STATION_TRAIT_CARP_INFESTATION "station_trait_carp_infestation"
 #define STATION_TRAIT_PREMIUM_INTERNALS "station_trait_premium_internals"
-#define STATION_TRAIT_HANGOVER "station_trait_hangover"
 #define STATION_TRAIT_FILLED_MAINT "station_trait_filled_maint"
 #define STATION_TRAIT_EMPTY_MAINT "station_trait_empty_maint"
 #define STATION_TRAIT_PDA_GLITCHED "station_trait_pda_glitched"
@@ -975,3 +996,15 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// Given to items that are bodyparts attached to a mob, organs attached to a mob or inside a bodypart
 #define TRAIT_INSIDE_BODY "inside_body"
+
+/// trait that prevents AI controllers from planning detached from ai_status to prevent weird state stuff.
+#define TRAIT_AI_PAUSED "TRAIT_AI_PAUSED"
+/// trait that prevents AI controllers from making new plans, but not executing plans
+#define TRAIT_AI_DISABLE_PLANNING "TRAIT_AI_DISABLE_PLANNING"
+
+// Flock trait sources
+/// Under control
+#define FLOCK_CONTROLLED_BY_OVERMIND_SOURCE "FLOCK_CONTROLLED_BY_OVERMIND_SOURCE"
+
+#define TRAIT_FLOCKPHASE "TRAIT_FLOCKPHASE"
+#define TRAIT_FLOCK_THING "TRAIT_FLOCK_THING"

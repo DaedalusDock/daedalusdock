@@ -302,11 +302,11 @@
 	holder.remove_reagent(/datum/reagent/smoke_powder, created_volume*3)
 	var/smoke_radius = round(sqrt(created_volume * 1.5), 1)
 	var/location = get_turf(holder.my_atom)
-	var/datum/effect_system/smoke_spread/chem/S = new
+	var/datum/effect_system/fluid_spread/smoke/chem/S = new
 	S.attach(location)
 	playsound(location, 'sound/effects/smoke.ogg', 50, TRUE, -3)
 	if(S)
-		S.set_up(holder, smoke_radius, location, 0)
+		S.set_up(smoke_radius, location = location, carry = holder, silent = FALSE)
 		S.start()
 	if(holder?.my_atom)
 		holder.clear_reagents()
@@ -320,11 +320,11 @@
 /datum/chemical_reaction/smoke_powder_smoke/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/location = get_turf(holder.my_atom)
 	var/smoke_radius = round(sqrt(created_volume / 2), 1)
-	var/datum/effect_system/smoke_spread/chem/S = new
+	var/datum/effect_system/fluid_spread/smoke/chem/S = new
 	S.attach(location)
 	playsound(location, 'sound/effects/smoke.ogg', 50, TRUE, -3)
 	if(S)
-		S.set_up(holder, smoke_radius, location, 0)
+		S.set_up(smoke_radius, location = location, carry = holder, silent = FALSE)
 		S.start()
 	if(holder?.my_atom)
 		holder.clear_reagents()
@@ -376,7 +376,7 @@
 	reaction_flags = REACTION_INSTANT
 
 /datum/chemical_reaction/pyrosium_oxygen/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	holder.chem_temp += 10*created_volume
+	holder.expose_temperature(holder.chem_temp + (10 * created_volume), 1)
 
 /datum/chemical_reaction/pyrosium
 	results = list(/datum/reagent/pyrosium = 3)
@@ -388,8 +388,7 @@
 	thermic_constant = 0
 
 /datum/chemical_reaction/pyrosium/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	holder.chem_temp = 20 // also cools the fuck down
-	return
+	holder.expose_temperature(20, 1) // also cools the fuck down
 
 /datum/chemical_reaction/reagent_explosion/nitrous_oxide
 	required_reagents = list(/datum/reagent/nitrous_oxide = 1)

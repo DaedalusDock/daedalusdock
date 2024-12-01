@@ -821,7 +821,9 @@ GLOBAL_LIST_INIT(voice_type2sound_ref, voice_type2sound)
 #define MOB_ATTACKEDBY_MISS 3
 /// Attack completely failed (missing user, etc)
 #define MOB_ATTACKEDBY_FAIL 0
+/// Attack hit and dealt damage.
 #define MOB_ATTACKEDBY_SUCCESS 1
+/// Attack hit but did no damage.
 #define MOB_ATTACKEDBY_NO_DAMAGE 2
 
 #define BLIND_NOT_BLIND 0

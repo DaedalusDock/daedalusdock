@@ -58,7 +58,9 @@
  * Returns: TRUE if valid, FALSE if invalid or missing.
  */
 /client/proc/discord_read_linked_id()
-	var/datum/discord_link_record/link = find_discord_link_by_ckey(ckey, timebound = FALSE) //We need their persistent link.
+	if(!SSdbcore.Connect())
+		return null // No DB, No data.
+	var/datum/discord_link_record/link = linked_discord_account || find_discord_link_by_ckey(ckey, timebound = FALSE) //We need their persistent link.
 	if(!link)
 
 		//No link history *at all?*, let's quietly create a blank one for them and check again.

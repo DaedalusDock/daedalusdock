@@ -206,8 +206,3 @@ have ways of interacting with a specific mob and control it.
 	// chance of monkey retaliation
 	if(prob(MONKEY_CUFF_RETALIATION_PROB))
 		retaliate(user)
-
-/datum/ai_controller/monkey/proc/target_del(target)
-	SIGNAL_HANDLER
-	remove_thing_from_blackboard_key(BB_MONKEY_BLACKLISTITEMS, target)
-

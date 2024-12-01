@@ -374,7 +374,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	if(do_message)
 		if(((attack_type == UNARMED_ATTACK) || (attack_type == LEAP_ATTACK)))
 			wielder.visible_message(span_danger("[wielder] fends off [attack_text] with [src]!"))
-			return ..(do_sound = FALSE)
+			do_sound = FALSE
+			return ..()
 	return ..()
 
 

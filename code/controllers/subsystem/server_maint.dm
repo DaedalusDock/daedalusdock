@@ -64,7 +64,7 @@ SUBSYSTEM_DEF(server_maint)
 		var/client/C = I
 		//handle kicking inactive players
 		if(round_started && kick_inactive && !C.holder && C.is_afk(afk_period))
-			var/cmob = C.mob
+			var/mob/cmob = C.mob
 			if (!isnewplayer(cmob) || !SSticker.queued_players.Find(cmob))
 				log_access("AFK: [key_name(C)]")
 				to_chat(C, span_userdanger("You have been inactive for more than [DisplayTimeText(afk_period)] and have been disconnected.</span><br><span class='danger'>You may reconnect via the button in the file menu or by <b><u><a href='byond://winset?command=.reconnect'>clicking here to reconnect</a></u></b>."))

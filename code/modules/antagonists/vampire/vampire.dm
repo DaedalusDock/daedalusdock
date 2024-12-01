@@ -56,6 +56,16 @@
 		return
 
 	thirst_level.add_points(1)
+	update_thirst_stage()
+
+	for(var/datum/vampire_state/current as anything in current_states)
+		current.tick(delta_time, host)
+
+/// Sync the thirst stage with the current thirst level.
+/datum/antagonist/vampire/proc/update_thirst_stage()
+	var/mob/living/carbon/human/host = owner.current
+	if(!istype(host))
+		return
 
 	var/new_stage
 	switch(thirst_level.has_points())
@@ -80,22 +90,30 @@
 
 	set_thirst_stage(new_stage)
 
-	for(var/datum/vampire_state/current as anything in current_states)
-		current.tick(host)
-
 /datum/antagonist/vampire/apply_innate_effects(mob/living/mob_override = owner.current)
 	if(!ishuman(mob_override))
 		return
 
 	var/datum/pathogen/blood_plague/plague = new /datum/pathogen/blood_plague
-	if(!mob_override.has_pathogen(plague))
-		mob_override.try_contract_pathogen(plague, FALSE, TRUE)
+	if(!mob_override.has_pathogen(plague) && mob_override.try_contract_pathogen(plague, FALSE, TRUE))
+		plague.set_stage(3)
 
 	for(var/datum/action/action as anything in innate_actions)
 		action.Grant(mob_override)
 
 	for(var/datum/vampire_state/state as anything in current_states)
 		state.apply_effects(mob_override)
+
+/datum/antagonist/vampire/remove_innate_effects(mob/living/mob_override = owner.current)
+	. = ..()
+	if(!ishuman(mob_override))
+		return
+
+	for(var/datum/action/action as anything in innate_actions)
+		action.Remove(mob_override)
+
+	for(var/datum/vampire_state/state as anything in current_states)
+		state.remove_effects(mob_override)
 
 /// You died cuz you aint suckin' hard enough
 /datum/antagonist/vampire/proc/death_by_thirst(mob/living/carbon/human/host)
@@ -124,10 +142,17 @@
 	for(var/datum/vampire_state/current as anything in current_states)
 		if(!current.can_be_active())
 			current.exit_state(host)
+			current_states -= current
 
 	for(var/datum/vampire_state/potential as anything in potential_states)
 		if(potential.can_be_active())
 			current_states += potential
 			potential.enter_state(host)
+
+	var/datum/vampire_state/current_state = current_states[length(current_states)]
+	if(thirst_stage < old_stage)
+		to_chat(host, current_state.regress_into_message)
+	else
+		to_chat(host, current_state.progress_into_message)
 
 	return old_stage

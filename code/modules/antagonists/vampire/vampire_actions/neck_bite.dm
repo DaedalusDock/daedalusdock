@@ -45,13 +45,20 @@
 	if(isturf(victim.loc))
 		victim.add_splatter_floor(victim.loc, TRUE)
 
-	victim.adjustBloodVolume(-10)
-	user.adjustBloodVolumeUpTo(10, BLOOD_VOLUME_NORMAL)
+	victim.adjustBloodVolume(-3)
+	user.adjustBloodVolumeUpTo(3, BLOOD_VOLUME_NORMAL)
 
 	var/datum/antagonist/vampire/vamp_datum = user.mind.has_antag_datum(/datum/antagonist/vampire)
 	vamp_datum.thirst_level.remove_points(2)
+	vamp_datum.update_thirst_stage()
 
-	if(prob(1)) // A chance to spread the plague!
+	// Draining an opposing vampire really, really messes them up.
+	var/datum/antagonist/vampire/victim_vamp_datum = victim.mind?.has_antag_datum(/datum/antagonist/vampire)
+	if(victim_vamp_datum)
+		victim_vamp_datum.thirst_level.add_points(4)
+		victim_vamp_datum.update_thirst_stage()
+
+	else if(prob(1)) // A chance to spread the plague!
 		var/datum/pathogen/blood_plague/vampirism = user.has_pathogen(/datum/pathogen/blood_plague)
 		victim.try_contract_pathogen(vampirism)
 

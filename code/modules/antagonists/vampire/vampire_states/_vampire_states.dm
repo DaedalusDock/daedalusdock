@@ -6,6 +6,11 @@
 	/// Actions to grant while this stage is active.
 	var/list/actions_to_grant
 
+	/// A message sent when entering this state from a higher one (a good thing)
+	var/regress_into_message
+	/// A message sent when entering this state from a lower one (a bad thing)
+	var/progress_into_message
+
 /datum/vampire_state/New(datum/antagonist/vampire/_parent)
 	parent = _parent
 
@@ -33,7 +38,7 @@
 	remove_effects(host)
 
 /// Called every second this state is active.
-/datum/vampire_state/proc/tick(mob/living/carbon/human/host)
+/datum/vampire_state/proc/tick(delta_time, mob/living/carbon/human/host)
 	return
 
 /// Apply persistent effects to the mob.
@@ -50,20 +55,25 @@
 	for(var/datum/action/action as anything in actions_to_grant)
 		action.Remove(host)
 
-/datum/vampire_state/bloodlust
-
-// Bloodlust is only active at this stage
-/datum/vampire_state/bloodlust/can_be_active()
-	return parent.thirst_stage == THIRST_STAGE_BLOODLUST
-
 /datum/vampire_state/sated
 	min_stage = THIRST_STAGE_SATED
+
+	regress_into_message = span_obviousnotice("The Thirst is sated, for now.")
+	progress_into_message = span_obviousnotice("Your violent bloodlust subsides, but the thirst remains.")
 
 /datum/vampire_state/hungry
 	min_stage = THIRST_STAGE_HUNGRY
 
+	regress_into_message = span_obviousnotice("You feel stronger, you must continue to feed.")
+	progress_into_message = span_obviousnotice("The Thirst grows stronger, you must feed.")
+
 /datum/vampire_state/starving
-	min_stage = THIRST_STAGE_WASTING
+	min_stage = THIRST_STAGE_STARVING
+
+	regress_into_message = span_obviousnotice("You feel better, you must continue to feed.")
+	progress_into_message = span_obviousnotice("You feel sickly. You must feed.")
 
 /datum/vampire_state/wasting
 	min_stage = THIRST_STAGE_WASTING
+
+	progress_into_message = span_obviousnotice("You feel as though you will not last long. The Thirst will claim you soon if you do not feed.")

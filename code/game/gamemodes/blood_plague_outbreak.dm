@@ -44,3 +44,23 @@
 		if(ispath(species_type, /datum/species/ipc))
 			candidates.Remove(candidate_player)
 			continue
+
+/datum/game_mode/blood_plague/check_finished()
+	. = ..()
+	if(.)
+		return
+
+	// If there's no non-vampires left alive, end the round.
+	// If this becomes too common, something is wrong, this is NOT a conversion antagonist.
+	for(var/mob/living/carbon/human in GLOB.human_list)
+		if(!human.ckey)
+			continue
+
+		var/turf/pos = get_turf(human)
+		if(!is_station_level(pos.z))
+			continue
+
+		if(IS_VAMPIRE(human))
+			continue
+
+		return TRUE

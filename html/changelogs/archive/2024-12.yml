@@ -1,0 +1,6 @@
+2024-12-01:
+  Kapu1178:
+  - bugfix: Stamina damage is dealt when attacking with items again.
+  - bugfix: You can no longer bypass movement speed from equip delays.
+  ToasterBan:
+  - rscadd: New, non-gameplay changing augments in the character creator

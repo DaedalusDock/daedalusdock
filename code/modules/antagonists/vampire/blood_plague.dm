@@ -43,5 +43,5 @@
 				affected_mob.mind.add_antag_datum(/datum/antagonist/vampire)
 
 /datum/pathogen/blood_plague/force_cure(add_resistance)
-	. = ..()
 	affected_mob.mind.remove_antag_datum(/datum/antagonist/vampire)
+	return ..()

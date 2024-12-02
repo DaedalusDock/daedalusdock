@@ -34,7 +34,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 
 	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
 	if(B && !(B.organ_flags & ORGAN_DEAD))
-		B.set_organ_dead(TRUE)
+		B.set_organ_dead(TRUE, cause_of_death = cause_of_death)
 
 	. = ..()
 

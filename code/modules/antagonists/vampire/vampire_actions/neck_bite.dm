@@ -9,7 +9,7 @@
 #define BLOOD_THIRST_EXCHANGE_COEFF 18 // A full drain is equivalent to 15 minutes of life.
 /// The amount of time before a victim can be fully drained again.
 #define SAME_TARGET_COOLDOWN (10 MINUTES)
-
+/// Calculate how much of a mob's blood budget will have been regenerated over a given time.
 #define BUDGET_REGEN_FOR_DELTA(time_delta) (time_delta * (BLOOD_DRAIN_PER_TARGET / SAME_TARGET_COOLDOWN))
 
 /datum/action/cooldown/neck_bite
@@ -70,6 +70,7 @@
 				break
 
 			if(!do_after(user, victim, 1 SECOND, IGNORE_HELD_ITEM|IGNORE_SLOWDOWNS|DO_PUBLIC, extra_checks = checks_callback, display = succ_image))
+				user.visible_message(span_notice("[user] removes [p_their()] teeth from [victim]'s neck."))
 				break
 
 			siphon_blood(user, victim)

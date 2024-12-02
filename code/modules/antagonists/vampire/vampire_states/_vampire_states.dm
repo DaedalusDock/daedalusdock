@@ -54,26 +54,3 @@
 
 	for(var/datum/action/action as anything in actions_to_grant)
 		action.Remove(host)
-
-/datum/vampire_state/sated
-	min_stage = THIRST_STAGE_SATED
-
-	regress_into_message = span_obviousnotice("The Thirst is sated, for now.")
-	progress_into_message = span_obviousnotice("Your violent bloodlust subsides, but the thirst remains.")
-
-/datum/vampire_state/hungry
-	min_stage = THIRST_STAGE_HUNGRY
-
-	regress_into_message = span_obviousnotice("You feel stronger, you must continue to feed.")
-	progress_into_message = span_obviousnotice("The Thirst grows stronger, you must feed.")
-
-/datum/vampire_state/starving
-	min_stage = THIRST_STAGE_STARVING
-
-	regress_into_message = span_obviousnotice("You feel better, you must continue to feed.")
-	progress_into_message = span_obviousnotice("You feel sickly. You must feed.")
-
-/datum/vampire_state/wasting
-	min_stage = THIRST_STAGE_WASTING
-
-	progress_into_message = span_obviousnotice("You feel as though you will not last long. The Thirst will claim you soon if you do not feed.")

@@ -4,6 +4,7 @@
 	plane = HUD_PLANE
 	mouse_opacity = MOUSE_OPACITY_ICON
 	private_screen = FALSE
+	default_click = TRUE
 	/// The mob whose cursor we are tracking.
 	var/mob/owner
 	/// Client view size of the scoping mob.

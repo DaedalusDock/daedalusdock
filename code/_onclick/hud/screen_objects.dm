@@ -35,6 +35,8 @@
 
 	/// If set to TRUE, mobs that do not own this hud cannot click this screen object.
 	var/private_screen = TRUE
+	/// If set to TRUE, call atom/Click()
+	var/default_click = FALSE
 
 /atom/movable/screen/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
@@ -55,7 +57,10 @@
 	if(!can_usr_use(usr))
 		return TRUE
 
-	SEND_SIGNAL(src, COMSIG_CLICK, location, control, params, usr)
+	if(default_click)
+		..()
+	else
+		SEND_SIGNAL(src, COMSIG_CLICK, location, control, params, usr)
 
 /atom/movable/screen/examine(mob/user)
 	return list()

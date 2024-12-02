@@ -2309,6 +2309,7 @@
 #include "code\modules\antagonists\traitor\objectives\steal.dm"
 #include "code\modules\antagonists\vampire\blood_plague.dm"
 #include "code\modules\antagonists\vampire\vampire.dm"
+#include "code\modules\antagonists\vampire\vampire_actions\glare.dm"
 #include "code\modules\antagonists\vampire\vampire_actions\neck_bite.dm"
 #include "code\modules\antagonists\vampire\vampire_states\_vampire_states.dm"
 #include "code\modules\antagonists\vampire\vampire_states\vampire_bloodlust.dm"

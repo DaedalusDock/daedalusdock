@@ -14,6 +14,7 @@
 
 	var/list/innate_actions = list(
 		/datum/action/cooldown/neck_bite,
+		/datum/action/cooldown/glare,
 	)
 
 /datum/antagonist/vampire/New()

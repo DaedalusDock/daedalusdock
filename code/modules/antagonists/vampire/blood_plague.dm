@@ -13,6 +13,7 @@
 
 	pathogen_flags = NONE
 	spread_flags = PATHOGEN_SPREAD_BLOOD
+	visibility_flags = HIDDEN_SCANNER|HIDDEN_PANDEMIC
 
 /datum/pathogen/blood_plague/on_process(delta_time, times_fired)
 	if(affected_mob.stat != CONSCIOUS)

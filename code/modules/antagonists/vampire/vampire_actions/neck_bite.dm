@@ -64,6 +64,7 @@
 	. = ..()
 
 	spawn(-1)
+		ADD_TRAIT(user, TRAIT_MUTE, ref(src))
 		var/image/succ_image = image('goon/icons/actions.dmi', "blood")
 		while(TRUE)
 			if(!can_bite(user, victim))
@@ -74,6 +75,8 @@
 				break
 
 			siphon_blood(user, victim)
+
+		REMOVE_TRAIT(user, TRAIT_MUTE, ref(src))
 
 /datum/action/cooldown/neck_bite/proc/siphon_blood(mob/living/carbon/human/user, mob/living/carbon/human/victim)
 	user.visible_message(span_danger("[user] siphons blood from [victim]'s neck!"), vision_distance = COMBAT_MESSAGE_RANGE, ignored_mobs = victim)
@@ -165,7 +168,7 @@
 
 	for(var/obj/item/hand_item/grab/grab in user.active_grabs)
 		var/mob/living/carbon/human/potential_victim = grab.affecting
-		if(!ishuman(potential_victim))
+		if(!ishuman(potential_victim) || ismonkey(potential_victim))
 			if(ismob(potential_victim) && error_string_ptr)
 				*error_string_ptr = "You cannot feast on [potential_victim]."
 			continue

@@ -3,7 +3,7 @@
 /mob/living/proc/has_pathogen(datum/pathogen/D)
 	for(var/datum/pathogen/DD in diseases)
 		if(D.IsSame(DD))
-			return D
+			return DD
 
 	return null
 

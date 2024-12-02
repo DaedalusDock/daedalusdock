@@ -1,22 +1,59 @@
+#define DRAIN_INFO_INDEX_TIME "time"
+#define DRAIN_INFO_INDEX_BUDGET "amt"
+
+/// How much blood we can siphon from a target per SAME_TARGET_COOLDOWN
+#define BLOOD_DRAIN_PER_TARGET 100
+/// Drain per second
+#define BLOOD_DRAIN_RATE 5
+/// Coeff for calculating thirst satiation per unit of blood.
+#define BLOOD_THIRST_EXCHANGE_COEFF 18 // A full drain is equivalent to 15 minutes of life.
+/// The amount of time before a victim can be fully drained again.
+#define SAME_TARGET_COOLDOWN (10 MINUTES)
+
+#define BUDGET_REGEN_FOR_DELTA(time_delta) (time_delta * (BLOOD_DRAIN_PER_TARGET / SAME_TARGET_COOLDOWN))
+
 /datum/action/cooldown/neck_bite
-	name = "Neck Bite"
+	name = "Feed"
+	desc = "Sate the thirst by sinking your teeth into the neck of a humanoid."
+	button_icon = 'goon/icons/actions.dmi'
+	button_icon_state = "bite"
+
 	check_flags = AB_CHECK_CONSCIOUS | AB_CHECK_HANDS_BLOCKED
+
+	/// A k:v list of weakref(mob) : blood_drained
+	var/list/already_drained = list()
+
+/datum/action/cooldown/neck_bite/process()
+	// Kind of hacky but I can't be bothered to care. We can accurately track all unavailable -> available transitions, but not the other way around.
+	if(IsAvailable())
+		build_all_button_icons(UPDATE_BUTTON_STATUS)
+
+/datum/action/cooldown/neck_bite/Grant(mob/granted_to)
+	. = ..()
+	RegisterSignal(granted_to, list(COMSIG_LIVING_START_GRAB, COMSIG_LIVING_NO_LONGER_GRABBING, COMSIG_LIVING_GRAB_DOWNGRADE, COMSIG_LIVING_GRAB_UPGRADE), PROC_REF(on_owner_grab_change))
+	START_PROCESSING(SSslowprocess, src)
+
+/datum/action/cooldown/neck_bite/Remove(mob/removed_from)
+	. = ..()
+	UnregisterSignal(removed_from, list(COMSIG_LIVING_START_GRAB, COMSIG_LIVING_NO_LONGER_GRABBING, COMSIG_LIVING_GRAB_DOWNGRADE, COMSIG_LIVING_GRAB_UPGRADE))
+	START_PROCESSING(SSslowprocess, src)
+
+/datum/action/cooldown/neck_bite/IsAvailable(feedback)
+	. = ..()
+	if(!.)
+		return
+
+	var/error = ""
+	if(!select_target(&error))
+		if(feedback && error)
+			to_chat(owner, span_warning(error))
+		return FALSE
+
+	return TRUE
 
 /datum/action/cooldown/neck_bite/Activate(atom/target)
 	var/mob/living/carbon/human/user = target
-	var/mob/living/carbon/human/victim
-
-	for(var/obj/item/hand_item/grab/grab in user.active_grabs)
-		if((grab.current_grab.damage_stage < GRAB_NECK) || !ishuman(grab.affecting))
-			continue
-
-		if(can_bite(user, grab.affecting))
-			victim = grab.affecting
-			break
-
-	if(isnull(victim))
-		return FALSE
-
+	var/mob/living/carbon/human/victim = select_target()
 
 	user.visible_message(span_danger("[user] bites down on [victim]'s neck!"), vision_distance = COMBAT_MESSAGE_RANGE)
 
@@ -45,28 +82,48 @@
 	if(isturf(victim.loc))
 		victim.add_splatter_floor(victim.loc, TRUE)
 
-	victim.adjustBloodVolume(-3)
-	user.adjustBloodVolumeUpTo(3, BLOOD_VOLUME_NORMAL)
+	var/list/drain_info = already_drained[WEAKREF(victim)]
+	if(isnull(drain_info))
+		// Set default
+		already_drained[WEAKREF(victim)] = drain_info = list(
+			DRAIN_INFO_INDEX_TIME = world.time,
+			DRAIN_INFO_INDEX_BUDGET = BLOOD_DRAIN_PER_TARGET - BLOOD_DRAIN_RATE,
+		)
+	else
+		var/last_drain_time = drain_info[DRAIN_INFO_INDEX_TIME]
+		var/last_budget = drain_info[DRAIN_INFO_INDEX_BUDGET]
+
+		var/time_delta = world.time - last_drain_time
+		var/new_budget_val = last_budget - BLOOD_DRAIN_RATE + BUDGET_REGEN_FOR_DELTA(time_delta)
+		drain_info[DRAIN_INFO_INDEX_BUDGET] = clamp(new_budget_val, 0, BLOOD_DRAIN_PER_TARGET)
+		drain_info[DRAIN_INFO_INDEX_TIME] = world.time
+
+	victim.adjustBloodVolume(-BLOOD_DRAIN_RATE)
+	user.adjustBloodVolumeUpTo(BLOOD_DRAIN_RATE, BLOOD_VOLUME_NORMAL)
 
 	var/datum/antagonist/vampire/vamp_datum = user.mind.has_antag_datum(/datum/antagonist/vampire)
-	vamp_datum.thirst_level.remove_points(2)
+	vamp_datum.thirst_level.remove_points(BLOOD_DRAIN_RATE * BLOOD_THIRST_EXCHANGE_COEFF)
 	vamp_datum.update_thirst_stage()
 
 	// Draining an opposing vampire really, really messes them up.
 	var/datum/antagonist/vampire/victim_vamp_datum = victim.mind?.has_antag_datum(/datum/antagonist/vampire)
 	if(victim_vamp_datum)
-		victim_vamp_datum.thirst_level.add_points(4)
+		victim_vamp_datum.thirst_level.add_points(-(BLOOD_DRAIN_RATE * BLOOD_THIRST_EXCHANGE_COEFF))
 		victim_vamp_datum.update_thirst_stage()
 
 	else if(prob(1)) // A chance to spread the plague!
-		var/datum/pathogen/blood_plague/vampirism = user.has_pathogen(/datum/pathogen/blood_plague)
-		victim.try_contract_pathogen(vampirism)
+		var/datum/pathogen/blood_plague/vampirism = new /datum/pathogen/blood_plague
+		victim.try_contract_pathogen(vampirism, FALSE, TRUE)
 
-/datum/action/cooldown/neck_bite/proc/can_bite(mob/living/carbon/human/user, mob/living/carbon/human/victim)
+	build_all_button_icons(UPDATE_BUTTON_STATUS)
+
+/datum/action/cooldown/neck_bite/proc/can_bite(mob/living/carbon/human/user, mob/living/carbon/human/victim, error_string_ptr)
 	if(!owner)
 		return FALSE
 
 	if(victim.stat == DEAD)
+		if(error_string_ptr)
+			*error_string_ptr = "You cannot feast on the dead."
 		return FALSE
 
 	if(!user.is_grabbing(victim))
@@ -74,9 +131,63 @@
 
 	var/obj/item/bodypart/head/head = victim.get_bodypart(BODY_ZONE_HEAD)
 	if(!head || !IS_ORGANIC_LIMB(head))
+		if(error_string_ptr)
+			*error_string_ptr = "[victim] does not have a neck."
 		return FALSE
 
-	if(victim.blood_volume < 100)
+	if(victim.blood_volume < BLOOD_DRAIN_PER_TARGET)
+		if(error_string_ptr)
+			*error_string_ptr = "[victim] does not have enough blood."
 		return FALSE
+
+	var/list/drain_info = already_drained[WEAKREF(victim)]
+	if(length(drain_info))
+		var/left_to_drain = drain_info[DRAIN_INFO_INDEX_BUDGET]
+		var/time_delta = world.time - drain_info[DRAIN_INFO_INDEX_TIME]
+		var/regenerated_blood = BUDGET_REGEN_FOR_DELTA(time_delta)
+		var/effective_budget = left_to_drain + regenerated_blood
+		if(effective_budget < BLOOD_DRAIN_RATE)
+			if(error_string_ptr)
+				*error_string_ptr = "You must wait before draining [victim] again."
+			return FALSE
 
 	return TRUE
+
+/// Gets a possible victim, or returns null.
+/datum/action/cooldown/neck_bite/proc/select_target(error_string_ptr)
+	var/mob/living/carbon/human/user = owner
+
+	if(!length(user.active_grabs))
+		if(error_string_ptr)
+			*error_string_ptr = "You aren't holding anyone."
+		return null
+
+	for(var/obj/item/hand_item/grab/grab in user.active_grabs)
+		var/mob/living/carbon/human/potential_victim = grab.affecting
+		if(!ishuman(potential_victim))
+			if(ismob(potential_victim) && error_string_ptr)
+				*error_string_ptr = "You cannot feast on [potential_victim]."
+			continue
+
+		if((grab.current_grab.damage_stage < GRAB_NECK))
+			if(error_string_ptr)
+				*error_string_ptr = "You need a stronger grip on [potential_victim]."
+			continue
+
+		if(can_bite(user, potential_victim, error_string_ptr))
+			return potential_victim
+
+	return null
+
+/// Called when the owner grabs or releases an object.
+/datum/action/cooldown/neck_bite/proc/on_owner_grab_change(datum/source)
+	SIGNAL_HANDLER
+
+	build_all_button_icons(UPDATE_BUTTON_STATUS)
+
+#undef DRAIN_INFO_INDEX_TIME
+#undef DRAIN_INFO_INDEX_BUDGET
+#undef BLOOD_DRAIN_PER_TARGET
+#undef SAME_TARGET_COOLDOWN
+#undef BLOOD_DRAIN_RATE
+#undef BUDGET_REGEN_FOR_DELTA

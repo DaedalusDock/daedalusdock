@@ -313,7 +313,11 @@ GLOBAL_LIST_EMPTY(species_list)
 	var/starttime = world.time
 	. = TRUE
 	while (world.time < endtime)
+		#ifdef DOAFTER_NO_STOPLAG
+		sleep(1)
+		#else
 		stoplag(1)
+		#endif
 
 		if(!QDELETED(progbar))
 			progbar.update(world.time - starttime)

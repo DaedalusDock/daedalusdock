@@ -150,7 +150,7 @@
 			potential.enter_state(host)
 
 	var/datum/vampire_state/current_state = current_states[length(current_states)]
-	if(thirst_stage < old_stage)
+	if(!old_stage || thirst_stage < old_stage)
 		to_chat(host, current_state.regress_into_message)
 	else
 		to_chat(host, current_state.progress_into_message)

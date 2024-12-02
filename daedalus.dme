@@ -2313,7 +2313,6 @@
 #include "code\modules\antagonists\vampire\vampire_actions\desperate_feed.dm"
 #include "code\modules\antagonists\vampire\vampire_actions\glare.dm"
 #include "code\modules\antagonists\vampire\vampire_actions\neck_bite.dm"
-#include "code\modules\antagonists\vampire\vampire_actions\screech.dm"
 #include "code\modules\antagonists\vampire\vampire_states\_vampire_states.dm"
 #include "code\modules\antagonists\vampire\vampire_states\vampire_bloodlust.dm"
 #include "code\modules\antagonists\vampire\vampire_states\vampire_hungry.dm"

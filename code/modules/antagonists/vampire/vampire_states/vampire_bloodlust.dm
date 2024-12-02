@@ -5,6 +5,14 @@
 /datum/vampire_state/bloodlust/can_be_active()
 	return parent.thirst_stage == THIRST_STAGE_BLOODLUST
 
+/datum/vampire_state/bloodlust/enter_state(mob/living/carbon/human/host)
+	. = ..()
+	host.mob_mood.add_mood_event("vampire", /datum/mood_event/vampire_bloodlust)
+
+/datum/vampire_state/bloodlust/exit_state(mob/living/carbon/human/host)
+	. = ..()
+	host.mob_mood.clear_mood_event("vampire")
+
 /datum/vampire_state/bloodlust/tick(delta_time, mob/living/carbon/human/host)
 	. = ..()
 

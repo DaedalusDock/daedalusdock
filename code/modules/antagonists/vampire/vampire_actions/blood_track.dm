@@ -2,7 +2,7 @@
 	name = "Blood Hunt"
 	desc = "Find your last victim."
 	button_icon = 'goon/icons/actions.dmi'
-	button_icon_state = "bite"
+	button_icon_state = "blood_static"
 
 	cooldown_time = 60 SECONDS
 

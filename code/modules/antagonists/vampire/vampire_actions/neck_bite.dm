@@ -109,6 +109,15 @@
 	vamp_datum.thirst_level.remove_points(BLOOD_DRAIN_RATE * BLOOD_THIRST_EXCHANGE_COEFF)
 	vamp_datum.update_thirst_stage()
 
+	var/had_victim = vamp_datum.last_victim_ref
+	vamp_datum.last_victim_ref = WEAKREF(victim)
+	if(!had_victim)
+		var/datum/action/cooldown/blood_track/track = locate() in owner.actions
+		if(track)
+			track.build_all_button_icons(UPDATE_BUTTON_STATUS)
+
+	victim.add_trace_DNA(user, user.get_trace_dna())
+
 	// Draining an opposing vampire really, really messes them up.
 	var/datum/antagonist/vampire/victim_vamp_datum = victim.mind?.has_antag_datum(/datum/antagonist/vampire)
 	if(victim_vamp_datum)

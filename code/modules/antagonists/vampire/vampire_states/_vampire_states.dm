@@ -17,6 +17,7 @@
 	for(var/datum/action/action as anything in actions_to_grant)
 		actions_to_grant -= action
 		action = new action
+		actions_to_grant += action
 
 /datum/vampire_state/Destroy(force, ...)
 	parent.state_datums -= src

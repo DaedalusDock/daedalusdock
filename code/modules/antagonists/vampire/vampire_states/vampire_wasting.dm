@@ -3,10 +3,14 @@
 
 	progress_into_message = span_obviousnotice("You feel as though you will not last long. If you do not feed, the Thirst will claim you soon enough.")
 
+	actions_to_grant = list(
+		/datum/action/cooldown/desperate_feed,
+	)
+
 /datum/vampire_state/wasting/apply_effects(mob/living/carbon/human/host)
 	. = ..()
 	host.apply_status_effect(/datum/status_effect/grouped/concussion, VAMPIRE_EFFECT)
-	host.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/vampire_wasting)
+	host.add_movespeed_modifier(/datum/movespeed_modifier/vampire_wasting)
 	host.mob_mood.add_mood_event("vampire", /datum/mood_event/vampire_wasting)
 
 /datum/vampire_state/wasting/remove_effects(mob/living/carbon/human/host)

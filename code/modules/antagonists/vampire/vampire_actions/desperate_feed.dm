@@ -1,5 +1,5 @@
 /datum/action/cooldown/desperate_feed
-	name = "Desperate Feed"
+	name = "Desperate Feast"
 	desc = "Feast upon your own arm."
 	button_icon = 'goon/icons/actions.dmi'
 	button_icon_state = "bite"

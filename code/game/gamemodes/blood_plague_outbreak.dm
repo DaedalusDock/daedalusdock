@@ -2,7 +2,7 @@
 #define VAMPIRE_SCALING_COEFF 0.1
 
 /datum/game_mode/blood_plague
-	name = "Blood Plague Outbreak"
+	name = "Sanguine Plague Outbreak"
 
 	weight = GAMEMODE_WEIGHT_COMMON
 	restricted_jobs = list(JOB_CYBORG, JOB_AI)

@@ -1,5 +1,5 @@
 /datum/antagonist/vampire
-	name = "\improper Blood Plague Victim"
+	name = "\improper Sanguine Plague Victim"
 	roundend_category = "vampires"
 	antagpanel_category = "Vampire"
 	job_rank = ROLE_VAMPIRE

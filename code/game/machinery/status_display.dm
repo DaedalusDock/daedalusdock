@@ -170,7 +170,7 @@
 			if(message1 == "" && message2 == "")
 				return
 
-	. += emissive_appearance(icon, "outline", alpha = src.alpha)
+	. += emissive_appearance(icon, "outline", alpha = 90)
 
 // Timed process - performs nothing in the base class
 /obj/machinery/status_display/process()

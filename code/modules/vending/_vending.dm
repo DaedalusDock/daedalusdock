@@ -275,7 +275,7 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
 	if(panel_open)
 		. += panel_type
 	if(light_mask && !(machine_stat & BROKEN) && powered())
-		. += emissive_appearance(icon, light_mask)
+		. += emissive_appearance(icon, light_mask, alpha = 90)
 
 /obj/machinery/vending/atom_break(damage_flag)
 	. = ..()

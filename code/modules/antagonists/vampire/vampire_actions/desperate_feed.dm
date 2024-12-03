@@ -80,6 +80,9 @@
 
 		playsound(user, pick(sound_pool), 15, TRUE)
 
+	if(isturf(user.loc))
+		user.add_splatter_floor(user.loc, TRUE)
+
 	var/datum/antagonist/vampire/vamp_datum = user.mind.has_antag_datum(/datum/antagonist/vampire)
 	vamp_datum.thirst_level.remove_points(10)
 	vamp_datum.update_thirst_stage()

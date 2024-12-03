@@ -55,9 +55,9 @@
 		return
 
 	. += mutable_appearance(icon, "apcox-[locked]")
-	. += emissive_appearance(icon, "apcox-[locked]")
+	. += emissive_appearance(icon, "apcox-[locked]", alpha = 90)
 	. += mutable_appearance(icon, "apco3-[charging]")
-	. += emissive_appearance(icon, "apco3-[charging]")
+	. += emissive_appearance(icon, "apco3-[charging]", alpha = 90)
 	if(!operating)
 		return
 
@@ -73,17 +73,17 @@
 	colorbuffer = mutable_appearance(icon, "apco0")
 	colorbuffer.color = map_apc_statcode_to_color[equipment+1]
 	. += colorbuffer
-	. += emissive_appearance(icon, "apco0")
+	. += emissive_appearance(icon, "apco0", alpha = 90)
 
 	colorbuffer = mutable_appearance(icon, "apco1")
 	colorbuffer.color = map_apc_statcode_to_color[lighting+1]
 	. += colorbuffer
 	. += emissive_appearance(icon, "apco1")
 
-	colorbuffer = mutable_appearance(icon, "apco2")
+	colorbuffer = mutable_appearance(icon, "apco2", alpha = 90)
 	colorbuffer.color = map_apc_statcode_to_color[environ+1]
 	. += colorbuffer
-	. += emissive_appearance(icon, "apco2")
+	. += emissive_appearance(icon, "apco2", alpha = 90)
 
 /// Checks for what icon updates we will need to handle
 /obj/machinery/power/apc/proc/check_updates()

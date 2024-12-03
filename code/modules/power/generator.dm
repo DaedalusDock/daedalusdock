@@ -54,10 +54,10 @@
 	var/L = min(round(lastgenlev / 100000), 8)
 	if(L != 0)
 		. += mutable_appearance(icon, "teg-op[L]")
-		. += emissive_appearance(icon, "teg-op[L]")
+		. += emissive_appearance(icon, "teg-op[L]", alpha = 90)
 	if(circ1 && circ2)
 		. += mutable_appearance(icon, "teg-oc[lastcirc]")
-		. += emissive_appearance(icon, "teg-oc[lastcirc]")
+		. += emissive_appearance(icon, "teg-oc[lastcirc]", alpha = 90)
 
 
 #define GENRATE 800 // generator output coefficient from Q

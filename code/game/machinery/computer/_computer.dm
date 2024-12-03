@@ -48,7 +48,7 @@ DEFINE_INTERACTABLE(/obj/machinery/computer)
 		return
 
 	. += mutable_appearance(icon, icon_screen)
-	. += emissive_appearance(icon, icon_screen)
+	. += emissive_appearance(icon, icon_screen, alpha = 90)
 
 /obj/machinery/computer/power_change()
 	. = ..()

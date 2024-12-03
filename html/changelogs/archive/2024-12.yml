@@ -4,3 +4,6 @@
   - bugfix: You can no longer bypass movement speed from equip delays.
   ToasterBan:
   - rscadd: New, non-gameplay changing augments in the character creator
+2024-12-03:
+  Kapu1178:
+  - bugfix: Kinesis works again

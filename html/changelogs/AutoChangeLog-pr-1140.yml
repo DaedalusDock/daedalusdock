@@ -1,0 +1,9 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - qol: Redid how space cash works because it was too annoying to play with. Large
+      bills do exist but are intended to be difficult to obtain and mostly for flair.
+      Space Cash now stacks up to 500, and is mostly given out in 1's.
+  - qol: Put FAR too much effort into making item stacks look prettier.
+  - qol: Item stacks now display the amount in the stack as a number on the sprite
+      if you are holding it.

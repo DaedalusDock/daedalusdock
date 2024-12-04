@@ -7,3 +7,7 @@
 2024-12-03:
   Kapu1178:
   - bugfix: Kinesis works again
+2024-12-04:
+  Kapu1178:
+  - qol: Improved the visual fidelity of many light sources.
+  - bugfix: quick equip works properly with items with equip delays

@@ -11650,10 +11650,7 @@
 /obj/effect/turf_decal/siding/red,
 /obj/structure/table/reinforced,
 /obj/machinery/recharger,
-/obj/item/stack/spacecash/c10{
-	pixel_x = -19;
-	pixel_y = 10
-	},
+/obj/item/stack/spacecash/c1/ten,
 /turf/open/floor/iron/dark/textured_large,
 /area/centcom/syndicate_mothership/control)
 "HJ" = (
@@ -14666,7 +14663,7 @@
 /turf/open/misc/asteroid/snow/airless,
 /area/centcom/syndicate_mothership)
 "QX" = (
-/obj/item/stack/spacecash/c20,
+/obj/item/stack/spacecash/c1/twenty,
 /turf/open/misc/asteroid/snow,
 /area/centcom/syndicate_mothership/control)
 "QY" = (
@@ -16092,7 +16089,7 @@
 /obj/machinery/camera/autoname/directional/west{
 	network = list("nukie")
 	},
-/obj/item/stack/spacecash/c20,
+/obj/item/stack/spacecash/c1/twenty,
 /turf/open/floor/iron/dark/textured_half,
 /area/centcom/syndicate_mothership/control)
 "UL" = (
@@ -16602,9 +16599,7 @@
 	},
 /obj/structure/noticeboard/directional/east,
 /obj/item/folder/red,
-/obj/item/stack/spacecash/c20{
-	pixel_y = 9
-	},
+/obj/item/stack/spacecash/c1/twenty,
 /obj/item/assembly/flash/handheld,
 /turf/open/floor/iron,
 /area/centcom/syndicate_mothership/control)

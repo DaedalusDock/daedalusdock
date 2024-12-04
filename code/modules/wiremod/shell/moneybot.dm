@@ -16,7 +16,7 @@
 	var/locked = FALSE
 
 /obj/structure/money_bot/deconstruct(disassembled)
-	SSeconomy.spawn_cash_for_amount(stored_money, drop_location())
+	SSeconomy.spawn_ones_for_amount(stored_money, drop_location())
 	return ..()
 
 /obj/structure/money_bot/proc/add_money(to_add)
@@ -76,7 +76,7 @@
 		return
 
 	attached_bot.add_money(-to_dispense)
-	SSeconomy.spawn_cash_for_amount(to_dispense, drop_location())
+	SSeconomy.spawn_ones_for_amount(to_dispense, drop_location())
 
 /obj/item/circuit_component/money_bot
 	display_name = "Money Bot"

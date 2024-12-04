@@ -245,7 +245,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	var/obj/item/storage/wallet/W = wear_id
 	if(istype(W))
 		var/monero = round(equipping.paycheck, 10)
-		SSeconomy.spawn_cash_for_amount(monero, W)
+		SSeconomy.spawn_ones_for_amount(monero, W)
 	else
 		bank_account.payday()
 

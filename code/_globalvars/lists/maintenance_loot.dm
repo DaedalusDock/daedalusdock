@@ -145,7 +145,7 @@ GLOBAL_LIST_INIT(common_loot, list( //common: basic items
 		/obj/item/extinguisher = 1,
 		/obj/item/grenade/smokebomb = 1,
 		/obj/item/radio/off = 1,
-		/obj/item/stack/spacecash/c10 = 1,
+		/obj/item/stack/spacecash/c1/ten = 1,
 		/obj/item/stack/sticky_tape = 1,
 		/obj/item/tank/internals/emergency_oxygen = 1,
 

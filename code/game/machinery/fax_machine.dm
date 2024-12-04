@@ -509,9 +509,9 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		. = FALSE
 	else
 		if(prob(50))
-			new /obj/item/stack/spacecash/c10(drop_location())
+			new /obj/item/stack/spacecash/c1/ten(drop_location())
 		else
-			new /obj/item/stack/spacecash/c20(drop_location())
+			new /obj/item/stack/spacecash/c1/twenty(drop_location())
 
 		playsound(src, 'sound/machines/ping.ogg', 60)
 		. = TRUE

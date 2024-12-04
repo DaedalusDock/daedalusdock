@@ -1,0 +1,3 @@
+/obj/item/stack/spacecash/c10 : /obj/item/stack/spacecash/c1/ten
+/obj/item/stack/spacecash/c20 : /obj/item/stack/spacecash/c1/twenty
+/obj/item/stack/spacecash/c10000 : /obj/item/stack/spacecash/c1000/ten

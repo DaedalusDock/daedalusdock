@@ -1,6 +1,10 @@
 /obj/item/stack/spacecash  //Don't use base space cash stacks. Any other space cash stack can merge with them, and could cause potential money duping exploits.
-	name = "stack of space cash"
-	singular_name = "bill"
+	name = "wad of space cash"
+	singular_name = "space cash bill"
+
+	stack_name = "wad"
+	multiple_gender = NEUTER
+
 	icon = 'icons/obj/economy.dmi'
 	icon_state = null
 	amount = 1
@@ -12,6 +16,8 @@
 	full_w_class = WEIGHT_CLASS_TINY
 	resistance_flags = FLAMMABLE
 	grind_results = list(/datum/reagent/cellulose = 10)
+
+	dynamically_set_name = TRUE
 
 	/// How much money one "amount" of this is worth. Use get_item_credit_value().
 	VAR_PROTECTED/value = 0

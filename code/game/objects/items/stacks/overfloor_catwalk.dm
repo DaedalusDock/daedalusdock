@@ -19,6 +19,7 @@
 
 	mats_per_unit = list(/datum/material/iron=100)
 	merge_type = /obj/item/stack/overfloor_catwalk
+	dynamically_set_name = TRUE
 
 	var/catwalk_type = /obj/structure/overfloor_catwalk
 

@@ -7,7 +7,7 @@
 	max_amount = 50
 
 /obj/item/stack/license_plates/empty
-	name = "empty license plate"
+	name = "empty license plates"
 	singular_name = "empty license plate"
 	desc = "Instead of a license plate number, this could contain a quote like \"Live laugh love\"."
 	merge_type = /obj/item/stack/license_plates/empty
@@ -16,7 +16,7 @@
 	amount = 50
 
 /obj/item/stack/license_plates/filled
-	name = "license plate"
+	name = "license plates"
 	singular_name = "license plate"
 	desc = "Prison labor paying off."
 	icon_state = "filled_plate_1_1"

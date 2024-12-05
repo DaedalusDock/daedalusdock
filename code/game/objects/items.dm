@@ -372,6 +372,11 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(slot_flags)
 		. += PROPERTY_WEARABLE
 
+	if(sharpness & SHARP_EDGED)
+		. += PROPERTY_EDGED
+	if(sharpness & SHARP_POINTY)
+		. += PROPERTY_POINTY
+
 	if(siemens_coefficient == 0)
 		. += PROPERTY_NONCONDUCTIVE
 

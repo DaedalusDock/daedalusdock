@@ -90,10 +90,6 @@
 	. = ..()
 	siemens_coefficient = pick(0,0,0,0.5,0.5,0.5,0.75)
 
-/obj/item/clothing/gloves/color/fyellow/old/examine_properties()
-	. = ..()
-	. |= PROPERTY_NONCONDUCTIVE
-
 /obj/item/clothing/gloves/cut
 	desc = "These gloves would protect the wearer from electric shock... if the fingers were covered."
 	name = "fingerless insulated gloves"

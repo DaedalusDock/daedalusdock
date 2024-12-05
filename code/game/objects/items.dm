@@ -354,6 +354,27 @@ DEFINE_INTERACTABLE(/obj/item)
 	. = ..()
 	update_slot_icon()
 
+/obj/item/examine_properties(mob/user)
+	. = ..()
+
+	switch(w_class)
+		if(WEIGHT_CLASS_TINY)
+			. += PROPERTY_TINY
+		if(WEIGHT_CLASS_SMALL)
+			. += PROPERTY_SMALL
+		if(WEIGHT_CLASS_BULKY)
+			. += PROPERTY_BULKY
+		if(WEIGHT_CLASS_HUGE)
+			. += PROPERTY_HUGE
+		if(WEIGHT_CLASS_GIGANTIC)
+			. += PROPERTY_GIGANTIC
+
+	if(slot_flags)
+		. += PROPERTY_WEARABLE
+
+	if(siemens_coefficient == 0)
+		. += PROPERTY_NONCONDUCTIVE
+
 /obj/item/get_mechanics_info()
 	. = ..()
 	var/pronoun = gender == PLURAL ? "They" : "It"

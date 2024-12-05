@@ -146,6 +146,14 @@
 
 	return ..()
 
+/obj/item/clothing/examine_properties()
+	. = ..()
+	if(clothing_flags & STOPSPRESSUREDAMAGE)
+		. += PROPERTY_SPACEPROOF_CLOTHING
+
+	if(clothing_flags & THICKMATERIAL)
+		. += PROPERTY_THICKMATERIAL
+
 /obj/item/clothing/get_mechanics_info()
 	. = ..()
 	var/pronoun = gender == PLURAL ? "They" : "It"
@@ -189,12 +197,6 @@
 		(.):Insert(1, "Armor Information")
 		(.):Insert(2, jointext(armor_info, ""))
 
-	if(clothing_flags & STOPSPRESSUREDAMAGE)
-		. += "- Wearing [gender == PLURAL ? "these" : "it"] will protect you from the vacuum of space."
-
-	if(clothing_flags & THICKMATERIAL)
-		. += "- The material is exceptionally thick."
-
 	if(!isnull(min_cold_protection_temperature) && min_cold_protection_temperature >= SPACE_SUIT_MIN_TEMP_PROTECT)
 		. += "- [pronoun] provide[pronoun_s] very good protection against very cold temperatures."
 
@@ -205,8 +207,6 @@
 			. += "- [pronoun] offer[pronoun_s] the wearer some protection from fire."
 		if (1601 to 35000)
 			. += "- [pronoun] offer[pronoun_s] the wearer robust protection from fire."
-
-
 
 /// Set the clothing's integrity back to 100%, remove all damage to bodyparts, and generally fix it up
 /obj/item/clothing/proc/repair(mob/user, params)

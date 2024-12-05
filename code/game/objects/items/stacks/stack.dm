@@ -47,7 +47,6 @@
 	var/novariants = TRUE
 	/// If TRUE, dynamically adjust the name of the item based on singular/plural quantities.
 	var/dynamically_set_name = FALSE
-
 	/// list that tells you how much is in a single unit.
 	var/list/mats_per_unit
 	/// Datum material type that this stack is made of
@@ -168,6 +167,10 @@
 	else
 		maptext = null
 
+/obj/item/stack/examine_properties(mob/user)
+	. = ..()
+	. += PROPERTY_STACKABLE
+
 /** Sets the amount of materials per unit for this stack.
  *
  * Arguments:
@@ -241,8 +244,6 @@
 
 	else if(plural)
 		. += span_notice("There are [get_amount()] in the [stack_name].")
-
-	. += span_notice("<b>Right-click</b> with an empty hand to take a custom amount.")
 
 	if(absorption_capacity < initial(absorption_capacity))
 		if(absorption_capacity == 0)
@@ -635,14 +636,17 @@
 
 	if(is_cyborg || !user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
+
 	if(is_zero_amount(delete_if_zero = TRUE))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
 	var/max = get_amount()
 	var/stackmaterial = tgui_input_number(user, "How many sheets do you wish to take out of this stack?", "Stack Split", max_value = max)
 	if(!stackmaterial || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
 	split_stack(user, stackmaterial, user)
-	to_chat(user, span_notice("You take [stackmaterial] sheets out of the stack."))
+	to_chat(user, span_notice("You take [stackmaterial] [singular_name || "sheets"] out of the [stack_name]."))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /** Splits the stack into two stacks.

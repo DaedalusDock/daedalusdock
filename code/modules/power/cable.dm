@@ -446,7 +446,7 @@
 /obj/item/stack/cable_coil
 	name = "cable coil"
 	custom_price = PAYCHECK_ASSISTANT * 0.8
-	gender = NEUTER //That's a cable coil sounds better than that's some cable coils
+	multiple_gender = NEUTER //That's a cable coil sounds better than that's some cable coils
 	icon = 'icons/obj/power.dmi'
 	icon_state = "coil"
 	inhand_icon_state = "coil"

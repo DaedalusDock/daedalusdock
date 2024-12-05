@@ -219,7 +219,7 @@
 
 	if(!length(ingredients))
 		if(isAI(user))
-			examine(user)
+			user.run_examinate(src)
 		else
 			to_chat(user, span_warning("\The [src] is empty."))
 		return
@@ -239,7 +239,7 @@
 		if("use")
 			cook()
 		if("examine")
-			examine(user)
+			user.run_examinate(src)
 
 /obj/machinery/microwave/proc/eject()
 	for(var/i in ingredients)

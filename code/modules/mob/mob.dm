@@ -579,7 +579,7 @@
 	if(result[length(result)] == "") // Pop off a trailing space
 		result.len -= 1
 
-	for(var/i in 1 to length(result))
+	for(var/i in 1 to length(result) - 1)
 		if(!findtext(result[i], "<hr>"))
 			result[i] += "\n"
 

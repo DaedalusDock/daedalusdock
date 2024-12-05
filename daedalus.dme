@@ -2849,6 +2849,7 @@
 #include "code\modules\codex\entries\machinery.dm"
 #include "code\modules\codex\entries\mechcomp.dm"
 #include "code\modules\codex\entries\power.dm"
+#include "code\modules\codex\entries\structure.dm"
 #include "code\modules\codex\entries\tools.dm"
 #include "code\modules\credits_roll\credits_client_procs.dm"
 #include "code\modules\credits_roll\credits_core.dm"

@@ -53,8 +53,6 @@
 
 /obj/machinery/microwave/examine(mob/user)
 	. = ..()
-	if(!operating)
-		. += span_notice("Right-click [src] to turn it on.")
 
 	if(!in_range(user, src) && !issilicon(user) && !isobserver(user))
 		. += span_warning("You're too far away to examine [src]'s contents and display!")

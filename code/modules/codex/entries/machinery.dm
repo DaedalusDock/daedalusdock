@@ -58,7 +58,7 @@
 	name = "A.P.C"
 	associated_paths = list(/obj/machinery/power/apc)
 	controls_text = {"
-	Right Click - Lock/Unlock interface, if given sufficient access.
+	Right Click - Lock/Unlock interface, if given sufficient access.<br>
 	Control Click (AI only) - Toggle breaker.
 	"}
 

@@ -16,10 +16,7 @@
 #define PROPERTY_HUGE span_tooltip("Can not be placed into most storage containers.", "Huge")
 /// Gigantic size
 #define PROPERTY_GIGANTIC span_tooltip("Can not be picked up.", "Gigantic")
-/// EDGED
-#define PROPERTY_EDGED span_tooltip("Can be used to cut.", "Sharp")
-/// POINTY
-#define PROPERTY_POINTY span_tooltip("Can be used to puncture.", "Pointed")
+
 //Clothing
 /// STOPSPRESSUREDAMAGE clothing flag
 #define PROPERTY_SPACEPROOF_CLOTHING span_tooltip("Protects the wearer from vacuum environments.", "Vacuumproof")

@@ -372,9 +372,6 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(slot_flags)
 		. += PROPERTY_WEARABLE
 
-	if(siemens_coefficient == 0)
-		. += PROPERTY_NONCONDUCTIVE
-
 /obj/item/get_mechanics_info()
 	. = ..()
 	var/pronoun = gender == PLURAL ? "They" : "It"

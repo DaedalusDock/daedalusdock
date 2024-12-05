@@ -146,14 +146,6 @@
 
 	return ..()
 
-/obj/item/clothing/examine_properties()
-	. = ..()
-	if(clothing_flags & STOPSPRESSUREDAMAGE)
-		. += PROPERTY_SPACEPROOF_CLOTHING
-
-	if(clothing_flags & THICKMATERIAL)
-		. += PROPERTY_THICKMATERIAL
-
 /obj/item/clothing/get_mechanics_info()
 	. = ..()
 	var/pronoun = gender == PLURAL ? "They" : "It"

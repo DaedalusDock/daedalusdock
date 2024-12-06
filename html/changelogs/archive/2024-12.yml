@@ -22,3 +22,11 @@
   - bugfix: Removed the text shadow from links using the obvious notice css class.
   jlsnow301:
   - bugfix: Fixed a modsuit bluescreen
+2024-12-06:
+  Kapu1178:
+  - rscadd: Added "examine properties", generic information displayed about objects
+      in the form of tooltips.
+  - qol: Removed several examine texts describing controls into their respective codex
+      entries.
+  - bugfix: Fixed cable coil grammar.
+  - bugfix: Removed extra newlines from the end of examine blocks.

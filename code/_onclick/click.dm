@@ -239,7 +239,7 @@
 	if(depth <= 0)
 		return FALSE
 
-	if(isnull(loc) || isarea(loc) || !loc.IsContainedAtomAccessible(src))
+	if(isnull(loc) || isarea(loc) || !loc.IsContainedAtomAccessible(src, user))
 		return FALSE
 
 	return loc.IsReachableBy(user, tool, depth, direct_access)
@@ -249,10 +249,10 @@
 	return reacher.Adjacent(src) || (tool && CheckToolReach(reacher, src, tool.reach))
 
 /// Returns TRUE if an atom contained within our contents is reachable.
-/atom/proc/IsContainedAtomAccessible(atom/contained)
+/atom/proc/IsContainedAtomAccessible(atom/contained, atom/movable/user)
 	return TRUE
 
-/atom/movable/IsContainedAtomAccessible(atom/contained)
+/atom/movable/IsContainedAtomAccessible(atom/contained, atom/movable/user)
 	return !!atom_storage
 
 /atom/movable/proc/DirectAccess()

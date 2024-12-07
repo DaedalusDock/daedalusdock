@@ -804,7 +804,7 @@
 
 	. = ..()
 
-	if(active_storage && !((active_storage.parent in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent,STORAGE_VIEW_DEPTH)))
+	if(active_storage && !((active_storage.parent in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent, view_depth = STORAGE_VIEW_DEPTH)))
 		active_storage.hide_contents(src)
 
 	if(!ISDIAGONALDIR(direct) && newloc != T && body_position == LYING_DOWN && !buckled && has_gravity())

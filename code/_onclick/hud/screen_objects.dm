@@ -340,7 +340,7 @@
 	if(ismecha(user.loc)) // stops inventory actions in a mech
 		return TRUE
 
-	if(!user.CanReach(dropping))
+	if(!dropping.IsReachableBy(user))
 		return TRUE
 
 	var/obj/item/I = dropping
@@ -588,7 +588,7 @@
 	if(ismecha(user.loc)) // stops inventory actions in a mech
 		return TRUE
 
-	if(!user.CanReach(dropping))
+	if(!dropping.IsReachableBy(user))
 		return TRUE
 
 	var/obj/item/I = dropping

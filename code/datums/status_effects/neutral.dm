@@ -135,11 +135,11 @@
 	if(give_alert_override)
 		give_alert_type = give_alert_override
 
-	if(offered && owner.CanReach(offered) && !IS_DEAD_OR_INCAP(offered) && offered.can_hold_items())
+	if(offered && offered.IsReachableBy(owner) && !IS_DEAD_OR_INCAP(offered) && offered.can_hold_items())
 		register_candidate(offered)
 	else
 		for(var/mob/living/carbon/possible_taker in orange(1, owner))
-			if(!owner.CanReach(possible_taker) || IS_DEAD_OR_INCAP(possible_taker) || !possible_taker.can_hold_items())
+			if(!possible_taker.IsReachableBy(owner) || IS_DEAD_OR_INCAP(possible_taker) || !possible_taker.can_hold_items())
 				continue
 			register_candidate(possible_taker)
 
@@ -178,7 +178,7 @@
 /// One of our possible takers moved, see if they left us hanging
 /datum/status_effect/offering/proc/check_taker_in_range(mob/living/carbon/taker)
 	SIGNAL_HANDLER
-	if(owner.CanReach(taker) && !IS_DEAD_OR_INCAP(taker))
+	if(taker.IsReachableBy(owner) && !IS_DEAD_OR_INCAP(taker))
 		return
 
 	to_chat(taker, span_warning("You moved out of range of [owner]!"))
@@ -190,7 +190,7 @@
 
 	for(var/i in possible_takers)
 		var/mob/living/carbon/checking_taker = i
-		if(!istype(checking_taker) || !owner.CanReach(checking_taker) || IS_DEAD_OR_INCAP(checking_taker))
+		if(!istype(checking_taker) || !checking_taker.IsReachableBy(owner) || IS_DEAD_OR_INCAP(checking_taker))
 			remove_candidate(checking_taker)
 
 /// We lost the item, give it up

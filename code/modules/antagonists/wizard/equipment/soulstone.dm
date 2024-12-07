@@ -335,7 +335,7 @@
 /obj/item/soulstone/proc/check_menu(mob/user, obj/structure/constructshell/shell)
 	if(!istype(user))
 		return FALSE
-	if(user.incapacitated() || !user.is_holding(src) || !user.CanReach(shell, src))
+	if(user.incapacitated() || !user.is_holding(src) || !shell.IsReachableBy(user, src))
 		return FALSE
 	return TRUE
 
@@ -448,7 +448,7 @@
 		var/list/consenting_candidates = poll_ghost_candidates("Would you like to play as a Shade?", "Cultist", ROLE_CULTIST, 50, POLL_IGNORE_SHADE)
 		if(consenting_candidates.len)
 			chosen_ghost = pick(consenting_candidates)
-	if(!victim || user.incapacitated() || !user.is_holding(src) || !user.CanReach(victim, src))
+	if(!victim || user.incapacitated() || !user.is_holding(src) || !victim.IsReachableBy(user, src))
 		return FALSE
 	if(!chosen_ghost || !chosen_ghost.client)
 		to_chat(user, span_danger("There were no spirits willing to become a shade."))

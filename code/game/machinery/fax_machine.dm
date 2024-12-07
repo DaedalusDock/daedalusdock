@@ -590,7 +590,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	if(!paper)
 		return
 
-	if(user && user.CanReach(src))
+	if(user && IsReachableBy(user))
 		user.put_in_hands(paper)
 	else
 		paper.forceMove(drop_location())
@@ -622,7 +622,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	if(!silent)
 		z_flick("fax_receive", src)
 		balloon_alert_to_viewers("removed [stored_paper]")
-	if(user && user.CanReach(src))
+	if(user && IsReachableBy(user))
 		user.put_in_hands(stored_paper)
 	else
 		stored_paper.forceMove(drop_location())
@@ -642,7 +642,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	if(!silent)
 		z_flick("fax_receive", src)
 		balloon_alert_to_viewers("removed [received_paper]")
-	if(user && user.CanReach(src))
+	if(user && IsReachableBy(user))
 		user.put_in_hands(received_paper)
 	else
 		received_paper.forceMove(drop_location())

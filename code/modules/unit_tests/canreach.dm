@@ -2,13 +2,13 @@
 	var/mob/living/carbon/human/user = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/wrench/wrench = ALLOCATE_BOTTOM_LEFT()
 
-	TEST_ASSERT(user.CanReach(wrench), "Wrench was not reachable by mob on the same turf.")
+	TEST_ASSERT(wrench.IsReachableBy(user), "Wrench was not reachable by mob on the same turf.")
 
 	wrench.forceMove(get_step(wrench, EAST))
-	TEST_ASSERT(user.CanReach(wrench), "Wrench was not reachable by mob within 1-turf range.")
+	TEST_ASSERT(wrench.IsReachableBy(user), "Wrench was not reachable by mob within 1-turf range.")
 
 	wrench.forceMove(get_step(wrench, EAST))
-	TEST_ASSERT(!user.CanReach(wrench), "Wrench was reachable over 1 turf away.")
+	TEST_ASSERT(!wrench.IsReachableBy(user), "Wrench was reachable over 1 turf away.")
 
 /datum/unit_test/can_reach_adjacency
 	var/east_turf_type
@@ -27,10 +27,10 @@
 	north_turf_type = north_turf.type
 
 	east_turf.ChangeTurf(/turf/closed/wall)
-	TEST_ASSERT(user.CanReach(wrench), "Wrench was not reachable despite only one direction being blocked.")
+	TEST_ASSERT(wrench.IsReachableBy(user), "Wrench was not reachable despite only one direction being blocked.")
 
 	north_turf.ChangeTurf(/turf/closed/wall)
-	TEST_ASSERT(!user.CanReach(wrench), "Wrench was reachable despite both directions being blocked.")
+	TEST_ASSERT(!wrench.IsReachableBy(user), "Wrench was reachable despite both directions being blocked.")
 
 
 /datum/unit_test/can_reach_adjacency/Destroy()
@@ -51,10 +51,9 @@
 
 	// Storage depth 1
 	wrench.forceMove(backpack)
-	TEST_ASSERT(user.CanReach(wrench), "Wrench was not reachable inside of worn backpack.")
+	TEST_ASSERT(wrench.IsReachableBy(user, depth = REACH_DEPTH_STORAGE(1)), "Wrench was not reachable inside of worn backpack.")
 
 	// Storage depth 2
 	box.forceMove(backpack)
 	wrench.forceMove(box)
-	TEST_ASSERT(user.CanReach(wrench), "Wrench was not reachable inside of box inside of worn backpack.")
-
+	TEST_ASSERT(wrench.IsReachableBy(user, depth = REACH_DEPTH_STORAGE(1)), "Wrench was not reachable inside of box inside of worn backpack.")

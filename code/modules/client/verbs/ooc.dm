@@ -400,6 +400,10 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 	var/split_size = splittext(sizes["mainwindow.split.size"], "x")
 	var/split_width = text2num(split_size[1])
 
+	// Game window is minimized.
+	if(split_width == 0)
+		return
+
 	// Avoid auto-resizing the statpanel and chat into nothing.
 	desired_width = min(desired_width, split_width - 300)
 

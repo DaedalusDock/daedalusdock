@@ -132,7 +132,9 @@
 			LAZYSET(brainmob.status_traits, TRAIT_BADDNA, L.status_traits[TRAIT_BADDNA])
 	if(L.mind && L.mind.current)
 		L.mind.transfer_to(brainmob)
-	to_chat(brainmob, span_notice("You feel slightly disoriented. That's normal when you're just a brain."))
+
+	if(brainmob.stat == CONSCIOUS)
+		to_chat(brainmob, span_notice("You feel slightly disoriented. That's normal when you're just a brain."))
 
 /obj/item/organ/brain/attackby(obj/item/O, mob/user, params)
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -376,10 +378,13 @@
 /obj/item/organ/brain/getToxLoss()
 	return 0
 
-/obj/item/organ/brain/set_organ_dead(failing, cause_of_death)
+/obj/item/organ/brain/set_organ_dead(failing, cause_of_death, change_mob_stat = TRUE)
 	. = ..()
 	if(!.)
 		return
+	if(!change_mob_stat)
+		return
+
 	if(failing)
 		if(owner)
 			owner.death(cause_of_death = cause_of_death)

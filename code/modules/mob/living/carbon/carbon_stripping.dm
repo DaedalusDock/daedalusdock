@@ -25,14 +25,18 @@
 			if(user.active_storage == I)
 				I.atom_storage.hide_contents(user)
 			else
-				if(!source.IsReachableBy(user))
+				if(!I.can_pickpocket(user))
 					to_chat(user, span_warning("You cannot reach into [I] from here."))
 					return
 
-				if(do_after(user, source, 3 SECONDS, DO_RESTRICT_USER_DIR_CHANGE|DO_PUBLIC, display = image('icons/hud/do_after.dmi', "pickpocket")))
-					if(!source.IsReachableBy(user))
+				var/mob/living/carbon/wearer = source
+				user.setDir(wearer.dir)
+
+				if(do_after(user, wearer, 3 SECONDS, DO_RESTRICT_USER_DIR_CHANGE|DO_PUBLIC, display = image('icons/hud/do_after.dmi', "pickpocket")))
+					if(!I.can_pickpocket(user))
 						to_chat(user, span_warning("You cannot reach into [I] from here."))
 						return
+
 					I.atom_storage.open_storage(user, skip_canreach = TRUE)
 
 		if("enable_internals", "disable_internals")

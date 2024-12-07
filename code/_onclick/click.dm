@@ -263,14 +263,13 @@
 	if(!isliving(user))
 		return
 
+	if(!isitem(contained))
+		return
+
 	var/mob/living/living_user = user
-	if(get_item_by_slot(ITEM_SLOT_BACK) != contained)
-		return
-
-	if(!(REVERSE_DIR(dir) & get_dir(src, user)))
-		return
-
-	return contained.atom_storage == living_user.active_storage
+	var/obj/item/I = contained
+	if(I.can_pickpocket(user))
+		return I.atom_storage == living_user.active_storage
 
 /atom/movable/proc/DirectAccess()
 	return list(src, loc)

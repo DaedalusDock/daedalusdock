@@ -37,6 +37,19 @@
 	atom_storage.max_slots = 21
 	atom_storage.max_total_storage = 21
 
+/obj/item/storage/backpack/can_pickpocket(mob/living/user)
+	var/mob/wearer = loc
+	if(!wearer)
+		return FALSE
+
+	if(wearer.get_item_by_slot(ITEM_SLOT_BACK) != src)
+		return FALSE
+
+	if(!(REVERSE_DIR(wearer.dir) & get_dir(wearer, user)))
+		return
+
+	return wearer.IsReachableBy(user)
+
 /*
  * Backpack Types
  */

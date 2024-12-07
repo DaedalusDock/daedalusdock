@@ -46,14 +46,11 @@
 	var/obj/item/storage/box/box = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/storage/backpack/backpack = ALLOCATE_BOTTOM_LEFT()
 
-	user.equip_to_appropriate_slot(backpack)
-	TEST_ASSERT(user.back == backpack, "Mob did not put on the backpack. What the fuck?")
-
 	// Storage depth 1
 	wrench.forceMove(backpack)
-	TEST_ASSERT(wrench.IsReachableBy(user, depth = REACH_DEPTH_STORAGE(1)), "Wrench was not reachable inside of worn backpack.")
+	TEST_ASSERT(wrench.IsReachableBy(user), "Wrench was not reachable inside of backpack.")
 
 	// Storage depth 2
 	box.forceMove(backpack)
 	wrench.forceMove(box)
-	TEST_ASSERT(wrench.IsReachableBy(user, depth = REACH_DEPTH_STORAGE(1)), "Wrench was not reachable inside of box inside of worn backpack.")
+	TEST_ASSERT(!wrench.IsReachableBy(user, depth = REACH_DEPTH_SELF), "Wrench was reachable inside of box inside of backpack, despite only searching a depth of 1.")

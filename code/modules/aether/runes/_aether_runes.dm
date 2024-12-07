@@ -7,8 +7,8 @@
 	icon_state = "rune_large"
 	layer = SIGIL_LAYER
 	color = "#1f4d39"
-	pixel_x = -32 //So the big ol' 96x96 sprite shows up right
-	pixel_y = -32
+	pixel_w = -32 //So the big ol' 96x96 sprite shows up right
+	pixel_z = -32
 
 	resistance_flags = FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	anchored = TRUE
@@ -37,14 +37,24 @@
 	. = ..()
 	particle_holder = new(src, /particles/rune)
 	particle_holder.appearance_flags |= RESET_COLOR | RESET_TRANSFORM
-	particle_holder.pixel_x = 32
-	particle_holder.pixel_y = 32
+	particle_holder.pixel_w = 32
+	particle_holder.pixel_z = 32
 	particle_holder.particles.spawning = 0
 
 /obj/effect/aether_rune/Destroy(force)
 	touching_rune = null
 	try_cancel_invoke(RUNE_FAIL_GRACEFUL)
 	return ..()
+
+/obj/effect/aether_rune/CheckReachableAdjacency(atom/movable/reacher, obj/item/tool)
+	. = ..()
+	if(.)
+		return TRUE
+
+	var/list/touchable_turfs = RANGE_TURFS(1,reacher) & RANGE_TURFS(1, src)
+	for(var/turf/open/T in touchable_turfs)
+		if(T.IsReachableBy(reacher))
+			return TRUE
 
 /obj/effect/aether_rune/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
@@ -215,8 +225,8 @@
 	effect.layer = FLY_LAYER
 	effect.appearance_flags |= RESET_COLOR
 	effect.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	effect.pixel_x = 0
-	effect.pixel_y = 0
+	effect.pixel_w = 0
+	effect.pixel_z = 0
 
 	vis_contents += effect
 
@@ -228,6 +238,9 @@
 /// Gets a mob that is in the center of the rune.
 /obj/effect/aether_rune/proc/find_target_mob()
 	var/mob/living/carbon/human/H = locate() in loc
+	if(isnull(H))
+		return null
+
 	if(H.body_position != LYING_DOWN)
 		return null
 

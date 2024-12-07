@@ -1,9 +1,13 @@
 /obj/item/stack/sticky_tape
-	name = "duct tape"
-	singular_name = "duct tape"
+	name = "roll of duct tape"
+	singular_name = "piece"
+	stack_name = "roll"
+	multiple_gender = NEUTER
+
 	desc = "Used for sticking to things for sticking said things to people."
 	icon = 'icons/obj/tapes.dmi'
 	icon_state = "tape"
+
 	var/prefix = "sticky"
 	w_class = WEIGHT_CLASS_TINY
 	full_w_class = WEIGHT_CLASS_TINY

@@ -373,16 +373,6 @@
 			to_chat(owner, span_danger("You black out!"))
 		owner.Unconscious(5 SECOND)
 
-/obj/item/organ/brain/applyOrganDamage(damage_amount, maximum, silent, updating_health = TRUE, cause_of_death = "Organ failure")
-	. = ..()
-	if(. >= 20) //This probably won't be triggered by oxyloss or mercury. Probably.
-		var/damage_secondary = min(. * 0.2, 20)
-		if (owner)
-			owner.flash_act(visual = TRUE)
-			owner.blur_eyes(.)
-			owner.adjust_confusion(. SECONDS)
-			owner.Unconscious(damage_secondary SECONDS)
-
 /obj/item/organ/brain/getToxLoss()
 	return 0
 

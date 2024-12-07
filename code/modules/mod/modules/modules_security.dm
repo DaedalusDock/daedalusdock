@@ -150,10 +150,10 @@
 	required_slots = list(ITEM_SLOT_OCLOTHING)
 
 /obj/item/mod/module/pepper_shoulders/on_suit_activation()
-	RegisterSignal(mod.wearer, COMSIG_HUMAN_CHECK_SHIELDS, PROC_REF(on_check_shields))
+	RegisterSignal(mod.wearer, COMSIG_LIVING_CHECK_BLOCK, PROC_REF(on_check_block))
 
 /obj/item/mod/module/pepper_shoulders/on_suit_deactivation(deleting = FALSE)
-	UnregisterSignal(mod.wearer, COMSIG_HUMAN_CHECK_SHIELDS)
+	UnregisterSignal(mod.wearer, COMSIG_LIVING_CHECK_BLOCK)
 
 /obj/item/mod/module/pepper_shoulders/on_use()
 	playsound(src, 'sound/effects/spray.ogg', 30, TRUE, -6)
@@ -163,7 +163,7 @@
 	smoke.set_up(1, location = get_turf(src), carry = capsaicin_holder)
 	smoke.start()
 
-/obj/item/mod/module/pepper_shoulders/proc/on_check_shields()
+/obj/item/mod/module/pepper_shoulders/proc/on_check_block()
 	SIGNAL_HANDLER
 
 	if(!COOLDOWN_FINISHED(src, cooldown_timer))

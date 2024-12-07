@@ -242,6 +242,7 @@
 				start_patrol()
 			if(BOT_PATROL)
 				bot_patrol()
+
 	else if(target)
 		if(QDELETED(target) || !isturf(target.loc))
 			target = null
@@ -255,12 +256,13 @@
 				mode = BOT_IDLE
 				return
 
-		if(target && path.len == 0 && (get_dist(src,target) > 1))
-			path = jps_path_to(src, target, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
+		if(target && path.len == 0 && (get_dist(src,target) > 1) && mode != BOT_MOVING)
 			mode = BOT_MOVING
+			path = jps_path_to(src, target, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
 			if(length(path) == 0)
 				add_to_ignore(target)
 				target = null
+				mode = BOT_IDLE
 
 		if(path.len > 0 && target)
 			if(!bot_move(path[path.len]))

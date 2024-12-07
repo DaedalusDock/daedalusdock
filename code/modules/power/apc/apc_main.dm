@@ -242,11 +242,6 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(BLUNT = 20, PUNCTURE = 20, SLASH = 0, 
 		else
 			. += "The cover is closed."
 
-	. += span_notice("Right-click the APC to [ locked ? "unlock" : "lock"] the interface.")
-
-	if(issilicon(user))
-		. += span_notice("Ctrl-Click the APC to switch the breaker [ operating ? "off" : "on"].")
-
 /obj/machinery/power/apc/deconstruct(disassembled = TRUE)
 	if(flags_1 & NODECONSTRUCT_1)
 		return

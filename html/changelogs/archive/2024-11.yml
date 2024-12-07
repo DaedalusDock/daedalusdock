@@ -22,3 +22,27 @@
       every turf they iterate through, rather than just every pulse.
   francinum:
   - server: Discord account linking no longer hard-requires the panic bunker
+2024-11-22:
+  Kapu1178:
+  - tweak: Adjusted the color of the "obviousnotice" message type.
+2024-11-25:
+  Kapu1178:
+  - server: Bumped rust_g version to 3.5.0
+  - bugfix: Ambience works again. Fuck.
+  - bugfix: Ambience sounds will no longer cut each other off in some situations.
+2024-11-26:
+  Kapu1178:
+  - bugfix: Optimized Cleanbots, Firebots, and Medbots.
+2024-11-28:
+  Kapu1178, MrMelbert:
+  - code_imp: Significantly rewrote how attacks are handled and damage is applied.
+  francinum:
+  - bugfix: The server no longer cries about discord linking if there's no DB.
+2024-11-29:
+  Kapu1178:
+  - bugfix: Acid disfigures people again.
+  - bugfix: The server is now 0.000000000000001% faster
+  francinum:
+  - bugfix: Late-515 Compliance fixes.
+  - admin: Notes/Messages Panel Verb.
+  - bugfix: Dynamically generated codex entries show up in search again.

@@ -19,7 +19,7 @@
 		return FALSE
 
 	// This breaks pathfinding :(
-	// if(!owner.CanReach(clicked_atom_turf))
+	// if(!clicked_atom_turf.IsReachableBy(owner))
 	// 	return FALSE
 
 	// So instead:

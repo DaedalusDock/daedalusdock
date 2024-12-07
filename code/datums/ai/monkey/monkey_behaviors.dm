@@ -8,12 +8,7 @@
 	. = ..()
 
 	if(!success) //Don't try again on this item if we failed
-		var/list/item_blacklist = controller.blackboard[BB_MONKEY_BLACKLISTITEMS]
-		var/obj/item/target = controller.blackboard[BB_MONKEY_PICKUPTARGET]
-
-		item_blacklist[target] = TRUE
-		if(istype(controller, /datum/ai_controller/monkey)) //What the fuck
-			controller.RegisterSignal(target, COMSIG_PARENT_QDELETING, TYPE_PROC_REF(/datum/ai_controller/monkey,target_del))
+		controller.set_blackboard_key_assoc(BB_MONKEY_BLACKLISTITEMS, controller.blackboard[BB_MONKEY_PICKUPTARGET], TRUE)
 
 	controller.set_blackboard_key(BB_MONKEY_PICKUPTARGET, null)
 
@@ -75,7 +70,7 @@
 	var/mob/living/victim = target.loc
 	var/mob/living/living_pawn = controller.pawn
 
-	if(!istype(victim) || !living_pawn.CanReach(victim))
+	if(!istype(victim) || !victim.IsReachableBy(living_pawn))
 		finish_action(controller, FALSE)
 		return
 
@@ -87,7 +82,7 @@
 
 	var/success = FALSE
 
-	if(do_after(living_pawn, victim, MONKEY_ITEM_SNATCH_DELAY, DO_PUBLIC, display = image('icons/hud/do_after.dmi', "pickpocket")) && target && living_pawn.CanReach(victim))
+	if(do_after(living_pawn, victim, MONKEY_ITEM_SNATCH_DELAY, DO_PUBLIC, display = image('icons/hud/do_after.dmi', "pickpocket")) && target && victim.IsReachableBy(living_pawn))
 
 		for(var/obj/item/I in victim.held_items)
 			if(I == target)
@@ -193,7 +188,7 @@
 		controller.set_blackboard_key(BB_MONKEY_GUN_WORKED, TRUE)
 
 	// attack with weapon if we have one
-	if(living_pawn.CanReach(target, weapon))
+	if(target.IsReachableBy(living_pawn, weapon))
 		if(weapon)
 			weapon.melee_attack_chain(living_pawn, target)
 		else

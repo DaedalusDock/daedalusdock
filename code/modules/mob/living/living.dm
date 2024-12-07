@@ -804,8 +804,10 @@
 
 	. = ..()
 
-	if(active_storage && !((active_storage.parent in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent,view_only = TRUE)))
-		active_storage.hide_contents(src)
+	if(active_storage)
+		var/storage_in_self = (active_storage.parent in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE])
+		if(!storage_in_self && !active_storage.can_be_reached_by(src))
+			active_storage.hide_contents(src)
 
 	if(!ISDIAGONALDIR(direct) && newloc != T && body_position == LYING_DOWN && !buckled && has_gravity())
 		if(length(grabbed_by))
@@ -1066,7 +1068,7 @@
 		to_chat(src, span_warning("You are not physically capable of doing that."))
 		return FALSE
 
-	if((flags & USE_CLOSE) && !CanReach(target) && (recursive_loc_check(src, target)))
+	if((flags & USE_CLOSE) && !target.IsReachableBy(src) && (recursive_loc_check(src, target)))
 		if(issilicon(src) && !ispAI(src))
 			if(!(flags & USE_SILICON_REACH)) // silicons can ignore range checks (except pAIs)
 				to_chat(src, span_warning("You are too far away."))

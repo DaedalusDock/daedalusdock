@@ -47,8 +47,9 @@
 	. = ..()
 
 	if(!controller.blackboard[hunting_target_key]) //Target is gone for some reason. forget about this task!
-		controller[hunting_target_key] = null
+		controller.clear_blackboard_key(hunting_target_key)
 		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
+
 
 	var/mob/living/hunter = controller.pawn
 	var/atom/hunted = controller.blackboard[hunting_target_key]

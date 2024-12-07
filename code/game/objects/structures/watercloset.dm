@@ -29,7 +29,7 @@
 		log_combat(user, swirlie, "swirlied (brute)")
 		swirlie.adjustBruteLoss(5)
 
-	else if(cistern && !open && user.CanReach(src))
+	else if(cistern && !open && IsReachableBy(user))
 		if(!contents.len)
 			to_chat(user, span_notice("The cistern is empty."))
 		else

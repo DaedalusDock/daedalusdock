@@ -83,11 +83,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	if(!(machine_stat & (NOPOWER|BROKEN)))
 		var/state = "[base_icon_state]_[GLOB.news_network.wanted_issue.active ? "wanted" : "normal"]"
 		. += mutable_appearance(icon, state)
-		. += emissive_appearance(icon, state, alpha = src.alpha)
+		. += emissive_appearance(icon, state, alpha = 90)
 
 		if(GLOB.news_network.wanted_issue.active && alert)
 			. += mutable_appearance(icon, "[base_icon_state]_alert")
-			. += emissive_appearance(icon, "[base_icon_state]_alert", alpha = src.alpha)
+			. += emissive_appearance(icon, "[base_icon_state]_alert", alpha = 90)
 
 	var/hp_percent = atom_integrity * 100 / max_integrity
 	switch(hp_percent)

@@ -581,12 +581,14 @@
 	if(!I)
 		to_chat(src, span_warning("You are not holding anything to equip!"))
 		return
-	if (temporarilyRemoveItemFromInventory(I) && !QDELETED(I))
-		if(I.equip_to_best_slot(src))
-			return
-		if(put_in_active_hand(I))
-			return
-		I.forceMove(drop_location())
+
+	if(I.equip_to_best_slot(src))
+		return
+
+	if(put_in_active_hand(I))
+		return
+
+	I.forceMove(drop_location())
 
 //used in code for items usable by both carbon and drones, this gives the proper back slot for each mob.(defibrillator, backpack watertank, ...)
 /mob/proc/getBackSlot()
@@ -655,9 +657,14 @@
 /mob/proc/unequip_delay_self_check(obj/item/I, bypass_delay)
 	return TRUE
 
+#define EQUIPPING_INTERACTION_KEY(item) "equipping_item_[ref(item)]"
+
 /mob/living/carbon/human/equip_delay_self_check(obj/item/I, bypass_delay)
 	if(!I.equip_delay_self || bypass_delay)
 		return TRUE
+
+	if(DOING_INTERACTION(src, EQUIPPING_INTERACTION_KEY(I)))
+		return FALSE
 
 	visible_message(
 		span_notice("[src] starts to put on [I]..."),
@@ -675,6 +682,9 @@
 /mob/living/carbon/human/unequip_delay_self_check(obj/item/I)
 	if(!I.equip_delay_self || is_holding(I))
 		return TRUE
+
+	if(DOING_INTERACTION(src, EQUIPPING_INTERACTION_KEY(I)))
+		return FALSE
 
 	visible_message(
 		span_notice("[src] starts to take off [I]..."),
@@ -700,9 +710,11 @@
 
 	ADD_TRAIT(L, TRAIT_EQUIPPING_OR_UNEQUIPPING, ref(src))
 
-	. = do_after(L, L, equip_delay_self, flags, display = src)
+	. = do_after(L, L, equip_delay_self, flags, interaction_key = EQUIPPING_INTERACTION_KEY(src), display = src)
 
 	REMOVE_TRAIT(L, TRAIT_EQUIPPING_OR_UNEQUIPPING, ref(src))
 
 	if(!HAS_TRAIT(L, TRAIT_EQUIPPING_OR_UNEQUIPPING))
 		L.remove_movespeed_modifier(/datum/movespeed_modifier/equipping)
+
+#undef EQUIPPING_INTERACTION_KEY

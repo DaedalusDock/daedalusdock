@@ -183,3 +183,15 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 /datum/map_template/unit_tests
 	name = "Unit Tests Zone"
 	mappath = "_maps/templates/unit_tests.dmm"
+
+/**
+ * Helper to perform a click
+ *
+ * * clicker: The mob that will be clicking
+ * * clicked_on: The atom that will be clicked
+ * * passed_params: A list of parameters to pass to the click
+ */
+/datum/unit_test/proc/click_wrapper(mob/living/clicker, atom/clicked_on, list/passed_params = list(LEFT_CLICK = 1, BUTTON = LEFT_CLICK))
+	clicker.next_click = -1
+	clicker.next_move = -1
+	clicker.ClickOn(clicked_on, list2params(passed_params))

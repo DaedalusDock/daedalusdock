@@ -42,7 +42,7 @@
 		if(atom_basic_score < best_score)
 			continue
 
-		if(pawn.CanReach(A))
+		if(A.IsReachableBy(pawn))
 			best_score = atom_basic_score
 			ideal_atom = A
 			continue

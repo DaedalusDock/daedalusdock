@@ -245,7 +245,7 @@
 		if("mix")
 			mix(user)
 		if("examine")
-			examine(user)
+			user.run_examinate(src)
 
 /obj/machinery/reagentgrinder/proc/eject(mob/user)
 	drop_all_items()

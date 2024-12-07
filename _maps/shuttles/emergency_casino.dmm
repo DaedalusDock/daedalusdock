@@ -477,11 +477,8 @@
 /area/shuttle/escape)
 "mm" = (
 /obj/structure/table/wood/poker,
-/obj/item/stack/spacecash/c10,
-/obj/item/stack/spacecash/c20{
-	pixel_x = -2;
-	pixel_y = 4
-	},
+/obj/item/stack/spacecash/c1/ten,
+/obj/item/stack/spacecash/c1/twenty,
 /obj/machinery/vending/wallmed/directional/west,
 /turf/open/floor/carpet/green,
 /area/shuttle/escape)
@@ -1103,10 +1100,7 @@
 "Gf" = (
 /obj/structure/table/reinforced,
 /obj/item/stack/spacecash/c100,
-/obj/item/stack/spacecash/c10{
-	pixel_x = 2;
-	pixel_y = 4
-	},
+/obj/item/stack/spacecash/c1/ten,
 /turf/open/floor/iron,
 /area/shuttle/escape)
 "Gs" = (

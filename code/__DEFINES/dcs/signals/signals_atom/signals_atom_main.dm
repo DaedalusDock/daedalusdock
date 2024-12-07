@@ -9,7 +9,10 @@
 #define COMSIG_PARENT_EXAMINE "atom_examine"
 ///from base of atom/get_examine_name(): (/mob, list/overrides)
 #define COMSIG_ATOM_GET_EXAMINE_NAME "atom_examine_name"
-#define COMSIG_PARENT_EXAMINE_MORE "atom_examine_more"                    ///from base of atom/examine_more(): (/mob)
+///from base of /atom/proc/examine_properties(): (/mob, list/examine_text)
+#define COMSIG_PARENT_EXAMINE_PROPERTIES "atom_examine_properties"
+///from base of atom/examine_more(): (/mob)
+#define COMSIG_PARENT_EXAMINE_MORE "atom_examine_more"
 	//End positions
 	#define COMPONENT_EXNAME_CHANGED (1<<0)
 ///from base of [/atom/proc/update_appearance]: (updates)
@@ -57,9 +60,6 @@
 #define COMSIG_ATOM_CONTENTS_DEL "atom_contents_del"
 ///from base of atom/has_gravity(): (turf/location, list/forced_gravities)
 #define COMSIG_ATOM_HAS_GRAVITY "atom_has_gravity"
-///from internal loop in atom/movable/proc/CanReach(): (list/next)
-#define COMSIG_ATOM_CANREACH "atom_can_reach"
-	#define COMPONENT_ALLOW_REACH (1<<0)
 ///for when an atom has been created through processing (atom/original_atom, list/chosen_processing_option)
 #define COMSIG_ATOM_CREATEDBY_PROCESSING "atom_createdby_processing"
 ///when an atom is processed (mob/living/user, obj/item/I, list/atom/results)

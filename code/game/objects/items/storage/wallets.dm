@@ -206,7 +206,7 @@
 	icon_state = "wallet"
 
 /obj/item/storage/wallet/random/PopulateContents()
-	SSeconomy.spawn_cash_for_amount(rand(5, 30), src)
+	SSeconomy.spawn_ones_for_amount(rand(5, 30), src)
 	new /obj/effect/spawner/random/entertainment/wallet_storage(src)
 
 /obj/item/storage/wallet/open

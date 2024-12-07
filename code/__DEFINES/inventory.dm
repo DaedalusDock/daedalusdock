@@ -20,8 +20,6 @@
 #define REACH_DEPTH_SELF 1
 /// A storage depth ontop of SELF. REACH_DEPTH_STORAGE(1) would allow an item inside of a backpack you are carrying.
 #define REACH_DEPTH_STORAGE(level) (level + REACH_DEPTH_SELF)
-/// An arbitrary depth value for keeping storage UIs open on Move().
-#define REACH_DEPTH_STORAGE_SANITY 5
 
 //ITEM INVENTORY SLOT BITMASKS
 /// Suit slot (armors, costumes, space suits, etc.)

@@ -806,7 +806,7 @@
 
 	if(active_storage)
 		var/storage_in_self = (active_storage.parent in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE])
-		if(!storage_in_self && !active_storage.parent.IsReachableBy(src, depth = REACH_DEPTH_STORAGE_SANITY))
+		if(!storage_in_self && !active_storage.can_be_reached_by(src))
 			active_storage.hide_contents(src)
 
 	if(!ISDIAGONALDIR(direct) && newloc != T && body_position == LYING_DOWN && !buckled && has_gravity())

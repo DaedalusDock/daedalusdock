@@ -247,7 +247,7 @@
 
 		)
 
-		if(do_after(src, src, buckle_cd, timed_action_flags = IGNORE_HELD_ITEM))
+		if(do_after(src, src, buckle_cd, timed_action_flags = DO_IGNORE_HELD_ITEM))
 			if(!buckled)
 				return
 			return !!buckled.user_unbuckle_mob(src,src)
@@ -306,7 +306,7 @@
 		visible_message(span_warning("[src] attempts to remove [I]!"))
 		to_chat(src, span_notice("You attempt to remove [I]... (This will take around [DisplayTimeText(breakouttime)] and you need to stand still.)"))
 
-		if(do_after(src, src, breakouttime, timed_action_flags = IGNORE_HELD_ITEM))
+		if(do_after(src, src, breakouttime, timed_action_flags = DO_IGNORE_HELD_ITEM))
 			. = clear_cuffs(I, cuff_break)
 		else
 			to_chat(src, span_warning("You fail to remove [I]!"))
@@ -316,7 +316,7 @@
 		visible_message(span_warning("[src] is trying to break [I]!"))
 		to_chat(src, span_notice("You attempt to break [I]... (This will take around 5 seconds and you need to stand still.)"))
 
-		if(do_after(src, src, breakouttime, timed_action_flags = IGNORE_HELD_ITEM))
+		if(do_after(src, src, breakouttime, timed_action_flags = DO_IGNORE_HELD_ITEM))
 			. = clear_cuffs(I, cuff_break)
 		else
 			to_chat(src, span_warning("You fail to break [I]!"))

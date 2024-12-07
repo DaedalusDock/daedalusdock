@@ -181,7 +181,7 @@
 /datum/slapcraft_step/proc/perform_do_after(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly, time_to_do)
 	var/flags = DO_PUBLIC
 	if(user.is_holding(item) && user.is_holding(assembly))
-		flags |= IGNORE_USER_LOC_CHANGE
+		flags |= DO_IGNORE_USER_LOC_CHANGE
 
 	if(!do_after(user, item, time_to_do, flags, interaction_key = "SLAPCRAFT", display = image('icons/hud/do_after.dmi', "hammer")))
 		return FALSE

@@ -506,7 +506,7 @@
 
 /mob/living/proc/get_up(instant = FALSE)
 	set waitfor = FALSE
-	if(!instant && !do_after(src, src, 1 SECONDS, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_TARGET_LOC_CHANGE|IGNORE_HELD_ITEM), extra_checks = CALLBACK(src, TYPE_PROC_REF(/mob/living, rest_checks_callback)), interaction_key = DOAFTER_SOURCE_GETTING_UP))
+	if(!instant && !do_after(src, src, 1 SECONDS, timed_action_flags = (DO_IGNORE_USER_LOC_CHANGE|DO_IGNORE_TARGET_LOC_CHANGE|DO_IGNORE_HELD_ITEM), extra_checks = CALLBACK(src, TYPE_PROC_REF(/mob/living, rest_checks_callback)), interaction_key = DOAFTER_SOURCE_GETTING_UP))
 		return
 	if(resting || body_position == STANDING_UP || HAS_TRAIT(src, TRAIT_FLOORED))
 		return
@@ -822,6 +822,15 @@
 		set_lying_angle(90)
 	else if(direct & WEST)
 		set_lying_angle(270)
+
+/mob/living/setDir(ndir)
+	. = ..()
+	if(isnull(.))
+		return
+
+	for(var/datum/storage/storage_datum in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE])
+		if(UNLINT(length(storage_datum.is_using)))
+			storage_datum.update_viewability()
 
 /mob/living/carbon/alien/humanoid/lying_angle_on_movement(direct)
 	return

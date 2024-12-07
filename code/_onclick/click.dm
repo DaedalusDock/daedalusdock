@@ -255,6 +255,23 @@
 /atom/movable/IsContainedAtomAccessible(atom/contained, atom/movable/user)
 	return !!atom_storage
 
+/mob/living/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	. = ..()
+	if(.)
+		return
+
+	if(!isliving(user))
+		return
+
+	var/mob/living/living_user = user
+	if(get_item_by_slot(ITEM_SLOT_BACK) != contained)
+		return
+
+	if(!(REVERSE_DIR(dir) & get_dir(src, user)))
+		return
+
+	return contained.atom_storage == living_user.active_storage
+
 /atom/movable/proc/DirectAccess()
 	return list(src, loc)
 

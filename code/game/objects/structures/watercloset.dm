@@ -61,7 +61,7 @@
 			if(open)
 				GM.visible_message(span_danger("[user] starts to give [GM] a swirlie!"), span_userdanger("[user] starts to give you a swirlie..."))
 				swirlie = GM
-				if(do_after(user, src, 3 SECONDS, timed_action_flags = IGNORE_HELD_ITEM))
+				if(do_after(user, src, 3 SECONDS, timed_action_flags = DO_IGNORE_HELD_ITEM))
 					GM.visible_message(span_danger("[user] gives [GM] a swirlie!"), span_userdanger("[user] gives you a swirlie!"), span_hear("You hear a toilet flushing."))
 					if(iscarbon(GM))
 						var/mob/living/carbon/C = GM

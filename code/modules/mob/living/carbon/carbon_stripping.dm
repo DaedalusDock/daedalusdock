@@ -6,13 +6,37 @@
 	key = STRIPPABLE_ITEM_BACK
 	item_slot = ITEM_SLOT_BACK
 
-/datum/strippable_item/mob_item_slot/back/get_alternate_action(atom/source, mob/user)
-	return get_strippable_alternate_action_internals(get_item(source), source)
+/datum/strippable_item/mob_item_slot/back/get_alternate_action(atom/source, mob/user, action)
+	. = get_strippable_alternate_action_internals(get_item(source), source)
+	if(.)
+		return
 
-/datum/strippable_item/mob_item_slot/back/alternate_action(atom/source, mob/user)
+	var/obj/item/I = get_item(source)
+	if(I.atom_storage)
+		return "pickpocket"
+
+/datum/strippable_item/mob_item_slot/back/alternate_action(atom/source, mob/user, action)
 	if(!..())
 		return
-	strippable_alternate_action_internals(get_item(source), source, user)
+
+	var/obj/item/I = get_item(source)
+	switch(action)
+		if("pickpocket")
+			if(user.active_storage == I)
+				I.atom_storage.hide_contents(user)
+			else
+				if(!source.IsReachableBy(user))
+					to_chat(user, span_warning("You cannot reach into [I] from here."))
+					return
+
+				if(do_after(user, source, 3 SECONDS, DO_RESTRICT_USER_DIR_CHANGE|DO_PUBLIC, display = image('icons/hud/do_after.dmi', "pickpocket")))
+					if(!source.IsReachableBy(user))
+						to_chat(user, span_warning("You cannot reach into [I] from here."))
+						return
+					I.atom_storage.open_storage(user, skip_canreach = TRUE)
+
+		if("enable_internals", "disable_internals")
+			strippable_alternate_action_internals(get_item(source), source, user)
 
 /datum/strippable_item/mob_item_slot/mask
 	key = STRIPPABLE_ITEM_MASK

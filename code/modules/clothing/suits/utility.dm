@@ -32,7 +32,7 @@
 /obj/item/clothing/suit/fire/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands)
-		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = src.alpha)
+		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = 90)
 
 /obj/item/clothing/suit/fire/firefighter
 	icon_state = "firesuit"
@@ -159,4 +159,4 @@
 /obj/item/clothing/suit/radiation/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands)
-		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = src.alpha)
+		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = 90)

@@ -672,7 +672,7 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 			state = "alarm1"
 
 	. += mutable_appearance(icon, state)
-	. += emissive_appearance(icon, state, alpha = src.alpha)
+	. += emissive_appearance(icon, state, alpha = 90)
 
 /obj/machinery/airalarm/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()

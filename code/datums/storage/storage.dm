@@ -214,7 +214,8 @@
 	if(isnull(new_real_loc))
 		return
 
-	new_real_loc.flags_1 |= HAS_DISASSOCIATED_STORAGE_1
+	if(parent != new_real_loc)
+		new_real_loc.flags_1 |= HAS_DISASSOCIATED_STORAGE_1
 
 	RegisterSignal(new_real_loc, COMSIG_ATOM_ENTERED, PROC_REF(handle_enter))
 	RegisterSignal(new_real_loc, COMSIG_ATOM_EXITED, PROC_REF(handle_exit))
@@ -301,7 +302,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	thing.plane = initial(thing.plane)
 	thing.mouse_opacity = initial(thing.mouse_opacity)
 	thing.screen_loc = null
-	if(thing.maptext)
+	if(numerical_stacking && thing.maptext)
 		thing.maptext = ""
 
 /**
@@ -593,7 +594,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  */
 /datum/storage/proc/remove_type(type, atom/destination, amount = INFINITY, check_adjacent = FALSE, force = FALSE, mob/user, list/inserted)
 	// Make sure whoever is reaching, can reach.
-	if(!force && check_adjacent && (!user || !user.CanReach(destination) || !user.CanReach(real_location)))
+	if(!force && check_adjacent && (!user || !destination.IsReachableBy(user) || !can_be_reached_by(user)))
 		return FALSE
 
 	var/list/taking = typecache_filter_list(real_location.contents, typecacheof(type))
@@ -738,7 +739,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	if(locked || (dest_object == parent))
 		return
 
-	if(!user.CanReach(parent) || !user.CanReach(dest_object))
+	if(!can_be_reached_by(user) || !dest_object.IsReachableBy(user))
 		return
 
 	if(SEND_SIGNAL(dest_object, COMSIG_STORAGE_DUMP_CONTENT, real_location, user) & STORAGE_DUMP_HANDLED)
@@ -889,7 +890,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		for(var/obj/item/item in contents_for_display())
 			item.mouse_opacity = MOUSE_OPACITY_OPAQUE
 			item.screen_loc = "[current_x]:[screen_pixel_x],[current_y]:[screen_pixel_y]"
-			item.maptext = ""
+			if(numerical_stacking)
+				item.maptext = ""
 			item.plane = ABOVE_HUD_PLANE
 
 			current_x++
@@ -930,7 +932,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 			show_contents(to_show)
 		return FALSE
 
-	if(!to_show.CanReach(parent))
+	if(!can_be_reached_by(to_show))
 		to_chat(to_show, span_warning("You cannot reach [parent]."))
 		return FALSE
 
@@ -983,7 +985,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	SIGNAL_HANDLER
 
 	for(var/mob/user in can_see_contents())
-		if (!user.CanReach(parent))
+		if (!can_be_reached_by(user))
 			hide_contents(user)
 
 /// Close the storage UI for everyone viewing us.
@@ -1061,6 +1063,10 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 	if(!length(is_using) && close_sound)
 		playsound(parent, close_sound, 50, TRUE, -5)
+
+/// Relay for parent.IsReachableBy
+/datum/storage/proc/can_be_reached_by(mob/user)
+	return parent.IsReachableBy(user)
 
 /datum/storage/proc/action_trigger(datum/signal_source, datum/action/source)
 	SIGNAL_HANDLER

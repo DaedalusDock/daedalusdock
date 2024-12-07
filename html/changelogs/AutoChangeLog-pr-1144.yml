@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - code_imp: Rewrote the code that handles if you can click on things. REPORT BUGS.

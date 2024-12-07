@@ -139,7 +139,7 @@
 /obj/machinery/griddle/proc/AddToGrill(obj/item/item_to_grill)
 	vis_contents += item_to_grill
 	griddled_objects += item_to_grill
-	item_to_grill.flags_1 |= IS_ONTOP_1
+	ADD_TRAIT(item_to_grill, TRAIT_SKIP_BASIC_REACH_CHECK, ref(src))
 	RegisterSignal(item_to_grill, COMSIG_MOVABLE_MOVED, PROC_REF(ItemMoved))
 	RegisterSignal(item_to_grill, COMSIG_GRILL_COMPLETED, PROC_REF(GrillCompleted))
 	RegisterSignal(item_to_grill, COMSIG_PARENT_QDELETING, PROC_REF(ItemRemovedFromGrill))
@@ -148,7 +148,7 @@
 
 /obj/machinery/griddle/proc/ItemRemovedFromGrill(obj/item/I)
 	SIGNAL_HANDLER
-	I.flags_1 &= ~IS_ONTOP_1
+	REMOVE_TRAIT(I, TRAIT_SKIP_BASIC_REACH_CHECK, ref(src))
 	griddled_objects -= I
 	vis_contents -= I
 	UnregisterSignal(I, list(COMSIG_GRILL_COMPLETED, COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING))

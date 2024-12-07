@@ -92,7 +92,7 @@
 	var/obj/item/held_item = pawn.get_item_by_slot(pawn.get_active_hand())
 	var/atom/target = controller.blackboard[target_key]
 
-	if(!target || !pawn.CanReach(target))
+	if(!target || !target.IsReachableBy(pawn))
 		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
 	pawn.set_combat_mode(FALSE)
@@ -118,7 +118,7 @@
 	var/obj/item/held_item = pawn.get_item_by_slot(pawn.get_active_hand())
 	var/atom/target = controller.blackboard[target_key]
 
-	if(!target || !pawn.CanReach(target) || !isliving(target))
+	if(!target || !target.IsReachableBy(pawn) || !isliving(target))
 		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_FAILURE
 
 	var/mob/living/living_target = target

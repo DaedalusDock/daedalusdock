@@ -275,7 +275,7 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
 	if(panel_open)
 		. += panel_type
 	if(light_mask && !(machine_stat & BROKEN) && powered())
-		. += emissive_appearance(icon, light_mask)
+		. += emissive_appearance(icon, light_mask, alpha = 90)
 
 /obj/machinery/vending/atom_break(damage_flag)
 	. = ..()
@@ -994,7 +994,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 	if(greyscale_colors)
 		vended_item.set_greyscale(colors=greyscale_colors)
 	R.amount--
-	if(usr.CanReach(src) && usr.put_in_hands(vended_item))
+	if(IsReachableBy(usr) && usr.put_in_hands(vended_item))
 		to_chat(usr, span_notice("You take [R.name] out of the slot."))
 	else
 		to_chat(usr, span_warning("[capitalize(R.name)] falls onto the floor!"))
@@ -1296,7 +1296,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 	loaded_items--
 	use_power(active_power_usage)
 	vending_machine_input[choice] = max(vending_machine_input[choice] - 1, 0)
-	if(user.CanReach(src) && user.put_in_hands(dispensed_item))
+	if(IsReachableBy(user) && user.put_in_hands(dispensed_item))
 		to_chat(user, span_notice("You take [dispensed_item.name] out of the slot."))
 	else
 		to_chat(user, span_warning("[capitalize(dispensed_item.name)] falls onto the floor!"))

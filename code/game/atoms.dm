@@ -710,7 +710,7 @@
  * Produces a signal [COMSIG_PARENT_EXAMINE]
  */
 /atom/proc/examine(mob/user)
-	. = list("[get_examine_string(user, TRUE)].") //PARIAH EDIT CHANGE
+	. = list("[get_examine_string(user, TRUE)].")
 	. += get_name_chaser(user)
 
 	if(desc)
@@ -718,9 +718,16 @@
 
 	. += "<hr>"
 
+	var/list/properties = examine_properties(user)
+	if(length(properties))
+		. += "<i>[jointext(properties, ", ")]</i>"
+		. += "<hr>"
+
 	var/place_linebreak = FALSE
-	if(SScodex.get_codex_entry(get_codex_value(user)))
-		. += "<span class='obviousnotice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>relevant information</a></b> available.</span>"
+	var/datum/codex_entry/entry = SScodex.get_codex_entry(get_codex_value(user))
+	if(entry)
+		var/information_type = length(entry.controls_text) ? "controls" : "relevant information"
+		. += "<span class='obviousnotice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>[information_type]</a></b> available.</span>"
 		place_linebreak = TRUE
 
 	if(isitem(src) && length(slapcraft_examine_hints_for_type(type)))
@@ -769,6 +776,19 @@
 		human_user.forensic_analysis_roll(src)
 
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
+
+/**
+ * Called by examine()
+ *
+ * This is where you put generic property tags that can be moused over for more information.
+ *
+ * Produces a signal [COMSIG_PARENT_EXAMINE_PROPERTIES]
+ */
+/atom/proc/examine_properties(mob/user)
+	SHOULD_CALL_PARENT(TRUE)
+	RETURN_TYPE(/list)
+	. = list()
+	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE_PROPERTIES, user, .)
 
 /**
  * Called when a mob examines (shift click or verb) this atom twice (or more) within EXAMINE_MORE_WINDOW (default 1 second)

@@ -39,7 +39,7 @@
 
 /obj/item/storage/backpack/can_pickpocket(mob/living/user)
 	var/mob/wearer = loc
-	if(!wearer)
+	if(!ismob(wearer))
 		return FALSE
 
 	if(wearer.get_item_by_slot(ITEM_SLOT_BACK) != src)

@@ -115,7 +115,7 @@
 		to_chat(user, span_warning("You don't have the dexterity to do this!"))
 		return FALSE
 
-	if(!(interaction_flags_atom & INTERACT_ATOM_DO_IGNORE_INCAPACITATED))
+	if(!(interaction_flags_atom & INTERACT_ATOM_IGNORE_INCAPACITATED))
 		var/ignore_flags = NONE
 		if(interaction_flags_atom & INTERACT_ATOM_IGNORE_RESTRAINED)
 			ignore_flags |= IGNORE_RESTRAINTS

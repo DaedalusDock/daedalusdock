@@ -7,7 +7,7 @@
 /// user must be dextrous
 #define INTERACT_ATOM_REQUIRES_DEXTERITY (1<<3)
 /// ignores incapacitated check
-#define INTERACT_ATOM_DO_IGNORE_INCAPACITATED (1<<4)
+#define INTERACT_ATOM_IGNORE_INCAPACITATED (1<<4)
 /// incapacitated check ignores restrained
 #define INTERACT_ATOM_IGNORE_RESTRAINED (1<<5)
 /// incapacitated check checks grab

@@ -11,7 +11,7 @@
 	var/obj/item/fetch_thing = controller.blackboard[BB_FETCH_TARGET]
 
 	//either we can't pick it up, or we'd rather eat it, so stop trying.
-	if(fetch_thing.anchored || !isturf(fetch_thing.loc) || IS_EDIBLE(fetch_thing) || !living_pawn.CanReach(fetch_thing))
+	if(fetch_thing.anchored || !isturf(fetch_thing.loc) || IS_EDIBLE(fetch_thing) || !fetch_thing.IsReachableBy(living_pawn))
 		return BEHAVIOR_PERFORM_FAILURE
 
 	return BEHAVIOR_PERFORM_SUCCESS

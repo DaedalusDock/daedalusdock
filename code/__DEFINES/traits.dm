@@ -121,6 +121,9 @@
 Remember to update _globalvars/traits.dm if you're adding/removing/renaming traits.
 */
 
+/// An item is ALWAYS considered baseline reachable and will pipe into CanBeReached().
+#define TRAIT_SKIP_BASIC_REACH_CHECK "skip_basic_reach_check"
+
 //mob traits
 /// Forces the user to stay unconscious.
 #define TRAIT_KNOCKEDOUT "knockedout"

@@ -37,7 +37,8 @@
 						to_chat(user, span_warning("You cannot reach into [I] from here."))
 						return
 
-					I.atom_storage.open_storage(user, skip_canreach = TRUE)
+					if(I.atom_storage.open_storage(user, skip_canreach = TRUE))
+						user.visible_message(span_notice("[user] reaches into [wearer]'s [I.name]."))
 
 		if("enable_internals", "disable_internals")
 			strippable_alternate_action_internals(get_item(source), source, user)

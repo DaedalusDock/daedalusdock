@@ -230,8 +230,14 @@
 			if(closed[target] || isarea(target))  // avoid infinity situations
 				continue
 
-			if(isturf(target) || isturf(target.loc) || (target in direct_access) || (ismovable(target) && target.flags_1 & IS_ONTOP_1) || target.loc?.atom_storage) //Directly accessible atoms
-				if(Adjacent(target) || (tool && CheckToolReach(src, target, tool.reach))) //Adjacent or reaching attacks
+			// Before we check CanBeReached() (adjacency), let's do some less expensive checks to see if we need to bother.
+			// A target that is not a turf or on a turf is unclickable, exceptions:
+			// * The object is directly accessible to the user (DirectAccess())
+			// * The object has the ALWAYS_CLICKABLE trait.
+			// * The object is inside of an atom with an associated atom_storage datum.
+			// If any of the above are true, we THEN check adjacency.
+			if(isturf(target) || isturf(target.loc) || (target in direct_access) || (HAS_TRAIT(target, TRAIT_SKIP_BASIC_REACH_CHECK)) || target.loc?.atom_storage)
+				if(target.CanBeReached(src, tool))
 					return TRUE
 
 			closed[target] = TRUE
@@ -244,6 +250,10 @@
 
 		checking = next
 	return FALSE
+
+/// Reciprocal function for CanReach().
+/atom/proc/CanBeReached(atom/movable/reacher, obj/item/tool)
+	return reacher.Adjacent(src) || (tool && CheckToolReach(reacher, src, tool.reach))
 
 /atom/movable/proc/DirectAccess()
 	return list(src, loc)

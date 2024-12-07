@@ -828,9 +828,9 @@
 	if(isnull(.))
 		return
 
-	for(var/datum/storage/storage_datum in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE])
-		if(UNLINT(length(storage_datum.is_using)))
-			storage_datum.update_viewability()
+	for(var/atom/movable/AM as anything in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE])
+		if(UNLINT(length(AM.atom_storage.is_using)))
+			AM.atom_storage.update_viewability()
 
 /mob/living/carbon/alien/humanoid/lying_angle_on_movement(direct)
 	return

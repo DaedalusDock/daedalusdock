@@ -294,7 +294,7 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 /// Used to prevent rotation by the user.
 #define DO_RESTRICT_USER_DIR_CHANGE (1<<5)
 /// Shown to all mobs not just the user
-#define DO_PUBLIC (1<<5)
+#define DO_PUBLIC (1<<6)
 
 
 

@@ -74,6 +74,9 @@
 	if(!(timed_action_flags & IGNORE_INCAPACITATED))
 		RegisterSignal(user, SIGNAL_ADDTRAIT(TRAIT_INCAPACITATED), PROC_REF(user_incap))
 
+	if(!(timed_action_flags & DO_RESTRICT_CLICKING))
+		RegisterSignal(user, COMSIG_LIVING_CHANGENEXT_MOVE, PROC_REF(on_changenext_move))
+
 	for(var/atom/target as anything in targets)
 		if(target == user)
 			continue
@@ -137,6 +140,12 @@
 /datum/timed_action/proc/user_incap(datum/source)
 	SIGNAL_HANDLER
 	cancel()
+
+/datum/timed_action/proc/on_changenext_move(datum/source, next_move)
+	SIGNAL_HANDLER
+
+	if(next_move > world.time)
+		cancel()
 
 /datum/timed_action/proc/target_gone(datum/source)
 	SIGNAL_HANDLER

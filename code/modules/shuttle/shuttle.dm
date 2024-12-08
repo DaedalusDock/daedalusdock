@@ -942,7 +942,7 @@
 				break
 
 	if(distant_source)
-		for(var/mob/M in SSmobs.clients_by_zlevel[z])
+		for(var/mob/M in SSmobs.cliented_living_mobs_by_zlevel[z])
 			var/dist_far = get_dist(M, distant_source)
 			if(dist_far <= long_range && dist_far > range)
 				M.playsound_local(distant_source, "sound/runtime/hyperspace/[selected_sound]_distance.ogg", 100)

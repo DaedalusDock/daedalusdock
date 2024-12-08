@@ -169,7 +169,7 @@
 			UnarmedAttack(item_atom, TRUE, modifiers)
 
 	//Standard reach turf to turf or reaching inside storage
-	if(A.IsReachableBy(src, W))
+	if(A.IsReachableBy(src, W?.reach))
 		if(W)
 			W.melee_attack_chain(src, A, params)
 		else
@@ -218,11 +218,11 @@
  * The inital use case is glass sheets breaking in to shards when the floor is hit.
  * Args:
  * * user: The movable trying to reach us.
- * * tool: An optional item being used.
+ * * reacher_range: How far the reacher can reach.
  * * depth: How deep nested inside of an atom contents stack an object can be.
  * * direct_access: Do not override. Used for recursion.
  */
-/atom/proc/IsReachableBy(atom/movable/user, obj/item/tool, depth = INFINITY, direct_access = user.DirectAccess())
+/atom/proc/IsReachableBy(atom/movable/user, reacher_range = 1, depth = INFINITY, direct_access = user.DirectAccess())
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(isnull(user))
@@ -231,8 +231,9 @@
 	if(src in direct_access)
 		return TRUE
 
-	if(isturf(loc) || isturf(src) || HAS_TRAIT(src, TRAIT_SKIP_BASIC_REACH_CHECK))
-		if(CheckReachableAdjacency(user, tool))
+	// This is a micro-opt, if any turf ever returns false from IsContainedAtomAccessible, change this.
+	if(isturf(loc) || isturf(src))
+		if(CheckReachableAdjacency(user, reacher_range))
 			return TRUE
 
 	depth--
@@ -242,11 +243,11 @@
 	if(isnull(loc) || isarea(loc) || !loc.IsContainedAtomAccessible(src, user))
 		return FALSE
 
-	return loc.IsReachableBy(user, tool, depth, direct_access)
+	return loc.IsReachableBy(user, reacher_range, depth, direct_access)
 
 /// Checks if a reacher is adjacent to us.
-/atom/proc/CheckReachableAdjacency(atom/movable/reacher, obj/item/tool)
-	return reacher.Adjacent(src) || (tool && RangedReachCheck(reacher, src, tool.reach))
+/atom/proc/CheckReachableAdjacency(atom/movable/reacher, reacher_range)
+	return reacher.Adjacent(src) || ((reacher_range > 1) && RangedReachCheck(reacher, src, reacher_range))
 
 /// Returns TRUE if an atom contained within our contents is reachable.
 /atom/proc/IsContainedAtomAccessible(atom/contained, atom/movable/user)

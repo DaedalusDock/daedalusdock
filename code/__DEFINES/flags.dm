@@ -291,8 +291,10 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define IGNORE_INCAPACITATED (1<<3)
 /// Used to prevent important slowdowns from being abused by drugs like kronkaine
 #define IGNORE_SLOWDOWNS (1<<4)
+/// If the user has their next_move value changed (usually by clicking), fail.
+#define DO_RESTRICT_CLICKING (1<<5)
 /// Shown to all mobs not just the user
-#define DO_PUBLIC (1<<5)
+#define DO_PUBLIC (1<<6)
 
 
 

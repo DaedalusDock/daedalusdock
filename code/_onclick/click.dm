@@ -246,7 +246,7 @@
 
 /// Checks if a reacher is adjacent to us.
 /atom/proc/CheckReachableAdjacency(atom/movable/reacher, obj/item/tool)
-	return reacher.Adjacent(src) || (tool && CheckToolReach(reacher, src, tool.reach))
+	return reacher.Adjacent(src) || (tool && RangedReachCheck(reacher, src, tool.reach))
 
 /// Returns TRUE if an atom contained within our contents is reachable.
 /atom/proc/IsContainedAtomAccessible(atom/contained, atom/movable/user)
@@ -270,27 +270,29 @@
 /turf/AllowClick()
 	return TRUE
 
-/proc/CheckToolReach(atom/movable/here, atom/movable/there, reach)
+/// Called by IsReachableBy() to check for ranged reaches.
+/proc/RangedReachCheck(atom/movable/here, atom/movable/there, reach)
 	if(!here || !there)
-		return
-	switch(reach)
-		if(0)
-			return FALSE
-		if(1)
-			return FALSE //here.Adjacent(there)
-		if(2 to INFINITY)
-			var/obj/dummy = new(get_turf(here))
-			dummy.pass_flags |= PASSTABLE
-			dummy.invisibility = INVISIBILITY_ABSTRACT
-			for(var/i in 1 to reach) //Limit it to that many tries
-				var/turf/T = get_step(dummy, get_dir(dummy, there))
-				if(there.IsReachableBy(dummy))
-					qdel(dummy)
-					return TRUE
-				if(!dummy.Move(T)) //we're blocked!
-					qdel(dummy)
-					return
-			qdel(dummy)
+		return FALSE
+
+	if(reach <= 1)
+		return FALSE
+
+	// Prevent infinite loop.
+	if(istype(here, /obj/effect/abstract/reach_checker))
+		return FALSE
+
+	var/obj/effect/abstract/reach_checker/dummy = new(get_turf(here))
+	for(var/i in 1 to reach) //Limit it to that many tries
+		var/turf/T = get_step(dummy, get_dir(dummy, there))
+		if(there.IsReachableBy(dummy))
+			. = TRUE
+			break
+
+		if(!dummy.Move(T)) //we're blocked!
+			break
+
+	qdel(dummy)
 
 /// Default behavior: ignore double clicks (the second click that makes the doubleclick call already calls for a normal click)
 /mob/proc/DblClickOn(atom/A, params)

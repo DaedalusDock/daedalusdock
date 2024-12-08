@@ -1,3 +1,7 @@
+#define WORKING 0
+#define CANCELLED 1
+#define SUCCEEDED 2
+
 /datum/timed_action
 	var/atom/movable/user
 	var/list/targets
@@ -16,7 +20,7 @@
 
 	var/drifting = FALSE
 
-	var/cancelled = FALSE
+	var/status = WORKING
 
 /datum/timed_action/New(_user, _targets, _time, _progress, _timed_action_flags, _extra_checks, image/_display)
 	user = _user
@@ -63,6 +67,7 @@
 	user_held_item = null
 	extra_checks = null
 	progbar = null
+	STOP_PROCESSING(SStimed_action, src)
 	return ..()
 
 /datum/timed_action/proc/register_signals()
@@ -87,40 +92,40 @@
 			RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(target_moved))
 
 /datum/timed_action/proc/cancel()
-	cancelled = TRUE
+	status = CANCELLED
+	STOP_PROCESSING(SStimed_action, src)
 
 /datum/timed_action/proc/wait()
-	. = TRUE
-	// Anything requiring a mob cannot happen if it isn't a mob in New() so this is safe.
-	var/mob/mob_user = user
+	START_PROCESSING(SStimed_action, src)
 
-	while(world.time < end_time)
-		if(cancelled)
-			. = FALSE
-			break
+	while(status == WORKING)
+		sleep(world.tick_lag)
 
-		stoplag(1)
-
-		// Yes, we check twice for responsiveness.
-		if(cancelled)
-			. = FALSE
-			break
-
-		if(!(timed_action_flags & IGNORE_HELD_ITEM) && mob_user.get_active_held_item() != user_held_item)
-			. = FALSE
-			break
-
-		if((extra_checks && !extra_checks.Invoke()))
-			. = FALSE
-			break
-
-		if(!QDELETED(progbar))
-			progbar.update(world.time - start_time)
+	. = (status == CANCELLED) ? FALSE : TRUE
 
 	if(!QDELETED(progbar))
 		progbar.end_progress()
 
 	qdel(src)
+
+/datum/timed_action/process(delta_time)
+	if(world.time >= end_time)
+		status = SUCCEEDED
+		return PROCESS_KILL
+
+	// Anything requiring a mob cannot happen if it isn't a mob in New() so this is safe.
+	var/mob/mob_user = user
+
+	if(!(timed_action_flags & IGNORE_HELD_ITEM) && mob_user.get_active_held_item() != user_held_item)
+		cancel()
+		return
+
+	if((extra_checks && !extra_checks.InvokeAsync()))
+		cancel()
+		return
+
+	if(!QDELETED(progbar))
+		progbar.update(world.time - start_time)
 
 /datum/timed_action/proc/user_gone(datum/source)
 	SIGNAL_HANDLER
@@ -157,3 +162,7 @@
 
 	if(source.loc != targets[source])
 		cancel()
+
+#undef WORKING
+#undef CANCELLED
+#undef SUCCEEDED

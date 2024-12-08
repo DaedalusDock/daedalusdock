@@ -31,6 +31,9 @@
 	if(!user)
 		return FALSE
 
+	if(time == 0)
+		return TRUE
+
 	if(!target)
 		target = user
 

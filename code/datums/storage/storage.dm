@@ -163,7 +163,7 @@
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(mass_empty))
 	RegisterSignal(parent, list(COMSIG_CLICK_ALT, COMSIG_ATOM_ATTACK_GHOST, COMSIG_ATOM_ATTACK_HAND_SECONDARY), PROC_REF(open_storage_on_signal))
 	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY_SECONDARY, PROC_REF(open_storage_attackby_secondary))
-	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(close_distance))
+	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(update_viewability))
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(update_actions))
 
 /datum/storage/proc/on_deconstruct()
@@ -769,6 +769,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 	remove_all(dump_loc)
 
+/datum/storage/proc/is_reachable(mob/user)
+	return parent.IsReachableBy(user)
+
 /// Signal handler for whenever something gets mouse-dropped onto us.
 /datum/storage/proc/on_mousedropped_onto(datum/source, obj/item/dropping, mob/user)
 	SIGNAL_HANDLER
@@ -924,7 +927,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	return COMPONENT_NO_AFTERATTACK
 
 /// Opens the storage to the mob, showing them the contents to their UI.
-/datum/storage/proc/open_storage(mob/to_show, performing_quickdraw)
+/datum/storage/proc/open_storage(mob/to_show, performing_quickdraw, skip_canreach = FALSE)
 	if(isobserver(to_show))
 		if(to_show.active_storage == src)
 			hide_contents(to_show)
@@ -932,7 +935,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 			show_contents(to_show)
 		return FALSE
 
-	if(!can_be_reached_by(to_show))
+	if(!skip_canreach && !can_be_reached_by(to_show))
 		to_chat(to_show, span_warning("You cannot reach [parent]."))
 		return FALSE
 
@@ -980,8 +983,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 			to_chat(toshow, span_notice("You fumble for [toremove] and it falls on the floor."))
 		return TRUE
 
-/// Signal handler for whenever a mob walks away with us, close if they can't reach us.
-/datum/storage/proc/close_distance(datum/source)
+/// Close the storage for people who can no longer see it.
+/datum/storage/proc/update_viewability(datum/source)
 	SIGNAL_HANDLER
 
 	for(var/mob/user in can_see_contents())

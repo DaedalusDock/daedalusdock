@@ -182,13 +182,13 @@
 /// Returns the ID of this item's strippable action.
 /// Return `null` if there is no alternate action.
 /// Any return value of this must be in StripMenu.
-/datum/strippable_item/proc/get_alternate_action(atom/source, mob/user)
+/datum/strippable_item/proc/get_alternate_action(atom/source, mob/user, action)
 	return null
 
 /// Performs an alternative action on this strippable_item.
 /// `has_alternate_action` needs to be TRUE.
 /// Returns FALSE if blocked by signal, TRUE otherwise.
-/datum/strippable_item/proc/alternate_action(atom/source, mob/user)
+/datum/strippable_item/proc/alternate_action(atom/source, mob/user, action)
 	SHOULD_CALL_PARENT(TRUE)
 	if(SEND_SIGNAL(user, COMSIG_TRY_ALT_ACTION, source) & COMPONENT_CANT_ALT_ACTION)
 		return FALSE
@@ -483,7 +483,7 @@
 			LAZYORASSOCLIST(interactions, user, key)
 
 			// Potentially yielding
-			strippable_item.alternate_action(owner, user)
+			strippable_item.alternate_action(owner, user, params["action"])
 
 			LAZYREMOVEASSOC(interactions, user, key)
 

@@ -131,7 +131,7 @@
 	if(istype(I, /obj/item/ammo_box))
 		var/obj/item/ammo_box/AM = I
 		for(var/obj/item/ammo_casing/AC in AM.stored_ammo)
-			if(user && load_delay && !do_after(user, src, load_delay, IGNORE_USER_LOC_CHANGE, FALSE, interaction_key = "load_round"))
+			if(user && load_delay && !do_after(user, src, load_delay, DO_IGNORE_USER_LOC_CHANGE, FALSE, interaction_key = "load_round"))
 				break
 
 			var/did_load = give_round(AC, replace_spent)

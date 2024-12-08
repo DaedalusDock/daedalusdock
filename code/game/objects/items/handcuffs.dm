@@ -67,7 +67,7 @@
 				to_chat(C, span_userdanger("You feel someone grab your wrists, the cold metal of [name] starting to dig into your skin!"))
 			playsound(loc, cuffsound, 30, TRUE, -2)
 			log_combat(user, C, "attempted to handcuff")
-			if(do_after(user, C, handcuff_time, timed_action_flags = IGNORE_SLOWDOWNS|DO_PUBLIC, display = src) && C.canBeHandcuffed())
+			if(do_after(user, C, handcuff_time, timed_action_flags = DO_IGNORE_SLOWDOWNS|DO_PUBLIC, display = src) && C.canBeHandcuffed())
 				if(!apply_cuffs(C, user, iscyborg(user)))
 					to_chat(user, span_warning("You fail to handcuff [C]!"))
 					log_combat(user, C, "failed to handcuff")

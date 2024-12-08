@@ -703,7 +703,7 @@
 /obj/item/proc/do_equip_wait(mob/living/L)
 	var/flags = DO_PUBLIC
 	if(equip_self_flags & EQUIP_ALLOW_MOVEMENT)
-		flags |= IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE
+		flags |= DO_IGNORE_USER_LOC_CHANGE | DO_IGNORE_TARGET_LOC_CHANGE
 
 	if(equip_self_flags & EQUIP_SLOWDOWN)
 		L.add_movespeed_modifier(/datum/movespeed_modifier/equipping)

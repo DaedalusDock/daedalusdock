@@ -1894,3 +1894,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	center["x"] = text2num(center["x"])
 	center["y"] = text2num(center["y"])
 	return center
+
+/// Returns TRUE if the passed mob can interact with this item's storage via pickpocketing.
+/obj/item/proc/can_pickpocket(mob/living/user)
+	return FALSE

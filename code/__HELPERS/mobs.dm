@@ -297,10 +297,12 @@ GLOBAL_LIST_EMPTY(species_list)
 	if(ismob(user))
 		var/mob/mobuser = user
 		holding = mobuser.get_active_held_item()
-		if(!(timed_action_flags & IGNORE_SLOWDOWNS))
+		if(!(timed_action_flags & DO_IGNORE_SLOWDOWNS))
 			time *= mobuser.cached_multiplicative_actions_slowdown
 	else
-		timed_action_flags |= IGNORE_HELD_ITEM|IGNORE_INCAPACITATED|IGNORE_SLOWDOWNS|DO_PUBLIC
+		timed_action_flags |= DO_IGNORE_HELD_ITEM|DO_IGNORE_INCAPACITATED|DO_IGNORE_SLOWDOWNS|DO_PUBLIC
+
+	var/stored_dir = user.dir
 
 	var/datum/progressbar/progbar
 	if(progress)
@@ -324,16 +326,17 @@ GLOBAL_LIST_EMPTY(species_list)
 
 		if(
 			QDELETED(user) \
-			|| (!(timed_action_flags & IGNORE_USER_LOC_CHANGE) && !drifting && user.loc != user_loc) \
-			|| (!(timed_action_flags & IGNORE_HELD_ITEM) && user:get_active_held_item() != holding) \
-			|| (!(timed_action_flags & IGNORE_INCAPACITATED) && HAS_TRAIT(user, TRAIT_INCAPACITATED)) \
+			|| (!(timed_action_flags & DO_IGNORE_USER_LOC_CHANGE) && !drifting && user.loc != user_loc) \
+			|| (!(timed_action_flags & DO_IGNORE_HELD_ITEM) && user:get_active_held_item() != holding) \
+			|| (!(timed_action_flags & DO_IGNORE_INCAPACITATED) && HAS_TRAIT(user, TRAIT_INCAPACITATED)) \
+			|| ((timed_action_flags & DO_RESTRICT_USER_DIR_CHANGE) && (stored_dir != user.dir)) \
 			|| (extra_checks && !extra_checks.Invoke()) \
 		)
 			. = FALSE
 			break
 
 		if(user != target && \
-			(QDELETED(target) || (!(timed_action_flags & IGNORE_TARGET_LOC_CHANGE) && target.loc != target_loc)))
+			(QDELETED(target) || (!(timed_action_flags & DO_IGNORE_TARGET_LOC_CHANGE) && target.loc != target_loc)))
 			. = FALSE
 			break
 
@@ -358,7 +361,7 @@ GLOBAL_LIST_EMPTY(species_list)
 		return FALSE
 	var/user_loc = user.loc
 
-	if(!(timed_action_flags & IGNORE_SLOWDOWNS))
+	if(!(timed_action_flags & DO_IGNORE_SLOWDOWNS))
 		time *= user.cached_multiplicative_actions_slowdown
 
 	var/drifting = FALSE
@@ -400,9 +403,9 @@ GLOBAL_LIST_EMPTY(species_list)
 			user_loc = user.loc
 
 		if(
-			(!(timed_action_flags & IGNORE_USER_LOC_CHANGE) && !drifting && user_loc != user.loc) \
-			|| (!(timed_action_flags & IGNORE_HELD_ITEM) && user.get_active_held_item() != holding) \
-			|| (!(timed_action_flags & IGNORE_INCAPACITATED) && HAS_TRAIT(user, TRAIT_INCAPACITATED)) \
+			(!(timed_action_flags & DO_IGNORE_USER_LOC_CHANGE) && !drifting && user_loc != user.loc) \
+			|| (!(timed_action_flags & DO_IGNORE_HELD_ITEM) && user.get_active_held_item() != holding) \
+			|| (!(timed_action_flags & DO_IGNORE_INCAPACITATED) && HAS_TRAIT(user, TRAIT_INCAPACITATED)) \
 			|| (extra_checks && !extra_checks.Invoke()) \
 			)
 			. = FALSE
@@ -411,7 +414,7 @@ GLOBAL_LIST_EMPTY(species_list)
 		for(var/atom/target as anything in targets)
 			if(
 				(QDELETED(target)) \
-				|| (!(timed_action_flags & IGNORE_TARGET_LOC_CHANGE) && originalloc[target] != target.loc) \
+				|| (!(timed_action_flags & DO_IGNORE_TARGET_LOC_CHANGE) && originalloc[target] != target.loc) \
 				)
 				. = FALSE
 				break

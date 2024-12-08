@@ -43,6 +43,10 @@
 	. = ..()
 	. += span_info("The zipper is [zipper_open ? "open" : "closed"].")
 
+/obj/item/storage/backpack/get_controls_info()
+	. = ..()
+	. += "Control Click (while holding) - Toggle zipper."
+
 /obj/item/storage/backpack/can_pickpocket(mob/living/user)
 	var/mob/wearer = loc
 	if(!ismob(wearer))

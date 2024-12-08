@@ -2878,6 +2878,8 @@
 #include "code\modules\discord\discord_helpers.dm"
 #include "code\modules\discord\discord_link_record.dm"
 #include "code\modules\discord\discord_sql_functions.dm"
+#include "code\modules\do_after\do_after.dm"
+#include "code\modules\do_after\timed_action.dm"
 #include "code\modules\dreams\_dream.dm"
 #include "code\modules\dreams\detective_nightmare.dm"
 #include "code\modules\dreams\mob_dream_procs.dm"

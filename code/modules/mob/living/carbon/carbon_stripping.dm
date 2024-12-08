@@ -22,23 +22,25 @@
 	var/obj/item/I = get_item(source)
 	switch(action)
 		if("pickpocket")
-			if(user.active_storage == I)
-				I.atom_storage.hide_contents(user)
-			else
+			if(user.active_storage == I.atom_storage)
+				return
+
+			if(!I.can_pickpocket(user))
+				to_chat(user, span_warning("You cannot reach into [I] from here."))
+				return
+
+			var/mob/living/carbon/wearer = source
+			user.setDir(wearer.dir)
+			if(!HAS_TRAIT(I, TRAIT_INSTANT_PICKPOCKET))
+				if(!do_after(user, wearer, 3 SECONDS, DO_RESTRICT_USER_DIR_CHANGE|DO_PUBLIC, display = image('icons/hud/do_after.dmi', "pickpocket")))
+					return
+
 				if(!I.can_pickpocket(user))
 					to_chat(user, span_warning("You cannot reach into [I] from here."))
 					return
 
-				var/mob/living/carbon/wearer = source
-				user.setDir(wearer.dir)
-
-				if(do_after(user, wearer, 3 SECONDS, DO_RESTRICT_USER_DIR_CHANGE|DO_PUBLIC, display = image('icons/hud/do_after.dmi', "pickpocket")))
-					if(!I.can_pickpocket(user))
-						to_chat(user, span_warning("You cannot reach into [I] from here."))
-						return
-
-					if(I.atom_storage.open_storage(user, skip_canreach = TRUE))
-						user.visible_message(span_notice("[user] reaches into [wearer]'s [I.name]."))
+			if(I.atom_storage.open_storage(user, skip_canreach = TRUE))
+				user.visible_message(span_notice("[user] reaches into [wearer]'s [I.name]."))
 
 		if("enable_internals", "disable_internals")
 			strippable_alternate_action_internals(get_item(source), source, user)

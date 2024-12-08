@@ -406,6 +406,8 @@
 	if(!can_interact(user))
 		return FALSE
 
+	return TRUE
+
 /mob/living/CtrlClick(mob/user, list/params)
 	if(!isliving(user) || !IsReachableBy(user) || user.incapacitated())
 		return ..()

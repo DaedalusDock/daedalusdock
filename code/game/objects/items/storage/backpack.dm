@@ -32,10 +32,16 @@
 	equip_delay_other = EQUIP_DELAY_BACK * 1.5
 	strip_delay = EQUIP_DELAY_BACK * 1.5
 
+	var/zipper_open = FALSE
+
 /obj/item/storage/backpack/Initialize()
 	. = ..()
 	atom_storage.max_slots = 21
 	atom_storage.max_total_storage = 21
+
+/obj/item/storage/backpack/examine(mob/user)
+	. = ..()
+	. += span_info("The zipper is [zipper_open ? "open" : "closed"].")
 
 /obj/item/storage/backpack/can_pickpocket(mob/living/user)
 	var/mob/wearer = loc
@@ -49,6 +55,26 @@
 		return
 
 	return wearer.IsReachableBy(user)
+
+/obj/item/storage/backpack/CtrlClick(mob/user, list/params)
+	. = ..()
+	if(!.)
+		return
+
+	if(user != loc)
+		return
+
+	toggle_zipper(user)
+
+/obj/item/storage/backpack/proc/toggle_zipper(mob/user)
+	zipper_open = !zipper_open
+	user?.changeNext_move(CLICK_CD_RAPID)
+	user?.visible_message(span_notice("[user] [zipper_open ? "unzips" : "zips"] [user.p_their()] [name]."))
+
+	if(zipper_open)
+		ADD_TRAIT(src, TRAIT_INSTANT_PICKPOCKET, INNATE_TRAIT)
+	else
+		REMOVE_TRAIT(src, TRAIT_INSTANT_PICKPOCKET, INNATE_TRAIT)
 
 /*
  * Backpack Types

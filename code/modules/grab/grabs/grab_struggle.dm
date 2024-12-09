@@ -47,7 +47,7 @@
 	#endif
 
 	var/datum/callback/user_incapacitated_callback = CALLBACK(src, PROC_REF(resolve_struggle_check), G)
-	if(do_after(G.assailant, G.affecting, upgrade_cooldown, DO_PUBLIC|IGNORE_USER_LOC_CHANGE|IGNORE_TARGET_LOC_CHANGE, extra_checks = user_incapacitated_callback))
+	if(do_after(G.assailant, G.affecting, upgrade_cooldown, DO_PUBLIC|DO_IGNORE_USER_LOC_CHANGE|DO_IGNORE_TARGET_LOC_CHANGE, extra_checks = user_incapacitated_callback))
 		G.done_struggle = TRUE
 		G.upgrade(TRUE)
 	else

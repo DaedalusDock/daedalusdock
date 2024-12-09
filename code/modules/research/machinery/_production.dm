@@ -145,7 +145,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 		reagents.remove_reagent(R, D.reagents_list[R]*amount/coeff)
 
 	var/time = (((D.construction_time || 2 SECONDS) / efficiency_coeff) * amount) ** 0.8
-	if(!do_after(src, src, time, IGNORE_USER_LOC_CHANGE))
+	if(!do_after(src, src, time, DO_IGNORE_USER_LOC_CHANGE))
 		return FALSE
 
 	for(var/i in 1 to amount)

@@ -256,6 +256,22 @@
 /atom/movable/IsContainedAtomAccessible(atom/contained, atom/movable/user)
 	return !!atom_storage
 
+/mob/living/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	. = ..()
+	if(.)
+		return
+
+	if(!isliving(user))
+		return
+
+	if(!isitem(contained))
+		return
+
+	var/mob/living/living_user = user
+	var/obj/item/I = contained
+	if(I.can_pickpocket(user))
+		return I.atom_storage == living_user.active_storage
+
 /atom/movable/proc/DirectAccess()
 	return list(src, loc)
 
@@ -389,6 +405,8 @@
 		ML.pulled(src)
 	if(!can_interact(user))
 		return FALSE
+
+	return TRUE
 
 /mob/living/CtrlClick(mob/user, list/params)
 	if(!isliving(user) || !IsReachableBy(user) || user.incapacitated())

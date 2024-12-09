@@ -617,6 +617,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_HIDES_VOICE "hides_voice"
 /// Wearing this item in the mask slot will make your voice your current ID, or unknown
 #define TRAIT_REPLACES_VOICE "replaces_voice"
+/// Pickpocketing this item takes no time.
+#define TRAIT_INSTANT_PICKPOCKET "instant_pickpocket"
 
 //quirk traits
 #define TRAIT_ALCOHOL_TOLERANCE "alcohol_tolerance"

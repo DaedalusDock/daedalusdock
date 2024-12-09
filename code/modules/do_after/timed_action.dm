@@ -7,6 +7,7 @@
 	var/list/targets
 
 	var/atom/user_loc
+	var/user_dir
 	var/obj/item/user_held_item
 
 	var/datum/progressbar/progbar
@@ -24,6 +25,8 @@
 
 /datum/timed_action/New(_user, _targets, _time, _progress, _timed_action_flags, _extra_checks, image/_display)
 	user = _user
+	user_dir = user.dir
+
 	timed_action_flags = _timed_action_flags
 	extra_checks = _extra_checks
 
@@ -47,10 +50,10 @@
 	if(ismob(user))
 		var/mob/mobuser = user
 		user_held_item = mobuser.get_active_held_item()
-		if(!(timed_action_flags & IGNORE_SLOWDOWNS))
+		if(!(timed_action_flags & DO_IGNORE_SLOWDOWNS))
 			_time *= mobuser.cached_multiplicative_actions_slowdown
 	else
-		timed_action_flags |= IGNORE_HELD_ITEM|IGNORE_INCAPACITATED|IGNORE_SLOWDOWNS|DO_PUBLIC
+		timed_action_flags |= DO_IGNORE_HELD_ITEM|DO_IGNORE_INCAPACITATED|DO_IGNORE_SLOWDOWNS|DO_PUBLIC
 
 	start_time = world.time
 	end_time = world.time + _time
@@ -73,14 +76,17 @@
 /datum/timed_action/proc/register_signals()
 	RegisterSignal(user, COMSIG_PARENT_QDELETING, PROC_REF(user_gone))
 
-	if(!(timed_action_flags & IGNORE_USER_LOC_CHANGE))
+	if(!(timed_action_flags & DO_IGNORE_USER_LOC_CHANGE))
 		RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(user_moved))
 
-	if(!(timed_action_flags & IGNORE_INCAPACITATED))
+	if(!(timed_action_flags & DO_IGNORE_INCAPACITATED))
 		RegisterSignal(user, SIGNAL_ADDTRAIT(TRAIT_INCAPACITATED), PROC_REF(user_incap))
 
 	if(!(timed_action_flags & DO_RESTRICT_CLICKING))
 		RegisterSignal(user, COMSIG_LIVING_CHANGENEXT_MOVE, PROC_REF(on_changenext_move))
+
+	if(timed_action_flags & DO_RESTRICT_USER_DIR_CHANGE)
+		RegisterSignal(user, COMSIG_ATOM_DIR_CHANGE, PROC_REF(user_dir_change))
 
 	for(var/atom/target as anything in targets)
 		if(target == user)
@@ -88,7 +94,7 @@
 
 		RegisterSignal(target, COMSIG_PARENT_QDELETING, PROC_REF(target_gone))
 
-		if(!(timed_action_flags & IGNORE_TARGET_LOC_CHANGE))
+		if(!(timed_action_flags & DO_IGNORE_TARGET_LOC_CHANGE))
 			RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(target_moved))
 
 /datum/timed_action/proc/cancel()
@@ -116,7 +122,7 @@
 	// Anything requiring a mob cannot happen if it isn't a mob in New() so this is safe.
 	var/mob/mob_user = user
 
-	if(!(timed_action_flags & IGNORE_HELD_ITEM) && mob_user.get_active_held_item() != user_held_item)
+	if(!(timed_action_flags & DO_IGNORE_HELD_ITEM) && mob_user.get_active_held_item() != user_held_item)
 		cancel()
 		return
 
@@ -143,6 +149,10 @@
 		cancel()
 
 /datum/timed_action/proc/user_incap(datum/source)
+	SIGNAL_HANDLER
+	cancel()
+
+/datum/timed_action/proc/user_dir_change(datum/source)
 	SIGNAL_HANDLER
 	cancel()
 

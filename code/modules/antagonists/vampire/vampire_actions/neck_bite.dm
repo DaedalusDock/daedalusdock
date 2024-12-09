@@ -58,7 +58,7 @@
 	user.visible_message(span_danger("[user] bites down on [victim]'s neck!"), vision_distance = COMBAT_MESSAGE_RANGE)
 
 	var/datum/callback/checks_callback = CALLBACK(src, PROC_REF(can_bite), user, victim)
-	if(!do_after(user, victim, 3 SECONDS, IGNORE_HELD_ITEM|IGNORE_SLOWDOWNS|DO_PUBLIC, extra_checks = checks_callback, display = image('goon/icons/actions.dmi', "bite")))
+	if(!do_after(user, victim, 3 SECONDS, DO_IGNORE_HELD_ITEM|DO_IGNORE_SLOWDOWNS|DO_PUBLIC, extra_checks = checks_callback, display = image('goon/icons/actions.dmi', "bite")))
 		return FALSE
 
 	. = ..()
@@ -70,7 +70,7 @@
 			if(!can_bite(user, victim))
 				break
 
-			if(!do_after(user, victim, 1 SECOND, IGNORE_HELD_ITEM|IGNORE_SLOWDOWNS|DO_PUBLIC, extra_checks = checks_callback, display = succ_image))
+			if(!do_after(user, victim, 1 SECOND, DO_IGNORE_HELD_ITEM|DO_IGNORE_SLOWDOWNS|DO_PUBLIC, extra_checks = checks_callback, display = succ_image))
 				user.visible_message(span_notice("[user] removes [p_their()] teeth from [victim]'s neck."))
 				break
 

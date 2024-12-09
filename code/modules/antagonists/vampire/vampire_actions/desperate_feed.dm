@@ -39,7 +39,7 @@
 
 		var/datum/callback/checks_callback = CALLBACK(src, PROC_REF(can_tear_arm), user, arm)
 		while(TRUE)
-			if(!do_after(user, user, 3 SECONDS, IGNORE_USER_LOC_CHANGE|IGNORE_TARGET_LOC_CHANGE|IGNORE_SLOWDOWNS|DO_PUBLIC, extra_checks = checks_callback, display = succ_image))
+			if(!do_after(user, user, 3 SECONDS, DO_IGNORE_USER_LOC_CHANGE|DO_IGNORE_TARGET_LOC_CHANGE|DO_IGNORE_SLOWDOWNS|DO_PUBLIC, extra_checks = checks_callback, display = succ_image))
 				user.visible_message(span_notice("[user] removes [user.p_their()] teeth from [user.p_their()] arm."))
 				break
 

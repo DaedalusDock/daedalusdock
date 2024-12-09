@@ -58,15 +58,22 @@
 		cooldown = base_cooldown + world.time
 		owner?.update_mob_action_buttons()
 		addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob, update_mob_action_buttons)), base_cooldown)
-		var/list/health
+
+		var/mob_health = null
 		if(damage_interrupt && isliving(owner))
 			var/mob/living/L = owner
-			health = list("health" = L.health)
+			mob_health = L.health
+
 		var/scribe_mod = scribe_time
 		if(istype(T, /turf/open/floor/engine/cult))
 			scribe_mod *= 0.5
+
 		playsound(T, 'sound/magic/enter_blood.ogg', 100, FALSE)
-		if(do_after(owner, owner, scribe_mod, extra_checks = CALLBACK(owner, TYPE_PROC_REF(/mob, break_do_after_checks), health, action_interrupt)))
+
+		var/flags = action_interrupt ? DO_RESTRICT_CLICKING : NONE
+		var/datum/callback/cb = mob_health ? CALLBACK(src, PROC_REF(check_health_changed), owner, list(mob_health)) : null
+
+		if(do_after(owner, owner, scribe_mod, flags, extra_checks = cb))
 			new rune_type(owner.loc, chosen_keyword)
 		else
 			qdel(R1)
@@ -78,6 +85,13 @@
 				qdel(R4)
 			cooldown = 0
 			owner?.update_mob_action_buttons()
+
+/datum/action/innate/cult/create_rune/proc/check_health_changed(mob/living/user, list/old_health)
+	if(user.health < old_health[1])
+		return FALSE
+
+	old_health[1] = user.health
+	return TRUE
 
 //teleport rune
 /datum/action/innate/cult/create_rune/tele

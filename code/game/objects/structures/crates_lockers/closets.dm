@@ -512,7 +512,7 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
 		span_warning("You [actuallyismob ? "try to ":""]stuff [O] into [src]."), \
 		span_hear("You hear clanging."))
 	if(actuallyismob)
-		if(do_after_mob(user, targets, 40))
+		if(do_after(user, targets, 40))
 			user.visible_message(span_notice("[user] stuffs [O] into [src]."), \
 				span_notice("You stuff [O] into [src]."), \
 				span_hear("You hear a loud metal bang."))

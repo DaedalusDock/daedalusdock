@@ -33,3 +33,8 @@
 2024-12-08:
   Kapu1178:
   - code_imp: Rewrote the code that handles if you can click on things. REPORT BUGS.
+2024-12-09:
+  Kapu1178:
+  - rscadd: You can steal from people's backpacks from behind using the strip menu.
+  - rscadd: You can now smash a plate over someone else's head.
+  - bugfix: Fixed being unable to point to food on plates.

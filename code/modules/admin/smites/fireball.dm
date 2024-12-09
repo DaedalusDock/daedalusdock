@@ -26,7 +26,7 @@
 	if(ismineralturf(T))
 		var/turf/closed/mineral/M = T
 		M.MinedAway()
-	playsound(T, SFX_EXPLOSION, 80, TRUE)
+	playsound(T, SFX_EXPLOSION, 80, TRUE, ignore_walls = TRUE)
 	T.create_fire(1, 10)
 
 /obj/effect/temp_visual/fireball

@@ -112,7 +112,7 @@
 				REMOVE_TRAIT(src, TRAIT_NODROP, HIS_GRACE_TRAIT)
 				master.Paralyze(60)
 				master.adjustBruteLoss(master.maxHealth)
-				playsound(master, 'sound/effects/splat.ogg', 100, FALSE)
+				playsound(master, 'sound/effects/splat.ogg', 100, FALSE, ignore_walls = 'sound/effects/splat.ogg')
 			else
 				master.apply_status_effect(/datum/status_effect/his_grace)
 		return
@@ -137,8 +137,8 @@
 		if(!L.stat)
 			L.visible_message(span_warning("[src] lunges at [L]!"), "<span class='his_grace big bold'>[src] lunges at you!</span>")
 			do_attack_animation(L, null, src)
-			playsound(L, 'sound/weapons/smash.ogg', 50, TRUE)
-			playsound(L, 'sound/misc/desecration-01.ogg', 50, TRUE)
+			playsound(L, 'sound/weapons/smash.ogg', 50, TRUE, ignore_walls = 'sound/weapons/smash.ogg')
+			playsound(L, 'sound/misc/desecration-01.ogg', 50, TRUE, ignore_walls = 'sound/misc/desecration-01.ogg')
 			L.adjustBruteLoss(force)
 			adjust_bloodthirst(-5) //Don't stop attacking they're right there!
 		else
@@ -154,7 +154,7 @@
 	gender = MALE
 	adjust_bloodthirst(1)
 	force_bonus = HIS_GRACE_FORCE_BONUS * LAZYLEN(contents)
-	playsound(user, 'sound/effects/pope_entry.ogg', 100)
+	playsound(user, 'sound/effects/pope_entry.ogg', 100, ignore_walls = 'sound/effects/pope_entry.ogg')
 	update_appearance()
 	move_gracefully()
 
@@ -202,8 +202,8 @@
 	var/victims = 0
 	meal.visible_message(span_warning("[src] swings open and devours [meal]!"), "<span class='his_grace big bold'>[src] consumes you!</span>")
 	meal.adjustBruteLoss(200)
-	playsound(meal, 'sound/misc/desecration-02.ogg', 75, TRUE)
-	playsound(src, 'sound/items/eatfood.ogg', 100, TRUE)
+	playsound(meal, 'sound/misc/desecration-02.ogg', 75, TRUE, ignore_walls = 'sound/misc/desecration-02.ogg')
+	playsound(src, 'sound/items/eatfood.ogg', 100, TRUE, ignore_walls = 'sound/items/eatfood.ogg')
 	meal.forceMove(src)
 	force_bonus += HIS_GRACE_FORCE_BONUS
 	prev_bloodthirst = bloodthirst
@@ -272,7 +272,7 @@
 	desc = "A legendary toolbox and a distant artifact from The Age of Three Powers. On its three latches engraved are the words \"The Sun\", \"The Moon\", and \"The Stars\". The entire toolbox has the words \"The World\" engraved into its sides."
 	ascended = TRUE
 	update_appearance()
-	playsound(src, 'sound/effects/his_grace_ascend.ogg', 100)
+	playsound(src, 'sound/effects/his_grace_ascend.ogg', 100, ignore_walls = 'sound/effects/his_grace_ascend.ogg')
 	if(istype(master))
 		master.update_held_items()
 		master.visible_message("<span class='his_grace big bold'>Gods will be watching.</span>")

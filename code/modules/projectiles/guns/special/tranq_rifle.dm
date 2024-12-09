@@ -41,7 +41,7 @@
 			return
 
 		to_chat(user, span_notice("You open the bolt of \the [src]."))
-		playsound(src, rack_sound, rack_sound_volume, rack_sound_vary)
+		playsound(src, rack_sound, rack_sound_volume, rack_sound_vary, ignore_walls = rack_sound)
 		chambered = null
 		bolt.is_locked = TRUE
 		return

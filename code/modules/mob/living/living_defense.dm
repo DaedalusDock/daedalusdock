@@ -16,19 +16,19 @@
 		if(penetrated_text)
 			to_chat(src, span_userdanger("[penetrated_text]"))
 		else
-			to_chat(src, span_userdanger("Your armor was penetrated!"))
+			to_chat(src, span_userdanger("Your armor was penetrated."))
 
 	else if(our_armor >= 100)
 		if(absorb_text)
 			to_chat(src, span_notice("[absorb_text]"))
 		else
-			to_chat(src, span_notice("Your armor absorbs the [armor_flag_to_strike_string(attack_flag)]!"))
+			to_chat(src, span_notice("Your armor absorbs the [armor_flag_to_strike_string(attack_flag)]."))
 
 	else
 		if(soften_text)
-			to_chat(src, span_warning("[soften_text]"))
+			to_chat(src, span_notice("[soften_text]"))
 		else
-			to_chat(src, span_warning("Your armor softens the [armor_flag_to_strike_string(attack_flag)]!"))
+			to_chat(src, span_notice("Your armor softens the [armor_flag_to_strike_string(attack_flag)]."))
 
 	return our_armor
 

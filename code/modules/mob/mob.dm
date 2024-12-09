@@ -754,8 +754,17 @@
 /// possibly delayed verb that finishes the pointing process starting in [/mob/verb/pointed()].
 /// either called immediately or in the tick after pointed() was called, as per the [DEFAULT_QUEUE_OR_CALL_VERB()] macro
 /mob/proc/_pointed(atom/pointing_at)
-	if(client && !(pointing_at in view(client.view, src)))
-		return FALSE
+	if(client)
+		var/list/viewlist = view(client.view, src)
+		if(!(pointing_at in viewlist))
+			if(!ismovable(pointing_at))
+				return FALSE
+
+			// This can also be a turf but, vis_contents bs
+			var/atom/movable/contained_within = pointing_at.loc
+			if(!(pointing_at in contained_within?.vis_contents) || !(contained_within in viewlist))
+				return FALSE
+
 
 	point_at(pointing_at)
 

@@ -30,3 +30,6 @@
       entries.
   - bugfix: Fixed cable coil grammar.
   - bugfix: Removed extra newlines from the end of examine blocks.
+2024-12-08:
+  Kapu1178:
+  - code_imp: Rewrote the code that handles if you can click on things. REPORT BUGS.

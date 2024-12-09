@@ -167,9 +167,6 @@
 //uncomment this to load centcom and runtime station and thats it.
 // #define LOWMEMORYMODE
 
-//uncomment this to have do_after use sleep instead of stoplag.
-// #define DOAFTER_NO_STOPLAG
-
 //uncomment to enable the spatial grid debug proc.
 // #define SPATIAL_GRID_ZLEVEL_STATS
 
@@ -273,13 +270,6 @@
 
 #ifdef LOWMEMORYMODE
 #warn LOWMEMORYMODE is enabled!
-	#ifndef DOAFTER_NO_STOPLAG
-		#define DOAFTER_NO_STOPLAG
-	#endif
-#endif
-
-#ifdef DOAFTER_NO_STOPLAG
-#warn DOAFTER_NO_STOPLAG is enabled!
 #endif
 
 #ifdef DEBUG_AI

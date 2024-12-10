@@ -261,154 +261,156 @@
 			set_self_sustaining(FALSE)
 			visible_message(span_warning("[name]'s auto-grow functionality shuts off!"))
 
-	if(world.time > (lastcycle + cycledelay))
-		lastcycle = world.time
-		if(myseed && plant_status != HYDROTRAY_PLANT_DEAD)
-			// Advance age
-			age++
-			if(age < myseed.maturation)
-				lastproduce = age
+	if(world.time < (lastcycle + cycledelay))
+		return
 
-			needs_update = 1
+	lastcycle = world.time
+
+	if(myseed && plant_status != HYDROTRAY_PLANT_DEAD)
+		// Advance age
+		age++
+		if(age < myseed.maturation)
+			lastproduce = age
+
+		needs_update = 1
 
 
 //Nutrients//////////////////////////////////////////////////////////////
-			// Nutrients deplete at a constant rate, since new nutrients can boost stats far easier.
-			apply_chemicals(lastuser?.resolve())
-			if(self_sustaining)
-				reagents.remove_all(min(0.5, nutridrain))
-			else
-				reagents.remove_all(nutridrain)
+		// Nutrients deplete at a constant rate, since new nutrients can boost stats far easier.
+		apply_chemicals(lastuser?.resolve())
+		if(self_sustaining)
+			reagents.remove_all(min(0.5, nutridrain))
+		else
+			reagents.remove_all(nutridrain)
 
-			// Lack of nutrients hurts non-weeds
-			if(reagents.total_volume <= 0 && !myseed.get_gene(/datum/plant_gene/trait/plant_type/weed_hardy))
-				adjust_plant_health(-rand(1,3))
+		// Lack of nutrients hurts non-weeds
+		if(reagents.total_volume <= 0 && !myseed.get_gene(/datum/plant_gene/trait/plant_type/weed_hardy))
+			adjust_plant_health(-rand(1,3))
 
 //Photosynthesis/////////////////////////////////////////////////////////
-			// Lack of light hurts non-mushrooms
-			if(isturf(loc))
-				var/turf/currentTurf = loc
-				var/lightAmt = currentTurf.get_lumcount()
-				var/is_fungus = myseed.get_gene(/datum/plant_gene/trait/plant_type/fungal_metabolism)
-				if(lightAmt < (is_fungus ? 0.2 : 0.4))
-					adjust_plant_health((is_fungus ? -1 : -2) / rating)
+		// Lack of light hurts non-mushrooms
+		if(isturf(loc))
+			var/turf/currentTurf = loc
+			var/lightAmt = currentTurf.get_lumcount()
+			var/is_fungus = myseed.get_gene(/datum/plant_gene/trait/plant_type/fungal_metabolism)
+			if(lightAmt < (is_fungus ? 0.2 : 0.4))
+				adjust_plant_health((is_fungus ? -1 : -2) / rating)
 
 //Water//////////////////////////////////////////////////////////////////
-			// Drink random amount of water
-			adjust_waterlevel(-0.4 / rating)
+		// Drink random amount of water
+		adjust_waterlevel(-0.4 / rating)
 
-			// If the plant is dry, it loses health pretty fast, unless mushroom
-			if(waterlevel <= 10 && !myseed.get_gene(/datum/plant_gene/trait/plant_type/fungal_metabolism))
-				adjust_plant_health(-rand(0,1) / rating)
-				if(waterlevel <= 0)
-					adjust_plant_health(-rand(0,2) / rating)
+		// If the plant is dry, it loses health pretty fast, unless mushroom
+		if(waterlevel <= 10 && !myseed.get_gene(/datum/plant_gene/trait/plant_type/fungal_metabolism))
+			adjust_plant_health(-rand(0,1) / rating)
+			if(waterlevel <= 0)
+				adjust_plant_health(-rand(0,2) / rating)
 
-			// Sufficient water level and nutrient level = plant healthy but also spawns weeds
-			else if(waterlevel > 10 && reagents.total_volume > 0)
-				adjust_plant_health(rand(1,2) / rating)
-				if(myseed && prob(myseed.weed_chance))
-					adjust_weedlevel(myseed.weed_rate)
-				else if(prob(5))  //5 percent chance the weed population will increase
-					adjust_weedlevel(1 / rating)
+		// Sufficient water level and nutrient level = plant healthy but also spawns weeds
+		else if(waterlevel > 10 && reagents.total_volume > 0)
+			adjust_plant_health(rand(1,2) / rating)
+			if(myseed && prob(myseed.weed_chance))
+				adjust_weedlevel(myseed.weed_rate)
+			else if(prob(5))  //5 percent chance the weed population will increase
+				adjust_weedlevel(1 / rating)
 
 //Toxins/////////////////////////////////////////////////////////////////
 
-			// Too much toxins cause harm, but when the plant drinks the contaiminated water, the toxins disappear slowly
-			if(toxic >= 40 && toxic < 80)
-				adjust_plant_health(-1 / rating)
-				adjust_toxic(-rating * 2)
-			else if(toxic >= 80) // I don't think it ever gets here tbh unless above is commented out
-				adjust_plant_health(-3)
-				adjust_toxic(-rating * 3)
+		// Too much toxins cause harm, but when the plant drinks the contaiminated water, the toxins disappear slowly
+		if(toxic >= 40 && toxic < 80)
+			adjust_plant_health(-1 / rating)
+			adjust_toxic(-rating * 2)
+		else if(toxic >= 80) // I don't think it ever gets here tbh unless above is commented out
+			adjust_plant_health(-3)
+			adjust_toxic(-rating * 3)
 
 //Pests & Weeds//////////////////////////////////////////////////////////
 
-			if(pestlevel >= 8)
-				if(!myseed.get_gene(/datum/plant_gene/trait/carnivory))
-					if(myseed.potency >=30)
-						myseed.adjust_potency(-rand(2,6)) //Pests eat leaves and nibble on fruit, lowering potency.
-						myseed.set_potency(min((myseed.potency), CARNIVORY_POTENCY_MIN, MAX_PLANT_POTENCY))
-				else
-					adjust_plant_health(2 / rating)
+		if(pestlevel >= 8)
+			if(!myseed.get_gene(/datum/plant_gene/trait/carnivory))
+				if(myseed.potency >=30)
+					myseed.adjust_potency(-rand(2,6)) //Pests eat leaves and nibble on fruit, lowering potency.
+					myseed.set_potency(min((myseed.potency), CARNIVORY_POTENCY_MIN, MAX_PLANT_POTENCY))
+			else
+				adjust_plant_health(2 / rating)
+				adjust_pestlevel(-1 / rating)
+
+		else if(pestlevel >= 4)
+			if(!myseed.get_gene(/datum/plant_gene/trait/carnivory))
+				if(myseed.potency >=30)
+					myseed.adjust_potency(-rand(1,4))
+					myseed.set_potency(min((myseed.potency), CARNIVORY_POTENCY_MIN, MAX_PLANT_POTENCY))
+
+			else
+				adjust_plant_health(1 / rating)
+				if(prob(50))
 					adjust_pestlevel(-1 / rating)
 
-			else if(pestlevel >= 4)
-				if(!myseed.get_gene(/datum/plant_gene/trait/carnivory))
-					if(myseed.potency >=30)
-						myseed.adjust_potency(-rand(1,4))
-						myseed.set_potency(min((myseed.potency), CARNIVORY_POTENCY_MIN, MAX_PLANT_POTENCY))
+		else if(pestlevel < 4 && myseed.get_gene(/datum/plant_gene/trait/carnivory))
+			if(prob(5))
+				adjust_pestlevel(-1 / rating)
 
-				else
-					adjust_plant_health(1 / rating)
-					if(prob(50))
-						adjust_pestlevel(-1 / rating)
-
-			else if(pestlevel < 4 && myseed.get_gene(/datum/plant_gene/trait/carnivory))
-				if(prob(5))
-					adjust_pestlevel(-1 / rating)
-
-			// If it's a weed, it doesn't stunt the growth
-			if(weedlevel >= 5 && !myseed.get_gene(/datum/plant_gene/trait/plant_type/weed_hardy))
-				if(myseed.yield >=3)
-					myseed.adjust_yield(-rand(1,2)) //Weeds choke out the plant's ability to bear more fruit.
-					myseed.set_yield(min((myseed.yield), WEED_HARDY_YIELD_MIN, MAX_PLANT_YIELD))
+		// If it's a weed, it doesn't stunt the growth
+		if(weedlevel >= 5 && !myseed.get_gene(/datum/plant_gene/trait/plant_type/weed_hardy))
+			if(myseed.yield >=3)
+				myseed.adjust_yield(-rand(1,2)) //Weeds choke out the plant's ability to bear more fruit.
+				myseed.set_yield(min((myseed.yield), WEED_HARDY_YIELD_MIN, MAX_PLANT_YIELD))
 
 //This is the part with pollination
-			pollinate()
+		pollinate()
 
 //This is where stability mutations exist now.
-			if(myseed.instability >= 80)
-				var/mutation_chance = myseed.instability - 75
-				mutate(0, 0, 0, 0, 0, 0, 0, mutation_chance, 0) //Scaling odds of a random trait or chemical
-			if(myseed.instability >= 60)
-				if(prob((myseed.instability)/2) && !self_sustaining && LAZYLEN(myseed.mutatelist)) //Minimum 30%, Maximum 50% chance of mutating every age tick when not on autogrow.
-					mutatespecie()
-					myseed.set_instability(myseed.instability/2)
-			if(myseed.instability >= 40)
-				if(prob(myseed.instability))
-					hardmutate()
-			if(myseed.instability >= 20 )
-				if(prob(myseed.instability))
-					mutate()
+		if(myseed.instability >= 80)
+			var/mutation_chance = myseed.instability - 75
+			mutate(0, 0, 0, 0, 0, 0, 0, mutation_chance, 0) //Scaling odds of a random trait or chemical
+		if(myseed.instability >= 60)
+			if(prob((myseed.instability)/2) && !self_sustaining && LAZYLEN(myseed.mutatelist)) //Minimum 30%, Maximum 50% chance of mutating every age tick when not on autogrow.
+				mutatespecie()
+				myseed.set_instability(myseed.instability/2)
+		if(myseed.instability >= 40)
+			if(prob(myseed.instability))
+				hardmutate()
+		if(myseed.instability >= 20 )
+			if(prob(myseed.instability))
+				mutate()
 
 //Health & Age///////////////////////////////////////////////////////////
 
-			// Plant dies if plant_health <= 0
-			if(plant_health <= 0)
-				plantdies()
-				adjust_weedlevel(1 / rating) // Weeds flourish
+		// Plant dies if plant_health <= 0
+		if(plant_health <= 0)
+			plantdies()
+			adjust_weedlevel(1 / rating) // Weeds flourish
 
-			// If the plant is too old, lose health fast
-			if(age > myseed.lifespan)
-				adjust_plant_health(-rand(1,5) / rating)
+		// If the plant is too old, lose health fast
+		if(age > myseed.lifespan)
+			adjust_plant_health(-rand(1,5) / rating)
 
-			// Harvest code
-			if(age > myseed.production && (age - lastproduce) > myseed.production && plant_status == HYDROTRAY_PLANT_GROWING)
-				if(myseed && myseed.yield != -1) // Unharvestable shouldn't be harvested
-					set_plant_status(HYDROTRAY_PLANT_HARVESTABLE)
-				else
-					lastproduce = age
-			if(prob(5))  // On each tick, there's a 5 percent chance the pest population will increase
-				adjust_pestlevel(1 / rating)
-		else
-			if(waterlevel > 10 && reagents.total_volume > 0 && prob(10))  // If there's no plant, the percentage chance is 10%
-				adjust_weedlevel(1 / rating)
+		// Harvest code
+		if(age > myseed.production && (age - lastproduce) > myseed.production && plant_status == HYDROTRAY_PLANT_GROWING)
+			if(myseed && myseed.yield != -1) // Unharvestable shouldn't be harvested
+				set_plant_status(HYDROTRAY_PLANT_HARVESTABLE)
+			else
+				lastproduce = age
+		if(prob(5))  // On each tick, there's a 5 percent chance the pest population will increase
+			adjust_pestlevel(1 / rating)
+	else
+		if(waterlevel > 10 && reagents.total_volume > 0 && prob(10))  // If there's no plant, the percentage chance is 10%
+			adjust_weedlevel(1 / rating)
 
-		// Weeeeeeeeeeeeeeedddssss
-		if(weedlevel >= 10 && prob(50) && !self_sustaining) // At this point the plant is kind of fucked. Weeds can overtake the plant spot.
-			if(myseed && myseed.yield >= 3)
-				myseed.adjust_yield(-rand(1,2)) //Loses even more yield per tick, quickly dropping to 3 minimum.
-				myseed.set_yield(min((myseed.yield), WEED_HARDY_YIELD_MIN, MAX_PLANT_YIELD))
-			if(!myseed)
-				weedinvasion()
-			needs_update = 1
-		if (needs_update)
-			update_appearance()
+	// Weeeeeeeeeeeeeeedddssss
+	if(weedlevel >= 10 && prob(50) && !self_sustaining) // At this point the plant is kind of fucked. Weeds can overtake the plant spot.
+		if(myseed && myseed.yield >= 3)
+			myseed.adjust_yield(-rand(1,2)) //Loses even more yield per tick, quickly dropping to 3 minimum.
+			myseed.set_yield(min((myseed.yield), WEED_HARDY_YIELD_MIN, MAX_PLANT_YIELD))
+		if(!myseed)
+			weedinvasion()
+		needs_update = 1
+	if (needs_update)
+		update_appearance()
 
-		if(myseed)
-			SEND_SIGNAL(myseed, COMSIG_SEED_ON_GROW, src)
+	if(myseed)
+		SEND_SIGNAL(myseed, COMSIG_SEED_ON_GROW, src)
 
-	return
 
 /obj/machinery/hydroponics/update_appearance(updates)
 	. = ..()

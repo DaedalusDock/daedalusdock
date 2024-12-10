@@ -304,11 +304,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	lit = FALSE
 	update_icon()
 
-	if(ismob(loc))
-		var/mob/living/M = loc
-		to_chat(M, span_notice("Your [name] goes out."))
-		M.update_worn_mask()
-		M.update_held_items()
+	if(equipped_to)
+		to_chat(equipped_to, span_notice("Your [name] goes out."))
+		equipped_to.update_worn_mask()
+		equipped_to.update_held_items()
 
 	qdel(GetComponent(/datum/component/smell))
 
@@ -1105,8 +1104,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		M.ignite_mob()
 
 	if(!reagents.total_volume)
-		if(ismob(loc))
-			to_chat(M, span_warning("[src] is empty!"))
+		if(equipped_to)
+			to_chat(equipped_to, span_warning("[src] is empty!"))
 			. = PROCESS_KILL
 			//it's reusable so it won't unequip when empty
 		return

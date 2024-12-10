@@ -218,11 +218,10 @@
 	post_unwrap_contents(user)
 
 /obj/item/delivery/small/attack_self_tk(mob/user)
-	if(ismob(loc))
-		var/mob/M = loc
-		M.temporarilyRemoveItemFromInventory(src, TRUE)
+	if(equipped_to)
+		equipped_to.temporarilyRemoveItemFromInventory(src, TRUE)
 		for(var/atom/movable/movable_content as anything in contents)
-			M.put_in_hands(movable_content)
+			equipped_to.put_in_hands(movable_content)
 	else
 		for(var/atom/movable/movable_content as anything in contents)
 			movable_content.forceMove(loc)

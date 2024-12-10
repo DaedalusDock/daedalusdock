@@ -116,9 +116,7 @@
 
 // Gives the jetpack component the user it expects
 /obj/item/tank/jetpack/proc/get_user()
-	if(!ismob(loc))
-		return null
-	return loc
+	return equipped_to
 
 /obj/item/tank/jetpack/suicide_act(mob/user)
 	if (!istype(user, /mob/living/carbon/human))

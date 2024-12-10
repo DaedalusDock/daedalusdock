@@ -39,8 +39,8 @@
 		REMOVE_TRAIT(src, TRAIT_NODROP, ABDUCTOR_VEST_TRAIT)
 	else
 		ADD_TRAIT(src, TRAIT_NODROP, ABDUCTOR_VEST_TRAIT)
-	if(ismob(loc))
-		to_chat(loc, span_notice("Your vest is now [HAS_TRAIT_FROM(src, TRAIT_NODROP, ABDUCTOR_VEST_TRAIT) ? "locked" : "unlocked"]."))
+	if(equipped_to)
+		to_chat(equipped_to, span_notice("Your vest is now [HAS_TRAIT_FROM(src, TRAIT_NODROP, ABDUCTOR_VEST_TRAIT) ? "locked" : "unlocked"]."))
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/flip_mode()
 	switch(mode)

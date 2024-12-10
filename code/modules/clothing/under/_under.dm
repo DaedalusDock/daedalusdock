@@ -98,14 +98,13 @@
 	if(has_sensor > NO_SENSORS)
 		if(severity <= EMP_HEAVY)
 			has_sensor = BROKEN_SENSORS
-			if(ismob(loc))
-				var/mob/M = loc
-				to_chat(M,span_warning("[src]'s sensors short out!"))
+			if(equipped_to)
+				to_chat(equipped_to, span_warning("[src]'s sensors short out!"))
 		else
 			sensor_mode = pick(SENSOR_OFF, SENSOR_OFF, SENSOR_OFF, SENSOR_LIVING, SENSOR_LIVING, SENSOR_COORDS)
-			if(ismob(loc))
-				var/mob/M = loc
-				to_chat(M,span_warning("The sensors on the [src] change rapidly!"))
+			if(equipped_to)
+				to_chat(equipped_to, span_warning("The sensors on the [src] change rapidly!"))
+
 		if(ishuman(loc))
 			var/mob/living/carbon/human/ooman = loc
 			if(ooman.w_uniform == src)

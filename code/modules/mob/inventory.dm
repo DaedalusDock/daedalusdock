@@ -436,13 +436,13 @@
 		I.plane = initial(I.plane)
 		I.appearance_flags &= ~NO_CLIENT_COLOR
 
-		if(!no_move && !(I.item_flags & DROPDEL)) //item may be moved/qdel'd immedietely, don't bother moving it
+		I.dropped(src, silent)
+
+		if(!no_move && !(I.item_flags & DROPDEL) && !QDELETED(I)) //item may be moved/qdel'd immedietely, don't bother moving it
 			if (isnull(newloc))
 				I.moveToNullspace()
 			else
 				I.forceMove(newloc)
-
-		I.dropped(src, silent)
 
 	SEND_SIGNAL(I, COMSIG_ITEM_POST_UNEQUIP, force, newloc, no_move, invdrop, silent)
 	SEND_SIGNAL(src, COMSIG_MOB_UNEQUIPPED_ITEM, I, force, newloc, no_move, invdrop, silent)

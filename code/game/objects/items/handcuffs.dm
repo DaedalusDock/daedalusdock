@@ -408,7 +408,7 @@
  * Arguments:
  */
 /obj/item/restraints/legcuffs/beartrap/energy/proc/dissipate()
-	if(!ismob(loc))
+	if(!equipped_to)
 		do_sparks(1, TRUE, src)
 		qdel(src)
 

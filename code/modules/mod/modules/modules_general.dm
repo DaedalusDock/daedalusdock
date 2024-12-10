@@ -46,13 +46,14 @@
 	if(QDELETED(source) || !mod.wearer || newloc == mod.wearer || !mod.wearer.s_store)
 		return
 
-	if(!atom_storage?.attempt_insert(mod.wearer.s_store, mod.wearer, override = TRUE))
+	var/obj/item/stored_item = mod.wearer.s_store
+	if(!atom_storage?.attempt_insert(stored_item, mod.wearer, override = TRUE))
 		balloon_alert(mod.wearer, "storage failed!")
-		to_chat(mod.wearer, span_warning("[src] fails to store [mod.wearer.s_store] inside itself!"))
+		to_chat(mod.wearer, span_warning("[src] fails to store [stored_item] inside itself!"))
 		return
 
-	to_chat(mod.wearer, span_notice("[src] stores [mod.wearer.s_store] inside itself."))
-	mod.wearer.temporarilyRemoveItemFromInventory(mod.wearer.s_store)
+	to_chat(mod.wearer, span_notice("[src] stores [stored_item] inside itself."))
+	mod.wearer.temporarilyRemoveItemFromInventory(stored_item)
 
 /obj/item/mod/module/storage/large_capacity
 	name = "MOD expanded storage module"

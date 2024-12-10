@@ -384,9 +384,6 @@
 		if(ITEM_SLOT_BELT)
 			update_appearance_flags |= UPDATE_NAME // I have literally no idea why this is needed. Ninja belt maybe?
 
-		if(ITEM_SLOT_ICLOTHING)
-			update_suit_sensors()
-
 	// Do the updates
 	if(need_bodypart_update)
 		update_body_parts()

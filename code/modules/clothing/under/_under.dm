@@ -105,10 +105,9 @@
 			if(equipped_to)
 				to_chat(equipped_to, span_warning("The sensors on the [src] change rapidly!"))
 
-		if(ishuman(loc))
-			var/mob/living/carbon/human/ooman = loc
-			if(ooman.w_uniform == src)
-				ooman.update_suit_sensors()
+		if(equipped_to)
+			var/mob/living/carbon/human/ooman = equipped_to
+			ooman.update_suit_sensors()
 
 
 /obj/item/clothing/under/visual_equipped(mob/living/user, slot)
@@ -124,7 +123,10 @@
 			adjusted = DIGITIGRADE_STYLE
 
 	if(attached_accessory && slot != ITEM_SLOT_HANDS && ishuman(user))
+		var/mob/living/carbon/human/H = user
 		attached_accessory.on_uniform_equip(src, user)
+		if(attached_accessory.above_suit)
+			H.update_worn_oversuit()
 
 	return ..()
 

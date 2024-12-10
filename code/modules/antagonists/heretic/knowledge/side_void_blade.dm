@@ -105,7 +105,7 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT)
 
-/obj/item/risen_hand/visual_equipped(mob/user, slot)
+/obj/item/risen_hand/visual_equipped(mob/living/user, slot)
 	. = ..()
 
 	// Even hand indexes are right hands,

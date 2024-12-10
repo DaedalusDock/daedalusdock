@@ -845,8 +845,9 @@ DEFINE_INTERACTABLE(/obj/item)
  * This separation exists to prevent things like the monkey sentience helmet from
  * polling ghosts while it's just being equipped as a visual preview for a dummy.
  */
-/obj/item/proc/visual_equipped(mob/user, slot, initial = FALSE)
-	return
+/obj/item/proc/visual_equipped(mob/living/user, slot, initial = FALSE)
+	SHOULD_CALL_PARENT(TRUE)
+	user.update_slots_for_item(src, slot)
 
 /**
  * Called after an item is placed in an equipment slot.
@@ -860,7 +861,7 @@ DEFINE_INTERACTABLE(/obj/item)
  */
 /obj/item/proc/equipped(mob/user, slot, initial = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
-	visual_equipped(user, slot, initial)
+
 	SEND_SIGNAL(src, COMSIG_ITEM_EQUIPPED, user, slot)
 	SEND_SIGNAL(user, COMSIG_MOB_EQUIPPED_ITEM, src, slot)
 
@@ -870,6 +871,7 @@ DEFINE_INTERACTABLE(/obj/item)
 				stack_trace("[user] failed to wield a twohanded item.")
 				spawn(0)
 					user.dropItemToGround(src)
+
 	else if(wielded)
 		unwield(user, FALSE)
 
@@ -887,6 +889,7 @@ DEFINE_INTERACTABLE(/obj/item)
 			playsound(src, pickup_sound, PICKUP_SOUND_VOLUME, ignore_walls = FALSE)
 
 	user.update_equipment_speed_mods()
+	visual_equipped(user, slot, initial)
 
 /// Gives one of our item actions to a mob, when equipped to a certain slot
 /obj/item/proc/give_item_action(datum/action/action, mob/to_who, slot)

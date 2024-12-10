@@ -111,8 +111,7 @@
 				ooman.update_suit_sensors()
 
 
-/obj/item/clothing/under/visual_equipped(mob/user, slot)
-	..()
+/obj/item/clothing/under/visual_equipped(mob/living/user, slot)
 	if(adjusted)
 		adjusted = NORMAL_STYLE
 		female_sprite_flags = initial(female_sprite_flags)
@@ -123,13 +122,11 @@
 		var/mob/living/carbon/human/H = user
 		if(H.dna.species.bodytype & BODYTYPE_DIGITIGRADE)
 			adjusted = DIGITIGRADE_STYLE
-		H.update_worn_undersuit()
 
 	if(attached_accessory && slot != ITEM_SLOT_HANDS && ishuman(user))
-		var/mob/living/carbon/human/H = user
 		attached_accessory.on_uniform_equip(src, user)
-		if(attached_accessory.above_suit)
-			H.update_worn_oversuit()
+
+	return ..()
 
 /obj/item/clothing/under/equipped(mob/user, slot)
 	..()

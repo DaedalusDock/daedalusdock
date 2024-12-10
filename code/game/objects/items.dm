@@ -306,8 +306,16 @@ DEFINE_INTERACTABLE(/obj/item)
 	// This var exists as a weird proxy "owner" ref
 	// It's used in a few places. Stop using it, and optimially replace all uses please
 	master = null
+
+	var/mob/living/carbon/human/H
+	if(istype(loc, /mob/living/carbon/human) && (slot_flags & ITEM_SLOT_BACK))
+		H = loc
+
 	if(equipped_to)
 		equipped_to.temporarilyRemoveItemFromInventory(src, TRUE)
+
+	if(H && H.back == src)
+		noop()
 
 	// Handle cleaning up our actions list
 	for(var/datum/action/action as anything in actions)
@@ -1430,16 +1438,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/doMove(atom/destination)
 	if (equipped_to)
-		var/hand_index = equipped_to.get_held_index_of_item(src)
-		if(hand_index)
-			equipped_to.held_items[hand_index] = null
-			equipped_to.update_held_items()
-			if(equipped_to.client)
-				equipped_to.client.screen -= src
-			layer = initial(layer)
-			plane = initial(plane)
-			appearance_flags &= ~NO_CLIENT_COLOR
-			dropped(equipped_to, FALSE)
+		equipped_to.temporarilyRemoveItemFromInventory(src, TRUE)
 	return ..()
 
 /obj/item/proc/embedded(obj/item/bodypart/part)

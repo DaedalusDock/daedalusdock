@@ -826,7 +826,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		playsound(src, drop_sound, DROP_SOUND_VOLUME, ignore_walls = FALSE)
 
 	if(!QDELETED(user))
-		if(I.slowdown)
+		if(slowdown)
 			user.update_equipment_speed_mods()
 		user.update_mouse_pointer()
 
@@ -890,7 +890,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		else if(slot == ITEM_SLOT_HANDS)
 			playsound(src, pickup_sound, PICKUP_SOUND_VOLUME, ignore_walls = FALSE)
 
-	if(I.slowdown)
+	if(slowdown)
 		user.update_equipment_speed_mods()
 	visual_equipped(user, slot, initial)
 

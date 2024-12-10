@@ -44,7 +44,7 @@
 	attempt_reload()
 
 /obj/item/gun/energy/recharge/proc/empty_if_not_held()
-	if(!ismob(loc))
+	if(!equipped_to)
 		empty()
 		deltimer(recharge_timerid)
 

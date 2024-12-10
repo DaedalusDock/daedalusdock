@@ -98,22 +98,19 @@
 	if(has_sensor > NO_SENSORS)
 		if(severity <= EMP_HEAVY)
 			has_sensor = BROKEN_SENSORS
-			if(ismob(loc))
-				var/mob/M = loc
-				to_chat(M,span_warning("[src]'s sensors short out!"))
+			if(equipped_to)
+				to_chat(equipped_to, span_warning("[src]'s sensors short out!"))
 		else
 			sensor_mode = pick(SENSOR_OFF, SENSOR_OFF, SENSOR_OFF, SENSOR_LIVING, SENSOR_LIVING, SENSOR_COORDS)
-			if(ismob(loc))
-				var/mob/M = loc
-				to_chat(M,span_warning("The sensors on the [src] change rapidly!"))
-		if(ishuman(loc))
-			var/mob/living/carbon/human/ooman = loc
-			if(ooman.w_uniform == src)
-				ooman.update_suit_sensors()
+			if(equipped_to)
+				to_chat(equipped_to, span_warning("The sensors on the [src] change rapidly!"))
+
+		if(equipped_to)
+			var/mob/living/carbon/human/ooman = equipped_to
+			ooman.update_suit_sensors()
 
 
-/obj/item/clothing/under/visual_equipped(mob/user, slot)
-	..()
+/obj/item/clothing/under/visual_equipped(mob/living/user, slot)
 	if(adjusted)
 		adjusted = NORMAL_STYLE
 		female_sprite_flags = initial(female_sprite_flags)
@@ -124,13 +121,14 @@
 		var/mob/living/carbon/human/H = user
 		if(H.dna.species.bodytype & BODYTYPE_DIGITIGRADE)
 			adjusted = DIGITIGRADE_STYLE
-		H.update_worn_undersuit()
 
 	if(attached_accessory && slot != ITEM_SLOT_HANDS && ishuman(user))
 		var/mob/living/carbon/human/H = user
 		attached_accessory.on_uniform_equip(src, user)
 		if(attached_accessory.above_suit)
 			H.update_worn_oversuit()
+
+	return ..()
 
 /obj/item/clothing/under/equipped(mob/user, slot)
 	..()

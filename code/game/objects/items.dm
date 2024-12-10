@@ -24,6 +24,9 @@ DEFINE_INTERACTABLE(/obj/item)
 	///Items can by default thrown up to 10 tiles by TK users
 	tk_throw_range = 10
 
+	/// The mob this item is being worn or held by.
+	var/tmp/mob/living/equipped_to
+
 	/// This var exists as a weird proxy "owner" ref
 	/// It's used in a few places. Stop using it, and optimially replace all uses please
 	var/tmp/obj/item/master = null
@@ -303,9 +306,8 @@ DEFINE_INTERACTABLE(/obj/item)
 	// This var exists as a weird proxy "owner" ref
 	// It's used in a few places. Stop using it, and optimially replace all uses please
 	master = null
-	if(ismob(loc))
-		var/mob/m = loc
-		m.temporarilyRemoveItemFromInventory(src, TRUE)
+	if(equipped_to)
+		equipped_to.temporarilyRemoveItemFromInventory(src, TRUE)
 
 	// Handle cleaning up our actions list
 	for(var/datum/action/action as anything in actions)
@@ -327,8 +329,8 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	if(href_list["examine"])
 		var/atom_to_view_check = src
-		if(ismob(loc))
-			atom_to_view_check = loc
+		if(equipped_to)
+			atom_to_view_check = equipped_to
 
 		if(!atom_to_view_check && isidcard(src) && istype(loc, /obj/item/storage/wallet))
 			var/obj/item/storage/wallet/W = loc
@@ -453,11 +455,10 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	LAZYADD(actions, action)
 	RegisterSignal(action, COMSIG_PARENT_QDELETING, PROC_REF(on_action_deleted))
-	if(ismob(loc))
+	if(equipped_to)
 		// We're being held or are equipped by someone while adding an action?
 		// Then they should also probably be granted the action, given it's in a correct slot
-		var/mob/holder = loc
-		give_item_action(action, holder, holder.get_slot_by_item(src))
+		give_item_action(action, equipped_to, equipped_to.get_slot_by_item(src))
 
 	return action
 
@@ -817,6 +818,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		qdel(src)
 
 	item_flags &= ~IN_INVENTORY
+	equipped_to = null
 	SEND_SIGNAL(src, COMSIG_ITEM_DROPPED, user)
 
 	if(!silent)
@@ -875,6 +877,8 @@ DEFINE_INTERACTABLE(/obj/item)
 		give_item_action(action, user, slot)
 
 	item_flags |= IN_INVENTORY
+	equipped_to = user
+
 	if(!initial)
 		if(equip_sound && (slot_flags & slot))
 			playsound(src, equip_sound, EQUIP_SOUND_VOLUME, TRUE, ignore_walls = FALSE)
@@ -1110,10 +1114,10 @@ DEFINE_INTERACTABLE(/obj/item)
 	return mutable_appearance('icons/obj/clothing/belt_overlays.dmi', icon_state_to_use)
 
 /obj/item/proc/update_slot_icon()
-	if(!ismob(loc))
+	if(!equipped_to)
 		return
-	var/mob/owner = loc
-	owner.update_clothing(slot_flags | ITEM_SLOT_HANDS)
+
+	equipped_to.update_clothing(slot_flags | ITEM_SLOT_HANDS)
 
 ///Returns the temperature of src. If you want to know if an item is hot use this proc.
 /obj/item/proc/get_temperature()
@@ -1425,18 +1429,17 @@ DEFINE_INTERACTABLE(/obj/item)
 	return 0
 
 /obj/item/doMove(atom/destination)
-	if (ismob(loc))
-		var/mob/M = loc
-		var/hand_index = M.get_held_index_of_item(src)
+	if (equipped_to)
+		var/hand_index = equipped_to.get_held_index_of_item(src)
 		if(hand_index)
-			M.held_items[hand_index] = null
-			M.update_held_items()
-			if(M.client)
-				M.client.screen -= src
+			equipped_to.held_items[hand_index] = null
+			equipped_to.update_held_items()
+			if(equipped_to.client)
+				equipped_to.client.screen -= src
 			layer = initial(layer)
 			plane = initial(plane)
 			appearance_flags &= ~NO_CLIENT_COLOR
-			dropped(M, FALSE)
+			dropped(equipped_to, FALSE)
 	return ..()
 
 /obj/item/proc/embedded(obj/item/bodypart/part)
@@ -1633,9 +1636,11 @@ DEFINE_INTERACTABLE(/obj/item)
 /obj/item/wash(clean_types)
 	. = ..()
 
-	if(ismob(loc))
-		var/mob/mob_loc = loc
-		mob_loc.regenerate_icons()
+	if(equipped_to)
+		if(equipped_to.is_holding(src))
+			equipped_to.update_held_items()
+		else
+			equipped_to.update_clothing()
 
 /// Called on [/datum/element/openspace_item_click_handler/proc/on_afterattack]. Check the relative file for information.
 /obj/item/proc/handle_openspace_click(turf/target, mob/user, proximity_flag, click_parameters)

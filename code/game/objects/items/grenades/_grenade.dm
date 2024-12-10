@@ -161,9 +161,8 @@
 	return TRUE
 
 /obj/item/grenade/proc/update_mob()
-	if(ismob(loc))
-		var/mob/mob = loc
-		mob.dropItemToGround(src)
+	if(equipped_to)
+		equipped_to.dropItemToGround(src)
 
 /obj/item/grenade/screwdriver_act(mob/living/user, obj/item/tool)
 	if(active)

@@ -307,15 +307,8 @@ DEFINE_INTERACTABLE(/obj/item)
 	// It's used in a few places. Stop using it, and optimially replace all uses please
 	master = null
 
-	var/mob/living/carbon/human/H
-	if(istype(loc, /mob/living/carbon/human) && (slot_flags & ITEM_SLOT_BACK))
-		H = loc
-
 	if(equipped_to)
 		equipped_to.temporarilyRemoveItemFromInventory(src, TRUE)
-
-	if(H && H.back == src)
-		noop()
 
 	// Handle cleaning up our actions list
 	for(var/datum/action/action as anything in actions)

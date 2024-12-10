@@ -194,7 +194,6 @@
 				return
 
 			w_uniform = I
-			update_suit_sensors()
 
 		if(ITEM_SLOT_LPOCKET)
 			l_store = I
@@ -225,7 +224,7 @@
 
 /mob/living/carbon/human/equipped_speed_mods()
 	. = ..()
-	for(var/sloties in get_all_worn_items() - list(l_store, r_store, s_store))
+	for(var/sloties in get_equipped_items(FALSE))
 		var/obj/item/thing = sloties
 		. += thing?.slowdown
 
@@ -300,7 +299,6 @@
 		handled = FALSE
 
 	if(handled && !QDELING(src))
-		update_equipment_speed_mods()
 		update_slots_for_item(I, slot)
 
 	// Send a signal for when we unequip an item that used to cover our feet/shoes. Used for bloody feet

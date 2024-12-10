@@ -179,7 +179,6 @@
 			update_mob_action_buttons(UPDATE_BUTTON_STATUS)
 
 	if(handled && !QDELETED(src))
-		update_equipment_speed_mods()
 		update_slots_for_item(I, slot)
 
 //handle stuff to update when a mob equips/unequips a mask.

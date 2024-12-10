@@ -825,8 +825,10 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(!silent)
 		playsound(src, drop_sound, DROP_SOUND_VOLUME, ignore_walls = FALSE)
 
-	user?.update_equipment_speed_mods()
-	user?.update_mouse_pointer()
+	if(!QDELETED(user))
+		if(I.slowdown)
+			user.update_equipment_speed_mods()
+		user.update_mouse_pointer()
 
 /// called just as an item is picked up (loc is not yet changed)
 /obj/item/proc/pickup(mob/user)
@@ -888,7 +890,8 @@ DEFINE_INTERACTABLE(/obj/item)
 		else if(slot == ITEM_SLOT_HANDS)
 			playsound(src, pickup_sound, PICKUP_SOUND_VOLUME, ignore_walls = FALSE)
 
-	user.update_equipment_speed_mods()
+	if(I.slowdown)
+		user.update_equipment_speed_mods()
 	visual_equipped(user, slot, initial)
 
 /// Gives one of our item actions to a mob, when equipped to a certain slot

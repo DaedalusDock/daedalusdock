@@ -49,7 +49,6 @@
 		/obj/item/seeds/cannabis/death = 1,
 		/obj/item/seeds/cannabis/white = 1,
 		/obj/item/seeds/cannabis/ultimate = 1,
-		/obj/item/seeds/kudzu = 1,
 		/obj/item/seeds/angel = 1,
 		/obj/item/seeds/glowshroom/glowcap = 1,
 		/obj/item/seeds/glowshroom/shadowshroom = 1,

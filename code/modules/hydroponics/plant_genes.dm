@@ -676,63 +676,6 @@
 	if(!(our_plant.resistance_flags & FIRE_PROOF))
 		our_plant.resistance_flags |= FIRE_PROOF
 
-/// Invasive spreading lets the plant jump to other trays, and the spreading plant won't replace plants of the same type.
-/datum/plant_gene/trait/invasive
-	name = "Invasive Spreading"
-	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
-
-/datum/plant_gene/trait/invasive/on_new_seed(obj/item/seeds/new_seed)
-	RegisterSignal(new_seed, COMSIG_SEED_ON_GROW, PROC_REF(try_spread))
-
-/datum/plant_gene/trait/invasive/on_removed(obj/item/seeds/old_seed)
-	UnregisterSignal(old_seed, COMSIG_SEED_ON_GROW)
-
-/*
- * Attempt to find an adjacent tray we can spread to.
- *
- * our_seed - our plant's seed, what spreads to other trays
- * our_tray - the hydroponics tray we're currently in
- */
-/datum/plant_gene/trait/invasive/proc/try_spread(obj/item/seeds/our_seed, obj/machinery/hydroponics/our_tray)
-	SIGNAL_HANDLER
-
-	if(prob(100 - (5 * (11 - our_seed.production))))
-		return
-
-	for(var/step_dir in GLOB.alldirs)
-		var/obj/machinery/hydroponics/spread_tray = locate() in get_step(our_tray, step_dir)
-		if(spread_tray && prob(15))
-			if(!our_tray.Adjacent(spread_tray))
-				continue //Don't spread through things we can't go through.
-
-			spread_seed(spread_tray, our_tray)
-
-/*
- * Actually spread the plant to the tray we found in try_spread.
- *
- * target_tray - the tray we're spreading to
- * origin_tray - the tray we're currently in
- */
-/datum/plant_gene/trait/invasive/proc/spread_seed(obj/machinery/hydroponics/target_tray, obj/machinery/hydroponics/origin_tray)
-	if(target_tray.myseed) // Check if there's another seed in the next tray.
-		if(target_tray.myseed.type == origin_tray.myseed.type && target_tray.plant_status != HYDROTRAY_PLANT_DEAD)
-			return FALSE // It should not destroy its own kind.
-		target_tray.visible_message(span_warning("The [target_tray.myseed.plantname] is overtaken by [origin_tray.myseed.plantname]!"))
-		QDEL_NULL(target_tray.myseed)
-	target_tray.set_seed(origin_tray.myseed.Copy())
-	target_tray.age = 0
-	target_tray.set_plant_health(target_tray.myseed.endurance)
-	target_tray.lastcycle = world.time
-	target_tray.set_weedlevel(0, update_icon = FALSE) // Reset
-	target_tray.set_pestlevel(0) // Reset
-	target_tray.visible_message(span_warning("The [origin_tray.myseed.plantname] spreads!"))
-	if(target_tray.myseed)
-		target_tray.name = "[initial(target_tray.name)] ([target_tray.myseed.plantname])"
-	else
-		target_tray.name = initial(target_tray.name)
-
-	return TRUE
-
 /**
  * A plant trait that causes the plant's food reagents to ferment instead.
  *

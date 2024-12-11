@@ -38,3 +38,6 @@
   - rscadd: You can steal from people's backpacks from behind using the strip menu.
   - rscadd: You can now smash a plate over someone else's head.
   - bugfix: Fixed being unable to point to food on plates.
+2024-12-11:
+  Kapu1178:
+  - qol: Added a screen alert for being prone.

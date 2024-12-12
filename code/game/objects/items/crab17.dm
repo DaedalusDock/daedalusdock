@@ -242,6 +242,6 @@
 
 /obj/effect/dumpeet_target/proc/endLaunch()
 	QDEL_NULL(DF) //Delete the falling machine effect, because at this point its animation is over. We dont use temp_visual because we want to manually delete it as soon as the pod appears
-	playsound(src, SFX_EXPLOSION, 80, TRUE)
+	playsound(src, SFX_EXPLOSION, 80, TRUE, ignore_walls = TRUE)
 	dump.forceMove(get_turf(src))
 	qdel(src) //The target's purpose is complete. It can rest easy now

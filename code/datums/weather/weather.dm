@@ -185,7 +185,7 @@
 
 /datum/weather/proc/send_alert(alert_msg, alert_sfx)
 	for(var/z_level in impacted_z_levels)
-		for(var/mob/player as anything in SSmobs.clients_by_zlevel[z_level])
+		for(var/mob/player as anything in SSmobs.cliented_living_mobs_by_zlevel[z_level])
 			if(!can_get_alert(player))
 				continue
 

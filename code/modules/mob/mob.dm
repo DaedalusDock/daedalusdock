@@ -1313,19 +1313,23 @@
 		. = client.mouse_down_icon
 
 	// Second, mouse up icons
-	if(isnull(.) && (client.mouse_down == FALSE) && client.mouse_up_icon)
+	else if((client.mouse_down == FALSE) && client.mouse_up_icon)
 		. = client.mouse_up_icon
 
 	// Third, mouse override icons
-	if(isnull(.) && client.mouse_override_icon)
+	else if(client.mouse_override_icon)
 		. = client.mouse_override_icon
 
 	// Fourth, examine icon
-	if(isnull(.) && examine_cursor_icon && client.keys_held["Shift"])
+	else if(examine_cursor_icon && client.keys_held["Shift"])
 		. = examine_cursor_icon
 
+	// Fifth, throw_mode
+	else if(throw_mode != THROW_MODE_DISABLED)
+		. = 'icons/effects/mouse_pointers/interact.dmi'
+
 	// Last, the mob decides.
-	if(isnull(.))
+	else
 		. = get_mouse_pointer_icon()
 		. ||= 'icons/effects/mouse_pointers/default.dmi'
 

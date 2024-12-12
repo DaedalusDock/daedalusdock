@@ -45,7 +45,8 @@
 /datum/preference_middleware/keybindings/proc/set_keybindings(list/params)
 	var/keybind_name = params["keybind_name"]
 
-	if (isnull(GLOB.keybindings_by_name[keybind_name]))
+	var/datum/keybinding/keybind_datum = GLOB.keybindings_by_name[keybind_name]
+	if (isnull(keybind_datum))
 		return FALSE
 
 	var/list/raw_hotkeys = params["hotkeys"]

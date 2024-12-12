@@ -932,6 +932,7 @@
 #include "code\datums\components\riding\riding.dm"
 #include "code\datums\components\riding\riding_mob.dm"
 #include "code\datums\components\riding\riding_vehicle.dm"
+#include "code\datums\keybinding\rawkey.dm"
 #include "code\datums\pathogens\_MobProcs.dm"
 #include "code\datums\pathogens\_pathogen.dm"
 #include "code\datums\pathogens\adrenal_crisis.dm"

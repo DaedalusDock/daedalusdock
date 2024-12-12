@@ -9,6 +9,11 @@
 
 /// Adds an instanced keybinding to the global tracker
 /proc/add_keybinding(datum/keybinding/instance)
+	if(istype(instance, /datum/keybinding/rawkey))
+		for(var/key in instance.hotkey_keys)
+			GLOB.raw_keybindings_by_key[key] = instance
+		return
+
 	GLOB.keybindings_by_name[instance.name] = instance
 
 	// Hotkey

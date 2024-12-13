@@ -871,7 +871,6 @@
 	atom_storage.set_holdable(list(
 		/obj/item/cultivator,
 		/obj/item/geneshears,
-		/obj/item/graft,
 		/obj/item/gun/energy/floragun,
 		/obj/item/hatchet,
 		/obj/item/plant_analyzer,
@@ -886,7 +885,6 @@
 		/obj/item/cultivator,
 		/obj/item/reagent_containers/spray/pestspray,
 		/obj/item/hatchet,
-		/obj/item/graft,
 		/obj/item/secateurs,
 		/obj/item/geneshears,
 		/obj/item/shovel/spade,

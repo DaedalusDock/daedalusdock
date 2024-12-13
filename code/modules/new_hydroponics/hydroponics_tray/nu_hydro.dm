@@ -14,6 +14,7 @@
 	///Its health
 	var/plant_health
 	var/max_plant_health
+	var/growth = 0
 
 	///Last time it was harvested
 	var/lastproduce = 0
@@ -91,7 +92,7 @@
 		if(issilicon(user))
 			return NONE
 
-		switch(plant_status)
+		switch(growing.plant_status)
 			if(HYDROTRAY_PLANT_DEAD)
 				context[SCREENTIP_CONTEXT_LMB] = "Remove dead plant"
 				return CONTEXTUAL_SCREENTIP_SET
@@ -103,7 +104,7 @@
 		return NONE
 
 	// If the plant is harvestable, we can graft it with secateurs or harvest it with a plant bag.
-	if(plant_status == HYDROTRAY_PLANT_HARVESTABLE)
+	if(growing.plant_status == HYDROTRAY_PLANT_HARVESTABLE)
 		if(istype(held_item, /obj/item/secateurs))
 			context[SCREENTIP_CONTEXT_LMB] = "Graft plant"
 			return CONTEXTUAL_SCREENTIP_SET
@@ -116,13 +117,6 @@
 	if(istype(held_item, /obj/item/geneshears) && plant_health > GENE_SHEAR_MIN_HEALTH)
 		context[SCREENTIP_CONTEXT_LMB] = "Remove plant gene"
 		return CONTEXTUAL_SCREENTIP_SET
-
-	// If we've got a charged somatoray, we can mutation lock it.
-	if(istype(held_item, /obj/item/gun/energy/floragun) && myseed.endurance > FLORA_GUN_MIN_ENDURANCE && LAZYLEN(myseed.mutatelist))
-		var/obj/item/gun/energy/floragun/flower_gun = held_item
-		if(flower_gun.cell.charge >= flower_gun.cell.maxcharge)
-			context[SCREENTIP_CONTEXT_LMB] = "Lock mutation"
-			return CONTEXTUAL_SCREENTIP_SET
 
 	// Edibles and pills can be composted.
 	if(IS_EDIBLE(held_item) || istype(held_item, /obj/item/reagent_containers/pill))
@@ -140,7 +134,7 @@
 /obj/machinery/hydroponics/Exited(atom/movable/gone)
 	. = ..()
 	if(!QDELETED(src) && gone == seed)
-		set_seed(null, FALSE)
+		clear_plant()
 
 /obj/machinery/hydroponics/examine(user)
 	. = ..()
@@ -150,7 +144,7 @@
 			. += span_alert("It's dead!")
 		else if (growing.plant_status == PLANT_HARVESTABLE)
 			. += span_info("It's ready to harvest.")
-		else if (plant_health <= (myseed.endurance / 2))
+		else if (plant_health <= (growing.base_health / 2))
 			. += span_alert("It looks unhealthy.")
 	else
 		. += span_info("It's empty.")
@@ -245,16 +239,13 @@
 
 /// Plant a new plant using a given seed.
 /obj/machinery/hydroponics/proc/plant_seed(obj/item/seeds/seed, mob/living/user)
-	if(user && !user.transferItemToLoc(seed, src))
-		return TRUE
-	else
+	if(seed.loc != src)
 		seed.forceMove(src)
 
 	src.seed = seed
 	var/plant_type = seed.plant_type
 
 	growing = new plant_type
-	growing.gene_holder = seed.gene_holder
 
 	plant_health = growing.base_health
 	plant_health += growing.get_effective_stat(PLANT_STAT_ENDURANCE)
@@ -262,6 +253,20 @@
 	current_tick = new(src)
 	update_appearance()
 	return TRUE
+
+/obj/machinery/hydroponics/proc/clear_plant(no_del = FALSE)
+	if(!seed)
+		return
+
+	if(no_del)
+		seed = null
+	else
+		QDEL_NULL(seed)
+
+	QDEL_NULL(current_tick)
+	growing = null
+	plant_health = 0
+	growth = 0
 
 /obj/machinery/hydroponics/process(delta_time)
 	if(self_sustaining && powered())
@@ -284,8 +289,8 @@
 		return
 
 	// Update plant status
-	var/new_growth_staus = growing.get_growth_status()
-	if(growing.plant_status != new_growth_staus)
+	var/new_growth_status = growing.get_growth_status()
+	if(growing.plant_status != new_growth_status)
 		growing.plant_status = new_growth_status
 		update_appearance()
 
@@ -332,8 +337,9 @@
 	// Take reagents.
 	reagents.remove_all(current_tick.water_need * tick_multiplier)
 
-	if(final_mutation_power)
-		bad_mutation_stuff(final_mutation_power)
+	#warn mutation
+	// if(final_mutation_power)
+	// 	bad_mutation_stuff(final_mutation_power)
 
 	// Swap out the tick datum
 	QDEL_NULL(current_tick)
@@ -348,9 +354,8 @@
 	if(!growing)
 		return
 
-	set_plant_health(0)
+	clear_plant()
 	update_appearance()
-	QDEL_NULL(current_tick)
 
 /obj/machinery/hydroponics/proc/get_water_level()
 	return reagents.has_reagent(/datum/reagent/water)
@@ -369,7 +374,7 @@
 			if(growing.gene_holder.has_active_gene(/datum/plant_gene/metabolism_fast))
 				amt *= 2
 
-			if(growing.gene_holder.has_active_gene(/datum/plant_gene/slow))
+			if(growing.gene_holder.has_active_gene(/datum/plant_gene/metabolism_slow))
 				amt /= 2
 
 	if(amt > 0 && !ignore_endurance)
@@ -380,7 +385,7 @@
 	set_plant_health(clamp(plant_health + amt, 0, max_health), FALSE)
 
 /obj/machinery/hydroponics/proc/set_plant_health(new_plant_health, update_icon = TRUE, forced = FALSE)
-	if(plant_health == new_plant_health || ((!myseed || plant.plant_status == PLANT_DEAD) && !forced))
+	if(plant_health == new_plant_health || ((!growing || growing.plant_status == PLANT_DEAD) && !forced))
 		return
 
 	plant_health = max(new_plant_health, 0)

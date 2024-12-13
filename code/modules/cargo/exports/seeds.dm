@@ -18,7 +18,7 @@
 	. = ..()
 	if(. && !dry_run)
 		var/obj/item/seeds/S = O
-		discovered_plants[S.type] = S.potency
+		discovered_plants[S.type] = S.plant_datum.get_effective_stat(PLANT_STAT_POTENCY)
 
 
 /datum/export/seed/potency
@@ -33,6 +33,6 @@
 	if(!cost)
 		return 0
 
-	var/potDiff = (S.potency - discovered_plants[S.type])
+	var/potDiff = (S.plant_datum.get_effective_stat(PLANT_STAT_POTENCY) - discovered_plants[S.type])
 
 	return round(..() * potDiff)

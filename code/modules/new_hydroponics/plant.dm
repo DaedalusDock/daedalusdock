@@ -5,6 +5,8 @@
 	var/species = ""
 	///the file that stores the sprites of the growing plant from this seed.
 	var/growing_icon = 'icons/obj/hydroponics/growing.dmi'
+	/// How many icon states there are between start and mature (inclusive)
+	var/growthstages = 6
 	/// Used to override grow icon (default is `"[species]-grow"`). You can use one grow icon for multiple closely related plants with it.
 	var/icon_grow
 	/// Used to override dead icon (default is `"[species]-dead"`). You can use one dead icon for multiple closely related plants with it.
@@ -34,6 +36,9 @@
 	/// How many times you can harvest this plant.
 	var/harvest_amt = 1
 
+	#warn impl add_reagents
+	var/list/add_reagents
+
 	/// Innate genes that all instances of this plant have.
 	var/list/innate_genes
 	/// Genes this plant has, may or may not be active.
@@ -56,6 +61,11 @@
 
 	/// The genes of the plant.
 	var/datum/plant_gene_holder/gene_holder
+
+/datum/plant/New(random_genes)
+	gene_holder = new()
+	if(random_genes)
+		gene_holder.randomize_alleles()
 
 /**
  * Returns the plant's growth state.
@@ -98,9 +108,9 @@
 		if(PLANT_STAT_PRODUCE_TIME)
 			base_val = time_to_produce
 		if(PLANT_STAT_ENDURANCE)
-			base_val = endurance
+			base_val = base_endurance
 		if(PLANT_STAT_POTENCY)
-			base_val = potency
+			base_val = base_potency
 		if(PLANT_STAT_YIELD)
 			base_val = harvest_yield
 		if(PLANT_STAT_HARVEST_AMT)

@@ -15,7 +15,7 @@
 // Are you a bad enough dude to poison your own plants?
 /datum/reagent/toxin/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
 	if(volume >= 1)
-		tox_damage += 1
+		plant_tick.tox_damage += 1
 
 /datum/reagent/toxin/affect_blood(mob/living/carbon/C, removed)
 	if(toxpwr)

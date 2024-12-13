@@ -18,18 +18,6 @@
 	mutatelist = list(/obj/item/seeds/galaxythistle)
 	graft_gene = /datum/plant_gene/trait/plant_type/weed_hardy
 
-/obj/item/seeds/starthistle/harvest(mob/user)
-	var/obj/machinery/hydroponics/parent = loc
-	var/seed_count = yield
-	if(prob(getYield() * 20))
-		seed_count++
-		var/output_loc = parent.Adjacent(user) ? user.loc : parent.loc
-		for(var/i in 1 to seed_count)
-			var/obj/item/seeds/starthistle/harvestseeds = Copy()
-			harvestseeds.forceMove(output_loc)
-
-	parent.update_tray(user, seed_count)
-
 //Galaxy Thistle
 /obj/item/seeds/galaxythistle
 	name = "pack of galaxythistle seeds"

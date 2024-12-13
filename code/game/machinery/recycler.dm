@@ -173,7 +173,7 @@
 	if(istype(L))
 		var/seed_modifier = 0
 		if(L.seed)
-			seed_modifier = round(L.seed.potency / 25)
+			seed_modifier = round(L.seed.plant_datum.get_effective_stat(PLANT_STAT_POTENCY) / 25)
 		new L.plank_type(loc, 1 + seed_modifier)
 	else
 		var/datum/component/material_container/materials = GetComponent(/datum/component/material_container)

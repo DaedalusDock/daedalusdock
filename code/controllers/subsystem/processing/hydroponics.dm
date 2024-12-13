@@ -3,6 +3,16 @@ PROCESSING_SUBSYSTEM_DEF(hydroponics)
 	flags = SS_HIBERNATE
 
 
+	var/list/gene_list = list()
+
+/datum/controller/subsystem/processing/hydroponics/Initialize(start_timeofday)
+	. = ..()
+	for(var/datum/plant_gene/path as anything in subtypesof(/datum/plant_gene))
+		if(isabstract(path))
+			continue
+
+		gene_list[path] = new path
+
 /datum/controller/subsystem/processing/hydroponics/proc/splice_alleles(allele_one, allele_two, value_one, value_two)
 	if(allele_one == allele_two)
 		// Both were dominant or recessive, average them

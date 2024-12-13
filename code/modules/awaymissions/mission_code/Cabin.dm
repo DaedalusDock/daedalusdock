@@ -97,7 +97,7 @@
 	if(!istype(L))
 		return
 	else
-		var/potency = L.seed.potency
+		var/potency = L.seed.plant_datum.get_effective_stat(PLANT_STAT_POTENCY)
 		..()
 		new L.plank_type(src.loc, 1 + round(potency / 25))
 

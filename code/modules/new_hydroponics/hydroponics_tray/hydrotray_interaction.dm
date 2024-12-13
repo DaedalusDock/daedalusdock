@@ -12,7 +12,7 @@
 			return
 
 		var/list/trays = list(src)//makes the list just this in cases of syringes and compost etc
-		var/target = myseed ? myseed.plantname : src
+		var/target = seed ? seed.plantname : src
 		var/visi_msg = ""
 		var/transfer_amount
 		var/irrigate = 0	//How am I supposed to irrigate pill contents?
@@ -70,17 +70,16 @@
 		return 1
 
 	else if(istype(O, /obj/item/seeds) && !istype(O, /obj/item/seeds/sample))
-		if(!myseed)
+		if(!seed)
 			if(istype(O, /obj/item/seeds/kudzu))
 				investigate_log("had Kudzu planted in it by [key_name(user)] at [AREACOORD(src)].", INVESTIGATE_BOTANY)
 			if(!user.transferItemToLoc(O, src))
 				return
 			SEND_SIGNAL(O, COMSIG_SEED_ON_PLANTED, src)
 			to_chat(user, span_notice("You plant [O]."))
-			set_seed(O)
-			TRAY_NAME_UPDATE
+			plant_seed(O)
 			age = 1
-			set_plant_health(myseed.endurance)
+			set_plant_health(seed.endurance)
 			lastcycle = world.time
 			return
 		else
@@ -97,28 +96,28 @@
 			return
 
 	else if(istype(O, /obj/item/secateurs))
-		if(!myseed)
+		if(!seed)
 			to_chat(user, span_notice("This plot is empty."))
 			return
 		else if(plant_status != HYDROTRAY_PLANT_HARVESTABLE)
 			to_chat(user, span_notice("This plant must be harvestable in order to be grafted."))
 			return
-		else if(myseed.grafted)
+		else if(seed.grafted)
 			to_chat(user, span_notice("This plant has already been grafted."))
 			return
 		else
 			user.visible_message(span_notice("[user] grafts off a limb from [src]."), span_notice("You carefully graft off a portion of [src]."))
-			var/obj/item/graft/snip = myseed.create_graft()
+			var/obj/item/graft/snip = seed.create_graft()
 			if(!snip)
 				return // The plant did not return a graft.
 
 			snip.forceMove(drop_location())
-			myseed.grafted = TRUE
+			seed.grafted = TRUE
 			adjust_plant_health(-5)
 			return
 
 	else if(istype(O, /obj/item/geneshears))
-		if(!myseed)
+		if(!seed)
 			to_chat(user, span_notice("The tray is empty."))
 			return
 		if(plant_health <= GENE_SHEAR_MIN_HEALTH)
@@ -126,42 +125,42 @@
 			return
 
 		var/list/current_traits = list()
-		for(var/datum/plant_gene/gene in myseed.genes)
+		for(var/datum/plant_gene/gene in seed.genes)
 			if(islist(gene))
 				continue
 			if(!(gene.mutability_flags & PLANT_GENE_REMOVABLE))
 				continue // Don't show genes that can't be removed.
 			current_traits[gene.name] = gene
-		var/removed_trait = tgui_input_list(user, "Trait to remove from the [myseed.plantname]", "Plant Trait Removal", sort_list(current_traits))
+		var/removed_trait = tgui_input_list(user, "Trait to remove from the [seed.plantname]", "Plant Trait Removal", sort_list(current_traits))
 		if(isnull(removed_trait))
 			return
 		if(!user.canUseTopic(src, USE_CLOSE))
 			return
-		if(!myseed)
+		if(!seed)
 			return
 		if(plant_health <= GENE_SHEAR_MIN_HEALTH) //Check health again to make sure they're not keeping inputs open to get free shears.
 			return
-		for(var/datum/plant_gene/gene in myseed.genes)
+		for(var/datum/plant_gene/gene in seed.genes)
 			if(gene.name == removed_trait)
-				if(myseed.genes.Remove(gene))
-					gene.on_removed(myseed)
+				if(seed.genes.Remove(gene))
+					gene.on_removed(seed)
 					qdel(gene)
 					break
-		myseed.reagents_from_genes()
+		seed.reagents_from_genes()
 		adjust_plant_health(-15)
-		to_chat(user, span_notice("You carefully shear the genes off of the [myseed.plantname], leaving the plant looking weaker."))
+		to_chat(user, span_notice("You carefully shear the genes off of the [seed.plantname], leaving the plant looking weaker."))
 		update_appearance()
 		return
 
 	else if(istype(O, /obj/item/graft))
 		var/obj/item/graft/snip = O
-		if(!myseed)
+		if(!seed)
 			to_chat(user, span_notice("The tray is empty."))
 			return
-		if(myseed.apply_graft(snip))
-			to_chat(user, span_notice("You carefully integrate the grafted plant limb onto [myseed.plantname], granting it [snip.stored_trait.get_name()]."))
+		if(seed.apply_graft(snip))
+			to_chat(user, span_notice("You carefully integrate the grafted plant limb onto [seed.plantname], granting it [snip.stored_trait.get_name()]."))
 		else
-			to_chat(user, span_notice("You integrate the grafted plant limb onto [myseed.plantname], but it does not accept the [snip.stored_trait.get_name()] trait from the [snip]."))
+			to_chat(user, span_notice("You integrate the grafted plant limb onto [seed.plantname], but it does not accept the [snip.stored_trait.get_name()] trait from the [snip]."))
 		qdel(snip)
 		return
 
@@ -172,14 +171,14 @@
 		return
 
 	else if(istype(O, /obj/item/shovel/spade))
-		if(!myseed && !weedlevel)
+		if(!seed && !weedlevel)
 			to_chat(user, span_warning("[src] doesn't have any plants or weeds!"))
 			return
 		user.visible_message(span_notice("[user] starts digging out [src]'s plants..."),
 			span_notice("You start digging out [src]'s plants..."))
-		if(O.use_tool(src, user, 50, volume=50) || (!myseed && !weedlevel))
+		if(O.use_tool(src, user, 50, volume=50) || (!seed && !weedlevel))
 			user.visible_message(span_notice("[user] digs out the plants in [src]!"), span_notice("You dig out all of [src]'s plants!"))
-			if(myseed) //Could be that they're just using it as a de-weeder
+			if(seed) //Could be that they're just using it as a de-weeder
 				age = 0
 				set_plant_health(0, update_icon = FALSE, forced = TRUE)
 				lastproduce = 0
@@ -197,18 +196,18 @@
 		if(flowergun.cell.charge < flowergun.cell.maxcharge)
 			to_chat(user, span_notice("[flowergun] must be fully charged to lock in a mutation!"))
 			return
-		if(!myseed)
+		if(!seed)
 			to_chat(user, span_warning("[src] is empty!"))
 			return
-		if(myseed.endurance <= FLORA_GUN_MIN_ENDURANCE)
-			to_chat(user, span_warning("[myseed.plantname] isn't hardy enough to sequence it's mutation!"))
+		if(seed.endurance <= FLORA_GUN_MIN_ENDURANCE)
+			to_chat(user, span_warning("[seed.plantname] isn't hardy enough to sequence it's mutation!"))
 			return
-		if(!LAZYLEN(myseed.mutatelist))
-			to_chat(user, span_warning("[myseed.plantname] has nothing else to mutate into!"))
+		if(!LAZYLEN(seed.mutatelist))
+			to_chat(user, span_warning("[seed.plantname] has nothing else to mutate into!"))
 			return
 		else
 			var/list/fresh_mut_list = list()
-			for(var/muties in myseed.mutatelist)
+			for(var/muties in seed.mutatelist)
 				var/obj/item/seeds/another_mut = new muties
 				fresh_mut_list[another_mut.plantname] = muties
 			var/locked_mutation = tgui_input_list(user, "Mutation to lock", "Plant Mutation Locks", sort_list(fresh_mut_list))
@@ -218,11 +217,11 @@
 				return
 			if(!user.canUseTopic(src, USE_CLOSE))
 				return
-			myseed.mutatelist = list(fresh_mut_list[locked_mutation])
-			myseed.set_endurance(myseed.endurance/2)
+			seed.mutatelist = list(fresh_mut_list[locked_mutation])
+			seed.set_endurance(seed.endurance/2)
 			flowergun.cell.use(flowergun.cell.charge)
 			flowergun.update_appearance()
-			to_chat(user, span_notice("[myseed.plantname]'s mutation was set to [locked_mutation], depleting [flowergun]'s cell!"))
+			to_chat(user, span_notice("[seed.plantname]'s mutation was set to [locked_mutation], depleting [flowergun]'s cell!"))
 			return
 	else
 		return ..()
@@ -244,7 +243,7 @@
 	if(issilicon(user)) //How does AI know what plant is?
 		return
 	if(plant_status == HYDROTRAY_PLANT_HARVESTABLE)
-		return myseed.harvest(user)
+		return seed.harvest(user)
 
 	else if(plant_status == HYDROTRAY_PLANT_DEAD)
 		to_chat(user, span_notice("You remove the dead plant from [src]."))
@@ -293,3 +292,57 @@
 	for(var/obj/machinery/hydroponics/h in range(1,src))
 		h.update_icon_state()
 	return TOOL_ACT_TOOLTYPE_SUCCESS
+
+/obj/machinery/hydroponics/proc/try_harvest(mob/living/user)
+	if(!growing)
+		return FALSE
+
+	if(!growing.on_harvest(user))
+		return FALSE
+
+	// At this point, harvest will occur.
+	growth = growing.get_growth_for_state(PLANT_MATURE)
+
+	var/quality = 1
+	var/max_yield = 10
+	var/harvest_yield = growing.get_effective_stat(PLANT_STAT_YIELD)
+
+	// Bonus yield for a healthy plant
+	if(plant_health > growing.base_health * 2)
+		quality += 5
+		var/yield_bonus = rand(1,3)
+		max_yield += yield_bonus
+		harvest_yield += yield_bonus
+
+	else if (plant_health < growing.base_health * 0.5)
+		quality -= 10
+
+	var/product_path = growing.mutation?.product_path || growing.product_path
+
+	if(!product_path)
+		return TRUE
+
+	var/bonus_yield_prob = 0
+	if(harvest_yield > max_yield)
+		bonus_yield_prob = harvest_yield - max_yield
+		harvest_yield = max_yield
+
+	harvest_yield = round(max(harvest_yield, 0))
+
+	var/turf/T = get_turf(src)
+	for(var/i in 1 to harvest_yield)
+		var/unit_quality = quality
+		unit_quality += rand(-2, 2)
+		unit_quality += plant.get_effective_stat(PLANT_STAT_POTENCY) / 6
+		unit_quality += plant.get_effective_stat(PLANT_STAT_ENDURANCE) / 6
+
+		var/atom/movable/product = new product_path(T)
+		product.add_fingerprint(M)
+
+	plant.harvest_amt--
+	if(plant.harvest_amt <= 0)
+		plant_death()
+		return TRUE
+
+	update_appearance()
+	return TRUE

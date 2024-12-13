@@ -30,21 +30,16 @@
 	return new_gene
 
 /*
- * on_new_seed is called when seed genes are initialized on the /obj/seed.
- *
- * new_seed - the seed being created
+ * on_add is called when seed genes are initialized on the /obj/seed.
  */
-/datum/plant_gene/proc/on_new_seed(obj/item/seeds/new_seed)
+/datum/plant_gene/proc/on_add(datum/plant_gene_holder/gene_holder)
 	return // Not implemented
 
 /*
- * on_removed is called when the gene is removed from a seed.
- * Also called when a seed is qdel'd (and all the genes are removed and deleted).
- *
- * old_seed - our seed, before being removed
+ * on_remove is called when the gene is removed from a seed.
  */
-/datum/plant_gene/proc/on_removed(obj/item/seeds/old_seed)
-	return // Not implemented
+/datum/plant_gene/proc/on_remove(datum/plant_genes/gene_holder)
+	return
 
 /// Reagent genes store a reagent ID and reagent ratio.
 /datum/plant_gene/reagent

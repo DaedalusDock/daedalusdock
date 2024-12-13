@@ -7,7 +7,7 @@
 	if(.)
 		return
 
-	plant_tick.water_consumption -= 0.5
+	plant_tick.water_need -= 0.2
 	plant_tick.overall_multiplier -= 0.25
 
 /datum/plant_gene/metabolism_fast
@@ -19,5 +19,5 @@
 	if(.)
 		return
 
-	plant_tick.water_consumption += 1
+	plant_tick.water_need += 0.4
 	plant_tick.overall_multiplier += 0.5

@@ -239,35 +239,6 @@
 	if(myseed)
 		SEND_SIGNAL(myseed, COMSIG_SEED_ON_GROW, src)
 
-///Sets a new value for the myseed variable, which is the seed of the plant that's growing inside the tray.
-/obj/machinery/hydroponics/proc/set_seed(obj/item/seeds/new_seed, delete_old_seed = TRUE)
-	var/old_seed = myseed
-	myseed = new_seed
-	if(old_seed && delete_old_seed)
-		qdel(old_seed)
-	set_plant_status(new_seed ? HYDROTRAY_PLANT_GROWING : HYDROTRAY_NO_PLANT) //To make sure they can't just put in another seed and insta-harvest it
-	if(myseed && myseed.loc != src)
-		myseed.forceMove(src)
-	SEND_SIGNAL(src, COMSIG_HYDROTRAY_SET_SEED, new_seed)
-	update_appearance()
-
-/obj/machinery/hydroponics/proc/mutatespecie() // Mutagent produced a new plant!
-	if(!myseed || plant_status == HYDROTRAY_PLANT_DEAD || !LAZYLEN(myseed.mutatelist))
-		return
-
-	var/oldPlantName = myseed.plantname
-	var/mutantseed = pick(myseed.mutatelist)
-	set_seed(new mutantseed(src))
-
-	hardmutate()
-	age = 0
-	set_plant_health(myseed.endurance, update_icon = FALSE)
-	lastcycle = world.time
-	set_weedlevel(0, update_icon = FALSE)
-
-	var/message = span_warning("[oldPlantName] suddenly mutates into [myseed.plantname]!")
-	addtimer(CALLBACK(src, PROC_REF(after_mutation), message), 0.5 SECONDS)
-
 /**
  * Called after plant mutation, update the appearance of the tray content and send a visible_message()
  */

@@ -1,7 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - tweak: Change the combat mode icons from "Combat" to "Help" and "Harm".
-  - rscadd: The combat mode icon now becomes "Grab" while holding CTRL.
-  - rscadd: Having throw mode on how changes your mouse icon.
-  - bugfix: Fixed having multiple hotkeys bound to one key not firing all keyUp events.

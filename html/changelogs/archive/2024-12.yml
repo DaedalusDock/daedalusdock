@@ -41,3 +41,9 @@
 2024-12-11:
   Kapu1178:
   - qol: Added a screen alert for being prone.
+2024-12-13:
+  Kapu1178:
+  - tweak: Change the combat mode icons from "Combat" to "Help" and "Harm".
+  - rscadd: The combat mode icon now becomes "Grab" while holding CTRL.
+  - rscadd: Having throw mode on how changes your mouse icon.
+  - bugfix: Fixed having multiple hotkeys bound to one key not firing all keyUp events.

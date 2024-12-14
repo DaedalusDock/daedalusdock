@@ -166,6 +166,9 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/// What company can employ this job? First index is default
 	var/list/employers = list()
 
+	/// Default security status. Skipped if null.
+	var/default_security_status = null
+
 
 /datum/job/New()
 	. = ..()

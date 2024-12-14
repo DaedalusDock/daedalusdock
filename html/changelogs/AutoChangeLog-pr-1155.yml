@@ -1,0 +1,6 @@
+author: francinum
+delete-after: true
+changes:
+  - qol: Chairs now point the correct way.
+  - bugfix: Robotics is now a Medical access.
+  - bugfix: Prisoners are now targeted by security robots automatically.

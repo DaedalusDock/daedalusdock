@@ -47,3 +47,8 @@
   - rscadd: The combat mode icon now becomes "Grab" while holding CTRL.
   - rscadd: Having throw mode on how changes your mouse icon.
   - bugfix: Fixed having multiple hotkeys bound to one key not firing all keyUp events.
+2024-12-15:
+  francinum:
+  - qol: Chairs now point the correct way.
+  - bugfix: Robotics is now a Medical access.
+  - bugfix: Prisoners are now targeted by security robots automatically.

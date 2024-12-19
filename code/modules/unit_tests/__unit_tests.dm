@@ -49,8 +49,12 @@
 #define UNIT_TEST_FAILED 1
 #define UNIT_TEST_SKIPPED 2
 
+/// Capture pre-unit test mapping error reports. Maybe one day we can take this out back and shoot it.
 #define TEST_PRE 0
-#define TEST_DEFAULT 1
+/// Ensures map standards. Runs before standard unit tests as for production maps, these are more important.
+#define TEST_MAP_STANDARDS 1
+/// Standard unit test priority
+#define TEST_DEFAULT 2
 /// After most test steps, used for tests that run long so shorter issues can be noticed faster
 #define TEST_LONGER 10
 /// This must be the last test to run due to the inherent nature of the test iterating every single tangible atom in the game

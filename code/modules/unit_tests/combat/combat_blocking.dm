@@ -1,5 +1,5 @@
 /// Test that items can block unarmed attacks
-/datum/unit_test/unarmed_blocking
+/datum/unit_test/combat/unarmed_blocking
 
 /datum/unit_test/unarmed_blocking/Run()
 	var/mob/living/carbon/human/consistent/attacker = ALLOCATE_BOTTOM_LEFT()
@@ -14,9 +14,9 @@
 	TEST_ASSERT_EQUAL(victim.getBruteLoss(), 0, "Victim took damage from being punched despite having a 100% block chance chair in their hands.")
 
 /// Test that items can block weapon attacks
-/datum/unit_test/armed_blocking
+/datum/unit_test/combat/armed_blocking
 
-/datum/unit_test/armed_blocking/Run()
+/datum/unit_test/combat/armed_blocking/Run()
 	var/mob/living/carbon/human/consistent/attacker = ALLOCATE_BOTTOM_LEFT()
 	var/mob/living/carbon/human/consistent/victim = ALLOCATE_BOTTOM_LEFT()
 

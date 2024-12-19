@@ -1,4 +1,4 @@
-/datum/unit_test/pills/Run()
+/datum/unit_test/reagents/pills/Run()
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human)
 	var/obj/item/reagent_containers/pill/iron/pill = allocate(/obj/item/reagent_containers/pill/iron)
 

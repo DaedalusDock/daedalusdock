@@ -11,7 +11,7 @@
 	else if(methods == INJECT)
 		exposed_mob.health = 80
 
-/datum/unit_test/reagent_mob_expose/Run()
+/datum/unit_test/reagents/mob_exposure_methods/Run()
 	// Life() is handled just by tests
 	SSmobs.pause()
 
@@ -54,6 +54,6 @@
 	syringe.melee_attack_chain(human, human)
 	TEST_ASSERT_EQUAL(human.health, 80, "Human health did not update after injection from syringe")
 
-/datum/unit_test/reagent_mob_expose/Destroy()
+/datum/unit_test/reagents/mob_exposure_methods/Destroy()
 	SSmobs.ignite()
 	return ..()

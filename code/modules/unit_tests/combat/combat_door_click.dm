@@ -1,7 +1,7 @@
 /// Tests that airlocks can be closed by clicking on the floor, as [/datum/component/redirect_attack_hand_from_turf ] dictates
-/datum/unit_test/door_click
+/datum/unit_test/combat/door_click
 
-/datum/unit_test/door_click/Run()
+/datum/unit_test/combat/door_click/Run()
 	var/mob/living/carbon/human/consistent/tider = ALLOCATE_BOTTOM_LEFT()
 	var/obj/machinery/door/airlock/public/glass/door = ALLOCATE_BOTTOM_LEFT()
 

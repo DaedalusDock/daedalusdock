@@ -1,8 +1,8 @@
 /// Test EMP flashlight EMPs people you point it at
-/datum/unit_test/emp_flashlight
+/datum/unit_test/combat/emp_flashlight
 	var/sig_caught = 0
 
-/datum/unit_test/emp_flashlight/Run()
+/datum/unit_test/combat/emp_flashlight/Run()
 	var/mob/living/carbon/human/consistent/flashlighter = ALLOCATE_BOTTOM_LEFT()
 	var/mob/living/carbon/human/consistent/victim = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/flashlight/emp/debug/flashlight = ALLOCATE_BOTTOM_LEFT()
@@ -13,6 +13,6 @@
 	click_wrapper(flashlighter, victim)
 	TEST_ASSERT_NOTEQUAL(sig_caught, 0, "EMP flashlight did not EMP the target on click.")
 
-/datum/unit_test/emp_flashlight/proc/sig_caught()
+/datum/unit_test/combat/emp_flashlight/proc/sig_caught()
 	SIGNAL_HANDLER
 	sig_caught++

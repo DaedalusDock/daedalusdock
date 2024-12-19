@@ -1,7 +1,7 @@
 /// Tests the droppper picks up and dispenses reagents correctly.
-/datum/unit_test/dropper_use
+/datum/unit_test/reagents/dropper_use
 
-/datum/unit_test/dropper_use/Run()
+/datum/unit_test/reagents/dropper_use/Run()
 	var/mob/living/carbon/human/consistent/chemist = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/reagent_containers/dropper/dropper = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/reagent_containers/glass/beaker/large/beaker = ALLOCATE_BOTTOM_LEFT()

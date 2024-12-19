@@ -1,8 +1,5 @@
 
-
-/datum/unit_test/reagent_id_typos
-
-/datum/unit_test/reagent_id_typos/Run()
+/datum/unit_test/reagents/reactions_must_have_valid_component_ids/Run()
 	for(var/I in SSreagents.chemical_reactions_list_reactant_index)
 		for(var/V in SSreagents.chemical_reactions_list_reactant_index[I])
 			var/datum/chemical_reaction/R = V

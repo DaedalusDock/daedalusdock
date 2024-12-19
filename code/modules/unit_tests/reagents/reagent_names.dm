@@ -1,7 +1,7 @@
 /// Test that all reagent names are different in order to prevent tgstation#65231
-/datum/unit_test/reagent_names
+/datum/unit_test/reagents/names_must_be_unique
 
-/datum/unit_test/reagent_names/Run()
+/datum/unit_test/reagents/names_must_be_unique/Run()
 	var/used_names = list()
 
 	for (var/datum/reagent/reagent as anything in subtypesof(/datum/reagent))

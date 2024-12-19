@@ -1,4 +1,4 @@
-/datum/unit_test/stamina_swing/Run()
+/datum/unit_test/combat/stamina_swing/Run()
 	var/mob/living/carbon/human/consistent/attacker = ALLOCATE_BOTTOM_LEFT()
 	var/mob/living/carbon/human/consistent/victim = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/chair/chair = ALLOCATE_BOTTOM_LEFT()
@@ -14,7 +14,7 @@
 	var/actual_loss = attacker.stamina.loss
 	TEST_ASSERT_EQUAL(actual_loss, expected_loss, "Attacker didn't lose 50 stamina, lost [actual_loss] instead.")
 
-/datum/unit_test/stamina_damage/Run()
+/datum/unit_test/combat/stamina_damage/Run()
 	var/mob/living/carbon/human/consistent/attacker = ALLOCATE_BOTTOM_LEFT()
 	var/mob/living/carbon/human/consistent/victim = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/chair/chair = ALLOCATE_BOTTOM_LEFT()

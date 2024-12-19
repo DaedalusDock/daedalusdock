@@ -1,4 +1,4 @@
-/datum/unit_test/reagent_mob_procs/Run()
+/datum/unit_test/reagents/reagent_mod_procs/Run()
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human)
 	var/obj/item/food/hotdog/debug/fooditem = allocate(/obj/item/food/hotdog/debug)
 

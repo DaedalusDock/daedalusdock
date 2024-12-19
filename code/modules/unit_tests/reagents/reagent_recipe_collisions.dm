@@ -1,8 +1,8 @@
 
 
-/datum/unit_test/reagent_recipe_collisions
+/datum/unit_test/reagents/recipes_must_not_conflict
 
-/datum/unit_test/reagent_recipe_collisions/Run()
+/datum/unit_test/reagents/recipes_must_not_conflict/Run()
 	var/list/reactions = list()
 	for(var/V in SSreagents.chemical_reactions_list_reactant_index)
 		reactions += SSreagents.chemical_reactions_list_reactant_index[V]

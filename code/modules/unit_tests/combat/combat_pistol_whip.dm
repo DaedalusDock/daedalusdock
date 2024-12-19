@@ -1,7 +1,7 @@
 /// Tests that guns (bayonetted or otherwise) are able to be used as melee weapons in close range
-/datum/unit_test/pistol_whip
+/datum/unit_test/combat/pistol_whip
 
-/datum/unit_test/pistol_whip/Run()
+/datum/unit_test/combat/pistol_whip/Run()
 	var/mob/living/carbon/human/consistent/attacker = ALLOCATE_BOTTOM_LEFT()
 	var/mob/living/carbon/human/consistent/victim = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/gun/ballistic/automatic/pistol/gun = ALLOCATE_BOTTOM_LEFT()

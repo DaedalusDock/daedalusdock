@@ -5,6 +5,8 @@
 	stack_name = "wad"
 	multiple_gender = NEUTER
 
+	abstract_type = /obj/item/stack/spacecash
+
 	icon = 'icons/obj/economy.dmi'
 	icon_state = null
 	amount = 1

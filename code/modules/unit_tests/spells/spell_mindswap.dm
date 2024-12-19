@@ -5,9 +5,9 @@
  * Also checks that the mindswap spell itself was transferred over
  * to the new body on cast.
  */
-/datum/unit_test/mind_swap_spell
+/datum/unit_test/spells/mind_swap_should_swap_minds
 
-/datum/unit_test/mind_swap_spell/Run()
+/datum/unit_test/spells/mind_swap_should_swap_minds/Run()
 
 	var/mob/living/carbon/human/swapper = allocate(/mob/living/carbon/human)
 	var/mob/living/carbon/human/to_swap = allocate(/mob/living/carbon/human)

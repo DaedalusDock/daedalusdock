@@ -1,63 +1,11 @@
 #define ALL_GASIDS xgm_gas_data.gases
 
-/datum/unit_test/atmos_machinery
-	abstract_type = /datum/unit_test/atmos_machinery
+/datum/unit_test/atmospherics/machinery
+	abstract_type = /datum/unit_test/atmospherics/machinery
 	var/list/test_cases = list()
 
-/datum/unit_test/atmos_machinery/Run()
-	return
-
-/datum/unit_test/atmos_machinery/proc/create_gas_mixes(gas_mix_data)
-	var/list/gas_mixes = list()
-	for(var/mix_name in gas_mix_data)
-		var/list/mix_data = gas_mix_data[mix_name]
-
-		var/datum/gas_mixture/gas_mix = new (CELL_VOLUME, mix_data["temperature"])
-
-		var/list/initial_gas = mix_data["initial_gas"]
-		if(initial_gas.len)
-			var/list/gas_args = list()
-			for(var/gasid in initial_gas)
-				gas_args += gasid
-				gas_args += initial_gas[gasid]
-			gas_mix.adjustMultipleGases(arglist(gas_args))
-
-		gas_mixes[mix_name] = gas_mix
-	return gas_mixes
-
-/datum/unit_test/atmos_machinery/proc/gas_amount_changes(list/before_gas_mixes, list/after_gas_mixes)
-	var/list/result = list()
-	for(var/mix_name in before_gas_mixes & after_gas_mixes)
-		var/change = list()
-
-		var/datum/gas_mixture/before = before_gas_mixes[mix_name]
-		var/datum/gas_mixture/after = after_gas_mixes[mix_name]
-
-		var/list/all_gases = before.gas | after.gas
-		for(var/gasid in all_gases)
-			change[gasid] = after.getGroupGas(gasid) - before.getGroupGas(gasid)
-
-		result[mix_name] = change
-
-	return result
-
-/datum/unit_test/atmos_machinery/proc/check_moles_conserved(case_name, list/before_gas_mixes, list/after_gas_mixes)
-	for(var/gasid in xgm_gas_data.gases)
-		var/before = 0
-		for(var/gasmix in before_gas_mixes)
-			var/datum/gas_mixture/G = before_gas_mixes[gasmix]
-			before += G.getGroupGas(gasid)
-
-		var/after = 0
-		for(var/gasmix in after_gas_mixes)
-			var/datum/gas_mixture/G = after_gas_mixes[gasmix]
-			after += G.getGroupGas(gasid)
-
-		if(abs(before - after) > ATMOS_PRECISION)
-			Fail("expected [before] moles of [gasid], found [after] moles.")
-
-/datum/unit_test/atmos_machinery/conserve_moles
-	//template = /datum/unit_test/atmos_machinery/conserve_moles
+/datum/unit_test/atmospherics/machinery/should_conserve_moles
+	abstract_type = /datum/unit_test/atmospherics/machinery/should_conserve_moles
 	test_cases = list(
 		uphill = list(
 			source = list(
@@ -159,13 +107,12 @@
 		),
 	)
 
-/datum/unit_test/atmos_machinery/conserve_moles/Run()
-	return
 
-/datum/unit_test/atmos_machinery/conserve_moles/pump_gas
+
+/datum/unit_test/atmospherics/machinery/should_conserve_moles/pump_gas
 	//name = "ATMOS MACHINERY: pump_gas() Conserves Moles"
 
-/datum/unit_test/atmos_machinery/conserve_moles/pump_gas/Run()
+/datum/unit_test/atmospherics/machinery/should_conserve_moles/pump_gas/Run()
 	for(var/case_name in test_cases)
 		var/gas_mix_data = test_cases[case_name]
 		var/list/before_gas_mixes = create_gas_mixes(gas_mix_data)
@@ -177,10 +124,10 @@
 
 	return 1
 
-/datum/unit_test/atmos_machinery/conserve_moles/pump_gas_passive
+/datum/unit_test/atmospherics/machinery/should_conserve_moles/pump_gas_passive
 	//name = "ATMOS MACHINERY: pump_gas_passive() Conserves Moles"
 
-/datum/unit_test/atmos_machinery/conserve_moles/pump_gas_passive/Run()
+/datum/unit_test/atmospherics/machinery/should_conserve_moles/pump_gas_passive/Run()
 	for(var/case_name in test_cases)
 		var/gas_mix_data = test_cases[case_name]
 		var/list/before_gas_mixes = create_gas_mixes(gas_mix_data)
@@ -192,10 +139,10 @@
 
 	return 1
 
-/datum/unit_test/atmos_machinery/conserve_moles/scrub_gas
+/datum/unit_test/atmospherics/machinery/should_conserve_moles/scrub_gas
 	//name = "ATMOS MACHINERY: scrub_gas() Conserves Moles"
 
-/datum/unit_test/atmos_machinery/conserve_moles/scrub_gas/Run()
+/datum/unit_test/atmospherics/machinery/should_conserve_moles/scrub_gas/Run()
 	var/list/filtering = xgm_gas_data.gases
 
 	for(var/case_name in test_cases)
@@ -209,10 +156,10 @@
 
 	return 1
 
-/datum/unit_test/atmos_machinery/conserve_moles/filter_gas
+/datum/unit_test/atmospherics/machinery/should_conserve_moles/filter_gas
 //	name = "ATMOS MACHINERY: filter_gas() Conserves Moles"
 
-/datum/unit_test/atmos_machinery/conserve_moles/filter_gas/Run()
+/datum/unit_test/atmospherics/machinery/should_conserve_moles/filter_gas/Run()
 	var/list/filtering = xgm_gas_data.gases
 
 	for(var/case_name in test_cases)
@@ -226,10 +173,10 @@
 
 	return 1
 
-/datum/unit_test/atmos_machinery/conserve_moles/filter_gas_multi
+/datum/unit_test/atmospherics/machinery/should_conserve_moles/filter_gas_multi
 	//name = "ATMOS MACHINERY: filter_gas_multi() Conserves Moles"
 
-/datum/unit_test/atmos_machinery/conserve_moles/filter_gas_multi/Run()
+/datum/unit_test/atmospherics/machinery/should_conserve_moles/filter_gas_multi/Run()
 	for(var/case_name in test_cases)
 		var/gas_mix_data = test_cases[case_name]
 		var/list/before_gas_mixes = create_gas_mixes(gas_mix_data)
@@ -245,10 +192,10 @@
 
 	return 1
 
-/datum/unit_test/atmos_machinery/conserve_moles/mix_gas
+/datum/unit_test/atmospherics/machinery/should_conserve_moles/mix_gas
 	//name = "ATMOS MACHINERY: mix_gas() Conserves Moles"
 
-/datum/unit_test/atmos_machinery/conserve_moles/mix_gas/Run()
+/datum/unit_test/atmospherics/machinery/should_conserve_moles/mix_gas/Run()
 	for(var/case_name in test_cases)
 		var/gas_mix_data = test_cases[case_name]
 		var/list/before_gas_mixes = create_gas_mixes(gas_mix_data)

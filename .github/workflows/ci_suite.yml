@@ -186,7 +186,7 @@ jobs:
         run: npm i
         working-directory: tools/screenshot-test-comparison
       - name: Run screenshot comparison
-        run: node tools/screenshot-test-comparison/index.js artifacts code/modules/unit_tests/screenshots artifacts/screenshot_comparisons
+        run: node tools/screenshot-test-comparison/index.js artifacts code/modules/unit_tests/screenshots/data artifacts/screenshot_comparisons
       # workflow_run does not give you the PR it ran on,
       # even through the thing literally named "matching pull requests".
       # However, in GraphQL, you can check if the check suite was ran

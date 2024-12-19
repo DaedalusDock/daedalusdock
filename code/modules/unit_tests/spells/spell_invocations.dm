@@ -2,9 +2,9 @@
  * Validates that all spells have a correct
  * invocation type and invocation setup.
  */
-/datum/unit_test/spell_invocations
+/datum/unit_test/spells/must_have_valid_invocation_setup
 
-/datum/unit_test/spell_invocations/Run()
+/datum/unit_test/spells/must_have_valid_invocation_setup/Run()
 
 	var/list/types_to_test = subtypesof(/datum/action/cooldown/spell)
 

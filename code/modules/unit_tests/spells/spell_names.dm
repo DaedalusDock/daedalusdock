@@ -11,9 +11,9 @@
  * "Lesser Fireball" for a subtype of Fireball with a shorter cooldown.
  * "Deadly Magic Missile" for a subtype of Magic Missile that does damage, etc.
  */
-/datum/unit_test/spell_names
+/datum/unit_test/spells/must_have_unique_names
 
-/datum/unit_test/spell_names/Run()
+/datum/unit_test/spells/must_have_unique_names/Run()
 
 	var/list/types_to_test = typesof(/datum/action/cooldown/spell)
 

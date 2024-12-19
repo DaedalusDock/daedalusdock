@@ -2,9 +2,9 @@
  * Validates that all shapeshift type spells
  * have a valid possible_shapes setup.
  */
-/datum/unit_test/shapeshift_spell_validity
+/datum/unit_test/spells/shapeshift_shapes_must_be_valid
 
-/datum/unit_test/shapeshift_spell_validity/Run()
+/datum/unit_test/spells/shapeshift_shapes_must_be_valid/Run()
 
 	var/list/types_to_test = subtypesof(/datum/action/cooldown/spell/shapeshift)
 

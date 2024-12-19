@@ -1,7 +1,7 @@
 /// Regression test for timestop being a 3x3 instead of a 5x5
-/datum/unit_test/timestop
+/datum/unit_test/spells/timestop
 
-/datum/unit_test/timestop/Run()
+/datum/unit_test/spells/timestop/Run()
 	var/mob/living/carbon/human/dio = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/kakyoin = allocate(/mob/living/carbon/human/consistent)
 	var/mob/living/carbon/human/jotaro = allocate(/mob/living/carbon/human/consistent)

@@ -1,7 +1,7 @@
 /// Test to make sure the pressure pumping proc used by things like portable pumps, pressure pumps, etc actually work.
-/datum/unit_test/atmospheric_gas_transfer
+/datum/unit_test/atmospherics/atmospheric_gas_transfer
 
-/datum/unit_test/atmospheric_gas_transfer/Run()
+/datum/unit_test/atmospherics/atmospheric_gas_transfer/Run()
 	/*
 	for (var/tempNmoles in list(1e4, 1e6, 1e8, 1e10, 1e12))
 		var/datum/gas_mixture/first_mix = allocate(/datum/gas_mixture)

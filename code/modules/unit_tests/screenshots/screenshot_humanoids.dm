@@ -1,7 +1,7 @@
 /// A screenshot test for every humanoid species with a handful of jobs.
-/datum/unit_test/screenshot_humanoids
+/datum/unit_test/screenshot/screenshot_humanoids
 
-/datum/unit_test/screenshot_humanoids/Run()
+/datum/unit_test/screenshot/screenshot_humanoids/Run()
 	// Test lizards as their own thing so we can get more coverage on their features
 
 	var/mob/living/carbon/human/lizard = allocate(/mob/living/carbon/human/dummy/consistent)

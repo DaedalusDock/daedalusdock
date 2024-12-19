@@ -5,5 +5,5 @@
 
 	for(var/stackpath in paths)
 		var/obj/item/stack/stack = stackpath
-		if(!isabstract(stackpath) && !stack.merge_type)
+		if(!isabstract(stack) && !stack.merge_type)
 			TEST_FAIL("([stack]) lacks set merge_type variable!")

@@ -6,6 +6,9 @@
 /// For advanced cases, fail unconditionally but don't return (so a test can return multiple results)
 #define TEST_FAIL(reason) (Fail(reason || "No reason", __FILE__, __LINE__))
 
+/// Mark the test as skipped.
+#define TEST_SKIP(reason) (return Skip(reason || "No reason"))
+
 /// Asserts that a condition is true
 /// If the condition is not true, fails the test
 #define TEST_ASSERT(assertion, reason) if (!(assertion)) { return Fail("Assertion failed: [reason || "No reason"]", __FILE__, __LINE__) }
@@ -46,8 +49,12 @@
 #define UNIT_TEST_FAILED 1
 #define UNIT_TEST_SKIPPED 2
 
+/// Capture pre-unit test mapping error reports. Maybe one day we can take this out back and shoot it.
 #define TEST_PRE 0
-#define TEST_DEFAULT 1
+/// Ensures map standards. Runs before standard unit tests as for production maps, these are more important.
+#define TEST_MAP_STANDARDS 1
+/// Standard unit test priority
+#define TEST_DEFAULT 2
 /// After most test steps, used for tests that run long so shorter issues can be noticed faster
 #define TEST_LONGER 10
 /// This must be the last test to run due to the inherent nature of the test iterating every single tangible atom in the game
@@ -61,10 +68,16 @@
 #define TEST_OUTPUT_GREEN(text) "\x1B\x5B1;32m[text]\x1B\x5B0m"
 /// Change color to yellow on ANSI terminal output, if enabled with -DANSICOLORS.
 #define TEST_OUTPUT_YELLOW(text) "\x1B\x5B1;33m[text]\x1B\x5B0m"
+/// Change color to blue on ANSI terminal output, if enabled with -DANSICOLORS.
+#define TEST_OUTPUT_BLUE(text) "\x1B\x5B1;34m[text]\x1B\x5B0m"
+/// Change color to magenta on ANSI terminal output, if enabled with -DANSICOLORS.
+#define TEST_OUTPUT_MAGENTA(text) "\x1B\x5B1;35m[text]\x1B\x5B0m"
 #else
 #define TEST_OUTPUT_RED(text) (text)
 #define TEST_OUTPUT_GREEN(text) (text)
 #define TEST_OUTPUT_YELLOW(text) (text)
+#define TEST_OUTPUT_BLUE(text) (text)
+#define TEST_OUTPUT_MAGENTA(text) (text)
 #endif
 
 /// A trait source when adding traits through unit tests
@@ -73,6 +86,13 @@
 /// Helper to allocate a new object with the implied type (the type of the variable it's assigned to) in the corner of the test room
 #define ALLOCATE_BOTTOM_LEFT(arguments...) allocate(__IMPLIED_TYPE__, run_loc_floor_bottom_left, ##arguments)
 
+// Include unit test base definition
+#include "_unit_test.dm"
+
+// Category Includes
+#include "mapping_standards\__include.dm"
+
+// Single File Includes
 #include "achievements.dm"
 #include "adenosine.dm"
 #include "anchored_mobs.dm"
@@ -185,7 +205,7 @@
 #include "tgui_create_message.dm"
 #include "timer_sanity.dm"
 #include "traitor.dm"
-#include "unit_test.dm"
+
 #include "wizard_loadout.dm"
 #include "wounds.dm"
 #ifdef REFERENCE_TRACKING_DEBUG //Don't try and parse this file if ref tracking isn't turned on. IE: don't parse ref tracking please mr linter

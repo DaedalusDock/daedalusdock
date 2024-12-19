@@ -30,9 +30,11 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 	var/priority = TEST_DEFAULT
 	//internal shit
 	var/focus = FALSE
-	var/succeeded = TRUE
+	var/test_status = UNIT_TEST_PASSED
 	var/list/allocated
 	var/list/fail_reasons
+
+	var/skip_reason
 
 	var/static/datum/space_level/reservation
 
@@ -65,12 +67,17 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 	TEST_FAIL("Run() called parent or not implemented")
 
 /datum/unit_test/proc/Fail(reason = "No reason", file = "OUTDATED_TEST", line = 1)
-	succeeded = FALSE
+	test_status = UNIT_TEST_FAILED
 
 	if(!istext(reason))
 		reason = "FORMATTED: [reason != null ? reason : "NULL"]"
 
 	LAZYADD(fail_reasons, list(list(reason, file, line)))
+
+
+/datum/unit_test/proc/Skip(reason = "No reason")
+	test_status = UNIT_TEST_SKIPPED
+	skip_reason = reason
 
 /// Allocates an instance of the provided type, and places it somewhere in an available loc
 /// Instances allocated through this proc will be destroyed when the test is over
@@ -118,10 +125,21 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 
 	duration = REALTIMEOFDAY - duration
 	GLOB.current_test = null
-	GLOB.failed_any_test |= !test.succeeded
+	GLOB.failed_any_test |= (test.test_status == UNIT_TEST_FAILED)
+
+	var/test_log_prefix
+	switch(test.test_status)
+		if(UNIT_TEST_FAILED)
+			test_log_prefix = TEST_OUTPUT_RED("FAIL")
+		if(UNIT_TEST_PASSED)
+			test_log_prefix = TEST_OUTPUT_GREEN("PASS")
+		if(UNIT_TEST_SKIPPED)
+			test_log_prefix = TEST_OUTPUT_BLUE("SKIPPED")
+		else //what
+			test_log_prefix = TEST_OUTPUT_MAGENTA("BAD STATUS [test.test_status]")
 
 	var/list/log_entry = list(
-		"[test.succeeded ? TEST_OUTPUT_GREEN("PASS") : TEST_OUTPUT_RED("FAIL")]: [test_path] [duration / 10]s",
+		"[test_log_prefix]: [test_path] [(test.test_status != UNIT_TEST_SKIPPED ? "[duration / 10]s" : "| [test.skip_reason]")]",
 	)
 	var/list/fail_reasons = test.fail_reasons
 	var/map_name = SSmapping.config.map_name
@@ -146,7 +164,9 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 	var/message = log_entry.Join("\n")
 	log_test(message)
 
-	test_results[test_path] = list("status" = test.succeeded ? UNIT_TEST_PASSED : UNIT_TEST_FAILED, "message" = message, "name" = test_path)
+
+
+	test_results[test_path] = list("status" = test.test_status, "message" = message, "name" = test_path)
 
 	qdel(test)
 
@@ -157,10 +177,15 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 
 	var/list/tests_to_run = subtypesof(/datum/unit_test)
 	var/list/focused_tests = list()
-	for (var/_test_to_run in tests_to_run)
-		var/datum/unit_test/test_to_run = _test_to_run
+
+	for (var/datum/unit_test/test_to_run as anything in tests_to_run)
+		// Handle VSCode Testing Integration Focus Tests
 		if (initial(test_to_run.focus))
 			focused_tests += test_to_run
+		// Remove abstract tests.
+		if (isabstract(test_to_run))
+			tests_to_run -= test_to_run
+
 	if(length(focused_tests))
 		tests_to_run = focused_tests
 

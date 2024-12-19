@@ -4502,7 +4502,7 @@
 #include "code\modules\three_dsix\stats\psyche.dm"
 #include "code\modules\three_dsix\stats\soma.dm"
 #include "code\modules\tooltip\tooltip.dm"
-#include "code\modules\unit_tests\_unit_tests.dm"
+#include "code\modules\unit_tests\__unit_tests.dm"
 #include "code\modules\universal_states\resonance_jump.dm"
 #include "code\modules\universal_states\universal_state.dm"
 #include "code\modules\uplink\uplink_devices.dm"

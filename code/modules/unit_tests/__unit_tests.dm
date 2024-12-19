@@ -65,9 +65,9 @@
 /// Change color to yellow on ANSI terminal output, if enabled with -DANSICOLORS.
 #define TEST_OUTPUT_YELLOW(text) "\x1B\x5B1;33m[text]\x1B\x5B0m"
 /// Change color to blue on ANSI terminal output, if enabled with -DANSICOLORS.
-#define TEST_OUTPUT_BLUE(text) "\x1B\x5B1;34m[text]\x1B\x5B0m
+#define TEST_OUTPUT_BLUE(text) "\x1B\x5B1;34m[text]\x1B\x5B0m"
 /// Change color to magenta on ANSI terminal output, if enabled with -DANSICOLORS.
-#define TEST_OUTPUT_MAGENTA(text) "\x1B\x5B1;35m[text]\x1B\x5B0m
+#define TEST_OUTPUT_MAGENTA(text) "\x1B\x5B1;35m[text]\x1B\x5B0m"
 #else
 #define TEST_OUTPUT_RED(text) (text)
 #define TEST_OUTPUT_GREEN(text) (text)

@@ -1,0 +1,1 @@
+/obj/item/reagent_containers/glass/bottle/initropidril : /obj/item/reagent_containers/glass/bottle/adenosine

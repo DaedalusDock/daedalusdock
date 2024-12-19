@@ -356,7 +356,7 @@
 	new /obj/item/reagent_containers/glass/bottle/fentanyl(src)
 	new /obj/item/reagent_containers/glass/bottle/cyanide(src)
 	new /obj/item/reagent_containers/glass/bottle/histamine(src)
-	new /obj/item/reagent_containers/glass/bottle/initropidril(src)
+	new /obj/item/reagent_containers/glass/bottle/adenosine(src)
 	new /obj/item/reagent_containers/glass/bottle/pancuronium(src)
 	new /obj/item/reagent_containers/glass/bottle/sodium_thiopental(src)
 	new /obj/item/reagent_containers/glass/bottle/lexorin(src)

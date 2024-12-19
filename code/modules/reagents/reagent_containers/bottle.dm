@@ -139,10 +139,10 @@
 	desc = "A small bottle. Contains Fentanyl."
 	list_reagents = list(/datum/reagent/toxin/fentanyl = 30)
 
-/obj/item/reagent_containers/glass/bottle/initropidril
-	name = "initropidril bottle"
-	desc = "A small bottle. Contains initropidril."
-	list_reagents = list(/datum/reagent/toxin/initropidril = 30)
+/obj/item/reagent_containers/glass/bottle/adenosine
+	name = "adenosine bottle"
+	desc = "A small bottle. Contains adenosine."
+	list_reagents = list(/datum/reagent/medicine/adenosine = 30)
 
 /obj/item/reagent_containers/glass/bottle/pancuronium
 	name = "pancuronium bottle"

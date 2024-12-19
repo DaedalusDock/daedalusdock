@@ -338,8 +338,8 @@
 	reagents.remove_all(current_tick.water_need * tick_multiplier)
 
 	#warn mutation
-	// if(final_mutation_power)
-	// 	bad_mutation_stuff(final_mutation_power)
+	if(final_mutation_power)
+		growing.mutate(final_mutation_power)
 
 	// Swap out the tick datum
 	QDEL_NULL(current_tick)

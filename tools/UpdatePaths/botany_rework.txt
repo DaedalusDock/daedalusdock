@@ -1,1 +1,4 @@
 /obj/item/seeds/kudzu : @DELETE
+/obj/item/seeds/banana/bluespace : /obj/item/seeds/banana
+/obj/item/food/grown/banana/bluespace : /obj/item/food/grown/banana
+/obj/item/grown/bananapeel/bluespace : /obj/item/grown/bananapeel/bluespace

@@ -306,6 +306,8 @@
 	var/quality = 1
 	var/max_yield = 10
 	var/harvest_yield = growing.get_effective_stat(PLANT_STAT_YIELD)
+	var/potency = growing.get_effective_stat(PLANT_STAT_POTENCY)
+	var/endurance = growing.get_effective_stat(PLANT_STAT_ENDURANCE)
 
 	// Bonus yield for a healthy plant
 	if(plant_health > growing.base_health * 2)
@@ -317,7 +319,7 @@
 	else if (plant_health < growing.base_health * 0.5)
 		quality -= 10
 
-	var/product_path = growing.mutation?.product_path || growing.product_path
+	var/product_path = growing.product_path
 
 	if(!product_path)
 		return TRUE
@@ -333,14 +335,18 @@
 	for(var/i in 1 to harvest_yield)
 		var/unit_quality = quality
 		unit_quality += rand(-2, 2)
-		unit_quality += plant.get_effective_stat(PLANT_STAT_POTENCY) / 6
-		unit_quality += plant.get_effective_stat(PLANT_STAT_ENDURANCE) / 6
+		unit_quality += potency / 6
+		unit_quality += endurance / 6
 
 		var/atom/movable/product = new product_path(T)
-		product.add_fingerprint(M)
+		product.add_fingerprint(user)
 
-	plant.harvest_amt--
-	if(plant.harvest_amt <= 0)
+		var/list/reagents_to_add = growing?.reagents_per_potency.Copy()
+		for(var/reagent in reagents_to_add)
+			product.reagents.add_reagent(reagent, reagents_to_add[reagent] * potency)
+
+	growing.harvest_amt--
+	if(growing.harvest_amt <= 0)
 		plant_death()
 		return TRUE
 

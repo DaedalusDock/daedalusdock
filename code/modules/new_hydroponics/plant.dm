@@ -36,8 +36,7 @@
 	/// How many times you can harvest this plant.
 	var/harvest_amt = 1
 
-	#warn impl add_reagents
-	var/list/add_reagents
+	var/list/reagents_per_potency
 
 	/// Innate genes that all instances of this plant have.
 	var/list/innate_genes
@@ -48,6 +47,10 @@
 
 	/// A pseudoarbitrary value. When attempting to splice two plants together, a larger difference in genome value makes it more difficult.
 	var/genome = 1
+	#warn impl genome
+
+	/// Rarity, decides export value.
+	var/rarity = 0
 
 	/// If the plant needs water to survive.
 	var/needs_water = TRUE
@@ -66,6 +69,10 @@
 	gene_holder = new()
 	if(random_genes)
 		gene_holder.randomize_alleles()
+
+	for(var/path in possible_mutations)
+		possible_mutations -= path
+		possible_mutations += SShydroponics.mutations[path]
 
 /**
  * Returns the plant's growth state.

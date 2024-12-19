@@ -1,5 +1,5 @@
 /datum/plant/aloe
-	name = "Aloe"
+	name = "aloe"
 	species = "aloe"
 
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
@@ -7,7 +7,10 @@
 
 	product_path = /obj/item/food/grown/aloe
 	harvest_yield = 3
-	reagents_add = list(/datum/reagent/consumable/nutriment/vitamin = 0.05, /datum/reagent/consumable/nutriment = 0.05)
+	reagents_per_potency = list(
+		/datum/reagent/consumable/nutriment/vitamin = 0.05,
+		/datum/reagent/consumable/nutriment = 0.05
+	)
 
 /obj/item/seeds/aloe
 	name = "pack of aloe seeds"

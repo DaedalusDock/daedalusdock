@@ -30,21 +30,21 @@
 	var/endurance_dominance = FALSE
 
 /datum/plant_gene_holder/proc/CopyFrom(datum/plant_gene_holder/from_holder)
-	from_holder.potency = from_holder.potency
-	new_genes.endurance = from_holder.endurance
+	potency = from_holder.potency
+	endurance = from_holder.endurance
 
-	new_genes.time_to_grow = from_holder.time_to_grow
-	new_genes.time_to_produce = from_holder.time_to_produce
-	new_genes.harvest_amt = from_holder.harvest_amt
-	new_genes.harvest_yield = from_holder.harvest_yield
+	time_to_grow = from_holder.time_to_grow
+	time_to_produce = from_holder.time_to_produce
+	harvest_amt = from_holder.harvest_amt
+	harvest_yield = from_holder.harvest_yield
 
-	new_genes.species_dominance = from_holder.species_dominance
-	new_genes.growth_time_dominance = from_holder.growth_time_dominance
-	new_genes.produce_time_dominance = from_holder.produce_time_dominance
-	new_genes.yield_dominance = from_holder.yield_dominance
-	new_genes.harvest_amt_dominance = from_holder.harvest_amt_dominance
-	new_genes.potency_dominance = from_holder.potency_dominance
-	new_genes.endurance_dominance = from_holder.endurance_dominance
+	species_dominance = from_holder.species_dominance
+	growth_time_dominance = from_holder.growth_time_dominance
+	produce_time_dominance = from_holder.produce_time_dominance
+	yield_dominance = from_holder.yield_dominance
+	harvest_amt_dominance = from_holder.harvest_amt_dominance
+	potency_dominance = from_holder.potency_dominance
+	endurance_dominance = from_holder.endurance_dominance
 
 	for(var/datum/plant_gene/gene as anything in from_holder.gene_list)
 		add_active_gene(gene.type)
@@ -112,12 +112,26 @@
 	LAZYREMOVE(gene_list, gene_to_remove)
 	gene_to_remove.on_remove(src)
 
-/// Randomly activate a latent gene.
-/datum/plant_gene_holder/proc/activate_latent_gene(multiplier = 1)
+/datum/plant_gene_holder/proc/multi_mutate(stat_power = 1, gene_power = 1, type_power = 1)
 	if(has_active_gene(/datum/plant_gene/stabilizer))
 		return FALSE
 
-	if(length(parent.latent_genes))
+	if(stat_power >= 1)
+		. += try_mutate_stats(stat_power, TRUE)
+
+	if(gene_power >= 1)
+		. += try_activate_latent_gene(gene_power, TRUE)
+
+	if(type_power >= 1)
+		. += try_mutate_type(type_power, TRUE)
+
+
+/// Randomly activate a latent gene.
+/datum/plant_gene_holder/proc/try_activate_latent_gene(mutation_power = 1, ignore_stable = FALSE)
+	if(!ignore_stable && has_active_gene(/datum/plant_gene/stabilizer))
+		return FALSE
+
+	if(!length(parent.latent_genes))
 		return FALSE
 
 	var/datum/plant_gene/gene_to_activate
@@ -126,7 +140,7 @@
 		if(has_active_gene(latent_gene.type))
 			continue
 
-		if(prob(latent_gene.development_chance))
+		if(prob(latent_gene.development_chance * mutation_power))
 			gene_to_activate = latent_gene
 			break
 
@@ -135,3 +149,56 @@
 
 	LAZYREMOVE(gene_list, gene_to_activate)
 	gene_to_add.on_add(src)
+	return TRUE
+
+/// Mutate the plant in various ways.
+/datum/plant_gene_holder/proc/try_mutate_stats(mutation_power = 1, ignore_stable = FALSE)
+	if(!ignore_stable && has_active_gene(/datum/plant_gene/stabilizer))
+		return FALSE
+
+	time_to_grow += rand(-1 SECONDS * mutation_power, 1 SECONDS * mutation_power)
+	time_to_produce += rand(-1 SECONDS * mutation_power, 1 SECONDS * mutation_power)
+	harvest_yield += rand(-2 * mutation_power, 2 * mutation_power)
+	potency += rand(-5 * mutation_power, 5 * mutation_power)
+	endurance += rand(-5* mutation_power, 5 * mutation_power)
+	if(prob(20))
+		harvest_amt += rand(-1 * mutation_power, 1 * mutation_power)
+
+	return TRUE
+
+/datum/plant_gene_holder/proc/try_mutate_type(mutation_power = 1, ignore_stable = FALSE)
+	if(!ignore_stable && has_active_gene(/datum/plant_gene/stabilizer))
+		return FALSE
+
+	if(!length(parent.possible_mutations))
+		return FALSE
+
+	var/prob_modifier = 0
+	for(var/datum/plant_gene/mutations/gene in gene_list)
+		if(gene.is_negative)
+			prob_modifier -= gene.mutation_chance_modifier
+		else
+			prob_modifier -= gene.mutation_chance_modifier
+
+	for(var/datum/plant_mutation/mutation as anything in parent.possible_mutations)
+		if(!prob((mutation.mutation_chance + prob_modifier) * mutation_power))
+			continue
+
+		if(!mutation.can_mutate(parent))
+			continue
+
+		var/new_path = mutation.plant_type.seed
+		var/obj/item/seeds/new_seed = new newpath(null, TRUE)
+		new_seed.plant_datum.gene_holder.CopyFrom(src)
+
+		var/datum/plant/old_parent = parent
+		var/atom/parent_loc = old_parent.loc
+		qdel(parent)
+
+		if(istype(parent_loc, /obj/machinery/hydroponics))
+			var/obj/machinery/hydroponics/tray = parent_loc
+			tray.plant_seed(new_seed)
+		else
+			new_seed.forceMove(parent_loc.drop_location())
+		break
+

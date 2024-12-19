@@ -5,6 +5,8 @@ PROCESSING_SUBSYSTEM_DEF(hydroponics)
 
 	var/list/gene_list = list()
 
+	var/list/mutation_list = list()
+
 /datum/controller/subsystem/processing/hydroponics/Initialize(start_timeofday)
 	. = ..()
 	for(var/datum/plant_gene/path as anything in subtypesof(/datum/plant_gene))
@@ -12,6 +14,12 @@ PROCESSING_SUBSYSTEM_DEF(hydroponics)
 			continue
 
 		gene_list[path] = new path
+
+	for(var/datum/plant_mutation/path as anything in subtypesof(/datum/plant_mutation))
+		if(isabstract(path))
+			continue
+
+		mutation_list[path] = new path
 
 /datum/controller/subsystem/processing/hydroponics/proc/splice_alleles(allele_one, allele_two, value_one, value_two)
 	if(allele_one == allele_two)

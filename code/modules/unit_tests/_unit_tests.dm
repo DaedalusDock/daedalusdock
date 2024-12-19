@@ -124,6 +124,7 @@
 #include "hulk.dm"
 #include "hydroponics_extractor_storage.dm"
 #include "hydroponics_harvest.dm"
+#include "hydroponics_sanity.dm"
 #include "hydroponics_self_mutations.dm"
 #include "interaction_structures.dm"
 #include "interaction_syringe_gun_load.dm"

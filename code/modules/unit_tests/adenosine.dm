@@ -3,7 +3,7 @@
 
 	TEST_ASSERT(!victim.undergoing_cardiac_arrest(), "Wtf why is a freshly spawned human undergoing cardiac arrest.")
 
-	victim.bloodstream.add_reagent(/datum/reagent/medicine/adenosine, 14)
+	victim.bloodstream.add_reagent(/datum/reagent/medicine/adenosine, 7)
 
 	for(var/i in 1 to 7)
 		victim.Life(SSmobs.wait)

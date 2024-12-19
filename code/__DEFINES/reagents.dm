@@ -105,7 +105,7 @@
 #define END_REACTION "end_reaction"
 
 /// Helper for converting realtime seconds into reagent cycles.
-#define SECONDS_TO_REAGENT_CYCLES(seconds) round(seconds / /datum/controller/subsystem/mobs::wait)
+#define SECONDS_TO_REAGENT_CYCLES(seconds) round(seconds / (/datum/controller/subsystem/mobs::wait / 10))
 
 ///Minimum requirement for addiction buzz to be met. Addiction code only checks this once every two seconds, so this should generally be low
 #define MIN_ADDICTION_REAGENT_AMOUNT 1

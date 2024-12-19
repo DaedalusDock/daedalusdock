@@ -28,6 +28,9 @@ GLOBAL_LIST_INIT(sandstone_recipes, list ( \
 	new/datum/stack_recipe("Breakdown into sand", /obj/item/stack/ore/glass, 1, one_per_turf = FALSE, on_floor = TRUE) \
 	))
 
+/obj/item/stack/sheet/mineral
+	abstract_type = /obj/item/stack/sheet/mineral
+
 /obj/item/stack/sheet/mineral/sandstone
 	name = "sandstone bricks"
 	desc = "This appears to be a combination of both sand and stone."

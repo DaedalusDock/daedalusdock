@@ -51,7 +51,7 @@
 	if(istype(W, /obj/item/melee/baton))
 		if(cooldown < world.time - 25)
 			user.visible_message(span_warning("[user] bashes [src] with [W]!"))
-			playsound(user.loc, 'sound/effects/shieldbash.ogg', 50, TRUE)
+			playsound(user.loc, 'sound/effects/shieldbash.ogg', 50, TRUE, ignore_walls = 'sound/effects/shieldbash.ogg')
 			cooldown = world.time
 	else if(istype(W, /obj/item/stack/sheet/mineral/titanium))
 		if (atom_integrity >= max_integrity)
@@ -76,7 +76,7 @@
 			. += span_warning("It's falling apart!")
 
 /obj/item/shield/riot/proc/shatter(mob/living/carbon/human/owner)
-	playsound(owner, 'sound/effects/glassbr3.ogg', 100)
+	playsound(owner, 'sound/effects/glassbr3.ogg', 100, ignore_walls = 'sound/effects/glassbr3.ogg')
 	new /obj/item/shard((get_turf(src)))
 
 /obj/item/shield/riot/on_shield_block(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK)
@@ -107,7 +107,7 @@
 	max_integrity = 30
 
 /obj/item/shield/riot/roman/shatter(mob/living/carbon/human/owner)
-	playsound(owner, 'sound/effects/grillehit.ogg', 100)
+	playsound(owner, 'sound/effects/grillehit.ogg', 100, ignore_walls = 'sound/effects/grillehit.ogg')
 	new /obj/item/stack/sheet/iron(get_turf(src))
 
 /obj/item/shield/riot/buckler
@@ -125,7 +125,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/shield/riot/buckler/shatter(mob/living/carbon/human/owner)
-	playsound(owner, 'sound/effects/bang.ogg', 50)
+	playsound(owner, 'sound/effects/bang.ogg', 50, ignore_walls = 'sound/effects/bang.ogg')
 	new /obj/item/stack/sheet/mineral/wood(get_turf(src))
 
 /obj/item/shield/riot/flash
@@ -241,7 +241,8 @@
 	enabled = active
 
 	balloon_alert(user, "[active ? "activated":"deactivated"]")
-	playsound(user ? user : src, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 35, TRUE)
+	var/sound_played = active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg'
+	playsound(user ? user : src, sound_played, 35, TRUE, ignore_walls = sound_played)
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/shield/riot/tele

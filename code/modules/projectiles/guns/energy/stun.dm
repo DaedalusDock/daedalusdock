@@ -35,9 +35,9 @@
 
 /obj/item/gun/energy/disabler/play_fire_sound()
 	if(suppressed)
-		playsound(src, suppressed_sound, suppressed_volume, vary_fire_sound, ignore_walls = FALSE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
+		playsound(src, suppressed_sound, suppressed_volume, vary_fire_sound, ignore_walls = suppressed_sound, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
 	else
-		playsound(src, fire_sound, fire_sound_volume, vary_fire_sound)
+		playsound(src, fire_sound, fire_sound_volume, vary_fire_sound, falloff_exponent = 1.5, ignore_walls = fire_sound, falloff_distance = 7)
 
 /obj/item/gun/energy/disabler/add_seclight_point()
 	AddComponent(/datum/component/seclite_attachable, \

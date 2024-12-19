@@ -7,7 +7,7 @@
 		TEST_FAIL("[icon] is not an icon.")
 		return
 
-	var/path_prefix = replacetext(replacetext("[type]", "/datum/unit_test/screenshot", ""), "/", "_")
+	var/path_prefix = replacetext(replacetext("[type]", "/datum/unit_test/screenshot/", ""), "/", "_")
 	name = replacetext(name, "/", "_")
 
 	var/filename = "code/modules/unit_tests/screenshots/data/[path_prefix]_[name].png"

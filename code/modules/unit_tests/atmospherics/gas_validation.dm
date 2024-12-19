@@ -1,4 +1,5 @@
 /datum/unit_test/atmospherics/gas_validation
+	name = "ATMOS: XGM Gasses must have valid configuration"
 
 /datum/unit_test/atmospherics/gas_validation/Run()
 	for(var/gas_id in xgm_gas_data.gases)

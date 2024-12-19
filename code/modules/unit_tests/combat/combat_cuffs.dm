@@ -1,5 +1,6 @@
 /// Tests that handcuffs can be applied.
 /datum/unit_test/combat/apply_cuffs
+	name = "LONGER COMBAT/HANDCUFFS: Handcuffs Should Apply"
 	priority = TEST_LONGER
 
 /datum/unit_test/combat/apply_cuffs/Run()
@@ -20,6 +21,7 @@
 
 /// Tests handcuffed (HANDS_BLOCKED) mobs cannot punch
 /datum/unit_test/combat/handcuff_punch
+	name = "COMBAT/HANDCUFFS: Cuffed Mobs Can't Punch"
 
 /datum/unit_test/combat/handcuff_punch/Run()
 	var/mob/living/carbon/human/attacker = allocate(/mob/living/carbon/human/consistent)
@@ -39,6 +41,8 @@
 
 /// Tests handcuffed (HANDS_BLOCKED) monkeys can still bite despite being cuffed
 /datum/unit_test/combat/handcuff_bite
+	name = "COMBAT/HANDCUFFS: Cuffed Monkeys Can't Bite"
+
 
 /datum/unit_test/combat/handcuff_bite/Run()
 	var/mob/living/carbon/human/attacker = allocate(/mob/living/carbon/human/consistent)

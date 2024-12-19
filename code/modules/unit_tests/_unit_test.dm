@@ -18,6 +18,10 @@ GLOBAL_VAR(test_log)
 GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 
 /datum/unit_test
+	/// Optional 'Descriptive Name' that replaces the typepath in log messages.
+	var/name = null
+
+
 	//Bit of metadata for the future maybe
 	var/list/procs_tested
 
@@ -115,7 +119,7 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 			test_log_prefix = TEST_OUTPUT_MAGENTA("BAD STATUS [test.test_status]")
 
 	var/list/log_entry = list(
-		"[test_log_prefix]: [test_path] [(test.test_status != UNIT_TEST_SKIPPED ? "[duration / 10]s" : "| [test.skip_reason]")]",
+		"[test_log_prefix]: [test.name || test_path] [(test.test_status != UNIT_TEST_SKIPPED ? "[duration / 10]s" : "| [test.skip_reason]")]",
 	)
 	var/list/fail_reasons = test.fail_reasons
 	var/map_name = SSmapping.config.map_name

@@ -1,5 +1,6 @@
 /// Test that items can block unarmed attacks
 /datum/unit_test/combat/unarmed_blocking
+	name = "COMBAT/BLOCKING: Items Must Block Unarmed Attacks"
 
 /datum/unit_test/combat/unarmed_blocking/Run()
 	var/mob/living/carbon/human/consistent/attacker = ALLOCATE_BOTTOM_LEFT()
@@ -15,6 +16,8 @@
 
 /// Test that items can block weapon attacks
 /datum/unit_test/combat/armed_blocking
+	name = "COMBAT/BLOCKING: Items Must Block Armed Attacks"
+
 
 /datum/unit_test/combat/armed_blocking/Run()
 	var/mob/living/carbon/human/consistent/attacker = ALLOCATE_BOTTOM_LEFT()

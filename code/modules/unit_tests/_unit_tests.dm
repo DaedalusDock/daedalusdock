@@ -74,6 +74,7 @@
 #define ALLOCATE_BOTTOM_LEFT(arguments...) allocate(__IMPLIED_TYPE__, run_loc_floor_bottom_left, ##arguments)
 
 #include "achievements.dm"
+#include "adenosine.dm"
 #include "anchored_mobs.dm"
 #include "anonymous_themes.dm"
 #include "area_contents.dm"

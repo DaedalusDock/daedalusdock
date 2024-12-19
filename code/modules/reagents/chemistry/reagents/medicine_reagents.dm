@@ -976,3 +976,54 @@
 
 	if(prob(3))
 		C.vomit(50, FALSE, FALSE, 1, purge_ratio = 0.2)
+
+/datum/reagent/medicine/adenosine
+	name = "Adenosine"
+	description = "A pharmaceutical used to lower a patient's heartrate. Can be used to restart hearts when dosed correctly."
+	reagent_state = LIQUID
+	color = "#7F10C0"
+	metabolization_rate = 0.5
+
+	overdose_threshold = 10
+
+/datum/reagent/medicine/adenosine/affect_blood(mob/living/carbon/C, removed)
+	if(overdosed)
+		return
+
+	if(current_cycle <= 3) // Seconds 1-6 do nothing. (0.5 to 1.5u)
+		return
+
+	if(current_cycle <= 7) // Seconds 8-14 stop ya heart. (2 to 3.5)
+		if(C.set_heartattack(TRUE))
+			log_health(C, "Heart stopped due to adenosine misdose.")
+		return
+
+	if(current_cycle == 8) // Restart heart after 16 seconds (exactly 4u)
+		if(C.set_heartattack(FALSE))
+			log_health(C, "Heart restarted due to adenosine.")
+		return
+
+	if(current_cycle in 9 to 20) // 4.5u to 10u is a safe buffer.
+		return
+
+	if(!prob(25)) // Only runs after 10 units have been processed.
+		return
+
+	switch(rand(1,10))
+		if(1 to 7)
+			C.losebreath += 4
+		if(8 to 9)
+			C.adjustOxyLoss(rand(3, 4), FALSE)
+			. = TRUE
+		if(10)
+			if(C.set_heartattack(TRUE))
+				log_health(C, "Heart stopped due to improper adenosine dose.")
+
+/datum/reagent/medicine/adenosine/overdose_process(mob/living/carbon/C)
+	if(C.set_heartattack(TRUE))
+		log_health(C, "Heart stopped due to adenosine overdose.")
+
+	if(prob(25))
+		C.losebreath += 4
+		C.adjustOxyLoss(rand(5,25), 0)
+	return TRUE

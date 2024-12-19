@@ -686,38 +686,6 @@
 		C.bloodstream.add_reagent(/datum/reagent/toxin/histamine,rand(1,3))
 		return
 
-/datum/reagent/toxin/initropidril
-	name = "Initropidril"
-	description = "A powerful poison with insidious effects. It can cause stuns, lethal breathing failure, and cardiac arrest."
-	silent_toxin = TRUE
-	reagent_state = LIQUID
-	color = "#7F10C0"
-	metabolization_rate = 0.5 * REAGENTS_METABOLISM
-	toxpwr = 2.5
-	chemical_flags = REAGENT_NO_RANDOM_RECIPE
-
-/datum/reagent/toxin/initropidril/affect_blood(mob/living/carbon/C, removed)
-	if(prob(25))
-		var/picked_option = rand(1,3)
-		switch(picked_option)
-			if(1)
-				C.Paralyze(60)
-				. = TRUE
-			if(2)
-				C.losebreath += 10
-				C.adjustOxyLoss(rand(5,25), 0)
-				. = TRUE
-			if(3)
-				if(C.set_heartattack(TRUE))
-					log_health(C, "Heart stopped due to initropidil.")
-					if(C.stat < UNCONSCIOUS)
-						C.visible_message(span_userdanger("[C] clutches at [C.p_their()] chest!"))
-				else
-					C.losebreath += 10
-					C.adjustOxyLoss(rand(5,25), 0)
-					. = TRUE
-	return ..() || .
-
 /datum/reagent/toxin/pancuronium
 	name = "Pancuronium"
 	description = "An undetectable toxin that swiftly incapacitates its victim. May also cause breathing failure."

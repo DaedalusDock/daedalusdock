@@ -1,5 +1,6 @@
 /datum/unit_test/screenshot
 	abstract_type = /datum/unit_test/screenshot
+	priority = TEST_LONGER
 
 
 /datum/unit_test/screenshot/proc/test_screenshot(name, icon/icon)
@@ -25,3 +26,18 @@
 		fcopy(icon, "data/screenshots_new/[path_prefix]_[name].png")
 
 		log_test("[path_prefix]_[name] was put in data/screenshots_new")
+
+/datum/unit_test/screenshot/proc/get_flat_icon_for_all_directions(atom/thing)
+	var/icon/output = icon('icons/effects/effects.dmi', "nothing")
+
+	for (var/direction in GLOB.cardinals)
+		var/icon/partial = getFlatIcon(thing, defdir = direction, no_anim = TRUE)
+		output.Insert(partial, dir = direction)
+
+	return output
+
+/datum/unit_test/screenshot/proc/make_dummy(species, job_outfit)
+	var/mob/living/carbon/human/dummy/consistent/dummy = allocate(/mob/living/carbon/human/dummy/consistent)
+	dummy.set_species(species)
+	dummy.equipOutfit(job_outfit, visualsOnly = TRUE)
+	return dummy

@@ -1,5 +1,6 @@
 /// A screenshot test to make sure every antag icon in the preferences menu is consistent
 /datum/unit_test/screenshot/screenshot_antag_icons
+	name = "SCREENSHOTS: Antag Portraits"
 
 /datum/unit_test/screenshot/screenshot_antag_icons/Run()
 	var/datum/asset/spritesheet/antagonists/antagonists = get_asset_datum(/datum/asset/spritesheet/antagonists)

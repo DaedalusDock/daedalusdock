@@ -984,7 +984,7 @@
 	color = "#7F10C0"
 	metabolization_rate = 0.5
 
-	overdose_threshold = 10
+	overdose_threshold = 15
 
 /datum/reagent/medicine/adenosine/affect_blood(mob/living/carbon/C, removed)
 	if(overdosed)

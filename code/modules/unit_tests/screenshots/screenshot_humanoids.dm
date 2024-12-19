@@ -2,6 +2,10 @@
 /datum/unit_test/screenshot/screenshot_humanoids
 
 /datum/unit_test/screenshot/screenshot_humanoids/Run()
+
+	//Create a github job collapse category.
+	log_test("::group::[type]")
+
 	// Test lizards as their own thing so we can get more coverage on their features
 
 	var/mob/living/carbon/human/lizard = allocate(/mob/living/carbon/human/dummy/consistent)
@@ -29,6 +33,8 @@
 	// The rest of the species
 	for (var/datum/species/species_type as anything in subtypesof(/datum/species) - /datum/species/moth - /datum/species/lizard)
 		test_screenshot("[species_type]", get_flat_icon_for_all_directions(make_dummy(species_type, /datum/outfit/job/assistant/consistent)))
+
+	log_test("::endgroup::")
 
 /datum/unit_test/screenshot/screenshot_humanoids/proc/get_flat_icon_for_all_directions(atom/thing)
 	var/icon/output = icon('icons/effects/effects.dmi', "nothing")

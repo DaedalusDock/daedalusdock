@@ -4,12 +4,17 @@
 /datum/unit_test/screenshot/screenshot_antag_icons/Run()
 	var/datum/asset/spritesheet/antagonists/antagonists = get_asset_datum(/datum/asset/spritesheet/antagonists)
 
+	//Create a github job collapse category.
+	log_test("::group::[type]")
+
 	for (var/antag_icon_key in antagonists.antag_icons)
 		var/icon/reference_icon = antagonists.antag_icons[antag_icon_key]
 
 		var/icon/icon = new()
 		icon.Insert(reference_icon, null, SOUTH, 1)
 		test_screenshot(antag_icon_key, icon)
+
+	log_test("::endgroup::")
 
 /// Sprites generated for the antagonists panel
 /datum/asset/spritesheet/antagonists

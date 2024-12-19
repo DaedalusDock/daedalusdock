@@ -110,7 +110,7 @@
 
 
 /datum/unit_test/atmospherics/machinery/should_conserve_moles/pump_gas
-	name = "ATMOS MACHINERY: pump_gas() Should Conserves Moles"
+	name = "ATMOS/MACHINERY: pump_gas() Should Conserves Moles"
 
 /datum/unit_test/atmospherics/machinery/should_conserve_moles/pump_gas/Run()
 	for(var/case_name in test_cases)
@@ -125,7 +125,7 @@
 	return 1
 
 /datum/unit_test/atmospherics/machinery/should_conserve_moles/pump_gas_passive
-	name = "ATMOS MACHINERY: pump_gas_passive() Should Conserves Moles"
+	name = "ATMOS/MACHINERY: pump_gas_passive() Should Conserves Moles"
 
 /datum/unit_test/atmospherics/machinery/should_conserve_moles/pump_gas_passive/Run()
 	for(var/case_name in test_cases)
@@ -140,7 +140,7 @@
 	return 1
 
 /datum/unit_test/atmospherics/machinery/should_conserve_moles/scrub_gas
-	name = "ATMOS MACHINERY: scrub_gas() Should Conserves Moles"
+	name = "ATMOS/MACHINERY: scrub_gas() Should Conserves Moles"
 
 /datum/unit_test/atmospherics/machinery/should_conserve_moles/scrub_gas/Run()
 	var/list/filtering = xgm_gas_data.gases
@@ -157,7 +157,7 @@
 	return 1
 
 /datum/unit_test/atmospherics/machinery/should_conserve_moles/filter_gas
-	name = "ATMOS MACHINERY: filter_gas() Should Conserves Moles"
+	name = "ATMOS/MACHINERY: filter_gas() Should Conserves Moles"
 
 /datum/unit_test/atmospherics/machinery/should_conserve_moles/filter_gas/Run()
 	var/list/filtering = xgm_gas_data.gases
@@ -174,7 +174,7 @@
 	return 1
 
 /datum/unit_test/atmospherics/machinery/should_conserve_moles/filter_gas_multi
-	name = "ATMOS MACHINERY: filter_gas_multi() Should Conserves Moles"
+	name = "ATMOS/MACHINERY: filter_gas_multi() Should Conserves Moles"
 
 /datum/unit_test/atmospherics/machinery/should_conserve_moles/filter_gas_multi/Run()
 	for(var/case_name in test_cases)
@@ -193,7 +193,7 @@
 	return 1
 
 /datum/unit_test/atmospherics/machinery/should_conserve_moles/mix_gas
-	name = "ATMOS MACHINERY: mix_gas() Should Conserves Moles"
+	name = "ATMOS/MACHINERY: mix_gas() Should Conserves Moles"
 
 /datum/unit_test/atmospherics/machinery/should_conserve_moles/mix_gas/Run()
 	for(var/case_name in test_cases)

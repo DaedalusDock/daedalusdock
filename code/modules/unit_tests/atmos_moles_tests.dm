@@ -1,7 +1,7 @@
 #define ALL_GASIDS xgm_gas_data.gases
 
 /datum/unit_test/atmos_machinery
-	//template = /datum/unit_test/atmos_machinery
+	abstract_type = /datum/unit_test/atmos_machinery
 	var/list/test_cases = list()
 
 /datum/unit_test/atmos_machinery/Run()

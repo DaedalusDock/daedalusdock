@@ -1,4 +1,4 @@
-/datum/unit_test/adenosine
+/datum/unit_test/adenosine/Run()
 	var/mob/living/carbon/human/victim = ALLOCATE_BOTTOM_LEFT()
 
 	TEST_ASSERT(!victim.undergoing_cardiac_arrest(), "Wtf why is a freshly spawned human undergoing cardiac arrest.")

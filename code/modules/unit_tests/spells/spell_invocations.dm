@@ -3,6 +3,7 @@
  * invocation type and invocation setup.
  */
 /datum/unit_test/spells/must_have_valid_invocation_setup
+	name = "SPELLS: Spells Should Have Valid Casting Configuration"
 
 /datum/unit_test/spells/must_have_valid_invocation_setup/Run()
 

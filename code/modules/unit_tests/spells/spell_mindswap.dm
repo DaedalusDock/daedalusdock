@@ -6,6 +6,7 @@
  * to the new body on cast.
  */
 /datum/unit_test/spells/mind_swap_should_swap_minds
+	name = "SPELLS: Mindswap Should Properly Swap Minds"
 
 /datum/unit_test/spells/mind_swap_should_swap_minds/Run()
 

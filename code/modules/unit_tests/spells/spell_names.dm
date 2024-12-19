@@ -12,6 +12,7 @@
  * "Deadly Magic Missile" for a subtype of Magic Missile that does damage, etc.
  */
 /datum/unit_test/spells/must_have_unique_names
+	name = "SPELLS: Spells Must Have Unique Names"
 
 /datum/unit_test/spells/must_have_unique_names/Run()
 

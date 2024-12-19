@@ -1,7 +1,7 @@
 /// Test that items can block unarmed attacks
 /datum/unit_test/combat/unarmed_blocking
 
-/datum/unit_test/unarmed_blocking/Run()
+/datum/unit_test/combat/unarmed_blocking/Run()
 	var/mob/living/carbon/human/consistent/attacker = ALLOCATE_BOTTOM_LEFT()
 	var/mob/living/carbon/human/consistent/victim = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/chair/chair = ALLOCATE_BOTTOM_LEFT()

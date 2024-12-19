@@ -131,12 +131,14 @@
 	throw_mode = THROW_MODE_DISABLED
 	if(hud_used)
 		hud_used.throw_icon.icon_state = "act_throw_off"
+	update_mouse_pointer()
 
 
 /mob/living/carbon/proc/throw_mode_on(mode = THROW_MODE_TOGGLE)
 	throw_mode = mode
 	if(hud_used)
 		hud_used.throw_icon.icon_state = "act_throw_on"
+	update_mouse_pointer()
 
 /mob/proc/throw_item(atom/target)
 	SEND_SIGNAL(src, COMSIG_MOB_THROW, target)
@@ -247,7 +249,7 @@
 
 		)
 
-		if(do_after(src, src, buckle_cd, timed_action_flags = IGNORE_HELD_ITEM))
+		if(do_after(src, src, buckle_cd, timed_action_flags = DO_IGNORE_HELD_ITEM))
 			if(!buckled)
 				return
 			return !!buckled.user_unbuckle_mob(src,src)
@@ -306,7 +308,7 @@
 		visible_message(span_warning("[src] attempts to remove [I]!"))
 		to_chat(src, span_notice("You attempt to remove [I]... (This will take around [DisplayTimeText(breakouttime)] and you need to stand still.)"))
 
-		if(do_after(src, src, breakouttime, timed_action_flags = IGNORE_HELD_ITEM))
+		if(do_after(src, src, breakouttime, timed_action_flags = DO_IGNORE_HELD_ITEM))
 			. = clear_cuffs(I, cuff_break)
 		else
 			to_chat(src, span_warning("You fail to remove [I]!"))
@@ -316,7 +318,7 @@
 		visible_message(span_warning("[src] is trying to break [I]!"))
 		to_chat(src, span_notice("You attempt to break [I]... (This will take around 5 seconds and you need to stand still.)"))
 
-		if(do_after(src, src, breakouttime, timed_action_flags = IGNORE_HELD_ITEM))
+		if(do_after(src, src, breakouttime, timed_action_flags = DO_IGNORE_HELD_ITEM))
 			. = clear_cuffs(I, cuff_break)
 		else
 			to_chat(src, span_warning("You fail to break [I]!"))

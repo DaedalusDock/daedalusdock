@@ -394,7 +394,7 @@
 /atom/movable/screen/combattoggle
 	name = "toggle combat mode"
 	icon = 'icons/hud/screen_midnight.dmi'
-	icon_state = "combat_off"
+	icon_state = "help"
 	screen_loc = ui_combat_toggle
 
 /atom/movable/screen/combattoggle/Initialize(mapload)
@@ -405,6 +405,7 @@
 	. = ..()
 	if(.)
 		return FALSE
+
 	if(isliving(usr))
 		var/mob/living/owner = usr
 		owner.set_combat_mode(!owner.combat_mode, FALSE)
@@ -414,7 +415,11 @@
 	var/mob/living/user = hud?.mymob
 	if(!istype(user) || !user.client)
 		return ..()
-	icon_state = user.combat_mode ? "combat" : "combat_off" //Treats the combat_mode
+
+	if(user.client.keys_held["Ctrl"])
+		icon_state = "grab"
+	else
+		icon_state = user.combat_mode ? "harm" : "help" //Treats the combat_mode
 	return ..()
 
 //Version of the combat toggle with the flashy overlay

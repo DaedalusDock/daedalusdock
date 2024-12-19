@@ -407,8 +407,9 @@
  * * invdrop - Invdrop is used to prevent stuff in pockets dropping. only set to false if it's going to immediately be replaced.
  * * silent - If TRUE, will not play the item's drop sound.
  * * use_unequip_delay - If TRUE, will run unequip_delay_self_check()
+ * * slot - DO NOT USE THIS ARG! It's used because of the awful way overriding this proc works to save on proc calls.
 */
-/mob/proc/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE)
+/mob/proc/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE, slot = get_slot_by_item(I))
 	PROTECTED_PROC(TRUE)
 	if(!I) //If there's nothing to drop, the drop is automatically succesfull. If(unEquip) should generally be used to check for TRAIT_NODROP.
 		return TRUE
@@ -420,7 +421,7 @@
 		return FALSE
 
 	var/static/list/exclude_from_unequip_delay = list(null, ITEM_SLOT_RPOCKET, ITEM_SLOT_LPOCKET, ITEM_SLOT_SUITSTORE, ITEM_SLOT_BACKPACK, ITEM_SLOT_HANDS)
-	if(use_unequip_delay && !(get_slot_by_item(I) in exclude_from_unequip_delay) && !unequip_delay_self_check(I))
+	if(use_unequip_delay && !(slot in exclude_from_unequip_delay) && !unequip_delay_self_check(I))
 		return FALSE
 
 	var/hand_index = get_held_index_of_item(I)
@@ -436,13 +437,13 @@
 		I.plane = initial(I.plane)
 		I.appearance_flags &= ~NO_CLIENT_COLOR
 
-		if(!no_move && !(I.item_flags & DROPDEL)) //item may be moved/qdel'd immedietely, don't bother moving it
+		I.dropped(src, silent)
+
+		if(!no_move && !(I.item_flags & DROPDEL) && !QDELETED(I)) //item may be moved/qdel'd immedietely, don't bother moving it
 			if (isnull(newloc))
 				I.moveToNullspace()
 			else
 				I.forceMove(newloc)
-
-		I.dropped(src, silent)
 
 	SEND_SIGNAL(I, COMSIG_ITEM_POST_UNEQUIP, force, newloc, no_move, invdrop, silent)
 	SEND_SIGNAL(src, COMSIG_MOB_UNEQUIPPED_ITEM, I, force, newloc, no_move, invdrop, silent)
@@ -545,6 +546,10 @@
 		obscured |= ITEM_SLOT_HEAD
 
 	return obscured
+
+/// Update any visuals relating to an item when it's equipped, unequipped, or it's flags_inv changes.
+/mob/living/proc/update_slots_for_item(obj/item/I, equipped_slot = null, force_obscurity_update)
+	return
 
 /obj/item/proc/equip_to_best_slot(mob/M)
 	if(M.equip_to_appropriate_slot(src))
@@ -703,7 +708,7 @@
 /obj/item/proc/do_equip_wait(mob/living/L)
 	var/flags = DO_PUBLIC
 	if(equip_self_flags & EQUIP_ALLOW_MOVEMENT)
-		flags |= IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE
+		flags |= DO_IGNORE_USER_LOC_CHANGE | DO_IGNORE_TARGET_LOC_CHANGE
 
 	if(equip_self_flags & EQUIP_SLOWDOWN)
 		L.add_movespeed_modifier(/datum/movespeed_modifier/equipping)

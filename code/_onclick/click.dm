@@ -169,7 +169,7 @@
 			UnarmedAttack(item_atom, TRUE, modifiers)
 
 	//Standard reach turf to turf or reaching inside storage
-	if(A.IsReachableBy(src, W))
+	if(A.IsReachableBy(src, W?.reach))
 		if(W)
 			W.melee_attack_chain(src, A, params)
 		else
@@ -218,11 +218,11 @@
  * The inital use case is glass sheets breaking in to shards when the floor is hit.
  * Args:
  * * user: The movable trying to reach us.
- * * tool: An optional item being used.
+ * * reacher_range: How far the reacher can reach.
  * * depth: How deep nested inside of an atom contents stack an object can be.
  * * direct_access: Do not override. Used for recursion.
  */
-/atom/proc/IsReachableBy(atom/movable/user, obj/item/tool, depth = INFINITY, direct_access = user.DirectAccess())
+/atom/proc/IsReachableBy(atom/movable/user, reacher_range = 1, depth = INFINITY, direct_access = user.DirectAccess())
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(isnull(user))
@@ -231,8 +231,9 @@
 	if(src in direct_access)
 		return TRUE
 
-	if(isturf(loc) || isturf(src) || HAS_TRAIT(src, TRAIT_SKIP_BASIC_REACH_CHECK))
-		if(CheckReachableAdjacency(user, tool))
+	// This is a micro-opt, if any turf ever returns false from IsContainedAtomAccessible, change this.
+	if(isturf(loc) || isturf(src))
+		if(CheckReachableAdjacency(user, reacher_range))
 			return TRUE
 
 	depth--
@@ -242,11 +243,11 @@
 	if(isnull(loc) || isarea(loc) || !loc.IsContainedAtomAccessible(src, user))
 		return FALSE
 
-	return loc.IsReachableBy(user, tool, depth, direct_access)
+	return loc.IsReachableBy(user, reacher_range, depth, direct_access)
 
 /// Checks if a reacher is adjacent to us.
-/atom/proc/CheckReachableAdjacency(atom/movable/reacher, obj/item/tool)
-	return reacher.Adjacent(src) || (tool && CheckToolReach(reacher, src, tool.reach))
+/atom/proc/CheckReachableAdjacency(atom/movable/reacher, reacher_range)
+	return reacher.Adjacent(src) || ((reacher_range > 1) && RangedReachCheck(reacher, src, reacher_range))
 
 /// Returns TRUE if an atom contained within our contents is reachable.
 /atom/proc/IsContainedAtomAccessible(atom/contained, atom/movable/user)
@@ -254,6 +255,22 @@
 
 /atom/movable/IsContainedAtomAccessible(atom/contained, atom/movable/user)
 	return !!atom_storage
+
+/mob/living/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	. = ..()
+	if(.)
+		return
+
+	if(!isliving(user))
+		return
+
+	if(!isitem(contained))
+		return
+
+	var/mob/living/living_user = user
+	var/obj/item/I = contained
+	if(I.can_pickpocket(user))
+		return I.atom_storage == living_user.active_storage
 
 /atom/movable/proc/DirectAccess()
 	return list(src, loc)
@@ -270,27 +287,29 @@
 /turf/AllowClick()
 	return TRUE
 
-/proc/CheckToolReach(atom/movable/here, atom/movable/there, reach)
+/// Called by IsReachableBy() to check for ranged reaches.
+/proc/RangedReachCheck(atom/movable/here, atom/movable/there, reach)
 	if(!here || !there)
-		return
-	switch(reach)
-		if(0)
-			return FALSE
-		if(1)
-			return FALSE //here.Adjacent(there)
-		if(2 to INFINITY)
-			var/obj/dummy = new(get_turf(here))
-			dummy.pass_flags |= PASSTABLE
-			dummy.invisibility = INVISIBILITY_ABSTRACT
-			for(var/i in 1 to reach) //Limit it to that many tries
-				var/turf/T = get_step(dummy, get_dir(dummy, there))
-				if(there.IsReachableBy(dummy))
-					qdel(dummy)
-					return TRUE
-				if(!dummy.Move(T)) //we're blocked!
-					qdel(dummy)
-					return
-			qdel(dummy)
+		return FALSE
+
+	if(reach <= 1)
+		return FALSE
+
+	// Prevent infinite loop.
+	if(istype(here, /obj/effect/abstract/reach_checker))
+		return FALSE
+
+	var/obj/effect/abstract/reach_checker/dummy = new(get_turf(here))
+	for(var/i in 1 to reach) //Limit it to that many tries
+		var/turf/T = get_step(dummy, get_dir(dummy, there))
+		if(there.IsReachableBy(dummy))
+			. = TRUE
+			break
+
+		if(!dummy.Move(T)) //we're blocked!
+			break
+
+	qdel(dummy)
 
 /// Default behavior: ignore double clicks (the second click that makes the doubleclick call already calls for a normal click)
 /mob/proc/DblClickOn(atom/A, params)
@@ -386,6 +405,8 @@
 		ML.pulled(src)
 	if(!can_interact(user))
 		return FALSE
+
+	return TRUE
 
 /mob/living/CtrlClick(mob/user, list/params)
 	if(!isliving(user) || !IsReachableBy(user) || user.incapacitated())

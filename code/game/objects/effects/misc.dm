@@ -116,3 +116,7 @@
 	if(!ismob(loc))
 		return INITIALIZE_HINT_QDEL
 
+/// Used by RangedReachCheck
+/obj/effect/abstract/reach_checker
+	pass_flags = PASSTABLE
+	invisibility = INVISIBILITY_ABSTRACT

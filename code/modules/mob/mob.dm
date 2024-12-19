@@ -754,8 +754,17 @@
 /// possibly delayed verb that finishes the pointing process starting in [/mob/verb/pointed()].
 /// either called immediately or in the tick after pointed() was called, as per the [DEFAULT_QUEUE_OR_CALL_VERB()] macro
 /mob/proc/_pointed(atom/pointing_at)
-	if(client && !(pointing_at in view(client.view, src)))
-		return FALSE
+	if(client)
+		var/list/viewlist = view(client.view, src)
+		if(!(pointing_at in viewlist))
+			if(!ismovable(pointing_at))
+				return FALSE
+
+			// This can also be a turf but, vis_contents bs
+			var/atom/movable/contained_within = pointing_at.loc
+			if(!(pointing_at in contained_within?.vis_contents) || !(contained_within in viewlist))
+				return FALSE
+
 
 	point_at(pointing_at)
 
@@ -1304,19 +1313,23 @@
 		. = client.mouse_down_icon
 
 	// Second, mouse up icons
-	if(isnull(.) && (client.mouse_down == FALSE) && client.mouse_up_icon)
+	else if((client.mouse_down == FALSE) && client.mouse_up_icon)
 		. = client.mouse_up_icon
 
 	// Third, mouse override icons
-	if(isnull(.) && client.mouse_override_icon)
+	else if(client.mouse_override_icon)
 		. = client.mouse_override_icon
 
 	// Fourth, examine icon
-	if(isnull(.) && examine_cursor_icon && client.keys_held["Shift"])
+	else if(examine_cursor_icon && client.keys_held["Shift"])
 		. = examine_cursor_icon
 
+	// Fifth, throw_mode
+	else if(throw_mode != THROW_MODE_DISABLED)
+		. = 'icons/effects/mouse_pointers/interact.dmi'
+
 	// Last, the mob decides.
-	if(isnull(.))
+	else
 		. = get_mouse_pointer_icon()
 		. ||= 'icons/effects/mouse_pointers/default.dmi'
 

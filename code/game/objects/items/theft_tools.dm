@@ -69,8 +69,8 @@
 		STOP_PROCESSING(SSobj, core)
 		icon_state = "core_container_sealed"
 		playsound(src, 'sound/items/deconstruct.ogg', 60, TRUE)
-		if(ismob(loc))
-			to_chat(loc, span_warning("[src] is permanently sealed, [core]'s radiation is contained."))
+		if(equipped_to)
+			to_chat(equipped_to, span_warning("[src] is permanently sealed, [core]'s radiation is contained."))
 
 /obj/item/nuke_core_container/attackby(obj/item/nuke_core/core, mob/user)
 	if(istype(core))
@@ -251,8 +251,8 @@
 		STOP_PROCESSING(SSobj, sliver)
 		icon_state = "core_container_sealed"
 		playsound(src, 'sound/items/Deconstruct.ogg', 60, TRUE)
-		if(ismob(loc))
-			to_chat(loc, span_warning("[src] is permanently sealed, [sliver] is safely contained."))
+		if(equipped_to)
+			to_chat(equipped_to, span_warning("[src] is permanently sealed, [sliver] is safely contained."))
 
 /obj/item/nuke_core_container/supermatter/attackby(obj/item/hemostat/supermatter/tongs, mob/user)
 	if(istype(tongs))

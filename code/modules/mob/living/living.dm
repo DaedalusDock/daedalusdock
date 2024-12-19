@@ -506,7 +506,7 @@
 
 /mob/living/proc/get_up(instant = FALSE)
 	set waitfor = FALSE
-	if(!instant && !do_after(src, src, 1 SECONDS, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_TARGET_LOC_CHANGE|IGNORE_HELD_ITEM), extra_checks = CALLBACK(src, TYPE_PROC_REF(/mob/living, rest_checks_callback)), interaction_key = DOAFTER_SOURCE_GETTING_UP))
+	if(!instant && !do_after(src, src, 1 SECONDS, timed_action_flags = (DO_IGNORE_USER_LOC_CHANGE|DO_IGNORE_TARGET_LOC_CHANGE|DO_IGNORE_HELD_ITEM), extra_checks = CALLBACK(src, TYPE_PROC_REF(/mob/living, rest_checks_callback)), interaction_key = DOAFTER_SOURCE_GETTING_UP))
 		return
 	if(resting || body_position == STANDING_UP || HAS_TRAIT(src, TRAIT_FLOORED))
 		return
@@ -528,25 +528,33 @@
 /mob/living/proc/on_lying_down(new_lying_angle)
 	if(layer == initial(layer)) //to avoid things like hiding larvas.
 		layer = LYING_MOB_LAYER //so mob lying always appear behind standing mobs
+
 	ADD_TRAIT(src, TRAIT_UI_BLOCKED, LYING_DOWN_TRAIT)
 	ADD_TRAIT(src, TRAIT_PULL_BLOCKED, LYING_DOWN_TRAIT)
+
 	set_density(FALSE) // We lose density and stop bumping passable dense things.
+
 	if(HAS_TRAIT(src, TRAIT_FLOORED) && !(dir & (NORTH|SOUTH)))
 		setDir(pick(NORTH, SOUTH)) // We are and look helpless.
-	body_position_pixel_y_offset = PIXEL_Y_OFFSET_LYING
-	playsound(loc, 'goon/sounds/body_thud.ogg', ishuman(src) ? 40 : 15, 1, 0.3)
 
+	body_position_pixel_y_offset = PIXEL_Y_OFFSET_LYING
+
+	playsound(loc, 'goon/sounds/body_thud.ogg', ishuman(src) ? 40 : 15, 1, 0.3)
+	throw_alert("lying_down", /atom/movable/screen/alert/lying_down)
 
 /// Proc to append behavior related to lying down.
 /mob/living/proc/on_standing_up()
 	if(layer == LYING_MOB_LAYER)
 		layer = initial(layer)
+
 	set_density(initial(density)) // We were prone before, so we become dense and things can bump into us again.
+
 	REMOVE_TRAIT(src, TRAIT_UI_BLOCKED, LYING_DOWN_TRAIT)
 	REMOVE_TRAIT(src, TRAIT_PULL_BLOCKED, LYING_DOWN_TRAIT)
+
 	body_position_pixel_y_offset = 0
 
-
+	clear_alert("lying_down")
 
 //Recursive function to find everything a mob is holding. Really shitty proc tbh.
 /mob/living/get_contents()
@@ -822,6 +830,15 @@
 		set_lying_angle(90)
 	else if(direct & WEST)
 		set_lying_angle(270)
+
+/mob/living/setDir(ndir)
+	. = ..()
+	if(isnull(.))
+		return
+
+	for(var/atom/movable/AM as anything in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE])
+		if(UNLINT(length(AM.atom_storage.is_using)))
+			AM.atom_storage.update_viewability()
 
 /mob/living/carbon/alien/humanoid/lying_angle_on_movement(direct)
 	return

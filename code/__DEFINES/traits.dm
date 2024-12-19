@@ -121,9 +121,6 @@
 Remember to update _globalvars/traits.dm if you're adding/removing/renaming traits.
 */
 
-/// An item is ALWAYS considered baseline reachable and will pipe into CanBeReached().
-#define TRAIT_SKIP_BASIC_REACH_CHECK "skip_basic_reach_check"
-
 //mob traits
 /// Forces the user to stay unconscious.
 #define TRAIT_KNOCKEDOUT "knockedout"
@@ -625,6 +622,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_HIDES_VOICE "hides_voice"
 /// Wearing this item in the mask slot will make your voice your current ID, or unknown
 #define TRAIT_REPLACES_VOICE "replaces_voice"
+/// Pickpocketing this item takes no time.
+#define TRAIT_INSTANT_PICKPOCKET "instant_pickpocket"
 
 //quirk traits
 #define TRAIT_ALCOHOL_TOLERANCE "alcohol_tolerance"

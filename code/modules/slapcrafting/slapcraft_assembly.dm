@@ -93,8 +93,8 @@
 		return
 
 	var/mob/living/holder
-	if(ismob(loc))
-		holder = loc
+	if(equipped_to)
+		holder = equipped_to
 		if(!holder.is_holding(src))
 			holder = null
 

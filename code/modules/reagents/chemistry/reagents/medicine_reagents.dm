@@ -984,18 +984,19 @@
 	color = "#7F10C0"
 	metabolization_rate = 0.5
 
-	overdose_threshold = 15
+	overdose_threshold = 10.1
 
 /datum/reagent/medicine/adenosine/affect_blood(mob/living/carbon/C, removed)
 	if(overdosed)
 		return
 
-	if(current_cycle <= 3) // Seconds 1-6 do nothing. (0.5 to 1.5u)
+	if(current_cycle < 5) // Seconds 1-8 do nothing. (0.5 to 2u)
 		return
 
-	if(current_cycle <= 7) // Seconds 8-14 stop ya heart. (2 to 3.5)
+	if(current_cycle in 5 to 7) // Seconds 10-14 stop ya heart. (2.5 to 3.5)
 		if(C.set_heartattack(TRUE))
 			log_health(C, "Heart stopped due to adenosine misdose.")
+			C.Unconscious(3 SECONDS)
 		return
 
 	if(current_cycle == 8) // Restart heart after 16 seconds (exactly 4u)

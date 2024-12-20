@@ -564,7 +564,6 @@
 #include "code\controllers\subsystem\moods.dm"
 #include "code\controllers\subsystem\mouse_entered.dm"
 #include "code\controllers\subsystem\networks.dm"
-#include "code\controllers\subsystem\nightshift.dm"
 #include "code\controllers\subsystem\npcpool.dm"
 #include "code\controllers\subsystem\overlays.dm"
 #include "code\controllers\subsystem\packetnets.dm"

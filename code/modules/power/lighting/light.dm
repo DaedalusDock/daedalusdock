@@ -53,19 +53,6 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	var/obj/item/stock_parts/cell/cell
 	///If true, this fixture generates a very weak cell at roundstart
 	var/start_with_cell = TRUE
-	///Currently in night shift mode?
-	var/nightshift_enabled = FALSE
-	///Set to FALSE to never let this light get switched to night mode.
-	var/nightshift_allowed = TRUE
-	///Outer radius of the nightshift light
-	var/nightshift_outer_range = 6
-	///Inner, brightest radius of the nightshift light
-	var/nightshift_inner_range = 1.5
-	///Alpha of the nightshift light
-	var/nightshift_light_power = 0.5
-	///Basecolor of the nightshift light
-	var/nightshift_light_color = "#dfac72"
-	var/nightshift_falloff = 1.85
 
 	///If true, the light is in emergency mode
 	var/emergency_mode = FALSE
@@ -92,10 +79,6 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 /obj/machinery/light/Initialize(mapload)
 	. = ..()
 	SET_TRACKING(__TYPE__)
-	if(!mapload) //sync up nightshift lighting for player made lights
-		var/area/local_area = get_area(src)
-		var/obj/machinery/power/apc/temp_apc = local_area.apc
-		nightshift_enabled = temp_apc?.nightshift_lights
 
 	if(start_with_cell && !no_emergency)
 		cell = new/obj/item/stock_parts/cell/emergency_light(src)
@@ -157,9 +140,6 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 
 	if(emergency_mode || firealarm) //PARIAH EDIT END
 		. += mutable_appearance(overlay_icon, "[base_state]_emergency")
-		return
-	if(nightshift_enabled)
-		. += mutable_appearance(overlay_icon, "[base_state]_nightshift")
 		return
 	. += mutable_appearance(overlay_icon, base_state)
 

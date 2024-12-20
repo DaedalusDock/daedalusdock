@@ -11,37 +11,24 @@
 	status = LIGHT_EMPTY
 	update(FALSE, FALSE, FALSE)
 
-/obj/machinery/light/no_nightlight
-	nightshift_enabled = FALSE
-
 /obj/machinery/light/warm
 	bulb_colour = "#fae5c1"
 
-/obj/machinery/light/warm/no_nightlight
-	nightshift_allowed = FALSE
-
 /obj/machinery/light/cold
 	bulb_colour = LIGHT_COLOR_FAINT_BLUE
-	nightshift_light_color = LIGHT_COLOR_FAINT_BLUE
-
-/obj/machinery/light/cold/no_nightlight
-	nightshift_allowed = FALSE
 
 /obj/machinery/light/red
 	bulb_colour = "#FF3232"
-	nightshift_allowed = FALSE
 	no_emergency = TRUE
 	bulb_inner_range = 4
 	bulb_power = 0.7
 
 /obj/machinery/light/blacklight
 	bulb_colour = "#A700FF"
-	nightshift_allowed = FALSE
 	bulb_inner_range = 4
 	bulb_power = 0.8
 
 /obj/machinery/light/dim
-	nightshift_allowed = FALSE
 	bulb_colour = "#FFDDCC"
 	bulb_power = 0.6
 
@@ -53,8 +40,6 @@
 	fitting = "bulb"
 	bulb_inner_range = 1
 	bulb_outer_range = 5
-	nightshift_inner_range = 0.5
-	nightshift_outer_range = 4
 	bulb_colour = "#FFD6AA"
 	desc = "A small lighting fixture."
 	light_type = /obj/item/light/bulb
@@ -75,18 +60,15 @@
 /obj/machinery/light/small/red
 	bulb_colour = "#FF3232"
 	no_emergency = TRUE
-	nightshift_allowed = FALSE
 	bulb_power = 0.8
 
 /obj/machinery/light/small/blacklight
 	bulb_colour = "#A700FF"
-	nightshift_allowed = FALSE
 	bulb_power = 0.9
 
 /obj/machinery/light/small/maintenance
 	color = "#FFCC66"
 	bulb_colour = "#e0a142"
-	nightshift_allowed = FALSE
 	bulb_power = 0.8
 
 /obj/machinery/light/small/maintenance/turn_on(trigger, play_sound)

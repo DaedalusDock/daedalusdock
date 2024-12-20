@@ -169,7 +169,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 				uptake_gas.adjustGas(gasname, -(uptake_gas.gas[gasname]), update=FALSE)
 				added_particles = TRUE
 		if(added_particles)
-			AIR_UPDATE_VALUES(uptake_gas)
+			uptake_gas.garbageCollect()
 
 	//let the particles inside the field react
 	react()
@@ -323,7 +323,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 		if(!plasma)
 			return
 		plasma.temperature = (plasma_temperature/2)
-		AIR_UPDATE_VALUES(plasma)
+		plasma.garbageCollect()
 		T.assume_air(plasma)
 		T.hotspot_expose(plasma_temperature)
 		plasma = null

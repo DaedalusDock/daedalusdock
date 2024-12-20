@@ -141,7 +141,7 @@
 	. = check_breath(breath, forced)
 
 	if(breath?.total_moles)
-		AIR_UPDATE_VALUES(breath)
+		breath.garbageCollect()
 		loc.assume_air(breath)
 
 	var/static/sound/breathing = sound('sound/voice/breathing.ogg', volume = 50, channel = CHANNEL_BREATHING)

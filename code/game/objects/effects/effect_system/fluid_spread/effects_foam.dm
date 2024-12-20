@@ -409,7 +409,7 @@
 			if(I == GAS_OXYGEN || I == GAS_NITROGEN)
 				continue
 			G_gases[I] = 0
-		AIR_UPDATE_VALUES(G)
+		G.garbageCollect()
 		G.merge(new_gas)
 
 	for(var/obj/machinery/atmospherics/components/unary/comp in location)

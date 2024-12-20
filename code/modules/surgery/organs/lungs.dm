@@ -269,7 +269,7 @@
 
 
 	//-- TRACES --//
-	AIR_UPDATE_VALUES(breath)
+	breath.garbageCollect()
 	if(breath.total_moles) // If there's some other shit in the air lets deal with it here.
 
 	// N2O

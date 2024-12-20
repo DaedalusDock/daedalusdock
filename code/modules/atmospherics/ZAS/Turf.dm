@@ -338,7 +338,7 @@
 		if(initial_gas)
 			air.gas = initial_gas.Copy()
 			air.temperature = temperature
-		AIR_UPDATE_VALUES(air)
+		air.garbageCollect()
 
 	else
 		if(air)
@@ -367,7 +367,7 @@
 		else
 			GM.temperature = TCMB
 
-		AIR_UPDATE_VALUES(GM)
+		GM.garbageCollect()
 		SSzas.unsimulated_gas_cache[gas_key] = air
 
 ///Copies this turf's group share from the zone. Usually used before removing it from the zone.

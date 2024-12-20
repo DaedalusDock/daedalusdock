@@ -12,7 +12,12 @@
 	update(FALSE, FALSE, FALSE)
 
 /obj/machinery/light/warm
-	bulb_colour = "#fae5c1"
+	bulb_colour = LIGHTBULB_COLOR_WARM
+
+/obj/machinery/light/warm/bar
+	bulb_inner_range = 1.8
+	bulb_outer_range = 7
+	bulb_power = 0.75
 
 /obj/machinery/light/cold
 	bulb_colour = LIGHT_COLOR_FAINT_BLUE
@@ -47,6 +52,9 @@
 /obj/machinery/light/small/broken
 	status = LIGHT_BROKEN
 	icon_state = "bulb-broken"
+
+/obj/machinery/light/small/bar
+	bulb_colour = LIGHTBULB_COLOR_WARM
 
 /obj/machinery/light/small/built
 	icon_state = "bulb-empty"
@@ -90,20 +98,13 @@ MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/structure/light_construct, 21, 0, 10, -1
 // ---- Tube frames
 MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/built, 21, 0, 10, -10)
 
-// ---- No nightlight tubes
-MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/no_nightlight, 21, 0, 10, -10)
-
 // ---- Warm light tubes
 MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/warm, 21, 0, 10, -10)
 
-// ---- No nightlight warm light tubes
-MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/warm/no_nightlight, 21, 0, 10, -10)
+MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/warm/bar, 21, 0, 10, -10)
 
 // ---- Cold light tubes
 MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/cold, 21, 0, 10, -10)
-
-// ---- No nightlight cold light tubes
-MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/cold/no_nightlight, 21, 0, 10, -10)
 
 // ---- Red tubes
 MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/red, 21, 0, 10, -10)
@@ -117,6 +118,7 @@ MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/dim, 21, 0, 10, -10)
 
 // -------- Bulb lights
 MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/small, 21, 0, 10, -10)
+MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/small/bar, 21, 0, 10, -10)
 
 // ---- Bulb construct
 MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/structure/light_construct/small, 21, 0, 10, -10)

@@ -107,3 +107,7 @@ do { \
 #define LIGHTS_RANDOMLY_BROKEN
 
 #define TURF_IS_DYNAMICALLY_LIT(T) (!(T.always_lit || T.loc.luminosity))
+
+#define LIGHTBULB_COLOR_WHITE "#fefefe"
+#define LIGHTBULB_COLOR_SLIGHTLY_WARM "#fffee0"
+#define LIGHTBULB_COLOR_WARM "#dfac72"

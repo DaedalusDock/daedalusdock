@@ -8631,7 +8631,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "4"
 	},
-/obj/machinery/light/warm/directional/west,
+/obj/machinery/light/warm/bar/directional/west,
 /turf/open/floor/iron,
 /area/station/service/bar)
 "dee" = (
@@ -14754,7 +14754,7 @@
 	dir = 1
 	},
 /obj/machinery/computer/security/telescreen/entertainment/directional/south,
-/obj/machinery/light/warm/directional/south,
+/obj/machinery/light/warm/bar/directional/south,
 /turf/open/floor/iron/white,
 /area/station/commons/lounge)
 "frQ" = (
@@ -20859,7 +20859,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/chair/stool/directional/north,
-/obj/machinery/light/small/directional/west,
+/obj/machinery/light/small/bar/directional/west,
 /turf/open/floor/wood,
 /area/station/commons/lounge)
 "hSw" = (
@@ -27228,7 +27228,7 @@
 /area/station/security/prison/shower)
 "klx" = (
 /obj/structure/chair/stool/directional/south,
-/obj/machinery/light/small/directional/west,
+/obj/machinery/light/small/bar/directional/west,
 /turf/open/floor/wood,
 /area/station/commons/lounge)
 "klE" = (
@@ -29150,7 +29150,7 @@
 	},
 /obj/effect/turf_decal/tile/bar,
 /obj/item/radio/intercom/directional/west,
-/obj/machinery/light/warm/directional/south,
+/obj/machinery/light/warm/bar/directional/south,
 /turf/open/floor/iron,
 /area/station/service/bar)
 "kXf" = (
@@ -30726,7 +30726,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/bar,
-/obj/machinery/light/warm/directional/west,
+/obj/machinery/light/warm/bar/directional/west,
 /turf/open/floor/iron,
 /area/station/commons/lounge)
 "lyp" = (
@@ -31501,7 +31501,7 @@
 "lMo" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light/small/directional/east,
+/obj/machinery/light/small/bar/directional/east,
 /turf/open/floor/wood,
 /area/station/commons/lounge)
 "lMq" = (
@@ -32715,6 +32715,12 @@
 	dir = 1
 	},
 /turf/open/floor/iron,
+/area/station/commons/lounge)
+"mog" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/light/small/bar/directional/south,
+/turf/open/floor/wood,
 /area/station/commons/lounge)
 "mok" = (
 /obj/structure/table,
@@ -43262,7 +43268,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/firealarm/directional/east,
-/obj/machinery/light/warm/directional/east,
+/obj/machinery/light/warm/bar/directional/east,
 /turf/open/floor/iron,
 /area/station/service/bar)
 "qam" = (
@@ -44060,7 +44066,7 @@
 /turf/open/floor/engine/airless,
 /area/station/engineering/supermatter/room)
 "qpS" = (
-/obj/machinery/light/small/directional/east,
+/obj/machinery/light/small/bar/directional/east,
 /turf/open/floor/wood,
 /area/station/commons/lounge)
 "qqa" = (
@@ -45385,7 +45391,7 @@
 /area/station/security/checkpoint/engineering)
 "qPr" = (
 /obj/machinery/restaurant_portal/restaurant,
-/obj/machinery/light/warm/directional/north,
+/obj/machinery/light/warm/bar/directional/north,
 /turf/open/floor/wood,
 /area/station/commons/lounge)
 "qPB" = (
@@ -63652,6 +63658,13 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/greater)
+"xIO" = (
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/obj/machinery/light/small/bar/directional/north,
+/turf/open/floor/wood,
+/area/station/commons/lounge)
 "xJe" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -100941,10 +100954,10 @@ pWd
 lnv
 cem
 qPr
-taP
-fAJ
-fAJ
-osl
+mog
+gBn
+gBn
+xIO
 uQS
 egt
 nlD

@@ -17,6 +17,8 @@
 	material_flags = MATERIAL_EFFECTS
 	novariants = TRUE // Ore stacks handle their icon updates themselves to keep the illusion that there's more going
 
+	abstract_type = /obj/item/stack/ore
+
 	var/list/stack_overlays
 	/// How many points this ore gets you from the ore redemption machine
 	var/points = 0

@@ -8,7 +8,8 @@
 	var/list/turf/failed_turfs = list()
 
 	for(var/obj/machinery/light/fixture in INSTANCES_OF(/obj/machinery/light))
-		if(!(get_area(fixture) in GLOB.the_station_areas))
+		var/area/fixture_area = get_area(fixture)
+		if(!(fixture_area.type in GLOB.the_station_areas))
 			continue //Skip non-station lights.
 
 		var/turf/light_turf = get_turf(fixture)

@@ -4,6 +4,7 @@
 // If you encounter it, well. Good luck and god help you -Francinum
 
 /datum/unit_test/mapping_standards/ladders_must_have_openspace
+	name = "MAPSTANDARDS: Ladders must have openspace"
 
 /datum/unit_test/mapping_standards/ladders_must_have_openspace/Run()
 	if(..()) {return};

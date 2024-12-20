@@ -143,11 +143,7 @@
 
 ///Returns the heat capacity of the gas mix based on the specific heat of the gases.
 /datum/gas_mixture/proc/getHeatCapacity()
-	. = 0
-	for(var/g in gas)
-		. += xgm_gas_data.specific_heat[g] * gas[g]
-	. *= group_multiplier
-
+	return values_dot(xgm_gas_data.specific_heat, gas) * group_multiplier
 
 ///Adds or removes thermal energy. Returns the actual thermal energy change, as in the case of removing energy we can't go below TCMB.
 /datum/gas_mixture/proc/adjustThermalEnergy(thermal_energy)

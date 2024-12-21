@@ -72,7 +72,7 @@
 
 	for(var/path in possible_mutations)
 		possible_mutations -= path
-		possible_mutations += SShydroponics.mutations[path]
+		possible_mutations += SShydroponics.mutation_list[path]
 
 /**
  * Returns the plant's growth state.

@@ -30,7 +30,7 @@
 	for(var/stat in ranges)
 		var/list/stat_range = ranges[stat]
 		var/lower = stat_range[1]
-		var/upper = stat_range[1]
+		var/upper = stat_range[2]
 		if((lower == -INFINITY) && (upper == INFINITY))
 			continue
 		if(!(P.get_effective_stat(stat) in lower to upper))

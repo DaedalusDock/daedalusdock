@@ -4,3 +4,5 @@
 /obj/item/grown/bananapeel/bluespace : /obj/item/grown/bananapeel/bluespace
 /obj/item/seeds/chili/ice : @DELETE
 /obj/item/food/grown/icepepper : @DELETE
+/obj/item/food/grown/citrus/orange_3d : @DELETE
+/obj/item/seeds/orange_3d : @DELETE

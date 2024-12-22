@@ -187,7 +187,7 @@
 		return
 
 	var/image/I = hud_list[hud_key]
-	if(isnull(I))
+	if(!isimage(I)) // The hud list can contain lists.
 		return
 
 	if(!pixel_y_only)

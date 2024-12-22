@@ -1010,3 +1010,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 #define TRAIT_FLOCKPHASE "TRAIT_FLOCKPHASE"
 #define TRAIT_FLOCK_THING "TRAIT_FLOCK_THING"
+
+/// Trait from mob/living/update_transform()
+#define UPDATE_TRANSFORM_TRAIT "update_transform"

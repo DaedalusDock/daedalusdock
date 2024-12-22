@@ -62,7 +62,7 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 
 /proc/log_harddel(text)
 	WRITE_LOG(GLOB.harddel_log, text)
-	#ifdef REFERENCE_DOING_IT_LIFE
+	#ifdef REFERENCE_DOING_IT_LIVE
 	message_admins(text)
 	#endif
 

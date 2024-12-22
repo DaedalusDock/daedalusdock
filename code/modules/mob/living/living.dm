@@ -832,9 +832,9 @@
 ///Called by mob Move() when the lying_angle is different than zero, to better visually simulate crawling.
 /mob/living/proc/lying_angle_on_movement(direct)
 	if(direct & EAST)
-		set_lying_angle(90)
+		set_lying_angle(LYING_ANGLE_EAST)
 	else if(direct & WEST)
-		set_lying_angle(270)
+		set_lying_angle(LYING_ANGLE_WEST)
 
 /mob/living/setDir(ndir)
 	. = ..()
@@ -1993,7 +1993,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /// Proc to append behavior to the condition of being floored. Called when the condition starts.
 /mob/living/proc/on_floored_start()
 	if(body_position == STANDING_UP) //force them on the ground
-		set_lying_angle(pick(90, 270))
+		set_lying_angle(pick(LYING_ANGLE_EAST, LYING_ANGLE_WEST))
 		set_body_position(LYING_DOWN)
 		on_fall()
 		stats?.set_skill_modifier(-2, /datum/rpg_skill/skirmish, SKILL_SOURCE_FLOORED)

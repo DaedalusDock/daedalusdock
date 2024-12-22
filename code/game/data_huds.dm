@@ -376,7 +376,9 @@ Diagnostic HUDs!
 	return get_visual_height() - world.icon_size
 
 /mob/living/carbon/human/get_hud_pixel_y()
-	return get_visual_height() - world.icon_size - pixel_y
+	. = ..()
+	if(body_position == LYING_DOWN)
+		. -= PIXEL_Y_OFFSET_LYING
 
 //Sillycone hooks
 /mob/living/silicon/proc/diag_hud_set_health()

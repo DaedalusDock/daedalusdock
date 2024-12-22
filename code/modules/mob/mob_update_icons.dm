@@ -12,21 +12,6 @@
 /mob/proc/update_icons()
 	return
 
-/// Called whenever a mob should be resized (mob/var/resize) or for standing/lying up.
-/mob/proc/update_transform()
-	SHOULD_NOT_OVERRIDE(TRUE)
-
-	var/transform_update = do_update_transform()
-	if(transform_update)
-		update_hud_images_height()
-
-	SEND_SIGNAL(src, COMSIG_MOB_POST_UPDATE_TRANSFORM) // ...and we want the signal to be sent last.
-	return transform_update
-
-/// Update our transform.
-/mob/proc/do_update_transform()
-	return
-
 ///Updates the handcuff overlay & HUD element.
 /mob/proc/update_worn_handcuffs()
 	return

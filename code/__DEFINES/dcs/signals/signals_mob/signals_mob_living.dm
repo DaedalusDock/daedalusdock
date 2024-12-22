@@ -9,7 +9,7 @@
 /// Called on the organ when it is removed from someone (mob/living/carbon/old_owner)
 #define COMSIG_ORGAN_REMOVED "comsig_organ_removed"
 
-///from base of mob/update_transform()
+///from base of mob/living/update_transform()
 #define COMSIG_MOB_POST_UPDATE_TRANSFORM "mob_post_update_transform"
 
 ///from /obj/structure/door/crush(): (mob/living/crushed, /obj/machinery/door/crushing_door)

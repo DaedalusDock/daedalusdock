@@ -572,9 +572,8 @@
 /datum/reagent/toxin/venom/affect_blood(mob/living/carbon/C, removed)
 	ADD_TRAIT(C, TRAIT_VENOMSIZE, CHEM_TRAIT_SOURCE(CHEM_BLOOD))
 	var/newsize = 1.1 * RESIZE_DEFAULT_SIZE
-	C.resize = newsize/current_size
+	C.update_transform(newsize/current_size)
 	current_size = newsize
-	C.update_transform()
 
 	toxpwr = 0.1 * volume
 	C.adjustBruteLoss((0.3 * volume) * removed, 0)
@@ -588,9 +587,8 @@
 /datum/reagent/toxin/venom/on_mob_end_metabolize(mob/living/carbon/C, class)
 	REMOVE_TRAIT(C, TRAIT_VENOMSIZE, CHEM_TRAIT_SOURCE(class))
 	if(!HAS_TRAIT(C, TRAIT_VENOMSIZE))
-		C.resize = RESIZE_DEFAULT_SIZE/current_size
+		C.update_transform(RESIZE_DEFAULT_SIZE/current_size)
 		current_size = RESIZE_DEFAULT_SIZE
-		C.update_transform()
 
 /datum/reagent/toxin/fentanyl
 	name = "Fentanyl"

@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Huds (ie, the health hud) no longer rotate with the mob they are shown
+      over.

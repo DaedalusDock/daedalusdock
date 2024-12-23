@@ -234,7 +234,7 @@
 	GLOB.religious_sect.adjust_favor(favor_gained, user)
 	to_chat(user, span_notice("[GLOB.deity] absorbs the burning corpse and any trace of fire with it. [GLOB.deity] rewards you with [favor_gained] favor."))
 	chosen_sacrifice.dust(force = TRUE)
-	playsound(get_turf(religious_tool), 'sound/effects/supermatter.ogg', 50, TRUE)
+	playsound(get_turf(religious_tool), 'sound/effects/supermatter.ogg', 50, TRUE, ignore_walls = TRUE)
 	chosen_sacrifice = null
 	return TRUE
 

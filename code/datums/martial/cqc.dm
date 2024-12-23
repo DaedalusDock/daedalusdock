@@ -77,7 +77,7 @@
 		D.visible_message(span_danger("[A] slams [D] into the ground!"), \
 						span_userdanger("You're slammed into the ground by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, A)
 		to_chat(A, span_danger("You slam [D] into the ground!"))
-		playsound(get_turf(A), 'sound/weapons/slam.ogg', 50, TRUE, -1)
+		playsound(get_turf(A), 'sound/weapons/slam.ogg', 50, TRUE, -1, ignore_walls = 'sound/weapons/slam.ogg')
 		D.apply_damage(10, BRUTE)
 		D.Paralyze(120)
 		log_combat(A, D, "slammed (CQC)")
@@ -90,7 +90,7 @@
 		D.visible_message(span_danger("[A] kicks [D] back!"), \
 						span_userdanger("You're kicked back by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, A)
 		to_chat(A, span_danger("You kick [D] back!"))
-		playsound(get_turf(A), 'sound/weapons/cqchit1.ogg', 50, TRUE, -1)
+		playsound(get_turf(A), 'sound/weapons/cqchit1.ogg', 50, TRUE, -1, ignore_walls = 'sound/weapons/cqchit1.ogg')
 		var/atom/throw_target = get_edge_target_turf(D, A.dir)
 		D.throw_at(throw_target, 1, 14, A)
 		D.apply_damage(10, A.get_attack_type())
@@ -101,7 +101,7 @@
 		D.visible_message(span_danger("[A] kicks [D]'s head, knocking [D.p_them()] out!"), \
 						span_userdanger("You're knocked unconscious by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, A)
 		to_chat(A, span_danger("You kick [D]'s head, knocking [D.p_them()] out!"))
-		playsound(get_turf(A), SFX_PUNCH, 50, TRUE, -1)
+		playsound(get_turf(A), SFX_PUNCH, 50, TRUE, -1, ignore_walls = SFX_PUNCH)
 		D.SetSleeping(300)
 		D.adjustOrganLoss(ORGAN_SLOT_BRAIN, 15, 150)
 		. = TRUE
@@ -114,7 +114,7 @@
 					span_userdanger("Your neck is punched by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, A)
 	to_chat(A, span_danger("You punch [D]'s neck!"))
 	D.stamina.adjust(-60)
-	playsound(get_turf(A), 'sound/weapons/cqchit1.ogg', 50, TRUE, -1)
+	playsound(get_turf(A), 'sound/weapons/cqchit1.ogg', 50, TRUE, -1, ignore_walls = 'sound/weapons/cqchit1.ogg')
 	return TRUE
 
 /datum/martial_art/cqc/proc/Restrain(mob/living/A, mob/living/D)
@@ -141,7 +141,7 @@
 		D.visible_message(span_danger("[A] strikes [D]'s abdomen, neck and back consecutively"), \
 						span_userdanger("Your abdomen, neck and back are struck consecutively by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, A)
 		to_chat(A, span_danger("You strike [D]'s abdomen, neck and back consecutively!"))
-		playsound(get_turf(D), 'sound/weapons/cqchit2.ogg', 50, TRUE, -1)
+		playsound(get_turf(D), 'sound/weapons/cqchit2.ogg', 50, TRUE, -1, ignore_walls = 'sound/weapons/cqchit2.ogg')
 		var/obj/item/I = D.get_active_held_item()
 		if(I && D.temporarilyRemoveItemFromInventory(I))
 			A.put_in_hands(I)
@@ -188,9 +188,9 @@
 		picked_hit_type = "stomp"
 	D.apply_damage(bonus_damage, BRUTE)
 	if(picked_hit_type == "kick" || picked_hit_type == "stomp")
-		playsound(get_turf(D), 'sound/weapons/cqchit2.ogg', 50, TRUE, -1)
+		playsound(get_turf(D), 'sound/weapons/cqchit2.ogg', 50, TRUE, -1, ignore_walls = 'sound/weapons/cqchit2.ogg')
 	else
-		playsound(get_turf(D), 'sound/weapons/cqchit1.ogg', 50, TRUE, -1)
+		playsound(get_turf(D), 'sound/weapons/cqchit1.ogg', 50, TRUE, -1, ignore_walls = 'sound/weapons/cqchit1.ogg')
 	D.visible_message(span_danger("[A] [picked_hit_type]ed [D]!"), \
 					span_userdanger("You're [picked_hit_type]ed by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, A)
 	to_chat(A, span_danger("You [picked_hit_type] [D]!"))
@@ -199,7 +199,7 @@
 		D.visible_message(span_danger("[A] leg sweeps [D]!"), \
 						span_userdanger("Your legs are sweeped by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, A)
 		to_chat(A, span_danger("You leg sweep [D]!"))
-		playsound(get_turf(A), 'sound/effects/hit_kick.ogg', 50, TRUE, -1)
+		playsound(get_turf(A), 'sound/effects/hit_kick.ogg', 50, TRUE, -1, ignore_walls = 'sound/effects/hit_kick.ogg')
 		D.apply_damage(10, BRUTE)
 		D.Paralyze(60)
 		log_combat(A, D, "sweeped (CQC)")
@@ -218,7 +218,7 @@
 			D.visible_message(span_danger("[A] strikes [D]'s jaw with their hand!"), \
 							span_userdanger("Your jaw is struck by [A], you feel disoriented!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, A)
 			to_chat(A, span_danger("You strike [D]'s jaw, leaving [D.p_them()] disoriented!"))
-			playsound(get_turf(D), 'sound/weapons/cqchit1.ogg', 50, TRUE, -1)
+			playsound(get_turf(D), 'sound/weapons/cqchit1.ogg', 50, TRUE, -1, ignore_walls = 'sound/weapons/cqchit1.ogg')
 			if(I && D.temporarilyRemoveItemFromInventory(I))
 				A.put_in_hands(I)
 			D.set_timed_status_effect(4 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)

@@ -23,7 +23,7 @@
 
 /obj/bullet_act(obj/projectile/P)
 	. = ..()
-	playsound(src, P.hitsound, 50, TRUE)
+	playsound(src, P.hitsound, 50, TRUE, ignore_walls = P.hitsound)
 	var/damage
 	if(!QDELETED(src)) //Bullet on_hit effect might have already destroyed this object
 		damage = take_damage(P.damage, P.damage_type, P.armor_flag, 0, turn(P.dir, 180), P.armor_penetration)

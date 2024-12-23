@@ -57,3 +57,8 @@
   - rscadd: Replaced Initropidril with Adenosine.
   francinum:
   - code_imp: There are now special unit tests for enforcing mapping standards.
+2024-12-23:
+  Kapu1178:
+  - bugfix: Huds (ie, the health hud) no longer rotate with the mob they are shown
+      over.
+  - bugfix: Headsets are no longer off by default.

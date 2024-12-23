@@ -26,21 +26,6 @@
 #define SOUTHDOWN (SOUTH|DOWN)
 #define WESTDOWN (WEST|DOWN)
 
-///A replacement for /datum/gas_mixture/proc/update_values()
-#define AIR_UPDATE_VALUES(air) \
-	do{ \
-		var/list/cache = air.gas; \
-		air.total_moles = 0; \
-		for(var/g in cache) { \
-			if(cache[g] <= 0) { \
-				cache -= g \
-			} \
-			else { \
-				air.total_moles += cache[g]; \
-			} \
-		} \
-	} while(FALSE)
-
 ///Checks is a turf is simulated and has a valid zone.
 #define TURF_HAS_VALID_ZONE(T) (!isnull(T:zone) && !T:zone:invalid)
 

@@ -391,19 +391,19 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module))
 	. = ..()
 	desc = "[desc] It has [uses] use\s remaining."
 
-/datum/action/innate/ai/ranged/override_machine/do_ability(mob/living/caller, atom/clicked_on)
-	if(caller.incapacitated())
-		unset_ranged_ability(caller)
+/datum/action/innate/ai/ranged/override_machine/do_ability(mob/living/invoker, atom/clicked_on)
+	if(invoker.incapacitated())
+		unset_ranged_ability(invoker)
 		return FALSE
 	if(!istype(clicked_on, /obj/machinery))
-		to_chat(caller, span_warning("You can only animate machines!"))
+		to_chat(invoker, span_warning("You can only animate machines!"))
 		return FALSE
 	var/obj/machinery/clicked_machine = clicked_on
 	if(!clicked_machine.can_be_overridden() || is_type_in_typecache(clicked_machine, GLOB.blacklisted_malf_machines))
-		to_chat(caller, span_warning("That machine can't be overridden!"))
+		to_chat(invoker, span_warning("That machine can't be overridden!"))
 		return FALSE
 
-	caller.playsound_local(caller, 'sound/misc/interference.ogg', 50, FALSE, use_reverb = FALSE)
+	invoker.playsound_local(invoker, 'sound/misc/interference.ogg', 50, FALSE, use_reverb = FALSE)
 	adjust_uses(-1)
 
 	if(uses)
@@ -411,15 +411,15 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module))
 		build_all_button_icons()
 
 	clicked_machine.audible_message(span_userdanger("You hear a loud electrical buzzing sound coming from [clicked_machine]!"))
-	addtimer(CALLBACK(src, PROC_REF(animate_machine), caller, clicked_machine), 5 SECONDS) //kabeep!
-	unset_ranged_ability(caller, span_danger("Sending override signal..."))
+	addtimer(CALLBACK(src, PROC_REF(animate_machine), invoker, clicked_machine), 5 SECONDS) //kabeep!
+	unset_ranged_ability(invoker, span_danger("Sending override signal..."))
 	return TRUE
 
-/datum/action/innate/ai/ranged/override_machine/proc/animate_machine(mob/living/caller, obj/machinery/to_animate)
+/datum/action/innate/ai/ranged/override_machine/proc/animate_machine(mob/living/invoker, obj/machinery/to_animate)
 	if(QDELETED(to_animate))
 		return
 
-	new /mob/living/simple_animal/hostile/mimic/copy/machine(get_turf(to_animate), to_animate, caller, TRUE)
+	new /mob/living/simple_animal/hostile/mimic/copy/machine(get_turf(to_animate), to_animate, invoker, TRUE)
 
 /// Destroy RCDs: Detonates all non-cyborg RCDs on the station.
 /datum/ai_module/destructive/destroy_rcd
@@ -468,38 +468,38 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module))
 	..()
 	desc = "[desc] It has [uses] use\s remaining."
 
-/datum/action/innate/ai/ranged/overload_machine/proc/detonate_machine(mob/living/caller, obj/machinery/to_explode)
+/datum/action/innate/ai/ranged/overload_machine/proc/detonate_machine(mob/living/invoker, obj/machinery/to_explode)
 	if(QDELETED(to_explode))
 		return
 
 	var/turf/machine_turf = get_turf(to_explode)
-	message_admins("[ADMIN_LOOKUPFLW(caller)] overloaded [to_explode.name] ([to_explode.type]) at [ADMIN_VERBOSEJMP(machine_turf)].")
-	log_game("[key_name(caller)] overloaded [to_explode.name] ([to_explode.type]) at [AREACOORD(machine_turf)].")
+	message_admins("[ADMIN_LOOKUPFLW(invoker)] overloaded [to_explode.name] ([to_explode.type]) at [ADMIN_VERBOSEJMP(machine_turf)].")
+	log_game("[key_name(invoker)] overloaded [to_explode.name] ([to_explode.type]) at [AREACOORD(machine_turf)].")
 	explosion(to_explode, heavy_impact_range = 2, light_impact_range = 3)
 	if(!QDELETED(to_explode)) //to check if the explosion killed it before we try to delete it
 		qdel(to_explode)
 
-/datum/action/innate/ai/ranged/overload_machine/do_ability(mob/living/caller, atom/clicked_on)
-	if(caller.incapacitated())
-		unset_ranged_ability(caller)
+/datum/action/innate/ai/ranged/overload_machine/do_ability(mob/living/invoker, atom/clicked_on)
+	if(invoker.incapacitated())
+		unset_ranged_ability(invoker)
 		return FALSE
 	if(!istype(clicked_on, /obj/machinery))
-		to_chat(caller, span_warning("You can only overload machines!"))
+		to_chat(invoker, span_warning("You can only overload machines!"))
 		return FALSE
 	var/obj/machinery/clicked_machine = clicked_on
 	if(is_type_in_typecache(clicked_machine, GLOB.blacklisted_malf_machines))
-		to_chat(caller, span_warning("You cannot overload that device!"))
+		to_chat(invoker, span_warning("You cannot overload that device!"))
 		return FALSE
 
-	caller.playsound_local(caller, SFX_SPARKS, 50, 0)
+	invoker.playsound_local(invoker, SFX_SPARKS, 50, 0)
 	adjust_uses(-1)
 	if(uses)
 		desc = "[initial(desc)] It has [uses] use\s remaining."
 		build_all_button_icons()
 
 	clicked_machine.audible_message(span_userdanger("You hear a loud electrical buzzing sound coming from [clicked_machine]!"))
-	addtimer(CALLBACK(src, PROC_REF(detonate_machine), caller, clicked_machine), 5 SECONDS) //kaboom!
-	unset_ranged_ability(caller, span_danger("Overcharging machine..."))
+	addtimer(CALLBACK(src, PROC_REF(detonate_machine), invoker, clicked_machine), 5 SECONDS) //kaboom!
+	unset_ranged_ability(invoker, span_danger("Overcharging machine..."))
 	return TRUE
 
 /// Blackout: Overloads a random number of lights across the station. Three uses.

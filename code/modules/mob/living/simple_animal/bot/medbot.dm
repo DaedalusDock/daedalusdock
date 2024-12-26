@@ -127,8 +127,6 @@
 	var/medical_mode_flags = MEDBOT_DECLARE_CRIT | MEDBOT_SPEAK_MODE
 //	Selections:  MEDBOT_DECLARE_CRIT | MEDBOT_STATIONARY_MODE | MEDBOT_SPEAK_MODE
 
-	///Is the medbot currently tending wounds
-	var/tending = FALSE
 	///How panicked we are about being tipped over (why would you do this?)
 	var/tipped_status = MEDBOT_PANIC_NONE
 	///The name we got when we were tipped
@@ -226,7 +224,6 @@
 	patient = null
 	previous_patient = null
 	last_found = world.time
-	tending = FALSE
 	update_appearance()
 
 /mob/living/simple_animal/bot/medbot/proc/soft_reset() //Allows the medibot to still actively perform its medical duties without being completely halted as a hard reset does.
@@ -234,7 +231,6 @@
 	patient = null
 	set_mode(BOT_IDLE)
 	last_found = world.time
-	tending = FALSE
 	frustration = 0
 	update_appearance()
 
@@ -427,7 +423,6 @@
 		if((get_dist(src,patient) <= 1)) //Patient is next to us, begin treatment!
 			if(mode != BOT_HEALING)
 				update_appearance()
-				frustration = 0
 				try_medicate_patient(patient)
 			return
 

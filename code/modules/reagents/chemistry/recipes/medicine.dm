@@ -213,9 +213,8 @@
 	// 	C10H9AgN4O2S is the chemical compound for silver sulf in real life. we conveniently have all of these chemicals, so let's replicate it here
 	required_reagents = list(
 		/datum/reagent/medicine/kelotane = 1, // Kelotane brings the carbon
-		/datum/reagent/hydrogen = 1,
+		/datum/reagent/ammonia = 1, // Ammonia brings the hydrogen and nitrogen
 		/datum/reagent/silver = 1,
-		/datum/reagent/nitrogen = 1,
 		/datum/reagent/oxygen = 1,
 		/datum/reagent/sulfur = 1
 	)

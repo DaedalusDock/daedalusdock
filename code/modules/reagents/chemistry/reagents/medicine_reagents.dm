@@ -151,7 +151,7 @@
 	description = "Meralyne is a concentrated form of bicaridine and can be used to treat extensive physical trauma."
 	color = "#FD5964"
 	taste_mult = 12
-	metabolization_rate = 0.2
+	metabolization_rate = 0.4
 	overdose_threshold = 20
 
 /datum/reagent/medicine/meralyne/affect_blood(mob/living/carbon/C, removed)
@@ -187,6 +187,7 @@
 	taste_mult = 1.5
 	reagent_state = LIQUID
 	color = "#ff8000"
+	metabolization_rate = 0.4
 	overdose_threshold = 20
 	value = 3.9
 

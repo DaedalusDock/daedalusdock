@@ -152,6 +152,8 @@ DEFINE_BITFIELD(bot_cover_flags, list(
 #define BOT_RESPONDING "Proceeding to AI waypoint"
 /// Currently moving
 #define BOT_MOVING "Moving"
+/// Currently making a path
+#define BOT_PATHING "Pathing"
 
 // Unique modes //
 /// Secbot - At target, preparing to arrest

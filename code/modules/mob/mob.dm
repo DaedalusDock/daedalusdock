@@ -201,7 +201,10 @@
 /// Update the pixel_y value of all huds attached to us.
 /atom/proc/update_hud_images_height()
 	var/new_pixel_y = get_hud_pixel_y()
-	for(var/hud in hud_possible)
+	for(var/hud in hud_list)
+		var/image/I = hud_list[hud]
+		if(!isimage(I) || I.override)
+			continue
 		set_hud_image_vars(hud, new_pixel_y = new_pixel_y, pixel_y_only = TRUE)
 
 /**

@@ -656,6 +656,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 	access_card.set_access(prev_access)
 	tries = 0
 	mode = BOT_IDLE
+	frustration = 0
 	ignore_list = list()
 	diag_hud_set_botstat()
 	diag_hud_set_botmode()

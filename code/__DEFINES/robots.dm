@@ -228,7 +228,7 @@ DEFINE_BITFIELD(janitor_mode_flags, list(
 
 #define MEDIBOT_VOICED_HOLD_ON "Hey, %TARGET%! Hold on, I'm coming."
 #define MEDIBOT_VOICED_WANT_TO_HELP "Wait, %TARGET%! I want to help!"
-#define MEDIBOT_VOICED_YOU_ARE_INJURED "%TARGET, you appear to be injured!"
+#define MEDIBOT_VOICED_YOU_ARE_INJURED "%TARGET%, you appear to be injured!"
 
 #define MEDIBOT_VOICED_ALL_PATCHED_UP "All patched up!"
 #define MEDIBOT_VOICED_APPLE_A_DAY "An apple a day keeps me away."

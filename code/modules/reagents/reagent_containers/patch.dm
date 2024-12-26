@@ -5,10 +5,11 @@
 	icon_state = "bandaid"
 	inhand_icon_state = "bandaid"
 	possible_transfer_amounts = list()
-	volume = 40
+	volume = 15
 	apply_type = TOUCH
 	apply_method = "apply"
-	self_delay = 30 // three seconds
+	self_delay = 2 SECONDS
+	other_delay = 1 SECOND
 	dissolvable = FALSE
 
 /obj/item/reagent_containers/pill/patch/attack(mob/living/L, mob/user)
@@ -27,8 +28,27 @@
 		return FALSE
 	return TRUE // Masks were stopping people from "eating" patches. Thanks, inheritance.
 
+/obj/item/reagent_containers/pill/patch/on_consumption(mob/M, mob/user)
+	if(!reagents.total_volume)
+		return
+
+	reagents.trans_to(M, reagents.total_volume, transfered_by = user, methods = TOUCH)
+	reagents.clear_reagents()
+
 /obj/item/reagent_containers/pill/patch/synthflesh
 	name = "synthflesh patch"
 	desc = "Helps with brute and burn injuries. Slightly toxic."
-	list_reagents = list(/datum/reagent/medicine/synthflesh = 20)
+	list_reagents = list(/datum/reagent/medicine/synthflesh = 15)
 	icon_state = "bandaid_both"
+
+/obj/item/reagent_containers/pill/patch/styptic_powder
+	name = "styptic patch"
+	desc = "A patch for aiding the healing of cuts and abrasions."
+	list_reagents = list(/datum/reagent/medicine/styptic_powder = 15)
+	icon_state = "bandaid_brute"
+
+/obj/item/reagent_containers/pill/patch/silver_sulfadiazine
+	name = "silver sulfadiazine patch"
+	desc = "A path which soothes burns on flesh."
+	list_reagents = list(/datum/reagent/medicine/silver_sulfadiazine = 15)
+	icon_state = "bandaid_burn"

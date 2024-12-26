@@ -232,7 +232,7 @@
 /mob/living/simple_animal/bot/medbot/proc/soft_reset() //Allows the medibot to still actively perform its medical duties without being completely halted as a hard reset does.
 	path = list()
 	patient = null
-	mode = BOT_IDLE
+	set_mode(BOT_IDLE)
 	last_found = world.time
 	tending = FALSE
 	frustration = 0
@@ -326,7 +326,7 @@
  * user - the mob who tipped us over
  */
 /mob/living/simple_animal/bot/medbot/proc/after_tip_over(mob/user)
-	mode = BOT_TIPPED
+	set_mode(BOT_TIPPED)
 	tipper_name = user.name
 	playsound(src, 'sound/machines/warning-buzzer.ogg', 50)
 
@@ -352,7 +352,7 @@
 		medbot_phrase(phrase, user)
 
 	tipped_status = MEDBOT_PANIC_NONE
-	mode = BOT_IDLE
+	set_mode(BOT_IDLE)
 
 /// if someone tipped us over, check whether we should ask for help or just right ourselves eventually
 /mob/living/simple_animal/bot/medbot/proc/handle_panic()
@@ -397,10 +397,7 @@
 	if(IsStun() || IsParalyzed())
 		previous_patient = WEAKREF(patient)
 		patient = null
-		mode = BOT_IDLE
-		return
-
-	if(tending)
+		set_mode(BOT_IDLE)
 		return
 
 	if(frustration > 5)
@@ -427,9 +424,8 @@
 		//previous_patient = WEAKREF(patient)
 
 	if(patient)
-		if((get_dist(src,patient) <= 1) && !tending) //Patient is next to us, begin treatment!
+		if((get_dist(src,patient) <= 1)) //Patient is next to us, begin treatment!
 			if(mode != BOT_HEALING)
-				mode = BOT_HEALING
 				update_appearance()
 				frustration = 0
 				try_medicate_patient(patient)
@@ -440,24 +436,25 @@
 			return
 
 		//Patient has moved away from us!
-		else if((mode == BOT_HEALING && !path.len) || (path.len && (get_dist(patient,path[path.len]) > 2)))
+		else if(!path.len || (path.len && (get_dist(patient,path[path.len]) > 2)))
 			path = list()
-			mode = BOT_IDLE
+			set_mode(BOT_IDLE)
 			last_found = world.time
 
-	if(patient && path.len == 0 && (get_dist(src,patient) > 1) && mode != BOT_MOVING)
-		mode = BOT_MOVING
-		path = jps_path_to(src, patient, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
-		if(!path.len) //Do not chase a patient we cannot reach.
-			add_to_ignore(patient)
-			soft_reset()
+		if(path.len == 0 && (get_dist(src,patient) > 1))
+			set_mode(BOT_PATHING)
+			path = jps_path_to(src, patient, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
+			set_mode(BOT_MOVING)
+			if(!path.len) //Do not chase a patient we cannot reach.
+				add_to_ignore(patient)
+				soft_reset()
 
-	if(path.len > 0 && patient)
-		frustration++
-		if(!bot_move(path[path.len]))
-			previous_patient = WEAKREF(patient)
-			soft_reset()
-		return
+		if(path.len > 0)
+			frustration++
+			if(!bot_move(path[path.len]))
+				previous_patient = WEAKREF(patient)
+				soft_reset()
+			return
 
 	if(bot_mode_flags & BOT_MODE_AUTOPATROL && !(medical_mode_flags & MEDBOT_STATIONARY_MODE) && !patient)
 		switch(mode)
@@ -515,10 +512,9 @@
 /mob/living/simple_animal/bot/medbot/UnarmedAttack(atom/A, proximity_flag, list/modifiers)
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
 		return
-	if(iscarbon(A) && !tending)
+	if(iscarbon(A) && mode != BOT_HEALING)
 		var/mob/living/carbon/C = A
 		patient = C
-		mode = BOT_HEALING
 		update_appearance()
 		try_medicate_patient(C)
 		update_appearance()
@@ -551,7 +547,8 @@
 		soft_reset()
 		return
 
-	tending = TRUE
+	set_mode(BOT_HEALING)
+
 	visible_message(span_warning("[src] is trying to inject [C]."))
 
 	var/datum/callback/medicate_check = CALLBACK(src, PROC_REF(medicate_callback), C)

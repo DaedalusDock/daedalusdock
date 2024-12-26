@@ -114,6 +114,57 @@
 
 	COOLDOWN_DECLARE(ignore_list_cleanup_cd)
 
+/mob/living/simple_animal/bot/Initialize(mapload)
+	. = ..()
+	GLOB.bots_list += src
+
+	path_hud = new /datum/atom_hud/data/bot_path()
+	for(var/hud in path_hud.hud_icons) // You get to see your own path
+		set_hud_image_active(hud, exclusive_hud = path_hud)
+
+	// Give bots a fancy new ID card that can hold any access.
+	access_card = new /obj/item/card/id/advanced/simple_bot(src)
+	// This access is so bots can be immediately set to patrol and leave Robotics, instead of having to be let out first.
+	access_card.set_access(list(ACCESS_ROBOTICS))
+	internal_radio = new /obj/item/radio(src)
+	if(radio_key)
+		internal_radio.keyslot = new radio_key
+	internal_radio.subspace_transmission = TRUE
+	internal_radio.canhear_range = -1 // anything greater will have the bot broadcast the channel as if it were saying it out loud.
+	internal_radio.recalculateChannels()
+
+	//Adds bot to the diagnostic HUD system
+	prepare_huds()
+	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
+		diag_hud.add_atom_to_hud(src)
+	diag_hud_set_bothealth()
+	diag_hud_set_botstat()
+	diag_hud_set_botmode()
+
+	//If a bot has its own HUD (for player bots), provide it.
+	if(!isnull(data_hud_type))
+		var/datum/atom_hud/datahud = GLOB.huds[data_hud_type]
+		datahud.show_to(src)
+	if(path_hud)
+		path_hud.add_atom_to_hud(src)
+		path_hud.show_to(src)
+
+
+/mob/living/simple_animal/bot/Destroy()
+	if(path_hud)
+		QDEL_NULL(path_hud)
+		path_hud = null
+	GLOB.bots_list -= src
+	if(paicard)
+		ejectpai()
+	QDEL_NULL(internal_radio)
+	QDEL_NULL(access_card)
+	ignore_list = null
+	return ..()
+
+/mob/living/simple_animal/bot/proc/set_mode(new_mode)
+	mode = new_mode
+
 /mob/living/simple_animal/bot/proc/get_mode()
 	if(client) //Player bots do not have modes, thus the override. Also an easy way for PDA users/AI to know when a bot is a player.
 		if(paicard)
@@ -163,54 +214,6 @@
 	if(checked_mode & checked_flag)
 		return TRUE
 	return FALSE
-
-/mob/living/simple_animal/bot/Initialize(mapload)
-	. = ..()
-	GLOB.bots_list += src
-
-	path_hud = new /datum/atom_hud/data/bot_path()
-	for(var/hud in path_hud.hud_icons) // You get to see your own path
-		set_hud_image_active(hud, exclusive_hud = path_hud)
-
-	// Give bots a fancy new ID card that can hold any access.
-	access_card = new /obj/item/card/id/advanced/simple_bot(src)
-	// This access is so bots can be immediately set to patrol and leave Robotics, instead of having to be let out first.
-	access_card.set_access(list(ACCESS_ROBOTICS))
-	internal_radio = new /obj/item/radio(src)
-	if(radio_key)
-		internal_radio.keyslot = new radio_key
-	internal_radio.subspace_transmission = TRUE
-	internal_radio.canhear_range = -1 // anything greater will have the bot broadcast the channel as if it were saying it out loud.
-	internal_radio.recalculateChannels()
-
-	//Adds bot to the diagnostic HUD system
-	prepare_huds()
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
-	diag_hud_set_bothealth()
-	diag_hud_set_botstat()
-	diag_hud_set_botmode()
-
-	//If a bot has its own HUD (for player bots), provide it.
-	if(!isnull(data_hud_type))
-		var/datum/atom_hud/datahud = GLOB.huds[data_hud_type]
-		datahud.show_to(src)
-	if(path_hud)
-		path_hud.add_atom_to_hud(src)
-		path_hud.show_to(src)
-
-
-/mob/living/simple_animal/bot/Destroy()
-	if(path_hud)
-		QDEL_NULL(path_hud)
-		path_hud = null
-	GLOB.bots_list -= src
-	if(paicard)
-		ejectpai()
-	QDEL_NULL(internal_radio)
-	QDEL_NULL(access_card)
-	ignore_list = null
-	return ..()
 
 /mob/living/simple_animal/bot/proc/check_access(mob/living/user, obj/item/card/id)
 	if(user.has_unlimited_silicon_privilege || isAdminGhostAI(user)) // Silicon and Admins always have access.
@@ -323,6 +326,8 @@
 			return FALSE
 		if(BOT_SUMMON) //Called to a location
 			summon_step()
+			return FALSE
+		if(BOT_PATHING)
 			return FALSE
 	return TRUE //Successful completion. Used to prevent child process() continuing if this one is ended early.
 
@@ -637,7 +642,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 		if(message)
 			to_chat(calling_ai, span_notice("[icon2html(src, calling_ai)] [name] called to [end_area]. [path.len-1] meters to destination."))
 		pathset = TRUE
-		mode = BOT_RESPONDING
+		set_mode(BOT_RESPONDING)
 		tries = 0
 	else
 		if(message)
@@ -666,7 +671,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 	pathset = FALSE
 	access_card.set_access(prev_access)
 	tries = 0
-	mode = BOT_IDLE
+	set_mode(BOT_IDLE)
 	frustration = 0
 	ignore_list = list()
 	diag_hud_set_botstat()
@@ -697,7 +702,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 		return
 
 	if(!(bot_mode_flags & BOT_MODE_AUTOPATROL)) //A bot not set to patrol should not be patrolling.
-		mode = BOT_IDLE
+		set_mode(BOT_IDLE)
 		return
 
 	if(patrol_target) // has patrol target
@@ -713,7 +718,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 	if(!path.len)
 		patrol_target = null
 		return
-	mode = BOT_PATROL
+	set_mode(BOT_PATROL)
 // perform a single patrol step
 
 /mob/living/simple_animal/bot/proc/patrol_step()
@@ -738,7 +743,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 			addtimer(CALLBACK(src, PROC_REF(patrol_step_not_moved)), 2)
 
 	else // no path, so calculate new one
-		mode = BOT_START_PATROL
+		set_mode(BOT_START_PATROL)
 
 /mob/living/simple_animal/bot/proc/patrol_step_not_moved()
 	calc_path()
@@ -756,7 +761,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 		destination = next_destination
 	else
 		bot_mode_flags &= ~BOT_MODE_AUTOPATROL
-		mode = BOT_IDLE
+		set_mode(BOT_IDLE)
 		speak("Disengaging patrol mode.")
 
 /mob/living/simple_animal/bot/proc/get_next_patrol_target()
@@ -805,7 +810,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 			summon_target = get_turf(user)
 			if(user_access.len != 0)
 				access_card.set_access(user_access + prev_access) //Adds the user's access, if any.
-			mode = BOT_SUMMON
+			set_mode(BOT_SUMMON)
 			speak("Responding.", radio_channel)
 
 		if("ejectpai")

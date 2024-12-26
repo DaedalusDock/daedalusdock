@@ -509,7 +509,7 @@ Diagnostic HUDs!
 			new_state = "hudpatrol"
 		if(BOT_PREP_ARREST, BOT_ARREST, BOT_HUNT) //STOP RIGHT THERE, CRIMINAL SCUM!
 			new_state = "hudalert"
-		if(BOT_MOVING, BOT_DELIVER, BOT_GO_HOME, BOT_NAV) //Moving to target for normal bots, moving to deliver or go home for MULES.
+		if(BOT_MOVING, BOT_PATHING, BOT_DELIVER, BOT_GO_HOME, BOT_NAV) //Moving to target for normal bots, moving to deliver or go home for MULES.
 			new_state = "hudmove"
 		else
 			new_state = ""

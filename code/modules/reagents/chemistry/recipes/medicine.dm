@@ -209,7 +209,10 @@
 	mix_message = "The solution yields an astringent powder."
 
 /datum/chemical_reaction/silver_sulfadiazine
-	results = list(/datum/reagent/medicine/silver_sulfadiazine = 4)
+	results = list(
+		/datum/reagent/medicine/silver_sulfadiazine = 5,
+		/datum/reagent/silicon = 1, // The silicon from the kelotane gets left over.
+	)
 	// 	C10H9AgN4O2S is the chemical compound for silver sulf in real life. we conveniently have all of these chemicals, so let's replicate it here
 	required_reagents = list(
 		/datum/reagent/medicine/kelotane = 1, // Kelotane brings the carbon

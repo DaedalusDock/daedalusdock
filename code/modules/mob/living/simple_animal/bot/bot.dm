@@ -111,7 +111,8 @@
 	var/path_image_icon_state = "path_indicator"
 	var/path_image_color = "#FFFFFF"
 	var/reset_access_timer_id
-	var/ignorelistcleanuptimer = 1 // This ticks up every automated action, at 300 we clean the ignore list
+
+	COOLDOWN_DECLARE(ignore_list_cleanup_cd)
 
 /mob/living/simple_animal/bot/proc/get_mode()
 	if(client) //Player bots do not have modes, thus the override. Also an easy way for PDA users/AI to know when a bot is a player.
@@ -208,6 +209,7 @@
 		ejectpai()
 	QDEL_NULL(internal_radio)
 	QDEL_NULL(access_card)
+	ignore_list = null
 	return ..()
 
 /mob/living/simple_animal/bot/proc/check_access(mob/living/user, obj/item/card/id)
@@ -301,14 +303,9 @@
 /mob/living/simple_animal/bot/handle_automated_action() //Master process which handles code common across most bots.
 	diag_hud_set_botmode()
 
-	if (ignorelistcleanuptimer % 300 == 0) // Every 300 actions, clean up the ignore list from old junk
-		for(var/ref in ignore_list)
-			var/atom/referredatom = locate(ref)
-			if (!referredatom || !istype(referredatom) || QDELETED(referredatom))
-				ignore_list -= ref
-		ignorelistcleanuptimer = 1
-	else
-		ignorelistcleanuptimer++
+	if (COOLDOWN_FINISHED(src, ignore_list_cleanup_cd))
+		clear_ignore_list()
+		COOLDOWN_START(src, ignore_list_cleanup_cd, 60 SECONDS)
 
 	if(!(bot_mode_flags & BOT_MODE_ON) || client)
 		return FALSE
@@ -554,12 +551,26 @@ GLOBAL_LIST_EMPTY(scan_typecaches)
 			return TRUE
 	return FALSE
 
-/mob/living/simple_animal/bot/proc/add_to_ignore(subject)
-	if(ignore_list.len < 50) //This will help keep track of them, so the bot is always trying to reach a blocked spot.
-		ignore_list += REF(subject)
-	else  //If the list is full, insert newest, delete oldest.
-		ignore_list.Cut(1,2)
-		ignore_list += REF(subject)
+/// Add an atom to our list of ignored objects.
+/mob/living/simple_animal/bot/proc/add_to_ignore(atom/subject)
+	if(isnull(subject))
+		return
+
+	if(ignore_list.len < 50)
+		remove_ignored_atom(ignore_list[1])
+
+	ignore_list += subject
+	RegisterSignal(subject, COMSIG_PARENT_QDELETING, PROC_REF(remove_ignored_atom))
+
+/mob/living/simple_animal/bot/proc/remove_ignored_atom(datum/source)
+	SIGNAL_HANDLER
+
+	UnregisterSignal(source, COMSIG_PARENT_QDELETING)
+	ignore_list -= source
+
+/mob/living/simple_animal/bot/proc/clear_ignore_list()
+	for(var/atom/A as anything in ignore_list)
+		remove_ignored_atom(A)
 
 /*
 Movement proc for stepping a bot through a path generated through A-star.

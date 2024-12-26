@@ -35,12 +35,12 @@
 	path_image_color = "#DDDDFF"
 
 	var/list/idle_phrases = list(
-		"Radar, put a mask on!" = 'sound/voice/medbot/radar.ogg',
-		"There's always a catch, and I'm the best there is." = 'sound/voice/medbot/catch.ogg',
-		"I knew it, I should've been a plastic surgeon." = 'sound/voice/medbot/surgeon.ogg',
-		"What kind of medbay is this? Everyone's dropping like flies." = 'sound/voice/medbot/flies.ogg',
-		"Delicious!" = 'sound/voice/medbot/delicious.ogg',
-		"Why are we still here? Just to suffer?" = 'sound/voice/medbot/why.ogg'
+		MEDIBOT_VOICED_MASK_ON = 'sound/voice/medbot/radar.ogg',
+		MEDIBOT_VOICED_ALWAYS_A_CATCH = 'sound/voice/medbot/catch.ogg',
+		MEDIBOT_VOICED_PLASTIC_SURGEON = 'sound/voice/medbot/surgeon.ogg',
+		MEDIBOT_VOICED_LIKE_FLIES = 'sound/voice/medbot/flies.ogg',
+		MEDIBOT_VOICED_DELICIOUS = 'sound/voice/medbot/delicious.ogg',
+		MEDIBOT_VOICED_SUFFER = 'sound/voice/medbot/why.ogg'
 	)
 
 	var/list/finish_healing_phrases = list(
@@ -611,8 +611,9 @@
 	if(!COOLDOWN_FINISHED(src, last_patient_message))
 		return
 	COOLDOWN_START(src, last_patient_message, MEDBOT_PATIENTSPEAK_DELAY)
-	var/area/location = get_area(src)
-	speak("Medical emergency! [crit_patient || "A patient"] is in critical condition at [location]!", radio_channel)
+
+	var/area/location = get_area(crit_patient)
+	speak("Medical emergency! [crit_patient] is in critical condition at [location]!", radio_channel)
 
 /mob/living/simple_animal/bot/medbot/proc/medbot_phrase(phrase, mob/target)
 	var/sound_path = all_phrases[phrase]

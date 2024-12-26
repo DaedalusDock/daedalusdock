@@ -305,7 +305,7 @@
 
 	if (COOLDOWN_FINISHED(src, ignore_list_cleanup_cd))
 		clear_ignore_list()
-		COOLDOWN_START(src, ignore_list_cleanup_cd, 60 SECONDS)
+		COOLDOWN_START(src, ignore_list_cleanup_cd, 20 SECONDS)
 
 	if(!(bot_mode_flags & BOT_MODE_ON) || client)
 		return FALSE

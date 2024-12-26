@@ -147,16 +147,17 @@
 	QDEL_NULL(open)
 
 	var/list/path = src.path || list()
-	reverse_range(path)
+	if(length(path))
+		reverse_range(path)
 
-	switch(diagonal_handling)
-		if(DIAGONAL_REMOVE_CLUNKY)
-			path = remove_clunky_diagonals(path, pass_info, simulated_only, avoid)
-		if(DIAGONAL_REMOVE_ALL)
-			path = remove_diagonals(path, pass_info, simulated_only, avoid)
+		switch(diagonal_handling)
+			if(DIAGONAL_REMOVE_CLUNKY)
+				path = remove_clunky_diagonals(path, pass_info, simulated_only, avoid)
+			if(DIAGONAL_REMOVE_ALL)
+				path = remove_diagonals(path, pass_info, simulated_only, avoid)
 
-	if(length(path) > 0 && skip_first)
-		path.Cut(1,2)
+		if(length(path) > 0 && skip_first)
+			path.Cut(1,2)
 
 	hand_back(path)
 	return ..()

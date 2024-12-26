@@ -12,7 +12,7 @@
  * * max_interact_count: The action will automatically fail if they are already performing this many or more actions with the given interaction_key.
  * * display: An atom or image to display over the user's head. Only works with DO_PUBLIC flag.
  */
-/proc/do_after(atom/movable/user, atom/target, time, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1, image/display)
+/proc/do_after(atom/movable/user, atom/target, time = 0, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1, image/display)
 	if(!user)
 		return FALSE
 

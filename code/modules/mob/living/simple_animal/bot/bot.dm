@@ -561,7 +561,7 @@ GLOBAL_LIST_EMPTY(scan_typecaches)
 	if(isnull(subject))
 		return
 
-	if(ignore_list.len < 50)
+	if(ignore_list.len >= 50)
 		remove_ignored_atom(ignore_list[1])
 
 	ignore_list += subject

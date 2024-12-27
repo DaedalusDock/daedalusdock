@@ -233,25 +233,43 @@ Class Procs:
 
 ///Prints debug information to the given mob. Used by the "Zone Info" verb. Does not require ZASDBG compile define.
 /zone/proc/dbg_data(mob/M)
-	to_chat(M, name)
+	. = list()
+	. += span_info("[name][invalid ? " ([span_alert("Invalid")])" : ""]")
+	if(length(contents) < ZONE_MIN_SIZE)
+		. += span_alert("This turf's zone is below the minimum size, and will merge over zone blockers.")
+	. += span_info("<br>Moles: [air.total_moles]")
+	. += span_info("Pressure: [air.returnPressure()] kPa")
+	. += span_info("Temperature: [air.temperature]°K ([air.temperature - T0C]°C)")
+	. += span_info("Volume: [air.volume]L")
+	. += span_info("Mixture:")
 	for(var/g in air.gas)
-		to_chat(M, "[xgm_gas_data.name[g]]: [air.gas[g]]")
-	to_chat(M, "P: [air.returnPressure()] kPa V: [air.volume]L T: [air.temperature]°K ([air.temperature - T0C]°C)")
-	to_chat(M, "O2 per N2: [(air.gas[GAS_NITROGEN] ? air.gas[GAS_OXYGEN]/air.gas[GAS_NITROGEN] : "N/A")] Moles: [air.total_moles]")
-	to_chat(M, "Simulated: [contents.len] ([air.group_multiplier])")
-	to_chat(M, "Edges: [edges.len]")
-	if(invalid) to_chat(M, "Invalid!")
+		. += span_info("[FOURSPACES]- [xgm_gas_data.name[g]]: [air.gas[g]] ([round((air.gas[g] / air.total_moles) * 100, ATMOS_PRECISION)]%)")
+
+	. += span_info("<br>Turfs: [contents.len] (Mult: [air.group_multiplier])")
+	. += span_info("All Edges: [edges.len]")
+
 	var/zone_edges = 0
 	var/space_edges = 0
 	var/space_coefficient = 0
+	var/list/unsim_pressures = list()
+	var/list/zone_pressures = list()
+
 	for(var/edge_source in edges)
 		var/connection_edge/E = edges[edge_source]
+		var/turf/jump_target = E.connecting_turfs[1]
+
 		if(E.type == /connection_edge/zone)
 			zone_edges++
+			var/zone/enemy_zone = edge_source
+			zone_pressures += span_info("[FOURSPACES]- [enemy_zone.air.returnPressure()] kPa ([E.excited ? span_alert("Excited") : span_good("Sleeping")]) [ADMIN_JMP(jump_target)]")
+
 		else
 			space_edges++
 			space_coefficient += E.coefficient
-			to_chat(M, " - [E:air:returnPressure()]kPa")
+			var/connection_edge/unsimulated/unsim_edge = E
+			unsim_pressures += span_info("[FOURSPACES]- [unsim_edge.air.returnPressure()] kPa ([unsim_edge.excited ? span_alert("Excited") : span_good("Sleeping")]) [ADMIN_JMP(jump_target)]")
 
-	to_chat(M, "Zone Edges: [zone_edges]")
-	to_chat(M, "Unsimulated Edges: [space_edges] ([space_coefficient] connections)\n")
+	. += span_info("Zone Edges: [zone_edges]")
+	. += zone_pressures
+	. += span_info("Unsimulated Edges: [space_edges] ([space_coefficient] connections)")
+	. += unsim_pressures

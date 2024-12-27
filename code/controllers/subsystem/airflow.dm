@@ -123,13 +123,17 @@ SUBSYSTEM_DEF(airflow)
 /atom/movable/proc/prepare_airflow(strength)
 	if (!airflow_dest || airflow_speed < 0 || last_airflow > world.time - zas_settings.airflow_delay)
 		return FALSE
+
 	if (airflow_speed)
 		airflow_speed = strength / max(get_dist(src, airflow_dest), 1)
 		return FALSE
+
 	if(!check_airflow_movable(strength*10)) //Repel/Gotoairflowdest() divide the differential by a max of 10, so we're undoing that here
 		return FALSE
-	if (airflow_dest == loc)
-		step_away(src, loc)
+
+	if (airflow_dest == loc) // This should no longer happen, but just in case, ignore it.
+		return FALSE
+
 	if (ismob(src))
 		to_chat(src, span_warning("You are pushed away by a rush of air!"))
 

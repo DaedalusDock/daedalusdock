@@ -134,15 +134,14 @@ SUBSYSTEM_DEF(airflow)
 	if (airflow_dest == loc) // This should no longer happen, but just in case, ignore it.
 		return FALSE
 
-	if (ismob(src))
-		to_chat(src, span_warning("You are pushed away by a rush of air!"))
-
 	last_airflow = world.time
 
 	var/airflow_falloff = 9 - sqrt((x - airflow_dest.x) ** 2 + (y - airflow_dest.y) ** 2)
 	if (airflow_falloff < 1)
-		airflow_dest = null
 		return FALSE
+
+	if (ismob(src))
+		to_chat(src, span_warning("You are pushed away by a rush of air!"))
 
 	airflow_speed = min(max(strength * (9 / airflow_falloff), 1), 9)
 	return TRUE
@@ -150,6 +149,7 @@ SUBSYSTEM_DEF(airflow)
 
 /atom/movable/proc/GotoAirflowDest(strength)
 	if (!prepare_airflow(strength))
+		airflow_dest = null
 		return
 	airflow_xo = airflow_dest.x - x
 	airflow_yo = airflow_dest.y - y
@@ -158,6 +158,7 @@ SUBSYSTEM_DEF(airflow)
 
 /atom/movable/proc/RepelAirflowDest(strength)
 	if (!prepare_airflow(strength))
+		airflow_dest = null
 		return
 	airflow_xo = -(airflow_dest.x - x)
 	airflow_yo = -(airflow_dest.y - y)

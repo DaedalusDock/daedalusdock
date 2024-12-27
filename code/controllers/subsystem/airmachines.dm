@@ -5,6 +5,8 @@ SUBSYSTEM_DEF(airmachines)
 	flags = SS_POST_FIRE_TIMING
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
+	wait = 0.5 SECONDS
+
 	var/cached_cost
 
 	var/list/pipe_init_dirs_cache = list()

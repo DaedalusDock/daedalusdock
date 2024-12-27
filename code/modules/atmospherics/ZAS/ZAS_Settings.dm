@@ -58,7 +58,7 @@
 	var/airflow_speed_decay_NAME = "Airflow Speed Decay"
 	var/airflow_speed_decay_DESC = "How rapidly the speed gained from airflow decays."
 
-	var/airflow_delay = 30
+	var/airflow_delay = 0 SECONDS
 	var/airflow_delay_NAME = "Airflow Retrigger Delay"
 	var/airflow_delay_DESC = "Time in deciseconds before things can be moved by airflow again."
 

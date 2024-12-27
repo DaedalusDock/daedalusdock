@@ -261,13 +261,13 @@ Class Procs:
 		if(E.type == /connection_edge/zone)
 			zone_edges++
 			var/zone/enemy_zone = edge_source
-			zone_pressures += span_info("[FOURSPACES]- [enemy_zone.air.returnPressure()]kPa ([E.excited ? span_alert("Excited") : span_good("Sleeping")]) [ADMIN_JMP(jump_target)]")
+			zone_pressures += span_info("[FOURSPACES]- [enemy_zone.air.returnPressure()] kPa ([E.excited ? span_alert("Excited") : span_good("Sleeping")]) [ADMIN_JMP(jump_target)]")
 
 		else
 			space_edges++
 			space_coefficient += E.coefficient
 			var/connection_edge/unsimulated/unsim_edge = E
-			unsim_pressures += span_info("[FOURSPACES]- [unsim_edge.air.returnPressure()]kPa ([unsim_edge.excited ? span_alert("Excited") : span_good("Sleeping")]) [ADMIN_JMP(jump_target)]")
+			unsim_pressures += span_info("[FOURSPACES]- [unsim_edge.air.returnPressure()] kPa ([unsim_edge.excited ? span_alert("Excited") : span_good("Sleeping")]) [ADMIN_JMP(jump_target)]")
 
 	. += span_info("Zone Edges: [zone_edges]")
 	. += zone_pressures

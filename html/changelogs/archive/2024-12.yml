@@ -62,3 +62,23 @@
   - bugfix: Huds (ie, the health hud) no longer rotate with the mob they are shown
       over.
   - bugfix: Headsets are no longer off by default.
+2024-12-27:
+  Kapu1178:
+  - bugfix: Fixed a deadlock in pathfinding code.
+  - bugfix: Fixed a hud positioning issue.
+  - bugfix: Tricordrazine math is no longer insane.
+  - balance: Adjusted Tricordrazine heal ramp-up to compensate.
+  - bugfix: Medbots now chase their targets for a bit instead of giving up instantly
+      if they moved.
+  - bugfix: Medbots now re-attempt healing their previously given-up-on target after
+      a specific time period.
+  - balance: Medbots no longer magically heal their target, opting to inject chems
+      instead.
+  - rscadd: Medbots now voice their displeasure if you move out of their range.
+  - rscadd: Silver Sulfadiazine, a fast-acting but inefficient topical burn healing
+      reagent.
+  - rscadd: Styptic Powder, a fast-acting but inefficient topical brute healing reagent.
+  - bugfix: Fixed coagulant effects causing errors.
+  - balance: Doubled the metabolization rates of Dermaline and Meralyne. I felt they
+      weren't impactful enough for how annoying they are to make.
+  - rscadd: Silver Sulfadiazine now has a byproduct of silicon.

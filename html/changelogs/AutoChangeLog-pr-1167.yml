@@ -1,9 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Silver Sulfadiazine, a fast-acting but inefficient topical burn healing
-      reagent.
-  - rscadd: Styptic Powder, a fast-acting but inefficient topical brute healing reagent.
-  - bugfix: Fixed coagulant effects causing errors.
-  - balance: Doubled the metabolization rates of Dermaline and Meralyne. I felt they
-      weren't impactful enough for how annoying they are to make.

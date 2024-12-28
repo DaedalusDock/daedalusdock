@@ -70,7 +70,7 @@ This entire system is an absolute mess.
 /mob/check_airflow_movable(n)
 	if(status_flags & GODMODE)
 		return FALSE
-	if(n < zas_settings.airflow_heavy_pressure)
+	if(n < zas_settings.airflow_mob_pressure)
 		return FALSE
 	if(HAS_TRAIT(src, TRAIT_NEGATES_GRAVITY)) //Magboots
 		return FALSE
@@ -88,16 +88,18 @@ This entire system is an absolute mess.
 
 /obj/item/check_airflow_movable(n)
 	switch(w_class)
-		if(0,1,2)
-			if(n < zas_settings.airflow_lightest_pressure) return 0
-		if(3)
-			if(n < zas_settings.airflow_light_pressure) return 0
-		if(4,5)
-			if(n < zas_settings.airflow_medium_pressure) return 0
-		if(6)
-			if(n < zas_settings.airflow_heavy_pressure) return 0
-		if(7 to INFINITY)
-			if(n < zas_settings.airflow_dense_pressure) return 0
+		if(0,WEIGHT_CLASS_TINY,WEIGHT_CLASS_SMALL)
+			if(n < zas_settings.airflow_lightest_pressure)
+				return FALSE
+		if(WEIGHT_CLASS_NORMAL)
+			if(n < zas_settings.airflow_light_pressure)
+				return FALSE
+		if(WEIGHT_CLASS_BULKY, WEIGHT_CLASS_HUGE)
+			if(n < zas_settings.airflow_medium_pressure)
+				return FALSE
+		if(WEIGHT_CLASS_GIGANTIC)
+			if(n < zas_settings.airflow_mob_pressure)
+				return FALSE
 	return ..()
 
 ///The typecache of objects airflow can't push objects into the same tile of

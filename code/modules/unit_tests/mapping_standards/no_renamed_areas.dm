@@ -10,4 +10,4 @@
 
 	for(var/area/area in GLOB.areas)
 		if(area.name != initial(area.name))
-			TEST_FAIL("Area [area]/([initial(area.name)]) (Unique: [!!(area_flags & UNIQUE_AREA)]) has been renamed. ")
+			TEST_FAIL("Area [area]/([initial(area.name)]) (Unique: [!!(area.area_flags & UNIQUE_AREA)]) has been renamed. ")

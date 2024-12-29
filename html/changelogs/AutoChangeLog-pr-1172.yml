@@ -1,0 +1,4 @@
+author: francinum
+delete-after: true
+changes:
+  - bugfix: Various instances of doubled-up firelocks or airlocks.

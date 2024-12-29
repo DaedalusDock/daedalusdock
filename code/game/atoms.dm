@@ -550,8 +550,7 @@
 
 ///Return the current air environment in this atom. If this atom is a turf, it will not automatically update the zone.
 /atom/proc/unsafe_return_air()
-	return loc?.unsafe_return_air()
-
+	return return_air()
 
 ///Return the air if we can analyze it
 /atom/proc/return_analyzable_air()

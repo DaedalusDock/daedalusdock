@@ -82,3 +82,6 @@
   - balance: Doubled the metabolization rates of Dermaline and Meralyne. I felt they
       weren't impactful enough for how annoying they are to make.
   - rscadd: Silver Sulfadiazine now has a byproduct of silicon.
+2024-12-29:
+  Kapu1178:
+  - tweak: Removed the Nanotrasen logo from TGUI interfaces.

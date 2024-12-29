@@ -53,7 +53,7 @@ This entire system is an absolute mess.
 
 	visible_message(
 		span_danger("[src] is thrown to the floor!"),
-		span_hear("You hear a gust of air, followed by a soft thud.")
+		blind_message = span_hear("You hear a gust of air, followed by a soft thud.")
 	)
 
 	last_airflow_stun = world.time
@@ -185,7 +185,7 @@ GLOBAL_LIST_INIT(airflow_step_blacklist, typecacheof(list(
 	. = ..()
 	visible_message(
 		span_danger("A flying [flying.name] slams into \the [src]!"),
-		span_danger("You hear a soft thud.")
+		blind_message = span_danger("You hear a soft thud.")
 	)
 
 	playsound(loc, "punch", 25, 1, -1)

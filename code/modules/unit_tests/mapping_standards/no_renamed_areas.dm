@@ -10,6 +10,6 @@
 		return
 
 	for(var/area/area in GLOB.areas)
-		if(area.name != initial(area.name))
+		if(!(area.type in exempt_areas) && (area.name != initial(area.name)))
 			// Unique areas might be worth exempting here? But at the same time, there's no throws here with no check. -Francinum
 			TEST_FAIL("Area [area]/([initial(area.name)]) at [AREACOORD(area.contents[1])] (Unique: [BOOLEAN(area.area_flags & UNIQUE_AREA)]) has been renamed. ")

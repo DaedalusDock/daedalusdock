@@ -19,3 +19,8 @@
 #define TYPE_PROC_REF(TYPE, X) (nameof(##TYPE.proc/##X))
 /// Call by name proc reference, checks if the proc is existing global proc
 #define GLOBAL_PROC_REF(X) (/proc/##X)
+
+// ZAS Mode
+#if DM_VERSION == 515
+#define ZAS_COMPAT_515
+#endif

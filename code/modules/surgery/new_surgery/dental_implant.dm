@@ -32,7 +32,7 @@
 		return
 
 	var/obj/item/reagent_containers/pill/pill = tool
-	pill.on_consumption(target, user)
+	pill.consume(target, user)
 	user.visible_message(span_warning("[pill] slips out of [user]'s hand, right down [target]'s throat!"), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 

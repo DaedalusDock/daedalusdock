@@ -1111,7 +1111,7 @@
 		if(coag_level > 0)
 			bleed_rate *= 1 + coag_level
 		else
-			bleed_rate *= 0.5 / coag_level
+			bleed_rate *= 0.5 / -coag_level
 
 	return bleed_rate
 

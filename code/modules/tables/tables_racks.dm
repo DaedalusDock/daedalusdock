@@ -931,7 +931,7 @@
 	patient = new_patient
 	if(patient)
 		ADD_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
-		patient.set_lying_angle(90)
+		patient.set_lying_angle(LYING_ANGLE_EAST)
 		patient.setDir(SOUTH)
 		RegisterSignal(patient, COMSIG_PARENT_QDELETING, PROC_REF(patient_deleted))
 

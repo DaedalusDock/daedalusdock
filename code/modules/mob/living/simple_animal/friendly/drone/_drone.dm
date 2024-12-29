@@ -196,7 +196,7 @@
 	listener.RegisterSignal(src, COMSIG_LIVING_REVIVE, TYPE_PROC_REF(/datum/alarm_listener, allow_alarm_changes))
 
 /mob/living/simple_animal/drone/med_hud_set_health()
-	set_hud_image_vars(DIAG_HUD, "huddiag[RoundDiagBar(health/maxHealth)]", get_hud_pixel_y())
+	set_hud_image_vars(DIAG_HUD, "huddiag[RoundDiagBar(health/maxHealth)]")
 
 /mob/living/simple_animal/drone/med_hud_set_status()
 	var/new_state
@@ -207,7 +207,7 @@
 	else
 		new_state = "hudstat"
 
-	set_hud_image_vars(DIAG_STAT_HUD, new_state, get_hud_pixel_y())
+	set_hud_image_vars(DIAG_STAT_HUD, new_state)
 
 /mob/living/simple_animal/drone/Destroy()
 	GLOB.drones_list -= src

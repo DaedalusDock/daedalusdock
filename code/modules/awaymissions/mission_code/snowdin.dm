@@ -220,6 +220,11 @@
 	baseturfs = /turf/open/lava/plasma/mafia
 	slowdown = 0
 
+//matches /turf/open/misc/asteroid/snow
+/turf/open/lava/plasma/snow_air
+	initial_gas = OPENTURF_LOW_PRESSURE
+	temperature = 180
+
 /////////// papers
 
 

@@ -2,6 +2,7 @@
 	fallback_colors = list(list(14, 18))
 	fallback_icon_state = "armor"
 	allowed = null
+	clothing_flags = parent_type::clothing_flags | THICKMATERIAL
 	body_parts_covered = CHEST
 	cold_protection = CHEST|GROIN
 	min_cold_protection_temperature = ARMOR_MIN_TEMP_PROTECT

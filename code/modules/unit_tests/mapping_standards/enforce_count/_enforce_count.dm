@@ -13,7 +13,8 @@
 	TEST_FAIL("Missing Collection Setup, Bad Test!")
 
 /datum/unit_test/mapping_standards/enforce_count/Run()
-	if(..()) {return};
+	if(..())
+		return
 
 	/// Turfs we've passed once. We don't fully count every tile.
 	var/list/turf/checked_turfs = list()

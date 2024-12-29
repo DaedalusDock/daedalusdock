@@ -22,7 +22,7 @@
 	SETTING_DEF(airflow_dense_pressure, 85, "Dense Movement Threshold %", "Percent of 1 Atm. at which dense objs can move.", "Airflow")
 	SETTING_DEF(airflow_speed_decay, 1.5, "Speed Decay Rate", "Speed removed from an airborne object per tick.", "Airflow")
 	SETTING_DEF(airflow_speed_for_density, 5, "Force Density Speed", "The speed value required to be able to impact objects during airflow, if not normally dense.", "Airflow")
-	SETTING_DEF(airflow_delay, 0 SECONDS, "Airflow Retrigger Grace", "After being affected by spacewind, wait this long before affecting again.", "Airflow")
+	SETTING_DEF(airflow_retrigger_delay, 0 SECONDS, "Airflow Retrigger Grace", "After being affected by spacewind, wait this long before affecting again.", "Airflow")
 	SETTING_DEF(airflow_mob_slowdown, 1, "Mob Slowdown", "Additive slowdown applied to mobs affected by spacewind.", "Airflow")
 
 	SETTING_DEF(airflow_stun_pressure, 60, "Mob Stunning Threshold %", "Percent of 1 Atm. at which mobs will be stunned by airflow.", "Airflow Impact")
@@ -70,7 +70,7 @@
 	edittable_vars += nameof(airflow_dense_pressure)
 	edittable_vars += nameof(airflow_speed_decay)
 	edittable_vars += nameof(airflow_speed_for_density)
-	edittable_vars += nameof(airflow_delay)
+	edittable_vars += nameof(airflow_retrigger_delay)
 	edittable_vars += nameof(airflow_mob_slowdown)
 
 	edittable_vars += nameof(airflow_stun_pressure)

@@ -133,19 +133,24 @@ Class Procs:
 		if(!M.simulated)
 			continue
 		//If they're already being tossed, don't do it again.
-		if(M.last_airflow > world.time - zas_settings.airflow_delay)
+		if(!COOLDOWN_FINISHED(M, airflow_push_cooldown))
 			continue
 		if(M.airflow_speed)
 			continue
 
 		//Check for knocking people over
+		var/send_message = FALSE
 		if(ismob(M) && differential > zas_settings.airflow_stun_pressure)
-			if(M:status_flags & GODMODE)
+			var/mob/living/living_mob = M
+			if(living_mob.status_flags & GODMODE)
 				continue
-			if(!M:airflow_stun())
-				to_chat(M, span_notice("A gust of air rushes past you."))
 
-		if(!M.check_airflow_movable(differential))
+			if(!living_mob.airflow_stun())
+				send_message = TRUE
+
+		if(!M.can_airflow_move(differential))
+			if(send_message)
+				to_chat(M, span_warning("A gust of air rushes past you."))
 			continue
 
 		//Check for things that are in range of the midpoint turfs.

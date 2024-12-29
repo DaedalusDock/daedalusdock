@@ -6,7 +6,8 @@
 	)
 
 /datum/unit_test/mapping_standards/no_renamed_areas/Run()
-	if(..()) {return};
+	if(..())
+		return
 
 	for(var/area/area in GLOB.areas)
 		if(area.name != initial(area.name))

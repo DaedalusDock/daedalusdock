@@ -112,37 +112,35 @@ GLOBAL_LIST_INIT(airflow_step_blacklist, typecacheof(list(
 	/obj/machinery/door
 	)))
 
-/atom/movable/Bump(atom/A)
-	. = ..()
-	if(!moving_by_airflow)
-		return
+/// Called when a movable Bump()s another atom due to forced airflow movement.
+/atom/movable/proc/AirflowBump(atom/A)
+	var/turf/T = get_turf(A)
+	if(airborne_acceleration > 1)
+		airflow_hit(A)
+		A.airflow_hit_act(src)
 
-	if(airflow_speed > 0 && airflow_dest)
-		var/turf/T = get_turf(A)
-		if(airborne_acceleration > 1)
-			airflow_hit(A)
-			A.airflow_hit_act(src)
-		else if(istype(src, /mob/living/carbon/human))
-			if((A:density))
-				to_chat(src, "<span class='notice'>You are pinned against \the [A] by airflow!</span>")
-				src:Stun(1 SECONDS) // :)
-				SSairflow.Dequeue(src)
-				return
-		/*
-		If the turf of the atom we bumped is NOT dense, then we check if the flying object is dense.
-		We check the special var because flying objects gain density so they can Bump() objects.
-		If the object is NOT normally dense, we remove our density and the target's density,
-		enabling us to step into their turf. Then, we set the density back to the way its supposed to be for airflow.
-		*/
-		if(!T.density)
-			if(ismovable(A) && !(GLOB.airflow_step_blacklist[A.type]) && !A:airflow_old_density)
-				set_density(FALSE)
-				A.set_density(FALSE)
-				step_towards(src, airflow_dest)
-				set_density(TRUE)
-				A.set_density(TRUE)
-	else
+	else if(istype(src, /mob/living/carbon/human) && A.density)
+		var/mob/living/carbon/human/human_src = src
+		to_chat(human_src, span_warning("You are pinned against \the [A] by airflow.</span>"))
+		human_src.Stun(2 SECONDS) // :)
 		SSairflow.Dequeue(src)
+		return
+	/*
+	If the turf of the atom we bumped is NOT dense, then we check if the flying object is dense.
+	We check the special var because flying objects gain density so they can Bump() objects.
+	If the object is NOT normally dense, we remove our density and the target's density,
+	enabling us to step into their turf. Then, we set the density back to the way its supposed to be for airflow.
+	*/
+	if(!T.density && ismovable(A) && !(GLOB.airflow_step_blacklist[A.type]))
+		var/atom/movable/bumped_movable = A
+		if(bumped_movable.airflow_old_density)
+			return
+
+		set_density(FALSE)
+		bumped_movable.set_density(FALSE)
+		step_towards(src, airflow_dest)
+		set_density(TRUE)
+		bumped_movable.set_density(TRUE)
 
 
 ///Called when src collides with A during airflow
@@ -156,24 +154,26 @@ GLOBAL_LIST_INIT(airflow_step_blacklist, typecacheof(list(
 	return ..()
 
 /mob/living/carbon/airflow_hit(atom/A)
-	if(istype(A, /obj/structure) || iswallturf(A))
-		if(airflow_speed > 10)
-			Paralyze(round(airflow_speed * zas_settings.airflow_stun))
-			Stun(round(airflow_speed * zas_settings.airflow_stun) + 3)
-			loc.add_blood_DNA(return_blood_DNA())
-			visible_message(
-				span_danger("[src] splats against \the [A]!"),
-				span_userdanger("You slam into \the [A] with tremendous force!"),
-				span_hear("You hear a loud thud.")
-			)
-			INVOKE_ASYNC(emote("scream"))
-		else
-			Stun(round(airflow_speed * zas_settings.airflow_stun/2))
-			visible_message(
-				span_danger("[src] slams into \the [A]!"),
-				span_userdanger("You're thrown against \the [A] by pressure!"),
-				span_hear("You hear a loud thud.")
-			)
+	if(!(istype(A, /obj/structure) || iswallturf(A)))
+		return ..()
+
+	if(airflow_speed > 10)
+		Paralyze(round(airflow_speed * zas_settings.airflow_stun))
+		Stun(round(airflow_speed * zas_settings.airflow_stun) + 3)
+		loc.add_blood_DNA(return_blood_DNA())
+		visible_message(
+			span_danger("[src] splats against \the [A]!"),
+			span_userdanger("You slam into \the [A] with tremendous force!"),
+			span_hear("You hear a loud thud.")
+		)
+		INVOKE_ASYNC(emote("scream"))
+	else
+		Stun(round(airflow_speed * zas_settings.airflow_stun/2))
+		visible_message(
+			span_danger("[src] slams into \the [A]!"),
+			span_userdanger("You're thrown against \the [A] by pressure!"),
+			span_hear("You hear a loud thud.")
+		)
 
 	return ..()
 

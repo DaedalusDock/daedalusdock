@@ -369,15 +369,6 @@
 	if(. == high_threshold_passed && owner)
 		owner.visible_message(span_danger("[owner] grabs at [owner.p_their()] throat, struggling for breath!"), span_userdanger("You suddenly feel like you can't breathe."))
 
-/obj/item/organ/lungs/plasmaman
-	name = "plasma filter"
-	desc = "A spongy rib-shaped mass for filtering plasma from the air."
-	icon_state = "lungs-plasma"
-
-	safe_oxygen_min = 0 //We don't breathe this
-	safe_plasma_min = 4 //We breathe THIS!
-	safe_plasma_max = 0
-
 /obj/item/organ/lungs/slime
 	name = "vacuole"
 	desc = "A large organelle designed to store oxygen and other important gasses."

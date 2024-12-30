@@ -14,7 +14,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/bartender,
-			SPECIES_PLASMAMAN = /datum/outfit/job/bartender/plasmaman,
 		),
 	)
 
@@ -59,16 +58,6 @@
 	ears = /obj/item/radio/headset/headset_srv
 	glasses = /obj/item/clothing/glasses/sunglasses/reagent
 	shoes = /obj/item/clothing/shoes/laceup
-
-/datum/outfit/job/bartender/plasmaman
-	name = "Bartender (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
-	gloves = /obj/item/clothing/gloves/color/plasmaman/white
-	head = /obj/item/clothing/head/helmet/space/plasmaman/white
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
-
 
 /datum/outfit/job/bartender/post_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()

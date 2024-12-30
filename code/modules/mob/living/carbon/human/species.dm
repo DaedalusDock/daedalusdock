@@ -148,7 +148,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/list/special_step_sounds
 	///Special sound for grabbing
 	var/grab_sound
-	/// A path to an outfit that is important for species life e.g. plasmaman outfit
+
+	/// A path to an outfit that is important for species life e.g. vox outfit
 	var/datum/outfit/outfit_important_for_life
 
 	///Used for picking outfits in _job.dm

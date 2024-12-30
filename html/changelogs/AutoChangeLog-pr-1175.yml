@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: 'Added species descriptions for: Human, Jinan, and Vox.'
+  - rscadd: Playable species are now in the Codex.

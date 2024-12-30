@@ -1596,11 +1596,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
  *
  * Returns a string.
  */
-/datum/species/proc/get_species_description()
+/datum/species/proc/get_species_mechanics()
 	SHOULD_CALL_PARENT(FALSE)
-
-	stack_trace("Species [name] ([type]) did not have a description set, and is a selectable roundstart race! Override get_species_description.")
-	return "No species description set, file a bug report!"
+	return "WIP"
 
 /**
  * Gets the lore behind the type of species. Can be long.
@@ -1613,8 +1611,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	SHOULD_CALL_PARENT(FALSE)
 	RETURN_TYPE(/list)
 
-	stack_trace("Species [name] ([type]) did not have lore set, and is a selectable roundstart race! Override get_species_lore.")
-	return list("No species lore set, file a bug report!")
+	return list("WIP")
 
 /**
  * Translate the species liked foods from bitfields into strings

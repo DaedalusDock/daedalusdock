@@ -1,4 +1,4 @@
-/*/datum/codex_category/species
+/datum/codex_category/species
 	name = "Species"
 	desc = "Many species you may encounter on your journey."
 
@@ -7,11 +7,10 @@
 		var/species_type = GLOB.species_list[species_id]
 		var/datum/species/species = new species_type()
 		var/_name = capitalize(codex_sanitize(species.plural_form))
-		new /datum/codex_entry(
+		var/datum/codex_entry/entry = new(
 			_display_name = _name,
 			_lore_text = species.get_species_lore().Join("<br><br>"),
-			_mechanics_text = species.get_species_description()
+			_mechanics_text = species.get_species_mechanics()
 		)
-		items += _name
+		items += entry
 	return ..()
-*/

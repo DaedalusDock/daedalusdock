@@ -783,7 +783,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	if(block_effect)
 		var/obj/effect/effect = new block_effect()
-		wielder.vis_contents += effect
+		wielder.add_viscontents(effect)
 
 /// Plays the block sound effect
 /obj/item/proc/play_block_sound(mob/living/carbon/human/wielder, attack_type)

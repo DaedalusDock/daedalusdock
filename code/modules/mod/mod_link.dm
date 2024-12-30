@@ -20,7 +20,7 @@
 	visuals.add_filter("crop_square", 1, alpha_mask_filter(icon = icon('icons/effects/effects.dmi', "modlink_filter")))
 	visuals.maptext_height = 6
 	visuals.alpha = 0
-	user.vis_contents += visuals
+	user.add_viscontents(visuals)
 	visuals.forceMove(user)
 	animate(visuals, 0.5 SECONDS, alpha = 255)
 	var/datum/callback/setdir_callback = CALLBACK(mod_link.holder, proc_path)

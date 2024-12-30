@@ -94,11 +94,11 @@
 				COMSIG_LIVING_USE_RADIO
 			)
 		)
-		target.vis_contents -= src
+		target.remove_viscontents(src)
 		user.visible_message(span_warning("[user] turns [tool] on [new_target]!"))
 
 	target = new_target
-	target.vis_contents += src
+	target.add_viscontents(src)
 
 	RegisterSignal(target, COMSIG_PARENT_QDELETING, PROC_REF(target_del))
 	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(target_moved))

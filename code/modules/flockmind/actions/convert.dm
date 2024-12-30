@@ -45,7 +45,7 @@
 /datum/action/cooldown/flock/convert/proc/convert_turf(turf/T)
 	var/mob/living/simple_animal/flock/bird = owner
 
-	T.vis_contents += turf_effect
+	T.add_viscontents(turf_effect)
 	if(iswallturf(T))
 		turf_effect.icon_state = "spawn-wall-loop"
 		flick("spawn-wall", turf_effect)
@@ -57,12 +57,12 @@
 
 	bird.flock?.reserve_turf(bird, T)
 	if(!do_after(owner, T, 4.5 SECONDS, DO_PUBLIC, interaction_key = "flock_convert"))
-		T.vis_contents -= turf_effect
+		T.remove_viscontents(turf_effect)
 		bird.flock?.free_turf(bird)
 		return FALSE
 
 	bird.flock?.free_turf(bird)
-	T.vis_contents -= turf_effect
+	T.remove_viscontents(turf_effect)
 
 	if(!is_valid_target(T))
 		return FALSE

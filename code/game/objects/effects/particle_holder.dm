@@ -26,7 +26,7 @@
 	particles = new particle_path()
 	// /atom doesn't have vis_contents, /turf and /atom/movable do
 	var/atom/movable/lie_about_areas = parent
-	lie_about_areas.vis_contents += src
+	lie_about_areas.add_viscontents(src)
 	RegisterSignal(parent, COMSIG_PARENT_QDELETING, PROC_REF(parent_deleted))
 
 	if(particle_flags & PARTICLE_ATTACH_MOB)
@@ -54,12 +54,12 @@
 	//remove old
 	if(ismob(oldloc))
 		var/mob/particle_mob = oldloc
-		particle_mob.vis_contents -= src
+		particle_mob.add_viscontents(src)
 
 	// If we're sitting in a mob, we want to emit from it too, for vibes and shit
 	if(ismob(attached.loc))
 		var/mob/particle_mob = attached.loc
-		particle_mob.vis_contents += src
+		particle_mob.add_viscontents(src)
 
 /// Sets the particles position to the passed coordinate list (X, Y, Z)
 /// See [https://www.byond.com/docs/ref/#/{notes}/particles] for position documentation

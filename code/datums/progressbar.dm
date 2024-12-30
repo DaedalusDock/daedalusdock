@@ -170,9 +170,7 @@
 		underlay.appearance_flags = APPEARANCE_UI
 		bar.underlays += underlay
 
-	owner:vis_contents += bar
-	if(owner.bound_overlay)
-		owner.bound_overlay.vis_contents += bar
+	owner.add_viscontents(bar)
 
 	animate(bar, alpha = 255, time = PROGRESSBAR_ANIMATION_TIME, easing = SINE_EASING)
 

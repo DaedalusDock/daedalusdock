@@ -83,7 +83,7 @@ Class Procs:
 	contents.Add(T)
 
 	if(air.graphic)
-		T.vis_contents += air.graphic
+		T.add_viscontents(air.graphic)
 
 	if(T.atmos_sensitive_contents)
 		if(isnull(atmos_sensitive_contents))
@@ -119,7 +119,7 @@ Class Procs:
 	T.zone = null
 
 	if(air.graphic)
-		T.vis_contents -= air.graphic
+		T.remove_viscontents(air.graphic)
 
 	if(length(contents))
 		air.group_multiplier = length(contents)
@@ -144,7 +144,7 @@ Class Procs:
 		into.add_turf(T)
 		// Remove old graphic
 		if(air_graphic)
-			T.vis_contents -= air_graphic
+			T.remove_viscontents(air_graphic)
 
 		#ifdef ZASDBG
 		T.dbg(zasdbgovl_merged)
@@ -185,7 +185,7 @@ Class Procs:
 			continue
 
 		if(air_graphic)
-			T.vis_contents -= air_graphic
+			T.remove_viscontents(air_graphic)
 
 		#ifdef ZASDBG
 		//T.dbg(invalid_zone)
@@ -226,9 +226,9 @@ Class Procs:
 				if(!(T.zone == src))
 					continue
 				if(length(graphic_add))
-					T.vis_contents += graphic_add
+					T.add_viscontents(graphic_add)
 				if(length(graphic_remove))
-					T.vis_contents -= graphic_remove
+					T.remove_viscontents(graphic_remove)
 				CHECK_TICK
 
 ///Prints debug information to the given mob. Used by the "Zone Info" verb. Does not require ZASDBG compile define.

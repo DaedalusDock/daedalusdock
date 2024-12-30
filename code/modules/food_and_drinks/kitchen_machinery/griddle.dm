@@ -140,7 +140,7 @@
 		to_chat(throwingdatum.thrower, span_notice("You throw [hitting_atom] onto [src]."))
 
 /obj/machinery/griddle/proc/AddToGrill(obj/item/item_to_grill)
-	vis_contents += item_to_grill
+	add_viscontents(item_to_grill)
 	griddled_objects += item_to_grill
 	RegisterSignal(item_to_grill, COMSIG_MOVABLE_MOVED, PROC_REF(ItemMoved))
 	RegisterSignal(item_to_grill, COMSIG_GRILL_COMPLETED, PROC_REF(GrillCompleted))

@@ -360,7 +360,7 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 
 /obj/effect/gateway_portal_effect/proc/update_portal_filters()
 	clear_filters()
-	vis_contents = null
+	cut_viscontents()
 
 	if(!our_destination)
 		return

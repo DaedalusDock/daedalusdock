@@ -516,7 +516,7 @@ SUBSYSTEM_DEF(zas)
 
 	#ifdef ZASDBG
 	for(var/turf/T as anything in E.connecting_turfs)
-		T.vis_contents -= zasdbgovl_edge
+		T.remove_viscontents(zasdbgovl_edge)
 	#endif
 
 ///Wakes an edge, adding it to the active process list.
@@ -531,7 +531,7 @@ SUBSYSTEM_DEF(zas)
 
 	#ifdef ZASDBG
 	for(var/turf/T as anything in E.connecting_turfs)
-		T.vis_contents += zasdbgovl_edge
+		T.add_viscontents(zasdbgovl_edge)
 	#endif
 
 ///Returns the edge between zones A and B.  If one doesn't exist, it creates one. See header for more information

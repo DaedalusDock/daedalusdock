@@ -76,8 +76,8 @@ GLOBAL_REAL_VAR(list/zasdbgovl_dirzoneblock) = list(
 
 /turf/var/tmp/obj/effect/zasdbg/dbg_img
 /turf/proc/dbg(obj/effect/zasdbg/img)
-	vis_contents -= dbg_img
-	vis_contents += img
+	remove_viscontents(dbg_img)
+	add_viscontents(img)
 	dbg_img = img
 
 /proc/soft_assert(thing,fail)

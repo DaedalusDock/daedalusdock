@@ -117,8 +117,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	// by default, vis_contents is inherited from the turf that was here before
 	if(length(vis_contents))
-		vis_contents.len = 0
-
+		cut_viscontents()
 	assemble_baseturfs()
 
 	if(length(contents))
@@ -195,7 +194,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		GLOB.station_turfs += src
 	#endif
 
-	vis_contents.len = 0
+	if(length(vis_contents))
+		cut_viscontents()
 
 /// WARNING WARNING
 /// Turfs DO NOT lose their signals when they get replaced, REMEMBER THIS

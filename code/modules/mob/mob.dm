@@ -1661,7 +1661,7 @@
 		container = new()
 		container.appearance = appearance
 
-	hud_used.vis_holder.vis_contents += appearance
+	hud_used.vis_holder.add_viscontents(container)
 	addtimer(CALLBACK(src, PROC_REF(remove_appearance), appearance), 5 SECONDS, TIMER_DELETE_ME)
 
 	return container
@@ -1670,4 +1670,4 @@
 	if(!hud_used)
 		return
 
-	hud_used.vis_holder.vis_contents -= appearance
+	hud_used.vis_holder.remove_viscontents(appearance)

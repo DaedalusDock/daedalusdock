@@ -243,7 +243,7 @@ SUBSYSTEM_DEF(zas)
 		T.post_update_air_properties()
 		T.needs_air_update = 0
 		#ifdef ZASDBG
-		T.vis_contents -= zasdbgovl_mark
+		T.remove_viscontents(zasdbgovl_mark)
 		//updated++
 		#endif
 
@@ -267,7 +267,7 @@ SUBSYSTEM_DEF(zas)
 		T.post_update_air_properties()
 		T.needs_air_update = 0
 		#ifdef ZASDBG
-		T.vis_contents -= zasdbgovl_mark
+		T.remove_viscontents(zasdbgovl_mark)
 		//updated++
 		#endif
 
@@ -490,7 +490,7 @@ SUBSYSTEM_DEF(zas)
 		return
 	tiles_to_update += T
 	#ifdef ZASDBG
-	T.vis_contents += zasdbgovl_mark
+	T.add_viscontents(zasdbgovl_mark)
 	#endif
 	T.needs_air_update = 1
 
@@ -516,7 +516,7 @@ SUBSYSTEM_DEF(zas)
 
 	#ifdef ZASDBG
 	for(var/turf/T as anything in E.connecting_turfs)
-		T.vis_contents -= zasdbgovl_edge
+		T.remove_viscontents(zasdbgovl_edge)
 	#endif
 
 ///Wakes an edge, adding it to the active process list.
@@ -531,7 +531,7 @@ SUBSYSTEM_DEF(zas)
 
 	#ifdef ZASDBG
 	for(var/turf/T as anything in E.connecting_turfs)
-		T.vis_contents += zasdbgovl_edge
+		T.add_viscontents(zasdbgovl_edge)
 	#endif
 
 ///Returns the edge between zones A and B.  If one doesn't exist, it creates one. See header for more information

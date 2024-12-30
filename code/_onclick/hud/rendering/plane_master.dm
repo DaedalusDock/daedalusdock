@@ -195,7 +195,7 @@
 	gas_heat_object = new /obj/effect/abstract/particle_emitter/heat(null, -1)
 	gas_heat_object.particles?.count = 250
 	gas_heat_object.particles?.spawning = 15
-	vis_contents += gas_heat_object
+	add_viscontents(gas_heat_object)
 
 /atom/movable/screen/plane_master/area
 	name = "area plane"

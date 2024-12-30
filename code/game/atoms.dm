@@ -852,9 +852,6 @@
 		. |= UPDATE_ICON_STATE
 
 	if(updates & UPDATE_OVERLAYS)
-		if(LAZYLEN(managed_vis_overlays))
-			SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
-
 		var/list/new_overlays = update_overlays(updates)
 		if(managed_overlays)
 			cut_overlay(managed_overlays)
@@ -2319,6 +2316,22 @@
 //Currently only changed by Observers to be hearing through their orbit target.
 /atom/proc/hear_location()
 	return src
+
+/// Add an atom or list of atoms to our vis_contents
+/atom/proc/add_viscontents(atom/A)
+	src:vis_contents += A
+
+/// Add an atom or list of atoms to our vis_contents, atoms already present will be ignored
+/atom/proc/distinct_add_viscontents(atom/A)
+	src:vis_contents |= A
+
+/// Remove an atom or list of atoms from our vis_contents
+/atom/proc/remove_viscontents(atom/A)
+	src:vis_contents -= A
+
+/// Cut our vis_contents
+/atom/proc/cut_viscontents()
+	src:vis_contents:len = 0
 
 /// Makes this atom look like a "hologram"
 /// So transparent, blue and with a scanline

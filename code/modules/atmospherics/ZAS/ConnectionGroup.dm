@@ -113,7 +113,7 @@ Class Procs:
 		zas_log("[type] Erased.")
 
 	for(var/turf/T in connecting_turfs)
-		T.vis_contents -= zasdbgovl_edge
+		T.remove_viscontents(zasdbgovl_edge)
 	#endif
 
 ///Called every air tick on edges in the processing list. Equalizes gas.
@@ -189,13 +189,13 @@ Class Procs:
 	connecting_turfs += c.A
 	#ifdef ZASDBG
 	if(excited)
-		c.A.vis_contents += zasdbgovl_edge
+		c.A.add_viscontents(zasdbgovl_edge)
 	#endif
 
 /connection_edge/zone/remove_connection(connection/c)
 	connecting_turfs -= c.A
 	#ifdef ZASDBG
-	c.A.vis_contents -= zasdbgovl_edge
+	c.A.remove_viscontents(zasdbgovl_edge)
 	#endif
 	return ..()
 
@@ -274,14 +274,14 @@ Class Procs:
 	air.group_multiplier = coefficient
 	#ifdef ZASDBG
 	if(excited)
-		c.B.vis_contents += zasdbgovl_edge
+		c.B.add_viscontents(zasdbgovl_edge)
 	#endif
 
 /connection_edge/unsimulated/remove_connection(connection/c)
 	connecting_turfs -= c.B
 	air.group_multiplier = coefficient
 	#ifdef ZASDBG
-	c.B.vis_contents -= zasdbgovl_edge
+	c.B.remove_viscontents(zasdbgovl_edge)
 	#endif
 	return ..()
 

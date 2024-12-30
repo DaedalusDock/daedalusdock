@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - code_imp: The code now compiles on 516. The server is not currently running 516
-      and does not recommend developing on it.

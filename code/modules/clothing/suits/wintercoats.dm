@@ -22,7 +22,6 @@
 		/obj/item/radio,
 		/obj/item/storage/fancy/cigarettes,
 		/obj/item/tank/internals/emergency_oxygen,
-		/obj/item/tank/internals/plasmaman,
 		/obj/item/toy,
 		/obj/item/storage/bag/books,
 	)

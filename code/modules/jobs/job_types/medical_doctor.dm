@@ -17,7 +17,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/doctor,
-			SPECIES_PLASMAMAN = /datum/outfit/job/doctor/plasmaman,
 		),
 	)
 
@@ -64,15 +63,6 @@
 	box = /obj/item/storage/box/survival/medical
 	chameleon_extras = /obj/item/gun/syringe
 	skillchips = list(/obj/item/skillchip/entrails_reader)
-
-/datum/outfit/job/doctor/plasmaman
-	name = JOB_MEDICAL_DOCTOR + " (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/medical
-	gloves = /obj/item/clothing/gloves/color/plasmaman/white
-	head = /obj/item/clothing/head/helmet/space/plasmaman/medical
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/doctor/mod
 	name = JOB_MEDICAL_DOCTOR + " (MODsuit)"

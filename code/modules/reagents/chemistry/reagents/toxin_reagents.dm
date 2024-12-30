@@ -86,10 +86,6 @@
 	if(holder.has_reagent(/datum/reagent/medicine/epinephrine))
 		holder.remove_reagent(/datum/reagent/medicine/epinephrine, 2 * removed)
 	C.adjustPlasma(20 * removed)
-	if(isplasmaman(C))
-		if(prob(10))
-			for(var/obj/item/bodypart/BP as anything in C.bodyparts)
-				BP.heal_bones()
 
 // Plasma will attempt to ignite at the ignition temperature.
 /datum/reagent/toxin/plasma/proc/on_temp_change(datum/reagents/_holder, old_temp)

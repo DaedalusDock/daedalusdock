@@ -4,7 +4,7 @@
 	fallback_colors = list(list(13, 15))
 	fallback_icon_state = "coat"
 
-	allowed = list(/obj/item/tank/internals/emergency_oxygen, /obj/item/tank/internals/plasmaman)
+	allowed = list(/obj/item/tank/internals/emergency_oxygen)
 
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 

@@ -272,7 +272,7 @@ GLOBAL_LIST_INIT(orion_events, generate_orion_events())
 			if(!spaceport_raided && food >= 10 && fuel >= 10 && gameStatus == ORION_STATUS_MARKET)
 				if(params["odd"])
 					//find some silly crewmember name
-					add_crewmember(pick(GLOB.commando_names + GLOB.nightmare_names + GLOB.ai_names + GLOB.clown_names + GLOB.mime_names + GLOB.plasmaman_names + GLOB.ethereal_names + GLOB.carp_names))
+					add_crewmember(pick(GLOB.commando_names + GLOB.nightmare_names + GLOB.ai_names + GLOB.clown_names + GLOB.mime_names + GLOB.ethereal_names + GLOB.carp_names))
 				else
 					add_crewmember()
 				fuel -= ORION_BUY_CREW_PRICE

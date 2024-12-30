@@ -57,7 +57,6 @@
 		/obj/item/organ/tongue/zombie,
 		/obj/item/organ/appendix,
 		/obj/item/organ/liver/fly,
-		/obj/item/organ/lungs/plasmaman,
 		/obj/item/organ/tail/cat,
 		/obj/item/organ/tail/lizard,
 	)

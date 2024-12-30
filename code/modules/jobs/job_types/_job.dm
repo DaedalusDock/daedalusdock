@@ -92,9 +92,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 
 	var/outfit = null
 
-	/// The job's outfit that will be assigned for plasmamen.
-	var/plasmaman_outfit = null
-
 	/// Different outfits for alternate job titles and different species
 	var/list/outfits
 

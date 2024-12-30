@@ -566,7 +566,7 @@
 			if(candidate.mmi || candidate.shell)
 				channeling = TRUE
 				user.visible_message(span_danger("A dark cloud emanates from [user]'s hand and swirls around [candidate]!"))
-				playsound(T, 'sound/machines/airlock_alien_prying.ogg', 80, TRUE)
+				playsound(T, 'sound/machines/airlock_alien_prying.ogg', 80, TRUE, ignore_walls = 'sound/machines/airlock_alien_prying.ogg')
 				var/prev_color = candidate.color
 				candidate.color = "black"
 				if(do_after(user, candidate, 90))
@@ -597,7 +597,7 @@
 				qdel(candidate)
 		else if(istype(target,/obj/machinery/door/airlock))
 			channeling = TRUE
-			playsound(T, 'sound/machines/doors/airlock_open_force.ogg', 50, TRUE)
+			playsound(T, 'sound/machines/doors/airlock_open_force.ogg', 50, TRUE, ignore_walls = 'sound/machines/doors/airlock_open_force.ogg')
 			do_sparks(5, TRUE, target)
 			if(do_after(user, user, 50))
 				if(QDELETED(target))

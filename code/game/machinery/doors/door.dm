@@ -210,7 +210,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	if(!red_alert_access)
 		return
 	audible_message(span_notice("[src] whirr[p_s()] as [p_they()] automatically lift[p_s()] access requirements!"))
-	playsound(src, 'sound/machines/boltsup.ogg', 50, TRUE)
+	playsound(src, 'sound/machines/boltsup.ogg', 50, TRUE, ignore_walls = 'sound/machines/boltsup.ogg')
 
 /obj/machinery/door/proc/try_safety_unlock(mob/user)
 	return FALSE
@@ -414,9 +414,9 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	switch(damage_type)
 		if(BRUTE)
 			if(glass)
-				playsound(loc, 'sound/effects/glasshit.ogg', 90, TRUE)
+				playsound(loc, 'sound/effects/glasshit.ogg', 90, TRUE, ignore_walls = 'sound/effects/glasshit.ogg')
 			else if(damage_amount)
-				playsound(loc, 'sound/weapons/smash.ogg', 50, TRUE)
+				playsound(loc, 'sound/weapons/smash.ogg', 50, TRUE, ignore_walls = 'sound/weapons/smash.ogg')
 			else
 				playsound(src, 'sound/weapons/tap.ogg', 50, TRUE)
 		if(BURN)

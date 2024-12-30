@@ -415,11 +415,11 @@
 	face_atom(targeted_atom)
 	if(casingtype)
 		var/obj/item/ammo_casing/casing = new casingtype(startloc)
-		playsound(src, projectilesound, 100, TRUE)
+		playsound(src, projectilesound, 100, TRUE, ignore_walls = projectilesound)
 		casing.fire_casing(targeted_atom, src, null, null, null, ran_zone(), 0,  src)
 	else if(projectiletype)
 		var/obj/projectile/P = new projectiletype(startloc)
-		playsound(src, projectilesound, 100, TRUE)
+		playsound(src, projectilesound, 100, TRUE, ignore_walls = projectilesound)
 		P.starting = startloc
 		P.firer = src
 		P.fired_from = src
@@ -565,7 +565,7 @@
 	if (!T)
 		return
 
-	if (!length(SSmobs.clients_by_zlevel[T.z])) // It's fine to use .len here but doesn't compile on 511
+	if (!length(SSmobs.cliented_living_mobs_by_zlevel[T.z])) // It's fine to use .len here but doesn't compile on 511
 		toggle_ai(AI_Z_OFF)
 		return
 
@@ -583,7 +583,7 @@
 /mob/living/simple_animal/hostile/proc/ListTargetsLazy(_Z)//Step 1, find out what we can see
 	var/static/hostile_machines = typecacheof(list(/obj/machinery/porta_turret, /obj/vehicle/sealed/mecha))
 	. = list()
-	for (var/I in SSmobs.clients_by_zlevel[_Z])
+	for (var/I in SSmobs.cliented_living_mobs_by_zlevel[_Z])
 		var/mob/M = I
 		if (get_dist(M, src) < vision_range)
 			if (isturf(M.loc))

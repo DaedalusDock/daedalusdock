@@ -526,7 +526,7 @@
 		for(var/obj/structure/carp_rift/c in S.loc.contents)
 			return
 		var/obj/structure/carp_rift/CR = new /obj/structure/carp_rift(S.loc)
-		playsound(S, 'sound/vehicles/rocketlaunch.ogg', 100, TRUE)
+		playsound(S, 'sound/vehicles/rocketlaunch.ogg', 100, TRUE, ignore_walls = 'sound/vehicles/rocketlaunch.ogg')
 		S.riftTimer = -1
 		CR.dragon = S
 		S.rift_list += CR
@@ -602,7 +602,7 @@
 		. += span_notice("It has [carp_stored] carp available to spawn as.")
 
 /obj/structure/carp_rift/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
-	playsound(src, 'sound/magic/lightningshock.ogg', 50, TRUE)
+	playsound(src, 'sound/magic/lightningshock.ogg', 50, TRUE, ignore_walls = 'sound/magic/lightningshock.ogg')
 
 /obj/structure/carp_rift/Destroy()
 	STOP_PROCESSING(SSobj, src)

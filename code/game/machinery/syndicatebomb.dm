@@ -73,7 +73,7 @@
 				volume = 10
 			else
 				volume = 5
-		playsound(loc, beepsound, volume, FALSE)
+		playsound(loc, beepsound, volume, FALSE, ignore_walls = beepsound)
 		next_beep = world.time + 10
 
 	if(active && ((detonation_timer <= world.time) || explode_now))
@@ -462,7 +462,7 @@
 		message_admins(adminlog)
 		log_game(adminlog)
 
-	playsound(loc, 'sound/effects/bamf.ogg', 75, TRUE, 5)
+	playsound(loc, 'sound/effects/bamf.ogg', 75, TRUE, 5, ignore_walls = TRUE)
 
 /obj/item/bombcore/chemical/attackby(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_CROWBAR && beakers.len > 0)

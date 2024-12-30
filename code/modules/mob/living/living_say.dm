@@ -290,7 +290,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 			speak_sound = voice_type2sound[voice_type]["!"]
 		else
 			speak_sound = voice_type2sound[voice_type][voice_type]
-		playsound(src, speak_sound, 300, 1, range - SOUND_RANGE, falloff_exponent = 0, pressure_affected = FALSE, ignore_walls = FALSE, use_reverb = FALSE)
+		playsound(src, speak_sound, 300, 1, range - SOUND_RANGE, falloff_exponent = 0, pressure_affected = FALSE, use_reverb = FALSE)
 
 	talkcount++
 	return TRUE

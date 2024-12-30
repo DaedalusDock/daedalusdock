@@ -17,7 +17,8 @@
 	if(.)
 		return
 	flick("[icon_state]-punch", src)
-	playsound(loc, pick(hit_sounds), 25, TRUE, -1)
+	var/sound_played = pick(hit_sounds)
+	playsound(loc, sound_played, 25, TRUE, -1, ignore_walls = sound_played)
 	if(isliving(user))
 		var/mob/living/L = user
 		L.apply_status_effect(/datum/status_effect/exercised)

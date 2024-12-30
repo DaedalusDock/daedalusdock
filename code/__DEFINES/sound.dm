@@ -26,6 +26,8 @@
 #define SOUND_DEFAULT_FALLOFF_DISTANCE 1 //For a normal sound this would be 1 tile of no falloff
 ///The default exponent of sound falloff
 #define SOUND_FALLOFF_EXPONENT 6
+/// When a sound is from a non-visible source, add this many turfs to the distance between the source and the hearer
+#define SOUND_OCCLUSION_DISTANCE_MODIFIER 3
 
 //#define SOUND_MINIMUM_PRESSURE 10
 

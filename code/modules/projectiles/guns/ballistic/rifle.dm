@@ -24,7 +24,7 @@
 /obj/item/gun/ballistic/rifle/rack(mob/user = null)
 	if (bolt.is_locked == FALSE) // The bolt is closed
 		to_chat(user, span_notice("You open the bolt of \the [src]."))
-		playsound(src, rack_sound, rack_sound_volume, rack_sound_vary)
+		playsound(src, rack_sound, rack_sound_volume, rack_sound_vary, ignore_walls = rack_sound)
 
 		update_chamber(FALSE, FALSE, FALSE)
 

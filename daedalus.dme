@@ -1458,6 +1458,7 @@
 #include "code\game\objects\items.dm"
 #include "code\game\objects\obj_defense.dm"
 #include "code\game\objects\objs.dm"
+#include "code\game\objects\sound_test.dm"
 #include "code\game\objects\structures.dm"
 #include "code\game\objects\effects\anomalies.dm"
 #include "code\game\objects\effects\blessing.dm"

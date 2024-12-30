@@ -823,7 +823,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	SEND_SIGNAL(src, COMSIG_ITEM_DROPPED, user)
 
 	if(!silent)
-		playsound(src, drop_sound, DROP_SOUND_VOLUME, ignore_walls = FALSE)
+		playsound(src, drop_sound, DROP_SOUND_VOLUME)
 
 	if(!QDELETED(user))
 		if(slowdown)
@@ -886,9 +886,9 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	if(!initial)
 		if(equip_sound && (slot_flags & slot))
-			playsound(src, equip_sound, EQUIP_SOUND_VOLUME, TRUE, ignore_walls = FALSE)
+			playsound(src, equip_sound, EQUIP_SOUND_VOLUME, TRUE)
 		else if(slot == ITEM_SLOT_HANDS)
-			playsound(src, pickup_sound, PICKUP_SOUND_VOLUME, ignore_walls = FALSE)
+			playsound(src, pickup_sound, PICKUP_SOUND_VOLUME)
 
 	if(slowdown)
 		user.update_equipment_speed_mods()
@@ -1078,16 +1078,16 @@ DEFINE_INTERACTABLE(/obj/item)
 			var/volume = get_volume_by_throwforce_and_or_w_class()
 			if (throwforce > 0)
 				if (mob_throw_hit_sound)
-					playsound(hit_atom, mob_throw_hit_sound, volume, TRUE, -1)
+					playsound(hit_atom, mob_throw_hit_sound, volume, TRUE, -1, ignore_walls = mob_throw_hit_sound)
 				else if(hitsound)
-					playsound(hit_atom, hitsound, volume, TRUE, -1)
+					playsound(hit_atom, hitsound, volume, TRUE, -1, ignore_walls = hitsound)
 				else
-					playsound(hit_atom, 'sound/weapons/genhit.ogg',volume, TRUE, -1)
+					playsound(hit_atom, 'sound/weapons/genhit.ogg',volume, TRUE, -1, ignore_walls = 'sound/weapons/genhit.ogg')
 			else
 				playsound(hit_atom, 'sound/weapons/throwtap.ogg', 1, volume, -1)
 
 		else
-			playsound(src, drop_sound, YEET_SOUND_VOLUME, ignore_walls = FALSE)
+			playsound(src, drop_sound, YEET_SOUND_VOLUME)
 		return hit_atom.hitby(src, 0, itempush, throwingdatum=throwingdatum)
 
 /obj/item/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, force, gentle = FALSE, quickstart = TRUE)

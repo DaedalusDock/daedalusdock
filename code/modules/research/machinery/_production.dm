@@ -152,7 +152,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 		new path(get_turf(src))
 
 	SSblackbox.record_feedback("nested tally", "item_printed", amount, list("[type]", "[path]"))
-	playsound(src, 'goon/sounds/chime.ogg', 50, FALSE, ignore_walls = FALSE)
+	playsound(src, 'goon/sounds/chime.ogg', 50, FALSE)
 
 /obj/machinery/rnd/production/proc/can_build_design(datum/design/D, amount)
 	var/coeff = efficient_with(D.build_path) ? efficiency_coeff : 1

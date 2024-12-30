@@ -101,11 +101,11 @@
 #define COMSIG_MOB_EQUIPPED_ITEM "mob_equipped_item"
 /// A mob has just unequipped an item.
 #define COMSIG_MOB_UNEQUIPPED_ITEM "mob_unequipped_item"
-///called on [/obj/item] before unequip from base of [mob/proc/doUnEquip]: (force, atom/newloc, no_move, invdrop, silent)
+///called on [/obj/item] before unequip from base of [mob/proc/tryUnequipItem]: (force, atom/newloc, no_move, invdrop, silent)
 #define COMSIG_ITEM_PRE_UNEQUIP "item_pre_unequip"
 	///only the pre unequip can be cancelled
 	#define COMPONENT_ITEM_BLOCK_UNEQUIP (1<<0)
-///called on [/obj/item] AFTER unequip from base of [mob/proc/doUnEquip]: (force, atom/newloc, no_move, invdrop, silent)
+///called on [/obj/item] AFTER unequip from base of [mob/proc/tryUnequipItem]: (force, atom/newloc, no_move, invdrop, silent)
 #define COMSIG_ITEM_POST_UNEQUIP "item_post_unequip"
 ///from base of obj/item/on_grind(): ())
 #define COMSIG_ITEM_ON_GRIND "on_grind"
@@ -129,7 +129,13 @@
 #define COMSIG_ITEM_ATTACK_ZONE "item_attack_zone"
 ///from base of obj/item/hit_reaction(): (list/args)
 #define COMSIG_ITEM_HIT_REACT "item_hit_react"
-	#define COMPONENT_HIT_REACTION_BLOCK (1<<0)
+
+#define COMSIG_ITEM_CHECK_BLOCK "item_check_block"
+	/// Hit was blocked by the component, continue to hit_reaction
+	#define COMPONENT_CHECK_BLOCK_BLOCKED (1<<0)
+	/// Hit was blocked by the component, do not continue into hit_reaction()
+	#define COMPONENT_CHECK_BLOCK_SKIP_REACTION (1<<1)
+
 ///called on item when microwaved (): (obj/machinery/microwave/M)
 #define COMSIG_ITEM_MICROWAVE_ACT "microwave_act"
 	#define COMPONENT_SUCCESFUL_MICROWAVE (1<<0)
@@ -227,6 +233,10 @@
 #define COMSIG_ITEM_SPLIT_PROFIT "item_split_profits"
 ///called when getting the item's exact ratio for cargo's profit, without selling the item.
 #define COMSIG_ITEM_SPLIT_PROFIT_DRY "item_split_profits_dry"
+///from base of /atom/movable/proc/on_enter_storage(): (datum/storage/storage)
+#define COMSIG_ITEM_STORED "item_stored"
+///from base of /atom/movable/proc/on_exit_storage(): (datum/storage/storage)
+#define COMSIG_ITEM_UNSTORED "item_unstored"
 
 // /obj/item/clothing signals
 
@@ -279,24 +289,25 @@
 
 ///called from base of /obj/item/radio/proc/set_frequency(): (list/args)
 #define COMSIG_RADIO_NEW_FREQUENCY "radio_new_frequency"
-
+#define COMSIG_RADIO_NEW_MESSAGE "radio_new_message"
+///called during SSpacketnets/proc/ImmediateSubspaceVocalSend(): (speaker, message, freq_num, data)
+#define COMSIG_RADIO_RECEIVE "radio_receive"
 // /obj/item/pen signals
-
 ///called after rotation in /obj/item/pen/attack_self(): (rotation, mob/living/carbon/user)
 #define COMSIG_PEN_ROTATED "pen_rotated"
 
 // /obj/item/gun signals
 
-///called in /obj/item/gun/fire_gun (user, target, flag, params)
+///called in /obj/item/gun/try_fire_gun (user, target, flag, params)
 #define COMSIG_GUN_TRY_FIRE "gun_try_fire"
 	#define COMPONENT_CANCEL_GUN_FIRE (1<<0)
-///called in /obj/item/gun/process_fire (src, target, params, zone_override)
+///called in /obj/item/gun/do_fire_gun (src, target, params, zone_override)
 #define COMSIG_MOB_FIRED_GUN "mob_fired_gun"
-///called in /obj/item/gun/process_fire (user, target, params, zone_override)
+///called in /obj/item/gun/do_fire_gun (user, target, params, zone_override)
 #define COMSIG_GUN_FIRED "gun_fired"
-///called in /obj/item/gun/process_chamber (src)
+///called in /obj/item/gun/update_chamber (src)
 #define COMSIG_GUN_CHAMBER_PROCESSED "gun_chamber_processed"
-///called in /obj/item/gun/ballistic/process_chamber (casing)
+///called in /obj/item/gun/ballistic/update_chamber (casing)
 #define COMSIG_CASING_EJECTED "casing_ejected"
 
 // Jetpack things
@@ -321,11 +332,11 @@
 
 // /obj/item/grenade signals
 
-///called in /obj/item/gun/process_fire (user, target, params, zone_override)
+///called in /obj/item/gun/do_fire_gun (user, target, params, zone_override)
 #define COMSIG_GRENADE_DETONATE "grenade_prime"
 //called from many places in grenade code (armed_by, nade, det_time, delayoverride)
 #define COMSIG_MOB_GRENADE_ARMED "grenade_mob_armed"
-///called in /obj/item/gun/process_fire (user, target, params, zone_override)
+///called in /obj/item/gun/do_fire_gun (user, target, params, zone_override)
 #define COMSIG_GRENADE_ARMED "grenade_armed"
 
 // /obj/projectile signals (sent to the firer)
@@ -379,7 +390,7 @@
 #define COMSIG_ITEM_ATTACK_SELF "item_attack_self"
 //from base of obj/item/attack_self_secondary(): (/mob)
 #define COMSIG_ITEM_ATTACK_SELF_SECONDARY "item_attack_self_secondary"
-///from base of obj/item/attack_atom(): (/obj, /mob)
+///from base of obj/item/attack_obj(): (/obj, /mob)
 #define COMSIG_ITEM_ATTACK_OBJ "item_attack_obj"
 ///from base of obj/item/pre_attack(): (atom/target, mob/user, params)
 #define COMSIG_ITEM_PRE_ATTACK "item_pre_attack"

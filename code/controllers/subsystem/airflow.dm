@@ -1,13 +1,20 @@
 SUBSYSTEM_DEF(airflow)
 	name = "Air (Airflow)"
-	wait = 1
-	flags = SS_NO_INIT|SS_TICKER
+	wait = 0
+	flags = SS_NO_INIT | SS_HIBERNATE
 	priority = FIRE_PRIORITY_AIRFLOW
 	runlevels = RUNLEVEL_GAME|RUNLEVEL_POSTGAME
 
 	var/static/tmp/list/processing = list()
 	var/static/tmp/list/current = list()
 
+
+/datum/controller/subsystem/airflow/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF(src, processing),
+		NAMEOF(src, current)
+	)
 
 /datum/controller/subsystem/airflow/Recover()
 	current.Cut()
@@ -70,28 +77,33 @@ SUBSYSTEM_DEF(airflow)
 			Dequeue(target)
 			continue
 
+		// We are moving now
+		target.airflow_old_density = target.density
+
 		if(!target.airflow_old_density && target.airflow_speed > zas_settings.airflow_speed_for_density)
 			target.set_density(TRUE)
 
 		target.moving_by_airflow = TRUE
 
-		var/olddir = target.dir
+		var/olddir = target.set_dir_on_move
+		target.set_dir_on_move = FALSE
 		step_towards(target, target.airflow_dest)
 
-		target.dir = olddir
+		target.set_dir_on_move = olddir
 		target.moving_by_airflow = FALSE
 		target.airborne_acceleration++
 
 		if(!target.airflow_old_density)
 			target.set_density(FALSE)
 
-		ADD_TRAIT(target, TRAIT_EXPERIENCING_AIRFLOW, AIRFLOW_TRAIT)
 
 /datum/controller/subsystem/airflow/proc/Enqueue(atom/movable/to_add)
 	if(!can_fire)
 		return
 	processing += to_add
+
 	RegisterSignal(to_add, COMSIG_PARENT_QDELETING, PROC_REF(HandleDel))
+	ADD_TRAIT(to_add, TRAIT_EXPERIENCING_AIRFLOW, AIRFLOW_TRAIT)
 
 /datum/controller/subsystem/airflow/proc/Dequeue(atom/movable/to_remove)
 	processing -= to_remove
@@ -129,7 +141,6 @@ SUBSYSTEM_DEF(airflow)
 		return FALSE
 
 	airflow_speed = min(max(strength * (9 / airflow_falloff), 1), 9)
-	airflow_old_density = src.density
 	return TRUE
 
 

@@ -10,12 +10,8 @@ again.
 
 /obj/effect/spawner/structure/Initialize(mapload)
 	. = ..()
-
 	for(var/spawn_type in spawn_list)
 		new spawn_type(loc)
-
-	return INITIALIZE_HINT_QDEL
-
 
 //normal windows
 
@@ -25,10 +21,10 @@ again.
 	name = "window spawner"
 	spawn_list = list(/obj/structure/low_wall, /obj/structure/window/fulltile)
 	dir = SOUTH
+	layer = ABOVE_OBJ_LAYER
 
 /obj/effect/spawner/structure/window/Initialize(mapload)
 	. = ..()
-
 	var/turf/current_turf = loc
 	current_turf.rcd_memory = RCD_MEMORY_WINDOWGRILLE
 
@@ -413,3 +409,15 @@ again.
 /obj/effect/spawner/structure/window/reinforced/plasma/prepainted/daedalus
 	name = "reinforced plasma window spawner (daedalus paint)"
 	spawn_list = list(/obj/structure/grille, /obj/structure/low_wall/prepainted/daedalus, /obj/structure/window/reinforced/plasma/fulltile)
+
+/obj/effect/spawner/structure/window/prepainted/marsexec
+	name = "reinforced window spawner (mars executive paint)"
+	spawn_list = list(/obj/structure/low_wall/prepainted/marsexec, /obj/structure/window/fulltile)
+
+/obj/effect/spawner/structure/window/reinforced/prepainted/marsexec
+	name = "window spawner (mars executive paint)"
+	spawn_list = list(/obj/structure/low_wall/prepainted/marsexec, /obj/structure/window/reinforced/fulltile)
+
+/obj/effect/spawner/structure/window/reinforced/tinted/prepainted/marsexec
+	name = "tinted reinforced window spawner (mars executive paint)"
+	spawn_list = list(/obj/structure/low_wall/prepainted/marsexec, /obj/structure/window/reinforced/tinted/fulltile)

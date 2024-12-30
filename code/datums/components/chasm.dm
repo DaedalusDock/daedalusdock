@@ -20,12 +20,9 @@
 		/obj/effect/hotspot,
 		/obj/effect/landmark,
 		/obj/effect/temp_visual,
-		/obj/effect/light_emitter/tendril,
-		/obj/effect/collapse,
 		/obj/effect/particle_effect/ion_trails,
 		/obj/effect/dummy/phased_mob,
 		/obj/effect/mapping_helpers,
-		/obj/effect/wisp,
 	))
 
 /datum/component/chasm/Initialize(turf/target)
@@ -41,7 +38,7 @@
 
 /datum/component/chasm/process()
 	if (!drop_stuff())
-		STOP_PROCESSING(SSobj, src)
+		return PROCESS_KILL
 
 /datum/component/chasm/proc/is_safe()
 	//if anything matching this typecache is found in the chasm, we don't drop things

@@ -56,7 +56,7 @@
 				H.color = "#000000"
 		adjustHealth(-maxHealth*BLOBMOB_HEALING_MULTIPLIER)
 
-/mob/living/simple_animal/hostile/blob/fire_act(exposed_temperature, exposed_volume)
+/mob/living/simple_animal/hostile/blob/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	..()
 	if(exposed_temperature)
 		adjustFireLoss(clamp(0.01 * exposed_temperature, 1, 5))
@@ -85,7 +85,7 @@
 		return 1
 	return ..()
 
-/mob/living/simple_animal/hostile/blob/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null)
+/mob/living/simple_animal/hostile/blob/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null, range = 7)
 	if(sanitize)
 		message = trim(copytext_char(sanitize(message), 1, MAX_MESSAGE_LEN))
 	var/spanned_message = say_quote(message)
@@ -137,7 +137,6 @@
 		factory.spores += src
 		if(linked_node.overmind && istype(linked_node.overmind.blobstrain, /datum/blobstrain/reagent/distributed_neurons) && !istype(src, /mob/living/simple_animal/hostile/blob/blobspore/weak))
 			notify_ghosts("A controllable spore has been created in \the [get_area(src)].", source = src, action = NOTIFY_ORBIT, flashwindow = FALSE, header = "Sentient Spore Created")
-		add_cell_sample()
 
 /mob/living/simple_animal/hostile/blob/blobspore/Life(delta_time = SSMOBS_DT, times_fired)
 	if(!is_zombie && isturf(src.loc))
@@ -173,7 +172,8 @@
 	is_zombie = 1
 	if(H.wear_suit)
 		var/obj/item/clothing/suit/armor/A = H.wear_suit
-		maxHealth += A.armor.melee //That zombie's got armor, I want armor!
+		maxHealth += A.returnArmor().getRating(BLUNT) //That zombie's got armor, I want armor!
+
 	maxHealth += 40
 	health = maxHealth
 	name = "blob zombie"
@@ -196,9 +196,9 @@
 	if(!key)
 		notify_ghosts("\A [src] has been created in \the [get_area(src)].", source = src, action = NOTIFY_ORBIT, flashwindow = FALSE, header = "Blob Zombie Created")
 
-/mob/living/simple_animal/hostile/blob/blobspore/death(gibbed)
+/mob/living/simple_animal/hostile/blob/blobspore/death(gibbed, cause_of_death = "Unknown")
 	// On death, create a small smoke of harmful gas (s-Acid)
-	var/datum/effect_system/smoke_spread/chem/S = new
+	var/datum/effect_system/fluid_spread/smoke/chem/S = new
 	var/turf/location = get_turf(src)
 
 	// Create the reagents to put into the air
@@ -213,7 +213,7 @@
 
 	// Attach the smoke spreader and setup/start it.
 	S.attach(location)
-	S.set_up(reagents, death_cloud_size, location, silent = TRUE)
+	S.set_up(death_cloud_size, location = location, carry = reagents, silent = TRUE)
 	S.start()
 	if(factory)
 		factory.spore_delay = world.time + factory.spore_cooldown //put the factory on cooldown
@@ -241,10 +241,6 @@
 			blob_head_overlay.color = overmind.blobstrain.complementary_color
 		color = initial(color)//looks better.
 		add_overlay(blob_head_overlay)
-
-/mob/living/simple_animal/hostile/blob/blobspore/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BLOBSPORE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
 /mob/living/simple_animal/hostile/blob/blobspore/independent
 	gold_core_spawnable = HOSTILE_SPAWN
 	independent = TRUE
@@ -281,17 +277,13 @@
 	verb_ask = "demands"
 	verb_exclaim = "roars"
 	verb_yell = "bellows"
-	force_threshold = 10
 	//pressure_resistance = 50
 	mob_size = MOB_SIZE_LARGE
 	hud_type = /datum/hud/living/blobbernaut
 
 /mob/living/simple_animal/hostile/blob/blobbernaut/Initialize(mapload)
 	. = ..()
-	add_cell_sample()
-
-/mob/living/simple_animal/hostile/blob/blobbernaut/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BLOBBERNAUT, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
+	AddElement(/datum/element/damage_threshold, 10)
 
 /mob/living/simple_animal/hostile/blob/blobbernaut/Life(delta_time = SSMOBS_DT, times_fired)
 	if(!..())
@@ -345,12 +337,12 @@
 		melee_damage_upper = initial(melee_damage_upper)
 		attack_verb_continuous = initial(attack_verb_continuous)
 
-/mob/living/simple_animal/hostile/blob/blobbernaut/death(gibbed)
-	..(gibbed)
+/mob/living/simple_animal/hostile/blob/blobbernaut/death(gibbed, cause_of_death = "Unknown")
+	..()
 	if(factory)
 		factory.naut = null //remove this naut from its factory
 		factory.max_integrity = initial(factory.max_integrity)
-	flick("blobbernaut_death", src)
+	z_flick("blobbernaut_death", src)
 
 /mob/living/simple_animal/hostile/blob/blobbernaut/independent
 	independent = TRUE

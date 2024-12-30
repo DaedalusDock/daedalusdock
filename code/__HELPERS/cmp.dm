@@ -95,18 +95,12 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 	else
 		return A.layer - B.layer
 
-/proc/cmp_advdisease_resistance_asc(datum/disease/advance/A, datum/disease/advance/B)
-	return A.totalResistance() - B.totalResistance()
+/proc/cmp_advdisease_resistance_asc(datum/pathogen/advance/A, datum/pathogen/advance/B)
+	return A.properties[PATHOGEN_PROP_RESISTANCE] - B.properties[PATHOGEN_PROP_RESISTANCE]
 
 /proc/cmp_quirk_asc(datum/quirk/A, datum/quirk/B)
-	var/a_sign = SIGN(initial(A.value) * -1)
-	var/b_sign = SIGN(initial(B.value) * -1)
-
-	// Neutral traits go last.
-	if(a_sign == 0)
-		a_sign = 2
-	if(b_sign == 0)
-		b_sign = 2
+	var/a_sign = SIGN(initial(A.quirk_genre) * -1)
+	var/b_sign = SIGN(initial(B.quirk_genre) * -1)
 
 	var/a_name = initial(A.name)
 	var/b_name = initial(B.name)
@@ -117,7 +111,7 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 		return sorttext(b_name, a_name)
 
 /proc/cmp_job_display_asc(datum/job/A, datum/job/B)
-	return A.display_order - B.display_order
+	return GLOB.job_display_order.Find(A.type) - GLOB.job_display_order.Find(B.type)
 
 /proc/cmp_department_display_asc(datum/job_department/A, datum/job_department/B)
 	return A.display_order - B.display_order
@@ -143,6 +137,11 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 /// Orders bodyparts by their body_part value, ascending.
 /proc/cmp_bodypart_by_body_part_asc(obj/item/bodypart/limb_one, obj/item/bodypart/limb_two)
 	return limb_one.body_part - limb_two.body_part
+
+/// Orders bodyparts by how they should be shown to players in a UI
+/proc/cmp_bodyparts_display_order(obj/item/bodypart/limb_one, obj/item/bodypart/limb_two)
+	var/static/list/parts = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG)
+	return parts.Find(limb_one.body_zone) - parts.Find(limb_two.body_zone)
 
 /// Orders by integrated circuit weight
 /proc/cmp_port_order_asc(datum/port/compare1, datum/port/compare2)
@@ -175,3 +174,29 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 ///Orders R-UST fusion by priority
 /proc/cmp_fusion_reaction_des(datum/fusion_reaction/A, datum/fusion_reaction/B)
 	return B.priority - A.priority
+
+/// Sort by plane, then by layer. Approximately BYOND rendering order.
+/proc/cmp_zm_render_order(atom/A, atom/B)
+	return (B.plane - A.plane) || (B.layer - A.layer)
+
+/// Sort modules by priority
+/proc/cmp_pref_modules(datum/preference_group/A, datum/preference_group/B)
+	return B.priority - A.priority
+
+/proc/cmp_pref_name(datum/preference/A, datum/preference/B)
+	return sorttext(B.explanation, A.explanation)
+
+/proc/cmp_loadout_name(datum/loadout_item/A, datum/loadout_item/B)
+	return sorttext(B.name, A.name)
+
+/// Orders designs by name
+/proc/cmp_design_name(datum/design/A, datum/design/B)
+	return sorttext(B.name, A.name)
+
+/// Orders lists by the size of lists in their contents
+/proc/cmp_list_length(list/A, list/B)
+	return length(A) - length(B)
+
+/// Orders codex entries by name alphabetically
+/proc/cmp_codex_name(datum/codex_entry/a, datum/codex_entry/b)
+	return sorttext(b.name, a.name)

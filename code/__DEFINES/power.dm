@@ -1,9 +1,3 @@
-#define CABLE_LAYER_1 (1<<0)
-#define CABLE_LAYER_2 (1<<1)
-#define CABLE_LAYER_3 (1<<2)
-
-#define MACHINERY_LAYER_1 1
-
 #define SOLAR_TRACK_OFF     0
 #define SOLAR_TRACK_TIMED   1
 #define SOLAR_TRACK_AUTO    2
@@ -33,3 +27,5 @@ GLOBAL_LIST_EMPTY(powernets)
 
 /// How much the bullets damage should be multiplied by when it is added to the internal variables
 #define SUPERMATTER_BULLET_ENERGY 10 //This is 5x greater than Baystation's to account for emitters doing about 5x less damage
+
+#define ARC_DAMAGE_TO_POWER(desired_damage) (desired_damage * 25000)

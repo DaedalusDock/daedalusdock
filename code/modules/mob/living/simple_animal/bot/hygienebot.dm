@@ -53,12 +53,14 @@
 	ADD_TRAIT(src, TRAIT_SPRAY_PAINTABLE, INNATE_TRAIT)
 
 /mob/living/simple_animal/bot/hygienebot/explode()
-	new /obj/effect/particle_effect/foam(loc)
+	new /obj/effect/particle_effect/fluid/foam(loc)
 
 	return ..()
 
 /mob/living/simple_animal/bot/hygienebot/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(washing)
 		do_wash(AM)
 
@@ -78,7 +80,7 @@
 
 /mob/living/simple_animal/bot/hygienebot/turn_off()
 	..()
-	mode = BOT_IDLE
+	set_mode(BOT_IDLE)
 
 /mob/living/simple_animal/bot/hygienebot/bot_reset()
 	..()
@@ -106,7 +108,7 @@
 			SSmove_manager.stop_looping(src)
 			look_for_lowhygiene() // see if any disgusting fucks are in range
 			if(!mode && bot_mode_flags & BOT_MODE_AUTOPATROL) // still idle, and set to patrol
-				mode = BOT_START_PATROL // switch to patrol mode
+				set_mode(BOT_START_PATROL)
 
 		if(BOT_HUNT) // hunting for stinkman
 			if(bot_cover_flags & BOT_COVER_EMAGGED) //lol fuck em up
@@ -128,7 +130,7 @@
 						speak("Well about fucking time you degenerate.", "Fucking finally.", "Thank god, you finally stopped.")
 						playsound(loc, 'sound/effects/hygienebot_angry.ogg', 60, 1)
 						mad = FALSE
-					mode = BOT_SHOWERSTANCE
+					set_mode(BOT_SHOWERSTANCE)
 				else
 					stop_washing()
 					var/olddist = get_dist(src, target)
@@ -166,7 +168,7 @@
 			bot_patrol()
 
 /mob/living/simple_animal/bot/hygienebot/proc/back_to_idle()
-	mode = BOT_IDLE
+	set_mode(BOT_IDLE)
 	SSmove_manager.stop_looping(src)
 	target = null
 	frustration = 0
@@ -176,7 +178,7 @@
 
 /mob/living/simple_animal/bot/hygienebot/proc/back_to_hunt()
 	frustration = 0
-	mode = BOT_HUNT
+	set_mode(BOT_HUNT)
 	stop_washing()
 	INVOKE_ASYNC(src, PROC_REF(handle_automated_action))
 
@@ -190,7 +192,7 @@
 			speak("Unhygienic client found. Please stand still so I can clean you.")
 			playsound(loc, 'sound/effects/hygienebot_happy.ogg', 60, 1)
 			visible_message("<b>[src]</b> points at [H.name]!")
-			mode = BOT_HUNT
+			set_mode(BOT_HUNT)
 			INVOKE_ASYNC(src, PROC_REF(handle_automated_action))
 			break
 		else

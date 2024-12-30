@@ -57,7 +57,6 @@
 		/obj/item/coin/titanium = 3,
 		/obj/item/coin/diamond = 2,
 		/obj/item/coin/bananium = 2,
-		/obj/item/coin/adamantine = 2,
 		/obj/item/coin/mythril = 2,
 		/obj/item/coin/runite = 2,
 		/obj/item/coin/twoheaded = 1,
@@ -71,8 +70,8 @@
 	spawn_loot_split = TRUE
 	loot = list(
 		/obj/item/stack/spacecash/c1 = 5,
-		/obj/item/stack/spacecash/c10 = 3,
-		/obj/item/stack/spacecash/c20 = 2,
+		/obj/item/stack/spacecash/c1/ten = 3,
+		/obj/item/stack/spacecash/c1/twenty= 2,
 	)
 
 /obj/effect/spawner/random/entertainment/money
@@ -82,9 +81,8 @@
 	spawn_loot_split = TRUE
 	loot = list(
 		/obj/item/stack/spacecash/c1 = 10,
-		/obj/item/stack/spacecash/c10 = 5,
-		/obj/item/stack/spacecash/c20 = 3,
-		/obj/item/stack/spacecash/c50 = 2,
+		/obj/item/stack/spacecash/c1/ten = 5,
+		/obj/item/stack/spacecash/c1/twenty= 3,
 		/obj/item/stack/spacecash/c100 = 1,
 	)
 
@@ -95,14 +93,11 @@
 	spawn_loot_split = TRUE
 	loot = list(
 		/obj/item/stack/spacecash/c1 = 100,
-		/obj/item/stack/spacecash/c10 = 80,
-		/obj/item/stack/spacecash/c20 = 60,
-		/obj/item/stack/spacecash/c50 = 40,
+		/obj/item/stack/spacecash/c1/ten = 80,
+		/obj/item/stack/spacecash/c1/twenty= 60,
 		/obj/item/stack/spacecash/c100 = 30,
-		/obj/item/stack/spacecash/c200 = 20,
-		/obj/item/stack/spacecash/c500 = 10,
 		/obj/item/stack/spacecash/c1000 = 5,
-		/obj/item/stack/spacecash/c10000 = 1,
+		/obj/item/stack/spacecash/c1000/ten = 1,
 	)
 
 /obj/effect/spawner/random/entertainment/drugs
@@ -113,7 +108,6 @@
 		/obj/item/clothing/mask/cigarette/rollie/cannabis = 15,
 		/obj/item/reagent_containers/syringe = 15,
 		/obj/item/cigbutt/roach = 15,
-		/obj/item/clothing/mask/cigarette/rollie/mindbreaker = 5,
 	)
 
 /obj/effect/spawner/random/entertainment/dice
@@ -227,5 +221,4 @@
 
 /obj/effect/spawner/random/entertainment/toy/Initialize(mapload)
 	loot += GLOB.arcade_prize_pool
-	. = ..()
-	return INITIALIZE_HINT_QDEL
+	return ..()

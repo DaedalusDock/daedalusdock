@@ -18,7 +18,7 @@
 	ambience_index = AMBIENCE_ENGI
 	airlock_wires = /datum/wires/airlock/engineering
 	sound_environment = SOUND_AREA_SPACE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 
 /area/ruin/space/way_home
 	name = "\improper Salvation"
@@ -358,8 +358,7 @@
 	icon_state = "DJ"
 	area_flags = UNIQUE_AREA | AREA_USES_STARLIGHT
 	has_gravity = STANDARD_GRAVITY
-	base_lighting_alpha = null
-	base_lighting_color = null
+	area_lighting = AREA_LIGHTING_DYNAMIC
 
 /area/ruin/space/djstation/service
 	name = "\improper DJ Station Service"
@@ -379,7 +378,6 @@
 	ambientsounds = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/ambigen10.ogg', 'sound/ambience/ambitech.ogg',\
 											'sound/ambience/ambitech2.ogg', 'sound/ambience/ambitech3.ogg', 'sound/ambience/ambimystery.ogg')
 	airlock_wires = /datum/wires/airlock/engineering
-	network_root_id = STATION_NETWORK_ROOT
 
 //ABANDONED BOX WHITESHIP
 

@@ -14,7 +14,7 @@
 		/obj/item/reagent_containers/glass/bottle/toxin = 1,
 		/obj/item/reagent_containers/glass/bottle/morphine = 2,
 		/obj/item/reagent_containers/glass/bottle/epinephrine= 3,
-		/obj/item/reagent_containers/glass/bottle/multiver = 3,
+		/obj/item/reagent_containers/glass/bottle/dylovene = 3,
 		/obj/item/storage/box/rxglasses = 1)
 	generate_items_inside(items_inside,src)
 
@@ -31,7 +31,7 @@
 		new /obj/item/clothing/mask/muzzle/breath(src)
 
 /obj/structure/closet/secure_closet/medical3
-	name = "medical doctor's locker"
+	name = "'s locker"
 	req_access = list(ACCESS_SURGERY)
 	icon_state = "med_secure"
 
@@ -59,7 +59,6 @@
 	new /obj/item/clothing/under/suit/black/skirt(src)
 	new /obj/item/clothing/shoes/laceup(src)
 	new /obj/item/storage/backpack/medic(src)
-	new /obj/item/radio/headset/headset_srvmed(src)
 	new /obj/item/clipboard(src)
 	new /obj/item/clothing/suit/straight_jacket(src)
 	new /obj/item/clothing/ears/earmuffs(src)
@@ -81,22 +80,15 @@
 	new /obj/item/radio/headset/heads/cmo(src)
 	new /obj/item/megaphone/command(src)
 	new /obj/item/defibrillator/compact/loaded(src)
-	new /obj/item/healthanalyzer/advanced(src)
 	new /obj/item/assembly/flash/handheld(src)
-	// new /obj/item/reagent_containers/hypospray/cmo(src) //ORIGINAL
-	new /obj/item/storage/hypospraykit/cmo(src) //PARIAH EDIT
-	new /obj/item/autosurgeon/organ/cmo(src)
-	new /obj/item/door_remote/chief_medical_officer(src)
-	new /obj/item/clothing/neck/petcollar(src)
-	new /obj/item/pet_carrier(src)
+	new /obj/item/reagent_containers/hypospray/cmo(src)
 	new /obj/item/wallframe/defib_mount(src)
-	new /obj/item/circuitboard/machine/techfab/department/medical(src)
+	new /obj/item/circuitboard/machine/fabricator/department/medical(src)
 	new /obj/item/storage/photo_album/cmo(src)
 	new /obj/item/storage/lockbox/medal/med(src)
 	new /obj/item/gun/ballistic/rifle/tranqrifle(src)
-	new /obj/item/ammo_box/magazine/tranq_rifle(src)
-	new /obj/item/ammo_box/magazine/tranq_rifle/mutadone(src)
-
+	new /obj/item/ammo_box/magazine/tranq_rifle/ryetalyn(src)
+	new /obj/item/ammo_box/magazine/tranq_rifle/ryetalyn(src)
 
 /obj/structure/closet/secure_closet/animal
 	name = "animal control"
@@ -120,11 +112,7 @@
 	new /obj/item/storage/box/pillbottles(src)
 	new /obj/item/storage/box/medigels(src)
 	new /obj/item/storage/box/medigels(src)
-	new /obj/item/storage/box/hypospray(src) //PARIAH EDIT ADDITION
-	new /obj/item/storage/box/hypospray(src) //PARIAH EDIT ADDITION
-	new /obj/item/ph_booklet(src)
 	new /obj/item/reagent_containers/dropper(src)
-	new /obj/item/reagent_containers/glass/bottle/acidic_buffer(src) //hopefully they get the hint
 
 /obj/structure/closet/secure_closet/chemical/heisenberg //contains one of each beaker, syringe etc.
 	name = "advanced chemical closet"
@@ -137,3 +125,18 @@
 	new /obj/item/storage/box/syringes/variety(src)
 	new /obj/item/storage/box/beakers/variety(src)
 	new /obj/item/clothing/glasses/science(src)
+
+/obj/structure/closet/secure_closet/chemical/cartridge
+	name = "cartridge closet"
+	desc = "Store dangerous chemical cartridges in here."
+	req_access = list(ACCESS_PHARMACY)
+	icon_door = "chemical"
+
+/obj/structure/closet/secure_closet/chemical/cartridge/PopulateContents()
+	var/list/spawn_cartridges = GLOB.cartridge_list_chems
+
+	for(var/datum/reagent/chem_type as anything in spawn_cartridges)
+		var/obj/item/reagent_containers/chem_cartridge/chem_cartridge = spawn_cartridges[chem_type]
+		chem_cartridge = new chem_cartridge(src)
+		chem_cartridge.reagents.add_reagent(chem_type, chem_cartridge.volume)
+		chem_cartridge.setLabel(initial(chem_type.name))

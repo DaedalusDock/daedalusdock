@@ -29,7 +29,7 @@
 	environment_smash = ENVIRONMENT_SMASH_NONE
 	stat_attack = DEAD
 	mouse_opacity = MOUSE_OPACITY_ICON
-	speed = 1
+	move_delay_modifier = 1
 	robust_searching = 1
 	unique_name = 1
 	speak_emote = list("squeaks")
@@ -65,7 +65,6 @@
 	cap_color = rgb(rand(0, 255), rand(0, 255), rand(0, 255))
 	UpdateMushroomCap()
 	health = maxHealth
-	add_cell_sample()
 	. = ..()
 
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
@@ -122,7 +121,7 @@
 		UpdateMushroomCap()
 		. = 1
 
-/mob/living/simple_animal/hostile/mushroom/death(gibbed)
+/mob/living/simple_animal/hostile/mushroom/death(gibbed, cause_of_death = "Unknown")
 	..(gibbed)
 	UpdateMushroomCap()
 
@@ -195,9 +194,5 @@
 	for(counter=0, counter<=powerlevel, counter++)
 		var/obj/item/food/hugemushroomslice/S = new /obj/item/food/hugemushroomslice(src.loc)
 		S.reagents.add_reagent(/datum/reagent/drug/mushroomhallucinogen, powerlevel)
-		S.reagents.add_reagent(/datum/reagent/medicine/omnizine, powerlevel)
+		S.reagents.add_reagent(/datum/reagent/medicine/tricordrazine, powerlevel)
 		S.reagents.add_reagent(/datum/reagent/medicine/synaptizine, powerlevel)
-
-/mob/living/simple_animal/hostile/mushroom/add_cell_sample()
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_WALKING_MUSHROOM, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)

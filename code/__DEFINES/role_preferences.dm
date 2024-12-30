@@ -18,6 +18,7 @@
 #define ROLE_THIEF "Thief"
 #define ROLE_TRAITOR "Traitor"
 #define ROLE_WIZARD "Wizard"
+#define ROLE_FLOCK "Flock"
 
 // Midround roles
 #define ROLE_ABDUCTOR "Abductor"
@@ -63,8 +64,6 @@
 #define ROLE_POSIBRAIN "Posibrain"
 #define ROLE_DRONE "Drone"
 #define ROLE_DEATHSQUAD "Deathsquad"
-#define ROLE_LAVALAND "Lavaland"
-
 #define ROLE_POSITRONIC_BRAIN "Positronic Brain"
 #define ROLE_FREE_GOLEM "Free Golem"
 #define ROLE_SERVANT_GOLEM "Servant Golem"
@@ -82,7 +81,6 @@
 #define ROLE_ESCAPED_PRISONER "Escaped Prisoner"
 #define ROLE_LIFEBRINGER "Lifebringer"
 #define ROLE_ASHWALKER "Ash Walker"
-#define ROLE_LAVALAND_SYNDICATE "Lavaland Syndicate"
 #define ROLE_HERMIT "Hermit"
 #define ROLE_BEACH_BUM "Beach Bum"
 #define ROLE_HOTEL_STAFF "Hotel Staff"
@@ -90,7 +88,6 @@
 #define ROLE_SYNDICATE_CYBERSUN "Cybersun Space Syndicate" //Ghost role syndi from Forgottenship ruin
 #define ROLE_SYNDICATE_CYBERSUN_CAPTAIN "Cybersun Space Syndicate Captain" //Forgottenship captain syndie
 #define ROLE_HEADSLUG_CHANGELING "Headslug Changeling"
-#define ROLE_SPACE_PIRATE "Space Pirate"
 #define ROLE_ANCIENT_CREW "Ancient Crew"
 #define ROLE_SPACE_DOCTOR "Space Doctor"
 #define ROLE_SPACE_BARTENDER "Space Bartender"
@@ -153,6 +150,6 @@ GLOBAL_LIST_INIT(special_roles, list(
 ))
 
 //Job defines for what happens when you fail to qualify for any job during job selection
-#define BEOVERFLOW 1
-#define BERANDOMJOB 2
-#define RETURNTOLOBBY 3
+#define BEOVERFLOW "Join as Assistant"
+#define BERANDOMJOB "Join as Random"
+#define RETURNTOLOBBY "Return to Lobby"

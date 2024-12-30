@@ -7,14 +7,14 @@
 	panel_type = "panel9"
 	products = list(
 		/obj/item/reagent_containers/food/drinks/coffee = 6,
-		/obj/item/reagent_containers/food/drinks/mug/tea = 6,
-		/obj/item/reagent_containers/food/drinks/mug/coco = 3
+		/obj/item/reagent_containers/glass/mug/tea = 6,
+		/obj/item/reagent_containers/glass/mug/coco = 3
 	)
 	contraband = list(
 		/obj/item/reagent_containers/food/drinks/ice = 12
 	)
 	refill_canister = /obj/item/vending_refill/coffee
-	default_price = PAYCHECK_PRISONER
+	default_price = PAYCHECK_ASSISTANT
 	extra_price = PAYCHECK_ASSISTANT
 	payment_department = ACCOUNT_STATION_MASTER
 	light_mask = "coffee-light-mask"

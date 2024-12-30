@@ -21,7 +21,7 @@
 	response_harm_simple = "kick"
 	attack_verb_continuous = "kicks"
 	attack_verb_simple = "kick"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	attack_vis_effect = ATTACK_EFFECT_KICK
 	health = 50
 	maxHealth = 50
@@ -36,7 +36,6 @@
 		self_right_time = rand(25 SECONDS, 50 SECONDS), \
 		post_tipped_callback = CALLBACK(src, PROC_REF(after_cow_tipped)))
 	AddElement(/datum/element/pet_bonus, "moos happily!")
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_COW, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 	udder_component()
 	make_tameable()
 	. = ..()
@@ -71,8 +70,8 @@
 /mob/living/basic/cow/proc/set_tip_react_blackboard(mob/living/carbon/tipper)
 	if(!HAS_TRAIT_FROM(src, TRAIT_IMMOBILIZED, TIPPED_OVER) || !ai_controller)
 		return
-	ai_controller.blackboard[BB_BASIC_MOB_TIP_REACTING] = TRUE
-	ai_controller.blackboard[BB_BASIC_MOB_TIPPER] = tipper
+	ai_controller.set_blackboard_key(BB_BASIC_MOB_TIP_REACTING, TRUE)
+	ai_controller.set_blackboard_key(BB_BASIC_MOB_TIPPER, tipper)
 
 /datum/ai_controller/basic_controller/cow
 	blackboard = list(
@@ -82,7 +81,7 @@
 
 	ai_traits = STOP_MOVING_WHEN_PULLED
 	ai_movement = /datum/ai_movement/basic_avoidance
-	idle_behavior = /datum/idle_behavior/idle_random_walk
+	default_behavior = /datum/ai_behavior/idle_random_walk
 	planning_subtrees = list(
 		/datum/ai_planning_subtree/tip_reaction,
 		/datum/ai_planning_subtree/random_speech/cow,
@@ -136,7 +135,6 @@
 
 /mob/living/basic/cow/moonicorn/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/venomous, /datum/reagent/pax, 5)
 	AddElement(/datum/element/movement_turf_changer, /turf/open/floor/grass/fairy)
 
 /mob/living/basic/cow/moonicorn/udder_component()

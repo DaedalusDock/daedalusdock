@@ -132,6 +132,10 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 	if(CONFIG_GET(flag/log_tools))
 		WRITE_LOG(GLOB.world_tool_log, "TOOL: [text]")
 
+/proc/log_graffiti(text, mob/initiator)
+	if(CONFIG_GET(flag/log_graffiti))
+		WRITE_LOG(GLOB.world_graffiti_log, "GRAFFITI: [initiator] wrote down [text]")
+
 /**
  * Writes to a special log file if the log_suspicious_login config flag is set,
  * which is intended to contain all logins that failed under suspicious circumstances.
@@ -290,6 +294,9 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 	WRITE_LOG(GLOB.config_error_log, text)
 	SEND_TEXT(world.log, text)
 
+/proc/log_mechcomp(text)
+	WRITE_LOG(GLOB.mechcomp_log, "MECHCOMP: [text]")
+
 /proc/log_mapping(text, skip_world_log)
 #ifdef UNIT_TESTS
 	GLOB.unit_test_mapping_logs += text
@@ -429,6 +436,56 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 
 /proc/key_name_admin(whom, include_name = TRUE)
 	return key_name(whom, TRUE, include_name)
+
+/// Returns an adminpm link with the inserted HTML.
+/proc/admin_pm_href(whom, html, astyle)
+	var/mob/M
+	var/client/C
+	var/key
+	var/ckey
+
+	if(!whom)
+		return html
+
+	if(istype(whom, /client))
+		C = whom
+		M = C.mob
+		key = C.key
+		ckey = C.ckey
+	else if(ismob(whom))
+		M = whom
+		C = M.client
+		key = M.key
+		ckey = M.ckey
+	else if(istext(whom))
+		key = whom
+		ckey = ckey(whom)
+		C = GLOB.directory[ckey]
+		if(C)
+			M = C.mob
+	else if(istype(whom,/datum/mind))
+		var/datum/mind/mind = whom
+		key = mind.key
+		ckey = ckey(key)
+		if(mind.current)
+			M = mind.current
+			if(M.client)
+				C = M.client
+	else
+		return html
+
+
+	if(!key)
+		return html
+
+	var/style = ""
+	if(astyle)
+		style = "style='[astyle]'"
+
+	if(C?.holder && C.holder.fakekey)
+		return "<a [style]href='?priv_msg=[C.findStealthKey()]'>[html]</a>"
+	else
+		return "<a [style]href='?priv_msg=[ckey]'>[html]</a>"
 
 /proc/loc_name(atom/A)
 	if(!istype(A))

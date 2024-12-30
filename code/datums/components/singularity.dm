@@ -46,6 +46,9 @@
 	/// The time that has elapsed since our last move/eat call
 	var/time_since_last_eat
 
+	/// Singularity power to override size.
+	var/override_power
+
 /datum/component/singularity/Initialize(
 	bsa_targetable = TRUE,
 	consume_range = 0,
@@ -55,6 +58,7 @@
 	notify_admins = TRUE,
 	singularity_size = STAGE_ONE,
 	roaming = TRUE,
+	override_power = null,
 )
 	if (!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -67,6 +71,7 @@
 	src.notify_admins = notify_admins
 	src.roaming = roaming
 	src.singularity_size = singularity_size
+	src.override_power = override_power
 
 /datum/component/singularity/RegisterWithParent()
 	START_PROCESSING(SSsinguloprocess, src)
@@ -102,7 +107,7 @@
 
 /datum/component/singularity/Destroy(force, silent)
 	GLOB.singularities -= src
-	QDEL_NULL(consume_callback)
+	consume_callback = null
 	target = null
 
 	return ..()
@@ -146,14 +151,12 @@
 /// Triggered when something enters the component's parent.
 /datum/component/singularity/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
+	if(arrived == parent)
+		return
 	consume(source, arrived)
 
 /datum/component/singularity/proc/consume(datum/source, atom/thing)
 	SIGNAL_HANDLER
-	if (thing == parent)
-		stack_trace("Singularity tried to consume itself.")
-		return
-
 	consume_callback?.Invoke(thing, src)
 
 /datum/component/singularity/proc/consume_attack(datum/source, mob/user)
@@ -205,7 +208,7 @@
 		if (in_consume_range)
 			consume(src, tile)
 		else
-			tile.singularity_pull(parent, singularity_size)
+			tile.singularity_pull(parent, override_power || singularity_size)
 
 		for (var/atom/movable/thing as anything in tile)
 			if(thing == parent)
@@ -213,7 +216,7 @@
 			if (in_consume_range)
 				consume(src, thing)
 			else
-				thing.singularity_pull(parent, singularity_size)
+				thing.singularity_pull(parent, override_power || singularity_size)
 
 		if(TICK_CHECK) //Yes this means the singulo can eat all of its host subsystem's cpu, but like it's the singulo, and it was gonna do that anyway
 			turfs_to_consume.Cut(1, cached_index + 1)

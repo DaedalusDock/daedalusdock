@@ -4,7 +4,6 @@
 	icon = 'icons/mob/aibots.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
 	force = 3
-	throw_speed = 2
 	throw_range = 5
 	var/created_name
 	var/build_step = ASSEMBLY_FIRST_STEP
@@ -497,11 +496,17 @@
 
 		if(ASSEMBLY_SECOND_STEP)
 			if(isprox(I)) //Construct
+				if(!can_finish_build(I, user, 0))
+					return
 				if(!user.temporarilyRemoveItemFromInventory(I))
 					return
 				build_step++
 				to_chat(user, span_notice("You add [I] to [src]."))
 				qdel(I)
+				var/mob/living/simple_animal/bot/hygienebot/H = new(drop_location())
+				H.name = created_name
+				qdel(src)
+				return
 			if(I.tool_behaviour == TOOL_WELDER) //Deconstruct
 				if(I.use_tool(src, user, 0, volume=30))
 					to_chat(user, span_notice("You weld close the water hole in [src]!"))
@@ -511,17 +516,6 @@
 		if(ASSEMBLY_THIRD_STEP)
 			if(!can_finish_build(I, user, 0))
 				return
-			if(istype(I, /obj/item/stack/ducts)) //Construct
-				var/obj/item/stack/ducts/D = I
-				if(D.get_amount() < 1)
-					to_chat(user, span_warning("You need one fluid duct to finish [src]"))
-					return
-				to_chat(user, span_notice("You start to pipe up [src]..."))
-				if(do_after(user, src, 40) && D.use(1))
-					to_chat(user, span_notice("You pipe up [src]."))
-					var/mob/living/simple_animal/bot/hygienebot/H = new(drop_location())
-					H.name = created_name
-					qdel(src)
 			if(I.tool_behaviour == TOOL_SCREWDRIVER) //deconstruct
 				new /obj/item/assembly/prox_sensor(Tsec)
 				to_chat(user, span_notice("You detach the proximity sensor from [src]."))

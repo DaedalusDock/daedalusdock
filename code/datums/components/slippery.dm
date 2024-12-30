@@ -73,6 +73,8 @@
  */
 /datum/component/slippery/proc/Slip(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
+	if(arrived == parent)
+		return
 	if(!isliving(arrived))
 		return
 	var/mob/living/victim = arrived
@@ -136,6 +138,8 @@
  */
 /datum/component/slippery/proc/Slip_on_wearer(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
+	if(arrived == parent)
+		return
 
 	if(holder.body_position == LYING_DOWN && !holder.buckled)
 		Slip(source, arrived)

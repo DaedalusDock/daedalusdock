@@ -12,10 +12,10 @@
 	response_help_simple = "pass through"
 	emote_taunt = list("wails")
 	taunt_chance = 25
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 80
 	health = 80
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	robust_searching = 1
 
 	harm_intent_damage = 10

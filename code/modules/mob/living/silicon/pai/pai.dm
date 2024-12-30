@@ -193,11 +193,7 @@
 	QDEL_NULL(signaler)
 	QDEL_NULL(hostscan)
 	QDEL_NULL(internal_gps)
-	if(!QDELETED(card) && loc != card)
-		card.forceMove(drop_location())
-		card.pai = null //these are otherwise handled by paicard/handle_atom_del()
-		card.emotion_icon = initial(card.emotion_icon)
-		card.update_appearance()
+	card = null
 	GLOB.pai_list -= src
 	return ..()
 
@@ -212,15 +208,16 @@
 /mob/living/silicon/pai/get_status_tab_items()
 	. += ..()
 	if(!stat)
-		. += text("Emitter Integrity: [emitterhealth * (100 / emittermaxhealth)]")
+		. += "Emitter Integrity: [emitterhealth * (100 / emittermaxhealth)]"
 	else
-		. += text("Systems nonfunctional")
+		. += "Systems nonfunctional"
 
 
 // See software.dm for Topic()
 
-/mob/living/silicon/pai/canUseTopic(atom/movable/M, be_close=FALSE, no_dexterity=FALSE, no_tk=FALSE, need_hands = FALSE, floor_okay=FALSE)
-	return ..(M, be_close, no_dexterity, no_tk, need_hands, TRUE) //Resting is just an aesthetic feature for them.
+/mob/living/silicon/pai/canUseTopic(atom/movable/target, flags)
+	flags |= USE_RESTING
+	return ..(target, flags) //Resting is just an aesthetic feature for them.
 
 /mob/proc/makePAI(delold)
 	var/obj/item/paicard/card = new /obj/item/paicard(get_turf(src))
@@ -243,11 +240,11 @@
 	. = ..()
 	. += "A personal AI in holochassis mode. Its master ID string seems to be [master]."
 
-/mob/living/silicon/pai/updatehealth()
+/mob/living/silicon/pai/updatehealth(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 	set_health(maxHealth - getBruteLoss() - getFireLoss())
-	update_stat()
+	update_stat(cause_of_death)
 
 /mob/living/silicon/pai/process(delta_time)
 	emitterhealth = clamp((emitterhealth + (emitter_regen_per_second * delta_time)), -50, emittermaxhealth)

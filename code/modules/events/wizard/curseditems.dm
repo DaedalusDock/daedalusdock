@@ -38,7 +38,7 @@
 			ruins_wizard_loadout = 1
 
 	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)
-		if(ruins_spaceworthiness && !is_station_level(H.z) || isspaceturf(H.loc) || isplasmaman(H))
+		if(ruins_spaceworthiness && !is_station_level(H.z) || isspaceturf(H.loc) || isvox(H))
 			continue //#savetheminers
 		if(ruins_wizard_loadout && IS_WIZARD(H))
 			continue
@@ -55,6 +55,6 @@
 				I.name = "cursed " + I.name
 
 	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)
-		var/datum/effect_system/smoke_spread/smoke = new
-		smoke.set_up(0, H.loc)
+		var/datum/effect_system/fluid_spread/smoke/smoke = new
+		smoke.set_up(0, location = H.loc)
 		smoke.start()

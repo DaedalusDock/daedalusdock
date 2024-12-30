@@ -14,11 +14,11 @@
 	response_harm_simple = "punch"
 	speak_chance = 1
 	icon = 'icons/mob/cult.dmi'
-	speed = 0
+	move_delay_modifier = 0
 	combat_mode = TRUE
 	stop_automated_movement = 1
 	status_flags = CANPUSH
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	see_in_dark = 7
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
 	damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0)
@@ -120,7 +120,7 @@
 /mob/living/simple_animal/hostile/construct/narsie_act()
 	return
 
-/mob/living/simple_animal/hostile/construct/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)
+/mob/living/simple_animal/hostile/construct/electrocute_act(shock_damage, siemens_coeff = 1, flags = SHOCK_HANDS, stun_multiplier = 1)
 	return 0
 
 /////////////////Juggernaut///////////////
@@ -140,12 +140,11 @@
 	melee_damage_upper = 25
 	attack_verb_continuous = "smashes their armored gauntlet into"
 	attack_verb_simple = "smash your armored gauntlet into"
-	speed = 2.5
+	move_delay_modifier = 2.5
 	environment_smash = ENVIRONMENT_SMASH_WALLS
 	attack_sound = 'sound/weapons/punch3.ogg'
 	status_flags = 0
 	mob_size = MOB_SIZE_LARGE
-	force_threshold = 10
 	construct_spells = list(
 		/datum/action/cooldown/spell/forcewall/cult,
 		/datum/action/cooldown/spell/basic_projectile/juggernaut,
@@ -153,6 +152,10 @@
 	)
 	playstyle_string = "<b>You are a Juggernaut. Though slow, your shell can withstand heavy punishment, \
 						create shield walls, rip apart enemies and walls alike, and even deflect energy weapons.</b>"
+
+/mob/living/simple_animal/hostile/construct/juggernaut/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/damage_threshold, 10)
 
 /mob/living/simple_animal/hostile/construct/juggernaut/hostile //actually hostile, will move around, hit things
 	AIStatus = AI_ON
@@ -246,7 +249,7 @@
 		if(QDELETED(living_target) || (living_target.stat == DEAD && prev_stat != DEAD))
 			total_refund += jaunt.cooldown_time
 		// you knocked them into critical
-		else if(HAS_TRAIT(living_target, TRAIT_CRITICAL_CONDITION) && prev_stat == CONSCIOUS)
+		else if(living_target.stat == UNCONSCIOUS && prev_stat == CONSCIOUS)
 			total_refund += crit_refund
 
 		if(living_target.stat != DEAD && prev_stat != DEAD)
@@ -318,7 +321,7 @@
 /mob/living/simple_animal/hostile/construct/artificer/Initialize(mapload)
 	. = ..()
 	var/datum/atom_hud/datahud = GLOB.huds[health_hud]
-	datahud.add_hud_to(src)
+	datahud.show_to(src)
 
 /mob/living/simple_animal/hostile/construct/artificer/Found(atom/A) //what have we found here?
 	if(isconstruct(A)) //is it a construct?
@@ -422,13 +425,14 @@
 /mob/living/simple_animal/hostile/construct/harvester/Bump(atom/AM)
 	. = ..()
 	if(istype(AM, /turf/closed/wall/mineral/cult) && AM != loc) //we can go through cult walls
-		var/atom/movable/stored_pulling = pulling
+		var/atom/movable/stored_pulling = get_active_grab()?.affecting
+		var/datum/grab/stored_tier = get_active_grab()?.current_grab.type
 		if(stored_pulling)
 			stored_pulling.setDir(get_dir(stored_pulling.loc, loc))
 			stored_pulling.forceMove(loc)
 		forceMove(AM)
 		if(stored_pulling)
-			start_pulling(stored_pulling, supress_message = TRUE) //drag anything we're pulling through the wall with us by magic
+			try_make_grab(stored_pulling, stored_tier)
 
 /mob/living/simple_animal/hostile/construct/harvester/AttackingTarget()
 	if(iscarbon(target))

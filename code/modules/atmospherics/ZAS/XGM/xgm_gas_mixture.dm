@@ -1,7 +1,7 @@
 /datum/gas_mixture
 	//Associative list of gas moles.
 	//Gases with 0 moles are not tracked and are pruned by updateValues()
-	var/list/gas = list()
+	var/list/gas
 	//Temperature in Kelvin of this gas mix.
 	var/temperature = 0
 
@@ -12,12 +12,13 @@
 	//Size of the group this gas_mixture is representing. 1 for singular turfs.
 	var/group_multiplier = 1
 
-	//List of active tile overlays for this gas_mixture.  Updated by checkTileGraphic()
-	var/list/graphic = list()
+	//Lazy list of active tile overlays for this gas_mixture.  Updated by checkTileGraphic()
+	var/list/graphic
 	//Cache of gas overlay objects
 	var/list/tile_overlay_cache
 
 /datum/gas_mixture/New(_volume = CELL_VOLUME, _temperature = 0, _group_multiplier = 1)
+	gas = list()
 	volume = _volume
 	temperature = _temperature
 	group_multiplier = _group_multiplier
@@ -38,12 +39,12 @@
 		return
 
 	if (group_multiplier != 1)
-		gas[gasid] += moles/group_multiplier
+		gas[gasid] += QUANTIZE(moles/group_multiplier)
 	else
 		gas[gasid] += moles
 
 	if(update)
-		AIR_UPDATE_VALUES(src)
+		garbageCollect()
 
 ///Sets the given gas id's mole count to the specified amount.
 /datum/gas_mixture/proc/setGasMoles(gasid, moles, update = TRUE, divide_among_group = FALSE)
@@ -54,7 +55,7 @@
 		gas[gasid] = moles
 
 	if(update)
-		AIR_UPDATE_VALUES(src)
+		garbageCollect()
 
 ///Same as adjustGas(), but takes a temperature which is mixed in with the gas.
 /datum/gas_mixture/proc/adjustGasWithTemp(gasid, moles, temp, update = 1)
@@ -74,7 +75,7 @@
 		gas[gasid] += moles
 
 	if(update)
-		AIR_UPDATE_VALUES(src)
+		garbageCollect()
 
 
 ///Variadic version of adjustGas().  Takes any number of gas and mole pairs and applies them.
@@ -84,7 +85,7 @@
 	for(var/i in 1 to args.len-1 step 2)
 		adjustGas(args[i], args[i+1], update = 0)
 
-	AIR_UPDATE_VALUES(src)
+	garbageCollect()
 
 
 ///Variadic version of adjustGasWithTemp().  Takes any number of gas, mole and temperature associations and applies them.
@@ -94,7 +95,7 @@
 	for(var/i in 1 to args.len-1 step 3)
 		adjustGasWithTemp(args[i], args[i + 1], args[i + 2], update = 0)
 
-	AIR_UPDATE_VALUES(src)
+	garbageCollect()
 
 
 ///Merges all the gas from another mixture into this one.  Respects group_multipliers and adjusts temperature correctly. Does not modify giver in any way.
@@ -116,7 +117,7 @@
 		for(var/g in giver.gas)
 			gas[g] += giver.gas[g]
 
-	AIR_UPDATE_VALUES(src)
+	garbageCollect()
 	SEND_SIGNAL(src, COMSIG_GASMIX_MERGED)
 
 ///Used to equalize the mixture between two zones before sleeping an edge.
@@ -134,19 +135,23 @@
 		temperature = ((temperature * our_heatcap) + (sharer.temperature * share_heatcap)) / (our_heatcap + share_heatcap)
 	sharer.temperature = temperature
 
-	AIR_UPDATE_VALUES(src)
-	AIR_UPDATE_VALUES(sharer)
+	garbageCollect()
+	sharer.garbageCollect()
 
 	return 1
 
-
+#ifndef ZAS_COMPAT_515
+///Returns the heat capacity of the gas mix based on the specific heat of the gases.
+/datum/gas_mixture/proc/getHeatCapacity()
+	return values_dot(xgm_gas_data.specific_heat, gas) * group_multiplier
+#else
 ///Returns the heat capacity of the gas mix based on the specific heat of the gases.
 /datum/gas_mixture/proc/getHeatCapacity()
 	. = 0
 	for(var/g in gas)
 		. += xgm_gas_data.specific_heat[g] * gas[g]
 	. *= group_multiplier
-
+#endif
 
 ///Adds or removes thermal energy. Returns the actual thermal energy change, as in the case of removing energy we can't go below TCMB.
 /datum/gas_mixture/proc/adjustThermalEnergy(thermal_energy)
@@ -204,16 +209,16 @@
 	var/safe_temp = max(temperature, TCMB) // We're about to divide by this.
 	return R_IDEAL_GAS_EQUATION * ( log( (IDEAL_GAS_ENTROPY_CONSTANT*volume/(gas[gasid] * safe_temp)) * (molar_mass*specific_heat*safe_temp)**(2/3) + 1 ) +  15 )
 
-///Updates the total_moles count and trims any empty gases. DO NOT USE. USE AIR_UPDATE_VALUES(air)!!!
-/datum/gas_mixture/proc/updateValues()
-	var/list/cached_gas = gas
-	total_moles = 0
-	for(var/g in cached_gas)
-		if(cached_gas[g] <= 0)
-			cached_gas -= g
-		else
-			total_moles += cached_gas[g]
-
+#ifndef ZAS_COMPAT_515
+///Updates the total_moles count and trims any empty gases.
+/datum/gas_mixture/proc/garbageCollect()
+	values_cut_under(gas, ATMOS_PRECISION)
+	total_moles = values_sum(gas)
+#else
+///Updates the total_moles count and trims any empty gases.
+/datum/gas_mixture/proc/garbageCollect()
+	AIR_UPDATE_VALUES(src)
+#endif
 
 ///Returns the pressure of the gas mix.  Only accurate if there have been no gas modifications since updateValues() has been called.
 /datum/gas_mixture/proc/returnPressure()
@@ -234,13 +239,11 @@
 
 	for(var/g in gas)
 		removed.gas[g] = QUANTIZE((gas[g] / total_moles) * amount)
-		gas[g] -= removed.gas[g] / group_multiplier
-		if(gas[g] <= ATMOS_PRECISION) //Removing floating point errors from the equation
-			gas -= g
+		gas[g] -= QUANTIZE(removed.gas[g] / group_multiplier)
 
 	removed.temperature = temperature
-	AIR_UPDATE_VALUES(src)
-	AIR_UPDATE_VALUES(removed)
+	garbageCollect()
+	removed.garbageCollect()
 
 	return removed
 
@@ -257,13 +260,13 @@
 	removed.group_multiplier = out_group_multiplier
 
 	for(var/g in gas)
-		removed.gas[g] = (gas[g] * ratio * group_multiplier / out_group_multiplier)
-		gas[g] = gas[g] * (1 - ratio)
+		removed.gas[g] = QUANTIZE((gas[g] * ratio * group_multiplier / out_group_multiplier))
+		gas[g] = QUANTIZE(gas[g] * (1 - ratio))
 
 	removed.temperature = temperature
 	removed.volume = volume * group_multiplier / out_group_multiplier
-	AIR_UPDATE_VALUES(src)
-	AIR_UPDATE_VALUES(removed)
+	garbageCollect()
+	removed.garbageCollect()
 
 	return removed
 
@@ -288,11 +291,11 @@
 	for(var/g in gas)
 		if(xgm_gas_data.flags[g] & flag)
 			removed.gas[g] = QUANTIZE((gas[g] / sum) * amount)
-			gas[g] -= removed.gas[g] / group_multiplier
+			gas[g] = QUANTIZE(gas[g] - (removed.gas[g] / group_multiplier))
 
 	removed.temperature = temperature
-	AIR_UPDATE_VALUES(src)
-	AIR_UPDATE_VALUES(removed)
+	garbageCollect()
+	removed.garbageCollect()
 
 	return removed
 
@@ -304,17 +307,16 @@
 			. += gas[g]
 
 ///Copies gas and temperature from another gas_mixture.
-/datum/gas_mixture/proc/copyFrom(const/datum/gas_mixture/sample, partial = 1)
-	var/list/cached_gas = gas
-	var/list/sample_gas = sample.gas.Copy()
-
-	//remove all gases not in the sample
-	cached_gas &= sample_gas
-
+/datum/gas_mixture/proc/copyFrom(const/datum/gas_mixture/sample, ratio = 1)
+	gas = sample.gas.Copy()
 	temperature = sample.temperature
-	for(var/id in sample_gas)
-		cached_gas[id] = sample_gas[id] * partial
-	AIR_UPDATE_VALUES(src)
+	if(ratio != 1)
+		var/list/cached_gas = gas
+		for(var/id in cached_gas)
+			cached_gas[id] = QUANTIZE(cached_gas[id] * ratio)
+		garbageCollect()
+	else
+		total_moles = sample.total_moles
 	return 1
 
 
@@ -361,12 +363,13 @@
 
 ///Rechecks the gas_mixture and adjusts the graphic list if needed. ///Two lists can be passed by reference if you need know specifically which graphics were added and removed.
 /datum/gas_mixture/proc/checkTileGraphic(list/graphic_add, list/graphic_remove)
-	if(length(graphic))
+	if(LAZYLEN(graphic))
 		for(var/obj/effect/gas_overlay/O as anything in graphic)
 			if(O.type == /obj/effect/gas_overlay/heat)
 				continue
 			if(gas[O.gas_id] <= xgm_gas_data.overlay_limit[O.gas_id])
 				LAZYADD(graphic_remove, O)
+
 	var/overlay_limit
 	for(var/g in gas)
 		overlay_limit = xgm_gas_data.overlay_limit[g]
@@ -374,14 +377,17 @@
 		if(!isnull(overlay_limit) && gas[g] > overlay_limit)
 			///Inlined getTileOverlay(g)
 			var/tile_overlay = LAZYACCESS(tile_overlay_cache, g)
+
 			if(isnull(tile_overlay))
 				LAZYSET(tile_overlay_cache, g, new/obj/effect/gas_overlay(null, g))
 				tile_overlay = tile_overlay_cache[g]
+
 			///End inline
 			if(!(tile_overlay in graphic))
 				LAZYADD(graphic_add, tile_overlay)
 
 	. = 0
+
 	var/tile_overlay = LAZYACCESS(tile_overlay_cache, "heat")
 	//If it's hot add something
 	if(temperature >= BODYTEMP_HEAT_DAMAGE_LIMIT)
@@ -390,25 +396,27 @@
 			tile_overlay = tile_overlay_cache["heat"]
 		if(!(tile_overlay in graphic))
 			LAZYADD(graphic_add, tile_overlay)
-	else if(length(graphic) && (tile_overlay in graphic))
+
+	else if(LAZYLEN(graphic) && (tile_overlay in graphic))
 		LAZYADD(graphic_remove, tile_overlay)
 
 	//Apply changes
 	if(length(graphic_add))
-		graphic |= graphic_add
+		LAZYDISTINCTADD(graphic, graphic_add)
 		. = 1
 	if(length(graphic_remove))
-		graphic -= graphic_remove
+		LAZYREMOVE(graphic, graphic_remove)
 		. = 1
 
-	if(length(graphic))
+	if(LAZYLEN(graphic))
 		var/pressure_mod = clamp(returnPressure() / ONE_ATMOSPHERE, 0, 2)
 		for(var/obj/effect/gas_overlay/O as anything in graphic)
-			if(O.type == /obj/effect/gas_overlay/heat) //Heat based
+			if(istype(O, /obj/effect/gas_overlay/heat)) //Heat based
 				var/new_alpha = clamp(max(125, 255 * ((temperature - BODYTEMP_HEAT_DAMAGE_LIMIT) / BODYTEMP_HEAT_DAMAGE_LIMIT * 4)), 125, 255)
 				if(new_alpha != O.alpha)
 					O.update_alpha_animation(new_alpha)
 				continue
+
 			var/concentration_mod = clamp(gas[O.gas_id] / total_moles, 0.1, 1)
 			var/new_alpha = min(240, round(pressure_mod * concentration_mod * 180, 5))
 			if(new_alpha != O.alpha)
@@ -424,7 +432,7 @@
 	for(var/g in right_side.gas)
 		gas[g] += right_side.gas[g]
 
-	AIR_UPDATE_VALUES(src)
+	garbageCollect()
 	return 1
 
 
@@ -433,25 +441,24 @@
 	for(var/g in right_side.gas)
 		gas[g] -= right_side.gas[g]
 
-	AIR_UPDATE_VALUES(src)
+	garbageCollect()
 	return 1
 
 
 ///Multiply all gas amounts by a factor.
 /datum/gas_mixture/proc/multiply(factor)
 	for(var/g in gas)
-		gas[g] *= factor
-
-	AIR_UPDATE_VALUES(src)
+		gas[g] = QUANTIZE(gas[g] * factor)
+	garbageCollect()
 	return 1
 
 
 ///Divide all gas amounts by a factor.
 /datum/gas_mixture/proc/divide(factor)
 	for(var/g in gas)
-		gas[g] /= factor
+		gas[g] = QUANTIZE(gas[g] / factor)
 
-	AIR_UPDATE_VALUES(src)
+	garbageCollect()
 	return 1
 
 
@@ -477,7 +484,7 @@
 		avg_gas[g] += other.gas[g] * share_size
 
 	for(var/g in avg_gas)
-		avg_gas[g] /= (size + share_size)
+		avg_gas[g] /= size + share_size
 
 	var/temp_avg = 0
 	if(full_heat_capacity + s_full_heat_capacity)
@@ -489,16 +496,16 @@
 	//WOOT WOOT TOUCH THIS AND YOU ARE A RETARD
 
 	for(var/g in avg_gas)
-		gas[g] = max(0, (gas[g] - avg_gas[g]) * (1 - ratio) + avg_gas[g])
+		gas[g] = QUANTIZE(max(0, (gas[g] - avg_gas[g]) * (1 - ratio) + avg_gas[g]))
 		if(!one_way)
-			other.gas[g] = max(0, (other.gas[g] - avg_gas[g]) * (1 - ratio) + avg_gas[g])
+			other.gas[g] = QUANTIZE(max(0, (other.gas[g] - avg_gas[g]) * (1 - ratio) + avg_gas[g]))
 
 	temperature = max(0, (temperature - temp_avg) * (1-ratio) + temp_avg)
 	if(!one_way)
 		other.temperature = max(0, (other.temperature - temp_avg) * (1-ratio) + temp_avg)
 
-	AIR_UPDATE_VALUES(src)
-	AIR_UPDATE_VALUES(other)
+	garbageCollect()
+	other.garbageCollect()
 
 	return compare(other, FALSE)
 
@@ -516,9 +523,11 @@
 	if(M)
 		return getMass()/M
 
-//Yeah baby we're sinning today.
 ///Compares the contents of two mixtures to see if they are identical.
-/datum/gas_mixture/proc/operator~=(datum/gas_mixture/other)
+/datum/gas_mixture/proc/isEqual(datum/gas_mixture/other)
+	if(src.total_moles != other.total_moles)
+		return FALSE
+
 	if(src.temperature != other.temperature)
 		return FALSE
 
@@ -545,14 +554,14 @@
 	return max(0, volume)
 
 /datum/gas_mixture/proc/returnVisuals()
-	AIR_UPDATE_VALUES(src)
+	garbageCollect()
 	checkTileGraphic()
 	return graphic
 
 ///Returns a gas_mixture datum with identical contents.
 /datum/gas_mixture/proc/copy()
 	RETURN_TYPE(/datum/gas_mixture)
-	AIR_UPDATE_VALUES(src)
+
 	var/datum/gas_mixture/new_gas = new(volume)
 	new_gas.gas = src.gas.Copy()
 	new_gas.temperature = src.temperature

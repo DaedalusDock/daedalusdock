@@ -14,6 +14,10 @@
 	desc = "You wear this on your back and put items into it."
 	icon_state = "backpack"
 	inhand_icon_state = "backpack"
+
+	stamina_damage = 0
+	stamina_cost = 0
+
 	lefthand_file = 'icons/mob/inhands/equipment/backpack_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/backpack_righthand.dmi'
 	w_class = WEIGHT_CLASS_BULKY
@@ -22,9 +26,59 @@
 	max_integrity = 300
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
+	storage_type = /datum/storage/backpack
+
+	equip_delay_self = EQUIP_DELAY_BACK
+	equip_delay_other = EQUIP_DELAY_BACK * 1.5
+	strip_delay = EQUIP_DELAY_BACK * 1.5
+
+	var/zipper_open = FALSE
+
 /obj/item/storage/backpack/Initialize()
 	. = ..()
-	create_storage(max_slots = 21, max_total_storage = 21)
+	atom_storage.max_slots = 21
+	atom_storage.max_total_storage = 21
+
+/obj/item/storage/backpack/examine(mob/user)
+	. = ..()
+	. += span_info("The zipper is [zipper_open ? "open" : "closed"].")
+
+/obj/item/storage/backpack/get_controls_info()
+	. = ..()
+	. += "Control Click (while holding) - Toggle zipper."
+
+/obj/item/storage/backpack/can_pickpocket(mob/living/user)
+	var/mob/wearer = loc
+	if(!ismob(wearer))
+		return FALSE
+
+	if(wearer.get_item_by_slot(ITEM_SLOT_BACK) != src)
+		return FALSE
+
+	if(!(REVERSE_DIR(wearer.dir) & get_dir(wearer, user)))
+		return
+
+	return wearer.IsReachableBy(user)
+
+/obj/item/storage/backpack/CtrlClick(mob/user, list/params)
+	. = ..()
+	if(!.)
+		return
+
+	if(user != loc)
+		return
+
+	toggle_zipper(user)
+
+/obj/item/storage/backpack/proc/toggle_zipper(mob/user)
+	zipper_open = !zipper_open
+	user?.changeNext_move(CLICK_CD_RAPID)
+	user?.visible_message(span_notice("[user] [zipper_open ? "unzips" : "zips"] [user.p_their()] [name]."))
+
+	if(zipper_open)
+		ADD_TRAIT(src, TRAIT_INSTANT_PICKPOCKET, INNATE_TRAIT)
+	else
+		REMOVE_TRAIT(src, TRAIT_INSTANT_PICKPOCKET, INNATE_TRAIT)
 
 /*
  * Backpack Types
@@ -53,7 +107,7 @@
 	inhand_icon_state = "holdingpack"
 	resistance_flags = FIRE_PROOF
 	item_flags = NO_MAT_REDEMPTION
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 60, ACID = 50)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 60, ACID = 50)
 
 /obj/item/storage/backpack/holding/Initialize()
 	. = ..()
@@ -441,10 +495,10 @@
 	new /obj/item/surgicaldrill(src)
 	new /obj/item/cautery(src)
 	new /obj/item/bonesetter(src)
-	new /obj/item/surgical_drapes(src)
 	new /obj/item/clothing/mask/surgical(src)
 	new /obj/item/razor(src)
 	new /obj/item/blood_filter(src)
+	new /obj/item/fixovein(src)
 
 /obj/item/storage/backpack/duffelbag/sec
 	name = "security duffel bag"
@@ -465,9 +519,9 @@
 	new /obj/item/bonesetter(src)
 	new /obj/item/surgicaldrill(src)
 	new /obj/item/cautery(src)
-	new /obj/item/surgical_drapes(src)
 	new /obj/item/clothing/mask/surgical(src)
 	new /obj/item/blood_filter(src)
+	new /obj/item/fixovein(src)
 
 /obj/item/storage/backpack/duffelbag/engineering
 	name = "industrial duffel bag"
@@ -555,12 +609,13 @@
 	new /obj/item/bonesetter(src)
 	new /obj/item/surgicaldrill(src)
 	new /obj/item/cautery(src)
-	new /obj/item/surgical_drapes(src)
 	new /obj/item/clothing/suit/straight_jacket(src)
 	new /obj/item/clothing/mask/muzzle(src)
 	new /obj/item/mmi/syndie(src)
 	new /obj/item/blood_filter(src)
 	new /obj/item/stack/medical/bone_gel(src)
+	new /obj/item/healthanalyzer/advanced(src)
+	new /obj/item/fixovein(src)
 
 /obj/item/storage/backpack/duffelbag/syndie/ammo
 	name = "ammunition duffel bag"
@@ -628,30 +683,26 @@
 	new /obj/item/clothing/glasses/thermal/syndi(src)
 
 /obj/item/storage/backpack/duffelbag/syndie/med/medicalbundle
-	desc = "A large duffel bag containing a medical equipment, a Donksoft LMG, a big jumbo box of riot darts, and a knock-off pair of magboots."
+	desc = "A large duffel bag containing a medical equipment, and a knock-off pair of magboots."
 
 /obj/item/storage/backpack/duffelbag/syndie/med/medicalbundle/PopulateContents()
 	new /obj/item/clothing/shoes/magboots/syndie(src)
 	new /obj/item/storage/medkit/tactical(src)
-	new /obj/item/gun/ballistic/automatic/l6_saw/toy(src)
-	new /obj/item/ammo_box/foambox/riot(src)
 
 /obj/item/storage/backpack/duffelbag/syndie/med/bioterrorbundle
-	desc = "A large duffel bag containing deadly chemicals, a handheld chem sprayer, Bioterror foam grenade, a Donksoft assault rifle, box of riot grade darts, a dart pistol, and a box of syringes."
+	desc = "A large duffel bag containing deadly chemicals, a handheld chem sprayer, Bioterror foam grenade, and a box of syringes."
 
 /obj/item/storage/backpack/duffelbag/syndie/med/bioterrorbundle/PopulateContents()
 	new /obj/item/reagent_containers/spray/chemsprayer/bioterror(src)
 	new /obj/item/storage/box/syndie_kit/chemical(src)
 	new /obj/item/gun/syringe/syndicate(src)
-	new /obj/item/gun/ballistic/automatic/c20r/toy(src)
 	new /obj/item/storage/box/syringes(src)
-	new /obj/item/ammo_box/foambox/riot(src)
 	new /obj/item/grenade/chem_grenade/bioterrorfoam(src)
 	if(prob(5))
 		new /obj/item/food/pizza/pineapple(src)
 
 /obj/item/storage/backpack/duffelbag/syndie/c4/PopulateContents()
-	for(var/i in 1 to 10)
+	for(var/i in 1 to 4)
 		new /obj/item/grenade/c4(src)
 
 /obj/item/storage/backpack/duffelbag/syndie/x4/PopulateContents()

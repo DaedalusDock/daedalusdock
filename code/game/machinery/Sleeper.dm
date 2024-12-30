@@ -15,19 +15,33 @@
 	state_open = TRUE
 	circuit = /obj/item/circuitboard/machine/sleeper
 
+	processing_flags = START_PROCESSING_MANUALLY
+
+	light_color = LIGHT_COLOR_CYAN
+	light_inner_range = 0.1
+	light_outer_range = 1.4
+	light_power = 1
+
 	var/efficiency = 1
 	var/min_health = -25
 	var/list/available_chems
-	var/controls_inside = FALSE
 	var/list/possible_chems = list(
-		list(/datum/reagent/medicine/epinephrine, /datum/reagent/medicine/morphine, /datum/reagent/medicine/c2/convermol, /datum/reagent/medicine/c2/libital, /datum/reagent/medicine/c2/aiuri),
-		list(/datum/reagent/medicine/oculine,/datum/reagent/medicine/inacusiate),
-		list(/datum/reagent/medicine/c2/multiver, /datum/reagent/medicine/mutadone, /datum/reagent/medicine/mannitol, /datum/reagent/medicine/salbutamol, /datum/reagent/medicine/pen_acid),
-		list(/datum/reagent/medicine/omnizine)
+		list(/datum/reagent/medicine/epinephrine, /datum/reagent/medicine/morphine, /datum/reagent/medicine/bicaridine, /datum/reagent/medicine/kelotane),
+		list(/datum/reagent/medicine/imidazoline,/datum/reagent/medicine/inacusiate),
+		list(/datum/reagent/medicine/dylovene, /datum/reagent/medicine/ryetalyn, /datum/reagent/medicine/alkysine, /datum/reagent/medicine/dexalin),
+		list(/datum/reagent/medicine/tricordrazine)
 	)
-	var/list/chem_buttons //Used when emagged to scramble which chem is used, eg: mutadone -> morphine
+	var/list/chem_buttons //Used when emagged to scramble which chem is used, eg: ryetalyn -> morphine
+
 	var/scrambled_chems = FALSE //Are chem buttons scrambled? used as a warning
+	/// Can the controls be accessed by the occupant?
+	var/controls_inside = FALSE
+	/// Has a maintenance hatch
+	var/has_panel = TRUE
+	var/has_anim = TRUE
+	var/rotatable = TRUE
 	var/enter_message = "<span class='notice'><b>You feel cool air surround you. You go numb as your senses turn inward.</b></span>"
+
 	payment_department = ACCOUNT_MED
 	fair_market_price = 5
 
@@ -51,10 +65,11 @@
 
 	efficiency = initial(efficiency)* E
 	min_health = initial(min_health) * E
-	available_chems = list()
-	for(var/i in 1 to I)
-		available_chems |= possible_chems[i]
-	reset_chem_buttons()
+	if(length(possible_chems))
+		available_chems = list()
+		for(var/i in 1 to I)
+			available_chems |= possible_chems[i]
+		reset_chem_buttons()
 
 /obj/machinery/sleeper/update_icon_state()
 	icon_state = "[base_icon_state][state_open ? "-open" : null]"
@@ -64,6 +79,10 @@
 	visible_message(span_notice("[occupant] emerges from [src]!"),
 		span_notice("You climb out of [src]!"))
 	open_machine()
+
+/obj/machinery/sleeper/on_set_is_operational(old_value)
+	. = ..()
+	refresh_light()
 
 /obj/machinery/sleeper/Exited(atom/movable/gone, direction)
 	. = ..()
@@ -76,36 +95,45 @@
 
 /obj/machinery/sleeper/open_machine()
 	if(!state_open && !panel_open)
-		flick("[initial(icon_state)]-anim", src)
+		if(has_anim)
+			z_flick("[initial(icon_state)]-anim", src)
 		..()
 
 /obj/machinery/sleeper/close_machine(mob/user)
 	if((isnull(user) || istype(user)) && state_open && !panel_open)
-		flick("[initial(icon_state)]-anim", src)
+		if(has_anim)
+			z_flick("[initial(icon_state)]-anim", src)
+
 		..(user)
+
 		var/mob/living/mob_occupant = occupant
-		if(mob_occupant && mob_occupant.stat != DEAD)
+		if(!mob_occupant)
+			return
+
+		if(enter_message && mob_occupant.stat != DEAD)
 			to_chat(mob_occupant, "[enter_message]")
 
 /obj/machinery/sleeper/emp_act(severity)
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return
+
 	if(is_operational && occupant)
 		open_machine()
 
 
-/obj/machinery/sleeper/MouseDrop_T(mob/target, mob/user)
+/obj/machinery/sleeper/MouseDroppedOn(mob/target, mob/user)
 	if(HAS_TRAIT(user, TRAIT_UI_BLOCKED) || !Adjacent(user) || !user.Adjacent(target) || !iscarbon(target) || !ISADVANCEDTOOLUSER(user))
 		return
 
 	close_machine(target)
 
-
 /obj/machinery/sleeper/screwdriver_act(mob/living/user, obj/item/I)
 	. = TRUE
 	if(..())
 		return
+	if(!has_panel)
+		return FALSE
 	if(occupant)
 		to_chat(user, span_warning("[src] is currently occupied!"))
 		return
@@ -118,7 +146,7 @@
 
 /obj/machinery/sleeper/wrench_act(mob/living/user, obj/item/I)
 	. = ..()
-	if(default_change_direction_wrench(user, I))
+	if(rotatable && default_change_direction_wrench(user, I))
 		return TRUE
 
 /obj/machinery/sleeper/crowbar_act(mob/living/user, obj/item/I)
@@ -129,7 +157,7 @@
 		return TRUE
 
 /obj/machinery/sleeper/default_pry_open(obj/item/I) //wew
-	. = !(state_open || panel_open || (flags_1 & NODECONSTRUCT_1)) && I.tool_behaviour == TOOL_CROWBAR
+	. = has_panel && !(state_open || panel_open || (flags_1 & NODECONSTRUCT_1)) && I.tool_behaviour == TOOL_CROWBAR
 	if(.)
 		I.play_tool_sound(src, 50)
 		visible_message(span_notice("[usr] pries open [src]."), span_notice("You pry open [src]."))
@@ -148,7 +176,7 @@
 
 /obj/machinery/sleeper/AltClick(mob/user)
 	. = ..()
-	if(!user.canUseTopic(src, !issilicon(user)))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	if(state_open)
 		close_machine()
@@ -159,14 +187,6 @@
 	. = ..()
 	. += span_notice("Alt-click [src] to [state_open ? "close" : "open"] it.")
 
-/obj/machinery/sleeper/process()
-	..()
-	check_nap_violations()
-	use_power(active_power_usage)
-
-/obj/machinery/sleeper/nap_violation(mob/violator)
-	open_machine()
-
 /obj/machinery/sleeper/ui_data()
 	var/list/data = list()
 	data["occupied"] = occupant ? 1 : 0
@@ -174,7 +194,7 @@
 
 	data["chems"] = list()
 	for(var/chem in available_chems)
-		var/datum/reagent/R = GLOB.chemical_reagents_list[chem]
+		var/datum/reagent/R = SSreagents.chemical_reagents_list[chem]
 		data["chems"] += list(list("name" = R.name, "id" = R.type, "allowed" = chem_allowed(chem)))
 
 	data["occupant"] = list()
@@ -183,12 +203,13 @@
 		data["occupant"]["name"] = mob_occupant.name
 		switch(mob_occupant.stat)
 			if(CONSCIOUS)
-				data["occupant"]["stat"] = "Conscious"
-				data["occupant"]["statstate"] = "good"
-			if(SOFT_CRIT)
-				data["occupant"]["stat"] = "Conscious"
-				data["occupant"]["statstate"] = "average"
-			if(UNCONSCIOUS, HARD_CRIT)
+				if(!HAS_TRAIT(mob_occupant, TRAIT_SOFT_CRITICAL_CONDITION))
+					data["occupant"]["stat"] = "Conscious"
+					data["occupant"]["statstate"] = "good"
+				else
+					data["occupant"]["stat"] = "Conscious"
+					data["occupant"]["statstate"] = "average"
+			if(UNCONSCIOUS)
 				data["occupant"]["stat"] = "Unconscious"
 				data["occupant"]["statstate"] = "average"
 			if(DEAD)
@@ -206,7 +227,7 @@
 		data["occupant"]["reagents"] = list()
 		if(mob_occupant.reagents && mob_occupant.reagents.reagent_list.len)
 			for(var/datum/reagent/R in mob_occupant.reagents.reagent_list)
-				if(R.chemical_flags & REAGENT_INVISIBLE) //Don't show hidden chems
+				if((R.chemical_flags & REAGENT_INVISIBLE)) //
 					continue
 				data["occupant"]["reagents"] += list(list("name" = R.name, "volume" = R.volume))
 	return data
@@ -217,7 +238,6 @@
 		return
 
 	var/mob/living/mob_occupant = occupant
-	check_nap_violations()
 	switch(action)
 		if("door")
 			if(state_open)
@@ -267,6 +287,11 @@
 	for(var/chem in av_chem)
 		chem_buttons[chem] = pick_n_take(av_chem) //no dupes, allow for random buttons to still be correct
 
+/obj/machinery/sleeper/proc/refresh_light()
+	if(is_operational)
+		set_light(l_on = TRUE)
+	else
+		set_light(l_on = FALSE)
 
 /obj/machinery/sleeper/syndie
 	icon_state = "sleeper_s"
@@ -291,12 +316,12 @@
 	controls_inside = TRUE
 	possible_chems = list(
 		list(/datum/reagent/consumable/ethanol/beer, /datum/reagent/consumable/laughter),
-		list(/datum/reagent/spraytan,/datum/reagent/barbers_aid),
+		list(/datum/reagent/barbers_aid),
 		list(/datum/reagent/colorful_reagent,/datum/reagent/hair_dye),
-		list(/datum/reagent/drug/space_drugs,/datum/reagent/baldium)
+		list(/datum/reagent/drug/space_drugs)
 	)//Exclusively uses non-lethal, "fun" chems. At an obvious downside.
 	var/spray_chems = list(
-		/datum/reagent/spraytan, /datum/reagent/hair_dye, /datum/reagent/baldium, /datum/reagent/barbers_aid
+		/datum/reagent/hair_dye, /datum/reagent/barbers_aid
 	)//Chemicals that need to have a touch or vapor reaction to be applied, not the standard chamber reaction.
 	enter_message = "<span class='notice'><b>You're surrounded by some funky music inside the chamber. You zone out as you feel waves of krunk vibe within you.</b></span>"
 

@@ -5,9 +5,8 @@
 /datum/wound
 	///The bodypart this wound is on
 	var/obj/item/bodypart/parent
-	///The mob this wound belongs to
-	var/mob/living/carbon/mob_parent
 
+	var/pain_factor = 0
 	///Number representing the current stage
 	var/current_stage = 0
 	///Description of the wound.
@@ -21,8 +20,6 @@
 	///Amount of damage the current wound type requires(less means we need to apply the next healing stage)
 	var/min_damage = 0
 
-	///Is bandaged?
-	var/bandaged = 0
 	///Is clamped?
 	var/clamped = 0
 	///Is salved?
@@ -52,6 +49,7 @@
 	// helper lists
 	var/tmp/list/desc_list = list()
 	var/tmp/list/damage_list = list()
+	var/tmp/list/embedded_objects //lazy
 
 /datum/wound/New(damage, obj/item/bodypart/BP = null)
 
@@ -72,32 +70,14 @@
 
 	if(istype(BP))
 		parent = BP
-		if(BP.current_gauze)
-			bandage()
-		RegisterSignal(parent, COMSIG_BODYPART_GAUZED, PROC_REF(on_gauze))
-		RegisterSignal(parent, COMSIG_BODYPART_GAUZE_DESTROYED, PROC_REF(on_ungauze))
-		if(parent.owner)
-			register_to_mob(parent.owner)
 
 /datum/wound/Destroy()
-	if(mob_parent)
-		unregister_from_mob()
 	if(parent)
 		LAZYREMOVE(parent.wounds, src)
 		parent = null
 
+	LAZYCLEARLIST(embedded_objects)
 	return ..()
-
-/datum/wound/proc/register_to_mob(mob/living/carbon/C)
-	if(mob_parent)
-		unregister_from_mob()
-	mob_parent = C
-	SEND_SIGNAL(mob_parent, COMSIG_CARBON_GAIN_WOUND, src, parent)
-
-/datum/wound/proc/unregister_from_mob()
-	SEND_SIGNAL(mob_parent, COMSIG_CARBON_LOSE_WOUND, src, parent)
-	mob_parent = null
-
 
 ///Returns 1 if there's a next stage, 0 otherwise
 /datum/wound/proc/init_stage(initial_damage)
@@ -114,13 +94,26 @@
 	return src.damage / src.amount
 
 /datum/wound/proc/can_autoheal()
-	return (wound_damage() <= autoheal_cutoff) ? 1 : is_treated()
+	if(LAZYLEN(embedded_objects))
+		return FALSE
+
+	switch(wound_type) //OOP is a lie. Should bruises, cuts, and punctures all share a common parent? Probably. Fuck you!
+		if (WOUND_BRUISE, WOUND_CUT, WOUND_PIERCE)
+			if(parent.bandage)
+				return wound_damage() <= initial(autoheal_cutoff)
+		if(WOUND_BURN)
+			. = salved
+
+	. ||= (wound_damage() <= autoheal_cutoff)
 
 ///Checks whether the wound has been appropriately treated
 /datum/wound/proc/is_treated()
+	if(LAZYLEN(embedded_objects))
+		return FALSE
+
 	switch(wound_type)
 		if (WOUND_BRUISE, WOUND_CUT, WOUND_PIERCE)
-			return bandaged
+			return parent.bandage
 		if (WOUND_BURN)
 			return salved
 
@@ -131,7 +124,6 @@
 	if (other.wound_type != src.wound_type) return 0
 	if (!(other.can_autoheal()) != !(src.can_autoheal())) return 0
 	if (other.is_surgical() != src.is_surgical()) return 0
-	if (!(other.bandaged) != !(src.bandaged)) return 0
 	if (!(other.clamped) != !(src.clamped)) return 0
 	if (!(other.salved) != !(src.salved)) return 0
 	if (!(other.disinfected) != !(src.disinfected)) return 0
@@ -139,6 +131,10 @@
 	return 1
 
 /datum/wound/proc/merge_wound(datum/wound/other)
+	for(var/obj/item/I as anything in other.embedded_objects)
+		RegisterSignal(I, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING), PROC_REF(item_gone))
+		LAZYDISTINCTADD(embedded_objects, I)
+
 	src.damage += other.damage
 	src.amount += other.amount
 	src.bleed_timer += other.bleed_timer
@@ -171,12 +167,6 @@
 
 	return 0
 
-/datum/wound/proc/bandage()
-	if(bandaged)
-		return FALSE
-	bandaged = 1
-	return TRUE
-
 /datum/wound/proc/salve()
 	if(salved)
 		return FALSE
@@ -200,11 +190,13 @@
 // heal the given amount of damage, and if the given amount of damage was more
 // than what needed to be healed, return how much heal was left
 /datum/wound/proc/heal_damage(amount)
+	/* UNREPAIRABLE DAMAGE
 	if(parent)
 		if (wound_type == WOUND_BURN && parent.burn_ratio > 1)
 			return amount	//We don't want to heal wounds on irreparable organs.
 		else if(parent.brute_ratio > 1)
 			return amount
+	*/
 
 	var/healed_damage = min(src.damage, amount)
 	amount -= healed_damage
@@ -219,7 +211,7 @@
 	return amount
 
 // opens the wound again
-/datum/wound/proc/open_wound(damage)
+/datum/wound/proc/open_wound(damage, update_damage = TRUE)
 	src.damage += damage
 	bleed_timer += damage
 
@@ -228,6 +220,9 @@
 
 	src.desc = desc_list[current_stage]
 	src.min_damage = damage_list[current_stage]
+
+	if(update_damage)
+		parent.update_damage()
 
 /datum/wound/proc/close_wound()
 	return
@@ -249,21 +244,19 @@
 		return 0
 	return 1
 
+/// Returns if the wound is currently bleeding.
 /datum/wound/proc/bleeding()
-	if(bandaged || clamped)
+	if(clamped)
 		return FALSE
+	if(length(embedded_objects))
+		for(var/obj/item/thing in embedded_objects)
+			if(thing.w_class > WEIGHT_CLASS_SMALL)
+				return FALSE
+	// If the bleed_timer is greater than zero, OR the wound_damage() is greater than the damage required to bleed constantly.
 	return ((bleed_timer > 0 || wound_damage() > bleed_threshold) && current_stage <= max_bleeding_stage)
 
 /datum/wound/proc/is_surgical()
 	return 0
-
-/datum/wound/proc/on_gauze(datum/source)
-	SIGNAL_HANDLER
-	bandage()
-
-/datum/wound/proc/on_ungauze(datum/source)
-	SIGNAL_HANDLER
-	bandaged = FALSE
 
 /datum/wound/proc/get_examine_desc()
 	var/this_wound_desc = desc
@@ -275,7 +268,7 @@
 			this_wound_desc = "<b>bleeding</b> [this_wound_desc]"
 		else
 			this_wound_desc = "bleeding [this_wound_desc]"
-	else if(bandaged)
+	else if(parent.bandage)
 		this_wound_desc = "bandaged [this_wound_desc]"
 
 	if(germ_level > 600)
@@ -285,6 +278,12 @@
 
 
 	return this_wound_desc
+
+
+/datum/wound/proc/item_gone(datum/source)
+	SIGNAL_HANDLER
+	LAZYREMOVE(embedded_objects, source)
+	UnregisterSignal(source, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING))
 
 /*Note that the MINIMUM damage before a wound can be applied should correspond to
 //the damage amount for the stage with the same name as the wound.
@@ -335,13 +334,22 @@
 					return /datum/wound/burn/moderate
 	return null //no wound
 
-/obj/item/bodypart/proc/attempt_dismemberment(brute as num, burn as num, sharpness)
-	if((sharpness & SHARP_EDGED) && brute >= max_damage * DROPLIMB_THRESHOLD_EDGE)
+/obj/item/bodypart/proc/attempt_dismemberment(brute as num, burn as num, sharpness, force_dismember)
+	if(force_dismember)
+		if(burn)
+			return dismember(DROPLIMB_BURN)
+		if(brute)
+			return dismember(sharpness & SHARP_EDGED ? DROPLIMB_EDGE : DROPLIMB_BLUNT)
+
+	if(sharpness & SHARP_POINTY)
+		brute *= 0.5
+
+	if((sharpness & SHARP_EDGED) && (brute) >= max_damage * DROPLIMB_THRESHOLD_EDGE)
 		if(prob(brute))
 			return dismember(DROPLIMB_EDGE, FALSE, FALSE)
 
 	else if(burn >= max_damage * DROPLIMB_THRESHOLD_DESTROY)
-		if(prob(burn))
+		if(prob(burn/3))
 			return dismember(DROPLIMB_BURN, FALSE, FALSE)
 
 	else if(brute >= max_damage * DROPLIMB_THRESHOLD_DESTROY)
@@ -349,5 +357,35 @@
 			return dismember(DROPLIMB_BLUNT, FALSE, FALSE)
 
 	else if(brute >= max_damage * DROPLIMB_THRESHOLD_TEAROFF)
-		if(prob(brute))
+		if(prob(brute/3))
 			return dismember(DROPLIMB_EDGE, FALSE, FALSE)
+
+/obj/item/bodypart/proc/violent_dismember_messages(droptype, clean)
+	var/gore
+	var/gore_sound
+	switch(droptype)
+		if(DROPLIMB_EDGE)
+			if(!clean)
+				gore_sound = "[!IS_ORGANIC_LIMB(src) ? "tortured metal" : "ripping tendons and flesh"]"
+				return list(
+						"\The [owner]'s [src.plaintext_zone] flies off in an arc!",
+						"Your [src.plaintext_zone] goes flying off!",
+						"You hear a terrible sound of [gore_sound]."
+					)
+
+		if(DROPLIMB_BURN)
+			gore = "[!IS_ORGANIC_LIMB(src) ? "": " of burning flesh"]"
+			return list(
+					"\The [owner]'s [src.plaintext_zone] flashes away into ashes!",
+					"Your [src.plaintext_zone] flashes away into ashes!",
+					"You hear a crackling sound[gore]."
+				)
+
+		if(DROPLIMB_BLUNT)
+			gore = "[!IS_ORGANIC_LIMB(src) ? "": " in shower of gore"]"
+			gore_sound = "[!IS_ORGANIC_LIMB(src) ? "rending sound of tortured metal" : "sickening splatter of gore"]"
+			return list(
+					"\The [owner]'s [src.plaintext_zone] explodes[gore]!",
+					"Your [src.plaintext_zone] explodes[gore]!",
+					"You hear the [gore_sound]."
+				)

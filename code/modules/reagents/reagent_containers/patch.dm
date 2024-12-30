@@ -5,15 +5,16 @@
 	icon_state = "bandaid"
 	inhand_icon_state = "bandaid"
 	possible_transfer_amounts = list()
-	volume = 40
-	apply_type = PATCH
+	volume = 15
+	apply_type = TOUCH
 	apply_method = "apply"
-	self_delay = 30 // three seconds
+	self_delay = 2 SECONDS
+	other_delay = 1 SECOND
 	dissolvable = FALSE
 
 /obj/item/reagent_containers/pill/patch/attack(mob/living/L, mob/user)
 	if(ishuman(L))
-		var/obj/item/bodypart/affecting = L.get_bodypart(check_zone(user.zone_selected))
+		var/obj/item/bodypart/affecting = L.get_bodypart(deprecise_zone(user.zone_selected))
 		if(!affecting)
 			to_chat(user, span_warning("The limb is missing!"))
 			return
@@ -27,20 +28,27 @@
 		return FALSE
 	return TRUE // Masks were stopping people from "eating" patches. Thanks, inheritance.
 
-/obj/item/reagent_containers/pill/patch/libital
-	name = "libital patch (brute)"
-	desc = "A pain reliever. Does minor liver damage. Diluted with Granibitaluri."
-	list_reagents = list(/datum/reagent/medicine/c2/libital = 2, /datum/reagent/medicine/granibitaluri = 8) //10 iterations
-	icon_state = "bandaid_brute"
+/obj/item/reagent_containers/pill/patch/on_consumption(mob/M, mob/user)
+	if(!reagents.total_volume)
+		return
 
-/obj/item/reagent_containers/pill/patch/aiuri
-	name = "aiuri patch (burn)"
-	desc = "Helps with burn injuries. Does minor eye damage. Diluted with Granibitaluri."
-	list_reagents = list(/datum/reagent/medicine/c2/aiuri = 2, /datum/reagent/medicine/granibitaluri = 8)
-	icon_state = "bandaid_burn"
+	reagents.trans_to(M, reagents.total_volume, transfered_by = user, methods = TOUCH)
+	reagents.clear_reagents()
 
 /obj/item/reagent_containers/pill/patch/synthflesh
 	name = "synthflesh patch"
 	desc = "Helps with brute and burn injuries. Slightly toxic."
-	list_reagents = list(/datum/reagent/medicine/c2/synthflesh = 20)
+	list_reagents = list(/datum/reagent/medicine/synthflesh = 15)
 	icon_state = "bandaid_both"
+
+/obj/item/reagent_containers/pill/patch/styptic_powder
+	name = "styptic patch"
+	desc = "A patch for aiding the healing of cuts and abrasions."
+	list_reagents = list(/datum/reagent/medicine/styptic_powder = 15)
+	icon_state = "bandaid_brute"
+
+/obj/item/reagent_containers/pill/patch/silver_sulfadiazine
+	name = "silver sulfadiazine patch"
+	desc = "A path which soothes burns on flesh."
+	list_reagents = list(/datum/reagent/medicine/silver_sulfadiazine = 15)
+	icon_state = "bandaid_burn"

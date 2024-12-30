@@ -5,7 +5,7 @@
 
 /datum/map_config
 	// Metadata
-	var/config_filename = "_maps/metastation.json"
+	var/config_filename = "_maps/theseus.json"
 	var/defaulted = TRUE  // set to FALSE by LoadConfig() succeeding
 	// Config from maps.txt
 	var/config_max_users = 0
@@ -13,16 +13,20 @@
 	var/voteweight = 1
 	var/votable = FALSE
 
-	// Config actually from the JSON - should default to Meta
-	var/map_name = "Meta Station"
-	var/map_path = "map_files/MetaStation"
-	var/map_file = "MetaStation.dmm"
+	// Config actually from the JSON - should default to Theseus
+	var/map_name = "Theseus"
+	var/map_path = "map_files/Theseus"
+	var/map_file = "Theseus.dmm"
+	var/webmap_id = "DaedalusMeta"
 
 	var/traits = null
 	var/space_ruin_levels = 7
 	var/space_empty_levels = 1
 
 	var/minetype = "lavaland"
+
+	/// X,Y values for the holomap offset. The holomap draws to a 480x480 image, so by default the offset is 480 / 4.
+	var/holomap_offsets = list(120, 120)
 
 	var/allow_custom_shuttles = TRUE
 	var/shuttles = list(
@@ -35,6 +39,9 @@
 	var/job_changes = list()
 	/// List of additional areas that count as a part of the library
 	var/library_areas = list()
+
+	/// Do we run mapping standards unit tests on this map?
+	var/run_mapping_tests = FALSE
 
 /**
  * Proc that simply loads the default map config, which should always be functional.
@@ -118,7 +125,7 @@
 	map_path = json["map_path"]
 
 	map_file = json["map_file"]
-	// "map_file": "MetaStation.dmm"
+	// "map_file": "Theseus.dmm"
 	if (istext(map_file))
 		if (!fexists("_maps/[map_path]/[map_file]"))
 			log_world("Map file ([map_path]/[map_file]) does not exist!")
@@ -132,6 +139,10 @@
 	else
 		log_world("map_file missing from json!")
 		return
+
+	webmap_id = json["webmap_id"]
+	if(!webmap_id)
+		log_mapping("Map is missing a webmap ID.")
 
 	if (islist(json["shuttles"]))
 		var/list/L = json["shuttles"]
@@ -169,9 +180,6 @@
 		log_world("map_config space_empty_levels is not a number!")
 		return
 
-	if ("minetype" in json)
-		minetype = json["minetype"]
-
 	allow_custom_shuttles = json["allow_custom_shuttles"] != FALSE
 
 	if ("job_changes" in json)
@@ -191,8 +199,24 @@
 				continue
 			library_areas += path
 
+	if("holomap_offset" in json)
+		if(!islist(json["holomap_offset"]) || length(json["holomap_offset"] != 2))
+			log_world("map_config \"holomap_offset\" field is invalid!")
+			return
+		temp = json["holomap_offset"]
+		if(!isnum(temp[1]) || !isnum(temp[2]))
+			log_world("map_config \"holomap_offset\" contains non-numbers!")
+			return
+
+		holomap_offsets = temp
+
+	if("run_mapping_tests" in json)
+		//This should be true, but just in case...
+		run_mapping_tests = json["run_mapping_tests"]
+
 	defaulted = FALSE
 	return TRUE
+
 #undef CHECK_EXISTS
 
 /datum/map_config/proc/GetFullMapPaths()

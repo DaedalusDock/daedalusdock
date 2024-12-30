@@ -45,7 +45,6 @@
 	color = "#B77D31" //To display in mapping softwares
 
 /turf/closed/wall/mineral/uranium
-	article = "a"
 	name = "uranium wall"
 	desc = "A wall with uranium plating. This is probably a bad idea."
 	plating_material = /datum/material/uranium
@@ -77,7 +76,7 @@
 	radiate()
 	..()
 
-/turf/closed/wall/mineral/uranium/Bumped(atom/movable/AM)
+/turf/closed/wall/mineral/uranium/BumpedBy(atom/movable/AM)
 	radiate()
 	..()
 
@@ -88,7 +87,7 @@
 	name = "plasma wall"
 	desc = "A wall with plasma plating. This is definitely a bad idea."
 	plating_material = /datum/material/plasma
-	color = "#c162ec" //To display in mapping softwares
+	color = /datum/material/plasma::wall_color //To display in mapping softwares
 
 /turf/closed/wall/mineral/wood
 	name = "wooden wall"
@@ -98,10 +97,10 @@
 	turf_flags = IS_SOLID
 	explosion_block = 0
 	plating_material = /datum/material/wood
-	color = "#bb8e53" //To display in mapping softwares
+	color = /datum/material/wood::wall_color //To display in mapping softwares
 
 /turf/closed/wall/mineral/wood/attackby(obj/item/W, mob/user)
-	if(W.get_sharpness() && W.force)
+	if((W.sharpness & SHARP_EDGED) && W.force)
 		var/duration = (48/W.force) * 2 //In seconds, for now.
 		if(istype(W, /obj/item/hatchet) || istype(W, /obj/item/fireaxe))
 			duration /= 4 //Much better with hatchets and axes.
@@ -152,8 +151,8 @@
 	explosion_block = 3
 	flags_1 = CAN_BE_DIRTY_1
 	flags_ricochet = RICOCHET_SHINY | RICOCHET_HARD
-	smoothing_groups = list(SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_SHUTTLE_PARTS)
+	smoothing_groups = SMOOTH_GROUP_WALLS
+	canSmoothWith = SMOOTH_GROUP_SHUTTLE_PARTS + SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
 	plating_material = /datum/material/titanium
 	color = "#b3c0c7" //To display in mapping softwares
 
@@ -171,7 +170,7 @@
 /turf/closed/wall/mineral/titanium/survival
 	name = "pod wall"
 	desc = "An easily-compressable wall used for temporary shelter."
-	canSmoothWith = list(SMOOTH_GROUP_SURVIVAL_TITANIUM_POD, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTLE_PARTS)
+	canSmoothWith = SMOOTH_GROUP_SHUTTLE_PARTS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_SURVIVAL_TITANIUM_WALLS
 	color = "#242424" //To display in mapping softwares
 	wall_paint = "#242424"
 	stripe_paint = "#824621"
@@ -179,8 +178,8 @@
 /turf/closed/wall/mineral/titanium/survival/nodiagonal
 
 /turf/closed/wall/mineral/titanium/survival/pod
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_SURVIVAL_TITANIUM_POD)
-	canSmoothWith = list(SMOOTH_GROUP_SURVIVAL_TITANIUM_POD)
+	smoothing_groups = SMOOTH_GROUP_SURVIVAL_TITANIUM_POD + SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS + SMOOTH_GROUP_SURVIVAL_TITANIUM_WALLS
+	canSmoothWith = SMOOTH_GROUP_SURVIVAL_TITANIUM_POD
 
 /////////////////////Plastitanium walls/////////////////////
 
@@ -189,8 +188,8 @@
 	desc = "A durable wall made of an alloy of plasma and titanium."
 	icon = 'icons/turf/walls/metal_wall.dmi'
 	explosion_block = 4
-	smoothing_groups = list(SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	smoothing_groups = SMOOTH_GROUP_WALLS
+	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
 	plating_material = /datum/material/alloy/plastitanium
 	color = "#3a313a" //To display in mapping softwares
 

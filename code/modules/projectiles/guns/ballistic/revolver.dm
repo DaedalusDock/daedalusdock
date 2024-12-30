@@ -10,20 +10,23 @@
 	dry_fire_sound = 'sound/weapons/gun/revolver/dry_fire.ogg'
 	casing_ejector = FALSE
 	internal_magazine = TRUE
-	bolt_type = BOLT_TYPE_NO_BOLT
-	tac_reloads = FALSE
+	bolt = /datum/gun_bolt/no_bolt
+
+	/// If TRUE, will rotate the cylinder after each shot.
+	var/auto_chamber = TRUE
+
 	var/spin_delay = 10
 	var/recent_spin = 0
 	var/last_fire = 0
 
-/obj/item/gun/ballistic/revolver/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
-	..()
+/obj/item/gun/ballistic/revolver/do_fire_gun(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+	. = ..()
 	last_fire = world.time
-
 
 /obj/item/gun/ballistic/revolver/chamber_round(keep_bullet, spin_cylinder = TRUE, replace_new_round)
 	if(!magazine) //if it mag was qdel'd somehow.
 		CRASH("revolver tried to chamber a round without a magazine!")
+
 	if(spin_cylinder)
 		chambered = magazine.get_round(TRUE)
 	else
@@ -31,13 +34,14 @@
 
 /obj/item/gun/ballistic/revolver/shoot_with_empty_chamber(mob/living/user as mob|obj)
 	..()
-	chamber_round()
+	if(auto_chamber)
+		chamber_round(spin_cylinder = TRUE)
 
 /obj/item/gun/ballistic/revolver/AltClick(mob/user)
 	..()
 	spin()
 
-/obj/item/gun/ballistic/revolver/fire_sounds()
+/obj/item/gun/ballistic/revolver/play_fire_sound()
 	var/frequency_to_use = sin((90/magazine?.max_ammo) * get_ammo(TRUE, FALSE)) // fucking REVOLVERS
 	var/click_frequency_to_use = 1 - frequency_to_use * 0.75
 	var/play_click = sqrt(magazine?.max_ammo) > get_ammo(TRUE, FALSE)
@@ -100,7 +104,7 @@
 	name = "\improper Colt Detective Special"
 	desc = "A classic, if not outdated, law enforcement firearm. Uses .38 Special rounds. \nSome spread rumors that if you loosen the barrel with a wrench, you can \"improve\" it."
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev38
-	icon_state = "c38"
+	icon_state = "detective"
 	fire_sound = 'sound/weapons/gun/revolver/shot.ogg'
 	can_modify_ammo = TRUE
 	initial_caliber = CALIBER_38
@@ -110,19 +114,6 @@
 	alternative_ammo_misfires = TRUE
 	misfire_probability = 0
 	misfire_percentage_increment = 25 //about 1 in 4 rounds, which increases rapidly every shot
-
-	obj_flags = UNIQUE_RENAME
-	unique_reskin = list(
-		"Default" = "c38",
-		"Fitz Special" = "c38_fitz",
-		"Police Positive Special" = "c38_police",
-		"Blued Steel" = "c38_blued",
-		"Stainless Steel" = "c38_stainless",
-		"Gold Trim" = "c38_trim",
-		"Golden" = "c38_gold",
-		"The Peacemaker" = "c38_peacemaker",
-		"Black Panther" = "c38_panther"
-	)
 
 /obj/item/gun/ballistic/revolver/syndicate
 	name = "\improper Syndicate Revolver"
@@ -188,7 +179,7 @@
 		return
 	..()
 
-/obj/item/gun/ballistic/revolver/russian/fire_gun(atom/target, mob/living/user, flag, params)
+/obj/item/gun/ballistic/revolver/russian/try_fire_gun(atom/target, mob/living/user, flag, params)
 	. = ..(null, user, flag, params)
 
 	if(flag)
@@ -214,7 +205,7 @@
 
 		spun = FALSE
 
-		var/zone = check_zone(user.zone_selected)
+		var/zone = deprecise_zone(user.zone_selected)
 		var/obj/item/bodypart/affecting = H.get_bodypart(zone)
 		var/is_target_face = zone == BODY_ZONE_HEAD || zone == BODY_ZONE_PRECISE_EYES || zone == BODY_ZONE_PRECISE_MOUTH
 
@@ -258,8 +249,67 @@
 		return FALSE
 	if(HAS_TRAIT(user, TRAIT_CLUMSY) || is_clown_job(user.mind?.assigned_role))
 		return ..()
-	if(process_fire(user, user, FALSE, null, BODY_ZONE_HEAD))
+	if(do_fire_gun(user, user, FALSE, null, BODY_ZONE_HEAD))
 		user.visible_message(span_warning("[user] somehow manages to shoot [user.p_them()]self in the face!"), span_userdanger("You somehow shoot yourself in the face! How the hell?!"))
-		user.emote("scream")
+		user.emote("agony")
 		user.drop_all_held_items()
 		user.Paralyze(80)
+
+
+/obj/item/gun/ballistic/revolver/single_action
+	name = "single action revolver"
+
+	one_hand_rack = TRUE
+	auto_chamber = FALSE
+
+	var/hammer_cocked = FALSE
+
+/obj/item/gun/ballistic/revolver/single_action/proc/toggle_hammer(mob/user)
+	PRIVATE_PROC(TRUE)
+
+	if(hammer_cocked)
+		user?.visible_message(span_alert("[user] decocks the hammer of [src]."), vision_distance = COMBAT_MESSAGE_RANGE)
+		hammer_cocked = FALSE
+		update_appearance()
+		return
+
+	user?.visible_message(span_alert("[user] cocks the hammer of [src]."), vision_distance = COMBAT_MESSAGE_RANGE)
+	hammer_cocked = TRUE
+	update_chamber(!chambered, TRUE, TRUE)
+	bolt.post_rack()
+	update_appearance()
+
+/obj/item/gun/ballistic/revolver/single_action/rack(mob/living/user)
+	toggle_hammer(user)
+	return TRUE
+
+/obj/item/gun/ballistic/revolver/single_action/can_fire()
+	if(!hammer_cocked)
+		return FALSE
+	return ..()
+
+/obj/item/gun/ballistic/revolver/single_action/shoot_with_empty_chamber(mob/living/user)
+	. = ..()
+	if(hammer_cocked)
+		toggle_hammer()
+
+/obj/item/gun/ballistic/revolver/single_action/do_fire_gun(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+	. = ..()
+	if(hammer_cocked)
+		toggle_hammer()
+
+/obj/item/gun/ballistic/revolver/single_action/dry_fire_feedback(mob/user)
+	if(!hammer_cocked)
+		to_chat(user, span_warning("[src]'s trigger won't budge."))
+		return
+	return ..()
+
+//SEC REVOLVER
+/obj/item/gun/ballistic/revolver/single_action/juno
+	name = "\improper 'Juno' Single-Action Revolver"
+	desc = "An incredibly durable .38 caliber single action revolver. First manufactured by Europan Arms for use onboard submarines, it's seen common use to this day due to being easy to manufacture and maintain."
+	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev38
+	icon_state = "juno"
+	initial_caliber = CALIBER_38
+	alternative_caliber = CALIBER_357
+	alternative_ammo_misfires = FALSE

@@ -19,15 +19,15 @@
 
 /obj/item/radio/intercom/Initialize(mapload, ndir, building)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	var/area/current_area = get_area(src)
 	if(!current_area)
 		return
 	RegisterSignal(current_area, COMSIG_AREA_POWER_CHANGE, PROC_REF(AreaPowerCheck))
-	GLOB.intercoms_list += src
 
 /obj/item/radio/intercom/Destroy()
 	. = ..()
-	GLOB.intercoms_list -= src
+	UNSET_TRACKING(__TYPE__)
 
 /obj/item/radio/intercom/examine(mob/user)
 	. = ..()
@@ -97,7 +97,7 @@
 
 	return TRUE
 
-/obj/item/radio/intercom/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
+/obj/item/radio/intercom/Hear(message, atom/movable/speaker, message_lang, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc, message_range)
 	if(message_mods[RADIO_EXTENSION] == MODE_INTERCOM)
 		return  // Avoid hearing the same thing twice
 	return ..()

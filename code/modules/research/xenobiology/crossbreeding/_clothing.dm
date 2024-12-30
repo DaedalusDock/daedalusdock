@@ -107,6 +107,7 @@ Slimecrossing Armor
 	w_class = WEIGHT_CLASS_TINY
 	throw_speed = 1
 	throw_range = 3
+
 /obj/item/clothing/head/peaceflower/proc/at_peace_check(mob/user)
 	if(iscarbon(user))
 		var/mob/living/carbon/carbon_user = user
@@ -124,19 +125,3 @@ Slimecrossing Armor
 	if(at_peace_check(usr))
 		return
 	return ..()
-
-/obj/item/clothing/suit/armor/heavy/adamantine
-	name = "adamantine armor"
-	desc = "A full suit of adamantine plate armor. Impressively resistant to damage, but weighs about as much as you do."
-	icon_state = "adamsuit"
-	inhand_icon_state = "adamsuit"
-	flags_inv = NONE
-	obj_flags = IMMUTABLE_SLOW
-	slowdown = 4
-	var/hit_reflect_chance = 40
-
-/obj/item/clothing/suit/armor/heavy/adamantine/IsReflect(def_zone)
-	if(def_zone in list(BODY_ZONE_CHEST, BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG) && prob(hit_reflect_chance))
-		return TRUE
-	else
-		return FALSE

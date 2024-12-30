@@ -16,6 +16,7 @@
 
 /mob/living/carbon/alien/humanoid/royal/Initialize(mapload)
 	. = ..()
+	AddComponent(/datum/component/seethrough_mob)
 	// as a wise man once wrote: "pull over that ass too fat"
 	REMOVE_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
@@ -28,7 +29,6 @@
 	maxHealth = 400
 	health = 400
 	icon_state = "alienq"
-	var/datum/action/small_sprite/smallsprite = new/datum/action/small_sprite/queen()
 
 /mob/living/carbon/alien/humanoid/royal/queen/Initialize(mapload)
 	//there should only be one queen
@@ -41,13 +41,10 @@
 			name = "alien princess ([rand(1, 999)])" //if this is too cutesy feel free to change it/remove it.
 			break
 
-	real_name = src.name
+	set_real_name(src.name)
 
 	var/datum/action/cooldown/spell/aoe/repulse/xeno/tail_whip = new(src)
 	tail_whip.Grant(src)
-
-	var/datum/action/small_sprite/queen/smallsprite = new(src)
-	smallsprite.Grant(src)
 
 	var/datum/action/cooldown/alien/promote/promotion = new(src)
 	promotion.Grant(src)
@@ -55,11 +52,11 @@
 	return ..()
 
 /mob/living/carbon/alien/humanoid/royal/queen/create_internal_organs()
-	internal_organs += new /obj/item/organ/internal/alien/plasmavessel/large/queen
-	internal_organs += new /obj/item/organ/internal/alien/resinspinner
-	internal_organs += new /obj/item/organ/internal/alien/acid
-	internal_organs += new /obj/item/organ/internal/alien/neurotoxin
-	internal_organs += new /obj/item/organ/internal/alien/eggsac
+	organs += new /obj/item/organ/alien/plasmavessel/large/queen
+	organs += new /obj/item/organ/alien/resinspinner
+	organs += new /obj/item/organ/alien/acid
+	organs += new /obj/item/organ/alien/neurotoxin
+	organs += new /obj/item/organ/alien/eggsac
 	return ..()
 
 //Queen verbs

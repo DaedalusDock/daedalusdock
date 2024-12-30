@@ -43,12 +43,12 @@
 
 	unset_click_ability(source, refund_cooldown = TRUE)
 
-/datum/action/cooldown/spell/pointed/projectile/furious_steel/InterceptClickOn(mob/living/caller, params, atom/click_target)
+/datum/action/cooldown/spell/pointed/projectile/furious_steel/InterceptClickOn(mob/living/invoker, params, atom/click_target)
 	// Let the caster prioritize using items like guns over blade casts
-	if(caller.get_active_held_item())
+	if(invoker.get_active_held_item())
 		return FALSE
 	// Let the caster prioritize melee attacks like punches and shoves over blade casts
-	if(get_dist(caller, click_target) <= 1)
+	if(get_dist(invoker, click_target) <= 1)
 		return FALSE
 
 	return ..()
@@ -87,7 +87,7 @@
 
 /datum/action/cooldown/spell/pointed/projectile/furious_steel/ready_projectile(obj/projectile/to_launch, atom/target, mob/user, iteration)
 	. = ..()
-	to_launch.def_zone = check_zone(user.zone_selected)
+	to_launch.aimed_def_zone = deprecise_zone(user.zone_selected)
 
 /// If our blade status effect is deleted, clear our refs and deactivate
 /datum/action/cooldown/spell/pointed/projectile/furious_steel/proc/on_status_effect_deleted(datum/status_effect/protective_blades/source)
@@ -102,7 +102,7 @@
 	icon_state = "knife"
 	speed = 2
 	damage = 25
-	armour_penetration = 100
+	armor_penetration = 100
 	sharpness = SHARP_EDGED
 	pass_flags = PASSTABLE | PASSFLAPS
 

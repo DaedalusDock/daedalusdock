@@ -167,11 +167,6 @@
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
 	build_path = /obj/machinery/computer/camera_advanced/base_construction
 
-/obj/item/circuitboard/computer/base_construction/aux
-	name = "circuit board (Aux Mining Base Construction Console)"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/computer/camera_advanced/base_construction/aux
-
 /obj/item/circuitboard/computer/base_construction/centcom
 	name = "circuit board (Centcom Base Construction Console)"
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
@@ -308,10 +303,10 @@
 
 /obj/item/circuitboard/computer/syndicate_shuttle/Initialize(mapload)
 	. = ..()
-	GLOB.syndicate_shuttle_boards += src
+	SET_TRACKING(__TYPE__)
 
 /obj/item/circuitboard/computer/syndicate_shuttle/Destroy()
-	GLOB.syndicate_shuttle_boards -= src
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/item/circuitboard/computer/syndicatedoor
@@ -337,10 +332,6 @@
 	name = "Salvage Pod Recall (Computer Board)"
 	build_path = /obj/machinery/computer/shuttle/white_ship/pod/recall
 
-/obj/item/circuitboard/computer/bountypad
-	name = "Bounty Pad (Computer Board)"
-	build_path = /obj/machinery/computer/piratepad_control/civilian
-
 /obj/item/circuitboard/computer/tram_controls
 	name = "Tram Controls (Computer Board)"
 	build_path = /obj/machinery/computer/tram_controls
@@ -356,11 +347,6 @@
 	name = "Medical Records Console (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
 	build_path = /obj/machinery/computer/med_data
-
-/obj/item/circuitboard/computer/operating
-	name = "Operating Computer (Computer Board)"
-	greyscale_colors = CIRCUIT_COLOR_MEDICAL
-	build_path = /obj/machinery/computer/operating
 
 /obj/item/circuitboard/computer/pandemic
 	name = "PanD.E.M.I.C. 2200 (Computer Board)"
@@ -389,16 +375,6 @@
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
 	build_path = /obj/machinery/computer/mecha
 
-/obj/item/circuitboard/computer/rdconsole
-	name = "R&D Console (Computer Board)"
-	greyscale_colors = CIRCUIT_COLOR_SCIENCE
-	build_path = /obj/machinery/computer/rdconsole
-
-/obj/item/circuitboard/computer/rdservercontrol
-	name = "R&D Server Control (Computer Board)"
-	greyscale_colors = CIRCUIT_COLOR_SCIENCE
-	build_path = /obj/machinery/computer/rdservercontrol
-
 /obj/item/circuitboard/computer/research
 	name = "Research Monitor (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
@@ -423,6 +399,12 @@
 	name = "DNA Console (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
 	build_path = /obj/machinery/computer/scan_consolenew
+	req_components = list(
+		/obj/item/disk/data = 1
+	)
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/medium
+	)
 
 /obj/item/circuitboard/computer/mechpad
 	name = "Mecha Orbital Pad Console (Computer Board)"
@@ -484,19 +466,13 @@
 	name = "Supply Console (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_SUPPLY
 	build_path = /obj/machinery/computer/cargo
-	var/contraband = FALSE
 
-/obj/item/circuitboard/computer/cargo/multitool_act(mob/living/user)
-	. = ..()
-	if(!(obj_flags & EMAGGED))
-		contraband = !contraband
-		to_chat(user, span_notice("Receiver spectrum set to [contraband ? "Broad" : "Standard"]."))
-	else
-		to_chat(user, span_alert("The spectrum chip is unresponsive."))
+	/// Matches supply pack flags.
+	var/supply_flags = NONE
 
 /obj/item/circuitboard/computer/cargo/emag_act(mob/living/user)
 	if(!(obj_flags & EMAGGED))
-		contraband = TRUE
+		supply_flags |= SUPPLY_PACK_CONTRABAND|SUPPLY_PACK_EMAG
 		obj_flags |= EMAGGED
 		to_chat(user, span_notice("You adjust [src]'s routing and receiver spectrum, unlocking special supplies and contraband."))
 
@@ -504,7 +480,7 @@
 	if(!istype(machine))
 		CRASH("Cargo board attempted to configure incorrect machine type: [machine] ([machine?.type])")
 
-	machine.contraband = contraband
+	machine.supply_flags = supply_flags
 	if (obj_flags & EMAGGED)
 		machine.obj_flags |= EMAGGED
 	else
@@ -516,17 +492,17 @@
 
 /obj/item/circuitboard/computer/cargo/express/emag_act(mob/living/user)
 	if(!(obj_flags & EMAGGED))
-		contraband = TRUE
+		supply_flags |= SUPPLY_PACK_EMAG
 		obj_flags |= EMAGGED
 		to_chat(user, span_notice("You change the routing protocols, allowing the Drop Pod to land anywhere on the station."))
 
 /obj/item/circuitboard/computer/cargo/express/multitool_act(mob/living/user)
 	if (!(obj_flags & EMAGGED))
-		contraband = !contraband
-		to_chat(user, span_notice("Receiver spectrum set to [contraband ? "Broad" : "Standard"]."))
+		supply_flags ^= SUPPLY_PACK_CONTRABAND
+		to_chat(user, span_notice("Receiver spectrum set to [(supply_flags & SUPPLY_PACK_CONTRABAND) ? "Broad" : "Standard"]."))
 	else
 		to_chat(user, span_notice("You reset the destination-routing protocols and receiver spectrum to factory defaults."))
-		contraband = FALSE
+		supply_flags &= ~(SUPPLY_PACK_CONTRABAND|SUPPLY_PACK_EMAG)
 		obj_flags &= ~EMAGGED
 
 /obj/item/circuitboard/computer/cargo/request
@@ -552,10 +528,6 @@
 	name = "Mining Shuttle (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_SUPPLY
 	build_path = /obj/machinery/computer/shuttle/mining
-
-/obj/item/circuitboard/computer/mining_shuttle/common
-	name = "Lavaland Shuttle (Computer Board)"
-	build_path = /obj/machinery/computer/shuttle/mining/common
 
 /obj/item/circuitboard/computer/exoscanner_console
 	name = "Scanner Array Control Console (Computer Board)"

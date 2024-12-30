@@ -67,7 +67,7 @@
 	spawn_antag(student.client, get_turf(src), apprentice_school, teacher.mind)
 
 /obj/item/antag_spawner/contract/spawn_antag(client/C, turf/T, kind, datum/mind/user)
-	new /obj/effect/particle_effect/smoke(T)
+	new /obj/effect/particle_effect/fluid/smoke(T)
 	var/mob/living/carbon/human/M = new/mob/living/carbon/human(T)
 	C.prefs.safe_transfer_prefs_to(M, is_antag = TRUE)
 	M.key = C.key
@@ -146,6 +146,11 @@
 	nukie.ckey = C.key
 	var/datum/mind/op_mind = nukie.mind
 
+	if(length(GLOB.newplayer_start)) // needed as hud code doesn't render huds if the atom (in this case the nukie) is in nullspace, so just move the nukie somewhere safe
+		nukie.forceMove(pick(GLOB.newplayer_start))
+	else
+		nukie.forceMove(locate(1,1,1))
+
 	antag_datum = new()
 	antag_datum.send_to_spawnpoint = FALSE
 	antag_datum.nukeop_outfit = outfit
@@ -208,9 +213,8 @@
 
 	borg.mmi.name = "[initial(borg.mmi.name)]: [brainopsname]"
 	borg.mmi.brain.name = "[brainopsname]'s brain"
-	borg.mmi.brainmob.real_name = brainopsname
-	borg.mmi.brainmob.name = brainopsname
-	borg.real_name = borg.name
+	borg.mmi.brainmob.set_real_name(brainopsname)
+	borg.set_real_name(borg.name)
 
 	borg.key = C.key
 

@@ -47,7 +47,7 @@
 		return
 	if(!isturf(user.loc))
 		return
-	if(!length(get_path_to(user, target, max_distance = changeling.sting_range, simulated_only = FALSE)))
+	if(!length(jps_path_to(user, target, max_distance = changeling.sting_range, simulated_only = FALSE)))
 		return // no path within the sting's range is found. what a weird place to use the pathfinding system
 	if(target.mind && target.mind.has_antag_datum(/datum/antagonist/changeling))
 		sting_feedback(user, target)
@@ -59,7 +59,8 @@
 		return
 	to_chat(user, span_notice("We stealthily sting [target.name]."))
 	if(target.mind && target.mind.has_antag_datum(/datum/antagonist/changeling))
-		to_chat(target, span_warning("You feel a tiny prick."))
+		var/mob/living/L = target
+		L.apply_pain(1, BODY_ZONE_CHEST, "You feel a tiny prick!")
 	return 1
 
 
@@ -102,7 +103,7 @@
 	var/mob/living/carbon/C = target
 	. = TRUE
 	if(istype(C))
-		C.real_name = NewDNA.real_name
+		C.set_real_name(NewDNA.real_name)
 		NewDNA.transfer_identity(C)
 		C.updateappearance(mutcolor_update=1)
 

@@ -80,7 +80,7 @@
 	user.last_special = world.time + CLICK_CD_BREAKOUT
 	to_chat(user, span_notice("You claw at the fabric of [src], trying to tear it open..."))
 	to_chat(loc, span_warning("Someone starts trying to break free of [src]!"))
-	if(!do_after(user, src, 12 SECONDS, timed_action_flags = (IGNORE_TARGET_LOC_CHANGE|IGNORE_HELD_ITEM)))
+	if(!do_after(user, src, 12 SECONDS, timed_action_flags = (DO_IGNORE_TARGET_LOC_CHANGE|DO_IGNORE_HELD_ITEM)))
 		return
 	// you are still in the bag? time to go unless you KO'd, honey!
 	// if they escape during this time and you rebag them the timer is still clocking down and does NOT reset so they can very easily get out.
@@ -120,3 +120,9 @@
 	icon_state = "syndieenvirobag_folded"
 	unfoldedbag_path = /obj/structure/closet/body_bag/environmental/prisoner/syndicate
 	resistance_flags = ACID_PROOF | FIRE_PROOF | FREEZE_PROOF | LAVA_PROOF
+
+/obj/item/bodybag/stasis
+	name = "stasis bag"
+	desc = "A highly advanced and highly expensive device for suspending living creatures during medical transport."
+	icon_state = "ntenvirobag_folded"
+	unfoldedbag_path = /obj/structure/closet/body_bag/stasis

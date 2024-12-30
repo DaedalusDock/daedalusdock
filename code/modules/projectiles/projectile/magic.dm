@@ -4,7 +4,7 @@
 	damage = 0
 	damage_type = OXY
 	nodamage = TRUE
-	armour_penetration = 100
+	armor_penetration = 100
 	armor_flag = NONE
 	/// determines what type of antimagic can block the spell projectile
 	var/antimagic_flags = MAGIC_RESISTANCE
@@ -77,8 +77,8 @@
 		if(!stuff.anchored && stuff.loc && !isobserver(stuff))
 			if(do_teleport(stuff, stuff, 10, channel = TELEPORT_CHANNEL_MAGIC))
 				teleammount++
-				var/datum/effect_system/smoke_spread/smoke = new
-				smoke.set_up(max(round(4 - teleammount),0), stuff.loc) //Smoke drops off if a lot of stuff is moved for the sake of sanity
+				var/datum/effect_system/fluid_spread/smoke/smoke = new
+				smoke.set_up(max(round(4 - teleammount),0), location = stuff.loc) //Smoke drops off if a lot of stuff is moved for the sake of sanity
 				smoke.start()
 
 /obj/projectile/magic/safety
@@ -98,8 +98,8 @@
 
 	if(do_teleport(target, destination_turf, channel=TELEPORT_CHANNEL_MAGIC))
 		for(var/t in list(origin_turf, destination_turf))
-			var/datum/effect_system/smoke_spread/smoke = new
-			smoke.set_up(0, t)
+			var/datum/effect_system/fluid_spread/smoke/smoke = new
+			smoke.set_up(0, location = t)
 			smoke.start()
 
 /obj/projectile/magic/door
@@ -333,11 +333,6 @@
 	name = "bolt of sapping"
 	icon_state = "sapping"
 
-/obj/projectile/magic/sapping/on_hit(mob/living/target)
-	. = ..()
-	if(isliving(target))
-		SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, REF(src), /datum/mood_event/sapped)
-
 /obj/projectile/magic/necropotence
 	name = "bolt of necropotence"
 	icon_state = "necropotence"
@@ -570,7 +565,7 @@
 		if(istype(adjacent_object, /obj/structure/destructible/cult))
 			continue
 
-		adjacent_object.take_damage(90, BRUTE, MELEE, 0)
+		adjacent_object.take_damage(90, BRUTE, BLUNT, 0)
 		new /obj/effect/temp_visual/cult/turf/floor(get_turf(adjacent_object))
 
 //still magic related, but a different path
@@ -581,7 +576,7 @@
 	damage = 0
 	damage_type = BURN
 	nodamage = FALSE
-	armour_penetration = 100
+	armor_penetration = 100
 	adj_temperature = -200 // Cools you down greatly per hit
 
 /obj/projectile/magic/nothing

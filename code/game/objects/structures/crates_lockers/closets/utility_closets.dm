@@ -26,12 +26,13 @@
 	if (prob(40))
 		new /obj/item/storage/toolbox/emergency(src)
 
-	switch (pick_weight(list("small" = 35, "aid" = 30, "tank" = 20, "both" = 10, "nothing" = 4, "delete" = 1)))
+	switch (pick_weight(list("small" = 35, "aid" = 30, "tank" = 20, "both" = 10, "inflatables" = 10, "nothing" = 4, "delete" = 1)))
 		if ("small")
 			new /obj/item/tank/internals/emergency_oxygen(src)
 			new /obj/item/tank/internals/emergency_oxygen(src)
 			new /obj/item/clothing/mask/breath(src)
 			new /obj/item/clothing/mask/breath(src)
+			new /obj/item/inflatable/shelter(src)
 
 		if ("aid")
 			new /obj/item/tank/internals/emergency_oxygen(src)
@@ -41,10 +42,16 @@
 		if ("tank")
 			new /obj/item/tank/internals/oxygen(src)
 			new /obj/item/clothing/mask/breath(src)
+			new /obj/item/inflatable/shelter(src)
 
 		if ("both")
 			new /obj/item/tank/internals/emergency_oxygen(src)
 			new /obj/item/clothing/mask/breath(src)
+
+		if ("inflatables")
+			new /obj/item/tank/internals/emergency_oxygen(src)
+			new /obj/item/clothing/mask/breath(src)
+			new /obj/item/storage/briefcase/inflatable(src)
 
 		if ("nothing")
 			// doot

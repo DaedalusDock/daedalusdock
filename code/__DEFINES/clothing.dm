@@ -11,10 +11,8 @@
 #define SENSOR_OFF 0
 /// Suit sensor displays the mob as alive or dead
 #define SENSOR_LIVING 1
-/// Suit sensor displays the mob damage values
-#define SENSOR_VITALS 2
-/// Suit sensor displays the mob damage values and exact location
-#define SENSOR_COORDS 3
+/// Suit sensor displays the mob's health status and rough
+#define SENSOR_COORDS 2
 
 //suit sensors: has_sensor defines
 /// Suit sensor has been EMP'd and cannot display any information (can be fixed)

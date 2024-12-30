@@ -55,8 +55,11 @@ GLOBAL_LIST_EMPTY(current_observers_list)
 ///underages who have been reported to security for trying to buy things they shouldn't, so they can't spam
 GLOBAL_LIST_EMPTY(narcd_underages)
 
+#define GET_LANGUAGE_DATUM(lang) (istype(lang, /datum/language) ? lang : GLOB.language_datum_instances[lang])
+
 GLOBAL_LIST_EMPTY(language_datum_instances)
 GLOBAL_LIST_EMPTY(all_languages)
+GLOBAL_LIST_EMPTY(preference_language_types)
 
 GLOBAL_LIST_EMPTY(sentient_disease_instances)
 
@@ -110,9 +113,8 @@ GLOBAL_LIST_INIT(construct_radial_images, list(
 
 /proc/get_crewmember_minds()
 	var/list/minds = list()
-	for(var/data in GLOB.data_core.locked)
-		var/datum/data/record/record = data
-		var/datum/mind/mind = record.fields["mindref"]
+	for(var/datum/data/record/record as anything in SSdatacore.get_records(DATACORE_RECORDS_LOCKED))
+		var/datum/mind/mind = record.fields[DATACORE_MINDREF]
 		if(mind)
 			minds += mind
 	return minds

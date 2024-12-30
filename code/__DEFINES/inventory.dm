@@ -1,7 +1,7 @@
 /*ALL DEFINES RELATED TO INVENTORY OBJECTS, MANAGEMENT, ETC, GO HERE*/
 
 //ITEM INVENTORY WEIGHT, FOR w_class
-/// Usually items smaller then a human hand, (e.g. playing cards, lighter, scalpel, coins/holochips)
+/// Usually items smaller then a human hand, (e.g. playing cards, lighter, scalpel, coins)
 #define WEIGHT_CLASS_TINY 1
 /// Pockets can hold small and tiny items, (e.g. flashlight, multitool, grenades, GPS device)
 #define WEIGHT_CLASS_SMALL 2
@@ -16,8 +16,10 @@
 
 //Inventory depth: limits how many nested storage items you can access directly.
 //1: stuff in mob, 2: stuff in backpack, 3: stuff in box in backpack, etc
-#define INVENTORY_DEPTH 3
-#define STORAGE_VIEW_DEPTH 2
+///
+#define REACH_DEPTH_SELF 1
+/// A storage depth ontop of SELF. REACH_DEPTH_STORAGE(1) would allow an item inside of a backpack you are carrying.
+#define REACH_DEPTH_STORAGE(level) (level + REACH_DEPTH_SELF)
 
 //ITEM INVENTORY SLOT BITMASKS
 /// Suit slot (armors, costumes, space suits, etc.)
@@ -86,6 +88,9 @@
 #define HIDESNOUT (1<<12)
 ///hides mutant/moth wings, does not apply to functional wings
 #define HIDEMUTWINGS (1<<13)
+
+/// Every flag that hides a bodypart or organ.
+#define BODYPART_HIDE_FLAGS (HIDESNOUT | HIDEMUTWINGS | HIDEHAIR | HIDEFACIALHAIR | HIDEEYES | HIDEJUMPSUIT)
 
 //bitflags for clothing coverage - also used for limbs
 #define CHEST (1<<0)
@@ -167,7 +172,6 @@
 GLOBAL_LIST_INIT(detective_vest_allowed, typecacheof(list(
 	/obj/item/ammo_box,
 	/obj/item/ammo_casing,
-	/obj/item/detective_scanner,
 	/obj/item/flashlight,
 	/obj/item/gun/ballistic,
 	/obj/item/gun/energy,
@@ -178,10 +182,9 @@ GLOBAL_LIST_INIT(detective_vest_allowed, typecacheof(list(
 	/obj/item/storage/fancy/cigarettes,
 	/obj/item/taperecorder,
 	/obj/item/tank/internals/emergency_oxygen,
-	/obj/item/tank/internals/plasmaman,
-	/obj/item/storage/belt/holster/detective,
-	/obj/item/storage/belt/holster/nukie,
-	/obj/item/storage/belt/holster/thermal,
+	/obj/item/storage/belt/holster/shoulder,
+	/obj/item/storage/belt/holster/shoulder/nukie,
+	/obj/item/storage/belt/holster/shoulder/thermal,
 	)))
 
 GLOBAL_LIST_INIT(security_vest_allowed, typecacheof(list(
@@ -195,10 +198,9 @@ GLOBAL_LIST_INIT(security_vest_allowed, typecacheof(list(
 	/obj/item/reagent_containers/spray/pepper,
 	/obj/item/restraints/handcuffs,
 	/obj/item/tank/internals/emergency_oxygen,
-	/obj/item/tank/internals/plasmaman,
-	/obj/item/storage/belt/holster/detective,
-	/obj/item/storage/belt/holster/nukie,
-	/obj/item/storage/belt/holster/thermal,
+	/obj/item/storage/belt/holster/shoulder,
+	/obj/item/storage/belt/holster/shoulder/nukie,
+	/obj/item/storage/belt/holster/shoulder/thermal,
 	)))
 
 GLOBAL_LIST_INIT(security_wintercoat_allowed, typecacheof(list(
@@ -209,9 +211,9 @@ GLOBAL_LIST_INIT(security_wintercoat_allowed, typecacheof(list(
 	/obj/item/melee/baton,
 	/obj/item/reagent_containers/spray/pepper,
 	/obj/item/restraints/handcuffs,
-	/obj/item/storage/belt/holster/detective,
-	/obj/item/storage/belt/holster/nukie,
-	/obj/item/storage/belt/holster/thermal,
+	/obj/item/storage/belt/holster/shoulder,
+	/obj/item/storage/belt/holster/shoulder/nukie,
+	/obj/item/storage/belt/holster/shoulder/thermal,
 	)))
 
 /// String for items placed into the left pocket.
@@ -230,3 +232,27 @@ GLOBAL_LIST_INIT(security_wintercoat_allowed, typecacheof(list(
 #define LOCATION_HEAD "on your head"
 /// String for items placed in the neck slot.
 #define LOCATION_NECK "around your neck"
+
+// Base equipment delays
+/// Delay base for Undersuit equipment.
+#define EQUIP_DELAY_UNDERSUIT (5 SECONDS)
+/// Delay base efor Oversuit equipment.
+#define EQUIP_DELAY_OVERSUIT (7 SECONDS)
+/// Delay base for things like coats that are trivially removed or put on.
+#define EQUIP_DELAY_COAT (2 SECONDS)
+/// Delay base for masks
+#define EQUIP_DELAY_MASK (1 SECONDS)
+/// Delay base for back-worn objects.
+#define EQUIP_DELAY_BACK (2 SECONDS)
+/// Delay base for belts.
+#define EQUIP_DELAY_BELT (1 SECONDS)
+/// Delay base for gloves.
+#define EQUIP_DELAY_GLOVES (1 SECONDS)
+/// Delay base for shoes.
+#define EQUIP_DELAY_SHOES (1 SECONDS)
+
+// Flags for self equipping items
+/// Allow movement during equip/unequip
+#define EQUIP_ALLOW_MOVEMENT (1<<0)
+/// Apply a slowdown when equipping or unequipping.
+#define EQUIP_SLOWDOWN (1<<1)

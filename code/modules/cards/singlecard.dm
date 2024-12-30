@@ -13,10 +13,10 @@
 	max_integrity = 50
 	force = 0
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 7
 	attack_verb_continuous = list("attacks")
 	attack_verb_simple = list("attack")
+	obj_flags = parent_type::obj_flags | SECRET_EXAMINE
 	/// Artistic style of the deck
 	var/deckstyle = "nanotrasen"
 	/// If the cards in the deck have different icon states (blank and CAS decks do not)
@@ -174,8 +174,7 @@
 
 		if(!isturf(loc)) // make a cardhand in our active hand
 			user.temporarilyRemoveItemFromInventory(src, TRUE)
-			new_cardhand.pickup(user)
-			user.put_in_active_hand(new_cardhand)
+			user.pickup_item(new_cardhand)
 		return
 
 	if(istype(item, /obj/item/toy/cards/cardhand)) // insert into cardhand
@@ -207,7 +206,7 @@
 			return
 
 		var/cardtext = stripped_input(user, "What do you wish to write on the card?", "Card Writing", "", 50)
-		if(!cardtext || !user.canUseTopic(src, BE_CLOSE))
+		if(!cardtext || !user.canUseTopic(src, USE_CLOSE))
 			return
 
 		cardname = cardtext
@@ -228,7 +227,7 @@
 	attack_self(user)
 
 /obj/item/toy/singlecard/attack_self(mob/living/carbon/human/user)
-	if(!ishuman(user) || !user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, NO_TK, !iscyborg(user)))
+	if(!ishuman(user) || !user.canUseTopic(src,USE_CLOSE|USE_IGNORE_TK|USE_DEXTERITY|USE_SILICON_REACH))
 		return
 
 	Flip()
@@ -236,7 +235,7 @@
 		user.balloon_alert_to_viewers("flips a card")
 
 /obj/item/toy/singlecard/AltClick(mob/living/carbon/human/user)
-	if(user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, NO_TK, !iscyborg(user)))
+	if(user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_DEXTERITY|USE_SILICON_REACH))
 		transform = turn(transform, 90)
 		// use the simple_rotation component to make this turn with Alt+RMB & Alt+LMB at some point in the future - TimT
 	return ..()

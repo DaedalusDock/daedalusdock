@@ -34,8 +34,8 @@ To add a crossbreed:
 	var/effect_desc = "null"
 	force = 0
 	w_class = WEIGHT_CLASS_TINY
+
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 6
 
 /obj/item/slimecross/examine(mob/user)
@@ -90,6 +90,10 @@ To add a crossbreed:
 			itemcolor = "#008B8B"
 	add_atom_colour(itemcolor, FIXED_COLOUR_PRIORITY)
 
+/obj/item/slimecross/Destroy(force)
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/item/slimecrossbeaker //To be used as a result for extract reactions that make chemicals.
 	name = "result extract"
 	desc = "You shouldn't see this."
@@ -122,17 +126,17 @@ To add a crossbreed:
 	color = "#FF0000"
 	list_reagents = list(/datum/reagent/blood = 50)
 
-/obj/item/slimecrossbeaker/pax //5u synthpax.
+/obj/item/slimecrossbeaker/pax
 	name = "peace-inducing extract"
 	desc = "A small blob of synthetic pax."
 	color = "#FFCCCC"
-	list_reagents = list(/datum/reagent/pax/peaceborg = 5)
+	list_reagents = list(/datum/reagent/pax = 2)
 
-/obj/item/slimecrossbeaker/omnizine //15u omnizine.
+/obj/item/slimecrossbeaker/tricordrazine //15u tricordrazine.
 	name = "healing extract"
-	desc = "A gelatinous extract of pure omnizine."
+	desc = "A gelatinous extract of pure tricordrazine."
 	color = "#FF00FF"
-	list_reagents = list(/datum/reagent/medicine/omnizine = 15)
+	list_reagents = list(/datum/reagent/medicine/tricordrazine = 15)
 
 /obj/item/slimecrossbeaker/autoinjector //As with the above, but automatically injects whomever it is used on with contents.
 	var/ignore_flags = FALSE
@@ -180,7 +184,7 @@ To add a crossbreed:
 	name = "peaceful distillation"
 	desc = "A light pink gooey sphere. Simply touching it makes you a little dizzy."
 	color = "#DDAAAA"
-	list_reagents = list(/datum/reagent/pax/peaceborg = 10, /datum/reagent/drug/space_drugs = 15) //Peace, dudes
+	list_reagents = list(/datum/reagent/pax = 5, /datum/reagent/drug/space_drugs = 15) //Peace, dudes
 
 /obj/item/slimecrossbeaker/autoinjector/peaceandlove/Initialize(mapload)
 	. = ..()

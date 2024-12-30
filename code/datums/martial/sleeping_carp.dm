@@ -33,7 +33,7 @@
 	D.visible_message(span_danger("[A] [atk_verb]s [D]!"), \
 					span_userdanger("[A] [atk_verb]s you!"), null, null, A)
 	to_chat(A, span_danger("You [atk_verb] [D]!"))
-	playsound(get_turf(D), 'sound/weapons/punch1.ogg', 25, TRUE, -1)
+	playsound(get_turf(D), SFX_PUNCH, 25, TRUE, -1)
 	log_combat(A, D, "strong punched (Sleeping Carp)")
 	D.apply_damage(20, A.get_attack_type(), affecting)
 	return
@@ -56,13 +56,13 @@
 	playsound(get_turf(A), 'sound/effects/hit_kick.ogg', 50, TRUE, -1)
 	if(D.body_position == STANDING_UP)
 		D.apply_damage(10, A.get_attack_type(), BODY_ZONE_HEAD)
-		D.apply_damage(40, STAMINA, BODY_ZONE_HEAD)
+		D.stamina.adjust(-40)
 		D.Knockdown(40)
 		D.visible_message(span_warning("[A] kicks [D] in the head, sending them face first into the floor!"), \
 					span_userdanger("You are kicked in the head by [A], sending you crashing to the floor!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, A)
 	else
 		D.apply_damage(5, A.get_attack_type(), BODY_ZONE_HEAD)
-		D.apply_damage(40, STAMINA, BODY_ZONE_HEAD)
+		D.stamina.adjust(-40)
 		D.drop_all_held_items()
 		D.visible_message(span_warning("[A] kicks [D] in the head!"), \
 					span_userdanger("You are kicked in the head by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, A)
@@ -87,7 +87,7 @@
 					span_userdanger("[A] [atk_verb]s you!"), null, null, A)
 	to_chat(A, span_danger("You [atk_verb] [D]!"))
 	D.apply_damage(rand(10,15), BRUTE, affecting)
-	playsound(get_turf(D), 'sound/weapons/punch1.ogg', 25, TRUE, -1)
+	playsound(get_turf(D), SFX_PUNCH, 25, TRUE, -1)
 	log_combat(A, D, "punched (Sleeping Carp)")
 	return TRUE
 
@@ -154,41 +154,29 @@
 /obj/item/staff/bostaff
 	name = "bo staff"
 	desc = "A long, tall staff made of polished wood. Traditionally used in ancient old-Earth martial arts. Can be wielded to both kill and incapacitate."
-	force = 10
-	w_class = WEIGHT_CLASS_BULKY
-	slot_flags = ITEM_SLOT_BACK
-	throwforce = 20
-	throw_speed = 2
-	attack_verb_continuous = list("smashes", "slams", "whacks", "thwacks")
-	attack_verb_simple = list("smash", "slam", "whack", "thwack")
 	icon = 'icons/obj/items_and_weapons.dmi'
 	icon_state = "bostaff0"
 	base_icon_state = "bostaff"
+
+	w_class = WEIGHT_CLASS_BULKY
+	slot_flags = ITEM_SLOT_BACK
+
+	force = 10
+	force_wielded = 20
+	throwforce = 2
+	throw_speed = 1.5
+
+	block_chance = 50
+
+	attack_verb_continuous = list("smashes", "slams", "whacks", "thwacks")
+	attack_verb_simple = list("smash", "slam", "whack", "thwack")
+
 	lefthand_file = 'icons/mob/inhands/weapons/staves_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/staves_righthand.dmi'
-	block_chance = 50
-	var/wielded = FALSE // track wielded status on item
 
 /obj/item/staff/bostaff/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
-
-/obj/item/staff/bostaff/ComponentInitialize()
-	. = ..()
-	AddComponent(/datum/component/two_handed, force_unwielded=10, force_wielded=24, icon_wielded="[base_icon_state]1")
-
-/// triggered on wield of two handed item
-/obj/item/staff/bostaff/proc/on_wield(obj/item/source, mob/user)
-	SIGNAL_HANDLER
-
-	wielded = TRUE
-
-/// triggered on unwield of two handed item
-/obj/item/staff/bostaff/proc/on_unwield(obj/item/source, mob/user)
-	SIGNAL_HANDLER
-
-	wielded = FALSE
+	icon_state_wielded = "[base_icon_state][1]"
 
 /obj/item/staff/bostaff/update_icon_state()
 	icon_state = "[base_icon_state]0"
@@ -225,14 +213,14 @@
 						span_userdanger("[user] [pick(fluffmessages)]s you with [src]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, user)
 		to_chat(user, span_danger("You [pick(fluffmessages)] [H] with [src]!"))
 		playsound(get_turf(user), 'sound/effects/woodhit.ogg', 75, TRUE, -1)
-		H.adjustStaminaLoss(rand(13,20))
+		H.stamina.adjust(-rand(13,20))
 		if(prob(10))
 			H.visible_message(span_warning("[H] collapses!"), \
 							span_userdanger("Your legs give out!"))
 			H.Paralyze(80)
-		if(H.staminaloss && !H.IsSleeping())
-			var/total_health = (H.health - H.staminaloss)
-			if(total_health <= HEALTH_THRESHOLD_CRIT && !H.stat)
+		if(H.stamina.loss && !H.IsSleeping())
+			var/total_health = (H.health - H.stamina.loss_as_percent)
+			if(total_health <= H.crit_threshold && !H.stat)
 				H.visible_message(span_warning("[user] delivers a heavy hit to [H]'s head, knocking [H.p_them()] out cold!"), \
 								span_userdanger("You're knocked unconscious by [user]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, user)
 				to_chat(user, span_danger("You deliver a heavy hit to [H]'s head, knocking [H.p_them()] out cold!"))
@@ -241,7 +229,7 @@
 	else
 		return ..()
 
-/obj/item/staff/bostaff/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/staff/bostaff/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
 	if(!wielded)
-		return ..()
-	return FALSE
+		return FALSE
+	return ..()

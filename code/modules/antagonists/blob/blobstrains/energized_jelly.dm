@@ -10,7 +10,7 @@
 	reagent = /datum/reagent/blob/energized_jelly
 
 /datum/blobstrain/reagent/energized_jelly/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag)
-	if((damage_flag == MELEE || damage_flag == BULLET || damage_flag == LASER) && B.get_integrity() - damage <= 0 && prob(10))
+	if((damage_flag == BLUNT || damage_flag == PUNCTURE || damage_flag == LASER || damage_flag == SLASH) && B.get_integrity() - damage <= 0 && prob(10))
 		do_sparks(rand(2, 4), FALSE, B)
 	return ..()
 
@@ -30,6 +30,6 @@
 	. = ..()
 	reac_volume = return_mob_expose_reac_volume(exposed_mob, methods, reac_volume, show_message, touch_protection, overmind)
 	exposed_mob.losebreath += round(0.2*reac_volume)
-	exposed_mob.adjustStaminaLoss(reac_volume * 1.2)
+	exposed_mob.stamina.adjust(-reac_volume * 1.2)
 	if(exposed_mob)
 		exposed_mob.apply_damage(0.6*reac_volume, OXY)

@@ -7,7 +7,7 @@
 ///Universal IV that can drain blood or feed reagents over a period of time from or to a replaceable container
 /obj/machinery/iv_drip
 	name = "\improper IV drip"
-	desc = "An IV drip with an advanced infusion pump that can both drain blood into and inject liquids from attached containers. Blood packs are injected at twice the displayed rate. Right-Click to detach the IV or the attached container."
+	desc = "An IV drip with an advanced infusion pump that can both drain blood into and inject liquids from attached containers. Blood packs are injected at twice the displayed rate."
 	icon = 'icons/obj/iv_drip.dmi'
 	icon_state = "iv_drip"
 	base_icon_state = "iv_drip"
@@ -24,6 +24,8 @@
 	var/obj/item/reagent_container
 	///Set false to block beaker use and instead use an internal reagent holder
 	var/use_internal_storage = FALSE
+	///If use_internal_storage is true, this is the created volume of the container
+	var/internal_storage_volume = 100
 	///Typecache of containers we accept
 	var/static/list/drip_containers = typecacheof(list(
 		/obj/item/reagent_containers/blood,
@@ -38,7 +40,7 @@
 	. = ..()
 	update_appearance()
 	if(use_internal_storage)
-		create_reagents(100, TRANSPARENT)
+		create_reagents(internal_storage_volume, TRANSPARENT)
 	interaction_flags_machine |= INTERACT_MACHINE_OFFLINE
 
 /obj/machinery/iv_drip/Destroy()
@@ -124,7 +126,7 @@
 
 /obj/machinery/iv_drip/MouseDrop(mob/living/target)
 	. = ..()
-	if(!ishuman(usr) || !usr.canUseTopic(src, BE_CLOSE) || !isliving(target))
+	if(!ishuman(usr) || !usr.canUseTopic(src, USE_CLOSE) || !isliving(target))
 		return
 
 	if(attached)
@@ -157,7 +159,7 @@
 		reagent_container = W
 		to_chat(user, span_notice("You attach [W] to [src]."))
 		user.log_message("attached a [W] to [src] at [AREACOORD(src)] containing ([reagent_container.reagents.get_reagent_log_string()])", LOG_ATTACK)
-		add_fingerprint(user)
+		W.leave_evidence(user, src)
 		update_appearance()
 		return
 	else
@@ -176,7 +178,7 @@
 		to_chat(attached, span_userdanger("The IV drip needle is ripped out of you, leaving an open bleeding wound!"))
 		var/list/arm_zones = shuffle(list(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM))
 		var/obj/item/bodypart/chosen_limb = attached.get_bodypart(arm_zones[1]) || attached.get_bodypart(arm_zones[2]) || attached.get_bodypart(BODY_ZONE_CHEST)
-		chosen_limb.receive_damage(7, sharpness = SHARP_POINTY)
+		chosen_limb.receive_damage(7, sharpness = SHARP_POINTY, modifiers = NONE)
 		detach_iv()
 		return PROCESS_KILL
 
@@ -259,7 +261,7 @@
 	if(!isliving(usr))
 		to_chat(usr, span_warning("You can't do that!"))
 		return
-	if (!usr.canUseTopic())
+	if (!usr.canUseTopic(USE_CLOSE))
 		return
 	if(usr.incapacitated())
 		return
@@ -279,7 +281,7 @@
 	if(!isliving(usr))
 		to_chat(usr, span_warning("You can't do that!"))
 		return
-	if (!usr.canUseTopic())
+	if (!usr.canUseTopic(USE_CLOSE))
 		return
 	if(usr.incapacitated())
 		return
@@ -312,42 +314,22 @@
 	desc = "An all-you-can-drip saline canister designed to supply a hospital without running out, with a scary looking pump rigged to inject saline into containers, but filling people directly might be a bad idea."
 	icon_state = "saline"
 	base_icon_state = "saline"
+	use_internal_storage = TRUE
+	internal_storage_volume = 5000
 	density = TRUE
 	inject_only = TRUE
 
 /obj/machinery/iv_drip/saline/Initialize(mapload)
+	AddElement(/datum/element/update_icon_blocker, COMSIG_ATOM_NO_UPDATE_OVERLAYS)
 	. = ..()
-	reagent_container = new /obj/item/reagent_containers/glass/saline(src)
-
-/obj/machinery/iv_drip/saline/ComponentInitialize()
-	. = ..()
-	AddElement(/datum/element/update_icon_blocker)
+	// Parent call creates our container. Fill it up to max.
+	reagents.add_reagent(/datum/reagent/medicine/saline_glucose, internal_storage_volume)
 
 /obj/machinery/iv_drip/saline/eject_beaker()
 	return
 
 /obj/machinery/iv_drip/saline/toggle_mode()
 	return
-
-///modified IV that can be anchored and takes plumbing in- and output
-/obj/machinery/iv_drip/plumbing
-	name = "automated IV drip"
-	desc = "A modified IV drip with plumbing connects. Reagents received from the connect are injected directly into their bloodstream, blood that is drawn goes to the internal storage and then into the ducting."
-	icon_state = "plumb"
-	base_icon_state = "plumb"
-
-	density = TRUE
-	use_internal_storage = TRUE
-
-/obj/machinery/iv_drip/plumbing/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/plumbing/iv_drip, anchored)
-	AddComponent(/datum/component/simple_rotation)
-
-/obj/machinery/iv_drip/plumbing/wrench_act(mob/living/user, obj/item/tool)
-	. = ..()
-	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 #undef IV_TAKING
 #undef IV_INJECTING

@@ -46,7 +46,7 @@
 	var/datum/component/uplink/hidden_uplink = internal_storage.GetComponent(/datum/component/uplink)
 	hidden_uplink.set_telecrystals(30)
 	var/obj/item/implant/weapons_auth/W = new/obj/item/implant/weapons_auth(src)
-	W.implant(src, force = TRUE)
+	W.implant(src, body_zone = BODY_ZONE_CHEST, force = TRUE)
 
 /mob/living/simple_animal/drone/snowflake
 	default_hatmask = /obj/item/clothing/head/chameleon/drone

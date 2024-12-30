@@ -244,14 +244,8 @@
 
 	var/icon/icon_bundle = GenerateBundle(color_string, last_external_icon=last_external_icon)
 	icon_bundle = fcopy_rsc(icon_bundle)
-
-	// This block is done like this because generated icons are unable to be scaled before getting added to the rsc
-	icon_bundle = fcopy_rsc(icon_bundle)
-	icon_bundle = icon(icon_bundle)
-	icon_bundle.Scale(width, height)
-	icon_bundle = fcopy_rsc(icon_bundle)
-
 	icon_cache[key] = icon_bundle
+
 	var/icon/output = icon(icon_bundle)
 	return output
 
@@ -303,7 +297,9 @@
 				generated_icon.GetPixel(1, 1)
 				generated_icons["[icon_state]-[bit_step]"] = generated_icon
 
-	var/icon/icon_bundle = icon('icons/testing/greyscale_error.dmi')
+	var/icon/icon_bundle = generated_icons[""] || icon('icons/testing/greyscale_error.dmi')
+	icon_bundle.Scale(width, height)
+	generated_icons -= ""
 	for(var/icon_state in generated_icons)
 		icon_bundle.Insert(generated_icons[icon_state], icon_state)
 
@@ -315,8 +311,9 @@
 	for(var/datum/greyscale_layer/layer as anything in group)
 		var/icon/layer_icon
 		if(islist(layer))
+			var/list/layer_list = layer
 			layer_icon = GenerateLayerGroup(colors, layer, render_steps, do_bitmasking, bitmask_step, last_external_icon)
-			layer = layer[1] // When there are multiple layers in a group like this we use the first one's blend mode
+			layer = layer_list[1] // When there are multiple layers in a group like this we use the first one's blend mode
 		else
 			layer_icon = layer.Generate(colors, render_steps, do_bitmasking, bitmask_step, last_external_icon)
 

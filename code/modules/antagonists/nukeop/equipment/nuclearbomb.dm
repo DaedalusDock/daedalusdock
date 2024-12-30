@@ -1,6 +1,7 @@
 /// TRUE only if the station was actually hit by the nuke, otherwise FALSE
 GLOBAL_VAR_INIT(station_was_nuked, FALSE)
 GLOBAL_VAR(station_nuke_source)
+GLOBAL_VAR(nuke_time_left)
 
 /obj/machinery/nuclearbomb
 	name = "nuclear fission explosive"
@@ -37,20 +38,21 @@ GLOBAL_VAR(station_nuke_source)
 
 /obj/machinery/nuclearbomb/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	countdown = new(src)
-	GLOB.nuke_list += src
 	core = new /obj/item/nuke_core(src)
 	STOP_PROCESSING(SSobj, core)
 	update_appearance()
 	SSpoints_of_interest.make_point_of_interest(src)
 	previous_level = get_security_level()
+	GLOB.nuke_time_left = get_time_left()
 
 /obj/machinery/nuclearbomb/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	safety = FALSE
 	if(!exploding)
 		// If we're not exploding, set the alert level back to normal
 		set_safety()
-	GLOB.nuke_list -= src
 	QDEL_NULL(countdown)
 	QDEL_NULL(core)
 	. = ..()
@@ -449,6 +451,7 @@ GLOBAL_VAR(station_nuke_source)
 			S.switch_mode_to(initial(S.mode))
 			S.alert = FALSE
 		countdown.stop()
+		GLOB.nuke_time_left = get_time_left()
 
 		SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NUKE_DEVICE_DISARMED, src)
 
@@ -589,15 +592,15 @@ GLOBAL_VAR(station_nuke_source)
 	R.my_atom = src
 	R.add_reagent(/datum/reagent/consumable/ethanol/beer, 100)
 
-	var/datum/effect_system/foam_spread/foam = new
-	foam.set_up(200, get_turf(src), R)
+	var/datum/effect_system/fluid_spread/foam/foam = new
+	foam.set_up(200, location = get_turf(src), carry = R)
 	foam.start()
 	disarm()
 
 /obj/machinery/nuclearbomb/beer/proc/stationwide_foam()
 	priority_announce("The scrubbers network is experiencing a backpressure surge. Some ejection of contents may occur.")
 
-	for (var/obj/machinery/atmospherics/components/unary/vent_scrubber/vent in GLOB.machines)
+	for (var/obj/machinery/atmospherics/components/unary/vent_scrubber/vent as anything in INSTANCES_OF(/obj/machinery/atmospherics/components/unary/vent_scrubber))
 		var/turf/vent_turf = get_turf(vent)
 		if (!vent_turf || !is_station_level(vent_turf.z) || vent.welded)
 			continue
@@ -605,7 +608,7 @@ GLOBAL_VAR(station_nuke_source)
 		var/datum/reagents/beer = new /datum/reagents(1000)
 		beer.my_atom = vent
 		beer.add_reagent(/datum/reagent/consumable/ethanol/beer, 100)
-		beer.create_foam(/datum/effect_system/foam_spread, 200)
+		beer.create_foam(/datum/effect_system/fluid_spread/foam, DIAMOND_AREA(10))
 
 		CHECK_TICK
 
@@ -679,7 +682,7 @@ This is here to make the tiles around the station mininuke change when it's arme
 	desc = "Better keep this safe."
 	icon_state = "nucleardisk"
 	max_integrity = 250
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 100, ACID = 100)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 100, ACID = 100)
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	var/fake = FALSE
 	var/turf/last_secured_location
@@ -689,55 +692,13 @@ This is here to make the tiles around the station mininuke change when it's arme
 	. = ..()
 	AddElement(/datum/element/bed_tuckable, 6, -6, 0)
 
-	if(!fake)
-		SSpoints_of_interest.make_point_of_interest(src)
-		last_disk_move = world.time
-		START_PROCESSING(SSobj, src)
-
-/obj/item/disk/nuclear/ComponentInitialize()
-	. = ..()
 	AddComponent(/datum/component/stationloving, !fake)
-
-/obj/item/disk/nuclear/process()
-	if(fake)
-		STOP_PROCESSING(SSobj, src)
-		CRASH("A fake nuke disk tried to call process(). Who the fuck and how the fuck")
-
-	var/turf/new_turf = get_turf(src)
-
-	if (is_secured())
-		last_secured_location = new_turf
-		last_disk_move = world.time
-		var/datum/round_event_control/operative/loneop = locate(/datum/round_event_control/operative) in SSevents.control
-		if(istype(loneop) && loneop.occurrences < loneop.max_occurrences && prob(loneop.weight))
-			loneop.weight = max(loneop.weight - 1, 0)
-			if(loneop.weight % 5 == 0 && SSticker.totalPlayers > 1)
-				message_admins("[src] is secured (currently in [ADMIN_VERBOSEJMP(new_turf)]). The weight of Lone Operative is now [loneop.weight].")
-			log_game("[src] being secured has reduced the weight of the Lone Operative event to [loneop.weight].")
-	else
-		/// How comfy is our disk?
-		var/disk_comfort_level = 0
-
-		//Go through and check for items that make disk comfy
-		for(var/obj/comfort_item in loc)
-			if(istype(comfort_item, /obj/item/bedsheet) || istype(comfort_item, /obj/structure/bed))
-				disk_comfort_level++
-
-		if(last_disk_move < world.time - 5000 && prob((world.time - 5000 - last_disk_move)*0.0001))
-			var/datum/round_event_control/operative/loneop = locate(/datum/round_event_control/operative) in SSevents.control
-			if(istype(loneop) && loneop.occurrences < loneop.max_occurrences)
-				loneop.weight += 1
-				if(loneop.weight % 5 == 0 && SSticker.totalPlayers > 1)
-					if(disk_comfort_level >= 2)
-						visible_message(span_notice("[src] sleeps soundly. Sleep tight, disky."))
-					message_admins("[src] is unsecured in [ADMIN_VERBOSEJMP(new_turf)]. The weight of Lone Operative is now [loneop.weight].")
-				log_game("[src] is unsecured for too long in [loc_name(new_turf)], and has increased the weight of the Lone Operative event to [loneop.weight].")
 
 /obj/item/disk/nuclear/proc/is_secured()
 	if (last_secured_location == get_turf(src))
 		return FALSE
 
-	var/mob/holder = pulledby || get(src, /mob)
+	var/mob/holder = get(src, /mob)
 	if (isnull(holder?.client))
 		return FALSE
 

@@ -3,7 +3,7 @@
 	combat_mode = TRUE
 	friendly_verb_continuous = "heals"
 	friendly_verb_simple = "heal"
-	speed = 0
+	move_delay_modifier = 0
 	damage_coeff = list(BRUTE = 0.7, BURN = 0.7, TOX = 0.7, CLONE = 0.7, STAMINA = 0, OXY = 0.7)
 	melee_damage_lower = 15
 	melee_damage_upper = 15
@@ -20,7 +20,7 @@
 /mob/living/simple_animal/hostile/guardian/healer/Initialize(mapload)
 	. = ..()
 	var/datum/atom_hud/medsensor = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
-	medsensor.add_hud_to(src)
+	medsensor.show_to(src)
 
 /mob/living/simple_animal/hostile/guardian/healer/get_status_tab_items()
 	. = ..()
@@ -40,14 +40,13 @@
 			H.color = guardiancolor
 		if(C == summoner)
 			update_health_hud()
-			med_hud_set_health()
-			med_hud_set_status()
+			update_med_hud()
 
 /mob/living/simple_animal/hostile/guardian/healer/ToggleMode()
 	if(src.loc == summoner)
 		if(toggle)
 			set_combat_mode(TRUE)
-			speed = 0
+			set_simple_move_delay(0)
 			damage_coeff = list(BRUTE = 0.7, BURN = 0.7, TOX = 0.7, CLONE = 0.7, STAMINA = 0, OXY = 0.7)
 			melee_damage_lower = 15
 			melee_damage_upper = 15
@@ -55,7 +54,7 @@
 			toggle = FALSE
 		else
 			set_combat_mode(FALSE)
-			speed = 1
+			set_simple_move_delay(1)
 			damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 1)
 			melee_damage_lower = 0
 			melee_damage_upper = 0

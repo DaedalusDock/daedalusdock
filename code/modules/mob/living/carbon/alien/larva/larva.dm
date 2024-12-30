@@ -6,8 +6,8 @@
 	mob_size = MOB_SIZE_SMALL
 	density = FALSE
 	hud_type = /datum/hud/larva
-	melee_damage_lower = 1
-	melee_damage_upper = 3
+	melee_damage_lower = 5
+	melee_damage_upper = 10
 	maxHealth = 25
 	health = 25
 	hardcrit_threshold = HEALTH_THRESHOLD_CRIT
@@ -38,7 +38,7 @@
 	return ..()
 
 /mob/living/carbon/alien/larva/create_internal_organs()
-	internal_organs += new /obj/item/organ/internal/alien/plasmavessel/small/tiny
+	organs += new /obj/item/organ/alien/plasmavessel/small/tiny
 	..()
 
 //This needs to be fixed
@@ -69,8 +69,8 @@
 /mob/living/carbon/alien/larva/toggle_throw_mode()
 	return
 
-/mob/living/carbon/alien/larva/start_pulling(atom/movable/AM, state, force = move_force, supress_message = FALSE)
-	return
+/mob/living/carbon/alien/larva/can_grab(atom/movable/target, target_zone, use_offhand)
+	return FALSE
 
 /mob/living/carbon/alien/larva/canBeHandcuffed()
 	return TRUE

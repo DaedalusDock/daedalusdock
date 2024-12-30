@@ -71,8 +71,8 @@
 		return
 	if(!I.force)
 		playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
-	else if(I.hitsound)
-		playsound(loc, I.hitsound, get_clamped_volume(), TRUE, -1)
+	else if(I.get_hitsound())
+		playsound(loc, I.get_hitsound(), get_clamped_volume(), TRUE, -1)
 
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src)
@@ -103,7 +103,7 @@
 	var/new_appearance = show_radial_menu(user, src, possible_appearances, custom_check = CALLBACK(src, PROC_REF(check_menu), user, crayon), radius = 36, require_near = TRUE)
 	if(!new_appearance)
 		return FALSE
-	if(!do_after(user, src, 1 SECONDS, timed_action_flags = IGNORE_HELD_ITEM))
+	if(!do_after(user, src, 1 SECONDS, timed_action_flags = DO_IGNORE_HELD_ITEM))
 		return FALSE
 	if(!check_menu(user, crayon))
 		return FALSE

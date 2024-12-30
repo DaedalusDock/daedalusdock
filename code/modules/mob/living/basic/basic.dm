@@ -12,13 +12,11 @@
 
 	///Defines how fast the basic mob can move. This is a multiplier
 	var/speed = 1
-	///How much stamina the mob recovers per second
-	var/stamina_recovery = 5
 
 	///how much damage this basic mob does to objects, if any.
 	var/obj_damage = 0
 	///How much armour they ignore, as a flat reduction from the targets armour value.
-	var/armour_penetration = 0
+	var/armor_penetration = 0
 	///Damage type of a simple mob's melee attack, should it do damage.
 	var/melee_damage_type = BRUTE
 	///If the attacks from this are sharp
@@ -30,6 +28,8 @@
 	var/attack_vis_effect
 	///Played when someone punches the creature.
 	var/attacked_sound = SFX_PUNCH //This should be an element
+	/// How often can you melee attack?
+	var/melee_attack_cooldown = 2 SECONDS
 
 	///What kind of objects this mob can smash.
 	var/environment_smash = ENVIRONMENT_SMASH_NONE
@@ -86,7 +86,7 @@
 		gender = pick(MALE,FEMALE)
 
 	if(!real_name)
-		real_name = name
+		set_real_name(name)
 
 	if(!loc)
 		stack_trace("Basic mob being instantiated in nullspace")
@@ -96,18 +96,12 @@
 	if(speak_emote)
 		speak_emote = string_list(speak_emote)
 
-/mob/living/basic/Life(delta_time = SSMOBS_DT, times_fired)
-	. = ..()
-	///Automatic stamina re-gain
-	if(staminaloss > 0)
-		adjustStaminaLoss(-stamina_recovery * delta_time, FALSE, TRUE)
-
 /mob/living/basic/say_mod(input, list/message_mods = list())
 	if(length(speak_emote))
 		verb_say = pick(speak_emote)
 	return ..()
 
-/mob/living/basic/death(gibbed)
+/mob/living/basic/death(gibbed, cause_of_death = "Unknown")
 	. = ..()
 	if(basic_mob_flags & DEL_ON_DEATH)
 		qdel(src)
@@ -118,8 +112,10 @@
 			transform = transform.Turn(180)
 		set_density(FALSE)
 
-/mob/living/basic/proc/melee_attack(atom/target)
+/mob/living/basic/proc/melee_attack(atom/target, put_on_cooldown = FALSE)
 	src.face_atom(target)
+	if (!put_on_cooldown)
+		changeNext_move(melee_attack_cooldown)
 	if(SEND_SIGNAL(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, target) & COMPONENT_HOSTILE_NO_ATTACK)
 		return FALSE //but more importantly return before attack_animal called
 	var/result = target.attack_basic_mob(src)
@@ -139,7 +135,7 @@
 /mob/living/basic/proc/update_basic_mob_varspeed()
 	if(speed == 0)
 		remove_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed)
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed, multiplicative_slowdown = speed)
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed, slowdown = speed)
 	SEND_SIGNAL(src, POST_BASIC_MOB_UPDATE_VARSPEED)
 
 /mob/living/basic/relaymove(mob/living/user, direction)

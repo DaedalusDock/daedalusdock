@@ -104,15 +104,18 @@
 	if(!proj_turf)
 		proj_turf = get_turf(src)
 	resonance_damage = initial(resonance_damage)
-	if(lavaland_equipment_pressure_check(proj_turf))
+	var/pressure = proj_turf.unsafe_return_air().returnPressure()
+	if(pressure < 20)
 		name = "strong [initial(name)]"
 		resonance_damage *= 3
 	else
 		name = initial(name)
 	resonance_damage *= damage_multiplier
 
-/obj/effect/temp_visual/resonance/proc/burst()
+/obj/effect/temp_visual/resonance/proc/burst(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(rupturing)
 		return
 	rupturing = TRUE
@@ -120,7 +123,8 @@
 	new /obj/effect/temp_visual/resonance_crush(src_turf)
 	if(ismineralturf(src_turf))
 		var/turf/closed/mineral/mineral_turf = src_turf
-		mineral_turf.gets_drilled(creator)
+		mineral_turf.MinedAway()
+
 	check_pressure(src_turf)
 	playsound(src_turf, 'sound/weapons/resonator_blast.ogg', 50, TRUE)
 	for(var/mob/living/attacked_living in src_turf)

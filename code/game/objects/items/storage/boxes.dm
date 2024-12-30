@@ -31,6 +31,8 @@
 	resistance_flags = FLAMMABLE
 	drop_sound = 'sound/items/handling/cardboardbox_drop.ogg'
 	pickup_sound = 'sound/items/handling/cardboardbox_pickup.ogg'
+
+	storage_type = /datum/storage/box
 	var/foldable = /obj/item/stack/sheet/cardboard
 	var/illustration = "writing"
 
@@ -117,9 +119,7 @@
 	var/medipen_type = /obj/item/reagent_containers/hypospray/medipen
 
 /obj/item/storage/box/survival/PopulateContents()
-	if(isplasmaman(loc))
-		new /obj/item/tank/internals/plasmaman/belt(src)
-	else if(isvox(loc))
+	if(isvox(loc))
 		new /obj/item/tank/internals/nitrogen/belt/emergency(src)
 	else
 		new mask_type(src)
@@ -137,13 +137,7 @@
 	new /obj/item/radio/off(src)
 
 /obj/item/storage/box/survival/proc/wardrobe_removal()
-	if(isplasmaman(loc)) //We need to specially fill the box with plasmaman gear, since it's intended for one
-		var/obj/item/mask = locate(mask_type) in src
-		var/obj/item/internals = locate(internal_type) in src
-		new /obj/item/tank/internals/plasmaman/belt(src)
-		qdel(mask) // Get rid of the items that shouldn't be
-		qdel(internals)
-	else if(isvox(loc))
+	if(isvox(loc))
 		var/obj/item/mask = locate(mask_type) in src
 		var/obj/item/internals = locate(internal_type) in src
 		new /obj/item/tank/internals/nitrogen/belt/emergency(src)
@@ -153,7 +147,7 @@
 
 // Mining survival box
 /obj/item/storage/box/survival/mining
-	mask_type = /obj/item/clothing/mask/gas/explorer
+	mask_type = /obj/item/clothing/mask/breath
 
 /obj/item/storage/box/survival/mining/PopulateContents()
 	..()
@@ -488,11 +482,6 @@
 	icon_state = "donkpocketboxpizza"
 	donktype = /obj/item/food/donkpocket/pizza
 
-/obj/item/storage/box/donkpockets/donkpocketgondola
-	name = "box of gondola-flavoured donk-pockets"
-	icon_state = "donkpocketboxgondola"
-	donktype = /obj/item/food/donkpocket/gondola
-
 /obj/item/storage/box/donkpockets/donkpocketberry
 	name = "box of berry-flavoured donk-pockets"
 	icon_state = "donkpocketboxberry"
@@ -715,7 +704,7 @@
 	slot_flags = ITEM_SLOT_BELT
 	drop_sound = 'sound/items/handling/matchbox_drop.ogg'
 	pickup_sound = 'sound/items/handling/matchbox_pickup.ogg'
-	custom_price = PAYCHECK_ASSISTANT * 0.4
+	custom_price = PAYCHECK_ASSISTANT * 0.3
 	base_icon_state = "matchbox"
 	illustration = null
 
@@ -792,15 +781,6 @@
 	for(var/i in 1 to 7)
 		new /obj/item/grenade/chem_grenade/metalfoam(src)
 
-/obj/item/storage/box/smart_metal_foam
-	name = "box of smart metal foam grenades"
-	desc = "Used to rapidly seal hull breaches. This variety conforms to the walls of its area."
-	illustration = "grenade"
-
-/obj/item/storage/box/smart_metal_foam/PopulateContents()
-	for(var/i in 1 to 7)
-		new/obj/item/grenade/chem_grenade/smart_metal_foam(src)
-
 /obj/item/storage/box/hug
 	name = "box of hugs"
 	desc = "A special box for sensitive people."
@@ -856,10 +836,9 @@
 /obj/item/storage/box/hug/survival/PopulateContents()
 	new /obj/item/reagent_containers/hypospray/medipen(src)
 
-	if(isplasmaman(loc))
-		new /obj/item/tank/internals/plasmaman/belt(src)
-	else if(isvox(loc))
+	if(isvox(loc))
 		new /obj/item/tank/internals/nitrogen/belt/emergency(src)
+		new /obj/item/clothing/mask/breath(src)
 	else
 		new /obj/item/clothing/mask/breath(src)
 		new /obj/item/tank/internals/emergency_oxygen(src)
@@ -874,14 +853,15 @@
 	for Medical Officers who just take the box for themselves."
 
 	/// the plushies that aren't of things trying to kill you
-	var/list/static/approved_by_corporate = list(/obj/item/toy/plush/carpplushie, // well, maybe they can be something that tries to kill you a little bit
+	var/list/static/approved_by_corporate = list(
+		/obj/item/toy/plush/carpplushie, // well, maybe they can be something that tries to kill you a little bit
 		/obj/item/toy/plush/slimeplushie,
 		/obj/item/toy/plush/lizard_plushie,
 		/obj/item/toy/plush/snakeplushie,
-		/obj/item/toy/plush/plasmamanplushie,
 		/obj/item/toy/plush/beeplushie,
 		/obj/item/toy/plush/moth,
-		/obj/item/toy/plush/pkplush)
+		/obj/item/toy/plush/pkplush
+	)
 
 /obj/item/storage/box/hug/plushes/PopulateContents()
 	for(var/i in 1 to 7)
@@ -980,7 +960,7 @@
 		icon_state = "paperbag_[choice]"
 		inhand_icon_state = "paperbag_[choice]"
 		return FALSE
-	else if(W.get_sharpness())
+	else if(W.sharpness)
 		if(!contents.len)
 			if(inhand_icon_state == "paperbag_None")
 				user.show_message(span_notice("You cut eyeholes into [src]."), MSG_VISUAL)
@@ -1035,19 +1015,9 @@
 	illustration = "scicircuit"
 
 /obj/item/storage/box/rndboards/PopulateContents()
-	new /obj/item/circuitboard/machine/protolathe/offstation(src)
+	new /obj/item/circuitboard/machine/fabricator/offstation(src)
 	new /obj/item/circuitboard/machine/destructive_analyzer(src)
 	new /obj/item/circuitboard/machine/circuit_imprinter/offstation(src)
-	new /obj/item/circuitboard/computer/rdconsole(src)
-
-/obj/item/storage/box/silver_sulf
-	name = "box of silver sulfadiazine patches"
-	desc = "Contains patches used to treat burns."
-	illustration = "firepatch"
-
-/obj/item/storage/box/silver_sulf/PopulateContents()
-	for(var/i in 1 to 7)
-		new /obj/item/reagent_containers/pill/patch/aiuri(src)
 
 /obj/item/storage/box/fountainpens
 	name = "box of fountain pens"
@@ -1066,7 +1036,7 @@
 	for(var/i in 1 to 7)
 		new/obj/item/grenade/chem_grenade/holy(src)
 
-/obj/item/storage/box/stockparts/basic //for ruins where it's a bad idea to give access to an autolathe/protolathe, but still want to make stock parts accessible
+/obj/item/storage/box/stockparts/basic //for ruins where it's a bad idea to give access to a fabricator, but still want to make stock parts accessible
 	name = "box of stock parts"
 	desc = "Contains a variety of basic stock parts."
 
@@ -1158,7 +1128,6 @@
 		/obj/item/card/emag=1,\
 		/obj/item/stack/spacecash/c1000=50,\
 		/obj/item/healthanalyzer/advanced=1,\
-		/obj/item/disk/tech_disk/debug=1,\
 		/obj/item/uplink/debug=1,\
 		/obj/item/uplink/nuclear/debug=1,\
 		/obj/item/storage/box/beakers/bluespace=1,\
@@ -1224,7 +1193,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	illustration = null
 	foldable = null
-	custom_price = PAYCHECK_EASY
+	custom_price = PAYCHECK_ASSISTANT * 0.2
 
 /obj/item/storage/box/gum/Initialize()
 	. = ..()
@@ -1244,22 +1213,6 @@
 /obj/item/storage/box/gum/nicotine/PopulateContents()
 	for(var/i in 1 to 4)
 		new/obj/item/food/bubblegum/nicotine(src)
-
-/obj/item/storage/box/gum/happiness
-	name = "HP+ gum packet"
-	desc = "A seemingly homemade packaging with an odd smell. It has a weird drawing of a smiling face sticking out its tongue."
-	icon_state = "bubblegum_happiness"
-	custom_price = PAYCHECK_HARD * 3
-	custom_premium_price = PAYCHECK_HARD * 3
-
-/obj/item/storage/box/gum/happiness/Initialize(mapload)
-	. = ..()
-	if (prob(25))
-		desc += " You can faintly make out the word 'Hemopagopril' was once scribbled on it."
-
-/obj/item/storage/box/gum/happiness/PopulateContents()
-	for(var/i in 1 to 4)
-		new/obj/item/food/bubblegum/happiness(src)
 
 /obj/item/storage/box/gum/bubblegum
 	name = "bubblegum gum packet"
@@ -1310,36 +1263,6 @@
 /obj/item/storage/box/skillchips/engineering/PopulateContents()
 	new/obj/item/skillchip/job/engineer(src)
 	new/obj/item/skillchip/job/engineer(src)
-
-/obj/item/storage/box/swab
-	name = "box of microbiological swabs"
-	desc = "Contains a number of sterile swabs for collecting microbiological samples."
-	illustration = "swab"
-
-/obj/item/storage/box/swab/PopulateContents()
-	for(var/i in 1 to 7)
-		new /obj/item/swab(src)
-
-/obj/item/storage/box/petridish
-	name = "box of petridishes"
-	desc = "This box purports to contain a number of high rim petridishes."
-	illustration = "petridish"
-
-/obj/item/storage/box/petridish/PopulateContents()
-	for(var/i in 1 to 7)
-		new /obj/item/petri_dish(src)
-
-/obj/item/storage/box/plumbing
-	name = "box of plumbing supplies"
-	desc = "Contains a small supply of pipes, water recyclers, and iron to connect to the rest of the station."
-
-/obj/item/storage/box/plumbing/PopulateContents()
-	var/list/items_inside = list(
-		/obj/item/stock_parts/water_recycler = 2,
-		/obj/item/stack/ducts/fifty = 1,
-		/obj/item/stack/sheet/iron/ten = 1,
-		)
-	generate_items_inside(items_inside, src)
 
 /obj/item/storage/box/tail_pin
 	name = "pin the tail on the corgi supplies"
@@ -1396,7 +1319,6 @@
 		/obj/item/slimecross/stabilized/oil=1,\
 		/obj/item/slimecross/stabilized/black=1,\
 		/obj/item/slimecross/stabilized/lightpink=1,\
-		/obj/item/slimecross/stabilized/adamantine=1,\
 		/obj/item/slimecross/stabilized/rainbow=1,\
 		)
 	generate_items_inside(items_inside,src)
@@ -1601,20 +1523,6 @@
 	new /obj/item/clothing/mask/gas/carp(src)
 	new /obj/item/knife/hunting(src)
 	new /obj/item/storage/box/papersack/meat(src)
-
-/obj/item/storage/box/hero/mothpioneer
-	name = "Mothic Fleet Pioneer - 2100's."
-	desc = "Some claim that the fleet engineers are directly responsible for most modern advancement in spacefaring design. Although the exact details of their past contributions are somewhat fuzzy, their ingenuity remains unmatched and unquestioned to this day."
-
-/obj/item/storage/box/hero/mothpioneer/PopulateContents()
-	new /obj/item/clothing/suit/mothcoat/original(src)
-	new /obj/item/clothing/head/mothcap(src)
-	new /obj/item/flashlight/lantern(src)
-	new /obj/item/screwdriver(src)
-	new /obj/item/wrench(src)
-	new /obj/item/crowbar(src)
-	new /obj/item/stack/sheet/iron/fifty(src)
-	new /obj/item/stack/sheet/glass/fifty(src)
 
 /obj/item/storage/box/holy/clock
 	name = "Forgotten kit"

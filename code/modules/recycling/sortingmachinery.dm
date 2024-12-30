@@ -38,15 +38,6 @@
 
 	qdel(src)
 
-/obj/item/delivery/contents_explosion(severity, target)
-	switch(severity)
-		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += contents
-		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += contents
-		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += contents
-
 /obj/item/delivery/deconstruct()
 	unwrap_contents()
 	post_unwrap_contents()
@@ -116,7 +107,7 @@
 			to_chat(user, span_notice("You scribble illegibly on the side of [src]!"))
 			return
 		var/str = tgui_input_text(user, "Label text?", "Set label", max_length = MAX_NAME_LEN)
-		if(!user.canUseTopic(src, BE_CLOSE))
+		if(!user.canUseTopic(src, USE_CLOSE))
 			return
 		if(!str || !length(str))
 			to_chat(user, span_warning("Invalid text!"))
@@ -227,11 +218,10 @@
 	post_unwrap_contents(user)
 
 /obj/item/delivery/small/attack_self_tk(mob/user)
-	if(ismob(loc))
-		var/mob/M = loc
-		M.temporarilyRemoveItemFromInventory(src, TRUE)
+	if(equipped_to)
+		equipped_to.temporarilyRemoveItemFromInventory(src, TRUE)
 		for(var/atom/movable/movable_content as anything in contents)
-			M.put_in_hands(movable_content)
+			equipped_to.put_in_hands(movable_content)
 	else
 		for(var/atom/movable/movable_content as anything in contents)
 			movable_content.forceMove(loc)
@@ -381,7 +371,7 @@
 	new_barcode.cut_multiplier = cut_multiplier		// Also the registered percent cut.
 	user.put_in_hands(new_barcode)
 
-/obj/item/sales_tagger/CtrlClick(mob/user)
+/obj/item/sales_tagger/CtrlClick(mob/user, list/params)
 	. = ..()
 	payments_acc = null
 	to_chat(user, span_notice("You clear the registered account."))

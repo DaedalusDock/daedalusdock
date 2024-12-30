@@ -304,7 +304,7 @@
 /proc/trim(text, max_length)
 	if(max_length)
 		text = copytext_char(text, 1, max_length)
-	return trim_left(trim_right(text))
+	return trimtext(text) || ""
 
 //Returns a string with the first element of the string capitalized.
 /proc/capitalize(t)
@@ -313,47 +313,31 @@
 		. = t[1]
 		return uppertext(.) + copytext(t, 1 + length(.))
 
-/proc/stringmerge(text,compare,replace = "*")
-//This proc fills in all spaces with the "replace" var (* by default) with whatever
-//is in the other string at the same spot (assuming it is not a replace char).
-//This is used for fingerprints
-	var/newtext = text
-	var/text_it = 1 //iterators
-	var/comp_it = 1
-	var/newtext_it = 1
-	var/text_length = length(text)
-	var/comp_length = length(compare)
-	while(comp_it <= comp_length && text_it <= text_length)
-		var/a = text[text_it]
-		var/b = compare[comp_it]
-//if it isn't both the same letter, or if they are both the replacement character
-//(no way to know what it was supposed to be)
-		if(a != b)
-			if(a == replace) //if A is the replacement char
-				newtext = copytext(newtext, 1, newtext_it) + b + copytext(newtext, newtext_it + length(newtext[newtext_it]))
-			else if(b == replace) //if B is the replacement char
-				newtext = copytext(newtext, 1, newtext_it) + a + copytext(newtext, newtext_it + length(newtext[newtext_it]))
-			else //The lists disagree, Uh-oh!
-				return 0
-		text_it += length(a)
-		comp_it += length(b)
-		newtext_it += length(newtext[newtext_it])
+/// This proc replaces all instances of the "replace" character in "text" with the character in the same position within the "compare" string
+/// "***************FFFFFFFFFFFFFFFFF******************" and "FFFFFFFFFFFFFFF*****************FFFFFFFFFFFFFFFFFF"
+/// is "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+/proc/stringmerge(text, compare, replace = "*")
+	if(length(text) != length(compare))
+		CRASH("Stringmerge received strings of differing lengths")
 
-	return newtext
+	var/list/frags = list()
+	var/idx = 1
+	var/span
+	var/nonspan
+	while(idx <= length_char(text))
+		span = spantext_char(text, replace, idx)
+		if(span)
+			frags += copytext_char(compare, idx, idx + span)
+			idx += span
+		else
+			nonspan = nonspantext_char(text, replace, idx)
+			frags += copytext_char(text, idx, idx + nonspan)
+			idx += nonspan
+	return jointext(frags, "")
 
-/proc/stringpercent(text,character = "*")
-//This proc returns the number of chars of the string that is the character
-//This is used for detective work to determine fingerprint completion.
-	if(!text || !character)
-		return 0
-	var/count = 0
-	var/lentext = length(text)
-	var/a = ""
-	for(var/i = 1, i <= lentext, i += length(a))
-		a = text[i]
-		if(a == character)
-			count++
-	return count
+//This proc returns the presence of the desired character
+/proc/stringcount(text, character = "*")
+	return length(splittext_char(text, character)) - 1
 
 /proc/reverse_text(text = "")
 	var/new_text = ""
@@ -368,6 +352,10 @@ GLOBAL_LIST_INIT(zero_character_only, list("0"))
 GLOBAL_LIST_INIT(hex_characters, list("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"))
 GLOBAL_LIST_INIT(alphabet, list("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"))
 GLOBAL_LIST_INIT(alphabet_upper, list("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"))
+GLOBAL_LIST_INIT(vowels_lower, list("a","e","i","o","u"))
+GLOBAL_LIST_INIT(vowels_upper, list("A","E","I","O","U"))
+GLOBAL_LIST_INIT(consonants_lower, list("b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","y","z"))
+GLOBAL_LIST_INIT(consonants_upper, list("B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Y","Z"))
 GLOBAL_LIST_INIT(numerals, list("1","2","3","4","5","6","7","8","9","0"))
 GLOBAL_LIST_INIT(space, list(" "))
 GLOBAL_LIST_INIT(binary, list("0","1"))
@@ -744,34 +732,37 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 	switch(macro)
 		//prefixes/agnostic
 		if("the")
-			rest = text("\the []", rest)
+			rest = "\the [rest]"
 		if("a")
-			rest = text("\a []", rest)
+			rest = "\a [rest]"
 		if("an")
-			rest = text("\an []", rest)
+			rest = "\an [rest]"
 		if("proper")
-			rest = text("\proper []", rest)
+			rest = "\proper [rest]"
 		if("improper")
-			rest = text("\improper []", rest)
+			rest = "\improper [rest]"
 		if("roman")
-			rest = text("\roman []", rest)
+			rest = "\roman [rest]"
 		//postfixes
 		if("th")
-			base = text("[]\th", rest)
+			base = "[rest]\th"
 		if("s")
-			base = text("[]\s", rest)
+			base = "[rest]\s"
 		if("he")
-			base = text("[]\he", rest)
+			base = "[rest]\he"
 		if("she")
-			base = text("[]\she", rest)
+			base = "[rest]\she"
 		if("his")
-			base = text("[]\his", rest)
+			base = "[rest]\his"
 		if("himself")
-			base = text("[]\himself", rest)
+			base = "[rest]\himself"
 		if("herself")
-			base = text("[]\herself", rest)
+			base = "[rest]\herself"
 		if("hers")
-			base = text("[]\hers", rest)
+			base = "[rest]\hers"
+		else // Someone fucked up, if you're not a macro just go home yeah?
+			// This does technically break parsing, but at least it's better then what it used to do
+			return base
 
 	. = base
 	if(rest)

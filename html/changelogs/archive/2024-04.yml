@@ -1,0 +1,35 @@
+2024-04-05:
+  francinum:
+  - bugfix: Updates webmap url
+2024-04-12:
+  Kapu1178:
+  - bugfix: AO overlays no longer get stuck when turfs change. This was most obvious
+      with the stellar body magnet.
+2024-04-14:
+  Kapu1178:
+  - bugfix: Security armor is armor again.
+2024-04-15:
+  Kapu1178:
+  - bugfix: Heterochromia works again.
+  - bugfix: The "Fingerprints" field of ID cards now uses the correct value.
+2024-04-20:
+  Kapu1178:
+  - rscadd: Gamemodes are back!
+  - rscdel: Dynamic has been disabled.
+  - rscdel: Removed all ghost roles.
+2024-04-22:
+  Kapu1178:
+  - rscadd: Multi-Z now supports things such as med huds and antag huds
+  - rscadd: Alot of animations now play across Z levels
+  - bugfix: Progress bars show up again.
+2024-04-23:
+  Kapu1178, PowerfulBacon:
+  - bugfix: Papercode featureset
+  - rscadd: Paper now has a help tab.
+  Lohikar, LemonInTheDark, TemporalOroboros, Kapu1178:
+  - refactor: Rewrote explosions
+  - refactor: Smoke and Foam now use a light fluid sim to spread.
+2024-04-29:
+  ToasterBan:
+  - rscadd: Added bay-style engraving, a wall or floor can be engraved with any sharp
+      object

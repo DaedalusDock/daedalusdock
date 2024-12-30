@@ -5,11 +5,10 @@
 /obj/machinery/disposal
 	icon = 'icons/obj/atmospherics/pipes/disposal.dmi'
 	density = TRUE
-	armor = list(MELEE = 25, BULLET = 10, LASER = 10, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
+	armor = list(BLUNT = 25, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
 	max_integrity = 200
 	resistance_flags = FIRE_PROOF
 	interaction_flags_machine = INTERACT_MACHINE_OPEN | INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON
-	obj_flags = CAN_BE_HIT | USES_TGUI
 
 	var/datum/gas_mixture/air_contents // internal reservoir
 	var/full_pressure = FALSE
@@ -85,7 +84,7 @@
 	trunk_check()
 
 /obj/machinery/disposal/attackby(obj/item/I, mob/living/user, params)
-	add_fingerprint(user)
+	I.leave_evidence(user, src)
 	if(!pressure_charging && !full_pressure && !flush)
 		if(I.tool_behaviour == TOOL_SCREWDRIVER)
 			panel_open = !panel_open
@@ -135,7 +134,7 @@
 	user.visible_message(span_notice("[user.name] places \the [I] into \the [src]."), span_notice("You place \the [I] into \the [src]."))
 
 //mouse drop another mob or self
-/obj/machinery/disposal/MouseDrop_T(mob/living/target, mob/living/user)
+/obj/machinery/disposal/MouseDroppedOn(mob/living/target, mob/living/user)
 	if(istype(target))
 		stuff_mob_in(target, user)
 
@@ -230,7 +229,7 @@
 		return
 
 /obj/machinery/disposal/proc/flushAnimation()
-	flick("[icon_state]-flush", src)
+	z_flick("[icon_state]-flush", src)
 
 // called when holder is expelled from a disposal
 /obj/machinery/disposal/proc/expel(obj/structure/disposalholder/H)
@@ -285,6 +284,7 @@
 	name = "disposal unit"
 	desc = "A pneumatic waste disposal unit."
 	icon_state = "disposal"
+	zmm_flags = ZMM_MANGLE_PLANES
 
 // attack by item places it in to disposal
 /obj/machinery/disposal/bin/attackby(obj/item/I, mob/user, params)
@@ -299,9 +299,6 @@
 		return ..()
 
 // handle machine interaction
-
-/obj/machinery/disposal/bin/ui_state(mob/user)
-	return GLOB.notcontained_state
 
 /obj/machinery/disposal/bin/ui_interact(mob/user, datum/tgui/ui)
 	if(machine_stat & BROKEN)
@@ -392,15 +389,15 @@
 	//check for items in disposal - occupied light
 	if(contents.len > 0)
 		. += "dispover-full"
-		. += emissive_appearance(icon, "dispover-full", alpha = src.alpha)
+		. += emissive_appearance(icon, "dispover-full", alpha = 90)
 
 	//charging and ready light
 	if(pressure_charging)
 		. += "dispover-charge"
-		. += emissive_appearance(icon, "dispover-charge-glow", alpha = src.alpha)
+		. += emissive_appearance(icon, "dispover-charge-glow", alpha = 90)
 	else if(full_pressure)
 		. += "dispover-ready"
-		. += emissive_appearance(icon, "dispover-ready-glow", alpha = src.alpha)
+		. += emissive_appearance(icon, "dispover-ready-glow", alpha = 90)
 
 /obj/machinery/disposal/bin/proc/do_flush()
 	set waitfor = FALSE
@@ -478,7 +475,7 @@
 		..()
 		flush()
 
-/obj/machinery/disposal/delivery_chute/Bumped(atom/movable/AM) //Go straight into the chute
+/obj/machinery/disposal/delivery_chute/BumpedBy(atom/movable/AM) //Go straight into the chute
 	if(QDELETED(AM) || !AM.CanEnterDisposals())
 		return
 	switch(dir)

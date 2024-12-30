@@ -13,13 +13,12 @@
 	slot_flags = ITEM_SLOT_BELT
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
-	throw_speed = 3
 	throw_range = 7
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10)
 	volume = 60
 	var/can_fill_from_container = TRUE
-	var/apply_type = PATCH
+	var/apply_type = TOUCH
 	var/apply_method = "spray" //the thick gel is sprayed and then dries into patch like film.
 	var/self_delay = 30
 	var/squirt_mode = 0
@@ -78,32 +77,10 @@
 		reagents.trans_to(M, amount_per_transfer_from_this, transfered_by = user, methods = apply_type)
 	return
 
-/obj/item/reagent_containers/medigel/libital
-	name = "medical gel (libital)"
-	desc = "A medical gel applicator bottle, designed for precision application, with an unscrewable cap. This one contains libital, for treating cuts and bruises. Libital does minor liver damage. Diluted with granibitaluri."
-	icon_state = "brutegel"
-	current_skin = "brutegel"
-	list_reagents = list(/datum/reagent/medicine/c2/libital = 24, /datum/reagent/medicine/granibitaluri = 36)
-
-/obj/item/reagent_containers/medigel/aiuri
-	name = "medical gel (aiuri)"
-	desc = "A medical gel applicator bottle, designed for precision application, with an unscrewable cap. This one contains aiuri, useful for treating burns. Aiuri does minor eye damage. Diluted with granibitaluri."
-	icon_state = "burngel"
-	current_skin = "burngel"
-	list_reagents = list(/datum/reagent/medicine/c2/aiuri = 24, /datum/reagent/medicine/granibitaluri = 36)
-
 /obj/item/reagent_containers/medigel/synthflesh
 	name = "medical gel (synthflesh)"
 	desc = "A medical gel applicator bottle, designed for precision application, with an unscrewable cap. This one contains synthflesh, a slightly toxic medicine capable of healing both bruises and burns."
 	icon_state = "synthgel"
 	current_skin = "synthgel"
-	list_reagents = list(/datum/reagent/medicine/c2/synthflesh = 60)
+	list_reagents = list(/datum/reagent/medicine/synthflesh = 60)
 	custom_price = PAYCHECK_MEDIUM * 5
-
-/obj/item/reagent_containers/medigel/sterilizine
-	name = "sterilizer gel"
-	desc = "gel bottle loaded with non-toxic sterilizer. Useful in preparation for surgery."
-	icon_state = "medigel_blue"
-	current_skin = "medigel_blue"
-	list_reagents = list(/datum/reagent/space_cleaner/sterilizine = 60)
-	custom_price = PAYCHECK_MEDIUM * 2

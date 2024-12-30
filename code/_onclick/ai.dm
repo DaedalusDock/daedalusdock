@@ -77,10 +77,6 @@
 	if(world.time <= next_move)
 		return
 
-	if(aicamera.in_camera_mode)
-		aicamera.camera_mode_off()
-		aicamera.captureimage(pixel_turf, usr)
-		return
 	if(waypoint_mode)
 		waypoint_mode = 0
 		set_waypoint(A)
@@ -123,7 +119,7 @@
 	A.AICtrlShiftClick(src)
 /mob/living/silicon/ai/ShiftClickOn(atom/A)
 	A.AIShiftClick(src)
-/mob/living/silicon/ai/CtrlClickOn(atom/A)
+/mob/living/silicon/ai/CtrlClickOn(atom/A, list/params)
 	A.AICtrlClick(src)
 /mob/living/silicon/ai/AltClickOn(atom/A)
 	A.AIAltClick(src)
@@ -151,7 +147,7 @@
 		return
 
 	toggle_bolt(usr)
-	add_hiddenprint(usr)
+	log_touch(usr)
 
 /obj/machinery/door/airlock/AIAltClick() // Eletrifies doors.
 	if(obj_flags & EMAGGED)
@@ -167,14 +163,14 @@
 		return
 
 	user_toggle_open(usr)
-	add_hiddenprint(usr)
+	log_touch(usr)
 
 /obj/machinery/door/airlock/AICtrlShiftClick()  // Sets/Unsets Emergency Access Override
 	if(obj_flags & EMAGGED)
 		return
 
 	toggle_emergency(usr)
-	add_hiddenprint(usr)
+	log_touch(usr)
 
 /* APC */
 /obj/machinery/power/apc/AICtrlClick() // turns off/on APCs.
@@ -195,7 +191,7 @@
 /* Holopads */
 /obj/machinery/holopad/AIAltClick(mob/living/silicon/ai/user)
 	hangup_all_calls()
-	add_hiddenprint(usr)
+	log_touch(usr)
 
 //
 // Override TurfAdjacent for AltClicking

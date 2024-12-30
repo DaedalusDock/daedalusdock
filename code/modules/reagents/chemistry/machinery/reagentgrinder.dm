@@ -58,11 +58,11 @@
 
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += beaker
+			EX_ACT(beaker, EXPLODE_DEVASTATE)
 		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += beaker
+			EX_ACT(beaker, EXPLODE_HEAVY)
 		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += beaker
+			EX_ACT(beaker, EXPLODE_LIGHT)
 
 /obj/machinery/reagentgrinder/RefreshParts()
 	. = ..()
@@ -99,7 +99,7 @@
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
-	if(!can_interact(user) || !user.canUseTopic(src, !issilicon(user), FALSE, NO_TK))
+	if(!can_interact(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_SILICON_REACH))
 		return
 	if(operating)
 		return
@@ -245,7 +245,7 @@
 		if("mix")
 			mix(user)
 		if("examine")
-			examine(user)
+			user.run_examinate(src)
 
 /obj/machinery/reagentgrinder/proc/eject(mob/user)
 	drop_all_items()

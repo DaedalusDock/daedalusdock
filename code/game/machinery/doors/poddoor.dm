@@ -8,14 +8,14 @@
 	sub_door = TRUE
 	explosion_block = 3
 	heat_proof = TRUE
-	safe = FALSE
+	dont_close_on_dense_objects = FALSE
 	max_integrity = 600
-	armor = list(MELEE = 50, BULLET = 100, LASER = 100, ENERGY = 100, BOMB = 50, BIO = 100, FIRE = 100, ACID = 70)
+	armor = list(BLUNT = 50, PUNCTURE = 100, SLASH = 100, LASER = 100, ENERGY = 100, BOMB = 50, BIO = 100, FIRE = 100, ACID = 70)
 	resistance_flags = FIRE_PROOF
 	damage_deflection = 70
 	can_open_with_hands = FALSE
 	block_air_zones = FALSE
-	smoothing_groups = list(SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	smoothing_groups = SMOOTH_GROUP_SHUTTERS_BLASTDOORS
 	door_align_type = /obj/machinery/door/poddoor
 	var/datum/crafting_recipe/recipe_type = /datum/crafting_recipe/blast_doors
 	var/deconstruction = BLASTDOOR_FINISHED // deconstruction step
@@ -39,7 +39,7 @@
 	if (deconstruction != BLASTDOOR_FINISHED)
 		return
 	var/change_id = tgui_input_number(user, "Set the door controllers ID", "Door Controller ID", id, 100)
-	if(!change_id || QDELETED(usr) || QDELETED(src) || !usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!change_id || QDELETED(usr) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	id = change_id
 	to_chat(user, span_notice("You change the ID to [id]."))
@@ -124,10 +124,10 @@
 /obj/machinery/door/poddoor/do_animate(animation)
 	switch(animation)
 		if("opening")
-			flick("opening", src)
+			z_flick("opening", src)
 			playsound(src, 'sound/machines/doors/blastdoor_open.ogg', 60, TRUE)
 		if("closing")
-			flick("closing", src)
+			z_flick("closing", src)
 			playsound(src, 'sound/machines/doors/blastdoor_close.ogg', 60, TRUE)
 
 /obj/machinery/door/poddoor/update_icon_state()
@@ -194,14 +194,6 @@
 /obj/machinery/door/poddoor/atmos_test_room_mainvent_2
 	name = "test chamber 2 vent"
 	id = TEST_ROOM_ATMOS_MAINVENT_2
-
-/obj/machinery/door/poddoor/incinerator_syndicatelava_main
-	name = "turbine vent"
-	id = INCINERATOR_SYNDICATELAVA_MAINVENT
-
-/obj/machinery/door/poddoor/incinerator_syndicatelava_aux
-	name = "combustion chamber vent"
-	id = INCINERATOR_SYNDICATELAVA_AUXVENT
 
 /obj/machinery/door/poddoor/massdriver_ordnance
 	name = "Ordnance Launcher Bay Door"

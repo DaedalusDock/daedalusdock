@@ -39,7 +39,7 @@
 /datum/round_event_control/spacevine
 	name = "Space Vines"
 	typepath = /datum/round_event/spacevine
-	weight = 15
+	weight = 4
 	max_occurrences = 3
 	min_players = 10
 
@@ -51,9 +51,9 @@
 
 	var/obj/structure/spacevine/vine = new()
 
-	for(var/area/station/hallway/area in world)
-		for(var/turf/floor in area)
-			if(floor.Enter(vine))
+	for(var/area/station/hallway/area in GLOB.areas)
+		for(var/turf/floor in area.get_contained_turfs())
+			if(floor.Enter(vine, TRUE))
 				turfs += floor
 
 	qdel(vine)
@@ -132,11 +132,11 @@
 		return
 	if(prob(TOXICITY_MUTATION_PROB) && istype(crosser) && !isvineimmune(crosser))
 		to_chat(crosser, span_alert("You accidentally touch the vine and feel a strange sensation."))
-		crosser.adjustToxLoss(20)
+		crosser.adjustToxLoss(20, cause_of_death = "Spacevine toxin")
 
 /datum/spacevine_mutation/toxicity/on_eat(obj/structure/spacevine/holder, mob/living/eater)
 	if(!isvineimmune(eater))
-		eater.adjustToxLoss(20)
+		eater.adjustToxLoss(20, cause_of_death = "Spacevine toxin")
 
 /datum/spacevine_mutation/explosive  // JC IT'S A BOMB
 	name = "Explosive"
@@ -212,7 +212,7 @@
 	var/mob/living/carbon/victim = living_mob //If the mob is carbon then it now also exists as a victim, and not just an living mob.
 	if(istype(victim)) //If the mob (M) is a carbon subtype (C) we move on to pick a more complex damage proc, with damage zones, wounds and armor mitigation.
 		var/obj/item/bodypart/limb = pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG, BODY_ZONE_HEAD, BODY_ZONE_CHEST) //Picks a random bodypart. Does not runtime even if it's missing.
-		var/armor = victim.run_armor_check(limb, MELEE, null, null) //armor = the armor value of that randomly chosen bodypart. Nulls to not print a message, because it would still print on pierce.
+		var/armor = victim.run_armor_check(limb, BLUNT, null, null) //armor = the armor value of that randomly chosen bodypart. Nulls to not print a message, because it would still print on pierce.
 		var/datum/spacevine_mutation/thorns/thorn = locate() in vine.mutations //Searches for the thorns mutation in the "mutations"-list inside obj/structure/spacevine, and defines T if it finds it.
 		if(thorn && (prob(40))) //If we found the thorns mutation there is now a chance to get stung instead of lashed or smashed.
 			victim.apply_damage(50, BRUTE, def_zone = limb, sharpness = SHARP_POINTY) //This one gets a bit lower damage because it ignores armor.
@@ -342,7 +342,7 @@
 	holder.modify_max_integrity(100)
 
 /datum/spacevine_mutation/woodening/on_hit(obj/structure/spacevine/holder, mob/living/hitter, obj/item/item, expected_damage)
-	if(item?.get_sharpness())
+	if(item?.sharpness & SHARP_EDGED)
 		. = expected_damage * 0.5
 	else
 		. = expected_damage
@@ -432,14 +432,14 @@
 
 /obj/structure/spacevine/attacked_by(obj/item/item, mob/living/user)
 	var/damage_dealt = item.force
-	if(item.get_sharpness())
+	if(item.sharpness & SHARP_EDGED)
 		damage_dealt *= 4
 	if(item.damtype == BURN)
 		damage_dealt *= 4
 
 	for(var/datum/spacevine_mutation/mutation in mutations)
 		damage_dealt = mutation.on_hit(src, user, item, damage_dealt) //on_hit now takes override damage as arg and returns new value for other mutations to permutate further
-	take_damage(damage_dealt, item.damtype, MELEE, 1)
+	take_damage(damage_dealt, item.damtype, BLUNT, 1)
 
 /obj/structure/spacevine/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	switch(damage_type)
@@ -453,6 +453,8 @@
 
 /obj/structure/spacevine/proc/on_entered(datum/source, atom/movable/movable)
 	SIGNAL_HANDLER
+	if(movable == src)
+		return
 	if(!isliving(movable))
 		return
 	for(var/datum/spacevine_mutation/mutation in mutations)

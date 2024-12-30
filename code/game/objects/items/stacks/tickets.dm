@@ -8,6 +8,8 @@
 	max_amount = 30
 	merge_type = /obj/item/stack/arcadeticket
 
+	dynamically_set_name = TRUE
+
 /obj/item/stack/arcadeticket/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
 	. = ..()
 	update_appearance()

@@ -18,6 +18,8 @@
 	comp_light_luminosity = 2.3 //Same as the PDA
 	looping_sound = FALSE
 
+	imprint_prefix = "PDA"
+
 	var/has_variants = TRUE
 	var/finish_color = null
 
@@ -26,6 +28,10 @@
 	var/obj/item/inserted_item
 
 	var/note = "Congratulations on your station upgrading to the new NtOS and Thinktronic based collaboration effort, bringing you the best in electronics and software since 2467!"  // the note used by the notekeeping app, stored here for convenience
+
+/obj/item/modular_computer/tablet/Destroy()
+	QDEL_NULL(inserted_item)
+	return ..()
 
 /obj/item/modular_computer/tablet/update_icon_state()
 	if(has_variants && !bypass_state)
@@ -58,6 +64,7 @@
 				return
 			to_chat(user, span_notice("You insert \the [W] into \the [src]."))
 			inserted_item = W
+			RegisterSignal(W, COMSIG_PARENT_QDELETING, PROC_REF(inserted_item_gone))
 			playsound(src, 'sound/machines/pda_button1.ogg', 50, TRUE)
 
 	if(istype(W, /obj/item/paper))
@@ -73,12 +80,16 @@
 
 	remove_pen(user)
 
-/obj/item/modular_computer/tablet/CtrlClick(mob/user)
+/obj/item/modular_computer/tablet/CtrlClick(mob/user, list/params)
 	. = ..()
 	if(.)
 		return
 
 	remove_pen(user)
+
+/obj/item/modular_computer/tablet/proc/inserted_item_gone(datum/source)
+	SIGNAL_HANDLER
+	inserted_item = null
 
 /obj/item/modular_computer/tablet/proc/tab_no_detonate()
 	SIGNAL_HANDLER
@@ -86,12 +97,13 @@
 
 /obj/item/modular_computer/tablet/proc/remove_pen(mob/user)
 
-	if(issilicon(user) || !user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK)) //TK doesn't work even with this removed but here for readability
+	if(issilicon(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK)) //TK doesn't work even with this removed but here for readability
 		return
 
 	if(inserted_item)
 		to_chat(user, span_notice("You remove [inserted_item] from [src]."))
 		user.put_in_hands(inserted_item)
+		UnregisterSignal(inserted_item, COMSIG_PARENT_QDELETING)
 		inserted_item = null
 		update_appearance()
 		playsound(src, 'sound/machines/pda_button2.ogg', 50, TRUE)
@@ -108,9 +120,8 @@
 	else
 		log_bomber(bomber, "successfully tablet-bombed", target, "as [target.p_they()] tried to reply to a rigged tablet message [bomber && !is_special_character(bomber) ? "(SENT BY NON-ANTAG)" : ""]")
 
-	if (ismob(loc))
-		var/mob/M = loc
-		M.show_message(span_userdanger("Your [src] explodes!"), MSG_VISUAL, span_warning("You hear a loud *pop*!"), MSG_AUDIBLE)
+	if (equipped_to)
+		equipped_to.show_message(span_userdanger("Your [src] explodes!"), MSG_VISUAL, span_warning("You hear a loud *pop*!"), MSG_AUDIBLE)
 	else
 		visible_message(span_danger("[src] explodes!"), span_warning("You hear a loud *pop*!"))
 
@@ -125,35 +136,6 @@
 	qdel(src)
 
 // SUBTYPES
-
-/obj/item/modular_computer/tablet/syndicate_contract_uplink
-	name = "contractor tablet"
-	icon = 'icons/obj/contractor_tablet.dmi'
-	icon_state = "tablet"
-	icon_state_unpowered = "tablet"
-	icon_state_powered = "tablet"
-	icon_state_menu = "assign"
-	w_class = WEIGHT_CLASS_SMALL
-	slot_flags = ITEM_SLOT_ID | ITEM_SLOT_BELT
-	comp_light_luminosity = 6.3
-	has_variants = FALSE
-
-/obj/item/modular_computer/tablet/syndicate_contract_uplink/Initialize(mapload)
-	. = ..()
-	var/obj/item/computer_hardware/hard_drive/small/syndicate/hard_drive = new
-	var/datum/computer_file/program/contract_uplink/uplink = new
-
-	active_program = uplink
-	uplink.program_state = PROGRAM_STATE_ACTIVE
-	uplink.computer = src
-
-	hard_drive.store_file(uplink)
-
-	install_component(new /obj/item/computer_hardware/battery(src, /obj/item/stock_parts/cell/computer))
-	install_component(hard_drive)
-	install_component(new /obj/item/computer_hardware/network_card)
-	install_component(new /obj/item/computer_hardware/card_slot)
-	install_component(new /obj/item/computer_hardware/printer/mini)
 
 /// Given to Nuke Ops members.
 /obj/item/modular_computer/tablet/nukeops
@@ -260,11 +242,11 @@
 		robo.toggle_headlamp(FALSE, TRUE)
 	return TRUE
 
-/obj/item/modular_computer/tablet/integrated/alert_call(datum/computer_file/program/caller, alerttext, sound = 'sound/machines/twobeep_high.ogg')
-	if(!caller || !caller.alert_able || caller.alert_silenced || !alerttext) //Yeah, we're checking alert_able. No, you don't get to make alerts that the user can't silence.
+/obj/item/modular_computer/tablet/integrated/alert_call(datum/computer_file/program/calling_program, alerttext, sound = 'sound/machines/twobeep_high.ogg')
+	if(!calling_program || !calling_program.alert_able || calling_program.alert_silenced || !alerttext) //Yeah, we're checking alert_able. No, you don't get to make alerts that the user can't silence.
 		return
 	borgo.playsound_local(src, sound, 50, TRUE)
-	to_chat(borgo, span_notice("The [src] displays a [caller.filedesc] notification: [alerttext]"))
+	to_chat(borgo, span_notice("The [src] displays a [calling_program.filedesc] notification: [alerttext]"))
 
 /obj/item/modular_computer/tablet/integrated/ui_state(mob/user)
 	return GLOB.reverse_contained_state
@@ -314,10 +296,17 @@
 
 /obj/item/modular_computer/tablet/pda/Initialize(mapload)
 	. = ..()
-	install_component(new /obj/item/computer_hardware/hard_drive/small)
+	var/obj/item/computer_hardware/hard_drive/small/hdd = new /obj/item/computer_hardware/hard_drive/small
+	install_component(hdd)
 	install_component(new /obj/item/computer_hardware/battery(src, /obj/item/stock_parts/cell/computer))
-	install_component(new /obj/item/computer_hardware/network_card)
+	install_component(new /obj/item/computer_hardware/network_card/packetnet)
 	install_component(new /obj/item/computer_hardware/card_slot)
+
+	var/datum/computer_file/data/text/autorun_file = new
+	autorun_file.filename = MC_AUTORUN_FILE
+	autorun_file.stored_text = "nt_messenger"
+	autorun_file.calculate_size()
+	hdd.store_file(autorun_file)
 
 	if(default_disk)
 		var/obj/item/computer_hardware/hard_drive/portable/disk = new default_disk(src)

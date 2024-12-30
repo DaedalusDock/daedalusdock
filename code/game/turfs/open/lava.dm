@@ -49,6 +49,7 @@
 	initial_gas = AIRLESS_ATMOS
 
 /turf/open/lava/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	. = ..()
 	if(burn_stuff(arrived))
 		START_PROCESSING(SSobj, src)
 
@@ -67,7 +68,7 @@
 
 /turf/open/lava/process(delta_time)
 	if(!burn_stuff(null, delta_time))
-		STOP_PROCESSING(SSobj, src)
+		return PROCESS_KILL
 
 /turf/open/lava/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	switch(the_rcd.mode)
@@ -91,11 +92,6 @@
 
 /turf/open/lava/singularity_pull(S, current_size)
 	return
-
-/turf/open/lava/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/floors.dmi'
-	underlay_appearance.icon_state = "basalt"
-	return TRUE
 
 /turf/open/lava/GetHeatCapacity()
 	. = 700000
@@ -206,8 +202,8 @@
 			burn_obj.resistance_flags |= FLAMMABLE //Even fireproof things burn up in lava
 		if(burn_obj.resistance_flags & FIRE_PROOF)
 			burn_obj.resistance_flags &= ~FIRE_PROOF
-		if(burn_obj.armor.fire > 50) //obj with 100% fire armor still get slowly burned away.
-			burn_obj.armor = burn_obj.armor.setRating(fire = 50)
+		if(burn_obj.returnArmor().fire > 50) //obj with 100% fire armor still get slowly burned away.
+			burn_obj.setArmor(burn_obj.returnArmor().setRating(fire = 50))
 		burn_obj.fire_act(temperature_damage, 1000 * delta_time)
 		if(istype(burn_obj, /obj/structure/closet))
 			var/obj/structure/closet/burn_closet = burn_obj
@@ -231,13 +227,9 @@
 	icon_state = "lava-255"
 	base_icon_state = "lava"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_FLOOR_LAVA)
-	canSmoothWith = list(SMOOTH_GROUP_FLOOR_LAVA)
-
-/turf/open/lava/smooth/lava_land_surface
-	initial_gas = LAVALAND_DEFAULT_ATMOS
-
-	baseturfs = /turf/open/lava/smooth/lava_land_surface
+	smoothing_groups = SMOOTH_GROUP_TURF_OPEN + SMOOTH_GROUP_FLOOR_LAVA
+	canSmoothWith = SMOOTH_GROUP_FLOOR_LAVA
+	underfloor_accessibility = UNDERFLOOR_INTERACTABLE //This avoids strangeness when routing pipes / wires along catwalks over lava
 
 /turf/open/lava/smooth/airless
 	initial_gas = AIRLESS_ATMOS

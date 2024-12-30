@@ -26,7 +26,7 @@
 			to_chat(usr, "Could not find [name]. Skipping.")
 			continue
 		//Get reaction
-		var/list/reactions = GLOB.chemical_reactions_list_product_index[reagent.type]
+		var/list/reactions = SSreagents.chemical_reactions_list_product_index[reagent.type]
 
 		if(!length(reactions))
 			to_chat(usr, "Could not find [name] reaction! Continuing anyways.")
@@ -49,16 +49,6 @@
 	//!style='background-color:#FFEE88;'|{{anchor|Synthetic-derived growth factor}}Synthetic-derived growth factor<span style="color:#A502E0;background-color:white">▮</span>
 	var/outstring = "!style='background-color:#FFEE88;'|{{anchor|[reagent.name]}}[reagent.name]<span style=\"color:[reagent.color];background-color:white\">▮</span>"
 
-	if(istype(reagent, /datum/reagent/inverse))
-		outstring += "\n<br>Inverse reagent"
-
-	else
-		var/datum/reagent/inverse_reagent = GLOB.chemical_reagents_list[reagent.inverse_chem]
-		if(inverse_reagent)
-			outstring += "\n<br>Inverse: \[\[#[inverse_reagent.name]|[inverse_reagent.name]\]\] <[reagent.inverse_chem_val*100]%"
-	var/ph_color
-	CONVERT_PH_TO_COLOR(reagent.ph, ph_color)
-	outstring += "\n<br>pH: [reagent.ph]<span style=\"color:[ph_color];background-color:white\">▮</span>"
 	outstring += "\n|"
 
 	//RECIPE
@@ -71,11 +61,7 @@
 		//min temp
 		if(reaction.is_cold_recipe)
 			outstring += "<b>Cold reaction</b>\n<br>"
-		outstring += "<b>Min temp:</b> [reaction.required_temp]K\n<br><b>Overheat:</b> [reaction.overheat_temp]K\n<br><b>Optimal pH:</b> [reaction.optimal_ph_min] to [reaction.optimal_ph_max]"
-
-		//Overly impure levels
-		if(reaction.purity_min)
-			outstring += "\n<br><b>Unstable purity:</b> <[reaction.purity_min*100]%"
+		outstring += "<b>Min temp:</b> [reaction.required_temp]K\n<br><b>Overheat:</b> [reaction.overheat_temp]K\n<br>"
 
 		//Kinetics
 		var/thermic = reaction.thermic_constant
@@ -111,39 +97,6 @@
 			//if("cheesey")
 				//outstring += "<br>Dangerously Cheesey"
 
-		//pH drift
-		if(reaction.results)
-			var/start_ph = 0
-			var/reactant_vol = 0
-			for(var/typepath in reaction.required_reagents)
-				var/datum/reagent/req_reagent = GLOB.chemical_reagents_list[typepath]
-				start_ph += req_reagent.ph * reaction.required_reagents[typepath]
-				reactant_vol += reaction.required_reagents[typepath]
-
-			var/product_vol = 0
-			var/end_ph = 0
-			for(var/typepath in reaction.results)
-				var/datum/reagent/prod_reagent = GLOB.chemical_reagents_list[typepath]
-				end_ph += prod_reagent.ph * reaction.results[typepath]
-				product_vol += reaction.results[typepath]
-
-			if(reactant_vol || product_vol)
-				start_ph = start_ph / reactant_vol
-				end_ph = end_ph / product_vol
-				var/sum_change = end_ph - start_ph
-				sum_change += reaction.H_ion_release
-
-				if(sum_change > 0)
-					outstring += "\n<br>H+ consuming"
-				else if (sum_change < 0)
-					outstring += "\n<br>H+ producing"
-			else
-				to_chat(usr, "[reaction] doesn't have valid product and reagent volumes! Please tell Fermi.")
-		else
-			if(reaction.H_ion_release > 0)
-				outstring += "\n<br>H+ consuming"
-			else if (reaction.H_ion_release < 0)
-				outstring += "\n<br>H+ producing"
 
 		//container
 		if(reaction.required_container)
@@ -152,9 +105,6 @@
 			container_name = replacetext(container_name, "_", " ")
 			outstring += "\n<br>[container_name]"
 
-		//Warn if it's dangerous
-		if(reaction.reaction_tags & REACTION_TAG_DANGEROUS)
-			outstring += "\n<br><b>Dangerous</b>"
 		outstring += "\n|"
 
 	//Description
@@ -162,7 +112,7 @@
 	outstring += "\n|"
 
 	//Chemical properties - *2 because 1 tick is every 2s
-	outstring += "<b>Rate:</b> [reagent.metabolization_rate*2]u/tick\n<br><b>Unreacted purity:</b> [reagent.creation_purity*100]%[(reagent.overdose_threshold ? "\n<br><b>OD:</b> [reagent.overdose_threshold]u" : "")]"
+	outstring += "<b>Rate:</b> [reagent.metabolization_rate*2]u/tick\n<br>[(reagent.overdose_threshold ? "\n<br><b>OD:</b> [reagent.overdose_threshold]u" : "")]"
 
 	if(length(reagent.addiction_types))
 		outstring += "\n<br><b>Addictions:</b>"

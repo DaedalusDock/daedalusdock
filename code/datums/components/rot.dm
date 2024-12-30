@@ -43,7 +43,7 @@
 		RegisterSignal(parent, COMSIG_MOVABLE_BUMP, PROC_REF(rot_react))
 	if(isliving(parent))
 		RegisterSignal(parent, COMSIG_LIVING_REVIVE, PROC_REF(react_to_revive)) //mobs stop this when they come to life
-		RegisterSignal(parent, COMSIG_LIVING_GET_PULLED, PROC_REF(rot_react_touch))
+		RegisterSignal(parent, COMSIG_ATOM_GET_GRABBED, PROC_REF(rot_react_touch))
 	if(iscarbon(parent))
 		var/mob/living/carbon/carbon_parent = parent
 		RegisterSignal(carbon_parent.reagents, list(COMSIG_REAGENTS_ADD_REAGENT,
@@ -87,9 +87,9 @@
 
 /datum/component/rot/proc/check_reagent(datum/reagents/source, datum/reagent/modified)
 	SIGNAL_HANDLER
-	if(modified && !istype(modified, /datum/reagent/toxin/formaldehyde) && !istype(modified, /datum/reagent/cryostylane))
+	if(modified && !istype(modified, /datum/reagent/space_cleaner))
 		return
-	if(source.has_reagent(/datum/reagent/toxin/formaldehyde, 15) || source.has_reagent(/datum/reagent/cryostylane))
+	if(source.has_reagent(/datum/reagent/space_cleaner, 15))
 		rest(REAGENT_BLOCKER)
 		return
 	start_up(REAGENT_BLOCKER)
@@ -119,6 +119,8 @@
 /// Triggered when something enters the component's parent.
 /datum/component/rot/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
+	if(arrived == parent)
+		return
 	rot_react(source, arrived)
 
 ///The main bit of logic for the rot component, does a temperature check and has a chance to infect react_to
@@ -147,9 +149,9 @@
 		return
 
 	//We're running just under the "worst disease", since we don't want these to be too strong
-	var/datum/disease/advance/random/rand_disease = new(rand(4 * strength * time_scaling), rand(strength * 5 * time_scaling))
+	var/datum/pathogen/advance/random/rand_disease = new(rand(4 * strength * time_scaling), rand(strength * 5 * time_scaling))
 	rand_disease.name = "Unknown"
-	react_to.ContactContractDisease(rand_disease, target_zone)
+	react_to.try_contact_contract_pathogen(rand_disease, target_zone)
 
 #undef REAGENT_BLOCKER
 #undef TEMPERATURE_BLOCKER

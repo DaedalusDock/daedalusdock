@@ -14,8 +14,10 @@
 			candidates.Remove(P)
 		else if((exclusive_roles.len > 0) && !(P.mind.assigned_role.title in exclusive_roles)) // Is the rule exclusive to their job?
 			candidates.Remove(P)
-		else if (!((antag_preference || antag_flag) in P.client.prefs.be_special) || is_banned_from(P.ckey, list(antag_flag_override || antag_flag, ROLE_SYNDICATE)))
-			candidates.Remove(P)
+		else
+			var/list/client_antags = P.client.prefs.read_preference(/datum/preference/blob/antagonists)
+			if(!client_antags[antag_preference || antag_flag] || is_banned_from(P.ckey, list(antag_flag_override || antag_flag, ROLE_SYNDICATE)))
+				candidates.Remove(P)
 
 /datum/dynamic_ruleset/latejoin/ready(forced = 0)
 	if (!forced)
@@ -52,9 +54,8 @@
 	antag_flag_override = ROLE_TRAITOR
 	protected_roles = list(
 		JOB_CAPTAIN,
-		JOB_DETECTIVE,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
 	)
@@ -84,13 +85,12 @@
 		JOB_AI,
 		JOB_CAPTAIN,
 		JOB_CHIEF_ENGINEER,
-		JOB_CHIEF_MEDICAL_OFFICER,
+		JOB_MEDICAL_DIRECTOR,
 		JOB_CYBORG,
 		JOB_DETECTIVE,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
-		JOB_RESEARCH_DIRECTOR,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
 	)
@@ -99,7 +99,7 @@
 		JOB_CYBORG,
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
 	)
@@ -124,8 +124,9 @@
 		return FALSE
 	var/head_check = 0
 	for(var/mob/player in GLOB.alive_player_list)
-		if (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+		if (player.mind.assigned_role.departments_bitflags & (DEPARTMENT_BITFLAG_COMPANY_LEADER))
 			head_check++
+
 	return (head_check >= required_heads_of_staff)
 
 /datum/dynamic_ruleset/latejoin/provocateur/execute()
@@ -136,7 +137,6 @@
 		revolution = new()
 		var/datum/antagonist/rev/head/new_head = new()
 		new_head.give_flash = TRUE
-		new_head.give_hud = TRUE
 		new_head.remove_clumsy = TRUE
 		new_head = M.mind.add_antag_datum(new_head, revolution)
 		revolution.update_objectives()
@@ -149,12 +149,15 @@
 		return FALSE
 
 /datum/dynamic_ruleset/latejoin/provocateur/rule_process()
-	var/winner = revolution.process_victory(revs_win_threat_injection)
+	var/winner = revolution.check_completion()
 	if (isnull(winner))
 		return
 
 	finished = winner
 	return RULESET_STOP_PROCESSING
+
+/datum/dynamic_ruleset/latejoin/provocateur/check_finished()
+	return !!finished
 
 /// Checks for revhead loss conditions and other antag datums.
 /datum/dynamic_ruleset/latejoin/provocateur/proc/check_eligible(datum/mind/M)
@@ -179,9 +182,8 @@
 	antag_flag_override = ROLE_HERETIC
 	protected_roles = list(
 		JOB_CAPTAIN,
-		JOB_DETECTIVE,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,

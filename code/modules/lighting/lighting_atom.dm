@@ -4,7 +4,7 @@
 #define NONSENSICAL_VALUE -99999
 /atom/proc/set_light(l_outer_range, l_inner_range, l_power, l_falloff_curve = LIGHTING_DEFAULT_FALLOFF_CURVE, l_color = NONSENSICAL_VALUE, l_on)
 	if(l_outer_range > 0 && l_outer_range < MINIMUM_USEFUL_LIGHT_RANGE)
-		l_outer_range = MINIMUM_USEFUL_LIGHT_RANGE //Brings the range up to 1.4, which is just barely brighter than the soft lighting that surrounds players.
+		l_outer_range = MINIMUM_USEFUL_LIGHT_RANGE
 
 	if(SEND_SIGNAL(src, COMSIG_ATOM_SET_LIGHT, l_inner_range, l_outer_range, l_power, l_falloff_curve, l_color, l_on) & COMPONENT_BLOCK_LIGHT_UPDATE)
 		return
@@ -13,7 +13,7 @@
 		set_light_power(l_power)
 
 	if(!isnull(l_inner_range) || !isnull(l_outer_range))
-		if(l_inner_range >= l_outer_range)
+		if(isnull(l_inner_range))
 			l_inner_range = l_outer_range / 4
 		set_light_range(l_inner_range, l_outer_range)
 
@@ -35,11 +35,11 @@
 /// Will update the light (duh).
 /// Creates or destroys it if needed, makes it update values, makes sure it's got the correct source turf...
 /atom/proc/update_light()
-	set waitfor = FALSE
+	SHOULD_NOT_SLEEP(TRUE)
 	if (QDELETED(src))
 		return
 
-	if(light_system != STATIC_LIGHT)
+	if(light_system != COMPLEX_LIGHT)
 		CRASH("update_light() for [src] with following light_system value: [light_system]")
 
 	if (!light_power || !light_outer_range || !light_on) // We won't emit light anyways, destroy the light source.

@@ -36,14 +36,10 @@
 #define DIAG_PATH_HUD "16"
 /// Gland indicators for abductors
 #define GLAND_HUD "17"
-#define SENTIENT_DISEASE_HUD "18"
+#define SENTIENT_PATHOGEN_HUD "18"
 #define AI_DETECT_HUD "19"
 /// Displays launchpads' targeting reticle
 #define DIAG_LAUNCHPAD_HUD "22"
-//for antag huds. these are used at the /mob level
-#define ANTAG_HUD "23"
-// for fans to identify pins
-#define FAN_HUD "24"
 
 //by default everything in the hud_list of an atom is an image
 //a value in hud_list with one of these will change that behavior
@@ -60,7 +56,6 @@
 #define DATA_HUD_ABDUCTOR 7
 #define DATA_HUD_SENTIENT_DISEASE 8
 #define DATA_HUD_AI_DETECT 9
-#define DATA_HUD_FAN 10
 
 // Notification action types
 #define NOTIFY_JUMP "jump"

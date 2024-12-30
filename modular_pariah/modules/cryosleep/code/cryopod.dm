@@ -20,7 +20,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 	// circuit = /obj/item/circuitboard/cryopodcontrol
 	density = FALSE
 	interaction_flags_machine = INTERACT_MACHINE_OFFLINE
-	req_one_access = list(ACCESS_HEADS, ACCESS_ARMORY) // Heads of staff or the warden can go here to claim recover items from their department that people went were cryodormed with.
+	req_one_access = list(ACCESS_SECURITY) // Security can reclaim objects.
 	var/mode = null
 
 	/// Used for logging people entering cryosleep and important items they are carrying.
@@ -81,7 +81,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 		var/mob/living/living_user = user
 		var/obj/item/card/id/id = living_user.get_idcard()
 		if(id)
-			if((ACCESS_HEADS in id.access) || (ACCESS_ARMORY in id.access))
+			if((ACCESS_MANAGEMENT in id.access) || (ACCESS_ARMORY in id.access))
 				item_retrieval_allowed = TRUE
 	data["item_retrieval_allowed"] = item_retrieval_allowed
 
@@ -219,45 +219,34 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 				to_chat(mind.current, "<BR>[span_userdanger("Your target is no longer within reach. Objective removed!")]")
 				mind.announce_objectives()
 		else if(istype(objective.target) && objective.target == mob_occupant.mind)
-			if(istype(objective, /datum/objective/contract))
-				var/datum/contractor_hub/the_hub = GLOB.contractors[objective.owner]
-				if(!the_hub)
-					return
-				for(var/datum/syndicate_contract/affected_contract as anything in the_hub.assigned_contracts)
-					if(affected_contract.contract == objective)
-						affected_contract.generate(the_hub.assigned_targets)
-						the_hub.assigned_targets.Add(affected_contract.contract.target)
-						to_chat(objective.owner.current, "<BR>[span_userdanger("Contract target out of reach. Contract rerolled.")]")
-						break
+			var/old_target = objective.target
+			objective.target = null
+			if(!objective)
+				return
+			objective.find_target()
+			if(!objective.target && objective.owner)
+				to_chat(objective.owner.current, "<BR>[span_userdanger("Your target is no longer within reach. Objective removed!")]")
+				for(var/datum/antagonist/antag in objective.owner.antag_datums)
+					antag.objectives -= objective
+			if (!objective.team)
+				objective.update_explanation_text()
+				objective.owner.announce_objectives()
+				to_chat(objective.owner.current, "<BR>[span_userdanger("You get the feeling your target is no longer within reach. Time for Plan [pick("A","B","C","D","X","Y","Z")]. Objectives updated!")]")
 			else
-				var/old_target = objective.target
-				objective.target = null
-				if(!objective)
-					return
-				objective.find_target()
-				if(!objective.target && objective.owner)
-					to_chat(objective.owner.current, "<BR>[span_userdanger("Your target is no longer within reach. Objective removed!")]")
-					for(var/datum/antagonist/antag in objective.owner.antag_datums)
-						antag.objectives -= objective
-				if (!objective.team)
-					objective.update_explanation_text()
-					objective.owner.announce_objectives()
+				var/list/objectivestoupdate
+				for(var/datum/mind/objective_owner in objective.get_owners())
+					to_chat(objective_owner.current, "<BR>[span_userdanger("You get the feeling your target is no longer within reach. Time for Plan [pick("A","B","C","D","X","Y","Z")]. Objectives updated!")]")
+					for(var/datum/objective/update_target_objective in objective_owner.get_all_objectives())
+						LAZYADD(objectivestoupdate, update_target_objective)
+				objectivestoupdate += objective.team.objectives
+				for(var/datum/objective/update_objective in objectivestoupdate)
+					if(update_objective.target != old_target || !istype(update_objective,objective.type))
+						continue
+					update_objective.target = objective.target
+					update_objective.update_explanation_text()
 					to_chat(objective.owner.current, "<BR>[span_userdanger("You get the feeling your target is no longer within reach. Time for Plan [pick("A","B","C","D","X","Y","Z")]. Objectives updated!")]")
-				else
-					var/list/objectivestoupdate
-					for(var/datum/mind/objective_owner in objective.get_owners())
-						to_chat(objective_owner.current, "<BR>[span_userdanger("You get the feeling your target is no longer within reach. Time for Plan [pick("A","B","C","D","X","Y","Z")]. Objectives updated!")]")
-						for(var/datum/objective/update_target_objective in objective_owner.get_all_objectives())
-							LAZYADD(objectivestoupdate, update_target_objective)
-					objectivestoupdate += objective.team.objectives
-					for(var/datum/objective/update_objective in objectivestoupdate)
-						if(update_objective.target != old_target || !istype(update_objective,objective.type))
-							continue
-						update_objective.target = objective.target
-						update_objective.update_explanation_text()
-						to_chat(objective.owner.current, "<BR>[span_userdanger("You get the feeling your target is no longer within reach. Time for Plan [pick("A","B","C","D","X","Y","Z")]. Objectives updated!")]")
-						update_objective.owner.announce_objectives()
-				qdel(objective)
+					update_objective.owner.announce_objectives()
+			qdel(objective)
 
 /obj/machinery/cryopod/proc/should_preserve_item(obj/item/item)
 	for(var/datum/objective_item/steal/possible_item in GLOB.possible_items)
@@ -284,17 +273,8 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 		crew_member["job"] = "N/A"
 
 	// Delete them from datacore.
-	var/announce_rank = null
-	for(var/datum/data/record/medical_record as anything in GLOB.data_core.medical)
-		if(medical_record.fields["name"] == mob_occupant.real_name)
-			qdel(medical_record)
-	for(var/datum/data/record/security_record as anything in GLOB.data_core.security)
-		if(security_record.fields["name"] == mob_occupant.real_name)
-			qdel(security_record)
-	for(var/datum/data/record/general_record as anything in GLOB.data_core.general)
-		if(general_record.fields["name"] == mob_occupant.real_name)
-			announce_rank = general_record.fields["rank"]
-			qdel(general_record)
+	var/announce_rank = SSdatacore.get_record_by_name(mob_occupant.real_name, DATACORE_RECORDS_STATION)?.fields[DATACORE_RANK]
+	SSdatacore.demanifest(mob_occupant.real_name)
 
 	var/obj/machinery/computer/cryopod/control_computer = control_computer_weakref?.resolve()
 	if(!control_computer)
@@ -309,8 +289,8 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 
 	visible_message(span_notice("[src] hums and hisses as it moves [mob_occupant.real_name] into storage."))
 
-	for(var/obj/item/item_content as anything in mob_occupant)
-		if(!istype(item_content) || HAS_TRAIT(item_content, TRAIT_NODROP))
+	for(var/obj/item/item_content in mob_occupant)
+		if(!HAS_TRAIT(item_content, TRAIT_NODROP) || (item_content.item_flags & ABSTRACT))
 			continue
 		if (issilicon(mob_occupant) && istype(item_content, /obj/item/mmi))
 			continue
@@ -325,7 +305,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 	open_machine()
 	name = initial(name)
 
-/obj/machinery/cryopod/MouseDrop_T(mob/living/target, mob/user)
+/obj/machinery/cryopod/MouseDroppedOn(mob/living/target, mob/user)
 	if(!istype(target) || !can_interact(user) || !target.Adjacent(user) || !ismob(target) || isanimal(target) || !istype(user.loc, /turf) || target.buckled)
 		return
 

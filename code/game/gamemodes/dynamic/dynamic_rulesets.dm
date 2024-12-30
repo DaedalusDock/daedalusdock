@@ -123,7 +123,7 @@
 		antag_fraction += ((1 + ruleset.scaled_times) * ruleset.get_antag_cap(population)) / mode.roundstart_pop_ready
 
 	for(var/i in 1 to max_scale)
-		if(antag_fraction < 0.25)
+		if(antag_fraction < 0.15)
 			scaled_times += 1
 			antag_fraction += get_antag_cap(population) / mode.roundstart_pop_ready // we added new antags, gotta update the %
 
@@ -184,6 +184,10 @@
 /datum/dynamic_ruleset/proc/trim_candidates()
 	return
 
+/// Returns TRUE if the round should end.
+/datum/dynamic_ruleset/proc/check_finished()
+	return FALSE
+
 /// Set mode result and news report here.
 /// Only called if ruleset is flagged as HIGH_IMPACT_RULESET
 /datum/dynamic_ruleset/proc/round_result()
@@ -210,7 +214,8 @@
 			candidates.Remove(candidate_player)
 			continue
 
-		if (!((antag_preference || antag_flag) in candidate_client.prefs.be_special))
+		var/list/client_antags = candidate_client.prefs.read_preference(/datum/preference/blob/antagonists)
+		if (!client_antags[antag_preference || antag_flag])
 			candidates.Remove(candidate_player)
 			continue
 
@@ -225,7 +230,7 @@
 			for(var/role in exclusive_roles)
 				var/datum/job/job = SSjob.GetJob(role)
 
-				if((role in candidate_client.prefs.job_preferences) && SSjob.check_job_eligibility(candidate_player, job, "Dynamic Roundstart TC", add_job_to_log = TRUE)==JOB_AVAILABLE)
+				if((role in candidate_client.prefs.read_preference(/datum/preference/blob/job_priority)) && SSjob.check_job_eligibility(candidate_player, job, "Dynamic Roundstart TC", add_job_to_log = TRUE)==JOB_AVAILABLE)
 					exclusive_candidate = TRUE
 					break
 

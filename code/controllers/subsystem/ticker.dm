@@ -9,7 +9,10 @@ SUBSYSTEM_DEF(ticker)
 	runlevels = RUNLEVEL_LOBBY | RUNLEVEL_SETUP | RUNLEVEL_GAME
 
 	var/current_state = GAME_STATE_STARTUP //state of current round (used by process()) Use the defines GAME_STATE_* !
-	var/force_ending = 0 //Round was ended by admin intervention
+
+	/// When TRUE, the round will end next tick or has already ended. Use SSticker.end_round() instead. This var is used by non-gamemodes to end the round.
+	VAR_PRIVATE/force_ending = FALSE
+
 	// If true, there is no lobby phase, the game starts immediately.
 	#ifndef LOWMEMORYMODE
 	var/start_immediately = FALSE
@@ -19,10 +22,16 @@ SUBSYSTEM_DEF(ticker)
 	var/setup_done = FALSE //All game setup done including mode post setup and
 
 	var/datum/game_mode/mode = null
-	///JSON for the music played in the lobby
-	var/list/login_music
-	///JSON for the round end music.
-	var/list/credits_music
+	///The name of the gamemode to show at roundstart. This is here to admins can give fake gamemodes.
+	var/mode_display_name = null
+
+	///All players that are readied up and about to spawn in.
+	var/list/mob/dead/new_player/ready_players
+
+	///Media track for the music played in the lobby
+	var/datum/media/login_music
+	///Media track for the round end music.
+	var/datum/media/credits_music
 
 	var/round_end_sound //music/jingle played when the world reboots
 	var/round_end_sound_sent = TRUE //If all clients have loaded it
@@ -48,6 +57,8 @@ SUBSYSTEM_DEF(ticker)
 	var/totalPlayersReady = 0
 	/// Num of ready admins, used for pregame stats on statpanel (only viewable by admins)
 	var/total_admins_ready = 0
+	/// Data for lobby player stat panels during the pre-game.
+	var/list/player_ready_data = list()
 
 	var/queue_delay = 0
 	var/list/queued_players = list() //used for join queues when the server exceeds the hard population cap
@@ -94,11 +105,23 @@ SUBSYSTEM_DEF(ticker)
 
 		GLOB.syndicate_code_response_regex = codeword_match
 
+	if(!GLOB.revolution_code_phrase)
+		GLOB.revolution_code_phrase = generate_code_phrase(return_list=TRUE)
+
+		var/codewords = jointext(GLOB.syndicate_code_phrase, "|")
+		var/regex/codeword_match = new("([codewords])", "ig")
+
+		GLOB.revolution_code_phrase_regex = codeword_match
+
 	start_at = world.time + (CONFIG_GET(number/lobby_countdown) * 10)
 	if(CONFIG_GET(flag/randomize_shift_time))
 		gametime_offset = rand(0, 23) HOURS
 	else if(CONFIG_GET(flag/shift_time_realtime))
 		gametime_offset = world.timeofday
+
+	if(GLOB.is_debug_server)
+		mode = new /datum/game_mode/extended
+
 	return ..()
 
 /datum/controller/subsystem/ticker/fire()
@@ -122,11 +145,46 @@ SUBSYSTEM_DEF(ticker)
 			totalPlayers = LAZYLEN(GLOB.new_player_list)
 			totalPlayersReady = 0
 			total_admins_ready = 0
+			player_ready_data.Cut()
+			var/list/players = list()
+
 			for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
-				if(player.ready == PLAYER_READY_TO_PLAY)
+				if(player.ready == PLAYER_READY_TO_PLAY || player.ready == PLAYER_READY_TO_OBSERVE)
 					++totalPlayersReady
 					if(player.client?.holder)
 						++total_admins_ready
+
+					players[player.key] = player
+
+			sortTim(players, GLOBAL_PROC_REF(cmp_text_asc))
+
+			if(CONFIG_GET(flag/show_job_estimation))
+				for(var/ckey in players)
+					var/mob/dead/new_player/player = players[ckey]
+					var/datum/preferences/prefs = player.client?.prefs
+					if(!prefs)
+						continue
+					if(!prefs.read_preference(/datum/preference/toggle/ready_job))
+						continue
+
+					var/display = player.client?.holder?.fakekey || ckey
+					if(player.ready == PLAYER_READY_TO_OBSERVE)
+						player_ready_data += "* [display] as Observer"
+						continue
+
+					var/datum/job/J = prefs.get_highest_priority_job()
+					if(!J)
+						player_ready_data += "* [display] forgot to pick a job!"
+						continue
+					var/title = prefs.alt_job_titles?[J.title] || J.title
+					if(player.ready == PLAYER_READY_TO_PLAY)
+						player_ready_data += "* [display] as [title]"
+
+				if(length(player_ready_data))
+					player_ready_data.Insert(1, "------------------")
+					player_ready_data.Insert(1, "Job Estimation:")
+					player_ready_data.Insert(1, "")
+
 
 			if(start_immediately)
 				timeLeft = 0
@@ -150,6 +208,7 @@ SUBSYSTEM_DEF(ticker)
 		if(GAME_STATE_SETTING_UP)
 			if(!setup())
 				//setup failed
+				start_immediately = FALSE //If the game failed to start, don't keep trying
 				current_state = GAME_STATE_STARTUP
 				start_at = world.time + (CONFIG_GET(number/lobby_countdown) * 10)
 				timeLeft = null
@@ -157,10 +216,11 @@ SUBSYSTEM_DEF(ticker)
 				SEND_SIGNAL(src, COMSIG_TICKER_ERROR_SETTING_UP)
 
 		if(GAME_STATE_PLAYING)
-			mode.process(wait * 0.1)
+			if(mode.datum_flags & DF_ISPROCESSING)
+				mode.process(wait * 0.1)
 			check_queue()
 
-			if(!roundend_check_paused && mode.check_finished(force_ending) || force_ending)
+			if(force_ending || (!roundend_check_paused && mode.check_finished()))
 				current_state = GAME_STATE_FINISHED
 				toggle_ooc(TRUE) // Turn it on
 				toggle_dooc(TRUE)
@@ -171,28 +231,22 @@ SUBSYSTEM_DEF(ticker)
 
 /datum/controller/subsystem/ticker/proc/setup()
 	to_chat(world, span_boldannounce("Starting game..."))
-	to_chat(world, "<br><hr><br>")
 	var/init_start = world.timeofday
 
-	mode = new /datum/game_mode/dynamic
+	ready_players = list() // This needs to be reset every setup, incase the gamemode fails to start.
+	for(var/i in GLOB.new_player_list)
+		var/mob/dead/new_player/player = i
+		if(player.ready == PLAYER_READY_TO_PLAY && player.mind && player.check_preferences())
+			ready_players.Add(player)
 
-	CHECK_TICK
-	//Configure mode and assign player to special mode stuff
-	var/can_continue = 0
-	can_continue = src.mode.pre_setup() //Choose antagonists
-	CHECK_TICK
-	can_continue = can_continue && SSjob.DivideOccupations() //Distribute jobs
-	CHECK_TICK
+	// Set up gamemode, divide up jobs.
+	if(!initialize_gamemode())
+		return FALSE
 
-	if(!GLOB.Debug2)
-		if(!can_continue)
-			log_game("Game failed pre_setup")
-			QDEL_NULL(mode)
-			to_chat(world, "<B>Error setting up game.</B> Reverting to pre-game lobby.")
-			SSjob.ResetOccupations()
-			return FALSE
-	else
-		message_admins(span_notice("DEBUG: Bypassing prestart checks..."))
+	to_chat(world, span_boldannounce("The gamemode is: [get_mode_name()]."))
+	if(mode_display_name)
+		message_admins("The real gamemode is: [get_mode_name(TRUE)].")
+	to_chat(world, "<br><hr><br>")
 
 	CHECK_TICK
 
@@ -207,12 +261,17 @@ SUBSYSTEM_DEF(ticker)
 		toggle_ooc(FALSE) // Turn it off
 
 	CHECK_TICK
-	GLOB.start_landmarks_list = shuffle(GLOB.start_landmarks_list) //Shuffle the order of spawn points so they dont always predictably spawn bottom-up and right-to-left
+
+	//Shuffle the order of spawn points so they dont always predictably spawn bottom-up and right-to-left
+	GLOB.start_landmarks_list = shuffle(GLOB.start_landmarks_list)
+	for(var/name in GLOB.start_landmarks_by_name)
+		GLOB.start_landmarks_by_name[name] = shuffle(GLOB.start_landmarks_by_name[name])
+
 	create_characters() //Create player characters
 	collect_minds()
 	equip_characters()
 
-	GLOB.data_core.manifest()
+	SSdatacore.generate_manifest()
 
 	transfer_characters() //transfer keys to the new mobs
 
@@ -240,8 +299,10 @@ SUBSYSTEM_DEF(ticker)
 			var/datum/holiday/holiday = SSevents.holidays[holidayname]
 			to_chat(world, "<h4>[holiday.greet()]</h4>")
 
+	//Setup the antags AFTTTTER theyve gotten their jobs
+	mode.setup_antags()
 	PostSetup()
-
+	SSticker.ready_players = null
 	return TRUE
 
 /datum/controller/subsystem/ticker/proc/PostSetup()
@@ -252,11 +313,10 @@ SUBSYSTEM_DEF(ticker)
 
 	var/list/adm = get_admin_counts()
 	var/list/allmins = adm["present"]
-	send2adminchat("Server", "Round [GLOB.round_id ? "#[GLOB.round_id]" : ""] has started[allmins.len ? ".":" with no active admins online!"]")
+	send2adminchat("Server", "Round [GLOB.round_id ? "#[GLOB.round_id]:" : "of"] [SSticker.get_mode_name()] has started[allmins.len ? ".":" with no active admins online!"]")
 	setup_done = TRUE
 
-	for(var/i in GLOB.start_landmarks_list)
-		var/obj/effect/landmark/start/S = i
+	for(var/obj/effect/landmark/start/S as anything in GLOB.start_landmarks_list)
 		if(istype(S)) //we can not runtime here. not in this important of a proc.
 			S.after_round_start()
 		else
@@ -274,6 +334,9 @@ SUBSYSTEM_DEF(ticker)
 			to_chat(iter_human, span_notice("You will gain [round(iter_human.hardcore_survival_score) * 2] hardcore random points if you greentext this round!"))
 		else
 			to_chat(iter_human, span_notice("You will gain [round(iter_human.hardcore_survival_score)] hardcore random points if you survive this round!"))
+
+/datum/controller/subsystem/ticker/proc/end_round()
+	force_ending = TRUE
 
 //These callbacks will fire after roundstart key transfer
 /datum/controller/subsystem/ticker/proc/OnRoundstart(datum/callback/cb)
@@ -294,19 +357,33 @@ SUBSYSTEM_DEF(ticker)
 		qdel(bomb)
 
 /datum/controller/subsystem/ticker/proc/create_characters()
-	for(var/i in GLOB.new_player_list)
-		var/mob/dead/new_player/player = i
-		if(player.ready == PLAYER_READY_TO_PLAY && player.mind)
-			GLOB.joined_player_list += player.ckey
-			var/atom/destination = player.mind.assigned_role.get_roundstart_spawn_point()
-			if(!destination) // Failed to fetch a proper roundstart location, won't be going anywhere.
-				player.new_player_panel()
-				continue
-			player.create_character(destination)
-		else if(player.ready == PLAYER_READY_TO_OBSERVE)
-			player.make_me_an_observer(TRUE)
-		else
-			player.new_player_panel()
+	var/list/spawn_spots = SSjob.latejoin_trackers.Copy()
+	var/list/spawn_spots_reload = spawn_spots.Copy() //In case we run out, we need something to reload from.
+	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
+		if(!player.mind)
+			//New player has logged out.
+			continue
+
+		switch(player.ready)
+			if(PLAYER_READY_TO_OBSERVE)
+				player.make_me_an_observer(TRUE)
+
+			if(PLAYER_READY_TO_PLAY)
+				GLOB.joined_player_list += player.ckey
+				var/atom/spawn_loc = player.mind.assigned_role.get_roundstart_spawn_point()
+				if(spawn_loc) //If we've been given an override, just take it and get out of here.
+					player.create_character(spawn_loc)
+
+				else //We haven't been passed an override destination. Give us the usual treatment.
+					if(!length(spawn_spots))
+						spawn_spots = spawn_spots_reload.Copy()
+
+					spawn_loc = pick_n_take(spawn_spots)
+					player.create_character(spawn_loc)
+			else //PLAYER_NOT_READY
+				//Reload their player panel so they see latejoin instead of ready.
+				player.npp.update()
+
 		CHECK_TICK
 
 /datum/controller/subsystem/ticker/proc/collect_minds()
@@ -318,103 +395,77 @@ SUBSYSTEM_DEF(ticker)
 
 
 /datum/controller/subsystem/ticker/proc/equip_characters()
-	GLOB.security_officer_distribution = decide_security_officer_departments(
-		shuffle(GLOB.new_player_list),
-		shuffle(GLOB.available_depts),
-	)
+	var/mob/dead/new_player/picked_spare_id_candidate = get_captain_or_backup()
+	// This is a bitfield!!!
+	var/departments_without_heads = filter_headless_departments(SSjob.get_necessary_departments())
 
-	var/captainless = TRUE
+	for(var/mob/dead/new_player/new_player_mob as anything in GLOB.new_player_list)
+		if(QDELETED(new_player_mob) || !isliving(new_player_mob.new_character))
+			CHECK_TICK
+			continue
 
-	var/highest_rank = length(SSjob.chain_of_command) + 1
+		var/mob/living/new_player_living = new_player_mob.new_character
+		if(!new_player_living.mind)
+			CHECK_TICK
+			continue
+
+		var/datum/job/player_assigned_role = new_player_living.mind.assigned_role
+		if(player_assigned_role.job_flags & JOB_EQUIP_RANK)
+			SSjob.EquipRank(new_player_living, player_assigned_role, new_player_mob.client)
+
+		player_assigned_role.after_roundstart_spawn(new_player_living, new_player_mob.client)
+
+		if(picked_spare_id_candidate == new_player_mob)
+			var/acting_captain = !is_captain_job(player_assigned_role)
+			SSjob.promote_to_captain(new_player_living, acting_captain)
+			SSshuttle.arrivals?.OnDock(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(priority_announce), player_assigned_role.get_captaincy_announcement(new_player_living), null, null, null, null, FALSE))
+
+		if(departments_without_heads && (player_assigned_role.departments_bitflags & departments_without_heads))
+			departments_without_heads &= ~SSjob.promote_to_department_head(new_player_living, player_assigned_role)
+
+		if((player_assigned_role.job_flags & JOB_ASSIGN_QUIRKS) && ishuman(new_player_living) && CONFIG_GET(flag/roundstart_traits))
+			SSquirks.AssignQuirks(new_player_living, new_player_mob.client)
+
+		CHECK_TICK
+
+/datum/controller/subsystem/ticker/proc/get_captain_or_backup()
 	var/list/spare_id_candidates = list()
-	var/mob/dead/new_player/picked_spare_id_candidate
+	var/datum/job_department/management = SSjob.get_department_type(/datum/job_department/command)
 
 	// Find a suitable player to hold captaincy.
 	for(var/mob/dead/new_player/new_player_mob as anything in GLOB.new_player_list)
 		if(is_banned_from(new_player_mob.ckey, list(JOB_CAPTAIN)))
 			CHECK_TICK
 			continue
+
 		if(!ishuman(new_player_mob.new_character))
 			continue
+
 		var/mob/living/carbon/human/new_player_human = new_player_mob.new_character
 		if(!new_player_human.mind || is_unassigned_job(new_player_human.mind.assigned_role))
 			continue
+
 		// Keep a rolling tally of who'll get the cap's spare ID vault code.
 		// Check assigned_role's priority and curate the candidate list appropriately.
-		var/player_assigned_role = new_player_human.mind.assigned_role.title
-		var/spare_id_priority = SSjob.chain_of_command[player_assigned_role]
-		if(spare_id_priority)
-			if(spare_id_priority < highest_rank)
-				spare_id_candidates.Cut()
-				spare_id_candidates += new_player_mob
-				highest_rank = spare_id_priority
-			else if(spare_id_priority == highest_rank)
-				spare_id_candidates += new_player_mob
+		if(new_player_human.mind.assigned_role.departments_bitflags & management.department_bitflags)
+			spare_id_candidates += new_player_human
+
 		CHECK_TICK
 
 	if(length(spare_id_candidates))
-		picked_spare_id_candidate = pick(spare_id_candidates)
+		return pick(spare_id_candidates)
 
-	for(var/mob/dead/new_player/new_player_mob as anything in GLOB.new_player_list)
-		if(QDELETED(new_player_mob) || !isliving(new_player_mob.new_character))
-			CHECK_TICK
-			continue
-		var/mob/living/new_player_living = new_player_mob.new_character
-		if(!new_player_living.mind)
-			CHECK_TICK
-			continue
-		var/datum/job/player_assigned_role = new_player_living.mind.assigned_role
-		if(player_assigned_role.job_flags & JOB_EQUIP_RANK)
-			SSjob.EquipRank(new_player_living, player_assigned_role, new_player_mob.client)
-		player_assigned_role.after_roundstart_spawn(new_player_living, new_player_mob.client)
-		if(picked_spare_id_candidate == new_player_mob)
-			captainless = FALSE
-			var/acting_captain = !is_captain_job(player_assigned_role)
-			SSjob.promote_to_captain(new_player_living, acting_captain)
-			OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(minor_announce), player_assigned_role.get_captaincy_announcement(new_player_living), ""))
-		if((player_assigned_role.job_flags & JOB_ASSIGN_QUIRKS) && ishuman(new_player_living) && CONFIG_GET(flag/roundstart_traits))
-			if(new_player_mob.client?.prefs?.should_be_random_hardcore(player_assigned_role, new_player_living.mind))
-				new_player_mob.client.prefs.hardcore_random_setup(new_player_living)
-			SSquirks.AssignQuirks(new_player_living, new_player_mob.client)
-		//PARIAH EDIT ADDITION
-		if(ishuman(new_player_living))
-			for(var/datum/loadout_item/item as anything in loadout_list_to_datums(new_player_mob.client?.prefs?.loadout_list))
-				item.post_equip_item(new_player_mob.client?.prefs, new_player_living)
-		//PARIAH EDIT END
-		CHECK_TICK
+/// Removes departments with a head present from the given list, returning the values as bitflags
+/datum/controller/subsystem/ticker/proc/filter_headless_departments(list/departments)
+	. = NONE
 
-	if(captainless)
-		for(var/mob/dead/new_player/new_player_mob as anything in GLOB.new_player_list)
-			var/mob/living/carbon/human/new_player_human = new_player_mob.new_character
-			if(new_player_human)
-				to_chat(new_player_mob, span_notice("Captainship not forced on anyone."))
-			CHECK_TICK
+	for(var/path in departments - /datum/job_department/command)
+		var/datum/job_department/department = SSjob.get_department_type(path)
+		var/datum/job/head_role = SSjob.GetJobType(department.department_head)
+		if(head_role.current_positions == 0)
+			. |= department.department_bitflags
 
-
-/datum/controller/subsystem/ticker/proc/decide_security_officer_departments(
-	list/new_players,
-	list/departments,
-)
-	var/list/officer_mobs = list()
-	var/list/officer_preferences = list()
-
-	for (var/mob/dead/new_player/new_player_mob as anything in new_players)
-		var/mob/living/carbon/human/character = new_player_mob.new_character
-		if (istype(character) && is_security_officer_job(character.mind?.assigned_role))
-			officer_mobs += character
-
-			var/datum/client_interface/client = GET_CLIENT(new_player_mob)
-			var/preference = client?.prefs?.read_preference(/datum/preference/choiced/security_department)
-			officer_preferences += preference
-
-	var/distribution = get_officer_departments(officer_preferences, departments)
-
-	var/list/output = list()
-
-	for (var/index in 1 to officer_mobs.len)
-		output[REF(officer_mobs[index])] = distribution[index]
-
-	return output
+	return .
 
 /datum/controller/subsystem/ticker/proc/transfer_characters()
 	var/list/livings = list()
@@ -443,7 +494,7 @@ SUBSYSTEM_DEF(ticker)
 		for (var/mob/dead/new_player/NP in queued_players)
 			to_chat(NP, span_userdanger("The alive players limit has been released!<br><a href='?src=[REF(NP)];late_join=override'>[html_encode(">>Join Game<<")]</a>"))
 			SEND_SOUND(NP, sound('sound/misc/notice1.ogg'))
-			NP.LateChoices()
+			NP.npp.LateChoices()
 		queued_players.len = 0
 		queue_delay = 0
 		return
@@ -458,7 +509,7 @@ SUBSYSTEM_DEF(ticker)
 				if(next_in_line?.client)
 					to_chat(next_in_line, span_userdanger("A slot has opened! You have approximately 20 seconds to join. <a href='?src=[REF(next_in_line)];late_join=override'>\>\>Join Game\<\<</a>"))
 					SEND_SOUND(next_in_line, sound('sound/misc/notice1.ogg'))
-					next_in_line.LateChoices()
+					next_in_line.npp.LateChoices()
 					return
 				queued_players -= next_in_line //Client disconnected, remove he
 			queue_delay = 0 //No vacancy: restart timer
@@ -607,7 +658,7 @@ SUBSYSTEM_DEF(ticker)
 	var/roll_credits_in = CONFIG_GET(number/eor_credits_delay) * 10
 	if(roll_credits)
 		if(roll_credits_in)
-			addtimer(CALLBACK(SScredits, TYPE_PROC_REF(/datum/controller/subsystem/credits, compile_credits), roll_credits_in))
+			addtimer(CALLBACK(SScredits, TYPE_PROC_REF(/datum/controller/subsystem/credits, compile_credits)), roll_credits_in)
 		else
 			SScredits.compile_credits()
 
@@ -653,103 +704,44 @@ SUBSYSTEM_DEF(ticker)
 	if(possible_themes.len)
 		return "[global.config.directory]/reboot_themes/[pick(possible_themes)]"
 
-/datum/controller/subsystem/ticker/proc/set_login_music(list/json)
-	if(!islist(json))
-		CRASH("Non-list given to set_login_music()!")
+/datum/controller/subsystem/ticker/proc/set_login_music(datum/media/track)
+	if(!istype(track))
+		CRASH("Non-datum/media given to set_login_music()!")
 
 	if(credits_music == login_music)
-		credits_music = json
-	login_music = json
+		credits_music = track
+	login_music = track
 
 	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
 		if(!player.client)
 			continue
 		player.client.playtitlemusic()
 
-/datum/controller/subsystem/ticker/proc/get_music_jsons(get_credits_music)
-	RETURN_TYPE(/list)
-	var/list/byond_sound_formats = list(
-		"mid" = TRUE,
-		"midi" = TRUE,
-		"mod" = TRUE,
-		"it" = TRUE,
-		"s3m" = TRUE,
-		"xm" = TRUE,
-		"oxm" = TRUE,
-		"wav" = TRUE,
-		"ogg" = TRUE,
-		"raw" = TRUE,
-		"wma" = TRUE,
-		"aiff" = TRUE,
-		"mp3" = TRUE,
-	)
-
-	var/list/music_data = list()
-	var/direct = get_credits_music ? "[global.config.directory]/credits_music/jsons/" : "[global.config.directory]/title_music/jsons/"
-	for(var/json_entry in flist(direct))
-		var/list/music_entry = json_decode(file2text("[direct][json_entry]"))
-		music_data += list(music_entry)
-
-	///Verify that the file actually exists!
-	for(var/entry in music_data)
-		if(entry["name"] == "EXAMPLE")
-			music_data -= list(entry)
-			continue
-
-		entry["file"] = "[config.directory]/[entry["file"]]"
-		if(!fexists(entry["file"]))
-			spawn(0)
-				UNTIL(SSticker.initialized)
-				message_admins("Music file for [entry["name"]] doesn't exist! ([entry["file"]]) call Kapu!")
-
-			music_data -= list(entry)
-			continue
-
-	///Remove any files with illegal extensions.
-	for(var/entry in music_data)
-		var/list/directory_split = splittext(entry["file"], "/")
-		var/list/extension_split = splittext(directory_split[length(directory_split)], ".")
-		if(extension_split.len >= 2)
-			var/ext = lowertext(extension_split[length(extension_split)]) //pick the real extension, no 'honk.ogg.exe' nonsense here
-			if(byond_sound_formats[ext])
-				continue
-		spawn(0)
-			UNTIL(SSticker.initialized)
-			message_admins("Music file for [entry["name"]] doesn't has an illegal file! ([entry["file"]]) call Kapu!")
-		music_data -= list(entry)
-
-	return music_data
-
 /datum/controller/subsystem/ticker/proc/pick_login_music()
-	var/list/title_music_data = list()
-	var/list/rare_music_data = list()
-	///The json of the song used last round.
-	var/list/old_login_music
+	var/list/title_music_data = SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_COMMON)
+	var/list/rare_music_data = SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_RARE)
+	///The full path of the last song used
+	var/old_login_music_t
+	///The full datum of the last song used.
+	var/datum/media/old_login_music
 
-	if(fexists("data/last_round_lobby_music.json"))
-		old_login_music = json_decode(file2text("data/last_round_lobby_music.json"))
-
-	//Remove the previous song.
-	var/list/music_jsons = get_music_jsons()
-	for(var/list/music_entry as anything in music_jsons)
-		if(old_login_music && (music_entry["file"] == old_login_music["file"]))
-			old_login_music = music_entry
-
-		//Find rare sounds that are map-agnostic or belong to our map
-		if(music_entry["rare"])
-			if((!music_entry["map"] || (music_entry["map"] == SSmapping.config.map_name)))
-				rare_music_data += list(music_entry)
-
-		//Filter out songs that don't belong to our map, add map-agnostic songs.
-		else if(!music_entry["map"] || music_entry["map"] == SSmapping.config.map_name)
-			title_music_data += list(music_entry)
-
-	//Remove the old login music from the current pool if it wouldn't empty the pool.
+	if(rustg_file_exists("data/last_round_lobby_music.txt")) //The define isn't truthy
+		old_login_music_t = rustg_file_read("data/last_round_lobby_music.txt")
+	var/list/music_tracks = title_music_data + rare_music_data
+	//Filter map-specific tracks
+	for(var/datum/media/music_filtered as anything in music_tracks)
+		if(old_login_music_t && (music_filtered.path == old_login_music_t))
+			old_login_music = music_filtered
+		if(music_filtered.map && music_filtered.map != SSmapping.config.map_name)
+			rare_music_data -= music_filtered
+			title_music_data -= music_filtered
+	//Remove the previous song
 	if(old_login_music)
-		if(old_login_music["rare"] && (length(rare_music_data) > 1))
-			rare_music_data -= list(old_login_music)
+		//Remove the old login music from the current pool if it wouldn't empty the pool.
+		if((MEDIA_TAG_LOBBYMUSIC_RARE in old_login_music.media_tags) && (length(rare_music_data) > 1))
+			rare_music_data -= old_login_music
 		else if(length(title_music_data) > 1)
-			title_music_data -= list(old_login_music)
+			title_music_data -= old_login_music
 
 	//Try to set a song json
 	var/use_rare_music = prob(10)
@@ -762,26 +754,15 @@ SUBSYSTEM_DEF(ticker)
 	if(!login_music)
 		var/music = pick(world.file2list(ROUND_START_MUSIC_LIST, "\n"))
 		var/list/split_path = splittext(music, "/")
-		login_music = list("name" = split_path[length(split_path)], "author" = null, "file" = music)
+		//Construct a minimal music track to satisfy the system.
+		login_music = new(name = split_path[length(split_path)], path = music)
 
 	//Write the last round file to our current choice
-	rustg_file_write(json_encode(login_music), "data/last_round_lobby_music.json")
+	rustg_file_write(login_music.path, "data/last_round_lobby_music.txt")
 
 /datum/controller/subsystem/ticker/proc/pick_credits_music()
-	var/list/music_data = list()
-	var/list/rare_music_data = list()
-
-	//Remove the previous song.
-	var/list/music_jsons = get_music_jsons(TRUE)
-	for(var/list/music_entry as anything in music_jsons)
-		//Find rare sounds that are map-agnostic or belong to our map
-		if(music_entry["rare"])
-			if((!music_entry["map"] || (music_entry["map"] == SSmapping.config.map_name)))
-				rare_music_data += list(music_entry)
-
-		//Filter out songs that don't belong to our map, add map-agnostic songs.
-		else if(!music_entry["map"] || music_entry["map"] == SSmapping.config.map_name)
-			music_data += list(music_entry)
+	var/list/music_data = SSmedia.get_track_pool(MEDIA_TAG_ROUNDEND_COMMON)
+	var/list/rare_music_data = SSmedia.get_track_pool(MEDIA_TAG_ROUNDEND_RARE)
 
 	//Try to set a song json
 	var/use_rare_music = prob(10)
@@ -792,3 +773,69 @@ SUBSYSTEM_DEF(ticker)
 
 	if(!credits_music)
 		credits_music = login_music
+
+///Generate a list of gamemodes we can play.
+/datum/controller/subsystem/ticker/proc/draft_gamemodes()
+	var/list/datum/game_mode/runnable_modes = list()
+	for(var/path in subtypesof(/datum/game_mode))
+		var/datum/game_mode/M = new path()
+		if(!(M.weight == GAMEMODE_WEIGHT_NEVER) && !M.check_for_errors())
+			runnable_modes[path] = M.weight
+	return runnable_modes
+
+/datum/controller/subsystem/ticker/proc/get_mode_name(bypass_secret)
+	if(!istype(mode))
+		return "Undecided"
+	if(bypass_secret || !mode_display_name)
+		return mode.name
+
+	return mode_display_name
+
+/datum/controller/subsystem/ticker/proc/initialize_gamemode()
+	if(!mode)
+		var/list/datum/game_mode/runnable_modes = draft_gamemodes()
+		if(!runnable_modes.len)
+			message_admins(world, "<B>No viable gamemodes to play.</B> Running Extended.")
+			mode = new /datum/game_mode/extended
+		else
+			mode = pick_weight(runnable_modes)
+			mode = new mode
+
+	else
+		if(istype(mode, /datum/game_mode/extended) && GLOB.is_debug_server)
+			message_admins("Using Extended gamemode during debugging. Use Set Gamemode to change this.")
+
+		var/potential_error = mode.check_for_errors()
+		if(potential_error)
+			if(mode_display_name)
+				message_admins(span_adminnotice("Unable to force secret [get_mode_name(TRUE)]. [potential_error]"))
+				to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
+			else
+				to_chat(world, "<B>Unable to start [get_mode_name(TRUE)].</B> [potential_error] Reverting to pre-game lobby.")
+
+			QDEL_NULL(mode)
+			SSjob.ResetOccupations()
+			return FALSE
+
+	CHECK_TICK
+	//Configure mode and assign player to special mode stuff
+	var/can_continue = 0
+	can_continue = src.mode.execute_roundstart() //Choose antagonists
+	CHECK_TICK
+	can_continue = can_continue && SSjob.DivideOccupations(mode.required_jobs) //Distribute jobs
+	CHECK_TICK
+
+	if(!GLOB.Debug2)
+		if(!can_continue)
+			log_game("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error].")
+			message_admins("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error].")
+			to_chat(world, "<B>Error setting up [get_mode_name(TRUE)].</B> Reverting to pre-game lobby.")
+			mode.on_failed_execute()
+			QDEL_NULL(mode)
+			SSjob.ResetOccupations()
+			return FALSE
+	else
+		message_admins(span_notice("DEBUG: Bypassing prestart checks..."))
+
+	log_game("Gamemode successfully initialized, chose: [mode.name]")
+	return TRUE

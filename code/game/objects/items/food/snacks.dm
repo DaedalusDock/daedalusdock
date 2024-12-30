@@ -46,8 +46,8 @@
 /obj/item/food/candy/bronx/proc/after_eat(mob/living/eater)
 	if(ishuman(eater))
 		var/mob/living/carbon/human/carl = eater
-		var/datum/disease/disease = new /datum/disease/parasite()
-		carl.ForceContractDisease(disease, make_copy = FALSE, del_on_fail = TRUE)
+		var/datum/pathogen/disease = new /datum/pathogen/parasite()
+		carl.try_contract_pathogen(disease, make_copy = FALSE, del_on_fail = TRUE)
 
 /obj/item/food/candy/bronx/examine(mob/user)
 	. = ..()
@@ -130,7 +130,7 @@
 	junkiness = 25
 	foodtypes = JUNKFOOD | GRAIN | SUGAR
 	food_flags = FOOD_FINGER_FOOD
-	custom_price = PAYCHECK_PRISONER
+	custom_price = PAYCHECK_ASSISTANT * 0.4
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/candy_trash

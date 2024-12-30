@@ -4,11 +4,11 @@
  * @license MIT
  */
 
-export const THEMES = ['light', 'dark'];
+import { THEME_DARK, THEME_LIGHT } from './settings/constants';
 
-const COLOR_DARK_BG = '#23272a';
+const COLOR_DARK_BG = '#222020';
 const COLOR_DARK_BG_DARKER = '#171717';
-const COLOR_DARK_TEXT = '#dfdfcf';
+const COLOR_DARK_TEXT = '#ABC7A2';
 
 let setClientThemeTimer = null;
 
@@ -22,7 +22,7 @@ let setClientThemeTimer = null;
  * There's no way round it. We're essentially changing the skin by hand.
  * It's painful but it works, and is the way Lummox suggested.
  */
-export const setClientTheme = name => {
+export const setClientTheme = (name) => {
   // Transmit once for fast updates and again in a little while in case we won
   // the race against statbrowser init.
   clearInterval(setClientThemeTimer);
@@ -31,7 +31,7 @@ export const setClientTheme = name => {
     Byond.command(`.output statbrowser:set_theme ${name}`);
   }, 1500);
 
-  if (name === 'light') {
+  if (name === THEME_LIGHT) {
     return Byond.winset({
       // Main windows
       'infowindow.background-color': 'none',
@@ -81,7 +81,7 @@ export const setClientTheme = name => {
       'tooltip.text-color': '#000000',
     });
   }
-  if (name === 'dark') {
+  if (name === THEME_DARK) {
     Byond.winset({
       // Main windows
       'infowindow.background-color': COLOR_DARK_BG,

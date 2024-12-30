@@ -97,6 +97,7 @@
 	poster_item_desc = initial(selected.poster_item_desc)
 	poster_item_icon_state = initial(selected.poster_item_icon_state)
 	ruined = initial(selected.ruined)
+	update_appearance()
 
 
 /obj/structure/sign/poster/attackby(obj/item/I, mob/user, params)
@@ -360,8 +361,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/random, 32)
 	icon_state = "the_griffin"
 
 /obj/structure/sign/poster/contraband/lizard
-	name = "Unathi"
-	desc = "This lewd poster depicts a unathi preparing to mate."
+	name = "Jinan"
+	desc = "This lewd poster depicts a Jinan preparing to mate."
 	icon_state = "lizard"
 
 /obj/structure/sign/poster/contraband/free_drone
@@ -426,11 +427,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/random, 32)
 	desc = "A poster advertising bounty hunting services. \"I hear you got a problem.\""
 	icon_state = "bountyhunters"
 
-/obj/structure/sign/poster/contraband/the_big_gas_giant_truth
-	name = "The Big Gas Giant Truth"
-	desc = "Don't believe everything you see on a poster, patriots. All the unathi at central command don't want to answer this SIMPLE QUESTION: WHERE IS THE GAS MINER MINING FROM, CENTCOM?"
-	icon_state = "the_big_gas_giant_truth"
-
 /obj/structure/sign/poster/contraband/got_wood
 	name = "Got Wood?"
 	desc = "A grimy old advert for a seedy lumber company. \"You got a friend in me.\" is scrawled in the corner."
@@ -483,11 +479,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/random, 32)
 	name = "Pet or Prisoner?"
 	desc = "The Animal Rights Consortium asks: when does a pet become a prisoner? Are slimes being mistreated on YOUR station? Say NO! to animal mistreatment!"
 	icon_state = "arc_slimes"
-
-/obj/structure/sign/poster/contraband/imperial_propaganda
-	name = "AVENGE OUR LORD, ENLIST TODAY"
-	desc = "An old Unathi Empire propaganda poster from around the time of the final Human-Unathi war. It invites the viewer to enlist in the military to avenge the strike on Atrakor and take the fight to the humans."
-	icon_state = "imperial_propaganda"
 
 /obj/structure/sign/poster/contraband/soviet_propaganda
 	name = "The One Place"

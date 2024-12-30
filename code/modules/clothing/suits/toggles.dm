@@ -2,6 +2,12 @@
 
 /obj/item/clothing/suit/hooded
 	actions_types = list(/datum/action/item_action/toggle_hood)
+
+	equip_self_flags = EQUIP_ALLOW_MOVEMENT | EQUIP_SLOWDOWN
+	equip_delay_self = EQUIP_DELAY_COAT
+	equip_delay_other = EQUIP_DELAY_COAT * 1.5
+	strip_delay = EQUIP_DELAY_COAT * 1.5
+
 	var/obj/item/clothing/head/hooded/hood
 	var/hoodtype = /obj/item/clothing/head/hooded/winterhood //so the chaplain hoodie or other hoodies can override this
 	///Alternative mode for hiding the hood, instead of storing the hood in the suit it qdels it, useful for when you deal with hooded suit with storage.
@@ -15,8 +21,8 @@
 		MakeHood()
 
 /obj/item/clothing/suit/hooded/Destroy()
-	. = ..()
 	QDEL_NULL(hood)
+	return ..()
 
 /obj/item/clothing/suit/hooded/proc/MakeHood()
 	if(!hood)
@@ -87,7 +93,11 @@
 
 
 /obj/item/clothing/head/hooded/Destroy()
-	suit = null
+	if(suit)
+		var/obj/item/clothing/suit/hooded/old_suit = suit
+		suit.hood = null
+		suit = null
+		old_suit.RemoveHood()
 	return ..()
 
 /obj/item/clothing/head/hooded/dropped()

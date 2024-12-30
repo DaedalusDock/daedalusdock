@@ -54,7 +54,9 @@
 	to_chat(owner, span_userdanger("You suddenly snap out of your hypnosis. The phrase '[hypnotic_phrase]' no longer feels important to you."))
 	owner.clear_alert(ALERT_HYPNOSIS)
 	..()
+	antagonist?.trauma = null
 	owner.mind.remove_antag_datum(/datum/antagonist/hypnotized)
+	antagonist = null
 
 /datum/brain_trauma/hypnosis/on_life(delta_time, times_fired)
 	..()
@@ -66,4 +68,7 @@
 				new /datum/hallucination/chat(owner, TRUE, FALSE, span_hypnophrase("[hypnotic_phrase]"))
 
 /datum/brain_trauma/hypnosis/handle_hearing(datum/source, list/hearing_args)
+	var/datum/language/L = hearing_args[HEARING_LANGUAGE]
+	if(istype(L, /datum/language/visual) || !L?.can_receive_language(owner))
+		return
 	hearing_args[HEARING_RAW_MESSAGE] = target_phrase.Replace(hearing_args[HEARING_RAW_MESSAGE], span_hypnophrase("$1"))

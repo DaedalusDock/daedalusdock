@@ -11,11 +11,9 @@
 
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
-	throw_speed = 3
 	throw_range = 7
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron=75, /datum/material/glass=25)
-	obj_flags = USES_TGUI
 
 	///if FALSE, broadcasting and listening dont matter and this radio shouldnt do anything
 	VAR_PRIVATE/on = TRUE
@@ -223,29 +221,26 @@
 		set_listening(FALSE, actual_setting = FALSE)
 
 /obj/item/radio/talk_into(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
+	if(!language)
+		language = talking_movable.get_selected_language()
+
+	if(istype(language, /datum/language/visual))
+		return
+
 	if(iscarbon(talking_movable) && (message_mods[MODE_HEADSET] || message_mods[RADIO_EXTENSION]) && !handsfree)
 		var/mob/living/carbon/talking_carbon = talking_movable
 		if(talking_carbon.handcuffed)// If we're handcuffed, we can't press the button
 			to_chat(talking_carbon, span_warning("You can't use the radio while handcuffed!"))
 			return ITALICS | REDUCE_RANGE
-		if(talking_carbon.pulledby?.grab_state)
+		if(HAS_TRAIT(talking_carbon, TRAIT_AGGRESSIVE_GRAB))
 			to_chat(talking_carbon, span_warning("You can't use the radio while aggressively grabbed!"))
 			return ITALICS | REDUCE_RANGE
 
-	if(HAS_TRAIT(talking_movable, TRAIT_SIGN_LANG)) //Forces Sign Language users to wear the translation gloves to speak over radios
-		var/mob/living/carbon/mute = talking_movable
-		if(istype(mute))
-			if(!HAS_TRAIT(talking_movable, TRAIT_CAN_SIGN_ON_COMMS))
-				return FALSE
-			switch(mute.check_signables_state())
-				if(SIGN_ONE_HAND) // One hand full
-					message = stars(message)
-				if(SIGN_HANDS_FULL to SIGN_CUFFED)
-					return FALSE
+	SEND_SIGNAL(src, COMSIG_RADIO_NEW_MESSAGE, talking_movable, message, channel)
+
 	if(!spans)
 		spans = list(talking_movable.speech_span)
-	if(!language)
-		language = talking_movable.get_selected_language()
+
 	INVOKE_ASYNC(src, PROC_REF(talk_into_impl), talking_movable, message, channel, spans.Copy(), language, message_mods)
 	return ITALICS | REDUCE_RANGE
 
@@ -327,10 +322,14 @@
 	signal.levels = list(T.z)
 	signal.broadcast()
 
-/obj/item/radio/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
+/obj/item/radio/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc, message_range)
 	. = ..()
+	if(istype(message_language, /datum/language/visual))
+		return
+
 	if(radio_freq || !broadcasting || get_dist(src, speaker) > canhear_range)
 		return
+
 	var/filtered_mods = list()
 	if (message_mods[MODE_CUSTOM_SAY_EMOTE])
 		filtered_mods[MODE_CUSTOM_SAY_EMOTE] = message_mods[MODE_CUSTOM_SAY_EMOTE]
@@ -448,12 +447,11 @@
 
 /obj/item/radio/examine(mob/user)
 	. = ..()
-	if (frequency && in_range(src, user))
+	if (frequency && (in_range(src, user) || isobserver(user)))
 		. += span_notice("It is set to broadcast over the [frequency/10] frequency.")
+
 	if (unscrewed)
-		. += span_notice("It can be attached and modified.")
-	else
-		. += span_notice("It cannot be modified or attached.")
+		. += span_notice("It can be attached to assemblies and modified.")
 
 /obj/item/radio/screwdriver_act(mob/living/user, obj/item/tool)
 	add_fingerprint(user)
@@ -469,8 +467,8 @@
 		return
 	emped++ //There's been an EMP; better count it
 	var/curremp = emped //Remember which EMP this was
-	if (listening && ismob(loc)) // if the radio is turned on and on someone's person they notice
-		to_chat(loc, span_warning("\The [src] overloads."))
+	if (listening && equipped_to) // if the radio is turned on and on someone's person they notice
+		to_chat(equipped_to, span_warning("\The [src] overloads."))
 	for (var/ch_name in channels)
 		channels[ch_name] = 0
 	set_on(FALSE)

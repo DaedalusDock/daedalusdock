@@ -284,12 +284,6 @@
 /obj/effect/turf_decal/stripes/corner,
 /turf/open/floor/mineral/titanium/tiled/yellow,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
-"ha" = (
-/obj/structure/statue/bone/rib{
-	dir = 1
-	},
-/turf/open/floor/cult,
-/area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "he" = (
 /obj/structure/flora/rock/pile,
 /turf/open/misc/asteroid/airless,
@@ -547,10 +541,6 @@
 /obj/effect/turf_decal/siding/thinplating_new/light/end,
 /turf/open/floor/mineral/titanium/tiled/white,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
-"mC" = (
-/obj/machinery/chem_mass_spec,
-/turf/open/floor/mineral/titanium/tiled/blue,
-/area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "mD" = (
 /obj/structure/railing/corner{
 	dir = 1
@@ -721,10 +711,7 @@
 	pixel_x = -5;
 	pixel_y = 3
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = 6;
-	pixel_y = 3
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /turf/open/floor/mineral/titanium/tiled/blue,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "qX" = (
@@ -1191,9 +1178,7 @@
 	dir = 1
 	},
 /obj/structure/table/reinforced/plastitaniumglass,
-/obj/item/crowbar/large{
-	pixel_y = 4
-	},
+/obj/item/crowbar,
 /turf/open/floor/mineral/plastitanium,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "AI" = (
@@ -1320,7 +1305,7 @@
 /turf/open/floor/mineral/titanium/tiled/purple,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "Dh" = (
-/obj/machinery/chem_heater/withbuffer,
+/obj/machinery/chem_heater,
 /turf/open/floor/mineral/titanium/tiled/blue,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "Do" = (
@@ -1980,10 +1965,6 @@
 "RL" = (
 /obj/structure/grille,
 /turf/open/floor/plating,
-/area/ruin/space/has_grav/powered/hilbertresearchfacility)
-"RN" = (
-/obj/structure/statue/bone/rib,
-/turf/open/floor/cult,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "RX" = (
 /obj/machinery/door/poddoor/shutters,
@@ -3186,7 +3167,7 @@ Bo
 Bo
 AZ
 Dh
-mC
+Mv
 Bo
 Bo
 rQ
@@ -3769,7 +3750,7 @@ wo
 Wt
 yO
 HK
-ha
+wo
 iO
 MX
 ow
@@ -3807,7 +3788,7 @@ el
 ZV
 Wt
 KC
-RN
+wo
 hW
 KC
 dJ

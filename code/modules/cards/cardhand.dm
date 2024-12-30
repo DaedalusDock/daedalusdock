@@ -5,6 +5,7 @@
 	icon_state = "none"
 	w_class = WEIGHT_CLASS_TINY
 	worn_icon_state = "card"
+	obj_flags = parent_type::obj_flags | SECRET_EXAMINE
 
 /obj/item/toy/cards/cardhand/Initialize(mapload, list/cards_to_combine = list())
 	. = ..()
@@ -61,8 +62,12 @@
 	return NONE
 
 /obj/item/toy/cards/cardhand/attack_self(mob/living/user)
-	if(!isliving(user) || !user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, NO_TK))
+	if(!isliving(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_DEXTERITY))
 		return
+
+	if(!user.get_empty_held_index())
+		to_chat(user, span_warning("You need an empty hand to draw from the pile."))
+		return FALSE
 
 	var/list/handradial = list()
 	for(var/obj/item/toy/singlecard/card in cards)
@@ -73,14 +78,13 @@
 		return FALSE
 
 	var/obj/item/toy/singlecard/selected_card = draw(user, choice)
-	selected_card.pickup(user)
-	user.put_in_hands(selected_card)
+	if(!user.pickup_item(selected_card, user.get_empty_held_index()))
+		selected_card.forceMove(user.drop_location())
 
 	if(cards.len == 1)
 		user.temporarilyRemoveItemFromInventory(src, TRUE)
 		var/obj/item/toy/singlecard/last_card = draw(user)
-		last_card.pickup(user)
-		user.put_in_hands(last_card)
+		user.pickup_item(last_card)
 		qdel(src) // cardhand is empty now so delete it
 
 /obj/item/toy/cards/cardhand/proc/check_menu(mob/living/user)

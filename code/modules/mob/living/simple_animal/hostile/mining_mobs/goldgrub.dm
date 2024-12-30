@@ -21,7 +21,7 @@
 	melee_damage_upper = 0
 	attack_verb_continuous = "barrels into"
 	attack_verb_simple = "barrel into"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	combat_mode = FALSE
 	speak_emote = list("screeches")
 	throw_message = "sinks in slowly, before being pushed out of "
@@ -116,7 +116,7 @@
 		return TRUE
 	return FALSE
 
-/mob/living/simple_animal/hostile/asteroid/goldgrub/death(gibbed)
+/mob/living/simple_animal/hostile/asteroid/goldgrub/death(gibbed, cause_of_death = "Unknown")
 	barf_contents()
 	return ..()
 

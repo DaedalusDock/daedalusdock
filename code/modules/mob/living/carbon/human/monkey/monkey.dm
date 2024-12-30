@@ -24,9 +24,13 @@
 /mob/living/carbon/human/species/monkey/angry/Initialize(mapload)
 	. = ..()
 	if(prob(10))
-		var/obj/item/clothing/head/helmet/justice/escape/helmet = new(src)
-		equip_to_slot_or_del(helmet,ITEM_SLOT_HEAD)
-		helmet.attack_self(src) // todo encapsulate toggle
+		INVOKE_ASYNC(src, PROC_REF(give_ape_escape_helmet))
+
+/// Gives our funny monkey an Ape Escape hat reference
+/mob/living/carbon/human/species/monkey/angry/proc/give_ape_escape_helmet()
+	var/obj/item/clothing/head/helmet/justice/escape/helmet = new(src)
+	equip_to_slot_or_del(helmet, ITEM_SLOT_HEAD)
+	helmet.attack_self(src) // todo encapsulate toggle
 
 
 /mob/living/carbon/human/species/monkey/punpun //except for a few special persistence features, pun pun is just a normal monkey
@@ -72,7 +76,7 @@
 		memory_saved = TRUE
 	..()
 
-/mob/living/carbon/human/species/monkey/punpun/death(gibbed)
+/mob/living/carbon/human/species/monkey/punpun/death(gibbed, cause_of_death = "Unknown")
 	if(!memory_saved)
 		Write_Memory(TRUE, gibbed)
 	..()

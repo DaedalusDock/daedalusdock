@@ -26,21 +26,6 @@
 #define SOUTHDOWN (SOUTH|DOWN)
 #define WESTDOWN (WEST|DOWN)
 
-///A replacement for /datum/gas_mixture/proc/update_values()
-#define AIR_UPDATE_VALUES(air) \
-	do{ \
-		var/list/cache = air.gas; \
-		air.total_moles = 0; \
-		for(var/g in cache) { \
-			if(cache[g] <= 0) { \
-				cache -= g \
-			} \
-			else { \
-				air.total_moles += cache[g]; \
-			} \
-		} \
-	} while(FALSE)
-
 ///Checks is a turf is simulated and has a valid zone.
 #define TURF_HAS_VALID_ZONE(T) (!isnull(T:zone) && !T:zone:invalid)
 
@@ -86,7 +71,7 @@ GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 ///The amount of pressure damage someone takes is equal to (pressure / HAZARD_HIGH_PRESSURE)*PRESSURE_DAMAGE_COEFFICIENT, with the maximum of MAX_PRESSURE_DAMAGE
 #define PRESSURE_DAMAGE_COEFFICIENT 4
 #define MAX_HIGH_PRESSURE_DAMAGE 4   // This used to be 20... I got this much random rage for some retarded decision by polymorph?! Polymorph now lies in a pool of blood with a katana jammed in his spleen. ~Errorage --PS: The katana did less than 20 damage to him :(
-#define LOW_PRESSURE_DAMAGE 0.6 // The amount of damage someone takes when in a low pressure area. (The pressure threshold is so low that it doesn't make sense to do any calculations, so it just applies this flat value).
+#define LOW_PRESSURE_DAMAGE 2 // The amount of damage someone takes when in a low pressure area. (The pressure threshold is so low that it doesn't make sense to do any calculations, so it just applies this flat value).
 
 
 ////OPTIMIZATIONS/////
@@ -117,10 +102,12 @@ GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 //If the fire is burning slower than this rate then the reaction is going too slow to be self sustaining and the fire burns itself out.
 //This ensures that fires don't grind to a near-halt while still remaining active forever.
 #define FIRE_GAS_MIN_BURNRATE			0.01
-#define FIRE_LIQUD_MIN_BURNRATE			0.0025
+#define FIRE_LIQUID_MIN_BURNRATE			0.0025
 
-//How many moles of fuel are contained within one solid/liquid fuel volume unit
-#define LIQUIDFUEL_AMOUNT_TO_MOL		0.45  //mol/volume unit
+// Converts liquid fuel units to mols
+#define LIQUIDFUEL_AMOUNT_TO_MOL(amount) round(amount * 0.45, ATMOS_PRECISION)
+// Converts gaseous fuel mols to reagent units
+#define GASFUEL_AMOUNT_TO_LIQUID(amount) round(amount / 0.45, CHEMICAL_QUANTISATION_LEVEL)
 
 #define TANK_LEAK_PRESSURE     (30 * ONE_ATMOSPHERE) // Tank starts leaking.
 #define TANK_RUPTURE_PRESSURE  (40 * ONE_ATMOSPHERE) // Tank spills all contents into atmosphere.
@@ -142,7 +129,7 @@ GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 #define TCOMMS_ATMOS list(GAS_NITROGEN = 100)
 //#define TCOMMS_ATMOS "n2=100;TEMP=80"
 /// space
-#define AIRLESS_ATMOS list()
+#define AIRLESS_ATMOS null
 /// -93.15°C snow and ice turfs
 //#define FROZEN_ATMOS "o2=22;n2=82;TEMP=180"
 /// -14°C kitchen coldroom, just might loss your tail; higher amount of mol to reach about 101.3 kpA
@@ -181,3 +168,20 @@ GLOBAL_REAL_VAR(list/reverse_dir) = list( // reverse_dir[dir] = reverse of dir
 #define  SPACE_HEAT_TRANSFER_COEFFICIENT 0.2 // A hack to partly simulate radiative heat.
 #define   OPEN_HEAT_TRANSFER_COEFFICIENT 0.4
 #define WINDOW_HEAT_TRANSFER_COEFFICIENT 0.1 // A hack for now.
+
+#ifdef ZAS_COMPAT_515
+///A replacement for /datum/gas_mixture/proc/update_values() (515 Compatible)
+#define AIR_UPDATE_VALUES(air) \
+	do{ \
+		var/list/cache = air.gas; \
+		air.total_moles = 0; \
+		for(var/g in cache) { \
+			if(cache[g] <= 0) { \
+				cache -= g \
+			} \
+			else { \
+				air.total_moles += cache[g]; \
+			} \
+		} \
+	} while(FALSE)
+#endif

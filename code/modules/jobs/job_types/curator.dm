@@ -1,5 +1,5 @@
 /datum/job/curator
-	title = JOB_CURATOR
+	title = JOB_ARCHIVIST
 	description = "Read and write books and hand them to people, stock \
 		bookshelves, report on station news."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
@@ -7,20 +7,18 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"
-	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/none,
+	)
 
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/curator,
-			SPECIES_PLASMAMAN = /datum/outfit/job/curator/plasmaman,
 		),
 	)
 
-	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_STATION_MASTER
-
-	display_order = JOB_DISPLAY_ORDER_CURATOR
 	departments_list = list(
 		/datum/job_department/service,
 		)
@@ -51,19 +49,10 @@
 
 	accessory = /obj/item/clothing/accessory/pocketprotector/full
 
-/datum/outfit/job/curator/plasmaman
-	name = "Curator (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/curator
-	gloves = /obj/item/clothing/gloves/color/plasmaman/prototype
-	head = /obj/item/clothing/head/helmet/space/plasmaman/curator
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
-
 /datum/outfit/job/curator/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()
 
 	if(visualsOnly)
 		return
 
-	H.grant_all_languages(TRUE, TRUE, TRUE, LANGUAGE_CURATOR)
+	H.grant_all_languages(TRUE, TRUE, TRUE, LANGUAGE_ARCHIVIST)

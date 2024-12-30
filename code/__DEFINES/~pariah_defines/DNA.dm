@@ -1,6 +1,6 @@
 #define PREVIEW_PREF_JOB "Job"
-#define PREVIEW_PREF_LOADOUT "Loadout"
 #define PREVIEW_PREF_UNDERWEAR "Underwear"
+#define PREVIEW_PREF_LOADOUT "Loadout"
 
 
 #define UNDERWEAR_HIDE_SOCKS (1<<0)
@@ -14,5 +14,3 @@
 
 #define REAGENT_ORGANIC 1
 #define REAGENT_SYNTHETIC 2
-
-#define MANDATORY_FEATURE_LIST list("flavor_text" = "")

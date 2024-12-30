@@ -1,12 +1,11 @@
 /mob/living/carbon/human/get_movespeed_modifiers()
 	var/list/considering = ..()
 	if(HAS_TRAIT(src, TRAIT_IGNORESLOWDOWN))
-		. = list()
 		for(var/id in considering)
 			var/datum/movespeed_modifier/M = considering[id]
-			if(M.flags & IGNORE_NOSLOW || M.multiplicative_slowdown < 0)
-				.[id] = M
-		return
+			if(!(M.flags & IGNORE_NOSLOW) && M.slowdown > 0)
+				considering -= id
+
 	return considering
 
 /mob/living/carbon/human/slip(knockdown_amount, obj/slipped_on, lube_flags, paralyze, force_drop = FALSE)
@@ -22,9 +21,10 @@
 	return ..()
 
 /mob/living/carbon/human/mob_negates_gravity()
-	return dna.species.negates_gravity(src) || ..()
+	if(dna.species.negates_gravity(src) || ..())
+		return TRUE
 
-/mob/living/carbon/human/Move(NewLoc, direct)
+/mob/living/carbon/human/Move(NewLoc, direct, glide_size_override, z_movement_flags)
 	. = ..()
 	if(shoes && body_position == STANDING_UP && loc == NewLoc && has_gravity(loc))
 		SEND_SIGNAL(shoes, COMSIG_SHOES_STEP_ACTION)

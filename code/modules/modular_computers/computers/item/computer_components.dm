@@ -36,6 +36,7 @@
 	install.holder = src
 	install.forceMove(src)
 	install.on_install(src, user)
+	notify_hardware_change()
 
 
 /// Uninstalls component.
@@ -69,3 +70,27 @@
 		if(component.name == name)
 			return component
 	return null
+
+/// Notify all programs of hardware changes.
+/obj/item/modular_computer/proc/notify_hardware_change()
+	if(active_program)
+		active_program.event_hardware_changed(FALSE)
+	for(var/datum/computer_file/program/prog as anything in idle_threads)
+		prog.event_hardware_changed(TRUE)
+	return
+
+/// Notify all programs about an ID removal.
+/obj/item/modular_computer/proc/notify_id_removed(device_type)
+	if(active_program)
+		active_program.event_id_removed(FALSE, device_type)
+
+	for(var/datum/computer_file/program/computer_program as anything in idle_threads)
+		computer_program.event_id_removed(TRUE, device_type)
+
+/// Notify all programs about an ID insertion.
+/obj/item/modular_computer/proc/notify_id_inserted(device_type)
+	if(active_program)
+		active_program.event_id_inserted(FALSE, device_type)
+
+	for(var/datum/computer_file/program/computer_program as anything in idle_threads)
+		computer_program.event_id_inserted(TRUE, device_type)

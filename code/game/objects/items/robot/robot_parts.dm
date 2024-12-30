@@ -220,7 +220,7 @@
 
 	else if(istype(W, /obj/item/bodypart/head/robot))
 		var/obj/item/bodypart/head/robot/HD = W
-		if(locate(/obj/item/organ/internal) in HD)
+		if(locate(/obj/item/organ) in HD)
 			to_chat(user, span_warning("There are organs inside [HD]!"))
 			return
 		if(head)
@@ -299,7 +299,6 @@
 			O.mmi = W //and give the real mmi to the borg.
 			O.updatename(brainmob.client)
 			brainmob.mind.transfer_to(O)
-			brainmob.mind.add_memory(MEMORY_BORGED, list(DETAIL_PROTAGONIST = user), story_value = STORY_VALUE_OKAY, memory_flags = MEMORY_SKIP_UNCONSCIOUS)
 			playsound(O.loc, 'sound/voice/liveagain.ogg', 75, TRUE)
 
 			if(O.mind && O.mind.special_role)
@@ -310,7 +309,7 @@
 			forceMove(O)
 			O.robot_suit = src
 
-			log_game("[key_name(user)] has put the MMI/posibrain of [key_name(M.brainmob)] into a cyborg shell at [AREACOORD(src)]")
+			log_game("[key_name(user)] has put the organ/posibrain of [key_name(M.brainmob)] into a cyborg shell at [AREACOORD(src)]")
 
 			if(!locomotion)
 				O.set_lockcharge(TRUE)

@@ -194,3 +194,9 @@
 	icon_state = "radshelter"
 	is_editable = TRUE
 
+/obj/structure/sign/exitonly
+	name = "\improper EXIT ONLY sign"
+	sign_change_name = "Exit ONly"
+	desc = "A sign informing you that you will not be able to re-enter this area without access."
+	icon_state = "exitonly"
+	is_editable = TRUE

@@ -18,10 +18,15 @@
 	inhand_icon_state = "pen"
 	worn_icon_state = "pen"
 	slot_flags = ITEM_SLOT_BELT | ITEM_SLOT_EARS
+
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 7
+	stamina_damage = 0
+	stamina_cost = 0
+	stamina_critical_chance = 0
+
 	custom_materials = list(/datum/material/iron=10)
 	//pressure_resistance = 2
 	grind_results = list(/datum/reagent/iron = 2, /datum/reagent/iodine = 1)
@@ -44,7 +49,7 @@
 	desc = "It's a normal red ink pen."
 	icon_state = "pen_red"
 	colour = "#FF0000"
-	throw_speed = 4 // red ones go faster (in this case, fast enough to embed!)
+	throw_speed = 2 // red ones go faster (in this case, fast enough to embed!)
 
 /obj/item/pen/invisible
 	desc = "It's an invisible pen marker."
@@ -105,7 +110,7 @@
 	icon_state = "pen-fountain-o"
 	force = 5
 	throwforce = 5
-	throw_speed = 4
+	throw_speed = 1.5
 	colour = "#DC143C"
 	custom_materials = list(/datum/material/gold = 750)
 	sharpness = SHARP_EDGED
@@ -135,7 +140,7 @@
 		to_chat(user, span_warning("You must be holding the pen to continue!"))
 		return
 	var/deg = tgui_input_number(user, "What angle would you like to rotate the pen head to? (0-360)", "Rotate Pen Head", max_value = 360)
-	if(isnull(deg) || QDELETED(user) || QDELETED(src) || !user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK) || loc != user)
+	if(isnull(deg) || QDELETED(user) || QDELETED(src) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK) || loc != user)
 		return
 	degrees = deg
 	to_chat(user, span_notice("You rotate the top of the pen to [deg] degrees."))
@@ -147,7 +152,7 @@
 	if(!M.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
 		return FALSE
 	to_chat(user, span_warning("You stab [M] with the pen."))
-	to_chat(M, span_danger("You feel a tiny prick!"))
+	M.apply_pain(1, BODY_ZONE_CHEST, "You feel a tiny prick!")
 	log_combat(user, M, "stabbed", src)
 	return TRUE
 
@@ -156,12 +161,12 @@
 	//Changing name/description of items. Only works if they have the UNIQUE_RENAME object flag set
 	if(isobj(O) && proximity && (O.obj_flags & UNIQUE_RENAME))
 		var/penchoice = tgui_input_list(user, "What would you like to edit?", "Pen Setting", list("Rename", "Description", "Reset"))
-		if(QDELETED(O) || !user.canUseTopic(O, BE_CLOSE))
+		if(QDELETED(O) || !user.canUseTopic(O, USE_CLOSE))
 			return
 		if(penchoice == "Rename")
 			var/input = tgui_input_text(user, "What do you want to name [O]?", "Object Name", "[O.name]", MAX_NAME_LEN)
 			var/oldname = O.name
-			if(QDELETED(O) || !user.canUseTopic(O, BE_CLOSE))
+			if(QDELETED(O) || !user.canUseTopic(O, USE_CLOSE))
 				return
 			if(input == oldname || !input)
 				to_chat(user, span_notice("You changed [O] to... well... [O]."))
@@ -177,7 +182,7 @@
 		if(penchoice == "Description")
 			var/input = tgui_input_text(user, "Describe [O]", "Description", "[O.desc]", 140)
 			var/olddesc = O.desc
-			if(QDELETED(O) || !user.canUseTopic(O, BE_CLOSE))
+			if(QDELETED(O) || !user.canUseTopic(O, USE_CLOSE))
 				return
 			if(input == olddesc || !input)
 				to_chat(user, span_notice("You decide against changing [O]'s description."))
@@ -187,7 +192,7 @@
 				O.renamedByPlayer = TRUE
 
 		if(penchoice == "Reset")
-			if(QDELETED(O) || !user.canUseTopic(O, BE_CLOSE))
+			if(QDELETED(O) || !user.canUseTopic(O, USE_CLOSE))
 				return
 
 			qdel(O.GetComponent(/datum/component/rename))

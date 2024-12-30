@@ -40,11 +40,6 @@
 	/// Datum level flags
 	var/datum_flags = NONE
 
-	/// A cached version of our \ref
-	/// The brunt of \ref costs are in creating entries in the string tree (a tree of immutable strings)
-	/// This avoids doing that more then once per datum by ensuring ref strings always have a reference to them after they're first pulled
-	var/cached_ref
-
 	/// A weak reference to another datum
 	var/datum/weakref/weak_reference
 
@@ -56,9 +51,19 @@
 	*/
 	var/list/cooldowns
 
+	// Abstract types are expanded upon more in __DEFINES\abstract.dm
+	/// If this var's value is equivalent to the current type, it is considered abstract.
+	/// It is illegal to instantiate abstract types.
+	var/datum/abstract_type = /datum
+
+
 #ifdef REFERENCE_TRACKING
-	var/running_find_references
+	/// When was this datum last touched by a reftracker?
+	/// If this value doesn't match with the start of the search
+	/// We know this datum has never been seen before, and we should check it
 	var/last_find_references = 0
+	/// How many references we're trying to find when searching
+	var/references_to_clear = 0
 	#ifdef REFERENCE_TRACKING_DEBUG
 	///Stores info about where refs are found, used for sanity checks and testing
 	var/list/found_refs
@@ -101,12 +106,13 @@
 	datum_flags &= ~DF_USE_TAG //In case something tries to REF us
 	weak_reference = null //ensure prompt GCing of weakref.
 
-	var/list/timers = active_timers
-	active_timers = null
-	for(var/datum/timedevent/timer as anything in timers)
-		if (timer.spent && !(timer.flags & TIMER_DELETE_ME))
-			continue
-		qdel(timer)
+	if(active_timers)
+		var/list/timers = active_timers
+		active_timers = null
+		for(var/datum/timedevent/timer as anything in timers)
+			if (timer.spent && !(timer.flags & TIMER_DELETE_ME))
+				continue
+			qdel(timer)
 
 	#ifdef REFERENCE_TRACKING
 	#ifdef REFERENCE_TRACKING_DEBUG
@@ -115,8 +121,8 @@
 	#endif
 
 	//BEGIN: ECS SHIT
-	var/list/dc = datum_components
-	if(dc)
+	if(datum_components)
+		var/list/dc = datum_components
 		var/all_components = dc[/datum/component]
 		if(length(all_components))
 			for(var/datum/component/component as anything in all_components)
@@ -124,7 +130,7 @@
 		else
 			var/datum/component/C = all_components
 			qdel(C, FALSE, TRUE)
-		dc.Cut()
+		dc = null
 
 	clear_signal_refs()
 	//END: ECS SHIT
@@ -270,3 +276,15 @@
 		return
 	SEND_SIGNAL(source, COMSIG_CD_RESET(index), S_TIMER_COOLDOWN_TIMELEFT(source, index))
 	TIMER_COOLDOWN_END(source, index)
+
+///Generate a tag for this /datum, if it implements one
+///Should be called as early as possible, best would be in New, to avoid weakref mistargets
+///Really just don't use this, you don't need it, global lists will do just fine MOST of the time
+///We really only use it for mobs to make id'ing people easier
+/datum/proc/GenerateTag()
+	datum_flags |= DF_USE_TAG
+
+/// Return text from this proc to provide extra context to hard deletes that happen to it
+/// Optional, you should use this for cases where replication is difficult and extra context is required
+/datum/proc/dump_harddel_info()
+	return

@@ -3,15 +3,25 @@
 	lefthand_file = 'icons/mob/inhands/misc/sheets_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/sheets_righthand.dmi'
 	full_w_class = WEIGHT_CLASS_NORMAL
+
+	abstract_type = /obj/item/stack/sheet
+
 	force = 5
 	throwforce = 5
 	max_amount = 50
 	throw_speed = 1
 	throw_range = 3
+	stamina_damage = 42
+	stamina_cost = 23
+	stamina_critical_chance = 10
+
 	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "smashes")
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "smash")
 	novariants = FALSE
 	material_flags = MATERIAL_EFFECTS
+
+	dynamically_set_name = TRUE
+
 	var/sheettype = null //this is used for girders in the creation of walls/false walls
 	var/point_value = 0 //turn-in value for the gulag stacker - loosely relative to its rarity.
 	///What type of wall does this sheet spawn

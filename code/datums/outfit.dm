@@ -107,6 +107,8 @@
 	///ID of the slot containing a gas tank
 	var/internals_slot = null
 
+	/// If TRUE, will spawn their ID in a wallet.
+	var/id_in_wallet = FALSE
 	/**
 	  * Any skillchips the mob should have in their brain.
 	  *
@@ -192,10 +194,18 @@
 		EQUIP_OUTFIT_ITEM(glasses, ITEM_SLOT_EYES)
 	if(back)
 		EQUIP_OUTFIT_ITEM(back, ITEM_SLOT_BACK)
+
 	if(id)
-		EQUIP_OUTFIT_ITEM(id, ITEM_SLOT_ID)
+		if(!visualsOnly && id_in_wallet && ispath(id, /obj/item/card/id))
+			var/obj/item/storage/wallet/W = /obj/item/storage/wallet/open
+			EQUIP_OUTFIT_ITEM(W, ITEM_SLOT_ID)
+			W = H.wear_id
+			INVOKE_ASYNC(W, TYPE_PROC_REF(/obj/item, InsertID), SSwardrobe.provide_type(id), TRUE)
+		else
+			EQUIP_OUTFIT_ITEM(id, ITEM_SLOT_ID)
+
 	if(!visualsOnly && id_trim && H.wear_id)
-		var/obj/item/card/id/id_card = H.wear_id
+		var/obj/item/card/id/id_card = H.wear_id.GetID(TRUE)
 		id_card.registered_age = H.age
 		if(id_trim)
 			if(!SSid_access.apply_trim_to_card(id_card, id_trim))
@@ -249,15 +259,14 @@
 	if(!visualsOnly)
 		apply_fingerprints(H)
 		if(internals_slot)
-			H.internal = H.get_item_by_slot(internals_slot)
-			H?.update_mob_action_buttons()
+			H.open_internals(H.get_item_by_slot(internals_slot))
 		if(implants)
 			for(var/implant_type in implants)
 				var/obj/item/implant/I = SSwardrobe.provide_type(implant_type, H)
-				I.implant(H, null, TRUE)
+				I.implant(H, null, BODY_ZONE_CHEST, TRUE)
 
 		// Insert the skillchips associated with this outfit into the target.
-		if(skillchips)
+		if(skillchips && H.needs_organ(ORGAN_SLOT_BRAIN))
 			for(var/skillchip_path in skillchips)
 				var/obj/item/skillchip/skillchip_instance = SSwardrobe.provide_type(skillchip_path)
 				var/implant_msg = H.implant_skillchip(skillchip_instance)

@@ -15,15 +15,16 @@
 /datum/design/lightswitch_frame
 	name = "Light Switch (Wallframe)"
 	id = "lightswitch_frame"
-	build_type = AUTOLATHE | PROTOLATHE | AWAY_LATHE
+	build_type = AUTOLATHE | FABRICATOR
 	materials = list(
 		/datum/material/iron = 200,
 		/datum/material/glass = 200,
 	)
 	build_path = /obj/item/wallframe/light_switch
-	category = list("initial", "Equipment")
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE | DEPARTMENTAL_FLAG_ENGINEERING
+	category = list(DCAT_FRAME)
+	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_ENGINEERING
 
+DEFINE_INTERACTABLE(/obj/machinery/light_switch)
 /obj/machinery/light_switch
 	name = "light switch"
 	icon = 'modular_pariah/modules/aesthetics/lightswitch/icons/lightswitch.dmi'
@@ -32,6 +33,8 @@
 	desc = "Make dark."
 	power_channel = AREA_USAGE_LIGHT
 	use_power = NO_POWER_USE
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	/// Set this to a string, path, or area instance to control that area
 	/// instead of the switch's location.
 	var/area/area = null
@@ -42,6 +45,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 /obj/machinery/light_switch/Initialize(mapload)
 	. = ..()
 
+	SET_TRACKING(__TYPE__)
 	AddComponent(/datum/component/usb_port, list(
 		/obj/item/circuit_component/light_switch,
 	))
@@ -60,6 +64,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	update_appearance()
 
 /obj/machinery/light_switch/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	area.light_switches -= src
 	if(!length(area.light_switches))
 		set_lights(TRUE)
@@ -75,7 +80,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	if(is_operational)
 		var/target_state = "[base_icon_state]-[(area.lightswitch ? "on" : "off")]"
 		. += mutable_appearance(icon, target_state, alpha = src.alpha)
-		. += emissive_appearance(icon, target_state, alpha = src.alpha)
+		. += emissive_appearance(icon, target_state, alpha = 90)
 	else
 		if(panel_open && has_wires)
 			. += mutable_appearance(icon, "[base_icon_state]-wires")
@@ -115,7 +120,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 		return ..()
 
 	if(has_wires)
-		if(user.electrocute_act(10, src))
+		if(user.electrocute_act(10))
 			return TRUE
 
 	new /obj/item/wallframe/light_switch(get_turf(user))
@@ -136,15 +141,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	. = ..()
 	if(panel_open)
 		if(has_wires)
-			. += "The wires are visible and could be <i>screwed</i> in place."
+			. += span_notice("The wires are visible and could be <i>screwed</i> in place.")
 		else
-			. += "The circuitry needs to be <i>wired</i> to be functional."
+			. += span_notice("The circuitry needs to be <i>wired</i> to be functional.")
 		return .
 
-	if(is_operational)
-		. += "It is [area.lightswitch ? "on" : "off"]."
-	else
-		. += "It doesn't appear to be functional."
+	. += span_notice("It is in the [area.lightswitch ? "on" : "off"] position.")
 
 /obj/machinery/light_switch/interact(mob/user)
 	. = ..()

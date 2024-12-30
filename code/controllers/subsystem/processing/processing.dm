@@ -10,6 +10,13 @@ SUBSYSTEM_DEF(processing)
 	var/list/processing = list()
 	var/list/currentrun = list()
 
+/datum/controller/subsystem/processing/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF(src, processing),
+		NAMEOF(src, currentrun)
+	)
+
 /datum/controller/subsystem/processing/stat_entry(msg)
 	msg = "[stat_tag]:[length(processing)]"
 	return ..()
@@ -47,4 +54,8 @@ SUBSYSTEM_DEF(processing)
  */
 /datum/proc/process(delta_time)
 	set waitfor = FALSE
+	var/static/list/fuckups = list()
+	if(!(type in fuckups))
+		stack_trace("[type] called datum process, this is wasting CPU time.")
+		fuckups += type
 	return PROCESS_KILL

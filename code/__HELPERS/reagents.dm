@@ -51,42 +51,45 @@
 		//there is at least one unique catalyst for the short reaction, so there is no conflict
 		return FALSE
 
-	//if we got this far, the longer reaction will be impossible to create if the shorter one is earlier in GLOB.chemical_reactions_list_reactant_index, and will require the reagents to be added in a particular order otherwise
+	//if we got this far, the longer reaction will be impossible to create if the shorter one is earlier in SSreagents.chemical_reactions_list_reactant_index, and will require the reagents to be added in a particular order otherwise
 	return TRUE
 
 /proc/get_chemical_reaction(id)
-	if(!GLOB.chemical_reactions_list_reactant_index)
+	if(!SSreagents.chemical_reactions_list_reactant_index)
 		return
-	for(var/reagent in GLOB.chemical_reactions_list_reactant_index)
-		for(var/R in GLOB.chemical_reactions_list_reactant_index[reagent])
+	for(var/reagent in SSreagents.chemical_reactions_list_reactant_index)
+		for(var/R in SSreagents.chemical_reactions_list_reactant_index[reagent])
 			var/datum/reac = R
 			if(reac.type == id)
 				return R
 
 /proc/remove_chemical_reaction(datum/chemical_reaction/R)
-	if(!GLOB.chemical_reactions_list_reactant_index || !R)
+	if(!SSreagents.chemical_reactions_list_reactant_index || !R)
 		return
 	for(var/rid in R.required_reagents)
-		GLOB.chemical_reactions_list_reactant_index[rid] -= R
+		SSreagents.chemical_reactions_list_reactant_index[rid] -= R
 
 //see build_chemical_reactions_list in holder.dm for explanations
-/proc/add_chemical_reaction(datum/chemical_reaction/R)
-	if(!GLOB.chemical_reactions_list_reactant_index || !R.required_reagents || !R.required_reagents.len)
+/proc/add_chemical_reaction(datum/chemical_reaction/add)
+	if(!SSreagents.chemical_reactions_list_reactant_index || !add.required_reagents || !add.required_reagents.len)
 		return
-	var/primary_reagent = R.required_reagents[1]
-	if(!GLOB.chemical_reactions_list_reactant_index[primary_reagent])
-		GLOB.chemical_reactions_list_reactant_index[primary_reagent] = list()
-	GLOB.chemical_reactions_list_reactant_index[primary_reagent] += R
+	var/rand_reagent = pick(add.required_reagents)
+	if(!SSreagents.chemical_reactions_list_reactant_index[rand_reagent])
+		SSreagents.chemical_reactions_list_reactant_index[rand_reagent] = list()
+	SSreagents.chemical_reactions_list_reactant_index[rand_reagent] += add
 
 //Creates foam from the reagent. Metaltype is for metal foam, notification is what to show people in textbox
-/datum/reagents/proc/create_foam(foamtype,foam_volume,metaltype = 0,notification = null)
+/datum/reagents/proc/create_foam(foamtype, foam_volume, result_type = null, notification = null, log = FALSE)
 	var/location = get_turf(my_atom)
-	var/datum/effect_system/foam_spread/foam = new foamtype()
-	foam.set_up(foam_volume, location, src, metaltype)
-	foam.start()
+
+	var/datum/effect_system/fluid_spread/foam/foam = new foamtype()
+	foam.set_up(amount = foam_volume, holder = my_atom, location = location, carry = src, result_type = result_type)
+	foam.start(log = log)
+
 	clear_reagents()
 	if(!notification)
 		return
+
 	for(var/mob/M in viewers(5, location))
 		to_chat(M, notification)
 
@@ -167,14 +170,14 @@
 ///Returns reagent datum from typepath
 /proc/find_reagent(input)
 	. = FALSE
-	if(GLOB.chemical_reagents_list[input]) //prefer IDs!
+	if(SSreagents.chemical_reagents_list[input]) //prefer IDs!
 		return input
 	else
 		return get_chem_id(input)
 
 /proc/find_reagent_object_from_type(input)
-	if(GLOB.chemical_reagents_list[input]) //prefer IDs!
-		return GLOB.chemical_reagents_list[input]
+	if(SSreagents.chemical_reagents_list[input]) //prefer IDs!
+		return SSreagents.chemical_reagents_list[input]
 	else
 		return null
 
@@ -182,17 +185,16 @@
 /proc/get_random_reagent_id()
 	var/static/list/random_reagents = list()
 	if(!random_reagents.len)
-		for(var/thing in subtypesof(/datum/reagent))
-			var/datum/reagent/R = thing
-			if(initial(R.chemical_flags) & REAGENT_CAN_BE_SYNTHESIZED)
-				random_reagents += R
+		for(var/datum/reagent/random_candidate as anything in subtypesof(/datum/reagent))
+			if(!(isabstract(random_candidate)) && !(initial(random_candidate.chemical_flags) & REAGENT_SPECIAL))
+				random_reagents += random_candidate
 	var/picked_reagent = pick(random_reagents)
 	return picked_reagent
 
 ///Returns reagent datum from reagent name string
 /proc/get_chem_id(chem_name)
-	for(var/X in GLOB.chemical_reagents_list)
-		var/datum/reagent/R = GLOB.chemical_reagents_list[X]
+	for(var/X in SSreagents.chemical_reagents_list)
+		var/datum/reagent/R = SSreagents.chemical_reagents_list[X]
 		if(ckey(chem_name) == ckey(lowertext(R.name)))
 			return X
 
@@ -200,7 +202,7 @@
 /proc/get_recipe_from_reagent_product(input_type)
 	if(!input_type)
 		return
-	var/list/matching_reactions = GLOB.chemical_reactions_list_product_index[input_type]
+	var/list/matching_reactions = SSreagents.chemical_reactions_list_product_index[input_type]
 	return matching_reactions
 
 /proc/reagent_paths_list_to_text(list/reagents, addendum)

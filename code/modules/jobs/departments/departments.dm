@@ -18,7 +18,13 @@
 	var/list/department_jobs = list()
 	/// For separatists, what independent name prefix does their nation get named?
 	var/list/nation_prefixes = list()
+	/// What manifest to start in besides the generic ones. Can be null.
+	var/manifest_key = null
+	/// Account ID for the budget
+	var/budget_id = null
 
+	var/exclude_from_latejoin = FALSE
+	var/is_not_real_department = FALSE
 
 /// Handles adding jobs to the department and setting up the job bitflags.
 /datum/job_department/proc/add_job(datum/job/job)
@@ -30,13 +36,6 @@
 	var/static/list/nation_suffixes = list("stan", "topia", "land", "nia", "ca", "tova", "dor", "ador", "tia", "sia", "ano", "tica", "tide", "cis", "marea", "co", "taoide", "slavia", "stotzka")
 	return pick(nation_prefixes) + pick(nation_suffixes)
 
-/// A special assistant only department, primarily for use by the preferences menu
-/datum/job_department/assistant
-	department_name = DEPARTMENT_ASSISTANT
-	department_bitflags = DEPARTMENT_BITFLAG_ASSISTANT
-	nation_prefixes = list("Assa", "Mainte", "Tunnel", "Gris", "Grey", "Liath", "Grigio", "Ass", "Assi")
-	// Don't add department_head! Assistants names should not be in bold.
-
 /datum/job_department/assistant/generate_nation_name()
 	var/nomadic_name = pick("roving clans", "barbaric tribes", "tides", "bandit kingdom", "tribal society", "marauder clans", "horde")
 	return "The [nomadic_name] of [..()]"
@@ -46,16 +45,16 @@
 	department_name = DEPARTMENT_CAPTAIN
 	department_bitflags = DEPARTMENT_BITFLAG_CAPTAIN
 	department_head = /datum/job/captain
+	is_not_real_department = TRUE
 
 /datum/job_department/command
-	department_name = DEPARTMENT_COMMAND
-	department_bitflags = DEPARTMENT_BITFLAG_COMMAND
+	department_name = DEPARTMENT_MANAGEMENT
+	department_bitflags = DEPARTMENT_BITFLAG_MANAGEMENT
 	department_head = /datum/job/captain
 	department_experience_type = EXP_TYPE_COMMAND
 	display_order = 1
 	label_class = "command"
 	latejoin_color = "#ccccff"
-
 
 /datum/job_department/security
 	department_name = DEPARTMENT_SECURITY
@@ -65,7 +64,9 @@
 	display_order = 2
 	label_class = "security"
 	latejoin_color = "#ffdddd"
+	manifest_key = DATACORE_RECORDS_MARS
 	nation_prefixes = list("Securi", "Beepski", "Shitcuri", "Red", "Stunba", "Flashbango", "Flasha", "Stanfordi")
+	budget_id = ACCOUNT_SEC
 
 /datum/job_department/engineering
 	department_name = DEPARTMENT_ENGINEERING
@@ -76,7 +77,8 @@
 	label_class = "engineering"
 	latejoin_color = "#ffeeaa"
 	nation_prefixes = list("Atomo", "Engino", "Power", "Teleco")
-
+	manifest_key = DATACORE_RECORDS_DAEDALUS
+	budget_id = ACCOUNT_ENG
 
 /datum/job_department/medical
 	department_name = DEPARTMENT_MEDICAL
@@ -87,18 +89,8 @@
 	label_class = "medical"
 	latejoin_color = "#ffddf0"
 	nation_prefixes = list("Mede", "Healtha", "Recova", "Chemi", "Viro", "Psych")
-
-
-/datum/job_department/science
-	department_name = DEPARTMENT_SCIENCE
-	department_bitflags = DEPARTMENT_BITFLAG_SCIENCE
-	department_head = /datum/job/research_director
-	department_experience_type = EXP_TYPE_SCIENCE
-	display_order = 5
-	label_class = "science"
-	latejoin_color = "#ffddff"
-	nation_prefixes = list("Sci", "Griffa", "Geneti", "Explosi", "Mecha", "Xeno", "Nani", "Cyto")
-
+	manifest_key = DATACORE_RECORDS_AETHER
+	budget_id = ACCOUNT_MED
 
 /datum/job_department/cargo
 	department_name = DEPARTMENT_CARGO
@@ -109,31 +101,47 @@
 	label_class = "supply"
 	latejoin_color = "#ddddff"
 	nation_prefixes = list("Cargo", "Guna", "Suppli", "Mule", "Crate", "Ore", "Mini", "Shaf")
-
-
-/datum/job_department/service
-	department_name = DEPARTMENT_SERVICE
-	department_bitflags = DEPARTMENT_BITFLAG_SERVICE
-	department_head = /datum/job/head_of_personnel
-	department_experience_type = EXP_TYPE_SERVICE
-	display_order = 7
-	label_class = "service"
-	latejoin_color = "#bbe291"
-	nation_prefixes = list("Honka", "Boozo", "Fatu", "Danka", "Mimi", "Libra", "Jani", "Religi")
-
+	manifest_key = DATACORE_RECORDS_HERMES
+	budget_id = ACCOUNT_CAR
 
 /datum/job_department/silicon
 	department_name = DEPARTMENT_SILICON
 	department_bitflags = DEPARTMENT_BITFLAG_SILICON
 	department_head = /datum/job/ai
 	department_experience_type = EXP_TYPE_SILICON
-	display_order = 8
+	display_order = 7
 	label_class = "silicon"
 	latejoin_color = "#ccffcc"
 
 /datum/job_department/silicon/generate_nation_name()
 	return "United Nations" //For nations ruleset specifically, because all other sources of nation creation cannot choose silicons
 
+/datum/job_department/service
+	department_name = DEPARTMENT_SERVICE
+	department_bitflags = DEPARTMENT_BITFLAG_SERVICE
+	department_head = /datum/job/head_of_personnel
+	department_experience_type = EXP_TYPE_SERVICE
+	display_order = 8
+	label_class = "service"
+	latejoin_color = "#bbe291"
+	nation_prefixes = list("Honka", "Boozo", "Fatu", "Danka", "Mimi", "Libra", "Jani", "Religi")
+
+/// A special assistant only department, primarily for use by the preferences menu
+/datum/job_department/assistant
+	department_name = DEPARTMENT_ASSISTANT
+	department_bitflags = DEPARTMENT_BITFLAG_ASSISTANT
+	display_order = 9
+	nation_prefixes = list("Assa", "Mainte", "Tunnel", "Gris", "Grey", "Liath", "Grigio", "Ass", "Assi")
+	// Don't add department_head! Assistants names should not be in bold.
+	is_not_real_department = TRUE
+
 /// Catch-all department for undefined jobs.
 /datum/job_department/undefined
 	display_order = 10
+	exclude_from_latejoin = TRUE
+
+/datum/job_department/company_leader
+	department_name = DEPARTMENT_COMPANY_LEADER
+	department_bitflags = DEPARTMENT_BITFLAG_COMPANY_LEADER
+	exclude_from_latejoin = TRUE
+	is_not_real_department = TRUE

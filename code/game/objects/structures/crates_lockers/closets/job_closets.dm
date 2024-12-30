@@ -17,7 +17,7 @@
 		/obj/item/clothing/shoes/sneakers/black = 2,
 		/obj/item/reagent_containers/glass/rag = 2,
 		/obj/item/storage/box/beanbag = 1,
-		/obj/item/clothing/suit/armor/vest/alt = 1,
+		/obj/item/clothing/suit/armor/vest/ballistic = 1,
 		/obj/item/circuitboard/machine/dish_drive = 1,
 		/obj/item/clothing/glasses/sunglasses/reagent = 1,
 		/obj/item/clothing/neck/petcollar = 1,
@@ -281,7 +281,6 @@
 		/obj/item/clothing/under/rank/rnd/scientist = 3,
 		/obj/item/clothing/suit/toggle/labcoat/science = 3,
 		/obj/item/clothing/shoes/sneakers/white = 3,
-		/obj/item/radio/headset/headset_sci = 2,
 		/obj/item/clothing/mask/gas = 3)
 	generate_items_inside(items_inside,src)
 	return

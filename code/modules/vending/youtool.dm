@@ -19,7 +19,7 @@
 		/obj/item/flashlight/glowstick/red = 3,
 		/obj/item/flashlight = 5,
 		/obj/item/clothing/ears/earmuffs = 1,
-		/obj/item/paint/anycolor = 5
+		/obj/item/paint_sprayer = 2,
 	)
 	contraband = list(
 		/obj/item/clothing/gloves/color/fyellow = 2
@@ -32,8 +32,8 @@
 		/obj/item/clothing/gloves/color/yellow = 1
 	)
 	refill_canister = /obj/item/vending_refill/youtool
-	default_price = PAYCHECK_ASSISTANT
-	extra_price = PAYCHECK_COMMAND * 1.5
+	default_price = PAYCHECK_ASSISTANT * 1.5
+	extra_price = PAYCHECK_COMMAND * 1.25
 	payment_department = ACCOUNT_ENG
 
 	discount_access = ACCESS_ENGINE

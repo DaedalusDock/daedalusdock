@@ -10,8 +10,6 @@
 	mats_per_unit = list(/datum/material/bluespace=MINERAL_MATERIAL_AMOUNT)
 	points = 50
 	refined_type = /obj/item/stack/sheet/bluespace_crystal
-	grind_results = list(/datum/reagent/bluespace = 20)
-	scan_state = "rock_BScrystal"
 	merge_type = /obj/item/stack/ore/bluespace_crystal
 	/// The teleport range when crushed/thrown at someone.
 	var/blink_range = 8
@@ -58,7 +56,7 @@
 	blink_range = 4 // Not as good as the organic stuff!
 	points = 0 //nice try
 	refined_type = null
-	grind_results = list(/datum/reagent/bluespace = 10, /datum/reagent/silicon = 20)
+	grind_results = list()
 	merge_type = /obj/item/stack/ore/bluespace_crystal/artificial
 
 //Polycrystals, aka stacks
@@ -73,7 +71,6 @@
 	attack_verb_continuous = list("bluespace polybashes", "bluespace polybatters", "bluespace polybludgeons", "bluespace polythrashes", "bluespace polysmashes")
 	attack_verb_simple = list("bluespace polybash", "bluespace polybatter", "bluespace polybludgeon", "bluespace polythrash", "bluespace polysmash")
 	novariants = TRUE
-	grind_results = list(/datum/reagent/bluespace = 20)
 	point_value = 30
 	merge_type = /obj/item/stack/sheet/bluespace_crystal
 	var/crystal_type = /obj/item/stack/ore/bluespace_crystal/refined

@@ -27,6 +27,8 @@
 
 /obj/structure/scanner_gate_shell/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	set_scanline("scanning", 10)
 	SEND_SIGNAL(src, COMSIG_SCANGATE_SHELL_PASS, AM)
 

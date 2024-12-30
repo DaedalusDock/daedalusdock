@@ -9,7 +9,7 @@
 
 /datum/action/changeling/biodegrade/sting_action(mob/living/carbon/human/user)
 	var/used = FALSE // only one form of shackles removed per use
-	if(!HAS_TRAIT(user, TRAIT_RESTRAINED) && !user.legcuffed && isopenturf(user.loc))
+	if(!HAS_TRAIT(user, TRAIT_ARMS_RESTRAINED) && !user.legcuffed && isopenturf(user.loc))
 		to_chat(user, span_warning("We are already free!"))
 		return FALSE
 
@@ -51,15 +51,6 @@
 		to_chat(user, span_warning("We vomit acidic goop onto the interior of [C]!"))
 		addtimer(CALLBACK(src, PROC_REF(open_closet), user, C), 70)
 		used = TRUE
-
-	if(istype(user.loc, /obj/structure/spider/cocoon) && !used)
-		var/obj/structure/spider/cocoon/C = user.loc
-		if(!istype(C))
-			return FALSE
-		C.visible_message(span_warning("[src] shifts and starts to fall apart!"))
-		to_chat(user, span_warning("We secrete acidic enzymes from our skin and begin melting our cocoon..."))
-		addtimer(CALLBACK(src, PROC_REF(dissolve_cocoon), user, C), 25) //Very short because it's just webs
-		used = TRUE
 	..()
 	return used
 
@@ -90,9 +81,3 @@
 		C.broken = TRUE
 		C.open()
 		to_chat(user, span_warning("We open the container restraining us!"))
-
-/datum/action/changeling/biodegrade/proc/dissolve_cocoon(mob/living/carbon/human/user, obj/structure/spider/cocoon/C)
-	if(C && user.loc == C)
-		new /obj/effect/decal/cleanable/greenglow(C.drop_location())
-		qdel(C) //The cocoon's destroy will move the changeling outside of it without interference
-		to_chat(user, span_warning("We dissolve the cocoon!"))

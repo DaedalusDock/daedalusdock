@@ -139,7 +139,7 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 		if(U.locked)
 			to_chat(user, span_warning("The upgrade is locked and cannot be used yet!"))
 			return
-		if(!user.canUnEquip(U))
+		if(!user.canUnequipItem(U))
 			to_chat(user, span_warning("The upgrade is stuck to you and you can't seem to let go of it!"))
 			return
 		add_to_upgrades(U, user)
@@ -179,8 +179,6 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 		if(modularInterface.install_component(floppy, user))
 			return
 
-	if(W.force && W.damtype != STAMINA && stat != DEAD) //only sparks if real damage is dealt.
-		spark_system.start()
 	return ..()
 
 /mob/living/silicon/robot/attack_alien(mob/living/carbon/alien/humanoid/user, list/modifiers)

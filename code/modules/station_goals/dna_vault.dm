@@ -53,7 +53,7 @@
 /datum/station_goal/dna_vault/check_completion()
 	if(..())
 		return TRUE
-	for(var/obj/machinery/dna_vault/V in GLOB.machines)
+	for(var/obj/machinery/dna_vault/V as anything in INSTANCES_OF(/obj/machinery/dna_vault))
 		if(V.animals.len >= animal_count && V.plants.len >= plant_count && V.dna.len >= human_count)
 			return TRUE
 	return FALSE
@@ -87,6 +87,7 @@
 	var/list/obj/structure/fillers = list()
 
 /obj/machinery/dna_vault/Initialize(mapload)
+	SET_TRACKING(__TYPE__)
 	//TODO: Replace this,bsa and gravgen with some big machinery datum
 	var/list/occupied = list()
 	for(var/direct in list(EAST,WEST,SOUTHEAST,SOUTHWEST))
@@ -112,6 +113,8 @@
 		var/obj/structure/filler/filler = V
 		filler.parent = null
 		qdel(filler)
+
+	UNSET_TRACKING(__TYPE__)
 	. = ..()
 
 /obj/machinery/dna_vault/ui_interact(mob/user, datum/tgui/ui)
@@ -193,8 +196,8 @@
 	switch(upgrade_type)
 		if(VAULT_TOXIN)
 			to_chat(H, span_notice("You feel resistant to airborne toxins."))
-			if(locate(/obj/item/organ/internal/lungs) in H.internal_organs)
-				var/obj/item/organ/internal/lungs/L = H.internal_organs_slot[ORGAN_SLOT_LUNGS]
+			if(locate(/obj/item/organ/lungs) in H.processing_organs)
+				var/obj/item/organ/lungs/L = H.organs_by_slot[ORGAN_SLOT_LUNGS]
 				L.plas_breath_dam_min = 0
 				L.plas_breath_dam_max = 0
 			ADD_TRAIT(H, TRAIT_VIRUSIMMUNE, "dna_vault")

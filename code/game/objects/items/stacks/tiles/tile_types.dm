@@ -11,13 +11,13 @@
 	righthand_file = 'icons/mob/inhands/misc/tiles_righthand.dmi'
 	icon = 'icons/obj/tiles.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
-	force = 1
-	throwforce = 1
-	throw_speed = 3
+	force = 6
+	throwforce = 15
 	throw_range = 7
 	max_amount = 60
 	novariants = TRUE
 	material_flags = MATERIAL_EFFECTS
+	abstract_type = /obj/item/stack/tile
 	/// What type of turf does this tile produce.
 	var/turf_type = null
 	/// What dir will the turf have?
@@ -77,6 +77,9 @@
 	if(!istype(target_plating))
 		return
 
+	if(target_plating.underfloor_accessibility != UNDERFLOOR_INTERACTABLE)
+		return
+
 	if(!replace_plating)
 		if(!use(1))
 			return
@@ -134,33 +137,7 @@
 	turf_type = /turf/open/floor/wood
 	resistance_flags = FLAMMABLE
 	merge_type = /obj/item/stack/tile/wood
-	tile_reskin_types = list(
-		/obj/item/stack/tile/wood,
-		/obj/item/stack/tile/wood/large,
-		/obj/item/stack/tile/wood/tile,
-		/obj/item/stack/tile/wood/parquet,
-	)
 
-/obj/item/stack/tile/wood/parquet
-	name = "parquet wood floor tile"
-	singular_name = "parquet wood floor tile"
-	icon_state = "tile-wood_parquet"
-	turf_type = /turf/open/floor/wood/parquet
-	merge_type = /obj/item/stack/tile/wood/parquet
-
-/obj/item/stack/tile/wood/large
-	name = "large wood floor tile"
-	singular_name = "large wood floor tile"
-	icon_state = "tile-wood_large"
-	turf_type = /turf/open/floor/wood/large
-	merge_type = /obj/item/stack/tile/wood/large
-
-/obj/item/stack/tile/wood/tile
-	name = "tiled wood floor tile"
-	singular_name = "tiled wood floor tile"
-	icon_state = "tile-wood_tile"
-	turf_type = /turf/open/floor/wood/tile
-	merge_type = /obj/item/stack/tile/wood/tile
 
 //Bamboo
 /obj/item/stack/tile/bamboo
@@ -376,7 +353,7 @@
 	. += neon_overlay
 	. += emissive_appearance(neon_icon || icon, neon_icon_state || icon_state, alpha = emissive_alpha)
 
-/obj/item/stack/tile/carpet/neon/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/stack/tile/carpet/neon/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands || !neon_inhand_icon_state)
 		return
@@ -1146,7 +1123,7 @@
 	. = ..()
 	. += emissive_appearance(icon, icon_state, alpha = alpha)
 
-/obj/item/stack/tile/emissive_test/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/stack/tile/emissive_test/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	. += emissive_appearance(standing.icon, standing.icon_state, alpha = standing.alpha)
 
@@ -1161,65 +1138,6 @@
 
 /obj/item/stack/tile/emissive_test/white/sixty
 	amount = 60
-
-//Catwalk Tiles
-/obj/item/stack/tile/catwalk_tile //This is our base type, sprited to look maintenance-styled
-	name = "catwalk plating"
-	singular_name = "catwalk plating tile"
-	desc = "Flooring that shows its contents underneath. Engineers love it!"
-	icon_state = "maint_catwalk"
-	inhand_icon_state = "tile-catwalk"
-	mats_per_unit = list(/datum/material/iron=100)
-	turf_type = /turf/open/floor/catwalk_floor
-	merge_type = /obj/item/stack/tile/catwalk_tile //Just to be cleaner, these all stack with eachother
-	tile_reskin_types = list(
-		/obj/item/stack/tile/catwalk_tile,
-		/obj/item/stack/tile/catwalk_tile/iron,
-		/obj/item/stack/tile/catwalk_tile/iron_white,
-		/obj/item/stack/tile/catwalk_tile/iron_dark,
-		/obj/item/stack/tile/catwalk_tile/flat_white,
-		/obj/item/stack/tile/catwalk_tile/titanium,
-		/obj/item/stack/tile/catwalk_tile/iron_smooth //this is the original greenish one
-	)
-
-/obj/item/stack/tile/catwalk_tile/sixty
-	amount = 60
-
-/obj/item/stack/tile/catwalk_tile/iron
-	name = "iron catwalk floor"
-	singular_name = "iron catwalk floor tile"
-	icon_state = "iron_catwalk"
-	turf_type = /turf/open/floor/catwalk_floor/iron
-
-/obj/item/stack/tile/catwalk_tile/iron_white
-	name = "white catwalk floor"
-	singular_name = "white catwalk floor tile"
-	icon_state = "whiteiron_catwalk"
-	turf_type = /turf/open/floor/catwalk_floor/iron_white
-
-/obj/item/stack/tile/catwalk_tile/iron_dark
-	name = "dark catwalk floor"
-	singular_name = "dark catwalk floor tile"
-	icon_state = "darkiron_catwalk"
-	turf_type = /turf/open/floor/catwalk_floor/iron_dark
-
-/obj/item/stack/tile/catwalk_tile/flat_white
-	name = "flat white catwalk floor"
-	singular_name = "flat white catwalk floor tile"
-	icon_state = "flatwhite_catwalk"
-	turf_type = /turf/open/floor/catwalk_floor/flat_white
-
-/obj/item/stack/tile/catwalk_tile/titanium
-	name = "titanium catwalk floor"
-	singular_name = "titanium catwalk floor tile"
-	icon_state = "titanium_catwalk"
-	turf_type = /turf/open/floor/catwalk_floor/titanium
-
-/obj/item/stack/tile/catwalk_tile/iron_smooth //this is the greenish one
-	name = "smooth iron catwalk floor"
-	singular_name = "smooth iron catwalk floor tile"
-	icon_state = "smoothiron_catwalk"
-	turf_type = /turf/open/floor/catwalk_floor/iron_smooth
 
 // Glass floors
 /obj/item/stack/tile/glass

@@ -18,16 +18,17 @@ SUBSYSTEM_DEF(communications)
 	else
 		return FALSE
 
-/datum/controller/subsystem/communications/proc/make_announcement(mob/living/user, is_silicon, input, syndicate, list/players)
+/datum/controller/subsystem/communications/proc/make_announcement(mob/living/user, is_silicon, input, syndicate, list/players, sender_name = JOB_CAPTAIN)
 	if(!can_announce(user, is_silicon))
 		return FALSE
+
 	if(is_silicon)
 		minor_announce(html_decode(input),"Station Announcement by [user.name] (AI)", players = players)
 		COOLDOWN_START(src, silicon_message_cooldown, COMMUNICATION_COOLDOWN_AI)
 	else
 		priority_announce(
 			html_decode(user.treat_message(input)),
-			"Station Announcement by Captain",
+			"Station Announcement by [sender_name]",
 			sound_type = 'sound/misc/announce.ogg',
 			send_to_newscaster = !syndicate,
 			do_not_modify = TRUE,
@@ -72,7 +73,7 @@ SUBSYSTEM_DEF(communications)
 	message_admins("[ADMIN_LOOKUPFLW(user)] has called an emergency meeting.")
 
 /datum/controller/subsystem/communications/proc/send_message(datum/comm_message/sending,print = TRUE,unique = FALSE)
-	for(var/obj/machinery/computer/communications/C in GLOB.machines)
+	for(var/obj/machinery/computer/communications/C as anything in INSTANCES_OF(/obj/machinery/computer/communications))
 		if(!(C.machine_stat & (BROKEN|NOPOWER)) && is_station_level(C.z))
 			if(unique)
 				C.add_message(sending)

@@ -3,7 +3,7 @@
 	desc = "Didn't make sense not to live for fun, your brain gets smart but your head gets dumb."
 	icon = 'icons/mob/human_parts.dmi'
 	icon_state = "default_human_head"
-	max_damage = 200
+	max_damage = 75
 	body_zone = BODY_ZONE_HEAD
 	body_part = HEAD
 	plaintext_zone = "head"
@@ -12,8 +12,6 @@
 	throw_range = 2 //No head bowling
 	px_x = 0
 	px_y = -8
-	stam_damage_coeff = 1
-	max_stamina_damage = 100
 	wound_resistance = 5
 	disabled_wound_penalty = 25
 	grind_results = null
@@ -27,13 +25,24 @@
 	unarmed_stun_threshold = 4
 	bodypart_trait_source = HEAD_TRAIT
 
-	bodypart_flags = STOCK_BP_FLAGS_HEAD
+	bodypart_flags = (BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_ARTERY | BP_CAN_BE_DISLOCATED)
+
+	amputation_point = "neck"
+	encased = "skull"
+	artery_name = "carotid artery"
+	cavity_name = "cranial"
+	joint_name = "jaw"
+
+	minimum_break_damage = 60 //It's really high because of how crippling the effect is.
 
 	var/mob/living/brain/brainmob //The current occupant.
-	var/obj/item/organ/internal/brain/brain //The brain organ
-	var/obj/item/organ/internal/eyes/eyes
-	var/obj/item/organ/internal/ears/ears
-	var/obj/item/organ/internal/tongue/tongue
+	var/obj/item/organ/brain/brain //The brain organ
+	var/obj/item/organ/eyes/eyes
+	var/obj/item/organ/ears/ears
+	var/obj/item/organ/tongue/tongue
+
+	///See [mob/living/proc/has_mouth()]
+	var/can_ingest_reagents = TRUE
 
 	var/eyes_icon_file = 'icons/mob/human_face.dmi'
 	///Render sclera for this species?
@@ -144,43 +153,39 @@
 		if(!tongue)
 			. += span_info("[real_name]'s tongue has been removed.")
 
-
-/obj/item/bodypart/head/can_dismember(obj/item/item)
-	if(owner.stat < HARD_CRIT)
-		return FALSE
-	return ..()
-
-/obj/item/bodypart/head/drop_organs(mob/user, violent_removal)
+/obj/item/bodypart/head/drop_contents(mob/user, violent_removal)
 	var/turf/head_turf = get_turf(src)
 	for(var/obj/item/head_item in src.contents)
 		if(head_item == brain)
+			var/obj/item/organ/brain/old_brain = brain // I am so scared of order of operations weirdness with brains, so this is how things are being done.
+			remove_organ(brain)
 			if(user)
 				user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), span_notice("You saw [src] open and pull out a brain."))
-			if(brainmob)
-				brainmob.container = null
-				brainmob.forceMove(brain)
-				brain.brainmob = brainmob
-				brainmob = null
 			if(violent_removal && prob(rand(80, 100))) //ghetto surgery can damage the brain.
 				to_chat(user, span_warning("[brain] was damaged in the process!"))
-				brain.setOrganDamage(brain.maxHealth)
-			brain.forceMove(head_turf)
-			brain = null
+				old_brain.setOrganDamage(old_brain.maxHealth)
+			old_brain.forceMove(head_turf)
 			update_icon_dropped()
 		else
 			if(istype(head_item, /obj/item/reagent_containers/pill))
 				for(var/datum/action/item_action/hands_free/activate_pill/pill_action in head_item.actions)
 					qdel(pill_action)
-			else if(istype(head_item, /obj/item/organ))
-				var/obj/item/organ/organ = head_item
-				if(organ.organ_flags & ORGAN_UNREMOVABLE)
-					continue
-			head_item.forceMove(head_turf)
+
 	eyes = null
 	ears = null
 	tongue = null
 
 	return ..()
+
+/obj/item/bodypart/head/apply_bone_break(mob/living/carbon/C)
+	. = ..()
+	//add_bodypart_trait(TRAIT_BLURRY_VISION)
+	C.apply_status_effect(/datum/status_effect/concussion)
+
+/obj/item/bodypart/head/apply_bone_heal(mob/living/carbon/C)
+	. = ..()
+	//remove_bodypart_trait(TRAIT_BLURRY_VISION)
+	C.remove_status_effect(/datum/status_effect/concussion)
 
 /obj/item/bodypart/head/update_limb(dropping_limb, is_creating)
 	. = ..()
@@ -252,6 +257,11 @@
 					eye_right.color = eyes.eye_color_right
 				. += eye_left
 				. += eye_right
+				if(eye_sclera)
+					var/image/sclera = image(eyes_icon_file, "eyes_sclera", -BODY_LAYER)
+					sclera.color = eyes.sclera_color
+					. += sclera
+
 			else
 				. += image(eyes_icon_file, "eyes_missing_both", -BODY_LAYER, SOUTH)
 	else
@@ -297,6 +307,12 @@
 	return gradient_overlay
 
 /obj/item/bodypart/head/talk_into(mob/holder, message, channel, spans, datum/language/language, list/message_mods)
+	if(isnull(language))
+		language = holder?.get_selected_language()
+
+	if(istype(language, /datum/language/visual))
+		return
+
 	var/mob/headholder = holder
 	if(istype(headholder))
 		headholder.log_talk(message, LOG_SAY, tag = "beheaded talk")
@@ -319,7 +335,7 @@
 	limb_id = SPECIES_MONKEY
 	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
 	should_draw_greyscale = FALSE
-	dmg_overlay_type = SPECIES_MONKEY
+	icon_dmg_overlay = 'icons/mob/species/monkey/damage.dmi'
 	is_dimorphic = FALSE
 
 /obj/item/bodypart/head/alien

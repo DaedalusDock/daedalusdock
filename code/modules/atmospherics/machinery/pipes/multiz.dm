@@ -59,3 +59,15 @@
 			continue
 		below.pipeline_expansion() //If we've got one below us, force it to add us on facebook
 	return ..()
+
+/obj/machinery/atmospherics/pipe/multiz/CanZFall(turf/from, direction, anchor_bypass)
+	. = ..()
+	if(anchored)
+		return FALSE
+
+	if(!isturf(loc))
+		return FALSE
+
+	var/turf/T = loc
+	if(locate(/obj/machinery/atmospherics/pipe/multiz) in direction == UP ? T.above : T.below)
+		return FALSE

@@ -29,7 +29,6 @@
 /mob/living/simple_animal/pet/dog/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/pet_bonus, "woofs happily!")
-	add_cell_sample()
 
 //Corgis and pugs are now under one dog subtype
 
@@ -50,9 +49,6 @@
 	var/obj/item/inventory_back
 	var/shaved = FALSE
 	var/nofur = FALSE //Corgis that have risen past the material plane of existence.
-
-/mob/living/simple_animal/pet/dog/corgi/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CORGI, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/pet/dog/corgi/Destroy()
 	QDEL_NULL(inventory_head)
@@ -90,7 +86,7 @@
 			possible_headwear += item
 	if(!length(possible_headwear))
 		for(var/obj/item/item in orange(1))
-			if(ispath(item.dog_fashion, /datum/dog_fashion/head) && CanReach(item))
+			if(ispath(item.dog_fashion, /datum/dog_fashion/head) && item.IsReachableBy(src))
 				possible_headwear += item
 	if(!length(possible_headwear))
 		return
@@ -133,9 +129,6 @@
 	gold_core_spawnable = FRIENDLY_SPAWN
 	collar_type = "pug"
 	held_state = "pug"
-
-/mob/living/simple_animal/pet/dog/pug/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_PUG, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/pet/dog/pug/mcgriff
 	name = "McGriff"
@@ -183,7 +176,7 @@
 		var/newcolor = rgb(rand(0, 255), rand(0, 255), rand(0, 255))
 		add_atom_colour(newcolor, FIXED_COLOUR_PRIORITY)
 
-/mob/living/simple_animal/pet/dog/corgi/death(gibbed)
+/mob/living/simple_animal/pet/dog/corgi/death(gibbed, cause_of_death = "Unknown")
 	..(gibbed)
 	regenerate_icons()
 
@@ -351,16 +344,16 @@ GLOBAL_LIST_INIT(strippable_corgi_items, create_strippable_list(list(
 	if(def_zone)
 		if(def_zone == BODY_ZONE_HEAD)
 			if(inventory_head)
-				armorval = inventory_head.armor.getRating(type)
+				armorval = inventory_head.returnArmor().getRating(type)
 		else
 			if(inventory_back)
-				armorval = inventory_back.armor.getRating(type)
+				armorval = inventory_back.returnArmor().getRating(type)
 		return armorval
 	else
 		if(inventory_head)
-			armorval += inventory_head.armor.getRating(type)
+			armorval += inventory_head.returnArmor().getRating(type)
 		if(inventory_back)
-			armorval += inventory_back.armor.getRating(type)
+			armorval += inventory_back.returnArmor().getRating(type)
 	return armorval*0.5
 
 /mob/living/simple_animal/pet/dog/corgi/attackby(obj/item/O, mob/user, params)
@@ -398,9 +391,6 @@ GLOBAL_LIST_INIT(strippable_corgi_items, create_strippable_list(list(
 		return
 	if(!item_to_add)
 		user.visible_message(span_notice("[user] pets [src]."), span_notice("You rest your hand on [src]'s head for a moment."))
-		if(flags_1 & HOLOGRAM_1)
-			return
-		SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, src, /datum/mood_event/pet_animal, src)
 		return
 
 	if(user && !user.temporarilyRemoveItemFromInventory(item_to_add))
@@ -497,7 +487,7 @@ GLOBAL_LIST_INIT(strippable_corgi_items, create_strippable_list(list(
 		memory_saved = TRUE
 	..()
 
-/mob/living/simple_animal/pet/dog/corgi/ian/death()
+/mob/living/simple_animal/pet/dog/corgi/ian/death(gibbed, cause_of_death = "Unknown")
 	if(!memory_saved)
 		Write_Memory(TRUE)
 	..()

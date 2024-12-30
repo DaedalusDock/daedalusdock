@@ -51,7 +51,7 @@ $border-radius: base.$border-radius !default;
   height: base.em(17px);
   margin: 0;
   padding: 0 0.5em;
-  font-family: Verdana, sans-serif;
+  font-family: base.$font-family;
   background-color: transparent;
   color: $text-color;
   color: inherit;

@@ -85,9 +85,9 @@
 /obj/item/modular_computer/laptop/proc/try_toggle_open(mob/living/user)
 	if(issilicon(user))
 		return
-	if(!isturf(loc) && !ismob(loc)) // No opening it in backpack.
+	if(!isturf(loc) && !equipped_to) // No opening it in backpack.
 		return
-	if(!user.canUseTopic(src, BE_CLOSE))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return
 
 	toggle_open(user)

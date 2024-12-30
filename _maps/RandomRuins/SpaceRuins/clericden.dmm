@@ -72,7 +72,7 @@
 "r" = (
 /obj/effect/decal/cleanable/shreds,
 /obj/effect/decal/remains/human,
-/obj/item/disk/design_disk/adv/cleric_mace,
+/obj/item/disk/data/cleric_mace,
 /obj/structure/trap/cult,
 /turf/open/floor/carpet/airless,
 /area/ruin/unpowered/no_grav)

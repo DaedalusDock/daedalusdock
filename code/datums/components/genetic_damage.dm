@@ -51,22 +51,18 @@
 
 	if (total_damage >= minimum_before_damage)
 		var/mob/living/living_mob = parent
-		living_mob.adjustToxLoss(toxin_damage_per_second * delta_time)
+		living_mob.adjustToxLoss(toxin_damage_per_second * delta_time, cause_of_death = "Genetic breakdown")
 
 	total_damage -= remove_per_second * delta_time
 	if (total_damage <= 0)
 		qdel(src)
 		return PROCESS_KILL
 
-/datum/component/genetic_damage/proc/on_healthscan(datum/source, list/render_list, advanced)
+/datum/component/genetic_damage/proc/on_healthscan(datum/source, list/render_string, mob/user, mode, advanced)
 	SIGNAL_HANDLER
 
 	if (advanced)
-		render_list += "<span class='alert ml-1'>Genetic damage: [round(total_damage / minimum_before_damage * 100, 0.1)]%</span>\n"
-	else if (total_damage >= minimum_before_damage)
-		render_list += "<span class='alert ml-1'>Severe genetic damage detected.</span>\n"
-	else
-		render_list += "<span class='alert ml-1'>Minor genetic damage detected.</span>\n"
+		render_string += "<span style='font-weight: bold; color: [COLOR_MEDICAL_GENETIC]'>Genetic damage: [round(total_damage / minimum_before_damage * 100, 0.1)]%</span>\n"
 
 #undef GORILLA_MUTATION_CHANCE_PER_SECOND
 #undef GORILLA_MUTATION_MINIMUM_DAMAGE

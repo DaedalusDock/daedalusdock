@@ -1,48 +1,52 @@
+#define MODE_QUEUE 1
+#define MODE_BUILD 0
+#define MAX_QUEUE_LEN 5
+
+DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 /obj/machinery/rnd/production
 	name = "technology fabricator"
 	desc = "Makes researched and prototype items with materials and energy."
 	layer = BELOW_OBJ_LAYER
 	/// Materials needed / coeff = actual.
 	var/efficiency_coeff = 1
-	var/list/categories = list()
 	var/datum/component/remote_materials/materials
-	var/allowed_department_flags = ALL
-	/// What's flick()'d on print.
-	var/production_animation
 	var/allowed_buildtypes = NONE
-	var/list/datum/design/cached_designs
+
+	/// Used by the search in the UI.
 	var/list/datum/design/matching_designs
+
 	/// Used for material distribution among other things.
 	var/department_tag = "Unidentified"
 
-	var/screen = RESEARCH_FABRICATOR_SCREEN_MAIN
+	var/screen = FABRICATOR_SCREEN_MAIN
+	/// Cache so we don't rebuild this every Topic(), see compile_categories().
+	var/list/categories
 	var/selected_category
 
 	/// What color is this machine's stripe? Leave null to not have a stripe.
 	var/stripe_color = null
 
+	/// The queue of things to produce. It's a list of lists.
+	var/list/queue
+	/// A queue packet we are processing
+	var/list/processing_packet
+
 /obj/machinery/rnd/production/Initialize(mapload)
 	. = ..()
+	queue = list()
+	selected_disk = internal_disk
 	create_reagents(0, OPENCONTAINER)
 	matching_designs = list()
-	cached_designs = list()
-	update_designs()
 	materials = AddComponent(/datum/component/remote_materials, "lathe", mapload, mat_container_flags=BREAKDOWN_FLAGS_LATHE)
 	RefreshParts()
 	update_icon(UPDATE_OVERLAYS)
+	if(internal_disk)
+		compile_categories()
 
 /obj/machinery/rnd/production/Destroy()
 	materials = null
-	cached_designs = null
 	matching_designs = null
 	return ..()
-
-/obj/machinery/rnd/production/proc/update_designs()
-	cached_designs.Cut()
-	for(var/i in stored_research.researched_designs)
-		var/datum/design/d = SSresearch.techweb_design_by_id(i)
-		if((isnull(allowed_department_flags) || (d.departmental_flags & allowed_department_flags)) && (d.build_type & allowed_buildtypes))
-			cached_designs |= d
 
 /obj/machinery/rnd/production/RefreshParts()
 	. = ..()
@@ -80,13 +84,109 @@
 		reagents.trans_to(G, G.reagents.maximum_volume)
 	return ..()
 
-/obj/machinery/rnd/production/proc/do_print(path, amount, list/matlist, notify_admins)
+/obj/machinery/rnd/production/proc/add_to_queue(datum/design/D, amount, notify_admins)
+	if(length(queue) >= MAX_QUEUE_LEN)
+		say("The build queue is full.")
+		playsound(src, 'sound/machines/buzz-two.ogg', 50, FALSE)
+		return
+
+	queue += list(list(D, amount))
+
 	if(notify_admins)
-		investigate_log("[key_name(usr)] built [amount] of [path] at [src]([type]).", INVESTIGATE_RESEARCH)
-		message_admins("[ADMIN_LOOKUPFLW(usr)] has built [amount] of [path] at \a [src]([type]).")
+		investigate_log("[key_name(usr)] queued [amount] of [D.build_path] at [src]([type]).", INVESTIGATE_RESEARCH)
+		message_admins("[ADMIN_LOOKUPFLW(usr)] has queued [amount] of [D.build_path] at \a [src]([type]).")
+
+	if(!busy)
+		run_queue()
+
+/obj/machinery/rnd/production/proc/run_queue()
+	set waitfor = FALSE
+	if(busy)
+		return
+	busy = TRUE
+
+	update_appearance(UPDATE_OVERLAYS)
+	while(length(queue))
+		var/list/queue_packet = queue[1]
+		queue -= list(queue_packet)
+		processing_packet = queue_packet
+		updateUsrDialog()
+		do_print(queue_packet[1], queue_packet[2])
+
+	processing_packet = null
+	busy = FALSE
+	update_appearance(UPDATE_OVERLAYS)
+	updateUsrDialog()
+
+/obj/machinery/rnd/production/proc/do_print(datum/design/D, amount)
+	if(!can_build_design(D, amount))
+		return FALSE
+
+	var/atom/path = D.build_path
+
+	var/coeff = efficient_with(D.build_path) ? efficiency_coeff : 1
+	var/list/efficient_mats = list()
+	for(var/MAT in D.materials)
+		efficient_mats[MAT] = D.materials[MAT]/coeff
+
+	var/power = active_power_usage
+	amount = clamp(amount, 1, 50)
+
+	for(var/M in D.materials)
+		power += round(D.materials[M] * amount / 35)
+
+	power = min(active_power_usage, power)
+	use_power(power)
+
+	materials.mat_container.use_materials(efficient_mats, amount)
+	materials.silo_log(src, "built", -amount, "[D.name]", efficient_mats)
+
+	for(var/R in D.reagents_list)
+		reagents.remove_reagent(R, D.reagents_list[R]*amount/coeff)
+
+	var/time = (((D.construction_time || 2 SECONDS) / efficiency_coeff) * amount) ** 0.8
+	if(!do_after(src, src, time, DO_IGNORE_USER_LOC_CHANGE))
+		return FALSE
+
 	for(var/i in 1 to amount)
 		new path(get_turf(src))
+
 	SSblackbox.record_feedback("nested tally", "item_printed", amount, list("[type]", "[path]"))
+	playsound(src, 'goon/sounds/chime.ogg', 50, FALSE, ignore_walls = FALSE)
+
+/obj/machinery/rnd/production/proc/can_build_design(datum/design/D, amount)
+	var/coeff = efficient_with(D.build_path) ? efficiency_coeff : 1
+	var/list/efficient_mats = list()
+	for(var/MAT in D.materials)
+		efficient_mats[MAT] = D.materials[MAT]/coeff
+
+	if(!materials.mat_container.has_materials(efficient_mats, amount))
+		say("Not enough materials to complete object[amount > 1? "s" : ""].")
+		playsound(src, 'sound/machines/buzz-two.ogg', 50, FALSE)
+		return FALSE
+
+	for(var/R in D.reagents_list)
+		if(!reagents.has_reagent(R, D.reagents_list[R]*amount/coeff))
+			say("Not enough reagents to complete object[amount > 1? "s" : ""].")
+			playsound(src, 'sound/machines/buzz-two.ogg', 50, FALSE)
+			return FALSE
+
+	if(D.build_type && !(D.build_type & allowed_buildtypes))
+		say("This machine does not have the necessary manipulation systems for this design. Please contact Ananke Support!")
+		playsound(src, 'sound/machines/buzz-two.ogg', 50, FALSE)
+		return FALSE
+
+	if(!materials.mat_container)
+		say("No connection to material storage, please contact the quartermaster.")
+		playsound(src, 'sound/machines/buzz-two.ogg', 50, FALSE)
+		return FALSE
+
+	if(materials.on_hold())
+		say("Mineral access is on hold, please contact the quartermaster.")
+		playsound(src, 'sound/machines/buzz-two.ogg', 50, FALSE)
+		return FALSE
+
+	return TRUE
 
 /**
  * Returns how many times over the given material requirement for the given design is satisfied.
@@ -138,55 +238,21 @@
 		amount = text2num(amount)
 	if(isnull(amount))
 		amount = 1
-	var/datum/design/D = stored_research.researched_designs[id] ? SSresearch.techweb_design_by_id(id) : null
+	var/datum/design/D = SStech.designs_by_id[id]
 	if(!istype(D))
 		return FALSE
-	if(!(isnull(allowed_department_flags) || (D.departmental_flags & allowed_department_flags)))
-		say("Warning: Printing failed: This fabricator does not have the necessary keys to decrypt design schematics. Please update the research data with the on-screen button and contact Nanotrasen Support!")
-		return FALSE
-	if(D.build_type && !(D.build_type & allowed_buildtypes))
-		say("This machine does not have the necessary manipulation systems for this design. Please contact Nanotrasen Support!")
-		return FALSE
-	if(!materials.mat_container)
-		say("No connection to material storage, please contact the quartermaster.")
-		return FALSE
-	if(materials.on_hold())
-		say("Mineral access is on hold, please contact the quartermaster.")
-		return FALSE
-	var/power = active_power_usage
-	amount = clamp(amount, 1, 50)
-	for(var/M in D.materials)
-		power += round(D.materials[M] * amount / 35)
-	power = min(active_power_usage, power)
-	use_power(power)
-	var/coeff = efficient_with(D.build_path) ? efficiency_coeff : 1
-	var/list/efficient_mats = list()
-	for(var/MAT in D.materials)
-		efficient_mats[MAT] = D.materials[MAT]/coeff
-	if(!materials.mat_container.has_materials(efficient_mats, amount))
-		say("Not enough materials to complete prototype[amount > 1? "s" : ""].")
-		return FALSE
-	for(var/R in D.reagents_list)
-		if(!reagents.has_reagent(R, D.reagents_list[R]*amount/coeff))
-			say("Not enough reagents to complete prototype[amount > 1? "s" : ""].")
-			return FALSE
-	materials.mat_container.use_materials(efficient_mats, amount)
-	materials.silo_log(src, "built", -amount, "[D.name]", efficient_mats)
-	for(var/R in D.reagents_list)
-		reagents.remove_reagent(R, D.reagents_list[R]*amount/coeff)
-	busy = TRUE
-	if(production_animation)
-		flick(production_animation, src)
-	var/timecoeff = D.lathe_time_factor / efficiency_coeff
-	addtimer(CALLBACK(src, PROC_REF(reset_busy)), (30 * timecoeff * amount) ** 0.5)
-	addtimer(CALLBACK(src, PROC_REF(do_print), D.build_path, amount, efficient_mats, D.dangerous_construction), (32 * timecoeff * amount) ** 0.8)
+	if(!(D in internal_disk.read(DATA_IDX_DESIGNS)))
+		CRASH("Tried to print a design we don't have! Potential exploit?")
+
+	playsound(src, 'goon/sounds/button.ogg', 100)
+	update_appearance(UPDATE_OVERLAYS)
+	add_to_queue(D, amount, D.dangerous_construction)
 	return TRUE
 
 /obj/machinery/rnd/production/proc/search(string)
 	matching_designs.Cut()
-	for(var/v in stored_research.researched_designs)
-		var/datum/design/D = SSresearch.techweb_design_by_id(v)
-		if(!(D.build_type & allowed_buildtypes) || !(isnull(allowed_department_flags) ||(D.departmental_flags & allowed_department_flags)))
+	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
+		if(!(D.build_type & allowed_buildtypes))
 			continue
 		if(findtext(D.name,string))
 			matching_designs.Add(D)
@@ -195,14 +261,18 @@
 	var/list/ui = list()
 	ui += ui_header()
 	switch(screen)
-		if(RESEARCH_FABRICATOR_SCREEN_MATERIALS)
+		if(FABRICATOR_SCREEN_MATERIALS)
 			ui += ui_screen_materials()
-		if(RESEARCH_FABRICATOR_SCREEN_CHEMICALS)
+		if(FABRICATOR_SCREEN_CHEMICALS)
 			ui += ui_screen_chemicals()
-		if(RESEARCH_FABRICATOR_SCREEN_SEARCH)
+		if(FABRICATOR_SCREEN_SEARCH)
 			ui += ui_screen_search()
-		if(RESEARCH_FABRICATOR_SCREEN_CATEGORYVIEW)
+		if(FABRICATOR_SCREEN_CATEGORYVIEW)
 			ui += ui_screen_category_view()
+		if(FABRICATOR_SCREEN_MODIFY_MEMORY)
+			ui += ui_screen_modify_memory()
+		if(FABRICATOR_SCREEN_QUEUE)
+			ui += ui_screen_queue()
 		else
 			ui += ui_screen_main()
 	for(var/i in 1 to length(ui))
@@ -213,23 +283,23 @@
 
 /obj/machinery/rnd/production/proc/ui_header()
 	var/list/l = list()
-	l += "<div class='statusDisplay'><b>[stored_research.organization] [department_tag] Department Lathe</b>"
-	l += "Security protocols: [(obj_flags & EMAGGED)? "<font color='red'>Disabled</font>" : "<font color='green'>Enabled</font>"]"
+	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><b>Ananke [department_tag ? "[department_tag] Fabricator" : "Omni Fabricator"]</b></legend>[RDSCREEN_NOBREAK]"
 	if (materials.mat_container)
-		l += "<A href='?src=[REF(src)];switch_screen=[RESEARCH_FABRICATOR_SCREEN_MATERIALS]'><B>Material Amount:</B> [materials.format_amount()]</A>"
+		l += "<A href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MATERIALS]'><B>Material Amount:</B> [materials.format_amount()]</A>"
 	else
 		l += "<font color='red'>No material storage connected, please contact the quartermaster.</font>"
-	l += "<A href='?src=[REF(src)];switch_screen=[RESEARCH_FABRICATOR_SCREEN_CHEMICALS]'><B>Chemical volume:</B> [reagents.total_volume] / [reagents.maximum_volume]</A>"
-	l += "<a href='?src=[REF(src)];sync_research=1'>Synchronize Research</a>"
-	l += "<a href='?src=[REF(src)];switch_screen=[RESEARCH_FABRICATOR_SCREEN_MAIN]'>Main Screen</a></div>[RDSCREEN_NOBREAK]"
+	l += "<A href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_CHEMICALS]'><B>Chemical volume:</B> [reagents.total_volume] / [reagents.maximum_volume]</A>"
+	l += "<a href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MODIFY_MEMORY]'>Manage Data</a>"
+	l += "<a href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MAIN]'>Main Screen</a><br>"
+	l += "<a href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_QUEUE]'>View Queue</a></fieldset>[RDSCREEN_NOBREAK]"
 	return l
 
 /obj/machinery/rnd/production/proc/ui_screen_materials()
 	if (!materials.mat_container)
-		screen = RESEARCH_FABRICATOR_SCREEN_MAIN
+		screen = FABRICATOR_SCREEN_MAIN
 		return ui_screen_main()
 	var/list/l = list()
-	l += "<div class='statusDisplay'><h3>Material Storage:</h3>"
+	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><b>Material Storage</b></legend>"
 	for(var/mat_id in materials.mat_container.materials)
 		var/datum/material/M = mat_id
 		var/amount = materials.mat_container.materials[mat_id]
@@ -239,17 +309,16 @@
 		if(amount >= MINERAL_MATERIAL_AMOUNT*5) l += "<A href='?src=[REF(src)];ejectsheet=[ref];eject_amt=5'>5x</A> [RDSCREEN_NOBREAK]"
 		if(amount >= MINERAL_MATERIAL_AMOUNT) l += "<A href='?src=[REF(src)];ejectsheet=[ref];eject_amt=50'>All</A>[RDSCREEN_NOBREAK]"
 		l += ""
-	l += "</div>[RDSCREEN_NOBREAK]"
+	l += "</fieldset>[RDSCREEN_NOBREAK]"
 	return l
 
 /obj/machinery/rnd/production/proc/ui_screen_chemicals()
 	var/list/l = list()
-	l += "<div class='statusDisplay'><A href='?src=[REF(src)];disposeall=1'>Disposal All Chemicals in Storage</A>"
-	l += "<h3>Chemical Storage:</h3>"
+	l += "<legend>Chemical Storage</legend>"
+	l +="<A href='?src=[REF(src)];disposeall=1'>Disposal All Chemicals in Storage</A>"
 	for(var/datum/reagent/R in reagents.reagent_list)
 		l += "[R.name]: [R.volume]"
 		l += "<A href='?src=[REF(src)];dispose=[R.type]'>Purge</A>"
-	l += "</div>"
 	return l
 
 /obj/machinery/rnd/production/proc/ui_screen_search()
@@ -285,9 +354,9 @@
 
 		temp_material += " | "
 		if (enough_mats < 1)
-			temp_material += "<span class='bad'>[cached_mats[material]/coeff] [CallMaterialName(material)]</span>"
+			temp_material += "<span class='bad'>[cached_mats[material]/coeff] [SSmaterials.GetMaterialName(material)]</span>"
 		else
-			temp_material += " [cached_mats[material]/coeff] [CallMaterialName(material)]"
+			temp_material += " [cached_mats[material]/coeff] [SSmaterials.GetMaterialName(material)]"
 
 	var/list/cached_reagents = D.reagents_list
 	for(var/reagent in cached_reagents)
@@ -296,9 +365,9 @@
 
 		temp_material += " | "
 		if (enough_chems < 1)
-			temp_material += "<span class='bad'>[cached_reagents[reagent]/coeff] [CallMaterialName(reagent)]</span>"
+			temp_material += "<span class='bad'>[cached_reagents[reagent]/coeff] [SSmaterials.GetMaterialName(reagent)]</span>"
 		else
-			temp_material += " [cached_reagents[reagent]/coeff] [CallMaterialName(reagent)]"
+			temp_material += " [cached_reagents[reagent]/coeff] [SSmaterials.GetMaterialName(reagent)]"
 
 	if (max_production >= 1)
 		entry_text += "<A href='?src=[REF(src)];build=[D.id];amount=1'>[D.name]</A>[RDSCREEN_NOBREAK]"
@@ -318,30 +387,52 @@
 	usr.set_machine(src)
 	if(ls["switch_screen"])
 		screen = text2num(ls["switch_screen"])
+
 	if(ls["build"]) //Causes the Protolathe to build something.
-		if(busy)
-			say("Warning: Fabricators busy!")
-		else
-			user_try_print_id(ls["build"], ls["amount"])
+		user_try_print_id(ls["build"], ls["amount"])
+
+	if(ls["dequeue"])
+		var/index = text2num(ls["dequeue"])
+		if(!isnull(index))
+			queue -= list(queue[index])
+
 	if(ls["search"]) //Search for designs with name matching pattern
 		search(ls["to_search"])
-		screen = RESEARCH_FABRICATOR_SCREEN_SEARCH
-	if(ls["sync_research"])
-		update_designs()
-		say("Synchronizing research with host technology database.")
+		screen = FABRICATOR_SCREEN_SEARCH
+
 	if(ls["category"])
 		selected_category = ls["category"]
+
 	if(ls["dispose"])  //Causes the protolathe to dispose of a single reagent (all of it)
 		var/reagent_path = text2path(ls["dispose"])
 		if(!ispath(reagent_path, /datum/reagent))
 			stack_trace("Invalid reagent typepath - [ls["dispose"]] - returned in reagent disposal topic call")
 		else
 			reagents.del_reagent(reagent_path)
+
 	if(ls["disposeall"]) //Causes the protolathe to dispose of all it's reagents.
 		reagents.clear_reagents()
+
 	if(ls["ejectsheet"]) //Causes the protolathe to eject a sheet of material
 		var/datum/material/M = locate(ls["ejectsheet"])
 		eject_sheets(M, ls["eject_amt"])
+
+	if(ls["toggle_disk"])
+		toggle_disk(usr)
+
+	if(ls["mem_trg"])
+		var/datum/design/target = locate(ls["mem_trg"]) in selected_disk.read(DATA_IDX_DESIGNS)
+		if(!target)
+			CRASH("Tried to perform a data operation on data we don't have. Potential HREF exploit.")
+
+		switch(ls["mem_act"])
+			if("mem_del")
+				disk_del(usr, DATA_IDX_DESIGNS, target)
+			if("mem_copy")
+				disk_copy(usr, DATA_IDX_DESIGNS, target, TRUE)
+			if("mem_move")
+				disk_move(usr, DATA_IDX_DESIGNS, target, TRUE)
+
 	updateUsrDialog()
 
 /obj/machinery/rnd/production/proc/eject_sheets(eject_sheet, eject_amt)
@@ -360,6 +451,7 @@
 
 /obj/machinery/rnd/production/proc/ui_screen_main()
 	var/list/l = list()
+	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><b>Designs</b></legend>[RDSCREEN_NOBREAK]"
 	l += "<form name='search' action='?src=[REF(src)]'>\
 	<input type='hidden' name='src' value='[REF(src)]'>\
 	<input type='hidden' name='search' value='to_search'>\
@@ -368,7 +460,8 @@
 	<input type='submit' value='Search'>\
 	</form><HR>"
 
-	l += list_categories(categories, RESEARCH_FABRICATOR_SCREEN_CATEGORYVIEW)
+	l += list_categories(categories, FABRICATOR_SCREEN_CATEGORYVIEW)
+	l += "</fieldset>"
 
 	return l
 
@@ -376,13 +469,10 @@
 	if(!selected_category)
 		return ui_screen_main()
 	var/list/l = list()
-	l += "<div class='statusDisplay'><h3>Browsing [selected_category]:</h3>"
+	l += "<div class='computerPaneSimple'><h3>Browsing [selected_category]:</h3>"
 	var/coeff = efficiency_coeff
-	for(var/v in stored_research.researched_designs)
-		var/datum/design/D = SSresearch.techweb_design_by_id(v)
+	for(var/datum/design/D as anything in sortTim(internal_disk.read(DATA_IDX_DESIGNS), GLOBAL_PROC_REF(cmp_name_asc)))
 		if(!(selected_category in D.category)|| !(D.build_type & allowed_buildtypes))
-			continue
-		if(!(isnull(allowed_department_flags) || (D.departmental_flags & allowed_department_flags)))
 			continue
 		l += design_menu_entry(D, coeff)
 	l += "</div>"
@@ -392,6 +482,7 @@
 	if(!categories)
 		return
 
+	sortTim(categories, GLOBAL_PROC_REF(cmp_text_asc))
 	var/line_length = 1
 	var/list/l = "<table style='width:100%' align='center'><tr>"
 
@@ -404,6 +495,49 @@
 		line_length++
 
 	l += "</tr></table></div>"
+	return l
+
+/obj/machinery/rnd/production/proc/ui_screen_modify_memory()
+	var/list/l = list()
+	var/list/designs = sortTim(selected_disk.read(DATA_IDX_DESIGNS), GLOBAL_PROC_REF(cmp_design_name))
+	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><A href='?src=[REF(src)];toggle_disk=1'>Selected Disk: [selected_disk == internal_disk ? "Internal" : "Foreign"]</A></legend>[RDSCREEN_NOBREAK]"
+	if(selected_disk)
+		l += "<table>[RDSCREEN_NOBREAK]"
+		for(var/datum/design/D as anything in designs)
+			l += "<tr><td>[D.name]<td>[RDSCREEN_NOBREAK]"
+			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_move'>MOVE</A></td>[RDSCREEN_NOBREAK]"
+			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_copy'>COPY</A></td>[RDSCREEN_NOBREAK]"
+			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_del'>DELETE</A></td></tr>[RDSCREEN_NOBREAK]"
+		l += "</table>[RDSCREEN_NOBREAK]"
+
+	else
+		l += "<h2>No Disk Inserted!</h2>[RDSCREEN_NOBREAK]"
+	l += "</fieldset>[RDSCREEN_NOBREAK]"
+	return l
+
+/obj/machinery/rnd/production/proc/ui_screen_queue()
+	var/list/l = list()
+	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'>Queue</legend>[RDSCREEN_NOBREAK]"
+	if(processing_packet)
+		l += "<table style='width:100%;border:1px solid rgba(255, 183, 0, 0.5)'>[RDSCREEN_NOBREAK]"
+		l += "<tr><th style='width:33.33%;text-align:center;border:1px solid rgba(255, 183, 0, 0.5)'>Design</th>[RDSCREEN_NOBREAK]"
+		l += "<th style='width:33.33%;text-align:center;border:1px solid rgba(255, 183, 0, 0.5)'>Amount</th>[RDSCREEN_NOBREAK]"
+		l += "<th style='width:33.33%;text-align:center;border:1px solid rgba(255, 183, 0, 0.5)'>Options</th></tr>[RDSCREEN_NOBREAK]"
+		var/datum/design/D = processing_packet[1]
+		l += "<tr><td style='text-align:center;border:1px solid rgba(255, 183, 0, 0.5)'>[D.name]</td>[RDSCREEN_NOBREAK]"
+		l += "<td style='text-align:center;border:1px solid rgba(255, 183, 0, 0.5)'>[processing_packet[2]]</td>[RDSCREEN_NOBREAK]"
+		l += "<td style='text-align:center;border:1px solid rgba(255, 183, 0, 0.5)'><span class='linkOn'>PROCESSING</span></td></tr>[RDSCREEN_NOBREAK]"
+
+		for(var/i in 1 to length(queue))
+			var/list/queue_packet = queue[i]
+			D = queue_packet[1]
+			l += "<tr><td style='text-align:center;border:1px solid rgba(255, 183, 0, 0.5)'>[D.name]</td>[RDSCREEN_NOBREAK]"
+			l += "<td style='text-align:center;border:1px solid rgba(255, 183, 0, 0.5)'>[queue_packet[2]]</td>[RDSCREEN_NOBREAK]"
+			l += "<td style='text-align:center;border:1px solid rgba(255, 183, 0, 0.5)'><A href='?src=[REF(src)];dequeue=[i]'>CANCEL</A></td></tr>[RDSCREEN_NOBREAK]"
+		l +="</table>[RDSCREEN_NOBREAK]"
+	else
+		l += "<h2>Nothing queued!</h2>[RDSCREEN_NOBREAK]"
+	l += "</fieldset>[RDSCREEN_NOBREAK]"
 	return l
 
 // Stuff for the stripe on the department machines
@@ -422,3 +556,35 @@
 		stripe.icon_state = "protolathe_stripe_t"
 	stripe.color = stripe_color
 	. += stripe
+
+/obj/machinery/rnd/production/proc/compile_categories()
+	categories = list()
+	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
+		if(!isnull(D.category))
+			categories |= D.category
+
+/obj/machinery/rnd/production/disk_move(mob/user, index, data, unique)
+	. = ..()
+	if(!.)
+		return
+	compile_categories()
+	updateUsrDialog()
+
+
+/obj/machinery/rnd/production/disk_del(mob/user, index, data)
+	. = ..()
+	if(!.)
+		return
+	compile_categories()
+	updateUsrDialog()
+
+
+/obj/machinery/rnd/production/disk_copy(mob/user, index, data, unique)
+	. = ..()
+	if(!.)
+		return
+	compile_categories()
+
+#undef MODE_BUILD
+#undef MODE_QUEUE
+#undef MAX_QUEUE_LEN

@@ -7,8 +7,8 @@
 	icon_state = "chasms-255"
 	base_icon_state = "chasms"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_TURF_CHASM)
-	canSmoothWith = list(SMOOTH_GROUP_TURF_CHASM)
+	smoothing_groups = SMOOTH_GROUP_TURF_OPEN + SMOOTH_GROUP_TURF_CHASM
+	canSmoothWith = SMOOTH_GROUP_TURF_CHASM
 	density = TRUE //This will prevent hostile mobs from pathing into chasms, while the canpass override will still let it function like an open turf
 	bullet_bounce_sound = null //abandon all hope ye who enter
 
@@ -52,11 +52,6 @@
 /turf/open/chasm/rust_heretic_act()
 	return FALSE
 
-/turf/open/chasm/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/floors.dmi'
-	underlay_appearance.icon_state = "basalt"
-	return TRUE
-
 /turf/open/chasm/attackby(obj/item/C, mob/user, params, area/area_restriction)
 	..()
 	if(istype(C, /obj/item/stack/rods))
@@ -75,26 +70,12 @@
 	else if(istype(C, /obj/item/stack/tile/iron))
 		build_with_floor_tiles(C, user)
 
-// Chasms for Lavaland, with planetary atmos and lava glow
 /turf/open/chasm/lavaland
-	initial_gas = LAVALAND_DEFAULT_ATMOS
-
+	initial_gas = OPENTURF_LOW_PRESSURE
 	baseturfs = /turf/open/chasm/lavaland
 	light_outer_range = 1.9 //slightly less range than lava
 	light_power = 0.65 //less bright, too
 	light_color = LIGHT_COLOR_LAVA //let's just say you're falling into lava, that makes sense right
-
-// Chasms for Ice moon, with planetary atmos and glow
-/turf/open/chasm/icemoon
-	icon = 'icons/turf/floors/icechasms.dmi'
-	icon_state = "icechasms-255"
-	base_icon_state = "icechasms"
-	initial_gas = ICEMOON_DEFAULT_ATMOS
-
-	baseturfs = /turf/open/chasm/icemoon
-	light_outer_range = 1.9
-	light_power = 0.65
-	light_color = LIGHT_COLOR_PURPLE
 
 // Chasms for the jungle, with planetary atmos and a different icon
 /turf/open/chasm/jungle
@@ -104,8 +85,3 @@
 	initial_gas = OPENTURF_LOW_PRESSURE
 
 	baseturfs = /turf/open/chasm/jungle
-
-/turf/open/chasm/jungle/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/floors.dmi'
-	underlay_appearance.icon_state = "dirt"
-	return TRUE

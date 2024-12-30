@@ -8,9 +8,13 @@
 	icon_state = "deck_nanotrasen_full"
 	w_class = WEIGHT_CLASS_SMALL
 	worn_icon_state = "card"
+
 	hitsound = null
+	wielded_hitsound = 'sound/items/cardflip.ogg'
+
 	attack_verb_continuous = list("attacks")
 	attack_verb_simple = list("attack")
+
 	/// The amount of time it takes to shuffle
 	var/shuffle_time = DECK_SHUFFLE_TIME
 	/// Deck shuffling cooldown.
@@ -21,8 +25,6 @@
 	var/decksize = INFINITY
 	/// The description of the cardgame that is played with this deck (used for memories)
 	var/cardgame_desc = "card game"
-	/// Wielding status for holding with two hands
-	var/wielded = FALSE
 	/// The holodeck computer used to spawn a holographic deck (see /obj/item/toy/cards/deck/syndicate/holographic)
 	var/obj/machinery/computer/holodeck/holodeck
 	/// If the cards in the deck have different card faces icons (blank and CAS decks do not)
@@ -33,9 +35,6 @@
 /obj/item/toy/cards/deck/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/drag_pickup)
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
-	AddComponent(/datum/component/two_handed, attacksound='sound/items/cardflip.ogg')
 	register_context()
 
 	if(!is_standard_deck)
@@ -116,38 +115,9 @@
 	cards = shuffle(cards)
 	playsound(src, 'sound/items/cardshuffle.ogg', 50, TRUE)
 	user.balloon_alert_to_viewers("shuffles the deck")
-	addtimer(CALLBACK(src, PROC_REF(CardgameEvent), user), 60 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE)
-
-/// This checks if nearby mobs are playing a cardgame and triggers a mood and memory
-/obj/item/toy/cards/deck/proc/CardgameEvent(mob/living/dealer)
-	var/card_players = list()
-	for(var/mob/living/carbon/person in viewers(loc, COMBAT_MESSAGE_RANGE))
-		var/obj/item/toy/held_card_item = person.is_holding_item_of_type(/obj/item/toy/singlecard) || person.is_holding_item_of_type(/obj/item/toy/cards/deck) || person.is_holding_item_of_type(/obj/item/toy/cards/cardhand)
-		if(held_card_item)
-			card_players[person] = held_card_item
-
-	if(length(card_players) >= 2) // need at least 2 people to play a cardgame, duh!
-		for(var/mob/living/carbon/player in card_players)
-			var/other_players = english_list(card_players - player)
-			var/obj/item/toy/held_card_item = card_players[player]
-
-			SEND_SIGNAL(player, COMSIG_ADD_MOOD_EVENT, "playing_cards", /datum/mood_event/playing_cards)
-			player.mind?.add_memory(
-				MEMORY_PLAYING_CARDS,
-				list(
-					DETAIL_PROTAGONIST = player,
-					DETAIL_PLAYERS = other_players,
-					DETAIL_CARDGAME = cardgame_desc,
-					DETAIL_DEALER = dealer,
-					DETAIL_HELD_CARD_ITEM = held_card_item,
-				),
-				story_value = STORY_VALUE_OKAY,
-				memory_flags = MEMORY_CHECK_BLINDNESS
-			)
-
 
 /obj/item/toy/cards/deck/attack_hand(mob/living/user, list/modifiers, flip_card = FALSE)
-	if(!ishuman(user) || !user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, NO_TK, !iscyborg(user)))
+	if(!ishuman(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_DEXTERITY))
 		return
 
 	var/obj/item/toy/singlecard/card = draw(user)
@@ -155,8 +125,8 @@
 		return
 	if(flip_card)
 		card.Flip()
-	card.pickup(user)
-	user.put_in_hands(card)
+
+	user.pickup_item(card)
 	user.balloon_alert_to_viewers("draws a card")
 
 /obj/item/toy/cards/deck/attack_hand_secondary(mob/living/user, list/modifiers)
@@ -164,7 +134,7 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/toy/cards/deck/AltClick(mob/living/user)
-	if(user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, NO_TK, !iscyborg(user)))
+	if(user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_DEXTERITY))
 		if(wielded)
 			shuffle_cards(user)
 		else
@@ -211,19 +181,7 @@
 	if(!throwingdatum?.thrower) // if a mob didn't throw it (need two people to play 52 pickup)
 		return
 
-	var/mob/living/thrower = throwingdatum.thrower
-
 	target.visible_message(span_warning("[target] is forced to play 52 card pickup!"), span_warning("You are forced to play 52 card pickup."))
-	SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "lost_52_card_pickup", /datum/mood_event/lost_52_card_pickup)
-	SEND_SIGNAL(thrower, COMSIG_ADD_MOOD_EVENT, "won_52_card_pickup", /datum/mood_event/won_52_card_pickup)
-	add_memory_in_range(
-		target,
-		7,
-		MEMORY_PLAYING_52_PICKUP,
-		list(DETAIL_PROTAGONIST = thrower, DETAIL_DEUTERAGONIST = target, DETAIL_WHAT_BY = src),
-		story_value = STORY_VALUE_OKAY,
-		memory_flags = MEMORY_CHECK_BLINDNESS
-	)
 
 /*
 || Syndicate playing cards, for pretending you're Gambit and playing poker for the nuke disk. ||

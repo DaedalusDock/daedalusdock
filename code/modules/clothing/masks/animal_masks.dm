@@ -64,13 +64,13 @@ GLOBAL_LIST_INIT(cursed_animal_masks, list(
 	var/update_speech_mod = !modifies_speech && LAZYLEN(animal_sounds)
 	if(update_speech_mod)
 		modifies_speech = TRUE
-	if(ismob(loc))
-		var/mob/M = loc
-		if(M.get_item_by_slot(ITEM_SLOT_MASK) == src)
+
+	if(equipped_to)
+		if(equipped_to.get_item_by_slot(ITEM_SLOT_MASK) == src)
 			if(update_speech_mod)
-				RegisterSignal(M, COMSIG_MOB_SAY, PROC_REF(handle_speech))
-			to_chat(M, span_userdanger("[src] was cursed!"))
-			M.update_worn_mask()
+				RegisterSignal(equipped_to, COMSIG_MOB_SAY, PROC_REF(handle_speech))
+			to_chat(equipped_to, span_userdanger("[src] was cursed!"))
+			equipped_to.update_worn_mask()
 
 /obj/item/clothing/mask/animal/proc/clear_curse()
 	REMOVE_TRAIT(src, TRAIT_NODROP, CURSED_MASK_TRAIT)
@@ -81,13 +81,12 @@ GLOBAL_LIST_INIT(cursed_animal_masks, list(
 	var/update_speech_mod = modifies_speech && !initial(modifies_speech)
 	if(update_speech_mod)
 		modifies_speech = FALSE
-	if(ismob(loc))
-		var/mob/M = loc
-		if(M.get_item_by_slot(ITEM_SLOT_MASK) == src)
-			to_chat(M, span_notice("[src]'s curse has been lifted!"))
+	if(equipped_to)
+		if(equipped_to.get_item_by_slot(ITEM_SLOT_MASK) == src)
+			to_chat(equipped_to, span_notice("[src]'s curse has been lifted!"))
 			if(update_speech_mod)
-				UnregisterSignal(M, COMSIG_MOB_SAY)
-			M.update_worn_mask()
+				UnregisterSignal(equipped_to, COMSIG_MOB_SAY)
+			equipped_to.update_worn_mask()
 
 /obj/item/clothing/mask/animal/handle_speech(datum/source, list/speech_args)
 	if(clothing_flags & VOICEBOX_DISABLED)

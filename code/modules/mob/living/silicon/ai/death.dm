@@ -1,4 +1,4 @@
-/mob/living/silicon/ai/death(gibbed)
+/mob/living/silicon/ai/death(gibbed, cause_of_death = "Unknown")
 	if(stat == DEAD)
 		return
 
@@ -16,7 +16,7 @@
 	else
 		icon_state = "ai_dead"
 	if("[old_icon]_death_transition" in icon_states(icon))
-		flick("[old_icon]_death_transition", src)
+		z_flick("[old_icon]_death_transition", src)
 
 	cameraFollow = null
 
@@ -30,7 +30,7 @@
 		set_eyeobj_visible(FALSE)
 
 
-	GLOB.shuttle_caller_list -= src
+	UNSET_TRACKING(TRACKING_KEY_SHUTTLE_CALLER)
 	SSshuttle.autoEvac()
 
 	ShutOffDoomsdayDevice()

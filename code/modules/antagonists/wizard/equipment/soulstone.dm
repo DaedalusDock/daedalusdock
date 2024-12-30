@@ -148,7 +148,6 @@
 	var/obj/item/bodypart/affecting = user.get_bodypart("[(user.active_hand_index % 2 == 0) ? "r" : "l" ]_arm")
 	affecting.receive_damage( 0, 10 ) // 10 burn damage
 	user.emote("scream")
-	user.update_damage_overlays()
 	user.dropItemToGround(src)
 
 //////////////////////////////Capturing////////////////////////////////////////////////////////
@@ -232,7 +231,6 @@
 	to_chat(occupant, span_userdanger("[user] holds you up briefly, then forces you into [target_toolbox]!"))
 	to_chat(occupant, span_deadsay("<b>Your eternal soul has been sacrificed to restore the soul of a toolbox. Them's the breaks!</b>"))
 
-	occupant.client?.give_award(/datum/award/achievement/misc/toolbox_soul, occupant)
 	occupant.deathmessage = "shrieks out in unholy pain as [occupant.p_their()] soul is absorbed into [target_toolbox]!"
 	release_shades(user, TRUE)
 	occupant.death()
@@ -337,7 +335,7 @@
 /obj/item/soulstone/proc/check_menu(mob/user, obj/structure/constructshell/shell)
 	if(!istype(user))
 		return FALSE
-	if(user.incapacitated() || !user.is_holding(src) || !user.CanReach(shell, src))
+	if(user.incapacitated() || !user.is_holding(src) || !shell.IsReachableBy(user, reach))
 		return FALSE
 	return TRUE
 
@@ -411,8 +409,7 @@
 	victim.stop_sound_channel(CHANNEL_HEARTBEAT)
 	var/mob/living/simple_animal/shade/soulstone_spirit = new /mob/living/simple_animal/shade(src)
 	soulstone_spirit.AddComponent(/datum/component/soulstoned, src)
-	soulstone_spirit.name = "Shade of [victim.real_name]"
-	soulstone_spirit.real_name = "Shade of [victim.real_name]"
+	soulstone_spirit.set_real_name("Shade of [victim.real_name]")
 	soulstone_spirit.key = shade_controller.key
 	soulstone_spirit.copy_languages(victim, LANGUAGE_MIND)//Copies the old mobs languages into the new mob holder.
 	if(user)
@@ -451,7 +448,7 @@
 		var/list/consenting_candidates = poll_ghost_candidates("Would you like to play as a Shade?", "Cultist", ROLE_CULTIST, 50, POLL_IGNORE_SHADE)
 		if(consenting_candidates.len)
 			chosen_ghost = pick(consenting_candidates)
-	if(!victim || user.incapacitated() || !user.is_holding(src) || !user.CanReach(victim, src))
+	if(!victim || user.incapacitated() || !user.is_holding(src) || !victim.IsReachableBy(user, reach))
 		return FALSE
 	if(!chosen_ghost || !chosen_ghost.client)
 		to_chat(user, span_danger("There were no spirits willing to become a shade."))

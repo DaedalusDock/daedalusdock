@@ -13,7 +13,6 @@
 	ADD_TRAIT(L, TRAIT_SHOCKIMMUNE, HIGHLANDER_TRAIT)
 	ADD_TRAIT(L, TRAIT_NOFIRE, HIGHLANDER_TRAIT)
 	ADD_TRAIT(L, TRAIT_NOBREATH, HIGHLANDER_TRAIT)
-	REMOVE_TRAIT(L, TRAIT_PACIFISM, ROUNDSTART_TRAIT)
 
 /datum/antagonist/highlander/remove_innate_effects(mob/living/mob_override)
 	var/mob/living/L = owner.current || mob_override
@@ -22,8 +21,6 @@
 	REMOVE_TRAIT(L, TRAIT_SHOCKIMMUNE, HIGHLANDER_TRAIT)
 	REMOVE_TRAIT(L, TRAIT_NOFIRE, HIGHLANDER_TRAIT)
 	REMOVE_TRAIT(L, TRAIT_NOBREATH, HIGHLANDER_TRAIT)
-	if(L.has_quirk(/datum/quirk/nonviolent))
-		ADD_TRAIT(L, TRAIT_PACIFISM, ROUNDSTART_TRAIT)
 
 /datum/antagonist/highlander/proc/forge_objectives()
 	var/datum/objective/steal/steal_objective = new
@@ -73,9 +70,8 @@
 	sword = new(H)
 	if(!GLOB.highlander_controller)
 		sword.flags_1 |= ADMIN_SPAWNED_1 //To prevent announcing
-	sword.pickup(H) //For the stun shielding
-	H.put_in_hands(sword)
 
+	H.pickup_item(sword)
 
 	var/obj/item/bloodcrawl/antiwelder = new(H)
 	antiwelder.name = "compulsion of honor"

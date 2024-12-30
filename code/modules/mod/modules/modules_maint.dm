@@ -10,6 +10,7 @@
 	icon_state = "springlock"
 	complexity = 3 // it is inside every part of your suit, so
 	incompatible_modules = list(/obj/item/mod/module/springlock)
+	var/set_off = FALSE
 
 /obj/item/mod/module/springlock/on_install()
 	mod.activation_step_time *= 0.5
@@ -27,12 +28,13 @@
 /obj/item/mod/module/springlock/proc/on_wearer_exposed(atom/source, list/reagents, datum/reagents/source_reagents, methods, volume_modifier, show_message)
 	SIGNAL_HANDLER
 
-	if(!(methods & (VAPOR|PATCH|TOUCH)))
+	if(!(methods & (VAPOR|TOUCH)) || set_off || mod.wearer.stat == DEAD)
 		return //remove non-touch reagent exposure
 	to_chat(mod.wearer, span_danger("[src] makes an ominous click sound..."))
 	playsound(src, 'sound/items/modsuit/springlock.ogg', 75, TRUE)
 	addtimer(CALLBACK(src, PROC_REF(snap_shut)), rand(3 SECONDS, 5 SECONDS))
 	RegisterSignal(mod, COMSIG_MOD_ACTIVATE, PROC_REF(on_activate_spring_block))
+	set_off = TRUE
 
 ///Signal fired when wearer attempts to activate/deactivate suits
 /obj/item/mod/module/springlock/proc/on_activate_spring_block(datum/source, user)
@@ -46,15 +48,18 @@
 	UnregisterSignal(mod, COMSIG_MOD_ACTIVATE)
 	if(!mod.wearer) //while there is a guaranteed user when on_wearer_exposed() fires, that isn't the same case for this proc
 		return
+
 	mod.wearer.visible_message("[src] inside [mod.wearer]'s [mod.name] snaps shut, mutilating the user inside!", span_userdanger("*SNAP*"))
 	mod.wearer.emote("scream")
 	playsound(mod.wearer, 'sound/effects/snap.ogg', 75, TRUE, frequency = 0.5)
 	playsound(mod.wearer, 'sound/effects/splat.ogg', 50, TRUE, frequency = 0.5)
-	mod.wearer.client?.give_award(/datum/award/achievement/misc/springlock, mod.wearer)
 	mod.wearer.apply_damage(500, BRUTE, forced = TRUE, spread_damage = TRUE, sharpness = SHARP_POINTY) //boggers, bogchamp, etc
+
 	if(!HAS_TRAIT(mod.wearer, TRAIT_NODEATH))
 		mod.wearer.death() //just in case, for some reason, they're still alive
+
 	flash_color(mod.wearer, flash_color = "#FF0000", flash_time = 10 SECONDS)
+	set_off = FALSE
 
 ///Rave Visor - Gives you a rainbow visor and plays jukebox music to you.
 /obj/item/mod/module/visor/rave
@@ -63,12 +68,13 @@
 	icon_state = "rave_visor"
 	complexity = 1
 	overlay_state_inactive = "module_rave"
+	required_slots = list(ITEM_SLOT_HEAD|ITEM_SLOT_MASK)
 	/// The client colors applied to the wearer.
 	var/datum/client_colour/rave_screen
 	/// The current element in the rainbow_order list we are on.
 	var/rave_number = 1
 	/// The track we selected to play.
-	var/datum/track/selection
+	var/datum/media/selection
 	/// A list of all the songs we can play.
 	var/list/songs = list()
 	/// A list of the colors the module can take.
@@ -83,34 +89,21 @@
 
 /obj/item/mod/module/visor/rave/Initialize(mapload)
 	. = ..()
-	var/list/tracks = flist("[global.config.directory]/jukebox_music/sounds/")
-	for(var/sound in tracks)
-		var/datum/track/track = new()
-		track.song_path = file("[global.config.directory]/jukebox_music/sounds/[sound]")
-		var/list/sound_params = splittext(sound,"+")
-		if(length(sound_params) != 3)
-			continue
-		track.song_name = sound_params[1]
-		track.song_length = text2num(sound_params[2])
-		track.song_beat = text2num(sound_params[3])
-		songs[track.song_name] = track
-	if(length(songs))
+	//This is structured in a stupid way. It'd be more effort to recode it than to crush the format until it's happy.
+	var/list/datum/media/tmp_songs = SSmedia.get_track_pool(MEDIA_TAG_JUKEBOX)
+	for(var/datum/media/track as anything in tmp_songs)
+		songs[track.name] = track
+	if(songs.len)
 		var/song_name = pick(songs)
 		selection = songs[song_name]
 
 /obj/item/mod/module/visor/rave/on_activation()
-	. = ..()
-	if(!.)
-		return
 	rave_screen = mod.wearer.add_client_colour(/datum/client_colour/rave)
 	rave_screen.update_colour(rainbow_order[rave_number])
 	if(selection)
-		mod.wearer.playsound_local(get_turf(src), null, 50, channel = CHANNEL_JUKEBOX, sound_to_use = sound(selection.song_path), use_reverb = FALSE)
+		mod.wearer.playsound_local(get_turf(src), null, 50, channel = CHANNEL_JUKEBOX, sound_to_use = sound(selection.path), use_reverb = FALSE)
 
 /obj/item/mod/module/visor/rave/on_deactivation(display_message = TRUE, deleting = FALSE)
-	. = ..()
-	if(!.)
-		return
 	QDEL_NULL(rave_screen)
 	if(selection)
 		mod.wearer.stop_sound_channel(CHANNEL_JUKEBOX)
@@ -133,7 +126,7 @@
 /obj/item/mod/module/visor/rave/get_configuration()
 	. = ..()
 	if(length(songs))
-		.["selection"] = add_ui_configuration("Song", "list", selection.song_name, clean_songs())
+		.["selection"] = add_ui_configuration("Song", "list", selection.name, clean_songs())
 
 /obj/item/mod/module/visor/rave/configure_edit(key, value)
 	switch(key)
@@ -147,30 +140,6 @@
 	for(var/track in songs)
 		. += track
 
-///Tanner - Tans you with spraytan.
-/obj/item/mod/module/tanner
-	name = "MOD tanning module"
-	desc = "A tanning module for modular suits. Skin cancer functionality has not been ever proven, \
-		although who knows with the rumors..."
-	icon_state = "tanning"
-	module_type = MODULE_USABLE
-	complexity = 1
-	use_power_cost = DEFAULT_CHARGE_DRAIN * 5
-	incompatible_modules = list(/obj/item/mod/module/tanner)
-	cooldown_time = 30 SECONDS
-
-/obj/item/mod/module/tanner/on_use()
-	. = ..()
-	if(!.)
-		return
-	playsound(src, 'sound/machines/microwave/microwave-end.ogg', 50, TRUE)
-	var/datum/reagents/holder = new()
-	holder.add_reagent(/datum/reagent/spraytan, 10)
-	holder.trans_to(mod.wearer, 10, methods = VAPOR)
-	if(prob(5))
-		SSradiation.irradiate(mod.wearer)
-	drain_power(use_power_cost)
-
 ///Balloon Blower - Blows a balloon.
 /obj/item/mod/module/balloon
 	name = "MOD balloon blower module"
@@ -181,16 +150,17 @@
 	use_power_cost = DEFAULT_CHARGE_DRAIN*0.5
 	incompatible_modules = list(/obj/item/mod/module/balloon)
 	cooldown_time = 15 SECONDS
+	required_slots = list(ITEM_SLOT_HEAD|ITEM_SLOT_MASK)
+	var/balloon_path = /obj/item/toy/balloon
+	var/blowing_time = 10 SECONDS
+	var/oxygen_damage = 20
 
 /obj/item/mod/module/balloon/on_use()
-	. = ..()
-	if(!.)
-		return
-	if(!do_after(mod.wearer, mod, 10 SECONDS))
+	if(!do_after(mod.wearer, mod, blowing_time))
 		return FALSE
-	mod.wearer.adjustOxyLoss(20)
+	mod.wearer.adjustOxyLoss(oxygen_damage)
 	playsound(src, 'sound/items/modsuit/inflate_bloon.ogg', 50, TRUE)
-	var/obj/item/toy/balloon/balloon = new(get_turf(src))
+	var/obj/item/toy/balloon/balloon = new balloon_path(get_turf(src))
 	mod.wearer.put_in_hands(balloon)
 	drain_power(use_power_cost)
 
@@ -205,13 +175,11 @@
 	use_power_cost = DEFAULT_CHARGE_DRAIN * 0.5
 	incompatible_modules = list(/obj/item/mod/module/paper_dispenser)
 	cooldown_time = 5 SECONDS
+	required_slots = list(ITEM_SLOT_GLOVES)
 	/// The total number of sheets created by this MOD. The more sheets, them more likely they set on fire.
 	var/num_sheets_dispensed = 0
 
 /obj/item/mod/module/paper_dispenser/on_use()
-	. = ..()
-	if(!.)
-		return
 	if(!do_after(mod.wearer, mod, 1 SECONDS))
 		return FALSE
 
@@ -248,6 +216,7 @@
 	device = /obj/item/stamp/mod
 	incompatible_modules = list(/obj/item/mod/module/stamp)
 	cooldown_time = 0.5 SECONDS
+	required_slots = list(ITEM_SLOT_GLOVES)
 
 /obj/item/stamp/mod
 	name = "MOD electronic stamp"
@@ -278,40 +247,42 @@
 	var/you_fucked_up = FALSE
 
 /obj/item/mod/module/atrocinator/on_activation()
-	. = ..()
-	if(!.)
-		return
 	playsound(src, 'sound/effects/curseattack.ogg', 50)
 	mod.wearer.AddElement(/datum/element/forced_gravity, NEGATIVE_GRAVITY)
 	RegisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED, PROC_REF(check_upstairs))
 	ADD_TRAIT(mod.wearer, TRAIT_SILENT_FOOTSTEPS, MOD_TRAIT)
+	passtable_on(mod.wearer, MOD_TRAIT)
 	check_upstairs() //todo at some point flip your screen around
 
-/obj/item/mod/module/atrocinator/on_deactivation(display_message = TRUE, deleting = FALSE)
+/obj/item/mod/module/atrocinator/deactivate(display_message = TRUE, deleting = FALSE)
 	if(you_fucked_up && !deleting)
 		to_chat(mod.wearer, span_danger("It's too late."))
 		return FALSE
-	. = ..()
-	if(!.)
-		return
-	if(deleting)
+	return ..()
+
+/obj/item/mod/module/atrocinator/on_deactivation(display_message = TRUE, deleting = FALSE)
+	if(!deleting)
 		playsound(src, 'sound/effects/curseattack.ogg', 50)
 	qdel(mod.wearer.RemoveElement(/datum/element/forced_gravity, NEGATIVE_GRAVITY))
 	UnregisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED)
+	UnregisterSignal(mod.wearer, COMSIG_MOB_SAY)
+	step_count = 0
 	REMOVE_TRAIT(mod.wearer, TRAIT_SILENT_FOOTSTEPS, MOD_TRAIT)
-	var/turf/open/openspace/current_turf = get_turf(mod.wearer)
-	if(istype(current_turf))
-		current_turf.zFall(mod.wearer, falling_from_move = TRUE)
+	passtable_off(mod.wearer, MOD_TRAIT)
+	mod.wearer.zFall()
 
 /obj/item/mod/module/atrocinator/proc/check_upstairs()
 	SIGNAL_HANDLER
 
 	if(you_fucked_up || mod.wearer.has_gravity() != NEGATIVE_GRAVITY)
 		return
+
 	var/turf/open/current_turf = get_turf(mod.wearer)
 	var/turf/open/openspace/turf_above = GetAbove(mod.wearer)
+
 	if(current_turf && istype(turf_above))
-		current_turf.zFall(mod.wearer)
+		mod.wearer.zFall()
+
 	else if(!turf_above && istype(current_turf) && !current_turf.simulated) //nothing holding you down
 		INVOKE_ASYNC(src, PROC_REF(fly_away))
 	else if(!(step_count % 2))

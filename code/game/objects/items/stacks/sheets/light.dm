@@ -1,5 +1,5 @@
 /obj/item/stack/light_w
-	name = "wired glass tile"
+	name = "wired glass tiles"
 	singular_name = "wired glass floor tile"
 	desc = "A glass tile, which is wired, somehow."
 	icon = 'icons/obj/tiles.dmi'
@@ -7,7 +7,6 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	force = 3
 	throwforce = 5
-	throw_speed = 3
 	throw_range = 7
 	flags_1 = CONDUCT_1
 	max_amount = 60

@@ -24,15 +24,18 @@
 		if(M != user)
 			M.visible_message(span_danger("[user] attempts to feed [M] something from [src]."), \
 						span_userdanger("[user] attempts to feed you something from [src]."))
-			if(!do_after(user, M))
+			if(!do_after(user, M, 3 SECONDS))
 				return
 			if(!reagents || !reagents.total_volume)
 				return // The drink might be empty after the delay, such as by spam-feeding
+
 			M.visible_message(span_danger("[user] feeds [M] something from [src]."), \
 						span_userdanger("[user] feeds you something from [src]."))
 			log_combat(user, M, "fed", reagents.get_reagent_log_string())
 		else
 			to_chat(user, span_notice("You swallow a gulp of [src]."))
+
+		add_trace_DNA(M.get_trace_dna())
 		SEND_SIGNAL(src, COMSIG_GLASS_DRANK, M, user)
 		addtimer(CALLBACK(reagents, TYPE_PROC_REF(/datum/reagents, trans_to), M, 5, TRUE, TRUE, FALSE, user, FALSE, INGEST), 5)
 		playsound(M.loc,'sound/items/drink.ogg', rand(10,50), TRUE)
@@ -40,10 +43,10 @@
 			var/mob/living/carbon/carbon_drinker = M
 			var/list/diseases = carbon_drinker.get_static_viruses()
 			if(LAZYLEN(diseases))
-				var/list/datum/disease/diseases_to_add = list()
+				var/list/datum/pathogen/diseases_to_add = list()
 				for(var/d in diseases)
-					var/datum/disease/malady = d
-					if(malady.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+					var/datum/pathogen/malady = d
+					if(malady.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
 						diseases_to_add += malady
 				if(LAZYLEN(diseases_to_add))
 					AddComponent(/datum/component/infective, diseases_to_add)
@@ -146,13 +149,15 @@
 
 /obj/item/reagent_containers/glass/beaker
 	name = "beaker"
-	desc = "A beaker. It can hold up to 50 units."
+	desc = "A beaker. It can hold up to 60 units."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "beaker"
 	inhand_icon_state = "beaker"
 	worn_icon_state = "beaker"
 	custom_materials = list(/datum/material/glass=500)
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
+	possible_transfer_amounts = list(5, 10, 15, 20, 25, 30, 60)
+	volume = 60
 
 /obj/item/reagent_containers/glass/beaker/Initialize(mapload)
 	. = ..()
@@ -169,23 +174,23 @@
 
 /obj/item/reagent_containers/glass/beaker/large
 	name = "large beaker"
-	desc = "A large beaker. Can hold up to 100 units."
+	desc = "A large beaker. Can hold up to 120 units."
 	icon_state = "beakerlarge"
 	custom_materials = list(/datum/material/glass=2500)
-	volume = 100
+	volume = 120
 	amount_per_transfer_from_this = 10
-	possible_transfer_amounts = list(5,10,15,20,25,30,50,100)
+	possible_transfer_amounts = list(5,10,15,20,25,30,40,60,120)
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
 
 /obj/item/reagent_containers/glass/beaker/plastic
 	name = "x-large beaker"
-	desc = "An extra-large beaker. Can hold up to 120 units."
+	desc = "An extra-large beaker. Can hold up to 150 units."
 	icon_state = "beakerwhite"
 	custom_materials = list(/datum/material/glass=2500, /datum/material/plastic=3000)
-	volume = 120
+	volume = 150
 	amount_per_transfer_from_this = 10
-	possible_transfer_amounts = list(5,10,15,20,25,30,60,120)
-	fill_icon_thresholds = list(0, 1, 10, 20, 40, 60, 80, 100)
+	possible_transfer_amounts = list(5,10,15,20,30,50,60,120,150)
+	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
 
 /obj/item/reagent_containers/glass/beaker/meta
 	name = "metamaterial beaker"
@@ -194,7 +199,7 @@
 	custom_materials = list(/datum/material/glass=2500, /datum/material/plastic=3000, /datum/material/gold=1000, /datum/material/titanium=1000)
 	volume = 180
 	amount_per_transfer_from_this = 10
-	possible_transfer_amounts = list(5,10,15,20,25,30,60,120,180)
+	possible_transfer_amounts = list(5,10,15,20,30,40,60,120,180)
 	fill_icon_thresholds = list(0, 1, 10, 25, 35, 50, 60, 80, 100)
 
 /obj/item/reagent_containers/glass/beaker/noreact
@@ -227,24 +232,24 @@
 /obj/item/reagent_containers/glass/beaker/slime
 	list_reagents = list(/datum/reagent/toxin/slimejelly = 50)
 
-/obj/item/reagent_containers/glass/beaker/large/libital
-	name = "libital reserve tank (diluted)"
-	list_reagents = list(/datum/reagent/medicine/c2/libital = 10,/datum/reagent/medicine/granibitaluri = 40)
+/obj/item/reagent_containers/glass/beaker/large/bicaridine
+	name = "bicaridine reserve tank"
+	list_reagents = list(/datum/reagent/medicine/bicaridine = 50)
 
-/obj/item/reagent_containers/glass/beaker/large/aiuri
-	name = "aiuri reserve tank (diluted)"
-	list_reagents = list(/datum/reagent/medicine/c2/aiuri = 10, /datum/reagent/medicine/granibitaluri = 40)
+/obj/item/reagent_containers/glass/beaker/large/kelotane
+	name = "kelotane reserve tank"
+	list_reagents = list(/datum/reagent/medicine/kelotane = 50)
 
-/obj/item/reagent_containers/glass/beaker/large/multiver
-	name = "multiver reserve tank (diluted)"
-	list_reagents = list(/datum/reagent/medicine/c2/multiver = 10, /datum/reagent/medicine/granibitaluri = 40)
+/obj/item/reagent_containers/glass/beaker/large/dylovene
+	name = "dylovene reserve tank"
+	list_reagents = list(/datum/reagent/medicine/dylovene = 50)
 
 /obj/item/reagent_containers/glass/beaker/large/epinephrine
-	name = "epinephrine reserve tank (diluted)"
+	name = "epinephrine reserve tank"
 	list_reagents = list(/datum/reagent/medicine/epinephrine = 50)
 
 /obj/item/reagent_containers/glass/beaker/synthflesh
-	list_reagents = list(/datum/reagent/medicine/c2/synthflesh = 50)
+	list_reagents = list(/datum/reagent/medicine/synthflesh = 50)
 
 /obj/item/reagent_containers/glass/bucket
 	name = "bucket"
@@ -262,7 +267,7 @@
 	flags_inv = HIDEHAIR
 	slot_flags = ITEM_SLOT_HEAD
 	resistance_flags = NONE
-	armor = list(MELEE = 10, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 75, ACID = 50) //Weak melee protection, because you can wear it on your head
+	armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 75, ACID = 50) //Weak melee protection, because you can wear it on your head
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 	slot_equipment_priority = list( \
 		ITEM_SLOT_BACK, ITEM_SLOT_ID,\
@@ -280,7 +285,7 @@
 	icon_state = "woodbucket"
 	inhand_icon_state = "woodbucket"
 	custom_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 2)
-	armor = list(MELEE = 10, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 50)
+	armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 50)
 	resistance_flags = FLAMMABLE
 	supports_variations_flags = NONE
 
@@ -352,12 +357,12 @@
 	..()
 	if(istype(I,/obj/item/pestle))
 		if(grinded)
-			if(user.getStaminaLoss() > 50)
+			if(HAS_TRAIT(user, TRAIT_EXHAUSTED))
 				to_chat(user, span_warning("You are too tired to work!"))
 				return
 			to_chat(user, span_notice("You start grinding..."))
 			if((do_after(user, src, 25)) && grinded)
-				user.adjustStaminaLoss(40)
+				user.stamina.adjust(-40)
 				if(grinded.juice_results) //prioritize juicing
 					grinded.on_juice()
 					reagents.add_reagent_list(grinded.juice_results)
@@ -384,7 +389,38 @@
 		return
 	to_chat(user, span_warning("You can't grind this!"))
 
-/obj/item/reagent_containers/glass/saline
-	name = "saline canister"
-	volume = 5000
-	list_reagents = list(/datum/reagent/medicine/salglu_solution = 5000)
+//TRUE MUGS for REAL MUG FANS !!!
+/obj/item/reagent_containers/glass/mug
+	name = "mug"
+	desc = "A generic porcelain mug, ready to hold your warm beverage."
+	icon = 'icons/obj/drinks.dmi'
+	icon_state = "tea_empty"
+	inhand_icon_state = "coffee"
+	fill_icon_state = "mug"
+	fill_icon_thresholds = list(0, 40, 80, 100)
+	volume = 30
+
+/obj/item/reagent_containers/glass/mug/Initialize(mapload)
+	. = ..()
+	update_appearance()
+
+/obj/item/reagent_containers/glass/mug/tea
+	name = "Duke Purple tea"
+	list_reagents = list(/datum/reagent/consumable/tea = 30)
+
+/obj/item/reagent_containers/glass/mug/coco
+	name = "Duke Purple tea"
+	list_reagents = list(/datum/reagent/consumable/hot_coco = 15, /datum/reagent/consumable/sugar = 5)
+
+/obj/item/reagent_containers/glass/mug/brit
+	name = "mug"
+	desc = "A mug with the british flag emblazoned on it."
+	icon = 'icons/obj/drinks.dmi'
+	icon_state = "britcup"
+
+/obj/item/reagent_containers/glass/mug/beagle
+	name = "beagle mug"
+	desc = "A mug, shaped like the head of a claymation beagle. What will they think of next?"
+	icon = 'icons/obj/drinks.dmi'
+	icon_state = "beaglemug"
+	fill_icon_state = null //it's not the right perspective to see inside. Don't blame me, we stole the sprite from baystation!

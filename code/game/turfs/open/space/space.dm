@@ -1,4 +1,5 @@
 GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, COLOR_CYAN, COLOR_ORANGE, COLOR_PURPLE)
+GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 
 /turf/open/space
 	icon = 'icons/turf/space.dmi'
@@ -7,14 +8,15 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 	overfloor_placed = FALSE
 	underfloor_accessibility = UNDERFLOOR_INTERACTABLE
 	z_flags = Z_ATMOS_IN_DOWN|Z_ATMOS_IN_UP|Z_ATMOS_OUT_DOWN|Z_ATMOS_OUT_UP
+	z_eventually_space = TRUE
 	temperature = TCMB
 	simulated = FALSE
+	explosion_block = 0.5
+	initial_gas = null
 
 	var/destination_z
 	var/destination_x
 	var/destination_y
-
-	initial_gas = AIRLESS_ATMOS
 
 	plane = PLANE_SPACE
 	layer = SPACE_LAYER
@@ -46,30 +48,32 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
  */
 /turf/open/space/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
-	icon_state = SPACE_ICON_STATE(x, y, z)
 
-	if(flags_1 & INITIALIZED_1)
+	appearance = global.space_appearances[(((x + y) ^ ~(x * y) + z) % 25) + 1]
+
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED_1
 
-	var/area/our_area = loc
-	if(!our_area.area_has_base_lighting) //Only provide your own lighting if the area doesn't for you
+	initialized = TRUE
+
+	if(!loc:area_has_base_lighting) //Only provide your own lighting if the area doesn't for you
 		// Intentionally not add_overlay for performance reasons.
 		// add_overlay does a bunch of generic stuff, like creating a new list for overlays,
 		// queueing compile, cloning appearance, etc etc etc that is not necessary here.
 		overlays += global.fullbright_overlay
-
-	if (!mapload)
-		var/turf/T = GetAbove(src)
-		if(!isnull(T))
-			T.multiz_turf_new(src, DOWN)
-		T = GetBelow(src)
-		if(!isnull(T))
-			T.multiz_turf_new(src, UP)
-
-	ComponentInitialize()
+		luminosity = TRUE
 
 	return INITIALIZE_HINT_NORMAL
+
+/proc/make_space_appearances()
+	. = new /list(26)
+	for (var/i in 0 to 25)
+		var/image/I = new()
+		I.appearance = /turf/open/space
+		I.icon_state = "[i]"
+		I.plane = PLANE_SPACE
+		I.layer = SPACE_LAYER
+		.[i+1] = I
 
 //ATTACK GHOST IGNORING PARENT RETURN VALUE
 /turf/open/space/attack_ghost(mob/dead/observer/user)
@@ -77,10 +81,6 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 		var/turf/T = locate(destination_x, destination_y, destination_z)
 		user.forceMove(T)
 
-/*
-/turf/open/space/Initalize_Atmos(times_fired)
-	return
-*/
 /turf/open/space/TakeTemperature(temp)
 
 /turf/open/space/RemoveLattice()
@@ -123,7 +123,7 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 	if(!arrived || src != arrived.loc)
 		return
 
-	if(destination_z && destination_x && destination_y && !arrived.pulledby && !arrived.currently_z_moving)
+	if(destination_z && destination_x && destination_y && !LAZYLEN(arrived.grabbed_by) && !arrived.currently_z_moving)
 		var/tx = destination_x
 		var/ty = destination_y
 		var/turf/DT = locate(tx, ty, destination_z)
@@ -144,13 +144,13 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 
 		if(SEND_SIGNAL(arrived, COMSIG_MOVABLE_LATERAL_Z_MOVE) & COMPONENT_BLOCK_MOVEMENT)
 			return
-		arrived.zMove(null, DT, ZMOVE_ALLOW_BUCKLED)
 
-		var/atom/movable/current_pull = arrived.pulling
-		while (current_pull)
-			var/turf/target_turf = get_step(current_pull.pulledby.loc, REVERSE_DIR(current_pull.pulledby.dir)) || current_pull.pulledby.loc
-			current_pull.zMove(null, target_turf, ZMOVE_ALLOW_BUCKLED)
-			current_pull = current_pull.pulling
+		arrived.forceMoveWithGroup(DT, ZMOVING_LATERAL)
+		if(isliving(arrived))
+			var/mob/living/L = arrived
+			for(var/obj/item/hand_item/grab/G as anything in L.recursively_get_conga_line())
+				var/turf/pulled_dest = get_step(G.assailant.loc, REVERSE_DIR(G.assailant.dir)) || G.assailant.loc
+				G.affecting.forceMoveWithGroup(pulled_dest, ZMOVING_LATERAL)
 
 
 /turf/open/space/MakeSlippery(wet_setting, min_wet_time, wet_time_to_add, max_wet_time, permanent)
@@ -171,13 +171,6 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 
 /turf/open/space/acid_act(acidpwr, acid_volume)
 	return FALSE
-
-/turf/open/space/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/space.dmi'
-	underlay_appearance.icon_state = SPACE_ICON_STATE(x, y, z)
-	underlay_appearance.plane = PLANE_SPACE
-	return TRUE
-
 
 /turf/open/space/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	if(!CanBuildHere())
@@ -203,7 +196,7 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 /turf/open/space/rust_heretic_act()
 	return FALSE
 
-/turf/open/space/ReplaceWithLattice()
+/turf/open/space/TryScrapeToLattice()
 	var/dest_x = destination_x
 	var/dest_y = destination_y
 	var/dest_z = destination_z
@@ -215,48 +208,25 @@ GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, C
 /turf/open/space/openspace
 	icon = 'icons/turf/floors.dmi'
 	icon_state = "invisible"
-	simulated = TRUE
+	z_flags = Z_ATMOS_IN_DOWN | Z_ATMOS_IN_UP | Z_ATMOS_OUT_DOWN | Z_ATMOS_OUT_UP | Z_MIMIC_BELOW | Z_MIMIC_OVERWRITE | Z_MIMIC_NO_AO
 
-/turf/open/space/openspace/Initialize(mapload) // handle plane and layer here so that they don't cover other obs/turfs in Dream Maker
-	. = ..()
-	overlays += GLOB.openspace_backdrop_one_for_all //Special grey square for projecting backdrop darkness filter on it.
-	icon_state = "invisible"
-	return INITIALIZE_HINT_LATELOAD
 
-/turf/open/space/openspace/LateInitialize()
-	. = ..()
-	AddElement(/datum/element/turf_z_transparency, is_openspace = TRUE)
+/turf/open/space/CanZPass(atom/movable/A, direction, z_move_flags)
+	if(z == A.z) //moving FROM this turf
+		//Check contents
+		for(var/obj/O in contents)
+			if(direction == UP)
+				if(O.obj_flags & BLOCK_Z_OUT_UP)
+					return FALSE
+			else if(O.obj_flags & BLOCK_Z_OUT_DOWN)
+				return FALSE
 
-/turf/open/space/openspace/zAirIn()
+	else
+		for(var/obj/O in contents)
+			if(direction == UP)
+				if(O.obj_flags & BLOCK_Z_IN_DOWN)
+					return FALSE
+			else if(O.obj_flags & BLOCK_Z_IN_UP)
+				return FALSE
+
 	return TRUE
-
-/turf/open/space/openspace/zAirOut()
-	return TRUE
-
-/turf/open/space/openspace/zPassIn(atom/movable/A, direction, turf/source)
-	if(direction == DOWN)
-		for(var/obj/contained_object in contents)
-			if(contained_object.obj_flags & BLOCK_Z_IN_DOWN)
-				return FALSE
-		return TRUE
-	if(direction == UP)
-		for(var/obj/contained_object in contents)
-			if(contained_object.obj_flags & BLOCK_Z_IN_UP)
-				return FALSE
-		return TRUE
-	return FALSE
-
-/turf/open/space/openspace/zPassOut(atom/movable/A, direction, turf/destination)
-	if(A.anchored)
-		return FALSE
-	if(direction == DOWN)
-		for(var/obj/contained_object in contents)
-			if(contained_object.obj_flags & BLOCK_Z_OUT_DOWN)
-				return FALSE
-		return TRUE
-	if(direction == UP)
-		for(var/obj/contained_object in contents)
-			if(contained_object.obj_flags & BLOCK_Z_OUT_UP)
-				return FALSE
-		return TRUE
-	return FALSE

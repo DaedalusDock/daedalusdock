@@ -12,9 +12,13 @@
 
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
+
 	force = 6
-	throw_speed = 3
 	throw_range = 7
+	stamina_damage = 15
+	stamina_cost = 10
+	stamina_critical_chance = 30
+
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron=80)
 	attack_verb_continuous = list("pinches", "nips")
@@ -25,7 +29,7 @@
 	pickup_sound = 'sound/items/handling/wirecutter_pickup.ogg'
 	tool_behaviour = TOOL_WIRECUTTER
 	toolspeed = 1
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	/// If the item should be assigned a random color
 	var/random_color = TRUE
 	/// List of possible random colors

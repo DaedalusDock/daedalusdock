@@ -11,7 +11,7 @@
 	allow_dense = TRUE
 	delivery_icon = null
 	can_weld_shut = FALSE
-	armor = list(MELEE = 30, BULLET = 50, LASER = 50, ENERGY = 100, BOMB = 100, BIO = 0, FIRE = 100, ACID = 80)
+	armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 100, BOMB = 100, BIO = 0, FIRE = 100, ACID = 80)
 	anchored = TRUE //So it cant slide around after landing
 	anchorable = FALSE
 	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
@@ -70,6 +70,9 @@
 	bluespace = TRUE
 	explosionSize = list(0,0,0,0)
 
+/obj/structure/closet/supplypod/safe
+	explosionSize = list(0,0,0,0)
+
 /obj/structure/closet/supplypod/extractionpod
 	name = "Syndicate Extraction Pod"
 	desc = "A specalised, blood-red styled pod for extracting high-value targets out of active mission areas. <b>Targets must be manually stuffed inside the pod for proper delivery.</b>"
@@ -100,32 +103,6 @@
 	if (customStyle)
 		style = customStyle
 	setStyle(style) //Upon initialization, give the supplypod an iconstate, name, and description based on the "style" variable. This system is important for the centcom_podlauncher to function correctly
-
-/obj/structure/closet/supplypod/extractionpod/Initialize(mapload)
-	. = ..()
-	var/turf/picked_turf = pick(GLOB.holdingfacility)
-	reverse_dropoff_coords = list(picked_turf.x, picked_turf.y, picked_turf.z)
-
-/obj/structure/closet/supplypod/extractionpod/Destroy()
-	if(recieving)
-		to_chat(tied_contract.contract.owner, "<BR>[span_userdanger("Extraction pod destroyed. Contract aborted.")]")
-		if (contract_hub.current_contract == tied_contract)
-			contract_hub.current_contract = null
-		contract_hub.assigned_contracts[tied_contract.id].status = CONTRACT_STATUS_ABORTED
-		tied_contract = null
-		contract_hub = null
-	return ..()
-
-/obj/structure/closet/supplypod/extractionpod/Moved(atom/OldLoc, Dir, list/old_locs, momentum_change = TRUE)
-	. = ..()
-	if(recieving && (atom_integrity <= 0))
-		to_chat(tied_contract.contract.owner, "<BR>[span_userdanger("Extraction pod destroyed. Contract aborted.")]")
-		if (contract_hub.current_contract == tied_contract)
-			contract_hub.current_contract = null
-		contract_hub.assigned_contracts[tied_contract.id].status = CONTRACT_STATUS_ABORTED
-		tied_contract = null
-		contract_hub = null
-
 
 /obj/structure/closet/supplypod/proc/setStyle(chosenStyle) //Used to give the sprite an icon state, name, and description.
 	style = chosenStyle
@@ -272,7 +249,7 @@
 							break
 			if (effectOrgans) //effectOrgans means remove every organ in our mob
 				var/mob/living/carbon/carbon_target_mob = target_living
-				for(var/obj/item/organ/organ_to_yeet as anything in carbon_target_mob.internal_organs)
+				for(var/obj/item/organ/organ_to_yeet as anything in carbon_target_mob.processing_organs)
 					var/destination = get_edge_target_turf(turf_underneath, pick(GLOB.alldirs)) //Pick a random direction to toss them in
 					organ_to_yeet.Remove(carbon_target_mob) //Note that this isn't the same proc as for lists
 					organ_to_yeet.forceMove(turf_underneath) //Move the organ outta the body
@@ -395,7 +372,7 @@
 		var/mob/living/mob_to_insert = to_insert
 		if(mob_to_insert.anchored || mob_to_insert.incorporeal_move)
 			return FALSE
-		mob_to_insert.stop_pulling()
+		mob_to_insert.release_all_grabs()
 
 	else if(isobj(to_insert))
 		var/obj/obj_to_insert = to_insert

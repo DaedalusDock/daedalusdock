@@ -1,97 +1,89 @@
 #define AO_TURF_CHECK(T) ((!T.opacity && !(locate(/obj/structure/low_wall) in T)) || !T.permit_ao)
 #define AO_SELF_CHECK(T) (!T.opacity || !(locate(/obj/structure/low_wall) in T))
-#define BITFLAG(X) (1<<(X))
-//Redefinitions of the diagonal directions so they can be stored in one var without conflicts
-#define N_NORTH     2
-#define N_SOUTH     4
-#define N_EAST      16
-#define N_WEST      256
-#define N_NORTHEAST 32
-#define N_NORTHWEST 512
-#define N_SOUTHEAST 64
-#define N_SOUTHWEST 1024
-/*
-Define for getting a bitfield of adjacent turfs that meet a condition.
-ORIGIN is the object to step from, VAR is the var to write the bitfield to
-TVAR is the temporary turf variable to use, FUNC is the condition to check.
-FUNC generally should reference TVAR.
-example:
-	var/turf/T
-	var/result = 0
-	CALCULATE_NEIGHBORS(src, result, T, isopenturf(T))
-*/
-#define CALCULATE_NEIGHBORS(ORIGIN, VAR, TVAR, FUNC) \
-	for (var/_tdir in GLOB.cardinals) {              \
+
+/**
+ * Define for getting a bitfield of adjacent turfs that meet a condition.
+ *
+ * Arguments:
+ * - ORIGIN - The atom to step from,
+ * - VAR    - The var to write the bitfield to.
+ * - TVAR   - The temporary turf variable to use.
+ * - FUNC   - An additional function used to validate the turf found in each direction. Generally should reference TVAR.
+ *
+ * Example:
+ * -  var/our_junction = 0
+ * -  var/turf/T
+ * -  CALCULATE_JUNCTIONS(src, our_junction, T, isopenturf(T))
+ * -  // isopenturf(T) NEEDS to be in the macro call since its nested into for loops.
+ *
+ * NOTICE:
+ * - This macro used to be CALCULATE_NEIGHBORS.
+ * - It has been renamed to avoid conflicts and confusions with other codebases.
+ */
+#define CALCULATE_JUNCTIONS(ORIGIN, VAR, TVAR, FUNC) \
+	for (var/_tdir in GLOB.cardinals) {               \
 		TVAR = get_step(ORIGIN, _tdir);              \
 		if ((TVAR) && (FUNC)) {                      \
-			VAR |= BITFLAG(_tdir);                   \
+			VAR |= _tdir;                            \
 		}                                            \
 	}                                                \
-	if (VAR & N_NORTH) {                             \
-		if (VAR & N_WEST) {                          \
+	if (VAR & NORTH_JUNCTION) {                      \
+		if (VAR & WEST_JUNCTION) {                   \
 			TVAR = get_step(ORIGIN, NORTHWEST);      \
 			if (FUNC) {                              \
-				VAR |= N_NORTHWEST;                  \
+				VAR |= NORTHWEST_JUNCTION;           \
 			}                                        \
 		}                                            \
-		if (VAR & N_EAST) {                          \
+		if (VAR & EAST_JUNCTION) {                   \
 			TVAR = get_step(ORIGIN, NORTHEAST);      \
 			if (FUNC) {                              \
-				VAR |= N_NORTHEAST;                  \
+				VAR |= NORTHEAST_JUNCTION;           \
 			}                                        \
 		}                                            \
 	}                                                \
-	if (VAR & N_SOUTH) {                             \
-		if (VAR & N_WEST) {                          \
+	if (VAR & SOUTH_JUNCTION) {                      \
+		if (VAR & WEST_JUNCTION) {                   \
 			TVAR = get_step(ORIGIN, SOUTHWEST);      \
 			if (FUNC) {                              \
-				VAR |= N_SOUTHWEST;                  \
+				VAR |= SOUTHWEST_JUNCTION;           \
 			}                                        \
 		}                                            \
-		if (VAR & N_EAST) {                          \
+		if (VAR & EAST_JUNCTION) {                   \
 			TVAR = get_step(ORIGIN, SOUTHEAST);      \
 			if (FUNC) {                              \
-				VAR |= N_SOUTHEAST;                  \
+				VAR |= SOUTHEAST_JUNCTION;           \
 			}                                        \
 		}                                            \
 	}
 
-/turf
-	///Turf can contain ao overlays (only false for space, walls are opaque so they dont get them anyway)
-	var/permit_ao = TRUE
-	/// Current ambient occlusion overlays. Tracked so we can handle them through SSoverlays.
-	var/tmp/list/ao_overlays
-	var/tmp/ao_neighbors
-	var/ao_queued = AO_UPDATE_NONE
+#define PROCESS_AO(TARGET, AO_VAR, NEIGHBORS, ALPHA, SHADOWER) \
+	if (permit_ao && NEIGHBORS != AO_ALL_NEIGHBORS) { \
+		var/image/I = cache["ao-[NEIGHBORS]|[pixel_x]/[pixel_y]/[pixel_z]/[pixel_w]|[ALPHA]|[SHADOWER]"]; \
+		if (!I) { \
+			/* This will also add the image to the cache. */ \
+			I = make_ao_image(NEIGHBORS, TARGET.pixel_x, TARGET.pixel_y, TARGET.pixel_z, TARGET.pixel_w, ALPHA, SHADOWER); \
+		} \
+		AO_VAR = I; \
+		TARGET.add_overlay(AO_VAR); \
+	}
 
-/turf/proc/regenerate_ao()
-	for(var/turf/T as anything in RANGE_TURFS(1, src))
-		if(T.permit_ao)
-			T.queue_ao(TRUE)
+#define CUT_AO(TARGET, AO_VAR) \
+	if (AO_VAR) { \
+		TARGET.cut_overlay(AO_VAR); \
+		AO_VAR = null; \
+	}
 
-/turf/proc/calculate_ao_neighbors()
-	ao_neighbors = 0
-	if (!permit_ao)
-		return
+/proc/make_ao_image(corner, px = 0, py = 0, pz = 0, pw = 0, alpha, shadower)
+	var/list/cache = SSao.image_cache
+	var/cstr = "ao-[corner]"
+	// PROCESS_AO above also uses this cache, check it before changing this key.
+	var/key = "[cstr]|[px]/[py]/[pz]/[pw]|[alpha]|[shadower]"
 
-	var/turf/T
-	if (AO_SELF_CHECK(src))
-		CALCULATE_NEIGHBORS(src, ao_neighbors, T, AO_TURF_CHECK(T))
-		// We don't want shadows on the top of turfs, so pretend that there's always non-opaque neighbors there
-		ao_neighbors |= (N_SOUTH | N_SOUTHEAST | N_SOUTHWEST)
-
-/proc/make_ao_image(corner, i, px = 0, py = 0, pz = 0, pw = 0)
-	var/list/cache = SSao.cache
-	var/cstr = "[corner]"
-	var/key = "[cstr]-[i]-[px]/[py]/[pz]/[pw]"
-
-	var/image/I = image('icons/turf/shadows.dmi', cstr, dir = 1<<(i-1))
-	I.alpha = WALL_AO_ALPHA;
-	I.blend_mode = BLEND_OVERLAY;
-	I.appearance_flags = RESET_ALPHA|RESET_COLOR|TILE_BOUND
+	var/image/I = image(shadower ? 'icons/turf/uncut_shadows.dmi' : 'icons/turf/shadows.dmi', cstr)
+	I.alpha = alpha
+	I.blend_mode = BLEND_OVERLAY
+	I.appearance_flags = RESET_ALPHA | RESET_COLOR | TILE_BOUND
 	I.layer = AO_LAYER
-
-
 	// If there's an offset, counteract it.
 	if (px || py || pz || pw)
 		I.pixel_x = -px
@@ -101,6 +93,54 @@ example:
 
 	. = cache[key] = I
 
+/turf
+	/**
+	 * Whether this turf is allowed to have ambient occlusion.
+	 * If FALSE, this turf will not be considered for ambient occlusion.
+	 */
+	var/permit_ao = TRUE
+
+	/**
+	 * Current ambient occlusion overlays.
+	 * Tracked here so that they can be reapplied during update_overlays()
+	 */
+	var/tmp/image/ao_overlay
+
+	/**
+	 * What directions this is currently smoothing with.
+	 * This starts as null for us to know when it's first set, but after that it will hold a 8-bit mask ranging from 0 to 255.
+	 *
+	 * IMPORTANT: This uses the smoothing direction flags as defined in icon_smoothing.dm, instead of the BYOND flags.
+	 */
+	var/tmp/ao_junction
+
+	/// The same as ao_overlay, but for the mimic turf.
+	var/tmp/image/ao_overlay_mimic
+
+	/// The same as ao_junction, but for the mimic turf.
+	var/tmp/ao_junction_mimic
+
+	/// Whether this turf is currently queued for ambient occlusion.
+	var/tmp/ao_queued = AO_UPDATE_NONE
+
+/turf/proc/calculate_ao_junction()
+	ao_junction = NONE
+	ao_junction_mimic = NONE
+	if (!permit_ao)
+		return
+
+	var/turf/T
+	if (z_flags & Z_MIMIC_BELOW)
+		CALCULATE_JUNCTIONS(src, ao_junction_mimic, T, (T.z_flags & Z_MIMIC_BELOW))
+	if (AO_SELF_CHECK(src) && !(z_flags & Z_MIMIC_NO_AO))
+		CALCULATE_JUNCTIONS(src, ao_junction, T, AO_TURF_CHECK(T))
+
+/turf/proc/regenerate_ao()
+	for (var/thing in RANGE_TURFS(1, src))
+		var/turf/T = thing
+		if (T?.permit_ao)
+			T.queue_ao(TRUE)
+
 /turf/proc/queue_ao(rebuild = TRUE)
 	if (!ao_queued)
 		SSao.queue += src
@@ -109,70 +149,32 @@ example:
 	if (ao_queued < new_level)
 		ao_queued = new_level
 
-#define PROCESS_AO_CORNER(AO_LIST, NEIGHBORS, CORNER_INDEX, CDIR) \
-	corner = 0; \
-	if (NEIGHBORS & (BITFLAG(CDIR))) { \
-		corner |= 2; \
-	} \
-	if (NEIGHBORS & (BITFLAG(turn(CDIR, 45)))) { \
-		corner |= 1; \
-	} \
-	if (NEIGHBORS & (BITFLAG(turn(CDIR, -45)))) { \
-		corner |= 4; \
-	} \
-	if (corner != 7) {	/* 7 is the 'no shadows' state, no reason to add overlays for it. */ \
-		var/image/I = cache["[corner]-[CORNER_INDEX]-[pixel_x]/[pixel_y]/[pixel_z]/[pixel_w]"]; \
-		if (!I) { \
-			I = make_ao_image(corner, CORNER_INDEX, pixel_x, pixel_y, pixel_z, pixel_w)	/* this will also add the image to the cache. */ \
-		} \
-		LAZYADD(AO_LIST, I); \
-	}
-
-#define CUT_AO(TARGET, AO_LIST) \
-	if (AO_LIST) { \
-		TARGET.cut_overlay(AO_LIST); \
-		AO_LIST.Cut(); \
-	}
-
-#define REGEN_AO(TARGET, AO_LIST, NEIGHBORS) \
-	if (permit_ao && NEIGHBORS != AO_ALL_NEIGHBORS) { \
-		var/corner;\
-		PROCESS_AO_CORNER(AO_LIST, NEIGHBORS, 1, NORTHWEST); \
-		PROCESS_AO_CORNER(AO_LIST, NEIGHBORS, 2, SOUTHEAST); \
-		PROCESS_AO_CORNER(AO_LIST, NEIGHBORS, 3, NORTHEAST); \
-		PROCESS_AO_CORNER(AO_LIST, NEIGHBORS, 4, SOUTHWEST); \
-	} \
-	UNSETEMPTY(AO_LIST); \
-	if (AO_LIST) { \
-		TARGET.update_appearance(UPDATE_ICON); \
-	}
-//TARGET.add_overlay(AO_LIST)
 /turf/proc/update_ao()
-	var/list/cache = SSao.cache
-	CUT_AO(src, ao_overlays)
-	if (AO_TURF_CHECK(src))
-		REGEN_AO(src, ao_overlays, ao_neighbors)
+	var/list/cache = SSao.image_cache
+	CUT_AO(shadower, ao_overlay_mimic)
+	CUT_AO(src, ao_overlay)
+	if (z_flags & Z_MIMIC_BELOW)
+		PROCESS_AO(shadower, ao_overlay_mimic, ao_junction_mimic, Z_AO_ALPHA, TRUE)
+	if (AO_TURF_CHECK(src) && !(z_flags & Z_MIMIC_NO_AO))
+		PROCESS_AO(src, ao_overlay, ao_junction, WALL_AO_ALPHA, FALSE)
 
 /turf/update_overlays()
 	. = ..()
-	if(permit_ao && ao_overlays)
-		. += ao_overlays
+	if(permit_ao && ao_overlay)
+		. += ao_overlay
 
-#undef REGEN_AO
-#undef PROCESS_AO_CORNER
+/atom/movable/openspace/multiplier/update_overlays()
+	. = ..()
+	var/turf/Tloc = loc
+	ASSERT(isturf(Tloc))
+	if (Tloc.ao_overlay_mimic)
+		.+= Tloc.ao_overlay_mimic
+
+#undef PROCESS_AO
+#undef CUT_AO
+#undef CALCULATE_JUNCTIONS
 #undef AO_TURF_CHECK
 #undef AO_SELF_CHECK
-#undef CALCULATE_NEIGHBORS
-#undef BITFLAG
-
-#undef N_NORTH
-#undef N_SOUTH
-#undef N_EAST
-#undef N_WEST
-#undef N_NORTHEAST
-#undef N_NORTHWEST
-#undef N_SOUTHEAST
-#undef N_SOUTHWEST
 
 /turf/open/space
 	permit_ao = FALSE

@@ -5,7 +5,7 @@
 	icon = 'icons/mob/eldritch_mobs.dmi'
 	gender = NEUTER
 	mob_biotypes = NONE
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	response_help_continuous = "thinks better of touching"
 	response_help_simple = "think better of touching"
 	response_disarm_continuous = "flails at"
@@ -14,7 +14,7 @@
 	response_harm_simple = "tears"
 	speak_emote = list("screams")
 	speak_chance = 1
-	speed = 0
+	move_delay_modifier = 0
 	combat_mode = TRUE
 	stop_automated_movement = TRUE
 	AIStatus = AI_OFF
@@ -54,7 +54,7 @@
 	maxHealth = 65
 	health = 65
 	sight = SEE_MOBS|SEE_OBJS|SEE_TURFS
-	loot = list(/obj/effect/gibspawner/human, /obj/item/bodypart/arm/left, /obj/item/organ/internal/eyes)
+	loot = list(/obj/effect/gibspawner/human, /obj/item/bodypart/arm/left, /obj/item/organ/eyes)
 	actions_to_add = list(
 		/datum/action/cooldown/spell/jaunt/ethereal_jaunt/ash/long,
 		/datum/action/cooldown/spell/list_target/telepathy/eldritch,
@@ -219,7 +219,7 @@
 /mob/living/simple_animal/hostile/heretic_summon/armsy/has_gravity(turf/T)
 	return TRUE
 
-/mob/living/simple_animal/hostile/heretic_summon/armsy/can_be_pulled()
+/mob/living/simple_animal/hostile/heretic_summon/armsy/can_be_grabbed(mob/living/grabber, target_zone, force)
 	return FALSE
 
 /// Updates every body in the chain to force move onto a single tile.
@@ -259,6 +259,7 @@
 		front.icon_state = "armsy_end"
 		front.icon_living = "armsy_end"
 		front.back = null
+		front = null
 	if(back)
 		QDEL_NULL(back) // chain destruction baby
 	return ..()

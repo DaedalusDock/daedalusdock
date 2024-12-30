@@ -1,9 +1,13 @@
 /obj/item/stack/sticky_tape
-	name = "duct tape"
-	singular_name = "duct tape"
+	name = "roll of duct tape"
+	singular_name = "piece"
+	stack_name = "roll"
+	multiple_gender = NEUTER
+
 	desc = "Used for sticking to things for sticking said things to people."
 	icon = 'icons/obj/tapes.dmi'
 	icon_state = "tape"
+
 	var/prefix = "sticky"
 	w_class = WEIGHT_CLASS_TINY
 	full_w_class = WEIGHT_CLASS_TINY
@@ -12,7 +16,7 @@
 	max_amount = 5
 	resistance_flags = FLAMMABLE
 	grind_results = list(/datum/reagent/cellulose = 5)
-	splint_factor = 0.65
+	splint_slowdown = 4
 	merge_type = /obj/item/stack/sticky_tape
 	usesound = 'sound/items/duct_tape_rip.ogg'
 	var/list/conferred_embed = EMBED_HARMLESS
@@ -26,10 +30,6 @@
 /obj/item/stack/sticky_tape/Initialize(mapload)
 	. = ..()
 	register_item_context()
-
-/obj/item/stack/sticky_tape/examine(mob/user)
-	. = ..()
-	. += span_notice("<b>Left-click</b> to restrain someone. Target mouth to gag.")
 
 /obj/item/stack/sticky_tape/add_item_context(
 	obj/item/source,
@@ -79,7 +79,7 @@
 		return
 	user.visible_message(span_notice("[user] begins wrapping [target] with [src]."), span_notice("You begin wrapping [target] with [src]."))
 	playsound(user, usesound, 50, TRUE)
-	if(do_after(user, target, 3 SECONDS))
+	if(do_after(user, target, 3 SECONDS, DO_PUBLIC, display = src))
 		use(1)
 		if(istype(target, /obj/item/clothing/gloves/fingerless))
 			var/obj/item/clothing/gloves/tackler/offbrand/O = new /obj/item/clothing/gloves/tackler/offbrand
@@ -105,7 +105,7 @@
 	playsound(loc, usesound, 30, TRUE, -2)
 	victim.visible_message(span_danger("[user] is trying to cover [victim]s mouth with [src]!"), \
 						span_userdanger("[user] is trying to cover your mouth with [src]!"))
-	if(do_after(user, victim, muzzle_delay))
+	if(do_after(user, victim, muzzle_delay, DO_PUBLIC, display = src))
 		if(!victim.wear_mask)
 			use(1)
 			victim.equip_to_slot_or_del(new tape_gag(victim), ITEM_SLOT_MASK)
@@ -121,11 +121,9 @@
 	playsound(loc, usesound, 30, TRUE, -2)
 	victim.visible_message(span_danger("[user] is trying to restrain [victim] with [src]!"), \
 							span_userdanger("[user] begins wrapping [src] around your wrists!"))
-	if(do_after(user, victim, handcuff_delay))
-		if(!victim.handcuffed)
+	if(do_after(user, victim, handcuff_delay, DO_PUBLIC, display = src))
+		if(victim.equip_to_slot_if_possible(new /obj/item/restraints/handcuffs/tape(victim), ITEM_SLOT_HANDCUFFED, TRUE, TRUE, null, TRUE))
 			use(1)
-			victim.set_handcuffed(new /obj/item/restraints/handcuffs/tape(victim))
-			victim.update_handcuffed()
 			victim.visible_message("<span class='notice'>[user] binds [victim]'s hands.</span>", \
 								"<span class='userdanger'>[user] handcuffs you.</span>")
 			log_combat(user, victim, "tapecuffed")
@@ -141,7 +139,7 @@
 	icon_state = "tape_y"
 	prefix = "super sticky"
 	conferred_embed = EMBED_HARMLESS_SUPERIOR
-	splint_factor = 0.4
+	splint_slowdown = 6
 	merge_type = /obj/item/stack/sticky_tape/super
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/super
 
@@ -172,7 +170,7 @@
 	icon_state = "tape_w"
 	prefix = "surgical"
 	conferred_embed = list("embed_chance" = 30, "pain_mult" = 0, "jostle_pain_mult" = 0, "ignore_throwspeed_threshold" = TRUE)
-	splint_factor = 0.5
-	custom_price = PAYCHECK_MEDIUM
+	splint_slowdown = 3
+	custom_price = PAYCHECK_ASSISTANT * 0.4
 	merge_type = /obj/item/stack/sticky_tape/surgical
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/surgical

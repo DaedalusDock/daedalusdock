@@ -5,7 +5,6 @@
 	drop_sound = 'sound/items/handling/paper_drop.ogg'
 	pickup_sound = 'sound/items/handling/paper_pickup.ogg'
 	throw_range = 1
-	throw_speed = 1
 	w_class = WEIGHT_CLASS_TINY
 	///what weapons will be allowed during the sparring match
 	var/weapons_condition = CONDITION_MELEE_ONLY
@@ -83,7 +82,7 @@
 		if(!isnull(resolved))
 			resolved_opponents += resolved
 
-	if(user in resolved_opponents && params["stakes"] == STAKES_HOLY_MATCH)
+	if((user in resolved_opponents) && params["stakes"] == STAKES_HOLY_MATCH)
 		to_chat(user, span_warning("This contract refuses to be signed up for a holy match by a previous holy match loser. Pick a different stake!"))
 
 	//any updating of the terms should update the UI to display new terms

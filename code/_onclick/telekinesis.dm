@@ -18,7 +18,7 @@
 	if(user.stat || !tkMaxRangeCheck(user, src))
 		return
 	new /obj/effect/temp_visual/telekinesis(get_turf(src))
-	add_hiddenprint(user)
+	log_touch(user)
 	user.UnarmedAttack(src, FALSE) // attack_hand, attack_paw, etc
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
@@ -49,7 +49,7 @@
 	if(!O.focus_object(src))
 		return
 	user.put_in_active_hand(O)
-	add_hiddenprint(user)
+	log_touch(user)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 

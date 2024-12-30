@@ -310,7 +310,7 @@
 	if(!owner || !isliving(owner))
 		return
 	var/mob/camera/ai_eye/remote/remote_eye = owner.remote_control
-	if(remote_eye.zMove(UP))
+	if(step(remote_eye, UP))
 		to_chat(owner, span_notice("You move upwards."))
 	else
 		to_chat(owner, span_notice("You couldn't move upwards!"))
@@ -324,7 +324,7 @@
 	if(!owner || !isliving(owner))
 		return
 	var/mob/camera/ai_eye/remote/remote_eye = owner.remote_control
-	if(remote_eye.zMove(DOWN))
+	if(step(remote_eye, DOWN))
 		to_chat(owner, span_notice("You move downwards."))
 	else
 		to_chat(owner, span_notice("You couldn't move downwards!"))

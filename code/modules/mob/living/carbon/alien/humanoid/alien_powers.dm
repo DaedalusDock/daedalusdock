@@ -264,30 +264,30 @@ Doesn't work on other aliens/AI.*/
 	build_all_button_icons()
 	on_who.update_icons()
 
-/datum/action/cooldown/alien/acid/neurotoxin/InterceptClickOn(mob/living/caller, params, atom/target)
+/datum/action/cooldown/alien/acid/neurotoxin/InterceptClickOn(mob/living/invoker, params, atom/target)
 	. = ..()
 	if(!.)
-		unset_click_ability(caller, refund_cooldown = FALSE)
+		unset_click_ability(invoker, refund_cooldown = FALSE)
 		return FALSE
 
 	// We do this in InterceptClickOn() instead of Activate()
 	// because we use the click parameters for aiming the projectile
 	// (or something like that)
-	var/turf/user_turf = caller.loc
-	var/turf/target_turf = get_step(caller, target.dir) // Get the tile infront of the move, based on their direction
+	var/turf/user_turf = invoker.loc
+	var/turf/target_turf = get_step(invoker, target.dir) // Get the tile infront of the move, based on their direction
 	if(!isturf(target_turf))
 		return FALSE
 
 	var/modifiers = params2list(params)
-	caller.visible_message(
-		span_danger("[caller] spits neurotoxin!"),
+	invoker.visible_message(
+		span_danger("[invoker] spits neurotoxin!"),
 		span_alertalien("You spit neurotoxin."),
 	)
-	var/obj/projectile/neurotoxin/neurotoxin = new /obj/projectile/neurotoxin(caller.loc)
-	neurotoxin.preparePixelProjectile(target, caller, modifiers)
-	neurotoxin.firer = caller
+	var/obj/projectile/neurotoxin/neurotoxin = new /obj/projectile/neurotoxin(invoker.loc)
+	neurotoxin.preparePixelProjectile(target, invoker, modifiers)
+	neurotoxin.firer = invoker
 	neurotoxin.fire()
-	caller.newtonian_move(get_dir(target_turf, user_turf))
+	invoker.newtonian_move(get_dir(target_turf, user_turf))
 	return TRUE
 
 // Has to return TRUE, otherwise is skipped.
@@ -364,14 +364,14 @@ Doesn't work on other aliens/AI.*/
 
 /// Gets the plasma level of this carbon's plasma vessel, or -1 if they don't have one
 /mob/living/carbon/proc/getPlasma()
-	var/obj/item/organ/internal/alien/plasmavessel/vessel = getorgan(/obj/item/organ/internal/alien/plasmavessel)
+	var/obj/item/organ/alien/plasmavessel/vessel = getorgan(/obj/item/organ/alien/plasmavessel)
 	if(!vessel)
 		return -1
 	return vessel.stored_plasma
 
 /// Adjusts the plasma level of the carbon's plasma vessel if they have one
 /mob/living/carbon/proc/adjustPlasma(amount)
-	var/obj/item/organ/internal/alien/plasmavessel/vessel = getorgan(/obj/item/organ/internal/alien/plasmavessel)
+	var/obj/item/organ/alien/plasmavessel/vessel = getorgan(/obj/item/organ/alien/plasmavessel)
 	if(!vessel)
 		return FALSE
 	vessel.stored_plasma = max(vessel.stored_plasma + amount,0)

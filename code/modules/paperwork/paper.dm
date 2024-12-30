@@ -22,11 +22,14 @@
 	inhand_icon_state = "paper"
 	worn_icon_state = "paper"
 	custom_fire_overlay = "paper_onfire_overlay"
+
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
 	throw_range = 1
-	throw_speed = 1
-	//pressure_resistance = 0
+	throw_speed = 0.7
+	stamina_cost = 0
+	stamina_damage = 0
+
 	slot_flags = ITEM_SLOT_HEAD
 	body_parts_covered = HEAD
 	resistance_flags = FLAMMABLE
@@ -35,7 +38,8 @@
 	drop_sound = 'sound/items/handling/paper_drop.ogg'
 	pickup_sound = 'sound/items/handling/paper_pickup.ogg'
 	grind_results = list(/datum/reagent/cellulose = 3)
-	color = "white"
+
+	color = "#ffffe1"
 	/// What's actually written on the paper.
 	var/info = ""
 	/**
@@ -69,7 +73,6 @@
 	stamps = null
 	stamped = null
 	form_fields = null
-	stamped = null
 	. = ..()
 
 /**
@@ -148,7 +151,7 @@
 	if(isnull(n_name) || n_name == "")
 		return
 	if(((loc == usr || istype(loc, /obj/item/clipboard)) && usr.stat == CONSCIOUS))
-		name = "paper[(n_name ? text("- '[n_name]'") : null)]"
+		name = "paper[(n_name ? "- '[n_name]'" : null)]"
 	add_fingerprint(usr)
 
 /obj/item/paper/suicide_act(mob/user)
@@ -213,7 +216,7 @@
 	if(user.is_holding(src)) //no TK shit here.
 		user.dropItemToGround(src)
 	user.visible_message(ignition_message)
-	add_fingerprint(user)
+	I.leave_evidence(user, src)
 	fire_act(I.get_temperature())
 
 /obj/item/paper/proc/add_info(text, color = DEFAULT_ADD_INFO_COLOR, font = DEFAULT_ADD_INFO_FONT, signature = DEFAULT_ADD_INFO_SIGN)
@@ -264,7 +267,7 @@
 	return ..()
 
 
-/obj/item/paper/fire_act(exposed_temperature, exposed_volume)
+/obj/item/paper/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()
 	if(.)
 		info = "[stars(info)]"
@@ -302,7 +305,7 @@
 			.["add_sign"] += style[ADD_INFO_SIGN]
 
 	.["max_length"] = MAX_PAPER_LENGTH
-	.["paper_color"] = !color || color == "white" ? "#FFFFFF" : color // color might not be set
+	.["paper_color"] = !color || color == "white" ? "#ffffff" : color // color might not be set
 	.["paper_state"] = icon_state /// TODO: show the sheet will bloodied or crinkling?
 	.["stamps"] = stamps
 

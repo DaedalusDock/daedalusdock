@@ -192,6 +192,35 @@ Turf and target are separate in case you want to teleport some distance from a t
 	var/y = min(world.maxy, max(1, target_atom.y + dy))
 	return locate(x, y, target_atom.z)
 
+/// returns a turf at the outer edge of a given radius
+/proc/get_random_perimeter_turf(atom/origin, radius)
+	var/turf/origin_turf = get_turf(origin)
+	if(isnull(origin_turf))
+		return null
+
+	if(radius == 0)
+		return origin_turf
+
+	var/upper_x = clamp(origin_turf.x + radius, 1, world.maxx)
+	var/lower_x = clamp(origin_turf.x - radius, 1, world.maxx)
+
+	var/upper_y = clamp(origin_turf.y + radius, 1, world.maxy)
+	var/lower_y = clamp(origin_turf.y - radius, 1, world.maxy)
+
+
+	var/x
+	var/y
+	var/z = origin_turf.z
+
+	if(prob(50))
+		x = pick(lower_x, upper_x)
+		y = rand(lower_y, upper_y)
+	else
+		x = rand(lower_x, upper_x)
+		y = pick(lower_y, upper_y)
+
+	return locate(x, y ,z)
+
 /**
  * Lets the turf this atom's *ICON* appears to inhabit
  * it takes into account:
@@ -206,6 +235,11 @@ Turf and target are separate in case you want to teleport some distance from a t
 /proc/get_turf_pixel(atom/checked_atom)
 	if(!istype(checked_atom))
 		return
+
+	//Find coordinates
+	var/turf/atom_turf = get_turf(checked_atom) //use checked_atom's turfs, as it's coords are the same as checked_atom's AND checked_atom's coords are lost if it is inside another atom
+	if(!atom_turf)
+		return null
 
 	//Find checked_atom's matrix so we can use it's X/Y pixel shifts
 	var/matrix/atom_matrix = matrix(checked_atom.transform)
@@ -225,10 +259,6 @@ Turf and target are separate in case you want to teleport some distance from a t
 	var/rough_x = round(round(pixel_x_offset, world.icon_size) / world.icon_size)
 	var/rough_y = round(round(pixel_y_offset, world.icon_size) / world.icon_size)
 
-	//Find coordinates
-	var/turf/atom_turf = get_turf(checked_atom) //use checked_atom's turfs, as it's coords are the same as checked_atom's AND checked_atom's coords are lost if it is inside another atom
-	if(!atom_turf)
-		return null
 	var/final_x = clamp(atom_turf.x + rough_x, 1, world.maxx)
 	var/final_y = clamp(atom_turf.y + rough_y, 1, world.maxy)
 
@@ -256,7 +286,6 @@ Turf and target are separate in case you want to teleport some distance from a t
 	LAZYSET(modifiers, ICON_Y, "[(click_turf_py - click_turf.pixel_y) + ((click_turf_y - click_turf.y) * world.icon_size)]")
 	return click_turf
 
-///Almost identical to the params_to_turf(), but unused (remove?)
 /proc/screen_loc_to_turf(text, turf/origin, client/C)
 	if(!text)
 		return null

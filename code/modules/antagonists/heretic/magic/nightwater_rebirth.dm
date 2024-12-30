@@ -38,7 +38,7 @@
 	new /obj/effect/temp_visual/eldritch_smoke(victim.drop_location())
 
 	//This is essentially a death mark, use this to finish your opponent quicker.
-	if(HAS_TRAIT(victim, TRAIT_CRITICAL_CONDITION) && !HAS_TRAIT(victim, TRAIT_NODEATH))
+	if(victim.stat == UNCONSCIOUS && !HAS_TRAIT(victim, TRAIT_NODEATH))
 		victim.death()
 	victim.apply_damage(20, BURN)
 
@@ -47,7 +47,7 @@
 	caster.adjustFireLoss(-10, FALSE)
 	caster.adjustToxLoss(-10, FALSE)
 	caster.adjustOxyLoss(-10, FALSE)
-	caster.adjustStaminaLoss(-10)
+	caster.stamina.adjust(10)
 
 /obj/effect/temp_visual/eldritch_smoke
 	icon = 'icons/effects/eldritch.dmi'

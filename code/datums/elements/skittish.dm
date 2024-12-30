@@ -3,7 +3,6 @@
  */
 
 /datum/element/skittish
-	element_flags = ELEMENT_DETACH
 
 /datum/element/skittish/Attach(datum/target)
 	. = ..()
@@ -18,7 +17,7 @@
 
 /datum/element/skittish/proc/Bump(mob/living/scooby, atom/target)
 	SIGNAL_HANDLER
-	if(scooby.stat != CONSCIOUS || scooby.m_intent != MOVE_INTENT_RUN)
+	if(scooby.stat != CONSCIOUS || scooby.m_intent == MOVE_INTENT_WALK)
 		return
 
 	if(!istype(target, /obj/structure/closet))

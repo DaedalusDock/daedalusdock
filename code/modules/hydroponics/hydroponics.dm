@@ -47,6 +47,7 @@
 	var/unwrenchable = TRUE
 	///Have we been visited by a bee recently, so bees dont overpollinate one plant
 	var/recent_bee_visit = FALSE
+	var/using_irrigation = FALSE
 	///The last user to add a reagent to the tray, mostly for logging purposes.
 	var/datum/weakref/lastuser
 	///If the tray generates nutrients and water on its own
@@ -153,10 +154,8 @@
 	icon = 'icons/obj/hydroponics/equipment.dmi'
 	icon_state = "hydrotray3"
 
-/obj/machinery/hydroponics/constructable/ComponentInitialize()
+/obj/machinery/hydroponics/constructable/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/simple_rotation)
-	AddComponent(/datum/component/plumbing/simple_demand)
 	AddComponent(/datum/component/usb_port, list(/obj/item/circuit_component/hydroponics))
 
 /obj/machinery/hydroponics/constructable/RefreshParts()
@@ -199,12 +198,33 @@
 	if(!QDELETED(src) && gone == myseed)
 		set_seed(null, FALSE)
 
+/obj/machinery/hydroponics/proc/FindConnected()
+	var/list/connected = list()
+	var/list/processing_atoms = list(src)
+
+	while(processing_atoms.len)
+		var/atom/a = processing_atoms[1]
+		for(var/step_dir in GLOB.cardinals)
+			var/obj/machinery/hydroponics/h = locate() in get_step(a, step_dir)
+			// Soil plots aren't dense
+			if(h && h.using_irrigation && h.density && !(h in connected) && !(h in processing_atoms))
+				processing_atoms += h
+
+		processing_atoms -= a
+		connected += a
+
+	return connected
+
 /obj/machinery/hydroponics/constructable/attackby(obj/item/I, mob/living/user, params)
 	if (!user.combat_mode)
 		// handle opening the panel
 		if(default_deconstruction_screwdriver(user, icon_state, icon_state, I))
 			return
-		if(default_deconstruction_crowbar(I))
+	// handle deconstructing the machine, if permissible
+		if(I.tool_behaviour == TOOL_CROWBAR && using_irrigation)
+			to_chat(user, "<span class='warning'>Disconnect the hoses first!</span>")
+			return
+		else if(default_deconstruction_crowbar(I))
 			return
 
 	return ..()
@@ -256,9 +276,9 @@
 			// Nutrients deplete at a constant rate, since new nutrients can boost stats far easier.
 			apply_chemicals(lastuser?.resolve())
 			if(self_sustaining)
-				reagents.remove_any(min(0.5, nutridrain))
+				reagents.remove_all(min(0.5, nutridrain))
 			else
-				reagents.remove_any(nutridrain)
+				reagents.remove_all(nutridrain)
 
 			// Lack of nutrients hurts non-weeds
 			if(reagents.total_volume <= 0 && !myseed.get_gene(/datum/plant_gene/trait/plant_type/weed_hardy))
@@ -275,7 +295,7 @@
 
 //Water//////////////////////////////////////////////////////////////////
 			// Drink random amount of water
-			adjust_waterlevel(-rand(1,6) / rating)
+			adjust_waterlevel(-0.4 / rating)
 
 			// If the plant is dry, it loses health pretty fast, unless mushroom
 			if(waterlevel <= 10 && !myseed.get_gene(/datum/plant_gene/trait/plant_type/fungal_metabolism))
@@ -409,6 +429,19 @@
 
 	if(self_sustaining && self_sustaining_overlay_icon_state)
 		. += mutable_appearance(icon, self_sustaining_overlay_icon_state)
+
+/obj/machinery/hydroponics/update_icon_state()
+	. = ..()
+	update_hoses()
+
+/obj/machinery/hydroponics/proc/update_hoses()
+	var/n = 0
+	for(var/Dir in GLOB.cardinals)
+		var/obj/machinery/hydroponics/t = locate() in get_step(src,Dir)
+		if(t && t.using_irrigation && using_irrigation)
+			n += Dir
+
+	icon_state = "hoses-[n]"
 
 /obj/machinery/hydroponics/proc/update_plant_overlay()
 	var/mutable_appearance/plant_overlay = mutable_appearance(myseed.growing_icon, layer = OBJ_LAYER + 0.01)
@@ -705,23 +738,25 @@
 					myseed.reagents_from_genes()
 					continue
 
-/**
- * Pest Mutation Proc.
- * When a tray is mutated with high pest values, it will spawn spiders.
- * * User - Person who last added chemicals to the tray for logging purposes.
- */
-/obj/machinery/hydroponics/proc/mutatepest(mob/user)
-	if(pestlevel > 5)
-		message_admins("[ADMIN_LOOKUPFLW(user)] last altered a hydro tray's contents which spawned spiderlings")
-		log_game("[key_name(user)] last altered a hydro tray, which spiderlings spawned from.")
-		visible_message(span_warning("The pests seem to behave oddly..."))
-		spawn_atom_to_turf(/obj/structure/spider/spiderling/hunter, src, 3, FALSE)
-	else if(myseed)
-		visible_message(span_warning("The pests seem to behave oddly in [myseed.name] tray, but quickly settle down..."))
-
 /obj/machinery/hydroponics/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
+	return TOOL_ACT_TOOLTYPE_SUCCESS
+
+/obj/machinery/hydroponics/wirecutter_act(mob/living/user, obj/item/tool)
+	. = ..()
+	if(!unwrenchable)
+		return
+	if (!anchored)
+		to_chat(user, "<span class='warning'>Anchor the tray first!</span>")
+		return TOOL_ACT_TOOLTYPE_SUCCESS
+
+	using_irrigation = !using_irrigation
+	tool.play_tool_sound(src)
+	user.visible_message("<span class='notice'>[user] [using_irrigation ? "" : "dis"]connects [src]'s irrigation hoses.</span>", \
+	"<span class='notice'>You [using_irrigation ? "" : "dis"]connect [src]'s irrigation hoses.</span>")
+	for(var/obj/machinery/hydroponics/h in range(1,src))
+		h.update_icon_state()
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/machinery/hydroponics/attackby(obj/item/O, mob/user, params)
@@ -741,6 +776,7 @@
 		var/target = myseed ? myseed.plantname : src
 		var/visi_msg = ""
 		var/transfer_amount
+		var/irrigate = 0	//How am I supposed to irrigate pill contents?
 
 		if(IS_EDIBLE(reagent_source) || istype(reagent_source, /obj/item/reagent_containers/pill))
 			visi_msg="[user] composts [reagent_source], spreading it through [target]"
@@ -748,30 +784,48 @@
 			SEND_SIGNAL(reagent_source, COMSIG_ITEM_ON_COMPOSTED, user)
 		else
 			transfer_amount = reagent_source.amount_per_transfer_from_this
-			if(istype(reagent_source, /obj/item/reagent_containers/syringe/))
+			if(istype(reagent_source, /obj/item/reagent_containers/syringe))
 				var/obj/item/reagent_containers/syringe/syr = reagent_source
 				visi_msg="[user] injects [target] with [syr]"
+			else if(istype(reagent_source, /obj/item/reagent_containers/spray/))
+				visi_msg="[user] sprays [target] with [reagent_source]"
+				playsound(loc, 'sound/effects/spray3.ogg', 50, TRUE, -6)
+				irrigate = 1
+			else if(transfer_amount) // Droppers, cans, beakers, what have you.
+				visi_msg="[user] uses [reagent_source] on [target]"
+				irrigate = 1
 			// Beakers, bottles, buckets, etc.
 			if(reagent_source.is_drainable())
 				playsound(loc, 'sound/effects/slosh.ogg', 25, TRUE)
 
+		if(irrigate && transfer_amount > 30 && reagent_source.reagents.total_volume >= 30 && using_irrigation)
+			trays = FindConnected()
+			if (trays.len > 1)
+				visi_msg += ", setting off the irrigation system"
+
 		if(visi_msg)
 			visible_message(span_notice("[visi_msg]."))
+
+		var/split = round(transfer_amount/trays.len)
 
 		for(var/obj/machinery/hydroponics/H in trays)
 		//cause I don't want to feel like im juggling 15 tamagotchis and I can get to my real work of ripping flooring apart in hopes of validating my life choices of becoming a space-gardener
 			//This was originally in apply_chemicals, but due to apply_chemicals only holding nutrients, we handle it here now.
 			if(reagent_source.reagents.has_reagent(/datum/reagent/water, 1))
-				var/water_amt = reagent_source.reagents.get_reagent_amount(/datum/reagent/water) * transfer_amount / reagent_source.reagents.total_volume
+				var/water_amt = reagent_source.reagents.get_reagent_amount(/datum/reagent/water) * split / reagent_source.reagents.total_volume
 				H.adjust_waterlevel(round(water_amt))
 				reagent_source.reagents.remove_reagent(/datum/reagent/water, water_amt)
-			reagent_source.reagents.trans_to(H.reagents, transfer_amount, transfered_by = user)
+
+			reagent_source.reagents.trans_to(H.reagents, split, transfered_by = user)
 			lastuser = WEAKREF(user)
+
 			if(IS_EDIBLE(reagent_source) || istype(reagent_source, /obj/item/reagent_containers/pill))
 				qdel(reagent_source)
 				H.update_appearance()
 				return 1
+
 			H.update_appearance()
+
 		if(reagent_source) // If the source wasn't composted and destroyed
 			reagent_source.update_appearance()
 		return 1
@@ -842,7 +896,7 @@
 		var/removed_trait = tgui_input_list(user, "Trait to remove from the [myseed.plantname]", "Plant Trait Removal", sort_list(current_traits))
 		if(isnull(removed_trait))
 			return
-		if(!user.canUseTopic(src, BE_CLOSE))
+		if(!user.canUseTopic(src, USE_CLOSE))
 			return
 		if(!myseed)
 			return
@@ -895,6 +949,7 @@
 				desc = initial(desc)
 			set_weedlevel(0) //Has a side effect of cleaning up those nasty weeds
 			return
+
 	else if(istype(O, /obj/item/storage/part_replacer))
 		RefreshParts()
 		return
@@ -922,7 +977,7 @@
 				return
 			if(isnull(fresh_mut_list[locked_mutation]))
 				return
-			if(!user.canUseTopic(src, BE_CLOSE))
+			if(!user.canUseTopic(src, USE_CLOSE))
 				return
 			myseed.mutatelist = list(fresh_mut_list[locked_mutation])
 			myseed.set_endurance(myseed.endurance/2)
@@ -942,6 +997,10 @@
 /obj/machinery/hydroponics/can_be_unfasten_wrench(mob/user, silent)
 	if (!unwrenchable)  // case also covered by NODECONSTRUCT checks in default_unfasten_wrench
 		return CANT_UNFASTEN
+	if (using_irrigation)
+		if (!silent)
+			to_chat(user, "<span class='warning'>Disconnect the hoses first!</span>")
+		return FAILED_UNFASTEN
 
 	return ..()
 
@@ -963,9 +1022,9 @@
 		if(user)
 			user.examinate(src)
 
-/obj/machinery/hydroponics/CtrlClick(mob/user)
+/obj/machinery/hydroponics/CtrlClick(mob/user, list/params)
 	. = ..()
-	if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	if(!powered())
 		to_chat(user, span_warning("[name] has no power."))
@@ -987,7 +1046,7 @@
 		update_appearance()
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	var/warning = tgui_alert(user, "Are you sure you wish to empty the tray's nutrient beaker?","Empty Tray Nutrients?", list("Yes", "No"))
-	if(warning == "Yes" && user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(warning == "Yes" && user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		reagents.clear_reagents()
 		to_chat(user, span_warning("You empty [src]'s nutrient tank."))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -1061,7 +1120,7 @@
 		qdel(src)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-/obj/machinery/hydroponics/soil/CtrlClick(mob/user)
+/obj/machinery/hydroponics/soil/CtrlClick(mob/user, list/params)
 	return //Soil has no electricity.
 
 

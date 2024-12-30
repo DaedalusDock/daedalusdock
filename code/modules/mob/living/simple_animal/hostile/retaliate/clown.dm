@@ -19,7 +19,7 @@
 	combat_mode = TRUE
 	maxHealth = 75
 	health = 75
-	speed = 1
+	move_delay_modifier = 1
 	harm_intent_damage = 8
 	melee_damage_lower = 10
 	melee_damage_upper = 10
@@ -64,7 +64,7 @@
 	response_disarm_continuous = "gently scoops and pours aside"
 	response_disarm_simple = "gently scoop and pour aside"
 	emote_see = list("bubbles", "oozes")
-	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/particle_effect/foam)
+	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/particle_effect/fluid/foam)
 
 /mob/living/simple_animal/hostile/retaliate/clown/lube/Initialize(mapload)
 	. = ..()
@@ -84,7 +84,7 @@
 	emote_see = list("honks", "bites into the banana", "plucks a banana off its head", "photosynthesizes")
 	maxHealth = 120
 	health = 120
-	speed = -1
+	move_delay_modifier = -1
 	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/human, /obj/item/soap, /obj/item/seeds/banana)
 	///Our peel dropping ability
 	var/datum/action/cooldown/rustle/banana_rustle
@@ -120,7 +120,7 @@
 	. = ..()
 	var/list/reachable_turfs = list()
 	for(var/turf/adjacent_turf in RANGE_TURFS(1, owner.loc))
-		if(adjacent_turf == owner.loc || !owner.CanReach(adjacent_turf) || !isopenturf(adjacent_turf))
+		if(adjacent_turf == owner.loc || !adjacent_turf.IsReachableBy(owner) || !isopenturf(adjacent_turf))
 			continue
 		reachable_turfs += adjacent_turf
 
@@ -147,10 +147,10 @@
 /datum/action/cooldown/exquisite_bunch/Trigger(trigger_flags, atom/target)
 	if(activating)
 		return
-	var/bunch_turf = get_step(owner.loc, owner.dir)
+	var/turf/bunch_turf = get_step(owner.loc, owner.dir)
 	if(!bunch_turf)
 		return
-	if(!owner.CanReach(bunch_turf) || !isopenturf(bunch_turf))
+	if(!bunch_turf.IsReachableBy(owner) || !isopenturf(bunch_turf))
 		owner.balloon_alert(owner, "can't do that here!")
 		return
 	activating = TRUE
@@ -177,7 +177,7 @@
 	icon_state = "honkling"
 	icon_living = "honkling"
 	turns_per_move = 1
-	speed = -10
+	move_delay_modifier = -10
 	harm_intent_damage = 1
 	melee_damage_lower = 1
 	melee_damage_upper = 1
@@ -203,7 +203,7 @@
 	dextrous = TRUE
 	maxHealth = 140
 	health = 140
-	speed = -5
+	move_delay_modifier = -5
 	melee_damage_upper = 15
 	attack_verb_continuous = "limply slaps"
 	attack_verb_simple = "limply slap"
@@ -234,7 +234,7 @@
 	health = 150
 	pixel_x = -16
 	base_pixel_x = -16
-	speed = 10
+	move_delay_modifier = 10
 	harm_intent_damage = 5
 	melee_damage_lower = 5
 	attack_verb_continuous = "YA-HONKs"
@@ -261,7 +261,7 @@
 	health = 400
 	pixel_x = -16
 	base_pixel_x = -16
-	speed = 2
+	move_delay_modifier = 2
 	harm_intent_damage = 15
 	melee_damage_lower = 15
 	melee_damage_upper = 20
@@ -287,12 +287,12 @@
 	emote_see = list("asserts his dominance", "emasculates everyone implicitly")
 	maxHealth = 500
 	health = 500
-	speed = -2
-	armour_penetration = 20
+	move_delay_modifier = -2
+	armor_penetration = 20
 	attack_verb_continuous = "steals the girlfriend of"
 	attack_verb_simple = "steal the girlfriend of"
 	attack_sound = 'sound/items/airhorn2.ogg'
-	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/human, /obj/effect/particle_effect/foam, /obj/item/soap)
+	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/human, /obj/effect/particle_effect/fluid/foam, /obj/item/soap)
 
 /mob/living/simple_animal/hostile/retaliate/clown/clownhulk/honcmunculus
 	name = "Honkmunculus"
@@ -308,15 +308,15 @@
 	speak_chance = 1
 	maxHealth = 200
 	health = 200
-	speed = -5
+	move_delay_modifier = -5
 	harm_intent_damage = 5
 	melee_damage_lower = 5
 	melee_damage_upper = 10
 	attack_verb_continuous = "ferociously mauls"
 	attack_verb_simple = "ferociously maul"
 	environment_smash = ENVIRONMENT_SMASH_NONE
-	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/xeno/bodypartless, /obj/effect/particle_effect/foam, /obj/item/soap)
-	attack_reagent = /datum/reagent/peaceborg/confuse
+	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/xeno/bodypartless, /obj/effect/particle_effect/fluid/foam, /obj/item/soap)
+	attack_reagent = /datum/reagent/cryptobiolin
 
 /mob/living/simple_animal/hostile/retaliate/clown/clownhulk/destroyer
 	name = "The Destroyer"
@@ -328,17 +328,17 @@
 	speak = list("HONK!!!", "The Honkmother is merciful, so I must act out her wrath.", "parce mihi ad beatus honkmother placet mihi ut peccata committere,", "DIE!!!")
 	maxHealth = 400
 	health = 400
-	speed = 5
+	move_delay_modifier = 5
 	harm_intent_damage = 30
 	melee_damage_lower = 20
 	melee_damage_upper = 40
-	armour_penetration = 30
-	stat_attack = HARD_CRIT
+	armor_penetration = 30
+	stat_attack = UNCONSCIOUS
 	attack_verb_continuous = "acts out divine vengeance on"
 	attack_verb_simple = "act out divine vengeance on"
 	obj_damage = 50
 	environment_smash = ENVIRONMENT_SMASH_RWALLS
-	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/human, /obj/effect/particle_effect/foam, /obj/item/soap)
+	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/human, /obj/effect/particle_effect/fluid/foam, /obj/item/soap)
 
 /mob/living/simple_animal/hostile/retaliate/clown/mutant
 	name = "Unknown"
@@ -360,7 +360,7 @@
 	health = 130
 	pixel_x = -16
 	base_pixel_x = -16
-	speed = -5
+	move_delay_modifier = -5
 	harm_intent_damage = 10
 	melee_damage_lower = 10
 	melee_damage_upper = 20
@@ -369,7 +369,7 @@
 	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/xeno/bodypartless, /obj/item/soap, /obj/effect/gibspawner/generic, /obj/effect/gibspawner/generic/animal, /obj/effect/gibspawner/human/bodypartless, /obj/effect/gibspawner/human)
 
 /mob/living/simple_animal/hostile/retaliate/clown/mutant/slow
-	speed = 20
+	move_delay_modifier = 20
 	move_to_delay = 60
 
 /mob/living/simple_animal/hostile/retaliate/clown/mutant/glutton
@@ -381,10 +381,9 @@
 	emote_see = list("jiggles", "wobbles")
 	health = 200
 	mob_size = MOB_SIZE_LARGE
-	speed = 1
+	move_delay_modifier = 1
 	melee_damage_lower = 10
 	melee_damage_upper = 15
-	force_threshold = 10 //lots of fat to cushion blows.
 	damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 1, CLONE = 2, STAMINA = 0, OXY = 1)
 	attack_verb_continuous = "slams"
 	attack_verb_simple = "slam"
@@ -399,9 +398,8 @@
 	var/datum/action/cooldown/regurgitate/spit = new(src)
 	spit.Grant(src)
 
-	add_cell_sample()
+	AddElement(/datum/element/damage_threshold, 10)
 	AddComponent(/datum/component/tameable, food_types = list(/obj/item/food/cheesiehonkers, /obj/item/food/cornchips), tame_chance = 30, bonus_tame_chance = 0, after_tame = CALLBACK(src, PROC_REF(tamed)))
-
 
 /mob/living/simple_animal/hostile/retaliate/clown/mutant/glutton/attacked_by(obj/item/I, mob/living/user)
 	if(!check_edible(I))
@@ -459,9 +457,6 @@
 	can_buckle = TRUE
 	buckle_lying = 0
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/glutton)
-
-/mob/living/simple_animal/hostile/retaliate/clown/mutant/glutton/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_GLUTTON, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/hostile/retaliate/clown/mutant/glutton/Exited(atom/movable/gone, direction)
 	. = ..()

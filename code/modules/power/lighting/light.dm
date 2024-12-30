@@ -1,4 +1,5 @@
 // the standard tube light fixture
+DEFINE_INTERACTABLE(/obj/machinery/light)
 /obj/machinery/light
 	name = "light fixture"
 	icon = 'icons/obj/lighting.dmi'
@@ -14,6 +15,7 @@
 	var/overlay_icon = 'icons/obj/lighting_overlay.dmi'
 	///base description and icon_state
 	var/base_state = "tube"
+
 	///Is the light on?
 	var/on = FALSE
 	///compared to the var/on for static calculations
@@ -21,17 +23,17 @@
 	///Amount of power used
 	var/static_power_used = 0
 	///The outer radius of the light's... light.
-	var/bulb_outer_range = 7
+	var/bulb_outer_range = 9
 	///The inner radius of the bulb's light, where it is at maximum brightness
-	var/bulb_inner_range = 1.5
+	var/bulb_inner_range = 1.8
 	///Basically the alpha of the emitted light source
-	var/bulb_power = 1
+	var/bulb_power = 0.6
 	///The falloff of the emitted light. Adjust until it looks good.
-	var/bulb_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
-
+	var/bulb_falloff = 1.85
 	///Default colour of the light.
-	var/bulb_colour = "#f2f9f7"
+	var/bulb_colour = "#dfac72"
 	///LIGHT_OK, _EMPTY, _BURNED or _BROKEN
+
 	var/status = LIGHT_OK
 	///Should we flicker?
 	var/flickering = FALSE
@@ -43,6 +45,10 @@
 	var/switchcount = 0
 	///True if rigged to explode
 	var/rigged = FALSE
+	/// Is the bulb removable
+	var/removable_bulb = TRUE
+	/// Is it pixel shifted onto walls?
+	var/align_with_wall = TRUE
 	///Cell reference
 	var/obj/item/stock_parts/cell/cell
 	///If true, this fixture generates a very weak cell at roundstart
@@ -56,10 +62,10 @@
 	///Inner, brightest radius of the nightshift light
 	var/nightshift_inner_range = 1.5
 	///Alpha of the nightshift light
-	var/nightshift_light_power = 0.85
+	var/nightshift_light_power = 0.5
 	///Basecolor of the nightshift light
-	var/nightshift_light_color = "#FFDDCC"
-	var/nightshift_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
+	var/nightshift_light_color = "#dfac72"
+	var/nightshift_falloff = 1.85
 
 	///If true, the light is in emergency mode
 	var/emergency_mode = FALSE
@@ -70,7 +76,7 @@
 	///Determines the colour of the light while it's in emergency mode
 	var/bulb_emergency_colour = "#FF3232"
 	///The multiplier for determining the light's power in emergency mode
-	var/bulb_emergency_pow_mul = 0.4
+	var/bulb_emergency_pow_mul = 0.6
 	///The minimum value for the light's power in emergency mode
 	var/bulb_emergency_pow_min = 0.2
 
@@ -85,7 +91,7 @@
 // create a new lighting fixture
 /obj/machinery/light/Initialize(mapload)
 	. = ..()
-
+	SET_TRACKING(__TYPE__)
 	if(!mapload) //sync up nightshift lighting for player made lights
 		var/area/local_area = get_area(src)
 		var/obj/machinery/power/apc/temp_apc = local_area.apc
@@ -103,6 +109,7 @@
 	my_area = get_area(src)
 	if(my_area)
 		LAZYADD(my_area.lights, src)
+
 	#ifdef LIGHTS_RANDOMLY_BROKEN
 	switch(fitting)
 		if("tube")
@@ -115,6 +122,7 @@
 	update(FALSE, TRUE, FALSE)
 
 /obj/machinery/light/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	if(my_area)
 		on = FALSE
 		LAZYREMOVE(my_area.lights, src)
@@ -155,6 +163,25 @@
 		return
 	. += mutable_appearance(overlay_icon, base_state)
 
+/obj/machinery/light/setDir(ndir)
+	. = ..()
+	if(!align_with_wall)
+		return
+
+	switch(dir)
+		if(NORTH)
+			pixel_y = 21
+			pixel_x = 0
+		if(SOUTH)
+			pixel_y = 0
+			pixel_x = 0
+		if(EAST)
+			pixel_x = 10
+			pixel_y = 0
+		if(WEST)
+			pixel_x = -10
+			pixel_y = 0
+
 //PARIAH EDIT ADDITION
 #define LIGHT_ON_DELAY_UPPER 3 SECONDS
 #define LIGHT_ON_DELAY_LOWER 1 SECONDS
@@ -176,11 +203,13 @@
 			turning_on = TRUE
 			addtimer(CALLBACK(src, PROC_REF(turn_on), trigger, play_sound), rand(LIGHT_ON_DELAY_LOWER, LIGHT_ON_DELAY_UPPER))
 	else if(has_emergency_power(LIGHT_EMERGENCY_POWER_USE) && !turned_off())
-		use_power = IDLE_POWER_USE
+		if(use_power != NO_POWER_USE)
+			use_power = IDLE_POWER_USE
 		emergency_mode = TRUE
 		START_PROCESSING(SSmachines, src)
 	else
-		use_power = IDLE_POWER_USE
+		if(use_power != NO_POWER_USE)
+			use_power = IDLE_POWER_USE
 		set_light(0)
 	update_appearance()
 
@@ -241,20 +270,20 @@
 	. = ..()
 	switch(status)
 		if(LIGHT_OK)
-			. += "It is turned [on? "on" : "off"]."
+			if(!on)
+				. += span_notice("It is turned off.")
 		if(LIGHT_EMPTY)
-			. += "The [fitting] has been removed."
+			. += span_notice("The [fitting] has been removed.")
 		if(LIGHT_BURNED)
-			. += "The [fitting] is burnt out."
+			. += span_notice("The [fitting] is burnt out.")
 		if(LIGHT_BROKEN)
-			. += "The [fitting] has been smashed."
-	if(cell)
-		. += "Its backup power charge meter reads [round((cell.charge / cell.maxcharge) * 100, 0.1)]%."
-	//PARIAH EDIT ADDITION
-	if(constant_flickering)
-		. += span_danger("The lighting ballast appears to be damaged, this could be fixed with a multitool.")
-	//PARIAH EDIT END
+			. += span_alert("The [fitting] has been smashed.")
 
+	if(cell)
+		. += span_notice("Its backup power charge meter reads: [round((cell.charge / cell.maxcharge) * 100, 0.1)]%.")
+
+	if(constant_flickering)
+		. += span_alert("The lighting ballast appears to be damaged, this could be fixed with a multitool.")
 
 
 // attack with item - insert light (if right type), otherwise try to break the light
@@ -269,7 +298,7 @@
 	//PARIAH EDIT ADDITION
 	if(istype(tool, /obj/item/multitool) && constant_flickering)
 		to_chat(user, span_notice("You start repairing the ballast of [src] with [tool]."))
-		if(do_after(user, src, 2 SECONDS))
+		if(do_after(user, src, 2 SECONDS, DO_PUBLIC, display = tool))
 			stop_flickering()
 			to_chat(user, span_notice("You repair the ballast of [src]!"))
 		return TRUE
@@ -277,10 +306,14 @@
 
 	// attempt to insert light
 	if(istype(tool, /obj/item/light))
+		if(!removable_bulb)
+			to_chat(user, span_warning("[src]'s bulb does not appear to come out."))
 		if(status == LIGHT_OK)
-			to_chat(user, span_warning("There is a [fitting] already inserted!"))
+			to_chat(user, span_warning("There is a [fitting] already inserted."))
 			return TRUE
-		add_fingerprint(user)
+
+		tool.leave_evidence(user, src)
+
 		var/obj/item/light/light_object = tool
 		if(!istype(light_object, light_type))
 			to_chat(user, span_warning("This type of light requires a [fitting]!"))
@@ -288,7 +321,7 @@
 		if(!user.temporarilyRemoveItemFromInventory(light_object))
 			return TRUE
 
-		add_fingerprint(user)
+		tool.leave_evidence(user, src)
 		if(status != LIGHT_EMPTY)
 			drop_light_tube(user)
 			to_chat(user, span_notice("You replace [light_object]."))
@@ -335,10 +368,12 @@
 	if(flags_1 & NODECONSTRUCT_1)
 		qdel(src)
 		return
+
 	var/obj/structure/light_construct/new_light = null
 	var/current_stage = 2
 	if(!disassembled)
 		current_stage = 1
+
 	switch(fitting)
 		if("tube")
 			new_light = new /obj/structure/light_construct(loc)
@@ -347,16 +382,22 @@
 		if("bulb")
 			new_light = new /obj/structure/light_construct/small(loc)
 			new_light.icon_state = "bulb-construct-stage[current_stage]"
+
 	new_light.setDir(dir)
 	new_light.stage = current_stage
+
 	if(!disassembled)
 		new_light.take_damage(new_light.max_integrity * 0.5, sound_effect=FALSE)
 		if(status != LIGHT_BROKEN)
 			break_light_tube()
-		if(status != LIGHT_EMPTY)
+
+		if(status != LIGHT_EMPTY && removable_bulb)
 			drop_light_tube()
+
 		new /obj/item/stack/cable_coil(loc, 1, "red")
+
 	transfer_fingerprints_to(new_light)
+
 	if(!QDELETED(cell))
 		new_light.cell = cell
 		cell.forceMove(new_light)
@@ -437,6 +478,7 @@
 	set waitfor = FALSE
 	if(flickering)
 		return
+
 	flickering = TRUE
 	if(on && status == LIGHT_OK)
 		for(var/i in 1 to amount)
@@ -466,25 +508,29 @@
 	if(.)
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
-	add_fingerprint(user)
 
 	if(status == LIGHT_EMPTY)
 		to_chat(user, span_warning("There is no [fitting] in this light!"))
-		return
+		return TRUE
+
+	if(!removable_bulb)
+		to_chat(user, span_warning("[src]'s bulb does not appear to come out."))
+		return TRUE
 
 	// make it burn hands unless you're wearing heat insulated gloves or have the RESISTHEAT/RESISTHEATHANDS traits
 	if(!on)
 		to_chat(user, span_notice("You remove the light [fitting]."))
 		// create a light tube/bulb item and put it in the user's hand
 		drop_light_tube(user)
-		return
+		return TRUE
+
 	var/protection_amount = 0
 	var/mob/living/carbon/human/electrician = user
 
 	if(istype(electrician))
-		var/obj/item/organ/internal/stomach/maybe_stomach = electrician.getorganslot(ORGAN_SLOT_STOMACH)
-		if(istype(maybe_stomach, /obj/item/organ/internal/stomach/ethereal))
-			var/obj/item/organ/internal/stomach/ethereal/stomach = maybe_stomach
+		var/obj/item/organ/stomach/maybe_stomach = electrician.getorganslot(ORGAN_SLOT_STOMACH)
+		if(istype(maybe_stomach, /obj/item/organ/stomach/ethereal))
+			var/obj/item/organ/stomach/ethereal/stomach = maybe_stomach
 			if(stomach.drain_time > world.time)
 				return
 			to_chat(electrician, span_notice("You start channeling some power through the [fitting] into your body."))
@@ -511,19 +557,18 @@
 		to_chat(user, span_notice("You telekinetically remove the light [fitting]."))
 	else
 		var/obj/item/bodypart/affecting = electrician.get_bodypart("[(user.active_hand_index % 2 == 0) ? "r" : "l" ]_arm")
-		if(affecting?.receive_damage( 0, 5 )) // 5 burn damage
-			electrician.update_damage_overlays()
+		affecting?.receive_damage( 0, 5 )
 		if(HAS_TRAIT(user, TRAIT_LIGHTBULB_REMOVER))
 			to_chat(user, span_notice("You feel like you're burning, but you can push through."))
 			if(!do_after(user, src, 5 SECONDS))
 				return
-			if(affecting?.receive_damage( 0, 10 )) // 10 more burn damage
-				electrician.update_damage_overlays()
+			affecting?.receive_damage( 0, 10 ) // 10 more burn damage
 			to_chat(user, span_notice("You manage to remove the light [fitting], shattering it in process."))
 			break_light_tube()
 		else
 			to_chat(user, span_warning("You try to remove the light [fitting], but you burn your hand on it!"))
 			return
+
 	// create a light tube/bulb item and put it in the user's hand
 	drop_light_tube(user)
 	return TRUE

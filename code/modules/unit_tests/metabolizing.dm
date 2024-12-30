@@ -5,10 +5,13 @@
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human)
 
 	var/list/blacklisted_reagents = list(
-		/datum/reagent/eigenstate, //Creates clones after a delay which get into other tests
 	)
-	var/list/reagents_to_check = subtypesof(/datum/reagent) - blacklisted_reagents - GLOB.fake_reagent_blacklist
-	for (var/reagent_type in reagents_to_check)
+	for (var/datum/reagent/reagent_type as anything in subtypesof(/datum/reagent))
+		if(isabstract(reagent_type)) //Are we abstract?
+			log_test(TEST_OUTPUT_YELLOW("Skipping abstract reagent [reagent_type]"))
+			continue
+		if(reagent_type in blacklisted_reagents)
+			log_test(TEST_OUTPUT_YELLOW("Skipping blacklisted reagent [reagent_type]"))
 		test_reagent(human, reagent_type)
 
 /datum/unit_test/metabolization/proc/test_reagent(mob/living/carbon/C, reagent_type)
@@ -27,8 +30,8 @@
 	var/obj/item/reagent_containers/pill/pill = allocate(/obj/item/reagent_containers/pill)
 	var/datum/reagent/drug/methamphetamine/meth = /datum/reagent/drug/methamphetamine
 
-	// Give them enough meth to be consumed in 2 metabolizations
-	pill.reagents.add_reagent(meth, 1.9 * initial(meth.metabolization_rate) * SSMOBS_DT)
+	// Give them enough meth to be consumed in 2 metabolizations.
+	pill.reagents.add_reagent(meth, initial(meth.metabolization_rate) * 2)
 	pill.attack(user, user)
 
 	user.Life(SSMOBS_DT)
@@ -80,13 +83,14 @@
 	pill.reagents.add_reagent(meth.type, 5)
 	pill.attack(pill_user, pill_user)
 
-	// Set the metabolism efficiency to 1.0 so it transfers all reagents to the body in one go.
-	var/obj/item/organ/internal/stomach/pill_belly = pill_user.getorganslot(ORGAN_SLOT_STOMACH)
-	pill_belly.metabolism_efficiency = 1
+	// Set the metabolism it transfers all reagents to the body in one go.
+	var/datum/reagents/R = pill_user.get_ingested_reagents()
+	var/datum/reagent/M = R.get_reagent(/datum/reagent/drug/methamphetamine)
+	M.ingest_met = INFINITY
 
 	pill_user.Life()
 
-	TEST_ASSERT(pill_user.mind.addiction_points[addiction_type_to_check], "User did not gain addiction points after metabolizing meth")
+	TEST_ASSERT(pill_user.mind.addiction_points[addiction_type_to_check], "User did not gain addiction points after metabolizing ingested meth")
 
 	// Then injected metabolism
 	syringe.volume = 5
@@ -96,7 +100,7 @@
 
 	syringe_user.Life()
 
-	TEST_ASSERT(syringe_user.mind.addiction_points[addiction_type_to_check], "User did not gain addiction points after metabolizing meth")
+	TEST_ASSERT(syringe_user.mind.addiction_points[addiction_type_to_check], "User did not gain addiction points after metabolizing injected meth")
 
 	// One half syringe
 	syringe.reagents.remove_all()
@@ -109,9 +113,8 @@
 	pill_two.attack(pill_syringe_user, pill_syringe_user)
 	syringe.melee_attack_chain(pill_syringe_user, pill_syringe_user)
 
-	// Set the metabolism efficiency to 1.0 so it transfers all reagents to the body in one go.
-	pill_belly = pill_syringe_user.getorganslot(ORGAN_SLOT_STOMACH)
-	pill_belly.metabolism_efficiency = 1
+	// Set the metabolism so it transfers all reagents to the body in one go.
+	pill_syringe_user.get_ingested_reagents().get_reagent(/datum/reagent/drug/methamphetamine).ingest_met = INFINITY
 
 	pill_syringe_user.Life()
 

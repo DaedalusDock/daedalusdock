@@ -7,6 +7,8 @@
 	var/list/associated_paths
 	//If TRUE, associated_paths will be passed into typesof first.
 	var/use_typesof = FALSE
+	//If TRUE, this is a dynamically created codex record, and will be stored in a different table.
+	var/dynamic
 	///IC information about the entry
 	var/lore_text
 	///OOC information about the entry.
@@ -19,12 +21,20 @@
 	var/disambiguator
 	var/list/categories
 
-	///Allows you to mark a type as "abstract" and to not generate it.
-	var/abstract_type
+	//Codex entries support abstract_type.
+	//Since the basetype is used for dynamically generated entries, it is not abstract.
 
-/datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text, _disambiguator)
+/datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text, _disambiguator, _dynamic = FALSE)
 
 	SScodex.all_entries += src
+
+	if(SScodex.initialized && !_dynamic)
+		_dynamic = TRUE //Override post-init codex entries to be dynamic
+		stack_trace("Forced post-SSCodex init codex-entry record to be dynamic. This shouldn't need to happen. Check this call stack!")
+
+	if(!SScodex.initialized && _dynamic) //If we haven't initialized, but we're creating a dynamic record, something has gone wrong.
+		to_chat(world, span_warning("\tCodex: Attempted to create dynamic record before SSCodex init!"))
+		CRASH("Attempted to create dynamic record before SSCodex init | Entry Name: [_display_name]")
 
 	if(_display_name)
 		name = _display_name
@@ -42,6 +52,8 @@
 		controls_text = _controls_text
 	if(_disambiguator)
 		disambiguator = _disambiguator
+	if(_dynamic)
+		dynamic = _dynamic
 
 
 	if(use_typesof && length(associated_paths))
@@ -62,24 +74,37 @@
 				stack_trace("Trying to save codex entry for [name] by path [associated_path] but one already exists!")
 			SScodex.entries_by_path[associated_path] = src
 
+	/// We always point to our own entry. Duh.
+	SScodex.entries_by_path[type] = src
+
 	if(!name)
 		if(length(associated_strings))
 			name = associated_strings[1]
 		else
 			CRASH("Attempted to instantiate unnamed codex entry with no associated strings!")
 
-	LAZYDISTINCTADD(associated_strings, codex_sanitize(name))
+	LAZYDISTINCTADD(associated_strings, "[codex_sanitize(name)]" )
 	for(var/associated_string in associated_strings)
 		var/clean_string = codex_sanitize(associated_string)
 		if(!clean_string)
 			associated_strings -= associated_string
 			continue
+
 		if(clean_string != associated_string)
 			associated_strings -= associated_string
 			associated_strings |= clean_string
-		if(SScodex.entries_by_string[clean_string])
-			stack_trace("Trying to save codex entry for [name] by string [clean_string] but one already exists!")
-		SScodex.entries_by_string[clean_string] = src
+
+		var/existing_entry = SScodex.entries_by_string[clean_string]
+		if(islist(existing_entry))
+			existing_entry += src
+		else if(existing_entry)
+			SScodex.entries_by_string[clean_string] = list(existing_entry, src)
+		else
+			SScodex.entries_by_string[clean_string] = src
+
+	if(_dynamic)
+		dynamic = TRUE
+		SScodex.cache_dynamic_record(src)
 
 	..()
 
@@ -92,7 +117,7 @@
 
 	. = list()
 	if(presenting_to)
-		var/datum/codex_entry/linked_entry = SScodex.get_entry_by_string("nexus")
+		var/datum/codex_entry/linked_entry = SScodex.get_codex_entry(/datum/codex_entry/nexus)
 		. += "<a href='?src=\ref[SScodex];show_examined_info=\ref[linked_entry];show_to=\ref[presenting_to]'>Home</a>"
 		if(presenting_to.client)
 			. += "<a href='?src=\ref[presenting_to.client];codex_search=1'>Search Codex</a>"
@@ -105,8 +130,6 @@
 		for(var/datum/codex_category/category in categories)
 			. += category.get_category_link(src)
 
-// TODO: clean up codex bodies until trimming linebreaks is unnecessary.
-#define TRIM_LINEBREAKS(TEXT) replacetext(replacetext(TEXT, SScodex.trailingLinebreakRegexStart, null), SScodex.trailingLinebreakRegexEnd, null)
 /datum/codex_entry/proc/get_codex_body(mob/presenting_to, include_header = TRUE, include_footer = TRUE)
 	RETURN_TYPE(/list)
 
@@ -114,25 +137,24 @@
 	if(include_header && presenting_to)
 		var/header = get_codex_header(presenting_to)
 		if(length(header))
-			. += "<span class='dmCodexHeader'>"
+			. += "<div class='dmCodexHeader'>"
 			. += jointext(header, null)
-			. += "</span>"
+			. += "</div>"
 
-	. += "<span class='dmCodexBody'>"
+	. += "<div class='dmCodexBody'>"
 	if(lore_text)
-		. += "<p><span class='codexLore'>[TRIM_LINEBREAKS(lore_text)]</span></p>"
+		. += "<div class='codexLore'>[lore_text]</div>"
 	if(mechanics_text)
-		. += "<h3>OOC Information</h3>\n<p><span class='codexMechanics'>[TRIM_LINEBREAKS(mechanics_text)]</span></p>"
+		. += "<h3>OOC Information</h3><div class='codexMechanics'>[mechanics_text]</div>"
 	if(antag_text && (!presenting_to || (presenting_to.mind && !length(presenting_to.mind.antag_datums))))
-		. += "<h3>Antagonist Information</h3>\n<p><span class='codexAntag'>[TRIM_LINEBREAKS(antag_text)]</span></p>"
+		. += "<h3>Antagonist Information</h3><div class='codexAntag'>[antag_text]</div>"
 	if(controls_text)
-		. += "<h3>Controls</h3>\n<p><span class='codexControls'>[TRIM_LINEBREAKS(controls_text)]</span></p>"
-	. += "</span>"
+		. += "<h3>Controls</h3><div class='codexControls'>[controls_text]</div>"
+	. += "</div>"
 
 	if(include_footer)
 		var/footer = get_codex_footer(presenting_to)
 		if(length(footer))
-			. += "<span class='dmCodexFooter'>"
+			. += "<div class='dmCodexFooter'>"
 			. += footer
-			. += "</span>"
-#undef TRIM_LINEBREAKS
+			. += "</div>"

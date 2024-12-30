@@ -17,9 +17,6 @@
 	reflect_sect_in_icons()
 	GLOB.chaplain_altars += src
 	AddElement(/datum/element/climbable)
-
-/obj/structure/altar_of_gods/ComponentInitialize()
-	. = ..()
 	AddComponent(/datum/component/religious_tool, ALL, FALSE, CALLBACK(src, PROC_REF(reflect_sect_in_icons)))
 
 /obj/structure/altar_of_gods/Destroy()
@@ -33,20 +30,21 @@
 	new_overlays += "convertaltarcandle"
 	return new_overlays
 
-/obj/structure/altar_of_gods/attack_hand(mob/living/user, list/modifiers)
-	if(!Adjacent(user) || !user.pulling)
-		return ..()
-	if(!isliving(user.pulling))
-		return ..()
-	var/mob/living/pushed_mob = user.pulling
+/obj/structure/altar_of_gods/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	. = ..()
+	if(!isliving(victim))
+		return
+
+	var/mob/living/pushed_mob = victim
 	if(pushed_mob.buckled)
 		to_chat(user, span_warning("[pushed_mob] is buckled to [pushed_mob.buckled]!"))
-		return ..()
+		return TRUE
+
 	to_chat(user, span_notice("You try to coax [pushed_mob] onto [src]..."))
 	if(!do_after(user,(5 SECONDS),target = pushed_mob))
-		return ..()
+		return TRUE
 	pushed_mob.forceMove(loc)
-	return ..()
+	return TRUE
 
 /obj/structure/altar_of_gods/examine_more(mob/user)
 	if(!isobserver(user))
@@ -107,7 +105,7 @@
 	new /obj/effect/decal/cleanable/ash(drop_location())
 	qdel(src)
 
-/obj/item/ritual_totem/can_be_pulled(user, grab_state, force)
+/obj/item/ritual_totem/can_be_grabbed(mob/living/grabber, target_zone, force)
 	. = ..()
 	return FALSE //no
 

@@ -5,6 +5,8 @@
 	desc = "High stakes, high rewards."
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "slots"
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	var/icon_screen = "slots_screen"
 	var/brightness_on = 1
 	anchored = TRUE
@@ -130,7 +132,7 @@
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
 		if(user.real_name != H.dna.real_name)
-			user.real_name = H.dna.real_name
+			user.set_real_name(H.dna.real_name)
 			H.dna.transfer_identity(user, transfer_SE=1)
 			user.updateappearance(mutcolor_update=1)
 			user.domutcheck()

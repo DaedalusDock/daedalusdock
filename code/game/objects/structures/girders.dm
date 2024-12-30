@@ -74,7 +74,7 @@
 		if(next_beep <= world.time)
 			next_beep = world.time + 10
 			playsound(src, 'sound/machines/clockcult/integration_cog_install.ogg', 50, TRUE)
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 
 	if(istype(W, /obj/item/gun/energy/plasmacutter))
 		to_chat(user, span_notice("You start slicing apart the girder..."))
@@ -103,7 +103,7 @@
 				to_chat(user, span_warning("You need two rods to place reinforcement struts!"))
 				return
 			to_chat(user, span_notice("You start placing reinforcement struts..."))
-			if(do_after(user, src, 20*platingmodifier))
+			if(do_after(user, src, 20*platingmodifier, DO_PUBLIC, display = W))
 				if(S.get_amount() < 2)
 					return
 				if(state != GIRDER_NORMAL)
@@ -128,7 +128,7 @@
 				to_chat(user, span_warning("You can't figure out how to reinforce a wall with this!"))
 				return
 			to_chat(user, span_notice("You start reinforcing the girder..."))
-			if(do_after(user, src, 20*platingmodifier))
+			if(do_after(user, src, 20*platingmodifier, DO_PUBLIC, display = W))
 				if(state != GIRDER_REINF_STRUTS)
 					return
 				if(S.get_amount() < 2)
@@ -148,7 +148,7 @@
 				to_chat(user, span_notice("You start adding plating..."))
 			else
 				to_chat(user, span_notice("You start adding plating, creating a false wall..."))
-			if (do_after(user, src, 40*platingmodifier))
+			if (do_after(user, src, 40*platingmodifier, DO_PUBLIC, display = W))
 				if(S.get_amount() < 2)
 					return
 				S.use(2)
@@ -172,7 +172,7 @@
 				qdel(src)
 				return
 
-		add_hiddenprint(user)
+		log_touch(user)
 
 	else if(istype(W, /obj/item/pipe))
 		var/obj/item/pipe/P = W
@@ -254,10 +254,14 @@
 	if((mover.pass_flags & PASSGRILLE) || istype(mover, /obj/projectile))
 		return prob(girderpasschance)
 
-/obj/structure/girder/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller)
-	. = !density
-	if(istype(caller))
-		. = . || (caller.pass_flags & PASSGRILLE)
+/obj/structure/girder/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	if(!density)
+		return TRUE
+
+	if(pass_info.pass_flags & PASSGRILLE)
+		return TRUE
+
+	return FALSE
 
 /obj/structure/girder/deconstruct(disassembled = TRUE)
 	if(!(flags_1 & NODECONSTRUCT_1))
@@ -294,7 +298,7 @@
 	can_displace = FALSE
 
 /obj/structure/girder/cult/attackby(obj/item/W, mob/user, params)
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 	if(istype(W, /obj/item/melee/cultblade/dagger) && IS_CULTIST(user)) //Cultists can demolish cult girders instantly with their tomes
 		user.visible_message(span_warning("[user] strikes [src] with [W]!"), span_notice("You demolish [src]."))
 		new /obj/item/stack/sheet/runed_metal(drop_location(), 1)
@@ -317,7 +321,7 @@
 			to_chat(user, span_warning("You need at least one sheet of runed metal to construct a runed wall!"))
 			return
 		user.visible_message(span_notice("[user] begins laying runed metal on [src]..."), span_notice("You begin constructing a runed wall..."))
-		if(do_after(user, src, 50))
+		if(do_after(user, src, 50, DO_PUBLIC, display = W))
 			if(R.get_amount() < 1)
 				return
 			user.visible_message(span_notice("[user] plates [src] with runed metal."), span_notice("You construct a runed wall."))
@@ -370,7 +374,7 @@
 	can_displace = FALSE
 
 /obj/structure/girder/bronze/attackby(obj/item/W, mob/living/user, params)
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 	if(W.tool_behaviour == TOOL_WELDER)
 		if(!W.tool_start_check(user, amount = 0))
 			return
@@ -387,7 +391,7 @@
 			to_chat(user, span_warning("You need at least two bronze sheets to build a bronze wall!"))
 			return
 		user.visible_message(span_notice("[user] begins plating [src] with bronze..."), span_notice("You begin constructing a bronze wall..."))
-		if(do_after(user, src, 50))
+		if(do_after(user, src, 50, DO_PUBLIC, display = W))
 			if(B.get_amount() < 2)
 				return
 			user.visible_message(span_notice("[user] plates [src] with bronze!"), span_notice("You construct a bronze wall."))

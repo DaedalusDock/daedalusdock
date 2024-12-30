@@ -31,13 +31,11 @@
 	if(M == user)
 		user.visible_message(span_notice("[user] swallows a gulp of [src]."), \
 			span_notice("You swallow a gulp of [src]."))
-		if(HAS_TRAIT(M, TRAIT_VORACIOUS))
-			M.changeNext_move(CLICK_CD_MELEE * 0.5) //chug! chug! chug!
 
 	else
 		M.visible_message(span_danger("[user] attempts to feed [M] the contents of [src]."), \
 			span_userdanger("[user] attempts to feed you the contents of [src]."))
-		if(!do_after(user, M))
+		if(!do_after(user, M, 3 SECONDS))
 			return
 		if(!reagents || !reagents.total_volume)
 			return // The drink might be empty after the delay, such as by spam-feeding
@@ -46,6 +44,7 @@
 		log_combat(user, M, "fed", reagents.get_reagent_log_string())
 
 	SEND_SIGNAL(src, COMSIG_DRINK_DRANK, M, user)
+
 	var/fraction = min(gulp_size/reagents.total_volume, 1)
 	reagents.trans_to(M, gulp_size, transfered_by = user, methods = INGEST)
 	checkLiked(fraction, M)
@@ -55,10 +54,10 @@
 		var/mob/living/carbon/carbon_drinker = M
 		var/list/diseases = carbon_drinker.get_static_viruses()
 		if(LAZYLEN(diseases))
-			var/list/datum/disease/diseases_to_add = list()
+			var/list/datum/pathogen/diseases_to_add = list()
 			for(var/d in diseases)
-				var/datum/disease/malady = d
-				if(malady.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+				var/datum/pathogen/malady = d
+				if(malady.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
 					diseases_to_add += malady
 			if(LAZYLEN(diseases_to_add))
 				AddComponent(/datum/component/infective, diseases_to_add)
@@ -151,7 +150,7 @@
 	var/obj/item/broken_bottle/B = new (loc)
 	B.mimic_broken(src, target)
 	qdel(src)
-	target.Bumped(B)
+	target.BumpedBy(B)
 
 /obj/item/reagent_containers/food/drinks/bullet_act(obj/projectile/P)
 	. = ..()
@@ -235,7 +234,7 @@
 /obj/item/reagent_containers/food/drinks/ice
 	name = "ice cup"
 	desc = "Careful, cold ice, do not chew."
-	custom_price = PAYCHECK_PRISONER * 0.6
+	custom_price = PAYCHECK_ASSISTANT * 0.4
 	icon_state = "coffee"
 	list_reagents = list(/datum/reagent/consumable/ice = 30)
 	spillable = TRUE
@@ -246,31 +245,6 @@
 	desc = "Either the station's water supply is contaminated, or this machine actually vends lemon, chocolate, and cherry snow cones."
 	list_reagents = list(/datum/reagent/consumable/ice = 25, /datum/reagent/liquidgibs = 5)
 
-/obj/item/reagent_containers/food/drinks/mug // parent type is literally just so empty mug sprites are a thing
-	name = "mug"
-	desc = "A drink served in a classy mug."
-	icon_state = "tea"
-	inhand_icon_state = "coffee"
-	spillable = TRUE
-
-/obj/item/reagent_containers/food/drinks/mug/update_icon_state()
-	icon_state = reagents.total_volume ? "tea" : "tea_empty"
-	return ..()
-
-/obj/item/reagent_containers/food/drinks/mug/tea
-	name = "Duke Purple tea"
-	desc = "An insult to Duke Purple is an insult to the Space Queen! Any proper gentleman will fight you, if you sully this tea."
-	list_reagents = list(/datum/reagent/consumable/tea = 30)
-
-/obj/item/reagent_containers/food/drinks/mug/coco
-	name = "Dutch hot coco"
-	desc = "Made in Space South America."
-	list_reagents = list(/datum/reagent/consumable/hot_coco = 15, /datum/reagent/consumable/sugar = 5)
-	foodtype = SUGAR
-	resistance_flags = FREEZE_PROOF
-	custom_price = PAYCHECK_ASSISTANT * 1.2
-
-
 /obj/item/reagent_containers/food/drinks/dry_ramen
 	name = "cup ramen"
 	desc = "Just add 5ml of water, self heats! A taste that reminds you of your school years. Now new with salty flavour!"
@@ -278,7 +252,7 @@
 	list_reagents = list(/datum/reagent/consumable/dry_ramen = 15, /datum/reagent/consumable/salt = 3)
 	foodtype = GRAIN
 	isGlass = FALSE
-	custom_price = PAYCHECK_ASSISTANT * 0.9
+	custom_price = PAYCHECK_ASSISTANT * 0.4
 
 /obj/item/reagent_containers/food/drinks/waterbottle
 	name = "bottle of water"
@@ -298,7 +272,7 @@
 	var/cap_lost = FALSE
 	var/mutable_appearance/cap_overlay
 	var/flip_chance = 10
-	custom_price = PAYCHECK_PRISONER * 0.8
+	custom_price = PAYCHECK_ASSISTANT * 0.5
 
 /obj/item/reagent_containers/food/drinks/waterbottle/Initialize(mapload)
 	. = ..()
@@ -380,8 +354,6 @@
 	if(!QDELETED(src) && cap_on && reagents.total_volume)
 		if(prob(flip_chance)) // landed upright
 			src.visible_message(span_notice("[src] lands upright!"))
-			if(throwingdatum.thrower)
-				SEND_SIGNAL(throwingdatum.thrower, COMSIG_ADD_MOOD_EVENT, "bottle_flip", /datum/mood_event/bottle_flip)
 		else // landed on it's side
 			animate(src, transform = matrix(prob(50)? 90 : -90, MATRIX_ROTATE), time = 3, loop = 0)
 
@@ -540,7 +512,7 @@
 	var/obj/item/broken_bottle/B = new (loc)
 	B.mimic_broken(src, target)
 	qdel(src)
-	target.Bumped(B)
+	target.BumpedBy(B)
 
 /obj/item/reagent_containers/food/drinks/colocup
 	name = "colo cup"
@@ -584,7 +556,7 @@
 /obj/item/reagent_containers/food/drinks/flask
 	name = "flask"
 	desc = "Every good spaceman knows it's a good idea to bring along a couple of pints of whiskey wherever they go."
-	custom_price = PAYCHECK_HARD * 2
+	custom_price = PAYCHECK_ASSISTANT * 3.5
 	icon_state = "flask"
 	custom_materials = list(/datum/material/iron=250)
 	volume = 60
@@ -601,13 +573,6 @@
 	desc = "The detective's only true friend."
 	icon_state = "detflask"
 	list_reagents = list(/datum/reagent/consumable/ethanol/whiskey = 30)
-
-/obj/item/reagent_containers/food/drinks/britcup
-	name = "cup"
-	desc = "A cup with the british flag emblazoned on it."
-	icon_state = "britcup"
-	volume = 30
-	spillable = TRUE
 
 //////////////////////////soda_cans//
 //These are in their own group to be used as IED's in /obj/item/grenade/ghettobomb.dm
@@ -701,12 +666,6 @@
 /obj/item/reagent_containers/food/drinks/soda_cans/proc/burst_soda(atom/target, hide_message = FALSE)
 	if(!target)
 		return
-
-	if(ismob(target))
-		SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "soda_spill", /datum/mood_event/soda_spill, src)
-		for(var/mob/living/iter_mob in view(src, 7))
-			if(iter_mob != target)
-				SEND_SIGNAL(iter_mob, COMSIG_ADD_MOOD_EVENT, "observed_soda_spill", /datum/mood_event/observed_soda_spill, target, src)
 
 	playsound(src, 'sound/effects/can_pop.ogg', 80, TRUE)
 	if(!hide_message)
@@ -817,25 +776,12 @@
 	list_reagents = list(/datum/reagent/consumable/spacemountainwind = 30)
 	foodtype = SUGAR | JUNKFOOD
 
-/obj/item/reagent_containers/food/drinks/soda_cans/thirteenloko
-	name = "Thirteen Loko"
-	desc = "The CMO has advised crew members that consumption of Thirteen Loko may result in seizures, blindness, drunkenness, or even death. Please Drink Responsibly."
-	icon_state = "thirteen_loko"
-	list_reagents = list(/datum/reagent/consumable/ethanol/thirteenloko = 30)
-	foodtype = SUGAR | JUNKFOOD
-
 /obj/item/reagent_containers/food/drinks/soda_cans/dr_gibb
 	name = "Dr. Gibb"
 	desc = "A delicious mixture of 42 different flavors."
 	icon_state = "dr_gibb"
 	list_reagents = list(/datum/reagent/consumable/dr_gibb = 30)
 	foodtype = SUGAR | JUNKFOOD
-
-/obj/item/reagent_containers/food/drinks/soda_cans/pwr_game
-	name = "Pwr Game"
-	desc = "The only drink with the PWR that true gamers crave. When a gamer talks about gamerfuel, this is what they're literally referring to."
-	icon_state = "purple_can"
-	list_reagents = list(/datum/reagent/consumable/pwr_game = 30)
 
 /obj/item/reagent_containers/food/drinks/soda_cans/shamblers
 	name = "Shambler's juice"

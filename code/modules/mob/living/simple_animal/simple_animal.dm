@@ -52,12 +52,8 @@
 	///Harm-intent verb in present simple tense.
 	var/response_harm_simple = "hit"
 	var/harm_intent_damage = 3
-	///Minimum force required to deal any damage.
-	var/force_threshold = 0
 	///Maximum amount of stamina damage the mob can be inflicted with total
 	var/max_staminaloss = 200
-	///How much stamina the mob recovers per second
-	var/stamina_recovery = 5
 
 	///Minimal body temperature without receiving damage
 	var/minbodytemp = 250
@@ -86,7 +82,7 @@
 	///how much damage this simple animal does to objects, if any.
 	var/obj_damage = 0
 	///How much armour they ignore, as a flat reduction from the targets armour value.
-	var/armour_penetration = 0
+	var/armor_penetration = 0
 	///Damage type of a simple mob's melee attack, should it do damage.
 	var/melee_damage_type = BRUTE
 	/// 1 for full damage , 0 for none , -1 for 1:1 heal from that source.
@@ -106,8 +102,8 @@
 	///Set to 1 to allow breaking of crates,lockers,racks,tables; 2 for walls; 3 for Rwalls.
 	var/environment_smash = ENVIRONMENT_SMASH_NONE
 
-	///LETS SEE IF I CAN SET SPEEDS FOR SIMPLE MOBS WITHOUT DESTROYING EVERYTHING. Higher speed is slower, negative speed is faster.
-	var/speed = 1
+	/// See simple_animal_movement.dm
+	var/move_delay_modifier = 1
 
 	///Hot simple_animal baby making vars.
 	var/list/childtype = null
@@ -173,10 +169,10 @@
 	if(gender == PLURAL)
 		gender = pick(MALE,FEMALE)
 	if(!real_name)
-		real_name = name
+		set_real_name(name)
 	if(!loc)
 		stack_trace("Simple animal being instantiated in nullspace")
-	update_simplemob_varspeed()
+	update_simple_move_delay()
 	if(dextrous)
 		AddComponent(/datum/component/personal_crafting)
 		ADD_TRAIT(src, TRAIT_ADVANCEDTOOLUSER, ROUNDSTART_TRAIT)
@@ -204,11 +200,6 @@
 	if(isnull(unsuitable_heat_damage))
 		unsuitable_heat_damage = unsuitable_atmos_damage
 
-/mob/living/simple_animal/Life(delta_time = SSMOBS_DT, times_fired)
-	. = ..()
-	if(staminaloss > 0)
-		adjustStaminaLoss(-stamina_recovery * delta_time, FALSE, TRUE)
-
 /mob/living/simple_animal/Destroy()
 	GLOB.simple_animals[AIStatus] -= src
 	if (LAZYLEN(SSnpcpool.currentrun))
@@ -234,12 +225,12 @@
 	if(access_card)
 		. += "There appears to be [icon2html(access_card, user)] \a [access_card] pinned to [p_them()]."
 
-/mob/living/simple_animal/update_stat()
+/mob/living/simple_animal/update_stat(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)
 		if(health <= 0)
-			death()
+			death(cause_of_death = cause_of_death)
 		else
 			set_stat(CONSCIOUS)
 	med_hud_set_status()
@@ -250,8 +241,9 @@
  * Updates the speed and staminaloss of a given simplemob.
  * Reduces the stamina loss by stamina_recovery
  */
-/mob/living/simple_animal/update_stamina()
-	set_varspeed(initial(speed) + (staminaloss * 0.06))
+/mob/living/simple_animal/on_stamina_update()
+	. = ..()
+	set_simple_move_delay(initial(move_delay_modifier) + (stamina.loss * 0.06))
 
 /mob/living/simple_animal/proc/handle_automated_action()
 	set waitfor = FALSE
@@ -269,7 +261,7 @@
 	turns_since_move++
 	if(turns_since_move < turns_per_move)
 		return TRUE
-	if(stop_automated_movement_when_pulled && pulledby) //Some animals don't move when pulled
+	if(stop_automated_movement_when_pulled && LAZYLEN(grabbed_by)) //Some animals don't move when pulled
 		return TRUE
 	var/anydir = pick(GLOB.cardinals)
 	if(Process_Spacemove(anydir))
@@ -315,7 +307,7 @@
 /mob/living/simple_animal/proc/environment_air_is_safe()
 	. = TRUE
 
-	if(pulledby && pulledby.grab_state >= GRAB_KILL && atmos_requirements["min_oxy"])
+	if(HAS_TRAIT(src, TRAIT_KILL_GRAB) && atmos_requirements["min_oxy"])
 		. = FALSE //getting choked
 
 	if(isturf(loc) && isopenturf(loc))
@@ -431,15 +423,6 @@
 		return FALSE
 	return ..()
 
-/mob/living/simple_animal/proc/set_varspeed(var_value)
-	speed = var_value
-	update_simplemob_varspeed()
-
-/mob/living/simple_animal/proc/update_simplemob_varspeed()
-	if(speed == 0)
-		remove_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed)
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed, multiplicative_slowdown = speed)
-
 /mob/living/simple_animal/get_status_tab_items()
 	. = ..()
 	. += ""
@@ -450,7 +433,7 @@
 		for(var/i in loot)
 			new i(loc)
 
-/mob/living/simple_animal/death(gibbed)
+/mob/living/simple_animal/death(gibbed, cause_of_death = "Unknown")
 	if(nest)
 		nest.spawned_mobs -= src
 		nest = null
@@ -597,10 +580,13 @@
 		return
 	if(!dextrous)
 		return
+
 	if(!hand_index)
 		hand_index = (active_hand_index % held_items.len)+1
+
 	var/oindex = active_hand_index
 	active_hand_index = hand_index
+
 	if(hud_used)
 		var/atom/movable/screen/inventory/hand/H
 		H = hud_used.hand_slots["[hand_index]"]
@@ -609,6 +595,8 @@
 		H = hud_used.hand_slots["[oindex]"]
 		if(H)
 			H.update_appearance()
+
+	update_mouse_pointer()
 
 /mob/living/simple_animal/put_in_hands(obj/item/I, del_on_fail = FALSE, merge_stacks = TRUE, ignore_animation = TRUE)
 	. = ..()
@@ -654,7 +642,7 @@
 			stack_trace("Something attempted to set simple animals AI to an invalid state: [togglestatus]")
 
 /mob/living/simple_animal/proc/consider_wakeup()
-	if (pulledby || shouldwakeup)
+	if (LAZYLEN(grabbed_by) || shouldwakeup)
 		toggle_ai(AI_ON)
 
 /mob/living/simple_animal/on_changed_z_level(turf/old_turf, turf/new_turf)
@@ -662,10 +650,6 @@
 	if (old_turf && AIStatus == AI_Z_OFF)
 		SSidlenpcpool.idle_mobs_by_zlevel[old_turf.z] -= src
 		toggle_ai(initial(AIStatus))
-
-///This proc is used for adding the swabbale element to mobs so that they are able to be biopsied and making sure holograpic and butter-based creatures don't yield viable cells samples.
-/mob/living/simple_animal/proc/add_cell_sample()
-	return
 
 /mob/living/simple_animal/relaymove(mob/living/user, direction)
 	if(user.incapacitated())

@@ -18,7 +18,6 @@
 		/obj/item/food/deepfryholder,
 		/obj/item/food/clothing,
 		/obj/item/food/meat/slab/human/mutant,
-		/obj/item/food/grown/ash_flora,
 		/obj/item/food/grown/nettle,
 		/obj/item/food/grown/shell
 		)

@@ -21,7 +21,7 @@
 	var/pairing_code = ""
 
 /datum/duel/New(new_gun_A, new_gun_B)
-	pairing_code = SSnetworks.assign_random_name()
+	pairing_code = SSpackets.generate_net_id(src)
 
 	gun_A = new_gun_A
 	gun_B = new_gun_B
@@ -246,7 +246,7 @@
 		return FALSE
 	return TRUE
 
-/obj/item/gun/energy/dueling/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+/obj/item/gun/energy/dueling/do_fire_gun(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
 	if(!check_valid_duel(user, TRUE))
 		return
 	if(duel.state == DUEL_READY)

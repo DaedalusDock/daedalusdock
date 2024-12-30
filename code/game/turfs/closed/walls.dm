@@ -16,26 +16,26 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 /turf/closed/wall
 	name = "wall"
 	desc = "A huge chunk of iron used to separate rooms."
-	icon = 'icons/turf/walls/solid_wall.dmi'
-	icon_state = null
+	icon = 'icons/turf/walls/bimmer_walls.dmi'
+	icon_state = "wall-0"
 	base_icon_state = "wall"
 
-	explosion_block = 1
+	explosion_block = 3
 	blocks_air = AIR_BLOCKED
 	baseturfs = /turf/open/floor/plating
 
 	flags_ricochet = RICOCHET_HARD
 
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	smoothing_groups = SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS
+	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
 	lighting_uses_jen = TRUE
 
 	heat_capacity = 312500 //a little over 5 cm thick , 312500 for 1 m by 2.5 m by 0.25 m plasteel wall
 
 	rcd_memory = RCD_MEMORY_WALL
 
-	color = "#57575c" //To display in mapping softwares
+	color = /datum/material/iron::wall_color //To display in mapping softwares
 
 	///lower numbers are harder. Used to determine the probability of a hulk smashing through.
 	var/hardness = 40
@@ -47,9 +47,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 
 	//These are set by the material, do not touch!!!
 	var/material_color
-	var/shiny_wall
 
-	var/shiny_stripe
 	var/stripe_icon
 	//Ok you can touch vars again :)
 
@@ -66,11 +64,20 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	var/rusted
 	/// Material Set Name
 	var/matset_name
+	/// Should the material name be used?
+	var/use_matset_name = TRUE
 
 	var/list/dent_decals
 
 	///Appearance cache key. This is very touchy.
 	VAR_PRIVATE/cache_key
+
+// DMEd Specific Simplified wall icons
+#if defined(SIMPLE_MAPHELPERS)
+/turf/closed/wall
+	icon='icons/effects/simplified_wall_helpers.dmi'
+	icon_state="generic"
+#endif
 
 /turf/closed/wall/has_material_type(datum/material/mat_type, exact=FALSE, mat_amount=0)
 	if(plating_material == mat_type)
@@ -80,23 +87,20 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	return FALSE
 
 /turf/closed/wall/update_name()
-	. = ..()
+	if(!use_matset_name)
+		return
+
 	if(rusted)
 		name = "rusted "+ matset_name
 	else
 		name = matset_name
 
+	return ..()
+
 /turf/closed/wall/Initialize(mapload)
 	color = null // Remove the color that was set for mapping clarity
 	. = ..()
 	set_materials(plating_material, reinf_material, FALSE)
-	if(is_station_level(z))
-		GLOB.station_turfs += src
-
-/turf/closed/wall/Destroy()
-	if(is_station_level(z))
-		GLOB.station_turfs -= src
-	return ..()
 
 /turf/closed/wall/copyTurf(turf/T)
 	. = ..()
@@ -113,7 +117,9 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	var/neighbor_stripe = NONE
 	for (var/cardinal = NORTH; cardinal <= WEST; cardinal *= 2) //No list copy please good sir
 		var/turf/step_turf = get_step(src, cardinal)
-		if(!can_area_smooth(step_turf))
+		var/can_area_smooth
+		CAN_AREAS_SMOOTH(src, step_turf, can_area_smooth)
+		if(isnull(can_area_smooth))
 			continue
 		for(var/atom/movable/movable_thing as anything in step_turf)
 			if(global.neighbor_typecache[movable_thing.type])
@@ -121,7 +127,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 				break
 
 	var/old_cache_key = cache_key
-	cache_key = "[icon]:[smoothing_junction]:[plating_color]:[stripe_icon]:[stripe_color]:[neighbor_stripe]:[shiny_wall]:[shiny_stripe]:[rusted]:[hard_decon && d_state]"
+	cache_key = "[icon]:[smoothing_junction]:[plating_color]:[stripe_icon]:[stripe_color]:[neighbor_stripe]:[rusted]:[hard_decon && d_state]"
 	if(!(old_cache_key == cache_key))
 
 		var/potential_overlays = global.wall_overlays_cache[cache_key]
@@ -134,30 +140,17 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 			overlays.len = 0
 			var/list/new_overlays = list()
 
-			if(shiny_wall)
-				var/image/shine = image(icon, "shine-[smoothing_junction]")
-				shine.appearance_flags = RESET_COLOR
-				new_overlays += shine
-
-			var/image/smoothed_stripe = image(stripe_icon, icon_state)
-			smoothed_stripe.appearance_flags = RESET_COLOR
-			smoothed_stripe.color = stripe_color
-			new_overlays += smoothed_stripe
-
-			if(shiny_stripe)
-				var/image/stripe_shine = image(stripe_icon, "shine-[smoothing_junction]")
-				stripe_shine.appearance_flags = RESET_COLOR
-				new_overlays += stripe_shine
+			if(stripe_icon)
+				var/image/smoothed_stripe = image(stripe_icon, icon_state)
+				smoothed_stripe.appearance_flags = RESET_COLOR
+				smoothed_stripe.color = stripe_color
+				new_overlays += smoothed_stripe
 
 			if(neighbor_stripe)
 				var/image/neighb_stripe_overlay = image('icons/turf/walls/neighbor_stripe.dmi', "stripe-[neighbor_stripe]")
 				neighb_stripe_overlay.appearance_flags = RESET_COLOR
 				neighb_stripe_overlay.color = stripe_color
 				new_overlays += neighb_stripe_overlay
-				if(shiny_wall)
-					var/image/shine = image('icons/turf/walls/neighbor_stripe.dmi', "shine-[neighbor_stripe]")
-					shine.appearance_flags = RESET_COLOR
-					new_overlays += shine
 
 			if(rusted)
 				var/image/rust_overlay = image('icons/turf/rust_overlay.dmi', "blobby_rust")
@@ -243,16 +236,17 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 
 	if(reinf_mat_ref)
 		icon = plating_mat_ref.reinforced_wall_icon
-		shiny_wall = plating_mat_ref.wall_shine & WALL_SHINE_REINFORCED
-		shiny_stripe = plating_mat_ref.wall_shine & WALL_SHINE_REINFORCED
 		material_color = plating_mat_ref.wall_color
+		explosion_block = initial(explosion_block) + 2
 	else
 		icon = plating_mat_ref.wall_icon
-		shiny_wall = plating_mat_ref.wall_shine & WALL_SHINE_PLATING
-		shiny_stripe = plating_mat_ref.wall_shine & WALL_SHINE_PLATING
 		material_color = plating_mat_ref.wall_color
+		explosion_block = initial(explosion_block)
 
-	stripe_icon = plating_mat_ref.wall_stripe_icon
+	if(reinf_mat_ref)
+		stripe_icon = plating_mat_ref.reinforced_wall_stripe_icon
+	else
+		stripe_icon = plating_mat_ref.wall_stripe_icon
 
 	plating_material = plating_mat
 	reinf_material = reinf_mat
@@ -263,6 +257,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	else
 		name = "[plating_mat_ref.name] [plating_mat_ref.wall_name]"
 		desc = "It seems to be a section of hull plated with [plating_mat_ref.name]."
+
 	matset_name = name
 
 	if(update_appearance)
@@ -397,7 +392,6 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	user.changeNext_move(CLICK_CD_MELEE)
 	to_chat(user, span_notice("You push the wall but nothing happens!"))
 	playsound(src, 'sound/weapons/genhit.ogg', 25, TRUE)
-	add_fingerprint(user)
 
 /turf/closed/wall/attackby(obj/item/W, mob/user, params)
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -409,7 +403,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	if(!isturf(user.loc))
 		return //can't do this stuff whilst inside objects and such
 
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 
 	var/turf/T = user.loc //get user's location for delay checks
 

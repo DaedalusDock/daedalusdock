@@ -19,7 +19,6 @@ GLOBAL_LIST_INIT(exp_specialmap, list(
 		ROLE_SKELETON,
 		ROLE_ZOMBIE,
 		ROLE_SPACE_BAR_PATRON,
-		ROLE_LAVALAND_SYNDICATE,
 		ROLE_MAINTENANCE_DRONE,
 		ROLE_GHOST_ROLE,
 		), // Ghost roles
@@ -39,8 +38,8 @@ GLOBAL_PROTECT(exp_specialmap)
 
 /proc/get_full_job_name(job)
 	var/static/regex/cap_expand = new("cap(?!tain)")
-	var/static/regex/cmo_expand = new("cmo")
-	var/static/regex/hos_expand = new("hos")
+	var/static/regex/cmo_expand = new("md")
+	var/static/regex/hos_expand = new("marshal")
 	var/static/regex/hop_expand = new("hop")
 	var/static/regex/rd_expand = new("rd")
 	var/static/regex/ce_expand = new("ce")
@@ -56,7 +55,7 @@ GLOBAL_PROTECT(exp_specialmap)
 	job = lowertext(job)
 	job = cap_expand.Replace(job, "captain")
 	job = cmo_expand.Replace(job, "medical director")
-	job = hos_expand.Replace(job, "head of security")
+	job = hos_expand.Replace(job, "security marshall")
 	job = hop_expand.Replace(job, "head of personnel")
 	job = rd_expand.Replace(job, "research director")
 	job = ce_expand.Replace(job, "chief engineer")
@@ -65,7 +64,7 @@ GLOBAL_PROTECT(exp_specialmap)
 	job = engi_expand.Replace(job, "station engineer")
 	job = atmos_expand.Replace(job, "atmospheric technician")
 	job = doc_expand.Replace(job, "medical doctor")
-	job = mine_expand.Replace(job, "shaft miner")
+	job = mine_expand.Replace(job, "prospector")
 	job = chef_expand.Replace(job, "cook")
 	job = borg_expand.Replace(job, "cyborg")
 	return job

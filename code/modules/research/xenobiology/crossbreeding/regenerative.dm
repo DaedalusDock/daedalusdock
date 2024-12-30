@@ -247,7 +247,7 @@ Regenerative extracts:
 		var/mob/living/carbon/D = dummy
 		T.dna.transfer_identity(D)
 		D.updateappearance(mutcolor_update=1)
-		D.real_name = T.real_name
+		D.set_real_name(T.real_name)
 	dummy.adjustBruteLoss(target.getBruteLoss())
 	dummy.adjustFireLoss(target.getFireLoss())
 	dummy.adjustToxLoss(target.getToxLoss())
@@ -265,13 +265,6 @@ Regenerative extracts:
 	var/mob/living/U = user
 	U.revive(full_heal = TRUE, admin_revive = FALSE)
 	to_chat(U, span_notice("Some of the milky goo sprays onto you, as well!"))
-
-/obj/item/slimecross/regenerative/adamantine
-	colour = "adamantine"
-	effect_desc = "Fully heals the target and boosts their armor."
-
-/obj/item/slimecross/regenerative/adamantine/core_effect(mob/living/target, mob/user) //WIP - Find out why this doesn't work.
-	target.apply_status_effect(/datum/status_effect/slimeskin)
 
 /obj/item/slimecross/regenerative/rainbow
 	colour = "rainbow"

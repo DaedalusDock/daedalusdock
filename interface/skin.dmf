@@ -1,12 +1,10 @@
 macro "default"
-	elem ".winset :map.right-click=false"
-		name = "SHIFT+Shift"
-	elem "Shift"
+	elem "PROTECTED-Shift"
 		name = "SHIFT"
-		command = ".winset :map.right-click=false"
-	elem "ShiftUp"
+		command = ".winset :map.right-click=false\nKeyDown Shift"
+	elem "PROTECTED-ShiftUp"
 		name = "SHIFT+UP"
-		command = ".winset :map.right-click=true"
+		command = ".winset :map.right-click=true\nKeyUp Shift"
 
 
 menu "menu"
@@ -65,7 +63,7 @@ window "mainwindow"
 		is-default = true
 		saved-params = "pos;size;is-minimized;is-maximized"
 		statusbar = false
-		icon = 'icons\\ui_icons\\common\\tg_32.png'
+		icon = 'icons\\ui_icons\\common\\ss13_32.png'
 		macro = "default"
 		menu = "menu"
 	elem "split"
@@ -149,6 +147,26 @@ window "infowindow"
 		anchor2 = -1,-1
 		saved-params = "pos;size;is-minimized;is-maximized"
 		is-pane = true
+	elem "codex_button"
+		type = BUTTON
+		pos = 445,5
+		size = 50x20
+		anchor1 = 70,0
+		anchor2 = 77,0
+		background-color = none
+		saved-params = "is-checked"
+		text = "Codex"
+		command = "Codex"
+	elem "webmap"
+		type = BUTTON
+		pos = 545,5
+		size = 75x20
+		anchor1 = 85,0
+		anchor2 = 97,0
+		background-color = none
+		saved-params = "is-checked"
+		text = "Webmap"
+		command = "webmap"
 	elem "info"
 		type = CHILD
 		pos = 0,30
@@ -162,54 +180,60 @@ window "infowindow"
 	elem "changelog"
 		type = BUTTON
 		pos = 16,5
-		size = 104x20
+		size = 79x20
 		anchor1 = 3,0
-		anchor2 = 19,0
+		anchor2 = 15,0
+		background-color = none
 		saved-params = "is-checked"
 		text = "Changelog"
 		command = "changelog"
 	elem "rules"
 		type = BUTTON
-		pos = 120,5
-		size = 100x20
-		anchor1 = 19,0
-		anchor2 = 34,0
+		pos = 395,5
+		size = 50x20
+		anchor1 = 62,0
+		anchor2 = 70,0
+		background-color = none
 		saved-params = "is-checked"
 		text = "Rules"
 		command = "rules"
 	elem "wiki"
 		type = BUTTON
-		pos = 220,5
-		size = 100x20
-		anchor1 = 34,0
-		anchor2 = 50,0
+		pos = 495,5
+		size = 50x20
+		anchor1 = 77,0
+		anchor2 = 85,0
+		background-color = none
 		saved-params = "is-checked"
 		text = "Wiki"
 		command = "wiki"
 	elem "forum"
 		type = BUTTON
-		pos = 320,5
+		pos = 295,5
 		size = 100x20
-		anchor1 = 50,0
-		anchor2 = 66,0
+		anchor1 = 46,0
+		anchor2 = 62,0
+		background-color = none
 		saved-params = "is-checked"
 		text = "Forum"
 		command = "forum"
 	elem "github"
 		type = BUTTON
-		pos = 420,5
+		pos = 195,5
 		size = 100x20
-		anchor1 = 66,0
-		anchor2 = 81,0
+		anchor1 = 30,0
+		anchor2 = 46,0
+		background-color = none
 		saved-params = "is-checked"
 		text = "Github"
 		command = "github"
 	elem "report-issue"
 		type = BUTTON
-		pos = 520,5
+		pos = 95,5
 		size = 100x20
-		anchor1 = 81,0
-		anchor2 = 97,0
+		anchor1 = 15,0
+		anchor2 = 30,0
+		background-color = none
 		saved-params = "is-checked"
 		text = "Report Issue"
 		command = "report-issue"

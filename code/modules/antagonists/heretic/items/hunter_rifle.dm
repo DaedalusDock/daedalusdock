@@ -20,7 +20,6 @@
 	ammo_type = /obj/item/ammo_casing/a762/lionhunter
 	caliber = CALIBER_A762
 	max_ammo = 3
-	multiload = TRUE
 
 /obj/item/ammo_casing/a762/lionhunter
 	projectile_type = /obj/projectile/bullet/a762/lionhunter
@@ -78,7 +77,7 @@
 	animate(reticle, fire_time * 0.5, transform = turn(reticle.transform, 180))
 
 	currently_aiming = TRUE
-	. = do_after(user, fire_time, target, IGNORE_TARGET_LOC_CHANGE, extra_checks = CALLBACK(src, PROC_REF(check_fire_callback), target, user))
+	. = do_after(user, fire_time, target, DO_IGNORE_TARGET_LOC_CHANGE, extra_checks = CALLBACK(src, PROC_REF(check_fire_callback), target, user))
 	currently_aiming = FALSE
 
 	animate(reticle, 0.5 SECONDS, alpha = 0)

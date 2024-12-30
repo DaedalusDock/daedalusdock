@@ -1,0 +1,9 @@
+/obj/effect/landmark/start/research_director : @DELETE
+/obj/effect/landmark/start/geneticist : @DELETE
+/obj/effect/landmark/start/roboticist : @DELETE
+/obj/effect/landmark/start/scientist : @DELETE
+/obj/item/disk/holodisk/snowdin/weregettingpaidright : @DELETE
+/obj/effect/mob_spawn/corpse/human/geneticist : @DELETE
+/obj/item/disk/holodisk/snowdin/ripjacob : @DELETE
+/obj/effect/mob_spawn/corpse/human/scientist : @DELETE
+/obj/effect/landmark/start/mime : @DELETE

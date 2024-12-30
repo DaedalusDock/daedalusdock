@@ -98,7 +98,7 @@
 ///type and all subtypes should always immediately call Initialize in New()
 #define INITIALIZE_IMMEDIATE(X) ##X/New(loc, ...){\
 	..();\
-	if(!(flags_1 & INITIALIZED_1)) {\
+	if(!(initialized)) {\
 		var/previous_initialized_value = SSatoms.initialized;\
 		SSatoms.initialized = INITIALIZATION_INNEW_MAPLOAD;\
 		args[1] = TRUE;\
@@ -120,31 +120,37 @@
 #define INIT_ORDER_SERVER_MAINT 93
 #define INIT_ORDER_INPUT 85
 #define INIT_ORDER_MODMANAGER 84
-#define INIT_ORDER_SOUNDS 83
-#define INIT_ORDER_INSTRUMENTS 82
-#define INIT_ORDER_GREYSCALE 81
+#define INIT_ORDER_SOUND_CACHE 83
+#define INIT_ORDER_SOUNDS 82
+#define INIT_ORDER_INSTRUMENTS 81
+#define INIT_ORDER_GREYSCALE 80
 #define INIT_ORDER_DISCORD 78
 #define INIT_ORDER_ACHIEVEMENTS 77
 #define INIT_ORDER_STATION 74 //This is high priority because it manipulates a lot of the subsystems that will initialize after it.
 #define INIT_ORDER_QUIRKS 73
-#define INIT_ORDER_REAGENTS 72 //HAS to be before mapping and assets - both create objects, which creates reagents, which relies on lists made in this subsystem
+#define INIT_ORDER_MATERIALS 72 //HAS to be before reagents, reagents have materials
+#define INIT_ORDER_REAGENTS 71 //HAS to be before mapping and assets - both create objects, which creates reagents, which relies on lists made in this subsystem
 #define INIT_ORDER_EVENTS 70
-#define INIT_ORDER_IDACCESS 66
-#define INIT_ORDER_JOBS 65 // Must init before atoms, to set up properly the dynamic job lists.
-#define INIT_ORDER_AI_MOVEMENT 56 //We need the movement setup
-#define INIT_ORDER_AI_CONTROLLERS 55 //So the controller can get the ref
-#define INIT_ORDER_TICKER 55
+#define INIT_ORDER_IDACCESS 68
+#define INIT_ORDER_JOBS 67 // Must init before atoms, to set up properly the dynamic job lists.
+#define INIT_ORDER_AI_MOVEMENT 66 //We need the movement setup
+#define INIT_ORDER_MEDIA 64 //Needs to init before ticker to generate the login music pool
+#define INIT_ORDER_DATACORE 63 // Must come before SSticker so datacore reading things can access it
+#define INIT_ORDER_AI_CONTROLLERS 62 //So the controller can get the ref
+#define INIT_ORDER_TICKER 61
 #define INIT_ORDER_TCG 55
 #define INIT_ORDER_MAPPING 50
-#define INIT_ORDER_EARLY_ASSETS 48
+#define INIT_ORDER_EARLY_ASSETS 49
 #define INIT_ORDER_RESEARCH 47
 #define INIT_ORDER_TIMETRACK 46
 #define INIT_ORDER_NETWORKS 45
 #define INIT_ORDER_SPATIAL_GRID 43
 #define INIT_ORDER_ECONOMY 40
-#define INIT_ORDER_OUTPUTS 35
-#define INIT_ORDER_RESTAURANT 34
+#define INIT_ORDER_OUTPUTS 36
+#define INIT_ORDER_RESTAURANT 35
+#define INIT_ORDER_TECH 33 //Must init before atoms, so design datums are ready.
 #define INIT_ORDER_ATOMS 30
+#define INIT_ORDER_HOLOMAP 29 // Must init after atoms
 #define INIT_ORDER_LANGUAGE 25
 #define INIT_ORDER_MACHINES 20
 #define INIT_ORDER_AIRMACHINES 17
@@ -167,6 +173,7 @@
 #define INIT_ORDER_EXPLOSIONS -69
 #define INIT_ORDER_AIR -70
 #define INIT_ORDER_AO -71
+#define INIT_ORDER_ZMIMIC -72
 #define INIT_ORDER_STATPANELS -97
 #define INIT_ORDER_BAN_CACHE -98
 #define INIT_ORDER_INIT_PROFILER -99 //Near the end, logs the costs of initialize
@@ -175,53 +182,65 @@
 // Subsystem fire priority, from lowest to highest priority
 // If the subsystem isn't listed here it's either DEFAULT or PROCESS (if it's a processing subsystem child)
 
-#define FIRE_PRIORITY_PING 10
-#define FIRE_PRIORITY_IDLE_NPC 10
-#define FIRE_PRIORITY_SERVER_MAINT 10
-#define FIRE_PRIORITY_RESEARCH 10
-#define FIRE_PRIORITY_AMBIENCE 10
-#define FIRE_PRIORITY_GARBAGE 15
-#define FIRE_PRIORITY_DATABASE 16
-#define FIRE_PRIORITY_AIRATOMS 18
-#define FIRE_PRIORITY_WET_FLOORS 20
-#define FIRE_PRIORITY_NPC 20
-#define FIRE_PRIORITY_NPC_MOVEMENT 21
-#define FIRE_PRIORITY_NPC_ACTIONS 22
-#define FIRE_PRIORITY_PROCESS 25
-#define FIRE_PRIORITY_THROWING 25
-#define FIRE_PRIORITY_REAGENTS 26
-#define FIRE_PRIORITY_SPACEDRIFT 30
-#define FIRE_PRIOTITY_SMOOTHING 35
-#define FIRE_PRIORITY_NETWORKS 40
-#define FIRE_PRIORITY_OBJ 40
-#define FIRE_PRIORITY_ACID 40
-#define FIRE_PRIOTITY_BURNING 40
-#define FIRE_PRIORITY_AIRMACHINES 45
-#define FIRE_PRIORITY_DEFAULT 50
-#define FIRE_PRIORITY_PARALLAX 65
-#define FIRE_PRIORITY_AIR 70
-#define FIRE_PRIORITY_INSTRUMENTS 80
-#define FIRE_PRIORITY_AIRFLOW 85
-#define FIRE_PRIORITY_PACKETS 95
-#define FIRE_PRIORITY_MOBS 100
-#define FIRE_PRIORITY_ASSETS 105
-#define FIRE_PRIORITY_TGUI 110
-#define FIRE_PRIORITY_TICKER 200
-#define FIRE_PRIORITY_STATPANEL 390
-#define FIRE_PRIORITY_CHAT 400
-#define FIRE_PRIORITY_RUNECHAT 410
-#define FIRE_PRIORITY_MOUSE_ENTERED 450
-#define FIRE_PRIORITY_OVERLAYS 500
-#define FIRE_PRIORITY_EXPLOSIONS 666
-#define FIRE_PRIORITY_TIMER 700
-#define FIRE_PRIORITY_SOUND_LOOPS 800
-#define FIRE_PRIORITY_SPEECH_CONTROLLER 900
+/*	Ticker bucket	*/
 #define FIRE_PRIORITY_INPUT 1000 // This must always always be the max highest priority. Player input must never be lost.
+#define FIRE_PRIORITY_DELAYED_VERBS 950
+#define FIRE_PRIORITY_TIMER 900
+#define FIRE_PRIORITY_SOUND_LOOPS 600
+#define FIRE_PRIORITY_MOUSE_ENTERED 500
+#define FIRE_PRIORITY_CHAT 400
+#define FIRE_PRIORITY_SPEECH_CONTROLLER 300
+#define FIRE_PRIORITY_RUNECHAT 250
+#define FIRE_PRIORITY_DO_AFTERS 100
+#define FIRE_PRIORITY_THROWING 20
+/* DEFAULT WOULD BE HERE */
+#define FIRE_PRIORITY_SPACEDRIFT 15
+#define FIRE_PRIORITY_NPC_MOVEMENT 10
+#define FIRE_PRIORITY_DATABASE 5
+
+/*	Normal bucket	*/
+#define FIRE_PRIORITY_STATPANEL 95
+#define FIRE_PRIORITY_TGUI 90
+#define FIRE_PRIORITY_TICKER 85
+#define FIRE_PRIORITY_MOBS 80
+#define FIRE_PRIORITY_STAMINA 75
+#define FIRE_PRIORITY_FLUIDS 72
+#define FIRE_PRIORITY_PACKETS 70
+#define FIRE_PRIORITY_AIRFLOW 70
+#define FIRE_PRIORITY_INSTRUMENTS 65
+#define FIRE_PRIORITY_AIR 60
+//
+#define FIRE_PRIORITY_DEFAULT 50
+//
+#define FIRE_PRIORITY_AIRMACHINES 45
+#define FIRE_PRIORITY_OBJ 40
+#define FIRE_PRIORITY_NETWORKS 40
+#define FIRE_PRIORITY_PATHFINDING 37
+#define FIRE_PRIOTITY_SMOOTHING 35
+#define FIRE_PRIORITY_REAGENTS 30
+#define FIRE_PRIORITY_ACID 27
+#define FIRE_PRIORITY_WET_FLOORS 25
+#define FIRE_PRIORITY_ASSETS 20
+#define FIRE_PRIORITY_RESEARCH 15
+#define FIRE_PRIORITY_SERVER_MAINT 10
+#define FIRE_PRIORITY_PING 5
+
+/*	Background bucket	*/
+#define FIRE_PRIORITY_PARALLAX 65
+//DEFAULT WOULD BE HERE
+#define FIRE_PRIOTITY_BURNING 40
+#define FIRE_PRIORITY_PROCESS 30
+#define FIRE_PRIORITY_NPC_ACTIONS 25
+#define FIRE_PRIORITY_NPC 20
+#define FIRE_PRIORITY_IDLE_NPC 10
+#define FIRE_PRIORITY_GARBAGE 10
+#define FIRE_PRIORITY_AMBIENCE 5
+#define FIRE_PRIORITY_CODEX 5
+
 
 
 // SS runlevels
 
-#define RUNLEVEL_INIT 0
 #define RUNLEVEL_LOBBY 1
 #define RUNLEVEL_SETUP 2
 #define RUNLEVEL_GAME 4
@@ -266,6 +285,7 @@
 	* * callback the callback to call on timer finish
 	* * wait deciseconds to run the timer for
 	* * flags flags for this timer, see: code\__DEFINES\subsystems.dm
+	* * timer_subsystem the subsystem to insert this timer into
 */
 #define addtimer(args...) _addtimer(args, file = __FILE__, line = __LINE__)
 

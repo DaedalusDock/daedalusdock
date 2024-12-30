@@ -28,8 +28,8 @@
 			SpeakPeace(list("Welcome to the error handling room.","Something's goofed up bad to send you here.","You should probably tell an admin what you were doing, or make a bug report."))
 			for(var/obj/structure/signpost/salvation/S in orange(7))
 				S.invisibility = 0
-				var/datum/effect_system/smoke_spread/smoke = new
-				smoke.set_up(1, S.loc)
+				var/datum/effect_system/fluid_spread/smoke/smoke = new
+				smoke.set_up(1, location = S.loc)
 				smoke.start()
 				break
 		if(1)
@@ -135,6 +135,8 @@
 
 /obj/item/rupee/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(!ismob(AM))
 		return
 	INVOKE_ASYNC(src, PROC_REF(put_in_crossers_hands), AM)

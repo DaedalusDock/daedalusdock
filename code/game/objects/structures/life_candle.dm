@@ -24,7 +24,7 @@
 	var/respawn_time = 50
 	var/respawn_sound = 'sound/magic/staff_animation.ogg'
 
-/obj/structure/life_candle/ComponentInitialize()
+/obj/structure/life_candle/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/movetype_handler)
 
@@ -66,8 +66,7 @@
 
 /obj/structure/life_candle/process()
 	if(!linked_minds.len)
-		STOP_PROCESSING(SSobj, src)
-		return
+		return PROCESS_KILL
 
 	for(var/m in linked_minds)
 		var/datum/mind/mind = m

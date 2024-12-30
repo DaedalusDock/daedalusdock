@@ -6,7 +6,7 @@
 	greyscale_colors = "#878687"
 	categories = list(MAT_CATEGORY_ORE = TRUE, MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/iron
-	value_per_unit = 0.0025
+	value_per_unit = IRON_VALUE_PER_UNIT
 	wall_color = "#57575c"
 
 /datum/material/iron/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
@@ -24,9 +24,9 @@
 	integrity_modifier = 0.1
 	sheet_type = /obj/item/stack/sheet/glass
 	shard_type = /obj/item/shard
-	value_per_unit = 0.0025
+	value_per_unit = IRON_VALUE_PER_UNIT * 0.5
 	beauty_modifier = 0.05
-	armor_modifiers = list(MELEE = 0.2, BULLET = 0.2, LASER = 0, ENERGY = 1, BOMB = 0, BIO = 0.2, FIRE = 1, ACID = 0.2)
+	armor_modifiers = list(BLUNT = 0.2, PUNCTURE = 0.2, SLASH = 0, LASER = 0, ENERGY = 1, BOMB = 0, BIO = 0.2, FIRE = 1, ACID = 0.2)
 	wall_type = null
 
 /datum/material/glass/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
@@ -46,7 +46,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	greyscale_colors = "#e3f1f8"
 	categories = list(MAT_CATEGORY_ORE = TRUE, MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/mineral/silver
-	value_per_unit = 0.025
+	value_per_unit = IRON_VALUE_PER_UNIT * 10
 	beauty_modifier = 0.075
 	wall_type = /turf/closed/wall/mineral/silver
 	false_wall_type = /obj/structure/falsewall/silver
@@ -64,9 +64,9 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	strength_modifier = 1.2
 	categories = list(MAT_CATEGORY_ORE = TRUE, MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/mineral/gold
-	value_per_unit = 0.0625
+	value_per_unit = IRON_VALUE_PER_UNIT * 25
 	beauty_modifier = 0.15
-	armor_modifiers = list(MELEE = 1.1, BULLET = 1.1, LASER = 1.15, ENERGY = 1.15, BOMB = 1, BIO = 1, FIRE = 0.7, ACID = 1.1)
+	armor_modifiers = list(BLUNT = 1.1, PUNCTURE = 1.1, SLASH = 0, LASER = 1.15, ENERGY = 1.15, BOMB = 1, BIO = 1, FIRE = 0.7, ACID = 1.1)
 	wall_type = /turf/closed/wall/mineral/gold
 	false_wall_type = /obj/structure/falsewall/gold
 
@@ -83,9 +83,9 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	categories = list(MAT_CATEGORY_ORE = TRUE, MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/mineral/diamond
 	alpha = 132
-	value_per_unit = 0.25
+	value_per_unit = IRON_VALUE_PER_UNIT * 100
 	beauty_modifier = 0.3
-	armor_modifiers = list(MELEE = 1.3, BULLET = 1.3, LASER = 0.6, ENERGY = 1, BOMB = 1.2, BIO = 1, FIRE = 1, ACID = 1)
+	armor_modifiers = list(BLUNT = 1.3, PUNCTURE = 1.3, SLASH = 0, LASER = 0.6, ENERGY = 1, BOMB = 1.2, BIO = 1, FIRE = 1, ACID = 1)
 	wall_type = /turf/closed/wall/mineral/diamond
 	false_wall_type = /obj/structure/falsewall/diamond
 
@@ -101,14 +101,12 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	greyscale_colors = rgb(48, 237, 26)
 	categories = list(MAT_CATEGORY_ORE = TRUE, MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/mineral/uranium
-	value_per_unit = 0.05
+	value_per_unit = IRON_VALUE_PER_UNIT * 20
 	beauty_modifier = 0.3 //It shines so beautiful
-	armor_modifiers = list(MELEE = 1.5, BULLET = 1.4, LASER = 0.5, ENERGY = 0.5, BOMB = 0, BIO = 0, FIRE = 1, ACID = 1)
+	armor_modifiers = list(BLUNT = 1.5, PUNCTURE = 1.4, SLASH = 0, LASER = 0.5, ENERGY = 0.5, BOMB = 0, BIO = 0, FIRE = 1, ACID = 1)
 	wall_icon = 'icons/turf/walls/stone_wall.dmi'
 	wall_type = /turf/closed/wall/mineral/uranium
 	false_wall_type = /obj/structure/falsewall/uranium
-
-	wall_shine = NONE
 
 /datum/material/uranium/on_applied(atom/source, amount, material_flags)
 	. = ..()
@@ -142,14 +140,12 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	categories = list(MAT_CATEGORY_ORE = TRUE, MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/mineral/plasma
 	shard_type = /obj/item/shard/plasma
-	value_per_unit = 0.1
+	value_per_unit = IRON_VALUE_PER_UNIT * 40
 	beauty_modifier = 0.15
-	armor_modifiers = list(MELEE = 1.4, BULLET = 0.7, LASER = 0, ENERGY = 1.2, BOMB = 0, BIO = 1.2, FIRE = 0, ACID = 0.5)
+	armor_modifiers = list(BLUNT = 1.4, PUNCTURE = 0.7, SLASH = 0, LASER = 0, ENERGY = 1.2, BOMB = 0, BIO = 1.2, FIRE = 0, ACID = 0.5)
 	wall_icon = 'icons/turf/walls/stone_wall.dmi'
 	wall_type = /turf/closed/wall/mineral/plasma
 	false_wall_type = /obj/structure/falsewall/plasma
-
-	wall_shine = NONE
 
 /datum/material/plasma/on_applied(atom/source, amount, material_flags)
 	. = ..()
@@ -183,11 +179,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.15
 	wall_type = null
 
-/datum/material/bluespace/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.reagents.add_reagent(/datum/reagent/bluespace, rand(5, 8))
-	source_item?.reagents?.add_reagent(/datum/reagent/bluespace, source_item.reagents.total_volume*(2/5))
-	return TRUE
-
 ///Honks and slips
 /datum/material/bananium
 	name = "bananium"
@@ -196,14 +187,12 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	greyscale_colors = "#ffff00"
 	categories = list(MAT_CATEGORY_ORE = TRUE, MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/mineral/bananium
-	value_per_unit = 0.5
+	value_per_unit = IRON_VALUE_PER_UNIT * 2
 	beauty_modifier = 0.5
-	armor_modifiers = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 100, BIO = 0, FIRE = 10, ACID = 0) //Clowns cant be blown away.
+	armor_modifiers = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 100, BIO = 0, FIRE = 10, ACID = 0) //Clowns cant be blown away.
 	wall_icon = 'icons/turf/walls/stone_wall.dmi'
 	wall_type = /turf/closed/wall/mineral/bananium
 	false_wall_type = /obj/structure/falsewall/bananium
-
-	wall_shine = NONE
 
 /datum/material/bananium/on_applied(atom/source, amount, material_flags)
 	. = ..()
@@ -229,13 +218,11 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	strength_modifier = 1.3
 	categories = list(MAT_CATEGORY_ORE = TRUE, MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/mineral/titanium
-	value_per_unit = 0.0625
-	armor_modifiers = list(MELEE = 1.35, BULLET = 1.3, LASER = 1.3, ENERGY = 1.25, BOMB = 1.25, BIO = 1, FIRE = 0.7, ACID = 1)
+	value_per_unit = IRON_VALUE_PER_UNIT * 25
+	armor_modifiers = list(BLUNT = 1.35, PUNCTURE = 1.3, SLASH = 0, LASER = 1.3, ENERGY = 1.25, BOMB = 1.25, BIO = 1, FIRE = 0.7, ACID = 1)
 	wall_icon = 'icons/turf/walls/metal_wall.dmi'
 	wall_type = /turf/closed/wall/mineral/titanium
 	false_wall_type = /obj/structure/falsewall/titanium
-
-	wall_shine = NONE
 
 /datum/material/titanium/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.apply_damage(15, BRUTE, BODY_ZONE_HEAD)
@@ -251,7 +238,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	sheet_type = /obj/item/stack/sheet/mineral/runite
 	value_per_unit = 0.3
 	beauty_modifier = 0.5
-	armor_modifiers = list(MELEE = 1.35, BULLET = 2, LASER = 0.5, ENERGY = 1.25, BOMB = 1.25, BIO = 1, FIRE = 1.4, ACID = 1) //rune is weak against magic lasers but strong against bullets. This is the combat triangle.
+	armor_modifiers = list(BLUNT = 1.35, PUNCTURE = 2, SLASH = 0, LASER = 0.5, ENERGY = 1.25, BOMB = 1.25, BIO = 1, FIRE = 1.4, ACID = 1) //rune is weak against magic lasers but strong against bullets. This is the combat triangle.
 
 /datum/material/runite/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD)
@@ -266,14 +253,9 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	strength_modifier = 0.85
 	sheet_type = /obj/item/stack/sheet/plastic
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
-	value_per_unit = 0.0125
+	value_per_unit = IRON_VALUE_PER_UNIT * 5
 	beauty_modifier = -0.01
-	armor_modifiers = list(MELEE = 1.5, BULLET = 1.1, LASER = 0.3, ENERGY = 0.5, BOMB = 1, BIO = 1, FIRE = 1.1, ACID = 1)
-
-/datum/material/plastic/on_accidental_mat_consumption(mob/living/carbon/eater, obj/item/food)
-	eater.reagents.add_reagent(/datum/reagent/plastic_polymers, rand(6, 8))
-	food?.reagents?.add_reagent(/datum/reagent/plastic_polymers, food.reagents.total_volume*(2/5))
-	return TRUE
+	armor_modifiers = list(BLUNT = 1.5, PUNCTURE = 1.1, SLASH = 0, LASER = 0.3, ENERGY = 0.5, BOMB = 1, BIO = 1, FIRE = 1.1, ACID = 1)
 
 ///Force decrease and mushy sound effect. (Not yet implemented)
 /datum/material/biomass
@@ -282,7 +264,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	color = "#735b4d"
 	greyscale_colors = "#735b4d"
 	strength_modifier = 0.8
-	value_per_unit = 0.025
+	value_per_unit = IRON_VALUE_PER_UNIT * 10
 
 /datum/material/wood
 	name = "wood"
@@ -292,16 +274,15 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	strength_modifier = 0.5
 	sheet_type = /obj/item/stack/sheet/mineral/wood
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
-	value_per_unit = 0.01
-	armor_modifiers = list(MELEE = 1.1, BULLET = 1.1, LASER = 0.4, ENERGY = 0.4, BOMB = 1, BIO = 0.2, FIRE = 0, ACID = 0.3)
+	value_per_unit = IRON_VALUE_PER_UNIT * 4
+	armor_modifiers = list(BLUNT = 1.1, PUNCTURE = 1.1, SLASH = 0, LASER = 0.4, ENERGY = 0.4, BOMB = 1, BIO = 0.2, FIRE = 0, ACID = 0.3)
 	texture_layer_icon_state = "woodgrain"
 	wall_icon = 'icons/turf/walls/wood_wall.dmi'
 	wall_stripe_icon = 'icons/turf/walls/wood_wall_stripe.dmi'
-	wall_color = "#93662C"
+	low_wall_stripe_icon = 'icons/turf/walls/wood_wall_stripe.dmi'
+	wall_color = "#38260f"
 	wall_type = /turf/closed/wall/mineral/wood
 	false_wall_type = /obj/structure/falsewall/wood
-
-	wall_shine = NONE
 
 /datum/material/wood/on_applied_obj(obj/source, amount, material_flags)
 	. = ..()
@@ -322,26 +303,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 
 	return TRUE
 
-///Stronk force increase
-/datum/material/adamantine
-	name = "adamantine"
-	desc = "A powerful material made out of magic, I mean science!"
-	color = "#6d7e8e"
-	greyscale_colors = "#6d7e8e"
-	strength_modifier = 1.5
-	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
-	sheet_type = /obj/item/stack/sheet/mineral/adamantine
-	value_per_unit = 0.25
-	beauty_modifier = 0.4
-	armor_modifiers = list(MELEE = 1.5, BULLET = 1.5, LASER = 1.3, ENERGY = 1.3, BOMB = 1, BIO = 1, FIRE = 2.5, ACID = 1)
-	wall_icon = 'icons/turf/walls/stone_wall.dmi'
-
-	wall_shine = NONE
-
-/datum/material/adamantine/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD)
-	return TRUE
-
 ///RPG Magic.
 /datum/material/mythril
 	name = "mythril"
@@ -352,11 +313,9 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	sheet_type = /obj/item/stack/sheet/mineral/mythril
 	value_per_unit = 0.75
 	strength_modifier = 1.2
-	armor_modifiers = list(MELEE = 1.5, BULLET = 1.5, LASER = 1.5, ENERGY = 1.5, BOMB = 1.5, BIO = 1.5, FIRE = 1.5, ACID = 1.5)
+	armor_modifiers = list(BLUNT = 1.5, PUNCTURE = 1.5, SLASH = 0, LASER = 1.5, ENERGY = 1.5, BOMB = 1.5, BIO = 1.5, FIRE = 1.5, ACID = 1.5)
 	beauty_modifier = 0.5
 	wall_icon = 'icons/turf/walls/stone_wall.dmi'
-
-	wall_shine = NONE
 
 /datum/material/mythril/on_applied_obj(atom/source, amount, material_flags)
 	. = ..()
@@ -408,7 +367,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.35
 	beauty_modifier = 0.35
 	strength_modifier = 1.2
-	armor_modifiers = list(MELEE = 1.35, BULLET = 1.3, LASER = 1.3, ENERGY = 1.25, BOMB = 0.7, BIO = 1, FIRE = 1.3, ACID = 1)
+	armor_modifiers = list(BLUNT = 1.35, PUNCTURE = 1.3, SLASH = 0, LASER = 1.3, ENERGY = 1.25, BOMB = 0.7, BIO = 1, FIRE = 1.3, ACID = 1)
 
 /datum/material/metalhydrogen/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.apply_damage(15, BRUTE, BODY_ZONE_HEAD)
@@ -422,16 +381,14 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	greyscale_colors = "#EDC9AF"
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/sandblock
-	value_per_unit = 0.001
+	value_per_unit = 0
 	strength_modifier = 0.5
 	integrity_modifier = 0.1
-	armor_modifiers = list(MELEE = 0.25, BULLET = 0.25, LASER = 1.25, ENERGY = 0.25, BOMB = 0.25, BIO = 0.25, FIRE = 1.5, ACID = 1.5)
+	armor_modifiers = list(BLUNT = 0.25, PUNCTURE = 0.25, SLASH = 0, LASER = 1.25, ENERGY = 0.25, BOMB = 0.25, BIO = 0.25, FIRE = 1.5, ACID = 1.5)
 	beauty_modifier = 0.25
 	turf_sound_override = FOOTSTEP_SAND
 	texture_layer_icon_state = "sand"
 	wall_icon = 'icons/turf/walls/stone_wall.dmi'
-
-	wall_shine = NONE
 
 /datum/material/sand/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.adjust_disgust(17)
@@ -445,13 +402,11 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	greyscale_colors = "#B77D31"
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/mineral/sandstone
-	value_per_unit = 0.0025
-	armor_modifiers = list(MELEE = 0.5, BULLET = 0.5, LASER = 1.25, ENERGY = 0.5, BOMB = 0.5, BIO = 0.25, FIRE = 1.5, ACID = 1.5)
+	value_per_unit = 0
+	armor_modifiers = list(BLUNT = 0.5, PUNCTURE = 0.5, SLASH = 0, LASER = 1.25, ENERGY = 0.5, BOMB = 0.5, BIO = 0.25, FIRE = 1.5, ACID = 1.5)
 	turf_sound_override = FOOTSTEP_WOOD
 	texture_layer_icon_state = "brick"
 	wall_icon = 'icons/turf/walls/stone_wall.dmi'
-
-	wall_shine = NONE
 
 /datum/material/snow
 	name = "snow"
@@ -460,13 +415,11 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	greyscale_colors = "#FFFFFF"
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/mineral/snow
-	value_per_unit = 0.0025
-	armor_modifiers = list(MELEE = 0.25, BULLET = 0.25, LASER = 0.25, ENERGY = 0.25, BOMB = 0.25, BIO = 0.25, FIRE = 0.25, ACID = 1.5)
+	value_per_unit = 0
+	armor_modifiers = list(BLUNT = 0.25, PUNCTURE = 0.25, SLASH = 0, LASER = 0.25, ENERGY = 0.25, BOMB = 0.25, BIO = 0.25, FIRE = 0.25, ACID = 1.5)
 	turf_sound_override = FOOTSTEP_SAND
 	texture_layer_icon_state = "sand"
 	wall_icon = 'icons/turf/walls/stone_wall.dmi'
-
-	wall_shine = NONE
 
 /datum/material/snow/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.reagents.add_reagent(/datum/reagent/water, rand(5, 10))
@@ -479,12 +432,10 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	greyscale_colors = "#3C3434"
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/runed_metal
-	value_per_unit = 0.75
-	armor_modifiers = list(MELEE = 1.2, BULLET = 1.2, LASER = 1, ENERGY = 1, BOMB = 1.2, BIO = 1.2, FIRE = 1.5, ACID = 1.5)
+	value_per_unit = 0
+	armor_modifiers = list(BLUNT = 1.2, PUNCTURE = 1.2, SLASH = 0, LASER = 1, ENERGY = 1, BOMB = 1.2, BIO = 1.2, FIRE = 1.5, ACID = 1.5)
 	texture_layer_icon_state = "runed"
 	wall_icon = 'icons/turf/walls/cult_wall.dmi'
-
-	wall_shine = NONE
 
 /datum/material/runedmetal/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.reagents.add_reagent(/datum/reagent/fuel/unholywater, rand(8, 12))
@@ -498,8 +449,8 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	greyscale_colors = "#92661A"
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/bronze
-	value_per_unit = 0.025
-	armor_modifiers = list(MELEE = 1, BULLET = 1, LASER = 1, ENERGY = 1, BOMB = 1, BIO = 1, FIRE = 1.5, ACID = 1.5)
+	value_per_unit = IRON_VALUE_PER_UNIT * 10
+	armor_modifiers = list(BLUNT = 1, PUNCTURE = 1, SLASH = 0, LASER = 1, ENERGY = 1, BOMB = 1, BIO = 1, FIRE = 1.5, ACID = 1.5)
 	beauty_modifier = 0.2
 
 /datum/material/paper
@@ -509,8 +460,8 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	greyscale_colors = "#E5DCD5"
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/paperframes
-	value_per_unit = 0.0025
-	armor_modifiers = list(MELEE = 0.1, BULLET = 0.1, LASER = 0.1, ENERGY = 0.1, BOMB = 0.1, BIO = 0.1, FIRE = 0, ACID = 1.5)
+	value_per_unit = 0
+	armor_modifiers = list(BLUNT = 0.1, PUNCTURE = 0.1, SLASH = 0, LASER = 0.1, ENERGY = 0.1, BOMB = 0.1, BIO = 0.1, FIRE = 0, ACID = 1.5)
 	beauty_modifier = 0.3
 	turf_sound_override = FOOTSTEP_SAND
 	texture_layer_icon_state = "paper"
@@ -535,12 +486,10 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	greyscale_colors = "#5F625C"
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/cardboard
-	value_per_unit = 0.003
-	armor_modifiers = list(MELEE = 0.25, BULLET = 0.25, LASER = 0.25, ENERGY = 0.25, BOMB = 0.25, BIO = 0.25, FIRE = 0, ACID = 1.5)
+	value_per_unit = IRON_VALUE_PER_UNIT * 0.25
+	armor_modifiers = list(BLUNT = 0.25, PUNCTURE = 0.25, SLASH = 0, LASER = 0.25, ENERGY = 0.25, BOMB = 0.25, BIO = 0.25, FIRE = 0, ACID = 1.5)
 	beauty_modifier = -0.1
 	wall_icon = 'icons/turf/walls/stone_wall.dmi'
-
-	wall_shine = NONE
 
 /datum/material/cardboard/on_applied_obj(obj/source, amount, material_flags)
 	. = ..()
@@ -562,8 +511,8 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	greyscale_colors = "#e3dac9"
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/bone
-	value_per_unit = 0.05
-	armor_modifiers = list(MELEE = 1.2, BULLET = 0.75, LASER = 0.75, ENERGY = 1.2, BOMB = 1, BIO = 1, FIRE = 1.5, ACID = 1.5)
+	value_per_unit = IRON_VALUE_PER_UNIT * 2
+	armor_modifiers = list(BLUNT = 1.2, PUNCTURE = 0.75, SLASH = 0, LASER = 0.75, ENERGY = 1.2, BOMB = 1, BIO = 1, FIRE = 1.5, ACID = 1.5)
 	beauty_modifier = -0.2
 
 /datum/material/bamboo
@@ -573,8 +522,8 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	greyscale_colors = "#87a852"
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/mineral/bamboo
-	value_per_unit = 0.0025
-	armor_modifiers = list(MELEE = 0.5, BULLET = 0.5, LASER = 0.5, ENERGY = 0.5, BOMB = 0.5, BIO = 0.51, FIRE = 0.5, ACID = 1.5)
+	value_per_unit = IRON_VALUE_PER_UNIT
+	armor_modifiers = list(BLUNT = 0.5, PUNCTURE = 0.5, SLASH = 0, LASER = 0.5, ENERGY = 0.5, BOMB = 0.5, BIO = 0.51, FIRE = 0.5, ACID = 1.5)
 	beauty_modifier = 0.2
 	turf_sound_override = FOOTSTEP_WOOD
 	texture_layer_icon_state = "bamboo"
@@ -587,7 +536,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	sheet_type = /obj/item/stack/sheet/mineral/zaukerite
 	value_per_unit = 0.45
-	armor_modifiers = list(MELEE = 0.9, BULLET = 0.9, LASER = 1.75, ENERGY = 1.75, BOMB = 0.5, BIO = 1, FIRE = 0.1, ACID = 1)
+	armor_modifiers = list(BLUNT = 0.9, PUNCTURE = 0.9, SLASH = 0, LASER = 1.75, ENERGY = 1.75, BOMB = 0.5, BIO = 1, FIRE = 0.1, ACID = 1)
 	beauty_modifier = 0.001
 
 /datum/material/zaukerite/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)

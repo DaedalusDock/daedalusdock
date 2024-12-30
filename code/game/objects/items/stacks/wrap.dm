@@ -23,13 +23,13 @@
 		//Generate random valid colors for paper and ribbon
 		var/generated_base_color = "#" + random_color()
 		var/generated_ribbon_color = "#" + random_color()
-		var/temp_base_hsv = RGBtoHSV(generated_base_color)
-		var/temp_ribbon_hsv = RGBtoHSV(generated_ribbon_color)
+		var/list/temp_base_hsv = rgb2hsv(generated_base_color)
+		var/list/temp_ribbon_hsv = rgb2hsv(generated_ribbon_color)
 
 		//If colors are too dark, set to original colors
-		if(ReadHSV(temp_base_hsv)[3] < ReadHSV("7F7F7F")[3])
+		if(temp_base_hsv[3] < 50)
 			generated_base_color = "#00FF00"
-		if(ReadHSV(temp_ribbon_hsv)[3] < ReadHSV("7F7F7F")[3])
+		if(temp_ribbon_hsv[3] < 50)
 			generated_ribbon_color = "#FF0000"
 
 		//Set layers to these colors, base then ribbon
@@ -38,7 +38,7 @@
 /obj/item/stack/wrapping_paper/attack_hand_secondary(mob/user, modifiers)
 	var/new_base = input(user, "", "Select a base color", color) as color
 	var/new_ribbon = input(user, "", "Select a ribbon color", color) as color
-	if(!user.canUseTopic(src, BE_CLOSE))
+	if(!user.canUseTopic(src, USE_CLOSE))
 		return
 	set_greyscale(colors = list(new_base, new_ribbon))
 	return TRUE
@@ -176,5 +176,4 @@
 	icon_state = "c_tube"
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
-	throw_speed = 3
 	throw_range = 5

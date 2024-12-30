@@ -3,7 +3,7 @@
  * The overlay can be specified in new as the first paramter; if not set it defaults to rust_overlay's rust_default
  */
 /datum/element/rust
-	element_flags = ELEMENT_BESPOKE|ELEMENT_DETACH
+	element_flags = ELEMENT_BESPOKE | ELEMENT_DETACH // Detach for turfs
 	id_arg_index = 2
 	/// The rust image itself, since the icon and icon state are only used as an argument
 	var/image/rust_overlay
@@ -49,14 +49,14 @@
 		if(TOOL_WELDER)
 			if(item.use(5))
 				user.balloon_alert(user, "burning off rust...")
-				if(!do_after(user, source, 5 SECONDS * item.toolspeed))
+				if(!do_after(user, source, 5 SECONDS * item.toolspeed, DO_PUBLIC, display = item))
 					return
 				user.balloon_alert(user, "burned off rust")
 				Detach(source)
 				return
 		if(TOOL_RUSTSCRAPER)
 			user.balloon_alert(user, "scraping off rust...")
-			if(!do_after(user, source, 2 SECONDS * item.toolspeed))
+			if(!do_after(user, source, 2 SECONDS * item.toolspeed, DO_PUBLIC, display = item))
 				return
 			user.balloon_alert(user, "scraped off rust")
 			Detach(source)

@@ -1,13 +1,21 @@
+DEFINE_INTERACTABLE(/mob/living)
 /mob/living
 	see_invisible = SEE_INVISIBLE_LIVING
 	sight = 0
 	see_in_dark = 2
-	hud_possible = list(HEALTH_HUD,STATUS_HUD,ANTAG_HUD)
+	hud_possible = list(
+		HEALTH_HUD = 'icons/mob/huds/hud.dmi',
+		STATUS_HUD = 'icons/mob/huds/hud.dmi',
+	)
 	//pressure_resistance = 10
 
 	hud_type = /datum/hud/living
 
-	var/resize = 1 ///Badminnery resize
+	///Tracks the scale of the mob transformation matrix in relation to its identity. Use update_transform(resize) to change it.
+	var/current_size = RESIZE_DEFAULT_SIZE
+	///How the mob transformation matrix is scaled on init.
+	var/initial_size = RESIZE_DEFAULT_SIZE
+
 	var/lastattacker = null
 	var/lastattackerckey = null
 
@@ -17,16 +25,26 @@
 	/// The mob's current health.
 	var/health = MAX_LIVING_HEALTH
 
+	/// The container for stats and skills
+	var/datum/stats/stats
+	///The holder for stamina handling
+	var/datum/stamina_container/stamina
+	/// Mood datum, can be null.
+	var/datum/mood/mob_mood
+
 	//Damage related vars, NOTE: THESE SHOULD ONLY BE MODIFIED BY PROCS
-	var/bruteloss = 0 ///Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
-	var/oxyloss = 0 ///Oxygen depravation damage (no air in lungs)
-	var/toxloss = 0 ///Toxic damage caused by being poisoned or radiated
-	var/fireloss = 0 ///Burn damage caused by being way too hot, too cold or burnt.
-	var/cloneloss = 0 ///Damage caused by being cloned or ejected from the cloner early. slimes also deal cloneloss damage to victims
-	var/staminaloss = 0 ///Stamina damage, or exhaustion. You recover it slowly naturally, and are knocked down if it gets too high. Holodeck and hallucinations deal this.
+	VAR_PROTECTED/bruteloss = 0 //!Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
+	VAR_PROTECTED/oxyloss = 0 //!Oxygen depravation damage (no air in lungs)
+	VAR_PROTECTED/toxloss = 0 //!Toxic damage caused by being poisoned or radiated
+	VAR_PROTECTED/fireloss = 0 //!Burn damage caused by being way too hot, too cold or burnt.
+	VAR_PROTECTED/cloneloss = 0 //!Damage caused by being cloned or ejected from the cloner early. slimes also deal cloneloss damage to victims
+
 	var/crit_threshold = HEALTH_THRESHOLD_CRIT /// when the mob goes from "normal" to crit
 	///When the mob enters hard critical state and is fully incapacitated.
 	var/hardcrit_threshold = HEALTH_THRESHOLD_FULLCRIT
+
+	/// Rate at which fire stacks should decay from this mob
+	var/fire_stack_decay_rate = -0.05
 
 	//Damage dealing vars! These are meaningless outside of specific instances where it's checked and defined.
 	// Lower bound of damage done by unarmed melee attacks. Mob code is a mess, only works where this is checked for.
@@ -48,6 +66,8 @@
 	VAR_PROTECTED/lying_angle = 0
 	/// Value of lying lying_angle before last change. TODO: Remove the need for this.
 	var/lying_prev = 0
+	/// Does the mob rotate when lying
+	var/rotate_on_lying = FALSE
 
 	var/hallucination = 0 ///Directly affects how long a mob will hallucinate for
 
@@ -68,7 +88,9 @@
 
 	var/list/quirks = list()
 
-	var/list/surgeries = list() ///a list of surgery datums. generally empty, they're added when the player wants them.
+	/// A lazylist of active surgeries and their relevant data.
+	var/list/surgeries_in_progress
+
 	///Mob specific surgery speed modifier
 	var/mob_surgery_speed_mod = 1
 
@@ -139,8 +161,6 @@
 	var/list/diseases /// list of all diseases in a mob
 	var/list/disease_resistances
 
-	var/slowed_by_drag = TRUE ///Whether the mob is slowed down when dragging another prone mob
-
 	/// List of changes to body temperature, used by desease symtoms like fever
 	var/list/body_temp_changes = list()
 
@@ -162,10 +182,15 @@
 	/// Is this mob allowed to be buckled/unbuckled to/from things?
 	var/can_buckle_to = TRUE
 
-	///The y amount a mob's sprite should be offset due to the current position they're in (e.g. lying down moves your sprite down)
-	var/body_position_pixel_x_offset = 0
+	/// A lazylist of grab objects we have
+	var/list/active_grabs
+
 	///The x amount a mob's sprite should be offset due to the current position they're in
+	var/body_position_pixel_x_offset = 0
+	///The y amount a mob's sprite should be offset due to the current position they're in or size (e.g. lying down moves your sprite down)
 	var/body_position_pixel_y_offset = 0
+	///The height offset of a mob's maptext due to their current size.
+	var/body_maptext_height_offset = 0
 
 	///what multiplicative slowdown we get from turfs currently.
 	var/current_turf_slowdown = 0
@@ -177,7 +202,25 @@
 	var/voice_type
 
 	COOLDOWN_DECLARE(smell_time)
-	var/last_smell_intensity = 0
+	var/datum/weakref/next_smell
 
 	/// What our current gravity state is. Used to avoid duplicate animates and such
 	var/gravity_state = null
+
+	///Used for lookup/lookdown verbs
+	var/mob/camera/z_eye/z_eye
+
+	///Gunpoint container
+	var/obj/effect/abstract/aim_overlay/gunpoint
+	var/gunpoint_flags = TARGET_CAN_MOVE | TARGET_CAN_INTERACT | TARGET_CAN_RADIO
+	var/use_gunpoint = FALSE
+
+	/// How many ticks of Life() has this mob gone through
+	var/life_ticks = 0
+	/// Chemical effects. Built by the chemical processing stage of Life().
+	var/list/chem_effects = list()
+
+	/// For each life tick, how many do we skip?
+	var/stasis_level = 0
+	/// List of stasis sources to their given value
+	var/list/stasis_sources = list()

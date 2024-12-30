@@ -27,12 +27,12 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 /// Fax machine design, for techwebs.
 /datum/design/board/fax_machine
-	name = "Machine Design (Fax Machine Board)"
+	name = "Machine Board (Fax Machine Board)"
 	desc = "The circuit board for a Fax Machine."
 	id = "fax_machine"
 	build_path = /obj/item/circuitboard/machine/fax_machine
 	category = list("Misc. Machinery")
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE | DEPARTMENTAL_FLAG_SECURITY | DEPARTMENTAL_FLAG_CARGO
+	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_SECURITY | DESIGN_FAB_SUPPLY
 
 /// Fax machine circuit.
 /obj/item/circuitboard/machine/fax_machine
@@ -54,7 +54,6 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	icon_state = "fax"
 	idle_power_usage = 10
 	active_power_usage = 100
-	req_one_access = list(ACCESS_HEADS, ACCESS_LAWYER)
 	circuit = /obj/item/circuitboard/machine/fax_machine
 	/// Whether this machine can send faxes
 	var/sending_enabled = TRUE
@@ -509,7 +508,11 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 50)
 		. = FALSE
 	else
-		new /obj/item/holochip(drop_location(), rand(15, 25))
+		if(prob(50))
+			new /obj/item/stack/spacecash/c1/ten(drop_location())
+		else
+			new /obj/item/stack/spacecash/c1/twenty(drop_location())
+
 		playsound(src, 'sound/machines/ping.ogg', 60)
 		. = TRUE
 
@@ -529,7 +532,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 	inserted_paper.forceMove(src)
 	LAZYADD(received_paperwork, inserted_paper)
-	flick("fax_send", src)
+	z_flick("fax_send", src)
 	to_chat(user, span_notice("You insert [inserted_paper] into [src], readying it for processing."))
 
 /*
@@ -545,7 +548,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	else
 		to_chat(user, span_notice("You insert [inserted_paper] into [src]."))
 
-	flick("fax_send", src)
+	z_flick("fax_send", src)
 	stored_paper = inserted_paper
 
 /*
@@ -587,13 +590,13 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	if(!paper)
 		return
 
-	if(user && user.CanReach(src))
+	if(user && IsReachableBy(user))
 		user.put_in_hands(paper)
 	else
 		paper.forceMove(drop_location())
 	LAZYREMOVE(received_paperwork, paper)
 	if(!silent)
-		flick("fax_receive", src)
+		z_flick("fax_receive", src)
 		playsound(src, 'sound/machines/ding.ogg', 50)
 		use_power(active_power_usage)
 
@@ -617,9 +620,9 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		return
 
 	if(!silent)
-		flick("fax_receive", src)
+		z_flick("fax_receive", src)
 		balloon_alert_to_viewers("removed [stored_paper]")
-	if(user && user.CanReach(src))
+	if(user && IsReachableBy(user))
 		user.put_in_hands(stored_paper)
 	else
 		stored_paper.forceMove(drop_location())
@@ -637,9 +640,9 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		return
 
 	if(!silent)
-		flick("fax_receive", src)
+		z_flick("fax_receive", src)
 		balloon_alert_to_viewers("removed [received_paper]")
-	if(user && user.CanReach(src))
+	if(user && IsReachableBy(user))
 		user.put_in_hands(received_paper)
 	else
 		received_paper.forceMove(drop_location())

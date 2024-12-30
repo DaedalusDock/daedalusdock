@@ -26,7 +26,6 @@ Slimecrossing Items
 	bodypart_type = part.type
 	brute_dam = part.brute_dam
 	burn_dam = part.burn_dam
-	stamina_dam = part.stamina_dam
 
 /mob/living/carbon/proc/apply_saved_bodyparts(list/datum/saved_bodypart/parts)
 	var/list/dont_chop = list()
@@ -37,8 +36,8 @@ Slimecrossing Items
 			saved_part.old_part = new saved_part.bodypart_type
 		if(!already || already != saved_part.old_part)
 			saved_part.old_part.replace_limb(src, TRUE)
-		saved_part.old_part.heal_damage(INFINITY, INFINITY, INFINITY, null, FALSE)
-		saved_part.old_part.receive_damage(saved_part.brute_dam, saved_part.burn_dam, saved_part.stamina_dam)
+		saved_part.old_part.heal_damage(INFINITY, INFINITY, null, FALSE)
+		saved_part.old_part.receive_damage(saved_part.brute_dam, saved_part.burn_dam)
 		dont_chop[zone] = TRUE
 	for(var/_part in bodyparts)
 		var/obj/item/bodypart/part = _part
@@ -152,7 +151,7 @@ Slimecrossing Items
 	icon_state = "frozen"
 	density = TRUE
 	max_integrity = 100
-	armor = list(MELEE = 30, BULLET = 50, LASER = -50, ENERGY = -50, BOMB = 0, BIO = 100, FIRE = -80, ACID = 30)
+	armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = -50, ENERGY = -50, BOMB = 0, BIO = 100, FIRE = -80, ACID = 30)
 
 /obj/structure/ice_stasis/Initialize(mapload)
 	. = ..()
@@ -182,7 +181,7 @@ Slimecrossing Items
 	if(M.mind)
 		to_chat(user, span_notice("You offer the device to [M]."))
 		if(tgui_alert(M, "Would you like to enter [user]'s capture device?", "Gold Capture Device", list("Yes", "No")) == "Yes")
-			if(user.canUseTopic(src, BE_CLOSE) && user.canUseTopic(M, BE_CLOSE))
+			if(user.canUseTopic(src, USE_CLOSE) && user.canUseTopic(M, USE_CLOSE))
 				to_chat(user, span_notice("You store [M] in the capture device."))
 				to_chat(M, span_notice("The world warps around you, and you're suddenly in an endless void, with a window to the outside floating in front of you."))
 				store(M, user)

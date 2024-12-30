@@ -63,14 +63,10 @@
 	UnregisterSignal(parent, COMSIG_ATOM_ATTACK_HAND_SECONDARY)
 
 /datum/component/tippable/Destroy()
-	if(pre_tipped_callback)
-		QDEL_NULL(pre_tipped_callback)
-	if(post_tipped_callback)
-		QDEL_NULL(post_tipped_callback)
-	if(post_untipped_callback)
-		QDEL_NULL(post_untipped_callback)
-	if(roleplay_callback)
-		QDEL_NULL(roleplay_callback)
+	pre_tipped_callback = null
+	post_tipped_callback = null
+	post_untipped_callback = null
+	roleplay_callback = null
 	return ..()
 
 /**
@@ -118,7 +114,7 @@
 			ignored_mobs = tipper
 		)
 
-		if(!do_after(tipper, tipped_mob, tip_time))
+		if(!do_after(tipper, tipped_mob, tip_time, DO_PUBLIC))
 			to_chat(tipper, span_danger("You fail to tip over [tipped_mob]."))
 			return
 	do_tip(tipped_mob, tipper)
@@ -170,7 +166,7 @@
 			ignored_mobs = untipper
 		)
 
-		if(!do_after(untipper, tipped_mob, untip_time))
+		if(!do_after(untipper, tipped_mob, untip_time, DO_PUBLIC))
 			to_chat(untipper, span_warning("You fail to right [tipped_mob]."))
 			return
 

@@ -11,7 +11,6 @@
 	worn_icon_state = "pinpointer"
 	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
-	throw_speed = 3
 	throw_range = 7
 	custom_materials = list(/datum/material/iron = 500, /datum/material/glass = 250)
 	var/active = FALSE
@@ -73,7 +72,7 @@
 
 ///Called by update_icon after sanity. There is a target
 /obj/item/pinpointer/proc/get_direction_icon(here, there)
-	if(get_dist_euclidian(here,there) <= minimum_range)
+	if(get_dist_euclidean(here,there) <= minimum_range)
 		return "pinon[alert ? "alert" : ""]direct[icon_suffix]"
 	else
 		setDir(get_dir(here, there))
@@ -90,7 +89,7 @@
 	desc = "A handheld tracking device that points to crew suit sensors."
 	icon_state = "pinpointer_crew"
 	worn_icon_state = "pinpointer_crew"
-	custom_price = PAYCHECK_MEDIUM * 4
+	custom_price = PAYCHECK_ASSISTANT * 10
 	custom_premium_price = PAYCHECK_MEDIUM * 6
 	var/has_owner = FALSE
 	var/pinpointer_owner = null
@@ -129,13 +128,13 @@
 
 		var/crewmember_name = "Unknown"
 		if(H.wear_id)
-			var/obj/item/card/id/I = H.wear_id.GetID()
+			var/obj/item/card/id/I = H.wear_id.GetID(TRUE)
 			if(I?.registered_name)
 				crewmember_name = I.registered_name
 
 		while(crewmember_name in name_counts)
 			name_counts[crewmember_name]++
-			crewmember_name = text("[] ([])", crewmember_name, name_counts[crewmember_name])
+			crewmember_name = "[crewmember_name] ([name_counts[crewmember_name]])"
 		names[crewmember_name] = H
 		name_counts[crewmember_name] = 1
 
@@ -167,7 +166,7 @@
 	desc = "A handheld tracking device that displays its proximity to crew suit sensors."
 	icon_state = "pinpointer_crewprox"
 	worn_icon_state = "pinpointer_prox"
-	custom_price = PAYCHECK_MEDIUM * 3
+	custom_price = PAYCHECK_ASSISTANT * 4
 
 /obj/item/pinpointer/crew/prox/get_direction_icon(here, there)
 	var/size = ""

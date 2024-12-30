@@ -11,7 +11,7 @@
 	turns_per_move = 5
 	response_help_continuous = "pushes"
 	response_help_simple = "push"
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 100
 	health = 100
 	harm_intent_damage = 5
@@ -19,7 +19,7 @@
 	melee_damage_upper = 10
 	attack_verb_continuous = "punches"
 	attack_verb_simple = "punch"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	combat_mode = TRUE
 	atmos_requirements = list("min_oxy" = 5, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 1, "min_co2" = 0, "max_co2" = 5, "min_n2" = 0, "max_n2" = 0)
 	unsuitable_atmos_damage = 7.5
@@ -37,7 +37,7 @@
 	icon_dead = "piratemelee_dead"
 	melee_damage_lower = 30
 	melee_damage_upper = 30
-	armour_penetration = 35
+	armor_penetration = 35
 	attack_verb_continuous = "slashes"
 	attack_verb_simple = "slash"
 	attack_sound = 'sound/weapons/blade1.ogg'
@@ -53,7 +53,7 @@
 	icon_dead = "piratespace_dead"
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
-	speed = 1
+	move_delay_modifier = 1
 
 /mob/living/simple_animal/hostile/pirate/melee/space/Initialize(mapload)
 	. = ..()
@@ -92,7 +92,7 @@
 	icon_dead = "piratespaceranged_dead"
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
-	speed = 1
+	move_delay_modifier = 1
 
 /mob/living/simple_animal/hostile/pirate/ranged/space/Initialize(mapload)
 	. = ..()

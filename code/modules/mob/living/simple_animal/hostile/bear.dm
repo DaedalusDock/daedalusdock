@@ -22,7 +22,7 @@
 	response_disarm_simple = "gently push aside"
 	maxHealth = 60
 	health = 60
-	speed = 0
+	move_delay_modifier = 0
 
 	obj_damage = 60
 	melee_damage_lower = 15 // i know it's like half what it used to be, but bears cause bleeding like crazy now so it works out
@@ -49,10 +49,6 @@
 /mob/living/simple_animal/hostile/bear/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
-	add_cell_sample()
-
-/mob/living/simple_animal/hostile/bear/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_BEAR, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/hostile/bear/Login()
 	. = ..()
@@ -92,7 +88,7 @@
 	butcher_results = list(/obj/item/food/meat/slab/bear = 5, /obj/item/clothing/head/bearpelt = 1, /obj/item/bear_armor = 1)
 	melee_damage_lower = 18
 	melee_damage_upper = 20
-	armour_penetration = 20
+	armor_penetration = 20
 	health = 120
 	maxHealth = 120
 	armored = TRUE
@@ -115,7 +111,7 @@
 		A.armored = TRUE
 		A.maxHealth += 60
 		A.health += 60
-		A.armour_penetration += 20
+		A.armor_penetration += 20
 		A.melee_damage_lower += 3
 		A.melee_damage_upper += 5
 		A.update_icons()
@@ -133,19 +129,16 @@
 	melee_damage_lower = 0
 	melee_damage_upper = 0
 	sharpness = NONE //it's made of butter
-	armour_penetration = 0
+	armor_penetration = 0
 	response_harm_continuous = "takes a bite out of"
 	response_harm_simple = "take a bite out of"
 	attacked_sound = 'sound/items/eatfood.ogg'
 	deathmessage = "loses its false life and collapses!"
-	butcher_results = list(/obj/item/food/butter = 6, /obj/item/food/meat/slab = 3, /obj/item/organ/internal/brain = 1, /obj/item/organ/internal/heart = 1)
+	butcher_results = list(/obj/item/food/butter = 6, /obj/item/food/meat/slab = 3, /obj/item/organ/brain = 1, /obj/item/organ/heart = 1)
 	attack_sound = 'sound/weapons/slap.ogg'
 	attack_vis_effect = ATTACK_EFFECT_DISARM
 	attack_verb_simple = "slap"
 	attack_verb_continuous = "slaps"
-
-/mob/living/simple_animal/hostile/bear/butter/add_cell_sample()
-	return //You cannot grow a real bear from butter.
 
 /mob/living/simple_animal/hostile/bear/butter/Life(delta_time = SSMOBS_DT, times_fired) //Heals butter bear really fast when he takes damage.
 	if(stat)
@@ -161,7 +154,7 @@
 
 /mob/living/simple_animal/hostile/bear/butter/CheckParts(list/parts) //Borrowed code from Cak, allows the brain used to actually control the bear.
 	..()
-	var/obj/item/organ/internal/brain/B = locate(/obj/item/organ/internal/brain) in contents
+	var/obj/item/organ/brain/B = locate(/obj/item/organ/brain) in contents
 	if(!B || !B.brainmob || !B.brainmob.mind)
 		return
 	B.brainmob.mind.transfer_to(src)

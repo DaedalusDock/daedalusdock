@@ -22,7 +22,7 @@
 	var/last_power_draw = 0
 
 
-/obj/machinery/atmospherics/components/trinary/mixer/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/trinary/mixer/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
@@ -49,8 +49,8 @@
 	var/on_state = on && nodes[1] && nodes[2] && nodes[3] && is_operational
 	icon_state = "mixer_[on_state ? "on" : "off"]-[set_overlay_offset(piping_layer)][flipped ? "_f" : ""]"
 
-/obj/machinery/atmospherics/components/trinary/mixer/New()
-	..()
+/obj/machinery/atmospherics/components/trinary/mixer/Initialize()
+	. = ..()
 	var/datum/gas_mixture/air3 = airs[3]
 	air3.volume = 300
 	airs[3] = air3
@@ -80,10 +80,10 @@
 	var/transfer_moles_max = INFINITY
 	var/transfer_moles = 0
 	/// Node 1
-	transfer_moles_max = min(transfer_moles_max, calculate_transfer_moles(air1, air3, delta))
+	transfer_moles_max = min(transfer_moles_max, calculate_transfer_moles(air1, air3, delta, parents[3]?.combined_volume || 0))
 	transfer_moles += (target_pressure*node1_concentration/air1.volume)*air1.total_moles
 	// Node 2
-	transfer_moles_max = min(transfer_moles_max, calculate_transfer_moles(air2, air3, delta))
+	transfer_moles_max = min(transfer_moles_max, calculate_transfer_moles(air2, air3, delta, parents[3]?.combined_volume || 0))
 	transfer_moles += (target_pressure*node2_concentration/air2.volume)*air2.total_moles
 	// Finalize
 	transfer_moles = clamp(transfer_moles, 0, transfer_moles_max)
@@ -98,12 +98,7 @@
 		ATMOS_USE_POWER(draw)
 		last_power_draw = draw
 
-	var/datum/pipeline/parent1 = parents[1]
-	parent1.update = TRUE
-	var/datum/pipeline/parent2 = parents[2]
-	parent2.update = TRUE
-	var/datum/pipeline/parent3 = parents[3]
-	parent3.update = TRUE
+	update_parents()
 
 /obj/machinery/atmospherics/components/trinary/mixer/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)

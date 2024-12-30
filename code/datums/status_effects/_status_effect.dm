@@ -7,6 +7,9 @@
 	/// While processing, this becomes the world.time when the status effect will expire.
 	/// -1 = infinite duration.
 	var/duration = -1
+	/// The maximum duration this status effect can be.
+	/// -1 = No limit
+	var/max_duration =-1
 	/// When set initially / in on_creation, this is how long between [proc/tick] calls in deciseconds.
 	/// While processing, this becomes the world.time when the next tick will occur.
 	/// -1 = will stop processing, if duration is also unlimited (-1).
@@ -41,7 +44,10 @@
 		LAZYADD(owner.status_effects, src)
 
 	if(duration != -1)
-		duration = world.time + duration
+		if(max_duration != -1)
+			duration = world.time + min(duration, max_duration)
+		else
+			duration = world.time + duration
 	tick_interval = world.time + tick_interval
 
 	if(alert_type)
@@ -110,6 +116,7 @@
 /// or when a status effect with on_remove_on_mob_delete
 /// set to FALSE has its mob deleted
 /datum/status_effect/proc/be_replaced()
+	linked_alert = null
 	owner.clear_alert(id)
 	LAZYREMOVE(owner.status_effects, src)
 	owner = null
@@ -135,6 +142,18 @@
 /// Adds nextmove adjustment additiviely to the owner while applied
 /datum/status_effect/proc/nextmove_adjust()
 	return 0
+
+/// Remove [seconds] of duration from the status effect, qdeling / ending if we eclipse the current world time.
+/datum/status_effect/proc/remove_duration(seconds)
+	if(duration == -1) // Infinite duration
+		return FALSE
+
+	duration -= seconds
+	if(duration <= world.time)
+		qdel(src)
+		return TRUE
+
+	return FALSE
 
 /// Alert base type for status effect alerts
 /atom/movable/screen/alert/status_effect

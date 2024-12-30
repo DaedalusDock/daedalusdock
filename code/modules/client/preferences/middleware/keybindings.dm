@@ -9,9 +9,6 @@
 	)
 
 /datum/preference_middleware/keybindings/get_ui_static_data(mob/user)
-	if (preferences.current_window == PREFERENCE_TAB_CHARACTER_PREFERENCES)
-		return list()
-
 	var/list/keybindings = preferences.key_bindings
 
 	return list(
@@ -27,6 +24,7 @@
 	preferences.key_bindings = deep_copy_list(GLOB.default_hotkeys)
 	preferences.key_bindings_by_key = preferences.get_key_bindings_by_key(preferences.key_bindings)
 	preferences.update_static_data(user)
+	preferences.parent.set_macros()
 
 	return TRUE
 
@@ -47,7 +45,8 @@
 /datum/preference_middleware/keybindings/proc/set_keybindings(list/params)
 	var/keybind_name = params["keybind_name"]
 
-	if (isnull(GLOB.keybindings_by_name[keybind_name]))
+	var/datum/keybinding/keybind_datum = GLOB.keybindings_by_name[keybind_name]
+	if (isnull(keybind_datum))
 		return FALSE
 
 	var/list/raw_hotkeys = params["hotkeys"]

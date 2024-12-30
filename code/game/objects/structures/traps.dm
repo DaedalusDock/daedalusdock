@@ -96,7 +96,7 @@
 	var/stun_time = 100
 
 /obj/structure/trap/stun/trap_effect(mob/living/L)
-	L.electrocute_act(30, src, flags = SHOCK_NOGLOVES) // electrocute act does a message.
+	L.electrocute_act(30, flags = NONE) // electrocute act does a message.
 	L.Paralyze(stun_time)
 
 /obj/structure/trap/stun/hunter
@@ -122,6 +122,8 @@
 	return ..()
 
 /obj/structure/trap/stun/hunter/on_entered(datum/source, atom/movable/AM)
+	if(AM == src)
+		return
 	if(isliving(AM))
 		var/mob/living/L = AM
 		if(!L.mind?.has_antag_datum(/datum/antagonist/fugitive))
@@ -132,7 +134,7 @@
 /obj/structure/trap/stun/hunter/flare()
 	..()
 	var/turf/our_turf = get_turf(src)
-	if(!our_turf)
+	if(!our_turf || !stored_item)
 		return
 	stored_item.forceMove(get_turf(src))
 	forceMove(stored_item)
@@ -238,7 +240,7 @@
 
 /obj/structure/trap/cult/trap_effect(mob/living/L)
 	to_chat(L, span_danger("<B>With a crack, the hostile constructs come out of hiding, stunning you!</B>"))
-	L.electrocute_act(10, src, flags = SHOCK_NOGLOVES) // electrocute act does a message.
+	L.electrocute_act(10, flags = NONE) // electrocute act does a message.
 	L.Paralyze(20)
 	new /mob/living/simple_animal/hostile/construct/proteon/hostile(loc)
 	new /mob/living/simple_animal/hostile/construct/proteon/hostile(loc)

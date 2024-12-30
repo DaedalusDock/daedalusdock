@@ -23,13 +23,11 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
-	dmg_overlay_type = "robotic"
+	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
-	brute_reduction = 5
-	burn_reduction = 4
+	bodypart_flags = (parent_type::bodypart_flags | BP_NO_PAIN) & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 	light_brute_msg = ROBOTIC_LIGHT_BRUTE_MSG
 	medium_brute_msg = ROBOTIC_MEDIUM_BRUTE_MSG
@@ -52,13 +50,11 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
-	dmg_overlay_type = "robotic"
+	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
-	brute_reduction = 5
-	burn_reduction = 4
+	bodypart_flags = (parent_type::bodypart_flags | BP_NO_PAIN) & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 	light_brute_msg = ROBOTIC_LIGHT_BRUTE_MSG
 	medium_brute_msg = ROBOTIC_MEDIUM_BRUTE_MSG
@@ -81,13 +77,11 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
-	dmg_overlay_type = "robotic"
+	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
-	brute_reduction = 5
-	burn_reduction = 4
+	bodypart_flags = (parent_type::bodypart_flags | BP_NO_PAIN) & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 	light_brute_msg = ROBOTIC_LIGHT_BRUTE_MSG
 	medium_brute_msg = ROBOTIC_MEDIUM_BRUTE_MSG
@@ -110,13 +104,11 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
-	dmg_overlay_type = "robotic"
+	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
-	brute_reduction = 5
-	burn_reduction = 4
+	bodypart_flags = (parent_type::bodypart_flags | BP_NO_PAIN) & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 	light_brute_msg = ROBOTIC_LIGHT_BRUTE_MSG
 	medium_brute_msg = ROBOTIC_MEDIUM_BRUTE_MSG
@@ -138,13 +130,11 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
-	dmg_overlay_type = "robotic"
+	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
-	brute_reduction = 5
-	burn_reduction = 4
+	bodypart_flags = (parent_type::bodypart_flags | BP_NO_PAIN) & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 	light_brute_msg = ROBOTIC_LIGHT_BRUTE_MSG
 	medium_brute_msg = ROBOTIC_MEDIUM_BRUTE_MSG
@@ -153,6 +143,8 @@
 	light_burn_msg = ROBOTIC_LIGHT_BURN_MSG
 	medium_burn_msg = ROBOTIC_MEDIUM_BURN_MSG
 	heavy_burn_msg = ROBOTIC_HEAVY_BURN_MSG
+
+	dismemberable = FALSE
 
 	var/wired = FALSE
 	var/obj/item/stock_parts/cell/cell = null
@@ -227,7 +219,7 @@
 	else
 		. += span_info("It has a couple spots that still need to be <b>wired</b>.")
 
-/obj/item/bodypart/chest/robot/drop_organs(mob/user, violent_removal)
+/obj/item/bodypart/chest/robot/drop_contents(mob/user, violent_removal)
 	if(wired)
 		new /obj/item/stack/cable_coil(drop_location(), 1)
 		wired = FALSE
@@ -249,13 +241,11 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
-	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
-	dmg_overlay_type = "robotic"
+	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
-	brute_reduction = 5
-	burn_reduction = 4
+	bodypart_flags = (parent_type::bodypart_flags | BP_NO_PAIN) & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 	light_brute_msg = ROBOTIC_LIGHT_BRUTE_MSG
 	medium_brute_msg = ROBOTIC_MEDIUM_BRUTE_MSG
@@ -330,7 +320,7 @@
 	return TRUE
 
 
-/obj/item/bodypart/head/robot/drop_organs(mob/user, violent_removal)
+/obj/item/bodypart/head/robot/drop_contents(mob/user, violent_removal)
 	if(flash1)
 		flash1.forceMove(user.loc)
 		flash1 = null
@@ -346,32 +336,32 @@
 	name = "surplus prosthetic left arm"
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
 	icon = 'icons/mob/augmentation/surplus_augments.dmi'
-	brute_reduction = 0
-	burn_reduction = 0
+	icon_static = 'icons/mob/augmentation/surplus_augments.dmi'
+	limb_id = "surplus"
 	max_damage = 20
 
 /obj/item/bodypart/arm/right/robot/surplus
 	name = "surplus prosthetic right arm"
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
 	icon = 'icons/mob/augmentation/surplus_augments.dmi'
-	brute_reduction = 0
-	burn_reduction = 0
+	icon_static = 'icons/mob/augmentation/surplus_augments.dmi'
+	limb_id = "surplus"
 	max_damage = 20
 
 /obj/item/bodypart/leg/left/robot/surplus
 	name = "surplus prosthetic left leg"
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
 	icon = 'icons/mob/augmentation/surplus_augments.dmi'
-	brute_reduction = 0
-	burn_reduction = 0
+	icon_static = 'icons/mob/augmentation/surplus_augments.dmi'
+	limb_id = "surplus"
 	max_damage = 20
 
 /obj/item/bodypart/leg/right/robot/surplus
 	name = "surplus prosthetic right leg"
 	desc = "A skeletal, robotic limb. Outdated and fragile, but it's still better than nothing."
 	icon = 'icons/mob/augmentation/surplus_augments.dmi'
-	brute_reduction = 0
-	burn_reduction = 0
+	icon_static = 'icons/mob/augmentation/surplus_augments.dmi'
+	limb_id = "surplus"
 	max_damage = 20
 
 

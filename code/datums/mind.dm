@@ -36,10 +36,10 @@
 	var/mob/living/current
 	var/active = FALSE
 
-	///a list of /datum/memories. assoc type of memory = memory datum. only one type of memory will be stored, new ones of the same type overriding the last.
-	var/list/memories = list()
-	///reference to the memory panel tgui
-	var/datum/memory_panel/memory_panel
+	/// A k:v list of note type : contents
+	VAR_PRIVATE/list/notes = list(NOTES_CUSTOM = "")
+	///reference to the note panel tgui
+	var/datum/note_panel/note_panel
 
 	/// Job datum indicating the mind's role. This should always exist after initialization, as a reference to a singleton.
 	var/datum/job/assigned_role
@@ -50,12 +50,15 @@
 	var/datum/martial_art/martial_art
 	var/static/default_martial_art = new/datum/martial_art
 	var/miming = FALSE // Mime's vow of silence
+
 	var/list/antag_datums
-	var/antag_hud_icon_state = null //this mind's ANTAG_HUD should have this icon_state
-	var/datum/atom_hud/alternate_appearance/basic/antagonist_hud/antag_hud = null //this mind's antag HUD
+	///this mind's antag HUD
+	var/datum/atom_hud/alternate_appearance/basic/antagonist_hud/antag_hud = null
+
 	var/holy_role = NONE //is this person a chaplain or admin role allowed to use bibles, Any rank besides 'NONE' allows for this.
 
-	var/mob/living/enslaved_to //If this mind's master is another mob (i.e. adamantine golems)
+	///If this mind's master is another mob (i.e. adamantine golems)
+	var/mob/living/enslaved_to
 	var/datum/language_holder/language_holder
 	var/unconvertable = FALSE
 	var/late_joiner = FALSE
@@ -88,6 +91,11 @@
 	///List of objective-specific equipment that couldn't properly be given to the mind
 	var/list/failed_special_equipment
 
+	///The cooldown for dreams.
+	COOLDOWN_DECLARE(dream_cooldown)
+	/// A lazylist of dream types we have fully experienced
+	var/list/finished_dream_types
+
 /datum/mind/New(_key)
 	key = _key
 	martial_art = default_martial_art
@@ -97,8 +105,7 @@
 /datum/mind/Destroy()
 	SSticker.minds -= src
 	QDEL_NULL(antag_hud)
-	QDEL_LIST(memories)
-	QDEL_NULL(memory_panel)
+	QDEL_NULL(note_panel)
 	QDEL_LIST(antag_datums)
 	QDEL_NULL(language_holder)
 	set_current(null)
@@ -130,6 +137,7 @@
 	set_current(null)
 
 /datum/mind/proc/get_language_holder()
+	RETURN_TYPE(/datum/language_holder)
 	if(!language_holder)
 		language_holder = new (src)
 	return language_holder
@@ -153,24 +161,40 @@
 	var/mob/living/old_current = current
 	if(current)
 		current.transfer_observers_to(new_character) //transfer anyone observing the old character to the new one
+
 	set_current(new_character) //associate ourself with our new body
 	QDEL_NULL(antag_hud)
+
 	new_character.mind = src //and associate our new body with ourself
-	antag_hud = new_character.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/antagonist_hud, "combo_hud", src)
+
+	antag_hud = new_character.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/antagonist_hud, "combo_hud", current, src)
+
 	for(var/a in antag_datums) //Makes sure all antag datums effects are applied in the new body
 		var/datum/antagonist/A = a
 		A.on_body_transfer(old_current, current)
+
 	if(iscarbon(new_character))
 		var/mob/living/carbon/C = new_character
 		C.last_mind = src
+
 	transfer_martial_arts(new_character)
+
+	// If the new mob is immune to addictions, cure them all.
+	if(HAS_TRAIT(new_character, TRAIT_NO_ADDICTION))
+		for(var/addiction_type in subtypesof(/datum/addiction))
+			remove_addiction_points(addiction_type, MAX_ADDICTION_POINTS)
+
 	RegisterSignal(new_character, COMSIG_LIVING_DEATH, PROC_REF(set_death_time))
+
 	if(active || force_key_move)
 		new_character.key = key //now transfer the key to link the client to our new body
+
 	if(new_character.client)
 		LAZYCLEARLIST(new_character.client.recent_examines)
 		new_character.client.init_verbs() // re-initialize character specific verbs
+
 	current.update_atom_languages()
+
 	SEND_SIGNAL(src, COMSIG_MIND_TRANSFERRED, old_current)
 	SEND_SIGNAL(current, COMSIG_MOB_MIND_TRANSFERRED_INTO)
 
@@ -414,7 +438,7 @@
 
 	if(implant)
 		var/obj/item/implant/uplink/starting/new_implant = new(traitor_mob)
-		new_implant.implant(traitor_mob, null, silent = TRUE)
+		new_implant.implant(traitor_mob, null, BODY_ZONE_CHEST, silent = TRUE)
 		if(!silent)
 			to_chat(traitor_mob, span_boldnotice("Your Syndicate Uplink has been cunningly implanted in you, for a small TC fee. Simply trigger the uplink to access it."))
 		return new_implant
@@ -426,6 +450,9 @@
 		CRASH("Uplink creation failed.")
 	new_uplink.setup_unlock_code()
 	new_uplink.uplink_handler.owner = traitor_mob.mind
+	if(isturf(new_uplink.uplink_handler))
+		stack_trace("what")
+
 	new_uplink.uplink_handler.assigned_role = traitor_mob.mind.assigned_role.title
 	new_uplink.uplink_handler.assigned_species = traitor_mob.dna.species.id
 	if(uplink_loc == R)
@@ -659,7 +686,6 @@
 					current.dropItemToGround(W, TRUE) //The TRUE forces all items to drop, since this is an admin undress.
 			if("takeuplink")
 				take_uplink()
-				wipe_memory()//Remove any memory they may have had.
 				log_admin("[key_name(usr)] removed [current]'s uplink.")
 			if("crystals")
 				if(check_rights(R_FUN))
@@ -712,7 +738,7 @@
 					log_admin("[key_name(usr)] gave [current] an uplink.")
 
 	else if (href_list["obj_announce"])
-		announce_objectives()
+		announce_objectives(TRUE)
 
 	//Something in here might have changed your mob
 	if(self_antagging && (!usr || !usr.client) && current.client)
@@ -726,12 +752,31 @@
 		all_objectives |= A.objectives
 	return all_objectives
 
-/datum/mind/proc/announce_objectives()
+/// Prints the objectives to the mind's owner. If loudly is true, instead open a window.
+/datum/mind/proc/announce_objectives(loudly)
+	set waitfor = FALSE
 	var/obj_count = 1
-	to_chat(current, span_notice("Your current objectives:"))
-	for(var/datum/objective/objective as anything in get_all_objectives())
-		to_chat(current, "<B>[objective.objective_name] #[obj_count]</B>: [objective.explanation_text]")
-		obj_count++
+	if(!loudly)
+		var/list/objectives = get_all_objectives()
+		if(!length(objectives))
+			return
+
+		to_chat(current, span_notice("Your current objectives:"))
+		for(var/datum/objective/objective as anything in get_all_objectives())
+			to_chat(current, "<B>[objective.objective_name] #[obj_count]</B>: [objective.explanation_text]")
+			obj_count++
+	else
+		var/list/content = list("<div>")
+		content +="<span style='text-align: center;color: red'><h1>Your objectives may have been changed!</h1></span><br><br>"
+		for(var/datum/objective/objective as anything in get_all_objectives())
+			content += "<B>[objective.objective_name] #[obj_count]</B>: [objective.explanation_text]<br><br>"
+			obj_count++
+
+		content += "</div>"
+		var/datum/browser/popup = new(current, "Objectives", "Objectives", 700, 300)
+		popup.set_window_options("can_close=1;can_minimize=10;can_maximize=0;can_resize=0;titlebar=1;")
+		popup.set_content(jointext(content, ""))
+		popup.open(current)
 
 /datum/mind/proc/find_syndicate_uplink(check_unlocked)
 	var/list/L = current.get_all_contents()
@@ -779,14 +824,6 @@
 	special_role = ROLE_WIZARD
 	add_antag_datum(/datum/antagonist/wizard)
 
-
-/datum/mind/proc/make_rev()
-	var/datum/antagonist/rev/head/head = new()
-	head.give_flash = TRUE
-	head.give_hud = TRUE
-	add_antag_datum(head)
-	special_role = ROLE_REV_HEAD
-
 /datum/mind/proc/transfer_martial_arts(mob/living/new_character)
 	if(!ishuman(new_character))
 		return
@@ -832,6 +869,8 @@
 
 ///Adds addiction points to the specified addiction
 /datum/mind/proc/add_addiction_points(type, amount)
+	if(current && HAS_TRAIT(current, TRAIT_NO_ADDICTION))
+		return
 	LAZYSET(addiction_points, type, min(LAZYACCESS(addiction_points, type) + amount, MAX_ADDICTION_POINTS))
 	var/datum/addiction/affected_addiction = SSaddiction.all_addictions[type]
 	return affected_addiction.on_gain_addiction_points(src)
@@ -852,12 +891,37 @@
 	. = assigned_role
 	assigned_role = new_role
 
-/// Simple proc to make someone become contractor support
-/datum/mind/proc/make_contractor_support()
-	if(has_antag_datum(/datum/antagonist/traitor/contractor_support))
-		return
-	add_antag_datum(/datum/antagonist/traitor/contractor_support)
+/// Getter for the memories list
+/datum/mind/proc/get_notes()
+	. = notes
 
+	if(length(antag_datums))
+		for(var/datum/antagonist/antag_datum as anything in antag_datums)
+			notes[NOTES_ANTAG] += antag_datum.antag_memory
+
+/// Setter for memories.
+/datum/mind/proc/set_note(note_key, content)
+	if(!note_key)
+		return
+
+	if(isnull(content) && (note_key != NOTES_CUSTOM))
+		notes -= note_key
+		return
+
+	notes[note_key] = content
+
+/// Append text to a note.
+/datum/mind/proc/append_note(note_key, content)
+	if(!note_key)
+		return
+
+	if(isnull(content))
+		return
+
+	if(!notes[note_key])
+		notes += note_key
+
+	notes[note_key] += content
 
 /mob/dead/new_player/sync_mind()
 	return

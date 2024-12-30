@@ -6,7 +6,6 @@
 	hijack_speed = 1
 	show_name_in_check_antagonists = TRUE
 	show_to_ghosts = TRUE
-	antag_moodlet = /datum/mood_event/focused
 	suicide_cry = "FOR THE SPIDER CLAN!!"
 	preview_outfit = /datum/outfit/ninja
 	///Whether or not this ninja will obtain objectives
@@ -76,7 +75,7 @@
 	//Explosive plant, the bomb will register its completion on priming
 	var/datum/objective/plant_explosive/bombobjective = new /datum/objective/plant_explosive()
 	for(var/sanity in 1 to 100) // 100 checks at most.
-		var/area/selected_area = pick(GLOB.sortedAreas)
+		var/area/selected_area = pick(GLOB.areas)
 		if(!is_station_level(selected_area.z) || !(selected_area.area_flags & VALID_TERRITORY))
 			continue
 		bombobjective.detonation_location = selected_area
@@ -103,7 +102,6 @@
 	SEND_SOUND(owner.current, sound('sound/effects/ninja_greeting.ogg'))
 	to_chat(owner.current, "I am an elite mercenary of the mighty Spider Clan!")
 	to_chat(owner.current, "Surprise is my weapon. Shadows are my armor. Without them, I am nothing. (//initialize your suit by right clicking on it, to use abilities like stealth)!")
-	owner.announce_objectives()
 
 /datum/antagonist/ninja/on_gain()
 	if(give_objectives)

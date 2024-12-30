@@ -6,40 +6,36 @@
 	total_positions = 3
 	spawn_positions = 2
 	supervisors = "the chief engineer"
-	selection_color = "#fff5cc"
+	selection_color = "#5b4d20"
 	exp_requirements = 60
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 
 	outfit = /datum/outfit/job/atmos
-	plasmaman_outfit = /datum/outfit/plasmaman/atmospherics
 
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/atmos,
-			SPECIES_PLASMAMAN = /datum/outfit/job/atmos/plasmaman,
 		),
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_ENG
 
 	liver_traits = list(TRAIT_ENGINEER_METABOLISM)
 
-	display_order = JOB_DISPLAY_ORDER_ATMOSPHERIC_TECHNICIAN
-	bounty_types = CIV_JOB_ENG
 	departments_list = list(
 		/datum/job_department/engineering,
 		)
+
+	employers = list(
+		/datum/employer/daedalus,
+	)
 
 	family_heirlooms = list(/obj/item/lighter, /obj/item/lighter/greyscale, /obj/item/storage/box/matches)
 
 	mail_goodies = list(
 		/obj/item/rpd_upgrade/unwrench = 30,
-		/obj/item/grenade/gas_crystal/crystal_foam = 10,
-		/obj/item/grenade/gas_crystal/proto_nitrate_crystal = 10,
-		/obj/item/grenade/gas_crystal/healium_crystal = 10,
-		/obj/item/grenade/gas_crystal/nitrous_oxide_crystal = 5,
 	)
 
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
@@ -63,15 +59,6 @@
 	box = /obj/item/storage/box/survival/engineer
 	pda_slot = ITEM_SLOT_LPOCKET
 
-/datum/outfit/job/atmos/plasmaman
-	name = "Atmospheric Technician (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/atmospherics
-	gloves = /obj/item/clothing/gloves/color/plasmaman/atmos
-	head = /obj/item/clothing/head/helmet/space/plasmaman/atmospherics
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
-
 /datum/outfit/job/atmos/mod
 	name = "Atmospheric Technician (MODsuit)"
 
@@ -79,3 +66,5 @@
 	back = /obj/item/mod/control/pre_equipped/atmospheric
 	mask = /obj/item/clothing/mask/gas/atmos
 	internals_slot = ITEM_SLOT_SUITSTORE
+	backpack_contents = null
+	box = null

@@ -19,7 +19,7 @@
 /obj/item/food/burger/plain/Initialize(mapload)
 	. = ..()
 	if(prob(1))
-		new/obj/effect/particle_effect/smoke(get_turf(src))
+		new/obj/effect/particle_effect/fluid/smoke(get_turf(src))
 		playsound(src, 'sound/effects/smoke.ogg', 50, TRUE)
 		visible_message(span_warning("Oh, ye gods! [src] is ruined! But what if...?"))
 		name = "steamed ham"
@@ -80,24 +80,6 @@
 	foodtypes = GRAIN | VEGETABLES
 	venue_value = FOOD_PRICE_CHEAP
 
-/obj/item/food/burger/roburger
-	name = "roburger"
-	desc = "The lettuce is the only organic component. Beep."
-	icon_state = "roburger"
-	food_reagents = list(/datum/reagent/consumable/nutriment = 8, /datum/reagent/cyborg_mutation_nanomachines = 6, /datum/reagent/consumable/nutriment/vitamin = 6)
-	tastes = list("bun" = 4, "lettuce" = 2, "sludge" = 1)
-	foodtypes = GRAIN | TOXIC
-	venue_value = FOOD_PRICE_EXOTIC
-
-/obj/item/food/burger/roburgerbig
-	name = "roburger"
-	desc = "This massive patty looks like poison. Beep."
-	icon_state = "roburger"
-	max_volume = 120
-	food_reagents = list(/datum/reagent/consumable/nutriment = 11, /datum/reagent/cyborg_mutation_nanomachines = 80, /datum/reagent/consumable/nutriment/vitamin = 15)
-	tastes = list("bun" = 4, "lettuce" = 2, "sludge" = 1)
-	foodtypes = GRAIN | TOXIC
-
 /obj/item/food/burger/xeno
 	name = "xenoburger"
 	desc = "Smells caustic. Tastes like heresy."
@@ -135,7 +117,7 @@
 	name = "brainburger"
 	desc = "A strange looking burger. It looks almost sentient."
 	icon_state = "brainburger"
-	food_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/medicine/mannitol = 6, /datum/reagent/consumable/nutriment/vitamin = 5, /datum/reagent/consumable/nutriment/protein = 6)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/medicine/alkysine = 6, /datum/reagent/consumable/nutriment/vitamin = 5, /datum/reagent/consumable/nutriment/protein = 6)
 	tastes = list("bun" = 4, "brains" = 2)
 	foodtypes = GRAIN | MEAT | GROSS
 	venue_value = FOOD_PRICE_CHEAP
@@ -426,10 +408,14 @@
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
+/obj/item/food/burger/crazy/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/item/food/burger/crazy/process(delta_time) // DIT EES HORRIBLE
 	if(DT_PROB(2.5, delta_time))
-		var/datum/effect_system/smoke_spread/bad/green/smoke = new
-		smoke.set_up(0, src)
+		var/datum/effect_system/fluid_spread/smoke/bad/green/smoke = new
+		smoke.set_up(0, location = src)
 		smoke.start()
 
 // empty burger you can customize

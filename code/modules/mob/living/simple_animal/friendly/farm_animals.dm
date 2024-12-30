@@ -24,7 +24,7 @@
 	attack_same = 1
 	attack_verb_continuous = "kicks"
 	attack_verb_simple = "kick"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	attack_vis_effect = ATTACK_EFFECT_KICK
 	health = 40
 	maxHealth = 40
@@ -56,7 +56,7 @@
 		return
 
 	eat_plants()
-	if(pulledby)
+	if(LAZYLEN(grabbed_by))
 		return
 
 	for(var/direction in shuffle(list(1,2,4,8,5,6,9,10)))
@@ -137,11 +137,7 @@
 	AddElement(/datum/element/pet_bonus, "chirps!")
 	pixel_x = base_pixel_x + rand(-6, 6)
 	pixel_y = base_pixel_y + rand(0, 10)
-	add_cell_sample()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
-
-/mob/living/simple_animal/chick/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CHICKEN, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/chick/Life(delta_time = SSMOBS_DT, times_fired)
 	. =..()
@@ -196,7 +192,6 @@
 /mob/living/simple_animal/chicken/Initialize(mapload)
 	. = ..()
 	chicken_count++
-	add_cell_sample()
 	AddElement(/datum/element/animal_variety, "chicken", pick("brown","black","white"), TRUE)
 	AddComponent(/datum/component/egg_layer,\
 		/obj/item/food/egg,\
@@ -209,9 +204,6 @@
 		egg_laid_callback = CALLBACK(src, PROC_REF(egg_laid))\
 	)
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
-
-/mob/living/simple_animal/chicken/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CHICKEN, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/chicken/Destroy()
 	chicken_count--
@@ -258,7 +250,7 @@
 	response_harm_simple = "kick"
 	attack_verb_continuous = "bucks"
 	attack_verb_simple = "buck"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	health = 75
 	maxHealth = 75
 	blood_volume = BLOOD_VOLUME_NORMAL

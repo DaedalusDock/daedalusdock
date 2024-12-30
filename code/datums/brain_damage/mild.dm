@@ -42,7 +42,6 @@
 
 /datum/brain_trauma/mild/dumbness/on_gain()
 	ADD_TRAIT(owner, TRAIT_DUMB, TRAUMA_TRAIT)
-	SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "dumb", /datum/mood_event/oblivious)
 	return ..()
 
 /datum/brain_trauma/mild/dumbness/on_life(delta_time, times_fired)
@@ -55,7 +54,6 @@
 /datum/brain_trauma/mild/dumbness/on_lose()
 	REMOVE_TRAIT(owner, TRAIT_DUMB, TRAUMA_TRAIT)
 	owner.remove_status_effect(/datum/status_effect/speech/stutter/derpspeech)
-	SEND_SIGNAL(owner, COMSIG_CLEAR_MOOD_EVENT, "dumb")
 	return ..()
 
 /datum/brain_trauma/mild/speech_impediment
@@ -114,7 +112,7 @@
 
 /datum/brain_trauma/mild/healthy/on_life(delta_time, times_fired)
 	owner.set_screwyhud(SCREWYHUD_HEALTHY) //just in case of hallucinations
-	owner.adjustStaminaLoss(-2.5 * delta_time) //no pain, no fatigue
+	owner.stamina.adjust(2.5 * delta_time) //no pain, no fatigue
 	..()
 
 /datum/brain_trauma/mild/healthy/on_lose()
@@ -145,7 +143,7 @@
 
 	else if(DT_PROB(1.5, delta_time))
 		to_chat(owner, span_warning("You feel a sudden weakness in your muscles!"))
-		owner.adjustStaminaLoss(50)
+		owner.stamina.adjust(-50)
 	..()
 
 /datum/brain_trauma/mild/muscle_spasms
@@ -237,6 +235,11 @@
 /datum/brain_trauma/mild/mind_echo/handle_hearing(datum/source, list/hearing_args)
 	if(owner == hearing_args[HEARING_SPEAKER])
 		return
+
+	var/datum/language/L = hearing_args[HEARING_LANGUAGE]
+	if(istype(L, /datum/language/visual) || !L?.can_receive_language(owner) || !owner.has_language(L))
+		return
+
 	if(hear_dejavu.len >= 5)
 		if(prob(25))
 			var/deja_vu = pick_n_take(hear_dejavu)

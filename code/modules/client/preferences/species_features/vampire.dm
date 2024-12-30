@@ -1,10 +1,7 @@
 /datum/preference/choiced/vampire_status
 	savefile_key = "feature_vampire_status"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_FEATURES
 	priority = PREFERENCE_PRIORITY_NAME_MODIFICATIONS //this will be overwritten by names otherwise
-	main_feature_name = "Vampire status"
-	should_generate_icons = TRUE
 	relevant_species_trait = BLOOD_CLANS
 
 /datum/preference/choiced/vampire_status/create_default_value()
@@ -13,8 +10,8 @@
 /datum/preference/choiced/vampire_status/init_possible_values()
 	var/list/values = list()
 
-	values["Inoculated"] = icon('icons/obj/drinks.dmi', "bloodglass")
-	values["Outcast"] = icon('icons/obj/bloodpack.dmi', "generic_bloodpack")
+	values += "Inoculated"
+	values += "Outcast"
 
 	return values
 
@@ -33,11 +30,12 @@ GLOBAL_LIST_EMPTY(vampire_houses)
 	var/datum/job/vampire_job = SSjob.GetJob(target.job)
 	if(!vampire_job) //no job or no mind LOSERS
 		return
-	var/list/valid_departments = (SSjob.joinable_departments.Copy()) - list(/datum/job_department/silicon, /datum/job_department/undefined)
+	var/list/valid_departments = (SSjob.departments.Copy()) - list(/datum/job_department/silicon, /datum/job_department/undefined, /datum/job_department/company_leader)
 	for(var/datum/job_department/potential_house as anything in valid_departments)
 		if(vampire_job in potential_house.department_jobs)
 			vampire_house = potential_house
 			break
+
 	if(!vampire_house) //sillycones
 		return
 	if(!GLOB.vampire_houses[vampire_house.department_name])

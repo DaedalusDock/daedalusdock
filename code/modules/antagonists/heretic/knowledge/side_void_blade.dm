@@ -105,7 +105,7 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT)
 
-/obj/item/risen_hand/visual_equipped(mob/user, slot)
+/obj/item/risen_hand/visual_equipped(mob/living/user, slot)
 	. = ..()
 
 	// Even hand indexes are right hands,
@@ -165,7 +165,7 @@
 		/obj/item/stack/sheet/mineral/titanium = 5,
 		/obj/item/clothing/suit/armor = 1,
 		/obj/item/assembly/flash = 1,
-		/obj/item/organ/internal/lungs = 1,
+		/obj/item/organ/lungs = 1,
 	)
 	cost = 1
 	route = PATH_SIDE

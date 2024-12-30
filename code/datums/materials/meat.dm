@@ -3,6 +3,7 @@
 	name = "meat"
 	desc = "Meat"
 	id = /datum/material/meat // So the bespoke versions are categorized under this
+
 	color = rgb(214, 67, 67)
 	greyscale_colors = rgb(214, 67, 67)
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
@@ -10,7 +11,7 @@
 	value_per_unit = 0.05
 	beauty_modifier = -0.3
 	strength_modifier = 0.7
-	armor_modifiers = list(MELEE = 0.3, BULLET = 0.3, LASER = 1.2, ENERGY = 1.2, BOMB = 0.3, BIO = 0, FIRE = 1, ACID = 1)
+	armor_modifiers = list(BLUNT = 0.3, PUNCTURE = 0.3, SLASH = 0, LASER = 1.2, ENERGY = 1.2, BOMB = 0.3, BIO = 0, FIRE = 1, ACID = 1)
 	item_sound_override = 'sound/effects/meatslap.ogg'
 	turf_sound_override = FOOTSTEP_MEAT
 	texture_layer_icon_state = "meat"
@@ -34,7 +35,7 @@
 
 
 /datum/material/meat/mob_meat
-	init_flags = MATERIAL_INIT_BESPOKE
+	bespoke = TRUE
 	var/subjectname = ""
 	var/subjectjob = null
 
@@ -42,7 +43,7 @@
 	if(!istype(source))
 		return FALSE
 
-	name = "[source?.name ? "[source.name]'s" : "mystery"] [initial(name)]"
+	name = "[source.name ? "[source.name]'s" : "mystery"] [initial(name)]"
 
 	if(source.real_name)
 		subjectname = source.real_name
@@ -56,7 +57,7 @@
 	return ..()
 
 /datum/material/meat/species_meat
-	init_flags = MATERIAL_INIT_BESPOKE
+	bespoke = TRUE
 
 /datum/material/meat/species_meat/Initialize(_id, datum/species/source)
 	if(!istype(source))

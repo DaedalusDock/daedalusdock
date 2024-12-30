@@ -7,6 +7,9 @@
 	name = "plating"
 	icon_state = "plating"
 	base_icon_state = "plating"
+	broken_blend = BLEND_MULTIPLY
+	burned_blend = BLEND_DEFAULT
+
 	overfloor_placed = FALSE
 	underfloor_accessibility = UNDERFLOOR_INTERACTABLE
 	baseturfs = /turf/baseturf_bottom
@@ -27,10 +30,10 @@
 	var/allow_replacement = TRUE
 
 /turf/open/floor/plating/setup_broken_states()
-	return list("platingdmg1", "platingdmg2", "platingdmg3")
+	return list("damaged1", "damaged2", "damaged4")
 
 /turf/open/floor/plating/setup_burnt_states()
-	return list("panelscorched")
+	return list("burned0", "burned1")
 
 /turf/open/floor/plating/examine(mob/user)
 	. = ..()
@@ -62,7 +65,7 @@
 			return
 		else
 			to_chat(user, span_notice("You begin reinforcing the floor..."))
-			if(do_after(user, src, 30))
+			if(do_after(user, src, 30, DO_PUBLIC, display = C))
 				if (R.get_amount() >= 2 && !istype(src, /turf/open/floor/engine))
 					PlaceOnTop(/turf/open/floor/engine, flags = CHANGETURF_INHERIT_AIR)
 					playsound(src, 'sound/items/deconstruct.ogg', 80, TRUE)
@@ -82,6 +85,21 @@
 				balloon_alert(user, "too damaged, use a welding tool!")
 			else
 				balloon_alert(user, "too damaged, use a welding or plating repair tool!")
+
+	else if(istype(C, /obj/item/stack/overfloor_catwalk))
+		if(!broken && !burnt)
+			for(var/obj/O in src)
+				for(var/M in O.buckled_mobs)
+					to_chat(user, span_warning("Someone is buckled to \the [O]! Unbuckle [M] to move \him out of the way."))
+					return
+			var/obj/item/stack/overfloor_catwalk/tile = C
+			tile.place_tile(src, user)
+		else
+			if(!iscyborg(user))
+				balloon_alert(user, "too damaged, use a welding tool!")
+			else
+				balloon_alert(user, "too damaged, use a welding or plating repair tool!")
+
 	else if(istype(C, /obj/item/cautery/prt)) //plating repair tool
 		if((broken || burnt) && C.use_tool(src, user, 0, volume=80))
 			to_chat(user, span_danger("You fix some dents on the broken plating."))
@@ -94,7 +112,7 @@
 			if(sheets.get_amount() < PLATE_REINFORCE_COST)
 				return
 			balloon_alert(user, "reinforcing plating...")
-			if(do_after(user, src, 12 SECONDS))
+			if(do_after(user, src, 12 SECONDS, DO_PUBLIC, display = C))
 				if(sheets.get_amount() < PLATE_REINFORCE_COST)
 					return
 				sheets.use(PLATE_REINFORCE_COST)
@@ -225,7 +243,7 @@
 	if(!isturf(user.loc))
 		return //can't do this stuff whilst inside objects and such
 
-	add_fingerprint(user)
+	tool_used.leave_evidence(user, src)
 
 	if(deconstruct_steps(tool_used, user))
 		return

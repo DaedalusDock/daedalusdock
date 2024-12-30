@@ -13,9 +13,9 @@
 	layer = LOW_WALL_LAYER
 	max_integrity = 150
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_LOW_WALL)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
-	armor = list(MELEE = 20, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 25, BIO = 100, FIRE = 80, ACID = 100)
+	smoothing_groups = SMOOTH_GROUP_LOW_WALL
+	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WALLS
+	armor = list(BLUNT = 20, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 25, BIO = 100, FIRE = 80, ACID = 100)
 
 	/// Material used in construction
 	var/plating_material = /datum/material/iron
@@ -29,7 +29,6 @@
 	//These are set by the material, do not touch!!!
 	var/material_color
 	var/stripe_icon
-	var/shiny_stripe
 	//Ok you can touch vars again :)
 
 /obj/structure/low_wall/Initialize(mapload)
@@ -75,7 +74,9 @@
 		var/obj/structure/low_wall/neighbor = locate() in step_turf
 		if(neighbor)
 			continue
-		if(!can_area_smooth(step_turf))
+		var/can_area_smooth
+		CAN_AREAS_SMOOTH(src, step_turf, can_area_smooth)
+		if(isnull(can_area_smooth))
 			continue
 		for(var/atom/movable/movable_thing as anything in step_turf)
 			if(airlock_typecache[movable_thing.type])
@@ -87,14 +88,10 @@
 		neighb_stripe_overlay.appearance_flags = RESET_COLOR
 		neighb_stripe_overlay.color = stripe_paint || material_color
 		overlays += neighb_stripe_overlay
-		if(shiny_stripe)
-			var/image/shine = image('icons/turf/walls/neighbor_stripe.dmi', "shine-[smoothing_junction]")
-			shine.appearance_flags = RESET_COLOR
-			overlays += shine
 
 	return ..()
 
-/obj/structure/low_wall/CanAllowThrough(atom/movable/mover, turf/target)
+/obj/structure/low_wall/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()
 	if(.)
 		return
@@ -102,12 +99,15 @@
 		return TRUE
 	if(locate(/obj/structure/low_wall) in get_turf(mover))
 		return TRUE
+	var/obj/structure/table/T = locate() in get_turf(mover)
+	if(T && T.flipped != TRUE)
+		return TRUE
 
 /obj/structure/low_wall/IsObscured()
 	return FALSE //We handle this ourselves. Please dont break <3.
 
 /obj/structure/low_wall/attackby(obj/item/weapon, mob/living/user, params)
-	if(istype(weapon, /obj/item/paint) || istype(weapon, /obj/item/paint_remover))
+	if(istype(weapon, /obj/item/paint_sprayer) || istype(weapon, /obj/item/paint_remover))
 		return ..()
 
 	if(is_top_obstructed())
@@ -178,11 +178,11 @@
 			return TRUE
 	return FALSE
 
-/obj/structure/low_wall/proc/set_wall_paint(new_paint)
+/obj/structure/low_wall/proc/paint_wall(new_paint)
 	wall_paint = new_paint
 	update_appearance()
 
-/obj/structure/low_wall/proc/set_stripe_paint(new_paint)
+/obj/structure/low_wall/proc/paint_stripe(new_paint)
 	stripe_paint = new_paint
 	update_appearance()
 
@@ -191,8 +191,7 @@
 	var/datum/material/mat_ref = GET_MATERIAL_REF(plating_material)
 
 	material_color = mat_ref.wall_color
-	stripe_icon = mat_ref.wall_stripe_icon
-	shiny_stripe = mat_ref.wall_shine
+	stripe_icon = mat_ref.low_wall_stripe_icon
 
 	if(update_appearance)
 		update_appearance()
@@ -209,7 +208,7 @@
 
 /obj/structure/low_wall/titanium
 	plating_material = /datum/material/titanium
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_SHUTTLE_PARTS)
+	canSmoothWith = SMOOTH_GROUP_SHUTTLE_PARTS + SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WALLS
 
 /obj/structure/low_wall/plastitanium
 	plating_material = /datum/material/alloy/plastitanium
@@ -223,3 +222,7 @@
 /obj/structure/low_wall/prepainted/daedalus
 	wall_paint = PAINT_WALL_DAEDALUS
 	stripe_paint = PAINT_STRIPE_DAEDALUS
+
+/obj/structure/low_wall/prepainted/marsexec
+	wall_paint = PAINT_WALL_MARS
+	stripe_paint = PAINT_STRIPE_MARS

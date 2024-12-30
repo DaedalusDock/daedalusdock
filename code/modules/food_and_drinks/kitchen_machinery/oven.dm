@@ -19,6 +19,7 @@
 	circuit = /obj/item/circuitboard/machine/oven
 	processing_flags = START_PROCESSING_MANUALLY
 	resistance_flags = FIRE_PROOF
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	///The tray inside of this oven, if there is one.
 	var/obj/item/plate/oven_tray/used_tray
@@ -55,7 +56,7 @@
 	else
 		. += mutable_appearance(icon, "oven_lid_closed")
 		if(used_tray?.contents.len)
-			. += emissive_appearance(icon, "oven_light_mask", alpha = src.alpha)
+			. += emissive_appearance(icon, "oven_light_mask", alpha = 90)
 
 /obj/machinery/oven/process(delta_time)
 	..()
@@ -93,14 +94,16 @@
 	else
 		return ..()
 
+/obj/machinery/oven/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	return ..() || istype(contained, /obj/item/plate/oven_tray)
+
 ///Adds a tray to the oven, making sure the shit can get baked.
 /obj/machinery/oven/proc/add_tray_to_oven(obj/item/plate/oven_tray)
 	used_tray = oven_tray
 
 	if(!open)
 		oven_tray.vis_flags |= VIS_HIDE
-	add_viscontents(oven_tray)
-	oven_tray.flags_1 |= IS_ONTOP_1
+	vis_contents += oven_tray
 	oven_tray.pixel_y = OVEN_TRAY_Y_OFFSET
 	oven_tray.pixel_x = OVEN_TRAY_X_OFFSET
 
@@ -115,8 +118,7 @@
 
 /obj/machinery/oven/proc/tray_removed_from_oven(obj/item/oven_tray)
 	SIGNAL_HANDLER
-	oven_tray.flags_1 &= ~IS_ONTOP_1
-	remove_viscontents(oven_tray)
+	vis_contents -= oven_tray
 	used_tray = null
 	UnregisterSignal(oven_tray, COMSIG_MOVABLE_MOVED)
 	update_baking_audio()

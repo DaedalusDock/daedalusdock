@@ -1,7 +1,8 @@
 /datum/preference/choiced/glasses
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	explanation = "Glasses"
 	savefile_key = "glasses"
 	savefile_identifier = PREFERENCE_CHARACTER
+	priority = PREFERENCE_PRIORITY_QUIRKS
 
 /datum/preference/choiced/glasses/init_possible_values()
 	return GLOB.nearsighted_glasses
@@ -10,7 +11,7 @@
 	if (!..(preferences))
 		return FALSE
 
-	return "Nearsighted" in preferences.all_quirks
+	return "Nearsighted" in preferences.read_preference(/datum/preference/blob/quirks)
 
 /datum/preference/choiced/glasses/apply_to_human(mob/living/carbon/human/target, value)
 	return

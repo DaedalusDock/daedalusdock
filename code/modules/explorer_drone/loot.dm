@@ -69,12 +69,12 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 /// Valuables
 /datum/adventure_loot_generator/simple/cash
 	id = "cash"
-	loot_list = list(/obj/item/storage/bag/money,/obj/item/antique,/obj/item/stack/spacecash/c1000,/obj/item/holochip/thousand)
+	loot_list = list(/obj/item/storage/bag/money,/obj/item/antique,/obj/item/stack/spacecash/c1000,)
 
 /// Drugs
 /datum/adventure_loot_generator/simple/drugs
 	id = "drugs"
-	loot_list = list(/obj/item/storage/pill_bottle/happy,/obj/item/storage/pill_bottle/lsd,/obj/item/storage/pill_bottle/penacid,/obj/item/storage/pill_bottle/stimulant)
+	loot_list = list(/obj/item/storage/pill_bottle/happy,/obj/item/storage/pill_bottle/lsd,/obj/item/storage/pill_bottle/haloperidol,/obj/item/storage/pill_bottle/stimulant)
 
 /// Rare minerals/materials
 /datum/adventure_loot_generator/simple/materials
@@ -153,7 +153,6 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 /obj/item/firelance/Initialize(mapload)
 	. = ..()
 	cell = new /obj/item/stock_parts/cell(src)
-	AddComponent(/datum/component/two_handed)
 
 /obj/item/firelance/attack(mob/living/M, mob/living/user, params)
 	if(!user.combat_mode)

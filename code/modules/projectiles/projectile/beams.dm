@@ -9,7 +9,7 @@
 	armor_flag = LASER
 	eyeblur = 2
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/red_laser
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 1
 	light_power = 1
 	light_color = COLOR_SOFT_RED
@@ -53,7 +53,7 @@
 	damage = 15
 
 /obj/projectile/beam/weak/penetrator
-	armour_penetration = 50
+	armor_penetration = 50
 
 /obj/projectile/beam/practice
 	name = "practice laser"
@@ -70,7 +70,7 @@
 	icon_state = "xray"
 	damage = 15
 	range = 15
-	armour_penetration = 100
+	armor_penetration = 100
 	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE | PASSCLOSEDTURF | PASSMACHINE | PASSSTRUCTURE | PASSDOORS
 
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/green_laser
@@ -80,15 +80,22 @@
 	impact_type = /obj/effect/projectile/impact/xray
 
 /obj/projectile/beam/disabler
-	name = "disabler beam"
-	icon_state = "omnilaser"
-	damage = 30
+	name = "disabler bolt"
+	icon = 'goon/icons/obj/projectiles.dmi'
+	icon_state = "taser_projectile"
+	speed = 0.7
+	damage = 0
 	damage_type = STAMINA
 	armor_flag = ENERGY
-	hitsound = 'sound/weapons/tap.ogg'
+
+	disorient_length = 2 SECONDS
+	disorient_damage = 50
+	disorient_status_length = 4 SECONDS
+
+	hitsound = 'goon/sounds/weapons/sparks6.ogg'
 	eyeblur = 0
-	impact_effect_type = /obj/effect/temp_visual/impact_effect/blue_laser
-	light_color = LIGHT_COLOR_BLUE
+	impact_effect_type = /obj/effect/temp_visual/impact_effect/yellow_laser
+	light_color = LIGHT_COLOR_DIM_YELLOW
 	tracer_type = /obj/effect/projectile/tracer/disabler
 	muzzle_type = /obj/effect/projectile/muzzle/disabler
 	impact_type = /obj/effect/projectile/impact/disabler
@@ -105,11 +112,8 @@
 
 /obj/projectile/beam/pulse/on_hit(atom/target, blocked = FALSE)
 	. = ..()
-	if (!QDELETED(target) && (isturf(target) || istype(target, /obj/structure/)))
-		if(isobj(target))
-			SSexplosions.med_mov_atom += target
-		else
-			SSexplosions.medturf += target
+	if (!QDELETED(target) && (isturf(target) || istype(target, /obj/structure)))
+		EX_ACT(target, EXPLODE_HEAVY)
 
 /obj/projectile/beam/pulse/shotgun
 	damage = 30
@@ -146,10 +150,10 @@
 	hitscan_light_range = 0.75
 	hitscan_light_color_override = COLOR_LIME
 	muzzle_flash_intensity = 6
-	muzzle_flash_range = 2
+	muzzle_flash_range = 3
 	muzzle_flash_color_override = COLOR_LIME
 	impact_light_intensity = 7
-	impact_light_range = 2.5
+	impact_light_range = 3
 	impact_light_color_override = COLOR_LIME
 
 /obj/projectile/beam/lasertag
@@ -168,7 +172,7 @@
 		var/mob/living/carbon/human/M = target
 		if(istype(M.wear_suit))
 			if(M.wear_suit.type in suit_types)
-				M.adjustStaminaLoss(34)
+				M.stamina.adjust(-34)
 
 /obj/projectile/beam/lasertag/redtag
 	icon_state = "laser"

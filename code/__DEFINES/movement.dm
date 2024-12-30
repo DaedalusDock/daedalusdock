@@ -34,6 +34,24 @@ GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 #define MOVEMENT_LOOP_IGNORE_PRIORITY (1<<1)
 ///Should we override the loop's glide?
 #define MOVEMENT_LOOP_IGNORE_GLIDE (1<<2)
+///Should we not update our movables dir on move?
+#define MOVEMENT_LOOP_NO_DIR_UPDATE (1<<3)
+///Is the loop moving the movable outside its control, like it's an external force? e.g. footsteps won't play if enabled.
+#define MOVEMENT_LOOP_OUTSIDE_CONTROL (1<<4)
+
+// Movement loop status flags
+/// Has the loop been paused, soon to be resumed?
+#define MOVELOOP_STATUS_PAUSED (1<<0)
+/// Is the loop running? (Is true even when paused)
+#define MOVELOOP_STATUS_RUNNING (1<<1)
+/// Is the loop queued in a subsystem?
+#define MOVELOOP_STATUS_QUEUED (1<<2)
+
+/**
+ * Returns a bitfield containing flags both present in `flags` arg and the `processing_move_loop_flags` move_packet variable.
+ * Has no use outside of procs called within the movement proc chain.
+ */
+#define CHECK_MOVE_LOOP_FLAGS(movable, flags) (movable.move_packet ? (movable.move_packet.processing_move_loop_flags & (flags)) : NONE)
 
 //Index defines for movement bucket data packets
 #define MOVEMENT_BUCKET_TIME 1
@@ -61,7 +79,7 @@ GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 /// Used when the grip on a pulled object shouldn't be broken.
 #define FALL_RETAIN_PULL (1<<3)
 
-/// Runs check_pulling() by the end of [/atom/movable/proc/zMove] for every movable that's pulling something. Should be kept enabled unless you know what you are doing.
+/// Runs recheck_grabs() by the end of [/atom/movable/proc/zMove] for every movable that's pulling something. Should be kept enabled unless you know what you are doing.
 #define ZMOVE_CHECK_PULLING (1<<0)
 /// Checks if pulledby is nearby. if not, stop being pulled.
 #define ZMOVE_CHECK_PULLEDBY (1<<1)
@@ -69,16 +87,18 @@ GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 #define ZMOVE_FALL_CHECKS (1<<2)
 #define ZMOVE_CAN_FLY_CHECKS (1<<3)
 #define ZMOVE_INCAPACITATED_CHECKS (1<<4)
-/// Doesn't call zPassIn() and zPassOut()
+/// Doesn't call CanZPass()
 #define ZMOVE_IGNORE_OBSTACLES (1<<5)
 /// Gives players chat feedbacks if they're unable to move through z levels.
 #define ZMOVE_FEEDBACK (1<<6)
 /// Whether we check the movable (if it exists) the living mob is buckled on or not.
 #define ZMOVE_ALLOW_BUCKLED (1<<7)
-/// If the movable is actually ventcrawling vertically.
-#define ZMOVE_VENTCRAWLING (1<<8)
 /// Includes movables that're either pulled by the source or mobs buckled to it in the list of moving movables.
-#define ZMOVE_INCLUDE_PULLED (1<<9)
+#define ZMOVE_INCLUDE_PULLED (1<<8)
+/// Skips check for whether the moving atom is anchored or not.
+#define ZMOVE_ALLOW_ANCHORED (1<<9)
+/// Skip CanMoveOnto() checks
+#define ZMOVE_SKIP_CANMOVEONTO (1<<10)
 
 #define ZMOVE_CHECK_PULLS (ZMOVE_CHECK_PULLING|ZMOVE_CHECK_PULLEDBY)
 
@@ -107,3 +127,8 @@ GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 #define TELEPORT_CHANNEL_CULT "cult"
 /// Anything else
 #define TELEPORT_CHANNEL_FREE "free"
+
+///Return values for moveloop Move()
+#define MOVELOOP_FAILURE 0
+#define MOVELOOP_SUCCESS 1
+#define MOVELOOP_NOT_READY 2

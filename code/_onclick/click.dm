@@ -28,6 +28,8 @@
 		adj += effect.nextmove_adjust()
 	next_move = world.time + ((num + adj)*mod)
 
+	SEND_SIGNAL(src, COMSIG_LIVING_CHANGENEXT_MOVE, next_move)
+
 /**
  * Before anything else, defer these calls to a per-mobtype handler.  This allows us to
  * remove istype() spaghetti code, but requires the addition of other handler procs to simplify it.
@@ -37,17 +39,18 @@
  *
  * Note that this proc can be overridden, and is in the case of screen objects.
  */
-/atom/Click(location,control,params)
-	if(flags_1 & INITIALIZED_1)
+/atom/Click(location, control, params)
+	if(initialized)
 		SEND_SIGNAL(src, COMSIG_CLICK, location, control, params, usr)
+
 		usr.ClickOn(src, params)
 
 /atom/DblClick(location,control,params)
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		usr.DblClickOn(src,params)
 
 /atom/MouseWheel(delta_x,delta_y,location,control,params)
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		usr.MouseWheelOn(src, delta_x, delta_y, params)
 
 /**
@@ -80,25 +83,30 @@
 		if(LAZYACCESS(modifiers, MIDDLE_CLICK))
 			ShiftMiddleClickOn(A)
 			return
+
 		if(LAZYACCESS(modifiers, CTRL_CLICK))
 			CtrlShiftClickOn(A)
 			return
+
 		ShiftClickOn(A)
 		return
+
 	if(LAZYACCESS(modifiers, MIDDLE_CLICK))
 		if(LAZYACCESS(modifiers, CTRL_CLICK))
 			CtrlMiddleClickOn(A)
 		else
 			MiddleClickOn(A, params)
 		return
+
 	if(LAZYACCESS(modifiers, ALT_CLICK)) // alt and alt-gr (rightalt)
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
 			alt_click_on_secondary(A)
 		else
 			AltClickOn(A)
 		return
+
 	if(LAZYACCESS(modifiers, CTRL_CLICK))
-		CtrlClickOn(A)
+		CtrlClickOn(A, modifiers)
 		return
 
 	//PARIAH EDIT ADDITION
@@ -119,7 +127,7 @@
 
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
 		changeNext_move(CLICK_CD_HANDCUFFED)   //Doing shit in cuffs shall be vey slow
-		UnarmedAttack(A, FALSE, modifiers)
+		UnarmedAttack(A, Adjacent(A), modifiers)
 		return
 
 	if(throw_mode)
@@ -133,11 +141,10 @@
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
 			W.attack_self_secondary(src, modifiers)
 			update_held_items()
-			return
 		else
 			W.attack_self(src, modifiers)
 			update_held_items()
-			return
+		return
 
 	//These are always reachable.
 	//User itself, current loc, and user inventory
@@ -148,7 +155,7 @@
 			if(ismob(A))
 				changeNext_move(CLICK_CD_MELEE)
 
-			UnarmedAttack(A, FALSE, modifiers)
+			UnarmedAttack(A, TRUE, modifiers)
 		return
 
 	//Can't reach anything else in lockers or other weirdness
@@ -162,13 +169,13 @@
 			UnarmedAttack(item_atom, TRUE, modifiers)
 
 	//Standard reach turf to turf or reaching inside storage
-	if(CanReach(A,W))
+	if(A.IsReachableBy(src, W?.reach))
 		if(W)
 			W.melee_attack_chain(src, A, params)
 		else
 			if(ismob(A))
 				changeNext_move(CLICK_CD_MELEE)
-			UnarmedAttack(A,1,modifiers)
+			UnarmedAttack(A, TRUE,modifiers)
 	else
 		if(W)
 			if(LAZYACCESS(modifiers, RIGHT_CLICK))
@@ -177,7 +184,7 @@
 				if(after_attack_secondary_result == SECONDARY_ATTACK_CALL_NORMAL)
 					W.afterattack(A, src, FALSE, params)
 			else
-				W.afterattack(A,src,0,params)
+				W.afterattack(A,src, FALSE, params)
 		else
 			if(LAZYACCESS(modifiers, RIGHT_CLICK))
 				ranged_secondary_attack(A, modifiers)
@@ -205,38 +212,65 @@
 	return FALSE
 
 /**
- * A backwards depth-limited breadth-first-search to see if the target is
- * logically "in" anything adjacent to us.
+ * Returns TRUE if a movable can "Reach" this atom. This is defined as adjacency
+ *
+ * This is used for crafting by hitting the floor with items.
+ * The inital use case is glass sheets breaking in to shards when the floor is hit.
+ * Args:
+ * * user: The movable trying to reach us.
+ * * reacher_range: How far the reacher can reach.
+ * * depth: How deep nested inside of an atom contents stack an object can be.
+ * * direct_access: Do not override. Used for recursion.
  */
-/atom/movable/proc/CanReach(atom/ultimate_target, obj/item/tool, view_only = FALSE)
-	var/list/direct_access = DirectAccess()
-	var/depth = 1 + (view_only ? STORAGE_VIEW_DEPTH : INVENTORY_DEPTH)
+/atom/proc/IsReachableBy(atom/movable/user, reacher_range = 1, depth = INFINITY, direct_access = user.DirectAccess())
+	SHOULD_NOT_OVERRIDE(TRUE)
 
-	var/list/closed = list()
-	var/list/checking = list(ultimate_target)
+	if(isnull(user))
+		return FALSE
 
-	while (checking.len && depth > 0)
-		var/list/next = list()
-		--depth
+	if(src in direct_access)
+		return TRUE
 
-		for(var/atom/target in checking)  // will filter out nulls
-			if(closed[target] || isarea(target))  // avoid infinity situations
-				continue
+	// This is a micro-opt, if any turf ever returns false from IsContainedAtomAccessible, change this.
+	if(isturf(loc) || isturf(src))
+		if(CheckReachableAdjacency(user, reacher_range))
+			return TRUE
 
-			if(isturf(target) || isturf(target.loc) || (target in direct_access) || (ismovable(target) && target.flags_1 & IS_ONTOP_1) || target.loc?.atom_storage) //Directly accessible atoms
-				if(Adjacent(target) || (tool && CheckToolReach(src, target, tool.reach))) //Adjacent or reaching attacks
-					return TRUE
+	depth--
+	if(depth <= 0)
+		return FALSE
 
-			closed[target] = TRUE
+	if(isnull(loc) || isarea(loc) || !loc.IsContainedAtomAccessible(src, user))
+		return FALSE
 
-			if (!target.loc)
-				continue
+	return loc.IsReachableBy(user, reacher_range, depth, direct_access)
 
-			if(target.loc.atom_storage)
-				next += target.loc
+/// Checks if a reacher is adjacent to us.
+/atom/proc/CheckReachableAdjacency(atom/movable/reacher, reacher_range)
+	return reacher.Adjacent(src) || ((reacher_range > 1) && RangedReachCheck(reacher, src, reacher_range))
 
-		checking = next
-	return FALSE
+/// Returns TRUE if an atom contained within our contents is reachable.
+/atom/proc/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	return TRUE
+
+/atom/movable/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	return !!atom_storage
+
+/mob/living/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	. = ..()
+	if(.)
+		return
+
+	if(!isliving(user))
+		return
+
+	if(!isitem(contained))
+		return
+
+	var/mob/living/living_user = user
+	var/obj/item/I = contained
+	if(I.can_pickpocket(user))
+		return I.atom_storage == living_user.active_storage
 
 /atom/movable/proc/DirectAccess()
 	return list(src, loc)
@@ -253,27 +287,29 @@
 /turf/AllowClick()
 	return TRUE
 
-/proc/CheckToolReach(atom/movable/here, atom/movable/there, reach)
+/// Called by IsReachableBy() to check for ranged reaches.
+/proc/RangedReachCheck(atom/movable/here, atom/movable/there, reach)
 	if(!here || !there)
-		return
-	switch(reach)
-		if(0)
-			return FALSE
-		if(1)
-			return FALSE //here.Adjacent(there)
-		if(2 to INFINITY)
-			var/obj/dummy = new(get_turf(here))
-			dummy.pass_flags |= PASSTABLE
-			dummy.invisibility = INVISIBILITY_ABSTRACT
-			for(var/i in 1 to reach) //Limit it to that many tries
-				var/turf/T = get_step(dummy, get_dir(dummy, there))
-				if(dummy.CanReach(there))
-					qdel(dummy)
-					return TRUE
-				if(!dummy.Move(T)) //we're blocked!
-					qdel(dummy)
-					return
-			qdel(dummy)
+		return FALSE
+
+	if(reach <= 1)
+		return FALSE
+
+	// Prevent infinite loop.
+	if(istype(here, /obj/effect/abstract/reach_checker))
+		return FALSE
+
+	var/obj/effect/abstract/reach_checker/dummy = new(get_turf(here))
+	for(var/i in 1 to reach) //Limit it to that many tries
+		var/turf/T = get_step(dummy, get_dir(dummy, there))
+		if(there.IsReachableBy(dummy))
+			. = TRUE
+			break
+
+		if(!dummy.Move(T)) //we're blocked!
+			break
+
+	qdel(dummy)
 
 /// Default behavior: ignore double clicks (the second click that makes the doubleclick call already calls for a normal click)
 /mob/proc/DblClickOn(atom/A, params)
@@ -281,7 +317,10 @@
 
 
 /**
- * Translates into [atom/proc/attack_hand], etc.
+ * UnarmedAttack: The higest level of mob click chain discounting click itself.
+ *
+ * This handles, just "clicking on something" without an item. It translates
+ * into [atom/proc/attack_hand], [atom/proc/attack_animal] etc.
  *
  * Note: proximity_flag here is used to distinguish between normal usage (flag=1),
  * and usage when clicking on things telekinetically (flag=0).  This proc will
@@ -343,19 +382,22 @@
 
 /atom/proc/ShiftClick(mob/user)
 	var/flags = SEND_SIGNAL(user, COMSIG_CLICK_SHIFT, src)
-	if(user.client && (user.client.eye == user || user.client.eye == user.loc || flags & COMPONENT_ALLOW_EXAMINATE))
-		user.examinate(src)
-	return
+	if(!user.client)
+		return
+	if(!((user.client.eye == user) || (user.client.eye == user.loc) || isobserver(user)) && !(flags & COMPONENT_ALLOW_EXAMINATE))
+		return
+
+	user.examinate(src)
 
 /**
  * Ctrl click
  * For most objects, pull
  */
-/mob/proc/CtrlClickOn(atom/A)
-	A.CtrlClick(src)
+/mob/proc/CtrlClickOn(atom/A, list/params)
+	A.CtrlClick(src, params)
 	return
 
-/atom/proc/CtrlClick(mob/user)
+/atom/proc/CtrlClick(mob/user, list/params)
 	SEND_SIGNAL(src, COMSIG_CLICK_CTRL, user)
 	SEND_SIGNAL(user, COMSIG_MOB_CTRL_CLICKED, src)
 	var/mob/living/ML = user
@@ -364,8 +406,10 @@
 	if(!can_interact(user))
 		return FALSE
 
-/mob/living/CtrlClick(mob/user)
-	if(!isliving(user) || !user.CanReach(src) || user.incapacitated())
+	return TRUE
+
+/mob/living/CtrlClick(mob/user, list/params)
+	if(!isliving(user) || !IsReachableBy(user) || user.incapacitated())
 		return ..()
 
 	if(world.time < user.next_move)
@@ -379,18 +423,23 @@
 	return ..()
 
 
-/mob/living/carbon/human/CtrlClick(mob/user)
+/mob/living/carbon/human/CtrlClick(mob/user, list/params)
 
-	if(!ishuman(user) || !user.CanReach(src) || user.incapacitated())
+	if(!ishuman(user) || !IsReachableBy(user) || user.incapacitated())
 		return ..()
 
 	if(world.time < user.next_move)
 		return FALSE
 
 	var/mob/living/carbon/human/human_user = user
-	if(human_user.dna.species.grab(human_user, src, human_user.mind.martial_art))
+	// If they're wielding a grab item, do the normal click chain.
+	var/obj/item/hand_item/grab/G = user.get_active_held_item()
+	if(isgrab(G))
+		G.current_grab.hit_with_grab(G, src, params)
+		return TRUE
+
+	if(human_user.dna.species.grab(human_user, src, human_user.mind.martial_art, params))
 		human_user.changeNext_move(CLICK_CD_MELEE)
-		human_user.animate_interact(src, INTERACT_GRAB)
 		return TRUE
 
 	return ..()
@@ -513,6 +562,10 @@
 	mouse_opacity = MOUSE_OPACITY_OPAQUE
 	screen_loc = "CENTER"
 
+/atom/movable/screen/click_catcher/can_usr_use(mob/user)
+	return TRUE // Owned by a client, not a mob. It's all safe anyways.
+
+
 #define MAX_SAFE_BYOND_ICON_SCALE_TILES (MAX_SAFE_BYOND_ICON_SCALE_PX / world.icon_size)
 #define MAX_SAFE_BYOND_ICON_SCALE_PX (33 * 32) //Not using world.icon_size on purpose.
 
@@ -532,6 +585,10 @@
 	transform = M
 
 /atom/movable/screen/click_catcher/Click(location, control, params)
+	. = ..()
+	if(.)
+		return FALSE
+
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, MIDDLE_CLICK) && iscarbon(usr))
 		var/mob/living/carbon/C = usr

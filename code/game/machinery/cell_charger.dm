@@ -28,10 +28,12 @@
 /obj/machinery/cell_charger/examine(mob/user)
 	. = ..()
 	. += "There's [charging ? "a" : "no"] cell in the charger."
-	if(charging)
-		. += "Current charge: [round(charging.percent(), 1)]%."
+
 	if(in_range(user, src) || isobserver(user))
-		. += span_notice("The status display reads: Charging power: <b>[charge_rate]W</b>.")
+		. += span_notice("The status display reads:")
+		. += span_notice("[FOURSPACES]Charging power: <b>[charge_rate]W</b>.")
+		if(charging)
+			. += span_notice("[FOURSPACES]Current charge: [round(charging.percent(), 1)]%.")
 
 /obj/machinery/cell_charger/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()

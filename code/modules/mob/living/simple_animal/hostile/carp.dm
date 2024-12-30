@@ -20,7 +20,7 @@
 	response_disarm_simple = "gently push aside"
 	emote_taunt = list("gnashes")
 	taunt_chance = 30
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 25
 	health = 25
 	search_objects = 1
@@ -87,9 +87,8 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_HEALS_FROM_CARP_RIFTS, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
-	add_cell_sample()
 	if(ai_controller)
-		ai_controller.blackboard[BB_HOSTILE_ATTACK_WORD] = pick(speak_emote)
+		ai_controller.set_blackboard_key(BB_HOSTILE_ATTACK_WORD, pick(speak_emote))
 		if(tamer)
 			tamed(tamer)
 		else
@@ -108,10 +107,6 @@
 		can_have_ai = FALSE
 		toggle_ai(AI_OFF)
 
-
-/mob/living/simple_animal/hostile/carp/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CARP, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
 /**
  * Randomly assigns a color to a carp from either a common or rare color variant lists
  *
@@ -129,7 +124,7 @@
 		our_color = pick(carp_colors)
 		set_greyscale(colors=list(carp_colors[our_color]))
 
-/mob/living/simple_animal/hostile/carp/death(gibbed)
+/mob/living/simple_animal/hostile/carp/death(gibbed, cause_of_death = "Unknown")
 	if(shiny)
 		QDEL_NULL(particles)
 	return ..()
@@ -192,10 +187,6 @@
 	del_on_death = 1
 	random_color = FALSE
 
-
-/mob/living/simple_animal/hostile/carp/holocarp/add_cell_sample()
-	return
-
 /mob/living/simple_animal/hostile/carp/megacarp
 	icon = 'icons/mob/broadMobs.dmi'
 	name = "Mega Space Carp"
@@ -226,10 +217,6 @@
 	melee_damage_upper += rand(10,20)
 	maxHealth += rand(30,60)
 	move_to_delay = rand(3,7)
-
-
-/mob/living/simple_animal/hostile/carp/megacarp/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MEGACARP, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/hostile/carp/megacarp/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
 	. = ..()
@@ -297,7 +284,7 @@
 	ADD_TRAIT(src, TRAIT_CAN_STRIP, INNATE_TRAIT) //carp can take the disk off the captain
 	ADD_TRAIT(src, TRAIT_CAN_USE_NUKE, INNATE_TRAIT) //carp SMART
 
-/mob/living/simple_animal/hostile/carp/cayenne/death(gibbed)
+/mob/living/simple_animal/hostile/carp/cayenne/death(gibbed, cause_of_death = "Unknown")
 	if(disky)
 		disky.forceMove(drop_location())
 		disky = null
@@ -321,8 +308,6 @@
 		disky = potential_disky
 		to_chat(src, span_nicegreen("YES!! You manage to pick up [disky]. (Click anywhere to place it back down.)"))
 		update_icon()
-		if(!disky.fake)
-			client.give_award(/datum/award/achievement/misc/cayenne_disk, src)
 		return
 	if(disky)
 		if(isopenturf(attacked_target))

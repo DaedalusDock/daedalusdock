@@ -10,7 +10,7 @@
 	sentience_type = SENTIENCE_HUMANOID
 	speak_chance = 0
 	turns_per_move = 5
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 100
 	health = 100
 	harm_intent_damage = 5
@@ -18,7 +18,7 @@
 	melee_damage_upper = 15
 	attack_verb_continuous = "punches"
 	attack_verb_simple = "punch"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	combat_mode = TRUE
 	loot = list(/obj/effect/mob_spawn/corpse/human/russian,
 				/obj/item/knife/kitchen)

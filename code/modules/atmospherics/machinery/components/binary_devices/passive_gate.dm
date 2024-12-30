@@ -26,7 +26,7 @@ Passive gate is similar to the regular pump except:
 	///Stores the radio connection
 	var/datum/radio_frequency/radio_connection
 
-/obj/machinery/atmospherics/components/binary/passive_gate/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/binary/passive_gate/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
@@ -62,8 +62,8 @@ Passive gate is similar to the regular pump except:
 	var/pressure_delta = input_starting_pressure - target_pressure
 
 	var/transfer_moles = (target_pressure/air1.volume)*air1.total_moles
-	transfer_moles = min(transfer_moles, calculate_transfer_moles(air1, air2, pressure_delta))
-	if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, pressure_delta)) >= 0)//pump_gas() will return a negative number if no flow occurred
+	transfer_moles = min(transfer_moles, calculate_transfer_moles(air1, air2, pressure_delta, parents[2]?.combined_volume || 0))
+	if(pump_gas_passive(air1, air2, transfer_moles) >= 0)//pump_gas() will return a negative number if no flow occurred
 		update_parents()
 
 //Radio remote control
@@ -144,6 +144,10 @@ Passive gate is similar to the regular pump except:
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 		return
 
+	if("status" in signal.data)
+		broadcast_status()
+		return
+
 	var/old_on = on //for logging
 
 	if("power" in signal.data)
@@ -157,10 +161,6 @@ Passive gate is similar to the regular pump except:
 
 	if(on != old_on)
 		investigate_log("was turned [on ? "on" : "off"] by a remote signal", INVESTIGATE_ATMOS)
-
-	if("status" in signal.data)
-		broadcast_status()
-		return
 
 	broadcast_status()
 	update_appearance()

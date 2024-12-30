@@ -41,6 +41,8 @@
 
 /obj/item/pressure_plate/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(!can_trigger || !active)
 		return
 	if(trigger_item && !istype(AM, specific_item))
@@ -72,7 +74,7 @@
 		sigdev = null
 	return ..()
 
-/obj/item/pressure_plate/CtrlClick(mob/user)
+/obj/item/pressure_plate/CtrlClick(mob/user, list/params)
 	if(protected)
 		to_chat(user, span_warning("You can't quite seem to turn this pressure plate off..."))
 		return

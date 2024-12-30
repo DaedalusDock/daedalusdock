@@ -1,69 +1,84 @@
-import { classes } from 'common/react';
 import { useBackend } from '../backend';
-import { Box, Button, Icon, LabeledList, NoticeBox, Section, Stack, Table } from '../components';
+import {
+  Box,
+  Button,
+  Icon,
+  LabeledList,
+  NoticeBox,
+  Section,
+  Stack,
+  Table,
+} from '../components';
+import { DmIcon } from '../components/DMIcon';
 import { Window } from '../layouts';
 
 type VendingData = {
-  onstation: boolean;
-  department: string;
-  jobDiscount: number;
-  product_records: ProductRecord[];
-  coin_records: CoinRecord[];
-  hidden_records: HiddenRecord[];
-  user: UserData;
-  stock: StockItem[];
-  extended_inventory: boolean;
   access: boolean;
+  coin_records: CoinRecord[];
+  department: string;
+  extended_inventory: boolean;
+  hidden_records: HiddenRecord[];
+  jobDiscount: number;
+  onstation: boolean;
+  product_records: ProductRecord[];
+  stock: StockItem[];
+  user: UserData;
   vending_machine_input: CustomInput[];
 };
 
 type ProductRecord = {
-  path: string;
-  name: string;
-  price: number;
+  icon: string;
+  icon_state: string;
   max_amount: number;
+  name: string;
+  path: string;
+  price: number;
   ref: string;
 };
 
 type CoinRecord = {
-  path: string;
-  name: string;
-  price: number;
+  icon: string;
+  icon_state: string;
   max_amount: number;
-  ref: string;
+  name: string;
+  path: string;
   premium: boolean;
+  price: number;
+  ref: string;
 };
 
 type HiddenRecord = {
-  path: string;
-  name: string;
-  price: number;
+  icon: string;
+  icon_state: string;
   max_amount: number;
-  ref: string;
+  name: string;
+  path: string;
   premium: boolean;
+  price: number;
+  ref: string;
 };
 
 type UserData = {
-  name: string;
   cash: number;
-  job: string;
   department: string;
+  job: string;
+  name: string;
 };
 
 type StockItem = {
-  name: string;
   amount: number;
   colorable: boolean;
+  name: string;
 };
 
 type CustomInput = {
+  img: string;
   name: string;
   price: number;
-  img: string;
 };
 
-export const Vending = (_, context) => {
-  const { data } = useBackend<VendingData>(context);
+export const Vending = (_) => {
+  const { data } = useBackend<VendingData>();
   const { onstation } = data;
 
   return (
@@ -85,8 +100,8 @@ export const Vending = (_, context) => {
 };
 
 /** Displays user details if an ID is present and the user is on the station */
-export const UserDetails = (_, context) => {
-  const { data } = useBackend<VendingData>(context);
+export const UserDetails = (_) => {
+  const { data } = useBackend<VendingData>();
   const { user } = data;
 
   if (!user) {
@@ -115,8 +130,8 @@ export const UserDetails = (_, context) => {
 };
 
 /** Displays  products in a section, with user balance at top */
-const ProductDisplay = (_, context) => {
-  const { data } = useBackend<VendingData>(context);
+const ProductDisplay = (_) => {
+  const { data } = useBackend<VendingData>();
   const {
     onstation,
     user,
@@ -145,12 +160,14 @@ const ProductDisplay = (_, context) => {
       scrollable
       title="Products"
       buttons={
-        !!onstation
-        && user && (
+        !!onstation &&
+        user && (
           <Box fontSize="16px" color="green">
             {(user && user.cash) || 0} cr <Icon name="coins" color="gold" />
-          </Box>)
-      }>
+          </Box>
+        )
+      }
+    >
       <Table>
         {inventory.map((product) => (
           <VendingRow
@@ -169,21 +186,20 @@ const ProductDisplay = (_, context) => {
  * Uses a table layout. Labeledlist might be better,
  * but you cannot use item icons as labels currently.
  */
-const VendingRow = (props, context) => {
-  const { data } = useBackend<VendingData>(context);
+const VendingRow = (props) => {
+  const { data } = useBackend<VendingData>();
   const { custom, product, productStock } = props;
   const { access, department, jobDiscount, onstation, user } = data;
-  const free
-    = !onstation
-    || product.price === 0;
+  const free = !onstation || product.price === 0;
   const discount = !product.premium && access;
   const remaining = custom ? product.amount : productStock.amount;
   const redPrice = Math.round(product.price * jobDiscount);
-  const disabled
-    = remaining === 0
-    || (onstation && !user)
-    || (onstation && !access
-    && (discount ? redPrice : product.price) > user?.cash);
+  const disabled =
+    remaining === 0 ||
+    (onstation && !user) ||
+    (onstation &&
+      !access &&
+      (discount ? redPrice : product.price) > user?.cash);
 
   return (
     <Table.Row>
@@ -199,11 +215,7 @@ const VendingRow = (props, context) => {
         )}
       </Table.Cell>
       <Table.Cell collapsing textAlign="right">
-        <ProductStock
-          custom={custom}
-          product={product}
-          remaining={remaining}
-        />
+        <ProductStock custom={custom} product={product} remaining={remaining} />
       </Table.Cell>
       <Table.Cell collapsing textAlign="center">
         <ProductButton
@@ -227,16 +239,15 @@ const ProductImage = (props) => {
     <img
       src={`data:image/jpeg;base64,${product.img}`}
       style={{
-        'vertical-align': 'middle',
-        'horizontal-align': 'middle',
+        verticalAlign: 'middle',
       }}
     />
   ) : (
-    <span
-      className={classes(['vending32x32', product.path])}
+    <DmIcon
+      icon={product.icon}
+      icon_state={product.icon_state}
       style={{
-        'vertical-align': 'middle',
-        'horizontal-align': 'middle',
+        verticalAlign: 'middle',
       }}
     />
   );
@@ -245,8 +256,8 @@ const ProductImage = (props) => {
 /** In the case of customizable items, ie: shoes,
  * this displays a color wheel button that opens another window.
  */
-const ProductColorSelect = (props, context) => {
-  const { act } = useBackend<VendingData>(context);
+const ProductColorSelect = (props) => {
+  const { act } = useBackend<VendingData>();
   const { disabled, product } = props;
 
   return (
@@ -266,24 +277,25 @@ const ProductStock = (props) => {
   return (
     <Box
       color={
-        (remaining <= 0 && 'bad')
-        || (!custom && remaining <= product.max_amount / 2 && 'average')
-        || 'good'
-      }>
+        (remaining <= 0 && 'bad') ||
+        (!custom && remaining <= product.max_amount / 2 && 'average') ||
+        'good'
+      }
+    >
       {remaining} left
     </Box>
   );
 };
 
 /** The main button to purchase an item. */
-const ProductButton = (props, context) => {
-  const { act, data } = useBackend<VendingData>(context);
+const ProductButton = (props) => {
+  const { act, data } = useBackend<VendingData>();
   const { access } = data;
   const { custom, discount, disabled, free, product, redPrice } = props;
   const customPrice = access ? 'FREE' : product.price + ' cr';
   let standardPrice = product.price + ' cr';
   if (free) {
-    standardPrice = "FREE";
+    standardPrice = 'FREE';
   } else if (discount) {
     standardPrice = redPrice + ' cr';
   }
@@ -293,8 +305,10 @@ const ProductButton = (props, context) => {
       disabled={disabled}
       onClick={() =>
         act('dispense', {
-          'item': product.name,
-        })}>
+          item: product.name,
+        })
+      }
+    >
       {customPrice}
     </Button>
   ) : (
@@ -303,8 +317,10 @@ const ProductButton = (props, context) => {
       disabled={disabled}
       onClick={() =>
         act('vend', {
-          'ref': product.ref,
-        })}>
+          ref: product.ref,
+        })
+      }
+    >
       {standardPrice}
     </Button>
   );

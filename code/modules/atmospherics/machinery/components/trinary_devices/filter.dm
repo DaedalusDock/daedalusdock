@@ -22,7 +22,7 @@
 	//Last power draw, for the progress bar in the UI
 	var/last_power_draw = 0
 
-/obj/machinery/atmospherics/components/trinary/filter/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/trinary/filter/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
@@ -73,8 +73,8 @@
 	var/datum/gas_mixture/air2 = airs[2]
 	var/datum/gas_mixture/air3 = airs[3]
 
-	var/transfer_moles_max = calculate_transfer_moles(air1, air3, MAX_OMNI_PRESSURE - air3.returnPressure())
-	transfer_moles_max = min(transfer_moles_max, (calculate_transfer_moles(air1, air2, MAX_OMNI_PRESSURE - air2.returnPressure())))
+	var/transfer_moles_max = calculate_transfer_moles(air1, air3, MAX_OMNI_PRESSURE - air3.returnPressure(), parents[3]?.combined_volume || 0)
+	transfer_moles_max = min(transfer_moles_max, (calculate_transfer_moles(air1, air2, MAX_OMNI_PRESSURE - air2.returnPressure(), parents[2]?.combined_volume || 0)))
 	//Figure out the amount of moles to transfer
 	var/transfer_moles = clamp(((transfer_rate/air1.volume)*air1.total_moles), 0, transfer_moles_max)
 	if(!transfer_moles)
@@ -206,7 +206,7 @@
 	icon_state = "filter_on-0"
 /obj/machinery/atmospherics/components/trinary/filter/atmos/n2
 	name = "nitrogen filter"
-	filter_type = list(GAS_N2O)
+	filter_type = list(GAS_NITROGEN)
 /obj/machinery/atmospherics/components/trinary/filter/atmos/o2
 	name = "oxygen filter"
 	filter_type = list(GAS_OXYGEN)

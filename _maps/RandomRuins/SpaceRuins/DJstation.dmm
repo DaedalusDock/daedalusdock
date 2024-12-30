@@ -5,7 +5,7 @@
 /turf/template_noop,
 /area/space/nearstation)
 "d" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/spawner/random/maintenance/two,
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
@@ -14,7 +14,7 @@
 /turf/template_noop,
 /area/space/nearstation)
 "f" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/airlock/maintenance_hatch{
 	name = "Telecommunications"
 	},
@@ -28,7 +28,7 @@
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "i" = (
-/obj/structure/reagent_dispensers/plumbed{
+/obj/structure/reagent_dispensers{
 	dir = 8
 	},
 /turf/open/floor/plating,
@@ -60,12 +60,11 @@
 /area/ruin/space/djstation/service)
 "w" = (
 /obj/machinery/door/airlock/maintenance_hatch,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "x" = (
 /obj/machinery/door/airlock/maintenance_hatch,
-/obj/machinery/duct,
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "y" = (
@@ -73,24 +72,24 @@
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "A" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "C" = (
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "D" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/airlock/maintenance_hatch,
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "E" = (
 /obj/machinery/power/solar/fake,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/solarpanel/airless,
 /area/ruin/space/djstation/solars)
 "G" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/light/small/directional/south,
 /obj/structure/closet/crate,
 /obj/item/clothing/head/ushanka,
@@ -98,29 +97,24 @@
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "I" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/east,
-/obj/machinery/duct,
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "M" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/structure/closet/crate,
 /obj/effect/spawner/random/maintenance/five,
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
-"N" = (
-/obj/machinery/duct,
-/turf/open/floor/plating,
-/area/ruin/space/djstation/service)
 "O" = (
 /obj/structure/lattice/catwalk,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/template_noop,
 /area/ruin/space/djstation/solars)
 "P" = (
 /obj/effect/spawner/structure/window/reinforced,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "R" = (
@@ -128,14 +122,14 @@
 	desc = "A high-capacity superconducting magnetic energy storage (SMES) unit.";
 	name = "power storage unit"
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "S" = (
 /obj/machinery/power/terminal{
 	dir = 1
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/djstation/service)
 "U" = (
@@ -513,11 +507,11 @@ o
 o
 o
 x
-N
-N
+C
+C
 x
 I
-N
+C
 C
 A
 C

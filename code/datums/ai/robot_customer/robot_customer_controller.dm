@@ -1,6 +1,6 @@
 /datum/ai_controller/robot_customer
 	ai_movement = /datum/ai_movement/basic_avoidance
-	movement_delay = 0.8 SECONDS
+	non_mob_movement_delay = 0.8 SECONDS
 	blackboard = list(BB_CUSTOMER_CURRENT_ORDER = null,
 	BB_CUSTOMER_MY_SEAT = null,
 	BB_CUSTOMER_PATIENCE = 999,
@@ -13,20 +13,20 @@
 
 /datum/ai_controller/robot_customer/Destroy()
 	// clear possible datum refs
-	blackboard[BB_CUSTOMER_CURRENT_ORDER] = null
-	blackboard[BB_CUSTOMER_CUSTOMERINFO] = null
+	set_blackboard_key(BB_CUSTOMER_CURRENT_ORDER, null)
+	set_blackboard_key(BB_CUSTOMER_CUSTOMERINFO, null)
 	return ..()
 
 /datum/ai_controller/robot_customer/TryPossessPawn(atom/new_pawn)
 	if(!istype(new_pawn, /mob/living/simple_animal/robot_customer))
 		return AI_CONTROLLER_INCOMPATIBLE
 	RegisterSignal(new_pawn, COMSIG_PARENT_ATTACKBY, PROC_REF(on_attackby))
-	RegisterSignal(new_pawn, COMSIG_LIVING_GET_PULLED, PROC_REF(on_get_pulled))
+	RegisterSignal(new_pawn, COMSIG_ATOM_GET_GRABBED, PROC_REF(on_get_pulled))
 	RegisterSignal(new_pawn, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_get_punched))
 	return ..() //Run parent at end
 
 /datum/ai_controller/robot_customer/UnpossessPawn(destroy)
-	UnregisterSignal(pawn, list(COMSIG_PARENT_ATTACKBY, COMSIG_LIVING_GET_PULLED, COMSIG_ATOM_ATTACK_HAND))
+	UnregisterSignal(pawn, list(COMSIG_PARENT_ATTACKBY, COMSIG_ATOM_GET_GRABBED, COMSIG_ATOM_ATTACK_HAND))
 	return ..() //Run parent at end
 
 /datum/ai_controller/robot_customer/proc/on_attackby(datum/source, obj/item/I, mob/living/user)
@@ -42,12 +42,12 @@
 
 /datum/ai_controller/robot_customer/proc/eat_order(obj/item/order_item, datum/venue/attending_venue)
 	if(!blackboard[BB_CUSTOMER_EATING])
-		blackboard[BB_CUSTOMER_EATING] = TRUE
+		set_blackboard_key(BB_CUSTOMER_EATING, TRUE)
 		attending_venue.on_get_order(pawn, order_item)
 		var/our_order = blackboard[BB_CUSTOMER_CURRENT_ORDER]
 		if(isdatum(our_order))
 			qdel(our_order)
-		blackboard[BB_CUSTOMER_CURRENT_ORDER] = null
+		set_blackboard_key(BB_CUSTOMER_CURRENT_ORDER, null)
 
 
 ///Called when
@@ -89,7 +89,7 @@
 			return
 		if(3)
 			customer.say(customer_data.self_defense_line)
-	blackboard[BB_CUSTOMER_CURRENT_TARGET] = greytider
+	set_blackboard_key(BB_CUSTOMER_CURRENT_TARGET, greytider)
 
 	CancelActions()
 

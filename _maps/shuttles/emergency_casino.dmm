@@ -477,15 +477,8 @@
 /area/shuttle/escape)
 "mm" = (
 /obj/structure/table/wood/poker,
-/obj/item/stack/spacecash/c10,
-/obj/item/stack/spacecash/c20{
-	pixel_x = -2;
-	pixel_y = 4
-	},
-/obj/item/stack/spacecash/c50{
-	pixel_x = 2;
-	pixel_y = 7
-	},
+/obj/item/stack/spacecash/c1/ten,
+/obj/item/stack/spacecash/c1/twenty,
 /obj/machinery/vending/wallmed/directional/west,
 /turf/open/floor/carpet/green,
 /area/shuttle/escape)
@@ -582,17 +575,12 @@
 /obj/item/reagent_containers/glass/bottle/epinephrine{
 	pixel_x = 6
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = -3
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /obj/item/reagent_containers/glass/bottle/epinephrine{
 	pixel_x = -3;
 	pixel_y = 8
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = 6;
-	pixel_y = 8
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /obj/item/reagent_containers/syringe/epinephrine{
 	pixel_x = 3;
 	pixel_y = -2
@@ -787,7 +775,6 @@
 /area/shuttle/escape/brig)
 "vL" = (
 /obj/structure/table/optable,
-/obj/item/surgical_drapes,
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
 "vP" = (
@@ -905,14 +892,7 @@
 /area/shuttle/escape)
 "yH" = (
 /obj/structure/closet/crate,
-/obj/item/paint/black,
-/obj/item/paint/blue,
-/obj/item/paint/green,
-/obj/item/paint/red,
-/obj/item/paint/violet,
-/obj/item/paint/white,
-/obj/item/paint/yellow,
-/obj/item/paint_remover,
+/obj/item/paint_sprayer,
 /turf/open/floor/sepia,
 /area/shuttle/escape)
 "yJ" = (
@@ -951,7 +931,7 @@
 	dir = 1
 	},
 /obj/structure/table/reinforced,
-/obj/machinery/chem_dispenser/drinks/beer/fullupgrade,
+/obj/machinery/chem_dispenser/drinks/beer,
 /turf/open/floor/iron,
 /area/shuttle/escape)
 "AA" = (
@@ -1120,10 +1100,7 @@
 "Gf" = (
 /obj/structure/table/reinforced,
 /obj/item/stack/spacecash/c100,
-/obj/item/stack/spacecash/c10{
-	pixel_x = 2;
-	pixel_y = 4
-	},
+/obj/item/stack/spacecash/c1/ten,
 /turf/open/floor/iron,
 /area/shuttle/escape)
 "Gs" = (
@@ -1196,7 +1173,7 @@
 	dir = 1
 	},
 /obj/structure/table/reinforced,
-/obj/machinery/chem_dispenser/drinks/fullupgrade,
+/obj/machinery/chem_dispenser/drinks,
 /obj/structure/sign/poster/official/cohiba_robusto_ad{
 	pixel_y = 32
 	},

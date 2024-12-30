@@ -5,21 +5,18 @@
 	faction = FACTION_STATION
 	total_positions = 2
 	spawn_positions = 1
-	supervisors = "the head of personnel"
-	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/none
+	)
 
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/janitor,
-			SPECIES_PLASMAMAN = /datum/outfit/job/janitor/plasmaman,
 		),
 	)
 
-	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_STATION_MASTER
-
-	display_order = JOB_DISPLAY_ORDER_JANITOR
 	departments_list = list(
 		/datum/job_department/service,
 		)
@@ -43,15 +40,6 @@
 	uniform = /obj/item/clothing/under/rank/civilian/janitor
 	belt = /obj/item/modular_computer/tablet/pda/janitor
 	ears = /obj/item/radio/headset/headset_srv
-
-/datum/outfit/job/janitor/plasmaman
-	name = "Janitor (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/janitor
-	gloves = /obj/item/clothing/gloves/color/plasmaman/janny
-	head = /obj/item/clothing/head/helmet/space/plasmaman/janitor
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/janitor/pre_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()

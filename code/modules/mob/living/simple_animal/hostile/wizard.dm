@@ -9,7 +9,7 @@
 	sentience_type = SENTIENCE_HUMANOID
 	speak_chance = 0
 	turns_per_move = 3
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 100
 	health = 100
 	harm_intent_damage = 5
@@ -17,7 +17,7 @@
 	melee_damage_upper = 5
 	attack_verb_continuous = "punches"
 	attack_verb_simple = "punch"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	combat_mode = TRUE
 	atmos_requirements = list("min_oxy" = 5, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 1, "min_co2" = 0, "max_co2" = 5, "min_n2" = 0, "max_n2" = 0)
 	unsuitable_atmos_damage = 7.5
@@ -41,7 +41,7 @@
 /mob/living/simple_animal/hostile/wizard/Initialize(mapload)
 	. = ..()
 	var/obj/item/implant/exile/exiled = new /obj/item/implant/exile(src)
-	exiled.implant(src)
+	exiled.implant(src, body_zone = BODY_ZONE_CHEST)
 
 	fireball = new(src)
 	fireball.spell_requirements &= ~(SPELL_REQUIRES_HUMAN|SPELL_REQUIRES_WIZARD_GARB|SPELL_REQUIRES_MIND)

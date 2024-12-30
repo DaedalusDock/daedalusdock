@@ -11,7 +11,7 @@
 	response_help_simple = "pass through"
 	combat_mode = TRUE
 	healable = 0
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 40
 	health = 40
 	harm_intent_damage = 10
@@ -30,7 +30,7 @@
 	maxbodytemp = 1500
 	//pressure_resistance = 300
 	gold_core_spawnable = NO_SPAWN //too spooky for science
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 1 // same glowing as visible player ghosts
 	light_power = 2
 	var/ghost_hairstyle

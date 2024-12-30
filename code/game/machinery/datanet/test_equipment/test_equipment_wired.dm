@@ -8,7 +8,7 @@
 // This equipment is *incredibly* basic, and there's probably a subtype of machinery that you should use instead.
 // I should probably remove this before pushing, but if not, here it is!
 
-/obj/machinery/test_equipment/wired/CtrlClick(mob/user)
+/obj/machinery/test_equipment/wired/CtrlClick(mob/user, list/params)
 	. = ..()
 	reconnect_dataterm()
 

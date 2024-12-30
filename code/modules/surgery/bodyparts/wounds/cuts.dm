@@ -1,12 +1,8 @@
 /** CUTS **/
 /datum/wound/cut
+	pain_factor = 1.25
 	bleed_threshold = 5
 	wound_type = WOUND_CUT
-
-/datum/wound/cut/bandage()
-	..()
-	if(!autoheal_cutoff)
-		autoheal_cutoff = initial(autoheal_cutoff)
 
 /datum/wound/cut/is_surgical()
 	return autoheal_cutoff == 0
@@ -17,6 +13,8 @@
 	min_damage = damage_list[current_stage]
 	if(damage > min_damage)
 		heal_damage(damage-min_damage)
+
+	parent.update_damage()
 
 /datum/wound/cut/small
 	// link wound descriptions to amounts of damage

@@ -2,7 +2,7 @@
 	var/amount = 0
 	var/maxamount = 3
 	var/upgrade_item = /obj/item/stack/sheet/animalhide/goliath_hide
-	var/datum/armor/added_armor = list(MELEE = 10)
+	var/datum/armor/added_armor = list(BLUNT = 10)
 	var/upgrade_name
 
 /datum/component/armor_plate/Initialize(_maxamount,obj/item/_upgrade_item,datum/armor/_added_armor)
@@ -68,7 +68,7 @@
 
 	var/obj/O = parent
 	amount++
-	O.armor = O.armor.attachArmor(added_armor)
+	O.setArmor(O.returnArmor().attachArmor(added_armor))
 
 	if(ismecha(O))
 		var/obj/vehicle/sealed/mecha/R = O

@@ -20,7 +20,7 @@
 	hide = TRUE
 	initial_volume = ATMOS_DEFAULT_VOLUME_PUMP
 	///Variable for radio frequency
-	var/frequency = 0
+	var/frequency = FREQ_ATMOS_CONTROL
 	///Variable for radio id
 	var/id = null
 	///Stores the radio connection
@@ -36,9 +36,30 @@
 	///Set the flag for the pressure bound
 	var/pressure_checks = EXT_BOUND
 
+	var/radio_filter_in
+	var/radio_filter_out
+
+/obj/machinery/atmospherics/components/binary/dp_vent_pump/Initialize(mapload)
+	if(!id_tag)
+		id_tag = SSpackets.generate_net_id(src)
+	. = ..()
+
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/Destroy()
+	var/area/vent_area = get_area(src)
+	if(vent_area)
+		vent_area.air_vent_info -= id_tag
+		GLOB.air_vent_names -= id_tag
+
 	SSpackets.remove_object(src, frequency)
+	radio_connection = null
 	return ..()
+
+/obj/machinery/atmospherics/components/binary/dp_vent_pump/update_name()
+	. = ..()
+	if(override_naming)
+		return
+	var/area/vent_area = get_area(src)
+	name = "\proper [vent_area.name] [name] [id_tag]"
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/update_icon_nopipes()
 	cut_overlays()
@@ -101,7 +122,7 @@
 			return
 		if(!environment.total_moles)
 			return
-		var/transfer_moles = calculate_transfer_moles(environment, air2, pressure_delta)
+		var/transfer_moles = calculate_transfer_moles(environment, air2, pressure_delta, parents[2]?.combined_volume || 0)
 
 		var/draw = pump_gas(environment, air2, transfer_moles, power_rating)
 		if(draw > -1)
@@ -122,7 +143,7 @@
 	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = SSpackets.add_object(src, frequency, filter = RADIO_ATMOSIA)
+		radio_connection = SSpackets.add_object(src, frequency, radio_filter_in)
 
 /**
  * Called in atmos_init(), send the component status to the radio device connected
@@ -142,16 +163,29 @@
 		"external" = external_pressure_bound,
 		"sigtype" = "status"
 	))
-	radio_connection.post_signal(signal, filter = RADIO_ATMOSIA)
+
+	var/area/vent_area = get_area(src)
+	if(!GLOB.air_vent_names[id_tag])
+		update_name()
+		GLOB.air_vent_names[id_tag] = name
+
+	vent_area.air_vent_info[id_tag] = signal.data
+	radio_connection.post_signal(signal, filter = radio_filter_out)
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/atmos_init()
-	..()
+	radio_filter_in = frequency==FREQ_ATMOS_CONTROL?(RADIO_FROM_AIRALARM):null
+	radio_filter_out = frequency==FREQ_ATMOS_CONTROL?(RADIO_TO_AIRALARM):null
 	if(frequency)
 		set_frequency(frequency)
 	broadcast_status()
+	..()
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/receive_signal(datum/signal/signal)
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
+		return
+
+	if(("status" in signal.data)) //Send stauts and early return, I'm cargoculting the timer here.
+		broadcast_status()
 		return
 
 	if("power" in signal.data)
@@ -184,9 +218,9 @@
 		external_pressure_bound = clamp(text2num(signal.data["set_external_pressure"]),0,MAX_PUMP_PRESSURE)
 
 	addtimer(CALLBACK(src, PROC_REF(broadcast_status)), 2)
+	update_appearance()
 
-	if(!("status" in signal.data)) //do not update_appearance
-		update_appearance()
+
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume
 	name = "large dual-port air vent"
@@ -221,10 +255,6 @@
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume/incinerator_atmos
 	id = INCINERATOR_ATMOS_DP_VENTPUMP
-	frequency = FREQ_AIRLOCK_CONTROL
-
-/obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume/incinerator_syndicatelava
-	id = INCINERATOR_SYNDICATELAVA_DP_VENTPUMP
 	frequency = FREQ_AIRLOCK_CONTROL
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume/layer2

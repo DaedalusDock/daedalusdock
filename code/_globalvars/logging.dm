@@ -6,6 +6,8 @@ GLOBAL_VAR(world_silicon_log)
 GLOBAL_PROTECT(world_silicon_log)
 GLOBAL_VAR(world_tool_log)
 GLOBAL_PROTECT(world_tool_log)
+GLOBAL_VAR(world_graffiti_log)
+GLOBAL_PROTECT(world_graffiti_log)
 /// Log associated with [/proc/log_suspicious_login()] - Intended to hold all logins that failed due to suspicious circumstances such as ban detection, CID randomisation etc.
 GLOBAL_VAR(world_suspicious_login_log)
 GLOBAL_PROTECT(world_suspicious_login_log)
@@ -84,6 +86,9 @@ GLOBAL_LIST_EMPTY(adminlog)
 GLOBAL_PROTECT(adminlog)
 
 GLOBAL_LIST_EMPTY(active_turfs_startlist)
+
+GLOBAL_LIST_EMPTY(mechcomp_log)
+GLOBAL_PROTECT(mechcomp_log)
 
 /////Picture logging
 GLOBAL_VAR(picture_log_directory)

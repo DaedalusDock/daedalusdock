@@ -111,6 +111,9 @@ Class Procs:
 	#ifdef ZASDBG
 	if(verbose)
 		zas_log("[type] Erased.")
+
+	for(var/turf/T in connecting_turfs)
+		T.vis_contents -= zasdbgovl_edge
 	#endif
 
 ///Called every air tick on edges in the processing list. Equalizes gas.
@@ -151,14 +154,16 @@ Class Procs:
 			if(!length(close_turfs))
 				continue
 
+
+			if(HAS_TRAIT(M, TRAIT_EXPERIENCING_AIRFLOW))
+				SSairflow.Dequeue(M)
+
 			M.airflow_dest = pick(close_turfs) //Pick a random midpoint to fly towards.
 
-			//Soul code im too scared to touch - Edit, I am no longer too scared to touch it. This used to cause an OOM if an admin bussed too hard.
-			if(M)
-				if(repelled)
-					M.RepelAirflowDest(differential/5)
-				else
-					M.GotoAirflowDest(differential/10)
+			if(repelled)
+				M.RepelAirflowDest(differential/5)
+			else
+				M.GotoAirflowDest(differential/10)
 
 		CHECK_TICK
 
@@ -182,9 +187,16 @@ Class Procs:
 /connection_edge/zone/add_connection(connection/c)
 	. = ..()
 	connecting_turfs += c.A
+	#ifdef ZASDBG
+	if(excited)
+		c.A.vis_contents += zasdbgovl_edge
+	#endif
 
 /connection_edge/zone/remove_connection(connection/c)
 	connecting_turfs -= c.A
+	#ifdef ZASDBG
+	c.A.vis_contents -= zasdbgovl_edge
+	#endif
 	return ..()
 
 /connection_edge/zone/contains_zone(zone/Z)
@@ -237,6 +249,7 @@ Class Procs:
 
 		flow(attracted, abs(differential), 0)
 		flow(repelled, abs(differential), 1)
+
 /connection_edge/unsimulated
 	var/turf/B
 	var/datum/gas_mixture/air
@@ -259,10 +272,17 @@ Class Procs:
 	. = ..()
 	connecting_turfs += c.B
 	air.group_multiplier = coefficient
+	#ifdef ZASDBG
+	if(excited)
+		c.B.vis_contents += zasdbgovl_edge
+	#endif
 
 /connection_edge/unsimulated/remove_connection(connection/c)
 	connecting_turfs -= c.B
 	air.group_multiplier = coefficient
+	#ifdef ZASDBG
+	c.B.vis_contents -= zasdbgovl_edge
+	#endif
 	return ..()
 
 /connection_edge/unsimulated/erase()

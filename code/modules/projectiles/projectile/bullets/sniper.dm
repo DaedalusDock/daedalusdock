@@ -1,24 +1,24 @@
 // .50 (Sniper)
 
 /obj/projectile/bullet/p50
-	name =".50 bullet"
+	name =".50 BMG bullet"
 	speed = 0.4
 	range = 400 // Enough to travel from one corner of the Z to the opposite corner and then some.
 	damage = 70
 	paralyze = 100
 	dismemberment = 50
-	armour_penetration = 50
+	armor_penetration = 50
 	var/breakthings = TRUE
 
 /obj/projectile/bullet/p50/on_hit(atom/target, blocked = 0)
 	if(isobj(target) && (blocked != 100) && breakthings)
 		var/obj/O = target
-		O.take_damage(80, BRUTE, BULLET, FALSE)
+		O.take_damage(80, BRUTE, PUNCTURE, FALSE)
 	return ..()
 
 /obj/projectile/bullet/p50/soporific
-	name =".50 soporific bullet"
-	armour_penetration = 0
+	name =".50 BMG soporific bullet"
+	armor_penetration = 0
 	damage = 0
 	dismemberment = 0
 	paralyze = 0
@@ -31,7 +31,7 @@
 	return ..()
 
 /obj/projectile/bullet/p50/penetrator
-	name = "penetrator round"
+	name = ".50 BMG penetrator bullet"
 	icon_state = "gauss"
 	damage = 60
 	range = 50
@@ -49,7 +49,7 @@
 	range = 16
 
 /obj/projectile/bullet/p50/marksman
-	name = ".50 marksman round"
+	name = ".50 BMG marksman bullet"
 	damage = 50
 	paralyze = 0
 	tracer_type = /obj/effect/projectile/tracer/sniper
@@ -59,13 +59,13 @@
 	impact_effect_type = null
 	hitscan_light_intensity = 3
 	hitscan_light_range = 0.75
-	hitscan_light_color_override = LIGHT_COLOR_YELLOW
+	hitscan_light_color_override = LIGHT_COLOR_DIM_YELLOW
 	muzzle_flash_intensity = 5
 	muzzle_flash_range = 1
-	muzzle_flash_color_override = LIGHT_COLOR_YELLOW
+	muzzle_flash_color_override = LIGHT_COLOR_DIM_YELLOW
 	impact_light_intensity = 5
 	impact_light_range = 1
-	impact_light_color_override = LIGHT_COLOR_YELLOW
+	impact_light_color_override = LIGHT_COLOR_DIM_YELLOW
 	ricochets_max = 1
 	ricochet_chance = 100
 	ricochet_auto_aim_angle = 45

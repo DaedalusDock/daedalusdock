@@ -14,7 +14,7 @@
 	req_access = null;
 	req_access_txt = "150"
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /mob/living/simple_animal/hostile/syndicate/ranged/smg/pilot{
 	environment_smash = 0
 	},
@@ -68,7 +68,7 @@
 	dir = 1;
 	network = list("caravansyndicate1")
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/caravan/syndicate1)
 "wV" = (
@@ -76,7 +76,7 @@
 /obj/machinery/door/airlock/hatch{
 	id_tag = "caravansyndicate1_bolt";
 	name = "External Airlock";
-	normalspeed = 0;
+	superspeed = 1;
 	req_access_txt = "150"
 	},
 /obj/effect/decal/cleanable/dirt,
@@ -92,7 +92,7 @@
 	preferred_direction = 4;
 	width = 9
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/caravan/syndicate1)
 "Jv" = (

@@ -4,7 +4,10 @@
 	icon_state = "construction"
 	anchored = FALSE
 	density = TRUE
-	max_integrity = 200
+
+	max_integrity = 120
+	armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 80, ACID = 70)
+
 	var/state = AIRLOCK_ASSEMBLY_NEEDS_WIRES
 	var/base_name = "airlock"
 	var/mineral = null
@@ -43,6 +46,8 @@
 
 	update_appearance()
 	update_name()
+
+	AddComponent(/datum/component/simple_rotation)
 
 /obj/structure/door_assembly/examine(mob/user)
 	. = ..()
@@ -169,7 +174,7 @@
 		W.play_tool_sound(src, 100)
 		user.visible_message(span_notice("[user] installs the electronics into the airlock assembly."), \
 							span_notice("You start to install electronics into the airlock assembly..."))
-		if(do_after(user, src, 40))
+		if(do_after(user, src, 40, DO_PUBLIC, display = W))
 			if( state != AIRLOCK_ASSEMBLY_NEEDS_ELECTRONICS )
 				return
 			if(!user.transferItemToLoc(W, src))
@@ -209,7 +214,7 @@
 							playsound(src, 'sound/items/crowbar.ogg', 100, TRUE)
 							user.visible_message(span_notice("[user] adds [G.name] to the airlock assembly."), \
 												span_notice("You start to install [G.name] into the airlock assembly..."))
-							if(do_after(user, src, 40))
+							if(do_after(user, src, 40, DO_PUBLIC, display = W))
 								if(G.get_amount() < 1 || glass)
 									return
 								if(G.type == /obj/item/stack/sheet/rglass)
@@ -232,7 +237,7 @@
 								playsound(src, 'sound/items/crowbar.ogg', 100, TRUE)
 								user.visible_message(span_notice("[user] adds [G.name] to the airlock assembly."), \
 									span_notice("You start to install [G.name] into the airlock assembly..."))
-								if(do_after(user, src, 40))
+								if(do_after(user, src, 40, DO_PUBLIC, display = W))
 									if(G.get_amount() < 2 || mineral)
 										return
 									to_chat(user, span_notice("You install [M] plating into the airlock assembly."))
@@ -315,7 +320,7 @@
 		if(!glass && has_fill_overlays)
 			. += get_airlock_overlay("fill_construction", stripe_overlays, color = stripe_paint)
 
-	. += get_airlock_overlay("panel_c[state+1]", overlays_file, TRUE)
+	. += get_airlock_overlay("panelAddComponent(/datum/component/simple_rotation, ROTATION_REQUIRE_WRENCH|ROTATION_IGNORE_ANCHORED)_c[state+1]", overlays_file, TRUE)
 
 /obj/structure/door_assembly/update_name()
 	name = ""
@@ -329,6 +334,9 @@
 			name = "near finished "
 	name += "[heat_proof_finished ? "heat-proofed " : ""][glass ? "window " : ""][base_name] assembly"
 	return ..()
+
+/obj/structure/door_assembly/AltClick(mob/user)
+	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
 
 /obj/structure/door_assembly/proc/transfer_assembly_vars(obj/structure/door_assembly/source, obj/structure/door_assembly/target, previous = FALSE)
 	target.glass = source.glass
@@ -377,3 +385,32 @@
 			qdel(src)
 			return TRUE
 	return FALSE
+
+/obj/structure/door_assembly/attack_hand(mob/living/user, list/modifiers)
+	. = ..()
+	if(.)
+		return
+
+	density = FALSE
+	var/is_user_adjacent = user.Adjacent(src)
+	density = TRUE
+
+	if(!is_user_adjacent)
+		return
+
+	. = TRUE
+
+	if(!do_after(user, src, 5 SECONDS, DO_PUBLIC))
+		return
+
+	shimmy_through(user)
+
+/// Move a mob into our loc.
+/obj/structure/door_assembly/proc/shimmy_through(mob/living/user)
+	set_density(FALSE)
+	. = user.Move(get_turf(src), get_dir(user, src))
+	set_density(TRUE)
+
+	if(.)
+		user.visible_message(span_notice("[user] shimmies their way through [src]."))
+

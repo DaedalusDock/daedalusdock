@@ -1,6 +1,8 @@
 //Defines for atom layers and planes
 //KEEP THESE IN A NICE ACSCENDING ORDER, PLEASE
 
+//#define FLOAT_PLANE -32767 //For easy recordkeeping; this is a byond define.
+
 //NEVER HAVE ANYTHING BELOW THIS PLANE ADJUST IF YOU NEED MORE SPACE
 #define LOWEST_EVER_PLANE -200
 
@@ -9,6 +11,11 @@
 #define PLANE_SPACE -95
 #define PLANE_SPACE_PARALLAX -90
 
+/*
+Z-Mimic uses planes -70 through -80, defined elsewhere.
+Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
+*/
+
 #define HEAT_PLANE -12
 #define HEAT_RENDER_TARGET "*HEAT_RENDER_TARGET"
 #define HEAT_COMPOSITE_RENDER_TARGET "*HEAT_RENDER_TARGET_C"
@@ -16,16 +23,13 @@
 #define GRAVITY_PULSE_PLANE -11
 #define GRAVITY_PULSE_RENDER_TARGET "*GRAVPULSE_RENDER_TARGET"
 
-#define OPENSPACE_LAYER 600 //Openspace layer over all
-
-#define TRANSPARENT_FLOOR_PLANE -10 //Transparent plane that shows openspace underneath the floor
-#define OPENSPACE_PLANE -9 //Openspace plane below all turfs
-#define OPENSPACE_BACKDROP_PLANE -8 //Black square just over openspace plane to guaranteed cover all in openspace turf
-
 
 #define FLOOR_PLANE -7
 
 #define GAME_PLANE -6
+
+///Slightly above the game plane but does not catch mouse clicks. Useful for certain visuals that should be clicked through, like seethrough trees
+#define SEETHROUGH_PLANE -5
 
 // PLANE_SPACE layer(s)
 #define SPACE_LAYER 1.8
@@ -37,7 +41,8 @@
 #define MID_TURF_LAYER 2.02
 #define HIGH_TURF_LAYER 2.03
 #define TURF_PLATING_DECAL_LAYER 2.031
-#define TURF_DECAL_LAYER 2.039 //Makes turf decals appear in DM how they will look inworld.
+#define TURF_DECAL_LAYER 2.032 //Makes turf decals appear in DM how they will look inworld.
+#define TURF_DECAL_HIGH_LAYER 2.033
 #define ABOVE_OPEN_TURF_LAYER 2.04
 #define AO_LAYER 2.045
 #define CLOSED_TURF_LAYER 2.05
@@ -47,14 +52,17 @@
 #define DISPOSAL_PIPE_LAYER 2.3
 #define GAS_PIPE_HIDDEN_LAYER 2.35 //layer = initial(layer) + piping_layer / 1000 in atmospherics/update_icon() to determine order of pipe overlap
 #define WIRE_LAYER 2.4
-#define WIRE_BRIDGE_LAYER 2.44
+#define WIRE_KNOT_LAYER 2.44
 #define WIRE_TERMINAL_LAYER 2.45
 #define GAS_SCRUBBER_LAYER 2.46
 #define GAS_PIPE_VISIBLE_LAYER 2.47 //layer = initial(layer) + piping_layer / 1000 in atmospherics/update_icon() to determine order of pipe overlap
 #define GAS_FILTER_LAYER 2.48
 #define GAS_PUMP_LAYER 2.49
+#define BOT_PATH_LAYER 2.491
 #define LOW_OBJ_LAYER 2.5
-///catwalk overlay of /turf/open/floor/plating/catwalk_floor
+/// The lattice of /obj/structure/overfloor_catwalk
+#define CATWALK_LATTICE_LAYER 2.505
+/// The rim of /obj/structure/overfloor_catwalk
 #define CATWALK_LAYER 2.51
 #define LOW_SIGIL_LAYER 2.52
 #define SIGIL_LAYER 2.53
@@ -99,6 +107,7 @@
 #define MOB_UPPER_LAYER 4.07
 #define HITSCAN_PROJECTILE_LAYER 4.09
 #define ABOVE_MOB_LAYER 4.1
+#define TROLLEY_BARS_LAYER 4.2
 #define WALL_OBJ_LAYER 4.25
 #define EDGED_TURF_LAYER 4.3
 #define ON_EDGED_TURF_LAYER 4.35
@@ -110,6 +119,7 @@
 //#define FLY_LAYER 5 //For easy recordkeeping; this is a byond define
 #define GAS_LAYER 5
 #define GASFIRE_LAYER 5.05
+#define MIMICKED_LIGHTING_LAYER 5.06
 #define RIPPLE_LAYER 5.1
 
 
@@ -167,10 +177,11 @@
 #define FULLSCREEN_PLANE 500
 #define FLASH_LAYER 1
 #define FULLSCREEN_LAYER 2
-#define UI_DAMAGE_LAYER 3
-#define BLIND_LAYER 4
-#define CRIT_LAYER 5
-#define CURSE_LAYER 6
+#define DITHER_LAYER 3
+#define UI_DAMAGE_LAYER 4
+#define BLIND_LAYER 5
+#define CRIT_LAYER 6
+#define CURSE_LAYER 7
 #define FOV_EFFECTS_LAYER 10000 //Blindness effects are not layer 4, they lie to you
 
 ///--------------- FULLSCREEN RUNECHAT BUBBLES ------------

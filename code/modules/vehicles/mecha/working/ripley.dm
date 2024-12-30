@@ -9,7 +9,7 @@
 	max_integrity = 200
 	ui_x = 1200
 	lights_power = 7
-	armor = list(MELEE = 40, BULLET = 20, LASER = 10, ENERGY = 20, BOMB = 40, BIO = 0, FIRE = 100, ACID = 100)
+	armor = list(BLUNT = 40, PUNCTURE = 20, SLASH = 0, LASER = 10, ENERGY = 20, BOMB = 40, BIO = 0, FIRE = 100, ACID = 100)
 	max_equip_by_category = list(
 		MECHA_UTILITY = 2,
 		MECHA_POWER = 1,
@@ -54,7 +54,7 @@
 
 /obj/vehicle/sealed/mecha/working/ripley/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/armor_plate,3,/obj/item/stack/sheet/animalhide/goliath_hide,list(MELEE = 10, BULLET = 5, LASER = 5))
+	AddComponent(/datum/component/armor_plate,3,/obj/item/stack/sheet/animalhide/goliath_hide, list(BLUNT = 10, PUNCTURE = 5, LASER = 5))
 
 
 /obj/vehicle/sealed/mecha/working/ripley/Destroy()
@@ -75,7 +75,7 @@
 	max_temperature = 30000
 	max_integrity = 250
 	possible_int_damage = MECHA_INT_FIRE|MECHA_INT_TEMP_CONTROL|MECHA_INT_TANK_BREACH|MECHA_INT_CONTROL_LOST|MECHA_INT_SHORT_CIRCUIT
-	armor = list(MELEE = 40, BULLET = 30, LASER = 30, ENERGY = 30, BOMB = 60, BIO = 0, FIRE = 100, ACID = 100)
+	armor = list(BLUNT = 40, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 30, BOMB = 60, BIO = 0, FIRE = 100, ACID = 100)
 	wreckage = /obj/structure/mecha_wreckage/ripley/mk2
 	enclosed = TRUE
 	enter_delay = 40
@@ -226,15 +226,13 @@
 		if(user.loc == src) //so we don't get the message if we resisted multiple times and succeeded.
 			to_chat(user, span_warning("You fail to push [O] out of [src]!"))
 
-/**
- * Makes the mecha go faster and halves the mecha drill cooldown if in Lavaland pressure.
- *
- * Checks for Lavaland pressure, if that works out the mech's speed is equal to fast_pressure_step_in and the cooldown for the mecha drill is halved. If not it uses slow_pressure_step_in and drill cooldown is normal.
- */
+/// Increases movement and drill speed in lower pressure environments because of less air resistance or something
 /obj/vehicle/sealed/mecha/working/ripley/proc/update_pressure()
 	var/turf/T = get_turf(loc)
+	var/datum/gas_mixture/environment = T.unsafe_return_air()
+	var/pressure = environment.returnPressure()
 
-	if(lavaland_equipment_pressure_check(T))
+	if(pressure < 20)
 		movedelay = fast_pressure_step_in
 		for(var/obj/item/mecha_parts/mecha_equipment/drill/drill in flat_equipment)
 			drill.equip_cooldown = initial(drill.equip_cooldown) * 0.5

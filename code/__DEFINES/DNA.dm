@@ -37,7 +37,7 @@
 #define DNA_UNI_IDENTITY_BLOCKS 7
 
 /// This number needs to equal the total number of DNA blocks
-#define DNA_FEATURE_BLOCKS 28
+#define DNA_FEATURE_BLOCKS 32
 
 #define DNA_MUTANT_COLOR_BLOCK 1
 #define DNA_ETHEREAL_COLOR_BLOCK 2
@@ -55,17 +55,22 @@
 #define DNA_MUSHROOM_CAPS_BLOCK 14
 #define DNA_MONKEY_TAIL_BLOCK 15
 #define DNA_POD_HAIR_BLOCK 16
-#define DNA_HEADTAILS_BLOCK 17
-#define DNA_MUTANT_COLOR_BLOCK_2 18
-#define DNA_MUTANT_COLOR_BLOCK_3 19
-#define DNA_TESHARI_FEATHERS_BLOCK 20
-#define DNA_TESHARI_EARS_BLOCK 21
-#define DNA_TESHARI_BODY_FEATHERS_BLOCK 22
-#define DNA_TESHARI_TAIL_BLOCK 23
-#define DNA_VOX_HAIR_BLOCK 24
-#define DNA_VOX_FACIAL_HAIR_BLOCK 25
-#define DNA_VOX_TAIL_BLOCK 26
-#define DNA_VOX_SNOUT_BLOCK 27
+#define DNA_MUTANT_COLOR_BLOCK_2 17
+#define DNA_MUTANT_COLOR_BLOCK_3 18
+#define DNA_TESHARI_FEATHERS_BLOCK 19
+#define DNA_TESHARI_EARS_BLOCK 20
+#define DNA_TESHARI_BODY_FEATHERS_BLOCK 21
+#define DNA_TESHARI_TAIL_BLOCK 22
+#define DNA_VOX_HAIR_BLOCK 23
+#define DNA_VOX_FACIAL_HAIR_BLOCK 24
+#define DNA_VOX_TAIL_BLOCK 25
+#define DNA_VOX_SNOUT_BLOCK 26
+#define DNA_IPC_SCREEN_BLOCK 27
+#define DNA_IPC_ANTENNA_BLOCK 28
+#define DNA_SAURIAN_SCREEN_BLOCK 29
+#define DNA_SAURIAN_TAIL_BLOCK 30
+#define DNA_SAURIAN_SCUTES_BLOCK 31
+#define DNA_SAURIAN_ANTENNA_BLOCK 32
 
 #define DNA_SEQUENCE_LENGTH 4
 #define DNA_MUTATION_BLOCKS 8
@@ -81,53 +86,54 @@
 #define NOTRANSSTING 7
 #define NOZOMBIE 8
 #define NO_UNDERWEAR 9
-#define NOSTOMACH 10
-#define NO_DNA_COPY 11
-#define DRINKSBLOOD 12
+#define NO_DNA_COPY 10
+#define DRINKSBLOOD 11
 /// Use this if you want to change the race's color without the player being able to pick their own color. AKA special color shifting
-#define DYNCOLORS 13
-#define AGENDER 14
+#define DYNCOLORS 12
+#define AGENDER 13
 /// Do not draw eyes or eyeless overlay
-#define NOEYESPRITES 15
-/// Used for determining which wounds are applicable to this species.
-/// if we have flesh (can suffer slash/piercing/burn wounds, requires they don't have NOBLOOD)
-#define HAS_FLESH 16
-/// if we have bones (can suffer bone wounds)
-#define HAS_BONE 17
+#define NOEYESPRITES 14
 ///If we have a limb-specific overlay sprite
-#define HAS_MARKINGS 18
+#define HAS_MARKINGS 15
 /// Do not draw blood overlay
-#define NOBLOODOVERLAY 19
+#define NOBLOODOVERLAY 17
 ///No augments, for monkeys in specific because they will turn into fucking freakazoids https://cdn.discordapp.com/attachments/326831214667235328/791313258912153640/102707682-fa7cad80-4294-11eb-8f13-8c689468aeb0.png
-#define NOAUGMENTS 20
+#define NOAUGMENTS 18
 ///will be assigned a universal vampire themed last name shared by their department. this is preferenced!
-#define BLOOD_CLANS 21
+#define BLOOD_CLANS 19
 /// Can this species use the 'Body size' preference
-#define BODY_RESIZABLE 22
-#define MUTCOLORS2 23
-#define MUTCOLORS3 24
+#define BODY_RESIZABLE 20
 ///Haircolor
-#define HAIRCOLOR 25
-#define FACEHAIRCOLOR 26
-#define SCLERA 27
+#define HAIRCOLOR 22
+#define FACEHAIRCOLOR 22
+#define SCLERA 23
 ///Has non-human hair. Used by pref code to hide standard hair options.
-#define NONHUMANHAIR 28
+#define NONHUMANHAIR 24
+///Snowflake for IPCs, so they can pick prosthetic branding
+#define BRANDEDPROSTHETICS 25
+
+/// For use in /datum/species/var/organs
+#define DOES_NOT_NEED "does_not_need"
 
 //organ slots
-#define ORGAN_SLOT_ADAMANTINE_RESONATOR "adamantine_resonator"
 #define ORGAN_SLOT_APPENDIX "appendix"
 #define ORGAN_SLOT_BRAIN "brain"
 #define ORGAN_SLOT_BRAIN_ANTIDROP "brain_antidrop"
 #define ORGAN_SLOT_BRAIN_ANTISTUN "brain_antistun"
 #define ORGAN_SLOT_BREATHING_TUBE "breathing_tube"
+#define ORGAN_SLOT_CELL "cell"
 #define ORGAN_SLOT_EARS "ears"
 #define ORGAN_SLOT_EYES "eye_sight"
+#define ORGAN_SLOT_FLUFF_HEAD "fluff_head"
+#define ORGAN_SLOT_FLUFF_CHEST "fluff_chest"
 #define ORGAN_SLOT_HEART "heart"
 #define ORGAN_SLOT_HEART_AID "heartdrive"
 #define ORGAN_SLOT_HUD "eye_hud"
 #define ORGAN_SLOT_LIVER "liver"
+#define ORGAN_SLOT_KIDNEYS "kidneys"
 #define ORGAN_SLOT_LUNGS "lungs"
 #define ORGAN_SLOT_PARASITE_EGG "parasite_egg"
+#define ORGAN_SLOT_POSIBRAIN "posibrain"
 #define ORGAN_SLOT_REGENERATIVE_CORE "hivecore"
 #define ORGAN_SLOT_RIGHT_ARM_AUG "r_arm_device"
 #define ORGAN_SLOT_LEFT_ARM_AUG "l_arm_device" //This one ignores alphabetical order cause the arms should be together
@@ -149,10 +155,13 @@
 #define ORGAN_SLOT_EXTERNAL_POD_HAIR "pod_hair"
 #define ORGAN_SLOT_EXTERNAL_VOX_HAIR "vox_hair"
 #define ORGAN_SLOT_EXTERNAL_VOX_FACIAL_HAIR "vox_facial_hair"
-#define ORGAN_SLOT_EXTERNAL_HEADTAILS "headtails"
 #define ORGAN_SLOT_EXTERNAL_TESHARI_FEATHERS "teshari_feathers"
 #define ORGAN_SLOT_EXTERNAL_TESHARI_EARS "teshari_ears"
 #define ORGAN_SLOT_EXTERNAL_TESHARI_BODY_FEATHERS "teshari_body_feathers"
+#define ORGAN_SLOT_EXTERNAL_IPC_SCREEN "ipc_screen"
+#define ORGAN_SLOT_EXTERNAL_IPC_ANTENNA "ipc_antenna"
+#define ORGAN_SLOT_EXTERNAL_SAURIAN_SCREEN "saurian_screen"
+#define ORGAN_SLOT_EXTERNAL_SAURIAN_SCUTES "saurian_scutes"
 
 /// Xenomorph organ slots
 #define ORGAN_SLOT_XENO_ACIDGLAND "acid_gland"
@@ -163,8 +172,6 @@
 #define ORGAN_SLOT_XENO_RESINSPINNER "resin_spinner"
 
 //organ defines
-#define STANDARD_ORGAN_THRESHOLD 100
-#define STANDARD_ORGAN_HEALING 50 / 100000
 /// designed to fail organs when left to decay for ~15 minutes
 #define STANDARD_ORGAN_DECAY 111 / 100000
 
@@ -178,10 +185,9 @@
 #define G_FEMALE 2
 #define G_PLURAL 3
 
-/// Defines how a mob's internal_organs_slot is ordered
+/// Defines how a mob's processing_organs is ordered
 /// Exists so Life()'s organ process order is consistent
 GLOBAL_LIST_INIT(organ_process_order, list(
-	ORGAN_SLOT_BRAIN,
 	ORGAN_SLOT_APPENDIX,
 	ORGAN_SLOT_RIGHT_ARM_AUG,
 	ORGAN_SLOT_LEFT_ARM_AUG,
@@ -195,10 +201,10 @@ GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_ZOMBIE,
 	ORGAN_SLOT_THRUSTERS,
 	ORGAN_SLOT_HUD,
+	ORGAN_SLOT_KIDNEYS,
 	ORGAN_SLOT_LIVER,
 	ORGAN_SLOT_TONGUE,
 	ORGAN_SLOT_VOICE,
-	ORGAN_SLOT_ADAMANTINE_RESONATOR,
 	ORGAN_SLOT_HEART_AID,
 	ORGAN_SLOT_BRAIN_ANTIDROP,
 	ORGAN_SLOT_BRAIN_ANTISTUN,
@@ -209,35 +215,11 @@ GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_XENO_RESINSPINNER,
 	ORGAN_SLOT_XENO_ACIDGLAND,
 	ORGAN_SLOT_XENO_NEUROTOXINGLAND,
-	ORGAN_SLOT_XENO_EGGSAC,))
+	ORGAN_SLOT_XENO_EGGSAC,
+	ORGAN_SLOT_BRAIN))
 
-//Defines for Golem Species IDs
-#define SPECIES_GOLEM "golem"
-#define SPECIES_GOLEM_ADAMANTINE "a_golem"
-#define SPECIES_GOLEM_PLASMA "p_golem"
-#define SPECIES_GOLEM_DIAMOND "diamond_golem"
-#define SPECIES_GOLEM_GOLD "gold_golem"
-#define SPECIES_GOLEM_SILVER "silver_golem"
-#define SPECIES_GOLEM_PLASTEEL "plasteel_golem"
-#define SPECIES_GOLEM_TITANIUM "titanium_golem"
-#define SPECIES_GOLEM_PLASTITANIUM "plastitanium_golem"
-#define SPECIES_GOLEM_ALIEN "alloy_golem"
-#define SPECIES_GOLEM_WOOD "wood_golem"
-#define SPECIES_GOLEM_URANIUM "uranium_golem"
-#define SPECIES_GOLEM_SAND "sand_golem"
-#define SPECIES_GOLEM_GLASS "glass_golem"
-#define SPECIES_GOLEM_BLUESPACE "bluespace_golem"
-#define SPECIES_GOLEM_BANANIUM "ba_golem"
-#define SPECIES_GOLEM_CULT "cultgolem"
-#define SPECIES_GOLEM_CLOTH "clothgolem"
-#define SPECIES_GOLEM_PLASTIC "plastic_golem"
-#define SPECIES_GOLEM_BRONZE "bronze_golem"
-#define SPECIES_GOLEM_CARDBOARD "c_golem"
-#define SPECIES_GOLEM_LEATHER "leather_golem"
-#define SPECIES_GOLEM_DURATHREAD "d_golem"
-#define SPECIES_GOLEM_BONE "b_golem"
-#define SPECIES_GOLEM_SNOW "sn_golem"
-#define SPECIES_GOLEM_HYDROGEN "metallic_hydrogen_golem"
+#define SPECIES_DATA_PERKS 1
+#define SPECIES_DATA_LANGUAGES 2
 
 // Defines for used in creating "perks" for the species preference pages.
 /// A key that designates UI icon displayed on the perk.

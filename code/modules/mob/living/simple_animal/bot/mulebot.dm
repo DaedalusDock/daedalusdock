@@ -18,7 +18,7 @@
 	animate_movement = SLIDE_STEPS
 	health = 50
 	maxHealth = 50
-	speed = 3
+	move_delay_modifier = 3
 	damage_coeff = list(BRUTE = 0.5, BURN = 0.7, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0)
 	combat_mode = TRUE //No swapping
 	buckle_lying = 0
@@ -31,7 +31,6 @@
 	bot_type = MULE_BOT
 	path_image_color = "#7F5200"
 
-	var/network_id = NETWORK_BOTS_CARGO
 	/// unique identifier in case there are multiple mulebots.
 	var/id
 
@@ -85,10 +84,6 @@
 	suffix = null
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/mulebot)
 	diag_hud_set_mulebotcell()
-
-	if(network_id)
-		AddComponent(/datum/component/ntnet_interface, network_id)
-
 
 /mob/living/simple_animal/bot/mulebot/handle_atom_del(atom/A)
 	if(A == load)
@@ -200,7 +195,7 @@
 	if(!(bot_cover_flags & BOT_COVER_OPEN))
 		bot_cover_flags ^= BOT_COVER_LOCKED
 		to_chat(user, span_notice("You [bot_cover_flags & BOT_COVER_LOCKED ? "lock" : "unlock"] [src]'s controls!"))
-	flick("[base_icon]-emagged", src)
+	z_flick("[base_icon]-emagged", src)
 	playsound(src, SFX_SPARKS, 100, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
 
 /mob/living/simple_animal/bot/mulebot/update_icon_state() //if you change the icon_state names, please make sure to update /datum/wires/mulebot/on_pulse() as well. <3
@@ -254,7 +249,7 @@
 	switch(mode)
 		if(BOT_IDLE, BOT_DELIVER, BOT_GO_HOME)
 			data["modeStatus"] = "good"
-		if(BOT_BLOCKED, BOT_NAV, BOT_WAIT_FOR_NAV)
+		if(BOT_BLOCKED, BOT_NAV, BOT_WAIT_FOR_NAV, BOT_PATHING)
 			data["modeStatus"] = "average"
 		if(BOT_NO_ROUTE)
 			data["modeStatus"] = "bad"
@@ -281,7 +276,7 @@
 			if(usr.has_unlimited_silicon_privilege)
 				bot_cover_flags ^= BOT_COVER_LOCKED
 				. = TRUE
-		if("power")
+		if("on")
 			if(bot_mode_flags & BOT_MODE_ON)
 				turn_off()
 			else if(bot_cover_flags & BOT_COVER_OPEN)
@@ -363,12 +358,12 @@
 		if(CHIME)
 			audible_message(span_hear("[src] makes a chiming sound!"))
 			playsound(src, 'sound/machines/chime.ogg', 50, FALSE)
-	flick("[base_icon]1", src)
+	z_flick("[base_icon]1", src)
 
 
 // mousedrop a crate to load the bot
 // can load anything if hacked
-/mob/living/simple_animal/bot/mulebot/MouseDrop_T(atom/movable/AM, mob/user)
+/mob/living/simple_animal/bot/mulebot/MouseDroppedOn(atom/movable/AM, mob/user)
 	var/mob/living/L = user
 
 	if (!istype(L))
@@ -414,7 +409,7 @@
 			return
 
 	load = AM
-	mode = BOT_IDLE
+	set_mode(BOT_IDLE)
 	update_appearance()
 
 ///resolves the name to display for the loaded mob. primarily needed for the paranormal subtype since we don't want to show the name of ghosts riding it.
@@ -443,7 +438,7 @@
 			update_appearance()
 		return
 
-	mode = BOT_IDLE
+	set_mode(BOT_IDLE)
 
 	var/atom/movable/cached_load = load //cache the load since unbuckling mobs clears the var.
 
@@ -466,7 +461,7 @@
 	if(cell)
 		. += "Charge Left: [cell.charge]/[cell.maxcharge]"
 	else
-		. += text("No Cell Inserted!")
+		. += "No Cell Inserted!"
 	if(load)
 		. += "Current Load: [get_load_name()]"
 
@@ -534,60 +529,60 @@
 						blockcount = 0
 						path -= loc
 						if(destination == home_destination)
-							mode = BOT_GO_HOME
+							set_mode(BOT_GO_HOME)
 						else
-							mode = BOT_DELIVER
+							set_mode(BOT_DELIVER)
 
 					else // failed to move
 
 						blockcount++
-						mode = BOT_BLOCKED
+						set_mode(BOT_BLOCKED)
 						if(blockcount == 3)
 							buzz(ANNOYED)
 
 						if(blockcount > 10) // attempt 10 times before recomputing
 							// find new path excluding blocked turf
 							buzz(SIGH)
-							mode = BOT_WAIT_FOR_NAV
+							set_mode(BOT_WAIT_FOR_NAV)
 							blockcount = 0
 							addtimer(CALLBACK(src, PROC_REF(process_blocked), next), 2 SECONDS)
 							return
 						return
 				else
 					buzz(ANNOYED)
-					mode = BOT_NAV
+					set_mode(BOT_NAV)
 					return
 			else
-				mode = BOT_NAV
+				set_mode(BOT_NAV)
 				return
 
 		if(BOT_NAV) // calculate new path
-			mode = BOT_WAIT_FOR_NAV
+			set_mode(BOT_WAIT_FOR_NAV)
 			INVOKE_ASYNC(src, PROC_REF(process_nav))
 
 /mob/living/simple_animal/bot/mulebot/proc/process_blocked(turf/next)
 	calc_path(avoid=next)
 	if(length(path))
 		buzz(DELIGHT)
-	mode = BOT_BLOCKED
+	set_mode(BOT_BLOCKED)
 
 /mob/living/simple_animal/bot/mulebot/proc/process_nav()
 	calc_path()
 
 	if(length(path))
 		blockcount = 0
-		mode = BOT_BLOCKED
+		set_mode(BOT_BLOCKED)
 		buzz(DELIGHT)
 
 	else
 		buzz(SIGH)
 
-		mode = BOT_NO_ROUTE
+		set_mode(BOT_NO_ROUTE)
 
 // calculates a path to the current destination
 // given an optional turf to avoid
 /mob/living/simple_animal/bot/mulebot/calc_path(turf/avoid = null)
-	path = get_path_to(src, target, 250, id=access_card, exclude=avoid)
+	path = jps_path_to(src, target, max_distance=250, access = access_card?.GetAccess(), exclude=avoid, diagonal_handling=DIAGONAL_REMOVE_ALL)
 
 // sets the current destination
 // signals all beacons matching the delivery code
@@ -601,9 +596,9 @@
 	if(!(bot_mode_flags & BOT_MODE_ON))
 		return
 	if(destination == home_destination)
-		mode = BOT_GO_HOME
+		set_mode(BOT_GO_HOME)
 	else
-		mode = BOT_DELIVER
+		set_mode(BOT_DELIVER)
 	get_nav()
 
 // starts bot moving to home
@@ -615,7 +610,7 @@
 
 /mob/living/simple_animal/bot/mulebot/proc/do_start_home()
 	set_destination(home_destination)
-	mode = BOT_BLOCKED
+	set_mode(BOT_BLOCKED)
 
 // called when bot reaches current target
 /mob/living/simple_animal/bot/mulebot/proc/at_target()
@@ -656,7 +651,7 @@
 		if(auto_return && home_destination && destination != home_destination)
 			// auto return set and not at home already
 			start_home()
-			mode = BOT_BLOCKED
+			set_mode(BOT_BLOCKED)
 		else
 			bot_reset() // otherwise go idle
 
@@ -681,12 +676,12 @@
 	playsound(src, 'sound/effects/splat.ogg', 50, TRUE)
 
 	var/damage = rand(5,15)
-	H.apply_damage(2*damage, BRUTE, BODY_ZONE_HEAD, run_armor_check(BODY_ZONE_HEAD, MELEE))
-	H.apply_damage(2*damage, BRUTE, BODY_ZONE_CHEST, run_armor_check(BODY_ZONE_CHEST, MELEE))
-	H.apply_damage(0.5*damage, BRUTE, BODY_ZONE_L_LEG, run_armor_check(BODY_ZONE_L_LEG, MELEE))
-	H.apply_damage(0.5*damage, BRUTE, BODY_ZONE_R_LEG, run_armor_check(BODY_ZONE_R_LEG, MELEE))
-	H.apply_damage(0.5*damage, BRUTE, BODY_ZONE_L_ARM, run_armor_check(BODY_ZONE_L_ARM, MELEE))
-	H.apply_damage(0.5*damage, BRUTE, BODY_ZONE_R_ARM, run_armor_check(BODY_ZONE_R_ARM, MELEE))
+	H.apply_damage(2*damage, BRUTE, BODY_ZONE_HEAD, run_armor_check(BODY_ZONE_HEAD, BLUNT))
+	H.apply_damage(2*damage, BRUTE, BODY_ZONE_CHEST, run_armor_check(BODY_ZONE_CHEST, BLUNT))
+	H.apply_damage(0.5*damage, BRUTE, BODY_ZONE_L_LEG, run_armor_check(BODY_ZONE_L_LEG, BLUNT))
+	H.apply_damage(0.5*damage, BRUTE, BODY_ZONE_R_LEG, run_armor_check(BODY_ZONE_R_LEG, BLUNT))
+	H.apply_damage(0.5*damage, BRUTE, BODY_ZONE_L_ARM, run_armor_check(BODY_ZONE_L_ARM, BLUNT))
+	H.apply_damage(0.5*damage, BRUTE, BODY_ZONE_R_ARM, run_armor_check(BODY_ZONE_R_ARM, BLUNT))
 
 	var/turf/T = get_turf(src)
 	T.add_mob_blood(H)
@@ -744,13 +739,16 @@
 	new /obj/effect/decal/cleanable/oil(loc)
 	return ..()
 
-/mob/living/simple_animal/bot/mulebot/resist()
-	..()
+/mob/living/simple_animal/bot/mulebot/remove_air(amount) //To prevent riders suffocating
+	return loc ? loc.remove_air(amount) : null
+
+/mob/living/simple_animal/bot/mulebot/execute_resist()
+	. = ..()
 	if(load)
 		unload()
 
 /mob/living/simple_animal/bot/mulebot/UnarmedAttack(atom/A, proximity_flag, list/modifiers)
-	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
+	if(!can_unarmed_attack())
 		return
 	if(isturf(A) && isturf(loc) && loc.Adjacent(A) && load)
 		unload(get_dir(loc, A))
@@ -786,7 +784,7 @@
 	base_icon = "paranormalmulebot"
 
 
-/mob/living/simple_animal/bot/mulebot/paranormal/MouseDrop_T(atom/movable/AM, mob/user)
+/mob/living/simple_animal/bot/mulebot/paranormal/MouseDroppedOn(atom/movable/AM, mob/user)
 	var/mob/living/L = user
 
 	if(user.incapacitated() || (istype(L) && L.body_position == LYING_DOWN))
@@ -830,7 +828,7 @@
 			return
 
 	load = AM
-	mode = BOT_IDLE
+	set_mode(BOT_IDLE)
 	update_appearance()
 
 /mob/living/simple_animal/bot/mulebot/paranormal/update_overlays()

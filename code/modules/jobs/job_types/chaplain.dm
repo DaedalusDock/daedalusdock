@@ -6,21 +6,18 @@
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the head of personnel"
-	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/none
+	)
 
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/chaplain,
-			SPECIES_PLASMAMAN = /datum/outfit/job/chaplain/plasmaman,
 		),
 	)
 
-	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_STATION_MASTER
-
-	display_order = JOB_DISPLAY_ORDER_CHAPLAIN
 	departments_list = list(
 		/datum/job_department/service,
 		)
@@ -132,12 +129,3 @@
 
 	chameleon_extras = /obj/item/stamp/chap
 	skillchips = list(/obj/item/skillchip/entrails_reader)
-
-/datum/outfit/job/chaplain/plasmaman
-	name = "Chaplain (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/chaplain
-	gloves = /obj/item/clothing/gloves/color/plasmaman/black
-	head = /obj/item/clothing/head/helmet/space/plasmaman/chaplain
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full

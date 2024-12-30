@@ -1,0 +1,8 @@
+/obj/item/surgical_drapes : @DELETE
+/obj/machinery/computer/operating : @DELETE
+/obj/item/disk/surgery/debug : @DELETE
+/obj/item/disk/surgery/forgottenship : @DELETE
+/obj/item/circuitboard/machine/medical_kiosk : @DELETE
+/obj/machinery/medical_kiosk : @DELETE
+/obj/item/scanner_wand : @DELETE
+/obj/item/stack/medical/bone_gel/four : /obj/item/stack/medical/bone_gel/twelve

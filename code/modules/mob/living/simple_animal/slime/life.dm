@@ -20,7 +20,6 @@
 	handle_nutrition(delta_time, times_fired)
 	if(QDELETED(src)) // Stop if the slime split during handle_nutrition()
 		return
-	reagents.remove_all(0.5 * REAGENTS_METABOLISM * reagents.reagent_list.len * delta_time) //Slimes are such snowflakes
 	handle_targets(delta_time, times_fired)
 	if(ckey)
 		return
@@ -31,7 +30,7 @@
 // Unlike most of the simple animals, slimes support UNCONSCIOUS. This is an ugly hack.
 /mob/living/simple_animal/slime/update_stat()
 	switch(stat)
-		if(UNCONSCIOUS, HARD_CRIT)
+		if(UNCONSCIOUS)
 			if(health > 0)
 				return
 	return ..()
@@ -106,7 +105,7 @@
 				AIproc = 0
 				break
 
-		var/sleeptime = cached_multiplicative_slowdown
+		var/sleeptime = movement_delay
 		if(sleeptime <= 0)
 			sleeptime = 1
 
@@ -141,27 +140,7 @@
 				adjustBruteLoss(round(sqrt(bodytemperature)) * delta_time)
 	else
 		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, SLIME_COLD)
-	/*
-	if(stat != DEAD)
-		var/bz_percentage =0
-		if(environment.gases[/datum/gas/bz])
-			bz_percentage = environment.gases[/datum/gas/bz][MOLES] / environment.get_moles()
-		var/stasis = (bz_percentage >= 0.05 && bodytemperature < (T0C + 100)) || force_stasis
 
-		switch(stat)
-			if(CONSCIOUS)
-				if(stasis)
-					to_chat(src, span_danger("Nerve gas in the air has put you in stasis!"))
-					set_stat(UNCONSCIOUS)
-					powerlevel = 0
-					rabid = FALSE
-					regenerate_icons()
-			if(UNCONSCIOUS, HARD_CRIT)
-				if(!stasis)
-					to_chat(src, span_notice("You wake up from the stasis."))
-					set_stat(CONSCIOUS)
-					regenerate_icons()
-	*/
 	updatehealth()
 
 
@@ -198,7 +177,7 @@
 	if(iscarbon(M))
 		var/mob/living/carbon/C = M
 		C.adjustCloneLoss(rand(2, 4) * 0.5 * delta_time)
-		C.adjustToxLoss(rand(1, 2) * 0.5 * delta_time)
+		C.adjustToxLoss(rand(1, 2) * 0.5 * delta_time, cause_of_death = name)
 
 		if(DT_PROB(5, delta_time) && C.client)
 			to_chat(C, "<span class='userdanger'>[pick("You can feel your body becoming weak!", \
@@ -377,7 +356,7 @@
 			else
 				if(holding_still)
 					holding_still = max(holding_still - (0.5 * delta_time), 0)
-				else if (docile && pulledby)
+				else if (docile && LAZYLEN(grabbed_by))
 					holding_still = 10
 				else if(!HAS_TRAIT(src, TRAIT_IMMOBILIZED) && isturf(loc) && prob(33))
 					step(src, pick(GLOB.cardinals))

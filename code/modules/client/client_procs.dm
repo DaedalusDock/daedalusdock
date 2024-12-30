@@ -38,9 +38,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(!usr || usr != mob) //stops us calling Topic for somebody else's client. Also helps prevent usr=null
 		return
 
-#ifndef TESTING	
+#ifndef TESTING
 	if (lowertext(hsrc_command) == "_debug") //disable the integrated byond vv in the client side debugging tools since it doesn't respect vv read protections
-		return 
+		return
 #endif
 
 	// asset_cache
@@ -71,7 +71,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			return
 
 	var/stl = CONFIG_GET(number/second_topic_limit)
-	if (!holder && stl)
+	if (!holder && stl && href_list["window_id"] != "statbrowser")
 		var/second = round(world.time, 10)
 		if (!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -122,15 +122,32 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(codex_topic(href, href_list))
 		return
 
+	if(href_list["show_slapcraft_hints"])
+		var/path = text2path(href_list["show_slapcraft_hints"])
+		if(ispath(path, /obj/item))
+			show_slapcraft_hints(path)
+		return
+
 	switch(href_list["action"])
 		if("openLink")
 			src << link(href_list["link"])
 	if (hsrc)
 		var/datum/real_src = hsrc
+		if(istext(real_src))
+			real_src = locate(real_src)
 		if(QDELETED(real_src))
 			return
 
+	//fun fact: Topic() acts like a verb and is executed at the end of the tick like other verbs. So we have to queue it if the server is
+	//overloaded
+	if(hsrc && hsrc != holder && DEFAULT_TRY_QUEUE_VERB(VERB_CALLBACK(src, PROC_REF(_Topic), hsrc, href, href_list)))
+		return
 	..() //redirect to hsrc.Topic()
+
+///dumb workaround because byond doesnt seem to recognize the .proc/Topic() typepath for /datum/proc/Topic() from the client Topic,
+///so we cant queue it without this
+/client/proc/_Topic(datum/hsrc, href, list/href_list)
+	return hsrc.Topic(href, href_list)
 
 /client/proc/is_content_unlocked()
 	if(!prefs.unlock_content)
@@ -324,8 +341,8 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		player_details.byond_version = full_version
 		GLOB.player_details[ckey] = player_details
 
-
 	. = ..() //calls mob.Login()
+
 	if (length(GLOB.stickybanadminexemptions))
 		GLOB.stickybanadminexemptions -= ckey
 		if (!length(GLOB.stickybanadminexemptions))
@@ -337,6 +354,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			add_system_note("Spoofed-Byond-Version", "Detected as using a spoofed byond version.")
 			log_suspicious_login("Failed Login: [key] - Spoofed byond version")
 			qdel(src)
+			return
 
 		if (num2text(byond_build) in GLOB.blacklisted_builds)
 			log_access("Failed login: [key] - blacklisted byond version")
@@ -349,49 +367,12 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 				qdel(src)
 				return
 
-	if(CONFIG_GET(flag/panic_bunker) && CONFIG_GET(flag/panic_bunker_discord_require))
-		if(!SSdbcore.Connect())
-			var/msg = "Database connection failure. Key [key] not checked for Discord account requirement."
-
-			if(!CONFIG_GET(flag/sql_enabled))
-				msg += "\nDB IS NOT ENABLED - THIS IS NOT A BUG\nDiscord account links cannot be checked without a database!"
-
-			log_world(msg)
-			message_admins(msg)
-		else
-			if(!discord_is_link_valid(ckey))
-				restricted_mode = TRUE
-				var/discord_otp = discord_get_or_generate_one_time_token_for_ckey(ckey)
-				var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
-				//These need to be immediate because we're disposing of the client the second we're done with this.
-				usr << browse(
-					"<center>[("[CONFIG_GET(string/panic_bunker_discord_register_message)]")] \
-					<br><br><span style='color:red'>Your One-Time-Password is: [discord_otp]</span> \
-					<br><br>To link your Discord account, head to the Discord Server and paste the following message:<hr/></center><code> \
-					[discord_prefix]verify [discord_otp]</code><hr/> \
-					<center><span style='color:red'>discord.daedalus13.net</span> \
-					<br>Due to technical limitations, we cannot embed this link. Love byond.",
-					"window=discordauth;can_resize=0;can_minimize=0",
-				)
-				to_chat_immediate(src, span_boldnotice("Your One-Time-Password is: [discord_otp]"))
-				to_chat_immediate(src, span_userdanger("DO NOT SHARE THIS OTP WITH ANYONE"))
-				to_chat_immediate(src, span_notice("To link your Discord account, head to the Discord Server and paste the following message:<hr/><code>[discord_prefix]verify [discord_otp]</code><hr/>\n"))
-
-				if(connecting_admin)
-					log_admin("The admin [key] has been allowed to bypass the Discord account link requirement")
-					message_admins(span_adminnotice("The admin [key] has been allowed to bypass the Discord account link requirement"))
-					to_chat(src, "As an admin, you have been allowed to bypass the Discord account link requirement")
-
-				else
-					log_access("Failed Login: [key] - No valid Discord account link registered.")
-					qdel(src)
-					return
-
 	if(SSinput.initialized)
 		set_macros()
 
 	// Initialize stat panel
 	stat_panel.initialize(
+		assets = list(get_asset_datum(/datum/asset/simple/namespaced/cursors)),
 		inline_html = file2text('html/statbrowser.html'),
 		inline_js = file2text('html/statbrowser.js'),
 		inline_css = file2text('html/statbrowser.css'),
@@ -465,6 +446,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		if(memo_message)
 			to_chat(src, memo_message)
 		adminGreet()
+
 	if (mob && reconnecting)
 		var/stealth_admin = mob.client?.holder?.fakekey
 		var/announce_leave = mob.client?.prefs?.read_preference(/datum/preference/toggle/broadcast_login_logout)
@@ -488,11 +470,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	var/cached_player_age = set_client_age_from_db(tdata) //we have to cache this because other shit may change it and we need it's current value now down below.
 	if (isnum(cached_player_age) && cached_player_age == -1) //first connection
 		player_age = 0
-		var/msg = "<b>This server changes default TG preference values to better fit the feel of our server.</b><br>"
-		msg += "We encourage you to try it out to see if you like it.<br>"
-		msg += "You may re-enable modern visuals in the preference menu.<br><br>"
-		msg += "<b>You will only see this message once</b>"
-		src << browse(msg, "window=warning_popup")
+		spawn(0)
+			if(!QDELETED(src))
+				show_soul_message()
 
 	var/nnpa = CONFIG_GET(number/notify_new_player_age)
 	if (isnum(cached_player_age) && cached_player_age == -1) //first connection
@@ -552,6 +532,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 	//Clear the credits browser if it's left over the from the previous round
 	clear_credits()
+
+	//Open to moving this: Pull the player's discord link if one exists:
+	discord_read_linked_id()
 
 	view_size = new(src, getScreenSize(prefs.read_preference(/datum/preference/toggle/widescreen)))
 	view_size.resetFormat()
@@ -615,15 +598,87 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	active_mousedown_item = null
 	SSambience.remove_ambience_client(src)
 	SSmouse_entered.hovers -= src
+	SSmouse_entered.sustained_hovers -= src
 	SSping.currentrun -= src
 	QDEL_NULL(view_size)
 	QDEL_NULL(void)
 	QDEL_NULL(tooltips)
-	QDEL_NULL(open_loadout_ui) //PARIAH EDIT ADDITION
+	QDEL_NULL(parallax_master)
+	QDEL_LIST(parallax_layers_cached)
+	parallax_layers = null
 	seen_messages = null
 	Master.UpdateTickRate()
 	..() //Even though we're going to be hard deleted there are still some things that want to know the destroy is happening
 	return QDEL_HINT_HARDDEL_NOW
+
+/// Checks panic bunker status and applies restricted_mode if necessary. Returns TRUE if the client should be kicked.
+/client/proc/check_panic_bunker()
+	if(ckey in GLOB.interviews.approved_ckeys)
+		return FALSE
+
+	var/is_admin = !!holder
+
+	// Check if user should be added to interview queue
+	if (CONFIG_GET(flag/panic_bunker_interview))
+		if(is_admin)
+			return FALSE
+
+		var/required_living_minutes = CONFIG_GET(number/panic_bunker_living)
+		var/living_minutes = get_exp_living(TRUE)
+		if (required_living_minutes >= living_minutes)
+			restricted_mode = TRUE
+			return FALSE
+
+	// Discord linkage
+	if(CONFIG_GET(flag/panic_bunker_discord_require))
+		if(!SSdbcore.Connect())
+			var/msg = "Database connection failure. Key [key] not checked for Discord account requirement."
+
+			if(!CONFIG_GET(flag/sql_enabled))
+				msg += "\nDB IS NOT ENABLED - THIS IS NOT A BUG\nDiscord account links cannot be checked without a database!"
+
+			log_world(msg)
+			message_admins(msg)
+			return FALSE
+		else
+			if(!discord_is_link_valid())
+				if(is_admin)
+					log_admin("The admin [key] has been allowed to bypass the Discord account link requirement")
+					message_admins(span_adminnotice("The admin [key] has been allowed to bypass the Discord account link requirement"))
+					to_chat(src, "As an admin, you have been allowed to bypass the Discord account link requirement")
+					return FALSE
+				else
+					var/kick = SSlag_switch?.measures[KICK_GUESTS]
+					log_access("Failed Login: [key] - No valid Discord account link registered. [kick ? "" : "They have been permitted to connect as a guest."]")
+					if(kick)
+						restricted_mode = TRUE // Don't bother removing their verbs, theyre about to be booted anyway and verb altering is expensive.
+						var/discord_otp = discord_get_or_generate_one_time_token_for_ckey(ckey)
+						var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
+						//These need to be immediate because we're disposing of the client the second we're done with this.
+						usr << browse(
+							{"
+								<center>
+								<span style='color:red'>Your One-Time-Password is:<br> [discord_otp]</span>
+								<br><br>
+								To link your Discord account, head to the Discord Server and make an entry ticket if you have not already. Then, paste the following into any channel:
+								<hr/>
+								</center>
+								<code>
+									[discord_prefix]verify [discord_otp]
+								</code>
+								<hr/>
+								discord.daedalus13.net (We are unable to embed this link for security reasons.)
+								<br>
+							"},
+							"window=discordauth;can_close=0;can_resize=0;can_minimize=0",
+						)
+						to_chat_immediate(src, span_boldnotice("Your One-Time-Password is: [discord_otp]"))
+						to_chat_immediate(src, span_userdanger("DO NOT SHARE THIS OTP WITH ANYONE"))
+						to_chat_immediate(src, span_notice("To link your Discord account, head to the Discord Server (discord.daedalus13.net) and paste the following message:<hr/><code>[discord_prefix]verify [discord_otp]</code><hr/>\n"))
+						return TRUE
+					else
+						restricted_mode = TRUE
+						return FALSE
 
 /client/proc/set_client_age_from_db(connectiontopic)
 	if (is_guest_key(src.key))
@@ -944,25 +999,32 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			click_intercept_time = 0 //Reset and return. Next click should work, but not this one.
 			return
 		click_intercept_time = 0 //Just reset. Let's not keep re-checking forever.
+
 	var/ab = FALSE
 	var/list/modifiers = params2list(params)
 
+	var/button_clicked = LAZYACCESS(modifiers, "button")
+
 	var/dragged = LAZYACCESS(modifiers, DRAG)
-	if(dragged && !LAZYACCESS(modifiers, dragged)) //I don't know what's going on here, but I don't trust it
+	if(dragged && button_clicked != dragged)
 		return
 
-	if (object && IS_WEAKREF_OF(object, middle_drag_atom_ref) && LAZYACCESS(modifiers, LEFT_CLICK))
+	if (object && IS_WEAKREF_OF(object, middle_drag_atom_ref) && button_clicked == LEFT_CLICK)
 		ab = max(0, 5 SECONDS-(world.time-middragtime)*0.1)
 
 	var/mcl = CONFIG_GET(number/minute_click_limit)
 	if (!holder && mcl)
 		var/minute = round(world.time, 600)
+
 		if (!clicklimiter)
 			clicklimiter = new(LIMITER_SIZE)
+
 		if (minute != clicklimiter[CURRENT_MINUTE])
 			clicklimiter[CURRENT_MINUTE] = minute
 			clicklimiter[MINUTE_COUNT] = 0
-		clicklimiter[MINUTE_COUNT] += 1+(ab)
+
+		clicklimiter[MINUTE_COUNT] += 1 + (ab)
+
 		if (clicklimiter[MINUTE_COUNT] > mcl)
 			var/msg = "Your previous click was ignored because you've done too many in a minute."
 			if (minute != clicklimiter[ADMINSWARNED_AT]) //only one admin message per-minute. (if they spam the admins can just boot/ban them)
@@ -983,13 +1045,21 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		var/second = round(world.time, 10)
 		if (!clicklimiter)
 			clicklimiter = new(LIMITER_SIZE)
+
 		if (second != clicklimiter[CURRENT_SECOND])
 			clicklimiter[CURRENT_SECOND] = second
 			clicklimiter[SECOND_COUNT] = 0
-		clicklimiter[SECOND_COUNT] += 1+(!!ab)
+
+		clicklimiter[SECOND_COUNT] += 1 + (!!ab)
+
 		if (clicklimiter[SECOND_COUNT] > scl)
 			to_chat(src, span_danger("Your previous click was ignored because you've done too many in a second"))
 			return
+
+	//check if the server is overloaded and if it is then queue up the click for next tick
+	//yes having it call a wrapping proc on the subsystem is fucking stupid glad we agree unfortunately byond insists its reasonable
+	if(!QDELETED(object) && TRY_QUEUE_VERB(VERB_CALLBACK(object, TYPE_PROC_REF(/atom, _Click), location, control, params), VERB_HIGH_PRIORITY_QUEUE_THRESHOLD, SSinput, control))
+		return
 
 	if (hotkeys)
 		// If hotkey mode is enabled, then clicking the map will automatically
@@ -998,7 +1068,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		winset(src, null, "input.background-color=[COLOR_INPUT_DISABLED]")
 
 	else
-		winset(src, null, "input.focus=true input.background-color=[COLOR_INPUT_ENABLED]")
+		winset(src, null, "input.background-color=[COLOR_INPUT_ENABLED]")
 
 	SEND_SIGNAL(src, COMSIG_CLIENT_CLICK, object, location, control, params, usr)
 
@@ -1087,6 +1157,8 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	movement_keys = list()
 	for(var/kb_name in D.key_bindings)
 		for(var/key in D.key_bindings[kb_name])
+			if(!hotkeys && !SSinput.unprintables_cache[key])
+				continue
 			switch(kb_name)
 				if("North")
 					movement_keys[key] = NORTH
@@ -1104,6 +1176,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=looc")
 				if("Me")
 					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=me")
+	calculate_move_dir()
 
 /client/proc/change_view(new_size)
 	if (isnull(new_size))
@@ -1206,16 +1279,21 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		holder.filteriffic = new /datum/filter_editor(in_atom)
 		holder.filteriffic.ui_interact(mob)
 
+///opens the particle editor UI for the in_atom object for this client
+/client/proc/open_particle_editor(atom/movable/in_atom)
+	if(holder)
+		holder.particle_test = new /datum/particle_editor(in_atom)
+		holder.particle_test.ui_interact(mob)
 
 /client/proc/set_right_click_menu_mode(shift_only)
 	if(shift_only)
 		winset(src, "mapwindow.map", "right-click=true")
-		winset(src, "ShiftUp", "is-disabled=false")
-		winset(src, "Shift", "is-disabled=false")
+		winset(src, "default.PROTECTED-Shift", "command=\".winset :map.right-click=false\nKeyDown Shift\"")
+		winset(src, "default.PROTECTED-ShiftUp", "command=\".winset :map.right-click=true\nKeyUp Shift\"")
 	else
 		winset(src, "mapwindow.map", "right-click=false")
-		winset(src, "default.Shift", "is-disabled=true")
-		winset(src, "default.ShiftUp", "is-disabled=true")
+		winset(src, "default.PROTECTED-Shift", "command=\"KeyDown Shift\"")
+		winset(src, "default.PROTECTED-ShiftUp", "command=\"KeyUp Shift\"")
 
 /client/proc/update_ambience_pref()
 	if(prefs.toggles & SOUND_AMBIENCE)
@@ -1278,3 +1356,42 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	SEND_SOUND(usr, sound(null))
 	tgui_panel?.stop_music()
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Stop Self Sounds"))
+
+/client/proc/show_slapcraft_hints(given_type)
+	var/list/hints = slapcraft_examine_hints_for_type(given_type)
+	if(!length(hints))
+		return
+	hints.Insert(1, "<div style='text-align: center;font-size: 200%;font-weight: bold'>Craftables<hr></div>")
+
+	to_chat(mob, examine_block("<span class='notice'>[jointext(hints, "<br>")]</span>"))
+
+/// Strip verbs from a client and it's mob.
+/client/proc/strip_verbs()
+	for (var/v in verbs)
+		var/procpath/verb_path = v
+		remove_verb(src, verb_path)
+
+	for (var/v in mob?.verbs)
+		var/procpath/verb_path = v
+		remove_verb(mob, verb_path)
+
+/client/proc/show_soul_message()
+	var/content = {"
+		<div style='width:100%;height:100%'>
+			<fieldset class='computerPane' style='height:100%'>
+				<div class='computerLegend' style='margin: auto;height: 100%'>
+				Welcome to Olympus Outpost, traveler.<br><br>
+
+				You may notice that the station is not run like other stations, and you may have some difficulty adjusting.
+				There's no need to fear, as we provide <b><i>Graphics and Accessibility</i></b> settings in the <b><i>Options</i></b> menu.
+				<br><br>
+				Please enjoy your stay.
+				</div>
+			</fieldset>
+		</div>
+	"}
+
+	var/datum/browser/popup = new(mob, "soulnotice", "Notice of Modification", 660, 270)
+	popup.set_window_options("can_close=1;can_resize=0")
+	popup.set_content(content)
+	popup.open()

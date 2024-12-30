@@ -4,7 +4,7 @@
 /area/template_noop)
 "ac" = (
 /obj/effect/spawner/structure/window/reinforced,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/abandonedzoo)
 "ag" = (
@@ -46,7 +46,7 @@
 	name = "Bio Containment";
 	req_one_access_txt = "47"
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
@@ -79,7 +79,7 @@
 /turf/template_noop,
 /area/template_noop)
 "aL" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
@@ -141,11 +141,11 @@
 /area/ruin/space/has_grav/abandonedzoo)
 "be" = (
 /obj/structure/reagent_dispensers/fueltank,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "bf" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/smes/engineering,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
@@ -165,9 +165,6 @@
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "bl" = (
-/obj/machinery/computer/operating{
-	dir = 8
-	},
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "bm" = (
@@ -322,7 +319,7 @@
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/abandonedzoo)
 "ix" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/shieldwallgen/unlocked/anchored,
 /turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/abandonedzoo)
@@ -331,7 +328,7 @@
 	name = "Bio-Research Station"
 	},
 /obj/effect/turf_decal/tile/green/fourcorners,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/abandonedzoo)
 "iZ" = (
@@ -342,7 +339,7 @@
 	pixel_y = -4
 	},
 /obj/item/wirecutters,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
@@ -357,7 +354,7 @@
 /area/ruin/space/has_grav/abandonedzoo)
 "kp" = (
 /obj/machinery/light/small/directional/west,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
@@ -394,16 +391,16 @@
 /area/ruin/space/has_grav/abandonedzoo)
 "oS" = (
 /obj/effect/turf_decal/tile/green/fourcorners,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/abandonedzoo)
 "qX" = (
 /obj/machinery/power/shieldwallgen/unlocked/anchored,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/abandonedzoo)
 "sT" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/shieldwallgen/unlocked/anchored,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/abandonedzoo)
@@ -422,7 +419,7 @@
 /area/ruin/space/has_grav/abandonedzoo)
 "wc" = (
 /obj/machinery/light/small/directional/east,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
@@ -438,7 +435,7 @@
 "wi" = (
 /obj/machinery/power/terminal,
 /obj/effect/turf_decal/tile/green/fourcorners,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/abandonedzoo)
 "Ap" = (
@@ -457,13 +454,13 @@
 /area/ruin/space/has_grav/abandonedzoo)
 "Gh" = (
 /obj/machinery/power/shieldwallgen/unlocked/anchored,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/abandonedzoo)
 "GX" = (
 /obj/structure/reagent_dispensers/watertank,
 /obj/machinery/light/directional/south,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "Ig" = (
@@ -474,7 +471,7 @@
 "LD" = (
 /obj/structure/rack,
 /obj/effect/spawner/random/maintenance,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/unlocked{
 	dir = 8;
 	environ = 0;
@@ -568,7 +565,6 @@
 /obj/item/surgicaldrill,
 /obj/item/hemostat,
 /obj/item/scalpel,
-/obj/item/surgical_drapes,
 /obj/item/retractor,
 /obj/item/cautery,
 /obj/item/circular_saw,

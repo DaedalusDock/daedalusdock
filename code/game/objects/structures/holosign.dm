@@ -6,7 +6,7 @@
 	icon = 'icons/effects/effects.dmi'
 	anchored = TRUE
 	max_integrity = 1
-	armor = list(MELEE = 0, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 0, BIO = 0, FIRE = 20, ACID = 20)
+	armor = list(BLUNT = 0, PUNCTURE = 50, SLASH = 90, LASER = 50, ENERGY = 50, BOMB = 0, BIO = 0, FIRE = 20, ACID = 20)
 	var/obj/item/holosign_creator/projector
 	var/use_vis_overlay = TRUE
 
@@ -37,7 +37,7 @@
 /obj/structure/holosign/proc/attack_holosign(mob/living/user, list/modifiers)
 	user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)
 	user.changeNext_move(CLICK_CD_MELEE)
-	take_damage(5 , BRUTE, MELEE, 1)
+	take_damage(5 , BRUTE, BLUNT, 1)
 
 /obj/structure/holosign/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	switch(damage_type)
@@ -127,11 +127,11 @@
 	allow_walk = FALSE
 
 /obj/structure/holosign/barrier/cyborg/bullet_act(obj/projectile/P)
-	take_damage((P.damage / 5) , BRUTE, MELEE, 1) //Doesn't really matter what damage flag it is.
+	take_damage((P.damage / 5) , BRUTE, BLUNT, 1) //Doesn't really matter what damage flag it is.
 	if(istype(P, /obj/projectile/energy/electrode))
-		take_damage(10, BRUTE, MELEE, 1) //Tasers aren't harmful.
+		take_damage(10, BRUTE, BLUNT, 1) //Tasers aren't harmful.
 	if(istype(P, /obj/projectile/beam/disabler))
-		take_damage(5, BRUTE, MELEE, 1) //Disablers aren't harmful.
+		take_damage(5, BRUTE, BLUNT, 1) //Disablers aren't harmful.
 	return BULLET_ACT_HIT
 
 /obj/structure/holosign/barrier/medical
@@ -159,7 +159,7 @@
 		return CheckHuman(mover)
 	return TRUE
 
-/obj/structure/holosign/barrier/medical/Bumped(atom/movable/AM)
+/obj/structure/holosign/barrier/medical/BumpedBy(atom/movable/AM)
 	. = ..()
 	icon_state = "holo_medical"
 	if(ishuman(AM) && !CheckHuman(AM))
@@ -170,7 +170,7 @@
 
 /obj/structure/holosign/barrier/medical/proc/CheckHuman(mob/living/carbon/human/sickboi)
 	var/threat = sickboi.check_virus()
-	if(get_disease_severity_value(threat) > get_disease_severity_value(DISEASE_SEVERITY_MINOR))
+	if(get_disease_severity_value(threat) > get_disease_severity_value(PATHOGEN_SEVERITY_MINOR))
 		return FALSE
 	return TRUE
 
@@ -188,7 +188,7 @@
 	var/shockcd = 0
 
 /obj/structure/holosign/barrier/cyborg/hacked/bullet_act(obj/projectile/P)
-	take_damage(P.damage, BRUTE, MELEE, 1) //Yeah no this doesn't get projectile resistance.
+	take_damage(P.damage, BRUTE, BLUNT, 1) //Yeah no this doesn't get projectile resistance.
 	return BULLET_ACT_HIT
 
 /obj/structure/holosign/barrier/cyborg/hacked/proc/cooldown()
@@ -201,11 +201,11 @@
 	if(!shockcd)
 		if(ismob(user))
 			var/mob/living/M = user
-			M.electrocute_act(15,"Energy Barrier")
+			M.electrocute_act(15)
 			shockcd = TRUE
 			addtimer(CALLBACK(src, PROC_REF(cooldown)), 5)
 
-/obj/structure/holosign/barrier/cyborg/hacked/Bumped(atom/movable/AM)
+/obj/structure/holosign/barrier/cyborg/hacked/BumpedBy(atom/movable/AM)
 	if(shockcd)
 		return
 
@@ -213,6 +213,6 @@
 		return
 
 	var/mob/living/M = AM
-	M.electrocute_act(15,"Energy Barrier")
+	M.electrocute_act(15)
 	shockcd = TRUE
 	addtimer(CALLBACK(src, PROC_REF(cooldown)), 5)

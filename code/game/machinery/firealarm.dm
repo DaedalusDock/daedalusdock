@@ -10,6 +10,7 @@
 	result_path = /obj/machinery/firealarm
 	pixel_shift = 26
 
+DEFINE_INTERACTABLE(/obj/machinery/firealarm)
 /obj/machinery/firealarm
 	name = "fire alarm"
 	desc = "<i>\"Pull this in case of emergency\"</i>. Thus, keep pulling it forever."
@@ -17,11 +18,12 @@
 	icon_state = "fire0"
 	max_integrity = 250
 	integrity_failure = 0.4
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.05
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.02
 	power_channel = AREA_USAGE_ENVIRON
 	resistance_flags = FIRE_PROOF
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	light_power = 0
 	light_outer_range = 7
@@ -57,6 +59,7 @@
 
 /obj/machinery/firealarm/Initialize(mapload, dir, building)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	if(building)
 		buildstage = 0
 		panel_open = TRUE
@@ -83,6 +86,7 @@
 
 /obj/machinery/firealarm/Destroy()
 	set_area(null)
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/machinery/firealarm/Moved(atom/OldLoc, Dir, list/old_locs, momentum_change = TRUE)
@@ -125,25 +129,25 @@
 	. += mutable_appearance(icon, "fire_overlay")
 	if(is_station_level(z))
 		. += mutable_appearance(icon, "fire_[SSsecurity_level.current_level]")
-		. += emissive_appearance(icon, "fire_[SSsecurity_level.current_level]", alpha = src.alpha)
+		. += emissive_appearance(icon, "fire_[SSsecurity_level.current_level]", alpha = 90)
 	else
 		. += mutable_appearance(icon, "fire_[SEC_LEVEL_GREEN]")
-		. += emissive_appearance(icon, "fire_[SEC_LEVEL_GREEN]", alpha = src.alpha)
+		. += emissive_appearance(icon, "fire_[SEC_LEVEL_GREEN]", alpha = 90)
 
 	if(!alert_type)
 		if(my_area?.fire_detect) //If this is false, leave the green light missing. A good hint to anyone paying attention.
 			. += mutable_appearance(icon, "fire_off")
-			. += emissive_appearance(icon, "fire_off", alpha = src.alpha)
+			. += emissive_appearance(icon, "fire_off", alpha = 90)
 	else if(obj_flags & EMAGGED)
 		. += mutable_appearance(icon, "fire_emagged")
-		. += emissive_appearance(icon, "fire_emagged", alpha = src.alpha)
+		. += emissive_appearance(icon, "fire_emagged", alpha = 90)
 	else
 		. += mutable_appearance(icon, "fire_on")
-		. += emissive_appearance(icon, "fire_on", alpha = src.alpha)
+		. += emissive_appearance(icon, "fire_on", alpha = 90)
 
 	if(!panel_open && alert_type) //It just looks horrible with the panel open
 		. += mutable_appearance(icon, "fire_detected")
-		. += emissive_appearance(icon, "fire_detected", alpha = src.alpha) //Pain
+		. += emissive_appearance(icon, "fire_detected", alpha = 90) //Pain
 
 /obj/machinery/firealarm/emp_act(severity)
 	. = ..()
@@ -265,7 +269,7 @@
 	return attack_hand_secondary(user)
 
 /obj/machinery/firealarm/attackby(obj/item/tool, mob/living/user, params)
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 
 	if(tool.tool_behaviour == TOOL_SCREWDRIVER && buildstage == 2)
 		tool.play_tool_sound(src)
@@ -404,7 +408,7 @@
 /obj/machinery/firealarm/examine(mob/user)
 	. = ..()
 	if((alert_type))
-		. += "The local area hazard light is flashing."
+		. += span_alert("The local area hazard light is flashing.")
 
 // Allows Silicons to disable thermal sensor
 /obj/machinery/firealarm/BorgCtrlClick(mob/living/silicon/robot/user)

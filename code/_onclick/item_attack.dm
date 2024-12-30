@@ -10,7 +10,8 @@
 /obj/item/proc/melee_attack_chain(mob/user, atom/target, params)
 	var/is_right_clicking = LAZYACCESS(params2list(params), RIGHT_CLICK)
 
-	if(tool_behaviour && (target.tool_act(user, src, tool_behaviour, is_right_clicking) & TOOL_ACT_MELEE_CHAIN_BLOCKING))
+	var/mob/living/L = user
+	if(tool_behaviour && (!istype(L) || !L.combat_mode) && (target.tool_act(user, src, tool_behaviour, is_right_clicking) & TOOL_ACT_MELEE_CHAIN_BLOCKING))
 		return TRUE
 
 	var/pre_attack_result
@@ -85,6 +86,7 @@
 /obj/item/proc/pre_attack(atom/A, mob/living/user, params) //do stuff before attackby!
 	if(SEND_SIGNAL(src, COMSIG_ITEM_PRE_ATTACK, A, user, params) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
+
 	return FALSE //return TRUE to avoid calling attackby after this proc does stuff
 
 /**
@@ -145,12 +147,15 @@
 	return SECONDARY_ATTACK_CALL_NORMAL
 
 /obj/attackby(obj/item/attacking_item, mob/user, params)
-	return ..() || ((obj_flags & CAN_BE_HIT) && attacking_item.attack_atom(src, user, params))
+	return ..() || ((obj_flags & CAN_BE_HIT) && attacking_item.attack_obj(src, user, params))
 
 /mob/living/attackby(obj/item/attacking_item, mob/living/user, params)
 	if(..())
 		return TRUE
-	user.changeNext_move(CLICK_CD_MELEE)
+	if (user.can_perform_surgery_on(src) && attacking_item.attempt_surgery(src, user))
+		return TRUE
+
+	user.changeNext_move(attacking_item.combat_click_delay)
 	return attacking_item.attack(src, user, params)
 
 /mob/living/attackby_secondary(obj/item/weapon, mob/living/user, params)
@@ -174,7 +179,10 @@
 	var/signal_return = SEND_SIGNAL(src, COMSIG_ITEM_ATTACK, M, user, params)
 	if(signal_return & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
-	if(signal_return & COMPONENT_SKIP_ATTACK)
+	if(signal_return & COMPONENT_SKIP_ATTACK_STEP)
+		return
+
+	if(!user.combat_mode)
 		return
 
 	SEND_SIGNAL(user, COMSIG_MOB_ITEM_ATTACK, M, user, params)
@@ -186,22 +194,28 @@
 		to_chat(user, span_warning("You don't want to harm other living beings!"))
 		return
 
-	if(!force)
-		playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
-	else if(hitsound)
-		playsound(loc, hitsound, get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
-
 	M.lastattacker = user.real_name
 	M.lastattackerckey = user.ckey
 
-	if(force && M == user && user.client)
-		user.client.give_award(/datum/award/achievement/misc/selfouch, user)
+	user.stamina_swing(src.stamina_cost)
 
 	user.do_attack_animation(M)
-	M.attacked_by(src, user)
+	var/attack_return = M.attacked_by(src, user)
+	switch(attack_return)
+		if(MOB_ATTACKEDBY_NO_DAMAGE)
+			playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
+		if(MOB_ATTACKEDBY_SUCCESS)
+			playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
+		if(MOB_ATTACKEDBY_MISS)
+			playsound(loc, get_misssound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
 
-	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)])")
+	var/missed = (attack_return == MOB_ATTACKEDBY_MISS || attack_return == MOB_ATTACKEDBY_FAIL)
+	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [missed ? "YES" : "NO"])")
+
 	add_fingerprint(user)
+
+	/// If we missed or the attack failed, interrupt attack chain.
+	return missed
 
 /// The equivalent of [/obj/item/proc/attack] but for alternate attacks, AKA right clicking
 /obj/item/proc/attack_secondary(mob/living/victim, mob/living/user, params)
@@ -215,15 +229,28 @@
 
 	return SECONDARY_ATTACK_CALL_NORMAL
 
-/// The equivalent of the standard version of [/obj/item/proc/attack] but for non mob targets.
-/obj/item/proc/attack_atom(atom/attacked_atom, mob/living/user, params)
-	if(SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_OBJ, attacked_atom, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
+/// The equivalent of the standard version of [/obj/item/proc/attack] but for /obj targets.
+/obj/item/proc/attack_obj(obj/attacked_obj, mob/living/user, params)
+	if(SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_OBJ, attacked_obj, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return
 	if(item_flags & NOBLUDGEON)
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
-	user.do_attack_animation(attacked_atom)
-	attacked_atom.attacked_by(src, user)
+	user.do_attack_animation(attacked_obj)
+	return attacked_obj.attacked_by(src, user)
+
+/// The equivalent of the standard version of [/obj/item/proc/attack] but for /turf targets.
+/obj/item/proc/attack_turf(turf/attacked_turf, mob/living/user, params)
+	if(!attacked_turf.uses_integrity)
+		return
+
+	if(item_flags & NOBLUDGEON)
+		return
+
+	// This probably needs to be changed later on, but it should work for now because only flock walls use integrity.
+	user.changeNext_move(CLICK_CD_MELEE)
+	user.do_attack_animation(attacked_turf)
+	return attacked_turf.attacked_by(src, user)
 
 /// Called from [/obj/item/proc/attack_atom] and [/obj/item/proc/attack] if the attack succeeds
 /atom/proc/attacked_by(obj/item/attacking_item, mob/living/user)
@@ -233,39 +260,20 @@
 	if(!attacking_item.force)
 		return
 
-	var/damage = take_damage(attacking_item.force, attacking_item.damtype, MELEE, 1)
+	var/damage = take_damage(attacking_item.force, attacking_item.damtype, BLUNT, 1)
+
 	//only witnesses close by and the victim see a hit message.
-	user.visible_message(span_danger("[user] hits [src] with [attacking_item][damage ? "." : ", without leaving a mark!"]"), \
-		span_danger("You hit [src] with [attacking_item][damage ? "." : ", without leaving a mark!"]"), null, COMBAT_MESSAGE_RANGE)
-	log_combat(user, src, "attacked", attacking_item)
+	user.visible_message(
+		span_danger("[user] hits [src] with [attacking_item][damage ? "." : ", without leaving a mark."]"),
+		null,
+		COMBAT_MESSAGE_RANGE
+	)
+
+	log_combat(user, src, "attacked ([damage] damage)", attacking_item)
+	return damage
 
 /area/attacked_by(obj/item/attacking_item, mob/living/user)
 	CRASH("areas are NOT supposed to have attacked_by() called on them!")
-
-/mob/living/attacked_by(obj/item/I, mob/living/user)
-	send_item_attack_message(I, user)
-	if(I.force)
-		apply_damage(I.force, I.damtype)
-		if(I.damtype == BRUTE)
-			if(prob(33))
-				I.add_mob_blood(src)
-				var/turf/location = get_turf(src)
-				add_splatter_floor(location)
-				if(get_dist(user, src) <= 1) //people with TK won't get smeared with blood
-					user.add_mob_blood(src)
-		return TRUE //successful attack
-
-/mob/living/simple_animal/attacked_by(obj/item/I, mob/living/user)
-	if(!attack_threshold_check(I.force, I.damtype, MELEE, FALSE))
-		playsound(loc, 'sound/weapons/tap.ogg', I.get_clamped_volume(), TRUE, -1)
-	else
-		return ..()
-
-/mob/living/basic/attacked_by(obj/item/I, mob/living/user)
-	if(!attack_threshold_check(I.force, I.damtype, MELEE, FALSE))
-		playsound(loc, 'sound/weapons/tap.ogg', I.get_clamped_volume(), TRUE, -1)
-	else
-		return ..()
 
 /**
  * Last proc in the [/obj/item/proc/melee_attack_chain]
@@ -313,23 +321,35 @@
 		else
 			return clamp(w_class * 6, 10, 100) // Multiply the item's weight class by 6, then clamp the value between 10 and 100
 
-/mob/living/proc/send_item_attack_message(obj/item/I, mob/living/user, hit_area, obj/item/bodypart/hit_bodypart)
+/mob/living/proc/send_item_attack_message(obj/item/I, mob/living/user, hit_area)
 	if(!I.force && !length(I.attack_verb_simple) && !length(I.attack_verb_continuous))
 		return
+
 	var/message_verb_continuous = length(I.attack_verb_continuous) ? "[pick(I.attack_verb_continuous)]" : "attacks"
 	var/message_verb_simple = length(I.attack_verb_simple) ? "[pick(I.attack_verb_simple)]" : "attack"
 	var/message_hit_area = ""
 	if(hit_area)
 		message_hit_area = " in the [hit_area]"
-	var/attack_message_spectator = "[src] [message_verb_continuous][message_hit_area] with [I]!"
-	var/attack_message_victim = "Something [message_verb_continuous] you[message_hit_area] with [I]!"
-	var/attack_message_attacker = "You [message_verb_simple] [src][message_hit_area] with [I]!"
-	if(user in viewers(src, null))
-		attack_message_spectator = "[user] [message_verb_continuous] [src][message_hit_area] with [I]!"
-		attack_message_victim = "[user] [message_verb_continuous] you[message_hit_area] with [I]!"
+
+	var/attack_message_spectator = "<b>[src]</b> [message_verb_continuous][message_hit_area] with [I]!"
+
 	if(user == src)
-		attack_message_victim = "You [message_verb_simple] yourself[message_hit_area] with [I]"
-	visible_message(span_danger("[attack_message_spectator]"),\
-		span_userdanger("[attack_message_victim]"), null, COMBAT_MESSAGE_RANGE, user)
-	to_chat(user, span_danger("[attack_message_attacker]"))
+		attack_message_spectator = "<b>[user]</b> [message_verb_simple] [user.p_them()]self[message_hit_area] with [I]!"
+	else if(user in viewers(src))
+		attack_message_spectator = "<b>[user]</b> [message_verb_continuous] <b>[src]</b>[message_hit_area] with [I]!"
+
+	visible_message(span_danger("[attack_message_spectator]"), vision_distance = COMBAT_MESSAGE_RANGE)
 	return 1
+
+/**
+ * Interaction handler for being clicked on with a grab. This is called regardless of user intent.
+ *
+ * **Parameters**:
+ * - `grab` - The grab item being used.
+ * - `click_params` - List of click parameters.
+ *
+ * Returns boolean to indicate whether the attack call was handled or not. If `FALSE`, the next `use_*` proc in the
+ * resolve chain will be called.
+ */
+/atom/proc/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	return FALSE

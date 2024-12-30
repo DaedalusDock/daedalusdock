@@ -37,7 +37,6 @@
 /mob/living/simple_animal/hostile/ooze/Initialize(mapload)
 	. = ..()
 	create_reagents(300)
-	add_cell_sample()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
 /mob/living/simple_animal/hostile/ooze/attacked_by(obj/item/I, mob/living/user)
@@ -96,11 +95,11 @@
 /mob/living/simple_animal/hostile/ooze/gelatinous
 	name = "Gelatinous Cube"
 	desc = "A cubic ooze native to Sholus VII.\nSince the advent of space travel this species has established itself in the waste treatment facilities of several space colonies.\nIt is often considered to be the third most infamous invasive species due to its highly aggressive and predatory nature."
-	speed = 1
+	move_delay_modifier = 1
 	damage_coeff = list(BRUTE = 1, BURN = 0.6, TOX = 0.5, CLONE = 1.5, STAMINA = 0, OXY = 1)
 	melee_damage_lower = 20
 	melee_damage_upper = 20
-	armour_penetration = 15
+	armor_penetration = 15
 	obj_damage = 20
 	deathmessage = "collapses into a pile of goo!"
 	///The ability to give yourself a metabolic speed boost which raises heat
@@ -127,9 +126,6 @@
 	if(!do_after(user, time = 6 SECONDS)) //6 second struggle
 		return FALSE
 	consume.stop_consuming()
-
-/mob/living/simple_animal/hostile/ooze/gelatinous/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_GELATINOUS, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 ///This ability lets the gelatinious ooze speed up for a little bit
 /datum/action/cooldown/metabolicboost
@@ -213,16 +209,17 @@
 	if(!.)
 		return
 	var/mob/living/simple_animal/hostile/ooze/gelatinous/ooze = owner
-	if(!isliving(ooze.pulling))
-		to_chat(src, span_warning("You need to be pulling a creature for this to work!"))
+	var/mob/living/target = ooze.get_active_grab()?.affecting
+	if(!isliving(target))
+		to_chat(src, span_warning("You need to be gripping a creature for this to work!"))
 		return FALSE
 	if(vored_mob)
 		to_chat(src, span_warning("You are already consuming another creature!"))
 		return FALSE
 	owner.visible_message(span_warning("[ooze] starts attempting to devour [target]!"), span_notice("You start attempting to devour [target]."))
-	if(!do_after(ooze, ooze.pulling, 1.5 SECONDS))
+	if(!do_after(ooze, target, 1.5 SECONDS))
 		return FALSE
-	var/mob/living/eat_target = ooze.pulling
+	var/mob/living/eat_target = target
 
 	if(!(eat_target.mob_biotypes & MOB_ORGANIC) || eat_target.stat == DEAD)
 		to_chat(src, span_warning("This creature isn't to my tastes!"))
@@ -273,7 +270,7 @@
 	icon_state = "grapes"
 	icon_living = "grapes"
 	icon_dead = "grapes_dead"
-	speed = 1
+	move_delay_modifier = 1
 	health = 200
 	maxHealth = 200
 	damage_coeff = list(BRUTE = 1, BURN = 0.8, TOX = 0.5, CLONE = 1.5, STAMINA = 0, OXY = 1)
@@ -288,9 +285,6 @@
 	glob_shooter.Grant(src)
 	var/datum/action/cooldown/gel_cocoon/gel_cocoon = new(src)
 	gel_cocoon.Grant(src)
-
-/mob/living/simple_animal/hostile/ooze/grapes/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_GRAPE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 ///Ability that allows the owner to fire healing globules at mobs, targetting specific limbs.
 /datum/action/cooldown/globules
@@ -331,7 +325,7 @@
 
 	return TRUE
 
-/datum/action/cooldown/globules/InterceptClickOn(mob/living/caller, params, atom/target)
+/datum/action/cooldown/globules/InterceptClickOn(mob/living/invoker, params, atom/target)
 	. = ..()
 	if(!.)
 		return FALSE
@@ -340,19 +334,19 @@
 	// Well, we need to use the params of the click intercept
 	// for passing into preparePixelProjectile, so we'll handle it here instead.
 	// We just need to make sure Pre-activate and Activate return TRUE so we make it this far
-	caller.visible_message(
-		span_nicegreen("[caller] launches a mending globule!"),
+	invoker.visible_message(
+		span_nicegreen("[invoker] launches a mending globule!"),
 		span_notice("You launch a mending globule."),
 	)
 
-	var/mob/living/simple_animal/hostile/ooze/oozy = caller
+	var/mob/living/simple_animal/hostile/ooze/oozy = invoker
 	if(istype(oozy))
 		oozy.adjust_ooze_nutrition(-5)
 
 	var/modifiers = params2list(params)
-	var/obj/projectile/globule/globule = new(caller.loc)
-	globule.preparePixelProjectile(target, caller, modifiers)
-	globule.def_zone = caller.zone_selected
+	var/obj/projectile/globule/globule = new(invoker.loc)
+	globule.preparePixelProjectile(target, invoker, modifiers)
+	globule.aimed_def_zone = invoker.zone_selected
 	globule.fire()
 
 	return TRUE
@@ -384,7 +378,7 @@
 	. = ..()
 	bodypart = null
 
-/obj/item/mending_globule/embedded(mob/living/carbon/human/embedded_mob, obj/item/bodypart/part)
+/obj/item/mending_globule/embedded(obj/item/bodypart/part)
 	. = ..()
 	if(!istype(part))
 		return
@@ -423,14 +417,15 @@
 ///Try to put the pulled mob in a cocoon
 /datum/action/cooldown/gel_cocoon/proc/gel_cocoon()
 	var/mob/living/simple_animal/hostile/ooze/grapes/ooze = owner
-	if(!iscarbon(ooze.pulling))
+	var/mob/living/carbon/target = ooze.get_active_grab()?.affecting
+	if(!iscarbon(target))
 		to_chat(src, span_warning("You need to be pulling an intelligent enough creature to assist it with a cocoon!"))
 		return FALSE
 	owner.visible_message(span_nicegreen("[ooze] starts attempting to put [target] into a gel cocoon!"), span_notice("You start attempting to put [target] into a gel cocoon."))
-	if(!do_after(ooze, ooze.pulling, 1.5 SECONDS))
+	if(!do_after(ooze, target, 1.5 SECONDS))
 		return FALSE
 
-	put_in_cocoon(ooze.pulling)
+	put_in_cocoon(target)
 	ooze.adjust_ooze_nutrition(-30)
 
 ///Mob needs to have enough nutrition
@@ -488,8 +483,8 @@
 	if(inhabitant.reagents.get_reagent_amount(/datum/reagent/medicine/atropine) < 5)
 		inhabitant.reagents.add_reagent(/datum/reagent/medicine/atropine, 0.5)
 
-	if(inhabitant.reagents.get_reagent_amount(/datum/reagent/medicine/salglu_solution) < 15)
-		inhabitant.reagents.add_reagent(/datum/reagent/medicine/salglu_solution, 1.5)
+	if(inhabitant.reagents.get_reagent_amount(/datum/reagent/medicine/saline_glucose) < 15)
+		inhabitant.reagents.add_reagent(/datum/reagent/medicine/saline_glucose, 1.5)
 
 	if(inhabitant.reagents.get_reagent_amount(/datum/reagent/consumable/milk) < 20)
 		inhabitant.reagents.add_reagent(/datum/reagent/consumable/milk, 2)

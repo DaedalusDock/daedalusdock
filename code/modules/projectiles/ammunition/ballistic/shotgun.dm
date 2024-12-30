@@ -5,7 +5,7 @@
 	desc = "A 12 gauge lead slug."
 	icon_state = "blshell"
 	worn_icon_state = "shell"
-	caliber = CALIBER_SHOTGUN
+	caliber = CALIBER_12GAUGE
 	custom_materials = list(/datum/material/iron=4000)
 	projectile_type = /obj/projectile/bullet/shotgun_slug
 
@@ -149,5 +149,5 @@
 	reagents.add_reagent(/datum/reagent/consumable/ethanol/neurotoxin, 6)
 	reagents.add_reagent(/datum/reagent/toxin/spore, 6)
 	reagents.add_reagent(/datum/reagent/toxin/mutetoxin, 6) //;HELP OPS IN MAINT
-	reagents.add_reagent(/datum/reagent/toxin/coniine, 6)
+	reagents.add_reagent(/datum/reagent/toxin/lexorin, 6)
 	reagents.add_reagent(/datum/reagent/toxin/sodium_thiopental, 6)

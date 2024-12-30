@@ -10,12 +10,13 @@
 	material_modifier = 0.5
 	material_flags = MATERIAL_EFFECTS | MATERIAL_AFFECT_STATISTICS
 	blocks_emissive = EMISSIVE_BLOCK_UNIQUE
+	abstract_type = /obj/structure/statue
 	/// Beauty component mood modifier
 	var/impressiveness = 15
 	/// Art component subtype added to this statue
 	var/art_type = /datum/element/art
-	/// Abstract root type
-	var/abstract_type = /obj/structure/statue
+	/// Can this statue be created by hand?
+	var/can_be_carved = TRUE
 
 /obj/structure/statue/Initialize(mapload)
 	. = ..()
@@ -106,7 +107,7 @@
 	abstract_type = /obj/structure/statue/gold
 
 /obj/structure/statue/gold/hos
-	name = "statue of the head of security"
+	name = "statue of the security marshal"
 	icon_state = "hos"
 
 /obj/structure/statue/gold/hop
@@ -246,7 +247,7 @@
 	custom_materials = list(/datum/material/metalhydrogen = MINERAL_MATERIAL_AMOUNT*10)
 	max_integrity = 1000
 	impressiveness = 100
-	abstract_type = /obj/structure/statue/elder_atmosian //This one is uncarvable
+	can_be_carved = FALSE //Created by a crafting recipe instead of the standard system.
 
 /obj/item/chisel
 	name = "chisel"
@@ -261,7 +262,6 @@
 	force = 5
 	w_class = WEIGHT_CLASS_TINY
 	throwforce = 5
-	throw_speed = 3
 	throw_range = 5
 	custom_materials = list(/datum/material/iron=75)
 	attack_verb_continuous = list("stabs")
@@ -284,7 +284,6 @@
 /obj/item/chisel/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/eyestab)
-	AddElement(/datum/element/wall_engraver)
 	//deals 200 damage to statues, meaning you can actually kill one in ~250 hits
 	AddElement(/datum/element/bane, /mob/living/simple_animal/hostile/statue, damage_multiplier = 40)
 
@@ -496,9 +495,11 @@ Moving interrupts
 
 /obj/structure/carving_block/proc/build_statue_cost_table()
 	. = list()
-	for(var/statue_type in subtypesof(/obj/structure/statue) - /obj/structure/statue/custom)
+	for(var/obj/structure/statue/statue_type as anything in subtypesof(/obj/structure/statue) - /obj/structure/statue/custom)
+		if(isabstract(statue_type))
+			continue
 		var/obj/structure/statue/S = new statue_type()
-		if(!S.icon_state || S.abstract_type == S.type || !S.custom_materials)
+		if(!S.icon_state || !S.can_be_carved || !S.custom_materials)
 			continue
 		.[S.type] = S.custom_materials
 		qdel(S)

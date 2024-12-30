@@ -16,20 +16,21 @@
 		to_chat(owner, span_warning("We are already absorbing!"))
 		return
 
-	if(!owner.pulling || !iscarbon(owner.pulling))
+	var/obj/item/hand_item/grab/G = owner.get_active_grab()
+	if(!G)
 		to_chat(owner, span_warning("We must be grabbing a creature to absorb them!"))
 		return
-	if(owner.grab_state <= GRAB_NECK)
+	if(!G.current_grab.can_absorb)
 		to_chat(owner, span_warning("We must have a tighter grip to absorb this creature!"))
 		return
 
-	var/mob/living/carbon/target = owner.pulling
+	var/mob/living/carbon/target = G.affecting
 	var/datum/antagonist/changeling/changeling = owner.mind.has_antag_datum(/datum/antagonist/changeling)
 	return changeling.can_absorb_dna(target)
 
-/datum/action/changeling/absorb_dna/sting_action(mob/owner)
+/datum/action/changeling/absorb_dna/sting_action(mob/living/owner)
 	var/datum/antagonist/changeling/changeling = owner.mind.has_antag_datum(/datum/antagonist/changeling)
-	var/mob/living/carbon/human/target = owner.pulling
+	var/mob/living/carbon/human/target = owner.get_active_grab()?.affecting
 	is_absorbing = TRUE
 
 	if(!attempt_absorb(target))
@@ -63,13 +64,7 @@
 
 /datum/action/changeling/absorb_dna/proc/absorb_memories(mob/living/carbon/human/target)
 	var/datum/mind/suckedbrain = target.mind
-
 	var/datum/antagonist/changeling/changeling = owner.mind.has_antag_datum(/datum/antagonist/changeling)
-
-	for(var/memory_type in suckedbrain.memories)
-		var/datum/memory/stolen_memory = suckedbrain.memories[memory_type]
-		changeling.stolen_memories[stolen_memory.name] = stolen_memory.generate_story(STORY_CHANGELING_ABSORB)
-	suckedbrain.wipe_memory()
 
 	for(var/datum/antagonist/antagonist_datum as anything in suckedbrain.antag_datums)
 		var/list/all_objectives = antagonist_datum.objectives.Copy()

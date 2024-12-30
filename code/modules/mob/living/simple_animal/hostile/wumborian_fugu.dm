@@ -26,7 +26,7 @@
 	friendly_verb_simple = "float near"
 	speak_emote = list("puffs")
 	vision_range = 5
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 50
 	health = 50
 	pixel_x = -16
@@ -37,7 +37,7 @@
 	melee_damage_upper = 0
 	attack_verb_continuous = "chomps"
 	attack_verb_simple = "chomp"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	attack_vis_effect = ATTACK_EFFECT_BITE
 	throw_message = "is avoided by the"
 	aggro_vision_range = 9
@@ -51,6 +51,7 @@
 
 /mob/living/simple_animal/hostile/asteroid/fugu/Initialize(mapload)
 	. = ..()
+	AddComponent(/datum/component/seethrough_mob)
 	E = new
 	E.Grant(src)
 
@@ -106,7 +107,7 @@
 	F.move_to_delay = 6
 	F.environment_smash = ENVIRONMENT_SMASH_WALLS
 	F.mob_size = MOB_SIZE_LARGE
-	F.speed = 1
+	F.move_delay_modifier = 1
 	addtimer(CALLBACK(F, TYPE_PROC_REF(/mob/living/simple_animal/hostile/asteroid/fugu, Deflate)), 100)
 
 /mob/living/simple_animal/hostile/asteroid/fugu/proc/Deflate()
@@ -125,9 +126,9 @@
 		inflate_cooldown = 4
 		environment_smash = ENVIRONMENT_SMASH_NONE
 		mob_size = MOB_SIZE_SMALL
-		speed = 0
+		move_delay_modifier = 0
 
-/mob/living/simple_animal/hostile/asteroid/fugu/death(gibbed)
+/mob/living/simple_animal/hostile/asteroid/fugu/death(gibbed, cause_of_death = "Unknown")
 	Deflate()
 	..(gibbed)
 
@@ -157,6 +158,7 @@
 
 	ADD_TRAIT(animal, TRAIT_FUGU_GLANDED, type)
 
+	animal.AddComponent(/datum/component/seethrough_mob)
 	animal.maxHealth *= 1.5
 	animal.health = min(animal.maxHealth, animal.health * 1.5)
 	animal.melee_damage_lower = max((animal.melee_damage_lower * 2), 10)

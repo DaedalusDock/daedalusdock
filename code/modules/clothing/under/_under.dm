@@ -4,14 +4,24 @@
 	worn_icon = 'icons/mob/clothing/under/default.dmi'
 	fallback_colors = list(list(15, 17), list(10, 19), list(15, 10))
 	fallback_icon_state = "under"
+
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	permeability_coefficient = 0.9
 	slot_flags = ITEM_SLOT_ICLOTHING
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0, WOUND = 5)
+
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 	equip_sound = 'sound/items/equip/jumpsuit_equip.ogg'
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
+
+	equip_self_flags = NONE
+	equip_delay_self = EQUIP_DELAY_UNDERSUIT
+	equip_delay_other = EQUIP_DELAY_UNDERSUIT * 1.5
+	strip_delay = EQUIP_DELAY_UNDERSUIT * 1.5
+
 	limb_integrity = 30
+
 	/// The variable containing the flags for how the woman uniform cropping is supposed to interact with the sprite.
 	var/female_sprite_flags = FEMALE_UNIFORM_FULL
 	var/has_sensor = HAS_SENSORS // For the crew computer
@@ -30,19 +40,29 @@
 	. = ..()
 	if(random_sensor)
 		//make the sensor mode favor higher levels, except coords.
-		sensor_mode = pick(SENSOR_VITALS, SENSOR_VITALS, SENSOR_VITALS, SENSOR_LIVING, SENSOR_LIVING, SENSOR_COORDS, SENSOR_COORDS, SENSOR_OFF)
+		sensor_mode = pick(SENSOR_LIVING, SENSOR_LIVING, SENSOR_COORDS, SENSOR_COORDS, SENSOR_OFF)
 	if(!(body_parts_covered & LEGS))
 		fallback_icon_state = "under_skirt"
 
-/obj/item/clothing/under/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
+/obj/item/clothing/under/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
 	if(isinhands)
 		return
 
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damageduniform")
-	if(HAS_BLOOD_DNA(src))
-		. += mutable_appearance('icons/effects/blood.dmi', "uniformblood")
+
+	var/list/dna = return_blood_DNA()
+	if(length(dna))
+		if(istype(wearer))
+			var/obj/item/bodypart/chest = wearer.get_bodypart(BODY_ZONE_CHEST)
+			if(!chest?.icon_bloodycover)
+				return
+			var/image/bloody_overlay = image(chest.icon_bloodycover, "uniformblood")
+			bloody_overlay.color = get_blood_dna_color(dna)
+			. += bloody_overlay
+		else
+			. += mutable_appearance('icons/effects/blood.dmi', "uniformblood")
 	if(accessory_overlay)
 		. += accessory_overlay
 
@@ -66,9 +86,6 @@
 
 /obj/item/clothing/under/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
 	..()
-	if(ismob(loc))
-		var/mob/M = loc
-		M.update_worn_undersuit()
 	if(damaged_state == CLOTHING_SHREDDED && has_sensor > NO_SENSORS)
 		has_sensor = BROKEN_SENSORS
 	else if(damaged_state == CLOTHING_PRISTINE && has_sensor == BROKEN_SENSORS)
@@ -81,22 +98,19 @@
 	if(has_sensor > NO_SENSORS)
 		if(severity <= EMP_HEAVY)
 			has_sensor = BROKEN_SENSORS
-			if(ismob(loc))
-				var/mob/M = loc
-				to_chat(M,span_warning("[src]'s sensors short out!"))
+			if(equipped_to)
+				to_chat(equipped_to, span_warning("[src]'s sensors short out!"))
 		else
-			sensor_mode = pick(SENSOR_OFF, SENSOR_OFF, SENSOR_OFF, SENSOR_LIVING, SENSOR_LIVING, SENSOR_VITALS, SENSOR_VITALS, SENSOR_COORDS)
-			if(ismob(loc))
-				var/mob/M = loc
-				to_chat(M,span_warning("The sensors on the [src] change rapidly!"))
-		if(ishuman(loc))
-			var/mob/living/carbon/human/ooman = loc
-			if(ooman.w_uniform == src)
-				ooman.update_suit_sensors()
+			sensor_mode = pick(SENSOR_OFF, SENSOR_OFF, SENSOR_OFF, SENSOR_LIVING, SENSOR_LIVING, SENSOR_COORDS)
+			if(equipped_to)
+				to_chat(equipped_to, span_warning("The sensors on the [src] change rapidly!"))
+
+		if(equipped_to)
+			var/mob/living/carbon/human/ooman = equipped_to
+			ooman.update_suit_sensors()
 
 
-/obj/item/clothing/under/visual_equipped(mob/user, slot)
-	..()
+/obj/item/clothing/under/visual_equipped(mob/living/user, slot)
 	if(adjusted)
 		adjusted = NORMAL_STYLE
 		female_sprite_flags = initial(female_sprite_flags)
@@ -107,27 +121,25 @@
 		var/mob/living/carbon/human/H = user
 		if(H.dna.species.bodytype & BODYTYPE_DIGITIGRADE)
 			adjusted = DIGITIGRADE_STYLE
-		H.update_worn_undersuit()
 
 	if(attached_accessory && slot != ITEM_SLOT_HANDS && ishuman(user))
 		var/mob/living/carbon/human/H = user
 		attached_accessory.on_uniform_equip(src, user)
-		H.fan_hud_set_fandom()
 		if(attached_accessory.above_suit)
 			H.update_worn_oversuit()
+
+	return ..()
 
 /obj/item/clothing/under/equipped(mob/user, slot)
 	..()
 	if(slot == ITEM_SLOT_ICLOTHING && freshly_laundered)
 		freshly_laundered = FALSE
-		SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "fresh_laundry", /datum/mood_event/fresh_laundry)
 
 /obj/item/clothing/under/dropped(mob/user)
 	if(attached_accessory)
 		attached_accessory.on_uniform_dropped(src, user)
 		if(ishuman(user))
 			var/mob/living/carbon/human/H = user
-			H.fan_hud_set_fandom()
 			if(attached_accessory.above_suit)
 				H.update_worn_oversuit()
 	..()
@@ -177,9 +189,7 @@
 		return
 
 	var/mob/living/carbon/human/holder = loc
-	holder.update_worn_undersuit()
-	holder.update_worn_oversuit()
-	holder.fan_hud_set_fandom()
+	holder.update_slots_for_item(src)
 
 /obj/item/clothing/under/proc/remove_accessory(mob/user)
 	. = FALSE
@@ -204,10 +214,7 @@
 		return
 
 	var/mob/living/carbon/human/holder = loc
-	holder.update_worn_undersuit()
-	holder.update_worn_oversuit()
-	holder.fan_hud_set_fandom()
-
+	holder.update_slots_for_item(src)
 
 /obj/item/clothing/under/examine(mob/user)
 	. = ..()
@@ -225,11 +232,10 @@
 			if(SENSOR_OFF)
 				. += "Its sensors appear to be disabled."
 			if(SENSOR_LIVING)
-				. += "Its binary life sensors appear to be enabled."
-			if(SENSOR_VITALS)
 				. += "Its vital tracker appears to be enabled."
 			if(SENSOR_COORDS)
 				. += "Its vital tracker and tracking beacon appear to be enabled."
+
 	if(attached_accessory)
 		. += "\A [attached_accessory] is attached to it."
 
@@ -252,7 +258,7 @@
 		to_chat(usr, "This suit does not have any sensors.")
 		return
 
-	var/list/modes = list("Off", "Binary vitals", "Exact vitals", "Tracking beacon")
+	var/list/modes = list("Off", "Vitals", "Tracking beacon")
 	var/switchMode = tgui_input_list(M, "Select a sensor mode", "Suit Sensors", modes, modes[sensor_mode + 1])
 	if(isnull(switchMode))
 		return
@@ -262,14 +268,12 @@
 	sensor_mode = modes.Find(switchMode) - 1
 	if (loc == usr)
 		switch(sensor_mode)
-			if(0)
+			if(SENSOR_OFF)
 				to_chat(usr, span_notice("You disable your suit's remote sensing equipment."))
-			if(1)
+			if(SENSOR_LIVING)
 				to_chat(usr, span_notice("Your suit will now only report whether you are alive or dead."))
-			if(2)
-				to_chat(usr, span_notice("Your suit will now only report your exact vital lifesigns."))
-			if(3)
-				to_chat(usr, span_notice("Your suit will now report your exact vital lifesigns as well as your coordinate position."))
+			if(SENSOR_COORDS)
+				to_chat(usr, span_notice("Your suit will now report your exact vital information as well as your coordinate position."))
 
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
@@ -281,7 +285,7 @@
 	if(.)
 		return
 
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return
 	if(attached_accessory)
 		remove_accessory(user)
@@ -304,10 +308,10 @@
 		to_chat(usr, span_notice("You adjust the suit to wear it more casually."))
 	else
 		to_chat(usr, span_notice("You adjust the suit back to normal."))
+
 	if(ishuman(usr))
 		var/mob/living/carbon/human/H = usr
-		H.update_worn_undersuit()
-		H.update_body()
+		H.update_slots_for_item(src, force_obscurity_update = TRUE)
 
 /obj/item/clothing/under/proc/toggle_jumpsuit_adjust()
 	if(adjusted == DIGITIGRADE_STYLE)

@@ -51,10 +51,10 @@ Charged extracts:
 
 /obj/item/slimecross/charged/purple
 	colour = "purple"
-	effect_desc = "Creates a packet of omnizine."
+	effect_desc = "Creates a packet of tricordrazine."
 
 /obj/item/slimecross/charged/purple/do_effect(mob/user)
-	new /obj/item/slimecrossbeaker/omnizine(get_turf(user))
+	new /obj/item/slimecrossbeaker/tricordrazine(get_turf(user))
 	user.visible_message(span_notice("[src] sparks, and floods with a regenerative solution!"))
 	..()
 
@@ -174,7 +174,7 @@ Charged extracts:
 	if(isnull(racechoice))
 		to_chat(user, span_notice("You decide not to become a slime for now."))
 		return
-	if(!user.canUseTopic(src, BE_CLOSE))
+	if(!user.canUseTopic(src, USE_CLOSE))
 		return
 	H.set_species(racechoice, icon_update=1)
 	H.visible_message(span_warning("[H] suddenly shifts form as [src] dissolves into [H.p_their()] skin!"))
@@ -256,15 +256,6 @@ Charged extracts:
 /obj/item/slimecross/charged/lightpink/do_effect(mob/user)
 	new /obj/item/slimepotion/peacepotion(get_turf(user))
 	user.visible_message(span_notice("[src] distills into a potion!"))
-	..()
-
-/obj/item/slimecross/charged/adamantine
-	colour = "adamantine"
-	effect_desc = "Creates a completed golem shell."
-
-/obj/item/slimecross/charged/adamantine/do_effect(mob/user)
-	user.visible_message(span_notice("[src] produces a fully formed golem shell!"))
-	new /obj/effect/mob_spawn/ghost_role/human/golem/servant(get_turf(src), /datum/species/golem/adamantine, user)
 	..()
 
 /obj/item/slimecross/charged/rainbow

@@ -1,3 +1,4 @@
+DEFINE_INTERACTABLE(/obj/structure/extinguisher_cabinet)
 /obj/structure/extinguisher_cabinet
 	name = "extinguisher cabinet"
 	desc = "A small wall mounted cabinet designed to hold a fire extinguisher."
@@ -20,10 +21,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 	else
 		stored_extinguisher = new /obj/item/extinguisher(src)
 
-/obj/structure/extinguisher_cabinet/examine(mob/user)
-	. = ..()
-	. += span_notice("Alt-click to [opened ? "close":"open"] it.")
-
 /obj/structure/extinguisher_cabinet/Destroy()
 	if(stored_extinguisher)
 		qdel(stored_extinguisher)
@@ -36,11 +33,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += stored_extinguisher
+			EX_ACT(stored_extinguisher, EXPLODE_DEVASTATE)
 		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += stored_extinguisher
+			EX_ACT(stored_extinguisher, EXPLODE_HEAVY)
 		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += stored_extinguisher
+			EX_ACT(stored_extinguisher, EXPLODE_LIGHT)
 
 /obj/structure/extinguisher_cabinet/handle_atom_del(atom/A)
 	if(A == stored_extinguisher)
@@ -109,8 +106,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 /obj/structure/extinguisher_cabinet/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
 
+/obj/structure/extinguisher_cabinet/attack_hand_secondary(mob/user, list/modifiers)
+	. = ..()
+	toggle_cabinet(user)
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
 /obj/structure/extinguisher_cabinet/AltClick(mob/living/user)
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, TRUE))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY|USE_NEED_HANDS))
 		return
 	toggle_cabinet(user)
 

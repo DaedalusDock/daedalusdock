@@ -10,7 +10,7 @@
 	integrity_failure = 0.4
 	light_color = COLOR_WHITE
 	light_power = FLASH_LIGHT_POWER
-	damage_deflection = 10
+	damage_deflection = 5
 	var/obj/item/assembly/flash/handheld/bulb
 	var/id = null
 	var/range = 2 //this is roughly the size of brig cell
@@ -27,23 +27,24 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/flasher, 26)
 	strength = 80
 	anchored = FALSE
 	density = TRUE
-	light_system = MOVABLE_LIGHT //Used as a flash here.
+	light_system = OVERLAY_LIGHT //Used as a flash here.
 	light_outer_range = FLASH_LIGHT_RANGE
 	light_on = FALSE
 	///Proximity monitor associated with this atom, needed for proximity checks.
 	var/datum/proximity_monitor/proximity_monitor
 
 /obj/machinery/flasher/Initialize(mapload, ndir = 0, built = 0)
-	. = ..() // ..() is EXTREMELY IMPORTANT, never forget to add it
+	. = ..()
+	SET_TRACKING(__TYPE__)
 	if(!built)
 		bulb = new(src)
-
 
 /obj/machinery/flasher/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
 	id = "[port.id]_[id]"
 
 /obj/machinery/flasher/Destroy()
 	QDEL_NULL(bulb)
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/machinery/flasher/powered()
@@ -57,7 +58,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/flasher, 26)
 
 //Don't want to render prison breaks impossible
 /obj/machinery/flasher/attackby(obj/item/W, mob/user, params)
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
+
 	if (W.tool_behaviour == TOOL_WIRECUTTER)
 		if (bulb)
 			user.visible_message(span_notice("[user] begins to disconnect [src]'s flashbulb."), span_notice("You begin to disconnect [src]'s flashbulb..."))

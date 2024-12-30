@@ -8,7 +8,7 @@
 	anchored = TRUE
 	pass_flags_self = LETPASSTHROW|PASSSTRUCTURE
 	/// armor more or less consistent with grille. max_integrity about one time and a half that of a grille.
-	armor = list(MELEE = 50, BULLET = 70, LASER = 70, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 0, ACID = 0)
+	armor = list(BLUNT = 50, PUNCTURE = 70, SLASH = 90, LASER = 70, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 0, ACID = 0)
 	max_integrity = 75
 
 	var/climbable = TRUE
@@ -36,7 +36,7 @@
 
 /obj/structure/railing/attackby(obj/item/I, mob/living/user, params)
 	..()
-	add_fingerprint(user)
+	I.leave_evidence(user, src)
 
 	if(I.tool_behaviour == TOOL_WELDER && !user.combat_mode)
 		if(atom_integrity < max_integrity)
@@ -64,7 +64,7 @@
 
 /obj/structure/railing/deconstruct(disassembled)
 	if(!(flags_1 & NODECONSTRUCT_1))
-		var/obj/item/stack/rods/rod = new /obj/item/stack/rods(drop_location(), 3)
+		var/obj/item/stack/rods/rod = new /obj/item/stack/rods(drop_location(), 6)
 		transfer_fingerprints_to(rod)
 	return ..()
 
@@ -85,7 +85,7 @@
 		return . || mover.throwing || mover.movement_type & (FLYING | FLOATING)
 	return TRUE
 
-/obj/structure/railing/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller)
+/obj/structure/railing/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
 	if(!(to_dir & dir))
 		return TRUE
 	return ..()
@@ -117,3 +117,27 @@
 /obj/structure/railing/proc/check_anchored(checked_anchored)
 	if(anchored == checked_anchored)
 		return TRUE
+
+/obj/structure/railing/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	var/mob/living/L = grab.get_affecting_mob()
+	if(!grab.current_grab.enable_violent_interactions || !isliving(L))
+		return ..()
+
+	if(!Adjacent(L))
+		grab.move_victim_towards(get_turf(src))
+		return ..()
+
+	if(user.combat_mode)
+		visible_message(span_danger("<b>[user] slams <b>[L]</b>'s face against \the [src]!</span>"))
+		playsound(loc, 'sound/effects/grillehit.ogg', 50, 1)
+		var/blocked = L.run_armor_check(BODY_ZONE_HEAD, BLUNT)
+		if (prob(30 * ((100 - blocked)/100)))
+			L.Knockdown(10 SECONDS)
+		L.apply_damage(8, BRUTE, BODY_ZONE_HEAD)
+	else
+		if (get_turf(L) == get_turf(src))
+			L.forceMove(get_step(src, src.dir))
+		else
+			L.forceMove(get_turf(src))
+		L.Knockdown(10 SECONDS)
+		visible_message(span_danger("<b>[user]</b> throws \the <b>[L]</b> over \the [src].</span>"))

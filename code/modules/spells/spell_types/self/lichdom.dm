@@ -48,7 +48,7 @@
 	playsound(cast_on, 'sound/effects/pope_entry.ogg', 100)
 
 	to_chat(cast_on, span_green("You begin to focus your very being into [marked_item]..."))
-	if(!do_after(cast_on, marked_item, 5 SECONDS, timed_action_flags = IGNORE_HELD_ITEM))
+	if(!do_after(cast_on, marked_item, 5 SECONDS, timed_action_flags = DO_IGNORE_HELD_ITEM))
 		to_chat(cast_on, span_warning("Your soul snaps back to your body as you stop ensouling [marked_item]!"))
 		return
 
@@ -62,7 +62,7 @@
 
 	if(iscarbon(cast_on))
 		var/mob/living/carbon/carbon_cast_on = cast_on
-		var/obj/item/organ/internal/brain/lich_brain = carbon_cast_on.getorganslot(ORGAN_SLOT_BRAIN)
+		var/obj/item/organ/brain/lich_brain = carbon_cast_on.getorganslot(ORGAN_SLOT_BRAIN)
 		if(lich_brain) // This prevents MMIs being used to stop lich revives
 			lich_brain.organ_flags &= ~ORGAN_VITAL
 			lich_brain.decoy_override = TRUE

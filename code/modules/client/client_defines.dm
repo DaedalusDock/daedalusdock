@@ -39,6 +39,9 @@
 		////////////////
 	/// hides the byond verb panel as we use our own custom version
 	show_verb_panel = FALSE
+	/// Use our custom cursor
+	mouse_pointer_icon = 'icons/effects/mouse_pointers/default.dmi'
+
 	///Contains admin info. Null if client is not an admin.
 	var/datum/admins/holder = null
 	///Needs to implement InterceptClickOn(user,params,atom) proc
@@ -108,10 +111,15 @@
 	var/account_join_date = null
 	///Age of byond account in days
 	var/account_age = -1
+	///Linked Discord account ID. Null is valid if the bunker is disabled.
+	var/datum/discord_link_record/linked_discord_account = null
+
 
 	preload_rsc = PRELOAD_RSC
 
 	var/atom/movable/screen/click_catcher/void
+	// Keep track of if our client has their mouse down or not
+	var/mouse_down = FALSE
 
 	///used to make a special mouse cursor, this one for mouse up icon
 	var/mouse_up_icon = null
@@ -173,6 +181,10 @@
 	var/middragtime = 0
 	//Middle-mouse-button clicked object control for aimbot exploit detection. Weakref
 	var/datum/weakref/middle_drag_atom_ref
+	//When we started the currently active drag
+	var/drag_start = 0
+	//The params we were passed at the start of the drag, in list form
+	var/list/drag_details
 
 
 	/// Messages currently seen by this client
@@ -195,6 +207,8 @@
 
 	var/list/parallax_layers
 	var/list/parallax_layers_cached
+	var/atom/movable/screen/parallax_root/parallax_master
+
 	///this is the last recorded client eye by SSparallax/fire()
 	var/atom/movable/movingmob
 	var/turf/previous_turf
@@ -204,8 +218,8 @@
 	var/parallax_movedir = 0
 	/// How many parallax layers to show our client
 	var/parallax_layers_max = 4
-	/// Timer for the area directional animation
-	var/parallax_animate_timer
+	/// Timers for the area directional animation, one for each layer
+	var/list/parallax_animate_timers
 	/// Do we want to do parallax animations at all?
 	/// Exists to prevent laptop fires
 	var/do_parallax_animations = TRUE
@@ -232,10 +246,15 @@
 	/// rate limiting for the crew manifest
 	var/crew_manifest_delay
 
+	/// Semaphore for macro updates, so that they all complete and don't stomp over each other.
+	var/updating_macros = FALSE
 	/// A buffer of currently held keys.
 	var/list/keys_held = list()
 	/// A buffer for combinations such of modifiers + keys (ex: CtrlD, AltE, ShiftT). Format: `"key"` -> `"combo"` (ex: `"D"` -> `"CtrlD"`)
 	var/list/key_combos_held = list()
+	/// The direction we WANT to move, based off our keybinds
+	/// Will be updated to be the actual direction later on
+	var/intended_direction = NONE
 	/*
 	** These next two vars are to apply movement for keypresses and releases made while move delayed.
 	** Because discarding that input makes the game less responsive.
@@ -260,3 +279,6 @@
 	//screen_text vars
 	///lazylist of screen_texts for this client, first in this list is the one playing
 	var/list/atom/movable/screen/text/screen_text/screen_texts
+
+	/// Keeps track of what ambience we are playing. Yeah i know it sucks.
+	var/playing_ambience

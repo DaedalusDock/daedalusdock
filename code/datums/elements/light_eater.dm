@@ -4,7 +4,6 @@
  * The temporary equivalent is [/datum/component/light_eater]
  */
 /datum/element/light_eater
-	element_flags = ELEMENT_DETACH
 
 /datum/element/light_eater/Attach(datum/target)
 	if(isatom(target))
@@ -128,12 +127,11 @@
  * - [owner][/mob/living/carbon/human]: The mob that blocked the target with the source
  * - [hitby][/atom/movable]: The movable that was blocked by the owner with the source
  * - attack_text: The text tring that will be used to report that the target was blocked
- * - final_block_chance: The probability of blocking the target with the source
  * - attack_type: The type of attack that was blocked
  */
-/datum/element/light_eater/proc/on_hit_reaction(obj/item/source, mob/living/carbon/human/owner, atom/movable/hitby, attack_text, final_block_chance, damage, attack_type)
+/datum/element/light_eater/proc/on_hit_reaction(obj/item/source, mob/living/carbon/human/owner, atom/movable/hitby, attack_text, damage, attack_type, block_success)
 	SIGNAL_HANDLER
-	if(prob(final_block_chance))
+	if(block_success)
 		eat_lights(hitby, source)
 	return NONE
 

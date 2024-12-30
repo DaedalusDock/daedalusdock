@@ -8,12 +8,10 @@
 	can_elimination_hijack = ELIMINATION_PREVENT
 	show_in_antagpanel = FALSE
 	show_to_ghosts = TRUE
-	antag_moodlet = /datum/mood_event/focused
 	suicide_cry = "FOR NANOTRASEN!!"
 	var/datum/team/ert/ert_team
 	var/leader = FALSE
 	var/datum/outfit/outfit = /datum/outfit/centcom/ert/security
-	var/datum/outfit/plasmaman_outfit = /datum/outfit/plasmaman/centcom_official
 	var/role = "Security Officer"
 	var/list/name_source
 	var/random_names = TRUE
@@ -92,7 +90,6 @@
 /datum/antagonist/ert/commander
 	role = "Commander"
 	outfit = /datum/outfit/centcom/ert/commander
-	plasmaman_outfit = /datum/outfit/plasmaman/centcom_commander
 
 /datum/antagonist/ert/commander/red
 	outfit = /datum/outfit/centcom/ert/commander/alert
@@ -108,7 +105,6 @@
 /datum/antagonist/ert/deathsquad
 	name = "Deathsquad Trooper"
 	outfit = /datum/outfit/centcom/death_commando
-	plasmaman_outfit = /datum/outfit/plasmaman/centcom_commander
 	role = "Trooper"
 	rip_and_tear = TRUE
 
@@ -156,7 +152,6 @@
 /datum/antagonist/ert/intern
 	name = "CentCom Intern"
 	outfit = /datum/outfit/centcom/centcom_intern
-	plasmaman_outfit = /datum/outfit/plasmaman/centcom_intern
 	random_names = FALSE
 	role = "Intern"
 	suicide_cry = "FOR MY INTERNSHIP!!"
@@ -176,7 +171,6 @@
 /datum/antagonist/ert/clown
 	role = "Clown"
 	outfit = /datum/outfit/centcom/ert/clown
-	plasmaman_outfit = /datum/outfit/plasmaman/party_comedian
 
 /datum/antagonist/ert/clown/New()
 	. = ..()
@@ -185,17 +179,14 @@
 /datum/antagonist/ert/janitor/party
 	role = "Party Cleaning Service"
 	outfit = /datum/outfit/centcom/ert/janitor/party
-	plasmaman_outfit = /datum/outfit/plasmaman/party_janitor
 
 /datum/antagonist/ert/security/party
 	role = "Party Bouncer"
 	outfit = /datum/outfit/centcom/ert/security/party
-	plasmaman_outfit = /datum/outfit/plasmaman/party_bouncer
 
 /datum/antagonist/ert/engineer/party
 	role = "Party Constructor"
 	outfit = /datum/outfit/centcom/ert/engineer/party
-	plasmaman_outfit = /datum/outfit/plasmaman/party_constructor
 
 /datum/antagonist/ert/clown/party
 	role = "Party Comedian"
@@ -229,9 +220,7 @@
 	var/mob/living/carbon/human/H = owner.current
 	if(!istype(H))
 		return
-	if(isplasmaman(H))
-		H.equipOutfit(plasmaman_outfit)
-		H.internal = H.get_item_for_held_index(2)
+
 	H.equipOutfit(outfit)
 
 
@@ -263,7 +252,7 @@
 	var/mob/living/M = mob_override || owner.current
 	if(M.hud_used)
 		var/datum/hud/H = M.hud_used
-		var/atom/movable/screen/wanted/giving_wanted_lvl = new /atom/movable/screen/wanted()
+		var/atom/movable/screen/wanted/giving_wanted_lvl = new /atom/movable/screen/wanted(null, M.hud_used)
 		H.wanted_lvl = giving_wanted_lvl
 		giving_wanted_lvl.hud = H
 		H.infodisplay += giving_wanted_lvl
@@ -302,7 +291,6 @@
 	name = "Undercover Cop"
 	role = "Undercover Cop"
 	outfit = /datum/outfit/families_police/beatcop
-	plasmaman_outfit = /datum/outfit/plasmaman/security
 	var/free_clothes = list(/obj/item/clothing/glasses/hud/spacecop/hidden,
 						/obj/item/clothing/under/rank/security/officer/beatcop,
 						/obj/item/clothing/head/spacepolice)

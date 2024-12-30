@@ -9,7 +9,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	mouse_opacity = MOUSE_OPACITY_ICON
 	speak_emote = list("telepathically cries")
-	speed = 2
+	move_delay_modifier = 2
 	move_to_delay = 2
 	projectiletype = /obj/projectile/temp/basilisk/ice
 	projectilesound = 'sound/weapons/pierce.ogg'
@@ -34,10 +34,9 @@
 	pull_force = MOVE_FORCE_VERY_STRONG
 	del_on_death = TRUE
 	loot = list()
-	crusher_loot = /obj/item/crusher_trophy/watcher_wing/ice_wing
 	deathmessage = "fades as the energies that tied it to this world dissipate."
 	deathsound = 'sound/magic/demon_dies.ogg'
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	robust_searching = TRUE
 	footstep_type = FOOTSTEP_MOB_CLAW
 	/// Distance the demon will teleport from the target
@@ -78,7 +77,7 @@
 		return
 	adjustHealth(-0.0125 * maxHealth * delta_time)
 
-/mob/living/simple_animal/hostile/asteroid/ice_demon/death(gibbed)
+/mob/living/simple_animal/hostile/asteroid/ice_demon/death(gibbed, cause_of_death = "Unknown")
 	move_force = MOVE_FORCE_DEFAULT
 	move_resist = MOVE_RESIST_DEFAULT
 	pull_force = PULL_FORCE_DEFAULT

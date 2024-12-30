@@ -20,7 +20,7 @@
 		/obj/item/camera = 3,
 		/obj/item/camera_film = 5,
 		/obj/item/chisel = 3,
-		/obj/item/stack/pipe_cleaner_coil/random = 10,
+		/obj/item/stack/cable_coil/random = 10,
 		/obj/item/cardpack/series_one = 10,
 		/obj/item/cardpack/resin = 10,
 		/obj/item/storage/card_binder = 10,
@@ -48,7 +48,6 @@
 		/obj/item/canvas/twentyfour_twentyfour = 5,
 		/obj/item/canvas/thirtysix_twentyfour = 3,
 		/obj/item/canvas/fortyfive_twentyseven = 3,
-		/obj/item/rcl = 2,
 		/obj/item/airlock_painter = 1,
 		/obj/item/melee/skateboard/pro = 3,
 		/obj/item/clothing/shoes/wheelys/rollerskates= 3,
@@ -59,7 +58,7 @@
 		/obj/item/toy/groan_tube = 2,
 	)
 	refill_canister = /obj/item/vending_refill/games
-	default_price = PAYCHECK_ASSISTANT
+	default_price = PAYCHECK_ASSISTANT * 0.3
 	extra_price = PAYCHECK_HARD * 1.25
 	payment_department = ACCOUNT_STATION_MASTER
 	light_mask = "games-light-mask"

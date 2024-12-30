@@ -106,10 +106,6 @@ Prismatic extracts:
 	paintcolor = "#FFB6C1"
 	colour = "light pink"
 
-/obj/item/slimecross/prismatic/adamantine
-	paintcolor = "#008B8B"
-	colour = "adamantine"
-
 /obj/item/slimecross/prismatic/rainbow
 	paintcolor = "#FFFFFF"
 	colour = "rainbow"

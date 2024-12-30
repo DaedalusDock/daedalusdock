@@ -32,7 +32,7 @@
 
 /obj/machinery/power/solar/Initialize(mapload, obj/item/solar_assembly/S)
 	. = ..()
-
+	SET_TRACKING(__TYPE__)
 	panel_edge = add_panel_overlay("solar_panel_edge", PANEL_EDGE_Y_OFFSET)
 	panel = add_panel_overlay("solar_panel", PANEL_Y_OFFSET)
 
@@ -41,6 +41,7 @@
 	RegisterSignal(SSsun, COMSIG_SUN_MOVED, PROC_REF(queue_update_solar_exposure))
 
 /obj/machinery/power/solar/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	unset_control() //remove from control computer
 	return ..()
 

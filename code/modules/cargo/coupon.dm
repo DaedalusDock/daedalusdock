@@ -22,15 +22,14 @@
 	if(discount_pct_off == COUPON_OMEN)
 		name = "coupon - fuck you"
 		desc = "The small text reads, 'You will be slaughtered'... That doesn't sound right, does it?"
-		if(ismob(loc))
-			var/mob/M = loc
-			to_chat(M, span_warning("The coupon reads '<b>fuck you</b>' in large, bold text... is- is that a prize, or?"))
-			M.AddComponent(/datum/component/omen, TRUE, src)
+		if(equipped_to)
+			to_chat(equipped_to, span_warning("The coupon reads '<b>fuck you</b>' in large, bold text... is- is that a prize, or?"))
+			equipped_to.AddComponent(/datum/component/omen, TRUE, src)
 	else
 		discount_pct_off = text2num(discount_pct_off)
 		name = "coupon - [round(discount_pct_off * 100)]% off [initial(discounted_pack.name)]"
 
-/obj/item/coupon/attack_atom(obj/O, mob/living/user, params)
+/obj/item/coupon/attack_obj(obj/O, mob/living/user, params)
 	if(!istype(O, /obj/machinery/computer/cargo))
 		return ..()
 	if(discount_pct_off == COUPON_OMEN)

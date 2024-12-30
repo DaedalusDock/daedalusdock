@@ -1,6 +1,5 @@
 /datum/keybinding/mob
 	category = CATEGORY_HUMAN
-	weight = WEIGHT_MOB
 
 /datum/keybinding/mob/stop_pulling
 	hotkey_keys = list("H", "Delete")
@@ -13,11 +12,13 @@
 	. = ..()
 	if(.)
 		return
-	var/mob/M = user.mob
-	if(!M.pulling)
-		to_chat(user, span_notice("You are not pulling anything."))
+	var/mob/living/M = user.mob
+	if(!istype(M))
+		return
+	if(!LAZYLEN(M.active_grabs))
+		to_chat(user, span_notice("You are not grabbing anything."))
 	else
-		M.stop_pulling()
+		M.release_all_grabs()
 	return TRUE
 
 /datum/keybinding/mob/swap_hands
@@ -84,12 +85,18 @@
 	if(.)
 		return
 	var/mob/M = user.mob
-	M.toggle_move_intent()
+	if(M.m_intent != MOVE_INTENT_WALK)
+		M.set_move_intent(MOVE_INTENT_WALK)
+	else
+		M.set_move_intent(MOVE_INTENT_RUN)
 	return TRUE
 
 /datum/keybinding/mob/toggle_move_intent/up(client/user)
 	var/mob/M = user.mob
-	M.toggle_move_intent()
+	if(M.m_intent != MOVE_INTENT_WALK)
+		M.set_move_intent(MOVE_INTENT_WALK)
+	else
+		M.set_move_intent(MOVE_INTENT_RUN)
 	return TRUE
 
 /datum/keybinding/mob/toggle_move_intent_alternative
@@ -105,7 +112,10 @@
 	if(.)
 		return
 	var/mob/M = user.mob
-	M.toggle_move_intent()
+	if(M.m_intent != MOVE_INTENT_WALK)
+		M.set_move_intent(MOVE_INTENT_WALK)
+	else
+		M.set_move_intent(MOVE_INTENT_RUN)
 	return TRUE
 
 /datum/keybinding/mob/target_head_cycle

@@ -10,9 +10,11 @@
 //movement intent defines for the m_intent var
 #define MOVE_INTENT_WALK "walk"
 #define MOVE_INTENT_RUN  "run"
+#define MOVE_INTENT_SPRINT "sprint"
 
 //Blood levels
-#define BLOOD_VOLUME_MAX_LETHAL 2150
+#define BLOOD_VOLUME_ABSOLUTE_MAX 2150
+#define BLOOD_VOLUME_MAX_LETHAL BLOOD_VOLUME_ABSOLUTE_MAX
 #define BLOOD_VOLUME_EXCESS 2100
 #define BLOOD_VOLUME_MAXIMUM 2000
 #define BLOOD_VOLUME_SLIME_SPLIT 1120
@@ -22,15 +24,43 @@
 #define BLOOD_VOLUME_BAD 224
 #define BLOOD_VOLUME_SURVIVE 122
 
-/// How efficiently humans regenerate blood.
-#define BLOOD_REGEN_FACTOR 0.25
+// Blood circulation levels
+#define BLOOD_CIRC_FULL 100
+#define BLOOD_CIRC_SAFE 85
+#define BLOOD_CIRC_OKAY 70
+#define BLOOD_CIRC_BAD 60
+#define BLOOD_CIRC_SURVIVE 30
+
+// Mood levels
+#define MOOD_LEVEL_HAPPY4 20
+#define MOOD_LEVEL_HAPPY3 15
+#define MOOD_LEVEL_HAPPY2 10
+#define MOOD_LEVEL_HAPPY1 5
+#define MOOD_LEVEL_NEUTRAL 0
+#define MOOD_LEVEL_SAD1 -5
+#define MOOD_LEVEL_SAD2 -10
+#define MOOD_LEVEL_SAD3 -15
+#define MOOD_LEVEL_SAD4 -20
+
+// Values for flash_pain()
+#define PAIN_SMALL "weakest_pain"
+#define PAIN_MEDIUM "weak_pain"
+#define PAIN_LARGE "pain"
+
+//Germs and infections.
+#define GERM_LEVEL_AMBIENT  275 // Maximum germ level you can reach by standing still.
+#define GERM_LEVEL_MOVE_CAP 300 // Maximum germ level you can reach by running around.
+
+#define INFECTION_LEVEL_ONE   250
+#define INFECTION_LEVEL_TWO   500  // infections grow from ambient to two in ~5 minutes
+#define INFECTION_LEVEL_THREE 1000 // infections grow from two to three in ~10 minutes
 
 //Sizes of mobs, used by mob/living/var/mob_size
-#define MOB_SIZE_TINY 0
-#define MOB_SIZE_SMALL 1
-#define MOB_SIZE_HUMAN 2
-#define MOB_SIZE_LARGE 3
-#define MOB_SIZE_HUGE 4 // Use this for things you don't want bluespace body-bagged
+#define MOB_SIZE_TINY 1
+#define MOB_SIZE_SMALL 5
+#define MOB_SIZE_HUMAN 10
+#define MOB_SIZE_LARGE 20
+#define MOB_SIZE_HUGE 40 // Use this for things you don't want bluespace body-bagged
 
 //Ventcrawling defines
 #define VENTCRAWLER_NONE   0
@@ -49,11 +79,6 @@
 #define MOB_REPTILE (1 << 8)
 #define MOB_SPIRIT (1 << 9)
 #define MOB_PLANT (1 << 10)
-
-
-//Organ defines for carbon mobs
-#define ORGAN_ORGANIC 1
-#define ORGAN_ROBOTIC 2
 
 #define DEFAULT_BODYPART_ICON_ORGANIC 'icons/mob/human_parts_greyscale.dmi'
 #define DEFAULT_BODYPART_ICON_ROBOTIC 'icons/mob/augmentation/augments.dmi'
@@ -79,16 +104,16 @@
 #define BODYTYPE_MONKEY (1<<4)
 ///The limb is snouted.
 #define BODYTYPE_SNOUTED (1<<5)
-///The limb has skrelly bits
-#define BODYTYPE_SKRELL (1<<6)
 ///The limb is voxed
-#define BODYTYPE_VOX_BEAK (1<<7)
+#define BODYTYPE_VOX_BEAK (1<<6)
 ///The limb is in the shape of a vox leg.
-#define BODYTYPE_VOX_LEGS (1<<8)
+#define BODYTYPE_VOX_LEGS (1<<7)
 ///Vox limb that isnt a head or legs.
-#define BODYTYPE_VOX_OTHER (1<<9)
+#define BODYTYPE_VOX_OTHER (1<<8)
 ///The limb is small and feathery
-#define BODYTYPE_TESHARI (1<<10)
+#define BODYTYPE_TESHARI (1<<9)
+/// IPC heads.
+#define BODYTYPE_BOXHEAD (1<<10)
 
 //Defines for Species IDs
 ///A placeholder bodytype for xeno larva, so their limbs cannot be attached to anything.
@@ -104,6 +129,7 @@
 #define SPECIES_FELINE "felinid"
 #define SPECIES_FLYPERSON "fly"
 #define SPECIES_HUMAN "human"
+#define SPECIES_IPC "ipc"
 #define SPECIES_JELLYPERSON "jelly"
 #define SPECIES_SLIMEPERSON "slime"
 #define SPECIES_LUMINESCENT "luminescent"
@@ -115,11 +141,10 @@
 #define SPECIES_MONKEY "monkey"
 #define SPECIES_MOTH "moth"
 #define SPECIES_MUSHROOM "mush"
-#define SPECIES_PLASMAMAN "plasmaman"
 #define SPECIES_PODPERSON "pod"
+#define SPECIES_SAURIAN "saurian"
 #define SPECIES_SHADOW "shadow"
 #define SPECIES_SKELETON "skeleton"
-#define SPECIES_SKRELL "skrell"
 #define SPECIES_SNAIL "snail"
 #define SPECIES_TESHARI "teshari"
 #define SPECIES_VAMPIRE "vampire"
@@ -156,10 +181,7 @@
 ///Heartbeat is gone... He's dead Jim :(
 #define BEAT_NONE 0
 
-#define HUMAN_MAX_OXYLOSS 3
-#define HUMAN_CRIT_MAX_OXYLOSS (SSMOBS_DT/3)
-
-#define STAMINA_REGEN_BLOCK_TIME (10 SECONDS)
+#define HUMAN_FAILBREATH_OXYLOSS 1
 
 #define HEAT_DAMAGE_LEVEL_1 1 //Amount of damage applied when your body temperature just passes the 360.15k safety point
 #define HEAT_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when your body temperature passes the 400K point
@@ -181,6 +203,7 @@
 //Brain Damage defines
 #define BRAIN_DAMAGE_MILD 20
 #define BRAIN_DAMAGE_SEVERE 100
+#define BRAIN_DAMAGE_CRITICAL 150
 #define BRAIN_DAMAGE_DEATH 200
 
 #define BRAIN_TRAUMA_MILD /datum/brain_trauma/mild
@@ -215,6 +238,7 @@
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1
 #define SURGERY_RETRACTED 2
+#define SURGERY_DEENCASED 3
 
 //Health hud screws for carbon mobs
 #define SCREWYHUD_NONE 0
@@ -236,26 +260,6 @@
 #define BEAUTY_LEVEL_DECENT 33
 #define BEAUTY_LEVEL_GOOD 66
 #define BEAUTY_LEVEL_GREAT 100
-
-//Moods levels for humans
-#define MOOD_LEVEL_HAPPY4 15
-#define MOOD_LEVEL_HAPPY3 10
-#define MOOD_LEVEL_HAPPY2 6
-#define MOOD_LEVEL_HAPPY1 2
-#define MOOD_LEVEL_NEUTRAL 0
-#define MOOD_LEVEL_SAD1 -3
-#define MOOD_LEVEL_SAD2 -7
-#define MOOD_LEVEL_SAD3 -15
-#define MOOD_LEVEL_SAD4 -20
-
-//Sanity levels for humans
-#define SANITY_MAXIMUM 150
-#define SANITY_GREAT 125
-#define SANITY_NEUTRAL 100
-#define SANITY_DISTURBED 75
-#define SANITY_UNSTABLE 50
-#define SANITY_CRAZY 25
-#define SANITY_INSANE 0
 
 //Nutrition levels for humans
 #define NUTRITION_LEVEL_FAT 600
@@ -317,8 +321,7 @@
 #define SENTIENCE_ORGANIC 1
 #define SENTIENCE_ARTIFICIAL 2
 #define SENTIENCE_HUMANOID 3
-#define SENTIENCE_MINEBOT 4
-#define SENTIENCE_BOSS 5
+#define SENTIENCE_BOSS 4
 
 //Mob AI Status
 #define POWER_RESTORATION_OFF 0
@@ -359,10 +362,10 @@
 
 ///Flags used by the flags parameter of electrocute act.
 
-///Makes it so that the shock doesn't take gloves into account.
-#define SHOCK_NOGLOVES (1 << 0)
-///Used when the shock is from a tesla bolt.
-#define SHOCK_TESLA (1 << 1)
+/// The shock is applied by hands, check gloves siemen coeff
+#define SHOCK_HANDS (1 << 0)
+/// Shock damage is reduced by the average siemen's coeff
+#define SHOCK_USE_AVG_SIEMENS (1 << 4)
 ///Used when an illusion shocks something. Makes the shock deal stamina damage and not trigger certain secondary effects.
 #define SHOCK_ILLUSION (1 << 2)
 ///The shock doesn't stun.
@@ -425,18 +428,88 @@
 #define AGE_MINOR 20  //legal age of space drinking and smoking
 #define WIZARD_AGE_MIN 30 //youngest a wizard can be
 #define APPRENTICE_AGE_MIN 29 //youngest an apprentice can be
-#define SHOES_SLOWDOWN 0 //How much shoes slow you down by default. Negative values speed you up
-#define SHOES_SPEED_SLIGHT  SHOES_SLOWDOWN - 1 // slightest speed boost to movement
 #define POCKET_STRIP_DELAY (4 SECONDS) //time taken to search somebody's pockets
 #define DOOR_CRUSH_DAMAGE 15 //the amount of damage that airlocks deal when they crush you
 
-#define REAGENTS_EFFECT_MULTIPLIER (REAGENTS_METABOLISM / 0.4) // By defining the effect multiplier this way, it'll exactly adjust all effects according to how they originally were with the 0.4 metabolism
+/// Applies a Chemical Effect with the given magnitude to the mob
+#define APPLY_CHEM_EFFECT(mob, effect, magnitude) \
+	if(effect in mob.chem_effects) { \
+		mob.chem_effects[effect] += magnitude; \
+	} \
+	else { \
+		mob.chem_effects[effect] = magnitude; \
+	}
+
+#define SET_CHEM_EFFECT_IF_LOWER(mob, effect, magnitude) \
+	if(effect in mob.chem_effects) { \
+		mob.chem_effects[effect] = max(magnitude , mob.chem_effects[effect]); \
+	} \
+	else { \
+		mob.chem_effects[effect] = magnitude; \
+	}
+
+///Check chem effect presence in a mob
+#define CHEM_EFFECT_MAGNITUDE(mob, effect) (mob.chem_effects[effect] || 0)
+
+//CHEMICAL EFFECTS
+/// Prevents damage from freezing. Boolean.
+#define CE_CRYO "cryo"
+/// Inaprovaline
+#define CE_STABLE "stable"
+/// Breathing depression, makes you need more air
+#define CE_BREATHLOSS "breathloss"
+/// Fights off necrosis in bodyparts and organs
+#define CE_ANTIBIOTIC "antibiotic"
+/// Iron/nutriment
+#define CE_BLOODRESTORE "bloodrestore"
+#define CE_PAINKILLER "painkiller"
+/// Liver filtering
+#define CE_ALCOHOL       "alcohol"
+/// Liver damage
+#define CE_ALCOHOL_TOXIC "alcotoxic"
+/// Increases or decreases heart rate
+#define CE_PULSE "xcardic"
+/// Reduces incoming toxin damage and helps with liver filtering
+#define CE_ANTITOX "antitox"
+/// Dexalin.
+#define CE_OXYGENATED "oxygen"
+/// Anti-virus effect.
+#define CE_ANTIVIRAL "antiviral"
+// Generic toxins, stops autoheal.
+#define CE_TOXIN "toxins"
+/// Gets in the way of blood circulation, higher the worse
+#define CE_BLOCKAGE "blockage"
+/// Lowers the subject's voice to a whisper
+#define	CE_VOICELOSS "whispers"
+/// Makes it harder to disarm someone
+#define CE_STIMULANT "stimulants"
+/// Multiplier for bloodloss
+#define CE_ANTICOAGULANT "anticoagulant"
+/// Enables brain regeneration even in poor circumstances
+#define CE_BRAIN_REGEN "brainregen"
+
+// Pulse levels, very simplified.
+#define PULSE_NONE 0 // So !M.pulse checks would be possible.
+#define PULSE_SLOW 1 // <60 bpm
+#define PULSE_NORM 2 //  60-90 bpm
+#define PULSE_FAST 3 //  90-120 bpm
+#define PULSE_2FAST 4 // >120 bpm
+#define PULSE_THREADY 5 // Occurs during hypovolemic shock
+#define GETPULSE_HAND 0 // Less accurate. (hand)
+#define GETPULSE_TOOL 1 // More accurate. (med scanner, sleeper, etc.)
+#define PULSE_MAX_BPM 250 // Highest, readable BPM by machines and humans.
+
+// Partial stasis sources
+#define STASIS_CRYOGENIC_FREEZING "cryo"
 
 // Eye protection
 #define FLASH_PROTECTION_SENSITIVE -1
 #define FLASH_PROTECTION_NONE 0
 #define FLASH_PROTECTION_FLASH 1
 #define FLASH_PROTECTION_WELDER 2
+
+// If a mob has a higher threshold than this, the icon shown will be increased to the big fire icon.
+#define MOB_BIG_FIRE_STACK_THRESHOLD 3
 
 // Roundstart trait system
 
@@ -448,6 +521,8 @@
 
 // /obj/item/bodypart on_mob_life() retval flag
 #define BODYPART_LIFE_UPDATE_HEALTH (1<<0)
+#define BODYPART_LIFE_UPDATE_HEALTH_HUD (1<<1)
+#define BODYPART_LIFE_UPDATE_DAMAGE_OVERLAYS (1<<2)
 
 #define MAX_REVIVE_FIRE_DAMAGE 180
 #define MAX_REVIVE_BRUTE_DAMAGE 180
@@ -461,7 +536,7 @@
 #define PULL_PRONE_SLOWDOWN 1.5
 #define HUMAN_CARRY_SLOWDOWN 0.35
 
-//Flags that control what things can spawn species (whitelist)
+//Flags that control what things can spawn species (whitelist) (changesource_flagx)
 //Badmin magic mirror
 #define MIRROR_BADMIN (1<<0)
 //Standard magic mirror (wizard)
@@ -523,9 +598,6 @@
 
 #define SILENCE_RANGED_MESSAGE (1<<0)
 
-/// Returns whether or not the given mob can succumb
-#define CAN_SUCCUMB(target) (HAS_TRAIT(target, TRAIT_CRITICAL_CONDITION) && !HAS_TRAIT(target, TRAIT_NODEATH))
-
 // Body position defines.
 /// Mob is standing up, usually associated with lying_angle value of 0.
 #define STANDING_UP 0
@@ -534,9 +606,6 @@
 
 ///How much a mob's sprite should be moved when they're lying down
 #define PIXEL_Y_OFFSET_LYING -6
-
-///Define for spawning megafauna instead of a mob for cave gen
-#define SPAWN_MEGAFAUNA "bluh bluh huge boss"
 
 ///Squash flags. For squashable element
 
@@ -566,6 +635,9 @@
 #define AI_EMOTION_DORFY "Dorfy"
 #define AI_EMOTION_BLUE_GLOW "Blue Glow"
 #define AI_EMOTION_RED_GLOW "Red Glow"
+
+/// Icon state to use for ai displays that just turns them off
+#define AI_DISPLAY_DONT_GLOW "ai_off"
 
 /// Throw modes, defines whether or not to turn off throw mode after
 #define THROW_MODE_DISABLED 0
@@ -664,16 +736,6 @@
 /// Fire layer when you're on fire
 #define FIRE_LAYER 1
 
-//Bitflags for the layers an external organ can draw on (organs can be drawn on multiple layers)
-/// Draws organ on the BODY_FRONT_LAYER
-#define EXTERNAL_FRONT (1 << 1)
-/// Draws organ on the BODY_ADJ_LAYER
-#define EXTERNAL_ADJACENT (1 << 2)
-/// Draws organ on the BODY_BEHIND_LAYER
-#define EXTERNAL_BEHIND (1 << 3)
-/// Draws organ on all EXTERNAL layers
-#define ALL_EXTERNAL_OVERLAYS EXTERNAL_FRONT | EXTERNAL_ADJACENT | EXTERNAL_BEHIND
-
 //Mob Overlay Index Shortcuts for alternate_worn_layer, layers
 //Because I *KNOW* somebody will think layer+1 means "above"
 //IT DOESN'T OK, IT MEANS "UNDER"
@@ -689,17 +751,28 @@
 #define ABOVE_BODY_FRONT_LAYER (BODY_FRONT_LAYER-1)
 
 //used by canUseTopic()
-/// If silicons need to be next to the atom to use this
-#define BE_CLOSE TRUE
-/// If other mobs (monkeys, aliens, etc) can use this
-#define NO_DEXTERITY TRUE // I had to change 20+ files because some non-dnd-playing fuckchumbis can't spell "dexterity"
-// If telekinesis you can use it from a distance
-#define NO_TK TRUE
-/// If mobs can use this while resting
-#define FLOOR_OKAY TRUE
+/// Needs to be Adjacent() to target.
+#define USE_CLOSE (1<<0)
+/// Needs to be an AdvancedToolUser
+#define USE_DEXTERITY (1<<1)
+// Forbid TK overriding USE_CLOSE
+#define USE_IGNORE_TK (1<<2)
+/// The mob needs to have hands (Does not need EMPTY hands)
+#define USE_NEED_HANDS (1<<3)
+/// Allows the mob to be resting
+#define USE_RESTING (1<<4)
+/// Ignore USE_CLOSE if they have silicon reach
+#define USE_SILICON_REACH (1<<5)
+/// Needs to be literate
+#define USE_LITERACY (1<<6)
+
 
 /// The default mob sprite size (used for shrinking or enlarging the mob sprite to regular size)
 #define RESIZE_DEFAULT_SIZE 1
+
+//Lying angles, which way your head points
+#define LYING_ANGLE_EAST 90
+#define LYING_ANGLE_WEST 270
 
 /// Get the client from the var
 #define CLIENT_FROM_VAR(I) (ismob(I) ? I:client : (istype(I, /client) ? I : (istype(I, /datum/mind) ? I:current?:client : null)))
@@ -737,3 +810,25 @@ GLOBAL_REAL_VAR(list/voice_type2sound) = list(
 
 ///Managed global that is a reference to the real global
 GLOBAL_LIST_INIT(voice_type2sound_ref, voice_type2sound)
+
+/// Breath succeeded completely
+#define BREATH_OKAY 1
+/// Breath caused damage, but should not be obvious
+#define BREATH_SILENT_DAMAGING 0
+/// Breath succeeded but is damaging.
+#define BREATH_DAMAGING -1
+/// Breath completely failed. chokies!!
+#define BREATH_FAILED -2
+
+/// Attack missed.
+#define MOB_ATTACKEDBY_MISS 3
+/// Attack completely failed (missing user, etc)
+#define MOB_ATTACKEDBY_FAIL 0
+/// Attack hit and dealt damage.
+#define MOB_ATTACKEDBY_SUCCESS 1
+/// Attack hit but did no damage.
+#define MOB_ATTACKEDBY_NO_DAMAGE 2
+
+#define BLIND_NOT_BLIND 0
+#define BLIND_PHYSICAL 1
+#define BLIND_SLEEPING 2

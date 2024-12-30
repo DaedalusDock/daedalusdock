@@ -39,12 +39,11 @@
 	inhand_icon_state = "corncob"
 	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 7
 	grind_results = list(/datum/reagent/cellulose = 10) //really partially hemicellulose
 
 /obj/item/grown/corncob/attackby(obj/item/grown/W, mob/user, params)
-	if(W.get_sharpness())
+	if(W.sharpness)
 		to_chat(user, span_notice("You use [W] to fashion a pipe out of the corn cob!"))
 		new /obj/item/clothing/mask/cigarette/pipe/cobpipe (user.loc)
 		qdel(src)
@@ -70,7 +69,6 @@
 	inhand_icon_state = "corncob"
 	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 7
 	var/snap_pops = 1
 

@@ -24,6 +24,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 
 ///Let's extract our dummies organs and limbs for storage, to reduce the cache missed that spamming a dummy cause
 /mob/living/carbon/human/dummy/proc/harvest_organs()
+	// Poolable organs
 	for(var/slot in list(ORGAN_SLOT_BRAIN, ORGAN_SLOT_HEART, ORGAN_SLOT_LUNGS, ORGAN_SLOT_APPENDIX, \
 		ORGAN_SLOT_EYES, ORGAN_SLOT_EARS, ORGAN_SLOT_TONGUE, ORGAN_SLOT_LIVER, ORGAN_SLOT_STOMACH))
 		var/obj/item/organ/current_organ = getorganslot(slot) //Time to cache it lads
@@ -31,12 +32,17 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 			current_organ.Remove(src, special = TRUE) //Please don't somehow kill our dummy
 			SSwardrobe.stash_object(current_organ)
 
+	// Remaining poolable organs
 	var/datum/species/current_species = dna.species
 	for(var/organ_path in current_species.mutant_organs)
 		var/obj/item/organ/current_organ = getorgan(organ_path)
 		if(current_organ)
 			current_organ.Remove(src, special = TRUE) //Please don't somehow kill our dummy
 			SSwardrobe.stash_object(current_organ)
+
+	for(var/obj/item/organ/O as anything in organs)
+		O.Remove(src, special = TRUE)
+		qdel(O)
 
 //Instead of just deleting our equipment, we save what we can and reinsert it into SSwardrobe's store
 //Hopefully this makes preference reloading not the worst thing ever
@@ -67,7 +73,9 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	for(var/obj/item/delete as anything in to_nuke)
 		qdel(delete)
 
-/mob/living/carbon/human/dummy/has_equipped(obj/item/item, slot, initial = FALSE)
+/mob/living/carbon/human/dummy/afterEquipItem(obj/item/item, slot, initial = FALSE)
+	item.item_flags |= IN_INVENTORY
+	item.equipped_to = src
 	return item.visual_equipped(src, slot, initial)
 
 /mob/living/carbon/human/dummy/proc/wipe_state()
@@ -83,31 +91,61 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 /mob/living/carbon/human/dummy/consistent
 
 /mob/living/carbon/human/dummy/consistent/setup_human_dna()
-	create_dna(src)
-	dna.initialize_dna(skip_index = TRUE)
-	dna.features["ears"] = "None"
-	dna.features["ethcolor"] = COLOR_WHITE
-	dna.features["frills"] = "None"
-	dna.features["horns"] = "None"
-	dna.set_all_mutant_colors(COLOR_VIBRANT_LIME)
-	dna.features["moth_antennae"] = "Plain"
-	dna.features["moth_markings"] = "None"
-	dna.features["moth_wings"] = "Plain"
-	dna.features["snout"] = "Round"
-	dna.features["spines"] = "None"
-	dna.features["tail_human"] = "None"
-	dna.features["tail_lizard"] = "Smooth"
-	dna.features["tail_vox"] = "Vox Tail"
-	dna.features["vox_hair"] = "None"
-	dna.features["vox_facial_hair"] = "None"
-	dna.features["vox_snout"] = "Vox Snout"
-	dna.features["tail_cat"] = "None"
-	dna.features["pod_hair"] = "Ivy"
-	dna.features["teshari_feathers"] = "Mane"
-	dna.features["teshari_body_feathers"] = "Plain"
-	dna.features["teshari_ears"] = "None"
-	dna.features["tail_teshari"] = "Default"
-	dna.features["headtails"] = "Long"
+	create_consistent_human_dna(src)
+
+/proc/create_consistent_human_dna(mob/living/carbon/human/H)
+	H.create_dna()
+	H.dna.initialize_dna(skip_index = TRUE)
+
+	H.dna.features["ears"] = get_consistent_feature_entry(GLOB.ears_list)
+	H.dna.features["ethcolor"] = COLOR_WHITE
+	H.dna.features["frills"] = get_consistent_feature_entry(GLOB.frills_list)
+	H.dna.features["horns"] = get_consistent_feature_entry(GLOB.horns_list)
+	H.dna.set_all_mutant_colors(COLOR_VIBRANT_LIME)
+	H.dna.features["moth_antennae"] = get_consistent_feature_entry(GLOB.moth_antennae_list)
+	H.dna.features["moth_markings"] = get_consistent_feature_entry(GLOB.moth_markings_list)
+	H.dna.features["moth_wings"] = get_consistent_feature_entry(GLOB.wings_list)
+	H.dna.features["snout"] = get_consistent_feature_entry(GLOB.snouts_list)
+	H.dna.features["spines"] = get_consistent_feature_entry(GLOB.spines_list)
+	H.dna.features["tail_human"] = get_consistent_feature_entry(GLOB.tails_list_human)
+	H.dna.features["tail_lizard"] = get_consistent_feature_entry(GLOB.tails_list_lizard)
+
+	H.dna.features["tail_vox"] = get_consistent_feature_entry(GLOB.tails_list_vox)
+	H.dna.features["vox_hair"] = get_consistent_feature_entry(GLOB.vox_hair_list)
+	H.dna.features["vox_facial_hair"] = get_consistent_feature_entry(GLOB.vox_facial_hair_list)
+	H.dna.features["vox_snout"] = get_consistent_feature_entry(GLOB.vox_snouts_list)
+
+	H.dna.features["tail_cat"] = get_consistent_feature_entry(GLOB.tails_list_human)
+	H.dna.features["pod_hair"] = get_consistent_feature_entry(GLOB.pod_hair_list)
+
+	H.dna.features["teshari_feathers"] = get_consistent_feature_entry(GLOB.teshari_feathers_list)
+	H.dna.features["teshari_body_feathers"] = get_consistent_feature_entry(GLOB.teshari_body_feathers_list)
+	H.dna.features["teshari_ears"] = get_consistent_feature_entry(GLOB.teshari_ears_list)
+	H.dna.features["tail_teshari"] = get_consistent_feature_entry(GLOB.teshari_tails_list)
+
+	H.dna.features["ipc_screen"] = get_consistent_feature_entry(GLOB.ipc_screens_list)
+	H.dna.features["ipc_antenna"] = get_consistent_feature_entry(GLOB.ipc_antenna_list)
+	H.dna.features["saurian_screen"] = get_consistent_feature_entry(GLOB.saurian_screens_list)
+	H.dna.features["saurian_tail"] = get_consistent_feature_entry(GLOB.saurian_tails_list)
+	H.dna.features["saurian_scutes"] = get_consistent_feature_entry(GLOB.saurian_scutes_list)
+	H.dna.features["saurian_antenna"] = get_consistent_feature_entry(GLOB.saurian_antenna_list)
+
+/// Takes in an accessory list and returns the first entry from that list, ensuring that we dont return SPRITE_ACCESSORY_NONE in the process.
+/proc/get_consistent_feature_entry(list/accessory_feature_list)
+	var/consistent_entry = (accessory_feature_list- SPRITE_ACCESSORY_NONE)[1]
+	ASSERT(!isnull(consistent_entry))
+	return consistent_entry
+
+/// Provides a dummy for unit_tests that functions like a normal human, but with a standardized appearance
+/// Copies the stock dna setup from the dummy/consistent type
+/mob/living/carbon/human/consistent
+
+/mob/living/carbon/human/consistent/setup_human_dna()
+	create_consistent_human_dna(src)
+	fully_replace_character_name(real_name, "John Doe")
+
+/mob/living/carbon/human/consistent/domutcheck()
+	return // We skipped adding any mutations so this runtimes
 
 //Inefficient pooling/caching way.
 GLOBAL_LIST_EMPTY(human_dummy_list)

@@ -16,13 +16,13 @@
 	combat_mode = TRUE
 	maxHealth = 100
 	health = 100
-	speed = 0
+	move_delay_modifier = 0
 	harm_intent_damage = 8
 	melee_damage_lower = 10
 	melee_damage_upper = 10
 	attack_verb_continuous = "hits"
 	attack_verb_simple = "hit"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	obj_damage = 0
 	environment_smash = ENVIRONMENT_SMASH_NONE
 	del_on_death = 0
@@ -37,8 +37,8 @@
 	icon_dead = null
 	icon_gib = "syndicate_gib"
 	turns_per_move = 5
-	speed = 0
-	stat_attack = HARD_CRIT
+	move_delay_modifier = 0
+	stat_attack = UNCONSCIOUS
 	robust_searching = 1
 	vision_range = 3
 	maxHealth = 100
@@ -48,7 +48,7 @@
 	melee_damage_upper = 15
 	attack_verb_continuous = "punches"
 	attack_verb_simple = "punch"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	faction = list("nanotrasenprivate")
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	sentience_type = SENTIENCE_HUMANOID

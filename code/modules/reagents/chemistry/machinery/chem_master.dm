@@ -66,19 +66,19 @@
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			if(beaker)
-				SSexplosions.high_mov_atom += beaker
+				EX_ACT(beaker, EXPLODE_DEVASTATE)
 			if(bottle)
-				SSexplosions.high_mov_atom += bottle
+				EX_ACT(bottle, EXPLODE_DEVASTATE)
 		if(EXPLODE_HEAVY)
 			if(beaker)
-				SSexplosions.med_mov_atom += beaker
+				EX_ACT(beaker, EXPLODE_HEAVY)
 			if(bottle)
-				SSexplosions.med_mov_atom += bottle
+				EX_ACT(bottle, EXPLODE_HEAVY)
 		if(EXPLODE_LIGHT)
 			if(beaker)
-				SSexplosions.low_mov_atom += beaker
+				EX_ACT(beaker, EXPLODE_LIGHT)
 			if(bottle)
-				SSexplosions.low_mov_atom += bottle
+				EX_ACT(bottle, EXPLODE_LIGHT)
 
 /obj/machinery/chem_master/handle_atom_del(atom/A)
 	..()
@@ -143,7 +143,7 @@
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
-	if(!can_interact(user) || !user.canUseTopic(src, !issilicon(user), FALSE, NO_TK))
+	if(!can_interact(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_SILICON_REACH))
 		return
 	replace_beaker(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -221,7 +221,7 @@
 /obj/machinery/chem_master/ui_data(mob/user)
 	var/list/data = list()
 	data["isBeakerLoaded"] = beaker ? 1 : 0
-	data["beakerCurrentVolume"] = beaker ? round(beaker.reagents.total_volume, 0.01) : null
+	data["beakerCurrentVolume"] = beaker ? round(beaker.reagents.total_volume, CHEMICAL_VOLUME_ROUNDING) : null
 	data["beakerMaxVolume"] = beaker ? beaker.volume : null
 	data["mode"] = mode
 	data["condi"] = condi
@@ -238,13 +238,13 @@
 	var/beaker_contents[0]
 	if(beaker)
 		for(var/datum/reagent/R in beaker.reagents.reagent_list)
-			beaker_contents.Add(list(list("name" = R.name, "id" = ckey(R.name), "volume" = round(R.volume, 0.01)))) // list in a list because Byond merges the first list...
+			beaker_contents.Add(list(list("name" = R.name, "id" = ckey(R.name), "volume" = round(R.volume, CHEMICAL_VOLUME_ROUNDING)))) // list in a list because Byond merges the first list...
 	data["beakerContents"] = beaker_contents
 
 	var/buffer_contents[0]
 	if(reagents.total_volume)
 		for(var/datum/reagent/N in reagents.reagent_list)
-			buffer_contents.Add(list(list("name" = N.name, "id" = ckey(N.name), "volume" = round(N.volume, 0.01)))) // ^
+			buffer_contents.Add(list(list("name" = N.name, "id" = ckey(N.name), "volume" = round(N.volume, CHEMICAL_VOLUME_ROUNDING)))) // ^
 	data["bufferContents"] = buffer_contents
 
 	//Calculated once since it'll never change
@@ -325,9 +325,9 @@
 		var/amount = text2num(params["amount"])
 		if(amount == null)
 			amount = text2num(input(usr,
-				"Max 10. Buffer content will be split evenly.",
+				"Max 20. Buffer content will be split evenly.",
 				"How many to make?", 1))
-		amount = clamp(round(amount), 0, 10)
+		amount = clamp(round(amount), 0, 20)
 		if (amount <= 0)
 			return FALSE
 		// Get units per item
@@ -383,7 +383,7 @@
 				"Name",
 				name_default,
 				MAX_NAME_LEN)
-		if(!name || !reagents.total_volume || !src || QDELETED(src) || !usr.canUseTopic(src, !issilicon(usr)))
+		if(!name || !reagents.total_volume || !src || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 			return FALSE
 		// Start filling
 		if(item_type == "pill")
@@ -468,7 +468,7 @@
 				state = "Gas"
 			var/const/P = 3 //The number of seconds between life ticks
 			var/T = initial(R.metabolization_rate) * (60 / P)
-			analyze_vars = list("name" = initial(R.name), "state" = state, "color" = initial(R.color), "description" = initial(R.description), "metaRate" = T, "overD" = initial(R.overdose_threshold), "pH" = initial(R.ph))
+			analyze_vars = list("name" = initial(R.name), "state" = state, "color" = initial(R.color), "description" = initial(R.description), "metaRate" = T, "overD" = initial(R.overdose_threshold))
 			screen = "analyze"
 			return TRUE
 

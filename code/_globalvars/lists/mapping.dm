@@ -95,10 +95,11 @@ GLOBAL_LIST_INIT(alldirs, list(
 
 GLOBAL_LIST_EMPTY(landmarks_list) //list of all landmarks created
 GLOBAL_LIST_EMPTY(start_landmarks_list) //list of all spawn points created
+GLOBAL_LIST_EMPTY(start_landmarks_by_name) // List of lists keyed by name
+GLOBAL_LIST_EMPTY(high_priority_spawns)
 GLOBAL_LIST_EMPTY(department_security_spawns) //list of all department security spawns
-GLOBAL_LIST_EMPTY(generic_event_spawns) //handles clockwork portal+eminence teleport destinations
-GLOBAL_LIST_EMPTY(jobspawn_overrides) //These will take precedence over normal spawnpoints if created.
 
+GLOBAL_LIST_EMPTY(generic_event_spawns) //handles clockwork portal+eminence teleport destinations
 GLOBAL_LIST_EMPTY(wizardstart)
 GLOBAL_LIST_EMPTY(nukeop_start)
 GLOBAL_LIST_EMPTY(nukeop_leader_start)
@@ -122,16 +123,13 @@ GLOBAL_LIST_EMPTY(bar_areas)
 //away missions
 GLOBAL_LIST_EMPTY(vr_spawnpoints)
 
-	//used by jump-to-area etc. Updated by area/updateName()
+// Just a list of all the area objects in the game
+/// Note, areas can have duplicate types
+GLOBAL_LIST_EMPTY(areas)
+/// Used by jump-to-area etc. Updated by area/updateName()
+/// If this is null, it needs to be recalculated. Use get_sorted_areas() as a getter please
 GLOBAL_LIST_EMPTY(sortedAreas)
 /// An association from typepath to area instance. Only includes areas with `unique` set.
 GLOBAL_LIST_EMPTY_TYPED(areas_by_type, /area)
 
 GLOBAL_LIST_EMPTY(all_abstract_markers)
-
-/// Global list of megafauna spawns on cave gen
-GLOBAL_LIST_INIT(megafauna_spawn_list, list(
-	/mob/living/simple_animal/hostile/megafauna/bubblegum = 6,
-	/mob/living/simple_animal/hostile/megafauna/colossus = 2,
-	/mob/living/simple_animal/hostile/megafauna/dragon = 4,
-))

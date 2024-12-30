@@ -126,7 +126,7 @@
 	source.adjustFireLoss(-2, FALSE)
 	source.adjustToxLoss(-2, FALSE, forced = TRUE)
 	source.adjustOxyLoss(-0.5, FALSE)
-	source.adjustStaminaLoss(-2)
+	source.stamina.adjust(2)
 	source.AdjustAllImmobility(-5)
 
 /datum/heretic_knowledge/mark/rust_mark
@@ -238,7 +238,6 @@
 	new /datum/rust_spread(loc)
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	RegisterSignal(user, COMSIG_LIVING_LIFE, PROC_REF(on_life))
-	user.client?.give_award(/datum/award/achievement/misc/rust_ascension, user)
 
 /**
  * Signal proc for [COMSIG_MOVABLE_MOVED].
@@ -279,7 +278,7 @@
 	source.adjustFireLoss(-4, FALSE)
 	source.adjustToxLoss(-4, FALSE, forced = TRUE)
 	source.adjustOxyLoss(-4, FALSE)
-	source.adjustStaminaLoss(-20)
+	source.stamina.adjust(20)
 
 /**
  * #Rust spread datum
@@ -348,7 +347,7 @@
 		max_dist = max(max_dist, get_dist(found_turf, centre) + 1)
 
 	for(var/turf/nearby_turf as anything in spiral_range_turfs(max_dist, centre, FALSE))
-		if(nearby_turf in rusted_turfs || is_type_in_typecache(nearby_turf, blacklisted_turfs))
+		if((nearby_turf in rusted_turfs) || is_type_in_typecache(nearby_turf, blacklisted_turfs))
 			continue
 
 		for(var/turf/line_turf as anything in get_line(nearby_turf, centre))

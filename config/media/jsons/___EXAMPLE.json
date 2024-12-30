@@ -1,0 +1,11 @@
+{
+	"x-comment-info": "Keys starting with x- are never read, and can safely be used as comments",
+	"name" : "EXAMPLE",
+	"x-comment-name": "This file's default name, EXAMPLE, is checked for and ignored, and must be changed.",
+	"author" : "EXAMPLE",
+	"file" : "sounds/poacher.ogg",
+	"media_tags": ["LOBBY", "JUKEBOX"],
+	"x-comment-duration": "Duration of a given file for use in the jukebox in deciseconds.",
+	"duration": 260,
+	"map" : false
+}

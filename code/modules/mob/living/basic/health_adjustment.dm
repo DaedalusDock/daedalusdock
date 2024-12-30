@@ -9,7 +9,7 @@
 /mob/living/basic/proc/adjust_health(amount, updating_health = TRUE, forced = FALSE)
 	. = FALSE
 	if(forced || !(status_flags & GODMODE))
-		bruteloss = round(clamp(bruteloss + amount, 0, maxHealth * 2), DAMAGE_PRECISION)
+		bruteloss = round(clamp(bruteloss + amount, 0, maxHealth), DAMAGE_PRECISION)
 		if(updating_health)
 			updatehealth()
 		. = amount
@@ -36,7 +36,7 @@
 	else if(damage_coeff[OXY])
 		. = adjust_health(amount * damage_coeff[OXY] * CONFIG_GET(number/damage_multiplier), updating_health, forced)
 
-/mob/living/basic/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE)
+/mob/living/basic/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE, cause_of_death = "Systemic organ failure")
 	if(forced)
 		. = adjust_health(amount * CONFIG_GET(number/damage_multiplier), updating_health, forced)
 	else if(damage_coeff[TOX])
@@ -48,9 +48,6 @@
 	else if(damage_coeff[CLONE])
 		. = adjust_health(amount * damage_coeff[CLONE] * CONFIG_GET(number/damage_multiplier), updating_health, forced)
 
-/mob/living/basic/adjustStaminaLoss(amount, updating_health = FALSE, forced = FALSE)
-	if(forced)
-		staminaloss = max(0, min(BASIC_MOB_MAX_STAMINALOSS, staminaloss + amount))
-	else
-		staminaloss = max(0, min(BASIC_MOB_MAX_STAMINALOSS, staminaloss + (amount * damage_coeff[STAMINA])))
-	update_stamina()
+/mob/living/basic/pre_stamina_change(diff as num)
+	return diff * damage_coeff[STAMINA]
+

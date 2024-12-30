@@ -32,32 +32,34 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define PREVENT_CLICK_UNDER_1 (1<<5)
 ///specifies that this atom is a hologram that isnt real
 #define HOLOGRAM_1 (1<<6)
-/// Prevents mobs from getting chainshocked by teslas and the supermatter
-#define SHOCKED_1 (1<<7)
-///Whether /atom/Initialize() has already run for the object
-#define INITIALIZED_1 (1<<8)
 /// was this spawned by an admin? used for stat tracking stuff.
-#define ADMIN_SPAWNED_1 (1<<9)
+#define ADMIN_SPAWNED_1 (1<<7)
 /// should not get harmed if this gets caught by an explosion?
-#define PREVENT_CONTENTS_EXPLOSION_1 (1<<10)
+#define PREVENT_CONTENTS_EXPLOSION_1 (1<<8)
 /// Should this object be paintable with very dark colors?
-#define ALLOW_DARK_PAINTS_1 (1<<11)
+#define ALLOW_DARK_PAINTS_1 (1<<9)
 /// Should this object be unpaintable?
-#define UNPAINTABLE_1 (1<<12)
+#define UNPAINTABLE_1 (1<<10)
 /// Is the thing currently spinning?
-#define IS_SPINNING_1 (1<<13)
-#define IS_ONTOP_1 (1<<14)
-#define SUPERMATTER_IGNORES_1 (1<<15)
+#define IS_SPINNING_1 (1<<11)
+#define SUPERMATTER_IGNORES_1 (1<<12)
 /// If a turf can be made dirty at roundstart. This is also used in areas.
-#define CAN_BE_DIRTY_1 (1<<16)
+#define CAN_BE_DIRTY_1 (1<<13)
 /// Should we use the initial icon for display? Mostly used by overlay only objects
-#define HTML_USE_INITAL_ICON_1 (1<<17)
+#define HTML_USE_INITAL_ICON_1 (1<<14)
 /// Can players recolor this in-game via vendors (and maybe more if support is added)?
-#define IS_PLAYER_COLORABLE_1 (1<<18)
+#define IS_PLAYER_COLORABLE_1 (1<<15)
 /// Whether or not this atom has contextual screentips when hovered OVER
-#define HAS_CONTEXTUAL_SCREENTIPS_1 (1<<19)
+#define HAS_CONTEXTUAL_SCREENTIPS_1 (1<<16)
 // Whether or not this atom is storing contents for a disassociated storage object
-#define HAS_DISASSOCIATED_STORAGE_1 (1<<20)
+#define HAS_DISASSOCIATED_STORAGE_1 (1<<17)
+// Atom has similar priority to border objects when doing Bump() calculations.
+#define BUMP_PRIORITY_1 (1<<18)
+/// If this atom has experienced a decal element "init finished" sourced appearance update
+/// We use this to ensure stacked decals don't double up appearance updates for no rasin
+/// Flag as an optimization, don't make this a trait without profiling
+/// Yes I know this is a stupid flag, no you can't take him from me ~LemonInTheDark
+#define DECAL_INIT_UPDATE_EXPERIENCED_1 (1<<19)
 
 //OH YEAH BABY FLAGS_2 HERE WE GO
 ///Plasma Contamination
@@ -110,28 +112,26 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define FLORA_ALLOWED (1<<3)
 /// If mobs can be spawned by natural random generation
 #define MOB_SPAWN_ALLOWED (1<<4)
-/// If megafauna can be spawned by natural random generation
-#define MEGAFAUNA_SPAWN_ALLOWED (1<<5)
 /// Are you forbidden from teleporting to the area? (centcom, mobs, wizard, hand teleporter)
-#define NOTELEPORT (1<<6)
+#define NOTELEPORT (1<<5)
 /// Hides area from player Teleport function.
-#define HIDDEN_AREA (1<<7)
+#define HIDDEN_AREA (1<<6)
 /// If false, loading multiple maps with this area type will create multiple instances.
-#define UNIQUE_AREA (1<<8)
+#define UNIQUE_AREA (1<<7)
 /// If people are allowed to suicide in it. Mostly for OOC stuff like minigames
-#define BLOCK_SUICIDE (1<<9)
+#define BLOCK_SUICIDE (1<<8)
 /// Can the Xenobio management console transverse this area by default?
-#define XENOBIOLOGY_COMPATIBLE (1<<10)
+#define XENOBIOLOGY_COMPATIBLE (1<<9)
 /// If Abductors are unable to teleport in with their observation console
-#define ABDUCTOR_PROOF (1<<11)
+#define ABDUCTOR_PROOF (1<<10)
 /// If an area should be hidden from power consoles, power/atmosphere alerts, etc.
-#define NO_ALERTS (1<<12)
+#define NO_ALERTS (1<<11)
 /// If blood cultists can draw runes or build structures on this AREA.
-#define CULT_PERMITTED (1<<13)
+#define CULT_PERMITTED (1<<12)
 ///Whther this area is iluminated by starlight
-#define AREA_USES_STARLIGHT (1<<14)
+#define AREA_USES_STARLIGHT (1<<13)
 /// If engravings are persistent in this area
-#define PERSISTENT_ENGRAVINGS (1<<15)
+#define PERSISTENT_ENGRAVINGS (1<<14)
 /*
 	These defines are used specifically with the atom/pass_flags bitmask
 	the atom/checkpass() proc uses them (tables will call movable atom checkpass(PASSTABLE) for example)
@@ -153,6 +153,8 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define PASSITEM (1<<12)
 /// Do not intercept click attempts during Adjacent() checks. See [turf/proc/ClickCross].
 #define LETPASSCLICKS (1<<13)
+/// Pass through flock objects and mobs
+#define PASSFLOCK (1<<14)
 
 //Movement Types
 #define GROUND (1<<0)
@@ -186,10 +188,18 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define ZAP_GENERATES_POWER (1<<5)
 /// Zaps with this flag will generate less power through tesla coils
 #define ZAP_LOW_POWER_GEN (1<<6)
+#define ZAP_NO_COOLDOWN (1<<7)
 
-#define ZAP_DEFAULT_FLAGS ZAP_MOB_STUN | ZAP_MOB_DAMAGE | ZAP_OBJ_DAMAGE
+#define ZAP_DEFAULT_FLAGS ZAP_MOB_STUN | ZAP_MOB_DAMAGE | ZAP_OBJ_DAMAGE | ZAP_NO_COOLDOWN
+#define ZAP_ENERGYBALL_FLAGS ((ZAP_DEFAULT_FLAGS) &~ ZAP_NO_COOLDOWN)
 #define ZAP_FUSION_FLAGS ZAP_OBJ_DAMAGE | ZAP_MOB_DAMAGE | ZAP_MOB_STUN
 #define ZAP_SUPERMATTER_FLAGS ZAP_GENERATES_POWER
+
+/// Convert a power value to mob damage
+#define TESLA_MOB_DAMAGE_COEFF 600
+#define TESLA_POWER_TO_MOB_DAMAGE(power) floor(power / TESLA_MOB_DAMAGE_COEFF)
+/// Convert a desired damage value into the required power amount
+#define TESLA_MOB_DAMAGE_TO_POWER(desired_damage) floor(desired_damage * TESLA_MOB_DAMAGE_COEFF)
 
 //EMP protection
 #define EMP_PROTECT_SELF (1<<0)
@@ -272,15 +282,22 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 
 // timed_action_flags parameter for `/proc/do_after_mob`, `/proc/do_mob` and `/proc/do_after`
 /// Can do the action even if mob moves location
-#define IGNORE_USER_LOC_CHANGE (1<<0)
+#define DO_IGNORE_USER_LOC_CHANGE (1<<0)
 /// Can do the action even if the target moves location
-#define IGNORE_TARGET_LOC_CHANGE (1<<1)
+#define DO_IGNORE_TARGET_LOC_CHANGE (1<<1)
 /// Can do the action even if the item is no longer being held
-#define IGNORE_HELD_ITEM (1<<2)
+#define DO_IGNORE_HELD_ITEM (1<<2)
 /// Can do the action even if the mob is incapacitated (ex. handcuffed)
-#define IGNORE_INCAPACITATED (1<<3)
+#define DO_IGNORE_INCAPACITATED (1<<3)
 /// Used to prevent important slowdowns from being abused by drugs like kronkaine
-#define IGNORE_SLOWDOWNS (1<<4)
+#define DO_IGNORE_SLOWDOWNS (1<<4)
+/// Used to prevent rotation by the user.
+#define DO_RESTRICT_USER_DIR_CHANGE (1<<5)
+/// If the user has their next_move value changed (usually by clicking), fail.
+#define DO_RESTRICT_CLICKING (1<<6)
+/// Shown to all mobs not just the user
+#define DO_PUBLIC (1<<7)
+
 
 
 // Spacevine-related flags
@@ -289,12 +306,42 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 /// Is the spacevine / flower bud cold resistant
 #define SPACEVINE_COLD_RESISTANT (1 << 1)
 
-//Z-level flags. Currently only for ZAS
-///Allows air to flow IN from higher Z levels
-#define Z_ATMOS_IN_UP (1<<0)
-///Allows air to flow IN from lower z levels
-#define Z_ATMOS_IN_DOWN (1<<1)
-///Allows air to flow OUT to higher Z levels
-#define Z_ATMOS_OUT_UP (1<<2)
-///Allows air to flow OUT to LOWER z levels
-#define Z_ATMOS_OUT_DOWN (1<<3)
+// Z-level flags, used by ZAS and Z-Mimic.
+
+#define Z_ATMOS_IN_UP      (1 << 0)	//! Allows air to flow IN from higher Z levels
+#define Z_ATMOS_IN_DOWN    (1 << 1)	//! Allows air to flow IN from lower z levels
+#define Z_ATMOS_OUT_UP     (1 << 2)	//! Allows air to flow OUT to higher Z levels
+#define Z_ATMOS_OUT_DOWN   (1 << 3)	//! Allows air to flow OUT to LOWER z levels
+
+#define Z_MIMIC_BELOW      (1 << 4)	//! Should this turf mimic the below turf?
+#define Z_MIMIC_OVERWRITE  (1 << 5)	//! If this turf is mimicking, overwrite its appearance instead of using a mimic object. This is faster, but means the turf cannot have its own appearance.
+#define Z_MIMIC_NO_AO      (1 << 6)	//! Bypass turf AO and only apply Z-AO. You probably want this on visually-empty z-turfs (like openspace).
+#define Z_MIMIC_NO_OCCLUDE (1 << 7)	//! If we're a non-OVERWRITE z-turf, allow clickthrough of this turf.
+#define Z_MIMIC_BASETURF   (1 << 8)	//! Fake-copy baseturf instead of below turf.
+
+GLOBAL_LIST_INIT(z_defines, list(
+	"Z_ATMOS_IN_UP",
+	"Z_ATMOS_IN_DOWN",
+	"Z_ATMOS_OUT_UP",
+	"Z_ATMOS_OUT_DOWN",
+
+	"Z_MIMIC_BELOW",
+	"Z_MIMIC_OVERWRITE",
+	"Z_MIMIC_NO_AO",
+	"Z_MIMIC_NO_OCCLUDE",
+	"Z_MIMIC_BASETURF"
+))
+
+// Z-Mimic movable flags. This is not prefixed with ZM_* to avoid confusion with other codebases that use that prefix for the above flags.
+
+#define ZMM_IGNORE          (1 << 0)	//! Do not copy this movable. Atoms with INVISIBILITY_ABSTRACT implicitly do not copy.
+#define ZMM_MANGLE_PLANES   (1 << 1)	//! Check this movable's overlays/underlays for explicit plane use and mangle for compatibility with Z-Mimic. If you're using emissive overlays, you probably should be using this flag. Expensive, only use if necessary.
+#define ZMM_LOOKAHEAD       (1 << 2)	//! Look one turf ahead and one turf back when considering z-turfs that might be seeing this atom. Respects dir. Cheap, but not free.
+#define ZMM_LOOKBESIDE      (1 << 3)	//! Look one turf to the left and right when considering z-turfs that might be seeing this atom. Respects dir. Cheap, but not free.
+#define ZMM_NO_CACHE_ROOT   (1 << 4)	//! When performing mangling, do not cache the root (depth=0) appearance. Set this on mangled types that change appearance frequently.
+
+// convenience flags
+
+// This is intended for use on dev-defined openspace turfs, don't put _OVERWRITE in here unless you feel like having people ask why their zturfs are empty
+#define Z_MIMIC_DEFAULTS (Z_MIMIC_BELOW)	//! Common defaults for zturfs.
+#define ZMM_WIDE_LOAD (ZMM_LOOKAHEAD | ZMM_LOOKBESIDE)	//! Atom is big and needs to scan one extra turf in both X and Y. This only extends the range by one turf. Cheap, but not free.

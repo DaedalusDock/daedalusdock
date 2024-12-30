@@ -39,17 +39,21 @@
 		for(var/i in baseturf_cache)
 			if(baseturf_to_replace[i])
 				baseturf_cache -= i
+
 		thing.baseturfs = baseturfs_string_list(baseturf_cache, thing)
+
 		if(!baseturf_cache.len)
 			thing.assemble_baseturfs(baseturf)
 		else
-			thing.PlaceOnBottom(null, baseturf)
+			if(!length(thing.baseturfs) || thing.baseturfs[1] != baseturf)
+				thing.PlaceOnBottom(baseturf)
+
 	else if(baseturf_to_replace[thing.baseturfs])
 		thing.assemble_baseturfs(baseturf)
+
 	else
-		thing.PlaceOnBottom(null, baseturf)
-
-
+		if(!length(thing.baseturfs) || thing.baseturfs[1] != baseturf)
+			thing.PlaceOnBottom(baseturf)
 
 /obj/effect/baseturf_helper/space
 	name = "space baseturf editor"
@@ -82,10 +86,6 @@
 /obj/effect/baseturf_helper/lava
 	name = "lava baseturf editor"
 	baseturf = /turf/open/lava/smooth
-
-/obj/effect/baseturf_helper/lava_land/surface
-	name = "lavaland baseturf editor"
-	baseturf = /turf/open/lava/smooth/lava_land_surface
 
 /obj/effect/baseturf_helper/reinforced_plating
 	name = "reinforced plating baseturf editor"
@@ -298,6 +298,17 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 /obj/effect/mapping_helpers/atom_injector/proc/generate_stack_trace()
 	. = "[name] found no targets at ([x], [y], [z]). First Match Only: [first_match_only ? "true" : "false"] target type: [target_type] | target name: [target_name]"
 
+/obj/effect/mapping_helpers/atom_injector/obj_flag
+	name = "Obj Flag Injector"
+	icon_state = "objflag_helper"
+	var/inject_flags = NONE
+
+/obj/effect/mapping_helpers/atom_injector/obj_flag/inject(atom/target)
+	if(!isobj(target))
+		return
+	var/obj/obj_target = target
+	obj_target.obj_flags |= inject_flags
+
 ///This helper applies components to things on the map directly.
 /obj/effect/mapping_helpers/atom_injector/component_injector
 	name = "Component Injector"
@@ -464,19 +475,21 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	var/bodycount = 2 //number of bodies to spawn
 
 /obj/effect/mapping_helpers/dead_body_placer/LateInitialize()
-	var/area/a = get_area(src)
+	var/area/my_area = get_area(src)
 	var/list/trays = list()
-	for (var/i in a.contents)
-		if (istype(i, /obj/structure/bodycontainer/morgue))
-			trays += i
+	for (var/obj/structure/bodycontainer/morgue/tray as anything in INSTANCES_OF(/obj/structure/bodycontainer/morgue))
+		if(get_area(tray) == my_area)
+			trays += tray
+
 	if(!trays.len)
 		log_mapping("[src] at [x],[y] could not find any morgues.")
 		return
+
 	for (var/i = 1 to bodycount)
 		var/obj/structure/bodycontainer/morgue/j = pick(trays)
 		var/mob/living/carbon/human/h = new /mob/living/carbon/human(j, 1)
 		h.death()
-		for (var/part in h.internal_organs) //randomly remove organs from each body, set those we keep to be in stasis
+		for (var/part in h.processing_organs) //randomly remove organs from each body, set those we keep to be in stasis
 			if (prob(40))
 				qdel(part)
 			else
@@ -504,15 +517,19 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	var/list/openturfs = list()
 
 	//confetti and a corgi balloon! (and some list stuff for more decorations)
-	for(var/thing in a.contents)
-		if(istype(thing, /obj/structure/table/reinforced))
-			table += thing
-		if(isopenturf(thing))
-			new /obj/effect/decal/cleanable/confetti(thing)
-			if(locate(/obj/structure/bed/dogbed/ian) in thing)
-				new /obj/item/toy/balloon/corgi(thing)
-			else
-				openturfs += thing
+	for(var/turf/T as anything in a.get_contained_turfs())
+		if(isopenturf(T))
+			new /obj/effect/decal/cleanable/confetti(T)
+
+		if(locate(/obj/structure/bed/dogbed/ian) in T)
+			new /obj/item/toy/balloon/corgi(T)
+		else
+			openturfs += T
+
+		var/table_or_null = locate(/obj/structure/table/reinforced) in T
+		if(table_or_null)
+			table += table_or_null
+
 
 	//cake + knife to cut it!
 	if(length(table))
@@ -710,11 +727,17 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	if(response.errored || response.status_code != 200)
 		query_in_progress = FALSE
 		CRASH("Failed to fetch mapped custom json from url [json_url], code: [response.status_code], error: [response.error]")
-	var/json_data = response["body"]
+	var/json_data = response.body
 	json_cache[json_url] = json_data
 	query_in_progress = FALSE
 	return json_data
 
+//DM Editor 'simplified' maphelpers.
+#if defined(SIMPLE_MAPHELPERS)
+#define PAINT_PREFIX "s_"
+#else
+#define PAINT_PREFIX ""
+#endif
 
 /obj/effect/mapping_helpers/paint_wall
 	name = "Paint Wall Helper"
@@ -748,9 +771,9 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 		var/obj/structure/low_wall/low_wall = locate() in loc
 		if(low_wall)
 			if(!isnull(wall_paint))
-				low_wall.set_wall_paint(wall_paint)
+				low_wall.paint_wall(wall_paint)
 			if(!isnull(stripe_paint))
-				low_wall.set_stripe_paint(stripe_paint)
+				low_wall.paint_stripe(stripe_paint)
 			did_anything = TRUE
 		else
 			var/obj/structure/falsewall/falsewall = locate() in loc
@@ -781,28 +804,207 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	name = "Command Wall Paint"
 	wall_paint = PAINT_WALL_COMMAND
 	stripe_paint = PAINT_STRIPE_COMMAND
-	icon_state = "paint_bridge"
+	icon_state = PAINT_PREFIX+"paint_bridge"
 
 /obj/effect/mapping_helpers/paint_wall/medical
 	name = "Medical Wall Paint"
 	wall_paint = PAINT_WALL_MEDICAL
 	stripe_paint = PAINT_STRIPE_MEDICAL
-	icon_state = "paint_medical"
+	icon_state = PAINT_PREFIX+"paint_medical"
 
 /obj/effect/mapping_helpers/paint_wall/daedalus
 	name = "Daedalus Wall Paint"
 	wall_paint = PAINT_WALL_DAEDALUS
 	stripe_paint = PAINT_STRIPE_DAEDALUS
-	icon_state = "paint_daedalus"
+	icon_state = PAINT_PREFIX+"paint_daedalus"
 
 /obj/effect/mapping_helpers/paint_wall/priapus
 	name = "Priapus Wall Paint"
 	wall_paint = PAINT_WALL_PRIAPUS
 	stripe_paint = PAINT_STRIPE_PRIAPUS
-	icon_state = "paint_priapus"
+	icon_state = PAINT_PREFIX+"paint_priapus"
 
 /obj/effect/mapping_helpers/paint_wall/centcom
 	name = "Central Command Wall Paint"
 	wall_paint = PAINT_WALL_CENTCOM
 	stripe_paint = PAINT_STRIPE_CENTCOM
-	icon_state = "paint_centcom"
+	icon_state = PAINT_PREFIX+"paint_centcom"
+
+
+/obj/effect/mapping_helpers/broken_floor
+	name = "broken floor"
+	icon = 'icons/turf/damage.dmi'
+	icon_state = "damaged1"
+	late = TRUE
+
+/obj/effect/mapping_helpers/broken_floor/LateInitialize()
+	var/turf/open/floor/floor = get_turf(src)
+	floor.break_tile()
+	qdel(src)
+
+/obj/effect/mapping_helpers/burnt_floor
+	name = "burnt floor"
+	icon = 'icons/turf/damage.dmi'
+	icon_state = "floorscorched1"
+	late = TRUE
+
+/obj/effect/mapping_helpers/burnt_floor/LateInitialize()
+	var/turf/open/floor/floor = get_turf(src)
+	floor.burn_tile()
+	qdel(src)
+
+
+/obj/effect/mapping_helpers/lightsout
+	name = "lights-out helper"
+	icon_state = "lightsout"
+
+/obj/effect/mapping_helpers/lightsout/Initialize(mapload)
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/effect/mapping_helpers/lightsout/LateInitialize()
+	var/obj/machinery/power/apc/gaypc = locate() in loc
+	if(!gaypc)
+		CRASH("Lights-Out Helper missing APC at [COORD(src)]")
+	gaypc.lighting = gaypc.setsubsystem(1) //fuck you oldcode
+	gaypc.update()
+	qdel(src)
+
+// -----------
+// Smart Cable
+// -----------
+/obj/structure/cable/smart_cable
+	icon_state = "mapping_helper"
+	color = "yellow"
+	var/connect_to_same_color = TRUE
+	var/has_become_cable = FALSE
+
+/obj/structure/cable/smart_cable/Initialize(mapload)
+	spawn_cable()
+	return ..()
+
+/obj/structure/cable/smart_cable/proc/spawn_cable()
+	var/passed_directions = NONE
+	var/dir_count = 0
+	var/turf/my_turf = loc
+	var/obj/machinery/power/terminal/terminal_on_myturf = locate() in my_turf
+	var/obj/machinery/power/smes/smes_on_myturf = locate() in my_turf
+	for(var/cardinal in GLOB.cardinals)
+		var/turf/step_turf = get_step(my_turf, cardinal)
+		for(var/obj/structure/cable/smart_cable/cable_spawner in step_turf)
+			if((connect_to_same_color && cable_spawner.connect_to_same_color) && (color != cable_spawner.color))
+				continue
+			// If we are on a terminal, and there's an SMES in our step direction, disregard the connection
+			if(terminal_on_myturf)
+				var/obj/machinery/power/smes/smes = locate() in step_turf
+				if(smes)
+					var/obj/machinery/power/apc/apc_on_myturf = locate() in my_turf
+					// Unless there's an APC on our turf (which means it's a terminal for the APC, and not for the SMES)
+					if(!apc_on_myturf)
+						continue
+			// If we are on an SMES, and there's a terminal on our step direction, disregard the connection
+			if(smes_on_myturf)
+				var/obj/machinery/power/terminal/terminal = locate() in step_turf
+				if(terminal)
+					var/obj/machinery/power/apc/apc_on_myturf = locate() in step_turf
+					// Unless there's an APC on the step turf (which means it's a terminal for the APC, and not for the SMES)
+					if(!apc_on_myturf)
+						continue
+			dir_count++
+			passed_directions |= cardinal
+	if(dir_count == 0)
+		WARNING("Smart cable mapping helper failed to spawn, connected to 0 directions, at [loc.x],[loc.y],[loc.z]")
+		return
+	switch(dir_count)
+		if(1)
+			//We spawn one cable with an open knot
+			spawn_cable_for_direction(passed_directions)
+		if(2)
+			//We spawn one cable that connects with 2 directions
+			spawn_cable_for_direction(passed_directions)
+		if(3)
+			//We spawn two cables, connecting with 3 directions total
+			spawn_cables_for_directions(passed_directions)
+		if(4)
+			//We spawn four cables, connecting with 4 directions total
+			spawn_cables_for_directions(passed_directions)
+	// if we want a knot, and we connect with more than 1 direction, spawn an extra open knotted cable connecting with any of the directions
+	if(dir_count > 1 && knot_desirable())
+		spawn_knotty_connecting_to_directions(passed_directions)
+
+/obj/structure/cable/smart_cable/proc/knot_desirable()
+	var/turf/my_turf = loc
+	var/obj/machinery/power/terminal/terminal = locate() in my_turf
+	if(terminal)
+		return TRUE
+	var/obj/structure/grille/grille = locate() in my_turf
+	if(grille)
+		return TRUE
+	var/obj/machinery/power/smes/smes = locate() in my_turf
+	if(smes)
+		return TRUE
+	var/obj/machinery/power/apc/apc = locate() in my_turf
+	if(apc)
+		return TRUE
+	var/obj/machinery/power/emitter/emitter = locate() in my_turf
+	if(emitter)
+		return TRUE
+	return FALSE
+
+/obj/structure/cable/smart_cable/proc/spawn_cable_for_direction(direction)
+	var/obj/structure/cable/cable
+	if(has_become_cable)
+		cable = new(loc)
+	else
+		cable = src
+		has_become_cable = TRUE
+	cable.color = color
+	cable.set_directions(direction)
+
+/obj/structure/cable/smart_cable/proc/spawn_cables_for_directions(directions)
+	if((directions & NORTH) && (directions & EAST))
+		spawn_cable_for_direction(NORTH|EAST)
+	if((directions & EAST) && (directions & SOUTH))
+		spawn_cable_for_direction(EAST|SOUTH)
+	if((directions & SOUTH) && (directions & WEST))
+		spawn_cable_for_direction(SOUTH|WEST)
+	if((directions & WEST) && (directions & NORTH))
+		spawn_cable_for_direction(WEST|NORTH)
+
+/obj/structure/cable/smart_cable/proc/spawn_knotty_connecting_to_directions(directions)
+	if(directions & NORTH)
+		spawn_cable_for_direction(NORTH)
+		return
+	if(directions & SOUTH)
+		spawn_cable_for_direction(SOUTH)
+		return
+	if(directions & EAST)
+		spawn_cable_for_direction(EAST)
+		return
+	if(directions & WEST)
+		spawn_cable_for_direction(WEST)
+		return
+
+/obj/structure/cable/smart_cable/color
+	connect_to_same_color = TRUE
+
+/obj/structure/cable/smart_cable/color/yellow
+	color = "yellow"
+
+/obj/structure/cable/smart_cable/color/red
+	color = "red"
+
+/obj/structure/cable/smart_cable/color/blue
+	color = "blue"
+
+/obj/structure/cable/smart_cable/color_connector
+	connect_to_same_color = FALSE
+
+/obj/structure/cable/smart_cable/color_connector/yellow
+	color = "yellow"
+
+/obj/structure/cable/smart_cable/color_connector/red
+	color = "red"
+
+/obj/structure/cable/smart_cable/color_connector/blue
+	color = "blue"

@@ -72,25 +72,6 @@ In all, this is a lot like the monkey code. /N
 			var/obj/item/bodypart/affecting = get_bodypart(ran_zone(user.zone_selected))
 			apply_damage(rand(1, 3), BRUTE, affecting)
 
-
-/mob/living/carbon/alien/attack_animal(mob/living/simple_animal/user, list/modifiers)
-	. = ..()
-	if(.)
-		var/damage = rand(user.melee_damage_lower, user.melee_damage_upper)
-		switch(user.melee_damage_type)
-			if(BRUTE)
-				adjustBruteLoss(damage)
-			if(BURN)
-				adjustFireLoss(damage)
-			if(TOX)
-				adjustToxLoss(damage)
-			if(OXY)
-				adjustOxyLoss(damage)
-			if(CLONE)
-				adjustCloneLoss(damage)
-			if(STAMINA)
-				adjustStaminaLoss(damage)
-
 /mob/living/carbon/alien/attack_slime(mob/living/simple_animal/slime/M)
 	if(..()) //successful slime attack
 		var/damage = rand(5, 35)
@@ -108,7 +89,7 @@ In all, this is a lot like the monkey code. /N
 	if(QDELETED(src))
 		return
 
-	var/obj/item/organ/internal/ears/ears = getorganslot(ORGAN_SLOT_EARS)
+	var/obj/item/organ/ears/ears = getorganslot(ORGAN_SLOT_EARS)
 	switch (severity)
 		if (EXPLODE_DEVASTATE)
 			gib()
@@ -129,7 +110,7 @@ In all, this is a lot like the monkey code. /N
 /mob/living/carbon/alien/soundbang_act(intensity = 1, stun_pwr = 20, damage_pwr = 5, deafen_pwr = 15)
 	return 0
 
-/mob/living/carbon/alien/acid_act(acidpwr, acid_volume)
+/mob/living/carbon/alien/acid_act(acidpwr, acid_volume, affect_clothing = TRUE, affect_body = TRUE)
 	return FALSE//aliens are immune to acid.
 
 /mob/living/carbon/alien/on_fire_stack(delta_time, times_fired, datum/status_effect/fire_handler/fire_stacks/fire_handler)

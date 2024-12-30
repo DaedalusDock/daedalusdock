@@ -28,14 +28,32 @@
 	var/beam_type = /obj/effect/ebeam
 	///This is used as the visual_contents of beams, so you can apply one effect to this and the whole beam will look like that. never gets deleted on redrawing.
 	var/obj/effect/ebeam/visuals
+	///The color of the beam we're drawing.
+	var/beam_color
+	///If we use an emissive appearance
+	var/emissive = TRUE
+	/// If set will be used instead of origin's pixel_x in offset calculations
+	var/override_origin_pixel_x = null
+	/// If set will be used instead of origin's pixel_y in offset calculations
+	var/override_origin_pixel_y = null
+	/// If set will be used instead of targets's pixel_x in offset calculations
+	var/override_target_pixel_x = null
+	/// If set will be used instead of targets's pixel_y in offset calculations
+	var/override_target_pixel_y = null
 
-/datum/beam/New(beam_origin,beam_target,beam_icon='icons/effects/beam.dmi',beam_icon_state="b_beam",time=INFINITY,maxdistance=INFINITY,btype = /obj/effect/ebeam)
-	origin = beam_origin
-	target = beam_target
-	max_distance = maxdistance
-	icon = beam_icon
-	icon_state = beam_icon_state
-	beam_type = btype
+/datum/beam/New(origin, target,	icon = 'icons/effects/beam.dmi', icon_state = "b_beam",	time = INFINITY, max_distance = INFINITY, beam_type = /obj/effect/ebeam, beam_color = null, emissive = TRUE, override_origin_pixel_x = null,	override_origin_pixel_y = null, override_target_pixel_x = null, override_target_pixel_y = null)
+	src.origin = origin
+	src.target = target
+	src.icon = icon
+	src.icon_state = icon_state
+	src.max_distance = max_distance
+	src.beam_type = beam_type
+	src.beam_color = beam_color
+	src.emissive = emissive
+	src.override_origin_pixel_x = override_origin_pixel_x
+	src.override_origin_pixel_y = override_origin_pixel_y
+	src.override_target_pixel_x = override_target_pixel_x
+	src.override_target_pixel_y = override_target_pixel_y
 	if(time < INFINITY)
 		QDEL_IN(src, time)
 
@@ -46,6 +64,11 @@
 	visuals = new beam_type()
 	visuals.icon = icon
 	visuals.icon_state = icon_state
+	visuals.color = beam_color
+	visuals.layer = ABOVE_ALL_MOB_LAYER
+	visuals.vis_flags = VIS_INHERIT_PLANE
+	visuals.emissive = emissive
+	visuals.update_appearance()
 	Draw()
 	RegisterSignal(origin, COMSIG_MOVABLE_MOVED, PROC_REF(redrawing))
 	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(redrawing))
@@ -137,7 +160,20 @@
 /obj/effect/ebeam
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	anchored = TRUE
+	var/emissive = TRUE
 	var/datum/beam/owner
+
+/obj/effect/ebeam/Initialize(mapload, beam_owner)
+	owner = beam_owner
+	return ..()
+
+/obj/effect/ebeam/update_overlays()
+	. = ..()
+	if(!emissive)
+		return
+	var/mutable_appearance/emissive_overlay = emissive_appearance(icon, icon_state, src)
+	emissive_overlay.transform = transform
+	. += emissive_overlay
 
 /obj/effect/ebeam/Destroy()
 	owner = null
@@ -160,7 +196,7 @@
  * maxdistance: how far the beam will go before stopping itself. Used mainly for two things: preventing lag if the beam may go in that direction and setting a range to abilities that use beams.
  * beam_type: The type of your custom beam. This is for adding other wacky stuff for your beam only. Most likely, you won't (and shouldn't) change it.
  */
-/atom/proc/Beam(atom/BeamTarget,icon_state="b_beam",icon='icons/effects/beam.dmi',time=INFINITY,maxdistance=INFINITY,beam_type=/obj/effect/ebeam)
-	var/datum/beam/newbeam = new(src,BeamTarget,icon,icon_state,time,maxdistance,beam_type)
-	INVOKE_ASYNC(newbeam, TYPE_PROC_REF(/datum/beam, Start))
+/atom/proc/Beam(atom/BeamTarget,icon_state="b_beam",icon='icons/effects/beam.dmi',time=INFINITY,maxdistance=INFINITY,beam_type=/obj/effect/ebeam, beam_color = null, emissive = TRUE, override_origin_pixel_x = null, override_origin_pixel_y = null, override_target_pixel_x = null, override_target_pixel_y = null)
+	var/datum/beam/newbeam = new(src,BeamTarget,icon,icon_state,time,maxdistance,beam_type, beam_color, emissive, override_origin_pixel_x, override_origin_pixel_y, override_target_pixel_x, override_target_pixel_y )
+	INVOKE_ASYNC(newbeam, TYPE_PROC_REF(/datum/beam/, Start))
 	return newbeam

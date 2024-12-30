@@ -2,43 +2,13 @@
 	plane = FLOOR_PLANE
 	initial_gas = OPENTURF_DEFAULT_ATMOS
 	z_flags = Z_ATMOS_IN_UP|Z_ATMOS_OUT_UP
+
 	///negative for faster, positive for slower
 	var/slowdown = 0
 	var/footstep = null
 	var/barefootstep = null
 	var/clawfootstep = null
 	var/heavyfootstep = null
-
-
-//direction is direction of travel of A
-/turf/open/zPassIn(atom/movable/A, direction, turf/source)
-	if(direction == DOWN)
-		for(var/obj/O in contents)
-			if(O.obj_flags & BLOCK_Z_IN_DOWN)
-				return FALSE
-		return TRUE
-	return FALSE
-
-//direction is direction of travel of A
-/turf/open/zPassOut(atom/movable/A, direction, turf/destination)
-	if(direction == UP)
-		for(var/obj/O in contents)
-			if(O.obj_flags & BLOCK_Z_OUT_UP)
-				return FALSE
-		return TRUE
-	return FALSE
-
-//direction is direction of travel of air
-/turf/open/zAirIn(direction, turf/source)
-	return (direction == DOWN)
-
-//direction is direction of travel of air
-/turf/open/zAirOut(direction, turf/source)
-	return (direction == UP)
-
-/turf/open/update_icon()
-	. = ..()
-	//update_visuals()
 
 /turf/open/indestructible
 	name = "floor"
@@ -73,7 +43,7 @@
 /turf/open/indestructible/permalube
 	icon_state = "darkfull"
 
-/turf/open/indestructible/permalube/ComponentInitialize()
+/turf/open/indestructible/permalube/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wet_floor, TURF_WET_LUBE, INFINITY, 0, INFINITY, TRUE)
 
@@ -86,7 +56,7 @@
 	heavyfootstep = null
 	var/sound = 'sound/effects/clownstep1.ogg'
 
-/turf/open/indestructible/honk/ComponentInitialize()
+/turf/open/indestructible/honk/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wet_floor, TURF_WET_SUPERLUBE, INFINITY, 0, INFINITY, TRUE)
 
@@ -94,49 +64,6 @@
 	. = ..()
 	if(ismob(arrived))
 		playsound(src, sound, 50, TRUE)
-
-/turf/open/indestructible/necropolis
-	name = "necropolis floor"
-	desc = "It's regarding you suspiciously."
-	icon = 'icons/turf/floors.dmi'
-	icon_state = "necro1"
-	baseturfs = /turf/open/indestructible/necropolis
-	initial_gas = LAVALAND_DEFAULT_ATMOS
-	footstep = FOOTSTEP_LAVA
-	barefootstep = FOOTSTEP_LAVA
-	clawfootstep = FOOTSTEP_LAVA
-	heavyfootstep = FOOTSTEP_LAVA
-	tiled_dirt = FALSE
-
-/turf/open/indestructible/necropolis/Initialize(mapload)
-	. = ..()
-	if(prob(12))
-		icon_state = "necro[rand(2,3)]"
-
-/turf/open/indestructible/necropolis/air
-	initial_gas = OPENTURF_DEFAULT_ATMOS
-
-/turf/open/indestructible/boss //you put stone tiles on this and use it as a base
-	name = "necropolis floor"
-	icon = 'icons/turf/boss_floors.dmi'
-	icon_state = "boss"
-	baseturfs = /turf/open/indestructible/boss
-	initial_gas = LAVALAND_DEFAULT_ATMOS
-
-/turf/open/indestructible/boss/air
-	initial_gas = OPENTURF_DEFAULT_ATMOS
-
-/turf/open/indestructible/hierophant
-	icon = 'icons/turf/floors/hierophant_floor.dmi'
-	initial_gas = LAVALAND_DEFAULT_ATMOS
-	baseturfs = /turf/open/indestructible/hierophant
-	smoothing_flags = SMOOTH_CORNERS
-	tiled_dirt = FALSE
-
-/turf/open/indestructible/hierophant/two
-
-/turf/open/indestructible/hierophant/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	return FALSE
 
 /turf/open/indestructible/paper
 	name = "notebook floor"
@@ -241,7 +168,7 @@
 	else
 		slipper.Knockdown(knockdown_amount)
 		slipper.Paralyze(paralyze_amount)
-		slipper.stop_pulling()
+		slipper.release_all_grabs()
 
 	if(buckled_obj)
 		buckled_obj.unbuckle_mob(slipper)
@@ -311,3 +238,25 @@
 	playsound(src, 'sound/weapons/genhit.ogg', 50, TRUE)
 	to_chat(user, span_notice("You build a floor."))
 	PlaceOnTop(/turf/open/floor/plating, flags = CHANGETURF_INHERIT_AIR)
+
+/// Used primarily for heretic's temple. To be removed.
+/turf/open/indestructible/necropolis
+	name = "necropolis floor"
+	desc = "It's regarding you suspiciously."
+	icon = 'icons/turf/floors.dmi'
+	icon_state = "necro1"
+	baseturfs = /turf/open/indestructible/necropolis
+	initial_gas = OPENTURF_LOW_PRESSURE
+	footstep = FOOTSTEP_LAVA
+	barefootstep = FOOTSTEP_LAVA
+	clawfootstep = FOOTSTEP_LAVA
+	heavyfootstep = FOOTSTEP_LAVA
+	tiled_dirt = FALSE
+
+/turf/open/indestructible/necropolis/Initialize(mapload)
+	. = ..()
+	if(prob(12))
+		icon_state = "necro[rand(2,3)]"
+
+/turf/open/indestructible/necropolis/air
+	initial_gas = OPENTURF_DEFAULT_ATMOS

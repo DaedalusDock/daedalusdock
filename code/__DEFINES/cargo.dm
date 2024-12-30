@@ -38,7 +38,7 @@
 #define SUPPLYPOD_X_OFFSET -16
 
 /// The baseline unit for cargo crates. Adjusting this will change the cost of all in-game shuttles, crate export values, bounty rewards, and all supply pack import values, as they use this as their unit of measurement.
-#define CARGO_CRATE_VALUE 200
+#define CARGO_CRATE_VALUE 10
 
 GLOBAL_LIST_EMPTY(supplypod_loading_bays)
 
@@ -58,3 +58,9 @@ GLOBAL_LIST_INIT(podstyles, list(\
 	list(POD_SHAPE_OTHER, "gondola",     FALSE, FALSE, FALSE,   RUBBLE_NONE,     "gondola",     "The silent walker. This one seems to be part of a delivery agency."),\
 	list(POD_SHAPE_OTHER, FALSE,         FALSE,    FALSE,            FALSE,   RUBBLE_NONE,         FALSE,      FALSE,      "rl_click", "give_po")\
 ))
+
+// Supply pack flags
+#define SUPPLY_PACK_EMAG (1<<0)
+#define SUPPLY_PACK_CONTRABAND (1<<1)
+#define SUPPLY_PACK_DROPPOD_ONLY (1<<2)
+#define SUPPLY_PACK_GOVERNMENT (1<<3)

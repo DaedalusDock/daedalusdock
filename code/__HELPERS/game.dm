@@ -41,7 +41,7 @@
 
 		else if(istype(object_to_check, /mob/living/carbon))
 			var/mob/living/carbon/mob_to_check = object_to_check
-			for(var/organ in mob_to_check.internal_organs)
+			for(var/organ in mob_to_check.processing_organs)
 				found_organ = organ
 				found_organ.organ_flags ^= ORGAN_FROZEN
 
@@ -210,7 +210,8 @@
 		if(!candidate_mob.key || !candidate_mob.client || (ignore_category && GLOB.poll_ignore[ignore_category] && (candidate_mob.ckey in GLOB.poll_ignore[ignore_category])))
 			continue
 		if(be_special_flag)
-			if(!(candidate_mob.client.prefs) || !(be_special_flag in candidate_mob.client.prefs.be_special))
+			var/list/client_antags = candidate_mob.client?.prefs?.read_preference(/datum/preference/blob/antagonists)
+			if(!(client_antags?[be_special_flag]))
 				continue
 
 			var/required_time = GLOB.special_roles[be_special_flag] || 0
@@ -315,16 +316,29 @@
 
 ///Recursively checks if an item is inside a given type, even through layers of storage. Returns the atom if it finds it.
 /proc/recursive_loc_check(atom/movable/target, type)
-	var/atom/atom_to_find = target
-	if(istype(atom_to_find, type))
-		return atom_to_find
+	var/atom/atom_to_find = null
 
-	while(!istype(atom_to_find.loc, type))
-		if(!atom_to_find.loc)
-			return
-		atom_to_find = atom_to_find.loc
+	if(ispath(type))
+		atom_to_find = target
+		if(istype(atom_to_find, type))
+			return atom_to_find
 
-	return atom_to_find.loc
+		while(!istype(atom_to_find.loc, type))
+			if(!atom_to_find.loc)
+				return
+			atom_to_find = atom_to_find.loc
+
+	else if(isatom(type))
+		atom_to_find = target
+		if(atom_to_find.loc == type)
+			return atom_to_find
+
+		while(atom_to_find.loc != type)
+			if(!atom_to_find.loc)
+				return
+			atom_to_find = atom_to_find.loc
+
+	return atom_to_find
 
 ///Send a message in common radio when a player arrives
 /proc/announce_arrival(mob/living/carbon/human/character, rank)
@@ -341,18 +355,6 @@
 
 	var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
 	announcer.announce("ARRIVAL", character.real_name, rank, list()) //make the list empty to make it announce it in common
-
-///Check if the turf pressure allows specialized equipment to work
-/proc/lavaland_equipment_pressure_check(turf/turf_to_check)
-	. = FALSE
-	if(!istype(turf_to_check))
-		return
-	var/datum/gas_mixture/environment = turf_to_check.unsafe_return_air()
-	if(isnull(environment))
-		return
-	var/pressure = environment.returnPressure()
-	if(pressure <= LAVALAND_EQUIPMENT_EFFECT_PRESSURE)
-		. = TRUE
 
 ///Find an obstruction free turf that's within the range of the center. Can also condition on if it is of a certain area type.
 /proc/find_obstruction_free_location(range, atom/center, area/specific_area)
@@ -375,7 +377,7 @@
 
 ///Disable power in the station APCs
 /proc/power_fail(duration_min, duration_max)
-	for(var/obj/machinery/power/apc/current_apc as anything in GLOB.apcs_list)
+	for(var/obj/machinery/power/apc/current_apc as anything in INSTANCES_OF(/obj/machinery/power/apc))
 		if(!current_apc.cell || !SSmapping.level_trait(current_apc.z, ZTRAIT_STATION))
 			continue
 		var/area/apc_area = current_apc.area

@@ -54,7 +54,7 @@
 	if(!open || !ismob(M))
 		return
 
-	if(!ishuman(M))
+	if(!ishuman(M) || !M:has_mouth())
 		to_chat(user, span_warning("Where are the lips on that?"))
 		return
 
@@ -74,7 +74,7 @@
 
 	user.visible_message(span_warning("[user] begins to do [target]'s lips with \the [src]."), \
 		span_notice("You begin to apply \the [src] on [target]'s lips..."))
-	if(!do_after(user, target, 2 SECONDS))
+	if(!do_after(user, target, 2 SECONDS, DO_PUBLIC))
 		return
 	user.visible_message(span_notice("[user] does [target]'s lips with \the [src]."), \
 		span_notice("You apply \the [src] on [target]'s lips."))
@@ -94,7 +94,7 @@
 
 	user.visible_message(span_warning("[user] begins to wipe [target]'s lipstick off with \the [src]."), \
 		span_notice("You begin to wipe off [target]'s lipstick..."))
-	if(!do_after(user, target, 1 SECONDS))
+	if(!do_after(user, target, 1 SECONDS, DO_PUBLIC))
 		return
 	user.visible_message(span_notice("[user] wipes [target]'s lipstick off with \the [src]."), \
 		span_notice("You wipe off [target]'s lipstick."))
@@ -138,7 +138,7 @@
 					if (H == user)
 						to_chat(user, span_warning("You need a mirror to properly style your own facial hair!"))
 						return
-					if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+					if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 						return
 					var/new_style = tgui_input_list(user, "Select a facial hairstyle", "Grooming", GLOB.facial_hairstyles_list)
 					if(isnull(new_style))
@@ -147,7 +147,7 @@
 						to_chat(user, span_warning("The mask is in the way!"))
 						return
 					user.visible_message(span_notice("[user] tries to change [H]'s facial hairstyle using [src]."), span_notice("You try to change [H]'s facial hairstyle using [src]."))
-					if(new_style && do_after(user, H, 6 SECONDS))
+					if(new_style && do_after(user, H, 6 SECONDS, DO_PUBLIC, display = src))
 						user.visible_message(span_notice("[user] successfully changes [H]'s facial hairstyle using [src]."), span_notice("You successfully change [H]'s facial hairstyle using [src]."))
 						H.facial_hairstyle = new_style
 						H.update_body_parts()
@@ -169,14 +169,14 @@
 				if(H == user) //shaving yourself
 					user.visible_message(span_notice("[user] starts to shave [user.p_their()] facial hair with [src]."), \
 						span_notice("You take a moment to shave your facial hair with [src]..."))
-					if(do_after(user, H, 5 SECONDS))
+					if(do_after(user, H, 5 SECONDS, DO_PUBLIC, display = src))
 						user.visible_message(span_notice("[user] shaves [user.p_their()] facial hair clean with [src]."), \
 							span_notice("You finish shaving with [src]. Fast and clean!"))
 						shave(H, location)
 				else
 					user.visible_message(span_warning("[user] tries to shave [H]'s facial hair with [src]."), \
 						span_notice("You start shaving [H]'s facial hair..."))
-					if(do_after(user, H, 5 SECONDS))
+					if(do_after(user, H, 5 SECONDS, DO_PUBLIC, display = src))
 						user.visible_message(span_warning("[user] shaves off [H]'s facial hair with [src]."), \
 							span_notice("You shave [H]'s facial hair clean off."))
 						shave(H, location)
@@ -186,7 +186,7 @@
 				if (H == user)
 					to_chat(user, span_warning("You need a mirror to properly style your own hair!"))
 					return
-				if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+				if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 					return
 				var/new_style = tgui_input_list(user, "Select a hairstyle", "Grooming", GLOB.hairstyles_list)
 				if(isnull(new_style))
@@ -198,7 +198,7 @@
 					to_chat(H, span_warning("[H] is just way too bald. Like, really really bald."))
 					return
 				user.visible_message(span_notice("[user] tries to change [H]'s hairstyle using [src]."), span_notice("You try to change [H]'s hairstyle using [src]."))
-				if(new_style && do_after(user, H, 6 SECONDS))
+				if(new_style && do_after(user, H, 6 SECONDS, DO_PUBLIC, display = src))
 					user.visible_message(span_notice("[user] successfully changes [H]'s hairstyle using [src]."), span_notice("You successfully change [H]'s hairstyle using [src]."))
 					H.hairstyle = new_style
 					H.update_body_parts()
@@ -215,7 +215,7 @@
 				if(H == user) //shaving yourself
 					user.visible_message(span_notice("[user] starts to shave [user.p_their()] head with [src]."), \
 						span_notice("You start to shave your head with [src]..."))
-					if(do_after(user, H, 5 SECONDS))
+					if(do_after(user, H, 5 SECONDS, DO_PUBLIC, display = src))
 						user.visible_message(span_notice("[user] shaves [user.p_their()] head with [src]."), \
 							span_notice("You finish shaving with [src]."))
 						shave(H, location)
@@ -223,7 +223,7 @@
 					var/turf/H_loc = H.loc
 					user.visible_message(span_warning("[user] tries to shave [H]'s head with [src]!"), \
 						span_notice("You start shaving [H]'s head..."))
-					if(do_after(user, H, 5 SECONDS))
+					if(do_after(user, H, 5 SECONDS, DO_PUBLIC, display = src))
 						if(H_loc == H.loc)
 							user.visible_message(span_warning("[user] shaves [H]'s head bald with [src]!"), \
 								span_notice("You shave [H]'s head bald."))

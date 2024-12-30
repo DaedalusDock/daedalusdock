@@ -7,34 +7,32 @@
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "the medical director"
-	selection_color = "#ffeef0"
+	selection_color = "#013d3b"
 	exp_requirements = 60
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 
+	employers = list(
+		/datum/employer/aether
+	)
+
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/chemist,
-			SPECIES_PLASMAMAN = /datum/outfit/job/chemist/plasmaman,
 		),
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_MED
 
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 
-	display_order = JOB_DISPLAY_ORDER_CHEMIST
-	bounty_types = CIV_JOB_CHEM
 	departments_list = list(
 		/datum/job_department/medical,
 	)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/chemistry, /obj/item/ph_booklet)
-
 	mail_goodies = list(
 		/obj/item/reagent_containers/glass/bottle/flash_powder = 15,
-		/obj/item/reagent_containers/glass/bottle/exotic_stabilizer = 5,
 		/obj/item/reagent_containers/glass/bottle/leadacetate = 5,
 		/obj/item/paper/secretrecipe = 1
 	)
@@ -53,8 +51,7 @@
 	ears = /obj/item/radio/headset/headset_med
 	glasses = /obj/item/clothing/glasses/science
 	shoes = /obj/item/clothing/shoes/sneakers/white
-	l_pocket = /obj/item/reagent_containers/glass/bottle/random_buffer
-	r_pocket = /obj/item/reagent_containers/dropper
+	r_pocket = /obj/item/reagent_containers/syringe
 
 	backpack = /obj/item/storage/backpack/chemistry
 	satchel = /obj/item/storage/backpack/satchel/chem
@@ -62,12 +59,3 @@
 
 	box = /obj/item/storage/box/survival/medical
 	chameleon_extras = /obj/item/gun/syringe
-
-/datum/outfit/job/chemist/plasmaman
-	name = "Chemist (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/chemist
-	gloves = /obj/item/clothing/gloves/color/plasmaman/white
-	head = /obj/item/clothing/head/helmet/space/plasmaman/chemist
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full

@@ -32,11 +32,6 @@
 	desc = "A small bottle of cyanide. Bitter almonds?"
 	list_reagents = list(/datum/reagent/toxin/cyanide = 30)
 
-/obj/item/reagent_containers/glass/bottle/spewium
-	name = "spewium bottle"
-	desc = "A small bottle of spewium."
-	list_reagents = list(/datum/reagent/toxin/spewium = 30)
-
 /obj/item/reagent_containers/glass/bottle/morphine
 	name = "morphine bottle"
 	desc = "A small bottle of morphine."
@@ -49,25 +44,30 @@
 	icon_state = "bottle20"
 	list_reagents = list(/datum/reagent/toxin/chloralhydrate = 15)
 
-/obj/item/reagent_containers/glass/bottle/mannitol
-	name = "mannitol bottle"
-	desc = "A small bottle of Mannitol. Useful for healing brain damage."
-	list_reagents = list(/datum/reagent/medicine/mannitol = 30)
+/obj/item/reagent_containers/glass/bottle/alkysine
+	name = "alkysine bottle"
+	desc = "A small bottle of Alkysine. Useful for healing brain damage."
+	list_reagents = list(/datum/reagent/medicine/alkysine = 30)
 
-/obj/item/reagent_containers/glass/bottle/multiver
-	name = "multiver bottle"
-	desc = "A small bottle of multiver, which removes toxins and other chemicals from the bloodstream but causes shortness of breath. All effects scale with the amount of reagents in the patient."
-	list_reagents = list(/datum/reagent/medicine/c2/multiver = 30)
+/obj/item/reagent_containers/glass/bottle/kelotane
+	name = "kelotane bottle"
+	desc = "A small bottle of kelotane, which helps the body close physical injuries. All effects scale with the amount of reagents in the patient."
+	list_reagents = list(/datum/reagent/medicine/kelotane = 30)
 
-/obj/item/reagent_containers/glass/bottle/calomel
-	name = "calomel bottle"
-	desc = "A small bottle of calomel, which quickly purges all chemicals from the patient. Causes toxin damage if the patient is not heavily injured."
-	list_reagents = list(/datum/reagent/medicine/calomel = 30)
+/obj/item/reagent_containers/glass/bottle/bicaridine
+	name = "bicaridine bottle"
+	desc = "A small bottle of bicaridine, which helps heal burns. All effects scale with the amount of reagents in the patient."
+	list_reagents = list(/datum/reagent/medicine/bicaridine = 30)
 
-/obj/item/reagent_containers/glass/bottle/syriniver
-	name = "syriniver bottle"
-	desc = "A small bottle of syriniver."
-	list_reagents = list(/datum/reagent/medicine/c2/syriniver = 30)
+/obj/item/reagent_containers/glass/bottle/dylovene
+	name = "dylovene bottle"
+	desc = "A small bottle of dylovene, which removes toxins and other chemicals from the bloodstream but causes shortness of breath. All effects scale with the amount of reagents in the patient."
+	list_reagents = list(/datum/reagent/medicine/dylovene = 30)
+
+/obj/item/reagent_containers/glass/bottle/ipecac
+	name = "ipecac bottle"
+	desc = "A small bottle of ipecac, which rapidly induces vomitting to purge the stomach of reagents."
+	list_reagents = list(/datum/reagent/medicine/ipecac = 30)
 
 /obj/item/reagent_containers/glass/bottle/mutagen
 	name = "unstable mutagen bottle"
@@ -117,25 +117,17 @@
 	list_reagents = list(/datum/reagent/consumable/frostoil = 30)
 
 /obj/item/reagent_containers/glass/bottle/traitor
-	name = "syndicate bottle"
-	desc = "A small bottle. Contains a random nasty chemical."
-	icon = 'icons/obj/chemical.dmi'
 	var/extra_reagent = null
 
 /obj/item/reagent_containers/glass/bottle/traitor/Initialize(mapload)
 	. = ..()
-	extra_reagent = pick(/datum/reagent/toxin/polonium, /datum/reagent/toxin/histamine, /datum/reagent/toxin/formaldehyde, /datum/reagent/toxin/venom, /datum/reagent/toxin/fentanyl, /datum/reagent/toxin/cyanide)
+	extra_reagent = pick(/datum/reagent/toxin/polonium, /datum/reagent/toxin/histamine, /datum/reagent/toxin/venom, /datum/reagent/toxin/fentanyl, /datum/reagent/toxin/cyanide)
 	reagents.add_reagent(extra_reagent, 3)
 
 /obj/item/reagent_containers/glass/bottle/polonium
 	name = "polonium bottle"
 	desc = "A small bottle. Contains Polonium."
 	list_reagents = list(/datum/reagent/toxin/polonium = 30)
-
-/obj/item/reagent_containers/glass/bottle/magillitis
-	name = "magillitis bottle"
-	desc = "A small bottle. Contains a serum known only as 'magillitis'."
-	list_reagents = list(/datum/reagent/magillitis = 5)
 
 /obj/item/reagent_containers/glass/bottle/venom
 	name = "venom bottle"
@@ -147,15 +139,10 @@
 	desc = "A small bottle. Contains Fentanyl."
 	list_reagents = list(/datum/reagent/toxin/fentanyl = 30)
 
-/obj/item/reagent_containers/glass/bottle/formaldehyde
-	name = "formaldehyde bottle"
-	desc = "A small bottle. Contains formaldehyde, a chemical that prevents organs from decaying."
-	list_reagents = list(/datum/reagent/toxin/formaldehyde = 30)
-
-/obj/item/reagent_containers/glass/bottle/initropidril
-	name = "initropidril bottle"
-	desc = "A small bottle. Contains initropidril."
-	list_reagents = list(/datum/reagent/toxin/initropidril = 30)
+/obj/item/reagent_containers/glass/bottle/adenosine
+	name = "adenosine bottle"
+	desc = "A small bottle. Contains adenosine."
+	list_reagents = list(/datum/reagent/medicine/adenosine = 30)
 
 /obj/item/reagent_containers/glass/bottle/pancuronium
 	name = "pancuronium bottle"
@@ -167,10 +154,10 @@
 	desc = "A small bottle. Contains sodium thiopental."
 	list_reagents = list(/datum/reagent/toxin/sodium_thiopental = 30)
 
-/obj/item/reagent_containers/glass/bottle/coniine
-	name = "coniine bottle"
-	desc = "A small bottle. Contains coniine."
-	list_reagents = list(/datum/reagent/toxin/coniine = 30)
+/obj/item/reagent_containers/glass/bottle/lexorin
+	name = "lexorin bottle"
+	desc = "A small bottle. Contains lexorin."
+	list_reagents = list(/datum/reagent/toxin/lexorin = 30)
 
 /obj/item/reagent_containers/glass/bottle/curare
 	name = "curare bottle"
@@ -197,40 +184,15 @@
 	desc = "A small bottle of potassium iodide."
 	list_reagents = list(/datum/reagent/medicine/potass_iodide = 30)
 
-/obj/item/reagent_containers/glass/bottle/salglu_solution
+/obj/item/reagent_containers/glass/bottle/saline_glucose
 	name = "saline-glucose solution bottle"
 	desc = "A small bottle of saline-glucose solution."
-	list_reagents = list(/datum/reagent/medicine/salglu_solution = 30)
+	list_reagents = list(/datum/reagent/medicine/saline_glucose = 30)
 
 /obj/item/reagent_containers/glass/bottle/atropine
 	name = "atropine bottle"
 	desc = "A small bottle of atropine."
 	list_reagents = list(/datum/reagent/medicine/atropine = 30)
-
-/obj/item/reagent_containers/glass/bottle/random_buffer
-	name = "Buffer bottle"
-	desc = "A small bottle of chemical buffer."
-
-/obj/item/reagent_containers/glass/bottle/random_buffer/Initialize(mapload)
-	. = ..()
-	if(prob(50))
-		name = "Acidic buffer bottle"
-		desc = "A small bottle of acidic buffer."
-		reagents.add_reagent(/datum/reagent/reaction_agent/acidic_buffer, 30)
-	else
-		name = "Basic buffer bottle"
-		desc = "A small bottle of basic buffer."
-		reagents.add_reagent(/datum/reagent/reaction_agent/basic_buffer, 30)
-
-/obj/item/reagent_containers/glass/bottle/acidic_buffer
-	name = "Acidic buffer bottle"
-	desc = "A small bottle of acidic buffer."
-	list_reagents = list(/datum/reagent/reaction_agent/acidic_buffer = 30)
-
-/obj/item/reagent_containers/glass/bottle/basic_buffer
-	name = "Basic buffer bottle"
-	desc = "A small bottle of basic buffer."
-	list_reagents = list(/datum/reagent/reaction_agent/basic_buffer = 30)
 
 /obj/item/reagent_containers/glass/bottle/romerol
 	name = "romerol bottle"
@@ -240,74 +202,74 @@
 /obj/item/reagent_containers/glass/bottle/random_virus
 	name = "Experimental disease culture bottle"
 	desc = "A small bottle. Contains an untested viral culture in synthblood medium."
-	spawned_disease = /datum/disease/advance/random
+	spawned_disease = /datum/pathogen/advance/random
 
 /obj/item/reagent_containers/glass/bottle/pierrot_throat
 	name = "Pierrot's Throat culture bottle"
 	desc = "A small bottle. Contains H0NI<42 virion culture in synthblood medium."
-	spawned_disease = /datum/disease/pierrot_throat
+	spawned_disease = /datum/pathogen/pierrot_throat
 
 /obj/item/reagent_containers/glass/bottle/cold
 	name = "Rhinovirus culture bottle"
 	desc = "A small bottle. Contains XY-rhinovirus culture in synthblood medium."
-	spawned_disease = /datum/disease/advance/cold
+	spawned_disease = /datum/pathogen/advance/cold
 
 /obj/item/reagent_containers/glass/bottle/flu_virion
 	name = "Flu virion culture bottle"
 	desc = "A small bottle. Contains H13N1 flu virion culture in synthblood medium."
-	spawned_disease = /datum/disease/advance/flu
+	spawned_disease = /datum/pathogen/advance/flu
 
 /obj/item/reagent_containers/glass/bottle/retrovirus
 	name = "Retrovirus culture bottle"
 	desc = "A small bottle. Contains a retrovirus culture in a synthblood medium."
-	spawned_disease = /datum/disease/dna_retrovirus
+	spawned_disease = /datum/pathogen/dna_retrovirus
 
 /obj/item/reagent_containers/glass/bottle/gbs
 	name = "GBS culture bottle"
 	desc = "A small bottle. Contains Gravitokinetic Bipotential SADS+ culture in synthblood medium."//Or simply - General BullShit
 	amount_per_transfer_from_this = 5
-	spawned_disease = /datum/disease/gbs
+	spawned_disease = /datum/pathogen/gbs
 
 /obj/item/reagent_containers/glass/bottle/fake_gbs
 	name = "GBS culture bottle"
 	desc = "A small bottle. Contains Gravitokinetic Bipotential SADS- culture in synthblood medium."//Or simply - General BullShit
-	spawned_disease = /datum/disease/fake_gbs
+	spawned_disease = /datum/pathogen/fake_gbs
 
 /obj/item/reagent_containers/glass/bottle/brainrot
 	name = "Brainrot culture bottle"
 	desc = "A small bottle. Contains Cryptococcus Cosmosis culture in synthblood medium."
 	icon_state = "bottle3"
-	spawned_disease = /datum/disease/brainrot
+	spawned_disease = /datum/pathogen/brainrot
 
 /obj/item/reagent_containers/glass/bottle/magnitis
 	name = "Magnitis culture bottle"
 	desc = "A small bottle. Contains a small dosage of Fukkos Miracos."
-	spawned_disease = /datum/disease/magnitis
+	spawned_disease = /datum/pathogen/magnitis
 
 /obj/item/reagent_containers/glass/bottle/wizarditis
 	name = "Wizarditis culture bottle"
 	desc = "A small bottle. Contains a sample of Rincewindus Vulgaris."
-	spawned_disease = /datum/disease/wizarditis
+	spawned_disease = /datum/pathogen/wizarditis
 
 /obj/item/reagent_containers/glass/bottle/anxiety
 	name = "Severe Anxiety culture bottle"
 	desc = "A small bottle. Contains a sample of Lepidopticides."
-	spawned_disease = /datum/disease/anxiety
+	spawned_disease = /datum/pathogen/anxiety
 
 /obj/item/reagent_containers/glass/bottle/beesease
 	name = "Beesease culture bottle"
 	desc = "A small bottle. Contains a sample of invasive Apidae."
-	spawned_disease = /datum/disease/beesease
+	spawned_disease = /datum/pathogen/beesease
 
 /obj/item/reagent_containers/glass/bottle/fluspanish
 	name = "Spanish flu culture bottle"
 	desc = "A small bottle. Contains a sample of Inquisitius."
-	spawned_disease = /datum/disease/fluspanish
+	spawned_disease = /datum/pathogen/fluspanish
 
 /obj/item/reagent_containers/glass/bottle/tuberculosis
 	name = "Fungal Tuberculosis culture bottle"
 	desc = "A small bottle. Contains a sample of Fungal Tubercle bacillus."
-	spawned_disease = /datum/disease/tuberculosis
+	spawned_disease = /datum/pathogen/tuberculosis
 
 /obj/item/reagent_containers/glass/bottle/tuberculosiscure
 	name = "BVAK bottle"
@@ -412,10 +374,6 @@
 	name = "iodine bottle"
 	list_reagents = list(/datum/reagent/iodine = 30)
 
-/obj/item/reagent_containers/glass/bottle/bromine
-	name = "bromine bottle"
-	list_reagents = list(/datum/reagent/bromine = 30)
-
 /obj/item/reagent_containers/glass/bottle/thermite
 	name = "thermite bottle"
 	list_reagents = list(/datum/reagent/thermite = 30)
@@ -437,11 +395,6 @@
 	desc = "A small bottle. Contains flash powder."
 	list_reagents = list(/datum/reagent/flash_powder = 30)
 
-/obj/item/reagent_containers/glass/bottle/exotic_stabilizer
-	name = "exotic stabilizer bottle"
-	desc = "A small bottle. Contains exotic stabilizer."
-	list_reagents = list(/datum/reagent/exotic_stabilizer = 30)
-
 /obj/item/reagent_containers/glass/bottle/leadacetate
 	name = "lead acetate bottle"
 	desc = "A small bottle. Contains lead acetate."
@@ -451,3 +404,8 @@
 	name = "bottle of caramel"
 	desc = "A bottle containing caramalized sugar, also known as caramel. Do not lick."
 	list_reagents = list(/datum/reagent/consumable/caramel = 30)
+
+/obj/item/reagent_containers/glass/bottle/space_cleaner
+	name = "bottle of space cleaner"
+	desc = "A small bottle. Contains space cleaner."
+	list_reagents = list(/datum/reagent/space_cleaner = 30)

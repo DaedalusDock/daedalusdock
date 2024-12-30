@@ -31,7 +31,7 @@
 	START_PROCESSING(SSobj, src)
 	update_appearance()
 
-/obj/item/clothing/glasses/meson/engine/ComponentInitialize()
+/obj/item/clothing/glasses/meson/engine/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
@@ -97,9 +97,8 @@
 	if(!port)
 		return
 	var/list/shuttle_areas = port.shuttle_areas
-	for(var/r in shuttle_areas)
-		var/area/region = r
-		for(var/turf/place in region.contents)
+	for(var/area/region as anything in shuttle_areas)
+		for(var/turf/place as anything in region.get_contained_turfs())
 			if(get_dist(user, place) > 7)
 				continue
 			var/image/pic

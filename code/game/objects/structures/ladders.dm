@@ -5,16 +5,17 @@
 	icon = 'icons/obj/structures.dmi'
 	icon_state = "ladder11"
 	anchored = TRUE
-	obj_flags = CAN_BE_HIT | BLOCK_Z_OUT_DOWN
+	obj_flags = CAN_BE_HIT
 	var/obj/structure/ladder/down   //the ladder below this one
 	var/obj/structure/ladder/up     //the ladder above this one
 	var/crafted = FALSE
 	/// Optional travel time for ladder in deciseconds
-	var/travel_time = 0
+	var/travel_time = 3 SECONDS
+	var/static/list/climbsounds = list('sound/effects/ladder.ogg','sound/effects/ladder2.ogg','sound/effects/ladder3.ogg','sound/effects/ladder4.ogg')
 
 /obj/structure/ladder/Initialize(mapload, obj/structure/ladder/up, obj/structure/ladder/down)
 	..()
-	GLOB.ladders += src
+	SET_TRACKING(__TYPE__)
 	if (up)
 		src.up = up
 		up.down = src
@@ -28,7 +29,7 @@
 /obj/structure/ladder/Destroy(force)
 	if ((resistance_flags & INDESTRUCTIBLE) && !force)
 		return QDEL_HINT_LETMELIVE
-	GLOB.ladders -= src
+	UNSET_TRACKING(__TYPE__)
 	disconnect()
 	return ..()
 
@@ -76,15 +77,24 @@
 	var/response = SEND_SIGNAL(user, COMSIG_LADDER_TRAVEL, src, ladder, going_up)
 	if(response & LADDER_TRAVEL_BLOCK)
 		return
-
+	var/turf/target = get_turf(ladder)
 	if(!is_ghost)
 		ladder.add_fingerprint(user)
-		if(!do_after(user, src, travel_time))
-			return
-		show_fluff_message(going_up, user)
+		for(var/atom/movable/AM as anything in target)
+			if(!AM.CanMoveOnto(user, get_dir(AM, user)))
+				to_chat(user, span_warning("[AM] blocks your path."))
+				return
 
-	var/turf/target = get_turf(ladder)
-	user.zMove(target = target, z_move_flags = ZMOVE_CHECK_PULLEDBY|ZMOVE_ALLOW_BUCKLED|ZMOVE_INCLUDE_PULLED)
+		user.Move(loc)
+		if(!do_after(user, src, travel_time, DO_PUBLIC))
+			return
+
+	if(!zstep(user, going_up ? UP : DOWN, ZMOVE_INCAPACITATED_CHECKS))
+		return
+
+	if(!is_ghost)
+		show_fluff_message(going_up, user, loc)
+		show_fluff_message(going_up, user, target)
 	ladder.use(user) //reopening ladder radial menu ahead
 
 /obj/structure/ladder/proc/use(mob/user, is_ghost=FALSE)
@@ -152,11 +162,13 @@
 	use(user, TRUE)
 	return ..()
 
-/obj/structure/ladder/proc/show_fluff_message(going_up, mob/user)
+/obj/structure/ladder/proc/show_fluff_message(going_up, mob/user, atom/dest)
 	if(going_up)
-		user.visible_message(span_notice("[user] climbs up [src]."), span_notice("You climb up [src]."))
+		dest.visible_message(span_notice("[user] climbs up [src]."), span_notice("You climb up [src]."))
 	else
-		user.visible_message(span_notice("[user] climbs down [src]."), span_notice("You climb down [src]."))
+		dest.visible_message(span_notice("[user] climbs down [src]."), span_notice("You climb down [src]."))
+
+	playsound(dest, pick(climbsounds), 50)
 
 
 // Indestructible away mission ladders which link based on a mapped ID and height value rather than X/Y/Z.
@@ -173,7 +185,7 @@
 		update_appearance()
 		return
 
-	for(var/obj/structure/ladder/unbreakable/unbreakable_ladder in GLOB.ladders)
+	for(var/obj/structure/ladder/unbreakable/unbreakable_ladder in INSTANCES_OF(/obj/structure/ladder))
 		if (unbreakable_ladder.id != id)
 			continue  // not one of our pals
 		if (!down && unbreakable_ladder.height == height - 1)

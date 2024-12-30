@@ -184,7 +184,7 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 	w_class = WEIGHT_CLASS_NORMAL
 	slot_flags = ITEM_SLOT_BELT
 	custom_materials = list(/datum/material/iron=75000, /datum/material/glass=37500)
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 	///Sparks system used when changing device in the UI
 	var/datum/effect_system/spark_spread/spark_system
@@ -210,8 +210,6 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 	var/category = ATMOS_CATEGORY
 	///Piping layer we are going to spawn the atmos device in
 	var/piping_layer = PIPING_LAYER_DEFAULT
-	///Layer for disposal ducts
-	var/ducting_layer = DUCT_LAYER_DEFAULT
 	///Stores the current device to spawn
 	var/datum/pipe_info/recipe
 	///Stores the first atmos device
@@ -243,11 +241,6 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 	qdel(spark_system)
 	spark_system = null
 	return ..()
-
-/obj/item/pipe_dispenser/examine(mob/user)
-	. = ..()
-	. += "You can scroll your mouse wheel to change the piping layer."
-	. += "You can right click a pipe to set the RPD to its color and layer."
 
 /obj/item/pipe_dispenser/equipped(mob/user, slot, initial)
 	. = ..()
@@ -329,7 +322,6 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 	var/list/data = list(
 		"category" = category,
 		"piping_layer" = piping_layer,
-		"ducting_layer" = ducting_layer,
 		"preview_rows" = recipe.get_preview(p_dir),
 		"categories" = list(),
 		"selected_color" = paint_color,
@@ -364,8 +356,9 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 	if(.)
 		return
 
-	if(!usr.canUseTopic(src, BE_CLOSE))
+	if(!usr.canUseTopic(src, USE_CLOSE))
 		return
+
 	var/playeffect = TRUE
 	switch(action)
 		if("color")
@@ -383,9 +376,6 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 			playeffect = FALSE
 		if("piping_layer")
 			piping_layer = text2num(params["piping_layer"])
-			playeffect = FALSE
-		if("ducting_layer")
-			ducting_layer = text2num(params["ducting_layer"])
 			playeffect = FALSE
 		if("pipe_type")
 			var/static/list/recipes

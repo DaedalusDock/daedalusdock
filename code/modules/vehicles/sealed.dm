@@ -14,7 +14,7 @@
 	if(istype(E))
 		E.vehicle_entered_target = src
 
-/obj/vehicle/sealed/MouseDrop_T(atom/dropping, mob/M)
+/obj/vehicle/sealed/MouseDroppedOn(atom/dropping, mob/M)
 	if(!istype(dropping) || !istype(M))
 		return ..()
 	if(M == dropping)
@@ -47,7 +47,7 @@
 /obj/vehicle/sealed/proc/mob_try_enter(mob/M)
 	if(!istype(M))
 		return FALSE
-	if(do_after(M, src, get_enter_delay(M), timed_action_flags = IGNORE_HELD_ITEM, extra_checks = CALLBACK(src, PROC_REF(enter_checks), M)))
+	if(do_after(M, src, get_enter_delay(M), timed_action_flags = DO_IGNORE_HELD_ITEM, extra_checks = CALLBACK(src, PROC_REF(enter_checks), M)))
 		mob_enter(M)
 		return TRUE
 	return FALSE

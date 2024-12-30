@@ -2,30 +2,31 @@
 	title = JOB_VIROLOGIST
 	description = "Study the effects of various diseases and synthesize a \
 		vaccine for them. Engineer beneficial viruses."
-	department_head = list(JOB_CHIEF_MEDICAL_OFFICER)
+	department_head = list(JOB_MEDICAL_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the medical director"
-	selection_color = "#ffeef0"
+	selection_color = "#013d3b"
 	exp_requirements = 60
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 
+	employers = list(
+		/datum/employer/aether,
+	)
+
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/virologist,
-			SPECIES_PLASMAMAN = /datum/outfit/job/virologist/plasmaman,
 		),
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_MED
 
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 
-	display_order = JOB_DISPLAY_ORDER_VIROLOGIST
-	bounty_types = CIV_JOB_VIRO
 	departments_list = list(
 		/datum/job_department/medical,
 		)
@@ -34,7 +35,7 @@
 
 	mail_goodies = list(
 		/obj/item/reagent_containers/glass/bottle/random_virus = 15,
-		/obj/item/reagent_containers/glass/bottle/formaldehyde = 10,
+		/obj/item/reagent_containers/glass/bottle/space_cleaner = 10,
 		/obj/item/reagent_containers/glass/bottle/synaptizine = 10,
 		/obj/item/stack/sheet/mineral/plasma = 10,
 		/obj/item/stack/sheet/mineral/uranium = 5,
@@ -61,12 +62,3 @@
 	duffelbag = /obj/item/storage/backpack/duffelbag/virology
 
 	box = /obj/item/storage/box/survival/medical
-
-/datum/outfit/job/virologist/plasmaman
-	name = "Virologist (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/viro
-	gloves = /obj/item/clothing/gloves/color/plasmaman/white
-	head = /obj/item/clothing/head/helmet/space/plasmaman/viro
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full

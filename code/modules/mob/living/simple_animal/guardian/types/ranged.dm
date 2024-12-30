@@ -4,7 +4,7 @@
 	icon_state = "guardian"
 	damage = 5
 	damage_type = BRUTE
-	armour_penetration = 100
+	armor_penetration = 100
 
 /mob/living/simple_animal/hostile/guardian/ranged
 	combat_mode = FALSE
@@ -120,6 +120,8 @@
 
 /obj/effect/snare/proc/on_entered(datum/source, AM as mob|obj)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(isliving(AM) && spawner && spawner.summoner && AM != spawner && !spawner.hasmatchingsummoner(AM))
 		to_chat(spawner.summoner, "[span_danger("<B>[AM] has crossed surveillance snare, [name].")]</B>")
 		var/list/guardians = spawner.summoner.hasparasites()

@@ -30,8 +30,8 @@
 	)
 
 	refill_canister = /obj/item/vending_refill/cigarette
-	default_price = PAYCHECK_ASSISTANT
-	extra_price = PAYCHECK_HARD
+	default_price = PAYCHECK_ASSISTANT * 0.9
+	extra_price = PAYCHECK_ASSISTANT * 2.75
 	payment_department = ACCOUNT_STATION_MASTER
 	light_mask = "cigs-light-mask"
 
@@ -46,28 +46,6 @@
 		/obj/item/storage/box/matches = 10,
 		/obj/item/lighter/greyscale = 4,
 		/obj/item/storage/fancy/rollingpapers = 5
-	)
-
-/obj/machinery/vending/cigarette/beach //Used in the lavaland_biodome_beach.dmm ruin
-	name = "\improper ShadyCigs Ultra"
-	desc = "Now with extra premium products!"
-	product_ads = "Probably not bad for you!;Dope will get you through times of no money better than money will get you through times of no dope!;It's good for you!"
-	product_slogans = "Turn on, tune in, drop out!;Better living through chemistry!;Toke!;Don't forget to keep a smile on your lips and a song in your heart!"
-	products = list(
-		/obj/item/storage/fancy/cigarettes = 5,
-		/obj/item/storage/fancy/cigarettes/cigpack_uplift = 3,
-		/obj/item/storage/fancy/cigarettes/cigpack_robust = 3,
-		/obj/item/storage/fancy/cigarettes/cigpack_carp = 3,
-		/obj/item/storage/fancy/cigarettes/cigpack_midori = 3,
-		/obj/item/storage/fancy/cigarettes/cigpack_cannabis = 5,
-		/obj/item/storage/box/matches = 10,
-		/obj/item/lighter/greyscale = 4,
-		/obj/item/storage/fancy/rollingpapers = 5
-	)
-	premium = list(
-		/obj/item/storage/fancy/cigarettes/cigpack_mindbreaker = 5,
-		/obj/item/clothing/mask/vape = 5,
-		/obj/item/lighter = 3
 	)
 
 /obj/item/vending_refill/cigarette

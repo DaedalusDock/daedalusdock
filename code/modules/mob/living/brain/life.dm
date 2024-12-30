@@ -7,17 +7,17 @@
 	. = ..()
 	handle_emp_damage(delta_time, times_fired)
 
-/mob/living/brain/update_stat()
+/mob/living/brain/update_stat(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 	if(health > HEALTH_THRESHOLD_DEAD)
 		return
 	if(stat != DEAD)
-		death()
-	var/obj/item/organ/internal/brain/BR
+		death(cause_of_death = cause_of_death)
+	var/obj/item/organ/brain/BR
 	if(container?.brain)
 		BR = container.brain
-	else if(istype(loc, /obj/item/organ/internal/brain))
+	else if(istype(loc, /obj/item/organ/brain))
 		BR = loc
 	if(BR)
 		BR.setOrganDamage(BRAIN_DAMAGE_DEATH) //beaten to a pulp

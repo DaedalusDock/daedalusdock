@@ -10,11 +10,12 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
 	gender = PLURAL
-	throw_speed = 3
 	throw_range = 5
 	attack_verb_continuous = list("connects")
 	attack_verb_simple = list("connect")
 	resistance_flags = FIRE_PROOF
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	/// If we're in the glove slot
 	var/on_wrist = FALSE
 	/// If the GPS is already on
@@ -94,7 +95,7 @@
 		if(isliving(loc))
 			connect_kheiral_network(loc)
 
-/obj/item/kheiral_cuffs/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/kheiral_cuffs/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "strandcuff_emissive", alpha = src.alpha)

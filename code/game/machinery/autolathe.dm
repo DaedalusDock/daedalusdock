@@ -6,6 +6,7 @@
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.5
 	circuit = /obj/item/circuitboard/machine/autolathe
 	layer = BELOW_OBJ_LAYER
+	has_disk_slot = TRUE
 
 	var/operating = FALSE
 	var/list/L = list()
@@ -19,36 +20,23 @@
 
 	var/busy = FALSE
 
+	var/list/categories
+
 	///the multiplier for how much materials the created object takes from this machines stored materials
 	var/creation_efficiency = 1.6
 
 	var/datum/design/being_built
-	var/datum/techweb/stored_research
 	var/list/datum/design/matching_designs
 	var/selected_category = "None"
 	var/base_price = 25
 	var/hacked_price = 50
 
-	var/list/categories = list(
-							"Tools",
-							"Electronics",
-							"Construction",
-							"T-Comm",
-							"Security",
-							"Machinery",
-							"Medical",
-							"Misc",
-							"Dinnerware",
-							"Imported"
-							)
-
 /obj/machinery/autolathe/Initialize(mapload)
 	AddComponent(/datum/component/material_container, SSmaterials.materials_by_category[MAT_CATEGORY_ITEM_MATERIAL], 0, MATCONTAINER_EXAMINE, _after_insert = CALLBACK(src, PROC_REF(AfterMaterialInsert)))
 	. = ..()
-
 	wires = new /datum/wires/autolathe(src)
-	stored_research = new /datum/techweb/specialized/autounlocking/autolathe
 	matching_designs = list()
+	compile_categories()
 
 /obj/machinery/autolathe/Destroy()
 	QDEL_NULL(wires)
@@ -85,18 +73,17 @@
 		)
 		data["materials"] += list(material_data)
 	if(selected_category != "None" && !length(matching_designs))
-		data["designs"] = handle_designs(stored_research.researched_designs, TRUE)
+		data["designs"] = handle_designs(internal_disk.read(DATA_IDX_DESIGNS), TRUE)
 	else
 		data["designs"] = handle_designs(matching_designs, FALSE)
 	return data
 
 /obj/machinery/autolathe/proc/handle_designs(list/designs, categorycheck)
 	var/list/output = list()
-	for(var/v in designs)
-		var/datum/design/D = categorycheck ? SSresearch.techweb_design_by_id(v) : v
-		if(categorycheck)
-			if(!(selected_category in D.category))
-				continue
+	for(var/datum/design/D as anything in designs)
+		if(categorycheck && !(selected_category in D.category))
+			continue
+
 		var/unbuildable = FALSE // we can't build the design currently
 		var/m10 = FALSE // 10x mult
 		var/m25 = FALSE // 25x mult
@@ -159,8 +146,7 @@
 	if(action == "search")
 		matching_designs.Cut()
 
-		for(var/v in stored_research.researched_designs)
-			var/datum/design/D = SSresearch.techweb_design_by_id(v)
+		for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
 			if(findtext(D.name,params["to_search"]))
 				matching_designs.Add(D)
 		. = TRUE
@@ -169,8 +155,8 @@
 		if (!busy)
 			/////////////////
 			//href protection
-			being_built = stored_research.isDesignResearchedID(params["id"])
-			if(!being_built)
+			being_built = SStech.designs_by_id[params["id"]]
+			if(!being_built || !(being_built in internal_disk.read(DATA_IDX_DESIGNS)))
 				return
 
 			var/multiplier = text2num(params["multiplier"])
@@ -246,26 +232,6 @@
 	if(machine_stat)
 		return TRUE
 
-	if(istype(attacking_item, /obj/item/disk/design_disk))
-		user.visible_message(span_notice("[user] begins to load \the [attacking_item] in \the [src]..."),
-			balloon_alert(user, "uploading design..."),
-			span_hear("You hear the chatter of a floppy drive."))
-		busy = TRUE
-		if(do_after(user, src, 14.4)) //This is soul
-			var/obj/item/disk/design_disk/disky = attacking_item
-			var/list/not_imported
-			for(var/datum/design/blueprint as anything in disky.blueprints)
-				if(!blueprint)
-					continue
-				if(blueprint.build_type & AUTOLATHE)
-					stored_research.add_design(blueprint)
-				else
-					LAZYADD(not_imported, blueprint.name)
-			if(not_imported)
-				to_chat(user, span_warning("The following design[length(not_imported) > 1 ? "s" : ""] couldn't be imported: [english_list(not_imported)]"))
-		busy = FALSE
-		return TRUE
-
 	if(panel_open)
 		balloon_alert(user, "close the panel first!")
 		return FALSE
@@ -325,11 +291,6 @@
 
 			if(length(picked_materials))
 				new_item.set_custom_materials(picked_materials, 1 / multiplier) //Ensure we get the non multiplied amount
-				for(var/x in picked_materials)
-					var/datum/material/M = x
-					if(!istype(M, /datum/material/glass) && !istype(M, /datum/material/iron))
-						user.client.give_award(/datum/award/achievement/misc/getting_an_upgrade, user)
-
 
 	icon_state = "autolathe"
 	busy = FALSE
@@ -351,7 +312,9 @@
 	. += ..()
 	var/datum/component/material_container/materials = GetComponent(/datum/component/material_container)
 	if(in_range(user, src) || isobserver(user))
-		. += span_notice("The status display reads: Storing up to <b>[materials.max_amount]</b> material units.<br>Material consumption at <b>[creation_efficiency*100]%</b>.")
+		. += span_notice("The status display reads:")
+		. += span_notice("[FOURSPACES]Storing up to <b>[materials.max_amount]</b> material units.")
+		. += span_notice("[FOURSPACES]Material consumption at <b>[creation_efficiency*100]%</b>.")
 
 /obj/machinery/autolathe/proc/can_build(datum/design/D, amount = 1)
 	if(length(D.make_reagents))
@@ -380,6 +343,13 @@
 			dat += "[D.materials[i] * coeff] [M.name] "
 	return dat
 
+/obj/machinery/autolathe/proc/compile_categories()
+	categories = list()
+	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
+		if(!isnull(D.category))
+			categories |= D.category
+	sortTim(categories, GLOBAL_PROC_REF(cmp_text_asc))
+
 /obj/machinery/autolathe/proc/reset(wire)
 	switch(wire)
 		if(WIRE_HACK)
@@ -407,13 +377,23 @@
 
 /obj/machinery/autolathe/proc/adjust_hacked(state)
 	hacked = state
-	for(var/id in SSresearch.techweb_designs)
-		var/datum/design/D = SSresearch.techweb_design_by_id(id)
-		if((D.build_type & AUTOLATHE) && ("hacked" in D.category))
-			if(hacked)
-				stored_research.add_design(D)
-			else
-				stored_research.remove_design(D)
+	var/static/list/datum/design/hacked_designs
+	if(!hacked_designs)
+		var/list/L = list(
+			/datum/design/large_welding_tool,
+			/datum/design/handcuffs,
+			/datum/design/receiver,
+			/datum/design/cleaver,
+			/datum/design/toygun,
+			/datum/design/capbox,
+		)
+		hacked_designs = SStech.fetch_designs(L)
+
+	if(hacked)
+		internal_disk.write(DATA_IDX_DESIGNS, hacked_designs, TRUE)
+	else
+		internal_disk.remove(DATA_IDX_DESIGNS, hacked_designs, TRUE)
+
 
 /obj/machinery/autolathe/hacked/Initialize(mapload)
 	. = ..()
@@ -423,3 +403,102 @@
 //Has a reference to the autolathe so you can do !!FUN!! things with hacked lathes
 /obj/item/proc/autolathe_crafted(obj/machinery/autolathe/A)
 	return
+
+/obj/item/disk/data/hyper/preloaded/autolathe
+
+/obj/item/disk/data/hyper/preloaded/autolathe/compile_designs()
+	. = ..()
+	. += list(
+		/datum/design/bucket,
+		/datum/design/mop,
+		/datum/design/broom,
+		/datum/design/crowbar,
+		/datum/design/multitool,
+		/datum/design/weldingtool,
+		/datum/design/wrench,
+		/datum/design/screwdriver,
+		/datum/design/wirecutters,
+		/datum/design/flashlight,
+		/datum/design/extinguisher,
+		/datum/design/analyzer,
+		/datum/design/tscanner,
+		/datum/design/welding_helmet,
+		/datum/design/cable_coil,
+		/datum/design/apc_board,
+		/datum/design/airlock_board,
+		/datum/design/firelock_board,
+		/datum/design/airalarm_electronics,
+		/datum/design/firealarm_electronics,
+		/datum/design/airlock_painter,
+		/datum/design/airlock_painter/decal,
+		/datum/design/airlock_painter/decal/tile,
+		/datum/design/paint_sprayer,
+		/datum/design/emergency_oxygen,
+		/datum/design/iron,
+		/datum/design/glass,
+		/datum/design/rglass,
+		/datum/design/rods,
+		/datum/design/plant_analyzer,
+		/datum/design/shovel,
+		/datum/design/spade,
+		/datum/design/secateurs,
+		/datum/design/blood_filter,
+		/datum/design/scalpel,
+		/datum/design/circular_saw,
+		/datum/design/bonesetter,
+		/datum/design/surgicaldrill,
+		/datum/design/retractor,
+		/datum/design/cautery,
+		/datum/design/hemostat,
+		/datum/design/beaker,
+		/datum/design/large_beaker,
+		/datum/design/pillbottle,
+		/datum/design/igniter,
+		/datum/design/condenser,
+		/datum/design/signaler,
+		/datum/design/radio_headset,
+		/datum/design/bounced_radio,
+		/datum/design/intercom_frame,
+		/datum/design/infrared_emitter,
+		/datum/design/health_sensor,
+		/datum/design/timer,
+		/datum/design/voice_analyzer,
+		/datum/design/light_bulb,
+		/datum/design/light_tube,
+		/datum/design/camera_assembly,
+		/datum/design/newscaster_frame,
+		/datum/design/status_display_frame,
+		/datum/design/syringe,
+		/datum/design/dropper,
+		/datum/design/prox_sensor,
+		/datum/design/foam_dart,
+		/datum/design/spraycan,
+		/datum/design/desttagger,
+		/datum/design/salestagger,
+		/datum/design/handlabeler,
+		/datum/design/geiger,
+		/datum/design/turret_control_frame,
+		/datum/design/conveyor_belt,
+		/datum/design/conveyor_switch,
+		/datum/design/miniature_power_cell,
+		/datum/design/package_wrap,
+		/datum/design/holodisk,
+		/datum/design/circuit,
+		/datum/design/circuitgreen,
+		/datum/design/circuitred,
+		/datum/design/price_tagger,
+		/datum/design/custom_vendor_refill,
+		/datum/design/plastic_tree,
+		/datum/design/plastic_ring,
+		/datum/design/plastic_box,
+		/datum/design/sticky_tape,
+		/datum/design/chisel,
+		/datum/design/control,
+		/datum/design/paperroll,
+		/datum/design/beacon,
+		/datum/design/plasticducky,
+		/datum/design/gas_filter,
+		/datum/design/oven_tray,
+		/datum/design/data,
+	)
+

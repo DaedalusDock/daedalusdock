@@ -5,21 +5,18 @@
 	faction = FACTION_STATION
 	total_positions = 3
 	spawn_positions = 2
-	supervisors = "the head of personnel"
-	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/none
+	)
 
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/botanist,
-			SPECIES_PLASMAMAN = /datum/outfit/job/botanist/plasmaman,
 		),
 	)
 
-	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_STATION_MASTER
-	display_order = JOB_DISPLAY_ORDER_BOTANIST
-	bounty_types = CIV_JOB_GROW
 	departments_list = list(
 		/datum/job_department/service,
 		)
@@ -53,12 +50,3 @@
 	backpack = /obj/item/storage/backpack/botany
 	satchel = /obj/item/storage/backpack/satchel/hyd
 	duffelbag = /obj/item/storage/backpack/duffelbag/hydroponics
-
-/datum/outfit/job/botanist/plasmaman
-	name = "Botanist (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/botany
-	gloves = /obj/item/clothing/gloves/botanic_leather/plasmaman
-	head = /obj/item/clothing/head/helmet/space/plasmaman/botany
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full

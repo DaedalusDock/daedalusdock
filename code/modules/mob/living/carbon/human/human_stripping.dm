@@ -23,17 +23,17 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	/datum/strippable_item/mob_item_slot/legcuffs,
 )))
 
-/mob/living/carbon/human/should_strip(mob/user)
+/mob/living/carbon/human/should_strip(mob/living/user)
 	. = ..()
 	if (!.)
 		return FALSE
 
-	if (user.grab_state != GRAB_AGGRESSIVE)
+	var/obj/item/hand_item/grab/G = user.is_grabbing(src)
+	if(!G)
 		return TRUE
 
-	if (ishuman(user))
-		var/mob/living/carbon/human/human_user = user
-		return !human_user.can_be_firemanned(src)
+	if ((G.current_grab.damage_stage == GRAB_AGGRESSIVE) && !combat_mode) // Do not conflict with fireman carrying
+		return FALSE
 
 /datum/strippable_item/mob_item_slot/eyes
 	key = STRIPPABLE_ITEM_EYES
@@ -47,13 +47,13 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	key = STRIPPABLE_ITEM_JUMPSUIT
 	item_slot = ITEM_SLOT_ICLOTHING
 
-/datum/strippable_item/mob_item_slot/jumpsuit/get_alternate_action(atom/source, mob/user)
+/datum/strippable_item/mob_item_slot/jumpsuit/get_alternate_action(atom/source, mob/user, action)
 	var/obj/item/clothing/under/jumpsuit = get_item(source)
 	if (!istype(jumpsuit))
 		return null
 	return jumpsuit?.can_adjust ? "adjust_jumpsuit" : null
 
-/datum/strippable_item/mob_item_slot/jumpsuit/alternate_action(atom/source, mob/user)
+/datum/strippable_item/mob_item_slot/jumpsuit/alternate_action(atom/source, mob/user, action)
 	if (!..())
 		return
 	var/obj/item/clothing/under/jumpsuit = get_item(source)
@@ -68,9 +68,9 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	if (!ismob(source))
 		return
 
-	var/mob/mob_source = source
-	mob_source.update_worn_undersuit()
-	mob_source.update_body()
+	if(iscarbon(source))
+		var/mob/living/carbon/carbon_source = source
+		carbon_source.update_slots_for_item(source)
 
 /datum/strippable_item/mob_item_slot/suit
 	key = STRIPPABLE_ITEM_SUIT
@@ -84,7 +84,14 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	key = STRIPPABLE_ITEM_FEET
 	item_slot = ITEM_SLOT_FEET
 
-/datum/strippable_item/mob_item_slot/feet/get_alternate_action(atom/source, mob/user)
+/datum/strippable_item/mob_item_slot/feet/start_unequip_mob(obj/item/item, mob/source, mob/user, strip_delay)
+	if(ishuman(source))
+		var/mob/living/carbon/human/victim = source
+		if(victim.body_position == STANDING_UP)
+			strip_delay += 3 SECONDS
+	return ..()
+
+/datum/strippable_item/mob_item_slot/feet/get_alternate_action(atom/source, mob/user, action)
 	var/obj/item/clothing/shoes/shoes = get_item(source)
 	if (!istype(shoes) || !shoes.can_be_tied)
 		return null
@@ -97,7 +104,7 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 		if (SHOES_KNOTTED)
 			return "unknot"
 
-/datum/strippable_item/mob_item_slot/feet/alternate_action(atom/source, mob/user)
+/datum/strippable_item/mob_item_slot/feet/alternate_action(atom/source, mob/user, action)
 	if(!..())
 		return
 	var/obj/item/clothing/shoes/shoes = get_item(source)
@@ -110,10 +117,10 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	key = STRIPPABLE_ITEM_SUIT_STORAGE
 	item_slot = ITEM_SLOT_SUITSTORE
 
-/datum/strippable_item/mob_item_slot/suit_storage/get_alternate_action(atom/source, mob/user)
+/datum/strippable_item/mob_item_slot/suit_storage/get_alternate_action(atom/source, mob/user, action)
 	return get_strippable_alternate_action_internals(get_item(source), source)
 
-/datum/strippable_item/mob_item_slot/suit_storage/alternate_action(atom/source, mob/user)
+/datum/strippable_item/mob_item_slot/suit_storage/alternate_action(atom/source, mob/user, action)
 	if (!..())
 		return
 	strippable_alternate_action_internals(get_item(source), source, user)
@@ -126,10 +133,10 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	key = STRIPPABLE_ITEM_BELT
 	item_slot = ITEM_SLOT_BELT
 
-/datum/strippable_item/mob_item_slot/belt/get_alternate_action(atom/source, mob/user)
+/datum/strippable_item/mob_item_slot/belt/get_alternate_action(atom/source, mob/user, action)
 	return get_strippable_alternate_action_internals(get_item(source), source)
 
-/datum/strippable_item/mob_item_slot/belt/alternate_action(atom/source, mob/user)
+/datum/strippable_item/mob_item_slot/belt/alternate_action(atom/source, mob/user, action)
 	if (!..())
 		return
 	strippable_alternate_action_internals(get_item(source), source, user)
@@ -189,12 +196,11 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 
 	var/mob/living/carbon/carbon_source = source
 
-	var/obj/item/clothing/mask = carbon_source.wear_mask
-	if (!istype(mask))
-		return
-
-	if ((mask.clothing_flags & MASKINTERNALS) && istype(item, /obj/item/tank))
-		return isnull(carbon_source.internal) ? "enable_internals" : "disable_internals"
+	if (carbon_source.can_breathe_internals() && istype(item, /obj/item/tank))
+		if(carbon_source.internal != item)
+			return "enable_internals"
+		else
+			return "disable_internals"
 
 /proc/strippable_alternate_action_internals(obj/item/item, atom/source, mob/user)
 	var/obj/item/tank/tank = item
@@ -205,26 +211,26 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	if (!istype(carbon_source))
 		return
 
-	var/obj/item/clothing/mask = carbon_source.wear_mask
-	if (!istype(mask) || !(mask.clothing_flags & MASKINTERNALS))
+	if (!carbon_source.can_breathe_internals())
 		return
 
 	carbon_source.visible_message(
-		span_danger("[user] tries to [isnull(carbon_source.internal) ? "open": "close"] the valve on [source]'s [item.name]."),
-		span_userdanger("[user] tries to [isnull(carbon_source.internal) ? "open": "close"] the valve on your [item.name]."),
+		span_danger("[user] tries to [carbon_source.internal != item ? "open": "close"] the valve on [source]'s [item.name]."),
+		span_userdanger("[user] tries to [carbon_source.internal != item ? "open": "close"] the valve on your [item.name]."),
 		ignored_mobs = user,
 	)
 
-	to_chat(user, span_notice("You try to [isnull(carbon_source.internal) ? "open": "close"] the valve on [source]'s [item.name]..."))
+	to_chat(user, span_notice("You try to [carbon_source.internal != item  ? "open": "close"] the valve on [source]'s [item.name]..."))
 
 	if(!do_after(user, carbon_source, INTERNALS_TOGGLE_DELAY))
 		return
 
-	if(carbon_source.internal)
-		carbon_source.internal = null
+	if (carbon_source.internal == item)
+		carbon_source.close_internals()
+
 	else if (!QDELETED(item))
-		if((carbon_source.wear_mask?.clothing_flags & MASKINTERNALS) || carbon_source.getorganslot(ORGAN_SLOT_BREATHING_TUBE))
-			carbon_source.internal = item
+		if(!carbon_source.try_open_internals(item))
+			return
 
 	carbon_source.visible_message(
 		span_danger("[user] [isnull(carbon_source.internal) ? "closes": "opens"] the valve on [source]'s [item.name]."),

@@ -21,7 +21,7 @@
 		console = null
 	return ..()
 
-/obj/machinery/abductor/experiment/MouseDrop_T(mob/target, mob/user)
+/obj/machinery/abductor/experiment/MouseDroppedOn(mob/target, mob/user)
 	if(user.stat != CONSCIOUS || HAS_TRAIT(user, TRAIT_UI_BLOCKED) || !Adjacent(user) || !target.Adjacent(user) || !ishuman(target))
 		return
 	if(isabductor(target))
@@ -132,7 +132,7 @@
 	if(H.stat == DEAD)
 		say("Specimen deceased - please provide fresh sample.")
 		return "Specimen deceased."
-	var/obj/item/organ/internal/heart/gland/GlandTest = locate() in H.internal_organs
+	var/obj/item/organ/heart/gland/GlandTest = locate() in H.organs
 	if(!GlandTest)
 		say("Experimental dissection not detected!")
 		return "No glands detected!"
@@ -153,7 +153,7 @@
 		user_abductor.team.abductees += H.mind
 		H.mind.add_antag_datum(/datum/antagonist/abductee)
 
-		for(var/obj/item/organ/internal/heart/gland/G in H.internal_organs)
+		for(var/obj/item/organ/heart/gland/G in H.organs)
 			G.Start()
 			point_reward++
 		if(point_reward > 0)
@@ -180,7 +180,8 @@
  */
 /obj/machinery/abductor/experiment/proc/send_back(mob/living/carbon/human/H)
 	H.Sleeping(160)
-	H.uncuff()
+	H.remove_legcuffs()
+	H.remove_handcuffs()
 	if(console && console.pad && console.pad.teleport_target)
 		H.forceMove(console.pad.teleport_target)
 		return

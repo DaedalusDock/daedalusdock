@@ -1,24 +1,26 @@
-#define DOOR_CLOSE_WAIT 60 ///Default wait until doors autoclose
+DEFINE_INTERACTABLE(/obj/machinery/door)
 /obj/machinery/door
 	name = "door"
 	desc = "It opens and closes."
 	icon = 'icons/obj/doors/Doorint.dmi'
 	icon_state = "door1"
 	base_icon_state = "door"
+	layer = OPEN_DOOR_LAYER
 	opacity = TRUE
 	density = TRUE
 	move_resist = MOVE_FORCE_VERY_STRONG
-	layer = OPEN_DOOR_LAYER
+
+	can_astar_pass = CANASTARPASS_ALWAYS_PROC
+
 	power_channel = AREA_USAGE_ENVIRON
 	pass_flags_self = PASSDOORS
 	max_integrity = 350
-	armor = list(MELEE = 30, BULLET = 30, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 80, ACID = 70)
+	armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 80, ACID = 70)
 	can_atmos_pass = CANPASS_PROC
 	flags_1 = PREVENT_CLICK_UNDER_1
 	receive_ricochet_chance_mod = 0.8
-	damage_deflection = 10
 
-	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT
+	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT | INTERACT_ATOM_NO_FINGERPRINT_ATTACK_HAND
 	blocks_emissive = EMISSIVE_BLOCK_UNIQUE
 
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
@@ -30,16 +32,20 @@
 	var/operating = FALSE
 	var/glass = FALSE
 	var/welded = FALSE
-	var/normalspeed = 1
 	var/heat_proof = FALSE // For rglass-windowed airlocks and firedoors
 	var/emergency = FALSE // Emergency access override
 	var/sub_door = FALSE // true if it's meant to go under another door.
 	var/closingLayer = CLOSED_DOOR_LAYER
-	var/autoclose = FALSE //does it automatically close after some time
-	var/safe = TRUE //whether the door detects things and mobs in its way and reopen or crushes them.
+
+	/// Does the door automatically close
+	var/autoclose = FALSE
+	/// How long it takes for the door to automatically close after being opened
+	var/autoclose_delay = 15 SECONDS
+
+	/// Whether the door detects things and mobs in its way and reopen or crushes them.
+	var/dont_close_on_dense_objects = TRUE
 	var/locked = FALSE //whether the door is bolted or not.
 	var/assemblytype //the type of door frame to drop during deconstruction
-	var/datum/effect_system/spark_spread/spark_system
 	var/real_explosion_block //ignore this, just use explosion_block
 	var/red_alert_access = FALSE //if TRUE, this door will always open on red alert
 	var/unres_sides = 0 //Unrestricted sides. A bitflag for which direction (if any) can open the door with no access
@@ -56,12 +62,17 @@
 	///Sound to play when knocked on
 	var/knock_sound = 'goon/sounds/Door_Metal_Knock_1.ogg'
 
+	/// Sparks caused by damage and such
+	var/datum/effect_system/spark_spread/spark_system
+
 /obj/machinery/door/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
+
 	set_init_door_layer()
 	update_freelook_sight()
 	register_context()
-	GLOB.airlocks += src
+
 	spark_system = new /datum/effect_system/spark_spread
 	spark_system.set_up(2, 1, src)
 	if(density)
@@ -140,10 +151,7 @@
 /obj/machinery/door/examine(mob/user)
 	. = ..()
 	if(red_alert_access)
-		if(SSsecurity_level.current_level >= SEC_LEVEL_RED)
-			. += span_notice("Due to a security threat, its access requirements have been lifted!")
-		else
-			. += span_notice("In the event of a red alert, its access requirements will automatically lift.")
+		. += span_notice("In the event of a red alert, its access requirements will automatically lift.")
 	. += span_notice("Its maintenance panel is [panel_open ? "open" : "<b>screwed</b> in place"].")
 
 /obj/machinery/door/add_context(atom/source, list/context, obj/item/held_item, mob/user)
@@ -172,8 +180,9 @@
 		layer = initial(layer)
 
 /obj/machinery/door/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	update_freelook_sight()
-	GLOB.airlocks -= src
+
 	if(spark_system)
 		qdel(spark_system)
 		spark_system = null
@@ -217,7 +226,7 @@
 /obj/machinery/door/proc/try_remove_seal(mob/user)
 	return
 
-/obj/machinery/door/Bumped(atom/movable/AM)
+/obj/machinery/door/BumpedBy(atom/movable/AM)
 	. = ..()
 	if(operating || (obj_flags & EMAGGED) || (!can_open_with_hands && density))
 		return
@@ -264,6 +273,20 @@
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return !opacity
 
+/obj/machinery/door/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	. = ..()
+	if(.)
+		return
+
+	if(locked)
+		return FALSE
+
+	var/mob/M = pass_info.caller_ref?.resolve()
+	if(isnull(M))
+		return
+
+	return allowed(M)
+
 /obj/machinery/door/proc/bumpopen(mob/user)
 	if(operating || !can_open_with_hands)
 		return
@@ -295,12 +318,17 @@
 		return
 	return ..()
 
-/obj/machinery/door/proc/try_to_activate_door(mob/user, access_bypass = FALSE)
+/obj/machinery/door/proc/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
 	set waitfor = FALSE
 
-	add_fingerprint(user)
+	if(attackedby)
+		attackedby.leave_evidence(user, src)
+	else
+		add_fingerprint(user)
+
 	if(operating || (obj_flags & EMAGGED) || !can_open_with_hands)
 		return
+
 	if(access_bypass || (requiresID() && allowed(user)))
 		. = TRUE
 		if(density)
@@ -352,13 +380,16 @@
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/machinery/door/attackby(obj/item/I, mob/living/user, params)
-	if(!user.combat_mode && istype(I, /obj/item/fireaxe))
+	if((I.item_flags & NOBLUDGEON) || user.combat_mode)
+		return ..()
+
+	if(istype(I, /obj/item/fireaxe))
 		try_to_crowbar(I, user, FALSE)
 		return TRUE
-	else if(I.item_flags & NOBLUDGEON || user.combat_mode)
-		return ..()
-	else if(try_to_activate_door(user))
+
+	if(try_to_activate_door(user, attackedby = I))
 		return TRUE
+
 	return ..()
 
 /obj/machinery/door/welder_act_secondary(mob/living/user, obj/item/tool)
@@ -414,17 +445,17 @@
 	switch(animation)
 		if("opening")
 			if(panel_open)
-				flick("o_doorc0", src)
+				z_flick("o_doorc0", src)
 			else
-				flick("doorc0", src)
+				z_flick("doorc0", src)
 		if("closing")
 			if(panel_open)
-				flick("o_doorc1", src)
+				z_flick("o_doorc1", src)
 			else
-				flick("doorc1", src)
+				z_flick("doorc1", src)
 		if("deny")
 			if(!machine_stat)
-				flick("door_deny", src)
+				z_flick("door_deny", src)
 
 
 /obj/machinery/door/proc/open()
@@ -447,7 +478,7 @@
 	zas_update_loc()
 	update_freelook_sight()
 	if(autoclose)
-		autoclose_in(DOOR_CLOSE_WAIT)
+		autoclose_in()
 	return 1
 
 /obj/machinery/door/proc/close()
@@ -455,11 +486,11 @@
 		return TRUE
 	if(operating || welded)
 		return
-	if(safe)
+	if(dont_close_on_dense_objects)
 		for(var/atom/movable/M in get_turf(src))
 			if(M.density && M != src) //something is blocking the door
 				if(autoclose)
-					autoclose_in(DOOR_CLOSE_WAIT)
+					autoclose_in()
 				return
 
 	operating = TRUE
@@ -480,7 +511,7 @@
 	if(!can_crush)
 		return TRUE
 
-	if(safe)
+	if(dont_close_on_dense_objects)
 		CheckForMobs()
 	else
 		crush()
@@ -500,7 +531,7 @@
 			L.emote("roar")
 		else if(ishuman(L)) //For humans
 			L.adjustBruteLoss(DOOR_CRUSH_DAMAGE)
-			L.emote("scream")
+			L.emote("agony")
 			L.Paralyze(100)
 		else //for simple_animals & borgs
 			L.adjustBruteLoss(DOOR_CRUSH_DAMAGE)
@@ -516,7 +547,7 @@
 	if(!QDELETED(src) && !density && !operating && !locked && !welded && autoclose)
 		close()
 
-/obj/machinery/door/proc/autoclose_in(wait)
+/obj/machinery/door/proc/autoclose_in(wait = autoclose_delay)
 	addtimer(CALLBACK(src, PROC_REF(autoclose)), wait, TIMER_UNIQUE | TIMER_NO_HASH_WAIT | TIMER_OVERRIDE)
 
 /obj/machinery/door/proc/requiresID()
@@ -564,14 +595,15 @@
 /obj/machinery/door/power_change()
 	. = ..()
 	if(. && !(machine_stat & NOPOWER))
-		autoclose_in(DOOR_CLOSE_WAIT)
+		autoclose_in()
 
 /obj/machinery/door/zap_act(power, zap_flags)
 	zap_flags &= ~ZAP_OBJ_DAMAGE
 	. = ..()
 
 /obj/machinery/door/proc/knock_on(mob/user)
-	user.changeNext_move(CLICK_CD_MELEE)
+	user?.changeNext_move(CLICK_CD_MELEE)
 	playsound(src, knock_sound, 100, TRUE)
+	add_fingerprint(user)
+	user?.animate_interact(src, INTERACT_GENERIC)
 
-#undef DOOR_CLOSE_WAIT

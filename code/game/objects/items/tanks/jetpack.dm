@@ -38,7 +38,7 @@
 	if(on && slot != ITEM_SLOT_BACK)
 		turn_off(user)
 
-/obj/item/tank/jetpack/dropped(mob/user, silent)
+/obj/item/tank/jetpack/unequipped(mob/user, silent)
 	. = ..()
 	if(on)
 		turn_off(user)

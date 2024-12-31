@@ -140,7 +140,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	user.add_stun_absorption("highlander", INFINITY, 1, " is protected by the power of Scotland!", "The power of Scotland absorbs the stun!", " is protected by the power of Scotland!")
 	user.ignore_slowdown(HIGHLANDER)
 
-/obj/item/claymore/highlander/dropped(mob/living/user)
+/obj/item/claymore/highlander/unequipped(mob/living/user)
 	. = ..()
 	user.unignore_slowdown(HIGHLANDER)
 

@@ -58,7 +58,7 @@
 	if(del_on_release)
 		qdel(src)
 
-/obj/item/mob_holder/dropped(mob/user, silent)
+/obj/item/mob_holder/unequipped(mob/user, silent)
 	. = ..()
 	if(held_mob && isturf(loc))
 		release_mob(display_messages = !silent)

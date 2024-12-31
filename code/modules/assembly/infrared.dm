@@ -70,7 +70,7 @@
 		. += "infrared_visible"
 		attached_overlays += "infrared_visible"
 
-/obj/item/assembly/infra/dropped()
+/obj/item/assembly/infra/unequipped()
 	. = ..()
 	if(holder)
 		holder_movement() //sync the dir of the device as well if it's contained in a TTV or an assembly holder

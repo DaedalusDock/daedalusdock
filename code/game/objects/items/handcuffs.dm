@@ -512,7 +512,7 @@
 		var/mob/living/carbon/C = hit_atom
 		effectReference = C.apply_status_effect(/datum/status_effect/gonbola_pacify)
 
-/obj/item/restraints/legcuffs/bola/gonbola/dropped(mob/user)
+/obj/item/restraints/legcuffs/bola/gonbola/unequipped(mob/user)
 	. = ..()
 	if(effectReference)
 		QDEL_NULL(effectReference)

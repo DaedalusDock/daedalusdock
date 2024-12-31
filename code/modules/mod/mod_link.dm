@@ -179,7 +179,7 @@
 	if(slot != ITEM_SLOT_NECK)
 		mod_link?.end_call()
 
-/obj/item/clothing/neck/link_scryer/dropped(mob/living/user)
+/obj/item/clothing/neck/link_scryer/unequipped(mob/living/user)
 	. = ..()
 	mod_link?.end_call()
 

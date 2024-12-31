@@ -20,7 +20,7 @@
 		if(enabled_waddle)
 			ADD_WADDLE(user, WADDLE_SOURCE_CLOWNSHOES)
 
-/obj/item/clothing/shoes/clown_shoes/dropped(mob/user)
+/obj/item/clothing/shoes/clown_shoes/unequipped(mob/user)
 	. = ..()
 	REMOVE_WADDLE(user, WADDLE_SOURCE_CLOWNSHOES)
 

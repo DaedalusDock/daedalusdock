@@ -166,7 +166,7 @@
 	to_chat(user, span_noticealien("You discard [src]."))
 	qdel(src)
 
-/obj/item/queen_promotion/dropped(mob/user, silent)
+/obj/item/queen_promotion/unequipped(mob/user, silent)
 	if(!silent)
 		to_chat(user, span_noticealien("You discard [src]."))
 	return ..()

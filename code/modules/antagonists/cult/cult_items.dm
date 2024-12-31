@@ -192,7 +192,7 @@ Striking a noncultist, however, will tear their flesh."}
 	linked_action.Grant(user, src)
 	user.update_icons()
 
-/obj/item/cult_bastard/dropped(mob/user)
+/obj/item/cult_bastard/unequipped(mob/user)
 	. = ..()
 	linked_action.Remove(user)
 	jaunt.Remove(user)

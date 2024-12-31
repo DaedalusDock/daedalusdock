@@ -543,7 +543,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 	if(istype(thing) && ismob(parent.loc))
 		var/mob/mobparent = parent.loc
-		thing.dropped(mobparent, TRUE)
+		thing.unequipped(mobparent, TRUE)
 
 	if(newLoc)
 		reset_item(thing)

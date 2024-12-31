@@ -208,7 +208,7 @@
 
 	return ..()
 
-/obj/item/mod/control/dropped(mob/user)
+/obj/item/mod/control/unequipped(mob/user)
 	. = ..()
 	if(QDELETED(src))
 		return

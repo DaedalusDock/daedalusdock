@@ -145,7 +145,7 @@
 
 	modes = list(MODE_NONE = MODE_TRAY, MODE_TRAY = MODE_PIPE_CONNECTABLE, MODE_PIPE_CONNECTABLE = MODE_NONE)
 
-/obj/item/clothing/glasses/meson/engine/tray/dropped(mob/user)
+/obj/item/clothing/glasses/meson/engine/tray/unequipped(mob/user)
 	. = ..()
 	if(connection_images.len)
 		connection_images.Cut()

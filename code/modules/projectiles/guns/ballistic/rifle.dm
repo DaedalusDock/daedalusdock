@@ -219,7 +219,7 @@
 
 	mag_type = /obj/item/ammo_box/magazine/internal/arcane_barrage
 
-/obj/item/gun/ballistic/rifle/enchanted/dropped()
+/obj/item/gun/ballistic/rifle/enchanted/unequipped()
 	. = ..()
 	guns_left = 0
 	magazine = null

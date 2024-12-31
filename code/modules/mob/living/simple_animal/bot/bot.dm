@@ -558,7 +558,7 @@ GLOBAL_LIST_EMPTY(scan_typecaches)
 
 /// Add an atom to our list of ignored objects.
 /mob/living/simple_animal/bot/proc/add_to_ignore(atom/subject)
-	if(isnull(subject))
+	if(isnull(subject) || (subject in ignore_list))
 		return
 
 	if(ignore_list.len >= 50)

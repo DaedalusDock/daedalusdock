@@ -1,0 +1,8 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - qol: You can now take paddles from a defibrillator at any time.
+  - qol: You can use AltClick to take paddles from a defibrillator.
+  - qol: You can use the Toggle Paddles verb to take paddles from a defibrillator.
+  - qol: You can now use the Use In Hand keybind to wield/unwield paddles (Restoring
+      old behavior).

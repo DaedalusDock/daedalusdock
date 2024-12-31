@@ -459,12 +459,17 @@
 	. = ..()
 	. += "<a href='?src=\ref[src];look_at_id=1'>\[Look at ID\]</a>"
 	if(registered_account)
-		. += span_notice("The account linked to the ID belongs to '[registered_account.account_holder]' and reports a balance of [registered_account.account_balance] cr.")
+		. += span_notice("The account linked to the ID belongs to '[registered_account.account_holder]'.")
 
 	if(HAS_TRAIT(user, TRAIT_ID_APPRAISER))
 		. += HAS_TRAIT(src, TRAIT_JOB_FIRST_ID_CARD) ? span_boldnotice("Hmm... yes, this ID was issued from Central Command!") : span_boldnotice("This ID was created in this sector, not by Central Command.")
 
 /obj/item/card/id/proc/show(mob/user)
+	set waitfor = FALSE
+
+	var/atom/movable/screen/front_container = user.send_appearance(front_image)
+	var/atom/movable/screen/side_container = user.send_appearance(side_image)
+
 	var/list/content = list("<table style='width:100%'><tr><td>")
 	content += "Name: [registered_name]<br>"
 	content += "Age: [registered_age]<br>"
@@ -472,15 +477,17 @@
 	content += "Blood Type: [blood_type]<br>"
 	content += "Fingerprint: [fingerprint]<br>"
 	content += "DNA Hash: [dna_hash]<br>"
+
 	if(front_image && side_image)
-		content +="<td style='text-align:center; vertical-align:top'>Photo:<br><img src=\ref[front_image.appearance] height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'><img src=\ref[side_image.appearance] height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'></td>"
+		content +="<td style='text-align:center; vertical-align:top'>Photo:<br><img src=\ref[front_container.appearance] height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'><img src=\ref[side_container.appearance] height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'></td>"
 	content += "</tr></table>"
 	content = jointext(content, null)
 
 	var/datum/browser/popup = new(user, "idcard", name, 660, 270)
 	popup.set_content(content)
 	popup.open()
-	return
+	sleep(1) // I don't know why but for some reason I need to re-send the entire UI to get it to display icons. Yes, I tried sleeping after sending the appearances.
+	popup.open()
 
 /obj/item/card/id/GetAccess()
 	return access.Copy()

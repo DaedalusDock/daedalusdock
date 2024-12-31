@@ -530,7 +530,7 @@
 //Applies brute and burn damage to the organ. Returns 1 if the damage-icon states changed at all.
 //Damage will not exceed max_damage using this proc
 //Cannot apply negative damage
-/obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, blocked = 0, updating_health = TRUE, required_status = null, sharpness = NONE, modifiers = DEFAULT_DAMAGE_FLAGS)
+/obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, blocked = 0, updating_health = TRUE, required_status = null, sharpness = NONE, modifiers = DEFAULT_DAMAGE_FLAGS, obj/item/weapon_used = null)
 	SHOULD_CALL_PARENT(TRUE)
 	var/hit_percent = (100-blocked)/100
 	if((!brute && !burn) || hit_percent <= 0)
@@ -548,6 +548,15 @@
 
 	if(!brute && !burn)
 		return FALSE
+
+	var/cause_of_death
+	if(brute)
+		if(sharpness == NONE)
+			cause_of_death = "Blunt force trauma"
+		else
+			cause_of_death = "Laceration"
+	else
+		cause_of_death = "Third-degree burn"
 
 	if(bodytype & (BODYTYPE_ALIEN|BODYTYPE_LARVA_PLACEHOLDER)) //aliens take double burn //nothing can burn with so much snowflake code around
 		burn *= 2
@@ -655,7 +664,7 @@
 	if(owner)
 		update_disabled()
 		if(updating_health)
-			owner.updatehealth()
+			owner.updatehealth(cause_of_death = cause_of_death)
 			if(. & BODYPART_LIFE_UPDATE_DAMAGE_OVERLAYS)
 				owner.update_damage_overlays()
 	return .
@@ -698,7 +707,6 @@
 	if(encased && !(bodypart_flags & BP_BROKEN_BONES)) //ribs protect
 		organ_hit_chance *= 0.6
 
-	organ_hit_chance = min(organ_hit_chance, 100)
 	if(prob(organ_hit_chance))
 		var/obj/item/organ/victim = pick_weight(victims)
 		damage *= victim.external_damage_modifier
@@ -1103,7 +1111,7 @@
 		if(coag_level > 0)
 			bleed_rate *= 1 + coag_level
 		else
-			bleed_rate *= 0.5 / coag_level
+			bleed_rate *= 0.5 / -coag_level
 
 	return bleed_rate
 

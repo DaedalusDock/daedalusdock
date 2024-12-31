@@ -138,7 +138,7 @@
 		else
 			. += pick("This parrot is no more.","This is a late parrot.","This is an ex-parrot.")
 
-/mob/living/simple_animal/parrot/death(gibbed)
+/mob/living/simple_animal/parrot/death(gibbed, cause_of_death = "Unknown")
 	if(held_item)
 		held_item.forceMove(drop_location())
 		held_item = null
@@ -310,9 +310,6 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 /mob/living/simple_animal/parrot/attack_paw(mob/living/carbon/human/user, list/modifiers)
 	return attack_hand(modifiers)
 
-/mob/living/simple_animal/parrot/attack_alien(mob/living/carbon/alien/user, list/modifiers)
-	return attack_hand(user, modifiers)
-
 //Simple animals
 /mob/living/simple_animal/parrot/attack_animal(mob/living/simple_animal/user, list/modifiers)
 	. = ..() //goodbye immortal parrots
@@ -323,7 +320,7 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 	if(parrot_state == PARROT_PERCH)
 		parrot_sleep_dur = parrot_sleep_max //Reset it's sleep timer if it was perched
 
-	if(user.melee_damage_upper > 0 && !stat)
+	if(. > 0 && stat == CONSCIOUS)
 		parrot_interest = user
 		parrot_state = PARROT_SWOOP | PARROT_ATTACK //Attack other animals regardless
 		icon_state = icon_living
@@ -923,7 +920,7 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 		memory_saved = TRUE
 	..()
 
-/mob/living/simple_animal/parrot/poly/death(gibbed)
+/mob/living/simple_animal/parrot/poly/death(gibbed, cause_of_death = "Unknown")
 	if(!memory_saved)
 		Write_Memory(TRUE)
 	if(rounds_survived == longest_survival || rounds_survived == longest_deathstreak || prob(0.666))
@@ -1010,9 +1007,9 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 /mob/living/simple_animal/parrot/poly/ghost/proc/Possess(mob/living/carbon/human/H)
 	if(!ishuman(H))
 		return
-	var/datum/disease/parrot_possession/P = new
+	var/datum/pathogen/parrot_possession/P = new
 	P.parrot = src
 	forceMove(H)
-	H.ForceContractDisease(P, FALSE)
+	H.try_contract_pathogen(P, FALSE)
 	parrot_interest = null
 	H.visible_message(span_danger("[src] dive bombs into [H]'s chest and vanishes!"), span_userdanger("[src] dive bombs into your chest, vanishing! This can't be good!"))

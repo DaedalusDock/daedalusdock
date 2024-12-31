@@ -22,7 +22,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	icon_state = "magicbase"
 	icon_living = "magicbase"
 	icon_dead = "magicbase"
-	speed = 0
+	move_delay_modifier = 0
 	combat_mode = TRUE
 	stop_automated_movement = 1
 	attack_sound = SFX_PUNCH
@@ -74,7 +74,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	if(!summoner)
 		return
 
-	set_hud_image_vars(HEALTH_HUD, "hud[RoundHealth(summoner)]", get_hud_pixel_y())
+	set_hud_image_vars(HEALTH_HUD, "hud[RoundHealth(summoner)]")
 
 /mob/living/simple_animal/hostile/guardian/med_hud_set_status()
 	if(!summoner)
@@ -86,7 +86,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	else
 		new_state = "hudhealthy"
 
-	set_hud_image_vars(STATUS_HUD, new_state, get_hud_pixel_y())
+	set_hud_image_vars(STATUS_HUD, new_state)
 
 /mob/living/simple_animal/hostile/guardian/Destroy()
 	GLOB.parasites -= src
@@ -241,7 +241,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	else
 		return ..()
 
-/mob/living/simple_animal/hostile/guardian/death()
+/mob/living/simple_animal/hostile/guardian/death(gibbed, cause_of_death = "Unknown")
 	drop_all_held_items()
 	..()
 	if(summoner)

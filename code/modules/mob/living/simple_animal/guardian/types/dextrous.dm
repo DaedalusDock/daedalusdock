@@ -12,7 +12,7 @@
 	held_items = list(null, null)
 	var/obj/item/internal_storage //what we're storing within ourself
 
-/mob/living/simple_animal/hostile/guardian/dextrous/death(gibbed)
+/mob/living/simple_animal/hostile/guardian/dextrous/death(gibbed, cause_of_death = "Unknown")
 	..()
 	if(internal_storage)
 		dropItemToGround(internal_storage)
@@ -41,7 +41,7 @@
 		..() //lose items, then return
 
 //SLOT HANDLING BULLSHIT FOR INTERNAL STORAGE
-/mob/living/simple_animal/hostile/guardian/dextrous/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+/mob/living/simple_animal/hostile/guardian/dextrous/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE, slot = get_slot_by_item(I))
 	if(..())
 		update_held_items()
 		if(I == internal_storage)

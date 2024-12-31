@@ -84,7 +84,7 @@
 	overcharge = overcharge || mutable_appearance('icons/effects/effects.dmi', "electricity", EFFECTS_LAYER)
 	carbon.add_overlay(overcharge)
 
-	if(do_after(carbon, 5 SECONDS, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_HELD_ITEM|IGNORE_INCAPACITATED)))
+	if(do_after(carbon, 5 SECONDS, timed_action_flags = (DO_IGNORE_USER_LOC_CHANGE|DO_IGNORE_HELD_ITEM|DO_IGNORE_INCAPACITATED)))
 		if(ishuman(carbon))
 			var/mob/living/carbon/human/human = carbon
 			if(human.dna?.species)
@@ -99,8 +99,8 @@
 		carbon.visible_message(span_danger("[carbon] violently discharges energy!"))
 
 		if(prob(10)) //chance of developing heart disease to dissuade overcharging oneself
-			var/datum/disease/D = new /datum/disease/heart_failure
-			carbon.ForceContractDisease(D)
+			var/datum/pathogen/D = new /datum/pathogen/heart_failure
+			carbon.try_contract_pathogen(D)
 			to_chat(carbon, span_userdanger("You're pretty sure you just felt your heart stop for a second there.."))
 			carbon.playsound_local(carbon, 'sound/effects/singlebeat.ogg', 100, 0)
 

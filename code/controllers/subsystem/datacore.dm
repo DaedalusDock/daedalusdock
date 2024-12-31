@@ -280,7 +280,7 @@ SUBSYSTEM_DEF(datacore)
 	var/datum/data/record/security/S = new()
 	S.fields[DATACORE_ID] = id
 	S.fields[DATACORE_NAME] = H.real_name
-	S.fields[DATACORE_CRIMINAL_STATUS] = CRIMINAL_NONE
+	S.fields[DATACORE_CRIMINAL_STATUS] = job.default_security_status || CRIMINAL_NONE
 	S.fields[DATACORE_CITATIONS] = list()
 	S.fields[DATACORE_CRIMES] = list()
 	S.fields[DATACORE_NOTES] = "No notes."

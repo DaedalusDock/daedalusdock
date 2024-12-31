@@ -412,10 +412,7 @@
 /area/shuttle/escape)
 "tJ" = (
 /obj/structure/table/reinforced,
-/obj/item/reagent_containers/food/drinks/britcup{
-	pixel_x = 8;
-	pixel_y = -1
-	},
+/obj/item/reagent_containers/glass/mug/brit,
 /obj/item/storage/medkit/regular{
 	pixel_x = -9;
 	pixel_y = 3

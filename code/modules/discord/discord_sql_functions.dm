@@ -117,6 +117,9 @@
  * Returns a [/datum/discord_link_record]
  */
 /client/proc/find_discord_link_by_ckey(ckey, timebound = FALSE)
+	if(!SSdbcore.Connect())
+		return null // No DB, No data.
+
 	var/timeboundsql = ""
 	if(timebound)
 		timeboundsql = "AND timestamp >= Now() - INTERVAL 4 HOUR"

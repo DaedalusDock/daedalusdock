@@ -104,6 +104,9 @@
 ////Used to force an equlibrium to end a reaction in reaction_step() (i.e. in a reaction_step() proc return END_REACTION to end it)
 #define END_REACTION "end_reaction"
 
+/// Helper for converting realtime seconds into reagent cycles.
+#define SECONDS_TO_REAGENT_CYCLES(seconds) round(seconds / (/datum/controller/subsystem/mobs::wait / 10))
+
 ///Minimum requirement for addiction buzz to be met. Addiction code only checks this once every two seconds, so this should generally be low
 #define MIN_ADDICTION_REAGENT_AMOUNT 1
 ///Nicotine requires much less in your system to be happy

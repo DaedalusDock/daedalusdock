@@ -3,7 +3,7 @@
 	desc = ""
 
 	value = STATS_BASELINE_VALUE
-
+	sound = 'sound/three_dsix/psyche.ogg'
 
 /datum/rpg_stat/psyche/get(mob/living/user)
 	. = ..()

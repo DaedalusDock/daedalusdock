@@ -26,7 +26,7 @@
 	minbodytemp = 0
 	maxbodytemp = 0
 	wander = 0
-	speed = 0
+	move_delay_modifier = 0
 	healable = 0
 	density = FALSE
 	pass_flags = PASSTABLE | PASSMOB
@@ -196,7 +196,7 @@
 	listener.RegisterSignal(src, COMSIG_LIVING_REVIVE, TYPE_PROC_REF(/datum/alarm_listener, allow_alarm_changes))
 
 /mob/living/simple_animal/drone/med_hud_set_health()
-	set_hud_image_vars(DIAG_HUD, "huddiag[RoundDiagBar(health/maxHealth)]", get_hud_pixel_y())
+	set_hud_image_vars(DIAG_HUD, "huddiag[RoundDiagBar(health/maxHealth)]")
 
 /mob/living/simple_animal/drone/med_hud_set_status()
 	var/new_state
@@ -207,7 +207,7 @@
 	else
 		new_state = "hudstat"
 
-	set_hud_image_vars(DIAG_STAT_HUD, new_state, get_hud_pixel_y())
+	set_hud_image_vars(DIAG_STAT_HUD, new_state)
 
 /mob/living/simple_animal/drone/Destroy()
 	GLOB.drones_list -= src
@@ -234,7 +234,7 @@
 		return client.holder.auto_deadmin()
 	return ..()
 
-/mob/living/simple_animal/drone/death(gibbed)
+/mob/living/simple_animal/drone/death(gibbed, cause_of_death = "Unknown")
 	..(gibbed)
 	if(internal_storage)
 		dropItemToGround(internal_storage)
@@ -362,5 +362,5 @@
 	// Why would bees pay attention to drones?
 	return TRUE
 
-/mob/living/simple_animal/drone/electrocute_act(shock_damage, source, siemens_coeff, flags = NONE)
+/mob/living/simple_animal/drone/electrocute_act(shock_damage, siemens_coeff, flags = SHOCK_HANDS, stun_multiplier = 1)
 	return FALSE //So they don't die trying to fix wiring

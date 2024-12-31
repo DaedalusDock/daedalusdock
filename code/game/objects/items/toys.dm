@@ -520,7 +520,7 @@
 	attack_verb_continuous = list("attacks", "strikes", "hits")
 	attack_verb_simple = list("attack", "strike", "hit")
 
-/obj/item/dualsaber/toy/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+/obj/item/dualsaber/toy/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
 	return FALSE
 
 /obj/item/dualsaber/toy/IsReflect() //Stops Toy Dualsabers from reflecting energy projectiles

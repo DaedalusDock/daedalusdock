@@ -550,7 +550,7 @@ What a mess.*/
 
 								var/overflow = pay - diff
 								if(overflow)
-									SSeconomy.spawn_cash_for_amount(overflow, drop_location())
+									SSeconomy.spawn_ones_for_amount(overflow, drop_location())
 
 							SSblackbox.ReportCitation(text2num(href_list["cdataid"]),"","","","", 0, pay)
 							qdel(S)

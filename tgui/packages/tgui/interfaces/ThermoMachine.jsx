@@ -55,7 +55,7 @@ export const ThermoMachine = (props) => {
                 maxValue={Math.round(data.max)}
                 step={5}
                 stepPixelSize={3}
-                onDrag={(e, value) =>
+                onDrag={(value) =>
                   act('target', {
                     target: value,
                   })
@@ -72,7 +72,7 @@ export const ThermoMachine = (props) => {
                 maxValue={Math.round(data.max_power)}
                 step={5}
                 stepPixelSize={3}
-                onDrag={(e, value) =>
+                onDrag={(value) =>
                   act('set_power', {
                     target: value,
                   })

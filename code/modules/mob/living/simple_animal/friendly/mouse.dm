@@ -50,7 +50,7 @@
 	src.icon_dead = "mouse_[body_color]_splat"
 	death()
 
-/mob/living/simple_animal/mouse/death(gibbed, toast)
+/mob/living/simple_animal/mouse/death(gibbed, cause_of_death = "Unknown", toast)
 	if(!ckey)
 		..(1)
 		if(!gibbed)

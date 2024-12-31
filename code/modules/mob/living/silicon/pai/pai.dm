@@ -240,11 +240,11 @@
 	. = ..()
 	. += "A personal AI in holochassis mode. Its master ID string seems to be [master]."
 
-/mob/living/silicon/pai/updatehealth()
+/mob/living/silicon/pai/updatehealth(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 	set_health(maxHealth - getBruteLoss() - getFireLoss())
-	update_stat()
+	update_stat(cause_of_death)
 
 /mob/living/silicon/pai/process(delta_time)
 	emitterhealth = clamp((emitterhealth + (emitter_regen_per_second * delta_time)), -50, emittermaxhealth)

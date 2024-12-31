@@ -45,7 +45,6 @@
 		/datum/language/moffic,
 		/datum/language/sylvan,
 		/datum/language/shadowtongue,
-		/datum/language/terrum,
 		/datum/language/schechi,
 		/datum/language/spacer,
 		/datum/language/vox,
@@ -246,7 +245,6 @@
 		/datum/language/moffic,
 		/datum/language/sylvan,
 		/datum/language/shadowtongue,
-		/datum/language/terrum,
 		/datum/language/buzzwords
 	))
 
@@ -386,7 +384,6 @@
 		/datum/language/moffic,
 		/datum/language/sylvan,
 		/datum/language/shadowtongue,
-		/datum/language/terrum,
 		/datum/language/spacer,
 	))
 
@@ -403,12 +400,6 @@
 			speech_args[SPEECH_SPANS] |= SPAN_SANS
 		if("papyrus")
 			speech_args[SPEECH_SPANS] |= SPAN_PAPYRUS
-
-/obj/item/organ/tongue/bone/plasmaman
-	name = "plasma bone \"tongue\""
-	desc = "Like animated skeletons, Plasmamen vibrate their teeth in order to produce speech."
-	icon_state = "tongueplasma"
-	modifies_speech = FALSE
 
 /obj/item/organ/tongue/robot
 	name = "robotic voicebox"
@@ -471,7 +462,6 @@
 		/datum/language/moffic,
 		/datum/language/sylvan,
 		/datum/language/shadowtongue,
-		/datum/language/terrum,
 		/datum/language/voltaic
 	))
 

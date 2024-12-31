@@ -33,6 +33,7 @@
 	desc = fried.desc
 	w_class = fried.w_class
 	slowdown = fried.slowdown
+	equip_self_flags = fried.equip_self_flags
 	equip_delay_self = fried.equip_delay_self
 	equip_delay_other = fried.equip_delay_other
 	strip_delay = fried.strip_delay

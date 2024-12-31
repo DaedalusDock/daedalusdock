@@ -39,8 +39,10 @@ export const EntryFloat = (props: EntryFloatProps) => {
       <NumberInput
         animated
         value={float}
+        step={1}
         minValue={0}
-        onDrag={(e, value) =>
+        maxValue={Infinity}
+        onDrag={(value) =>
           act('edit', {
             var: var_name,
             new_value: value,
@@ -64,8 +66,11 @@ export const EntryCoord = (props: EntryCoordProps) => {
       />
       <NumberInput
         animated
-        value={coord?.[0]}
-        onDrag={(e, value) =>
+        step={1}
+        minValue={-Infinity}
+        maxValue={Infinity}
+        value={coord?.[0] || 0}
+        onDrag={(value) =>
           act('edit', {
             var: var_name,
             new_value: [value, coord?.[1], coord?.[2]],
@@ -74,8 +79,11 @@ export const EntryCoord = (props: EntryCoordProps) => {
       />
       <NumberInput
         animated
-        value={coord?.[1]}
-        onDrag={(e, value) =>
+        step={1}
+        minValue={-Infinity}
+        maxValue={Infinity}
+        value={coord?.[1] || 0}
+        onDrag={(value) =>
           act('edit', {
             var: var_name,
             new_value: [coord?.[0], value, coord?.[2]],
@@ -84,8 +92,11 @@ export const EntryCoord = (props: EntryCoordProps) => {
       />
       <NumberInput
         animated
-        value={coord?.[2]}
-        onDrag={(e, value) =>
+        step={1}
+        minValue={-Infinity}
+        maxValue={Infinity}
+        value={coord?.[2] || 0}
+        onDrag={(value) =>
           act('edit', {
             var: var_name,
             new_value: [coord?.[0], coord?.[1], value],
@@ -232,9 +243,10 @@ export const EntryTransform = (props: EntryTransformProps) => {
               animated
               key={index}
               value={value}
+              step={1}
               minValue={0}
               maxValue={1}
-              onDrag={(e, value) =>
+              onDrag={(value) =>
                 act('edit', {
                   var: var_name,
                   new_value: transform!.map((x, i) =>
@@ -275,8 +287,10 @@ export const EntryIcon = (props: EntryIconStateProps) => {
                 <NumberInput
                   animated
                   value={icon_state[icon_name]}
+                  step={1}
                   minValue={0}
-                  onDrag={(e, value) =>
+                  maxValue={Infinity}
+                  onDrag={(value) =>
                     act('edit', {
                       var: var_name,
                       var_mod: P_DATA_ICON_WEIGHT,
@@ -365,7 +379,9 @@ export const EntryIconState = (props: EntryIconStateProps) => {
                   animated
                   value={icon_state[iconstate]}
                   minValue={0}
-                  onDrag={(e, value) =>
+                  maxValue={Infinity}
+                  step={1}
+                  onDrag={(value) =>
                     act('edit', {
                       var: var_name,
                       new_value: editWeightOf(icon_state, iconstate, value),

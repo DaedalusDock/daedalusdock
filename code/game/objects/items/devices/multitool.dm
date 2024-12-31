@@ -61,8 +61,8 @@
 
 /obj/item/multitool/ai_detect/Destroy()
 	STOP_PROCESSING(SSfastprocess, src)
-	if(hud_on && ismob(loc))
-		remove_hud(loc)
+	if(hud_on && equipped_to)
+		remove_hud(equipped_to)
 	QDEL_NULL(eye)
 	return ..()
 

@@ -98,7 +98,7 @@
 
 
 /datum/reagent/consumable/poisonberryjuice/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(1 * removed, 0)
+	C.adjustToxLoss(1 * removed, 0, cause_of_death = "Poison berry juice")
 	. = TRUE
 
 /datum/reagent/consumable/watermelonjuice
@@ -1025,9 +1025,9 @@
 
 	var/newsize = pick(0.5, 0.75, 1, 1.50, 2)
 	newsize *= RESIZE_DEFAULT_SIZE
-	C.resize = newsize/current_size
+	C.update_transform(newsize/current_size)
 	current_size = newsize
-	C.update_transform()
+
 	if(prob(35))
 		spawn(-1)
 			C.emote("sneeze")
@@ -1036,9 +1036,8 @@
 	if(class == CHEM_TOUCH)
 		return
 
-	C.resize = RESIZE_DEFAULT_SIZE/current_size
+	C.update_transform(RESIZE_DEFAULT_SIZE/current_size)
 	current_size = RESIZE_DEFAULT_SIZE
-	C.update_transform()
 
 /datum/reagent/consumable/bungojuice
 	name = "Bungo Juice"

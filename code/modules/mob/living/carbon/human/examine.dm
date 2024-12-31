@@ -128,7 +128,7 @@
 	if (length(status_examines))
 		. += status_examines
 
-	var/appears_dead = FALSE
+	var/appears_dead = isobserver(user)
 	var/adjacent = get_dist(user, src) <= 1
 	if(stat != CONSCIOUS || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
 		if(!adjacent)
@@ -139,6 +139,7 @@
 				if(failed_last_breath)
 					. += span_alert("[t_He] isn't breathing.")
 			else
+				appears_dead = TRUE
 				. += span_danger("The spark of life has left [t_him].")
 				if(suiciding)
 					. += span_warning("[t_He] appear[t_s] to have committed suicide.")
@@ -297,7 +298,8 @@
 				if(HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
 					msg += "[t_He] [t_is] barely conscious.\n"
 
-		if(getorgan(/obj/item/organ/brain))
+
+		if(stat != DEAD && getorgan(/obj/item/organ/brain))
 			if(ai_controller?.ai_status == AI_STATUS_ON)
 				msg += "[span_deadsay("[t_He] do[t_es]n't appear to be [t_him]self.")]\n"
 			else if(!key)
@@ -372,11 +374,12 @@
 
 	var/possible_invisible_damage = getToxLoss() > 20 || getBrainLoss()
 
-	if((possible_invisible_damage || length(fucked_reasons) || visible_bodyparts >= 3))
+	if(!length(get_missing_limbs()) && (possible_invisible_damage || length(fucked_reasons) || visible_bodyparts >= 3))
 		var/datum/roll_result/result = living_user.stat_roll(15, /datum/rpg_skill/anatomia)
 		switch(result.outcome)
 			if(SUCCESS, CRIT_SUCCESS)
 				spawn(0)
+					result.do_skill_sound(living_user)
 					if(possible_invisible_damage && living_user.stats.cooldown_finished("found_invisible_damage_[REF(src)]"))
 						to_chat(living_user, result.create_tooltip("Something is not right, this person is not well. You can feel it in your very core."))
 						living_user.stats.set_cooldown("found_invisible_damage_[REF(src)]", INFINITY) // Never again

@@ -43,7 +43,7 @@
 	draining = TRUE
 	essence_drained += rand(15, 20)
 	to_chat(src, span_revennotice("You search for the soul of [target]."))
-	if(do_after(src, target, rand(10, 20), timed_action_flags = IGNORE_HELD_ITEM)) //did they get deleted in that second?
+	if(do_after(src, target, rand(10, 20), timed_action_flags = DO_IGNORE_HELD_ITEM)) //did they get deleted in that second?
 		if(target.ckey)
 			to_chat(src, span_revennotice("[target.p_their(TRUE)] soul burns with intelligence."))
 			essence_drained += rand(20, 30)
@@ -55,7 +55,7 @@
 			essence_drained = 5
 		else
 			to_chat(src, span_revennotice("[target.p_their(TRUE)] soul is weak and faltering."))
-		if(do_after(src, target, rand(15, 20), timed_action_flags = IGNORE_HELD_ITEM)) //did they get deleted NOW?
+		if(do_after(src, target, rand(15, 20), timed_action_flags = DO_IGNORE_HELD_ITEM)) //did they get deleted NOW?
 			switch(essence_drained)
 				if(1 to 30)
 					to_chat(src, span_revennotice("[target] will not yield much essence. Still, every bit counts."))
@@ -65,7 +65,7 @@
 					to_chat(src, span_revenboldnotice("Such a feast! [target] will yield much essence to you."))
 				if(90 to INFINITY)
 					to_chat(src, span_revenbignotice("Ah, the perfect soul. [target] will yield massive amounts of essence to you."))
-			if(do_after(src, target, rand(15, 25), timed_action_flags = IGNORE_HELD_ITEM)) //how about now
+			if(do_after(src, target, rand(15, 25), timed_action_flags = DO_IGNORE_HELD_ITEM)) //how about now
 				if(!target.stat)
 					to_chat(src, span_revenwarning("[target.p_theyre(TRUE)] now powerful enough to fight off your draining."))
 					to_chat(target, span_boldannounce("You feel something tugging across your body before subsiding."))
@@ -85,7 +85,7 @@
 					draining = FALSE
 					return
 				var/datum/beam/B = Beam(target,icon_state="drain_life")
-				if(do_after(src, target, 46, timed_action_flags = IGNORE_HELD_ITEM)) //As one cannot prove the existance of ghosts, ghosts cannot prove the existance of the target they were draining.
+				if(do_after(src, target, 46, timed_action_flags = DO_IGNORE_HELD_ITEM)) //As one cannot prove the existance of ghosts, ghosts cannot prove the existance of the target they were draining.
 					change_essence_amount(essence_drained, FALSE, target)
 					if(essence_drained <= 90 && target.stat != DEAD && !HAS_TRAIT(target, TRAIT_WEAK_SOUL))
 						essence_regen_cap += 5
@@ -252,7 +252,7 @@
 			continue
 		to_shock.Beam(human_mob, icon_state = "purple_lightning", time = 0.5 SECONDS)
 		if(!human_mob.can_block_magic(antimagic_flags))
-			human_mob.electrocute_act(shock_damage, to_shock, flags = SHOCK_NOGLOVES)
+			human_mob.electrocute_act(shock_damage, flags = NONE)
 
 		do_sparks(4, FALSE, human_mob)
 		playsound(human_mob, 'sound/machines/defib_zap.ogg', 50, TRUE, -1)
@@ -372,18 +372,18 @@
 				var/mob/living/carbon/human/H = mob
 				H.set_haircolor("#1d2953", override = TRUE) //will be reset when blight is cured
 				var/blightfound = FALSE
-				for(var/datum/disease/revblight/blight in H.diseases)
+				for(var/datum/pathogen/revblight/blight in H.diseases)
 					blightfound = TRUE
 					if(blight.stage < 5)
 						blight.stage++
 				if(!blightfound)
-					H.ForceContractDisease(new /datum/disease/revblight(), FALSE, TRUE)
+					H.try_contract_pathogen(new /datum/pathogen/revblight(), FALSE, TRUE)
 					to_chat(H, span_revenminor("You feel [pick("suddenly sick", "a surge of nausea", "like your skin is <i>wrong</i>")]."))
 			else
 				if(mob.reagents)
 					mob.reagents.add_reagent(/datum/reagent/toxin/plasma, 5)
 		else
-			mob.adjustToxLoss(5)
+			mob.adjustToxLoss(5, cause_of_death = "Blight")
 	for(var/obj/structure/spacevine/vine in victim) //Fucking with botanists, the ability.
 		vine.add_atom_colour("#823abb", TEMPORARY_COLOUR_PRIORITY)
 		new /obj/effect/temp_visual/revenant(vine.loc)

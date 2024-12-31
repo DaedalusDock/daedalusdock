@@ -2,19 +2,23 @@
 	maxHealth = 200
 	blood_volume = BLOOD_VOLUME_NORMAL
 	gender = MALE
+
 	//pressure_resistance = 15
 	hud_possible = list(
 		HEALTH_HUD = 'icons/mob/huds/med_hud.dmi',
 		STATUS_HUD = 'icons/mob/huds/hud.dmi',
 		GLAND_HUD = 'icons/mob/huds/hud.dmi',
 	)
+
 	has_limbs = TRUE
 	held_items = list(null, null)
 	num_legs = 0 //Populated on init through list/bodyparts
 	usable_legs = 0 //Populated on init through list/bodyparts
 	num_hands = 0 //Populated on init through list/bodyparts
 	usable_hands = 0 //Populated on init through list/bodyparts
+
 	mobility_flags = MOBILITY_FLAGS_CARBON_DEFAULT
+	rotate_on_lying = TRUE
 	blocks_emissive = NONE
 	zmm_flags = ZMM_MANGLE_PLANES //Emissive eyes :holding_back_tears:
 
@@ -33,8 +37,6 @@
 	var/datum/reagents/touching = null
 	///Can't talk. Value goes down every life proc. NOTE TO FUTURE CODERS: DO NOT INITIALIZE NUMERICAL VARS AS NULL OR I WILL MURDER YOU.
 	var/silent = 0
-	///How many dream images we have left to send
-	var/dreaming = 0
 
 	///Whether or not the mob is handcuffed
 	var/obj/item/handcuffed = null
@@ -79,8 +81,6 @@
 	var/obj/item/food/meat/slab/type_of_meat = /obj/item/food/meat/slab
 
 	var/gib_type = /obj/effect/decal/cleanable/blood/gibs
-
-	var/rotate_on_lying = 1
 
 	/// Total level of visualy impairing items
 	var/tinttotal = 0

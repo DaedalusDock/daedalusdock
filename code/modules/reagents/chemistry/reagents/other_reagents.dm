@@ -213,13 +213,13 @@
 	. = ..()
 	if(data?["viruses"])
 		for(var/thing in data["viruses"])
-			var/datum/disease/strain = thing
+			var/datum/pathogen/strain = thing
 
-			if((strain.spread_flags & DISEASE_SPREAD_SPECIAL) || (strain.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
+			if((strain.spread_flags & PATHOGEN_SPREAD_SPECIAL) || (strain.spread_flags & PATHOGEN_SPREAD_NON_CONTAGIOUS))
 				continue
 
-			if((methods & (TOUCH|VAPOR)) && (strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS))
-				exposed_mob.ContactContractDisease(strain)
+			if((methods & (TOUCH|VAPOR)) && (strain.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS))
+				exposed_mob.try_contact_contract_pathogen(strain)
 
 
 /datum/reagent/blood/affect_blood(mob/living/carbon/C, removed)
@@ -227,12 +227,12 @@
 		return
 
 	if(data["viruses"])
-		for(var/datum/disease/strain as anything in data["viruses"])
+		for(var/datum/pathogen/strain as anything in data["viruses"])
 
-			if((strain.spread_flags & (DISEASE_SPREAD_SPECIAL|DISEASE_SPREAD_NON_CONTAGIOUS)))
+			if((strain.spread_flags & (PATHOGEN_SPREAD_SPECIAL|PATHOGEN_SPREAD_NON_CONTAGIOUS)))
 				continue
 
-			C.ForceContractDisease(strain)
+			C.try_contract_pathogen(strain)
 
 	if(!(C.get_blood_id() == /datum/reagent/blood))
 		return
@@ -245,13 +245,13 @@
 		C.adjustBloodVolume(round(removed, 0.1))
 
 /datum/reagent/blood/affect_touch(mob/living/carbon/C, removed)
-	for(var/datum/disease/strain as anything in data?["viruses"])
+	for(var/datum/pathogen/strain as anything in data?["viruses"])
 
-		if((strain.spread_flags & DISEASE_SPREAD_SPECIAL) || (strain.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
+		if((strain.spread_flags & PATHOGEN_SPREAD_SPECIAL) || (strain.spread_flags & PATHOGEN_SPREAD_NON_CONTAGIOUS))
 			continue
 
-		if(strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
-			C.ContactContractDisease(strain)
+		if(strain.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
+			C.try_contact_contract_pathogen(strain)
 
 /datum/reagent/blood/on_new(list/data)
 	. = ..()
@@ -273,16 +273,16 @@
 			// Stop issues with the list changing during mixing.
 			var/list/to_mix = list()
 
-			for(var/datum/disease/advance/AD in mix1)
+			for(var/datum/pathogen/advance/AD in mix1)
 				to_mix += AD
-			for(var/datum/disease/advance/AD in mix2)
+			for(var/datum/pathogen/advance/AD in mix2)
 				to_mix += AD
 
-			var/datum/disease/advance/AD = Advance_Mix(to_mix)
+			var/datum/pathogen/advance/AD = Advance_Mix(to_mix)
 			if(AD)
 				var/list/preserve = list(AD)
 				for(var/D in data["viruses"])
-					if(!istype(D, /datum/disease/advance))
+					if(!istype(D, /datum/pathogen/advance))
 						preserve += D
 				data["viruses"] = preserve
 	return 1
@@ -291,7 +291,7 @@
 	. = list()
 	if(data && data["viruses"])
 		for(var/thing in data["viruses"])
-			var/datum/disease/D = thing
+			var/datum/pathogen/D = thing
 			. += D
 
 /datum/reagent/blood/expose_turf(turf/exposed_turf, reac_volume)//splash the blood all over the place
@@ -306,8 +306,8 @@
 		bloodsplatter = new(exposed_turf, data["viruses"])
 	else if(LAZYLEN(data["viruses"]))
 		var/list/viri_to_add = list()
-		for(var/datum/disease/virus in data["viruses"])
-			if(virus.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+		for(var/datum/pathogen/virus in data["viruses"])
+			if(virus.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
 				viri_to_add += virus
 		if(LAZYLEN(viri_to_add))
 			bloodsplatter.AddComponent(/datum/component/infective, viri_to_add)
@@ -384,7 +384,7 @@
 	color = pick(potential_colors)
 
 /datum/reagent/hair_dye/affect_ingest(mob/living/carbon/C, removed) //What the fuck is wrong with you
-	C.adjustToxLoss(2 * removed, FALSE)
+	C.adjustToxLoss(2 * removed, FALSE, cause_of_death = "Ingesting hair dye")
 	return ..() || TRUE
 
 /datum/reagent/hair_dye/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=FALSE)
@@ -408,7 +408,7 @@
 
 /datum/reagent/plantnutriment/affect_blood(mob/living/carbon/C, removed)
 	if(prob(tox_prob *2))
-		C.adjustToxLoss(1 * removed, 0)
+		C.adjustToxLoss(1 * removed, 0, cause_of_death = "Plant nutriment poisoning")
 		. = TRUE
 
 /datum/reagent/plantnutriment/eznutriment
@@ -574,7 +574,7 @@
 
 /datum/reagent/technetium/affect_blood(mob/living/carbon/C, removed)
 	if(!(current_cycle % 8))
-		C.adjustToxLoss(5 * removed, FALSE)
+		C.adjustToxLoss(5 * removed, FALSE, cause_of_death = "Technetium 99 poisoning")
 		. = TRUE
 
 /datum/reagent/helgrasp
@@ -655,7 +655,7 @@
 			drinker.blood_volume += 3 * removed
 	else
 		drinker.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
-		drinker.adjustToxLoss(2 * removed, FALSE)
+		drinker.adjustToxLoss(2 * removed, FALSE, cause_of_death = "The devil")
 		drinker.adjustFireLoss(2 * removed, FALSE)
 		drinker.adjustOxyLoss(2 * removed, FALSE)
 		drinker.adjustBruteLoss(2 * removed, FALSE)
@@ -740,7 +740,7 @@
 			C.blood_volume += 3 * removed
 	else  // Will deal about 90 damage when 50 units are thrown
 		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
-		C.adjustToxLoss(1 * removed, 0)
+		C.adjustToxLoss(1 * removed, 0, cause_of_death = "The devil")
 		C.adjustFireLoss(1 * removed, 0)
 		C.adjustOxyLoss(1 * removed, 0)
 		C.adjustBruteLoss(1 * removed, 0)
@@ -825,18 +825,18 @@
 		return
 
 	for(var/thing in exposed_mob.diseases)
-		var/datum/disease/infection = thing
-		if(infection.GetDiseaseID() in data)
-			infection.cure()
+		var/datum/pathogen/infection = thing
+		if(infection.get_id() in data)
+			infection.force_cure()
 	LAZYOR(exposed_mob.disease_resistances, data)
 
 /datum/reagent/vaccine/affect_blood(mob/living/carbon/C, removed)
 	if(!islist(data))
 		return
 	for(var/thing in C.diseases)
-		var/datum/disease/infection = thing
-		if(infection.GetDiseaseID() in data)
-			infection.cure()
+		var/datum/pathogen/infection = thing
+		if(infection.get_id() in data)
+			infection.force_cure()
 	LAZYOR(C.disease_resistances, data)
 
 
@@ -855,7 +855,7 @@
 		cached_data = list()
 	else
 		cached_data = data
-	cached_data |= "[/datum/disease/tuberculosis]"
+	cached_data |= "[/datum/pathogen/tuberculosis]"
 	src.data = cached_data
 
 /datum/reagent/barbers_aid
@@ -900,16 +900,15 @@
 		if(200 to INFINITY)
 			newsize = 3.5*RESIZE_DEFAULT_SIZE
 
-	C.resize = newsize/current_size
+	C.update_transform(newsize/current_size)
 	current_size = newsize
-	C.update_transform()
 
 /datum/reagent/growthserum/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class != CHEM_BLOOD)
 		return
-	C.resize = RESIZE_DEFAULT_SIZE/current_size
+
+	C.update_transform(RESIZE_DEFAULT_SIZE/current_size)
 	current_size = RESIZE_DEFAULT_SIZE
-	C.update_transform()
 
 /datum/reagent/impedrezene // Impairs mental function correctly, takes an overwhelming dose to kill.
 	name = "Impedrezene"
@@ -1044,15 +1043,15 @@
 	metabolization_rate = INFINITY
 
 /datum/reagent/fungalspores/affect_ingest(mob/living/carbon/C, removed)
-	C.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
+	C.try_contract_pathogen(new /datum/pathogen/tuberculosis(), FALSE, TRUE)
 	return ..()
 
 /datum/reagent/fungalspores/affect_blood(mob/living/carbon/C, removed)
-	C.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
+	C.try_contract_pathogen(new /datum/pathogen/tuberculosis(), FALSE, TRUE)
 
 /datum/reagent/fungalspores/affect_touch(mob/living/carbon/C, removed)
 	if(prob(min(volume,100)*(1 - C.get_permeability_protection())))
-		C.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
+		C.try_contract_pathogen(new /datum/pathogen/tuberculosis(), FALSE, TRUE)
 
 
 #define CRYO_SPEED_PREFACTOR 0.4
@@ -1114,7 +1113,7 @@
 		C.remove_status_effect(/datum/status_effect/jitter)
 
 /datum/reagent/medicine/changelingadrenaline/overdose_process(mob/living/carbon/C)
-	C.adjustToxLoss(0.2, 0)
+	C.adjustToxLoss(0.2, 0, cause_of_death = "Changeling adrenaline overdose")
 	return TRUE
 
 /datum/reagent/medicine/changelinghaste
@@ -1133,7 +1132,7 @@
 		C.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/changelinghaste)
 
 /datum/reagent/medicine/changelinghaste/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(0.2, 0)
+	C.adjustToxLoss(0.2, 0, cause_of_death = "Changeling haste")
 	return TRUE
 
 /datum/reagent/gold

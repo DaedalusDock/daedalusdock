@@ -463,7 +463,7 @@ const InfoSection = (props) => {
             return (
               <Stack.Item key={module.ref}>
                 {!active && <LockedModule />}
-                <Module {...module} active={active} />
+                <Module {...module} ref={undefined} active={active} />
               </Stack.Item>
             );
           })) || <Box textAlign="center">No Info Modules Detected</Box>}

@@ -152,8 +152,9 @@
 					screen = 1
 			curr_page--
 			playsound(loc, SFX_PAGE_TURN, 50, TRUE)
-		if(ismob(loc))
-			attack_self(loc)
+
+		if(equipped_to)
+			attack_self(equipped_to)
 
 /obj/item/newspaper/attackby(obj/item/W, mob/living/user, params)
 	if(burn_paper_product_attackby_check(W, user))

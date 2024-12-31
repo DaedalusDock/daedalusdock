@@ -152,18 +152,21 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 
 	return "[prefix] <span data-component=\"Tooltip\" data-innerhtml=\"[tooltip_html]\" class=\"tooltip\">[finished_prob_string]</span>[seperator][body]"
 
+/// Play
+/datum/roll_result/proc/do_skill_sound(mob/user)
+	if(isnull(skill_type_used))
+		return
+
+	var/datum/rpg_stat/stat_path = initial(skill_type_used.parent_stat_type)
+	var/sound_path = initial(stat_path.sound)
+	SEND_SOUND(user, sound(sound_path))
+
 /datum/roll_result/success
 	outcome = SUCCESS
 	success_prob = 100
 	crit_success_prob = 0
 	roll = 18
 	requirement = 3
-
-/mob/living/verb/testroll()
-	name = "testroll"
-
-	var/datum/roll_result/result = stat_roll(11, /datum/rpg_skill/skirmish)
-	to_chat(usr, result.create_tooltip("This message is a test, and not indicative of the final product."))
 
 /// Returns a number between 0 and 100 to roll the desired value when rolling the given dice.
 /proc/dice_probability(num, sides, desired)

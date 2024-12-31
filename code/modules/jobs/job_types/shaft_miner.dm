@@ -17,7 +17,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/miner,
-			SPECIES_PLASMAMAN = /datum/outfit/job/miner/plasmaman,
 		),
 	)
 
@@ -57,15 +56,6 @@
 	duffelbag = /obj/item/storage/backpack/duffelbag/explorer
 
 	box = /obj/item/storage/box/survival/mining
-
-/datum/outfit/job/miner/plasmaman
-	name = "Shaft Miner (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/mining
-	gloves = /obj/item/clothing/gloves/color/plasmaman/explorer
-	head = /obj/item/clothing/head/helmet/space/plasmaman/mining
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/miner/equipped
 	name = "Shaft Miner (Equipment)"

@@ -31,7 +31,7 @@
 	/// A list of REFs to people who recently examined us
 	var/list/recent_examiner_refs = list()
 
-/mob/living/simple_animal/hostile/heretic_summon/maid_in_the_mirror/death(gibbed)
+/mob/living/simple_animal/hostile/heretic_summon/maid_in_the_mirror/death(gibbed, cause_of_death = "Unknown")
 	var/turf/death_turf = get_turf(src)
 	death_turf.TakeTemperature(-40)
 	return ..()

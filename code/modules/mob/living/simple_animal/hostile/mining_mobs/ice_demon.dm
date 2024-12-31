@@ -9,7 +9,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	mouse_opacity = MOUSE_OPACITY_ICON
 	speak_emote = list("telepathically cries")
-	speed = 2
+	move_delay_modifier = 2
 	move_to_delay = 2
 	projectiletype = /obj/projectile/temp/basilisk/ice
 	projectilesound = 'sound/weapons/pierce.ogg'
@@ -77,7 +77,7 @@
 		return
 	adjustHealth(-0.0125 * maxHealth * delta_time)
 
-/mob/living/simple_animal/hostile/asteroid/ice_demon/death(gibbed)
+/mob/living/simple_animal/hostile/asteroid/ice_demon/death(gibbed, cause_of_death = "Unknown")
 	move_force = MOVE_FORCE_DEFAULT
 	move_resist = MOVE_RESIST_DEFAULT
 	pull_force = PULL_FORCE_DEFAULT

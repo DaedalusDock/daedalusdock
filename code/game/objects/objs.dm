@@ -4,9 +4,6 @@
 	speech_span = SPAN_ROBOT
 	var/obj_flags = CAN_BE_HIT
 
-	/// Extra examine line to describe controls, such as right-clicking, left-clicking, etc.
-	var/desc_controls
-
 	var/damtype = BRUTE
 	var/force = 0
 
@@ -85,7 +82,7 @@
 		return null
 
 /obj/proc/updateUsrDialog()
-	if((obj_flags & IN_USE) && !(obj_flags & USES_TGUI))
+	if((obj_flags & IN_USE))
 		var/is_in_use = FALSE
 		var/list/nearby = viewers(1, src)
 		for(var/mob/M in nearby)
@@ -255,11 +252,6 @@
 						return
 					log_admin("[key_name(usr)] deleted all objects of type or subtype of [O_type] ([i] objects deleted) ")
 					message_admins(span_notice("[key_name(usr)] deleted all objects of type or subtype of [O_type] ([i] objects deleted) "))
-
-/obj/examine(mob/user)
-	. = ..()
-	if(desc_controls)
-		. += span_notice(desc_controls)
 
 /obj/AltClick(mob/user)
 	. = ..()

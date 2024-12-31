@@ -123,7 +123,7 @@
 			new /obj/item/card/emag(src)
 			new /obj/item/storage/toolbox/syndicate(src)
 			new /obj/item/card/id/advanced/mining(src)
-			new /obj/item/stack/spacecash/c10000(src)
+			new /obj/item/stack/spacecash/c1000/ten(src)
 			new /obj/item/toy/spinningtoy(src) //lol
 
 		if(KIT_SABOTAGE)
@@ -356,7 +356,7 @@
 	new /obj/item/reagent_containers/glass/bottle/fentanyl(src)
 	new /obj/item/reagent_containers/glass/bottle/cyanide(src)
 	new /obj/item/reagent_containers/glass/bottle/histamine(src)
-	new /obj/item/reagent_containers/glass/bottle/initropidril(src)
+	new /obj/item/reagent_containers/glass/bottle/adenosine(src)
 	new /obj/item/reagent_containers/glass/bottle/pancuronium(src)
 	new /obj/item/reagent_containers/glass/bottle/sodium_thiopental(src)
 	new /obj/item/reagent_containers/glass/bottle/lexorin(src)
@@ -478,7 +478,7 @@
 
 /obj/item/storage/box/syndie_kit/sleepytime/PopulateContents()
 	new /obj/item/clothing/under/syndicate/bloodred/sleepytime(src)
-	new /obj/item/reagent_containers/food/drinks/mug/coco(src)
+	new /obj/item/reagent_containers/glass/mug/coco(src)
 	new /obj/item/toy/plush/carpplushie(src)
 	new /obj/item/bedsheet/syndie(src)
 

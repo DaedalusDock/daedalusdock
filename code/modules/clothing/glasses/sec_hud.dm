@@ -182,7 +182,7 @@
 			owner.playsound_local(get_turf(owner), 'sound/items/sec_hud/inspect_unhighlight.mp3', 100, channel = used_channel)
 			owner.playsound_local(get_turf(owner), vol =  200, channel = used_channel, sound_to_use = loop, wait = TRUE)
 
-/datum/action/innate/investigate/do_ability(mob/living/caller, atom/clicked_on, list/params)
+/datum/action/innate/investigate/do_ability(mob/living/invoker, atom/clicked_on, list/params)
 	if(!ishuman(clicked_on) || params?[RIGHT_CLICK])
 		unset_ranged_ability(owner)
 		return TRUE
@@ -222,7 +222,7 @@
 	animate(dir = EAST, 0.5 SECONDS)
 	animate(dir = SOUTH, 0.5 SECONDS)
 
-	hud_obj.vis_contents += holder
+	hud_obj.add_viscontents(holder)
 
 	var/list/text = list("<span style='text-align:center'>[uppertext(general_record?.fields[DATACORE_NAME]) || "UNKNOWN"]</span>")
 	text += "<br><br><br><br><br><br><br>"

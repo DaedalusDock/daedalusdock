@@ -9,7 +9,6 @@
 	max_integrity = 200
 	resistance_flags = FIRE_PROOF
 	interaction_flags_machine = INTERACT_MACHINE_OPEN | INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON
-	obj_flags = CAN_BE_HIT | USES_TGUI
 
 	var/datum/gas_mixture/air_contents // internal reservoir
 	var/full_pressure = FALSE
@@ -301,9 +300,6 @@
 
 // handle machine interaction
 
-/obj/machinery/disposal/bin/ui_state(mob/user)
-	return GLOB.notcontained_state
-
 /obj/machinery/disposal/bin/ui_interact(mob/user, datum/tgui/ui)
 	if(machine_stat & BROKEN)
 		return
@@ -393,15 +389,15 @@
 	//check for items in disposal - occupied light
 	if(contents.len > 0)
 		. += "dispover-full"
-		. += emissive_appearance(icon, "dispover-full", alpha = src.alpha)
+		. += emissive_appearance(icon, "dispover-full", alpha = 90)
 
 	//charging and ready light
 	if(pressure_charging)
 		. += "dispover-charge"
-		. += emissive_appearance(icon, "dispover-charge-glow", alpha = src.alpha)
+		. += emissive_appearance(icon, "dispover-charge-glow", alpha = 90)
 	else if(full_pressure)
 		. += "dispover-ready"
-		. += emissive_appearance(icon, "dispover-ready-glow", alpha = src.alpha)
+		. += emissive_appearance(icon, "dispover-ready-glow", alpha = 90)
 
 /obj/machinery/disposal/bin/proc/do_flush()
 	set waitfor = FALSE

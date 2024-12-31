@@ -147,7 +147,7 @@
 	..()
 
 
-/mob/living/simple_animal/slime/updatehealth()
+/mob/living/simple_animal/slime/updatehealth(cause_of_death)
 	. = ..()
 	var/mod = 0
 	if(!HAS_TRAIT(src, TRAIT_IGNOREDAMAGESLOWDOWN))
@@ -239,7 +239,7 @@
 			Feedon(Food)
 	return ..()
 
-/mob/living/simple_animal/slime/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+/mob/living/simple_animal/slime/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE, slot = get_slot_by_item(I))
 	return
 
 /mob/living/simple_animal/slime/try_make_grab(atom/movable/target, grab_type)

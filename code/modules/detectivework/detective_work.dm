@@ -107,11 +107,11 @@
 
 	return forensics.add_blood_DNA(dna)
 
-/obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
+/obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/pathogen/diseases)
 	. = ..()
 	transfer_blood = rand(2, 4)
 
-/turf/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
+/turf/add_blood_DNA(list/blood_dna, list/datum/pathogen/diseases)
 	var/obj/effect/decal/cleanable/blood/splatter/B = locate() in src
 	if(!B)
 		B = new /obj/effect/decal/cleanable/blood/splatter(src, diseases)
@@ -119,7 +119,7 @@
 	if(!QDELETED(B))
 		return B.add_blood_DNA(blood_dna) //give blood info to the blood decal.
 
-/mob/living/carbon/human/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
+/mob/living/carbon/human/add_blood_DNA(list/blood_dna, list/datum/pathogen/diseases)
 	return add_blood_DNA_to_items(blood_dna)
 
 /// Adds blood DNA to certain slots the mob is wearing
@@ -195,3 +195,58 @@
  */
 /atom/proc/transfer_gunshot_residue_to(atom/transfer_to)
 	transfer_to.add_gunshot_residue(return_gunshot_residue())
+
+/// On examine, players have a chance to find forensic evidence. This can only happen once per object.
+/mob/living/carbon/human/proc/forensic_analysis_roll(atom/examined)
+	if(!stats.cooldown_finished("examine_forensic_analysis"))
+		return
+
+	// Already gotten the good rng on this one
+	if(stats.examined_object_weakrefs[WEAKREF(examined)])
+		return
+
+	if(examined.return_blood_DNA())
+		return // This is kind of obvious
+
+	var/list/fingerprints = examined.return_fingerprints()?.Copy()
+	var/list/trace_dna = examined.return_trace_DNA()?.Copy()
+	var/list/residue = examined.return_gunshot_residue()
+
+	// Exclude our own prints
+	if(length(fingerprints))
+		var/obj/item/bodypart/arm/left_arm = get_bodypart(BODY_ZONE_L_ARM)
+		var/obj/item/bodypart/arm/right_arm = get_bodypart(BODY_ZONE_R_ARM)
+
+		if(left_arm)
+			fingerprints -= get_fingerprints(TRUE, left_arm)
+		if(right_arm)
+			fingerprints -= get_fingerprints(TRUE, right_arm)
+
+	// Exclude our DNA
+	if(length(trace_dna))
+		trace_dna -= get_trace_dna()
+
+	// Do nothing if theres no evidence.
+	if(!(length(fingerprints) || length(trace_dna) || length(residue)))
+		return
+
+	var/datum/roll_result/result = stat_roll(16, /datum/rpg_skill/forensics)
+
+	switch(result.outcome)
+		if(FAILURE, CRIT_FAILURE)
+			stats.set_cooldown("examine_forensic_analysis", 15 SECONDS)
+			return
+
+	result.do_skill_sound(src)
+	stats.examined_object_weakrefs[WEAKREF(examined)] = TRUE
+	stats.set_cooldown("examine_forensic_analysis", 15 MINUTES)
+
+	// Spawn 0 so this displays *after* the examine block.
+	spawn(0)
+		if(length(residue))
+			to_chat(src, result.create_tooltip("A remnant of past events flashes into your mind, the booming crack of a firearm."))
+
+		else if(length(fingerprints) || length(trace_dna))
+			var/text = isitem(examined) ? "someone else has held this item in the past" : "someone else has been here before"
+			to_chat(src, result.create_tooltip("Perhaps it is a stray particle of dust, or a smudge on the surface. Whatever it may be, you are certain [text]."))
+

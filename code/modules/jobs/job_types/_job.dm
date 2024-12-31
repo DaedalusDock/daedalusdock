@@ -92,9 +92,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 
 	var/outfit = null
 
-	/// The job's outfit that will be assigned for plasmamen.
-	var/plasmaman_outfit = null
-
 	/// Different outfits for alternate job titles and different species
 	var/list/outfits
 
@@ -165,6 +162,9 @@ GLOBAL_LIST_INIT(job_display_order, list(
 
 	/// What company can employ this job? First index is default
 	var/list/employers = list()
+
+	/// Default security status. Skipped if null.
+	var/default_security_status = null
 
 
 /datum/job/New()
@@ -245,7 +245,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	var/obj/item/storage/wallet/W = wear_id
 	if(istype(W))
 		var/monero = round(equipping.paycheck, 10)
-		SSeconomy.spawn_cash_for_amount(monero, W)
+		SSeconomy.spawn_ones_for_amount(monero, W)
 	else
 		bank_account.payday()
 
@@ -438,32 +438,30 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(random_spawns_possible)
 		return get_latejoin_spawn_point()
 
-	if(length(GLOB.jobspawn_overrides[title]))
-		return pick(GLOB.jobspawn_overrides[title])
+	if(length(GLOB.high_priority_spawns[title]))
+		return pick(GLOB.high_priority_spawns[title])
 
 	return null //We don't care where we go. Let Ticker decide for us.
 
 
 /// Handles finding and picking a valid roundstart effect landmark spawn point, in case no uncommon different spawning events occur.
 /datum/job/proc/get_default_roundstart_spawn_point()
-	for(var/obj/effect/landmark/start/spawn_point as anything in GLOB.start_landmarks_list)
-		if(spawn_point.name != title)
-			continue
-		. = spawn_point
-		if(spawn_point.used) //so we can revert to spawning them on top of eachother if something goes wrong
-			continue
-		spawn_point.used = TRUE
-		break
-	if(!.)
-		log_world("Couldn't find a round start spawn point for [title]")
+	var/obj/effect/landmark/start/spawnpoint = get_start_landmark_for(title)
+	if(!spawnpoint)
+		log_world("Couldn't find a round start spawn point for [title].")
 
+	spawnpoint.used = TRUE
+
+	return spawnpoint
 
 /// Finds a valid latejoin spawn point, checking for events and special conditions.
 /datum/job/proc/get_latejoin_spawn_point()
-	if(length(GLOB.jobspawn_overrides[title])) //We're doing something special today.
-		return pick(GLOB.jobspawn_overrides[title])
+	if(length(GLOB.high_priority_spawns[title])) //We're doing something special today.
+		return pick(GLOB.high_priority_spawns[title])
+
 	if(length(SSjob.latejoin_trackers))
 		return pick(SSjob.latejoin_trackers)
+
 	return SSjob.get_last_resort_spawn_points()
 
 

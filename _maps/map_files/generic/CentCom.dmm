@@ -623,16 +623,6 @@
 	anchored = 1;
 	name = "Plasmaman suits"
 	},
-/obj/item/clothing/under/plasmaman,
-/obj/item/clothing/under/plasmaman/engineering,
-/obj/item/clothing/under/plasmaman/botany,
-/obj/item/clothing/under/plasmaman/janitor,
-/obj/item/clothing/under/plasmaman/chef,
-/obj/item/clothing/head/helmet/space/plasmaman,
-/obj/item/clothing/head/helmet/space/plasmaman/engineering,
-/obj/item/clothing/head/helmet/space/plasmaman/botany,
-/obj/item/clothing/head/helmet/space/plasmaman/janitor,
-/obj/item/clothing/head/helmet/space/plasmaman/white,
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
@@ -2505,7 +2495,7 @@
 	pixel_y = 17
 	},
 /obj/structure/fluff/tram_rail,
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "hm" = (
 /obj/structure/flora/ausbushes/lavendergrass,
@@ -2635,11 +2625,6 @@
 /obj/item/clothing/mask/breath,
 /obj/item/clothing/mask/breath,
 /obj/item/clothing/mask/breath,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
@@ -6054,7 +6039,7 @@
 	dir = 1
 	},
 /obj/structure/railing,
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "ri" = (
 /obj/effect/turf_decal/stripes/full,
@@ -7234,7 +7219,7 @@
 /obj/structure/railing{
 	dir = 10
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "uX" = (
 /obj/machinery/shower{
@@ -8979,7 +8964,7 @@
 /obj/structure/railing{
 	dir = 9
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "zZ" = (
 /obj/effect/turf_decal/tile/brown{
@@ -9170,7 +9155,7 @@
 /obj/item/reagent_containers/food/condiment/peppermill{
 	pixel_x = -8
 	},
-/obj/item/reagent_containers/food/drinks/britcup,
+/obj/item/reagent_containers/glass/mug/brit,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/centcom/tdome/observation)
@@ -10265,7 +10250,7 @@
 "Du" = (
 /obj/structure/table/reinforced,
 /obj/machinery/door/firedoor,
-/obj/item/reagent_containers/food/drinks/britcup,
+/obj/item/reagent_containers/glass/mug/brit,
 /obj/structure/window/reinforced{
 	dir = 8
 	},
@@ -10571,7 +10556,7 @@
 /obj/structure/railing{
 	dir = 1
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Es" = (
 /obj/effect/light_emitter{
@@ -10733,7 +10718,7 @@
 /obj/structure/railing{
 	dir = 8
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "ES" = (
 /obj/structure/sign/poster/contraband/lamarr{
@@ -10941,7 +10926,7 @@
 /obj/structure/railing{
 	dir = 9
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Fy" = (
 /obj/structure/chair/stool/directional/south,
@@ -11650,10 +11635,7 @@
 /obj/effect/turf_decal/siding/red,
 /obj/structure/table/reinforced,
 /obj/machinery/recharger,
-/obj/item/stack/spacecash/c10{
-	pixel_x = -19;
-	pixel_y = 10
-	},
+/obj/item/stack/spacecash/c1/ten,
 /turf/open/floor/iron/dark/textured_large,
 /area/centcom/syndicate_mothership/control)
 "HJ" = (
@@ -12181,7 +12163,7 @@
 /obj/structure/railing{
 	dir = 10
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Jo" = (
 /obj/machinery/door/airlock/centcom{
@@ -12446,7 +12428,7 @@
 /turf/open/misc/asteroid/snow/airless,
 /area/centcom/syndicate_mothership)
 "Ki" = (
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Kk" = (
 /obj/docking_port/stationary{
@@ -13403,7 +13385,7 @@
 /obj/structure/railing{
 	dir = 6
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Np" = (
 /obj/structure/bookcase/random,
@@ -13431,7 +13413,7 @@
 /obj/structure/railing{
 	dir = 6
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Nt" = (
 /obj/structure/filingcabinet/medical,
@@ -14666,7 +14648,7 @@
 /turf/open/misc/asteroid/snow/airless,
 /area/centcom/syndicate_mothership)
 "QX" = (
-/obj/item/stack/spacecash/c20,
+/obj/item/stack/spacecash/c1/twenty,
 /turf/open/misc/asteroid/snow,
 /area/centcom/syndicate_mothership/control)
 "QY" = (
@@ -15271,7 +15253,7 @@
 /obj/structure/railing{
 	dir = 9
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "SL" = (
 /obj/structure/rack,
@@ -15737,7 +15719,7 @@
 /obj/structure/railing{
 	dir = 10
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "TO" = (
 /obj/machinery/keycard_auth/directional/south,
@@ -16092,7 +16074,7 @@
 /obj/machinery/camera/autoname/directional/west{
 	network = list("nukie")
 	},
-/obj/item/stack/spacecash/c20,
+/obj/item/stack/spacecash/c1/twenty,
 /turf/open/floor/iron/dark/textured_half,
 /area/centcom/syndicate_mothership/control)
 "UL" = (
@@ -16602,9 +16584,7 @@
 	},
 /obj/structure/noticeboard/directional/east,
 /obj/item/folder/red,
-/obj/item/stack/spacecash/c20{
-	pixel_y = 9
-	},
+/obj/item/stack/spacecash/c1/twenty,
 /obj/item/assembly/flash/handheld,
 /turf/open/floor/iron,
 /area/centcom/syndicate_mothership/control)

@@ -45,13 +45,16 @@
 
 /// Handles the integrity of an atom changing. This must be called instead of changing integrity directly.
 /atom/proc/update_integrity(new_value)
-	SHOULD_NOT_OVERRIDE(TRUE)
+	SHOULD_CALL_PARENT(TRUE)
+
 	if(!uses_integrity)
 		CRASH("/atom/proc/update_integrity() was called on [src] when it doesnt use integrity!")
+
 	var/old_value = atom_integrity
 	new_value = max(0, new_value)
 	if(atom_integrity == new_value)
 		return
+
 	atom_integrity = new_value
 	SEND_SIGNAL(src, COMSIG_ATOM_INTEGRITY_CHANGED, old_value, new_value)
 
@@ -62,10 +65,9 @@
 
 /**
  * Retrieves the atom's current damage as a percentage where `100%` is `100`.
- * If `use_raw_values` is `TRUE`, uses the raw var values instead of the `get_*` proc results.
  */
 /atom/proc/get_integrity_percentage()
-	return round((get_integrity_lost())/max_integrity * 100)
+	return ceil((get_integrity())/max_integrity * 100)
 
 /atom/proc/get_integrity_lost()
 	return max_integrity - get_integrity()

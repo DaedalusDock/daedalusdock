@@ -62,3 +62,62 @@
 
 /datum/reagent/medicine/strange_reagent/affect_touch(mob/living/carbon/C, removed)
 	holder.del_reagent(type)
+
+/datum/reagent/medicine/silver_sulfadiazine
+	name = "Silver Sulfadiazine"
+	description = "This antibacterial compound is used to treat burn victims."
+	reagent_state = LIQUID
+	color = "#F0DC00"
+	touch_met = 1
+	harmful = TRUE
+	taste_description = "burn cream"
+
+	var/heal_per_unit = 1.2
+
+/datum/reagent/medicine/silver_sulfadiazine/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
+	. = ..()
+
+	if(!(methods & TOUCH))
+		return
+
+	exposed_mob.heal_overall_damage(burn = heal_per_unit * reac_volume, required_status = BODYTYPE_ORGANIC)
+
+/datum/reagent/medicine/silver_sulfadiazine/affect_blood(mob/living/carbon/C, removed)
+	C.adjustToxLoss(0.5 * removed, FALSE)
+	return TRUE
+
+/datum/reagent/medicine/silver_sulfadiazine/affect_touch(mob/living/carbon/C, removed)
+	C.heal_overall_damage(burn = heal_per_unit * removed, required_status = BODYTYPE_ORGANIC)
+	return TRUE
+
+/datum/reagent/medicine/styptic_powder
+	name = "Styptic Powder"
+	description = "Styptic (aluminum sulfate) powder helps control bleeding and heal physical wounds."
+	reagent_state = LIQUID
+	color = "#FF9696"
+	touch_met = 1
+	harmful = TRUE
+	taste_description = "wound cream"
+
+	var/heal_per_unit = 1.2
+
+/datum/reagent/medicine/styptic_powder/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
+	. = ..()
+
+	if(!(methods & TOUCH))
+		return
+
+	exposed_mob.heal_overall_damage(heal_per_unit * reac_volume, required_status = BODYTYPE_ORGANIC)
+
+	if(ishuman(exposed_mob))
+		var/mob/living/carbon/human/H = exposed_mob
+		H.notify_pain(1, "Your flesh burns.", TRUE)
+
+/datum/reagent/medicine/styptic_powder/affect_blood(mob/living/carbon/C, removed)
+	C.adjustToxLoss(0.5 * removed, FALSE)
+	return TRUE
+
+/datum/reagent/medicine/styptic_powder/affect_touch(mob/living/carbon/C, removed)
+	C.heal_overall_damage(heal_per_unit * removed, required_status = BODYTYPE_ORGANIC)
+	APPLY_CHEM_EFFECT(C, CE_ANTICOAGULANT, -1)
+	return TRUE

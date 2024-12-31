@@ -179,8 +179,6 @@ GLOBAL_LIST_INIT(blacklisted_borg_hats, typecacheof(list( //Hats that don't real
 		if(modularInterface.install_component(floppy, user))
 			return
 
-	if(W.force && W.damtype != STAMINA && stat != DEAD) //only sparks if real damage is dealt.
-		spark_system.start()
 	return ..()
 
 /mob/living/silicon/robot/attack_alien(mob/living/carbon/alien/humanoid/user, list/modifiers)

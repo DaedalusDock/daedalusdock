@@ -89,13 +89,6 @@
 	else
 		return ..()
 
-/obj/item/watertank/MouseDrop(obj/over_object)
-	var/mob/M = loc
-	if(istype(M) && istype(over_object, /atom/movable/screen/inventory/hand))
-		var/atom/movable/screen/inventory/hand/H = over_object
-		M.putItemFromInventoryInHandIfPossible(src, H.held_index)
-	return ..()
-
 /obj/item/watertank/attackby(obj/item/attacking_item, mob/user, params)
 	if(attacking_item == noz)
 		remove_noz()
@@ -444,14 +437,14 @@
 /obj/item/reagent_containers/chemtank/proc/turn_on()
 	on = TRUE
 	START_PROCESSING(SSobj, src)
-	if(ismob(loc))
-		to_chat(loc, span_notice("[src] turns on."))
+	if(equipped_to)
+		to_chat(equipped_to, span_notice("[src] turns on."))
 
 /obj/item/reagent_containers/chemtank/proc/turn_off()
 	on = FALSE
 	STOP_PROCESSING(SSobj, src)
-	if(ismob(loc))
-		to_chat(loc, span_notice("[src] turns off."))
+	if(equipped_to)
+		to_chat(equipped_to, span_notice("[src] turns off."))
 
 /obj/item/reagent_containers/chemtank/process(delta_time)
 	if(!ishuman(loc))

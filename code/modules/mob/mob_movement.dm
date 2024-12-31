@@ -66,8 +66,8 @@
 /client/Move(new_loc, direct)
 	if(world.time < move_delay) //do not move anything ahead of this check please
 		return FALSE
-	next_move_dir_add = 0
-	next_move_dir_sub = 0
+	next_move_dir_add = NONE
+	next_move_dir_sub = NONE
 	var/old_move_delay = move_delay
 	move_delay = world.time + world.tick_lag //this is here because Move() can now be called mutiple times per tick
 	if(!direct || !new_loc)
@@ -375,10 +375,8 @@
  * force_drop = the slip forces them to drop held items
  */
 /mob/proc/slip(knockdown_amount, obj/slipped_on, lube_flags, paralyze, force_drop = FALSE)
-	mind?.add_memory(MEMORY_SLIPPED, list(DETAIL_WHAT_BY = slipped_on, DETAIL_PROTAGONIST = src), story_value = STORY_VALUE_OKAY)
 	if(mind)
 		SSblackbox.record_feedback("amount", "slips", 1)
-	return
 
 //bodypart selection verbs - Cyberboss
 //8: repeated presses toggles through head - eyes - mouth

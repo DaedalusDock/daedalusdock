@@ -169,7 +169,7 @@
 			UnarmedAttack(item_atom, TRUE, modifiers)
 
 	//Standard reach turf to turf or reaching inside storage
-	if(CanReach(A,W))
+	if(A.IsReachableBy(src, W?.reach))
 		if(W)
 			W.melee_attack_chain(src, A, params)
 		else
@@ -212,38 +212,65 @@
 	return FALSE
 
 /**
- * A backwards depth-limited breadth-first-search to see if the target is
- * logically "in" anything adjacent to us.
+ * Returns TRUE if a movable can "Reach" this atom. This is defined as adjacency
+ *
+ * This is used for crafting by hitting the floor with items.
+ * The inital use case is glass sheets breaking in to shards when the floor is hit.
+ * Args:
+ * * user: The movable trying to reach us.
+ * * reacher_range: How far the reacher can reach.
+ * * depth: How deep nested inside of an atom contents stack an object can be.
+ * * direct_access: Do not override. Used for recursion.
  */
-/atom/movable/proc/CanReach(atom/ultimate_target, obj/item/tool, view_only = FALSE)
-	var/list/direct_access = DirectAccess()
-	var/depth = 1 + (view_only ? STORAGE_VIEW_DEPTH : INVENTORY_DEPTH)
+/atom/proc/IsReachableBy(atom/movable/user, reacher_range = 1, depth = INFINITY, direct_access = user.DirectAccess())
+	SHOULD_NOT_OVERRIDE(TRUE)
 
-	var/list/closed = list()
-	var/list/checking = list(ultimate_target)
+	if(isnull(user))
+		return FALSE
 
-	while (checking.len && depth > 0)
-		var/list/next = list()
-		--depth
+	if(src in direct_access)
+		return TRUE
 
-		for(var/atom/target in checking)  // will filter out nulls
-			if(closed[target] || isarea(target))  // avoid infinity situations
-				continue
+	// This is a micro-opt, if any turf ever returns false from IsContainedAtomAccessible, change this.
+	if(isturf(loc) || isturf(src))
+		if(CheckReachableAdjacency(user, reacher_range))
+			return TRUE
 
-			if(isturf(target) || isturf(target.loc) || (target in direct_access) || (ismovable(target) && target.flags_1 & IS_ONTOP_1) || target.loc?.atom_storage) //Directly accessible atoms
-				if(Adjacent(target) || (tool && CheckToolReach(src, target, tool.reach))) //Adjacent or reaching attacks
-					return TRUE
+	depth--
+	if(depth <= 0)
+		return FALSE
 
-			closed[target] = TRUE
+	if(isnull(loc) || isarea(loc) || !loc.IsContainedAtomAccessible(src, user))
+		return FALSE
 
-			if (!target.loc)
-				continue
+	return loc.IsReachableBy(user, reacher_range, depth, direct_access)
 
-			if(target.loc.atom_storage)
-				next += target.loc
+/// Checks if a reacher is adjacent to us.
+/atom/proc/CheckReachableAdjacency(atom/movable/reacher, reacher_range)
+	return reacher.Adjacent(src) || ((reacher_range > 1) && RangedReachCheck(reacher, src, reacher_range))
 
-		checking = next
-	return FALSE
+/// Returns TRUE if an atom contained within our contents is reachable.
+/atom/proc/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	return TRUE
+
+/atom/movable/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	return !!atom_storage
+
+/mob/living/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	. = ..()
+	if(.)
+		return
+
+	if(!isliving(user))
+		return
+
+	if(!isitem(contained))
+		return
+
+	var/mob/living/living_user = user
+	var/obj/item/I = contained
+	if(I.can_pickpocket(user))
+		return I.atom_storage == living_user.active_storage
 
 /atom/movable/proc/DirectAccess()
 	return list(src, loc)
@@ -260,27 +287,29 @@
 /turf/AllowClick()
 	return TRUE
 
-/proc/CheckToolReach(atom/movable/here, atom/movable/there, reach)
+/// Called by IsReachableBy() to check for ranged reaches.
+/proc/RangedReachCheck(atom/movable/here, atom/movable/there, reach)
 	if(!here || !there)
-		return
-	switch(reach)
-		if(0)
-			return FALSE
-		if(1)
-			return FALSE //here.Adjacent(there)
-		if(2 to INFINITY)
-			var/obj/dummy = new(get_turf(here))
-			dummy.pass_flags |= PASSTABLE
-			dummy.invisibility = INVISIBILITY_ABSTRACT
-			for(var/i in 1 to reach) //Limit it to that many tries
-				var/turf/T = get_step(dummy, get_dir(dummy, there))
-				if(dummy.CanReach(there))
-					qdel(dummy)
-					return TRUE
-				if(!dummy.Move(T)) //we're blocked!
-					qdel(dummy)
-					return
-			qdel(dummy)
+		return FALSE
+
+	if(reach <= 1)
+		return FALSE
+
+	// Prevent infinite loop.
+	if(istype(here, /obj/effect/abstract/reach_checker))
+		return FALSE
+
+	var/obj/effect/abstract/reach_checker/dummy = new(get_turf(here))
+	for(var/i in 1 to reach) //Limit it to that many tries
+		var/turf/T = get_step(dummy, get_dir(dummy, there))
+		if(there.IsReachableBy(dummy))
+			. = TRUE
+			break
+
+		if(!dummy.Move(T)) //we're blocked!
+			break
+
+	qdel(dummy)
 
 /// Default behavior: ignore double clicks (the second click that makes the doubleclick call already calls for a normal click)
 /mob/proc/DblClickOn(atom/A, params)
@@ -377,8 +406,10 @@
 	if(!can_interact(user))
 		return FALSE
 
+	return TRUE
+
 /mob/living/CtrlClick(mob/user, list/params)
-	if(!isliving(user) || !user.CanReach(src) || user.incapacitated())
+	if(!isliving(user) || !IsReachableBy(user) || user.incapacitated())
 		return ..()
 
 	if(world.time < user.next_move)
@@ -394,7 +425,7 @@
 
 /mob/living/carbon/human/CtrlClick(mob/user, list/params)
 
-	if(!ishuman(user) || !user.CanReach(src) || user.incapacitated())
+	if(!ishuman(user) || !IsReachableBy(user) || user.incapacitated())
 		return ..()
 
 	if(world.time < user.next_move)

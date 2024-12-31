@@ -123,10 +123,10 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 	warp = new(src)
-	vis_contents += warp
+	add_viscontents(warp)
 
 /obj/effect/anomaly/grav/Destroy()
-	vis_contents -= warp
+	remove_viscontents(warp)
 	warp = null
 	return ..()
 
@@ -233,7 +233,7 @@
 /obj/effect/anomaly/flux/proc/mobShock(mob/living/M)
 	if(canshock && istype(M))
 		canshock = FALSE
-		M.electrocute_act(shockdamage, name, flags = SHOCK_NOGLOVES)
+		M.electrocute_act(shockdamage, flags = NONE)
 
 /obj/effect/anomaly/flux/detonate()
 	if(explosive)

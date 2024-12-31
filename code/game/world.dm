@@ -94,7 +94,7 @@ GLOBAL_VAR(restart_counter)
 	#endif
 
 /world/proc/InitTgs()
-	TgsNew(new /datum/tgs_event_handler/impl, TGS_SECURITY_TRUSTED)
+	TgsNew(new /datum/tgs_event_handler/impl, TGS_SECURITY_TRUSTED, new /datum/tgs_http_handler/rustg)
 	GLOB.revdata.load_tgs_info()
 
 /world/proc/HandleTestRun()

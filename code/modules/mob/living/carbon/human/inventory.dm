@@ -140,63 +140,49 @@
 			if(belt)
 				return
 			belt = I
-			update_slots_for_item(I, slot)
 
 		if(ITEM_SLOT_ID)
 			if(wear_id)
 				return
 
 			wear_id = I
-			sec_hud_set_ID()
-			update_slots_for_item(I, slot)
 
 		if(ITEM_SLOT_EARS)
 			if(ears)
 				return
 
 			ears = I
-			update_slots_for_item(I, slot)
 
 		if(ITEM_SLOT_EYES)
 			if(glasses)
 				return
 
 			glasses = I
-			update_slots_for_item(I, slot)
 
 			var/obj/item/clothing/glasses/G = I
 			if(G.glass_colour_type)
 				update_glasses_color(G, 1)
 
-			if(G.tint)
-				update_tint()
-
 			if(G.vision_correction)
 				clear_fullscreen("nearsighted")
-
-			if(G.vision_flags || G.darkness_view || G.invis_override || G.invis_view || !isnull(G.lighting_alpha))
-				update_sight()
 
 		if(ITEM_SLOT_GLOVES)
 			if(gloves)
 				return
 
 			gloves = I
-			update_slots_for_item(I, slot)
 
 		if(ITEM_SLOT_FEET)
 			if(shoes)
 				return
 
 			shoes = I
-			update_slots_for_item(I, slot)
 
 		if(ITEM_SLOT_OCLOTHING)
 			if(wear_suit)
 				return
 
 			wear_suit = I
-			update_slots_for_item(I, slot)
 
 			if(wear_suit.breakouttime) //when equipping a straightjacket
 				ADD_TRAIT(src, TRAIT_ARMS_RESTRAINED, SUIT_TRAIT)
@@ -208,7 +194,6 @@
 				return
 
 			w_uniform = I
-			update_slots_for_item(I, slot)
 			update_suit_sensors()
 
 		if(ITEM_SLOT_LPOCKET)
@@ -224,7 +209,6 @@
 				return
 
 			s_store = I
-			update_suit_storage()
 
 		else
 			to_chat(src, span_danger("You are trying to equip this item to an unsupported inventory slot. Report this to a coder!"))
@@ -241,15 +225,17 @@
 
 /mob/living/carbon/human/equipped_speed_mods()
 	. = ..()
-	for(var/sloties in get_all_worn_items() - list(l_store, r_store, s_store))
+	for(var/sloties in get_equipped_items(FALSE))
 		var/obj/item/thing = sloties
 		. += thing?.slowdown
 
-/mob/living/carbon/human/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+/mob/living/carbon/human/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE, slot = get_slot_by_item(I))
 	var/index = get_held_index_of_item(I)
 	. = ..() //See mob.dm for an explanation on this and some rage about people copypasting instead of calling ..() like they should.
 	if(!. || !I)
 		return
+
+	var/handled = TRUE
 
 	if(index && !QDELETED(src) && dna.species.mutanthands) //hand freed, fill with claws, skip if we're getting deleted.
 		put_in_hand(new dna.species.mutanthands(), index)
@@ -264,8 +250,6 @@
 			update_mob_action_buttons() //certain action buttons may be usable again.
 
 		wear_suit = null
-		if(!QDELETED(src)) //no need to update we're getting deleted anyway
-			update_slots_for_item(I, ITEM_SLOT_OCLOTHING)
 
 	else if(I == w_uniform)
 		if(invdrop)
@@ -281,13 +265,9 @@
 		w_uniform = null
 		update_suit_sensors()
 
-		if(!QDELETED(src))
-			update_slots_for_item(I, ITEM_SLOT_ICLOTHING)
-
 	else if(I == gloves)
 		gloves = null
-		if(!QDELETED(src))
-			update_slots_for_item(I, ITEM_SLOT_GLOVES)
+		handled = TRUE
 
 	else if(I == glasses)
 		glasses = null
@@ -296,52 +276,32 @@
 		if(G.glass_colour_type)
 			update_glasses_color(G, 0)
 
-		if(G.tint)
-			update_tint()
-
 		if(G.vision_correction && HAS_TRAIT(src, TRAIT_NEARSIGHT))
 			overlay_fullscreen("nearsighted", /atom/movable/screen/fullscreen/impaired, 1)
 
-		if(G.vision_flags || G.darkness_view || G.invis_override || G.invis_view || !isnull(G.lighting_alpha))
-			update_sight()
-
-		if(!QDELETED(src))
-			update_slots_for_item(I, ITEM_SLOT_EYES)
-
 	else if(I == ears)
 		ears = null
-		if(!QDELETED(src))
-			update_slots_for_item(I, ITEM_SLOT_EARS)
 
 	else if(I == belt)
 		belt = null
-		if(!QDELETED(src))
-			update_slots_for_item(I, ITEM_SLOT_BELT)
-			update_name()
 
 	else if(I == wear_id)
 		wear_id = null
-		sec_hud_set_ID()
-		if(!QDELETED(src))
-			update_slots_for_item(I, ITEM_SLOT_ID)
-			update_name()
 
 	else if(I == r_store)
 		r_store = null
-		if(!QDELETED(src))
-			update_pockets()
 
 	else if(I == l_store)
 		l_store = null
-		if(!QDELETED(src))
-			update_pockets()
 
 	else if(I == s_store)
 		s_store = null
-		if(!QDELETED(src))
-			update_suit_storage()
 
-	update_equipment_speed_mods()
+	else
+		handled = FALSE
+
+	if(handled && !QDELING(src))
+		update_slots_for_item(I, slot)
 
 	// Send a signal for when we unequip an item that used to cover our feet/shoes. Used for bloody feet
 	if((I.body_parts_covered & FEET) || (I.flags_inv | I.transparent_protection) & HIDESHOES)

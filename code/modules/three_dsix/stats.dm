@@ -10,6 +10,9 @@
 
 	VAR_PRIVATE/list/stat_cooldowns = list()
 
+	/// A list of weakrefs to examined objects. Used for forensic rolls. THIS DOES JUST KEEP GETTING BIGGER, SO, CAREFUL.
+	var/list/examined_object_weakrefs = list()
+
 /datum/stats/New(owner)
 	. = ..()
 	src.owner = owner

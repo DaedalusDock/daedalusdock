@@ -1263,6 +1263,9 @@
  * - max_temp: The maximum temperature that can be reached.
  */
 /datum/reagents/proc/adjust_thermal_energy(delta_energy, min_temp = 2.7, max_temp = 1000, handle_reactions = TRUE)
+	if(delta_energy == 0)
+		return
+
 	var/heat_capacity = getHeatCapacity()
 	if(!heat_capacity)
 		return // no div/0 please
@@ -1276,7 +1279,11 @@
 		var/obj/item/reagent_containers/RCs = my_atom
 		if(RCs.reagent_flags & NO_REACT) //stasis holders IE cryobeaker
 			return
+
 	var/temp_delta = (temperature - chem_temp) * coeff
+	if(temp_delta == 0)
+		return
+
 	if(temp_delta > 0)
 		chem_temp = min(chem_temp + max(temp_delta, 1), temperature)
 	else

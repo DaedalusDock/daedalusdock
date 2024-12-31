@@ -201,6 +201,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_TESLA_SHOCKIMMUNE "tesla_shock_immunity"
 // Is this atom being actively shocked? Used to prevent repeated shocks.
 #define TRAIT_BEING_SHOCKED "shocked"
+/// The above but for the flock sentinel
+#define TRAIT_SHOCKED_BY_SENTINEL "shocked_by_flock_sentinel"
 /// You cannot ENTER cardiac arrest.
 #define TRAIT_STABLEHEART "stable_heart"
 /// Prevents you from leaving your corpse
@@ -255,6 +257,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_NO_ADDICTION "no_addiction"
 /// Makes whispers clearly heard from seven tiles away, the full hearing range
 #define TRAIT_GOOD_HEARING "good_hearing"
+/// This mob's speech is heard through walls by dead players/observers even if it has no client. Idk a better name
+#define TRAIT_IMPORTANT_SPEAKER "important_speaker"
 
 // Stops the mob from slipping on water, or banana peels, or pretty much anything that doesn't have [GALOSHES_DONT_HELP] set
 #define TRAIT_NO_SLIP_WATER "NO_SLIP_WATER"
@@ -276,6 +280,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_FEARLESS "fearless"
 /// Ignores darkness for hearing
 #define TRAIT_HEAR_THROUGH_DARKNESS "hear_through_darkness"
+/// Ignores line of sight for the purposes of send_speech()
+#define TRAIT_HEAR_THROUGH_WALLS "hear_through_walls"
 /// These are used for brain-based paralysis, where replacing the limb won't fix it
 #define TRAIT_PARALYSIS_L_ARM "para-l-arm"
 #define TRAIT_PARALYSIS_R_ARM "para-r-arm"
@@ -388,8 +394,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_KISS_OF_DEATH "kiss_of_death"
 /// Used to activate french kissing
 #define TRAIT_GARLIC_BREATH "kiss_of_garlic_death"
-/// Used on limbs in the process of turning a human into a plasmaman while in plasma lava
-#define TRAIT_PLASMABURNT "plasma_burnt"
 /// Addictions don't tick down, basically they're permanently addicted
 #define TRAIT_HOPELESSLY_ADDICTED "hopelessly_addicted"
 /// Their eyes glow an unnatural red colour. Currently used to set special examine text on humans. Does not guarantee the mob's eyes are coloured red, nor that there is any visible glow on their character sprite.
@@ -440,6 +444,9 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 * When present in the mob's mind, they will always love donuts.
 */
 #define TRAIT_DONUT_LOVER "donut_lover"
+
+/// Equipping or unequipping an item
+#define TRAIT_EQUIPPING_OR_UNEQUIPPING "equipping_or_unequipping"
 
 /// `do_teleport` will not allow this atom to teleport
 #define TRAIT_NO_TELEPORT "no-teleport"
@@ -522,6 +529,11 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_VOIDSTORM_IMMUNE "voidstorm_immune"
 #define TRAIT_WEATHER_IMMUNE "weather_immune" //Immune to ALL weather effects.
 
+/// Mob is dreaming
+#define TRAIT_DREAMING "currently_dreaming"
+/// Mob cannot dream
+#define TRAIT_CANNOT_DREAM "unable_to_dream"
+
 //non-mob traits
 /// Used for limb-based paralysis, where replacing the limb will fix it.
 #define TRAIT_PARALYSIS "paralysis"
@@ -603,6 +615,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_HIDES_VOICE "hides_voice"
 /// Wearing this item in the mask slot will make your voice your current ID, or unknown
 #define TRAIT_REPLACES_VOICE "replaces_voice"
+/// Pickpocketing this item takes no time.
+#define TRAIT_INSTANT_PICKPOCKET "instant_pickpocket"
 
 //quirk traits
 #define TRAIT_ALCOHOL_TOLERANCE "alcohol_tolerance"
@@ -699,7 +713,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define FLIGHTPOTION_TRAIT "flightpotion"
 /// Trait inherited by experimental surgeries
 #define EXPERIMENTAL_SURGERY_TRAIT "experimental_surgery"
-#define DISEASE_TRAIT "disease"
+#define PATHOGEN_TRAIT "disease"
 #define SPECIES_TRAIT "species"
 #define ORGAN_TRAIT "organ"
 /// cannot be removed without admin intervention
@@ -868,6 +882,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define EMP_TRAIT "emp"
 /// Given by the operating table
 #define OPTABLE_TRAIT "optable"
+/// Given by dreaming
+#define DREAMING_SOURCE "dreaming"
 
 /**
 * Trait granted by [/mob/living/carbon/Initialize] and
@@ -980,3 +996,18 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// Given to items that are bodyparts attached to a mob, organs attached to a mob or inside a bodypart
 #define TRAIT_INSIDE_BODY "inside_body"
+
+/// trait that prevents AI controllers from planning detached from ai_status to prevent weird state stuff.
+#define TRAIT_AI_PAUSED "TRAIT_AI_PAUSED"
+/// trait that prevents AI controllers from making new plans, but not executing plans
+#define TRAIT_AI_DISABLE_PLANNING "TRAIT_AI_DISABLE_PLANNING"
+
+// Flock trait sources
+/// Under control
+#define FLOCK_CONTROLLED_BY_OVERMIND_SOURCE "FLOCK_CONTROLLED_BY_OVERMIND_SOURCE"
+
+#define TRAIT_FLOCKPHASE "TRAIT_FLOCKPHASE"
+#define TRAIT_FLOCK_THING "TRAIT_FLOCK_THING"
+
+/// Trait from mob/living/update_transform()
+#define UPDATE_TRANSFORM_TRAIT "update_transform"

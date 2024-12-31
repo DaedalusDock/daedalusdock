@@ -1,13 +1,6 @@
+// Deprecated, you do not need to use this type for melee weapons.
 /obj/item/melee
 	item_flags = NEEDS_PERMIT
-
-/obj/item/melee/proc/check_martial_counter(mob/living/carbon/human/target, mob/living/carbon/human/user)
-	if(target.check_block())
-		target.visible_message(span_danger("[target.name] blocks [src] and twists [user]'s arm behind [user.p_their()] back!"),
-					span_userdanger("You block the attack!"))
-		user.Stun(40)
-		return TRUE
-
 
 /obj/item/melee/chainofcommand
 	name = "chain of command"
@@ -76,9 +69,9 @@
 	. = ..()
 	AddComponent(/datum/component/butchering, 30, 95, 5) //fast and effective, but as a sword, it might damage the results.
 
-/obj/item/melee/sabre/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+/obj/item/melee/sabre/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
 	if(attack_type == PROJECTILE_ATTACK)
-		return FALSE //Don't bring a sword to a gunfight
+		return FALSE
 	return ..()
 
 /obj/item/melee/sabre/on_exit_storage(datum/storage/container)

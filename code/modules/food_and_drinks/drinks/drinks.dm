@@ -54,10 +54,10 @@
 		var/mob/living/carbon/carbon_drinker = M
 		var/list/diseases = carbon_drinker.get_static_viruses()
 		if(LAZYLEN(diseases))
-			var/list/datum/disease/diseases_to_add = list()
+			var/list/datum/pathogen/diseases_to_add = list()
 			for(var/d in diseases)
-				var/datum/disease/malady = d
-				if(malady.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+				var/datum/pathogen/malady = d
+				if(malady.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
 					diseases_to_add += malady
 			if(LAZYLEN(diseases_to_add))
 				AddComponent(/datum/component/infective, diseases_to_add)
@@ -244,36 +244,6 @@
 	name = "dirty ice cup"
 	desc = "Either the station's water supply is contaminated, or this machine actually vends lemon, chocolate, and cherry snow cones."
 	list_reagents = list(/datum/reagent/consumable/ice = 25, /datum/reagent/liquidgibs = 5)
-
-/obj/item/reagent_containers/food/drinks/mug // parent type is literally just so empty mug sprites are a thing
-	name = "mug"
-	desc = "A drink served in a classy mug."
-	icon_state = "tea"
-	inhand_icon_state = "coffee"
-	spillable = TRUE
-
-/obj/item/reagent_containers/food/drinks/mug/update_icon_state()
-	icon_state = reagents.total_volume ? "tea" : "tea_empty"
-	return ..()
-
-/obj/item/reagent_containers/food/drinks/mug/tea
-	name = "Duke Purple tea"
-	desc = "An insult to Duke Purple is an insult to the Space Queen! Any proper gentleman will fight you, if you sully this tea."
-	list_reagents = list(/datum/reagent/consumable/tea = 30)
-
-/obj/item/reagent_containers/food/drinks/mug/coco
-	name = "Dutch hot coco"
-	desc = "Made in Space South America."
-	list_reagents = list(/datum/reagent/consumable/hot_coco = 15, /datum/reagent/consumable/sugar = 5)
-	foodtype = SUGAR
-	resistance_flags = FREEZE_PROOF
-	custom_price = PAYCHECK_ASSISTANT * 0.9
-
-/obj/item/reagent_containers/food/drinks/mug/beagle
-	name = "beagle mug"
-	desc = "A heavy mug. A beagle mug. Careful not to break it!"
-	icon_state = "beaglemug"
-
 
 /obj/item/reagent_containers/food/drinks/dry_ramen
 	name = "cup ramen"
@@ -603,13 +573,6 @@
 	desc = "The detective's only true friend."
 	icon_state = "detflask"
 	list_reagents = list(/datum/reagent/consumable/ethanol/whiskey = 30)
-
-/obj/item/reagent_containers/food/drinks/britcup
-	name = "cup"
-	desc = "A cup with the british flag emblazoned on it."
-	icon_state = "britcup"
-	volume = 30
-	spillable = TRUE
 
 //////////////////////////soda_cans//
 //These are in their own group to be used as IED's in /obj/item/grenade/ghettobomb.dm

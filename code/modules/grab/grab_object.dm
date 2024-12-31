@@ -71,13 +71,13 @@
 	if(isliving(affecting))
 		if(!ishuman(assailant) || !assailant:gloves)
 			var/mob/living/affecting_mob = affecting
-			for(var/datum/disease/D as anything in assailant.diseases)
-				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-					affecting_mob.ContactContractDisease(D)
+			for(var/datum/pathogen/D as anything in assailant.diseases)
+				if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
+					affecting_mob.try_contact_contract_pathogen(D)
 
-			for(var/datum/disease/D as anything in affecting_mob.diseases)
-				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-					assailant.ContactContractDisease(D)
+			for(var/datum/pathogen/D as anything in affecting_mob.diseases)
+				if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
+					assailant.try_contact_contract_pathogen(D)
 
 	/// Setup the effects applied by grab
 	current_grab.update_stage_effects(src, null)
@@ -92,6 +92,7 @@
 
 	// Leave forensics
 	leave_forensic_traces()
+
 	/// Setup signals
 	var/obj/item/bodypart/BP = get_targeted_bodypart()
 	if(BP)
@@ -126,6 +127,11 @@
 	else
 		stack_trace("Grab (\ref[src]) qdeleted while not having an assailant.")
 
+	//DEBUG CODE
+	if(HAS_TRAIT_FROM(affecting, TRAIT_AGGRESSIVE_GRAB, ref(src)))
+		stack_trace("Somehow all other safeties failed and [affecting] still is marked as grabbed from a qdeling grab, removing!")
+		REMOVE_TRAIT(affecting, TRAIT_AGGRESSIVE_GRAB, ref(src))
+
 	affecting = null
 	assailant = null
 	current_grab = null
@@ -140,6 +146,9 @@
 
 /obj/item/hand_item/grab/update_icon_state()
 	. = ..()
+	if(QDELING(src))
+		return
+
 	icon = current_grab.icon
 	if(current_grab.icon_state)
 		icon_state = current_grab.icon_state
@@ -289,13 +298,15 @@
 		return
 
 	var/datum/grab/upgrab = current_grab.upgrade(src)
-	if(!upgrab)
+	var/datum/grab/oldgrab = current_grab
+	if(!upgrab || QDELETED(src))
 		return
 
 	if(is_grab_unique(current_grab))
-		current_grab.remove_unique_grab_effects(src)
+		current_grab.remove_unique_grab_effects(affecting)
 
 	current_grab = upgrab
+	current_grab.update_stage_effects(src, oldgrab)
 
 	COOLDOWN_START(src, upgrade_cd, current_grab.upgrade_cooldown)
 
@@ -308,26 +319,28 @@
 		return
 
 	if(is_grab_unique(current_grab))
-		current_grab.apply_unique_grab_effects(src)
+		current_grab.apply_unique_grab_effects(affecting)
 
 	adjust_position()
 	update_appearance()
 
 /obj/item/hand_item/grab/proc/downgrade(silent)
 	var/datum/grab/downgrab = current_grab.downgrade(src)
+	var/datum/grab/oldgrab = current_grab
 	if(!downgrab)
 		return
 
 	if(is_grab_unique(current_grab))
-		current_grab.remove_unique_grab_effects(src)
+		current_grab.remove_unique_grab_effects(affecting)
 
 	current_grab = downgrab
+	current_grab.update_stage_effects(src, oldgrab)
 
 	if(!current_grab.enter_as_down(src))
 		return
 
 	if(is_grab_unique(current_grab))
-		current_grab.apply_unique_grab_effects(src)
+		current_grab.apply_unique_grab_effects(affecting)
 
 	current_grab.enter_as_down(src, silent)
 	adjust_position()

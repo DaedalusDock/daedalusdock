@@ -550,7 +550,7 @@
 				pref = "filled"
 			else
 				pref = "expended"
-			for(var/datum/disease/advance/disease in M.diseases)
+			for(var/datum/pathogen/advance/disease in M.diseases)
 				for(var/datum/symptom/symp in disease.symptoms)
 					if((symp.type == /datum/symptom/genetic_mutation)||(symp.type == /datum/symptom/viralevolution))
 						crispr_charge = TRUE

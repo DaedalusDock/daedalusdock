@@ -1,8 +1,8 @@
 /datum/rpg_skill/handicraft
 	name = "Handicraft"
-	desc = "Forge new creations from rubble and ruin."
+	desc = "Control and manipulate, with style."
 
-	parent_stat_type = /datum/rpg_stat/motorics
+	parent_stat_type = /datum/rpg_stat/kinesis
 
 /datum/rpg_skill/handicraft/get(mob/living/user)
 	. = ..()

@@ -121,6 +121,7 @@
 /obj/item/mod/control/Destroy()
 	STOP_PROCESSING(SSobj, src)
 
+	clean_up()
 	for(var/obj/item/mod/module/module as anything in modules)
 		uninstall(module, deleting = TRUE)
 
@@ -199,43 +200,24 @@
 			module.deactivate(display_message = TRUE)
 		module.on_process(delta_time)
 
-/obj/item/mod/control/visual_equipped(mob/user, slot, initial = FALSE) //needs to be visual because we wanna show it in select equipment
+/obj/item/mod/control/visual_equipped(mob/living/user, slot, initial = FALSE) //needs to be visual because we wanna show it in select equipment
 	if(slot & slot_flags)
 		set_wearer(user)
 	else if(wearer)
 		unset_wearer()
 
+	return ..()
+
 /obj/item/mod/control/dropped(mob/user)
 	. = ..()
-	if(wearer)
-		unset_wearer()
+	if(QDELETED(src))
+		return
+
+	clean_up()
 
 /obj/item/mod/control/item_action_slot_check(slot)
 	if(slot == ITEM_SLOT_BACK)
 		return TRUE
-
-/obj/item/mod/control/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
-	. = ..()
-	if(!wearer || old_loc != wearer || loc == wearer)
-		return
-
-	if(active || activating)
-		for(var/obj/item/mod/module/module as anything in modules)
-			if(!module.active)
-				continue
-			module.deactivate(display_message = FALSE)
-
-		for(var/obj/item/part as anything in get_parts())
-			seal_part(part, is_sealed = FALSE)
-
-	for(var/obj/item/part as anything in get_parts())
-		retract(null, part)
-
-	if(active)
-		finish_activation(is_on = FALSE)
-		mod_link?.end_call()
-
-	unset_wearer()
 
 /obj/item/mod/control/allow_attack_hand_drop(mob/user)
 	if(user != wearer)
@@ -250,16 +232,14 @@
 /obj/item/mod/control/MouseDrop(atom/over_object)
 	if(usr != wearer || !istype(over_object, /atom/movable/screen/inventory/hand))
 		return ..()
+
 	for(var/obj/item/part as anything in get_parts())
 		if(part.loc != src)
 			balloon_alert(wearer, "retract parts first!")
 			playsound(src, 'sound/machines/scanbuzz.ogg', 25, FALSE, SILENCED_SOUND_EXTRARANGE)
 			return
-	if(!wearer.incapacitated())
-		var/atom/movable/screen/inventory/hand/ui_hand = over_object
-		if(wearer.putItemFromInventoryInHandIfPossible(src, ui_hand.held_index))
-			add_fingerprint(usr)
-			return ..()
+
+	return ..()
 
 /obj/item/mod/control/wrench_act(mob/living/user, obj/item/wrench)
 	if(..())
@@ -483,10 +463,6 @@
 	wearer = null
 
 /obj/item/mod/control/proc/clean_up()
-	if(QDELING(src))
-		unset_wearer()
-		return
-
 	if(active || activating)
 		for(var/obj/item/mod/module/module as anything in modules)
 			if(!module.active)
@@ -503,9 +479,8 @@
 		finish_activation(is_on = FALSE)
 		mod_link?.end_call()
 
-	var/mob/old_wearer = wearer
-	unset_wearer()
-	old_wearer.temporarilyRemoveItemFromInventory(src)
+	if(wearer)
+		unset_wearer()
 
 /obj/item/mod/control/proc/quick_module(mob/user)
 	if(!length(modules))

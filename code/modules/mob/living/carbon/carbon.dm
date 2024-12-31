@@ -131,12 +131,14 @@
 	throw_mode = THROW_MODE_DISABLED
 	if(hud_used)
 		hud_used.throw_icon.icon_state = "act_throw_off"
+	update_mouse_pointer()
 
 
 /mob/living/carbon/proc/throw_mode_on(mode = THROW_MODE_TOGGLE)
 	throw_mode = mode
 	if(hud_used)
 		hud_used.throw_icon.icon_state = "act_throw_on"
+	update_mouse_pointer()
 
 /mob/proc/throw_item(atom/target)
 	SEND_SIGNAL(src, COMSIG_MOB_THROW, target)
@@ -247,7 +249,7 @@
 
 		)
 
-		if(do_after(src, src, buckle_cd, timed_action_flags = IGNORE_HELD_ITEM))
+		if(do_after(src, src, buckle_cd, timed_action_flags = DO_IGNORE_HELD_ITEM))
 			if(!buckled)
 				return
 			return !!buckled.user_unbuckle_mob(src,src)
@@ -306,7 +308,7 @@
 		visible_message(span_warning("[src] attempts to remove [I]!"))
 		to_chat(src, span_notice("You attempt to remove [I]... (This will take around [DisplayTimeText(breakouttime)] and you need to stand still.)"))
 
-		if(do_after(src, src, breakouttime, timed_action_flags = IGNORE_HELD_ITEM))
+		if(do_after(src, src, breakouttime, timed_action_flags = DO_IGNORE_HELD_ITEM))
 			. = clear_cuffs(I, cuff_break)
 		else
 			to_chat(src, span_warning("You fail to remove [I]!"))
@@ -316,7 +318,7 @@
 		visible_message(span_warning("[src] is trying to break [I]!"))
 		to_chat(src, span_notice("You attempt to break [I]... (This will take around 5 seconds and you need to stand still.)"))
 
-		if(do_after(src, src, breakouttime, timed_action_flags = IGNORE_HELD_ITEM))
+		if(do_after(src, src, breakouttime, timed_action_flags = DO_IGNORE_HELD_ITEM))
 			. = clear_cuffs(I, cuff_break)
 		else
 			to_chat(src, span_warning("You fail to break [I]!"))
@@ -500,14 +502,14 @@
 
 
 //Updates the mob's health from bodyparts and mob damage variables
-/mob/living/carbon/updatehealth()
+/mob/living/carbon/updatehealth(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 
 	set_health(round(maxHealth - getBrainLoss(), DAMAGE_PRECISION))
 	update_damage_hud()
 	update_health_hud()
-	update_stat()
+	update_stat(cause_of_death)
 	SEND_SIGNAL(src, COMSIG_CARBON_HEALTH_UPDATE)
 
 /mob/living/carbon/on_stamina_update()
@@ -772,7 +774,7 @@
 			REMOVE_TRAIT(src, TRAIT_SIXTHSENSE, "near-death")
 
 
-/mob/living/carbon/update_stat()
+/mob/living/carbon/update_stat(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 
@@ -837,9 +839,9 @@
 		organ.set_organ_dead(FALSE)
 
 	for(var/thing in diseases)
-		var/datum/disease/D = thing
-		if(D.severity != DISEASE_SEVERITY_POSITIVE)
-			D.cure(FALSE)
+		var/datum/pathogen/D = thing
+		if(D.severity != PATHOGEN_SEVERITY_POSITIVE)
+			D.force_cure(add_resistance = FALSE)
 
 	if(admin_revive)
 		suiciding = FALSE
@@ -1212,7 +1214,7 @@
 /// Special carbon interaction on lying down, to transform its sprite by a rotation.
 /mob/living/carbon/proc/lying_angle_on_lying_down(new_lying_angle)
 	if(!new_lying_angle)
-		set_lying_angle(pick(90, 270))
+		set_lying_angle(pick(LYING_ANGLE_EAST, LYING_ANGLE_WEST))
 	else
 		set_lying_angle(new_lying_angle)
 

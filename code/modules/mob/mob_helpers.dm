@@ -122,7 +122,7 @@ GLOBAL_LIST_INIT(bodyzone_gurps_mods, list(
 	var/list/limbs = list()
 	for(var/obj/item/bodypart/part as anything in bodyparts)
 		var/limb_zone = part.body_zone //cache the zone since we're gonna check it a ton.
-		if(limb_zone in blacklisted_parts || part.is_stump)
+		if((limb_zone in blacklisted_parts) || part.is_stump)
 			continue
 		if(even_weights)
 			limbs[limb_zone] = 1

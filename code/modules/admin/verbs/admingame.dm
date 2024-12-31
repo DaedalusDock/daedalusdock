@@ -45,6 +45,10 @@
 			full_version = "[M.client.byond_version].[M.client.byond_build ? M.client.byond_build : "xxx"]"
 		body += "<br>\[<b>Byond version:</b> [full_version]\]<br>"
 		body += "<br><b>Input Mode:</b> [M.client.hotkeys ? "Using Hotkeys" : "Using Classic Input"]<br>"
+		if(isnull(M.client.linked_discord_account))
+			body += "<br><b>Linked Discord ID:</b> <code>MISSING RESPONSE DATUM, HAVE THEY JUST JOINED OR IS SQL DISABLED?</code><br>"
+		else
+			body += "<br><b>Linked Discord ID:</b> <code>[M.client.linked_discord_account.valid ? M.client.linked_discord_account.discord_id : "NONE"]</code><br>"
 
 
 	body += "<br><br>\[ "
@@ -145,6 +149,18 @@
 
 	usr << browse(body, "window=adminplayeropts-[REF(M)];size=550x515")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Player Panel") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+/datum/admins/proc/check_death_info(mob/living/carbon/human/H in GLOB.mob_list)
+	set category = "Admin.Game"
+	set name = "Show Death Info"
+
+	if(!check_rights())
+		return
+
+	if(!ishuman(H))
+		return
+
+	H.show_death_stats(usr)
 
 /client/proc/cmd_admin_godmode(mob/M in GLOB.mob_list)
 	set category = "Admin.Game"

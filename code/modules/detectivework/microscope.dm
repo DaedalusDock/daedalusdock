@@ -13,10 +13,10 @@
 /obj/machinery/microscope/update_overlays()
 	. = ..()
 	if(!(machine_stat & NOPOWER))
-		. += emissive_appearance(icon, "[icon_state]_lights")
+		. += emissive_appearance(icon, "[icon_state]_lights", alpha = 90)
 		. += "[icon_state]_lights"
 	if(sample)
-		. += emissive_appearance(icon, "[icon_state]_lights_working")
+		. += emissive_appearance(icon, "[icon_state]_lights_working", alpha = 90)
 		. +="[icon_state]_lights_working"
 
 /obj/machinery/microscope/attackby(obj/item/weapon, mob/user, params)

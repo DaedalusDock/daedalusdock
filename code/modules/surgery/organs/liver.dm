@@ -75,7 +75,7 @@
 
 	if(!istype(liver_owner))
 		return
-	if(organ_flags & ORGAN_DEAD || HAS_TRAIT(liver_owner, TRAIT_NOMETABOLISM))//can't process reagents with a failing liver
+	if(organ_flags & ORGAN_DEAD)
 		return
 
 	if (germ_level > INFECTION_LEVEL_ONE)
@@ -88,7 +88,6 @@
 	//Detox can heal small amounts of damage
 	if (damage < maxHealth && !owner.chem_effects[CE_TOXIN])
 		applyOrganDamage(-0.2 * owner.chem_effects[CE_ANTITOX], updating_health = FALSE)
-		. = TRUE
 
 	// Get the effectiveness of the liver.
 	var/filter_effect = 3
@@ -105,19 +104,16 @@
 	// If you're not filtering well, you're in trouble. Ammonia buildup to toxic levels and damage from alcohol
 	if(filter_effect < 2)
 		if(owner.chem_effects[CE_ALCOHOL])
-			owner.adjustToxLoss(0.5 * max(2 - filter_effect, 0) * (owner.chem_effects[CE_ALCOHOL_TOXIC] + 0.5 * owner.chem_effects[CE_ALCOHOL]))
+			owner.adjustToxLoss(0.5 * max(2 - filter_effect, 0) * (owner.chem_effects[CE_ALCOHOL_TOXIC] + 0.5 * owner.chem_effects[CE_ALCOHOL]), cause_of_death = "Alcohol poisoning")
 
 	if(owner.chem_effects[CE_ALCOHOL_TOXIC])
 		applyOrganDamage(owner.chem_effects[CE_ALCOHOL_TOXIC], updating_health = FALSE)
-		. = TRUE
 	// Heal a bit if needed and we're not busy. This allows recovery from low amounts of toxloss.
 	if(!owner.chem_effects[CE_ALCOHOL] && !owner.chem_effects[CE_TOXIN] && !HAS_TRAIT(owner, TRAIT_IRRADIATED) && damage > 0)
 		if(damage < low_threshold * maxHealth)
 			applyOrganDamage(-0.3, updating_health = FALSE)
-			. = TRUE
 		else if(damage < high_threshold * maxHealth)
 			applyOrganDamage(-0.2, updating_health = FALSE)
-			. = TRUE
 
 	if(damage > 10 && DT_PROB(damage/4, delta_time)) //the higher the damage the higher the probability
 		to_chat(liver_owner, span_warning("You feel a dull pain in your abdomen."))
@@ -148,11 +144,6 @@
 #undef HAS_NO_TOXIN
 #undef HAS_PAINFUL_TOXIN
 #undef LIVER_FAILURE_STAGE_SECONDS
-
-/obj/item/organ/liver/plasmaman
-	name = "reagent processing crystal"
-	icon_state = "liver-p"
-	desc = "A large crystal that is somehow capable of metabolizing chemicals, these are found in plasmamen."
 
 /obj/item/organ/liver/alien
 	name = "alien liver" // doesnt matter for actual aliens because they dont take toxin damage
@@ -189,8 +180,9 @@
 	if(. & EMP_PROTECT_SELF)
 		return
 	if(!COOLDOWN_FINISHED(src, severe_cooldown)) //So we cant just spam emp to kill people.
-		owner.adjustToxLoss(10)
+		owner.adjustToxLoss(10, cause_of_death = "Faulty prosthetic liver")
 		COOLDOWN_START(src, severe_cooldown, 10 SECONDS)
+
 	if(prob(emp_vulnerability/severity)) //Chance of permanent effects
 		organ_flags |= ORGAN_SYNTHETIC_EMP //Starts organ faliure - gonna need replacing soon.
 

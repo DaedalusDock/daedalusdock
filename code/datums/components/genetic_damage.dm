@@ -51,7 +51,7 @@
 
 	if (total_damage >= minimum_before_damage)
 		var/mob/living/living_mob = parent
-		living_mob.adjustToxLoss(toxin_damage_per_second * delta_time)
+		living_mob.adjustToxLoss(toxin_damage_per_second * delta_time, cause_of_death = "Genetic breakdown")
 
 	total_damage -= remove_per_second * delta_time
 	if (total_damage <= 0)

@@ -10,7 +10,7 @@
 
 
 /datum/reagent/uranium/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(tox_damage * removed, FALSE)
+	C.adjustToxLoss(tox_damage * removed, FALSE, cause_of_death = "Uranium poisoning")
 	return TRUE
 
 /datum/reagent/uranium/expose_turf(turf/exposed_turf, reac_volume)
@@ -91,7 +91,7 @@
 		exposed_mob.adjust_fire_stacks(reac_volume / 10)
 
 /datum/reagent/fuel/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(0.5 * removed, 0)
+	C.adjustToxLoss(0.5 * removed, 0, cause_of_death = "Ingesting fuel")
 	return TRUE
 
 /datum/reagent/space_cleaner
@@ -145,7 +145,7 @@
 /datum/reagent/space_cleaner/ez_clean/affect_blood(mob/living/carbon/C, removed)
 	C.adjustBruteLoss(1.665*removed, FALSE)
 	C.adjustFireLoss(1.665*removed, FALSE)
-	C.adjustToxLoss(1.665*removed, FALSE)
+	C.adjustToxLoss(1.665*removed, FALSE, cause_of_death = "Ingesting space cleaner")
 	return TRUE
 
 /datum/reagent/space_cleaner/ez_clean/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
@@ -217,7 +217,7 @@
 /datum/reagent/stimulants/overdose_process(mob/living/carbon/C)
 	if(prob(25))
 		C.stamina.adjust(2.5)
-		C.adjustToxLoss(1, 0)
+		C.adjustToxLoss(1, 0, cause_of_death = "Stimulant overdose")
 		C.losebreath++
 		. = TRUE
 
@@ -331,7 +331,7 @@
 	value = DISPENSER_REAGENT_VALUE
 
 /datum/reagent/acetone/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(removed * 3, FALSE)
+	C.adjustToxLoss(removed * 3, FALSE, cause_of_death = "Ingesting acetone")
 	return TRUE
 
 /datum/reagent/acetone/expose_obj(obj/exposed_obj, reac_volume, exposed_temperature)

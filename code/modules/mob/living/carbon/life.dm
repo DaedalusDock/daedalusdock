@@ -141,7 +141,7 @@
 	. = check_breath(breath, forced)
 
 	if(breath?.total_moles)
-		AIR_UPDATE_VALUES(breath)
+		breath.garbageCollect()
 		loc.assume_air(breath)
 
 	var/static/sound/breathing = sound('sound/voice/breathing.ogg', volume = 50, channel = CHANNEL_BREATHING)
@@ -234,7 +234,7 @@
 	//PLASMA
 	if(Plasma_partialpressure > safe_plas_max)
 		var/ratio = breath.gas[GAS_PLASMA]/safe_plas_max * 10
-		adjustToxLoss(clamp(ratio, MIN_TOXIC_GAS_DAMAGE, MAX_TOXIC_GAS_DAMAGE))
+		adjustToxLoss(clamp(ratio, MIN_TOXIC_GAS_DAMAGE, MAX_TOXIC_GAS_DAMAGE), cause_of_death ="Plasma poisoning")
 		throw_alert(ALERT_TOO_MUCH_PLASMA, /atom/movable/screen/alert/too_much_plas)
 	else
 		clear_alert(ALERT_TOO_MUCH_PLASMA)
@@ -304,13 +304,12 @@
 		updatehealth()
 
 /mob/living/carbon/handle_diseases(delta_time, times_fired)
-	for(var/thing in diseases)
-		var/datum/disease/D = thing
+	for(var/datum/pathogen/D as anything in diseases)
 		if(DT_PROB(D.infectivity, delta_time))
-			D.spread()
+			D.airborne_spread()
 
 		if(stat != DEAD || D.process_dead)
-			D.stage_act(delta_time, times_fired)
+			D.on_process(delta_time, times_fired)
 
 /mob/living/carbon/handle_mutations(time_since_irradiated, delta_time, times_fired)
 	if(!dna?.temporary_mutations.len)
@@ -357,7 +356,7 @@
 	if(touching)
 		. += touching.metabolize(src, can_overdose = FALSE, updatehealth = FALSE)
 
-	if(stat != DEAD)
+	if(stat != DEAD && !HAS_TRAIT(src, TRAIT_NOMETABOLISM))
 		var/obj/item/organ/stomach/S = organs_by_slot[ORGAN_SLOT_STOMACH]
 		if(S?.reagents && !(S.organ_flags & ORGAN_DEAD))
 			. += S.reagents.metabolize(src, can_overdose = TRUE, updatehealth = FALSE)
@@ -593,12 +592,10 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(liver)
 		return
 
-	reagents.end_metabolization(src) //Stops trait-based effects on reagents, to prevent permanent buffs
-
 	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || !needs_organ(ORGAN_SLOT_LIVER))
 		return
 
-	adjustToxLoss(0.6 * delta_time, TRUE,  TRUE)
+	adjustToxLoss(0.6 * delta_time, TRUE, TRUE, cause_of_death = "Lack of a liver")
 	if(DT_PROB(2, delta_time))
 		vomit(50, TRUE, FALSE, 1, TRUE, harm = FALSE, purge_ratio = 1)
 

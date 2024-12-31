@@ -139,10 +139,10 @@
 	desc = "A small bottle. Contains Fentanyl."
 	list_reagents = list(/datum/reagent/toxin/fentanyl = 30)
 
-/obj/item/reagent_containers/glass/bottle/initropidril
-	name = "initropidril bottle"
-	desc = "A small bottle. Contains initropidril."
-	list_reagents = list(/datum/reagent/toxin/initropidril = 30)
+/obj/item/reagent_containers/glass/bottle/adenosine
+	name = "adenosine bottle"
+	desc = "A small bottle. Contains adenosine."
+	list_reagents = list(/datum/reagent/medicine/adenosine = 30)
 
 /obj/item/reagent_containers/glass/bottle/pancuronium
 	name = "pancuronium bottle"
@@ -202,74 +202,74 @@
 /obj/item/reagent_containers/glass/bottle/random_virus
 	name = "Experimental disease culture bottle"
 	desc = "A small bottle. Contains an untested viral culture in synthblood medium."
-	spawned_disease = /datum/disease/advance/random
+	spawned_disease = /datum/pathogen/advance/random
 
 /obj/item/reagent_containers/glass/bottle/pierrot_throat
 	name = "Pierrot's Throat culture bottle"
 	desc = "A small bottle. Contains H0NI<42 virion culture in synthblood medium."
-	spawned_disease = /datum/disease/pierrot_throat
+	spawned_disease = /datum/pathogen/pierrot_throat
 
 /obj/item/reagent_containers/glass/bottle/cold
 	name = "Rhinovirus culture bottle"
 	desc = "A small bottle. Contains XY-rhinovirus culture in synthblood medium."
-	spawned_disease = /datum/disease/advance/cold
+	spawned_disease = /datum/pathogen/advance/cold
 
 /obj/item/reagent_containers/glass/bottle/flu_virion
 	name = "Flu virion culture bottle"
 	desc = "A small bottle. Contains H13N1 flu virion culture in synthblood medium."
-	spawned_disease = /datum/disease/advance/flu
+	spawned_disease = /datum/pathogen/advance/flu
 
 /obj/item/reagent_containers/glass/bottle/retrovirus
 	name = "Retrovirus culture bottle"
 	desc = "A small bottle. Contains a retrovirus culture in a synthblood medium."
-	spawned_disease = /datum/disease/dna_retrovirus
+	spawned_disease = /datum/pathogen/dna_retrovirus
 
 /obj/item/reagent_containers/glass/bottle/gbs
 	name = "GBS culture bottle"
 	desc = "A small bottle. Contains Gravitokinetic Bipotential SADS+ culture in synthblood medium."//Or simply - General BullShit
 	amount_per_transfer_from_this = 5
-	spawned_disease = /datum/disease/gbs
+	spawned_disease = /datum/pathogen/gbs
 
 /obj/item/reagent_containers/glass/bottle/fake_gbs
 	name = "GBS culture bottle"
 	desc = "A small bottle. Contains Gravitokinetic Bipotential SADS- culture in synthblood medium."//Or simply - General BullShit
-	spawned_disease = /datum/disease/fake_gbs
+	spawned_disease = /datum/pathogen/fake_gbs
 
 /obj/item/reagent_containers/glass/bottle/brainrot
 	name = "Brainrot culture bottle"
 	desc = "A small bottle. Contains Cryptococcus Cosmosis culture in synthblood medium."
 	icon_state = "bottle3"
-	spawned_disease = /datum/disease/brainrot
+	spawned_disease = /datum/pathogen/brainrot
 
 /obj/item/reagent_containers/glass/bottle/magnitis
 	name = "Magnitis culture bottle"
 	desc = "A small bottle. Contains a small dosage of Fukkos Miracos."
-	spawned_disease = /datum/disease/magnitis
+	spawned_disease = /datum/pathogen/magnitis
 
 /obj/item/reagent_containers/glass/bottle/wizarditis
 	name = "Wizarditis culture bottle"
 	desc = "A small bottle. Contains a sample of Rincewindus Vulgaris."
-	spawned_disease = /datum/disease/wizarditis
+	spawned_disease = /datum/pathogen/wizarditis
 
 /obj/item/reagent_containers/glass/bottle/anxiety
 	name = "Severe Anxiety culture bottle"
 	desc = "A small bottle. Contains a sample of Lepidopticides."
-	spawned_disease = /datum/disease/anxiety
+	spawned_disease = /datum/pathogen/anxiety
 
 /obj/item/reagent_containers/glass/bottle/beesease
 	name = "Beesease culture bottle"
 	desc = "A small bottle. Contains a sample of invasive Apidae."
-	spawned_disease = /datum/disease/beesease
+	spawned_disease = /datum/pathogen/beesease
 
 /obj/item/reagent_containers/glass/bottle/fluspanish
 	name = "Spanish flu culture bottle"
 	desc = "A small bottle. Contains a sample of Inquisitius."
-	spawned_disease = /datum/disease/fluspanish
+	spawned_disease = /datum/pathogen/fluspanish
 
 /obj/item/reagent_containers/glass/bottle/tuberculosis
 	name = "Fungal Tuberculosis culture bottle"
 	desc = "A small bottle. Contains a sample of Fungal Tubercle bacillus."
-	spawned_disease = /datum/disease/tuberculosis
+	spawned_disease = /datum/pathogen/tuberculosis
 
 /obj/item/reagent_containers/glass/bottle/tuberculosiscure
 	name = "BVAK bottle"

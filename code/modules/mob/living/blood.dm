@@ -21,7 +21,7 @@
 // Takes care blood loss and regeneration
 /mob/living/carbon/human/handle_blood(delta_time, times_fired)
 
-	if(NOBLOOD in dna.species.species_traits || HAS_TRAIT(src, TRAIT_NOBLEED) || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
+	if((NOBLOOD in dna.species.species_traits) || HAS_TRAIT(src, TRAIT_NOBLEED) || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
 		return
 
 	if(bodytemperature < TCRYO || (HAS_TRAIT(src, TRAIT_HUSK))) //cryosleep or husked people do not pump the blood.
@@ -112,7 +112,7 @@
 
 /// A helper to see how much blood we're losing per tick
 /mob/living/carbon/proc/get_bleed_rate()
-	if(NOBLOOD in dna.species.species_traits || HAS_TRAIT(src, TRAIT_NOBLEED) || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
+	if((NOBLOOD in dna.species.species_traits) || HAS_TRAIT(src, TRAIT_NOBLEED) || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
 		return 0
 
 	if(bodytemperature < TCRYO || (HAS_TRAIT(src, TRAIT_HUSK)))
@@ -226,12 +226,11 @@
 		var/mob/living/carbon/C = AM
 		if(blood_id == C.get_blood_id())//both mobs have the same blood substance
 			if(blood_id == /datum/reagent/blood) //normal blood
-				if(blood_data["viruses"])
-					for(var/thing in blood_data["viruses"])
-						var/datum/disease/D = thing
-						if((D.spread_flags & DISEASE_SPREAD_SPECIAL) || (D.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
-							continue
-						C.ForceContractDisease(D)
+				for(var/datum/pathogen/D as anything in blood_data["viruses"])
+					if((D.spread_flags & PATHOGEN_SPREAD_SPECIAL) || (D.spread_flags & PATHOGEN_SPREAD_NON_CONTAGIOUS))
+						continue
+					C.try_contract_pathogen(D)
+
 				if(!C.dna.blood_type.is_compatible(blood_data["blood_type"]:type))
 					C.reagents.add_reagent(/datum/reagent/toxin, amount * 0.5)
 					return TRUE
@@ -244,46 +243,48 @@
 
 
 /mob/living/proc/get_blood_data(blood_id)
-	return
+	return list()
 
 /mob/living/carbon/get_blood_data(blood_id)
-	if(blood_id == /datum/reagent/blood) //actual blood reagent
-		var/blood_data = list()
-		//set the blood data
-		blood_data["viruses"] = list()
+	if(blood_id != /datum/reagent/blood) //actual blood reagent
+		return list()
 
-		for(var/thing in diseases)
-			var/datum/disease/D = thing
-			blood_data["viruses"] += D.Copy()
+	var/blood_data = list()
+	//set the blood data
+	blood_data["viruses"] = list()
 
-		blood_data["blood_DNA"] = dna.unique_enzymes
-		if(LAZYLEN(disease_resistances))
-			blood_data["resistances"] = disease_resistances.Copy()
-		var/list/temp_chem = list()
-		for(var/datum/reagent/R in reagents.reagent_list)
-			temp_chem[R.type] = R.volume
-		blood_data["trace_chem"] = list2params(temp_chem)
-		if(mind)
-			blood_data["mind"] = mind
-		else if(last_mind)
-			blood_data["mind"] = last_mind
-		if(ckey)
-			blood_data["ckey"] = ckey
-		else if(last_mind)
-			blood_data["ckey"] = ckey(last_mind.key)
+	for(var/thing in diseases)
+		var/datum/pathogen/D = thing
+		blood_data["viruses"] += D.Copy()
 
-		if(!suiciding)
-			blood_data["cloneable"] = 1
-		blood_data["blood_type"] = dna.blood_type
-		blood_data["gender"] = gender
-		blood_data["real_name"] = real_name
-		blood_data["features"] = dna.features
-		blood_data["factions"] = faction
-		blood_data["quirks"] = list()
-		for(var/V in quirks)
-			var/datum/quirk/T = V
-			blood_data["quirks"] += T.type
-		return blood_data
+	blood_data["blood_DNA"] = dna.unique_enzymes
+	if(LAZYLEN(disease_resistances))
+		blood_data["resistances"] = disease_resistances.Copy()
+	var/list/temp_chem = list()
+	for(var/datum/reagent/R in reagents.reagent_list)
+		temp_chem[R.type] = R.volume
+	blood_data["trace_chem"] = list2params(temp_chem)
+	if(mind)
+		blood_data["mind"] = mind
+	else if(last_mind)
+		blood_data["mind"] = last_mind
+	if(ckey)
+		blood_data["ckey"] = ckey
+	else if(last_mind)
+		blood_data["ckey"] = ckey(last_mind.key)
+
+	if(!suiciding)
+		blood_data["cloneable"] = 1
+	blood_data["blood_type"] = dna.blood_type
+	blood_data["gender"] = gender
+	blood_data["real_name"] = real_name
+	blood_data["features"] = dna.features
+	blood_data["factions"] = faction
+	blood_data["quirks"] = list()
+	for(var/V in quirks)
+		var/datum/quirk/T = V
+		blood_data["quirks"] += T.type
+	return blood_data
 
 //get the id of the substance this mob use as blood.
 /mob/proc/get_blood_id()

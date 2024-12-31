@@ -128,7 +128,7 @@ GLOBAL_LIST_INIT(metal_recipes, list ( \
 ))
 
 /obj/item/stack/sheet/iron
-	name = "iron"
+	name = "iron sheets"
 	desc = "Sheets made out of iron."
 	singular_name = "iron sheet"
 	icon_state = "sheet-metal"
@@ -212,7 +212,7 @@ GLOBAL_LIST_INIT(plasteel_recipes, list ( \
 ))
 
 /obj/item/stack/sheet/plasteel
-	name = "plasteel"
+	name = "plasteel sheets"
 	singular_name = "plasteel sheet"
 	desc = "This sheet is an alloy of iron and plasma."
 	icon_state = "sheet-plasteel"
@@ -287,7 +287,7 @@ GLOBAL_LIST_INIT(wood_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/wood
-	name = "wooden plank"
+	name = "wooden planks"
 	desc = "One can only guess that this is a bunch of wood."
 	singular_name = "wood plank"
 	icon_state = "sheet-wood"
@@ -399,7 +399,7 @@ GLOBAL_LIST_INIT(cloth_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/cloth
-	name = "cloth"
+	name = "cloth rolls"
 	desc = "Is it cotton? Linen? Denim? Burlap? Canvas? You can't tell."
 	singular_name = "cloth roll"
 	icon_state = "sheet-cloth"
@@ -433,7 +433,7 @@ GLOBAL_LIST_INIT(durathread_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/durathread
-	name = "durathread"
+	name = "durathread rolls"
 	desc = "A fabric sown from incredibly durable threads, known for its usefulness in armor production."
 	singular_name = "durathread roll"
 	icon_state = "sheet-durathread"
@@ -453,6 +453,7 @@ GLOBAL_LIST_INIT(durathread_recipes, list ( \
 	name = "raw cotton bundle"
 	desc = "A bundle of raw cotton ready to be spun on the loom."
 	singular_name = "raw cotton ball"
+	multiple_gender = NEUTER
 	icon_state = "sheet-cotton"
 	resistance_flags = FLAMMABLE
 	force = 0
@@ -462,14 +463,20 @@ GLOBAL_LIST_INIT(durathread_recipes, list ( \
 	var/loom_result = /obj/item/stack/sheet/cloth
 	grind_results = list(/datum/reagent/cellulose = 20)
 
+	dynamically_set_name = FALSE
+
 /obj/item/stack/sheet/cotton/durathread
 	name = "raw durathread bundle"
 	desc = "A bundle of raw durathread ready to be spun on the loom."
 	singular_name = "raw durathread ball"
+	multiple_gender = NEUTER
+
 	icon_state = "sheet-durathreadraw"
 	merge_type = /obj/item/stack/sheet/cotton/durathread
 	loom_result = /obj/item/stack/sheet/durathread
 	grind_results = list()
+
+	dynamically_set_name = FALSE
 
 /*
  * Cardboard
@@ -535,7 +542,7 @@ GLOBAL_LIST_INIT(cardboard_recipes, list ( \
 ))
 
 /obj/item/stack/sheet/cardboard //BubbleWrap //it's cardboard you fuck
-	name = "cardboard"
+	name = "cardboard sheets"
 	desc = "Large sheets of card, like boxes folded flat."
 	singular_name = "cardboard sheet"
 	icon_state = "sheet-card"
@@ -588,7 +595,7 @@ GLOBAL_LIST_INIT(runed_metal_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/runed_metal
-	name = "runed metal"
+	name = "runed metal sheets"
 	desc = "Sheets of cold metal with shifting inscriptions writ upon them."
 	singular_name = "runed metal sheet"
 	icon_state = "sheet-runed"
@@ -646,7 +653,7 @@ GLOBAL_LIST_INIT(bronze_recipes, list ( \
 ))
 
 /obj/item/stack/sheet/bronze
-	name = "bronze"
+	name = "bronze sheets"
 	desc = "On closer inspection, what appears to be wholly-unsuitable-for-building brass is actually more structurally stable bronze."
 	singular_name = "bronze sheet"
 	icon_state = "sheet-brass"
@@ -737,7 +744,7 @@ GLOBAL_LIST_INIT(plastic_recipes, list(
 	new /datum/stack_recipe("blank wall sign", /obj/item/sign, 1)))
 
 /obj/item/stack/sheet/plastic
-	name = "plastic"
+	name = "plastic sheets"
 	desc = "Compress dinosaur over millions of years, then refine, split and mold, and voila! You have plastic."
 	singular_name = "plastic sheet"
 	icon_state = "sheet-plastic"
@@ -853,3 +860,11 @@ new /datum/stack_recipe("paper frame door", /obj/structure/mineral_door/paperfra
 	amount = 20
 /obj/item/stack/sheet/hauntium/five
 	amount = 5
+
+/obj/item/stack/sheet/gnesis
+	name = "wafers"
+	singular_name = "wafer"
+	material_flags = MATERIAL_EFFECTS | MATERIAL_COLOR
+	mats_per_unit = list(/datum/material/gnesis = MINERAL_MATERIAL_AMOUNT)
+	material_type = /datum/material/gnesis
+	merge_type = /obj/item/stack/sheet/gnesis

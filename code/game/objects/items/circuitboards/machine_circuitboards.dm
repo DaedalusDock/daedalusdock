@@ -744,6 +744,16 @@
 	name = "Party Pod (Machine Board)"
 	build_path = /obj/machinery/sleeper/party
 
+/obj/item/circuitboard/machine/sleeper/mancrowave
+	name = "Thermal Homeostasis Regulator (Machine Board)"
+	build_path = /obj/machinery/sleeper/mancrowave
+	req_components = list(
+		/obj/item/stock_parts/scanning_module = 1,
+		/obj/item/stock_parts/micro_laser = 2,
+		/obj/item/stack/cable_coil = 1,
+		/obj/item/stack/sheet/glass = 2,
+	)
+
 /obj/item/circuitboard/machine/smoke_machine
 	name = "Smoke Machine (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL

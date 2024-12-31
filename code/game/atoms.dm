@@ -710,7 +710,7 @@
  * Produces a signal [COMSIG_PARENT_EXAMINE]
  */
 /atom/proc/examine(mob/user)
-	. = list("[get_examine_string(user, TRUE)].") //PARIAH EDIT CHANGE
+	. = list("[get_examine_string(user, TRUE)].")
 	. += get_name_chaser(user)
 
 	if(desc)
@@ -718,9 +718,16 @@
 
 	. += "<hr>"
 
+	var/list/properties = examine_properties(user)
+	if(length(properties))
+		. += "<i>[jointext(properties, ", ")]</i>"
+		. += "<hr>"
+
 	var/place_linebreak = FALSE
-	if(SScodex.get_codex_entry(get_codex_value(user)))
-		. += "<span class='obviousnotice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>relevant information</a></b> available.</span>"
+	var/datum/codex_entry/entry = SScodex.get_codex_entry(get_codex_value(user))
+	if(entry)
+		var/information_type = length(entry.controls_text) ? "controls" : "relevant information"
+		. += "<span class='obviousnotice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>[information_type]</a></b> available.</span>"
 		place_linebreak = TRUE
 
 	if(isitem(src) && length(slapcraft_examine_hints_for_type(type)))
@@ -764,19 +771,24 @@
 			else
 				. += span_alert("It looks empty.")
 
-	if(isliving(user) && !ismovable(loc) && !ismob(src))
-		var/mob/living/living_user = user
-		if(living_user.stats.cooldown_finished("examine_forensic_evidence_present_[REF(src)]") && !return_blood_DNA() && (return_fibers() || return_fingerprints() || return_trace_DNA() || return_gunshot_residue()))
-			var/datum/roll_result/result = living_user.stat_roll(15, /datum/rpg_skill/forensics)
-			switch(result.outcome)
-				if(CRIT_SUCCESS, SUCCESS)
-					spawn(0)
-						var/text = isitem(src) ? "someone has held this item in the past" : "someone has been here before"
-						to_chat(living_user, result.create_tooltip("Perhaps it is a stray particle of dust, or a smudge on the surface. Whatever it is, you are certain [text]."))
-
-			living_user.stats.set_cooldown("examine_forensic_evidence_present_[REF(src)]", INFINITY)
+	if(ishuman(user) && !ismovable(loc) && !ismob(src))
+		var/mob/living/carbon/human/human_user = user
+		human_user.forensic_analysis_roll(src)
 
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
+
+/**
+ * Called by examine()
+ *
+ * This is where you put generic property tags that can be moused over for more information.
+ *
+ * Produces a signal [COMSIG_PARENT_EXAMINE_PROPERTIES]
+ */
+/atom/proc/examine_properties(mob/user)
+	SHOULD_CALL_PARENT(TRUE)
+	RETURN_TYPE(/list)
+	. = list()
+	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE_PROPERTIES, user, .)
 
 /**
  * Called when a mob examines (shift click or verb) this atom twice (or more) within EXAMINE_MORE_WINDOW (default 1 second)
@@ -840,9 +852,6 @@
 		. |= UPDATE_ICON_STATE
 
 	if(updates & UPDATE_OVERLAYS)
-		if(LAZYLEN(managed_vis_overlays))
-			SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
-
 		var/list/new_overlays = update_overlays(updates)
 		if(managed_overlays)
 			cut_overlay(managed_overlays)
@@ -1105,12 +1114,14 @@
 /**
  * Respond to an electric bolt action on our item
  *
- * Default behaviour is to return, we define here to allow for cleaner code later on
+ * Returns an amount of power to use for future shocks.
  */
 /atom/proc/zap_act(power, zap_flags)
-	return
+	ADD_TRAIT(src, TRAIT_BEING_SHOCKED, WAS_SHOCKED)
+	addtimer(TRAIT_CALLBACK_REMOVE(src, TRAIT_BEING_SHOCKED, WAS_SHOCKED), 1 SECONDS, TIMER_UNIQUE|TIMER_NO_HASH_WAIT)
+	return 0
 
-/**
+/**s
  * If someone's trying to dump items onto our atom, where should they be dumped to?
  *
  * Return a loc to place objects, or null to stop dumping.
@@ -1150,8 +1161,13 @@
  */
 /atom/proc/setDir(newdir)
 	SHOULD_CALL_PARENT(TRUE)
+	if(newdir == dir)
+		return null
+
+	. = dir
 	SEND_SIGNAL(src, COMSIG_ATOM_DIR_CHANGE, dir, newdir)
 	dir = newdir
+	return .
 
 /**
  * Called when the atom log's in or out
@@ -1259,11 +1275,11 @@
 	switch(var_name)
 		if(NAMEOF(src, light_inner_range))
 			if(light_system == COMPLEX_LIGHT)
-				set_light(l_inner_range = var_value)
+				set_light(l_outer_range = light_outer_range, l_inner_range = var_value, )
 				. = TRUE
 		if(NAMEOF(src, light_outer_range))
 			if(light_system == COMPLEX_LIGHT)
-				set_light(l_outer_range = var_value)
+				set_light(l_outer_range = var_value, l_inner_range = light_inner_range)
 			else
 				set_light_range(var_value)
 			. = TRUE
@@ -1280,7 +1296,10 @@
 				set_light_color(var_value)
 			. = TRUE
 		if(NAMEOF(src, light_on))
-			set_light_on(var_value)
+			if(light_system == COMPLEX_LIGHT)
+				set_light(l_on = var_value)
+			else
+				set_light_color(var_value)
 			. = TRUE
 		if(NAMEOF(src, light_flags))
 			set_light_flags(var_value)
@@ -2297,6 +2316,22 @@
 //Currently only changed by Observers to be hearing through their orbit target.
 /atom/proc/hear_location()
 	return src
+
+/// Add an atom or list of atoms to our vis_contents
+/atom/proc/add_viscontents(atom/A)
+	src:vis_contents += A
+
+/// Add an atom or list of atoms to our vis_contents, atoms already present will be ignored
+/atom/proc/distinct_add_viscontents(atom/A)
+	src:vis_contents |= A
+
+/// Remove an atom or list of atoms from our vis_contents
+/atom/proc/remove_viscontents(atom/A)
+	src:vis_contents -= A
+
+/// Cut our vis_contents
+/atom/proc/cut_viscontents()
+	src:vis_contents:len = 0
 
 /// Makes this atom look like a "hologram"
 /// So transparent, blue and with a scanline

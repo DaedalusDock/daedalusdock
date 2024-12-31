@@ -11,7 +11,11 @@ DEFINE_INTERACTABLE(/mob/living)
 
 	hud_type = /datum/hud/living
 
-	var/resize = 1 ///Badminnery resize
+	///Tracks the scale of the mob transformation matrix in relation to its identity. Use update_transform(resize) to change it.
+	var/current_size = RESIZE_DEFAULT_SIZE
+	///How the mob transformation matrix is scaled on init.
+	var/initial_size = RESIZE_DEFAULT_SIZE
+
 	var/lastattacker = null
 	var/lastattackerckey = null
 
@@ -25,13 +29,15 @@ DEFINE_INTERACTABLE(/mob/living)
 	var/datum/stats/stats
 	///The holder for stamina handling
 	var/datum/stamina_container/stamina
+	/// Mood datum, can be null.
+	var/datum/mood/mob_mood
 
 	//Damage related vars, NOTE: THESE SHOULD ONLY BE MODIFIED BY PROCS
-	VAR_PROTECTED/bruteloss = 0 ///Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
-	VAR_PROTECTED/oxyloss = 0 ///Oxygen depravation damage (no air in lungs)
-	VAR_PROTECTED/toxloss = 0 ///Toxic damage caused by being poisoned or radiated
-	VAR_PROTECTED/fireloss = 0 ///Burn damage caused by being way too hot, too cold or burnt.
-	VAR_PROTECTED/cloneloss = 0 ///Damage caused by being cloned or ejected from the cloner early. slimes also deal cloneloss damage to victims
+	VAR_PROTECTED/bruteloss = 0 //!Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
+	VAR_PROTECTED/oxyloss = 0 //!Oxygen depravation damage (no air in lungs)
+	VAR_PROTECTED/toxloss = 0 //!Toxic damage caused by being poisoned or radiated
+	VAR_PROTECTED/fireloss = 0 //!Burn damage caused by being way too hot, too cold or burnt.
+	VAR_PROTECTED/cloneloss = 0 //!Damage caused by being cloned or ejected from the cloner early. slimes also deal cloneloss damage to victims
 
 	var/crit_threshold = HEALTH_THRESHOLD_CRIT /// when the mob goes from "normal" to crit
 	///When the mob enters hard critical state and is fully incapacitated.
@@ -60,6 +66,8 @@ DEFINE_INTERACTABLE(/mob/living)
 	VAR_PROTECTED/lying_angle = 0
 	/// Value of lying lying_angle before last change. TODO: Remove the need for this.
 	var/lying_prev = 0
+	/// Does the mob rotate when lying
+	var/rotate_on_lying = FALSE
 
 	var/hallucination = 0 ///Directly affects how long a mob will hallucinate for
 
@@ -177,10 +185,12 @@ DEFINE_INTERACTABLE(/mob/living)
 	/// A lazylist of grab objects we have
 	var/list/active_grabs
 
-	///The y amount a mob's sprite should be offset due to the current position they're in (e.g. lying down moves your sprite down)
-	var/body_position_pixel_x_offset = 0
 	///The x amount a mob's sprite should be offset due to the current position they're in
+	var/body_position_pixel_x_offset = 0
+	///The y amount a mob's sprite should be offset due to the current position they're in or size (e.g. lying down moves your sprite down)
 	var/body_position_pixel_y_offset = 0
+	///The height offset of a mob's maptext due to their current size.
+	var/body_maptext_height_offset = 0
 
 	///what multiplicative slowdown we get from turfs currently.
 	var/current_turf_slowdown = 0

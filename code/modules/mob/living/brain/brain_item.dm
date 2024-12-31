@@ -132,7 +132,9 @@
 			LAZYSET(brainmob.status_traits, TRAIT_BADDNA, L.status_traits[TRAIT_BADDNA])
 	if(L.mind && L.mind.current)
 		L.mind.transfer_to(brainmob)
-	to_chat(brainmob, span_notice("You feel slightly disoriented. That's normal when you're just a brain."))
+
+	if(brainmob.stat == CONSCIOUS)
+		to_chat(brainmob, span_notice("You feel slightly disoriented. That's normal when you're just a brain."))
 
 /obj/item/organ/brain/attackby(obj/item/O, mob/user, params)
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -274,20 +276,20 @@
 	switch(blood_percent)
 		if(BLOOD_CIRC_SAFE to INFINITY)
 			if(can_heal)
-				. |= applyOrganDamage(-1, updating_health = FALSE)
+				applyOrganDamage(-1)
 
 		if(BLOOD_CIRC_OKAY to BLOOD_CIRC_SAFE)
 			if(owner.stat == CONSCIOUS && prob(1))
 				to_chat(owner, span_warning("You feel [pick("dizzy","woozy","faint")]..."))
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 30 : 60
 			if(!past_damage_threshold(2) && prob(damprob))
-				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+				applyOrganDamage(BRAIN_DECAY_RATE, cause_of_death = "Hypoxemia")
 
 		if(BLOOD_CIRC_BAD to BLOOD_CIRC_OKAY)
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 40 : 80
 			if(!past_damage_threshold(4) && prob(damprob))
-				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+				applyOrganDamage(BRAIN_DECAY_RATE, cause_of_death = "Hypoxemia")
 
 			if(owner.stat == CONSCIOUS && prob(10))
 				log_health(owner, "Passed out due to poor blood oxygenation, random chance.")
@@ -298,7 +300,7 @@
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 60 : 100
 			if(!past_damage_threshold(6) && prob(damprob))
-				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+				applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE, cause_of_death = "Hypoxemia")
 
 			if(owner.stat == CONSCIOUS && prob(15))
 				log_health(owner, "Passed out due to poor blood oxygenation, random chance.")
@@ -309,9 +311,9 @@
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 80 : 100
 			if(prob(damprob))
-				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+				applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE, cause_of_death = "Hypoxemia")
 			if(prob(damprob))
-				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+				applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE, cause_of_death = "Hypoxemia")
 	. = ..()
 
 /obj/item/organ/brain/check_damage_thresholds(mob/M)
@@ -373,28 +375,21 @@
 			to_chat(owner, span_danger("You black out!"))
 		owner.Unconscious(5 SECOND)
 
-/obj/item/organ/brain/applyOrganDamage(damage_amount, maximum, silent, updating_health = TRUE)
-	. = ..()
-	if(. >= 20) //This probably won't be triggered by oxyloss or mercury. Probably.
-		var/damage_secondary = min(. * 0.2, 20)
-		if (owner)
-			owner.flash_act(visual = TRUE)
-			owner.blur_eyes(.)
-			owner.adjust_confusion(. SECONDS)
-			owner.Unconscious(damage_secondary SECONDS)
-
 /obj/item/organ/brain/getToxLoss()
 	return 0
 
-/obj/item/organ/brain/set_organ_dead(failing)
+/obj/item/organ/brain/set_organ_dead(failing, cause_of_death, change_mob_stat = TRUE)
 	. = ..()
 	if(!.)
 		return
+	if(!change_mob_stat)
+		return
+
 	if(failing)
 		if(owner)
-			owner.death()
+			owner.death(cause_of_death = cause_of_death)
 		else if(brainmob)
-			brainmob.death()
+			brainmob.death(cause_of_death = cause_of_death)
 		return
 	else
 		if(owner)
@@ -602,7 +597,7 @@
 
 /obj/item/organ/brain/get_scan_results(tag)
 	. = ..()
-	var/list/traumas = owner.get_traumas()
+	var/list/traumas = owner?.get_traumas()
 	if(!length(traumas))
 		return
 

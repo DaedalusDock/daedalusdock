@@ -17,23 +17,46 @@
 
 /obj/item/stack
 	icon = 'icons/obj/stack_objects.dmi'
-	gender = PLURAL
+	maptext_x = -4
+	maptext_y = 2
+
 	material_modifier = 0.05 //5%, so that a 50 sheet stack has the effect of 5k materials instead of 100k.
 	max_integrity = 100
 
 	var/list/datum/stack_recipe/recipes
+	/// The name of one piece of the stack.
 	var/singular_name
+	/// The gender of a single instance of the stack.
+	var/singular_gender = NEUTER
+
+	/// The name used to describe the group of objects.
+	var/stack_name = "stack"
+	/// The gender of the stack.
+	var/multiple_gender = PLURAL
+
+	/// The amount of STUFF currently in the stack.
 	var/amount = 1
-	var/max_amount = 50 //also see stack recipes initialisation, param "max_res_amount" must be equal to this max_amount
-	var/is_cyborg = FALSE // It's TRUE if module is used by a cyborg, and uses its storage
+	/// The maximum amount of STUFF this stack can hold. also see stack recipes initialisation, param "max_res_amount" must be equal to this max_amount
+	var/max_amount = 50
+
+	/// This path and its children should merge with this stack, defaults to src.type
+	var/merge_type = null
+	/// The weight class the stack should have at amount > 2/3rds max_amount
+	var/full_w_class = WEIGHT_CLASS_NORMAL
+	/// If FALSE, the stack changes icon state based on the ratio of amount to max amount.
+	var/novariants = TRUE
+	/// If TRUE, dynamically adjust the name of the item based on singular/plural quantities.
+	var/dynamically_set_name = FALSE
+	/// list that tells you how much is in a single unit.
+	var/list/mats_per_unit
+	/// Datum material type that this stack is made of
+	var/material_type
+
 	var/datum/robot_energy_storage/source
 	var/cost = 1 // How much energy from storage it costs
-	var/merge_type = null // This path and its children should merge with this stack, defaults to src.type
-	var/full_w_class = WEIGHT_CLASS_NORMAL //The weight class the stack should have at amount > 2/3rds max_amount
-	var/novariants = TRUE //Determines whether the item should update it's sprites based on amount.
-	var/list/mats_per_unit //list that tells you how much is in a single unit.
-	///Datum material type that this stack is made of
-	var/material_type
+	/// It's TRUE if module is used by a cyborg, and uses its storage
+	var/is_cyborg = FALSE
+
 	//NOTE: When adding grind_results, the amounts should be for an INDIVIDUAL ITEM - these amounts will be multiplied by the stack size in on_grind()
 	var/obj/structure/table/tableVariant // we tables now (stores table variant to be built from this stack)
 
@@ -101,6 +124,52 @@
 		COMSIG_ATOM_ENTERED = PROC_REF(on_movable_entered_occupied_turf),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+
+/obj/item/stack/update_appearance(updates)
+	. = ..()
+	update_gender()
+
+/obj/item/stack/update_name(updates)
+	if(dynamically_set_name)
+		if(amount > 1)
+			name = initial(name)
+		else
+			name = singular_name
+	return ..()
+
+/// Update the gender var based on if the stack contains 1 or more items.
+/obj/item/stack/proc/update_gender() // Maybe the funniest proc name ever
+	if(amount > 1)
+		gender = multiple_gender
+	else
+		gender = singular_gender
+
+/obj/item/stack/equipped(mob/user, slot, initial)
+	. = ..()
+	update_maptext()
+
+/obj/item/stack/dropped(mob/user, silent)
+	. = ..()
+	update_maptext()
+
+/obj/item/stack/on_enter_storage(datum/storage/master_storage)
+	. = ..()
+	update_maptext()
+
+/obj/item/stack/on_exit_storage(datum/storage/master_storage)
+	. = ..()
+	update_maptext()
+
+/// Set the maptext for the item that shows how much junk is inside the trunk.
+/obj/item/stack/proc/update_maptext()
+	if(item_flags & (IN_INVENTORY|IN_STORAGE))
+		maptext = MAPTEXT("<span style='text-align: right'>[amount]</span>")
+	else
+		maptext = null
+
+/obj/item/stack/examine_properties(mob/user)
+	. = ..()
+	. += PROPERTY_STACKABLE
 
 /** Sets the amount of materials per unit for this stack.
  *
@@ -171,16 +240,10 @@
 
 	if(singular_name)
 		if(plural)
-			. += span_notice("There are [get_amount()] [singular_name]\s in the stack.")
-		else
-			. += span_notice("There is [get_amount()] [singular_name] in the stack.")
+			. += span_notice("There are [get_amount()] [singular_name]\s in the [stack_name].")
 
 	else if(plural)
-		. += span_notice("There are [get_amount()] in the stack.")
-	else
-		. += span_notice("There is [get_amount()] in the stack.")
-
-	. += span_notice("<b>Right-click</b> with an empty hand to take a custom amount.")
+		. += span_notice("There are [get_amount()] in the [stack_name].")
 
 	if(absorption_capacity < initial(absorption_capacity))
 		if(absorption_capacity == 0)
@@ -573,14 +636,17 @@
 
 	if(is_cyborg || !user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
+
 	if(is_zero_amount(delete_if_zero = TRUE))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
 	var/max = get_amount()
 	var/stackmaterial = tgui_input_number(user, "How many sheets do you wish to take out of this stack?", "Stack Split", max_value = max)
 	if(!stackmaterial || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
 	split_stack(user, stackmaterial, user)
-	to_chat(user, span_notice("You take [stackmaterial] sheets out of the stack."))
+	to_chat(user, span_notice("You take [stackmaterial] [singular_name || "sheets"] out of the [stack_name]."))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /** Splits the stack into two stacks.
@@ -610,7 +676,7 @@
 	if(can_merge(W, inhand = TRUE))
 		var/obj/item/stack/S = W
 		if(merge(S))
-			to_chat(user, span_notice("Your [S.name] stack now contains [S.get_amount()] [S.singular_name]\s."))
+			to_chat(user, span_notice("[S] [stack_name] of [S.name] now contains [S.get_amount()] [S.singular_name]\s."))
 	else
 		. = ..()
 

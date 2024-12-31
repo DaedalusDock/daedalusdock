@@ -50,7 +50,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/body_scan_display, 32)
 		return
 
 	. += image(icon, "operating")
-	. += emissive_appearance(icon, "operating")
+	. += emissive_appearance(icon, "operating", alpha = 90)
 
 /obj/machinery/body_scan_display/Topic(href, href_list)
 	. = ..()

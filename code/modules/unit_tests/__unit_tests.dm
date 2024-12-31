@@ -166,6 +166,7 @@
 #include "serving_tray.dm"
 #include "siunit.dm"
 #include "slapcraft_sanity.dm"
+#include "snapback_sanity.dm"
 #include "spawn_humans.dm"
 #include "spawn_mobs.dm"
 #include "species_config_sanity.dm"

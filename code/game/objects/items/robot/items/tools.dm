@@ -118,7 +118,7 @@
 			return host.loc
 	return null
 
-/obj/item/borg/projectile_dampen/dropped()
+/obj/item/borg/projectile_dampen/unequipped()
 	host = loc
 	return ..()
 

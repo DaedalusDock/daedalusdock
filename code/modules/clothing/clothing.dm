@@ -287,7 +287,7 @@
 	QDEL_NULL(moth_snack)
 	return ..()
 
-/obj/item/clothing/dropped(mob/living/user)
+/obj/item/clothing/unequipped(mob/living/user)
 	..()
 	if(!istype(user))
 		return

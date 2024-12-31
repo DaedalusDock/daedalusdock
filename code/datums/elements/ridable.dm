@@ -157,7 +157,7 @@
 	var/mob/living/parent
 	var/selfdeleting = FALSE
 
-/obj/item/riding_offhand/dropped()
+/obj/item/riding_offhand/unequipped()
 	selfdeleting = TRUE
 	. = ..()
 

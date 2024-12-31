@@ -155,7 +155,7 @@
 	if(slot == ITEM_SLOT_OCLOTHING)
 		disguise(user)
 
-/obj/item/clothing/suit/cardborg/dropped(mob/living/user)
+/obj/item/clothing/suit/cardborg/unequipped(mob/living/user)
 	..()
 	user.remove_alt_appearance("standard_borg_disguise")
 
@@ -242,7 +242,7 @@
 	if (slot == ITEM_SLOT_HEAD)
 		user.faction |= "carp"
 
-/obj/item/clothing/head/hooded/carp_hood/dropped(mob/living/carbon/human/user)
+/obj/item/clothing/head/hooded/carp_hood/unequipped(mob/living/carbon/human/user)
 	..()
 	if (user.head == src)
 		user.faction -= "carp"

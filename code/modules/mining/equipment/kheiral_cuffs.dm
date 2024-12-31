@@ -46,7 +46,7 @@
 	playsound(loc, 'sound/weapons/handcuffs.ogg', 30, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	connect_kheiral_network(user)
 
-/obj/item/kheiral_cuffs/dropped(mob/user, silent)
+/obj/item/kheiral_cuffs/unequipped(mob/user, silent)
 	. = ..()
 	if(on_wrist)
 		playsound(loc, 'sound/weapons/handcuffs.ogg', 30, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)

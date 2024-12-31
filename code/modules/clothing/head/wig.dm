@@ -19,7 +19,7 @@
 	if(ishuman(user) && slot == ITEM_SLOT_HEAD)
 		item_flags |= EXAMINE_SKIP
 
-/obj/item/clothing/head/wig/dropped(mob/user)
+/obj/item/clothing/head/wig/unequipped(mob/user)
 	. = ..()
 	item_flags &= ~EXAMINE_SKIP
 

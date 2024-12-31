@@ -407,7 +407,7 @@
 		icon_state = "[base_icon_state][wielded]_cooldown"
 	return ..()
 
-/obj/item/shockpaddles/dropped(mob/user)
+/obj/item/shockpaddles/unequipped(mob/user)
 	. = ..()
 	if(user)
 		UnregisterSignal(user, COMSIG_MOVABLE_MOVED)

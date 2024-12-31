@@ -65,7 +65,7 @@
 		update_hud_icon(user) // update the hud
 
 // On removal stop processing, save battery
-/obj/item/clothing/suit/space/dropped(mob/user)
+/obj/item/clothing/suit/space/unequipped(mob/user)
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 	var/mob/living/carbon/human/human = user

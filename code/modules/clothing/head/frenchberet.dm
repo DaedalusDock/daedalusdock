@@ -16,7 +16,7 @@
 		UnregisterSignal(M, COMSIG_MOB_SAY)
 		REMOVE_TRAIT(M, TRAIT_GARLIC_BREATH, type)
 
-/obj/item/clothing/head/frenchberet/dropped(mob/M)
+/obj/item/clothing/head/frenchberet/unequipped(mob/M)
 	. = ..()
 	UnregisterSignal(M, COMSIG_MOB_SAY)
 	REMOVE_TRAIT(M, TRAIT_GARLIC_BREATH, type)

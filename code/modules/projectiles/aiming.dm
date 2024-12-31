@@ -45,7 +45,7 @@
 		),
 		PROC_REF(cancel)
 	)
-	RegisterSignal(tool, list(COMSIG_ITEM_DROPPED, COMSIG_ITEM_EQUIPPED), PROC_REF(check_item))
+	RegisterSignal(tool, list(COMSIG_ITEM_UNEQUIPPED, COMSIG_ITEM_EQUIPPED), PROC_REF(check_item))
 
 	user.apply_status_effect(/datum/status_effect/holdup, user)
 	target.apply_status_effect(/datum/status_effect/grouped/heldup, REF(user))

@@ -105,7 +105,7 @@
 	user.pixel_y -= offset
 	worn_y_dimension = world.icon_size
 
-/obj/item/clothing/shoes/dropped(mob/user)
+/obj/item/clothing/shoes/unequipped(mob/user)
 	var/atom/movable/screen/alert/our_alert = our_alert_ref?.resolve()
 	if(!our_alert)
 		our_alert_ref = null

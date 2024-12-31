@@ -145,6 +145,6 @@
 	. = ..()
 	icon_state = alt_icon
 
-/obj/item/food/grown/citrus/orange_3d/dropped(mob/user)
+/obj/item/food/grown/citrus/orange_3d/unequipped(mob/user)
 	. = ..()
 	icon_state = initial(icon_state)

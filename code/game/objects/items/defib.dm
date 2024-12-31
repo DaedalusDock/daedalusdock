@@ -142,7 +142,7 @@
 
 /obj/item/defibrillator/AltClick(mob/user)
 	. = ..()
-	if(!user.canUseTopic(src, USE_CLOSE|USE_NEED_HANDS))
+	if(on || !user.canUseTopic(src, USE_CLOSE|USE_NEED_HANDS))
 		return
 
 	toggle_paddles(user)

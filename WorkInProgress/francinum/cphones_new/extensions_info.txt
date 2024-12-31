@@ -1,0 +1,40 @@
+//Var
+list(
+	//Extension
+	"0003" = list(
+		//Authentication secret.
+		"secret" = "auth_secret",
+		//Caller Name. Replacement for p2p_phone friendly_name. Optional, Uses the extension number otherwise.
+		"cnam" = "Bar",
+		//Registered phones.
+		"reg" = list(
+			"net_addr_here" = bool:busy
+		)
+	)
+)
+
+
+// signal protocol
+
+user send:
+{
+	"proto":"sip",
+	"verb":"register",
+	"user":"$EXTNUM",
+	"auth":"$SECRET",
+}
+exchange reply:
+{
+	"proto":"sip",
+	"verb":"ack",
+	"user":"$EXTNUM",
+	"reg_token":"$token",
+}
+
+
+//keepalive, Intentionally doesn't include password.
+{
+	"proto":"sip",
+	"verb":"reauth",
+	"user":"$EXTNUM",
+}

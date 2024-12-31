@@ -3934,7 +3934,6 @@
 #include "code\modules\power\apc\apc_networking.dm"
 #include "code\modules\power\apc\apc_power_proc.dm"
 #include "code\modules\power\apc\apc_tool_act.dm"
-#include "code\modules\power\lighting\_light_defines.dm"
 #include "code\modules\power\lighting\floor_light.dm"
 #include "code\modules\power\lighting\light.dm"
 #include "code\modules\power\lighting\light_construct.dm"

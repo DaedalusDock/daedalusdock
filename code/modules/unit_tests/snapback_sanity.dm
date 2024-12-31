@@ -5,7 +5,7 @@
 	var/mob/living/carbon/human/user = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/defibrillator/defib = ALLOCATE_BOTTOM_LEFT()
 
-	TEST_ASSERT(user.put_in_hands(defib.paddles), "Mob failed to equip defib paddles.")
+	TEST_ASSERT(defib.toggle_paddles(user), "Mob failed to equip defib paddles.")
 	user.forceMove(locate(user.x + 2, user.y, user.z))
 
 	TEST_ASSERT(!user.is_holding(defib.paddles), "Mob is still holding defib paddles after moving out of range.")

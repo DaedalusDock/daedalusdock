@@ -2217,10 +2217,6 @@
 	},
 /turf/open/floor/plating,
 /area/station/hallway/primary/fore)
-"aLB" = (
-/obj/effect/landmark/start/lawyer,
-/turf/open/floor/iron,
-/area/station/security/courtroom)
 "aLZ" = (
 /obj/effect/landmark/blobstart,
 /obj/effect/mapping_helpers/broken_floor,
@@ -3272,7 +3268,6 @@
 	},
 /obj/machinery/light/small/directional/east,
 /obj/machinery/newscaster/directional/south,
-/obj/effect/landmark/start/assistant,
 /obj/machinery/button/door/directional/east{
 	name = "Lock Control";
 	id = "AuxToilet2";
@@ -4254,15 +4249,6 @@
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
 /turf/open/floor/iron/white,
 /area/station/hallway/secondary/entry)
-"bvD" = (
-/obj/structure/chair,
-/obj/effect/landmark/start/assistant,
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/yellow/opposingcorners,
-/turf/open/floor/iron/white,
-/area/station/hallway/secondary/entry)
 "bvF" = (
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
 /turf/open/floor/iron/white,
@@ -5209,7 +5195,6 @@
 "bLx" = (
 /obj/structure/bed,
 /obj/item/bedsheet/captain,
-/obj/effect/landmark/start/captain,
 /obj/machinery/camera/directional/east{
 	c_tag = "Captain's Quarters"
 	},
@@ -6646,7 +6631,6 @@
 /turf/open/floor/iron,
 /area/station/security/prison/rec)
 "cpY" = (
-/obj/effect/landmark/start/captain,
 /obj/machinery/airalarm/directional/south,
 /obj/machinery/light/small/directional/east,
 /turf/open/floor/wood,
@@ -7319,7 +7303,6 @@
 /obj/structure/chair/office{
 	dir = 8
 	},
-/obj/effect/landmark/start/psychologist,
 /obj/machinery/airalarm/directional/east,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood,
@@ -12119,7 +12102,6 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/starboard)
 "etx" = (
-/obj/effect/landmark/start/bartender,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/decal/cleanable/dirt,
@@ -15180,7 +15162,6 @@
 /turf/open/floor/iron/dark,
 /area/station/security/office/hall)
 "fBB" = (
-/obj/effect/landmark/start/station_engineer,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
 	},
@@ -18610,13 +18591,6 @@
 /obj/machinery/atmospherics/pipe/smart/simple/yellow/visible,
 /turf/open/space/basic,
 /area/space/nearstation)
-"gQz" = (
-/obj/effect/landmark/start/botanist,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/decal/cleanable/dirt,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/iron,
-/area/station/service/hydroponics)
 "gQE" = (
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
@@ -20262,7 +20236,6 @@
 /area/station/maintenance/starboard/lesser)
 "hIa" = (
 /obj/structure/chair,
-/obj/effect/landmark/start/chaplain,
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron/grimy,
 /area/station/service/chapel/office)
@@ -20367,7 +20340,6 @@
 /turf/closed/wall/r_wall/prepainted/daedalus,
 /area/station/engineering/atmos)
 "hJT" = (
-/obj/effect/landmark/start/head_of_personnel,
 /obj/structure/chair/office{
 	dir = 8
 	},
@@ -20848,7 +20820,6 @@
 /area/station/service/hydroponics)
 "hTk" = (
 /obj/structure/chair/office,
-/obj/effect/landmark/start/head_of_personnel,
 /obj/machinery/light_switch{
 	pixel_x = 38;
 	pixel_y = -35
@@ -21235,10 +21206,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/cargo/sorting)
-"iaO" = (
-/obj/effect/landmark/start/lawyer,
-/turf/open/floor/wood,
-/area/station/service/lawoffice)
 "ibe" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
@@ -23484,7 +23451,6 @@
 /turf/open/floor/iron/dark,
 /area/station/engineering/gravity_generator)
 "iPY" = (
-/obj/effect/landmark/start/lawyer,
 /obj/structure/chair/office{
 	dir = 4
 	},
@@ -23885,7 +23851,6 @@
 	},
 /obj/machinery/light/small/directional/east,
 /obj/machinery/newscaster/directional/south,
-/obj/effect/landmark/start/assistant,
 /obj/machinery/button/door/directional/east{
 	name = "Lock Control";
 	id = "AuxToilet1";
@@ -25621,7 +25586,6 @@
 /area/station/hallway/primary/central/fore)
 "jHS" = (
 /obj/machinery/light/small/directional/east,
-/obj/effect/landmark/start/chaplain,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/office)
 "jIl" = (
@@ -25670,7 +25634,6 @@
 /obj/structure/chair/comfy/black{
 	dir = 8
 	},
-/obj/effect/landmark/start/head_of_security,
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/hos)
 "jIZ" = (
@@ -30104,7 +30067,6 @@
 /obj/structure/disposalpipe/sorting/mail{
 	sortType = 4
 	},
-/obj/effect/landmark/start/station_engineer,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable/yellow{
@@ -34667,7 +34629,6 @@
 /obj/structure/chair{
 	dir = 1
 	},
-/obj/effect/landmark/start/chaplain,
 /obj/item/radio/intercom/chapel/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/office)
@@ -37754,7 +37715,6 @@
 /obj/structure/chair/office/light{
 	dir = 8
 	},
-/obj/effect/landmark/start/virologist,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -43705,7 +43665,6 @@
 /area/station/hallway/secondary/exit/departure_lounge)
 "qko" = (
 /obj/structure/chair/office/light,
-/obj/effect/landmark/start/virologist,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/light/floor/has_bulb,
 /obj/structure/cable/yellow{
@@ -46277,7 +46236,6 @@
 /area/station/security/prison/workout)
 "rlY" = (
 /obj/structure/chair/office,
-/obj/effect/landmark/start/quartermaster,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood,
@@ -47933,7 +47891,6 @@
 	pixel_y = 13
 	},
 /obj/machinery/light/directional/south,
-/obj/effect/landmark/start/captain,
 /obj/machinery/light_switch/directional/south,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/white,
@@ -50135,12 +50092,6 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/iron/dark,
 /area/station/security/deck)
-"sEy" = (
-/obj/structure/chair,
-/obj/effect/landmark/start/chaplain,
-/obj/effect/turf_decal/tile/neutral/fourcorners,
-/turf/open/floor/iron/dark,
-/area/station/service/chapel/funeral)
 "sED" = (
 /obj/structure/cable/yellow{
 	icon_state = "18"
@@ -51338,10 +51289,6 @@
 	dir = 8
 	},
 /area/station/service/chapel)
-"tdc" = (
-/obj/effect/landmark/start/station_engineer,
-/turf/open/floor/iron,
-/area/station/engineering/main)
 "tdh" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -52294,7 +52241,6 @@
 /obj/structure/chair{
 	dir = 8
 	},
-/obj/effect/landmark/start/assistant,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/station/commons/fitness/recreation)
@@ -59214,7 +59160,6 @@
 /obj/machinery/shower{
 	dir = 8
 	},
-/obj/effect/landmark/start/assistant,
 /turf/open/floor/iron/freezer,
 /area/station/commons/toilet/restrooms)
 "wfw" = (
@@ -60756,7 +60701,6 @@
 	},
 /obj/machinery/light/small/directional/east,
 /obj/machinery/newscaster/directional/east,
-/obj/effect/landmark/start/assistant,
 /obj/machinery/button/door/directional/south{
 	name = "Lock Control";
 	id = "Toilet4";
@@ -61287,7 +61231,6 @@
 	},
 /obj/machinery/light/small/directional/west,
 /obj/machinery/newscaster/directional/south,
-/obj/effect/landmark/start/assistant,
 /obj/effect/spawner/random/trash/graffiti{
 	pixel_x = -32;
 	spawn_loot_chance = 50
@@ -61458,7 +61401,6 @@
 /turf/open/floor/iron/dark,
 /area/station/engineering/atmos)
 "wVC" = (
-/obj/effect/landmark/start/station_engineer,
 /obj/machinery/light/directional/west,
 /obj/structure/sign/warning/electricshock{
 	pixel_x = -31
@@ -62603,10 +62545,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/command)
-"xrk" = (
-/obj/effect/landmark/start/chaplain,
-/turf/open/floor/iron/dark,
-/area/station/service/chapel)
 "xro" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -73814,7 +73752,7 @@ aaa
 aaa
 aaa
 uwS
-bvD
+aVw
 aWU
 oWO
 oWO
@@ -75090,7 +75028,7 @@ aaa
 aaa
 lMJ
 oWO
-bvD
+aVw
 aWU
 oWO
 aaa
@@ -75347,7 +75285,7 @@ lAu
 oWO
 oWO
 oWO
-bvD
+aVw
 aWU
 oWO
 lAu
@@ -85955,7 +85893,7 @@ eVO
 dYv
 iDZ
 dYv
-sEy
+rJC
 msw
 lAu
 aaa
@@ -88524,7 +88462,7 @@ uXC
 uXC
 uXC
 lUv
-xrk
+rAV
 anw
 kuN
 lAu
@@ -94085,7 +94023,7 @@ neP
 vxI
 kXl
 oux
-aLB
+aIR
 rti
 tvB
 lqA
@@ -95885,7 +95823,7 @@ psj
 jJG
 tJj
 aGw
-iaO
+foq
 osJ
 xsV
 qBB
@@ -102606,7 +102544,7 @@ oCO
 bnj
 lES
 nGF
-gQz
+rhw
 sAD
 qbl
 qQH
@@ -105646,7 +105584,7 @@ agk
 wwz
 bIp
 muT
-tdc
+muT
 muT
 lGN
 bCR

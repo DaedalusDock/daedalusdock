@@ -9,6 +9,8 @@
 		mutations_by_plant[mutation.plant_type] = mutation.type
 
 	for(var/datum/plant/P as anything in subtypesof(/datum/plant))
+		if(isabstract(P))
+			continue
 		P = new P
 		var/list/mechanics = list()
 

@@ -16,7 +16,8 @@
 
 /obj/machinery/projector/Initialize(mapload)
 	. = ..()
-	SSticker.OnRoundstart(CALLBACK(src, PROC_REF(play), 5 SECONDS))
+	if(!SSticker.HasRoundStarted())
+		SSticker.OnRoundstart(CALLBACK(src, PROC_REF(play), 5 SECONDS))
 
 /obj/machinery/projector/update_icon_state()
 	icon_state = "[base_icon_state][playing]"

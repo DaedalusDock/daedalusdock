@@ -44,7 +44,7 @@
 			return
 	return ..()
 
-/obj/item/clothing/head/foilhat/dropped(mob/user)
+/obj/item/clothing/head/foilhat/unequipped(mob/user)
 	. = ..()
 	if(paranoia)
 		QDEL_NULL(paranoia)

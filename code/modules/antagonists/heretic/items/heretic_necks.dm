@@ -31,7 +31,7 @@
 	ADD_TRAIT(user, heretic_only_trait, "[CLOTHING_TRAIT] [REF(src)]")
 	user.update_sight()
 
-/obj/item/clothing/neck/eldritch_amulet/dropped(mob/user)
+/obj/item/clothing/neck/eldritch_amulet/unequipped(mob/user)
 	. = ..()
 	REMOVE_TRAIT(user, heretic_only_trait, "[CLOTHING_TRAIT] [REF(src)]")
 	user.update_sight()

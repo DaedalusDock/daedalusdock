@@ -24,7 +24,7 @@
 	if(slot != ITEM_SLOT_EYES)
 		user.client.close_popup("spypopup")
 
-/obj/item/clothing/glasses/sunglasses/spy/dropped(mob/user)
+/obj/item/clothing/glasses/sunglasses/spy/unequipped(mob/user)
 	. = ..()
 	user.client.close_popup("spypopup")
 

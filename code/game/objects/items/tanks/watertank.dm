@@ -96,7 +96,7 @@
 	else
 		return ..()
 
-/obj/item/watertank/dropped(mob/user)
+/obj/item/watertank/unequipped(mob/user)
 	..()
 	remove_noz()
 
@@ -218,7 +218,7 @@
 /obj/item/watertank/atmos/make_noz()
 	return new /obj/item/extinguisher/mini/nozzle(src)
 
-/obj/item/watertank/atmos/dropped(mob/user)
+/obj/item/watertank/atmos/unequipped(mob/user)
 	..()
 	icon_state = "waterbackpackatmos"
 	if(istype(noz, /obj/item/extinguisher/mini/nozzle))

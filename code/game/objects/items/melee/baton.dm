@@ -99,7 +99,7 @@
 	var/mob/living/L = user
 	user_flip(L, L.combat_mode)
 
-/obj/item/melee/baton/dropped(mob/user, silent)
+/obj/item/melee/baton/unequipped(mob/user, silent)
 	. = ..()
 	UnregisterSignal(user, COMSIG_LIVING_TOGGLE_COMBAT_MODE)
 	user_flip(null, FALSE)

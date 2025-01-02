@@ -74,7 +74,7 @@
 	if(hud_on)
 		show_hud(user)
 
-/obj/item/multitool/ai_detect/dropped(mob/living/carbon/human/user)
+/obj/item/multitool/ai_detect/unequipped(mob/living/carbon/human/user)
 	..()
 	if(hud_on)
 		remove_hud(user)

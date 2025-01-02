@@ -33,7 +33,7 @@
 				user.reagents.add_reagent(/datum/reagent/toxin, 7)
 
 
-/obj/item/clothing/shoes/cowboy/dropped(mob/living/user)
+/obj/item/clothing/shoes/cowboy/unequipped(mob/living/user)
 	. = ..()
 	UnregisterSignal(user, COMSIG_LIVING_SLAM_TABLE)
 

@@ -314,7 +314,7 @@
 			reagents.clear_reagents()
 		reagents.flags = NONE
 
-/obj/item/reagent_containers/glass/bucket/dropped(mob/user)
+/obj/item/reagent_containers/glass/bucket/unequipped(mob/user)
 	. = ..()
 	reagents.flags = initial(reagent_flags)
 

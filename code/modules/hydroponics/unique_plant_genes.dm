@@ -251,7 +251,7 @@
 		return
 
 	our_chili = WEAKREF(our_plant)
-	RegisterSignal(our_plant, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED), PROC_REF(stop_backfire_effect))
+	RegisterSignal(our_plant, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_UNEQUIPPED), PROC_REF(stop_backfire_effect))
 
 /*
  * Begin processing the trait on backfire.

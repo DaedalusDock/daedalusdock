@@ -89,7 +89,7 @@
 	user.set_anchored(TRUE)
 	user.status_flags &= ~CANPUSH
 
-/obj/item/ctf/dropped(mob/user)
+/obj/item/ctf/unequipped(mob/user)
 	..()
 	user.anchored = FALSE // Hacky usage that bypasses set_anchored()
 	user.status_flags |= CANPUSH

@@ -36,7 +36,7 @@
 	else
 		set_blackboard_key(BB_LIKES_EQUIPPER, TRUE)
 
-	RegisterSignal(pawn, COMSIG_ITEM_DROPPED, PROC_REF(on_dropped))
+	RegisterSignal(pawn, COMSIG_ITEM_UNEQUIPPED, PROC_REF(on_dropped))
 
 ///Flip it so we listen for equip again but not for drop.
 /datum/ai_controller/haunted/proc/on_dropped(datum/source, mob/user)
@@ -44,4 +44,4 @@
 
 	RegisterSignal(pawn, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
 	set_blackboard_key(BB_LIKES_EQUIPPER, FALSE)
-	UnregisterSignal(pawn, COMSIG_ITEM_DROPPED)
+	UnregisterSignal(pawn, COMSIG_ITEM_UNEQUIPPED)

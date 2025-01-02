@@ -68,7 +68,7 @@
 		var/mob/living/student = user
 		style.teach(student, 1)
 
-/obj/item/clothing/gloves/boxing/dropped(mob/user)
+/obj/item/clothing/gloves/boxing/unequipped(mob/user)
 	..()
 	if(!ishuman(user))
 		return

@@ -1,12 +1,13 @@
 // AI EYE
 //
-// An invisible (no icon) mob that the AI controls to look around the station with.
+// An invisible mob that the AI controls to look around the station with.
 // It streams chunks as it moves around, which will show it what the AI can and cannot see.
 /mob/camera/ai_eye
 	name = "Inactive AI Eye"
 
 	icon_state = "ai_camera"
 	icon = 'icons/mob/cameramob.dmi'
+	plane = ABOVE_LIGHTING_PLANE
 	invisibility = INVISIBILITY_MAXIMUM
 	hud_possible = list(
 		AI_DETECT_HUD = HUD_LIST_LIST
@@ -189,6 +190,8 @@
 	eyeobj.setLoc(loc)
 	eyeobj.set_real_name("[name] (AI Eye)")
 	set_eyeobj_visible(TRUE)
+
+	sense_of_self = image(eyeobj.icon, eyeobj, eyeobj.icon_state)
 
 /mob/living/silicon/ai/proc/set_eyeobj_visible(state = TRUE)
 	if(!eyeobj)

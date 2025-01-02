@@ -8,7 +8,7 @@
 [![resentment](.github/images/badges/built-with-resentment.svg)](.github/images/comics/131-bug-free.png) [![technical debt](.github/images/badges/contains-technical-debt.svg)](.github/images/comics/106-tech-debt-modified.png) [![forinfinityandbyond](.github/images/badges/made-in-byond.gif)](https://www.reddit.com/r/SS13/comments/5oplxp/what_is_the_main_problem_with_byond_as_an_engine/dclbu1a)
 
 * **Website:** https://daedalus13.net
-* **Code:** https://github.com/DaedalusDock/
+* **Code:** https://github.com/DaedalusDock/daedalusdock
 * **Wiki:** https://wiki.daedalus13.net/Main_Page
 * **Codedocs:** https://codedoc.daedalus13.net/
 * **Daedalus Dock Discord:** https://discord.gg/bttwJmfznH

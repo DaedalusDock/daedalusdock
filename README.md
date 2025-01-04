@@ -1,6 +1,6 @@
 ## Daedalus Dock codebase
 
-[![CI Suite](https://github.com/DaedalusDock/Gameserver/actions/workflows/ci_suite.yml/badge.svg)](https://github.com/DaedalusDock/Gameserver/actions/workflows/ci_suite.yml)
+[![CI Suite](https://github.com/DaedalusDock/daedalusdock/actions/workflows/ci_suite.yml/badge.svg)](https://github.com/DaedalusDock/daedalusdock/actions/workflows/ci_suite.yml)
 [![Percentage of issues still open](https://isitmaintained.com/badge/open/DaedalusDock/daedalusdock.svg)](https://isitmaintained.com/project/DaedalusDock/daedalusdock "Percentage of issues still open")
 [![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/DaedalusDock/daedalusdock.svg)](https://isitmaintained.com/project/DaedalusDock/daedalusdock "Average time to resolve an issue")
 ![Coverage](https://img.shields.io/badge/coverage-no%25-red.svg)

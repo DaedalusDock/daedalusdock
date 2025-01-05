@@ -6,3 +6,5 @@
 /obj/item/food/grown/icepepper : @DELETE
 /obj/item/food/grown/citrus/orange_3d : @DELETE
 /obj/item/seeds/orange_3d : @DELETE
+/obj/item/food/grown/barrelmelon : @DELETE
+/obj/item/seeds/watermelon/barrel : @DELETE

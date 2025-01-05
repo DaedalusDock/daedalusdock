@@ -1,7 +1,7 @@
 // Pumpkin
 /datum/plant/pumpkin
 	species = "pumpkin"
-	plantname = "pumpkin vine"
+	name = "pumpkin vine"
 
 	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
@@ -19,9 +19,7 @@
 	desc = "These seeds grow into pumpkin vines."
 	icon_state = "seed-pumpkin"
 
-	genes = list(/datum/plant_gene/trait/repeated_harvest)
-	mutatelist = list(/obj/item/seeds/pumpkin/blumpkin)
-	reagents_add = list(/datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.2)
+	plant_type = /datum/plant/pumpkin
 
 /obj/item/food/grown/pumpkin
 	seed = /obj/item/seeds/pumpkin

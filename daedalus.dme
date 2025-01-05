@@ -3883,7 +3883,6 @@
 #include "code\modules\new_hydroponics\plants\peas.dm"
 #include "code\modules\new_hydroponics\plants\pineapple.dm"
 #include "code\modules\new_hydroponics\plants\potato.dm"
-#include "code\modules\new_hydroponics\plants\pumpkin.dm"
 #include "code\modules\ninja\__ninjaDefines.dm"
 #include "code\modules\ninja\energy_katana.dm"
 #include "code\modules\ninja\ninja_explosive.dm"

@@ -8,3 +8,10 @@
 /obj/item/seeds/orange_3d : @DELETE
 /obj/item/food/grown/barrelmelon : @DELETE
 /obj/item/seeds/watermelon/barrel : @DELETE
+/obj/item/food/grown/peace : @DELETE
+/obj/item/seeds/peas/laugh/peace : @DELETE
+/obj/item/food/grown/laugh : @DELETE
+/obj/item/seeds/peas/laugh : @DELETE
+/obj/item/food/grown/pumpkin/blumpkin : @DELETE
+/obj/item/food/pie/blumpkinpie : @DELETE
+/obj/item/food/pieslice/blumpkin : @DELETE

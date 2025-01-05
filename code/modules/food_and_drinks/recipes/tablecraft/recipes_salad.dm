@@ -105,7 +105,6 @@
 		/obj/item/food/grown/ambrosia/vulgaris = 1,
 		/obj/item/food/grown/ambrosia/deus = 1,
 		/obj/item/food/grown/ambrosia/gaia = 1,
-		/obj/item/food/grown/peace = 1
 	)
 	result = /obj/item/food/salad/edensalad
 	subcategory = CAT_SALAD

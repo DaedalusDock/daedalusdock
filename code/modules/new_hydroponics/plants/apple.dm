@@ -1,4 +1,16 @@
 // Apple
+/datum/plant_mutation/pineapple_apple
+	plant_type = /datum/plant/apple
+
+	ranges = list(
+		PLANT_STAT_ENDURANCE = list(-INFINITY, INFINITY),
+		PLANT_STAT_POTENCY = list(-INFINITY, INFINITY),
+		PLANT_STAT_GROW_TIME = list(-INFINITY, INFINITY),
+		PLANT_STAT_PRODUCE_TIME = list(-INFINITY, INFINITY),
+		PLANT_STAT_HARVEST_AMT = list(-INFINITY, INFINITY),
+		PLANT_STAT_YIELD = list(3, INFINITY)
+	)
+
 /datum/plant/apple
 	name = "Apple Tree"
 	species = "apple"
@@ -9,7 +21,7 @@
 
 	seed_path = /obj/item/seeds/apple
 	product_path = /obj/item/food/grown/apple
-	harvest_yield = 5
+	harvest_yield = 3
 
 	innate_genes = list(/datum/plant_gene/trait/one_bite)
 	possible_mutations = list(/datum/plant_mutation/apple_gold)

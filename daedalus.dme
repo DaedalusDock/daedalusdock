@@ -4795,6 +4795,7 @@
 #include "WorkInProgress\francinum\cphones_new\reg_info.dm"
 #include "WorkInProgress\francinum\cphones_new\phone\_packet_handler.dm"
 #include "WorkInProgress\francinum\cphones_new\phone\phone.dm"
+#include "WorkInProgress\francinum\cphones_new\phone\sip_call.dm"
 #include "WorkInProgress\francinum\cphones_new\phone\sip_handler.dm"
 #include "WorkInProgress\francinum\cphones_new\phone\voice_data_handler.dm"
 // END_INCLUDE

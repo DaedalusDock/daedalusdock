@@ -17,7 +17,7 @@
 
 	/* Master Interface:
 	 *
-	 * output: receive_voice_packet(datum/signal/varname)
+	 * output: receive_handler_packet(datum/packet_handler/sender, datum/signal/signal)
 	 * > Receives a data-complete voice packet, the master is
 	 * expected to make any modifications they need (addressing, etc)
 	 * before sending it out via the usual means.
@@ -34,14 +34,13 @@
 	*/
 
 
-/datum/packet_handler/voice_data/New(_speaker, _allow_mute)
+/datum/packet_handler/voice_data/New(_master, _speaker, _allow_mute)
 	. = ..()
 	allow_mute = _allow_mute
 	set_speaker(_speaker)
 
 /datum/packet_handler/voice_data/Destroy(force, ...)
 	release_speaker()
-	master = null
 	return ..()
 
 /datum/packet_handler/voice_data/proc/set_visuals(_span, _name)

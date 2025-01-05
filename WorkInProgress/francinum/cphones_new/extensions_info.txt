@@ -16,6 +16,24 @@ list(
 
 // signal protocol
 
+// Skeleton:
+{
+	"proto":"sip",
+	"verb": VERB,
+	"seq": $RAND_SEQ // Used to associate ACKs with various flows. - NOT ANYMORE THIS IS ANNOYING
+}
+
+//Verbs:
+/*
+ * REGISTER: Grants a reauth token upon login, allows placing calls via INVITE
+ * REAUTH: like register, returns a new auth token (via ACK) upon successful reauth, else NACK
+ * INVITE: Request to start a call with another extension.
+ * RINGING: Informs the station that the far side is now ringing.
+ * CANCEL: Sent by the requesting client. Cancel the call, free all equipment.
+ *
+ */
+
+// Registration
 user send:
 {
 	"proto":"sip",
@@ -28,13 +46,22 @@ exchange reply:
 	"proto":"sip",
 	"verb":"ack",
 	"user":"$EXTNUM",
-	"reg_token":"$token",
+	"auth_token":"$token",
 }
 
 
-//keepalive, Intentionally doesn't include password.
+//keepalive, Use the auth token instead.
 {
 	"proto":"sip",
 	"verb":"reauth",
 	"user":"$EXTNUM",
+	"auth_token":"$REAUTHTOKEN",
+}
+
+// Start Call
+{
+	"proto":"sip",
+	"verb": "invite",
+	"to" : "$EXT",
+	"auth_token":"$token",
 }

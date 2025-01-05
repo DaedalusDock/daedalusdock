@@ -22,9 +22,6 @@
 	/// Used to authenticate with the exchange.
 	var/tmp/autoconf_secret = ""
 
-	/// Set to TRUE once the SIP core has fully booted.
-	var/tmp/net_booted = FALSE
-
 	/// Is our write-protect screw installed? If not, Allow entering configuration mode.
 	var/config_screwed = TRUE
 	/// Are we currently in the config handler? If so, what state are we in.
@@ -43,7 +40,7 @@
 	packet_queue = list()
 	packet_handlers = list()
 	//Init our various handlers.
-	packet_handlers[PACKET_HANDLER_VOICE_DATA] = new /datum/packet_handler/voice_data()
+	packet_handlers[PACKET_HANDLER_VOICE_DATA] = new /datum/packet_handler/voice_data(src, /*speaker*/)
 
 /obj/machinery/telephony/telephone/Destroy()
 	. = ..()
@@ -59,13 +56,16 @@
 
 
 /obj/machinery/telephony/telephone/process()
-	// We have not 'booted'
-	if(packet_handlers[PACKET_HANDLER_SIGNALLING])
+	// We intentionally delay this until game start.
+	if(!packet_handlers[PACKET_HANDLER_SIGNALLING])
 		packet_handlers[PACKET_HANDLER_SIGNALLING] = new /datum/packet_handler/sip_registration(
+			src,
 			init_extension,
 			init_office_code,
 			autoconf_secret
 		)
+	else
+		packet_handlers[PACKET_HANDLER_SIGNALLING].process()
 	if(length(packet_queue))
 		handle_packet_queue()
 
@@ -75,8 +75,17 @@
 	var/datum/signal/storable = signal.Copy()
 	packet_queue += storable
 
-/obj/machinery/telephony/telephone
+/obj/machinery/telephony/telephone/receive_handler_packet(datum/packet_handler/sender, datum/signal/signal, list/sip_state)
+	switch(sender.type)
+		if(/datum/packet_handler/sip_registration)
+			//SIP data handler can also send control information instead, it'll only send one or the other.
+			if(sip_state)
+				switch(sip_state[SIP_STATE_CODE])
+					if(SIP_STATE_CODE_START_RINGING)
+			else
+		if(/datum/packet_handler/voice_data)
 
+// time to play dress-up as a subsystem
 /obj/machinery/telephony/telephone/proc/handle_packet_queue()
 	for(var/datum/signal/packet as anything in packet_queue)
 		var/list/data = packet.data
@@ -86,3 +95,8 @@
 			if(PACKET_PROTOCOL_RTP)
 				packet_handlers[PACKET_HANDLER_VOICE_DATA].receive_signal(packet)
 			//else {drop_packet};
+		if(data[PACKET_CMD] == NET_COMMAND_PING_REPLY) //If this is a ping reply, it also goes to the SIP handler.
+			packet_handlers[PACKET_HANDLER_SIGNALLING]?.receive_signal(packet)
+		packet_queue -= packet
+		if(TICK_CHECK)
+			return

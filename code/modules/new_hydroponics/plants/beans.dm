@@ -40,7 +40,7 @@
 /datum/plant_mutation/soybean_koi
 	plant_type = /datum/plant/soybean/koi
 
-	chance = 5
+	mutation_chance = 5
 
 /datum/plant/soybean/koi
 	species = "koibean"

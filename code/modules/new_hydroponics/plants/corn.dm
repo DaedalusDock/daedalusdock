@@ -18,7 +18,7 @@
 		/datum/reagent/consumable/nutriment = 0.1
 	)
 
-	mutations_possible = list(/datum/plant_mutation/corn_snapscorn)
+	possible_mutations = list(/datum/plant_mutation/corn_snapscorn)
 
 /obj/item/seeds/corn
 	name = "pack of corn seeds"
@@ -67,7 +67,7 @@
 
 /datum/plant/corn/snapcorn
 	species = "snapcorn"
-	plantname = "Snapcorn Stalks"
+	name = "snapcorn stalks"
 
 	seed_path = /obj/item/seeds/corn/snapcorn
 	product_path = /obj/item/grown/snapcorn

@@ -101,9 +101,9 @@
 	product_path = /obj/item/food/grown/poppy/geranium/fraxinella
 
 	reagents_per_potency = list(
-		/datum/reagent/consumable/nutriment = 0.05
+		/datum/reagent/consumable/nutriment = 0.05,
 		/datum/reagent/fuel/oil = 0.05
-		)
+	)
 
 /obj/item/seeds/fraxinella
 	name = "pack of fraxinella seeds"
@@ -292,7 +292,7 @@
 	possible_mutations = list(/datum/plant_mutation/carbonrose)
 	reagents_per_potency = list(
 		/datum/reagent/consumable/nutriment = 0.05,
-		/datum/reagent/medicine/tricordrazine = 0.1
+		/datum/reagent/medicine/tricordrazine = 0.1,
 		/datum/reagent/fuel/oil = 0.05
 	)
 

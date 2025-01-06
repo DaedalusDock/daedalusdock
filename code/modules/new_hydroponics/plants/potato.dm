@@ -1,7 +1,7 @@
 // Potato
 /datum/plant/potato
 	species = "potato"
-	plantname = "potatoes"
+	name = "potatoes"
 
 	growthstages = 4
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
@@ -57,7 +57,7 @@
 
 /datum/plant/potato/sweet
 	species = "sweetpotato"
-	plantname = "sweet potato"
+	name = "sweet potato"
 
 	seed_path = /obj/item/seeds/potato/sweet
 	product_path = /obj/item/food/grown/potato/sweet

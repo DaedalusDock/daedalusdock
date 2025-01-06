@@ -51,7 +51,7 @@
 
 /datum/plant/watermelon/holy
 	species = "holymelon"
-	plantname = "holy melon vines"
+	name = "holy melon vines"
 
 	seed_path = /obj/item/seeds/watermelon/holy
 	product_path = /obj/item/food/grown/holymelon
@@ -66,8 +66,6 @@
 	name = "pack of holymelon seeds"
 	desc = "These seeds grow into holymelon plants."
 	icon_state = "seed-holymelon"
-	species = "holymelon"
-	plantname = "Holy Melon Vines"
 
 	plant_type = /datum/plant/watermelon/holy
 

@@ -1,6 +1,6 @@
 /datum/plant/onion
 	species = "onion"
-	plantname = "Onion Sprouts"
+	name = "onion sprouts"
 
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
 

@@ -37,11 +37,11 @@
 
 /datum/plant/chilli/ghost
 	species = "chilighost"
-	plantname = "ghost chili plants"
+	name = "ghost chili plants"
 
 	harvest_yield = 3
 	product_path = /obj/item/food/grown/ghost_chili
-	seed_type = /obj/item/seeds/chili/ghost
+	seed_path = /obj/item/seeds/chili/ghost
 	harvest_yield = 3
 
 	innate_genes = list(/datum/plant_gene/trait/backfire/chili_heat)

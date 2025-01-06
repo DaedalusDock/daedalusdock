@@ -53,8 +53,6 @@
 	desc = "These seeds grow into sweet korta nuts, a mutation of the original species that produces a thick syrup used as a sweetener."
 	icon_state = "seed-sweetkorta"
 
-	product = /obj/item/food/grown/korta_nut/sweet
-
 /obj/item/food/grown/korta_nut/sweet
 	seed = /obj/item/seeds/korta_nut/sweet
 	name = "sweet korta nut"

@@ -75,7 +75,7 @@
 
 /datum/plant/cherry/bulb
 	species = "cherrybulb"
-	plantname = "cherry bulb tree"
+	name = "cherry bulb tree"
 
 	seed_path = /obj/item/seeds/cherry/bulb
 	product_path = /obj/item/food/grown/cherrybulbs
@@ -83,7 +83,7 @@
 
 	possible_mutations = null
 
-	reagents_add = list(/datum/reagent/consumable/nutriment = 0.07, /datum/reagent/consumable/sugar = 0.07)
+	reagents_per_potency = list(/datum/reagent/consumable/nutriment = 0.07, /datum/reagent/consumable/sugar = 0.07)
 	rarity = 10
 
 /obj/item/seeds/cherry/bulb
@@ -107,7 +107,7 @@
 //Cherry Bombs
 /datum/plant/cherry/bomb
 	species = "cherry_bomb"
-	plantname = "cherry bomb tree"
+	name = "cherry bomb tree"
 
 	seed_path = /obj/item/seeds/cherry/bomb
 	product_path = /obj/item/food/grown/cherry_bomb

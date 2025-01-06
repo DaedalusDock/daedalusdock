@@ -29,7 +29,7 @@
 
 /datum/plant/ambrosia/deus
 	species = "ambrosiadeus"
-	plantname = "Ambrosia Deus"
+	name = "ambrosia deus"
 
 	seed_path = /obj/item/seeds/ambrosia/deus
 	product_path = /obj/item/food/grown/ambrosia/deus

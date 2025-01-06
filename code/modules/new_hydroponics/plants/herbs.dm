@@ -16,12 +16,6 @@
 	name = "pack of herb seeds"
 	desc = "These seeds grow to produce an assortment of herbs and seasonings."
 	icon_state = "seed-herbs"
-	species = "herbs"
-	plantname = "Herbs"
-	product = /obj/item/food/grown/herbs
-
-	genes = list(/datum/plant_gene/trait/repeated_harvest)
-	reagents_add = list(/datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.1)
 
 /obj/item/food/grown/herbs
 	seed = /obj/item/seeds/herbs

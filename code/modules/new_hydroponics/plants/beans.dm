@@ -26,7 +26,7 @@
 	icon_state = "seed-soybean"
 
 /obj/item/food/grown/soybeans
-	seed = /obj/item/seeds/soya
+	plant_datum = /datum/plant/soybean
 	name = "soybeans"
 	desc = "It's pretty bland, but oh the possibilities..."
 	gender = PLURAL
@@ -65,7 +65,7 @@
 	icon_state = "seed-koibean"
 
 /obj/item/food/grown/koibeans
-	seed = /obj/item/seeds/soya/koi
+	plant_datum = /datum/plant/soybean/koi
 	name = "koibean"
 	desc = "Something about these seems fishy."
 	icon_state = "koibeans"

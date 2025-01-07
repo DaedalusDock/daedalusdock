@@ -11,13 +11,13 @@
 
 /obj/item/food/grown/banana/bombanana
 	trash_type = /obj/item/grown/bananapeel/bombanana
-	seed = /obj/item/seeds/banana/bombanana
+	plant_datum = /datum/plant/bombanana
 	tastes = list("explosives" = 10)
 	food_reagents = list(/datum/reagent/consumable/nutriment/vitamin = 1)
 
 /obj/item/grown/bananapeel/bombanana
 	desc = "A peel from a banana. Why is it beeping?"
-	seed = /obj/item/seeds/banana/bombanana
+	plant_datum = /datum/plant/bombanana
 	var/det_time = 50
 	var/obj/item/grenade/syndieminibomb/bomb
 

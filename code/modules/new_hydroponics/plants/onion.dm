@@ -18,7 +18,7 @@
 	plant_type = /datum/plant/onion
 
 /obj/item/food/grown/onion
-	seed = /obj/item/seeds/onion
+	plant_datum = /datum/plant/onion
 	name = "onion"
 	desc = "Nothing to cry over."
 	icon_state = "onion"
@@ -58,7 +58,7 @@
 	plant_type = /datum/plant/onion/red
 
 /obj/item/food/grown/onion/red
-	seed = /obj/item/seeds/onion/red
+	plant_datum = /datum/plant/onion/red
 	name = "red onion"
 	desc = "Purple despite the name."
 	icon_state = "onion_red"

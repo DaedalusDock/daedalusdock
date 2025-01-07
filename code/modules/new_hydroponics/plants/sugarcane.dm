@@ -20,7 +20,7 @@
 	plant_type = /datum/plant/sugarcane
 
 /obj/item/food/grown/sugarcane
-	seed = /obj/item/seeds/sugarcane
+	plant_datum = /datum/plant/sugarcane
 	name = "sugarcane"
 	desc = "Sickly sweet."
 	icon_state = "sugarcane"
@@ -51,7 +51,7 @@
 	plant_type = /datum/plant/bamboo
 
 /obj/item/grown/log/bamboo
-	seed = /obj/item/seeds/bamboo
+	plant_datum = /datum/plant/bamboo
 	name = "bamboo log"
 	desc = "A long and resistant bamboo log."
 	icon_state = "bamboo"

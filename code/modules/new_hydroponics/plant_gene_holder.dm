@@ -76,6 +76,7 @@
 		if(PLANT_STAT_HARVEST_AMT)
 			base_val = harvest_amt
 
+	#warn base_val?
 	. = 0
 
 	if(length(gene_list))

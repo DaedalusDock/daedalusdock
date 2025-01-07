@@ -20,7 +20,7 @@
 	plant_type = /datum/plant/carrot
 
 /obj/item/food/grown/carrot
-	seed = /obj/item/seeds/carrot
+	plant_datum = /datum/plant/carrot
 	name = "carrot"
 	desc = "It's good for the eyes!"
 	icon_state = "carrot"
@@ -63,7 +63,7 @@
 	plant_type = /datum/plant/carrot/parsnip
 
 /obj/item/food/grown/parsnip
-	seed = /obj/item/seeds/carrot/parsnip
+	plant_datum = /datum/plant/carrot/parsnip
 	name = "parsnip"
 	desc = "Closely related to carrots."
 	icon_state = "parsnip"
@@ -94,7 +94,7 @@
 	plant_type = /datum/plant/whitebeet
 
 /obj/item/food/grown/whitebeet
-	seed = /obj/item/seeds/whitebeet
+	plant_datum = /datum/plant/whitebeet
 	name = "white-beet"
 	desc = "You can't beat white-beet."
 	icon_state = "whitebeet"
@@ -128,7 +128,7 @@
 	plant_type = /datum/plant/redbeet
 
 /obj/item/food/grown/redbeet
-	seed = /obj/item/seeds/redbeet
+	splant_datum = /datum/plant/redbeet
 	name = "red beet"
 	desc = "You can't beat red beet."
 	icon_state = "redbeet"

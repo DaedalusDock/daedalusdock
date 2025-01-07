@@ -28,7 +28,7 @@
 	return MANUAL_SUICIDE
 
 /obj/item/food/grown/watermelon
-	seed = /obj/item/seeds/watermelon
+	plant_datum = /datum/plant/watermelon
 	name = "watermelon"
 	desc = "It's full of watery goodness."
 	icon_state = "watermelon"
@@ -71,7 +71,7 @@
 	plant_type = /datum/plant/watermelon/holy
 
 /obj/item/food/grown/holymelon
-	seed = /obj/item/seeds/watermelon/holy
+	plant_datum = /datum/plant/watermelon/holy
 	name = "holymelon"
 	desc = "The water within this melon has been blessed by some deity that's particularly fond of watermelon."
 	icon_state = "holymelon"

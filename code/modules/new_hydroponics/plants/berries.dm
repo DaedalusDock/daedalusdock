@@ -24,7 +24,7 @@
 	plant_type = /datum/plant/berry
 
 /obj/item/food/grown/berries
-	seed = /obj/item/seeds/berry
+	plant_datum = /datum/plant/berry
 	name = "bunch of berries"
 	desc = "Nutritious!"
 	icon_state = "berrypile"
@@ -79,7 +79,7 @@
 	wine_power = 35
 
 /obj/item/food/grown/berries/poison
-	seed = /obj/item/seeds/berry/poison
+	plant_datum = /datum/plant/berry/poison
 	name = "bunch of poison-berries"
 	desc = "Taste so good, you might die!"
 	icon_state = "poisonberrypile"
@@ -129,7 +129,7 @@
 	plant_type = /datum/plant/berry/death
 
 /obj/item/food/grown/berries/death
-	seed = /obj/item/seeds/berry/death
+	plant_datum = /datum/plant/berry/death
 	name = "bunch of death-berries"
 	desc = "Taste so good, you will die!"
 	icon_state = "deathberrypile"
@@ -179,7 +179,7 @@
 	plant_type = /datum/plant/berry/glow
 
 /obj/item/food/grown/berries/glow
-	seed = /obj/item/seeds/berry/glow
+	plant_datum = /datum/plant/berry/glow
 	name = "bunch of glow-berries"
 	desc = "Nutritious!"
 	bite_consumption_mod = 3
@@ -218,7 +218,7 @@
 	plant_type = /datum/plant/grape
 
 /obj/item/food/grown/grapes
-	seed = /obj/item/seeds/grape
+	plant_datum = /datum/plant/grape
 	name = "bunch of grapes"
 	desc = "Nutritious!"
 	icon_state = "grapes"
@@ -268,7 +268,7 @@
 	plant_type = /datum/plant/grape/green
 
 /obj/item/food/grown/grapes/green
-	seed = /obj/item/seeds/grape/green
+	plant_datum = /datum/plant/grape/green
 	name = "bunch of green grapes"
 	icon_state = "greengrapes"
 	bite_consumption_mod = 3
@@ -297,7 +297,7 @@
 	plant_type = /datum/plant/toechtauese
 
 /obj/item/food/grown/toechtauese
-	seed = /obj/item/seeds/toechtauese
+	plant_datum = /datum/plant/toechtauese
 	name = "töchtaüse berries"
 	desc = "A branch with töchtaüse berries on it. They're a favourite on the Mothic Fleet, but not in this form."
 	icon_state = "toechtauese_branch"

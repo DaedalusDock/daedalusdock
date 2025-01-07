@@ -21,7 +21,7 @@
 	plant_type = /datum/plant/cotton
 
 /obj/item/grown/cotton
-	seed = /obj/item/seeds/cotton
+	plant_datum = /datum/plant/cotton
 	name = "cotton bundle"
 	desc = "A fluffy bundle of cotton."
 	icon_state = "cotton"
@@ -38,8 +38,8 @@
 /obj/item/grown/cotton/attack_self(mob/user)
 	user.show_message(span_notice("You pull some [cotton_name] out of the [name]!"), MSG_VISUAL)
 	var/seed_modifier = 0
-	if(seed)
-		seed_modifier = round(seed.potency / 25)
+	if(plant_datum)
+		seed_modifier = round(cached_potency / 25)
 	var/amount = 1 + seed_modifier
 	var/obj/item/stack/cotton = new cotton_type(user.drop_location(), amount)
 	to_chat(user, span_notice("You pull [src] apart, salvaging [amount] [cotton.name]."))
@@ -78,7 +78,7 @@
 	plant_type = /datum/plant/cotton/durathread
 
 /obj/item/grown/cotton/durathread
-	seed = /obj/item/seeds/cotton/durathread
+	plant_datum = /datum/plant/cotton/durathread
 	name = "durathread bundle"
 	desc = "A tough bundle of durathread, good luck unraveling this."
 	icon_state = "durathread"

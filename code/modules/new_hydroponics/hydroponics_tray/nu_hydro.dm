@@ -9,7 +9,7 @@
 	circuit = /obj/item/circuitboard/machine/hydroponics
 	use_power = NO_POWER_USE
 
-	subsystem_type = /datum/controller/subsystem/hydroponics
+	subsystem_type = /datum/controller/subsystem/processing/hydroponics
 
 	///Its health
 	var/plant_health
@@ -213,14 +213,17 @@
 	switch(growing.plant_status)
 		if(PLANT_DEAD)
 			plant_overlay.icon_state = growing.icon_dead
+
 		if(PLANT_HARVESTABLE)
 			if(!growing.icon_harvest)
 				plant_overlay.icon_state = "[growing.icon_grow][growing.growthstages]"
 			else
 				plant_overlay.icon_state = growing.icon_harvest
+
 		else
-			var/t_growthstate = clamp(round((age / myseed.maturation) * myseed.growthstages), 1, myseed.growthstages)
+			var/t_growthstate = clamp(round((growth / growing.time_to_grow) * growing.growthstages), 1, growing.growthstages)
 			plant_overlay.icon_state = "[growing.icon_grow][t_growthstate]"
+
 	return plant_overlay
 
 /obj/machinery/hydroponics/proc/update_status_light_overlays()
@@ -441,7 +444,6 @@
 	flags_1 = NODECONSTRUCT_1
 	unwrenchable = FALSE
 	self_sustaining_overlay_icon_state = null
-	maxnutri = 15
 
 /obj/machinery/hydroponics/soil/update_icon(updates=ALL)
 	. = ..()

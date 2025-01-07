@@ -23,7 +23,7 @@
 	plant_type = /datum/plant/chilli
 
 /obj/item/food/grown/chili
-	seed = /obj/item/seeds/chili
+	plant_datum = /datum/plant/chilli
 	name = "chili"
 	desc = "It's spicy! Wait... IT'S BURNING ME!!"
 	icon_state = "chilipepper"
@@ -57,7 +57,7 @@
 	icon_state = "seed-chilighost"
 
 /obj/item/food/grown/ghost_chili
-	seed = /obj/item/seeds/chili/ghost
+	plant_datum = /datum/plant/chilli/ghost
 	name = "ghost chili"
 	desc = "It seems to be vibrating gently."
 	icon_state = "ghostchilipepper"
@@ -85,7 +85,7 @@
 	plant_type = /datum/plant/chilli/bell_pepper
 
 /obj/item/food/grown/bell_pepper
-	seed = /obj/item/seeds/chili/bell_pepper
+	plant_datum = /datum/plant/chilli/bell_pepper
 	name = "bell pepper"
 	desc = "A big mild pepper that's good for many things."
 	icon_state = "bell_pepper"

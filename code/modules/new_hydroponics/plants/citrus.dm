@@ -1,6 +1,6 @@
 // Citrus - base type
 /obj/item/food/grown/citrus
-	seed = /obj/item/seeds/lime
+	plant_datum = /datum/plant/lime
 	name = "citrus"
 	desc = "It's so sour, your face will twist."
 	icon_state = "lime"
@@ -31,7 +31,7 @@
 	plant_type = /datum/plant/orange
 
 /obj/item/food/grown/citrus/orange
-	seed = /obj/item/seeds/orange
+	plant_datum = /datum/plant/orange
 	name = "orange"
 	desc = "It's a tangy fruit."
 	icon_state = "orange"
@@ -63,7 +63,7 @@
 	plant_type = /datum/plant/lime
 
 /obj/item/food/grown/citrus/lime
-	seed = /obj/item/seeds/lime
+	plant_datum = /datum/plant/lime
 	name = "lime"
 	desc = "It's so sour, your face will twist."
 	icon_state = "lime"
@@ -93,7 +93,7 @@
 	plant_type = /datum/plant/lemon
 
 /obj/item/food/grown/citrus/lemon
-	seed = /obj/item/seeds/lemon
+	plant_datum = /datum/plant/lemon
 	name = "lemon"
 	desc = "When life gives you lemons, make lemonade."
 	icon_state = "lemon"
@@ -127,7 +127,7 @@
 	plant_type = /datum/plant/lemon_fire
 
 /obj/item/food/grown/firelemon
-	seed = /obj/item/seeds/firelemon
+	plant_datum = /datum/plant/lemon_fire
 	name = "Combustible Lemon"
 	desc = "Made for burning houses down."
 	icon_state = "firelemon"

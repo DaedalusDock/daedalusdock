@@ -21,7 +21,7 @@
 	plant_type = /datum/plant/tea
 
 /obj/item/food/grown/tea
-	seed = /obj/item/seeds/tea
+	plant_datum = /datum/plant/tea
 	name = "Tea Aspera tips"
 	desc = "These aromatic tips of the tea plant can be dried to make tea."
 	icon_state = "tea_aspera_leaves"
@@ -52,7 +52,7 @@
 	plant_type = /datum/plant/tea/astra
 
 /obj/item/food/grown/tea/astra
-	seed = /obj/item/seeds/tea/astra
+	plant_datum = /datum/plant/tea/astra
 	name = "Tea Astra tips"
 	icon_state = "tea_astra_leaves"
 	bite_consumption_mod = 2
@@ -81,7 +81,7 @@
 	plant_type = /datum/plant/coffee
 
 /obj/item/food/grown/coffee
-	seed = /obj/item/seeds/coffee
+	plant_datum = /datum/plant/coffee
 	name = "coffee arabica beans"
 	desc = "Dry them out to make coffee."
 	icon_state = "coffee_arabica"
@@ -112,7 +112,7 @@
 	plant_type =/datum/plant/coffee/robusta
 
 /obj/item/food/grown/coffee/robusta
-	seed = /obj/item/seeds/coffee/robusta
+	plant_datum = /datum/plant/coffee/robusta
 	name = "coffee robusta beans"
 	desc = "Increases robustness by 37 percent!"
 	icon_state = "coffee_robusta"

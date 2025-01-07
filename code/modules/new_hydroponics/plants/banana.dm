@@ -24,7 +24,7 @@
 	icon_state = "seed-banana"
 
 /obj/item/food/grown/banana
-	seed = /obj/item/seeds/banana
+	plant_datum = /datum/plant/banana
 	name = "banana"
 	desc = "It's an excellent prop for a clown."
 	icon_state = "banana"
@@ -39,8 +39,8 @@
 	. = ..()
 	var/obj/item/grown/bananapeel/peel = .
 	if(istype(peel))
-		peel.grind_results = list(/datum/reagent/medicine/coagulant = peel.seed.potency * 0.2)
-		peel.juice_results = list(/datum/reagent/medicine/coagulant = peel.seed.potency * 0.2)
+		peel.grind_results = list(/datum/reagent/medicine/coagulant = peel.cached_potency * 0.2)
+		peel.juice_results = list(/datum/reagent/medicine/coagulant = peel.cached_potency * 0.2)
 
 /obj/item/food/grown/banana/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is aiming [src] at [user.p_them()]self! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -57,7 +57,7 @@
 
 //Banana Peel
 /obj/item/grown/bananapeel
-	seed = /obj/item/seeds/banana
+	plant_datum = /datum/plant/banana
 	name = "banana peel"
 	desc = "A peel from a banana."
 	lefthand_file = 'icons/mob/inhands/misc/food_lefthand.dmi'
@@ -111,7 +111,7 @@
 	plant_type = /datum/plant/banana/mime
 
 /obj/item/food/grown/banana/mime
-	seed = /obj/item/seeds/banana/mime
+	plant_datum = /datum/plant/banana/mime
 	name = "mimana"
 	desc = "It's an excellent prop for a mime."
 	icon_state = "mimana"
@@ -119,7 +119,7 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/silencer
 
 /obj/item/grown/bananapeel/mimanapeel
-	seed = /obj/item/seeds/banana/mime
+	plant_datum = /datum/plant/banana/mime
 	name = "mimana peel"
 	desc = "A mimana peel."
 	icon_state = "mimana_peel"

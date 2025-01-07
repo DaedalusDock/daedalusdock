@@ -177,7 +177,7 @@
 // ---------------------------------------------------------------
 
 /obj/item/food/grown/cannabis
-	seed = /obj/item/seeds/cannabis
+	plant_datum = /datum/plant/cannabis
 	icon = 'goon/icons/obj/hydroponics.dmi'
 	name = "cannabis leaf"
 	desc = "Recently legalized in most galaxies."
@@ -188,28 +188,28 @@
 	wine_power = 20
 
 /obj/item/food/grown/cannabis/rainbow
-	seed = /obj/item/seeds/cannabis/rainbow
+	plant_datum = /datum/plant/cannabis/rainbow
 	name = "rainbow cannabis leaf"
 	desc = "Is it supposed to be glowing like that...?"
 	icon_state = "megacannabis"
 	wine_power = 60
 
 /obj/item/food/grown/cannabis/death
-	seed = /obj/item/seeds/cannabis/death
+	plant_datum = /datum/plant/cannabis/death
 	name = "death cannabis leaf"
 	desc = "Looks a bit dark. Oh well."
 	icon_state = "blackcannabis"
 	wine_power = 40
 
 /obj/item/food/grown/cannabis/white
-	seed = /obj/item/seeds/cannabis/white
+	plant_datum = /datum/plant/cannabis/white
 	name = "white cannabis leaf"
 	desc = "It feels smooth and nice to the touch."
 	icon_state = "whitecannabis"
 	wine_power = 10
 
 /obj/item/food/grown/cannabis/ultimate
-	seed = /obj/item/seeds/cannabis/ultimate
+	plant_datum = /datum/plant/cannabis/ultimate
 	name = "omega cannabis leaf"
 	desc = "You feel dizzy looking at it. What the fuck?"
 	icon_state = "ocannabis"

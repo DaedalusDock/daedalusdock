@@ -20,7 +20,7 @@
 	plant_type = /datum/plant/tobacco
 
 /obj/item/food/grown/tobacco
-	seed = /obj/item/seeds/tobacco
+	plant_datum = /datum/plant/tobacco
 	name = "tobacco leaves"
 	desc = "Dry them out to make some smokes."
 	icon_state = "tobacco_leaves"
@@ -57,7 +57,7 @@
 	plant_type = /datum/plant/tobacco/space
 
 /obj/item/food/grown/tobacco/space
-	seed = /obj/item/seeds/tobacco/space
+	plant_datum = /datum/plant/tobacco/space
 	name = "space tobacco leaves"
 	desc = "Dry them out to make some space-smokes."
 	icon_state = "stobacco_leaves"

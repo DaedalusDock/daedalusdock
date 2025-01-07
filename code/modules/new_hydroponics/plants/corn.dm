@@ -28,7 +28,7 @@
 	plant_type = /datum/plant/corn
 
 /obj/item/food/grown/corn
-	seed = /obj/item/seeds/corn
+	plant_datum = /datum/plant/corn
 	name = "ear of corn"
 	desc = "Needs some butter!"
 	icon_state = "corn"
@@ -83,7 +83,7 @@
 	plant_type = /datum/plant/corn/snapcorn
 
 /obj/item/grown/snapcorn
-	seed = /obj/item/seeds/corn/snapcorn
+	plant_datum = /datum/plant/corn/snapcorn
 	name = "snap corn"
 	desc = "A cob with snap pops."
 	icon_state = "snapcorn"
@@ -95,7 +95,7 @@
 
 /obj/item/grown/snapcorn/add_juice()
 	..()
-	snap_pops = max(round(seed.potency/8), 1)
+	snap_pops = max(round(cached_potency/8), 1)
 
 /obj/item/grown/snapcorn/attack_self(mob/user)
 	..()

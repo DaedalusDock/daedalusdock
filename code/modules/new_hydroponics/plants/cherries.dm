@@ -23,7 +23,7 @@
 	plant_type = /datum/plant/cherry
 
 /obj/item/food/grown/cherries
-	seed = /obj/item/seeds/cherry
+	plant_datum = /datum/plant/cherry
 	name = "cherries"
 	desc = "Great for toppings!"
 	icon_state = "cherry"
@@ -58,7 +58,7 @@
 	plant_type = /datum/plant/cherry/blue
 
 /obj/item/food/grown/bluecherries
-	seed = /obj/item/seeds/cherry/blue
+	plant_datum = /datum/plant/cherry/blue
 	name = "blue cherries"
 	desc = "They're cherries that are blue."
 	icon_state = "bluecherry"
@@ -94,7 +94,7 @@
 	plant_type = /datum/plant/cherry/bulb
 
 /obj/item/food/grown/cherrybulbs
-	seed = /obj/item/seeds/cherry/bulb
+	plant_datum = /datum/plant/cherry/bulb
 	name = "cherry bulbs"
 	desc = "They're like little Space Christmas lights!"
 	icon_state = "cherry_bulb"
@@ -128,6 +128,6 @@
 	desc = "You think you can hear the hissing of a tiny fuse."
 	icon_state = "cherry_bomb"
 	alt_icon = "cherry_bomb_lit"
-	seed = /obj/item/seeds/cherry/bomb
+	plant_datum = /datum/plant/cherry/bomb
 	bite_consumption_mod = 3
 	wine_power = 80

@@ -21,7 +21,7 @@
 	plant_type = /datum/plant/pineapple
 
 /obj/item/food/grown/pineapple
-	seed = /obj/item/seeds/pineapple
+	plant_datum = /datum/plant/pineapple
 	name = "pineapples"
 	desc = "Blorble."
 	icon_state = "pineapple"

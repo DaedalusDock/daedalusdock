@@ -20,7 +20,7 @@
 	plant_type = /datum/plant/towercap
 
 /obj/item/grown/log
-	seed = /obj/item/seeds/tower
+	plant_datum = /datum/plant/towercap
 	name = "tower-cap log"
 	desc = "It's better than bad, it's good!"
 	icon_state = "logs"
@@ -85,7 +85,7 @@
 /obj/item/grown/log/proc/get_plank_amount()
 	var/plank_amount = 1
 	if(seed)
-		plank_amount += round(seed.potency / 25)
+		plank_amount += round(cached_potency / 25)
 	return plank_amount
 
 /obj/item/grown/log/proc/CheckAccepted(obj/item/I)

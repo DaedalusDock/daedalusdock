@@ -38,7 +38,7 @@
 	plant_type = /datum/plant/flower/geranium
 
 /obj/item/food/grown/poppy
-	seed = /obj/item/seeds/poppy
+	plant_datum = /datum/plant/flower/poppy
 	name = "poppy"
 	desc = "Long-used as a symbol of rest, peace, and death."
 	icon_state = "map_flower"
@@ -80,7 +80,7 @@
 	plant_type = /datum/plant/flower/geranium
 
 /obj/item/food/grown/poppy/geranium
-	seed = /obj/item/seeds/geranium
+	plant_datum = /datum/plant/flower/geranium
 	name = "geranium"
 	desc = "A beautiful blue flower."
 	greyscale_colors = "#1499bb"
@@ -109,7 +109,7 @@
 	plant_type = /datum/plant/flower/fraxinella
 
 /obj/item/food/grown/poppy/geranium/fraxinella
-	seed = /obj/item/seeds/fraxinella
+	plant_datum = /datum/plant/flower/fraxinella
 	name = "fraxinella"
 	desc = "A beautiful light pink flower."
 	icon_state = "fraxinella"
@@ -137,7 +137,7 @@
 	plant_type = /datum/plant/flower/harebell
 
 /obj/item/food/grown/harebell
-	seed = /obj/item/seeds/harebell
+	plant_datum = /datum/plant/flower/harebell
 	name = "harebell"
 	desc = "\"I'll sweeten thy sad grave: thou shalt not lack the flower that's like thy face, pale primrose, nor the azured hare-bell, like thy veins; no, nor the leaf of eglantine, whom not to slander, out-sweeten'd not thy breath.\""
 	icon_state = "harebell"
@@ -177,7 +177,7 @@
 	plant_type = /datum/plant/flower/sunflower
 
 /obj/item/food/grown/sunflower // FLOWER POWER!
-	seed = /obj/item/seeds/sunflower
+	plant_datum = /datum/plant/flower/sunflower
 	name = "sunflower"
 	desc = "It's beautiful! A certain person might beat you to death if you trample these."
 	icon_state = "sunflower"
@@ -222,7 +222,7 @@
 	plant_type = /datum/plant/flower/moonflower
 
 /obj/item/food/grown/moonflower
-	seed = /obj/item/seeds/moonflower
+	plant_datum = /datum/plant/flower/moonflower
 	name = "moonflower"
 	desc = "Store in a location at least 50 yards away from werewolves."
 	icon_state = "moonflower"
@@ -256,7 +256,7 @@
 	plant_type = /datum/plant/flower/novaflower
 
 /obj/item/grown/novaflower
-	seed = /obj/item/seeds/novaflower
+	plant_datum = /datum/plant/flower/novaflower
 	name = "\improper novaflower"
 	desc = "These beautiful flowers have a crisp smokey scent, like a summer bonfire."
 	icon_state = "novaflower"
@@ -303,7 +303,7 @@
 	plant_type = /datum/plant/flower/rose
 
 /obj/item/food/grown/rose
-	seed = /obj/item/seeds/rose
+	plant_datum = /datum/plant/flower/rose
 	name = "\improper rose"
 	desc = "The classic fleur d'amour - flower of love. Watch for its thorns!"
 	base_icon_state = "rose"
@@ -339,7 +339,7 @@
 	plant_type = /datum/plant/flower/carbon_rose
 
 /obj/item/grown/carbon_rose
-	seed = /obj/item/seeds/carbon_rose
+	plant_datum = /datum/plant/flower/carbon_rose
 	name = "carbon rose"
 	desc = "The all new fleur d'amour gris - the flower of love, modernized, with no harsh thorns."
 	icon_state = "carbonrose"

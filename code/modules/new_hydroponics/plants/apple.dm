@@ -36,7 +36,7 @@
 	icon_state = "seed-apple"
 
 /obj/item/food/grown/apple
-	seed = /obj/item/seeds/apple
+	plant_datum = /datum/plant/apple
 	name = "apple"
 	desc = "It's a little piece of Eden."
 	icon_state = "apple"
@@ -80,7 +80,7 @@
 	icon_state = "seed-goldapple"
 
 /obj/item/food/grown/apple/gold
-	seed = /obj/item/seeds/apple/gold
+	plant_datum = /datum/plant/apple/gold
 	name = "golden apple"
 	desc = "Emblazoned upon the apple is the word 'Kallisti'."
 	icon_state = "goldapple"

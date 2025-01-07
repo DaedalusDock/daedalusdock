@@ -18,7 +18,7 @@
 	icon_state = "seed-herbs"
 
 /obj/item/food/grown/herbs
-	seed = /obj/item/seeds/herbs
+	plant_datum = /datum/plant/herbs
 	name = "bundle of herbs"
 	desc = "A bundle of various herbs. Somehow, you're always able to pick what you need out."
 	icon_state = "herbs"

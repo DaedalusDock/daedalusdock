@@ -17,8 +17,12 @@
 	max_volume = 100
 	w_class = WEIGHT_CLASS_SMALL
 	resistance_flags = FLAMMABLE
-	/// type path, gets converted to item on New(). It's safe to assume it's always a seed item.
-	var/obj/item/seeds/seed = null
+
+	/// Plant datum that defines the stats of this edible.
+	var/datum/plant/plant_datum
+	var/cached_potency = 0
+	var/cached_endurance = 0
+
 	///Name of the plant
 	var/plantname = ""
 	/// The modifier applied to the plant's bite size. If a plant has a large amount of reagents naturally, this should be increased to match.
@@ -40,19 +44,19 @@
 	/// If the grown food has an alternaitve icon state to use in places.
 	var/alt_icon
 
-/obj/item/food/grown/Initialize(mapload, obj/item/seeds/new_seed)
+/obj/item/food/grown/Initialize(mapload, datum/plant/copy_from)
 	if(!tastes)
 		tastes = list("[name]" = 1) //This happens first else the component already inits
 
-	if(istype(new_seed))
-		seed = new_seed.Copy()
+	if(istype(copy_from))
+		plant_datum = copy_from.Copy()
 
-	else if(ispath(seed))
+	else if(ispath(plant_datum))
 		// This is for adminspawn or map-placed growns. They get the default stats of their seed type.
-		seed = new seed()
+		plant_datum = new plant_datum(random_genes = TRUE)
 
-	else if(!seed)
-		stack_trace("Grown object created without a seed. WTF")
+	else if(!plant_datum)
+		stack_trace("Grown object created without a plant datum. WTF")
 		return INITIALIZE_HINT_QDEL
 
 	pixel_x = base_pixel_x + rand(-5, 5)
@@ -60,19 +64,24 @@
 
 	make_dryable()
 
+	cached_potency = plant_datum.get_effective_stat(PLANT_STAT_POTENCY)
+	cached_endurance = plant_datum.get_effective_stat(PLANT_STAT_ENDURANCE)
+
+	var/datum/plant_gene_holder/gene_holder = plant_datum.gene_holder
+
 	// Go through all traits in their genes and call on_new_plant from them.
-	for(var/datum/plant_gene/trait/trait in seed.genes)
+	for(var/datum/plant_gene/trait/trait in gene_holder)
 		trait.on_new_plant(src, loc)
 
 	// Set our default bitesize: bite size = 1 + (potency * 0.05) * (max_volume * 0.01) * modifier
 	// A 100 potency, non-densified plant = 1 + (5 * 1 * modifier) = 6u bite size
 	// For reference, your average 100 potency tomato has 14u of reagents - So, with no modifier it is eaten in 3 bites
-	bite_consumption = 1 + round(max((seed.potency * BITE_SIZE_POTENCY_MULTIPLIER), 1) * (max_volume * BITE_SIZE_VOLUME_MULTIPLIER) * bite_consumption_mod)
+	bite_consumption = 1 + round(max((cached_potency * BITE_SIZE_POTENCY_MULTIPLIER), 1) * (max_volume * BITE_SIZE_VOLUME_MULTIPLIER) * bite_consumption_mod)
 
 	. = ..() //Only call it here because we want all the genes and shit to be applied before we add edibility. God this code is a mess.
 
-	seed.prepare_result(src)
-	transform *= TRANSFORM_USING_VARIABLE(seed.potency, 100) + 0.5 //Makes the resulting produce's sprite larger or smaller based on potency!
+	plant_datum.prepare_result(src)
+	transform *= TRANSFORM_USING_VARIABLE(cached_potency, 100) + 0.5 //Makes the resulting produce's sprite larger or smaller based on potency!
 
 /obj/item/food/grown/Destroy()
 	if(isatom(seed))

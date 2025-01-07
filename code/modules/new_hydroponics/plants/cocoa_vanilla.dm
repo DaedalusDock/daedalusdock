@@ -20,7 +20,7 @@
 	plant_type = /datum/plant/cocoa
 
 /obj/item/food/grown/cocoapod
-	seed = /obj/item/seeds/cocoapod
+	plant_datum = /datum/plant/cocoa
 	name = "cocoa pod"
 	desc = "Fattening... Mmmmm... chucklate."
 	icon_state = "cocoapod"
@@ -51,7 +51,7 @@
 	plant_type = /datum/plant/cocoa/vanilla
 
 /obj/item/food/grown/vanillapod
-	seed = /obj/item/seeds/cocoapod/vanillapod
+	plant_datum = /datum/plant/cocoa/vanilla
 	name = "vanilla pod"
 	desc = "Fattening... Mmmmm... vanilla."
 	icon_state = "vanillapod"
@@ -84,7 +84,7 @@
 	plant_type = /datum/plant/cocoa/bungotree
 
 /obj/item/food/grown/bungofruit
-	seed = /obj/item/seeds/cocoapod/bungotree
+	plant_datum = /datum/plant/cocoa/bungotree
 	name = "bungo fruit"
 	desc = "A strange fruit, tough leathery skin protects its juicy flesh and large poisonous seed."
 	icon_state = "bungo"
@@ -96,7 +96,7 @@
 	distill_reagent = null
 
 /obj/item/food/grown/bungopit
-	seed = /obj/item/seeds/cocoapod/bungotree
+	plant_datum = /datum/plant/cocoa/bungotree
 	name = "bungo pit"
 	icon_state = "bungopit"
 	bite_consumption_mod = 5
@@ -110,5 +110,5 @@
 /obj/item/food/grown/bungopit/Initialize(mapload)
 	. =..()
 	reagents.clear_reagents()
-	reagents.add_reagent(/datum/reagent/toxin/bungotoxin, seed.potency * 0.10) //More than this will kill at too low potency
-	reagents.add_reagent(/datum/reagent/consumable/nutriment, seed.potency * 0.04)
+	reagents.add_reagent(/datum/reagent/toxin/bungotoxin, cached_potency * 0.10) //More than this will kill at too low potency
+	reagents.add_reagent(/datum/reagent/consumable/nutriment, cached_potency * 0.04)

@@ -17,7 +17,7 @@
 	plant_type = /datum/plant/garlic
 
 /obj/item/food/grown/garlic
-	seed = /obj/item/seeds/garlic
+	plant_datum = /datum/plant/garlic
 	name = "garlic"
 	desc = "Delicious, but with a potentially overwhelming odor."
 	icon_state = "garlic"

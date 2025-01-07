@@ -22,7 +22,7 @@
 	plant_type = /datum/plant/korta_nut
 
 /obj/item/food/grown/korta_nut
-	seed = /obj/item/seeds/korta_nut
+	plant_datum = /datum/plant/korta_nut
 	name = "korta nut"
 	desc = "A little nut of great importance. Has a peppery shell which can be ground into flour and a soft, pulpy interior that produces a milky fluid when juiced. Or you can eat them whole, as a quick snack."
 	icon_state = "korta_nut"
@@ -54,7 +54,7 @@
 	icon_state = "seed-sweetkorta"
 
 /obj/item/food/grown/korta_nut/sweet
-	seed = /obj/item/seeds/korta_nut/sweet
+	plant_datum = /datum/plant/korta_nut/sweet
 	name = "sweet korta nut"
 	desc = "A sweet treat lizards love to eat."
 	icon_state = "korta_nut"

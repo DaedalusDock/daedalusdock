@@ -61,7 +61,7 @@
 	reagents_from_genes()
 
 /obj/item/food/grown/random
-	seed = /obj/item/seeds/random
+	plant_datum = /datum/plant/random
 	name = "strange plant"
 	desc = "What could this even be?"
 	icon_state = "crunchy"

@@ -24,7 +24,7 @@
 	plant_type = /datum/plant/wheat
 
 /obj/item/food/grown/wheat
-	seed = /obj/item/seeds/wheat
+	plant_datum = /datum/plant/wheat
 	name = "wheat"
 	desc = "Sigh... wheat... a-grain?"
 	gender = PLURAL
@@ -54,7 +54,7 @@
 	plant_type = list(/datum/plant/wheat/oat)
 
 /obj/item/food/grown/oat
-	seed = /obj/item/seeds/wheat/oat
+	plant_datum = /datum/plant/wheat/oat
 	name = "oat"
 	desc = "Eat oats, do squats."
 	gender = PLURAL
@@ -84,7 +84,7 @@
 	plant_type = /datum/plant/wheat/rice
 
 /obj/item/food/grown/rice
-	seed = /obj/item/seeds/wheat/rice
+	plant_datum = /datum/plant/wheat/rice
 	name = "rice"
 	desc = "Rice to meet you."
 	gender = PLURAL
@@ -123,7 +123,7 @@
 	icon_state = "meatwheat"
 	gender = PLURAL
 	bite_consumption_mod = 0.5
-	seed = /obj/item/seeds/wheat/meat
+	plant_datum = /datum/plant/wheat/meat
 	foodtypes = MEAT | GRAIN
 	grind_results = list(/datum/reagent/consumable/flour = 0, /datum/reagent/blood = 0)
 	tastes = list("meatwheat" = 1)

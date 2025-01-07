@@ -74,13 +74,20 @@
 		possible_mutations -= path
 		possible_mutations += SShydroponics.mutation_list[path]
 
+/datum/plant/proc/Copy()
+	RETURN_TYPE(/datum/plant)
+	var/datum/plant/new_plant = new type()
+	new_plant.gene_holder.CopyFrom(gene_holder)
+
+	return new_plant
+
 /**
  * Returns the plant's growth state.
  * Args:
  * * gene_holder: The plant's plant_gene_holder
  * * growth: Given growth time
  */
-/datum/plant/get_growth_status(growth)
+/datum/plant/proc/get_growth_status(growth)
 	if(growth <= 0)
 		return PLANT_DEAD
 
@@ -123,6 +130,6 @@
 		if(PLANT_STAT_HARVEST_AMT)
 			base_val = harvest_amt
 
-	. = 0
+	. = base_val
 
 	. += gene_holder.get_effective_stat(stat)

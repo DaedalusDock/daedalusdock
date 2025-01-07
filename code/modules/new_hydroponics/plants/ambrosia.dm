@@ -17,7 +17,7 @@
 	)
 
 /obj/item/food/grown/ambrosia/vulgaris
-	seed = /obj/item/seeds/ambrosia
+	plant_datum = /datum/plant/ambrosia
 	name = "ambrosia vulgaris branch"
 	desc = "This is a plant containing various healing chemicals."
 	wine_power = 30
@@ -44,7 +44,7 @@
 
 
 /obj/item/food/grown/ambrosia/deus
-	seed = /obj/item/seeds/ambrosia/deus
+	plant_datum = /datum/plant/ambrosia/deus
 	name = "ambrosia deus branch"
 	desc = "Eating this makes you feel immortal!"
 	icon_state = "ambrosiadeus"
@@ -93,6 +93,6 @@
 	icon_state = "ambrosia_gaia"
 	light_system = OVERLAY_LIGHT
 	light_outer_range = 3
-	seed = /obj/item/seeds/ambrosia/gaia
+	plant_datum = /datum/plant/ambrosia/gaia
 	wine_power = 70
 	wine_flavor = "the earthmother's blessing"

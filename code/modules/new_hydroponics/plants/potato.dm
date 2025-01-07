@@ -24,7 +24,7 @@
 	plant_type = /datum/plant/potato
 
 /obj/item/food/grown/potato
-	seed = /obj/item/seeds/potato
+	plant_datum = /datum/plant/potato
 	name = "potato"
 	desc = "Boil 'em! Mash 'em! Stick 'em in a stew!"
 	icon_state = "potato"
@@ -73,7 +73,7 @@
 	plant_type = /datum/plant/potato/sweet
 
 /obj/item/food/grown/potato/sweet
-	seed = /obj/item/seeds/potato/sweet
+	plant_datum = /datum/plant/potato/sweet
 	name = "sweet potato"
 	desc = "It's sweet."
 	icon_state = "sweetpotato"

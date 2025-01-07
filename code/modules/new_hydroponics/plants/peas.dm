@@ -21,7 +21,7 @@
 	plant_type = /datum/plant/peas
 
 /obj/item/food/grown/peas
-	seed = /obj/item/seeds/peas
+	plant_datum = /datum/plant/peas
 	name = "peapod"
 	desc = "Finally... peas."
 	icon_state = "peas"

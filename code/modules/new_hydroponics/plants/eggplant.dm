@@ -19,7 +19,7 @@
 	plant_type = /datum/plant/eggplant
 
 /obj/item/food/grown/eggplant
-	seed = /obj/item/seeds/eggplant
+	plant_datum = /datum/plant/eggplant
 	name = "eggplant"
 	desc = "Maybe there's a chicken inside?"
 	icon_state = "eggplant"

@@ -20,7 +20,7 @@
 	plant_type = /datum/plant/rainbow_bunch
 
 /obj/item/food/grown/rainbow_flower
-	seed = /obj/item/seeds/rainbow_bunch
+	plant_datum = /datum/plant/rainbow_bunch
 	name = "rainbow flower"
 	desc = "A beautiful flower capable of being used for most dyeing processes."
 	icon_state = "map_flower"

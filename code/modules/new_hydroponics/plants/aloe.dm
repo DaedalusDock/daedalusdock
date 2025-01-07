@@ -20,7 +20,7 @@
 	plant_type = /datum/plant/aloe
 
 /obj/item/food/grown/aloe
-	seed = /obj/item/seeds/aloe
+	plant_datum = /datum/plant/aloe
 	name = "aloe"
 	desc = "Cut leaves from the aloe plant."
 	icon_state = "aloe"

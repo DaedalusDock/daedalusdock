@@ -22,7 +22,7 @@
 	plant_type = /datum/plant/pumpkin
 
 /obj/item/food/grown/pumpkin
-	seed = /obj/item/seeds/pumpkin
+	plant_datum = /datum/plant/pumpkin
 	name = "pumpkin"
 	desc = "It's large and scary."
 	icon_state = "pumpkin"

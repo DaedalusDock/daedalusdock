@@ -84,3 +84,8 @@
 
 /obj/item/grown/get_plant_seed()
 	return seed
+
+/obj/item/seeds/proc/reagents_from_genes()
+	reagents_add = list()
+	for(var/datum/plant_gene/reagent/R in genes)
+		reagents_add[R.reagent_id] = R.rate

@@ -19,7 +19,6 @@
 
 	possible_mutations = list(
 		/datum/plant_mutation/geranium,
-		/datum/plant_mutation/lily
 	)
 	reagents_per_potency = list(
 		/datum/reagent/medicine/morphine = 0.2,
@@ -37,9 +36,6 @@
 
 /datum/plant_mutation/geranium
 	plant_type = /datum/plant/flower/geranium
-
-/datum/plant_mutation/lily
-	plant_type = /datum/plant/flower/lily
 
 /obj/item/food/grown/poppy
 	seed = /obj/item/seeds/poppy

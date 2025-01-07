@@ -22,6 +22,7 @@
 /obj/item/seeds/watermelon/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is swallowing [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	user.gib()
+	var/product = plant_datum.product_path
 	new product(drop_location())
 	qdel(src)
 	return MANUAL_SUICIDE

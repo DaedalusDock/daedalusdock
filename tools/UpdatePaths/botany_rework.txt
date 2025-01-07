@@ -15,3 +15,4 @@
 /obj/item/food/grown/pumpkin/blumpkin : @DELETE
 /obj/item/food/pie/blumpkinpie : @DELETE
 /obj/item/food/pieslice/blumpkin : @DELETE
+/obj/item/seeds/tower/steel : @DELETE

@@ -2,13 +2,15 @@
 
 /datum/plant/cabbage
 	species = "cabbage"
-	plantname = "Cabbages"
+	name = "Cabbages"
 
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
+
+	seed_path = /obj/item/seeds/cabbage
 	product_path = /obj/item/food/grown/cabbage
 
 	growthstages = 1
-	harvest_amt = 4
+	harvest_yield = 4
 
 	base_endurance = 25
 
@@ -22,8 +24,10 @@
 	desc = "These seeds grow into cabbages."
 	icon_state = "seed-cabbage"
 
+	plant_type = /datum/plant/cabbage
+
 /obj/item/food/grown/cabbage
-	seed = /obj/item/seeds/cabbage
+	plant_datum = /datum/plant/cabbage
 	name = "cabbage"
 	desc = "Ewwwwwwwwww. Cabbage."
 	icon_state = "cabbage"

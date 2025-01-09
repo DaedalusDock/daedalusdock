@@ -77,7 +77,7 @@
 			base_val = harvest_amt
 
 	#warn base_val?
-	. = 0
+	. = base_val
 
 	if(length(gene_list))
 		for(var/datum/plant_gene/gene as anything in gene_list)

@@ -3,7 +3,7 @@
 	name = "Explosive Contents"
 	trait_ids = ATTACK_SELF_ID
 
-/datum/plant_gene/product_trait/bomb_plant/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/bomb_plant/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()
 	if(!.)
 		return
@@ -16,27 +16,27 @@
 /*
  * Trigger our plant's detonation.
  *
- * our_plant - the plant that's exploding
+ * product - the plant that's exploding
  * user - the mob detonating the plant
  */
-/datum/plant_gene/product_trait/bomb_plant/proc/trigger_detonation(obj/item/our_plant, mob/living/user)
+/datum/plant_gene/product_trait/bomb_plant/proc/trigger_detonation(obj/item/product, mob/living/user)
 	SIGNAL_HANDLER
 
-	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
-	var/obj/item/food/grown/grown_plant = our_plant
-	// If we have an alt icon, use that to show our plant is exploding.
-	if(istype(our_plant) && grown_plant.alt_icon)
-		our_plant.icon_state = grown_plant.alt_icon
-	else
-		our_plant.color = COLOR_RED
+	var/obj/item/food/grown/grown_plant = product
 
-	playsound(our_plant, 'sound/effects/fuse.ogg', our_seed.potency, FALSE)
+	// If we have an alt icon, use that to show our plant is exploding.
+	if(istype(grown_plant) && grown_plant.alt_icon)
+		grown_plant.icon_state = grown_plant.alt_icon
+	else
+		grown_plant.color = COLOR_RED
+
+	playsound(grown_plant, 'sound/effects/fuse.ogg', grown_plant.cached_potency, FALSE)
 	user.visible_message(
-		span_warning("[user] plucks the stem from [our_plant]!"),
-		span_userdanger("You pluck the stem from [our_plant], which begins to hiss loudly!"),
+		span_warning("[user] plucks the stem from [grown_plant]!"),
+		span_userdanger("You pluck the stem from [grown_plant], which begins to hiss loudly!"),
 	)
-	log_bomber(user, "primed a", our_plant, "for detonation")
-	detonate(our_plant)
+	log_bomber(user, "primed a", grown_plant, "for detonation")
+	detonate(grown_plant)
 
 /*
  * Reacting to when the plant is deconstructed.
@@ -95,10 +95,10 @@
 	playsound(our_plant.drop_location(), 'sound/weapons/armbomb.ogg', 75, TRUE, -3)
 	addtimer(CALLBACK(src, PROC_REF(detonate), our_plant), rand(1 SECONDS, 6 SECONDS))
 
-/datum/plant_gene/product_trait/bomb_plant/potency_based/detonate(obj/item/our_plant)
-	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
-	var/flame_reach = clamp(round(our_seed.potency / 20), 1, 5) //Like IEDs - their flame range can get up to 5, but their real boom is small
+/datum/plant_gene/product_trait/bomb_plant/potency_based/detonate(obj/item/product)
+	var/datum/plant/our_plant = product.get_plant_datum()
+	var/flame_reach = clamp(round(our_plant.gene_holder.get_effective_stat(PLANT_STAT_POTENCY) / 20), 1, 5) //Like IEDs - their flame range can get up to 5, but their real boom is small
 
-	our_plant.forceMove(our_plant.drop_location())
-	explosion(our_plant, devastation_range = -1, heavy_impact_range = -1, light_impact_range = 2, flame_range = flame_reach)
-	qdel(our_plant)
+	product.forceMove(product.drop_location())
+	explosion(product, devastation_range = -1, heavy_impact_range = -1, light_impact_range = 2, flame_range = flame_reach)
+	qdel(product)

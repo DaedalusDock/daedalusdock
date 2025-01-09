@@ -8,7 +8,7 @@
 	trait_ids = REAGENT_TRANSFER_ID
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
-/datum/plant_gene/product_trait/stinging/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/stinging/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()
 	if(!.)
 		return
@@ -19,20 +19,22 @@
 /*
  * Injects a target with a number of reagents from our plant.
  *
- * our_plant - our plant that's injecting someone
+ * product - our plant that's injecting someone
  * target - the atom being hit on thrown or slipping on our plant
  */
-/datum/plant_gene/product_trait/stinging/proc/prickles_inject(obj/item/our_plant, atom/target)
+/datum/plant_gene/product_trait/stinging/proc/prickles_inject(obj/item/product, atom/target)
 	SIGNAL_HANDLER
 
-	if(!isliving(target) || !our_plant.reagents?.total_volume)
+	if(!isliving(target) || !product.reagents?.total_volume)
 		return
 
 	var/mob/living/living_target = target
-	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
+	var/datum/plant/our_plant = product.get_plant_datum()
+	var/potency = our_plant.get_effective_stat(PLANT_STAT_POTENCY)
+
 	if(living_target.reagents && living_target.can_inject())
-		var/injecting_amount = max(1, our_seed.potency * 0.2) // Minimum of 1, max of 20
-		our_plant.reagents.trans_to(living_target, injecting_amount, methods = INJECT)
-		to_chat(target, span_danger("You are pricked by [our_plant]!"))
-		log_combat(our_plant, living_target, "pricked and attempted to inject reagents from [our_plant] to [living_target]. Last touched by: [our_plant.fingerprintslast].")
-		our_plant.investigate_log("pricked and injected [key_name(living_target)] and injected [injecting_amount] reagents at [AREACOORD(living_target)]. Last touched by: [our_plant.fingerprintslast].", INVESTIGATE_BOTANY)
+		var/injecting_amount = max(1, potency * 0.2) // Minimum of 1, max of 20
+		product.reagents.trans_to(living_target, injecting_amount, methods = INJECT)
+		to_chat(target, span_danger("You are pricked by [product]!"))
+		log_combat(product, living_target, "pricked and attempted to inject reagents from [product] to [living_target]. Last touched by: [product.fingerprintslast].")
+		product.investigate_log("pricked and injected [key_name(living_target)] and injected [injecting_amount] reagents at [AREACOORD(living_target)]. Last touched by: [product.fingerprintslast].", INVESTIGATE_BOTANY)

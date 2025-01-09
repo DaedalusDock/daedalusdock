@@ -8,17 +8,16 @@
 	/// When we fully degrade, what degraded off of us?
 	var/degradation_noun = "leaves"
 
-/datum/plant_gene/product_trait/attack/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/attack/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()
 	if(!.)
 		return
 
 	if(force_multiplier)
-		var/datum/plant/our_plant = product.get_plant_datum()
-		our_plant.force = round((5 + our_plant.get_effective_stat(PLANT_STAT_POTENCY) * force_multiplier), 1)
+		product.force = round((5 + plant_datum.get_effective_stat(PLANT_STAT_POTENCY) * force_multiplier), 1)
 
-	RegisterSignal(our_plant, COMSIG_ITEM_ATTACK, PROC_REF(on_plant_attack))
-	RegisterSignal(our_plant, COMSIG_ITEM_AFTERATTACK, PROC_REF(after_plant_attack))
+	RegisterSignal(product, COMSIG_ITEM_ATTACK, PROC_REF(on_plant_attack))
+	RegisterSignal(product, COMSIG_ITEM_AFTERATTACK, PROC_REF(after_plant_attack))
 
 /// Signal proc for [COMSIG_ITEM_ATTACK] that allows for effects on attack
 /datum/plant_gene/product_trait/attack/proc/on_plant_attack(obj/item/source, mob/living/target, mob/living/user)
@@ -84,29 +83,31 @@
 	degrades_after_hit = TRUE
 	degradation_noun = "petals"
 
-/datum/plant_gene/product_trait/attack/novaflower_attack/attack_effect(obj/item/our_plant, mob/living/target, mob/living/user)
+/datum/plant_gene/product_trait/attack/novaflower_attack/attack_effect(obj/item/product, mob/living/target, mob/living/user)
 	if(!istype(target))
 		return
 
-	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
-	to_chat(target, span_danger("You are lit on fire from the intense heat of [our_plant]!"))
-	target.adjust_fire_stacks(round(our_seed.potency / 20))
+	var/datum/plant/our_plant = product.get_plant_datum()
+	to_chat(target, span_danger("You are lit on fire from the intense heat of [product]!"))
+	target.adjust_fire_stacks(round(our_plant.get_effective_stat(PLANT_STAT_POTENCY) / 20))
+
 	if(target.ignite_mob())
-		message_admins("[ADMIN_LOOKUPFLW(user)] set [ADMIN_LOOKUPFLW(target)] on fire with [our_plant] at [AREACOORD(user)]")
-		log_game("[key_name(user)] set [key_name(target)] on fire with [our_plant] at [AREACOORD(user)]")
-	our_plant.investigate_log("was used by [key_name(user)] to burn [key_name(target)] at [AREACOORD(user)]", INVESTIGATE_BOTANY)
+		message_admins("[ADMIN_LOOKUPFLW(user)] set [ADMIN_LOOKUPFLW(target)] on fire with [product] at [AREACOORD(user)]")
+		log_game("[key_name(user)] set [key_name(target)] on fire with [product] at [AREACOORD(user)]")
+
+	product.investigate_log("was used by [key_name(user)] to burn [key_name(target)] at [AREACOORD(user)]", INVESTIGATE_BOTANY)
 
 /// Sunflower's attack effect (shows cute text)
 /datum/plant_gene/product_trait/attack/sunflower_attack
 	name = "Bright Petals"
 
-/datum/plant_gene/product_trait/attack/sunflower_attack/after_attack_effect(obj/item/our_plant, atom/target, mob/user, proximity_flag, click_parameters)
+/datum/plant_gene/product_trait/attack/sunflower_attack/after_attack_effect(obj/item/product, atom/target, mob/user, proximity_flag, click_parameters)
 	if(ismob(target))
 		var/mob/target_mob = target
-		user.visible_message("<font color='green'>[user] smacks [target_mob] with [user.p_their()] [our_plant.name]! <font color='orange'><b>FLOWER POWER!</b></font></font>", ignored_mobs = list(target_mob, user))
+		user.visible_message("<font color='green'>[user] smacks [target_mob] with [user.p_their()] [product.name]! <font color='orange'><b>FLOWER POWER!</b></font></font>", ignored_mobs = list(target_mob, user))
 		if(target_mob != user)
-			to_chat(target_mob, "<font color='green'>[user] smacks you with [our_plant]!<font color='orange'><b>FLOWER POWER!</b></font></font>")
-		to_chat(user, "<font color='green'>Your [our_plant.name]'s <font color='orange'><b>FLOWER POWER</b></font> strikes [target_mob]!</font>")
+			to_chat(target_mob, "<font color='green'>[user] smacks you with [product]!<font color='orange'><b>FLOWER POWER!</b></font></font>")
+		to_chat(user, "<font color='green'>Your [product.name]'s <font color='orange'><b>FLOWER POWER</b></font> strikes [target_mob]!</font>")
 
 	return ..()
 

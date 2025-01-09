@@ -6,7 +6,7 @@
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
 // Register a signal that our plant can be squashed on add.
-/datum/plant_gene/product_trait/squash/on_new_plant(obj/item/food/grown/product, newloc)
+/datum/plant_gene/product_trait/squash/on_new_product(obj/item/food/grown/product, newloc)
 	. = ..()
 	if(!.)
 		return

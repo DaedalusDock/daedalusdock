@@ -8,7 +8,7 @@
 	examine_line = "<span class='info'>It has a very slippery skin.</span>"
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
-/datum/plant_gene/product_trait/slip/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/slip/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()
 	if(!.)
 		return

@@ -2,7 +2,7 @@
 /datum/plant_gene/product_trait/one_bite
 	name = "Large Bites"
 
-/datum/plant_gene/product_trait/one_bite/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/one_bite/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()
 	if(!.)
 		return

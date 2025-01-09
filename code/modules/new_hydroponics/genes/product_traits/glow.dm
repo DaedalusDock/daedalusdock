@@ -17,7 +17,7 @@
 /datum/plant_gene/product_trait/glow/proc/glow_power(potency)
 	return max(potency * (rate + 0.01), 0.1)
 
-/datum/plant_gene/product_trait/glow/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/glow/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()
 	if(!.)
 		return
@@ -36,8 +36,8 @@
 	rate = 0.04
 	glow_color = "#AAD84B"
 
-/datum/plant_gene/product_trait/glow/shadow/glow_power(obj/item/seeds/seed)
-	return -max(seed.potency*(rate*0.2), 0.2)
+/datum/plant_gene/product_trait/glow/shadow/glow_power(potency)
+	return -max(potency * (rate * 0.2), 0.2)
 
 /// Colored versions of bioluminescence.
 

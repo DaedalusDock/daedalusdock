@@ -108,12 +108,12 @@
 	return TRUE
 
 /*
- * on_new_plant is called for every plant trait on an /obj/item/grown or /obj/item/food/grown when initialized.
+ * on_new_product is called for every plant trait on an /obj/item/grown or /obj/item/food/grown when initialized.
  *
  * product - the source product being created
  * newloc - the loc of the plant
  */
-/datum/plant_gene/product_trait/proc/on_new_product(obj/item/product, newloc)
+/datum/plant_gene/product_trait/proc/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	// Plant products should always have a bound plant datum.
 	if(isnull(product.get_plant_datum()))
 		stack_trace("[product] ([product.type]) has a nulled plant_datum value while trying to initialize [src]!")

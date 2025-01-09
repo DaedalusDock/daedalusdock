@@ -14,7 +14,7 @@
 	/// Spawned mob's move delay = this multiplier * seed potency.
 	var/mob_speed_multiplier = 1
 
-/datum/plant_gene/product_trait/mob_transformation/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/mob_transformation/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()
 	if(!.)
 		return
@@ -94,26 +94,31 @@
 /*
  * Actually awaken the plant, spawning the mob designated by the [killer_plant] typepath.
  *
- * our_plant - the plant that's waking up
+ * product - the plant that's waking up
  */
-/datum/plant_gene/product_trait/mob_transformation/proc/awaken(obj/item/our_plant)
-	if(QDELETED(our_plant))
+/datum/plant_gene/product_trait/mob_transformation/proc/awaken(obj/item/product)
+	if(QDELETED(product))
 		return
 	if(!ispath(killer_plant))
 		return
 
-	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
-	var/mob/living/spawned_mob = new killer_plant(our_plant.drop_location())
-	spawned_mob.maxHealth += round(our_seed.endurance * mob_health_multiplier)
+	var/datum/plant/our_plant = product.get_plant_datum()
+	var/mob/living/spawned_mob = new killer_plant(product.drop_location())
+
+	spawned_mob.maxHealth += round(our_plant.get_effective_stat(PLANT_STAT_ENDURANCE) * mob_health_multiplier)
 	spawned_mob.health = spawned_mob.maxHealth
+
+	var/potency = our_plant.get_effective_stat(PLANT_STAT_POTENCY)
+
 	if(ishostile(spawned_mob))
 		var/mob/living/simple_animal/hostile/spawned_simplemob = spawned_mob
-		spawned_simplemob.melee_damage_lower += round(our_seed.potency * mob_melee_multiplier)
-		spawned_simplemob.melee_damage_upper += round(our_seed.potency * mob_melee_multiplier)
-		spawned_simplemob.move_to_delay -= round(our_seed.production * mob_speed_multiplier)
-	our_plant.forceMove(our_plant.drop_location())
-	spawned_mob.visible_message(span_notice("[our_plant] growls as it suddenly awakens!"))
-	qdel(our_plant)
+		spawned_simplemob.melee_damage_lower += round(potency * mob_melee_multiplier)
+		spawned_simplemob.melee_damage_upper += round(potency * mob_melee_multiplier)
+		//spawned_simplemob.move_to_delay -= round(our_seed.production * mob_speed_multiplier)
+
+	product.forceMove(product.drop_location())
+	spawned_mob.visible_message(span_notice("[product] growls as it suddenly awakens!"))
+	qdel(product)
 
 /// Killer Tomato's transformation gene.
 /datum/plant_gene/product_trait/mob_transformation/tomato

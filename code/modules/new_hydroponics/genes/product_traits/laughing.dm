@@ -9,7 +9,7 @@
 	/// Sounds that play when this trait triggers
 	var/list/sounds = list('sound/items/SitcomLaugh1.ogg', 'sound/items/SitcomLaugh2.ogg', 'sound/items/SitcomLaugh3.ogg')
 
-/datum/plant_gene/product_trait/plant_laughter/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/plant_laughter/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()
 	if(!.)
 		return

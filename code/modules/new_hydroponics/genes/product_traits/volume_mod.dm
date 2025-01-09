@@ -4,7 +4,7 @@
 	/// The new number we set the plant's max_volume to.
 	var/new_capcity = 100
 
-/datum/plant_gene/product_trait/modified_volume/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/modified_volume/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()
 	if(!.)
 		return

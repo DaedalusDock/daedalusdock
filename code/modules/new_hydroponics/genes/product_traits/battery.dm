@@ -9,7 +9,7 @@
 	/// The number of cables needed to make a battery.
 	var/cables_needed_per_battery = 5
 
-/datum/plant_gene/product_trait/battery/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/battery/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()
 	if(!.)
 		return
@@ -46,32 +46,33 @@
  * hit_item - the item we're hitting the plant with
  * user - the person hitting the plant with an item
  */
-/datum/plant_gene/product_trait/battery/proc/make_battery(obj/item/our_plant, obj/item/hit_item, mob/user)
+/datum/plant_gene/product_trait/battery/proc/make_battery(obj/item/product, obj/item/hit_item, mob/user)
 	SIGNAL_HANDLER
 
 	if(!istype(hit_item, /obj/item/stack/cable_coil))
 		return
 
-	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
+	var/datum/plant/our_plant = product.get_plant_datum()
 	var/obj/item/stack/cable_coil/cabling = hit_item
+
 	if(!cabling.use(cables_needed_per_battery))
-		to_chat(user, span_warning("You need five lengths of cable to make a [our_plant] battery!"))
+		to_chat(user, span_warning("You need five lengths of cable to make a [product] battery!"))
 		return
 
-	to_chat(user, span_notice("You add some cable to [our_plant] and slide it inside the battery encasing."))
+	to_chat(user, span_notice("You add some cable to [product] and slide it inside the battery encasing."))
 	var/obj/item/stock_parts/cell/potato/pocell = new /obj/item/stock_parts/cell/potato(user.loc)
-	pocell.icon_state = our_plant.icon_state
-	pocell.maxcharge = our_seed.potency * 20
+	pocell.icon_state = product.icon_state
+	pocell.maxcharge = our_plant.get_effective_stat(PLANT_STAT_ENDURANCE) * 20
 
 	// The secret of potato supercells!
-	var/datum/plant_gene/product_trait/cell_charge/electrical_gene = our_seed.get_gene(/datum/plant_gene/product_trait/cell_charge)
+	var/datum/plant_gene/product_trait/cell_charge/electrical_gene = our_plant.gene_holder.has_active_gene(/datum/plant_gene/product_trait/cell_charge)
 	if(electrical_gene) // Cell charge max is now 40MJ or otherwise known as 400KJ (Same as bluespace power cells)
 		pocell.maxcharge *= (electrical_gene.rate * 100)
 	pocell.charge = pocell.maxcharge
-	pocell.name = "[our_plant.name] battery"
+	pocell.name = "[product.name] battery"
 	pocell.desc = "A rechargeable plant-based power cell. This one has a rating of [display_energy(pocell.maxcharge)], and you should not swallow it."
 
-	if(our_plant.reagents.has_reagent(/datum/reagent/toxin/plasma, 2))
+	if(product.reagents.has_reagent(/datum/reagent/toxin/plasma, 2))
 		pocell.rigged = TRUE
 
-	qdel(our_plant)
+	qdel(product)

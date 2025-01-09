@@ -9,7 +9,7 @@
 	/// Our googly eyes appearance.
 	var/image/googly
 
-/datum/plant_gene/product_trait/eyes/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/eyes/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()
 	if(!.)
 		return

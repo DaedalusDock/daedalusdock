@@ -8,7 +8,7 @@
 	/// A list of extra genes to check to be considered safe.
 	var/list/genes_to_check
 
-/datum/plant_gene/product_trait/backfire/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/backfire/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()
 	if(!.)
 		return
@@ -34,14 +34,14 @@
 	name = "Rose Thorns"
 	traits_to_check = list(TRAIT_PIERCEIMMUNE)
 
-/datum/plant_gene/product_trait/backfire/rose_thorns/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
-	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
-	if(!our_seed.get_gene(/datum/plant_gene/product_trait/sticky) && prob(66))
-		to_chat(user, span_danger("[our_plant]'s thorns nearly prick your hand. Best be careful."))
+/datum/plant_gene/product_trait/backfire/rose_thorns/backfire_effect(obj/item/product, mob/living/carbon/user)
+	var/datum/plant/our_plant = product.get_plant_datum()
+	if(!our_plant.gene_holder.has_active_gene(/datum/plant_gene/product_trait/sticky) && prob(66))
+		to_chat(user, span_danger("[product]'s thorns nearly prick your hand. Best be careful."))
 		return
 
-	to_chat(user, span_danger("[our_plant]'s thorns prick your hand. Ouch."))
-	our_plant.investigate_log("rose-pricked [key_name(user)] at [AREACOORD(user)]", INVESTIGATE_BOTANY)
+	to_chat(user, span_danger("[product]'s thorns prick your hand. Ouch."))
+	product.investigate_log("rose-pricked [key_name(user)] at [AREACOORD(user)]", INVESTIGATE_BOTANY)
 	var/obj/item/bodypart/affecting = user.get_active_hand()
 	affecting?.receive_damage(2)
 
@@ -88,7 +88,7 @@
 	/// The chili this gene is tied to, to track it for processing.
 	var/datum/weakref/our_chili
 
-/datum/plant_gene/product_trait/backfire/chili_heat/on_new_plant(obj/item/our_plant, newloc)
+/datum/plant_gene/product_trait/backfire/chili_heat/on_new_product(obj/item/our_plant, newloc)
 	. = ..()
 	if(!.)
 		return

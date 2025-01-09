@@ -10,7 +10,7 @@
 	trait_flags = TRAIT_HALVES_YIELD
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
-/datum/plant_gene/product_trait/maxchem/on_new_plant(obj/item/our_plant, newloc)
+/datum/plant_gene/product_trait/maxchem/on_new_product(obj/item/our_plant, newloc)
 	. = ..()
 	if(!.)
 		return

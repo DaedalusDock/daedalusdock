@@ -3841,6 +3841,7 @@
 #include "code\modules\new_hydroponics\plant_tick.dm"
 #include "code\modules\new_hydroponics\genes\metabolism.dm"
 #include "code\modules\new_hydroponics\genes\reagent.dm"
+#include "code\modules\new_hydroponics\genes\stabilizer.dm"
 #include "code\modules\new_hydroponics\genes\product_traits\anti-magic.dm"
 #include "code\modules\new_hydroponics\genes\product_traits\attack.dm"
 #include "code\modules\new_hydroponics\genes\product_traits\battery.dm"

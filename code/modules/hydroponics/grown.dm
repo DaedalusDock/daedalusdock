@@ -69,9 +69,9 @@
 
 	var/datum/plant_gene_holder/gene_holder = plant_datum.gene_holder
 
-	// Go through all traits in their genes and call on_new_plant from them.
+	// Go through all traits in their genes and call on_new_product from them.
 	for(var/datum/plant_gene/product_trait/trait in gene_holder)
-		trait.on_new_plant(src, loc)
+		trait.on_new_product(src, loc, plant_datum)
 
 	// Set our default bitesize: bite size = 1 + (potency * 0.05) * (max_volume * 0.01) * modifier
 	// A 100 potency, non-densified plant = 1 + (5 * 1 * modifier) = 6u bite size

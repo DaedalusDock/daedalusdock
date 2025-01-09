@@ -32,9 +32,9 @@
 		cached_potency = plant_datum.get_effective_stat(PLANT_STAT_POTENCY)
 		cached_endurance = plant_datum.get_effective_stat(PLANT_STAT_ENDURANCE)
 
-		// Go through all traits in their genes and call on_new_plant from them.
+		// Go through all traits in their genes and call on_new_product from them.
 		for(var/datum/plant_gene/product_trait/trait in plant_datum.gene_holder.gene_list)
-			trait.on_new_plant(src, loc)
+			trait.on_new_product(src, loc)
 
 		if(istype(src, plant_datum.product_path)) // no adding reagents if it is just a trash item
 			plant_datum.prepare_result(src)

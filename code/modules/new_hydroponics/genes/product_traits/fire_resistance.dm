@@ -6,11 +6,11 @@
 /datum/plant_gene/product_trait/fire_resistance/on_new_seed(obj/item/seeds/new_seed)
 	new_seed.resistance_flags |= FIRE_PROOF
 
-/datum/plant_gene/product_trait/fire_resistance/on_removed(obj/item/seeds/old_seed)
+/datum/plant_gene/product_trait/fire_resistance/on_remove(datum/plant_gene_holder/gene_holder)
 	if(old_seed.resistance_flags & FIRE_PROOF)
 		old_seed.resistance_flags &= ~FIRE_PROOF
 
-/datum/plant_gene/product_trait/fire_resistance/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/fire_resistance/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()
 	if(!.)
 		return

@@ -147,26 +147,25 @@
 	return TRUE
 
 /*
- * on_new_plant is called for every plant trait on an /obj/item/grown or /obj/item/food/grown when initialized.
+ * on_new_product is called for every plant trait on an /obj/item/grown or /obj/item/food/grown when initialized.
  *
- * our_plant - the source plant being created
+ * product - the source plant being created
  * newloc - the loc of the plant
  */
-/datum/plant_gene/product_trait/proc/on_new_plant(obj/item/our_plant, newloc)
+/datum/plant_gene/product_trait/proc/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	// Plants should always have seeds, but if a plant gene is somehow being instantiated on a plant with no seed, stop initializing genes
-	// (Plants hold their genes on their seeds, so we can't really add them to something that doesn't exist)
-	if(isnull(our_plant.get_plant_seed()))
-		stack_trace("[our_plant] ([our_plant.type]) has a nulled seed value while trying to initialize [src]!")
+	if(isnull(plant_datum))
+		stack_trace("[product] ([product.type]) has a nulled seed value while trying to initialize [src]!")
 		return FALSE
 
 	// Add on any bonus lines on examine
 	if(examine_line)
-		RegisterSignal(our_plant, COMSIG_PARENT_EXAMINE, PROC_REF(examine))
+		RegisterSignal(product, COMSIG_PARENT_EXAMINE, PROC_REF(examine))
 
 	return TRUE
 
 /// Add on any unique examine text to the plant's examine text.
-/datum/plant_gene/product_trait/proc/examine(obj/item/our_plant, mob/examiner, list/examine_list)
+/datum/plant_gene/product_trait/proc/examine(obj/item/product, mob/examiner, list/examine_list)
 	SIGNAL_HANDLER
 
 	examine_list += examine_line

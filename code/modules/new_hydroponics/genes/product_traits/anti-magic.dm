@@ -4,7 +4,7 @@
 	/// The amount of anti-magic blocking uses we have.
 	var/shield_uses = 1
 
-/datum/plant_gene/product_trait/anti_magic/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/anti_magic/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()
 	if(!.)
 		return

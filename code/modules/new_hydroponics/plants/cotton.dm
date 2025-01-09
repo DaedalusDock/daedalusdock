@@ -64,7 +64,6 @@
 	name = "Durathread"
 
 	icon_harvest = "durathread-harvest"
-	icon_state = "seed-durathread"
 	icon_dead = "cotton-dead"
 	growthstages = 3
 

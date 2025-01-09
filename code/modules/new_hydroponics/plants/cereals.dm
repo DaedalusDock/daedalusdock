@@ -99,8 +99,7 @@
 
 /datum/plant_mutation/wheat_meat
 	plant_type = /datum/plant/wheat/meat
-
-	#warn wheat meat
+	mutation_chance = 0
 
 /datum/plant/wheat/meat
 	species = "rice"

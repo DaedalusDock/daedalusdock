@@ -76,14 +76,14 @@
  *  - returned seed CAN be null in weird cases but in all applications it SHOULD NOT be.
  * Returns null if it is not a plant.
  */
-/obj/item/proc/get_plant_seed()
+/obj/item/proc/get_plant_datum()
 	return null
 
-/obj/item/food/grown/get_plant_seed()
-	return seed
+/obj/item/food/grown/get_plant_datum()
+	return plant_datum
 
-/obj/item/grown/get_plant_seed()
-	return seed
+/obj/item/grown/get_plant_datum()
+	return get_plant_datum
 
 /obj/item/seeds/proc/reagents_from_genes()
 	reagents_add = list()

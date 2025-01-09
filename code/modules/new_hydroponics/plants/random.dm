@@ -33,9 +33,8 @@
 	var/random_plant_type = pick(subtypesof(/datum/plant_gene/trait/plant_type))
 	var/datum/plant_gene/trait/plant_type/P = new random_plant_type
 	if(P.can_add(src))
-		genes += P
-	else
-		qdel(P)
+		plant_datum.gene_holder.add_active_gene(P.type)
+	qdel(P)
 
 /obj/item/seeds/random/proc/add_random_traits(lower = 0, upper = 2)
 	var/amount_random_traits = rand(lower, upper)
@@ -43,9 +42,8 @@
 		var/random_trait = pick(subtypesof(/datum/plant_gene/trait))
 		var/datum/plant_gene/trait/picked_random_trait = new random_trait
 		if((picked_random_trait.mutability_flags & PLANT_GENE_MUTATABLE) && picked_random_trait.can_add(src))
-			genes += picked_random_trait
-		else
-			qdel(picked_random_trait)
+			plant_datum.gene_holder.add_active_gene(picked_random_trait)
+		qdel(picked_random_trait)
 
 /obj/item/seeds/random/proc/add_random_reagents(lower = 0, upper = 2)
 	var/amount_random_reagents = rand(lower, upper)

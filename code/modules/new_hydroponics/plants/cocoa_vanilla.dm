@@ -60,6 +60,10 @@
 	tastes = list("vanilla" = 1)
 	distill_reagent = /datum/reagent/consumable/vanilla //Takes longer, but you can get even more vanilla from it.
 
+/datum/plant_mutation/cocoa_bungo
+	plant_type = /datum/plant/cocoa/bungotree
+	mutation_chance = 0
+
 /datum/plant/cocoa/bungotree
 	species = "bungotree"
 	name = "bungo tree"

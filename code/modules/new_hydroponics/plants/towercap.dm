@@ -10,7 +10,7 @@
 	product_path = /obj/item/grown/log
 
 	innate_genes = list(/datum/plant_gene/trait/plant_type/fungal_metabolism)
-	mutations_possible = list(/datum/reagent/cellulose = 0.05)
+	possible_mutations = list(/datum/reagent/cellulose = 0.05)
 
 /obj/item/seeds/tower
 	name = "pack of tower-cap mycelium"
@@ -84,7 +84,7 @@
 /// Returns an amount of planks that the log will yield
 /obj/item/grown/log/proc/get_plank_amount()
 	var/plank_amount = 1
-	if(seed)
+	if(plant_datum)
 		plank_amount += round(cached_potency / 25)
 	return plank_amount
 
@@ -92,7 +92,7 @@
 	return is_type_in_typecache(I, accepted)
 
 /obj/item/grown/log/tree
-	seed = null
+	plant_datum = null
 	name = "wood log"
 	desc = "TIMMMMM-BERRRRRRRRRRR!"
 

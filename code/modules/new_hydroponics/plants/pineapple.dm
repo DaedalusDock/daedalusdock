@@ -9,7 +9,7 @@
 	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 
-	innate_genes = list(/datum/plant_gene/trait/juicing)
+	latent_genes = list(/datum/plant_gene/trait/juicing)
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.02, /datum/reagent/consumable/nutriment = 0.2, /datum/reagent/water = 0.04)
 	possible_mutations = list(/datum/plant_mutation/pineapple_apple)
 

@@ -1,0 +1,26 @@
+/**
+ * A plant trait that causes the plant's capacity to double.
+ *
+ * When harvested, the plant's individual capacity is set to double it's default.
+ * However, the plant's maximum yield is also halved, only up to 5.
+ */
+/datum/plant_gene/trait/maxchem
+	name = "Densified Chemicals"
+	rate = 2
+	trait_flags = TRAIT_HALVES_YIELD
+	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
+
+/datum/plant_gene/trait/maxchem/on_new_plant(obj/item/our_plant, newloc)
+	. = ..()
+	if(!.)
+		return
+
+	var/obj/item/food/grown/grown_plant = our_plant
+	if(istype(grown_plant, /obj/item/food/grown))
+		//Grown foods use the edible component so we need to change their max_volume var
+		grown_plant.max_volume *= rate
+	else
+		//Grown inedibles however just use a reagents holder, so.
+		our_plant.reagents?.maximum_volume *= rate
+
+#warn impliment half yield cap

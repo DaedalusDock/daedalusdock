@@ -57,7 +57,8 @@
 	seed_path = /obj/item/seeds/watermelon/holy
 	product_path = /obj/item/food/grown/holymelon
 
-	innate_genes = list(/datum/plant_gene/trait/glow/yellow, /datum/plant_gene/trait/anti_magic)
+	innate_genes = list(/datum/plant_gene/trait/anti_magic)
+	latent_genes = list(/datum/plant_gene/trait/glow/yellow)
 	possible_mutations = null
 
 	reagents_per_potency = list(/datum/reagent/water/holywater = 0.2, /datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.1)

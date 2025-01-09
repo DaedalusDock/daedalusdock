@@ -72,7 +72,7 @@
 	seed_path = /obj/item/seeds/corn/snapcorn
 	product_path = /obj/item/grown/snapcorn
 
-	mutations_possible = null
+	possible_mutations = null
 	rarity = 10
 
 /obj/item/seeds/corn/snapcorn

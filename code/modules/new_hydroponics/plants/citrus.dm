@@ -70,6 +70,9 @@
 	juice_results = list(/datum/reagent/consumable/limejuice = 0)
 
 // Lemon
+/datum/plant_mutation/lemon
+	plant_type = /datum/plant/lemon
+
 /datum/plant/lemon
 	species = "lemon"
 	name = "lemon tree"

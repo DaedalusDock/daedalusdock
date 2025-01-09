@@ -117,7 +117,7 @@
 	seed_path = /obj/item/seeds/redbeet
 	product_path = /obj/item/food/grown/redbeet
 
-	innate_genes = list(/datum/plant_gene/trait/maxchem)
+	latent_genes = list(/datum/plant_gene/trait/maxchem)
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.05, /datum/reagent/consumable/nutriment = 0.05)
 
 /obj/item/seeds/redbeet
@@ -128,7 +128,7 @@
 	plant_type = /datum/plant/redbeet
 
 /obj/item/food/grown/redbeet
-	splant_datum = /datum/plant/redbeet
+	plant_datum = /datum/plant/redbeet
 	name = "red beet"
 	desc = "You can't beat red beet."
 	icon_state = "redbeet"

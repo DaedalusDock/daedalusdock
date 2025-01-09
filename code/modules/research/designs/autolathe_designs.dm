@@ -246,14 +246,6 @@
 	build_path = /obj/item/tank/internals/emergency_oxygen/empty
 	category = list(DCAT_ATMOS)
 
-/datum/design/plasmaman_tank_belt
-	name = "Plasmaman Belt Tank"
-	id = "plasmaman_tank_belt"
-	build_type = AUTOLATHE | FABRICATOR
-	materials = list(/datum/material/iron = 800)
-	build_path = /obj/item/tank/internals/plasmaman/belt/empty
-	category = list(DCAT_ATMOS)
-
 /datum/design/generic_gas_tank
 	name = "Generic Gas Tank"
 	id = "generic_tank"

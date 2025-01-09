@@ -614,7 +614,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 /obj/item/restraints/handcuffs/energy/used
 	item_flags = DROPDEL
 
-/obj/item/restraints/handcuffs/energy/used/dropped(mob/user)
+/obj/item/restraints/handcuffs/energy/used/unequipped(mob/user)
 	user.visible_message(span_danger("[user]'s [name] breaks in a discharge of energy!"), \
 							span_userdanger("[user]'s [name] breaks in a discharge of energy!"))
 	var/datum/effect_system/spark_spread/S = new

@@ -473,7 +473,7 @@ If you make a derivative work from this code, you must include this notification
 		style.teach(user, TRUE)
 	return
 
-/obj/item/storage/belt/champion/wrestling/dropped(mob/user)
+/obj/item/storage/belt/champion/wrestling/unequipped(mob/user)
 	. = ..()
 	if(user.get_item_by_slot(ITEM_SLOT_BELT) == src)
 		style.remove(user)

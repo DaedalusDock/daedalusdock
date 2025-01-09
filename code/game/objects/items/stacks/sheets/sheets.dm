@@ -4,6 +4,8 @@
 	righthand_file = 'icons/mob/inhands/misc/sheets_righthand.dmi'
 	full_w_class = WEIGHT_CLASS_NORMAL
 
+	abstract_type = /obj/item/stack/sheet
+
 	force = 5
 	throwforce = 5
 	max_amount = 50

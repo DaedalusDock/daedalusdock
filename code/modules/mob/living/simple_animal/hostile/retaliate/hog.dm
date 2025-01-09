@@ -86,7 +86,7 @@
 	overlay.icon = 'icons/mob/animal.dmi'
 	overlay.icon_state = "hog_alert_overlay"
 	overlay.layer += 1
-	vis_contents += overlay
+	add_viscontents(overlay)
 	QDEL_IN(overlay, 1.5 SECONDS)
 	playsound(src, 'sound/creatures/hog/hogscream.ogg', 50, TRUE)
 

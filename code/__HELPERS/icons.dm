@@ -1064,7 +1064,7 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 
 	GLOB.transformation_animation_objects[src] = transformation_objects
 	for(var/A in transformation_objects)
-		vis_contents += A
+		add_viscontents(A)
 	if(reset_after)
 		addtimer(CALLBACK(src, PROC_REF(_reset_transformation_animation), filter_index),time)
 
@@ -1074,7 +1074,7 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 /atom/movable/proc/_reset_transformation_animation(filter_index)
 	var/list/transformation_objects = GLOB.transformation_animation_objects[src]
 	for(var/A in transformation_objects)
-		vis_contents -= A
+		remove_viscontents(A)
 		qdel(A)
 	transformation_objects.Cut()
 	GLOB.transformation_animation_objects -= src

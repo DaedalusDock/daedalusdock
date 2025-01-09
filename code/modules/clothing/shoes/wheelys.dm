@@ -38,7 +38,7 @@
 	wheels.buckle_mob(user)
 	wheelToggle = TRUE
 
-/obj/item/clothing/shoes/wheelys/dropped(mob/user)
+/obj/item/clothing/shoes/wheelys/unequipped(mob/user)
 	if(wheelToggle)
 		wheels.unbuckle_mob(user)
 		wheelToggle = FALSE

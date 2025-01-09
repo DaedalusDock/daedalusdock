@@ -243,7 +243,7 @@
 	else
 		UnregisterSignal(M, COMSIG_MOB_SAY)
 
-/obj/item/clothing/head/warden/drill/dropped(mob/M)
+/obj/item/clothing/head/warden/drill/unequipped(mob/M)
 	. = ..()
 	UnregisterSignal(M, COMSIG_MOB_SAY)
 

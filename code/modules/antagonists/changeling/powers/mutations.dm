@@ -204,7 +204,7 @@
 		span_hear("You hear a metal screeching sound."))
 		A.open(2)
 
-/obj/item/melee/arm_blade/dropped(mob/user)
+/obj/item/melee/arm_blade/unequipped(mob/user)
 	..()
 	if(can_drop)
 		new /obj/item/melee/synthetic_arm_blade(get_turf(user))

@@ -135,7 +135,7 @@
 	if(slot == ITEM_SLOT_ICLOTHING && freshly_laundered)
 		freshly_laundered = FALSE
 
-/obj/item/clothing/under/dropped(mob/user)
+/obj/item/clothing/under/unequipped(mob/user)
 	if(attached_accessory)
 		attached_accessory.on_uniform_dropped(src, user)
 		if(ishuman(user))

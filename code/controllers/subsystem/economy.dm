@@ -300,9 +300,9 @@ SUBSYSTEM_DEF(economy)
 		var/list/possible_names = list(
 			"human" = random_unique_name(),
 			"lizard" = random_unique_lizard_name(),
-			"plasmaman" = random_unique_plasmaman_name(),
 			"ethereal" = random_unique_ethereal_name(),
-			"moth" = random_unique_moth_name(),)
+			"moth" = random_unique_moth_name(),
+		)
 		paper_victim_species = pick(possible_names)
 		paper_victim = possible_names[paper_victim_species]
 		all_tracked_data += "victim"

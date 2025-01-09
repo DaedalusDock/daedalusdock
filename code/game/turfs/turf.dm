@@ -117,8 +117,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	// by default, vis_contents is inherited from the turf that was here before
 	if(length(vis_contents))
-		vis_contents.len = 0
-
+		cut_viscontents()
 	assemble_baseturfs()
 
 	if(length(contents))
@@ -195,7 +194,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		GLOB.station_turfs += src
 	#endif
 
-	vis_contents.len = 0
+	if(length(vis_contents))
+		cut_viscontents()
 
 /// WARNING WARNING
 /// Turfs DO NOT lose their signals when they get replaced, REMEMBER THIS
@@ -686,15 +686,15 @@ GLOBAL_LIST_EMPTY(station_turfs)
  * Returns adjacent turfs to this turf that are reachable, in all cardinal directions
  *
  * Arguments:
- * * caller: The movable, if one exists, being used for mobility checks to see what tiles it can reach
+ * * invoker: The movable, if one exists, being used for mobility checks to see what tiles it can reach
  * * ID: An ID card that decides if we can gain access to doors that would otherwise block a turf
  * * simulated_only: Do we only worry about turfs with simulated atmos, most notably things that aren't space?
  * * no_id: When true, doors with public access will count as impassible
 */
-/turf/proc/reachableAdjacentTurfs(atom/movable/caller, list/access, simulated_only, no_id = FALSE)
+/turf/proc/reachableAdjacentTurfs(atom/movable/invoker, list/access, simulated_only, no_id = FALSE)
 	. = list()
 
-	var/datum/can_pass_info/pass_info = new(caller, access, no_id)
+	var/datum/can_pass_info/pass_info = new(invoker, access, no_id)
 	for(var/iter_dir in GLOB.cardinals)
 		var/turf/turf_to_check = get_step(src,iter_dir)
 		if(!turf_to_check || (simulated_only && isspaceturf(turf_to_check)))

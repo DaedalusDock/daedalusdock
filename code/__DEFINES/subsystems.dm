@@ -124,7 +124,6 @@
 #define INIT_ORDER_SOUNDS 82
 #define INIT_ORDER_INSTRUMENTS 81
 #define INIT_ORDER_GREYSCALE 80
-#define INIT_ORDER_VIS 79
 #define INIT_ORDER_DISCORD 78
 #define INIT_ORDER_ACHIEVEMENTS 77
 #define INIT_ORDER_STATION 74 //This is high priority because it manipulates a lot of the subsystems that will initialize after it.
@@ -221,7 +220,6 @@
 #define FIRE_PRIORITY_REAGENTS 30
 #define FIRE_PRIORITY_ACID 27
 #define FIRE_PRIORITY_WET_FLOORS 25
-#define FIRE_PRIORITY_VIS 20
 #define FIRE_PRIORITY_ASSETS 20
 #define FIRE_PRIORITY_RESEARCH 15
 #define FIRE_PRIORITY_SERVER_MAINT 10

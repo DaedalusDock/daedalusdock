@@ -74,7 +74,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	if(!summoner)
 		return
 
-	set_hud_image_vars(HEALTH_HUD, "hud[RoundHealth(summoner)]", get_hud_pixel_y())
+	set_hud_image_vars(HEALTH_HUD, "hud[RoundHealth(summoner)]")
 
 /mob/living/simple_animal/hostile/guardian/med_hud_set_status()
 	if(!summoner)
@@ -86,7 +86,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	else
 		new_state = "hudhealthy"
 
-	set_hud_image_vars(STATUS_HUD, new_state, get_hud_pixel_y())
+	set_hud_image_vars(STATUS_HUD, new_state)
 
 /mob/living/simple_animal/hostile/guardian/Destroy()
 	GLOB.parasites -= src

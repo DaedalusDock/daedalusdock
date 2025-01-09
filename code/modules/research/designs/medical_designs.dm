@@ -71,16 +71,6 @@
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
-/datum/design/plasmarefiller
-	name = "Plasma-Man Jumpsuit Refill"
-	desc = "A refill pack for the auto-extinguisher on Plasma-man suits."
-	id = "plasmarefiller" //Why did this have no plasmatech
-	build_type = FABRICATOR
-	materials = list(/datum/material/iron = 4000, /datum/material/plasma = 1000)
-	build_path = /obj/item/extinguisher_refill
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
-
 /datum/design/crewpinpointerprox
 	name = "Proximity Crew Pinpointer"
 	desc = "Displays your approximate proximity to someone if their suit sensors are turned to tracking beacon."

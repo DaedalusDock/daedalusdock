@@ -148,7 +148,7 @@
 	. = ..()
 	update_maptext()
 
-/obj/item/stack/dropped(mob/user, silent)
+/obj/item/stack/unequipped(mob/user, silent)
 	. = ..()
 	update_maptext()
 

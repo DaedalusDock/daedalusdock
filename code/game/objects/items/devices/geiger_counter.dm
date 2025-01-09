@@ -84,7 +84,7 @@
 
 	RegisterSignal(user, COMSIG_IN_RANGE_OF_IRRADIATION, PROC_REF(on_pre_potential_irradiation))
 
-/obj/item/geiger_counter/dropped(mob/user, silent = FALSE)
+/obj/item/geiger_counter/unequipped(mob/user, silent = FALSE)
 	. = ..()
 
 	UnregisterSignal(user, COMSIG_IN_RANGE_OF_IRRADIATION, PROC_REF(on_pre_potential_irradiation))

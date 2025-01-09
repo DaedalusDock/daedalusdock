@@ -875,16 +875,15 @@
 		if(200 to INFINITY)
 			newsize = 3.5*RESIZE_DEFAULT_SIZE
 
-	C.resize = newsize/current_size
+	C.update_transform(newsize/current_size)
 	current_size = newsize
-	C.update_transform()
 
 /datum/reagent/growthserum/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class != CHEM_BLOOD)
 		return
-	C.resize = RESIZE_DEFAULT_SIZE/current_size
+
+	C.update_transform(RESIZE_DEFAULT_SIZE/current_size)
 	current_size = RESIZE_DEFAULT_SIZE
-	C.update_transform()
 
 /datum/reagent/impedrezene // Impairs mental function correctly, takes an overwhelming dose to kill.
 	name = "Impedrezene"

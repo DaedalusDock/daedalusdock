@@ -21,7 +21,6 @@
 // 	outfits = list(
 // 		"Default" = list(
 // 			SPECIES_HUMAN = /datum/outfit/job/security_consultant,
-// 			SPECIES_PLASMAMAN = /datum/outfit/job/security_consultant/plasmaman,
 // 		),
 // 	)
 
@@ -60,12 +59,3 @@
 // 	ears = /obj/item/radio/headset/heads/captain
 // 	glasses = /obj/item/clothing/glasses/sunglasses
 // 	shoes = /obj/item/clothing/shoes/laceup
-
-// /datum/outfit/job/security_consultant/plasmaman
-// 	name = JOB_SECURITY_CONSULTANT + " (Plasmaman)"
-
-// 	uniform = /obj/item/clothing/under/plasmaman/head_of_personnel
-// 	gloves = /obj/item/clothing/gloves/color/plasmaman/head_of_personnel
-// 	head = /obj/item/clothing/head/helmet/space/plasmaman/head_of_personnel
-// 	mask = /obj/item/clothing/mask/breath
-// 	r_hand = /obj/item/tank/internals/plasmaman/belt/full

@@ -344,7 +344,6 @@
 
 /mob/living/silicon/robot/update_icons()
 	cut_overlays()
-	SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
 	icon_state = model.cyborg_base_icon
 	if(stat != DEAD && !(HAS_TRAIT(src, TRAIT_KNOCKEDOUT) || IsStun() || IsParalyzed() || low_power_mode)) //Not dead, not stunned.
 		if(!eye_lights)
@@ -707,9 +706,8 @@
 		hud_used.update_robot_modules_display()
 
 	if (hasExpanded)
-		resize = 0.5
 		hasExpanded = FALSE
-		update_transform()
+		update_transform(0.5)
 	logevent("Chassis model has been reset.")
 	log_silicon("CYBORG: [key_name(src)] has reset their cyborg model.")
 	model.transform_to(/obj/item/robot_model)

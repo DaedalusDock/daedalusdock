@@ -31,13 +31,13 @@
 
 	TEST_ASSERT(!lab_rat.has_alert(ALERT_NOT_ENOUGH_OXYGEN), "Humans can't get a full breath from the standard initial_gas on a turf. Turf: [to_fill.type] | Air: [json_encode(to_fill.air.gas)] | Returned Air: [json_encode(to_fill.return_air().gas)]")
 
-/// Tests to make sure plasmaman can breath from their internal tanks
-/datum/unit_test/breath_sanity_plasmamen
+/// Tests to make sure vox can breath from their internal tanks
+/datum/unit_test/breath_sanity_vox
 
-/datum/unit_test/breath_sanity_plasmamen/Run()
-	var/mob/living/carbon/human/species/plasma/lab_rat = allocate(/mob/living/carbon/human/species/plasma)
+/datum/unit_test/breath_sanity_vox/Run()
+	var/mob/living/carbon/human/species/vox/lab_rat = allocate(/mob/living/carbon/human/species/vox)
 	var/obj/item/clothing/mask/breath/tube = allocate(/obj/item/clothing/mask/breath)
-	var/obj/item/tank/internals/plasmaman/source = allocate(/obj/item/tank/internals/plasmaman)
+	var/obj/item/tank/internals/nitrogen/source = allocate(/obj/item/tank/internals/nitrogen)
 
 	lab_rat.equip_to_slot_if_possible(tube, ITEM_SLOT_MASK)
 	lab_rat.equip_to_slot_if_possible(source, ITEM_SLOT_HANDS)
@@ -45,9 +45,9 @@
 
 	lab_rat.breathe()
 
-	TEST_ASSERT(!lab_rat.has_alert(ALERT_NOT_ENOUGH_PLASMA), "Plasmamen can't get a full breath from a standard plasma tank")
+	TEST_ASSERT(!lab_rat.has_alert(ALERT_NOT_ENOUGH_PLASMA), "Vox can't get a full breath from a standard plasma tank")
 	lab_rat.clear_alert(ALERT_NOT_ENOUGH_PLASMA)
 
 	//Prep the mob
 	source.toggle_internals(lab_rat)
-	TEST_ASSERT(!lab_rat.internal, "Plasmaman toggle_internals() failed to toggle internals")
+	TEST_ASSERT(!lab_rat.internal, "Vox toggle_internals() failed to toggle internals")

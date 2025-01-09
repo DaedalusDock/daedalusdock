@@ -25,7 +25,7 @@
 	else
 		UnregisterSignal(M, COMSIG_MOB_SAY)
 
-/obj/item/megaphone/dropped(mob/M)
+/obj/item/megaphone/unequipped(mob/M)
 	. = ..()
 	UnregisterSignal(M, COMSIG_MOB_SAY)
 

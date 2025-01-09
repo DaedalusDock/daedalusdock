@@ -131,12 +131,14 @@
 	throw_mode = THROW_MODE_DISABLED
 	if(hud_used)
 		hud_used.throw_icon.icon_state = "act_throw_off"
+	update_mouse_pointer()
 
 
 /mob/living/carbon/proc/throw_mode_on(mode = THROW_MODE_TOGGLE)
 	throw_mode = mode
 	if(hud_used)
 		hud_used.throw_icon.icon_state = "act_throw_on"
+	update_mouse_pointer()
 
 /mob/proc/throw_item(atom/target)
 	SEND_SIGNAL(src, COMSIG_MOB_THROW, target)
@@ -1212,7 +1214,7 @@
 /// Special carbon interaction on lying down, to transform its sprite by a rotation.
 /mob/living/carbon/proc/lying_angle_on_lying_down(new_lying_angle)
 	if(!new_lying_angle)
-		set_lying_angle(pick(90, 270))
+		set_lying_angle(pick(LYING_ANGLE_EAST, LYING_ANGLE_WEST))
 	else
 		set_lying_angle(new_lying_angle)
 

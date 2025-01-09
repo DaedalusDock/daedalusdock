@@ -254,12 +254,6 @@
 		reagents.remove_reagent(milk.type, milk.metabolization_rate * delta_time)
 	return ..()
 
-/obj/item/organ/stomach/bone/plasmaman
-	name = "digestive crystal"
-	icon_state = "stomach-p"
-	desc = "A strange crystal that is responsible for metabolizing the unseen energy force that feeds plasmamen."
-	milk_burn_healing = 0
-
 /obj/item/organ/stomach/cybernetic
 	name = "basic cybernetic stomach"
 	icon_state = "stomach-c"

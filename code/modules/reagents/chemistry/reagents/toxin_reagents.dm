@@ -85,10 +85,6 @@
 	if(holder.has_reagent(/datum/reagent/medicine/epinephrine))
 		holder.remove_reagent(/datum/reagent/medicine/epinephrine, 2 * removed)
 	C.adjustPlasma(20 * removed)
-	if(isplasmaman(C))
-		if(prob(10))
-			for(var/obj/item/bodypart/BP as anything in C.bodyparts)
-				BP.heal_bones()
 
 // Plasma will attempt to ignite at the ignition temperature.
 /datum/reagent/toxin/plasma/proc/on_temp_change(datum/reagents/_holder, old_temp)
@@ -560,9 +556,8 @@
 /datum/reagent/toxin/venom/affect_blood(mob/living/carbon/C, removed)
 	ADD_TRAIT(C, TRAIT_VENOMSIZE, CHEM_TRAIT_SOURCE(CHEM_BLOOD))
 	var/newsize = 1.1 * RESIZE_DEFAULT_SIZE
-	C.resize = newsize/current_size
+	C.update_transform(newsize/current_size)
 	current_size = newsize
-	C.update_transform()
 
 	toxpwr = 0.1 * volume
 	C.adjustBruteLoss((0.3 * volume) * removed, 0)
@@ -576,9 +571,8 @@
 /datum/reagent/toxin/venom/on_mob_end_metabolize(mob/living/carbon/C, class)
 	REMOVE_TRAIT(C, TRAIT_VENOMSIZE, CHEM_TRAIT_SOURCE(class))
 	if(!HAS_TRAIT(C, TRAIT_VENOMSIZE))
-		C.resize = RESIZE_DEFAULT_SIZE/current_size
+		C.update_transform(RESIZE_DEFAULT_SIZE/current_size)
 		current_size = RESIZE_DEFAULT_SIZE
-		C.update_transform()
 
 /datum/reagent/toxin/fentanyl
 	name = "Fentanyl"
@@ -673,38 +667,6 @@
 	if(prob(3))
 		C.bloodstream.add_reagent(/datum/reagent/toxin/histamine,rand(1,3))
 		return
-
-/datum/reagent/toxin/initropidril
-	name = "Initropidril"
-	description = "A powerful poison with insidious effects. It can cause stuns, lethal breathing failure, and cardiac arrest."
-	silent_toxin = TRUE
-	reagent_state = LIQUID
-	color = "#7F10C0"
-	metabolization_rate = 0.5 * REAGENTS_METABOLISM
-	toxpwr = 2.5
-	chemical_flags = REAGENT_NO_RANDOM_RECIPE
-
-/datum/reagent/toxin/initropidril/affect_blood(mob/living/carbon/C, removed)
-	if(prob(25))
-		var/picked_option = rand(1,3)
-		switch(picked_option)
-			if(1)
-				C.Paralyze(60)
-				. = TRUE
-			if(2)
-				C.losebreath += 10
-				C.adjustOxyLoss(rand(5,25), 0)
-				. = TRUE
-			if(3)
-				if(C.set_heartattack(TRUE))
-					log_health(C, "Heart stopped due to initropidil.")
-					if(C.stat < UNCONSCIOUS)
-						C.visible_message(span_userdanger("[C] clutches at [C.p_their()] chest!"))
-				else
-					C.losebreath += 10
-					C.adjustOxyLoss(rand(5,25), 0)
-					. = TRUE
-	return ..() || .
 
 /datum/reagent/toxin/pancuronium
 	name = "Pancuronium"

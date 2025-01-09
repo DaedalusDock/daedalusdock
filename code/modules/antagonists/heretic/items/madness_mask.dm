@@ -39,7 +39,7 @@
 	ADD_TRAIT(src, TRAIT_NODROP, CLOTHING_TRAIT)
 	to_chat(user, span_userdanger("[src] clamps tightly to your face as you feel your soul draining away!"))
 
-/obj/item/clothing/mask/madness_mask/dropped(mob/M)
+/obj/item/clothing/mask/madness_mask/unequipped(mob/M)
 	local_user = null
 	STOP_PROCESSING(SSobj, src)
 	REMOVE_TRAIT(src, TRAIT_NODROP, CLOTHING_TRAIT)

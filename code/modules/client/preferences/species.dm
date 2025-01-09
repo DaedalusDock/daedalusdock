@@ -37,10 +37,10 @@
 		var/list/diet = S.get_species_diet()
 		var/list/perks = get_species_constant_data(S.type)?[SPECIES_DATA_PERKS]
 		var/list/content = list("<div style='text-align:center'>")
-		content += S.get_species_description()
+		content += S.get_species_lore()
 		content += {"
 		<br><br>
-		<table style='min-width: 90%; margin 0 auto; border: 2px solid white'>
+		<table style='min-width: 90%; margin: 0 auto; border: 2px solid white'>
 			<th style='text-align: center;vertical-align: middle; width: 33.33%; border: 2px solid white'>
 				<span style='color: #AAFFAA'>Liked Food</span>
 			</th>
@@ -61,6 +61,7 @@
 			"}
 		content += {"
 		</table>
+		<br>
 		<table class='zebraTable' style='min-width: 90%; margin 0 auto'>
 		"}
 

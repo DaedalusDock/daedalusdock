@@ -783,7 +783,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	if(block_effect)
 		var/obj/effect/effect = new block_effect()
-		wielder.vis_contents += effect
+		wielder.add_viscontents(effect)
 
 /// Plays the block sound effect
 /obj/item/proc/play_block_sound(mob/living/carbon/human/wielder, attack_type)
@@ -805,7 +805,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	return ITALICS | REDUCE_RANGE
 
 /// Called when a mob drops an item.
-/obj/item/proc/dropped(mob/user, silent = FALSE)
+/obj/item/proc/unequipped(mob/user, silent = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(wielded)
@@ -820,7 +820,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	item_flags &= ~IN_INVENTORY
 	equipped_to = null
-	SEND_SIGNAL(src, COMSIG_ITEM_DROPPED, user)
+	SEND_SIGNAL(src, COMSIG_ITEM_UNEQUIPPED, user)
 
 	if(!silent)
 		playsound(src, drop_sound, DROP_SOUND_VOLUME, ignore_walls = FALSE)

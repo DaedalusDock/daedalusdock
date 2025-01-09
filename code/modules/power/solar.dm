@@ -52,7 +52,7 @@
 	overlay.icon_state = icon_state
 	overlay.layer = FLY_LAYER
 	overlay.pixel_y = y_offset
-	vis_contents += overlay
+	add_viscontents(overlay)
 	return overlay
 
 /obj/machinery/power/solar/should_have_node()

@@ -125,7 +125,7 @@
 	static_inventory += using
 	robit.interfaceButton = using
 	if(robit.modularInterface)
-		using.vis_contents += robit.modularInterface
+		using.add_viscontents(robit.modularInterface)
 	var/atom/movable/screen/robot/modpc/tabletbutton = using
 	tabletbutton.robot = robit
 

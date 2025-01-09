@@ -457,7 +457,7 @@
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(check_range))
 	become_hearing_sensitive()//Start listening.
 
-/obj/item/p2p_phone_handset/dropped(mob/user)
+/obj/item/p2p_phone_handset/unequipped(mob/user)
 	. = ..()
 	if(user)
 		UnregisterSignal(user, COMSIG_MOVABLE_MOVED)

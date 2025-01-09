@@ -70,7 +70,7 @@
 	var/datum/plant_gene_holder/gene_holder = plant_datum.gene_holder
 
 	// Go through all traits in their genes and call on_new_product from them.
-	for(var/datum/plant_gene/product_trait/trait in gene_holder)
+	for(var/datum/plant_gene/product_trait/trait in gene_holder.gene_list)
 		trait.on_new_product(src, loc, plant_datum)
 
 	// Set our default bitesize: bite size = 1 + (potency * 0.05) * (max_volume * 0.01) * modifier
@@ -84,8 +84,8 @@
 	transform *= TRANSFORM_USING_VARIABLE(cached_potency, 100) + 0.5 //Makes the resulting produce's sprite larger or smaller based on potency!
 
 /obj/item/food/grown/Destroy()
-	if(isatom(seed))
-		QDEL_NULL(seed)
+	if(istype(plant_datum))
+		QDEL_NULL(plant_datum)
 	return ..()
 
 /obj/item/food/grown/MakeEdible()

@@ -17,19 +17,6 @@
 
 	///Describes the product on the product path.
 	var/productdesc
-	/// Used to update icons. Should match the name in the sprites unless all icon_* are overridden.
-	var/species = ""
-	///the file that stores the sprites of the growing plant from this seed.
-	var/growing_icon = 'icons/obj/hydroponics/growing.dmi'
-	/// Used to override grow icon (default is `"[species]-grow"`). You can use one grow icon for multiple closely related plants with it.
-	var/icon_grow
-	/// Used to override dead icon (default is `"[species]-dead"`). You can use one dead icon for multiple closely related plants with it.
-	var/icon_dead
-	/// Used to override harvest icon (default is `"[species]-harvest"`). If null, plant will use `[icon_grow][growthstages]`.
-	var/icon_harvest
-
-	/// Amount of growth sprites the plant has.
-	var/growthstages = 6
 
 	/// How rare the plant is. Used for giving points to cargo when shipping off to CentCom.
 	var/rarity = 0
@@ -83,7 +70,7 @@
 	return plant_datum
 
 /obj/item/grown/get_plant_datum()
-	return get_plant_datum
+	return plant_datum
 
 /obj/item/seeds/proc/reagents_from_genes()
 	reagents_add = list()

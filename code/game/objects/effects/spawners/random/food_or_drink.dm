@@ -41,7 +41,6 @@
 	loot = list( // /obj/item/seeds/random is not a random seed, but an exotic seed.
 		/obj/item/seeds/random = 30,
 		/obj/item/seeds/liberty = 5,
-		/obj/item/seeds/replicapod = 5,
 		/obj/item/seeds/reishi = 5,
 		/obj/item/seeds/nettle/death = 1,
 		/obj/item/seeds/plump/walkingmushroom = 1,
@@ -167,7 +166,6 @@
 	name = "seed vault seeds"
 	icon_state = "seed"
 	loot = list(
-		/obj/item/seeds/gatfruit = 10,
 		/obj/item/seeds/cherry/bomb = 10,
 		/obj/item/seeds/berry/glow = 10,
 		/obj/item/seeds/sunflower/moonflower = 8,

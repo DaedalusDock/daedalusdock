@@ -1942,13 +1942,12 @@
 	cost = CARGO_CRATE_VALUE * 3
 	access_view = ACCESS_HYDROPONICS
 	contains = list(/obj/item/seeds/nettle,
-					/obj/item/seeds/replicapod,
 					/obj/item/seeds/plump,
 					/obj/item/seeds/liberty,
 					/obj/item/seeds/amanita,
 					/obj/item/seeds/reishi,
 					/obj/item/seeds/bamboo,
-					/obj/item/seeds/eggplant/eggy,
+					/obj/item/seeds/eggplant,
 					/obj/item/seeds/rainbow_bunch,
 					/obj/item/seeds/shrub,
 					/obj/item/seeds/random,

@@ -40,13 +40,14 @@
 	new_reagent_gene.rate = rate
 	return
 
-/datum/plant_gene/reagent/can_add(obj/item/seeds/our_seed)
+/datum/plant_gene/reagent/can_add(obj/item/seeds/our_seed, datum/plant/our_plant)
 	. = ..()
 	if(!.)
 		return FALSE
-	for(var/datum/plant_gene/reagent/seed_reagent in our_seed.genes)
+
+	for(var/datum/plant_gene/reagent/seed_reagent in our_plant.gene_holder.gene_list)
 		if(seed_reagent.reagent_id == reagent_id && seed_reagent.rate <= rate)
-			return FALSE // We can upgrade reagent genes if our rate is greater than the one already in the plant.
+			return FALSE
 	return TRUE
 
 /**
@@ -54,10 +55,11 @@
  *
  * Called when plants are crossbreeding, this looks for two matching reagent_ids, where the rates are greater, in order to upgrade.
  */
-/datum/plant_gene/reagent/proc/try_upgrade_gene(obj/item/seeds/seed)
-	for(var/datum/plant_gene/reagent/reagent in seed.genes)
+/datum/plant_gene/reagent/proc/try_upgrade_gene(datum/plant/plant)
+	for(var/datum/plant_gene/reagent/reagent in plant.gene_holder.gene_list)
 		if(reagent.reagent_id != reagent_id || reagent.rate <= rate)
 			continue
+
 		rate = reagent.rate
 		return TRUE
 	return FALSE

@@ -53,7 +53,7 @@
 /datum/plant_gene/product_trait/cell_charge/proc/recharge_cells(obj/item/product, mob/living/eater, mob/feeder)
 	SIGNAL_HANDLER
 
-	to_chat(eater, span_notice("You feel energized as you bite into [our_plant]."))
+	to_chat(eater, span_notice("You feel energized as you bite into [product]."))
 	var/batteries_recharged = FALSE
 	var/datum/plant/our_plant = product.get_plant_datum()
 	var/potency = our_plant.get_effective_stat(PLANT_STAT_POTENCY)

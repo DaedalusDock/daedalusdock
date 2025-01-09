@@ -149,7 +149,7 @@
 		return FALSE
 
 	LAZYREMOVE(gene_list, gene_to_activate)
-	gene_to_add.on_add(src)
+	gene_to_activate.on_add(src)
 	return TRUE
 
 /// Mutate the plant in various ways.
@@ -188,7 +188,7 @@
 		if(!mutation.can_mutate(parent))
 			continue
 
-		var/new_path = mutation.plant_type.seed
+		var/new_path = mutation.plant_type.seed_path
 		var/obj/item/seeds/new_seed = new newpath(null, TRUE)
 		new_seed.plant_datum.gene_holder.CopyFrom(src)
 

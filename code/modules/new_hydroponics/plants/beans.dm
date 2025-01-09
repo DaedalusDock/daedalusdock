@@ -1,7 +1,7 @@
 // Soybeans
 /datum/plant/soybean
 	species = "soybean"
-	plantname = "soybean plants"
+	name = "soybean plants"
 
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
 	icon_grow = "soybean-grow"

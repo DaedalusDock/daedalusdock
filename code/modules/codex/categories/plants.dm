@@ -65,7 +65,7 @@
 				mechanics += "[FOURSPACES][CODEX_LINK(initial(mutation_plant_path.name), initial(mutation_plant_path.name))]"
 
 		var/datum/codex_entry/entry = new(
-			_display_name = "[iter_gas.name] (plant)",
+			_display_name = "[P.name] (plant)",
 			_mechanics_text = jointext(mechanics, "<br>")
 		)
 

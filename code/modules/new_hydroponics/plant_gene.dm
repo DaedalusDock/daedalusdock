@@ -40,11 +40,12 @@
 /*
  * Check if the seed can accept this plant gene.
  *
- * our_seed - the seed we're adding the gene to
+ * our_seed - the seed we're adding the gene to.
+ * our_plant - the plant we're adding the gene to.
  *
  * Returns TRUE if the seed can take the gene, and FALSE otherwise.
  */
-/datum/plant_gene/proc/can_add(obj/item/seeds/our_seed)
+/datum/plant_gene/proc/can_add(obj/item/seeds/our_seed, datum/plant/our_plant)
 	return !istype(our_seed, /obj/item/seeds/sample) // Samples can't accept new genes.
 
 /*
@@ -85,21 +86,16 @@
 	new_trait_gene.rate = rate
 	return
 
-/*
- * Checks if we can add the trait to the seed in question.
- *
- * source_seed - the seed genes we're adding the trait too
- */
-/datum/plant_gene/product_trait/can_add(obj/item/seeds/source_seed)
+/datum/plant_gene/product_trait/can_add(obj/item/seeds/our_seed, datum/plant/our_plant)
 	. = ..()
 	if(!.)
 		return FALSE
 
 	for(var/obj/item/seeds/found_seed as anything in seed_blacklist)
-		if(istype(source_seed, found_seed))
+		if(istype(our_seed, found_seed))
 			return FALSE
 
-	for(var/datum/plant_gene/product_trait/trait in source_seed.genes)
+	for(var/datum/plant_gene/product_trait/trait in our_plant.gene_holder.gene_list)
 		if(trait_ids & trait.trait_ids)
 			return FALSE
 		if(type == trait.type)

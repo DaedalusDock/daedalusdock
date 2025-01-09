@@ -23,7 +23,9 @@
 /obj/structure/fermenting_barrel/proc/makeWine(obj/item/food/grown/fruit)
 	if(fruit.reagents)
 		fruit.reagents.trans_to(src, fruit.reagents.total_volume)
-	var/amount = fruit.seed.plant_datum.get_effective_stat(PLANT_STAT_POTENCY) / 4
+
+	var/amount = fruit.cached_potency / 4
+
 	if(fruit.distill_reagent)
 		reagents.add_reagent(fruit.distill_reagent, amount)
 	else

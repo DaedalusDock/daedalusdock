@@ -177,7 +177,8 @@
 
 	var/datum/plant_gene/product_trait/glow/G = growing?.gene_holder.has_active_gene(/datum/plant_gene/product_trait/glow)
 	if(G)
-		set_light(l_outer_range = G.glow_range(myseed), l_power = G.glow_power(myseed), l_color = G.glow_color)
+		var/potency = growing.get_effective_stat(PLANT_STAT_POTENCY)
+		set_light(l_outer_range = G.glow_range(potency), l_power = G.glow_power(potency), l_color = G.glow_color)
 		return
 
 	set_light(0)

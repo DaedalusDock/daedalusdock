@@ -13,7 +13,7 @@
 	var/cached_potency = 0
 	var/cached_endurance = 0
 
-/obj/item/grown/Initialize(mapload, obj/item/seeds/new_seed)
+/obj/item/grown/Initialize(mapload, datum/plant/copy_from)
 	. = ..()
 	create_reagents(100)
 
@@ -43,8 +43,8 @@
 		add_juice()
 
 /obj/item/grown/Destroy()
-	if(isatom(seed))
-		QDEL_NULL(seed)
+	if(istype(plant_datum))
+		QDEL_NULL(plant_datum)
 	return ..()
 
 /obj/item/grown/proc/add_juice()

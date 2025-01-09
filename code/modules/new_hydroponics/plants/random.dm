@@ -51,10 +51,10 @@
 		var/random_amount = rand(4, 15) * 0.01 // this must be multiplied by 0.01, otherwise, it will not properly associate
 		var/datum/plant_gene/reagent/R = new(get_random_reagent_id(), random_amount)
 		if(R.can_add(src))
-			plant.gene_holder.add_active_gene(R.type)
+			plant_datum.gene_holder.add_active_gene(R.type)
 		else
-			var/datum/plant_gene/reagent/existing = plant.gene_holder.has_active_gene(R.type)
-			existing.try_upgrade_gene(plant)
+			var/datum/plant_gene/reagent/existing = plant_datum.gene_holder.has_active_gene(R.type)
+			existing.try_upgrade_gene(plant_datum)
 		qdel(R)
 
 	reagents_from_genes()

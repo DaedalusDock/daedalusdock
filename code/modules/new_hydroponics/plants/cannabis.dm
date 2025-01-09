@@ -118,7 +118,7 @@
 	name = "pack of lifeweed seeds"
 	desc = "I will give unto him that is munchies of the fountain of the cravings of life, freely."
 	icon_state = "seed-whitecannabis"
-	species = "whitecannabis"
+
 	plant_type = /datum/plant/cannabis/white
 
 // Ultimate cannabis

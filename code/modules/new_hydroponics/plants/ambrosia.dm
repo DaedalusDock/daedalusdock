@@ -63,7 +63,7 @@
 		PLANT_STAT_YIELD = list(-INFINITY, INFINITY)
 	)
 
-	infusion_reagents = list(/datum/reagent/morphine)
+	infusion_reagents = list(/datum/reagent/medicine/morphine)
 
 
 /datum/plant/ambrosia/gaia

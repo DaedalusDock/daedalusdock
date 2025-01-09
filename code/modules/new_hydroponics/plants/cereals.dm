@@ -66,6 +66,9 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/ale
 
 // Rice
+/datum/plant_mutation/rice
+	plant_type = /datum/plant/wheat/rice
+
 /datum/plant/wheat/rice
 	species = "rice"
 	name = "rice stalks"

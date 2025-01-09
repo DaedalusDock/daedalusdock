@@ -1,12 +1,12 @@
 /datum/unit_test/seed_sanity/Run()
-	for(var/obj/item/seeds/seed_type as anything in subtypesof(/obj/item/seed))
+	for(var/obj/item/seeds/seed_type as anything in subtypesof(/obj/item/seeds))
 		if(!seed_type.plant_type)
 			TEST_FAIL("[seed_type] has no plant_type set.")
 
 /datum/unit_test/plant_seed_reciprocal/Run()
 	var/list/plants_with_seeds = list()
 
-	for(var/obj/item/seeds/S as anything in subtypesof(/obj/item/seed))
+	for(var/obj/item/seeds/S as anything in subtypesof(/obj/item/seeds))
 		plants_with_seeds[S.plant_type] = S
 
 	for(var/datum/plant/P as anything in subtypesof(/datum/plant))

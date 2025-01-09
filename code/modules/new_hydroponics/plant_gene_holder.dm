@@ -76,7 +76,6 @@
 		if(PLANT_STAT_HARVEST_AMT)
 			base_val = harvest_amt
 
-	#warn base_val?
 	. = base_val
 
 	if(length(gene_list))
@@ -189,7 +188,7 @@
 			continue
 
 		var/new_path = mutation.plant_type.seed_path
-		var/obj/item/seeds/new_seed = new newpath(null, TRUE)
+		var/obj/item/seeds/new_seed = new new_path(null, TRUE)
 		new_seed.plant_datum.gene_holder.CopyFrom(src)
 
 		var/datum/plant/old_parent = parent

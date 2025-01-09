@@ -70,13 +70,13 @@
 
 	possible_mutations = list(/datum/plant_mutation/berry_death)
 	rarity = 10 // Mildly poisonous berries are common in reality
+	wine_power = 35
 
 /obj/item/seeds/berry/poison
 	name = "pack of poison-berry seeds"
 	desc = "These seeds grow into poison-berry bushes."
 	icon_state = "seed-poisonberry"
 	plant_type = /datum/plant/berry/poison
-	wine_power = 35
 
 /obj/item/food/grown/berries/poison
 	plant_datum = /datum/plant/berry/poison

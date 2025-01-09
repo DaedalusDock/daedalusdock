@@ -77,7 +77,7 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 
 	modify_max_integrity(GLOWSHROOM_BASE_INTEGRITY + ((100 - GLOWSHROOM_BASE_INTEGRITY) / 100 * myseed.plant_datum.get_effective_stat(PLANT_STAT_ENDURANCE))) //goes up to 100 with peak endurance
 
-	var/datum/plant_gene/trait/glow/our_glow_gene = myseed.plant_datum.gene_holder.has_active_gene(/datum/plant_gene/trait/glow)
+	var/datum/plant_gene/product_trait/glow/our_glow_gene = myseed.plant_datum.gene_holder.has_active_gene(/datum/plant_gene/product_trait/glow)
 	if(ispath(our_glow_gene)) // Seeds were ported to initialize so their genes are still typepaths here, luckily their initializer is smart enough to handle us doing this
 		myseed.genes -= our_glow_gene
 		our_glow_gene = new our_glow_gene

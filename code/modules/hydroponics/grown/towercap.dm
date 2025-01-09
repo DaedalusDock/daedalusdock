@@ -14,10 +14,10 @@
 	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
 	icon_dead = "towercap-dead"
-	genes = list(/datum/plant_gene/trait/plant_type/fungal_metabolism)
+	genes = list(/datum/plant_gene/product_trait/plant_type/fungal_metabolism)
 	mutatelist = list(/obj/item/seeds/tower/steel)
 	reagents_add = list(/datum/reagent/cellulose = 0.05)
-	graft_gene = /datum/plant_gene/trait/plant_type/fungal_metabolism
+	graft_gene = /datum/plant_gene/product_trait/plant_type/fungal_metabolism
 
 /obj/item/seeds/tower/steel
 	name = "pack of steel-cap mycelium"

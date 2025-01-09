@@ -71,7 +71,7 @@
 //Cherry Bulbs
 /datum/plant_mutation/cherry_bulb
 	plant_type = /datum/plant/cherry/bulb
-	required_genes = list(/datum/plant_gene/trait/glow)
+	required_genes = list(/datum/plant_gene/product_trait/glow)
 
 /datum/plant/cherry/bulb
 	species = "cherrybulb"
@@ -79,7 +79,7 @@
 
 	seed_path = /obj/item/seeds/cherry/bulb
 	product_path = /obj/item/food/grown/cherrybulbs
-	innate_genes = list(/datum/plant_gene/trait/glow/pink)
+	innate_genes = list(/datum/plant_gene/product_trait/glow/pink)
 
 	possible_mutations = null
 

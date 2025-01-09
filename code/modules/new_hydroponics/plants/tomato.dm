@@ -10,7 +10,7 @@
 	seed_path = /obj/item/seeds/tomato
 	product_path = /obj/item/food/grown/tomato
 
-	innate_genes = list(/datum/plant_gene/trait/squash)
+	innate_genes = list(/datum/plant_gene/product_trait/squash)
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.1)
 
 	possible_mutations = list(/datum/plant_mutation/tomato_blood, /datum/plant_mutation/tomato_blue, /datum/plant_mutation/tomato_killer)
@@ -81,7 +81,7 @@
 	product_path = /obj/item/food/grown/tomato/blue
 	harvest_yield = 2
 
-	innate_genes = list(/datum/plant_gene/trait/slip)
+	innate_genes = list(/datum/plant_gene/product_trait/slip)
 	reagents_per_potency = list(/datum/reagent/lube = 0.2, /datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.1)
 	possible_mutations = null
 
@@ -118,7 +118,7 @@
 	seed_path = /obj/item/seeds/tomato/killer
 	product_path = /obj/item/food/grown/tomato/killer
 
-	innate_genes = list(/datum/plant_gene/trait/mob_transformation/tomato)
+	innate_genes = list(/datum/plant_gene/product_trait/mob_transformation/tomato)
 
 	possible_mutations = null
 	rarity = 30

@@ -3,13 +3,13 @@
  * 100 potency plants are made into 2 mj batteries.
  * Plants with electrical activity has their capacities massively increased (up to 40 mj at 100 potency)
  */
-/datum/plant_gene/trait/battery
+/datum/plant_gene/product_trait/battery
 	name = "Capacitive Cell Production"
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 	/// The number of cables needed to make a battery.
 	var/cables_needed_per_battery = 5
 
-/datum/plant_gene/trait/battery/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/battery/on_new_plant(obj/item/product, newloc)
 	. = ..()
 	if(!.)
 		return
@@ -21,7 +21,7 @@
 /*
  * Signal proc for [COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM] to add context to plant batteries.
  */
-/datum/plant_gene/trait/battery/proc/on_requesting_context_from_item(
+/datum/plant_gene/product_trait/battery/proc/on_requesting_context_from_item(
 	obj/item/source,
 	list/context,
 	obj/item/held_item,
@@ -46,7 +46,7 @@
  * hit_item - the item we're hitting the plant with
  * user - the person hitting the plant with an item
  */
-/datum/plant_gene/trait/battery/proc/make_battery(obj/item/our_plant, obj/item/hit_item, mob/user)
+/datum/plant_gene/product_trait/battery/proc/make_battery(obj/item/our_plant, obj/item/hit_item, mob/user)
 	SIGNAL_HANDLER
 
 	if(!istype(hit_item, /obj/item/stack/cable_coil))
@@ -64,7 +64,7 @@
 	pocell.maxcharge = our_seed.potency * 20
 
 	// The secret of potato supercells!
-	var/datum/plant_gene/trait/cell_charge/electrical_gene = our_seed.get_gene(/datum/plant_gene/trait/cell_charge)
+	var/datum/plant_gene/product_trait/cell_charge/electrical_gene = our_seed.get_gene(/datum/plant_gene/product_trait/cell_charge)
 	if(electrical_gene) // Cell charge max is now 40MJ or otherwise known as 400KJ (Same as bluespace power cells)
 		pocell.maxcharge *= (electrical_gene.rate * 100)
 	pocell.charge = pocell.maxcharge

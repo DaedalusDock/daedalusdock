@@ -4,18 +4,18 @@
  * Small (potency * rate) chance to shock squish or slip target for (potency * rate) damage.
  * Also affects plant batteries see capatative cell production datum
  */
-/datum/plant_gene/trait/cell_charge
+/datum/plant_gene/product_trait/cell_charge
 	name = "Electrical Activity"
 	rate = 0.2
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
-/datum/plant_gene/trait/cell_charge/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/cell_charge/on_new_plant(obj/item/product, newloc)
 	. = ..()
 	if(!.)
 		return
 
 	var/datum/plant/our_plant = product.get_plant_datum()
-	if(our_plant.gene_holder.has_active_gene(/datum/plant_gene/trait/squash))
+	if(our_plant.gene_holder.has_active_gene(/datum/plant_gene/product_trait/squash))
 		// If we have the squash gene, let that handle slipping
 		RegisterSignal(product, COMSIG_PLANT_ON_SQUASH, PROC_REF(zap_target))
 	else
@@ -29,7 +29,7 @@
  * our_plant - our source plant, shocking the target
  * target - the atom being zapped by our plant
  */
-/datum/plant_gene/trait/cell_charge/proc/zap_target(obj/item/our_plant, atom/target)
+/datum/plant_gene/product_trait/cell_charge/proc/zap_target(obj/item/our_plant, atom/target)
 	SIGNAL_HANDLER
 
 	if(!iscarbon(target))
@@ -49,7 +49,7 @@
  * eater - the mob that bit the plant
  * feeder - the mob that feed the eater the plant
  */
-/datum/plant_gene/trait/cell_charge/proc/recharge_cells(obj/item/our_plant, mob/living/eater, mob/feeder)
+/datum/plant_gene/product_trait/cell_charge/proc/recharge_cells(obj/item/our_plant, mob/living/eater, mob/feeder)
 	SIGNAL_HANDLER
 
 	to_chat(eater, span_notice("You feel energized as you bite into [our_plant]."))

@@ -161,7 +161,7 @@
 	product_path = /obj/item/food/grown/berries/glow
 	seed_path = /obj/item/seeds/berry/glow
 
-	innate_genes = list(/datum/plant_gene/trait/glow/white)
+	innate_genes = list(/datum/plant_gene/product_trait/glow/white)
 
 	possible_mutations = null
 

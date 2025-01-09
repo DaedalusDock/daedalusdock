@@ -1,4 +1,4 @@
-/datum/plant_gene/trait/mob_transformation
+/datum/plant_gene/product_trait/mob_transformation
 	name = "Dormant Ferocity"
 	trait_ids = ATTACK_SELF_ID
 	/// Whether mobs spawned by this trait are dangerous or not.
@@ -14,7 +14,7 @@
 	/// Spawned mob's move delay = this multiplier * seed potency.
 	var/mob_speed_multiplier = 1
 
-/datum/plant_gene/trait/mob_transformation/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/mob_transformation/on_new_plant(obj/item/product, newloc)
 	. = ..()
 	if(!.)
 		return
@@ -33,7 +33,7 @@
  * target - the mob eating the plant
  * user - the mob feeding someone the plant (generally, target == user)
  */
-/datum/plant_gene/trait/mob_transformation/proc/pre_consumption_check(obj/item/our_plant, atom/target, mob/user)
+/datum/plant_gene/product_trait/mob_transformation/proc/pre_consumption_check(obj/item/our_plant, atom/target, mob/user)
 	SIGNAL_HANDLER
 
 	if(!awakening)
@@ -54,7 +54,7 @@
  * our_plant - our plant that we're waking up
  * user - the mob activating the plant
  */
-/datum/plant_gene/trait/mob_transformation/proc/manual_awakening(obj/item/our_plant, mob/user)
+/datum/plant_gene/product_trait/mob_transformation/proc/manual_awakening(obj/item/our_plant, mob/user)
 	SIGNAL_HANDLER
 
 	if(awakening || isspaceturf(user.loc))
@@ -74,7 +74,7 @@
  * our_plant - our plant, which is waking up
  * user - the mob handling the plant
  */
-/datum/plant_gene/trait/mob_transformation/proc/early_awakening(obj/item/our_plant, mob/living/carbon/user)
+/datum/plant_gene/product_trait/mob_transformation/proc/early_awakening(obj/item/our_plant, mob/living/carbon/user)
 	SIGNAL_HANDLER
 
 	if(!awakening && !isspaceturf(user.loc) && prob(25))
@@ -87,7 +87,7 @@
  *
  * awaken_time - the time, in seconds, it will take for the plant to spawn.
  */
-/datum/plant_gene/trait/mob_transformation/proc/begin_awaken(obj/item/our_plant, awaken_time)
+/datum/plant_gene/product_trait/mob_transformation/proc/begin_awaken(obj/item/our_plant, awaken_time)
 	awakening = TRUE
 	addtimer(CALLBACK(src, PROC_REF(awaken), our_plant), awaken_time)
 
@@ -96,7 +96,7 @@
  *
  * our_plant - the plant that's waking up
  */
-/datum/plant_gene/trait/mob_transformation/proc/awaken(obj/item/our_plant)
+/datum/plant_gene/product_trait/mob_transformation/proc/awaken(obj/item/our_plant)
 	if(QDELETED(our_plant))
 		return
 	if(!ispath(killer_plant))
@@ -116,7 +116,7 @@
 	qdel(our_plant)
 
 /// Killer Tomato's transformation gene.
-/datum/plant_gene/trait/mob_transformation/tomato
+/datum/plant_gene/product_trait/mob_transformation/tomato
 	dangerous = TRUE
 	killer_plant = /mob/living/simple_animal/hostile/killertomato
 	mob_health_multiplier = 0.33
@@ -124,7 +124,7 @@
 	mob_speed_multiplier = 0.02
 
 /// Walking Mushroom's transformation gene
-/datum/plant_gene/trait/mob_transformation/shroom
+/datum/plant_gene/product_trait/mob_transformation/shroom
 	killer_plant = /mob/living/simple_animal/hostile/mushroom
 	mob_health_multiplier = 0.25
 	mob_melee_multiplier = 0.05

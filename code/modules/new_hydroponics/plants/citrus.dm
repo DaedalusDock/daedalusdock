@@ -117,7 +117,7 @@
 
 	product_path = /obj/item/food/grown/firelemon
 
-	innate_genes = list(/datum/plant_gene/trait/bomb_plant/potency_based)
+	innate_genes = list(/datum/plant_gene/product_trait/bomb_plant/potency_based)
 
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment = 0.05, /datum/reagent/fuel = 0.05)
 

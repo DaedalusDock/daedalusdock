@@ -10,7 +10,7 @@
 	seed_path = /obj/item/seeds/korta_nut
 	product_path = /obj/item/food/grown/korta_nut
 
-	innate_genes = list(/datum/plant_gene/trait/one_bite)
+	innate_genes = list(/datum/plant_gene/product_trait/one_bite)
 	possible_mutations = list(/datum/plant_mutation/korta_nut_sweet)
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.1)
 

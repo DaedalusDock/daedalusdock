@@ -4,13 +4,13 @@
  * When harvested, the plant's individual capacity is set to double it's default.
  * However, the plant's maximum yield is also halved, only up to 5.
  */
-/datum/plant_gene/trait/maxchem
+/datum/plant_gene/product_trait/maxchem
 	name = "Densified Chemicals"
 	rate = 2
 	trait_flags = TRAIT_HALVES_YIELD
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
-/datum/plant_gene/trait/maxchem/on_new_plant(obj/item/our_plant, newloc)
+/datum/plant_gene/product_trait/maxchem/on_new_plant(obj/item/our_plant, newloc)
 	. = ..()
 	if(!.)
 		return

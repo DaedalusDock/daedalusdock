@@ -11,7 +11,7 @@
 	seed_path = /obj/item/seeds/potato
 	product_path = /obj/item/food/grown/potato
 
-	innate_genes = list(/datum/plant_gene/trait/battery, /datum/plant_gene/trait/one_bite)
+	innate_genes = list(/datum/plant_gene/product_trait/battery, /datum/plant_gene/product_trait/one_bite)
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.1)
 
 	possible_mutations = list(/datum/plant_mutation/potato_sweet)

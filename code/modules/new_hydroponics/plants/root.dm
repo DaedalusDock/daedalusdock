@@ -117,7 +117,7 @@
 	seed_path = /obj/item/seeds/redbeet
 	product_path = /obj/item/food/grown/redbeet
 
-	latent_genes = list(/datum/plant_gene/trait/maxchem)
+	latent_genes = list(/datum/plant_gene/product_trait/maxchem)
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.05, /datum/reagent/consumable/nutriment = 0.05)
 
 /obj/item/seeds/redbeet

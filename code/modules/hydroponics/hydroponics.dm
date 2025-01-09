@@ -112,7 +112,7 @@
 			reagents.remove_all(nutridrain)
 
 		// Lack of nutrients hurts non-weeds
-		if(reagents.total_volume <= 0 && !myseed.get_gene(/datum/plant_gene/trait/plant_type/weed_hardy))
+		if(reagents.total_volume <= 0 && !myseed.get_gene(/datum/plant_gene/product_trait/plant_type/weed_hardy))
 			adjust_plant_health(-rand(1,3))
 
 //Photosynthesis/////////////////////////////////////////////////////////
@@ -120,7 +120,7 @@
 		if(isturf(loc))
 			var/turf/currentTurf = loc
 			var/lightAmt = currentTurf.get_lumcount()
-			var/is_fungus = myseed.get_gene(/datum/plant_gene/trait/plant_type/fungal_metabolism)
+			var/is_fungus = myseed.get_gene(/datum/plant_gene/product_trait/plant_type/fungal_metabolism)
 			if(lightAmt < (is_fungus ? 0.2 : 0.4))
 				adjust_plant_health((is_fungus ? -1 : -2) / rating)
 
@@ -129,7 +129,7 @@
 		adjust_waterlevel(-0.4 / rating)
 
 		// If the plant is dry, it loses health pretty fast, unless mushroom
-		if(waterlevel <= 10 && !myseed.get_gene(/datum/plant_gene/trait/plant_type/fungal_metabolism))
+		if(waterlevel <= 10 && !myseed.get_gene(/datum/plant_gene/product_trait/plant_type/fungal_metabolism))
 			adjust_plant_health(-rand(0,1) / rating)
 			if(waterlevel <= 0)
 				adjust_plant_health(-rand(0,2) / rating)
@@ -155,7 +155,7 @@
 //Pests & Weeds//////////////////////////////////////////////////////////
 
 		if(pestlevel >= 8)
-			if(!myseed.get_gene(/datum/plant_gene/trait/carnivory))
+			if(!myseed.get_gene(/datum/plant_gene/product_trait/carnivory))
 				if(myseed.potency >=30)
 					myseed.adjust_potency(-rand(2,6)) //Pests eat leaves and nibble on fruit, lowering potency.
 					myseed.set_potency(min((myseed.potency), CARNIVORY_POTENCY_MIN, MAX_PLANT_POTENCY))
@@ -164,7 +164,7 @@
 				adjust_pestlevel(-1 / rating)
 
 		else if(pestlevel >= 4)
-			if(!myseed.get_gene(/datum/plant_gene/trait/carnivory))
+			if(!myseed.get_gene(/datum/plant_gene/product_trait/carnivory))
 				if(myseed.potency >=30)
 					myseed.adjust_potency(-rand(1,4))
 					myseed.set_potency(min((myseed.potency), CARNIVORY_POTENCY_MIN, MAX_PLANT_POTENCY))
@@ -174,12 +174,12 @@
 				if(prob(50))
 					adjust_pestlevel(-1 / rating)
 
-		else if(pestlevel < 4 && myseed.get_gene(/datum/plant_gene/trait/carnivory))
+		else if(pestlevel < 4 && myseed.get_gene(/datum/plant_gene/product_trait/carnivory))
 			if(prob(5))
 				adjust_pestlevel(-1 / rating)
 
 		// If it's a weed, it doesn't stunt the growth
-		if(weedlevel >= 5 && !myseed.get_gene(/datum/plant_gene/trait/plant_type/weed_hardy))
+		if(weedlevel >= 5 && !myseed.get_gene(/datum/plant_gene/product_trait/plant_type/weed_hardy))
 			if(myseed.yield >=3)
 				myseed.adjust_yield(-rand(1,2)) //Weeds choke out the plant's ability to bear more fruit.
 				myseed.set_yield(min((myseed.yield), WEED_HARDY_YIELD_MIN, MAX_PLANT_YIELD))
@@ -297,7 +297,7 @@
 		to_chat(user, span_warning("You fail to harvest anything useful!"))
 	else
 		to_chat(user, span_notice("You harvest [product_count] items from the [myseed.plantname]."))
-	if(!myseed.get_gene(/datum/plant_gene/trait/repeated_harvest))
+	if(!myseed.get_gene(/datum/plant_gene/product_trait/repeated_harvest))
 		set_seed(null)
 		name = initial(name)
 		desc = initial(desc)

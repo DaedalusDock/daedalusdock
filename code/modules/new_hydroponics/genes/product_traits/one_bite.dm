@@ -1,8 +1,8 @@
 /// Traiit for plants eaten in 1 bite.
-/datum/plant_gene/trait/one_bite
+/datum/plant_gene/product_trait/one_bite
 	name = "Large Bites"
 
-/datum/plant_gene/trait/one_bite/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/one_bite/on_new_plant(obj/item/product, newloc)
 	. = ..()
 	if(!.)
 		return

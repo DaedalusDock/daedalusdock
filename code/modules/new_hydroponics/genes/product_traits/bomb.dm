@@ -1,9 +1,9 @@
 /// Plants that explode when used (based on their reagent contents)
-/datum/plant_gene/trait/bomb_plant
+/datum/plant_gene/product_trait/bomb_plant
 	name = "Explosive Contents"
 	trait_ids = ATTACK_SELF_ID
 
-/datum/plant_gene/trait/bomb_plant/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/bomb_plant/on_new_plant(obj/item/product, newloc)
 	. = ..()
 	if(!.)
 		return
@@ -19,7 +19,7 @@
  * our_plant - the plant that's exploding
  * user - the mob detonating the plant
  */
-/datum/plant_gene/trait/bomb_plant/proc/trigger_detonation(obj/item/our_plant, mob/living/user)
+/datum/plant_gene/product_trait/bomb_plant/proc/trigger_detonation(obj/item/our_plant, mob/living/user)
 	SIGNAL_HANDLER
 
 	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
@@ -45,7 +45,7 @@
  * our_plant - the plant that's 'deconstructed'
  * disassembled - if it was disassembled when it was deconstructed.
  */
-/datum/plant_gene/trait/bomb_plant/proc/deconstruct_reaction(obj/item/our_plant, disassembled)
+/datum/plant_gene/product_trait/bomb_plant/proc/deconstruct_reaction(obj/item/our_plant, disassembled)
 	SIGNAL_HANDLER
 
 	if(!disassembled)
@@ -61,7 +61,7 @@
  * our_plant - the plant that's exploded on
  * severity - severity of the explosion
  */
-/datum/plant_gene/trait/bomb_plant/proc/explosion_reaction(obj/item/our_plant, severity)
+/datum/plant_gene/product_trait/bomb_plant/proc/explosion_reaction(obj/item/our_plant, severity)
 	SIGNAL_HANDLER
 
 	qdel(our_plant)
@@ -71,15 +71,15 @@
  *
  * our_plant - the plant that's exploding for real
  */
-/datum/plant_gene/trait/bomb_plant/proc/detonate(obj/item/our_plant)
+/datum/plant_gene/product_trait/bomb_plant/proc/detonate(obj/item/our_plant)
 	our_plant.reagents.chem_temp = 1000 //Sets off the gunpowder
 	our_plant.reagents.handle_reactions()
 
 /// A subtype of bomb plants that have their boom sized based on potency instead of reagent contents.
-/datum/plant_gene/trait/bomb_plant/potency_based
+/datum/plant_gene/product_trait/bomb_plant/potency_based
 	name = "Explosive Nature"
 
-/datum/plant_gene/trait/bomb_plant/potency_based/trigger_detonation(obj/item/our_plant, mob/living/user)
+/datum/plant_gene/product_trait/bomb_plant/potency_based/trigger_detonation(obj/item/our_plant, mob/living/user)
 	user.visible_message(
 		span_warning("[user] primes [our_plant]!"),
 		span_userdanger("You prime [our_plant]!"),
@@ -95,7 +95,7 @@
 	playsound(our_plant.drop_location(), 'sound/weapons/armbomb.ogg', 75, TRUE, -3)
 	addtimer(CALLBACK(src, PROC_REF(detonate), our_plant), rand(1 SECONDS, 6 SECONDS))
 
-/datum/plant_gene/trait/bomb_plant/potency_based/detonate(obj/item/our_plant)
+/datum/plant_gene/product_trait/bomb_plant/potency_based/detonate(obj/item/our_plant)
 	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
 	var/flame_reach = clamp(round(our_seed.potency / 20), 1, 5) //Like IEDs - their flame range can get up to 5, but their real boom is small
 

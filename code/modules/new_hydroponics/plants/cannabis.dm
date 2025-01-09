@@ -147,7 +147,7 @@
 	species = "ocannabis"
 	name = "omega weed"
 
-	innate_genes = list(/datum/plant_gene/trait/glow/green)
+	innate_genes = list(/datum/plant_gene/product_trait/glow/green)
 
 	product_path = /obj/item/food/grown/cannabis/ultimate
 	seed_path = /obj/item/seeds/cannabis/ultimate

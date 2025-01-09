@@ -44,7 +44,7 @@
 	seed_path = /obj/item/seeds/chili/ghost
 	harvest_yield = 3
 
-	innate_genes = list(/datum/plant_gene/trait/backfire/chili_heat)
+	innate_genes = list(/datum/plant_gene/product_trait/backfire/chili_heat)
 
 	possible_mutations = null
 

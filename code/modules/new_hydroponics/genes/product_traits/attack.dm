@@ -1,5 +1,5 @@
 /// Traits that turn a plant into a weapon, giving them force and effects on attack.
-/datum/plant_gene/trait/attack
+/datum/plant_gene/product_trait/attack
 	name = "On Attack Trait"
 	/// The multiplier we apply to the potency to calculate force. Set to 0 to not affect the force.
 	var/force_multiplier = 0
@@ -8,7 +8,7 @@
 	/// When we fully degrade, what degraded off of us?
 	var/degradation_noun = "leaves"
 
-/datum/plant_gene/trait/attack/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/attack/on_new_plant(obj/item/product, newloc)
 	. = ..()
 	if(!.)
 		return
@@ -21,7 +21,7 @@
 	RegisterSignal(our_plant, COMSIG_ITEM_AFTERATTACK, PROC_REF(after_plant_attack))
 
 /// Signal proc for [COMSIG_ITEM_ATTACK] that allows for effects on attack
-/datum/plant_gene/trait/attack/proc/on_plant_attack(obj/item/source, mob/living/target, mob/living/user)
+/datum/plant_gene/product_trait/attack/proc/on_plant_attack(obj/item/source, mob/living/target, mob/living/user)
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(attack_effect), source, target, user)
@@ -34,11 +34,11 @@
  * user - the person who is attacking with the plant
  * target - the person who is attacked by the plant
  */
-/datum/plant_gene/trait/attack/proc/attack_effect(obj/item/our_plant, mob/living/target, mob/living/user)
+/datum/plant_gene/product_trait/attack/proc/attack_effect(obj/item/our_plant, mob/living/target, mob/living/user)
 	return
 
 /// Signal proc for [COMSIG_ITEM_AFTERATTACK] that allows for effects after an attack is done
-/datum/plant_gene/trait/attack/proc/after_plant_attack(obj/item/source, atom/target, mob/user, proximity_flag, click_parameters)
+/datum/plant_gene/product_trait/attack/proc/after_plant_attack(obj/item/source, atom/target, mob/user, proximity_flag, click_parameters)
 	SIGNAL_HANDLER
 
 	if(!proximity_flag)
@@ -62,7 +62,7 @@
  * user - the person who is attacking with the plant
  * target - the atom which is attacked by the plant
  */
-/datum/plant_gene/trait/attack/proc/after_attack_effect(obj/item/our_plant, atom/target, mob/living/user)
+/datum/plant_gene/product_trait/attack/proc/after_attack_effect(obj/item/our_plant, atom/target, mob/living/user)
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(!degrades_after_hit)
@@ -78,13 +78,13 @@
 	qdel(our_plant)
 
 /// Novaflower's attack effects (sets people on fire) + degradation on attack
-/datum/plant_gene/trait/attack/novaflower_attack
+/datum/plant_gene/product_trait/attack/novaflower_attack
 	name = "Heated Petals"
 	force_multiplier = 0.2
 	degrades_after_hit = TRUE
 	degradation_noun = "petals"
 
-/datum/plant_gene/trait/attack/novaflower_attack/attack_effect(obj/item/our_plant, mob/living/target, mob/living/user)
+/datum/plant_gene/product_trait/attack/novaflower_attack/attack_effect(obj/item/our_plant, mob/living/target, mob/living/user)
 	if(!istype(target))
 		return
 
@@ -97,10 +97,10 @@
 	our_plant.investigate_log("was used by [key_name(user)] to burn [key_name(target)] at [AREACOORD(user)]", INVESTIGATE_BOTANY)
 
 /// Sunflower's attack effect (shows cute text)
-/datum/plant_gene/trait/attack/sunflower_attack
+/datum/plant_gene/product_trait/attack/sunflower_attack
 	name = "Bright Petals"
 
-/datum/plant_gene/trait/attack/sunflower_attack/after_attack_effect(obj/item/our_plant, atom/target, mob/user, proximity_flag, click_parameters)
+/datum/plant_gene/product_trait/attack/sunflower_attack/after_attack_effect(obj/item/our_plant, atom/target, mob/user, proximity_flag, click_parameters)
 	if(ismob(target))
 		var/mob/target_mob = target
 		user.visible_message("<font color='green'>[user] smacks [target_mob] with [user.p_their()] [our_plant.name]! <font color='orange'><b>FLOWER POWER!</b></font></font>", ignored_mobs = list(target_mob, user))
@@ -111,12 +111,12 @@
 	return ..()
 
 /// Normal nettle's force + degradation on attack
-/datum/plant_gene/trait/attack/nettle_attack
+/datum/plant_gene/product_trait/attack/nettle_attack
 	name = "Sharpened Leaves"
 	force_multiplier = 0.2
 	degrades_after_hit = TRUE
 
 /// Deathnettle force + degradation on attack
-/datum/plant_gene/trait/attack/nettle_attack/death
+/datum/plant_gene/product_trait/attack/nettle_attack/death
 	name = "Aggressive Sharpened Leaves"
 	force_multiplier = 0.4

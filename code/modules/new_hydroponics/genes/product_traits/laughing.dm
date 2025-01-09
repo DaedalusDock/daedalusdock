@@ -3,13 +3,13 @@
  * Like the sitcom component but for plants.
  * Just like slippery skin, if we have a trash type this only functions on that. (Banana peels)
  */
-/datum/plant_gene/trait/plant_laughter
+/datum/plant_gene/product_trait/plant_laughter
 	name = "Hallucinatory Feedback"
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 	/// Sounds that play when this trait triggers
 	var/list/sounds = list('sound/items/SitcomLaugh1.ogg', 'sound/items/SitcomLaugh2.ogg', 'sound/items/SitcomLaugh3.ogg')
 
-/datum/plant_gene/trait/plant_laughter/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/plant_laughter/on_new_plant(obj/item/product, newloc)
 	. = ..()
 	if(!.)
 		return
@@ -26,7 +26,7 @@
  * our_plant - the source plant that was slipped on
  * target - the atom that slipped on the plant
  */
-/datum/plant_gene/trait/plant_laughter/proc/laughter(obj/item/our_plant, atom/target)
+/datum/plant_gene/product_trait/plant_laughter/proc/laughter(obj/item/our_plant, atom/target)
 	SIGNAL_HANDLER
 
 	our_plant.audible_message(span_notice("[our_plant] lets out burst of laughter."))

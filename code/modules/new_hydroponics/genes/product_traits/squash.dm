@@ -1,12 +1,12 @@
 /// Allows the plant to be squashed when thrown or slipped on, leaving a colored mess and trash type item behind.
-/datum/plant_gene/trait/squash
+/datum/plant_gene/product_trait/squash
 	name = "Liquid Contents"
 	examine_line = "<span class='info'>It has a lot of liquid contents inside.</span>"
 	trait_ids = THROW_IMPACT_ID | REAGENT_TRANSFER_ID | ATTACK_SELF_ID
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
 // Register a signal that our plant can be squashed on add.
-/datum/plant_gene/trait/squash/on_new_plant(obj/item/food/grown/product, newloc)
+/datum/plant_gene/product_trait/squash/on_new_plant(obj/item/food/grown/product, newloc)
 	. = ..()
 	if(!.)
 		return
@@ -22,7 +22,7 @@
  * our_plant - the plant this trait belongs to.
  * target - the atom being hit by this squashed plant.
  */
-/datum/plant_gene/trait/squash/proc/squash_plant(obj/item/food/grown/our_plant, atom/target)
+/datum/plant_gene/product_trait/squash/proc/squash_plant(obj/item/food/grown/our_plant, atom/target)
 	SIGNAL_HANDLER
 
 	var/turf/our_turf = get_turf(target)

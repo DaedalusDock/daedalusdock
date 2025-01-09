@@ -1,5 +1,5 @@
 /// Traits for plants with backfire effects. These are negative effects that occur when a plant is handled without gloves/unsafely.
-/datum/plant_gene/trait/backfire
+/datum/plant_gene/product_trait/backfire
 	name = "Backfire Trait"
 	/// Whether our actions are cancelled when the backfire triggers.
 	var/cancel_action_on_backfire = FALSE
@@ -8,7 +8,7 @@
 	/// A list of extra genes to check to be considered safe.
 	var/list/genes_to_check
 
-/datum/plant_gene/trait/backfire/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/backfire/on_new_plant(obj/item/product, newloc)
 	. = ..()
 	if(!.)
 		return
@@ -17,7 +17,7 @@
 	RegisterSignal(product, COMSIG_PLANT_ON_BACKFIRE, PROC_REF(on_backfire))
 
 /// Signal proc for [COMSIG_PLANT_ON_BACKFIRE] that causes the backfire effect.
-/datum/plant_gene/trait/backfire/proc/on_backfire(obj/item/source, mob/living/carbon/user)
+/datum/plant_gene/product_trait/backfire/proc/on_backfire(obj/item/source, mob/living/carbon/user)
 	SIGNAL_HANDLER
 
 	INVOKE_ASYNC(src, PROC_REF(backfire_effect), source, user)
@@ -26,17 +26,17 @@
  * The actual backfire effect on the user.
  * Override with plant-specific effects.
  */
-/datum/plant_gene/trait/backfire/proc/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
+/datum/plant_gene/product_trait/backfire/proc/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
 	return
 
 /// Rose's prick on backfire
-/datum/plant_gene/trait/backfire/rose_thorns
+/datum/plant_gene/product_trait/backfire/rose_thorns
 	name = "Rose Thorns"
 	traits_to_check = list(TRAIT_PIERCEIMMUNE)
 
-/datum/plant_gene/trait/backfire/rose_thorns/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
+/datum/plant_gene/product_trait/backfire/rose_thorns/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
 	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
-	if(!our_seed.get_gene(/datum/plant_gene/trait/sticky) && prob(66))
+	if(!our_seed.get_gene(/datum/plant_gene/product_trait/sticky) && prob(66))
 		to_chat(user, span_danger("[our_plant]'s thorns nearly prick your hand. Best be careful."))
 		return
 
@@ -46,32 +46,32 @@
 	affecting?.receive_damage(2)
 
 /// Novaflower's hand burn on backfire
-/datum/plant_gene/trait/backfire/novaflower_heat
+/datum/plant_gene/product_trait/backfire/novaflower_heat
 	name = "Burning Stem"
 	cancel_action_on_backfire = TRUE
 
-/datum/plant_gene/trait/backfire/novaflower_heat/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
+/datum/plant_gene/product_trait/backfire/novaflower_heat/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
 	to_chat(user, span_danger("[our_plant] singes your bare hand!"))
 	our_plant.investigate_log("self-burned [key_name(user)] for [our_plant.force] at [AREACOORD(user)]", INVESTIGATE_BOTANY)
 	var/obj/item/bodypart/affecting = user.get_active_hand()
 	return affecting?.receive_damage(0, our_plant.force)
 
 /// Normal Nettle hannd burn on backfire
-/datum/plant_gene/trait/backfire/nettle_burn
+/datum/plant_gene/product_trait/backfire/nettle_burn
 	name = "Stinging Stem"
 
-/datum/plant_gene/trait/backfire/nettle_burn/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
+/datum/plant_gene/product_trait/backfire/nettle_burn/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
 	to_chat(user, span_danger("[our_plant] burns your bare hand!"))
 	our_plant.investigate_log("self-burned [key_name(user)] for [our_plant.force] at [AREACOORD(user)]", INVESTIGATE_BOTANY)
 	var/obj/item/bodypart/affecting = user.get_active_hand()
 	return affecting?.receive_damage(0, our_plant.force)
 
 /// Deathnettle hand burn + stun on backfire
-/datum/plant_gene/trait/backfire/nettle_burn/death
+/datum/plant_gene/product_trait/backfire/nettle_burn/death
 	name = "Aggressive Stinging Stem"
 	cancel_action_on_backfire = TRUE
 
-/datum/plant_gene/trait/backfire/nettle_burn/death/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
+/datum/plant_gene/product_trait/backfire/nettle_burn/death/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
 	. = ..()
 	if(!. || prob(50))
 		return
@@ -80,15 +80,15 @@
 	to_chat(user, span_userdanger("You are stunned by the powerful acids of [our_plant]!"))
 
 /// Ghost-Chili heating up on backfire
-/datum/plant_gene/trait/backfire/chili_heat
+/datum/plant_gene/product_trait/backfire/chili_heat
 	name = "Active Capsicum Glands"
-	genes_to_check = list(/datum/plant_gene/trait/chem_heating)
+	genes_to_check = list(/datum/plant_gene/product_trait/chem_heating)
 	/// The mob currently holding the chili.
 	var/datum/weakref/held_mob
 	/// The chili this gene is tied to, to track it for processing.
 	var/datum/weakref/our_chili
 
-/datum/plant_gene/trait/backfire/chili_heat/on_new_plant(obj/item/our_plant, newloc)
+/datum/plant_gene/product_trait/backfire/chili_heat/on_new_plant(obj/item/our_plant, newloc)
 	. = ..()
 	if(!.)
 		return
@@ -102,7 +102,7 @@
  * our_plant - our source plant, which is backfiring
  * user - the mob holding our plant
  */
-/datum/plant_gene/trait/backfire/chili_heat/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
+/datum/plant_gene/product_trait/backfire/chili_heat/backfire_effect(obj/item/our_plant, mob/living/carbon/user)
 	held_mob = WEAKREF(user)
 	START_PROCESSING(SSobj, src)
 
@@ -111,7 +111,7 @@
  *
  * our_plant - our source plant
  */
-/datum/plant_gene/trait/backfire/chili_heat/proc/stop_backfire_effect(datum/source)
+/datum/plant_gene/product_trait/backfire/chili_heat/proc/stop_backfire_effect(datum/source)
 	SIGNAL_HANDLER
 
 	held_mob = null
@@ -121,7 +121,7 @@
  * The processing of our trait. Heats up the mob ([held_mob]) currently holding the source plant ([our_chili]).
  * Stops processing if we're no longer being held by [held mob].
  */
-/datum/plant_gene/trait/backfire/chili_heat/process(delta_time)
+/datum/plant_gene/product_trait/backfire/chili_heat/process(delta_time)
 	var/mob/living/carbon/our_mob = held_mob?.resolve()
 	var/obj/item/our_plant = our_chili?.resolve()
 

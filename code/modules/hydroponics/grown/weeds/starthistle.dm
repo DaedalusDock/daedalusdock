@@ -14,9 +14,9 @@
 	instability = 35
 	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_flowers.dmi'
-	genes = list(/datum/plant_gene/trait/plant_type/weed_hardy)
+	genes = list(/datum/plant_gene/product_trait/plant_type/weed_hardy)
 	mutatelist = list(/obj/item/seeds/galaxythistle)
-	graft_gene = /datum/plant_gene/trait/plant_type/weed_hardy
+	graft_gene = /datum/plant_gene/product_trait/plant_type/weed_hardy
 
 //Galaxy Thistle
 /obj/item/seeds/galaxythistle
@@ -35,10 +35,10 @@
 	instability = 35
 	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_flowers.dmi'
-	genes = list(/datum/plant_gene/trait/plant_type/weed_hardy, /datum/plant_gene/trait/invasive/galaxythistle)
+	genes = list(/datum/plant_gene/product_trait/plant_type/weed_hardy, /datum/plant_gene/product_trait/invasive/galaxythistle)
 	mutatelist = null
 	reagents_add = list(/datum/reagent/consumable/nutriment = 0.05, /datum/reagent/medicine/peridaxon = 0.1)
-	graft_gene = /datum/plant_gene/trait/invasive
+	graft_gene = /datum/plant_gene/product_trait/invasive
 
 /obj/item/food/grown/galaxythistle
 	seed = /obj/item/seeds/galaxythistle

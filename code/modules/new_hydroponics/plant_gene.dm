@@ -67,7 +67,7 @@
 
 //* PRODUCT-AFFECTING GENES *//
 /// Traits that affect the grown product.
-/datum/plant_gene/trait
+/datum/plant_gene/product_trait
 	/// The rate at which this trait affects something. This can be anything really - why? I dunno.
 	var/rate = 0.05
 	/// Bonus lines displayed on examine.
@@ -79,9 +79,9 @@
 	/// A blacklist of seeds that a trait cannot be attached to.
 	var/list/obj/item/seeds/seed_blacklist
 
-/datum/plant_gene/trait/Copy()
+/datum/plant_gene/product_trait/Copy()
 	. = ..()
-	var/datum/plant_gene/trait/new_trait_gene = .
+	var/datum/plant_gene/product_trait/new_trait_gene = .
 	new_trait_gene.rate = rate
 	return
 
@@ -90,7 +90,7 @@
  *
  * source_seed - the seed genes we're adding the trait too
  */
-/datum/plant_gene/trait/can_add(obj/item/seeds/source_seed)
+/datum/plant_gene/product_trait/can_add(obj/item/seeds/source_seed)
 	. = ..()
 	if(!.)
 		return FALSE
@@ -99,7 +99,7 @@
 		if(istype(source_seed, found_seed))
 			return FALSE
 
-	for(var/datum/plant_gene/trait/trait in source_seed.genes)
+	for(var/datum/plant_gene/product_trait/trait in source_seed.genes)
 		if(trait_ids & trait.trait_ids)
 			return FALSE
 		if(type == trait.type)
@@ -113,7 +113,7 @@
  * product - the source product being created
  * newloc - the loc of the plant
  */
-/datum/plant_gene/trait/proc/on_new_product(obj/item/product, newloc)
+/datum/plant_gene/product_trait/proc/on_new_product(obj/item/product, newloc)
 	// Plant products should always have a bound plant datum.
 	if(isnull(product.get_plant_datum()))
 		stack_trace("[product] ([product.type]) has a nulled plant_datum value while trying to initialize [src]!")
@@ -126,7 +126,7 @@
 	return TRUE
 
 /// Add on any unique examine text to the plant's examine text.
-/datum/plant_gene/trait/proc/examine(obj/item/our_plant, mob/examiner, list/examine_list)
+/datum/plant_gene/product_trait/proc/examine(obj/item/our_plant, mob/examiner, list/examine_list)
 	SIGNAL_HANDLER
 
 	examine_list += examine_line

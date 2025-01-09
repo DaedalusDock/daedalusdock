@@ -59,7 +59,7 @@
 // 	if(tray.myseed != seed)
 // 		TEST_FAIL("Hydroponics harvest from [saved_name] had [tray.myseed] planted when it was testing [seed].")
 
-// 	var/double_chemicals = seed.get_gene(/datum/plant_gene/trait/maxchem)
+// 	var/double_chemicals = seed.get_gene(/datum/plant_gene/product_trait/maxchem)
 // 	var/expected_yield = seed.getYield()
 // 	var/max_volume = 100 //For 99% of plants, max volume is 100.
 

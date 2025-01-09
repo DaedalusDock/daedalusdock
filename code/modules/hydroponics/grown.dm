@@ -70,7 +70,7 @@
 	var/datum/plant_gene_holder/gene_holder = plant_datum.gene_holder
 
 	// Go through all traits in their genes and call on_new_plant from them.
-	for(var/datum/plant_gene/trait/trait in gene_holder)
+	for(var/datum/plant_gene/product_trait/trait in gene_holder)
 		trait.on_new_plant(src, loc)
 
 	// Set our default bitesize: bite size = 1 + (potency * 0.05) * (max_volume * 0.01) * modifier

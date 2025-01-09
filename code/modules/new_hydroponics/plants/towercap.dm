@@ -9,7 +9,7 @@
 	seed_path = /obj/item/seeds/tower
 	product_path = /obj/item/grown/log
 
-	innate_genes = list(/datum/plant_gene/trait/plant_type/fungal_metabolism)
+	innate_genes = list(/datum/plant_gene/product_trait/plant_type/fungal_metabolism)
 	possible_mutations = list(/datum/reagent/cellulose = 0.05)
 
 /obj/item/seeds/tower

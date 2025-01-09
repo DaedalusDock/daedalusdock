@@ -2,13 +2,13 @@
  * Injects a number of chemicals from the plant when you throw it at someone or they slip on it.
  * At 0 potency it can inject 1 unit of its chemicals, while at 100 potency it can inject 20 units.
  */
-/datum/plant_gene/trait/stinging
+/datum/plant_gene/product_trait/stinging
 	name = "Hypodermic Prickles"
 	examine_line = "<span class='info'>It's quite prickley.</span>"
 	trait_ids = REAGENT_TRANSFER_ID
 	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
-/datum/plant_gene/trait/stinging/on_new_plant(obj/item/product, newloc)
+/datum/plant_gene/product_trait/stinging/on_new_plant(obj/item/product, newloc)
 	. = ..()
 	if(!.)
 		return
@@ -22,7 +22,7 @@
  * our_plant - our plant that's injecting someone
  * target - the atom being hit on thrown or slipping on our plant
  */
-/datum/plant_gene/trait/stinging/proc/prickles_inject(obj/item/our_plant, atom/target)
+/datum/plant_gene/product_trait/stinging/proc/prickles_inject(obj/item/our_plant, atom/target)
 	SIGNAL_HANDLER
 
 	if(!isliving(target) || !our_plant.reagents?.total_volume)

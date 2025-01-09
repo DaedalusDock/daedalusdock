@@ -10,7 +10,7 @@
 	product_path = /obj/item/food/grown/rainbow_flower
 	harvest_yield = 3
 
-	innate_genes = list(/datum/plant_gene/trait/preserved)
+	innate_genes = list(/datum/plant_gene/product_trait/preserved)
 
 /obj/item/seeds/rainbow_bunch
 	name = "pack of rainbow bunch seeds"

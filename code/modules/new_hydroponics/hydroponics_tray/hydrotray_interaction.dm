@@ -116,54 +116,6 @@
 			adjust_plant_health(-5)
 			return
 
-	else if(istype(O, /obj/item/geneshears))
-		if(!seed)
-			to_chat(user, span_notice("The tray is empty."))
-			return
-		if(plant_health <= GENE_SHEAR_MIN_HEALTH)
-			to_chat(user, span_notice("This plant looks too unhealty to be sheared right now."))
-			return
-
-		var/list/current_traits = list()
-		for(var/datum/plant_gene/gene in seed.genes)
-			if(islist(gene))
-				continue
-			if(!(gene.mutability_flags & PLANT_GENE_REMOVABLE))
-				continue // Don't show genes that can't be removed.
-			current_traits[gene.name] = gene
-		var/removed_trait = tgui_input_list(user, "Trait to remove from the [seed.plantname]", "Plant Trait Removal", sort_list(current_traits))
-		if(isnull(removed_trait))
-			return
-		if(!user.canUseTopic(src, USE_CLOSE))
-			return
-		if(!seed)
-			return
-		if(plant_health <= GENE_SHEAR_MIN_HEALTH) //Check health again to make sure they're not keeping inputs open to get free shears.
-			return
-		for(var/datum/plant_gene/gene in seed.genes)
-			if(gene.name == removed_trait)
-				if(seed.genes.Remove(gene))
-					gene.on_removed(seed)
-					qdel(gene)
-					break
-		seed.reagents_from_genes()
-		adjust_plant_health(-15)
-		to_chat(user, span_notice("You carefully shear the genes off of the [seed.plantname], leaving the plant looking weaker."))
-		update_appearance()
-		return
-
-	else if(istype(O, /obj/item/graft))
-		var/obj/item/graft/snip = O
-		if(!seed)
-			to_chat(user, span_notice("The tray is empty."))
-			return
-		if(seed.apply_graft(snip))
-			to_chat(user, span_notice("You carefully integrate the grafted plant limb onto [seed.plantname], granting it [snip.stored_trait.get_name()]."))
-		else
-			to_chat(user, span_notice("You integrate the grafted plant limb onto [seed.plantname], but it does not accept the [snip.stored_trait.get_name()] trait from the [snip]."))
-		qdel(snip)
-		return
-
 	else if(istype(O, /obj/item/storage/bag/plants))
 		attack_hand(user)
 		for(var/obj/item/food/grown/G in locate(user.x,user.y,user.z))

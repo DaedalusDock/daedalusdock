@@ -17,7 +17,6 @@
 	if(istype(grown_plant) && ispath(grown_plant.trash_type, /obj/item/grown))
 		return
 
-	var/obj/item/seeds/our_seed = grown_plant.get_plant_datum()
 	var/stun_len = grown_plant.cached_potency * rate
 
 	if(!istype(grown_plant, /obj/item/grown/bananapeel) && (!grown_plant.reagents || !grown_plant.reagents.has_reagent(/datum/reagent/lube)))

@@ -66,7 +66,7 @@
 	distill_reagent = /datum/reagent/consumable/ethanol/ale
 
 // Rice
-/datum/plant_mutation/rice
+/datum/plant_mutation/wheat_rice
 	plant_type = /datum/plant/wheat/rice
 
 /datum/plant/wheat/rice

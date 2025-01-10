@@ -112,7 +112,7 @@
 		if(HAS_TRAIT(user, checked_trait))
 			return TRUE
 
-	var/datum/plant/our_plant = product.get_plant_seed()
+	var/datum/plant/our_plant = product.get_plant_datum()
 	if(our_plant)
 		for(var/checked_gene in extra_genes)
 			if(!our_plant.gene_holder.has_active_gene(checked_gene))

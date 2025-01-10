@@ -12,9 +12,6 @@
 		filling.color = sample_color
 		add_overlay(filling)
 
-/obj/item/seeds/sample/get_unique_analyzer_text()
-	return "The DNA of this sample is damaged beyond recovery, it can't support life on its own."
-
 /obj/item/seeds/sample/alienweed
 	name = "alien weed sample"
 	icon_state = "alienweed"

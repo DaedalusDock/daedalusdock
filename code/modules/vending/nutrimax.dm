@@ -16,7 +16,6 @@
 		/obj/item/storage/bag/plants = 5,
 		/obj/item/cultivator = 3,
 		/obj/item/shovel/spade = 3,
-		/obj/item/secateurs = 3,
 		/obj/item/plant_analyzer = 4
 	)
 	contraband = list(

@@ -36,7 +36,6 @@
 					english_reagents += initial(reagent_path.name)
 				mechanics += "[FOURSPACES]Any of Infusions: [english_list(english_reagents)]."
 
-			var/inserted_range_header = FALSE
 			for(var/stat in mutation_source.ranges)
 				var/list/stat_requirement = mutation_source.ranges[stat]
 				var/lower_bound = stat_requirement[1]

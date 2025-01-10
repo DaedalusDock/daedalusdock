@@ -105,18 +105,9 @@
 
 	// If the plant is harvestable, we can graft it with secateurs or harvest it with a plant bag.
 	if(growing.plant_status == HYDROTRAY_PLANT_HARVESTABLE)
-		if(istype(held_item, /obj/item/secateurs))
-			context[SCREENTIP_CONTEXT_LMB] = "Graft plant"
-			return CONTEXTUAL_SCREENTIP_SET
-
 		if(istype(held_item, /obj/item/storage/bag/plants))
 			context[SCREENTIP_CONTEXT_LMB] = "Harvest plant"
 			return CONTEXTUAL_SCREENTIP_SET
-
-	// If the plant's in good health, we can shear it.
-	if(istype(held_item, /obj/item/geneshears) && plant_health > GENE_SHEAR_MIN_HEALTH)
-		context[SCREENTIP_CONTEXT_LMB] = "Remove plant gene"
-		return CONTEXTUAL_SCREENTIP_SET
 
 	// Edibles and pills can be composted.
 	if(IS_EDIBLE(held_item) || istype(held_item, /obj/item/reagent_containers/pill))
@@ -352,7 +343,6 @@
 /obj/machinery/hydroponics/proc/apply_chemicals(mob/user)
 	for(var/datum/reagent/chem as anything in reagents.reagent_list)
 		chem.on_hydroponics_apply(current_tick, reagents, chem.volume, src, user)
-		#warn change from seed to current tick
 
 /obj/machinery/hydroponics/proc/plant_death()
 	if(!growing)

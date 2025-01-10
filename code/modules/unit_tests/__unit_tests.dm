@@ -157,7 +157,6 @@
 #include "objectives.dm"
 #include "outfit_sanity.dm"
 #include "paintings.dm"
-#include "plantgrowth_tests.dm"
 #include "preferences.dm"
 #include "projectiles.dm"
 #include "quirks.dm"

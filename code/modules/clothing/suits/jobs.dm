@@ -20,9 +20,7 @@
 		/obj/item/reagent_containers/spray/pestspray,
 		/obj/item/hatchet,
 		/obj/item/storage/bag/plants,
-		/obj/item/graft,
 		/obj/item/secateurs,
-		/obj/item/geneshears
 	)
 
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION

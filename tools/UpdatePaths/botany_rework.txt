@@ -18,3 +18,4 @@
 /obj/item/seeds/tower/steel : @DELETE
 /obj/item/seeds/tomato/blue/bluespace : @DELETE
 /obj/item/food/grown/tomato/blue/bluespace : @DELETE
+/obj/item/geneshears : @DELETE

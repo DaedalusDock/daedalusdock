@@ -80,7 +80,7 @@
 
 	. = ..() //Only call it here because we want all the genes and shit to be applied before we add edibility. God this code is a mess.
 
-	plant_datum.prepare_result(src)
+	plant_datum.prepare_product(src)
 	transform *= TRANSFORM_USING_VARIABLE(cached_potency, 100) + 0.5 //Makes the resulting produce's sprite larger or smaller based on potency!
 
 /obj/item/food/grown/Destroy()
@@ -113,7 +113,7 @@
 /obj/item/food/grown/proc/generate_trash()
 	// If this is some type of grown thing, we pass a seed arg into its Inititalize()
 	if(ispath(trash_type, /obj/item/grown) || ispath(trash_type, /obj/item/food/grown))
-		return new trash_type(src, seed)
+		return new trash_type(src, growing)
 
 	return new trash_type(src)
 

@@ -17,10 +17,8 @@
 		/obj/item/reagent_containers/glass/bottle,
 		/obj/item/reagent_containers/glass/beaker,
 		/obj/item/cultivator,
-		/obj/item/reagent_containers/spray/pestspray,
 		/obj/item/hatchet,
 		/obj/item/storage/bag/plants,
-		/obj/item/secateurs,
 	)
 
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION

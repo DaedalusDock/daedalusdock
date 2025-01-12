@@ -31,6 +31,7 @@
 	pixel_y = base_pixel_y + rand(-8, 8)
 
 	plant_datum = new plant_type(!nogenes)
+	plant_datum.in_seed = src
 
 /obj/item/seeds/Destroy()
 	QDEL_NULL(plant_datum)
@@ -71,8 +72,3 @@
 
 /obj/item/grown/get_plant_datum()
 	return plant_datum
-
-/obj/item/seeds/proc/reagents_from_genes()
-	reagents_add = list()
-	for(var/datum/plant_gene/reagent/R in genes)
-		reagents_add[R.reagent_id] = R.rate

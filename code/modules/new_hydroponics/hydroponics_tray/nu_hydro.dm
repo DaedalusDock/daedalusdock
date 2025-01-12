@@ -240,7 +240,7 @@
 	src.seed = seed
 	var/plant_type = seed.plant_type
 
-	growing = new plant_type
+	growing = seed.plant_datum
 
 	plant_health = growing.base_health
 	plant_health += growing.get_effective_stat(PLANT_STAT_ENDURANCE)
@@ -297,7 +297,7 @@
 
 	var/final_growth_delta = current_tick.plant_growth_delta
 	var/final_health_delta = current_tick.plant_health_delta
-	var/final_mutation_power = current_tick.mutation_power * tick_multiplier
+	var/final_mutation_power = PLANT_STAT_PROB_ROUND(current_tick.mutation_power * tick_multiplier)
 
 	var/water_level = get_water_level()
 
@@ -310,16 +310,16 @@
 	else
 		adjust_plant_health(PLANT_STAT_PROB_ROUND(HYDRO_NO_WATER_DAMAGE * tick_multiplier), damage_type = PLANT_DAMAGE_NO_WATER)
 
-	final_growth_delta *= tick_multiplier
-	final_health_delta *= tick_multiplier
+	final_growth_delta = PLANT_STAT_PROB_ROUND(final_growth_delta * tick_multiplier)
+	final_health_delta = PLANT_STAT_PROB_ROUND(final_health_delta * tick_multiplier)
 
 	// Apply health and growth deltas
 	if(final_health_delta)
-		adjust_plant_health(PLANT_STAT_PROB_ROUND(final_health_delta))
+		adjust_plant_health(final_health_delta)
 		if(plant_health == 0)
 			return
 
-	growth = max(growth + PLANT_STAT_PROB_ROUND(final_growth_delta), 0)
+	growth = max(growth + final_growth_delta, 0)
 
 	// Stat mods
 	plant_dna.time_to_grow = plant_dna.time_to_grow + PLANT_STAT_PROB_ROUND(current_tick.time_to_grow_mod * tick_multiplier)
@@ -332,9 +332,8 @@
 	// Take reagents.
 	reagents.remove_all(current_tick.water_need * tick_multiplier)
 
-	#warn mutation
-	if(final_mutation_power)
-		growing.mutate(final_mutation_power)
+	if(final_mutation_power >= 1)
+		growing.gene_holder.multi_mutate(final_mutation_power, final_mutation_power, final_mutation_power)
 
 	// Swap out the tick datum
 	QDEL_NULL(current_tick)

@@ -4,7 +4,7 @@
 
 	/// Modifier for /datum/plant/var/time_to_grow
 	var/time_to_grow = 0
-	/// Modifier for /datum/plant/var/time_to_produce
+	/// Modifier for /datum/plant/var/time	_to_produce
 	var/time_to_produce = 0
 	/// Modifier for /datum/plant/var/time_to_harvest
 	var/harvest_amt = 0
@@ -173,6 +173,9 @@
 	if(!length(parent.possible_mutations))
 		return FALSE
 
+	if(!parent.in_seed)
+		return FALSE
+
 	var/prob_modifier = 0
 	for(var/datum/plant_gene/mutations/gene in gene_list)
 		if(gene.is_negative)
@@ -191,9 +194,8 @@
 		var/obj/item/seeds/new_seed = new new_path(null, TRUE)
 		new_seed.plant_datum.gene_holder.CopyFrom(src)
 
-		var/datum/plant/old_parent = parent
-		var/atom/parent_loc = old_parent.loc
-		qdel(parent)
+		var/atom/parent_loc = parent.in_seed.loc
+		qdel(parent.in_seed)
 
 		if(istype(parent_loc, /obj/machinery/hydroponics))
 			var/obj/machinery/hydroponics/tray = parent_loc

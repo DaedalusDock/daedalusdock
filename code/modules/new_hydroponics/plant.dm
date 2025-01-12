@@ -1,6 +1,9 @@
 /datum/plant
 	var/name = "BAD NAME"
 
+	/// Ref to the seed we're in, if any.
+	var/obj/item/seeds/in_seed
+
 	/// Used to update icons. Should match the name in the sprites unless all icon_* are overridden.
 	var/species = ""
 	///the file that stores the sprites of the growing plant from this seed.
@@ -74,6 +77,10 @@
 		possible_mutations -= path
 		possible_mutations += SShydroponics.mutation_list[path]
 
+/datum/plant/Destroy()
+	in_seed = null
+	return ..()
+
 /datum/plant/proc/Copy()
 	RETURN_TYPE(/datum/plant)
 	var/datum/plant/new_plant = new type()
@@ -133,3 +140,73 @@
 	. = base_val
 
 	. += gene_holder.get_effective_stat(stat)
+
+/**
+ * This is where plant chemical products are handled.
+ *
+ * Individually, the formula for individual amounts of chemicals is Potency * the chemical production %, rounded to the fullest 1.
+ * Specific chem handling is also handled here, like bloodtype, food taste within nutriment, and the auto-distilling/autojuicing traits.
+ * This is where chemical reactions can occur, and the heating / cooling traits effect the reagent container.
+ */
+/datum/plant/proc/prepare_product(obj/item/product)
+	ASSERT(product.reagents)
+
+	var/reagent_max = 0
+	for(var/reagent_path in reagents_per_potency)
+		reagent_max += reagents_per_potency[reagent_path]
+
+	if(!(IS_EDIBLE(product) || istype(product, /obj/item/grown)))
+		return
+
+	var/obj/item/food/grown/grown_edible = product
+	var/potency = get_effective_stat(PLANT_STAT_POTENCY)
+
+	for(var/reagent_path in reagents_per_potency)
+		var/reagent_overflow_mod = reagents_per_potency[reagent_path]
+		if(reagent_max > 1)
+			reagent_overflow_mod = (reagents_per_potency[reagent_path] / reagent_max)
+
+		var/edible_vol = grown_edible.reagents?.maximum_volume || 0
+
+		 //the plant will always have at least 1u of each of the reagents in its reagent production traits
+		var/amount = max(1, round((edible_vol) * (potency/100) * reagent_overflow_mod, 1)) //the plant will always have at least 1u of each of the reagents in its reagent production traits
+
+		var/list/data
+		switch(reagent_path)
+			if(/datum/reagent/blood)
+				data = list("blood_type" = /datum/blood/human/omin)
+
+			if(/datum/reagent/consumable/nutriment, /datum/reagent/consumable/nutriment/vitamin)
+				if(istype(grown_edible))
+					data = grown_edible.tastes // apple tastes of apple.
+
+		product.reagents.add_reagent(reagent_path, amount, data)
+
+	//Handles the juicing trait, swaps nutriment and vitamins for that species various juices if they exist. Mutually exclusive with distilling.
+	if(gene_holder.has_active_gene(/datum/plant_gene/product_trait/juicing) && grown_edible.juice_results)
+		grown_edible.on_juice()
+		grown_edible.reagents.add_reagent_list(grown_edible.juice_results)
+
+	else if(gene_holder.has_active_gene(/datum/plant_gene/product_trait/brewing) && grown_edible.distill_reagent)
+		var/amount = grown_edible.reagents.has_reagent(/datum/reagent/consumable/nutriment) + product.reagents.has_reagent(/datum/reagent/consumable/nutriment/vitamin)
+		grown_edible.reagents.add_reagent(grown_edible.distill_reagent, amount/2)
+
+
+	/// The number of nutriments we have inside of our plant, for use in our heating / cooling genes
+	var/num_nutriment = product.reagents.has_reagent(/datum/reagent/consumable/nutriment)
+
+	// Heats up the plant's contents by 25 kelvin per 1 unit of nutriment. Mutually exclusive with cooling.
+	if(gene_holder.has_active_gene(/datum/plant_gene/product_trait/chem_heating))
+		product.visible_message(span_notice("[product] releases freezing air, consuming its nutriments to heat its contents."))
+		product.reagents.remove_reagent(/datum/reagent/consumable/nutriment, num_nutriment)
+		product.reagents.chem_temp = min(1000, (product.reagents.chem_temp + num_nutriment * 25))
+		product.reagents.handle_reactions()
+		playsound(product.loc, 'sound/effects/wounds/sizzle2.ogg', 5)
+
+	// Cools down the plant's contents by 5 kelvin per 1 unit of nutriment. Mutually exclusive with heating.
+	else if(gene_holder.has_active_gene(/datum/plant_gene/product_trait/chem_cooling))
+		product.visible_message(span_notice("[product] releases a blast of hot air, consuming its nutriments to cool its contents."))
+		product.reagents.remove_reagent(/datum/reagent/consumable/nutriment, num_nutriment)
+		product.reagents.chem_temp = max(3, (product.reagents.chem_temp + num_nutriment * -5))
+		product.reagents.handle_reactions()
+		playsound(product.loc, 'sound/effects/space_wind.ogg', 50)

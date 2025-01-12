@@ -12,7 +12,7 @@
 			return
 
 		var/list/trays = list(src)//makes the list just this in cases of syringes and compost etc
-		var/target = seed ? seed.plantname : src
+		var/target = growing ? growing.name : src
 		var/visi_msg = ""
 		var/transfer_amount
 		var/irrigate = 0	//How am I supposed to irrigate pill contents?
@@ -49,12 +49,6 @@
 
 		for(var/obj/machinery/hydroponics/H in trays)
 		//cause I don't want to feel like im juggling 15 tamagotchis and I can get to my real work of ripping flooring apart in hopes of validating my life choices of becoming a space-gardener
-			//This was originally in apply_chemicals, but due to apply_chemicals only holding nutrients, we handle it here now.
-			if(reagent_source.reagents.has_reagent(/datum/reagent/water, 1))
-				var/water_amt = reagent_source.reagents.get_reagent_amount(/datum/reagent/water) * split / reagent_source.reagents.total_volume
-				H.adjust_waterlevel(round(water_amt))
-				reagent_source.reagents.remove_reagent(/datum/reagent/water, water_amt)
-
 			reagent_source.reagents.trans_to(H.reagents, split, transfered_by = user)
 			lastuser = WEAKREF(user)
 
@@ -71,8 +65,6 @@
 
 	else if(istype(O, /obj/item/seeds) && !istype(O, /obj/item/seeds/sample))
 		if(!seed)
-			if(istype(O, /obj/item/seeds/kudzu))
-				investigate_log("had Kudzu planted in it by [key_name(user)] at [AREACOORD(src)].", INVESTIGATE_BOTANY)
 			if(!user.transferItemToLoc(O, src))
 				return
 			SEND_SIGNAL(O, COMSIG_SEED_ON_PLANTED, src)
@@ -95,27 +87,6 @@
 			to_chat(user, span_warning("This plot is completely devoid of weeds! It doesn't need uprooting."))
 			return
 
-	else if(istype(O, /obj/item/secateurs))
-		if(!seed)
-			to_chat(user, span_notice("This plot is empty."))
-			return
-		else if(plant_status != HYDROTRAY_PLANT_HARVESTABLE)
-			to_chat(user, span_notice("This plant must be harvestable in order to be grafted."))
-			return
-		else if(seed.grafted)
-			to_chat(user, span_notice("This plant has already been grafted."))
-			return
-		else
-			user.visible_message(span_notice("[user] grafts off a limb from [src]."), span_notice("You carefully graft off a portion of [src]."))
-			var/obj/item/graft/snip = seed.create_graft()
-			if(!snip)
-				return // The plant did not return a graft.
-
-			snip.forceMove(drop_location())
-			seed.grafted = TRUE
-			adjust_plant_health(-5)
-			return
-
 	else if(istype(O, /obj/item/storage/bag/plants))
 		attack_hand(user)
 		for(var/obj/item/food/grown/G in locate(user.x,user.y,user.z))
@@ -126,9 +97,11 @@
 		if(!seed && !weedlevel)
 			to_chat(user, span_warning("[src] doesn't have any plants or weeds!"))
 			return
+
 		user.visible_message(span_notice("[user] starts digging out [src]'s plants..."),
 			span_notice("You start digging out [src]'s plants..."))
-		if(O.use_tool(src, user, 50, volume=50) || (!seed && !weedlevel))
+
+		if(O.use_tool(src, user, 50, volume = 50) || (!seed && !weedlevel))
 			user.visible_message(span_notice("[user] digs out the plants in [src]!"), span_notice("You dig out all of [src]'s plants!"))
 			if(seed) //Could be that they're just using it as a de-weeder
 				age = 0
@@ -137,44 +110,18 @@
 				set_seed(null)
 				name = initial(name)
 				desc = initial(desc)
+
 			set_weedlevel(0) //Has a side effect of cleaning up those nasty weeds
 			return
 
 	else if(istype(O, /obj/item/storage/part_replacer))
 		RefreshParts()
 		return
+
 	else if(istype(O, /obj/item/gun/energy/floragun))
-		var/obj/item/gun/energy/floragun/flowergun = O
-		if(flowergun.cell.charge < flowergun.cell.maxcharge)
-			to_chat(user, span_notice("[flowergun] must be fully charged to lock in a mutation!"))
-			return
-		if(!seed)
-			to_chat(user, span_warning("[src] is empty!"))
-			return
-		if(seed.endurance <= FLORA_GUN_MIN_ENDURANCE)
-			to_chat(user, span_warning("[seed.plantname] isn't hardy enough to sequence it's mutation!"))
-			return
-		if(!LAZYLEN(seed.mutatelist))
-			to_chat(user, span_warning("[seed.plantname] has nothing else to mutate into!"))
-			return
-		else
-			var/list/fresh_mut_list = list()
-			for(var/muties in seed.mutatelist)
-				var/obj/item/seeds/another_mut = new muties
-				fresh_mut_list[another_mut.plantname] = muties
-			var/locked_mutation = tgui_input_list(user, "Mutation to lock", "Plant Mutation Locks", sort_list(fresh_mut_list))
-			if(isnull(locked_mutation))
-				return
-			if(isnull(fresh_mut_list[locked_mutation]))
-				return
-			if(!user.canUseTopic(src, USE_CLOSE))
-				return
-			seed.mutatelist = list(fresh_mut_list[locked_mutation])
-			seed.set_endurance(seed.endurance/2)
-			flowergun.cell.use(flowergun.cell.charge)
-			flowergun.update_appearance()
-			to_chat(user, span_notice("[seed.plantname]'s mutation was set to [locked_mutation], depleting [flowergun]'s cell!"))
-			return
+		#warn impl somatoray
+		return
+
 	else
 		return ..()
 
@@ -297,7 +244,18 @@
 		for(var/reagent in reagents_to_add)
 			product.reagents.add_reagent(reagent, reagents_to_add[reagent] * potency)
 
-	growing.harvest_amt--
+	// Healthy plants keep producing.
+	if(plant_health >= growing.base_health * 4)
+		bonus_yield_prob += 20
+
+		if(prob(bonus_yield_prob))
+			to_chat(user, span_notice("The [growing.name] glisten."))
+		else
+			growing.harvest_amt--
+
+	else
+		growing.harvest_amt--
+
 	if(growing.harvest_amt <= 0)
 		plant_death()
 		return TRUE

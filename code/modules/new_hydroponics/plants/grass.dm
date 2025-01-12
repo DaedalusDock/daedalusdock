@@ -22,7 +22,7 @@
 	plant_type = /datum/plant/grass
 
 /obj/item/food/grown/grass
-	seed = /obj/item/seeds/grass
+	plant_datum = /datum/plant/grass
 	name = "grass"
 	desc = "Green and lush."
 	icon_state = "grassclump"
@@ -69,7 +69,7 @@
 	plant_type = /datum/plant/grass/fairy
 
 /obj/item/food/grown/grass/fairy
-	seed = /obj/item/seeds/grass/fairy
+	plant_datum = /datum/plant/grass/fairy
 	name = "fairygrass"
 	desc = "Blue, glowing, and smells fainly of mushrooms."
 	icon_state = "fairygrassclump"

@@ -26,26 +26,31 @@
 	if(extractor)
 		seedloc = extractor.loc
 
-	if(istype(O, /obj/item/food/grown/))
+	if(istype(O, /obj/item/food/grown))
 		var/obj/item/food/grown/F = O
-		if(F.seed)
+		if(F.plant_datum)
 			if(user && !user.temporarilyRemoveItemFromInventory(O)) //couldn't drop the item
 				return
+
+			var/seed_path = F.plant_datum.seed_path
 			while(t_amount < t_max)
-				var/obj/item/seeds/t_prod = F.seed.Copy()
+				var/obj/item/seeds/t_prod = new seed_path(null, F.plant_datum)
 				seeds.Add(t_prod)
 				t_prod.forceMove(seedloc)
 				t_amount++
+
 			qdel(O)
 			return seeds
 
 	else if(istype(O, /obj/item/grown))
 		var/obj/item/grown/F = O
-		if(F.seed)
+		if(F.plant_datum)
 			if(user && !user.temporarilyRemoveItemFromInventory(O))
 				return
+
+			var/seed_path = F.plant_datum.seed_path
 			while(t_amount < t_max)
-				var/obj/item/seeds/t_prod = F.seed.Copy()
+				var/obj/item/seeds/t_prod = new seed_path(null, F.plant_datum)
 				t_prod.forceMove(seedloc)
 				t_amount++
 			qdel(O)

@@ -7,8 +7,9 @@
 	new_seed.resistance_flags |= FIRE_PROOF
 
 /datum/plant_gene/product_trait/fire_resistance/on_remove(datum/plant_gene_holder/gene_holder)
-	if(old_seed.resistance_flags & FIRE_PROOF)
-		old_seed.resistance_flags &= ~FIRE_PROOF
+	var/obj/item/seeds/seed = gene_holder.parent.in_seed
+	if(seed)
+		seed.resistance_flags &= ~FIRE_PROOF
 
 /datum/plant_gene/product_trait/fire_resistance/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()

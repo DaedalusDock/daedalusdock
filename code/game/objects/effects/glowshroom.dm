@@ -234,7 +234,7 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 	take_damage(amount)
 	// take_damage could qdel our shroom, so check beforehand
 	// if our endurance dropped below the min plant endurance, then delete our shroom anyways
-	if (!QDELETED(src) && myseed.plant_datum.base_endurance <= MIN_LANT_ENDURANCE)
+	if (!QDELETED(src) && myseed.plant_datum.base_endurance <= MIN_PLANT_ENDURANCE)
 		qdel(src)
 
 /obj/structure/glowshroom/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)

@@ -51,6 +51,73 @@
 	greyscale_config_worn = /datum/greyscale_config/flower_simple_worn
 	greyscale_colors = "#d23838"
 
+// Lily
+
+/datum/plant/flower/lily
+	species = "lily"
+	name = "Lily Plants"
+
+	seed_path = /obj/item/seeds/lily
+	product_path = /obj/item/food/grown/poppy/lily
+
+	possible_mutations = list(
+		/datum/plant_mutation/trumpet,
+	)
+
+	reagents_per_potency = list(
+		/datum/reagent/consumable/nutriment = 0.05
+	)
+
+/obj/item/seeds/lily
+	name = "pack of lily seeds"
+	desc = "These seeds grow into lilies."
+	icon_state = "seed-lily"
+
+	plant_type = /datum/plant/flower/lily
+
+/datum/plant_mutation/trumpet
+	plant_type = /datum/plant/flower/trumpet
+
+/obj/item/food/grown/poppy/lily
+	seed = /obj/item/seeds/lily
+	name = "lily"
+	desc = "A beautiful orange flower."
+	greyscale_colors = "#fe881f"
+
+//Spacemans's Trumpet
+
+/datum/plant/flower/trumpet
+	species = "spacemanstrumpet"
+	name = "Spaceman's Trumpet Plant"
+
+	growthstages = 4
+	harvest_yield = 4
+	rarity = 30
+
+	icon_grow = "spacemanstrumpet-grow"
+	icon_dead = "spacemanstrumpet-dead"
+
+	seed_path = /obj/item/seeds/trumpet
+	product_path = /obj/item/food/grown/trumpet
+
+	reagents_per_potency = list(/datum/reagent/consumable/nutriment = 0.05)
+
+/obj/item/seeds/trumpet
+	name = "pack of spaceman's trumpet seeds"
+	desc = "A plant sculped by extensive genetic engineering. The spaceman's trumpet is said to bear no resemblance to its wild ancestors. Inside NT AgriSci circles it is better known as NTPW-0372."
+	icon_state = "seed-trumpet"
+
+	plant_type = /datum/plant/flower/trumpet
+
+
+/obj/item/food/grown/trumpet
+	seed = /obj/item/seeds/trumpet
+	name = "spaceman's trumpet"
+	desc = "A vivid flower that smells faintly of freshly cut grass. Touching the flower seems to stain the skin some time after contact, yet most other surfaces seem to be unaffected by this phenomenon."
+	icon_state = "spacemanstrumpet"
+	bite_consumption_mod = 2
+	foodtypes = VEGETABLES
+
 // Geranium
 /datum/plant/flower/geranium
 	species = "geranium"

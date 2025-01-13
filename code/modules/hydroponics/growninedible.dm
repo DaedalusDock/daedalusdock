@@ -37,7 +37,7 @@
 			trait.on_new_product(src, loc)
 
 		if(istype(src, plant_datum.product_path)) // no adding reagents if it is just a trash item
-			plant_datum.prepare_result(src)
+			plant_datum.prepare_product(src)
 
 		transform *= TRANSFORM_USING_VARIABLE(cached_potency, 100) + 0.5
 		add_juice()
@@ -55,7 +55,7 @@
 /obj/item/grown/microwave_act(obj/machinery/microwave/M)
 	return
 
-/obj/item/grown/on_grind()
+/obj/item/grown/do_grind()
 	. = ..()
 	for(var/i in 1 to grind_results.len)
 		grind_results[grind_results[i]] = round(cached_potency)

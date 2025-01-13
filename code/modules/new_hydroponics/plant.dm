@@ -70,8 +70,14 @@
 
 /datum/plant/New(random_genes)
 	gene_holder = new()
+
 	if(random_genes)
 		gene_holder.randomize_alleles()
+
+		for(var/reag_id in reagents_per_potency)
+			gene_holder.add_active_gene(new /datum/plant_gene/reagent(reag_id, reagents_per_potency[reag_id]))
+
+	inherit_reagents_from_genes()
 
 	for(var/path in possible_mutations)
 		possible_mutations -= path
@@ -140,6 +146,13 @@
 	. = base_val
 
 	. += gene_holder.get_effective_stat(stat)
+
+/// Replace reagents_per_potency with genes.
+/datum/plant/proc/inherit_reagents_from_genes()
+	reagents_per_potency.Cut()
+
+	for(var/datum/plant_gene/reagent/R in gene_holder.gene_list)
+		reagents_add[R.reagent_id] = R.rate
 
 /**
  * This is where plant chemical products are handled.

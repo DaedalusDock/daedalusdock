@@ -21,7 +21,6 @@
 		/obj/item/reagent_containers/glass/bottle,
 		/obj/item/reagent_containers/glass/beaker,
 		/obj/item/cultivator,
-		/obj/item/reagent_containers/spray/pestspray,
 		/obj/item/hatchet,
 		/obj/item/storage/bag/plants
 	)

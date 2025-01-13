@@ -90,14 +90,19 @@
 				return gene
 
 /// Add an active gene, not a latent one.
-/datum/plant_gene_holder/proc/add_active_gene(gene_path)
+/datum/plant_gene_holder/proc/add_active_gene(datum/plant_gene/gene_path)
+	var/datum/plant_gene/gene_instance
+	if(istype(gene_path))
+		gene_instance = gene_path
+		gene_path = gene_instance.type
+
 	if(length(gene_list))
 		for(var/datum/plant_gene/gene as anything in gene_list)
 			if(gene.type == gene_path)
 				return FALSE
 
 
-	var/datum/plant_gene/new_gene = SShydroponics.gene_list[gene_path]
+	var/datum/plant_gene/new_gene = gene_instance || SShydroponics.gene_list[gene_path]
 
 	LAZYADD(gene_list, new_gene)
 	new_gene.on_add(src)

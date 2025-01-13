@@ -3860,6 +3860,7 @@
 #include "code\modules\new_hydroponics\items\cultivator.dm"
 #include "code\modules\new_hydroponics\items\hatchet.dm"
 #include "code\modules\new_hydroponics\items\plant_analyzer.dm"
+#include "code\modules\new_hydroponics\items\scythe.dm"
 #include "code\modules\new_hydroponics\plants\aloe.dm"
 #include "code\modules\new_hydroponics\plants\ambrosia.dm"
 #include "code\modules\new_hydroponics\plants\apple.dm"

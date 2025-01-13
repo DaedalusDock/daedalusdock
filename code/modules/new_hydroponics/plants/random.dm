@@ -57,7 +57,7 @@
 			existing.try_upgrade_gene(plant_datum)
 		qdel(R)
 
-	reagents_from_genes()
+	plant_datum.inherit_reagents_from_genes()
 
 /obj/item/food/grown/random
 	plant_datum = /datum/plant/random

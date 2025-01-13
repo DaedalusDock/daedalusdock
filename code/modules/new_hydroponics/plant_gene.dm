@@ -60,6 +60,14 @@
 /datum/plant_gene/proc/on_remove(datum/plant_gene_holder/gene_holder)
 	return
 
+/*
+ * on_new_seed is called when seed genes are initialized on the /obj/seed.
+ *
+ * new_seed - the seed being created
+ */
+/datum/plant_gene/proc/on_new_seed(obj/item/seeds/new_seed)
+	return // Not implemented
+
 /// Copies over vars and information about our current gene to a new gene and returns the new instance of gene.
 /datum/plant_gene/proc/Copy()
 	var/datum/plant_gene/new_gene = new type

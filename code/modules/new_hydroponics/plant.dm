@@ -19,16 +19,16 @@
 
 	/// The starting health value of this plant.
 	var/base_health = 15
-	/// The baseline amount of time to reach maturity. Half of this value is the time to reach "Growing"
-	var/time_to_grow = 40 SECONDS
-	/// The baseline amount of time AFTER reaching maturity to produce a harvest.
-	var/time_to_produce = 40 SECONDS
 
 	// * Stats * //
 	/// The starting amount of endurance this plant has.
 	var/base_endurance = 0
 	/// The starting amount of potency this plant has.
 	var/base_potency = 0
+	/// The baseline amount of time to reach maturity. Half of this value is the time to reach "Growing"
+	var/base_maturation = 40 SECONDS
+	/// The baseline amount of time AFTER reaching maturity to produce a harvest.
+	var/base_production = 40 SECONDS
 
 	/// Typepath of the product upon harvesting.
 	var/product_path
@@ -120,20 +120,20 @@
 /datum/plant/proc/get_growth_for_state(desired_state)
 	switch(desired_state)
 		if(PLANT_HARVESTABLE)
-			return get_effective_stat(PLANT_STAT_PRODUCE_TIME)
+			return get_effective_stat(PLANT_STAT_PRODUCTION)
 		if(PLANT_MATURE)
-			return gene_holder.get_effective_stat(PLANT_STAT_GROW_TIME)
+			return gene_holder.get_effective_stat(PLANT_STAT_MATURATION)
 		if(PLANT_GROWING)
-			return gene_holder.get_effective_stat(PLANT_STAT_GROW_TIME) / 2
+			return gene_holder.get_effective_stat(PLANT_STAT_MATURATION) / 2
 
 /// Returns the given stat, including active gene modifiers.
 /datum/plant/proc/get_effective_stat(stat)
 	var/base_val = 0
 	switch(stat)
-		if(PLANT_STAT_GROW_TIME)
-			base_val = time_to_grow
-		if(PLANT_STAT_PRODUCE_TIME)
-			base_val = time_to_produce
+		if(PLANT_STAT_MATURATION)
+			base_val = base_maturation
+		if(PLANT_STAT_PRODUCTION)
+			base_val = base_production
 		if(PLANT_STAT_ENDURANCE)
 			base_val = base_endurance
 		if(PLANT_STAT_POTENCY)

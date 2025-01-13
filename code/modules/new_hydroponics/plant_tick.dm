@@ -17,8 +17,8 @@
 	/// Magic number to describe how aggressive the mutation outcome is this tick.
 	var/mutation_power = 0
 
-	var/time_to_grow_mod = 0
-	var/time_to_produce_mod = 0
+	var/maturation_mod = 0
+	var/production_mod = 0
 	var/yield_mod = 0
 	var/harvest_amt_mod = 0
 	var/endurance_mod = 0

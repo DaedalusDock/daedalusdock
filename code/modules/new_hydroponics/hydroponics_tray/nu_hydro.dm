@@ -220,7 +220,7 @@
 				plant_overlay.icon_state = growing.icon_harvest
 
 		else
-			var/t_growthstate = clamp(round((growth / growing.time_to_grow) * growing.growthstages), 1, growing.growthstages)
+			var/t_growthstate = clamp(round((growth / growing.get_effective_stat(PLANT_STAT_MATURATION)) * growing.growthstages), 1, growing.growthstages)
 			plant_overlay.icon_state = "[growing.icon_grow || "[growing.species]-grow"][t_growthstate]"
 
 	return plant_overlay
@@ -331,8 +331,8 @@
 	growth = max(growth + final_growth_delta, 0)
 
 	// Stat mods
-	plant_dna.time_to_grow = plant_dna.time_to_grow + PLANT_STAT_PROB_ROUND(current_tick.time_to_grow_mod * tick_multiplier)
-	plant_dna.time_to_produce = plant_dna.time_to_produce + PLANT_STAT_PROB_ROUND(current_tick.time_to_produce_mod * tick_multiplier)
+	plant_dna.maturation = plant_dna.maturation + PLANT_STAT_PROB_ROUND(current_tick.maturation_mod * tick_multiplier)
+	plant_dna.production = plant_dna.production + PLANT_STAT_PROB_ROUND(current_tick.production_mod * tick_multiplier)
 	plant_dna.harvest_yield = plant_dna.harvest_yield + PLANT_STAT_PROB_ROUND(current_tick.yield_mod * tick_multiplier)
 	plant_dna.harvest_amt = plant_dna.harvest_amt + PLANT_STAT_PROB_ROUND(current_tick.harvest_amt_mod * tick_multiplier)
 	plant_dna.endurance = plant_dna.endurance + PLANT_STAT_PROB_ROUND(current_tick.endurance_mod * tick_multiplier)

@@ -6,8 +6,8 @@
 #define PLANT_HARVESTABLE "harvestable"
 
 // Plant stats
-#define PLANT_STAT_GROW_TIME "time_to_grow"
-#define PLANT_STAT_PRODUCE_TIME "time_to_produce"
+#define PLANT_STAT_MATURATION "maturation"
+#define PLANT_STAT_PRODUCTION "production"
 #define PLANT_STAT_YIELD "yield"
 #define PLANT_STAT_HARVEST_AMT "harvest_amt"
 #define PLANT_STAT_ENDURANCE "endurance"

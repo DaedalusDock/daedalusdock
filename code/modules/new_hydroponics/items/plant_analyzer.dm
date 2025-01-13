@@ -243,8 +243,8 @@
 
 	text += "- Endurance: [span_notice(plant_datum.get_effective_stat(PLANT_STAT_ENDURANCE))]"
 	text += "- Potency: [span_notice(plant_datum.get_effective_stat(PLANT_STAT_POTENCY))]"
-	text += "- Grow Time: [span_notice(plant_datum.get_effective_stat(PLANT_STAT_GROW_TIME))]"
-	text += "- Produce Time: [span_notice(plant_datum.get_effective_stat(PLANT_STAT_PRODUCE_TIME))]"
+	text += "- Grow Time: [span_notice(plant_datum.get_effective_stat(PLANT_STAT_MATURATION))]"
+	text += "- Produce Time: [span_notice(plant_datum.get_effective_stat(PLANT_STAT_PRODUCTION))]"
 	text += "- Harvest Count: [span_notice(plant_datum.get_effective_stat(PLANT_STAT_HARVEST_AMT))]"
 	text += "- Harvest Yield: [span_notice(plant_datum.get_effective_stat(PLANT_STAT_YIELD))]"
 

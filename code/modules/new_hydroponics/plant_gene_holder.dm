@@ -2,10 +2,10 @@
 	/// The plant we belong to.
 	var/datum/plant/parent
 
-	/// Modifier for /datum/plant/var/time_to_grow
-	var/time_to_grow = 0
+	/// Modifier for /datum/plant/var/maturation
+	var/maturation = 0
 	/// Modifier for /datum/plant/var/time	_to_produce
-	var/time_to_produce = 0
+	var/production = 0
 	/// Modifier for /datum/plant/var/time_to_harvest
 	var/harvest_amt = 0
 	/// Modifier for /datum/plant/var/harvest_yield
@@ -33,8 +33,8 @@
 	potency = from_holder.potency
 	endurance = from_holder.endurance
 
-	time_to_grow = from_holder.time_to_grow
-	time_to_produce = from_holder.time_to_produce
+	maturation = from_holder.maturation
+	production = from_holder.production
 	harvest_amt = from_holder.harvest_amt
 	harvest_yield = from_holder.harvest_yield
 
@@ -63,10 +63,10 @@
 /datum/plant_gene_holder/proc/get_effective_stat(stat)
 	var/base_val = 0
 	switch(stat)
-		if(PLANT_STAT_GROW_TIME)
-			base_val = time_to_grow
-		if(PLANT_STAT_PRODUCE_TIME)
-			base_val = time_to_produce
+		if(PLANT_STAT_MATURATION)
+			base_val = maturation
+		if(PLANT_STAT_PRODUCTION)
+			base_val = production
 		if(PLANT_STAT_ENDURANCE)
 			base_val = endurance
 		if(PLANT_STAT_POTENCY)
@@ -161,8 +161,8 @@
 	if(!ignore_stable && has_active_gene(/datum/plant_gene/stabilizer))
 		return FALSE
 
-	time_to_grow += rand(-1 SECONDS * mutation_power, 1 SECONDS * mutation_power)
-	time_to_produce += rand(-1 SECONDS * mutation_power, 1 SECONDS * mutation_power)
+	maturation += rand(-1 SECONDS * mutation_power, 1 SECONDS * mutation_power)
+	production += rand(-1 SECONDS * mutation_power, 1 SECONDS * mutation_power)
 	harvest_yield += rand(-2 * mutation_power, 2 * mutation_power)
 	potency += rand(-5 * mutation_power, 5 * mutation_power)
 	endurance += rand(-5* mutation_power, 5 * mutation_power)

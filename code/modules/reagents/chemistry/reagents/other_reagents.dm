@@ -457,7 +457,7 @@
 
 /datum/reagent/plantnutriment/liquidearthquake/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
 	if(volume >= 1)
-		plant_tick.time_to_produce_mod -= 0.2
+		plant_tick.production_mod -= 0.2
 
 // Bee chemicals
 

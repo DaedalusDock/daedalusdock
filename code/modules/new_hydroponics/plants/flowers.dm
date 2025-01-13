@@ -79,7 +79,7 @@
 	plant_type = /datum/plant/flower/trumpet
 
 /obj/item/food/grown/poppy/lily
-	seed = /obj/item/seeds/lily
+	plant_datum = /datum/plant/flower/lily
 	name = "lily"
 	desc = "A beautiful orange flower."
 	greyscale_colors = "#fe881f"
@@ -111,7 +111,7 @@
 
 
 /obj/item/food/grown/trumpet
-	seed = /obj/item/seeds/trumpet
+	plant_datum = /datum/plant/flower/trumpet
 	name = "spaceman's trumpet"
 	desc = "A vivid flower that smells faintly of freshly cut grass. Touching the flower seems to stain the skin some time after contact, yet most other surfaces seem to be unaffected by this phenomenon."
 	icon_state = "spacemanstrumpet"

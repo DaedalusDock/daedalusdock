@@ -11,10 +11,14 @@
 
 	subsystem_type = /datum/controller/subsystem/processing/hydroponics
 
+	var/datum/weakref/lastuser
+
 	///Its health
 	var/plant_health
 	var/max_plant_health
 	var/growth = 0
+
+	var/weedlevel = 0
 
 	///Last time it was harvested
 	var/lastproduce = 0
@@ -241,9 +245,9 @@
 	var/plant_type = seed.plant_type
 
 	growing = seed.plant_datum
+	growth = 1
 
-	plant_health = growing.base_health
-	plant_health += growing.get_effective_stat(PLANT_STAT_ENDURANCE)
+	set_plant_health(growing.base_health + growing.get_effective_stat(PLANT_STAT_ENDURANCE))
 
 	current_tick = new(src)
 	update_appearance()
@@ -262,6 +266,8 @@
 	growing = null
 	plant_health = 0
 	growth = 0
+	lastproduce = 0
+	update_appearance()
 
 /obj/machinery/hydroponics/process(delta_time)
 	if(self_sustaining && powered())
@@ -272,7 +278,7 @@
 
 	var/datum/plant_gene_holder/plant_dna = growing.gene_holder
 
-	apply_chemicals()
+	apply_chemicals(lastuser?.resolve())
 
 	if(length(plant_dna.gene_list))
 		for(var/datum/plant_gene/gene as anything in plant_dna.gene_list)
@@ -389,7 +395,8 @@
 	if(update_icon)
 		update_appearance()
 
-
+/obj/machinery/hydroponics/proc/set_weedlevel(new_weed_level)
+	#warn impliment set_weed_level
 /**
  * Spawn Plant.
  * Upon using strange reagent on a tray, it will spawn a killer tomato or killer tree at random.

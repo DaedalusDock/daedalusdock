@@ -1,12 +1,13 @@
 /obj/item/seeds/sample
 	name = "plant sample"
 	icon_state = "sample-empty"
-	potency = -1
-	yield = -1
 	var/sample_color = "#FFFFFF"
 
 /obj/item/seeds/sample/Initialize(mapload)
 	. = ..()
+	plant_datum.base_potency = -1
+	plant_datum.harvest_yield = -1
+
 	if(sample_color)
 		var/mutable_appearance/filling = mutable_appearance(icon, "sample-filling")
 		filling.color = sample_color

@@ -83,7 +83,7 @@
 	mob/living/user,
 )
 
-	if(held_item?.get_plant_seed())
+	if(held_item?.get_plant_datum())
 		context[SCREENTIP_CONTEXT_LMB] = "Make seeds"
 		return CONTEXTUAL_SCREENTIP_SET
 
@@ -172,7 +172,8 @@
  * * O - seed to generate the string from
  */
 /obj/machinery/seed_extractor/proc/generate_seed_string(obj/item/seeds/O)
-	return "name=[O.name];lifespan=[O.lifespan];endurance=[O.endurance];maturation=[O.maturation];production=[O.production];yield=[O.yield];potency=[O.potency];instability=[O.instability]"
+	#warn impl generate_seed_string
+	//return "name=[O.name];lifespan=[O.lifespan];endurance=[O.endurance];maturation=[O.maturation];production=[O.production];yield=[O.yield];potency=[O.potency];instability=[O.instability]"
 
 
 /** Add Seeds Proc.

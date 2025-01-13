@@ -70,8 +70,6 @@
 			SEND_SIGNAL(O, COMSIG_SEED_ON_PLANTED, src)
 			to_chat(user, span_notice("You plant [O]."))
 			plant_seed(O)
-			age = 1
-			set_plant_health(seed.endurance)
 			lastcycle = world.time
 			return
 		else
@@ -104,12 +102,7 @@
 		if(O.use_tool(src, user, 50, volume = 50) || (!seed && !weedlevel))
 			user.visible_message(span_notice("[user] digs out the plants in [src]!"), span_notice("You dig out all of [src]'s plants!"))
 			if(seed) //Could be that they're just using it as a de-weeder
-				age = 0
-				set_plant_health(0, update_icon = FALSE, forced = TRUE)
-				lastproduce = 0
-				set_seed(null)
-				name = initial(name)
-				desc = initial(desc)
+				clear_plant()
 
 			set_weedlevel(0) //Has a side effect of cleaning up those nasty weeds
 			return
@@ -141,16 +134,19 @@
 		return
 	if(issilicon(user)) //How does AI know what plant is?
 		return
-	if(plant_status == HYDROTRAY_PLANT_HARVESTABLE)
-		return seed.harvest(user)
 
-	else if(plant_status == HYDROTRAY_PLANT_DEAD)
-		to_chat(user, span_notice("You remove the dead plant from [src]."))
-		clear_plant()
-		update_appearance()
-	else
+	if(!growing)
 		if(user)
 			user.examinate(src)
+		return
+
+	switch(growing.plant_status)
+		if(HYDROTRAY_PLANT_HARVESTABLE)
+			return try_harvest(user)
+
+		if(HYDROTRAY_PLANT_DEAD)
+			to_chat(user, span_notice("You remove the dead plant from [src]."))
+			clear_plant()
 
 /obj/machinery/hydroponics/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()
@@ -196,8 +192,8 @@
 	if(!growing)
 		return FALSE
 
-	if(!growing.on_harvest(user))
-		return FALSE
+	// if(!growing.on_harvest(user))
+	// 	return FALSE
 
 	// At this point, harvest will occur.
 	growth = growing.get_growth_for_state(PLANT_MATURE)
@@ -242,7 +238,7 @@
 
 		var/list/reagents_to_add = growing?.reagents_per_potency.Copy()
 		for(var/reagent in reagents_to_add)
-			product.reagents.add_reagent(reagent, reagents_to_add[reagent] * potency)
+			product.reagents.add_reagent(reagent, reagents_to_add[reagent] * SCALE_PLANT_POTENCY(potency))
 
 	// Healthy plants keep producing.
 	if(plant_health >= growing.base_health * 4)

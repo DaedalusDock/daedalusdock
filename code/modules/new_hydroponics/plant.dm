@@ -152,7 +152,7 @@
 	reagents_per_potency.Cut()
 
 	for(var/datum/plant_gene/reagent/R in gene_holder.gene_list)
-		reagents_add[R.reagent_id] = R.rate
+		reagents_per_potency[R.reagent_id] = R.rate
 
 /**
  * This is where plant chemical products are handled.

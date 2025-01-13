@@ -15,6 +15,15 @@
 
 #define PLANT_STAT_PROB_ROUND(num) (trunc(num) + prob(fract(num) * 100) * SIGN(num))
 
+/// The functional maximum value from SCALE_PLANT_POTENCY
+#define POTENCY_SCALE_FUNCTIONAL_MAXIMUM 200
+/// The value returned by SCALE_PLANT_POTENCY when given 100 potency
+#define POTENCY_SCALE_AT_100 80
+
+#define POTENCY_SCALE_FACTOR (((100 * POTENCY_SCALE_FUNCTIONAL_MAXIMUM) / POTENCY_SCALE_AT_100) - 100)
+/// Scales a potency value according to the above values.
+#define SCALE_PLANT_POTENCY(given_potency) ((POTENCY_SCALE_FUNCTIONAL_MAXIMUM / (given_potency + POTENCY_SCALE_FACTOR)) * 100)
+
 /// Water level above this is considered drowning the plant.
 #define HYDRO_WATER_DROWNING_LIMIT 50
 

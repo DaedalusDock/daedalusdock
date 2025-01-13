@@ -35,6 +35,8 @@
 	desc = "These seeds grow into apple trees."
 	icon_state = "seed-apple"
 
+	plant_type = /datum/plant/apple
+
 /obj/item/food/grown/apple
 	plant_datum = /datum/plant/apple
 	name = "apple"

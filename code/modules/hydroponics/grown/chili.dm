@@ -13,7 +13,6 @@
 	potency = 20
 	instability = 30
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
-	icon_grow = "chili-grow" // Uses one growth icons set for all the subtypes
 	icon_dead = "chili-dead" // Same for the dead icon
 	genes = list(/datum/plant_gene/product_trait/repeated_harvest)
 	mutatelist = list(/obj/item/seeds/chili/ice, /obj/item/seeds/chili/ghost)

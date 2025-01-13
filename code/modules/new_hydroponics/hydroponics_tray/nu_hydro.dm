@@ -215,13 +215,13 @@
 
 		if(PLANT_HARVESTABLE)
 			if(!growing.icon_harvest)
-				plant_overlay.icon_state = "[growing.icon_grow][growing.growthstages]"
+				plant_overlay.icon_state = "[growing.icon_grow]-harvest"
 			else
 				plant_overlay.icon_state = growing.icon_harvest
 
 		else
 			var/t_growthstate = clamp(round((growth / growing.time_to_grow) * growing.growthstages), 1, growing.growthstages)
-			plant_overlay.icon_state = "[growing.icon_grow][t_growthstate]"
+			plant_overlay.icon_state = "[growing.icon_grow || "[growing.species]-grow"][t_growthstate]"
 
 	return plant_overlay
 
@@ -265,6 +265,7 @@
 
 	QDEL_NULL(current_tick)
 	growing = null
+	seed = null
 	plant_health = 0
 	growth = 0
 	lastproduce = 0
@@ -294,7 +295,8 @@
 	var/new_growth_status = growing.get_growth_status(growth)
 	if(growing.plant_status != new_growth_status)
 		growing.plant_status = new_growth_status
-		update_appearance()
+
+	update_appearance()
 
 
 /obj/machinery/hydroponics/proc/cycle_plant_tick()

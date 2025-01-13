@@ -26,7 +26,7 @@ GLOBAL_LIST_INIT(medicine_reagents, build_medicine_reagents())
 			if (!.[reagent])
 				.[reagent] = list()
 			.[reagent] += type
-		qdel(item)
+		qdel(plant_datum)
 
 ///Just grab every craftable medicine you can think off
 /proc/build_medicine_reagents()

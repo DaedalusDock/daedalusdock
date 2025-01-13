@@ -12,7 +12,7 @@
 
 	seed_path = /obj/item/seeds/soya
 	product_path = /obj/item/food/grown/soybeans
-	harvest_yield = 3
+	base_harvest_yield = 3
 
 	reagents_per_potency = list(
 		/datum/reagent/consumable/nutriment/vitamin = 0.04,

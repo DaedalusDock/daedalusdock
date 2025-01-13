@@ -9,7 +9,7 @@
 
 	seed_path = /obj/item/seeds/grass
 	product_path = /obj/item/food/grown/grass
-	harvest_yield = 5
+	base_harvest_yield = 5
 
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment = 0.02, /datum/reagent/hydrogen = 0.05)
 	possible_mutations = list(/datum/plant_mutation/grass_fairy)

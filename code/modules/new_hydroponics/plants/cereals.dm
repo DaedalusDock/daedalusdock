@@ -5,7 +5,7 @@
 	icon_dead = "wheat-dead"
 
 	product_path = /obj/item/food/grown/wheat
-	harvest_amt = 4
+	base_harvest_amt =4
 
 	reagents_per_potency = list(
 		/datum/reagent/consumable/nutriment = 0.04,

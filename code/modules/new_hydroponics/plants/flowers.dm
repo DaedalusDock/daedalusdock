@@ -91,7 +91,7 @@
 	name = "Spaceman's Trumpet Plant"
 
 	growthstages = 4
-	harvest_yield = 4
+	base_harvest_yield = 4
 	rarity = 30
 
 	icon_grow = "spacemanstrumpet-grow"

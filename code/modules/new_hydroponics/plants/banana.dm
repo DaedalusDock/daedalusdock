@@ -7,7 +7,7 @@
 	icon_dead = "banana-dead"
 
 	product_path = /obj/item/food/grown/banana
-	harvest_yield = 5
+	base_harvest_yield = 5
 
 	reagents_per_potency = list(
 		/datum/reagent/consumable/banana = 0.1,

@@ -6,7 +6,7 @@
 	growthstages = 5
 
 	product_path = /obj/item/food/grown/aloe
-	harvest_yield = 3
+	base_harvest_yield = 3
 	reagents_per_potency = list(
 		/datum/reagent/consumable/nutriment/vitamin = 0.05,
 		/datum/reagent/consumable/nutriment = 0.05

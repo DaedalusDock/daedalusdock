@@ -79,7 +79,7 @@
 
 	seed_path = /obj/item/seeds/tomato/blue
 	product_path = /obj/item/food/grown/tomato/blue
-	harvest_yield = 2
+	base_harvest_yield = 2
 
 	innate_genes = list(/datum/plant_gene/product_trait/slip)
 	reagents_per_potency = list(/datum/reagent/lube = 0.2, /datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.1)
@@ -114,7 +114,7 @@
 	icon_dead = "killertomato-dead"
 	growthstages = 2
 
-	harvest_yield = 2
+	base_harvest_yield = 2
 	seed_path = /obj/item/seeds/tomato/killer
 	product_path = /obj/item/food/grown/tomato/killer
 

@@ -9,7 +9,7 @@
 
 	seed_path = /obj/item/seeds/peas
 	product_path = /obj/item/food/grown/peas
-	harvest_yield = 3
+	base_harvest_yield = 3
 
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.1, /datum/reagent/consumable/nutriment = 0.05, /datum/reagent/water = 0.05)
 

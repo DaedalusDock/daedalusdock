@@ -78,6 +78,7 @@
 
 	. = base_val
 
+	#warn use a signal for this instead
 	if(length(gene_list))
 		for(var/datum/plant_gene/gene as anything in gene_list)
 			. += gene.get_stat_modifier(src, stat, base_val)

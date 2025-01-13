@@ -21,7 +21,7 @@
 
 	seed_path = /obj/item/seeds/apple
 	product_path = /obj/item/food/grown/apple
-	harvest_yield = 3
+	base_harvest_yield = 3
 
 	innate_genes = list(/datum/plant_gene/product_trait/one_bite)
 	possible_mutations = list(/datum/plant_mutation/apple_gold)

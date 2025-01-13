@@ -10,7 +10,7 @@
 
 	seed_path = /obj/item/seeds/pumpkin
 	product_path = /obj/item/food/grown/pumpkin
-	harvest_amt = 3
+	base_harvest_amt =3
 
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.2)
 

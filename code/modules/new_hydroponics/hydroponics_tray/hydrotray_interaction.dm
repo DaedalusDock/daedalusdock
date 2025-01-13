@@ -236,9 +236,8 @@
 		var/atom/movable/product = new product_path(T)
 		product.add_fingerprint(user)
 
-		var/list/reagents_to_add = growing?.reagents_per_potency.Copy()
-		for(var/reagent in reagents_to_add)
-			product.reagents.add_reagent(reagent, reagents_to_add[reagent] * SCALE_PLANT_POTENCY(potency))
+		for(var/reagent in growing?.reagents_per_potency)
+			product.reagents.add_reagent(reagent, growing.reagents_per_potency[reagent] * SCALE_PLANT_POTENCY(potency))
 
 	// Healthy plants keep producing.
 	if(plant_health >= growing.base_health * 4)
@@ -247,12 +246,12 @@
 		if(prob(bonus_yield_prob))
 			to_chat(user, span_notice("The [growing.name] glisten."))
 		else
-			growing.harvest_amt--
+			growing.base_harvest_amt--
 
 	else
-		growing.harvest_amt--
+		growing.base_harvest_amt--
 
-	if(growing.harvest_amt <= 0)
+	if(growing.base_harvest_amt <= 0)
 		plant_death()
 		return TRUE
 

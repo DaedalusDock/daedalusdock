@@ -10,7 +10,7 @@
 	product_path = /obj/item/food/grown/cabbage
 
 	growthstages = 1
-	harvest_yield = 4
+	base_harvest_yield = 4
 
 	base_endurance = 25
 

@@ -6,7 +6,7 @@
 	product_path = /obj/item/grown/shrub
 
 	growthstages = 3
-	harvest_yield = 2
+	base_harvest_yield = 2
 
 /obj/item/seeds/shrub
 	name = "pack of shrub seeds"

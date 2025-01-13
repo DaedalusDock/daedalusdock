@@ -257,11 +257,11 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 	if(generation == 1)
 		myseed.plant_datum.base_potency = 100
 		myseed.plant_datum.base_endurance = 100
-		myseed.plant_datum.harvest_yield = 10
+		myseed.plant_datum.base_harvest_yield = 10
 
 /obj/structure/glowshroom/medium/Initialize(mapload, obj/item/seeds/newseed)
 	. = ..()
 	if(generation == 1)
 		myseed.plant_datum.base_potency = 50
 		myseed.plant_datum.base_endurance = 50
-		myseed.plant_datum.harvest_yield = 5
+		myseed.plant_datum.base_harvest_yield = 5

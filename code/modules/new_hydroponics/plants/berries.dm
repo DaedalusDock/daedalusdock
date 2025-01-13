@@ -20,7 +20,7 @@
 		/datum/reagent/consumable/nutriment = 0.1
 	)
 
-	harvest_yield = 4
+	base_harvest_yield = 4
 
 /obj/item/seeds/berry
 	name = "pack of berry seeds"
@@ -205,7 +205,7 @@
 
 	seed_path = /obj/item/seeds/grape
 	product_path = /obj/item/food/grown/grapes
-	harvest_yield = 4
+	base_harvest_yield = 4
 
 	possible_mutations = list(/datum/plant_mutation/grape/green)
 
@@ -254,7 +254,7 @@
 
 	seed_path = /obj/item/seeds/grape/green
 	product_path = /obj/item/food/grown/grapes/green
-	harvest_yield = 4
+	base_harvest_yield = 4
 
 	possible_mutations = null
 

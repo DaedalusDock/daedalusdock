@@ -29,15 +29,15 @@
 	var/base_maturation = 40 SECONDS
 	/// The baseline amount of time AFTER reaching maturity to produce a harvest.
 	var/base_production = 40 SECONDS
+	/// How many instances of the product are yielded per harvest.
+	var/base_harvest_yield = 1
+	/// How many times you can harvest this plant.
+	var/base_harvest_amt = 1
 
 	/// Typepath of the product upon harvesting.
 	var/product_path
 	/// Type of seed produced.
 	var/seed_path = /obj/item/seeds
-	/// How many instances of the product are yielded per harvest.
-	var/harvest_yield = 1
-	/// How many times you can harvest this plant.
-	var/harvest_amt = 1
 
 	var/list/reagents_per_potency
 
@@ -64,6 +64,9 @@
 
 	///The status of the plant in the tray. Whether it's harvestable, alive, missing or dead.
 	var/plant_status = PLANT_PLANTED
+
+	/// The generation of this plant. Cool tracking to see how far the genepool as come.
+	var/generation = 1
 
 	/// The genes of the plant.
 	var/datum/plant_gene_holder/gene_holder
@@ -139,9 +142,9 @@
 		if(PLANT_STAT_POTENCY)
 			base_val = base_potency
 		if(PLANT_STAT_YIELD)
-			base_val = harvest_yield
+			base_val = base_harvest_yield
 		if(PLANT_STAT_HARVEST_AMT)
-			base_val = harvest_amt
+			base_val = base_harvest_amt
 
 	. = base_val
 

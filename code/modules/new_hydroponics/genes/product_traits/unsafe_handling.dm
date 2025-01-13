@@ -36,7 +36,7 @@
 
 /datum/plant_gene/product_trait/backfire/rose_thorns/backfire_effect(obj/item/product, mob/living/carbon/user)
 	var/datum/plant/our_plant = product.get_plant_datum()
-	if(!our_plant.gene_holder.has_active_gene(/datum/plant_gene/product_trait/sticky) && prob(66))
+	if(!our_plant.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/sticky) && prob(66))
 		to_chat(user, span_danger("[product]'s thorns nearly prick your hand. Best be careful."))
 		return
 

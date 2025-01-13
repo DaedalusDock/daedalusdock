@@ -115,7 +115,7 @@
 	var/datum/plant/our_plant = product.get_plant_datum()
 	if(our_plant)
 		for(var/checked_gene in extra_genes)
-			if(!our_plant.gene_holder.has_active_gene(checked_gene))
+			if(!our_plant.gene_holder.has_active_gene_of_type(checked_gene))
 				return TRUE
 
 	for(var/obj/item/clothing/worn_item in user.get_equipped_items())

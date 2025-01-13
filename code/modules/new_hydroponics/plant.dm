@@ -42,13 +42,14 @@
 	var/list/reagents_per_potency
 
 	/// Innate genes that all instances of this plant have.
-	var/list/innate_genes
+	var/list/innate_genes = list()
 	/// Genes this plant has, may or may not be active.
-	var/list/latent_genes
+	var/list/latent_genes = list()
 	/// Possible mutation paths for this plant.
 	var/list/possible_mutations
 
 	/// A pseudoarbitrary value. When attempting to splice two plants together, a larger difference in genome value makes it more difficult.
+	/// 0 genome delta is a 100% splice chance, 10 is 0%
 	var/genome = 1
 	#warn impl genome
 
@@ -72,7 +73,7 @@
 	var/datum/plant_gene_holder/gene_holder
 
 /datum/plant/New(random_genes)
-	gene_holder = new()
+	gene_holder = new(src)
 
 	if(random_genes)
 		gene_holder.randomize_alleles()
@@ -93,7 +94,29 @@
 /datum/plant/proc/Copy()
 	RETURN_TYPE(/datum/plant)
 	var/datum/plant/new_plant = new type()
+
+	new_plant.base_health = base_health
+	new_plant.base_potency = base_potency
+	new_plant.base_endurance = base_endurance
+	new_plant.base_maturation = base_maturation
+	new_plant.base_production = base_production
+	new_plant.base_harvest_amt = base_harvest_amt
+	new_plant.base_harvest_yield = base_harvest_yield
+
+	new_plant.generation = generation
+	new_plant.is_hybrid = is_hybrid
+	new_plant.needs_water = needs_water
+
+	new_plant.name = name
+	new_plant.rarity = rarity
+	new_plant.genome = genome
+
+	new_plant.innate_genes = innate_genes.Copy()
+	new_plant.latent_genes = latent_genes.Copy()
+
 	new_plant.gene_holder.CopyFrom(gene_holder)
+
+	new_plant.inherit_reagents_from_genes()
 
 	return new_plant
 
@@ -149,6 +172,30 @@
 	. = base_val
 
 	. += gene_holder.get_effective_stat(stat)
+	#warn TODO: split get_effective_stat
+	if(stat == PLANT_STAT_YIELD && HAS_TRAIT(src, TRAIT_HALVES_YIELD))
+		. /= 2
+
+	return ceil(clamp(., 0, 200))
+
+/datum/plant/proc/get_scaled_potency()
+	return SCALE_PLANT_POTENCY(get_effective_stat(PLANT_STAT_POTENCY))
+
+/// Returns the given stat, including active gene modifiers.
+/datum/plant/proc/set_base_stat(stat, value)
+	switch(stat)
+		if(PLANT_STAT_MATURATION)
+			base_maturation = value
+		if(PLANT_STAT_PRODUCTION)
+			base_production = value
+		if(PLANT_STAT_ENDURANCE)
+			base_endurance = value
+		if(PLANT_STAT_POTENCY)
+			base_potency = value
+		if(PLANT_STAT_YIELD)
+			base_harvest_yield = value
+		if(PLANT_STAT_HARVEST_AMT)
+			base_harvest_amt = value
 
 /// Replace reagents_per_potency with genes.
 /datum/plant/proc/inherit_reagents_from_genes()
@@ -175,14 +222,14 @@
 		return
 
 	var/obj/item/food/grown/grown_edible = product
-	var/potency = get_effective_stat(PLANT_STAT_POTENCY)
+	var/potency = get_scaled_potency()
 
 	for(var/reagent_path in reagents_per_potency)
 		var/reagent_overflow_mod = reagents_per_potency[reagent_path]
 		if(reagent_max > 1)
 			reagent_overflow_mod = (reagents_per_potency[reagent_path] / reagent_max)
 
-		var/edible_vol = grown_edible.reagents?.maximum_volume || 0
+		var/edible_vol = grown_edible.reagents.maximum_volume || 0
 
 		 //the plant will always have at least 1u of each of the reagents in its reagent production traits
 		var/amount = max(1, round((edible_vol) * (potency/100) * reagent_overflow_mod, 1)) //the plant will always have at least 1u of each of the reagents in its reagent production traits
@@ -199,10 +246,10 @@
 		product.reagents.add_reagent(reagent_path, amount, data)
 
 	//Handles the juicing trait, swaps nutriment and vitamins for that species various juices if they exist. Mutually exclusive with distilling.
-	if(gene_holder.has_active_gene(/datum/plant_gene/product_trait/juicing) && grown_edible.juice_results)
+	if(gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/juicing) && grown_edible.juice_results)
 		grown_edible.juice(grown_edible.reagents)
 
-	else if(gene_holder.has_active_gene(/datum/plant_gene/product_trait/brewing) && grown_edible.distill_reagent)
+	else if(gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/brewing) && grown_edible.distill_reagent)
 		var/amount = grown_edible.reagents.has_reagent(/datum/reagent/consumable/nutriment) + product.reagents.has_reagent(/datum/reagent/consumable/nutriment/vitamin)
 		grown_edible.reagents.add_reagent(grown_edible.distill_reagent, amount/2)
 
@@ -211,7 +258,7 @@
 	var/num_nutriment = product.reagents.has_reagent(/datum/reagent/consumable/nutriment)
 
 	// Heats up the plant's contents by 25 kelvin per 1 unit of nutriment. Mutually exclusive with cooling.
-	if(gene_holder.has_active_gene(/datum/plant_gene/product_trait/chem_heating))
+	if(gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/chem_heating))
 		product.visible_message(span_notice("[product] releases freezing air, consuming its nutriments to heat its contents."))
 		product.reagents.remove_reagent(/datum/reagent/consumable/nutriment, num_nutriment)
 		product.reagents.chem_temp = min(1000, (product.reagents.chem_temp + num_nutriment * 25))
@@ -219,7 +266,7 @@
 		playsound(product.loc, 'sound/effects/wounds/sizzle2.ogg', 5)
 
 	// Cools down the plant's contents by 5 kelvin per 1 unit of nutriment. Mutually exclusive with heating.
-	else if(gene_holder.has_active_gene(/datum/plant_gene/product_trait/chem_cooling))
+	else if(gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/chem_cooling))
 		product.visible_message(span_notice("[product] releases a blast of hot air, consuming its nutriments to cool its contents."))
 		product.reagents.remove_reagent(/datum/reagent/consumable/nutriment, num_nutriment)
 		product.reagents.chem_temp = max(3, (product.reagents.chem_temp + num_nutriment * -5))

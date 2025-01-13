@@ -201,7 +201,7 @@
 	var/quality = 1
 	var/max_yield = 10
 	var/harvest_yield = growing.get_effective_stat(PLANT_STAT_YIELD)
-	var/potency = growing.get_effective_stat(PLANT_STAT_POTENCY)
+	var/potency = growing.get_scaled_potency()
 	var/endurance = growing.get_effective_stat(PLANT_STAT_ENDURANCE)
 
 	// Bonus yield for a healthy plant
@@ -226,18 +226,17 @@
 
 	harvest_yield = round(max(harvest_yield, 0))
 
-	var/turf/T = get_turf(src)
+	var/turf/T = user?.drop_location() || drop_location()
+
+	#warn impl quality
 	for(var/i in 1 to harvest_yield)
 		var/unit_quality = quality
 		unit_quality += rand(-2, 2)
 		unit_quality += potency / 6
 		unit_quality += endurance / 6
 
-		var/atom/movable/product = new product_path(T)
+		var/atom/movable/product = new product_path(T, growing)
 		product.add_fingerprint(user)
-
-		for(var/reagent in growing?.reagents_per_potency)
-			product.reagents.add_reagent(reagent, growing.reagents_per_potency[reagent] * SCALE_PLANT_POTENCY(potency))
 
 	// Healthy plants keep producing.
 	if(plant_health >= growing.base_health * 4)

@@ -41,8 +41,8 @@
 	new_plant.genome = round((dominant_species.genome + recessive_species.genome) / 2)
 	new_seed.name = "[new_plant.name] seed"
 
-	for(var/datum/plant_mutation/mutation as anything in dominant_species.gene_holder.gene_list)
-		new_plant.gene_holder.add_active_gene(mutation.type)
+	for(var/datum/plant_gene/gene as anything in dominant_species.gene_holder.gene_list)
+		new_plant.gene_holder.add_active_gene(gene.Copy())
 
 	new_plant.innate_genes = dominant_species.innate_genes | recessive_species.innate_genes
 	new_plant.latent_genes = dominant_species.latent_genes | recessive_species.latent_genes

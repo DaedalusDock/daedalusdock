@@ -78,7 +78,7 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 
 	modify_max_integrity(GLOWSHROOM_BASE_INTEGRITY + ((100 - GLOWSHROOM_BASE_INTEGRITY) / 100 * myseed.plant_datum.get_effective_stat(PLANT_STAT_ENDURANCE))) //goes up to 100 with peak endurance
 
-	var/datum/plant_gene/product_trait/glow/our_glow_gene = myseed.plant_datum.gene_holder.has_active_gene(/datum/plant_gene/product_trait/glow)
+	var/datum/plant_gene/product_trait/glow/our_glow_gene = myseed.plant_datum.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/glow)
 	var/potency = myseed.plant_datum.get_effective_stat(PLANT_STAT_POTENCY)
 
 	if(istype(our_glow_gene))

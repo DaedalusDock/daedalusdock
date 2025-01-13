@@ -13,7 +13,7 @@
 		return
 
 	var/datum/plant/our_plant = product.get_plant_datum()
-	if(our_plant.gene_holder.has_active_gene(/datum/plant_gene/product_trait/squash))
+	if(our_plant.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/squash))
 		// If we have the squash gene, let that handle slipping
 		RegisterSignal(product, COMSIG_PLANT_ON_SQUASH, PROC_REF(squash_teleport))
 	else

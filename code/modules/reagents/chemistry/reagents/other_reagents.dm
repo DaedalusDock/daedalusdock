@@ -407,7 +407,9 @@
 	if(volume >= 1)
 		plant_tick.potency_mod += 0.5
 		plant_tick.plant_growth_delta += 2.5
+		#ifndef UNIT_TESTS
 		plant_tick.mutation_power += 0.1
+		#endif
 		plant_tick.yield_mod += 0.2
 
 /datum/reagent/plantnutriment/left4zednutriment

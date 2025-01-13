@@ -2,6 +2,7 @@
 	var/name = "BAD GENE"
 	var/desc = ""
 
+
 	var/mutability_flags = NONE
 
 	/// Chance for this gene to develop fully and become active.
@@ -11,6 +12,10 @@
 
 	/// Chance to process
 	var/process_chance = 100
+
+/// Returns a hash ID for the gene.
+/datum/plant_gene/proc/get_id()
+	return "[type]"
 
 /// Processing effects. Return TRUE to cancel effects for children.
 /datum/plant_gene/proc/tick(delta_time, obj/machinery/hydroponics/tray, datum/plant/plant, datum/plant_tick/plant_tick)
@@ -45,8 +50,8 @@
  *
  * Returns TRUE if the seed can take the gene, and FALSE otherwise.
  */
-/datum/plant_gene/proc/can_add(obj/item/seeds/our_seed, datum/plant/our_plant)
-	return !istype(our_seed, /obj/item/seeds/sample) // Samples can't accept new genes.
+/datum/plant_gene/proc/can_add(datum/plant/our_plant)
+	return TRUE
 
 /*
  * on_add is called when seed genes are initialized on the /obj/seed.
@@ -85,8 +90,9 @@
 	var/trait_ids
 	/// Flag - Modifications made to the final product.
 	var/trait_flags
-	/// A blacklist of seeds that a trait cannot be attached to.
-	var/list/obj/item/seeds/seed_blacklist
+
+/datum/plant_gene/product_trait/get_id()
+	return "[type][rate][trait_ids][trait_flags]"
 
 /datum/plant_gene/product_trait/Copy()
 	. = ..()
@@ -94,22 +100,13 @@
 	new_trait_gene.rate = rate
 	return
 
-/datum/plant_gene/product_trait/can_add(obj/item/seeds/our_seed, datum/plant/our_plant)
+/datum/plant_gene/product_trait/on_add(datum/plant_gene_holder/gene_holder)
 	. = ..()
-	if(!.)
-		return FALSE
+	ADD_TRAIT(gene_holder.parent, TRAIT_HALF_YIELD, PLANT_GENE_SOURCE)
 
-	for(var/obj/item/seeds/found_seed as anything in seed_blacklist)
-		if(istype(our_seed, found_seed))
-			return FALSE
-
-	for(var/datum/plant_gene/product_trait/trait in our_plant.gene_holder.gene_list)
-		if(trait_ids & trait.trait_ids)
-			return FALSE
-		if(type == trait.type)
-			return FALSE
-
-	return TRUE
+/datum/plant_gene/product_trait/on_remove(datum/plant_gene_holder/gene_holder)
+	. = ..()
+	REMOVE_TRAIT(gene_holder.parent, TRAIT_HALF_YIELD, PLANT_GENE_SOURCE)
 
 /*
  * on_new_product is called for every plant trait on an /obj/item/grown or /obj/item/food/grown when initialized.

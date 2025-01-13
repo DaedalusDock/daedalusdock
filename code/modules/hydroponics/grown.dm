@@ -64,7 +64,7 @@
 
 	make_dryable()
 
-	cached_potency = plant_datum.get_effective_stat(PLANT_STAT_POTENCY)
+	cached_potency = plant_datum.get_scaled_potency()
 	cached_endurance = plant_datum.get_effective_stat(PLANT_STAT_ENDURANCE)
 
 	var/datum/plant_gene_holder/gene_holder = plant_datum.gene_holder

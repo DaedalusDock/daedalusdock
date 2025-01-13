@@ -24,7 +24,7 @@
 /// Check if this mutation can be applied to a given plant.
 /datum/plant_mutation/proc/can_mutate(datum/plant/P)
 	for(var/gene_path in required_genes)
-		if(!P.gene_holder.has_active_gene(gene_path))
+		if(!P.gene_holder.has_active_gene_of_type(gene_path))
 			return FALSE
 
 	for(var/stat in ranges)

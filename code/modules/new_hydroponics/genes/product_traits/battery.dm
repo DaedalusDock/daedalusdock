@@ -65,7 +65,7 @@
 	pocell.maxcharge = our_plant.get_effective_stat(PLANT_STAT_ENDURANCE) * 20
 
 	// The secret of potato supercells!
-	var/datum/plant_gene/product_trait/cell_charge/electrical_gene = our_plant.gene_holder.has_active_gene(/datum/plant_gene/product_trait/cell_charge)
+	var/datum/plant_gene/product_trait/cell_charge/electrical_gene = our_plant.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/cell_charge)
 	if(electrical_gene) // Cell charge max is now 40MJ or otherwise known as 400KJ (Same as bluespace power cells)
 		pocell.maxcharge *= (electrical_gene.rate * 100)
 	pocell.charge = pocell.maxcharge

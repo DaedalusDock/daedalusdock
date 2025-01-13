@@ -138,7 +138,7 @@
 
 /////////////////////// UNIT TESTING
 
-// #define UNIT_TESTS //If this is uncommented, we do a single run though of the game setup and tear down process with unit tests in between
+#define UNIT_TESTS //If this is uncommented, we do a single run though of the game setup and tear down process with unit tests in between
 
 
 /////////////////////// AUTO WIKI

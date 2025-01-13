@@ -29,6 +29,9 @@
 	var/potency_dominance = FALSE
 	var/endurance_dominance = FALSE
 
+/datum/plant_gene_holder/New(datum/plant/new_parent)
+	parent = new_parent
+
 /datum/plant_gene_holder/proc/CopyFrom(datum/plant_gene_holder/from_holder)
 	potency = from_holder.potency
 	endurance = from_holder.endurance
@@ -47,7 +50,7 @@
 	endurance_dominance = from_holder.endurance_dominance
 
 	for(var/datum/plant_gene/gene as anything in from_holder.gene_list)
-		add_active_gene(gene.type)
+		add_active_gene(gene.Copy())
 
 /// Randomize the dominance of the alleles in this plant.
 /datum/plant_gene_holder/proc/randomize_alleles()
@@ -83,27 +86,47 @@
 		for(var/datum/plant_gene/gene as anything in gene_list)
 			. += gene.get_stat_modifier(src, stat, base_val)
 
-/// Does the plant have the given gene active
-/datum/plant_gene_holder/proc/has_active_gene(gene_path)
+/// Returns the given stat, including active gene modifiers.
+/datum/plant_gene_holder/proc/set_stat(stat, value)
+	switch(stat)
+		if(PLANT_STAT_MATURATION)
+			maturation = value
+		if(PLANT_STAT_PRODUCTION)
+			production = value
+		if(PLANT_STAT_ENDURANCE)
+			endurance = value
+		if(PLANT_STAT_POTENCY)
+			potency = value
+		if(PLANT_STAT_YIELD)
+			harvest_yield = value
+		if(PLANT_STAT_HARVEST_AMT)
+			harvest_amt = value
+
+/// Does the plant have the given gene active of the given type.
+/datum/plant_gene_holder/proc/has_active_gene_of_type(gene_path)
 	if(length(gene_list))
 		for(var/datum/plant_gene/gene as anything in gene_list)
 			if(gene.type == gene_path)
 				return gene
 
+/// Does the plant have the given gene active that shares the same hash as the given gene instance.
+/datum/plant_gene_holder/proc/has_active_gene_of_id(datum/plant_gene/gene)
+	var/our_id = gene.get_id()
+	for(var/datum/plant_gene/existing_gene as anything in gene_list)
+		if(existing_gene.get_id() == our_id)
+			return existing_gene
+
 /// Add an active gene, not a latent one.
 /datum/plant_gene_holder/proc/add_active_gene(datum/plant_gene/gene_path)
-	var/datum/plant_gene/gene_instance
-	if(istype(gene_path))
-		gene_instance = gene_path
-		gene_path = gene_instance.type
+	var/datum/plant_gene/new_gene = istype(gene_path) ? gene_path : new gene_path
 
-	if(length(gene_list))
-		for(var/datum/plant_gene/gene as anything in gene_list)
-			if(gene.type == gene_path)
-				return FALSE
+	if(!new_gene.can_add(parent))
+		qdel(new_gene)
+		return FALSE
 
-
-	var/datum/plant_gene/new_gene = gene_instance || SShydroponics.gene_list[gene_path]
+	if(length(gene_list) && has_active_gene_of_id(new_gene))
+		qdel(new_gene)
+		return FALSE
 
 	LAZYADD(gene_list, new_gene)
 	new_gene.on_add(src)
@@ -111,7 +134,7 @@
 
 /// Remove an active gene.
 /datum/plant_gene_holder/proc/remove_active_gene(gene_path)
-	var/datum/plant_gene/gene_to_remove = has_active_gene(gene_path)
+	var/datum/plant_gene/gene_to_remove = has_active_gene_of_type(gene_path)
 	if(!gene_to_remove)
 		return FALSE
 
@@ -119,7 +142,7 @@
 	gene_to_remove.on_remove(src)
 
 /datum/plant_gene_holder/proc/multi_mutate(stat_power = 1, gene_power = 1, type_power = 1)
-	if(has_active_gene(/datum/plant_gene/stabilizer))
+	if(has_active_gene_of_type(/datum/plant_gene/stabilizer))
 		return FALSE
 
 	if(stat_power >= 1)
@@ -134,7 +157,7 @@
 
 /// Randomly activate a latent gene.
 /datum/plant_gene_holder/proc/try_activate_latent_gene(mutation_power = 1, ignore_stable = FALSE)
-	if(!ignore_stable && has_active_gene(/datum/plant_gene/stabilizer))
+	if(!ignore_stable && has_active_gene_of_type(/datum/plant_gene/stabilizer))
 		return FALSE
 
 	if(!length(parent.latent_genes))
@@ -143,7 +166,7 @@
 	var/datum/plant_gene/gene_to_activate
 
 	for(var/datum/plant_gene/latent_gene as anything in parent.latent_genes)
-		if(has_active_gene(latent_gene.type))
+		if(has_active_gene_of_type(latent_gene.type))
 			continue
 
 		if(prob(latent_gene.development_chance * mutation_power))
@@ -159,7 +182,7 @@
 
 /// Mutate the plant in various ways.
 /datum/plant_gene_holder/proc/try_mutate_stats(mutation_power = 1, ignore_stable = FALSE)
-	if(!ignore_stable && has_active_gene(/datum/plant_gene/stabilizer))
+	if(!ignore_stable && has_active_gene_of_type(/datum/plant_gene/stabilizer))
 		return FALSE
 
 	maturation += rand(-1 SECONDS * mutation_power, 1 SECONDS * mutation_power)
@@ -173,7 +196,7 @@
 	return TRUE
 
 /datum/plant_gene_holder/proc/try_mutate_type(mutation_power = 1, ignore_stable = FALSE)
-	if(!ignore_stable && has_active_gene(/datum/plant_gene/stabilizer))
+	if(!ignore_stable && has_active_gene_of_type(/datum/plant_gene/stabilizer))
 		return FALSE
 
 	if(!length(parent.possible_mutations))

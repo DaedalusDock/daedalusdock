@@ -32,6 +32,9 @@
 		set_reagent(new_reagent_id)
 		rate = new_reagent_rate
 
+/datum/plant_gene/reagent/get_id()
+	return "[type][rate][reagent_id]"
+
 /datum/plant_gene/reagent/Copy()
 	. = ..()
 	var/datum/plant_gene/reagent/new_reagent_gene = .
@@ -40,13 +43,13 @@
 	new_reagent_gene.rate = rate
 	return
 
-/datum/plant_gene/reagent/can_add(obj/item/seeds/our_seed, datum/plant/our_plant)
+/datum/plant_gene/reagent/can_add(datum/plant/our_plant)
 	. = ..()
 	if(!.)
 		return FALSE
 
 	for(var/datum/plant_gene/reagent/seed_reagent in our_plant.gene_holder.gene_list)
-		if(seed_reagent.reagent_id == reagent_id && seed_reagent.rate <= rate)
+		if(seed_reagent.reagent_id == reagent_id)
 			return FALSE
 	return TRUE
 

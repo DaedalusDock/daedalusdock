@@ -229,13 +229,13 @@
 /obj/item/plant_analyzer/proc/get_analyzer_text_traits(datum/plant/plant_datum)
 	var/list/text = list()
 
-	if(plant_datum.gene_holder.has_active_gene(/datum/plant_gene/product_trait/plant_type/weed_hardy))
+	if(plant_datum.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/plant_type/weed_hardy))
 		text += "- Plant type: [span_notice("Weed. Can grow in nutrient-poor soil.")]"
 
-	else if(plant_datum.gene_holder.has_active_gene(/datum/plant_gene/product_trait/plant_type/fungal_metabolism))
+	else if(plant_datum.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/plant_type/fungal_metabolism))
 		text += "- Plant type: [span_notice("Mushroom. Can grow in dry soil.")]"
 
-	else if(plant_datum.gene_holder.has_active_gene(/datum/plant_gene/product_trait/plant_type/alien_properties))
+	else if(plant_datum.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/plant_type/alien_properties))
 		text += "- Plant type: [span_warning("UNKNOWN")]"
 
 	else

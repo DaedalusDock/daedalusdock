@@ -2,6 +2,9 @@
 // Here's all the seeds (plants) that can be used in hydro
 // ********************************************************
 
+/datum/plant/debug
+	name = "THIS IS BROKEN"
+
 /obj/item/seeds
 	icon = 'icons/obj/hydroponics/seeds.dmi'
 	icon_state = "seed" // Unknown plant seed - these shouldn't exist in-game.
@@ -13,7 +16,7 @@
 	var/datum/plant/plant_datum
 
 	/// Typepath of plant_datum
-	var/plant_type
+	var/plant_type = /datum/plant/debug
 
 	///Describes the product on the product path.
 	var/productdesc

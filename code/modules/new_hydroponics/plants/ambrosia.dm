@@ -86,6 +86,7 @@
 	desc = "These seeds grow into ambrosia gaia, filled with infinite potential."
 	icon_state = "seed-ambrosia_gaia"
 
+	plant_type = /datum/plant/ambrosia/gaia
 
 /obj/item/food/grown/ambrosia/gaia
 	name = "ambrosia gaia branch"

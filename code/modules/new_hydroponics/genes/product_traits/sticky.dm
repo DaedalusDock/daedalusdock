@@ -11,7 +11,7 @@
 		return
 
 	var/datum/plant/our_plant = product.get_plant_datum()
-	if(our_plant.gene_holder.has_active_gene(/datum/plant_gene/product_trait/stinging))
+	if(our_plant.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/stinging))
 		product.embedding = EMBED_POINTY
 	else
 		product.embedding = EMBED_HARMLESS

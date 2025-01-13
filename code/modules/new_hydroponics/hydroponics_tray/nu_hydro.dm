@@ -170,7 +170,7 @@
 		set_light(3)
 		return
 
-	var/datum/plant_gene/product_trait/glow/G = growing?.gene_holder.has_active_gene(/datum/plant_gene/product_trait/glow)
+	var/datum/plant_gene/product_trait/glow/G = growing?.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/glow)
 	if(G)
 		var/potency = growing.get_effective_stat(PLANT_STAT_POTENCY)
 		set_light(l_outer_range = G.glow_range(potency), l_power = G.glow_power(potency), l_color = G.glow_color)
@@ -241,6 +241,9 @@
 
 /// Plant a new plant using a given seed.
 /obj/machinery/hydroponics/proc/plant_seed(obj/item/seeds/seed, mob/living/user)
+	if(src.seed)
+		clear_plant()
+
 	if(seed.loc != src)
 		seed.forceMove(src)
 
@@ -331,12 +334,12 @@
 	growth = max(growth + final_growth_delta, 0)
 
 	// Stat mods
-	plant_dna.maturation = plant_dna.maturation + PLANT_STAT_PROB_ROUND(current_tick.maturation_mod * tick_multiplier)
-	plant_dna.production = plant_dna.production + PLANT_STAT_PROB_ROUND(current_tick.production_mod * tick_multiplier)
-	plant_dna.harvest_yield = plant_dna.harvest_yield + PLANT_STAT_PROB_ROUND(current_tick.yield_mod * tick_multiplier)
-	plant_dna.harvest_amt = plant_dna.harvest_amt + PLANT_STAT_PROB_ROUND(current_tick.harvest_amt_mod * tick_multiplier)
-	plant_dna.endurance = plant_dna.endurance + PLANT_STAT_PROB_ROUND(current_tick.endurance_mod * tick_multiplier)
-	plant_dna.potency = plant_dna.potency + PLANT_STAT_PROB_ROUND(current_tick.potency_mod * tick_multiplier)
+	plant_dna.set_stat(PLANT_STAT_MATURATION, plant_dna.maturation + PLANT_STAT_PROB_ROUND(current_tick.maturation_mod * tick_multiplier))
+	plant_dna.set_stat(PLANT_STAT_PRODUCTION, plant_dna.production + PLANT_STAT_PROB_ROUND(current_tick.production_mod * tick_multiplier))
+	plant_dna.set_stat(PLANT_STAT_YIELD, plant_dna.harvest_yield + PLANT_STAT_PROB_ROUND(current_tick.yield_mod * tick_multiplier))
+	plant_dna.set_stat(PLANT_STAT_HARVEST_AMT, plant_dna.harvest_amt + PLANT_STAT_PROB_ROUND(current_tick.harvest_amt_mod * tick_multiplier))
+	plant_dna.set_stat(PLANT_STAT_ENDURANCE, plant_dna.endurance + PLANT_STAT_PROB_ROUND(current_tick.endurance_mod * tick_multiplier))
+	plant_dna.set_stat(PLANT_STAT_POTENCY, plant_dna.potency + PLANT_STAT_PROB_ROUND(current_tick.potency_mod * tick_multiplier))
 
 	// Take reagents.
 	reagents.remove_all(current_tick.water_need * tick_multiplier)
@@ -373,10 +376,10 @@
 
 	switch(damage_type)
 		if(PLANT_DAMAGE_NO_WATER)
-			if(growing.gene_holder.has_active_gene(/datum/plant_gene/metabolism_fast))
+			if(growing.gene_holder.has_active_gene_of_type(/datum/plant_gene/metabolism_fast))
 				amt *= 2
 
-			if(growing.gene_holder.has_active_gene(/datum/plant_gene/metabolism_slow))
+			if(growing.gene_holder.has_active_gene_of_type(/datum/plant_gene/metabolism_slow))
 				amt /= 2
 
 	if(amt > 0 && !ignore_endurance)

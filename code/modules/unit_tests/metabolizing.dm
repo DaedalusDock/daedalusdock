@@ -48,9 +48,6 @@
 	SSmobs.ignite()
 	return ..()
 
-/datum/unit_test/addictions
-	var/list/minds_to_cleanup = list()
-
 /datum/unit_test/addictions/Run()
 	SSmobs.pause()
 
@@ -59,17 +56,14 @@
 	var/mob/living/carbon/human/pill_syringe_user = allocate(/mob/living/carbon/human)
 
 	var/datum/mind/pill_mind = new /datum/mind("Mothcocks")
-	minds_to_cleanup += pill_mind
 	pill_mind.active = TRUE
 	pill_mind.transfer_to(pill_user)
 
 	var/datum/mind/syringe_mind = new /datum/mind("Mothcocks")
-	minds_to_cleanup += syringe_mind
 	syringe_mind.active = TRUE
 	syringe_mind.transfer_to(syringe_user)
 
 	var/datum/mind/pill_syringe_mind = new /datum/mind("Mothcocks")
-	minds_to_cleanup += pill_syringe_mind
 	pill_syringe_mind.active = TRUE
 	pill_syringe_mind.transfer_to(pill_syringe_user)
 
@@ -128,8 +122,4 @@
 
 /datum/unit_test/addictions/Destroy()
 	SSmobs.ignite()
-	for(var/datum/mind/M as anything in minds_to_cleanup)
-		var/mob/mob = M.get_ghost(TRUE)
-		mob.key = null
-		qdel(mob)
 	return ..()

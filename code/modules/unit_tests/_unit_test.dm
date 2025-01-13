@@ -65,6 +65,12 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 			if (istype(content, /obj/effect/landmark))
 				continue
 			qdel(content)
+
+	for(var/mob/dead/observer/ghost in GLOB.dead_mob_list)
+		if(!ghost.client)
+			ghost.key = null
+			qdel(ghost)
+
 	return ..()
 
 /datum/unit_test/proc/Run()

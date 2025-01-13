@@ -113,7 +113,7 @@
 /obj/item/food/grown/proc/generate_trash()
 	// If this is some type of grown thing, we pass a seed arg into its Inititalize()
 	if(ispath(trash_type, /obj/item/grown) || ispath(trash_type, /obj/item/food/grown))
-		return new trash_type(src, growing)
+		return new trash_type(src, plant_datum)
 
 	return new trash_type(src)
 
@@ -123,22 +123,19 @@
 		return
 	return TRUE
 
-/obj/item/food/grown/on_grind()
-	. = ..()
-	var/nutriment = reagents.get_reagent_amount(/datum/reagent/consumable/nutriment)
-	if(grind_results?.len)
-		for(var/i in 1 to grind_results.len)
-			grind_results[grind_results[i]] = nutriment
-		reagents.del_reagent(/datum/reagent/consumable/nutriment)
-		reagents.del_reagent(/datum/reagent/consumable/nutriment/vitamin)
+/obj/item/grown/do_grind(datum/reagents/target_holder, mob/user)
+	var/grind_results_num = LAZYLEN(grind_results)
 
-/obj/item/food/grown/on_juice()
-	var/nutriment = reagents.get_reagent_amount(/datum/reagent/consumable/nutriment)
-	if(juice_results?.len)
-		for(var/i in 1 to juice_results.len)
-			juice_results[juice_results[i]] = nutriment
-		reagents.del_reagent(/datum/reagent/consumable/nutriment)
-		reagents.del_reagent(/datum/reagent/consumable/nutriment/vitamin)
+	if(grind_results_num)
+		var/total_nutriment_amount = reagents.get_reagent_amount(/datum/reagent/consumable/nutriment, type_check = REAGENT_SUB_TYPE)
+		var/single_reagent_amount = grind_results_num > 1 ? round(total_nutriment_amount / grind_results_num, CHEMICAL_QUANTISATION_LEVEL) : total_nutriment_amount
+
+		reagents.remove_reagent(/datum/reagent/consumable/nutriment, total_nutriment_amount, include_subtypes = TRUE)
+		for(var/reagent in grind_results)
+			reagents.add_reagent(reagent, single_reagent_amount)
+
+	return reagents?.trans_to(target_holder, reagents.total_volume, transfered_by = user)
+
 
 #undef BITE_SIZE_POTENCY_MULTIPLIER
 #undef BITE_SIZE_VOLUME_MULTIPLIER

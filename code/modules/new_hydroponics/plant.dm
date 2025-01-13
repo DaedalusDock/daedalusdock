@@ -184,8 +184,7 @@
 
 	//Handles the juicing trait, swaps nutriment and vitamins for that species various juices if they exist. Mutually exclusive with distilling.
 	if(gene_holder.has_active_gene(/datum/plant_gene/product_trait/juicing) && grown_edible.juice_results)
-		grown_edible.on_juice()
-		grown_edible.reagents.add_reagent_list(grown_edible.juice_results)
+		grown_edible.juice(grown_edible.reagents)
 
 	else if(gene_holder.has_active_gene(/datum/plant_gene/product_trait/brewing) && grown_edible.distill_reagent)
 		var/amount = grown_edible.reagents.has_reagent(/datum/reagent/consumable/nutriment) + product.reagents.has_reagent(/datum/reagent/consumable/nutriment/vitamin)

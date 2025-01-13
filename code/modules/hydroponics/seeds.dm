@@ -2,9 +2,6 @@
 // Here's all the seeds (plants) that can be used in hydro
 // ********************************************************
 
-/datum/plant/debug
-	name = "THIS IS BROKEN"
-
 /obj/item/seeds
 	icon = 'icons/obj/hydroponics/seeds.dmi'
 	icon_state = "seed" // Unknown plant seed - these shouldn't exist in-game.
@@ -13,18 +10,14 @@
 	resistance_flags = FLAMMABLE
 
 	/// The plant within.
-	var/datum/plant/plant_datum
+	var/tmp/datum/plant/plant_datum
 
 	/// Typepath of plant_datum
-	var/plant_type = /datum/plant/debug
+	var/plant_type
 
 	///Describes the product on the product path.
 	var/productdesc
 
-	/// How rare the plant is. Used for giving points to cargo when shipping off to CentCom.
-	var/rarity = 0
-	/// The type of plants that this plant can mutate into.
-	var/list/mutatelist
 	///Determines if the plant should be allowed to mutate early at 30+ instability.
 	var/seed_flags = MUTATE_EARLY
 

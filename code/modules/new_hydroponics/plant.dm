@@ -1,4 +1,5 @@
 /datum/plant
+	abstract_type = /datum/plant
 	var/name = "BAD NAME"
 
 	/// Ref to the seed we're in, if any.

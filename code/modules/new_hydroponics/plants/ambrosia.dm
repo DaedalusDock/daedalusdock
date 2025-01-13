@@ -6,7 +6,7 @@
 	seed_path = /obj/item/food/grown/ambrosia/vulgaris
 	product_path = /obj/item/food/grown/ambrosia/vulgaris
 
-	possible_mutations = list(/datum/plant_mutation/ambrosia_deus, /datum/plant_mutation/ambrosia_gaia)
+	possible_mutations = list(/datum/plant_mutation/ambrosia_deus)
 	reagents_per_potency = list(
 		/datum/reagent/medicine/kelotane = 0.1,
 		/datum/reagent/medicine/bicaridine = 0.1,

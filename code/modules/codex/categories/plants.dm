@@ -20,6 +20,7 @@
 		var/datum/plant_mutation/mutation_source = mutations_by_plant[P.type]
 		if(mutation_source)
 			mechanics += "Mutation requirements: "
+			mechanics += "[FOURSPACES] A bit of luck."
 
 			if(length(mutation_source.required_genes))
 				var/list/english_genes = list()
@@ -65,7 +66,8 @@
 
 		var/datum/codex_entry/entry = new(
 			_display_name = "[P.name] (plant)",
-			_mechanics_text = jointext(mechanics, "<br>")
+			_associated_strings = list(P.name),
+			_mechanics_text = jointext(mechanics, "<br>"),
 		)
 
 		items += entry

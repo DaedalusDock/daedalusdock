@@ -12,7 +12,7 @@
 		return 0
 	if(needs_discovery && !(S.type in discovered_plants))
 		return 0
-	return ..() * S.rarity // That's right, no bonus for potency. Send a crappy sample first to "show improvement" later.
+	return ..() * S.plant_datum.rarity // That's right, no bonus for potency. Send a crappy sample first to "show improvement" later.
 
 /datum/export/seed/sell_object(obj/O, datum/export_report/report, dry_run, apply_elastic)
 	. = ..()

@@ -171,6 +171,23 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 
 	tests_to_run = sortTim(tests_to_run, GLOBAL_PROC_REF(cmp_unit_test_priority))
 
+	/// Create a list of every unit test for each priority value
+	var/list/priority_buckets = list()
+	for(var/datum/unit_test/test as anything in tests_to_run)
+		var/priority_str = "[test.priority]"
+		if(!(priority_str in priority_buckets))
+			priority_buckets[priority_str] = list()
+
+		priority_buckets[priority_str] += test
+
+	/// Sort them by name within those buckets
+	for(var/priority_str in priority_buckets)
+		sortTim(priority_buckets[priority_str], GLOBAL_PROC_REF(cmp_name_asc), TRUE)
+
+	tests_to_run = list()
+	for(var/priority_str in priority_buckets)
+		tests_to_run += priority_buckets[priority_str]
+
 	var/list/test_results = list()
 
 	for(var/unit_path in tests_to_run)

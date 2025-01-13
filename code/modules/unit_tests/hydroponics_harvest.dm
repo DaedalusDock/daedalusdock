@@ -19,6 +19,9 @@
 //  * This test checks both /obj/item/food/grown items and /obj/item/grown items since, despite both being used in hydroponics,
 //  * they aren't the same type so everything that works with one isn't guaranteed to work with the other.
 //  */
+/datum/unit_test/hydroponics_harvest
+	name = "HYDROPONICS: Plants Shall Have Correct Stats On Harvest"
+
 /datum/unit_test/hydroponics_harvest/Run()
 	var/obj/machinery/hydroponics/hydroponics_tray = allocate(/obj/machinery/hydroponics)
 	var/obj/item/seeds/planted_food_seed = allocate(/obj/item/seeds/apple) //grown food
@@ -61,7 +64,6 @@
 
 	var/double_chemicals = planted.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/maxchem)
 	var/expected_yield = planted.get_effective_stat(PLANT_STAT_YIELD)
-	var/effective_potency = planted.get_scaled_potency()
 	var/max_volume = 100 //For 99% of plants, max volume is 100.
 
 	if(double_chemicals)

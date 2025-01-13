@@ -1,7 +1,17 @@
+/datum/unit_test/seed_sanity
+	name = "HYDROPONICS: Seeds Shall Have plant_type Set"
+
 /datum/unit_test/seed_sanity/Run()
 	for(var/obj/item/seeds/seed_type as anything in subtypesof(/obj/item/seeds))
 		if(!seed_type.plant_type)
 			TEST_FAIL("[seed_type] has no plant_type set.")
+
+		if(!ispath(seed_type.plant_type, /datum/plant))
+			TEST_FAIL("[seed_type] has an invalid plant_type set, got: [seed_type.plant_type].")
+
+
+/datum/unit_test/plant_seed_reciprocal
+	name = "HYDROPONICS: Seeds and Plants Shall Reciprocate"
 
 /datum/unit_test/plant_seed_reciprocal/Run()
 	var/list/plants_with_seeds = list()
@@ -16,7 +26,7 @@
 			TEST_FAIL("[P] has no seed_path, but [plants_with_seeds[P]] has it as a plant.")
 
 /datum/unit_test/plant_icon_validation
-	name = "Plants Shall Have Icons"
+	name = "HYDROPONICS: Plants Shall Have Icons"
 
 /datum/unit_test/plant_icon_validation/Run()
 	for(var/datum/plant/path as anything in typesof(/datum/plant))

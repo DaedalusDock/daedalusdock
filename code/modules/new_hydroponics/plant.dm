@@ -40,6 +40,7 @@
 	/// Type of seed produced.
 	var/seed_path = /obj/item/seeds
 
+	/// Per 1 point of potency, the product will contain that much reagent.
 	var/list/reagents_per_potency
 
 	/// Innate genes that all instances of this plant have.

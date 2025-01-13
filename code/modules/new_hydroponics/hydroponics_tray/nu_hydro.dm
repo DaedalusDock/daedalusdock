@@ -242,8 +242,6 @@
 		seed.forceMove(src)
 
 	src.seed = seed
-	var/plant_type = seed.plant_type
-
 	growing = seed.plant_datum
 	growth = 1
 

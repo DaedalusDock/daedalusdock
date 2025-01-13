@@ -62,10 +62,6 @@
 	my_atom = null
 	return ..()
 
-/// Is this holder full or not
-/datum/reagents/proc/is_full()
-	return total_volume >= maximum_volume
-
 /**
  * Adds a reagent to this holder
  *

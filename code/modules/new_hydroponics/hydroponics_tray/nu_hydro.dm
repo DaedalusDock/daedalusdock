@@ -208,7 +208,10 @@
 	var/mutable_appearance/plant_overlay = mutable_appearance(growing.growing_icon, layer = OBJ_LAYER + 0.01)
 	switch(growing.plant_status)
 		if(PLANT_DEAD)
-			plant_overlay.icon_state = growing.icon_dead
+			if(!growing.icon_dead)
+				plant_overlay.icon_state = "[growing.species]-dead"
+			else
+				plant_overlay.icon_state = growing.icon_dead
 
 		if(PLANT_HARVESTABLE)
 			if(!growing.icon_harvest)
@@ -257,7 +260,7 @@
 
 	if(no_del)
 		seed = null
-	else
+	else if(!QDELING(seed))
 		QDEL_NULL(seed)
 
 	QDEL_NULL(current_tick)
@@ -288,7 +291,7 @@
 		return
 
 	// Update plant status
-	var/new_growth_status = growing.get_growth_status()
+	var/new_growth_status = growing.get_growth_status(growth)
 	if(growing.plant_status != new_growth_status)
 		growing.plant_status = new_growth_status
 		update_appearance()

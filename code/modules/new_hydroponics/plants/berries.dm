@@ -10,11 +10,16 @@
 	product_path = /obj/item/food/grown/berries
 	seed_path = /obj/item/seeds/berry
 
-	possible_mutations = list(/datum/plant/berry/glow, /datum/plant/berry/poison)
+	possible_mutations = list(
+		/datum/plant_mutation/berry_glow,
+		/datum/plant_mutation/berry_poison
+	)
+
 	reagents_per_potency = list(
 		/datum/reagent/consumable/nutriment/vitamin = 0.04,
 		/datum/reagent/consumable/nutriment = 0.1
 	)
+
 	harvest_yield = 4
 
 /obj/item/seeds/berry

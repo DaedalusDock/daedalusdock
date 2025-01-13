@@ -1,6 +1,12 @@
+/datum/plant/sample
+	name = "plant sample"
+
 /obj/item/seeds/sample
 	name = "plant sample"
 	icon_state = "sample-empty"
+
+	plant_type = /datum/plant/sample
+
 	var/sample_color = "#FFFFFF"
 
 /obj/item/seeds/sample/Initialize(mapload)

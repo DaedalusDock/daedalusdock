@@ -63,7 +63,7 @@
 	//* Stateful vars *//
 
 	///The status of the plant in the tray. Whether it's harvestable, alive, missing or dead.
-	var/plant_status = PLANT_DEAD
+	var/plant_status = PLANT_PLANTED
 
 	/// The genes of the plant.
 	var/datum/plant_gene_holder/gene_holder
@@ -149,7 +149,7 @@
 
 /// Replace reagents_per_potency with genes.
 /datum/plant/proc/inherit_reagents_from_genes()
-	reagents_per_potency.Cut()
+	reagents_per_potency = list()
 
 	for(var/datum/plant_gene/reagent/R in gene_holder.gene_list)
 		reagents_per_potency[R.reagent_id] = R.rate

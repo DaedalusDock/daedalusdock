@@ -65,6 +65,12 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 			if (istype(content, /obj/effect/landmark))
 				continue
 			qdel(content)
+
+	for(var/mob/dead/observer/ghost in GLOB.dead_mob_list)
+		if(!ghost.client)
+			ghost.key = null
+			qdel(ghost)
+
 	return ..()
 
 /datum/unit_test/proc/Run()
@@ -170,6 +176,23 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 		tests_to_run = focused_tests
 
 	tests_to_run = sortTim(tests_to_run, GLOBAL_PROC_REF(cmp_unit_test_priority))
+
+	/// Create a list of every unit test for each priority value
+	var/list/priority_buckets = list()
+	for(var/datum/unit_test/test as anything in tests_to_run)
+		var/priority_str = "[test.priority]"
+		if(!(priority_str in priority_buckets))
+			priority_buckets[priority_str] = list()
+
+		priority_buckets[priority_str] += test
+
+	/// Sort them by name within those buckets
+	for(var/priority_str in priority_buckets)
+		sortTim(priority_buckets[priority_str], GLOBAL_PROC_REF(cmp_name_or_type_asc))
+
+	tests_to_run = list()
+	for(var/priority_str in priority_buckets)
+		tests_to_run += priority_buckets[priority_str]
 
 	var/list/test_results = list()
 

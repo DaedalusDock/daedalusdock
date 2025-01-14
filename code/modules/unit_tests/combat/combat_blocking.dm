@@ -18,7 +18,6 @@
 /datum/unit_test/combat/armed_blocking
 	name = "COMBAT/BLOCKING: Items Must Block Armed Attacks"
 
-
 /datum/unit_test/combat/armed_blocking/Run()
 	var/mob/living/carbon/human/consistent/attacker = ALLOCATE_BOTTOM_LEFT()
 	var/mob/living/carbon/human/consistent/victim = ALLOCATE_BOTTOM_LEFT()

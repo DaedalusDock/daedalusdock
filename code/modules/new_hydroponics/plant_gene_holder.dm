@@ -32,6 +32,10 @@
 /datum/plant_gene_holder/New(datum/plant/new_parent)
 	parent = new_parent
 
+/datum/plant_gene_holder/Destroy(force, ...)
+	parent = null
+	return ..()
+
 /datum/plant_gene_holder/proc/CopyFrom(datum/plant_gene_holder/from_holder)
 	potency = from_holder.potency
 	endurance = from_holder.endurance

@@ -208,14 +208,11 @@
 	var/mutable_appearance/plant_overlay = mutable_appearance(growing.growing_icon, layer = OBJ_LAYER + 0.01)
 	switch(growing.plant_status)
 		if(PLANT_DEAD)
-			if(!growing.icon_dead)
-				plant_overlay.icon_state = "[growing.species]-dead"
-			else
-				plant_overlay.icon_state = growing.icon_dead
+			plant_overlay.icon_state = growing.icon_dead
 
 		if(PLANT_HARVESTABLE)
 			if(!growing.icon_harvest)
-				plant_overlay.icon_state = "[growing.icon_grow || growing.species]-harvest"
+				plant_overlay.icon_state = "[growing.icon_grow][growing.growthstages]"
 			else
 				plant_overlay.icon_state = growing.icon_harvest
 
@@ -223,7 +220,7 @@
 			var/t_growthstate = clamp(round((growth / growing.get_effective_stat(PLANT_STAT_MATURATION)) * growing.growthstages), 1, growing.growthstages)
 			#warn temp
 			to_chat(world, "[(growth / growing.get_effective_stat(PLANT_STAT_MATURATION)) * growing.growthstages]")
-			plant_overlay.icon_state = "[growing.icon_grow || "[growing.species]-grow"][t_growthstate]"
+			plant_overlay.icon_state = "[myseed.icon_grow][t_growthstate]"
 
 	return plant_overlay
 

@@ -99,6 +99,7 @@
 
 /datum/plant/Destroy()
 	in_seed = null
+	QDEL_NULL(gene_holder)
 	return ..()
 
 /datum/plant/proc/Copy()

@@ -3,7 +3,7 @@
 	species = "ambrosiavulgaris"
 	icon_dead = "ambrosia-dead"
 
-	seed_path = /obj/item/food/grown/ambrosia/vulgaris
+	seed_path = /obj/item/seeds/ambrosia/vulgaris
 	product_path = /obj/item/food/grown/ambrosia/vulgaris
 
 	possible_mutations = list(/datum/plant_mutation/ambrosia_deus)
@@ -16,13 +16,19 @@
 		/datum/reagent/toxin = 0.1,
 	)
 
+/obj/item/seeds/ambrosia/vulgaris
+	name = "pack of ambrosia vulgaris seeds"
+	desc = "These seeds grow into a plant with healing properties."
+	icon_state = "seed-ambrosiavulgaris"
+
+	plant_type = /datum/plant/ambrosia
+
 /obj/item/food/grown/ambrosia/vulgaris
 	plant_datum = /datum/plant/ambrosia
 	name = "ambrosia vulgaris branch"
 	desc = "This is a plant containing various healing chemicals."
-	wine_power = 30
 
-	plant_type = /datum/plant/ambrosia
+	wine_power = 30
 
 // Ambrosia Deus
 /datum/plant_mutation/ambrosia_deus

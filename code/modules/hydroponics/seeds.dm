@@ -21,12 +21,12 @@
 	///Determines if the plant should be allowed to mutate early at 30+ instability.
 	var/seed_flags = MUTATE_EARLY
 
-/obj/item/seeds/Initialize(mapload, nogenes = FALSE)
+/obj/item/seeds/Initialize(mapload, datum/plant/copy_from)
 	. = ..()
 	pixel_x = base_pixel_x + rand(-8, 8)
 	pixel_y = base_pixel_y + rand(-8, 8)
 
-	plant_datum = new plant_type(!nogenes)
+	plant_datum = copy_from ? copy_from.Copy() : new plant_type()
 	plant_datum.in_seed = src
 
 /obj/item/seeds/Destroy()
@@ -36,13 +36,6 @@
 /obj/item/seeds/examine(mob/user)
 	. = ..()
 	. += span_notice("Use a pen on it to rename it or change its description.")
-
-/// Copy all the variables from one seed to a new instance of the same seed and return it.
-/obj/item/seeds/proc/Copy()
-	var/obj/item/seeds/copy_seed = new type(null, TRUE)
-	copy_seed.plant_datum.gene_holder.CopyFrom(plant_datum.gene_holder)
-	return copy_seed
-
 
 /**
  * Override for seeds with unique text for their analyzer. (No newlines at the start or end of unique text!)

@@ -74,17 +74,19 @@
 	/// The genes of the plant.
 	var/datum/plant_gene_holder/gene_holder
 
-/datum/plant/New(random_genes)
+/datum/plant/New(empty)
+	if(empty)
+		return
+
 	gene_holder = new(src)
 
-	if(random_genes)
-		gene_holder.randomize_alleles()
+	gene_holder.randomize_alleles()
 
-		for(var/reag_id in reagents_per_potency)
-			gene_holder.add_active_gene(new /datum/plant_gene/reagent(reag_id, reagents_per_potency[reag_id]))
+	for(var/reag_id in reagents_per_potency)
+		gene_holder.add_active_gene(new /datum/plant_gene/reagent(reag_id, reagents_per_potency[reag_id]))
 
-		for(var/gene_path in innate_genes)
-			gene_holder.add_active_gene(new gene_path)
+	for(var/gene_path in innate_genes)
+		gene_holder.add_active_gene(new gene_path)
 
 	inherit_reagents_from_genes()
 
@@ -92,14 +94,8 @@
 		possible_mutations -= path
 		possible_mutations += SShydroponics.mutation_list[path]
 
-	if(!icon_grow)
-		icon_grow = "[species]-grow"
 
-	if(!icon_dead)
-		icon_dead = "[species]-dead"
-
-	if(!icon_harvest && !gene_holder.has_active_gene_of_type(/datum/plant_gene/trait/plant_type/fungal_metabolism) && yield != -1)
-		icon_harvest = "[species]-harvest"
+	set_fallback_icons()
 
 /datum/plant/Destroy()
 	in_seed = null
@@ -107,7 +103,7 @@
 
 /datum/plant/proc/Copy()
 	RETURN_TYPE(/datum/plant)
-	var/datum/plant/new_plant = new type()
+	var/datum/plant/new_plant = new type(empty = TRUE)
 
 	new_plant.base_health = base_health
 	new_plant.base_potency = base_potency
@@ -122,6 +118,12 @@
 	new_plant.needs_water = needs_water
 
 	new_plant.name = name
+	new_plant.growing_icon = growing_icon
+	new_plant.icon_dead = icon_dead
+	new_plant.icon_grow = icon_grow
+	new_plant.icon_harvest = icon_harvest
+	new_plant.growthstages = growthstages
+
 	new_plant.rarity = rarity
 	new_plant.genome = genome
 
@@ -133,6 +135,17 @@
 	new_plant.inherit_reagents_from_genes()
 
 	return new_plant
+
+
+/datum/plant/proc/set_fallback_icons()
+	if(!icon_grow)
+		icon_grow = "[species]-grow"
+
+	if(!icon_dead)
+		icon_dead = "[species]-dead"
+
+	if(!icon_harvest)
+		icon_harvest = "[species]-harvest"
 
 /**
  * Returns the plant's growth state.

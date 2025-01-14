@@ -53,6 +53,10 @@
 	potency_dominance = from_holder.potency_dominance
 	endurance_dominance = from_holder.endurance_dominance
 
+	#warn this needs to use references
+	for(var/datum/plant_gene/gene as anything in gene_list)
+		remove_active_gene(gene)
+
 	for(var/datum/plant_gene/gene as anything in from_holder.gene_list)
 		add_active_gene(gene.Copy())
 
@@ -137,8 +141,8 @@
 	return TRUE
 
 /// Remove an active gene.
-/datum/plant_gene_holder/proc/remove_active_gene(gene_path)
-	var/datum/plant_gene/gene_to_remove = has_active_gene_of_type(gene_path)
+/datum/plant_gene_holder/proc/remove_active_gene(datum/plant_gene/gene)
+	var/datum/plant_gene/gene_to_remove = has_active_gene_of_id(gene)
 	if(!gene_to_remove)
 		return FALSE
 
@@ -224,7 +228,7 @@
 			continue
 
 		var/new_path = mutation.plant_type.seed_path
-		var/obj/item/seeds/new_seed = new new_path(null, TRUE)
+		var/obj/item/seeds/new_seed = new new_path(null)
 		new_seed.plant_datum.gene_holder.CopyFrom(src)
 
 		var/atom/parent_loc = parent.in_seed.loc

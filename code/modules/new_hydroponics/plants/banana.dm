@@ -23,6 +23,8 @@
 	desc = "They're seeds that grow into banana trees. When grown, keep away from clown."
 	icon_state = "seed-banana"
 
+	plant_type = /datum/plant/banana
+
 /obj/item/food/grown/banana
 	plant_datum = /datum/plant/banana
 	name = "banana"

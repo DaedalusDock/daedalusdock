@@ -51,7 +51,8 @@
 	name = "pack of oat seeds"
 	desc = "These may, or may not, grow into oat."
 	icon_state = "seed-oat"
-	plant_type = list(/datum/plant/wheat/oat)
+
+	plant_type = /datum/plant/wheat/oat
 
 /obj/item/food/grown/oat
 	plant_datum = /datum/plant/wheat/oat

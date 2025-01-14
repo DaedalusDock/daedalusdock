@@ -22,6 +22,8 @@
 	desc = "This is a plant containing various healing chemicals."
 	wine_power = 30
 
+	plant_type = /datum/plant/ambrosia
+
 // Ambrosia Deus
 /datum/plant_mutation/ambrosia_deus
 	plant_type = /datum/plant/ambrosia/deus
@@ -42,6 +44,7 @@
 	desc = "These seeds grow into ambrosia deus. Could it be the food of the gods..?"
 	icon_state = "seed-ambrosiadeus"
 
+	plant_type = /datum/plant/ambrosia/deus
 
 /obj/item/food/grown/ambrosia/deus
 	plant_datum = /datum/plant/ambrosia/deus

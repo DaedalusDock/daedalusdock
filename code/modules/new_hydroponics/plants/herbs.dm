@@ -17,6 +17,8 @@
 	desc = "These seeds grow to produce an assortment of herbs and seasonings."
 	icon_state = "seed-herbs"
 
+	plant_type = /datum/plant/herbs
+
 /obj/item/food/grown/herbs
 	plant_datum = /datum/plant/herbs
 	name = "bundle of herbs"

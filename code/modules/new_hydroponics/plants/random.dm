@@ -16,6 +16,7 @@
 	desc = "Mysterious seeds as strange as their name implies. Spooky."
 	icon_state = "seed-x"
 
+	plant_type = /datum/plant/random
 	custom_premium_price = PAYCHECK_EASY * 2
 
 /obj/item/seeds/random/Initialize(mapload)

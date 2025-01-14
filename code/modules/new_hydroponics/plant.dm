@@ -83,11 +83,23 @@
 		for(var/reag_id in reagents_per_potency)
 			gene_holder.add_active_gene(new /datum/plant_gene/reagent(reag_id, reagents_per_potency[reag_id]))
 
+		for(var/gene_path in innate_genes)
+			gene_holder.add_active_gene(new gene_path)
+
 	inherit_reagents_from_genes()
 
 	for(var/path in possible_mutations)
 		possible_mutations -= path
 		possible_mutations += SShydroponics.mutation_list[path]
+
+	if(!icon_grow)
+		icon_grow = "[species]-grow"
+
+	if(!icon_dead)
+		icon_dead = "[species]-dead"
+
+	if(!icon_harvest && !get_gene(/datum/plant_gene/trait/plant_type/fungal_metabolism) && yield != -1)
+		icon_harvest = "[species]-harvest"
 
 /datum/plant/Destroy()
 	in_seed = null

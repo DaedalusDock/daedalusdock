@@ -25,6 +25,8 @@
 	desc = "These seeds grow into soybean plants."
 	icon_state = "seed-soybean"
 
+	plant_type = /datum/plant/soybean
+
 /obj/item/food/grown/soybeans
 	plant_datum = /datum/plant/soybean
 	name = "soybeans"
@@ -63,6 +65,8 @@
 	name = "pack of koibean seeds"
 	desc = "These seeds grow into koibean plants."
 	icon_state = "seed-koibean"
+
+	plant_type = /datum/plant/soybean/koi
 
 /obj/item/food/grown/koibeans
 	plant_datum = /datum/plant/soybean/koi

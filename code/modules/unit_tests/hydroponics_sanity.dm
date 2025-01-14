@@ -5,6 +5,7 @@
 	for(var/obj/item/seeds/seed_type as anything in subtypesof(/obj/item/seeds))
 		if(!seed_type.plant_type)
 			TEST_FAIL("[seed_type] has no plant_type set.")
+			continue
 
 		if(!ispath(seed_type.plant_type, /datum/plant))
 			TEST_FAIL("[seed_type] has an invalid plant_type set, got: [seed_type.plant_type].")
@@ -33,20 +34,21 @@
 		if(isabstract(path))
 			continue
 
-		var/species = path.species
-		var/icon_file = path.growing_icon
+		var/datum/plant/plant_datum = new path
+		var/species= plant_datum.species
+		var/icon_file = plant_datum.growing_icon
 
-		if(isnull(path.growing_icon))
-			TEST_FAIL("[path] has no growing icon.")
+		if(isnull(plant_datum.growing_icon))
+			TEST_FAIL("[plant_datum] has no growing icon.")
 			continue
 
-		if(!icon_exists(icon_file, "[species]-dead"))
-			TEST_FAIL("[path] is missing a dead state.")
+		if(!icon_exists(icon_file, plant_datum.icon_dead))
+			TEST_FAIL("[plant_datum] is missing a dead state.")
 
-		if(!icon_exists(icon_file, "[species]-harvest"))
-			TEST_FAIL("[path] is missing a harvest state.")
+		if(!icon_exists(icon_file, plant_datum.icon_harvest))
+			TEST_FAIL("[plant_datum] is missing a harvest state.")
 
 		for(var/i in 1 to path.growthstages)
-			if(!icon_exists(icon_file, "[species]-grow[i]"))
-				TEST_FAIL("[path] is missing a growth stage state: [i]")
+			if(!icon_exists(icon_file, "[plant_datum.icon_grow][i]"))
+				TEST_FAIL("[plant_datum] is missing a growth stage state: [i]")
 

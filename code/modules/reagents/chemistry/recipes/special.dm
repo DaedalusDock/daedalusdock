@@ -18,7 +18,7 @@ GLOBAL_LIST_INIT(medicine_reagents, build_medicine_reagents())
 
 	//dang plant snowflake
 	for (var/type in subtypesof(/datum/plant))
-		var/datum/plant/plant_datum = new type
+		var/datum/plant/plant_datum = new type(empty = TRUE)
 		for(var/datum/reagent/reagent as anything in plant_datum.reagents_per_potency)
 			var/chem_flags = initial(reagent.chemical_flags)
 			if(!VALID_RANDOM_RECIPE_REAGENT(chem_flags))

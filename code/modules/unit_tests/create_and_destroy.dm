@@ -1,5 +1,6 @@
 ///Delete one of every type, sleep a while, then check to see if anything has gone fucky
 /datum/unit_test/create_and_destroy
+	name = "DEL THE WORLD: All Atoms Shall Cleanly Initialize and Destroy"
 	//You absolutely must run last
 	priority = TEST_DEL_WORLD
 

@@ -5,8 +5,11 @@
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
 	growthstages = 5
 
+	seed_path = /obj/item/seeds/aloe
 	product_path = /obj/item/food/grown/aloe
+
 	base_harvest_yield = 3
+
 	reagents_per_potency = list(
 		/datum/reagent/consumable/nutriment/vitamin = 0.05,
 		/datum/reagent/consumable/nutriment = 0.05

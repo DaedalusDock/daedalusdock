@@ -215,12 +215,14 @@
 
 		if(PLANT_HARVESTABLE)
 			if(!growing.icon_harvest)
-				plant_overlay.icon_state = "[growing.icon_grow]-harvest"
+				plant_overlay.icon_state = "[growing.icon_grow || growing.species]-harvest"
 			else
 				plant_overlay.icon_state = growing.icon_harvest
 
 		else
 			var/t_growthstate = clamp(round((growth / growing.get_effective_stat(PLANT_STAT_MATURATION)) * growing.growthstages), 1, growing.growthstages)
+			#warn temp
+			to_chat(world, "[(growth / growing.get_effective_stat(PLANT_STAT_MATURATION)) * growing.growthstages]")
 			plant_overlay.icon_state = "[growing.icon_grow || "[growing.species]-grow"][t_growthstate]"
 
 	return plant_overlay
@@ -309,7 +311,7 @@
 
 	var/final_growth_delta = current_tick.plant_growth_delta
 	var/final_health_delta = current_tick.plant_health_delta
-	var/final_mutation_power = PLANT_STAT_PROB_ROUND(current_tick.mutation_power * tick_multiplier)
+	var/final_mutation_power = psbr(current_tick.mutation_power * tick_multiplier)
 
 	var/water_level = get_water_level()
 
@@ -320,10 +322,10 @@
 			final_growth_delta += current_tick.water_level_bonus_growth
 
 	else
-		adjust_plant_health(PLANT_STAT_PROB_ROUND(HYDRO_NO_WATER_DAMAGE * tick_multiplier), damage_type = PLANT_DAMAGE_NO_WATER)
+		adjust_plant_health(psbr(HYDRO_NO_WATER_DAMAGE * tick_multiplier), damage_type = PLANT_DAMAGE_NO_WATER)
 
-	final_growth_delta = PLANT_STAT_PROB_ROUND(final_growth_delta * tick_multiplier)
-	final_health_delta = PLANT_STAT_PROB_ROUND(final_health_delta * tick_multiplier)
+	final_growth_delta = psbr(final_growth_delta * tick_multiplier)
+	final_health_delta = psbr(final_health_delta * tick_multiplier)
 
 	// Apply health and growth deltas
 	if(final_health_delta)
@@ -334,12 +336,12 @@
 	growth = max(growth + final_growth_delta, 0)
 
 	// Stat mods
-	plant_dna.set_stat(PLANT_STAT_MATURATION, plant_dna.maturation + PLANT_STAT_PROB_ROUND(current_tick.maturation_mod * tick_multiplier))
-	plant_dna.set_stat(PLANT_STAT_PRODUCTION, plant_dna.production + PLANT_STAT_PROB_ROUND(current_tick.production_mod * tick_multiplier))
-	plant_dna.set_stat(PLANT_STAT_YIELD, plant_dna.harvest_yield + PLANT_STAT_PROB_ROUND(current_tick.yield_mod * tick_multiplier))
-	plant_dna.set_stat(PLANT_STAT_HARVEST_AMT, plant_dna.harvest_amt + PLANT_STAT_PROB_ROUND(current_tick.harvest_amt_mod * tick_multiplier))
-	plant_dna.set_stat(PLANT_STAT_ENDURANCE, plant_dna.endurance + PLANT_STAT_PROB_ROUND(current_tick.endurance_mod * tick_multiplier))
-	plant_dna.set_stat(PLANT_STAT_POTENCY, plant_dna.potency + PLANT_STAT_PROB_ROUND(current_tick.potency_mod * tick_multiplier))
+	plant_dna.set_stat(PLANT_STAT_MATURATION, plant_dna.maturation + psbr(current_tick.maturation_mod * tick_multiplier))
+	plant_dna.set_stat(PLANT_STAT_PRODUCTION, plant_dna.production + psbr(current_tick.production_mod * tick_multiplier))
+	plant_dna.set_stat(PLANT_STAT_YIELD, plant_dna.harvest_yield + psbr(current_tick.yield_mod * tick_multiplier))
+	plant_dna.set_stat(PLANT_STAT_HARVEST_AMT, plant_dna.harvest_amt + psbr(current_tick.harvest_amt_mod * tick_multiplier))
+	plant_dna.set_stat(PLANT_STAT_ENDURANCE, plant_dna.endurance + psbr(current_tick.endurance_mod * tick_multiplier))
+	plant_dna.set_stat(PLANT_STAT_POTENCY, plant_dna.potency + psbr(current_tick.potency_mod * tick_multiplier))
 
 	// Take reagents.
 	reagents.remove_all(current_tick.water_need * tick_multiplier)

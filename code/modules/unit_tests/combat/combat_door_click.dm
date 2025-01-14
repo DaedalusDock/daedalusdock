@@ -1,5 +1,6 @@
 /// Tests that airlocks can be closed by clicking on the floor, as [/datum/component/redirect_attack_hand_from_turf ] dictates
 /datum/unit_test/combat/door_click
+	name = "COMBAT/INTERACTION: Doors Shall Open and Close On Click."
 
 /datum/unit_test/combat/door_click/Run()
 	var/mob/living/carbon/human/consistent/tider = ALLOCATE_BOTTOM_LEFT()

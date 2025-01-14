@@ -1,5 +1,6 @@
 /// Tests that flashes, well, flash.
 /datum/unit_test/combat/flash_click
+	name = "COMBAT/FLASH: Flashes Shall Deal Stamina Damage"
 	var/apply_verb = "while Attacker was not on combat mode"
 
 /datum/unit_test/combat/flash_click/Run()
@@ -22,6 +23,7 @@
 
 /// Tests that flashes flash on combat mode.
 /datum/unit_test/combat/flash_click/combat_mode
+	name = "COMBAT/FLASH: Flashes Shall Deal Stamina Damage (Combat Mode)"
 	apply_verb = "while Attacker was on combat mode"
 
 /datum/unit_test/combat/flash_click/combat_mode/ready_subjects(mob/living/carbon/human/attacker, mob/living/carbon/human/victim)
@@ -30,6 +32,7 @@
 
 /// Tests that flashes do not flash if wearing protection.
 /datum/unit_test/combat/flash_click/flash_protection
+	name = "COMBAT/FLASH: Flashes Shall Deal Not Deal Stamina Damage To Flash Immune"
 	apply_verb = "while wearing flash protection"
 
 /datum/unit_test/combat/flash_click/flash_protection/ready_subjects(mob/living/carbon/human/attacker, mob/living/carbon/human/victim)

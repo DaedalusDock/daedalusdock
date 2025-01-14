@@ -4,7 +4,7 @@
 	icon_dead = "ambrosia-dead"
 
 	seed_path = /obj/item/seeds/ambrosia
-	product_path = /obj/item/food/grown/ambrosia/vulgaris
+	product_path = /obj/item/food/grown/ambrosia
 
 	possible_mutations = list(/datum/plant_mutation/ambrosia_deus)
 	reagents_per_potency = list(
@@ -23,7 +23,7 @@
 
 	plant_type = /datum/plant/ambrosia
 
-/obj/item/food/grown/ambrosia/vulgaris
+/obj/item/food/grown/ambrosia
 	plant_datum = /datum/plant/ambrosia
 	name = "ambrosia vulgaris branch"
 	desc = "This is a plant containing various healing chemicals."

@@ -16,7 +16,7 @@
 	icon_state = "seed-ambrosiavulgaris"
 	species = "ambrosiavulgaris"
 	plantname = "Ambrosia Vulgaris"
-	product = /obj/item/food/grown/ambrosia/vulgaris
+	product = /obj/item/food/grown/ambrosia
 	lifespan = 60
 	endurance = 25
 	yield = 6
@@ -27,7 +27,7 @@
 	mutatelist = list(/obj/item/seeds/ambrosia/deus)
 	reagents_add = list(/datum/reagent/medicine/kelotane = 0.1, /datum/reagent/medicine/bicaridine = 0.1 ,/datum/reagent/drug/space_drugs = 0.15, /datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.05, /datum/reagent/toxin = 0.1)
 
-/obj/item/food/grown/ambrosia/vulgaris
+/obj/item/food/grown/ambrosia
 	seed = /obj/item/seeds/ambrosia
 	name = "ambrosia vulgaris branch"
 	desc = "This is a plant containing various healing chemicals."

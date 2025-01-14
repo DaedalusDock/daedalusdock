@@ -78,7 +78,7 @@
 	if(empty)
 		return
 
-	gene_holder = new(src)
+	create_gene_holder()
 
 	gene_holder.randomize_alleles()
 
@@ -104,6 +104,7 @@
 /datum/plant/proc/Copy()
 	RETURN_TYPE(/datum/plant)
 	var/datum/plant/new_plant = new type(empty = TRUE)
+	new_plant.create_gene_holder()
 
 	new_plant.base_health = base_health
 	new_plant.base_potency = base_potency
@@ -136,6 +137,11 @@
 
 	return new_plant
 
+/datum/plant/proc/create_gene_holder()
+	if(gene_holder)
+		CRASH("Tried to create a gene holder for a plant that already has one.")
+
+	gene_holder = new(src)
 
 /datum/plant/proc/set_fallback_icons()
 	if(!icon_grow)

@@ -22,7 +22,7 @@
 
 	else if(ispath(plant_datum))
 		// This is for adminspawn or map-placed growns. They get the default stats of their seed type.
-		plant_datum = new plant_datum(random_genes = TRUE)
+		plant_datum = new plant_datum()
 		plant_datum.gene_holder.potency = max(50, plant_datum.gene_holder.potency)
 
 	pixel_x = base_pixel_x + rand(-5, 5)

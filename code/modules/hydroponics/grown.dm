@@ -53,7 +53,7 @@
 
 	else if(ispath(plant_datum))
 		// This is for adminspawn or map-placed growns. They get the default stats of their seed type.
-		plant_datum = new plant_datum(random_genes = TRUE)
+		plant_datum = new plant_datum()
 
 	else if(!plant_datum)
 		stack_trace("Grown object created without a plant datum. WTF")

@@ -222,6 +222,8 @@
 
 	product_path = /obj/item/food/grown/sunflower
 
+	innate_genes = list(/datum/plant_gene/product_trait/attack/sunflower_attack)
+
 	possible_mutations = list(
 		/datum/plant_mutation/moonflower,
 		/datum/plant_mutation/novaflower
@@ -229,10 +231,11 @@
 	reagents_per_potency = list(
 		/datum/reagent/consumable/cornoil = 0.08,
 		/datum/reagent/consumable/nutriment = 0.04
-		)
+	)
 
 /datum/plant_mutation/moonflower
 	plant_type = /datum/plant/flower/moonflower
+
 /datum/plant_mutation/novaflower
 	plant_type = /datum/plant/flower/novaflower
 
@@ -308,6 +311,8 @@
 	rarity = 20
 
 	product_path = /obj/item/grown/novaflower
+
+	innate_genes = list(/datum/plant_gene/product_trait/backfire/novaflower_heat, /datum/plant_gene/product_trait/attack/novaflower_attack)
 
 	reagents_per_potency = list(
 		/datum/reagent/consumable/condensedcapsaicin = 0.25,

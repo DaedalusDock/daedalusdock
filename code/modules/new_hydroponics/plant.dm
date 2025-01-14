@@ -98,7 +98,7 @@
 	if(!icon_dead)
 		icon_dead = "[species]-dead"
 
-	if(!icon_harvest && !get_gene(/datum/plant_gene/trait/plant_type/fungal_metabolism) && yield != -1)
+	if(!icon_harvest && !gene_holder.has_active_gene_of_type(/datum/plant_gene/trait/plant_type/fungal_metabolism) && yield != -1)
 		icon_harvest = "[species]-harvest"
 
 /datum/plant/Destroy()

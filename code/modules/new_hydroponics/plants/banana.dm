@@ -104,6 +104,7 @@
 		/datum/reagent/consumable/nutriment = 0.02
 	)
 
+	possible_mutations = null
 	rarity = 15
 
 /obj/item/seeds/banana/mime

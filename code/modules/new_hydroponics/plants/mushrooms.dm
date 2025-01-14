@@ -354,6 +354,7 @@
 
 	innate_genes = list(/datum/plant_gene/product_trait/glow/shadow, /datum/plant_gene/product_trait/plant_type/fungal_metabolism)
 	reagents_per_potency = list(/datum/reagent/uranium/radium = 0.2, /datum/reagent/consumable/nutriment = 0.04)
+	possible_mutations = null
 
 	rarity = 30
 

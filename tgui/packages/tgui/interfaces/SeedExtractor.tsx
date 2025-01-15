@@ -1,5 +1,5 @@
 import { useBackend } from '../backend';
-import { Button, Section, Table } from '../components';
+import { Box, Button, Flex, Section } from '../components';
 import { Window } from '../layouts';
 
 type SeedData = {
@@ -29,41 +29,60 @@ export const SeedExtractor = (props) => {
   const seeds = data.seeds;
   return (
     <Window width={1000} height={400}>
-      <Window.Content scrollable>
-        <Section title="Stored seeds:">
-          <Table cellpadding="3" textAlign="center">
-            <Table.Row header>
-              <Table.Cell width="25%">Name</Table.Cell>
-              <Table.Cell width="15%">Endurance</Table.Cell>
-              <Table.Cell width="15%">Maturation</Table.Cell>
-              <Table.Cell width="15%">Production</Table.Cell>
-              <Table.Cell width="15%">Yield</Table.Cell>
-              <Table.Cell width="15%">Potency</Table.Cell>
-              <Table.Cell width="15%">Stock</Table.Cell>
-            </Table.Row>
-            {seeds.map((item) => (
-              <Table.Row key={item.hash}>
-                <Table.Cell bold>{item.name}</Table.Cell>
-                <Table.Cell>{item.endurance}</Table.Cell>
-                <Table.Cell>{item.maturation}</Table.Cell>
-                <Table.Cell>{item.production}</Table.Cell>
-                <Table.Cell>{item.yield}</Table.Cell>
-                <Table.Cell>{item.potency}</Table.Cell>
-                <Table.Cell>
-                  <Button
-                    content="Vend"
-                    onClick={() =>
-                      act('select', {
-                        item: item.hash,
-                      })
-                    }
-                  />
-                  ({item.amount} left)
-                </Table.Cell>
-              </Table.Row>
-            ))}
-          </Table>
-        </Section>
+      <Window.Content>
+        <Flex direction="row" height="100%">
+          <Flex.Item width="75%" height="100%">
+            <Section title="Stored Seeds" height="100%" overflowY="scroll">
+              <Box textAlign="center" height="100%">
+                <Flex direction="column" height="100%">
+                  <Flex direction="row">
+                    <Flex.Item width="25%" textAlign="left">
+                      Name
+                    </Flex.Item>
+                    <Flex.Item width="15%">Endurance</Flex.Item>
+                    <Flex.Item width="15%">Maturation</Flex.Item>
+                    <Flex.Item width="15%">Production</Flex.Item>
+                    <Flex.Item width="15%">Yield</Flex.Item>
+                    <Flex.Item width="15%">Potency</Flex.Item>
+                    <Flex.Item width="15%">Stock</Flex.Item>
+                  </Flex>
+                  <Flex.Item height="1em" />
+                  {seeds.map((item) => (
+                    <Flex direction="row" key={item.hash}>
+                      <Flex.Item bold width="25%" textAlign="left">
+                        {item.name}
+                      </Flex.Item>
+                      <Flex.Item width="15%">{item.endurance}</Flex.Item>
+                      <Flex.Item width="15%">{item.maturation}</Flex.Item>
+                      <Flex.Item width="15%">{item.production}</Flex.Item>
+                      <Flex.Item width="15%">{item.yield}</Flex.Item>
+                      <Flex.Item width="15%">{item.potency}</Flex.Item>
+                      <Flex.Item width="15%">
+                        ({item.amount}x)
+                        <Button
+                          content="Vend"
+                          onClick={() =>
+                            act('select', {
+                              item: item.hash,
+                            })
+                          }
+                          style={{
+                            marginLeft: '0.5em',
+                          }}
+                        />
+                      </Flex.Item>
+                    </Flex>
+                  ))}
+                </Flex>
+              </Box>
+            </Section>
+          </Flex.Item>
+          <Flex.Item width="25%">
+            <Section title="Manipulate DNA" fill height="100%">
+              Test
+            </Section>
+          </Flex.Item>
+        </Flex>
       </Window.Content>
     </Window>
   );

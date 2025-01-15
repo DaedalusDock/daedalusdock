@@ -2,9 +2,9 @@
 	/// The plant we belong to.
 	var/datum/plant/parent
 
-	/// Modifier for /datum/plant/var/maturation
+	/// A larger number REDUCES the time it takes to grow.
 	var/maturation = 0
-	/// Modifier for /datum/plant/var/time	_to_produce
+	/// A larger number REDUCES the time it takes to produce.
 	var/production = 0
 	/// Modifier for /datum/plant/var/time_to_harvest
 	var/harvest_amt = 0

@@ -180,11 +180,11 @@
 /datum/plant/proc/get_growth_for_state(desired_state)
 	switch(desired_state)
 		if(PLANT_HARVESTABLE)
-			return get_effective_stat(PLANT_STAT_PRODUCTION)
+			return base_production - gene_holder.get_effective_stat(PLANT_STAT_PRODUCTION)
 		if(PLANT_MATURE)
-			return gene_holder.get_effective_stat(PLANT_STAT_MATURATION)
+			return base_maturation - gene_holder.get_effective_stat(PLANT_STAT_MATURATION)
 		if(PLANT_GROWING)
-			return gene_holder.get_effective_stat(PLANT_STAT_MATURATION) / 2
+			return (base_maturation - gene_holder.get_effective_stat(PLANT_STAT_MATURATION)) / 2
 
 /// Returns the given stat, including active gene modifiers.
 /datum/plant/proc/get_effective_stat(stat)
@@ -306,3 +306,7 @@
 		product.reagents.chem_temp = max(3, (product.reagents.chem_temp + num_nutriment * -5))
 		product.reagents.handle_reactions()
 		playsound(product.loc, 'sound/effects/space_wind.ogg', 50)
+
+/// Hashes the plant, used by the Seed Extractor.
+/datum/plant/proc/hash()
+	return "[name][gene_holder.potency][gene_holder.endurance][gene_holder.production][gene_holder.maturation][gene_holder.harvest_yield]"

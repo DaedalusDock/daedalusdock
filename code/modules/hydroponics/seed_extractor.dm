@@ -69,6 +69,9 @@
 	/// Associated list of seeds, they are all weak refs.  We check the len to see how many refs we have for each
 	// seed
 	var/list/piles = list()
+	/// k:v list of string_hash to hash data list
+	var/list/hashes = list()
+
 	var/max_seeds = 1000
 	var/seed_multiplier = 1
 
@@ -161,21 +164,6 @@
 
 	return ..()
 
-/**
- * Generate seed string
- *
- * Creates a string based of the traits of a seed.  We use this string as a bucket for all
- * seeds that match as well as the key the ui uses to get the seed.  We also use the key
- * for the data shown in the ui.  Javascript parses this string to display
- *
- * Arguments:
- * * O - seed to generate the string from
- */
-/obj/machinery/seed_extractor/proc/generate_seed_string(obj/item/seeds/O)
-	#warn impl generate_seed_string
-	//return "name=[O.name];lifespan=[O.lifespan];endurance=[O.endurance];maturation=[O.maturation];production=[O.production];yield=[O.yield];potency=[O.potency];instability=[O.instability]"
-
-
 /** Add Seeds Proc.
  *
  * Adds the seeds to the contents and to an associated list that pregenerates the data
@@ -194,11 +182,30 @@
 	else if(!taking_from.atom_storage?.attempt_remove(to_add, src, silent = TRUE))
 		return FALSE
 
-	var/seed_string = generate_seed_string(to_add)
+	var/seed_string = to_add.plant_datum.hash()
+
+	var/list/seed_data = hashes[seed_string]
+	if(isnull(seed_data))
+		seed_data = list(
+			"hash" = seed_string,
+			"name" = to_add.plant_datum.name,
+			"potency" = to_add.plant_datum.gene_holder.potency,
+			"endurance" = to_add.plant_datum.gene_holder.endurance,
+			"production" = to_add.plant_datum.gene_holder.production,
+			"maturation" = to_add.plant_datum.gene_holder.maturation,
+			"yield" = to_add.plant_datum.gene_holder.harvest_yield,
+			"amount" = 1,
+		)
+
+		hashes[seed_string] = seed_data
+
 	if(piles[seed_string])
 		piles[seed_string] += WEAKREF(to_add)
 	else
 		piles[seed_string] = list(WEAKREF(to_add))
+
+	if(ismob(taking_from))
+		SStgui.try_update_ui(taking_from, src)
 
 	return TRUE
 
@@ -212,15 +219,16 @@
 		ui.open()
 
 /obj/machinery/seed_extractor/ui_data()
-	var/list/V = list()
+	var/list/seed_data_list = list()
 	for(var/key in piles)
-		if(piles[key])
-			var/len = length(piles[key])
-			if(len)
-				V[key] = len
+		var/pile_size = length(piles[key])
+		if(pile_size)
+			var/list/key_data = hashes[key]
+			key_data["amount"] = pile_size
+			seed_data_list[++seed_data_list.len] = key_data
 
 	. = list()
-	.["seeds"] = V
+	.["seeds"] = seed_data_list
 
 /obj/machinery/seed_extractor/ui_act(action, params)
 	. = ..()

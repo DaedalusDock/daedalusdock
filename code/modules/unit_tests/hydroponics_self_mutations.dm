@@ -1,6 +1,6 @@
 /// Unit test to ensure plants can't self-mutate into themselves.
 /datum/unit_test/hydroponics_self_mutation
-	name = "Plants Shall Not Mutate Into Themselves"
+	name = "HYDROPONICS: Plants Shall Not Mutate Into Themselves"
 
 /datum/unit_test/hydroponics_self_mutation/Run()
 	for(var/datum/plant/P as anything in subtypesof(/datum/plant))

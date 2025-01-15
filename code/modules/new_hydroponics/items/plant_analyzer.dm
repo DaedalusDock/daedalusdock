@@ -258,7 +258,7 @@
 		if(istype(traits, /datum/plant_gene/product_trait/plant_type))
 			continue
 
-		if(traits.mutability_flags & PLANT_GENE_REMOVABLE)
+		if(traits.gene_flags & PLANT_GENE_REMOVABLE)
 			all_removable_traits += "[(all_removable_traits == "") ? "" : ", "][traits.get_name()]"
 		else
 			all_immutable_traits += "[(all_immutable_traits == "") ? "" : ", "][traits.get_name()]"

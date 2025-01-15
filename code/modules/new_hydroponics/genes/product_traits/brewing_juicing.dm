@@ -9,7 +9,7 @@
 /datum/plant_gene/product_trait/brewing
 	name = "Auto-Distilling Composition"
 	trait_ids = CONTENTS_CHANGE_ID
-	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
+	gene_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 
 /**
  * Similar to auto-distilling, but instead of brewing the plant's contents it juices it.
@@ -19,4 +19,4 @@
 /datum/plant_gene/product_trait/juicing
 	name = "Auto-Juicing Composition"
 	trait_ids = CONTENTS_CHANGE_ID
-	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
+	gene_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE

@@ -3,7 +3,8 @@
 	var/desc = ""
 
 
-	var/mutability_flags = NONE
+	/// Flags for genes
+	var/gene_flags = NONE
 
 	/// Chance for this gene to develop fully and become active.
 	var/development_chance = 10
@@ -76,7 +77,7 @@
 /// Copies over vars and information about our current gene to a new gene and returns the new instance of gene.
 /datum/plant_gene/proc/Copy()
 	var/datum/plant_gene/new_gene = new type
-	new_gene.mutability_flags = mutability_flags
+	new_gene.gene_flags = gene_flags
 	return new_gene
 
 //* PRODUCT-AFFECTING GENES *//

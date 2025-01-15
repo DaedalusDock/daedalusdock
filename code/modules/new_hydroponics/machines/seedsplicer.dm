@@ -42,6 +42,9 @@
 	new_seed.name = "[new_plant.name] seed"
 
 	for(var/datum/plant_gene/gene as anything in dominant_species.gene_holder.gene_list)
+		if(gene.gene_flags & PLANT_GENE_UNSPLICABLE)
+			continue
+
 		new_plant.gene_holder.add_active_gene(gene.Copy())
 
 	new_plant.innate_genes = dominant_species.innate_genes | recessive_species.innate_genes

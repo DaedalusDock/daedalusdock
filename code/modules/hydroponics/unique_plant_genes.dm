@@ -5,8 +5,8 @@
 
 /// Starthistle's essential invasive spreading
 /datum/plant_gene/product_trait/invasive/galaxythistle
-	mutability_flags = PLANT_GENE_GRAFTABLE
+	gene_flags = PLANT_GENE_GRAFTABLE
 
 /// Jupitercup's essential carnivory
 /datum/plant_gene/product_trait/carnivory/jupitercup
-	mutability_flags = PLANT_GENE_GRAFTABLE
+	gene_flags = PLANT_GENE_GRAFTABLE

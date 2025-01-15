@@ -5,7 +5,7 @@
  */
 /datum/plant_gene/product_trait/eyes
 	name = "Oculary Mimicry"
-	mutability_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
+	gene_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
 	/// Our googly eyes appearance.
 	var/image/googly
 

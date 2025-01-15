@@ -42,6 +42,8 @@
 #define PLANT_GENE_MUTATABLE (1<<1)
 /// Plant genes that can be graftable. Used in formatting text, as they need to be set to be graftable anyways.
 #define PLANT_GENE_GRAFTABLE (1<<2)
+/// Gene is not passed on via splicing.
+#define PLANT_GENE_UNSPLICABLE (1<<3)
 
 /// -- Flags for seeds. --
 /// Allows a plant to wild mutate (mutate on haravest) at a certain instability.

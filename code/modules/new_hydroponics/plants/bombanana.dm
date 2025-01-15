@@ -11,7 +11,7 @@
 
 /obj/item/food/grown/banana/bombanana
 	trash_type = /obj/item/grown/bananapeel/bombanana
-	plant_datum = /datum/plant/bombanana
+	plant_datum = /obj/item/food/grown/banana/bombanana
 	tastes = list("explosives" = 10)
 	food_reagents = list(/datum/reagent/consumable/nutriment/vitamin = 1)
 

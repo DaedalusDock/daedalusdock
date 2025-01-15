@@ -5,6 +5,7 @@
 	growing_icon = 'icons/obj/hydroponics/growing_flowers.dmi'
 	icon_dead = "rainbowbunch-dead"
 	icon_harvest = "rainbowbunch-harvest"
+	growthstages = 4
 
 	seed_path = /obj/item/seeds/rainbow_bunch
 	product_path = /obj/item/food/grown/rainbow_flower

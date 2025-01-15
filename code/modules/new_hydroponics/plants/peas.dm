@@ -6,6 +6,7 @@
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
 	icon_grow = "peas-grow"
 	icon_dead = "peas-dead"
+	growthstages = 3
 
 	seed_path = /obj/item/seeds/peas
 	product_path = /obj/item/food/grown/peas

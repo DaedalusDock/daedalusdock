@@ -2,6 +2,7 @@
 	species = "onion"
 	name = "onion sprouts"
 
+	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
 
 	seed_path = /obj/item/seeds/onion

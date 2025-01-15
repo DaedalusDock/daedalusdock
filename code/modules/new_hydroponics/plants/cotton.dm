@@ -5,6 +5,7 @@
 	icon_harvest = "cotton-harvest"
 	icon_dead = "cotton-dead"
 	growing_icon = 'icons/obj/hydroponics/growing.dmi'
+	growthstages = 3
 
 	seed_path = /obj/item/seeds/cotton
 	product_path = /obj/item/grown/cotton

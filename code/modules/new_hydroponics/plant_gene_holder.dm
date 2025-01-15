@@ -53,7 +53,6 @@
 	potency_dominance = from_holder.potency_dominance
 	endurance_dominance = from_holder.endurance_dominance
 
-	#warn this needs to use references
 	for(var/datum/plant_gene/gene as anything in gene_list)
 		remove_active_gene(gene)
 

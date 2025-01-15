@@ -34,7 +34,7 @@
 
 		// Go through all traits in their genes and call on_new_product from them.
 		for(var/datum/plant_gene/product_trait/trait in plant_datum.gene_holder.gene_list)
-			trait.on_new_product(src, loc)
+			trait.on_new_product(src, loc, plant_datum)
 
 		if(istype(src, plant_datum.product_path)) // no adding reagents if it is just a trash item
 			plant_datum.prepare_product(src)

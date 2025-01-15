@@ -7,7 +7,7 @@
 /obj/item/seeds/banana/bombanana
 	name = "pack of bombanana seeds"
 	desc = "They're seeds that grow into bombanana trees. When grown, give to the clown."
-	plant_type = /datum/plant/bombanana
+	plant_type = /datum/plant/banana/bombanana
 
 /obj/item/food/grown/banana/bombanana
 	trash_type = /obj/item/grown/bananapeel/bombanana
@@ -17,7 +17,7 @@
 
 /obj/item/grown/bananapeel/bombanana
 	desc = "A peel from a banana. Why is it beeping?"
-	plant_datum = /datum/plant/bombanana
+	plant_datum = /datum/plant/banana/bombanana
 	var/det_time = 50
 	var/obj/item/grenade/syndieminibomb/bomb
 

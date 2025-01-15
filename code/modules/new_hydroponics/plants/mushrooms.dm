@@ -9,7 +9,7 @@
 	species = "reishi"
 	name = "reishi"
 
-	growthstages = 4
+	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
 
 	seed_path = /obj/item/seeds/reishi
@@ -36,7 +36,7 @@
 	species = "amanita"
 	name = "fly amanita"
 
-	growthstages = 3
+	growthstages = 2
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
 
 	seed_path = /obj/item/seeds/amanita
@@ -70,7 +70,7 @@
 	name = "destroying angels"
 
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
-	growthstages = 3
+	growthstages = 2
 
 	seed_path = /obj/item/seeds/angel
 	product_path = /obj/item/food/grown/mushroom/angel
@@ -105,7 +105,7 @@
 	name = "liberty cap"
 
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
-	growthstages = 3
+	growthstages = 2
 
 	product_path = /obj/item/food/grown/mushroom/libertycap
 	seed_path = /obj/item/seeds/liberty
@@ -133,7 +133,7 @@
 	species = "plump"
 	name = "plump helmet"
 
-	growthstages = 3
+	growthstages = 2
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
 
 	seed_path = /obj/item/seeds/plump
@@ -166,6 +166,7 @@
 	name = "walking mushroom"
 	possible_mutations = null
 
+	growthstages = 2
 	innate_genes = list(/datum/plant_gene/product_trait/plant_type/fungal_metabolism, /datum/plant_gene/product_trait/mob_transformation/shroom)
 	latent_genes = list(/datum/plant_gene/product_trait/eyes)
 
@@ -191,7 +192,7 @@
 	name = "chanterelle"
 
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
-	growthstages = 3
+	growthstages = 2
 
 	seed_path = /obj/item/seeds/chanter
 	product_path = /obj/item/food/grown/mushroom/chanterelle
@@ -252,7 +253,7 @@
 	name = "glowshroom"
 
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
-	growthstages = 4
+	growthstages = 3
 
 	seed_path = /obj/item/seeds/glowshroom
 	product_path = /obj/item/food/grown/mushroom/glowshroom
@@ -314,6 +315,7 @@
 	name = "glowcap"
 
 	icon_harvest = "glowcap-harvest"
+	growthstages = 4
 
 	product_path = /obj/item/food/grown/mushroom/glowshroom/glowcap
 	seed_path = /obj/item/seeds/glowshroom/glowcap
@@ -348,6 +350,8 @@
 	icon_grow = "shadowshroom-grow"
 	icon_dead = "shadowshroom-dead"
 	name = "shadowshroom"
+
+	growthstages = 3
 
 	seed_path = /obj/item/seeds/glowshroom/shadowshroom
 	product_path = /obj/item/food/grown/mushroom/glowshroom/shadowshroom

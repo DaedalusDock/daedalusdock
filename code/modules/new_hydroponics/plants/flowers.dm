@@ -57,6 +57,10 @@
 	species = "lily"
 	name = "Lily Plants"
 
+	icon_dead = "poppy-dead"
+	icon_grow = "poppy-grow"
+	growthstages = 3
+
 	seed_path = /obj/item/seeds/lily
 	product_path = /obj/item/food/grown/poppy/lily
 
@@ -123,8 +127,9 @@
 	species = "geranium"
 	name = "Geraniums"
 
-	icon_grow = "poppy-grow"
 	icon_dead = "poppy-dead"
+	icon_grow = "poppy-grow"
+	growthstages = 3
 
 	product_path = /obj/item/food/grown/poppy/geranium
 	reagents_per_potency = list(
@@ -157,8 +162,9 @@
 	species = "fraxinella"
 	name = "Fraxinella Plants"
 
-	icon_grow = "poppy-grow"
 	icon_dead = "poppy-dead"
+	icon_grow = "poppy-grow"
+	growthstages = 3
 
 	rarity = 15
 	product_path = /obj/item/food/grown/poppy/geranium/fraxinella
@@ -273,6 +279,7 @@
 
 	icon_grow = "moonflower-grow"
 	icon_dead = "sunflower-dead"
+	growthstages = 3
 
 	rarity = 15
 
@@ -307,6 +314,7 @@
 
 	icon_grow = "novaflower-grow"
 	icon_dead = "sunflower-dead"
+	growthstages = 3
 
 	rarity = 20
 

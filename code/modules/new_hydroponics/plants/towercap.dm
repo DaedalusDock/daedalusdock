@@ -2,7 +2,7 @@
 	species = "towercap"
 	name = "tower caps"
 
-	growthstages = 3
+	growthstages = 2
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
 	icon_dead = "towercap-dead"
 

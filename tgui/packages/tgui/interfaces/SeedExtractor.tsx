@@ -33,13 +33,13 @@ export const SeedExtractor = (props) => {
         <Section title="Stored seeds:">
           <Table cellpadding="3" textAlign="center">
             <Table.Row header>
-              <Table.Cell>Name</Table.Cell>
-              <Table.Cell>Endurance</Table.Cell>
-              <Table.Cell>Maturation</Table.Cell>
-              <Table.Cell>Production</Table.Cell>
-              <Table.Cell>Yield</Table.Cell>
-              <Table.Cell>Potency</Table.Cell>
-              <Table.Cell>Stock</Table.Cell>
+              <Table.Cell width="25%">Name</Table.Cell>
+              <Table.Cell width="15%">Endurance</Table.Cell>
+              <Table.Cell width="15%">Maturation</Table.Cell>
+              <Table.Cell width="15%">Production</Table.Cell>
+              <Table.Cell width="15%">Yield</Table.Cell>
+              <Table.Cell width="15%">Potency</Table.Cell>
+              <Table.Cell width="15%">Stock</Table.Cell>
             </Table.Row>
             {seeds.map((item) => (
               <Table.Row key={item.hash}>

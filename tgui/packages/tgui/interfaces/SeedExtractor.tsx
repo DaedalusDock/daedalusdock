@@ -1,5 +1,5 @@
 import { useBackend } from '../backend';
-import { Box, Button, Flex, Section } from '../components';
+import { Box, Button, Flex, Section, Table } from '../components';
 import { Window } from '../layouts';
 
 type SeedData = {
@@ -34,30 +34,52 @@ export const SeedExtractor = (props) => {
           <Flex.Item width="75%" height="100%">
             <Section title="Stored Seeds" height="100%" overflowY="scroll">
               <Box textAlign="center" height="100%">
-                <Flex direction="column" height="100%">
-                  <Flex direction="row">
-                    <Flex.Item width="25%" textAlign="left">
+                <Table cellpadding="3" height="100%">
+                  <Table.Row header>
+                    <Table.Cell width="25%" textAlign="left">
                       Name
-                    </Flex.Item>
-                    <Flex.Item width="15%">Endurance</Flex.Item>
-                    <Flex.Item width="15%">Maturation</Flex.Item>
-                    <Flex.Item width="15%">Production</Flex.Item>
-                    <Flex.Item width="15%">Yield</Flex.Item>
-                    <Flex.Item width="15%">Potency</Flex.Item>
-                    <Flex.Item width="15%">Stock</Flex.Item>
-                  </Flex>
-                  <Flex.Item height="1em" />
+                    </Table.Cell>
+                    <Table.Cell width="13%" textAlign="center">
+                      Endurance
+                    </Table.Cell>
+                    <Table.Cell width="13%" textAlign="center">
+                      Maturation
+                    </Table.Cell>
+                    <Table.Cell width="13%" textAlign="center">
+                      Production
+                    </Table.Cell>
+                    <Table.Cell width="13%" textAlign="center">
+                      Yield
+                    </Table.Cell>
+                    <Table.Cell width="10%" textAlign="center">
+                      Potency
+                    </Table.Cell>
+                    <Table.Cell width="23%" textAlign="center">
+                      Stock
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Cell height="1em" />
                   {seeds.map((item) => (
-                    <Flex direction="row" key={item.hash}>
-                      <Flex.Item bold width="25%" textAlign="left">
+                    <Table.Row key={item.hash}>
+                      <Table.Cell bold width="25%" textAlign="left">
                         {item.name}
-                      </Flex.Item>
-                      <Flex.Item width="15%">{item.endurance}</Flex.Item>
-                      <Flex.Item width="15%">{item.maturation}</Flex.Item>
-                      <Flex.Item width="15%">{item.production}</Flex.Item>
-                      <Flex.Item width="15%">{item.yield}</Flex.Item>
-                      <Flex.Item width="15%">{item.potency}</Flex.Item>
-                      <Flex.Item width="15%">
+                      </Table.Cell>
+                      <Table.Cell width="13%" textAlign="center">
+                        {item.endurance}
+                      </Table.Cell>
+                      <Table.Cell width="13%" textAlign="center">
+                        {item.maturation}
+                      </Table.Cell>
+                      <Table.Cell width="13%" textAlign="center">
+                        {item.production}
+                      </Table.Cell>
+                      <Table.Cell width="13%" textAlign="center">
+                        {item.yield}
+                      </Table.Cell>
+                      <Table.Cell width="10%" textAlign="center">
+                        {item.potency}
+                      </Table.Cell>
+                      <Table.Cell width="23%">
                         ({item.amount}x)
                         <Button
                           content="Vend"
@@ -70,10 +92,10 @@ export const SeedExtractor = (props) => {
                             marginLeft: '0.5em',
                           }}
                         />
-                      </Flex.Item>
-                    </Flex>
+                      </Table.Cell>
+                    </Table.Row>
                   ))}
-                </Flex>
+                </Table>
               </Box>
             </Section>
           </Flex.Item>

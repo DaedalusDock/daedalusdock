@@ -48,7 +48,7 @@
 		if(!icon_exists(icon_file, plant_datum.icon_harvest))
 			TEST_FAIL("[plant_datum] is missing a harvest state.")
 
-		for(var/i in 1 to path.growthstages)
+		for(var/i in 1 to plant_datum.growthstages)
 			if(!icon_exists(icon_file, "[plant_datum.icon_grow][i]"))
 				TEST_FAIL("[plant_datum] is missing a growth stage state: [i]")
 

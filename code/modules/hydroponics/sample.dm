@@ -1,5 +1,8 @@
 /datum/plant/sample
 	name = "plant sample"
+	species = "ambrosiavulgaris"
+	icon_dead = "ambrosia-dead"
+
 
 /obj/item/seeds/sample
 	name = "plant sample"

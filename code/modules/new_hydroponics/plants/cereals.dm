@@ -107,7 +107,7 @@
 
 /datum/plant/wheat/meat
 	species = "meatwheat"
-	plantname = "meatwheat"
+	name = "meatwheat"
 
 	seed_path = /obj/item/seeds/wheat/meat
 	product_path = /obj/item/food/grown/meatwheat

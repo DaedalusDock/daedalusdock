@@ -39,16 +39,16 @@
 		var/icon_file = plant_datum.growing_icon
 
 		if(isnull(plant_datum.growing_icon))
-			TEST_FAIL("[plant_datum] has no growing icon.")
+			TEST_FAIL("[plant_datum.type] has no growing icon.")
 			continue
 
 		if(!icon_exists(icon_file, plant_datum.icon_dead))
-			TEST_FAIL("[plant_datum] is missing a dead state.")
+			TEST_FAIL("[plant_datum.type] is missing a dead state.")
 
 		if(!icon_exists(icon_file, plant_datum.icon_harvest))
-			TEST_FAIL("[plant_datum] is missing a harvest state.")
+			TEST_FAIL("[plant_datum.type] is missing a harvest state.")
 
 		for(var/i in 1 to plant_datum.growthstages)
 			if(!icon_exists(icon_file, "[plant_datum.icon_grow][i]"))
-				TEST_FAIL("[plant_datum] is missing a growth stage state: [i]")
+				TEST_FAIL("[plant_datum.type] is missing a growth stage state: [i]")
 

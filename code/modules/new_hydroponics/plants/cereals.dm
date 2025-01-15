@@ -106,8 +106,8 @@
 	mutation_chance = 0
 
 /datum/plant/wheat/meat
-	species = "rice"
-	name = "rice stalks"
+	species = "meatwheat"
+	plantname = "meatwheat"
 
 	seed_path = /obj/item/seeds/wheat/meat
 	product_path = /obj/item/food/grown/meatwheat

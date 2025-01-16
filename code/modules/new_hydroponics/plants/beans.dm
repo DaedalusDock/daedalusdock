@@ -14,6 +14,8 @@
 	product_path = /obj/item/food/grown/soybeans
 	base_harvest_yield = 3
 
+	latent_genes = list(/datum/plant_gene/quality/inferior, /datum/plant_gene/metabolism_fast, /datum/plant_gene/seedless)
+
 	reagents_per_potency = list(
 		/datum/reagent/consumable/nutriment/vitamin = 0.04,
 		/datum/reagent/consumable/nutriment = 0.05,

@@ -20,6 +20,7 @@
 		/datum/reagent/consumable/nutriment = 0.1
 	)
 
+	latent_genes = list(/datum/plant_gene/metabolism_fast, /datum/plant_gene/seedless)
 	base_harvest_yield = 4
 
 /obj/item/seeds/berry
@@ -208,6 +209,8 @@
 	base_harvest_yield = 4
 
 	possible_mutations = list(/datum/plant_mutation/grape/green)
+
+	latent_genes = list(/datum/plant_gene/metabolism_fast, /datum/plant_gene/seedless)
 
 	reagents_per_potency = list(
 		/datum/reagent/consumable/nutriment/vitamin = 0.04,

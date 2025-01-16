@@ -14,7 +14,7 @@
 	name = "Fast Metabolism"
 	desc = "This gene causes a plant to grow faster, but also consume water more rapidly."
 
-/datum/plant_gene/metabolism_slow/tick(delta_time, obj/machinery/hydroponics/tray, datum/plant/plant, datum/plant_tick/plant_tick)
+/datum/plant_gene/metabolism_fast/tick(delta_time, obj/machinery/hydroponics/tray, datum/plant/plant, datum/plant_tick/plant_tick)
 	. = ..()
 	if(.)
 		return

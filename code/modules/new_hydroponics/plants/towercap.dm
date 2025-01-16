@@ -10,6 +10,8 @@
 	product_path = /obj/item/grown/log
 
 	innate_genes = list(/datum/plant_gene/product_trait/plant_type/fungal_metabolism)
+	latent_genes = list(/datum/plant_gene/metabolism_fast, /datum/plant_gene/metabolism_slow)
+
 	reagents_per_potency = list(/datum/reagent/cellulose = 0.05)
 
 /obj/item/seeds/tower

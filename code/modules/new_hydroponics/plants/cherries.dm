@@ -12,6 +12,8 @@
 	seed_path = /obj/item/food/grown/cherries
 	product_path = /obj/item/food/grown/cherries
 
+	latent_genes = list(/datum/plant_gene/metabolism_fast, /datum/plant_gene/seedless)
+
 	possible_mutations = list(/datum/plant_mutation/cherry_blue, /datum/plant_mutation/cherry_bulb)
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment = 0.07, /datum/reagent/consumable/sugar = 0.07)
 

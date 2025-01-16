@@ -24,6 +24,8 @@
 	base_harvest_yield = 3
 
 	innate_genes = list(/datum/plant_gene/product_trait/one_bite)
+	latent_genes = list(/datum/plant_gene/quality/superior, /datum/plant_gene/unstable)
+
 	possible_mutations = list(/datum/plant_mutation/apple_gold)
 	reagents_per_potency = list(
 		/datum/reagent/consumable/nutriment/vitamin = 0.04,
@@ -73,6 +75,9 @@
 		/datum/reagent/consumable/nutriment/vitamin = 0.04,
 		/datum/reagent/consumable/nutriment = 0.1
 	)
+
+	latent_genes = list(/datum/plant_gene/quality/superior)
+
 	possible_mutations = null
 	rarity = 40 // Alchemy!
 

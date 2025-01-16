@@ -2,7 +2,7 @@
 /// Traits for flowers, makes plants not decompose.
 /datum/plant_gene/product_trait/preserved
 	name = "Natural Insecticide"
-	gene_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
+	gene_flags = PLANT_GENE_MUTATABLE
 
 /datum/plant_gene/product_trait/preserved/on_new_product(obj/item/our_plant, newloc)
 	. = ..()

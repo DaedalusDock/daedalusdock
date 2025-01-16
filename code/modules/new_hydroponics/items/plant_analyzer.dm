@@ -255,13 +255,10 @@
 	var/all_removable_traits = ""
 	var/all_immutable_traits = ""
 	for(var/datum/plant_gene/product_trait/traits in plant_datum.gene_holder.gene_list)
-		if(istype(traits, /datum/plant_gene/product_trait/plant_type))
+		if(isabstract(traits))
 			continue
 
-		if(traits.gene_flags & PLANT_GENE_REMOVABLE)
-			all_removable_traits += "[(all_removable_traits == "") ? "" : ", "][traits.get_name()]"
-		else
-			all_immutable_traits += "[(all_immutable_traits == "") ? "" : ", "][traits.get_name()]"
+		all_immutable_traits += "[(all_immutable_traits == "") ? "" : ", "][traits.get_name()]"
 
 	text += "- Plant Traits: [span_notice("[all_removable_traits? all_removable_traits : "None."]")]"
 	text += "- Core Plant Traits: [span_notice("[all_immutable_traits? all_immutable_traits : "None."]")]"

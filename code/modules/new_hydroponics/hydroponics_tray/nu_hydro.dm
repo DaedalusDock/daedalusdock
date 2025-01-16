@@ -218,8 +218,6 @@
 
 		else
 			var/t_growthstate = clamp(round((growth / growing.get_effective_stat(PLANT_STAT_MATURATION)) * growing.growthstages), 1, growing.growthstages)
-			#warn temp
-			to_chat(world, "[(growth / growing.get_effective_stat(PLANT_STAT_MATURATION)) * growing.growthstages]")
 			plant_overlay.icon_state = "[growing.icon_grow][t_growthstate]"
 
 	return plant_overlay

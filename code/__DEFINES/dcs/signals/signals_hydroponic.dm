@@ -10,3 +10,6 @@
 #define COMSIG_SEED_ON_GROW "plant_on_grow"
 ///called when a seed is planted in a tray (obj/machinery/hydroponics)
 #define COMSIG_SEED_ON_PLANTED "plant_on_plant"
+
+/// Called by plant gene holders when getting a stat's value. (stat, base_val)
+#define COMSIG_PLANT_GENE_HOLDER_GET_STAT "pgh_get_stat"

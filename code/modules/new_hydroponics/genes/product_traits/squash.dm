@@ -3,7 +3,7 @@
 	name = "Liquid Contents"
 	examine_line = "<span class='info'>It has a lot of liquid contents inside.</span>"
 	trait_ids = THROW_IMPACT_ID | REAGENT_TRANSFER_ID | ATTACK_SELF_ID
-	gene_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
+	gene_flags = PLANT_GENE_MUTATABLE
 
 // Register a signal that our plant can be squashed on add.
 /datum/plant_gene/product_trait/squash/on_new_product(obj/item/food/grown/product, newloc)

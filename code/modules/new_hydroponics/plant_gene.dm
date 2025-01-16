@@ -32,7 +32,7 @@
  * * stat: Desired stat
  * * base_val: The value of the gene holder's stat, before any gene modifiers.
  */
-/datum/plant_gene/proc/get_stat_modifier(datum/plant_gene_holder/gene_holder, stat, base_val)
+/datum/plant_gene/proc/get_stat_modifier(datum/plant_gene_holder/gene_holder, stat, base_val, tally)
 	return 0
 
 /*
@@ -100,6 +100,19 @@
 	var/datum/plant_gene/product_trait/new_trait_gene = .
 	new_trait_gene.rate = rate
 	return
+
+/datum/plant_gene/product_trait/can_add(datum/plant/our_plant)
+	. = ..()
+	if(!.)
+		return
+
+	for(var/datum/plant_gene/product_trait/trait in our_plant.gene_holder.gene_list)
+		if(trait_ids & trait.trait_ids)
+			return FALSE
+		if(type == trait.type)
+			return FALSE
+
+	return TRUE
 
 /datum/plant_gene/product_trait/on_add(datum/plant_gene_holder/gene_holder)
 	. = ..()

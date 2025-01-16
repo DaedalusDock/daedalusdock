@@ -6,7 +6,7 @@
 	name = "Exothermic Activity"
 	trait_ids = TEMP_CHANGE_ID
 	trait_flags = TRAIT_HALVES_YIELD
-	gene_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
+	gene_flags = PLANT_GENE_MUTATABLE
 
 /**
  * This trait is the opposite of above - it cools down the plant's chemical contents on harvest.
@@ -16,4 +16,4 @@
 	name = "Endothermic Activity"
 	trait_ids = TEMP_CHANGE_ID
 	trait_flags = TRAIT_HALVES_YIELD
-	gene_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
+	gene_flags = PLANT_GENE_MUTATABLE

@@ -1,7 +1,7 @@
 /// Explodes into reagent-filled smoke when squashed.
 /datum/plant_gene/product_trait/smoke
 	name = "Gaseous Decomposition"
-	gene_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
+	gene_flags = PLANT_GENE_MUTATABLE
 
 /datum/plant_gene/product_trait/smoke/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()

@@ -65,7 +65,7 @@
 
 /// Preset plant reagent genes that are unremovable from a plant.
 /datum/plant_gene/reagent/preset
-	gene_flags = PLANT_GENE_GRAFTABLE
+	gene_flags = PLANT_GENE_UNSPLICABLE
 
 /datum/plant_gene/reagent/preset/New(new_reagent_id, new_reagent_rate = 0.04)
 	. = ..()

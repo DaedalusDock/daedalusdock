@@ -7,7 +7,7 @@
 /datum/plant_gene/product_trait/cell_charge
 	name = "Electrical Activity"
 	rate = 0.2
-	gene_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
+	gene_flags = PLANT_GENE_MUTATABLE
 
 /datum/plant_gene/product_trait/cell_charge/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()

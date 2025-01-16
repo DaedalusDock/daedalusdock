@@ -88,10 +88,10 @@
 
 	. = base_val
 
-	#warn use a signal for this instead
-	if(length(gene_list))
-		for(var/datum/plant_gene/gene as anything in gene_list)
-			. += gene.get_stat_modifier(src, stat, base_val)
+	var/list/out = list()
+	SEND_SIGNAL(src, COMSIG_PLANT_GENE_HOLDER_GET_STAT, stat, base_val, out)
+	for(var/num in out)
+		. += num
 
 /// Returns the given stat, including active gene modifiers.
 /datum/plant_gene_holder/proc/set_stat(stat, value)

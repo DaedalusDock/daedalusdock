@@ -2,7 +2,6 @@
 /datum/plant_gene/product_trait/plant_type
 	name = "you shouldn't see this"
 	trait_ids = PLANT_TYPE_ID
-	gene_flags = PLANT_GENE_GRAFTABLE
 
 /// Weeds don't get annoyed by weeds in their tray.
 /datum/plant_gene/product_trait/plant_type/weed_hardy

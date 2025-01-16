@@ -6,7 +6,7 @@
 	name = "Hypodermic Prickles"
 	examine_line = "<span class='info'>It's quite prickley.</span>"
 	trait_ids = REAGENT_TRANSFER_ID
-	gene_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
+	gene_flags = PLANT_GENE_MUTATABLE
 
 /datum/plant_gene/product_trait/stinging/on_new_product(obj/item/product, newloc, datum/plant/plant_datum)
 	. = ..()

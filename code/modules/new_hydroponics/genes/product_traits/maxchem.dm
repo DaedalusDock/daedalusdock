@@ -8,7 +8,7 @@
 	name = "Densified Chemicals"
 	rate = 2
 	trait_flags = TRAIT_HALVES_YIELD
-	gene_flags = PLANT_GENE_REMOVABLE | PLANT_GENE_MUTATABLE | PLANT_GENE_GRAFTABLE
+	gene_flags = PLANT_GENE_MUTATABLE
 
 /datum/plant_gene/product_trait/maxchem/on_new_product(obj/item/our_plant, newloc)
 	. = ..()
@@ -22,5 +22,3 @@
 	else
 		//Grown inedibles however just use a reagents holder, so.
 		our_plant.reagents?.maximum_volume *= rate
-
-#warn impliment half yield cap

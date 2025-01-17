@@ -1,5 +1,14 @@
+import { BooleanLike } from 'common/react';
+
 import { useBackend, useSharedState } from '../backend';
-import { Box, Button, Flex, Section, Stack, Table } from '../components';
+import {
+  AnimatedNumber,
+  Box,
+  Button,
+  Flex,
+  Section,
+  Table,
+} from '../components';
 import { truncate } from '../format';
 import { Window } from '../layouts';
 
@@ -15,7 +24,17 @@ type Seed = {
   yield: number;
 };
 
-type Beaker = {};
+type Reagent = {
+  name: string;
+  volume: number;
+};
+
+type Beaker = {
+  loaded: BooleanLike;
+  max_volume?: number;
+  reagents?: Reagent[];
+  volume?: number;
+};
 
 type SeedExtractorData = {
   beaker: Beaker;
@@ -46,6 +65,8 @@ export const SeedList = (props) => {
   const { act, data } = useBackend<SeedExtractorData>();
   const seeds = data.seeds;
   const splicing = data.splice_target;
+  const beaker = data.beaker;
+  const has_enough_reagent = checkReagents(beaker.reagents);
   return (
     <Flex direction="row" height="100%">
       <Flex.Item width="75%" height="100%">
@@ -135,6 +156,7 @@ export const SeedList = (props) => {
                     <Button
                       icon="fill-drip"
                       title="Infuse"
+                      disabled={!beaker.loaded || !has_enough_reagent}
                       onClick={() => act('infuse')}
                     />
                     {SpliceButton(item, splicing)}
@@ -155,15 +177,68 @@ export const SeedList = (props) => {
         </Section>
       </Flex.Item>
       <Flex.Item width="25%">
-        <Section title="Infusion" fill height="100%">
-          <Stack>
-            <Stack.Item>Beaker: OK</Stack.Item>
-          </Stack>
+        <Section
+          title="Infusion"
+          fill
+          height="100%"
+          buttons={
+            !!beaker.loaded && (
+              <>
+                <Box inline color="label" mr={2}>
+                  <AnimatedNumber value={beaker.volume} initial={0} />
+                  {` / ${beaker.max_volume} units`}
+                </Box>
+                <Button
+                  icon="eject"
+                  content="Eject"
+                  onClick={() => act('eject_beaker')}
+                />
+              </>
+            )
+          }
+        >
+          {(!beaker.loaded && (
+            <Box color="label" mt="3px" mb="5px">
+              No beaker loaded.
+            </Box>
+          )) || (
+            <Box height="100%">
+              {beaker.reagents?.map((reagent) => (
+                <ReagentEntry
+                  key={reagent.name}
+                  chemical={reagent}
+                  transferTo="buffer"
+                />
+              ))}
+            </Box>
+          )}
         </Section>
       </Flex.Item>
     </Flex>
   );
 };
+
+const ReagentEntry = (props) => {
+  const { chemical } = props;
+  return (
+    <Table.Row key={chemical.id}>
+      <Table.Cell color="label">
+        <AnimatedNumber value={chemical.volume} initial={0} />
+        {` units of ${chemical.name}`}
+      </Table.Cell>
+    </Table.Row>
+  );
+};
+
+function checkReagents(reagents: Reagent[] | undefined) {
+  let has_enough_reagent = false;
+  reagents?.forEach((reagent) => {
+    if (reagent.volume >= 10) {
+      has_enough_reagent = true;
+    }
+  });
+  return has_enough_reagent || false;
+}
 
 function SpliceButton(item: Seed, splicing?: Seed) {
   const { act } = useBackend<SeedExtractorData>();

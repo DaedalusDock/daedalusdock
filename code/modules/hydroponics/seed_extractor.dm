@@ -60,7 +60,7 @@
 
 
 /obj/machinery/seed_extractor
-	name = "seed extractor"
+	name = "Plantmaster Mk.V"
 	desc = "Extracts and bags seeds from produce."
 	icon = 'icons/obj/hydroponics/equipment.dmi'
 	icon_state = "sextractor"
@@ -75,6 +75,8 @@
 
 	/// The selected seed for splicing.
 	var/obj/item/seeds/splice_target
+
+	var/obj/item/reagent_containers/beaker
 
 	/// I'm lazy and feeling soulful.
 	var/obj/item/plant_analyzer/internal_analyzer
@@ -104,6 +106,8 @@
 /obj/machinery/seed_extractor/Destroy()
 	QDEL_LIST(seeds_to_data)
 	QDEL_NULL(internal_analyzer)
+	QDEL_NULL(beaker)
+	QDEL_NULL(splice_target)
 	return ..()
 
 /obj/machinery/seed_extractor/RefreshParts()
@@ -135,6 +139,10 @@
 
 	if(default_deconstruction_crowbar(attacking_item))
 		return TRUE
+
+	if(is_reagent_container(attacking_item))
+		if(replace_beaker(user, attacking_item))
+			return TRUE
 
 	if(istype(attacking_item, /obj/item/storage/bag/plants))
 		var/loaded = 0
@@ -178,6 +186,10 @@
 
 /obj/machinery/seed_extractor/Exited(atom/movable/gone, direction)
 	. = ..()
+
+	if(gone == beaker)
+		beaker = null
+
 	if(gone == splice_target)
 		splice_target = null
 
@@ -186,6 +198,23 @@
 
 	set_seed_data(gone, TRUE)
 	update_static_data_for_all()
+
+/// Replaces the beaker, or removes it, or adds it.
+/obj/machinery/seed_extractor/proc/replace_beaker(mob/living/user, obj/item/new_beaker)
+	if(beaker)
+		try_put_in_hand(beaker, user)
+
+	if(new_beaker)
+		if(user)
+			if(!user.transferItemToLoc(new_beaker, src))
+				return FALSE
+		else
+			new_beaker.forceMove(src)
+
+		beaker = new_beaker
+
+	return TRUE
+
 
 /** Add Seeds Proc.
  *
@@ -248,7 +277,24 @@
 
 /obj/machinery/seed_extractor/ui_data()
 	var/list/data = list()
+	var/list/beaker_data = list(
+		"loaded" = !!beaker,
+		"max_volume" = beaker?.reagents.maximum_volume,
+		"volume" = beaker?.reagents.total_volume,
+	)
+
+	if(beaker)
+		var/list/reagents = list()
+		beaker_data["reagents"] = reagents
+
+		for(var/datum/reagent/R as anything in beaker.reagents.reagent_list)
+			reagents[++reagents.len] = list(
+				"name" = R.name,
+				"volume" = R.volume
+			)
+
 	data["splice_target"] = seeds_to_data[splice_target]
+	data["beaker"] = beaker_data
 	return data
 
 /obj/machinery/seed_extractor/ui_act(action, params)
@@ -313,6 +359,12 @@
 		if("infuse")
 			noop()
 
+		if("eject_beaker")
+			if(!beaker)
+				return
+
+			if(replace_beaker(usr))
+				return TRUE
 
 /obj/machinery/seed_extractor/proc/splice(obj/item/seeds/seed_one, obj/item/seeds/seed_two)
 	var/datum/plant/plant_one = seed_one.plant_datum

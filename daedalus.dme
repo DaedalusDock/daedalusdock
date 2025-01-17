@@ -2829,6 +2829,7 @@
 #include "code\modules\codex\categories\guides.dm"
 #include "code\modules\codex\categories\machines.dm"
 #include "code\modules\codex\categories\mechcomp.dm"
+#include "code\modules\codex\categories\plant_genes.dm"
 #include "code\modules\codex\categories\plants.dm"
 #include "code\modules\codex\categories\power.dm"
 #include "code\modules\codex\categories\reagents.dm"

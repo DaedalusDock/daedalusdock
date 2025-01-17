@@ -260,7 +260,7 @@
 		if(isabstract(trait))
 			continue
 
-		traits += trait.get_name()
+		traits += "<a href='?src=\ref[SScodex];show_examined_info=\ref[trait];show_to=\ref[usr]'>[trait.get_name()]</a>"
 
 	text += "- Plant Traits: [span_info("[length(traits) ? english_list(traits) : "None."]")]"
 	text += "*---------*"

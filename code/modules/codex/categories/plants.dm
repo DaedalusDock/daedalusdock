@@ -1,6 +1,6 @@
 /datum/codex_category/plants
 	name = "Plants"
-	desc = "Information on plantss found in game."
+	desc = "Information on plants found in game."
 
 /datum/codex_category/plants/Populate()
 	var/list/mutations_by_plant = list()

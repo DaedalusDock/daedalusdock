@@ -1,11 +1,12 @@
 // Banana
 /datum/plant/banana
 	species = "banana"
-	name = "Banana Tree"
+	name = "bananas"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 	icon_dead = "banana-dead"
 
+	seed_path = /obj/item/seeds/banana
 	product_path = /obj/item/food/grown/banana
 	base_harvest_yield = 5
 

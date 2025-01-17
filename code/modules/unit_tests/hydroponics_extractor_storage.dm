@@ -36,12 +36,8 @@
 	var/obj/item/seeds/apple/apple_now_stored = locate() in extractor
 	TEST_ASSERT_NOTNULL(apple_now_stored, "The apple seed was removed from the dummy's hands, but is not in the plant seed extractor's contents.")
 
-	// The apple seed's key should be in the extractor's "piles" list
-	var/apple_seed_key = apple_now_stored.plant_datum.hash()
-	TEST_ASSERT(apple_seed_key in extractor.piles, "The apple seed was added to the plant seed extractor's contents correctly, but did not register in the piles list, and is unaccessible.")
-
-	// And it should be tracked in the piles list as a weakref
-	TEST_ASSERT_EQUAL(length(extractor.piles[apple_seed_key]), 1, "While 1 apple seed was added to the plant seed extractor, its weakref was not added to the piles list correctly.")
+	// The apple seed is now in the extracto seed list.
+	TEST_ASSERT(apple_now_stored in extractor.seeds_to_data, "The apple seed was added to the plant seed extractor's contents correctly, but did not register in the piles list, and is unaccessible.")
 
 	// Let's test the plant bag now.
 	// If they fail to pick up the bag, we have an issue.

@@ -9,17 +9,18 @@
 	w_class = WEIGHT_CLASS_TINY
 	resistance_flags = FLAMMABLE
 
-	/// The plant within.
-	var/tmp/datum/plant/plant_datum
-
-	/// Typepath of plant_datum
+	/// Typepath of plant_datum to spawn on init.
 	var/plant_type
-
-	///Describes the product on the product path.
-	var/productdesc
 
 	///Determines if the plant should be allowed to mutate early at 30+ instability.
 	var/seed_flags = MUTATE_EARLY
+
+	/// The plant within.
+	var/tmp/datum/plant/plant_datum
+
+	/// How much damage the seed has sustained. Destroyed at 100%.
+	var/tmp/seed_damage = 0
+	#warn impl correctly
 
 /obj/item/seeds/Initialize(mapload, datum/plant/copy_from)
 	. = ..()

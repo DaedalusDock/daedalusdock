@@ -52,3 +52,14 @@
 			if(!icon_exists(icon_file, "[plant_datum.icon_grow][i]"))
 				TEST_FAIL("[plant_datum.type] is missing a growth stage state: [i]")
 
+
+/datum/unit_test/plants_have_valid_seeds
+	name = "HYDROPONICS: Plants Shall Have Valid Seeds"
+
+/datum/unit_test/plants_have_valid_seeds/Run()
+	for(var/datum/plant/P as anything in subtypesof(/datum/plant))
+		if(isabstract(P))
+			continue
+
+		if(!ispath(initial(P.seed_path), /obj/item/seeds))
+			TEST_FAIL("[P] has an invalid seed_path: [initial(P.seed_path)]")

@@ -1,7 +1,7 @@
 // Cherries
 /datum/plant/cherry
 	species = "cherry"
-	name = "cherry tree"
+	name = "cherries"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 	icon_grow = "cherry-grow"
@@ -9,7 +9,7 @@
 	icon_harvest = "cherry-harvest"
 	growthstages = 5
 
-	seed_path = /obj/item/food/grown/cherries
+	seed_path = /obj/item/seeds/cherry
 	product_path = /obj/item/food/grown/cherries
 
 	latent_genes = list(/datum/plant_gene/metabolism_fast, /datum/plant_gene/seedless)

@@ -38,7 +38,7 @@
 	/// Typepath of the product upon harvesting.
 	var/product_path
 	/// Type of seed produced.
-	var/seed_path = /obj/item/seeds
+	var/seed_path
 
 	/// Per 1 point of potency, the product will contain that much reagent.
 	var/list/reagents_per_potency

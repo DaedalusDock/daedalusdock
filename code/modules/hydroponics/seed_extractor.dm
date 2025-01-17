@@ -359,6 +359,9 @@
 	new_plant.innate_genes = dominant_species.innate_genes | recessive_species.innate_genes
 	new_plant.latent_genes = dominant_species.latent_genes | recessive_species.latent_genes
 
+	for(var/innate_gene in innate_genes)
+		new_plant.gene_holder.add_active_gene(new innate_gene)
+
 	new_plant.reagents_per_potency = list()
 	for(var/reagent_path in dominant_species.reagents_per_potency)
 		new_plant.reagents_per_potency[reagent_path] = dominant_species.reagents_per_potency[reagent_path]

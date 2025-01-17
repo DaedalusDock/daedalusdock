@@ -59,8 +59,4 @@
 		TEST_ASSERT_NOTNULL(seed_now_stored, "The plant bag transferred its [initial(seed_type.name)] somewhere, but they were not found in the plant seed extractor.")
 
 		// All keys shold be independently in the piles list
-		var/stored_seed_key = seed_now_stored.plant_datum.hash()
-		TEST_ASSERT(stored_seed_key in extractor.piles, "The [initial(seed_type.name)] was added to the plant seed extractor's contents correctly, but did not register in the piles list, and is unaccessible.")
-
-		// And all seeds should be tracked as weakrefs
-		TEST_ASSERT_EQUAL(length(extractor.piles[stored_seed_key]), num_seeds_to_make_of_each, "While [num_seeds_to_make_of_each] [initial(seed_type.name)]s were added to the plant seed extractor, not all weakrefs were added to the piles list correctly.")
+		TEST_ASSERT(seed_now_stored in extractor.seeds_to_data, "The [initial(seed_type.name)] was added to the plant seed extractor's contents correctly, but did not register in the seeds list, and is unaccessible.")

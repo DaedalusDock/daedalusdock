@@ -57,6 +57,9 @@
 /obj/item/proc/get_plant_datum()
 	return null
 
+/obj/item/seeds/get_plant_datum()
+	return plant_datum
+
 /obj/item/food/grown/get_plant_datum()
 	return plant_datum
 

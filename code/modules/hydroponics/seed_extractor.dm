@@ -76,9 +76,13 @@
 	/// The selected seed for splicing.
 	var/obj/item/seeds/splice_target
 
+	/// I'm lazy and feeling soulful.
+	var/obj/item/plant_analyzer/internal_analyzer
+
 /obj/machinery/seed_extractor/Initialize(mapload, obj/item/seeds/new_seed)
 	. = ..()
 	register_context()
+	internal_analyzer = new(null)
 
 /obj/machinery/seed_extractor/add_context(
 	atom/source,
@@ -99,6 +103,7 @@
 
 /obj/machinery/seed_extractor/Destroy()
 	QDEL_LIST(seeds_to_data)
+	QDEL_NULL(internal_analyzer)
 	return ..()
 
 /obj/machinery/seed_extractor/RefreshParts()
@@ -298,7 +303,12 @@
 			return TRUE
 
 		if("analyze")
-			noop()
+			var/obj/item/seeds/found_seed = locate(params["ref"]) in seeds_to_data
+			if(!found_seed)
+				return
+
+			internal_analyzer.do_plant_stats_scan(found_seed, usr)
+			return TRUE
 
 		if("infuse")
 			noop()
@@ -359,7 +369,7 @@
 	new_plant.innate_genes = dominant_species.innate_genes | recessive_species.innate_genes
 	new_plant.latent_genes = dominant_species.latent_genes | recessive_species.latent_genes
 
-	for(var/innate_gene in innate_genes)
+	for(var/innate_gene in new_plant.innate_genes)
 		new_plant.gene_holder.add_active_gene(new innate_gene)
 
 	new_plant.reagents_per_potency = list()

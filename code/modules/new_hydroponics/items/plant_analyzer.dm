@@ -227,41 +227,42 @@
  * Returns the formatted output as text.
  */
 /obj/item/plant_analyzer/proc/get_analyzer_text_traits(datum/plant/plant_datum)
+	var/datum/plant_gene_holder/dna = plant_datum.gene_holder
 	var/list/text = list()
 
 	if(plant_datum.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/plant_type/weed_hardy))
-		text += "- Plant type: [span_notice("Weed. Can grow in nutrient-poor soil.")]"
+		text += "- Plant type: [span_info("Weed. Can grow in nutrient-poor soil.")]"
 
 	else if(plant_datum.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/plant_type/fungal_metabolism))
-		text += "- Plant type: [span_notice("Mushroom. Can grow in dry soil.")]"
+		text += "- Plant type: [span_info("Mushroom. Can grow in dry soil.")]"
 
 	else if(plant_datum.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/plant_type/alien_properties))
 		text += "- Plant type: [span_warning("UNKNOWN")]"
 
 	else
-		text += "- Plant type: [span_notice("Normal plant")]"
+		text += "- Plant type: [span_info("Normal plant")]"
 
-	text += "- Endurance: [span_notice(plant_datum.get_effective_stat(PLANT_STAT_ENDURANCE))]"
-	text += "- Potency: [span_notice(plant_datum.get_effective_stat(PLANT_STAT_POTENCY))]"
-	text += "- Grow Time: [span_notice(plant_datum.get_effective_stat(PLANT_STAT_MATURATION))]"
-	text += "- Produce Time: [span_notice(plant_datum.get_effective_stat(PLANT_STAT_PRODUCTION))]"
-	text += "- Harvest Count: [span_notice(plant_datum.get_effective_stat(PLANT_STAT_HARVEST_AMT))]"
-	text += "- Harvest Yield: [span_notice(plant_datum.get_effective_stat(PLANT_STAT_YIELD))]"
-
+	text += span_info("[plant_datum.name]")
+	text += "- Generation: [span_info("[plant_datum.generation]")]"
+	text += "- Endurance ([dna.endurance_dominance ? span_info("D") : span_alert("R")]): [span_info("[dna.get_effective_stat(PLANT_STAT_ENDURANCE)]")]"
+	text += "- Potency ([dna.potency_dominance ? span_info("D") : span_alert("R")]): [span_info("[dna.get_effective_stat(PLANT_STAT_POTENCY)]")]"
+	text += "- Maturation ([dna.growth_time_dominance ? span_info("D") : span_alert("R")]): [span_info("[dna.get_effective_stat(PLANT_STAT_MATURATION)]")]"
+	text += "- Production ([dna.produce_time_dominance ? span_info("D") : span_alert("R")]): [span_info("[dna.get_effective_stat(PLANT_STAT_PRODUCTION)]")]"
+	text += "- Harvest Count ([dna.harvest_amt_dominance ? span_info("D") : span_alert("R")]): [span_info("[dna.get_effective_stat(PLANT_STAT_HARVEST_AMT)]")]"
+	text += "- Harvest Yield ([dna.yield_dominance ? span_info("D") : span_alert("R")]): [span_info("[dna.get_effective_stat(PLANT_STAT_YIELD)]")]"
+	text += ""
 
 	if(plant_datum.rarity)
-		text += "- Species Discovery Value: [span_notice("[plant_datum.rarity]")]"
+		text += "- Species Discovery Value: [span_info("[plant_datum.rarity]")]"
 
-	var/all_removable_traits = ""
-	var/all_immutable_traits = ""
-	for(var/datum/plant_gene/product_trait/traits in plant_datum.gene_holder.gene_list)
-		if(isabstract(traits))
+	var/list/traits = list()
+	for(var/datum/plant_gene/product_trait/trait in plant_datum.gene_holder.gene_list)
+		if(isabstract(trait))
 			continue
 
-		all_immutable_traits += "[(all_immutable_traits == "") ? "" : ", "][traits.get_name()]"
+		traits += trait.get_name()
 
-	text += "- Plant Traits: [span_notice("[all_removable_traits? all_removable_traits : "None."]")]"
-	text += "- Core Plant Traits: [span_notice("[all_immutable_traits? all_immutable_traits : "None."]")]"
+	text += "- Plant Traits: [span_info("[length(traits) ? english_list(traits) : "None."]")]"
 	text += "*---------*"
 	return jointext(text, "<br>")
 

@@ -131,11 +131,13 @@
 	icon_grow = "poppy-grow"
 	growthstages = 3
 
+	seed_path = /obj/item/seeds/geranium
 	product_path = /obj/item/food/grown/poppy/geranium
+
 	reagents_per_potency = list(
 		/datum/reagent/medicine/morphine = 0.2,
 		/datum/reagent/consumable/nutriment = 0.05
-		)
+	)
 
 	possible_mutations = list(
 		/datum/plant_mutation/fraxinella
@@ -167,6 +169,7 @@
 	growthstages = 3
 
 	rarity = 15
+	seed_path = /obj/item/seeds/fraxinella
 	product_path = /obj/item/food/grown/poppy/geranium/fraxinella
 
 	reagents_per_potency = list(
@@ -198,6 +201,7 @@
 
 	growthstages = 4
 
+	seed_path = /obj/item/seeds/harebell
 	product_path = /obj/item/food/grown/harebell
 
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment = 0.04)
@@ -226,6 +230,7 @@
 
 	growthstages = 3
 
+	seed_path = /obj/item/seeds/sunflower
 	product_path = /obj/item/food/grown/sunflower
 
 	innate_genes = list(/datum/plant_gene/product_trait/attack/sunflower_attack)
@@ -283,6 +288,7 @@
 
 	rarity = 15
 
+	seed_path = /obj/item/seeds/moonflower
 	product_path = /obj/item/food/grown/moonflower
 
 	reagents_per_potency = list(
@@ -318,6 +324,7 @@
 
 	rarity = 20
 
+	seed_path = /obj/item/seeds/novaflower
 	product_path = /obj/item/grown/novaflower
 
 	innate_genes = list(/datum/plant_gene/product_trait/backfire/novaflower_heat, /datum/plant_gene/product_trait/attack/novaflower_attack)
@@ -363,6 +370,7 @@
 	icon_grow = "rose-grow"
 	icon_dead = "rose-dead"
 
+	seed_path = /obj/item/seeds/rose
 	product_path = /obj/item/food/grown/rose
 
 	possible_mutations = list(/datum/plant_mutation/carbonrose)
@@ -407,7 +415,7 @@
 	icon_grow = "carbonrose-grow"
 	icon_dead = "carbonrose-dead"
 
-
+	seed_path = /obj/item/seeds/carbon_rose
 	product_path = /obj/item/grown/carbon_rose
 	reagents_per_potency = list(/datum/reagent/carbon = 0.1)
 

@@ -4,6 +4,7 @@
 	name = "wheat stalks"
 	icon_dead = "wheat-dead"
 
+	seed_path = /obj/item/seeds/wheat
 	product_path = /obj/item/food/grown/wheat
 	base_harvest_amt =4
 

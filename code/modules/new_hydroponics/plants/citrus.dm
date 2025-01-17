@@ -115,6 +115,7 @@
 	icon_grow = "lime-grow"
 	icon_dead = "lime-dead"
 
+	seed_path = /obj/item/seeds/firelemon
 	product_path = /obj/item/food/grown/firelemon
 
 	innate_genes = list(/datum/plant_gene/product_trait/bomb_plant/potency_based)

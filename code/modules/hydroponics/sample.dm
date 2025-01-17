@@ -3,6 +3,7 @@
 	species = "ambrosiavulgaris"
 	icon_dead = "ambrosia-dead"
 
+	seed_path = /obj/item/seeds/sample
 
 /obj/item/seeds/sample
 	name = "plant sample"

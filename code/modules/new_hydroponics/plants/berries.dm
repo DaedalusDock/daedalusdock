@@ -291,7 +291,9 @@
 	icon_grow = "toechtauese-grow"
 	icon_dead = "toechtauese-dead"
 
+	seed_path = /obj/item/seeds/toechtauese
 	product_path = /obj/item/food/grown/toechtauese
+
 	reagents_per_potency = list(
 		/datum/reagent/consumable/toechtauese_juice = 0.1,
 		/datum/reagent/toxin/itching_powder = 0.04

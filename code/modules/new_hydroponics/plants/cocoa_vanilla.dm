@@ -1,13 +1,15 @@
 // Cocoa Pod
 /datum/plant/cocoa
 	species = "cocoapod"
-	name = "cocoa tree"
+	name = "cocoa"
 
-	product_path = /obj/item/food/grown/cocoapod
 	growthstages = 5
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 	icon_grow = "cocoapod-grow"
 	icon_dead = "cocoapod-dead"
+
+	seed_path = /obj/item/seeds/cocoapod
+	product_path = /obj/item/food/grown/cocoapod
 
 	reagents_per_potency = list(/datum/reagent/consumable/coco = 0.25, /datum/reagent/consumable/nutriment = 0.1)
 	possible_mutations = list(/datum/plant_mutation/cocoa_vanilla, /datum/plant_mutation/cocoa_bungo)

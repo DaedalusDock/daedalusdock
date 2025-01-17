@@ -49,7 +49,7 @@
 
 	icon_dead = "carrot-dead"
 
-	seed_path = /obj/item/food/grown/parsnip
+	seed_path = /obj/item/seeds/carrot/parsnip
 	product_path = /obj/item/food/grown/parsnip
 
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.05, /datum/reagent/consumable/nutriment = 0.05, /datum/reagent/aluminium = 0.05)

@@ -1,6 +1,7 @@
 PROCESSING_SUBSYSTEM_DEF(hydroponics)
 	name = "Hydroponics"
 	flags = SS_HIBERNATE
+	wait = 5 SECONDS
 
 
 	var/list/gene_list = list()

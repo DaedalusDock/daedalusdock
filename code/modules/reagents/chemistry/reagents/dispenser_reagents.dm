@@ -26,6 +26,12 @@
 	C.adjustToxLoss(0.5, FALSE, cause_of_death = "Ingesting ALOT of ammonia")
 	return TRUE
 
+/datum/reagent/ammonia/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref)
+	. = ..()
+	plant_dna.maturation += rand(5, 10)
+	plant_dna.production += rand(2, 5)
+	damage_ref += rand(10, 20)
+
 /datum/reagent/carbon
 	name = "Carbon"
 	description = "A chemical element, the building block of life."
@@ -183,6 +189,10 @@
 		return
 	reac_volume = round(reac_volume,0.1)
 	exposed_turf.acid_act(acidpwr, reac_volume)
+
+/datum/reagent/toxin/acid/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref)
+	. = ..()
+	damage_ref[1] = rand(40, 50)
 
 /datum/reagent/toxin/acid/hydrochloric //Like sulfuric, but less toxic and more acidic.
 	name = "Hydrochloric Acid"

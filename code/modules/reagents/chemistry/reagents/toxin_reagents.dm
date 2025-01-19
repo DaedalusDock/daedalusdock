@@ -17,6 +17,10 @@
 	if(volume >= 1)
 		plant_tick.tox_damage += 1
 
+/datum/reagent/toxin/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref)
+	. = ..()
+	damage_ref += rand(15, 30)
+
 /datum/reagent/toxin/affect_blood(mob/living/carbon/C, removed)
 	if(toxpwr)
 		C.adjustToxLoss(toxpwr * removed, 0, cause_of_death = "Poisoning")
@@ -57,6 +61,14 @@
 	if(volume >= 1)
 		plant_tick.mutation_power += 1
 		plant_tick.tox_damage += 1
+
+/datum/reagent/toxin/mutagen/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref)
+	. = ..()
+	plant_dna.try_mutate_stats(2)
+	plant_dna.try_activate_latent_gene(3)
+	if(prob(5))
+		plant_dna.add_active_gene(new /datum/plant_gene/unstable)
+	return plant_dna.try_mutate_type(10)
 
 /datum/reagent/toxin/plasma
 	name = "Plasma"
@@ -328,6 +340,10 @@
 /datum/reagent/toxin/plantbgone/weedkiller/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
 	if(volume >= 1)
 		plant_tick.tox_damage += 0.2
+
+/datum/reagent/toxin/plantbgone/weedkiller/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref)
+	. = ..()
+	damage_ref += rand(50, 60)
 
 /datum/reagent/toxin/pestkiller
 	name = "Pest Killer"

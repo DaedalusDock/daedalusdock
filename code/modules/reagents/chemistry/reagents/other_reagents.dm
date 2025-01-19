@@ -971,6 +971,11 @@
 		if(mytray.growing.gene_holder.harvest_yield > 1)
 			plant_tick.yield_mod -= 0.25
 
+/datum/reagent/saltpetre/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref)
+	. = ..()
+	plant_dna.potency += rand(2, 8)
+	plant_dna.harvest_yield += rand(0, 2)
+
 /datum/reagent/cordiolis_hepatico
 	name = "Cordiolis Hepatico"
 	description = "A strange, pitch-black reagent that seems to absorb all light. Effects unknown."

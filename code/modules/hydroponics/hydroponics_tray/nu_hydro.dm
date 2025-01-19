@@ -22,10 +22,6 @@
 
 	///Last time it was harvested
 	var/lastproduce = 0
-	///Used for timing of cycles.
-	var/lastcycle = 0
-	///About 10 seconds / cycle
-	var/cycledelay = 200
 
 	/// Plant datum that is occupying this tray.
 	var/datum/plant/growing
@@ -317,7 +313,7 @@
 			final_growth_delta += current_tick.water_level_bonus_growth
 
 	else
-		adjust_plant_health(psbr(HYDRO_NO_WATER_DAMAGE * tick_multiplier), damage_type = PLANT_DAMAGE_NO_WATER)
+		adjust_plant_health(psbr(-HYDRO_NO_WATER_DAMAGE * tick_multiplier), damage_type = PLANT_DAMAGE_NO_WATER)
 
 	final_growth_delta = psbr(final_growth_delta * tick_multiplier)
 	final_health_delta = psbr(final_health_delta * tick_multiplier)
@@ -360,7 +356,7 @@
 	update_appearance()
 
 /obj/machinery/hydroponics/proc/get_water_level()
-	return reagents.has_reagent(/datum/reagent/water)
+	return reagents.get_reagent_amount(/datum/reagent/water)
 
 /**
  * Adjust Health.

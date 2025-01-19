@@ -226,17 +226,27 @@
 		if(!mutation.can_mutate(parent))
 			continue
 
-		var/new_path = mutation.plant_type.seed_path
-		var/obj/item/seeds/new_seed = new new_path(null)
-		new_seed.plant_datum.gene_holder.CopyFrom(src)
-
-		var/atom/parent_loc = parent.in_seed.loc
-		qdel(parent.in_seed)
-
-		if(istype(parent_loc, /obj/machinery/hydroponics))
-			var/obj/machinery/hydroponics/tray = parent_loc
-			tray.plant_seed(new_seed)
-		else
-			new_seed.forceMove(parent_loc.drop_location())
+		apply_mutation(mutation)
 		break
+
+/// Applies a mutation.
+/datum/plant_gene_holder/proc/apply_mutation(datum/plant_mutation/mutation) as /obj/item/seeds
+	RETURN_TYPE(/obj/item/seeds)
+
+	var/new_path = mutation.plant_type.seed_path
+	var/obj/item/seeds/new_seed = new new_path(null)
+	new_seed.plant_datum.gene_holder.CopyFrom(src)
+	new_seed.seed_damage = parent.in_seed.seed_damage
+
+	var/atom/parent_loc = parent.in_seed.loc
+	qdel(parent.in_seed)
+
+	if(istype(parent_loc, /obj/machinery/hydroponics))
+		var/obj/machinery/hydroponics/tray = parent_loc
+		tray.plant_seed(new_seed)
+	else
+		new_seed.forceMove(parent_loc)
+
+	return new_seed
+
 

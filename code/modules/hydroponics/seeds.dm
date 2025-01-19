@@ -45,6 +45,12 @@
 /obj/item/seeds/proc/get_unique_analyzer_text()
 	return null
 
+/// Damages the seed, deleting it at 100 damage.
+/obj/item/seeds/proc/damage_seed(amt)
+	seed_damage = clamp(seed_damage + amt, 0, 100)
+	if(seed_damage == 100)
+		qdel(src)
+
 /*
  * Both `/item/food/grown` and `/item/grown` implement a seed variable which tracks
  * plant statistics, genes, traits, etc. This proc gets the seed for either grown food or

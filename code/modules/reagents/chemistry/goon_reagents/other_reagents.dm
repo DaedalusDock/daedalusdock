@@ -30,6 +30,12 @@
 		plant_tick.radiation_damage += 2
 		plant_tick.mutation_power += 0.2
 
+/datum/reagent/uranium/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref)
+	. = ..()
+	plant_dna.try_mutate_stats(1)
+	plant_dna.try_activate_latent_gene(2)
+	return plant_dna.try_mutate_type(1)
+
 /datum/reagent/uranium/radium
 	name = "Radium"
 	description = "Radium is an alkaline earth metal. It is extremely radioactive."

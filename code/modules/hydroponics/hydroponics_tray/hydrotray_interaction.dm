@@ -70,7 +70,6 @@
 			SEND_SIGNAL(O, COMSIG_SEED_ON_PLANTED, src)
 			to_chat(user, span_notice("You plant [O]."))
 			plant_seed(O)
-			lastcycle = world.time
 			return
 		else
 			to_chat(user, span_warning("[src] already has seeds in it!"))

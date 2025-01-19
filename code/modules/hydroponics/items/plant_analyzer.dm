@@ -138,12 +138,7 @@
 	else
 		returned_message += span_bold("No plant found.")
 
-	returned_message += "- Water level: [span_notice("[scanned_tray.get_water_level()] / [scanned_tray.reagents.maximum_volume]")]"
-
-	var/yield = scanned_tray.growing?.get_effective_stat(PLANT_STAT_YIELD)
-	if(yield > 1)
-		returned_message += "- Yield modifier on harvest: [span_notice("[yield]x")]"
-
+	returned_message += "- Reagent level: [span_notice("[scanned_tray.get_water_level()] / [scanned_tray.reagents.maximum_volume]")]"
 	returned_message += "*---------*"
 	return span_info(jointext(returned_message, "<br>"))
 
@@ -239,10 +234,6 @@
 	else if(plant_datum.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/plant_type/alien_properties))
 		text += "- Plant type: [span_warning("UNKNOWN")]"
 
-	else
-		text += "- Plant type: [span_info("Normal plant")]"
-
-	text += span_info("[plant_datum.name]")
 	text += "- Generation: [span_info("[plant_datum.generation]")]"
 	text += "- Endurance ([dna.endurance_dominance ? span_info("D") : span_alert("R")]): [span_info("[dna.get_effective_stat(PLANT_STAT_ENDURANCE)]")]"
 	text += "- Potency ([dna.potency_dominance ? span_info("D") : span_alert("R")]): [span_info("[dna.get_effective_stat(PLANT_STAT_POTENCY)]")]"

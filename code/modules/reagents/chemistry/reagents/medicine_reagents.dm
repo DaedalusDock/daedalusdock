@@ -671,6 +671,26 @@
 	if(C.has_dna())
 		C.dna.remove_all_mutations(list(MUT_NORMAL, MUT_EXTRA), TRUE)
 
+/datum/reagent/medicine/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref)
+	. = ..()
+	if(plant_dna.endurance < 0)
+		plant_dna.endurance += 1
+
+	if(plant_dna.potency < 0)
+		plant_dna.potency += 1
+
+	if(plant_dna.harvest_amt < 0)
+		plant_dna.harvest_amt += 1
+
+	if(plant_dna.harvest_yield < 0)
+		plant_dna.harvest_yield += 1
+
+	if(plant_dna.maturation < 0)
+		plant_dna.maturation += 1
+
+	if(plant_dna.production < 0)
+		plant_dna.production += 1
+
 /datum/reagent/medicine/spaceacillin
 	name = "Spaceacillin"
 	description = "Spaceacillin will prevent a patient from conventionally spreading any diseases they are currently infected with. Also reduces infection in serious burns."

@@ -259,6 +259,18 @@ Primarily used in reagents/reaction_agents
 	if(!mytray)
 		return
 
+/**
+ * Called by the Plantmaster to infuse a plant.
+ * Returns an amount to damage the plant.
+ * Args:
+ * * plant_datum: The plant being infused.
+ * * plant_dna: The plant's gene holder.
+ * * damage_ref: Lists are references abuse. Add a number to the list to deal damage to the seed.
+ */
+/datum/reagent/proc/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref) as /obj/item/seeds
+	RETURN_TYPE(/obj/item/seeds)
+	return
+
 /// Should return a associative list where keys are taste descriptions and values are strength ratios
 /datum/reagent/proc/get_taste_description(mob/living/taster)
 	return list("[taste_description]" = 1)

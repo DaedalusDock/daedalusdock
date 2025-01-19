@@ -26,10 +26,10 @@
 	var/base_endurance = 0
 	/// The starting amount of potency this plant has.
 	var/base_potency = 0
-	/// The baseline amount of time to reach maturity. Half of this value is the time to reach "Growing"
-	var/base_maturation = 40 SECONDS
-	/// The baseline amount of time AFTER reaching maturity to produce a harvest.
-	var/base_production = 40 SECONDS
+	/// The baseline amount of ticks to reach maturity. Half of this value is the time to reach "Growing"
+	var/base_maturation = 6
+	/// The baseline amount of ticks AFTER reaching maturity to produce a harvest.
+	var/base_production = 6
 	/// How many instances of the product are yielded per harvest.
 	var/base_harvest_yield = 1
 	/// How many times you can harvest this plant.
@@ -307,6 +307,28 @@
 		product.reagents.handle_reactions()
 		playsound(product.loc, 'sound/effects/space_wind.ogg', 50)
 
-/// Hashes the plant, used by the Seed Extractor.
-/datum/plant/proc/hash()
-	return "[name][gene_holder.potency][gene_holder.endurance][gene_holder.production][gene_holder.maturation][gene_holder.harvest_yield]"
+
+/datum/plant/proc/infuse(datum/reagent/R) as /obj/item/seeds
+	RETURN_TYPE(/obj/item/seeds)
+
+	var/damage_chance = get_effective_stat(PLANT_STAT_ENDURANCE)
+	var/damage_ref = list()
+	var/obj/item/seeds/new_seeds = R.infuse_plant(src, gene_holder, damage_ref)
+	var/obj/item/seeds/seed_to_damage = new_seeds || in_seed
+
+	if(length(damage_ref) && prob(damage_chance))
+		seed_to_damage.damage_seed(damage_ref[1])
+
+	if(QDELING(seed_to_damage))
+		return
+
+	var/datum/plant/target_plant = seed_to_damage.plant_datum
+
+	#warn make sure seed damage is copied when needed
+	for(var/datum/plant_mutation/mutation as anything in target_plant.possible_mutations)
+		for(var/infusion_requirement in mutation.infusion_reagents)
+			if(!ispath(R.type, infusion_requirement))
+				continue
+
+			if(prob(mutation.mutation_chance) && mutation.can_mutate(target_plant))
+				return target_plant.gene_holder.apply_mutation(mutation)

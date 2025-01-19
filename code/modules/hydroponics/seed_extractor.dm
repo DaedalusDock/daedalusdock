@@ -223,7 +223,6 @@
  *
  * to_add - what seed are we adding?
  * taking_from - where are we taking the seed from? A mob, a bag, etc?
- * user - who is inserting the seed?
  **/
 /obj/machinery/seed_extractor/proc/add_seed(obj/item/seeds/to_add, atom/taking_from)
 	if(taking_from)
@@ -470,3 +469,48 @@
 	splice_chance -= genome_delta * 10
 
 	return min(splice_chance, 0)
+
+/obj/machinery/seed_extractor/proc/try_infuse(mob/living/user, obj/item/seeds/seed)
+	if(beaker.reagents.total_volume < 10)
+		return FALSE
+
+	var/list/valid_reagents = list()
+	for(var/datum/reagent/R as anything in beaker.reagents.reagent_list)
+		if(R.volume < 10)
+			continue
+
+		valid_reagents[capitalize(R.name)] = R
+
+	if(!length(valid_reagents))
+		return FALSE
+
+	var/chosen = tgui_input_list(user, "Select a reagent to infuse", "Infusion", valid_reagents)
+	if(isnull(valid_reagents))
+		return FALSE
+
+	var/datum/reagent/chosen_reagent = valid_reagents[chosen]
+	if(!beaker?.reagents.has_reagent(chosen_reagent.type, 10))
+		return FALSE
+
+	seed.damage_seed(rand(3, 7))
+	beaker.reagents.remove_reagent(chosen_reagent.type, 10)
+	if(QDELETED(seed))
+		to_chat(user, span_warning("The seed was destroyed."))
+		playsound(src, 'sound/machines/buzz-sigh.ogg', 50)
+		return TRUE
+
+	var/obj/item/seeds/new_seed = seed.plant_datum.infuse(chosen_reagent)
+	if(QDELETED(seed) && isnull(new_seed))
+		to_chat(user, span_warning("The seed was destroyed."))
+		playsound(src, 'sound/machines/buzz-sigh.ogg', 50)
+		return TRUE
+
+	if(new_seed)
+		add_seed(new_seed)
+		to_chat(user, span_notice("You've created [new_seed]."))
+		playsound(src, 'sound/machines/chime.ogg', 50)
+		return TRUE
+
+	to_chat(user, span_notice("Infusion of [seed] successful."))
+	playsound(src, 'sound/machines/chime.ogg', 50)
+	return TRUE

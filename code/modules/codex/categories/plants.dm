@@ -14,7 +14,7 @@
 		P = new P
 		var/list/mechanics = list()
 
-		mechanics += "It grows in [P.base_maturation / 10] seconds."
+		mechanics += "It grows in [(P.base_maturation) * (/datum/controller/subsystem/processing/hydroponics::wait / 10)] seconds."
 		mechanics += "It can produce harvests after [P.base_production / 10] more seconds."
 
 		var/datum/plant_mutation/mutation_source = mutations_by_plant[P.type]

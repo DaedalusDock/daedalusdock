@@ -1,5 +1,5 @@
 /datum/plant/ambrosia
-	name = "ambrosia vulgaris"
+	name = "ambrosia"
 	species = "ambrosiavulgaris"
 	icon_dead = "ambrosia-dead"
 
@@ -17,7 +17,7 @@
 	)
 
 /obj/item/seeds/ambrosia
-	name = "pack of ambrosia vulgaris seeds"
+	name = "pack of ambrosia seeds"
 	desc = "These seeds grow into a plant with healing properties."
 	icon_state = "seed-ambrosiavulgaris"
 
@@ -25,8 +25,9 @@
 
 /obj/item/food/grown/ambrosia
 	plant_datum = /datum/plant/ambrosia
-	name = "ambrosia vulgaris branch"
+	name = "ambrosia branch"
 	desc = "This is a plant containing various healing chemicals."
+	icon_state = "ambrosiavulgaris"
 
 	wine_power = 30
 

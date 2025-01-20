@@ -287,7 +287,7 @@
 			gene.tick(delta_time, src, growing, current_tick)
 
 	// Cycle the tick
-	cycle_plant_tick()
+	cycle_plant_tick(delta_time)
 	if(!growing || growing.plant_status == PLANT_DEAD)
 		return
 
@@ -299,12 +299,12 @@
 	update_appearance()
 
 
-/obj/machinery/hydroponics/proc/cycle_plant_tick()
+/obj/machinery/hydroponics/proc/cycle_plant_tick(delta_time)
 	var/datum/plant_gene_holder/plant_dna = growing.gene_holder
 
 	var/tick_multiplier = current_tick.overall_multiplier
 
-	var/final_growth_delta = current_tick.plant_growth_delta
+	var/final_growth_delta = current_tick.plant_growth_delta * delta_time
 	var/final_health_delta = current_tick.plant_health_delta
 	var/final_mutation_power = psbr(current_tick.mutation_power * tick_multiplier)
 

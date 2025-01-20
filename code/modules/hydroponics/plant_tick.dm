@@ -3,7 +3,7 @@
 	var/overall_multiplier = 1
 
 	/// How much the plant is growing (or reversing) this tick.
-	var/plant_growth_delta = HYDRO_BASE_GROWTH_RATE
+	var/plant_growth_delta = 1
 	/// How much the plant's health is changing this tick.
 	var/plant_health_delta = 0
 

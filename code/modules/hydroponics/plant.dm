@@ -26,10 +26,10 @@
 	var/base_endurance = 0
 	/// The starting amount of potency this plant has.
 	var/base_potency = 0
-	/// The baseline amount of ticks to reach maturity. Half of this value is the time to reach "Growing"
-	var/base_maturation = 6
-	/// The baseline amount of ticks AFTER reaching maturity to produce a harvest.
-	var/base_production = 6
+	/// The baseline amount of seconds to reach maturity. Half of this value is the time to reach "Growing"
+	var/base_maturation = 40
+	/// The baseline amount of seconds AFTER reaching maturity to produce a harvest.
+	var/base_production = 40
 	/// How many instances of the product are yielded per harvest.
 	var/base_harvest_yield = 1
 	/// How many times you can harvest this plant.

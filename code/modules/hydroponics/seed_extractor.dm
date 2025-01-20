@@ -467,6 +467,8 @@
 	var/genome_delta = abs(plant_one.genome - plant_two.genome)
 
 	splice_chance -= genome_delta * 10
+	splice_chance -= seed_one.seed_damage
+	splice_chance -= seed_two.seed_damage
 
 	return min(splice_chance, 0)
 
@@ -506,6 +508,7 @@
 		return TRUE
 
 	if(new_seed)
+		new_seed.seed_damage = seed.seed_damage
 		add_seed(new_seed)
 		to_chat(user, span_notice("You've created [new_seed]."))
 		playsound(src, 'sound/machines/chime.ogg', 50)

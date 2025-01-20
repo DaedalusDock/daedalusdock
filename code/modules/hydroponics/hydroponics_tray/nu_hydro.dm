@@ -244,7 +244,11 @@
 	growing = seed.plant_datum
 	growth = 1
 
-	set_plant_health(growing.base_health + growing.get_effective_stat(PLANT_STAT_ENDURANCE))
+	var/health = growing.base_health + growing.get_effective_stat(PLANT_STAT_ENDURANCE)
+	if(seed.seed_damage)
+		health = max(1, health - round(seed.seed_damage / 5))
+
+	set_plant_health(health)
 
 	current_tick = new(src)
 	update_appearance()

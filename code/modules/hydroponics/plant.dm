@@ -144,7 +144,7 @@
 /datum/plant/proc/CopySeed(new_generation = FALSE) as /obj/item/seeds
 	RETURN_TYPE(/obj/item/seeds)
 
-	var/obj/item/seeds/new_seed = new(null, src)
+	var/obj/item/seeds/new_seed = new seed_path(null, src)
 	if(new_generation)
 		new_seed.plant_datum.generation = generation + 1
 	return new_seed

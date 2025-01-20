@@ -12,7 +12,7 @@
 	)
 
 /datum/plant/apple
-	name = "Apple Tree"
+	name = "apple"
 	species = "apple"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'

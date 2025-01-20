@@ -10,6 +10,16 @@
 	seed_path = /obj/item/seeds/eggplant
 	product_path = /obj/item/food/grown/eggplant
 
+	base_health = 25
+	base_maturation = 70
+	base_production = 110
+	base_harvest_amt = 2
+	base_harvest_yield = 4
+	base_endurance = 2
+
+	genome = 18
+
+	latent_genes = list(/datum/plant_gene/mutations, /datum/plant_gene/continous_damage/sudden_death)
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.1)
 
 /obj/item/seeds/eggplant

@@ -8,6 +8,16 @@
 	seed_path = /obj/item/seeds/onion
 	product_path = /obj/item/food/grown/onion
 
+	base_health = 20
+	base_maturation = 60
+	base_production = 100
+	base_harvest_amt = 1
+	base_harvest_yield = 3
+	base_endurance = 3
+
+	genome = 13
+	force_single_harvest = TRUE
+
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.1)
 	possible_mutations = list(/datum/plant_mutation/onion_red)
 

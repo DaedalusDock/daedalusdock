@@ -10,6 +10,15 @@
 	product_path = /obj/item/food/grown/berries
 	seed_path = /obj/item/seeds/berry
 
+	base_health = 10
+	base_maturation = 60
+	base_production = 120
+	base_harvest_amt = 3
+	base_harvest_yield = 2
+	base_endurance = 3
+
+	genome = 18
+
 	possible_mutations = list(
 		/datum/plant_mutation/berry_glow,
 		/datum/plant_mutation/berry_poison
@@ -206,7 +215,15 @@
 
 	seed_path = /obj/item/seeds/grape
 	product_path = /obj/item/food/grown/grapes
-	base_harvest_yield = 4
+
+	base_health = 5
+	base_maturation = 40
+	base_production = 120
+	base_harvest_amt = 5
+	base_harvest_yield = 2
+	base_endurance = 0
+
+	genome = 20
 
 	possible_mutations = list(/datum/plant_mutation/grape/green)
 

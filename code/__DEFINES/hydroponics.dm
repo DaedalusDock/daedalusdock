@@ -33,6 +33,9 @@
 /// Damage per process tick if the plant has no water.
 #define HYDRO_NO_WATER_DAMAGE 1
 
+/// Max yield possible
+#define HYDRO_MAX_YIELD 10
+
 // Plant damage types
 /// Lack of water during process tick
 #define PLANT_DAMAGE_NO_WATER "no_water"

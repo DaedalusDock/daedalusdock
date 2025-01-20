@@ -8,7 +8,15 @@
 
 	seed_path = /obj/item/seeds/banana
 	product_path = /obj/item/food/grown/banana
+
+	base_health = 15
+	base_maturation = 120
+	base_production = 160
+	base_harvest_amt = 4
 	base_harvest_yield = 5
+	base_endurance = 3
+
+	genome = 15
 
 	reagents_per_potency = list(
 		/datum/reagent/consumable/banana = 0.1,

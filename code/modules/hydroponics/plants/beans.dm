@@ -12,9 +12,18 @@
 
 	seed_path = /obj/item/seeds/soya
 	product_path = /obj/item/food/grown/soybeans
-	base_harvest_yield = 3
 
-	latent_genes = list(/datum/plant_gene/quality/inferior, /datum/plant_gene/metabolism_fast, /datum/plant_gene/seedless)
+	base_health = 15
+	base_maturation = 60
+	base_production = 105
+	base_harvest_amt = 3
+	base_harvest_yield = 4
+	base_endurance = 1
+
+	genome = 7
+	force_single_harvest = TRUE
+
+	latent_genes = list(/datum/plant_gene/quality/inferior, /datum/plant_gene/metabolism_fast)
 
 	reagents_per_potency = list(
 		/datum/reagent/consumable/nutriment/vitamin = 0.04,

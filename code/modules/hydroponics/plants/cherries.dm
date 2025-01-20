@@ -9,6 +9,15 @@
 	icon_harvest = "cherry-harvest"
 	growthstages = 5
 
+	base_health = 5
+	base_maturation = 40
+	base_production = 120
+	base_harvest_amt = 2
+	base_harvest_yield = 5
+	base_endurance = 0
+
+	genome = 20
+
 	seed_path = /obj/item/seeds/cherry
 	product_path = /obj/item/food/grown/cherries
 

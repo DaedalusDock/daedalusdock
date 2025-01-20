@@ -9,7 +9,16 @@
 
 	seed_path = /obj/item/seeds/grass
 	product_path = /obj/item/food/grown/grass
-	base_harvest_yield = 5
+
+	base_health = 10
+	base_maturation = 15
+	base_production = 50
+	base_harvest_amt = 1
+	base_harvest_yield = 8
+	base_endurance = 10
+
+	genome = 4
+	force_single_harvest = TRUE
 
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment = 0.02, /datum/reagent/hydrogen = 0.05)
 	possible_mutations = list(/datum/plant_mutation/grass_fairy)

@@ -30,6 +30,9 @@
 	plant_datum = copy_from ? copy_from.Copy() : new plant_type()
 	plant_datum.in_seed = src
 
+	for(var/datum/plant_gene/gene as anything in plant_datum.gene_holder.gene_list)
+		gene.on_new_seed(src)
+
 /obj/item/seeds/Destroy()
 	QDEL_NULL(plant_datum)
 	return ..()

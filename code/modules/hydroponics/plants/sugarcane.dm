@@ -6,6 +6,17 @@
 
 	growthstages = 2
 
+
+	base_health = 10
+	base_maturation = 30
+	base_production = 60
+	base_harvest_amt = 1
+	base_harvest_yield = 7
+	base_endurance = 0
+
+	genome = 8
+	force_single_harvest = TRUE
+
 	seed_path = /obj/item/seeds/sugarcane
 	product_path = /obj/item/food/grown/sugarcane
 

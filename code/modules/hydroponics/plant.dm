@@ -53,7 +53,9 @@
 	/// A pseudoarbitrary value. When attempting to splice two plants together, a larger difference in genome value makes it more difficult.
 	/// 0 genome delta is a 100% splice chance, 10 is 0%
 	var/genome = 1
-	#warn impl genome
+
+	/// If TRUE, this plant can only ever be harvested once. However, it will receive benefits to compensate.
+	var/force_single_harvest = FALSE
 
 	/// Rarity, decides export value.
 	var/rarity = 0
@@ -128,6 +130,7 @@
 
 	new_plant.rarity = rarity
 	new_plant.genome = genome
+	new_plant.force_single_harvest = force_single_harvest
 
 	new_plant.innate_genes = innate_genes.Copy()
 	new_plant.latent_genes = latent_genes.Copy()
@@ -137,6 +140,14 @@
 	new_plant.inherit_reagents_from_genes()
 
 	return new_plant
+
+/datum/plant/proc/CopySeed(new_generation = FALSE) as /obj/item/seeds
+	RETURN_TYPE(/obj/item/seeds)
+
+	var/obj/item/seeds/new_seed = new(null, src)
+	if(new_generation)
+		new_seed.plant_datum.generation = generation + 1
+	return new_seed
 
 /datum/plant/proc/create_gene_holder()
 	if(gene_holder)
@@ -324,7 +335,6 @@
 
 	var/datum/plant/target_plant = seed_to_damage.plant_datum
 
-	#warn make sure seed damage is copied when needed
 	for(var/datum/plant_mutation/mutation as anything in target_plant.possible_mutations)
 		for(var/infusion_requirement in mutation.infusion_reagents)
 			if(!ispath(R.type, infusion_requirement))

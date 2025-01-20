@@ -8,6 +8,15 @@
 	icon_dead = "peas-dead"
 	growthstages = 3
 
+	base_health = 40
+	base_maturation = 50
+	base_production = 130
+	base_harvest_amt = 4
+	base_harvest_yield = 2
+	base_endurance = 0
+
+	genome = 8
+
 	seed_path = /obj/item/seeds/peas
 	product_path = /obj/item/food/grown/peas
 	base_harvest_yield = 3

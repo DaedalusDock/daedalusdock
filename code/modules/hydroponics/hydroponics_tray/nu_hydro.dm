@@ -245,6 +245,12 @@
 	growth = 1
 
 	var/health = growing.base_health + growing.get_effective_stat(PLANT_STAT_ENDURANCE)
+	if(growing.force_single_harvest)
+		health += round(growing.gene_holder.get_effective_stat(PLANT_STAT_HARVEST_AMT) * 2)
+
+	if(growing.get_effective_stat(PLANT_STAT_YIELD) > HYDRO_MAX_YIELD)
+		health += growing.get_effective_stat(PLANT_STAT_YIELD) - HYDRO_MAX_YIELD
+
 	if(seed.seed_damage)
 		health = max(1, health - round(seed.seed_damage / 5))
 
@@ -371,13 +377,17 @@
 	if(!growing || amt == 0)
 		return
 
-	switch(damage_type)
-		if(PLANT_DAMAGE_NO_WATER)
-			if(growing.gene_holder.has_active_gene_of_type(/datum/plant_gene/metabolism_fast))
-				amt *= 2
+	if(damage_type)
+		switch(damage_type)
+			if(PLANT_DAMAGE_NO_WATER)
+				if(growing.gene_holder.has_active_gene_of_type(/datum/plant_gene/metabolism_fast))
+					amt *= 2
 
-			if(growing.gene_holder.has_active_gene_of_type(/datum/plant_gene/metabolism_slow))
-				amt /= 2
+				if(growing.gene_holder.has_active_gene_of_type(/datum/plant_gene/metabolism_slow))
+					amt /= 2
+
+		for(var/datum/plant_gene/damage_mod/gene in growing.gene_holder.gene_list)
+			amt *= gene.multiplier
 
 	if(amt > 0 && !ignore_endurance)
 		if(prob(growing.get_effective_stat(PLANT_STAT_ENDURANCE)))

@@ -32,9 +32,8 @@
 			if(user && !user.temporarilyRemoveItemFromInventory(O)) //couldn't drop the item
 				return
 
-			var/seed_path = F.plant_datum.seed_path
 			while(t_amount < t_max)
-				var/obj/item/seeds/t_prod = new seed_path(null, F.plant_datum)
+				var/obj/item/seeds/t_prod = F.plant_datum.CopySeed()
 				seeds.Add(t_prod)
 				t_prod.forceMove(seedloc)
 				t_amount++
@@ -48,9 +47,8 @@
 			if(user && !user.temporarilyRemoveItemFromInventory(O))
 				return
 
-			var/seed_path = F.plant_datum.seed_path
 			while(t_amount < t_max)
-				var/obj/item/seeds/t_prod = new seed_path(null, F.plant_datum)
+				var/obj/item/seeds/t_prod = F.plant_datum.CopySeed()
 				t_prod.forceMove(seedloc)
 				t_amount++
 			qdel(O)
@@ -407,6 +405,7 @@
 	new_plant.icon_harvest = dominant_species.icon_harvest
 
 	new_plant.base_health = dominant_species.base_health
+	new_plant.force_single_harvest = dominant_species.force_single_harvest
 
 	new_plant.genome = round((dominant_species.genome + recessive_species.genome) / 2)
 	new_seed.name = "[new_plant.name] seed"
@@ -469,6 +468,9 @@
 	splice_chance -= genome_delta * 10
 	splice_chance -= seed_one.seed_damage
 	splice_chance -= seed_two.seed_damage
+
+	for(var/datum/plant_gene/splicability/gene in plant_one.gene_holder.gene_list + plant_two.gene_holder.gene_list)
+		splice_chance += gene.modifier
 
 	return min(splice_chance, 0)
 

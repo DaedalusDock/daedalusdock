@@ -9,6 +9,15 @@
 	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 
+	base_health = 80
+	base_maturation = 120
+	base_production = 200
+	base_harvest_amt = 5
+	base_harvest_yield = 2
+	base_endurance = 3
+
+	genome = 19
+
 	latent_genes = list(/datum/plant_gene/product_trait/juicing)
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.02, /datum/reagent/consumable/nutriment = 0.2, /datum/reagent/water = 0.04)
 	possible_mutations = list(/datum/plant_mutation/pineapple_apple)

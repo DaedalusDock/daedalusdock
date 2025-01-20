@@ -12,7 +12,16 @@
 	growthstages = 1
 	base_harvest_yield = 4
 
-	base_endurance = 25
+	base_health = 30
+	base_maturation = 40
+	base_production = 80
+	base_harvest_amt = 1
+	base_harvest_yield = 8
+	base_endurance = 5
+
+	genome = 12
+
+	latent_genes = list(/datum/plant_gene/damage_mod/vulnerability)
 
 	reagents_per_potency = list(
 		/datum/reagent/consumable/nutriment/vitamin = 0.04,

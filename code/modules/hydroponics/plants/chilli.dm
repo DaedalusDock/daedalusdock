@@ -7,10 +7,19 @@
 	icon_grow = "chili-grow" // Uses one growth icons set for all the subtypes
 	icon_dead = "chili-dead" // Same for the dead icon
 
-	base_harvest_yield = 4
+	base_health = 20
+	base_maturation = 60
+	base_production = 100
+	base_harvest_amt = 3
+	base_harvest_yield = 3
+	base_endurance = 3
+
+	genome = 17
 
 	seed_path = /obj/item/seeds/chili
 	product_path = /obj/item/food/grown/chili
+
+	latent_genes = list(/datum/plant_gene/growth_mod/slow)
 
 	possible_mutations = list(/datum/plant_mutation/chilli_ghost)
 	reagents_per_potency = list(/datum/reagent/consumable/capsaicin = 0.25, /datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.04)
@@ -39,10 +48,8 @@
 	species = "chilighost"
 	name = "ghost chili plants"
 
-	base_harvest_yield = 3
 	product_path = /obj/item/food/grown/ghost_chili
 	seed_path = /obj/item/seeds/chili/ghost
-	base_harvest_yield = 3
 
 	innate_genes = list(/datum/plant_gene/product_trait/backfire/chili_heat)
 

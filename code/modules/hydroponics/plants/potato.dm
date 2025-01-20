@@ -8,6 +8,16 @@
 	icon_grow = "potato-grow"
 	icon_dead = "potato-dead"
 
+	base_health = 40
+	base_maturation = 80
+	base_production = 160
+	base_harvest_amt = 1
+	base_harvest_yield = 4
+	base_endurance = 10
+
+	genome = 16
+	force_single_harvest = TRUE
+
 	seed_path = /obj/item/seeds/potato
 	product_path = /obj/item/food/grown/potato
 

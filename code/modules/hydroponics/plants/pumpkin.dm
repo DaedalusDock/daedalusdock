@@ -8,9 +8,18 @@
 	icon_grow = "pumpkin-grow"
 	icon_dead = "pumpkin-dead"
 
+	base_health = 60
+	base_maturation = 100
+	base_production = 170
+	base_harvest_amt = 4
+	base_harvest_yield = 2
+	base_endurance = 10
+
+	genome = 19
+	force_single_harvest = TRUE
+
 	seed_path = /obj/item/seeds/pumpkin
 	product_path = /obj/item/food/grown/pumpkin
-	base_harvest_amt =3
 
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.2)
 

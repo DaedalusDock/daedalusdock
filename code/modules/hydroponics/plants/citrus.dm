@@ -20,6 +20,17 @@
 	seed_path = /obj/item/seeds/orange
 	product_path = /obj/item/food/grown/citrus/orange
 
+	base_health = 20
+	base_maturation = 60
+	base_production = 100
+	base_harvest_amt = 3
+	base_harvest_yield = 2
+	base_endurance = 3
+
+	genome = 21
+
+	latent_genes = list(/datum/plant_gene/splicability/positive, /datum/plant_gene/damage_mod/vulnerability)
+
 	possible_mutations = list(/datum/plant_mutation/lime, /datum/plant_mutation/lemon)
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.05)
 
@@ -52,6 +63,17 @@
 	seed_path = /obj/item/seeds/lime
 	product_path = /obj/item/food/grown/citrus/lime
 
+	base_health = 30
+	base_maturation = 30
+	base_production = 130
+	base_harvest_amt = 3
+	base_harvest_yield = 3
+	base_endurance = 3
+
+	genome = 21
+
+	latent_genes = list(/datum/plant_gene/splicability/negative)
+
 	possible_mutations = list(/datum/plant_mutation/lemon)
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.05)
 
@@ -83,6 +105,15 @@
 
 	seed_path = /obj/item/seeds/lemon
 	product_path = /obj/item/food/grown/citrus/lemon
+
+	base_health = 30
+	base_maturation = 100
+	base_production = 130
+	base_harvest_amt = 3
+	base_harvest_yield = 3
+	base_endurance = 3
+
+	genome = 21
 
 	possible_mutations = list(/datum/plant_mutation/lemon_fire, /datum/plant_mutation/lime)
 

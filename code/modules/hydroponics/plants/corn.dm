@@ -12,12 +12,22 @@
 
 	growthstages = 3
 
+	base_health = 20
+	base_maturation = 60
+	base_production = 110
+	base_harvest_amt = 3
+	base_harvest_yield = 3
+	base_endurance = 2
+
+	genome = 10
+
 	reagents_per_potency = list(
 		/datum/reagent/consumable/cornoil = 0.2,
 		/datum/reagent/consumable/nutriment/vitamin = 0.04,
 		/datum/reagent/consumable/nutriment = 0.1
 	)
 
+	latent_genes = list(/datum/plant_gene/splicability/negative)
 	possible_mutations = list(/datum/plant_mutation/corn_snapscorn)
 
 /obj/item/seeds/corn

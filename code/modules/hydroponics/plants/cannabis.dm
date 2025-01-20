@@ -11,6 +11,16 @@
 	seed_path = /obj/item/seeds/cannabis
 	product_path = /obj/item/food/grown/cannabis
 
+	base_health = 10
+	base_maturation = 30
+	base_production = 80
+	base_harvest_amt = 1
+	base_harvest_yield = 6
+	base_endurance = 0
+
+	genome = 2
+
+	latent_genes = list(/datum/plant_gene/yield_mod/negative)
 	reagents_per_potency = list(/datum/reagent/drug/cannabis = 0.15)
 
 	possible_mutations = list(

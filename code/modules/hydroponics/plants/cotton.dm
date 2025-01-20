@@ -10,6 +10,16 @@
 	seed_path = /obj/item/seeds/cotton
 	product_path = /obj/item/grown/cotton
 
+	base_health = 10
+	base_maturation = 40
+	base_production = 150
+	base_harvest_amt = 4
+	base_harvest_yield = 4
+	base_endurance = 0
+
+	genome = 5
+
+	latent_genes = list(/datum/plant_gene/growth_mod/slow)
 	possible_mutations = list(
 		/datum/plant_mutation/cotton_durathread
 	)

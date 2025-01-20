@@ -8,6 +8,16 @@
 	icon_dead = "herbs-dead"
 	growthstages = 2
 
+	base_health = 20
+	base_maturation = 30
+	base_production = 100
+	base_harvest_amt = 1
+	base_harvest_yield = 5
+	base_endurance = 0
+
+	genome = 3
+	force_single_harvest = TRUE
+
 	seed_path = /obj/item/seeds/herbs
 	product_path = /obj/item/food/grown/herbs
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.1)

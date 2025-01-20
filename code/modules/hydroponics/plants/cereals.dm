@@ -6,11 +6,22 @@
 
 	seed_path = /obj/item/seeds/wheat
 	product_path = /obj/item/food/grown/wheat
-	base_harvest_amt =4
 
 	reagents_per_potency = list(
 		/datum/reagent/consumable/nutriment = 0.04,
 	)
+
+	base_health = 15
+	base_maturation = 20
+	base_production = 40
+	base_harvest_amt = 2
+	base_harvest_yield = 5
+	base_endurance = 0
+
+	genome = 10
+	force_single_harvest = TRUE
+
+	latent_genes = list(/datum/plant_gene/growth_mod/fast, /datum/plant_gene/continous_damage)
 
 	possible_mutations = list(
 		/datum/plant_mutation/wheat_oat,

@@ -6,6 +6,16 @@
 	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
 
+	base_health = 20
+	base_maturation = 40
+	base_production = 80
+	base_harvest_amt = 1
+	base_harvest_yield = 8
+	base_endurance = 5
+
+	genome = 12
+	force_single_harvest = TRUE
+
 	seed_path = /obj/item/seeds/carrot
 	product_path = /datum/plant/carrot
 

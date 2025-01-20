@@ -198,7 +198,7 @@
 	growth = growing.get_growth_for_state(PLANT_MATURE)
 
 	var/quality = 1
-	var/max_yield = 10
+	var/max_yield = HYDRO_MAX_YIELD
 	var/harvest_yield = growing.get_effective_stat(PLANT_STAT_YIELD)
 	var/potency = growing.get_scaled_potency()
 	var/endurance = growing.get_effective_stat(PLANT_STAT_ENDURANCE)
@@ -218,6 +218,9 @@
 	if(!product_path)
 		return TRUE
 
+	for(var/datum/plant_gene/yield_mod/gene in growing.gene_holder.gene_list)
+		max_yield = ceil(max_yield * gene.multiplier)
+
 	var/bonus_yield_prob = 0
 	if(harvest_yield > max_yield)
 		bonus_yield_prob = harvest_yield - max_yield
@@ -226,6 +229,8 @@
 	harvest_yield = round(max(harvest_yield, 0))
 
 	var/turf/T = user?.drop_location() || drop_location()
+
+	var/can_produce_seed = growing.force_single_harvest || !growing.gene_holder.has_active_gene_of_type(/datum/plant_gene/seedless)
 
 	#warn impl quality
 	for(var/i in 1 to harvest_yield)
@@ -237,19 +242,25 @@
 		var/atom/movable/product = new product_path(T, growing)
 		product.add_fingerprint(user)
 
-	// Healthy plants keep producing.
-	if(plant_health >= growing.base_health * 4)
-		bonus_yield_prob += 20
+		// We want to consistently offer seeds, but if harvest_yield is high we want to curb the amount of seeds available to reduce lag.
+		if(can_produce_seed && prob(80 / ceil(harvest_yield / 2)))
+			var/obj/item/new_seed = growing.CopySeed()
+			new_seed.forceMove(T)
 
-		if(prob(bonus_yield_prob))
-			to_chat(user, span_notice("The [growing.name] glisten."))
+	if(!growing.gene_holder.has_active_gene_of_type(/datum/plant_gene/immortal))
+		// Healthy plants keep producing.
+		if(plant_health >= growing.base_health * 4)
+			bonus_yield_prob += 20
+
+			if(prob(bonus_yield_prob))
+				to_chat(user, span_notice("The [growing.name] glistens."))
+			else
+				growing.base_harvest_amt--
+
 		else
 			growing.base_harvest_amt--
 
-	else
-		growing.base_harvest_amt--
-
-	if(growing.base_harvest_amt <= 0)
+	if(growing.force_single_harvest || growing.base_harvest_amt <= 0)
 		plant_death()
 		return TRUE
 

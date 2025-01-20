@@ -3,6 +3,14 @@
 
 	growing_icon = 'icons/obj/hydroponics/growing_flowers.dmi'
 
+	base_health = 20
+	base_maturation = 30
+	base_production = 100
+	base_harvest_amt = 1
+	base_harvest_yield = 5
+	base_endurance = 0
+
+	genome = 7
 
 // Poppy
 /datum/plant/flower/poppy

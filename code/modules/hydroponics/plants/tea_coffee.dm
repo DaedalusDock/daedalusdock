@@ -6,6 +6,16 @@
 	growthstages = 5
 	icon_dead = "tea-dead"
 
+	base_health = 20
+	base_maturation = 20
+	base_production = 60
+	base_harvest_amt = 1
+	base_harvest_yield = 5
+	base_endurance = 3
+
+	genome = 1
+	force_single_harvest = TRUE
+
 	seed_path = /obj/item/seeds/tea
 	product_path = /obj/item/food/grown/tea
 

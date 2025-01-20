@@ -10,8 +10,17 @@
 	seed_path = /obj/item/seeds/tomato
 	product_path = /obj/item/food/grown/tomato
 
+	base_health = 20
+	base_maturation = 75
+	base_production = 110
+	base_harvest_amt = 3
+	base_harvest_yield = 3
+	base_endurance = 3
+
+	genome = 18
+
 	innate_genes = list(/datum/plant_gene/product_trait/squash)
-	latent_genes = list(/datum/plant_gene/quality/inferior)
+	latent_genes = list(/datum/plant_gene/quality/inferior, /datum/plant_gene/splicability/positive)
 
 	reagents_per_potency = list(/datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.1)
 
@@ -81,6 +90,7 @@
 
 	seed_path = /obj/item/seeds/tomato/blue
 	product_path = /obj/item/food/grown/tomato/blue
+
 	base_harvest_yield = 2
 
 	innate_genes = list(/datum/plant_gene/product_trait/slip)

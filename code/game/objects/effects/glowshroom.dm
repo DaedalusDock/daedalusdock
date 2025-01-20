@@ -188,8 +188,7 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 		if(shroom_count >= place_count)
 			continue
 
-		var/seed_type = myseed.plant_datum.seed_path
-		var/obj/item/seeds/seed_copy = new seed_type(null, myseed.plant_datum)
+		var/obj/item/seeds/seed_copy = myseed.plant_datum.CopySeed()
 		var/obj/structure/glowshroom/child = new type(new_loc, seed_copy)
 		child.generation = generation + 1
 

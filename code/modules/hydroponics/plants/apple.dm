@@ -21,7 +21,15 @@
 
 	seed_path = /obj/item/seeds/apple
 	product_path = /obj/item/food/grown/apple
+
+	base_health = 40
+	base_maturation = 200
+	base_production = 260
+	base_harvest_amt = 10
 	base_harvest_yield = 3
+	base_endurance = 5
+
+	genome = 19
 
 	innate_genes = list(/datum/plant_gene/product_trait/one_bite)
 	latent_genes = list(/datum/plant_gene/quality/superior, /datum/plant_gene/unstable)

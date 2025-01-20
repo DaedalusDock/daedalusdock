@@ -6,6 +6,16 @@
 	seed_path = /obj/item/seeds/ambrosia
 	product_path = /obj/item/food/grown/ambrosia
 
+	base_health = 30
+	base_maturation = 30
+	base_production = 150
+	base_harvest_amt = 1
+	base_harvest_yield = 5
+	base_endurance = 0
+
+	genome = 1 //the progenitor. or something.
+	force_single_harvest = TRUE
+
 	possible_mutations = list(/datum/plant_mutation/ambrosia_deus)
 	reagents_per_potency = list(
 		/datum/reagent/medicine/kelotane = 0.1,

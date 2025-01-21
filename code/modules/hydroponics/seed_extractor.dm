@@ -59,7 +59,7 @@
 
 /obj/machinery/seed_extractor
 	name = "Plantmaster Mk.V"
-	desc = "Extracts and bags seeds from produce."
+	desc = "An advanced and expensive device capable of manipulating the DNA of seeds."
 	icon = 'icons/obj/hydroponics/equipment.dmi'
 	icon_state = "sextractor"
 	density = TRUE
@@ -91,7 +91,7 @@
 	mob/living/user,
 )
 
-	if(held_item?.get_plant_datum())
+	if(!istype(held_item, /obj/item/seeds) && held_item?.get_plant_datum())
 		context[SCREENTIP_CONTEXT_LMB] = "Make seeds"
 		return CONTEXTUAL_SCREENTIP_SET
 

@@ -1966,10 +1966,6 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
-"zX" = (
-/obj/machinery/hydroponics/constructable,
-/turf/open/floor/iron,
-/area/station/commons/storage/primary)
 "Ao" = (
 /obj/effect/turf_decal/plaque{
 	icon_state = "L9"
@@ -2376,10 +2372,6 @@
 /obj/machinery/chem_recipe_debug,
 /turf/open/floor/iron,
 /area/station/medical/chemistry)
-"Nd" = (
-/obj/machinery/vending/hydroseeds,
-/turf/open/floor/iron,
-/area/station/commons/storage/primary)
 "NN" = (
 /obj/structure/fans/tiny,
 /obj/structure/cable/smart_cable/color/yellow,
@@ -2588,10 +2580,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
-"TR" = (
-/obj/machinery/vending/hydronutrients,
-/turf/open/floor/iron,
-/area/station/commons/storage/primary)
 "UI" = (
 /obj/machinery/door/airlock,
 /obj/structure/cable/smart_cable/color/yellow,
@@ -7598,7 +7586,7 @@ cS
 hf
 dr
 dJ
-TR
+dJ
 dJ
 dI
 dJ
@@ -7690,7 +7678,7 @@ Tg
 xN
 ds
 dJ
-Nd
+dJ
 dJ
 dI
 dJ
@@ -7783,7 +7771,7 @@ jm
 dt
 dJ
 dD
-zX
+dJ
 ax
 dJ
 XZ

@@ -71,21 +71,26 @@
 
 	tray.attack_hand(user)
 	var/list/obj/item/all_harvested_items = list()
+	var/list/obj/item/harvested_seeds = list()
+	var/list/obj/item/produce = list()
 	for(var/obj/item/harvested_food in user.drop_location())
-		all_harvested_items += harvested_food
+		if(istype(harvested_food, /obj/item/seeds))
+			harvested_seeds += harvested_food
+		else
+			produce += harvested_food
 
-	if(!all_harvested_items.len)
+	if(!produce.len)
 		TEST_FAIL("Hydroponics harvest from [saved_name] resulted in 0 harvest.")
 
-	TEST_ASSERT_EQUAL(all_harvested_items.len, expected_yield, "Hydroponics harvest from [saved_name] only harvested [all_harvested_items.len] items instead of [expected_yield] items.")
-	TEST_ASSERT(all_harvested_items[1].reagents, "Hydroponics harvest from [saved_name] had no reagent container.")
-	TEST_ASSERT_EQUAL(all_harvested_items[1].reagents.maximum_volume, max_volume, "Hydroponics harvest from [saved_name] [double_chemicals ? "did not have its reagent capacity doubled to [max_volume] properly." : "did not have its reagents capped at [max_volume] properly."]")
+	TEST_ASSERT_EQUAL(produce.len, expected_yield, "Hydroponics harvest from [saved_name] harvested [all_harvested_items.len] items instead of [expected_yield] items.")
+	TEST_ASSERT(produce[1].reagents, "Hydroponics harvest from [saved_name] had no reagent container.")
+	TEST_ASSERT_EQUAL(produce[1].reagents.maximum_volume, max_volume, "Hydroponics harvest from [saved_name] [double_chemicals ? "did not have its reagent capacity doubled to [max_volume] properly." : "did not have its reagents capped at [max_volume] properly."]")
 
 	var/expected_nutriments = planted.reagents_per_potency[/datum/reagent/consumable/nutriment] * max_volume * (POTENCY_SCALE_AT_100 / 100)
 	var/expected_vitamins = planted.reagents_per_potency[/datum/reagent/consumable/nutriment/vitamin] * max_volume * (POTENCY_SCALE_AT_100 / 100)
 
-	var/found_nutriments = all_harvested_items[1].reagents.get_reagent_amount(/datum/reagent/consumable/nutriment)
-	var/found_vitamins = all_harvested_items[1].reagents.get_reagent_amount(/datum/reagent/consumable/nutriment/vitamin)
+	var/found_nutriments = produce[1].reagents.get_reagent_amount(/datum/reagent/consumable/nutriment)
+	var/found_vitamins = produce[1].reagents.get_reagent_amount(/datum/reagent/consumable/nutriment/vitamin)
 	QDEL_LIST(all_harvested_items) //We got everything we needed from our harvest, we can clean it up.
 
 	TEST_ASSERT_EQUAL(found_nutriments, expected_nutriments, "Hydroponics harvest from [saved_name] has a [expected_nutriments] nutriment gene (expecting [expected_nutriments]) but only had [found_nutriments] units of nutriment inside.")

@@ -4,6 +4,8 @@
 
 	/// Chance to mutate on trigger.
 	var/mutation_chance = 10
+	/// Chance to mutation on infusion.
+	var/infusion_chance = 80
 
 	/// Stat ranges that must be fallen into.
 	var/list/ranges = list(

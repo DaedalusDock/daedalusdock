@@ -340,5 +340,5 @@
 			if(!ispath(R.type, infusion_requirement))
 				continue
 
-			if(prob(mutation.mutation_chance) && mutation.can_mutate(target_plant))
+			if(prob(mutation.infusion_chance) && mutation.can_mutate(target_plant))
 				return target_plant.gene_holder.apply_mutation(mutation)

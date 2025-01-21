@@ -68,7 +68,7 @@
 		PLANT_STAT_HARVEST_AMT = list(-INFINITY, INFINITY),
 		PLANT_STAT_YIELD = list(-INFINITY, INFINITY)
 	)
-	mutation_chance = 100
+	infusion_chance = 100
 
 /datum/plant/cotton/durathread
 	species = "durathread"

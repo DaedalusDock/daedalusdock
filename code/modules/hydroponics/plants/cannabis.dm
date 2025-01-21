@@ -148,7 +148,7 @@
 		/datum/reagent/medicine/haloperidol,
 		/datum/reagent/toxin/mindbreaker,
 	)
-	mutation_chance = 100
+	infusion_chance = 100
 
 /datum/plant_mutation/omegaweed/New()
 	infusion_reagents += typesof(/datum/reagent/drug)

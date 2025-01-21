@@ -220,6 +220,9 @@
 			prob_modifier -= gene.mutation_chance_modifier
 
 	for(var/datum/plant_mutation/mutation as anything in parent.possible_mutations)
+		if(length(mutation.infusion_reagents))
+			continue
+
 		if(!prob((mutation.mutation_chance + prob_modifier) * mutation_power))
 			continue
 

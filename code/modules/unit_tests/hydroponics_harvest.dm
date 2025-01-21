@@ -74,6 +74,7 @@
 	var/list/obj/item/harvested_seeds = list()
 	var/list/obj/item/produce = list()
 	for(var/obj/item/harvested_food in user.drop_location())
+		all_harvested_items += harvested_food
 		if(istype(harvested_food, /obj/item/seeds))
 			harvested_seeds += harvested_food
 		else

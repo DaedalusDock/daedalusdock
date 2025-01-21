@@ -41,10 +41,6 @@
 /// Gene can be obtained via random seed.
 #define PLANT_GENE_MUTATABLE (1<<1)
 
-/// -- Flags for seeds. --
-/// Allows a plant to wild mutate (mutate on haravest) at a certain instability.
-#define MUTATE_EARLY (1<<0)
-
 /// -- Flags for traits. --
 /// Caps the plant's yield at 5 instead of 10.
 #define TRAIT_HALVES_YIELD (1<<0)

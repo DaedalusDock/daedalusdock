@@ -12,10 +12,6 @@
 	/// Typepath of plant_datum to spawn on init.
 	var/tmp/plant_type
 
-	///Determines if the plant should be allowed to mutate early at 30+ instability.
-	var/seed_flags = MUTATE_EARLY
-	#warn remove?
-
 	/// The plant within.
 	var/tmp/datum/plant/plant_datum
 

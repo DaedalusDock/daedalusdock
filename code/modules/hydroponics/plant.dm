@@ -217,7 +217,7 @@
 	. = base_val
 
 	. += gene_holder.get_effective_stat(stat)
-	#warn TODO: split get_effective_stat
+
 	if(stat == PLANT_STAT_YIELD && HAS_TRAIT(src, TRAIT_HALVES_YIELD))
 		. /= 2
 

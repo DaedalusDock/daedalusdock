@@ -32,7 +32,7 @@ PROCESSING_SUBSYSTEM_DEF(hydroponics)
 /datum/controller/subsystem/processing/hydroponics/proc/splice_alleles(allele_one, allele_two, value_one, value_two)
 	if(allele_one == allele_two)
 		// Both were dominant or recessive, average them
-		return round((allele_one + allele_two) / 2)
+		return round((value_one + value_two) / 2)
 
 	var/dominance = allele_one - allele_two
 

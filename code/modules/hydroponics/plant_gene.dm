@@ -1,5 +1,5 @@
 /datum/plant_gene
-	var/name = "BAD GENE"
+	var/name = "BAD GENE NAME"
 	var/desc = ""
 
 

@@ -1,6 +1,7 @@
 /// Holymelon's anti-magic trait. Charges based on potency.
 /datum/plant_gene/product_trait/anti_magic
 	name = "Anti-Magic Vacuoles"
+	desc = "Products carry anti-magic properties."
 	/// The amount of anti-magic blocking uses we have.
 	var/shield_uses = 1
 

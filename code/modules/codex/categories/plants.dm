@@ -14,8 +14,18 @@
 		P = new P
 		var/list/mechanics = list()
 
-		mechanics += "It grows in [(P.base_maturation) * (/datum/controller/subsystem/processing/hydroponics::wait / 10)] seconds."
-		mechanics += "It can produce harvests after [P.base_production * (/datum/controller/subsystem/processing/hydroponics::wait / 10)] more seconds."
+		mechanics += "It grows in [P.base_maturation] seconds."
+		mechanics += "It can produce harvests after [P.base_production] more seconds."
+
+		if(length(P.latent_genes))
+			mechanics += "It carries the following latent genes:"
+			for(var/datum/plant_gene/path as anything in P.latent_genes)
+				mechanics += "[FOURSPACES] [initial(path.desc) ? CODEX_LINK(initial(path.name), "[path]") : initial(path.name)]"
+
+		if(length(P.innate_genes))
+			mechanics += "It carries the following innate genes:"
+			for(var/datum/plant_gene/path as anything in P.innate_genes)
+				mechanics += "[FOURSPACES] [initial(path.desc) ? CODEX_LINK(initial(path.name), "[path]") : initial(path.name)]"
 
 		var/datum/plant_mutation/mutation_source = mutations_by_plant[P.type]
 		if(mutation_source)

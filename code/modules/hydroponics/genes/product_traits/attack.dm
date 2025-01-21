@@ -1,5 +1,6 @@
 /// Traits that turn a plant into a weapon, giving them force and effects on attack.
 /datum/plant_gene/product_trait/attack
+	abstract_type = /datum/plant_gene/product_trait/attack
 	name = "On Attack Trait"
 	/// The multiplier we apply to the potency to calculate force. Set to 0 to not affect the force.
 	var/force_multiplier = 0
@@ -79,6 +80,7 @@
 /// Novaflower's attack effects (sets people on fire) + degradation on attack
 /datum/plant_gene/product_trait/attack/novaflower_attack
 	name = "Heated Petals"
+	desc = "The petals of the product are hot enough to ignite flammable objects."
 	force_multiplier = 0.2
 	degrades_after_hit = TRUE
 	degradation_noun = "petals"
@@ -114,10 +116,12 @@
 /// Normal nettle's force + degradation on attack
 /datum/plant_gene/product_trait/attack/nettle_attack
 	name = "Sharpened Leaves"
+	desc = "The leaves of the product are abnormally sharp."
 	force_multiplier = 0.2
 	degrades_after_hit = TRUE
 
 /// Deathnettle force + degradation on attack
 /datum/plant_gene/product_trait/attack/nettle_attack/death
 	name = "Aggressive Sharpened Leaves"
+	desc = "The leaves of the product are capable of slicing flesh with ease."
 	force_multiplier = 0.4

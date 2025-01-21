@@ -5,6 +5,7 @@
  */
 /datum/plant_gene/product_trait/battery
 	name = "Capacitive Cell Production"
+	desc = "The cells are of the product are capable of holding electrical charge."
 	gene_flags = PLANT_GENE_MUTATABLE
 	/// The number of cables needed to make a battery.
 	var/cables_needed_per_battery = 5

@@ -3097,7 +3097,6 @@
 #include "code\modules\hydroponics\genes\splicing.dm"
 #include "code\modules\hydroponics\genes\stat_mods\damage.dm"
 #include "code\modules\hydroponics\genes\stat_mods\growth.dm"
-#include "code\modules\hydroponics\genes\stat_mods\health.dm"
 #include "code\modules\hydroponics\genes\stat_mods\yield.dm"
 #include "code\modules\hydroponics\plants\nettle.dm"
 #include "code\modules\hydroponics\plants\starthistle.dm"

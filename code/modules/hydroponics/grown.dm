@@ -99,7 +99,17 @@
 				eatverbs = eatverbs,\
 				bite_consumption = bite_consumption,\
 				microwaved_type = microwaved_type,\
-				junkiness = junkiness)
+				junkiness = junkiness,\
+				on_consume = CALLBACK(src, PROC_REF(on_consume))\
+			)
+
+
+/// Callback for when the food item is FULLY eaten.
+/obj/item/food/grown/proc/on_consume(mob/living/eater, mob/living/feeder)
+	if(prob(20) && !plant_datum.gene_holder.has_active_gene_of_type(/datum/plant_gene/seedless))
+		var/obj/item/seeds/seed = plant_datum.CopySeed()
+		eater.visible_message(span_notice("</b>[eater]</b> spits out a seed."))
+		seed.forceMove(eater.drop_location())
 
 /obj/item/food/grown/proc/make_dryable()
 	AddElement(/datum/element/dryable, type)

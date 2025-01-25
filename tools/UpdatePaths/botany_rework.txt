@@ -22,3 +22,6 @@
 /obj/item/food/grown/ambrosia/vulgaris : /obj/item/food/grown/ambrosia
 /obj/item/cultivator/@SUBTYPES : @DELETE
 /obj/item/reagent_containers/spray/pestspray : @DELETE
+/obj/item/secateurs : @DELETE
+/obj/item/grown/bananapeel/bluespace : @DELETE
+/obj/item/reagent_containers/spray/weedspray : @DELETE

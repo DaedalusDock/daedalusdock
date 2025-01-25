@@ -18,12 +18,9 @@
 
 	possible_mutations = list(/datum/plant_mutation/ambrosia_deus)
 	reagents_per_potency = list(
-		/datum/reagent/medicine/kelotane = 0.1,
-		/datum/reagent/medicine/bicaridine = 0.1,
-		/datum/reagent/drug/space_drugs = 0.15,
+		/datum/reagent/ichor = 0.15,
 		/datum/reagent/consumable/nutriment/vitamin = 0.04,
-		/datum/reagent/consumable/nutriment = 0.05,
-		/datum/reagent/toxin = 0.1,
+		/datum/reagent/consumable/nutriment = 0.05
 	)
 
 /obj/item/seeds/ambrosia
@@ -53,6 +50,14 @@
 	seed_path = /obj/item/seeds/ambrosia/deus
 	product_path = /obj/item/food/grown/ambrosia/deus
 	possible_mutations = list(/datum/plant_mutation/ambrosia_gaia)
+
+	reagents_per_potency = list(
+		/datum/reagent/medicine/tricordrazine = 0.15,
+		/datum/reagent/medicine/synaptizine = 0.15,
+		/datum/reagent/drug/space_drugs = 0.1,
+		/datum/reagent/consumable/nutriment/vitamin = 0.04,
+		/datum/reagent/consumable/nutriment = 0.05
+	)
 
 	rarity = 40
 

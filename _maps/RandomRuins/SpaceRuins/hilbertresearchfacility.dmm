@@ -2083,7 +2083,6 @@
 /obj/structure/table/reinforced/rglass,
 /obj/item/hatchet,
 /obj/item/shovel/spade,
-/obj/item/secateurs,
 /turf/open/floor/glass,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "TO" = (
@@ -2097,11 +2096,6 @@
 /obj/machinery/light/cold/directional/north,
 /obj/structure/hedge/opaque,
 /turf/open/floor/iron/grimy,
-/area/ruin/space/has_grav/powered/hilbertresearchfacility)
-"TV" = (
-/obj/structure/table/reinforced/rglass,
-/obj/item/grown/bananapeel/bluespace,
-/turf/open/floor/glass,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "Ui" = (
 /obj/effect/decal/cleanable/dirt/dust,
@@ -2588,7 +2582,7 @@ Rj
 CO
 Rj
 Ti
-TV
+zq
 Bo
 Ut
 Ut

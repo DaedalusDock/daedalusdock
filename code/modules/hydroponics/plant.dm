@@ -279,14 +279,14 @@
 		//the plant will always have at least 1u of each of the reagents in its reagent production traits
 		var/amount = max(1, round((edible_vol) * (potency/100) * reagent_overflow_mod, 1)) //the plant will always have at least 1u of each of the reagents in its reagent production traits
 
-		var/list/data
+		var/list/data = list("potency" = potency)
 		switch(reagent_path)
 			if(/datum/reagent/blood)
-				data = list("blood_type" = /datum/blood/human/omin)
+				data["blood_type"] = /datum/blood/human/omin
 
 			if(/datum/reagent/consumable/nutriment, /datum/reagent/consumable/nutriment/vitamin)
 				if(istype(grown_edible))
-					data = grown_edible.tastes // apple tastes of apple.
+					data += grown_edible.tastes // apple tastes of apple.
 
 		product.reagents.add_reagent(reagent_path, amount, data)
 

@@ -100,7 +100,44 @@
 		return
 
 	else if(istype(O, /obj/item/gun/energy/floragun))
-		#warn impl somatoray
+		var/obj/item/gun/energy/floragun/flowergun = O
+		if(flowergun.cell.charge < flowergun.cell.maxcharge)
+			to_chat(user, span_notice("[flowergun] must be fully charged."))
+			return
+
+		if(!growing)
+			to_chat(user, span_warning("[src] is empty."))
+			return
+
+		if(growing.gene_holder.endurance <= FLORA_GUN_MIN_ENDURANCE)
+			to_chat(user, span_warning("[growing.name] is not hardy enough to sequence its mutation."))
+			return
+
+		var/list/fresh_mut_list = list()
+		for(var/datum/plant_mutation/mut in growing.possible_mutations)
+			if(length(mut.infusion_reagents))
+				continue
+			if(!mut.can_mutate(growing))
+				continue
+
+			var/datum/plant/plant_path = mut.plant_type
+			fresh_mut_list[initial(plant_path.name)] = mut
+
+		if(!length(fresh_mut_list))
+			to_chat(user, span_warning("[growing.name] is unable to mutate."))
+			return
+
+		var/locked_mutation = tgui_input_list(user, "Select a mutation", "Somatoray", sort_list(fresh_mut_list))
+		if(isnull(locked_mutation))
+			return
+		if(isnull(fresh_mut_list[locked_mutation]))
+			return
+		if(!user.canUseTopic(src))
+			return
+
+		flowergun.play_fire_sound()
+		flowergun.cell.use(flowergun.cell.charge)
+		flowergun.update_appearance()
 		return
 
 	else

@@ -578,7 +578,7 @@
 		plant_tick.yield_mod++
 
 	if(prob(BEE_POLLINATE_POTENCY_CHANCE))
-		plant_tick.plant_tick.potency_mod++
+		plant_tick.potency_mod++
 
 /datum/reagent/consumable/honey/affect_ingest(mob/living/carbon/C, removed)
 	holder.add_reagent(/datum/reagent/consumable/sugar, 3 * removed)

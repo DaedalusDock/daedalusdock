@@ -3867,7 +3867,6 @@
 #include "code\modules\hydroponics\hydroponics_tray\hydrotray_interaction.dm"
 #include "code\modules\hydroponics\hydroponics_tray\nu_hydro.dm"
 #include "code\modules\hydroponics\items\bottles.dm"
-#include "code\modules\hydroponics\items\cultivator.dm"
 #include "code\modules\hydroponics\items\hatchet.dm"
 #include "code\modules\hydroponics\items\plant_analyzer.dm"
 #include "code\modules\hydroponics\items\scythe.dm"

@@ -3008,10 +3008,6 @@
 /obj/effect/station_crash/devastating,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
-"OM" = (
-/obj/item/cultivator,
-/turf/open/floor/grass,
-/area/shuttle/escape)
 "OW" = (
 /obj/item/seeds/banana,
 /obj/item/seeds/grass,
@@ -6107,7 +6103,7 @@ nr
 mQ
 EL
 Py
-OM
+Vi
 Vi
 GU
 eu

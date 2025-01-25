@@ -317,7 +317,6 @@
 /area/station/ai_monitored/security/armory)
 "adQ" = (
 /obj/structure/table,
-/obj/item/cultivator,
 /obj/item/hatchet,
 /obj/structure/extinguisher_cabinet/directional/west,
 /obj/item/paper/guides/jobs/hydroponics,
@@ -7860,7 +7859,6 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
 	},
-/obj/item/cultivator,
 /obj/item/clothing/head/chefhat,
 /obj/machinery/camera/directional/west{
 	c_tag = "Service - Starboard"
@@ -17699,9 +17697,6 @@
 /obj/item/shovel/spade{
 	pixel_x = -4;
 	pixel_y = -2
-	},
-/obj/item/cultivator{
-	pixel_y = 3
 	},
 /obj/item/reagent_containers/glass/bucket{
 	pixel_x = 6;
@@ -43990,7 +43985,6 @@
 	},
 /area/station/ai_monitored/command/nuke_storage)
 "qri" = (
-/obj/item/cultivator,
 /obj/item/crowbar,
 /obj/item/plant_analyzer,
 /obj/item/reagent_containers/glass/bucket,
@@ -49866,7 +49860,6 @@
 /obj/item/shovel/spade,
 /obj/item/wrench,
 /obj/item/reagent_containers/glass/bucket,
-/obj/item/cultivator,
 /obj/item/wirecutters,
 /obj/machinery/airalarm/directional/south,
 /obj/effect/turf_decal/stripes/line{
@@ -51606,7 +51599,6 @@
 "tiF" = (
 /obj/structure/table,
 /obj/item/hatchet,
-/obj/item/cultivator,
 /obj/item/crowbar,
 /obj/item/reagent_containers/glass/bucket,
 /obj/item/plant_analyzer,
@@ -55547,7 +55539,6 @@
 /area/station/ai_monitored/aisat/exterior)
 "uKl" = (
 /obj/structure/table,
-/obj/item/cultivator,
 /obj/item/hatchet,
 /obj/item/crowbar,
 /obj/machinery/light/directional/north,
@@ -56821,10 +56812,6 @@
 /obj/structure/table,
 /obj/item/plant_analyzer{
 	pixel_x = -3
-	},
-/obj/item/cultivator{
-	pixel_x = 4;
-	pixel_y = 9
 	},
 /turf/open/floor/iron,
 /area/station/security/prison/garden)

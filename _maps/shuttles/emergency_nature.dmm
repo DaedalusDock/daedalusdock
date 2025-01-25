@@ -835,7 +835,6 @@
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
 "Fo" = (
-/obj/item/cultivator,
 /mob/living/simple_animal/hostile/lizard,
 /turf/open/floor/grass,
 /area/shuttle/escape)

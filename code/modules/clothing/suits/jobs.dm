@@ -16,7 +16,6 @@
 		/obj/item/seeds,
 		/obj/item/reagent_containers/glass/bottle,
 		/obj/item/reagent_containers/glass/beaker,
-		/obj/item/cultivator,
 		/obj/item/hatchet,
 		/obj/item/storage/bag/plants,
 	)

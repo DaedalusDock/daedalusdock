@@ -20,3 +20,4 @@
 /obj/item/food/grown/tomato/blue/bluespace : @DELETE
 /obj/item/geneshears : @DELETE
 /obj/item/food/grown/ambrosia/vulgaris : /obj/item/food/grown/ambrosia
+/obj/item/cultivator/@SUBTYPES : @DELETE

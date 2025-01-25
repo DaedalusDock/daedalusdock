@@ -50,9 +50,6 @@
 			SCREENTIP_CONTEXT_LMB = "Scan tray stats",
 			SCREENTIP_CONTEXT_RMB = "Scan tray chemicals"
 		),
-		/obj/item/cultivator = list(
-			SCREENTIP_CONTEXT_LMB = "Remove weeds",
-		),
 		/obj/item/shovel = list(
 			SCREENTIP_CONTEXT_LMB = "Clear tray",
 		),
@@ -408,8 +405,6 @@
 	if(update_icon)
 		update_appearance()
 
-/obj/machinery/hydroponics/proc/set_weedlevel(new_weed_level)
-	#warn impliment set_weed_level
 /**
  * Spawn Plant.
  * Upon using strange reagent on a tray, it will spawn a killer tomato or killer tree at random.

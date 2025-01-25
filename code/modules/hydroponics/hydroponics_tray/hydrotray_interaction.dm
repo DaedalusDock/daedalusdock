@@ -75,15 +75,6 @@
 			to_chat(user, span_warning("[src] already has seeds in it!"))
 			return
 
-	else if(istype(O, /obj/item/cultivator))
-		if(weedlevel > 0)
-			user.visible_message(span_notice("[user] uproots the weeds."), span_notice("You remove the weeds from [src]."))
-			set_weedlevel(0)
-			return
-		else
-			to_chat(user, span_warning("This plot is completely devoid of weeds! It doesn't need uprooting."))
-			return
-
 	else if(istype(O, /obj/item/storage/bag/plants))
 		attack_hand(user)
 		for(var/obj/item/food/grown/G in locate(user.x,user.y,user.z))
@@ -91,19 +82,17 @@
 		return
 
 	else if(istype(O, /obj/item/shovel/spade))
-		if(!seed && !weedlevel)
+		if(!seed)
 			to_chat(user, span_warning("[src] doesn't have any plants or weeds!"))
 			return
 
 		user.visible_message(span_notice("[user] starts digging out [src]'s plants..."),
 			span_notice("You start digging out [src]'s plants..."))
 
-		if(O.use_tool(src, user, 50, volume = 50) || (!seed && !weedlevel))
+		if(O.use_tool(src, user, 50, volume = 50))
 			user.visible_message(span_notice("[user] digs out the plants in [src]!"), span_notice("You dig out all of [src]'s plants!"))
-			if(seed) //Could be that they're just using it as a de-weeder
+			if(seed)
 				clear_plant()
-
-			set_weedlevel(0) //Has a side effect of cleaning up those nasty weeds
 			return
 
 	else if(istype(O, /obj/item/storage/part_replacer))

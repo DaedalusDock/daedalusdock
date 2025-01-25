@@ -417,15 +417,6 @@
 	category = list(DCAT_DINNERWARE)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
-/datum/design/cultivator
-	name = "Cultivator"
-	id = "cultivator"
-	build_type = AUTOLATHE | FABRICATOR
-	materials = list(/datum/material/iron=50)
-	build_path = /obj/item/cultivator
-	category = list(DCAT_BOTANICAL)
-	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
-
 /datum/design/plant_analyzer
 	name = "Plant Analyzer"
 	id = "plant_analyzer"

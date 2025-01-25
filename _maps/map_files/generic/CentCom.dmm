@@ -10596,10 +10596,6 @@
 /obj/item/seeds/cannabis{
 	pixel_y = 8
 	},
-/obj/item/cultivator{
-	pixel_x = -6;
-	pixel_y = 11
-	},
 /turf/open/floor/mineral/titanium/tiled,
 /area/centcom/syndicate_mothership/expansion_bioterrorism)
 "EB" = (
@@ -13755,7 +13751,6 @@
 /obj/item/shovel/spade{
 	pixel_y = -14
 	},
-/obj/item/cultivator,
 /turf/open/floor/wood,
 /area/centcom/central_command_areas/holding)
 "Ox" = (

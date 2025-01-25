@@ -2082,7 +2082,6 @@
 "TE" = (
 /obj/structure/table/reinforced/rglass,
 /obj/item/hatchet,
-/obj/item/cultivator,
 /obj/item/shovel/spade,
 /obj/item/secateurs,
 /turf/open/floor/glass,

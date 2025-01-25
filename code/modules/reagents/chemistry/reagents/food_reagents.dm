@@ -567,16 +567,18 @@
 	ingest_met = 0.2
 	taste_description = "sweetness"
 
-#warn honey
-// 	// On the other hand, honey has been known to carry pollen with it rarely. Can be used to take in a lot of plant qualities all at once, or harm the plant.
-// /datum/reagent/consumable/honey/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
-// 	. = ..()
-// 	if(chems.has_reagent(type, 1))
-// 		if(myseed && prob(20))
-// 			mytray.pollinate(1)
-// 		else
-// 			mytray.adjust_weedlevel(rand(1,2))
-// 			mytray.adjust_pestlevel(rand(1,2))
+
+// On the other hand, honey has been known to carry pollen with it rarely. Can be used to take in a lot of plant qualities all at once, or harm the plant.
+/datum/reagent/consumable/honey/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	. = ..()
+	if(volume < 1)
+		return
+
+	if(prob(BEE_POLLINATE_YIELD_CHANCE))
+		plant_tick.yield_mod++
+
+	if(prob(BEE_POLLINATE_POTENCY_CHANCE))
+		plant_tick.plant_tick.potency_mod++
 
 /datum/reagent/consumable/honey/affect_ingest(mob/living/carbon/C, removed)
 	holder.add_reagent(/datum/reagent/consumable/sugar, 3 * removed)

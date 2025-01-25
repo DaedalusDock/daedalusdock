@@ -276,7 +276,7 @@
 
 		var/edible_vol = grown_edible.reagents.maximum_volume || 0
 
-		 //the plant will always have at least 1u of each of the reagents in its reagent production traits
+		//the plant will always have at least 1u of each of the reagents in its reagent production traits
 		var/amount = max(1, round((edible_vol) * (potency/100) * reagent_overflow_mod, 1)) //the plant will always have at least 1u of each of the reagents in its reagent production traits
 
 		var/list/data

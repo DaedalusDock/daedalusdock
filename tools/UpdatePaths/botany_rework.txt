@@ -21,3 +21,4 @@
 /obj/item/geneshears : @DELETE
 /obj/item/food/grown/ambrosia/vulgaris : /obj/item/food/grown/ambrosia
 /obj/item/cultivator/@SUBTYPES : @DELETE
+/obj/item/reagent_containers/spray/pestspray : @DELETE

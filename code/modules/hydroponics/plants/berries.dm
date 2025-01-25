@@ -1,7 +1,7 @@
 // Berries
 /datum/plant/berry
 	species = "berry"
-	name = "Berry Bush"
+	name = "Berry"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 	icon_grow = "berry-grow" // Uses one growth icons set for all the subtypes
@@ -64,7 +64,7 @@
 
 /datum/plant/berry/poison
 	species = "poisonberry"
-	name = "Poison-Berry Bush"
+	name = "Poison-Berry"
 
 	product_path = /obj/item/food/grown/berries/poison
 	seed_path = /obj/item/seeds/berry/poison
@@ -121,7 +121,7 @@
 
 /datum/plant/berry/death
 	species = "deathberry"
-	name = "Death Berry Bush"
+	name = "Death Berry"
 
 	product_path = /obj/item/food/grown/berries/death
 	seed_path = /obj/item/seeds/berry/death
@@ -170,7 +170,7 @@
 
 /datum/plant/berry/glow
 	species = "glowberry"
-	name = "glowberry bush"
+	name = "Glowberry"
 
 	product_path = /obj/item/food/grown/berries/glow
 	seed_path = /obj/item/seeds/berry/glow
@@ -206,7 +206,7 @@
 // Grapes
 /datum/plant/grape
 	species = "grape"
-	name = "Grape Vine"
+	name = "Grape"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 	icon_grow = "grape-grow"
@@ -270,7 +270,7 @@
 
 /datum/plant/grape/green
 	species = "greengrape"
-	name = "green-grape Vine"
+	name = "Green-Grape"
 
 	seed_path = /obj/item/seeds/grape/green
 	product_path = /obj/item/food/grown/grapes/green
@@ -302,7 +302,7 @@
 // Toechtauese Berries
 /datum/plant/toechtauese
 	species = "toechtauese"
-	name  = "töchtaüse bush"
+	name = "Töchtaüse Berry"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 	icon_grow = "toechtauese-grow"

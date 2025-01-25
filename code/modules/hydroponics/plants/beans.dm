@@ -1,7 +1,7 @@
 // Soybeans
 /datum/plant/soybean
 	species = "soybean"
-	name = "soybean plants"
+	name = "Soybean"
 
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
 	icon_grow = "soybean-grow"
@@ -57,7 +57,7 @@
 
 /datum/plant/soybean/koi
 	species = "koibean"
-	name = "Koibean Plants"
+	name = "Koibean"
 
 	seed_path = /obj/item/seeds/soya/koi
 	product_path = /obj/item/food/grown/koibeans

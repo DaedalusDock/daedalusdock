@@ -226,8 +226,8 @@
 	var/quality = 1
 	var/max_yield = HYDRO_MAX_YIELD
 	var/harvest_yield = growing.get_effective_stat(PLANT_STAT_YIELD)
-	var/potency = growing.get_scaled_potency()
-	var/endurance = growing.get_effective_stat(PLANT_STAT_ENDURANCE)
+	// var/potency = growing.get_scaled_potency()
+	// var/endurance = growing.get_effective_stat(PLANT_STAT_ENDURANCE)
 
 	// Bonus yield for a healthy plant
 	if(plant_health > growing.base_health * 2)

@@ -1,7 +1,7 @@
 // Starthistle
 /datum/plant/starthistle
 	species = "starthistle"
-	name = "starthistle"
+	name = "Starthistle"
 
 	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_flowers.dmi'
@@ -24,7 +24,7 @@
 
 /datum/plant/galaxythistle
 	species = "galaxythistle"
-	name = "galaxythistle"
+	name = "Galaxythistle"
 
 	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_flowers.dmi'

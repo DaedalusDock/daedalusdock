@@ -12,7 +12,7 @@
 	)
 
 /datum/plant/apple
-	name = "apple"
+	name = "Apple"
 	species = "apple"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
@@ -74,7 +74,7 @@
 
 /datum/plant/apple/gold
 	species = "goldapple"
-	name = "Golden Apple Tree"
+	name = "Golden Apple"
 
 	seed_path = /obj/item/seeds/apple/gold
 	product_path = /obj/item/food/grown/apple/gold

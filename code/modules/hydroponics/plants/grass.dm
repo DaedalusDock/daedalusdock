@@ -1,7 +1,7 @@
 // Grass
 /datum/plant/grass
 	species = "grass"
-	name = "grass"
+	name = "Grass"
 
 	growthstages = 2
 	icon_grow = "grass-grow"
@@ -59,7 +59,7 @@
 
 /datum/plant/grass/fairy
 	species = "fairygrass"
-	name = "fairygrass"
+	name = "Fairygrass"
 
 	icon_grow = "fairygrass-grow"
 	icon_dead = "fairygrass-dead"

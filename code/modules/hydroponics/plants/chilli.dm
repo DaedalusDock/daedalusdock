@@ -1,7 +1,7 @@
 // Chili
 /datum/plant/chilli
 	species = "chili"
-	name = "chili plants"
+	name = "Chili"
 
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
 	icon_grow = "chili-grow" // Uses one growth icons set for all the subtypes
@@ -46,7 +46,7 @@
 
 /datum/plant/chilli/ghost
 	species = "chilighost"
-	name = "ghost chili plants"
+	name = "Ghost Chili"
 
 	product_path = /obj/item/food/grown/ghost_chili
 	seed_path = /obj/item/seeds/chili/ghost

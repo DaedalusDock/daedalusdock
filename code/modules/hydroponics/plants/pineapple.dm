@@ -1,7 +1,7 @@
 // Pineapple!
 /datum/plant/pineapple
 	species = "pineapple"
-	name = "pineapple plant"
+	name = "Pineapple"
 
 	product_path = /obj/item/food/grown/pineapple
 	seed_path = /obj/item/seeds/pineapple

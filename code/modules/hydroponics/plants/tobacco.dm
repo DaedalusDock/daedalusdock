@@ -1,7 +1,7 @@
 // Tobacco
 /datum/plant/tobacco
 	species = "tobacco"
-	name = "tobacco"
+	name = "Tobacco"
 
 	growthstages = 3
 	icon_dead = "tobacco-dead"
@@ -40,7 +40,7 @@
 
 /datum/plant/tobacco/space
 	species = "stobacco"
-	name = "space tobacco"
+	name = "Space Tobacco"
 
 	seed_path = /obj/item/seeds/tobacco/space
 	product_path = /obj/item/food/grown/tobacco/space

@@ -1,7 +1,7 @@
 //Random seeds; stats, traits, and plant type are randomized for each seed.
 /datum/plant/random
 	species = "?????"
-	name = "strange plant"
+	name = "Strange Plant"
 
 	icon_grow = "xpod-grow"
 	icon_dead = "xpod-dead"

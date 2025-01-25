@@ -1,7 +1,7 @@
 // Tomato
 /datum/plant/tomato
 	species = "tomato"
-	name = "tomato plant"
+	name = "Tomato"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 	icon_grow = "tomato-grow"
@@ -51,7 +51,7 @@
 
 /datum/plant/tomato/blood
 	species = "bloodtomato"
-	name = "blood tomato plant"
+	name = "Blood Tomato"
 
 	seed_path = /obj/item/seeds/tomato/blood
 	product_path = /obj/item/food/grown/tomato/blood
@@ -84,7 +84,7 @@
 
 /datum/plant/tomato/blue
 	species = "bluetomato"
-	name = "blue tomato plant"
+	name = "Blue Tomato"
 
 	icon_grow = "bluetomato-grow"
 
@@ -120,7 +120,7 @@
 
 /datum/plant/tomato/killer
 	species = "killertomato"
-	name = "killer tomato plant"
+	name = "Killer Tomato"
 
 	icon_grow = "killertomato-grow"
 	icon_harvest = "killertomato-harvest"

@@ -1,7 +1,7 @@
 //BOMBANANA
 
 /datum/plant/banana/bombanana
-	name = "Bombanana Tree"
+	name = "Bombanana"
 	product_path = /obj/item/food/grown/banana/bombanana
 
 /obj/item/seeds/banana/bombanana

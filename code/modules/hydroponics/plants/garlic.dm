@@ -1,6 +1,6 @@
 /datum/plant/garlic
 	species = "garlic"
-	name = "garlic sprouts"
+	name = "Garlic"
 
 	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'

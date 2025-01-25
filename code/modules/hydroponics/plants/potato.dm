@@ -1,7 +1,7 @@
 // Potato
 /datum/plant/potato
 	species = "potato"
-	name = "potatoes"
+	name = "Potato"
 
 	growthstages = 4
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'

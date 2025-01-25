@@ -2,7 +2,7 @@
 // Sugarcane
 /datum/plant/sugarcane
 	species = "sugarcane"
-	name = "sugarcane"
+	name = "Sugarcane"
 
 	growthstages = 2
 
@@ -45,7 +45,7 @@
 
 /datum/plant/bamboo
 	species = "bamboo"
-	name = "bamboo"
+	name = "Bamboo"
 
 	growing_icon = 'icons/obj/hydroponics/growing.dmi'
 	icon_dead = "bamboo-dead"

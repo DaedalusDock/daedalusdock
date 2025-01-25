@@ -1,7 +1,7 @@
 // Watermelon
 /datum/plant/watermelon
 	species = "watermelon"
-	name = "watermelon vines"
+	name = "Watermelon"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 	icon_dead = "watermelon-dead"
@@ -63,7 +63,7 @@
 
 /datum/plant/watermelon/holy
 	species = "holymelon"
-	name = "holy melon vines"
+	name = "Holymelon"
 
 	seed_path = /obj/item/seeds/watermelon/holy
 	product_path = /obj/item/food/grown/holymelon

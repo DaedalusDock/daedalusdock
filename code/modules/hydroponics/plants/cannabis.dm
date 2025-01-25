@@ -1,7 +1,7 @@
 // Cannabis
 /datum/plant/cannabis
 	species = "cannabis"
-	name = "cannabis"
+	name = "Cannabis"
 
 	growing_icon = 'goon/icons/obj/hydroponics.dmi'
 	icon_grow = "cannabis-grow" // Uses one growth icons set for all the subtypes
@@ -42,7 +42,7 @@
 
 /datum/plant/cannabis/rainbow
 	species = "megacannabis"
-	name = "rainbow weed"
+	name = "Rainbow Weed"
 
 	seed_path = /obj/item/seeds/cannabis/rainbow
 	product_path = /obj/item/food/grown/cannabis/rainbow
@@ -79,7 +79,7 @@
 
 /datum/plant/cannabis/death
 	species = "blackcannabis"
-	name = "deathweed"
+	name = "Deathweed"
 
 	seed_path = /obj/item/seeds/cannabis/death
 	product_path = /obj/item/food/grown/cannabis/death
@@ -113,7 +113,7 @@
 
 /datum/plant/cannabis/white
 	species = "whitecannabis"
-	name = "lifeweed"
+	name = "Lifeweed"
 
 	seed_path = /obj/item/seeds/cannabis/white
 	product_path = /obj/item/food/grown/cannabis/white
@@ -155,7 +155,7 @@
 
 /datum/plant/cannabis/ultimate
 	species = "ocannabis"
-	name = "omega weed"
+	name = "Omega Weed"
 
 	innate_genes = list(/datum/plant_gene/product_trait/glow/green)
 

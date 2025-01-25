@@ -1,7 +1,7 @@
 // Eggplant
 /datum/plant/eggplant
 	species = "eggplant"
-	name = "eggplant"
+	name = "Eggplant"
 
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
 	icon_grow = "eggplant-grow"

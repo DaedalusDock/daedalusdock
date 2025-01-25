@@ -1,7 +1,7 @@
 // Wheat
 /datum/plant/wheat
 	species = "wheat"
-	name = "wheat stalks"
+	name = "Wheat"
 	icon_dead = "wheat-dead"
 
 	seed_path = /obj/item/seeds/wheat
@@ -53,7 +53,7 @@
 
 /datum/plant/wheat/oat
 	species = "oat"
-	name = "Oat Stalks"
+	name = "Oat"
 	product_path = /obj/item/food/grown/oat
 	seed_path = /obj/item/seeds/wheat/oat
 
@@ -84,7 +84,7 @@
 
 /datum/plant/wheat/rice
 	species = "rice"
-	name = "rice stalks"
+	name = "Rice"
 
 	growthstages = 3
 
@@ -119,7 +119,7 @@
 
 /datum/plant/wheat/meat
 	species = "meatwheat"
-	name = "meatwheat"
+	name = "Meatwheat"
 
 	seed_path = /obj/item/seeds/wheat/meat
 	product_path = /obj/item/food/grown/meatwheat

@@ -1,7 +1,7 @@
 // Tea
 /datum/plant/tea
 	species = "teaaspera"
-	name = "tea aspera"
+	name = "Tea Aspera"
 
 	growthstages = 5
 	icon_dead = "tea-dead"
@@ -72,7 +72,7 @@
 // Coffee
 /datum/plant/coffee
 	species = "coffeea"
-	name = "coffee arabica Bush"
+	name = "Coffee Arabica"
 
 	growthstages = 5
 	icon_dead = "coffee-dead"

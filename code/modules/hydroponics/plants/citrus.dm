@@ -11,7 +11,7 @@
 // Orange
 /datum/plant/orange
 	species = "orange"
-	name = "orange tree"
+	name = "Orange"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 	icon_grow = "lime-grow"
@@ -43,7 +43,7 @@
 
 /obj/item/food/grown/citrus/orange
 	plant_datum = /datum/plant/orange
-	name = "orange"
+	name = "Orange"
 	desc = "It's a tangy fruit."
 	icon_state = "orange"
 	foodtypes = ORANGES
@@ -56,7 +56,7 @@
 
 /datum/plant/lime
 	species = "lime"
-	name = "lime tree"
+	name = "Lime"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 
@@ -97,7 +97,7 @@
 
 /datum/plant/lemon
 	species = "lemon"
-	name = "lemon tree"
+	name = "Lemon"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 	icon_grow = "lime-grow"
@@ -140,7 +140,7 @@
 
 /datum/plant/lemon_fire
 	species = "firelemon"
-	name = "combustible lemon tree"
+	name = "Combustible Lemon"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 	icon_grow = "lime-grow"

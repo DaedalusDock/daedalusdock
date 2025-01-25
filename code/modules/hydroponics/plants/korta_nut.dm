@@ -1,7 +1,7 @@
 //Korta Nut
 /datum/plant/korta_nut
 	species = "kortanut"
-	name = "korta nut bush"
+	name = "Korta Nut"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 	icon_grow = "kortanut-grow"
@@ -38,7 +38,7 @@
 
 /datum/plant/korta_nut/sweet
 	species = "kortanut"
-	name = "sweet korta nut bush"
+	name = "Sweet Korta Nut"
 
 	seed_path = /obj/item/seeds/korta_nut/sweet
 	product_path = /obj/item/food/grown/korta_nut/sweet

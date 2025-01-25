@@ -1,7 +1,7 @@
 // Carrot
 /datum/plant/carrot
 	species = "carrot"
-	name = "carrots"
+	name = "Carrot"
 
 	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
@@ -55,7 +55,7 @@
 
 /datum/plant/carrot/parsnip
 	species = "parsnip"
-	name = "parsnips"
+	name = "Parsnip"
 
 	icon_dead = "carrot-dead"
 
@@ -85,7 +85,7 @@
 // White-Beet
 /datum/plant/whitebeet
 	species = "whitebeet"
-	name = "white-beets"
+	name = "White-beets"
 
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
 	icon_dead = "whitebeet-dead"
@@ -119,7 +119,7 @@
 
 /datum/plant/redbeet
 	species = "redbeet"
-	name = "red-beets"
+	name = "Red-beets"
 
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
 	icon_dead = "whitebeet-dead"

@@ -1,7 +1,7 @@
 // Cocoa Pod
 /datum/plant/cocoa
 	species = "cocoapod"
-	name = "cocoa"
+	name = "Cocoa Pod"
 
 	growthstages = 5
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
@@ -37,7 +37,7 @@
 
 /datum/plant/cocoa/vanilla
 	species = "vanillapod"
-	name = "vanilla tree"
+	name = "Vanilla Pod"
 
 	seed_path = /obj/item/seeds/cocoapod/vanillapod
 	product_path = /obj/item/food/grown/vanillapod
@@ -68,7 +68,7 @@
 
 /datum/plant/cocoa/bungotree
 	species = "bungotree"
-	name = "bungo tree"
+	name = "Bungo Fruit"
 
 	growthstages = 4
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'

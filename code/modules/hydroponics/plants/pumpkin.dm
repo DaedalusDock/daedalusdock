@@ -1,7 +1,7 @@
 // Pumpkin
 /datum/plant/pumpkin
 	species = "pumpkin"
-	name = "pumpkin vine"
+	name = "Pumpkin"
 
 	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'

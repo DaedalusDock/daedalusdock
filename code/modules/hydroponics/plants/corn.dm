@@ -1,7 +1,7 @@
 // Corn
 /datum/plant/corn
 	species = "corn"
-	name = "Corn Stalks"
+	name = "Corn"
 
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
 	icon_grow = "corn-grow" // Uses one growth icons set for all the subtypes
@@ -77,7 +77,7 @@
 
 /datum/plant/corn/snapcorn
 	species = "snapcorn"
-	name = "snapcorn stalks"
+	name = "Snapcorn"
 
 	seed_path = /obj/item/seeds/corn/snapcorn
 	product_path = /obj/item/grown/snapcorn

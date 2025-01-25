@@ -1,7 +1,7 @@
 // Finally, peas.
 /datum/plant/peas
 	species = "peas"
-	name = "pea vines"
+	name = "Pea"
 
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
 	icon_grow = "peas-grow"

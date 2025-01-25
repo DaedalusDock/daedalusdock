@@ -1,6 +1,6 @@
 /datum/plant/nettle
 	species = "nettle"
-	name = "nettles"
+	name = "Nettle"
 
 	growthstages = 5
 
@@ -27,7 +27,7 @@
 
 /datum/plant/nettle/death
 	species = "deathnettle"
-	name = "death nettles"
+	name = "Death Nettle"
 
 	seed_path = /obj/item/seeds/nettle/death
 	product_path = /obj/item/food/grown/nettle/death

@@ -14,9 +14,6 @@
 #define PLANT_STAT_POTENCY "potency"
 
 #define PLANT_STAT_PROB_ROUND(num) (trunc(num) + prob(fract(num) * 100) * SIGN(num))
-#warn undo this
-/proc/psbr(num)
-	return PLANT_STAT_PROB_ROUND(num)
 
 /// The functional maximum value from SCALE_PLANT_POTENCY
 #define POTENCY_SCALE_FUNCTIONAL_MAXIMUM 200

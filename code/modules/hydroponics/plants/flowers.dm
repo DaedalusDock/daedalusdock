@@ -15,7 +15,7 @@
 // Poppy
 /datum/plant/flower/poppy
 	species = "poppy"
-	name = "Poppy flowers"
+	name = "Poppy"
 
 	icon_grow = "poppy-grow"
 	icon_dead = "poppy-dead"
@@ -63,7 +63,7 @@
 
 /datum/plant/flower/lily
 	species = "lily"
-	name = "Lily Plants"
+	name = "Lily"
 
 	icon_dead = "poppy-dead"
 	icon_grow = "poppy-grow"
@@ -133,7 +133,7 @@
 // Geranium
 /datum/plant/flower/geranium
 	species = "geranium"
-	name = "Geraniums"
+	name = "Geranium"
 
 	icon_dead = "poppy-dead"
 	icon_grow = "poppy-grow"
@@ -170,7 +170,7 @@
 ///Fraxinella seeds.
 /datum/plant/flower/fraxinella
 	species = "fraxinella"
-	name = "Fraxinella Plants"
+	name = "Fraxinella"
 
 	icon_dead = "poppy-dead"
 	icon_grow = "poppy-grow"
@@ -205,7 +205,7 @@
 // Harebell
 /datum/plant/flower/harebell
 	species = "harebell"
-	name = "Harebells"
+	name = "Harebell"
 
 	growthstages = 4
 
@@ -234,7 +234,7 @@
 // Sunflower
 /datum/plant/flower/sunflower
 	species = "sunflower"
-	name = "Sunflowers"
+	name = "Sunflower"
 
 	growthstages = 3
 
@@ -288,7 +288,7 @@
 // Moonflower
 /datum/plant/flower/moonflower
 	species = "moonflower"
-	name = "Moonflowers"
+	name = "Moonflower"
 
 	icon_grow = "moonflower-grow"
 	icon_dead = "sunflower-dead"
@@ -324,7 +324,7 @@
 // Novaflower
 /datum/plant/flower/novaflower
 	species = "novaflower"
-	name = "Novaflowers"
+	name = "Novaflower"
 
 	icon_grow = "novaflower-grow"
 	icon_dead = "sunflower-dead"
@@ -372,7 +372,7 @@
 // Rose
 /datum/plant/flower/rose
 	species = "rose"
-	name = "Rose Bush"
+	name = "Rose"
 
 	growthstages = 3
 	icon_grow = "rose-grow"
@@ -415,7 +415,7 @@
 // Carbon Rose
 /datum/plant/flower/carbon_rose
 	species = "carbonrose"
-	name = "Carbon Rose Flower"
+	name = "Carbon Rose"
 
 	rarity = 10
 

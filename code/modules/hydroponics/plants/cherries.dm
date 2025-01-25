@@ -1,7 +1,7 @@
 // Cherries
 /datum/plant/cherry
 	species = "cherry"
-	name = "cherries"
+	name = "Cherry"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 	icon_grow = "cherry-grow"
@@ -51,7 +51,7 @@
 
 /datum/plant/cherry/blue
 	species = "bluecherry"
-	name = "Blue Cherry Tree"
+	name = "Blue Cherry"
 
 	seed_path = /obj/item/seeds/cherry/blue
 	product_path = /obj/item/food/grown/bluecherries
@@ -86,7 +86,7 @@
 
 /datum/plant/cherry/bulb
 	species = "cherrybulb"
-	name = "cherry bulb tree"
+	name = "Cherry Bulb"
 
 	seed_path = /obj/item/seeds/cherry/bulb
 	product_path = /obj/item/food/grown/cherrybulbs

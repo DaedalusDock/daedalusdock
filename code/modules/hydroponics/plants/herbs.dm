@@ -1,7 +1,7 @@
 // Herbs
 /datum/plant/herbs
 	species = "herbs"
-	name = "herbs"
+	name = "Herbs"
 
 	growing_icon = 'icons/obj/hydroponics/growing.dmi'
 	icon_grow = "herbs-grow"

@@ -1,5 +1,5 @@
 /datum/plant/ambrosia
-	name = "ambrosia"
+	name = "Ambrosia"
 	species = "ambrosiavulgaris"
 	icon_dead = "ambrosia-dead"
 
@@ -48,7 +48,7 @@
 
 /datum/plant/ambrosia/deus
 	species = "ambrosiadeus"
-	name = "ambrosia deus"
+	name = "Ambrosia Deus"
 
 	seed_path = /obj/item/seeds/ambrosia/deus
 	product_path = /obj/item/food/grown/ambrosia/deus
@@ -88,7 +88,7 @@
 
 /datum/plant/ambrosia/gaia
 	species = "ambrosia_gaia"
-	name = "ambrosia gaia"
+	name = "Ambrosia Gaia"
 
 	seed_path = /obj/item/seeds/ambrosia/gaia
 	product_path = /obj/item/food/grown/ambrosia/gaia

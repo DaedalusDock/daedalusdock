@@ -1,5 +1,5 @@
 /datum/plant/aloe
-	name = "aloe"
+	name = "Aloe"
 	species = "aloe"
 
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'

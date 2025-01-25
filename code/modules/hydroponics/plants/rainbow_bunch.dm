@@ -1,6 +1,6 @@
 /datum/plant/rainbow_bunch
 	species = "rainbowbunch"
-	name = "polychromatic flowers"
+	name = "Polychromatic Flower"
 
 	growing_icon = 'icons/obj/hydroponics/growing_flowers.dmi'
 	icon_dead = "rainbowbunch-dead"

@@ -1,6 +1,6 @@
 /datum/plant/towercap
 	species = "towercap"
-	name = "tower caps"
+	name = "Tower-cap"
 
 	growthstages = 2
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'

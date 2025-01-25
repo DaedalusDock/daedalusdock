@@ -7,7 +7,7 @@
 // Reishi
 /datum/plant/reishi
 	species = "reishi"
-	name = "reishi"
+	name = "Reishi"
 
 	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
@@ -34,7 +34,7 @@
 // Fly Amanita
 /datum/plant/amanita
 	species = "amanita"
-	name = "fly amanita"
+	name = "Fly Amanita"
 
 	growthstages = 2
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
@@ -67,7 +67,7 @@
 // Destroying Angel
 /datum/plant/angel
 	species = "angel"
-	name = "destroying angels"
+	name = "Destroying Angels"
 
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
 	growthstages = 2
@@ -102,7 +102,7 @@
 // Liberty Cap
 /datum/plant/liberty
 	species = "liberty"
-	name = "liberty cap"
+	name = "Liberty Cap"
 
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
 	growthstages = 2
@@ -131,7 +131,7 @@
 // Plump Helmet
 /datum/plant/plump
 	species = "plump"
-	name = "plump helmet"
+	name = "Plump Helmet"
 
 	growthstages = 2
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
@@ -163,7 +163,7 @@
 
 /datum/plant/plump/walking
 	species = "walkingmushroom"
-	name = "walking mushroom"
+	name = "Walking Mushroom"
 	possible_mutations = null
 
 	growthstages = 2
@@ -189,7 +189,7 @@
 // Chanterelle
 /datum/plant/chanter
 	species = "chanter"
-	name = "chanterelle"
+	name = "Chanterelle"
 
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
 	growthstages = 2
@@ -221,7 +221,7 @@
 
 /datum/plant/chanter/jupiter
 	species = "jupitercup"
-	name = "jupiter cup"
+	name = "Jupiter Cup"
 
 	growthstages = 2
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
@@ -250,7 +250,7 @@
 // Glowshroom
 /datum/plant/glowshroom
 	species = "glowshroom"
-	name = "glowshroom"
+	name = "Glowshroom"
 
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
 	growthstages = 3
@@ -312,7 +312,7 @@
 
 /datum/plant/glowshroom/glowcap
 	species = "glowcap"
-	name = "glowcap"
+	name = "Glowcap"
 
 	icon_harvest = "glowcap-harvest"
 	growthstages = 4
@@ -349,7 +349,7 @@
 	species = "shadowshroom"
 	icon_grow = "shadowshroom-grow"
 	icon_dead = "shadowshroom-dead"
-	name = "shadowshroom"
+	name = "Shadowshroom"
 
 	growthstages = 3
 
@@ -386,7 +386,7 @@
 
 /datum/plant/puffball
 	species = "odiouspuffball"
-	name = "odious puffball"
+	name = "Odious Puffball"
 
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
 	icon_grow = "odiouspuffball-grow"

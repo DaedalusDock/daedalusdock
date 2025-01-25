@@ -1,7 +1,7 @@
 // Banana
 /datum/plant/banana
 	species = "banana"
-	name = "bananas"
+	name = "Banana"
 
 	growing_icon = 'icons/obj/hydroponics/growing_fruits.dmi'
 	icon_dead = "banana-dead"
@@ -101,7 +101,7 @@
 
 /datum/plant/banana/mime
 	species = "mimana"
-	name = "Mimana Tree"
+	name = "Mimana"
 
 	seed_path = /obj/item/seeds/banana/mime
 	product_path = /obj/item/food/grown/banana/mime

@@ -2,7 +2,7 @@
 
 /datum/plant/cabbage
 	species = "cabbage"
-	name = "Cabbages"
+	name = "Cabbage"
 
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
 

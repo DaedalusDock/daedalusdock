@@ -258,12 +258,12 @@
 
 	var/can_produce_seed = growing.force_single_harvest || !growing.gene_holder.has_active_gene_of_type(/datum/plant_gene/seedless)
 
-	#warn impl quality
 	for(var/i in 1 to harvest_yield)
-		var/unit_quality = quality
-		unit_quality += rand(-2, 2)
-		unit_quality += potency / 6
-		unit_quality += endurance / 6
+		// Quality for whenever food is reworked.
+		// var/unit_quality = quality
+		// unit_quality += rand(-2, 2)
+		// unit_quality += potency / 6
+		// unit_quality += endurance / 6
 
 		var/atom/movable/product = new product_path(T, growing)
 		product.add_fingerprint(user)

@@ -126,8 +126,14 @@
 
 /obj/machinery/hydroponics/examine(user)
 	. = ..()
+
 	if(seed)
-		. += span_info("It has [span_name("[growing.name]")] planted.")
+		var/text = span_name(growing.name)
+		if(!growing.is_hybrid)
+			var/datum/codex_entry/entry = SScodex.get_codex_entry(growing.type)
+			text = "<a href='?src=\ref[SScodex];show_examined_info=\ref[entry];show_to=\ref[user]'>[growing.name]</a>"
+
+		. += span_info("It has [text] planted.")
 		if (growing.plant_status == PLANT_DEAD)
 			. += span_alert("It's dead!")
 		else if (growing.plant_status == PLANT_HARVESTABLE)

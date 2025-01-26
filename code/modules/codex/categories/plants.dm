@@ -27,10 +27,10 @@
 			for(var/datum/plant_gene/path as anything in P.innate_genes)
 				mechanics += "[FOURSPACES] [initial(path.desc) ? CODEX_LINK(initial(path.name), "[path]") : initial(path.name)]"
 
-		var/datum/plant_mutation/mutation_source = mutations_by_plant[P.type]
+		var/datum/plant_mutation/mutation_source = SShydroponics.mutation_list[mutations_by_plant[P.type]]
 		if(mutation_source)
 			mechanics += "Mutation requirements: "
-			mechanics += "[FOURSPACES] A bit of luck."
+			mechanics += "[FOURSPACES]A bit of luck."
 
 			if(length(mutation_source.required_genes))
 				var/list/english_genes = list()
@@ -76,7 +76,7 @@
 
 		var/datum/codex_entry/entry = new(
 			_display_name = "[P.name] (plant)",
-			_associated_strings = list(P.name),
+			_associated_paths = list(P.type),
 			_mechanics_text = jointext(mechanics, "<br>"),
 		)
 

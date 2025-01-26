@@ -355,6 +355,7 @@
 
 		if("infuse")
 			noop()
+			#warn impl
 
 		if("eject_beaker")
 			if(!beaker)

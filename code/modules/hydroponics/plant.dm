@@ -77,6 +77,10 @@
 	var/datum/plant_gene_holder/gene_holder
 
 /datum/plant/New(empty)
+	for(var/path in possible_mutations)
+		possible_mutations -= path
+		possible_mutations += SShydroponics.mutation_list[path]
+
 	if(empty)
 		return
 
@@ -91,11 +95,6 @@
 		gene_holder.add_active_gene(new gene_path)
 
 	inherit_reagents_from_genes()
-
-	for(var/path in possible_mutations)
-		possible_mutations -= path
-		possible_mutations += SShydroponics.mutation_list[path]
-
 
 	set_fallback_icons()
 

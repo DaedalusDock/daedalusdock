@@ -15,6 +15,16 @@
 	seed_path = /obj/item/seeds/reishi
 	product_path = /obj/item/food/grown/mushroom/reishi
 
+	base_health = 30
+	base_maturation = 120
+	base_production = 200
+	base_harvest_amt = 1
+	base_harvest_yield = 4
+	base_endurance = 10
+
+	genome = 31
+	force_single_harvest = TRUE
+
 	innate_genes = list(/datum/plant_gene/product_trait/plant_type/fungal_metabolism)
 	reagents_per_potency = list(/datum/reagent/medicine/morphine = 0.35, /datum/reagent/medicine/dylovene = 0.35, /datum/reagent/consumable/nutriment = 0)
 
@@ -41,6 +51,16 @@
 
 	seed_path = /obj/item/seeds/amanita
 	product_path = /obj/item/food/grown/mushroom/amanita
+
+	base_health = 30
+	base_maturation = 120
+	base_production = 200
+	base_harvest_amt = 1
+	base_harvest_yield = 4
+	base_endurance = 10
+
+	genome = 31
+	force_single_harvest = TRUE
 
 	reagents_per_potency = list(
 		/datum/reagent/drug/mushroomhallucinogen = 0.04,
@@ -75,6 +95,16 @@
 	seed_path = /obj/item/seeds/angel
 	product_path = /obj/item/food/grown/mushroom/angel
 
+	base_health = 30
+	base_maturation = 120
+	base_production = 200
+	base_harvest_amt = 1
+	base_harvest_yield = 4
+	base_endurance = 10
+
+	genome = 31
+	force_single_harvest = TRUE
+
 	innate_genes = list(/datum/plant_gene/product_trait/plant_type/fungal_metabolism)
 	reagents_per_potency = list(
 		/datum/reagent/drug/mushroomhallucinogen = 0.04,
@@ -107,9 +137,18 @@
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
 	growthstages = 2
 
+	base_health = 30
+	base_maturation = 120
+	base_production = 200
+	base_harvest_amt = 1
+	base_harvest_yield = 4
+	base_endurance = 10
+
+	genome = 31
+	force_single_harvest = TRUE
+
 	product_path = /obj/item/food/grown/mushroom/libertycap
 	seed_path = /obj/item/seeds/liberty
-
 
 	innate_genes = list(/datum/plant_gene/product_trait/plant_type/fungal_metabolism)
 	reagents_per_potency = list(/datum/reagent/drug/mushroomhallucinogen = 0.25, /datum/reagent/consumable/nutriment = 0.02)
@@ -135,6 +174,16 @@
 
 	growthstages = 2
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
+
+	base_health = 30
+	base_maturation = 120
+	base_production = 200
+	base_harvest_amt = 1
+	base_harvest_yield = 4
+	base_endurance = 10
+
+	genome = 31
+	force_single_harvest = TRUE
 
 	seed_path = /obj/item/seeds/plump
 	product_path = /obj/item/food/grown/mushroom/plumphelmet
@@ -193,6 +242,16 @@
 
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
 	growthstages = 2
+
+	base_health = 30
+	base_maturation = 120
+	base_production = 200
+	base_harvest_amt = 1
+	base_harvest_yield = 4
+	base_endurance = 10
+
+	genome = 31
+	force_single_harvest = TRUE
 
 	seed_path = /obj/item/seeds/chanter
 	product_path = /obj/item/food/grown/mushroom/chanterelle
@@ -254,6 +313,16 @@
 
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
 	growthstages = 3
+
+	base_health = 30
+	base_maturation = 120
+	base_production = 200
+	base_harvest_amt = 1
+	base_harvest_yield = 4
+	base_endurance = 10
+
+	genome = 31
+	force_single_harvest = TRUE
 
 	seed_path = /obj/item/seeds/glowshroom
 	product_path = /obj/item/food/grown/mushroom/glowshroom
@@ -393,6 +462,16 @@
 	icon_dead = "odiouspuffball-dead"
 	icon_harvest = "odiouspuffball-harvest"
 	growthstages = 3
+
+	base_health = 30
+	base_maturation = 120
+	base_production = 200
+	base_harvest_amt = 1
+	base_harvest_yield = 4
+	base_endurance = 10
+
+	genome = 31
+	force_single_harvest = TRUE
 
 	seed_path = /obj/item/seeds/odious_puffball
 	product_path = /obj/item/food/grown/mushroom/odious_puffball

@@ -328,6 +328,13 @@
 				splice_target = found_seed
 				return TRUE
 
+			if(prob(get_splice_chance(splice_target, found_seed)))
+				to_chat(usr, span_warning("Splice failed."))
+				qdel(splice_target)
+				qdel(found_seed)
+				update_static_data_for_all()
+				return TRUE
+
 			splice(splice_target, found_seed)
 			return TRUE
 
@@ -473,7 +480,7 @@
 	for(var/datum/plant_gene/splicability/gene in plant_one.gene_holder.gene_list + plant_two.gene_holder.gene_list)
 		splice_chance += gene.modifier
 
-	return min(splice_chance, 0)
+	return max(splice_chance, 0)
 
 /obj/machinery/seed_extractor/proc/try_infuse(mob/living/user, obj/item/seeds/seed)
 	if(beaker.reagents.total_volume < 10)

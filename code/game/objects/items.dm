@@ -1264,6 +1264,8 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(!QDELETED(target_holder))
 		reagents.trans_to(target_holder, reagents.total_volume, transfered_by = user)
 
+	juice_results = null
+
 /obj/item/proc/damagetype2text()
 	. += list()
 	if(damtype == BURN)

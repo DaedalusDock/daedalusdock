@@ -133,7 +133,10 @@
 		return
 	return TRUE
 
-/obj/item/grown/do_grind(datum/reagents/target_holder, mob/user)
+/obj/item/food/grown/can_be_ground()
+	return reagents.total_volume || ..()
+
+/obj/item/food/grown/do_grind(datum/reagents/target_holder, mob/user)
 	var/grind_results_num = LAZYLEN(grind_results)
 
 	if(grind_results_num)
@@ -145,7 +148,6 @@
 			reagents.add_reagent(reagent, single_reagent_amount)
 
 	return reagents?.trans_to(target_holder, reagents.total_volume, transfered_by = user)
-
 
 #undef BITE_SIZE_POTENCY_MULTIPLIER
 #undef BITE_SIZE_VOLUME_MULTIPLIER

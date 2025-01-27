@@ -56,6 +56,7 @@
 	return
 
 /obj/item/grown/do_grind()
-	. = ..()
 	for(var/i in 1 to grind_results.len)
 		grind_results[grind_results[i]] = round(cached_potency)
+
+	return ..()

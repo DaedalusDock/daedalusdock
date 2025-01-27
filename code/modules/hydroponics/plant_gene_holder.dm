@@ -36,7 +36,7 @@
 	parent = null
 	return ..()
 
-/datum/plant_gene_holder/proc/CopyFrom(datum/plant_gene_holder/from_holder)
+/datum/plant_gene_holder/proc/CopyFrom(datum/plant_gene_holder/from_holder, remove_existing_genes = TRUE)
 	potency = from_holder.potency
 	endurance = from_holder.endurance
 
@@ -53,8 +53,9 @@
 	potency_dominance = from_holder.potency_dominance
 	endurance_dominance = from_holder.endurance_dominance
 
-	for(var/datum/plant_gene/gene as anything in gene_list)
-		remove_active_gene(gene)
+	if(remove_existing_genes)
+		for(var/datum/plant_gene/gene as anything in gene_list)
+			remove_active_gene(gene)
 
 	for(var/datum/plant_gene/gene as anything in from_holder.gene_list)
 		add_active_gene(gene.Copy())
@@ -238,7 +239,7 @@
 
 	var/new_path = mutation.plant_type.seed_path
 	var/obj/item/seeds/new_seed = new new_path(null)
-	new_seed.plant_datum.gene_holder.CopyFrom(src)
+	new_seed.plant_datum.gene_holder.CopyFrom(src, FALSE)
 	new_seed.seed_damage = parent.in_seed.seed_damage
 
 	var/atom/parent_loc = parent.in_seed.loc
@@ -246,7 +247,10 @@
 
 	if(istype(parent_loc, /obj/machinery/hydroponics))
 		var/obj/machinery/hydroponics/tray = parent_loc
+		var/old_growth = tray.growth
 		tray.plant_seed(new_seed)
+		tray.growth = old_growth
+		tray.update_appearance()
 	else
 		new_seed.forceMove(parent_loc)
 

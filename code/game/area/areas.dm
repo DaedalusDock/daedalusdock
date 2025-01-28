@@ -407,6 +407,16 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		var/mob/M = arrived
 		M.update_ambience_area(src)
 
+		if(M.client && old_area)
+			if(area_flags & SHOW_NAME)
+				M.client.show_location_blurb(2 SECONDS, FALSE, TRUE)
+
+			if(!LAZYACCESS(ckeys_that_have_been_here, M.ckey) && ishuman(M))
+				LAZYADDASSOC(ckeys_that_have_been_here, M.ckey, TRUE)
+
+				if(prob(1))
+					display_flavor()
+
 	if(!arrived.important_recursive_contents?[RECURSIVE_CONTENTS_AREA_SENSITIVE])
 		return
 

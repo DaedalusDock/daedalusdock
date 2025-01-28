@@ -480,7 +480,7 @@ SUBSYSTEM_DEF(ticker)
 			livings += living
 
 	if(livings.len)
-		addtimer(CALLBACK(src, PROC_REF(release_characters), livings), 30, TIMER_CLIENT_TIME)
+		addtimer(CALLBACK(src, PROC_REF(release_characters), livings), 3 SECONDS, TIMER_CLIENT_TIME)
 
 /datum/controller/subsystem/ticker/proc/release_characters(list/livings)
 	for(var/I in livings)

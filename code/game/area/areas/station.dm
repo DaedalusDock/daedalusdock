@@ -957,7 +957,7 @@
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
 
 /area/station/medical/medbay/central
-	name = "\improper Ward Central"
+	name = "\improper Ward (Central)"
 	icon_state = "med_central"
 
 /area/station/medical/medbay/lobby
@@ -966,7 +966,7 @@
 
 //The Ward is a large area, these additional areas help level out APC load.
 /area/station/medical/medbay/aft
-	name = "\improper Ward Aft"
+	name = "\improper Ward (Aft)"
 	icon_state = "med_aft"
 
 /area/station/medical/storage
@@ -990,11 +990,11 @@
 	icon_state = "kitchen_cold"
 
 /area/station/medical/coldroom/port
-	name = "\improper Port Ward Cold Room "
+	name = "\improper Ward Port Cold Room "
 
 
 /area/station/medical/coldroom/starboard
-	name = "\improper Starboard Ward Cold "
+	name = "\improper Ward Starboard Cold Room"
 
 /area/station/medical/patients_rooms
 	name = "\improper Patients' Rooms"
@@ -1003,7 +1003,6 @@
 
 /area/station/medical/patients_rooms/room_a
 	name = "Patient Room A"
-
 
 /area/station/medical/patients_rooms/room_b
 	name = "Patient Room B"
@@ -1032,47 +1031,48 @@
 	icon_state = "chem"
 
 /area/station/medical/pharmacy
-	name = "\improper Pharmacy"
+	name = "\improper Ward (Pharmacy)"
 	icon_state = "pharmacy"
 
 /area/station/medical/surgery
-	name = "\improper Operating Room"
+	name = "Operating Room"
 	icon_state = "surgery"
 	ambience_index = AMBIENCE_VIROLOGY
 
 /area/station/medical/surgery/prep
-	name = "\improper Pre-Op Prep"
+	name = "\improper Ward (Operating Hallway)"
 	icon_state = "surgeryprep"
 
 /area/station/medical/surgery/fore
-	name = "\improper Fore Operating Room"
+	name = "Operating Room (Fore)"
 	icon_state = "foresurgery"
 
 /area/station/medical/surgery/aft
-	name = "\improper Aft Operating Room"
+	name = "Operating Room (Aft)"
 	icon_state = "aftsurgery"
 
 /area/station/medical/surgery/port
-	name = "\improper Port Operating Room"
+	name = "Operating Room (Port)"
 	icon_state = "portsurgery"
 
 /area/station/medical/surgery/starboard
-	name = "\improper Starboard Operating Room"
+	name = "Operating Room (Starboard)"
 	icon_state = "starboardsurgery"
 
 /area/station/medical/surgery/theatre
 	name = "\improper Grand Surgery Theatre"
 	icon_state = "surgerytheatre"
+
 /area/station/medical/cryo
 	name = "Cryogenics"
 	icon_state = "cryo"
 
 /area/station/medical/exam_room
-	name = "\improper Exam Room"
+	name = "\improper Ward (Exam Room)"
 	icon_state = "exam_room"
 
 /area/station/medical/treatment_center
-	name = "\improper Ward Treatment Center"
+	name = "\improper Ward (Treatment Center)"
 	icon_state = "exam_room"
 
 /area/station/medical/psychology

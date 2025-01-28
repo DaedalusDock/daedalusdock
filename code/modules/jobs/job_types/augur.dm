@@ -51,6 +51,21 @@
 /datum/job/augur/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
 
+/datum/job/augur/on_join_popup(client/C, job_title_pref)
+	var/content = {"
+		<div style='width:100%; text-align:center; font-size: 20px'>
+		You are the <b>[title]</b>
+		</div>
+		<br>
+		<div style='padding: 0px 30px; text-align: center; font-size: 14px;'>
+		You are high ranking member of the Aether Association, and a powerful Hematic. Ensure the cycle of life and death continues,
+		saving those whose time has not yet come, and ending those who violate the Sacred Cycle. Protect the Biblion tou Hema with your life.
+		</div>
+	"}
+	var/datum/browser/popup = new(C.mob, "jobinfo", "Role Information", 480, 360)
+	popup.set_window_options("can_close=1;can_resize=0")
+	popup.set_content(content)
+	popup.open(FALSE)
 
 /datum/outfit/job/cmo
 	name = JOB_AUGUR

@@ -99,12 +99,10 @@
 	icon_state = "coathydro"
 	inhand_icon_state = "coathydro"
 	allowed = list(
-		/obj/item/cultivator,
 		/obj/item/hatchet,
 		/obj/item/plant_analyzer,
 		/obj/item/reagent_containers/spray/plantbgone,
 		/obj/item/reagent_containers/glass/bottle,
-		/obj/item/reagent_containers/spray/pestspray,
 		/obj/item/seeds,
 		/obj/item/storage/bag/plants,
 	)

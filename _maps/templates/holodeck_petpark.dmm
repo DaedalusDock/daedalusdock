@@ -105,11 +105,6 @@
 	},
 /turf/open/floor/holofloor,
 /area/template_noop)
-"U" = (
-/obj/machinery/hydroponics/soil,
-/obj/item/cultivator,
-/turf/open/floor/holofloor/grass,
-/area/template_noop)
 "V" = (
 /obj/item/shovel/spade{
 	pixel_x = 2;
@@ -190,7 +185,7 @@ I
 I
 G
 R
-U
+c
 q
 I
 "}

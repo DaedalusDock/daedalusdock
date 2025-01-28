@@ -411,26 +411,24 @@
 		return 0
 	return ..()
 
-/mob/living/carbon/proc/vomit(lost_nutrition = 10, blood = FALSE, stun = TRUE, distance = 1, message = TRUE, vomit_type = VOMIT_TOXIC, harm = TRUE, force = FALSE, purge_ratio = 0.1)
+/mob/living/carbon/proc/vomit(lost_nutrition = 10, blood = FALSE, stun = TRUE, distance = 1, message = TRUE, vomit_type = VOMIT_TOXIC, harm = TRUE, force = FALSE, purge_ratio = 0.4)
 	if((HAS_TRAIT(src, TRAIT_NOHUNGER) || HAS_TRAIT(src, TRAIT_TOXINLOVER)) && !force)
 		return TRUE
 
 	if(nutrition < 100 && !blood && !force)
 		if(message)
-			visible_message(span_warning("[src] dry heaves!"), \
-							span_userdanger("You try to throw up, but there's nothing in your stomach!"))
+			visible_message(span_notice("<b>[src]</b> dry heaves."), blind_message = span_hear("You hear someone dry heave."))
 		if(stun)
 			Paralyze(200)
 		return TRUE
 
 	if(is_mouth_covered()) //make this add a blood/vomit overlay later it'll be hilarious
 		if(message)
-			visible_message(span_danger("[src] throws up all over [p_them()]self!"), \
-							span_userdanger("You throw up all over yourself!"))
+			visible_message(span_warning("<b>[src]</b> vomits onto [p_them()]self."))
 		distance = 0
 	else
 		if(message)
-			visible_message(span_danger("[src] throws up!"), span_userdanger("You throw up!"))
+			visible_message(span_warning("<b>[src]</b> vomits onto the floor."))
 
 	if(stun)
 		Paralyze(80)

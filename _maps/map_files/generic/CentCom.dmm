@@ -5152,8 +5152,6 @@
 /obj/item/food/grown/tomato,
 /obj/item/food/grown/rice,
 /obj/item/food/grown/rice,
-/obj/item/food/grown/icepepper,
-/obj/item/food/grown/icepepper,
 /obj/item/food/grown/citrus/lemon,
 /obj/item/food/grown/citrus/lime,
 /obj/item/food/grown/citrus/orange,
@@ -10598,10 +10596,6 @@
 /obj/item/seeds/cannabis{
 	pixel_y = 8
 	},
-/obj/item/cultivator{
-	pixel_x = -6;
-	pixel_y = 11
-	},
 /turf/open/floor/mineral/titanium/tiled,
 /area/centcom/syndicate_mothership/expansion_bioterrorism)
 "EB" = (
@@ -13757,7 +13751,6 @@
 /obj/item/shovel/spade{
 	pixel_y = -14
 	},
-/obj/item/cultivator,
 /turf/open/floor/wood,
 /area/centcom/central_command_areas/holding)
 "Ox" = (
@@ -17730,7 +17723,7 @@
 /obj/item/food/grown/chili,
 /obj/item/food/grown/carrot,
 /obj/item/food/grown/apple,
-/obj/item/food/grown/ambrosia/vulgaris,
+/obj/item/food/grown/ambrosia,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/status_display/evac/directional/north,
 /turf/open/floor/iron/dark,

@@ -211,7 +211,11 @@ export const SeedList = (props) => {
                       icon="fill-drip"
                       title="Infuse"
                       disabled={!beaker.loaded || !has_enough_reagent}
-                      onClick={() => act('infuse')}
+                      onClick={() =>
+                        act('infuse', {
+                          ref: item.ref,
+                        })
+                      }
                     />
                     {SpliceButton(item, splicing)}
                     <Button

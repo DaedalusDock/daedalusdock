@@ -361,8 +361,11 @@
 			return TRUE
 
 		if("infuse")
-			noop()
-			#warn impl
+			var/obj/item/seeds/found_seed = locate(params["ref"]) in seeds_to_data
+			if(!found_seed)
+				return
+
+			try_infuse(usr, found_seed)
 
 		if("eject_beaker")
 			if(!beaker)

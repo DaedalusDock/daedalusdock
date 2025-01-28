@@ -4,13 +4,14 @@
 	name = "Station Areas"
 	icon = 'icons/area/areas_station.dmi'
 	icon_state = "station"
+	area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | SHOW_NAME
 
 //Maintenance
 
 /area/station/maintenance
 	name = "Generic Maintenance"
 	ambience_index = AMBIENCE_MAINT
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | PERSISTENT_ENGRAVINGS
+	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | SHOW_NAME | PERSISTENT_ENGRAVINGS
 	airlock_wires = /datum/wires/airlock/maint
 	sound_environment = SOUND_AREA_TUNNEL_ENCLOSED
 	forced_ambience = TRUE
@@ -95,7 +96,7 @@
 /area/station/maintenance/department/science/xenobiology
 	name = "Xenobiology Maintenance"
 	icon_state = "xenomaint"
-	area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | XENOBIOLOGY_COMPATIBLE | CULT_PERMITTED
+	area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | SHOW_NAME | XENOBIOLOGY_COMPATIBLE
 
 //Maintenance - Generic Tunnels
 
@@ -434,7 +435,7 @@
 	name = "\improper Crew Facilities"
 	icon_state = "commons"
 	sound_environment = SOUND_AREA_STANDARD_STATION
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 	holomap_color = HOLOMAP_AREACOLOR_GENERIC_ROOM
 
 /area/station/commons/dorms
@@ -618,7 +619,7 @@
 /area/station/service/library
 	name = "\improper Library"
 	icon_state = "library"
-	area_flags = CULT_PERMITTED | BLOBS_ALLOWED | UNIQUE_AREA
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 	sound_environment = SOUND_AREA_LARGE_SOFTFLOOR
 
 /area/station/service/library/lounge
@@ -688,7 +689,7 @@
 /area/station/service/janitor
 	name = "\improper Custodial Closet"
 	icon_state = "janitor"
-	area_flags = CULT_PERMITTED | BLOBS_ALLOWED | UNIQUE_AREA
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
 
 /area/station/service/hydroponics
@@ -772,7 +773,7 @@
 /area/station/engineering/atmospherics_engine
 	name = "\improper Atmospherics Engine"
 	icon_state = "atmos_engine"
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 
 /area/station/engineering/lobby
 	name = "\improper Engineering Lobby"
@@ -785,7 +786,7 @@
 /area/station/engineering/supermatter
 	name = "\improper Supermatter Engine"
 	icon_state = "engine_sm"
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
 
 /area/station/engineering/supermatter/room
@@ -823,7 +824,7 @@
 /area/station/engineering/storage/tcomms
 	name = "Telecomms Storage"
 	icon_state = "tcom_storage"
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 
 /area/station/engineering/storage/mech
 	name = "Mechanical Storage"
@@ -1137,7 +1138,7 @@
 /area/station/security/prison
 	name = "\improper Prison Wing"
 	icon_state = "sec_prison"
-	area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | PERSISTENT_ENGRAVINGS
+	area_flags = parent_type::area_flags | PERSISTENT_ENGRAVINGS
 
 /area/station/security/prison/toilet //radproof
 	name = "\improper Prison Toilet"
@@ -1395,7 +1396,7 @@
 /area/station/science/test_area
 	name = "\improper Ordnance Test Area"
 	icon_state = "ord_test"
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 	holomap_color = null
 
 /area/station/science/mixing
@@ -1405,7 +1406,7 @@
 /area/station/science/mixing/chamber
 	name = "\improper Ordnance Mixing Chamber"
 	icon_state = "ord_mix_chamber"
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 
 /area/station/science/mixing/hallway
 	name = "\improper Ordnance Mixing Hallway"

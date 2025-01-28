@@ -275,6 +275,13 @@ Primarily used in reagents/reaction_agents
 /datum/reagent/proc/get_taste_description(mob/living/taster)
 	return list("[taste_description]" = 1)
 
+/// Removes OTHER reagents from the given holder.
+/datum/reagent/proc/purge_others(datum/reagents/holder, amount)
+	for(var/datum/reagent/R as anything in holder.reagent_list)
+		if(istype(R, type))
+			continue
+		holder.remove_reagent(R.type, amount)
+
 /proc/pretty_string_from_reagent_list(list/reagent_list)
 	//Convert reagent list to a printable string for logging etc
 	var/list/rs = list()

@@ -35,3 +35,48 @@
 	. = C.adjustBruteLoss(-2 * effectiveness * removed, updating_health = FALSE)
 	return ..() || .
 
+/datum/reagent/tincture/burnboil
+	name = "Burnboil"
+	description = "An herbal tincture for mending wounds."
+	color = "#494617"
+	taste_description = "tartness"
+	taste_mult = 2
+
+/datum/reagent/tincture/burnboil/affect_ingest(mob/living/carbon/C, removed)
+	var/effectiveness = get_effectiveness_mod()
+	C.adjustToxLoss(0.4 * effectiveness * removed)
+	. = C.adjustFireLoss(-3 * effectiveness * removed, updating_health = FALSE)
+	return ..() || .
+
+/datum/reagent/tincture/siphroot
+	name = "Siphroa"
+	description = "An herbal tincture for restoring blood."
+	color = "#2c041b"
+	taste_description = "a horrible sourness"
+	taste_mult = 2
+
+/datum/reagent/tincture/siphroot/affect_ingest(mob/living/carbon/C, removed)
+	var/effectiveness = get_effectiveness_mod()
+	C.adjustBloodVolumeUpTo(2 * effectiveness * removed, BLOOD_VOLUME_NORMAL + 100)
+	C.adjustToxLoss(1 * effectiveness * removed, updating_health = FALSE)
+	return ..()
+
+/datum/reagent/tincture/calomel
+	name = "Gutclean"
+	description = "An herbal tincture for expelling fluid from the body."
+	color = "#13042c"
+	taste_description = "thousands of microscopic blades"
+	taste_mult = 2
+
+/datum/reagent/tincture/calomel/affect_ingest(mob/living/carbon/C, removed)
+	C.adjustToxLoss(0.2 * removed)
+	purge_others(C.bloodstream, 3 * removed)
+
+	var/datum/reagents/ingested = C.get_ingested_reagents()
+	if(ingested)
+		purge_others(ingested, 3 * removed)
+
+	if(prob(12))
+		C.vomit(8, blood = (C.nutrition == 0))
+
+	return ..()

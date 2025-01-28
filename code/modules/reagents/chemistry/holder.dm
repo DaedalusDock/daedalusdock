@@ -1058,7 +1058,7 @@
 		if (!reagent)
 			continue
 
-		if(istype(R, /datum/reagent/ichor))
+		if(istype(reagent, /datum/reagent/ichor))
 			total_reagent_potency += reagent.data?["potency"] || 0
 
 		remove_reagent(_reagent, (multiplier * cached_required_reagents[_reagent]), safety = 1)

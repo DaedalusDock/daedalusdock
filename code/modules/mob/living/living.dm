@@ -510,9 +510,9 @@
 		return
 	if(resting || body_position == STANDING_UP || HAS_TRAIT(src, TRAIT_FLOORED))
 		return
-	set_lying_angle(0)
-	set_body_position(STANDING_UP)
 
+	set_body_position(STANDING_UP)
+	set_lying_angle(0)
 
 /mob/living/proc/rest_checks_callback()
 	if(resting || body_position == STANDING_UP || HAS_TRAIT(src, TRAIT_FLOORED))
@@ -537,7 +537,8 @@
 	if(HAS_TRAIT(src, TRAIT_FLOORED) && !(dir & (NORTH|SOUTH)))
 		setDir(pick(NORTH, SOUTH)) // We are and look helpless.
 
-	body_position_pixel_y_offset = PIXEL_Y_OFFSET_LYING
+	if(rotate_on_lying)
+		body_position_pixel_y_offset = PIXEL_Y_OFFSET_LYING
 
 	playsound(loc, 'goon/sounds/body_thud.ogg', ishuman(src) ? 40 : 15, 1, 0.3)
 	throw_alert("lying_down", /atom/movable/screen/alert/lying_down)
@@ -552,9 +553,13 @@
 	REMOVE_TRAIT(src, TRAIT_UI_BLOCKED, LYING_DOWN_TRAIT)
 	REMOVE_TRAIT(src, TRAIT_PULL_BLOCKED, LYING_DOWN_TRAIT)
 
-	body_position_pixel_y_offset = 0
+	body_position_pixel_y_offset = get_pixel_y_offset_standing(current_size)
 
 	clear_alert("lying_down")
+
+/// Returns what the body_position_pixel_y_offset should be if the current size were `value`
+/mob/living/proc/get_pixel_y_offset_standing(size)
+	return (size-1) * get_icon_height() * 0.5
 
 //Recursive function to find everything a mob is holding. Really shitty proc tbh.
 /mob/living/get_contents()
@@ -827,9 +832,9 @@
 ///Called by mob Move() when the lying_angle is different than zero, to better visually simulate crawling.
 /mob/living/proc/lying_angle_on_movement(direct)
 	if(direct & EAST)
-		set_lying_angle(90)
+		set_lying_angle(LYING_ANGLE_EAST)
 	else if(direct & WEST)
-		set_lying_angle(270)
+		set_lying_angle(LYING_ANGLE_WEST)
 
 /mob/living/setDir(ndir)
 	. = ..()
@@ -1651,6 +1656,11 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if(NAMEOF(src, body_position))
 			set_body_position(var_value)
 			. = TRUE
+		if(NAMEOF(src, current_size))
+			if(var_value == 0) //prevents divisions of and by zero.
+				return FALSE
+			update_transform(var_value/current_size)
+			. = TRUE
 
 	if(!isnull(.))
 		datum_flags |= DF_VAR_EDITED
@@ -1661,8 +1671,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	switch(var_name)
 		if(NAMEOF(src, maxHealth))
 			updatehealth()
-		if(NAMEOF(src, resize))
-			update_transform()
 		if(NAMEOF(src, lighting_alpha))
 			sync_lighting_plane_alpha()
 
@@ -1812,13 +1820,17 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			if(. >= UNCONSCIOUS)
 				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
 				mob_mood?.update_mood()
+				blur_eyes(4)
+
 			REMOVE_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_NO_SPRINT, STAT_TRAIT)
+
 		if(UNCONSCIOUS)
 			become_blind(UNCONSCIOUS_TRAIT)
 			ADD_TRAIT(src, TRAIT_DEAF, STAT_TRAIT)
+
 		if(DEAD)
 			remove_from_alive_mob_list()
 			add_to_dead_mob_list()
@@ -1985,7 +1997,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /// Proc to append behavior to the condition of being floored. Called when the condition starts.
 /mob/living/proc/on_floored_start()
 	if(body_position == STANDING_UP) //force them on the ground
-		set_lying_angle(pick(90, 270))
+		set_lying_angle(pick(LYING_ANGLE_EAST, LYING_ANGLE_WEST))
 		set_body_position(LYING_DOWN)
 		on_fall()
 		stats?.set_skill_modifier(-2, /datum/rpg_skill/skirmish, SKILL_SOURCE_FLOORED)

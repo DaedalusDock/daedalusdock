@@ -285,13 +285,13 @@
 /// Set the tome in the blackboard
 /obj/effect/aether_rune/proc/set_tome(obj/item/tome)
 	blackboard[RUNE_BB_TOME] = tome
-	RegisterSignal(tome, list(COMSIG_ITEM_DROPPED, COMSIG_PARENT_QDELETING), PROC_REF(tome_dropped))
+	RegisterSignal(tome, list(COMSIG_ITEM_UNEQUIPPED, COMSIG_PARENT_QDELETING), PROC_REF(tome_dropped))
 
 /obj/effect/aether_rune/proc/remove_tome(obj/item/I)
 	if(!I)
 		return
 
-	UnregisterSignal(I, list(COMSIG_ITEM_DROPPED, COMSIG_PARENT_QDELETING))
+	UnregisterSignal(I, list(COMSIG_ITEM_UNEQUIPPED, COMSIG_PARENT_QDELETING))
 
 /obj/effect/aether_rune/proc/set_invoker(mob/user)
 	blackboard[RUNE_BB_INVOKER] = user

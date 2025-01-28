@@ -358,7 +358,7 @@ SUBSYSTEM_DEF(codex)
 		to_chat(world, span_debug("Codex: Debug server detected. DB operation disabled. See _compile_options.dm."))
 		log_world("Codex: Codex DB generation Skipped")
 		return
-	#ifdef FORCE_CODEX_DATABASE
+	#if FORCE_CODEX_DATABASE == TRUE
 	to_chat(world, span_debug("Codex: Debug server detected. Override flag set, Dropping and regenerating index."))
 	log_world("Codex: Codex DB generation forced by compile flag.")
 	drop_existing = TRUE

@@ -64,12 +64,11 @@
 
 	playsound(user, 'sound/items/healthanalyzer.ogg', 50, 1)
 
-	user.visible_message(span_notice("[user] analyzes [M]'s vitals."), \
-						span_notice("You analyze [M]'s vitals."))
+	user.visible_message(span_notice("[user] analyzes [M] with [src]."))
 
 	switch (scanmode)
 		if (SCANMODE_HEALTH)
-			healthscan(user, M, advanced, mode)
+			healthscan(user, M, advanced, mode, TRUE)
 		if (SCANMODE_CHEM)
 			chemscan(user, M)
 		if (SCANMODE_SURGERY)

@@ -20,7 +20,7 @@
 	var/datum/design/being_built
 
 	/// All the categories of organs we can print.
-	var/list/categories = list(SPECIES_HUMAN, SPECIES_LIZARD, SPECIES_MOTH, SPECIES_PLASMAMAN, SPECIES_ETHEREAL, "other")
+	var/list/categories = list(SPECIES_HUMAN, SPECIES_LIZARD, SPECIES_MOTH, SPECIES_ETHEREAL, "other")
 
 /obj/machinery/limbgrower/Initialize(mapload)
 	create_reagents(100, OPENCONTAINER)

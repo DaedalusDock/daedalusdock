@@ -68,9 +68,8 @@
 	. = ..()
 
 /obj/structure/table/abductor/wabbajack/process()
-	var/area = orange(4, src)
 	if(!our_statue)
-		for(var/obj/machinery/power/emitter/energycannon/magical/M in area)
+		for(var/obj/machinery/power/emitter/energycannon/magical/M in orange(4, src))
 			our_statue = M
 			break
 

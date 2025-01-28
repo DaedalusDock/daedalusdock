@@ -1,4 +1,5 @@
 /obj/item/stack/tile/mineral
+	abstract_type = /obj/item/stack/tile/mineral
 	/// Determines what stack is gotten out of us when welded.
 	var/mineralType = null
 

@@ -57,14 +57,14 @@
 
 ///This proc adds the food to viscontents and makes sure it can deregister if this changes.
 /obj/item/plate/proc/AddToPlate(obj/item/item_to_plate)
-	vis_contents += item_to_plate
+	add_viscontents(item_to_plate)
 	RegisterSignal(item_to_plate, COMSIG_MOVABLE_MOVED, PROC_REF(ItemMoved))
 	RegisterSignal(item_to_plate, COMSIG_PARENT_QDELETING, PROC_REF(ItemMoved))
 	update_appearance()
 
 ///This proc cleans up any signals on the item when it is removed from a plate, and ensures it has the correct state again.
 /obj/item/plate/proc/ItemRemovedFromPlate(obj/item/removed_item)
-	vis_contents -= removed_item
+	remove_viscontents(removed_item)
 	UnregisterSignal(removed_item, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING))
 
 ///This proc is called by signals that remove the food from the plate.

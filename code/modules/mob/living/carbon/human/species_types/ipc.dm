@@ -70,6 +70,7 @@
 
 /datum/species/ipc/saurian
 	name = "Integrated Positronic Chassis (Jinan)"
+	plural_form = "Integrated Positronic Chassis (Jinan)"
 	id = SPECIES_SAURIAN
 	species_traits = list(NOEYESPRITES, MUTCOLORS, NOBLOOD, NOZOMBIE, NO_UNDERWEAR, NO_DNA_COPY, NOTRANSSTING, AGENDER, EYECOLOR)
 	cosmetic_organs = list(

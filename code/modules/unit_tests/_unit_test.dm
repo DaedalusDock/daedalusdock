@@ -18,6 +18,10 @@ GLOBAL_VAR(test_log)
 GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 
 /datum/unit_test
+	/// Optional 'Descriptive Name' that replaces the typepath in log messages.
+	var/name = null
+
+
 	//Bit of metadata for the future maybe
 	var/list/procs_tested
 
@@ -61,6 +65,12 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 			if (istype(content, /obj/effect/landmark))
 				continue
 			qdel(content)
+
+	for(var/mob/dead/observer/ghost in GLOB.dead_mob_list)
+		if(!ghost.client)
+			ghost.key = null
+			qdel(ghost)
+
 	return ..()
 
 /datum/unit_test/proc/Run()
@@ -91,30 +101,6 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 	allocated += instance
 	return instance
 
-/datum/unit_test/proc/test_screenshot(name, icon/icon)
-	if (!istype(icon))
-		TEST_FAIL("[icon] is not an icon.")
-		return
-
-	var/path_prefix = replacetext(replacetext("[type]", "/datum/unit_test/", ""), "/", "_")
-	name = replacetext(name, "/", "_")
-
-	var/filename = "code/modules/unit_tests/screenshots/[path_prefix]_[name].png"
-
-	if (fexists(filename))
-		var/data_filename = "data/screenshots/[path_prefix]_[name].png"
-		fcopy(icon, data_filename)
-		log_test("[path_prefix]_[name] was found, putting in data/screenshots")
-	else if (fexists("code"))
-		// We are probably running in a local build
-		fcopy(icon, filename)
-		TEST_FAIL("Screenshot for [name] did not exist. One has been created.")
-	else
-		// We are probably running in real CI, so just pretend it worked and move on
-		fcopy(icon, "data/screenshots_new/[path_prefix]_[name].png")
-
-		log_test("[path_prefix]_[name] was put in data/screenshots_new")
-
 /proc/RunUnitTest(test_path, list/test_results)
 	var/datum/unit_test/test = new test_path
 
@@ -139,7 +125,7 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 			test_log_prefix = TEST_OUTPUT_MAGENTA("BAD STATUS [test.test_status]")
 
 	var/list/log_entry = list(
-		"[test_log_prefix]: [test_path] [(test.test_status != UNIT_TEST_SKIPPED ? "[duration / 10]s" : "| [test.skip_reason]")]",
+		"[test_log_prefix]: [test.name || test_path] [(test.test_status != UNIT_TEST_SKIPPED ? "[duration / 10]s" : "| [test.skip_reason]")]",
 	)
 	var/list/fail_reasons = test.fail_reasons
 	var/map_name = SSmapping.config.map_name
@@ -190,6 +176,23 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 		tests_to_run = focused_tests
 
 	tests_to_run = sortTim(tests_to_run, GLOBAL_PROC_REF(cmp_unit_test_priority))
+
+	/// Create a list of every unit test for each priority value
+	var/list/priority_buckets = list()
+	for(var/datum/unit_test/test as anything in tests_to_run)
+		var/priority_str = "[test.priority]"
+		if(!(priority_str in priority_buckets))
+			priority_buckets[priority_str] = list()
+
+		priority_buckets[priority_str] += test
+
+	/// Sort them by name within those buckets
+	for(var/priority_str in priority_buckets)
+		sortTim(priority_buckets[priority_str], GLOBAL_PROC_REF(cmp_name_or_type_asc))
+
+	tests_to_run = list()
+	for(var/priority_str in priority_buckets)
+		tests_to_run += priority_buckets[priority_str]
 
 	var/list/test_results = list()
 

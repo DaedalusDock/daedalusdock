@@ -8,7 +8,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/synthflesh = 25)
 	build_path = /obj/item/bodypart/arm/left
-	category = list(SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_PLASMAMAN,SPECIES_ETHEREAL)
+	category = list(SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_ETHEREAL)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 /datum/design/rightarm
@@ -17,7 +17,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/synthflesh = 25)
 	build_path = /obj/item/bodypart/arm/right
-	category = list(SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_PLASMAMAN,SPECIES_ETHEREAL)
+	category = list(SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_ETHEREAL)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 /datum/design/leftleg
@@ -26,7 +26,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/synthflesh = 25)
 	build_path = /obj/item/bodypart/leg/left
-	category = list(SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_PLASMAMAN,SPECIES_ETHEREAL, "digitigrade")
+	category = list(SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_ETHEREAL, "digitigrade")
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 /datum/design/rightleg
@@ -35,7 +35,7 @@
 	build_type = LIMBGROWER
 	reagents_list = list(/datum/reagent/medicine/synthflesh = 25)
 	build_path = /obj/item/bodypart/leg/right
-	category = list(SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_PLASMAMAN,SPECIES_ETHEREAL, "digitigrade")
+	category = list(SPECIES_HUMAN,SPECIES_LIZARD,SPECIES_MOTH,SPECIES_ETHEREAL, "digitigrade")
 	mapload_design_flags = DESIGN_LIMBGROWER
 
 //Non-limb limb designs
@@ -158,42 +158,6 @@
 	category = list(SPECIES_HUMAN)
 	mapload_design_flags = DESIGN_LIMBGROWER
 
-/datum/design/plasmaman_lungs
-	name = "Plasma Filter"
-	id = "plasmamanlungs"
-	build_type = LIMBGROWER
-	reagents_list = list(/datum/reagent/medicine/synthflesh = 10, /datum/reagent/toxin/plasma = 20)
-	build_path = /obj/item/organ/lungs/plasmaman
-	category = list(SPECIES_PLASMAMAN)
-	mapload_design_flags = DESIGN_LIMBGROWER
-
-/datum/design/plasmaman_tongue
-	name = "Plasma Bone Tongue"
-	id = "plasmamantongue"
-	build_type = LIMBGROWER
-	reagents_list = list(/datum/reagent/medicine/synthflesh = 10, /datum/reagent/toxin/plasma = 20)
-	build_path = /obj/item/organ/tongue/bone/plasmaman
-	category = list(SPECIES_PLASMAMAN)
-	mapload_design_flags = DESIGN_LIMBGROWER
-
-/datum/design/plasmaman_liver
-	name = "Reagent Processing Crystal"
-	id = "plasmamanliver"
-	build_type = LIMBGROWER
-	reagents_list = list(/datum/reagent/medicine/synthflesh = 10, /datum/reagent/toxin/plasma = 20)
-	build_path = /obj/item/organ/liver/plasmaman
-	category = list(SPECIES_PLASMAMAN)
-	mapload_design_flags = DESIGN_LIMBGROWER
-
-/datum/design/plasmaman_stomach
-	name = "Digestive Crystal"
-	id = "plasmamanstomach"
-	build_type = LIMBGROWER
-	reagents_list = list(/datum/reagent/medicine/synthflesh = 10, /datum/reagent/toxin/plasma = 20)
-	build_path = /obj/item/organ/stomach/bone/plasmaman
-	category = list(SPECIES_PLASMAMAN)
-	mapload_design_flags = DESIGN_LIMBGROWER
-
 /datum/design/ethereal_stomach
 	name = "Biological Battery"
 	id = "etherealstomach"
@@ -272,16 +236,6 @@
 	desc = "Contains designs for Jinan organs for the limbgrower - Jinan tongue, and tail"
 	id = "limbdesign_unathi"
 	build_path = /obj/item/disk/data/limbs/lizard
-
-/obj/item/disk/data/limbs/plasmaman
-	name = "Plasmaman Organ Design Disk"
-	limb_designs = list(/datum/design/plasmaman_stomach, /datum/design/plasmaman_liver, /datum/design/plasmaman_lungs, /datum/design/plasmaman_tongue)
-
-/datum/design/limb_disk/plasmaman
-	name = "Plasmaman Organ Design Disk"
-	desc = "Contains designs for plasmaman organs for the limbgrower - Plasmaman tongue, liver, stomach, and lungs."
-	id = "limbdesign_plasmaman"
-	build_path = /obj/item/disk/data/limbs/plasmaman
 
 /obj/item/disk/data/limbs/ethereal
 	name = "Ethereal Organ Design Disk"

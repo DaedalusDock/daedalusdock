@@ -127,7 +127,7 @@
 	return mob_target.toggle_internals(src)
 
 /// Closes the tank if dropped while open.
-/obj/item/tank/dropped(mob/living/user, silent)
+/obj/item/tank/unequipped(mob/living/user, silent)
 	. = ..()
 	// Close open air tank if its current user got sent to the shadowrealm.
 	if (QDELETED(breathing_mob))

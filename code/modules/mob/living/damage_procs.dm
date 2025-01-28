@@ -92,6 +92,25 @@
 		final_mod *= new_mod
 	return final_mod
 
+/**
+ * Simply a wrapper for calling mob adjustXLoss() procs to heal a certain damage type,
+ * when you don't know what damage type you're healing exactly.
+ */
+/mob/living/proc/heal_damage_type(heal_amount = 0, damagetype = BRUTE)
+	heal_amount = abs(heal_amount) * -1
+
+	switch(damagetype)
+		if(BRUTE)
+			return adjustBruteLoss(heal_amount)
+		if(BURN)
+			return adjustFireLoss(heal_amount)
+		if(TOX)
+			return adjustToxLoss(heal_amount)
+		if(OXY)
+			return adjustOxyLoss(heal_amount)
+		if(STAMINA)
+			stamina.adjust(-heal_amount)
+
 ///like [apply_damage][/mob/living/proc/apply_damage] except it always uses the damage procs
 /mob/living/proc/apply_damage_type(damage = 0, damagetype = BRUTE)
 	switch(damagetype)

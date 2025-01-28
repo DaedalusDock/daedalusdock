@@ -109,7 +109,7 @@
 			var/mob/to_arrest = pick(targets)
 			if(to_arrest)
 				target = to_arrest
-				mode = BOT_HUNT
+				set_mode(BOT_HUNT)
 
 /mob/living/simple_animal/bot/secbot/ed209/RangedAttack(atom/A)
 	if(!(bot_mode_flags & BOT_MODE_ON))

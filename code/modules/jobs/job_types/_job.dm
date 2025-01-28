@@ -92,9 +92,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 
 	var/outfit = null
 
-	/// The job's outfit that will be assigned for plasmamen.
-	var/plasmaman_outfit = null
-
 	/// Different outfits for alternate job titles and different species
 	var/list/outfits
 
@@ -138,8 +135,8 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/// Should this job be allowed to be picked for the bureaucratic error event?
 	var/allow_bureaucratic_error = TRUE
 
-	///Is this job affected by weird spawns like the ones from station traits
-	var/random_spawns_possible = TRUE
+	/// How this job decides where to spawn.
+	var/spawn_logic = JOBSPAWN_ALLOW_RANDOM
 
 	/// List of family heirlooms this job can get with the family heirloom quirk. List of types.
 	var/list/family_heirlooms
@@ -435,22 +432,45 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	return "Due to extreme staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
 
 
-/// Returns either an atom the mob should spawn in, or null, if we have no special overrides.
+/// Returns either an atom the mob should spawn on.
 /datum/job/proc/get_roundstart_spawn_point()
-	if(random_spawns_possible)
-		return get_latejoin_spawn_point()
+	SHOULD_NOT_OVERRIDE(TRUE)
 
-	if(length(GLOB.high_priority_spawns[title]))
-		return pick(GLOB.high_priority_spawns[title])
+	if(spawn_logic == JOBSPAWN_FORCE_RANDOM)
+		return get_roundstart_spawn_point_random()
 
-	return null //We don't care where we go. Let Ticker decide for us.
+	var/atom/spawn_point = get_roundstart_spawn_point_fixed()
+	if(isnull(spawn_point))
+		// That's okay, the map may not have any fixed spawnpoints for this job and this job allows that.
+		if(spawn_logic == JOBSPAWN_ALLOW_RANDOM)
+			return get_roundstart_spawn_point_random()
+
+		else // Something has gone horribly wrong
+			stack_trace("Something has gone very wrong. [type] could not find a job spawn location.")
+			return SSjob.get_last_resort_spawn_points()
+
+	return spawn_point
 
 
-/// Handles finding and picking a valid roundstart effect landmark spawn point, in case no uncommon different spawning events occur.
-/datum/job/proc/get_default_roundstart_spawn_point()
+/// Returns a fixed spawn location to use. This is probably one of a few job landmarks.
+/datum/job/proc/get_roundstart_spawn_point_fixed()
+	PROTECTED_PROC(TRUE)
+	return get_jobspawn_landmark()
+
+/// Returns a roundstart spawnpoint to use if spawn logic determined it should spawn at a "random" location.
+/datum/job/proc/get_roundstart_spawn_point_random()
+	PROTECTED_PROC(TRUE)
+	return SSticker.get_random_spawnpoint()
+
+/// Returns an unused jobspawn landmark. You CAN run out of landmarks, please be mindful of this!
+/datum/job/proc/get_jobspawn_landmark()
+	SHOULD_NOT_OVERRIDE(TRUE)
+	RETURN_TYPE(/obj/effect/landmark/start)
+
 	var/obj/effect/landmark/start/spawnpoint = get_start_landmark_for(title)
 	if(!spawnpoint)
 		log_world("Couldn't find a round start spawn point for [title].")
+		return
 
 	spawnpoint.used = TRUE
 
@@ -476,7 +496,9 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	else
 		spawn_instance = new spawn_type(player_client.mob.loc)
 		spawn_point.JoinPlayerHere(spawn_instance, TRUE)
+
 	spawn_instance.apply_prefs_job(player_client, src)
+
 	if(!player_client)
 		qdel(spawn_instance)
 		return // Disconnected while checking for the appearance ban.
@@ -485,7 +507,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 
 /// Applies the preference options to the spawning mob, taking the job into account. Assumes the client has the proper mind.
 /mob/living/proc/apply_prefs_job(client/player_client, datum/job/job)
-
+	return
 
 /mob/living/carbon/human/apply_prefs_job(client/player_client, datum/job/job)
 	var/fully_randomize = GLOB.current_anonymous_theme || is_banned_from(player_client.ckey, "Appearance")

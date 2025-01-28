@@ -223,12 +223,12 @@
 	enable_text = span_cult("You prepare to horrify a target...")
 	disable_text = span_cult("You dispel the magic...")
 
-/datum/action/innate/cult/blood_spell/horror/InterceptClickOn(mob/living/caller, params, atom/clicked_on)
-	var/turf/caller_turf = get_turf(caller)
+/datum/action/innate/cult/blood_spell/horror/InterceptClickOn(mob/living/invoker, params, atom/clicked_on)
+	var/turf/caller_turf = get_turf(invoker)
 	if(!isturf(caller_turf))
 		return FALSE
 
-	if(!ishuman(clicked_on) || get_dist(caller, clicked_on) > 7)
+	if(!ishuman(clicked_on) || get_dist(invoker, clicked_on) > 7)
 		return FALSE
 
 	var/mob/living/carbon/human/human_clicked = clicked_on
@@ -237,23 +237,23 @@
 
 	return ..()
 
-/datum/action/innate/cult/blood_spell/horror/do_ability(mob/living/caller, mob/living/carbon/human/clicked_on)
+/datum/action/innate/cult/blood_spell/horror/do_ability(mob/living/invoker, mob/living/carbon/human/clicked_on)
 
 	clicked_on.hallucination = max(clicked_on.hallucination, 120)
-	SEND_SOUND(caller, sound('sound/effects/ghost.ogg', FALSE, TRUE, 50))
+	SEND_SOUND(invoker, sound('sound/effects/ghost.ogg', FALSE, TRUE, 50))
 
 	var/image/sparkle_image = image('icons/effects/cult/effects.dmi', clicked_on, "bloodsparkles", ABOVE_MOB_LAYER)
 	clicked_on.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/cult, "cult_apoc", sparkle_image, NONE)
 
 	addtimer(CALLBACK(clicked_on, TYPE_PROC_REF(/atom, remove_alt_appearance), "cult_apoc", TRUE), 4 MINUTES, TIMER_OVERRIDE|TIMER_UNIQUE)
-	to_chat(caller, span_cultbold("[clicked_on] has been cursed with living nightmares!"))
+	to_chat(invoker, span_cultbold("[clicked_on] has been cursed with living nightmares!"))
 
 	charges--
 	desc = base_desc
 	desc += "<br><b><u>Has [charges] use\s remaining</u></b>."
 	build_all_button_icons()
 	if(charges <= 0)
-		to_chat(caller, span_cult("You have exhausted the spell's power!"))
+		to_chat(invoker, span_cult("You have exhausted the spell's power!"))
 		qdel(src)
 
 	return TRUE
@@ -513,7 +513,7 @@
 	trashtype = /obj/item/restraints/handcuffs/energy/used
 	item_flags = DROPDEL
 
-/obj/item/restraints/handcuffs/energy/cult/used/dropped(mob/user)
+/obj/item/restraints/handcuffs/energy/cult/used/unequipped(mob/user)
 	user.visible_message(span_danger("[user]'s shackles shatter in a discharge of dark magic!"), \
 							span_userdanger("Your [src] shatters in a discharge of dark magic!"))
 	. = ..()

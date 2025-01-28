@@ -291,11 +291,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if(needs_update >= 0)
 		update_character(needs_update, S) //needs_update == savefile_version if we need an update (positive integer)
 
-	var/mob/dead/new_player/body = parent?.mob
-	if(istype(body))
-		spawn(-1)
-			body.npp.open()
-
 	return TRUE
 
 /datum/preferences/proc/save_character()

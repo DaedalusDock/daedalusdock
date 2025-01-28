@@ -350,7 +350,7 @@ Moving interrupts
 	RegisterSignal(tracked_user,COMSIG_MOVABLE_MOVED,PROC_REF(break_sculpting))
 	to_chat(user,span_notice("You prepare to work on [B]."),type=MESSAGE_TYPE_INFO)
 
-/obj/item/chisel/dropped(mob/user, silent)
+/obj/item/chisel/unequipped(mob/user, silent)
 	. = ..()
 	break_sculpting()
 

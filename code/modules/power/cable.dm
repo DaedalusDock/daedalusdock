@@ -525,7 +525,7 @@
 
 		click_manager.set_user(user)
 
-/obj/item/stack/cable_coil/dropped()
+/obj/item/stack/cable_coil/unequipped()
 	. = ..()
 	click_manager?.set_user(null)
 
@@ -586,7 +586,7 @@
 			user.put_in_hands(restraints)
 	update_appearance()
 
-/obj/item/stack/cable_coil/dropped(mob/wearer)
+/obj/item/stack/cable_coil/unequipped(mob/wearer)
 	. = ..()
 	set_cable_layer_mode(FALSE, null)
 

@@ -125,7 +125,7 @@
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(pickup_ores))
 	listeningTo = user
 
-/obj/item/storage/bag/ore/dropped()
+/obj/item/storage/bag/ore/unequipped()
 	. = ..()
 	if(listeningTo)
 		UnregisterSignal(listeningTo, COMSIG_MOVABLE_MOVED)
@@ -206,7 +206,6 @@
 		/obj/item/seeds,
 		/obj/item/grown,
 		/obj/item/reagent_containers/honeycomb,
-		/obj/item/graft,
 		))
 ////////
 

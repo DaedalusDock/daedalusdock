@@ -390,7 +390,7 @@
 	if(slot == ITEM_SLOT_EYES)
 		user.become_blind(BLINDFOLD_TRAIT)
 
-/obj/item/clothing/glasses/blindfold/dropped(mob/living/carbon/human/user)
+/obj/item/clothing/glasses/blindfold/unequipped(mob/living/carbon/human/user)
 	..()
 	user.cure_blind(BLINDFOLD_TRAIT)
 
@@ -463,7 +463,7 @@
 		return
 	ADD_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
 
-/obj/item/clothing/glasses/thermal/xray/dropped(mob/living/carbon/human/user)
+/obj/item/clothing/glasses/thermal/xray/unequipped(mob/living/carbon/human/user)
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
 
@@ -575,7 +575,7 @@
 		if(xray)
 			ADD_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
 
-/obj/item/clothing/glasses/debug/dropped(mob/user)
+/obj/item/clothing/glasses/debug/unequipped(mob/user)
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_MEDICAL_HUD, GLASSES_TRAIT)
 	REMOVE_TRAIT(user, TRAIT_SECURITY_HUD, GLASSES_TRAIT)

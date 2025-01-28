@@ -181,44 +181,26 @@
 	burn_living.adjustFireLoss(2)
 	if(QDELETED(burn_living))
 		return
+
 	burn_living.adjust_fire_stacks(20) //dipping into a stream of plasma would probably make you more flammable than usual
 	burn_living.adjust_bodytemperature(-rand(50,65)) //its cold, man
-	if(!ishuman(burn_living) || DT_PROB(65, delta_time))
+	if(DT_PROB(65, delta_time))
 		return
+
 	var/mob/living/carbon/human/burn_human = burn_living
-	var/datum/species/burn_species = burn_human.dna.species
-	if(istype(burn_species, /datum/species/plasmaman) || istype(burn_species, /datum/species/android)) //ignore plasmamen/robotic species
-		return
-
-	var/list/plasma_parts = list()//a list of the organic parts to be turned into plasma limbs
-	var/list/robo_parts = list()//keep a reference of robotic parts so we know if we can turn them into a plasmaman
-	for(var/obj/item/bodypart/burn_limb as anything in burn_human.bodyparts)
-		if(IS_ORGANIC_LIMB(burn_limb) && burn_limb.limb_id != SPECIES_PLASMAMAN) //getting every organic, non-plasmaman limb (augments/androids are immune to this)
-			plasma_parts += burn_limb
-		if(!IS_ORGANIC_LIMB(burn_limb))
-			robo_parts += burn_limb
-
 	burn_human.adjustToxLoss(15, cause_of_death = "Liquid plasma")
 	burn_human.adjustFireLoss(25)
-	if(plasma_parts.len)
-		var/obj/item/bodypart/burn_limb = pick(plasma_parts) //using the above-mentioned list to get a choice of limbs
-		burn_human.emote("scream")
-		ADD_TRAIT(burn_limb, TRAIT_PLASMABURNT, src)
-		burn_human.update_body_parts()
-		burn_human.emote("scream")
-		burn_human.visible_message(span_warning("[burn_human]'s [burn_limb.name] melts down to the bone!"), \
-			span_userdanger("You scream out in pain as your [burn_limb.name] melts down to the bone, leaving an eerie plasma-like glow where flesh used to be!"))
-	if(!plasma_parts.len && !robo_parts.len) //a person with no potential organic limbs left AND no robotic limbs, time to turn them into a plasmaman
-		burn_human.ignite_mob()
-		burn_human.set_species(/datum/species/plasmaman)
-		burn_human.visible_message(span_warning("[burn_human] bursts into a brilliant purple flame as [burn_human.p_their()] entire body is that of a skeleton!"), \
-			span_userdanger("Your senses numb as all of your remaining flesh is turned into a purple slurry, sloshing off your body and leaving only your bones to show in a vibrant purple!"))
 
 //mafia specific tame happy plasma (normal atmos, no slowdown)
 /turf/open/lava/plasma/mafia
 	initial_gas = OPENTURF_DEFAULT_ATMOS
 	baseturfs = /turf/open/lava/plasma/mafia
 	slowdown = 0
+
+//matches /turf/open/misc/asteroid/snow
+/turf/open/lava/plasma/snow_air
+	initial_gas = OPENTURF_LOW_PRESSURE
+	temperature = 180
 
 /////////// papers
 

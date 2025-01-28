@@ -1487,7 +1487,6 @@
 /obj/structure/table,
 /obj/item/storage/bag/plants/portaseeder,
 /obj/item/shovel/spade,
-/obj/item/cultivator,
 /obj/item/plant_analyzer,
 /obj/item/reagent_containers/glass/bucket,
 /obj/effect/decal/cleanable/dirt/dust,

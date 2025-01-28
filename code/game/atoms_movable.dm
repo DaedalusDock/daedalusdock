@@ -215,7 +215,7 @@
 
 	vis_locs = null //clears this atom out of all viscontents
 	if(length(vis_contents))
-		vis_contents.Cut()
+		cut_viscontents()
 
 /atom/movable/proc/update_emissive_block()
 	if(!blocks_emissive)

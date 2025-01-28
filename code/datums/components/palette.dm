@@ -43,7 +43,7 @@
 	QDEL_NULL(color_picker_menu)
 	QDEL_LIST(menu_choices)
 	UnregisterSignal(parent, list(COMSIG_ITEM_ATTACK_SELF_SECONDARY, COMSIG_PARENT_EXAMINE,
-		COMSIG_ITEM_DROPPED, COMSIG_PAINTING_TOOL_SET_COLOR, COMSIG_PAINTING_TOOL_GET_ADDITIONAL_DATA))
+		COMSIG_ITEM_UNEQUIPPED, COMSIG_PAINTING_TOOL_SET_COLOR, COMSIG_PAINTING_TOOL_GET_ADDITIONAL_DATA))
 	return ..()
 
 /datum/component/palette/proc/on_examine(datum/source, mob/user, list/examine_list)
@@ -67,7 +67,7 @@
 
 	color_picker_menu = show_radial_menu_persistent(user, parent, choices, select_proc = CALLBACK(src, PROC_REF(choice_selected), user), tooltips = TRUE, radial_slice_icon = "palette_bg")
 
-	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(close_radial_menu))
+	RegisterSignal(parent, COMSIG_ITEM_UNEQUIPPED, PROC_REF(close_radial_menu))
 
 /datum/component/palette/proc/build_radial_list()
 	var/radial_list = list()
@@ -90,7 +90,7 @@
 	SIGNAL_HANDLER
 
 	QDEL_NULL(color_picker_menu)
-	UnregisterSignal(parent, COMSIG_ITEM_DROPPED)
+	UnregisterSignal(parent, COMSIG_ITEM_UNEQUIPPED)
 
 /datum/component/palette/proc/update_radial_list()
 	if(QDELETED(color_picker_menu))

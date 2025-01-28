@@ -17,7 +17,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/paramedic,
-			SPECIES_PLASMAMAN = /datum/outfit/job/paramedic/plasmaman,
 		),
 	)
 
@@ -70,12 +69,3 @@
 	box = /obj/item/storage/box/survival/medical
 	chameleon_extras = /obj/item/gun/syringe
 	pda_slot = ITEM_SLOT_LPOCKET
-
-/datum/outfit/job/paramedic/plasmaman
-	name = "Paramedic (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/paramedic
-	gloves = /obj/item/clothing/gloves/color/plasmaman/plasmanitrile
-	head = /obj/item/clothing/head/helmet/space/plasmaman/paramedic
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full

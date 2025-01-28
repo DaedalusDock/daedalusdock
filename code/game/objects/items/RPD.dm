@@ -249,7 +249,7 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 	else
 		UnregisterSignal(user,COMSIG_MOUSE_SCROLL_ON)
 
-/obj/item/pipe_dispenser/dropped(mob/user, silent)
+/obj/item/pipe_dispenser/unequipped(mob/user, silent)
 	UnregisterSignal(user, COMSIG_MOUSE_SCROLL_ON)
 	return ..()
 

@@ -165,7 +165,7 @@
 	if(planted_on)
 		return
 	forceMove(target)
-	target.vis_contents += src
+	target.add_viscontents(src)
 	planted_on = target
 	RegisterSignal(planted_on, COMSIG_PARENT_QDELETING, PROC_REF(handle_planted_on_deletion))
 	SEND_SIGNAL(src, COMSIG_TRAITOR_BUG_PLANTED_OBJECT, target)
@@ -175,13 +175,13 @@
 
 /obj/item/traitor_bug/Destroy()
 	if(planted_on)
-		planted_on.vis_contents -= src
+		planted_on.remove_viscontents(src)
 	return ..()
 
 /obj/item/traitor_bug/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
 	if(planted_on)
-		planted_on.vis_contents -= src
+		planted_on.remove_viscontents(src)
 		anchored = FALSE
 		UnregisterSignal(planted_on, COMSIG_PARENT_QDELETING)
 		planted_on = null

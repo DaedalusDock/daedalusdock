@@ -25,7 +25,7 @@
 	LoseTarget()
 	return ..()
 
-/obj/item/gun/medbeam/dropped(mob/user)
+/obj/item/gun/medbeam/unequipped(mob/user)
 	..()
 	LoseTarget()
 

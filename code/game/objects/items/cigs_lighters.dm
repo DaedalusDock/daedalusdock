@@ -81,7 +81,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/match/extinguish()
 	matchburnout()
 
-/obj/item/match/dropped(mob/user)
+/obj/item/match/unequipped(mob/user)
 	matchburnout()
 	return ..()
 
@@ -1068,7 +1068,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	reagents.flags &= ~(NO_REACT)
 	START_PROCESSING(SSobj, src)
 
-/obj/item/clothing/mask/vape/dropped(mob/user)
+/obj/item/clothing/mask/vape/unequipped(mob/user)
 	. = ..()
 	if(user.get_item_by_slot(ITEM_SLOT_MASK) == src)
 		reagents.flags |= NO_REACT

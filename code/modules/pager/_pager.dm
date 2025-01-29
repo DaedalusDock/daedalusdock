@@ -74,7 +74,7 @@
 	audible_message(span_hear("[chat_image] beeps."), span_notice("[chat_image] The [name]'s screen lights up and begins to blink."), hearing_distance = 2)
 	blink()
 
-	if(!length(SStgui.get_open_uis(src)) && !has_unread_messages)
+	if(equipped_to && !SStgui.get_open_ui(equipped_to, src) && !has_unread_messages)
 		has_unread_messages = TRUE
 		update_appearance(UPDATE_OVERLAYS)
 

@@ -590,15 +590,16 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
 	if(liver && !(liver.organ_flags & ORGAN_DEAD))
+		remove_status_effect(/datum/status_effect/grouped/concussion, DEAD_LIVER_EFFECT)
 		return
 
 	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || !needs_organ(ORGAN_SLOT_LIVER))
+		remove_status_effect(/datum/status_effect/grouped/concussion, DEAD_LIVER_EFFECT)
 		return
 
 	adjustToxLoss(0.6 * delta_time, TRUE, TRUE, cause_of_death = "Lack of a liver")
 
 	// Hepatic Encephalopathy
-	#warn apply concussion effect here.
 	set_slurring_if_lower(10 SECONDS)
 	if(DT_PROB(2, delta_time))
 		set_confusion_if_lower(10 SECONDS)
@@ -608,6 +609,11 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 	if(DT_PROB(2, delta_time))
 		vomit(50, TRUE, FALSE, 1, TRUE, harm = FALSE, purge_ratio = 1)
+
+	// stoopid micro optimization, don't instantiate a new status effect every life tick for no raisin.
+	var/datum/status_effect/grouped/concussion/existing = has_status_effect(/datum/status_effect/grouped/concussion)
+	if(!(DEAD_LIVER_EFFECT in existing.sources))
+		apply_status_effect(/datum/status_effect/grouped/concussion, DEAD_LIVER_EFFECT)
 
 /mob/living/carbon/proc/undergoing_liver_failure()
 	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)

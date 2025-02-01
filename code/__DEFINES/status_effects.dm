@@ -43,7 +43,11 @@
 
 #define STASIS_DEBUG_HEALTH "stasis_debug_health"
 
+/// Head fracture
 #define BROKEN_SKULL_EFFECT "broken_head"
+/// Missing or dead liver.
+#define DEAD_LIVER_EFFECT "dead_liver"
+
 #define VAMPIRE_EFFECT "vampire_effect"
 
 // Status effect application helpers.

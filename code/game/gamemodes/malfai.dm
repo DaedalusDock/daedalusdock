@@ -1,13 +1,10 @@
-/datum/game_mode/malf
+/datum/game_mode/one_antag/malf
 	name = "Malfunctioning AI"
 
 	weight = GAMEMODE_WEIGHT_EPIC
-	exclusive_roles = list(JOB_AI)
+	antag_selector = /datum/antagonist_selector/malfai
 
-	antag_datum = /datum/antagonist/malf_ai
-	antag_flag = ROLE_MALF
-
-/datum/game_mode/malf/check_for_errors()
+/datum/game_mode/one_antag/malf/check_for_errors()
 	var/datum/job/ai_job = SSjob.GetJobType(/datum/job/ai)
 
 	// If we're not forced, we're going to make sure we can actually have an AI in this shift,
@@ -16,8 +13,5 @@
 
 	return ..()
 
-/datum/game_mode/malf/pre_setup()
-	. = ..()
-
-	var/mob/M = pick_n_take(possible_antags)
-	select_antagonist(M.mind)
+/datum/game_mode/one_antag/malf/get_antag_count()
+	return 1

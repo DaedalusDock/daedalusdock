@@ -784,6 +784,9 @@ SUBSYSTEM_DEF(ticker)
 	var/list/datum/game_mode/runnable_modes = list()
 	for(var/path in subtypesof(/datum/game_mode))
 		var/datum/game_mode/M = new path()
+		if(isabstract(M))
+			continue
+
 		if(!(M.weight == GAMEMODE_WEIGHT_NEVER) && !M.check_for_errors())
 			runnable_modes[path] = M.weight
 	return runnable_modes
@@ -825,9 +828,9 @@ SUBSYSTEM_DEF(ticker)
 	CHECK_TICK
 	//Configure mode and assign player to special mode stuff
 	var/can_continue = 0
-	can_continue = src.mode.execute_roundstart() //Choose antagonists
+	can_continue = mode.execute_roundstart() //Choose antagonists
 	CHECK_TICK
-	can_continue = can_continue && SSjob.DivideOccupations(mode.required_jobs) //Distribute jobs
+	can_continue = can_continue && SSjob.DivideOccupations(mode.get_required_jobs()) //Distribute jobs
 	CHECK_TICK
 
 	if(!GLOB.Debug2)

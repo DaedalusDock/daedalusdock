@@ -321,6 +321,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	back = /obj/item/storage/backpack
 	shoes = /obj/item/clothing/shoes/sneakers/black
 	box = /obj/item/storage/box/survival
+	belt = /obj/item/modular_computer/tablet/pda
 
 	id_in_wallet = TRUE
 	preload = TRUE // These are used by the prefs ui, and also just kinda could use the extra help at roundstart

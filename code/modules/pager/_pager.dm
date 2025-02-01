@@ -4,6 +4,7 @@
 	icon = 'goon/icons/items/pda.dmi'
 	icon_state = "pda"
 	base_icon_state = "pda"
+	worn_icon_state = "pda"
 
 	w_class = WEIGHT_CLASS_NORMAL
 	slot_flags = ITEM_SLOT_BELT

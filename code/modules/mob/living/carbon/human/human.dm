@@ -1084,9 +1084,6 @@
 /mob/living/carbon/human/species/skeleton
 	race = /datum/species/skeleton
 
-/mob/living/carbon/human/species/vampire
-	race = /datum/species/vampire
-
 /mob/living/carbon/human/species/zombie
 	race = /datum/species/zombie
 

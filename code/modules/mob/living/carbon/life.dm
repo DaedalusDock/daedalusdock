@@ -582,8 +582,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 //LIVER//
 /////////
 
-///Check to see if we have the liver, if not automatically gives you last-stage effects of lacking a liver.
-
+/// Handles having a missing or dead liver.
 /mob/living/carbon/proc/handle_liver(delta_time, times_fired)
 	if(!dna)
 		return
@@ -612,7 +611,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 	// stoopid micro optimization, don't instantiate a new status effect every life tick for no raisin.
 	var/datum/status_effect/grouped/concussion/existing = has_status_effect(/datum/status_effect/grouped/concussion)
-	if(!(DEAD_LIVER_EFFECT in existing.sources))
+	if(isnull(existing) || !(DEAD_LIVER_EFFECT in existing.sources))
 		apply_status_effect(/datum/status_effect/grouped/concussion, DEAD_LIVER_EFFECT)
 
 /mob/living/carbon/proc/undergoing_liver_failure()

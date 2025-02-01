@@ -581,7 +581,7 @@
 	if(!the_window.fulltile)
 		return
 	var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new(the_window, null, blood_dna_info)
-	the_window.vis_contents += final_splatter
+	the_window.add_viscontents(final_splatter)
 	the_window.bloodied = TRUE
 	qdel(src)
 

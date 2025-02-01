@@ -360,8 +360,6 @@ SUBSYSTEM_DEF(ticker)
 		qdel(bomb)
 
 /datum/controller/subsystem/ticker/proc/create_characters()
-	var/list/spawn_spots = SSjob.latejoin_trackers.Copy()
-	var/list/spawn_spots_reload = spawn_spots.Copy() //In case we run out, we need something to reload from.
 	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
 		if(!player.mind)
 			//New player has logged out.
@@ -374,20 +372,23 @@ SUBSYSTEM_DEF(ticker)
 			if(PLAYER_READY_TO_PLAY)
 				GLOB.joined_player_list += player.ckey
 				var/atom/spawn_loc = player.mind.assigned_role.get_roundstart_spawn_point()
-				if(spawn_loc) //If we've been given an override, just take it and get out of here.
-					player.create_character(spawn_loc)
+				player.create_character(spawn_loc)
 
-				else //We haven't been passed an override destination. Give us the usual treatment.
-					if(!length(spawn_spots))
-						spawn_spots = spawn_spots_reload.Copy()
-
-					spawn_loc = pick_n_take(spawn_spots)
-					player.create_character(spawn_loc)
 			else //PLAYER_NOT_READY
 				//Reload their player panel so they see latejoin instead of ready.
 				player.npp.update()
 
 		CHECK_TICK
+
+/// Returns a (probably) unused latejoin spawn point. Used by roundstart code to spread players out.
+/datum/controller/subsystem/ticker/proc/get_random_spawnpoint()
+	var/static/list/spawnpoints
+	if(!length(spawnpoints))
+		if(length(SSjob.latejoin_trackers))
+			spawnpoints = SSjob.latejoin_trackers.Copy()
+		else
+			return SSjob.get_last_resort_spawn_points()
+	return pick_n_take(spawnpoints)
 
 /datum/controller/subsystem/ticker/proc/collect_minds()
 	for(var/i in GLOB.new_player_list)
@@ -480,8 +481,9 @@ SUBSYSTEM_DEF(ticker)
 			living.notransform = TRUE
 			living.client?.init_verbs()
 			livings += living
+
 	if(livings.len)
-		addtimer(CALLBACK(src, PROC_REF(release_characters), livings), 30, TIMER_CLIENT_TIME)
+		addtimer(CALLBACK(src, PROC_REF(release_characters), livings), 3 SECONDS, TIMER_CLIENT_TIME)
 
 /datum/controller/subsystem/ticker/proc/release_characters(list/livings)
 	for(var/I in livings)

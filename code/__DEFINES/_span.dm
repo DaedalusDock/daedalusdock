@@ -114,7 +114,7 @@
 #define span_statsgood(str) ("<span class='statsGood'>" + str + "</span>")
 #define span_suicide(str) ("<span class='suicide'>" + str + "</span>")
 #define span_suppradio(str) ("<span class='suppradio'>" + str + "</span>")
-#define span_subtle(str) ("<spanb class='subtle'>" + str + "</span>")
+#define span_subtle(str) ("<span class='subtle'>" + str + "</span>")
 #define span_syndradio(str) ("<span class='syndradio'>" + str + "</span>")
 #define span_tape_recorder(str) ("<span class='tape_recorder'>" + str + "</span>")
 #define span_tinynotice(str) ("<span class='tinynotice'>" + str + "</span>")

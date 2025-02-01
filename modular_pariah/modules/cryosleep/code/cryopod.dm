@@ -295,7 +295,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 		if (issilicon(mob_occupant) && istype(item_content, /obj/item/mmi))
 			continue
 		if(control_computer)
-			item_content.dropped(mob_occupant)
+			item_content.unequipped(mob_occupant)
 			mob_occupant.transferItemToLoc(item_content, control_computer, force = TRUE, silent = TRUE)
 			control_computer.frozen_item += item_content
 		else mob_occupant.transferItemToLoc(item_content, drop_location(), force = TRUE, silent = TRUE)

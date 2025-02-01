@@ -36,7 +36,7 @@
 	if(slot == ITEM_SLOT_GLOVES)
 		RegisterSignal(user, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(touch))
 
-/obj/item/clothing/gloves/space_ninja/dropped(mob/living/user)
+/obj/item/clothing/gloves/space_ninja/unequipped(mob/living/user)
 	. = ..()
 	UnregisterSignal(user, COMSIG_LIVING_EARLY_UNARMED_ATTACK)
 

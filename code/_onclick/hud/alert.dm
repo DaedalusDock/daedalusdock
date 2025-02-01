@@ -839,6 +839,19 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	desc = "You are in very bad shape. Max stamina reduced by 100 and stamina regen reduced by 5."
 	icon_state = ALERT_SOFTCRIT
 
+/atom/movable/screen/alert/lying_down
+	name = "Prone"
+	desc = "You are prone. Click to attempt to stand up."
+	icon_state = "paralysis"
+
+/atom/movable/screen/alert/lying_down/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return
+
+	var/mob/living/living_owner = owner
+	living_owner.set_resting(FALSE)
+
 // PRIVATE = only edit, use, or override these if you're editing the system as a whole
 
 // Re-render all alerts - also called in /datum/hud/show_hud() because it's needed there

@@ -145,7 +145,7 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
 	if(!door_obj)
 		door_obj = new
 	var/default_door_icon = "[icon_door || icon_state]_door"
-	vis_contents += door_obj
+	add_viscontents(door_obj)
 	door_obj.icon = icon
 	door_obj.icon_state = default_door_icon
 	is_animating_door = TRUE
@@ -177,7 +177,7 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
 /// Ends the door animation and removes the animated overlay
 /obj/structure/closet/proc/end_door_animation()
 	is_animating_door = FALSE
-	vis_contents -= door_obj
+	remove_viscontents(door_obj)
 	update_icon()
 
 /// Calculates the matrix to be applied to the animated door overlay

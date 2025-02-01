@@ -191,32 +191,6 @@
 	contains = list(/obj/item/storage/box/metalfoam)
 	crate_name = "metal foam grenade crate"
 
-/datum/supply_pack/emergency/plasma_spacesuit
-	name = "Plasmaman Space Envirosuits"
-	desc = "Contains two space-worthy envirosuits for Plasmamen. Order now and we'll throw in two free helmets! Requires EVA access to open."
-	cost = CARGO_CRATE_VALUE * 3.5
-	access = ACCESS_EVA
-	contains = list(/obj/item/clothing/suit/space/eva/plasmaman,
-					/obj/item/clothing/suit/space/eva/plasmaman,
-					/obj/item/clothing/head/helmet/space/plasmaman,
-					/obj/item/clothing/head/helmet/space/plasmaman)
-	crate_name = "plasmaman EVA crate"
-	crate_type = /obj/structure/closet/crate/secure
-
-/datum/supply_pack/emergency/plasmaman
-	name = "Plasmaman Supply Kit"
-	desc = "Keep those Plasmamen alive with two sets of Plasmaman outfits. Each set contains a plasmaman jumpsuit, gloves, internals tank, and helmet."
-	cost = CARGO_CRATE_VALUE * 3
-	contains = list(/obj/item/clothing/under/plasmaman,
-					/obj/item/clothing/under/plasmaman,
-					/obj/item/tank/internals/plasmaman/belt/full,
-					/obj/item/tank/internals/plasmaman/belt/full,
-					/obj/item/clothing/head/helmet/space/plasmaman,
-					/obj/item/clothing/head/helmet/space/plasmaman,
-					/obj/item/clothing/gloves/color/plasmaman,
-					/obj/item/clothing/gloves/color/plasmaman)
-	crate_name = "plasmaman supply kit"
-
 /datum/supply_pack/emergency/radiation
 	name = "Radiation Protection Crate"
 	desc = "Survive the Nuclear Apocalypse and Supermatter Engine alike with two sets of Radiation suits. Each set contains a helmet, suit, and Geiger counter. We'll even throw in a bottle of vodka and some glasses too, considering the life-expectancy of people who order this."
@@ -264,10 +238,12 @@
 	desc = "Keep those invasive species OUT. Contains a scythe, gasmask, and two anti-weed chemical grenades. Warranty void if used on ambrosia. Requires Hydroponics access to open."
 	cost = CARGO_CRATE_VALUE * 2.5
 	access = ACCESS_HYDROPONICS
-	contains = list(/obj/item/scythe,
-					/obj/item/clothing/mask/gas,
-					/obj/item/grenade/chem_grenade/antiweed,
-					/obj/item/grenade/chem_grenade/antiweed)
+	contains = list(
+		/obj/item/scythe,
+		/obj/item/clothing/mask/gas,
+		/obj/item/grenade/chem_grenade/antiweed,
+		/obj/item/grenade/chem_grenade/antiweed
+	)
 	crate_name = "weed control crate"
 	crate_type = /obj/structure/closet/crate/secure/hydroponics
 
@@ -1087,7 +1063,7 @@
 
 /datum/supply_pack/materials/foamtank
 	name = "Firefighting Foam Tank Crate"
-	desc = "Contains a tank of firefighting foam. Also known as \"plasmaman's bane\"."
+	desc = "Contains a tank of firefighting foam."
 	cost = CARGO_CRATE_VALUE * 3
 	contains = list(/obj/structure/reagent_dispensers/foamtank)
 	crate_name = "foam tank crate"
@@ -1942,13 +1918,12 @@
 	cost = CARGO_CRATE_VALUE * 3
 	access_view = ACCESS_HYDROPONICS
 	contains = list(/obj/item/seeds/nettle,
-					/obj/item/seeds/replicapod,
 					/obj/item/seeds/plump,
 					/obj/item/seeds/liberty,
 					/obj/item/seeds/amanita,
 					/obj/item/seeds/reishi,
 					/obj/item/seeds/bamboo,
-					/obj/item/seeds/eggplant/eggy,
+					/obj/item/seeds/eggplant,
 					/obj/item/seeds/rainbow_bunch,
 					/obj/item/seeds/shrub,
 					/obj/item/seeds/random,
@@ -2007,7 +1982,6 @@
 					/obj/item/reagent_containers/glass/bottle/ammonia,
 					/obj/item/reagent_containers/glass/bottle/ammonia,
 					/obj/item/hatchet,
-					/obj/item/cultivator,
 					/obj/item/plant_analyzer,
 					/obj/item/clothing/gloves/botanic_leather,
 					/obj/item/clothing/suit/apron)

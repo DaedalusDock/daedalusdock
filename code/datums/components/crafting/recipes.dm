@@ -537,13 +537,6 @@
 	result = /obj/structure/bonfire
 	category = CAT_PRIMAL
 
-/datum/crafting_recipe/rake //Category resorting incoming - but you never resorted, did you?
-	name = "Rake"
-	time = 30
-	reqs = list(/obj/item/stack/sheet/mineral/wood = 5)
-	result = /obj/item/cultivator/rake
-	category = CAT_PRIMAL
-
 /datum/crafting_recipe/woodbucket
 	name = "Wooden Bucket"
 	time = 30

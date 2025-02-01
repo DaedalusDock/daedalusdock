@@ -255,6 +255,41 @@
 
 	return FALSE
 
+/**
+ * Turn one reagent into another, preserving volume, temp, purity, ph
+ * Arguments
+ *
+ * * [source_reagent_typepath][/datum/reagent] - the typepath of the reagent you are trying to convert
+ * * [target_reagent_typepath][/datum/reagent] - the final typepath the source_reagent_typepath will be converted into
+ * * multiplier - the multiplier applied on the source_reagent_typepath volume before converting
+ * * include_source_subtypes- if TRUE will convert all subtypes of source_reagent_typepath into target_reagent_typepath as well
+ */
+/datum/reagents/proc/convert_reagent(
+	datum/reagent/source_reagent_typepath,
+	datum/reagent/target_reagent_typepath,
+	multiplier = 1,
+	include_source_subtypes = FALSE
+)
+	if(!ispath(source_reagent_typepath))
+		stack_trace("invalid reagent path passed to convert reagent [source_reagent_typepath]")
+		return FALSE
+
+	var/reagent_amount = 0
+	if(include_source_subtypes)
+		var/list/reagent_type_list = typecacheof(source_reagent_typepath)
+		for(var/datum/reagent/reagent as anything in reagent_list)
+			if(is_type_in_typecache(reagent, reagent_type_list))
+				reagent_amount += reagent.volume
+				remove_reagent(reagent.type, reagent.volume * multiplier)
+	else
+		var/datum/reagent/source_reagent = has_reagent(source_reagent_typepath)
+		if(istype(source_reagent))
+			reagent_amount = source_reagent.volume
+			remove_reagent(source_reagent_typepath, reagent_amount)
+
+	if(reagent_amount > 0)
+		add_reagent(target_reagent_typepath, reagent_amount * multiplier, reagtemp = chem_temp)
+
 /// Remove every reagent except this one
 /datum/reagents/proc/isolate_reagent(reagent)
 	for(var/datum/reagent/cached_reagent as anything in reagent_list)
@@ -614,15 +649,19 @@
 /datum/reagents/proc/metabolize(mob/living/carbon/owner, delta_time, times_fired, can_overdose = FALSE, liverless = FALSE, updatehealth = TRUE)
 	if(owner)
 		expose_temperature(owner.bodytemperature, 0.25)
+
 	var/need_mob_update = FALSE
 	for(var/datum/reagent/reagent as anything in reagent_list)
 		if(owner.stat == DEAD && !(reagent.chemical_flags & REAGENT_DEAD_PROCESS))
 			continue
 		need_mob_update += metabolize_reagent(owner, reagent, delta_time, times_fired, can_overdose, liverless)
+
 	update_total()
+
 	if(owner && updatehealth && need_mob_update)
 		owner.updatehealth()
 		owner.update_damage_overlays()
+
 	return need_mob_update
 
 /*
@@ -1006,6 +1045,8 @@
 	var/list/cached_results = selected_reaction.results
 	var/datum/cached_my_atom = my_atom
 	var/multiplier = INFINITY
+
+	var/total_reagent_potency = 0
 	for(var/reagent in cached_required_reagents)
 		multiplier = round(min(multiplier, round(get_reagent_amount(reagent) / cached_required_reagents[reagent])))
 
@@ -1016,13 +1057,22 @@
 		var/datum/reagent/reagent = has_reagent(_reagent)
 		if (!reagent)
 			continue
+
+		if(istype(reagent, /datum/reagent/ichor))
+			total_reagent_potency += reagent.data?["potency"] || 0
+
 		remove_reagent(_reagent, (multiplier * cached_required_reagents[_reagent]), safety = 1)
 
 	for(var/product in cached_results)
 		multiplier = max(multiplier, 1) //this shouldn't happen ...
 		var/yield = (cached_results[product]*multiplier)
 		SSblackbox.record_feedback("tally", "chemical_reaction", yield, product)
-		add_reagent(product, yield, null, chem_temp,)
+		add_reagent(
+			product,
+			yield,
+			total_reagent_potency && list("potency" = total_reagent_potency),
+			chem_temp
+		)
 
 	if(cached_my_atom)
 		if(!ismob(cached_my_atom)) // No bubbling mobs
@@ -1148,13 +1198,38 @@
 /datum/reagents/proc/holder_full()
 	return total_volume >= maximum_volume
 
-/// Get the amount of this reagent
-/datum/reagents/proc/get_reagent_amount(reagent)
+/**
+ * Get the amount of this reagent or the sum of all its subtypes if specified
+ * Arguments
+ * * [reagent][datum/reagent] - the typepath of the reagent to look for
+ * * type_check - see defines under reagents.dm file
+ */
+/datum/reagents/proc/get_reagent_amount(datum/reagent/reagent, type_check = REAGENT_STRICT_TYPE)
+	if(!ispath(reagent))
+		stack_trace("invalid path passed to get_reagent_amount [reagent]")
+		return 0
 	var/list/cached_reagents = reagent_list
+
+	var/total_amount = 0
 	for(var/datum/reagent/cached_reagent as anything in cached_reagents)
-		if(cached_reagent.type == reagent)
-			return round(cached_reagent.volume, CHEMICAL_VOLUME_ROUNDING)
-	return 0
+		switch(type_check)
+			if(REAGENT_STRICT_TYPE)
+				if(cached_reagent.type != reagent)
+					continue
+			if(REAGENT_PARENT_TYPE) //to simulate typesof() which returns the type and then child types
+				if(cached_reagent.type != reagent && type2parent(cached_reagent.type) != reagent)
+					continue
+			else
+				if(!istype(cached_reagent, reagent))
+					continue
+
+		total_amount += cached_reagent.volume
+
+		//short cut to break when we have found our one exact type
+		if(type_check == REAGENT_STRICT_TYPE)
+			return total_amount
+
+	return round(total_amount, CHEMICAL_VOLUME_ROUNDING)
 
 /// Get a comma separated string of every reagent name in this holder. UNUSED
 /datum/reagents/proc/get_reagent_names()

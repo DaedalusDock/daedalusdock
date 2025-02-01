@@ -5953,7 +5953,6 @@
 	name = "First Aid Supplies";
 	req_access_txt = "5"
 	},
-/obj/item/mod/module/plasma_stabilizer,
 /obj/item/mod/module/thermal_regulator,
 /turf/open/floor/iron/dark,
 /area/station/medical/storage)

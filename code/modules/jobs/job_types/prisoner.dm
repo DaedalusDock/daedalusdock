@@ -12,7 +12,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/prisoner,
-			SPECIES_PLASMAMAN = /datum/outfit/job/prisoner/plasmaman,
 		),
 	)
 
@@ -25,6 +24,7 @@
 
 	family_heirlooms = list(/obj/item/pen/blue)
 	rpg_title = "Defeated Miniboss"
+	default_security_status = CRIMINAL_INCARCERATED
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
 
@@ -38,15 +38,6 @@
 	belt = null
 	ears = null
 	shoes = /obj/item/clothing/shoes/sneakers/orange
-
-/datum/outfit/job/prisoner/plasmaman
-	name = "Prisoner (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/prisoner
-	gloves = /obj/item/clothing/gloves/color/plasmaman/black
-	head = /obj/item/clothing/head/helmet/space/plasmaman/prisoner
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/prisoner/pre_equip(mob/living/carbon/human/H)
 	..()

@@ -24,6 +24,9 @@ DEFINE_INTERACTABLE(/obj/item)
 	///Items can by default thrown up to 10 tiles by TK users
 	tk_throw_range = 10
 
+	/// The mob this item is being worn or held by.
+	var/tmp/mob/living/equipped_to
+
 	/// This var exists as a weird proxy "owner" ref
 	/// It's used in a few places. Stop using it, and optimially replace all uses please
 	var/tmp/obj/item/master = null
@@ -303,9 +306,9 @@ DEFINE_INTERACTABLE(/obj/item)
 	// This var exists as a weird proxy "owner" ref
 	// It's used in a few places. Stop using it, and optimially replace all uses please
 	master = null
-	if(ismob(loc))
-		var/mob/m = loc
-		m.temporarilyRemoveItemFromInventory(src, TRUE)
+
+	if(equipped_to)
+		equipped_to.temporarilyRemoveItemFromInventory(src, TRUE)
 
 	// Handle cleaning up our actions list
 	for(var/datum/action/action as anything in actions)
@@ -327,8 +330,8 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	if(href_list["examine"])
 		var/atom_to_view_check = src
-		if(ismob(loc))
-			atom_to_view_check = loc
+		if(equipped_to)
+			atom_to_view_check = equipped_to
 
 		if(!atom_to_view_check && isidcard(src) && istype(loc, /obj/item/storage/wallet))
 			var/obj/item/storage/wallet/W = loc
@@ -453,11 +456,10 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	LAZYADD(actions, action)
 	RegisterSignal(action, COMSIG_PARENT_QDELETING, PROC_REF(on_action_deleted))
-	if(ismob(loc))
+	if(equipped_to)
 		// We're being held or are equipped by someone while adding an action?
 		// Then they should also probably be granted the action, given it's in a correct slot
-		var/mob/holder = loc
-		give_item_action(action, holder, holder.get_slot_by_item(src))
+		give_item_action(action, equipped_to, equipped_to.get_slot_by_item(src))
 
 	return action
 
@@ -781,7 +783,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	if(block_effect)
 		var/obj/effect/effect = new block_effect()
-		wielder.vis_contents += effect
+		wielder.add_viscontents(effect)
 
 /// Plays the block sound effect
 /obj/item/proc/play_block_sound(mob/living/carbon/human/wielder, attack_type)
@@ -803,7 +805,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	return ITALICS | REDUCE_RANGE
 
 /// Called when a mob drops an item.
-/obj/item/proc/dropped(mob/user, silent = FALSE)
+/obj/item/proc/unequipped(mob/user, silent = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(wielded)
@@ -817,13 +819,16 @@ DEFINE_INTERACTABLE(/obj/item)
 		qdel(src)
 
 	item_flags &= ~IN_INVENTORY
-	SEND_SIGNAL(src, COMSIG_ITEM_DROPPED, user)
+	equipped_to = null
+	SEND_SIGNAL(src, COMSIG_ITEM_UNEQUIPPED, user)
 
 	if(!silent)
 		playsound(src, drop_sound, DROP_SOUND_VOLUME, ignore_walls = FALSE)
 
-	user?.update_equipment_speed_mods()
-	user?.update_mouse_pointer()
+	if(!QDELETED(user))
+		if(slowdown)
+			user.update_equipment_speed_mods()
+		user.update_mouse_pointer()
 
 /// called just as an item is picked up (loc is not yet changed)
 /obj/item/proc/pickup(mob/user)
@@ -842,8 +847,9 @@ DEFINE_INTERACTABLE(/obj/item)
  * This separation exists to prevent things like the monkey sentience helmet from
  * polling ghosts while it's just being equipped as a visual preview for a dummy.
  */
-/obj/item/proc/visual_equipped(mob/user, slot, initial = FALSE)
-	return
+/obj/item/proc/visual_equipped(mob/living/user, slot, initial = FALSE)
+	SHOULD_CALL_PARENT(TRUE)
+	user.update_slots_for_item(src, slot)
 
 /**
  * Called after an item is placed in an equipment slot.
@@ -857,7 +863,7 @@ DEFINE_INTERACTABLE(/obj/item)
  */
 /obj/item/proc/equipped(mob/user, slot, initial = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
-	visual_equipped(user, slot, initial)
+
 	SEND_SIGNAL(src, COMSIG_ITEM_EQUIPPED, user, slot)
 	SEND_SIGNAL(user, COMSIG_MOB_EQUIPPED_ITEM, src, slot)
 
@@ -867,6 +873,7 @@ DEFINE_INTERACTABLE(/obj/item)
 				stack_trace("[user] failed to wield a twohanded item.")
 				spawn(0)
 					user.dropItemToGround(src)
+
 	else if(wielded)
 		unwield(user, FALSE)
 
@@ -875,13 +882,17 @@ DEFINE_INTERACTABLE(/obj/item)
 		give_item_action(action, user, slot)
 
 	item_flags |= IN_INVENTORY
+	equipped_to = user
+
 	if(!initial)
 		if(equip_sound && (slot_flags & slot))
 			playsound(src, equip_sound, EQUIP_SOUND_VOLUME, TRUE, ignore_walls = FALSE)
 		else if(slot == ITEM_SLOT_HANDS)
 			playsound(src, pickup_sound, PICKUP_SOUND_VOLUME, ignore_walls = FALSE)
 
-	user.update_equipment_speed_mods()
+	if(slowdown)
+		user.update_equipment_speed_mods()
+	visual_equipped(user, slot, initial)
 
 /// Gives one of our item actions to a mob, when equipped to a certain slot
 /obj/item/proc/give_item_action(datum/action/action, mob/to_who, slot)
@@ -1110,10 +1121,10 @@ DEFINE_INTERACTABLE(/obj/item)
 	return mutable_appearance('icons/obj/clothing/belt_overlays.dmi', icon_state_to_use)
 
 /obj/item/proc/update_slot_icon()
-	if(!ismob(loc))
+	if(!equipped_to)
 		return
-	var/mob/owner = loc
-	owner.update_clothing(slot_flags | ITEM_SLOT_HANDS)
+
+	equipped_to.update_clothing(slot_flags | ITEM_SLOT_HANDS)
 
 ///Returns the temperature of src. If you want to know if an item is hot use this proc.
 /obj/item/proc/get_temperature()
@@ -1187,13 +1198,73 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/proc/grind_requirements(obj/machinery/reagentgrinder/R) //Used to check for extra requirements for grinding an object
 	return TRUE
+///Grind item, adding grind_results to item's reagents and transfering to target_holder if specified
+/obj/item/proc/grind(datum/reagents/target_holder, mob/user, atom/movable/grinder = loc)
+	SHOULD_NOT_OVERRIDE(TRUE)
+
+	SEND_SIGNAL(src, COMSIG_ITEM_PRE_GRIND)
+
+	. = FALSE
+	if(!can_be_ground() || target_holder.holder_full())
+		return
+
+	return do_grind(target_holder, user)
 
 ///Called BEFORE the object is ground up - use this to change grind results based on conditions. Use "return -1" to prevent the grinding from occurring
-/obj/item/proc/on_grind()
-	return SEND_SIGNAL(src, COMSIG_ITEM_ON_GRIND)
+/obj/item/proc/can_be_ground()
+	if(!length(grind_results))
+		return FALSE
 
-/obj/item/proc/on_juice()
-	return SEND_SIGNAL(src, COMSIG_ITEM_ON_JUICE)
+	return TRUE
+
+///Subtypes override his proc for custom grinding
+/obj/item/proc/do_grind(datum/reagents/target_holder, mob/user)
+	PROTECTED_PROC(TRUE)
+
+	. = FALSE
+	if(length(grind_results))
+		target_holder.add_reagent_list(grind_results)
+		. = TRUE
+
+	if(reagents?.trans_to(target_holder, reagents.total_volume, transfered_by = user))
+		. = TRUE
+
+///Juice item, converting nutriments into juice_typepath and transfering to target_holder if specified
+/obj/item/proc/juice(datum/reagents/target_holder, mob/user, atom/movable/juicer = loc)
+	SHOULD_NOT_OVERRIDE(TRUE)
+
+	SEND_SIGNAL(src, COMSIG_ITEM_PRE_JUICE)
+
+	. = FALSE
+	if(!can_be_juiced() || !reagents?.total_volume)
+		return
+
+	return do_juice(target_holder, user)
+
+
+/obj/item/proc/can_be_juiced()
+	if(!length(juice_results))
+		return FALSE
+
+	return TRUE
+
+/// Subtypes override his proc for custom juicing
+/obj/item/proc/do_juice(datum/reagents/target_holder, mob/user)
+	PROTECTED_PROC(TRUE)
+
+	. = FALSE
+
+	var/mult = round(1 / length(juice_results), CHEMICAL_QUANTISATION_LEVEL)
+
+	for(var/reagent_type in juice_results)
+		reagents.convert_reagent(/datum/reagent/consumable/nutriment, reagent_type, mult, include_source_subtypes = FALSE)
+		reagents.convert_reagent(/datum/reagent/consumable/nutriment/vitamin, reagent_type, mult, include_source_subtypes = FALSE)
+		. = TRUE
+
+	if(!QDELETED(target_holder))
+		reagents.trans_to(target_holder, reagents.total_volume, transfered_by = user)
+
+	juice_results = null
 
 /obj/item/proc/damagetype2text()
 	. += list()
@@ -1425,18 +1496,8 @@ DEFINE_INTERACTABLE(/obj/item)
 	return 0
 
 /obj/item/doMove(atom/destination)
-	if (ismob(loc))
-		var/mob/M = loc
-		var/hand_index = M.get_held_index_of_item(src)
-		if(hand_index)
-			M.held_items[hand_index] = null
-			M.update_held_items()
-			if(M.client)
-				M.client.screen -= src
-			layer = initial(layer)
-			plane = initial(plane)
-			appearance_flags &= ~NO_CLIENT_COLOR
-			dropped(M, FALSE)
+	if (equipped_to)
+		equipped_to.temporarilyRemoveItemFromInventory(src, TRUE)
 	return ..()
 
 /obj/item/proc/embedded(obj/item/bodypart/part)
@@ -1633,9 +1694,11 @@ DEFINE_INTERACTABLE(/obj/item)
 /obj/item/wash(clean_types)
 	. = ..()
 
-	if(ismob(loc))
-		var/mob/mob_loc = loc
-		mob_loc.regenerate_icons()
+	if(equipped_to)
+		if(equipped_to.is_holding(src))
+			equipped_to.update_held_items()
+		else
+			equipped_to.update_clothing()
 
 /// Called on [/datum/element/openspace_item_click_handler/proc/on_afterattack]. Check the relative file for information.
 /obj/item/proc/handle_openspace_click(turf/target, mob/user, proximity_flag, click_parameters)

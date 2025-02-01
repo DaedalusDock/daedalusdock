@@ -103,7 +103,7 @@
 
 	for(var/obj/item/hand_item/grab/G in active_grabs)
 		var/atom/movable/pulling = G.affecting
-		if(!MultiZAdjacent(src, pulling))
+		if(!MultiZAdjacent(pulling))
 			qdel(G)
 		else if(!isturf(loc))
 			qdel(G)

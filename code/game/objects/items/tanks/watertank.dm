@@ -96,7 +96,7 @@
 	else
 		return ..()
 
-/obj/item/watertank/dropped(mob/user)
+/obj/item/watertank/unequipped(mob/user)
 	..()
 	remove_noz()
 
@@ -218,7 +218,7 @@
 /obj/item/watertank/atmos/make_noz()
 	return new /obj/item/extinguisher/mini/nozzle(src)
 
-/obj/item/watertank/atmos/dropped(mob/user)
+/obj/item/watertank/atmos/unequipped(mob/user)
 	..()
 	icon_state = "waterbackpackatmos"
 	if(istype(noz, /obj/item/extinguisher/mini/nozzle))
@@ -437,14 +437,14 @@
 /obj/item/reagent_containers/chemtank/proc/turn_on()
 	on = TRUE
 	START_PROCESSING(SSobj, src)
-	if(ismob(loc))
-		to_chat(loc, span_notice("[src] turns on."))
+	if(equipped_to)
+		to_chat(equipped_to, span_notice("[src] turns on."))
 
 /obj/item/reagent_containers/chemtank/proc/turn_off()
 	on = FALSE
 	STOP_PROCESSING(SSobj, src)
-	if(ismob(loc))
-		to_chat(loc, span_notice("[src] turns off."))
+	if(equipped_to)
+		to_chat(equipped_to, span_notice("[src] turns off."))
 
 /obj/item/reagent_containers/chemtank/process(delta_time)
 	if(!ishuman(loc))

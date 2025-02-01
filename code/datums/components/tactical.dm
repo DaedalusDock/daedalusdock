@@ -9,10 +9,10 @@
 
 /datum/component/tactical/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(modify))
-	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(unmodify))
+	RegisterSignal(parent, COMSIG_ITEM_UNEQUIPPED, PROC_REF(unmodify))
 
 /datum/component/tactical/UnregisterFromParent()
-	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
+	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_UNEQUIPPED))
 	unmodify()
 
 /datum/component/tactical/Destroy()

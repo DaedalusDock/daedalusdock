@@ -486,7 +486,7 @@
 	magnification = null
 	new /obj/effect/decal/cleanable/ash/crematorium(drop_location()) //just in case they're in a locker or other containers it needs to use crematorium ash, see the path itself for an explanation
 
-/obj/item/clothing/head/helmet/monkey_sentience/dropped(mob/user)
+/obj/item/clothing/head/helmet/monkey_sentience/unequipped(mob/user)
 	. = ..()
 	if(magnification || polling)
 		qdel(src)//runs disconnect code

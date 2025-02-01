@@ -313,7 +313,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	//calculate the energy produced by the reaction and then set the new temperature of the mix
 	temperature = (starting_energy + zas_settings.fire_fuel_energy_release * (used_gas_fuel + used_liquid_fuel)) / getHeatCapacity()
-	AIR_UPDATE_VALUES(src)
+	garbageCollect()
 
 	#ifdef FIREDBG
 	to_chat(world, "used_gas_fuel = [used_gas_fuel]; used_liquid_fuel = [used_liquid_fuel]; total = [used_fuel]")

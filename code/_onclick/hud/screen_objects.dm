@@ -394,7 +394,7 @@
 /atom/movable/screen/combattoggle
 	name = "toggle combat mode"
 	icon = 'icons/hud/screen_midnight.dmi'
-	icon_state = "combat_off"
+	icon_state = "help"
 	screen_loc = ui_combat_toggle
 
 /atom/movable/screen/combattoggle/Initialize(mapload)
@@ -405,6 +405,7 @@
 	. = ..()
 	if(.)
 		return FALSE
+
 	if(isliving(usr))
 		var/mob/living/owner = usr
 		owner.set_combat_mode(!owner.combat_mode, FALSE)
@@ -414,7 +415,11 @@
 	var/mob/living/user = hud?.mymob
 	if(!istype(user) || !user.client)
 		return ..()
-	icon_state = user.combat_mode ? "combat" : "combat_off" //Treats the combat_mode
+
+	if(user.client.keys_held["Ctrl"])
+		icon_state = "grab"
+	else
+		icon_state = user.combat_mode ? "harm" : "help" //Treats the combat_mode
 	return ..()
 
 //Version of the combat toggle with the flashy overlay
@@ -649,7 +654,7 @@
 
 	if(hovering == choice)
 		return
-	vis_contents -= hover_overlays_cache[hovering]
+	remove_viscontents(hover_overlays_cache[hovering])
 	hovering = choice
 
 	var/obj/effect/overlay/zone_sel/overlay_object = hover_overlays_cache[choice]
@@ -657,7 +662,7 @@
 		overlay_object = new
 		overlay_object.icon_state = "[choice]"
 		hover_overlays_cache[choice] = overlay_object
-	vis_contents += overlay_object
+	add_viscontents(overlay_object)
 
 /obj/effect/overlay/zone_sel
 	icon = 'icons/hud/screen_gen.dmi'
@@ -669,7 +674,7 @@
 /atom/movable/screen/zone_sel/MouseExited(location, control, params)
 	. = ..()
 	if(!isobserver(usr) && hovering)
-		vis_contents -= hover_overlays_cache[hovering]
+		remove_viscontents(hover_overlays_cache[hovering])
 		hovering = null
 
 /atom/movable/screen/zone_sel/proc/get_zone_at(icon_x, icon_y)

@@ -313,9 +313,8 @@
 	on = FALSE
 	force = initial(src.force)
 	damtype = initial(src.damtype)
-	if(ismob(loc))
-		var/mob/U = loc
-		update_brightness(U)
+	if(equipped_to)
+		update_brightness(equipped_to)
 	else
 		update_brightness(null)
 

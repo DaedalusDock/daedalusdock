@@ -109,7 +109,7 @@
 /obj/vehicle/ridden/trolley/proc/load_cargo(obj/structure/closet/crate/cargo)
 	cargo.close()
 	cargo.forceMove(src)
-	vis_contents += cargo
+	add_viscontents(cargo)
 	cargo.vis_flags = VIS_INHERIT_ID
 	cargo.layer = ABOVE_MOB_LAYER
 	cargo.pixel_y = 4
@@ -134,7 +134,7 @@
 	cargo.pixel_y = initial(pixel_y)
 	cargo.layer = initial(layer)
 	cargo.vis_flags &= ~VIS_INHERIT_ID
-	vis_contents -= cargo
+	remove_viscontents(cargo)
 	cargo.forceMove(deposit_turf)
 	user.visible_message(
 		span_notice("[user] unloads [cargo] from [src]."),

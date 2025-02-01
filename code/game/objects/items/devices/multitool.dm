@@ -61,8 +61,8 @@
 
 /obj/item/multitool/ai_detect/Destroy()
 	STOP_PROCESSING(SSfastprocess, src)
-	if(hud_on && ismob(loc))
-		remove_hud(loc)
+	if(hud_on && equipped_to)
+		remove_hud(equipped_to)
 	QDEL_NULL(eye)
 	return ..()
 
@@ -74,7 +74,7 @@
 	if(hud_on)
 		show_hud(user)
 
-/obj/item/multitool/ai_detect/dropped(mob/living/carbon/human/user)
+/obj/item/multitool/ai_detect/unequipped(mob/living/carbon/human/user)
 	..()
 	if(hud_on)
 		remove_hud(user)

@@ -209,7 +209,7 @@
 	else
 		STOP_PROCESSING(SSobj, src)
 
-/obj/item/ore_sensor/dropped(mob/user, silent)
+/obj/item/ore_sensor/unequipped(mob/user, silent)
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 

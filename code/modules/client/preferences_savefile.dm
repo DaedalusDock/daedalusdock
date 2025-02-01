@@ -181,15 +181,15 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		fcopy(S, bacpath) //byond helpfully lets you use a savefile for the first arg.
 		update_preferences(needs_update, S) //needs_update = savefile_version if we need an update (positive integer)
 
-	check_keybindings() // this apparently fails every time and overwrites any unloaded prefs with the default values, so don't load anything after this line or it won't actually save
-	key_bindings_by_key = get_key_bindings_by_key(key_bindings)
-
 	//Sanitize
 	lastchangelog = sanitize_text(lastchangelog, initial(lastchangelog))
 	default_slot = sanitize_integer(default_slot, 1, max_save_slots, initial(default_slot))
 	toggles = sanitize_integer(toggles, 0, SHORT_REAL_LIMIT-1, initial(toggles))
 	key_bindings = sanitize_keybindings(key_bindings)
 	favorite_outfits = SANITIZE_LIST(favorite_outfits)
+
+	check_keybindings() // this apparently fails every time and overwrites any unloaded prefs with the default values, so don't load anything after this line or it won't actually save
+	key_bindings_by_key = get_key_bindings_by_key(key_bindings)
 
 	if(needs_update >= 0) //save the updated version
 		var/old_default_slot = default_slot
@@ -290,11 +290,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//preference updating will handle saving the updated data for us.
 	if(needs_update >= 0)
 		update_character(needs_update, S) //needs_update == savefile_version if we need an update (positive integer)
-
-	var/mob/dead/new_player/body = parent?.mob
-	if(istype(body))
-		spawn(-1)
-			body.npp.open()
 
 	return TRUE
 

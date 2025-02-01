@@ -139,3 +139,10 @@
 
 #define FACTION_NONE "None"
 #define FACTION_STATION "Station"
+
+/// Spawn point is always fixed.
+#define JOBSPAWN_FORCE_FIXED 0
+/// Spawn point prefers a fixed spawnpoint, but can be a latejoin one.
+#define JOBSPAWN_ALLOW_RANDOM 1
+/// Spawn point is always a random spawnpoint.
+#define JOBSPAWN_FORCE_RANDOM 2

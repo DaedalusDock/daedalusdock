@@ -8,7 +8,7 @@
 	if(slot == ITEM_SLOT_BELT || ITEM_SLOT_SUITSTORE)
 		ADD_TRAIT(user, TRAIT_GUNFLIP, CLOTHING_TRAIT)
 
-/obj/item/storage/belt/holster/dropped(mob/user, silent)
+/obj/item/storage/belt/holster/unequipped(mob/user, silent)
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_GUNFLIP, CLOTHING_TRAIT)
 

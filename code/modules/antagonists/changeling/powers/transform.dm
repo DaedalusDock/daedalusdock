@@ -119,7 +119,7 @@
 	if(!hud_icon)
 		return
 
-	set_hud_image_vars(ID_HUD, hud_icon, get_hud_pixel_y())
+	set_hud_image_vars(ID_HUD, hud_icon)
 
 /**
  * Returns cached flat icon of the ID, creates one if there is not one already cached

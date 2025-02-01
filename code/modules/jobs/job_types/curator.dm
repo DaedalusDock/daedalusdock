@@ -16,7 +16,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/curator,
-			SPECIES_PLASMAMAN = /datum/outfit/job/curator/plasmaman,
 		),
 	)
 
@@ -49,15 +48,6 @@
 	l_hand = /obj/item/storage/bag/books
 
 	accessory = /obj/item/clothing/accessory/pocketprotector/full
-
-/datum/outfit/job/curator/plasmaman
-	name = JOB_ARCHIVIST + " (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/curator
-	gloves = /obj/item/clothing/gloves/color/plasmaman/prototype
-	head = /obj/item/clothing/head/helmet/space/plasmaman/curator
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/curator/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()

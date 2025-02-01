@@ -408,7 +408,7 @@
  * Arguments:
  */
 /obj/item/restraints/legcuffs/beartrap/energy/proc/dissipate()
-	if(!ismob(loc))
+	if(!equipped_to)
 		do_sparks(1, TRUE, src)
 		qdel(src)
 
@@ -512,7 +512,7 @@
 		var/mob/living/carbon/C = hit_atom
 		effectReference = C.apply_status_effect(/datum/status_effect/gonbola_pacify)
 
-/obj/item/restraints/legcuffs/bola/gonbola/dropped(mob/user)
+/obj/item/restraints/legcuffs/bola/gonbola/unequipped(mob/user)
 	. = ..()
 	if(effectReference)
 		QDEL_NULL(effectReference)

@@ -38,7 +38,7 @@
 	if(on && slot != ITEM_SLOT_BACK)
 		turn_off(user)
 
-/obj/item/tank/jetpack/dropped(mob/user, silent)
+/obj/item/tank/jetpack/unequipped(mob/user, silent)
 	. = ..()
 	if(on)
 		turn_off(user)
@@ -116,9 +116,7 @@
 
 // Gives the jetpack component the user it expects
 /obj/item/tank/jetpack/proc/get_user()
-	if(!ismob(loc))
-		return null
-	return loc
+	return equipped_to
 
 /obj/item/tank/jetpack/suicide_act(mob/user)
 	if (!istype(user, /mob/living/carbon/human))

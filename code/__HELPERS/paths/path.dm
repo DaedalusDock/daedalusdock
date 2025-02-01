@@ -10,7 +10,7 @@
  * It will yield until a path is returned, using magic
  *
  * Arguments:
- * * caller: The movable atom that's trying to find the path
+ * * invoker: The movable atom that's trying to find the path
  * * end: What we're trying to path to. It doesn't matter if this is a turf or some other atom, we're gonna just path to the turf it's on anyway
  * * max_distance: The maximum number of steps we can take in a given path to search (default: 30, 0 = infinite)
  * * mintargetdistance: Minimum distance to the target before path returns, could be used to get near a target, but not right to it - for an AI mob with a gun, for example.
@@ -20,24 +20,25 @@
  * * skip_first: Whether or not to delete the first item in the path. This would be done because the first item is the starting tile, which can break movement for some creatures.
  * * diagonal_handling: defines how we handle diagonal moves. see __DEFINES/path.dm
  */
-/proc/jps_path_to(atom/movable/caller, atom/end, max_distance = 30, mintargetdist, list/access, simulated_only = TRUE, turf/exclude, skip_first=TRUE, diagonal_handling=DIAGONAL_REMOVE_CLUNKY)
-	var/list/path = list()
+/proc/jps_path_to(atom/movable/invoker, atom/end, max_distance = 30, mintargetdist, list/access, simulated_only = TRUE, turf/exclude, skip_first=TRUE, diagonal_handling=DIAGONAL_REMOVE_CLUNKY)
+	var/datum/pathfind_packet/packet = new
 	// We're guarenteed that list will be the first list in pathfinding_finished's argset because of how callback handles the arguments list
-	var/datum/callback/await = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(pathfinding_finished), path)
-	if(!SSpathfinder.pathfind(caller, end, max_distance, mintargetdist, access, simulated_only, exclude, skip_first, diagonal_handling, await))
+	var/datum/callback/await = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(pathfinding_finished), packet)
+	if(!SSpathfinder.pathfind(invoker, end, max_distance, mintargetdist, access, simulated_only, exclude, skip_first, diagonal_handling, await))
 		return list()
 
-	UNTIL(length(path))
-	if(length(path) == 1 && path[1] == null || (QDELETED(caller) || QDELETED(end))) // It's trash, just hand back null to make it easy
-		return list()
-	return path
+	UNTIL(packet.path)
+	return packet.path
 
 /// Uses funny pass by reference bullshit to take the path created by pathfinding, and insert it into a return list
 /// We'll be able to use this return list to tell a sleeping proc to continue execution
-/proc/pathfinding_finished(list/return_list, list/path)
-	// We use += here to ensure the list is still pointing at the same thing
-	return_list += path
+/proc/pathfinding_finished(datum/pathfind_packet/return_packet, list/path)
+	return_packet.path = path || list()
 
+/// Wrapper around the path list since we play with refs.
+/datum/pathfind_packet
+	/// The unwound path, set when it's finished.
+	var/list/path
 
 /datum/pathfind
 	/// The turf we started at
@@ -97,7 +98,7 @@
  * Call to return a value to whoever spawned this pathfinding work
  * Will fail if it's already been called
  */
-/datum/pathfind/proc/hand_back(value)
+/datum/pathfind/proc/hand_back(list/value)
 	set waitfor = FALSE
 	on_finish?.Invoke(value)
 	on_finish = null

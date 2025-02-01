@@ -10,7 +10,7 @@
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
-	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
+	RegisterSignal(parent, COMSIG_ITEM_UNEQUIPPED, PROC_REF(on_drop))
 
 /datum/component/wearertargeting/proc/on_equip(datum/source, mob/equipper, slot)
 	SIGNAL_HANDLER

@@ -59,7 +59,7 @@
 
 	update_action_buttons()
 
-/obj/item/clothing/suit/hooded/dropped()
+/obj/item/clothing/suit/hooded/unequipped()
 	..()
 	RemoveHood()
 
@@ -100,7 +100,7 @@
 		old_suit.RemoveHood()
 	return ..()
 
-/obj/item/clothing/head/hooded/dropped()
+/obj/item/clothing/head/hooded/unequipped()
 	..()
 	if(suit)
 		suit.RemoveHood()

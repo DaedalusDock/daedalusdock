@@ -758,21 +758,23 @@ SUBSYSTEM_DEF(job)
 	if(buckle && isliving(joining_mob))
 		buckle_mob(joining_mob, FALSE, FALSE)
 
+/// Send an existing mob to their latejoin spawnpoint. Returns FALSE if it couldn't find a proper one, and resorted to the last resort.
 /datum/controller/subsystem/job/proc/SendToLateJoin(mob/M, buckle = TRUE)
 	var/atom/destination
 
-	if(M.mind && !is_unassigned_job(M.mind.assigned_role) && length(GLOB.high_priority_spawns)) //We're doing something special today.
-		destination = pick(GLOB.high_priority_spawns[M.mind.assigned_role.title])
+	if(M.mind?.assigned_role && !is_unassigned_job(M.mind.assigned_role)) //We're doing something special today.
+		destination = M.mind.assigned_role.get_latejoin_spawn_point()
 		destination.JoinPlayerHere(M, FALSE)
 		return TRUE
 
-	if(latejoin_trackers.len)
+	if(length(latejoin_trackers))
 		destination = pick(latejoin_trackers)
 		destination.JoinPlayerHere(M, buckle)
 		return TRUE
 
 	destination = get_last_resort_spawn_points()
 	destination.JoinPlayerHere(M, buckle)
+	return FALSE
 
 
 /datum/controller/subsystem/job/proc/get_last_resort_spawn_points()

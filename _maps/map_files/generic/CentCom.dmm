@@ -623,16 +623,6 @@
 	anchored = 1;
 	name = "Plasmaman suits"
 	},
-/obj/item/clothing/under/plasmaman,
-/obj/item/clothing/under/plasmaman/engineering,
-/obj/item/clothing/under/plasmaman/botany,
-/obj/item/clothing/under/plasmaman/janitor,
-/obj/item/clothing/under/plasmaman/chef,
-/obj/item/clothing/head/helmet/space/plasmaman,
-/obj/item/clothing/head/helmet/space/plasmaman/engineering,
-/obj/item/clothing/head/helmet/space/plasmaman/botany,
-/obj/item/clothing/head/helmet/space/plasmaman/janitor,
-/obj/item/clothing/head/helmet/space/plasmaman/white,
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
@@ -2505,7 +2495,7 @@
 	pixel_y = 17
 	},
 /obj/structure/fluff/tram_rail,
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "hm" = (
 /obj/structure/flora/ausbushes/lavendergrass,
@@ -2635,11 +2625,6 @@
 /obj/item/clothing/mask/breath,
 /obj/item/clothing/mask/breath,
 /obj/item/clothing/mask/breath,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
@@ -5167,8 +5152,6 @@
 /obj/item/food/grown/tomato,
 /obj/item/food/grown/rice,
 /obj/item/food/grown/rice,
-/obj/item/food/grown/icepepper,
-/obj/item/food/grown/icepepper,
 /obj/item/food/grown/citrus/lemon,
 /obj/item/food/grown/citrus/lime,
 /obj/item/food/grown/citrus/orange,
@@ -6054,7 +6037,7 @@
 	dir = 1
 	},
 /obj/structure/railing,
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "ri" = (
 /obj/effect/turf_decal/stripes/full,
@@ -7234,7 +7217,7 @@
 /obj/structure/railing{
 	dir = 10
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "uX" = (
 /obj/machinery/shower{
@@ -8979,7 +8962,7 @@
 /obj/structure/railing{
 	dir = 9
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "zZ" = (
 /obj/effect/turf_decal/tile/brown{
@@ -10571,7 +10554,7 @@
 /obj/structure/railing{
 	dir = 1
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Es" = (
 /obj/effect/light_emitter{
@@ -10612,10 +10595,6 @@
 /obj/machinery/light/cold/directional/west,
 /obj/item/seeds/cannabis{
 	pixel_y = 8
-	},
-/obj/item/cultivator{
-	pixel_x = -6;
-	pixel_y = 11
 	},
 /turf/open/floor/mineral/titanium/tiled,
 /area/centcom/syndicate_mothership/expansion_bioterrorism)
@@ -10733,7 +10712,7 @@
 /obj/structure/railing{
 	dir = 8
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "ES" = (
 /obj/structure/sign/poster/contraband/lamarr{
@@ -10941,7 +10920,7 @@
 /obj/structure/railing{
 	dir = 9
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Fy" = (
 /obj/structure/chair/stool/directional/south,
@@ -12178,7 +12157,7 @@
 /obj/structure/railing{
 	dir = 10
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Jo" = (
 /obj/machinery/door/airlock/centcom{
@@ -12443,7 +12422,7 @@
 /turf/open/misc/asteroid/snow/airless,
 /area/centcom/syndicate_mothership)
 "Ki" = (
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Kk" = (
 /obj/docking_port/stationary{
@@ -13400,7 +13379,7 @@
 /obj/structure/railing{
 	dir = 6
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Np" = (
 /obj/structure/bookcase/random,
@@ -13428,7 +13407,7 @@
 /obj/structure/railing{
 	dir = 6
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Nt" = (
 /obj/structure/filingcabinet/medical,
@@ -13772,7 +13751,6 @@
 /obj/item/shovel/spade{
 	pixel_y = -14
 	},
-/obj/item/cultivator,
 /turf/open/floor/wood,
 /area/centcom/central_command_areas/holding)
 "Ox" = (
@@ -15268,7 +15246,7 @@
 /obj/structure/railing{
 	dir = 9
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "SL" = (
 /obj/structure/rack,
@@ -15734,7 +15712,7 @@
 /obj/structure/railing{
 	dir = 10
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "TO" = (
 /obj/machinery/keycard_auth/directional/south,
@@ -17745,7 +17723,7 @@
 /obj/item/food/grown/chili,
 /obj/item/food/grown/carrot,
 /obj/item/food/grown/apple,
-/obj/item/food/grown/ambrosia/vulgaris,
+/obj/item/food/grown/ambrosia,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/status_display/evac/directional/north,
 /turf/open/floor/iron/dark,

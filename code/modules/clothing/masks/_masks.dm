@@ -45,19 +45,18 @@
 	else
 		UnregisterSignal(M, COMSIG_MOB_SAY)
 
-/obj/item/clothing/mask/dropped(mob/M)
+/obj/item/clothing/mask/unequipped(mob/M)
 	. = ..()
 	UnregisterSignal(M, COMSIG_MOB_SAY)
 
 /obj/item/clothing/mask/vv_edit_var(vname, vval)
-	if(vname == NAMEOF(src, modifies_speech) && ismob(loc))
-		var/mob/M = loc
-		if(M.get_item_by_slot(ITEM_SLOT_MASK) == src)
+	if(vname == NAMEOF(src, modifies_speech) && equipped_to)
+		if(equipped_to.get_item_by_slot(ITEM_SLOT_MASK) == src)
 			if(vval)
 				if(!modifies_speech)
-					RegisterSignal(M, COMSIG_MOB_SAY, PROC_REF(handle_speech))
+					RegisterSignal(equipped_to, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 			else if(modifies_speech)
-				UnregisterSignal(M, COMSIG_MOB_SAY)
+				UnregisterSignal(equipped_to, COMSIG_MOB_SAY)
 	return ..()
 
 /obj/item/clothing/mask/proc/handle_speech()

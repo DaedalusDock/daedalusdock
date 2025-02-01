@@ -95,7 +95,7 @@
 	healing_beam.do_fire_gun(target, user)
 	return FALSE
 
-/obj/item/gun/magic/staff/healing/dropped(mob/user)
+/obj/item/gun/magic/staff/healing/unequipped(mob/user)
 	healing_beam.LoseTarget()
 	return ..()
 

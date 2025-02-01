@@ -380,7 +380,6 @@
 	var/static/list/datum/design/hacked_designs
 	if(!hacked_designs)
 		var/list/L = list(
-			/datum/design/plasmaman_tank_belt,
 			/datum/design/large_welding_tool,
 			/datum/design/handcuffs,
 			/datum/design/receiver,
@@ -435,7 +434,6 @@
 		/datum/design/airlock_painter/decal/tile,
 		/datum/design/paint_sprayer,
 		/datum/design/emergency_oxygen,
-		/datum/design/plasmaman_tank_belt,
 		/datum/design/iron,
 		/datum/design/glass,
 		/datum/design/rglass,
@@ -443,7 +441,6 @@
 		/datum/design/plant_analyzer,
 		/datum/design/shovel,
 		/datum/design/spade,
-		/datum/design/secateurs,
 		/datum/design/blood_filter,
 		/datum/design/scalpel,
 		/datum/design/circular_saw,
@@ -500,7 +497,6 @@
 		/datum/design/beacon,
 		/datum/design/plasticducky,
 		/datum/design/gas_filter,
-		/datum/design/plasmaman_gas_filter,
 		/datum/design/oven_tray,
 		/datum/design/data,
 	)

@@ -6,6 +6,7 @@ GLOBAL_REAL_VAR(obj/effect/zasdbg/merged/zasdbgovl_merged) = new
 GLOBAL_REAL_VAR(obj/effect/zasdbg/invalid_zone/zasdbgovl_invalid_zone) = new
 GLOBAL_REAL_VAR(obj/effect/zasdbg/blocked/zasdbgovl_blocked) = new
 GLOBAL_REAL_VAR(obj/effect/zasdbg/mark/zasdbgovl_mark) = new
+GLOBAL_REAL_VAR(obj/effect/zasdbg/edge/zasdbgovl_edge) = new
 
 GLOBAL_REAL_VAR(list/zasdbgovl_dirblock) = list(
 	"north" = new /obj/effect/zasdbg/air_blocked/north,
@@ -31,6 +32,7 @@ GLOBAL_REAL_VAR(list/zasdbgovl_dirzoneblock) = list(
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	layer = FLY_LAYER
 	vis_flags = NONE
+	appearance_flags = RESET_COLOR | RESET_TRANSFORM | KEEP_APART
 
 /obj/effect/zasdbg/assigned
 	icon_state = "assigned"
@@ -44,6 +46,8 @@ GLOBAL_REAL_VAR(list/zasdbgovl_dirzoneblock) = list(
 	icon_state = "fullblock"
 /obj/effect/zasdbg/mark
 	icon_state = "mark"
+/obj/effect/zasdbg/edge
+	icon_state = "edge"
 
 /obj/effect/zasdbg/zone_blocked
 	icon_state = "zoneblock"
@@ -72,8 +76,8 @@ GLOBAL_REAL_VAR(list/zasdbgovl_dirzoneblock) = list(
 
 /turf/var/tmp/obj/effect/zasdbg/dbg_img
 /turf/proc/dbg(obj/effect/zasdbg/img)
-	vis_contents -= dbg_img
-	vis_contents += img
+	remove_viscontents(dbg_img)
+	add_viscontents(img)
 	dbg_img = img
 
 /proc/soft_assert(thing,fail)

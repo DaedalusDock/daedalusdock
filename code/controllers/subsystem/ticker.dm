@@ -782,13 +782,15 @@ SUBSYSTEM_DEF(ticker)
 ///Generate a list of gamemodes we can play.
 /datum/controller/subsystem/ticker/proc/draft_gamemodes()
 	var/list/datum/game_mode/runnable_modes = list()
-	for(var/path in subtypesof(/datum/game_mode))
-		var/datum/game_mode/M = new path()
-		if(isabstract(M))
+	for(var/datum/game_mode/path as anything in subtypesof(/datum/game_mode))
+		if(isabstract(path))
 			continue
 
+		var/datum/game_mode/M = new path()
 		if(!(M.weight == GAMEMODE_WEIGHT_NEVER) && !M.check_for_errors())
 			runnable_modes[path] = M.weight
+		else
+			qdel(M)
 	return runnable_modes
 
 /datum/controller/subsystem/ticker/proc/get_mode_name(bypass_secret)

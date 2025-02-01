@@ -1084,9 +1084,6 @@
 /mob/living/carbon/human/species/skeleton
 	race = /datum/species/skeleton
 
-/mob/living/carbon/human/species/vampire
-	race = /datum/species/vampire
-
 /mob/living/carbon/human/species/zombie
 	race = /datum/species/zombie
 
@@ -1277,6 +1274,7 @@
 		I.add_trace_DNA(user.get_trace_dna())
 	else
 		add_trace_DNA(user.get_trace_dna())
+
 /mob/living/carbon/human/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()
 	var/head_exposure = 1

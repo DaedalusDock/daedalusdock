@@ -38,6 +38,9 @@
 	  */
 	var/can_transfer = FALSE
 
+	/// A lazy list of the sources for this component
+	var/list/sources
+
 /**
  * Create a new component.
  *
@@ -164,6 +167,28 @@
  */
 /datum/component/proc/UnregisterFromParent()
 	return
+
+/**
+ * Called when the component has a new source registered.
+ * Return COMPONENT_INCOMPATIBLE to signal that the source is incompatible and should not be added
+ */
+/datum/component/proc/on_source_add(source, ...)
+	SHOULD_CALL_PARENT(TRUE)
+	if(dupe_mode != COMPONENT_DUPE_SOURCES)
+		return COMPONENT_INCOMPATIBLE
+	LAZYOR(sources, source)
+
+/**
+ * Called when the component has a source removed.
+ * You probably want to call parent after you do your logic because at the end of this we qdel if we have no sources remaining!
+ */
+/datum/component/proc/on_source_remove(source)
+	SHOULD_CALL_PARENT(TRUE)
+	if(dupe_mode != COMPONENT_DUPE_SOURCES)
+		CRASH("Component '[type]' does not use sources but is trying to remove a source")
+	LAZYREMOVE(sources, source)
+	if(!LAZYLEN(sources))
+		qdel(src)
 
 /**
  * Register to listen for a signal from the passed in target
@@ -396,7 +421,7 @@
  *
  * Properly handles duplicate situations based on the `dupe_mode` var
  */
-/datum/proc/_AddComponent(list/raw_args)
+/datum/proc/_AddComponent(list/raw_args, source)
 	var/new_type = raw_args[1]
 	var/datum/component/nt = new_type
 
@@ -416,6 +441,12 @@
 		new_comp = nt
 		nt = new_comp.type
 
+	var/uses_sources = (dm == COMPONENT_DUPE_SOURCES)
+	if(uses_sources && !source)
+		CRASH("Attempted to add a sourced component of type '[nt]' to '[type]' without a source!")
+	else if(!uses_sources && source)
+		CRASH("Attempted to add a normal component of type '[nt]' to '[type]' with a source!")
+
 	raw_args[1] = src
 
 	if(dm != COMPONENT_DUPE_ALLOWED && dm != COMPONENT_DUPE_SELECTIVE)
@@ -431,12 +462,14 @@
 					if(!QDELETED(new_comp))
 						old_comp.InheritComponent(new_comp, TRUE)
 						QDEL_NULL(new_comp)
+
 				if(COMPONENT_DUPE_HIGHLANDER)
 					if(!new_comp)
 						new_comp = new nt(raw_args)
 					if(!QDELETED(new_comp))
 						new_comp.InheritComponent(old_comp, FALSE)
 						QDEL_NULL(old_comp)
+
 				if(COMPONENT_DUPE_UNIQUE_PASSARGS)
 					if(!new_comp)
 						var/list/arguments = raw_args.Copy(2)
@@ -444,8 +477,18 @@
 						old_comp.InheritComponent(arglist(arguments))
 					else
 						old_comp.InheritComponent(new_comp, TRUE)
+
+				if(COMPONENT_DUPE_SOURCES)
+					if(source in old_comp.sources)
+						return old_comp // source already registered, no work to do
+
+					if(old_comp.on_source_add(arglist(list(source) + raw_args.Copy(2))) == COMPONENT_INCOMPATIBLE)
+						stack_trace("incompatible source added to a [old_comp.type]. Args: [json_encode(raw_args)]")
+						return null
+
 		else if(!new_comp)
 			new_comp = new nt(raw_args) // There's a valid dupe mode but there's no old component, act like normal
+
 	else if(dm == COMPONENT_DUPE_SELECTIVE)
 		var/list/arguments = raw_args.Copy()
 		arguments[1] = new_comp
@@ -464,6 +507,16 @@
 		SEND_SIGNAL(src, COMSIG_COMPONENT_ADDED, new_comp)
 		return new_comp
 	return old_comp
+
+/**
+ * Removes a component source from this datum
+ */
+/datum/proc/RemoveComponentFrom(source, datum/component/component_type)
+	if(ispath(component_type))
+		component_type = GetExactComponent(component_type)
+	if(!component_type)
+		return
+	component_type.on_source_remove(source)
 
 /**
  * Get existing component of type, or create it and return a reference to it

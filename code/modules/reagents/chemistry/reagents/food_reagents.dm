@@ -382,7 +382,7 @@
 		REMOVE_TRAIT(C, TRAIT_GARLIC_BREATH, CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/consumable/garlic/affect_blood(mob/living/carbon/C, removed)
-	if(isvampire(C)) //incapacitating but not lethal. Unfortunately, vampires cannot vomit.
+	if(IS_VAMPIRE(C)) //incapacitating but not lethal. Unfortunately, vampires cannot vomit.
 		if(prob(min(current_cycle, 25)))
 			to_chat(C, span_danger("You can't get the scent of garlic out of your nose! You can barely think..."))
 			C.Paralyze(10)

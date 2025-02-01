@@ -103,7 +103,7 @@
 		drain_info[DRAIN_INFO_INDEX_TIME] = world.time
 
 	victim.adjustBloodVolume(-BLOOD_DRAIN_RATE)
-	user.adjustBloodVolumeUpTo(BLOOD_DRAIN_RATE, BLOOD_VOLUME_NORMAL)
+	user.adjustBloodVolumeUpTo(BLOOD_DRAIN_RATE, BLOOD_VOLUME_NORMAL + 100)
 
 	var/datum/antagonist/vampire/vamp_datum = user.mind.has_antag_datum(/datum/antagonist/vampire)
 	vamp_datum.thirst_level.remove_points(BLOOD_DRAIN_RATE * BLOOD_THIRST_EXCHANGE_COEFF)

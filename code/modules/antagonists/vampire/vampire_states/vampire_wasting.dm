@@ -11,13 +11,15 @@
 	. = ..()
 	host.apply_status_effect(/datum/status_effect/grouped/concussion, VAMPIRE_EFFECT)
 	host.add_movespeed_modifier(/datum/movespeed_modifier/vampire_wasting)
-	host.mob_mood.add_mood_event("vampire", /datum/mood_event/vampire_wasting)
+	host.mob_mood.add_mood_event(VAMPIRE_TRAIT, /datum/mood_event/vampire_wasting)
+	host.add_client_colour(/datum/client_colour/monochrome)
 
 /datum/vampire_state/wasting/remove_effects(mob/living/carbon/human/host)
 	. = ..()
 	host.remove_status_effect(/datum/status_effect/grouped/concussion, VAMPIRE_EFFECT)
 	host.remove_movespeed_modifier(/datum/movespeed_modifier/vampire_wasting)
-	host.mob_mood.clear_mood_event("vampire")
+	host.mob_mood.clear_mood_event(VAMPIRE_TRAIT)
+	host.remove_client_colour(/datum/client_colour/monochrome)
 
 /datum/vampire_state/wasting/tick(delta_time, mob/living/carbon/human/host)
 	. = ..()

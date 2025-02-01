@@ -7,7 +7,7 @@
 /datum/vampire_state/starving/apply_effects(mob/living/carbon/human/host)
 	. = ..()
 	host.add_movespeed_modifier(/datum/movespeed_modifier/vampire_starving)
-	host.mob_mood.add_mood_event("vampire", /datum/mood_event/vampire_starving)
+	host.mob_mood.add_mood_event(VAMPIRE_TRAIT, /datum/mood_event/vampire_starving)
 
 /datum/vampire_state/starving/remove_effects(mob/living/carbon/human/host)
 	. = ..()

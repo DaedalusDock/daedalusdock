@@ -290,7 +290,7 @@
 	var/write_pref = FALSE
 	for(var/job_name in job_priority)
 		var/datum/job/J = SSjob.GetJob(job_name)
-		if(!(employer_path in J.employers))
+		if(isnull(J) || !(employer_path in J.employers))
 			job_priority -= job_name
 			write_pref = TRUE
 

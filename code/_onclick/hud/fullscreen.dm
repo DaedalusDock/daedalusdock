@@ -122,6 +122,12 @@
 	layer = CURSE_LAYER
 	plane = FULLSCREEN_PLANE
 
+/atom/movable/screen/fullscreen/curse/bloodlust
+
+/atom/movable/screen/fullscreen/curse/bloodlust/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	color = color_matrix_rotate_hue(90)
+
 /atom/movable/screen/fullscreen/ivanov_display
 	icon_state = "ivanov"
 	alpha = 180
@@ -222,3 +228,5 @@
 	layer = DITHER_LAYER
 	show_when_dead = TRUE
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
+
+/atom/movable/screen/fullscreen/bloodlust

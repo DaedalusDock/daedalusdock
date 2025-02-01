@@ -142,6 +142,8 @@
 
 	var/mob/living/carbon/human/host = owner.current
 
+	SEND_SOUND(host, sound('sound/three_dsix/psyche.ogg'))
+
 	var/list/potential_states = state_datums - current_states
 	for(var/datum/vampire_state/current as anything in current_states)
 		if(!current.can_be_active())

@@ -10,8 +10,8 @@
 
 /datum/vampire_state/hungry/enter_state(mob/living/carbon/human/host)
 	. = ..()
-	host.mob_mood.add_mood_event("vampire", /datum/mood_event/vampire_hungry)
+	host.mob_mood.add_mood_event(VAMPIRE_TRAIT, /datum/mood_event/vampire_hungry)
 
 /datum/vampire_state/hungry/exit_state(mob/living/carbon/human/host)
 	. = ..()
-	host.mob_mood.clear_mood_event("vampire")
+	host.mob_mood.clear_mood_event(VAMPIRE_TRAIT)

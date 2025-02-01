@@ -210,7 +210,7 @@
 
 		LAZYSET(dirty_pathogens, id, P.Copy())
 
-	if(prob(5))
+	if(prob(2))
 		var/datum/pathogen/hep_c = new /datum/pathogen/hep_c
 		if(dirty_pathogens?[hep_c.get_id()])
 			qdel(hep_c)

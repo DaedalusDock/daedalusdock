@@ -1125,6 +1125,7 @@
 #include "code\datums\pathogens\fluspanish.dm"
 #include "code\datums\pathogens\gbs.dm"
 #include "code\datums\pathogens\heart_failure.dm"
+#include "code\datums\pathogens\hep_c.dm"
 #include "code\datums\pathogens\magnitis.dm"
 #include "code\datums\pathogens\parasitic_infection.dm"
 #include "code\datums\pathogens\parrotpossession.dm"

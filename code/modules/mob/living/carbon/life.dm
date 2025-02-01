@@ -400,7 +400,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			var/zzzchance = min(5, 5*drowsyness/30)
 			if((prob(zzzchance) || drowsyness >= 60) || ( drowsyness >= 20 && IsSleeping()))
 				if(stat == CONSCIOUS)
-					to_chat(src, span_notice("You are about to fall asleep..."))
+					to_chat(src, span_obviousnotice("You feel so tired..."))
 				Sleeping(5 SECONDS)
 
 	if(silent)
@@ -589,13 +589,23 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		return
 
 	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
-	if(liver)
+	if(liver && !(liver.organ_flags & ORGAN_DEAD))
 		return
 
 	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || !needs_organ(ORGAN_SLOT_LIVER))
 		return
 
 	adjustToxLoss(0.6 * delta_time, TRUE, TRUE, cause_of_death = "Lack of a liver")
+
+	// Hepatic Encephalopathy
+	#warn apply concussion effect here.
+	set_slurring_if_lower(10 SECONDS)
+	if(DT_PROB(2, delta_time))
+		set_confusion_if_lower(10 SECONDS)
+
+	if(DT_PROB(5, delta_time))
+		adjust_drowsyness(6, 12)
+
 	if(DT_PROB(2, delta_time))
 		vomit(50, TRUE, FALSE, 1, TRUE, harm = FALSE, purge_ratio = 1)
 

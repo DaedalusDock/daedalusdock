@@ -52,7 +52,9 @@
 
 	if(!istype(liver_owner))
 		return
+
 	if(organ_flags & ORGAN_DEAD)
+		// Handled by handle_liver.
 		return
 
 	if (germ_level > INFECTION_LEVEL_ONE)

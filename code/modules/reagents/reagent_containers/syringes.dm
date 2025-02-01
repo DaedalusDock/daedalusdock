@@ -210,6 +210,13 @@
 
 		LAZYSET(dirty_pathogens, id, P.Copy())
 
+	if(prob(5))
+		var/datum/pathogen/hep_c = new /datum/pathogen/hep_c
+		if(dirty_pathogens?[hep_c.get_id()])
+			qdel(hep_c)
+		else
+			LAZYSET(dirty_pathogens, hep_c.get_id(), hep_c)
+
 	LAZYOR(dirty_blood_DNA, blood_DNA)
 	sterile = FALSE
 	update_appearance(UPDATE_OVERLAYS)
@@ -223,7 +230,6 @@
 		var/datum/pathogen/P = dirty_pathogens[disease_id]
 		H.try_contract_pathogen(P, make_copy = TRUE) // It's probably a good idea to not leave refs to an active disease in the syringe.
 
-	#warn add some kind of bloodborne disease here?
 	H.germ_level = max(H.germ_level, INFECTION_LEVEL_TWO)
 
 /obj/item/reagent_containers/syringe/epinephrine

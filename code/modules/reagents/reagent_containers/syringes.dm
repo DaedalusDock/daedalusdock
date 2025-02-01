@@ -32,6 +32,28 @@
 /obj/item/reagent_containers/syringe/attackby(obj/item/I, mob/user, params)
 	return
 
+/obj/item/reagent_containers/syringe/welder_act(mob/living/user, obj/item/tool)
+	. = ..()
+	if(sterile)
+		return
+
+	if(tool.use_tool(src, user, 5 SECONDS, amount = 5))
+		var/datum/roll_result/result = user.stat_roll(11, /datum/rpg_skill/anatomia)
+		result.do_skill_sound(user)
+		switch(result.outcome)
+			if(SUCCESS, CRIT_SUCCESS)
+				user.visible_message(
+					result.create_tooltip("You are confident the syringe is now safe to use."),
+					span_notice("<b>[user]</b> sterilizes the tip of [src] with [tool].")
+				)
+				sterilize()
+
+			if(FAILURE, CRIT_FAILURE)
+				user.visible_message(
+					result.create_tooltip("This can not be safe yet..."),
+					span_notice("<b>[user]</b> sterilizes the tip of [src] with [tool].")
+				)
+
 /obj/item/reagent_containers/syringe/proc/try_syringe(atom/target, mob/user, proximity)
 	if(!proximity)
 		return FALSE

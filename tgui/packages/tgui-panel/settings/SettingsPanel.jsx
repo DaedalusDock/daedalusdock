@@ -143,7 +143,7 @@ export const SettingsGeneral = (props) => {
             value={fontSize}
             unit="px"
             format={(value) => toFixed(value)}
-            onChange={(e, value) =>
+            onChange={(value) =>
               dispatch(
                 updateSettings({
                   fontSize: value,

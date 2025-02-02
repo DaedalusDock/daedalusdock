@@ -96,7 +96,7 @@
 	var/obj/item/reagent_containers/woundseal_bottle = blackboard[RUNE_BB_REVIVAL_WOUNDSEAL_CONTAINER]
 	woundseal_bottle.reagents.remove_reagent(/datum/reagent/tincture/woundseal, required_woundseal_amt)
 
-	var/obj/item/reagent_containers/blood_bottle = blackboard[RUNE_BB_REVIVAL_WOUNDSEAL_CONTAINER]
+	var/obj/item/reagent_containers/blood_bottle = blackboard[RUNE_BB_REVIVAL_BLOOD_CONTAINER]
 	blood_bottle.reagents.remove_reagent(/datum/reagent/blood, required_blood_amt)
 
 	var/obj/item/heart = blackboard[RUNE_BB_REVIVAL_HEART]

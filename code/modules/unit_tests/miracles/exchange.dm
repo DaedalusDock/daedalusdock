@@ -14,13 +14,12 @@
 
 	invoker.forceMove(get_step(invoker, NORTH))
 	invoker.put_in_active_hand(tome)
+	target.set_body_position(LYING_DOWN)
 
-	blood_bottle.reagents.add_reagent(/datum/reagent/blood, /obj/effect/aether_rune/revival::required_blood_amt)
+	blood_bottle.reagents.add_reagent(/datum/reagent/blood, /obj/effect/aether_rune/exchange::required_blood_amt)
 
 	invoker.ClickOn(exchange_rune)
 	sleep(1 SECOND)
-
-	TEST_ASSERT(target.stat != DEAD, "Target was not revived by the miracle.")
 
 	TEST_ASSERT(target.getorganslot(ORGAN_SLOT_HEART) == new_heart, "Heart was not swapped.")
 	TEST_ASSERT(target.get_bodypart(BODY_ZONE_R_ARM) == new_arm, "Arm was not swapped.")

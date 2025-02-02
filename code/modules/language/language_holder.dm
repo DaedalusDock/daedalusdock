@@ -71,6 +71,13 @@ Key procs
 	owner = null
 	return ..()
 
+/// Setter for selected language.
+/datum/language_holder/proc/set_selected_language(datum/language/new_selected)
+	if(!istype(new_selected))
+		CRASH("Tried to set selected language to a [new_selected].")
+
+	selected_language = new_selected
+
 /// Grants the supplied language.
 /datum/language_holder/proc/grant_language(datum/language/language, understood = TRUE, spoken = TRUE, source = LANGUAGE_MIND)
 	if(istype(language))
@@ -185,6 +192,8 @@ Key procs
 
 /// Returns selected language if it can be spoken, or decides, sets and returns a new selected language if possible.
 /datum/language_holder/proc/get_selected_language()
+	RETURN_TYPE(/datum/language)
+
 	if(selected_language && can_speak_language(selected_language))
 		return selected_language
 

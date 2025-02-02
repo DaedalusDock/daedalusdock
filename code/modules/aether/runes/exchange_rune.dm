@@ -129,20 +129,3 @@
 
 		var/obj/item/bodypart/picked = pick_n_take(bodyparts)
 		picked.dismember()
-
-/obj/effect/aether_rune/exchange/proc/register_item(obj/item/I)
-	RegisterSignal(I, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_MOVED), PROC_REF(item_moved_or_deleted))
-
-/obj/effect/aether_rune/exchange/proc/unregister_item(obj/item/I)
-	UnregisterSignal(I, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_MOVED))
-
-/obj/effect/aether_rune/exchange/proc/item_moved_or_deleted(datum/source)
-	SIGNAL_HANDLER
-
-	var/obj/item/I = source
-	if(QDELETED(I))
-		try_cancel_invoke(RUNE_FAIL_GRACEFUL)
-		return
-
-	if(get_dist(src, I) > 1)
-		try_cancel_invoke(RUNE_FAIL_TARGET_ITEM_OUT_OF_RUNE, I)

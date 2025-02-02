@@ -182,7 +182,9 @@
 			var/phrase = invocation_phrases[next_phrase_index]
 			user.say(phrase, language = /datum/language/common, ignore_spam = TRUE, forced = "miracle invocation")
 			next_phrase_index++
+			#ifndef UNIT_TESTS
 			next_phrase_time = world.time + invocation_phrases[phrase]
+			#endif
 
 		//stoplag(world.tick_lag)
 		sleep(world.tick_lag)
@@ -415,3 +417,20 @@
 	SIGNAL_HANDLER
 
 	try_cancel_invoke(RUNE_FAIL_TARGET_STOOD_UP, source)
+
+/obj/effect/aether_rune/proc/register_item(obj/item/I)
+	RegisterSignal(I, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_MOVED), PROC_REF(item_moved_or_deleted))
+
+/obj/effect/aether_rune/proc/unregister_item(obj/item/I)
+	UnregisterSignal(I, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_MOVED))
+
+/obj/effect/aether_rune/proc/item_moved_or_deleted(datum/source)
+	SIGNAL_HANDLER
+
+	var/obj/item/I = source
+	if(QDELETED(I))
+		try_cancel_invoke(RUNE_FAIL_GRACEFUL)
+		return
+
+	if(!isturf(I.loc) || get_dist(src, I) > 1)
+		try_cancel_invoke(RUNE_FAIL_TARGET_ITEM_OUT_OF_RUNE, I)

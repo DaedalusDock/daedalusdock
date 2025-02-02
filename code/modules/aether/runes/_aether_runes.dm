@@ -18,6 +18,8 @@
 	/// Misc state tracking
 	var/list/blackboard = list()
 
+	/// How much blood the miracle needs.
+	var/required_blood_amt = 30
 	/// How many extra people are needed to invoke the rune.
 	var/required_helpers = 0
 	/// A lazylist of mobs currently touching the rune.
@@ -97,6 +99,9 @@
 	if(mob_target)
 		unregister_target_mob(mob_target)
 
+	// Remove blood container signals.
+	unregister_item(blackboard[RUNE_BB_BLOOD_CONTAINER])
+
 	blackboard.Cut()
 
 	// Reset visual appearance
@@ -127,6 +132,9 @@
 	if(!blackboard[RUNE_BB_TARGET_MOB])
 		return FALSE
 
+	if(!blackboard[RUNE_BB_BLOOD_CONTAINER])
+		return FALSE
+
 	var/mob/living/user = blackboard[RUNE_BB_INVOKER]
 	if(!user?.can_speak_vocal())
 		return FALSE
@@ -144,6 +152,15 @@
 	if(target_mob)
 		blackboard[RUNE_BB_TARGET_MOB] = target_mob
 		register_target_mob(target_mob)
+
+	for(var/obj/item/reagent_containers/reagent_container in orange(1, src))
+		if(!reagent_container.is_open_container())
+			continue
+
+		if(reagent_container.reagents.has_reagent(/datum/reagent/blood, required_blood_amt))
+			blackboard[RUNE_BB_BLOOD_CONTAINER] = reagent_container
+			register_item(reagent_container)
+			break
 
 /// Begin invoking a rune.
 /obj/effect/aether_rune/proc/begin_invoke()
@@ -193,6 +210,9 @@
 /obj/effect/aether_rune/proc/succeed_invoke(mob/living/carbon/human/target_mob)
 	SHOULD_CALL_PARENT(TRUE)
 	SHOULD_NOT_SLEEP(TRUE)
+
+	var/obj/item/reagent_containers/blood_bottle = blackboard[RUNE_BB_BLOOD_CONTAINER]
+	blood_bottle.reagents.remove_reagent(/datum/reagent/blood, required_blood_amt)
 
 	playsound(src, 'sound/magic/voidblink.ogg', 50, TRUE)
 	visible_message(span_statsbad("[src] stops moving, and dulls in color."))

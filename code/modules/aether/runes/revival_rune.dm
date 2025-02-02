@@ -1,5 +1,4 @@
 /obj/effect/aether_rune/revival
-	var/required_blood_amt = 30
 	var/required_woundseal_amt = 30
 	var/required_woundseal_potency = 80
 
@@ -35,11 +34,6 @@
 		if(!reagent_container.is_open_container())
 			continue
 
-		if(isnull(blackboard[RUNE_BB_REVIVAL_BLOOD_CONTAINER]) && reagent_container.reagents.has_reagent(/datum/reagent/blood, required_blood_amt))
-			register_item(reagent_container)
-			blackboard[RUNE_BB_REVIVAL_BLOOD_CONTAINER] = reagent_container
-			continue
-
 		if(isnull(blackboard[RUNE_BB_REVIVAL_WOUNDSEAL_CONTAINER]))
 			var/datum/reagent/tincture/woundseal/woundseal = reagent_container.reagents.has_reagent(/datum/reagent/tincture/woundseal, required_woundseal_amt)
 			if(woundseal && woundseal.data?["potency"] >= required_woundseal_potency)
@@ -70,9 +64,6 @@
 	if(!blackboard[RUNE_BB_REVIVAL_WOUNDSEAL_CONTAINER])
 		return FALSE
 
-	if(!blackboard[RUNE_BB_REVIVAL_BLOOD_CONTAINER])
-		return FALSE
-
 /obj/effect/aether_rune/revival/succeed_invoke(mob/living/carbon/human/target_mob)
 	var/obj/item/organ/brain/B = target_mob.getorganslot(ORGAN_SLOT_BRAIN)
 	B.applyOrganDamage(-INFINITY)
@@ -95,9 +86,6 @@
 
 	var/obj/item/reagent_containers/woundseal_bottle = blackboard[RUNE_BB_REVIVAL_WOUNDSEAL_CONTAINER]
 	woundseal_bottle.reagents.remove_reagent(/datum/reagent/tincture/woundseal, required_woundseal_amt)
-
-	var/obj/item/reagent_containers/blood_bottle = blackboard[RUNE_BB_REVIVAL_BLOOD_CONTAINER]
-	blood_bottle.reagents.remove_reagent(/datum/reagent/blood, required_blood_amt)
 
 	var/obj/item/heart = blackboard[RUNE_BB_REVIVAL_HEART]
 	qdel(heart)

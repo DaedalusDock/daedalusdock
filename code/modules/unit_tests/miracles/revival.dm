@@ -1,4 +1,3 @@
-/// Tests that airlocks can be closed by clicking on the floor, as [/datum/component/redirect_attack_hand_from_turf ] dictates
 /datum/unit_test/revival_miracle
 	name = "MIRACLES/REVIVAL: Revival Miracle Works."
 

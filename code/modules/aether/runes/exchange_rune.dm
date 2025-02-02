@@ -22,6 +22,7 @@
 		if(isbodypart(I) || isorgan(I))
 			register_item(I)
 			things += I
+			continue
 
 	blackboard[RUNE_BB_EXCHANGE_PARTS] = things
 

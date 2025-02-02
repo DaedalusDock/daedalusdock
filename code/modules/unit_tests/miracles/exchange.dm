@@ -1,5 +1,5 @@
 /datum/unit_test/exchange_miracle
-	name = "MIRACLES/REVIVAL: Revival Miracle Works."
+	name = "MIRACLES/EXCHANGE: Exchange Miracle Works."
 
 /datum/unit_test/exchange_miracle/Run()
 	var/mob/living/carbon/human/invoker = ALLOCATE_BOTTOM_LEFT()

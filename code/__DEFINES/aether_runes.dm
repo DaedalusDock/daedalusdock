@@ -17,6 +17,10 @@
 /// The reagent container containing Woundseal used.
 #define RUNE_BB_REVIVAL_WOUNDSEAL_CONTAINER "revival_woundseal_container"
 
+// Heal rune
+/// List of reagents containers containing tinctures.
+#define RUNE_BB_HEAL_REAGENT_CONTAINERS "heal_reagent_containers"
+
 /// Graceful fails should have NO SIDE EFFECTS.
 #define RUNE_FAIL_GRACEFUL "graceful_fail"
 

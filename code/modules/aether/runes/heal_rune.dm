@@ -1,8 +1,65 @@
 /obj/effect/aether_rune/heal
 
+/obj/effect/aether_rune/wipe_state()
+	for(var/item in blackboard[RUNE_BB_HEAL_REAGENT_CONTAINERS])
+		unregister_item(item)
+	return ..()
+
+/obj/effect/aether_rune/heal/pre_invoke(mob/living/user, obj/item/aether_tome/tome)
+	. = ..()
+	blackboard[RUNE_BB_HEAL_REAGENT_CONTAINERS] = list()
+
+	for(var/obj/item/reagent_containers/reagent_container in orange(1, src))
+		if(!reagent_container.is_open_container())
+			continue
+
+		if(\
+			reagent_container.reagents.has_reagent(/datum/reagent/tincture/woundseal) || \
+			reagent_container.reagents.has_reagent(/datum/reagent/tincture/burnboil) || \
+			reagent_container.reagents.has_reagent(/datum/reagent/tincture/siphroot) || \
+			reagent_container.reagents.has_reagent(/datum/reagent/tincture/calomel) \
+		)
+			register_item(reagent_container)
+			blackboard[RUNE_BB_HEAL_REAGENT_CONTAINERS] += reagent_container
+
+/obj/effect/aether_rune/heal/can_invoke()
+	. = ..()
+	if(!.)
+		return
+
+	return length(blackboard[RUNE_BB_HEAL_REAGENT_CONTAINERS])
+
 /obj/effect/aether_rune/heal/succeed_invoke(mob/living/carbon/human/target_mob)
 	visible_message(span_statsgood("Strands of [target_mob.p_s()] skin knit themselves together over [target_mob.p_their()] wounds."))
-	target_mob.fully_heal()
+
+	var/woundseal = 0
+	var/burnboil = 0
+	var/siphroot = 0
+	var/calomel = 0
+	for(var/obj/item/reagent_containers/reagent_container in blackboard[RUNE_BB_HEAL_REAGENT_CONTAINERS])
+		woundseal += reagent_container.reagents.get_reagent_amount(/datum/reagent/tincture/woundseal)
+		burnboil += reagent_container.reagents.get_reagent_amount(/datum/reagent/tincture/burnboil)
+		siphroot += reagent_container.reagents.get_reagent_amount(/datum/reagent/tincture/siphroot)
+		calomel += reagent_container.reagents.get_reagent_amount(/datum/reagent/tincture/calomel)
+		reagent_container.reagents.remove_reagent_list(list(
+			/datum/reagent/tincture/woundseal,
+			/datum/reagent/tincture/burnboil,
+			/datum/reagent/tincture/siphroot,
+			/datum/reagent/tincture/calomel
+		))
+
+	target_mob.heal_overall_damage(
+		woundseal * 8,
+		burnboil * 8,
+		BODYTYPE_ORGANIC,
+	)
+
+	if(calomel)
+		target_mob.adjustToxLoss(calomel * -10)
+	if(siphroot)
+		target_mob.adjustBloodVolume(siphroot * 10)
+		if(target_mob.blood_volume >= BLOOD_VOLUME_NORMAL && siphroot >= 10)
+			target_mob.set_heartattack(FALSE)
 	return ..()
 
 /obj/effect/aether_rune/heal/fail_invoke(failure_reason, failure_source)

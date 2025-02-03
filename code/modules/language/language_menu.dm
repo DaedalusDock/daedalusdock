@@ -79,7 +79,7 @@
 	switch(action)
 		if("select_default")
 			if(language_datum && AM.can_speak_language(language_datum))
-				language_holder.selected_language = language_datum
+				language_holder.set_selected_language(language_datum)
 				. = TRUE
 		if("grant_language")
 			if((is_admin || isobserver(AM)) && language_datum)

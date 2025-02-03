@@ -690,7 +690,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	Hologram.add_atom_colour("#77abff", FIXED_COLOUR_PRIORITY)
 	Hologram.dir = SOUTH //for now
 	var/datum/language_holder/holder = Hologram.get_language_holder()
-	holder.selected_language = record.language
+	holder.set_selected_language(GET_LANGUAGE_DATUM(record.language))
 	Hologram.mouse_opacity = MOUSE_OPACITY_TRANSPARENT//So you can't click on it.
 	Hologram.layer = FLY_LAYER//Above all the other objects/mobs. Or the vast majority of them.
 	Hologram.set_anchored(TRUE)//So space wind cannot drag it.
@@ -774,7 +774,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 			return
 		if(HOLORECORD_LANGUAGE)
 			var/datum/language_holder/holder = replay_holo.get_language_holder()
-			holder.selected_language = entry[2]
+			holder.set_selected_language(GET_LANGUAGE_DATUM(entry[2]))
 		if(HOLORECORD_PRESET)
 			var/preset_type = entry[2]
 			var/datum/preset_holoimage/H = new preset_type

@@ -93,7 +93,7 @@
 	for(var/mob/living/simple_animal/bot/found_bot in GLOB.alive_mob_list)
 		/// The bot's language holder - so we can randomize and change their language
 		var/datum/language_holder/bot_languages = found_bot.get_language_holder()
-		bot_languages.selected_language = bot_languages.get_random_spoken_language()
+		bot_languages.set_selected_language(bot_languages.get_random_spoken_language())
 
 /datum/station_trait/revenge_of_pun_pun
 	name = "Revenge of Pun Pun"

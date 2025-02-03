@@ -29,7 +29,7 @@
 /datum/game_mode/one_antag/pre_setup()
 	. = ..()
 	if(!antag_selector.setup(get_antag_count(), SSticker.ready_players.Copy()))
-		setup_error = "No possible antagonists found"
+		setup_error += "No possible antagonists found"
 		return FALSE
 
 	antagonists = antag_selector.selected_antagonists

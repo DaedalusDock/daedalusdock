@@ -22,8 +22,8 @@
 	///Is the gamemode votable? !Not implimented!
 	var/votable = FALSE
 
-	///Dynamically set to what the problem was. Or the first problem, anyway.
-	var/setup_error = ""
+	///Dynamically set to what the problem(s) was/were.
+	var/list/setup_error = list()
 
 	///The minimum players this gamemode can roll
 	var/min_pop = 1
@@ -61,14 +61,14 @@
 /datum/game_mode/proc/execute_roundstart()
 	SHOULD_CALL_PARENT(TRUE)
 	if(!pre_setup())
-		setup_error ||= "Failed pre_setup."
+		setup_error += "Failed pre_setup."
 		return FALSE
 
 	antagonists = GLOB.pre_setup_antags.Copy()
 	GLOB.pre_setup_antags.Cut()
 	var/number_of_antags = length(antagonists)
 	if(number_of_antags < required_enemies)
-		setup_error = "Not enough antagonists selected. Required [required_enemies], got [number_of_antags]."
+		setup_error += "Not enough antagonists selected. Required [required_enemies], got [number_of_antags]."
 		return FALSE
 
 	return TRUE

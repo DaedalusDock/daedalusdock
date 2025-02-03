@@ -41,12 +41,10 @@
 		burnboil += reagent_container.reagents.get_reagent_amount(/datum/reagent/tincture/burnboil)
 		siphroot += reagent_container.reagents.get_reagent_amount(/datum/reagent/tincture/siphroot)
 		calomel += reagent_container.reagents.get_reagent_amount(/datum/reagent/tincture/calomel)
-		reagent_container.reagents.remove_reagent_list(list(
-			/datum/reagent/tincture/woundseal,
-			/datum/reagent/tincture/burnboil,
-			/datum/reagent/tincture/siphroot,
-			/datum/reagent/tincture/calomel
-		))
+		reagent_container.reagents.del_reagent(/datum/reagent/tincture/woundseal)
+		reagent_container.reagents.del_reagent(/datum/reagent/tincture/burnboil)
+		reagent_container.reagents.del_reagent(/datum/reagent/tincture/siphroot)
+		reagent_container.reagents.del_reagent(/datum/reagent/tincture/calomel)
 
 	target_mob.heal_overall_damage(
 		woundseal * 8,

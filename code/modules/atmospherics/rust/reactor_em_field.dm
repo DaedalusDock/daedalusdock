@@ -126,8 +126,8 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 			alpha = 230
 		else
 			var/temp_mod = ((plasma_temperature-5000)/20000)
-			use_range = light_min_range + Ceil((light_max_range-light_min_range)*temp_mod)
-			use_power = light_min_power + Ceil((light_max_power-light_min_power)*temp_mod)
+			use_range = light_min_range + ceil((light_max_range-light_min_range)*temp_mod)
+			use_power = light_min_power + ceil((light_max_power-light_min_power)*temp_mod)
 			switch (plasma_temperature)
 				if (1000 to 6000)
 					light_color = COLOR_ORANGE
@@ -265,7 +265,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 		span_hear("You hear a horrifying resonant crash. Oh no.")
 	)
 	set_light(l_outer_range = 15, l_power = 1, l_color = "#ccccff")
-	empulse(get_turf(src), Ceil(plasma_temperature/1000), Ceil(plasma_temperature/300))
+	empulse(get_turf(src), ceil(plasma_temperature/1000), ceil(plasma_temperature/300))
 	addtimer(CALLBACK(src, PROC_REF(kaboom)), 5 SECONDS)
 
 /obj/effect/reactor_em_field/proc/kaboom()
@@ -341,8 +341,8 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 /obj/effect/reactor_em_field/proc/radiate()
 	if(isturf(loc))
 		var/list/cache4speed = ignore_types
-		var/empsev = max(1, min(3, Ceil(size/2)))
-		for(var/atom/movable/AM in range(max(1,Floor(size/2)), loc))
+		var/empsev = max(1, min(3, ceil(size/2)))
+		for(var/atom/movable/AM in range(max(1,floor(size/2)), loc))
 			if(AM == src || AM == owned_core || !AM.simulated || cache4speed[AM.type])
 				continue
 
@@ -391,7 +391,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 		//determine a random amount to actually react this cycle, and remove it from the standard pool
 		//this is a hack, and quite nonrealistic :(
 		for(var/reactant in react_pool)
-			react_pool[reactant] = rand(Floor(react_pool[reactant]/2),react_pool[reactant])
+			react_pool[reactant] = rand(floor(react_pool[reactant]/2), react_pool[reactant])
 			reactants[reactant] -= react_pool[reactant]
 			if(!react_pool[reactant])
 				react_pool -= reactant

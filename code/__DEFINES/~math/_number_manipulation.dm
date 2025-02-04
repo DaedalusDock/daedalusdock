@@ -77,3 +77,31 @@
 		power++ //Transfer to output, increment power, repeat until the input pile is all used
 
 	return output
+
+/// Returns the mean of either a list or variadic arguments: Mean(list(1, 2, 3)) = 2 , Mean(1, 2, 3) = 2
+/proc/Mean(...)
+	var/list/values = args
+	if (islist(values[1]))
+		values = values[1]
+	var/sum = 0
+	if (values.len)
+		for (var/value in values)
+			sum += value
+		sum /= values.len
+	return sum
+
+/// Returns the euclidian square magnitude of a vector of either a list or variadic arguments: VecSquareMag(list(1, 2, 3)) = 14 , VecSquareMag(1, 2, 3) = 14
+/proc/VecSquareMag(...)
+	var/list/parts = args
+	if (islist(parts[1]))
+		parts = parts[1]
+	var/sum = 0
+	for (var/part in parts)
+		sum += part * part
+	return sum
+
+
+/// Returns the euclidian magnitude of a vector of either a list or variadic arguments: VecMag(list(3, 4)) = 5 , VecMag(3, 4) = 5
+/proc/VecMag(...)
+	var/squareMag = VecSquareMag(arglist(args))
+	return sqrt(squareMag)

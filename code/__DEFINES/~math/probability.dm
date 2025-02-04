@@ -4,3 +4,10 @@
 
 /// Like DT_PROB_RATE but easier to use, simply put `if(DT_PROB(10, 5))`
 #define DT_PROB(prob_per_second_percent, delta_time) (prob(100*DT_PROB_RATE((prob_per_second_percent)/100, (delta_time))))
+
+/// A random real number between low and high inclusive
+#define rand_float(low, high) ( rand() * ((high) - (low)) + (low) )
+
+/// prob() but as "1 in X" odds.
+/proc/anyprob(value)
+	return (rand(1,value)==value)

@@ -25,31 +25,6 @@
 		return
 	. += (-b - root) / bottom
 
-
-/proc/get_turf_in_angle(angle, turf/starting, increments)
-	var/pixel_x = 0
-	var/pixel_y = 0
-	for(var/i in 1 to increments)
-		pixel_x += sin(angle)+16*sin(angle)*2
-		pixel_y += cos(angle)+16*cos(angle)*2
-	var/new_x = starting.x
-	var/new_y = starting.y
-	while(pixel_x > 16)
-		pixel_x -= 32
-		new_x++
-	while(pixel_x < -16)
-		pixel_x += 32
-		new_x--
-	while(pixel_y > 16)
-		pixel_y -= 32
-		new_y++
-	while(pixel_y < -16)
-		pixel_y += 32
-		new_y--
-	new_x = clamp(new_x, 1, world.maxx)
-	new_y = clamp(new_y, 1, world.maxy)
-	return locate(new_x, new_y, starting.z)
-
 // Returns a list where [1] is all x values and [2] is all y values that overlap between the given pair of rectangles
 /proc/get_overlap(x1, y1, x2, y2, x3, y3, x4, y4)
 	var/list/region_x1 = list()
@@ -70,4 +45,8 @@
 
 	return list(region_x1 & region_x2, region_y1 & region_y2)
 
-
+///counts the number of bits in Byond's 16-bit width field, in constant time and memory!
+/proc/bit_count(bit_field)
+	var/temp = bit_field - ((bit_field >> 1) & 46811) - ((bit_field >> 2) & 37449) //0133333 and 0111111 respectively
+	temp = ((temp + (temp >> 3)) & 29127) % 63 //070707
+	return temp

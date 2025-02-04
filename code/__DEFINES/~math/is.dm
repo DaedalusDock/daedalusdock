@@ -20,4 +20,4 @@
 #define ISINTEGER(x) (round(x) == x)
 
 /// Evaluates TRUE if X is a multiple of Y
-#define ISMULTIPLE(x, y) ((x) % (y) == 0)
+#define ISMULTIPLE(x, y) ((x) %% (y) == 0)

@@ -9,8 +9,8 @@
 		var/list/screenview = getviewsize(client.view)
 		var/screenviewX = screenview[1] * world.icon_size
 		var/screenviewY = screenview[2] * world.icon_size
-		var/ox = round(screenviewX/2) - client.pixel_x //"origin" x
-		var/oy = round(screenviewY/2) - client.pixel_y //"origin" y
+		var/ox = floor(screenviewX/2) - client.pixel_x //"origin" x
+		var/oy = floor(screenviewY/2) - client.pixel_y //"origin" y
 		var/angle = SIMPLIFY_DEGREES(ATAN2(y - oy, x - ox))
 		return angle
 

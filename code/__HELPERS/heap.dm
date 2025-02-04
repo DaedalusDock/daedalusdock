@@ -39,12 +39,12 @@
 
 //Get a node up to its right position in the heap
 /datum/heap/proc/swim(index)
-	var/parent = round(index * 0.5)
+	var/parent = floor(index * 0.5)
 
 	while(parent > 0 && (call(cmp)(L[index],L[parent]) > 0))
 		L.Swap(index,parent)
 		index = parent
-		parent = round(index * 0.5)
+		parent = floor(index * 0.5)
 
 //Get a node down to its right position in the heap
 /datum/heap/proc/sink(index)

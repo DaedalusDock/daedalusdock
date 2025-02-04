@@ -6,3 +6,6 @@
 
 // Like round(), but always rounds down.
 #define FLOOR2(x, y) ( round((x) / (y)) * (y) )
+
+/// Exists purely to avoid the footgun of round(x) being floor(x)
+#define ROUND(x, y) (round(x, y))

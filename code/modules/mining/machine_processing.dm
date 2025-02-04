@@ -233,7 +233,7 @@
 	var/datum/component/material_container/materials = GetComponent(/datum/component/material_container)
 	var/datum/material/mat = selected_material
 	if(mat)
-		var/sheets_to_remove = (materials.materials[mat] >= (MINERAL_MATERIAL_AMOUNT * SMELT_AMOUNT * delta_time) ) ? SMELT_AMOUNT * delta_time : round(materials.materials[mat] /  MINERAL_MATERIAL_AMOUNT)
+		var/sheets_to_remove = (materials.materials[mat] >= (MINERAL_MATERIAL_AMOUNT * SMELT_AMOUNT * delta_time) ) ? SMELT_AMOUNT * delta_time : QUESTIONABLE_FLOOR(materials.materials[mat] /  MINERAL_MATERIAL_AMOUNT)
 		if(!sheets_to_remove)
 			on = FALSE
 		else
@@ -270,7 +270,7 @@
 		var/required_amount = D.materials[mat_cat]
 		var/amount = materials.materials[mat_cat]
 
-		build_amount = min(build_amount, round(amount / required_amount))
+		build_amount = min(build_amount, QUESTIONABLE_FLOOR(amount / required_amount))
 
 	return build_amount
 

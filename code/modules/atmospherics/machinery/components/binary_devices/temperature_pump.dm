@@ -70,8 +70,8 @@
 /obj/machinery/atmospherics/components/binary/temperature_pump/ui_data()
 	var/data = list()
 	data["on"] = on
-	data["rate"] = round(heat_transfer_rate)
-	data["max_heat_transfer_rate"] = round(max_heat_transfer_rate)
+	data["rate"] = QUESTIONABLE_FLOOR(heat_transfer_rate)
+	data["max_heat_transfer_rate"] = QUESTIONABLE_FLOOR(max_heat_transfer_rate)
 	return data
 
 /obj/machinery/atmospherics/components/binary/temperature_pump/ui_act(action, params)

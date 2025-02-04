@@ -44,7 +44,7 @@
 	// Ignore this on oversized/infinite cells or ammo without cost
 	if(shot_cost_percent > 0)
 		// The total amount of shots the fully charged energy gun can fire before running out
-		var/max_shots = round(100/shot_cost_percent)
+		var/max_shots = QUESTIONABLE_FLOOR(100/shot_cost_percent)
 		// How many shots left before the energy gun's current battery runs out of energy
 		var/shots_left = round((round(clamp(cell.charge / cell.maxcharge, 0, 1) * 100))/shot_cost_percent)
 		frequency_to_use = sin((90/max_shots) * shots_left)
@@ -57,7 +57,7 @@
 /obj/item/gun/energy/emp_act(severity)
 	. = ..()
 	if(!(. & EMP_PROTECT_CONTENTS))
-		cell.use(round(cell.charge / severity))
+		cell.use(QUESTIONABLE_FLOOR(cell.charge / severity))
 		chambered = null //we empty the chamber
 		recharge_newshot() //and try to charge a new shot
 		update_appearance()

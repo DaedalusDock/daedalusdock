@@ -420,7 +420,7 @@
 
 /obj/machinery/power/solar_control/ui_data()
 	var/data = list()
-	data["generated"] = round(lastgen)
+	data["generated"] = QUESTIONABLE_FLOOR(lastgen)
 	data["generated_ratio"] = data["generated"] / round(max(connected_panels.len, 1) * SOLAR_GEN_RATE)
 	data["azimuth_current"] = azimuth_target
 	data["azimuth_rate"] = azimuth_rate

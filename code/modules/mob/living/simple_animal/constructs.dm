@@ -163,7 +163,7 @@
 
 /mob/living/simple_animal/hostile/construct/juggernaut/bullet_act(obj/projectile/P)
 	if(istype(P, /obj/projectile/energy) || istype(P, /obj/projectile/beam))
-		var/reflectchance = 40 - round(P.damage/3)
+		var/reflectchance = 40 - QUESTIONABLE_FLOOR(P.damage/3)
 		if(prob(reflectchance))
 			apply_damage(P.damage * 0.5, P.damage_type)
 			visible_message(span_danger("The [P.name] is reflected by [src]'s armored shell!"), \

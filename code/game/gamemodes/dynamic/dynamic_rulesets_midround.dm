@@ -80,7 +80,7 @@
 				if (M.mind && (M.mind.assigned_role.title in enemy_roles) && (!(M in candidates) || (M.mind.assigned_role.title in restricted_roles)))
 					job_check++ // Checking for "enemies" (such as sec officers). To be counters, they must either not be candidates to that rule, or have a job that restricts them from it
 
-		var/threat = round(mode.threat_level/10)
+		var/threat = QUESTIONABLE_FLOOR(mode.threat_level/10)
 		if (job_check < required_enemies[threat])
 			return FALSE
 	return TRUE
@@ -211,7 +211,7 @@
 /datum/dynamic_ruleset/midround/autotraitor/acceptable(population = 0, threat = 0)
 	var/player_count = GLOB.alive_player_list.len
 	var/antag_count = GLOB.current_living_antags.len
-	var/max_traitors = round(player_count / 10) + 1
+	var/max_traitors = QUESTIONABLE_FLOOR(player_count / 10) + 1
 
 	// adding traitors if the antag population is getting low
 	var/too_little_antags = antag_count < max_traitors
@@ -452,7 +452,7 @@
 /datum/dynamic_ruleset/midround/from_ghosts/nuclear/acceptable(population=0, threat=0)
 	if (locate(/datum/dynamic_ruleset/roundstart/nuclear) in mode.executed_rules)
 		return FALSE // Unavailable if nuke ops were already sent at roundstart
-	indice_pop = min(operative_cap.len, round(living_players.len/5)+1)
+	indice_pop = min(operative_cap.len, QUESTIONABLE_FLOOR(living_players.len/5)+1)
 	required_candidates = operative_cap[indice_pop]
 	return ..()
 

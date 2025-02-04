@@ -132,7 +132,7 @@
 			//figure out the amount of sheets that can fit that space
 			var/obj/item/stack/stack_to_split = I
 			var/material_per_sheet = material_amount / stack_to_split.amount
-			var/sheets_to_insert = round(space_left / material_per_sheet)
+			var/sheets_to_insert = QUESTIONABLE_FLOOR(space_left / material_per_sheet)
 			if(!sheets_to_insert)
 				to_chat(user, span_warning("[parent] can't hold any more of [I] sheets."))
 				return
@@ -321,7 +321,7 @@
 		var/atom/parent_atom = parent
 		target = parent_atom.drop_location()
 	if(materials[M] < (sheet_amt * MINERAL_MATERIAL_AMOUNT))
-		sheet_amt = round(materials[M] / MINERAL_MATERIAL_AMOUNT)
+		sheet_amt = QUESTIONABLE_FLOOR(materials[M] / MINERAL_MATERIAL_AMOUNT)
 	var/count = 0
 	while(sheet_amt > MAX_STACK_SIZE)
 		new M.sheet_type(target, MAX_STACK_SIZE, null, list((M) = MINERAL_MATERIAL_AMOUNT))
@@ -398,7 +398,7 @@
 /// Turns a material amount into the amount of sheets it should output
 /datum/component/material_container/proc/amount2sheet(amt)
 	if(amt >= MINERAL_MATERIAL_AMOUNT)
-		return round(amt / MINERAL_MATERIAL_AMOUNT)
+		return QUESTIONABLE_FLOOR(amt / MINERAL_MATERIAL_AMOUNT)
 	return FALSE
 
 /// Turns an amount of sheets into the amount of material amount it should output
@@ -437,7 +437,7 @@
 			"name" = material.name,
 			"ref" = REF(material),
 			"amount" = amount,
-			"sheets" = round(amount / MINERAL_MATERIAL_AMOUNT),
+			"sheets" = QUESTIONABLE_FLOOR(amount / MINERAL_MATERIAL_AMOUNT),
 			"removable" = amount >= MINERAL_MATERIAL_AMOUNT,
 		))
 

@@ -269,7 +269,7 @@
 		if((iterwound.parent.body_zone in check_areas))
 			leg_wounds++
 
-	defense_mod -= round(leg_wounds * 0.5)
+	defense_mod -= QUESTIONABLE_FLOOR(leg_wounds * 0.5)
 
 	if(ishuman(target))
 		var/mob/living/carbon/human/T = target

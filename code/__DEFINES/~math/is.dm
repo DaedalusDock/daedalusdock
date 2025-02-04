@@ -17,7 +17,7 @@
 #define ISINRANGE_EX(val, min, max) (min < val && val < max)
 
 /// Evaluates TRUE if the input is an integer
-#define ISINTEGER(x) (round(x) == x)
+#define ISINTEGER(x) (floor(x) == x)
 
 /// Evaluates TRUE if X is a multiple of Y
 #define ISMULTIPLE(x, y) ((x) %% (y) == 0)

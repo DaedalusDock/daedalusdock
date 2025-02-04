@@ -2131,9 +2131,9 @@
 	if(ran == 0)
 		ran = pick(-1,1) //hacky, statistically should almost never happen. 0-chance makes people mad though
 	else if(ran < 0)
-		ran = round(ran) //negative, so floor it
+		ran = QUESTIONABLE_FLOOR(ran) //negative, so floor it
 	else
-		ran = -round(-ran) //positive, so ceiling it
+		ran = -QUESTIONABLE_FLOOR(-ran) //positive, so ceiling it
 	return num2hex(WRAP(hex2num(input)+ran, 0, 16**length), length)
 
 	/**

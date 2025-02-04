@@ -41,7 +41,7 @@
 	if(istype(T, /obj/item/stack/sheet/mineral/wood))
 		var/obj/item/stack/sheet/mineral/wood/wood = T
 		var/space_remaining = MAXIMUM_BURN_TIMER - burn_time_remaining()
-		var/space_for_logs = round(space_remaining / LOG_BURN_TIMER)
+		var/space_for_logs = QUESTIONABLE_FLOOR(space_remaining / LOG_BURN_TIMER)
 		if(space_for_logs < 1)
 			to_chat(user, span_warning("You can't fit any more of [T] in [src]!"))
 			return

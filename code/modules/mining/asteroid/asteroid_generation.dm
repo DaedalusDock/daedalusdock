@@ -51,7 +51,7 @@
 
 	. += center
 
-	var/corner_range = round(size * 1.5)
+	var/corner_range = QUESTIONABLE_FLOOR(size * 1.5)
 	var/total_distance = 0
 	var/current_dist_from_center = 0
 

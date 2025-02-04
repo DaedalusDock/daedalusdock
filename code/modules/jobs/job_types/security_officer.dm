@@ -265,7 +265,7 @@
 	return selection
 
 /proc/get_distribution(candidates, departments)
-	var/number_of_twos = min(departments, round(candidates / 2))
+	var/number_of_twos = min(departments, QUESTIONABLE_FLOOR(candidates / 2))
 	var/redistribute = candidates - (2 * number_of_twos)
 
 	var/distribution[max(1, number_of_twos)]

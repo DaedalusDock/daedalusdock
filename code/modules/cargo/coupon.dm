@@ -27,7 +27,7 @@
 			equipped_to.AddComponent(/datum/component/omen, TRUE, src)
 	else
 		discount_pct_off = text2num(discount_pct_off)
-		name = "coupon - [round(discount_pct_off * 100)]% off [initial(discounted_pack.name)]"
+		name = "coupon - [QUESTIONABLE_FLOOR(discount_pct_off * 100)]% off [initial(discounted_pack.name)]"
 
 /obj/item/coupon/attack_obj(obj/O, mob/living/user, params)
 	if(!istype(O, /obj/machinery/computer/cargo))

@@ -246,7 +246,7 @@
 	var/angle = get_angle(mod.wearer, target)
 	mod.wearer.transform = mod.wearer.transform.Turn(angle)
 	mod.wearer.throw_at(get_ranged_target_turf_direct(mod.wearer, target, power), \
-		range = power, speed = max(round(0.2*power), 1), thrower = mod.wearer, spin = FALSE, \
+		range = power, speed = max(QUESTIONABLE_FLOOR(0.2*power), 1), thrower = mod.wearer, spin = FALSE, \
 		callback = CALLBACK(src, PROC_REF(on_throw_end), target, -angle))
 
 /obj/item/mod/module/hydraulic/proc/on_throw_end(atom/target, angle)

@@ -299,7 +299,7 @@
 /datum/song/proc/set_repeats(new_repeats_value)
 	if(playing)
 		return //So that people cant keep adding to repeat. If the do it intentionally, it could result in the server crashing.
-	repeat = round(new_repeats_value)
+	repeat = QUESTIONABLE_FLOOR(new_repeats_value)
 	if(repeat < 0)
 		repeat = 0
 	if(repeat > max_repeats)

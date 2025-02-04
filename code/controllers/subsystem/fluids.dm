@@ -85,7 +85,7 @@ SUBSYSTEM_DEF(fluids)
  */
 /datum/controller/subsystem/fluids/proc/initialize_spread_carousel()
 	// Make absolutely certain that the spread wait is in sync with the target spread tick rate.
-	num_spread_buckets = round(spread_wait / wait)
+	num_spread_buckets = QUESTIONABLE_FLOOR(spread_wait / wait)
 	spread_wait = wait * num_spread_buckets
 
 	spread_carousel = list()
@@ -103,7 +103,7 @@ SUBSYSTEM_DEF(fluids)
  */
 /datum/controller/subsystem/fluids/proc/initialize_effect_carousel()
 	// Make absolutely certain that the effect wait is in sync with the target effect tick rate.
-	num_effect_buckets = round(effect_wait / wait)
+	num_effect_buckets = QUESTIONABLE_FLOOR(effect_wait / wait)
 	effect_wait = wait * num_effect_buckets
 
 	effect_carousel = list()

@@ -173,7 +173,7 @@
 	if(istype(L))
 		var/seed_modifier = 0
 		if(L.plant_datum)
-			seed_modifier = round(L.cached_potency / 25)
+			seed_modifier = QUESTIONABLE_FLOOR(L.cached_potency / 25)
 		new L.plank_type(loc, 1 + seed_modifier)
 
 	else

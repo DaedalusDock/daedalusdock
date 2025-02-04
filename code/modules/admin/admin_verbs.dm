@@ -600,7 +600,7 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 	if (isnull(ex_power))
 		return
 	var/range = round((2 * ex_power)**GLOB.DYN_EX_SCALE)
-	to_chat(usr, "Estimated Explosive Range: (Devastation: [round(range*0.25)], Heavy: [round(range*0.5)], Light: [round(range)])", confidential = TRUE)
+	to_chat(usr, "Estimated Explosive Range: (Devastation: [QUESTIONABLE_FLOOR(range*0.25)], Heavy: [QUESTIONABLE_FLOOR(range*0.5)], Light: [QUESTIONABLE_FLOOR(range)])", confidential = TRUE)
 
 /client/proc/get_dynex_power()
 	set category = "Debug"

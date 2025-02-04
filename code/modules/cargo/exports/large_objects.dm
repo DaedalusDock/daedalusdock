@@ -34,7 +34,7 @@
 	var/obj/structure/reagent_dispensers/D = O
 	var/ratio = D.reagents.total_volume / D.reagents.maximum_volume
 
-	return ..() + round(contents_cost * ratio)
+	return ..() + QUESTIONABLE_FLOOR(contents_cost * ratio)
 
 /datum/export/large/reagent_dispenser/water
 	unit_name = "watertank"

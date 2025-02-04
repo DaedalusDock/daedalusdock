@@ -109,8 +109,8 @@
 /obj/machinery/atmospherics/components/trinary/mixer/ui_data()
 	var/data = list()
 	data["on"] = on
-	data["set_pressure"] = round(target_pressure)
-	data["max_pressure"] = round(MAX_OMNI_PRESSURE)
+	data["set_pressure"] = QUESTIONABLE_FLOOR(target_pressure)
+	data["max_pressure"] = QUESTIONABLE_FLOOR(MAX_OMNI_PRESSURE)
 	data["node1_concentration"] = round(node1_concentration*100, 1)
 	data["node2_concentration"] = round(node2_concentration*100, 1)
 	data["last_draw"] = last_power_draw

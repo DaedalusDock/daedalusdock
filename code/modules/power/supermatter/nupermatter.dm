@@ -405,7 +405,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 		var/thermal_power = thermal_release_modifier * device_energy
 		if (debug)
 			var/heat_capacity_new = removed.getHeatCapacity()
-			visible_message("[src]: Releasing [round(thermal_power)] J.")
+			visible_message("[src]: Releasing [QUESTIONABLE_FLOOR(thermal_power)] J.")
 			visible_message("[src]: Releasing additional [round((heat_capacity_new - heat_capacity)*removed.temperature)] J with exhaust gasses.")
 
 		removed.adjustThermalEnergy(thermal_power)

@@ -738,7 +738,7 @@
 		icon_state = "nuketoyidle"
 	else
 		var/timeleft = (cooldown - world.time)
-		to_chat(user, span_alert("Nothing happens, and '</span>[round(timeleft/10)]<span class='alert'>' appears on the small display."))
+		to_chat(user, span_alert("Nothing happens, and '</span>[QUESTIONABLE_FLOOR(timeleft/10)]<span class='alert'>' appears on the small display."))
 		sleep(5)
 
 /obj/item/toy/nuke/emag_act(mob/user)

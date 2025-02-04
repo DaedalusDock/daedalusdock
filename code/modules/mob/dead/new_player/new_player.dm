@@ -42,7 +42,7 @@
 		src << browse(null, "window=playersetup") //closes the player setup window
 		npp.open()
 
-//When you cop out of the round (NB: this HAS A SLEEP FOR PLAYER INPUT IN IT)
+//When you cop out of the QUESTIONABLE_FLOOR(NB: this HAS A SLEEP FOR PLAYER INPUT IN IT)
 /mob/dead/new_player/proc/make_me_an_observer(skip_check)
 	if(QDELETED(src) || !src.client || src.client.restricted_mode)
 		ready = PLAYER_NOT_READY

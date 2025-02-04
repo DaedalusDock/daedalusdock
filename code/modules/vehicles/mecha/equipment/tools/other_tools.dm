@@ -328,7 +328,7 @@
 	if(P.type == fuel.type && P.amount > 0)
 		var/to_load = max(max_fuel - fuel.amount*MINERAL_MATERIAL_AMOUNT,0)
 		if(to_load)
-			var/units = min(max(round(to_load / MINERAL_MATERIAL_AMOUNT),1),P.amount)
+			var/units = min(max(QUESTIONABLE_FLOOR(to_load / MINERAL_MATERIAL_AMOUNT),1),P.amount)
 			fuel.amount += units
 			P.use(units)
 			to_chat(user, "[icon2html(src, user)][span_notice("[units] unit\s of [fuel] successfully loaded.")]")

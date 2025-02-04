@@ -567,7 +567,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /// Accepts a number represeting our position in the group, indexes at 0 to make the math nicer
 /datum/action_group/proc/ButtonNumberToScreenCoords(number, landing = FALSE)
-	var/row = round(number / column_max)
+	var/row = QUESTIONABLE_FLOOR(number / column_max)
 	row -= row_offset // If you're less then 0, you don't get to render, this lets us "scroll" rows ya feel?
 	if(row < 0)
 		return null

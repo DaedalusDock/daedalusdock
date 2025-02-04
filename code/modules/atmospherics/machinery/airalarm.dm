@@ -1084,9 +1084,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 21)
 		var/turf/alarm_turf = get_turf(connected_alarm)
 		var/datum/gas_mixture/environment = alarm_turf.unsafe_return_air()
 		pressure.set_output(round(environment.returnPressure()))
-		my_temperature.set_output(round(environment.temperature))
+		my_temperature.set_output(QUESTIONABLE_FLOOR(environment.temperature))
 		if(ispath(options_map[current_option]))
-			gas_amount.set_output(round(environment.gas[options_map[current_option]]))
+			gas_amount.set_output(QUESTIONABLE_FLOOR(environment.gas[options_map[current_option]]))
 		return
 
 	var/datum/tlv/settings = connected_alarm.TLV[options_map[current_option]]

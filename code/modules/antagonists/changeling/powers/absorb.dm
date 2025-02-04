@@ -122,12 +122,12 @@
 		to_chat(owner, span_boldnotice("[target] was one of us. We have absorbed their power."))
 
 		// Gain half of their genetic points.
-		var/genetic_points_to_add = round(target_ling.total_genetic_points / 2)
+		var/genetic_points_to_add = QUESTIONABLE_FLOOR(target_ling.total_genetic_points / 2)
 		changeling.genetic_points += genetic_points_to_add
 		changeling.total_genetic_points += genetic_points_to_add
 
 		// And half of their chemical charges.
-		var/chems_to_add = round(target_ling.total_chem_storage / 2)
+		var/chems_to_add = QUESTIONABLE_FLOOR(target_ling.total_chem_storage / 2)
 		changeling.adjust_chemicals(chems_to_add)
 		changeling.total_chem_storage += chems_to_add
 

@@ -319,7 +319,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 				continue
 			if(!plasma)
 				plasma = new
-			plasma.adjustGas(reactant, max(1,round(reactants[reactant]*0.1)), 0) // *0.1 to compensate for *10 when uptaking gas.
+			plasma.adjustGas(reactant, max(1,QUESTIONABLE_FLOOR(reactants[reactant]*0.1)), 0) // *0.1 to compensate for *10 when uptaking gas.
 		if(!plasma)
 			return
 		plasma.temperature = (plasma_temperature/2)
@@ -444,7 +444,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 					continue
 
 				if(plasma_temperature < max_num_reactants * cur_reaction.energy_consumption)
-					max_num_reactants = round(plasma_temperature / cur_reaction.energy_consumption)
+					max_num_reactants = QUESTIONABLE_FLOOR(plasma_temperature / cur_reaction.energy_consumption)
 					if(max_num_reactants < 1)
 						continue
 

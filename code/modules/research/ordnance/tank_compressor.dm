@@ -310,8 +310,8 @@
 /obj/machinery/atmospherics/components/binary/tank_compressor/ui_static_data()
 	var/list/data = list(
 	"maxTransfer" = TANK_COMPRESSOR_MAX_TRANSFER_RATE,
-	"leakPressure" = round(TANK_LEAK_PRESSURE),
-	"fragmentPressure" = round(TANK_FRAGMENT_PRESSURE),
+	"leakPressure" = QUESTIONABLE_FLOOR(TANK_LEAK_PRESSURE),
+	"fragmentPressure" = QUESTIONABLE_FLOOR(TANK_FRAGMENT_PRESSURE),
 	"ejectPressure" = PUMP_MAX_PRESSURE
 	)
 	return data

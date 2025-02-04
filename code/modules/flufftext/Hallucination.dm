@@ -1515,7 +1515,7 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 			update_temp()
 			next_action += 3
 	else if (increasing_stages)
-		var/new_stage = min(round(time_spent / RAISE_FIRE_TIME), RAISE_FIRE_COUNT)
+		var/new_stage = min(QUESTIONABLE_FLOOR(time_spent / RAISE_FIRE_TIME), RAISE_FIRE_COUNT)
 		if (stage != new_stage)
 			stage = new_stage
 			update_temp()

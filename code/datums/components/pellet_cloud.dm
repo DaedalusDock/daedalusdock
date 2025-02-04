@@ -195,7 +195,7 @@
 		var/mob/living/martyr = M
 		if(radius > 4)
 			martyr.visible_message("<b>[span_danger("[martyr] heroically covers \the [parent] with [martyr.p_their()] body, absorbing a load of the shrapnel!")]</b>", span_userdanger("You heroically cover \the [parent] with your body, absorbing a load of the shrapnel!"))
-			magnitude_absorbed += round(radius * 0.5)
+			magnitude_absorbed += QUESTIONABLE_FLOOR(radius * 0.5)
 		else if(radius >= 2)
 			martyr.visible_message("<b>[span_danger("[martyr] heroically covers \the [parent] with [martyr.p_their()] body, absorbing some of the shrapnel!")]</b>", span_userdanger("You heroically cover \the [parent] with your body, absorbing some of the shrapnel!"))
 			magnitude_absorbed += 2
@@ -205,13 +205,13 @@
 
 		var/pellets_absorbed = (radius ** 2) - ((radius - magnitude_absorbed - 1) ** 2)
 		radius -= magnitude_absorbed
-		pellet_delta -= round(pellets_absorbed * 0.5)
+		pellet_delta -= QUESTIONABLE_FLOOR(pellets_absorbed * 0.5)
 
 		if(martyr.stat != DEAD && martyr.client)
 			LAZYADD(purple_hearts, martyr)
 			RegisterSignal(martyr, COMSIG_PARENT_QDELETING, PROC_REF(on_target_qdel), override=TRUE)
 
-		for(var/i in 1 to round(pellets_absorbed * 0.5))
+		for(var/i in 1 to QUESTIONABLE_FLOOR(pellets_absorbed * 0.5))
 			pew(martyr)
 
 		if(radius < 1)

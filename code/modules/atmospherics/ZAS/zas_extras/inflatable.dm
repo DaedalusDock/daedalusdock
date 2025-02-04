@@ -113,9 +113,9 @@
 		max_local_temp = max(max_local_temp, env.temperature)
 
 	if(prob(50) && (max_pressure - min_pressure > max_pressure_diff || max_local_temp > max_temp))
-		var/initial_damage_percentage = round(atom_integrity / max_integrity * 100)
+		var/initial_damage_percentage = QUESTIONABLE_FLOOR(atom_integrity / max_integrity * 100)
 		take_damage(1)
-		var/damage_percentage = round(atom_integrity / max_integrity * 100)
+		var/damage_percentage = QUESTIONABLE_FLOOR(atom_integrity / max_integrity * 100)
 		if (damage_percentage >= 70 && initial_damage_percentage < 70)
 			visible_message(span_warning("\The [src] is barely holding up!"))
 		else if (damage_percentage >= 30 && initial_damage_percentage < 30)

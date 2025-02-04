@@ -109,8 +109,8 @@ Passive gate is similar to the regular pump except:
 /obj/machinery/atmospherics/components/binary/passive_gate/ui_data()
 	var/data = list()
 	data["on"] = on
-	data["pressure"] = round(target_pressure)
-	data["max_pressure"] = round(MAX_PUMP_PRESSURE)
+	data["pressure"] = QUESTIONABLE_FLOOR(target_pressure)
+	data["max_pressure"] = QUESTIONABLE_FLOOR(MAX_PUMP_PRESSURE)
 	return data
 
 /obj/machinery/atmospherics/components/binary/passive_gate/ui_act(action, params)

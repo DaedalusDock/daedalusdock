@@ -1041,7 +1041,7 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 		. += hex2num(md5[i])
 	. = . % 9
 	dropped_atom.pixel_x = -8 + ((.%3)*8)
-	dropped_atom.pixel_y = -8 + (round( . / 3)*8)
+	dropped_atom.pixel_y = -8 + (QUESTIONABLE_FLOOR( . / 3)*8)
 
 /obj/machinery/rust_heretic_act()
 	take_damage(500, BRUTE, BLUNT, 1)

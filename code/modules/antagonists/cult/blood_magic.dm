@@ -681,7 +681,7 @@
 						return ..()
 					else
 						H.setBloodVolume(BLOOD_VOLUME_SAFE)
-						uses -= round(restore_blood/2)
+						uses -= QUESTIONABLE_FLOOR(restore_blood/2)
 						to_chat(user,span_warning("Your blood rites have restored [H == user ? "your" : "[H.p_their()]"] blood to safe levels!"))
 
 				var/overall_damage = H.getBruteLoss() + H.getFireLoss() + H.getToxLoss() + H.getOxyLoss()
@@ -692,10 +692,10 @@
 					if(H == user)
 						to_chat(user,span_cult("<b>Your blood healing is far less efficient when used on yourself!</b>"))
 						ratio *= 0.35 // Healing is half as effective if you can't perform a full heal
-						uses -= round(overall_damage) // Healing is 65% more "expensive" even if you can still perform the full heal
+						uses -= QUESTIONABLE_FLOOR(overall_damage) // Healing is 65% more "expensive" even if you can still perform the full heal
 					if(ratio>1)
 						ratio = 1
-						uses -= round(overall_damage)
+						uses -= QUESTIONABLE_FLOOR(overall_damage)
 						H.visible_message(span_warning("[H] is fully healed by [H==user ? "[H.p_their()]":"[H]'s"]'s blood magic!"))
 					else
 						H.visible_message(span_warning("[H] is partially healed by [H==user ? "[H.p_their()]":"[H]'s"] blood magic."))
@@ -765,8 +765,8 @@
 			user.Beam(T,icon_state="drainbeam", time = 15)
 			new /obj/effect/temp_visual/cult/sparks(get_turf(user))
 			playsound(T, 'sound/magic/enter_blood.ogg', 50)
-			to_chat(user, span_cultitalic("Your blood rite has gained [round(temp)] charge\s from blood sources around you!"))
-			uses += max(1, round(temp))
+			to_chat(user, span_cultitalic("Your blood rite has gained [QUESTIONABLE_FLOOR(temp)] charge\s from blood sources around you!"))
+			uses += max(1, QUESTIONABLE_FLOOR(temp))
 
 /obj/item/melee/blood_magic/manipulator/attack_self(mob/living/user)
 	if(IS_CULTIST(user))

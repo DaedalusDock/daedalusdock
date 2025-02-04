@@ -45,7 +45,7 @@
 		if(visi_msg)
 			visible_message(span_notice("[visi_msg]."))
 
-		var/split = round(transfer_amount/trays.len)
+		var/split = QUESTIONABLE_FLOOR(transfer_amount/trays.len)
 
 		for(var/obj/machinery/hydroponics/H in trays)
 		//cause I don't want to feel like im juggling 15 tamagotchis and I can get to my real work of ripping flooring apart in hopes of validating my life choices of becoming a space-gardener

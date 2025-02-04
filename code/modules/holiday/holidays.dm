@@ -646,7 +646,7 @@
 
 /datum/holiday/programmers/shouldCelebrate(dd, mm, yyyy, ddd) //Programmer's day falls on the 2^8th day of the year
 	if(mm == 9)
-		if(yyyy/4 == round(yyyy/4)) //Note: Won't work right on September 12th, 2200 (at least it's a Friday!)
+		if(yyyy/4 == QUESTIONABLE_FLOOR(yyyy/4)) //Note: Won't work right on September 12th, 2200 (at least it's a Friday!)
 			if(dd == 12)
 				return TRUE
 		else

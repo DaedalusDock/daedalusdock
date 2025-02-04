@@ -124,7 +124,7 @@
 	if(!account_job)
 		return
 
-	var/money_to_transfer = round(account_job.paycheck * payday_modifier * amt_of_paychecks)
+	var/money_to_transfer = QUESTIONABLE_FLOOR(account_job.paycheck * payday_modifier * amt_of_paychecks)
 
 	if(isnull(drain_from))
 		adjust_money(money_to_transfer)

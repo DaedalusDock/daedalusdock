@@ -483,7 +483,7 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 						singlespace = 1
 
 				if(singlespace == 0)
-					count_w = count_w % 2 ? round(count_w / 2 + 0.25) : count_w / 2
+					count_w = count_w % 2 ? QUESTIONABLE_FLOOR(count_w / 2 + 0.25) : count_w / 2
 
 				line = replacetext(line, regex("\\*", ""), "<li>")
 				while(listlevel < count_w)
@@ -811,7 +811,7 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 /proc/int_to_words(number, carried_string, capitalise = FALSE)
 	var/static/list/tens = list("", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety")
 	var/static/list/ones = list("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen")
-	number = round(number)
+	number = QUESTIONABLE_FLOOR(number)
 
 	if(number > 999)
 		return
@@ -823,7 +823,7 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 
 	if(number >= 100)
 		string += int_to_words(number / 100, "hundred")
-		number = round(number % 100)
+		number = QUESTIONABLE_FLOOR(number % 100)
 		if(!number)
 			return string + carried_string
 		string += "and"
@@ -863,7 +863,7 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 		number = abs(number)
 		negative = TRUE
 
-	number = round(number)
+	number = QUESTIONABLE_FLOOR(number)
 
 	if(number > 999999999)
 		return negative ? -number : number
@@ -997,9 +997,9 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 		return "0 [unit]"
 
 	var/exponent = clamp(log(10, abs(value)), -15, 15) // Calculate the exponent and clamp it so we don't go outside the prefix list bounds
-	var/divider = 10 ** (round(exponent / 3) * 3) // Rounds the exponent to nearest SI unit and power it back to the full form
+	var/divider = 10 ** (QUESTIONABLE_FLOOR(exponent / 3) * 3) // Rounds the exponent to nearest SI unit and power it back to the full form
 	var/coefficient = round(value / divider, 10 ** -maxdecimals) // Calculate the coefficient and round it to desired decimals
-	var/prefix_index = round(exponent / 3) + 6 // Calculate the index in the prefixes list for this exponent
+	var/prefix_index = QUESTIONABLE_FLOOR(exponent / 3) + 6 // Calculate the index in the prefixes list for this exponent
 
 	// An edge case which happens if we round 999.9 to 0 decimals for example, which gets rounded to 1000
 	// In that case, we manually swap up to the next prefix if there is one available
@@ -1195,7 +1195,7 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 	var/static/list/units_prefix = list("", "un", "duo", "tre", "quattuor", "quin", "sex", "septen", "octo", "novem")
 	var/static/list/tens_prefix = list("", "decem", "vigin", "trigin", "quadragin", "quinquagin", "sexagin", "septuagin", "octogin", "nongen")
 	var/static/list/one_to_nine = list("monuple", "double", "triple", "quadruple", "quintuple", "sextuple", "septuple", "octuple", "nonuple")
-	number = round(number)
+	number = QUESTIONABLE_FLOOR(number)
 	switch(number)
 		if(0)
 			return "empty tuple"

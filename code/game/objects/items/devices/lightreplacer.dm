@@ -86,7 +86,7 @@
 			return
 		if(!user.temporarilyRemoveItemFromInventory(W))
 			return
-		AddUses(round(increment*0.75))
+		AddUses(QUESTIONABLE_FLOOR(increment*0.75))
 		to_chat(user, span_notice("You insert a shard of glass into \the [src]. You have [uses] light\s remaining."))
 		qdel(W)
 		return
@@ -166,7 +166,7 @@
 
 /obj/item/lightreplacer/proc/AddShards(amount = 1, user)
 	bulb_shards += amount
-	var/new_bulbs = round(bulb_shards / shards_required)
+	var/new_bulbs = QUESTIONABLE_FLOOR(bulb_shards / shards_required)
 	if(new_bulbs > 0)
 		AddUses(new_bulbs)
 	bulb_shards = bulb_shards % shards_required

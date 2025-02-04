@@ -970,7 +970,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 		..()
 
 /obj/item/construction/rld/update_icon_state()
-	icon_state = "rld-[round(matter/matter_divisor)]"
+	icon_state = "rld-[QUESTIONABLE_FLOOR(matter/matter_divisor)]"
 	return ..()
 
 /obj/item/construction/rld/attack_self(mob/user)

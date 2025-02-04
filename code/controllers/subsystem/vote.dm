@@ -136,7 +136,7 @@ SUBSYSTEM_DEF(vote)
 	var/vp = CONFIG_GET(number/vote_period)
 	to_chat(world, "\n<span class='infoplain'><font color='purple'><b>[text]</b>\nType <b>vote</b> or click <a href='byond://winset?command=vote'>here</a> to place your votes.\nYou have [DisplayTimeText(vp)] to vote.</font></span>")
 
-	time_remaining = round(vp/10)
+	time_remaining = QUESTIONABLE_FLOOR(vp/10)
 	for(var/client/C in GLOB.clients)
 		var/datum/action/vote/V = new
 		V.Grant(C.mob)

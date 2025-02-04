@@ -242,7 +242,7 @@
 				target= text2num(target) + T0C
 				. = TRUE
 			if(.)
-				target_temperature = clamp(round(target),
+				target_temperature = clamp(QUESTIONABLE_FLOOR(target),
 					max(settable_temperature_median - settable_temperature_range, TCMB),
 					settable_temperature_median + settable_temperature_range)
 		if("eject")
@@ -324,7 +324,7 @@
 	. = ..()
 	.["chemHacked"] = TRUE
 	.["beaker"] = beaker
-	.["currentTemp"] = beaker ? (round(beaker.reagents.chem_temp - T0C)) : "N/A"
+	.["currentTemp"] = beaker ? (QUESTIONABLE_FLOOR(beaker.reagents.chem_temp - T0C)) : "N/A"
 
 /obj/machinery/space_heater/improvised_chem_heater/ui_act(action, params)
 	. = ..()

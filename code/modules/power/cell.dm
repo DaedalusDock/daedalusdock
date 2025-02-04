@@ -125,7 +125,7 @@
 	var/turf/T = get_turf(src.loc)
 	if (charge==0)
 		return
-	var/range_devastation = -1 //round(charge/11000)
+	var/range_devastation = -1 //QUESTIONABLE_FLOOR(charge/11000)
 	var/range_heavy = round(sqrt(charge)/60)
 	var/range_light = round(sqrt(charge)/30)
 	var/range_flash = range_light
@@ -205,7 +205,7 @@
 
 /obj/item/stock_parts/cell/proc/get_electrocute_damage()
 	if(charge >= 1000)
-		return clamp(20 + round(charge/25000), 20, 195) + rand(-5,5)
+		return clamp(20 + QUESTIONABLE_FLOOR(charge/25000), 20, 195) + rand(-5,5)
 	else
 		return 0
 

@@ -182,17 +182,17 @@
 
 /obj/item/tank/ui_static_data(mob/user)
 	. = list (
-		"defaultReleasePressure" = round(TANK_DEFAULT_RELEASE_PRESSURE),
-		"minReleasePressure" = round(TANK_MIN_RELEASE_PRESSURE),
-		"maxReleasePressure" = round(TANK_MAX_RELEASE_PRESSURE),
-		"leakPressure" = round(TANK_LEAK_PRESSURE),
-		"fragmentPressure" = round(TANK_FRAGMENT_PRESSURE)
+		"defaultReleasePressure" = QUESTIONABLE_FLOOR(TANK_DEFAULT_RELEASE_PRESSURE),
+		"minReleasePressure" = QUESTIONABLE_FLOOR(TANK_MIN_RELEASE_PRESSURE),
+		"maxReleasePressure" = QUESTIONABLE_FLOOR(TANK_MAX_RELEASE_PRESSURE),
+		"leakPressure" = QUESTIONABLE_FLOOR(TANK_LEAK_PRESSURE),
+		"fragmentPressure" = QUESTIONABLE_FLOOR(TANK_FRAGMENT_PRESSURE)
 	)
 
 /obj/item/tank/ui_data(mob/user)
 	. = list(
 		"tankPressure" = round(air_contents.returnPressure()),
-		"releasePressure" = round(distribute_pressure)
+		"releasePressure" = QUESTIONABLE_FLOOR(distribute_pressure)
 	)
 
 	var/mob/living/carbon/carbon_user = user
@@ -221,7 +221,7 @@
 				pressure = text2num(pressure)
 				. = TRUE
 			if(.)
-				distribute_pressure = clamp(round(pressure), TANK_MIN_RELEASE_PRESSURE, TANK_MAX_RELEASE_PRESSURE)
+				distribute_pressure = clamp(QUESTIONABLE_FLOOR(pressure), TANK_MIN_RELEASE_PRESSURE, TANK_MAX_RELEASE_PRESSURE)
 
 /obj/item/tank/remove_air(amount)
 	START_PROCESSING(SSobj, src)
@@ -352,10 +352,10 @@
 		log_atmos("[type] exploded with a power of [strength * mult] and a mix of ", air_contents)
 		if(explosion(
 			src,
-			round(mult*strength*0.15),
-			round(mult*strength*0.35),
-			round(mult*strength*0.80),
-			round(mult*strength*1.20),
+			QUESTIONABLE_FLOOR(mult*strength*0.15),
+			QUESTIONABLE_FLOOR(mult*strength*0.35),
+			QUESTIONABLE_FLOOR(mult*strength*0.80),
+			QUESTIONABLE_FLOOR(mult*strength*1.20),
 		) & COMSIG_CANCEL_EXPLOSION)
 			return ..()
 

@@ -4,8 +4,8 @@
 		return place_on_isolated_level(z)
 	while(sanity > 0)
 		sanity--
-		var/width_border = TRANSITIONEDGE + SPACERUIN_MAP_EDGE_PAD + round(width / 2)
-		var/height_border = TRANSITIONEDGE + SPACERUIN_MAP_EDGE_PAD + round(height / 2)
+		var/width_border = TRANSITIONEDGE + SPACERUIN_MAP_EDGE_PAD + QUESTIONABLE_FLOOR(width / 2)
+		var/height_border = TRANSITIONEDGE + SPACERUIN_MAP_EDGE_PAD + QUESTIONABLE_FLOOR(height / 2)
 		var/turf/central_turf = forced_turf ? forced_turf : locate(rand(width_border, world.maxx - width_border), rand(height_border, world.maxy - height_border), z)
 		var/valid = TRUE
 		var/list/affected_turfs = get_affected_turfs(central_turf,1)
@@ -59,7 +59,7 @@
 	loaded++
 	for(var/turf/T in get_affected_turfs(placement))
 		T.turf_flags |= NO_RUINS
-	var/turf/center = locate(placement.x + round(width/2),placement.y + round(height/2),placement.z)
+	var/turf/center = locate(placement.x + QUESTIONABLE_FLOOR(width/2),placement.y + QUESTIONABLE_FLOOR(height/2),placement.z)
 	new /obj/effect/landmark/ruin(center, src)
 	return center
 

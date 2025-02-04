@@ -216,7 +216,7 @@
 		to_chat(collateral_mob, span_userdanger("[the_hulk] swings [yeeted_person] directly into you, sending you flying!"))
 
 		collateral_mob.adjustBruteLoss(step*0.5)
-		collateral_mob.throw_at(collat_throw_target, round(step * 0.25) + 1, round(step * 0.25) + 1)
+		collateral_mob.throw_at(collat_throw_target, QUESTIONABLE_FLOOR(step * 0.25) + 1, QUESTIONABLE_FLOOR(step * 0.25) + 1)
 		step -= 5
 		delay += 5
 

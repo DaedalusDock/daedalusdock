@@ -160,7 +160,7 @@
 
 /datum/reagent/drug/methamphetamine/overdose_process(mob/living/carbon/C)
 	if(!HAS_TRAIT(C, TRAIT_IMMOBILIZED) && !ismovable(C.loc))
-		for(var/i in 1 to round(4))
+		for(var/i in 1 to QUESTIONABLE_FLOOR(4))
 			step(C, pick(GLOB.cardinals))
 
 	if(prob(10))

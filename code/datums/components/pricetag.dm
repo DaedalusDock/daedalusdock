@@ -86,7 +86,7 @@
 
 	for(var/datum/bank_account/payee as anything in payees)
 		// Every payee with a ratio gets a cut based on the item's total value
-		var/payee_cut = round(item_value * payees[payee])
+		var/payee_cut = QUESTIONABLE_FLOOR(item_value * payees[payee])
 		// And of course, the cut is removed from what cargo gets. (But not below zero, just in case)
 		overall_item_price = max(0, overall_item_price - payee_cut)
 

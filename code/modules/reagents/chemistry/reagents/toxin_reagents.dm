@@ -836,7 +836,7 @@
 			ADD_TRAIT(C, TRAIT_ROTATIUM, CHEM_TRAIT_SOURCE(CHEM_BLOOD))
 			var/atom/movable/plane_master_controller/pm_controller = C.hud_used.plane_master_controllers[PLANE_MASTERS_GAME]
 
-			var/rotation = min(round(current_cycle/20), 89) // By this point the player is probably puking and quitting anyway
+			var/rotation = min(QUESTIONABLE_FLOOR(current_cycle/20), 89) // By this point the player is probably puking and quitting anyway
 			for(var/key in pm_controller.controlled_planes)
 				animate(pm_controller.controlled_planes[key], transform = matrix(rotation, MATRIX_ROTATE), time = 5, easing = QUAD_EASING, loop = -1)
 				animate(transform = matrix(-rotation, MATRIX_ROTATE), time = 5, easing = QUAD_EASING)

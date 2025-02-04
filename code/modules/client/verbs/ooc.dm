@@ -383,7 +383,7 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 
 	var/desired_width = 0
 	if(zoom_value)
-		desired_width = round(view_size[1] * zoom_value * world.icon_size)
+		desired_width = QUESTIONABLE_FLOOR(view_size[1] * zoom_value * world.icon_size)
 	else
 
 		// Looks like we expect mapwindow.size to be "ixj" where i and j are numbers.
@@ -391,7 +391,7 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 		if(length(map_size) != 2)
 			CRASH("map_size of incorrect length --- map_size var: [map_size] --- map_size length: [length(map_size)]")
 		var/height = text2num(map_size[2])
-		desired_width = round(height * aspect_ratio)
+		desired_width = QUESTIONABLE_FLOOR(height * aspect_ratio)
 
 	if (text2num(map_size[1]) == desired_width)
 		// Nothing to do

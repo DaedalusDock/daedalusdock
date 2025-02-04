@@ -112,9 +112,9 @@
 
 	if(ishostile(spawned_mob))
 		var/mob/living/simple_animal/hostile/spawned_simplemob = spawned_mob
-		spawned_simplemob.melee_damage_lower += round(potency * mob_melee_multiplier)
-		spawned_simplemob.melee_damage_upper += round(potency * mob_melee_multiplier)
-		//spawned_simplemob.move_to_delay -= round(our_seed.production * mob_speed_multiplier)
+		spawned_simplemob.melee_damage_lower += QUESTIONABLE_FLOOR(potency * mob_melee_multiplier)
+		spawned_simplemob.melee_damage_upper += QUESTIONABLE_FLOOR(potency * mob_melee_multiplier)
+		//spawned_simplemob.move_to_delay -= QUESTIONABLE_FLOOR(our_seed.production * mob_speed_multiplier)
 
 	product.forceMove(product.drop_location())
 	spawned_mob.visible_message(span_notice("[product] growls as it suddenly awakens!"))

@@ -187,7 +187,7 @@
 	if(newtime == "Instant" && change_det_time(0))
 		to_chat(user, span_notice("You modify the time delay. It's set to be instantaneous."))
 		return
-	newtime = round(newtime)
+	newtime = QUESTIONABLE_FLOOR(newtime)
 	if(change_det_time(newtime))
 		to_chat(user, span_notice("You modify the time delay. It's set for [DisplayTimeText(det_time)]."))
 

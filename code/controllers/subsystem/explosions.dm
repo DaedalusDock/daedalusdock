@@ -84,7 +84,7 @@ SUBSYSTEM_DEF(explosions)
 
 	var/range = 0
 	range = round((2 * power)**GLOB.DYN_EX_SCALE)
-	return explosion(epicenter, devastation_range = round(range * 0.25), heavy_impact_range = round(range * 0.5), light_impact_range = round(range), flame_range = flame_range*range, flash_range = flash_range*range, adminlog = adminlog, ignorecap = ignorecap, silent = silent, smoke = smoke, explosion_cause = explosion_cause)
+	return explosion(epicenter, devastation_range = QUESTIONABLE_FLOOR(range * 0.25), heavy_impact_range = QUESTIONABLE_FLOOR(range * 0.5), light_impact_range = QUESTIONABLE_FLOOR(range), flame_range = flame_range*range, flash_range = flash_range*range, adminlog = adminlog, ignorecap = ignorecap, silent = silent, smoke = smoke, explosion_cause = explosion_cause)
 
 // Explosion SFX defines...
 /// The probability that a quaking explosion will make the station creak per unit. Maths!

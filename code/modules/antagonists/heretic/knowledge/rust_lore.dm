@@ -319,7 +319,7 @@
 	return ..()
 
 /datum/rust_spread/process(delta_time)
-	var/spread_amount = round(spread_per_sec * delta_time)
+	var/spread_amount = QUESTIONABLE_FLOOR(spread_per_sec * delta_time)
 
 	if(length(edge_turfs) < spread_amount)
 		compile_turfs()

@@ -64,7 +64,7 @@
 	if(!.)
 		return .
 
-	money += round(delta_time / 2) //SPESSH MAJICKS
+	money += QUESTIONABLE_FLOOR(delta_time / 2) //SPESSH MAJICKS
 
 /obj/machinery/computer/slot_machine/update_icon_state()
 	if(machine_stat & BROKEN)

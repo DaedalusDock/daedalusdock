@@ -246,7 +246,7 @@
 	in_combat = FALSE
 	say("AN EASY WIN. MY POWER INCREASES.") // steal a soul, become swole
 	add_atom_colour(rgb(255, 115, 115), ADMIN_COLOUR_PRIORITY)
-	max_combat_health = round(max_combat_health*1.5 + 0.1)
+	max_combat_health = QUESTIONABLE_FLOOR(max_combat_health*1.5 + 0.1)
 	combat_health = max_combat_health
 	wins++
 	return BRUTELOSS
@@ -327,7 +327,7 @@
 			//combat commences
 			switch(rand(1,8))
 				if(1 to 3) //attacker wins
-					if(attacker.special_attack_cooldown == 0 && attacker.combat_health <= round(attacker.max_combat_health/3)) //if health is less than 1/3 and special off CD, use it
+					if(attacker.special_attack_cooldown == 0 && attacker.combat_health <= QUESTIONABLE_FLOOR(attacker.max_combat_health/3)) //if health is less than 1/3 and special off CD, use it
 						attacker.special_attack_charged = TRUE
 						attacker_controller.visible_message(span_danger("[attacker] begins charging its special attack!!"), \
 											span_danger("You begin charging [attacker]'s special attack!"))
@@ -371,7 +371,7 @@
 										span_hear("You hear hard plastic bouncing off hard plastic."), COMBAT_MESSAGE_RANGE)
 
 				if(6 to 8) //defender wins
-					if(special_attack_cooldown == 0 && combat_health <= round(max_combat_health/3)) //if health is less than 1/3 and special off CD, use it
+					if(special_attack_cooldown == 0 && combat_health <= QUESTIONABLE_FLOOR(max_combat_health/3)) //if health is less than 1/3 and special off CD, use it
 						special_attack_charged = TRUE
 						src_controller.visible_message(span_danger("[src] begins charging its special attack!!"), \
 										span_danger("You begin charging [src]'s special attack!"))

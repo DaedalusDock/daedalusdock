@@ -208,7 +208,7 @@
 		total_volume += grind_results[reagent]
 
 	//compute number of pieces(or sheets) from available_volume
-	var/available_amount = min(current_amount, round(available_volume / total_volume))
+	var/available_amount = min(current_amount, QUESTIONABLE_FLOOR(available_volume / total_volume))
 	if(available_amount <= 0)
 		return FALSE
 
@@ -281,7 +281,7 @@
 
 /obj/item/stack/proc/get_amount()
 	if(is_cyborg)
-		. = round(source?.energy / cost)
+		. = QUESTIONABLE_FLOOR(source?.energy / cost)
 	else
 		. = (amount)
 

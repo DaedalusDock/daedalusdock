@@ -64,7 +64,7 @@
 	var/list/map_offsets = map.return_offsets()
 	var/list/map_bounds = map.return_bounds()
 	var/value = text2num(href_list["x"] || href_list["y"])
-	if(!isnull(value)) // round(null) = 0
+	if(!isnull(value)) // QUESTIONABLE_FLOOR(null) = 0
 		value = round(value, 1)
 		if("x" in href_list)
 			coords_x = WRAP(coords_x + map_offsets[1] + value, map_bounds[1] + map_offsets[1], map_bounds[2] + map_offsets[1])

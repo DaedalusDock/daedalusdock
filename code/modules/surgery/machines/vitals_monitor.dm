@@ -211,7 +211,7 @@ DEFINE_INTERACTABLE(/obj/machinery/vitals_monitor)
 	var/obj/item/organ/brain/brain = victim.getorganslot(ORGAN_SLOT_BRAIN)
 	var/danger = FALSE
 	if (istype(brain) && victim.stat != DEAD && !HAS_TRAIT(victim, TRAIT_FAKEDEATH))
-		switch (round(brain.damage / brain.damage_threshold_value))
+		switch (QUESTIONABLE_FLOOR(brain.damage / brain.damage_threshold_value))
 			if (0)
 				brain_activity = "normal"
 			if (1 to 2)

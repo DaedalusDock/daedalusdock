@@ -572,19 +572,19 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 
 /obj/machinery/portable_atmospherics/canister/ui_static_data(mob/user)
 	return list(
-		"defaultReleasePressure" = round(CAN_DEFAULT_RELEASE_PRESSURE),
-		"minReleasePressure" = round(can_min_release_pressure),
-		"maxReleasePressure" = round(can_max_release_pressure),
-		"pressureLimit" = round(pressure_limit),
-		"holdingTankLeakPressure" = round(TANK_LEAK_PRESSURE),
-		"holdingTankFragPressure" = round(TANK_FRAGMENT_PRESSURE)
+		"defaultReleasePressure" = QUESTIONABLE_FLOOR(CAN_DEFAULT_RELEASE_PRESSURE),
+		"minReleasePressure" = QUESTIONABLE_FLOOR(can_min_release_pressure),
+		"maxReleasePressure" = QUESTIONABLE_FLOOR(can_max_release_pressure),
+		"pressureLimit" = QUESTIONABLE_FLOOR(pressure_limit),
+		"holdingTankLeakPressure" = QUESTIONABLE_FLOOR(TANK_LEAK_PRESSURE),
+		"holdingTankFragPressure" = QUESTIONABLE_FLOOR(TANK_FRAGMENT_PRESSURE)
 	)
 
 /obj/machinery/portable_atmospherics/canister/ui_data()
 	. = list(
 		"portConnected" = !!connected_port,
 		"tankPressure" = round(air_contents.returnPressure()),
-		"releasePressure" = round(release_pressure),
+		"releasePressure" = QUESTIONABLE_FLOOR(release_pressure),
 		"valveOpen" = !!valve_open,
 		"isPrototype" = !!prototype,
 		"hasHoldingTank" = !!holding
@@ -660,7 +660,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 				pressure = text2num(pressure)
 				. = TRUE
 			if(.)
-				release_pressure = clamp(round(pressure), can_min_release_pressure, can_max_release_pressure)
+				release_pressure = clamp(QUESTIONABLE_FLOOR(pressure), can_min_release_pressure, can_max_release_pressure)
 				investigate_log("was set to [release_pressure] kPa by [key_name(usr)].", INVESTIGATE_ATMOS)
 		if("valve")		//logging for openning canisters
 			var/logmsg

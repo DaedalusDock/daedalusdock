@@ -42,11 +42,11 @@
 
 /obj/item/food/grown/grass/attack_self(mob/user)
 	to_chat(user, span_notice("You prepare the astroturf."))
-	var/grassAmt = 1 + round(cached_potency * tile_coefficient) // The grass we're holding
+	var/grassAmt = 1 + QUESTIONABLE_FLOOR(cached_potency * tile_coefficient) // The grass we're holding
 	for(var/obj/item/food/grown/grass/G in user.loc) // The grass on the floor
 		if(G.type != type)
 			continue
-		grassAmt += 1 + round(G.cached_potency * tile_coefficient)
+		grassAmt += 1 + QUESTIONABLE_FLOOR(G.cached_potency * tile_coefficient)
 		qdel(G)
 	new stacktype(user.drop_location(), grassAmt)
 	qdel(src)

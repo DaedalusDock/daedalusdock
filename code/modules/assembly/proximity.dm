@@ -150,6 +150,6 @@
 		if("input")
 			var/value = text2num(params["adjust"])
 			if(value)
-				value = round(time + value)
+				value = QUESTIONABLE_FLOOR(time + value)
 				time = clamp(value, 0, 600)
 				. = TRUE

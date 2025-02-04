@@ -496,7 +496,7 @@
 	var/speed = (wires.is_cut(WIRE_MOTOR1) ? 0 : 1) + (wires.is_cut(WIRE_MOTOR2) ? 0 : 2)
 	if(!speed)//Devide by zero man bad
 		return
-	num_steps = round(10/speed) //10, 5, or 3 steps, depending on how many wires we have cut
+	num_steps = QUESTIONABLE_FLOOR(10/speed) //10, 5, or 3 steps, depending on how many wires we have cut
 	START_PROCESSING(SSfastprocess, src)
 
 /mob/living/simple_animal/bot/mulebot/process()

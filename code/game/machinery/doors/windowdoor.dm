@@ -260,10 +260,10 @@
 
 /obj/machinery/door/window/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if((exposed_temperature > T0C + (reinf ? 1600 : 800)))
-		take_damage(round(exposed_temperature / 200), BURN, 0, 0)
+		take_damage(QUESTIONABLE_FLOOR(exposed_temperature / 200), BURN, 0, 0)
 
 /obj/machinery/door/window/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
-	take_damage(round(exposed_temperature / 200), BURN, 0, 0)
+	take_damage(QUESTIONABLE_FLOOR(exposed_temperature / 200), BURN, 0, 0)
 
 /obj/structure/window/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
 	var/initial_damage_percentage = get_integrity_percentage()

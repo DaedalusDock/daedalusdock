@@ -41,7 +41,7 @@
 	var/power = our_plant.get_effective_stat(PLANT_STAT_POTENCY) * rate
 
 	if(prob(power))
-		target_carbon.electrocute_act(round(power), 1, NONE)
+		target_carbon.electrocute_act(QUESTIONABLE_FLOOR(power), 1, NONE)
 
 /*
  * Recharges every cell the person is holding for a bit based on plant potency.

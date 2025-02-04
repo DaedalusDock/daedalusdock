@@ -364,7 +364,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 		var/obj/item/potential_product = record.product_path
 		var/premium_sanity = round(initial(potential_product.custom_premium_price))
 		if(premium_sanity)
-			record.custom_premium_price = round(premium_sanity * multiplier)
+			record.custom_premium_price = QUESTIONABLE_FLOOR(premium_sanity * multiplier)
 			continue
 		//For some ungodly reason, some premium only items only have a custom_price
 		record.custom_premium_price = round(extra_price + (initial(potential_product.custom_price) * (multiplier)))

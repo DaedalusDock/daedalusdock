@@ -58,7 +58,7 @@ GLOBAL_PROTECT(exp_to_update)
 
 /proc/get_exp_format(expnum)
 	if(expnum > 60)
-		return num2text(round(expnum / 60)) + "h"
+		return num2text(QUESTIONABLE_FLOOR(expnum / 60)) + "h"
 	else if(expnum > 0)
 		return num2text(expnum) + "m"
 	else

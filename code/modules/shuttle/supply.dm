@@ -239,7 +239,7 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 		total += ex.total_value[E]
 
 	SSeconomy.export_total += total
-	var/cargo_split = round(total/2)
+	var/cargo_split = QUESTIONABLE_FLOOR(total/2)
 	cargo_account.adjust_money(cargo_split)
 	master_account.adjust_money(total - cargo_split)
 

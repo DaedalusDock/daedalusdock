@@ -55,7 +55,7 @@
 		var/amount_mod = disassembled ? 0 : -2
 		for(var/mat in custom_materials)
 			var/datum/material/custom_material = GET_MATERIAL_REF(mat)
-			var/amount = max(0,round(custom_materials[mat]/MINERAL_MATERIAL_AMOUNT) + amount_mod)
+			var/amount = max(0,QUESTIONABLE_FLOOR(custom_materials[mat]/MINERAL_MATERIAL_AMOUNT) + amount_mod)
 			if(amount > 0)
 				new custom_material.sheet_type(drop_location(),amount)
 	qdel(src)
@@ -326,7 +326,7 @@ Moving interrupts
 	//How long whole process takes
 	var/sculpting_time = 30 SECONDS
 	//Single interruptible progress period
-	var/sculpting_period = round(sculpting_time / world.icon_size) //this is just so it reveals pixels line by line for each.
+	var/sculpting_period = QUESTIONABLE_FLOOR(sculpting_time / world.icon_size) //this is just so it reveals pixels line by line for each.
 	var/interrupted = FALSE
 	var/remaining_time = sculpting_time - (prepared_block.completion * sculpting_time)
 
@@ -471,7 +471,7 @@ Moving interrupts
 			remove_filter("partial_uncover")
 			target_appearance_with_filters = null
 		else
-			var/mask_offset = min(world.icon_size,round(completion * world.icon_size))
+			var/mask_offset = min(world.icon_size,QUESTIONABLE_FLOOR(completion * world.icon_size))
 			remove_filter("partial_uncover")
 			add_filter("partial_uncover", 1, alpha_mask_filter(icon = white, y = -mask_offset))
 			target_appearance_with_filters.filters = filter(type="alpha",icon=white,y=-mask_offset,flags=MASK_INVERSE)

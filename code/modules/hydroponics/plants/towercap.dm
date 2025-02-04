@@ -87,7 +87,7 @@
 /obj/item/grown/log/proc/get_plank_amount()
 	var/plank_amount = 1
 	if(plant_datum)
-		plank_amount += round(cached_potency / 25)
+		plank_amount += QUESTIONABLE_FLOOR(cached_potency / 25)
 	return plank_amount
 
 /obj/item/grown/log/proc/CheckAccepted(obj/item/I)

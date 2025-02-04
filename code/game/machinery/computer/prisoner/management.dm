@@ -101,7 +101,7 @@
 						var/num = tgui_input_text(usr, "Enter the prisoner's goal", "Prisoner Management", 1, 1000, 1)
 						if(isnull(num))
 							return
-						contained_id.goal = round(num)
+						contained_id.goal = QUESTIONABLE_FLOOR(num)
 		else if(href_list["inject1"])
 			var/obj/item/implant/I = locate(href_list["inject1"]) in GLOB.tracked_chem_implants
 			if(I && istype(I))

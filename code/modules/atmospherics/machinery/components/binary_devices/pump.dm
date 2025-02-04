@@ -116,8 +116,8 @@
 /obj/machinery/atmospherics/components/binary/pump/ui_data()
 	var/data = list()
 	data["on"] = on
-	data["pressure"] = round(target_pressure)
-	data["max_pressure"] = round(MAX_PUMP_PRESSURE)
+	data["pressure"] = QUESTIONABLE_FLOOR(target_pressure)
+	data["max_pressure"] = QUESTIONABLE_FLOOR(MAX_PUMP_PRESSURE)
 	data["last_draw"] = last_power_draw
 	data["max_power"] = power_rating
 	return data

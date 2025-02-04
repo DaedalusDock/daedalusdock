@@ -228,8 +228,8 @@
 
 /// Create looping random path animation, pixel offsets parameters include offsets already
 /datum/component/aquarium_content/proc/swim_animation()
-	var/avg_width = round(sprite_width / 2)
-	var/avg_height = round(sprite_height / 2)
+	var/avg_width = QUESTIONABLE_FLOOR(sprite_width / 2)
+	var/avg_height = QUESTIONABLE_FLOOR(sprite_height / 2)
 
 	var/list/aq_properties = current_aquarium.get_surface_properties()
 	var/px_min = aq_properties[AQUARIUM_PROPERTIES_PX_MIN] + avg_width - 16
@@ -262,7 +262,7 @@
 
 /datum/component/aquarium_content/proc/dead_animation()
 	//Set base_py to lowest possible value
-	var/avg_height = round(sprite_height / 2)
+	var/avg_height = QUESTIONABLE_FLOOR(sprite_height / 2)
 	var/list/aq_properties = current_aquarium.get_surface_properties()
 	var/py_min = aq_properties[AQUARIUM_PROPERTIES_PY_MIN] + avg_height - 16
 	base_py = py_min
@@ -278,8 +278,8 @@
 
 /datum/component/aquarium_content/proc/randomize_base_position()
 	var/list/aq_properties = current_aquarium.get_surface_properties()
-	var/avg_width = round(sprite_width / 2)
-	var/avg_height = round(sprite_height / 2)
+	var/avg_width = QUESTIONABLE_FLOOR(sprite_width / 2)
+	var/avg_height = QUESTIONABLE_FLOOR(sprite_height / 2)
 	var/px_min = aq_properties[AQUARIUM_PROPERTIES_PX_MIN] + avg_width - 16
 	var/px_max = aq_properties[AQUARIUM_PROPERTIES_PX_MAX] - avg_width - 16
 	var/py_min = aq_properties[AQUARIUM_PROPERTIES_PY_MIN] + avg_height - 16

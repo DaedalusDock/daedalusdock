@@ -95,7 +95,7 @@ GLOBAL_LIST_EMPTY(silo_access_logs)
 	for(var/M in materials.materials)
 		var/datum/material/mat = M
 		var/amount = materials.materials[M]
-		var/sheets = round(amount) / MINERAL_MATERIAL_AMOUNT
+		var/sheets = QUESTIONABLE_FLOOR(amount) / MINERAL_MATERIAL_AMOUNT
 		var/ref = REF(M)
 		if (sheets)
 			if (sheets >= 1)
@@ -249,7 +249,7 @@ GLOBAL_LIST_EMPTY(silo_access_logs)
 	var/sep = ""
 	for(var/key in materials)
 		var/datum/material/M = key
-		var/val = round(materials[key]) / MINERAL_MATERIAL_AMOUNT
+		var/val = QUESTIONABLE_FLOOR(materials[key]) / MINERAL_MATERIAL_AMOUNT
 		msg += sep
 		sep = ", "
 		msg += "[amount < 0 ? "-" : "+"][val] [M.name]"

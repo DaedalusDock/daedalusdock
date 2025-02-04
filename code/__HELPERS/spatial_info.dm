@@ -201,7 +201,7 @@
 		if(X1<X2)
 			b+=m
 		while(X1!=X2 || Y1!=Y2)
-			if(round(m*X1+b-Y1))
+			if(QUESTIONABLE_FLOOR(m*X1+b-Y1))
 				Y1+=signY //Line exits tile vertically
 			else
 				X1+=signX //Line exits tile horizontally

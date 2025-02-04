@@ -406,7 +406,7 @@ SUBSYSTEM_DEF(timer)
 	if (flags & TIMER_STOPPABLE)
 		id = num2text(nextid, 100)
 		if (nextid >= SHORT_REAL_LIMIT)
-			nextid += min(1, 2 ** round(nextid / SHORT_REAL_LIMIT))
+			nextid += min(1, 2 ** QUESTIONABLE_FLOOR(nextid / SHORT_REAL_LIMIT))
 		else
 			nextid++
 		timer_subsystem.timer_id_dict[id] = src

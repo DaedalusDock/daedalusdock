@@ -35,7 +35,7 @@
 /datum/reagent/blob/blazing_oil/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/overmind)
 	. = ..()
 	reac_volume = return_mob_expose_reac_volume(exposed_mob, methods, reac_volume, show_message, touch_protection, overmind)
-	exposed_mob.adjust_fire_stacks(round(reac_volume/10))
+	exposed_mob.adjust_fire_stacks(QUESTIONABLE_FLOOR(reac_volume/10))
 	exposed_mob.ignite_mob()
 	if(exposed_mob)
 		exposed_mob.apply_damage(0.8*reac_volume, BURN)

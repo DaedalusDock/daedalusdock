@@ -51,7 +51,7 @@
 	if(machine_stat & (NOPOWER|BROKEN))
 		return
 
-	var/L = min(round(lastgenlev / 100000), 8)
+	var/L = min(QUESTIONABLE_FLOOR(lastgenlev / 100000), 8)
 	if(L != 0)
 		. += mutable_appearance(icon, "teg-op[L]")
 		. += emissive_appearance(icon, "teg-op[L]", alpha = 90)
@@ -127,7 +127,7 @@
 	effective_gen = (lastgen1 + lastgen2) / 2
 
 	// update icon overlays and power usage only when necessary
-	var/genlev = max(0, min( round(11*effective_gen / max_power), 11))
+	var/genlev = max(0, min( QUESTIONABLE_FLOOR(11*effective_gen / max_power), 11))
 	if(effective_gen > 100 && genlev == 0)
 		genlev = 1
 	if(genlev != lastgenlev)

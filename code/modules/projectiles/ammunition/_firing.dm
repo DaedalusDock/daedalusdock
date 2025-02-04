@@ -7,7 +7,7 @@
 			if(randomspread)
 				spread = round((rand() - 0.5) * distro)
 			else //Smart spread
-				spread = round(1 - 0.5) * distro
+				spread = QUESTIONABLE_FLOOR(1 - 0.5) * distro
 
 		if(!throw_proj(target, targloc, user, params, spread, fired_from))
 			return FALSE

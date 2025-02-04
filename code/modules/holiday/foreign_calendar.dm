@@ -43,7 +43,7 @@ by John Walker 2015, released under public domain
 
 ///Converts BYOND realtime to Julian Day
 /datum/foreign_calendar/proc/realtime_to_jd(realtime)
-	return round(realtime / 864000) + BYOND_EPOCH
+	return QUESTIONABLE_FLOOR(realtime / 864000) + BYOND_EPOCH
 
 //////////////////////////////
 //     Islamic Calendar     //
@@ -52,7 +52,7 @@ by John Walker 2015, released under public domain
 	return ((yr * 11 + 14) % 30) < 11
 
 /datum/foreign_calendar/islamic/set_date()
-	var/jd_adj = round(jd) + 0.5 // adjust julian date so it ends in .5
+	var/jd_adj = QUESTIONABLE_FLOOR(jd) + 0.5 // adjust julian date so it ends in .5
 	yyyy = round(((30 * (jd_adj - ISLAMIC_EPOCH)) + 10646) / 10631)
 	mm = min(12, CEILING2(((jd - (29 + islamic_to_jd(yyyy, 1, 1))) / 29.5) + 1, 1))
 	dd = jd - islamic_to_jd(yyyy, mm, 1) + 1
@@ -89,7 +89,7 @@ by John Walker 2015, released under public domain
 /datum/foreign_calendar/hebrew/set_date(jd)
 	if (yyyy && mm && dd)
 		return
-	jd = round(jd) + 0.5
+	jd = QUESTIONABLE_FLOOR(jd) + 0.5
 	var/count = round(((jd - HEBREW_EPOCH) * 98496) / 35975351)
 	var/year = count - 1
 	for (var/i = count; jd >= hebrew_to_jd(i, 7, 1); i++)
@@ -112,7 +112,7 @@ by John Walker 2015, released under public domain
 /datum/foreign_calendar/hebrew/proc/hebrew_delay_1(year)
 	var/months = round(((235 * year) - 234) / 19)
 	var/parts = 12084 + (13753 * months)
-	var/day = (months * 29) + round(parts / 25920)
+	var/day = (months * 29) + QUESTIONABLE_FLOOR(parts / 25920)
 	if (3 * (day + 1) % 7 < 3)
 		day++
 	return day

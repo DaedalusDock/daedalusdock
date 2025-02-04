@@ -130,10 +130,10 @@
 	data["direction"] = direction == PUMP_IN ? TRUE : FALSE
 	data["connected"] = connected_port ? TRUE : FALSE
 	data["pressure"] = round(air_contents.returnPressure() ? air_contents.returnPressure() : 0)
-	data["target_pressure"] = round(target_pressure ? target_pressure : 0)
-	data["default_pressure"] = round(PUMP_DEFAULT_PRESSURE)
-	data["min_pressure"] = round(PUMP_MIN_PRESSURE)
-	data["max_pressure"] = round(PUMP_MAX_PRESSURE)
+	data["target_pressure"] = QUESTIONABLE_FLOOR(target_pressure ? target_pressure : 0)
+	data["default_pressure"] = QUESTIONABLE_FLOOR(PUMP_DEFAULT_PRESSURE)
+	data["min_pressure"] = QUESTIONABLE_FLOOR(PUMP_MIN_PRESSURE)
+	data["max_pressure"] = QUESTIONABLE_FLOOR(PUMP_MAX_PRESSURE)
 
 	if(holding)
 		data["holding"] = list()
@@ -185,7 +185,7 @@
 				pressure = text2num(pressure)
 				. = TRUE
 			if(.)
-				target_pressure = clamp(round(pressure), PUMP_MIN_PRESSURE, PUMP_MAX_PRESSURE)
+				target_pressure = clamp(QUESTIONABLE_FLOOR(pressure), PUMP_MIN_PRESSURE, PUMP_MAX_PRESSURE)
 				investigate_log("was set to [target_pressure] kPa by [key_name(usr)].", INVESTIGATE_ATMOS)
 		if("eject")
 			if(holding)

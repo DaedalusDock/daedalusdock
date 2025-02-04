@@ -415,7 +415,7 @@
 		QUEUE_SMOOTH(src)
 
 	var/ratio = atom_integrity / max_integrity
-	ratio = CEILING(ratio*4, 1) * 25
+	ratio = CEILING2(ratio*4, 1) * 25
 	if(ratio > 75)
 		return
 

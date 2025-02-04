@@ -550,7 +550,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 /datum/action_group/proc/refresh_actions()
 
 	// We don't use size() here because landings are not canon
-	var/total_rows = ROUND_UP(length(actions) / column_max)
+	var/total_rows = ceil(length(actions) / column_max)
 	total_rows -= max_rows // Lets get the amount of rows we're off from our max
 	row_offset = clamp(row_offset, 0, total_rows) // You're not allowed to offset so far that we have a row of blank space
 

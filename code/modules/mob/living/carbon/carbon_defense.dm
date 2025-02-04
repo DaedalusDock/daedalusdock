@@ -379,7 +379,7 @@
 
 	var/sum = (zones["[HEAD]"] * 0.1) + (zones["[CHEST]"] * 0.5) + (zones["[ARMS]"] * 0.15) + (zones["[LEGS]"] * 0.15) + (zones["[HANDS]"] * 0.05) + (zones["[FEET]"] * 0.05)
 
-	return CEILING(sum, 0.01)
+	return CEILING2(sum, 0.01)
 
 /mob/living/carbon/proc/share_blood_on_touch(mob/living/carbon/human/who_touched_us)
 	return

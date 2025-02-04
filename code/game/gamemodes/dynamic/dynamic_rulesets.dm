@@ -134,7 +134,7 @@
 	if (isnum(antag_cap))
 		return antag_cap
 
-	return CEILING(population / antag_cap["denominator"], 1) + (antag_cap["offset"] || 0)
+	return CEILING2(population / antag_cap["denominator"], 1) + (antag_cap["offset"] || 0)
 
 /// This is called if persistent variable is true everytime SSTicker ticks.
 /datum/dynamic_ruleset/proc/rule_process()

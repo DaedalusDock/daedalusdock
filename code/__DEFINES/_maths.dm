@@ -1,34 +1,12 @@
-// Remove these once we have Byond implementation.
-// ------------------------------------
-#define IS_FINITE(a) (isnum(a) && !isinf(a))
-
-#define IS_INF_OR_NAN(a) (isnan(a) || isinf(a))
-
-// Aight dont remove the rest
-
 // Credits to Nickr5 for the useful procs I've taken from his library resource.
 // This file is quadruple wrapped for your pleasure
 // (
-
-#define NUM_E 2.71828183
-
-#define SQRT_2 1.414214 //CLOSE ENOUGH!
-
-#define PI 3.1416
-#define INFINITY 1e31 //closer then enough
-
-#define SHORT_REAL_LIMIT 16777216
-
-#define LIGHT_SPEED 299792458 // meters per second
 
 //"fancy" math for calculating time in ms from tick_usage percentage and the length of ticks
 //percent_of_tick_used * (ticklag * 100(to convert to ms)) / 100(percent ratio)
 //collapsed to percent_of_tick_used * tick_lag
 #define TICK_DELTA_TO_MS(percent_of_tick_used) ((percent_of_tick_used) * world.tick_lag)
 #define TICK_USAGE_TO_MS(starting_tickusage) (TICK_DELTA_TO_MS(TICK_USAGE_REAL - starting_tickusage))
-
-#define PERCENT(val) (round((val)*100, 0.1))
-#define CLAMP01(x) (clamp(x, 0, 1))
 
 //time of day but automatically adjusts to the server going into the next day within the same round.
 //for when you need a reliable time number that doesn't depend on byond time.
@@ -38,13 +16,6 @@
 /// Gets the sign of x, returns -1 if negative, 0 if 0, 1 if positive
 #define SIGN(x) ( ((x) > 0) - ((x) < 0) )
 
-#define CEILING(x, y) ( -round(-(x) / (y)) * (y) )
-
-#define ROUND_UP(x) ( -round(-(x)))
-
-// round() acts like floor(x, 1) by default but can't handle other values
-#define FLOOR(x, y) ( round((x) / (y)) * (y) )
-
 // Similar to clamp but the bottom rolls around to the top and vice versa. min is inclusive, max is exclusive
 #define WRAP(val, min, max) clamp(( min == max ? min : (val) - (round(((val) - (min))/((max) - (min))) * ((max) - (min))) ),min,max)
 
@@ -52,7 +23,7 @@
 #define WRAP_UP(val, max) (((val) % (max)) + 1)
 
 // Real modulus that handles decimals
-#define MODULUS(x, y) ( (x) - FLOOR(x, y))
+#define MODULUS(x, y) ( (x) - FLOOR2(x, y))
 
 // Cotangent
 #define COT(x) (1 / tan(x))
@@ -77,22 +48,6 @@
 // Used for calculating the radioactive strength falloff
 #define INVERSE_SQUARE(initial_strength,cur_distance,initial_distance) ( (initial_strength)*((initial_distance)**2/(cur_distance)**2) )
 
-#define ISABOUTEQUAL(a, b, deviation) (deviation ? abs((a) - (b)) <= deviation : abs((a) - (b)) <= 0.1)
-
-#define ISEVEN(x) (x % 2 == 0)
-
-#define ISODD(x) (x % 2 != 0)
-
-// Returns true if val is from min to max, inclusive.
-#define ISINRANGE(val, min, max) (min <= val && val <= max)
-
-// Same as above, exclusive.
-#define ISINRANGE_EX(val, min, max) (min < val && val < max)
-
-#define ISINTEGER(x) (round(x) == x)
-
-#define ISMULTIPLE(x, y) ((x) % (y) == 0)
-
 // Performs a linear interpolation between a and b.
 // Note that amount=0 returns a, amount=1 returns b, and
 // amount=0.5 returns the mean of a and b.
@@ -116,12 +71,6 @@
 		return
 	. += (-b - root) / bottom
 
-#define TODEGREES(radians) ((radians) * 57.2957795)
-
-#define TORADIANS(degrees) ((degrees) * 0.0174532925)
-
-/// Gets shift x that would be required the bitflag (1<<x)
-#define TOBITSHIFT(bit) (round(log(2, bit), 1))
 
 /// Reverse an angle. 45 -> 225, 0 -> 180, etc
 #define REVERSE_ANGLE(angle) (floor((angle) + 180) % 360)
@@ -247,3 +196,37 @@
 
 /// See above, but clamps the resulting value between omin and omax
 #define MAPCLAMP(x, imin, imax, omin, omax) clamp(MAP(x, imin, imax, omin, omax), omin, omax)
+
+/*
+	This proc makes the input taper off above cap. But there's no absolute cutoff.
+	Chunks of the input value above cap, are reduced more and more with each successive one and added to the output
+	A higher input value always makes a higher output value. but the rate of growth slows
+*/
+/proc/soft_cap(input, cap = 0, groupsize = 1, groupmult = 0.9)
+
+	//The cap is a ringfenced amount. If we're below that, just return the input
+	if (input <= cap)
+		return input
+
+	var/output = 0
+	var/buffer = 0
+	var/power = 1//We increment this after each group, then apply it to the groupmult as a power
+
+	//Ok its above, so the cap is a safe amount, we move that to the output
+	input -= cap
+	output += cap
+
+	//Now we start moving groups from input to buffer
+
+
+	while (input > 0)
+		buffer = min(input, groupsize)	//We take the groupsize, or all the input has left if its less
+		input -= buffer
+
+		buffer *= groupmult**power //This reduces the group by the groupmult to the power of which index we're on.
+		//This ensures that each successive group is reduced more than the previous one
+
+		output += buffer
+		power++ //Transfer to output, increment power, repeat until the input pile is all used
+
+	return output

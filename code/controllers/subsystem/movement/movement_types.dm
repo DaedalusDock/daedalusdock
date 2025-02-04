@@ -625,9 +625,9 @@
 /datum/move_loop/has_target/move_towards/move()
 	//Move our tickers forward a step, we're guaranteed at least one step forward because of how the code is written
 	if(x_rate) //Did you know that rounding by 0 throws a divide by 0 error?
-		x_ticker = FLOOR(x_ticker + x_rate, x_rate)
+		x_ticker = FLOOR2(x_ticker + x_rate, x_rate)
 	if(y_rate)
-		y_ticker = FLOOR(y_ticker + y_rate, y_rate)
+		y_ticker = FLOOR2(y_ticker + y_rate, y_rate)
 
 	var/x = moving.x
 	var/y = moving.y

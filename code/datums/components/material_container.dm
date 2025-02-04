@@ -173,7 +173,7 @@
 	if(QDELETED(I))
 		return FALSE
 
-	multiplier = CEILING(multiplier, 0.01)
+	multiplier = CEILING2(multiplier, 0.01)
 
 	var/material_amount = get_item_material_amount(I, breakdown_flags)
 	if(!material_amount || !has_space(material_amount))

@@ -807,7 +807,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 /obj/item/construction/rcd/update_overlays()
 	. = ..()
 	if(has_ammobar)
-		var/ratio = CEILING((matter / max_matter) * ammo_sections, 1)
+		var/ratio = CEILING2((matter / max_matter) * ammo_sections, 1)
 		if(ratio > 0)
 			. += "[icon_state]_charge[ratio]"
 

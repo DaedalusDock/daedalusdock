@@ -54,11 +54,11 @@ by John Walker 2015, released under public domain
 /datum/foreign_calendar/islamic/set_date()
 	var/jd_adj = round(jd) + 0.5 // adjust julian date so it ends in .5
 	yyyy = round(((30 * (jd_adj - ISLAMIC_EPOCH)) + 10646) / 10631)
-	mm = min(12, CEILING(((jd - (29 + islamic_to_jd(yyyy, 1, 1))) / 29.5) + 1, 1))
+	mm = min(12, CEILING2(((jd - (29 + islamic_to_jd(yyyy, 1, 1))) / 29.5) + 1, 1))
 	dd = jd - islamic_to_jd(yyyy, mm, 1) + 1
 
 /datum/foreign_calendar/islamic/proc/islamic_to_jd(year, month, day)
-	return day + CEILING(29.5 * (month - 1), 1) + (year - 1) * 354 + round((3 + (11 * year)) / 30) + ISLAMIC_EPOCH - 1
+	return day + CEILING2(29.5 * (month - 1), 1) + (year - 1) * 354 + round((3 + (11 * year)) / 30) + ISLAMIC_EPOCH - 1
 
 //////////////////////////////
 //      Hebrew Calendar     //

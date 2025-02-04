@@ -64,7 +64,7 @@
 	. = ..()
 	if(change_icons)
 		var/ratio = get_fuel() / max_fuel
-		ratio = CEILING(ratio*4, 1) * 25
+		ratio = CEILING2(ratio*4, 1) * 25
 		. += "[initial(icon_state)][ratio]"
 	if(welding)
 		. += "[initial(icon_state)]-on"

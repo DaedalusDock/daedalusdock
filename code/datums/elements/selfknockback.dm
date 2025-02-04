@@ -42,7 +42,7 @@ clamping the Knockback_Force value below. */
 	if(isturf(attacktarget) && !attacktarget.density)
 		return
 	if(proximity_flag || (get_dist(attacktarget, usertarget) <= I.reach))
-		var/knockback_force = Get_Knockback_Force(clamp(CEILING((I.force / 10), 1), 1, 5))
+		var/knockback_force = Get_Knockback_Force(clamp(CEILING2((I.force / 10), 1), 1, 5))
 		var/knockback_speed = Get_Knockback_Speed(clamp(knockback_force, 1, 5))
 
 		var/target_angle = get_angle(attacktarget, usertarget)
@@ -56,7 +56,7 @@ clamping the Knockback_Force value below. */
 	if(!P.firer)
 		return
 
-	var/knockback_force = Get_Knockback_Force(clamp(CEILING((P.damage / 10), 1), 1, 5))
+	var/knockback_force = Get_Knockback_Force(clamp(CEILING2((P.damage / 10), 1), 1, 5))
 	var/knockback_speed = Get_Knockback_Speed(clamp(knockback_force, 1, 5))
 
 	var/atom/movable/knockback_target = P.firer

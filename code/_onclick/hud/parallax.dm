@@ -289,8 +289,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/parallax_layer)
 	// Turn the view size into a grid of correctly scaled overlays
 	var/list/viewscales = getviewsize(view)
 	// This could be half the size but we need to provide space for parallax movement on mob movement, and movement on scroll from shuttles, so like this instead
-	var/countx = CEILING((viewscales[1] / 2) * parallax_scaler, 1) + 1
-	var/county = CEILING((viewscales[2] / 2) * parallax_scaler, 1) + 1
+	var/countx = CEILING2((viewscales[1] / 2) * parallax_scaler, 1) + 1
+	var/county = CEILING2((viewscales[2] / 2) * parallax_scaler, 1) + 1
 	var/list/new_overlays = new
 	for(var/x in -countx to countx)
 		for(var/y in -county to county)

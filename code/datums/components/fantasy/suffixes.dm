@@ -116,7 +116,7 @@
 	// This works even with the species picks since we're only accessing the name
 
 	var/obj/item/master = comp.parent
-	var/max_mobs = max(CEILING(comp.quality/2, 1), 1)
+	var/max_mobs = max(CEILING2(comp.quality/2, 1), 1)
 	var/spawn_delay = 300 - 30 * comp.quality
 	comp.appliedComponents += master.AddComponent(/datum/component/summoning, list(picked_mobtype), 100, max_mobs, spawn_delay)
 	return "[newName] of [initial(picked_mobtype.name)] summoning"
@@ -164,12 +164,12 @@
 /datum/fantasy_affix/strength/apply(datum/component/fantasy/comp, newName)
 	. = ..()
 	var/obj/item/master = comp.parent
-	master.AddElement(/datum/element/knockback, CEILING(comp.quality/2, 1), FLOOR(comp.quality/10, 1))
+	master.AddElement(/datum/element/knockback, CEILING2(comp.quality/2, 1), FLOOR2(comp.quality/10, 1))
 	return "[newName] of strength"
 
 /datum/fantasy_affix/strength/remove(datum/component/fantasy/comp)
 	var/obj/item/master = comp.parent
-	master.RemoveElement(/datum/element/knockback, CEILING(comp.quality/2, 1), FLOOR(comp.quality/10, 1))
+	master.RemoveElement(/datum/element/knockback, CEILING2(comp.quality/2, 1), FLOOR2(comp.quality/10, 1))
 
 //////////// Bad suffixes
 

@@ -57,7 +57,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount/loaded, 28)
 		var/obj/item/stock_parts/cell/C = get_cell()
 		. += (defib.safety ? "online" : "emagged")
 		var/ratio = C.charge / C.maxcharge
-		ratio = CEILING(ratio * 4, 1) * 25
+		ratio = CEILING2(ratio * 4, 1) * 25
 		. += "charge[ratio]"
 
 	if(clamps_locked)

@@ -89,7 +89,7 @@
 		if(!amount || !redemption_mat_amount)
 			return FALSE
 
-		var/smeltable_sheets = FLOOR(redemption_mat_amount / amount, 1)
+		var/smeltable_sheets = FLOOR2(redemption_mat_amount / amount, 1)
 
 		if(!smeltable_sheets)
 			return FALSE
@@ -279,7 +279,7 @@
 				if(!amount)
 					return
 
-				var/stored_amount = CEILING(amount / MINERAL_MATERIAL_AMOUNT, 0.1)
+				var/stored_amount = CEILING2(amount / MINERAL_MATERIAL_AMOUNT, 0.1)
 
 				if(!stored_amount)
 					return

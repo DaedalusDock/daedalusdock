@@ -53,7 +53,7 @@
 	while(number_of_hostiles > hostiles_spawn.len)
 		hostiles_spawn += get_random_station_turf()
 
-	next_boss_spawn = startWhen + CEILING(2 * number_of_hostiles / number_of_bosses, 1)
+	next_boss_spawn = startWhen + CEILING2(2 * number_of_hostiles / number_of_bosses, 1)
 
 /datum/round_event/portal_storm/announce(fake)
 	sound_to_playing_players('sound/magic/lightning_chargeup.ogg')
@@ -108,7 +108,7 @@
 		return FALSE
 
 	if(activeFor == next_boss_spawn)
-		next_boss_spawn += CEILING(number_of_hostiles / number_of_bosses, 1)
+		next_boss_spawn += CEILING2(number_of_hostiles / number_of_bosses, 1)
 		return TRUE
 	return FALSE
 

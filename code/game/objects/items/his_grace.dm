@@ -97,7 +97,7 @@
 		return
 
 	if(bloodthirst < HIS_GRACE_CONSUME_OWNER && !ascended)
-		adjust_bloodthirst((1 + FLOOR(LAZYLEN(contents) * 0.5, 1)) * delta_time) //Maybe adjust this?
+		adjust_bloodthirst((1 + FLOOR2(LAZYLEN(contents) * 0.5, 1)) * delta_time) //Maybe adjust this?
 	else
 		adjust_bloodthirst(1 * delta_time) //don't cool off rapidly once we're at the point where His Grace consumes all.
 

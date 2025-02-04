@@ -1129,7 +1129,7 @@
 		pack.id = "[type]([name])"
 
 		pack.cost = cost + (moleCount * xgm_gas_data.base_value[gasType])
-		pack.cost = CEILING(pack.cost, 10)
+		pack.cost = CEILING2(pack.cost, 10)
 
 		pack.contains = list(GLOB.gas_id_to_canister[gasType])
 

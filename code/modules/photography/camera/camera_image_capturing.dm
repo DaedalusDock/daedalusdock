@@ -61,8 +61,8 @@
 		sorted.Insert(j+1, c)
 		CHECK_TICK
 
-	var/xcomp = FLOOR(psize_x / 2, 1) - 15
-	var/ycomp = FLOOR(psize_y / 2, 1) - 15
+	var/xcomp = FLOOR2(psize_x / 2, 1) - 15
+	var/ycomp = FLOOR2(psize_y / 2, 1) - 15
 
 	if(!skip_normal) //these are not clones
 		for(var/atom/A in sorted)

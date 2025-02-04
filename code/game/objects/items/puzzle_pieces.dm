@@ -209,7 +209,7 @@
 		var/mutable_appearance/lit_image = mutable_appearance('icons/obj/puzzle_small.dmi', "light_lit")
 		var/mutable_appearance/emissive_image = emissive_appearance('icons/obj/puzzle_small.dmi', "light_lit")
 		lit_image.pixel_x = 8 * ((i % 3 || 3 ) - 1)
-		lit_image.pixel_y = -8 * (ROUND_UP(i / 3) - 1)
+		lit_image.pixel_y = -8 * (ceil(i / 3) - 1)
 		emissive_image.pixel_x = lit_image.pixel_x
 		emissive_image.pixel_y = lit_image.pixel_y
 		. += lit_image
@@ -223,8 +223,8 @@
 	var/y_clicked = text2num(modifiers[ICON_Y])
 	if(x_clicked <= 4 || x_clicked >= 29 || y_clicked <= 4 || y_clicked >= 29)
 		return ..()
-	x_clicked = ROUND_UP((x_clicked - 4) / 8)
-	y_clicked = (-(ROUND_UP((y_clicked - 4) / 8) - 4) - 1) * 3
+	x_clicked = ceil((x_clicked - 4) / 8)
+	y_clicked = (-(ceil((y_clicked - 4) / 8) - 4) - 1) * 3
 	light_clicked = x_clicked + y_clicked
 	switch_light(light_clicked)
 	playsound(src, 'sound/machines/click.ogg', 50, TRUE)

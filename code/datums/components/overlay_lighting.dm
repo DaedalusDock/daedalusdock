@@ -330,9 +330,9 @@
 		return
 	if(range == 0)
 		turn_off()
-	range = clamp(CEILING(new_range, 0.5), 1, 6)
+	range = clamp(CEILING2(new_range, 0.5), 1, 6)
 	var/pixel_bounds = ((range - 1) * 64) + 32
-	lumcount_range = CEILING(range, 1)
+	lumcount_range = CEILING2(range, 1)
 	if(current_holder && overlay_lighting_flags & LIGHTING_ON)
 		current_holder.underlays -= visible_mask
 	visible_mask.icon = light_overlays["[pixel_bounds]"]

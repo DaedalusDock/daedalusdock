@@ -347,7 +347,7 @@
 	else
 		SetSpread(PATHOGEN_SPREAD_BLOOD)
 
-	contraction_chance_modifier = max(CEILING(0.4 * properties[PATHOGEN_PROP_TRANSMITTABLE], 1), 1)
+	contraction_chance_modifier = max(CEILING2(0.4 * properties[PATHOGEN_PROP_TRANSMITTABLE], 1), 1)
 	cure_chance = clamp(7.5 - (0.5 * properties[PATHOGEN_PROP_RESISTANCE]), 5, 10) // can be between 5 and 10
 	stage_prob = max(0.5 * properties[PATHOGEN_PROP_STAGE_RATE], 1)
 	SetSeverity(properties[PATHOGEN_PROP_SEVERITY])

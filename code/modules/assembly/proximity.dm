@@ -122,8 +122,8 @@
 
 /obj/item/assembly/prox_sensor/ui_data(mob/user)
 	var/list/data = list()
-	data["seconds"] = round(time % 60)
-	data["minutes"] = round((time - data["seconds"]) / 60)
+	data["seconds"] = ROUND(time % 60, 1)
+	data["minutes"] = ROUND((time - data["seconds"]) / 60, 1)
 	data["timing"] = timing
 	data["scanning"] = scanning
 	data["sensitivity"] = sensitivity

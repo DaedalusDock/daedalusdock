@@ -156,7 +156,7 @@
 	if (wound_type == WOUND_BRUISE && !bleeding()) //bruises only infectable if bleeding
 		return 0
 
-	var/dam_coef = round(damage/10)
+	var/dam_coef = ROUND(damage/10, 1)
 	switch (wound_type)
 		if (WOUND_BRUISE)
 			return prob(dam_coef*5)

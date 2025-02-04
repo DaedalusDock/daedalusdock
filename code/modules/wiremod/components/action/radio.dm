@@ -58,14 +58,14 @@
 		current_freq = frequency
 
 	if(COMPONENT_TRIGGERED_BY(trigger_input, port))
-		var/datum/signal/signal = new(src, list("code" = round(code.value) || 0, "key" = parent?.owner_id))
+		var/datum/signal/signal = new(src, list("code" = floor(code.value) || 0, "key" = parent?.owner_id))
 		radio_connection.post_signal(signal)
 
 /obj/item/circuit_component/radio/receive_signal(datum/signal/signal)
 	. = FALSE
 	if(!signal)
 		return
-	if(signal.data["code"] != round(code.value || 0))
+	if(signal.data["code"] != floor(code.value || 0))
 		return
 
 	if(public_options.value == COMP_RADIO_PRIVATE && parent?.owner_id != signal.data["key"])

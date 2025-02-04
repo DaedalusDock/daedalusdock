@@ -121,7 +121,7 @@
 		if(get_area(ai) == area)
 			return
 
-	failure_timer = max(failure_timer, round(duration))
+	failure_timer = max(failure_timer, ROUND(duration, 1))
 	update()
 	queue_icon_update()
 

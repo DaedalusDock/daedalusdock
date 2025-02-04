@@ -20,7 +20,7 @@
 
 	var/next_delay = click_cooldown_override || CLICK_CD_RANGE
 	if(HAS_TRAIT(user, TRAIT_DOUBLE_TAP))
-		next_delay = round(next_delay * 0.5)
+		next_delay = ROUND(next_delay * 0.5, 1)
 
 	user.changeNext_move(next_delay)
 	if(!tk_firing(user, fired_from))

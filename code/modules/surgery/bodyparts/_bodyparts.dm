@@ -629,7 +629,7 @@
 		owner?.notify_pain(getPain() - pain_reduction)
 
 	if(owner && total > 15 && prob(total*4) && !(bodypart_flags & BP_NO_PAIN))
-		owner.bloodstream.add_reagent(/datum/reagent/medicine/epinephrine, round(total/10))
+		owner.bloodstream.add_reagent(/datum/reagent/medicine/epinephrine, ROUND(total/10, 1))
 
 	//Disturb treated burns
 	if(brute > 5)

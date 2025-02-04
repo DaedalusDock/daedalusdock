@@ -46,7 +46,7 @@
 	if(!def_zone) // Distribute to all bodyparts evenly if no bodypart
 		var/list/not_full = bodyparts.Copy()
 		var/list/parts = not_full.Copy()
-		var/amount_remaining = round(amount/2)
+		var/amount_remaining = round(amount/2, DAMAGE_PRECISION)
 		while(amount_remaining > 0 && length(not_full))
 			if(!length(parts))
 				parts += not_full
@@ -106,7 +106,7 @@
 		return FALSE
 
 	if(message)
-		switch(round(amount))
+		switch(ROUND(amount, 1))
 			if(PAIN_AMT_AGONIZING to INFINITY)
 				to_chat(src, span_danger(span_big(message)))
 			if(PAIN_AMT_MEDIUM to PAIN_AMT_AGONIZING - 1)
@@ -129,7 +129,7 @@
 	var/emote = dna.species.get_pain_emote(amount)
 	var/probability = 0
 
-	switch(round(amount))
+	switch(ROUND(amount, 1))
 		if(PAIN_AMT_AGONIZING to INFINITY)
 			probability = 100
 		if(PAIN_AMT_MEDIUM to PAIN_AMT_AGONIZING - 1)

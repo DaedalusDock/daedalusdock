@@ -74,7 +74,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 		if (germ_level >= INFECTION_LEVEL_ONE/2)
 			//aiming for germ level to go from ambient to INFECTION_LEVEL_TWO in an average of 15 minutes, when immunity is full.
-			if(antibiotics < 5 && prob(round(germ_level/6 * 0.01)))
+			if(antibiotics < 5 && prob(ROUND(germ_level/6 * 0.01, 1)))
 				germ_level += 1
 
 		if(germ_level >= INFECTION_LEVEL_ONE)

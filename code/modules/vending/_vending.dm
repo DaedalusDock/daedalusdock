@@ -953,7 +953,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 
 		var/datum/bank_account/account = C.registered_account
 		if((length(C.access&req_access) || (discount_access in C.access)) && !(R in premium))
-			price_to_use = round(price_to_use * VENDING_DISCOUNT)
+			price_to_use = ROUND(price_to_use * VENDING_DISCOUNT, 1)
 
 		if(coin_records.Find(R) || hidden_records.Find(R))
 			price_to_use = R.custom_premium_price ? R.custom_premium_price : extra_price

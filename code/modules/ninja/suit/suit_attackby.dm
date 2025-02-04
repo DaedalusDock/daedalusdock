@@ -23,7 +23,7 @@
 				old_cell.corrupt()
 				old_cell.update_appearance()
 				cell = CELL
-				to_chat(ninja, span_notice("Upgrade complete. Maximum capacity: <b>[round(cell.maxcharge/100)]</b>%"))
+				to_chat(ninja, span_notice("Upgrade complete. Maximum capacity: <b>[floor(cell.maxcharge/100)]</b>%"))
 			else
 				to_chat(ninja, span_danger("Procedure interrupted. Protocol terminated."))
 		return

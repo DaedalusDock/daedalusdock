@@ -327,7 +327,7 @@
 			amount = text2num(input(usr,
 				"Max 20. Buffer content will be split evenly.",
 				"How many to make?", 1))
-		amount = clamp(round(amount), 0, 20)
+		amount = clamp(ROUND(amount, 1), 0, 20)
 		if (amount <= 0)
 			return FALSE
 		// Get units per item

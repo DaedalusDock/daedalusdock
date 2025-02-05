@@ -1,6 +1,6 @@
 // This file contains aether's runes. It's very similar to cult runes but different enough to warrant not touching cult code.
 /obj/effect/aether_rune
-	name = "strange rune"
+	name = "strange sigil"
 	desc = "An odd collection of symbols drawn in chalk."
 
 	icon = 'icons/effects/aether_runes.dmi'

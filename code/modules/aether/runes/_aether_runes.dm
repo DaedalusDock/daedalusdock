@@ -49,12 +49,13 @@
 	particle_holder.pixel_z = 32
 	particle_holder.particles.spawning = 0
 
+	icon_state = "rune_[rune_type]"
+
 	outer_ring = new()
+	outer_ring.icon_state = "sigil_[rune_type]"
 	outer_ring.appearance_flags |= RESET_TRANSFORM
 	outer_ring.vis_flags = VIS_INHERIT_ID | VIS_INHERIT_LAYER | VIS_INHERIT_PLANE | VIS_INHERIT_ICON
-
 	add_viscontents(outer_ring)
-	update_appearance()
 
 /obj/effect/aether_rune/Destroy(force)
 	touching_rune = null
@@ -72,11 +73,6 @@
 	for(var/turf/open/T in touchable_turfs)
 		if(T.IsReachableBy(reacher))
 			return TRUE
-
-/obj/effect/aether_rune/update_icon_state()
-	icon_state = "rune_[rune_type]"
-	outer_ring.icon_state = "sigil_[rune_type]"
-	return ..()
 
 /obj/effect/aether_rune/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
@@ -259,6 +255,12 @@
 	color = active_color
 	particle_holder.particles.spawning = initial(particle_holder.particles.spawning)
 
+	var/mutable_appearance/src_emissive = emissive_appearance(icon, icon_state, alpha = 100)
+	add_overlay(src_emissive)
+
+	var/mutable_appearance/ring_emissive = emissive_appearance(icon, outer_ring.icon_state, alpha = 100)
+	outer_ring.add_overlay(ring_emissive)
+
 	SpinAnimation(time, clockwise = FALSE)
 	outer_ring.SpinAnimation(round(time / 2, 0.1), clockwise = TRUE)
 
@@ -266,6 +268,9 @@
 /obj/effect/aether_rune/proc/stop_invoke_animation()
 	color = initial(color)
 	particle_holder.particles.spawning = 0
+
+	cut_overlays()
+	outer_ring.cut_overlays()
 
 	animate(src, transform = matrix()) // Interrupt the existing transform animation
 	animate(outer_ring, transform = matrix())

@@ -1,4 +1,5 @@
 /obj/effect/aether_rune/heal
+	rune_type = "heal"
 
 /obj/effect/aether_rune/wipe_state()
 	for(var/item in blackboard[RUNE_BB_HEAL_REAGENT_CONTAINERS])

@@ -1,4 +1,6 @@
 /obj/effect/aether_rune/revival
+	rune_type = "revival"
+
 	var/required_woundseal_amt = 30
 	var/required_woundseal_potency = 80
 

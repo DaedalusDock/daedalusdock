@@ -3,8 +3,9 @@
 	name = "strange rune"
 	desc = "An odd collection of symbols drawn in chalk."
 
-	icon = 'icons/effects/96x96.dmi'
-	icon_state = "rune_large"
+	icon = 'icons/effects/aether_runes.dmi'
+	icon_state = "rune_revival"
+
 	layer = SIGIL_LAYER
 	color = "#1f4d39"
 	pixel_w = -32 //So the big ol' 96x96 sprite shows up right
@@ -12,6 +13,9 @@
 
 	resistance_flags = FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	anchored = TRUE
+
+	/// Used to build the appearance.
+	var/rune_type = "revival"
 
 	var/active_color = "#4dffb5"
 
@@ -34,6 +38,8 @@
 	var/invoking = RUNE_INVOKING_IDLE
 
 	var/obj/effect/abstract/particle_holder/particle_holder
+	/// Outer ring inside our vis_contents, to be animated seperately.
+	var/obj/effect/abstract/outer_ring
 
 /obj/effect/aether_rune/Initialize(mapload)
 	. = ..()
@@ -43,9 +49,18 @@
 	particle_holder.pixel_z = 32
 	particle_holder.particles.spawning = 0
 
+	outer_ring = new()
+	outer_ring.appearance_flags |= RESET_TRANSFORM
+	outer_ring.vis_flags = VIS_INHERIT_ID | VIS_INHERIT_LAYER | VIS_INHERIT_PLANE | VIS_INHERIT_ICON
+
+	add_viscontents(outer_ring)
+	update_appearance()
+
 /obj/effect/aether_rune/Destroy(force)
 	touching_rune = null
 	try_cancel_invoke(RUNE_FAIL_GRACEFUL)
+	QDEL_NULL(outer_ring)
+	QDEL_NULL(particle_holder)
 	return ..()
 
 /obj/effect/aether_rune/CheckReachableAdjacency(atom/movable/reacher, obj/item/tool)
@@ -57,6 +72,11 @@
 	for(var/turf/open/T in touchable_turfs)
 		if(T.IsReachableBy(reacher))
 			return TRUE
+
+/obj/effect/aether_rune/update_icon_state()
+	icon_state = "rune_[rune_type]"
+	outer_ring.icon_state = "sigil_[rune_type]"
+	return ..()
 
 /obj/effect/aether_rune/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
@@ -104,10 +124,7 @@
 
 	blackboard.Cut()
 
-	// Reset visual appearance
-	color = initial(color)
-	particle_holder.particles.spawning = 0
-	animate(src, transform = matrix()) // Interrupt the existing transform animation
+	stop_invoke_animation()
 
 /// Attempt to invoke the rune.
 /obj/effect/aether_rune/proc/try_invoke(mob/living/user, obj/item/aether_tome/tome)
@@ -132,7 +149,7 @@
 	if(!blackboard[RUNE_BB_TARGET_MOB])
 		return FALSE
 
-	if(!blackboard[RUNE_BB_BLOOD_CONTAINER])
+	if(required_blood_amt && !blackboard[RUNE_BB_BLOOD_CONTAINER])
 		return FALSE
 
 	var/mob/living/user = blackboard[RUNE_BB_INVOKER]
@@ -167,8 +184,6 @@
 	set waitfor = FALSE
 
 	invoking = RUNE_INVOKING_ACTIVE
-	color = active_color
-	particle_holder.particles.spawning = initial(particle_holder.particles.spawning)
 
 	visible_message(span_statsgood("[src] erupts with an eerie glow, and begins to spin."))
 	var/mob/living/user = blackboard[RUNE_BB_INVOKER]
@@ -179,7 +194,7 @@
 	for(var/phrase in invocation_phrases)
 		time += invocation_phrases[phrase]
 
-	SpinAnimation(time, clockwise = FALSE)
+	start_invoke_animation(time)
 
 	var/next_phrase_time = 1
 	var/next_phrase_index = 1
@@ -212,7 +227,7 @@
 	SHOULD_NOT_SLEEP(TRUE)
 
 	var/obj/item/reagent_containers/blood_bottle = blackboard[RUNE_BB_BLOOD_CONTAINER]
-	blood_bottle.reagents.remove_reagent(/datum/reagent/blood, required_blood_amt)
+	blood_bottle?.reagents.remove_reagent(/datum/reagent/blood, required_blood_amt)
 
 	playsound(src, 'sound/magic/voidblink.ogg', 50, TRUE)
 	visible_message(span_statsbad("[src] stops moving, and dulls in color."))
@@ -239,6 +254,22 @@
 	blackboard[RUNE_BB_CANCEL_REASON] = reason
 	blackboard[RUNE_BB_CANCEL_SOURCE] = source
 
+/// Does what it says on the tin
+/obj/effect/aether_rune/proc/start_invoke_animation(time)
+	color = active_color
+	particle_holder.particles.spawning = initial(particle_holder.particles.spawning)
+
+	SpinAnimation(time, clockwise = FALSE)
+	outer_ring.SpinAnimation(round(time / 2, 0.1), clockwise = TRUE)
+
+/// Does what it says on the tin
+/obj/effect/aether_rune/proc/stop_invoke_animation()
+	color = initial(color)
+	particle_holder.particles.spawning = 0
+
+	animate(src, transform = matrix()) // Interrupt the existing transform animation
+	animate(outer_ring, transform = matrix())
+
 /// Visual effect when the rune is successfully invoked.
 /obj/effect/aether_rune/proc/invoke_success_visual_effect()
 	var/obj/effect/abstract/effect = new()
@@ -250,12 +281,12 @@
 	effect.pixel_w = 0
 	effect.pixel_z = 0
 
-	vis_contents += effect
+	add_viscontents(effect)
 
-	animate(effect, transform = matrix(2, MATRIX_SCALE), time = 0.2 SECONDS, easing = SINE_EASING|EASE_IN)
-	animate(effect, alpha = 0, time = 0.2 SECONDS, flags = ANIMATION_PARALLEL)
+	animate(effect, transform = matrix(4, MATRIX_SCALE), time = 0.4 SECONDS, easing = SINE_EASING|EASE_IN)
+	animate(effect, alpha = 0, time = 0.4 SECONDS, flags = ANIMATION_PARALLEL)
 
-	QDEL_IN(effect, 0.2 SECONDS)
+	QDEL_IN(effect, 0.4 SECONDS)
 
 /// Gets a mob that is in the center of the rune.
 /obj/effect/aether_rune/proc/find_target_mob()
@@ -442,6 +473,8 @@
 	RegisterSignal(I, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_MOVED), PROC_REF(item_moved_or_deleted))
 
 /obj/effect/aether_rune/proc/unregister_item(obj/item/I)
+	if(isnull(I))
+		return
 	UnregisterSignal(I, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_MOVED))
 
 /obj/effect/aether_rune/proc/item_moved_or_deleted(datum/source)

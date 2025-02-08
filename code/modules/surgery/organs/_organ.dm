@@ -419,7 +419,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return
 
 	var/old_damage = damage
-	damage = min(clamp(damage + damage_amount, 0, maximum), maxHealth)
+	damage = min(clamp(round(damage + damage_amount, DAMAGE_PRECISION), 0, maximum), maxHealth)
 	. = damage - old_damage
 
 	var/mess = check_damage_thresholds(owner)

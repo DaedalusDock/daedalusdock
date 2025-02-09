@@ -7,9 +7,9 @@
 	var/obj/item/storage/box/survival/box = ALLOCATE_BOTTOM_LEFT()
 
 	box.forceMove(backpack)
-	user.equip_to_slot_if_possible(backpack, ITEM_SLOT_BACKPACK)
+	user.equip_to_slot_if_possible(backpack, ITEM_SLOT_BACK)
 
-	TEST_ASSERT(user.get_item_by_slot(ITEM_SLOT_BACKPACK) == backpack, "Mob did not equip the backpack.")
+	TEST_ASSERT(user.get_item_by_slot(ITEM_SLOT_BACK) == backpack, "Mob did not equip the backpack.")
 
 	var/obj/item/nested_item = box.contents[1]
 	var/atom/movable/screen/inventory/hand/hand_inventory = user.hud_used.hand_slots["[user.active_hand_index]"]

@@ -305,17 +305,25 @@
 	return covered_flags
 
 ///Returns an item that is covering a bodypart.
-/mob/living/carbon/proc/get_item_covering_bodypart(obj/item/bodypart/BP)
-	return get_item_covering_zone(BP.body_zone)
+/mob/living/carbon/proc/get_item_covering_bodypart(obj/item/bodypart/BP, thickmaterial_only)
+	return get_item_covering_zone(BP.body_zone, thickmaterial_only)
 
 ///Returns an item that is covering a body_zone (BODY_ZONE_CHEST, etc)
-/mob/living/carbon/proc/get_item_covering_zone(zone)
+/mob/living/carbon/proc/get_item_covering_zone(zone, thickmaterial_only)
 	var/list/zones = body_zone2cover_flags(zone)
 	var/cover_field = NONE
 	for(var/_zone in zones)
 		cover_field |= _zone
 
 	for(var/obj/item/inv_item in get_all_worn_items())
+		if(thickmaterial_only)
+			if(!isclothing(inv_item))
+				continue
+
+			var/obj/item/clothing/clothing = inv_item
+			if(!(clothing.clothing_flags & THICKMATERIAL))
+				continue
+
 		if(cover_field & inv_item.body_parts_covered)
 			return inv_item
 

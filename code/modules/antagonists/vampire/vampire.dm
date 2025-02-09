@@ -16,6 +16,7 @@
 	var/datum/weakref/last_victim_ref
 
 	var/list/innate_actions = list(
+		/datum/action/cooldown/blood_sense,
 		/datum/action/cooldown/neck_bite,
 		/datum/action/cooldown/glare,
 	)

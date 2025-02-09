@@ -1,17 +1,3 @@
-#define DRAIN_INFO_INDEX_TIME "time"
-#define DRAIN_INFO_INDEX_BUDGET "amt"
-
-/// How much blood we can siphon from a target per SAME_TARGET_COOLDOWN
-#define BLOOD_DRAIN_PER_TARGET 100
-/// Drain per second
-#define BLOOD_DRAIN_RATE 5
-/// Coeff for calculating thirst satiation per unit of blood.
-#define BLOOD_THIRST_EXCHANGE_COEFF 18 // A full drain is equivalent to 15 minutes of life.
-/// The amount of time before a victim can be fully drained again.
-#define SAME_TARGET_COOLDOWN (10 MINUTES)
-/// Calculate how much of a mob's blood budget will have been regenerated over a given time.
-#define BUDGET_REGEN_FOR_DELTA(time_delta) (time_delta * (BLOOD_DRAIN_PER_TARGET / SAME_TARGET_COOLDOWN))
-
 /datum/action/cooldown/neck_bite
 	name = "Feed"
 	desc = "Sate the thirst by sinking your teeth into the neck of a humanoid."
@@ -19,9 +5,6 @@
 	button_icon_state = "bite"
 
 	check_flags = AB_CHECK_CONSCIOUS | AB_CHECK_HANDS_BLOCKED
-
-	/// A k:v list of weakref(mob) : blood_drained
-	var/list/already_drained = list()
 
 /datum/action/cooldown/neck_bite/process()
 	// Kind of hacky but I can't be bothered to care. We can accurately track all unavailable -> available transitions, but not the other way around.
@@ -86,27 +69,13 @@
 	if(isturf(victim.loc))
 		victim.add_splatter_floor(victim.loc, TRUE)
 
-	var/list/drain_info = already_drained[WEAKREF(victim)]
-	if(isnull(drain_info))
-		// Set default
-		already_drained[WEAKREF(victim)] = drain_info = list(
-			DRAIN_INFO_INDEX_TIME = world.time,
-			DRAIN_INFO_INDEX_BUDGET = BLOOD_DRAIN_PER_TARGET - BLOOD_DRAIN_RATE,
-		)
-	else
-		var/last_drain_time = drain_info[DRAIN_INFO_INDEX_TIME]
-		var/last_budget = drain_info[DRAIN_INFO_INDEX_BUDGET]
+	GLOB.blood_controller.drain_blood(victim, VAMPIRE_BLOOD_DRAIN_RATE)
 
-		var/time_delta = world.time - last_drain_time
-		var/new_budget_val = last_budget - BLOOD_DRAIN_RATE + BUDGET_REGEN_FOR_DELTA(time_delta)
-		drain_info[DRAIN_INFO_INDEX_BUDGET] = clamp(new_budget_val, 0, BLOOD_DRAIN_PER_TARGET)
-		drain_info[DRAIN_INFO_INDEX_TIME] = world.time
-
-	victim.adjustBloodVolume(-BLOOD_DRAIN_RATE)
-	user.adjustBloodVolumeUpTo(BLOOD_DRAIN_RATE, BLOOD_VOLUME_NORMAL + 100)
+	victim.adjustBloodVolume(-VAMPIRE_BLOOD_DRAIN_RATE)
+	user.adjustBloodVolumeUpTo(VAMPIRE_BLOOD_DRAIN_RATE, BLOOD_VOLUME_NORMAL + 100)
 
 	var/datum/antagonist/vampire/vamp_datum = user.mind.has_antag_datum(/datum/antagonist/vampire)
-	vamp_datum.thirst_level.remove_points(BLOOD_DRAIN_RATE * BLOOD_THIRST_EXCHANGE_COEFF)
+	vamp_datum.thirst_level.remove_points(VAMPIRE_BLOOD_DRAIN_RATE * VAMPIRE_BLOOD_THIRST_EXCHANGE_COEFF)
 	vamp_datum.update_thirst_stage()
 
 	var/had_victim = vamp_datum.last_victim_ref
@@ -121,7 +90,7 @@
 	// Draining an opposing vampire really, really messes them up.
 	var/datum/antagonist/vampire/victim_vamp_datum = victim.mind?.has_antag_datum(/datum/antagonist/vampire)
 	if(victim_vamp_datum)
-		victim_vamp_datum.thirst_level.add_points(-(BLOOD_DRAIN_RATE * BLOOD_THIRST_EXCHANGE_COEFF))
+		victim_vamp_datum.thirst_level.add_points(-(VAMPIRE_BLOOD_DRAIN_RATE * VAMPIRE_BLOOD_THIRST_EXCHANGE_COEFF))
 		victim_vamp_datum.update_thirst_stage()
 
 	else if(prob(1)) // A chance to spread the plague!
@@ -148,21 +117,15 @@
 			*error_string_ptr = "[victim] does not have a neck."
 		return FALSE
 
-	if(victim.blood_volume < BLOOD_DRAIN_PER_TARGET)
+	if(victim.blood_volume < VAMPIRE_BLOOD_DRAIN_PER_TARGET)
 		if(error_string_ptr)
 			*error_string_ptr = "[victim] does not have enough blood."
 		return FALSE
 
-	var/list/drain_info = already_drained[WEAKREF(victim)]
-	if(length(drain_info))
-		var/left_to_drain = drain_info[DRAIN_INFO_INDEX_BUDGET]
-		var/time_delta = world.time - drain_info[DRAIN_INFO_INDEX_TIME]
-		var/regenerated_blood = BUDGET_REGEN_FOR_DELTA(time_delta)
-		var/effective_budget = left_to_drain + regenerated_blood
-		if(effective_budget < BLOOD_DRAIN_RATE)
-			if(error_string_ptr)
-				*error_string_ptr = "You must wait before draining [victim] again."
-			return FALSE
+	if(GLOB.blood_controller.get_blood_remaining(victim) < VAMPIRE_BLOOD_DRAIN_RATE)
+		if(error_string_ptr)
+			*error_string_ptr = "You must wait before draining [victim] again."
+		return FALSE
 
 	return TRUE
 
@@ -197,10 +160,3 @@
 	SIGNAL_HANDLER
 
 	build_all_button_icons(UPDATE_BUTTON_STATUS)
-
-#undef DRAIN_INFO_INDEX_TIME
-#undef DRAIN_INFO_INDEX_BUDGET
-#undef BLOOD_DRAIN_PER_TARGET
-#undef SAME_TARGET_COOLDOWN
-#undef BLOOD_DRAIN_RATE
-#undef BUDGET_REGEN_FOR_DELTA

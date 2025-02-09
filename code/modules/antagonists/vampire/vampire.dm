@@ -46,10 +46,16 @@
 /datum/antagonist/vampire/on_gain()
 	. = ..()
 	START_PROCESSING(SSprocessing, src)
+	update_thirst_stage()
 
 /datum/antagonist/vampire/on_removal()
+	var/mob/living/old_owner_mob = owner.current
 	. = ..()
 	STOP_PROCESSING(SSprocessing, src)
+
+	var/datum/pathogen/blood_plague/plague = locate() in old_owner_mob.diseases
+	if(plague)
+		plague.force_cure()
 
 /datum/antagonist/vampire/process(delta_time)
 	var/mob/living/carbon/human/host = owner.current
@@ -76,10 +82,10 @@
 		if(THIRST_THRESHOLD_BLOODLUST to THIRST_THRESHOLD_SATED-1)
 			new_stage = THIRST_STAGE_BLOODLUST
 
-		if(THIRST_THRESHOLD_SATED to THIRST_THRESHOLD_HUNGERY-1)
+		if(THIRST_THRESHOLD_SATED to THIRST_THRESHOLD_HUNGRY-1)
 			new_stage = THIRST_STAGE_SATED
 
-		if(THIRST_THRESHOLD_HUNGERY to THIRST_THRESHOLD_STARVING-1)
+		if(THIRST_THRESHOLD_HUNGRY to THIRST_THRESHOLD_STARVING-1)
 			new_stage = THIRST_STAGE_HUNGRY
 
 		if(THIRST_THRESHOLD_STARVING to THIRST_THRESHOLD_WASTING-1)
@@ -162,3 +168,7 @@
 		to_chat(host, current_state.progress_into_message)
 
 	return old_stage
+
+/datum/antagonist/vampire/proc/get_thirst_stage_string()
+	var/datum/vampire_state/current_state = current_states[length(current_states)]
+	return current_state.name

@@ -1,4 +1,5 @@
 /datum/vampire_state/bloodlust
+	name = "Bloodlust!"
 	regress_into_message = span_statsgood("The Thirst is too much, you must feed! More! More!")
 
 	var/list/arm_weakrefs = list()

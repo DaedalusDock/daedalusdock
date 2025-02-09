@@ -1,4 +1,5 @@
 /datum/vampire_state/hungry
+	name = "Hungry"
 	min_stage = THIRST_STAGE_HUNGRY
 
 	regress_into_message = span_obviousnotice("You feel stronger, you must continue to feed.")

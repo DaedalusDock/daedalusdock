@@ -3,7 +3,7 @@
 
 /datum/unit_test/nested_inventory/Run()
 	var/mob/living/carbon/human/consistent/user = ALLOCATE_BOTTOM_LEFT()
-	var/obj/item/backpack/backpack = ALLOCATE_BOTTOM_LEFT()
+	var/obj/item/storage/backpack/backpack = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/storage/box/survival/box = ALLOCATE_BOTTOM_LEFT()
 
 	box.forceMove(backpack)
@@ -18,4 +18,4 @@
 
 	TEST_ASSERT(!user.is_holding(nested_item), "Mob equipped the item.")
 	TEST_ASSERT(!QDELETED(nested_item), "Item was qdeleted.")
-	TEST_ASSERT(nested_item.loc == box, "Item ended up outside the box, inside [I.loc || "NULLSPACE"].")
+	TEST_ASSERT(nested_item.loc == box, "Item ended up outside the box, inside [nested_item.loc || "NULLSPACE"].")

@@ -305,17 +305,7 @@
 		. |= dropItemToGround(I)
 
 /mob/proc/putItemFromInventoryInHandIfPossible(obj/item/I, hand_index, force_removal = FALSE, use_unequip_delay = FALSE)
-	if(!can_put_in_hand(I, hand_index))
-		return FALSE
-	if(!temporarilyRemoveItemFromInventory(I, force_removal, use_unequip_delay = use_unequip_delay))
-		return FALSE
-
-	I.remove_item_from_storage(src)
-
-	if(!pickup_item(I, hand_index, ignore_anim = TRUE))
-		qdel(I)
-		CRASH("Assertion failure: putItemFromInventoryInHandIfPossible") //should never be possible
-	return TRUE
+	return pickup_item(I, hand_index, ignore_anim = TRUE)
 
 /// Switches the items inside of two hand indexes.
 /mob/proc/swapHeldIndexes(index_A, index_B)
@@ -412,6 +402,9 @@
 /mob/proc/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE, slot = get_slot_by_item(I))
 	PROTECTED_PROC(TRUE)
 	if(!I) //If there's nothing to drop, the drop is automatically succesfull. If(unEquip) should generally be used to check for TRAIT_NODROP.
+		return TRUE
+
+	if(I.equipped_to != src) // It isn't even equipped to us.
 		return TRUE
 
 	if(!force && !canUnequipItem(I, newloc, no_move, invdrop, silent))

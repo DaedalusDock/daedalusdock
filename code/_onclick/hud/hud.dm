@@ -191,7 +191,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	view_audit_buttons()
 
 /mob/proc/create_mob_hud()
-	if(!GET_CLIENT(src) || hud_used)
+	if(!client || hud_used)
 		return
 
 	set_hud_used(new hud_type(src))

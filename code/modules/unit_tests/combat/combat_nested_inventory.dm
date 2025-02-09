@@ -6,6 +6,10 @@
 	var/obj/item/storage/backpack/backpack = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/storage/box/survival/box = ALLOCATE_BOTTOM_LEFT()
 
+	var/datum/client_interface/mock_client = new
+	user.mock_client = mock_client
+	user.create_mob_hud()
+
 	box.forceMove(backpack)
 	user.equip_to_slot_if_possible(backpack, ITEM_SLOT_BACK)
 

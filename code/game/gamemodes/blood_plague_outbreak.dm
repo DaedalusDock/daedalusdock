@@ -63,4 +63,6 @@
 		if(IS_VAMPIRE(human))
 			continue
 
-		return TRUE
+		return FALSE
+
+	return TRUE

@@ -7,7 +7,7 @@
 	var/obj/item/storage/box/survival/box = ALLOCATE_BOTTOM_LEFT()
 
 	box.forceMove(backpack)
-	user.equip_to_slot_if_possible(backpack)
+	user.equip_to_slot_if_possible(backpack, ITEM_SLOT_BACKPACK)
 
 	TEST_ASSERT(user.get_item_by_slot(ITEM_SLOT_BACKPACK) == backpack, "Mob did not equip the backpack.")
 

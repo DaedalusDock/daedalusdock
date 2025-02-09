@@ -95,7 +95,9 @@
 
 	else if(prob(1)) // A chance to spread the plague!
 		var/datum/pathogen/blood_plague/vampirism = new /datum/pathogen/blood_plague
-		victim.try_contract_pathogen(vampirism, FALSE, TRUE)
+		if(victim.try_contract_pathogen(vampirism, FALSE, TRUE))
+			message_admins("[key_name_admin(user)] spread The Sanguine Plague to [key_name_admin(victim)].")
+			log_game("ANTAGS: [key_name(user)] spread The Sanguine Plague to [key_name(victim)].")
 
 	build_all_button_icons(UPDATE_BUTTON_STATUS)
 

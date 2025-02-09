@@ -64,9 +64,11 @@
 	owner.visible_message(span_notice("[owner] glances into [target]'s eyes."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 	if(victim.get_total_tint() || victim.get_eye_protection())
+		to_chat(owner, span_warning("[target.p_their()] eyes are covered."))
 		return // Lol owned
 
 	if(!victim.flash_act(INFINITY, FALSE, FALSE, TRUE))
+		to_chat(owner, span_warning("[target.p_their()] eyes are covered."))
 		return // Lol owned
 
 	victim.stamina.adjust(-300)

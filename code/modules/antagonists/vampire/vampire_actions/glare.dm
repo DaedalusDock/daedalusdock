@@ -12,7 +12,7 @@
 
 /datum/action/cooldown/glare/is_valid_target(atom/cast_on)
 	var/mob/living/carbon/human/victim = cast_on
-	if(!istype(cast_on))
+	if(!istype(victim))
 		return FALSE
 
 	if(victim == owner)
@@ -21,7 +21,7 @@
 	if(victim.stat != CONSCIOUS)
 		return FALSE
 
-	if(get_dist(victim, cast_on) > 2)
+	if(get_dist(victim, owner) > 2)
 		to_chat(owner, span_warning("[victim] is too far away."))
 		return FALSE
 

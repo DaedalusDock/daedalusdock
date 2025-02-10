@@ -301,3 +301,4 @@
 /atom/movable/screen/fullscreen/cursor_catcher/cable
 	alpha = 0
 	mouse_opacity = MOUSE_OPACITY_OPAQUE
+	default_click = FALSE

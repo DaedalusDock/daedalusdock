@@ -149,6 +149,7 @@
 #define INIT_ORDER_OUTPUTS 36
 #define INIT_ORDER_RESTAURANT 35
 #define INIT_ORDER_TECH 33 //Must init before atoms, so design datums are ready.
+#define INIT_ORDER_HYDROPONICS 32 // Must init before atoms, so mutations are ready.
 #define INIT_ORDER_ATOMS 30
 #define INIT_ORDER_HOLOMAP 29 // Must init after atoms
 #define INIT_ORDER_LANGUAGE 25

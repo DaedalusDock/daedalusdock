@@ -187,7 +187,7 @@ Key procs
 /// Checks if you can speak the language. Tongue limitations should be supplied as an argument.
 /datum/language_holder/proc/can_speak_language(datum/language/language)
 	var/atom/movable/ouratom = get_atom()
-	var/can_speak_language = language.can_speak_language(ouratom)
+	var/can_speak_language = language.can_speak_language(ouratom, ignore_mute = TRUE)
 
 	if((bypass_speaking_limitations || can_speak_language) && has_language(language, TRUE))
 		return TRUE

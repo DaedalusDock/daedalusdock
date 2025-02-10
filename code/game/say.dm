@@ -77,7 +77,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	if(radio_freq)
 		wrapper_span = "<span class = '[get_radio_span(radio_freq)]'>"
 
-	else if(message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
+	else if(message_mods[MODE_CUSTOM_SAY_ERASE_INPUT] || isnull(message_language))
 		wrapper_span = "<span class = 'emote'>"
 
 	//Radio freq/name display
@@ -113,7 +113,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
 		messagepart = "<span class='emote'>[message_mods[MODE_CUSTOM_SAY_EMOTE]]</span>"
 	else
-		if(message_mods[MODE_NO_QUOTE])
+		if(message_mods[MODE_NO_QUOTE] || isnull(message_language))
 			messagepart = translated_message
 		else
 			messagepart = speaker.say_quote(translated_message, spans, message_mods, message_language)

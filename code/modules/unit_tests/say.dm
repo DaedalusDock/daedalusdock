@@ -240,7 +240,7 @@
 /datum/unit_test/mute/Run()
 	var/mob/living/carbon/human/user = ALLOCATE_BOTTOM_LEFT()
 
-	ADD_TRAIT(user, TRAIT_MUTED, TRAIT_SOURCE_UNIT_TESTS)
+	ADD_TRAIT(user, TRAIT_MUTE, TRAIT_SOURCE_UNIT_TESTS)
 	user.language_holder.set_selected_language(GET_LANGUAGE_DATUM(/datum/language/common))
 
 	TEST_ASSERT(!user.say("Test!"), "Mob was able to speak despite being muted.")

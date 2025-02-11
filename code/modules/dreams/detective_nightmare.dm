@@ -1,7 +1,7 @@
 /datum/dream/detective_nightmare
 	abstract_type = /datum/dream/detective_nightmare
 
-	dream_flags = parent_type::dream_flags & ~DREAM_GENERIC
+	dream_class = DREAM_CLASS_DETECTIVE
 
 /datum/dream/detective_nightmare/WrapMessage(mob/living/carbon/dreamer, message)
 	return message

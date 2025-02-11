@@ -609,6 +609,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			germ_message =  "Acute Infection++"
 		if (INFECTION_LEVEL_THREE to INFINITY)
 			germ_message =  "Septic"
+
 	if (germ_message)
 		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_TOXIN]'>[germ_message]</span>" : germ_message
 

@@ -72,6 +72,15 @@
 	var/obj/item/organ/brain/B = target_mob.getorganslot(ORGAN_SLOT_BRAIN)
 	B.applyOrganDamage(-INFINITY)
 	B.set_organ_dead(FALSE)
+
+	for(var/obj/item/organ/O in target_mob.processing_organs)
+		if(O.organ_flags & ORGAN_SYNTHETIC)
+			continue
+
+		B.applyOrganDamage(-INFINITY)
+		B.set_organ_dead(FALSE)
+		B.germ_level = 0
+
 	target_mob.set_heartattack(FALSE)
 	target_mob.revive()
 

@@ -33,6 +33,7 @@
 	paycheck = PAYCHECK_COMMAND
 	paycheck_department = ACCOUNT_MED
 
+	mind_traits = list(TRAIT_AETHERITE)
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM, TRAIT_ROYAL_METABOLISM)
 
 	mail_goodies = list(

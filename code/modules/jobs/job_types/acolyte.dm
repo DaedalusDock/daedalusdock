@@ -23,6 +23,7 @@
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_MED
 
+	mind_traits = list(TRAIT_AETHERITE)
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 
 	departments_list = list(

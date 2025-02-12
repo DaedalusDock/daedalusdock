@@ -62,7 +62,7 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	if(chosenRoomNumber > SHORT_REAL_LIMIT)
 		to_chat(target, span_warning("You have to check out the first [SHORT_REAL_LIMIT] rooms before you can go to a higher numbered one!"))
 		return
-	if((chosenRoomNumber < 1) || (chosenRoomNumber != round(chosenRoomNumber)))
+	if((chosenRoomNumber < 1) || (chosenRoomNumber != QUESTIONABLE_FLOOR(chosenRoomNumber)))
 		to_chat(target, span_warning("That is not a valid room number!"))
 		return
 

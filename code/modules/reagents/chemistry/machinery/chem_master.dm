@@ -327,7 +327,7 @@
 			amount = text2num(input(usr,
 				"Max 20. Buffer content will be split evenly.",
 				"How many to make?", 1))
-		amount = clamp(round(amount), 0, 20)
+		amount = clamp(ROUND(amount, 1), 0, 20)
 		if (amount <= 0)
 			return FALSE
 		// Get units per item
@@ -500,7 +500,7 @@
 			. += hex2num(md5[i])
 		. = . % 9
 		AM.pixel_x = AM.base_pixel_x + ((.%3)*6)
-		AM.pixel_y = AM.base_pixel_y - 8 + (round( . / 3)*8)
+		AM.pixel_y = AM.base_pixel_y - 8 + (QUESTIONABLE_FLOOR( . / 3)*8)
 
 /**
  * Translates styles data into UI compatible format

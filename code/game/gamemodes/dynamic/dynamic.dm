@@ -271,7 +271,7 @@ GLOBAL_VAR_INIT(dynamic_forced_threat_level, -1)
 
 /datum/game_mode/dynamic/proc/send_intercept()
 	. = "<b><i>Central Command Status Summary</i></b><hr>"
-	switch(round(shown_threat))
+	switch(QUESTIONABLE_FLOOR(shown_threat))
 		if(0 to 19)
 			var/show_core_territory = (GLOB.current_living_antags.len > 0)
 			if (prob(FAKE_GREENSHIFT_FORM_CHANCE))
@@ -667,7 +667,7 @@ GLOBAL_VAR_INIT(dynamic_forced_threat_level, -1)
 		forced_injection = dry_run
 		return 100
 	var/chance = 0
-	var/max_pop_per_antag = max(5,15 - round(threat_level/10) - round(GLOB.alive_player_list.len/5))
+	var/max_pop_per_antag = max(5,15 - QUESTIONABLE_FLOOR(threat_level/10) - QUESTIONABLE_FLOOR(GLOB.alive_player_list.len/5))
 	if (!GLOB.current_living_antags.len)
 		chance += 50 // No antags at all? let's boost those odds!
 	else

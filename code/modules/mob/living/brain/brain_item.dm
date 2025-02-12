@@ -241,10 +241,10 @@
 
 /obj/item/organ/brain/set_max_health(new_health)
 	. = ..()
-	damage_threshold_value = round(maxHealth / BRAIN_DAMAGE_THRESHOLDS)
+	damage_threshold_value = floor(maxHealth / BRAIN_DAMAGE_THRESHOLDS)
 
 /obj/item/organ/brain/proc/past_damage_threshold(threshold)
-	return round(damage / damage_threshold_value) > threshold
+	return floor(damage / damage_threshold_value) > threshold
 
 /obj/item/organ/brain/on_life(delta_time, times_fired)
 	handle_damage_effects()

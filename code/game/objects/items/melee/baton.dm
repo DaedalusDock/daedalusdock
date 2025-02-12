@@ -60,7 +60,7 @@
 	. = ..()
 	// Adding an extra break for the sake of presentation
 	if(charged_stamina_damage != 0)
-		offensive_notes = "\nVarious interviewed security forces report being able to beat criminals into exhaustion with only [span_warning("[CEILING(100 / charged_stamina_damage, 1)] hit\s!")]"
+		offensive_notes = "\nVarious interviewed security forces report being able to beat criminals into exhaustion with only [span_warning("[CEILING2(100 / charged_stamina_damage, 1)] hit\s!")]"
 
 	if(can_be_flipped)
 		AddElement(/datum/element/update_icon_updates_onmob)

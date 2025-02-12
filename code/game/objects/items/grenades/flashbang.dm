@@ -130,7 +130,7 @@
 		user.changeNext_move(CLICK_CD_RAPID)
 
 /obj/item/grenade/primer/detonate(mob/living/lanced_by)
-	shrapnel_radius = round(rots / rots_per_mag)
+	shrapnel_radius = QUESTIONABLE_FLOOR(rots / rots_per_mag)
 	. = ..()
 	if(!.)
 		return

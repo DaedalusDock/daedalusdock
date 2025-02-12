@@ -342,7 +342,7 @@
 	if(W.force >= 3)
 		var/force_effect = 2 * W.force
 		if(is_adult)
-			force_effect = round(W.force/2)
+			force_effect = QUESTIONABLE_FLOOR(W.force/2)
 		if(prob(10 + force_effect))
 			discipline_slime(user)
 	if(istype(W, /obj/item/storage/bag/xeno))

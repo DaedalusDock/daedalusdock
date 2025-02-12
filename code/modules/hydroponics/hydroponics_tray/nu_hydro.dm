@@ -255,7 +255,7 @@
 		health += growing.get_effective_stat(PLANT_STAT_YIELD) - HYDRO_MAX_YIELD
 
 	if(seed.seed_damage)
-		health = max(1, health - round(seed.seed_damage / 5))
+		health = max(1, health - QUESTIONABLE_FLOOR(seed.seed_damage / 5))
 
 	set_plant_health(health)
 

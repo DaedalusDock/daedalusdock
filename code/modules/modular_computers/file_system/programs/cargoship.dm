@@ -59,7 +59,7 @@
 		if("resetid")
 			payments_acc = null
 		if("setsplit")
-			var/potential_cut = input("How much would you like to pay out to the registered card?","Percentage Profit ([round(cut_min*100)]% - [round(cut_max*100)]%)") as num|null
+			var/potential_cut = input("How much would you like to pay out to the registered card?","Percentage Profit ([QUESTIONABLE_FLOOR(cut_min*100)]% - [QUESTIONABLE_FLOOR(cut_max*100)]%)") as num|null
 			cut_multiplier = potential_cut ? clamp(round(potential_cut/100, cut_min), cut_min, cut_max) : initial(cut_multiplier)
 		if("print")
 			if(!printer)

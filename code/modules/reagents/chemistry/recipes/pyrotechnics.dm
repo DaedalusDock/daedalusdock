@@ -46,7 +46,7 @@
 	modifier = 4
 
 /datum/chemical_reaction/reagent_explosion/rdx_explosion2/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	var/fire_range = round(created_volume/30)
+	var/fire_range = QUESTIONABLE_FLOOR(created_volume/30)
 	var/turf/T = get_turf(holder.my_atom)
 	for(var/turf/target as anything in RANGE_TURFS(fire_range,T))
 		//new /obj/effect/hotspot(target)
@@ -55,7 +55,7 @@
 	..()
 
 /datum/chemical_reaction/reagent_explosion/rdx_explosion3/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	var/fire_range = round(created_volume/20)
+	var/fire_range = QUESTIONABLE_FLOOR(created_volume/20)
 	var/turf/T = get_turf(holder.my_atom)
 	for(var/turf/turf as anything in RANGE_TURFS(fire_range,T))
 		turf.create_fire(1, 10)
@@ -103,7 +103,7 @@
 		///turf where to play sound
 		var/turf/T = get_turf(holder.my_atom)
 		///special size for anti cult effect
-		var/effective_size = round(created_volume/48)
+		var/effective_size = QUESTIONABLE_FLOOR(created_volume/48)
 		playsound(T, 'sound/effects/pray.ogg', 80, FALSE, effective_size)
 		for(var/mob/living/simple_animal/revenant/R in get_hearers_in_view(7,T))
 			var/deity
@@ -148,7 +148,7 @@
 	var/location = get_turf(holder.my_atom)
 	// 100 created volume = 4 heavy range & 7 light range. A few tiles smaller than traitor EMP grandes.
 	// 200 created volume = 8 heavy range & 14 light range. 4 tiles larger than traitor EMP grenades.
-	empulse(location, round(created_volume / 12), round(created_volume / 7), 1)
+	empulse(location, QUESTIONABLE_FLOOR(created_volume / 12), QUESTIONABLE_FLOOR(created_volume / 7), 1)
 	holder.clear_reagents()
 
 
@@ -166,7 +166,7 @@
 			if(required_reagents[R])
 				continue
 			beeagents += R
-		var/bee_amount = round(created_volume * 0.2)
+		var/bee_amount = QUESTIONABLE_FLOOR(created_volume * 0.2)
 		for(var/i in 1 to bee_amount)
 			var/mob/living/simple_animal/hostile/bee/short/new_bee = new(location)
 			if(LAZYLEN(beeagents))

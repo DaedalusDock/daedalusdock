@@ -1,6 +1,6 @@
 //Some information about how html sanitization is handled
 //All book info datums should store sanitized data. This cannot be worked around
-//All inputs and outputs from the round (DB calls) need to use sanitized data
+//All inputs and outputs from the QUESTIONABLE_FLOOR(DB calls) need to use sanitized data
 //All tgui menus should get unsanitized data, since jsx handles that on its own
 //Everything else should use sanitized data. Yes including names, it's an xss vuln because of how chat works
 ///A datum which contains all the metadata of a book

@@ -159,7 +159,7 @@
 	if(head)
 		if((head.heat_protection & HEAD) && (head.max_heat_protection_temperature >= FIRE_HELM_MAX_TEMP_PROTECT))
 			thermal_protection += (head.max_heat_protection_temperature * THERMAL_PROTECTION_HEAD)
-	thermal_protection = round(thermal_protection)
+	thermal_protection = ROUND(thermal_protection, 1)
 	return thermal_protection
 
 //END FIRE CODE

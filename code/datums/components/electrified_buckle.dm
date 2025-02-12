@@ -160,7 +160,7 @@
 			return
 
 		for(var/mob/living/guinea_pig as anything in parent_as_movable.buckled_mobs)
-			guinea_pig.electrocute_act(round(live_cable.powernet.avail / ELECTRIC_BUCKLE_SHOCK_STRENGTH_DIVISOR))
+			guinea_pig.electrocute_act(QUESTIONABLE_FLOOR(live_cable.powernet.avail / ELECTRIC_BUCKLE_SHOCK_STRENGTH_DIVISOR))
 			break
 	else
 		for(var/mob/living/guinea_pig as anything in parent_as_movable.buckled_mobs)
@@ -183,7 +183,7 @@
 			return
 
 		for(var/mob/living/guinea_pig as anything in parent_as_movable.buckled_mobs)
-			var/shock_damage = round(live_cable.powernet.avail / ELECTRIC_BUCKLE_SHOCK_STRENGTH_DIVISOR)
+			var/shock_damage = QUESTIONABLE_FLOOR(live_cable.powernet.avail / ELECTRIC_BUCKLE_SHOCK_STRENGTH_DIVISOR)
 			guinea_pig.electrocute_act(shock_damage)
 			break
 

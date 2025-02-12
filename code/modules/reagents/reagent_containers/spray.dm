@@ -67,7 +67,7 @@
 	else
 		reagents.trans_to(reagent_puff, amount_per_transfer_from_this, 1/range)
 	reagent_puff.color = mix_color_from_reagents(reagent_puff.reagents.reagent_list)
-	var/wait_step = max(round(2+3/range), 2)
+	var/wait_step = max(QUESTIONABLE_FLOOR(2+3/range), 2)
 
 	var/puff_reagent_string = reagent_puff.reagents.get_reagent_log_string()
 	var/turf/src_turf = get_turf(src)

@@ -2016,7 +2016,7 @@ GLOBAL_LIST_EMPTY(species_perks)
 		. = 80 * (1 - bodytemperature / 120)
 		. = min(., 20)
 
-	return (round(.))
+	return (ROUND(., 1))
 
 
 /datum/species/proc/get_pain_emote(amount)

@@ -105,7 +105,7 @@
 
 /obj/item/grown/snapcorn/add_juice()
 	..()
-	snap_pops = max(round(cached_potency/8), 1)
+	snap_pops = max(QUESTIONABLE_FLOOR(cached_potency/8), 1)
 
 /obj/item/grown/snapcorn/attack_self(mob/user)
 	..()

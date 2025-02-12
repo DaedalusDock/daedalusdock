@@ -160,7 +160,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	else
 		zone = 360 - starting_angle + ending_angle
 
-	max_elements = round(zone / min_angle)
+	max_elements = QUESTIONABLE_FLOOR(zone / min_angle)
 	var/paged = max_elements < choices.len
 	if(elements.len < max_elements)
 		var/elements_to_add = max_elements - elements.len
@@ -195,7 +195,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 
 /datum/radial_menu/proc/update_screen_objects(anim = FALSE)
 	var/list/page_choices = page_data[current_page]
-	var/angle_per_element = round(zone / page_choices.len)
+	var/angle_per_element = QUESTIONABLE_FLOOR(zone / page_choices.len)
 	for(var/i in 1 to elements.len)
 		var/atom/movable/screen/radial/E = elements[i]
 		var/angle = WRAP(starting_angle + (i - 1) * angle_per_element,0,360)

@@ -551,7 +551,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 /datum/action_group/proc/refresh_actions()
 
 	// We don't use size() here because landings are not canon
-	var/total_rows = ROUND_UP(length(actions) / column_max)
+	var/total_rows = ceil(length(actions) / column_max)
 	total_rows -= max_rows // Lets get the amount of rows we're off from our max
 	row_offset = clamp(row_offset, 0, total_rows) // You're not allowed to offset so far that we have a row of blank space
 
@@ -568,7 +568,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /// Accepts a number represeting our position in the group, indexes at 0 to make the math nicer
 /datum/action_group/proc/ButtonNumberToScreenCoords(number, landing = FALSE)
-	var/row = round(number / column_max)
+	var/row = QUESTIONABLE_FLOOR(number / column_max)
 	row -= row_offset // If you're less then 0, you don't get to render, this lets us "scroll" rows ya feel?
 	if(row < 0)
 		return null

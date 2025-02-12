@@ -95,7 +95,7 @@
 		else
 			for(var/i in custom_materials)
 				var/datum/material/M = i
-				new M.sheet_type(loc, FLOOR(custom_materials[M] / MINERAL_MATERIAL_AMOUNT, 1))
+				new M.sheet_type(loc, FLOOR2(custom_materials[M] / MINERAL_MATERIAL_AMOUNT, 1))
 	..()
 
 /obj/structure/toilet/attackby(obj/item/I, mob/living/user, params)
@@ -444,7 +444,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	else
 		for(var/i in custom_materials)
 			var/datum/material/M = i
-			new M.sheet_type(loc, FLOOR(custom_materials[M] / MINERAL_MATERIAL_AMOUNT, 1))
+			new M.sheet_type(loc, FLOOR2(custom_materials[M] / MINERAL_MATERIAL_AMOUNT, 1))
 
 /obj/structure/sink/proc/begin_reclamation()
 	if(!reclaiming)
@@ -496,7 +496,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 
 /obj/structure/sinkframe/proc/drop_materials()
 	for(var/datum/material/material as anything in custom_materials)
-		new material.sheet_type(loc, FLOOR(custom_materials[material] / MINERAL_MATERIAL_AMOUNT, 1))
+		new material.sheet_type(loc, FLOOR2(custom_materials[material] / MINERAL_MATERIAL_AMOUNT, 1))
 	return
 
 //Water source, use the type water_source for unlimited water sources like classic sinks.

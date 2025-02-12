@@ -326,7 +326,7 @@
 
 /obj/item/organ/tongue/zombie/modify_speech(datum/source, list/speech_args)
 	var/list/message_list = splittext(speech_args[SPEECH_MESSAGE], " ")
-	var/maxchanges = max(round(message_list.len / 1.5), 2)
+	var/maxchanges = max(QUESTIONABLE_FLOOR(message_list.len / 1.5), 2)
 
 	for(var/i = rand(maxchanges / 2, maxchanges), i > 0, i--)
 		var/insertpos = rand(1, message_list.len - 1)

@@ -75,7 +75,7 @@
 	for(point as anything in grid)
 		point.set_neigbours(grid, grid_diameter)
 
-	var/center = round(grid_diameter / 2)
+	var/center = floor(grid_diameter / 2)
 	point = grid[CHORDS_TO_1D(grid_diameter, center, center)]
 	grid.Cut()
 

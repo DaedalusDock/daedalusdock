@@ -235,8 +235,8 @@
 		price += ex.total_value[x]
 
 	if(price)
-		var/true_price = round(price*profit_scaling)
-		to_chat(user, span_notice("[selling ? "Sold" : "Getting the price of"] [I], value: <b>[true_price]</b> credits[I.contents.len ? " (exportable contents included)" : ""].[profit_scaling < 1 && selling ? "<b>[round(price-true_price)]</b> credit\s taken as processing fee\s." : ""]"))
+		var/true_price = QUESTIONABLE_FLOOR(price*profit_scaling)
+		to_chat(user, span_notice("[selling ? "Sold" : "Getting the price of"] [I], value: <b>[true_price]</b> credits[I.contents.len ? " (exportable contents included)" : ""].[profit_scaling < 1 && selling ? "<b>[QUESTIONABLE_FLOOR(price-true_price)]</b> credit\s taken as processing fee\s." : ""]"))
 		if(selling)
 			SSeconomy.spawn_ones_for_amount(true_price, get_turf(user))
 	else

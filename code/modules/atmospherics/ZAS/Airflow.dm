@@ -158,8 +158,8 @@ GLOBAL_LIST_INIT(airflow_step_blacklist, typecacheof(list(
 /mob/living/carbon/airflow_hit(atom/A)
 	if(istype(A, /obj/structure) || iswallturf(A))
 		if(airflow_speed > 10)
-			Paralyze(round(airflow_speed * zas_settings.airflow_stun))
-			Stun(round(airflow_speed * zas_settings.airflow_stun) + 3)
+			Paralyze(QUESTIONABLE_FLOOR(airflow_speed * zas_settings.airflow_stun))
+			Stun(QUESTIONABLE_FLOOR(airflow_speed * zas_settings.airflow_stun) + 3)
 			loc.add_blood_DNA(return_blood_DNA())
 			visible_message(
 				span_danger("[src] splats against \the [A]!"),
@@ -168,7 +168,7 @@ GLOBAL_LIST_INIT(airflow_step_blacklist, typecacheof(list(
 			)
 			INVOKE_ASYNC(emote("scream"))
 		else
-			Stun(round(airflow_speed * zas_settings.airflow_stun/2))
+			Stun(QUESTIONABLE_FLOOR(airflow_speed * zas_settings.airflow_stun/2))
 			visible_message(
 				span_danger("[src] slams into \the [A]!"),
 				span_userdanger("You're thrown against \the [A] by pressure!"),
@@ -230,10 +230,10 @@ GLOBAL_LIST_INIT(airflow_step_blacklist, typecacheof(list(
 
 
 	if(airflow_speed > 10)
-		Paralyze(round(flying.airflow_speed * zas_settings.airflow_stun))
-		Stun(round(flying.airflow_speed * zas_settings.airflow_stun) + 3)
+		Paralyze(QUESTIONABLE_FLOOR(flying.airflow_speed * zas_settings.airflow_stun))
+		Stun(QUESTIONABLE_FLOOR(flying.airflow_speed * zas_settings.airflow_stun) + 3)
 	else
-		Stun(round(flying.airflow_speed * zas_settings.airflow_stun/2))
+		Stun(QUESTIONABLE_FLOOR(flying.airflow_speed * zas_settings.airflow_stun/2))
 
 /zone/proc/movables()
 	RETURN_TYPE(/list)

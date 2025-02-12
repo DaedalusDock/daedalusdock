@@ -762,7 +762,7 @@
 				else
 					var/dam_state = min(1,((body_part.brute_dam + body_part.burn_dam) / max(1,body_part.max_damage)))
 					if(dam_state)
-						icon_num = max(1, min(Ceil(dam_state * 6), 6))
+						icon_num = max(1, min(ceil(dam_state * 6), 6))
 
 				if(icon_num)
 					new_overlays += image('icons/hud/screen_gen.dmi', "[body_part.body_zone][icon_num]")

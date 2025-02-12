@@ -415,7 +415,7 @@
 		QUEUE_SMOOTH(src)
 
 	var/ratio = atom_integrity / max_integrity
-	ratio = CEILING(ratio*4, 1) * 25
+	ratio = CEILING2(ratio*4, 1) * 25
 	if(ratio > 75)
 		return
 
@@ -423,7 +423,7 @@
 
 /obj/structure/window/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	if (exposed_temperature > melting_point)
-		take_damage(round(exposed_volume / 100), BURN, 0, 0)
+		take_damage(QUESTIONABLE_FLOOR(exposed_volume / 100), BURN, 0, 0)
 
 /obj/structure/window/get_dumping_location()
 	return null

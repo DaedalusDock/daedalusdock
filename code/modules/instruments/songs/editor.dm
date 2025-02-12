@@ -54,7 +54,7 @@
 		dat += "<B><A href='?src=[REF(src)];edit=1'>Hide Editor</A></B>"
 		dat += " <A href='?src=[REF(src)];newsong=1'>Start a New Song</A>"
 		dat += " <A href='?src=[REF(src)];import=1'>Import a Song</A><BR><BR>"
-		var/bpm = round(600 / tempo)
+		var/bpm = QUESTIONABLE_FLOOR(600 / tempo)
 		dat += "Tempo: <A href='?src=[REF(src)];tempo=[world.tick_lag]'>-</A> [bpm] BPM <A href='?src=[REF(src)];tempo=-[world.tick_lag]'>+</A><BR><BR>"
 		var/linecount = 0
 		for(var/line in lines)

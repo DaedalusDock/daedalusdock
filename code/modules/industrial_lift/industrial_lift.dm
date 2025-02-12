@@ -256,8 +256,8 @@ GLOBAL_LIST_EMPTY(lifts)
 		destination = going
 		going = get_dir_multiz(loc, going)
 
-	var/x_offset = ROUND_UP(bound_width / 32) - 1 //how many tiles our horizontally farthest edge is from us
-	var/y_offset = ROUND_UP(bound_height / 32) - 1 //how many tiles our vertically farthest edge is from us
+	var/x_offset = ceil(bound_width / 32) - 1 //how many tiles our horizontally farthest edge is from us
+	var/y_offset = ceil(bound_height / 32) - 1 //how many tiles our vertically farthest edge is from us
 
 	//the x coordinate of the edge furthest from our future destination, which would be our right hand side
 	var/back_edge_x = destination.x + x_offset//if we arent multitile this should just be destination.x

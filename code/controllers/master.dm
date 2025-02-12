@@ -231,7 +231,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 	for (var/datum/controller/subsystem/subsystem as anything in subsystems)
 		var/subsystem_init_stage = subsystem.init_stage
-		if (!isnum(subsystem_init_stage) || subsystem_init_stage < 1 || subsystem_init_stage > INITSTAGE_MAX || round(subsystem_init_stage) != subsystem_init_stage)
+		if (!isnum(subsystem_init_stage) || subsystem_init_stage < 1 || subsystem_init_stage > INITSTAGE_MAX || QUESTIONABLE_FLOOR(subsystem_init_stage) != subsystem_init_stage)
 			stack_trace("ERROR: MC: subsystem `[subsystem.type]` has invalid init_stage: `[subsystem_init_stage]`. Setting to `[INITSTAGE_MAX]`")
 			subsystem_init_stage = subsystem.init_stage = INITSTAGE_MAX
 		stage_sorted_subsystems[subsystem_init_stage] += subsystem
@@ -407,7 +407,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 				continue
 
 			//Byond resumed us late. assume it might have to do the same next tick
-			if (last_run + CEILING(world.tick_lag * (processing * sleep_delta), world.tick_lag) < world.time)
+			if (last_run + CEILING2(world.tick_lag * (processing * sleep_delta), world.tick_lag) < world.time)
 				sleep_delta += 1
 
 			sleep_delta = MC_AVERAGE_FAST(sleep_delta, 1) //decay sleep_delta
@@ -619,7 +619,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 			tick_precentage = max(tick_precentage*0.5, tick_precentage-queue_node.tick_overrun)
 
-			current_ticklimit = round(TICK_USAGE + tick_precentage)
+			current_ticklimit = QUESTIONABLE_FLOOR(TICK_USAGE + tick_precentage)
 
 			ran = TRUE
 

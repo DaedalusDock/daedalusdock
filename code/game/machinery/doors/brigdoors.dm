@@ -214,7 +214,7 @@
 /obj/machinery/door_timer/ui_data()
 	var/list/data = list()
 	var/time_left = time_left(seconds = TRUE)
-	data["seconds"] = round(time_left % 60)
+	data["seconds"] = QUESTIONABLE_FLOOR(time_left % 60)
 	data["minutes"] = round((time_left - data["seconds"]) / 60)
 	data["timing"] = timing
 	data["flash_charging"] = FALSE

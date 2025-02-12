@@ -341,7 +341,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	if (germ_level >= INFECTION_LEVEL_ONE/2)
 		//aiming for germ level to go from ambient to INFECTION_LEVEL_TWO in an average of 15 minutes, when immunity is full.
-		if(antibiotics < 5 && prob(round(germ_level/6 * 0.01)))
+		if(antibiotics < 5 && prob(ROUND(germ_level/6 * 0.01, 1)))
 			germ_level += 1
 
 	if(germ_level >= INFECTION_LEVEL_ONE)
@@ -406,7 +406,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	return //so we don't grant the organ's action to mobs who pick up the organ.
 
 /obj/item/organ/proc/set_max_health(new_max)
-	maxHealth = FLOOR(new_max, 1)
+	maxHealth = FLOOR2(new_max, 1)
 	damage = min(damage, maxHealth)
 
 ///Adjusts an organ's damage by the amount "damage_amount", up to a maximum amount, which is by default max damage
@@ -628,7 +628,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(damage > maxHealth * low_threshold)
 		var/scarring = damage/maxHealth
 		scarring = 1 - 0.3 * scarring ** 2 // Between ~15 and 30 percent loss
-		var/new_max_dam = FLOOR(scarring * maxHealth, 1)
+		var/new_max_dam = FLOOR2(scarring * maxHealth, 1)
 		if(new_max_dam < maxHealth)
 			to_chat(user, span_warning("Not every part of [src] could be saved, some dead tissue had to be removed, making it more suspectable to damage in the future."))
 			set_max_health(new_max_dam)

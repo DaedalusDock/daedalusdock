@@ -174,8 +174,8 @@
 				return
 
 			var/list/babies = list()
-			var/new_nutrition = round(nutrition * 0.9)
-			var/new_powerlevel = round(powerlevel / 4)
+			var/new_nutrition = QUESTIONABLE_FLOOR(nutrition * 0.9)
+			var/new_powerlevel = QUESTIONABLE_FLOOR(powerlevel / 4)
 			var/turf/drop_loc = drop_location()
 
 			for(var/i in 1 to 4)

@@ -42,10 +42,9 @@
 		x_offset = clamp(x_offset, world.icon_size, view_bounds[1])
 		y_offset = clamp(y_offset, world.icon_size, view_bounds[2])
 
-	// Round with no argument is floor, so we get the non pixel offset here
-	var/x = round(x_offset / world.icon_size)
+	var/x = floor(x_offset / world.icon_size)
 	var/pixel_x = x_offset % world.icon_size
-	var/y = round(y_offset / world.icon_size)
+	var/y = floor(y_offset / world.icon_size)
 	var/pixel_y = y_offset % world.icon_size
 
 	var/list/generated_loc = list()

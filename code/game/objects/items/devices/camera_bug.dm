@@ -134,7 +134,7 @@
 						html += "Last seen near [outstring] (now)<br>"
 					else
 						// 15 second intervals ~ 1/4 minute
-						var/m = round(time_diff/4)
+						var/m = QUESTIONABLE_FLOOR(time_diff/4)
 						var/s = (time_diff - 4*m) * 15
 						if(!s)
 							s = "00"
@@ -167,7 +167,7 @@
 			else
 				names[S.name] = 1
 				dat += "[S.name]"
-			var/stage = round(S.current_size / 2)+1
+			var/stage = QUESTIONABLE_FLOOR(S.current_size / 2)+1
 			dat += " (Stage [stage])"
 			dat += " <a href='?[REF(src)];track=[REF(S)]'>\[Track\]</a><br>"
 

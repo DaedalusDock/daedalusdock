@@ -68,9 +68,9 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 	// https://en.wikipedia.org/wiki/Zeller%27s_congruence
 	var/m = month < 3 ? month + 12 : month // month (march = 3, april = 4...february = 14)
 	var/K = year % 100 // year of century
-	var/J = round(year / 100) // zero-based century
+	var/J = QUESTIONABLE_FLOOR(year / 100) // zero-based century
 	// day 0-6 saturday to sunday:
-	var/h = (1 + round(13 * (m + 1) / 5) + K + round(K / 4) + round(J / 4) - 2 * J) % 7
+	var/h = (1 + round(13 * (m + 1) / 5) + K + QUESTIONABLE_FLOOR(K / 4) + QUESTIONABLE_FLOOR(J / 4) - 2 * J) % 7
 	//convert to ISO 1-7 monday first format
 	return ((h + 5) % 7) + 1
 
@@ -78,26 +78,26 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 //Takes a value of time in deciseconds.
 //Returns a text value of that number in hours, minutes, or seconds.
 /proc/DisplayTimeText(time_value, round_seconds_to = 0.1)
-	var/second = FLOOR(time_value * 0.1, round_seconds_to)
+	var/second = FLOOR2(time_value * 0.1, round_seconds_to)
 	if(!second)
 		return "right now"
 	if(second < 60)
 		return "[second] second[(second != 1)? "s":""]"
-	var/minute = FLOOR(second / 60, 1)
-	second = FLOOR(MODULUS(second, 60), round_seconds_to)
+	var/minute = FLOOR2(second / 60, 1)
+	second = FLOOR2(MODULUS(second, 60), round_seconds_to)
 	var/secondT
 	if(second)
 		secondT = " and [second] second[(second != 1)? "s":""]"
 	if(minute < 60)
 		return "[minute] minute[(minute != 1)? "s":""][secondT]"
-	var/hour = FLOOR(minute / 60, 1)
+	var/hour = FLOOR2(minute / 60, 1)
 	minute = MODULUS(minute, 60)
 	var/minuteT
 	if(minute)
 		minuteT = " and [minute] minute[(minute != 1)? "s":""]"
 	if(hour < 24)
 		return "[hour] hour[(hour != 1)? "s":""][minuteT][secondT]"
-	var/day = FLOOR(hour / 24, 1)
+	var/day = FLOOR2(hour / 24, 1)
 	hour = MODULUS(hour, 24)
 	var/hourT
 	if(hour)

@@ -138,8 +138,8 @@
 	var/temp = min(needed_sheets, sheet_left)
 	needed_sheets -= temp
 	sheet_left -= temp
-	sheets -= round(needed_sheets)
-	needed_sheets -= round(needed_sheets)
+	sheets -= QUESTIONABLE_FLOOR(needed_sheets)
+	needed_sheets -= QUESTIONABLE_FLOOR(needed_sheets)
 	if (sheet_left <= 0 && sheets > 0)
 		sheet_left = 1 - needed_sheets
 		sheets--

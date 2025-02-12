@@ -75,7 +75,7 @@
 
 /// Returns a description for religious tools
 /datum/religion_sect/proc/tool_examine(mob/living/holy_creature)
-	return "You are currently at [round(favor)] favor with [GLOB.deity]."
+	return "You are currently at [QUESTIONABLE_FLOOR(favor)] favor with [GLOB.deity]."
 
 /// Adjust Favor by a certain amount. Can provide optional features based on a user. Returns actual amount added/removed
 /datum/religion_sect/proc/adjust_favor(amount = 0, mob/living/chap)
@@ -187,7 +187,7 @@
 	if(the_cell.charge < 300)
 		to_chat(chap,span_notice("[GLOB.deity] does not accept pity amounts of power."))
 		return
-	adjust_favor(round(the_cell.charge/300), chap)
+	adjust_favor(QUESTIONABLE_FLOOR(the_cell.charge/300), chap)
 	to_chat(chap, span_notice("You offer [the_cell]'s power to [GLOB.deity], pleasing them."))
 	qdel(I)
 	return TRUE
@@ -400,7 +400,7 @@
 	var/list/past_opponents = list()
 
 /datum/religion_sect/spar/tool_examine(mob/living/holy_creature)
-	return "You have [round(favor)] sparring matches won in [GLOB.deity]'s name to redeem. You have lost [matches_lost] holy matches. You will be excommunicated after losing three matches."
+	return "You have [QUESTIONABLE_FLOOR(favor)] sparring matches won in [GLOB.deity]'s name to redeem. You have lost [matches_lost] holy matches. You will be excommunicated after losing three matches."
 
 /datum/religion_sect/music
 	name = "Festival God"

@@ -13,6 +13,7 @@
 
 
 /datum/game_mode
+	abstract_type = /datum/game_mode
 	datum_flags = DF_ISPROCESSING
 
 	var/name = "oh god oh fuck what did you do"
@@ -33,24 +34,6 @@
 	///The recommended number of antag players for this round type
 	var/recommended_enemies = 0
 
-	///Typepath of the antagonist datum to hand out at round start
-	var/datum/antagonist/antag_datum
-
-	///A list of jobs cannot physically be this antagonist, typically AI and borgs.
-	var/list/restricted_jobs = null
-	///A list of jobs that should not be this antagonist
-	var/list/protected_jobs = null
-	///Jobs required for this round type to function, k:v list of JOB_TITLE : NUM_JOB. list(list(cap=1),list(hos=1,sec=2)) translates to one captain OR one hos and two secmans
-	var/list/required_jobs = null
-	/// If set, rule will only accept candidates from those roles. If on a roundstart ruleset, requires the player to have the correct antag pref enabled and any of the possible roles enabled.
-	var/list/exclusive_roles = null
-
-	///The antagonist flag to check player prefs for, for example ROLE_WIZARD
-	var/antag_flag = NONE
-	/// If a role is to be considered another for the purpose of banning.
-	var/antag_flag_to_ban_check = NONE
-	/// If set, will check this preference instead of antag_flag.
-	var/antag_preference = null
 	/// Even if the mode has no antag datum, force possible_antags to be built
 	var/force_pre_setup_check = FALSE
 
@@ -72,10 +55,6 @@
 	else if(length(SSticker.ready_players) > max_pop)
 		return "Too many players, less than [max_pop + 1] players needed."
 
-	var/list/antag_candidates = trim_candidates(SSticker.ready_players.Copy())
-	if(length(antag_candidates) < required_enemies) //Not enough antags
-		return "Not enough eligible players, [required_enemies] antagonists needed."
-
 	return null
 
 ///Try to start this gamemode, called by SSticker. Returns FALSE if it fails.
@@ -94,54 +73,18 @@
 
 	return TRUE
 
-///Add a mind to pre_setup_antags and perform any work on it.
-/datum/game_mode/proc/select_antagonist(datum/mind/M, datum/antagonist/antag_path = src.antag_datum)
-	GLOB.pre_setup_antags[M] = antag_path
-
-	M.restricted_roles = restricted_jobs
-
-	if(initial(antag_path.job_rank))
-		M.special_role = initial(antag_path.job_rank)
-
-	if(initial(antag_path.assign_job))
-		M.set_assigned_role(SSjob.GetJobType(initial(antag_path.assign_job)))
-
 ///Populate the possible_antags list of minds, and any child behavior.
 /datum/game_mode/proc/pre_setup()
 	SHOULD_CALL_PARENT(TRUE)
-
-	if(!antag_datum && !force_pre_setup_check)
-		return TRUE
-
-	if(CONFIG_GET(flag/protect_roles_from_antagonist))
-		restricted_jobs += protected_jobs
-
-	if(CONFIG_GET(flag/protect_assistant_from_antagonist))
-		restricted_jobs += JOB_ASSISTANT
-
-	possible_antags = SSticker.ready_players.Copy()
-
-	// Strip out antag bans/people without this antag as a pref
-	trim_candidates(possible_antags)
-	if(!length(possible_antags))
-		setup_error += "No possible antagonists found"
-		return FALSE
 	return TRUE
 
 /// The absolute last thing called before the round starts. Setup gamemode info/antagonists.
 /datum/game_mode/proc/setup_antags()
 	SHOULD_CALL_PARENT(TRUE)
 
-	give_antag_datums()
-
 	for(var/datum/mind/M as anything in antagonists)
 		RegisterSignal(M, COMSIG_MIND_TRANSFERRED, PROC_REF(handle_antagonist_mind_transfer))
 		init_mob_signals(M.current)
-
-/// Actually send out the antag datums
-/datum/game_mode/proc/give_antag_datums()
-	for(var/datum/mind/M as anything in antagonists)
-		M.add_antag_datum(antagonists[M])
 
 ///Clean up a mess we may have made during set up.
 /datum/game_mode/proc/on_failed_execute()
@@ -194,6 +137,10 @@
 ///Handles late-join antag assignments
 /datum/game_mode/proc/make_antag_chance(mob/living/carbon/human/character)
 	return
+
+/// Returns a list of jobs that MUST roll.
+/datum/game_mode/proc/get_required_jobs()
+	return null
 
 /datum/game_mode/proc/check_finished() //to be called by SSticker
 	SHOULD_CALL_PARENT(TRUE)
@@ -346,55 +293,6 @@
 /// Mode specific admin panel.
 /datum/game_mode/proc/admin_panel()
 	return
-
-///Return a list of players that have our antag flag checked in prefs and are not banned, among other criteria.
-/datum/game_mode/proc/trim_candidates(list/candidates)
-	RETURN_TYPE(/list)
-	SHOULD_CALL_PARENT(TRUE)
-
-	for(var/mob/dead/new_player/candidate_player in candidates)
-		var/client/candidate_client = GET_CLIENT(candidate_player)
-		if (!candidate_client || !candidate_player.mind) // Are they connected?
-			candidates.Remove(candidate_player)
-			continue
-
-		// Code for age-gating antags.
-		/*if(candidate_client.get_remaining_days(minimum_required_age) > 0)
-			candidates.Remove(candidate_player)
-			continue*/
-
-		if(candidate_player.mind.special_role) // We really don't want to give antag to an antag.
-			candidates.Remove(candidate_player)
-			continue
-
-		var/list/antag_prefs = candidate_client.prefs.read_preference(/datum/preference/blob/antagonists)
-		if(antag_flag || antag_preference)
-			if (!antag_prefs[antag_preference || antag_flag])
-				candidates.Remove(candidate_player)
-				continue
-
-		if(antag_flag || antag_flag_to_ban_check)
-			if (is_banned_from(candidate_player.ckey, list(antag_flag_to_ban_check || antag_flag, ROLE_SYNDICATE)))
-				candidates.Remove(candidate_player)
-				continue
-
-		// If this ruleset has exclusive_roles set, we want to only consider players who have those
-		// job prefs enabled and are eligible to play that job. Otherwise, continue as before.
-		if(length(exclusive_roles))
-			var/exclusive_candidate = FALSE
-			for(var/role in exclusive_roles)
-				var/datum/job/job = SSjob.GetJob(role)
-
-				if((role in candidate_client.prefs.read_preference(/datum/preference/blob/job_priority)) && SSjob.check_job_eligibility(candidate_player, job, "Gamemode Roundstart TC", add_job_to_log = TRUE)==JOB_AVAILABLE)
-					exclusive_candidate = TRUE
-					break
-
-			// If they didn't have any of the required job prefs enabled or were banned from all enabled prefs,
-			// they're not eligible for this antag type.
-			if(!exclusive_candidate)
-				candidates.Remove(candidate_player)
-
-	return candidates
 
 ///Stub for reference that gamemodes do infact, process.
 /datum/game_mode/process(delta_time)

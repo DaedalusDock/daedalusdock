@@ -174,7 +174,7 @@
 	var/datum/plant_gene/gene_to_activate
 
 	for(var/datum/plant_gene/latent_gene as anything in parent.latent_genes)
-		if(has_active_gene_of_type(latent_gene.type))
+		if(has_active_gene_of_type(latent_gene))
 			continue
 
 		if(prob(latent_gene.development_chance * mutation_power))
@@ -184,9 +184,7 @@
 	if(!gene_to_activate)
 		return FALSE
 
-	LAZYREMOVE(gene_list, gene_to_activate)
-	gene_to_activate.on_add(src)
-	return TRUE
+	return add_active_gene(gene_to_activate)
 
 /// Mutate the plant in various ways.
 /datum/plant_gene_holder/proc/try_mutate_stats(mutation_power = 1, ignore_stable = FALSE)

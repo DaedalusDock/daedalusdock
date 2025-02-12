@@ -129,10 +129,10 @@
 	if(isnull(drain_from))
 		adjust_money(money_to_transfer)
 		SSblackbox.record_feedback("amount", "free_income", money_to_transfer)
-		log_econ("[money_to_transfer] credits were given to [src.account_holder]'s account from [drain_from.account_holder].")
 		return TRUE
 	else
 		if(transfer_money(drain_from, money_to_transfer))
+			log_econ("[money_to_transfer] credits were given to [src.account_holder]'s account from [drain_from.account_holder].")
 			return TRUE
 	return FALSE
 

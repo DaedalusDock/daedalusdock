@@ -62,6 +62,9 @@ Key procs
 		if(M.current)
 			update_atom_languages(M.current)
 
+	if(selected_language)
+		set_selected_language(GET_LANGUAGE_DATUM(selected_language))
+
 	// If we have an owner, we'll set a default selected language
 	if(owner)
 		get_selected_language()
@@ -184,7 +187,7 @@ Key procs
 /// Checks if you can speak the language. Tongue limitations should be supplied as an argument.
 /datum/language_holder/proc/can_speak_language(datum/language/language)
 	var/atom/movable/ouratom = get_atom()
-	var/can_speak_language = language.can_speak_language(ouratom)
+	var/can_speak_language = language.can_speak_language(ouratom, ignore_mute = TRUE)
 
 	if((bypass_speaking_limitations || can_speak_language) && has_language(language, TRUE))
 		return TRUE
@@ -206,7 +209,7 @@ Key procs
 
 		if((!highest_priority || (priority > highest_priority)) && !(language.type in blocked_languages))
 			if(can_speak_language(language))
-				selected_language = language
+				set_selected_language(language)
 				highest_priority = priority
 
 	return selected_language

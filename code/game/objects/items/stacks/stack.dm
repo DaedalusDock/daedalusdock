@@ -128,6 +128,7 @@
 /obj/item/stack/update_appearance(updates)
 	. = ..()
 	update_gender()
+	update_maptext()
 
 /obj/item/stack/update_name(updates)
 	if(dynamically_set_name)
@@ -488,15 +489,21 @@
 /obj/item/stack/use(used, transfer = FALSE, check = TRUE) // return 0 = borked; return 1 = had enough
 	if(check && is_zero_amount(delete_if_zero = TRUE))
 		return FALSE
+
 	if(is_cyborg)
 		return source.use_charge(used * cost)
+
 	if (amount < used)
 		return FALSE
+
 	amount -= used
+
 	if(check && is_zero_amount(delete_if_zero = TRUE))
 		return TRUE
+
 	if(length(mats_per_unit))
 		update_custom_materials()
+
 	update_appearance()
 	update_weight()
 	return TRUE

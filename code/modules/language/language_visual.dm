@@ -8,13 +8,13 @@
 	var/mob/M = hearer
 	return !M.is_blind()
 
-/datum/language/visual/can_speak_language(atom/movable/speaker, silent = TRUE)
+/datum/language/visual/can_speak_language(atom/movable/speaker, silent = TRUE, ignore_mute = FALSE)
 	if(!isliving(speaker))
 		return TRUE
 
 	var/mob/living/L = speaker
 
-	. = L.can_speak_sign()
+	. = ignore_mute ? TRUE : L.can_speak_sign()
 
 	if(!.)
 		if(!silent)

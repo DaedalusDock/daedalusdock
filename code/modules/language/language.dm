@@ -122,12 +122,12 @@
 #undef SCRAMBLE_CACHE_LEN
 
 /// Returns TRUE if the movable can speak the language. This does not check it knows the language.
-/datum/language/proc/can_speak_language(atom/movable/speaker, silent = TRUE)
+/datum/language/proc/can_speak_language(atom/movable/speaker, silent = TRUE, ignore_mute = FALSE)
 	if(!isliving(speaker))
 		return TRUE
 
 	var/mob/living/L = speaker
-	. = L.can_speak_vocal()
+	. = ignore_mute ? TRUE : L.can_speak_vocal()
 	if(!.)
 		if(!silent)
 			to_chat(speaker, span_warning("You find yourself unable to speak!"))

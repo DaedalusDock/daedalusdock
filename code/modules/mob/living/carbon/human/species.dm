@@ -1319,7 +1319,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		humi.remove_movespeed_modifier(/datum/movespeed_modifier/cold)
 
 
-	if((humi.stat == CONSCIOUS) && prob(5))
+	if((humi.stat == CONSCIOUS) && prob(4))
 		if(bodytemp < cold_discomfort_level)
 			to_chat(humi, span_warning(pick(cold_discomfort_strings)))
 		else if(bodytemp > heat_discomfort_level)

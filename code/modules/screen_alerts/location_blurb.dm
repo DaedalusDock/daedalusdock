@@ -10,9 +10,9 @@
 	var/area/A = get_area(mob)
 	var/text
 	if(!name_only)
-		text = "[stationdate2text()], [time_to_twelve_hour(station_time()-1, "hh:mm")]\n[station_name()], [A.name]"
+		text = "[stationdate2text()], [time_to_twelve_hour(station_time()-1, "hh:mm")]\n[station_name()], [A]"
 	else
-		text = "[A.name]"
+		text = "[A]"
 
 	text = uppertext(text)
 

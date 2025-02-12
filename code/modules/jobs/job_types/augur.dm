@@ -1,5 +1,5 @@
-/datum/job/chief_medical_officer
-	title = JOB_MEDICAL_DIRECTOR
+/datum/job/augur
+	title = JOB_AUGUR
 	description = "Coordinate doctors and other medbay employees, ensure they \
 		know how to save lives, check for injuries on the crew monitor."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
@@ -33,6 +33,7 @@
 	paycheck = PAYCHECK_COMMAND
 	paycheck_department = ACCOUNT_MED
 
+	mind_traits = list(TRAIT_AETHERITE)
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM, TRAIT_ROYAL_METABOLISM)
 
 	mail_goodies = list(
@@ -48,27 +49,38 @@
 	voice_of_god_power = 1.4 //Command staff has authority
 
 
-/datum/job/chief_medical_officer/get_captaincy_announcement(mob/living/captain)
+/datum/job/augur/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
 
+/datum/job/augur/on_join_popup(client/C, job_title_pref)
+	var/content = {"
+		<div style='width:100%; text-align:center; font-size: 20px'>
+		You are the <b>[title]</b>
+		</div>
+		<br>
+		<div style='padding: 0px 30px; text-align: center; font-size: 14px;'>
+		You are high ranking member of the Aether Association, and a powerful Hematic. Ensure the cycle of life and death continues,
+		saving those whose time has not yet come, and ending those who violate the Sacred Cycle. Protect the Biblion tou Hema with your life.
+		</div>
+	"}
+	var/datum/browser/popup = new(C.mob, "jobinfo", "Role Information", 480, 360)
+	popup.set_window_options("can_close=1;can_resize=0")
+	popup.set_content(content)
+	popup.open(FALSE)
 
 /datum/outfit/job/cmo
-	name = "Medical Director"
-	jobtype = /datum/job/chief_medical_officer
+	name = JOB_AUGUR
+	jobtype = /datum/job/augur
 
 	id = /obj/item/card/id/advanced/silver
 	id_trim = /datum/id_trim/job/chief_medical_officer
 	uniform = /obj/item/clothing/under/rank/medical/chief_medical_officer
-	backpack_contents = list(
-		/obj/item/assembly/flash/handheld
-	)
 	suit = /obj/item/clothing/suit/toggle/labcoat/cmo
-	suit_store = /obj/item/flashlight/pen/paramedic
-	belt = /obj/item/modular_computer/tablet/pda/heads/cmo
+	belt = /obj/item/pager/aether
 	ears = /obj/item/radio/headset/heads/cmo
 	shoes = /obj/item/clothing/shoes/sneakers/blue
 	l_pocket = /obj/item/pinpointer/crew
-	l_hand = /obj/item/storage/medkit/surgery
+	l_hand = /obj/item/aether_tome
 
 	backpack = /obj/item/storage/backpack/medic
 	satchel = /obj/item/storage/backpack/satchel/med
@@ -78,17 +90,15 @@
 	chameleon_extras = list(
 		/obj/item/gun/syringe,
 		/obj/item/stamp/cmo,
-		)
-	skillchips = list(/obj/item/skillchip/entrails_reader)
+	)
 
 /datum/outfit/job/cmo/mod
-	name = "Medical Director (MODsuit)"
+	name = JOB_AUGUR + " (MODsuit)"
 
 	suit_store = /obj/item/tank/internals/oxygen
 	back = /obj/item/mod/control/pre_equipped/rescue
 	suit = null
 	mask = /obj/item/clothing/mask/breath/medical
-	r_pocket = /obj/item/flashlight/pen/paramedic
 	internals_slot = ITEM_SLOT_SUITSTORE
 	backpack_contents = null
 	box = null

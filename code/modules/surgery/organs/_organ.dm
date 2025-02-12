@@ -269,17 +269,16 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	on_death(delta_time, times_fired) //Kinda hate doing it like this, but I really don't want to call process directly.
 
 
-/// This is on_life() but for when the organ is dead or outside of a mob. Bad name.
+/// This is on_life() but for when the owner is dead or outside of a mob. Bad name.
 /obj/item/organ/proc/on_death(delta_time, times_fired)
 	if(organ_flags & (ORGAN_SYNTHETIC|ORGAN_FROZEN|ORGAN_DEAD))
 		return
 
-	if(isnull(owner))
+	germ_level += rand(1,3)
+	if(germ_level >= INFECTION_LEVEL_TWO)
 		germ_level += rand(1,3)
-		if(germ_level >= INFECTION_LEVEL_TWO)
-			germ_level += rand(1,3)
-		if(germ_level >= INFECTION_LEVEL_THREE)
-			set_organ_dead(TRUE, "Necrosis")
+	if(germ_level >= INFECTION_LEVEL_THREE)
+		set_organ_dead(TRUE, "Necrosis")
 
 /// Called once every life tick on every organ in a carbon's body
 /// NOTE: THIS IS VERY HOT. Be careful what you put in here
@@ -420,7 +419,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return
 
 	var/old_damage = damage
-	damage = min(clamp(damage + damage_amount, 0, maximum), maxHealth)
+	damage = min(clamp(round(damage + damage_amount, DAMAGE_PRECISION), 0, maximum), maxHealth)
 	. = damage - old_damage
 
 	var/mess = check_damage_thresholds(owner)
@@ -610,6 +609,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			germ_message =  "Acute Infection++"
 		if (INFECTION_LEVEL_THREE to INFINITY)
 			germ_message =  "Septic"
+
 	if (germ_message)
 		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_TOXIN]'>[germ_message]</span>" : germ_message
 

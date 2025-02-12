@@ -400,7 +400,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			var/zzzchance = min(5, 5*drowsyness/30)
 			if((prob(zzzchance) || drowsyness >= 60) || ( drowsyness >= 20 && IsSleeping()))
 				if(stat == CONSCIOUS)
-					to_chat(src, span_notice("You are about to fall asleep..."))
+					to_chat(src, span_obviousnotice("You feel so tired..."))
 				Sleeping(5 SECONDS)
 
 	if(silent)
@@ -582,22 +582,37 @@ All effects don't start immediately, but rather get worse over time; the rate is
 //LIVER//
 /////////
 
-///Check to see if we have the liver, if not automatically gives you last-stage effects of lacking a liver.
-
+/// Handles having a missing or dead liver.
 /mob/living/carbon/proc/handle_liver(delta_time, times_fired)
 	if(!dna)
 		return
 
 	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
-	if(liver)
+	if(liver && !(liver.organ_flags & ORGAN_DEAD))
+		remove_status_effect(/datum/status_effect/grouped/concussion, DEAD_LIVER_EFFECT)
 		return
 
 	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || !needs_organ(ORGAN_SLOT_LIVER))
+		remove_status_effect(/datum/status_effect/grouped/concussion, DEAD_LIVER_EFFECT)
 		return
 
 	adjustToxLoss(0.6 * delta_time, TRUE, TRUE, cause_of_death = "Lack of a liver")
+
+	// Hepatic Encephalopathy
+	set_slurring_if_lower(10 SECONDS)
+	if(DT_PROB(2, delta_time))
+		set_confusion_if_lower(10 SECONDS)
+
+	if(DT_PROB(5, delta_time))
+		adjust_drowsyness(6, 12)
+
 	if(DT_PROB(2, delta_time))
 		vomit(50, TRUE, FALSE, 1, TRUE, harm = FALSE, purge_ratio = 1)
+
+	// stoopid micro optimization, don't instantiate a new status effect every life tick for no raisin.
+	var/datum/status_effect/grouped/concussion/existing = has_status_effect(/datum/status_effect/grouped/concussion)
+	if(isnull(existing) || !(DEAD_LIVER_EFFECT in existing.sources))
+		apply_status_effect(/datum/status_effect/grouped/concussion, DEAD_LIVER_EFFECT)
 
 /mob/living/carbon/proc/undergoing_liver_failure()
 	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)

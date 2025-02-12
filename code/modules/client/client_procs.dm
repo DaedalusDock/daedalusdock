@@ -234,6 +234,14 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 	GLOB.clients += src
 	GLOB.directory[ckey] = src
+	var/reconnecting = FALSE
+	if(GLOB.persistent_clients_by_ckey[ckey])
+		reconnecting = TRUE
+		persistent_client = GLOB.persistent_clients_by_ckey[ckey]
+		persistent_client.byond_version = full_version
+	else
+		persistent_client = new(ckey)
+		persistent_client.byond_version = full_version
 
 	// Instantiate stat panel
 	stat_panel = new(src, "statbrowser")
@@ -332,15 +340,6 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 				else
 					message_admins(span_danger("<B>[message_type]: </B></span><span class='notice'>Connecting player [key_name_admin(src)] has the same [matches] as [joined_player_ckey](no longer logged in)<b>[in_round]</b>. "))
 					log_admin_private("[message_type]: Connecting player [key_name(src)] has the same [matches] as [joined_player_ckey](no longer logged in)[in_round].")
-
-	var/reconnecting = FALSE
-	if(GLOB.persistent_clients_by_ckey[ckey])
-		reconnecting = TRUE
-		persistent_client = GLOB.persistent_clients_by_ckey[ckey]
-		persistent_client.byond_version = full_version
-	else
-		persistent_client = new(ckey)
-		persistent_client.byond_version = full_version
 
 	. = ..() //calls mob.Login()
 

@@ -21,8 +21,11 @@ GLOBAL_LIST_EMPTY(persistent_clients)
 	var/list/post_logout_callbacks = list()
 
 	var/datum/achievement_data/achievements
+	/// The preferences of the client.
+	var/datum/preferences/prefs
 
-/datum/persistent_client/New(ckey)
+/datum/persistent_client/New(ckey, client/_client)
+	client = _client
 	achievements = new(ckey)
 	GLOB.persistent_clients_by_ckey[ckey] = src
 	GLOB.persistent_clients += src

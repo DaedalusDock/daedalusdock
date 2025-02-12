@@ -6,8 +6,13 @@ GLOBAL_LIST_EMPTY(persistent_clients)
 /datum/persistent_client
 	/// The actual client, can be null at any time (duh)
 	var/client/client
+	/// The mob this client is bound to.
+	var/mob/mob
+
 	/// The last known byond version the client connected with.
-	var/byond_version = "Unknown"
+	var/byond_version
+	/// The last known byond build the client connected with.
+	var/byond_build
 
 	/// Nested list of client-related logging.
 	var/list/logging = list()
@@ -34,6 +39,18 @@ GLOBAL_LIST_EMPTY(persistent_clients)
 	SHOULD_CALL_PARENT(FALSE)
 	. = QDEL_HINT_LETMELIVE
 	CRASH("Who the FUCK tried to delete a persistent client? FUCK OFF!!!")
+
+/// Setter for the mob var, handles both references.
+/datum/persistent_client/proc/SetMob(mob/new_mob)
+	mob?.persistent_client = null
+	mob = new_mob
+	new_mob?.persistent_client = src
+
+/// Returns the full version string (i.e 515.1642) of the BYOND version and build.
+/datum/persistent_client/proc/full_byond_version()
+	if(!byond_version)
+		return "Unknown"
+	return "[byond_version].[byond_build || "xxx"]"
 
 /proc/log_played_names(ckey, ...)
 	if(!ckey)

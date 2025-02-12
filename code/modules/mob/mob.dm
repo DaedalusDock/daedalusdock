@@ -25,6 +25,8 @@
  * Parent call
  */
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
+	persistent_client?.SetMob(null)
+
 	unset_machine()
 	remove_from_mob_list()
 	remove_from_dead_mob_list()

@@ -29,7 +29,7 @@
 		return FALSE
 
 	canon_client = client
-	persistent_client = client.persistent_client
+	client.persistent_client.SetMob(src)
 
 	add_to_player_list()
 	lastKnownIP = client.address
@@ -102,9 +102,8 @@
 		else
 			client.change_view(getScreenSize(client.prefs.read_preference(/datum/preference/toggle/widescreen)))
 
-		if(persistent_client.player_actions.len)
-			for(var/datum/action/A in client.persistent_client.player_actions)
-				A.Grant(src)
+		for(var/datum/action/A in client.persistent_client.player_actions)
+			A.Grant(src)
 
 		for(var/foo in persistent_client.post_login_callbacks)
 			var/datum/callback/CB = foo

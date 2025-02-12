@@ -234,14 +234,17 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 	GLOB.clients += src
 	GLOB.directory[ckey] = src
+
 	var/reconnecting = FALSE
 	if(GLOB.persistent_clients_by_ckey[ckey])
 		reconnecting = TRUE
 		persistent_client = GLOB.persistent_clients_by_ckey[ckey]
-		persistent_client.byond_version = full_version
+		persistent_client.byond_version = byond_build
+		persistent_client.byond_build = byond_build
 	else
 		persistent_client = new(ckey)
-		persistent_client.byond_version = full_version
+		persistent_client.byond_version = byond_version
+		persistent_client.byond_build = byond_build
 
 	// Instantiate stat panel
 	stat_panel = new(src, "statbrowser")
@@ -298,8 +301,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(fexists("data/server_last_roundend_report.html"))
 		add_verb(src, /client/proc/show_servers_last_roundend_report)
 
-	var/full_version = "[byond_version].[byond_build ? byond_build : "xxx"]"
-	log_access("Login: [key_name(src)] from [address ? address : "localhost"]-[computer_id] || BYOND v[full_version]")
+	log_access("Login: [key_name(src)] from [address ? address : "localhost"]-[computer_id] || BYOND v[persistent_client.full_byond_version()]")
 
 	var/alert_mob_dupe_login = FALSE
 	var/alert_admin_multikey = FALSE

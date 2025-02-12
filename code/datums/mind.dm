@@ -19,9 +19,9 @@
 	- IMPORTANT NOTE 2, if you want a player to become a ghost, use mob.ghostize() It does all the hard work for you.
 
 	- When creating a new mob which will be a new IC character (e.g. putting a shade in a construct or randomly selecting
-		a ghost to become a xeno during an event). Simply assign the key or ckey like you've always done.
+		a ghost to become a xeno during an event). Pass the player's key or ckey into the following proc.
 
-			new_mob.key = key
+			new_mob.PossessByPlayer(ckey)
 
 		The Login proc will handle making a new mind for that mobtype (including setting up stuff like mind.name). Simple!
 		However if you want that mind to have any special properties like being a traitor etc you will have to do that
@@ -187,7 +187,7 @@
 	RegisterSignal(new_character, COMSIG_LIVING_DEATH, PROC_REF(set_death_time))
 
 	if(active || force_key_move)
-		new_character.key = key //now transfer the key to link the client to our new body
+		new_character.PossessByPlayer(key) //now transfer the key to link the client to our new body
 
 	if(new_character.client)
 		LAZYCLEARLIST(new_character.client.recent_examines)

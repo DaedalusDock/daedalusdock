@@ -223,7 +223,7 @@
 	if(key)
 		to_chat(user, span_warning("Someone else already took this plant!"))
 		return
-	key = user.key
+	PossessByPlayer(user.key)
 	log_game("[key_name(src)] took control of [name].")
 
 /**

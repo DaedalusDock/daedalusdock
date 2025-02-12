@@ -478,7 +478,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	chosen_guardian.ghostize(0)
 	chosen_guardian.guardianrecolor()
 	chosen_guardian.guardianrename() //give it a new color and name, to show it's a new person
-	chosen_guardian.key = candidate.key
+	chosen_guardian.PossessByPlayer(candidate.key)
 	chosen_guardian.reset = 1
 	switch(chosen_guardian.theme)
 		if("tech")
@@ -607,7 +607,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	var/mob/living/simple_animal/hostile/guardian/G = new pickedtype(user, theme)
 	G.name = mob_name
 	G.summoner = user
-	G.key = candidate.key
+	G.PossessByPlayer(candidate.key)
 	G.mind.enslave_mind_to_creator(user)
 	log_game("[key_name(user)] has summoned [key_name(G)], a [guardiantype] holoparasite.")
 	switch(theme)

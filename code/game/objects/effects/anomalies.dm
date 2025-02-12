@@ -354,7 +354,7 @@
 	var/list/mob/dead/observer/candidates = poll_candidates_for_mob("Do you want to play as a pyroclastic anomaly slime?", ROLE_SENTIENCE, null, 10 SECONDS, S, POLL_IGNORE_PYROSLIME)
 	if(LAZYLEN(candidates))
 		var/mob/dead/observer/chosen = pick(candidates)
-		S.key = chosen.key
+		S.PossessByPlayer(chosen.ckey)
 		S.mind.special_role = ROLE_PYROCLASTIC_SLIME
 		var/policy = get_policy(ROLE_PYROCLASTIC_SLIME)
 		if (policy)

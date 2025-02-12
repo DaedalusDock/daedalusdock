@@ -409,7 +409,7 @@
 	new_team_member.prefs.safe_transfer_prefs_to(M, is_antag = TRUE)
 	if(M.dna.species.outfit_important_for_life)
 		M.set_species(/datum/species/human)
-	M.key = new_team_member.key
+	M.PossessByPlayer(new_team_member.key)
 	M.faction += team
 	M.equipOutfit(chosen_class)
 	RegisterSignal(M, COMSIG_PARENT_QDELETING, PROC_REF(ctf_qdelled_player)) //just in case CTF has some map hazards (read: chasms). bit shorter than dust

@@ -61,7 +61,7 @@
 		return
 
 	pai.set_real_name(chosen_name)
-	pai.key = choice.key
+	pai.PossessByPlayer(choice.key)
 	card.setPersonality(pai)
 	for(var/datum/pai_candidate/candidate in SSpai.candidates)
 		if(candidate.key == choice.key)

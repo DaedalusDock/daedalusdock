@@ -62,7 +62,7 @@
 		if(brainmob.mind)
 			brainmob.mind.transfer_to(owner)
 		else
-			owner.key = brainmob.key
+			owner.PossessByPlayer(brainmob.key)
 
 		owner.set_suicide(brainmob.suiciding)
 

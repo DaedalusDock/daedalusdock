@@ -1566,7 +1566,7 @@
 	if(!canon_client)
 		return
 
-	for(var/foo in canon_client.player_details.post_logout_callbacks)
+	for(var/foo in persistent_client?.post_logout_callbacks)
 		var/datum/callback/CB = foo
 		CB.Invoke()
 

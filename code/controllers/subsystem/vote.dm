@@ -142,7 +142,7 @@ SUBSYSTEM_DEF(vote)
 		V.Grant(C.mob)
 		V.name = "Vote: [current_vote.name]"
 
-		C.player_details.player_actions += V
+		C.persistent_client.player_actions += V
 		generated_actions += V
 
 		if(C.prefs.toggles & SOUND_ANNOUNCEMENTS)
@@ -260,11 +260,11 @@ SUBSYSTEM_DEF(vote)
 
 // We also need to remove our action from the player actions when we're cleaning up.
 /datum/action/vote/Remove(mob/removed_from)
-	if(removed_from.client)
-		removed_from.client?.player_details.player_actions -= src
+	if(removed_from.persistent_client)
+		removed_from.persistent_client?.player_actions -= src
 
 	else if(removed_from.ckey)
-		var/datum/player_details/associated_details = GLOB.player_details[removed_from.ckey]
-		associated_details?.player_actions -= src
+		var/datum/persistent_client/persistent_client = GLOB.persistent_clients_by_ckey[removed_from.ckey]
+		persistent_client?.player_actions -= src
 
 	return ..()

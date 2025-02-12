@@ -30,8 +30,8 @@ SUBSYSTEM_DEF(achievements)
 
 	for(var/i in GLOB.clients)
 		var/client/C = i
-		if(!C.player_details.achievements.initialized)
-			C.player_details.achievements.InitializeData()
+		if(!C.persistent_client.achievements.initialized)
+			C.persistent_client.achievements.InitializeData()
 
 	return ..()
 
@@ -40,8 +40,8 @@ SUBSYSTEM_DEF(achievements)
 
 /datum/controller/subsystem/achievements/proc/save_achievements_to_db()
 	var/list/cheevos_to_save = list()
-	for(var/ckey in GLOB.player_details)
-		var/datum/player_details/PD = GLOB.player_details[ckey]
+	for(var/ckey in GLOB.persistent_clients_by_ckey)
+		var/datum/persistent_client/PD = GLOB.persistent_clients_by_ckey[ckey]
 		if(!PD || !PD.achievements)
 			continue
 		cheevos_to_save += PD.achievements.get_changed_data()

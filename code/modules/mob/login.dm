@@ -27,7 +27,10 @@
 /mob/Login()
 	if(!client)
 		return FALSE
+
 	canon_client = client
+	persistent_client = client.persistent_client
+
 	add_to_player_list()
 	lastKnownIP = client.address
 	computer_id = client.computer_id
@@ -99,13 +102,14 @@
 		else
 			client.change_view(getScreenSize(client.prefs.read_preference(/datum/preference/toggle/widescreen)))
 
-		if(client.player_details.player_actions.len)
-			for(var/datum/action/A in client.player_details.player_actions)
+		if(persistent_client.player_actions.len)
+			for(var/datum/action/A in client.persistent_client.player_actions)
 				A.Grant(src)
 
-		for(var/foo in client.player_details.post_login_callbacks)
+		for(var/foo in persistent_client.post_login_callbacks)
 			var/datum/callback/CB = foo
 			CB.Invoke()
+
 		log_played_names(client.ckey,name,real_name)
 		auto_deadmin_on_login()
 

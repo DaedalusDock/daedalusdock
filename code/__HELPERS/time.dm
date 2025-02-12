@@ -31,6 +31,10 @@
 		station_date = time2text(timeofday, "DD-MM") + "-" + num2text(CURRENT_STATION_YEAR)
 	return station_date
 
+/// Returns the round duration in real time.
+/proc/round_timeofday()
+	return REALTIMEOFDAY - SSticker.round_start_timeofday
+
 //returns timestamp in a sql and a not-quite-compliant ISO 8601 friendly format
 /proc/SQLtime(timevar)
 	return time2text(timevar || world.timeofday, "YYYY-MM-DD hh:mm:ss")

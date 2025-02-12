@@ -12,7 +12,7 @@
 
 /datum/action/cooldown/glare/is_valid_target(atom/cast_on)
 	var/mob/living/carbon/human/victim = cast_on
-	if(!istype(cast_on))
+	if(!istype(victim))
 		return FALSE
 
 	if(victim == owner)
@@ -21,7 +21,7 @@
 	if(victim.stat != CONSCIOUS)
 		return FALSE
 
-	if(get_dist(victim, cast_on) > 2)
+	if(get_dist(victim, owner) > 2)
 		to_chat(owner, span_warning("[victim] is too far away."))
 		return FALSE
 
@@ -64,9 +64,11 @@
 	owner.visible_message(span_notice("[owner] glances into [target]'s eyes."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 	if(victim.get_total_tint() || victim.get_eye_protection())
+		to_chat(owner, span_warning("[target.p_their()] eyes are covered."))
 		return // Lol owned
 
 	if(!victim.flash_act(INFINITY, FALSE, FALSE, TRUE))
+		to_chat(owner, span_warning("[target.p_their()] eyes are covered."))
 		return // Lol owned
 
 	victim.stamina.adjust(-300)

@@ -147,6 +147,7 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 	if(!owner.current)
 		CRASH("[src] ran on_gain() on a mind without a mob")
+
 	if(ui_name)//in the future, this should entirely replace greet.
 		info_button = new(src)
 		info_button.Grant(owner.current)
@@ -163,7 +164,6 @@ GLOBAL_LIST_EMPTY(antagonists)
 	if(!soft_antag && owner.current.stat != DEAD && owner.current.client)
 		owner.current.add_to_current_living_antags()
 
-
 	if(!silent)
 		greet()
 		if(ui_name)
@@ -171,6 +171,9 @@ GLOBAL_LIST_EMPTY(antagonists)
 			info_button.Trigger()
 
 	SEND_SIGNAL(owner, COMSIG_ANTAGONIST_GAINED, src)
+
+	message_admins("[key_name_admin(owner.current)] was made into [type].")
+	log_game("ANTAGS: [key_name(owner.current)] was made into a [type].")
 
 /**
  * Proc that checks the sent mob aganst the banlistfor this antagonist.
@@ -229,6 +232,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 		if (!antag_hud.mobShouldSee(current))
 			antag_hud.hide_from(current)
 
+	message_admins("[key_name_admin(owner.current)] lost their [type].")
+	log_game("ANTAGS: [key_name(owner.current)] lost their [type].")
 	qdel(src)
 
 /**

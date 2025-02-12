@@ -1,4 +1,5 @@
 /datum/vampire_state/bloodlust
+	name = "Bloodlust!"
 	regress_into_message = span_statsgood("The Thirst is too much, you must feed! More! More!")
 
 	var/list/arm_weakrefs = list()
@@ -57,7 +58,7 @@
 	if(host.stat != CONSCIOUS)
 		return
 
-	if(host.blood_volume >= BLOOD_VOLUME_NORMAL && DT_PROB(10, delta_time))
+	if(host.blood_volume >= BLOOD_VOLUME_NORMAL && DT_PROB(3.3, delta_time))
 		host.bleed(1)
 		host.visible_message(span_subtle("A drop of blood falls from <b>[host]</b>'s fangs."))
 

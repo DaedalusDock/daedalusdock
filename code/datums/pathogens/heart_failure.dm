@@ -65,5 +65,4 @@
 			affected_mob.stamina.adjust(-60)
 			affected_mob.set_heartattack(TRUE)
 			force_cure()
-			SSblackbox.record_feedback("amount", "heartattacks", 1)
 			return FALSE

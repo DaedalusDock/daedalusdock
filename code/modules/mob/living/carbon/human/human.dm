@@ -92,6 +92,12 @@
 			. += "Chemical Storage: [changeling.chem_charges]/[changeling.total_chem_storage]"
 			. += "Absorbed DNA: [changeling.absorbed_count]"
 
+		var/datum/antagonist/vampire/vampire = mind.has_antag_datum(/datum/antagonist/vampire)
+		if(vampire)
+			. += ""
+			. += "State: [vampire.get_thirst_stage_string()]"
+			. += "Thirst: [vampire.thirst_level.has_points()]/[vampire.thirst_level.get_max_points()]"
+
 /mob/living/carbon/human/reset_perspective(atom/new_eye, force_reset = FALSE)
 	if(dna?.species?.prevent_perspective_change && !force_reset) // This is in case a species needs to prevent perspective changes in certain cases, like Dullahans preventing perspective changes when they're looking through their head.
 		update_fullscreen()

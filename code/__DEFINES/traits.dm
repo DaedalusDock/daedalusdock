@@ -352,7 +352,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// always detect storm weathers
 #define TRAIT_DETECT_STORM "detect_storm"
 #define TRAIT_PRIMITIVE "primitive"
-#define TRAIT_GUNFLIP "gunflip"
 /// Increases chance of getting special traumas, makes them harder to cure
 #define TRAIT_SPECIAL_TRAUMA_BOOST "special_trauma_boost"
 #define TRAIT_SPACEWALK "spacewalk"

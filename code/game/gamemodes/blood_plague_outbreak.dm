@@ -11,6 +11,7 @@
 	if(.)
 		return
 
+	var/list/transit_levels = SSmapping.levels_by_trait(ZTRAIT_TRANSIT)
 	// If there's no non-vampires left alive, end the round.
 	// If this becomes too common, something is wrong, this is NOT a conversion antagonist.
 	for(var/mob/living/carbon/human in GLOB.human_list)
@@ -18,10 +19,12 @@
 			continue
 
 		var/turf/pos = get_turf(human)
-		if(!is_station_level(pos.z))
+		if(isnull(pos) || !(is_station_level(pos.z) || (pos.z in transit_levels)))
 			continue
 
 		if(IS_VAMPIRE(human))
 			continue
 
-		return TRUE
+		return FALSE
+
+	return TRUE

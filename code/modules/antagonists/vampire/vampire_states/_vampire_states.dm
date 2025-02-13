@@ -1,6 +1,8 @@
 /datum/vampire_state
 	var/datum/antagonist/vampire/parent
 
+	var/name = ""
+
 	/// The minimum stage for this datum to be active.
 	var/min_stage
 	/// Actions to grant while this stage is active.

@@ -1,9 +1,13 @@
 /datum/antagonist/vampire
-	name = "\improper Sanguine Plague Victim"
+	name = "Afflicted"
+	name_prefix = "an"
+	description = "You are infected with the Sanguine Plague, and have developed supernatural abilities alongside a thirst for human blood."
+
 	roundend_category = "vampires"
 	antagpanel_category = "Vampire"
 	job_rank = ROLE_VAMPIRE
-	antag_hud_name = "traitor"
+	antag_hud_name = "vampire"
+	ui_name = null
 
 	/// The thirst!
 	var/datum/point_holder/thirst_level = 0

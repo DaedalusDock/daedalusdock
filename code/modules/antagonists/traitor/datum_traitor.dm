@@ -1,5 +1,5 @@
 /datum/antagonist/traitor
-	name = "\improper Traitor"
+	name = "Traitor"
 	roundend_category = "traitors"
 	antagpanel_category = "Traitor"
 	job_rank = ROLE_TRAITOR

@@ -606,9 +606,15 @@ GLOBAL_LIST_INIT(job_display_order, list(
 
 /// Called by SSjob when a player joins the round as this job.
 /datum/job/proc/on_join_message(client/C, job_title_pref)
-	var/job_header = "<u><span style='font-size: 200%'>You are the <span style='color:[selection_color]'>[job_title_pref]</span></span></u>."
+	var/completed_title = "<span style='color:[selection_color]'>[job_title_pref]</span>"
+	var/prefix
+	if(spawn_positions == 1)
+		prefix = "the"
+	else
+		prefix = (uppertext(title[1]) in GLOB.vowels_upper) ? "an" : "a"
 
-	var/job_info = list("<br><br>[description]")
+	var/job_header = "<div style='font-size: 200%;text-align: center'>You are [prefix] [completed_title]</div>"
+	var/job_info = list("<hr>[description]")
 
 	if(supervisors)
 		job_info += "<br><br>As the <span style='color:[selection_color]'>[job_title_pref == title ? job_title_pref : "[job_title_pref] ([title])"]</span> \

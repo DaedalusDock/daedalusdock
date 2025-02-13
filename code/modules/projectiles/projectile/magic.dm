@@ -78,7 +78,7 @@
 			if(do_teleport(stuff, stuff, 10, channel = TELEPORT_CHANNEL_MAGIC))
 				teleammount++
 				var/datum/effect_system/fluid_spread/smoke/smoke = new
-				smoke.set_up(max(round(4 - teleammount),0), location = stuff.loc) //Smoke drops off if a lot of stuff is moved for the sake of sanity
+				smoke.set_up(max(QUESTIONABLE_FLOOR(4 - teleammount),0), location = stuff.loc) //Smoke drops off if a lot of stuff is moved for the sake of sanity
 				smoke.start()
 
 /obj/projectile/magic/safety

@@ -143,7 +143,7 @@
 
 /datum/map_template/proc/load(turf/T, centered = FALSE)
 	if(centered)
-		T = locate(T.x - round(width/2) , T.y - round(height/2) , T.z)
+		T = locate(T.x - QUESTIONABLE_FLOOR(width/2) , T.y - QUESTIONABLE_FLOOR(height/2) , T.z)
 	if(!T)
 		return
 	if(T.x+width > world.maxx)
@@ -195,7 +195,7 @@
 /datum/map_template/proc/get_affected_turfs(turf/T, centered = FALSE)
 	var/turf/placement = T
 	if(centered)
-		var/turf/corner = locate(placement.x - round(width/2), placement.y - round(height/2), placement.z)
+		var/turf/corner = locate(placement.x - QUESTIONABLE_FLOOR(width/2), placement.y - QUESTIONABLE_FLOOR(height/2), placement.z)
 		if(corner)
 			placement = corner
 	return block(placement, locate(placement.x+width-1, placement.y+height-1, placement.z))

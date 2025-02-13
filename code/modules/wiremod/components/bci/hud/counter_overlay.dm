@@ -83,10 +83,10 @@
 
 	counter_appearance = WEAKREF(alt_appearance)
 
-	var/cleared_number = clamp(round(counter_number.value), 0, 999)
+	var/cleared_number = clamp(ROUND(counter_number.value, 1), 0, 999)
 
 	for(var/i = 1 to 3)
-		var/cur_num = round(cleared_number / (10 ** (3 - i))) % 10
+		var/cur_num = ROUND(cleared_number / (10 ** (3 - i)), 1) % 10
 		var/image/number = image(icon = 'icons/hud/screen_bci.dmi', icon_state = "hud_number_[cur_num]", loc = owner, layer = RIPPLE_LAYER)
 		number.plane = ABOVE_LIGHTING_PLANE
 

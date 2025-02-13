@@ -87,9 +87,9 @@
 /obj/machinery/atmospherics/components/binary/temperature_gate/ui_data()
 	var/data = list()
 	data["on"] = on
-	data["temperature"] = round(target_temperature)
-	data["min_temperature"] = round(minimum_temperature)
-	data["max_temperature"] = round(max_temperature)
+	data["temperature"] = QUESTIONABLE_FLOOR(target_temperature)
+	data["min_temperature"] = QUESTIONABLE_FLOOR(minimum_temperature)
+	data["max_temperature"] = QUESTIONABLE_FLOOR(max_temperature)
 	return data
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/ui_act(action, params)

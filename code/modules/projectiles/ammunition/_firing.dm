@@ -7,7 +7,7 @@
 			if(randomspread)
 				spread = round((rand() - 0.5) * distro)
 			else //Smart spread
-				spread = round(1 - 0.5) * distro
+				spread = QUESTIONABLE_FLOOR(1 - 0.5) * distro
 
 		if(!throw_proj(target, targloc, user, params, spread, fired_from))
 			return FALSE
@@ -20,7 +20,7 @@
 
 	var/next_delay = click_cooldown_override || CLICK_CD_RANGE
 	if(HAS_TRAIT(user, TRAIT_DOUBLE_TAP))
-		next_delay = round(next_delay * 0.5)
+		next_delay = ROUND(next_delay * 0.5, 1)
 
 	user.changeNext_move(next_delay)
 	if(!tk_firing(user, fired_from))

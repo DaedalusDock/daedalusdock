@@ -189,7 +189,7 @@ no power level overlay is currently in the overlays list.
  *no power level overlay is currently in the overlays list.
  */
 /obj/machinery/field/generator/proc/check_power_level()
-	var/new_level = round(6 * power / field_generator_max_power)
+	var/new_level = QUESTIONABLE_FLOOR(6 * power / field_generator_max_power)
 	if(new_level != power_level)
 		power_level = new_level
 		update_appearance()

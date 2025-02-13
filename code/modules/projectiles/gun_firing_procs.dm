@@ -264,7 +264,7 @@
 	// The fire delay after any modifiers
 	var/modified_delay = fire_delay
 	if(user && HAS_TRAIT(user, TRAIT_DOUBLE_TAP))
-		modified_delay = ROUND_UP(fire_delay * 0.5)
+		modified_delay = ceil(fire_delay * 0.5)
 
 	// If this is a burst gun, pawn it off to another behemoth proc.
 	if(burst_size > 1)

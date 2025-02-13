@@ -123,7 +123,7 @@
 		if("code")
 			var/value = text2num(params["code"])
 			if(value)
-				value = round(value)
+				value = QUESTIONABLE_FLOOR(value)
 				code = clamp(value, 1, 100)
 				. = TRUE
 		if("reset")

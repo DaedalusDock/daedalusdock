@@ -108,8 +108,8 @@
 	var/data = list()
 	var/static/all_gases = xgm_gas_data.gases
 	data["on"] = on
-	data["rate"] = round(transfer_rate)
-	data["max_rate"] = round(ATMOS_DEFAULT_VOLUME_FILTER)
+	data["rate"] = QUESTIONABLE_FLOOR(transfer_rate)
+	data["max_rate"] = QUESTIONABLE_FLOOR(ATMOS_DEFAULT_VOLUME_FILTER)
 	data["last_draw"] = last_power_draw
 	data["max_power"] = power_rating
 

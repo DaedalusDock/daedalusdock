@@ -168,7 +168,7 @@ GLOBAL_LIST_INIT(reinforced_glass_recipes, list ( \
 	var/glacost = 500
 
 /obj/item/stack/sheet/rglass/cyborg/get_amount()
-	return min(round(source.energy / cost), round(glasource.energy / glacost))
+	return min(QUESTIONABLE_FLOOR(source.energy / cost), QUESTIONABLE_FLOOR(glasource.energy / glacost))
 
 /obj/item/stack/sheet/rglass/cyborg/use(used, transfer = FALSE, check = TRUE) // Requires special checks, because it uses two storages
 	if(get_amount(used)) //ensure we still have enough energy if called in a do_after chain

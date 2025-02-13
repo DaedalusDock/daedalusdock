@@ -503,7 +503,7 @@
 		vine_mutations_list[mutation] = max_mutation_severity - mutation.severity // this is intended to be before the potency check as the ideal maximum potency is used for weighting
 	if(potency != null)
 		mutativeness = potency * MUTATIVENESS_SCALE_FACTOR // If potency is 100, 10 mutativeness; if 1: 0.1 mutativeness
-		max_mutation_severity = round(potency * MAX_SEVERITY_LINEAR_COEFF + MAX_SEVERITY_CONSTANT_TERM) // If potency is 100, 20 max mutation severity; if 1, 10 max mutation severity
+		max_mutation_severity = QUESTIONABLE_FLOOR(potency * MAX_SEVERITY_LINEAR_COEFF + MAX_SEVERITY_CONSTANT_TERM) // If potency is 100, 20 max mutation severity; if 1, 10 max mutation severity
 	if(production != null && production <= MAX_POSSIBLE_PRODUCTIVITY_VALUE) //Prevents runtime in case production is set to 11.
 		spread_cap = SPREAD_CAP_SCALE_FACTOR * (MAX_POSSIBLE_PRODUCTIVITY_VALUE + 1 - production) //Best production speed of 1 increases spread_cap to 40, worst production speed of 10 lowers it to 4, even distribution
 		spread_multiplier = SPREAD_MULTIPLIER_MAX / (MAX_POSSIBLE_PRODUCTIVITY_VALUE + 1 - production) // Best production speed of 1: 10% of total vines will spread per second, worst production speed of 10: 1% of total vines (with minimum of 1) will spread per second

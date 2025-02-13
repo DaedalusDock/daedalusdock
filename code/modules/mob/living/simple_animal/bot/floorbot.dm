@@ -54,7 +54,7 @@
 	. = ..()
 	if(tilestack == gone)
 		if(tilestack && tilestack.max_amount < tilestack.amount) //split the stack if it exceeds its normal max_amount
-			var/iterations = round(tilestack.amount/tilestack.max_amount) //round() without second arg floors the value
+			var/iterations = QUESTIONABLE_FLOOR(tilestack.amount/tilestack.max_amount) //round() without second arg floors the value
 			for(var/a in 1 to iterations)
 				if(a == iterations)
 					tilestack.split_stack(null, tilestack.amount - tilestack.max_amount, tilestack.drop_location())

@@ -311,7 +311,7 @@
 		if(possible_enemy == controller.pawn || (!enemies[possible_enemy] && (!controller.blackboard[BB_MONKEY_AGGRESSIVE] || HAS_AI_CONTROLLER_TYPE(possible_enemy, /datum/ai_controller/monkey)))) //Are they an enemy? (And do we even care?)
 			continue
 		// Weighted list, so the closer they are the more likely they are to be chosen as the enemy
-		valids[possible_enemy] = CEILING(100 / (get_dist(controller.pawn, possible_enemy) || 1), 1)
+		valids[possible_enemy] = CEILING2(100 / (get_dist(controller.pawn, possible_enemy) || 1), 1)
 
 	if(!valids.len)
 		return BEHAVIOR_PERFORM_FAILURE

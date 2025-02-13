@@ -21,7 +21,7 @@ GLOBAL_REAL_VAR(bitflag_lists) = list()
 				if (value < 0) { \
 					value = MAX_S_TURF + 1 + abs(value); \
 				} \
-				new_bitflag_list["[round(value / 24)]"] |= (1 << (value % 24)); \
+				new_bitflag_list["[QUESTIONABLE_FLOOR(value / 24)]"] |= (1 << (value % 24)); \
 			}; \
 			target = global.bitflag_lists[txt_signature] = new_bitflag_list; \
 		}; \

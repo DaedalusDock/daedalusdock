@@ -110,7 +110,7 @@
 		return
 	else if(T.cooldown)
 		var/seconds_left = max(0, (T.cooldown_timer - world.time) / 10)
-		return "[round(seconds_left)]"
+		return "[QUESTIONABLE_FLOOR(seconds_left)]"
 
 /obj/effect/countdown/doomsday
 	name = "doomsday countdown"
@@ -131,7 +131,7 @@
 		return
 	else
 		var/time_left = max(0, (A.death_time - world.time) / 10)
-		return round(time_left)
+		return QUESTIONABLE_FLOOR(time_left)
 
 /obj/effect/countdown/hourglass
 	name = "hourglass countdown"
@@ -142,7 +142,7 @@
 		return
 	else
 		var/time_left = max(0, (H.finish_time - world.time) / 10)
-		return round(time_left)
+		return QUESTIONABLE_FLOOR(time_left)
 
 /obj/effect/countdown/arena
 	invisibility = 0
@@ -155,7 +155,7 @@
 	else
 		var/obj/machinery/computer/arena/C = A.get_controller()
 		var/time_left = max(0, (C.start_time - world.time) / 10)
-		return round(time_left)
+		return QUESTIONABLE_FLOOR(time_left)
 
 /obj/effect/countdown/flower_bud
 	name = "flower bud countdown"

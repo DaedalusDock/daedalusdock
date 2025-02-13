@@ -67,7 +67,7 @@ GLOBAL_LIST_EMPTY(exploration_sites)
 	var/list/category_weights = base_weights.Copy()
 	for(var/modifier in distance_modifiers)
 		category_weights[modifier] += distance*distance_modifiers[modifier]
-	var/min_events_amount = CEILING(0.4*distance+0.2,1)
+	var/min_events_amount = CEILING2(0.4*distance+0.2,1)
 	for(var/i in 1 to rand(min_events_amount,min_events_amount+2))
 		var/chosen_category = pick_weight(category_weights)
 		var/datum/exploration_event/event = generate_event(site_traits,chosen_category)

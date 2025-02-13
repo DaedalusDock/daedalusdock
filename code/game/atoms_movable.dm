@@ -355,8 +355,8 @@
 		new_locs = block(
 			newloc,
 			locate(
-				min(world.maxx, newloc.x + CEILING(bound_width / 32, 1)),
-				min(world.maxy, newloc.y + CEILING(bound_height / 32, 1)),
+				min(world.maxx, newloc.x + CEILING2(bound_width / 32, 1)),
+				min(world.maxy, newloc.y + CEILING2(bound_height / 32, 1)),
 				newloc.z
 				)
 		) // If this is a multi-tile object then we need to predict the new locs and check if they allow our entrance.
@@ -843,8 +843,8 @@
 				var/list/new_locs = block(
 					destination,
 					locate(
-						min(world.maxx, destination.x + ROUND_UP(bound_width / 32)),
-						min(world.maxy, destination.y + ROUND_UP(bound_height / 32)),
+						min(world.maxx, destination.x + ceil(bound_width / 32)),
+						min(world.maxy, destination.y + ceil(bound_height / 32)),
 						destination.z
 					)
 				)

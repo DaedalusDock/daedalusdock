@@ -87,7 +87,7 @@
 * Arguments:
 * * heart_sender: The reference to the mob who sent the commendation, just for the purposes of logging
 * * duration: How long from the moment it's applied the heart will last
-* * instant: If TRUE (or if the round is already over), we'll give them the heart status now, if FALSE, we wait until the end of the round (which is the standard behavior)
+* * instant: If TRUE (or if the round is already over), we'll give them the heart status now, if FALSE, we wait until the end of the QUESTIONABLE_FLOOR(which is the standard behavior)
 */
 /mob/proc/receive_heart(mob/heart_sender, duration = 24 HOURS, instant = FALSE)
 	if(!client)

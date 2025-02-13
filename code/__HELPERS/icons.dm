@@ -324,10 +324,10 @@ world
 /proc/AngleToHue(angle)
 	// normalize hsv in case anything is screwy
 	if(angle < 0 || angle >= 360)
-		angle -= 360 * round(angle / 360)
+		angle -= 360 * ROUND(angle / 360, 1)
 	var/hue = angle * (1530/360)
 	// Decompress hue
-	hue += round(hue / 255)
+	hue += ROUND(hue / 255, 1)
 	return hue
 
 // positive angle rotates forward through red->green->blue
@@ -344,16 +344,17 @@ world
 	HSV[1] -= HSV[1] >> 8
 
 	if(angle < 0 || angle >= 360)
-		angle -= 360 * round(angle / 360)
-	HSV[1] = round(HSV[1] + angle * (1530/360), 1)
+		angle -= 360 * ROUND(angle / 360, 1)
+	HSV[1] = ROUND(HSV[1] + angle * (1530/360), 1)
 
 	// normalize hue
 	if(HSV[1] < 0 || HSV[1] >= 1530)
 		HSV[1] %= 1530
 	if(HSV[1] < 0)
 		HSV[1] += 1530
+
 	// decompress hue
-	HSV[1] += round(HSV[1] / 255)
+	HSV[1] += ROUND(HSV[1] / 255, 1)
 
 	return hsv2rgb(HSV)
 

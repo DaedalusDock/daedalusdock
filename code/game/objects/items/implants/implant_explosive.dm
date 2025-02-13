@@ -44,9 +44,9 @@
 		popup = FALSE
 		if(response != "Yes")
 			return 0
-	heavy = round(heavy)
-	medium = round(medium)
-	weak = round(weak)
+	heavy = QUESTIONABLE_FLOOR(heavy)
+	medium = QUESTIONABLE_FLOOR(medium)
+	weak = QUESTIONABLE_FLOOR(weak)
 	to_chat(imp_in, span_notice("You activate your [name]."))
 	active = TRUE
 	var/turf/boomturf = get_turf(imp_in)

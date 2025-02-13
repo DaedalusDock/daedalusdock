@@ -606,7 +606,7 @@
 	return core?.max_charge_amount() || 1 //avoid dividing by 0
 
 /obj/item/mod/control/proc/get_charge_percent()
-	return ROUND_UP((get_charge() / get_max_charge()) * 100)
+	return ceil((get_charge() / get_max_charge()) * 100)
 
 /obj/item/mod/control/proc/add_charge(amount)
 	return core?.add_charge(amount) || FALSE

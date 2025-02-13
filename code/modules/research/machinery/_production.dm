@@ -133,7 +133,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 	amount = clamp(amount, 1, 50)
 
 	for(var/M in D.materials)
-		power += round(D.materials[M] * amount / 35)
+		power += QUESTIONABLE_FLOOR(D.materials[M] * amount / 35)
 
 	power = min(active_power_usage, power)
 	use_power(power)

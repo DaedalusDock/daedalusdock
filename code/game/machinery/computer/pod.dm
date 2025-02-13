@@ -72,7 +72,7 @@
 	// If the cooldown has finished, just display the time. If the cooldown hasn't finished, display the cooldown.
 	var/display_time = COOLDOWN_FINISHED(src, massdriver_countdown) ? time : COOLDOWN_TIMELEFT(src, massdriver_countdown) * 0.1
 	data["connected"] = connected ? TRUE : FALSE
-	data["seconds"] = round(display_time % 60)
+	data["seconds"] = QUESTIONABLE_FLOOR(display_time % 60)
 	data["minutes"] = round((display_time - data["seconds"]) / 60)
 	data["timing"] = timing
 	data["power"] = connected ? connected.power : 0.25
@@ -118,7 +118,7 @@
 			var/value = text2num(params["adjust"])
 			if(!value)
 				return
-			value = round(time + value)
+			value = QUESTIONABLE_FLOOR(time + value)
 			time = clamp(value, 0, 120)
 			return TRUE
 		if("door")

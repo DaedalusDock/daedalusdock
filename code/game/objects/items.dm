@@ -762,7 +762,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /// Returns a number to feed into prob() to determine if the attack was blocked.
 /obj/item/proc/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
-	var/block_chance_modifier = round(damage / -3)
+	var/block_chance_modifier = QUESTIONABLE_FLOOR(damage / -3)
 	var/final_block_chance = block_chance - (clamp((armor_penetration - src.armor_penetration)/2,0,100)) + block_chance_modifier
 	return final_block_chance
 

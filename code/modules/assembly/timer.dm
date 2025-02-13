@@ -97,8 +97,8 @@
 
 /obj/item/assembly/timer/ui_data(mob/user)
 	var/list/data = list()
-	data["seconds"] = round(time % 60)
-	data["minutes"] = round((time - data["seconds"]) / 60)
+	data["seconds"] = ROUND(time % 60, 1)
+	data["minutes"] = ROUND((time - data["seconds"]) / 60, 1)
 	data["timing"] = timing
 	data["loop"] = loop
 	return data
@@ -121,7 +121,7 @@
 		if("input")
 			var/value = text2num(params["adjust"])
 			if(value)
-				value = round(time + value)
+				value = ROUND(time + value, 1)
 				time = clamp(value, 1, 600)
 				saved_time = time
 				. = TRUE

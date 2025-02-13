@@ -103,7 +103,7 @@
 			. = TRUE
 		if("code")
 			code = text2num(params["code"])
-			code = round(code)
+			code = QUESTIONABLE_FLOOR(code)
 			. = TRUE
 		if("reset")
 			if(params["reset"] == "freq")

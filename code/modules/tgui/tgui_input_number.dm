@@ -27,7 +27,7 @@
 	// Client does NOT have tgui_input on: Returns regular input
 	if(!user.client.prefs.read_preference(/datum/preference/toggle/tgui_input))
 		var/input_number = input(user, message, title, default) as null|num
-		return clamp(round_value ? round(input_number) : input_number, min_value, max_value)
+		return clamp(round_value ? ROUND(input_number, 1) : input_number, min_value, max_value)
 	var/datum/tgui_input_number/number_input = new(user, message, title, default, max_value, min_value, timeout, round_value)
 	number_input.ui_interact(user)
 	number_input.wait()
@@ -63,7 +63,7 @@
 	// Client does NOT have tgui_input on: Returns regular input
 	if(!user.client.prefs.read_preference(/datum/preference/toggle/tgui_input))
 		var/input_number = input(user, message, title, default) as null|num
-		return clamp(round_value ? round(input_number) : input_number, min_value, max_value)
+		return clamp(round_value ? ROUND(input_number, 1) : input_number, min_value, max_value)
 	var/datum/tgui_input_number/async/number_input = new(user, message, title, default, max_value, min_value, callback, timeout, round_value)
 	number_input.ui_interact(user)
 
@@ -166,7 +166,7 @@
 		if("submit")
 			if(!isnum(params["entry"]))
 				CRASH("A non number was input into tgui input number by [usr]")
-			var/choice = round_value ? round(params["entry"]) : params["entry"]
+			var/choice = round_value ? ROUND(params["entry"], 1) : params["entry"]
 			if(choice > max_value)
 				CRASH("A number greater than the max value was input into tgui input number by [usr]")
 			if(choice < min_value)

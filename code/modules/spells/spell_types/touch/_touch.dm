@@ -20,7 +20,7 @@
 	return ..()
 
 /datum/action/cooldown/spell/touch/Remove(mob/living/remove_from)
-	remove_hand(remove_from)
+	remove_hand(remove_from, TRUE)
 	return ..()
 
 // PreActivate is overridden to not check is_valid_target on the caster, as it makes less sense.
@@ -89,7 +89,7 @@
 		QDEL_NULL(attached_hand)
 
 	if(reset_cooldown_after)
-		if(hand_owner)
+		if(hand_owner && attached_hand)
 			to_chat(hand_owner, drop_message)
 		reset_spell_cooldown()
 	else
@@ -224,8 +224,10 @@
 	righthand_file = 'icons/mob/inhands/misc/touchspell_righthand.dmi'
 	icon_state = "latexballon"
 	inhand_icon_state = null
+
 	item_flags = NEEDS_PERMIT | ABSTRACT
 	w_class = WEIGHT_CLASS_HUGE
+
 	force = 0
 	throwforce = 0
 	throw_range = 0

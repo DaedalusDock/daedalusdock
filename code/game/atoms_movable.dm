@@ -1136,7 +1136,7 @@
 	return
 
 
-/atom/movable/proc/do_attack_animation(atom/attacked_atom, visual_effect_icon, obj/item/used_item, no_effect, fov_effect = TRUE)
+/atom/movable/proc/do_attack_animation(atom/attacked_atom, visual_effect_icon, obj/item/used_item, no_effect, fov_effect = TRUE, do_hurt = TRUE)
 	if(!no_effect && (visual_effect_icon || used_item))
 		do_item_attack_animation(attacked_atom, visual_effect_icon, used_item)
 
@@ -1171,7 +1171,8 @@
 		animate(AM, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff, transform=rotated_transform, time = 1, easing=BACK_EASING|EASE_IN, flags = ANIMATION_PARALLEL)
 		animate(pixel_x = pixel_x - pixel_x_diff, pixel_y = pixel_y - pixel_y_diff, transform=initial_transform, time = 2, easing=SINE_EASING, flags = ANIMATION_PARALLEL)
 
-	attacked_atom.do_hurt_animation()
+	if(do_hurt)
+		attacked_atom.do_hurt_animation()
 
 /// Plays an animation for getting hit.
 /atom/proc/do_hurt_animation()

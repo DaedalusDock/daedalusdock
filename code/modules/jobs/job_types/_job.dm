@@ -13,8 +13,8 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/datum/job/station_engineer,
 	/datum/job/atmospheric_technician,
 	// Medical
-	/datum/job/chief_medical_officer,
-	/datum/job/doctor,
+	/datum/job/augur,
+	/datum/job/acolyte,
 	/datum/job/paramedic,
 	/datum/job/chemist,
 	/datum/job/virologist,
@@ -47,7 +47,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	var/description
 
 	/// A string added to the on-join block to tell you how to use your radio.
-	var/radio_help_message = "<b>Prefix your message with :h to speak on your department's radio. To see other prefixes, look closely at your headset.</b>"
+	var/radio_help_message = "<b>Prefix your message with :h to speak on your faction's radio. To see other prefixes, look closely at your headset.</b>"
 
 	/// Innate skill levels unlocked at roundstart. Based on config.jobs_have_minimal_access config setting, for example with a skeleton crew. Format is list(/datum/skill/foo = SKILL_EXP_NOVICE) with exp as an integer or as per code/_DEFINES/skills.dm
 	var/list/skills
@@ -318,10 +318,10 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	uniform = /obj/item/clothing/under/color/grey
 	id = /obj/item/card/id/advanced
 	ears = /obj/item/radio/headset
-	belt = /obj/item/modular_computer/tablet/pda
 	back = /obj/item/storage/backpack
 	shoes = /obj/item/clothing/shoes/sneakers/black
 	box = /obj/item/storage/box/survival
+	belt = /obj/item/modular_computer/tablet/pda
 
 	id_in_wallet = TRUE
 	preload = TRUE // These are used by the prefs ui, and also just kinda could use the extra help at roundstart

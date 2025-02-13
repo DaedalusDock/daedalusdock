@@ -209,7 +209,7 @@
 			"AMOUNT" = wound.amount,
 			"DAMAGE" = wound.damage,
 			"HEALING" = BOOLEAN(wound.can_autoheal()),
-			"BLEEDING" = wound.bleeding() ? "[WOUND_BLEED_RATE(wound)]u" : null,
+			"BLEEDING" = wound.bleeding() ? "[WOUND_BLEED_RATE(wound)]u" : "NONE",
 			"CLAMPED" = BOOLEAN(wound.clamped),
 			"TREATED" = BOOLEAN(wound.is_treated()),
 			"SURGICAL" = BOOLEAN(wound.is_surgical()),

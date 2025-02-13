@@ -95,7 +95,6 @@
 		wear_suit,
 		gloves,
 		shoes,
-		belt,
 		w_uniform,
 		head,
 		glasses,

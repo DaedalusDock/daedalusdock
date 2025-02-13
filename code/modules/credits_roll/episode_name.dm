@@ -395,7 +395,7 @@
 		if(GLOB.nuke_time_left < 30)
 			episode_names += new /datum/episode_name/rare("[GLOB.nuke_time_left] SECOND[GLOB.nuke_time_left == 1 ? "" : "S"] TO MIDNIGHT", "The nuke was defused with [GLOB.nuke_time_left] seconds remaining.", (30 - GLOB.nuke_time_left) * 100)
 
-	if(istype(SSticker.mode, /datum/game_mode/blood_plague))
+	if(istype(SSticker.mode, /datum/game_mode/one_antag/blood_plague))
 		var/list/vampire_episode_names = list(
 			"The Masquerade",
 			"Blood Hunt",

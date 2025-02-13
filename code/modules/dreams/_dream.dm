@@ -10,12 +10,12 @@ GLOBAL_DATUM_INIT(dream_controller, /datum/dream_controller, new)
 			continue
 
 		var/datum/dream/dream_instance = new dream_type
-		all_dreams_weighted[dream_type] = dream_instance
+		all_dreams_weighted[dream_instance] = dream_instance.weight
 
 		if(isnull(dreams_by_class_weighted[dream_instance.dream_class]))
 			dreams_by_class_weighted[dream_instance.dream_class] = list()
 
-		dreams_by_class_weighted[dream_instance.dream_class][dream_type] = dream_instance.dream_class
+		dreams_by_class_weighted[dream_instance.dream_class][dream_instance] = dream_instance.weight
 
 /datum/dream_controller/proc/get_dreams(dream_class) as /list
 	RETURN_TYPE(/list)

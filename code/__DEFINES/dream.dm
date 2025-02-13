@@ -7,3 +7,4 @@
 #define DREAM_CLASS_GENERIC "generic_dream"
 #define DREAM_CLASS_DETECTIVE "detective_dream"
 #define DREAM_CLASS_AETHERITE "aether_dream"
+#define DREAM_CLASS_VAMPIRE "vampire_dream"

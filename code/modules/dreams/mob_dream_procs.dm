@@ -39,7 +39,6 @@
 		return null
 
 	var/list/dream_pool
-	var/datum/dream/dream
 	if(mind?.assigned_role?.title == JOB_DETECTIVE)
 		dream_pool = GLOB.dream_controller.get_dreams(DREAM_CLASS_DETECTIVE).Copy()
 
@@ -49,6 +48,10 @@
 	else
 		dream_pool = GLOB.dream_controller.get_dreams(DREAM_CLASS_GENERIC).Copy()
 
+	if(mind.has_antag_datum(/datum/antagonist/vampire) || locate(/datum/pathogen/blood_plague) in diseases)
+		dream_pool += GLOB.dream_controller.get_dreams(DREAM_CLASS_VAMPIRE).Copy()
+
+	var/datum/dream/dream
 	while(length(dream_pool))
 		dream = pick_weight(dream_pool)
 		dream_pool -= dream

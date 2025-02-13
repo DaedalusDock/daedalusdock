@@ -332,7 +332,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 			tgui_alert(target, "You're an important role! [AHELP_FIRST_MESSAGE]")
 		var/datum/antagonist/antag = target.mind.has_antag_datum(/datum/antagonist)
 		if(antag)
-			tgui_alert(target, "You're \a [antag.name]! [AHELP_FIRST_MESSAGE]")
+			tgui_alert(target, "You're [antag.get_name()]! [AHELP_FIRST_MESSAGE]")
 
 	if(!istype(target) || !can_interact(user) || !target.Adjacent(user) || !ismob(target) || isanimal(target) || !istype(user.loc, /turf) || target.buckled)
 		return

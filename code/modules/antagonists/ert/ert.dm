@@ -228,7 +228,7 @@
 	if(!ert_team)
 		return
 
-	to_chat(owner, "<span class='warningplain'><B><font size=3 color=red>You are the [name].</font></B></span>")
+	to_chat(owner, "<span class='warningplain'><B><font size=3 color=red>You are [get_name()].</font></B></span>")
 
 	var/missiondesc = "Your squad is being sent on a mission to [station_name()] by Nanotrasen's Security Division."
 	if(leader) //If Squad Leader
@@ -316,7 +316,7 @@
 
 
 /datum/antagonist/ert/families/undercover_cop/greet()
-	var/missiondesc = "<span class='warningplain'><B><font size=3 color=red>You are the [name].</font></B>"
+	var/missiondesc = "<span class='warningplain'><B><font size=3 color=red>You are [get_name()].</font></B>"
 	missiondesc += "<BR><B><font size=3 color=red>You are NOT a Nanotrasen Employee. You work for the local government.</font></B>"
 	missiondesc += "<BR>You are an undercover police officer on board [station_name()]. You've been sent here by the Spinward Stellar Coalition because of suspected abusive behavior by the security department, and to keep tabs on a potential criminal organization operation."
 	missiondesc += "<BR><B>Your Mission</B>:"

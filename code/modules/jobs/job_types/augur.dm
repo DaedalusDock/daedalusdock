@@ -1,7 +1,6 @@
 /datum/job/augur
 	title = JOB_AUGUR
-	description = "Coordinate doctors and other medbay employees, ensure they \
-		know how to save lives, check for injuries on the crew monitor."
+
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	head_announce = list(RADIO_CHANNEL_MEDICAL)
 	faction = FACTION_STATION
@@ -48,25 +47,16 @@
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
+/datum/job/augur/New()
+	. = ..()
+	description = "You are high ranking member of the Aether Association, and a powerful Hematic. \
+	Lead your <span style='color:[/datum/job/acolyte::selection_color]'>Acolytes</span> in ensuring the Sacred Cycle is upheld. \
+	Save those whose time has not yet come, \
+	and end those who violate the circle of life. \
+	Protect the Biblion tou Hema with your life."
 
 /datum/job/augur/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
-
-/datum/job/augur/on_join_popup(client/C, job_title_pref)
-	var/content = {"
-		<div style='width:100%; text-align:center; font-size: 20px'>
-		You are the <b>[title]</b>
-		</div>
-		<br>
-		<div style='padding: 0px 30px; text-align: center; font-size: 14px;'>
-		You are high ranking member of the Aether Association, and a powerful Hematic. Ensure the cycle of life and death continues,
-		saving those whose time has not yet come, and ending those who violate the Sacred Cycle. Protect the Biblion tou Hema with your life.
-		</div>
-	"}
-	var/datum/browser/popup = new(C.mob, "jobinfo", "Role Information", 480, 360)
-	popup.set_window_options("can_close=1;can_resize=0")
-	popup.set_content(content)
-	popup.open(FALSE)
 
 /datum/outfit/job/cmo
 	name = JOB_AUGUR

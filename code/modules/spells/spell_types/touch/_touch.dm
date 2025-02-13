@@ -89,7 +89,7 @@
 		QDEL_NULL(attached_hand)
 
 	if(reset_cooldown_after)
-		if(hand_owner)
+		if(hand_owner && attached_hand)
 			to_chat(hand_owner, drop_message)
 		reset_spell_cooldown()
 	else

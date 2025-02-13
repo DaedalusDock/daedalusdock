@@ -1,12 +1,9 @@
 /datum/job/acolyte
 	title = JOB_ACOLYTE
-	description = "Save lives, run around the station looking for victims, \
-		scan everyone in sight"
 	department_head = list(JOB_AUGUR)
 	faction = FACTION_STATION
 	total_positions = 5
 	spawn_positions = 3
-	supervisors = "the medical director"
 	selection_color = "#013d3b"
 	exp_granted_type = EXP_TYPE_CREW
 
@@ -43,6 +40,11 @@
 	rpg_title = "Cleric"
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
+/datum/job/acolyte/New()
+	. = ..()
+	description = "A member of a strange religious organization, you aid your \
+	<span style='color:[/datum/job/augur::selection_color]'>Augur</span> in maintaining the Sacred Cycle. \
+	Aid those who are not yet ready to pass unto the Ephemeral Twilight, and condemn those who attempt to avoid it."
 
 /datum/outfit/job/doctor
 	name = JOB_ACOLYTE

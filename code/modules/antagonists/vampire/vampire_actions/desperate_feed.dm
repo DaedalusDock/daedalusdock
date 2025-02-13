@@ -26,7 +26,7 @@
 	spawn(-1)
 		var/mob/living/carbon/human/user = owner
 		var/obj/item/bodypart/arm/arm = user.get_active_hand()
-		var/obj/item/covering = user.get_item_covering_bodypart(arm)
+		var/obj/item/covering = user.get_item_covering_bodypart(arm, thickmaterial_only = TRUE)
 
 		if(covering)
 			user.visible_message(span_notice("[user] bites down onto [user.p_their()] arm covered by [covering]."))
@@ -84,5 +84,5 @@
 		user.add_splatter_floor(user.loc, TRUE)
 
 	var/datum/antagonist/vampire/vamp_datum = user.mind.has_antag_datum(/datum/antagonist/vampire)
-	vamp_datum.thirst_level.remove_points(10)
+	vamp_datum.thirst_level.remove_points(30)
 	vamp_datum.update_thirst_stage()

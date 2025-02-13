@@ -782,10 +782,15 @@ SUBSYSTEM_DEF(ticker)
 ///Generate a list of gamemodes we can play.
 /datum/controller/subsystem/ticker/proc/draft_gamemodes()
 	var/list/datum/game_mode/runnable_modes = list()
-	for(var/path in subtypesof(/datum/game_mode))
+	for(var/datum/game_mode/path as anything in subtypesof(/datum/game_mode))
+		if(isabstract(path))
+			continue
+
 		var/datum/game_mode/M = new path()
 		if(!(M.weight == GAMEMODE_WEIGHT_NEVER) && !M.check_for_errors())
 			runnable_modes[path] = M.weight
+		else
+			qdel(M)
 	return runnable_modes
 
 /datum/controller/subsystem/ticker/proc/get_mode_name(bypass_secret)
@@ -825,15 +830,15 @@ SUBSYSTEM_DEF(ticker)
 	CHECK_TICK
 	//Configure mode and assign player to special mode stuff
 	var/can_continue = 0
-	can_continue = src.mode.execute_roundstart() //Choose antagonists
+	can_continue = mode.execute_roundstart() //Choose antagonists
 	CHECK_TICK
-	can_continue = can_continue && SSjob.DivideOccupations(mode.required_jobs) //Distribute jobs
+	can_continue = can_continue && SSjob.DivideOccupations(mode.get_required_jobs()) //Distribute jobs
 	CHECK_TICK
 
 	if(!GLOB.Debug2)
 		if(!can_continue)
-			log_game("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error].")
-			message_admins("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error].")
+			log_game("[get_mode_name(TRUE)] failed pre_setup, cause(s): [english_list(mode.setup_error)].")
+			message_admins("[get_mode_name(TRUE)] failed pre_setup, cause(s): [english_list(mode.setup_error)].")
 			to_chat(world, "<B>Error setting up [get_mode_name(TRUE)].</B> Reverting to pre-game lobby.")
 			mode.on_failed_execute()
 			QDEL_NULL(mode)

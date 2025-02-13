@@ -3,15 +3,6 @@
 	w_class = WEIGHT_CLASS_BULKY
 	storage_type = /datum/storage/holster
 
-/obj/item/storage/belt/holster/equipped(mob/user, slot, initial)
-	. = ..()
-	if(slot == ITEM_SLOT_BELT || ITEM_SLOT_SUITSTORE)
-		ADD_TRAIT(user, TRAIT_GUNFLIP, CLOTHING_TRAIT)
-
-/obj/item/storage/belt/holster/unequipped(mob/user, silent)
-	. = ..()
-	REMOVE_TRAIT(user, TRAIT_GUNFLIP, CLOTHING_TRAIT)
-
 /// Detective's shoulder holster.
 /obj/item/storage/belt/holster/shoulder
 	name = "revolver shoulder holster"

@@ -1,5 +1,6 @@
 /datum/antagonist/brother
-	name = "\improper Brother"
+	name = "Blood Brother"
+
 	antagpanel_category = "Brother"
 	job_rank = ROLE_BROTHER
 	var/special_role = ROLE_BROTHER

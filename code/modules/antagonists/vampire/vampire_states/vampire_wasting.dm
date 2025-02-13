@@ -1,4 +1,5 @@
 /datum/vampire_state/wasting
+	name = "Wasting"
 	min_stage = THIRST_STAGE_WASTING
 
 	progress_into_message = span_obviousnotice("You feel as though you will not last long. If you do not feed, the Thirst will claim you soon enough.")

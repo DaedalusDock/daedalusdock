@@ -77,7 +77,9 @@
 	update_movespeed()
 	update_moodlet()
 
-	owner?.med_hud_set_health()
+	if(owner)
+		owner.med_hud_set_health()
+		SSblackbox.record_feedback("amount", "heartattacks", 1)
 
 /obj/item/organ/heart/proc/update_movespeed()
 	if(isnull(owner))

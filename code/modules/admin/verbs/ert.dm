@@ -199,7 +199,7 @@
 			ert_operative.mind.set_assigned_role(SSjob.GetJobType(ert_antag.ert_job_path))
 
 			//Logging and cleanup
-			log_game("[key_name(ert_operative)] has been selected as an [ert_antag.name]")
+			log_game("[key_name(ert_operative)] has been selected as [ert_antag.get_name()]")
 			numagents--
 			teamSpawned++
 

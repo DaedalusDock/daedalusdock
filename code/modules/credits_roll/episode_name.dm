@@ -30,14 +30,14 @@
 		if(15)
 			thename += ": THE SEASON FINALE"
 		if(16 to 40)
-			if(REALTIMEOFDAY - SSticker.round_start_timeofday > 60 * 60 * 3) //3 hours
+			if(round_timeofday() > 3 HOURS)
 				thename += ": THE FEATURE LENGTH PRESENTATION"
 		if(41 to 65)
-			if(REALTIMEOFDAY - SSticker.round_start_timeofday > 0 && REALTIMEOFDAY - SSticker.round_start_timeofday < 60 * 30) //30 min
+			if(round_timeofday() in 1 to 30 MINUTES)
 				thename += ": ABRIDGED"
 		else
 			for(var/client/C in GLOB.clients)
-				if(C.ckey == "francinum" || C.ckey == "kapu1178" || C.ckey == "gonenoculer5")
+				if(C.ckey == "francinum" || C.ckey == "kapu1178")
 					thename += ": THE DIRECTOR'S CUT"
 					break
 
@@ -53,56 +53,23 @@
 	episode_names += new /datum/episode_name("[pick("SPACE", "SEXY", "DRAGON", "WARLOCK", "LAUNDRY", "GUN", "ADVERTISING", "DOG", "CARBON MONOXIDE", "NINJA", "WIZARD", "SOCRATIC", "JUVENILE DELIQUENCY", "POLITICALLY MOTIVATED", "RADTACULAR SICKNASTY", "CORPORATE", "MEGA")] [pick("QUEST", "FORCE", "ADVENTURE")]", weight=25)
 
 	draft_spooky_episodes()
+	draft_gamemode_episodes()
+
+	if(round_timeofday() < 5 MINUTES)
+		var/list/end_too_soon_names = list(
+			"The Divine Comedy",
+			"I Have No Mouth, and I Must Scream",
+			"KAPUUUUUUUUUUUUUUUUUUUUUUUUUUUUU",
+			"Functional Programming",
+		)
+
+		episode_names += new /datum/episode_name(pick(end_too_soon_names), "The round was cut short.", 10000)
 
 	switch(GLOB.start_state.score(GLOB.end_state))
 		if(-INFINITY to -2000)
 			episode_names += new /datum/episode_name("[pick("THE CREW'S PUNISHMENT", "A PUBLIC RELATIONS NIGHTMARE", "[uppr_name]: A NATIONAL CONCERN", "WITH APOLOGIES TO THE CREW", "THE CREW BITES THE DUST", "THE CREW BLOWS IT", "THE CREW GIVES UP THE DREAM", "THE CREW IS DONE FOR", "THE CREW SHOULD NOT BE ALLOWED ON TV", "THE END OF [uppr_name] AS WE KNOW IT")]", "Extremely low score of [GLOB.start_state.score(GLOB.end_state)].", 250)
 		if(4500 to INFINITY)
 			episode_names += new /datum/episode_name("[pick("THE CREW'S DAY OUT", "THIS SIDE OF PARADISE", "[uppr_name]: A SITUATION COMEDY", "THE CREW'S LUNCH BREAK", "THE CREW'S BACK IN BUSINESS", "THE CREW'S BIG BREAK", "THE CREW SAVES THE DAY", "THE CREW RULES THE WORLD", "THE ONE WITH ALL THE SCIENCE AND PROGRESS AND PROMOTIONS AND ALL THE COOL AND GOOD THINGS", "THE TURNING POINT")]", "High score of [GLOB.start_state.score(GLOB.end_state)].", 250)
-
-	if(GAMEMODE_WAS_DYNAMIC)
-		var/datum/game_mode/dynamic/dynameme = SSticker.mode
-		switch(dynameme.threat_level)
-			if(0 to 35)
-				episode_names += new /datum/episode_name("[pick("THE DAY [uppr_name] STOOD STILL", "MUCH ADO ABOUT NOTHING", "WHERE SILENCE HAS LEASE", "RED HERRING", "HOME ALONE", "GO BIG OR GO [uppr_name]", "PLACEBO EFFECT", "ECHOES", "SILENT PARTNERS", "WITH FRIENDS LIKE THESE...", "EYE OF THE STORM", "BORN TO BE MILD", "STILL WATERS")]", "Low threat level of [dynameme.threat_level]%.", 150)
-				if(GLOB.start_state.score(GLOB.end_state) < -1000)
-					episode_names += new /datum/episode_name/rare("[pick("HOW OH HOW DID IT ALL GO SO WRONG?!", "EXPLAIN THIS ONE TO THE EXECUTIVES", "THE CREW GOES ON SAFARI", "OUR GREATEST ENEMY", "THE INSIDE JOB", "MURDER BY PROXY")]", "Low threat level of [dynameme.threat_level]%... but the crew still had a very low score.", GLOB.start_state.score(GLOB.end_state)/150*-2)
-				if((REALTIMEOFDAY - SSticker.round_start_timeofday) > 60 * 60 * 3) //3 hours
-					episode_names += new /datum/episode_name/rare("THE LONG NIGHT", "Low threat level of [dynameme.threat_level]%, and the round lasted over three hours.", 300)
-			if(35 to 60)
-				episode_names += new /datum/episode_name("[pick("THERE MIGHT BE BLOOD", "IT CAME FROM [uppr_name]!", "THE [uppr_name] INCIDENT", "THE ENEMY WITHIN", "MIDDAY MADNESS", "AS THE CLOCK STRIKES TWELVE", "CONFIDENCE AND PARANOIA", "THE PRANK THAT WENT WAY TOO FAR", "A HOUSE DIVIDED", "[uppr_name] TO THE RESCUE!", "ESCAPE FROM [uppr_name]", \
-				"HIT AND RUN", "THE AWAKENING", "THE GREAT ESCAPE", "THE LAST TEMPTATION OF [uppr_name]", "[uppr_name]'S FALL FROM GRACE", "BETTER THE [uppr_name] YOU KNOW...", "PLAYING WITH FIRE", "UNDER PRESSURE", "THE DAY BEFORE THE DEADLINE", "[uppr_name]'S MOST WANTED", "THE BALLAD OF [uppr_name]")]", "Moderate threat level of [dynameme.threat_level]%.", 150)
-			if(60 to 100)
-				episode_names += new /datum/episode_name("[pick("ATTACK! ATTACK! ATTACK!", "CAN'T FIX CRAZY", "APOCALYPSE [pick("N", "W", "H")]OW", "A TASTE OF ARMAGEDDON", "OPERATION: ANNIHILATE!", "THE PERFECT STORM", "TIME'S UP FOR THE CREW", "A TOTALLY FUN THING THAT THE CREW WILL NEVER DO AGAIN", "EVERYBODY HATES [uppr_name]", "BATTLE OF [uppr_name]", \
-				"THE SHOWDOWN", "MANHUNT", "THE ONE WITH ALL THE FIGHTING", "THE RECKONING OF [uppr_name]", "THERE GOES THE NEIGHBORHOOD", "THE THIN RED LINE", "ONE DAY FROM RETIREMENT")]", "High threat level of [dynameme.threat_level]%.", 250)
-				if(GLOB.start_state.score(GLOB.end_state) > 3000)
-					episode_names += new /datum/episode_name/rare("[pick("THE OPPORTUNITY OF A LIFETIME", "DRASTIC MEASURES", "DEUS EX", "THE SHOW MUST GO ON", "TRIAL BY FIRE", "A STITCH IN TIME", "ALL'S FAIR IN LOVE AND WAR", "COME HELL OR HIGH HEAVEN", "REVERSAL OF FORTUNE", "DOUBLE TOIL AND DOUBLE TROUBLE")]", "High threat level of [dynameme.threat_level]%... but the crew still had a very high score!", GLOB.start_state.score(GLOB.end_state)/50)
-				if((REALTIMEOFDAY - SSticker.round_start_timeofday) > 60 * 55 && (REALTIMEOFDAY - SSticker.round_start_timeofday) < 60 * 65) //55-65 minutes
-					episode_names += new /datum/episode_name/rare("RUSH HOUR", "High threat level of [dynameme.threat_level]%, and the round lasted just about an hour.", 500)
-				if(get_station_avg_temp() < T0C)
-					episode_names += new /datum/episode_name/rare("A COLD DAY IN HELL", "Station temperature was below 0C this round and threat was high", 1000)
-
-		if(locate(/datum/dynamic_ruleset/midround/from_ghosts/blob) in dynameme.executed_rules)
-			episode_names += new /datum/episode_name/rare("[pick("MARRIED TO THE BLOB", "THE CREW GETS QUARANTINED")]", "Round included a roundstart blob.", 350)
-
-	if(GAMEMODE_WAS_MALF_AI)
-		episode_names += new /datum/episode_name/rare("[pick("I'M SORRY [uppr_name], I'M AFRAID I CAN'T LET YOU DO THAT", "A STRANGE GAME", "THE AI GOES ROGUE", "RISE OF THE MACHINES")]", "Round included a malfunctioning AI.", 300)
-
-	if(GAMEMODE_WAS_REVS)
-		episode_names += new /datum/episode_name/rare("[pick("THE CREW STARTS A REVOLUTION", "HELL IS OTHER SPESSMEN", "INSURRECTION", "THE CREW RISES UP", 25;"FUN WITH FRIENDS")]", "Round included roundstart revs.", 350)
-		if(copytext(uppr_name,1,2) == "V")
-			episode_names += new /datum/episode_name/rare("V FOR [uppr_name]", "Round included roundstart revs... and the station's name starts with V.", 1500)
-
-	if(GLOB.station_was_nuked)
-		episode_names += new /datum/episode_name/rare("[pick("THE CREW GETS NUKED", "THE CREW IS THE BOMB", "THE CREW GOES NUCLEAR", "THE CREW BLASTS OFF AGAIN!", "THE 'BOOM' HEARD 'ROUND THE WORLD", 25;"THE BIG BANG THEORY")]", "The station was nuked!", 450)
-		if(GAMEMODE_WAS_NUCLEAR_EMERGENCY)
-			theme = "syndie" //This really should use the nukeop's check_win(), but the newcops gamemode wasn't coded like that.
-	else
-		if(GAMEMODE_WAS_NUCLEAR_EMERGENCY)
-			episode_names += new /datum/episode_name/rare("[pick("THE CREW SOLVES THE NUCLEAR CRISIS", "BLAST, FOILED AGAIN", "FISSION MAILED", 50;"I OPENED THE WINDOW, AND IN FLEW COPS")]", "The crew defeated the nuclear operatives.", 350)
-		if(GLOB.nuke_time_left < 30)
-			episode_names += new /datum/episode_name/rare("[GLOB.nuke_time_left] SECOND[GLOB.nuke_time_left == 1 ? "" : "S"] TO MIDNIGHT", "The nuke was defused with [GLOB.nuke_time_left] seconds remaining.", (30 - GLOB.nuke_time_left) * 100)
-
 
 	if(BLACKBOX_FEEDBACK_NUM("narsies_spawned") > 0)
 		episode_names += new /datum/episode_name/rare("[pick("NAR-SIE'S DAY OUT", "NAR-SIE'S VACATION", "THE CREW LEARNS ABOUT SACRED GEOMETRY", "REALM OF THE MAD GOD", "THE ONE WITH THE ELDRITCH HORROR", 50;"STUDY HARD, BUT PART-SIE HARDER")]", "Nar-Sie is loose!", 500)
@@ -166,10 +133,11 @@
 	var/escaped = SSticker.popcount[POPCOUNT_ESCAPEES]
 	var/escaped_on_shuttle = SSticker.popcount[POPCOUNT_SHUTTLE_ESCAPEES]
 	var/human_escapees = SSticker.popcount[POPCOUNT_ESCAPEES_HUMANONLY]
-	if((REALTIMEOFDAY - SSticker.round_start_timeofday) < 20 MINUTES) //shuttle docked in less than 16 minutes!!
+	if(round_timeofday() < 20 MINUTES) //shuttle docked in less than 16 minutes!!
 		episode_names += new /datum/episode_name/rare("[pick("THE CAPTAIN STUBS THEIR TOE", "QUICK GETAWAY", "A MOST EFFICIENT APOCALYPSE", "THE CREW'S [round((REALTIMEOFDAY - SSticker.round_start_timeofday)/60)] MINUTES OF FAME", "ON SECOND THOUGHT, LET'S NOT GO TO [uppr_name]. 'TIS A SILLY PLACE.")]", "This round was about as short as they come.", 750)
 		if(escaped_on_shuttle == 0)
 			episode_names += new /datum/episode_name/rare("DRY RUN", "This round was as short as they come, and there were no escapees.", 2500)
+
 	if(dead == 0)
 		episode_names += new /datum/episode_name/rare("[pick("EMPLOYEE TRANSFER", "LIVE LONG AND PROSPER", "PEACE AND QUIET IN [uppr_name]", "THE ONE WITHOUT ALL THE FIGHTING", "THE CREW TRIES TO KILL A FLY FOR [round((REALTIMEOFDAY - SSticker.round_start_timeofday)/60)] MINUTES")]", "No-one died this round.", 2500) //in practice, this one is very very very rare, so if it happens let's pick it more often
 	if(escaped == 0 || SSshuttle.emergency.is_hijacked())
@@ -377,6 +345,85 @@
 
 		if(findtext(uppr_name, "13"))
 			episode_names += new /datum/episode_name/rare("UNLUCKY NUMBERS", "The station's name contained \"13\".", 1000)
+
+/datum/controller/subsystem/credits/proc/draft_gamemode_episodes()
+	if(!EMERGENCY_ESCAPED_OR_ENDGAMED)
+		return
+
+	var/uppr_name = uppertext(station_name()) //so we don't run these two 500 times
+
+	if(GAMEMODE_WAS_DYNAMIC)
+		var/datum/game_mode/dynamic/dynameme = SSticker.mode
+		switch(dynameme.threat_level)
+			if(0 to 35)
+				episode_names += new /datum/episode_name("[pick("THE DAY [uppr_name] STOOD STILL", "MUCH ADO ABOUT NOTHING", "WHERE SILENCE HAS LEASE", "RED HERRING", "HOME ALONE", "GO BIG OR GO [uppr_name]", "PLACEBO EFFECT", "ECHOES", "SILENT PARTNERS", "WITH FRIENDS LIKE THESE...", "EYE OF THE STORM", "BORN TO BE MILD", "STILL WATERS")]", "Low threat level of [dynameme.threat_level]%.", 150)
+				if(GLOB.start_state.score(GLOB.end_state) < -1000)
+					episode_names += new /datum/episode_name/rare("[pick("HOW OH HOW DID IT ALL GO SO WRONG?!", "EXPLAIN THIS ONE TO THE EXECUTIVES", "THE CREW GOES ON SAFARI", "OUR GREATEST ENEMY", "THE INSIDE JOB", "MURDER BY PROXY")]", "Low threat level of [dynameme.threat_level]%... but the crew still had a very low score.", GLOB.start_state.score(GLOB.end_state)/150*-2)
+				if(round_timeofday() > 3 HOURS)
+					episode_names += new /datum/episode_name/rare("THE LONG NIGHT", "Low threat level of [dynameme.threat_level]%, and the round lasted over three hours.", 300)
+			if(35 to 60)
+				episode_names += new /datum/episode_name("[pick("THERE MIGHT BE BLOOD", "IT CAME FROM [uppr_name]!", "THE [uppr_name] INCIDENT", "THE ENEMY WITHIN", "MIDDAY MADNESS", "AS THE CLOCK STRIKES TWELVE", "CONFIDENCE AND PARANOIA", "THE PRANK THAT WENT WAY TOO FAR", "A HOUSE DIVIDED", "[uppr_name] TO THE RESCUE!", "ESCAPE FROM [uppr_name]", \
+				"HIT AND RUN", "THE AWAKENING", "THE GREAT ESCAPE", "THE LAST TEMPTATION OF [uppr_name]", "[uppr_name]'S FALL FROM GRACE", "BETTER THE [uppr_name] YOU KNOW...", "PLAYING WITH FIRE", "UNDER PRESSURE", "THE DAY BEFORE THE DEADLINE", "[uppr_name]'S MOST WANTED", "THE BALLAD OF [uppr_name]")]", "Moderate threat level of [dynameme.threat_level]%.", 150)
+			if(60 to 100)
+				episode_names += new /datum/episode_name("[pick("ATTACK! ATTACK! ATTACK!", "CAN'T FIX CRAZY", "APOCALYPSE [pick("N", "W", "H")]OW", "A TASTE OF ARMAGEDDON", "OPERATION: ANNIHILATE!", "THE PERFECT STORM", "TIME'S UP FOR THE CREW", "A TOTALLY FUN THING THAT THE CREW WILL NEVER DO AGAIN", "EVERYBODY HATES [uppr_name]", "BATTLE OF [uppr_name]", \
+				"THE SHOWDOWN", "MANHUNT", "THE ONE WITH ALL THE FIGHTING", "THE RECKONING OF [uppr_name]", "THERE GOES THE NEIGHBORHOOD", "THE THIN RED LINE", "ONE DAY FROM RETIREMENT")]", "High threat level of [dynameme.threat_level]%.", 250)
+				if(GLOB.start_state.score(GLOB.end_state) > 3000)
+					episode_names += new /datum/episode_name/rare("[pick("THE OPPORTUNITY OF A LIFETIME", "DRASTIC MEASURES", "DEUS EX", "THE SHOW MUST GO ON", "TRIAL BY FIRE", "A STITCH IN TIME", "ALL'S FAIR IN LOVE AND WAR", "COME HELL OR HIGH HEAVEN", "REVERSAL OF FORTUNE", "DOUBLE TOIL AND DOUBLE TROUBLE")]", "High threat level of [dynameme.threat_level]%... but the crew still had a very high score!", GLOB.start_state.score(GLOB.end_state)/50)
+				if(round_timeofday() in 55 MINUTES to 65 MINUTES)
+					episode_names += new /datum/episode_name/rare("RUSH HOUR", "High threat level of [dynameme.threat_level]%, and the round lasted just about an hour.", 500)
+				if(get_station_avg_temp() < T0C)
+					episode_names += new /datum/episode_name/rare("A COLD DAY IN HELL", "Station temperature was below 0C this round and threat was high", 1000)
+
+		if(locate(/datum/dynamic_ruleset/midround/from_ghosts/blob) in dynameme.executed_rules)
+			episode_names += new /datum/episode_name/rare("[pick("MARRIED TO THE BLOB", "THE CREW GETS QUARANTINED")]", "Round included a roundstart blob.", 350)
+
+	if(GAMEMODE_WAS_MALF_AI)
+		episode_names += new /datum/episode_name/rare("[pick("I'M SORRY [uppr_name], I'M AFRAID I CAN'T LET YOU DO THAT", "A STRANGE GAME", "THE AI GOES ROGUE", "RISE OF THE MACHINES")]", "Round included a malfunctioning AI.", 300)
+
+	if(GAMEMODE_WAS_REVS)
+		episode_names += new /datum/episode_name/rare("[pick("THE CREW STARTS A REVOLUTION", "HELL IS OTHER SPESSMEN", "INSURRECTION", "THE CREW RISES UP", 25;"FUN WITH FRIENDS")]", "Round included roundstart revs.", 350)
+		if(copytext(uppr_name,1,2) == "V")
+			episode_names += new /datum/episode_name/rare("V FOR [uppr_name]", "Round included roundstart revs... and the station's name starts with V.", 1500)
+
+	if(GLOB.station_was_nuked)
+		episode_names += new /datum/episode_name/rare("[pick("THE CREW GETS NUKED", "THE CREW IS THE BOMB", "THE CREW GOES NUCLEAR", "THE CREW BLASTS OFF AGAIN!", "THE 'BOOM' HEARD 'ROUND THE WORLD", 25;"THE BIG BANG THEORY")]", "The station was nuked!", 450)
+		if(GAMEMODE_WAS_NUCLEAR_EMERGENCY)
+			theme = "syndie" //This really should use the nukeop's check_win(), but the newcops gamemode wasn't coded like that.
+	else
+		if(GAMEMODE_WAS_NUCLEAR_EMERGENCY)
+			episode_names += new /datum/episode_name/rare("[pick("THE CREW SOLVES THE NUCLEAR CRISIS", "BLAST, FOILED AGAIN", "FISSION MAILED", 50;"I OPENED THE WINDOW, AND IN FLEW COPS")]", "The crew defeated the nuclear operatives.", 350)
+		if(GLOB.nuke_time_left < 30)
+			episode_names += new /datum/episode_name/rare("[GLOB.nuke_time_left] SECOND[GLOB.nuke_time_left == 1 ? "" : "S"] TO MIDNIGHT", "The nuke was defused with [GLOB.nuke_time_left] seconds remaining.", (30 - GLOB.nuke_time_left) * 100)
+
+	if(istype(SSticker.mode, /datum/game_mode/one_antag/blood_plague))
+		var/list/vampire_episode_names = list(
+			"The Masquerade",
+			"Blood Hunt",
+			"Nooosssferatu!",
+			"Still A Better Love Story",
+			"Pathologic",
+			"Bloody Incredible",
+		)
+		episode_names += new /datum/episode_name/rare(pick(vampire_episode_names), "The gamemode was Blood Plague Outbreak.", 300)
+
+	else if(istype(SSticker.mode, /datum/game_mode/extended))
+		if(!length(GLOB.antagonists))
+			var/list/extended_names = list(
+				"THE DAY [uppr_name] STOOD STILL",
+				"MUCH ADO ABOUT NOTHING",
+				"WHERE SILENCE HAS LEASE",
+				"RED HERRING",
+				"HOME ALONE",
+				"GO BIG OR GO [uppr_name]",
+				"PLACEBO EFFECT",
+				"ECHOES",
+				"SILENT PARTNERS",
+				"WITH FRIENDS LIKE THESE...",
+				"EYE OF THE STORM",
+				"BORN TO BE MILD",
+				"STILL WATERS",
+			)
+			episode_names += new /datum/episode_name(pick(extended_names), "The gamemode was Extended.", 150)
 
 /proc/get_station_avg_temp()
 	var/avg_temp = 0

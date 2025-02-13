@@ -5,6 +5,7 @@
 
 /datum/antagonist/cult
 	name = "Cultist"
+
 	roundend_category = "cultists"
 	antagpanel_category = "Cult"
 	suicide_cry = "FOR NAR'SIE!!"
@@ -197,6 +198,9 @@
 			qdel(o)
 
 /datum/antagonist/cult/master
+	name = "Cult Leader"
+	name_prefix = "the"
+
 	ignore_implant = TRUE
 	show_in_antagpanel = FALSE //Feel free to add this later
 	hud_icon = 'icons/mob/huds/antag_hud.dmi'

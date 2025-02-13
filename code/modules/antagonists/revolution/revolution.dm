@@ -4,7 +4,10 @@
 #define HEAD_UPDATE_PERIOD 300
 
 /datum/antagonist/rev
-	name = "\improper Mutineer"
+	name = "Mutineer"
+	name_prefix = "a"
+	description = "Help your cause. Do not harm your fellow freedom fighters. You can identify them using memorized <span class='blue'>code words</span>. Help them destroy the government to win the revolution!"
+
 	roundend_category = "mutineers" // if by some miracle revolutionaries without revolution happen
 	antagpanel_category = "Revolution"
 	job_rank = ROLE_REV
@@ -57,7 +60,6 @@
 
 /datum/antagonist/rev/build_greeting()
 	. = ..()
-	. += "Help your cause. Do not harm your fellow freedom fighters. You can identify them using memorized <span class='blue'>code words</span>. Help them destroy the government to win the revolution!"
 	. += "Your companions have devised this list of words to identify eachother: <span class='blue'>[jointext(GLOB.revolution_code_phrase, ", ")]</span>"
 
 /datum/antagonist/rev/create_team(datum/team/revolution/new_team)

@@ -44,6 +44,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 /datum/preferences/proc/update_preferences(current_version, savefile/S)
 	return
 
+//Hairstyle Name Migration.
 /datum/preferences/proc/migrate_hairstyles(current_version, savefile/savefile)
 	if(current_version < 45)
 		migrate_hairstyles(savefile)

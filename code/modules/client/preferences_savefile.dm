@@ -44,108 +44,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 /datum/preferences/proc/update_preferences(current_version, savefile/S)
 	return
 
-//Hairstyle Name Migration.
-/datum/preferences/proc/migrate_hairstyles(current_version, savefile/savefile)
-	if(current_version < 45)
-		migrate_hairstyles(savefile)
-	var/hairstyle
-	READ_FILE(savefile["hairstyle_name"], hairstyle)
-	var/new_hairstyle = list(
-	"Afro 2" = "Afro (Alt)",
-	"African Pigtails" = "Pigtails (African)",
-	"Bedhead" = "Bedhead (Short)",
-	"Bedhead 2" = "Bedhead (Short Alt)",
-	"Bedhead 3" = "Bedhead (Short and Smooth)",
-	"Long Bedhead" = "Bedhead (Long)",
-	"Floorlength Bedhead" = "Bedhead (Floorlength)",
-	"Beehive" = "Beehive (Ponytail)",
-	"Beehive 2" = "Beehive (Tails)",
-	"Beehive 3" = "Beehive (Tails Alt)",
-	"Big Tails" = "Pigtails (Huge)",
-	"Blunt Bangs Alt" = "Blunt Bangs (Alt)",
-	"Bobcurl" = "Bob Hair 6",
-	"Boddicker" = "Balding Hair (Alt)",
-	"Bowlcut 2" = "Bowlcut (Alt)",
-	"Braid (Floorlength)" = "High Braid (Floorlength)",
-	"Braided" = "Braid",
-	"Braided Front" = "Braid (Twin)",
-	"Braid (High)" = "High Braid (Short)",
-	"Braid (Short)" = "High Braid",
-	"Braided Tail" = "Braid (Tail)",
-	"Bun Head" = "Bun",
-	"Bun Head 2" = "Bun (Double)",
-	"Bun Head 3" = "Bun (Fancy Alt)",
-	"Bun Head 4" = "Bun (Fancy Alt)",
-	"Bun (Manbun) ALT" = "Bun (Manbun Alt)",
-	"Country Side-Braid" = "Braid (Country)",
-	"CIA" = "Business Hair (CIA)",
-	"Combed Bob" = "Bob Hair 7",
-	"Cornrows 2" = "Cornrows (Alt)",
-	"Cornrow Bun" = "Cornrows (Bun)",
-	"Cornrow Braid" = "Cornrows (Braid)",
-	"Cornrow Tail" = "Cornrows (Dual Tail)",
-	"Cut Hair" = "Short Hair",
-	"Dandy Pompadour" = "Pompadour (Dandy)",
-	"Double Bun" = "Bun (Double Alt)",
-	"Emo Fringe" = "Emo (Fringe)",
-	"Emo Short" = "Emo (Short)",
-	"Emo Long" = "Emo (Long)",
-	"Flat Top (Big)" = "Flat Top (Large)",
-	"Fortune Teller Alt" = "Fortune Teller (Alt)",
-	"Geisha" = "Bun (Geisha)",
-	"Grande" = "High Braid (Floorlength)",
-	"Half-banged Hair ALT" = "Half-banged Hair (Alt)",
-	"Half-shaved 2 (clipped)" = "Half-shaved (Clipped/Snout)",
-	"Half-shaved Glamorous" = "Half-shaved (Glamorous)",
-	"Half-shaved Long Messy" = "Half-shaved (Long and Messy)",
-	"Half-shaved Messy" = "Half-shaved (Messy)",
-	"Long Half-shaved" = "Half-shaved (Classic)",
-	"Half-shaved 2" = "Half-shaved",
-	"Hime Updo" = "Hime Cut (Updo)",
-	"Long Emo" = "Emo (Long Alt)",
-	"Long Fringe" = "Long Hair (Fringe)",
-	"Long Gloomy Bangs" = "Gloomy Bangs (Long)",
-	"Medium Gloomy Bangs" = "Gloomy Bangs (Medium)",
-	"Long Sideparted" = "Long Side Part (Straight)",
-	"Mohawk Short" = "Mohawk (Short)",
-	"Mohawk (Reverse)" = "Mohawk (Reverse)",
-	"Mohawk (Reverse) ALT" = "Mohawk (Reverse Alt)",
-	"Over Eye ALT" = "Over Eye (Alt)",
-	"Parted 2" = "Parted (Alt)",
-	"Pigtails" = "Pigtails (Thin)",
-	"Pigtails 2" = "Pigtails (Front)",
-	"Pigtails 3" = "Pigtails (Side)",
-	"Pigtails 4" = "Pigtails (Poofy)",
-	"Pigtails 5" = "Pigtails (Poofy)",
-	"Ponytail (High)" = "High Braid (Short Alt)",
-	"Ponytail (Country)" = "Braid (Country)",
-	"Ponytail ALT" = "Ponytail (Alt)",
-	"Ponytail Feminine" = "Ponytail (Side) 5",
-	"Simple Ponytail" = "Ponytail (Simple)",
-	"Short Hair 6" = "Flow Hair",
-	"Short Hair 5" = "Balding Hair",
-	"Short Hair 7" = "Short Hair 4",
-	"Short Hair 8" = "Short Hair 5",
-	"Short Hair 80s" = "Short Hair (80s)",
-	"Short Hair Rosa" = "Short Hair (Rosa)",
-	"Shoulder-length Hair" = "Short Hair (Shoulder Length)",
-	"Twintails" = "Pigtails (Twin)",
-	"Longer Twintails" = "Pigtails (Twin Long)",
-	"Undercut Left" = "Undercut (Left)",
-	"Undercut Right" = "Undercut (Right)",
-	"Very Long with Fringe" = "Very Long Hair (Fringe)",
-	"Very Long Hair 2" = "Very Long Hair (Alt)",
-	"Very Long Over Eye" = "Very Long Hair (Over Eye)",
-	"Very Short Over Eye ALT" = "Very Short Over Eye (Alt)",
-	"Slime Tendrils Alt" = "Slime Tendrils (Alt)",
-	"Slime Droplet Alt" = "Slime Droplet (Alt)"
-	)
-
-	if(isnull(new_hairstyle))
-		return
-
-	write_preference(/datum/preference/choiced/hairstyle, new_hairstyle)
-
 /datum/preferences/proc/update_character(current_version, savefile/savefile)
 	// Job name update 1
 	if(current_version < 44)
@@ -184,6 +82,109 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 				tail.type = tail.get_choices()[1]
 			)
 			write_preference(/datum/preference/blob/augments, augs)
+
+	if(current_version < 45)
+		migrate_hairstyles(savefile)
+
+//Hairstyle Name Migration.
+/datum/preferences/proc/migrate_hairstyles(savefile/savefile)
+	var/hairstyle
+	READ_FILE(savefile["hairstyle_name"], hairstyle)
+	var/static/list/new_hairstyle = list(
+		"Afro 2" = "Afro (Alt)",
+		"African Pigtails" = "Pigtails (African)",
+		"Bedhead" = "Bedhead (Short)",
+		"Bedhead 2" = "Bedhead (Short Alt)",
+		"Bedhead 3" = "Bedhead (Short and Smooth)",
+		"Long Bedhead" = "Bedhead (Long)",
+		"Floorlength Bedhead" = "Bedhead (Floorlength)",
+		"Beehive" = "Beehive (Ponytail)",
+		"Beehive 2" = "Beehive (Tails)",
+		"Beehive 3" = "Beehive (Tails Alt)",
+		"Big Tails" = "Pigtails (Huge)",
+		"Blunt Bangs Alt" = "Blunt Bangs (Alt)",
+		"Bobcurl" = "Bob Hair 6",
+		"Boddicker" = "Balding Hair (Alt)",
+		"Bowlcut 2" = "Bowlcut (Alt)",
+		"Braid (Floorlength)" = "High Braid (Floorlength)",
+		"Braided" = "Braid",
+		"Braided Front" = "Braid (Twin)",
+		"Braid (High)" = "High Braid (Short)",
+		"Braid (Short)" = "High Braid",
+		"Braided Tail" = "Braid (Tail)",
+		"Bun Head" = "Bun",
+		"Bun Head 2" = "Bun (Double)",
+		"Bun Head 3" = "Bun (Fancy Alt)",
+		"Bun Head 4" = "Bun (Fancy Alt)",
+		"Bun (Manbun) ALT" = "Bun (Manbun Alt)",
+		"Country Side-Braid" = "Braid (Country)",
+		"CIA" = "Business Hair (CIA)",
+		"Combed Bob" = "Bob Hair 7",
+		"Cornrows 2" = "Cornrows (Alt)",
+		"Cornrow Bun" = "Cornrows (Bun)",
+		"Cornrow Braid" = "Cornrows (Braid)",
+		"Cornrow Tail" = "Cornrows (Dual Tail)",
+		"Cut Hair" = "Short Hair",
+		"Dandy Pompadour" = "Pompadour (Dandy)",
+		"Double Bun" = "Bun (Double Alt)",
+		"Emo Fringe" = "Emo (Fringe)",
+		"Emo Short" = "Emo (Short)",
+		"Emo Long" = "Emo (Long)",
+		"Flat Top (Big)" = "Flat Top (Large)",
+		"Fortune Teller Alt" = "Fortune Teller (Alt)",
+		"Geisha" = "Bun (Geisha)",
+		"Grande" = "High Braid (Floorlength)",
+		"Half-banged Hair ALT" = "Half-banged Hair (Alt)",
+		"Half-shaved 2 (clipped)" = "Half-shaved (Clipped/Snout)",
+		"Half-shaved Glamorous" = "Half-shaved (Glamorous)",
+		"Half-shaved Long Messy" = "Half-shaved (Long and Messy)",
+		"Half-shaved Messy" = "Half-shaved (Messy)",
+		"Long Half-shaved" = "Half-shaved (Classic)",
+		"Half-shaved 2" = "Half-shaved",
+		"Hime Updo" = "Hime Cut (Updo)",
+		"Long Emo" = "Emo (Long Alt)",
+		"Long Fringe" = "Long Hair (Fringe)",
+		"Long Gloomy Bangs" = "Gloomy Bangs (Long)",
+		"Medium Gloomy Bangs" = "Gloomy Bangs (Medium)",
+		"Long Sideparted" = "Long Side Part (Straight)",
+		"Mohawk Short" = "Mohawk (Short)",
+		"Mohawk (Reverse)" = "Mohawk (Reverse)",
+		"Mohawk (Reverse) ALT" = "Mohawk (Reverse Alt)",
+		"Over Eye ALT" = "Over Eye (Alt)",
+		"Parted 2" = "Parted (Alt)",
+		"Pigtails" = "Pigtails (Thin)",
+		"Pigtails 2" = "Pigtails (Front)",
+		"Pigtails 3" = "Pigtails (Side)",
+		"Pigtails 4" = "Pigtails (Poofy)",
+		"Pigtails 5" = "Pigtails (Poofy)",
+		"Ponytail (High)" = "High Braid (Short Alt)",
+		"Ponytail (Country)" = "Braid (Country)",
+		"Ponytail ALT" = "Ponytail (Alt)",
+		"Ponytail Feminine" = "Ponytail (Side) 5",
+		"Simple Ponytail" = "Ponytail (Simple)",
+		"Short Hair 6" = "Flow Hair",
+		"Short Hair 5" = "Balding Hair",
+		"Short Hair 7" = "Short Hair 4",
+		"Short Hair 8" = "Short Hair 5",
+		"Short Hair 80s" = "Short Hair (80s)",
+		"Short Hair Rosa" = "Short Hair (Rosa)",
+		"Shoulder-length Hair" = "Short Hair (Shoulder Length)",
+		"Twintails" = "Pigtails (Twin)",
+		"Longer Twintails" = "Pigtails (Twin Long)",
+		"Undercut Left" = "Undercut (Left)",
+		"Undercut Right" = "Undercut (Right)",
+		"Very Long with Fringe" = "Very Long Hair (Fringe)",
+		"Very Long Hair 2" = "Very Long Hair (Alt)",
+		"Very Long Over Eye" = "Very Long Hair (Over Eye)",
+		"Very Short Over Eye ALT" = "Very Short Over Eye (Alt)",
+		"Slime Tendrils Alt" = "Slime Tendrils (Alt)",
+		"Slime Droplet Alt" = "Slime Droplet (Alt)"
+	)
+
+	if(isnull(new_hairstyle))
+		return
+
+	write_preference(/datum/preference/choiced/hairstyle, new_hairstyle)
 
 /// checks through keybindings for outdated unbound keys and updates them
 /datum/preferences/proc/check_keybindings()

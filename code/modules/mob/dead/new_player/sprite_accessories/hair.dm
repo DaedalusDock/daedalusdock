@@ -969,6 +969,14 @@
 	name = "Royal Curls"
 	icon_state = "hair_royalcurls"
 
+/datum/sprite_accessory/hair/runner
+	name = "Runner"
+	icon_state = "hair_runner"
+
+/datum/sprite_accessory/hair/runnerbun
+	name = "Runner Bun"
+	icon_state = "hair_runnerbun"
+
 /datum/sprite_accessory/hair/sabitsuki
 	name = "Sabitsuki"
 	icon_state = "hair_sabitsuki"

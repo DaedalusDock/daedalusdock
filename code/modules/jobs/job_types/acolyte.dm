@@ -22,6 +22,7 @@
 
 	mind_traits = list(TRAIT_AETHERITE)
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
+	languages = list(/datum/language/aether)
 
 	departments_list = list(
 		/datum/job_department/medical,

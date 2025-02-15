@@ -112,6 +112,9 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	///Lazylist of traits added to the liver of the mob assigned this job (used for the classic "cops heal from donuts" reaction, among others)
 	var/list/liver_traits = null
 
+	/// Lazylist of language types to grant.
+	var/list/languages = null
+
 	/// Goodies that can be received via the mail system.
 	// this is a weighted list.
 	/// Keep the _job definition for this empty and use /obj/item/mail to define general gifts.
@@ -205,6 +208,9 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(liver)
 		for(var/trait in liver_traits)
 			ADD_TRAIT(liver, trait, JOB_TRAIT)
+
+	for(var/language_path in languages)
+		spawned.grant_language(language_path, source = LANGUAGE_MIND)
 
 	if(!ishuman(spawned))
 		return

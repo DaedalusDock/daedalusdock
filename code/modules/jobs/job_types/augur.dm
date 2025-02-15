@@ -34,6 +34,7 @@
 
 	mind_traits = list(TRAIT_AETHERITE)
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM, TRAIT_ROYAL_METABOLISM)
+	languages = list(/datum/language/aether)
 
 	mail_goodies = list(
 		/obj/effect/spawner/random/medical/organs = 10,

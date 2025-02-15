@@ -462,7 +462,7 @@
 /obj/item/book/manual/codex/surgery
 	name = "A.P. Surgical Journal, #### Edition"
 	starting_title = "A.P. Surgical Journal, #### Edition"
-	desc = "A reprint of the Aether Pharmaceutical surgical journal, Detailing the 'latest' methods of medicial butchering."
+	desc = "A reprint of the Aether Association surgical journal, Detailing the 'latest' methods of medicial butchering."
 	icon_state = "bookaether"
 	target_entry = "Guide to Surgery"
 

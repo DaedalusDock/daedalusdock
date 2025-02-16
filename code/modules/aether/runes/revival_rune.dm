@@ -4,8 +4,6 @@
 	var/required_woundseal_amt = 30
 	var/required_woundseal_potency = 80
 
-#warn impl failures and give invocation phrases
-
 /obj/effect/aether_rune/revival/find_target_mob()
 	for(var/mob/living/carbon/human/H in loc)
 		if(H.stat != DEAD)

@@ -1,7 +1,7 @@
 /// Used by the Neck Bite ability.
 /datum/wound/neck_bite
 	pain_factor = 0
-	auto_bleed_threshold = 0
+	always_bleed_threshold = 0
 	wound_type = WOUND_PIERCE
 
 	autoheal_cutoff = 10

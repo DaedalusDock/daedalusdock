@@ -1228,8 +1228,8 @@
 		)
 	else
 		visible_message(
-			span_warning("The [W.desc] on [src]'s [W.parent.plaintext_zone] widens with a nasty ripping noise."),
-			span_warning("The [W.desc] on your [W.parent.plaintext_zone] widens with a nasty ripping noise."),
+			span_warning("The [W.desc] on [src]'s [W.wound_location()] widens with a nasty ripping noise."),
+			span_warning("The [W.desc] on your [W.wound_location()] widens with a nasty ripping noise."),
 			span_hear("You hear a nasty ripping noise, as if flesh is being torn apart."),
 			COMBAT_MESSAGE_RANGE,
 		)

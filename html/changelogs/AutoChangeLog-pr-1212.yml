@@ -1,0 +1,10 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Afflicted - Neck Bite now grants Nutrition and Satiety.
+  - rscadd: Afflicted - Neck Bite is now instant during Bloodlust.
+  - rscadd: Afflicted - Neck Bite now only requires an Aggressive grab during Bloodlust.
+  - rscadd: Afflicted - Neck Bite now heals a small amount of Physical damage.
+  - rscadd: Afflicted - Neck Bite now Mutes the victim for the duration once they
+      have been bit.
+  - rscadd: Afflicted - Blood Hunt now allows you to track any of your previous victims.

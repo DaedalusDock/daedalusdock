@@ -290,6 +290,9 @@
 
 	return this_wound_desc
 
+/// Returns the location of the wound for descriptions.
+/datum/wound/proc/wound_location()
+	return parent.plaintext_zone
 
 /datum/wound/proc/item_gone(datum/source)
 	SIGNAL_HANDLER

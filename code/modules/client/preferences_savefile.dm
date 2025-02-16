@@ -120,7 +120,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		"Country Side-Braid" = "Braid (Country)",
 		"CIA" = "Business Hair (CIA)",
 		"Combed Bob" = "Bob Hair 7",
-		"Cornrows 2" = "Cornrows (Alt)",
+		"Cornrows 1" = "Cornrows (Short)",
+		"Cornrows 2" = "Cornrows (Short Alt)",
 		"Cornrow Bun" = "Cornrows (Bun)",
 		"Cornrow Braid" = "Cornrows (Braid)",
 		"Cornrow Tail" = "Cornrows (Dual Tail)",
@@ -178,7 +179,12 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		"Very Long Over Eye" = "Very Long Hair (Over Eye)",
 		"Very Short Over Eye ALT" = "Very Short Over Eye (Alt)",
 		"Slime Tendrils Alt" = "Slime Tendrils (Alt)",
-		"Slime Droplet Alt" = "Slime Droplet (Alt)"
+		"Slime Droplet Alt" = "Slime Droplet (Alt)",
+		"Row Braid" = "Cornrows (Braid)",
+		"Row Bun" = "Cornrows (Bun)",
+		"Row Dual Tail" = "Cornrows (Dual Tail)",
+		"Rows 1" = "Cornrows (Short)",
+		"Rows 2" = "Cornrows (Short Alt)"
 	)
 
 	if(isnull(new_hairstyle))

@@ -313,6 +313,10 @@
 
 //Cornrow Hairs.
 
+/datum/sprite_accessory/hair/cornrows
+	name = "Cornrows"
+	icon_state = "hair_cornrows"
+
 /datum/sprite_accessory/hair/cornrows_braid
 	name = "Cornrows (Braid)"
 	icon_state = "hair_cornrows_braid"
@@ -325,13 +329,17 @@
 	name = "Cornrows (Dual Tail)"
 	icon_state = "hair_cornrows_dualtail"
 
-/datum/sprite_accessory/hair/cornrows_alt
-	name = "Cornrows (Alt)"
-	icon_state = "hair_cornrows_alt"
+/datum/sprite_accessory/hair/cornrows_long
+	name = "Cornrows (Long)"
+	icon_state = "hair_cornrows_long"
 
-/datum/sprite_accessory/hair/cornrows
-	name = "Cornrows"
-	icon_state = "hair_cornrows"
+/datum/sprite_accessory/hair/cornrows_short_alt
+	name = "Cornrows (Short Alt)"
+	icon_state = "hair_cornrows_short_alt"
+
+/datum/sprite_accessory/hair/cornrows_short
+	name = "Cornrows (Short)"
+	icon_state = "hair_cornrows_short"
 
 /datum/sprite_accessory/hair/cotton
 	name = "Cotton"
@@ -899,6 +907,10 @@
 	name = "Ponytail (Tight)"
 	icon_state = "hair_ponytail_tight"
 
+/datum/sprite_accessory/hair/ponytail_zoey
+	name = "Ponytail (Zoey)"
+	icon_state = "hair_ponytail_zoey"
+
 /datum/sprite_accessory/hair/ponytail2
 	name = "Ponytail 2"
 	icon_state = "hair_ponytail2"
@@ -1234,10 +1246,6 @@
 /datum/sprite_accessory/hair/ziegler
 	name = "Ziegler"
 	icon_state = "hair_ziegler"
-
-/datum/sprite_accessory/hair/zoey
-	name = "Zoey"
-	icon_state = "hair_zoey"
 
 //Podhair
 

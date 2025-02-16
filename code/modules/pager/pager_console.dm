@@ -1,9 +1,9 @@
 /obj/machinery/computer/pager
-	name = "account lookup console"
-	desc = "Used to view crewmember accounts and purchases."
+	name = "pager terminal"
+	desc = "A terminal used to send messages to linked pagers."
 	icon_screen = "request"
 	icon_keyboard = "med_key"
-	circuit = /obj/item/circuitboard/computer/accounting
+	circuit = /obj/item/circuitboard/computer/pager
 	light_color = LIGHT_COLOR_GREEN
 
 	var/pager_class = "common"
@@ -42,3 +42,7 @@
 			text_content = copytext_char(params["message"], 1, 42)
 			return TRUE
 
+
+/obj/machinery/computer/pager/aether
+	circuit = /obj/item/circuitboard/computer/pager/aether
+	pager_class = PAGER_CLASS_AETHER

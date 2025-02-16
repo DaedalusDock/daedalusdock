@@ -54,13 +54,13 @@
 	backpack_contents = list(
 		/obj/item/roller = 1,
 		/obj/item/bodybag/stasis = 1,
+		/obj/item/pager/aether,
 	)
 	belt = /obj/item/storage/belt/medical/paramedic
 	ears = /obj/item/radio/headset/headset_med
 	head = /obj/item/clothing/head/soft/paramedic
 	gloves = /obj/item/clothing/gloves/color/latex/nitrile
 	shoes = /obj/item/clothing/shoes/sneakers/blue
-	l_pocket = /obj/item/modular_computer/tablet/pda/medical
 
 	backpack = /obj/item/storage/backpack/medic
 	satchel = /obj/item/storage/backpack/satchel/med

@@ -67,9 +67,6 @@ require only minor tweaks.
 #define ZTRAIT_ICE_RUINS_UNDERGROUND "Ice Ruins Underground"
 #define ZTRAIT_ISOLATED_RUINS "Isolated Ruins" //Placing ruins on z levels with this trait will use turf reservation instead of usual placement.
 
-// boolean - Is this Z-level used to house shuttles during transport
-#define ZTRAIT_TRANSIT "Transit"
-
 // boolean - weather types that occur on the level
 #define ZTRAIT_SNOWSTORM "Weather_Snowstorm"
 #define ZTRAIT_VOIDSTORM "Weather_Voidstorm"
@@ -116,9 +113,6 @@ require only minor tweaks.
 #define ZTRAITS_AWAY list(ZTRAIT_AWAY = TRUE)
 ///Z level traits for Secret Away Missions
 #define ZTRAITS_AWAY_SECRET list(ZTRAIT_AWAY = TRUE, ZTRAIT_SECRET = TRUE, ZTRAIT_NOPHASE = TRUE)
-
-///Z level traits for the transit z level
-#define ZTRAITS_TRANSIT list(ZTRAIT_RESERVED = TRUE, ZTRAIT_TRANSIT = TRUE)
 
 #define DL_NAME "name"
 #define DL_TRAITS "traits"

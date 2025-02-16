@@ -19,7 +19,7 @@
 		return
 
 	var/datum/antagonist/vampire/vamp_datum = owner.mind.has_antag_datum(/datum/antagonist/vampire)
-	return !!vamp_datum.last_victim_ref
+	return !!length(vamp_datum.past_victim_refs)
 
 /datum/action/cooldown/blood_track/Activate(atom/target)
 	var/mob/living/carbon/human/human_owner = owner
@@ -32,10 +32,28 @@
 		to_chat(owner, span_notice("You are unable to catch a scent here."))
 		return
 
+	var/datum/antagonist/vampire/vamp_datum = owner.mind.has_antag_datum(/datum/antagonist/vampire)
+
+	var/list/options = list()
+	for(var/datum/weakref/weakref as anything in vamp_datum.past_victim_refs)
+		var/mob/living/carbon/human/H = weakref.resolve()
+		if(!ishuman(H))
+			vamp_datum.past_victim_refs -= weakref
+			continue
+
+		options[H.real_name] = weakref
+
+	var/victim_name = tgui_input_list(owner, "Select a target", "Blood hunt", options, options[1], 1 MINUTE)
+	if(isnull(victim_name) || isnull(owner))
+		return
+
+	var/datum/weakref/victim_ref = options[victim_name]
+	var/mob/living/carbon/human/victim = victim_ref.resolve()
+	if(!ishuman(victim))
+		return
+
 	. = ..()
 
-	var/datum/antagonist/vampire/vamp_datum = owner.mind.has_antag_datum(/datum/antagonist/vampire)
-	var/mob/living/carbon/human/victim = vamp_datum.last_victim_ref.resolve()
 	var/turf/victim_turf = get_turf(victim)
 	var/turf/owner_turf = get_turf(owner)
 

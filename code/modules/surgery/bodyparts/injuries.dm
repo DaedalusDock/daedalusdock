@@ -280,7 +280,8 @@
 	var/datum/wound/W = get_incision()
 	if(!W)
 		return
-	W.open_wound(min(W.damage * 2, W.damage_list[1] - W.damage))
+
+	W.open_wound(min(W.damage * 2, W.damage_list[length(W.damage_list)] - W.damage))
 
 /obj/item/bodypart/proc/jointlock(mob/living/user)
 	if(!IS_ORGANIC_LIMB(src))

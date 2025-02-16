@@ -356,7 +356,7 @@
 		return english_list(flavor_text)
 
 	if(owner)
-		if(current_damage)
+		if(length(flavor_text))
 			. += "[owner.p_they(TRUE)] [owner.p_have()] [english_list(flavor_text)] on [owner.p_their()] [plaintext_zone]."
 
 		for(var/obj/item/I in embedded_objects)
@@ -491,17 +491,15 @@
 
 	if(!IS_ORGANIC_LIMB(src)) //Robotic limbs don't heal or get worse.
 		for(var/datum/wound/W as anything in wounds) //Repaired wounds disappear though
-			if(W.damage <= 0)  //and they disappear right away
+			if(W.damage <= 0)
 				qdel(W)
 		return
 
 	for(var/datum/wound/W as anything in wounds)
 		// wounds can disappear after 10 minutes at the earliest
-		if(W.damage <= 0 && W.created + (10 MINUTES) <= world.time)
+		if(W.damage <= 0 && (W.scar_expiration <= world.time))
 			qdel(W)
-			stack_trace("Wound with zero health collected")
 			continue
-			// let the GC handle the deletion of the wound
 
 		// slow healing
 		var/heal_amt = 0
@@ -608,8 +606,9 @@
 	/*
 	// START WOUND HANDLING
 	*/
+
 	// If the limbs can break, make sure we don't exceed the maximum damage a limb can take before breaking
-	var/block_cut = (pure_brute < 10) || !IS_ORGANIC_LIMB(src)
+	var/block_cut = (pure_brute < 6) || !IS_ORGANIC_LIMB(src)
 	var/can_cut = !block_cut && ((sharpness) || prob(brute))
 	if(brute)
 		var/to_create = WOUND_BRUISE
@@ -779,7 +778,7 @@
 
 	//update damage counts
 	for(var/datum/wound/W as anything in wounds)
-		if(W.damage <= 0)
+		if(W.damage <= 0 && (W.scar_expiration <= world.time))
 			qdel(W)
 			continue
 

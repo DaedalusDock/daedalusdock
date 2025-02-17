@@ -4483,6 +4483,7 @@
 #include "code\modules\surgery\bodyparts\wounds\create_wound.dm"
 #include "code\modules\surgery\bodyparts\wounds\cuts.dm"
 #include "code\modules\surgery\bodyparts\wounds\lost_limb.dm"
+#include "code\modules\surgery\bodyparts\wounds\neck_bite.dm"
 #include "code\modules\surgery\bodyparts\wounds\punctures.dm"
 #include "code\modules\surgery\machines\bodyscanner.dm"
 #include "code\modules\surgery\machines\bodyscanner_display.dm"

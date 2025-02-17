@@ -1,12 +1,9 @@
-/datum/job/doctor
-	title = JOB_MEDICAL_DOCTOR
-	description = "Save lives, run around the station looking for victims, \
-		scan everyone in sight"
-	department_head = list(JOB_MEDICAL_DIRECTOR)
+/datum/job/acolyte
+	title = JOB_ACOLYTE
+	department_head = list(JOB_AUGUR)
 	faction = FACTION_STATION
 	total_positions = 5
 	spawn_positions = 3
-	supervisors = "the medical director"
 	selection_color = "#013d3b"
 	exp_granted_type = EXP_TYPE_CREW
 
@@ -23,7 +20,9 @@
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_MED
 
+	mind_traits = list(TRAIT_AETHERITE)
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
+	languages = list(/datum/language/aether)
 
 	departments_list = list(
 		/datum/job_department/medical,
@@ -42,16 +41,21 @@
 	rpg_title = "Cleric"
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
+/datum/job/acolyte/New()
+	. = ..()
+	description = "A member of a strange religious organization, you aid your \
+	<span style='color:[/datum/job/augur::selection_color]'>Augur</span> in maintaining the Sacred Cycle. \
+	Aid those who are not yet ready to pass unto the Ephemeral Twilight, and condemn those who attempt to avoid it."
 
 /datum/outfit/job/doctor
-	name = JOB_MEDICAL_DOCTOR
-	jobtype = /datum/job/doctor
+	name = JOB_ACOLYTE
+	jobtype = /datum/job/acolyte
 
 	id_trim = /datum/id_trim/job/medical_doctor
 	uniform = /obj/item/clothing/under/rank/medical/doctor
 	suit = /obj/item/clothing/suit/toggle/labcoat/md
 	suit_store = /obj/item/flashlight/pen
-	belt = /obj/item/modular_computer/tablet/pda/medical
+	belt = /obj/item/pager/aether
 	ears = /obj/item/radio/headset/headset_med
 	shoes = /obj/item/clothing/shoes/sneakers/white
 	l_hand = /obj/item/storage/medkit/surgery
@@ -62,10 +66,9 @@
 
 	box = /obj/item/storage/box/survival/medical
 	chameleon_extras = /obj/item/gun/syringe
-	skillchips = list(/obj/item/skillchip/entrails_reader)
 
 /datum/outfit/job/doctor/mod
-	name = JOB_MEDICAL_DOCTOR + " (MODsuit)"
+	name = JOB_ACOLYTE + " (MODsuit)"
 
 	suit_store = /obj/item/tank/internals/oxygen
 	back = /obj/item/mod/control/pre_equipped/medical

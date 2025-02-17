@@ -306,7 +306,7 @@
 			for(var/i in loaded_coupons)
 				var/obj/item/coupon/coupon_check = i
 				if(pack.type == coupon_check.discounted_pack)
-					say("Coupon found! [round(coupon_check.discount_pct_off * 100)]% off applied!")
+					say("Coupon found! [QUESTIONABLE_FLOOR(coupon_check.discount_pct_off * 100)]% off applied!")
 					coupon_check.moveToNullspace()
 					applied_coupon = coupon_check
 					break

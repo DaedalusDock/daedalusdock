@@ -208,9 +208,9 @@
 					didthegamerwin = FALSE
 		if(!didthegamerwin)
 			return FALSE
-		player_client.give_award(/datum/award/score/hardcore_random, human_mob, round(human_mob.hardcore_survival_score * 2))
+		player_client.give_award(/datum/award/score/hardcore_random, human_mob, ROUND(human_mob.hardcore_survival_score * 2, 1))
 	else if(human_mob.onCentCom())
-		player_client.give_award(/datum/award/score/hardcore_random, human_mob, round(human_mob.hardcore_survival_score))
+		player_client.give_award(/datum/award/score/hardcore_random, human_mob, ROUND(human_mob.hardcore_survival_score, 1))
 
 
 /datum/controller/subsystem/ticker/proc/declare_completion()
@@ -595,7 +595,7 @@
 	. += "<div class='panel stationborder'><span class='header'>The following people made it out as a random hardcore character:</span>"
 	. += "<ul class='playerlist'>"
 	for(var/mob/living/carbon/human/human_player in hardcores)
-		. += "<li>[printplayer(human_player.mind)] with a hardcore random score of [round(human_player.hardcore_survival_score)]</li>"
+		. += "<li>[printplayer(human_player.mind)] with a hardcore random score of [ROUND(human_player.hardcore_survival_score, 1)]</li>"
 	. += "</ul></div>"
 
 /datum/controller/subsystem/ticker/proc/antag_report()

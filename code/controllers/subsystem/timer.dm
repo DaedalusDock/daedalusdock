@@ -406,7 +406,7 @@ SUBSYSTEM_DEF(timer)
 	if (flags & TIMER_STOPPABLE)
 		id = num2text(nextid, 100)
 		if (nextid >= SHORT_REAL_LIMIT)
-			nextid += min(1, 2 ** round(nextid / SHORT_REAL_LIMIT))
+			nextid += min(1, 2 ** QUESTIONABLE_FLOOR(nextid / SHORT_REAL_LIMIT))
 		else
 			nextid++
 		timer_subsystem.timer_id_dict[id] = src
@@ -616,7 +616,7 @@ SUBSYSTEM_DEF(timer)
 		stack_trace("addtimer called with a callback assigned to a qdeleted object. In the future such timers will not \
 			be supported and may refuse to run or run with a 0 wait")
 
-	wait = max(CEILING(wait, world.tick_lag), world.tick_lag)
+	wait = max(CEILING2(wait, world.tick_lag), world.tick_lag)
 
 	if(wait >= INFINITY)
 		CRASH("Attempted to create timer with INFINITY delay")

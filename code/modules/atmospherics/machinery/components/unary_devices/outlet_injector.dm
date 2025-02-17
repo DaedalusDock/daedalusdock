@@ -75,8 +75,8 @@
 /obj/machinery/atmospherics/components/unary/outlet_injector/ui_data()
 	var/data = list()
 	data["on"] = on
-	data["rate"] = round(volume_rate)
-	data["max_rate"] = round(ATMOS_DEFAULT_VOLUME_PUMP)
+	data["rate"] = QUESTIONABLE_FLOOR(volume_rate)
+	data["max_rate"] = QUESTIONABLE_FLOOR(ATMOS_DEFAULT_VOLUME_PUMP)
 	return data
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/ui_act(action, params)

@@ -272,7 +272,7 @@
 
 			var/ckey = data["ckey"]
 
-			if (tgui_alert(usr,"Are you sure you want to put [ckey]'s stickyban on timeout until next round (or removed)?","Are you sure",list("Yes","No")) == "No")
+			if (tgui_alert(usr,"Are you sure you want to put [ckey]'s stickyban on timeout until next QUESTIONABLE_FLOOR(or removed)?","Are you sure",list("Yes","No")) == "No")
 				return
 			var/ban = get_stickyban_from_ckey(ckey)
 			if (!ban)

@@ -12,7 +12,7 @@
 		if(uplink_item.cost >= 20) //Tough love for nuke ops
 			discount *= 0.5
 		uplink_item.category = category
-		uplink_item.cost = max(round(uplink_item.cost * discount),1)
+		uplink_item.cost = max(QUESTIONABLE_FLOOR(uplink_item.cost * discount),1)
 		uplink_item.name += " ([round(((initial(uplink_item.cost)-uplink_item.cost)/initial(uplink_item.cost))*100)]% off!)"
 		uplink_item.desc += " Normally costs [initial(uplink_item.cost)] TC. All sales final. [pick(disclaimer)]"
 		uplink_item.item = taken_item.item

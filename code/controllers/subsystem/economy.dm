@@ -118,7 +118,7 @@ SUBSYSTEM_DEF(economy)
 			if(!bank_account.account_job || !(bank_account.account_job in department.department_jobs) || (bank_account.account_holder in dead_people))
 				continue
 
-			required_funds += round(bank_account.account_job.paycheck * bank_account.payday_modifier)
+			required_funds += QUESTIONABLE_FLOOR(bank_account.account_job.paycheck * bank_account.payday_modifier)
 			to_pay += bank_account
 
 		if(required_funds <= department_account.account_balance)
@@ -143,7 +143,7 @@ SUBSYSTEM_DEF(economy)
 
 				announcer.pda_message(
 					target_id,
-					"Your payroll for this quarter has been processed. A sum of [round(bank_account.account_job.paycheck * bank_account.payday_modifier)] has been deposited into your account.",
+					"Your payroll for this quarter has been processed. A sum of [QUESTIONABLE_FLOOR(bank_account.account_job.paycheck * bank_account.payday_modifier)] has been deposited into your account.",
 				)
 
 		else
@@ -377,7 +377,7 @@ SUBSYSTEM_DEF(economy)
 
 /// Spawns a given amount of money in optimal stacks at the given location.
 /datum/controller/subsystem/economy/proc/spawn_cash_for_amount(amt, spawn_loc)
-	amt = round(amt) // Don't pass in decimals you twat
+	amt = QUESTIONABLE_FLOOR(amt) // Don't pass in decimals you twat
 	var/thousands = 0
 	var/hundreds = 0
 	var/ones = 0

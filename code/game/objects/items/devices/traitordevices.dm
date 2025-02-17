@@ -99,7 +99,7 @@ effective or pretty fucking useless.
 	if(QDELETED(M) || !ishuman(M) || HAS_TRAIT(M, TRAIT_RADIMMUNE))
 		return
 	if(passed_intensity >= 5)
-		M.apply_effect(round(passed_intensity/0.075), EFFECT_UNCONSCIOUS) //to save you some math, this is a round(intensity * (4/3)) second long knockout
+		M.apply_effect(QUESTIONABLE_FLOOR(passed_intensity/0.075), EFFECT_UNCONSCIOUS) //to save you some math, this is a round(intensity * (4/3)) second long knockout
 
 /obj/item/healthanalyzer/rad_laser/proc/get_cooldown()
 	return round(max(10, (stealth*30 + intensity*5 - wavelength/4)))
@@ -161,7 +161,7 @@ effective or pretty fucking useless.
 				target = text2num(target)
 				. = TRUE
 			if(.)
-				target = round(target)
+				target = QUESTIONABLE_FLOOR(target)
 				intensity = clamp(target, 1, 20)
 		if("radwavelength")
 			var/target = params["target"]
@@ -179,7 +179,7 @@ effective or pretty fucking useless.
 				target = text2num(target)
 				. = TRUE
 			if(.)
-				target = round(target)
+				target = QUESTIONABLE_FLOOR(target)
 				wavelength = clamp(target, 0, 120)
 
 /obj/item/shadowcloak

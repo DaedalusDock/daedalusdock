@@ -164,7 +164,7 @@
 				to_chat(usr, span_alert("[src] only accepts a numerical multiplier!"))
 				return
 			var/is_stack = ispath(being_built.build_path, /obj/item/stack)
-			multiplier = clamp(round(multiplier),1,50)
+			multiplier = clamp(QUESTIONABLE_FLOOR(multiplier),1,50)
 
 			/////////////////
 

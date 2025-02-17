@@ -9,7 +9,7 @@
 
 /obj/structure/destructible/cult/examine_status(mob/user)
 	if(IS_CULTIST(user) || isobserver(user))
-		return span_cult("It's at <b>[round(atom_integrity * 100 / max_integrity)]%</b> stability.")
+		return span_cult("It's at <b>[QUESTIONABLE_FLOOR(atom_integrity * 100 / max_integrity)]%</b> stability.")
 	return ..()
 
 /obj/structure/destructible/cult/examine(mob/user)
@@ -43,7 +43,7 @@
 	Beam(user, icon_state = "sendbeam", time = 0.4 SECONDS)
 	user.visible_message(
 		span_danger("[user] repairs [src]."),
-		span_cult("You repair [src], leaving it at <b>[round(atom_integrity * 100 / max_integrity)]%</b> stability.")
+		span_cult("You repair [src], leaving it at <b>[QUESTIONABLE_FLOOR(atom_integrity * 100 / max_integrity)]%</b> stability.")
 		)
 
 /*

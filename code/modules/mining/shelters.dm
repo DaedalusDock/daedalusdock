@@ -33,10 +33,10 @@
 				return SHELTER_DEPLOY_ANCHORED_OBJECTS
 
 	// Check if the shelter sticks out of map borders
-	var/shelter_origin_x = deploy_location.x - round(width/2)
+	var/shelter_origin_x = deploy_location.x - QUESTIONABLE_FLOOR(width/2)
 	if(shelter_origin_x <= 1 || shelter_origin_x+width > world.maxx)
 		return SHELTER_DEPLOY_OUTSIDE_MAP
-	var/shelter_origin_y = deploy_location.y - round(height/2)
+	var/shelter_origin_y = deploy_location.y - QUESTIONABLE_FLOOR(height/2)
 	if(shelter_origin_y <= 1 || shelter_origin_y+height > world.maxy)
 		return SHELTER_DEPLOY_OUTSIDE_MAP
 

@@ -464,7 +464,7 @@
  * Called once every 15 to 5 seconds (depend on damage done), handles alarm calls
  */
 /obj/machinery/power/turbine/core_rotor/proc/damage_alert(damage_done)
-	COOLDOWN_START(src, turbine_damage_alert, max(round(TURBINE_DAMAGE_ALARM_START - damage_done), 5) SECONDS)
+	COOLDOWN_START(src, turbine_damage_alert, max(QUESTIONABLE_FLOOR(TURBINE_DAMAGE_ALARM_START - damage_done), 5) SECONDS)
 
 	var/integrity = get_turbine_integrity()
 

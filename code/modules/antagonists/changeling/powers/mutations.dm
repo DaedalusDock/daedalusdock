@@ -412,7 +412,7 @@
 		return
 
 	var/obj/item/shield/changeling/S = ..(user)
-	S.remaining_uses = round(changeling.absorbed_count * 3)
+	S.remaining_uses = QUESTIONABLE_FLOOR(changeling.absorbed_count * 3)
 	return TRUE
 
 /obj/item/shield/changeling

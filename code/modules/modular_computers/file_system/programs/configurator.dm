@@ -34,7 +34,7 @@
 		data["battery_percent"] = round(battery_module.battery.percent())
 
 	if(battery_module?.battery)
-		data["battery"] = list("max" = battery_module.battery.maxcharge, "charge" = round(battery_module.battery.charge))
+		data["battery"] = list("max" = battery_module.battery.maxcharge, "charge" = QUESTIONABLE_FLOOR(battery_module.battery.charge))
 
 	var/list/all_entries[0]
 	for(var/I in computer.all_components)

@@ -1407,9 +1407,9 @@
 //Get fluffy numbers
 /mob/living/carbon/proc/get_blood_pressure()
 	if(HAS_TRAIT(src, TRAIT_FAKEDEATH))
-		return "[FLOOR(120+rand(-5,5), 1)*0.25]/[FLOOR(80+rand(-5,5)*0.25, 1)]"
+		return "[FLOOR2(120+rand(-5,5), 1)*0.25]/[FLOOR2(80+rand(-5,5)*0.25, 1)]"
 	var/blood_result = get_blood_circulation()
-	return "[FLOOR((120+rand(-5,5))*(blood_result/100), 1)]/[FLOOR((80+rand(-5,5))*(blood_result/100), 1)]"
+	return "[FLOOR2((120+rand(-5,5))*(blood_result/100), 1)]/[FLOOR2((80+rand(-5,5))*(blood_result/100), 1)]"
 
 /mob/living/carbon/proc/resuscitate()
 	if(!undergoing_cardiac_arrest())

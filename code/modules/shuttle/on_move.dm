@@ -129,7 +129,7 @@ All ShuttleMove procs go here
 		return
 	var/turf/target = get_edge_target_turf(src, move_dir)
 	var/range = throw_force * 10
-	range = CEILING(rand(range-(range*0.1), range+(range*0.1)), 10)/10
+	range = CEILING2(rand(range-(range*0.1), range+(range*0.1)), 10)/10
 	var/speed = range/5
 	safe_throw_at(target, range, speed, force = MOVE_FORCE_EXTREMELY_STRONG)
 
@@ -319,7 +319,7 @@ All ShuttleMove procs go here
 /obj/structure/cable/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
 	. = ..()
 	cut_cable_from_powernet(FALSE)
-	var/clockwise_rotation_amount = round(rotation / 90)
+	var/clockwise_rotation_amount = QUESTIONABLE_FLOOR(rotation / 90)
 	rotate_clockwise_amount(clockwise_rotation_amount)
 
 /obj/structure/cable/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)

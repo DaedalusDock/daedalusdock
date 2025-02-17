@@ -101,13 +101,13 @@
 /datum/holomap_holder/station/New(parent, icon/holomap_icon)
 	..()
 	var/image/I = image('icons/hud/holomap/holomap_64x64.dmi', "legend")
-	I.pixel_x = round(HOLOMAP_SIZE / 6)
-	I.pixel_y = round(HOLOMAP_SIZE * 0.75)
+	I.pixel_x = QUESTIONABLE_FLOOR(HOLOMAP_SIZE / 6)
+	I.pixel_y = QUESTIONABLE_FLOOR(HOLOMAP_SIZE * 0.75)
 	holomap.overlays += I
 
 	I = image('icons/hud/holomap/holomap_64x64.dmi', "youarehere")
-	I.pixel_x = round(HOLOMAP_SIZE / 6)
-	I.pixel_y = round(HOLOMAP_SIZE * 0.75)
+	I.pixel_x = QUESTIONABLE_FLOOR(HOLOMAP_SIZE / 6)
+	I.pixel_y = QUESTIONABLE_FLOOR(HOLOMAP_SIZE * 0.75)
 	holomap.overlays += I
 
 /datum/holomap_holder/station/get_image()

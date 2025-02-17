@@ -14,4 +14,4 @@
 
 #define WARNING_DELAY 20			//seconds between warnings.
 
-#define HALLUCINATION_RANGE(P) (min(7, round(P ** 0.25)))
+#define HALLUCINATION_RANGE(P) (min(7, ROUND(P ** 0.25, 1)))

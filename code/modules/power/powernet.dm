@@ -104,8 +104,8 @@
 			S.restore() // and restore some of the power that was used
 
 	// update power consoles
-	viewavail = round(0.8 * viewavail + 0.2 * avail)
-	viewload = round(0.8 * viewload + 0.2 * load)
+	viewavail = QUESTIONABLE_FLOOR(0.8 * viewavail + 0.2 * avail)
+	viewload = QUESTIONABLE_FLOOR(0.8 * viewload + 0.2 * load)
 
 	// reset the powernet
 	load = delayedload
@@ -115,7 +115,7 @@
 
 /datum/powernet/proc/get_electrocute_damage()
 	if(avail >= 1000)
-		return clamp(20 + round(avail/25000), 20, 195) + rand(-5,5)
+		return clamp(20 + ROUND(avail/25000, 1), 20, 195) + rand(-5,5)
 	else
 		return 0
 

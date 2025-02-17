@@ -10,7 +10,7 @@
 		for(var/I in all_components)
 			var/obj/item/computer_hardware/H = all_components[I]
 			if(prob(component_probability))
-				H.take_damage(round(damage_amount*0.5), damage_type, damage_flag, 0)
+				H.take_damage(QUESTIONABLE_FLOOR(damage_amount*0.5), damage_type, damage_flag, 0)
 
 
 /obj/item/modular_computer/deconstruct(disassembled = TRUE)
@@ -20,7 +20,7 @@
 	if(!(flags_1 & NODECONSTRUCT_1))
 		physical.visible_message(span_notice("\The [src] breaks apart!"))
 		var/turf/newloc = get_turf(src)
-		new /obj/item/stack/sheet/iron(newloc, round(steel_sheet_cost/2))
+		new /obj/item/stack/sheet/iron(newloc, QUESTIONABLE_FLOOR(steel_sheet_cost/2))
 		for(var/C in all_components)
 			var/obj/item/computer_hardware/H = all_components[C]
 			if(QDELETED(H))

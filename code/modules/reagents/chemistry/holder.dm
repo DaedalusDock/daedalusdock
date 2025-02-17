@@ -1363,7 +1363,7 @@
 		chem_temp = min(chem_temp + max(temp_delta, 1), temperature)
 	else
 		chem_temp = max(chem_temp + min(temp_delta, -1), temperature)
-	set_temperature(round(chem_temp))
+	set_temperature(ROUND(chem_temp, 1))
 	handle_reactions()
 
 /** Sets the temperature of this reagent container to a new value.

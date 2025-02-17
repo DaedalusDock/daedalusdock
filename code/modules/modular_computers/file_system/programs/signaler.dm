@@ -41,7 +41,7 @@
 			. = TRUE
 		if("code")
 			signal_code = text2num(params["code"])
-			signal_code = round(signal_code)
+			signal_code = QUESTIONABLE_FLOOR(signal_code)
 			. = TRUE
 		if("reset")
 			if(params["reset"] == "freq")

@@ -240,7 +240,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 			A.overload_lighting()
 		// Causes the APCs to go into system failure mode.
 		var/random_change = rand(100 - DETONATION_SHUTDOWN_RNG_FACTOR, 100 + DETONATION_SHUTDOWN_RNG_FACTOR) / 100
-		A.energy_fail(round(DETONATION_SHUTDOWN_APC * random_change))
+		A.energy_fail(ROUND(DETONATION_SHUTDOWN_APC * random_change, 1))
 
 	// Effect 2: Break solar arrays
 
@@ -295,7 +295,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 
 /obj/machinery/power/supermatter/get_integrity_percentage()
 	var/integrity = damage / explosion_point
-	integrity = round(100 - integrity * 100)
+	integrity = ROUND(100 - integrity * 100, 1)
 	integrity = integrity < 0 ? 0 : integrity
 	return integrity
 
@@ -405,7 +405,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 		var/thermal_power = thermal_release_modifier * device_energy
 		if (debug)
 			var/heat_capacity_new = removed.getHeatCapacity()
-			visible_message("[src]: Releasing [round(thermal_power)] J.")
+			visible_message("[src]: Releasing [QUESTIONABLE_FLOOR(thermal_power)] J.")
 			visible_message("[src]: Releasing additional [round((heat_capacity_new - heat_capacity)*removed.temperature)] J with exhaust gasses.")
 
 		removed.adjustThermalEnergy(thermal_power)

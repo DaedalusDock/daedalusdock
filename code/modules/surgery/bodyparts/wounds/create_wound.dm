@@ -15,7 +15,7 @@
 		var/internal_damage
 		if(prob(damage) && set_sever_artery(TRUE))
 			internal_damage = TRUE
-		if(prob(Ceil(damage/4)) && set_sever_tendon(TRUE))
+		if(prob(ceil(damage/4)) && set_sever_tendon(TRUE))
 			internal_damage = TRUE
 		if(internal_damage)
 			owner?.apply_pain(50, body_zone, "You feel something rip in your [plaintext_zone]!")

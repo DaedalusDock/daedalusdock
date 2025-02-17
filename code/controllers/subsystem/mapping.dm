@@ -335,8 +335,8 @@ Used by the AI doomsday and the self-destruct nuke.
 	for (var/P in parsed_maps)
 		var/datum/parsed_map/pm = P
 		var/list/bounds = pm.bounds
-		var/x_offset = bounds ? round(world.maxx / 2 - bounds[MAP_MAXX] / 2) + 1 : 1
-		var/y_offset = bounds ? round(world.maxy / 2 - bounds[MAP_MAXY] / 2) + 1 : 1
+		var/x_offset = bounds ? QUESTIONABLE_FLOOR(world.maxx / 2 - bounds[MAP_MAXX] / 2) + 1 : 1
+		var/y_offset = bounds ? QUESTIONABLE_FLOOR(world.maxy / 2 - bounds[MAP_MAXY] / 2) + 1 : 1
 		if (!pm.load(x_offset, y_offset, start_z + parsed_maps[P], no_changeturf = TRUE, new_z = TRUE))
 			errorList |= pm.original_path
 

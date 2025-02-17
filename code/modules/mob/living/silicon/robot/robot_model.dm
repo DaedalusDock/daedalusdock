@@ -305,7 +305,7 @@
 	if(!soap)
 		return
 	if(soap.uses < initial(soap.uses))
-		soap.uses += ROUND_UP(initial(soap.uses) / 100) * coeff
+		soap.uses += ceil(initial(soap.uses) / 100) * coeff
 
 /obj/item/robot_model/engineering
 	name = "Engineering"
@@ -580,7 +580,7 @@
 	if(!soap)
 		return
 	if(soap.uses < initial(soap.uses))
-		soap.uses += ROUND_UP(initial(soap.uses) / 100) * coeff
+		soap.uses += ceil(initial(soap.uses) / 100) * coeff
 
 /obj/item/robot_model/medical
 	name = "Medical"

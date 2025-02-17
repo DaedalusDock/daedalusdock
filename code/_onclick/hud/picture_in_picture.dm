@@ -132,7 +132,7 @@
 	var/turf/T = get_turf(center)
 	if(!T)
 		return list()
-	var/turf/lowerleft = locate(max(1, T.x - round(width/2)), max(1, T.y - round(height/2)), T.z)
+	var/turf/lowerleft = locate(max(1, T.x - QUESTIONABLE_FLOOR(width/2)), max(1, T.y - QUESTIONABLE_FLOOR(height/2)), T.z)
 	var/turf/upperright = locate(min(world.maxx, lowerleft.x + width - 1), min(world.maxy, lowerleft.y + height - 1), lowerleft.z)
 	return block(lowerleft, upperright)
 

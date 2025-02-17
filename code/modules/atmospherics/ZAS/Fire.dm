@@ -436,7 +436,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	if(!uses_integrity)
 		burn(exposed_temperature)
 	else if (exposed_temperature > heat_capacity)
-		take_damage(log(Frand(0.9, 1.1) * (exposed_temperature - heat_capacity)), BURN)
+		take_damage(log(rand_float(0.9, 1.1) * (exposed_temperature - heat_capacity)), BURN)
 	return ..()
 
 /obj/effect/dummy/lighting_obj/moblight/fire

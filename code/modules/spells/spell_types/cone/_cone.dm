@@ -98,7 +98,7 @@
 
 ///This proc adjusts the cones width depending on the level.
 /datum/action/cooldown/spell/cone/proc/calculate_cone_shape(current_level)
-	var/end_taper_start = round(cone_levels * 0.8)
+	var/end_taper_start = QUESTIONABLE_FLOOR(cone_levels * 0.8)
 	if(current_level > end_taper_start)
 		return (current_level % end_taper_start) * 2 //someone more talented and probably come up with a better formula.
 	else

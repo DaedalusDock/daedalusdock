@@ -42,8 +42,8 @@
 /// Takes a width and height, and uses them to set the inner window, and interpolate the outer window
 /datum/cell_tracker/proc/set_bounds(width = 0, height = 0, ratio = 2)
 	// We want to store these as radii, rather then width and height, since that's convineient for spatial grid code
-	var/x_radius = CEILING(width, 2)
-	var/y_radius = CEILING(height, 2)
+	var/x_radius = CEILING2(width, 2)
+	var/y_radius = CEILING2(height, 2)
 	inner_window_x_radius = x_radius
 	inner_window_y_radius = y_radius
 

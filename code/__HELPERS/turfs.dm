@@ -278,8 +278,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 	var/click_turf_px = text2num(click_turf_x[2])
 	var/click_turf_py = text2num(click_turf_y[2])
-	click_turf_x = origin.x + text2num(click_turf_x[1]) - round(actual_view[1] / 2) - 1
-	click_turf_y = origin.y + text2num(click_turf_y[1]) - round(actual_view[2] / 2) - 1
+	click_turf_x = origin.x + text2num(click_turf_x[1]) - QUESTIONABLE_FLOOR(actual_view[1] / 2) - 1
+	click_turf_y = origin.y + text2num(click_turf_y[1]) - QUESTIONABLE_FLOOR(actual_view[2] / 2) - 1
 
 	var/turf/click_turf = locate(clamp(click_turf_x, 1, world.maxx), clamp(click_turf_y, 1, world.maxy), click_turf_z)
 	LAZYSET(modifiers, ICON_X, "[(click_turf_px - click_turf.pixel_x) + ((click_turf_x - click_turf.x) * world.icon_size)]")
@@ -296,8 +296,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 	tX = text2num(tX[2])
 	tZ = origin.z
 	var/list/actual_view = getviewsize(C ? C.view : world.view)
-	tX = clamp(origin.x + round(actual_view[1] / 2) - tX, 1, world.maxx)
-	tY = clamp(origin.y + round(actual_view[2] / 2) - tY, 1, world.maxy)
+	tX = clamp(origin.x + QUESTIONABLE_FLOOR(actual_view[1] / 2) - tX, 1, world.maxx)
+	tY = clamp(origin.y + QUESTIONABLE_FLOOR(actual_view[2] / 2) - tY, 1, world.maxy)
 	return locate(tX, tY, tZ)
 
 ///similar function to RANGE_TURFS(), but will search spiralling outwards from the center (like the above, but only turfs)

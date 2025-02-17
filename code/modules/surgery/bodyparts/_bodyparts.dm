@@ -267,117 +267,6 @@
 		drop_limb(FALSE, TRUE)
 		stack_trace("Bodypart moved while it still had an owner")
 
-/obj/item/bodypart/examine(mob/user)
-	SHOULD_CALL_PARENT(TRUE)
-	. = ..()
-	. += mob_examine()
-
-/obj/item/bodypart/proc/mob_examine(hallucinating, covered, just_wounds_please)
-	. = list()
-
-	if(covered)
-		for(var/obj/item/I in embedded_objects)
-			if(I.isEmbedHarmless())
-				. += "<a href='?src=[REF(src)];embedded_object=[REF(I)]' class='danger'>There is \a [I] stuck to [owner.p_their()] [plaintext_zone]!</a>"
-			else
-				. += "<a href='?src=[REF(src)];embedded_object=[REF(I)]' class='danger'>There is \a [I] embedded in [owner.p_their()] [plaintext_zone]!</a>"
-
-		if(splint && istype(splint, /obj/item/stack))
-			. += span_notice("\t <a href='?src=[REF(src)];splint_remove=1' class='notice'>[owner.p_their(TRUE)] [plaintext_zone] is splinted with [splint].</a>")
-
-		if(bandage)
-			. += span_notice("\t <a href='?src=[REF(src)];bandage_remove=1' class='[bandage.absorption_capacity ? "notice" : "warning"]'>[owner.p_their(TRUE)] [plaintext_zone] is bandaged with [bandage][bandage.absorption_capacity ? "." : ", blood is trickling out."]</a>")
-		return
-
-	if(hallucinating == SCREWYHUD_HEALTHY)
-		return
-
-	if(hallucinating == SCREWYHUD_CRIT)
-		var/list/flavor_text = list("a")
-		flavor_text += pick(" pair of ", " ton of ", " several ")
-		flavor_text += pick("large cuts", "severe burns")
-		. += "[owner.p_they(TRUE)] [owner.p_have()] [english_list(flavor_text)] on [owner.p_their()] [plaintext_zone]."
-		return
-
-	var/list/flavor_text = list()
-	if((bodypart_flags & BP_CUT_AWAY) && !is_stump)
-		flavor_text += "a tear at the [amputation_point] so severe that it hangs by a scrap of flesh"
-
-	if(!IS_ORGANIC_LIMB(src))
-		if(brute_dam)
-			switch(brute_dam)
-				if(0 to 20)
-					flavor_text += "some dents"
-				if(21 to INFINITY)
-					flavor_text += pick("a lot of dents","severe denting")
-		if(burn_dam)
-			switch(burn_dam)
-				if(0 to 20)
-					flavor_text += "some burns"
-				if(21 to INFINITY)
-					flavor_text += pick("a lot of burns","severe melting")
-	else
-		var/list/wound_descriptors = list()
-		for(var/datum/wound/W as anything in wounds)
-			var/descriptor = W.get_examine_desc()
-			if(descriptor)
-				wound_descriptors[descriptor] += W.amount
-
-		if(how_open() >= SURGERY_RETRACTED)
-			var/bone = encased ? encased : "bone"
-			if(bodypart_flags & BP_BROKEN_BONES)
-				bone = "broken [bone]"
-			wound_descriptors["[bone] exposed"] = 1
-
-			if(!encased || how_open() >= SURGERY_DEENCASED)
-				var/list/bits = list()
-				for(var/obj/item/organ/organ in contained_organs)
-					if(organ.cosmetic_only)
-						continue
-					bits += organ.get_visible_state()
-
-				for(var/obj/item/implant in cavity_items)
-					bits += implant.name
-				if(length(bits))
-					wound_descriptors["[english_list(bits)] visible in the wounds"] = 1
-
-		for(var/wound in wound_descriptors)
-			switch(wound_descriptors[wound])
-				if(1)
-					flavor_text += "a [wound]"
-				if(2)
-					flavor_text += "a pair of [wound]s"
-				if(3 to 5)
-					flavor_text += "several [wound]s"
-				if(6 to INFINITY)
-					flavor_text += "a ton of [wound]\s"
-
-	if(just_wounds_please)
-		return english_list(flavor_text)
-
-	if(owner)
-		if(length(flavor_text))
-			. += "[owner.p_they(TRUE)] [owner.p_have()] [english_list(flavor_text)] on [owner.p_their()] [plaintext_zone]."
-
-		for(var/obj/item/I in embedded_objects)
-			if(I.isEmbedHarmless())
-				. += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)]' class='warning'>There is \a [I] stuck to [owner.p_their()] [plaintext_zone]!</a>"
-			else
-				. += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)]' class='warning'>There is \a [I] embedded in [owner.p_their()] [plaintext_zone]!</a>"
-
-		if(splint && istype(splint, /obj/item/stack))
-			. += span_notice("\t <a href='?src=[REF(src)];splint_remove=1' class='warning'>[owner.p_their(TRUE)] [plaintext_zone] is splinted with [splint].</a>")
-		if(bandage)
-			. += span_notice("\n\t <a href='?src=[REF(src)];bandage_remove=1' class='notice'>[owner.p_their(TRUE)] [plaintext_zone] is bandaged with [bandage][bandage.absorption_capacity ? "." : ", <span class='warning'>it is no longer absorbing blood</span>."]</a>")
-		return
-
-	else
-		if(current_damage)
-			. += "It has [english_list(flavor_text)]."
-		if(bodypart_flags & BP_BROKEN_BONES)
-			. += span_warning("It is dented and swollen.")
-		return
-
 /obj/item/bodypart/blob_act()
 	receive_damage(max_damage)
 
@@ -1452,7 +1341,10 @@
 
 	user.visible_message(span_notice("[user] starts inspecting [owner]'s [plaintext_zone] carefully."))
 	if(LAZYLEN(wounds))
-		to_chat(user, span_warning("You find [mob_examine(just_wounds_please = TRUE)]."))
+		to_chat(user, span_warning("You find the following:"))
+		for(var/wound_desc in get_wound_descriptions())
+			to_chat(user, wound_desc)
+
 		var/list/stuff = list()
 		for(var/datum/wound/wound as anything in wounds)
 			if(LAZYLEN(wound.embedded_objects))

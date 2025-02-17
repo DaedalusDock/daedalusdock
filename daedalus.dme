@@ -4441,6 +4441,7 @@
 #include "code\modules\station_goals\station_goal.dm"
 #include "code\modules\surgery\tools.dm"
 #include "code\modules\surgery\bodyparts\_bodyparts.dm"
+#include "code\modules\surgery\bodyparts\bodypart_examine.dm"
 #include "code\modules\surgery\bodyparts\digitigrade.dm"
 #include "code\modules\surgery\bodyparts\dismemberment.dm"
 #include "code\modules\surgery\bodyparts\germs_bodypart.dm"

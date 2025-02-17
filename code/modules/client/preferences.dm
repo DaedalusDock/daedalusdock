@@ -4,16 +4,22 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/client/parent
 	//doohickeys for savefiles
 	var/path
-	var/default_slot = 1 //Holder so it doesn't default to slot 1, rather the last one used
-	var/max_save_slots = 10
+	/// Whether or not we allow saving/loading. Used for guests, if they're enabled
+	var/load_and_save = TRUE
+	/// Ensures that we always load the last used save, QOL
+	var/default_slot = 1
+	/// The maximum number of slots we're allowed to contain
+	var/max_save_slots = 3
 
-	//non-preference stuff
-	var/muted = 0
+	/// Bitflags for communications that are muted
+	var/muted = NONE
+	/// Last IP that this client has connected from
 	var/last_ip
+	/// Last CID that this client has connected from
 	var/last_id
 
-	//game-preferences
-	var/lastchangelog = "" //Saved changlog filesize to detect if there was a change
+	/// Cached changelog size, to detect new changelogs since last join
+	var/lastchangelog = ""
 
 	/// Custom keybindings. Map of keybind names to keyboard inputs.
 	/// For example, by default would have "swap_hands" -> list("X")
@@ -24,7 +30,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/list/key_bindings_by_key = list()
 
 	var/toggles = TOGGLES_DEFAULT
-	var/db_flags
+	var/db_flags = NONE
 	var/chat_toggles = TOGGLES_DEFAULT_CHAT
 	var/ghost_form = "ghost"
 
@@ -52,11 +58,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	/// A list of instantiated middleware
 	var/list/datum/preference_middleware/middleware = list()
 
-	/// The savefile relating to core preferences, PREFERENCE_PLAYER
-	var/savefile/game_savefile
+	/// The json savefile for this datum
+	var/datum/json_savefile/savefile
 
 	/// The savefile relating to character preferences, PREFERENCE_CHARACTER
-	var/savefile/character_savefile
+	var/list/character_data
 
 	/// A list of keys that have been updated since the last save.
 	var/list/recently_updated_keys = list()
@@ -98,10 +104,15 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 	if(istype(C))
 		if(!is_guest_key(C.key))
-			load_path(C.ckey)
-			unlock_content = !!C.IsByondMember()
+			load_and_save = !is_guest_key(parent.key)
+			load_path(parent.ckey)
+			if(load_and_save && !fexists(path))
+				try_savefile_type_migration()
+			unlock_content = !!C.IsByondMember() //TG made this a preference level var, I can do that if you want.
 			if(unlock_content)
 				max_save_slots = 15
+
+	load_savefile()
 
 	// give them default keybinds and update their movement keys
 	key_bindings = deep_copy_list(GLOB.default_hotkeys)

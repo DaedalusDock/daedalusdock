@@ -3,3 +3,12 @@
   - tweak: Swapped out all of the Tip of the Round entries
   - tweak: Cyborgs spawn on the station.
   - qol: AI can now see their own eye.
+2025-02-17:
+  Kapu1178:
+  - rscadd: Afflicted - Neck Bite now grants Nutrition and Satiety.
+  - rscadd: Afflicted - Neck Bite is now instant during Bloodlust.
+  - rscadd: Afflicted - Neck Bite now only requires an Aggressive grab during Bloodlust.
+  - rscadd: Afflicted - Neck Bite now heals a small amount of Physical damage.
+  - rscadd: Afflicted - Neck Bite now Mutes the victim for the duration once they
+      have been bit.
+  - rscadd: Afflicted - Blood Hunt now allows you to track any of your previous victims.

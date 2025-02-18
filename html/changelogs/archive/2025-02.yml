@@ -12,3 +12,6 @@
   - rscadd: Afflicted - Neck Bite now Mutes the victim for the duration once they
       have been bit.
   - rscadd: Afflicted - Blood Hunt now allows you to track any of your previous victims.
+2025-02-18:
+  Kapu1178:
+  - bugfix: Slapcrafting works again.

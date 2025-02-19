@@ -15,3 +15,7 @@
 2025-02-18:
   Kapu1178:
   - bugfix: Slapcrafting works again.
+2025-02-19:
+  Kapu1178:
+  - rscadd: Unarmed attacks inflict different wounds based on their type.
+  - rscadd: 0-damage wounds (scars) persist for some time.

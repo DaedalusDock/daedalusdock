@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Unarmed attacks inflict different wounds based on their type.
-  - rscadd: 0-damage wounds (scars) persist for some time.

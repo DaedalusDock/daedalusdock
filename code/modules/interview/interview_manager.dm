@@ -107,7 +107,7 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
 		to_chat(to_queue.owner, span_notice("No active admins are online, your interview's submission was sent through TGS to admins who are available. This may use IRC or Discord."))
 	for(var/client/X in GLOB.admins)
 		if(X.prefs.toggles & SOUND_ADMINHELP)
-			SEND_SOUND(X, sound('sound/effects/adminhelp.ogg'))
+			SEND_SOUND(X, sound('goon/sounds/adminhelp.ogg'))
 		window_flash(X, ignorepref = TRUE)
 		to_chat(X, span_adminhelp("[to_queue.link_self()] for [ckey] enqueued for review. Current position in queue: [to_queue.pos_in_queue]"), confidential = TRUE)
 

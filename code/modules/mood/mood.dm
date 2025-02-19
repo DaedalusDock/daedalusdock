@@ -104,7 +104,7 @@
 	if (mood_events[category])
 		the_event = mood_events[category]
 		if (the_event.type != type)
-			clear_mood_event(category, quiet = TRUE)
+			clear_mood_event(category, update_mood = FALSE)
 		else
 			if (the_event.timeout)
 				if (!isnull(mood_to_copy_from))
@@ -112,11 +112,13 @@
 				addtimer(CALLBACK(src, PROC_REF(clear_mood_event), category), the_event.timeout, (TIMER_UNIQUE|TIMER_OVERRIDE))
 			qdel(mood_to_copy_from)
 			return // Don't need to update the event.
+
 	var/list/params = args.Copy(3)
 
 	params.Insert(1, mob_parent)
 	the_event = new type(arglist(params))
 	if (QDELETED(the_event)) // the mood event has been deleted for whatever reason (requires a job, etc)
+		update_mood(quiet = TRUE) // Just in case we deleted a mood event earlier.
 		return
 
 	the_event.category = category
@@ -135,8 +137,9 @@
  * Arguments:
  * * category - (Text) Removes the mood event with the given category
  * * quiet - (Bool) Surpresses messages.
+ * * update_mood - (Bool) Run update_mood().
  */
-/datum/mood/proc/clear_mood_event(category, quiet = FALSE)
+/datum/mood/proc/clear_mood_event(category, quiet = FALSE, update_mood = TRUE)
 	if (!istext(category))
 		category = REF(category)
 
@@ -146,7 +149,8 @@
 
 	mood_events -= category
 	qdel(event)
-	update_mood(quiet)
+	if(update_mood)
+		update_mood(quiet)
 
 /// Updates the mobs mood.
 /// Called after mood events have been added/removed.
@@ -159,7 +163,6 @@
 
 	mood = 0
 	shown_mood = 0
-
 
 	for(var/category in mood_events)
 		var/datum/mood_event/the_event = mood_events[category]

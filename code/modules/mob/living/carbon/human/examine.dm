@@ -12,10 +12,15 @@
 	var/t_s = p_s()
 	var/obscure_name
 
+	var/viewer_hallucinating = FALSE
 	if(isliving(user))
 		var/mob/living/L = user
 		if(HAS_TRAIT(L, TRAIT_PROSOPAGNOSIA) || HAS_TRAIT(L, TRAIT_INVISIBLE_MAN))
 			obscure_name = TRUE
+
+	if(ishuman(user))
+		var/mob/living/carbon/H = user
+		viewer_hallucinating = H.hal_screwyhud
 
 	var/obscured = check_obscured_slots()
 	var/skipface = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
@@ -173,7 +178,7 @@
 					break
 			if(!is_bloody)
 				msg += span_notice("[t_His] [body_part.plaintext_zone] is covered.\n")
-			for(var/string in body_part.mob_examine(hal_screwyhud, TRUE))
+			for(var/string in body_part.mob_examine(viewer_hallucinating, TRUE))
 				msg += "[string]</br>"
 
 			continue
@@ -182,7 +187,7 @@
 			if((body_part.brute_dam + body_part.burn_dam) >= body_part.max_damage * 0.8)
 				fucked_reasons["[t_His] [body_part.plaintext_zone] is greviously injured."] = 3
 
-			for(var/string in body_part.mob_examine(hal_screwyhud, FALSE))
+			for(var/string in body_part.mob_examine(viewer_hallucinating, FALSE))
 				msg += "[string]</br>"
 
 	for(var/X in disabled)

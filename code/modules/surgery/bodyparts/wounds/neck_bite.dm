@@ -1,14 +1,14 @@
 /// Used by the Neck Bite ability.
 /datum/wound/neck_bite
 	pain_factor = 0
-	bleed_threshold = 0
+	always_bleed_threshold = 0
 	wound_type = WOUND_PIERCE
 
 	autoheal_cutoff = 10
-	max_bleeding_stage = 1
+	min_bleeding_stage = 2
 	stages = list(
-		"afflicted bite" = 5,
 		"fading bite mark" = 0,
+		"afflicted bite" = 5,
 	)
 
 /datum/wound/neck_bite/can_worsen(damage_type, damage)

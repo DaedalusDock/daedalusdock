@@ -488,7 +488,6 @@
 	// If the limbs can break, make sure we don't exceed the maximum damage a limb can take before breaking
 	var/block_cut = (pure_brute < 6) || !IS_ORGANIC_LIMB(src)
 	var/can_cut = !block_cut && ((sharpness) || prob(brute))
-	var/datum/wound/new_or_existing_wound
 
 	if(brute)
 		var/to_create = WOUND_BRUISE

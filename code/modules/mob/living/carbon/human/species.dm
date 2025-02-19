@@ -1055,11 +1055,15 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		log_combat(user, target, "attempted to punch (missed)")
 		return FALSE
 
+	var/attack_sharpness = NONE
 	switch(atk_effect)
 		if(ATTACK_EFFECT_BITE)
 			target.add_trace_DNA_on_clothing_or_self(user, attacking_zone)
+			attack_sharpness |= SHARP_POINTY
+
 		if(ATTACK_EFFECT_PUNCH, ATTACK_EFFECT_CLAW, ATTACK_EFFECT_SLASH)
 			target.add_fingerprint_on_clothing_or_self(user, attacking_zone)
+			attack_sharpness |= SHARP_EDGED
 
 	var/armor_block = target.run_armor_check(affecting, BLUNT)
 
@@ -1088,7 +1092,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	else//other attacks deal full raw damage + 1.5x in stamina damage
 
-		target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
+		target.apply_damage(damage, attack_type, affecting, armor_block, sharpness = attack_sharpness, attack_direction = attack_direction)
 		target.stamina.adjust(-STAMINA_DAMAGE_UNARMED)
 		log_combat(user, target, "punched")
 		. |= ATTACK_CONSUME_STAMINA
@@ -1319,7 +1323,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		humi.remove_movespeed_modifier(/datum/movespeed_modifier/cold)
 
 
-	if((humi.stat == CONSCIOUS) && prob(5))
+	if((humi.stat == CONSCIOUS) && prob(4))
 		if(bodytemp < cold_discomfort_level)
 			to_chat(humi, span_warning(pick(cold_discomfort_strings)))
 		else if(bodytemp > heat_discomfort_level)

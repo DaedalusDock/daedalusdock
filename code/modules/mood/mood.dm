@@ -118,7 +118,7 @@
 	if (mood_events[category])
 		the_event = mood_events[category]
 		if (the_event.type != type)
-			clear_mood_event(category)
+			clear_mood_event(category, quiet = TRUE)
 		else
 			if (the_event.timeout)
 				if (!isnull(mood_to_copy_from))
@@ -148,8 +148,9 @@
  *
  * Arguments:
  * * category - (Text) Removes the mood event with the given category
+ * * quiet - (Bool) Surpresses messages.
  */
-/datum/mood/proc/clear_mood_event(category)
+/datum/mood/proc/clear_mood_event(category, quiet = FALSE)
 	if (!istext(category))
 		category = REF(category)
 
@@ -159,11 +160,11 @@
 
 	mood_events -= category
 	qdel(event)
-	update_mood()
+	update_mood(quiet)
 
 /// Updates the mobs mood.
 /// Called after mood events have been added/removed.
-/datum/mood/proc/update_mood()
+/datum/mood/proc/update_mood(quiet)
 	if(QDELETED(mob_parent)) //don't bother updating their mood if they're about to be salty anyway. (in other words, we're about to be destroyed too anyway.)
 		return
 
@@ -213,10 +214,11 @@
 		if (MOOD_LEVEL_HAPPY4 to INFINITY)
 			mood_level = MOOD_LEVEL_HAPPY4
 
-	if(mood_level > old_mood_level)
-		to_chat(mob_parent, span_notice("I have become less stressed."))
-	else
-		to_chat(mob_parent, span_warning("I have become more stressed."))
+	if(!quiet)
+		if(mood_level > old_mood_level)
+			to_chat(mob_parent, span_notice("I have become less stressed."))
+		else
+			to_chat(mob_parent, span_warning("I have become more stressed."))
 
 	update_mood_icon()
 

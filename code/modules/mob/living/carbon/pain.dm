@@ -1,6 +1,5 @@
 /mob/living
-	COOLDOWN_DECLARE(pain_cd)
-	COOLDOWN_DECLARE(pain_emote_cd)
+	var/list/pain_cooldowns = list()
 
 /mob/living/carbon
 	var/shock_stage
@@ -12,7 +11,7 @@
 
 	. -= CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)
 
-	return max(0, .)
+	return round(max(0, .), 1)
 
 /mob/living/carbon/adjustPain(amount, updating_health = TRUE)
 	if(((status_flags & GODMODE)))
@@ -84,40 +83,52 @@
 	if(stat != CONSCIOUS)
 		return
 
-	if(amount >= PAIN_AMT_AGONIZING)
-		flash_pain(PAIN_LARGE)
-		shake_camera(src, 3, 4)
-	else if(amount >= PAIN_AMT_MEDIUM)
-		flash_pain(PAIN_MEDIUM)
-		shake_camera(src, 1, 2)
-	else if(amount >= PAIN_AMT_LOW)
-		flash_pain(PAIN_SMALL)
+	var/class = pain_class(amount)
+	switch(class)
+		if(PAIN_CLASS_AGONIZING)
+			flash_pain(PAIN_LARGE)
+			shake_camera(src, 3, 4)
+		if(PAIN_CLASS_MEDIUM)
+			flash_pain(PAIN_MEDIUM)
+			shake_camera(src, 1, 2)
+		if(PAIN_CLASS_LOW)
+			flash_pain(PAIN_SMALL)
 
 	if(message)
 		pain_message(message, amount, ignore_cd)
 
 /mob/living/carbon/proc/pain_message(message, amount, ignore_cd)
 	set waitfor = FALSE
-	if(!amount || (stat != CONSCIOUS) || HAS_TRAIT(src, TRAIT_FAKEDEATH))
+	if(amount <= 0 || (stat != CONSCIOUS) || HAS_TRAIT(src, TRAIT_FAKEDEATH))
 		return FALSE
 
-	. = COOLDOWN_FINISHED(src, pain_cd)
+	var/pain_class = pain_class(amount)
+	var/cooldown_class = "[pain_class]-nonlife"
+	. = COOLDOWN_FINISHED(src, pain_cooldowns[cooldown_class])
 	if(!ignore_cd && !.)
 		return FALSE
 
 	if(message)
-		switch(round(amount))
-			if(PAIN_AMT_AGONIZING to INFINITY)
+		switch(pain_class)
+			if(PAIN_CLASS_AGONIZING)
 				to_chat(src, span_danger(span_big(message)))
-			if(PAIN_AMT_MEDIUM to PAIN_AMT_AGONIZING - 1)
+			if(PAIN_CLASS_MEDIUM)
 				to_chat(src, span_danger(message))
-			if(PAIN_AMT_LOW to PAIN_AMT_MEDIUM - 1)
+			if(PAIN_CLASS_LOW)
 				to_chat(src, span_danger(message))
 			else
 				to_chat(src, span_warning(message))
 
 	if(.)
-		COOLDOWN_START(src, pain_cd, rand(8 SECONDS, 14 SECONDS))
+		switch(pain_class)
+			if(PAIN_CLASS_AGONIZING)
+				COOLDOWN_START(src, pain_cooldowns[cooldown_class], 20 SECONDS)
+			if(PAIN_CLASS_MEDIUM)
+				COOLDOWN_START(src, pain_cooldowns[cooldown_class], 40 SECONDS)
+			if(PAIN_CLASS_LOW)
+				COOLDOWN_START(src, pain_cooldowns[cooldown_class], 60 SECONDS)
+			else
+				COOLDOWN_START(src, pain_cooldowns[cooldown_class], 120 SECONDS)
 
 	return TRUE
 
@@ -126,27 +137,27 @@
 	if(!.)
 		return
 
-	var/emote = dna.species.get_pain_emote(amount)
 	var/probability = 0
 
-	switch(round(amount))
-		if(PAIN_AMT_AGONIZING to INFINITY)
+	switch(pain_class(amount))
+		if(PAIN_CLASS_AGONIZING)
 			probability = 100
-		if(PAIN_AMT_MEDIUM to PAIN_AMT_AGONIZING - 1)
+		if(PAIN_CLASS_MEDIUM)
 			probability = 70
-		if(1 to PAIN_AMT_MEDIUM - 1)
-			probability = 20
 
-	if(emote && prob(probability))
+	if(prob(probability))
 		pain_emote(amount)
 
 /// Perform a pain response emote, amount is the amount of pain they are in. See pain defines for easy numbers.
 /mob/living/carbon/proc/pain_emote(amount = PAIN_AMT_LOW, bypass_cd)
-	if(!COOLDOWN_FINISHED(src, pain_emote_cd) && !bypass_cd)
+	if(!COOLDOWN_FINISHED(src, pain_cooldowns["emote"]) && !bypass_cd)
 		return
 
-	COOLDOWN_START(src, pain_emote_cd, 5 SECONDS)
 	var/emote = dna.species.get_pain_emote(amount)
+	if(!emote)
+		return
+
+	COOLDOWN_START(src, pain_cooldowns["emote"], 15 SECONDS)
 	if(findtext(emote, "me ", 1, 4))
 		manual_emote(copytext(emote, 4))
 	else
@@ -180,19 +191,20 @@
 		shock_stage = max(shock_stage + 1, SHOCK_TIER_4 + 1)
 
 	var/pain = getPain()
+	var/overall_pain_class = pain_class(pain)
 
 	// Pain mood adjustment
-	if(pain == 0)
-		mob_mood?.clear_mood_event("pain")
-	else
-		if(pain >= PAIN_AMT_AGONIZING)
+	switch(overall_pain_class)
+		if(PAIN_CLASS_AGONIZING)
 			mob_mood.add_mood_event("pain", /datum/mood_event/pain_four)
-		else if(pain >= PAIN_AMT_MEDIUM)
+		if(PAIN_CLASS_MEDIUM)
 			mob_mood.add_mood_event("pain", /datum/mood_event/pain_three)
-		else if(pain >= PAIN_AMT_LOW)
+		if(PAIN_CLASS_LOW)
 			mob_mood.add_mood_event("pain", /datum/mood_event/pain_two)
-		else
+		if(PAIN_CLASS_NEGLIGIBLE)
 			mob_mood.add_mood_event("pain", /datum/mood_event/pain_one)
+		if(PAIN_CLASS_NONE)
+			mob_mood.clear_mood_event("pain")
 
 	if(pain >= max(SHOCK_MIN_PAIN_TO_BEGIN, shock_stage * 0.8))
 		// A chance to fight through the pain.
@@ -266,7 +278,7 @@
 
 	if((shock_stage > SHOCK_TIER_6 && prob(2)) || shock_stage == SHOCK_TIER_6)
 		if (stat == CONSCIOUS)
-			pain_message(pick("You black out.", "I feel like I could die any moment now.", "I can't go on anymore."), shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
+			pain_message(pick("You black out.", "I feel like I could die any moment now.", "I can't go on anymore."), shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3, TRUE)
 			Unconscious(10 SECONDS)
 			return // We'll be generous
 
@@ -275,8 +287,9 @@
 			visible_message("<b>[src]</b> falls limp!")
 		Unconscious(20 SECONDS)
 
-	if(message)
-		pain_message(message, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
+	if(message && !COOLDOWN_FINISHED(src, pain_cooldowns["shock"]))
+		COOLDOWN_START(src, pain_cooldowns["shock"], 20 SECONDS)
+		pain_message(message, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3, TRUE)
 
 #undef SHOCK_STRING_MINOR
 #undef SHOCK_STRING_MAJOR
@@ -312,42 +325,45 @@
 	if(stat != CONSCIOUS)
 		return
 
-	var/pain_timeleft = COOLDOWN_TIMELEFT(src, pain_cd)
-	if(pain_timeleft && !prob(5))
-		// At 40 pain, the pain cooldown ticks 50% faster, since handle_pain() runs every two seconds
-		COOLDOWN_START(src, pain_cd, round(pain_timeleft - (pain / 40)))
-		return
-
-	var/highest_damage
+	var/highest_bp_pain = 0
 	var/obj/item/bodypart/damaged_part
 	for(var/obj/item/bodypart/loop as anything in bodyparts)
 		if(loop.bodypart_flags & BP_NO_PAIN)
 			continue
 
-		var/dam = loop.getPain()
-		if(dam && dam > highest_damage && (highest_damage == 0 || prob(70)))
+		var/bp_pain = loop.getPain()
+		if(bp_pain > highest_bp_pain || (highest_bp_pain == bp_pain && prob(50)))
 			damaged_part = loop
-			highest_damage = dam
+			highest_bp_pain = bp_pain
 
-	if(damaged_part && CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER) < highest_damage)
-		if(highest_damage > PAIN_THRESHOLD_REDUCE_PARALYSIS)
-			AdjustSleeping(-(highest_damage / 5) SECONDS)
-		if(highest_damage > PAIN_THRESHOLD_DROP_ITEM && prob(highest_damage / 5))
+	if(damaged_part && CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER) < highest_bp_pain)
+		if(highest_bp_pain > PAIN_THRESHOLD_REDUCE_PARALYSIS)
+			AdjustSleeping(-(highest_bp_pain / 5) SECONDS)
+		if(highest_bp_pain > PAIN_THRESHOLD_DROP_ITEM && prob(highest_bp_pain / 5))
 			var/obj/item/I = get_active_held_item()
 			if(I && dropItemToGround(I))
 				visible_message(span_alert("[src] twitches, dropping their [I]."))
 
 		var/burning = damaged_part.burn_dam > damaged_part.brute_dam
 		var/msg
-		switch(highest_damage)
-			if(1 to PAIN_AMT_MEDIUM)
-				msg = "Your [damaged_part.plaintext_zone] [burning ? "burns" : "hurts"]."
-			if(PAIN_AMT_MEDIUM to PAIN_AMT_AGONIZING)
-				msg = "Your [damaged_part.plaintext_zone] [burning ? "burns" : "hurts"] badly!"
-			if(PAIN_AMT_AGONIZING to INFINITY)
-				msg = "OH GOD! Your [damaged_part.plaintext_zone] is [burning ? "on fire" : "hurting terribly"]!"
+		var/highest_bp_pain_class = pain_class(highest_bp_pain)
 
-		pain_message(msg, highest_damage)
+		if(COOLDOWN_FINISHED(src, pain_cooldowns[highest_bp_pain_class]))
+			switch(highest_bp_pain_class)
+				if(PAIN_CLASS_AGONIZING)
+					COOLDOWN_START(src, pain_cooldowns[highest_bp_pain_class], 20 SECONDS)
+					msg = "OH GOD! Your [damaged_part.plaintext_zone] is [burning ? "on fire" : "hurting terribly"]!"
+
+				if(PAIN_CLASS_MEDIUM)
+					COOLDOWN_START(src, pain_cooldowns[highest_bp_pain_class], 40 SECONDS)
+					msg = "Your [damaged_part.plaintext_zone] [burning ? "burns" : "hurts"] badly."
+
+				if(PAIN_CLASS_LOW)
+					msg = "Your [damaged_part.plaintext_zone] [burning ? "burns" : "hurts"]."
+					COOLDOWN_START(src, pain_cooldowns[highest_bp_pain_class], 60 SECONDS)
+
+			if(msg)
+				pain_message(msg, highest_bp_pain, TRUE)
 
 
 	// Damage to internal organs hurts a lot.
@@ -368,18 +384,36 @@
 			if(I.damage > (I.high_threshold * I.maxHealth))
 				pain_given = 40
 				message = "You feel a sharp pain in your [parent.plaintext_zone]"
-			apply_pain(pain_given, parent.body_zone, message)
+			apply_pain(pain_given, parent.body_zone, message, TRUE)
 
 	if(prob(1))
 		var/systemic_organ_failure = getToxLoss()
 		switch(systemic_organ_failure)
 			if(5 to 17)
-				pain_message("Your body stings slightly.", 10)
+				pain_message("Your body stings slightly.", 1, TRUE)
 			if(17 to 35)
-				pain_message("Your body stings.", 20)
+				pain_message("Your body stings.", PAIN_AMT_LOW, TRUE)
 			if(35 to 60)
-				pain_message("Your body stings strongly.", 40)
+				pain_message("Your body stings strongly.", PAIN_AMT_MEDIUM, TRUE)
 			if(60 to 100)
-				pain_message("Your whole body hurts badly.", 40)
+				pain_message("Your whole body hurts badly.", PAIN_AMT_MEDIUM, TRUE)
 			if(100 to INFINITY)
-				pain_message("Your body aches all over, it's driving you mad.", 70)
+				pain_message("Your body aches all over, it's driving you mad.", PAIN_AMT_AGONIZING, TRUE)
+
+/// Converts a pain value to a "class" of pain.
+/proc/pain_class(pain_amt)
+	switch(pain_amt)
+		if(0)
+			return PAIN_CLASS_NONE
+
+		if(1 to PAIN_AMT_LOW-1)
+			return PAIN_CLASS_NEGLIGIBLE
+
+		if(PAIN_AMT_LOW to PAIN_AMT_MEDIUM-1)
+			return PAIN_CLASS_LOW
+
+		if(PAIN_AMT_MEDIUM to PAIN_AMT_AGONIZING-1)
+			return PAIN_CLASS_MEDIUM
+
+		if(PAIN_AMT_AGONIZING to INFINITY)
+			return PAIN_CLASS_AGONIZING

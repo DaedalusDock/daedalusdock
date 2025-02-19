@@ -30,6 +30,12 @@
 #define PAIN_AMT_MEDIUM (PAIN_AMT_PASSOUT * 0.35)
 #define PAIN_AMT_AGONIZING (PAIN_AMT_PASSOUT * 0.85)
 
+#define PAIN_CLASS_NONE "none"
+#define PAIN_CLASS_NEGLIGIBLE "negligible"
+#define PAIN_CLASS_LOW "low"
+#define PAIN_CLASS_MEDIUM "medium"
+#define PAIN_CLASS_AGONIZING "agonizing"
+
 /// max_damage * this value is the amount of pain constantly applied when the limb bone is broken
 #define BROKEN_BONE_PAIN_FACTOR 0.1
 /// max_damage * this value is the amount of pain constantly applied when the limb is dislocated

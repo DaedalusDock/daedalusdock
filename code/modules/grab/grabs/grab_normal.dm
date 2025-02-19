@@ -94,7 +94,7 @@
 			G.action_used()
 			BP.set_dislocated(FALSE)
 			assailant.visible_message(span_warning("\The [affecting]'s [BP.joint_name] pops back into place!"))
-			affecting.pain_message("AAAHHHHAAGGHHHH", 50, TRUE)
+			affecting.pain_message("AAAHHHHAAGGHHHH", PAIN_AMT_MEDIUM, TRUE)
 		return TRUE
 
 	if(BP.can_be_dislocated())

@@ -233,17 +233,21 @@
 					stats.set_cooldown("shrug_off_pain", 60 SECONDS)
 					// Do not return
 
+		if(shock_stage == 0)
+			throw_alert("traumatic shock", /atom/movable/screen/alert/shock)
 		shock_stage = min(shock_stage + 1, SHOCK_MAXIMUM)
 
 	else if(!heart_attack_gaming)
 		shock_stage = min(shock_stage, SHOCK_MAXIMUM)
-		var/recovery = 1
+		var/recovery = 2
 		if(pain < 0.5 * shock_stage)
-			recovery = 3
+			recovery = 4
 		else if(pain < 0.25 * shock_stage)
-			recovery = 2
+			recovery = 3
 
 		shock_stage = max(shock_stage - recovery, 0)
+		if(shock_stage == 0)
+			clear_alert("traumatic shock")
 		return
 
 	if(stat)

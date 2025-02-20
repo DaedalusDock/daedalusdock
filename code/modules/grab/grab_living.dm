@@ -53,6 +53,14 @@
 	if(SEND_SIGNAL(src, COMSIG_LIVING_TRY_GRAB, target, grab_type) & COMSIG_LIVING_CANCEL_GRAB)
 		return
 
+	// REALLY SHITTY CODE TO FIX A GAMEBREAKING BUG. I HATE GRAB CODE WHY DID I PORT THIS?
+	if(src == target)
+		if(ispath(grab_type, /datum/grab/normal) && grab_type != /datum/grab/normal/passive)
+			grab_type = /datum/grab/normal/passive
+
+	else if(grab_type == /datum/grab/normal/passive && HAS_TRAIT(src, TRAIT_STRONG_GRABBER))
+		grab_type == /datum/grab/normal/aggressive
+
 	// Resolve to the 'topmost' atom in the buckle chain, as grabbing someone buckled to something tends to prevent further interaction.
 	var/atom/movable/original_target = target
 	if(ismob(target))

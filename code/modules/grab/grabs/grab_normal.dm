@@ -236,6 +236,9 @@
 	return TRUE
 
 /datum/grab/normal/resolve_item_attack(obj/item/hand_item/grab/G, mob/living/carbon/human/user, obj/item/I)
+	if(damage_stage < GRAB_AGGRESSIVE)
+		return
+
 	switch(G.target_zone)
 		if(BODY_ZONE_HEAD)
 			return attack_throat(G, I, user)

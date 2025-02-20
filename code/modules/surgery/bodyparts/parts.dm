@@ -20,7 +20,7 @@
 
 	minimum_break_damage = 35
 
-	bodypart_flags = (BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_ARTERY | BP_CAN_BE_DISLOCATED)
+	bodypart_flags = (BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_ARTERY)
 
 	///The bodytype(s) allowed to attach to this chest.
 	var/acceptable_bodytype = BODYTYPE_HUMANOID

@@ -175,7 +175,7 @@
 		"I can't feel anything!"\
 	)
 
-/mob/living/carbon/proc/handle_shock()
+/mob/living/carbon/proc/handle_shock(delta_time)
 	if(status_flags & GODMODE)
 		return
 
@@ -298,7 +298,7 @@
 #undef SHOCK_STRING_MINOR
 #undef SHOCK_STRING_MAJOR
 
-/mob/living/carbon/proc/handle_pain()
+/mob/living/carbon/proc/handle_pain(delta_time)
 	if(stat == DEAD)
 		return
 

@@ -194,7 +194,7 @@
 	var/generic_bleedstacks
 
 	/// If something is currently supporting this limb as a splint
-	var/obj/item/splint
+	var/obj/item/stack/splint
 	/// Timer ID for splint heal.
 	var/splint_heal_timer
 	/// The bandage that may-or-may-not be absorbing our blood

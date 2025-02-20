@@ -134,16 +134,13 @@
 
 /// Updates the interaction speed modifier of this limb, used by Limping and similar to determine delay.
 /obj/item/bodypart/proc/update_interaction_speed()
-	if(bodypart_flags & BP_BROKEN_BONES)
-		if(!splint)
-			interaction_speed_modifier = 7
-		else
-			if(istype(splint, /obj/item/stack))
-				var/obj/item/stack/S = splint
-				interaction_speed_modifier = initial(interaction_speed_modifier) + S.splint_slowdown
+	interaction_speed_modifier = initial(interaction_speed_modifier)
 
-	else
-		interaction_speed_modifier = initial(interaction_speed_modifier)
+	if(splint)
+		interaction_speed_modifier += splint.splint_slowdown
+
+	else if(bodypart_flags & BP_BROKEN_BONES)
+		interaction_speed_modifier += 7
 
 	SEND_SIGNAL(src, COMSIG_LIMB_UPDATE_INTERACTION_SPEED, interaction_speed_modifier)
 	return interaction_speed_modifier

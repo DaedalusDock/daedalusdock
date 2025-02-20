@@ -1,7 +1,10 @@
 /// Apply an item as a splint.
-/obj/item/bodypart/proc/apply_splint(obj/item/stack/splint/new_splint)
+/obj/item/bodypart/proc/apply_splint(obj/item/stack/new_splint)
 	if(splint)
 		return FALSE
+
+	if(new_splint.splint_slowdown == null)
+		return
 
 	splint = new_splint.split_stack(null, 1, src)
 

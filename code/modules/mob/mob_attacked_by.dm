@@ -64,7 +64,7 @@
 	var/damage_done = apply_damage(
 		damage = damage,
 		damagetype = attacking_item.damtype,
-		def_zone = BODY_ZONE_CHEST,
+		def_zone = hit_zone,
 		blocked = armor_block,
 		sharpness = attacking_item.sharpness,
 		attack_direction = get_dir(attacker, src),

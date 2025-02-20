@@ -61,9 +61,6 @@
 		if(ispath(grab_type, /datum/grab/normal) && grab_type != /datum/grab/normal/passive)
 			grab_type = /datum/grab/normal/passive
 
-	else if(grab_type == /datum/grab/normal/passive && HAS_TRAIT(src, TRAIT_STRONG_GRABBER))
-		grab_type = /datum/grab/normal/aggressive
-
 	// Resolve to the 'topmost' atom in the buckle chain, as grabbing someone buckled to something tends to prevent further interaction.
 	var/atom/movable/original_target = target
 	if(ismob(target))

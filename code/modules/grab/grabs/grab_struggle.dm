@@ -18,7 +18,7 @@
 	if(!affecting)
 		return TRUE
 
-	if(affecting == assailant)
+	if(HAS_TRAIT(assailant, TRAIT_STRONG_GRABBER))
 		G.done_struggle = TRUE
 		G.upgrade(TRUE)
 		return FALSE

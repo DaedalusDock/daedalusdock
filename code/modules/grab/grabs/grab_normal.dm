@@ -17,9 +17,9 @@
 		return
 
 	if(G.affecting != G.assailant)
-		G.assailant.visible_message(span_warning("[G.assailant] has grabbed [G.affecting]'s [BP.plaintext_zone]!"))
+		G.assailant.visible_message(span_warning("<b>[G.assailant]</b> grabs <b>[G.affecting]</b> by [G.affecting.p_their()] [BP.plaintext_zone]."))
 	else
-		G.assailant.visible_message(span_notice("[G.assailant] has grabbed [G.assailant.p_their()] [BP.plaintext_zone]!"))
+		G.assailant.visible_message(span_notice("<b>[G.assailant]</b> grabs [G.assailant.p_their()] [BP.plaintext_zone]."))
 
 /datum/grab/normal/on_hit_help(obj/item/hand_item/grab/G, atom/A)
 

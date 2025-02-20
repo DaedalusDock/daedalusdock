@@ -84,8 +84,10 @@
 	current_grab.special_bodyzone_effects(src)
 
 	var/mob/living/L = get_affecting_mob()
-	if(L && L != assailant && assailant.combat_mode)
-		upgrade(TRUE)
+	if(L)
+		log_combat(assailant, L, "grabbed")
+		if(L != assailant && assailant.combat_mode)
+			upgrade(TRUE)
 
 	/// Update appearance
 	update_appearance(UPDATE_ICON_STATE)
@@ -128,6 +130,9 @@
 
 	if(assailant)
 		assailant.after_grab_release(affecting)
+
+	if(ismob(affecting))
+		log_combat(assailant, affecting, "dropped a grab on")
 
 	//DEBUG CODE
 	if(HAS_TRAIT_FROM(affecting, TRAIT_AGGRESSIVE_GRAB, ref(src)))
@@ -333,6 +338,9 @@
 	adjust_position()
 	update_appearance()
 
+	if(ismob(affecting))
+		log_combat(assailant, affecting, "upgraded grab to [current_grab.type]")
+
 	SEND_SIGNAL(assailant, COMSIG_LIVING_GRAB_UPGRADE)
 
 /obj/item/hand_item/grab/proc/downgrade(silent)
@@ -355,6 +363,9 @@
 
 	adjust_position()
 	update_appearance()
+
+	if(ismob(affecting))
+		log_combat(assailant, affecting, "downgraded grab to [current_grab.type]")
 
 	SEND_SIGNAL(assailant, COMSIG_LIVING_GRAB_DOWNGRADE)
 

@@ -5,7 +5,7 @@
 	var/ishuman = ishuman(src)
 	// Humans have miss chance. We dont apply this to living mobs for my sanity, i guess.
 	if(ishuman)
-		var/target_zone = deprecise_zone(attacker.zone_selected) //our REAL intended target
+		var/target_zone = hit_zone //our REAL intended target
 
 		// Can't hit a bodypart that doesn't exist!
 		var/obj/item/bodypart/affecting = get_bodypart(target_zone)

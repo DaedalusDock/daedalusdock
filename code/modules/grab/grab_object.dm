@@ -84,7 +84,7 @@
 	current_grab.special_bodyzone_effects(src)
 
 	var/mob/living/L = get_affecting_mob()
-	if(L && assailant.combat_mode)
+	if(L && L != assailant && assailant.combat_mode)
 		upgrade(TRUE)
 
 	/// Update appearance

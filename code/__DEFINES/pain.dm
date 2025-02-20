@@ -1,5 +1,5 @@
 /// Chance to drop your held item passed here
-#define PAIN_THRESHOLD_DROP_ITEM 50
+#define PAIN_THRESHOLD_DROP_ITEM 100
 /// Chance to reduce paralysis duration passed here
 #define PAIN_THRESHOLD_REDUCE_PARALYSIS 10
 /// Stage at

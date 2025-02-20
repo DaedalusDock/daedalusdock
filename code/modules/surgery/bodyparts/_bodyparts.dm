@@ -195,6 +195,8 @@
 
 	/// If something is currently supporting this limb as a splint
 	var/obj/item/splint
+	/// Timer ID for splint heal.
+	var/splint_heal_timer
 	/// The bandage that may-or-may-not be absorbing our blood
 	var/obj/item/stack/bandage
 
@@ -372,6 +374,7 @@
 		if(temporary_pain)
 			temporary_pain = owner.body_position == LYING_DOWN ? max(0, temporary_pain - 3) : max(0, temporary_pain - 1)
 			. |= BODYPART_LIFE_UPDATE_HEALTH_HUD
+
 	. |= update_germs()
 
 /obj/item/bodypart/proc/wound_life(delta_time)
@@ -1059,43 +1062,6 @@
 /obj/item/bodypart/proc/bandage_gone(obj/item/stack/bandage)
 	SIGNAL_HANDLER
 	remove_bandage()
-
-/obj/item/bodypart/proc/apply_splint(obj/item/splint)
-	if(src.splint)
-		return FALSE
-
-	src.splint = splint
-	if(istype(splint, /obj/item/stack))
-		splint.forceMove(src)
-
-	update_interaction_speed()
-	RegisterSignal(splint, COMSIG_PARENT_QDELETING, PROC_REF(splint_gone))
-	SEND_SIGNAL(src, COMSIG_LIMB_SPLINTED, splint)
-	return TRUE
-
-/obj/item/bodypart/leg/apply_splint(obj/item/splint)
-	. = ..()
-	if(!.)
-		return
-	owner.apply_status_effect(/datum/status_effect/limp)
-
-/obj/item/bodypart/proc/remove_splint()
-	if(!splint)
-		return FALSE
-
-	. = splint
-
-	UnregisterSignal(splint, COMSIG_PARENT_QDELETING)
-	if(splint.loc == src)
-		splint.forceMove(drop_location())
-
-	splint = null
-	update_interaction_speed()
-	SEND_SIGNAL(src, COMSIG_LIMB_UNSPLINTED, splint)
-
-/obj/item/bodypart/proc/splint_gone(obj/item/source)
-	SIGNAL_HANDLER
-	remove_splint()
 
 /obj/item/bodypart/drop_location()
 	if(owner)

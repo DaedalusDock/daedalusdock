@@ -53,6 +53,9 @@
 
 	update_interaction_speed()
 
+	if(splint) // If the bodypart is splinted, start the timer to heal it.
+		set_splint_timer()
+
 	if(owner)
 		apply_bone_break(owner)
 	return TRUE
@@ -91,6 +94,7 @@
 	bodypart_flags &= ~BP_BROKEN_BONES
 
 	update_interaction_speed()
+	clear_splint_timer()
 
 	if(owner)
 		apply_bone_heal(owner)
@@ -136,7 +140,7 @@
 		else
 			if(istype(splint, /obj/item/stack))
 				var/obj/item/stack/S = splint
-				interaction_speed_modifier = 2 * (1 + S.splint_slowdown)
+				interaction_speed_modifier = initial(interaction_speed_modifier) + S.splint_slowdown
 
 	else
 		interaction_speed_modifier = initial(interaction_speed_modifier)

@@ -343,7 +343,7 @@
 	if(damaged_part && CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER) < highest_bp_pain)
 		if(highest_bp_pain > PAIN_THRESHOLD_REDUCE_PARALYSIS)
 			AdjustSleeping(-(highest_bp_pain / 5) SECONDS)
-		if(highest_bp_pain > PAIN_THRESHOLD_DROP_ITEM && prob(highest_bp_pain / 5))
+		if(highest_bp_pain > PAIN_THRESHOLD_DROP_ITEM && DT_PROB(highest_bp_pain * 0.05, delta_time))
 			var/obj/item/I = get_active_held_item()
 			if(I && dropItemToGround(I))
 				visible_message(span_alert("[src] twitches, dropping their [I]."))

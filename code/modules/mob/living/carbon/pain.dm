@@ -186,6 +186,7 @@
 		shock_stage = 0
 		return
 
+	// If our heart has stopped, INSTANTLY enter shock tier 4
 	var/heart_attack_gaming = undergoing_cardiac_arrest()
 	if(heart_attack_gaming)
 		shock_stage = max(shock_stage + 1, SHOCK_TIER_4 + 1)
@@ -303,6 +304,7 @@
 		return
 
 	var/pain = getPain()
+	var/painkiller = CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)
 	/// Brain health scales the pain passout modifier with an importance of 80%
 	var/brain_health_factor = 1 + ((maxHealth - getBrainLoss()) / maxHealth - 1) * 0.8
 	/// Blood circulation scales the pain passout modifier with an importance of 40%
@@ -340,13 +342,12 @@
 			damaged_part = loop
 			highest_bp_pain = bp_pain
 
-	if(damaged_part && CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER) < highest_bp_pain)
-		if(highest_bp_pain > PAIN_THRESHOLD_REDUCE_PARALYSIS)
+	if(damaged_part && painkiller < highest_bp_pain)
+		if(highest_bp_pain > PAIN_THRESHOLD_REDUCE_SLEEP)
 			AdjustSleeping(-(highest_bp_pain / 5) SECONDS)
-		if(highest_bp_pain > PAIN_THRESHOLD_DROP_ITEM && DT_PROB(highest_bp_pain * 0.05, delta_time))
-			var/obj/item/I = get_active_held_item()
-			if(I && dropItemToGround(I))
-				visible_message(span_alert("[src] twitches, dropping their [I]."))
+
+		if(highest_bp_pain > PAIN_THRESHOLD_DROP_ITEM && COOLDOWN_FINISHED(src, pain_cooldowns["drop_item"]))
+			pain_drop_item(highest_bp_pain)
 
 		var/burning = damaged_part.burn_dam > damaged_part.brute_dam
 		var/msg
@@ -403,6 +404,47 @@
 				pain_message("Your whole body hurts badly.", PAIN_AMT_MEDIUM, TRUE)
 			if(100 to INFINITY)
 				pain_message("Your body aches all over, it's driving you mad.", PAIN_AMT_AGONIZING, TRUE)
+
+/// Called by handle_pain() to consider dropping an item based on Willpower.
+/mob/living/carbon/proc/pain_drop_item(pain_amt)
+	// For every 20 points of pain above the threshold, the roll is modified by -1
+	var/roll_modifier = floor(max(0, pain_amt - PAIN_THRESHOLD_DROP_ITEM) / -20)
+	/// ~25% chance to fail baseline.
+	var/datum/roll_result/result = stat_roll(9, /datum/rpg_skill/willpower, roll_modifier)
+
+	var/obj/item/held_item = get_active_held_item()
+
+	switch(result.outcome)
+		if(CRIT_FAILURE)
+			COOLDOWN_START(src, pain_cooldowns["drop_item"], 20 SECONDS)
+			if(!length(held_items))
+				return
+
+			result.do_skill_sound(src)
+			to_chat(src, result.create_tooltip("A streak of pain shoots throughout your whole body."))
+			drop_all_held_items()
+			visible_message(span_warning("<b>[src]</b>'s body spasms, and [p_they()] drop what [p_they()] were holding."), ignored_mobs = list(src))
+
+		if(FAILURE)
+			COOLDOWN_START(src, pain_cooldowns["drop_item"], 20 SECONDS)
+			if(!held_item || !dropItemToGround(held_item))
+				return
+
+			result.do_skill_sound(src)
+			var/side = IS_RIGHT_INDEX(active_hand_index) ? "right" : "left"
+			to_chat(src, result.create_tooltip("A bolt of pain shoots through your [side] hand."))
+			visible_message(span_warning("<b>[src]</b>'s [side] arm twitches, dropping [held_item]."), ignored_mobs = list(src))
+
+		if(SUCCESS)
+			COOLDOWN_START(src, pain_cooldowns["drop_item"], 20 SECONDS)
+
+		if(CRIT_SUCCESS)
+			COOLDOWN_START(src, pain_cooldowns["drop_item"], 120 SECONDS)
+			if(!held_item)
+				return
+
+			result.do_skill_sound(src)
+			to_chat(src, result.create_tooltip("Hold on. Grip your [held_item.name] tightly."))
 
 /// Converts a pain value to a "class" of pain.
 /proc/pain_class(pain_amt)

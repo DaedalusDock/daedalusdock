@@ -119,17 +119,17 @@
 
 	if(IS_ORGANIC_LIMB(src))
 		if(bodypart_flags & BP_NO_PAIN)
-			owner.visible_message(span_alert("<b>[owner]</b> drops what [owner.p_they()] [p_are()] holding in [owner.p_their()] [zone_name]."))
-			owner.dropItemToGround(target_item)
+			if(owner.dropItemToGround(target_item))
+				owner.visible_message(span_warning("<b>[owner]</b> drops what [owner.p_they()] [p_are()] holding in [owner.p_their()] [zone_name]."))
 			return
 
-		owner.apply_pain(30, src, "A sharp pain in your [plaintext_zone] forces you to drop your [target_item]!", TRUE, FALSE)
-		owner.dropItemToGround(target_item)
+		if(owner.dropItemToGround(target_item))
+			owner.apply_pain(30, src, "A sharp pain in your [plaintext_zone] forces you to drop your [target_item]!", TRUE, FALSE)
 		return . | BODYPART_LIFE_UPDATE_HEALTH_HUD
 
 	else
-		owner.visible_message(span_alert("<b>[owner]</b>'s [zone_name] malfunctions, dropping what [owner.p_they()] [p_are()] holding.."))
-		owner.dropItemToGround(target_item)
+		if(owner.dropItemToGround(target_item))
+			owner.visible_message(span_alert("<b>[owner]</b>'s [zone_name] malfunctions, dropping what [owner.p_they()] [p_are()] holding.."))
 		return
 
 /obj/item/bodypart/arm/left

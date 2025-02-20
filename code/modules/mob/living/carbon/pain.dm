@@ -407,10 +407,10 @@
 
 /// Called by handle_pain() to consider dropping an item based on Willpower.
 /mob/living/carbon/proc/pain_drop_item(pain_amt)
-	// For every 20 points of pain above the threshold, the roll is modified by -1
-	var/roll_modifier = floor(max(0, pain_amt - PAIN_THRESHOLD_DROP_ITEM) / -20)
-	/// ~25% chance to fail baseline.
-	var/datum/roll_result/result = stat_roll(9, /datum/rpg_skill/willpower, roll_modifier)
+	// For every 30 points of pain above the threshold, the roll is modified by -1
+	var/roll_modifier = floor(max(0, pain_amt - PAIN_THRESHOLD_DROP_ITEM) / -50)
+	/// ~17% chance to fail baseline.
+	var/datum/roll_result/result = stat_roll(8, /datum/rpg_skill/willpower, roll_modifier)
 
 	var/obj/item/held_item = get_active_held_item()
 

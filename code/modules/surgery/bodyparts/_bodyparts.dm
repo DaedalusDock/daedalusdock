@@ -674,7 +674,7 @@
 	current_damage = round(brute_dam + burn_dam, DAMAGE_PRECISION)
 	burn_dam = round(burn_dam, DAMAGE_PRECISION)
 	brute_dam = round(brute_dam, DAMAGE_PRECISION)
-	wound_pain = min(round(wound_pain, DAMAGE_PRECISION), max_damage * 2)
+	wound_pain = min(round(wound_pain, DAMAGE_PRECISION), max_damage)
 
 	var/limb_loss_threshold = max_damage
 

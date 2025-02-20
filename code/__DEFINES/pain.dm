@@ -33,7 +33,7 @@
 #define PAIN_CLASS_AGONIZING "agonizing"
 
 /// Chance to drop your held item passed here
-#define PAIN_THRESHOLD_DROP_ITEM 70
+#define PAIN_THRESHOLD_DROP_ITEM 75
 /// Chance to reduce sleep duration passed here
 #define PAIN_THRESHOLD_REDUCE_SLEEP 10
 

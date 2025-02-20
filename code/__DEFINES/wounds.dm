@@ -18,8 +18,8 @@
 #define FLUIDLOSS_BURN_REQUIRED 5
 
 //CONFIG STUFF
-///A modifier applied to wound auto healing
-#define WOUND_REGENERATION_MODIFIER 0.25
+/// How much wound damage is healed per second if the wound is able to autoheal.
+#define WOUND_AUTOHEAL_RATE 0.1
 
 #define WOUND_BLEED_RATE(wound) (round(wound.damage / 40, DAMAGE_PRECISION))
 

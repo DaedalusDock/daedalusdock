@@ -198,7 +198,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 		return FALSE
 
 	var/mob/living/L = G.get_affecting_mob()
-	if(!isliving(L))
+	if(!isliving(L) || L == G.assailant)
 		return FALSE
 
 	if(!(L.status_flags & CANPUSH) || HAS_TRAIT(L, TRAIT_PUSHIMMUNE))

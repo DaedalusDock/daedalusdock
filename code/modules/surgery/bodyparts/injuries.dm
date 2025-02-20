@@ -202,7 +202,7 @@
 		if(!painless)
 			owner?.apply_pain(max_damage * DISLOCATED_LIMB_PAIN_FACTOR, body_zone, "A surge of pain shoots through your [plaintext_zone].")
 	else
-		bodypart_flags &= BP_DISLOCATED
+		bodypart_flags &= ~BP_DISLOCATED
 
 	return TRUE
 

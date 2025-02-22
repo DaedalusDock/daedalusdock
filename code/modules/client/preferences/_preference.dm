@@ -270,7 +270,10 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 		CRASH("Preference type `[preference_type]` is invalid! [extra_info]")
 
 	if (preference_type in value_cache)
-		return value_cache[preference_type]
+		. = value_cache[preference_type]
+		if(islist(.))
+			return (.):Copy()
+		return .
 
 	var/value = preference_entry.read(get_save_data_for_savefile_identifier(preference_entry.savefile_identifier), src)
 	if (isnull(value))
@@ -280,6 +283,8 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 		else
 			CRASH("Couldn't write the default value for [preference_type] (received [value])")
 	value_cache[preference_type] = value
+	if(islist(value))
+		return value:Copy()
 	return value
 
 /// Set a /datum/preference entry.

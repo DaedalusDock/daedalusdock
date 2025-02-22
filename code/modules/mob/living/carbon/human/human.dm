@@ -96,7 +96,7 @@
 		if(vampire)
 			. += ""
 			. += "State: [vampire.get_thirst_stage_string()]"
-			. += "Thirst: [vampire.thirst_level.has_points()]/[vampire.thirst_level.get_max_points()]"
+			. += "Thirst: [vampire.thirst_level.has_points() - THIRST_THRESHOLD_SATED]/[THIRST_THRESHOLD_DEAD - THIRST_THRESHOLD_SATED]"
 
 /mob/living/carbon/human/reset_perspective(atom/new_eye, force_reset = FALSE)
 	if(dna?.species?.prevent_perspective_change && !force_reset) // This is in case a species needs to prevent perspective changes in certain cases, like Dullahans preventing perspective changes when they're looking through their head.

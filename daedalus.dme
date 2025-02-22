@@ -2618,6 +2618,7 @@
 #include "code\modules\client\preferences_savefile.dm"
 #include "code\modules\client\migrations\convert_to_json_savefile.dm"
 #include "code\modules\client\migrations\migrate_med_sec_fancy_job_titles.dm"
+#include "code\modules\client\migrations\reconcile_v44.dm"
 #include "code\modules\client\preferences\_preference.dm"
 #include "code\modules\client\preferences\accessibility.dm"
 #include "code\modules\client\preferences\admin.dm"

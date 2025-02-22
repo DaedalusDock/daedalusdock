@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: The Afflicted - Thirst is now shown between Sated and Dead, with "Bloodlust"
+      being represented by negative Thirst

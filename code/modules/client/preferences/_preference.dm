@@ -610,10 +610,3 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /datum/preference/blob/apply_to_human(mob/living/carbon/human/target, value)
 	return
 
-
-#warn Uses full saved/loaded datum references. Not safe. Dummying it out
-/datum/preference/blob/loadout/deserialize(input, datum/preferences/preferences)
-	return list()
-
-/datum/preference/blob/loadout/serialize(input)
-	return "TEMP: NOT REAL"

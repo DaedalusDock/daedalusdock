@@ -16,8 +16,8 @@
 	var/list/current_states = list()
 	var/list/state_datums
 
-	/// Weakref to the last mob drained of blood.
-	var/datum/weakref/last_victim_ref
+	/// Weakrefs to mobs drained of blood.
+	var/list/datum/weakref/past_victim_refs = list()
 
 	var/list/innate_actions = list(
 		/datum/action/cooldown/blood_sense,

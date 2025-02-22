@@ -56,6 +56,13 @@ SUBSYSTEM_DEF(wardrobe)
 	stock_hit = 0
 	stock_miss = 0
 
+/// Returns TRUE if the atom is already stashed inside the wardrobe.
+/datum/controller/subsystem/wardrobe/proc/contains_object(atom/test_for)
+	var/list/stock_info = preloaded_stock[test_for.type]
+	if(stock_info)
+		return test_for in stock_info[WARDROBE_STOCK_CONTENTS]
+	return FALSE
+
 /// Resets the load queue to the master template, accounting for the existing stock
 /datum/controller/subsystem/wardrobe/proc/hard_refresh_queue()
 	for(var/datum/type_to_queue as anything in canon_minimum)
@@ -217,6 +224,12 @@ SUBSYSTEM_DEF(wardrobe)
 /datum/controller/subsystem/wardrobe/proc/stash_object(atom/movable/object)
 	var/object_type = object.type
 	var/list/master_info = canon_minimum[object_type]
+
+	#ifdef UNIT_TESTS
+	if(contains_object(object))
+		CRASH("Tried to stash an atom we already have.")
+	#endif
+
 	// I will not permit objects you didn't reserve ahead of time
 	if(!master_info)
 		qdel(object)
@@ -232,6 +245,7 @@ SUBSYSTEM_DEF(wardrobe)
 	if(amount_held - stock_target >= overflow_lienency)
 		qdel(object)
 		return
+
 	// Fuck off
 	if(QDELETED(object))
 		stack_trace("We tried to stash a qdeleted object, what did you do")

@@ -18108,9 +18108,6 @@
 /turf/open/floor/plating,
 /area/station/medical/virology)
 "gHq" = (
-/obj/machinery/modular_computer/console/preset/command{
-	dir = 8
-	},
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
@@ -18119,6 +18116,9 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "9"
+	},
+/obj/machinery/computer/pager/aether{
+	dir = 8
 	},
 /turf/open/floor/carpet/blue,
 /area/station/command/heads_quarters/cmo)

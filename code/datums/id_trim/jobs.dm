@@ -193,19 +193,21 @@
 	job = /datum/job/chief_engineer
 
 /datum/id_trim/job/chief_medical_officer
-	assignment = "Medical Director"
+	assignment = JOB_AUGUR
 	intern_alt_name = "Medical Director-in-Training"
 	trim_state = "trim_chiefmedicalofficer"
 	sechud_icon_state = SECHUD_CHIEF_MEDICAL_OFFICER
 	extra_access = list(ACCESS_TELEPORTER)
 	extra_wildcard_access = list()
-	minimal_access = list(ACCESS_CHEMISTRY, ACCESS_EVA, ACCESS_KEYCARD_AUTH, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MEDICAL,
-					ACCESS_MEDICAL, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_PHARMACY, ACCESS_PSYCHOLOGY, ACCESS_RC_ANNOUNCE,
-					ACCESS_BRIG_ENTRANCE, ACCESS_SURGERY, ACCESS_VIROLOGY, ACCESS_ROBOTICS)
+	minimal_access = list(
+		ACCESS_CHEMISTRY, ACCESS_EVA, ACCESS_KEYCARD_AUTH, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MEDICAL,
+		ACCESS_MEDICAL, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_PHARMACY, ACCESS_PSYCHOLOGY, ACCESS_RC_ANNOUNCE,
+		ACCESS_BRIG_ENTRANCE, ACCESS_SURGERY, ACCESS_VIROLOGY, ACCESS_ROBOTICS
+	)
 	minimal_wildcard_access = list(ACCESS_CMO)
 	config_job = "chief_medical_officer"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
-	job = /datum/job/chief_medical_officer
+	job = /datum/job/augur
 
 /datum/id_trim/job/clown
 	assignment = "Clown"
@@ -332,14 +334,14 @@
 	job = /datum/job/lawyer
 
 /datum/id_trim/job/medical_doctor
-	assignment = JOB_MEDICAL_DOCTOR
+	assignment = JOB_ACOLYTE
 	trim_state = "trim_medicaldoctor"
 	sechud_icon_state = SECHUD_MEDICAL_DOCTOR
 	extra_access = list(ACCESS_CHEMISTRY, ACCESS_VIROLOGY, ACCESS_ROBOTICS)
 	minimal_access = list(ACCESS_MECH_MEDICAL, ACCESS_MEDICAL, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_PHARMACY, ACCESS_SURGERY)
 	config_job = "medical_doctor"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CMO, ACCESS_CHANGE_IDS)
-	job = /datum/job/doctor
+	job = /datum/job/acolyte
 
 /datum/id_trim/job/mime
 	assignment = JOB_CLOWN

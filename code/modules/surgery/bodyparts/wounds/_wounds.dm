@@ -16,7 +16,7 @@
 	///Ticks of bleeding left
 	var/bleed_timer = 0
 	///Above this amount wounds you will need to treat the wound to stop bleeding, regardless of bleed_timer
-	var/bleed_threshold = 30
+	var/always_bleed_threshold = 30
 	///Amount of damage the current wound type requires(less means we need to apply the next healing stage)
 	var/min_damage = 0
 
@@ -27,7 +27,9 @@
 	///Is disinfected?
 	var/disinfected = 0
 
-	var/created = 0
+	/// World.time the wound can be deleted. This is so that wounds with zero damage can scar and take some time to disappear. For flavor.
+	var/scar_expiration
+
 	///Number of wounds of this type
 	var/amount = 1
 	///Amount of germs in the wound
@@ -37,8 +39,8 @@
 	/// stages such as "cut", "deep cut", etc.
 	var/list/stages
 
-	///Maximum stage at which bleeding should still happen. Beyond this stage bleeding is prevented.
-	var/max_bleeding_stage = 0
+	///Minimum stage at which bleeding can happen. Below this stage bleeding is prevented.
+	var/min_bleeding_stage = 0
 
 	/// String (One of `wound_type_*`). The wound's injury type.
 	var/wound_type = WOUND_CUT
@@ -47,13 +49,17 @@
 	var/autoheal_cutoff = 15
 
 	// helper lists
+	/// Flat version of the description portion of stages.
 	var/tmp/list/desc_list = list()
+	/// Flat version of the damage value portion of stages.
 	var/tmp/list/damage_list = list()
-	var/tmp/list/embedded_objects //lazy
+
+	/// Lazylist of
+	var/tmp/list/embedded_objects
 
 /datum/wound/New(damage, obj/item/bodypart/BP = null)
 
-	created = world.time
+	scar_expiration = world.time + 10 MINUTES
 
 	// reading from a list("stage" = damage) is pretty difficult, so build two separate
 	// lists from them instead
@@ -62,9 +68,7 @@
 		damage_list += stages[V]
 
 	src.damage = damage
-
-	// initialize with the appropriate stage
-	src.init_stage(damage)
+	update_wound_stage()
 
 	bleed_timer += damage
 
@@ -74,37 +78,45 @@
 /datum/wound/Destroy()
 	if(parent)
 		LAZYREMOVE(parent.wounds, src)
+		parent.update_damage()
 		parent = null
 
 	LAZYCLEARLIST(embedded_objects)
 	return ..()
 
-///Returns 1 if there's a next stage, 0 otherwise
-/datum/wound/proc/init_stage(initial_damage)
-	current_stage = stages.len
+/// Set the wound stage based on the current damage.
+/datum/wound/proc/update_wound_stage()
+	current_stage = 1
 
-	while(src.current_stage > 1 && src.damage_list[current_stage-1] <= initial_damage / src.amount)
-		src.current_stage--
+	var/wound_damage = wound_damage()
 
-	src.min_damage = damage_list[current_stage]
-	src.desc = desc_list[current_stage]
+	for(var/i in 1 to length(stages))
+		if(damage_list[i] > wound_damage)
+			break
+
+		current_stage = i
+
+	min_damage = damage_list[current_stage]
+	desc = desc_list[current_stage]
 
 ///The amount of damage per wound
 /datum/wound/proc/wound_damage()
-	return src.damage / src.amount
+	return max(0, round(damage / amount, DAMAGE_PRECISION))
 
 /datum/wound/proc/can_autoheal()
 	if(LAZYLEN(embedded_objects))
 		return FALSE
 
+	var/wound_damage = wound_damage()
 	switch(wound_type) //OOP is a lie. Should bruises, cuts, and punctures all share a common parent? Probably. Fuck you!
 		if (WOUND_BRUISE, WOUND_CUT, WOUND_PIERCE)
 			if(parent.bandage)
-				return wound_damage() <= initial(autoheal_cutoff)
+				return wound_damage <= initial(autoheal_cutoff)
+
 		if(WOUND_BURN)
 			. = salved
 
-	. ||= (wound_damage() <= autoheal_cutoff)
+	. ||= (wound_damage <= autoheal_cutoff)
 
 ///Checks whether the wound has been appropriately treated
 /datum/wound/proc/is_treated()
@@ -139,7 +151,7 @@
 	src.amount += other.amount
 	src.bleed_timer += other.bleed_timer
 	src.germ_level = max(src.germ_level, other.germ_level)
-	src.created = max(src.created, other.created)	//take the newer created time
+	src.scar_expiration = max(src.scar_expiration, other.scar_expiration) //take the newer time
 	qdel(other)
 
 // checks if wound is considered open for external infections
@@ -199,27 +211,20 @@
 	*/
 
 	var/healed_damage = min(src.damage, amount)
-	amount -= healed_damage
-	src.damage -= healed_damage
+	amount = round(amount - healed_damage, DAMAGE_PRECISION)
+	damage = round(damage - healed_damage, DAMAGE_PRECISION)
 
-	while(src.wound_damage() < damage_list[current_stage] && current_stage < src.desc_list.len)
-		current_stage++
-	desc = desc_list[current_stage]
-	src.min_damage = damage_list[current_stage]
+	update_wound_stage()
 
 	// return amount of healing still leftover, can be used for other wounds
 	return amount
 
 // opens the wound again
 /datum/wound/proc/open_wound(damage, update_damage = TRUE)
-	src.damage += damage
+	src.damage = round(src.damage + damage, DAMAGE_PRECISION)
 	bleed_timer += damage
 
-	while(src.current_stage > 1 && src.damage_list[current_stage-1] <= src.damage / src.amount)
-		src.current_stage--
-
-	src.desc = desc_list[current_stage]
-	src.min_damage = damage_list[current_stage]
+	update_wound_stage()
 
 	if(update_damage)
 		parent.update_damage()
@@ -239,7 +244,8 @@
 	//with 1.5*, a shallow cut will be able to carry at most 30 damage,
 	//37.5 for a deep cut
 	//52.5 for a flesh wound, etc.
-	var/max_wound_damage = 1.5*src.damage_list[1]
+
+	var/max_wound_damage = 1.5 * damage_list[length(damage_list)]
 	if (src.damage + damage > max_wound_damage)
 		return 0
 	return 1
@@ -248,12 +254,17 @@
 /datum/wound/proc/bleeding()
 	if(clamped)
 		return FALSE
+
+	if(current_stage < min_bleeding_stage)
+		return FALSE
+
 	if(length(embedded_objects))
 		for(var/obj/item/thing in embedded_objects)
 			if(thing.w_class > WEIGHT_CLASS_SMALL)
 				return FALSE
+
 	// If the bleed_timer is greater than zero, OR the wound_damage() is greater than the damage required to bleed constantly.
-	return ((bleed_timer > 0 || wound_damage() > bleed_threshold) && current_stage <= max_bleeding_stage)
+	return (bleed_timer > 0) || (wound_damage() > always_bleed_threshold)
 
 /datum/wound/proc/is_surgical()
 	return 0
@@ -264,7 +275,7 @@
 		this_wound_desc = "salved [this_wound_desc]"
 
 	if(bleeding())
-		if(wound_damage() > bleed_threshold)
+		if(wound_damage() > always_bleed_threshold)
 			this_wound_desc = "<b>bleeding</b> [this_wound_desc]"
 		else
 			this_wound_desc = "bleeding [this_wound_desc]"
@@ -279,6 +290,9 @@
 
 	return this_wound_desc
 
+/// Returns the location of the wound for descriptions.
+/datum/wound/proc/wound_location()
+	return parent.plaintext_zone
 
 /datum/wound/proc/item_gone(datum/source)
 	SIGNAL_HANDLER

@@ -1,4 +1,4 @@
-/datum/preferences/proc/reconcile_v44()
+/datum/preferences/proc/reconcile_v44(current_version)
 	//Due to unsafe edits to the v44 updater, I need to make sure that both states are safely reconciled..
 
 	if(current_version < 44)

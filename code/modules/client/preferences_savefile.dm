@@ -49,7 +49,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		migrate_med_sec_fancy_job_titles()
 	if(current_version < 45)
 		// Aethering Part 2 tampered with v44 in an unsafe way,
-		reconcile_v44()
+		reconcile_v44(current_version)
 	return
 
 /// Called when reading preferences if a savefile update is detected. This proc is for

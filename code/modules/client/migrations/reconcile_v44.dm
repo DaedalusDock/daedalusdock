@@ -7,7 +7,7 @@
 
 	var/list/migrate_jobs = list(
 		// If my logic is correct, this state should never occur, but just to ensure all states are stable.
-		"Medical Doctor" = JOB_ACOLYTE
+		"Medical Doctor" = JOB_ACOLYTE,
 		// Pre-Aethering-II Doctor.
 		"General Practitioner" = JOB_ACOLYTE
 	)

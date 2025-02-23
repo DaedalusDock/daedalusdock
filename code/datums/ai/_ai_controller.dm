@@ -68,6 +68,9 @@ multiple modular subtrees with behaviors
 	#endif
 
 /datum/ai_controller/New(atom/new_pawn)
+	if(default_behavior)
+		default_behavior = GET_AI_BEHAVIOR(default_behavior)
+
 	change_ai_movement_type(ai_movement)
 	init_subtrees()
 
@@ -161,8 +164,10 @@ multiple modular subtrees with behaviors
 		SSmove_manager.stop_looping(pawn) //stop moving
 		return //this should remove them from processing in the future through event-based stuff.
 
-	if(!length(current_behaviors) && default_behavior)
-		queue_behavior(default_behavior)
+	if(!length(current_behaviors) && default_behavior && behavior_cooldowns[default_behavior] < world.time)
+		var/action_seconds_per_tick = max(default_behavior.get_cooldown(src) * 0.1, delta_time)
+		ProcessBehavior(action_seconds_per_tick, default_behavior)
+		return
 
 	for(var/datum/ai_behavior/current_behavior as anything in current_behaviors)
 

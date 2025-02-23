@@ -19,3 +19,7 @@
   Kapu1178:
   - rscadd: Unarmed attacks inflict different wounds based on their type.
   - rscadd: 0-damage wounds (scars) persist for some time.
+2025-02-23:
+  Kapu1178:
+  - rscadd: The Afflicted - Thirst is now shown between Sated and Dead, with "Bloodlust"
+      being represented by negative Thirst

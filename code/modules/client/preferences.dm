@@ -497,17 +497,15 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/subscreen)
 /datum/preferences/proc/create_character_profiles()
 	var/list/profiles = list()
 
-	var/savefile/savefile = new(path)
 	for (var/index in 1 to max_save_slots)
 		// It won't be updated in the savefile yet, so just read the name directly
 		if (index == default_slot)
 			profiles += read_preference(/datum/preference/name/real_name)
 			continue
 
-		savefile.cd = "/character[index]"
-
-		var/name
-		READ_FILE(savefile["real_name"], name)
+		var/tree_key = "character[index]"
+		var/save_data = savefile.get_entry(tree_key)
+		var/name = save_data?["real_name"]
 
 		if (isnull(name))
 			profiles += null

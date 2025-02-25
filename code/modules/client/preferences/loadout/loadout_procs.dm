@@ -29,7 +29,8 @@
 
 	var/datum/preference/pref = GLOB.preference_entries[/datum/preference/blob/loadout]
 	loadout += new /datum/loadout_entry(loadout_item.type)
-	return update_preference(pref, loadout)
+
+	return update_preference(pref, pref.serialize(loadout))
 
 /datum/preferences/proc/remove_loadout_item(datum/loadout_item/loadout_item, list/loadout)
 	if(!istype(loadout_item))
@@ -41,7 +42,7 @@
 
 	var/datum/preference/pref = GLOB.preference_entries[/datum/preference/blob/loadout]
 	loadout -= entry
-	return update_preference(pref, loadout)
+	return update_preference(pref, pref.serialize(loadout))
 
 /datum/preferences/proc/get_loadout_entry_for_loadout_item(datum/loadout_item/loadout_item, list/loadout)
 	for(var/datum/loadout_entry/entry as anything in loadout)

@@ -91,6 +91,17 @@ GLOBAL_LIST_EMPTY(loadout_category_to_subcategory_to_items)
 	src.custom_gags_colors = custom_gags_colors
 	src.custom_color_rotation = custom_color_rotation
 
+/// Converts a loadout entry to a list of vars for saving.
+/datum/loadout_entry/proc/to_list()
+	return list(
+		"path" = path,
+		"name" = custom_name,
+		"desc" = custom_desc,
+		"color" = custom_color,
+		"gags_colors" = custom_gags_colors,
+		"color_rotation" = custom_color_rotation,
+	)
+
 /datum/loadout_entry/proc/get_spawned_item()
 	var/datum/loadout_item/loadout_item = locate(path) in GLOB.loadout_items
 	var/obj/item/spawned = new loadout_item.path()

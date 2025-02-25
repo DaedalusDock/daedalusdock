@@ -103,7 +103,7 @@
 	// Draining an opposing vampire really, really messes them up.
 	var/datum/antagonist/vampire/victim_vamp_datum = victim.mind?.has_antag_datum(/datum/antagonist/vampire)
 	if(victim_vamp_datum)
-		victim_vamp_datum.thirst_level.add_points(-(VAMPIRE_BLOOD_DRAIN_RATE * VAMPIRE_BLOOD_THIRST_EXCHANGE_COEFF))
+		victim_vamp_datum.thirst_level.add_points(VAMPIRE_BLOOD_DRAIN_RATE * VAMPIRE_BLOOD_THIRST_EXCHANGE_COEFF)
 		victim_vamp_datum.update_thirst_stage()
 
 	else if(prob(1)) // A chance to spread the plague!

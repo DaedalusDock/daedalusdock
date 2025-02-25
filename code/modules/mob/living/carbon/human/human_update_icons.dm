@@ -181,9 +181,8 @@ There are several things that need to be remembered:
 		inv.update_icon()
 
 	//Bloody hands begin
-	var/mutable_appearance/bloody_overlay = mutable_appearance('icons/effects/blood.dmi', "bloodyhands", -GLOVES_LAYER)
-	cut_overlay(bloody_overlay)
-	if(!gloves && blood_in_hands && (num_hands > 0))
+	if(isnull(gloves) && blood_in_hands && num_hands > 0)
+		var/mutable_appearance/bloody_overlay = mutable_appearance('icons/effects/blood.dmi', "bloodyhands", -GLOVES_LAYER)
 		bloody_overlay = mutable_appearance('icons/effects/blood.dmi', "bloodyhands", -GLOVES_LAYER)
 		bloody_overlay.color = get_blood_dna_color(return_blood_DNA()) || COLOR_HUMAN_BLOOD
 		if(num_hands < 2)
@@ -191,8 +190,9 @@ There are several things that need to be remembered:
 				bloody_overlay.icon_state = "bloodyhands_left"
 			else if(has_right_hand(FALSE))
 				bloody_overlay.icon_state = "bloodyhands_right"
-
-		add_overlay(bloody_overlay)
+		overlays_standing[GLOVES_LAYER] = bloody_overlay
+		apply_overlay(GLOVES_LAYER)
+		return
 	//Bloody hands end
 
 	var/mutable_appearance/gloves_overlay

@@ -237,12 +237,13 @@
 
 	var/smol_threshold = minimum_break_damage * 0.4
 	var/beeg_threshold = minimum_break_damage * 0.6
+	var/incision_max_size = incision.damage_list[length(incision.damage_list)]
 	// Clamp it to the largest that the wound can be
-	beeg_threshold = min(beeg_threshold, incision.damage_list[1])
+	beeg_threshold = min(beeg_threshold, incision_max_size)
 
 	if(!(incision.autoheal_cutoff == 0)) //not clean incision
 		smol_threshold *= 1.5
-		beeg_threshold = max(beeg_threshold, min(beeg_threshold * 1.5, incision.damage_list[1])) //wounds can't achieve bigger
+		beeg_threshold = max(beeg_threshold, min(beeg_threshold * 1.5, incision_max_size)) //wounds can't achieve bigger
 
 	if(incision.damage >= smol_threshold) //smol incision
 		. = SURGERY_OPEN
@@ -259,7 +260,7 @@
 	var/datum/wound/incision
 
 	for(var/datum/wound/cut/W in wounds)
-		if(W.current_stage > W.max_bleeding_stage) // Shit's unusable
+		if(W.current_stage < W.min_bleeding_stage) // Shit's unusable
 			continue
 		if(strict && !W.is_surgical()) //We don't need dirty ones
 			continue
@@ -279,7 +280,8 @@
 	var/datum/wound/W = get_incision()
 	if(!W)
 		return
-	W.open_wound(min(W.damage * 2, W.damage_list[1] - W.damage))
+
+	W.open_wound(min(W.damage * 2, W.damage_list[length(W.damage_list)] - W.damage))
 
 /obj/item/bodypart/proc/jointlock(mob/living/user)
 	if(!IS_ORGANIC_LIMB(src))

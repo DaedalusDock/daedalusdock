@@ -87,13 +87,12 @@
 	if(QDELING(assembly) && assembly.being_finished)
 		var/in_hands = FALSE
 		if(length(assembly.finished_items) == 1)
-			var/obj/item/finished_item = assembly.finished_items[1].resolve()
+			var/obj/item/finished_item = assembly.finished_items[1]
 			if(isitem(finished_item) && put_in_hands(finished_item))
 				in_hands = TRUE
 
 		if(!in_hands)
-			for(var/datum/weakref/W as anything in assembly.finished_items)
-				var/obj/item/finished_item = W.resolve()
+			for(var/obj/item/finished_item as anything in assembly.finished_items)
 				finished_item.forceMove(fallback_loc)
 
 		assembly.finished_items = null

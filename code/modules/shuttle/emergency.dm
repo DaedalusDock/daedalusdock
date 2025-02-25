@@ -502,7 +502,7 @@
 				for(var/obj/docking_port/mobile/M in SSshuttle.mobile_docking_ports)
 					M.post_emergency_launch()
 				if(prob(10))
-					SSuniverse.SetUniversalState(/datum/universal_state/resonance_jump, list(ZTRAIT_TRANSIT))
+					SSuniverse.SetUniversalState(/datum/universal_state/resonance_jump, list(ZTRAIT_RESERVED))
 				setTimer(SSshuttle.emergency_escape_time * engine_coeff)
 				priority_announce("The Icarus has entered the resonance gate and is enroute to it's destination. Estimate [timeLeft(600)] minutes until the shuttle docks at Sector Control.", "LRSV Icarus Announcement")
 				INVOKE_ASYNC(SSticker, TYPE_PROC_REF(/datum/controller/subsystem/ticker, poll_hearts))

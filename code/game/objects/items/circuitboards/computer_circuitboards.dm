@@ -19,6 +19,16 @@
 	greyscale_colors = CIRCUIT_COLOR_COMMAND
 	build_path = /obj/machinery/computer/accounting
 
+/obj/item/circuitboard/computer/pager
+	name = "Pager Console (Computer Board)"
+	greyscale_colors = CIRCUIT_COLOR_GENERIC
+	build_path = /obj/machinery/computer/pager
+
+/obj/item/circuitboard/computer/pager/aether
+	name = "Aether Pager Terminal (Computer Board)"
+	greyscale_colors = CIRCUIT_COLOR_MEDICAL
+	build_path = /obj/machinery/computer/pager/aether
+
 //obj/item/circuitboard/computer/shield
 // name = "Shield Control (Computer Board)"
 // greyscale_colors = CIRCUIT_COLOR_COMMAND

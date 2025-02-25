@@ -2,15 +2,15 @@
 /datum/wound/bruise
 	pain_factor = 1.25
 	stages = list(
-		"monumental bruise" = 80,
-		"huge bruise" = 50,
-		"large bruise" = 30,
-		"moderate bruise" = 20,
+		"tiny bruise" = 5,
 		"small bruise" = 10,
-		"tiny bruise" = 5
+		"moderate bruise" = 20,
+		"large bruise" = 30,
+		"huge bruise" = 50,
+		"monumental bruise" = 80,
 		)
 
-	bleed_threshold = 20
-	max_bleeding_stage = 3 //only large bruise and above can bleed.
+	always_bleed_threshold = 20
+	min_bleeding_stage = 3 //only large bruise and above can bleed.
 	autoheal_cutoff = 30
 	wound_type = WOUND_BRUISE

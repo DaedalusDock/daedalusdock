@@ -47,31 +47,39 @@
 	var/mob/living/carbon/human/user = target
 	var/mob/living/carbon/human/victim = select_target()
 
-	user.visible_message(span_danger("[user] bites down on [victim]'s neck!"), vision_distance = COMBAT_MESSAGE_RANGE)
-
+	var/datum/antagonist/vampire/vamp_datum = user.mind.has_antag_datum(/datum/antagonist/vampire)
 	var/datum/callback/checks_callback = CALLBACK(src, PROC_REF(can_bite), user, victim)
-	if(!do_after(user, victim, 3 SECONDS, DO_IGNORE_HELD_ITEM|DO_IGNORE_SLOWDOWNS|DO_PUBLIC, extra_checks = checks_callback, display = image('goon/icons/actions.dmi', "bite")))
-		return FALSE
+
+	if(vamp_datum.thirst_stage != THIRST_STAGE_BLOODLUST)
+		if(!do_after(user, victim, 3 SECONDS, DO_IGNORE_HELD_ITEM|DO_IGNORE_SLOWDOWNS|DO_PUBLIC, extra_checks = checks_callback, display = image('goon/icons/actions.dmi', "bite")))
+			return FALSE
 
 	. = ..()
 
 	spawn(-1)
+		user.visible_message(span_danger("<b>[user]</b> bites down on <b>[victim]</b>'s neck."), vision_distance = COMBAT_MESSAGE_RANGE)
+
 		ADD_TRAIT(user, TRAIT_MUTE, ref(src))
+		ADD_TRAIT(victim, TRAIT_MUTE, ref(src))
+		var/obj/item/bodypart/head/head = victim.get_bodypart(BODY_ZONE_HEAD)
+		head.create_wound_easy(/datum/wound/neck_bite, 10)
+
 		var/image/succ_image = image('goon/icons/actions.dmi', "blood")
 		while(TRUE)
 			if(!can_bite(user, victim))
 				break
 
 			if(!do_after(user, victim, 1 SECOND, DO_IGNORE_HELD_ITEM|DO_IGNORE_SLOWDOWNS|DO_PUBLIC, extra_checks = checks_callback, display = succ_image))
-				user.visible_message(span_notice("[user] removes [p_their()] teeth from [victim]'s neck."))
+				user.visible_message(span_notice("<b>[user]</b> removes [p_their()] teeth from </b>[victim]</b>'s neck."))
 				break
 
 			siphon_blood(user, victim)
 
+		REMOVE_TRAIT(victim, TRAIT_MUTE, ref(src))
 		REMOVE_TRAIT(user, TRAIT_MUTE, ref(src))
 
 /datum/action/cooldown/neck_bite/proc/siphon_blood(mob/living/carbon/human/user, mob/living/carbon/human/victim)
-	user.visible_message(span_danger("[user] siphons blood from [victim]'s neck!"), vision_distance = COMBAT_MESSAGE_RANGE, ignored_mobs = victim)
+	user.visible_message(span_danger("<b>[user]</b> siphons blood from <b>[victim]</b>'s neck."), vision_distance = COMBAT_MESSAGE_RANGE, ignored_mobs = victim)
 	if(victim.stat == CONSCIOUS)
 		to_chat(victim, span_danger("You can feel blood draining from your neck."))
 
@@ -83,13 +91,18 @@
 	victim.adjustBloodVolume(-VAMPIRE_BLOOD_DRAIN_RATE)
 	user.adjustBloodVolumeUpTo(VAMPIRE_BLOOD_DRAIN_RATE, BLOOD_VOLUME_NORMAL + 100)
 
+	if(user.nutrition < NUTRITION_LEVEL_FULL)
+		user.set_nutrition(min(user.nutrition + 10, NUTRITION_LEVEL_FULL))
+		user.satiety = min(user.satiety + 20, MAX_SATIETY)
+
+	user.heal_overall_damage(2.5, 2.5, BODYTYPE_ORGANIC)
+
 	var/datum/antagonist/vampire/vamp_datum = user.mind.has_antag_datum(/datum/antagonist/vampire)
 	vamp_datum.thirst_level.remove_points(VAMPIRE_BLOOD_DRAIN_RATE * VAMPIRE_BLOOD_THIRST_EXCHANGE_COEFF)
 	vamp_datum.update_thirst_stage()
 
-	var/had_victim = vamp_datum.last_victim_ref
-	vamp_datum.last_victim_ref = WEAKREF(victim)
-	if(!had_victim)
+	if(!(WEAKREF(victim) in vamp_datum.past_victim_refs))
+		vamp_datum.past_victim_refs += WEAKREF(victim)
 		var/datum/action/cooldown/blood_track/track = locate() in owner.actions
 		if(track)
 			track.build_all_button_icons(UPDATE_BUTTON_STATUS)
@@ -99,7 +112,7 @@
 	// Draining an opposing vampire really, really messes them up.
 	var/datum/antagonist/vampire/victim_vamp_datum = victim.mind?.has_antag_datum(/datum/antagonist/vampire)
 	if(victim_vamp_datum)
-		victim_vamp_datum.thirst_level.add_points(-(VAMPIRE_BLOOD_DRAIN_RATE * VAMPIRE_BLOOD_THIRST_EXCHANGE_COEFF))
+		victim_vamp_datum.thirst_level.add_points(VAMPIRE_BLOOD_DRAIN_RATE * VAMPIRE_BLOOD_THIRST_EXCHANGE_COEFF)
 		victim_vamp_datum.update_thirst_stage()
 
 	else if(prob(1)) // A chance to spread the plague!
@@ -149,6 +162,10 @@
 			*error_string_ptr = "You aren't holding anyone."
 		return null
 
+	var/datum/antagonist/vampire/vamp_datum = user.mind.has_antag_datum(/datum/antagonist/vampire)
+
+	var/needed_grab = vamp_datum.thirst_stage == THIRST_STAGE_BLOODLUST ? GRAB_AGGRESSIVE : GRAB_NECK
+
 	for(var/obj/item/hand_item/grab/grab in user.active_grabs)
 		var/mob/living/carbon/human/potential_victim = grab.affecting
 		if(!ishuman(potential_victim) || ismonkey(potential_victim))
@@ -156,7 +173,7 @@
 				*error_string_ptr = "You cannot feast on [potential_victim]."
 			continue
 
-		if((grab.current_grab.damage_stage < GRAB_NECK))
+		if((grab.current_grab.damage_stage < needed_grab))
 			if(error_string_ptr)
 				*error_string_ptr = "You need a stronger grip on [potential_victim]."
 			continue

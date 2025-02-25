@@ -43,8 +43,6 @@
 	/// a very temporary list of overlays to add
 	var/tmp/list/add_overlays
 
-	///vis overlays managed by SSvis_overlays to automaticaly turn them like other overlays.
-	var/tmp/list/managed_vis_overlays
 	///overlays managed by [update_overlays][/atom/proc/update_overlays] to prevent removing overlays that weren't added by the same proc. Single items are stored on their own, not in a list.
 	var/tmp/list/managed_overlays
 

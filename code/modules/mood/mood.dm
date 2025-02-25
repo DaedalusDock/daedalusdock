@@ -25,10 +25,6 @@
 	/// List of mood events currently active on this datum
 	var/list/mood_events = list()
 
-	/// Tracks the last mob stat, updates on change
-	/// Used to stop processing SSmood
-	var/last_stat = CONSCIOUS
-
 /datum/mood/New(mob/living/mob_to_make_moody)
 	if (!istype(mob_to_make_moody))
 		stack_trace("Tried to apply mood to a non-living atom!")
@@ -39,7 +35,6 @@
 
 	RegisterSignal(mob_to_make_moody, COMSIG_MOB_HUD_CREATED, PROC_REF(modify_hud))
 	RegisterSignal(mob_to_make_moody, COMSIG_LIVING_REVIVE, PROC_REF(on_revive))
-	RegisterSignal(mob_to_make_moody, COMSIG_MOB_STATCHANGE, PROC_REF(handle_mob_death))
 	RegisterSignal(mob_to_make_moody, COMSIG_PARENT_QDELETING, PROC_REF(clear_parent_ref))
 
 	if(mob_to_make_moody.hud_used)
@@ -57,15 +52,6 @@
 	QDEL_LIST_ASSOC_VAL(mood_events)
 	mob_parent = null
 	return ..()
-
-/datum/mood/proc/handle_mob_death(datum/source)
-	SIGNAL_HANDLER
-
-	if (last_stat == DEAD && mob_parent.stat != DEAD)
-		START_PROCESSING(SSmood, src)
-	else if (last_stat != DEAD && mob_parent.stat == DEAD)
-		STOP_PROCESSING(SSmood, src)
-	last_stat = mob_parent.stat
 
 /// Handles mood given by nutrition
 /datum/mood/proc/update_nutrition_moodlets()

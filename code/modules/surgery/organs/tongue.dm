@@ -35,6 +35,7 @@
 	var/static/list/languages_possible_base = typecacheof(list(
 		/datum/language/common,
 		/datum/language/uncommon,
+		/datum/language/aether,
 		/datum/language/draconic,
 		/datum/language/codespeak,
 		/datum/language/monkey,

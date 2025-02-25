@@ -13,7 +13,16 @@
 
 /datum/action/cooldown/neck_bite/Grant(mob/granted_to)
 	. = ..()
-	RegisterSignal(granted_to, list(COMSIG_LIVING_START_GRAB, COMSIG_LIVING_NO_LONGER_GRABBING, COMSIG_LIVING_GRAB_DOWNGRADE, COMSIG_LIVING_GRAB_UPGRADE), PROC_REF(on_owner_grab_change))
+	RegisterSignal(
+		granted_to,
+		list(
+			COMSIG_LIVING_START_GRAB,
+			COMSIG_LIVING_NO_LONGER_GRABBING,
+			COMSIG_LIVING_GRAB_DOWNGRADE,
+			COMSIG_LIVING_GRAB_UPGRADE
+		),
+		PROC_REF(on_owner_grab_change)
+	)
 	START_PROCESSING(SSslowprocess, src)
 
 /datum/action/cooldown/neck_bite/Remove(mob/removed_from)

@@ -266,7 +266,7 @@
 	var/leg_wounds = 0 // -1 defense per 2 leg wounds
 	var/static/list/check_areas = list(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	for(var/datum/wound/iterwound in target.get_wounds())
-		if((iterwound.parent.body_zone in check_areas))
+		if(iterwound.damage && (iterwound.parent.body_zone in check_areas))
 			leg_wounds++
 
 	defense_mod -= round(leg_wounds * 0.5)

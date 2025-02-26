@@ -64,82 +64,106 @@
 
 	. = ..()
 
-	#warn maybe snowflake monkeys in human bite code.
-	if(ishuman(victim) && !ismonkey(victim))
-		bite_human(target, victim)
-	else
-		bite_mob(target, victim)
+	bite_mob(target, victim)
 
 
 /// Called when biting a human.
-/datum/action/cooldown/neck_bite/proc/bite_human(mob/living/carbon/human/user, mob/living/carbon/human/victim)
+/datum/action/cooldown/neck_bite/proc/bite_mob(mob/living/carbon/human/user, mob/living/victim)
 	set waitfor = FALSE
 
-	user.visible_message(span_danger("<b>[user]</b> bites down on <b>[victim]</b>'s neck."), vision_distance = COMBAT_MESSAGE_RANGE)
+	var/victim_is_human = ishuman(victim)
+	var/message = "<b>[user]</b> bites down on <b>[victim]</b>."
+	if(victim_is_human)
+		message = "<b>[user]</b> bites down on <b>[victim]</b>'s neck."
+
+	user.visible_message(span_danger("[message]"), vision_distance = COMBAT_MESSAGE_RANGE)
 
 	ADD_TRAIT(user, TRAIT_MUTE, ref(src))
 	ADD_TRAIT(victim, TRAIT_MUTE, ref(src))
 
-	if(ishuman(victim))
+	if(victim_is_human)
 		var/obj/item/bodypart/head/head = victim.get_bodypart(BODY_ZONE_HEAD)
 		head.create_wound_easy(/datum/wound/neck_bite, 10)
 
+	var/datum/callback/checks_callback = CALLBACK(src, PROC_REF(can_bite), user, victim)
 	var/image/succ_image = image('goon/icons/actions.dmi', "blood")
+
 	while(TRUE)
 		if(!can_bite(user, victim))
 			break
 
 		if(!do_after(user, victim, 1 SECOND, DO_IGNORE_HELD_ITEM|DO_IGNORE_SLOWDOWNS|DO_PUBLIC, extra_checks = checks_callback, display = succ_image))
-			user.visible_message(span_notice("<b>[user]</b> removes [p_their()] teeth from </b>[victim]</b>'s neck."))
 			break
 
 		siphon_blood(user, victim)
 
+	var/message_remove = "<b>[user]</b> removes [p_their()] teeth from </b>[victim]</b>."
+	if(victim_is_human)
+		message_remove = "<b>[user]</b> removes [p_their()] teeth from </b>[victim]</b>'s neck."
+
+	user.visible_message(span_notice("<b>[user]</b> removes [p_their()] teeth from </b>[victim]</b>'s neck."))
+
 	REMOVE_TRAIT(victim, TRAIT_MUTE, ref(src))
 	REMOVE_TRAIT(user, TRAIT_MUTE, ref(src))
 
-/// Called when biting a non-human, ie, a RAT.
-/datum/action/cooldown/neck_bite/proc/bite_mob(mob/living/carbon/human/user, mob/living/carbon/human/victim)
-	set waitfor = FALSE
-
 /datum/action/cooldown/neck_bite/proc/siphon_blood(mob/living/carbon/human/user, mob/living/victim)
-	user.visible_message(span_danger("<b>[user]</b> siphons blood from <b>[victim]</b>'s neck."), vision_distance = COMBAT_MESSAGE_RANGE, ignored_mobs = victim)
-	if(victim.stat == CONSCIOUS)
-		to_chat(victim, span_danger("You can feel blood draining from your neck."))
+	var/blood_delta = VAMPIRE_BLOOD_DRAIN_RATE
+	var/thirst_delta = VAMPIRE_BLOOD_DRAIN_RATE * VAMPIRE_BLOOD_THIRST_EXCHANGE_COEFF
+
+	var/victim_is_human = ishuman(victim)
+
+	var/message = "<b>[user]</b> siphons blood from <b>[victim]</b>."
+	if(victim_is_human)
+		message = "<b>[user]</b> siphons blood from <b>[victim]</b>'s neck."
+
+	user.visible_message(span_danger("[message]"), vision_distance = COMBAT_MESSAGE_RANGE, ignored_mobs = victim)
+
+	if(victim_is_human && victim.stat == CONSCIOUS)
+		to_chat(victim, span_danger("You feel blood being siphoned from your neck."))
 
 	if(isturf(victim.loc))
 		victim.add_splatter_floor(victim.loc, TRUE)
 
-	GLOB.blood_controller.drain_blood(victim, VAMPIRE_BLOOD_DRAIN_RATE)
+	GLOB.blood_controller.drain_blood(victim, victim_is_human ? blood_delta : 20)
 
-	victim.adjustBloodVolume(-VAMPIRE_BLOOD_DRAIN_RATE)
-	user.adjustBloodVolumeUpTo(VAMPIRE_BLOOD_DRAIN_RATE, BLOOD_VOLUME_NORMAL + 100)
+	// Take blood from the victim. Or damage them
+	if(victim_is_human)
+		victim.adjustBloodVolume(-blood_delta)
+	else
+		victim.adjustBruteLoss(5)
 
+	// Restore blood to the chomper.
+	user.adjustBloodVolumeUpTo(blood_delta, BLOOD_VOLUME_NORMAL + 100)
+
+	// Restore nutrition and health to the chomper.
 	if(user.nutrition < NUTRITION_LEVEL_FULL)
 		user.set_nutrition(min(user.nutrition + 10, NUTRITION_LEVEL_FULL))
 		user.satiety = min(user.satiety + 20, MAX_SATIETY)
 
 	user.heal_overall_damage(2.5, 2.5, BODYTYPE_ORGANIC)
 
+	// Reduce Thirst of the chomper.
 	var/datum/antagonist/vampire/vamp_datum = user.mind.has_antag_datum(/datum/antagonist/vampire)
-	vamp_datum.thirst_level.remove_points(VAMPIRE_BLOOD_DRAIN_RATE * VAMPIRE_BLOOD_THIRST_EXCHANGE_COEFF)
+	vamp_datum.thirst_level.remove_points(thirst_delta)
 	vamp_datum.update_thirst_stage()
 
-	if(!(WEAKREF(victim) in vamp_datum.past_victim_refs))
+	// Add the chomper's saliva to the victim.
+	victim.add_trace_DNA(user, user.get_trace_dna())
+
+	// Add the victim to the blood track list.
+	if(victim_is_human &&!(WEAKREF(victim) in vamp_datum.past_victim_refs))
 		vamp_datum.past_victim_refs += WEAKREF(victim)
 		var/datum/action/cooldown/blood_track/track = locate() in owner.actions
 		if(track)
 			track.build_all_button_icons(UPDATE_BUTTON_STATUS)
 
-	victim.add_trace_DNA(user, user.get_trace_dna())
-
 	// Draining an opposing vampire really, really messes them up.
 	var/datum/antagonist/vampire/victim_vamp_datum = victim.mind?.has_antag_datum(/datum/antagonist/vampire)
 	if(victim_vamp_datum)
-		victim_vamp_datum.thirst_level.add_points(VAMPIRE_BLOOD_DRAIN_RATE * VAMPIRE_BLOOD_THIRST_EXCHANGE_COEFF)
+		victim_vamp_datum.thirst_level.add_points(thirst_delta)
 		victim_vamp_datum.update_thirst_stage()
 
-	else if(prob(1)) // A chance to spread the plague!
+	else if(victim_is_human && prob(1)) // A chance to spread the plague!
 		var/datum/pathogen/blood_plague/vampirism = new /datum/pathogen/blood_plague
 		if(victim.try_contract_pathogen(vampirism, FALSE, TRUE))
 			message_admins("[key_name_admin(user)] spread The Sanguine Plague to [key_name_admin(victim)].")

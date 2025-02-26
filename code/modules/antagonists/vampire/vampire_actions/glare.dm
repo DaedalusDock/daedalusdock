@@ -63,8 +63,8 @@
 	playsound(target, 'goon/sounds/glare.ogg', 50, TRUE, extrarange = MEDIUM_RANGE_SOUND_EXTRARANGE)
 	owner.visible_message(span_notice("[owner] glances into [target]'s eyes."), vision_distance = COMBAT_MESSAGE_RANGE)
 
-	if(isvampire(victim))
-		to_chat(owner, span_warning("It had no effect."))
+	if(IS_VAMPIRE(victim))
+		to_chat(owner, span_warning("[target.p_theyre()] unaffected by your gaze."))
 		return // Lol owned
 
 	if(victim.get_total_tint() || victim.get_eye_protection())

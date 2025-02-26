@@ -97,11 +97,11 @@
 
 		siphon_blood(user, victim)
 
-	var/message_remove = "<b>[user]</b> removes [p_their()] teeth from </b>[victim]</b>."
+	var/message_remove = "<b>[user]</b> removes [user.p_their()] teeth from </b>[victim]</b>."
 	if(victim_is_human)
-		message_remove = "<b>[user]</b> removes [p_their()] teeth from </b>[victim]</b>'s neck."
+		message_remove = "<b>[user]</b> removes [user.p_their()] teeth from </b>[victim]</b>'s neck."
 
-	user.visible_message(span_notice("<b>[user]</b> removes [p_their()] teeth from </b>[victim]</b>'s neck."))
+	user.visible_message(span_notice("[message_remove]"))
 
 	REMOVE_TRAIT(victim, TRAIT_MUTE, ref(src))
 	REMOVE_TRAIT(user, TRAIT_MUTE, ref(src))

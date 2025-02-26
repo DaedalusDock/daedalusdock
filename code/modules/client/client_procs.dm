@@ -565,6 +565,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			deadchat_broadcast(" has disconnected.", "<b>[mob][mob.get_realname_string()]</b>", follow_target = mob, turf_target = get_turf(mob), message_type = DEADCHAT_LOGIN_LOGOUT, admin_only=!announce_join)
 		mob.become_uncliented()
 
+	if(persistent_client)
+		persistent_client.client = null
+
 	GLOB.clients -= src
 	GLOB.directory -= ckey
 	log_access("Logout: [key_name(src)]")

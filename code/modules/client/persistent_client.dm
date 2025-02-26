@@ -42,6 +42,9 @@ GLOBAL_LIST_EMPTY(persistent_clients)
 
 /// Setter for the mob var, handles both references.
 /datum/persistent_client/proc/SetMob(mob/new_mob)
+	if(mob == new_mob)
+		return
+
 	mob?.persistent_client = null
 	new_mob?.persistent_client?.SetMob(null)
 

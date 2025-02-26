@@ -6,6 +6,14 @@
 
 	check_flags = AB_CHECK_CONSCIOUS | AB_CHECK_HANDS_BLOCKED
 
+	var/static/list/bitable_typecache
+
+/datum/action/cooldown/neck_bite/New(Target, original)
+	. = ..()
+	if(isnull(bitable_typecache))
+		var/list/to_typecache = typesof(/mob/living/carbon/human, /mob/living/simple_animal) - typesof(/mob/living/simple_animal/bot)
+		bitable_typecache = typecacheof(to_typecache)
+
 /datum/action/cooldown/neck_bite/process()
 	// Kind of hacky but I can't be bothered to care. We can accurately track all unavailable -> available transitions, but not the other way around.
 	if(IsAvailable())
@@ -45,7 +53,7 @@
 
 /datum/action/cooldown/neck_bite/Activate(atom/target)
 	var/mob/living/carbon/human/user = target
-	var/mob/living/carbon/human/victim = select_target()
+	var/mob/living/victim = select_target()
 
 	var/datum/antagonist/vampire/vamp_datum = user.mind.has_antag_datum(/datum/antagonist/vampire)
 	var/datum/callback/checks_callback = CALLBACK(src, PROC_REF(can_bite), user, victim)
@@ -56,29 +64,45 @@
 
 	. = ..()
 
-	spawn(-1)
-		user.visible_message(span_danger("<b>[user]</b> bites down on <b>[victim]</b>'s neck."), vision_distance = COMBAT_MESSAGE_RANGE)
+	#warn maybe snowflake monkeys in human bite code.
+	if(ishuman(victim) && !ismonkey(victim))
+		bite_human(target, victim)
+	else
+		bite_mob(target, victim)
 
-		ADD_TRAIT(user, TRAIT_MUTE, ref(src))
-		ADD_TRAIT(victim, TRAIT_MUTE, ref(src))
+
+/// Called when biting a human.
+/datum/action/cooldown/neck_bite/proc/bite_human(mob/living/carbon/human/user, mob/living/carbon/human/victim)
+	set waitfor = FALSE
+
+	user.visible_message(span_danger("<b>[user]</b> bites down on <b>[victim]</b>'s neck."), vision_distance = COMBAT_MESSAGE_RANGE)
+
+	ADD_TRAIT(user, TRAIT_MUTE, ref(src))
+	ADD_TRAIT(victim, TRAIT_MUTE, ref(src))
+
+	if(ishuman(victim))
 		var/obj/item/bodypart/head/head = victim.get_bodypart(BODY_ZONE_HEAD)
 		head.create_wound_easy(/datum/wound/neck_bite, 10)
 
-		var/image/succ_image = image('goon/icons/actions.dmi', "blood")
-		while(TRUE)
-			if(!can_bite(user, victim))
-				break
+	var/image/succ_image = image('goon/icons/actions.dmi', "blood")
+	while(TRUE)
+		if(!can_bite(user, victim))
+			break
 
-			if(!do_after(user, victim, 1 SECOND, DO_IGNORE_HELD_ITEM|DO_IGNORE_SLOWDOWNS|DO_PUBLIC, extra_checks = checks_callback, display = succ_image))
-				user.visible_message(span_notice("<b>[user]</b> removes [p_their()] teeth from </b>[victim]</b>'s neck."))
-				break
+		if(!do_after(user, victim, 1 SECOND, DO_IGNORE_HELD_ITEM|DO_IGNORE_SLOWDOWNS|DO_PUBLIC, extra_checks = checks_callback, display = succ_image))
+			user.visible_message(span_notice("<b>[user]</b> removes [p_their()] teeth from </b>[victim]</b>'s neck."))
+			break
 
-			siphon_blood(user, victim)
+		siphon_blood(user, victim)
 
-		REMOVE_TRAIT(victim, TRAIT_MUTE, ref(src))
-		REMOVE_TRAIT(user, TRAIT_MUTE, ref(src))
+	REMOVE_TRAIT(victim, TRAIT_MUTE, ref(src))
+	REMOVE_TRAIT(user, TRAIT_MUTE, ref(src))
 
-/datum/action/cooldown/neck_bite/proc/siphon_blood(mob/living/carbon/human/user, mob/living/carbon/human/victim)
+/// Called when biting a non-human, ie, a RAT.
+/datum/action/cooldown/neck_bite/proc/bite_mob(mob/living/carbon/human/user, mob/living/carbon/human/victim)
+	set waitfor = FALSE
+
+/datum/action/cooldown/neck_bite/proc/siphon_blood(mob/living/carbon/human/user, mob/living/victim)
 	user.visible_message(span_danger("<b>[user]</b> siphons blood from <b>[victim]</b>'s neck."), vision_distance = COMBAT_MESSAGE_RANGE, ignored_mobs = victim)
 	if(victim.stat == CONSCIOUS)
 		to_chat(victim, span_danger("You can feel blood draining from your neck."))
@@ -123,7 +147,7 @@
 
 	build_all_button_icons(UPDATE_BUTTON_STATUS)
 
-/datum/action/cooldown/neck_bite/proc/can_bite(mob/living/carbon/human/user, mob/living/carbon/human/victim, error_string_ptr)
+/datum/action/cooldown/neck_bite/proc/can_bite(mob/living/carbon/human/user, mob/living/victim, error_string_ptr)
 	if(!owner)
 		return FALSE
 
@@ -134,6 +158,10 @@
 
 	if(!user.is_grabbing(victim))
 		return FALSE
+
+	// Everything below this point requires a human.
+	if(!ishuman(victim))
+		return TRUE
 
 	var/obj/item/bodypart/head/head = victim.get_bodypart(BODY_ZONE_HEAD)
 	if(!head || !IS_ORGANIC_LIMB(head))
@@ -164,14 +192,16 @@
 
 	var/datum/antagonist/vampire/vamp_datum = user.mind.has_antag_datum(/datum/antagonist/vampire)
 
-	var/needed_grab = vamp_datum.thirst_stage == THIRST_STAGE_BLOODLUST ? GRAB_AGGRESSIVE : GRAB_NECK
-
 	for(var/obj/item/hand_item/grab/grab in user.active_grabs)
-		var/mob/living/carbon/human/potential_victim = grab.affecting
-		if(!ishuman(potential_victim) || ismonkey(potential_victim))
+		var/mob/living/potential_victim = grab.affecting
+		if(!bitable_typecache[potential_victim.type] || !(potential_victim.mob_biotypes & MOB_ORGANIC))
 			if(ismob(potential_victim) && error_string_ptr)
 				*error_string_ptr = "You cannot feast on [potential_victim]."
 			continue
+
+		var/needed_grab = GRAB_AGGRESSIVE
+		if(vamp_datum.thirst_stage != THIRST_STAGE_BLOODLUST && ishuman(potential_victim))
+			needed_grab = GRAB_NECK
 
 		if((grab.current_grab.damage_stage < needed_grab))
 			if(error_string_ptr)

@@ -58,4 +58,4 @@
 	message_admins("[key_name_admin(candidate)] respawned as a Flocktrace.")
 
 	var/mob/camera/flock/new_ghostbird = new(get_turf(ghost_bird), ghost_bird.flock)
-	new_ghostbird.key = candidate.key
+	new_ghostbird.PossessByPlayer(candidate.key)

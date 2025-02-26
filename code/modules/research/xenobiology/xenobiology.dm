@@ -657,7 +657,7 @@
 	var/list/candidates = poll_candidates_for_mob("Do you want to play as [dumb_mob.name]?", ROLE_SENTIENCE, ROLE_SENTIENCE, 5 SECONDS, dumb_mob, POLL_IGNORE_SENTIENCE_POTION) // see poll_ignore.dm
 	if(LAZYLEN(candidates))
 		var/mob/dead/observer/C = pick(candidates)
-		dumb_mob.key = C.key
+		dumb_mob.PossessByPlayer(C.key)
 		dumb_mob.mind.enslave_mind_to_creator(user)
 		SEND_SIGNAL(dumb_mob, COMSIG_SIMPLEMOB_SENTIENCEPOTION, user)
 		if(isanimal(dumb_mob))

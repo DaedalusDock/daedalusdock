@@ -24,3 +24,6 @@
 // Custom types that we define don't get a unique id, but this is useful for identifying
 // types that don't normally have a way to run istype() on them.
 #define TYPEID(thing) copytext(REF(thing), 4, 6)
+
+/// Abstraction over using mob.client to just check if there's a connected player.
+#define HAS_CONNECTED_PLAYER(mob) (mob.client)

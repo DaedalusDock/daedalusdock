@@ -47,7 +47,7 @@
 
 	var/log_source = M.logging
 	if(source == LOGSRC_CKEY && M.ckey)
-		var/datum/player_details/details = GLOB.player_details[M.ckey]
+		var/datum/persistent_client/details = GLOB.persistent_clients_by_ckey[M.ckey]
 		if(details) //we dont want to runtime if an admin aghosted
 			log_source = details.logging
 	var/list/concatenated_logs = list()

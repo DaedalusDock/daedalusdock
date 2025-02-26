@@ -25,6 +25,8 @@
  * Parent call
  */
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
+	persistent_client?.SetMob(null)
+
 	unset_machine()
 	remove_from_mob_list()
 	remove_from_dead_mob_list()
@@ -104,6 +106,17 @@
 /mob/GenerateTag()
 	. = ..()
 	tag = "mob_[next_mob_id++]"
+
+/// Assigns a (c)key to this mob.
+/mob/proc/PossessByPlayer(ckey)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	if(isnull(ckey))
+		return
+
+	if(!istext(ckey))
+		CRASH("Tried to assign a mob a non-text ckey, wtf?!")
+
+	src.ckey = ckey(ckey)
 
 /**
  * set every hud image in the given category active so other people with the given hud can see it.
@@ -873,7 +886,7 @@
 		qdel(M)
 		return
 
-	M.key = key
+	M.PossessByPlayer(key)
 
 
 /**
@@ -1566,7 +1579,7 @@
 	if(!canon_client)
 		return
 
-	for(var/foo in canon_client.player_details.post_logout_callbacks)
+	for(var/foo in persistent_client?.post_logout_callbacks)
 		var/datum/callback/CB = foo
 		CB.Invoke()
 

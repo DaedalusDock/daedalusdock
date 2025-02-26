@@ -23,3 +23,7 @@
   Kapu1178:
   - rscadd: The Afflicted - Thirst is now shown between Sated and Dead, with "Bloodlust"
       being represented by negative Thirst
+2025-02-26:
+  Kapu1178:
+  - bugfix: Fixed idle mob AI never triggering.
+  - bugfix: Fixed an instance of infinite overlay stacking.

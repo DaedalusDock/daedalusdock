@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Fixed idle mob AI never triggering.
-  - bugfix: Fixed an instance of infinite overlay stacking.

@@ -27,3 +27,6 @@
   Kapu1178:
   - bugfix: Fixed idle mob AI never triggering.
   - bugfix: Fixed an instance of infinite overlay stacking.
+2025-02-27:
+  Kapu1178:
+  - rscadd: Afflicted can now use Neck Bite on simple mobs for a small amount of thirst.

@@ -95,6 +95,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return ..()
 
 /datum/preferences/New(client/C)
+	if(!C)
+		CRASH("Attempted to create preferences without a client or mock.")
 	parent = C
 
 	for (var/middleware_type in subtypesof(/datum/preference_middleware))
@@ -102,7 +104,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 	selected_category = locate(/datum/preference_group/category/general) in GLOB.all_pref_groups
 
-	if(istype(C))
+	if(istype(C) || istype(C, /datum/client_interface))
 		if(!is_guest_key(C.key))
 			load_and_save = !is_guest_key(parent.key)
 			load_path(parent.ckey)

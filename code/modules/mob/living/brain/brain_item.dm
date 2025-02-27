@@ -357,7 +357,7 @@
 		return
 
 	if(damage > 0 && prob(1))
-		owner.pain_message("Your head feels numb and painful.", 10)
+		owner.pain_message("Your head feels numb and painful.", PAIN_AMT_LOW, TRUE)
 
 	if(damage >= (maxHealth * low_threshold) && prob(1) && owner.eye_blurry <= 0)
 		to_chat(owner, span_warning("It becomes hard to see for some reason."))

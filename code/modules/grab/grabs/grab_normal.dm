@@ -17,9 +17,9 @@
 		return
 
 	if(G.affecting != G.assailant)
-		G.assailant.visible_message(span_warning("[G.assailant] has grabbed [G.affecting]'s [BP.plaintext_zone]!"))
+		G.assailant.visible_message(span_warning("<b>[G.assailant]</b> grabs <b>[G.affecting]</b> by [G.affecting.p_their()] [BP.plaintext_zone]."))
 	else
-		G.assailant.visible_message(span_notice("[G.assailant] has grabbed [G.assailant.p_their()] [BP.plaintext_zone]!"))
+		G.assailant.visible_message(span_notice("<b>[G.assailant]</b> grabs [G.assailant.p_their()] [BP.plaintext_zone]."))
 
 /datum/grab/normal/on_hit_help(obj/item/hand_item/grab/G, atom/A)
 
@@ -94,7 +94,7 @@
 			G.action_used()
 			BP.set_dislocated(FALSE)
 			assailant.visible_message(span_warning("\The [affecting]'s [BP.joint_name] pops back into place!"))
-			affecting.pain_message("AAAHHHHAAGGHHHH", 50, TRUE)
+			affecting.pain_message("AAAHHHHAAGGHHHH", PAIN_AMT_MEDIUM, TRUE)
 		return TRUE
 
 	if(BP.can_be_dislocated())
@@ -236,6 +236,9 @@
 	return TRUE
 
 /datum/grab/normal/resolve_item_attack(obj/item/hand_item/grab/G, mob/living/carbon/human/user, obj/item/I)
+	if(damage_stage < GRAB_AGGRESSIVE)
+		return
+
 	switch(G.target_zone)
 		if(BODY_ZONE_HEAD)
 			return attack_throat(G, I, user)

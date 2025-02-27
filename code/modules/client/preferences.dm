@@ -105,14 +105,17 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	selected_category = locate(/datum/preference_group/category/general) in GLOB.all_pref_groups
 
 	if(istype(C) || istype(C, /datum/client_interface))
-		if(!is_guest_key(C.key))
-			load_and_save = !is_guest_key(parent.key)
-			load_path(parent.ckey)
-			if(load_and_save && !fexists(path))
-				try_savefile_type_migration()
-			unlock_content = !!C.IsByondMember() //TG made this a preference level var, I can do that if you want.
-			if(unlock_content)
-				max_save_slots = 15
+#ifdef UNIT_TESTS
+		load_and_save = !is_guest_key(parent.key) //Treat them as fully real.
+#else
+		load_and_save = !is_guest_key(parent.key) && !istype(C, /datum/client_interface) // Never save mock clients to disk on prod.
+#endif
+		load_path(parent.ckey)
+		if(load_and_save && !fexists(path))
+			try_savefile_type_migration()
+		unlock_content = !!C.IsByondMember() //TG made this a preference level var, I can do that if you want.
+		if(unlock_content)
+			max_save_slots = 15
 
 	load_savefile()
 

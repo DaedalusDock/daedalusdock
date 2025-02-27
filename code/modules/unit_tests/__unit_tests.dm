@@ -142,6 +142,7 @@
 #include "hydroponics_self_mutations.dm"
 #include "interaction_structures.dm"
 #include "interaction_syringe_gun_load.dm"
+#include "json_savefile_importing.dm"
 #include "keybinding_init.dm"
 #include "knockoff_component.dm"
 #include "load_map_security.dm"

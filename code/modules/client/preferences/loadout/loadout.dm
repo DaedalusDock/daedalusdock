@@ -9,17 +9,44 @@
 	return list()
 
 /datum/preference/blob/loadout/deserialize(input, datum/preferences/preferences)
-	for(var/datum/loadout_entry/entry as anything in input)
-		var/datum/loadout_item/loadout_item = locate(entry.path) in GLOB.loadout_items
-		// Entry doesn't point to an item, remove it
-		if(!loadout_item)
-			input -= entry
-	var/points_in_slot = preferences.calculate_loadout_points(input)
-	if(points_in_slot < 0)
-		preferences.update_preference(src, create_default_value())
-		return preferences.read_preference(type)
+	var/list/json
+	try
+		json = json_decode(input)
 
-	return input
+	catch
+		return create_default_value()
+
+	var/list/loadout_entries = list()
+	for(var/list/entry as anything in json)
+		var/path = text2path(entry["path"])
+		if(!path || !(locate(path) in GLOB.loadout_items))
+			continue
+
+		var/name = entry["name"]
+		var/desc = entry["desc"]
+		var/color = entry["color"]
+		var/gags_colors = entry["gags_colors"]
+		var/color_rotation = entry["color_rotation"]
+
+		var/datum/loadout_entry/entry_datum = new(path, name, desc, color, gags_colors, color_rotation)
+
+		loadout_entries += entry_datum
+
+	var/points_in_slot = preferences.calculate_loadout_points(loadout_entries)
+	if(points_in_slot < 0)
+		return create_default_value()
+
+	return loadout_entries
+
+/datum/preference/blob/loadout/serialize(input)
+	if(!islist(input))
+		return json_encode(create_default_value())
+
+	var/list/out = list()
+	for(var/datum/loadout_entry/entry in input)
+		out[++out.len] = entry.to_list()
+
+	return json_encode(out)
 
 /datum/preference/blob/loadout/button_act(mob/user, datum/preferences/prefs, list/params)
 	if(params["toggle_show_equipped"])
@@ -73,7 +100,7 @@
 
 			new_name = strip_html(new_name, MAX_ITEM_NAME_LEN)
 			entry.custom_name = new_name
-			prefs.update_preference(src, loadout)
+			prefs.update_preference(src, serialize(loadout))
 			return TRUE
 
 		if("desc")
@@ -88,7 +115,7 @@
 
 			new_desc = strip_html(new_desc, MAX_ITEM_DESC_LEN)
 			entry.custom_desc = new_desc
-			prefs.update_preference(src, loadout)
+			prefs.update_preference(src, serialize(loadout))
 			return TRUE
 
 		if("color")
@@ -106,7 +133,7 @@
 				return
 
 			entry.custom_color = new_color
-			prefs.update_preference(src, loadout)
+			prefs.update_preference(src, serialize(loadout))
 			return TRUE
 
 		if("gags")
@@ -128,7 +155,7 @@
 
 			gags_list[gags_index] = new_color
 			entry.custom_gags_colors = color_list_to_string(gags_list)
-			prefs.update_preference(src, loadout)
+			prefs.update_preference(src, serialize(loadout))
 			return TRUE
 
 		if("color_rotation")
@@ -143,5 +170,5 @@
 				return
 
 			entry.custom_color_rotation = new_rotation
-			prefs.update_preference(src, loadout)
+			prefs.update_preference(src, serialize(loadout))
 			return TRUE

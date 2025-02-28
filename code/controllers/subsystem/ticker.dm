@@ -306,6 +306,7 @@ SUBSYSTEM_DEF(ticker)
 	mode.setup_antags()
 	PostSetup()
 	SSticker.ready_players = null
+	SStitle.game_status?.alpha = 0
 	return TRUE
 
 /datum/controller/subsystem/ticker/proc/PostSetup()

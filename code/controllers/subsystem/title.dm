@@ -11,6 +11,14 @@ SUBSYSTEM_DEF(title)
 	var/icon/icon
 	var/icon/previous_icon
 
+	/// Var for setting a fixed tip of the round for adminbus
+	var/tip_adminbus = null
+	/// The current tip
+	var/current_tip = null
+
+	var/list/tip_list
+	var/list/silly_tip_list
+
 	/// The turf that contains all of the splash screen stuff
 	var/turf/closed/indestructible/splashscreen/splash_turf
 
@@ -60,6 +68,8 @@ SUBSYSTEM_DEF(title)
 	if(splash_turf)
 		setup_objects()
 
+	tip_list = world.file2list("strings/tips.txt")
+	silly_tip_list = world.file2list("strings/sillytips.txt")
 	return ..()
 
 /datum/controller/subsystem/title/vv_edit_var(var_name, var_value)
@@ -90,6 +100,42 @@ SUBSYSTEM_DEF(title)
 
 	gamemode.maptext = "<span class='vga outline' style='color: #aaaaaa'>Gamemode: [SSticker.get_mode_name()]</span>"
 
+	if(times_fired % 15 == 0) // every 15 seconds
+		update_tip()
+
+/datum/controller/subsystem/title/proc/update_tip()
+	set waitfor = FALSE
+
+	var/new_tip = ""
+
+	if(tip_adminbus)
+		if((current_tip == tip_adminbus))
+			return
+
+		new_tip = tip_adminbus
+
+	if(!new_tip)
+		if(length(tip_list) && prob(95))
+			new_tip = pick(tip_list)
+		else if(length(silly_tip_list))
+			new_tip = pick(silly_tip_list)
+
+	if(!new_tip)
+		return
+
+	if(new_tip[1] != "@")
+		new_tip = html_encode(new_tip)
+	else
+		new_tip = copytext(new_tip, 2)
+
+	if(current_tip)
+		animate(tip, alpha = 0, time = 1.5 SECONDS)
+		sleep(1.5 SECONDS)
+
+	current_tip = new_tip
+	tip.maptext = "<span class='vga outline center align-top'>[current_tip]</span>"
+	animate(tip, alpha = 255, time = 1.5 SECONDS)
+
 /// Called in init to create all of the vis contents objects
 /datum/controller/subsystem/title/proc/setup_objects()
 	backdrop.icon = icon
@@ -119,8 +165,10 @@ SUBSYSTEM_DEF(title)
 	add_child_object(gamemode, "Gamemode")
 
 	tip = new()
+	tip.alpha = 0
 	tip.maptext_width = 320
-	tip.maptext_height = 48
+	tip.maptext_height = 128
+	tip.maptext_x = -(320 / 2) + 16
 	tip.pixel_y = world.icon_size * 7
 	tip.pixel_x = world.icon_size * 7
 	add_child_object(tip, "Tip")

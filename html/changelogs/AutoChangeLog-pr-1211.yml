@@ -1,5 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - refactor: Saves are now stored in a new format. if you experience any issues,
-      please report it in the usual locations.

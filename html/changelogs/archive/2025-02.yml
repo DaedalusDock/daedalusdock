@@ -30,3 +30,7 @@
 2025-02-27:
   Kapu1178:
   - rscadd: Afflicted can now use Neck Bite on simple mobs for a small amount of thirst.
+2025-02-28:
+  francinum:
+  - refactor: Saves are now stored in a new format. if you experience any issues,
+      please report it in the usual locations.

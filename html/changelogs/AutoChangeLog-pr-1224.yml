@@ -1,0 +1,8 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Fixed AI and Cyborg not being selected by Divide Occupations.
+  - bugfix: Fixed AI and Cyborg not correctly displaying in the preferences menu.
+  - bugfix: Fixed modsuits not being removable. (pugman899)
+  - bugfix: Fixed the Mixed gamemode's antagonist selection.
+  - bugfix: Fixed the character limit regressing to 3.

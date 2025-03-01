@@ -9,7 +9,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	/// Ensures that we always load the last used save, QOL
 	var/default_slot = 1
 	/// The maximum number of slots we're allowed to contain
-	var/max_save_slots = 3
+	var/max_save_slots = 10
 
 	/// Bitflags for communications that are muted
 	var/muted = NONE
@@ -406,6 +406,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/character_preview_view)
 
 	/// The body that is displayed
 	var/mob/living/carbon/human/dummy/body
+	/// The appearance to display
+	var/mutable_appearance/rendered_appearance
 
 	/// The preferences this refers to
 	var/datum/preferences/preferences
@@ -448,11 +450,13 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/character_preview_view)
 		create_body()
 	else
 		body.wipe_state()
-	preferences.render_new_preview_appearance(body)
+
+	rendered_appearance = preferences.render_new_preview_appearance(body)
+
 	for(var/index in subscreens)
 		var/atom/movable/screen/subscreen = subscreens[index]
 		var/cache_dir = subscreen.dir
-		subscreen.appearance = body.appearance
+		subscreen.appearance = rendered_appearance.appearance
 		subscreen.dir = cache_dir
 
 /atom/movable/screen/character_preview_view/proc/create_body()
@@ -487,7 +491,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/character_preview_view)
 			preview = new
 			subscreens["preview-[dir]"] = preview
 			client?.register_map_obj(preview)
-		preview.appearance = body.appearance
+
+		preview.appearance = rendered_appearance.appearance
 		preview.dir = dir
 		preview.set_position(0, pos)
 

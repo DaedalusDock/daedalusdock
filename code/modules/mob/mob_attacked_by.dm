@@ -1,11 +1,11 @@
 /mob/living/attacked_by(obj/item/attacking_item, mob/living/attacker)
-	var/hit_zone = BODY_ZONE_CHEST
+	var/hit_zone = deprecise_zone(attacker.zone_selected)
 	var/hit_zone_text = "body"
 
 	var/ishuman = ishuman(src)
 	// Humans have miss chance. We dont apply this to living mobs for my sanity, i guess.
 	if(ishuman)
-		var/target_zone = deprecise_zone(attacker.zone_selected) //our REAL intended target
+		var/target_zone = hit_zone //our REAL intended target
 
 		// Can't hit a bodypart that doesn't exist!
 		var/obj/item/bodypart/affecting = get_bodypart(target_zone)
@@ -30,11 +30,7 @@
 				if(FAILURE)
 					hit_zone = get_random_valid_zone()
 
-				else
-					hit_zone = target_zone
-
-			affecting = get_bodypart(hit_zone)
-
+		affecting = get_bodypart(hit_zone)
 		hit_zone_text = affecting.plaintext_zone
 
 	send_item_attack_message(attacking_item, attacker, hit_zone_text != "body" ? hit_zone_text : null)
@@ -68,7 +64,7 @@
 	var/damage_done = apply_damage(
 		damage = damage,
 		damagetype = attacking_item.damtype,
-		def_zone = BODY_ZONE_CHEST,
+		def_zone = hit_zone,
 		blocked = armor_block,
 		sharpness = attacking_item.sharpness,
 		attack_direction = get_dir(attacker, src),

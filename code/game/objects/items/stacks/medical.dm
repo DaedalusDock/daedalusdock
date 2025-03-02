@@ -241,7 +241,7 @@
 
 	var/wound_desc
 	for(var/datum/wound/W as anything in shuffle(affecting.wounds))
-		if(W.wound_type != WOUND_CUT && W.wound_type != WOUND_PIERCE)
+		if(W.damage <= 0 || W.wound_type != WOUND_CUT && W.wound_type != WOUND_PIERCE)
 			continue
 		if(W.damage <= 15)
 			wound_desc = W.desc

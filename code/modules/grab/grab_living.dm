@@ -49,9 +49,17 @@
 /mob/living/proc/try_make_grab(atom/movable/target, grab_type, use_offhand)
 	return canUseTopic(src, USE_IGNORE_TK|USE_CLOSE) && make_grab(target, grab_type, use_offhand)
 
+/// DO NOT CALL DIRECTLY. USE THE ABOVE.
 /mob/living/proc/make_grab(atom/movable/target, grab_type = /datum/grab/simple, use_offhand)
+	PRIVATE_PROC(TRUE)
+
 	if(SEND_SIGNAL(src, COMSIG_LIVING_TRY_GRAB, target, grab_type) & COMSIG_LIVING_CANCEL_GRAB)
 		return
+
+	// REALLY SHITTY CODE TO FIX A GAMEBREAKING BUG. I HATE GRAB CODE WHY DID I PORT THIS?
+	if(src == target)
+		if(ispath(grab_type, /datum/grab/normal) && grab_type != /datum/grab/normal/passive)
+			grab_type = /datum/grab/normal/passive
 
 	// Resolve to the 'topmost' atom in the buckle chain, as grabbing someone buckled to something tends to prevent further interaction.
 	var/atom/movable/original_target = target

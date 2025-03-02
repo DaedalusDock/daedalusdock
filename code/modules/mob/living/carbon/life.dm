@@ -31,8 +31,8 @@
 		stop_sound_channel(CHANNEL_HEARTBEAT)
 
 	if(stat != DEAD && !(IS_IN_STASIS(src)))
-		handle_shock()
-		handle_pain()
+		handle_shock(delta_time)
+		handle_pain(delta_time)
 		if(shock_stage >= SHOCK_TIER_1)
 			add_movespeed_modifier(/datum/movespeed_modifier/shock, TRUE)
 		else

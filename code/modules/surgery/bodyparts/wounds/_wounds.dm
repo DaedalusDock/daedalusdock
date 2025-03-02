@@ -59,7 +59,7 @@
 
 /datum/wound/New(damage, obj/item/bodypart/BP = null)
 
-	scar_expiration = world.time + 10 MINUTES
+	scar_expiration = world.time + 5 MINUTES
 
 	// reading from a list("stage" = damage) is pretty difficult, so build two separate
 	// lists from them instead

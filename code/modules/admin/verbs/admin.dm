@@ -11,19 +11,19 @@
 
 	var/input = input(usr, "Please specify your tip that you want to send to the players.", "Tip", "") as message|null
 	if(!input)
+		SStitle.tip_adminbus = null
+		SStitle.update_tip()
 		return
 
 	if(!SSticker)
 		return
 
 	// If we've already tipped, then send it straight away.
-	if(SSticker.tipped)
-		send_tip_of_the_round(world, input)
-	else
-		SSticker.selected_tip = input
+	SStitle.tip_adminbus = input
+	SStitle.update_tip()
 
-	message_admins("[key_name_admin(usr)] sent a tip of the round.")
-	log_admin("[key_name(usr)] sent \"[input]\" as the Tip of the Round.")
+	message_admins("[key_name_admin(usr)] updated the title screen tip text.")
+	log_admin("[key_name(usr)] sent \"[input]\" as the title screen tip text.")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Show Tip")
 
 /datum/admins/proc/announce()

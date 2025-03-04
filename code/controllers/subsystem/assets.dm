@@ -2,8 +2,14 @@ SUBSYSTEM_DEF(assets)
 	name = "Assets"
 	init_order = INIT_ORDER_ASSETS
 	flags = SS_NO_FIRE
+
 	var/list/datum/asset_cache_item/cache = list()
-	var/list/preload = list()
+
+	/// Put RSC refs here
+	var/list/preload = list(
+		'fonts/ibmvga9.ttf',
+	)
+
 	var/datum/asset_transport/transport = new()
 
 /datum/controller/subsystem/assets/OnConfigLoad()

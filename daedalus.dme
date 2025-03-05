@@ -1501,6 +1501,7 @@
 #include "code\game\objects\effects\portals.dm"
 #include "code\game\objects\effects\powerup.dm"
 #include "code\game\objects\effects\spiderwebs.dm"
+#include "code\game\objects\effects\splashscreen.dm"
 #include "code\game\objects\effects\sprint_dust.dm"
 #include "code\game\objects\effects\step_triggers.dm"
 #include "code\game\objects\effects\wanted_poster.dm"

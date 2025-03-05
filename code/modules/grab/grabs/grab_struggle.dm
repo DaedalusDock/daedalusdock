@@ -18,21 +18,22 @@
 	if(!affecting)
 		return TRUE
 
-	if(affecting == assailant)
+	if(HAS_TRAIT(assailant, TRAIT_STRONG_GRABBER))
 		G.done_struggle = TRUE
 		G.upgrade(TRUE)
 		return FALSE
 
 	if(!affecting.can_resist() || !affecting.combat_mode)
-		affecting.visible_message(
-			span_danger("\The <b>[affecting]</b> isn't prepared to fight back as <b>[assailant]</b> tightens [assailant.p_their()] grip!"),
-			vision_distance = COMBAT_MESSAGE_RANGE,
-		)
+		if(affecting.stat == CONSCIOUS)
+			affecting.visible_message(
+				span_danger("\The <b>[affecting]</b> isn't prepared to fight back as <b>[assailant]</b> tightens [assailant.p_their()] grip."),
+				vision_distance = COMBAT_MESSAGE_RANGE,
+			)
 		G.done_struggle = TRUE
 		G.upgrade(TRUE, FALSE)
 		return FALSE
 
-	affecting.visible_message("<span class='warning'>[affecting] struggles against [assailant]!</span>", vision_distance = COMBAT_MESSAGE_RANGE)
+	affecting.visible_message("<span class='warning'><b>[affecting]</b> struggles against <b>[assailant]</b>.</span>", vision_distance = COMBAT_MESSAGE_RANGE)
 	G.done_struggle = FALSE
 	addtimer(CALLBACK(G, TYPE_PROC_REF(/obj/item/hand_item/grab, handle_resist)), 1 SECOND)
 	resolve_struggle(G)
@@ -42,7 +43,7 @@
 	set waitfor = FALSE
 
 	#ifdef UNIT_TESTS
-	var/upgrade_cooldown = 0
+	upgrade_cooldown = 0
 	sleep(world.tick_lag)
 	#endif
 

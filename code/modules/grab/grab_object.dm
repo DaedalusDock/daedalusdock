@@ -84,8 +84,10 @@
 	current_grab.special_bodyzone_effects(src)
 
 	var/mob/living/L = get_affecting_mob()
-	if(L && assailant.combat_mode)
-		upgrade(TRUE)
+	if(L)
+		log_combat(assailant, L, "grabbed")
+		if(L != assailant && assailant.combat_mode)
+			upgrade(TRUE)
 
 	/// Update appearance
 	update_appearance(UPDATE_ICON_STATE)
@@ -104,6 +106,7 @@
 		RegisterSignal(affecting, COMSIG_PARENT_QDELETING, PROC_REF(target_or_owner_del))
 	RegisterSignal(affecting, COMSIG_MOVABLE_PRE_THROW, PROC_REF(target_thrown))
 	RegisterSignal(affecting, COMSIG_ATOM_ATTACK_HAND, PROC_REF(intercept_attack_hand))
+	RegisterSignal(affecting, COMSIG_PARENT_ATTACKBY, PROC_REF(resolve_item_attack))
 
 	RegisterSignal(assailant, COMSIG_MOB_SELECTED_ZONE_SET, PROC_REF(on_target_change))
 
@@ -127,6 +130,9 @@
 
 	if(assailant)
 		assailant.after_grab_release(affecting)
+
+	if(ismob(affecting))
+		log_combat(assailant, affecting, "dropped a grab on")
 
 	//DEBUG CODE
 	if(HAS_TRAIT_FROM(affecting, TRAIT_AGGRESSIVE_GRAB, ref(src)))
@@ -183,7 +189,6 @@
 	if(src != assailant.get_active_held_item())
 		return // Note that because of this condition, there's no guarantee that target_zone = old_sel
 
-	new_sel = deprecise_zone(new_sel)
 	if(target_zone == new_sel)
 		return
 
@@ -204,8 +209,9 @@
 		to_chat(assailant, span_warning("You fail to grab \the [affecting] there as they do not have that bodypart!"))
 		return
 
-	name = "[initial(name)] ([BP.plaintext_zone])"
-	to_chat(assailant, span_notice("You are now holding \the [affecting] by \the [BP.plaintext_zone]."))
+	if(old_zone != target_zone)
+		name = "[initial(name)] ([BP.plaintext_zone])"
+		to_chat(assailant, span_notice("You are now holding \the [affecting] by \the [BP.plaintext_zone]."))
 
 	if(!isbodypart(BP))
 		qdel(src)
@@ -245,11 +251,18 @@
 	var/mob/living/L = get_affecting_mob()
 	return (L?.get_bodypart(deprecise_zone(target_zone)))
 
-/obj/item/hand_item/grab/proc/resolve_item_attack(mob/living/M, obj/item/I, target_zone)
-	if((M && ishuman(M)) && I)
-		return current_grab.resolve_item_attack(src, M, I, target_zone)
-	else
-		return 0
+// Intercepts attackby() calls on our target.
+/obj/item/hand_item/grab/proc/resolve_item_attack(datum/source, obj/item/I, mob/attacker, params)
+	SIGNAL_HANDLER
+
+	if(!ishuman(attacker))
+		return
+	var/mob/living/carbon/human/human_attacker = attacker
+	if(human_attacker.combat_mode)
+		return
+
+	if(current_grab.resolve_item_attack(src, attacker, I, human_attacker.zone_selected))
+		return COMPONENT_NO_AFTERATTACK
 
 /obj/item/hand_item/grab/proc/action_used()
 	COOLDOWN_START(src, action_cd, current_grab.action_cooldown)
@@ -325,6 +338,9 @@
 	adjust_position()
 	update_appearance()
 
+	if(ismob(affecting))
+		log_combat(assailant, affecting, "upgraded grab to [current_grab.type]")
+
 	SEND_SIGNAL(assailant, COMSIG_LIVING_GRAB_UPGRADE)
 
 /obj/item/hand_item/grab/proc/downgrade(silent)
@@ -347,6 +363,9 @@
 
 	adjust_position()
 	update_appearance()
+
+	if(ismob(affecting))
+		log_combat(assailant, affecting, "downgraded grab to [current_grab.type]")
 
 	SEND_SIGNAL(assailant, COMSIG_LIVING_GRAB_DOWNGRADE)
 

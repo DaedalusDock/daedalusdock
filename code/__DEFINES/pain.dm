@@ -1,7 +1,3 @@
-/// Chance to drop your held item passed here
-#define PAIN_THRESHOLD_DROP_ITEM 50
-/// Chance to reduce paralysis duration passed here
-#define PAIN_THRESHOLD_REDUCE_PARALYSIS 10
 /// Stage at
 #define SHOCK_MIN_PAIN_TO_BEGIN 30
 
@@ -29,6 +25,17 @@
 #define PAIN_AMT_LOW (PAIN_AMT_PASSOUT * 0.05)
 #define PAIN_AMT_MEDIUM (PAIN_AMT_PASSOUT * 0.35)
 #define PAIN_AMT_AGONIZING (PAIN_AMT_PASSOUT * 0.85)
+
+#define PAIN_CLASS_NONE "none"
+#define PAIN_CLASS_NEGLIGIBLE "negligible"
+#define PAIN_CLASS_LOW "low"
+#define PAIN_CLASS_MEDIUM "medium"
+#define PAIN_CLASS_AGONIZING "agonizing"
+
+/// Chance to drop your held item passed here
+#define PAIN_THRESHOLD_DROP_ITEM 75
+/// Chance to reduce sleep duration passed here
+#define PAIN_THRESHOLD_REDUCE_SLEEP 10
 
 /// max_damage * this value is the amount of pain constantly applied when the limb bone is broken
 #define BROKEN_BONE_PAIN_FACTOR 0.1

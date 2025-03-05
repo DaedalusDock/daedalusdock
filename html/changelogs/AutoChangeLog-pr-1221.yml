@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: The splash-screen now contains information.
+  - tweak: The tip of the round has been replaced with cycling text on the splash-screen.

@@ -61,8 +61,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/toxic_food = TOXIC
 	///How are we treated regarding processing reagents, by default we process them as if we're organic
 	var/reagent_flags = PROCESS_ORGANIC
-	///Inventory slots the race can't equip stuff to. Golems cannot wear jumpsuits, for example.
-	var/list/no_equip = list()
+	///Inventory slots the race can't equip stuff to.
+	var/no_equip_flags = NONE
 	/// Allows the species to equip items that normally require a jumpsuit without having one equipped. Used by golems.
 	var/nojumpsuit = FALSE
 	///Affects the speech message, for example: Motharula flutters, "My speech message is flutters!"
@@ -475,12 +475,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// Drop the items the new species can't wear
 	if((AGENDER in species_traits))
 		C.gender = PLURAL
-	for(var/slot_id in no_equip)
-		var/obj/item/thing = C.get_item_by_slot(slot_id)
-		if(thing && (!thing.species_exception || !is_type_in_list(src,thing.species_exception)))
-			C.dropItemToGround(thing)
-	if(C.hud_used)
-		C.hud_used.update_locked_slots()
+
+	for(var/obj/item/equipped_item in C.get_equipped_items(include_pockets = TRUE))
+		var/equipped_item_slot = C.get_slot_by_item(equipped_item)
+		if(!equipped_item.mob_can_equip(C, C, equipped_item_slot, bypass_equip_delay_self = TRUE, ignore_equipped = TRUE))
+			C.dropItemToGround(equipped_item, force = TRUE)
 
 	C.mob_size = species_mob_size
 	C.mob_biotypes = inherent_biotypes
@@ -506,6 +505,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				C.dropItemToGround(I)
 			else //Entries in the list should only ever be items or null, so if it's not an item, we can assume it's an empty hand
 				INVOKE_ASYNC(C, TYPE_PROC_REF(/mob, put_in_hands), new mutanthands)
+
+	// Update locked slots AFTER all organ and body stuff is handled
+	C.hud_used?.update_locked_slots()
 
 	for(var/X in inherent_traits)
 		ADD_TRAIT(C, X, SPECIES_TRAIT)
@@ -706,13 +708,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/spec_death(gibbed, mob/living/carbon/human/H)
 	return
 
-/datum/species/proc/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE)
-	if(slot in no_equip)
+/datum/species/proc/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE)
+	if(slot & no_equip_flags)
 		if(!I.species_exception || !is_type_in_list(src, I.species_exception))
 			return FALSE
 
 	// if there's an item in the slot we want, fail
-	if(H.get_item_by_slot(slot))
+	if(!ignore_equipped && H.get_item_by_slot(slot))
 		return FALSE
 
 	// For whatever reason, this item cannot be equipped by this species
@@ -821,7 +823,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(ITEM_SLOT_LPOCKET)
 			if(HAS_TRAIT(I, TRAIT_NODROP)) //Pockets aren't visible, so you can't move TRAIT_NODROP items into them.
 				return FALSE
-			if(H.l_store) // no pocket swaps at all
+			if(!ignore_equipped && H.l_store) // no pocket swaps at all
 				return FALSE
 
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_L_LEG)
@@ -835,7 +837,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(ITEM_SLOT_RPOCKET)
 			if(HAS_TRAIT(I, TRAIT_NODROP))
 				return FALSE
-			if(H.r_store)
+			if(!ignore_equipped && H.r_store)
 				return FALSE
 
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_R_LEG)

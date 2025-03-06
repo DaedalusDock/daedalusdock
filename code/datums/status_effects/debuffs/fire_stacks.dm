@@ -25,7 +25,7 @@
 	else
 		adjust_stacks(new_stacks)
 
-/datum/status_effect/fire_handler/on_creation(effect, mob/living/new_owner, new_stacks, forced = FALSE)
+/datum/status_effect/fire_handler/on_creation(mob/living/new_owner, new_stacks, forced = FALSE)
 	. = ..()
 
 	if(isanimal(owner))

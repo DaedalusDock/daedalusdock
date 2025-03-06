@@ -239,6 +239,7 @@
 	if(ai_voicechanger)
 		ai_voicechanger.owner = null
 		ai_voicechanger = null
+	lit_cameras = null
 	return ..()
 
 /mob/living/silicon/ai/pre_examinate(atom/examinify)

@@ -105,7 +105,7 @@
 			var/obj/machinery/holopad/H = ai.current
 			H.move_hologram(ai, destination)
 		if(ai.camera_light_on)
-			ai.light_cameras()
+			ai.update_lit_cameras()
 		if(ai.master_multicam)
 			ai.master_multicam.refresh_view()
 

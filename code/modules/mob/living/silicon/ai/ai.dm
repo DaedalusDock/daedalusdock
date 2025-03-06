@@ -769,6 +769,9 @@
 //AI_CAMERA_LUMINOSITY
 
 /mob/living/silicon/ai/proc/update_lit_cameras()
+	if(isnull(eyeobj)) // Initialize
+		return
+
 	var/list/obj/machinery/camera/add = list()
 	var/list/obj/machinery/camera/remove = list()
 	var/list/obj/machinery/camera/visible = list()

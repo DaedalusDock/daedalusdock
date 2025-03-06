@@ -758,7 +758,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 
 		if(ITEM_SLOT_GLOVES)
-			if(H.num_hands < 2)
+			if(H.num_hands == 0)
 				return FALSE
 			return H.equip_delay_self_check(I, bypass_equip_delay_self)
 

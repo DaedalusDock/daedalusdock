@@ -15248,6 +15248,9 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/aft)
 "fCV" = (
@@ -32824,6 +32827,9 @@
 /obj/machinery/camera/directional/west{
 	c_tag = "Custodial Closet"
 	},
+/obj/structure/cable/yellow{
+	icon_state = "1"
+	},
 /turf/open/floor/iron,
 /area/station/service/janitor)
 "mqo" = (
@@ -37523,6 +37529,15 @@
 /obj/effect/spawner/random/trash/janitor_supplies,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
+"oaG" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/overfloor_catwalk/iron_dark,
+/obj/structure/cable/yellow{
+	icon_state = "10"
+	},
+/turf/open/floor/plating,
+/area/station/service/janitor)
 "oaN" = (
 /obj/effect/turf_decal/trimline/blue/line{
 	dir = 1
@@ -42601,6 +42616,9 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
 /turf/open/floor/iron,
 /area/station/service/janitor)
 "pRf" = (
@@ -46925,6 +46943,17 @@
 /obj/machinery/atm,
 /turf/open/floor/carpet/blue,
 /area/station/medical/medbay/lobby)
+"rvG" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable/yellow{
+	icon_state = "3"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "5"
+	},
+/turf/open/floor/iron,
+/area/station/hallway/primary/aft)
 "rvI" = (
 /obj/effect/turf_decal/stripes/white/line{
 	dir = 8
@@ -95664,7 +95693,7 @@ bZK
 gNa
 bZK
 bZK
-bZK
+rvG
 xLD
 bZK
 bZK
@@ -96435,7 +96464,7 @@ cKc
 aLs
 acg
 nRZ
-qGh
+oaG
 mqi
 thq
 eBp

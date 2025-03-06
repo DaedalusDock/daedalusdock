@@ -348,7 +348,7 @@
 	if(I.flags_inv & HIDEEYES)
 		update_worn_glasses()
 	sec_hud_set_security_status()
-	update_name()
+	update_appearance(UPDATE_NAME)
 	..()
 
 /mob/living/carbon/human/proc/equipOutfit(outfit, visualsOnly = FALSE)

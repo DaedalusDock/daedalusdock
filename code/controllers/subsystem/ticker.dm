@@ -42,7 +42,6 @@ SUBSYSTEM_DEF(ticker)
 	var/admin_delay_notice = "" //a message to display to anyone who tries to restart the world after a delay
 	var/ready_for_reboot = FALSE //all roundend preparation done with, all that's left is reboot
 
-	var/tipped = FALSE //Did we broadcast the tip of the day yet?
 	var/selected_tip // What will be the tip of the day?
 
 	var/timeLeft //pregame timer
@@ -197,10 +196,6 @@ SUBSYSTEM_DEF(ticker)
 				return
 			timeLeft -= wait
 
-			if(timeLeft <= 300 && !tipped)
-				send_tip_of_the_round(world, selected_tip)
-				tipped = TRUE
-
 			if(timeLeft <= 0)
 				SEND_SIGNAL(src, COMSIG_TICKER_ENTER_SETTING_UP)
 				current_state = GAME_STATE_SETTING_UP
@@ -306,6 +301,7 @@ SUBSYSTEM_DEF(ticker)
 	mode.setup_antags()
 	PostSetup()
 	SSticker.ready_players = null
+	SStitle.game_status?.alpha = 0
 	return TRUE
 
 /datum/controller/subsystem/ticker/proc/PostSetup()
@@ -548,7 +544,6 @@ SUBSYSTEM_DEF(ticker)
 
 	delay_end = SSticker.delay_end
 
-	tipped = SSticker.tipped
 	selected_tip = SSticker.selected_tip
 
 	timeLeft = SSticker.timeLeft

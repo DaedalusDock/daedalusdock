@@ -194,7 +194,9 @@
 	var/generic_bleedstacks
 
 	/// If something is currently supporting this limb as a splint
-	var/obj/item/splint
+	var/obj/item/stack/splint
+	/// Timer ID for splint heal.
+	var/splint_heal_timer
 	/// The bandage that may-or-may-not be absorbing our blood
 	var/obj/item/stack/bandage
 
@@ -368,13 +370,14 @@
 /obj/item/bodypart/proc/on_life(delta_time, times_fired, stam_heal)
 	SHOULD_CALL_PARENT(TRUE)
 	if(owner.stat != DEAD)
-		. |= wound_life()
+		. |= wound_life(delta_time)
 		if(temporary_pain)
 			temporary_pain = owner.body_position == LYING_DOWN ? max(0, temporary_pain - 3) : max(0, temporary_pain - 1)
 			. |= BODYPART_LIFE_UPDATE_HEALTH_HUD
+
 	. |= update_germs()
 
-/obj/item/bodypart/proc/wound_life()
+/obj/item/bodypart/proc/wound_life(delta_time)
 	if(!LAZYLEN(wounds))
 		return
 
@@ -390,23 +393,12 @@
 			qdel(W)
 			continue
 
-		// slow healing
-		var/heal_amt = 0
 		// if damage >= 50 AFTER treatment then it's probably too severe to heal within the timeframe of a round.
-		if ( W.can_autoheal() && W.wound_damage() && brute_ratio < 0.5 && burn_ratio < 0.5)
-			heal_amt += 0.5
+		if (brute_ratio < 0.5 && burn_ratio < 0.5 && W.wound_damage() && W.can_autoheal())
+			var/dam_type = W.wound_type == WOUND_BURN ? BURN : BRUTE
+			if(owner.can_autoheal(dam_type))
+				W.heal_damage(WOUND_AUTOHEAL_RATE * delta_time)
 
-		//configurable regen speed woo, no-regen hardcore or instaheal hugbox, choose your destiny
-		heal_amt = heal_amt * WOUND_REGENERATION_MODIFIER
-		// amount of healing is spread over all the wounds
-		heal_amt = heal_amt / (LAZYLEN(wounds) + 1)
-		// making it look prettier on scanners
-		heal_amt = round(heal_amt,0.1)
-		var/dam_type = BRUTE
-		if (W.wound_type == WOUND_BURN)
-			dam_type = BURN
-		if(owner.can_autoheal(dam_type))
-			W.heal_damage(heal_amt)
 
 	// sync the bodypart's damage with its wounds
 	return update_damage()
@@ -499,6 +491,7 @@
 	// If the limbs can break, make sure we don't exceed the maximum damage a limb can take before breaking
 	var/block_cut = (pure_brute < 6) || !IS_ORGANIC_LIMB(src)
 	var/can_cut = !block_cut && ((sharpness) || prob(brute))
+
 	if(brute)
 		var/to_create = WOUND_BRUISE
 		if(can_cut)
@@ -513,8 +506,7 @@
 
 	//Initial pain spike
 	if(owner)
-		var/pain_reduction = CHEM_EFFECT_MAGNITUDE(owner, CE_PAINKILLER) / length(owner.bodyparts)
-		owner?.notify_pain(getPain() - pain_reduction)
+		owner.apply_pain(0.2 * burn + 0.1 * brute, src, updating_health = FALSE)
 
 	if(owner && total > 15 && prob(total*4) && !(bodypart_flags & BP_NO_PAIN))
 		owner.bloodstream.add_reagent(/datum/reagent/medicine/epinephrine, round(total/10))
@@ -689,8 +681,8 @@
 	brute_ratio = brute_dam / (limb_loss_threshold * 2)
 	burn_ratio = burn_dam / (limb_loss_threshold * 2)
 
-	var/tbrute = min(round( (brute_dam/max_damage)*3, 1 ), 3)
-	var/tburn = min(round( (burn_dam/max_damage)*3, 1 ), 3)
+	var/tbrute = min(round((brute_dam/max_damage) * 3, 1), 3)
+	var/tburn = min(round((burn_dam/max_damage) * 3, 1), 3)
 	if((tbrute != brutestate) || (tburn != burnstate))
 		brutestate = tbrute
 		burnstate = tburn
@@ -1070,43 +1062,6 @@
 /obj/item/bodypart/proc/bandage_gone(obj/item/stack/bandage)
 	SIGNAL_HANDLER
 	remove_bandage()
-
-/obj/item/bodypart/proc/apply_splint(obj/item/splint)
-	if(src.splint)
-		return FALSE
-
-	src.splint = splint
-	if(istype(splint, /obj/item/stack))
-		splint.forceMove(src)
-
-	update_interaction_speed()
-	RegisterSignal(splint, COMSIG_PARENT_QDELETING, PROC_REF(splint_gone))
-	SEND_SIGNAL(src, COMSIG_LIMB_SPLINTED, splint)
-	return TRUE
-
-/obj/item/bodypart/leg/apply_splint(obj/item/splint)
-	. = ..()
-	if(!.)
-		return
-	owner.apply_status_effect(/datum/status_effect/limp)
-
-/obj/item/bodypart/proc/remove_splint()
-	if(!splint)
-		return FALSE
-
-	. = splint
-
-	UnregisterSignal(splint, COMSIG_PARENT_QDELETING)
-	if(splint.loc == src)
-		splint.forceMove(drop_location())
-
-	splint = null
-	update_interaction_speed()
-	SEND_SIGNAL(src, COMSIG_LIMB_UNSPLINTED, splint)
-
-/obj/item/bodypart/proc/splint_gone(obj/item/source)
-	SIGNAL_HANDLER
-	remove_splint()
 
 /obj/item/bodypart/drop_location()
 	if(owner)

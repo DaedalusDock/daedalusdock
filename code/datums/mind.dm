@@ -36,6 +36,9 @@
 	var/mob/living/current
 	var/active = FALSE
 
+	/// A copy of a corpse appearance, set when transferring a mind to a brainmob.
+	var/mutable_appearance/body_appearance
+
 	/// A k:v list of note type : contents
 	VAR_PRIVATE/list/notes = list(NOTES_CUSTOM = "")
 	///reference to the note panel tgui

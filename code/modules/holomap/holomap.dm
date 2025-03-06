@@ -58,7 +58,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/holomap, 32)
 
 	if(!bogus && is_operational && SSholomap.initialized && (initial_z <= length(SSholomap.minimaps)))
 		. += SSholomap.minimaps[initial_z]["[dir]"]
-		. += emissive_appearance(SSholomap.minimap_icons[initial_z]["[dir]"])
+		. += emissive_appearance(SSholomap.minimap_icons[initial_z]["[dir]"], alpha = 90)
 
 /obj/machinery/holomap/update_icon_state()
 	if(is_operational)

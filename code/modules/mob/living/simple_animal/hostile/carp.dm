@@ -20,7 +20,7 @@
 	response_disarm_simple = "gently push aside"
 	emote_taunt = list("gnashes")
 	taunt_chance = 30
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 25
 	health = 25
 	search_objects = 1
@@ -88,7 +88,7 @@
 	ADD_TRAIT(src, TRAIT_HEALS_FROM_CARP_RIFTS, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
 	if(ai_controller)
-		ai_controller.blackboard[BB_HOSTILE_ATTACK_WORD] = pick(speak_emote)
+		ai_controller.set_blackboard_key(BB_HOSTILE_ATTACK_WORD, pick(speak_emote))
 		if(tamer)
 			tamed(tamer)
 		else

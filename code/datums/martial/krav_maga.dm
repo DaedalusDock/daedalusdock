@@ -183,9 +183,9 @@
 	if(slot == ITEM_SLOT_GLOVES)
 		style.teach(user, TRUE)
 
-/obj/item/clothing/gloves/krav_maga/dropped(mob/user)
+/obj/item/clothing/gloves/krav_maga/unequipped(mob/user)
 	. = ..()
-	if(user.get_item_by_slot(ITEM_SLOT_GLOVES) == src)
+	if(user.get_item_by_slot(ITEM_SLOT_GLOVES) != src)
 		style.remove(user)
 
 /obj/item/clothing/gloves/krav_maga/sec//more obviously named, given to sec

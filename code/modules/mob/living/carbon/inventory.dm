@@ -88,14 +88,12 @@
 			if(back)
 				return
 			back = I
-			update_slots_for_item(I, slot)
 
 		if(ITEM_SLOT_MASK)
 			if(wear_mask)
 				return
 
 			wear_mask = I
-			update_slots_for_item(I, slot)
 			wear_mask_update(I, toggle_off = 0)
 
 		if(ITEM_SLOT_HEAD)
@@ -103,14 +101,11 @@
 				return
 
 			head = I
-			update_slots_for_item(I, slot)
-			SEND_SIGNAL(src, COMSIG_CARBON_EQUIP_HAT, I)
 
 		if(ITEM_SLOT_NECK)
 			if(wear_neck)
 				return
 			wear_neck = I
-			update_slots_for_item(I, slot)
 
 		if(ITEM_SLOT_HANDCUFFED)
 			set_handcuffed(I)
@@ -121,7 +116,6 @@
 
 		if(ITEM_SLOT_HANDS)
 			put_in_hands(I)
-			update_held_items()
 
 		if(ITEM_SLOT_BACKPACK)
 			if(!back || !back.atom_storage?.attempt_insert(I, src, override = TRUE))
@@ -141,47 +135,42 @@
 /mob/living/carbon/proc/afterEquipItem(obj/item/item, slot, initial = FALSE)
 	if(length(item.actions))
 		item.update_action_buttons(UPDATE_BUTTON_STATUS)
+
 	return item.equipped(src, slot, initial)
 
-/mob/living/carbon/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+/mob/living/carbon/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE, slot = get_slot_by_item(I))
 	. = ..() //Sets the default return value to what the parent returns.
 	if(!. || !I) //We don't want to set anything to null if the parent returned 0.
 		return
 
+	var/handled = TRUE
 	if(I == head)
 		head = null
-		SEND_SIGNAL(src, COMSIG_CARBON_UNEQUIP_HAT, I, force, newloc, no_move, invdrop, silent)
-		if(!QDELETED(src))
-			update_slots_for_item(I, ITEM_SLOT_HEAD)
 
 	else if(I == back)
 		back = null
-		if(!QDELETED(src))
-			update_slots_for_item(I, ITEM_SLOT_BACK)
 
 	else if(I == wear_mask)
 		wear_mask = null
 		if(!QDELETED(src))
-			update_slots_for_item(I, ITEM_SLOT_MASK)
 			wear_mask_update(I, toggle_off = 1)
 
 	else if(I == wear_neck)
 		wear_neck = null
-		if(!QDELETED(src))
-			update_slots_for_item(I, ITEM_SLOT_NECK)
 
 	else if(I == handcuffed)
 		set_handcuffed(null)
 
 	else if(I == shoes)
 		shoes = null
-		if(!QDELETED(src))
-			update_slots_for_item(I, ITEM_SLOT_FEET)
 
 	else if(I == legcuffed)
 		legcuffed = null
 		if(!QDELETED(src))
 			update_worn_legcuffs()
+
+	else
+		handled = FALSE
 
 	// Not an else-if because we're probably equipped in another slot
 	if((I == internal || I == external) && (QDELETED(src) || QDELETED(I) || I.loc != src))
@@ -189,7 +178,8 @@
 		if(!QDELETED(src))
 			update_mob_action_buttons(UPDATE_BUTTON_STATUS)
 
-	update_equipment_speed_mods()
+	if(handled && !QDELETED(src))
+		update_slots_for_item(I, slot)
 
 //handle stuff to update when a mob equips/unequips a mask.
 /mob/living/proc/wear_mask_update(obj/item/I, toggle_off = 1)
@@ -240,7 +230,7 @@
 			to_chat(src, span_warning("[offered.p_theyre(TRUE)] unable to take anything in [offered.p_their()] current state!"))
 			return
 
-		if(!CanReach(offered))
+		if(!offered.IsReachableBy(src))
 			to_chat(src, span_warning("You have to be beside [offered.p_them()]!"))
 			return
 	else
@@ -315,22 +305,29 @@
 	return covered_flags
 
 ///Returns an item that is covering a bodypart.
-/mob/living/carbon/proc/get_item_covering_bodypart(obj/item/bodypart/BP)
-	return get_item_covering_zone(BP.body_zone)
+/mob/living/carbon/proc/get_item_covering_bodypart(obj/item/bodypart/BP, thickmaterial_only)
+	return get_item_covering_zone(BP.body_zone, thickmaterial_only)
 
 ///Returns an item that is covering a body_zone (BODY_ZONE_CHEST, etc)
-/mob/living/carbon/proc/get_item_covering_zone(zone)
+/mob/living/carbon/proc/get_item_covering_zone(zone, thickmaterial_only)
 	var/list/zones = body_zone2cover_flags(zone)
 	var/cover_field = NONE
 	for(var/_zone in zones)
 		cover_field |= _zone
 
 	for(var/obj/item/inv_item in get_all_worn_items())
+		if(thickmaterial_only)
+			if(!isclothing(inv_item))
+				continue
+
+			var/obj/item/clothing/clothing = inv_item
+			if(!(clothing.clothing_flags & THICKMATERIAL))
+				continue
+
 		if(cover_field & inv_item.body_parts_covered)
 			return inv_item
 
-/// Update any visuals relating to an item when it's equipped, unequipped, or it's flags_inv changes.
-/mob/living/carbon/proc/update_slots_for_item(obj/item/I, equipped_slot = null, force_obscurity_update)
+/mob/living/carbon/update_slots_for_item(obj/item/I, equipped_slot = null, force_obscurity_update)
 	if(isnull(equipped_slot))
 		equipped_slot = get_slot_by_item(I)
 		if(is_holding(I))
@@ -342,6 +339,7 @@
 	var/old_obscured_slots = obscured_slots
 	var/slots_to_update = equipped_slot
 	var/need_bodypart_update = FALSE
+	var/update_appearance_flags = NONE
 
 	if(I.flags_inv || force_obscurity_update)
 		update_obscurity()
@@ -354,7 +352,7 @@
 		// Update name if we are changing face visibility
 		var/face_coverage_changed = updated_slots & HIDEFACE
 		if(face_coverage_changed)
-			update_appearance(UPDATE_NAME)
+			update_appearance_flags |= UPDATE_NAME
 
 		// Update body incase any bodyparts or organs changed visibility
 		var/bodypart_coverage_changed = updated_slots & BODYPART_HIDE_FLAGS
@@ -377,8 +375,28 @@
 				var/mob/living/carbon/human/H = src
 				H.sec_hud_set_security_status()
 
+		if(ITEM_SLOT_ID)
+			update_appearance_flags |= UPDATE_NAME
+			if(ishuman(src))
+				var/mob/living/carbon/human/H = src
+				H.sec_hud_set_ID()
+
+		if(ITEM_SLOT_EYES)
+			var/obj/item/clothing/glasses/G = I
+			if(G.tint || initial(G.tint))
+				update_tint()
+
+			if(G.vision_flags || G.darkness_view || G.invis_override || G.invis_view || !isnull(G.lighting_alpha))
+				update_sight()
+
+		if(ITEM_SLOT_BELT)
+			update_appearance_flags |= UPDATE_NAME // I have literally no idea why this is needed. Ninja belt maybe?
+
 	// Do the updates
 	if(need_bodypart_update)
 		update_body_parts()
+
+	if(update_appearance_flags)
+		update_appearance(update_appearance_flags)
 
 	update_clothing(slots_to_update)

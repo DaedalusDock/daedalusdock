@@ -42,7 +42,7 @@
 	var/drytime = 0
 	var/is_dry = FALSE
 
-/obj/effect/decal/cleanable/blood/Initialize(mapload, list/datum/disease/diseases, list/blood_dna = list("Unknown DNA" = random_blood_type()))
+/obj/effect/decal/cleanable/blood/Initialize(mapload, list/datum/pathogen/diseases, list/blood_dna = list("Unknown DNA" = random_blood_type()))
 	. = ..()
 	if((. == INITIALIZE_HINT_QDEL) || !should_dry)
 		return
@@ -136,7 +136,7 @@
 	reagent_amount = 0
 	icon_state = "floor1-old"
 
-/obj/effect/decal/cleanable/blood/old/Initialize(mapload, list/datum/disease/diseases)
+/obj/effect/decal/cleanable/blood/old/Initialize(mapload, list/datum/pathogen/diseases)
 	add_blood_DNA(list("Non-human DNA" = random_blood_type())) // Needs to happen before ..()
 	. = ..()
 	AddComponent(/datum/component/spook_factor, SPOOK_AMT_BLOOD_SPLATTER)
@@ -210,7 +210,7 @@
 	///Information about the diseases our streaking spawns
 	var/list/streak_diseases
 
-/obj/effect/decal/cleanable/blood/gibs/Initialize(mapload, list/datum/disease/diseases)
+/obj/effect/decal/cleanable/blood/gibs/Initialize(mapload, list/datum/pathogen/diseases)
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_PIPE_EJECTING, PROC_REF(on_pipe_eject))
 	AddComponent(/datum/component/spook_factor, SPOOK_AMT_BLOOD_STREAK)
@@ -302,7 +302,7 @@
 
 	reagent_amount = 0
 
-/obj/effect/decal/cleanable/blood/gibs/old/Initialize(mapload, list/datum/disease/diseases)
+/obj/effect/decal/cleanable/blood/gibs/old/Initialize(mapload, list/datum/pathogen/diseases)
 	. = ..()
 	setDir(pick(1,2,4,8))
 	add_blood_DNA(list("Non-human DNA" = random_blood_type()))
@@ -381,7 +381,7 @@
 
 /obj/effect/decal/cleanable/blood/footprints/Initialize(
 	mapload,
-	list/datum/disease/diseases,
+	list/datum/pathogen/diseases,
 	list/blood_dna = list("Unknown DNA" = random_blood_type()),
 	blood_print
 	)
@@ -531,10 +531,7 @@
 			if(!splashed_human.is_eyes_covered())
 				splashed_human.blur_eyes(3)
 				to_chat(splashed_human, span_alert("You're blinded by a spray of blood!"))
-			if(splashed_human.wear_suit)
-				splashed_human.wear_suit.add_blood_DNA(blood_dna_info)
-			if(splashed_human.w_uniform)
-				splashed_human.w_uniform.add_blood_DNA(blood_dna_info)
+			splashed_human.add_blood_DNA_to_items(blood_dna_info)
 			splatter_strength--
 
 	if(splatter_strength <= 0) // we used all the puff so we delete it.
@@ -581,7 +578,7 @@
 	if(!the_window.fulltile)
 		return
 	var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new(the_window, null, blood_dna_info)
-	the_window.vis_contents += final_splatter
+	the_window.add_viscontents(final_splatter)
 	the_window.bloodied = TRUE
 	qdel(src)
 

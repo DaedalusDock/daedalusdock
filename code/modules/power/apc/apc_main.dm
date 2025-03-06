@@ -242,11 +242,6 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(BLUNT = 20, PUNCTURE = 20, SLASH = 0, 
 		else
 			. += "The cover is closed."
 
-	. += span_notice("Right-click the APC to [ locked ? "unlock" : "lock"] the interface.")
-
-	if(issilicon(user))
-		. += span_notice("Ctrl-Click the APC to switch the breaker [ operating ? "off" : "on"].")
-
 /obj/machinery/power/apc/deconstruct(disassembled = TRUE)
 	if(flags_1 & NODECONSTRUCT_1)
 		return
@@ -386,12 +381,12 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(BLUNT = 20, PUNCTURE = 20, SLASH = 0, 
 		if("main_lights")
 			area.lightswitch = !area.lightswitch
 			area.power_change()
-			for(var/obj/machinery/light_switch/light_switch in area)
+			for(var/obj/machinery/light_switch/light_switch in area.light_switches)
 				light_switch.update_appearance()
 				SEND_SIGNAL(light_switch, COMSIG_LIGHT_SWITCH_SET, area.lightswitch)
 		if("emergency_lighting")
 			emergency_lights = !emergency_lights
-			for(var/obj/machinery/light/L in area)
+			for(var/obj/machinery/light/L in area.lights)
 				if(!initial(L.no_emergency)) //If there was an override set on creation, keep that override
 					L.no_emergency = emergency_lights
 					INVOKE_ASYNC(L, TYPE_PROC_REF(/obj/machinery/light, update), FALSE)

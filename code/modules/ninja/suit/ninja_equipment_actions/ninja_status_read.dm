@@ -32,7 +32,7 @@
 	//Diseases
 	if(length(ninja.diseases))
 		info_list += "Viruses:"
-		for(var/datum/disease/ninja_disease in ninja.diseases)
+		for(var/datum/pathogen/ninja_disease in ninja.diseases)
 			info_list += "[span_info("* [ninja_disease.name], Type: [ninja_disease.spread_text], Stage: [ninja_disease.stage]/[ninja_disease.max_stages], Possible Cure: [ninja_disease.cure_text]")]\n"
 
 	to_chat(ninja, "[info_list.Join()]")

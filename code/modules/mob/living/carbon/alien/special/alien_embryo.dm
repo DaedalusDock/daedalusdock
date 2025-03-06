@@ -1,4 +1,4 @@
-// This is to replace the previous datum/disease/alien_embryo for slightly improved handling and maintainability
+// This is to replace the previous datum/pathogen/alien_embryo for slightly improved handling and maintainability
 // It functions almost identically (see code/datums/diseases/alien_embryo.dm)
 /obj/item/organ/body_egg/alien_embryo
 	name = "alien embryo"
@@ -95,7 +95,7 @@
 
 	var/atom/xeno_loc = get_turf(owner)
 	var/mob/living/carbon/alien/larva/new_xeno = new(xeno_loc)
-	new_xeno.key = ghost.key
+	new_xeno.PossessByPlayer(ghost.key)
 	SEND_SOUND(new_xeno, sound('sound/voice/hiss5.ogg',0,0,0,100)) //To get the player's attention
 	ADD_TRAIT(new_xeno, TRAIT_IMMOBILIZED, type) //so we don't move during the bursting animation
 	ADD_TRAIT(new_xeno, TRAIT_HANDS_BLOCKED, type)

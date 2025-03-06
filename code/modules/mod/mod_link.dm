@@ -20,7 +20,7 @@
 	visuals.add_filter("crop_square", 1, alpha_mask_filter(icon = icon('icons/effects/effects.dmi', "modlink_filter")))
 	visuals.maptext_height = 6
 	visuals.alpha = 0
-	user.vis_contents += visuals
+	user.add_viscontents(visuals)
 	visuals.forceMove(user)
 	animate(visuals, 0.5 SECONDS, alpha = 255)
 	var/datum/callback/setdir_callback = CALLBACK(mod_link.holder, proc_path)
@@ -179,7 +179,7 @@
 	if(slot != ITEM_SLOT_NECK)
 		mod_link?.end_call()
 
-/obj/item/clothing/neck/link_scryer/dropped(mob/living/user)
+/obj/item/clothing/neck/link_scryer/unequipped(mob/living/user)
 	. = ..()
 	mod_link?.end_call()
 
@@ -383,7 +383,7 @@
 	RETURN_TYPE(/datum/mod_link)
 	if(!link_call)
 		return
-	return link_call.caller == src ? link_call.receiver : link_call.caller
+	return link_call.sender == src ? link_call.receiver : link_call.sender
 
 /datum/mod_link/proc/call_link(datum/mod_link/called, mob/user)
 	if(!frequency)
@@ -424,16 +424,16 @@
 /// A MODlink call datum, used to handle the call between two MODlinks.
 /datum/mod_link_call
 	/// The MODlink that is calling.
-	var/datum/mod_link/caller
+	var/datum/mod_link/sender
 	/// The MODlink that is being called.
 	var/datum/mod_link/receiver
 
-/datum/mod_link_call/New(datum/mod_link/caller, datum/mod_link/receiver)
-	caller.link_call = src
+/datum/mod_link_call/New(datum/mod_link/sender, datum/mod_link/receiver)
+	sender.link_call = src
 	receiver.link_call = src
-	src.caller = caller
+	src.sender = sender
 	src.receiver = receiver
-	var/mob/living/caller_mob = caller.get_user_callback.Invoke()
+	var/mob/living/caller_mob = sender.get_user_callback.Invoke()
 	ADD_TRAIT(caller_mob, TRAIT_IN_CALL, REF(src))
 	var/mob/living/receiver_mob = receiver.get_user_callback.Invoke()
 	ADD_TRAIT(receiver_mob, TRAIT_IN_CALL, REF(src))
@@ -441,7 +441,7 @@
 	START_PROCESSING(SSprocessing, src)
 
 /datum/mod_link_call/Destroy()
-	var/mob/living/caller_mob = caller.get_user_callback.Invoke()
+	var/mob/living/caller_mob = sender.get_user_callback.Invoke()
 	if(!QDELETED(caller_mob))
 		REMOVE_TRAIT(caller_mob, TRAIT_IN_CALL, REF(src))
 	var/mob/living/receiver_mob = receiver.get_user_callback.Invoke()
@@ -449,7 +449,7 @@
 		REMOVE_TRAIT(receiver_mob, TRAIT_IN_CALL, REF(src))
 	STOP_PROCESSING(SSprocessing, src)
 	clear_visuals()
-	caller.link_call = null
+	sender.link_call = null
 	receiver.link_call = null
 	return ..()
 
@@ -459,16 +459,16 @@
 	qdel(src)
 
 /datum/mod_link_call/proc/can_continue_call()
-	return caller.frequency == receiver.frequency && caller.can_call_callback.Invoke() && receiver.can_call_callback.Invoke()
+	return sender.frequency == receiver.frequency && sender.can_call_callback.Invoke() && receiver.can_call_callback.Invoke()
 
 /datum/mod_link_call/proc/make_visuals()
-	var/caller_visual = caller.make_visual_callback.Invoke()
+	var/caller_visual = sender.make_visual_callback.Invoke()
 	var/receiver_visual = receiver.make_visual_callback.Invoke()
-	caller.get_visual_callback.Invoke(receiver_visual)
+	sender.get_visual_callback.Invoke(receiver_visual)
 	receiver.get_visual_callback.Invoke(caller_visual)
 
 /datum/mod_link_call/proc/clear_visuals()
-	caller.delete_visual_callback.Invoke()
+	sender.delete_visual_callback.Invoke()
 	receiver.delete_visual_callback.Invoke()
 
 /proc/call_link(mob/user, datum/mod_link/calling_link)
@@ -509,25 +509,25 @@
 	. = ..()
 	if(usr != owner)
 		return
-	var/datum/mod_link/caller = caller_ref.resolve()
+	var/datum/mod_link/sender = caller_ref.resolve()
 	var/datum/mod_link/receiver = receiver_ref.resolve()
-	if(!caller || !receiver)
+	if(!sender || !receiver)
 		return
-	if(caller.link_call || receiver.link_call)
+	if(sender.link_call || receiver.link_call)
 		return
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		end_message = "call denied!"
-		owner.clear_alert("[REF(caller)]_modlink")
+		owner.clear_alert("[REF(sender)]_modlink")
 		return
 	end_message = "call accepted"
-	new /datum/mod_link_call(caller, receiver)
-	owner.clear_alert("[REF(caller)]_modlink")
+	new /datum/mod_link_call(sender, receiver)
+	owner.clear_alert("[REF(sender)]_modlink")
 
 /atom/movable/screen/alert/modlink_call/Destroy()
 	var/mob/living/user = user_ref?.resolve()
-	var/datum/mod_link/caller = caller_ref?.resolve()
-	if(!user || !caller)
+	var/datum/mod_link/sender = caller_ref?.resolve()
+	if(!user || !sender)
 		return ..()
-	caller.holder.balloon_alert(user, end_message)
+	sender.holder.balloon_alert(user, end_message)
 	return ..()

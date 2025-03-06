@@ -488,7 +488,7 @@
 		qdel(grab)
 
 	var/obj/effect/decal/cleanable/blood/splatter/over_window/splatter = new(src, null, affecting_mob.get_blood_dna_list())
-	vis_contents += splatter
+	add_viscontents(splatter)
 	bloodied = TRUE
 	return TRUE
 

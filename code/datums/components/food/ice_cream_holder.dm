@@ -177,7 +177,7 @@
 
 	var/datum/venue/venue_to_pay = sold_to.ai_controller?.blackboard[BB_CUSTOMER_ATTENDING_VENUE]
 
-	SSeconomy.spawn_cash_for_amount(venue_price, get_turf(source))
+	SSeconomy.spawn_ones_for_amount(venue_price, get_turf(source))
 	venue_to_pay.total_income += venue_price
 	playsound(get_turf(source), 'sound/effects/cashregister.ogg', 60, TRUE)
 

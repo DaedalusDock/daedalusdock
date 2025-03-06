@@ -2827,7 +2827,6 @@
 /obj/structure/closet/wardrobe/orange,
 /obj/effect/spawner/random/maintenance/two,
 /obj/item/shovel/spade,
-/obj/item/cultivator,
 /turf/open/floor/iron/airless,
 /area/ruin/space/derelict/hallway/primary/port)
 "zN" = (

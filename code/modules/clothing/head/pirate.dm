@@ -16,7 +16,7 @@
 		user.grant_language(/datum/language/piratespeak/, TRUE, TRUE, LANGUAGE_HAT)
 		to_chat(user, span_boldnotice("You suddenly know how to speak like a pirate!"))
 
-/obj/item/clothing/head/pirate/dropped(mob/user)
+/obj/item/clothing/head/pirate/unequipped(mob/user)
 	. = ..()
 	if(!ishuman(user))
 		return

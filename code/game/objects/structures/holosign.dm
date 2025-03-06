@@ -14,7 +14,10 @@
 	. = ..()
 	if(use_vis_overlay)
 		alpha = 0
-		SSvis_overlays.add_vis_overlay(src, icon, icon_state, ABOVE_MOB_LAYER, GAME_PLANE, dir, add_appearance_flags = RESET_ALPHA) //you see mobs under it, but you hit them like they are above it
+		var/obj/effect/overlay/vis/visual = new(icon, icon_state, ABOVE_MOB_LAYER)
+		visual.appearance_flags |= RESET_ALPHA
+		add_viscontents(visual) //you see mobs under it, but you hit them like they are above it
+
 	if(source_projector)
 		projector = source_projector
 		LAZYADD(projector.signs, src)
@@ -167,7 +170,7 @@
 
 /obj/structure/holosign/barrier/medical/proc/CheckHuman(mob/living/carbon/human/sickboi)
 	var/threat = sickboi.check_virus()
-	if(get_disease_severity_value(threat) > get_disease_severity_value(DISEASE_SEVERITY_MINOR))
+	if(get_disease_severity_value(threat) > get_disease_severity_value(PATHOGEN_SEVERITY_MINOR))
 		return FALSE
 	return TRUE
 
@@ -198,7 +201,7 @@
 	if(!shockcd)
 		if(ismob(user))
 			var/mob/living/M = user
-			M.electrocute_act(15,"Energy Barrier")
+			M.electrocute_act(15)
 			shockcd = TRUE
 			addtimer(CALLBACK(src, PROC_REF(cooldown)), 5)
 
@@ -210,6 +213,6 @@
 		return
 
 	var/mob/living/M = AM
-	M.electrocute_act(15,"Energy Barrier")
+	M.electrocute_act(15)
 	shockcd = TRUE
 	addtimer(CALLBACK(src, PROC_REF(cooldown)), 5)

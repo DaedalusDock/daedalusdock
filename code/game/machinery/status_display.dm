@@ -127,7 +127,7 @@
 		qdel(overlay)
 
 	var/obj/effect/overlay/status_display_text/new_status_display_text = new(src, line_y, message)
-	vis_contents += new_status_display_text
+	add_viscontents(new_status_display_text)
 	return new_status_display_text
 
 /obj/machinery/status_display/update_appearance(updates=ALL)
@@ -170,7 +170,7 @@
 			if(message1 == "" && message2 == "")
 				return
 
-	. += emissive_appearance(icon, "outline", alpha = src.alpha)
+	. += emissive_appearance(icon, "outline", alpha = 90)
 
 // Timed process - performs nothing in the base class
 /obj/machinery/status_display/process()

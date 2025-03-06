@@ -24,7 +24,7 @@
 	else
 		UnregisterSignal(user, COMSIG_LIVING_UNARMED_ATTACK)
 
-/obj/item/clothing/shoes/gunboots/dropped(mob/user)
+/obj/item/clothing/shoes/gunboots/unequipped(mob/user)
 	if(user)
 		UnregisterSignal(user, COMSIG_LIVING_UNARMED_ATTACK)
 	return ..()

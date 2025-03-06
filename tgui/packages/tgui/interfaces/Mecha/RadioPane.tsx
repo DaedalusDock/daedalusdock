@@ -30,7 +30,7 @@ export const RadioPane = (props) => {
       </LabeledList.Item>
       <LabeledList.Item label="Frequency">
         <NumberInput
-          animate
+          animated
           unit="kHz"
           step={0.2}
           stepPixelSize={6}
@@ -39,7 +39,7 @@ export const RadioPane = (props) => {
           value={frequency / 10}
           format={(value) => toFixed(value, 1)}
           width="80px"
-          onDrag={(e, value) =>
+          onDrag={(value) =>
             act('set_frequency', {
               new_frequency: value,
             })

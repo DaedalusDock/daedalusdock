@@ -38,8 +38,8 @@
 	if(isliving(user))
 		var/mob/living/L = user
 		for(var/thing in L.diseases)
-			var/datum/disease/D = thing
-			if(D.severity == DISEASE_SEVERITY_POSITIVE)
+			var/datum/pathogen/D = thing
+			if(D.severity == PATHOGEN_SEVERITY_POSITIVE)
 				continue
-			D.cure()
+			D.force_cure()
 	return TRUE

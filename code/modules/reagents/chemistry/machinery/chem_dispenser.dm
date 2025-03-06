@@ -71,7 +71,6 @@
 			. += span_notice("It looks like you can <b>pry</b> out one of the cartridges.")
 		else
 			. += "It has space for [maximum_cartridges] cartridges."
-	. += span_notice("Use <b>RMB</b> to eject a stored beaker.")
 
 /obj/machinery/chem_dispenser/on_set_is_operational(old_value)
 	if(old_value) //Turned off

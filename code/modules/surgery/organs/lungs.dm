@@ -141,7 +141,7 @@
 		if(O2_pp > safe_oxygen_max)
 			if(!forced)
 				var/ratio = (O2_moles/safe_oxygen_max) * 10
-				breather.apply_damage_type(clamp(ratio, oxy_breath_dam_min, oxy_breath_dam_max), oxy_damage_type)
+				breather.apply_damage(clamp(ratio, oxy_breath_dam_min, oxy_breath_dam_max), oxy_damage_type, spread_damage = TRUE)
 			breather.throw_alert(ALERT_TOO_MUCH_OXYGEN, /atom/movable/screen/alert/too_much_oxy)
 			. = BREATH_DAMAGING
 
@@ -173,7 +173,7 @@
 		if(N2_pp > safe_nitro_max)
 			if(!forced)
 				var/ratio = (N2_moles/safe_nitro_max) * 10
-				breather.apply_damage_type(clamp(ratio, nitro_breath_dam_min, nitro_breath_dam_max), nitro_damage_type)
+				breather.apply_damage(clamp(ratio, nitro_breath_dam_min, nitro_breath_dam_max), nitro_damage_type, spread_damage = TRUE)
 			breather.throw_alert(ALERT_TOO_MUCH_NITRO, /atom/movable/screen/alert/too_much_nitro)
 			. = BREATH_DAMAGING
 		else
@@ -206,9 +206,9 @@
 				breather.co2overloadtime = world.time
 			else if(world.time - breather.co2overloadtime > 120)
 				breather.Unconscious(60)
-				breather.apply_damage_type(3, co2_damage_type) // Lets hurt em a little, let them know we mean business
+				breather.apply_damage(3, co2_damage_type, spread_damage = TRUE) // Lets hurt em a little, let them know we mean business
 				if(world.time - breather.co2overloadtime > 300) // They've been in here 30s now, lets start to kill them for their own good!
-					breather.apply_damage_type(8, co2_damage_type)
+					breather.apply_damage(8, co2_damage_type, spread_damage = TRUE)
 				breather.throw_alert(ALERT_TOO_MUCH_CO2, /atom/movable/screen/alert/too_much_co2)
 			. = BREATH_DAMAGING
 
@@ -242,7 +242,7 @@
 		if(Plasma_pp > safe_plasma_max)
 			if(!forced)
 				var/ratio = (plasma_moles/safe_plasma_max) * 10
-				breather.apply_damage_type(clamp(ratio, plas_breath_dam_min, plas_breath_dam_max), plas_damage_type)
+				breather.apply_damage(clamp(ratio, plas_breath_dam_min, plas_breath_dam_max), plas_damage_type, spread_damage = TRUE)
 			breather.throw_alert(ALERT_TOO_MUCH_PLASMA, /atom/movable/screen/alert/too_much_plas)
 			. = BREATH_DAMAGING
 		else
@@ -269,7 +269,7 @@
 
 
 	//-- TRACES --//
-	AIR_UPDATE_VALUES(breath)
+	breath.garbageCollect()
 	if(breath.total_moles) // If there's some other shit in the air lets deal with it here.
 
 	// N2O
@@ -317,11 +317,11 @@
 	if(!HAS_TRAIT(breather, TRAIT_RESISTCOLD)) // COLD DAMAGE
 		var/cold_modifier = breather.dna.species.coldmod
 		if(breath_temperature < cold_level_3_threshold)
-			breather.apply_damage_type(cold_level_3_damage*cold_modifier, cold_damage_type)
+			breather.apply_damage(cold_level_3_damage*cold_modifier, cold_damage_type, spread_damage = TRUE)
 		if(breath_temperature > cold_level_3_threshold && breath_temperature < cold_level_2_threshold)
-			breather.apply_damage_type(cold_level_2_damage*cold_modifier, cold_damage_type)
+			breather.apply_damage(cold_level_2_damage*cold_modifier, cold_damage_type, spread_damage = TRUE)
 		if(breath_temperature > cold_level_2_threshold && breath_temperature < cold_level_1_threshold)
-			breather.apply_damage_type(cold_level_1_damage*cold_modifier, cold_damage_type)
+			breather.apply_damage(cold_level_1_damage*cold_modifier, cold_damage_type, spread_damage = TRUE)
 		if(breath_temperature < cold_level_1_threshold)
 			if(prob(20))
 				to_chat(breather, span_warning("You feel [cold_message] in your [name]!"))
@@ -329,11 +329,11 @@
 	if(!HAS_TRAIT(breather, TRAIT_RESISTHEAT)) // HEAT DAMAGE
 		var/heat_modifier = breather.dna.species.heatmod
 		if(breath_temperature > heat_level_1_threshold && breath_temperature < heat_level_2_threshold)
-			breather.apply_damage_type(heat_level_1_damage*heat_modifier, heat_damage_type)
+			breather.apply_damage(heat_level_1_damage*heat_modifier, heat_damage_type, spread_damage = TRUE)
 		if(breath_temperature > heat_level_2_threshold && breath_temperature < heat_level_3_threshold)
-			breather.apply_damage_type(heat_level_2_damage*heat_modifier, heat_damage_type)
+			breather.apply_damage(heat_level_2_damage*heat_modifier, heat_damage_type, spread_damage = TRUE)
 		if(breath_temperature > heat_level_3_threshold)
-			breather.apply_damage_type(heat_level_3_damage*heat_modifier, heat_damage_type)
+			breather.apply_damage(heat_level_3_damage*heat_modifier, heat_damage_type, spread_damage = TRUE)
 		if(breath_temperature > heat_level_1_threshold)
 			if(prob(20))
 				to_chat(breather, span_warning("You feel [hot_message] in your [name]!"))
@@ -368,15 +368,6 @@
 	. = ..()
 	if(. == high_threshold_passed && owner)
 		owner.visible_message(span_danger("[owner] grabs at [owner.p_their()] throat, struggling for breath!"), span_userdanger("You suddenly feel like you can't breathe."))
-
-/obj/item/organ/lungs/plasmaman
-	name = "plasma filter"
-	desc = "A spongy rib-shaped mass for filtering plasma from the air."
-	icon_state = "lungs-plasma"
-
-	safe_oxygen_min = 0 //We don't breathe this
-	safe_plasma_min = 4 //We breathe THIS!
-	safe_plasma_max = 0
 
 /obj/item/organ/lungs/slime
 	name = "vacuole"

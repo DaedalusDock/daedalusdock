@@ -16,7 +16,7 @@
 		IMPCHEM_HUD = 'icons/mob/huds/hud.dmi',
 		IMPTRACK_HUD = 'icons/mob/huds/hud.dmi',
 		GLAND_HUD = 'icons/mob/huds/hud.dmi',
-		SENTIENT_DISEASE_HUD = 'icons/mob/huds/hud.dmi',
+		SENTIENT_PATHOGEN_HUD = 'icons/mob/huds/hud.dmi',
 	)
 
 	hud_type = /datum/hud/human

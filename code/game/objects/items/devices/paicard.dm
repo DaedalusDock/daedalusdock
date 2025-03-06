@@ -110,7 +110,7 @@
 			/// The newly downloaded pAI personality
 			var/mob/living/silicon/pai/new_pai = new(src)
 			new_pai.set_real_name(candidate.name || pick(GLOB.ninja_names))
-			new_pai.key = candidate.key
+			new_pai.PossessByPlayer(candidate.key)
 			setPersonality(new_pai)
 			SSpai.candidates -= candidate
 		if("fix_speech")

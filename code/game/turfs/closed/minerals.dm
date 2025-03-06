@@ -51,7 +51,7 @@
 
 	// by default, vis_contents is inherited from the turf that was here before
 	if(length(vis_contents))
-		vis_contents.len = 0
+		cut_viscontents()
 
 	assemble_baseturfs()
 

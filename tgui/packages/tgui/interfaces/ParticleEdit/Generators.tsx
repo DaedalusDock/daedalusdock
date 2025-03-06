@@ -66,8 +66,10 @@ export const GeneratorListEntry = (props: GeneratorProps) => {
           <NumberInput
             animated
             value={A}
+            step={1}
             minValue={0}
-            onDrag={(e, value) =>
+            maxValue={Infinity}
+            onDrag={(value) =>
               act('edit', {
                 var: var_name,
                 var_mod: P_DATA_GENERATOR,
@@ -80,7 +82,10 @@ export const GeneratorListEntry = (props: GeneratorProps) => {
             <NumberInput
               animated
               value={A[0]}
-              onDrag={(e, value) =>
+              step={1}
+              minValue={-Infinity}
+              maxValue={Infinity}
+              onDrag={(value) =>
                 act('edit', {
                   var: var_name,
                   var_mod: P_DATA_GENERATOR,
@@ -96,7 +101,10 @@ export const GeneratorListEntry = (props: GeneratorProps) => {
             <NumberInput
               animated
               value={A[1]}
-              onDrag={(e, value) =>
+              step={1}
+              minValue={-Infinity}
+              maxValue={Infinity}
+              onDrag={(value) =>
                 act('edit', {
                   var: var_name,
                   var_mod: P_DATA_GENERATOR,
@@ -107,7 +115,10 @@ export const GeneratorListEntry = (props: GeneratorProps) => {
             <NumberInput
               animated
               value={A[2]}
-              onDrag={(e, value) =>
+              step={1}
+              minValue={-Infinity}
+              maxValue={Infinity}
+              onDrag={(value) =>
                 act('edit', {
                   var: var_name,
                   var_mod: P_DATA_GENERATOR,
@@ -124,7 +135,10 @@ export const GeneratorListEntry = (props: GeneratorProps) => {
           <NumberInput
             animated
             value={B}
-            onDrag={(e, value) =>
+            step={1}
+            minValue={-Infinity}
+            maxValue={Infinity}
+            onDrag={(value) =>
               act('edit', {
                 var: var_name,
                 var_mod: P_DATA_GENERATOR,
@@ -137,7 +151,10 @@ export const GeneratorListEntry = (props: GeneratorProps) => {
             <NumberInput
               animated
               value={B[0]}
-              onDrag={(e, value) =>
+              step={1}
+              minValue={-Infinity}
+              maxValue={Infinity}
+              onDrag={(value) =>
                 act('edit', {
                   var: var_name,
                   var_mod: P_DATA_GENERATOR,
@@ -153,7 +170,10 @@ export const GeneratorListEntry = (props: GeneratorProps) => {
             <NumberInput
               animated
               value={B[1]}
-              onDrag={(e, value) =>
+              step={1}
+              minValue={-Infinity}
+              maxValue={Infinity}
+              onDrag={(value) =>
                 act('edit', {
                   var: var_name,
                   var_mod: P_DATA_GENERATOR,
@@ -169,7 +189,10 @@ export const GeneratorListEntry = (props: GeneratorProps) => {
             <NumberInput
               animated
               value={B[2]}
-              onDrag={(e, value) =>
+              step={1}
+              minValue={-Infinity}
+              maxValue={Infinity}
+              onDrag={(value) =>
                 act('edit', {
                   var: var_name,
                   var_mod: P_DATA_GENERATOR,

@@ -16,7 +16,7 @@
 	name = "combat clown shoes"
 	desc = "advanced clown shoes that protect the wearer and render them nearly immune to slipping on their own peels. They also squeak at 100% capacity."
 	clothing_traits = list(TRAIT_NO_SLIP_WATER)
-	slowdown = SHOES_SLOWDOWN
+	slowdown = /obj/item/clothing/shoes::slowdown
 	armor = list(BLUNT = 25, PUNCTURE = 25, SLASH = 0, LASER = 25, ENERGY = 25, BOMB = 50, BIO = 10, FIRE = 70, ACID = 50)
 	strip_delay = 70
 	resistance_flags = NONE
@@ -34,7 +34,7 @@
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/combat
 	name = "mk-honk combat shoes"
 	desc = "The culmination of years of clown combat research, these shoes leave a trail of chaos in their wake. They will slowly recharge themselves over time, or can be manually charged with bananium."
-	slowdown = SHOES_SLOWDOWN
+	slowdown = /obj/item/clothing/shoes::slowdown
 	armor = list(BLUNT = 25, PUNCTURE = 25, SLASH = 0, LASER = 25, ENERGY = 25, BOMB = 50, BIO = 10, FIRE = 70, ACID = 50)
 	strip_delay = 70
 	resistance_flags = NONE
@@ -170,46 +170,6 @@
 			slipper.Slip(src, hit_atom)
 	else
 		return ..()
-
-
-//BOMBANANA
-
-/obj/item/seeds/banana/bombanana
-	name = "pack of bombanana seeds"
-	desc = "They're seeds that grow into bombanana trees. When grown, give to the clown."
-	plantname = "Bombanana Tree"
-	product = /obj/item/food/grown/banana/bombanana
-
-/obj/item/food/grown/banana/bombanana
-	trash_type = /obj/item/grown/bananapeel/bombanana
-	seed = /obj/item/seeds/banana/bombanana
-	tastes = list("explosives" = 10)
-	food_reagents = list(/datum/reagent/consumable/nutriment/vitamin = 1)
-
-/obj/item/grown/bananapeel/bombanana
-	desc = "A peel from a banana. Why is it beeping?"
-	seed = /obj/item/seeds/banana/bombanana
-	var/det_time = 50
-	var/obj/item/grenade/syndieminibomb/bomb
-
-/obj/item/grown/bananapeel/bombanana/Initialize(mapload)
-	. = ..()
-	bomb = new /obj/item/grenade/syndieminibomb(src)
-	bomb.det_time = det_time
-	if(iscarbon(loc))
-		to_chat(loc, span_danger("[src] begins to beep."))
-	bomb.arm_grenade(loc, null, FALSE)
-	AddComponent(/datum/component/slippery, det_time)
-
-/obj/item/grown/bananapeel/bombanana/Destroy()
-	. = ..()
-	QDEL_NULL(bomb)
-
-/obj/item/grown/bananapeel/bombanana/suicide_act(mob/user)
-	user.visible_message(span_suicide("[user] is deliberately slipping on the [src.name]! It looks like \he's trying to commit suicide."))
-	playsound(loc, 'sound/misc/slip.ogg', 50, TRUE, -1)
-	bomb.arm_grenade(user, 0, FALSE)
-	return (BRUTELOSS)
 
 //TEARSTACHE GRENADE
 

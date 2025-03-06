@@ -34,7 +34,7 @@ export const AtmosFilter = (props) => {
                 unit="L/s"
                 minValue={0}
                 maxValue={data.max_rate}
-                onDrag={(e, value) =>
+                onDrag={(value) =>
                   act('rate', {
                     rate: value,
                   })

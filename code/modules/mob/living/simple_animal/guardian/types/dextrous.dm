@@ -19,7 +19,7 @@
 
 /mob/living/simple_animal/hostile/guardian/dextrous/examine(mob/user)
 	if(dextrous)
-		. = list("<span class='info'>This is [icon2html(src)] \a <b>[src]</b>!\n[desc]<hr>") //PARIAH EDIT CHANGE
+		. = list("<span class='info'>This is [icon2html(src, user)] \a <b>[src]</b>!\n[desc]<hr>") //PARIAH EDIT CHANGE
 		for(var/obj/item/I in held_items)
 			if(!(I.item_flags & ABSTRACT))
 				. += "It has [I.get_examine_string(user)] in its [get_held_index_name(get_held_index_of_item(I))]."
@@ -41,7 +41,7 @@
 		..() //lose items, then return
 
 //SLOT HANDLING BULLSHIT FOR INTERNAL STORAGE
-/mob/living/simple_animal/hostile/guardian/dextrous/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+/mob/living/simple_animal/hostile/guardian/dextrous/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE, slot = get_slot_by_item(I))
 	if(..())
 		update_held_items()
 		if(I == internal_storage)

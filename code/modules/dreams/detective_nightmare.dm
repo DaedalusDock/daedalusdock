@@ -1,7 +1,7 @@
 /datum/dream/detective_nightmare
 	abstract_type = /datum/dream/detective_nightmare
 
-	dream_flags = parent_type::dream_flags & ~DREAM_GENERIC
+	dream_class = DREAM_CLASS_DETECTIVE
 
 /datum/dream/detective_nightmare/WrapMessage(mob/living/carbon/dreamer, message)
 	return message
@@ -17,7 +17,7 @@
 	abstract_type = /datum/dream/detective_nightmare/limbic_system
 
 	dream_flags = parent_type::dream_flags | DREAM_ONCE_PER_ROUND | DREAM_CUT_SHORT_IS_COMPLETE
-	weight = 350
+	weight = 35
 
 	dream_cooldown = 25 SECONDS
 
@@ -57,7 +57,7 @@
 
 /datum/dream/detective_nightmare/wake_up_harry
 	dream_flags = parent_type::dream_flags | DREAM_ONCE_PER_ROUND | DREAM_CUT_SHORT_IS_COMPLETE
-	weight = 50
+	weight = 5
 
 /datum/dream/detective_nightmare/wake_up_harry/GenerateDream(mob/living/carbon/dreamer)
 	return list(
@@ -67,7 +67,7 @@
 	)
 
 /datum/dream/detective_nightmare/random
-	weight = 2000
+	weight = 100
 
 /datum/dream/detective_nightmare/random/WrapMessage(mob/living/carbon/dreamer, message)
 	return span_statsbad("<i>... [message] ...</i>")

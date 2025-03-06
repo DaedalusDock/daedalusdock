@@ -39,12 +39,16 @@
 			if(trigger)
 				burn_out()
 		else
-			use_power = ACTIVE_POWER_USE
+			if(use_power != NO_POWER_USE)
+				use_power = ACTIVE_POWER_USE
 			set_light(l_outer_range = OR, l_inner_range = IR, l_power = PO, l_falloff_curve = FC, l_color = CO)
 			if(play_sound)
 				playsound(src.loc, 'modular_pariah/modules/aesthetics/lights/sound/light_on.ogg', 65, 1)
 
 /obj/machinery/light/proc/start_flickering()
+	if(constant_flickering)
+		return
+
 	on = FALSE
 	update(FALSE, TRUE, FALSE)
 
@@ -53,6 +57,9 @@
 	flicker_timer = addtimer(CALLBACK(src, PROC_REF(flicker_on)), rand(5, 10))
 
 /obj/machinery/light/proc/stop_flickering()
+	if(!constant_flickering)
+		return
+
 	constant_flickering = FALSE
 
 	if(flicker_timer)

@@ -11,7 +11,11 @@ DEFINE_INTERACTABLE(/mob/living)
 
 	hud_type = /datum/hud/living
 
-	var/resize = 1 ///Badminnery resize
+	///Tracks the scale of the mob transformation matrix in relation to its identity. Use update_transform(resize) to change it.
+	var/current_size = RESIZE_DEFAULT_SIZE
+	///How the mob transformation matrix is scaled on init.
+	var/initial_size = RESIZE_DEFAULT_SIZE
+
 	var/lastattacker = null
 	var/lastattackerckey = null
 
@@ -25,6 +29,8 @@ DEFINE_INTERACTABLE(/mob/living)
 	var/datum/stats/stats
 	///The holder for stamina handling
 	var/datum/stamina_container/stamina
+	/// Mood datum, can be null.
+	var/datum/mood/mob_mood
 
 	//Damage related vars, NOTE: THESE SHOULD ONLY BE MODIFIED BY PROCS
 	VAR_PROTECTED/bruteloss = 0 //!Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
@@ -60,6 +66,8 @@ DEFINE_INTERACTABLE(/mob/living)
 	VAR_PROTECTED/lying_angle = 0
 	/// Value of lying lying_angle before last change. TODO: Remove the need for this.
 	var/lying_prev = 0
+	/// Does the mob rotate when lying
+	var/rotate_on_lying = FALSE
 
 	var/hallucination = 0 ///Directly affects how long a mob will hallucinate for
 
@@ -178,10 +186,12 @@ DEFINE_INTERACTABLE(/mob/living)
 	/// A lazylist of grab objects we have
 	var/list/active_grabs
 
-	///The y amount a mob's sprite should be offset due to the current position they're in (e.g. lying down moves your sprite down)
-	var/body_position_pixel_x_offset = 0
 	///The x amount a mob's sprite should be offset due to the current position they're in
+	var/body_position_pixel_x_offset = 0
+	///The y amount a mob's sprite should be offset due to the current position they're in or size (e.g. lying down moves your sprite down)
 	var/body_position_pixel_y_offset = 0
+	///The height offset of a mob's maptext due to their current size.
+	var/body_maptext_height_offset = 0
 
 	///what multiplicative slowdown we get from turfs currently.
 	var/current_turf_slowdown = 0

@@ -92,14 +92,23 @@
 //slowdown when in softcrit. Note that crawling slowdown will also apply at the same time!
 #define SOFTCRIT_ADD_SLOWDOWN 3
 //slowdown when crawling
-#define CRAWLING_ADD_SLOWDOWN 6
+#define CRAWLING_ADD_SLOWDOWN 8
 
-//Attack types for checking shields/hit reactions
+//Attack types for checking block reactions
+/// Attack was made with a melee weapon
 #define MELEE_ATTACK 1
+/// Attack is a punch or kick.
+/// Mob attacks are not classified as unarmed (currently).
 #define UNARMED_ATTACK 2
+/// A projectile is hitting us.
 #define PROJECTILE_ATTACK 3
+/// A thrown item is hitting us.
 #define THROWN_PROJECTILE_ATTACK 4
+/// We're being tackled or leaped at.
 #define LEAP_ATTACK 5
+
+/// Used in check block to get what mob is attacking the blocker.
+#define GET_ASSAILANT(weapon) (get(weapon, /mob/living))
 
 //attack visual effects
 #define ATTACK_EFFECT_PUNCH "punch"
@@ -282,3 +291,6 @@ GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 #define ATTACK_CHAIN_CONTINUE 0
 /// Attack was a success, stop any further chain procs
 #define ATTACK_CHAIN_SUCCESS 1
+
+/// Armor can't block more than this as a percentage
+#define ARMOR_MAX_BLOCK 90

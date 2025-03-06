@@ -13,10 +13,13 @@
 	var/silent_toxin = FALSE //won't produce a pain message when processed by liver/life() if there isn't another non-silent toxin present.
 
 // Are you a bad enough dude to poison your own plants?
-/datum/reagent/toxin/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
+/datum/reagent/toxin/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.tox_damage += 1
+
+/datum/reagent/toxin/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref)
 	. = ..()
-	if(chems.has_reagent(type, 1))
-		mytray.adjust_toxic(round(chems.get_reagent_amount(type) * 2))
+	damage_ref += rand(15, 30)
 
 /datum/reagent/toxin/affect_blood(mob/living/carbon/C, removed)
 	if(toxpwr)
@@ -54,10 +57,18 @@
 		C.updateappearance()
 		C.domutcheck()
 
-/datum/reagent/toxin/mutagen/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
-	mytray.mutation_roll(user)
-	if(chems.has_reagent(type, 1))
-		mytray.adjust_toxic(3) //It is still toxic, mind you, but not to the same degree.
+/datum/reagent/toxin/mutagen/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.mutation_power += 1
+		plant_tick.tox_damage += 1
+
+/datum/reagent/toxin/mutagen/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref)
+	. = ..()
+	plant_dna.try_mutate_stats(2)
+	plant_dna.try_activate_latent_gene(3)
+	if(prob(5))
+		plant_dna.add_active_gene(new /datum/plant_gene/unstable)
+	return plant_dna.try_mutate_type(10)
 
 /datum/reagent/toxin/plasma
 	name = "Plasma"
@@ -86,10 +97,6 @@
 	if(holder.has_reagent(/datum/reagent/medicine/epinephrine))
 		holder.remove_reagent(/datum/reagent/medicine/epinephrine, 2 * removed)
 	C.adjustPlasma(20 * removed)
-	if(isplasmaman(C))
-		if(prob(10))
-			for(var/obj/item/bodypart/BP as anything in C.bodyparts)
-				BP.heal_bones()
 
 // Plasma will attempt to ignite at the ignition temperature.
 /datum/reagent/toxin/plasma/proc/on_temp_change(datum/reagents/_holder, old_temp)
@@ -297,12 +304,9 @@
 
 
 	// Plant-B-Gone is just as bad
-/datum/reagent/toxin/plantbgone/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
-	. = ..()
-	if(chems.has_reagent(type, 1))
-		mytray.adjust_plant_health(-round(chems.get_reagent_amount(type) * 10))
-		mytray.adjust_toxic(round(chems.get_reagent_amount(type) * 6))
-		mytray.adjust_weedlevel(-rand(4,8))
+/datum/reagent/toxin/plantbgone/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.tox_damage += 10
 
 /datum/reagent/toxin/plantbgone/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()
@@ -333,12 +337,13 @@
 
 
 	//Weed Spray
-/datum/reagent/toxin/plantbgone/weedkiller/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
-	if(!mytray)
-		return
-	if(chems.has_reagent(type, 1))
-		mytray.adjust_toxic(round(chems.get_reagent_amount(type) * 0.5))
-		mytray.adjust_weedlevel(-rand(1,2))
+/datum/reagent/toxin/plantbgone/weedkiller/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.tox_damage += 0.2
+
+/datum/reagent/toxin/plantbgone/weedkiller/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref)
+	. = ..()
+	damage_ref += rand(50, 60)
 
 /datum/reagent/toxin/pestkiller
 	name = "Pest Killer"
@@ -348,12 +353,9 @@
 
 
 //Pest Spray
-/datum/reagent/toxin/pestkiller/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
-	if(!mytray)
-		return
-	if(chems.has_reagent(type, 1))
-		mytray.adjust_toxic(round(chems.get_reagent_amount(type) * 1))
-		mytray.adjust_pestlevel(-rand(1,2))
+/datum/reagent/toxin/pestkiller/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.tox_damage += 0.2
 
 /datum/reagent/toxin/pestkiller/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
@@ -379,12 +381,10 @@
 
 
 //Pest Spray
-/datum/reagent/toxin/pestkiller/organic/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
-	if(!mytray)
-		return
-	if(chems.has_reagent(type, 1))
-		mytray.adjust_toxic(round(chems.get_reagent_amount(type) * 0.1))
-		mytray.adjust_pestlevel(-rand(1,2))
+/datum/reagent/toxin/pestkiller/organic/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.tox_damage += 0.1
+
 
 /datum/reagent/toxin/spore
 	name = "Spore Toxin"
@@ -572,9 +572,8 @@
 /datum/reagent/toxin/venom/affect_blood(mob/living/carbon/C, removed)
 	ADD_TRAIT(C, TRAIT_VENOMSIZE, CHEM_TRAIT_SOURCE(CHEM_BLOOD))
 	var/newsize = 1.1 * RESIZE_DEFAULT_SIZE
-	C.resize = newsize/current_size
+	C.update_transform(newsize/current_size)
 	current_size = newsize
-	C.update_transform()
 
 	toxpwr = 0.1 * volume
 	C.adjustBruteLoss((0.3 * volume) * removed, 0)
@@ -588,9 +587,8 @@
 /datum/reagent/toxin/venom/on_mob_end_metabolize(mob/living/carbon/C, class)
 	REMOVE_TRAIT(C, TRAIT_VENOMSIZE, CHEM_TRAIT_SOURCE(class))
 	if(!HAS_TRAIT(C, TRAIT_VENOMSIZE))
-		C.resize = RESIZE_DEFAULT_SIZE/current_size
+		C.update_transform(RESIZE_DEFAULT_SIZE/current_size)
 		current_size = RESIZE_DEFAULT_SIZE
-		C.update_transform()
 
 /datum/reagent/toxin/fentanyl
 	name = "Fentanyl"
@@ -685,38 +683,6 @@
 	if(prob(3))
 		C.bloodstream.add_reagent(/datum/reagent/toxin/histamine,rand(1,3))
 		return
-
-/datum/reagent/toxin/initropidril
-	name = "Initropidril"
-	description = "A powerful poison with insidious effects. It can cause stuns, lethal breathing failure, and cardiac arrest."
-	silent_toxin = TRUE
-	reagent_state = LIQUID
-	color = "#7F10C0"
-	metabolization_rate = 0.5 * REAGENTS_METABOLISM
-	toxpwr = 2.5
-	chemical_flags = REAGENT_NO_RANDOM_RECIPE
-
-/datum/reagent/toxin/initropidril/affect_blood(mob/living/carbon/C, removed)
-	if(prob(25))
-		var/picked_option = rand(1,3)
-		switch(picked_option)
-			if(1)
-				C.Paralyze(60)
-				. = TRUE
-			if(2)
-				C.losebreath += 10
-				C.adjustOxyLoss(rand(5,25), 0)
-				. = TRUE
-			if(3)
-				if(C.set_heartattack(TRUE))
-					log_health(C, "Heart stopped due to initropidil.")
-					if(C.stat < UNCONSCIOUS)
-						C.visible_message(span_userdanger("[C] clutches at [C.p_their()] chest!"))
-				else
-					C.losebreath += 10
-					C.adjustOxyLoss(rand(5,25), 0)
-					. = TRUE
-	return ..() || .
 
 /datum/reagent/toxin/pancuronium
 	name = "Pancuronium"
@@ -909,12 +875,9 @@
 
 
 // SERIOUSLY
-/datum/reagent/toxin/acid/fluacid/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
-	. = ..()
-	if(chems.has_reagent(type, 1))
-		mytray.adjust_plant_health(-round(chems.get_reagent_amount(type) * 2))
-		mytray.adjust_toxic(round(chems.get_reagent_amount(type) * 3))
-		mytray.adjust_weedlevel(-rand(1,4))
+/datum/reagent/toxin/acid/fluacid/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.fire_damage += 10
 
 /datum/reagent/toxin/acid/fluacid/affect_blood(mob/living/carbon/C, removed)
 	. = ..()

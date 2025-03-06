@@ -58,6 +58,9 @@
 
 /// For admins. Logs when mobs players with this thing.
 /atom/proc/log_touch(mob/M)
+	if (QDELING(src))
+		return
+
 	if(isnull(forensics))
 		create_forensics()
 
@@ -65,6 +68,9 @@
 
 /// Add a list of fingerprints
 /atom/proc/add_fingerprint_list(list/fingerprints)
+	if (QDELING(src))
+		return
+
 	if(isnull(forensics))
 		create_forensics()
 
@@ -72,23 +78,35 @@
 
 /// Add a list of fibers
 /atom/proc/add_fiber_list(list/fibertext)
+	if (QDELING(src))
+		return
+
 	if(isnull(forensics))
 		create_forensics()
 	forensics.add_fiber_list(fibertext)
 
 /// Add a list of residues
 /atom/proc/add_gunshot_residue(residue)
+	if (QDELING(src))
+		return
+
 	if(isnull(forensics))
 		create_forensics()
 	forensics.add_gunshot_residue(residue)
 
 /atom/proc/log_touch_list(list/hiddenprints)
+	if (QDELING(src))
+		return
+
 	if(isnull(forensics))
 		create_forensics()
 
 	forensics.log_touch_list(hiddenprints)
 
 /atom/proc/add_trace_DNA(list/dna)
+	if (QDELING(src))
+		return
+
 	if(isnull(forensics))
 		create_forensics()
 
@@ -107,11 +125,11 @@
 
 	return forensics.add_blood_DNA(dna)
 
-/obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
+/obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/pathogen/diseases)
 	. = ..()
 	transfer_blood = rand(2, 4)
 
-/turf/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
+/turf/add_blood_DNA(list/blood_dna, list/datum/pathogen/diseases)
 	var/obj/effect/decal/cleanable/blood/splatter/B = locate() in src
 	if(!B)
 		B = new /obj/effect/decal/cleanable/blood/splatter(src, diseases)
@@ -119,7 +137,7 @@
 	if(!QDELETED(B))
 		return B.add_blood_DNA(blood_dna) //give blood info to the blood decal.
 
-/mob/living/carbon/human/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
+/mob/living/carbon/human/add_blood_DNA(list/blood_dna, list/datum/pathogen/diseases)
 	return add_blood_DNA_to_items(blood_dna)
 
 /// Adds blood DNA to certain slots the mob is wearing
@@ -237,6 +255,7 @@
 			stats.set_cooldown("examine_forensic_analysis", 15 SECONDS)
 			return
 
+	result.do_skill_sound(src)
 	stats.examined_object_weakrefs[WEAKREF(examined)] = TRUE
 	stats.set_cooldown("examine_forensic_analysis", 15 MINUTES)
 

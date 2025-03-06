@@ -47,7 +47,7 @@
 /// The datum used to handle the JPS pathfinding, completely self-contained
 /datum/pathfind/jps
 	/// The thing that we're actually trying to path for
-	var/atom/movable/caller
+	var/atom/movable/invoker
 	/// The turf we're trying to path to (note that this won't track a moving target)
 	var/turf/end
 	/// The open list/stack we pop nodes out from (TODO: make this a normal list and macro-ize the heap operations to reduce proc overhead)
@@ -64,9 +64,9 @@
 	/// Defines how we handle diagonal moves. See __DEFINES/path.dm
 	var/diagonal_handling = DIAGONAL_REMOVE_CLUNKY
 
-/datum/pathfind/jps/New(atom/movable/caller, atom/goal, access, max_distance, mintargetdist, simulated_only, avoid, skip_first, diagonal_handling, datum/callback/on_finish)
-	src.caller = caller
-	src.pass_info = new(caller, access)
+/datum/pathfind/jps/New(atom/movable/invoker, atom/goal, access, max_distance, mintargetdist, simulated_only, avoid, skip_first, diagonal_handling, datum/callback/on_finish)
+	src.invoker = invoker
+	src.pass_info = new(invoker, access)
 	end = get_turf(goal)
 	open = new /datum/heap(GLOBAL_PROC_REF(HeapPathWeightCompare))
 	found_turfs = new()
@@ -80,7 +80,7 @@
 
 /datum/pathfind/jps/Destroy(force, ...)
 	. = ..()
-	caller = null
+	invoker = null
 	end = null
 	open = null
 
@@ -90,7 +90,7 @@
  *  returns FALSE if it fails to setup properly, TRUE otherwise
  */
 /datum/pathfind/jps/start()
-	start ||= get_turf(caller)
+	start ||= get_turf(invoker)
 	. = ..()
 	if(!.)
 		return .
@@ -112,12 +112,12 @@
  * search_step() is the workhorse of pathfinding. It'll do the searching logic, and will slowly build up a path
  * returns TRUE if everything is stable, FALSE if the pathfinding logic has failed, and we need to abort
  */
-/datum/pathfind/jps/search_step()
+/datum/pathfind/jps/search_step(tick_check = TRUE)
 	. = ..()
 	if(!.)
 		return .
 
-	if(QDELETED(caller))
+	if(QDELETED(invoker))
 		return FALSE
 
 	while(!open.is_empty() && !path)
@@ -133,7 +133,7 @@
 			diag_scan_spec(current_turf, scan_direction, current_processed_node)
 
 		// Stable, we'll just be back later
-		if(TICK_CHECK)
+		if(tick_check && TICK_CHECK)
 			return TRUE
 
 	return TRUE
@@ -147,16 +147,17 @@
 	QDEL_NULL(open)
 
 	var/list/path = src.path || list()
-	reverse_range(path)
+	if(length(path))
+		reverse_range(path)
 
-	switch(diagonal_handling)
-		if(DIAGONAL_REMOVE_CLUNKY)
-			path = remove_clunky_diagonals(path, pass_info, simulated_only, avoid)
-		if(DIAGONAL_REMOVE_ALL)
-			path = remove_diagonals(path, pass_info, simulated_only, avoid)
+		switch(diagonal_handling)
+			if(DIAGONAL_REMOVE_CLUNKY)
+				path = remove_clunky_diagonals(path, pass_info, simulated_only, avoid)
+			if(DIAGONAL_REMOVE_ALL)
+				path = remove_diagonals(path, pass_info, simulated_only, avoid)
 
-	if(length(path) > 0 && skip_first)
-		path.Cut(1,2)
+		if(length(path) > 0 && skip_first)
+			path.Cut(1,2)
 
 	hand_back(path)
 	return ..()
@@ -372,14 +373,14 @@
 			return
 
 /**
- * For seeing if we can actually move between 2 given turfs while accounting for our access and the caller's pass_flags
+ * For seeing if we can actually move between 2 given turfs while accounting for our access and the invoker's pass_flags
  *
  * Assumes destinantion turf is non-dense - check and shortcircuit in code invoking this proc to avoid overhead.
  * Makes some other assumptions, such as assuming that unless declared, non dense objects will not block movement.
  * It's fragile, but this is VERY much the most expensive part of JPS, so it'd better be fast
  *
  * Arguments:
- * * caller: The movable, if one exists, being used for mobility checks to see what tiles it can reach
+ * * invoker: The movable, if one exists, being used for mobility checks to see what tiles it can reach
  * * access: A list that decides if we can gain access to doors that would otherwise block a turf
  * * simulated_only: Do we only worry about turfs with simulated atmos, most notably things that aren't space?
  * * no_id: When true, doors with public access will count as impassible
@@ -406,10 +407,9 @@
 
 	/// These are generally cheaper than looping contents so they go first
 	switch(destination_turf.pathing_pass_method)
-		// This is already assumed to be true
-		//if(TURF_PATHING_PASS_DENSITY)
-		//	if(destination_turf.density)
-		//		return TRUE
+		if(TURF_PATHING_PASS_DENSITY)
+			if(destination_turf.density)
+				return TRUE
 		if(TURF_PATHING_PASS_PROC)
 			if(!destination_turf.CanAStarPass(actual_dir, pass_info))
 				return TRUE

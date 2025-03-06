@@ -65,7 +65,7 @@
 	hud_icons = list(GLAND_HUD)
 
 /datum/atom_hud/sentient_disease
-	hud_icons = list(SENTIENT_DISEASE_HUD)
+	hud_icons = list(SENTIENT_PATHOGEN_HUD)
 
 /datum/atom_hud/ai_detector
 	hud_icons = list(AI_DETECT_HUD)
@@ -95,11 +95,11 @@ Medical HUD! Basic mode needs suit sensors on.
 	var/threat
 	var/severity
 	if(HAS_TRAIT(src, TRAIT_DISEASELIKE_SEVERITY_MEDIUM))
-		severity = DISEASE_SEVERITY_MEDIUM
+		severity = PATHOGEN_SEVERITY_MEDIUM
 		threat = get_disease_severity_value(severity)
 
 	for(var/thing in diseases)
-		var/datum/disease/D = thing
+		var/datum/pathogen/D = thing
 		if(!(D.visibility_flags & HIDDEN_SCANNER))
 			if(!threat || get_disease_severity_value(D.severity) > threat) //a buffing virus gets an icon
 				threat = get_disease_severity_value(D.severity)
@@ -170,7 +170,7 @@ Medical HUD! Basic mode needs suit sensors on.
 
 //called when a living mob changes health
 /mob/living/proc/med_hud_set_health()
-	set_hud_image_vars(HEALTH_HUD, "hud[RoundHealth(src)]", get_hud_pixel_y())
+	set_hud_image_vars(HEALTH_HUD, "hud[RoundHealth(src)]")
 
 /mob/living/carbon/med_hud_set_health()
 	var/new_state = ""
@@ -181,7 +181,7 @@ Medical HUD! Basic mode needs suit sensors on.
 	else
 		new_state = "[pulse()]"
 
-	set_hud_image_vars(HEALTH_HUD, new_state, get_hud_pixel_y())
+	set_hud_image_vars(HEALTH_HUD, new_state)
 
 //called when a carbon changes stat, virus or XENO_HOST
 /mob/living/proc/med_hud_set_status()
@@ -191,7 +191,7 @@ Medical HUD! Basic mode needs suit sensors on.
 	else
 		new_state = "hudhealthy"
 
-	set_hud_image_vars(STATUS_HUD, new_state, get_hud_pixel_y())
+	set_hud_image_vars(STATUS_HUD, new_state)
 
 /mob/living/carbon/med_hud_set_status()
 	var/new_state
@@ -203,24 +203,24 @@ Medical HUD! Basic mode needs suit sensors on.
 		new_state = "huddead"
 	else
 		switch(virus_threat)
-			if(DISEASE_SEVERITY_BIOHAZARD)
+			if(PATHOGEN_SEVERITY_BIOHAZARD)
 				new_state = "hudill5"
-			if(DISEASE_SEVERITY_DANGEROUS)
+			if(PATHOGEN_SEVERITY_DANGEROUS)
 				new_state = "hudill4"
-			if(DISEASE_SEVERITY_HARMFUL)
+			if(PATHOGEN_SEVERITY_HARMFUL)
 				new_state = "hudill3"
-			if(DISEASE_SEVERITY_MEDIUM)
+			if(PATHOGEN_SEVERITY_MEDIUM)
 				new_state = "hudill2"
-			if(DISEASE_SEVERITY_MINOR)
+			if(PATHOGEN_SEVERITY_MINOR)
 				new_state = "hudill1"
-			if(DISEASE_SEVERITY_NONTHREAT)
+			if(PATHOGEN_SEVERITY_NONTHREAT)
 				new_state = "hudill0"
-			if(DISEASE_SEVERITY_POSITIVE)
+			if(PATHOGEN_SEVERITY_POSITIVE)
 				new_state = "hudbuff"
 			if(null)
 				new_state = "hudhealthy"
 
-	set_hud_image_vars(STATUS_HUD, new_state, get_hud_pixel_y())
+	set_hud_image_vars(STATUS_HUD, new_state)
 
 /***********************************************
 Security HUDs! Basic mode shows only the job.
@@ -234,7 +234,7 @@ Security HUDs! Basic mode shows only the job.
 		sechud_icon_state = "hudno_id"
 
 	sec_hud_set_security_status()
-	set_hud_image_vars(ID_HUD, sechud_icon_state, get_hud_pixel_y())
+	set_hud_image_vars(ID_HUD, sechud_icon_state)
 
 /mob/living/proc/sec_hud_set_implants()
 	for(var/i in list(IMPTRACK_HUD, IMPLOYAL_HUD, IMPCHEM_HUD))
@@ -257,7 +257,7 @@ Security HUDs! Basic mode shows only the job.
 
 /mob/living/carbon/human/proc/sec_hud_set_security_status()
 	var/perpname = get_face_name(get_id_name(""))
-	if(perpname && SSdatacore)
+	if(perpname && SSdatacore.initialized)
 		var/datum/data/record/security/R = SSdatacore.get_record_by_name(name, DATACORE_RECORDS_SECURITY)
 		if(R)
 			var/new_state
@@ -277,7 +277,7 @@ Security HUDs! Basic mode shows only the job.
 					has_criminal_entry = FALSE
 
 			if(has_criminal_entry)
-				set_hud_image_vars(WANTED_HUD, new_state, get_hud_pixel_y())
+				set_hud_image_vars(WANTED_HUD, new_state)
 				set_hud_image_active(WANTED_HUD)
 				return
 
@@ -306,24 +306,79 @@ Diagnostic HUDs!
 		else
 			return "dead"
 
-/// Returns a pixel_y value to use for hud code
-/atom/proc/get_hud_pixel_y()
+/// Returns the icon's height in pixels.
+/atom/proc/get_icon_height()
 	SHOULD_NOT_OVERRIDE(TRUE)
-	var/static/hud_icon_height_cache = list()
+	var/static/icon_height_cache = list()
 	if(isnull(icon))
 		return 0
 
-	. = hud_icon_height_cache[icon]
+	. = icon_height_cache[icon]
 
 	if(!isnull(.)) // 0 is valid
 		return .
 
 	var/icon/I
 	I = icon(icon, icon_state, dir)
-	. = I.Height() - world.icon_size
+	. = I.Height()
 
 	if(isfile(icon) && length("[icon]")) // Do NOT cache icon instances, only filepaths
-		hud_icon_height_cache[icon] = .
+		icon_height_cache[icon] = .
+
+/// Returns the icon's width in pixels.
+/atom/proc/get_icon_width()
+	SHOULD_NOT_OVERRIDE(TRUE)
+	var/static/icon_width_cache = list()
+	if(isnull(icon))
+		return 0
+
+	. = icon_width_cache[icon]
+
+	if(!isnull(.)) // 0 is valid
+		return .
+
+	var/icon/I
+	I = icon(icon, icon_state, dir)
+	. = I.Width()
+
+	if(isfile(icon) && length("[icon]")) // Do NOT cache icon instances, only filepaths
+		icon_width_cache[icon] = .
+
+/// Gets the atom's visual width in pixels, accounting for transformations.
+/atom/proc/get_visual_width()
+	var/width = get_icon_width()
+	var/height = get_icon_height()
+	var/matrix/transform_cache = transform
+	var/scale_list = list(
+		width * transform_cache.a + height * transform_cache.b + transform_cache.c,
+		width * transform_cache.a + transform_cache.c,
+		height * transform_cache.b + transform_cache.c,
+		transform_cache.c
+	)
+	return max(scale_list) - min(scale_list)
+
+
+/// Gets the atom's visual height in pixels, accounting for transformations.
+/atom/proc/get_visual_height()
+	var/width = get_icon_width()
+	var/height = get_icon_height()
+	var/matrix/transform_cache = transform
+	var/scale_list = list(
+		width * transform_cache.d + height * transform_cache.e + transform_cache.f,
+		width * transform_cache.d + transform_cache.f,
+		height * transform_cache.e + transform_cache.f,
+		transform_cache.f
+	)
+	return max(scale_list) - min(scale_list)
+
+/// Gets the pixel_y value to be used on atom hud images.
+/atom/proc/get_hud_pixel_y()
+	return get_visual_height() - world.icon_size
+
+/mob/living/carbon/human/get_hud_pixel_y()
+	. = ..()
+	if(body_position == LYING_DOWN)
+		. -= PIXEL_Y_OFFSET_LYING
 
 //Sillycone hooks
 /mob/living/silicon/proc/diag_hud_set_health()
@@ -333,7 +388,7 @@ Diagnostic HUDs!
 	else
 		new_state = "huddiag[RoundDiagBar(health/maxHealth)]"
 
-	set_hud_image_vars(DIAG_HUD, new_state, get_hud_pixel_y())
+	set_hud_image_vars(DIAG_HUD, new_state)
 
 /mob/living/silicon/proc/diag_hud_set_status()
 	var/new_state
@@ -345,7 +400,7 @@ Diagnostic HUDs!
 		else
 			new_state = "huddead2"
 
-	set_hud_image_vars(DIAG_STAT_HUD, new_state, get_hud_pixel_y())
+	set_hud_image_vars(DIAG_STAT_HUD, new_state)
 
 //Borgie battery tracking!
 /mob/living/silicon/robot/proc/diag_hud_set_borgcell()
@@ -356,7 +411,7 @@ Diagnostic HUDs!
 	else
 		new_state = "hudnobatt"
 
-	set_hud_image_vars(DIAG_BATT_HUD, new_state, get_hud_pixel_y())
+	set_hud_image_vars(DIAG_BATT_HUD, new_state)
 
 //borg-AI shell tracking
 /mob/living/silicon/robot/proc/diag_hud_set_aishell() //Shows tracking beacons on the mech
@@ -372,7 +427,7 @@ Diagnostic HUDs!
 		new_state = "hudtracking"
 
 	set_hud_image_active(DIAG_TRACK_HUD)
-	set_hud_image_vars(DIAG_TRACK_HUD, new_state, get_hud_pixel_y())
+	set_hud_image_vars(DIAG_TRACK_HUD, new_state)
 
 //AI side tracking of AI shell control
 /mob/living/silicon/ai/proc/diag_hud_set_deployed() //Shows tracking beacons on the mech
@@ -381,14 +436,14 @@ Diagnostic HUDs!
 		set_hud_image_inactive(DIAG_TRACK_HUD)
 
 	else //AI is currently controlling a shell
-		set_hud_image_vars(DIAG_TRACK_HUD, "hudtrackingai", get_hud_pixel_y())
+		set_hud_image_vars(DIAG_TRACK_HUD, "hudtrackingai")
 		set_hud_image_active(DIAG_TRACK_HUD)
 
 /*~~~~~~~~~~~~~~~~~~~~
 	BIG STOMPY MECHS
 ~~~~~~~~~~~~~~~~~~~~~*/
 /obj/vehicle/sealed/mecha/proc/diag_hud_set_mechhealth()
-	set_hud_image_vars(DIAG_MECH_HUD, "huddiag[RoundDiagBar(atom_integrity/max_integrity)]", get_hud_pixel_y())
+	set_hud_image_vars(DIAG_MECH_HUD, "huddiag[RoundDiagBar(atom_integrity/max_integrity)]")
 
 
 /obj/vehicle/sealed/mecha/proc/diag_hud_set_mechcell()
@@ -399,11 +454,11 @@ Diagnostic HUDs!
 	else
 		new_state = "hudnobatt"
 
-	set_hud_image_vars(DIAG_BATT_HUD, new_state, get_hud_pixel_y())
+	set_hud_image_vars(DIAG_BATT_HUD, new_state)
 
 /obj/vehicle/sealed/mecha/proc/diag_hud_set_mechstat()
 	if(internal_damage)
-		set_hud_image_vars(DIAG_STAT_HUD, "hudwarn", get_hud_pixel_y())
+		set_hud_image_vars(DIAG_STAT_HUD, "hudwarn")
 		set_hud_image_active(DIAG_STAT_HUD)
 		return
 
@@ -420,13 +475,13 @@ Diagnostic HUDs!
 		else
 			new_icon_state = "hudtracking"
 
-	set_hud_image_vars(DIAG_TRACK_HUD, new_icon_state, get_hud_pixel_y())
+	set_hud_image_vars(DIAG_TRACK_HUD, new_icon_state)
 
 /*~~~~~~~~~
 	Bots!
 ~~~~~~~~~~*/
 /mob/living/simple_animal/bot/proc/diag_hud_set_bothealth()
-	set_hud_image_vars(DIAG_HUD, "huddiag[RoundDiagBar(health/maxHealth)]", get_hud_pixel_y())
+	set_hud_image_vars(DIAG_HUD, "huddiag[RoundDiagBar(health/maxHealth)]")
 
 /mob/living/simple_animal/bot/proc/diag_hud_set_botstat() //On (With wireless on or off), Off, EMP'ed
 	var/new_state
@@ -437,11 +492,11 @@ Diagnostic HUDs!
 	else //Bot is off
 		new_state = "huddead2"
 
-	set_hud_image_vars(DIAG_STAT_HUD, new_state, get_hud_pixel_y())
+	set_hud_image_vars(DIAG_STAT_HUD, new_state)
 
 /mob/living/simple_animal/bot/proc/diag_hud_set_botmode() //Shows a bot's current operation
 	if(client) //If the bot is player controlled, it will not be following mode logic!
-		set_hud_image_vars(DIAG_BOT_HUD, "hudsentient", get_hud_pixel_y())
+		set_hud_image_vars(DIAG_BOT_HUD, "hudsentient")
 		return
 
 	var/new_state
@@ -454,12 +509,12 @@ Diagnostic HUDs!
 			new_state = "hudpatrol"
 		if(BOT_PREP_ARREST, BOT_ARREST, BOT_HUNT) //STOP RIGHT THERE, CRIMINAL SCUM!
 			new_state = "hudalert"
-		if(BOT_MOVING, BOT_DELIVER, BOT_GO_HOME, BOT_NAV) //Moving to target for normal bots, moving to deliver or go home for MULES.
+		if(BOT_MOVING, BOT_PATHING, BOT_DELIVER, BOT_GO_HOME, BOT_NAV) //Moving to target for normal bots, moving to deliver or go home for MULES.
 			new_state = "hudmove"
 		else
 			new_state = ""
 
-	set_hud_image_vars(DIAG_BOT_HUD, new_state, get_hud_pixel_y())
+	set_hud_image_vars(DIAG_BOT_HUD, new_state)
 
 /mob/living/simple_animal/bot/mulebot/proc/diag_hud_set_mulebotcell()
 	var/new_state
@@ -469,7 +524,7 @@ Diagnostic HUDs!
 	else
 		new_state = "hudnobatt"
 
-	set_hud_image_vars(DIAG_BATT_HUD, new_state, get_hud_pixel_y())
+	set_hud_image_vars(DIAG_BATT_HUD, new_state)
 
 /*~~~~~~~~~~~~
 	Airlocks!

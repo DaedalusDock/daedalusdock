@@ -4,13 +4,14 @@
 	name = "Station Areas"
 	icon = 'icons/area/areas_station.dmi'
 	icon_state = "station"
+	area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | SHOW_NAME
 
 //Maintenance
 
 /area/station/maintenance
 	name = "Generic Maintenance"
 	ambience_index = AMBIENCE_MAINT
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | PERSISTENT_ENGRAVINGS
+	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | SHOW_NAME | PERSISTENT_ENGRAVINGS
 	airlock_wires = /datum/wires/airlock/maint
 	sound_environment = SOUND_AREA_TUNNEL_ENCLOSED
 	forced_ambience = TRUE
@@ -61,11 +62,11 @@
 	icon_state = "maint_brig"
 
 /area/station/maintenance/department/medical
-	name = "Medbay Maintenance"
+	name = "Ward Maintenance"
 	icon_state = "medbay_maint"
 
 /area/station/maintenance/department/medical/central
-	name = "Central Medbay Maintenance"
+	name = "Central Ward Maintenance"
 	icon_state = "medbay_maint_central"
 
 /area/station/maintenance/department/medical/morgue
@@ -95,7 +96,7 @@
 /area/station/maintenance/department/science/xenobiology
 	name = "Xenobiology Maintenance"
 	icon_state = "xenomaint"
-	area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | XENOBIOLOGY_COMPATIBLE | CULT_PERMITTED
+	area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | SHOW_NAME | XENOBIOLOGY_COMPATIBLE
 
 //Maintenance - Generic Tunnels
 
@@ -434,7 +435,7 @@
 	name = "\improper Crew Facilities"
 	icon_state = "commons"
 	sound_environment = SOUND_AREA_STANDARD_STATION
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 	holomap_color = HOLOMAP_AREACOLOR_GENERIC_ROOM
 
 /area/station/commons/dorms
@@ -618,7 +619,7 @@
 /area/station/service/library
 	name = "\improper Library"
 	icon_state = "library"
-	area_flags = CULT_PERMITTED | BLOBS_ALLOWED | UNIQUE_AREA
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 	sound_environment = SOUND_AREA_LARGE_SOFTFLOOR
 
 /area/station/service/library/lounge
@@ -688,7 +689,7 @@
 /area/station/service/janitor
 	name = "\improper Custodial Closet"
 	icon_state = "janitor"
-	area_flags = CULT_PERMITTED | BLOBS_ALLOWED | UNIQUE_AREA
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
 
 /area/station/service/hydroponics
@@ -772,10 +773,10 @@
 /area/station/engineering/atmospherics_engine
 	name = "\improper Atmospherics Engine"
 	icon_state = "atmos_engine"
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 
 /area/station/engineering/lobby
-	name = "\improper Engineering Lobby"
+	name = "\improper Engineering Foyer"
 	icon_state = "engi_lobby"
 
 /area/station/engineering/monitoring
@@ -785,7 +786,7 @@
 /area/station/engineering/supermatter
 	name = "\improper Supermatter Engine"
 	icon_state = "engine_sm"
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
 
 /area/station/engineering/supermatter/room
@@ -823,7 +824,7 @@
 /area/station/engineering/storage/tcomms
 	name = "Telecomms Storage"
 	icon_state = "tcom_storage"
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 
 /area/station/engineering/storage/mech
 	name = "Mechanical Storage"
@@ -935,10 +936,10 @@
 	name = "Starboard Bow Solar Maintenance"
 	icon_state = "SolarcontrolFS"
 
-//MedBay
+// The Ward
 
 /area/station/medical
-	name = "Medical"
+	name = "\improper Ward"
 	icon_state = "medbay"
 	ambience_index = AMBIENCE_MEDICAL
 	airlock_wires = /datum/wires/airlock/medbay
@@ -956,20 +957,20 @@
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
 
 /area/station/medical/medbay/central
-	name = "Medbay Central"
+	name = "\improper Ward (Central)"
 	icon_state = "med_central"
 
 /area/station/medical/medbay/lobby
-	name = "\improper Medbay Lobby"
+	name = "\improper Ward Foyer"
 	icon_state = "med_lobby"
 
-	//Medbay is a large area, these additional areas help level out APC load.
+//The Ward is a large area, these additional areas help level out APC load.
 /area/station/medical/medbay/aft
-	name = "Medbay Aft"
+	name = "\improper Ward (Aft)"
 	icon_state = "med_aft"
 
 /area/station/medical/storage
-	name = "Medbay Storage"
+	name = "\improper Ward Storage"
 	icon_state = "med_storage"
 
 /area/station/medical/paramedic
@@ -977,23 +978,23 @@
 	icon_state = "paramedic"
 
 /area/station/medical/office
-	name = "\improper Medical Office"
+	name = "\improper Ward Office"
 	icon_state = "med_office"
 
 /area/station/medical/break_room
-	name = "\improper Medical Break Room"
+	name = "\improper Ward Break Room"
 	icon_state = "med_break"
 
 /area/station/medical/coldroom
-	name = "\improper Medical Cold Room"
+	name = "\improper Ward Cold Room"
 	icon_state = "kitchen_cold"
 
 /area/station/medical/coldroom/port
-	name = "\improper Port Medical Cold Room "
+	name = "\improper Ward Port Cold Room "
 
 
 /area/station/medical/coldroom/starboard
-	name = "\improper Starboard Medical Cold "
+	name = "\improper Ward Starboard Cold Room"
 
 /area/station/medical/patients_rooms
 	name = "\improper Patients' Rooms"
@@ -1002,7 +1003,6 @@
 
 /area/station/medical/patients_rooms/room_a
 	name = "Patient Room A"
-
 
 /area/station/medical/patients_rooms/room_b
 	name = "Patient Room B"
@@ -1031,47 +1031,48 @@
 	icon_state = "chem"
 
 /area/station/medical/pharmacy
-	name = "\improper Pharmacy"
+	name = "\improper Ward (Pharmacy)"
 	icon_state = "pharmacy"
 
 /area/station/medical/surgery
-	name = "\improper Operating Room"
+	name = "Operating Room"
 	icon_state = "surgery"
 	ambience_index = AMBIENCE_VIROLOGY
 
 /area/station/medical/surgery/prep
-	name = "\improper Pre-Op Prep"
+	name = "\improper Ward (Operating Hallway)"
 	icon_state = "surgeryprep"
 
 /area/station/medical/surgery/fore
-	name = "\improper Fore Operating Room"
+	name = "Operating Room (Fore)"
 	icon_state = "foresurgery"
 
 /area/station/medical/surgery/aft
-	name = "\improper Aft Operating Room"
+	name = "Operating Room (Aft)"
 	icon_state = "aftsurgery"
 
 /area/station/medical/surgery/port
-	name = "\improper Port Operating Room"
+	name = "Operating Room (Port)"
 	icon_state = "portsurgery"
 
 /area/station/medical/surgery/starboard
-	name = "\improper Starboard Operating Room"
+	name = "Operating Room (Starboard)"
 	icon_state = "starboardsurgery"
 
 /area/station/medical/surgery/theatre
 	name = "\improper Grand Surgery Theatre"
 	icon_state = "surgerytheatre"
+
 /area/station/medical/cryo
 	name = "Cryogenics"
 	icon_state = "cryo"
 
 /area/station/medical/exam_room
-	name = "\improper Exam Room"
+	name = "\improper Ward (Exam Room)"
 	icon_state = "exam_room"
 
 /area/station/medical/treatment_center
-	name = "\improper Medbay Treatment Center"
+	name = "\improper Ward (Treatment Center)"
 	icon_state = "exam_room"
 
 /area/station/medical/psychology
@@ -1137,7 +1138,7 @@
 /area/station/security/prison
 	name = "\improper Prison Wing"
 	icon_state = "sec_prison"
-	area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | PERSISTENT_ENGRAVINGS
+	area_flags = parent_type::area_flags | PERSISTENT_ENGRAVINGS
 
 /area/station/security/prison/toilet //radproof
 	name = "\improper Prison Toilet"
@@ -1308,7 +1309,7 @@
 	sound_environment = SOUND_AREA_LARGE_ENCLOSED
 
 /area/station/cargo/lobby
-	name = "\improper Cargo Lobby"
+	name = "\improper Cargo Foyer"
 	icon_state = "cargo_lobby"
 
 /area/station/cargo/qm
@@ -1395,7 +1396,7 @@
 /area/station/science/test_area
 	name = "\improper Ordnance Test Area"
 	icon_state = "ord_test"
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 	holomap_color = null
 
 /area/station/science/mixing
@@ -1405,7 +1406,7 @@
 /area/station/science/mixing/chamber
 	name = "\improper Ordnance Mixing Chamber"
 	icon_state = "ord_mix_chamber"
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 
 /area/station/science/mixing/hallway
 	name = "\improper Ordnance Mixing Hallway"

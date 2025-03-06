@@ -88,7 +88,7 @@
 	decal_reagent = /datum/reagent/fuel/oil
 	reagent_amount = 10
 
-/obj/effect/decal/cleanable/oil/Initialize(mapload, list/datum/disease/diseases)
+/obj/effect/decal/cleanable/oil/Initialize(mapload, list/datum/pathogen/diseases)
 	. = ..()
 	AddComponent(/datum/component/smell, INTENSITY_NORMAL, SCENT_HAZE, "industrial lubricant", 3)
 
@@ -116,6 +116,6 @@
 	random_icon_states = list("streak1", "streak2", "streak3", "streak4", "streak5")
 	beauty = -50
 
-/obj/effect/decal/cleanable/oil/slippery/Initialize(mapload, list/datum/disease/diseases)
+/obj/effect/decal/cleanable/oil/slippery/Initialize(mapload, list/datum/pathogen/diseases)
 	. = ..()
 	AddComponent(/datum/component/slippery, 80, (NO_SLIP_WHEN_WALKING | SLIDE))

@@ -242,11 +242,6 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 	spark_system = null
 	return ..()
 
-/obj/item/pipe_dispenser/examine(mob/user)
-	. = ..()
-	. += "You can scroll your mouse wheel to change the piping layer."
-	. += "You can right click a pipe to set the RPD to its color and layer."
-
 /obj/item/pipe_dispenser/equipped(mob/user, slot, initial)
 	. = ..()
 	if(slot == ITEM_SLOT_HANDS)
@@ -254,7 +249,7 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 	else
 		UnregisterSignal(user,COMSIG_MOUSE_SCROLL_ON)
 
-/obj/item/pipe_dispenser/dropped(mob/user, silent)
+/obj/item/pipe_dispenser/unequipped(mob/user, silent)
 	UnregisterSignal(user, COMSIG_MOUSE_SCROLL_ON)
 	return ..()
 

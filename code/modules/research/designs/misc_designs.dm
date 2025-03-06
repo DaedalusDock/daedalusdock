@@ -422,15 +422,6 @@
 	category = list(DCAT_ATMOS)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 
-/datum/design/plasmaman_gas_filter
-	name = "Plasmaman gas filter"
-	id = "plasmaman_gas_filter"
-	build_type = FABRICATOR | AUTOLATHE
-	materials = list(/datum/material/iron = 100)
-	build_path = /obj/item/gas_filter/plasmaman
-	category = list(DCAT_ATMOS)
-	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
-
 /////////////////////////////////////////
 /////////Restaurant Equipment////////////
 /////////////////////////////////////////

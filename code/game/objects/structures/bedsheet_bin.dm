@@ -38,7 +38,7 @@ LINEN BINS
 		dying_key = DYE_REGISTRY_DOUBLE_BEDSHEET
 
 /obj/item/bedsheet/attack_self(mob/living/user)
-	if(!user.CanReach(src)) //No telekenetic grabbing.
+	if(!IsReachableBy(user)) //No telekenetic grabbing.
 		return
 	if(!user.dropItemToGround(src))
 		return

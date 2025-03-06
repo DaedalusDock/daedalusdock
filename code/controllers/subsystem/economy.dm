@@ -300,9 +300,9 @@ SUBSYSTEM_DEF(economy)
 		var/list/possible_names = list(
 			"human" = random_unique_name(),
 			"lizard" = random_unique_lizard_name(),
-			"plasmaman" = random_unique_plasmaman_name(),
 			"ethereal" = random_unique_ethereal_name(),
-			"moth" = random_unique_moth_name(),)
+			"moth" = random_unique_moth_name(),
+		)
 		paper_victim_species = pick(possible_names)
 		paper_victim = possible_names[paper_victim_species]
 		all_tracked_data += "victim"
@@ -378,14 +378,9 @@ SUBSYSTEM_DEF(economy)
 /// Spawns a given amount of money in optimal stacks at the given location.
 /datum/controller/subsystem/economy/proc/spawn_cash_for_amount(amt, spawn_loc)
 	amt = round(amt) // Don't pass in decimals you twat
-	var/ten_thousands = 0
 	var/thousands = 0
 	var/hundreds = 0
-	var/tens = 0
 	var/ones = 0
-
-	ten_thousands = floor(amt / 10000)
-	amt -= ten_thousands * 10000
 
 	thousands = floor(amt / 1000)
 	amt -= thousands * 1000
@@ -393,19 +388,19 @@ SUBSYSTEM_DEF(economy)
 	hundreds = floor(amt / 100)
 	amt -= hundreds * 100
 
-	tens = floor(amt / 10)
-	amt -= tens * 10
-
 	ones = amt
 
-	if(ten_thousands)
-		new /obj/item/stack/spacecash/c10000(spawn_loc, ten_thousands)
 	if(thousands)
 		new /obj/item/stack/spacecash/c1000(spawn_loc, thousands)
 	if(hundreds)
 		new /obj/item/stack/spacecash/c100(spawn_loc, hundreds)
-	if(tens)
-		new /obj/item/stack/spacecash/c10(spawn_loc, tens)
 	if(ones)
 		new /obj/item/stack/spacecash/c1(spawn_loc, ones)
 
+/datum/controller/subsystem/economy/proc/spawn_ones_for_amount(amt, spawn_loc)
+	var/amount_per_stack = /obj/item/stack/spacecash/c1::max_amount
+
+	while(amt)
+		var/split_amt = min(amt, amount_per_stack)
+		amt -= split_amt
+		new /obj/item/stack/spacecash/c1(spawn_loc, split_amt)

@@ -4,14 +4,24 @@
 	worn_icon = 'icons/mob/clothing/under/default.dmi'
 	fallback_colors = list(list(15, 17), list(10, 19), list(15, 10))
 	fallback_icon_state = "under"
+
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	permeability_coefficient = 0.9
 	slot_flags = ITEM_SLOT_ICLOTHING
+
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 	equip_sound = 'sound/items/equip/jumpsuit_equip.ogg'
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
+
+	equip_self_flags = NONE
+	equip_delay_self = EQUIP_DELAY_UNDERSUIT
+	equip_delay_other = EQUIP_DELAY_UNDERSUIT * 1.5
+	strip_delay = EQUIP_DELAY_UNDERSUIT * 1.5
+
 	limb_integrity = 30
+
 	/// The variable containing the flags for how the woman uniform cropping is supposed to interact with the sprite.
 	var/female_sprite_flags = FEMALE_UNIFORM_FULL
 	var/has_sensor = HAS_SENSORS // For the crew computer
@@ -88,22 +98,19 @@
 	if(has_sensor > NO_SENSORS)
 		if(severity <= EMP_HEAVY)
 			has_sensor = BROKEN_SENSORS
-			if(ismob(loc))
-				var/mob/M = loc
-				to_chat(M,span_warning("[src]'s sensors short out!"))
+			if(equipped_to)
+				to_chat(equipped_to, span_warning("[src]'s sensors short out!"))
 		else
 			sensor_mode = pick(SENSOR_OFF, SENSOR_OFF, SENSOR_OFF, SENSOR_LIVING, SENSOR_LIVING, SENSOR_COORDS)
-			if(ismob(loc))
-				var/mob/M = loc
-				to_chat(M,span_warning("The sensors on the [src] change rapidly!"))
-		if(ishuman(loc))
-			var/mob/living/carbon/human/ooman = loc
-			if(ooman.w_uniform == src)
-				ooman.update_suit_sensors()
+			if(equipped_to)
+				to_chat(equipped_to, span_warning("The sensors on the [src] change rapidly!"))
+
+		if(equipped_to)
+			var/mob/living/carbon/human/ooman = equipped_to
+			ooman.update_suit_sensors()
 
 
-/obj/item/clothing/under/visual_equipped(mob/user, slot)
-	..()
+/obj/item/clothing/under/visual_equipped(mob/living/user, slot)
 	if(adjusted)
 		adjusted = NORMAL_STYLE
 		female_sprite_flags = initial(female_sprite_flags)
@@ -114,7 +121,6 @@
 		var/mob/living/carbon/human/H = user
 		if(H.dna.species.bodytype & BODYTYPE_DIGITIGRADE)
 			adjusted = DIGITIGRADE_STYLE
-		H.update_worn_undersuit()
 
 	if(attached_accessory && slot != ITEM_SLOT_HANDS && ishuman(user))
 		var/mob/living/carbon/human/H = user
@@ -122,12 +128,14 @@
 		if(attached_accessory.above_suit)
 			H.update_worn_oversuit()
 
+	return ..()
+
 /obj/item/clothing/under/equipped(mob/user, slot)
 	..()
 	if(slot == ITEM_SLOT_ICLOTHING && freshly_laundered)
 		freshly_laundered = FALSE
 
-/obj/item/clothing/under/dropped(mob/user)
+/obj/item/clothing/under/unequipped(mob/user)
 	if(attached_accessory)
 		attached_accessory.on_uniform_dropped(src, user)
 		if(ishuman(user))

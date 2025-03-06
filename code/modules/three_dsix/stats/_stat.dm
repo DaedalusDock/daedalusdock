@@ -6,6 +6,8 @@
 	var/value = STATS_BASELINE_VALUE
 	var/list/modifiers
 
+	var/sound
+
 /datum/rpg_stat/proc/get(mob/living/user)
 	return value - STATS_BASELINE_VALUE
 

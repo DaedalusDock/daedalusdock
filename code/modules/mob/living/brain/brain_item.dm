@@ -62,7 +62,7 @@
 		if(brainmob.mind)
 			brainmob.mind.transfer_to(owner)
 		else
-			owner.key = brainmob.key
+			owner.PossessByPlayer(brainmob.key)
 
 		owner.set_suicide(brainmob.suiciding)
 
@@ -138,7 +138,8 @@
 			L.mind.body_appearance = L.appearance
 		L.mind.transfer_to(brainmob)
 
-	to_chat(brainmob, span_notice("You feel slightly disoriented. That's normal when you're just a brain."))
+	if(brainmob.stat == CONSCIOUS)
+		to_chat(brainmob, span_notice("You feel slightly disoriented. That's normal when you're just a brain."))
 
 /obj/item/organ/brain/attackby(obj/item/O, mob/user, params)
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -361,7 +362,7 @@
 		return
 
 	if(damage > 0 && prob(1))
-		owner.pain_message("Your head feels numb and painful.", 10)
+		owner.pain_message("Your head feels numb and painful.", PAIN_AMT_LOW, TRUE)
 
 	if(damage >= (maxHealth * low_threshold) && prob(1) && owner.eye_blurry <= 0)
 		to_chat(owner, span_warning("It becomes hard to see for some reason."))
@@ -379,23 +380,16 @@
 			to_chat(owner, span_danger("You black out!"))
 		owner.Unconscious(5 SECOND)
 
-/obj/item/organ/brain/applyOrganDamage(damage_amount, maximum, silent, updating_health = TRUE, cause_of_death = "Organ failure")
-	. = ..()
-	if(. >= 20) //This probably won't be triggered by oxyloss or mercury. Probably.
-		var/damage_secondary = min(. * 0.2, 20)
-		if (owner)
-			owner.flash_act(visual = TRUE)
-			owner.blur_eyes(.)
-			owner.adjust_confusion(. SECONDS)
-			owner.Unconscious(damage_secondary SECONDS)
-
 /obj/item/organ/brain/getToxLoss()
 	return 0
 
-/obj/item/organ/brain/set_organ_dead(failing, cause_of_death)
+/obj/item/organ/brain/set_organ_dead(failing, cause_of_death, change_mob_stat = TRUE)
 	. = ..()
 	if(!.)
 		return
+	if(!change_mob_stat)
+		return
+
 	if(failing)
 		if(owner)
 			owner.death(cause_of_death = cause_of_death)

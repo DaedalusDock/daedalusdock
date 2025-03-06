@@ -12,10 +12,15 @@
 	var/t_s = p_s()
 	var/obscure_name
 
+	var/viewer_hallucinating = FALSE
 	if(isliving(user))
 		var/mob/living/L = user
 		if(HAS_TRAIT(L, TRAIT_PROSOPAGNOSIA) || HAS_TRAIT(L, TRAIT_INVISIBLE_MAN))
 			obscure_name = TRUE
+
+	if(ishuman(user))
+		var/mob/living/carbon/H = user
+		viewer_hallucinating = H.hal_screwyhud
 
 	var/obscured = check_obscured_slots()
 	var/skipface = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
@@ -173,7 +178,7 @@
 					break
 			if(!is_bloody)
 				msg += span_notice("[t_His] [body_part.plaintext_zone] is covered.\n")
-			for(var/string in body_part.mob_examine(hal_screwyhud, TRUE))
+			for(var/string in body_part.mob_examine(viewer_hallucinating, TRUE))
 				msg += "[string]</br>"
 
 			continue
@@ -182,7 +187,7 @@
 			if((body_part.brute_dam + body_part.burn_dam) >= body_part.max_damage * 0.8)
 				fucked_reasons["[t_His] [body_part.plaintext_zone] is greviously injured."] = 3
 
-			for(var/string in body_part.mob_examine(hal_screwyhud, FALSE))
+			for(var/string in body_part.mob_examine(viewer_hallucinating, FALSE))
 				msg += "[string]</br>"
 
 	for(var/X in disabled)
@@ -374,11 +379,12 @@
 
 	var/possible_invisible_damage = getToxLoss() > 20 || getBrainLoss()
 
-	if((possible_invisible_damage || length(fucked_reasons) || visible_bodyparts >= 3))
+	if(!length(get_missing_limbs()) && (possible_invisible_damage || length(fucked_reasons) || visible_bodyparts >= 3))
 		var/datum/roll_result/result = living_user.stat_roll(15, /datum/rpg_skill/anatomia)
 		switch(result.outcome)
 			if(SUCCESS, CRIT_SUCCESS)
 				spawn(0)
+					result.do_skill_sound(living_user)
 					if(possible_invisible_damage && living_user.stats.cooldown_finished("found_invisible_damage_[REF(src)]"))
 						to_chat(living_user, result.create_tooltip("Something is not right, this person is not well. You can feel it in your very core."))
 						living_user.stats.set_cooldown("found_invisible_damage_[REF(src)]", INFINITY) // Never again

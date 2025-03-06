@@ -36,7 +36,7 @@
 	var/list/mob/dead/observer/candidates = poll_candidates_for_mob("Do you want to play as [owner.real_name]'s split personality?", ROLE_PAI, null, 7.5 SECONDS, stranger_backseat, POLL_IGNORE_SPLITPERSONALITY)
 	if(LAZYLEN(candidates))
 		var/mob/dead/observer/C = pick(candidates)
-		stranger_backseat.key = C.key
+		stranger_backseat.PossessByPlayer(C.ckey)
 		log_game("[key_name(stranger_backseat)] became [key_name(owner)]'s split personality.")
 		message_admins("[ADMIN_LOOKUPFLW(stranger_backseat)] became [ADMIN_LOOKUPFLW(owner)]'s split personality.")
 	else
@@ -92,7 +92,7 @@
 	owner.computer_id = null
 	owner.lastKnownIP = null
 
-	new_backseat.ckey = owner.ckey
+	new_backseat.PossessByPlayer(owner.ckey)
 
 	new_backseat.name = owner.name
 
@@ -208,7 +208,7 @@
 	var/list/mob/dead/observer/candidates = poll_candidates_for_mob("Do you want to play as [owner.real_name]'s brainwashed mind?", null, null, 7.5 SECONDS, stranger_backseat)
 	if(LAZYLEN(candidates))
 		var/mob/dead/observer/C = pick(candidates)
-		stranger_backseat.key = C.key
+		stranger_backseat.PossessByPlayer(C.ckey)
 	else
 		qdel(src)
 

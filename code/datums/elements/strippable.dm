@@ -182,13 +182,13 @@
 /// Returns the ID of this item's strippable action.
 /// Return `null` if there is no alternate action.
 /// Any return value of this must be in StripMenu.
-/datum/strippable_item/proc/get_alternate_action(atom/source, mob/user)
+/datum/strippable_item/proc/get_alternate_action(atom/source, mob/user, action)
 	return null
 
 /// Performs an alternative action on this strippable_item.
 /// `has_alternate_action` needs to be TRUE.
 /// Returns FALSE if blocked by signal, TRUE otherwise.
-/datum/strippable_item/proc/alternate_action(atom/source, mob/user)
+/datum/strippable_item/proc/alternate_action(atom/source, mob/user, action)
 	SHOULD_CALL_PARENT(TRUE)
 	if(SEND_SIGNAL(user, COMSIG_TRY_ALT_ACTION, source) & COMPONENT_CANT_ALT_ACTION)
 		return FALSE
@@ -292,15 +292,13 @@
 /datum/strippable_item/mob_item_slot/proc/get_equip_delay(obj/item/equipping)
 	return equipping.equip_delay_other
 
-/// A utility function for `/datum/strippable_item`s to start unequipping an item from a mob.
-/proc/start_unequip_mob(obj/item/item, mob/source, mob/user, strip_delay)
+/datum/strippable_item/proc/start_unequip_mob(obj/item/item, mob/source, mob/user, strip_delay)
 	if (!do_after(user, source, strip_delay || item.strip_delay, DO_PUBLIC, interaction_key = REF(item), display = image('icons/hud/do_after.dmi', "pickpocket")))
 		return FALSE
 
 	return TRUE
 
-/// A utility function for `/datum/strippable_item`s to finish unequipping an item from a mob.
-/proc/finish_unequip_mob(obj/item/item, mob/source, mob/user)
+/datum/strippable_item/proc/finish_unequip_mob(obj/item/item, mob/source, mob/user)
 	if (!item.doStrip(user, source))
 		return FALSE
 
@@ -485,7 +483,7 @@
 			LAZYORASSOCLIST(interactions, user, key)
 
 			// Potentially yielding
-			strippable_item.alternate_action(owner, user)
+			strippable_item.alternate_action(owner, user, params["action"])
 
 			LAZYREMOVEASSOC(interactions, user, key)
 

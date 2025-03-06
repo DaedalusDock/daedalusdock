@@ -73,6 +73,11 @@ const ALTERNATE_ACTIONS: Record<string, AlternateAction> = {
     icon: 'tshirt',
     text: 'Adjust jumpsuit',
   },
+
+  pickpocket: {
+    icon: 'hand-paper',
+    text: 'Pickpocket',
+  },
 };
 
 const SLOTS: Record<
@@ -381,6 +386,8 @@ export const StripMenu = (props) => {
                             onClick={() => {
                               act('alt', {
                                 key: keyAtSpot,
+                                action:
+                                  item && 'name' in item && item.alternate,
                               });
                             }}
                             tooltip={alternateAction.text}

@@ -167,7 +167,7 @@
 		goIdle()
 		return FALSE
 	update_appearance()
-	A.safe = FALSE //Door crushies, manual door after all. Set every time in case someone changed it, safe doors can end up waiting forever.
+	A.dont_close_on_dense_objects = FALSE //Door crushies, manual door after all. Set every time in case someone changed it, safe doors can end up waiting forever.
 	A.unbolt()
 	if(A.close())
 		if(machine_stat & NOPOWER || lostPower || !A || QDELETED(A))

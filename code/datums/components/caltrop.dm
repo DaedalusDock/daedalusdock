@@ -91,7 +91,7 @@
 	if(!istype(O))
 		return
 
-	if(O.bodypart_flags & BP_NO_PAIN)
+	if(O.bodytype & BODYTYPE_ROBOTIC)
 		return
 
 	if (!(flags & CALTROP_BYPASS_SHOES))

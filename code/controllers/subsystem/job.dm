@@ -47,7 +47,7 @@ SUBSYSTEM_DEF(job)
 		JOB_CAPTAIN = 1,
 		JOB_HEAD_OF_PERSONNEL = 2,
 		JOB_CHIEF_ENGINEER = 3,
-		JOB_MEDICAL_DIRECTOR = 4,
+		JOB_AUGUR = 4,
 		JOB_SECURITY_MARSHAL = 5,
 		JOB_QUARTERMASTER = 6,
 	)
@@ -438,6 +438,7 @@ SUBSYSTEM_DEF(job)
 
 	. = assign_captain()
 	if(!.)
+		SSticker.mode.setup_error += "Failed to assign captain. See JobDebug for more information."
 		return FALSE
 
 	//People who wants to be the overflow role, sure, go on.
@@ -528,6 +529,7 @@ SUBSYSTEM_DEF(job)
 			if(!AssignRole(player, GetJobType(overflow_role))) //If everything is already filled, make them an assistant
 				JobDebug("DO, Forced antagonist could not be assigned any random job or the overflow role. DivideOccupations failed.")
 				JobDebug("---------------------------------------------------")
+				SSticker.mode.setup_error += "An unassigned player could not be given a random or overflow role. See JobDebug for more information."
 				return FALSE //Living on the edge, the forced antagonist couldn't be assigned to overflow role (bans, client age) - just reroll
 
 	JobDebug("DO, Ending handle unrejectable unassigned")
@@ -543,6 +545,8 @@ SUBSYSTEM_DEF(job)
 					we_fucked = TRUE
 
 			if(we_fucked)
+				JobDebug("DO, could not fill all departments.")
+				SSticker.mode.setup_error += "Could not fill all required departments. See JobDebug for more information."
 				return FALSE
 
 			JobDebug("DO, all departments have atleast one player.")
@@ -622,7 +626,7 @@ SUBSYSTEM_DEF(job)
 		var/mob/living/carbon/human/wageslave = equipping
 		var/datum/bank_account/bank = SSeconomy.bank_accounts_by_id["[wageslave.account_id]"]
 
-		wageslave.mind.add_memory(MEMORY_ACCOUNT, list(DETAIL_ACCOUNT_ID = wageslave.account_id, DETAIL_ACCOUNT_PIN = bank.account_pin), story_value = STORY_VALUE_SHIT, memory_flags = MEMORY_FLAG_NOLOCATION)
+		wageslave.mind.set_note(NOTES_BANK_ACCOUNT, list("Account ID: [wageslave.account_id]<br>Account PIN: [bank.account_pin]"))
 		to_chat(player_client, span_obviousnotice("Your bank account pin is: <b>[bank.account_pin]</b>"))
 
 		setup_alt_job_items(wageslave, job, player_client) //PARIAH EDIT ADDITION
@@ -758,20 +762,23 @@ SUBSYSTEM_DEF(job)
 	if(buckle && isliving(joining_mob))
 		buckle_mob(joining_mob, FALSE, FALSE)
 
+/// Send an existing mob to their latejoin spawnpoint. Returns FALSE if it couldn't find a proper one, and resorted to the last resort.
 /datum/controller/subsystem/job/proc/SendToLateJoin(mob/M, buckle = TRUE)
 	var/atom/destination
-	if(M.mind && !is_unassigned_job(M.mind.assigned_role) && length(GLOB.jobspawn_overrides[M.mind.assigned_role.title])) //We're doing something special today.
-		destination = pick(GLOB.jobspawn_overrides[M.mind.assigned_role.title])
+
+	if(M.mind?.assigned_role && !is_unassigned_job(M.mind.assigned_role)) //We're doing something special today.
+		destination = M.mind.assigned_role.get_latejoin_spawn_point()
 		destination.JoinPlayerHere(M, FALSE)
 		return TRUE
 
-	if(latejoin_trackers.len)
+	if(length(latejoin_trackers))
 		destination = pick(latejoin_trackers)
 		destination.JoinPlayerHere(M, buckle)
 		return TRUE
 
 	destination = get_last_resort_spawn_points()
 	destination.JoinPlayerHere(M, buckle)
+	return FALSE
 
 
 /datum/controller/subsystem/job/proc/get_last_resort_spawn_points()
@@ -1073,12 +1080,12 @@ SUBSYSTEM_DEF(job)
 		for(var/rank in required_group)
 			var/datum/job/J = GetJob(rank)
 			if(!J)
-				SSticker.mode.setup_error = "Invalid job [rank] in gamemode required jobs."
+				SSticker.mode.setup_error += "Invalid job [rank] in gamemode required jobs."
 				return FALSE
 			if(J.current_positions < required_group[rank])
 				group_ok = FALSE
 				break
 		if(group_ok)
 			return TRUE
-	SSticker.mode.setup_error = "Required jobs not present."
+	SSticker.mode.setup_error += "Required jobs not present."
 	return FALSE

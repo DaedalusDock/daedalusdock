@@ -16,6 +16,7 @@
 	throw_range = 7
 	attack_verb_continuous = list("attacks")
 	attack_verb_simple = list("attack")
+	obj_flags = parent_type::obj_flags | SECRET_EXAMINE
 	/// Artistic style of the deck
 	var/deckstyle = "nanotrasen"
 	/// If the cards in the deck have different icon states (blank and CAS decks do not)

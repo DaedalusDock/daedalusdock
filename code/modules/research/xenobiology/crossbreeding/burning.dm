@@ -98,7 +98,7 @@ Burning extracts:
 		if(M != user)
 			var/mob/living/carbon/C = M
 			if(istype(C))
-				C.electrocute_act(25,src)
+				C.electrocute_act(25)
 			else
 				M.adjustFireLoss(25)
 			to_chat(M, span_danger("You feel a sharp electrical pulse!"))

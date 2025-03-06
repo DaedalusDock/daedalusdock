@@ -6,7 +6,7 @@
 /datum/ai_movement/dumb/start_moving_towards(datum/ai_controller/controller, atom/current_movement_target, min_distance)
 	. = ..()
 	var/atom/movable/moving = controller.pawn
-	var/delay = controller.movement_delay
+	var/delay = controller.get_movement_delay()
 	var/datum/move_loop/loop = SSmove_manager.move_towards_legacy(moving, current_movement_target, delay, subsystem = SSai_movement, extra_info = controller)
 	RegisterSignal(loop, COMSIG_MOVELOOP_PREPROCESS_CHECK, PROC_REF(pre_move))
 	RegisterSignal(loop, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(post_move))

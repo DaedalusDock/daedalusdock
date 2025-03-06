@@ -26,21 +26,6 @@
 #define SOUTHDOWN (SOUTH|DOWN)
 #define WESTDOWN (WEST|DOWN)
 
-///A replacement for /datum/gas_mixture/proc/update_values()
-#define AIR_UPDATE_VALUES(air) \
-	do{ \
-		var/list/cache = air.gas; \
-		air.total_moles = 0; \
-		for(var/g in cache) { \
-			if(cache[g] <= 0) { \
-				cache -= g \
-			} \
-			else { \
-				air.total_moles += cache[g]; \
-			} \
-		} \
-	} while(FALSE)
-
 ///Checks is a turf is simulated and has a valid zone.
 #define TURF_HAS_VALID_ZONE(T) (!isnull(T:zone) && !T:zone:invalid)
 
@@ -183,3 +168,20 @@ GLOBAL_REAL_VAR(list/reverse_dir) = list( // reverse_dir[dir] = reverse of dir
 #define  SPACE_HEAT_TRANSFER_COEFFICIENT 0.2 // A hack to partly simulate radiative heat.
 #define   OPEN_HEAT_TRANSFER_COEFFICIENT 0.4
 #define WINDOW_HEAT_TRANSFER_COEFFICIENT 0.1 // A hack for now.
+
+#ifdef ZAS_COMPAT_515
+///A replacement for /datum/gas_mixture/proc/update_values() (515 Compatible)
+#define AIR_UPDATE_VALUES(air) \
+	do{ \
+		var/list/cache = air.gas; \
+		air.total_moles = 0; \
+		for(var/g in cache) { \
+			if(cache[g] <= 0) { \
+				cache -= g \
+			} \
+			else { \
+				air.total_moles += cache[g]; \
+			} \
+		} \
+	} while(FALSE)
+#endif

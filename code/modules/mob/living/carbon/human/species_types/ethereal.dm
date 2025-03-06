@@ -193,18 +193,6 @@
 		'sound/voice/ethereal/ethereal_scream_3.ogg',
 	)
 
-/datum/species/ethereal/get_species_description()
-	return "Coming from the planet of Sprout, the theocratic ethereals are \
-		separated socially by caste, and espouse a dogma of aiding the weak and \
-		downtrodden."
-
-/datum/species/ethereal/get_species_lore()
-	return list(
-		"Ethereals are a species native to the planet Sprout. \
-		When they were originally discovered, they were at a medieval level of technological progression, \
-		but due to their natural acclimation with electricity, they felt easy among the large Daedalus installations.",
-	)
-
 /datum/species/ethereal/create_pref_unique_perks()
 	var/list/to_add = list()
 

@@ -5,7 +5,6 @@ have ways of interacting with a specific mob and control it.
 ///OOK OOK OOK
 
 /datum/ai_controller/monkey
-	movement_delay = 0.4 SECONDS
 	planning_subtrees = list(
 		/datum/ai_planning_subtree/generic_resist,
 		/datum/ai_planning_subtree/monkey_combat,
@@ -27,7 +26,7 @@ have ways of interacting with a specific mob and control it.
 		BB_MONKEY_GUN_WORKED = TRUE,
 		BB_SONG_LINES = MONKEY_SONG,
 	)
-	idle_behavior = /datum/idle_behavior/idle_monkey
+	default_behavior = /datum/ai_behavior/idle_monkey
 
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_crossed),
@@ -39,13 +38,12 @@ have ways of interacting with a specific mob and control it.
 	. = ..()
 	if(. & AI_CONTROLLER_INCOMPATIBLE)
 		return
-	blackboard[BB_MONKEY_AGGRESSIVE] = TRUE //Angry cunt
+	set_blackboard_key(BB_MONKEY_AGGRESSIVE, TRUE) //Angry cunt
 
 /datum/ai_controller/monkey/TryPossessPawn(atom/new_pawn)
 	if(!isliving(new_pawn))
 		return AI_CONTROLLER_INCOMPATIBLE
 
-	var/mob/living/living_pawn = new_pawn
 	AddComponent(/datum/component/connect_loc_behalf, new_pawn, loc_connections)
 	RegisterSignal(new_pawn, COMSIG_PARENT_ATTACKBY, PROC_REF(on_attackby))
 	RegisterSignal(new_pawn, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_attack_hand))
@@ -58,9 +56,6 @@ have ways of interacting with a specific mob and control it.
 	RegisterSignal(new_pawn, COMSIG_LIVING_TRY_SYRINGE, PROC_REF(on_try_syringe))
 	RegisterSignal(new_pawn, COMSIG_ATOM_HULK_ATTACK, PROC_REF(on_attack_hulk))
 	RegisterSignal(new_pawn, COMSIG_CARBON_CUFF_ATTEMPTED, PROC_REF(on_attempt_cuff))
-	RegisterSignal(new_pawn, COMSIG_MOB_MOVESPEED_UPDATED, PROC_REF(update_movespeed))
-
-	movement_delay = living_pawn.movement_delay
 	return ..() //Run parent at end
 
 /datum/ai_controller/monkey/UnpossessPawn(destroy)
@@ -101,7 +96,7 @@ have ways of interacting with a specific mob and control it.
 	var/mob/living/living_pawn = pawn
 
 	if(!locate(/obj/item) in living_pawn.held_items)
-		blackboard[BB_MONKEY_BEST_FORCE_FOUND] = 0
+		set_blackboard_key(BB_MONKEY_BEST_FORCE_FOUND, 0)
 
 	if(blackboard[BB_MONKEY_GUN_NEURONS_ACTIVATED] && (locate(/obj/item/gun) in living_pawn.held_items))
 		// We have a gun, what could we possibly want?
@@ -115,7 +110,7 @@ have ways of interacting with a specific mob and control it.
 	weapon = GetBestWeapon(src, nearby_items, living_pawn.held_items)
 
 	var/pickpocket = FALSE
-	for(var/mob/living/carbon/human/human in oview(5, living_pawn))
+	for(var/mob/living/carbon/human/human in oview(target_search_radius, living_pawn))
 		var/obj/item/held_weapon = GetBestWeapon(src, human.held_items + weapon, living_pawn.held_items)
 		if(held_weapon == weapon) // It's just the same one, not a held one
 			continue
@@ -125,8 +120,8 @@ have ways of interacting with a specific mob and control it.
 	if(!weapon || (weapon in living_pawn.held_items))
 		return FALSE
 
-	blackboard[BB_MONKEY_PICKUPTARGET] = weapon
-	current_movement_target = weapon
+	set_blackboard_key(BB_MONKEY_PICKUPTARGET, weapon)
+	set_move_target(weapon)
 	if(pickpocket)
 		queue_behavior(/datum/ai_behavior/monkey_equip/pickpocket)
 	else
@@ -135,8 +130,7 @@ have ways of interacting with a specific mob and control it.
 
 ///Reactive events to being hit
 /datum/ai_controller/monkey/proc/retaliate(mob/living/L)
-	var/list/enemies = blackboard[BB_MONKEY_ENEMIES]
-	enemies[WEAKREF(L)] += MONKEY_HATRED_AMOUNT
+	add_blackboard_key_assoc(BB_MONKEY_ENEMIES, L, MONKEY_HATRED_AMOUNT)
 
 /datum/ai_controller/monkey/proc/on_attackby(datum/source, obj/item/I, mob/user)
 	SIGNAL_HANDLER
@@ -212,11 +206,3 @@ have ways of interacting with a specific mob and control it.
 	// chance of monkey retaliation
 	if(prob(MONKEY_CUFF_RETALIATION_PROB))
 		retaliate(user)
-
-/datum/ai_controller/monkey/proc/update_movespeed(mob/living/pawn)
-	SIGNAL_HANDLER
-	movement_delay = pawn.movement_delay
-
-/datum/ai_controller/monkey/proc/target_del(target)
-	SIGNAL_HANDLER
-	blackboard[BB_MONKEY_BLACKLISTITEMS] -= target

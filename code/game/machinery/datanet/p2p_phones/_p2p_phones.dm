@@ -457,7 +457,7 @@
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(check_range))
 	become_hearing_sensitive()//Start listening.
 
-/obj/item/p2p_phone_handset/dropped(mob/user)
+/obj/item/p2p_phone_handset/unequipped(mob/user)
 	. = ..()
 	if(user)
 		UnregisterSignal(user, COMSIG_MOVABLE_MOVED)
@@ -508,9 +508,8 @@
 /obj/item/p2p_phone_handset/proc/snap_back()
 	if(!callstation)
 		return
-	if(ismob(loc))
-		var/mob/M = loc
-		M.dropItemToGround(src, TRUE)
+	if(equipped_to)
+		equipped_to.dropItemToGround(src, TRUE)
 	forceMove(callstation)
 	callstation.handset_statechange(HANDSET_ONHOOK)
 

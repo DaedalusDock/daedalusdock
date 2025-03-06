@@ -16,7 +16,7 @@ GLOBAL_LIST_INIT(glass_recipes, list ( \
 ))
 
 /obj/item/stack/sheet/glass
-	name = "glass"
+	name = "glass sheets"
 	desc = "HOLY SHEET! That is a lot of glass."
 	singular_name = "glass sheet"
 	icon_state = "sheet-glass"
@@ -82,7 +82,7 @@ GLOBAL_LIST_INIT(pglass_recipes, list ( \
 ))
 
 /obj/item/stack/sheet/plasmaglass
-	name = "plasma glass"
+	name = "plasma glass sheets"
 	desc = "A glass sheet made out of a plasma-silicate alloy. It looks extremely tough and heavily fire resistant."
 	singular_name = "plasma glass sheet"
 	icon_state = "sheet-pglass"
@@ -138,7 +138,7 @@ GLOBAL_LIST_INIT(reinforced_glass_recipes, list ( \
 
 
 /obj/item/stack/sheet/rglass
-	name = "reinforced glass"
+	name = "reinforced glass sheets"
 	desc = "Glass which seems to have rods or something stuck in them."
 	singular_name = "reinforced glass sheet"
 	icon_state = "sheet-rglass"
@@ -191,7 +191,7 @@ GLOBAL_LIST_INIT(prglass_recipes, list ( \
 ))
 
 /obj/item/stack/sheet/plasmarglass
-	name = "reinforced plasma glass"
+	name = "reinforced plasma glass sheets"
 	desc = "A glass sheet made out of a plasma-silicate alloy and a rod matrix. It looks hopelessly tough and nearly fire-proof!"
 	singular_name = "reinforced plasma glass sheet"
 	icon_state = "sheet-prglass"
@@ -217,7 +217,7 @@ GLOBAL_LIST_INIT(titaniumglass_recipes, list(
 	))
 
 /obj/item/stack/sheet/titaniumglass
-	name = "titanium glass"
+	name = "titanium glass sheets"
 	desc = "A glass sheet made out of a titanium-silicate alloy."
 	singular_name = "titanium glass sheet"
 	icon_state = "sheet-titaniumglass"
@@ -242,7 +242,7 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	))
 
 /obj/item/stack/sheet/plastitaniumglass
-	name = "plastitanium glass"
+	name = "plastitanium glass sheets"
 	desc = "A glass sheet made out of a plasma-titanium-silicate alloy."
 	singular_name = "plastitanium glass sheet"
 	icon_state = "sheet-plastitaniumglass"
@@ -259,6 +259,14 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 /obj/item/stack/sheet/plastitaniumglass/get_main_recipes()
 	. = ..()
 	. += GLOB.plastitaniumglass_recipes
+
+/obj/item/stack/sheet/gnesis_glass
+	name = "transculent wafers"
+	singular_name = "transculent wafer"
+	desc = "A shimmering, translucent block of weird alien computer crystal stuff."
+	mats_per_unit = list(/datum/material/gnesis_glass=MINERAL_MATERIAL_AMOUNT)
+	material_type = /datum/material/gnesis_glass
+	merge_type = /obj/item/stack/sheet/gnesis_glass
 
 /obj/item/shard
 	name = "shard"
@@ -403,3 +411,15 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	icon_prefix = "plastitanium"
 	weld_material = /obj/item/stack/sheet/plastitaniumglass
 	craft_time = 14 SECONDS
+
+/obj/item/shard/gnesis_glass
+	name = "bright shard"
+	desc = "A nasty looking shard of titanium infused glass."
+	color = "#1bdebd"
+	force = 7
+	throwforce = 12
+
+	custom_materials = list(/datum/material/gnesis_glass=MINERAL_MATERIAL_AMOUNT)
+	weld_material = /obj/item/stack/sheet/gnesis_glass
+	craft_time = 7 SECONDS
+

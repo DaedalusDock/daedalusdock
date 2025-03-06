@@ -304,10 +304,7 @@
 	pixel_y = -1
 	},
 /obj/item/radio/intercom/directional/north,
-/obj/item/reagent_containers/food/drinks/mug{
-	pixel_x = -4;
-	pixel_y = 4
-	},
+/obj/item/reagent_containers/glass/mug,
 /turf/open/floor/wood,
 /area/station/command/corporate_showroom)
 "bh" = (
@@ -2200,7 +2197,6 @@
 /turf/open/floor/iron/dark,
 /area/station/security/checkpoint/medical)
 "hn" = (
-/obj/effect/landmark/start/depsec/medical,
 /obj/machinery/button/door/directional/east{
 	id = "medsecprivacy";
 	name = "Privacy Shutters Control"
@@ -2632,7 +2628,6 @@
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 4
 	},
-/obj/effect/landmark/start/depsec/medical,
 /turf/open/floor/iron/dark,
 /area/station/security/checkpoint/medical)
 "jc" = (
@@ -2826,7 +2821,6 @@
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 10
 	},
-/obj/effect/landmark/start/depsec/medical,
 /turf/open/floor/iron/dark,
 /area/station/security/checkpoint/medical)
 "jL" = (
@@ -5959,7 +5953,6 @@
 	name = "First Aid Supplies";
 	req_access_txt = "5"
 	},
-/obj/item/mod/module/plasma_stabilizer,
 /obj/item/mod/module/thermal_regulator,
 /turf/open/floor/iron/dark,
 /area/station/medical/storage)
@@ -11493,7 +11486,6 @@
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 4
 	},
-/obj/effect/landmark/start/depsec/medical,
 /obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/station/security/checkpoint/medical)
@@ -13369,7 +13361,6 @@
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 10
 	},
-/obj/effect/landmark/start/depsec/medical,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,

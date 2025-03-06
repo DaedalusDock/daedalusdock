@@ -727,7 +727,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	if(response.errored || response.status_code != 200)
 		query_in_progress = FALSE
 		CRASH("Failed to fetch mapped custom json from url [json_url], code: [response.status_code], error: [response.error]")
-	var/json_data = response["body"]
+	var/json_data = response.body
 	json_cache[json_url] = json_data
 	query_in_progress = FALSE
 	return json_data
@@ -863,11 +863,9 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/mapping_helpers/lightsout/LateInitialize()
-	var/obj/machinery/power/apc/gaypc = locate() in loc
-	if(!gaypc)
-		CRASH("Lights-Out Helper missing APC at [COORD(src)]")
-	gaypc.lighting = gaypc.setsubsystem(1) //fuck you oldcode
-	gaypc.update()
+	var/area/A = get_area(src)
+	A.lightswitch = FALSE
+	A.power_change()
 	qdel(src)
 
 // -----------

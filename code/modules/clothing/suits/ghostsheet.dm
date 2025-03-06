@@ -10,6 +10,9 @@
 	flags_inv = HIDEGLOVES|HIDEEARS|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 	alternate_worn_layer = UNDER_HEAD_LAYER
 
+	equip_delay_self = 0
+	equip_delay_other = 0
+	strip_delay = 0
 
 /obj/item/clothing/suit/ghost_sheet/spooky
 	name = "spooky ghost"

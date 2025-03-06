@@ -10,25 +10,26 @@
 		if(DROPLIMB_EDGE, DROPLIMB_BLUNT)
 			wound_type = WOUND_CUT
 			if(!IS_ORGANIC_LIMB(lost_limb))
-				max_bleeding_stage = -1
-				bleed_threshold = INFINITY
+				min_bleeding_stage = INFINITY
+				always_bleed_threshold = INFINITY
 				stages = list("mangled robotic socket" = 0)
 			else
-				max_bleeding_stage = 3 //clotted stump and above can bleed.
+				min_bleeding_stage = 2 //clotted stump and above can bleed.
 				stages = list(
-					"ripped stump" = damage_amt*1.3,
-					"bloody stump" = damage_amt,
+					"scarred stump" = 0,
 					"clotted stump" = damage_amt*0.5,
-					"scarred stump" = 0
+					"bloody stump" = damage_amt,
+					"ripped stump" = damage_amt*1.3,
 				)
+
 		if(DROPLIMB_BURN)
 			wound_type = WOUND_BURN
 			stages = list(
-				"mangled charred stump" = damage_amt*1.3,
-				"charred stump" = damage_amt,
+				"scarred stump" = 0,
 				"scarred stump" = damage_amt*0.5,
-				"scarred stump" = 0
-				)
+				"charred stump" = damage_amt,
+				"mangled charred stump" = damage_amt*1.3,
+			)
 
 	..(damage_amt)
 

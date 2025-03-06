@@ -262,6 +262,7 @@
 
 	if(viewing_camera)
 		viewing_camera.visible_message("[src]'s lens rotates and zooms into something.")
+		playsound(viewing_camera, 'sound/machines/camera_zoom.ogg', 50, FALSE, ignore_walls = FALSE)
 
 	var/mob/living/target_examined = examinify
 	if(target_examined.stats.cooldown_finished("ai_examine"))

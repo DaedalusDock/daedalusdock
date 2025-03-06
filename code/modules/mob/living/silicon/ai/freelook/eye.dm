@@ -189,6 +189,7 @@
 	eyeobj.ai = src
 	eyeobj.setLoc(loc)
 	eyeobj.set_real_name("[name] (AI Eye)")
+	eyeobj.RegisterSignal(src, COMSIG_CLICK_SHIFT, TYPE_PROC_REF(/mob/camera/ai_eye, examinate_check))
 	set_eyeobj_visible(TRUE)
 
 	sense_of_self = image(eyeobj.icon, eyeobj, eyeobj.icon_state)
@@ -212,6 +213,13 @@
 	. = ..()
 	if(relay_speech && speaker && ai && !radio_freq && speaker != ai && near_camera(speaker))
 		ai.relay_speech(message, speaker, message_language, raw_message, radio_freq, spans, message_mods)
+
+///Called when the AI shiftclicks on something to examinate it.
+/mob/camera/ai_eye/proc/examinate_check(mob/user, atom/source)
+	SIGNAL_HANDLER
+
+	if(user.client.eye == src)
+		return COMPONENT_ALLOW_EXAMINATE
 
 /obj/effect/overlay/ai_detect_hud
 	name = ""

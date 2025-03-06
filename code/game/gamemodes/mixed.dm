@@ -12,8 +12,6 @@
 
 	var/list/antag_weight_map = list(
 		/datum/antagonist_selector/traitor = 100,
-		/datum/antagonist_selector/changeling = 0,
-		/datum/antagonist_selector/heretic = 20,
 		/datum/antagonist_selector/vampire = 20,
 		/datum/antagonist_selector/wizard = 1,
 	)

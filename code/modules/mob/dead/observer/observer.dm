@@ -44,7 +44,7 @@ GLOBAL_VAR_INIT(fresh_ghost_adjectives, __fresh_ghost_adjectives())
 	var/started_as_observer = FALSE
 	/// Was this ghost spawned using the admin ghost command.
 	var/admin_ghost = FALSE
-	#warn TODO
+	/// When set by exorcise(), the ghost is unable to return to it's corpse and loses the monochrome filter.
 	var/exorcised = FALSE
 
 	var/atom/movable/following = null

@@ -85,6 +85,9 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 
 /mob/living/carbon/human/proc/show_death_stats(mob/user)
 	var/list/scan = time_of_death_stats
+	if(!length(scan))
+		return
+
 	var/list/ui_content = list()
 
 	var/datum/browser/popup = new(user, "timeofdeathinfo", "Time of Death Information", 600, 800)

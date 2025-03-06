@@ -119,10 +119,12 @@
 		return
 	if(!L.mind)
 		return
+
 	brainmob = new(src)
 	brainmob.set_real_name(L.real_name)
 	brainmob.timeofhostdeath = L.timeofdeath
 	brainmob.suiciding = suicided
+
 	if(L.has_dna())
 		var/mob/living/carbon/C = L
 		if(!brainmob.stored_dna)
@@ -130,7 +132,10 @@
 		C.dna.copy_dna(brainmob.stored_dna)
 		if(HAS_TRAIT(L, TRAIT_BADDNA))
 			LAZYSET(brainmob.status_traits, TRAIT_BADDNA, L.status_traits[TRAIT_BADDNA])
+
 	if(L.mind && L.mind.current)
+		if(!QDELETED(L))
+			L.mind.body_appearance = L.appearance
 		L.mind.transfer_to(brainmob)
 
 	if(brainmob.stat == CONSCIOUS)

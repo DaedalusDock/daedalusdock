@@ -136,6 +136,8 @@
 	if(length(item.actions))
 		item.update_action_buttons(UPDATE_BUTTON_STATUS)
 
+	hud_used?.update_locked_slots()
+
 	return item.equipped(src, slot, initial)
 
 /mob/living/carbon/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE, slot = get_slot_by_item(I))
@@ -180,6 +182,7 @@
 
 	if(handled && !QDELETED(src))
 		update_slots_for_item(I, slot)
+		hud_used?.update_locked_slots()
 
 //handle stuff to update when a mob equips/unequips a mask.
 /mob/living/proc/wear_mask_update(obj/item/I, toggle_off = 1)

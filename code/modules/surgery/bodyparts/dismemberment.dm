@@ -168,6 +168,7 @@
 	bodypart_flags |= BP_CUT_AWAY
 
 	if(!special)
+		phantom_owner.hud_used?.update_locked_slots()
 		if(phantom_owner.dna)
 			for(var/datum/mutation/human/mutation as anything in phantom_owner.dna.mutations) //some mutations require having specific limbs to be kept.
 				if(mutation.limb_req && mutation.limb_req == body_zone)
@@ -409,6 +410,9 @@
 	new_limb_owner.updatehealth()
 	new_limb_owner.update_body()
 	new_limb_owner.update_damage_overlays()
+
+	if(!special)
+		new_limb_owner.hud_used?.update_locked_slots()
 	return TRUE
 
 /obj/item/bodypart/head/attach_limb(mob/living/carbon/new_head_owner, special = FALSE, abort = FALSE)

@@ -557,6 +557,21 @@
 	SEND_SIGNAL(src, COMSIG_MOB_RESET_PERSPECTIVE)
 	return TRUE
 
+/// Can this mob examine the desired atom
+/mob/proc/can_examinate(atom/examinify)
+	if(isturf(examinify) && !(sight & SEE_TURFS) && !(examinify in view(client ? client.view : world.view, src)))
+		// shift-click catcher may issue examinate() calls for out-of-sight turfs
+		return FALSE
+
+	if(is_blind() && !blind_examine_check(examinify)) //blind people see things differently (through touch)
+		return FALSE
+
+	return TRUE
+
+/// Insert or change behavior prior to examine, after can_examine passes.
+/mob/proc/pre_examinate(atom/examinify)
+	return TRUE
+
 /**
  * Examine a mob
  *
@@ -571,15 +586,16 @@
 	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(run_examinate), examinify))
 
 /mob/proc/run_examinate(atom/examinify)
+	set waitfor = FALSE
 
-	if(isturf(examinify) && !(sight & SEE_TURFS) && !(examinify in view(client ? client.view : world.view, src)))
-		// shift-click catcher may issue examinate() calls for out-of-sight turfs
+	if(!can_examinate(examinify))
 		return
 
-	if(is_blind() && !blind_examine_check(examinify)) //blind people see things differently (through touch)
+	if(!pre_examinate(examinify))
 		return
 
 	face_atom(examinify)
+
 	var/list/result
 	if(client)
 		LAZYINITLIST(client.recent_examines)

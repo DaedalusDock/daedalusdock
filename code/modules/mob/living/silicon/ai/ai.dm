@@ -238,6 +238,36 @@
 		ai_voicechanger = null
 	return ..()
 
+/mob/living/silicon/ai/pre_examinate(atom/examinify)
+	if(client?.eye == src) // Not using a camera
+		return ..()
+
+	if(!isliving(examinify))
+		return ..()
+
+	if(!do_after(src, examinify, 1.5 SECONDS, DO_IGNORE_TARGET_LOC_CHANGE|DO_IGNORE_USER_LOC_CHANGE|DO_IGNORE_HELD_ITEM|DO_IGNORE_SLOWDOWNS|DO_IGNORE_INCAPACITATED))
+		return FALSE
+
+	if(!can_examinate(examinify))
+		return FALSE
+
+	if(!can_interact_with(examinify)) // Checks cameranet visibility
+		return FALSE
+
+	var/mob/living/target_examined = examinify
+	if(target_examined.stats.cooldown_finished("ai_examine"))
+		var/datum/roll_result/result = target_examined.stat_roll(13, /datum/rpg_skill/extrasensory)
+		switch(result.outcome)
+			if(SUCCESS, CRIT_SUCCESS)
+				target_examined.stats.set_cooldown("ai_examine", 1 MINUTE)
+				result.do_skill_sound(target_examined)
+				to_chat(target_examined, result.create_tooltip("Something from above is watching you."))
+
+	return TRUE
+
+/mob/living/silicon/ai/broadcast_examine(atom/examined)
+	return
+
 /// Removes all malfunction-related abilities from the AI
 /mob/living/silicon/ai/proc/remove_malf_abilities()
 	QDEL_NULL(modules_action)
@@ -740,6 +770,7 @@
 	for (var/obj/machinery/camera/C in remove)
 		lit_cameras -= C //Removed from list before turning off the light so that it doesn't check the AI looking away.
 		C.Togglelight(0)
+
 	for (var/obj/machinery/camera/C in add)
 		C.Togglelight(1)
 		lit_cameras |= C

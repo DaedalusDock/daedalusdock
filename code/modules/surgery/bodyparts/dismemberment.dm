@@ -281,10 +281,10 @@
 			var/atom/movable/screen/inventory/hand/associated_hand = arm_owner.hud_used.hand_slots["[held_index]"]
 			if(associated_hand)
 				associated_hand.update_appearance()
-		if(arm_owner.gloves)
-			arm_owner.dropItemToGround(arm_owner.gloves, TRUE)
-		arm_owner.update_worn_gloves() //to remove the bloody hands overlay
-	return ..()
+	. = ..()
+	if(arm_owner.num_hands == 0)
+		arm_owner.dropItemToGround(arm_owner.gloves, TRUE)
+	arm_owner.update_worn_gloves() //to remove the bloody hands overlay
 
 /obj/item/bodypart/leg/drop_limb(special)
 	if(owner && !special)

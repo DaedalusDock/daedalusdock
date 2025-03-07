@@ -21,13 +21,6 @@
 		CO = color
 	if (firealarm)
 		CO = bulb_emergency_colour
-	else if (nightshift_enabled)
-		OR = nightshift_outer_range
-		IR = nightshift_inner_range
-		PO = nightshift_light_power
-		if(!color)
-			CO = nightshift_light_color
-		FC = nightshift_falloff
 
 	var/matching = light && OR == light.light_outer_range && IR == light.light_inner_range && PO == light.light_power && CO == light.light_color && FC == light.light_falloff_curve
 	if(!matching)

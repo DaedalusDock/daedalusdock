@@ -24,5 +24,4 @@ SUBSYSTEM_DEF(security_level)
 /datum/controller/subsystem/security_level/proc/set_level(new_level)
 	SSsecurity_level.current_level = new_level
 	SEND_SIGNAL(src, COMSIG_SECURITY_LEVEL_CHANGED, new_level)
-	SSnightshift.check_nightshift()
 	SSblackbox.record_feedback("tally", "security_level_changes", 1, get_security_level())

@@ -238,19 +238,6 @@ const ApcContent = (props) => {
               />
             }
           />
-          <LabeledList.Item
-            label="Night Shift Lighting"
-            buttons={
-              <Button
-                icon={data.nightshiftLights ? 'lightbulb' : 'lightbulb-o'}
-                content={data.nightshiftLights ? 'Enabled' : 'Disabled'}
-                width={6.6}
-                textAlign="left"
-                selected={data.nightshiftLights}
-                onClick={() => act('toggle_nightshift')}
-              />
-            }
-          />
         </LabeledList>
       </Section>
     </>

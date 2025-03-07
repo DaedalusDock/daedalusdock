@@ -13,8 +13,8 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/datum/job/station_engineer,
 	/datum/job/atmospheric_technician,
 	// Medical
-	/datum/job/chief_medical_officer,
-	/datum/job/doctor,
+	/datum/job/augur,
+	/datum/job/acolyte,
 	/datum/job/paramedic,
 	/datum/job/chemist,
 	/datum/job/virologist,
@@ -47,7 +47,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	var/description
 
 	/// A string added to the on-join block to tell you how to use your radio.
-	var/radio_help_message = "<b>Prefix your message with :h to speak on your department's radio. To see other prefixes, look closely at your headset.</b>"
+	var/radio_help_message = "<b>Prefix your message with :h to speak on your faction's radio. To see other prefixes, look closely at your headset.</b>"
 
 	/// Innate skill levels unlocked at roundstart. Based on config.jobs_have_minimal_access config setting, for example with a skeleton crew. Format is list(/datum/skill/foo = SKILL_EXP_NOVICE) with exp as an integer or as per code/_DEFINES/skills.dm
 	var/list/skills
@@ -112,6 +112,9 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	///Lazylist of traits added to the liver of the mob assigned this job (used for the classic "cops heal from donuts" reaction, among others)
 	var/list/liver_traits = null
 
+	/// Lazylist of language types to grant.
+	var/list/languages = null
+
 	/// Goodies that can be received via the mail system.
 	// this is a weighted list.
 	/// Keep the _job definition for this empty and use /obj/item/mail to define general gifts.
@@ -161,7 +164,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	var/rpg_title
 
 	/// What company can employ this job? First index is default
-	var/list/employers = list()
+	var/list/employers = list(/datum/employer/none)
 
 	/// Default security status. Skipped if null.
 	var/default_security_status = null
@@ -205,6 +208,9 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(liver)
 		for(var/trait in liver_traits)
 			ADD_TRAIT(liver, trait, JOB_TRAIT)
+
+	for(var/language_path in languages)
+		spawned.grant_language(language_path, source = LANGUAGE_MIND)
 
 	if(!ishuman(spawned))
 		return
@@ -318,10 +324,10 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	uniform = /obj/item/clothing/under/color/grey
 	id = /obj/item/card/id/advanced
 	ears = /obj/item/radio/headset
-	belt = /obj/item/modular_computer/tablet/pda
 	back = /obj/item/storage/backpack
 	shoes = /obj/item/clothing/shoes/sneakers/black
 	box = /obj/item/storage/box/survival
+	belt = /obj/item/modular_computer/tablet/pda
 
 	id_in_wallet = TRUE
 	preload = TRUE // These are used by the prefs ui, and also just kinda could use the extra help at roundstart

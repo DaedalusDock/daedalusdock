@@ -997,7 +997,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 		if(mind && paicard.pai)
 			mind.transfer_to(paicard.pai)
 		else if(paicard.pai)
-			paicard.pai.key = key
+			paicard.pai.PossessByPlayer(key)
 		else
 			ghostize(0) // The pAI card that just got ejected was dead.
 		key = null

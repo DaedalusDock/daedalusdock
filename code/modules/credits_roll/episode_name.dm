@@ -99,7 +99,7 @@
 		episode_names += new /datum/episode_name/rare("THE CREW GOES BANANAS", "People slipped [BLACKBOX_FEEDBACK_NUM("slips")] times this round.", min(500, BLACKBOX_FEEDBACK_NUM("slips")/2))
 
 	/*var/clowns_trolled
-	for(var/datum/player_details/detail_iter as anything in GLOB.player_details)
+	for(var/datum/persistent_client/detail_iter as anything in GLOB.persistent_clients)
 
 	if(score.clownabuse > 75)
 		episode_names += new /datum/episode_name/rare("EVERYBODY LOVES A CLOWN", "[score.clownabuse] instances of clown abuse this round.", min(350, score.clownabuse*2))

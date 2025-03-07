@@ -6,6 +6,8 @@
 #define STATUS_EFFECT_REPLACE 2
 /// if it only allows one, and new instances just instead refresh the timer
 #define STATUS_EFFECT_REFRESH 3
+/// if it only allows one, and new instances add to the timer
+#define STATUS_EFFECT_EXTEND 4
 
 ///Processing flags - used to define the speed at which the status will work
 ///This is fast - 0.2s between ticks (I believe!)
@@ -43,7 +45,11 @@
 
 #define STASIS_DEBUG_HEALTH "stasis_debug_health"
 
+/// Head fracture
 #define BROKEN_SKULL_EFFECT "broken_head"
+/// Missing or dead liver.
+#define DEAD_LIVER_EFFECT "dead_liver"
+
 #define VAMPIRE_EFFECT "vampire_effect"
 
 // Status effect application helpers.

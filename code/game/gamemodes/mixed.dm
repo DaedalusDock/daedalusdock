@@ -12,8 +12,6 @@
 
 	var/list/antag_weight_map = list(
 		/datum/antagonist_selector/traitor = 100,
-		/datum/antagonist_selector/changeling = 0,
-		/datum/antagonist_selector/heretic = 20,
 		/datum/antagonist_selector/vampire = 20,
 		/datum/antagonist_selector/wizard = 1,
 	)
@@ -45,8 +43,8 @@
 		antagonist_pool[pick_weight(antag_weight_map)] += 1
 		number_of_antags--
 
-	for(var/datum/antagonist_selector/selector in shuffle(antag_weight_map))
-		selector.setup(antag_weight_map[selector], player_pool)
+	for(var/datum/antagonist_selector/selector in shuffle(antagonist_pool))
+		selector.setup(antagonist_pool[selector], player_pool)
 		player_pool -= selector.selected_mobs
 
 /datum/game_mode/mixed/setup_antags()

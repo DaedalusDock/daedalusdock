@@ -1,4 +1,5 @@
 /obj/item/bodypart/proc/create_wound(wound_type = WOUND_CUT, damage, surgical, update_damage = TRUE)
+	damage = round(damage, DAMAGE_PRECISION)
 	if(damage <= 0)
 		return
 
@@ -32,7 +33,7 @@
 		owner.adjustBloodVolume(-fluid_loss)
 
 	//Check whether we can widen an existing wound
-	if(!surgical && LAZYLEN(wounds) && prob(max(50+(real_wound_count-1)*10,90)))
+	if(!surgical && LAZYLEN(wounds) && prob(min(50+(real_wound_count-1) * 10, 90)))
 		if ((wound_type == WOUND_CUT || wound_type == WOUND_BRUISE) && damage >= 5)
 			//we need to make sure that the wound we are going to worsen is compatible with the type of damage...
 			var/list/compatible_wounds = list()
@@ -84,6 +85,10 @@
 		return W
 
 /obj/item/bodypart/proc/create_wound_easy(type2make, damage, update_damage = TRUE)
+	damage = round(damage, DAMAGE_PRECISION)
+	if(damage <= 0)
+		return
+
 	var/datum/wound/W = new type2make(damage, src)
 	var/merged = FALSE
 	for(var/datum/wound/other as anything in wounds)

@@ -410,7 +410,7 @@ GLOBAL_LIST_INIT(bodyzone_gurps_mods, list(
 		to_chat(M, "Your mob has been taken over by a ghost!")
 		message_admins("[key_name_admin(C)] has taken control of ([ADMIN_LOOKUPFLW(M)])")
 		M.ghostize(0)
-		M.key = C.key
+		M.PossessByPlayer(C.key)
 		M.client?.init_verbs()
 		return TRUE
 	else
@@ -438,8 +438,8 @@ GLOBAL_LIST_INIT(bodyzone_gurps_mods, list(
 	var/smessage_type = num2text(message_type, MAX_BITFLAG_DIGITS)
 
 	if(client)
-		if(!islist(client.player_details.logging[smessage_type]))
-			client.player_details.logging[smessage_type] = list()
+		if(!islist(persistent_client.logging[smessage_type]))
+			persistent_client.logging[smessage_type] = list()
 
 	if(!islist(logging[smessage_type]))
 		logging[smessage_type] = list()
@@ -470,8 +470,8 @@ GLOBAL_LIST_INIT(bodyzone_gurps_mods, list(
 
 	logging[smessage_type] += timestamped_message
 
-	if(client)
-		client.player_details.logging[smessage_type] += timestamped_message
+	if(HAS_CONNECTED_PLAYER(src))
+		persistent_client.logging[smessage_type] += timestamped_message
 
 	..()
 

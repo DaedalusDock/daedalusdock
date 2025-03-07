@@ -124,6 +124,9 @@
 				handle_reactions()
 			return amount
 
+	if(!is_reacting && amount < CHEMICAL_VOLUME_ROUNDING)
+		return 0
+
 	//otherwise make a new one
 	var/datum/reagent/new_reagent = new reagent(data)
 	cached_reagents += new_reagent
@@ -146,7 +149,7 @@
 	SEND_SIGNAL(src, COMSIG_REAGENTS_NEW_REAGENT, new_reagent, amount, reagtemp, data, no_react)
 	if(!no_react)
 		handle_reactions()
-	return TRUE
+	return amount
 
 /**
  * Removes a specific reagent. can supress reactions if needed
@@ -232,7 +235,7 @@
 		total_removed_amount += remove_reagent(reagent.type, reagent.volume * part)
 	handle_reactions()
 
-	return round(total_removed_amount, CHEMICAL_VOLUME_ROUNDING)
+	return round(total_removed_amount, CHEMICAL_QUANTISATION_LEVEL)
 
 /**
  * Removes an specific reagent from this holder

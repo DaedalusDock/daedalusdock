@@ -52,19 +52,24 @@
 
 /obj/item/organ/heart/Remove(mob/living/carbon/heartless, special = 0)
 	..()
-	if(!special)
-		addtimer(CALLBACK(src, PROC_REF(stop_if_unowned)), 120)
+	if(special)
+		return
 
+	addtimer(CALLBACK(src, PROC_REF(stop_if_unowned)), 2 MINUTES)
 	heartless.med_hud_set_health()
 	update_moodlet()
 
 /obj/item/organ/heart/proc/Restart()
+	if(organ_flags & ORGAN_DEAD)
+		return FALSE
+
 	pulse = PULSE_NORM
 	update_appearance(UPDATE_ICON_STATE)
 	update_movespeed()
 	update_moodlet()
 
 	owner?.med_hud_set_health()
+	return TRUE
 
 /obj/item/organ/heart/proc/Stop()
 	pulse = PULSE_NONE
@@ -110,7 +115,7 @@
 
 /obj/item/organ/heart/on_death(delta_time, times_fired)
 	. = ..()
-	if(pulse)
+	if(pulse && owner)
 		Stop()
 
 /obj/item/organ/heart/on_life(delta_time, times_fired)
@@ -242,7 +247,8 @@
 /obj/item/organ/heart/cybernetic
 	name = "basic cybernetic heart"
 	desc = "A basic electronic device designed to mimic the functions of an organic human heart."
-	icon_state = "heart-c"
+	base_icon_state = "heart-c"
+	icon_state = "heart-c-on"
 	organ_flags = ORGAN_SYNTHETIC
 
 	var/dose_available = FALSE
@@ -253,7 +259,8 @@
 /obj/item/organ/heart/cybernetic/tier2
 	name = "cybernetic heart"
 	desc = "An electronic device designed to mimic the functions of an organic human heart. Also holds an emergency dose of epinephrine, used automatically after facing severe trauma."
-	icon_state = "heart-c-u"
+	icon_state = "heart-c-u-on"
+	base_icon_state = "heart-c-u"
 	maxHealth = 60
 	dose_available = TRUE
 	emp_vulnerability = 40
@@ -261,7 +268,8 @@
 /obj/item/organ/heart/cybernetic/tier3
 	name = "upgraded cybernetic heart"
 	desc = "An electronic device designed to mimic the functions of an organic human heart. Also holds an emergency dose of epinephrine, used automatically after facing severe trauma. This upgraded model can regenerate its dose after use."
-	icon_state = "heart-c-u2"
+	icon_state = "heart-c-u2-on"
+	base_icon_state = "heart-c-u2"
 	maxHealth = 90
 	dose_available = TRUE
 	emp_vulnerability = 20

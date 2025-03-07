@@ -1,0 +1,20 @@
+2025-03-02:
+  Kapu1178:
+  - bugfix: Fixed AI and Cyborg not being selected by Divide Occupations.
+  - bugfix: Fixed AI and Cyborg not correctly displaying in the preferences menu.
+  - bugfix: Fixed modsuits not being removable. (pugman899)
+  - bugfix: Fixed the Mixed gamemode's antagonist selection.
+  - bugfix: Fixed the character limit regressing to 3.
+  pugman899:
+  - rscadd: Wires to below the jani's room
+2025-03-06:
+  Kapu1178:
+  - rscadd: The splash-screen now contains information.
+  - tweak: The tip of the round has been replaced with cycling text on the splash-screen.
+  - qol: Adjusted logic to reduce the spammy-ness of pain messages, while not eating
+      "important" pain notifications.
+  - rscadd: Getting hit applies a small amount of temporary pain.
+  - balance: Improved the rate that wounds automatically heal at.
+  - balance: Improved the rate at which Traumatic Shock decays.
+  - bugfix: Fixed a bug that caused mood messages to display multiple times.
+  - bugfix: Slice Tendon and Throat Slit are actually usable.

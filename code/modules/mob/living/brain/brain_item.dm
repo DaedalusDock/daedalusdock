@@ -62,7 +62,7 @@
 		if(brainmob.mind)
 			brainmob.mind.transfer_to(owner)
 		else
-			owner.key = brainmob.key
+			owner.PossessByPlayer(brainmob.key)
 
 		owner.set_suicide(brainmob.suiciding)
 
@@ -119,10 +119,12 @@
 		return
 	if(!L.mind)
 		return
+
 	brainmob = new(src)
 	brainmob.set_real_name(L.real_name)
 	brainmob.timeofhostdeath = L.timeofdeath
 	brainmob.suiciding = suicided
+
 	if(L.has_dna())
 		var/mob/living/carbon/C = L
 		if(!brainmob.stored_dna)
@@ -130,7 +132,10 @@
 		C.dna.copy_dna(brainmob.stored_dna)
 		if(HAS_TRAIT(L, TRAIT_BADDNA))
 			LAZYSET(brainmob.status_traits, TRAIT_BADDNA, L.status_traits[TRAIT_BADDNA])
+
 	if(L.mind && L.mind.current)
+		if(!QDELETED(L))
+			L.mind.body_appearance = L.appearance
 		L.mind.transfer_to(brainmob)
 
 	if(brainmob.stat == CONSCIOUS)
@@ -357,7 +362,7 @@
 		return
 
 	if(damage > 0 && prob(1))
-		owner.pain_message("Your head feels numb and painful.", 10)
+		owner.pain_message("Your head feels numb and painful.", PAIN_AMT_LOW, TRUE)
 
 	if(damage >= (maxHealth * low_threshold) && prob(1) && owner.eye_blurry <= 0)
 		to_chat(owner, span_warning("It becomes hard to see for some reason."))

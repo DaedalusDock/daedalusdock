@@ -75,16 +75,12 @@
 /mob/living/carbon/getBruteLoss()
 	var/amount = 0
 	for(var/obj/item/bodypart/BP as anything in bodyparts)
-		if(!IS_ORGANIC_LIMB(BP))
-			continue
 		amount += BP.brute_dam
 	return amount
 
 /mob/living/carbon/getFireLoss()
 	var/amount = 0
 	for(var/obj/item/bodypart/BP as anything in bodyparts)
-		if(!IS_ORGANIC_LIMB(BP))
-			continue
 		amount += BP.burn_dam
 	return amount
 

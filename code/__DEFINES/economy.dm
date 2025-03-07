@@ -21,7 +21,7 @@
 #define ACCOUNT_ENG "ENG"
 #define ACCOUNT_ENG_NAME "Daedalus Industries Funds"
 #define ACCOUNT_MED "MED"
-#define ACCOUNT_MED_NAME "Aether Pharmaceuticals Funds"
+#define ACCOUNT_MED_NAME "Aether Association Funds"
 #define ACCOUNT_SRV "SRV"
 #define ACCOUNT_CAR "CAR"
 #define ACCOUNT_CAR_NAME "Hermes Galactic Freight Funds"

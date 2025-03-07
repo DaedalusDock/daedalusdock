@@ -222,7 +222,7 @@
 /mob/proc/makePAI(delold)
 	var/obj/item/paicard/card = new /obj/item/paicard(get_turf(src))
 	var/mob/living/silicon/pai/pai = new /mob/living/silicon/pai(card)
-	pai.key = key
+	pai.PossessByPlayer(key)
 	pai.name = name
 	card.setPersonality(pai)
 	if(delold)

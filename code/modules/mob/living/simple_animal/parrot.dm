@@ -928,7 +928,7 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 		if(mind)
 			mind.transfer_to(G)
 		else
-			G.key = key
+			G.PossessByPlayer(key)
 	..(gibbed)
 
 /mob/living/simple_animal/parrot/poly/proc/Read_Memory()

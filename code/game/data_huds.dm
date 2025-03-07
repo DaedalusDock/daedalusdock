@@ -257,7 +257,7 @@ Security HUDs! Basic mode shows only the job.
 
 /mob/living/carbon/human/proc/sec_hud_set_security_status()
 	var/perpname = get_face_name(get_id_name(""))
-	if(perpname && SSdatacore)
+	if(perpname && SSdatacore.initialized)
 		var/datum/data/record/security/R = SSdatacore.get_record_by_name(name, DATACORE_RECORDS_SECURITY)
 		if(R)
 			var/new_state

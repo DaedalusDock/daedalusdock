@@ -520,12 +520,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 		see = get_hear(view_range, pos)
 	return see
 
-/obj/machinery/camera/proc/Togglelight(on)
-	for(var/mob/living/silicon/ai/A in GLOB.ai_list)
+/obj/machinery/camera/proc/set_ai_light(on, mob/living/silicon/ai/user)
+	for(var/mob/living/silicon/ai/A in GLOB.ai_list - user)
 		if(src in A.lit_cameras)
 			return
 
 	set_light(l_on = !!on)
+	visible_message(span_subtle("[src]'s light flicks [on ? "on" : "off"]."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 /obj/machinery/camera/get_remote_view_fullscreens(mob/user)
 	if(view_range == short_range) //unfocused

@@ -232,7 +232,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	E.alpha = 255
 	E.mouse_opacity = MOUSE_OPACITY_ICON
 	E.cut_overlays()
-	E.vis_contents.Cut()
+	E.cut_viscontents()
 	if(choice_id == NEXT_PAGE_ID)
 		E.name = "Next Page"
 		E.next_page = TRUE
@@ -260,7 +260,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 			var/obj/effect/abstract/info/info_button = new(E, choice_datum.info)
 			info_button.plane = ABOVE_HUD_PLANE
 			info_button.layer = RADIAL_CONTENT_LAYER
-			E.vis_contents += info_button
+			E.add_viscontents(info_button)
 
 /datum/radial_menu/New()
 	close_button = new

@@ -37,8 +37,12 @@ SUBSYSTEM_DEF(lighting)
 	MC_SPLIT_TICK_INIT(3)
 	if(!init_tick_checks)
 		MC_SPLIT_TICK
+	else
+		SStitle.set_game_status_text(sub_text = "Setting up lighting corners")
+
 	var/list/queue = sources_queue
 	var/i = 0
+
 	for (i in 1 to length(queue))
 		var/datum/light_source/L = queue[i]
 
@@ -56,6 +60,8 @@ SUBSYSTEM_DEF(lighting)
 
 	if(!init_tick_checks)
 		MC_SPLIT_TICK
+	else
+		SStitle.set_game_status_text(sub_text = "Propagating lumens")
 
 	queue = corners_queue
 	for (i in 1 to length(queue))
@@ -68,6 +74,7 @@ SUBSYSTEM_DEF(lighting)
 			CHECK_TICK
 		else if (MC_TICK_CHECK)
 			break
+
 	if (i)
 		queue.Cut(1, i+1)
 		i = 0
@@ -75,6 +82,8 @@ SUBSYSTEM_DEF(lighting)
 
 	if(!init_tick_checks)
 		MC_SPLIT_TICK
+	else
+		SStitle.set_game_status_text(sub_text = "Rendering light")
 
 	queue = objects_queue
 	for (i in 1 to length(queue))

@@ -111,7 +111,59 @@
 	var/path_image_icon_state = "path_indicator"
 	var/path_image_color = "#FFFFFF"
 	var/reset_access_timer_id
-	var/ignorelistcleanuptimer = 1 // This ticks up every automated action, at 300 we clean the ignore list
+
+	COOLDOWN_DECLARE(ignore_list_cleanup_cd)
+
+/mob/living/simple_animal/bot/Initialize(mapload)
+	. = ..()
+	GLOB.bots_list += src
+
+	path_hud = new /datum/atom_hud/data/bot_path()
+	for(var/hud in path_hud.hud_icons) // You get to see your own path
+		set_hud_image_active(hud, exclusive_hud = path_hud)
+
+	// Give bots a fancy new ID card that can hold any access.
+	access_card = new /obj/item/card/id/advanced/simple_bot(src)
+	// This access is so bots can be immediately set to patrol and leave Robotics, instead of having to be let out first.
+	access_card.set_access(list(ACCESS_ROBOTICS))
+	internal_radio = new /obj/item/radio(src)
+	if(radio_key)
+		internal_radio.keyslot = new radio_key
+	internal_radio.subspace_transmission = TRUE
+	internal_radio.canhear_range = -1 // anything greater will have the bot broadcast the channel as if it were saying it out loud.
+	internal_radio.recalculateChannels()
+
+	//Adds bot to the diagnostic HUD system
+	prepare_huds()
+	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
+		diag_hud.add_atom_to_hud(src)
+	diag_hud_set_bothealth()
+	diag_hud_set_botstat()
+	diag_hud_set_botmode()
+
+	//If a bot has its own HUD (for player bots), provide it.
+	if(!isnull(data_hud_type))
+		var/datum/atom_hud/datahud = GLOB.huds[data_hud_type]
+		datahud.show_to(src)
+	if(path_hud)
+		path_hud.add_atom_to_hud(src)
+		path_hud.show_to(src)
+
+
+/mob/living/simple_animal/bot/Destroy()
+	if(path_hud)
+		QDEL_NULL(path_hud)
+		path_hud = null
+	GLOB.bots_list -= src
+	if(paicard)
+		ejectpai()
+	QDEL_NULL(internal_radio)
+	QDEL_NULL(access_card)
+	ignore_list = null
+	return ..()
+
+/mob/living/simple_animal/bot/proc/set_mode(new_mode)
+	mode = new_mode
 
 /mob/living/simple_animal/bot/proc/get_mode()
 	if(client) //Player bots do not have modes, thus the override. Also an easy way for PDA users/AI to know when a bot is a player.
@@ -162,53 +214,6 @@
 	if(checked_mode & checked_flag)
 		return TRUE
 	return FALSE
-
-/mob/living/simple_animal/bot/Initialize(mapload)
-	. = ..()
-	GLOB.bots_list += src
-
-	path_hud = new /datum/atom_hud/data/bot_path()
-	for(var/hud in path_hud.hud_icons) // You get to see your own path
-		set_hud_image_active(hud, exclusive_hud = path_hud)
-
-	// Give bots a fancy new ID card that can hold any access.
-	access_card = new /obj/item/card/id/advanced/simple_bot(src)
-	// This access is so bots can be immediately set to patrol and leave Robotics, instead of having to be let out first.
-	access_card.set_access(list(ACCESS_ROBOTICS))
-	internal_radio = new /obj/item/radio(src)
-	if(radio_key)
-		internal_radio.keyslot = new radio_key
-	internal_radio.subspace_transmission = TRUE
-	internal_radio.canhear_range = -1 // anything greater will have the bot broadcast the channel as if it were saying it out loud.
-	internal_radio.recalculateChannels()
-
-	//Adds bot to the diagnostic HUD system
-	prepare_huds()
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
-	diag_hud_set_bothealth()
-	diag_hud_set_botstat()
-	diag_hud_set_botmode()
-
-	//If a bot has its own HUD (for player bots), provide it.
-	if(!isnull(data_hud_type))
-		var/datum/atom_hud/datahud = GLOB.huds[data_hud_type]
-		datahud.show_to(src)
-	if(path_hud)
-		path_hud.add_atom_to_hud(src)
-		path_hud.show_to(src)
-
-
-/mob/living/simple_animal/bot/Destroy()
-	if(path_hud)
-		QDEL_NULL(path_hud)
-		path_hud = null
-	GLOB.bots_list -= src
-	if(paicard)
-		ejectpai()
-	QDEL_NULL(internal_radio)
-	QDEL_NULL(access_card)
-	return ..()
 
 /mob/living/simple_animal/bot/proc/check_access(mob/living/user, obj/item/card/id)
 	if(user.has_unlimited_silicon_privilege || isAdminGhostAI(user)) // Silicon and Admins always have access.
@@ -301,14 +306,9 @@
 /mob/living/simple_animal/bot/handle_automated_action() //Master process which handles code common across most bots.
 	diag_hud_set_botmode()
 
-	if (ignorelistcleanuptimer % 300 == 0) // Every 300 actions, clean up the ignore list from old junk
-		for(var/ref in ignore_list)
-			var/atom/referredatom = locate(ref)
-			if (!referredatom || !istype(referredatom) || QDELETED(referredatom))
-				ignore_list -= ref
-		ignorelistcleanuptimer = 1
-	else
-		ignorelistcleanuptimer++
+	if (COOLDOWN_FINISHED(src, ignore_list_cleanup_cd))
+		clear_ignore_list()
+		COOLDOWN_START(src, ignore_list_cleanup_cd, 20 SECONDS)
 
 	if(!(bot_mode_flags & BOT_MODE_ON) || client)
 		return FALSE
@@ -326,6 +326,8 @@
 			return FALSE
 		if(BOT_SUMMON) //Called to a location
 			summon_step()
+			return FALSE
+		if(BOT_PATHING)
 			return FALSE
 	return TRUE //Successful completion. Used to prevent child process() continuing if this one is ended early.
 
@@ -554,12 +556,26 @@ GLOBAL_LIST_EMPTY(scan_typecaches)
 			return TRUE
 	return FALSE
 
-/mob/living/simple_animal/bot/proc/add_to_ignore(subject)
-	if(ignore_list.len < 50) //This will help keep track of them, so the bot is always trying to reach a blocked spot.
-		ignore_list += REF(subject)
-	else  //If the list is full, insert newest, delete oldest.
-		ignore_list.Cut(1,2)
-		ignore_list += REF(subject)
+/// Add an atom to our list of ignored objects.
+/mob/living/simple_animal/bot/proc/add_to_ignore(atom/subject)
+	if(isnull(subject) || (subject in ignore_list))
+		return
+
+	if(ignore_list.len >= 50)
+		remove_ignored_atom(ignore_list[1])
+
+	ignore_list += subject
+	RegisterSignal(subject, COMSIG_PARENT_QDELETING, PROC_REF(remove_ignored_atom))
+
+/mob/living/simple_animal/bot/proc/remove_ignored_atom(datum/source)
+	SIGNAL_HANDLER
+
+	UnregisterSignal(source, COMSIG_PARENT_QDELETING)
+	ignore_list -= source
+
+/mob/living/simple_animal/bot/proc/clear_ignore_list()
+	for(var/atom/A as anything in ignore_list)
+		remove_ignored_atom(A)
 
 /*
 Movement proc for stepping a bot through a path generated through A-star.
@@ -607,12 +623,12 @@ Pass a positive integer as an argument to override a bot's default speed.
 	if(mode != BOT_SUMMON && mode != BOT_RESPONDING)
 		access_card.set_access(prev_access)
 
-/mob/living/simple_animal/bot/proc/call_bot(caller, turf/waypoint, message = TRUE)
+/mob/living/simple_animal/bot/proc/call_bot(invoker, turf/waypoint, message = TRUE)
 	bot_reset() //Reset a bot before setting it to call mode.
 
 	var/list/access = SSid_access.accesses_by_region[REGION_ALL_STATION]
 	set_path(jps_path_to(src, waypoint, max_distance=200, access = access.Copy(), diagonal_handling=DIAGONAL_REMOVE_ALL))
-	calling_ai = caller //Link the AI to the bot!
+	calling_ai = invoker //Link the AI to the bot!
 	ai_waypoint = waypoint
 
 	if(path?.len) //Ensures that a valid path is calculated!
@@ -622,11 +638,11 @@ Pass a positive integer as an argument to override a bot's default speed.
 		access_card.set_access(REGION_ACCESS_ALL_STATION) //Give the bot all-access while under the AI's command.
 		if(client)
 			reset_access_timer_id = addtimer(CALLBACK (src, PROC_REF(bot_reset)), 60 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE) //if the bot is player controlled, they get the extra access for a limited time
-			to_chat(src, span_notice("[span_big("Priority waypoint set by [icon2html(calling_ai, src)] <b>[caller]</b>. Proceed to <b>[end_area]</b>.")]<br>[path.len-1] meters to destination. You have been granted additional door access for 60 seconds."))
+			to_chat(src, span_notice("[span_big("Priority waypoint set by [icon2html(calling_ai, src)] <b>[invoker]</b>. Proceed to <b>[end_area]</b>.")]<br>[path.len-1] meters to destination. You have been granted additional door access for 60 seconds."))
 		if(message)
 			to_chat(calling_ai, span_notice("[icon2html(src, calling_ai)] [name] called to [end_area]. [path.len-1] meters to destination."))
 		pathset = TRUE
-		mode = BOT_RESPONDING
+		set_mode(BOT_RESPONDING)
 		tries = 0
 	else
 		if(message)
@@ -655,7 +671,8 @@ Pass a positive integer as an argument to override a bot's default speed.
 	pathset = FALSE
 	access_card.set_access(prev_access)
 	tries = 0
-	mode = BOT_IDLE
+	set_mode(BOT_IDLE)
+	frustration = 0
 	ignore_list = list()
 	diag_hud_set_botstat()
 	diag_hud_set_botmode()
@@ -685,7 +702,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 		return
 
 	if(!(bot_mode_flags & BOT_MODE_AUTOPATROL)) //A bot not set to patrol should not be patrolling.
-		mode = BOT_IDLE
+		set_mode(BOT_IDLE)
 		return
 
 	if(patrol_target) // has patrol target
@@ -701,7 +718,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 	if(!path.len)
 		patrol_target = null
 		return
-	mode = BOT_PATROL
+	set_mode(BOT_PATROL)
 // perform a single patrol step
 
 /mob/living/simple_animal/bot/proc/patrol_step()
@@ -726,7 +743,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 			addtimer(CALLBACK(src, PROC_REF(patrol_step_not_moved)), 2)
 
 	else // no path, so calculate new one
-		mode = BOT_START_PATROL
+		set_mode(BOT_START_PATROL)
 
 /mob/living/simple_animal/bot/proc/patrol_step_not_moved()
 	calc_path()
@@ -744,7 +761,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 		destination = next_destination
 	else
 		bot_mode_flags &= ~BOT_MODE_AUTOPATROL
-		mode = BOT_IDLE
+		set_mode(BOT_IDLE)
 		speak("Disengaging patrol mode.")
 
 /mob/living/simple_animal/bot/proc/get_next_patrol_target()
@@ -793,7 +810,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 			summon_target = get_turf(user)
 			if(user_access.len != 0)
 				access_card.set_access(user_access + prev_access) //Adds the user's access, if any.
-			mode = BOT_SUMMON
+			set_mode(BOT_SUMMON)
 			speak("Responding.", radio_channel)
 
 		if("ejectpai")
@@ -980,7 +997,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 		if(mind && paicard.pai)
 			mind.transfer_to(paicard.pai)
 		else if(paicard.pai)
-			paicard.pai.key = key
+			paicard.pai.PossessByPlayer(key)
 		else
 			ghostize(0) // The pAI card that just got ejected was dead.
 		key = null

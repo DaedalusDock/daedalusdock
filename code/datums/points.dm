@@ -36,3 +36,6 @@
 /datum/point_holder/proc/set_max_points(new_max)
 	max_points = new_max
 	points = min(max_points, points)
+
+/datum/point_holder/proc/get_max_points()
+	return max_points

@@ -69,6 +69,8 @@ You can find more information about all of these from their respective doc comme
 
 `TEST_FOCUS(test_path)` - *Only* run the test provided within the parameters. Useful for reducing noise. For example, if we only want to run our example square test, we can add `TEST_FOCUS(/datum/unit_test/square)`. Should *never* be pushed in a pull request--you will be laughed at.
 
+`TEST_SKIP(reason)` - Mark a test as skipped, and stops the test. This is mostly used for map tests that shouldn't run on test maps, which likely have very strange setups that wouldn't be allowed in a normal, production map.
+
 ## Final Notes
 
 - Writing tests before you attempt to fix the bug can actually speed up development a lot! It means you don't have to go in game and folllow the same exact steps manually every time. This process is known as "TDD" (test driven development). Write the test first, make sure it fails, *then* start work on the fix/feature, and you'll know you're done when your tests pass. If you do try this, do make sure to confirm in a non-testing environment just to double check.

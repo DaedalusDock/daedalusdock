@@ -173,9 +173,6 @@
 	dog_fashion = /datum/dog_fashion/head/clown
 	var/list/clownmask_designs = list()
 
-/obj/item/clothing/mask/gas/clown_hat/plasmaman
-	starting_filter_type = /obj/item/gas_filter/plasmaman
-
 /obj/item/clothing/mask/gas/clown_hat/Initialize(mapload)
 	.=..()
 	clownmask_designs = list(
@@ -229,9 +226,6 @@
 	actions_types = list(/datum/action/item_action/adjust)
 
 	var/list/mimemask_designs = list()
-
-/obj/item/clothing/mask/gas/mime/plasmaman
-	starting_filter_type = /obj/item/gas_filter/plasmaman
 
 /obj/item/clothing/mask/gas/mime/Initialize(mapload)
 	.=..()

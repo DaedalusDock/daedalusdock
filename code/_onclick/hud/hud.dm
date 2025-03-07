@@ -193,6 +193,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 /mob/proc/create_mob_hud()
 	if(!client || hud_used)
 		return
+
 	set_hud_used(new hud_type(src))
 	update_sight()
 	SEND_SIGNAL(src, COMSIG_MOB_HUD_CREATED)
@@ -395,6 +396,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	if(ismob(mymob) && mymob.hud_used == src)
 		show_hud(hud_version)
 
+/// Handles dimming inventory slots that a mob can't equip items to in their current state
 /datum/hud/proc/update_locked_slots()
 	return
 

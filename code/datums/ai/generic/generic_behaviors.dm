@@ -185,8 +185,8 @@
 	if(QDELETED(controller.pawn))
 		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
-	// if(controller.blackboard_key_exists(set_key))
-	// 	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
+	if(controller.blackboard_key_exists(set_key))
+		return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
 	var/find_this_thing = search_tactic(controller, locate_path, search_range)
 	if(isnull(find_this_thing))

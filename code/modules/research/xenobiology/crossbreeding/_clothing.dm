@@ -24,7 +24,7 @@ Slimecrossing Armor
 		user.clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 		user.apply_status_effect(/datum/status_effect/rebreathing)
 
-/obj/item/clothing/mask/nobreath/dropped(mob/living/carbon/human/user)
+/obj/item/clothing/mask/nobreath/unequipped(mob/living/carbon/human/user)
 	..()
 	user.remove_status_effect(/datum/status_effect/rebreathing)
 

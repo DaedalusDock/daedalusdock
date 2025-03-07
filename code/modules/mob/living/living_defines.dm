@@ -11,7 +11,11 @@ DEFINE_INTERACTABLE(/mob/living)
 
 	hud_type = /datum/hud/living
 
-	var/resize = 1 ///Badminnery resize
+	///Tracks the scale of the mob transformation matrix in relation to its identity. Use update_transform(resize) to change it.
+	var/current_size = RESIZE_DEFAULT_SIZE
+	///How the mob transformation matrix is scaled on init.
+	var/initial_size = RESIZE_DEFAULT_SIZE
+
 	var/lastattacker = null
 	var/lastattackerckey = null
 
@@ -62,17 +66,20 @@ DEFINE_INTERACTABLE(/mob/living)
 	VAR_PROTECTED/lying_angle = 0
 	/// Value of lying lying_angle before last change. TODO: Remove the need for this.
 	var/lying_prev = 0
+	/// Does the mob rotate when lying
+	var/rotate_on_lying = FALSE
 
 	var/hallucination = 0 ///Directly affects how long a mob will hallucinate for
 
 	var/last_special = 0 ///Used by the resist verb, likely used to prevent players from bypassing next_move by logging in/out.
+	/// Time of death as world.time
 	var/timeofdeath = 0
 
 	/// Helper vars for quick access to firestacks, these should be updated every time firestacks are adjusted
 	var/on_fire = FALSE
 	var/fire_stacks = 0
 
-	/**
+	/**			mind.mob_appearance = appearance
 	  * Allows mobs to move through dense areas without restriction. For instance, in space or out of holder objects.
 	  *
 	  * FALSE is off, [INCORPOREAL_MOVE_BASIC] is normal, [INCORPOREAL_MOVE_SHADOW] is for ninjas
@@ -92,8 +99,8 @@ DEFINE_INTERACTABLE(/mob/living)
 
 	var/cameraFollow = null
 
-	/// Time of death
-	var/tod = null
+	/// Time of death in the in-game time format
+	var/timeofdeath_as_ingame = null
 
 	var/limb_destroyer = 0 //1 Sets AI behavior that allows mobs to target and dismember limbs with their basic attack.
 
@@ -179,10 +186,12 @@ DEFINE_INTERACTABLE(/mob/living)
 	/// A lazylist of grab objects we have
 	var/list/active_grabs
 
-	///The y amount a mob's sprite should be offset due to the current position they're in (e.g. lying down moves your sprite down)
-	var/body_position_pixel_x_offset = 0
 	///The x amount a mob's sprite should be offset due to the current position they're in
+	var/body_position_pixel_x_offset = 0
+	///The y amount a mob's sprite should be offset due to the current position they're in or size (e.g. lying down moves your sprite down)
 	var/body_position_pixel_y_offset = 0
+	///The height offset of a mob's maptext due to their current size.
+	var/body_maptext_height_offset = 0
 
 	///what multiplicative slowdown we get from turfs currently.
 	var/current_turf_slowdown = 0

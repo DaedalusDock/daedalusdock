@@ -65,7 +65,9 @@
 
 	ADD_TRAIT(src, TRAIT_FLOCKPHASE, INNATE_TRAIT)
 	pass_flags_self |= LETPASSTHROW | PASSFLOCK
-	resize = 0
+
+	current_size = 0
+
 	set_density(FALSE)
 	release_all_grabs()
 	add_movespeed_modifier(/datum/movespeed_modifier/flockphase)
@@ -84,7 +86,7 @@
 
 	REMOVE_TRAIT(src, TRAIT_FLOCKPHASE, INNATE_TRAIT)
 	pass_flags_self &= ~(LETPASSTHROW | PASSFLOCK)
-	resize = initial(resize)
+	current_size = initial_size
 	set_density(TRUE)
 	remove_movespeed_modifier(/datum/movespeed_modifier/flockphase)
 

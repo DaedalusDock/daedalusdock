@@ -23,6 +23,8 @@
 	/// We also need to clear this var/do other cleanup in client/Destroy, since that happens before logout
 	/// HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
 	var/client/canon_client
+	/// Persistent client.
+	var/datum/persistent_client/persistent_client
 
 	var/shift_to_open_context_menu = TRUE
 
@@ -93,6 +95,8 @@
 	var/eye_blurry = 0 //Carbon
 	/// What is the mobs real name (name is overridden for disguises etc)
 	var/real_name = null
+	/// The name this mob had when it died. Used by dead say.
+	var/died_as_name = ""
 
 	/**
 	  * back up of the real name during admin possession

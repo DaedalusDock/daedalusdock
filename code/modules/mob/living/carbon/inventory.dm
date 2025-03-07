@@ -136,6 +136,8 @@
 	if(length(item.actions))
 		item.update_action_buttons(UPDATE_BUTTON_STATUS)
 
+	hud_used?.update_locked_slots()
+
 	return item.equipped(src, slot, initial)
 
 /mob/living/carbon/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE, slot = get_slot_by_item(I))
@@ -180,6 +182,7 @@
 
 	if(handled && !QDELETED(src))
 		update_slots_for_item(I, slot)
+		hud_used?.update_locked_slots()
 
 //handle stuff to update when a mob equips/unequips a mask.
 /mob/living/proc/wear_mask_update(obj/item/I, toggle_off = 1)
@@ -305,17 +308,25 @@
 	return covered_flags
 
 ///Returns an item that is covering a bodypart.
-/mob/living/carbon/proc/get_item_covering_bodypart(obj/item/bodypart/BP)
-	return get_item_covering_zone(BP.body_zone)
+/mob/living/carbon/proc/get_item_covering_bodypart(obj/item/bodypart/BP, thickmaterial_only)
+	return get_item_covering_zone(BP.body_zone, thickmaterial_only)
 
 ///Returns an item that is covering a body_zone (BODY_ZONE_CHEST, etc)
-/mob/living/carbon/proc/get_item_covering_zone(zone)
+/mob/living/carbon/proc/get_item_covering_zone(zone, thickmaterial_only)
 	var/list/zones = body_zone2cover_flags(zone)
 	var/cover_field = NONE
 	for(var/_zone in zones)
 		cover_field |= _zone
 
 	for(var/obj/item/inv_item in get_all_worn_items())
+		if(thickmaterial_only)
+			if(!isclothing(inv_item))
+				continue
+
+			var/obj/item/clothing/clothing = inv_item
+			if(!(clothing.clothing_flags & THICKMATERIAL))
+				continue
+
 		if(cover_field & inv_item.body_parts_covered)
 			return inv_item
 

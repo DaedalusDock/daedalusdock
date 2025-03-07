@@ -52,8 +52,8 @@
 #define JOB_STATION_ENGINEER "Station Engineer"
 #define JOB_ATMOSPHERIC_TECHNICIAN "Atmospheric Technician"
 //Medical
-#define JOB_MEDICAL_DIRECTOR "Medical Director"
-#define JOB_MEDICAL_DOCTOR "General Practitioner"
+#define JOB_AUGUR "Augur"
+#define JOB_ACOLYTE "Acolyte"
 #define JOB_PARAMEDIC "Paramedic"
 #define JOB_CHEMIST "Chemist"
 #define JOB_VIROLOGIST "Virologist"
@@ -109,7 +109,7 @@
 #define DEPARTMENT_BITFLAG_SCIENCE (1<<5)
 #define DEPARTMENT_SCIENCE "Science"
 #define DEPARTMENT_BITFLAG_MEDICAL (1<<6)
-#define DEPARTMENT_MEDICAL "Aether Pharmaceuticals"
+#define DEPARTMENT_MEDICAL "Aether Association"
 #define DEPARTMENT_BITFLAG_SILICON (1<<7)
 #define DEPARTMENT_SILICON "Silicon"
 #define DEPARTMENT_BITFLAG_ASSISTANT (1<<8)
@@ -139,3 +139,10 @@
 
 #define FACTION_NONE "None"
 #define FACTION_STATION "Station"
+
+/// Spawn point is always fixed.
+#define JOBSPAWN_FORCE_FIXED 0
+/// Spawn point prefers a fixed spawnpoint, but can be a latejoin one.
+#define JOBSPAWN_ALLOW_RANDOM 1
+/// Spawn point is always a random spawnpoint.
+#define JOBSPAWN_FORCE_RANDOM 2

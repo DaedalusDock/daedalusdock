@@ -246,14 +246,6 @@
 	build_path = /obj/item/tank/internals/emergency_oxygen/empty
 	category = list(DCAT_ATMOS)
 
-/datum/design/plasmaman_tank_belt
-	name = "Plasmaman Belt Tank"
-	id = "plasmaman_tank_belt"
-	build_type = AUTOLATHE | FABRICATOR
-	materials = list(/datum/material/iron = 800)
-	build_path = /obj/item/tank/internals/plasmaman/belt/empty
-	category = list(DCAT_ATMOS)
-
 /datum/design/generic_gas_tank
 	name = "Generic Gas Tank"
 	id = "generic_tank"
@@ -425,15 +417,6 @@
 	category = list(DCAT_DINNERWARE)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
-/datum/design/cultivator
-	name = "Cultivator"
-	id = "cultivator"
-	build_type = AUTOLATHE | FABRICATOR
-	materials = list(/datum/material/iron=50)
-	build_path = /obj/item/cultivator
-	category = list(DCAT_BOTANICAL)
-	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
-
 /datum/design/plant_analyzer
 	name = "Plant Analyzer"
 	id = "plant_analyzer"
@@ -468,15 +451,6 @@
 	materials = list(/datum/material/iron = 15000)
 	build_path = /obj/item/hatchet
 	category = list(DCAT_MISC_TOOL, DCAT_BOTANICAL)
-	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
-
-/datum/design/secateurs
-	name = "Secateurs"
-	id = "secateurs"
-	build_type = AUTOLATHE | FABRICATOR
-	materials = list(/datum/material/iron = 4000)
-	build_path = /obj/item/secateurs
-	category = list(DCAT_BOTANICAL)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
 /datum/design/blood_filter

@@ -211,7 +211,7 @@
 	. = ..()
 	RegisterSignal(M, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 
-/obj/item/instrument/harmonica/dropped(mob/M)
+/obj/item/instrument/harmonica/unequipped(mob/M)
 	. = ..()
 	UnregisterSignal(M, COMSIG_MOB_SAY)
 

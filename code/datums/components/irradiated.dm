@@ -90,7 +90,7 @@
 	if (should_halt_effects(parent))
 		return
 
-	if (human_parent.stat > DEAD)
+	if (human_parent.stat != DEAD)
 		human_parent.dna?.species?.handle_radiation(human_parent, world.time - beginning_of_irradiation, delta_time)
 
 	process_tox_damage(human_parent, delta_time)

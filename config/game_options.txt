@@ -31,7 +31,7 @@ COMMENDATION_PERCENT_POLL 0.05
 
 ## These modify the run/walk speed of all mobs before the mob-specific modifiers are applied.
 RUN_DELAY 4
-WALK_DELAY 6
+WALK_DELAY 5
 SPRINT_DELAY 2
 
 ## The variables below affect the movement of specific mob types. THIS AFFECTS ALL SUBTYPES OF THE TYPE YOU CHOOSE!
@@ -82,6 +82,9 @@ STATION_GOAL_BUDGET 1
 
 ## Uncomment to not send a roundstart intercept report. Gamemodes may override this.
 #NO_INTERCEPT_REPORT
+
+## Uncomment to hide the gamemode name from players.
+#HIDE_GAMEMODE_NAME
 
 ## The amount of time it takes for the emergency shuttle to be called, from round start.
 SHUTTLE_REFUEL_DELAY 12000
@@ -294,7 +297,6 @@ ROUNDSTART_RACES human
 ROUNDSTART_RACES lizard
 #ROUNDSTART_RACES fly
 ROUNDSTART_RACES moth
-ROUNDSTART_RACES plasmaman
 #ROUNDSTART_RACES shadow
 ROUNDSTART_RACES teshari
 ROUNDSTART_RACES ipc

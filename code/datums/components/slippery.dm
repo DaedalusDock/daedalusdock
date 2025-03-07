@@ -41,7 +41,7 @@
 	if(ismovable(parent))
 		if(isitem(parent))
 			RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
-			RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
+			RegisterSignal(parent, COMSIG_ITEM_UNEQUIPPED, PROC_REF(on_drop))
 	else
 		RegisterSignal(parent, COMSIG_ATOM_ENTERED, PROC_REF(Slip))
 
@@ -113,7 +113,7 @@
 		holder = null
 
 /*
- * Gets called when COMSIG_ITEM_DROPPED is sent to parent.
+ * Gets called when COMSIG_ITEM_UNEQUIPPED is sent to parent.
  * Makes our holder mob un-slippery.
  *
  * source - the source of the signal

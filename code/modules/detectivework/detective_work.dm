@@ -58,6 +58,9 @@
 
 /// For admins. Logs when mobs players with this thing.
 /atom/proc/log_touch(mob/M)
+	if (QDELING(src))
+		return
+
 	if(isnull(forensics))
 		create_forensics()
 
@@ -65,6 +68,9 @@
 
 /// Add a list of fingerprints
 /atom/proc/add_fingerprint_list(list/fingerprints)
+	if (QDELING(src))
+		return
+
 	if(isnull(forensics))
 		create_forensics()
 
@@ -72,23 +78,35 @@
 
 /// Add a list of fibers
 /atom/proc/add_fiber_list(list/fibertext)
+	if (QDELING(src))
+		return
+
 	if(isnull(forensics))
 		create_forensics()
 	forensics.add_fiber_list(fibertext)
 
 /// Add a list of residues
 /atom/proc/add_gunshot_residue(residue)
+	if (QDELING(src))
+		return
+
 	if(isnull(forensics))
 		create_forensics()
 	forensics.add_gunshot_residue(residue)
 
 /atom/proc/log_touch_list(list/hiddenprints)
+	if (QDELING(src))
+		return
+
 	if(isnull(forensics))
 		create_forensics()
 
 	forensics.log_touch_list(hiddenprints)
 
 /atom/proc/add_trace_DNA(list/dna)
+	if (QDELING(src))
+		return
+
 	if(isnull(forensics))
 		create_forensics()
 

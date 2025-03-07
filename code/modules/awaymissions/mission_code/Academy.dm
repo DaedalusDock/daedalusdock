@@ -133,7 +133,7 @@
 		var/mob/dead/observer/C = pick(candidates)
 		message_admins("[ADMIN_LOOKUPFLW(C)] was spawned as Wizard Academy Defender")
 		current_wizard.ghostize() // on the off chance braindead defender gets back in
-		current_wizard.key = C.key
+		current_wizard.PossessByPlayer(C.key)
 
 /obj/structure/academy_wizard_spawner/proc/summon_wizard()
 	var/turf/T = src.loc
@@ -330,7 +330,7 @@
 			if(LAZYLEN(candidates))
 				var/mob/dead/observer/C = pick(candidates)
 				message_admins("[ADMIN_LOOKUPFLW(C)] was spawned as Dice Servant")
-				H.key = C.key
+				H.PossessByPlayer(C.key)
 
 			var/datum/action/cooldown/spell/summon_mob/summon_servant = new(user.mind || user, H)
 			summon_servant.Grant(user)

@@ -531,10 +531,7 @@
 			if(!splashed_human.is_eyes_covered())
 				splashed_human.blur_eyes(3)
 				to_chat(splashed_human, span_alert("You're blinded by a spray of blood!"))
-			if(splashed_human.wear_suit)
-				splashed_human.wear_suit.add_blood_DNA(blood_dna_info)
-			if(splashed_human.w_uniform)
-				splashed_human.w_uniform.add_blood_DNA(blood_dna_info)
+			splashed_human.add_blood_DNA_to_items(blood_dna_info)
 			splatter_strength--
 
 	if(splatter_strength <= 0) // we used all the puff so we delete it.
@@ -581,7 +578,7 @@
 	if(!the_window.fulltile)
 		return
 	var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new(the_window, null, blood_dna_info)
-	the_window.vis_contents += final_splatter
+	the_window.add_viscontents(final_splatter)
 	the_window.bloodied = TRUE
 	qdel(src)
 

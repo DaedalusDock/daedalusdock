@@ -1,23 +1,25 @@
-//-------------------------
-// DREAM DATUMS
+GLOBAL_DATUM_INIT(dream_controller, /datum/dream_controller, new)
 
-GLOBAL_LIST_EMPTY(generic_dreams_weighted)
-GLOBAL_LIST_EMPTY(detective_dreams_weighted)
-GLOBAL_LIST_EMPTY(all_dreams_weighted)
+/datum/dream_controller
+	var/list/all_dreams_weighted = list()
+	var/list/dreams_by_class_weighted = list()
 
-/proc/init_dreams()
+/datum/dream_controller/New()
 	for(var/datum/dream/dream_type as anything in subtypesof(/datum/dream))
 		if(isabstract(dream_type))
 			continue
 
-		var/datum/dream/dream = new dream_type
-		GLOB.all_dreams_weighted[dream] = initial(dream_type.weight)
+		var/datum/dream/dream_instance = new dream_type
+		all_dreams_weighted[dream_instance] = dream_instance.weight
 
-		if(initial(dream_type.dream_flags) & DREAM_GENERIC)
-			GLOB.generic_dreams_weighted[dream] = initial(dream_type.weight)
+		if(isnull(dreams_by_class_weighted[dream_instance.dream_class]))
+			dreams_by_class_weighted[dream_instance.dream_class] = list()
 
-		if(istype(dream, /datum/dream/detective_nightmare))
-			GLOB.detective_dreams_weighted[dream] = initial(dream_type.weight)
+		dreams_by_class_weighted[dream_instance.dream_class][dream_instance] = dream_instance.weight
+
+/datum/dream_controller/proc/get_dreams(dream_class) as /list
+	RETURN_TYPE(/list)
+	return dreams_by_class_weighted[dream_class]
 
 /**
  * Contains all the behavior needed to play a kind of dream.
@@ -26,7 +28,10 @@ GLOBAL_LIST_EMPTY(all_dreams_weighted)
 /datum/dream
 	abstract_type = /datum/dream
 
-	var/dream_flags = DREAM_GENERIC
+	var/dream_flags = NONE
+
+	/// Controls who can roll this dream.
+	var/dream_class = DREAM_CLASS_GENERIC
 
 	/// The relative chance this dream will be randomly selected
 	var/weight = 1000

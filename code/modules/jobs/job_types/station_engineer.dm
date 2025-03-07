@@ -21,7 +21,6 @@
 			SPECIES_HUMAN = /datum/outfit/job/engineer,
 			SPECIES_TESHARI = /datum/outfit/job/engineer,
 			SPECIES_VOX = /datum/outfit/job/engineer,
-			SPECIES_PLASMAMAN = /datum/outfit/job/engineer/plasmaman,
 		),
 		"Engine Technician" = list(
 			SPECIES_HUMAN = /datum/outfit/job/engineer/enginetech,
@@ -80,15 +79,6 @@
 	box = /obj/item/storage/box/survival/engineer
 	pda_slot = ITEM_SLOT_LPOCKET
 	skillchips = list(/obj/item/skillchip/job/engineer)
-
-/datum/outfit/job/engineer/plasmaman
-	name = "Station Engineer (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/engineering
-	gloves = /obj/item/clothing/gloves/color/plasmaman/engineer
-	head = /obj/item/clothing/head/helmet/space/plasmaman/engineering
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/engineer/mod
 	name = "Station Engineer (MODsuit)"

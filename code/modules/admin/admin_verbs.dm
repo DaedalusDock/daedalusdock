@@ -112,6 +112,7 @@ GLOBAL_LIST_INIT(admin_verbs_fun, list(
 	/client/proc/admin_away,
 	/client/proc/add_mob_ability,
 	/client/proc/set_title_music,
+	/client/proc/restore_ghost_character,
 	/datum/admins/proc/station_traits_panel,
 	))
 GLOBAL_PROTECT(admin_verbs_fun)
@@ -1016,7 +1017,12 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 		to_chat(usr, span_adminnotice("You cannot set the gamemode after the round has started!"))
 		return
 
-	var/gamemode_path = input(usr, "Select Gamemode", "Set Gamemode") as null|anything in subtypesof(/datum/game_mode)
+	var/list/selectable_gamemodes = subtypesof(/datum/game_mode)
+	for(var/datum/game_mode/path as anything in selectable_gamemodes)
+		if(isabstract(path))
+			selectable_gamemodes -= path
+
+	var/gamemode_path = input(usr, "Select Gamemode", "Set Gamemode") as null|anything in selectable_gamemodes
 	if(!gamemode_path)
 		return
 

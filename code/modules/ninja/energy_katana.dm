@@ -54,7 +54,7 @@
 	user.update_icons()
 	playsound(src, 'sound/items/unsheath.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
-/obj/item/energy_katana/dropped(mob/user)
+/obj/item/energy_katana/unequipped(mob/user)
 	. = ..()
 	jaunt.Remove(user)
 	user.update_icons()

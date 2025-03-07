@@ -30,7 +30,7 @@
 		UnregisterSignal(owner, COMSIG_PARENT_EXAMINE)
 	return ..()
 
-/obj/item/hand_item/circlegame/dropped(mob/user)
+/obj/item/hand_item/circlegame/unequipped(mob/user)
 	UnregisterSignal(user, COMSIG_PARENT_EXAMINE) //loc will have changed by the time this is called, so Destroy() can't catch it
 	// this is a dropdel item.
 	return ..()

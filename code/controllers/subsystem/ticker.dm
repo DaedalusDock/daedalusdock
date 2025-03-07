@@ -42,7 +42,6 @@ SUBSYSTEM_DEF(ticker)
 	var/admin_delay_notice = "" //a message to display to anyone who tries to restart the world after a delay
 	var/ready_for_reboot = FALSE //all roundend preparation done with, all that's left is reboot
 
-	var/tipped = FALSE //Did we broadcast the tip of the day yet?
 	var/selected_tip // What will be the tip of the day?
 
 	var/timeLeft //pregame timer
@@ -122,6 +121,9 @@ SUBSYSTEM_DEF(ticker)
 	if(GLOB.is_debug_server)
 		mode = new /datum/game_mode/extended
 
+	if(CONFIG_GET(flag/hide_gamemode_name))
+		mode_display_name = "Secret"
+
 	return ..()
 
 /datum/controller/subsystem/ticker/fire()
@@ -193,10 +195,6 @@ SUBSYSTEM_DEF(ticker)
 			if(timeLeft < 0)
 				return
 			timeLeft -= wait
-
-			if(timeLeft <= 300 && !tipped)
-				send_tip_of_the_round(world, selected_tip)
-				tipped = TRUE
 
 			if(timeLeft <= 0)
 				SEND_SIGNAL(src, COMSIG_TICKER_ENTER_SETTING_UP)
@@ -303,6 +301,7 @@ SUBSYSTEM_DEF(ticker)
 	mode.setup_antags()
 	PostSetup()
 	SSticker.ready_players = null
+	SStitle.game_status?.alpha = 0
 	return TRUE
 
 /datum/controller/subsystem/ticker/proc/PostSetup()
@@ -357,8 +356,6 @@ SUBSYSTEM_DEF(ticker)
 		qdel(bomb)
 
 /datum/controller/subsystem/ticker/proc/create_characters()
-	var/list/spawn_spots = SSjob.latejoin_trackers.Copy()
-	var/list/spawn_spots_reload = spawn_spots.Copy() //In case we run out, we need something to reload from.
 	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
 		if(!player.mind)
 			//New player has logged out.
@@ -371,20 +368,23 @@ SUBSYSTEM_DEF(ticker)
 			if(PLAYER_READY_TO_PLAY)
 				GLOB.joined_player_list += player.ckey
 				var/atom/spawn_loc = player.mind.assigned_role.get_roundstart_spawn_point()
-				if(spawn_loc) //If we've been given an override, just take it and get out of here.
-					player.create_character(spawn_loc)
+				player.create_character(spawn_loc)
 
-				else //We haven't been passed an override destination. Give us the usual treatment.
-					if(!length(spawn_spots))
-						spawn_spots = spawn_spots_reload.Copy()
-
-					spawn_loc = pick_n_take(spawn_spots)
-					player.create_character(spawn_loc)
 			else //PLAYER_NOT_READY
 				//Reload their player panel so they see latejoin instead of ready.
 				player.npp.update()
 
 		CHECK_TICK
+
+/// Returns a (probably) unused latejoin spawn point. Used by roundstart code to spread players out.
+/datum/controller/subsystem/ticker/proc/get_random_spawnpoint()
+	var/static/list/spawnpoints
+	if(!length(spawnpoints))
+		if(length(SSjob.latejoin_trackers))
+			spawnpoints = SSjob.latejoin_trackers.Copy()
+		else
+			return SSjob.get_last_resort_spawn_points()
+	return pick_n_take(spawnpoints)
 
 /datum/controller/subsystem/ticker/proc/collect_minds()
 	for(var/i in GLOB.new_player_list)
@@ -477,8 +477,9 @@ SUBSYSTEM_DEF(ticker)
 			living.notransform = TRUE
 			living.client?.init_verbs()
 			livings += living
+
 	if(livings.len)
-		addtimer(CALLBACK(src, PROC_REF(release_characters), livings), 30, TIMER_CLIENT_TIME)
+		addtimer(CALLBACK(src, PROC_REF(release_characters), livings), 3 SECONDS, TIMER_CLIENT_TIME)
 
 /datum/controller/subsystem/ticker/proc/release_characters(list/livings)
 	for(var/I in livings)
@@ -543,7 +544,6 @@ SUBSYSTEM_DEF(ticker)
 
 	delay_end = SSticker.delay_end
 
-	tipped = SSticker.tipped
 	selected_tip = SSticker.selected_tip
 
 	timeLeft = SSticker.timeLeft
@@ -777,10 +777,15 @@ SUBSYSTEM_DEF(ticker)
 ///Generate a list of gamemodes we can play.
 /datum/controller/subsystem/ticker/proc/draft_gamemodes()
 	var/list/datum/game_mode/runnable_modes = list()
-	for(var/path in subtypesof(/datum/game_mode))
+	for(var/datum/game_mode/path as anything in subtypesof(/datum/game_mode))
+		if(isabstract(path))
+			continue
+
 		var/datum/game_mode/M = new path()
 		if(!(M.weight == GAMEMODE_WEIGHT_NEVER) && !M.check_for_errors())
 			runnable_modes[path] = M.weight
+		else
+			qdel(M)
 	return runnable_modes
 
 /datum/controller/subsystem/ticker/proc/get_mode_name(bypass_secret)
@@ -820,15 +825,15 @@ SUBSYSTEM_DEF(ticker)
 	CHECK_TICK
 	//Configure mode and assign player to special mode stuff
 	var/can_continue = 0
-	can_continue = src.mode.execute_roundstart() //Choose antagonists
+	can_continue = mode.execute_roundstart() //Choose antagonists
 	CHECK_TICK
-	can_continue = can_continue && SSjob.DivideOccupations(mode.required_jobs) //Distribute jobs
+	can_continue = can_continue && SSjob.DivideOccupations(mode.get_required_jobs()) //Distribute jobs
 	CHECK_TICK
 
 	if(!GLOB.Debug2)
 		if(!can_continue)
-			log_game("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error].")
-			message_admins("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error].")
+			log_game("[get_mode_name(TRUE)] failed pre_setup, cause(s): [english_list(mode.setup_error)].")
+			message_admins("[get_mode_name(TRUE)] failed pre_setup, cause(s): [english_list(mode.setup_error)].")
 			to_chat(world, "<B>Error setting up [get_mode_name(TRUE)].</B> Reverting to pre-game lobby.")
 			mode.on_failed_execute()
 			QDEL_NULL(mode)

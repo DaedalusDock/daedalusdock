@@ -29,13 +29,13 @@
 
 /datum/component/spill/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(equip_react))
-	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(drop_react))
+	RegisterSignal(parent, COMSIG_ITEM_UNEQUIPPED, PROC_REF(drop_react))
 	var/obj/item/master = parent
 	preexisting_slot_flags = master.slot_flags
 	master.slot_flags |= ITEM_SLOT_POCKETS
 
 /datum/component/spill/UnregisterFromParent()
-	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
+	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_UNEQUIPPED))
 	var/obj/item/master = parent
 	if(!(preexisting_slot_flags & ITEM_SLOT_POCKETS))
 		master.slot_flags &= ~ITEM_SLOT_POCKETS

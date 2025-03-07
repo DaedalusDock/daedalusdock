@@ -7,7 +7,8 @@
 #define FORMAT_CHEM_CHARGES_TEXT(charges) MAPTEXT("<div align='center' valign='middle' style='position:relative; top:0px; left:6px'><font color='#dd66dd'>[round(charges)]</font></div>")
 
 /datum/antagonist/changeling
-	name = "\improper Changeling"
+	name = "Changeling"
+
 	roundend_category = "changelings"
 	antagpanel_category = "Changeling"
 	job_rank = ROLE_CHANGELING
@@ -865,7 +866,10 @@
 
 // Changelings spawned from non-changeling headslugs (IE, due to being transformed into a headslug as a non-ling). Weaker than a normal changeling.
 /datum/antagonist/changeling/headslug
-	name = "\improper Headslug Changeling"
+	name = "Headslug Changeling"
+	name_prefix = "a"
+	description = "You are a fresh changeling birthed from a headslug! You aren't as strong as a normal changeling, as you are newly born."
+
 	show_in_antagpanel = FALSE
 	give_objectives = FALSE
 	soft_antag = TRUE
@@ -880,10 +884,6 @@
 	var/policy = get_policy(ROLE_HEADSLUG_CHANGELING)
 	if(policy)
 		to_chat(owner, policy)
-
-/datum/antagonist/changeling/headslug/build_greeting()
-	. = ..()
-	. += "You are a fresh changeling birthed from a headslug! You aren't as strong as a normal changeling, as you are newly born."
 
 /datum/outfit/changeling
 	name = "Changeling"

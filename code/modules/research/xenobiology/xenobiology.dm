@@ -9,7 +9,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
 	throw_range = 6
-	grind_results = list()
+	grind_results = list(/datum/reagent/toxin/slimejelly = 20)
 	var/Uses = 1 ///uses before it goes inert
 	var/qdel_timer = null ///deletion timer, for delayed reactions
 	var/effectmod ///Which type of crossbred
@@ -39,10 +39,6 @@
 	. = ..()
 	create_reagents(100, INJECTABLE | DRAWABLE)
 
-/obj/item/slime_extract/on_grind()
-	. = ..()
-	if(Uses)
-		grind_results[/datum/reagent/toxin/slimejelly] = 20
 
 /**
 * Effect when activated by a Luminescent.
@@ -661,7 +657,7 @@
 	var/list/candidates = poll_candidates_for_mob("Do you want to play as [dumb_mob.name]?", ROLE_SENTIENCE, ROLE_SENTIENCE, 5 SECONDS, dumb_mob, POLL_IGNORE_SENTIENCE_POTION) // see poll_ignore.dm
 	if(LAZYLEN(candidates))
 		var/mob/dead/observer/C = pick(candidates)
-		dumb_mob.key = C.key
+		dumb_mob.PossessByPlayer(C.key)
 		dumb_mob.mind.enslave_mind_to_creator(user)
 		SEND_SIGNAL(dumb_mob, COMSIG_SIMPLEMOB_SENTIENCEPOTION, user)
 		if(isanimal(dumb_mob))

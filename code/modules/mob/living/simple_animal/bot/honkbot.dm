@@ -93,7 +93,7 @@
 	)
 
 	target_lastloc = target.loc
-	mode = BOT_PREP_ARREST
+	set_mode(BOT_PREP_ARREST)
 
 /mob/living/simple_animal/bot/secbot/honkbot/retaliate(mob/living/carbon/human/attacking_human)
 	. = ..()

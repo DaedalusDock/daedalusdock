@@ -1,0 +1,10 @@
+#include "_reagents.dm"
+
+#include "reagent_descriptions.dm"
+#include "reagent_id_typos.dm"
+#include "reagent_mod_expose.dm"
+#include "reagent_mod_procs.dm"
+#include "reagent_names.dm"
+#include "reagent_recipe_collisions.dm"
+#include "pills.dm"
+#include "dropper.dm"

@@ -50,7 +50,7 @@
 	var/list/mob/dead/observer/candidates = poll_candidates_for_mob("Do you want to play as [owner.real_name]'s imaginary friend?", ROLE_PAI, null, 7.5 SECONDS, friend, POLL_IGNORE_IMAGINARYFRIEND)
 	if(LAZYLEN(candidates))
 		var/mob/dead/observer/C = pick(candidates)
-		friend.key = C.key
+		friend.PossessByPlayer(C.ckey)
 		friend_initialized = TRUE
 	else
 		qdel(src)

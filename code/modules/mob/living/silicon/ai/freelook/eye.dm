@@ -1,12 +1,13 @@
 // AI EYE
 //
-// An invisible (no icon) mob that the AI controls to look around the station with.
+// An invisible mob that the AI controls to look around the station with.
 // It streams chunks as it moves around, which will show it what the AI can and cannot see.
 /mob/camera/ai_eye
 	name = "Inactive AI Eye"
 
 	icon_state = "ai_camera"
 	icon = 'icons/mob/cameramob.dmi'
+	plane = ABOVE_LIGHTING_PLANE
 	invisibility = INVISIBILITY_MAXIMUM
 	hud_possible = list(
 		AI_DETECT_HUD = HUD_LIST_LIST
@@ -188,7 +189,10 @@
 	eyeobj.ai = src
 	eyeobj.setLoc(loc)
 	eyeobj.set_real_name("[name] (AI Eye)")
+	eyeobj.RegisterSignal(src, COMSIG_CLICK_SHIFT, TYPE_PROC_REF(/mob/camera/ai_eye, examinate_check))
 	set_eyeobj_visible(TRUE)
+
+	sense_of_self = image(eyeobj.icon, eyeobj, eyeobj.icon_state)
 
 /mob/living/silicon/ai/proc/set_eyeobj_visible(state = TRUE)
 	if(!eyeobj)
@@ -209,6 +213,13 @@
 	. = ..()
 	if(relay_speech && speaker && ai && !radio_freq && speaker != ai && near_camera(speaker))
 		ai.relay_speech(message, speaker, message_language, raw_message, radio_freq, spans, message_mods)
+
+///Called when the AI shiftclicks on something to examinate it.
+/mob/camera/ai_eye/proc/examinate_check(mob/user, atom/source)
+	SIGNAL_HANDLER
+
+	if(user.client.eye == src)
+		return COMPONENT_ALLOW_EXAMINATE
 
 /obj/effect/overlay/ai_detect_hud
 	name = ""

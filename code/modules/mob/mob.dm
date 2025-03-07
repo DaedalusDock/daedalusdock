@@ -25,6 +25,8 @@
  * Parent call
  */
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
+	persistent_client?.SetMob(null)
+
 	unset_machine()
 	remove_from_mob_list()
 	remove_from_dead_mob_list()
@@ -105,6 +107,17 @@
 	. = ..()
 	tag = "mob_[next_mob_id++]"
 
+/// Assigns a (c)key to this mob.
+/mob/proc/PossessByPlayer(ckey)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	if(isnull(ckey))
+		return
+
+	if(!istext(ckey))
+		CRASH("Tried to assign a mob a non-text ckey, wtf?!")
+
+	src.ckey = ckey(ckey)
+
 /**
  * set every hud image in the given category active so other people with the given hud can see it.
  * Arguments:
@@ -176,26 +189,37 @@
 
 		else
 			var/image/I = image(hint, src, "")
-			I.appearance_flags = RESET_COLOR|RESET_TRANSFORM
+			I.appearance_flags = RESET_COLOR|RESET_TRANSFORM|KEEP_APART
 			hud_list[hud] = I
 
 		set_hud_image_active(hud, update_huds = FALSE) //by default everything is active. but dont add it to huds to keep control.
 
 /// Update the icon_state of an atom hud image.
-/atom/proc/set_hud_image_vars(hud_key, new_state = null, new_pixel_y = 0)
+/atom/proc/set_hud_image_vars(hud_key, new_state = null, new_pixel_y = (get_hud_pixel_y()), pixel_y_only = FALSE)
 	if(isnull(hud_list))
 		return
 
 	var/image/I = hud_list[hud_key]
-	if(isnull(I))
+	if(!isimage(I)) // The hud list can contain lists.
 		return
 
-	I.icon_state = new_state
+	if(!pixel_y_only)
+		I.icon_state = new_state
 	I.pixel_y = new_pixel_y
 
 	if(!isarea(src) && !isturf(src))
 		var/atom/movable/AM = src
-		AM.bound_overlay?.set_hud_image_vars(hud_key, new_state, new_pixel_y)
+		AM.bound_overlay?.set_hud_image_vars(hud_key, new_state, new_pixel_y, pixel_y_only)
+
+/// Update the pixel_y value of all huds attached to us.
+/atom/proc/update_hud_images_height()
+	var/new_pixel_y = get_hud_pixel_y()
+	for(var/hud in hud_list)
+		var/image/I = hud_list[hud]
+		if(!isimage(I) || I.override)
+			continue
+		set_hud_image_vars(hud, new_pixel_y = new_pixel_y, pixel_y_only = TRUE)
+
 /**
  * Return the desc of this mob for a photo
  */
@@ -862,7 +886,7 @@
 		qdel(M)
 		return
 
-	M.key = key
+	M.PossessByPlayer(key)
 
 
 /**
@@ -1192,7 +1216,7 @@
 	if(change_name)
 		name = real_name
 	if(update_name)
-		update_name()
+		update_appearance(UPDATE_NAME)
 
 /**
  * Fully update the name of a mob
@@ -1555,7 +1579,7 @@
 	if(!canon_client)
 		return
 
-	for(var/foo in canon_client.player_details.post_logout_callbacks)
+	for(var/foo in persistent_client?.post_logout_callbacks)
 		var/datum/callback/CB = foo
 		CB.Invoke()
 
@@ -1650,7 +1674,7 @@
 		container = new()
 		container.appearance = appearance
 
-	hud_used.vis_holder.vis_contents += appearance
+	hud_used.vis_holder.add_viscontents(container)
 	addtimer(CALLBACK(src, PROC_REF(remove_appearance), appearance), 5 SECONDS, TIMER_DELETE_ME)
 
 	return container
@@ -1659,4 +1683,4 @@
 	if(!hud_used)
 		return
 
-	hud_used.vis_holder.vis_contents -= appearance
+	hud_used.vis_holder.remove_viscontents(appearance)

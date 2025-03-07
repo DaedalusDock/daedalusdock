@@ -88,7 +88,7 @@
 	set_user(user)
 	return ..()
 
-/obj/item/gun/energy/beam_rifle/dropped(mob/user)
+/obj/item/gun/energy/beam_rifle/unequipped(mob/user)
 	set_user()
 	return ..()
 

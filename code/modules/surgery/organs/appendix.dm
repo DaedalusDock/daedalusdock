@@ -45,6 +45,7 @@
 		become_inflamed()
 
 /obj/item/organ/appendix/proc/become_inflamed()
+	log_health(owner, "Afflicted with Appendicitis.")
 	inflamation_stage = 1
 	update_appearance()
 	if(owner)

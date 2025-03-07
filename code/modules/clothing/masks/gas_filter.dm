@@ -92,11 +92,3 @@
 /obj/item/gas_filter/damaged/Initialize(mapload)
 	. = ..()
 	filter_status = rand(35, 65)
-
-/obj/item/gas_filter/plasmaman
-	name = "plasmaman atmospheric gas filter"
-	high_filtering_gases = list(
-		GAS_OXYGEN,
-		GAS_CO2,
-		GAS_N2O
-		)

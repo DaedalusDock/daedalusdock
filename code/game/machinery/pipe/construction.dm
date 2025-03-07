@@ -74,10 +74,10 @@ Buildable meters
 	if(make_from.flipped)
 		do_a_flip()
 
-/obj/item/pipe/dropped()
+/obj/item/pipe/unequipped()
+	. = ..()
 	if(loc)
 		set_piping_layer(piping_layer)
-	return ..()
 
 /obj/item/pipe/proc/set_piping_layer(new_layer = PIPING_LAYER_DEFAULT)
 	var/obj/machinery/atmospherics/fakeA = pipe_type
@@ -364,7 +364,7 @@ Buildable meters
 	to_chat(user, span_notice("You fasten the meter to the [loc.name]."))
 	qdel(src)
 
-/obj/item/pipe_meter/dropped()
+/obj/item/pipe_meter/unequipped()
 	. = ..()
 	if(loc)
 		setAttachLayer(piping_layer)

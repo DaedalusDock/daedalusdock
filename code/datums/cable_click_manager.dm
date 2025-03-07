@@ -45,7 +45,7 @@
 
 	if(user)
 		UnregisterSignal(user, list(COMSIG_MOB_LOGIN, COMSIG_MOB_LOGOUT, COMSIG_MOB_SWAP_HANDS, COMSIG_MOB_CLICKON))
-		user.clear_fullscreen("cable_laying", FALSE)
+		user.clear_fullscreen(ref(src), FALSE)
 		user.client?.images -= phantom_wire
 		user.client?.images -= phantom_knot
 
@@ -70,7 +70,7 @@
 	user.client.images |= phantom_wire
 	user.client.images |= phantom_knot
 
-	catcher = user.overlay_fullscreen("cable_laying", /atom/movable/screen/fullscreen/cursor_catcher/cable, 0)
+	catcher = user.overlay_fullscreen(ref(src), /atom/movable/screen/fullscreen/cursor_catcher/cable, 0)
 	catcher.assign_to_mob(user)
 
 	if(user.get_active_held_item() != parent)
@@ -301,3 +301,4 @@
 /atom/movable/screen/fullscreen/cursor_catcher/cable
 	alpha = 0
 	mouse_opacity = MOUSE_OPACITY_OPAQUE
+	default_click = FALSE

@@ -22,7 +22,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/captain,
-			SPECIES_PLASMAMAN = /datum/outfit/job/captain/plasmaman,
 		),
 	)
 
@@ -105,15 +104,6 @@
 	if(!celestial_charter)
 		return
 	celestial_charter.name_type = special_charter
-
-/datum/outfit/job/captain/plasmaman
-	name = JOB_CAPTAIN + " (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/captain
-	gloves = /obj/item/clothing/gloves/color/captain
-	head = /obj/item/clothing/head/helmet/space/plasmaman/captain
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/captain/mod
 	name = "Captain (MODsuit)"

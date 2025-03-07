@@ -673,7 +673,7 @@
 ///allows this movable to hear and adds itself to the important_recursive_contents list of itself and every movable loc its in
 /atom/movable/proc/become_hearing_sensitive(trait_source = TRAIT_GENERIC)
 	ADD_TRAIT(src, TRAIT_HEARING_SENSITIVE, trait_source)
-	if(!HAS_TRAIT(src, TRAIT_HEARING_SENSITIVE))
+	if(HAS_TRAIT_NOT_FROM(src, TRAIT_HEARING_SENSITIVE, trait_source))
 		return
 
 	for(var/atom/movable/location as anything in get_nested_locs(src) + src)
@@ -689,7 +689,7 @@
 ///allows this movable to hear and adds itself to the important_recursive_contents list of itself and every movable loc its in
 /atom/movable/proc/become_radio_sensitive(trait_source = TRAIT_GENERIC)
 	ADD_TRAIT(src, TRAIT_HEARING_SENSITIVE, trait_source)
-	if(!HAS_TRAIT(src, TRAIT_HEARING_SENSITIVE))
+	if(HAS_TRAIT_NOT_FROM(src, TRAIT_HEARING_SENSITIVE, trait_source))
 		return
 
 	for(var/atom/movable/location as anything in get_nested_locs(src) + src)

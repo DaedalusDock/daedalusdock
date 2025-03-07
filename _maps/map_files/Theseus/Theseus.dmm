@@ -1878,7 +1878,7 @@
 /obj/structure/window/reinforced{
 	dir = 1
 	},
-/obj/machinery/light/no_nightlight/directional/east,
+/obj/machinery/light,
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible,
 /turf/open/floor/iron/dark,
 /area/station/engineering/atmos)
@@ -3008,10 +3008,6 @@
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)
-"bbB" = (
-/obj/machinery/light/no_nightlight/directional/north,
-/turf/open/floor/iron/dark,
-/area/station/engineering/atmospherics_engine)
 "bbE" = (
 /obj/machinery/shower{
 	name = "emergency shower";
@@ -4675,7 +4671,7 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
 	},
-/obj/machinery/light/no_nightlight/directional/west,
+/obj/machinery/light,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
@@ -7591,7 +7587,7 @@
 /turf/open/floor/iron/dark,
 /area/station/command/bridge)
 "cIy" = (
-/obj/machinery/light/no_nightlight/directional/east,
+/obj/machinery/light,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
@@ -10795,7 +10791,7 @@
 /turf/open/floor/iron/dark,
 /area/station/hallway/primary/aft)
 "dYE" = (
-/obj/machinery/light/no_nightlight/directional/west,
+/obj/machinery/light,
 /turf/open/floor/iron/dark,
 /area/station/engineering/atmospherics_engine)
 "dYN" = (
@@ -16921,7 +16917,7 @@
 /obj/machinery/atmospherics/pipe/smart/simple/cyan/visible/layer5{
 	dir = 4
 	},
-/obj/machinery/light/no_nightlight/directional/south,
+/obj/machinery/light,
 /turf/open/floor/iron/dark,
 /area/station/engineering/atmos)
 "goQ" = (
@@ -18687,7 +18683,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/machinery/light/no_nightlight/directional/north,
+/obj/machinery/light,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable/red{
@@ -25034,7 +25030,7 @@
 /obj/effect/turf_decal/trimline/yellow/warning{
 	dir = 8
 	},
-/obj/machinery/light/no_nightlight/directional/west,
+/obj/machinery/light,
 /turf/open/floor/iron,
 /area/station/engineering/atmospherics_engine)
 "jyv" = (
@@ -28508,7 +28504,7 @@
 "kNI" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light/no_nightlight/directional/north,
+/obj/machinery/light,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
@@ -31953,7 +31949,7 @@
 /obj/machinery/light_switch/directional/north,
 /obj/machinery/pipedispenser/disposal,
 /obj/effect/turf_decal/stripes/line,
-/obj/machinery/light/no_nightlight/directional/north,
+/obj/machinery/light,
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
 "mdd" = (
@@ -32227,7 +32223,7 @@
 /area/station/medical/pharmacy)
 "mio" = (
 /obj/machinery/atmospherics/pipe/smart/manifold/cyan/visible/layer5,
-/obj/machinery/light/no_nightlight/directional/south,
+/obj/machinery/light,
 /obj/structure/sign/poster/official/wtf_is_co2{
 	pixel_y = -32
 	},
@@ -34447,7 +34443,7 @@
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible{
 	dir = 4
 	},
-/obj/machinery/light/no_nightlight/directional/north,
+/obj/machinery/light,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
@@ -34926,10 +34922,6 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/aft)
-"nel" = (
-/obj/machinery/light/no_nightlight/directional/east,
-/turf/open/floor/iron/dark,
-/area/station/engineering/atmospherics_engine)
 "nex" = (
 /obj/machinery/navbeacon{
 	location = "3-Central-Port";
@@ -55797,7 +55789,7 @@
 	dir = 4
 	},
 /obj/machinery/light_switch/directional/north,
-/obj/machinery/light/no_nightlight/directional/north,
+/obj/machinery/light,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
@@ -57554,7 +57546,7 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
 	},
-/obj/machinery/light/no_nightlight/directional/west,
+/obj/machinery/light,
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible,
 /obj/effect/turf_decal/stripes/corner{
 	dir = 1
@@ -61896,7 +61888,7 @@
 "xfH" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/light/no_nightlight/directional/north,
+/obj/machinery/light,
 /obj/machinery/airalarm/directional/north,
 /obj/effect/turf_decal/siding/yellow/corner{
 	dir = 4
@@ -64716,7 +64708,7 @@
 /turf/open/floor/iron,
 /area/station/security/medical)
 "yhT" = (
-/obj/machinery/light/no_nightlight/directional/south,
+/obj/machinery/light,
 /turf/open/floor/iron/dark,
 /area/station/engineering/atmos)
 "yhU" = (
@@ -112628,7 +112620,7 @@ aaa
 aaa
 aaa
 ras
-bbB
+dYE
 dtK
 haX
 cII
@@ -113660,7 +113652,7 @@ nul
 nul
 dtK
 dtK
-nel
+dYE
 dtK
 nby
 wvB

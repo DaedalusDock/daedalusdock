@@ -33,3 +33,6 @@
 #define CHAT_TAG(img) "<img class='chat_tag' src='[img]'>"
 /// Radio tag image embed, see chat_tags.dm
 #define RADIO_TAG(img)"<img class='radio_tag' src='[img]'>"
+
+/proc/systemtext(text)
+	return span_system("<b>SYSTEM:</b> [text]")

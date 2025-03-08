@@ -2294,6 +2294,7 @@
 #include "code\modules\antagonists\heretic\structures\mawed_crucible.dm"
 #include "code\modules\antagonists\highlander\highlander.dm"
 #include "code\modules\antagonists\hypnotized\hypnotized.dm"
+#include "code\modules\antagonists\lucid\lucid_powers\lightningbolt.dm"
 #include "code\modules\antagonists\magic_servant\servant.dm"
 #include "code\modules\antagonists\malf_ai\datum_malf_ai.dm"
 #include "code\modules\antagonists\morph\morph.dm"

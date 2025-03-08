@@ -250,7 +250,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			if(GLOB.is_debug_server)
 				to_chat(world, systemtext(span_notice("Initializing [subsystem.name]...")))
 
-			SStitle.set_game_status_text(sub_text = "Initializing [subsystem.name]")
+			SSlobby.set_game_status_text(sub_text = "Initializing [subsystem.name]")
 
 			subsystem.Initialize(REALTIMEOFDAY)
 			CHECK_TICK
@@ -272,7 +272,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	var/msg = "Initializations complete within [time] second[time == 1 ? "" : "s"]!"
 	to_chat(world, systemtext("[msg]"))
 	log_world(msg)
-	SStitle.set_game_status_text("Ready to Play")
+	SSlobby.set_game_status_text("Ready to Play")
 
 	// Set world options.
 	world.change_fps(CONFIG_GET(number/fps))

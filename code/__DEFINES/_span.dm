@@ -139,3 +139,5 @@
 
 // Codex
 #define CODEX_LINK(str, entrytext) ("<span codexlink='" + entrytext + "'>" + str + "</span>")
+
+#define systemtext(text) span_system("<b>SYSTEM:</b> [text]")

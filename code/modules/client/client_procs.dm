@@ -544,7 +544,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	view_size.setZoomMode()
 	Master.UpdateTickRate()
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CLIENT_CONNECT, src)
+
 	fully_created = TRUE
+	SSlobby.client_login(src)
 
 //////////////
 //DISCONNECT//
@@ -576,6 +578,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	GLOB.interviews.client_logout(src)
 	GLOB.requests.client_logout(src)
 	SSserver_maint.UpdateHubStatus()
+	if(fully_created)
+		SSlobby.client_logout(src)
+
 	if(obj_window)
 		QDEL_NULL(obj_window)
 	if(holder)

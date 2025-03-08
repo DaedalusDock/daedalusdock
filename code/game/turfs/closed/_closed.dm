@@ -53,7 +53,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 
 /turf/closed/indestructible/splashscreen/Initialize(mapload)
 	. = ..()
-	SStitle.splash_turf = src
+	SSlobby.splash_turf = src
 	add_viscontents(new /obj/effect/abstract/splashscreen/master)
 
 /turf/closed/indestructible/start_area

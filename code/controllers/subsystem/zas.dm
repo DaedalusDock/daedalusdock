@@ -182,7 +182,7 @@ SUBSYSTEM_DEF(zas)
 		S.update_air_properties()
 
 		if(TICK_CHECK)
-			SStitle.set_game_status_text(sub_text = "Propagating atmospheric zones")
+			SSlobby.set_game_status_text(sub_text = "Propagating atmospheric zones")
 			stoplag()
 
 	to_chat(world, systemtext("ZAS:\n - Total Simulated Turfs: [simulated_turf_count]\n - Total Zones: [zones.len]\n - Total Edges: [edges.len]\n - Total Active Edges: [active_edges.len ? "<span class='danger'>[active_edges.len]</span>" : "None"]\n - Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_count]"))
@@ -192,7 +192,7 @@ SUBSYSTEM_DEF(zas)
 	if (simulate)
 		to_chat(world, systemtext("ZAS: Firing once..."))
 
-		SStitle.set_game_status_text(sub_text = "Settling air")
+		SSlobby.set_game_status_text(sub_text = "Settling air")
 		starttime = REALTIMEOFDAY
 		fire(FALSE, TRUE)
 

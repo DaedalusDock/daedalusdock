@@ -307,7 +307,7 @@
 	if (owner.prefs.read_preference(/datum/preference/toggle/bypass_deadmin_in_centcom) && is_centcom_level(owner.mob.z))
 		return FALSE
 
-	to_chat(owner, span_interface("You are now a normal player."), confidential = TRUE)
+	to_chat(owner, systemtext("You are now a normal player."), confidential = TRUE)
 	var/old_owner = owner
 	deactivate()
 	message_admins("[old_owner] deadmined via auto-deadmin config.")

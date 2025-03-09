@@ -25,13 +25,13 @@ SUBSYSTEM_DEF(airmachines)
 
 /datum/controller/subsystem/airmachines/Initialize(timeofday)
 	var/starttime = REALTIMEOFDAY
-	to_chat(world, span_debug("Airmachines: Setting up atmospheric machinery..."))
+	to_chat(world, systemtext("Airmachines: Setting up atmospheric machinery..."))
 	setup_atmos_machinery()
-	to_chat(world, span_debug("Airmachines: Airmachine setup completed in [(REALTIMEOFDAY- starttime) / 10] seconds!"))
+	to_chat(world, systemtext("Airmachines: Airmachine setup completed in [(REALTIMEOFDAY- starttime) / 10] seconds!"))
 	starttime = REALTIMEOFDAY
-	to_chat(world, span_debug("Airmachines: Creating pipenets..."))
+	to_chat(world, systemtext("Airmachines: Creating pipenets..."))
 	setup_pipenets()
-	to_chat(world, span_debug("Airmachines: Pipenet creation completed in [(REALTIMEOFDAY- starttime) / 10] seconds!"))
+	to_chat(world, systemtext("Airmachines: Pipenet creation completed in [(REALTIMEOFDAY- starttime) / 10] seconds!"))
 	return ..()
 
 /datum/controller/subsystem/airmachines/stat_entry(msg)

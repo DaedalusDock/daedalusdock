@@ -1,5 +1,5 @@
-SUBSYSTEM_DEF(title)
-	name = "Title Screen"
+SUBSYSTEM_DEF(lobby)
+	name = "Lobby"
 	flags = SS_BACKGROUND
 	wait = 1 SECOND
 	priority = FIRE_PRIORITY_TITLE
@@ -36,7 +36,7 @@ SUBSYSTEM_DEF(title)
 	/// Displays the tip of the round
 	var/obj/effect/abstract/splashscreen/tip
 
-/datum/controller/subsystem/title/Initialize()
+/datum/controller/subsystem/lobby/Initialize()
 	if(file_path && icon)
 		return
 
@@ -72,7 +72,7 @@ SUBSYSTEM_DEF(title)
 	silly_tip_list = world.file2list("strings/sillytips.txt")
 	return ..()
 
-/datum/controller/subsystem/title/vv_edit_var(var_name, var_value)
+/datum/controller/subsystem/lobby/vv_edit_var(var_name, var_value)
 	. = ..()
 	if(.)
 		switch(var_name)
@@ -80,18 +80,18 @@ SUBSYSTEM_DEF(title)
 				if(splash_turf)
 					splash_turf.icon = icon
 
-/datum/controller/subsystem/title/Shutdown()
+/datum/controller/subsystem/lobby/Shutdown()
 	if(file_path)
 		var/F = file("data/previous_title.dat")
 		WRITE_FILE(F, file_path)
 
-/datum/controller/subsystem/title/Recover()
-	icon = SStitle.icon
-	splash_turf = SStitle.splash_turf
-	file_path = SStitle.file_path
-	previous_icon = SStitle.previous_icon
+/datum/controller/subsystem/lobby/Recover()
+	icon = SSlobby.icon
+	splash_turf = SSlobby.splash_turf
+	file_path = SSlobby.file_path
+	previous_icon = SSlobby.previous_icon
 
-/datum/controller/subsystem/title/fire(resumed)
+/datum/controller/subsystem/lobby/fire(resumed)
 	if(!splash_turf) // Something is wrong
 		can_fire = FALSE
 		return
@@ -103,7 +103,7 @@ SUBSYSTEM_DEF(title)
 	if(times_fired % 15 == 0) // every 15 seconds
 		update_tip()
 
-/datum/controller/subsystem/title/proc/update_tip()
+/datum/controller/subsystem/lobby/proc/update_tip()
 	set waitfor = FALSE
 
 	var/new_tip = ""
@@ -137,7 +137,7 @@ SUBSYSTEM_DEF(title)
 	animate(tip, alpha = 255, time = 1.5 SECONDS)
 
 /// Called in init to create all of the vis contents objects
-/datum/controller/subsystem/title/proc/setup_objects()
+/datum/controller/subsystem/lobby/proc/setup_objects()
 	backdrop.icon = icon
 	backdrop.handle_generic_titlescreen_sizes()
 
@@ -174,14 +174,28 @@ SUBSYSTEM_DEF(title)
 	add_child_object(tip, "Tip")
 
 /// Adds an atom to the vis contents of the master.
-/datum/controller/subsystem/title/proc/add_child_object(obj/effect/abstract/new_object, object_name)
+/datum/controller/subsystem/lobby/proc/add_child_object(obj/effect/abstract/new_object, object_name)
 	master_object.add_viscontents(new_object)
 	new_object.name = object_name // So you can VV the master object to see children easily.
 	return new_object
 
 /// Update the load status of the game
-/datum/controller/subsystem/title/proc/set_game_status_text(new_text = "Setting up game...", sub_text)
+/datum/controller/subsystem/lobby/proc/set_game_status_text(new_text = "Setting up game...", sub_text)
 	if(!game_status)
 		return
 
 	game_status.maptext = "<span class='vga center align-top outline'>[new_text]\n<span style='color: #aaaaaa'>[sub_text]</span></span>"
+
+/// Called when a client FULLY connects.
+/datum/controller/subsystem/lobby/proc/client_login(client/C)
+	if(SSticker.current_state > GAME_STATE_PREGAME)
+		return
+
+	to_chat(world, systemtext("<b>[C.key]</b> has connected."))
+
+/// Called when a fully connected client disconnects.
+/datum/controller/subsystem/lobby/proc/client_logout(client/C)
+	if(SSticker.current_state > GAME_STATE_PREGAME)
+		return
+
+	to_chat(world, systemtext("<b>[C.key]</b> has disconnected."))

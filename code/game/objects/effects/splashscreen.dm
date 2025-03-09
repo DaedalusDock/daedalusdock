@@ -20,7 +20,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/abstract/splashscreen)
 
 /obj/effect/abstract/splashscreen/master/Initialize(mapload)
 	. = ..()
-	SStitle.master_object = src
+	SSlobby.master_object = src
 	add_viscontents(new /obj/effect/abstract/splashscreen/backdrop)
 
 /obj/effect/abstract/splashscreen/backdrop
@@ -29,14 +29,14 @@ INITIALIZE_IMMEDIATE(/obj/effect/abstract/splashscreen)
 
 /obj/effect/abstract/splashscreen/backdrop/Initialize(mapload)
 	. = ..()
-	SStitle.backdrop = src
-	if(SStitle.icon)
-		icon = SStitle.icon
+	SSlobby.backdrop = src
+	if(SSlobby.icon)
+		icon = SSlobby.icon
 		handle_generic_titlescreen_sizes()
 
 ///helper proc that will center the screen if the icon is changed to a generic width, to make admins have to fudge around with pixel_x less. returns null
 /obj/effect/abstract/splashscreen/backdrop/proc/handle_generic_titlescreen_sizes()
-	var/icon/size_check = icon(SStitle.backdrop.icon, SStitle.backdrop.icon_state)
+	var/icon/size_check = icon(SSlobby.backdrop.icon, SSlobby.backdrop.icon_state)
 	var/width = size_check.Width()
 	if(width == 480) // 480x480 is nonwidescreen
 		pixel_x = 0

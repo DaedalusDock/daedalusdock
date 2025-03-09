@@ -224,9 +224,6 @@ a.popt {
 .bold,
 .name,
 .prefix,
-.ooc,
-.looc,
-.adminooc,
 .admin,
 .medal,
 .yell {
@@ -266,24 +263,37 @@ em {
   font-weight: bold;
 }
 
+// Applied to messages that don't come from the game.
+.system {
+  color: #23db55;
+  font-family: 'Lucida Console', monospace;
+}
+
+.systemfont {
+  font-family: 'Lucida Console', monospace;
+}
+
 .ooc {
   color: #cca300;
+  font-family: 'Lucida Console', monospace;
+}
+
+.oocplain {
   font-weight: bold;
-  text-shadow: 0 0 0.15em #db7900;
+  font-family: 'Lucida Console', monospace;
 }
 
 .looc {
-  color: #6699cc;
+  color: #0099cc;
+  font-family: 'Lucida Console', monospace;
 }
 
 .adminobserverooc {
   color: #0099cc;
-  font-weight: bold;
 }
 
 .adminooc {
   color: #3d5bc3;
-  font-weight: bold;
 }
 
 .adminsay {

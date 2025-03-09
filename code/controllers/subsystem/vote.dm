@@ -129,12 +129,12 @@ SUBSYSTEM_DEF(vote)
 	initiator = initiator_key
 	started_time = REALTIMEOFDAY
 
-	var/text = "[capitalize(current_vote.name)] vote started by [initiator || "CentCom"]."
+	var/text = "[capitalize(current_vote.name)] vote started by [initiator || "server"]."
 
 	log_vote(text)
 
 	var/vp = CONFIG_GET(number/vote_period)
-	to_chat(world, "\n<span class='infoplain'><font color='purple'><b>[text]</b>\nType <b>vote</b> or click <a href='byond://winset?command=vote'>here</a> to place your votes.\nYou have [DisplayTimeText(vp)] to vote.</font></span>")
+	to_chat(world, "\n[systemtext("<font color='purple'><b>[text]</b>\nType <b>vote</b> or click <a href='byond://winset?command=vote'>here</a> to place your votes.\nYou have [DisplayTimeText(vp)] to vote.</font>")]")
 
 	time_remaining = round(vp/10)
 	for(var/client/C in GLOB.clients)

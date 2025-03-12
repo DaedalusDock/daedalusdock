@@ -18,3 +18,13 @@
   - balance: Improved the rate at which Traumatic Shock decays.
   - bugfix: Fixed a bug that caused mood messages to display multiple times.
   - bugfix: Slice Tendon and Throat Slit are actually usable.
+2025-03-07:
+  JohnFulpWillard:
+  - qol: AI can now examine things while outside of their shell.
+  Kapu1178:
+  - tweak: Disabled Heretics.
+  MrMelbert:
+  - qol: 'Inventory slots will now dim if they are unable to be used. ex: suit storage
+      will dim without an oversuit'
+  mc-oofert:
+  - rscadd: You can now wear gloves while lacking an arm.

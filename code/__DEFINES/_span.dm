@@ -116,6 +116,8 @@
 #define span_suppradio(str) ("<span class='suppradio'>" + str + "</span>")
 #define span_subtle(str) ("<span class='subtle'>" + str + "</span>")
 #define span_syndradio(str) ("<span class='syndradio'>" + str + "</span>")
+#define span_system(str) ("<span class='system'>" + str + "</span>")
+#define span_systemfont(str) ("<span class='systemfont'>" + str + "</span>")
 #define span_tape_recorder(str) ("<span class='tape_recorder'>" + str + "</span>")
 #define span_tinynotice(str) ("<span class='tinynotice'>" + str + "</span>")
 #define span_tinynoticeital(str) ("<span class='tinynoticeital'>" + str + "</span>")
@@ -137,3 +139,5 @@
 
 // Codex
 #define CODEX_LINK(str, entrytext) ("<span codexlink='" + entrytext + "'>" + str + "</span>")
+
+#define systemtext(text) span_system("<b>SYSTEM:</b> [text]")

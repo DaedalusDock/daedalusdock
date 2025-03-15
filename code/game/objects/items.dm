@@ -1008,7 +1008,7 @@ DEFINE_INTERACTABLE(/obj/item)
  * * bypass_equip_delay_self for whether we want to bypass the equip delay
  * * ignore_equipped ignores any already equipped items in that slot
  */
-/obj/item/proc/mob_can_equip(mob/living/M, mob/living/equipper, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, ignore_equipped = TRUE)
+/obj/item/proc/mob_can_equip(mob/living/M, mob/living/equipper, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE)
 	if(!M)
 		return FALSE
 	if((item_flags & HAND_ITEM) && slot != ITEM_SLOT_HANDS)

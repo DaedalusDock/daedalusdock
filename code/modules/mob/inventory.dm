@@ -583,6 +583,9 @@
 	if(I.equip_to_best_slot(src))
 		return
 
+	if(is_holding(I)) // Already holding it, just keep holding it.
+		return
+
 	if(put_in_active_hand(I))
 		return
 

@@ -17,8 +17,8 @@
 		to_chat(owner, span_warning("That one has no life force left."))
 		return FALSE
 
-	if(L.stat == CONSCIOUS)
-		to_chat(owner, span_warning("I cannot influence those that are awake."))
+	if(L.stat != CONSCIOUS)
+		to_chat(owner, span_warning("I cannot influence those that are asleep."))
 		return FALSE
 
 /datum/action/cooldown/chilling_presence/Activate(atom/target)

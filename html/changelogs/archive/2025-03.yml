@@ -28,3 +28,9 @@
       will dim without an oversuit'
   mc-oofert:
   - rscadd: You can now wear gloves while lacking an arm.
+2025-03-16:
+  Kapu1178:
+  - bugfix: Chilling Presence ghost power works on awake targets.
+  - tweak: Restyled OOC and system messages.
+  - bugfix: You can no longer equip multiple items to the same slot.
+  - bugfix: Fixed the honk module not working.

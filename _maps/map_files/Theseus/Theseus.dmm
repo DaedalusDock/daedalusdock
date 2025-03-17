@@ -29923,6 +29923,7 @@
 	},
 /obj/structure/table,
 /obj/item/stack/splint,
+/obj/machinery/light/cold/directional/north,
 /turf/open/floor/iron/white,
 /area/station/medical/storage)
 "llm" = (
@@ -54743,6 +54744,11 @@
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
+"uuT" = (
+/obj/structure/table,
+/obj/machinery/autoclave,
+/turf/open/floor/iron/white,
+/area/station/medical/storage)
 "uuW" = (
 /obj/structure/closet/radiation,
 /obj/structure/sign/warning/radiation/rad_area{
@@ -91324,7 +91330,7 @@ vzN
 nWg
 gQV
 wDO
-wDO
+uuT
 gQV
 wAP
 nQw

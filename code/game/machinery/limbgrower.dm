@@ -150,7 +150,7 @@
 			. = TRUE
 
 		if("make_limb")
-			being_built = SStech.sanitize_design_id(params["design_id"])
+			being_built = SStech.sanitize_design_id(src, params["design_id"])
 			if(!being_built)
 				CRASH("[src] was passed an invalid design id!")
 

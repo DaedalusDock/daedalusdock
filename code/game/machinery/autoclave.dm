@@ -20,6 +20,7 @@
 
 	var/sanitize_time = 30 SECONDS
 
+	var/static/alpha_mask_filter
 	var/datum/looping_sound/microwave/soundloop
 
 	/// Timer ID for the actual work. Can be used to check if the machine is "busy"
@@ -28,6 +29,8 @@
 /obj/machinery/autoclave/Initialize(mapload)
 	. = ..()
 	soundloop = new(src)
+	alpha_mask_filter ||= filter(type = "alpha", icon = icon(icon, "alphamask"))
+
 	update_appearance(UPDATE_OVERLAYS)
 	register_context()
 
@@ -44,6 +47,8 @@
 	. = ..()
 	if(held_item)
 		context[SCREENTIP_CONTEXT_LMB] = "Insert"
+	else
+		context[SCREENTIP_CONTEXT_LMB] = state_open ? "Close" : "Open"
 
 	context[SCREENTIP_CONTEXT_RMB] = "Turn on"
 	return CONTEXTUAL_SCREENTIP_SET
@@ -51,21 +56,29 @@
 /obj/machinery/autoclave/update_overlays()
 	. = ..()
 	if(state_open)
-		var/image/open_door_overlay = image(icon, "door-open")
-		open_door_overlay.pixel_x = -18
-		. += open_door_overlay
+		. += image(icon, "door-open")
 	else
+		if(occupant)
+			var/mutable_appearance/content_copy = new /mutable_appearance(occupant)
+			content_copy.layer = FLOAT_LAYER
+			content_copy.plane = FLOAT_PLANE
+			content_copy.pixel_x = 0
+			content_copy.pixel_y = 0
+			content_copy.appearance_flags |= KEEP_TOGETHER
+			content_copy.filters += alpha_mask_filter
+			. += content_copy
+
 		. += image(icon, "door-closed")
 
 	if(!is_operational)
-		. += image(icon, "light-off")
-	else if(work_timer_id)
-		. += image(icon, "light-green")
-		. += emissive_appearance(icon, "light-green", alpha = 90)
-	else
-		. += image(icon, "light-red")
-		. += emissive_appearance(icon, "light-red", alpha = 90)
+		. += image(icon, "lights-off")
 
+	else if(work_timer_id)
+		. += image(icon, "lights-green")
+		. += emissive_appearance(icon, "lights-green-emi", alpha = 90)
+	else
+		. += image(icon, "lights-red")
+		. += emissive_appearance(icon, "lights-red-emi", alpha = 90)
 
 /obj/machinery/autoclave/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()

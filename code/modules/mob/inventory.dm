@@ -548,9 +548,6 @@
 	if(M.equip_to_appropriate_slot(src))
 		M.update_held_items()
 		return TRUE
-	else
-		if(equip_delay_self)
-			return
 
 	if(M.active_storage?.attempt_insert(src, M))
 		return TRUE
@@ -563,7 +560,7 @@
 		if(I.atom_storage?.attempt_insert(src, M))
 			return TRUE
 
-	to_chat(M, span_warning("You are unable to equip that!"))
+	to_chat(M, span_warning("You are unable to equip that."))
 	return FALSE
 
 
@@ -577,16 +574,10 @@
 /mob/proc/execute_quick_equip()
 	var/obj/item/I = get_active_held_item()
 	if(!I)
-		to_chat(src, span_warning("You are not holding anything to equip!"))
+		to_chat(src, span_warning("You are not holding anything to equip."))
 		return
 
-	if(I.equip_to_best_slot(src))
-		return
-
-	if(put_in_active_hand(I))
-		return
-
-	I.forceMove(drop_location())
+	return I.equip_to_best_slot(src)
 
 //used in code for items usable by both carbon and drones, this gives the proper back slot for each mob.(defibrillator, backpack watertank, ...)
 /mob/proc/getBackSlot()

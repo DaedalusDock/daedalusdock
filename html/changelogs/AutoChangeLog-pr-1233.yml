@@ -1,5 +1,0 @@
-author: MrMelbert
-delete-after: true
-changes:
-  - qol: 'Inventory slots will now dim if they are unable to be used. ex: suit storage
-      will dim without an oversuit'

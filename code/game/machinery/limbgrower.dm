@@ -8,6 +8,7 @@
 	density = TRUE
 	circuit = /obj/item/circuitboard/machine/limbgrower
 
+	var/allowed_buildtypes = LIMBGROWER
 	/// The category of limbs we're browing in our UI.
 	var/selected_category = SPECIES_HUMAN
 	/// If we're currently printing something.

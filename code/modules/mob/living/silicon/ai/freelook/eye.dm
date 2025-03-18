@@ -12,6 +12,7 @@
 	hud_possible = list(
 		AI_DETECT_HUD = HUD_LIST_LIST
 	)
+
 	var/list/visibleCameraChunks = list()
 	var/mob/living/silicon/ai/ai = null
 	var/relay_speech = FALSE
@@ -19,6 +20,7 @@
 	var/static_visibility_range = 16
 	var/ai_detector_visible = TRUE
 	var/ai_detector_color = COLOR_RED
+
 	interaction_range = null
 
 /mob/camera/ai_eye/Initialize(mapload)
@@ -103,7 +105,7 @@
 			var/obj/machinery/holopad/H = ai.current
 			H.move_hologram(ai, destination)
 		if(ai.camera_light_on)
-			ai.light_cameras()
+			ai.update_lit_cameras()
 		if(ai.master_multicam)
 			ai.master_multicam.refresh_view()
 

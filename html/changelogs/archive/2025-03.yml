@@ -41,3 +41,12 @@
   MisterGrimm:
   - balance: Slipping while under a Omen curse no longer causes your head to pop like
       a grape
+2025-03-18:
+  Kapu1178:
+  - rscdel: Removed nightshift lighting.
+  - bugfix: The Ore Box now works again.
+  - bugfix: The Limbgrower now works again.
+  - bugfix: Flipping tables no longer moves anchored objects.
+  - bugfix: Repair Internal Organ surgery can be completed.
+  jlsnow301:
+  - bugfix: The chemmaster can have dispatch amounts set again

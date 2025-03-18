@@ -385,9 +385,6 @@ MICE_ROUNDSTART 10
 ## This used to be named traits, hence the config name, but it handles quirks, not the other kind of trait!
 ROUNDSTART_TRAITS
 
-## Enable night shifts ##
-#ENABLE_NIGHT_SHIFTS
-
 ## Enable randomized shift start times##
 #RANDOMIZE_SHIFT_TIME
 

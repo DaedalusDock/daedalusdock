@@ -1,0 +1,3 @@
+/obj/machinery/light/no_nightlight/@SUBTYPES : /obj/machinery/light{@OLD}
+/obj/machinery/light/warm/no_nightlight/@SUBTYPES : /obj/machinery/light/warm{@OLD}
+/obj/machinery/light/cold/no_nightlight/@SUBTYPES : /obj/machinery/light/cold{@OLD}

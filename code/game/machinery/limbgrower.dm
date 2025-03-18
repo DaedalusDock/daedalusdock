@@ -8,6 +8,7 @@
 	density = TRUE
 	circuit = /obj/item/circuitboard/machine/limbgrower
 
+	var/allowed_buildtypes = LIMBGROWER
 	/// The category of limbs we're browing in our UI.
 	var/selected_category = SPECIES_HUMAN
 	/// If we're currently printing something.
@@ -150,7 +151,7 @@
 			. = TRUE
 
 		if("make_limb")
-			being_built = SStech.sanitize_design_id(params["design_id"])
+			being_built = SStech.sanitize_design_id(src, params["design_id"])
 			if(!being_built)
 				CRASH("[src] was passed an invalid design id!")
 

@@ -405,6 +405,11 @@
 		return TRUE
 
 	if(I.equipped_to != src) // It isn't even equipped to us.
+		if(!no_move && !QDELETED(I))
+			if (isnull(newloc))
+				I.moveToNullspace()
+			else
+				I.forceMove(newloc)
 		return TRUE
 
 	if(!force && !canUnequipItem(I, newloc, no_move, invdrop, silent))

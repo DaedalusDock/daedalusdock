@@ -41,7 +41,7 @@
 		if(istype(I, /obj/item/organ/brain))
 			continue
 		if(!(I.organ_flags & (ORGAN_SYNTHETIC)) && I.damage > 0)
-			organs[I.name] = I.slot
+			organs[I.name] = I
 
 	var/obj/item/organ/O
 	var/organ_to_replace = -1

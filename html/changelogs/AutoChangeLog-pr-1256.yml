@@ -1,0 +1,7 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: The Ore Box now works again.
+  - bugfix: The Limbgrower now works again.
+  - bugfix: Flipping tables no longer moves anchored objects.
+  - bugfix: Repair Internal Organ surgery can be completed.

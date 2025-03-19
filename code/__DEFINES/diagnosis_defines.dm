@@ -1,0 +1,2 @@
+#define DIAGNOSIS_SYMPTOM_CATEGORY_CIRCULATION "Circulatory System"
+#define DIAGNOSIS_SYMPTOM_CATEGORY_BRAIN "Brain Activity"

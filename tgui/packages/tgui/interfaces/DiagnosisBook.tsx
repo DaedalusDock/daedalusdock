@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useBackend } from '../backend';
-import { Button, Flex, Section } from '../components';
+import { Button, Flex, Section, TextArea } from '../components';
 import { Window } from '../layouts';
 
 type Condition = {
@@ -34,7 +34,7 @@ type DiagnosisBookData = {
 
 export const DiagnosisBook = (_) => {
   return (
-    <Window width={800} height={600} title="Diagnosis Book">
+    <Window width={1000} height={600} title="Diagnosis Book" theme="retro">
       <Window.Content>
         <Flex fill justify="center" height="100%">
           <PatientInfo />
@@ -50,11 +50,55 @@ export const PatientInfo = (_) => {
   const { act, data } = useBackend<DiagnosisBookData>();
   const { mob } = data;
   return (
-    <Flex.Item width="20%" height="100%">
+    <Flex.Item width="30%" height="100%">
       <Section title="Patient" height="100%">
         <Flex direction="column">
-          <Flex.Item>{`Name: ${mob.name || ''}`}</Flex.Item>
-          <Flex.Item>{`Time: ${mob.time || ''}`}</Flex.Item>
+          <Flex.Item>
+            <Flex direction="row">
+              <div
+                style={{
+                  fontSize: '200%',
+                  marginRight: '8px',
+                  width: '40%',
+                  fontWeight: 'bold',
+                }}
+              >
+                Name:
+              </div>
+              {
+                <TextArea
+                  width="60%"
+                  height="1.8rem"
+                  maxLength={32}
+                  value={mob.name || ''}
+                  onChange={(e, value) => act('update_mob', { name: value })}
+                />
+              }
+            </Flex>
+          </Flex.Item>
+          <Flex.Item>
+            <Flex direction="row">
+              <div
+                style={{
+                  fontSize: '200%',
+                  marginRight: '8px',
+                  width: '40%',
+                  fontWeight: 'bold',
+                }}
+              >
+                Time:
+              </div>
+              {
+                <TextArea
+                  width="60%"
+                  height="1.8rem"
+                  maxLength={32}
+                  value={mob.time || ''}
+                  onChange={(e, value) => act('update_mob', { time: value })}
+                />
+              }
+            </Flex>
+          </Flex.Item>
         </Flex>
       </Section>
     </Flex.Item>
@@ -65,7 +109,7 @@ export const SymptomInfo = (_) => {
   const { act, data } = useBackend<DiagnosisBookData>();
   const { symptoms, symptom_categories } = data;
   return (
-    <Flex.Item width="40%" height="100%">
+    <Flex.Item width="35%" height="100%">
       <Section title="Suspected Symptoms" height="100%" fill scrollable>
         <Flex direction="column">
           {symptom_categories
@@ -100,6 +144,7 @@ function symptomInfoEntry(
                       : 'red'
                   }
                   tooltip={symptom.desc}
+                  tooltipPosition="bottom-start"
                   onClick={() => act('cycle_symptom', { path: symptom.path })}
                 >
                   {symptom.name}
@@ -116,7 +161,7 @@ export const ConditionInfo = (_) => {
   const { act, data } = useBackend<DiagnosisBookData>();
   const { conditions } = data;
   return (
-    <Flex.Item width="40%" height="100%">
+    <Flex.Item width="35%" height="100%">
       <Section title="Conditons" height="100%" fill scrollable>
         <Flex direction="column">
           {conditions

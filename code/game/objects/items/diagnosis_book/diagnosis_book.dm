@@ -86,6 +86,15 @@
 				selected_symptoms += symptom_path
 			return TRUE
 
+		if("update_mob")
+			if(params["name"])
+				var/new_name = params["name"]
+				if(length(new_name) > 32)
+					return
+
+				selected_mob_data["name"] = new_name
+				return TRUE
+
 /obj/item/diagnosis_book/pre_attack(atom/A, mob/living/user, params)
 	. = ..()
 	if(.)

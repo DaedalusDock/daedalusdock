@@ -12,8 +12,6 @@
 	desc = "The surface of the patient's skin contains blue or purple discoloration as a result of low oxygen presence in the blood."
 	category = DIAGNOSIS_SYMPTOM_CATEGORY_CIRCULATION
 
-#warn add cyanosis
-
 /datum/diagnosis_symptom/unconscious
 	name = "Loss of consciousness"
 	desc = "The patient is unconscious and unresponsive."

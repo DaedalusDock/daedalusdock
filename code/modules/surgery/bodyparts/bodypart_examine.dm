@@ -37,12 +37,21 @@
 			. += span_notice("\t <a href='?src=[REF(src)];splint_remove=1' class='warning'>[owner.p_their(TRUE)] [plaintext_zone] is splinted with [splint].</a>")
 		if(bandage)
 			. += span_notice("\n\t <a href='?src=[REF(src)];bandage_remove=1' class='notice'>[owner.p_their(TRUE)] [plaintext_zone] is bandaged with [bandage][bandage.absorption_capacity ? "." : ", <span class='warning'>it is no longer absorbing blood</span>."]</a>")
-		return
 
 	else
 		if(bodypart_flags & BP_BROKEN_BONES)
 			. += span_warning("It is dented and swollen.")
-		return
+
+
+/obj/item/bodypart/arm/mob_examine(hallucinating, covered)
+	. = ..()
+	if((bodypart_flags & BP_HAS_BLOOD) && owner.undergoing_cyanosis() && !(HANDS & owner.get_all_covered_flags()))
+		. += span_warning("[owner.p_their(TRUE)] [parse_zone(aux_zone)] is a sickly blue.")
+
+/obj/item/bodypart/leg/mob_examine(hallucinating, covered)
+	. = ..()
+	if((bodypart_flags & BP_HAS_BLOOD) && owner.undergoing_cyanosis() && !(FEET & owner.get_all_covered_flags()))
+		. += span_warning("[owner.p_their(TRUE)] [body_zone == BODY_ZONE_L_LEG ? "left foot" : "right foot"] is a sickly blue.")
 
 /// Returns a list of wound descriptions in text form.
 /obj/item/bodypart/proc/get_wound_descriptions(hallucinating) as /list

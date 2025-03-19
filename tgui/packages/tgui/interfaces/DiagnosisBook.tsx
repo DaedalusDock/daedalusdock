@@ -173,7 +173,7 @@ function printConditionSymptoms(condition: Condition) {
   const { data } = useBackend<DiagnosisBookData>();
   const { symptoms, selected_symptoms } = data;
   let elements: React.JSX.Element[] = [];
-  for (const symptom_name of condition.symptoms) {
+  for (const symptom_name of condition.symptoms.sort()) {
     const symptom_object = symptoms.find(
       (symptom) => symptom.name === symptom_name,
     );

@@ -79,3 +79,16 @@
 		/datum/diagnosis_symptom/no_pulse,
 		/datum/diagnosis_symptom/syncope,
 	)
+
+/datum/diagnosis_condition/liver_failure
+	name = "Liver Failure"
+	desc = "The patient's liver is failing or has stopped functioning."
+	symptoms = list(
+		/datum/diagnosis_symptom/blurred_vision,
+		/datum/diagnosis_symptom/jaundice,
+		/datum/diagnosis_symptom/slurred_speech,
+		/datum/diagnosis_symptom/confusion,
+		/datum/diagnosis_symptom/nausea,
+		/datum/diagnosis_symptom/chest_pain,
+		/datum/diagnosis_symptom/drowsyness,
+	)

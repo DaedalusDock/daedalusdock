@@ -141,7 +141,7 @@ function symptomInfoEntry(
                   color={
                     data.selected_symptoms.includes(symptom.path)
                       ? 'green'
-                      : 'red'
+                      : 'default'
                   }
                   tooltip={symptom.desc}
                   tooltipPosition="bottom-start"
@@ -198,9 +198,10 @@ function conditionInfoEntry(condition: Condition) {
     <Flex.Item>
       <Section
         title={
-          <span>
+          <span style={{ fontSize: '150%' }}>
             {condition.name}
             <Button
+              fontSize="60%"
               icon="question"
               tooltip={condition.desc}
               style={{ marginLeft: '8px' }}
@@ -227,10 +228,27 @@ function printConditionSymptoms(condition: Condition) {
     }
 
     if (selected_symptoms.includes(symptom_object.path)) {
-      elements.push(<span>{symptom_object.name}</span>);
+      elements.push(
+        <span
+          style={{
+            fontSize: '150%',
+            textWrap: 'nowrap',
+            display: 'inline-block',
+          }}
+        >
+          {symptom_object.name}
+        </span>,
+      );
     } else {
       elements.push(
-        <span style={{ textDecoration: 'line-through' }}>
+        <span
+          style={{
+            textDecoration: 'line-through',
+            fontSize: '150%',
+            textWrap: 'nowrap',
+            display: 'inline-block',
+          }}
+        >
           {symptom_object.name}
         </span>,
       );

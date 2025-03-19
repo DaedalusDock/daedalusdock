@@ -1,2 +1,6 @@
 #define DIAGNOSIS_SYMPTOM_CATEGORY_CIRCULATION "Circulatory System"
 #define DIAGNOSIS_SYMPTOM_CATEGORY_BRAIN "Brain Activity"
+#define DIAGNOSIS_SYMPTOM_CATEGORY_SKIN "Integumentary System"
+#define DIAGNOSIS_SYMPTOM_CATEGORY_GI "Gastrointestinal Tract"
+#define DIAGNOSIS_SYMPTOM_CATEGORY_EYES "Ophthalmic"
+#define DIAGNOSIS_SYMPTOM_CATEGORY_NERVES "Nervous System"

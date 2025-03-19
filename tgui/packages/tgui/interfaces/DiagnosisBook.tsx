@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useBackend } from '../backend';
 import { Button, Flex, Section } from '../components';
 import { Window } from '../layouts';
@@ -170,7 +172,7 @@ function conditionInfoEntry(condition: Condition) {
 function printConditionSymptoms(condition: Condition) {
   const { data } = useBackend<DiagnosisBookData>();
   const { symptoms, selected_symptoms } = data;
-  let strings: string[] = [];
+  let elements: React.JSX.Element[] = [];
   for (const symptom_name of condition.symptoms) {
     const symptom_object = symptoms.find(
       (symptom) => symptom.name === symptom_name,
@@ -180,16 +182,38 @@ function printConditionSymptoms(condition: Condition) {
     }
 
     if (selected_symptoms.includes(symptom_object.path)) {
-      strings.push(symptom_object.name);
+      elements.push(<span>{symptom_object.name}</span>);
     } else {
-      strings.push(
-        `<span style='text-decoration: line-through'>${symptom_object.name}</span>`,
+      elements.push(
+        <span style={{ textDecoration: 'line-through' }}>
+          {symptom_object.name}
+        </span>,
       );
     }
   }
-  const text_html = { __html: strings.join(' | ') };
-  /* eslint-disable react/no-danger */
-  return <span dangerouslySetInnerHTML={text_html} />;
+
+  return joinElementArray(
+    elements,
+    <span style={{ margin: '0px 4px' }}>|</span>,
+  );
+}
+
+/**
+ * Joins an array of React Nodes elements with an optional separator.
+ * @param {React.ReactNode[]} spans - The array of <span> elements to join.
+ * @param {React.ReactNode} [separator] - The optional separator <span> element.
+ * @returns {React.JSX.Element[]} The joined <span> elements with the separator in between.
+ */
+function joinElementArray(
+  elements: React.ReactNode[],
+  separator?: React.ReactNode,
+) {
+  return elements.map((element, index) => (
+    <React.Fragment key={index}>
+      {element}
+      {index < elements.length - 1 && separator}
+    </React.Fragment>
+  ));
 }
 
 function getSymptomByName(symptom_name: string) {

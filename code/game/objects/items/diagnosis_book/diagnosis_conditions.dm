@@ -71,7 +71,7 @@
 
 /datum/diagnosis_condition/asystole
 	name = "Asystole"
-	desc = "Patient's heart has ceased beating."
+	desc = "The patient's heart has ceased beating."
 	symptoms = list(
 		/datum/diagnosis_symptom/cyanosis,
 		/datum/diagnosis_symptom/unconscious,

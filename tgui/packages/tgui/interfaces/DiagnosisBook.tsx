@@ -97,6 +97,7 @@ function symptomInfoEntry(
                       ? 'green'
                       : 'red'
                   }
+                  tooltip={symptom.desc}
                   onClick={() => act('cycle_symptom', { path: symptom.path })}
                 >
                   {symptom.name}
@@ -148,7 +149,18 @@ function compareConditions(a: Condition, b: Condition) {
 function conditionInfoEntry(condition: Condition) {
   return (
     <Flex.Item>
-      <Section title={condition.name}>
+      <Section
+        title={
+          <span>
+            {condition.name}
+            <Button
+              icon="question"
+              tooltip={condition.desc}
+              style={{ marginLeft: '8px' }}
+            />
+          </span>
+        }
+      >
         {printConditionSymptoms(condition)}
       </Section>
     </Flex.Item>

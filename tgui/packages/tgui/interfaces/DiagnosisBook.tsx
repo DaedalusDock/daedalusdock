@@ -1,7 +1,15 @@
+import { BooleanLike } from 'common/react';
 import React from 'react';
 
 import { useBackend } from '../backend';
-import { Button, Flex, Section, TextArea } from '../components';
+import {
+  Button,
+  ByondUi,
+  DmIcon,
+  Flex,
+  Section,
+  TextArea,
+} from '../components';
 import { Window } from '../layouts';
 
 type Condition = {
@@ -13,6 +21,7 @@ type Condition = {
 };
 
 type MobData = {
+  has_appearance: BooleanLike;
   name: string | undefined;
   time: string | undefined;
 };
@@ -26,6 +35,7 @@ type Symptom = {
 
 type DiagnosisBookData = {
   conditions: Condition[];
+  map_ref: string;
   mob: MobData;
   selected_symptoms: string[];
   symptom_categories: string[];
@@ -53,6 +63,7 @@ export const PatientInfo = (_) => {
     <Flex.Item width="30%" height="100%">
       <Section title="Patient" height="100%">
         <Flex direction="column">
+          <PatientAppearance />
           <Flex.Item>
             <Flex direction="row">
               <div
@@ -101,6 +112,33 @@ export const PatientInfo = (_) => {
           </Flex.Item>
         </Flex>
       </Section>
+    </Flex.Item>
+  );
+};
+
+export const PatientAppearance = (_) => {
+  const { data } = useBackend<DiagnosisBookData>();
+  const { map_ref, mob } = data;
+  return (
+    <Flex.Item>
+      <Flex justify="center" direction="row">
+        <Flex.Item>
+          {mob.has_appearance ? (
+            <ByondUi
+              height="256px"
+              width="256px"
+              params={{ id: map_ref, type: 'map' }}
+            />
+          ) : (
+            <DmIcon
+              icon="icons/hud/noimg.dmi"
+              icon_state="png"
+              height="256px"
+              width="256px"
+            />
+          )}
+        </Flex.Item>
+      </Flex>
     </Flex.Item>
   );
 };

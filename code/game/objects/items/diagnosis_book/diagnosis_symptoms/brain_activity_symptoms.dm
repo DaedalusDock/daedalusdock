@@ -4,7 +4,7 @@
 	category = DIAGNOSIS_SYMPTOM_CATEGORY_BRAIN
 
 /datum/diagnosis_symptom/slurred_speech
-	name = "Slurred Speech"
+	name = "Slurred speech"
 	desc = "The patient is unable to speak clearly."
 	category = DIAGNOSIS_SYMPTOM_CATEGORY_BRAIN
 

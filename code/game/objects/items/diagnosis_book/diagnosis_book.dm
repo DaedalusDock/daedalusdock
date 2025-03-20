@@ -6,12 +6,17 @@
 	/// Static UI data
 	var/static/list/static_data
 
+	/// Byond UI screen object used by the interface
+	var/atom/movable/screen/map_view/byondui/byondui_screen
+
 	/// Data for the selected mob.
 	var/list/selected_mob_data = list()
 	var/list/selected_symptoms = list()
 
 /obj/item/diagnosis_book/Initialize(mapload)
 	. = ..()
+	byondui_screen = new
+
 	if(isnull(static_data))
 		static_data = list()
 		var/list/conditions = list()
@@ -51,9 +56,14 @@
 			symptom_packet["path"] = symptom.type
 			symptom_categories |= symptom.category
 
+/obj/item/diagnosis_book/Destroy(force)
+	QDEL_NULL(byondui_screen)
+	return ..()
+
 /obj/item/diagnosis_book/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
+		byondui_screen.register_to_client(user.client)
 		ui = new(user, src, "DiagnosisBook")
 		ui.open()
 
@@ -63,7 +73,8 @@
 /obj/item/diagnosis_book/ui_data(mob/user)
 	return list(
 		"mob" = selected_mob_data,
-		"selected_symptoms" = selected_symptoms
+		"selected_symptoms" = selected_symptoms,
+		"map_ref" = byondui_screen.assigned_map,
 	)
 
 /obj/item/diagnosis_book/ui_act(action, list/params)
@@ -95,6 +106,14 @@
 				selected_mob_data["name"] = new_name
 				return TRUE
 
+			if(params["time"])
+				var/new_time = params["time"]
+				if(length(new_time) > 32)
+					return
+
+				selected_mob_data["time"] = new_time
+				return TRUE
+
 /obj/item/diagnosis_book/pre_attack(atom/A, mob/living/user, params)
 	. = ..()
 	if(.)
@@ -110,6 +129,19 @@
 	selected_mob_data = list()
 	selected_mob_data["name"] = target.name
 	selected_mob_data["time"] = stationtime2text("hh:mm")
+	selected_mob_data["has_appearance"] = 1
+
+	var/mutable_appearance/character_appearance = new(A.appearance)
+	remove_non_canon_overlays(character_appearance)
+
+	var/matrix/new_transform = matrix()
+	new_transform.Scale(4, 4)
+	new_transform.Translate(18, -24)
+
+	character_appearance.transform = new_transform
+	character_appearance.dir = SOUTH
+
+	byondui_screen.rendered_atom.appearance = character_appearance.appearance
 
 	ui_interact(user)
 	return TRUE

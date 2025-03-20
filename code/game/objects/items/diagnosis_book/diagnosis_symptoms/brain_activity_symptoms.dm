@@ -13,8 +13,8 @@
 	desc = "The patient is experiencing difficulty walking straight."
 	category = DIAGNOSIS_SYMPTOM_CATEGORY_BRAIN
 
-/datum/diagnosis_symptom/drowsyness
-	name = "Drowsyness"
+/datum/diagnosis_symptom/drowsiness
+	name = "Drowsiness"
 	desc = "The patient is reporting lethargy and an urge to sleep."
 	category = DIAGNOSIS_SYMPTOM_CATEGORY_BRAIN
 

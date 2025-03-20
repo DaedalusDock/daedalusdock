@@ -16,6 +16,7 @@
 /obj/item/diagnosis_book/Initialize(mapload)
 	. = ..()
 	byondui_screen = new
+	wipe_byondui()
 
 	if(isnull(static_data))
 		static_data = list()
@@ -129,7 +130,6 @@
 	selected_mob_data = list()
 	selected_mob_data["name"] = target.name
 	selected_mob_data["time"] = stationtime2text("hh:mm")
-	selected_mob_data["has_appearance"] = 1
 
 	var/mutable_appearance/character_appearance = new(A.appearance)
 	remove_non_canon_overlays(character_appearance)
@@ -145,3 +145,15 @@
 
 	ui_interact(user)
 	return TRUE
+
+/// Set the byondui appearance to a "No Image" icon.
+/obj/item/diagnosis_book/proc/wipe_byondui()
+	var/image/I = image('icons/hud/noimg.dmi', "png")
+	var/matrix/new_transform = matrix()
+	new_transform.Scale(2, 2)
+	new_transform.Translate(17, 17)
+
+	I.transform = new_transform
+	I.color = list(rgb(77,77,77), rgb(150,150,150), rgb(28,28,28), rgb(0,0,0))
+
+	byondui_screen.rendered_atom.appearance = I.appearance

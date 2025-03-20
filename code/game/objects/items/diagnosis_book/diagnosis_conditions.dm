@@ -39,7 +39,7 @@
 		/datum/diagnosis_symptom/confusion,
 		/datum/diagnosis_symptom/nausea,
 		/datum/diagnosis_symptom/chest_pain,
-		/datum/diagnosis_symptom/drowsyness,
+		/datum/diagnosis_symptom/drowsiness,
 		/datum/diagnosis_symptom/unconscious,
 	)
 

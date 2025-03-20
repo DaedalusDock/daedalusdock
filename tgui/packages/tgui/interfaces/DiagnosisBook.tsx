@@ -1,15 +1,7 @@
-import { BooleanLike } from 'common/react';
 import React from 'react';
 
 import { useBackend } from '../backend';
-import {
-  Button,
-  ByondUi,
-  DmIcon,
-  Flex,
-  Section,
-  TextArea,
-} from '../components';
+import { Button, ByondUi, Flex, Section, TextArea } from '../components';
 import { Window } from '../layouts';
 
 type Condition = {
@@ -21,7 +13,6 @@ type Condition = {
 };
 
 type MobData = {
-  has_appearance: BooleanLike;
   name: string | undefined;
   time: string | undefined;
 };
@@ -123,20 +114,11 @@ export const PatientAppearance = (_) => {
     <Flex.Item>
       <Flex justify="center" direction="row">
         <Flex.Item>
-          {mob.has_appearance ? (
-            <ByondUi
-              height="256px"
-              width="256px"
-              params={{ id: map_ref, type: 'map' }}
-            />
-          ) : (
-            <DmIcon
-              icon="icons/hud/noimg.dmi"
-              icon_state="png"
-              height="256px"
-              width="256px"
-            />
-          )}
+          <ByondUi
+            height="256px"
+            width="256px"
+            params={{ id: map_ref, type: 'map' }}
+          />
         </Flex.Item>
       </Flex>
     </Flex.Item>

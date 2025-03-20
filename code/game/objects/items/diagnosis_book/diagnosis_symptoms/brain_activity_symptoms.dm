@@ -17,3 +17,13 @@
 	name = "Drowsyness"
 	desc = "The patient is reporting lethargy and an urge to sleep."
 	category = DIAGNOSIS_SYMPTOM_CATEGORY_BRAIN
+
+/datum/diagnosis_symptom/dizziness
+	name = "Dizziness"
+	desc = "The patient is reporting a feeling of vision instability."
+	category = DIAGNOSIS_SYMPTOM_CATEGORY_BRAIN
+
+/datum/diagnosis_symptom/jittering
+	name = "Jittering"
+	desc = "The patient is experiencing rapid, uncontrolled movement."
+	category = DIAGNOSIS_SYMPTOM_CATEGORY_BRAIN

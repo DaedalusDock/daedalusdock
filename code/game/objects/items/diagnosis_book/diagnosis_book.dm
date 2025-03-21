@@ -68,6 +68,9 @@
 		ui = new(user, src, "DiagnosisBook")
 		ui.open()
 
+/obj/item/diagnosis_book/ui_state(mob/user)
+	return GLOB.hands_state
+
 /obj/item/diagnosis_book/ui_static_data(mob/user)
 	return static_data
 

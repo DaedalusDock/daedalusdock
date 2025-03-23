@@ -1,7 +1,8 @@
+import { classes } from 'common/react';
 import React from 'react';
 
-import { useBackend } from '../backend';
-import { Button, ByondUi, Flex, Section, TextArea } from '../components';
+import { useBackend, useLocalState } from '../backend';
+import { Box, Button, ByondUi, Flex, Section, TextArea } from '../components';
 import { Window } from '../layouts';
 
 type Condition = {
@@ -48,59 +49,24 @@ export const DiagnosisBook = (_) => {
 };
 
 export const PatientInfo = (_) => {
-  const { act, data } = useBackend<DiagnosisBookData>();
+  const { data } = useBackend<DiagnosisBookData>();
   const { mob } = data;
   return (
     <Flex.Item width="30%" height="100%">
       <Section title="Patient" height="100%">
         <Flex direction="column">
           <PatientAppearance />
-          <Flex.Item>
-            <Flex direction="row">
-              <div
-                style={{
-                  fontSize: '200%',
-                  marginRight: '8px',
-                  width: '40%',
-                  fontWeight: 'bold',
-                }}
-              >
-                Name:
-              </div>
-              {
-                <TextArea
-                  width="60%"
-                  height="1.8rem"
-                  maxLength={32}
-                  value={mob.name || ''}
-                  onChange={(e, value) => act('update_mob', { name: value })}
-                />
-              }
-            </Flex>
-          </Flex.Item>
-          <Flex.Item>
-            <Flex direction="row">
-              <div
-                style={{
-                  fontSize: '200%',
-                  marginRight: '8px',
-                  width: '40%',
-                  fontWeight: 'bold',
-                }}
-              >
-                Time:
-              </div>
-              {
-                <TextArea
-                  width="60%"
-                  height="1.8rem"
-                  maxLength={32}
-                  value={mob.time || ''}
-                  onChange={(e, value) => act('update_mob', { time: value })}
-                />
-              }
-            </Flex>
-          </Flex.Item>
+          <PatientEntry
+            fieldName="Name"
+            actName="name"
+            actValue={mob.name || ''}
+          />
+          <PatientEntry
+            fieldName="Time"
+            actName="time"
+            actValue={mob.time || ''}
+          />
+          <DiagnoseButton />
         </Flex>
       </Section>
     </Flex.Item>
@@ -119,6 +85,77 @@ export const PatientAppearance = (_) => {
             width="256px"
             params={{ id: map_ref, type: 'map' }}
           />
+        </Flex.Item>
+      </Flex>
+    </Flex.Item>
+  );
+};
+
+export const PatientEntry = (props) => {
+  const { act } = useBackend<DiagnosisBookData>();
+  const { fieldName, actName, actValue } = props;
+  return (
+    <Flex.Item>
+      <Flex direction="row">
+        <Box
+          style={{
+            fontSize: '200%',
+            marginRight: '8px',
+            width: '40%',
+            fontWeight: 'bold',
+          }}
+        >
+          {`${fieldName}:`}
+        </Box>
+        {
+          <TextArea
+            width="60%"
+            height="1.8rem"
+            maxLength={32}
+            value={actValue}
+            onChange={(e, value) => act('update_mob', { [actName]: value })}
+          />
+        }
+      </Flex>
+    </Flex.Item>
+  );
+};
+
+export const DiagnoseButton = (_) => {
+  const { act } = useBackend<DiagnosisBookData>();
+  const [selected_condition, setSelectedCondition] = useLocalState(
+    'selected_condition',
+    '',
+  );
+  return (
+    <Flex.Item style={{ marginTop: '40px' }}>
+      <Flex direction="column" align="center">
+        <Box
+          style={{
+            fontSize: '200%',
+            marginBottom: '8px',
+            fontWeight: 'bold',
+          }}
+        >
+          Diagnosis
+        </Box>
+        {
+          <TextArea
+            width="60%"
+            height="1.8rem"
+            maxLength={32}
+            value={selected_condition || ''}
+            onChange={(e, value) => setSelectedCondition(value)}
+          />
+        }
+        <Flex.Item>
+          <Button
+            mt="8px"
+            disabled={!selected_condition}
+            onClick={() => act('diagnose', { diagnosis: selected_condition })}
+          >
+            Diagnose
+          </Button>
         </Flex.Item>
       </Flex>
     </Flex.Item>
@@ -183,7 +220,10 @@ export const ConditionInfo = (_) => {
   return (
     <Flex.Item width="35%" height="100%">
       <Section title="Conditons" height="100%" fill scrollable>
-        <Flex direction="column">
+        <Flex
+          direction="column"
+          className="DiagnosisBook__conditionBlockContainer"
+        >
           {conditions
             .sort(compareConditions)
             .map((condition) => conditionInfoEntry(condition))}
@@ -214,23 +254,40 @@ function compareConditions(a: Condition, b: Condition) {
 }
 
 function conditionInfoEntry(condition: Condition) {
+  const [selected_condition, setSelectedCondition] = useLocalState(
+    'selected_condition',
+    '',
+  );
+  const is_selected = selected_condition === condition.name;
   return (
-    <Flex.Item>
-      <Section
-        title={
-          <span style={{ fontSize: '150%' }}>
-            {condition.name}
-            <Button
-              fontSize="60%"
-              icon="question"
-              tooltip={condition.desc}
-              style={{ marginLeft: '8px' }}
-            />
-          </span>
-        }
-      >
-        {printConditionSymptoms(condition)}
-      </Section>
+    <Flex.Item
+      className={classes([
+        'DiagnosisBook__conditionBlock',
+        is_selected && 'DiagnosisBook__conditionBlock--selectedCondition',
+      ])}
+      onClick={() => setSelectedCondition(is_selected ? '' : condition.name)}
+    >
+      <Flex direction="column">
+        <Flex.Item>
+          <Box className="DiagnosisBook__conditionBlockHeader">
+            <span style={{ fontSize: '150%' }}>
+              {condition.name}
+              <Button
+                fontSize="60%"
+                icon="question"
+                tooltip={condition.desc}
+                style={{ marginLeft: '8px' }}
+                onClick={(event) => event.stopPropagation()}
+              />
+            </span>
+          </Box>
+        </Flex.Item>
+        <Flex.Item>
+          <Box className="DiagnosisBook__conditionBlockBody">
+            {printConditionSymptoms(condition)}
+          </Box>
+        </Flex.Item>
+      </Flex>
     </Flex.Item>
   );
 }

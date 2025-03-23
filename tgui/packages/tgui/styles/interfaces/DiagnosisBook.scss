@@ -1,0 +1,30 @@
+@use '../base.scss';
+
+.DiagnosisBook__conditionBlockContainer {
+}
+
+.DiagnosisBook__conditionBlock {
+  box-sizing: border-box;
+  &:hover {
+    border: dashed #e8e4c9;
+  }
+  &:not(:last-of-type) {
+    margin-bottom: 18px;
+  }
+}
+
+.DiagnosisBook__conditionBlock--selectedCondition {
+  border: dashed #e8e4c9;
+}
+
+.DiagnosisBook__conditionBlockHeader {
+  margin-left: 6px;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.DiagnosisBook__conditionBlockBody {
+}
+
+.DiagnosisBook__conditionSpacer {
+}

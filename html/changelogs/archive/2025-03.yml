@@ -50,3 +50,6 @@
   - bugfix: Repair Internal Organ surgery can be completed.
   jlsnow301:
   - bugfix: The chemmaster can have dispatch amounts set again
+2025-03-24:
+  Kapu1178:
+  - balance: Reduces effectiveness of Tend Wounds.

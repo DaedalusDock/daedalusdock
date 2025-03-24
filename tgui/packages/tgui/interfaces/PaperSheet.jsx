@@ -55,8 +55,7 @@ const createIDHeader = (index) => {
 // we will then output a TEXT input for it that hopefully covers
 // the exact amount of spaces
 const field_regex = /\[(_+)\]/g;
-const field_tag_regex =
-  /\[<input\s+(?!disabled)(.*?)\s+id="(?<id>paperfield_\d+)"(.*?)\/>\]/gm;
+const field_tag_regex = /\[<input\s+[^>]*\sid="(paperfield_\d+)"[^>]*>\]/gm;
 const sign_regex = /%s(?:ign)?(?=\\s|$)?/gim;
 
 const createInputField = (length, width, font, fontsize, color, id) => {
@@ -164,7 +163,9 @@ const checkAllFields = (txt, font, color, user_name, bold = false) => {
   // for nothing, if nothing is entered, txt is just returned
   while ((matches = field_tag_regex.exec(txt)) !== null) {
     const full_match = matches[0];
-    const id = matches.groups.id;
+
+    /// I genuinely don't know why this is necessary, but it is.
+    const id = matches.groups ? matches.groups.id : matches[1];
     if (id) {
       const dom = document.getElementById(id);
       // make sure we got data, and kill any html that might
@@ -595,10 +596,10 @@ class PaperSheetEdit extends Component {
               textColor={'black'}
               backgroundColor="white"
               icon="question-circle-o"
-              onmouseover={() => {
+              onMouseOver={() => {
                 this.setState({ showingHelpTip: true });
               }}
-              onmouseout={() => {
+              onMouseOut={() => {
                 this.setState({ showingHelpTip: false });
               }}
             >

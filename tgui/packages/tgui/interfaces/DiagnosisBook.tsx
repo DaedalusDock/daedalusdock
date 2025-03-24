@@ -1,7 +1,7 @@
 import { classes } from 'common/react';
 import React from 'react';
 
-import { useBackend, useLocalState } from '../backend';
+import { useBackend } from '../backend';
 import { Box, Button, ByondUi, Flex, Section, TextArea } from '../components';
 import { Window } from '../layouts';
 
@@ -14,6 +14,7 @@ type Condition = {
 };
 
 type MobData = {
+  diagnosis: string | undefined;
   name: string | undefined;
   time: string | undefined;
 };
@@ -128,11 +129,9 @@ export const PatientEntry = (props) => {
 };
 
 export const DiagnoseButton = (_) => {
-  const { act } = useBackend<DiagnosisBookData>();
-  const [selected_condition, setSelectedCondition] = useLocalState(
-    'selected_condition',
-    '',
-  );
+  const { data, act } = useBackend<DiagnosisBookData>();
+  const { mob } = data;
+  const diagnosis = mob.diagnosis;
   return (
     <Flex.Item style={{ marginTop: '40px' }}>
       <Flex direction="column" align="center" justify="center">
@@ -152,23 +151,18 @@ export const DiagnoseButton = (_) => {
             width="100%"
             height="1.8rem"
             maxLength={15}
-            value={selected_condition || ''}
-            onChange={(e, value) => setSelectedCondition(value)}
+            value={diagnosis || ''}
+            onChange={(e, value) => act('update_mob', { diagnosis: value })}
             noborder
           />
         </Box>
         <Flex.Item>
           <Button
             mt="8px"
-            disabled={!selected_condition}
-            onClick={() => {
-              act('diagnose', { diagnosis: selected_condition });
-              setSelectedCondition('');
-            }}
+            disabled={!diagnosis}
+            onClick={() => act('diagnose', { diagnosis: diagnosis })}
           >
-            <span style={!selected_condition ? { color: '#FFFFFF' } : {}}>
-              Diagnose
-            </span>
+            <span style={!diagnosis ? { color: '#FFFFFF' } : {}}>Diagnose</span>
           </Button>
         </Flex.Item>
       </Flex>
@@ -296,18 +290,19 @@ function compareConditions(a: Condition, b: Condition) {
 }
 
 function conditionInfoEntry(condition: Condition) {
-  const [selected_condition, setSelectedCondition] = useLocalState(
-    'selected_condition',
-    '',
-  );
-  const is_selected = selected_condition === condition.name;
+  const { data, act } = useBackend<DiagnosisBookData>();
+  const { mob } = data;
+  const diagnosis = mob.diagnosis;
+  const is_selected = diagnosis === condition.name;
   return (
     <Flex.Item
       className={classes([
         'DiagnosisBook__conditionBlock',
         is_selected && 'DiagnosisBook__conditionBlock--selectedCondition',
       ])}
-      onClick={() => setSelectedCondition(is_selected ? '' : condition.name)}
+      onClick={() =>
+        act('update_mob', { diagnosis: is_selected ? '' : condition.name })
+      }
     >
       <Flex direction="column">
         <Flex.Item>

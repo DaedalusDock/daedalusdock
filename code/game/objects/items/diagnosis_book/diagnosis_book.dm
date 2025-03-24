@@ -68,6 +68,13 @@
 		ui = new(user, src, "DiagnosisBook")
 		ui.open()
 
+/obj/item/diagnosis_book/ui_status(mob/user)
+	// Even harder to read if your blind...braile? humm
+	// .. or if you cannot read
+	if(!user.can_read(src))
+		return UI_CLOSE
+	return ..()
+
 /obj/item/diagnosis_book/ui_state(mob/user)
 	return GLOB.hands_state
 
@@ -81,7 +88,7 @@
 		"map_ref" = byondui_screen.assigned_map,
 	)
 
-/obj/item/diagnosis_book/ui_act(action, list/params)
+/obj/item/diagnosis_book/ui_act(action, list/params, datum/tgui/ui)
 	. = ..()
 	if(.)
 		return
@@ -118,10 +125,21 @@
 				selected_mob_data["time"] = new_time
 				return TRUE
 
+			if(params["diagnosis"])
+				var/new_diagnosis = params["diagnosis"]
+				if(length(new_diagnosis > 32))
+					return
+
+				selected_mob_data["diagnosis"] = new_diagnosis
+				return TRUE
+
 		if("diagnose")
 			var/diagnosis = params["diagnosis"]
-			if(!diagnosis)
+			if(!istext(diagnosis) || length(diagnosis) > 15)
 				return
+
+			if(!diagnose(ui.user, diagnosis))
+				return FALSE
 
 			selected_mob_data = list()
 			selected_symptoms = list()
@@ -170,3 +188,39 @@
 	I.color = list(rgb(77,77,77), rgb(150,150,150), rgb(28,28,28), rgb(0,0,0))
 
 	byondui_screen.rendered_atom.appearance = I.appearance
+
+/obj/item/diagnosis_book/proc/diagnose(mob/user, diagnosis)
+	if(!user.get_empty_held_index())
+		to_chat(user, span_warning("You require a free hand to tear out a page."))
+		return FALSE
+
+	var/list/symptom_text = list()
+	for(var/datum/diagnosis_symptom/symptom_path as anything in selected_symptoms)
+		symptom_text += "<li>[initial(symptom_path.name)]</li>"
+
+	symptom_text = jointext(symptom_text, "")
+
+	var/info = {"
+		<span style="color: #000000; font-family: 'Verdana';">
+		<p>
+			Patient Name = \[<input disabled="" id="paperfield_1" style="color: rgb(0, 0, 0); font-family: Verdana; min-width: 180px; max-width: 180px;" type="text" size="15" maxlength="15" value="[selected_mob_data["name"]]" />\]<br />
+			Time of Day = \[<input disabled="" id="paperfield_2" style="color: rgb(0, 0, 0); font-family: Verdana; min-width: 180px; max-width: 180px;" type="text" size="15" maxlength="15" value="[selected_mob_data["time"]]" />\]
+		</p>
+		<p>Symptoms:</p>
+		<ul>
+			[symptom_text]
+		</ul>
+		<p>Diagnosis: \[<input disabled="" id="paperfield_3" style="color: rgb(0, 0, 0); font-family: Verdana; min-width: 180px; max-width: 180px;" type="text" size="15" maxlength="15" value="[diagnosis]" />\]</p>
+		<p>Physician: \[<input disabled="" id="paperfield_4" style="color: rgb(0, 0, 0); font-family: Times New Roman; font-weight: bold; min-width: 116px; max-width: 116px;" type="text" size="15" maxlength="15" value="[user.real_name]" />\]</p>
+		</span>
+	"}
+
+	var/obj/item/paper/page = new()
+	page.setText(info)
+
+	if(!user.put_in_hands(page))
+		page.forceMove(drop_location())
+
+	playsound(user, 'sound/items/duct_tape_rip.ogg', 50, TRUE)
+	user.visible_message(span_notice("[user] tears a page out of [src]."))
+	return TRUE

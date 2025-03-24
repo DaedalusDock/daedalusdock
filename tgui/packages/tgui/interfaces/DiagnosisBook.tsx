@@ -57,11 +57,11 @@ export const PatientInfo = (_) => {
       height="100%"
       className="DiagnosisBook__patientBlock"
     >
-      <Section title="Patient" height="100%">
+      <Section height="100%">
         <Flex direction="column">
           <PatientAppearance />
           <PatientEntry
-            fieldName="Name"
+            fieldName="Patient"
             actName="name"
             actValue={mob.name || ''}
           />
@@ -163,7 +163,9 @@ export const DiagnoseButton = (_) => {
             disabled={!selected_condition}
             onClick={() => act('diagnose', { diagnosis: selected_condition })}
           >
-            Diagnose
+            <span style={!selected_condition ? { color: '#FFFFFF' } : {}}>
+              Diagnose
+            </span>
           </Button>
         </Flex.Item>
       </Flex>

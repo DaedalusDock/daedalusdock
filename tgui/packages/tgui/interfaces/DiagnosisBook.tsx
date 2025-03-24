@@ -161,7 +161,10 @@ export const DiagnoseButton = (_) => {
           <Button
             mt="8px"
             disabled={!selected_condition}
-            onClick={() => act('diagnose', { diagnosis: selected_condition })}
+            onClick={() => {
+              act('diagnose', { diagnosis: selected_condition });
+              setSelectedCondition('');
+            }}
           >
             <span style={!selected_condition ? { color: '#FFFFFF' } : {}}>
               Diagnose

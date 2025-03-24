@@ -118,6 +118,16 @@
 				selected_mob_data["time"] = new_time
 				return TRUE
 
+		if("diagnose")
+			var/diagnosis = params["diagnosis"]
+			if(!diagnosis)
+				return
+
+			selected_mob_data = list()
+			selected_symptoms = list()
+			wipe_byondui()
+			return TRUE
+
 /obj/item/diagnosis_book/pre_attack(atom/A, mob/living/user, params)
 	. = ..()
 	if(.)

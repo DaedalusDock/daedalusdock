@@ -16,6 +16,7 @@ type Condition = {
 type MobData = {
   diagnosis: string | undefined;
   name: string | undefined;
+  occupation: string | undefined;
   time: string | undefined;
 };
 
@@ -65,6 +66,11 @@ export const PatientInfo = (_) => {
             fieldName="Patient"
             actName="name"
             actValue={mob.name || ''}
+          />
+          <PatientEntry
+            fieldName="Occupation"
+            actName="occupation"
+            actValue={mob.occupation || ''}
           />
           <PatientEntry
             fieldName="Time"

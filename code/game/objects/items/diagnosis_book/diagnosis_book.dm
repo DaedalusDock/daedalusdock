@@ -3,6 +3,9 @@
 	icon = 'goon/icons/obj/kinginyellow.dmi'
 	icon_state = "bookkiy"
 
+	/// Number of pages, just so you can't make infinite paper.
+	var/pages_remaining = 20
+
 	/// Static UI data
 	var/static/list/static_data
 
@@ -62,6 +65,10 @@
 	return ..()
 
 /obj/item/diagnosis_book/ui_interact(mob/user, datum/tgui/ui)
+	if(pages_remaining <= 0)
+		to_chat(user, span_warning("There are no pages left."))
+		return
+
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		byondui_screen.register_to_client(user.client)
@@ -72,6 +79,8 @@
 	// Even harder to read if your blind...braile? humm
 	// .. or if you cannot read
 	if(!user.can_read(src))
+		return UI_CLOSE
+	if(pages_remaining <= 0)
 		return UI_CLOSE
 	return ..()
 
@@ -91,6 +100,9 @@
 /obj/item/diagnosis_book/ui_act(action, list/params, datum/tgui/ui)
 	. = ..()
 	if(.)
+		return
+
+	if(pages_remaining <= 0)
 		return
 
 	switch(action)
@@ -125,9 +137,17 @@
 				selected_mob_data["time"] = new_time
 				return TRUE
 
+			if(params["occupation"])
+				var/new_occupation = params["occupation"]
+				if(length(new_occupation) > 32)
+					return
+
+				selected_mob_data["occupation"] = new_occupation
+				return TRUE
+
 			if(params["diagnosis"])
 				var/new_diagnosis = params["diagnosis"]
-				if(length(new_diagnosis > 32))
+				if(length(new_diagnosis) > 32)
 					return
 
 				selected_mob_data["diagnosis"] = new_diagnosis
@@ -157,10 +177,17 @@
 	if(!ishuman(A))
 		return
 
+	if(pages_remaining <= 0)
+		return
+
 	var/mob/living/carbon/human/target = A
 	selected_mob_data = list()
 	selected_mob_data["name"] = target.name
 	selected_mob_data["time"] = stationtime2text("hh:mm")
+
+	var/obj/item/card/id/id_card = target.get_idcard()
+	if(id_card)
+		selected_mob_data["occupation"] = id_card.assignment
 
 	var/mutable_appearance/character_appearance = new(A.appearance)
 	remove_non_canon_overlays(character_appearance)
@@ -198,23 +225,25 @@
 	for(var/datum/diagnosis_symptom/symptom_path as anything in selected_symptoms)
 		symptom_text += "<li>[initial(symptom_path.name)]</li>"
 
-	symptom_text = jointext(symptom_text, "")
+	symptom_text = jointext(sortTim(symptom_text, GLOBAL_PROC_REF(cmp_text_dsc)), "")
 
 	var/info = {"
 		<span style="color: #000000; font-family: 'Verdana';">
 		<p>
 			Patient Name = \[<input disabled="" id="paperfield_1" style="color: rgb(0, 0, 0); font-family: Verdana; min-width: 180px; max-width: 180px;" type="text" size="15" maxlength="15" value="[selected_mob_data["name"]]" />\]<br />
-			Time of Day = \[<input disabled="" id="paperfield_2" style="color: rgb(0, 0, 0); font-family: Verdana; min-width: 180px; max-width: 180px;" type="text" size="15" maxlength="15" value="[selected_mob_data["time"]]" />\]
+			Patient Occupation = \[<input disabled="" id="paperfield_2" style="color: rgb(0, 0, 0); font-family: Verdana; min-width: 180px; max-width: 180px;" type="text" size="15" maxlength="15" value="[selected_mob_data["occupation"]]" />\]<br />
+			Time of Day = \[<input disabled="" id="paperfield_3" style="color: rgb(0, 0, 0); font-family: Verdana; min-width: 180px; max-width: 180px;" type="text" size="15" maxlength="15" value="[selected_mob_data["time"]]" />\]
 		</p>
 		<p>Symptoms:</p>
 		<ul>
 			[symptom_text]
 		</ul>
-		<p>Diagnosis: \[<input disabled="" id="paperfield_3" style="color: rgb(0, 0, 0); font-family: Verdana; min-width: 180px; max-width: 180px;" type="text" size="15" maxlength="15" value="[diagnosis]" />\]</p>
-		<p>Physician: \[<input disabled="" id="paperfield_4" style="color: rgb(0, 0, 0); font-family: Times New Roman; font-weight: bold; min-width: 116px; max-width: 116px;" type="text" size="15" maxlength="15" value="[user.real_name]" />\]</p>
+		<p>Diagnosis: \[<input disabled="" id="paperfield_4" style="color: rgb(0, 0, 0); font-family: Verdana; min-width: 180px; max-width: 180px;" type="text" size="15" maxlength="15" value="[diagnosis]" />\]</p>
+		<p>Physician: \[<input disabled="" id="paperfield_5" style="color: rgb(0, 0, 0); font-family: Times New Roman; font-weight: bold; min-width: 116px; max-width: 116px;" type="text" size="15" maxlength="15" value="[user.real_name]" />\]</p>
 		</span>
 	"}
 
+	pages_remaining--
 	var/obj/item/paper/page = new()
 	page.setText(info)
 

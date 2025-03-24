@@ -1,12 +1,13 @@
 @use '../base.scss';
 
 .DiagnosisBook__conditionBlockContainer {
+  padding-bottom: 1em;
 }
 
 .DiagnosisBook__conditionBlock {
   box-sizing: border-box;
   &:hover {
-    border: dashed #e8e4c9;
+    outline: dashed #e8e4c9;
   }
   &:not(:last-of-type) {
     margin-bottom: 18px;
@@ -14,7 +15,7 @@
 }
 
 .DiagnosisBook__conditionBlock--selectedCondition {
-  border: dashed #e8e4c9;
+  outline: dashed #e8e4c9;
 }
 
 .DiagnosisBook__conditionBlockHeader {

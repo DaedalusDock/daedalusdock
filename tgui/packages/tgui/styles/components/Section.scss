@@ -30,6 +30,10 @@ $separator-color: colors.$primary !default;
   border-bottom: base.em(2px) solid $separator-color;
 }
 
+.Section--titleBorderless {
+  border-bottom: none;
+}
+
 .Section__titleText {
   font-size: base.em(14px);
   font-weight: bold;

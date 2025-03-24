@@ -38,7 +38,7 @@ export const DiagnosisBook = (_) => {
   return (
     <Window width={1000} height={600} title="Diagnosis Book" theme="retro">
       <Window.Content>
-        <Flex fill justify="center" height="100%">
+        <Flex fill justify="center" height="100%" width>
           <PatientInfo />
           <SymptomInfo />
           <ConditionInfo />
@@ -219,7 +219,24 @@ export const ConditionInfo = (_) => {
   const { conditions } = data;
   return (
     <Flex.Item width="35%" height="100%">
-      <Section title="Conditons" height="100%" fill scrollable>
+      <Section
+        title={
+          <Box
+            style={{
+              fontSize: '200%',
+              textAlign: 'center',
+              color: '#B7A486',
+            }}
+          >
+            Diagnoses
+          </Box>
+        }
+        height="100%"
+        fill
+        scrollable
+        noTitleBorder
+        style={{ backgroundColor: 'black', color: '#B7A486' }}
+      >
         <Flex
           direction="column"
           className="DiagnosisBook__conditionBlockContainer"

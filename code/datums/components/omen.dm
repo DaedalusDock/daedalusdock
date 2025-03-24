@@ -99,8 +99,12 @@
 
 	playsound(get_turf(our_guy), 'sound/effects/tableheadsmash.ogg', 90, TRUE)
 	our_guy.visible_message(span_danger("[our_guy] hits [our_guy.p_their()] head really badly falling down!"), span_userdanger("You hit your head really badly falling down!"))
-	the_head.receive_damage(75)
-	our_guy.adjustOrganLoss(ORGAN_SLOT_BRAIN, 100)
+	the_head.receive_damage(40) //OUCH
+	the_head.break_bones()
+	our_guy.adjustOrganLoss(ORGAN_SLOT_BRAIN, 50)
+	if(iscarbon(our_guy)) //For some reason Omen checks for living instead of carbon, so we need this check
+		var/mob/living/carbon/our_guy_carbon = our_guy
+		our_guy_carbon.gain_trauma(/datum/brain_trauma/mild/concussion) //Our guy just had his head bounce like a basketball
 	if(!permanent)
 		qdel(src)
 

@@ -189,6 +189,11 @@
 
 	return discover_after
 
+/obj/item/reagent_containers/syringe/microwave_act(obj/machinery/microwave/M)
+	. = ..()
+	if(prob(10) || istype(M, /obj/machinery/autoclave))
+		sterilize()
+
 /obj/item/reagent_containers/syringe/update_icon_state()
 	var/rounded_vol = get_rounded_vol()
 	icon_state = "[base_icon_state]_[rounded_vol]"

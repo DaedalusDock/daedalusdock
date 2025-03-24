@@ -220,7 +220,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	init_stage_completed = 0
 	var/mc_started = FALSE
 
-	to_chat(world, span_boldannounce("Initializing subsystems..."))
+	to_chat(world, systemtext("Initializing subsystems..."))
 
 	var/list/stage_sorted_subsystems = new(INITSTAGE_MAX)
 	for (var/i in 1 to INITSTAGE_MAX)
@@ -248,9 +248,9 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			current_initializing_subsystem = subsystem
 
 			if(GLOB.is_debug_server)
-				to_chat(world, span_boldnotice("Initializing [subsystem.name]..."))
+				to_chat(world, systemtext(span_notice("Initializing [subsystem.name]...")))
 
-			SStitle.set_game_status_text(sub_text = "Initializing [subsystem.name]")
+			SSlobby.set_game_status_text(sub_text = "Initializing [subsystem.name]")
 
 			subsystem.Initialize(REALTIMEOFDAY)
 			CHECK_TICK
@@ -270,9 +270,9 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 
 	var/msg = "Initializations complete within [time] second[time == 1 ? "" : "s"]!"
-	to_chat(world, span_boldannounce("[msg]"))
+	to_chat(world, systemtext("[msg]"))
 	log_world(msg)
-	SStitle.set_game_status_text("Ready to Play")
+	SSlobby.set_game_status_text("Ready to Play")
 
 	// Set world options.
 	world.change_fps(CONFIG_GET(number/fps))

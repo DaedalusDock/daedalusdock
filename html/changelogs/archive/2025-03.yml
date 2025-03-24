@@ -28,3 +28,28 @@
       will dim without an oversuit'
   mc-oofert:
   - rscadd: You can now wear gloves while lacking an arm.
+2025-03-16:
+  Kapu1178:
+  - bugfix: Chilling Presence ghost power works on awake targets.
+  - tweak: Restyled OOC and system messages.
+  - bugfix: You can no longer equip multiple items to the same slot.
+  - bugfix: Fixed the honk module not working.
+2025-03-17:
+  Kapu1178, yyzsong:
+  - rscadd: Added an Autoclave to the Ward Storage room, it can be used to sanitize
+      syringes.
+  MisterGrimm:
+  - balance: Slipping while under a Omen curse no longer causes your head to pop like
+      a grape
+2025-03-18:
+  Kapu1178:
+  - rscdel: Removed nightshift lighting.
+  - bugfix: The Ore Box now works again.
+  - bugfix: The Limbgrower now works again.
+  - bugfix: Flipping tables no longer moves anchored objects.
+  - bugfix: Repair Internal Organ surgery can be completed.
+  jlsnow301:
+  - bugfix: The chemmaster can have dispatch amounts set again
+2025-03-24:
+  Kapu1178:
+  - balance: Reduces effectiveness of Tend Wounds.

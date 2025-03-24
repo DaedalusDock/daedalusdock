@@ -14,13 +14,6 @@
 	terminal.setDir(dir)
 	terminal.master = src
 
-/obj/machinery/power/apc/proc/toggle_nightshift_lights(mob/living/user)
-	if(last_nightshift_switch > world.time - 100) //~10 seconds between each toggle to prevent spamming
-		to_chat(usr, span_warning("[src]'s night lighting circuit breaker is still cycling!"))
-		return
-	last_nightshift_switch = world.time
-	set_nightshift(!nightshift_lights)
-
 /obj/machinery/power/apc/proc/update()
 	if(operating && !shorted && !failure_timer)
 		area.power_light = (lighting > APC_CHANNEL_AUTO_OFF)
@@ -124,12 +117,3 @@
 	failure_timer = max(failure_timer, round(duration))
 	update()
 	queue_icon_update()
-
-/obj/machinery/power/apc/proc/set_nightshift(on)
-	set waitfor = FALSE
-	nightshift_lights = on
-	for(var/obj/machinery/light/night_light in area.lights)
-		if(night_light.nightshift_allowed)
-			night_light.nightshift_enabled = nightshift_lights
-			night_light.update(FALSE)
-		CHECK_TICK

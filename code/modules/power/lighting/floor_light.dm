@@ -20,12 +20,6 @@
 	// Floor lights use a steep falloff because they're pointing at the ceiling, they diffuse sharply as a result.
 	bulb_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE //+ 0.5
 
-	nightshift_inner_range = 0.5
-	nightshift_outer_range = 5
-	nightshift_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE + 1
-	nightshift_light_power = 1
-	nightshift_light_color = "#f2f9f7"
-
 /obj/machinery/light/floor/has_bulb
 	status = LIGHT_OK
 	start_with_cell = TRUE

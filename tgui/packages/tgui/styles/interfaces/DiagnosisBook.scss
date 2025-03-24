@@ -1,4 +1,17 @@
 @use '../base.scss';
+@use 'sass:color';
+
+$text-border-color: #454442;
+
+.DiagnosisBook__textFieldContainer {
+  border-bottom: dashed $text-border-color;
+  box-sizing: border-box;
+}
+
+.DiagnosisBook__textAreaInner {
+  font-size: 16px;
+  white-space: nowrap;
+}
 
 .DiagnosisBook__conditionBlockContainer {
   padding-bottom: 1em;

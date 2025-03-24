@@ -36,7 +36,7 @@ type DiagnosisBookData = {
 
 export const DiagnosisBook = (_) => {
   return (
-    <Window width={1000} height={600} title="Diagnosis Book" theme="retro">
+    <Window width={1000} height={600} title="Diagnosis Book" theme="book">
       <Window.Content>
         <Flex fill justify="center" height="100%" width>
           <PatientInfo />
@@ -96,7 +96,7 @@ export const PatientEntry = (props) => {
   const { fieldName, actName, actValue } = props;
   return (
     <Flex.Item>
-      <Flex direction="row">
+      <Flex direction="row" align="baseline">
         <Box
           style={{
             fontSize: '200%',
@@ -107,15 +107,17 @@ export const PatientEntry = (props) => {
         >
           {`${fieldName}:`}
         </Box>
-        {
+        <Box width="60%" className="DiagnosisBook__textFieldContainer">
           <TextArea
-            width="60%"
+            top="3px"
             height="1.8rem"
-            maxLength={32}
+            maxLength={15}
             value={actValue}
             onChange={(e, value) => act('update_mob', { [actName]: value })}
+            noborder
+            innerClassName="DiagnosisBook__textAreaInner"
           />
-        }
+        </Box>
       </Flex>
     </Flex.Item>
   );
@@ -129,7 +131,7 @@ export const DiagnoseButton = (_) => {
   );
   return (
     <Flex.Item style={{ marginTop: '40px' }}>
-      <Flex direction="column" align="center">
+      <Flex direction="column" align="center" justify="center">
         <Box
           style={{
             fontSize: '200%',
@@ -139,15 +141,18 @@ export const DiagnoseButton = (_) => {
         >
           Diagnosis
         </Box>
-        {
+        <Box width="60%" className="DiagnosisBook__textFieldContainer">
           <TextArea
-            width="60%"
+            innerClassName="DiagnosisBook__textAreaInner"
+            top="3px"
+            width="100%"
             height="1.8rem"
-            maxLength={32}
+            maxLength={15}
             value={selected_condition || ''}
             onChange={(e, value) => setSelectedCondition(value)}
+            noborder
           />
-        }
+        </Box>
         <Flex.Item>
           <Button
             mt="8px"

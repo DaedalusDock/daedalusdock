@@ -52,7 +52,11 @@ export const PatientInfo = (_) => {
   const { data } = useBackend<DiagnosisBookData>();
   const { mob } = data;
   return (
-    <Flex.Item width="30%" height="100%">
+    <Flex.Item
+      width="30%"
+      height="100%"
+      className="DiagnosisBook__patientBlock"
+    >
       <Section title="Patient" height="100%">
         <Flex direction="column">
           <PatientAppearance />
@@ -172,7 +176,18 @@ export const SymptomInfo = (_) => {
   const { symptoms, symptom_categories } = data;
   return (
     <Flex.Item width="35%" height="100%">
-      <Section title="Suspected Symptoms" height="100%" fill scrollable>
+      <Section
+        title={
+          <Box className="DiagnosisBook__symptomBlockTitle">
+            Suspected Symptoms
+            <hr />
+          </Box>
+        }
+        height="100%"
+        fill
+        scrollable
+        noTitleBorder
+      >
         <Flex direction="column">
           {symptom_categories
             .sort()

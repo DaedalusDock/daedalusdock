@@ -58,8 +58,6 @@ const createIDHeader = (index) => {
 // the exact amount of spaces
 const field_regex = /\[(_+)\]/g;
 const field_tag_regex = /\[<input\s+[^>]*\sid="(paperfield_\d+)"[^>]*>\]/gm;
-const field_disabled_regex =
-  /\[<input\s+[^>]*\sdisabled\s*=\s*(['"]?)[^>]*\1[^>]*>\]/g;
 const sign_regex = /%s(?:ign)?(?=\\s|$)?/gim;
 
 const createInputField = (length, width, font, fontsize, color, id) => {
@@ -157,7 +155,14 @@ const run_marked_default = (value) => {
  ** It returns any values that were saved and a corrected
  ** html code or null if nothing was updated
  */
-const checkAllFields = (txt, font, color, user_name, bold = false) => {
+const checkAllFields = (
+  txt,
+  font,
+  color,
+  user_name,
+  bold = false,
+  italic = false,
+) => {
   let matches;
   let values = {};
   let replace = [];
@@ -192,24 +197,35 @@ const checkAllFields = (txt, font, color, user_name, bold = false) => {
     if (sanitized_text.length === 0) {
       continue;
     }
+
     // this is easier than doing a bunch of text manipulations
     const target = dom.cloneNode(true);
-    // in case they sign in a field
+
+    // If they signed a signature, apply appropriate text effects.
     if (sanitized_text.match(sign_regex)) {
       target.style.fontFamily = 'Times New Roman';
       bold = true;
+      italic = true;
       target.defaultValue = user_name;
     } else {
       target.style.fontFamily = font;
       target.defaultValue = sanitized_text;
     }
+
+    // Apply weight/style
     if (bold) {
       target.style.fontWeight = 'bold';
     }
+    if (italic) {
+      target.style.fontStyle = 'italic';
+    }
+
     target.style.color = color;
     target.disabled = true;
+
     const wrap = document.createElement('div');
     wrap.appendChild(target);
+
     values[id] = sanitized_text; // save the data
     replace.push({ value: '[' + wrap.innerHTML + ']', raw_text: full_match });
   }

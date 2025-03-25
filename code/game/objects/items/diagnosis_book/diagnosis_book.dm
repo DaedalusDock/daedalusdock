@@ -155,7 +155,7 @@
 
 		if("diagnose")
 			var/diagnosis = params["diagnosis"]
-			if(!istext(diagnosis) || length(diagnosis) > 15)
+			if(!istext(diagnosis) || length(diagnosis) > 32)
 				return
 
 			if(!diagnose(ui.user, diagnosis))
@@ -239,7 +239,7 @@
 			[symptom_text]
 		</ul>
 		<p>Diagnosis: \[<input disabled="" id="paperfield_4" style="color: rgb(0, 0, 0); font-family: Verdana; min-width: 180px; max-width: 180px;" type="text" size="15" maxlength="15" value="[diagnosis]" />\]</p>
-		<p>Physician: \[<input disabled="" id="paperfield_5" style="color: rgb(0, 0, 0); font-family: Times New Roman; font-weight: bold; min-width: 116px; max-width: 116px;" type="text" size="15" maxlength="15" value="[user.real_name]" />\]</p>
+		<p>Physician: \[<input disabled="" id="paperfield_5" style="color: rgb(0, 0, 0); font-family: Times New Roman; font-style: italic; font-weight: bold; min-width: 116px; max-width: 116px;" type="text" size="15" maxlength="15" value="[user.real_name]" />\]</p>
 		</span>
 	"}
 

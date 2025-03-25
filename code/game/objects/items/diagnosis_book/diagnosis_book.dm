@@ -225,7 +225,7 @@
 	for(var/datum/diagnosis_symptom/symptom_path as anything in selected_symptoms)
 		symptom_text += "<li>[initial(symptom_path.name)]</li>"
 
-	symptom_text = jointext(sortTim(symptom_text, GLOBAL_PROC_REF(cmp_text_dsc)), "") || "<li>N/A</li>"
+	symptom_text = jointext(symptom_text, "") || "<li>N/A</li>"
 
 	var/info = {"
 		<span style="color: #000000; font-family: 'Verdana';">

@@ -410,6 +410,7 @@
 		if(TURF_PATHING_PASS_DENSITY)
 			if(destination_turf.density)
 				return TRUE
+
 		if(TURF_PATHING_PASS_PROC)
 			if(!destination_turf.CanAStarPass(actual_dir, pass_info))
 				return TRUE

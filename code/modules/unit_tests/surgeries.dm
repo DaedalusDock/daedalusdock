@@ -133,21 +133,21 @@
 	user.put_in_active_hand(scalpel)
 	scalpel.melee_attack_chain(user, patient)
 
-	TEST_ASSERT(patient_chest.how_open() == SURGERY_OPEN, "[parse_zone(zone)] was not incised.")
+	TEST_ASSERT(patient_chest.how_open() == SURGERY_OPEN, "[parse_zone(user.zone_selected)] was not incised.")
 
 	user.desired_surgery = /datum/surgery_step/generic_organic/retract_skin
 	user.drop_all_held_items()
 	user.put_in_active_hand(retractor)
 	retractor.melee_attack_chain(user, patient)
 
-	TEST_ASSERT(patient_chest.how_open() == SURGERY_RETRACTED, "[parse_zone(zone)]'s incision was not widened (Openness: [BP.how_open()]).")
+	TEST_ASSERT(patient_chest.how_open() == SURGERY_RETRACTED, "[parse_zone(user.zone_selected)]'s incision was not widened (Openness: [patient_chest.how_open()]).")
 
 	user.desired_surgery = /datum/surgery_step/open_encased
 	user.drop_all_held_items()
 	user.put_in_active_hand(saw)
 	saw.melee_attack_chain(user, patient)
 
-	TEST_ASSERT(patient_chest.how_open() == SURGERY_DEENCASED, "[parse_zone(zone)] was not de-encased (Openness: [BP.how_open()]).")
+	TEST_ASSERT(patient_chest.how_open() == SURGERY_DEENCASED, "[parse_zone(user.zone_selected)] was not de-encased (Openness: [patient_chest.how_open()]).")
 
 	user.desired_surgery = /datum/surgery_step/internal/fix_organ
 	user.drop_all_held_items()

@@ -151,7 +151,7 @@
 
 	user.desired_surgery = /datum/surgery_step/internal/fix_organ
 	user.drop_all_held_items()
-	user.put_in_active_hand(saw)
+	user.put_in_active_hand(suture)
 	suture.melee_attack_chain(user, patient)
 
 	TEST_ASSERT(patient_liver.damage == 0, "Liver damage value was not zero, instead it was [patient_liver.damage].")

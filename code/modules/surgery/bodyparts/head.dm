@@ -190,6 +190,9 @@
 /obj/item/bodypart/head/update_limb(dropping_limb, is_creating)
 	. = ..()
 
+	if(!owner)
+		return
+
 	real_name = owner.real_name
 	if(HAS_TRAIT(owner, TRAIT_HUSK))
 		real_name = "Unknown"

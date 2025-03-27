@@ -5,7 +5,7 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 /obj/item/bodypart/proc/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
-	if(HAS_TRAIT(owner, TRAIT_HUSK) && IS_ORGANIC_LIMB(src))
+	if(owner && HAS_TRAIT(owner, TRAIT_HUSK) && IS_ORGANIC_LIMB(src))
 		is_husked = TRUE
 	else
 		is_husked = FALSE
@@ -50,10 +50,14 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	return TRUE
 
 //to update the bodypart's icon when not attached to a mob
-/obj/item/bodypart/proc/update_icon_dropped()
+/obj/item/bodypart/proc/update_icon_dropped(update_limb = TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
+	if(update_limb)
+		update_limb()
+
 	cut_overlays()
+
 	if(is_stump)
 		return
 

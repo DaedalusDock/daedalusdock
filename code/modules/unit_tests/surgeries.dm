@@ -111,3 +111,48 @@
 
 		user.drop_all_held_items()
 		patient.fully_heal()
+
+/datum/unit_test/test_repair_organ/Run()
+	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human)
+	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human)
+	var/obj/structure/table/table = allocate(/obj/structure/table/optable)
+	var/obj/item/scalpel/scalpel = allocate(__IMPLIED_TYPE__)
+	var/obj/item/retractor/retractor = allocate(__IMPLIED_TYPE__)
+	var/obj/item/circular_saw/saw = allocate(__IMPLIED_TYPE__)
+	var/obj/item/stack/medical/suture/suture = allocate(__IMPLIED_TYPE__)
+
+	table.forceMove(get_turf(patient)) //Not really needed but it silences the linter and gives insurance
+	patient.set_lying_down()
+
+	var/obj/item/organ/liver/patient_liver = patient.getorganslot(ORGAN_SLOT_LUNGS)
+	patient_liver.applyOrganDamage(20)
+
+	var/obj/item/bodypart/chest/patient_chest = patient.get_bodypart(BODY_ZONE_CHEST)
+
+	user.zone_selected = BODY_ZONE_CHEST
+	user.desired_surgery = /datum/surgery_step/generic_organic/incise
+	user.put_in_active_hand(scalpel)
+	scalpel.melee_attack_chain(user, patient)
+
+	TEST_ASSERT(patient_chest.how_open() == SURGERY_OPEN, "[parse_zone(user.zone_selected)] was not incised.")
+
+	user.desired_surgery = /datum/surgery_step/generic_organic/retract_skin
+	user.drop_all_held_items()
+	user.put_in_active_hand(retractor)
+	retractor.melee_attack_chain(user, patient)
+
+	TEST_ASSERT(patient_chest.how_open() == SURGERY_RETRACTED, "[parse_zone(user.zone_selected)]'s incision was not widened (Openness: [patient_chest.how_open()]).")
+
+	user.desired_surgery = /datum/surgery_step/open_encased
+	user.drop_all_held_items()
+	user.put_in_active_hand(saw)
+	saw.melee_attack_chain(user, patient)
+
+	TEST_ASSERT(patient_chest.how_open() == SURGERY_DEENCASED, "[parse_zone(user.zone_selected)] was not de-encased (Openness: [patient_chest.how_open()]).")
+
+	user.desired_surgery = /datum/surgery_step/internal/fix_organ
+	user.drop_all_held_items()
+	user.put_in_active_hand(suture)
+	suture.melee_attack_chain(user, patient)
+
+	TEST_ASSERT(patient_liver.damage == 0, "Liver damage value was not zero, instead it was [patient_liver.damage].")

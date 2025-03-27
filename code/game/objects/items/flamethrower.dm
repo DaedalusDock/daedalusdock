@@ -1,3 +1,6 @@
+/// Ratio of gas removed from the tank for every turf.
+#define FLAMETHROWER_RELEASE_RATIO 0.05
+
 /obj/item/flamethrower
 	name = "flamethrower"
 	desc = "You are a firestarter!"
@@ -19,7 +22,6 @@
 	light_on = FALSE
 	var/status = FALSE
 	var/lit = FALSE //on or off
-	var/operating = FALSE//cooldown
 	var/obj/item/weldingtool/weldtool = null
 	var/obj/item/assembly/igniter/igniter = null
 	var/obj/item/tank/internals/plasma/ptank = null
@@ -31,9 +33,29 @@
 	var/acti_sound = 'sound/items/welderactivate.ogg'
 	var/deac_sound = 'sound/items/welderdeactivate.ogg'
 
+	/// Prevents fuel duping because im a lazy coder.
+	COOLDOWN_DECLARE(use_cooldown)
+
 /obj/item/flamethrower/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
+
+	if(create_full)
+		if(!weldtool)
+			weldtool = new /obj/item/weldingtool(src)
+		weldtool.status = FALSE
+
+		if(!igniter)
+			igniter = new igniter_type(src)
+
+		igniter.secured = FALSE
+		status = TRUE
+
+		if(create_with_tank)
+			ptank = new /obj/item/tank/internals/plasma/full(src)
+		update_appearance()
+
+	RegisterSignal(src, COMSIG_ITEM_RECHARGED, PROC_REF(instant_refill))
 
 /obj/item/flamethrower/Destroy()
 	if(weldtool)
@@ -76,15 +98,41 @@
 	if(ishuman(user))
 		if(!can_trigger_gun(user))
 			return
+
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You can't bring yourself to fire \the [src]! You don't want to risk harming anyone..."))
 		return
+
 	if(user && user.get_active_held_item() == src) // Make sure our user is still holding us
+		if(!lit || !ptank)
+			return FALSE
+
+		if(!COOLDOWN_FINISHED(src, use_cooldown))
+			to_chat(user, span_danger("[src] is cooling down."))
+			return FALSE
+
 		var/turf/target_turf = get_turf(target)
-		if(target_turf)
-			var/turflist = get_line(user, target_turf)
-			log_combat(user, target, "flamethrowered", src)
-			flame_turf(turflist)
+		var/turf/our_turf = get_turf(src)
+		if(!our_turf || !target_turf)
+			return
+
+		if(!check_flamethrower_fuel(ptank.return_air()?.copy().removeRatio(FLAMETHROWER_RELEASE_RATIO)))
+			audible_message(span_danger("[src] sputters."))
+			playsound(src, 'sound/weapons/gun/flamethrower/flamethrower_empty.ogg', 50, TRUE, -3)
+			return
+
+		playsound(
+			src,
+			pick('sound/weapons/gun/flamethrower/flamethrower1.ogg','sound/weapons/gun/flamethrower/flamethrower2.ogg','sound/weapons/gun/flamethrower/flamethrower3.ogg' ),
+			50,
+			TRUE,
+			-3,
+		)
+
+		COOLDOWN_START(src, use_cooldown, 1 SECOND)
+
+		log_combat(user, target, "flamethrowered", src)
+		spew_fire(our_turf, target_turf)
 
 /obj/item/flamethrower/wrench_act(mob/living/user, obj/item/tool)
 	. = TRUE
@@ -192,32 +240,47 @@
 	status = TRUE
 	update_appearance()
 
-//Called from turf.dm turf/dblclick
-/obj/item/flamethrower/proc/flame_turf(turflist)
-	if(!lit || operating)
+/// Ignites every turf in the turf list, with a small gap between each.
+/obj/item/flamethrower/proc/spew_fire(turf/starting_turf, turf/target_turf)
+	var/list/turf_list = get_cone(
+		starting_turf,
+		max(get_dist(starting_turf, target_turf), 5),
+		1,
+		60,
+		get_angle(starting_turf, target_turf),
+		check_air_passability = TRUE,
+	)
+
+	flamethrower_recursive_ignite(turf_list, starting_turf, get_dist(get_turf(src), target_turf), ptank.return_air())
+
+/// Global so that when the flamethrower stops existing we can keep spitting fire.
+/proc/flamethrower_recursive_ignite(list/turfs, starting_turf, range = 1, datum/gas_mixture/released_gas, iteration = 1)
+	if(!released_gas?.volume)
 		return
-	operating = TRUE
-	var/turf/previousturf = get_turf(src)
-	for(var/turf/T in turflist)
-		if(T == previousturf)
-			continue //so we don't burn the tile we be standin on
-		/*var/list/turfs_sharing_with_prev = previousturf.TryGetNonDenseNeighbour()
-		if(!(T in turfs_sharing_with_prev))
-			break*/
-		ignite_turf(T)
-		sleep(1)
-		previousturf = T
-	operating = FALSE
-	for(var/mob/M in viewers(1, loc))
-		if((M.client && M.machine == src))
-			attack_self(M)
 
+	if(iteration > range)
+		return
 
-/obj/item/flamethrower/proc/ignite_turf(turf/target, release_amount = 5)
-	//TODO: DEFERRED Consider checking to make sure tank pressure is high enough before doing this...
-	//Transfer 5% of current tank air contents to turf
-	var/datum/gas_mixture/ptank_mix = ptank.return_air()
-	var/datum/gas_mixture/air_transfer = ptank_mix.removeRatio(release_amount)
+	for(var/turf/T as anything in turfs)
+		if(get_dist(starting_turf, T) != iteration)
+			continue
+
+		var/datum/gas_mixture/release_iter = released_gas.removeRatio(FLAMETHROWER_RELEASE_RATIO)
+		if(!check_flamethrower_fuel(release_iter))
+			return
+
+		flamethrower_ignite_turf(T, release_iter)
+
+	iteration++
+
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(flamethrower_recursive_ignite), turfs, starting_turf, range, released_gas, iteration), 0.1 SECONDS)
+
+/// Attempt to ignite a turf
+/proc/flamethrower_ignite_turf(turf/target, datum/gas_mixture/air_transfer)
+	if(isclosedturf(target) || isgroundlessturf(target))
+		return FALSE
+
+	var/reagent_amount = GASFUEL_AMOUNT_TO_LIQUID(air_transfer.getByFlag(XGM_GAS_FUEL))
 
 	// Find or make the ignitable decal
 	var/obj/effect/decal/cleanable/oil/l_fuel = locate() in target
@@ -226,29 +289,34 @@
 		l_fuel.reagents.clear_reagents()
 
 	// Add the reagents to the fuel
-	l_fuel.reagents.add_reagent(/datum/reagent/fuel/oil, LIQUIDFUEL_AMOUNT_TO_MOL(release_amount))
+	l_fuel.reagents.add_reagent(/datum/reagent/fuel/oil, reagent_amount)
 
 	// Remove the actual fuel, we don't want to dump plasma into the air
 	air_transfer.removeByFlag(XGM_GAS_FUEL, INFINITY)
 	//Transfer the removed air to the turf
 	target.assume_air(air_transfer)
 	//Burn it based on transfered gas
-	target.hotspot_expose((ptank.air_contents.temperature*2) + 380,500) // -- More of my "how do I shot fire?" dickery. -- TLE
+	target.hotspot_expose((air_transfer.temperature*2) + 380, 500) // -- More of my "how do I shot fire?" dickery. -- TLE
+	return TRUE
 
-/obj/item/flamethrower/Initialize(mapload)
-	. = ..()
-	if(create_full)
-		if(!weldtool)
-			weldtool = new /obj/item/weldingtool(src)
-		weldtool.status = FALSE
-		if(!igniter)
-			igniter = new igniter_type(src)
-		igniter.secured = FALSE
-		status = TRUE
-		if(create_with_tank)
-			ptank = new /obj/item/tank/internals/plasma/full(src)
-		update_appearance()
-	RegisterSignal(src, COMSIG_ITEM_RECHARGED, PROC_REF(instant_refill))
+/// Returns TRUE if the given gas mixture is enough to ignite a fire.
+/proc/check_flamethrower_fuel(datum/gas_mixture/checking_gas)
+	if(!checking_gas?.volume)
+		return FALSE
+
+	if(checking_gas.getByFlag(XGM_GAS_FUEL) < FIRE_MINIMUM_FUEL_MOL_TO_EXIST)
+		return FALSE
+
+	return TRUE
+
+/obj/item/flamethrower/proc/rupture_tank()
+	if(!ptank)
+		return
+
+	var/list/turf_list = get_cone(get_turf(src), 4, -1, 359, 0, check_air_passability = TRUE)
+	flamethrower_recursive_ignite(turf_list, get_turf(src), 5, ptank.return_air())
+	qdel(ptank)
+	update_appearance()
 
 /obj/item/flamethrower/full
 	create_full = TRUE
@@ -262,12 +330,11 @@
 		return
 
 	var/obj/projectile/P = hitby
-	if(damage && attack_type == PROJECTILE_ATTACK && P.damage_type != STAMINA && prob(15))
+	if(ptank && damage && attack_type == PROJECTILE_ATTACK && P.damage_type != STAMINA && prob(15))
 		owner.visible_message(span_danger("\The [attack_text] hits the fuel tank on [owner]'s [name], rupturing it! What a shot!"))
 		var/turf/target_turf = get_turf(owner)
 		log_game("A projectile ([hitby]) detonated a flamethrower tank held by [key_name(owner)] at [COORD(target_turf)]")
-		ignite_turf(target_turf, release_amount = 100)
-		qdel(ptank)
+		rupture_tank()
 		return 1 //It hit the flamethrower, not them
 
 
@@ -281,3 +348,5 @@
 		tank_mix.setGasMoles(GAS_PLASMA,(10*ONE_ATMOSPHERE)*ptank.volume/(R_IDEAL_GAS_EQUATION*T20C))
 		ptank = new /obj/item/tank/internals/plasma/full(src)
 	update_appearance()
+
+#undef FLAMETHROWER_RELEASE_RATIO

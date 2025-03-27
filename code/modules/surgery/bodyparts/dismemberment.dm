@@ -183,7 +183,7 @@
 
 	remove_splint()
 
-	update_icon_dropped()
+	update_icon_dropped(update_limb = FALSE) // Limb updated above
 	synchronize_bodytypes(phantom_owner)
 
 	phantom_owner.update_health_hud() //update the healthdoll

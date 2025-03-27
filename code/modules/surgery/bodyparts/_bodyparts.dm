@@ -237,7 +237,7 @@
 		grind_results = null
 
 	name = "[limb_id] [parse_zone(body_zone)]"
-	update_icon_dropped()
+	update_icon_dropped(update_limb = FALSE)
 	refresh_bleed_rate()
 
 /obj/item/bodypart/Destroy()

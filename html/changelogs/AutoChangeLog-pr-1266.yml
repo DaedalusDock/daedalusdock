@@ -1,0 +1,9 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Fixed Repair Internal Organ surgery (for real).
+  - bugfix: Fixed the limbgrower not growing limbs (for real!!!!).
+  - bugfix: Fixed Metal Balls being uncraftable.
+  - bugfix: Fixed slapcrafting recipes that have more than 2 steps.
+  - code_imp: Cleaned up slapcrafting finalization code.
+  - rscadd: Reworked the flamethrower to be more flamethrower-y.

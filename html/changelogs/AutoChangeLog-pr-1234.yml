@@ -1,0 +1,9 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: AI's camera lights are now on by default and cannot be disabled.
+  - rscadd: Cameras now emit messages similar to players when an AI uses them to examine
+      something.
+  - rscadd: Added a new skill, Extrasensory. This has absolutely nothing to do with
+      the above.
+  - rscadd: Examining a mob as AI using a camera has a short delay.

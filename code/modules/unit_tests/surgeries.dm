@@ -70,7 +70,8 @@
 	user.put_in_active_hand(hemostat)
 	hemostat.melee_attack_chain(user, patient)
 
-	TEST_ASSERT(BP.get_damage() <= BP.max_damage * 0.25, "Chest did not heal to less than [BP.max_damage/2], healed to [BP.get_damage()]")
+	var/expected_damage = /datum/surgery_step/tend_wounds::cant_heal_below
+	TEST_ASSERT(BP.get_damage() == expected_damage, "Chest did not heal to [expected_damage], healed to [BP.get_damage()]")
 
 /datum/unit_test/test_retraction/Run()
 	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human)

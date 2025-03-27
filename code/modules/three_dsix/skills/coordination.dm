@@ -1,5 +1,5 @@
 /datum/rpg_skill/handicraft
-	name = "Handicraft"
+	name = "Coordination"
 	desc = "Control and manipulate, with style."
 
 	parent_stat_type = /datum/rpg_stat/kinesis

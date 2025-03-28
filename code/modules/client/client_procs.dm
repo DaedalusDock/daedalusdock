@@ -399,7 +399,10 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	connection_time = world.time
 	connection_realtime = world.realtime
 	connection_timeofday = world.timeofday
+
 	winset(src, null, "command=\".configure graphics-hwmode on\"")
+	winset(src, null, "browser-options=find,devtools")
+
 	var/cev = CONFIG_GET(number/client_error_version)
 	var/ceb = CONFIG_GET(number/client_error_build)
 	var/cwv = CONFIG_GET(number/client_warn_version)

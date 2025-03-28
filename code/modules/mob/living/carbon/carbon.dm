@@ -1447,3 +1447,7 @@
 		stack_trace("Something tried to drop an organ or bodypart that isn't allowed to be dropped")
 		return FALSE
 	return ..()
+
+/// Returns TRUE if the mob would have blue hands/feet.
+/mob/living/carbon/proc/undergoing_cyanosis()
+	return needs_organ(ORGAN_SLOT_HEART) && get_blood_oxygenation() < BLOOD_CIRC_SAFE

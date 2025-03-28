@@ -16,6 +16,7 @@ export { Collapsible } from './Collapsible';
 export { ColorBox } from './ColorBox';
 export { Dimmer } from './Dimmer';
 export { Divider } from './Divider';
+export { DmIcon } from './DMIcon';
 export { DraggableControl } from './DraggableControl';
 export { Dropdown } from './Dropdown';
 export { FitText } from './FitText';

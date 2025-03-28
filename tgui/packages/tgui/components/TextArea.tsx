@@ -26,6 +26,8 @@ type Props = Partial<{
   displayedValue: string;
   dontUseTabForIndent: boolean;
   fluid: boolean;
+  /** Classname applied to the internal textarea element */
+  innerClassName: string;
   maxLength: number;
   noborder: boolean;
   /** Fires when user is 'done typing': Clicked out, blur, enter key (but not shift+enter) */
@@ -60,6 +62,7 @@ export const TextArea = forwardRef(
       scrollbar,
       selfClear,
       value,
+      innerClassName,
       ...boxProps
     } = props;
     const { className, fluid, nowrap, ...rest } = boxProps;
@@ -176,6 +179,7 @@ export const TextArea = forwardRef(
             'TextArea__textarea',
             scrollbar && 'TextArea__textarea--scrollable',
             nowrap && 'TextArea__nowrap',
+            innerClassName,
           ])}
           maxLength={maxLength}
           onBlur={(event) => onChange?.(event, event.target.value)}

@@ -42,6 +42,58 @@
 	else
 		screen_loc = "[x1],[y1] to [x2],[y2]"
 
+/atom/movable/screen/map_view/byondui
+	del_on_map_removal = FALSE
+	var/list/plane_masters = list()
+
+	/// Weakrefs to client(s) viewing thisUI
+	var/list/datum/weakref/viewing_clients = list()
+	/// The atom rendered.
+	var/atom/movable/screen/background/rendered_atom
+
+/atom/movable/screen/map_view/byondui/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+
+	assigned_map = "byondui_[ref(src)]"
+	set_position(1, 1)
+
+	for (var/plane_master_type in subtypesof(/atom/movable/screen/plane_master) - /atom/movable/screen/plane_master/blackness)
+		var/atom/movable/screen/plane_master/plane_master = new plane_master_type()
+		plane_master.assigned_map = assigned_map
+		plane_master.screen_loc = "[assigned_map]:CENTER"
+		plane_master.del_on_map_removal = FALSE
+		plane_masters += plane_master
+
+	rendered_atom = new
+	rendered_atom.assigned_map = assigned_map
+	rendered_atom.del_on_map_removal = FALSE
+	rendered_atom.set_position(0, 0)
+
+/atom/movable/screen/map_view/byondui/Destroy()
+	for(var/datum/weakref/client_ref as anything in viewing_clients)
+		var/client/C = client_ref.resolve()
+		C?.clear_map(assigned_map)
+
+	QDEL_LIST(plane_masters)
+
+	viewing_clients = null
+	plane_masters = null
+
+	return ..()
+
+/atom/movable/screen/map_view/byondui/proc/register_to_client(client/client)
+	if (!client)
+		return
+
+	if(client.weak_reference in viewing_clients)
+		return
+
+	viewing_clients += WEAKREF(client)
+	client.register_map_obj(src)
+	client.register_map_obj(rendered_atom)
+	for(var/plane in plane_masters)
+		client.register_map_obj(plane)
+
 /**
  * Registers screen obj with the client, which makes it visible on the
  * assigned map, and becomes a part of the assigned map's lifecycle.

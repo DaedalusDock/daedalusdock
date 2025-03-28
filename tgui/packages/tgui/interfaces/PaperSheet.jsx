@@ -17,8 +17,10 @@ import { Component } from 'react';
 import { useBackend } from '../backend';
 import { Box, Flex, Table, Tabs, TextArea } from '../components';
 import { Window } from '../layouts';
+import { createLogger } from '../logging';
 import { sanitizeText } from '../sanitize';
 const MAX_PAPER_LENGTH = 5000; // Question, should we send this with ui_data?
+const logger = createLogger('Paper');
 
 // Hacky, yes, works?...yes
 const textWidth = (text, font, fontsize) => {
@@ -55,8 +57,7 @@ const createIDHeader = (index) => {
 // we will then output a TEXT input for it that hopefully covers
 // the exact amount of spaces
 const field_regex = /\[(_+)\]/g;
-const field_tag_regex =
-  /\[<input\s+(?!disabled)(.*?)\s+id="(?<id>paperfield_\d+)"(.*?)\/>\]/gm;
+const field_tag_regex = /\[<input\s+[^>]*\sid="(paperfield_\d+)"[^>]*>\]/gm;
 const sign_regex = /%s(?:ign)?(?=\\s|$)?/gim;
 
 const createInputField = (length, width, font, fontsize, color, id) => {
@@ -154,7 +155,14 @@ const run_marked_default = (value) => {
  ** It returns any values that were saved and a corrected
  ** html code or null if nothing was updated
  */
-const checkAllFields = (txt, font, color, user_name, bold = false) => {
+const checkAllFields = (
+  txt,
+  font,
+  color,
+  user_name,
+  bold = false,
+  italic = false,
+) => {
   let matches;
   let values = {};
   let replace = [];
@@ -164,41 +172,64 @@ const checkAllFields = (txt, font, color, user_name, bold = false) => {
   // for nothing, if nothing is entered, txt is just returned
   while ((matches = field_tag_regex.exec(txt)) !== null) {
     const full_match = matches[0];
-    const id = matches.groups.id;
-    if (id) {
-      const dom = document.getElementById(id);
-      // make sure we got data, and kill any html that might
-      // be in it
-      const dom_text = dom && dom.value ? dom.value : '';
-      if (dom_text.length === 0) {
-        continue;
-      }
-      const sanitized_text = sanitizeText(dom.value.trim(), []);
-      if (sanitized_text.length === 0) {
-        continue;
-      }
-      // this is easier than doing a bunch of text manipulations
-      const target = dom.cloneNode(true);
-      // in case they sign in a field
-      if (sanitized_text.match(sign_regex)) {
-        target.style.fontFamily = 'Times New Roman';
-        bold = true;
-        target.defaultValue = user_name;
-      } else {
-        target.style.fontFamily = font;
-        target.defaultValue = sanitized_text;
-      }
-      if (bold) {
-        target.style.fontWeight = 'bold';
-      }
-      target.style.color = color;
-      target.disabled = true;
-      const wrap = document.createElement('div');
-      wrap.appendChild(target);
-      values[id] = sanitized_text; // save the data
-      replace.push({ value: '[' + wrap.innerHTML + ']', raw_text: full_match });
+    logger.log('Found match: ' + full_match);
+
+    /// I genuinely don't know why this is necessary, but it is.
+    const id = matches.groups ? matches.groups.id : matches[1];
+    logger.log('Found ID: ' + id);
+    if (!id) {
+      continue;
     }
+
+    const dom = document.getElementById(id);
+    // make sure we got data, and kill any html that might
+    // be in it
+    const dom_text = dom && dom.value ? dom.value : '';
+    if (dom_text.length === 0) {
+      continue;
+    }
+
+    if (dom.disabled) {
+      logger.log('Found disabled attribute, skipping...');
+      continue;
+    }
+    const sanitized_text = sanitizeText(dom.value.trim(), []);
+    if (sanitized_text.length === 0) {
+      continue;
+    }
+
+    // this is easier than doing a bunch of text manipulations
+    const target = dom.cloneNode(true);
+
+    // If they signed a signature, apply appropriate text effects.
+    if (sanitized_text.match(sign_regex)) {
+      target.style.fontFamily = 'Times New Roman';
+      bold = true;
+      italic = true;
+      target.defaultValue = user_name;
+    } else {
+      target.style.fontFamily = font;
+      target.defaultValue = sanitized_text;
+    }
+
+    // Apply weight/style
+    if (bold) {
+      target.style.fontWeight = 'bold';
+    }
+    if (italic) {
+      target.style.fontStyle = 'italic';
+    }
+
+    target.style.color = color;
+    target.disabled = true;
+
+    const wrap = document.createElement('div');
+    wrap.appendChild(target);
+
+    values[id] = sanitized_text; // save the data
+    replace.push({ value: '[' + wrap.innerHTML + ']', raw_text: full_match });
   }
+
   if (replace.length > 0) {
     for (const o of replace) {
       txt = txt.replace(o.raw_text, o.value);
@@ -595,10 +626,10 @@ class PaperSheetEdit extends Component {
               textColor={'black'}
               backgroundColor="white"
               icon="question-circle-o"
-              onmouseover={() => {
+              onMouseOver={() => {
                 this.setState({ showingHelpTip: true });
               }}
-              onmouseout={() => {
+              onMouseOut={() => {
                 this.setState({ showingHelpTip: false });
               }}
             >

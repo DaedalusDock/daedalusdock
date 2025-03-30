@@ -102,6 +102,7 @@
 
 	var/datum/browser/browser = new(user, "caselock", "[name]", 300, 280)
 	browser.set_content(dat)
+	browser.open()
 
 
 /obj/item/storage/secure/Topic(href, href_list)

@@ -46,9 +46,10 @@
 	if(closed_at)
 		dat += "<br>Closed at: [gameTimestamp("hh:mm:ss", closed_at)] (Approx [DisplayTimeText(world.time - closed_at)] ago)"
 	dat += "<br><br>"
-	dat += "<br><b>Log:</b><br><br>"
+	dat += "<br><fieldset class='computerPaneSimple'><legend>Activity</legend>"
 	for(var/I in _interactions_player)
 		dat += "[I]<br>"
+	dat += "</fieldset>"
 
 	browser.add_head_content("<title>Player Ticket #[id]</title>")
 	browser.set_content(dat.Join())

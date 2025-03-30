@@ -30,8 +30,9 @@
 	handler = "[usr.ckey]"
 
 /datum/admin_help/proc/PlayerTicketPanel()
-	var/list/dat = list("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>Player Ticket</title></head>")
-	dat += "<b>State: "
+	var/datum/browser/browser = new(usr, "ahelp[id]", "Ticket #[id]")
+	var/list/dat = list()
+	dat += "State: "
 	switch(state)
 		if(AHELP_ACTIVE)
 			dat += "<font color='red'>OPEN</font></b>"
@@ -49,7 +50,9 @@
 	for(var/I in _interactions_player)
 		dat += "[I]<br>"
 
-	usr << browse(dat.Join(), "window=ahelp[id];size=620x480")
+	browser.add_head_content("<title>Player Ticket #[id]</title>")
+	browser.set_content(dat.Join())
+	browser.open()
 
 /datum/admin_help/proc/AddInteractionPlayer(formatted_message)
 	_interactions_player += "[time_stamp()]: [formatted_message]"

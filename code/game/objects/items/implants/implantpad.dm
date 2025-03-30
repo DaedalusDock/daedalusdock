@@ -75,6 +75,6 @@
 	else
 		dat += "Please insert an implant casing!"
 
-	var/datum/browser/browser = new(, user, "implantpad")
+	var/datum/browser/browser = new(user, "implantpad")
 	browser.set_content(dat)
 	browser.open()

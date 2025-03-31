@@ -7,6 +7,7 @@
 		hallucinating = human_user.hal_screwyhud
 	. += mob_examine(hallucinating)
 
+/// Called when the parent mob is examined. Except also not because fuck you.
 /obj/item/bodypart/proc/mob_examine(hallucinating, covered)
 	. = list()
 
@@ -26,23 +27,36 @@
 
 	. += get_wound_descriptions(hallucinating)
 
-	if(owner)
-		for(var/obj/item/I in embedded_objects)
-			if(I.isEmbedHarmless())
-				. += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)]' class='warning'>There is \a [I] stuck to [owner.p_their()] [plaintext_zone]!</a>"
-			else
-				. += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)]' class='warning'>There is \a [I] embedded in [owner.p_their()] [plaintext_zone]!</a>"
-
-		if(splint)
-			. += span_notice("\t <a href='?src=[REF(src)];splint_remove=1' class='warning'>[owner.p_their(TRUE)] [plaintext_zone] is splinted with [splint].</a>")
-		if(bandage)
-			. += span_notice("\n\t <a href='?src=[REF(src)];bandage_remove=1' class='notice'>[owner.p_their(TRUE)] [plaintext_zone] is bandaged with [bandage][bandage.absorption_capacity ? "." : ", <span class='warning'>it is no longer absorbing blood</span>."]</a>")
-		return
-
-	else
+	if(!owner)
 		if(bodypart_flags & BP_BROKEN_BONES)
-			. += span_warning("It is dented and swollen.")
+			. += span_alert("It is dented and swollen.")
 		return
+
+	// Everything below this comment assumes there is an owner, and the bodypart is not visibly obscured.
+
+	for(var/obj/item/I in embedded_objects)
+		if(I.isEmbedHarmless())
+			. += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)]' class='warning'>There is \a [I] stuck to [owner.p_their()] [plaintext_zone]!</a>"
+		else
+			. += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)]' class='warning'>There is \a [I] embedded in [owner.p_their()] [plaintext_zone]!</a>"
+
+	if(splint)
+		. += span_notice("\t <a href='?src=[REF(src)];splint_remove=1' class='warning'>[owner.p_their(TRUE)] [plaintext_zone] is splinted with [splint].</a>")
+	if(bandage)
+		. += span_notice("\n\t <a href='?src=[REF(src)];bandage_remove=1' class='notice'>[owner.p_their(TRUE)] [plaintext_zone] is bandaged with [bandage][bandage.absorption_capacity ? "." : ", <span class='warning'>it is no longer absorbing blood</span>."]</a>")
+
+	if((bodypart_flags & BP_HAS_BLOOD) && (owner.undergoing_jaundice() == JAUNDICE_SKIN))
+		. += span_alert("The skin of [owner.p_their()] [plaintext_zone] is a faint yellow.")
+
+/obj/item/bodypart/arm/mob_examine(hallucinating, covered)
+	. = ..()
+	if((bodypart_flags & BP_HAS_BLOOD) && owner.undergoing_cyanosis() && !(HANDS & owner.get_all_covered_flags()))
+		. += span_alert("[owner.p_their(TRUE)] [parse_zone(aux_zone)] is a sickly blue.")
+
+/obj/item/bodypart/leg/mob_examine(hallucinating, covered)
+	. = ..()
+	if((bodypart_flags & BP_HAS_BLOOD) && owner.undergoing_cyanosis() && !(FEET & owner.get_all_covered_flags()))
+		. += span_alert("[owner.p_their(TRUE)] [body_zone == BODY_ZONE_L_LEG ? "left foot" : "right foot"] is a sickly blue.")
 
 /// Returns a list of wound descriptions in text form.
 /obj/item/bodypart/proc/get_wound_descriptions(hallucinating) as /list

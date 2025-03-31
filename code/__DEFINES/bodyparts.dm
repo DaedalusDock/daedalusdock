@@ -74,3 +74,10 @@
 #define DAMAGE_CAN_DISMEMBER (1<<2)
 
 #define DEFAULT_DAMAGE_FLAGS (DAMAGE_CAN_FRACTURE | DAMAGE_CAN_JOSTLE_BONES | DAMAGE_CAN_DISMEMBER)
+
+// Color priorities for bodyparts
+#define LIMB_COLOR_LIMBGROWER 5
+#define LIMB_COLOR_JAUNDICE 10
+#define LIMB_COLOR_HULK 15
+/// Base priority for atom colors, gets atom priorities added to it
+#define LIMB_COLOR_ATOM_COLOR 30

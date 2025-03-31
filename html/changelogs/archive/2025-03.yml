@@ -50,3 +50,24 @@
   - bugfix: Repair Internal Organ surgery can be completed.
   jlsnow301:
   - bugfix: The chemmaster can have dispatch amounts set again
+2025-03-24:
+  Kapu1178:
+  - balance: Reduces effectiveness of Tend Wounds.
+2025-03-28:
+  Kapu1178:
+  - rscadd: AI's camera lights are now on by default and cannot be disabled.
+  - rscadd: Cameras now emit messages similar to players when an AI uses them to examine
+      something.
+  - rscadd: Added a new skill, Extrasensory. This has absolutely nothing to do with
+      the above.
+  - rscadd: Examining a mob as AI using a camera has a short delay.
+  - bugfix: Fixed Repair Internal Organ surgery (for real).
+  - bugfix: Fixed the limbgrower not growing limbs (for real!!!!).
+  - bugfix: Fixed Metal Balls being uncraftable.
+  - bugfix: Fixed slapcrafting recipes that have more than 2 steps.
+  - code_imp: Cleaned up slapcrafting finalization code.
+  - rscadd: Reworked the flamethrower to be more flamethrower-y.
+2025-03-31:
+  Kapu1178:
+  - rscadd: The diagnosis book, a tool for diagnosing patients.
+  - bugfix: Input fields in paper work mostly correctly.

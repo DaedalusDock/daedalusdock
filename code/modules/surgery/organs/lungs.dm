@@ -366,8 +366,10 @@
 
 /obj/item/organ/lungs/check_damage_thresholds(mob/organ_owner)
 	. = ..()
-	if(. == high_threshold_passed && owner)
-		owner.visible_message(span_danger("[owner] grabs at [owner.p_their()] throat, struggling for breath!"), span_userdanger("You suddenly feel like you can't breathe."))
+	if(. < ORGAN_HIGH_THRESHOLD_PASSED)
+		return
+	if((owner?.stat == CONSCIOUS) && owner.needs_organ(ORGAN_SLOT_LUNGS))
+		owner.manual_emote("[owner] begins choking and grabbing at [owner.p_their()] throat!")
 
 /obj/item/organ/lungs/slime
 	name = "vacuole"

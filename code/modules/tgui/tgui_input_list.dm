@@ -15,18 +15,22 @@
 		user = usr
 	if(!length(items))
 		return
+
 	if (!istype(user))
-		if (istype(user, /client))
-			var/client/client = user
-			user = client.mob
-		else
+		if (!istype(user, /client))
 			return
+
+		var/client/client = user
+		user = client.mob
+
 	/// Client does NOT have tgui_input on: Returns regular input
 	if(!user.client.prefs.read_preference(/datum/preference/toggle/tgui_input))
 		return input(user, message, title, default) as null|anything in items
+
 	var/datum/tgui_list_input/input = new(user, message, title, items, default, timeout)
 	input.ui_interact(user)
 	input.wait()
+
 	if (input)
 		. = input.choice
 		qdel(input)
@@ -117,8 +121,8 @@
 
 /datum/tgui_list_input/Destroy(force, ...)
 	SStgui.close_uis(src)
-	QDEL_NULL(items)
-	. = ..()
+	items = null
+	return ..()
 
 /**
  * Waits for a user's response to the tgui_list_input's prompt before returning. Returns early if

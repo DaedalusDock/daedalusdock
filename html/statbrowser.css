@@ -197,6 +197,7 @@ li a:hover:not(.active) {
 }
 
 .grid-item:hover .grid-item-text {
+	height: 100%;
 	width: auto;
 	text-decoration: underline;
 	cursor: url("link_select.cur"), pointer;

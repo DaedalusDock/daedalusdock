@@ -12,6 +12,7 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 	temperature = TCMB
 	simulated = FALSE
 	explosion_block = 0.5
+	initial_gas = null
 
 	var/destination_z
 	var/destination_x
@@ -48,9 +49,6 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 /turf/open/space/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
 
-	var/static/list/spacegas = list()
-	initial_gas = spacegas //Avoid the nasty (init) call
-
 	appearance = global.space_appearances[(((x + y) ^ ~(x * y) + z) % 25) + 1]
 
 	if(initialized)
@@ -63,6 +61,7 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 		// add_overlay does a bunch of generic stuff, like creating a new list for overlays,
 		// queueing compile, cloning appearance, etc etc etc that is not necessary here.
 		overlays += global.fullbright_overlay
+		luminosity = TRUE
 
 	return INITIALIZE_HINT_NORMAL
 

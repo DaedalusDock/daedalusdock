@@ -12,8 +12,12 @@
 	supports_variations_flags = CLOTHING_VOX_VARIATION | CLOTHING_DIGITIGRADE_VARIATION
 
 	permeability_coefficient = 0.5
-	slowdown = SHOES_SLOWDOWN
-	strip_delay = 1 SECONDS
+	slowdown = 0
+
+	equip_self_flags = NONE
+	equip_delay_self = EQUIP_DELAY_SHOES
+	equip_delay_other = EQUIP_DELAY_SHOES * 1.5
+	strip_delay = EQUIP_DELAY_SHOES // In stripping code, if the mob is standing, it adds additional time.
 
 	var/offset = 0
 	var/equipped_before_drop = FALSE
@@ -82,13 +86,13 @@
 	else if(tied == SHOES_KNOTTED)
 		. += "The shoelaces are all knotted together."
 
-/obj/item/clothing/shoes/visual_equipped(mob/user, slot)
-	..()
+/obj/item/clothing/shoes/visual_equipped(mob/living/user, slot)
 	if(offset && (slot_flags & slot))
 		user.pixel_y += offset
 		worn_y_dimension -= (offset * 2)
 		user.update_worn_shoes()
 		equipped_before_drop = TRUE
+	return ..()
 
 /obj/item/clothing/shoes/equipped(mob/user, slot)
 	. = ..()
@@ -101,7 +105,7 @@
 	user.pixel_y -= offset
 	worn_y_dimension = world.icon_size
 
-/obj/item/clothing/shoes/dropped(mob/user)
+/obj/item/clothing/shoes/unequipped(mob/user)
 	var/atom/movable/screen/alert/our_alert = our_alert_ref?.resolve()
 	if(!our_alert)
 		our_alert_ref = null

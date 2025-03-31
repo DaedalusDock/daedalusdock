@@ -29,6 +29,7 @@
 	pickup_sound = 'sound/items/handling/toolbox_pickup.ogg'
 	material_flags = MATERIAL_EFFECTS | MATERIAL_COLOR
 
+	storage_type = /datum/storage/toolbox
 	var/latches = "single_latch"
 	var/has_latches = TRUE
 

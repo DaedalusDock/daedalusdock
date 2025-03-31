@@ -459,12 +459,17 @@
 	. = ..()
 	. += "<a href='?src=\ref[src];look_at_id=1'>\[Look at ID\]</a>"
 	if(registered_account)
-		. += span_notice("The account linked to the ID belongs to '[registered_account.account_holder]' and reports a balance of [registered_account.account_balance] cr.")
+		. += span_notice("The account linked to the ID belongs to '[registered_account.account_holder]'.")
 
 	if(HAS_TRAIT(user, TRAIT_ID_APPRAISER))
 		. += HAS_TRAIT(src, TRAIT_JOB_FIRST_ID_CARD) ? span_boldnotice("Hmm... yes, this ID was issued from Central Command!") : span_boldnotice("This ID was created in this sector, not by Central Command.")
 
 /obj/item/card/id/proc/show(mob/user)
+	set waitfor = FALSE
+
+	var/atom/movable/screen/front_container = user.send_appearance(front_image)
+	var/atom/movable/screen/side_container = user.send_appearance(side_image)
+
 	var/list/content = list("<table style='width:100%'><tr><td>")
 	content += "Name: [registered_name]<br>"
 	content += "Age: [registered_age]<br>"
@@ -472,15 +477,17 @@
 	content += "Blood Type: [blood_type]<br>"
 	content += "Fingerprint: [fingerprint]<br>"
 	content += "DNA Hash: [dna_hash]<br>"
+
 	if(front_image && side_image)
-		content +="<td style='text-align:center; vertical-align:top'>Photo:<br><img src=\ref[front_image.appearance] height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'><img src=\ref[side_image.appearance] height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'></td>"
+		content +="<td style='text-align:center; vertical-align:top'>Photo:<br><img src=\ref[front_container.appearance] height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'><img src=\ref[side_container.appearance] height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'></td>"
 	content += "</tr></table>"
 	content = jointext(content, null)
 
 	var/datum/browser/popup = new(user, "idcard", name, 660, 270)
 	popup.set_content(content)
 	popup.open()
-	return
+	sleep(1) // I don't know why but for some reason I need to re-send the entire UI to get it to display icons. Yes, I tried sleeping after sending the appearances.
+	popup.open()
 
 /obj/item/card/id/GetAccess()
 	return access.Copy()
@@ -507,15 +514,15 @@
 	label = "[name_string], [assignment_string]"
 
 /obj/item/card/id/proc/set_data_by_record(datum/data/record/R, set_access, visual)
-	registered_name = R.fields["name"]
-	registered_age = R.fields["age"] || "UNSET"
-	dna_hash = R.fields["identity"] || "UNSET"
-	fingerprint = R.fields["fingerprint"] || "UNSET"
-	blood_type = R.fields["blood_type"] || "UNSET"
-	assignment = R.fields["trim"] || "UNSET"
+	registered_name = R.fields[DATACORE_NAME]
+	registered_age = R.fields[DATACORE_AGE] || "UNSET"
+	dna_hash = R.fields[DATACORE_DNA_IDENTITY] || "UNSET"
+	fingerprint = R.fields[DATACORE_FINGERPRINT] || "UNSET"
+	blood_type = R.fields[DATACORE_BLOOD_TYPE] || "UNSET"
+	assignment = R.fields[DATACORE_TRIM] || "UNSET"
 	for(var/datum/id_trim/trim as anything in SSid_access.trim_singletons_by_path)
 		trim = SSid_access.trim_singletons_by_path[trim]
-		if(trim.assignment == R.fields["trim"])
+		if(trim.assignment == R.fields[DATACORE_TRIM])
 			if(visual)
 				SSid_access.apply_trim_to_chameleon_card(src, trim.type)
 			else
@@ -523,9 +530,9 @@
 	update_label()
 	update_icon()
 
-/obj/item/card/id/proc/datacore_ready(datum/source, datum/datacore/datacore)
+/obj/item/card/id/proc/datacore_ready(datum/source)
 	SIGNAL_HANDLER
-	set_icon(find_record("name", registered_name, GLOB.data_core.locked))
+	set_icon(SSdatacore.get_record_by_name(registered_name, DATACORE_RECORDS_LOCKED))
 	UnregisterSignal(src, COMSIG_GLOB_DATACORE_READY)
 
 /// Sets the UI icon of the ID to their datacore entry, or their current appearance if no record is found.
@@ -660,10 +667,10 @@
 /obj/item/card/id/advanced/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_EQUIPPED, PROC_REF(update_intern_status))
-	RegisterSignal(src, COMSIG_ITEM_DROPPED, PROC_REF(remove_intern_status))
+	RegisterSignal(src, COMSIG_ITEM_UNEQUIPPED, PROC_REF(remove_intern_status))
 
 /obj/item/card/id/advanced/Destroy()
-	UnregisterSignal(src, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
+	UnregisterSignal(src, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_UNEQUIPPED))
 
 	return ..()
 
@@ -705,17 +712,17 @@
 /obj/item/card/id/advanced/proc/on_holding_card_slot_moved(obj/item/computer_hardware/card_slot/source, atom/old_loc, dir, forced)
 	SIGNAL_HANDLER
 	if(istype(old_loc, /obj/item/modular_computer/tablet))
-		UnregisterSignal(old_loc, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
+		UnregisterSignal(old_loc, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_UNEQUIPPED))
 
 	if(istype(source.loc, /obj/item/modular_computer/tablet))
 		RegisterSignal(source.loc, COMSIG_ITEM_EQUIPPED, PROC_REF(update_intern_status))
-		RegisterSignal(source.loc, COMSIG_ITEM_DROPPED, PROC_REF(remove_intern_status))
+		RegisterSignal(source.loc, COMSIG_ITEM_UNEQUIPPED, PROC_REF(remove_intern_status))
 
 /obj/item/card/id/advanced/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
 
 	if(istype(old_loc, /obj/item/storage/wallet))
-		UnregisterSignal(old_loc, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
+		UnregisterSignal(old_loc, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_UNEQUIPPED))
 
 	if(istype(old_loc, /obj/item/computer_hardware/card_slot))
 		var/obj/item/computer_hardware/card_slot/slot = old_loc
@@ -724,11 +731,11 @@
 
 		if(istype(slot.holder, /obj/item/modular_computer/tablet))
 			var/obj/item/modular_computer/tablet/slot_holder = slot.holder
-			UnregisterSignal(slot_holder, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
+			UnregisterSignal(slot_holder, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_UNEQUIPPED))
 
 	if(istype(loc, /obj/item/storage/wallet))
 		RegisterSignal(loc, COMSIG_ITEM_EQUIPPED, PROC_REF(update_intern_status))
-		RegisterSignal(loc, COMSIG_ITEM_DROPPED, PROC_REF(remove_intern_status))
+		RegisterSignal(loc, COMSIG_ITEM_UNEQUIPPED, PROC_REF(remove_intern_status))
 
 	if(istype(loc, /obj/item/computer_hardware/card_slot))
 		var/obj/item/computer_hardware/card_slot/slot = loc
@@ -738,7 +745,7 @@
 		if(istype(slot.holder, /obj/item/modular_computer/tablet))
 			var/obj/item/modular_computer/tablet/slot_holder = slot.holder
 			RegisterSignal(slot_holder, COMSIG_ITEM_EQUIPPED, PROC_REF(update_intern_status))
-			RegisterSignal(slot_holder, COMSIG_ITEM_DROPPED, PROC_REF(remove_intern_status))
+			RegisterSignal(slot_holder, COMSIG_ITEM_UNEQUIPPED, PROC_REF(remove_intern_status))
 
 /obj/item/card/id/advanced/update_overlays()
 	. = ..()
@@ -795,15 +802,15 @@
 	wildcard_slots = WILDCARD_LIMIT_GOLD
 
 /obj/item/card/id/advanced/gold/captains_spare
-	name = "captain's spare ID"
+	name = "superintendent's spare ID"
 	desc = "The spare ID of the High Lord himself."
-	registered_name = "Captain"
+	registered_name = JOB_CAPTAIN
 	trim = /datum/id_trim/job/captain
 	registered_age = null
 
 /obj/item/card/id/advanced/gold/captains_spare/update_label() //so it doesn't change to Captain's ID card (Captain) on a sneeze
-	if(registered_name == "Captain")
-		name = "[initial(name)][(!assignment || assignment == "Captain") ? "" : " ([assignment])"]"
+	if(registered_name == JOB_CAPTAIN)
+		name = "[initial(name)][(!assignment || assignment == JOB_CAPTAIN) ? "" : " ([assignment])"]"
 		update_appearance(UPDATE_ICON)
 	else
 		..()
@@ -1335,12 +1342,12 @@
 
 			if("Impersonate Crew")
 				var/list/options = list()
-				for(var/datum/data/record/R as anything in GLOB.data_core.general)
-					options += R.fields["name"]
+				for(var/datum/data/record/R as anything in SSdatacore.get_records(DATACORE_RECORDS_STATION))
+					options += R.fields[DATACORE_NAME]
 				var/choice = tgui_input_list(user, "Select a crew member", "Impersonate Crew", options)
 				if(!choice)
 					return
-				var/datum/data/record/R = find_record("name", choice, GLOB.data_core.locked)
+				var/datum/data/record/R = SSdatacore.get_record_by_name(choice, DATACORE_RECORDS_LOCKED)
 				set_data_by_record(R, visual = TRUE)
 				set_icon(R)
 				return

@@ -64,8 +64,13 @@
 
 	/// If TRUE, chat messages for inserting/removing items will not be shown.
 	var/silent = FALSE
-	/// play a rustling sound when interacting with the bag
-	var/rustle_sound = TRUE
+
+	/// Sound played when first opened.
+	var/open_sound = SFX_RUSTLE
+	/// Sound played when closed.
+	var/close_sound = null
+	/// Sound played when interacting with contents.
+	var/rustle_sound = SFX_RUSTLE
 
 	/// alt click takes an item out instead of opening up storage
 	var/quickdraw = FALSE
@@ -158,7 +163,7 @@
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(mass_empty))
 	RegisterSignal(parent, list(COMSIG_CLICK_ALT, COMSIG_ATOM_ATTACK_GHOST, COMSIG_ATOM_ATTACK_HAND_SECONDARY), PROC_REF(open_storage_on_signal))
 	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY_SECONDARY, PROC_REF(open_storage_attackby_secondary))
-	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(close_distance))
+	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(update_viewability))
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(update_actions))
 
 /datum/storage/proc/on_deconstruct()
@@ -209,7 +214,8 @@
 	if(isnull(new_real_loc))
 		return
 
-	new_real_loc.flags_1 |= HAS_DISASSOCIATED_STORAGE_1
+	if(parent != new_real_loc)
+		new_real_loc.flags_1 |= HAS_DISASSOCIATED_STORAGE_1
 
 	RegisterSignal(new_real_loc, COMSIG_ATOM_ENTERED, PROC_REF(handle_enter))
 	RegisterSignal(new_real_loc, COMSIG_ATOM_EXITED, PROC_REF(handle_exit))
@@ -296,7 +302,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	thing.plane = initial(thing.plane)
 	thing.mouse_opacity = initial(thing.mouse_opacity)
 	thing.screen_loc = null
-	if(thing.maptext)
+	if(numerical_stacking && thing.maptext)
 		thing.maptext = ""
 
 /**
@@ -308,6 +314,21 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  */
 /datum/storage/proc/can_insert(obj/item/to_insert, mob/user, messages = TRUE, force = FALSE)
 	if(QDELETED(to_insert) || !isitem(to_insert))
+		return FALSE
+
+	if(to_insert.item_flags & ABSTRACT)
+		return FALSE
+
+	if(parent.flags_1 & HOLOGRAM_1)
+		if(!(to_insert.flags_1 & HOLOGRAM_1))
+			return FALSE
+	else if(to_insert.flags_1 & HOLOGRAM_1)
+		return FALSE
+
+	if(user && !user.canUnequipItem(to_insert))
+		return FALSE
+
+	if(!can_manipulate_contents(user, force, !messages))
 		return FALSE
 
 	if(locked && !force)
@@ -381,11 +402,36 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	if(!can_insert(to_insert, user, force = force))
 		return FALSE
 
+	// This ensures the item doesn't play its dropped sound. Also just cleaner than relying on the item doMove() override.
+	user?.temporarilyRemoveItemFromInventory(to_insert, TRUE)
+
 	to_insert.item_flags |= IN_STORAGE
 	to_insert.forceMove(real_location)
 	item_insertion_feedback(user, to_insert, override)
 	real_location.update_appearance()
 	SEND_SIGNAL(src, COMSIG_STORAGE_INSERTED_ITEM, to_insert, user, override, force)
+	return TRUE
+
+/**
+ * Check to see if items can be added/removed.
+ *
+ * @param mob/living/user an optional user
+ * @param force will bypass most checks
+ * @param silent will surpress feedback messages
+ */
+/datum/storage/proc/can_manipulate_contents(mob/living/user, force, silent)
+	if(force)
+		return TRUE
+	if(locked)
+		return FALSE
+
+	if(isitem(parent))
+		var/obj/item/item_loc = parent
+		if(item_loc.item_flags & IN_STORAGE)
+			if(!silent && user)
+				to_chat(user, span_warning("You cannot manipulate an object inside of [parent] while it is within another object."))
+			return FALSE
+
 	return TRUE
 
 /// Checks if the item is allowed into storage based on it's weight class
@@ -473,7 +519,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		return
 
 	if(rustle_sound)
-		playsound(parent, SFX_RUSTLE, 50, TRUE, -5)
+		playsound(parent, rustle_sound, 50, TRUE, -5)
 
 	to_chat(user, span_notice("You put [thing] [insert_preposition]to [parent]."))
 
@@ -487,19 +533,24 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * @param obj/item/thing the object we're removing
  * @param atom/newLoc where we're placing the item
  * @param silent if TRUE, we won't play any exit sounds
+ * @param user the mob performing the action
  */
-/datum/storage/proc/attempt_remove(obj/item/thing, atom/newLoc, silent = FALSE)
+/datum/storage/proc/attempt_remove(obj/item/thing, atom/newLoc, silent = FALSE, mob/living/user)
+	SHOULD_NOT_SLEEP(TRUE)
+
+	if(!can_manipulate_contents(user, silent = silent))
+		return FALSE
 
 	if(istype(thing) && ismob(parent.loc))
 		var/mob/mobparent = parent.loc
-		thing.dropped(mobparent, TRUE)
+		thing.unequipped(mobparent, TRUE)
 
 	if(newLoc)
 		reset_item(thing)
 		thing.forceMove(newLoc)
 
 		if(rustle_sound && !silent)
-			playsound(parent, SFX_RUSTLE, 50, TRUE, -5)
+			playsound(parent, rustle_sound, 50, TRUE, -5)
 	else
 		thing.moveToNullspace()
 
@@ -543,7 +594,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  */
 /datum/storage/proc/remove_type(type, atom/destination, amount = INFINITY, check_adjacent = FALSE, force = FALSE, mob/user, list/inserted)
 	// Make sure whoever is reaching, can reach.
-	if(!force && check_adjacent && (!user || !user.CanReach(destination) || !user.CanReach(real_location)))
+	if(!force && check_adjacent && (!user || !destination.IsReachableBy(user) || !can_be_reached_by(user)))
 		return FALSE
 
 	var/list/taking = typecache_filter_list(real_location.contents, typecacheof(type))
@@ -688,7 +739,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	if(locked || (dest_object == parent))
 		return
 
-	if(!user.CanReach(parent) || !user.CanReach(dest_object))
+	if(!can_be_reached_by(user) || !dest_object.IsReachableBy(user))
 		return
 
 	if(SEND_SIGNAL(dest_object, COMSIG_STORAGE_DUMP_CONTENT, real_location, user) & STORAGE_DUMP_HANDLED)
@@ -699,7 +750,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		to_chat(user, span_notice("You dump the contents of [parent] into [dest_object]."))
 
 		if(rustle_sound)
-			playsound(parent, SFX_RUSTLE, 50, TRUE, -5)
+			playsound(parent, rustle_sound, 50, TRUE, -5)
 
 		for(var/obj/item/to_dump in real_location)
 			dest_object.atom_storage.attempt_insert(to_dump, user)
@@ -717,6 +768,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		return
 
 	remove_all(dump_loc)
+
+/datum/storage/proc/is_reachable(mob/user)
+	return parent.IsReachableBy(user)
 
 /// Signal handler for whenever something gets mouse-dropped onto us.
 /datum/storage/proc/on_mousedropped_onto(datum/source, obj/item/dropping, mob/user)
@@ -839,7 +893,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		for(var/obj/item/item in contents_for_display())
 			item.mouse_opacity = MOUSE_OPACITY_OPAQUE
 			item.screen_loc = "[current_x]:[screen_pixel_x],[current_y]:[screen_pixel_y]"
-			item.maptext = ""
+			if(numerical_stacking)
+				item.maptext = ""
 			item.plane = ABOVE_HUD_PLANE
 
 			current_x++
@@ -872,7 +927,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	return COMPONENT_NO_AFTERATTACK
 
 /// Opens the storage to the mob, showing them the contents to their UI.
-/datum/storage/proc/open_storage(mob/to_show, performing_quickdraw)
+/datum/storage/proc/open_storage(mob/to_show, performing_quickdraw, skip_canreach = FALSE)
 	if(isobserver(to_show))
 		if(to_show.active_storage == src)
 			hide_contents(to_show)
@@ -880,7 +935,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 			show_contents(to_show)
 		return FALSE
 
-	if(!to_show.CanReach(parent))
+	if(!skip_canreach && !can_be_reached_by(to_show))
 		to_chat(to_show, span_warning("You cannot reach [parent]."))
 		return FALSE
 
@@ -898,8 +953,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		if(animated)
 			animate_parent()
 
-		if(rustle_sound)
-			playsound(parent, SFX_RUSTLE, 50, TRUE, -5)
+		if(open_sound)
+			playsound(parent, open_sound, 50, TRUE, -5)
 
 		return TRUE
 
@@ -928,12 +983,12 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 			to_chat(toshow, span_notice("You fumble for [toremove] and it falls on the floor."))
 		return TRUE
 
-/// Signal handler for whenever a mob walks away with us, close if they can't reach us.
-/datum/storage/proc/close_distance(datum/source)
+/// Close the storage for people who can no longer see it.
+/datum/storage/proc/update_viewability(datum/source)
 	SIGNAL_HANDLER
 
 	for(var/mob/user in can_see_contents())
-		if (!user.CanReach(parent))
+		if (!can_be_reached_by(user))
 			hide_contents(user)
 
 /// Close the storage UI for everyone viewing us.
@@ -1008,6 +1063,13 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	toshow.client.screen -= boxes
 	toshow.client.screen -= closer
 	toshow.client.screen -= real_location.contents
+
+	if(!length(is_using) && close_sound)
+		playsound(parent, close_sound, 50, TRUE, -5)
+
+/// Relay for parent.IsReachableBy
+/datum/storage/proc/can_be_reached_by(mob/user)
+	return parent.IsReachableBy(user)
 
 /datum/storage/proc/action_trigger(datum/signal_source, datum/action/source)
 	SIGNAL_HANDLER

@@ -147,8 +147,8 @@
 	var/species_color = ""
 	///Limbs need this information as a back-up incase they are generated outside of a carbon (limbgrower)
 	var/should_draw_greyscale = TRUE
-	///An "override" color that can be applied to ANY limb, greyscale or not.
-	var/variable_color = ""
+	/// An assoc list of priority (as a string because byond) -> color, used to override draw_color.
+	var/list/color_overrides
 
 	///whether it can be dismembered with a weapon.
 	var/dismemberable = 1
@@ -194,7 +194,9 @@
 	var/generic_bleedstacks
 
 	/// If something is currently supporting this limb as a splint
-	var/obj/item/splint
+	var/obj/item/stack/splint
+	/// Timer ID for splint heal.
+	var/splint_heal_timer
 	/// The bandage that may-or-may-not be absorbing our blood
 	var/obj/item/stack/bandage
 
@@ -235,7 +237,7 @@
 		grind_results = null
 
 	name = "[limb_id] [parse_zone(body_zone)]"
-	update_icon_dropped()
+	update_icon_dropped(update_limb = FALSE)
 	refresh_bleed_rate()
 
 /obj/item/bodypart/Destroy()
@@ -266,117 +268,6 @@
 	if(owner && loc != owner)
 		drop_limb(FALSE, TRUE)
 		stack_trace("Bodypart moved while it still had an owner")
-
-/obj/item/bodypart/examine(mob/user)
-	SHOULD_CALL_PARENT(TRUE)
-	. = ..()
-	. += mob_examine()
-
-/obj/item/bodypart/proc/mob_examine(hallucinating, covered, just_wounds_please)
-	. = list()
-
-	if(covered)
-		for(var/obj/item/I in embedded_objects)
-			if(I.isEmbedHarmless())
-				. += "<a href='?src=[REF(src)];embedded_object=[REF(I)]' class='danger'>There is \a [I] stuck to [owner.p_their()] [plaintext_zone]!</a>"
-			else
-				. += "<a href='?src=[REF(src)];embedded_object=[REF(I)]' class='danger'>There is \a [I] embedded in [owner.p_their()] [plaintext_zone]!</a>"
-
-		if(splint && istype(splint, /obj/item/stack))
-			. += span_notice("\t <a href='?src=[REF(src)];splint_remove=1' class='notice'>[owner.p_their(TRUE)] [plaintext_zone] is splinted with [splint].</a>")
-
-		if(bandage)
-			. += span_notice("\t <a href='?src=[REF(src)];bandage_remove=1' class='[bandage.absorption_capacity ? "notice" : "warning"]'>[owner.p_their(TRUE)] [plaintext_zone] is bandaged with [bandage][bandage.absorption_capacity ? "." : ", blood is trickling out."]</a>")
-		return
-
-	if(hallucinating == SCREWYHUD_HEALTHY)
-		return
-
-	if(hallucinating == SCREWYHUD_CRIT)
-		var/list/flavor_text = list("a")
-		flavor_text += pick(" pair of ", " ton of ", " several ")
-		flavor_text += pick("large cuts", "severe burns")
-		. += "[owner.p_they(TRUE)] [owner.p_have()] [english_list(flavor_text)] on [owner.p_their()] [plaintext_zone]."
-		return
-
-	var/list/flavor_text = list()
-	if((bodypart_flags & BP_CUT_AWAY) && !is_stump)
-		flavor_text += "a tear at the [amputation_point] so severe that it hangs by a scrap of flesh"
-
-	if(!IS_ORGANIC_LIMB(src))
-		if(brute_dam)
-			switch(brute_dam)
-				if(0 to 20)
-					flavor_text += "some dents"
-				if(21 to INFINITY)
-					flavor_text += pick("a lot of dents","severe denting")
-		if(burn_dam)
-			switch(burn_dam)
-				if(0 to 20)
-					flavor_text += "some burns"
-				if(21 to INFINITY)
-					flavor_text += pick("a lot of burns","severe melting")
-	else
-		var/list/wound_descriptors = list()
-		for(var/datum/wound/W as anything in wounds)
-			var/descriptor = W.get_examine_desc()
-			if(descriptor)
-				wound_descriptors[descriptor] += W.amount
-
-		if(how_open() >= SURGERY_RETRACTED)
-			var/bone = encased ? encased : "bone"
-			if(bodypart_flags & BP_BROKEN_BONES)
-				bone = "broken [bone]"
-			wound_descriptors["[bone] exposed"] = 1
-
-			if(!encased || how_open() >= SURGERY_DEENCASED)
-				var/list/bits = list()
-				for(var/obj/item/organ/organ in contained_organs)
-					if(organ.cosmetic_only)
-						continue
-					bits += organ.get_visible_state()
-
-				for(var/obj/item/implant in cavity_items)
-					bits += implant.name
-				if(length(bits))
-					wound_descriptors["[english_list(bits)] visible in the wounds"] = 1
-
-		for(var/wound in wound_descriptors)
-			switch(wound_descriptors[wound])
-				if(1)
-					flavor_text += "a [wound]"
-				if(2)
-					flavor_text += "a pair of [wound]s"
-				if(3 to 5)
-					flavor_text += "several [wound]s"
-				if(6 to INFINITY)
-					flavor_text += "a ton of [wound]\s"
-
-	if(just_wounds_please)
-		return english_list(flavor_text)
-
-	if(owner)
-		if(current_damage)
-			. += "[owner.p_they(TRUE)] [owner.p_have()] [english_list(flavor_text)] on [owner.p_their()] [plaintext_zone]."
-
-		for(var/obj/item/I in embedded_objects)
-			if(I.isEmbedHarmless())
-				. += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)]' class='warning'>There is \a [I] stuck to [owner.p_their()] [plaintext_zone]!</a>"
-			else
-				. += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)]' class='warning'>There is \a [I] embedded in [owner.p_their()] [plaintext_zone]!</a>"
-
-		if(splint && istype(splint, /obj/item/stack))
-			. += span_notice("\t <a href='?src=[REF(src)];splint_remove=1' class='warning'>[owner.p_their(TRUE)] [plaintext_zone] is splinted with [splint].</a>")
-		if(bandage)
-			. += span_notice("\n\t <a href='?src=[REF(src)];bandage_remove=1' class='notice'>[owner.p_their(TRUE)] [plaintext_zone] is bandaged with [bandage][bandage.absorption_capacity ? "." : ", <span class='warning'>it is no longer absorbing blood</span>."]</a>")
-		return
-
-	else
-		if(current_damage)
-			. += "It has [english_list(flavor_text)]."
-		if(bodypart_flags & BP_BROKEN_BONES)
-			. += span_warning("It is dented and swollen.")
-		return
 
 /obj/item/bodypart/blob_act()
 	receive_damage(max_damage)
@@ -479,47 +370,35 @@
 /obj/item/bodypart/proc/on_life(delta_time, times_fired, stam_heal)
 	SHOULD_CALL_PARENT(TRUE)
 	if(owner.stat != DEAD)
-		. |= wound_life()
+		. |= wound_life(delta_time)
 		if(temporary_pain)
 			temporary_pain = owner.body_position == LYING_DOWN ? max(0, temporary_pain - 3) : max(0, temporary_pain - 1)
 			. |= BODYPART_LIFE_UPDATE_HEALTH_HUD
+
 	. |= update_germs()
 
-/obj/item/bodypart/proc/wound_life()
+/obj/item/bodypart/proc/wound_life(delta_time)
 	if(!LAZYLEN(wounds))
 		return
 
 	if(!IS_ORGANIC_LIMB(src)) //Robotic limbs don't heal or get worse.
 		for(var/datum/wound/W as anything in wounds) //Repaired wounds disappear though
-			if(W.damage <= 0)  //and they disappear right away
+			if(W.damage <= 0)
 				qdel(W)
 		return
 
 	for(var/datum/wound/W as anything in wounds)
 		// wounds can disappear after 10 minutes at the earliest
-		if(W.damage <= 0 && W.created + (10 MINUTES) <= world.time)
+		if(W.damage <= 0 && (W.scar_expiration <= world.time))
 			qdel(W)
-			stack_trace("Wound with zero health collected")
 			continue
-			// let the GC handle the deletion of the wound
 
-		// slow healing
-		var/heal_amt = 0
 		// if damage >= 50 AFTER treatment then it's probably too severe to heal within the timeframe of a round.
-		if ( W.can_autoheal() && W.wound_damage() && brute_ratio < 0.5 && burn_ratio < 0.5)
-			heal_amt += 0.5
+		if (brute_ratio < 0.5 && burn_ratio < 0.5 && W.wound_damage() && W.can_autoheal())
+			var/dam_type = W.wound_type == WOUND_BURN ? BURN : BRUTE
+			if(owner.can_autoheal(dam_type))
+				W.heal_damage(WOUND_AUTOHEAL_RATE * delta_time)
 
-		//configurable regen speed woo, no-regen hardcore or instaheal hugbox, choose your destiny
-		heal_amt = heal_amt * WOUND_REGENERATION_MODIFIER
-		// amount of healing is spread over all the wounds
-		heal_amt = heal_amt / (LAZYLEN(wounds) + 1)
-		// making it look prettier on scanners
-		heal_amt = round(heal_amt,0.1)
-		var/dam_type = BRUTE
-		if (W.wound_type == WOUND_BURN)
-			dam_type = BURN
-		if(owner.can_autoheal(dam_type))
-			W.heal_damage(heal_amt)
 
 	// sync the bodypart's damage with its wounds
 	return update_damage()
@@ -530,7 +409,7 @@
 //Applies brute and burn damage to the organ. Returns 1 if the damage-icon states changed at all.
 //Damage will not exceed max_damage using this proc
 //Cannot apply negative damage
-/obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, blocked = 0, updating_health = TRUE, required_status = null, sharpness = NONE, modifiers = DEFAULT_DAMAGE_FLAGS)
+/obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, blocked = 0, updating_health = TRUE, required_status = null, sharpness = NONE, modifiers = DEFAULT_DAMAGE_FLAGS, obj/item/weapon_used = null)
 	SHOULD_CALL_PARENT(TRUE)
 	var/hit_percent = (100-blocked)/100
 	if((!brute && !burn) || hit_percent <= 0)
@@ -548,6 +427,15 @@
 
 	if(!brute && !burn)
 		return FALSE
+
+	var/cause_of_death
+	if(brute)
+		if(sharpness == NONE)
+			cause_of_death = "Blunt force trauma"
+		else
+			cause_of_death = "Laceration"
+	else
+		cause_of_death = "Third-degree burn"
 
 	if(bodytype & (BODYTYPE_ALIEN|BODYTYPE_LARVA_PLACEHOLDER)) //aliens take double burn //nothing can burn with so much snowflake code around
 		burn *= 2
@@ -599,9 +487,11 @@
 	/*
 	// START WOUND HANDLING
 	*/
+
 	// If the limbs can break, make sure we don't exceed the maximum damage a limb can take before breaking
-	var/block_cut = (pure_brute < 10) || !IS_ORGANIC_LIMB(src)
+	var/block_cut = (pure_brute < 6) || !IS_ORGANIC_LIMB(src)
 	var/can_cut = !block_cut && ((sharpness) || prob(brute))
+
 	if(brute)
 		var/to_create = WOUND_BRUISE
 		if(can_cut)
@@ -616,8 +506,7 @@
 
 	//Initial pain spike
 	if(owner)
-		var/pain_reduction = CHEM_EFFECT_MAGNITUDE(owner, CE_PAINKILLER) / length(owner.bodyparts)
-		owner?.notify_pain(getPain() - pain_reduction)
+		owner.apply_pain(0.2 * burn + 0.1 * brute, src, updating_health = FALSE)
 
 	if(owner && total > 15 && prob(total*4) && !(bodypart_flags & BP_NO_PAIN))
 		owner.bloodstream.add_reagent(/datum/reagent/medicine/epinephrine, round(total/10))
@@ -655,7 +544,7 @@
 	if(owner)
 		update_disabled()
 		if(updating_health)
-			owner.updatehealth()
+			owner.updatehealth(cause_of_death = cause_of_death)
 			if(. & BODYPART_LIFE_UPDATE_DAMAGE_OVERLAYS)
 				owner.update_damage_overlays()
 	return .
@@ -698,7 +587,6 @@
 	if(encased && !(bodypart_flags & BP_BROKEN_BONES)) //ribs protect
 		organ_hit_chance *= 0.6
 
-	organ_hit_chance = min(organ_hit_chance, 100)
 	if(prob(organ_hit_chance))
 		var/obj/item/organ/victim = pick_weight(victims)
 		damage *= victim.external_damage_modifier
@@ -771,7 +659,7 @@
 
 	//update damage counts
 	for(var/datum/wound/W as anything in wounds)
-		if(W.damage <= 0)
+		if(W.damage <= 0 && (W.scar_expiration <= world.time))
 			qdel(W)
 			continue
 
@@ -793,8 +681,8 @@
 	brute_ratio = brute_dam / (limb_loss_threshold * 2)
 	burn_ratio = burn_dam / (limb_loss_threshold * 2)
 
-	var/tbrute = min(round( (brute_dam/max_damage)*3, 1 ), 3)
-	var/tburn = min(round( (burn_dam/max_damage)*3, 1 ), 3)
+	var/tbrute = min(round((brute_dam/max_damage) * 3, 1), 3)
+	var/tburn = min(round((burn_dam/max_damage) * 3, 1), 3)
 	if((tbrute != brutestate) || (tburn != burnstate))
 		brutestate = tbrute
 		burnstate = tburn
@@ -1103,7 +991,7 @@
 		if(coag_level > 0)
 			bleed_rate *= 1 + coag_level
 		else
-			bleed_rate *= 0.5 / coag_level
+			bleed_rate *= 0.5 / -coag_level
 
 	return bleed_rate
 
@@ -1174,43 +1062,6 @@
 /obj/item/bodypart/proc/bandage_gone(obj/item/stack/bandage)
 	SIGNAL_HANDLER
 	remove_bandage()
-
-/obj/item/bodypart/proc/apply_splint(obj/item/splint)
-	if(src.splint)
-		return FALSE
-
-	src.splint = splint
-	if(istype(splint, /obj/item/stack))
-		splint.forceMove(src)
-
-	update_interaction_speed()
-	RegisterSignal(splint, COMSIG_PARENT_QDELETING, PROC_REF(splint_gone))
-	SEND_SIGNAL(src, COMSIG_LIMB_SPLINTED, splint)
-	return TRUE
-
-/obj/item/bodypart/leg/apply_splint(obj/item/splint)
-	. = ..()
-	if(!.)
-		return
-	owner.apply_status_effect(/datum/status_effect/limp)
-
-/obj/item/bodypart/proc/remove_splint()
-	if(!splint)
-		return FALSE
-
-	. = splint
-
-	UnregisterSignal(splint, COMSIG_PARENT_QDELETING)
-	if(splint.loc == src)
-		splint.forceMove(drop_location())
-
-	splint = null
-	update_interaction_speed()
-	SEND_SIGNAL(src, COMSIG_LIMB_UNSPLINTED, splint)
-
-/obj/item/bodypart/proc/splint_gone(obj/item/source)
-	SIGNAL_HANDLER
-	remove_splint()
 
 /obj/item/bodypart/drop_location()
 	if(owner)
@@ -1445,7 +1296,10 @@
 
 	user.visible_message(span_notice("[user] starts inspecting [owner]'s [plaintext_zone] carefully."))
 	if(LAZYLEN(wounds))
-		to_chat(user, span_warning("You find [mob_examine(just_wounds_please = TRUE)]."))
+		to_chat(user, span_warning("You find the following:"))
+		for(var/wound_desc in get_wound_descriptions())
+			to_chat(user, wound_desc)
+
 		var/list/stuff = list()
 		for(var/datum/wound/wound as anything in wounds)
 			if(LAZYLEN(wound.embedded_objects))
@@ -1505,3 +1359,7 @@
 
 	for(var/trait in bodypart_traits)
 		REMOVE_TRAIT(target, trait, bodypart_trait_source)
+
+/// Returns TRUE if this limb can be affected by jaundice.
+/obj/item/bodypart/proc/can_be_jaundiced()
+	return IS_ORGANIC_LIMB(src) && skin_tone

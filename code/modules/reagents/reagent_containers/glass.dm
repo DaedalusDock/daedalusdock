@@ -43,10 +43,10 @@
 			var/mob/living/carbon/carbon_drinker = M
 			var/list/diseases = carbon_drinker.get_static_viruses()
 			if(LAZYLEN(diseases))
-				var/list/datum/disease/diseases_to_add = list()
+				var/list/datum/pathogen/diseases_to_add = list()
 				for(var/d in diseases)
-					var/datum/disease/malady = d
-					if(malady.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+					var/datum/pathogen/malady = d
+					if(malady.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
 						diseases_to_add += malady
 				if(LAZYLEN(diseases_to_add))
 					AddComponent(/datum/component/infective, diseases_to_add)
@@ -314,7 +314,7 @@
 			reagents.clear_reagents()
 		reagents.flags = NONE
 
-/obj/item/reagent_containers/glass/bucket/dropped(mob/user)
+/obj/item/reagent_containers/glass/bucket/unequipped(mob/user)
 	. = ..()
 	reagents.flags = initial(reagent_flags)
 
@@ -364,15 +364,14 @@
 			if((do_after(user, src, 25)) && grinded)
 				user.stamina.adjust(-40)
 				if(grinded.juice_results) //prioritize juicing
-					grinded.on_juice()
+					grinded.juice(reagents)
 					reagents.add_reagent_list(grinded.juice_results)
 					to_chat(user, span_notice("You juice [grinded] into a fine liquid."))
 					QDEL_NULL(grinded)
 					return
-				grinded.on_grind()
-				reagents.add_reagent_list(grinded.grind_results)
-				if(grinded.reagents) //food and pills
-					grinded.reagents.trans_to(src, grinded.reagents.total_volume, transfered_by = user)
+
+				grinded.grind(reagents)
+
 				to_chat(user, span_notice("You break [grinded] into powder."))
 				QDEL_NULL(grinded)
 				return
@@ -388,3 +387,39 @@
 		grinded = I
 		return
 	to_chat(user, span_warning("You can't grind this!"))
+
+//TRUE MUGS for REAL MUG FANS !!!
+/obj/item/reagent_containers/glass/mug
+	name = "mug"
+	desc = "A generic porcelain mug, ready to hold your warm beverage."
+	icon = 'icons/obj/drinks.dmi'
+	icon_state = "tea_empty"
+	inhand_icon_state = "coffee"
+	fill_icon_state = "mug"
+	fill_icon_thresholds = list(0, 40, 80, 100)
+	volume = 30
+
+/obj/item/reagent_containers/glass/mug/Initialize(mapload)
+	. = ..()
+	update_appearance()
+
+/obj/item/reagent_containers/glass/mug/tea
+	name = "Duke Purple tea"
+	list_reagents = list(/datum/reagent/consumable/tea = 30)
+
+/obj/item/reagent_containers/glass/mug/coco
+	name = "Duke Purple tea"
+	list_reagents = list(/datum/reagent/consumable/hot_coco = 15, /datum/reagent/consumable/sugar = 5)
+
+/obj/item/reagent_containers/glass/mug/brit
+	name = "mug"
+	desc = "A mug with the british flag emblazoned on it."
+	icon = 'icons/obj/drinks.dmi'
+	icon_state = "britcup"
+
+/obj/item/reagent_containers/glass/mug/beagle
+	name = "beagle mug"
+	desc = "A mug, shaped like the head of a claymation beagle. What will they think of next?"
+	icon = 'icons/obj/drinks.dmi'
+	icon_state = "beaglemug"
+	fill_icon_state = null //it's not the right perspective to see inside. Don't blame me, we stole the sprite from baystation!

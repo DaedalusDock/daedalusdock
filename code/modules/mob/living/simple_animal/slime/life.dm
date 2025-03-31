@@ -177,7 +177,7 @@
 	if(iscarbon(M))
 		var/mob/living/carbon/C = M
 		C.adjustCloneLoss(rand(2, 4) * 0.5 * delta_time)
-		C.adjustToxLoss(rand(1, 2) * 0.5 * delta_time)
+		C.adjustToxLoss(rand(1, 2) * 0.5 * delta_time, cause_of_death = name)
 
 		if(DT_PROB(5, delta_time) && C.client)
 			to_chat(C, "<span class='userdanger'>[pick("You can feel your body becoming weak!", \

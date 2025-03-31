@@ -23,7 +23,7 @@
 /datum/data/vending_product
 	name = "generic"
 	///Typepath of the product that is created when this record "sells"
-	var/product_path = null
+	var/atom/movable/product_path = null
 	///How many of this product we currently have
 	var/amount = 0
 	///How many we can store at maximum
@@ -142,9 +142,9 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
 	///Bills we accept?
 	var/obj/item/stack/spacecash/bill
 	///Default price of items if not overridden
-	var/default_price = 25
-	///Default price of premium items if not overridden
-	var/extra_price = 50
+	var/default_price = PAYCHECK_ASSISTANT * 0.4
+	/// Default price ADDED to the default price of premium items if they don't have one set.
+	var/extra_price = PAYCHECK_ASSISTANT * 1.5
 	///Whether our age check is currently functional
 	var/age_restrictions = TRUE
 	/**
@@ -275,7 +275,7 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
 	if(panel_open)
 		. += panel_type
 	if(light_mask && !(machine_stat & BROKEN) && powered())
-		. += emissive_appearance(icon, light_mask)
+		. += emissive_appearance(icon, light_mask, alpha = 90)
 
 /obj/machinery/vending/atom_break(damage_flag)
 	. = ..()
@@ -632,7 +632,6 @@ GLOBAL_LIST_EMPTY(vending_products)
 			. = TRUE
 			playsound(L, 'sound/effects/blobattack.ogg', 40, TRUE)
 			playsound(L, 'sound/effects/splat.ogg', 50, TRUE)
-			add_memory_in_range(L, 7, MEMORY_VENDING_CRUSHED, list(DETAIL_PROTAGONIST = L, DETAIL_WHAT_BY = src), story_value = STORY_VALUE_AMAZING, memory_flags = MEMORY_CHECK_BLINDNESS, protagonist_memory_flags = MEMORY_SKIP_UNCONSCIOUS)
 
 	var/matrix/M = matrix()
 	M.Turn(pick(90, 270))
@@ -754,10 +753,10 @@ GLOBAL_LIST_EMPTY(vending_products)
 	if (!Adjacent(user, src))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-/obj/machinery/vending/ui_assets(mob/user)
-	return list(
-		get_asset_datum(/datum/asset/spritesheet/vending),
-	)
+// /obj/machinery/vending/ui_assets(mob/user)
+// 	return list(
+// 		get_asset_datum(/datum/asset/spritesheet/vending),
+// 	)
 
 /obj/machinery/vending/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -777,7 +776,9 @@ GLOBAL_LIST_EMPTY(vending_products)
 			name = R.name,
 			price = R.custom_price || default_price,
 			max_amount = R.max_amount,
-			ref = REF(R)
+			ref = REF(R),
+			icon = initial(R.product_path.icon),
+			icon_state = initial(R.product_path.icon_state)
 		)
 		.["product_records"] += list(data)
 	.["coin_records"] = list()
@@ -788,7 +789,9 @@ GLOBAL_LIST_EMPTY(vending_products)
 			price = R.custom_premium_price || extra_price,
 			max_amount = R.max_amount,
 			ref = REF(R),
-			premium = TRUE
+			premium = TRUE,
+			icon = initial(R.product_path.icon),
+			icon_state = initial(R.product_path.icon_state)
 		)
 		.["coin_records"] += list(data)
 	.["hidden_records"] = list()
@@ -799,7 +802,9 @@ GLOBAL_LIST_EMPTY(vending_products)
 			price = R.custom_premium_price || extra_price,
 			max_amount = R.max_amount,
 			ref = REF(R),
-			premium = TRUE
+			premium = TRUE,
+			icon = initial(R.product_path.icon),
+			icon_state = initial(R.product_path.icon_state)
 		)
 		.["hidden_records"] += list(data)
 
@@ -969,6 +974,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 			SSblackbox.record_feedback("amount", "vending_spent", price_to_use)
 			SSeconomy.track_purchase(account, price_to_use, name)
 			log_econ("[price_to_use] credits were inserted into [src] by [account.account_holder] to buy [R].")
+
 	if(last_shopper != REF(usr) || purchase_message_cooldown < world.time)
 		say("Thank you for shopping with [src]!")
 		purchase_message_cooldown = world.time + 5 SECONDS
@@ -988,7 +994,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 	if(greyscale_colors)
 		vended_item.set_greyscale(colors=greyscale_colors)
 	R.amount--
-	if(usr.CanReach(src) && usr.put_in_hands(vended_item))
+	if(IsReachableBy(usr) && usr.put_in_hands(vended_item))
 		to_chat(usr, span_notice("You take [R.name] out of the slot."))
 	else
 		to_chat(usr, span_warning("[capitalize(R.name)] falls onto the floor!"))
@@ -1290,7 +1296,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 	loaded_items--
 	use_power(active_power_usage)
 	vending_machine_input[choice] = max(vending_machine_input[choice] - 1, 0)
-	if(user.CanReach(src) && user.put_in_hands(dispensed_item))
+	if(IsReachableBy(user) && user.put_in_hands(dispensed_item))
 		to_chat(user, span_notice("You take [dispensed_item.name] out of the slot."))
 	else
 		to_chat(user, span_warning("[capitalize(dispensed_item.name)] falls onto the floor!"))

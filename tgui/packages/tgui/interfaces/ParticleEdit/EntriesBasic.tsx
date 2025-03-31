@@ -1,11 +1,33 @@
 import { useBackend, useLocalState } from '../../backend';
-import { Box, Button, LabeledList, NumberInput, ColorBox, Input, Dropdown, Stack } from '../../components';
-import { EntryCoordProps, EntryFloatProps, EntryGradientProps, EntryIconStateProps, EntryTransformProps, MatrixTypes, ParticleUIData, P_DATA_ICON_ADD, P_DATA_ICON_REMOVE, P_DATA_ICON_WEIGHT, SpaceToNum, SpaceTypes } from './data';
+import {
+  Box,
+  Button,
+  ColorBox,
+  Dropdown,
+  Input,
+  LabeledList,
+  NumberInput,
+  Stack,
+} from '../../components';
+import {
+  EntryCoordProps,
+  EntryFloatProps,
+  EntryGradientProps,
+  EntryIconStateProps,
+  EntryTransformProps,
+  MatrixTypes,
+  P_DATA_ICON_ADD,
+  P_DATA_ICON_REMOVE,
+  P_DATA_ICON_WEIGHT,
+  ParticleUIData,
+  SpaceToNum,
+  SpaceTypes,
+} from './data';
 import { editKeyOf, editWeightOf, setGradientSpace } from './helpers';
 
-export const EntryFloat = (props: EntryFloatProps, context) => {
-  const { act, data } = useBackend<ParticleUIData>(context);
-  const [desc, setdesc] = useLocalState(context, 'desc', '');
+export const EntryFloat = (props: EntryFloatProps) => {
+  const { act, data } = useBackend<ParticleUIData>();
+  const [desc, setdesc] = useLocalState('desc', '');
   const { name, var_name, float } = props;
   return (
     <LabeledList.Item label={name}>
@@ -17,20 +39,23 @@ export const EntryFloat = (props: EntryFloatProps, context) => {
       <NumberInput
         animated
         value={float}
+        step={1}
         minValue={0}
-        onDrag={(e, value) =>
+        maxValue={Infinity}
+        onDrag={(value) =>
           act('edit', {
             var: var_name,
             new_value: value,
-          })}
+          })
+        }
       />
     </LabeledList.Item>
   );
 };
 
-export const EntryCoord = (props: EntryCoordProps, context) => {
-  const { act, data } = useBackend<ParticleUIData>(context);
-  const [desc, setdesc] = useLocalState(context, 'desc', '');
+export const EntryCoord = (props: EntryCoordProps) => {
+  const { act, data } = useBackend<ParticleUIData>();
+  const [desc, setdesc] = useLocalState('desc', '');
   const { name, var_name, coord } = props;
   return (
     <LabeledList.Item label={name}>
@@ -41,44 +66,56 @@ export const EntryCoord = (props: EntryCoordProps, context) => {
       />
       <NumberInput
         animated
-        value={coord?.[0]}
-        onDrag={(e, value) =>
+        step={1}
+        minValue={-Infinity}
+        maxValue={Infinity}
+        value={coord?.[0] || 0}
+        onDrag={(value) =>
           act('edit', {
             var: var_name,
             new_value: [value, coord?.[1], coord?.[2]],
-          })}
+          })
+        }
       />
       <NumberInput
         animated
-        value={coord?.[1]}
-        onDrag={(e, value) =>
+        step={1}
+        minValue={-Infinity}
+        maxValue={Infinity}
+        value={coord?.[1] || 0}
+        onDrag={(value) =>
           act('edit', {
             var: var_name,
             new_value: [coord?.[0], value, coord?.[2]],
-          })}
+          })
+        }
       />
       <NumberInput
         animated
-        value={coord?.[2]}
-        onDrag={(e, value) =>
+        step={1}
+        minValue={-Infinity}
+        maxValue={Infinity}
+        value={coord?.[2] || 0}
+        onDrag={(value) =>
           act('edit', {
             var: var_name,
             new_value: [coord?.[0], coord?.[1], value],
-          })}
+          })
+        }
       />
     </LabeledList.Item>
   );
 };
 
-export const EntryGradient = (props: EntryGradientProps, context) => {
-  const { act, data } = useBackend<ParticleUIData>(context);
-  const [desc, setdesc] = useLocalState(context, 'desc', '');
+export const EntryGradient = (props: EntryGradientProps) => {
+  const { act, data } = useBackend<ParticleUIData>();
+  const [desc, setdesc] = useLocalState('desc', '');
   const { name, var_name, gradient } = props;
   const isLooping = gradient?.find((x) => x === 'loop');
   const space_type = gradient?.includes('space')
     ? Object.keys(SpaceToNum).find(
-      (space) => SpaceToNum[space] === gradient['space']
-    )
+        (space) => SpaceToNum[space] === gradient['space'],
+      )
     : 'COLORSPACE_RGB';
   return (
     <LabeledList.Item label={name}>
@@ -101,7 +138,8 @@ export const EntryGradient = (props: EntryGradientProps, context) => {
                 new_value: isLooping
                   ? gradient!.filter((x, i) => i !== gradient!.indexOf('loop'))
                   : [...(gradient || []), 'loop'],
-              })}
+              })
+            }
           />
         </Stack.Item>
         <Stack.Item>
@@ -113,8 +151,9 @@ export const EntryGradient = (props: EntryGradientProps, context) => {
                 var: var_name,
                 new_value: gradient
                   ? setGradientSpace(gradient, SpaceToNum[e])
-                  : { 'space': SpaceToNum[e] },
-              })}
+                  : { space: SpaceToNum[e] },
+              })
+            }
             width="145px"
           />
         </Stack.Item>
@@ -133,9 +172,10 @@ export const EntryGradient = (props: EntryGradientProps, context) => {
                     act('edit', {
                       var: var_name,
                       new_value: gradient!.map((x, i) =>
-                        i === index ? value : x
+                        i === index ? value : x,
                       ),
-                    })}
+                    })
+                  }
                 />
                 <Button
                   icon={'minus'}
@@ -144,10 +184,11 @@ export const EntryGradient = (props: EntryGradientProps, context) => {
                     act('edit', {
                       var: var_name,
                       new_value: gradient.filter((x, i) => i !== index),
-                    })}
+                    })
+                  }
                 />
               </>
-            )
+            ),
           )}
         </Stack.Item>
         <Stack.Item>
@@ -158,7 +199,8 @@ export const EntryGradient = (props: EntryGradientProps, context) => {
               act('edit', {
                 var: var_name,
                 new_value: [...(gradient || []), '#FFFFFF'],
-              })}
+              })
+            }
           />
         </Stack.Item>
       </Stack>
@@ -166,12 +208,12 @@ export const EntryGradient = (props: EntryGradientProps, context) => {
   );
 };
 
-export const EntryTransform = (props: EntryTransformProps, context) => {
-  const { act, data } = useBackend<ParticleUIData>(context);
-  const [desc, setdesc] = useLocalState(context, 'desc', '');
+export const EntryTransform = (props: EntryTransformProps) => {
+  const { act, data } = useBackend<ParticleUIData>();
+  const [desc, setdesc] = useLocalState('desc', '');
   const len = props.transform?.length ? props.transform.length : 0;
-  const selected
-    = len < 7
+  const selected =
+    len < 7
       ? 'Simple Matrix'
       : len < 13
         ? 'Complex Matrix'
@@ -201,14 +243,17 @@ export const EntryTransform = (props: EntryTransformProps, context) => {
               animated
               key={index}
               value={value}
+              step={1}
               minValue={0}
               maxValue={1}
-              onDrag={(e, value) =>
+              onDrag={(value) =>
                 act('edit', {
                   var: var_name,
                   new_value: transform!.map((x, i) =>
-                    i === index ? value : x
-                  ) })}
+                    i === index ? value : x,
+                  ),
+                })
+              }
             />
           ))}
         </Stack.Item>
@@ -217,9 +262,9 @@ export const EntryTransform = (props: EntryTransformProps, context) => {
   );
 };
 
-export const EntryIcon = (props: EntryIconStateProps, context) => {
-  const { act, data } = useBackend<ParticleUIData>(context);
-  const [desc, setdesc] = useLocalState(context, 'desc', '');
+export const EntryIcon = (props: EntryIconStateProps) => {
+  const { act, data } = useBackend<ParticleUIData>();
+  const [desc, setdesc] = useLocalState('desc', '');
   const { name, var_name, icon_state } = props;
   return (
     <LabeledList.Item label={name}>
@@ -242,13 +287,16 @@ export const EntryIcon = (props: EntryIconStateProps, context) => {
                 <NumberInput
                   animated
                   value={icon_state[icon_name]}
+                  step={1}
                   minValue={0}
-                  onDrag={(e, value) =>
+                  maxValue={Infinity}
+                  onDrag={(value) =>
                     act('edit', {
                       var: var_name,
                       var_mod: P_DATA_ICON_WEIGHT,
                       new_value: [icon_name, value],
-                    })}
+                    })
+                  }
                 />
               </Stack.Item>
               <Button
@@ -258,7 +306,8 @@ export const EntryIcon = (props: EntryIconStateProps, context) => {
                     var: var_name,
                     var_mod: P_DATA_ICON_REMOVE,
                     new_value: icon_name,
-                  })}
+                  })
+                }
               />
             </>
           ))
@@ -278,7 +327,8 @@ export const EntryIcon = (props: EntryIconStateProps, context) => {
               act('edit', {
                 var: var_name,
                 var_mod: P_DATA_ICON_ADD,
-              })}
+              })
+            }
           />
         </Stack.Item>
       </Stack>
@@ -286,14 +336,14 @@ export const EntryIcon = (props: EntryIconStateProps, context) => {
   );
 };
 
-export const EntryIconState = (props: EntryIconStateProps, context) => {
-  const { act, data } = useBackend<ParticleUIData>(context);
-  const [desc, setdesc] = useLocalState(context, 'desc', '');
+export const EntryIconState = (props: EntryIconStateProps) => {
+  const { act, data } = useBackend<ParticleUIData>();
+  const [desc, setdesc] = useLocalState('desc', '');
   const { name, var_name, icon_state } = props;
-  const newValue
-    = typeof icon_state === 'string'
-      ? { [icon_state]: 1, 'None': 0 }
-      : { ...icon_state, 'None': 0 };
+  const newValue =
+    typeof icon_state === 'string'
+      ? { [icon_state]: 1, None: 0 }
+      : { ...icon_state, None: 0 };
   return (
     <LabeledList.Item label={name}>
       <Stack>
@@ -317,7 +367,8 @@ export const EntryIconState = (props: EntryIconStateProps, context) => {
                     act('edit', {
                       var: var_name,
                       new_value: editKeyOf(icon_state, iconstate, value),
-                    })}
+                    })
+                  }
                 />
               </Stack.Item>
               <Stack.Item>
@@ -328,11 +379,14 @@ export const EntryIconState = (props: EntryIconStateProps, context) => {
                   animated
                   value={icon_state[iconstate]}
                   minValue={0}
-                  onDrag={(e, value) =>
+                  maxValue={Infinity}
+                  step={1}
+                  onDrag={(value) =>
                     act('edit', {
                       var: var_name,
                       new_value: editWeightOf(icon_state, iconstate, value),
-                    })}
+                    })
+                  }
                 />
               </Stack.Item>
               <Stack.Item>
@@ -343,10 +397,11 @@ export const EntryIconState = (props: EntryIconStateProps, context) => {
                       var: var_name,
                       new_value: Object.fromEntries(
                         Object.entries(icon_state).filter(
-                          ([key]) => key !== iconstate
-                        )
+                          ([key]) => key !== iconstate,
+                        ),
                       ),
-                    })}
+                    })
+                  }
                 />
               </Stack.Item>
             </>
@@ -359,7 +414,8 @@ export const EntryIconState = (props: EntryIconStateProps, context) => {
                 act('edit', {
                   var: var_name,
                   new_value: value,
-                })}
+                })
+              }
             />
             = 1
           </>
@@ -370,7 +426,8 @@ export const EntryIconState = (props: EntryIconStateProps, context) => {
             act('edit', {
               var: var_name,
               new_value: newValue,
-            })}
+            })
+          }
         />
       </Stack>
     </LabeledList.Item>

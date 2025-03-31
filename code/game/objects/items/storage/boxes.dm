@@ -31,6 +31,8 @@
 	resistance_flags = FLAMMABLE
 	drop_sound = 'sound/items/handling/cardboardbox_drop.ogg'
 	pickup_sound = 'sound/items/handling/cardboardbox_pickup.ogg'
+
+	storage_type = /datum/storage/box
 	var/foldable = /obj/item/stack/sheet/cardboard
 	var/illustration = "writing"
 
@@ -117,9 +119,7 @@
 	var/medipen_type = /obj/item/reagent_containers/hypospray/medipen
 
 /obj/item/storage/box/survival/PopulateContents()
-	if(isplasmaman(loc))
-		new /obj/item/tank/internals/plasmaman/belt(src)
-	else if(isvox(loc))
+	if(isvox(loc))
 		new /obj/item/tank/internals/nitrogen/belt/emergency(src)
 	else
 		new mask_type(src)
@@ -137,13 +137,7 @@
 	new /obj/item/radio/off(src)
 
 /obj/item/storage/box/survival/proc/wardrobe_removal()
-	if(isplasmaman(loc)) //We need to specially fill the box with plasmaman gear, since it's intended for one
-		var/obj/item/mask = locate(mask_type) in src
-		var/obj/item/internals = locate(internal_type) in src
-		new /obj/item/tank/internals/plasmaman/belt(src)
-		qdel(mask) // Get rid of the items that shouldn't be
-		qdel(internals)
-	else if(isvox(loc))
+	if(isvox(loc))
 		var/obj/item/mask = locate(mask_type) in src
 		var/obj/item/internals = locate(internal_type) in src
 		new /obj/item/tank/internals/nitrogen/belt/emergency(src)
@@ -211,11 +205,13 @@
 
 /obj/item/storage/box/syringes
 	name = "box of syringes"
-	desc = "A box full of syringes."
+	desc = "A box able to fit 9 syringes."
 	illustration = "syringe"
 
+	storage_type = /datum/storage/box/syringe
+
 /obj/item/storage/box/syringes/PopulateContents()
-	for(var/i in 1 to 7)
+	for(var/i in 1 to 9)
 		new /obj/item/reagent_containers/syringe(src)
 
 /obj/item/storage/box/syringes/variety
@@ -231,6 +227,8 @@
 	name = "box of medipens"
 	desc = "A box full of epinephrine MediPens."
 	illustration = "epipen"
+
+	storage_type = /datum/storage/box/syringe
 
 /obj/item/storage/box/medipens/PopulateContents()
 	for(var/i in 1 to 7)
@@ -710,7 +708,7 @@
 	slot_flags = ITEM_SLOT_BELT
 	drop_sound = 'sound/items/handling/matchbox_drop.ogg'
 	pickup_sound = 'sound/items/handling/matchbox_pickup.ogg'
-	custom_price = PAYCHECK_ASSISTANT * 0.4
+	custom_price = PAYCHECK_ASSISTANT * 0.3
 	base_icon_state = "matchbox"
 	illustration = null
 
@@ -842,10 +840,9 @@
 /obj/item/storage/box/hug/survival/PopulateContents()
 	new /obj/item/reagent_containers/hypospray/medipen(src)
 
-	if(isplasmaman(loc))
-		new /obj/item/tank/internals/plasmaman/belt(src)
-	else if(isvox(loc))
+	if(isvox(loc))
 		new /obj/item/tank/internals/nitrogen/belt/emergency(src)
+		new /obj/item/clothing/mask/breath(src)
 	else
 		new /obj/item/clothing/mask/breath(src)
 		new /obj/item/tank/internals/emergency_oxygen(src)
@@ -860,14 +857,15 @@
 	for Medical Officers who just take the box for themselves."
 
 	/// the plushies that aren't of things trying to kill you
-	var/list/static/approved_by_corporate = list(/obj/item/toy/plush/carpplushie, // well, maybe they can be something that tries to kill you a little bit
+	var/list/static/approved_by_corporate = list(
+		/obj/item/toy/plush/carpplushie, // well, maybe they can be something that tries to kill you a little bit
 		/obj/item/toy/plush/slimeplushie,
 		/obj/item/toy/plush/lizard_plushie,
 		/obj/item/toy/plush/snakeplushie,
-		/obj/item/toy/plush/plasmamanplushie,
 		/obj/item/toy/plush/beeplushie,
 		/obj/item/toy/plush/moth,
-		/obj/item/toy/plush/pkplush)
+		/obj/item/toy/plush/pkplush
+	)
 
 /obj/item/storage/box/hug/plushes/PopulateContents()
 	for(var/i in 1 to 7)
@@ -1199,7 +1197,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	illustration = null
 	foldable = null
-	custom_price = PAYCHECK_EASY
+	custom_price = PAYCHECK_ASSISTANT * 0.2
 
 /obj/item/storage/box/gum/Initialize()
 	. = ..()

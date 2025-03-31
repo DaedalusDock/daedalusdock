@@ -23,7 +23,6 @@
 
 	coldmod = 1.5
 	heatmod = 0.67
-	payday_modifier = 0.75
 	job_outfit_type = SPECIES_HUMAN
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	species_cookie = /obj/item/food/meat/slab
@@ -130,33 +129,13 @@
 		'sound/voice/lizard/lizard_scream_3.ogg',
 	)
 
-/datum/species/lizard/get_species_description()
-	return {"
-		The peaceful Jinan people originate from the planet Jitarai.
-		They are adept with robotics and artifical intelligence,
-		which is how their governing body came to be an AI known as Companion.
-		"}
+/datum/species/lizard/get_species_mechanics()
+	return "Cold blooded, with poor thermoregulation."
 
 /datum/species/lizard/get_species_lore()
 	return list(
-		"The face of conspiracy theory was changed forever the day mankind met the lizards.",
-
-		"Jinans are a species of intelligent humanoid reptiles from the planet Jitarai. They are most known for \
-		their innovation in the field of robotics, at the time of first contact, they were over one hundred years \
-		ahead of Humanity. Jitarai has one governing body, a century year old artificial intelligence known as Companion. \
-		Developed by the Old Jinar (Great Ones) to lead their people to greatness, Companion succeeded it's goal \
-		and united the planet under one government. Despite the success of the Companion project, some of the Jinan people \
-		have a distrust in their artificial leader. Many seek to leave the planet as soon as they acquire means, be it out of fear \
-		or disgust that their people are controlled by a machine. The way the government operates is not fully known, \
-		with some outsiders theorizing there is a Jinan council that maintains Companion.",
-
-		"The Jinan people created and popularized the Integrated Positronic Chassis (IPC), a fully autonomous robot capable \
-		of performing the same tasks as a normal person. Their primary export is robotics equipment, industrial equipment, and positronic brains. \
-		Many companies from Earth have created their own versions of IPCs, and sell them on the market with middling success.",
-
-		"Jinans were the first species to be discovered by Humanity, with their probe having crash landed onto Mercury in 1953, \
-		sparking the Space Race. Eventually, contact was made by the United States, and a positive relationship quickly \
-		developed between the two peoples. ",
+		"Highly intelligent reptilian humanoids from a planet ruled by an artificial intelligence named Friend Computer. \
+		Creators of the most advanced prosthetics and A.I technology."
 	)
 
 // Override for the default temperature perks, so we can give our specific "cold blooded" perk.

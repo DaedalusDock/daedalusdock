@@ -168,7 +168,7 @@
 
 /obj/item/flashlight/pen
 	name = "penlight"
-	desc = "A pen-sized light, used by medical staff. It can also be used to create a hologram to alert people of incoming medical assistance."
+	desc = "A pen-sized light, used by medical staff."
 	icon_state = "penlight"
 	inhand_icon_state = ""
 	worn_icon_state = "pen"
@@ -176,43 +176,6 @@
 	flags_1 = CONDUCT_1
 	light_outer_range = 2
 	var/holo_cooldown = 0
-
-/obj/item/flashlight/pen/afterattack(atom/target, mob/user, proximity_flag)
-	. = ..()
-	if(!proximity_flag)
-		if(holo_cooldown > world.time)
-			to_chat(user, span_warning("[src] is not ready yet!"))
-			return
-		var/T = get_turf(target)
-		if(locate(/mob/living) in T)
-			new /obj/effect/temp_visual/medical_holosign(T,user) //produce a holographic glow
-			holo_cooldown = world.time + 10 SECONDS
-			return
-
-// see: [/datum/wound/burn/proc/uv()]
-/obj/item/flashlight/pen/paramedic
-	name = "paramedic penlight"
-	desc = "A high-powered UV penlight intended to help stave off infection in the field on serious burned patients. Probably really bad to look into."
-	icon_state = "penlight_surgical"
-	/// Our current UV cooldown
-	COOLDOWN_DECLARE(uv_cooldown)
-	/// How long between UV fryings
-	var/uv_cooldown_length = 30 SECONDS
-	/// How much sanitization to apply to the burn wound
-	var/uv_power = 1
-
-/obj/effect/temp_visual/medical_holosign
-	name = "medical holosign"
-	desc = "A small holographic glow that indicates a medic is coming to treat a patient."
-	icon_state = "medi_holo"
-	duration = 30
-
-/obj/effect/temp_visual/medical_holosign/Initialize(mapload, creator)
-	. = ..()
-	playsound(loc, 'sound/machines/ping.ogg', 50, FALSE) //make some noise!
-	if(creator)
-		visible_message(span_danger("[creator] created a medical hologram!"))
-
 
 /obj/item/flashlight/seclite
 	name = "seclite"
@@ -313,9 +276,8 @@
 	on = FALSE
 	force = initial(src.force)
 	damtype = initial(src.damtype)
-	if(ismob(loc))
-		var/mob/U = loc
-		update_brightness(U)
+	if(equipped_to)
+		update_brightness(equipped_to)
 	else
 		update_brightness(null)
 
@@ -462,7 +424,7 @@
 /obj/item/flashlight/glowstick
 	name = "glowstick"
 	desc = "A military-grade glowstick."
-	custom_price = PAYCHECK_PRISONER
+	custom_price = PAYCHECK_ASSISTANT * 0.6
 	w_class = WEIGHT_CLASS_SMALL
 	light_outer_range = 4
 	light_system = OVERLAY_LIGHT

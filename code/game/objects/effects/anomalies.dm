@@ -123,10 +123,10 @@
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 	warp = new(src)
-	vis_contents += warp
+	add_viscontents(warp)
 
 /obj/effect/anomaly/grav/Destroy()
-	vis_contents -= warp
+	remove_viscontents(warp)
 	warp = null
 	return ..()
 
@@ -233,7 +233,7 @@
 /obj/effect/anomaly/flux/proc/mobShock(mob/living/M)
 	if(canshock && istype(M))
 		canshock = FALSE
-		M.electrocute_act(shockdamage, name, flags = SHOCK_NOGLOVES)
+		M.electrocute_act(shockdamage, flags = NONE)
 
 /obj/effect/anomaly/flux/detonate()
 	if(explosive)
@@ -354,7 +354,7 @@
 	var/list/mob/dead/observer/candidates = poll_candidates_for_mob("Do you want to play as a pyroclastic anomaly slime?", ROLE_SENTIENCE, null, 10 SECONDS, S, POLL_IGNORE_PYROSLIME)
 	if(LAZYLEN(candidates))
 		var/mob/dead/observer/chosen = pick(candidates)
-		S.key = chosen.key
+		S.PossessByPlayer(chosen.ckey)
 		S.mind.special_role = ROLE_PYROCLASTIC_SLIME
 		var/policy = get_policy(ROLE_PYROCLASTIC_SLIME)
 		if (policy)

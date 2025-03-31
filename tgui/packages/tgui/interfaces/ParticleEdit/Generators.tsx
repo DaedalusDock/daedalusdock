@@ -1,9 +1,17 @@
 import { useBackend } from '../../backend';
-import { NumberInput, Dropdown, Stack } from '../../components';
-import { GeneratorProps, GeneratorTypes, GeneratorTypesNoVectors, ParticleUIData, P_DATA_GENERATOR, RandToNumber, RandTypes } from './data';
+import { Dropdown, NumberInput, Stack } from '../../components';
+import {
+  GeneratorProps,
+  GeneratorTypes,
+  GeneratorTypesNoVectors,
+  P_DATA_GENERATOR,
+  ParticleUIData,
+  RandToNumber,
+  RandTypes,
+} from './data';
 
-export const GeneratorListEntry = (props: GeneratorProps, context) => {
-  const { act, data } = useBackend<ParticleUIData>(context);
+export const GeneratorListEntry = (props: GeneratorProps) => {
+  const { act, data } = useBackend<ParticleUIData>();
   const { var_name, generator, allow_vectors } = props;
   // omits generators that are not allowed with certain vars
   const allowed_generators = allow_vectors
@@ -47,7 +55,8 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
               var: var_name,
               var_mod: P_DATA_GENERATOR,
               new_value: [e, A, B, RandToNumber[rand_type]],
-            })}
+            })
+          }
           width="130px"
         />
       </Stack.Item>
@@ -57,20 +66,26 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
           <NumberInput
             animated
             value={A}
+            step={1}
             minValue={0}
-            onDrag={(e, value) =>
+            maxValue={Infinity}
+            onDrag={(value) =>
               act('edit', {
                 var: var_name,
                 var_mod: P_DATA_GENERATOR,
                 new_value: [type, value, B, RandToNumber[rand_type]],
-              })}
+              })
+            }
           />
         ) : (
           <>
             <NumberInput
               animated
               value={A[0]}
-              onDrag={(e, value) =>
+              step={1}
+              minValue={-Infinity}
+              maxValue={Infinity}
+              onDrag={(value) =>
                 act('edit', {
                   var: var_name,
                   var_mod: P_DATA_GENERATOR,
@@ -80,27 +95,36 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
                     B,
                     RandToNumber[rand_type],
                   ],
-                })}
+                })
+              }
             />
             <NumberInput
               animated
               value={A[1]}
-              onDrag={(e, value) =>
+              step={1}
+              minValue={-Infinity}
+              maxValue={Infinity}
+              onDrag={(value) =>
                 act('edit', {
                   var: var_name,
                   var_mod: P_DATA_GENERATOR,
                   new_value: [type, [A[0], value, A[2]], B, rand_type],
-                })}
+                })
+              }
             />
             <NumberInput
               animated
               value={A[2]}
-              onDrag={(e, value) =>
+              step={1}
+              minValue={-Infinity}
+              maxValue={Infinity}
+              onDrag={(value) =>
                 act('edit', {
                   var: var_name,
                   var_mod: P_DATA_GENERATOR,
                   new_value: [type, [A[0], A[1], value], B, rand_type],
-                })}
+                })
+              }
             />
           </>
         )}
@@ -111,19 +135,26 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
           <NumberInput
             animated
             value={B}
-            onDrag={(e, value) =>
+            step={1}
+            minValue={-Infinity}
+            maxValue={Infinity}
+            onDrag={(value) =>
               act('edit', {
                 var: var_name,
                 var_mod: P_DATA_GENERATOR,
                 new_value: [type, A, value, RandToNumber[rand_type]],
-              })}
+              })
+            }
           />
         ) : (
           <>
             <NumberInput
               animated
               value={B[0]}
-              onDrag={(e, value) =>
+              step={1}
+              minValue={-Infinity}
+              maxValue={Infinity}
+              onDrag={(value) =>
                 act('edit', {
                   var: var_name,
                   var_mod: P_DATA_GENERATOR,
@@ -133,12 +164,16 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
                     [value, B[1], B[2]],
                     RandToNumber[rand_type],
                   ],
-                })}
+                })
+              }
             />
             <NumberInput
               animated
               value={B[1]}
-              onDrag={(e, value) =>
+              step={1}
+              minValue={-Infinity}
+              maxValue={Infinity}
+              onDrag={(value) =>
                 act('edit', {
                   var: var_name,
                   var_mod: P_DATA_GENERATOR,
@@ -148,12 +183,16 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
                     [B[0], value, B[2]],
                     RandToNumber[rand_type],
                   ],
-                })}
+                })
+              }
             />
             <NumberInput
               animated
               value={B[2]}
-              onDrag={(e, value) =>
+              step={1}
+              minValue={-Infinity}
+              maxValue={Infinity}
+              onDrag={(value) =>
                 act('edit', {
                   var: var_name,
                   var_mod: P_DATA_GENERATOR,
@@ -163,7 +202,8 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
                     [B[0], B[1], value],
                     RandToNumber[rand_type],
                   ],
-                })}
+                })
+              }
             />
           </>
         )}
@@ -177,7 +217,8 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
               var: var_name,
               var_mod: P_DATA_GENERATOR,
               new_value: [type, A, B, RandToNumber[value]],
-            })}
+            })
+          }
           width="130px"
         />
       </Stack.Item>

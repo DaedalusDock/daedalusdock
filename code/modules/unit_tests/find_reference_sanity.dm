@@ -64,7 +64,7 @@
 
 	//Second round, bit harder this time
 	testbed.overlays += victim
-	testbed.vis_contents += victim
+	testbed.add_viscontents(victim)
 	testbed.test_assoc_list[victim] = TRUE
 
 	var/refcount = refcount(victim)

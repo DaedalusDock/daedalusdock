@@ -68,7 +68,7 @@
 /obj/machinery/smartfridge/update_overlays()
 	. = ..()
 	if(!machine_stat)
-		. += emissive_appearance(icon, "[initial(icon_state)]-light-mask", alpha = src.alpha)
+		. += emissive_appearance(icon, "[initial(icon_state)]-light-mask", alpha = 90)
 
 /obj/machinery/smartfridge/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
@@ -144,7 +144,7 @@
 		return ..()
 
 /obj/machinery/smartfridge/proc/accept_check(obj/item/O)
-	if(istype(O, /obj/item/food/grown/) || istype(O, /obj/item/seeds/) || istype(O, /obj/item/grown/) || istype(O, /obj/item/graft/))
+	if(istype(O, /obj/item/food/grown) || istype(O, /obj/item/seeds) || istype(O, /obj/item/grown))
 		return TRUE
 	return FALSE
 

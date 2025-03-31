@@ -191,13 +191,13 @@
 
 	if(!charging)
 		. += mutable_appearance(icon, "[base_icon_state]-empty", alpha = src.alpha)
-		. += emissive_appearance(icon, "[base_icon_state]-empty", alpha = src.alpha)
+		. += emissive_appearance(icon, "[base_icon_state]-empty", alpha = 90)
 		return
 
 	if(using_power)
 		. += mutable_appearance(icon, "[base_icon_state]-charging", alpha = src.alpha)
-		. += emissive_appearance(icon, "[base_icon_state]-charging", alpha = src.alpha)
+		. += emissive_appearance(icon, "[base_icon_state]-charging", alpha = 90)
 		return
 
 	. += mutable_appearance(icon, "[base_icon_state]-full", alpha = src.alpha)
-	. += emissive_appearance(icon, "[base_icon_state]-full", alpha = src.alpha)
+	. += emissive_appearance(icon, "[base_icon_state]-full", alpha = 90)

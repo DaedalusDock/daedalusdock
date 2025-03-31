@@ -16,7 +16,9 @@
 /obj/item/storage/wallet/Initialize()
 	. = ..()
 	atom_storage.animated = FALSE
-	atom_storage.rustle_sound = FALSE
+	atom_storage.rustle_sound = null
+	atom_storage.open_sound = null
+	atom_storage.close_sound = null
 	atom_storage.max_slots = 4
 	atom_storage.max_specific_storage = WEIGHT_CLASS_TINY
 	atom_storage.max_total_storage = WEIGHT_CLASS_TINY * 4
@@ -204,7 +206,7 @@
 	icon_state = "wallet"
 
 /obj/item/storage/wallet/random/PopulateContents()
-	SSeconomy.spawn_cash_for_amount(rand(5, 30), src)
+	SSeconomy.spawn_ones_for_amount(rand(5, 30), src)
 	new /obj/effect/spawner/random/entertainment/wallet_storage(src)
 
 /obj/item/storage/wallet/open

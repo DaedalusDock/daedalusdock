@@ -9,7 +9,11 @@
  * Render relay object assigned to a plane master to be able to relay it's render onto other planes that are not it's own
  */
 /atom/movable/render_plane_relay
+#if DM_VERSION < 516
 	screen_loc = "CENTER"
+#else
+	screen_loc = "1,1"
+#endif
 	layer = -1
 	plane = 0
 	appearance_flags = PASS_MOUSE | NO_CLIENT_COLOR | KEEP_TOGETHER

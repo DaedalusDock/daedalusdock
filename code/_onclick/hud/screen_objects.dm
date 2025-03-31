@@ -14,13 +14,13 @@
 	speech_span = SPAN_ROBOT
 	vis_flags = VIS_INHERIT_PLANE
 	appearance_flags = APPEARANCE_UI
+	flags_1 = parent_type::flags_1 | NO_SCREENTIPS_1
 	/// A reference to the object in the slot. Grabs or items, generally, but any datum will do.
 	var/datum/weakref/master_ref = null
 	/// A reference to the owner HUD, if any.
 	var/datum/hud/hud = null
 	/**
 	 * Map name assigned to this object.
-	 * Automatically set by /client/proc/add_obj_to_map.
 	 */
 	var/assigned_map
 	/**
@@ -34,11 +34,15 @@
 
 	/// If set to TRUE, mobs that do not own this hud cannot click this screen object.
 	var/private_screen = TRUE
+	/// If set to TRUE, call atom/Click()
+	var/default_click = FALSE
 
 /atom/movable/screen/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
-	if(istype(hud_owner))
-		hud = hud_owner
+	if(isnull(hud_owner)) //some screens set their hud owners on /new, this prevents overriding them with null post atoms init
+		return
+
+	set_new_hud(hud_owner)
 
 /atom/movable/screen/Destroy()
 	master_ref = null
@@ -52,12 +56,10 @@
 	if(!can_usr_use(usr))
 		return TRUE
 
-	SEND_SIGNAL(src, COMSIG_CLICK, location, control, params, usr)
-
-/atom/movable/screen/proc/can_usr_use(mob/user)
-	. = TRUE
-	if(private_screen && (hud?.mymob != user))
-		return FALSE
+	if(default_click)
+		..()
+	else
+		SEND_SIGNAL(src, COMSIG_CLICK, location, control, params, usr)
 
 /atom/movable/screen/examine(mob/user)
 	return list()
@@ -65,8 +67,29 @@
 /atom/movable/screen/orbit()
 	return
 
+/atom/movable/screen/proc/can_usr_use(mob/user)
+	. = TRUE
+	if(private_screen && (hud?.mymob != user))
+		return FALSE
+
+///setter used to set our new hud
+/atom/movable/screen/proc/set_new_hud(datum/hud/hud_owner)
+	if(hud)
+		UnregisterSignal(hud, COMSIG_PARENT_QDELETING)
+
+	if(isnull(hud_owner))
+		hud = null
+		return
+
+	hud = hud_owner
+	RegisterSignal(hud, COMSIG_PARENT_QDELETING, PROC_REF(on_hud_delete))
+
 /atom/movable/screen/proc/component_click(atom/movable/screen/component_button/component, params)
 	return
+
+/atom/movable/screen/proc/on_hud_delete(datum/source)
+	SIGNAL_HANDLER
+	set_new_hud(hud_owner = null)
 
 /atom/movable/screen/text
 	icon = null
@@ -236,7 +259,7 @@
 	var/image/item_overlay = image(holding)
 	item_overlay.alpha = 92
 
-	if(!user.can_equip(holding, slot_id, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
+	if(!holding.mob_can_equip(user, null, slot_id, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
 		item_overlay.color = "#FF0000"
 	else
 		item_overlay.color = "#00ff00"
@@ -274,11 +297,13 @@
 
 
 /atom/movable/screen/inventory/hand/Click(location, control, params)
+	SHOULD_CALL_PARENT(FALSE)
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
-	. = ..()
 	if(!can_usr_use(usr))
-		return FALSE
+		return TRUE
+
+	SEND_SIGNAL(src, COMSIG_CLICK, location, control, params, usr)
 
 	var/mob/user = hud?.mymob
 	if(world.time <= user.next_move)
@@ -314,7 +339,7 @@
 	if(ismecha(user.loc)) // stops inventory actions in a mech
 		return TRUE
 
-	if(!user.CanReach(dropping))
+	if(!dropping.IsReachableBy(user))
 		return TRUE
 
 	var/obj/item/I = dropping
@@ -325,7 +350,8 @@
 	if(item_index)
 		user.swapHeldIndexes(item_index, held_index)
 	else
-		user.putItemFromInventoryInHandIfPossible(dropping, held_index)
+		user.putItemFromInventoryInHandIfPossible(dropping, held_index, use_unequip_delay = TRUE)
+		I.add_fingerprint(user)
 	return TRUE
 
 /atom/movable/screen/close
@@ -367,7 +393,7 @@
 /atom/movable/screen/combattoggle
 	name = "toggle combat mode"
 	icon = 'icons/hud/screen_midnight.dmi'
-	icon_state = "combat_off"
+	icon_state = "help"
 	screen_loc = ui_combat_toggle
 
 /atom/movable/screen/combattoggle/Initialize(mapload)
@@ -378,6 +404,7 @@
 	. = ..()
 	if(.)
 		return FALSE
+
 	if(isliving(usr))
 		var/mob/living/owner = usr
 		owner.set_combat_mode(!owner.combat_mode, FALSE)
@@ -387,7 +414,11 @@
 	var/mob/living/user = hud?.mymob
 	if(!istype(user) || !user.client)
 		return ..()
-	icon_state = user.combat_mode ? "combat" : "combat_off" //Treats the combat_mode
+
+	if(user.client.keys_held["Ctrl"])
+		icon_state = "grab"
+	else
+		icon_state = user.combat_mode ? "harm" : "help" //Treats the combat_mode
 	return ..()
 
 //Version of the combat toggle with the flashy overlay
@@ -561,7 +592,7 @@
 	if(ismecha(user.loc)) // stops inventory actions in a mech
 		return TRUE
 
-	if(!user.CanReach(dropping))
+	if(!dropping.IsReachableBy(user))
 		return TRUE
 
 	var/obj/item/I = dropping
@@ -622,7 +653,7 @@
 
 	if(hovering == choice)
 		return
-	vis_contents -= hover_overlays_cache[hovering]
+	remove_viscontents(hover_overlays_cache[hovering])
 	hovering = choice
 
 	var/obj/effect/overlay/zone_sel/overlay_object = hover_overlays_cache[choice]
@@ -630,7 +661,7 @@
 		overlay_object = new
 		overlay_object.icon_state = "[choice]"
 		hover_overlays_cache[choice] = overlay_object
-	vis_contents += overlay_object
+	add_viscontents(overlay_object)
 
 /obj/effect/overlay/zone_sel
 	icon = 'icons/hud/screen_gen.dmi'
@@ -642,7 +673,7 @@
 /atom/movable/screen/zone_sel/MouseExited(location, control, params)
 	. = ..()
 	if(!isobserver(usr) && hovering)
-		vis_contents -= hover_overlays_cache[hovering]
+		remove_viscontents(hover_overlays_cache[hovering])
 		hovering = null
 
 /atom/movable/screen/zone_sel/proc/get_zone_at(icon_x, icon_y)
@@ -1014,3 +1045,22 @@
 	if(iteration == src.iteration)
 		progbar.end_progress()
 
+
+/atom/movable/screen/holomap
+	icon = ""
+	plane = FULLSCREEN_PLANE
+	layer = FLOAT_LAYER
+	// Holomaps are 480x480.
+	// We offset them by half the size on each axis to center them.
+	// We need to account for this object being 32x32, so we subtract 32 from the initial 480 before dividing
+	screen_loc = "CENTER:-224,CENTER:-224"
+
+/atom/movable/screen/vis_holder
+	icon = ""
+	invisibility = INVISIBILITY_MAXIMUM
+
+/atom/movable/screen/mood
+	name = "mood"
+	icon_state = "mood5"
+	screen_loc = ui_mood
+	color = "#4b96c4"

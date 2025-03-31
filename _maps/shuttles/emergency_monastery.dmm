@@ -1825,7 +1825,7 @@
 /area/shuttle/escape)
 "zP" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/food/drinks/mug/tea,
+/obj/item/reagent_containers/glass/mug/tea,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "zQ" = (
@@ -3007,10 +3007,6 @@
 "OJ" = (
 /obj/effect/station_crash/devastating,
 /turf/open/floor/iron/dark,
-/area/shuttle/escape)
-"OM" = (
-/obj/item/cultivator,
-/turf/open/floor/grass,
 /area/shuttle/escape)
 "OW" = (
 /obj/item/seeds/banana,
@@ -6107,7 +6103,7 @@ nr
 mQ
 EL
 Py
-OM
+Vi
 Vi
 GU
 eu

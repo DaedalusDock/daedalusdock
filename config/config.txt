@@ -149,7 +149,7 @@ LOG_TRAITOR
 LOG_MANIFEST
 
 ## log job divide debugging information
-#LOG_JOB_DEBUG
+LOG_JOB_DEBUG
 
 ## log all world.Topic() calls
 # LOG_WORLD_TOPIC
@@ -378,8 +378,8 @@ NOTIFY_NEW_PLAYER_ACCOUNT_AGE 1
 ##  Requires database and PANIC_BUNKER
 #PANIC_BUNKER_DISCORD_REQUIRE
 
-## Custom message to show the client if they are not allowed access due to MFA
-#PANIC_BUNKER_DISCORD_REGISTER_MESSAGE Sorry but this server requires players to link their Discord account before playing! Please enter the following command, including the token, into this Server's Discord Guild.
+## Discord link for the panic bunker
+#PANIC_BUNKER_DISCORD_LINK
 
 ## Uncomment to enable the interview system for players who are below the living hour requirement instead of explicitly blocking them from the server
 ## Note this requires the PANIC_BUNKER to be enabled to do anything.

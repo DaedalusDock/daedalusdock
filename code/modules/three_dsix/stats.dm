@@ -1,102 +1,94 @@
-/datum/gurps_stats
+/datum/stats
 	var/mob/living/owner
 
-	// Higher is better with stats. 10 is the baseline.
-	VAR_PRIVATE/strength = 10
-	VAR_PRIVATE/dexterity = 10
-	VAR_PRIVATE/intelligence = 10
-	VAR_PRIVATE/endurance = 10
-
+	// Higher is better with stats. 11 is the baseline.
 	/// A lazylist
-	VAR_PRIVATE/list/modifiers = list(
-		STRENGTH = list(),
-		DEXTERITY = list(),
-		INTELLIGENCE = list(),
-		ENDURANCE = list()
-	)
+	VAR_PRIVATE/list/stats = list()
 
 	// Higher is better with skills. 0 is the baseline.
-	VAR_PRIVATE/list/skills = list(
-	)
+	VAR_PRIVATE/list/skills = list()
 
-/datum/gurps_stats/New(owner)
+	VAR_PRIVATE/list/stat_cooldowns = list()
+
+	/// A list of weakrefs to examined objects. Used for forensic rolls. THIS DOES JUST KEEP GETTING BIGGER, SO, CAREFUL.
+	var/list/examined_object_weakrefs = list()
+
+/datum/stats/New(owner)
 	. = ..()
 	src.owner = owner
 
-/datum/gurps_stats/Destroy()
+	for(var/datum/path as anything in typesof(/datum/rpg_stat))
+		if(isabstract(path))
+			continue
+		stats[path] = new path
+
+	for(var/datum/path as anything in typesof(/datum/rpg_skill))
+		if(isabstract(path))
+			continue
+		skills[path] += new path
+
+/datum/stats/Destroy()
 	owner = null
+	stats = null
+	skills = null
 	return ..()
 
-/datum/gurps_stats/proc/strength()
-	. = strength
-	for(var/source in modifiers[STRENGTH])
-		. += modifiers[STRENGTH][source]
+/// Return a given stat value.
+/datum/stats/proc/get_stat_modifier(stat)
+	var/datum/rpg_stat/S = stats[stat]
+	return S.get(owner)
 
-/datum/gurps_stats/proc/dexterity()
-	. = dexterity
-	for(var/source in modifiers[DEXTERITY])
-		. += modifiers[DEXTERITY][source]
+/// Return a given skill value modifier.
+/datum/stats/proc/get_skill_modifier(skill)
+	var/datum/rpg_skill/S = skills[skill]
+	return S.get(owner)
 
-/datum/gurps_stats/proc/intelligence()
-	. = intelligence
-	for(var/source in modifiers[INTELLIGENCE])
-		. += modifiers[INTELLIGENCE][source]
-
-/datum/gurps_stats/proc/endurance()
-	. = endurance
-	for(var/source in modifiers[ENDURANCE])
-		. += modifiers[ENDURANCE][source]
-
-/// Return a given stat.
-/datum/gurps_stats/proc/get_stat(stat)
-	switch(stat)
-		if(STRENGTH)
-			return strength()
-		if(DEXTERITY)
-			return dexterity()
-		if(INTELLIGENCE)
-			return intelligence()
-		if(ENDURANCE)
-			return endurance()
-		else
-			CRASH("Bad stat requested: [stat || "NULL"]")
-
-/// Pass in a list such as list(DEXTERITY = 1) as well as a source.
-/datum/gurps_stats/proc/add_modifiers(list/stats, source)
+/// Add a stat modifier from a given source
+/datum/stats/proc/set_stat_modifier(amount, datum/rpg_stat/stat_path, source)
 	if(!source)
-		CRASH("No source passed into add_modifier()")
+		CRASH("No source passed into set_modifiers()")
+	if(!ispath(stat_path))
+		CRASH("Bad stat: [stat_path]")
 
-	for(var/stat in stats)
-		modifiers[stat][source] = stats[stat]
+	var/datum/rpg_stat/S = stats[stat_path]
+	LAZYSET(S.modifiers, source, amount)
+	S.update_modifiers()
 
-/// Pass in a list such as list(DEXTERITY = 1) as well as a source.
-/datum/gurps_stats/proc/remove_modifiers(source)
+/// Remove all stat modifiers given by a source.
+/datum/stats/proc/remove_stat_modifier(datum/rpg_stat/stat_path, source)
 	if(!source)
-		CRASH("No source passed into remove_modifier()")
+		CRASH("No source passed into remove_modifiers()")
+	if(!ispath(stat_path))
+		CRASH("Bad stat: [stat_path]")
 
-	for(var/stat in modifiers)
-		modifiers[stat] -= source
+	var/datum/rpg_stat/S = stats[stat_path]
+	if(LAZYACCESS(S.modifiers, source))
+		S.modifiers -= source
+		S.update_modifiers()
 
-/datum/gurps_stats/proc/add_skill(amount, skill, source)
+/datum/stats/proc/set_skill_modifier(amount, datum/rpg_skill/skill, source)
 	if(!source)
-		CRASH("No source passed into add_skill()")
+		CRASH("No source passed into set_skill_modifier()")
+	if(!ispath(skill))
+		CRASH("Bad skill: [skill]")
 
-	if(isnull(skills[skill]))
-		skills[skill] = list()
+	var/datum/rpg_skill/S = skills[skill]
+	LAZYSET(S.modifiers, source, amount)
+	S.update_modifiers()
 
-	skills[skill][source] = amount
-
-/datum/gurps_stats/proc/remove_skill(skill, source)
+/datum/stats/proc/remove_skill_modifier(datum/rpg_skill/skill, source)
 	if(!source)
 		CRASH("No source passed into remove_skill()")
+	if(!ispath(skill))
+		CRASH("Bad skill: [skill]")
 
-	skills[skill] -= source
-	if(!length(skills[skill]))
-		skills -= skill
+	var/datum/rpg_skill/S = skills[skill]
+	if(LAZYACCESS(S.modifiers, source))
+		LAZYREMOVE(S.modifiers, source)
+		S.update_modifiers()
 
-/datum/gurps_stats/proc/get_skill(skill)
-	. = 0
-	for(var/source in skills[skill])
-		. += skills[skill][source]
+/datum/stats/proc/cooldown_finished(index)
+	return COOLDOWN_FINISHED(src, stat_cooldowns[index])
 
-	. += owner.__get_skill(skill)
+/datum/stats/proc/set_cooldown(index, value)
+	COOLDOWN_START(src, stat_cooldowns[index], value)

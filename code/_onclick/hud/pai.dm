@@ -110,8 +110,8 @@
 /atom/movable/screen/pai/crew_manifest/Click()
 	if(!..())
 		return
-	var/mob/living/silicon/pai/pAI = usr
-	pAI.ai_roster()
+
+	show_crew_manifest(usr)
 
 /atom/movable/screen/pai/state_laws
 	name = "State Laws"
@@ -154,7 +154,7 @@
 	required_software = "photography module"
 
 /atom/movable/screen/pai/image_take/Click()
-	if(!..())
+	if(!(. = ..()))
 		return
 	var/mob/living/silicon/pai/pAI = usr
 	pAI.aicamera.toggle_camera_mode(usr)

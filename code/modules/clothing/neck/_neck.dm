@@ -37,7 +37,7 @@
 	fallback_colors = list(list(16, 20))
 	fallback_icon_state = "tie"
 	w_class = WEIGHT_CLASS_SMALL
-	custom_price = PAYCHECK_EASY
+	custom_price = PAYCHECK_ASSISTANT * 1.4
 
 /obj/item/clothing/neck/tie/blue
 	name = "blue tie"
@@ -114,7 +114,7 @@
 	desc = "A stylish scarf. The perfect winter accessory for those with a keen fashion sense, and those who just can't handle a cold breeze on their necks."
 	w_class = WEIGHT_CLASS_TINY
 	dog_fashion = /datum/dog_fashion/head
-	custom_price = PAYCHECK_EASY
+	custom_price = PAYCHECK_ASSISTANT * 1.6
 
 /obj/item/clothing/neck/scarf/black
 	name = "black scarf"
@@ -238,7 +238,7 @@
 		var/true_price = round(price*profit_scaling)
 		to_chat(user, span_notice("[selling ? "Sold" : "Getting the price of"] [I], value: <b>[true_price]</b> credits[I.contents.len ? " (exportable contents included)" : ""].[profit_scaling < 1 && selling ? "<b>[round(price-true_price)]</b> credit\s taken as processing fee\s." : ""]"))
 		if(selling)
-			SSeconomy.spawn_cash_for_amount(true_price, get_turf(user))
+			SSeconomy.spawn_ones_for_amount(true_price, get_turf(user))
 	else
 		to_chat(user, span_warning("There is no export value for [I] or any items within it."))
 

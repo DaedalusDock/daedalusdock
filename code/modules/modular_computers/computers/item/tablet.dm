@@ -120,9 +120,8 @@
 	else
 		log_bomber(bomber, "successfully tablet-bombed", target, "as [target.p_they()] tried to reply to a rigged tablet message [bomber && !is_special_character(bomber) ? "(SENT BY NON-ANTAG)" : ""]")
 
-	if (ismob(loc))
-		var/mob/M = loc
-		M.show_message(span_userdanger("Your [src] explodes!"), MSG_VISUAL, span_warning("You hear a loud *pop*!"), MSG_AUDIBLE)
+	if (equipped_to)
+		equipped_to.show_message(span_userdanger("Your [src] explodes!"), MSG_VISUAL, span_warning("You hear a loud *pop*!"), MSG_AUDIBLE)
 	else
 		visible_message(span_danger("[src] explodes!"), span_warning("You hear a loud *pop*!"))
 
@@ -243,11 +242,11 @@
 		robo.toggle_headlamp(FALSE, TRUE)
 	return TRUE
 
-/obj/item/modular_computer/tablet/integrated/alert_call(datum/computer_file/program/caller, alerttext, sound = 'sound/machines/twobeep_high.ogg')
-	if(!caller || !caller.alert_able || caller.alert_silenced || !alerttext) //Yeah, we're checking alert_able. No, you don't get to make alerts that the user can't silence.
+/obj/item/modular_computer/tablet/integrated/alert_call(datum/computer_file/program/calling_program, alerttext, sound = 'sound/machines/twobeep_high.ogg')
+	if(!calling_program || !calling_program.alert_able || calling_program.alert_silenced || !alerttext) //Yeah, we're checking alert_able. No, you don't get to make alerts that the user can't silence.
 		return
 	borgo.playsound_local(src, sound, 50, TRUE)
-	to_chat(borgo, span_notice("The [src] displays a [caller.filedesc] notification: [alerttext]"))
+	to_chat(borgo, span_notice("The [src] displays a [calling_program.filedesc] notification: [alerttext]"))
 
 /obj/item/modular_computer/tablet/integrated/ui_state(mob/user)
 	return GLOB.reverse_contained_state

@@ -65,7 +65,7 @@
 		update_hud_icon(user) // update the hud
 
 // On removal stop processing, save battery
-/obj/item/clothing/suit/space/dropped(mob/user)
+/obj/item/clothing/suit/space/unequipped(mob/user)
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 	var/mob/living/carbon/human/human = user
@@ -262,8 +262,8 @@
 	if(!ishuman(user))
 		return FIRELOSS
 	var/mob/living/carbon/human/humanafterall = user
-	var/datum/disease/advance/cold/pun = new //in the show, arnold survives his stunt, but catches a cold because of it
-	humanafterall.ForceContractDisease(pun, FALSE, TRUE) //this'll show up on health analyzers and the like
+	var/datum/pathogen/advance/cold/pun = new //in the show, arnold survives his stunt, but catches a cold because of it
+	humanafterall.try_contract_pathogen(pun, FALSE, TRUE) //this'll show up on health analyzers and the like
 	return FIRELOSS
 
 #undef THERMAL_REGULATOR_COST

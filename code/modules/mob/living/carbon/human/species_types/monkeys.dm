@@ -25,13 +25,8 @@
 		TRAIT_WEAK_SOUL,
 		TRAIT_GUN_NATURAL,
 	)
-	no_equip = list(
-		ITEM_SLOT_OCLOTHING,
-		ITEM_SLOT_GLOVES,
-		ITEM_SLOT_FEET,
-		ITEM_SLOT_ICLOTHING,
-		ITEM_SLOT_SUITSTORE,
-	)
+	no_equip_flags =ITEM_SLOT_OCLOTHING | ITEM_SLOT_GLOVES | ITEM_SLOT_FEET | ITEM_SLOT_ICLOTHING | ITEM_SLOT_SUITSTORE
+
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | ERT_SPAWN | SLIME_EXTRACT
 	liked_food = MEAT | FRUIT
 	disliked_food = CLOTH
@@ -49,10 +44,6 @@
 	fire_overlay = "monkey_burning"
 	dust_anim = "dust-m"
 	gib_anim = "gibbed-m"
-
-	payday_modifier = 1.5
-
-
 
 /datum/species/monkey/random_name(gender,unique,lastname)
 	var/randname = "monkey ([rand(1,999)])"
@@ -87,18 +78,6 @@
 		'sound/creatures/monkey/monkey_screech_5.ogg',
 		'sound/creatures/monkey/monkey_screech_6.ogg',
 		'sound/creatures/monkey/monkey_screech_7.ogg',
-	)
-
-/datum/species/monkey/get_species_description()
-	return "Monkeys are a type of primate that exist between humans and animals on the evolutionary chain. \
-		Every year, on Monkey Day, Nanotrasen shows their respect for the little guys by allowing them to roam the station freely."
-
-/datum/species/monkey/get_species_lore()
-	return list(
-		"Monkeys are commonly used as test subjects on board Space Station Thirteen. \
-		But what if... for one day... the Monkeys were allowed to be the scientists? \
-		What experiments would they come up it? Would they (stereotypically) be related to bananas somehow? \
-		There's only one way to find out.",
 	)
 
 /datum/species/monkey/create_pref_unique_perks()

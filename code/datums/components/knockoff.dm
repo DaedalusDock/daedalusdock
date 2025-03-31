@@ -22,10 +22,10 @@
 
 /datum/component/knockoff/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equipped))
-	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_dropped))
+	RegisterSignal(parent, COMSIG_ITEM_UNEQUIPPED, PROC_REF(on_dropped))
 
 /datum/component/knockoff/UnregisterFromParent()
-	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
+	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_UNEQUIPPED))
 
 	var/obj/item/item_parent = parent
 	if(ismob(item_parent.loc))
@@ -91,7 +91,7 @@
 	RegisterSignal(equipper, COMSIG_HUMAN_DISARM_HIT, PROC_REF(on_equipped_mob_disarm), TRUE)
 	RegisterSignal(equipper, COMSIG_LIVING_STATUS_KNOCKDOWN, PROC_REF(on_equipped_mob_knockdown), TRUE)
 
-/// Signal proc for [COMSIG_ITEM_DROPPED]
+/// Signal proc for [COMSIG_ITEM_UNEQUIPPED]
 /// Unregisters our signals which can cause a knockdown when we're unequipped (dropped)
 /datum/component/knockoff/proc/on_dropped(datum/source, mob/living/dropper)
 	SIGNAL_HANDLER

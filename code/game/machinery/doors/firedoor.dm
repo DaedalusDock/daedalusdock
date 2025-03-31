@@ -16,7 +16,7 @@
 	glass = FALSE
 	sub_door = TRUE
 	explosion_block = 1
-	safe = FALSE
+	dont_close_on_dense_objects = FALSE
 	layer = BELOW_OPEN_DOOR_LAYER
 	closingLayer = CLOSED_FIREDOOR_LAYER
 	assemblytype = /obj/structure/firelock_frame
@@ -411,7 +411,7 @@
 	if(!(border_dir == dir)) //Make sure looking at appropriate border
 		return TRUE
 
-/obj/machinery/door/firedoor/border_only/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
+/obj/machinery/door/firedoor/border_only/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
 	return !density || (dir != to_dir)
 
 /obj/machinery/door/firedoor/border_only/proc/on_exit(datum/source, atom/movable/leaving, direction)

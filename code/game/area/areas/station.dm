@@ -4,18 +4,20 @@
 	name = "Station Areas"
 	icon = 'icons/area/areas_station.dmi'
 	icon_state = "station"
+	area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | SHOW_NAME
 
 //Maintenance
 
 /area/station/maintenance
 	name = "Generic Maintenance"
 	ambience_index = AMBIENCE_MAINT
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | PERSISTENT_ENGRAVINGS
+	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | SHOW_NAME | PERSISTENT_ENGRAVINGS
 	airlock_wires = /datum/wires/airlock/maint
 	sound_environment = SOUND_AREA_TUNNEL_ENCLOSED
 	forced_ambience = TRUE
 	ambient_buzz = 'sound/ambience/source_corridor2.ogg'
 	ambient_buzz_vol = 30
+	holomap_color = HOLOMAP_AREACOLOR_MAINTENANCE
 
 //Maintenance - Departmental
 
@@ -60,11 +62,11 @@
 	icon_state = "maint_brig"
 
 /area/station/maintenance/department/medical
-	name = "Medbay Maintenance"
+	name = "Ward Maintenance"
 	icon_state = "medbay_maint"
 
 /area/station/maintenance/department/medical/central
-	name = "Central Medbay Maintenance"
+	name = "Central Ward Maintenance"
 	icon_state = "medbay_maint_central"
 
 /area/station/maintenance/department/medical/morgue
@@ -94,7 +96,7 @@
 /area/station/maintenance/department/science/xenobiology
 	name = "Xenobiology Maintenance"
 	icon_state = "xenomaint"
-	area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | XENOBIOLOGY_COMPATIBLE | CULT_PERMITTED
+	area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | SHOW_NAME | XENOBIOLOGY_COMPATIBLE
 
 //Maintenance - Generic Tunnels
 
@@ -220,6 +222,7 @@
 /area/station/maintenance/space_hut
 	name = "\improper Space Hut"
 	icon_state = "spacehut"
+	holomap_color = null
 
 /area/station/maintenance/space_hut/cabin
 	name = "Abandoned Cabin"
@@ -258,6 +261,7 @@
 
 /area/station/hallway
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_HALLWAYS
 
 /area/station/hallway/primary
 	name = "\improper Primary Hallway"
@@ -356,6 +360,7 @@
 	ambientsounds = list('sound/ambience/signal.ogg')
 	airlock_wires = /datum/wires/airlock/command
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 
 /area/station/command/bridge
 	name = "\improper Bridge"
@@ -379,22 +384,24 @@
 /area/station/command/heads_quarters
 
 /area/station/command/heads_quarters/captain
-	name = "\improper Captain's Office"
+	name = "\improper Superintendent's Office"
 	icon_state = "captain"
 	sound_environment = SOUND_AREA_WOODFLOOR
 
 /area/station/command/heads_quarters/captain/private
-	name = "\improper Captain's Quarters"
+	name = "\improper Superintendent's Quarters"
 	icon_state = "captain_private"
 	sound_environment = SOUND_AREA_WOODFLOOR
 
 /area/station/command/heads_quarters/ce
 	name = "\improper Chief Engineer's Office"
 	icon_state = "ce_office"
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/station/command/heads_quarters/cmo
 	name = "\improper Medical Director's Office"
 	icon_state = "cmo_office"
+	holomap_color = HOLOMAP_AREACOLOR_MEDICAL
 
 /area/station/command/heads_quarters/hop
 	name = "\improper Head of Personnel's Office"
@@ -403,10 +410,12 @@
 /area/station/command/heads_quarters/hos
 	name = "\improper Security Marshal's Office"
 	icon_state = "hos_office"
+	holomap_color = HOLOMAP_AREACOLOR_SECURITY
 
 /area/station/command/heads_quarters/rd
 	name = "\improper Research Director's Office"
 	icon_state = "rd_office"
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
 //Command - Teleporters
 
@@ -426,7 +435,8 @@
 	name = "\improper Crew Facilities"
 	icon_state = "commons"
 	sound_environment = SOUND_AREA_STANDARD_STATION
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
+	holomap_color = HOLOMAP_AREACOLOR_GENERIC_ROOM
 
 /area/station/commons/dorms
 	name = "\improper Dormitories"
@@ -547,6 +557,7 @@
 
 /area/station/service
 	airlock_wires = /datum/wires/airlock/service
+	holomap_color = HOLOMAP_AREACOLOR_GENERIC_ROOM
 
 /area/station/service/cafeteria
 	name = "\improper Cafeteria"
@@ -608,7 +619,7 @@
 /area/station/service/library
 	name = "\improper Library"
 	icon_state = "library"
-	area_flags = CULT_PERMITTED | BLOBS_ALLOWED | UNIQUE_AREA
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 	sound_environment = SOUND_AREA_LARGE_SOFTFLOOR
 
 /area/station/service/library/lounge
@@ -678,7 +689,7 @@
 /area/station/service/janitor
 	name = "\improper Custodial Closet"
 	icon_state = "janitor"
-	area_flags = CULT_PERMITTED | BLOBS_ALLOWED | UNIQUE_AREA
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
 
 /area/station/service/hydroponics
@@ -710,6 +721,7 @@
 	ambience_index = AMBIENCE_ENGI
 	airlock_wires = /datum/wires/airlock/engineering
 	sound_environment = SOUND_AREA_LARGE_ENCLOSED
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/station/engineering/engine_smes
 	name = "\improper Engineering SMES"
@@ -761,10 +773,10 @@
 /area/station/engineering/atmospherics_engine
 	name = "\improper Atmospherics Engine"
 	icon_state = "atmos_engine"
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 
 /area/station/engineering/lobby
-	name = "\improper Engineering Lobby"
+	name = "\improper Engineering Foyer"
 	icon_state = "engi_lobby"
 
 /area/station/engineering/monitoring
@@ -774,7 +786,7 @@
 /area/station/engineering/supermatter
 	name = "\improper Supermatter Engine"
 	icon_state = "engine_sm"
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
 
 /area/station/engineering/supermatter/room
@@ -812,7 +824,7 @@
 /area/station/engineering/storage/tcomms
 	name = "Telecomms Storage"
 	icon_state = "tcom_storage"
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 
 /area/station/engineering/storage/mech
 	name = "Mechanical Storage"
@@ -826,6 +838,7 @@
 	icon_state = "construction"
 	ambience_index = AMBIENCE_ENGI
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/station/construction/mining/aux_base
 	name = "Auxiliary Base Construction"
@@ -835,6 +848,7 @@
 /area/station/construction/storage_wing
 	name = "\improper Storage Wing"
 	icon_state = "storage_wing"
+	holomap_color = HOLOMAP_AREACOLOR_HALLWAYS
 
 //Solars
 
@@ -845,8 +859,6 @@
 	ambience_index = AMBIENCE_ENGI
 	airlock_wires = /datum/wires/airlock/engineering
 	sound_environment = SOUND_AREA_SPACE
-	base_lighting_alpha = null
-	base_lighting_color = null
 
 /area/station/solars/fore
 	name = "\improper Fore Solar Array"
@@ -924,16 +936,17 @@
 	name = "Starboard Bow Solar Maintenance"
 	icon_state = "SolarcontrolFS"
 
-//MedBay
+// The Ward
 
 /area/station/medical
-	name = "Medical"
+	name = "\improper Ward"
 	icon_state = "medbay"
 	ambience_index = AMBIENCE_MEDICAL
 	airlock_wires = /datum/wires/airlock/medbay
 	sound_environment = SOUND_AREA_STANDARD_STATION
 	min_ambience_cooldown = 90 SECONDS
 	max_ambience_cooldown = 180 SECONDS
+	holomap_color = HOLOMAP_AREACOLOR_MEDICAL
 
 	spook_level = SPOOK_AMT_CORPSE * -2 // We can expect like two dudes to be dead in here at all times.
 
@@ -944,20 +957,20 @@
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
 
 /area/station/medical/medbay/central
-	name = "Medbay Central"
+	name = "\improper Ward (Central)"
 	icon_state = "med_central"
 
 /area/station/medical/medbay/lobby
-	name = "\improper Medbay Lobby"
+	name = "\improper Ward Foyer"
 	icon_state = "med_lobby"
 
-	//Medbay is a large area, these additional areas help level out APC load.
+//The Ward is a large area, these additional areas help level out APC load.
 /area/station/medical/medbay/aft
-	name = "Medbay Aft"
+	name = "\improper Ward (Aft)"
 	icon_state = "med_aft"
 
 /area/station/medical/storage
-	name = "Medbay Storage"
+	name = "\improper Ward Storage"
 	icon_state = "med_storage"
 
 /area/station/medical/paramedic
@@ -965,23 +978,23 @@
 	icon_state = "paramedic"
 
 /area/station/medical/office
-	name = "\improper Medical Office"
+	name = "\improper Ward Office"
 	icon_state = "med_office"
 
 /area/station/medical/break_room
-	name = "\improper Medical Break Room"
+	name = "\improper Ward Break Room"
 	icon_state = "med_break"
 
 /area/station/medical/coldroom
-	name = "\improper Medical Cold Room"
+	name = "\improper Ward Cold Room"
 	icon_state = "kitchen_cold"
 
 /area/station/medical/coldroom/port
-	name = "\improper Port Medical Cold Room "
+	name = "\improper Ward Port Cold Room "
 
 
 /area/station/medical/coldroom/starboard
-	name = "\improper Starboard Medical Cold "
+	name = "\improper Ward Starboard Cold Room"
 
 /area/station/medical/patients_rooms
 	name = "\improper Patients' Rooms"
@@ -990,7 +1003,6 @@
 
 /area/station/medical/patients_rooms/room_a
 	name = "Patient Room A"
-
 
 /area/station/medical/patients_rooms/room_b
 	name = "Patient Room B"
@@ -1019,47 +1031,48 @@
 	icon_state = "chem"
 
 /area/station/medical/pharmacy
-	name = "\improper Pharmacy"
+	name = "\improper Ward (Pharmacy)"
 	icon_state = "pharmacy"
 
 /area/station/medical/surgery
-	name = "\improper Operating Room"
+	name = "Operating Room"
 	icon_state = "surgery"
 	ambience_index = AMBIENCE_VIROLOGY
 
 /area/station/medical/surgery/prep
-	name = "\improper Pre-Op Prep"
+	name = "\improper Ward (Operating Hallway)"
 	icon_state = "surgeryprep"
 
 /area/station/medical/surgery/fore
-	name = "\improper Fore Operating Room"
+	name = "Operating Room (Fore)"
 	icon_state = "foresurgery"
 
 /area/station/medical/surgery/aft
-	name = "\improper Aft Operating Room"
+	name = "Operating Room (Aft)"
 	icon_state = "aftsurgery"
 
 /area/station/medical/surgery/port
-	name = "\improper Port Operating Room"
+	name = "Operating Room (Port)"
 	icon_state = "portsurgery"
 
 /area/station/medical/surgery/starboard
-	name = "\improper Starboard Operating Room"
+	name = "Operating Room (Starboard)"
 	icon_state = "starboardsurgery"
 
 /area/station/medical/surgery/theatre
 	name = "\improper Grand Surgery Theatre"
 	icon_state = "surgerytheatre"
+
 /area/station/medical/cryo
 	name = "Cryogenics"
 	icon_state = "cryo"
 
 /area/station/medical/exam_room
-	name = "\improper Exam Room"
+	name = "\improper Ward (Exam Room)"
 	icon_state = "exam_room"
 
 /area/station/medical/treatment_center
-	name = "\improper Medbay Treatment Center"
+	name = "\improper Ward (Treatment Center)"
 	icon_state = "exam_room"
 
 /area/station/medical/psychology
@@ -1075,6 +1088,7 @@
 	ambience_index = AMBIENCE_DANGER
 	airlock_wires = /datum/wires/airlock/security
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_SECURITY
 
 /area/station/security/office
 	name = "\improper Security Office"
@@ -1124,7 +1138,7 @@
 /area/station/security/prison
 	name = "\improper Prison Wing"
 	icon_state = "sec_prison"
-	area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | PERSISTENT_ENGRAVINGS
+	area_flags = parent_type::area_flags | PERSISTENT_ENGRAVINGS
 
 /area/station/security/prison/toilet //radproof
 	name = "\improper Prison Toilet"
@@ -1189,6 +1203,7 @@
 	name = "\improper Private Investigator's Office"
 	icon_state = "detective"
 	ambientsounds = list('sound/ambience/ambidet1.ogg','sound/ambience/ambidet2.ogg')
+	holomap_color = HOLOMAP_AREACOLOR_HALLWAYS
 
 /area/station/security/detectives_office/private_investigators_office
 	icon_state = "investigate_office"
@@ -1221,18 +1236,22 @@
 /area/station/security/checkpoint/supply
 	name = "Security Post - Cargo Bay"
 	icon_state = "checkpoint_supp"
+	holomap_color = HOLOMAP_AREACOLOR_CARGO
 
 /area/station/security/checkpoint/engineering
 	name = "Security Post - Engineering"
 	icon_state = "checkpoint_engi"
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/station/security/checkpoint/medical
 	name = "Security Post - Medbay"
 	icon_state = "checkpoint_med"
+	holomap_color = HOLOMAP_AREACOLOR_MEDICAL
 
 /area/station/security/checkpoint/science
 	name = "Security Post - Science"
 	icon_state = "checkpoint_sci"
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
 /area/station/security/checkpoint/science/research
 	name = "Security Post - Research Division"
@@ -1261,6 +1280,7 @@
 	icon_state = "quart"
 	airlock_wires = /datum/wires/airlock/service
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_CARGO
 
 /area/station/cargo/sorting
 	name = "\improper Delivery Office"
@@ -1289,7 +1309,7 @@
 	sound_environment = SOUND_AREA_LARGE_ENCLOSED
 
 /area/station/cargo/lobby
-	name = "\improper Cargo Lobby"
+	name = "\improper Cargo Foyer"
 	icon_state = "cargo_lobby"
 
 /area/station/cargo/qm
@@ -1317,16 +1337,17 @@
 	icon_state = "mining"
 	requires_power = TRUE
 	always_unpowered = TRUE
+	holomap_color = null
 
-	static_lighting = FALSE
-	base_lighting_alpha = 255
-	base_lighting_color = "#FFFFFF"
+	area_lighting = AREA_LIGHTING_STATIC
 
 	power_light = FALSE
 	power_equip = FALSE
 	power_environ = FALSE
 	area_flags = NO_ALERTS
 	outdoors = TRUE
+
+	ambient_buzz = null
 	ambience_index = AMBIENCE_SPACE
 	flags_1 = CAN_BE_DIRTY_1
 	sound_environment = SOUND_AREA_SPACE
@@ -1338,6 +1359,7 @@
 	icon_state = "science"
 	airlock_wires = /datum/wires/airlock/science
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
 /area/station/science/lobby
 	name = "\improper Science Lobby"
@@ -1374,7 +1396,8 @@
 /area/station/science/test_area
 	name = "\improper Ordnance Test Area"
 	icon_state = "ord_test"
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
+	holomap_color = null
 
 /area/station/science/mixing
 	name = "\improper Ordnance Mixing Lab"
@@ -1383,7 +1406,7 @@
 /area/station/science/mixing/chamber
 	name = "\improper Ordnance Mixing Chamber"
 	icon_state = "ord_mix_chamber"
-	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	area_flags = parent_type::area_flags &~ VALID_TERRITORY
 
 /area/station/science/mixing/hallway
 	name = "\improper Ordnance Mixing Hallway"
@@ -1437,6 +1460,7 @@
 // Telecommunications Satellite
 
 /area/station/tcommsat
+	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 	ambientsounds = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/ambigen10.ogg', 'sound/ambience/ambitech.ogg',\
 											'sound/ambience/ambitech2.ogg', 'sound/ambience/ambitech3.ogg', 'sound/ambience/ambimystery.ogg')
 	airlock_wires = /datum/wires/airlock/engineering

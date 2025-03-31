@@ -25,7 +25,7 @@
 	var/mode = SCANNER_VERBOSE
 	var/scanmode = SCANMODE_HEALTH
 	var/advanced = FALSE
-	custom_price = PAYCHECK_HARD
+	custom_price = PAYCHECK_ASSISTANT * 3
 
 /obj/item/healthanalyzer/Initialize(mapload)
 	. = ..()
@@ -64,12 +64,11 @@
 
 	playsound(user, 'sound/items/healthanalyzer.ogg', 50, 1)
 
-	user.visible_message(span_notice("[user] analyzes [M]'s vitals."), \
-						span_notice("You analyze [M]'s vitals."))
+	user.visible_message(span_notice("[user] analyzes [M] with [src]."))
 
 	switch (scanmode)
 		if (SCANMODE_HEALTH)
-			healthscan(user, M, advanced, mode)
+			healthscan(user, M, advanced, mode, TRUE)
 		if (SCANMODE_CHEM)
 			chemscan(user, M)
 		if (SCANMODE_SURGERY)
@@ -307,44 +306,6 @@
 	desc = "A hand-held body scanner able to distinguish vital signs of the subject with high accuracy."
 	advanced = TRUE
 
-/// Displays wounds with extended information on their status vs medscanners
-/proc/woundscan(mob/user, mob/living/carbon/patient, obj/item/healthanalyzer/wound/scanner, advanced = FALSE)
-	if(!istype(patient) || user.incapacitated())
-		return
-
-	if(user.is_blind())
-		to_chat(user, span_warning("You realize that your scanner has no accessibility support for the blind!"))
-		return
-
-	var/data_string_list = ""
-	var/list/damaged_limbs = patient.get_damaged_bodyparts(TRUE, TRUE)
-	if(!length(damaged_limbs))
-		data_string_list += "No detectable limb injuries.\n"
-
-	sortTim(damaged_limbs, GLOBAL_PROC_REF(cmp_bodyparts_display_order))
-
-	for(var/obj/item/bodypart/limb as anything in damaged_limbs)
-		var/limb_string = "[capitalize(limb.body_zone)][(limb.bodytype & BODYTYPE_ROBOTIC) ? " <span style='font-weight: bold; color: [COLOR_MEDICAL_ROBOTIC]'>(Cybernetic)</span>" : ""]:"
-		if(limb.brute_dam)
-			limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>[advanced ? "[limb.brute_dam]" + " points of" : get_wound_severity(limb.brute_ratio)] physical trauma</span>\]"
-
-		if(limb.burn_dam)
-			limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BURN]'>[advanced ? "[limb.burn_dam]" + " points of": get_wound_severity(limb.burn_ratio)] burns</span>\]"
-
-		if(limb.bodypart_flags & BP_BLEEDING)
-			limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>bleeding</span>\]"
-
-		data_string_list += (limb_string + "\n")
-
-	if(data_string_list == "")
-		if(istype(scanner))
-			// Only emit the cheerful scanner message if this scan came from a scanner
-			to_chat(user, span_notice("[scanner] makes a happy ping and briefly displays a smiley face with several exclamation points! It's really excited to report that [patient] has no wounds!"))
-		else
-			to_chat(user, "<span class='notice ml-1'>No wounds detected in subject.</span>")
-	else
-		to_chat(user, jointext(data_string_list, ""), type = MESSAGE_TYPE_INFO)
-
 /proc/surgericalscan(mob/living/user, mob/living/carbon/target)
 	if(!istype(target) || user.incapacitated())
 		return
@@ -372,43 +333,6 @@
 		data += jointext(bodypart_data, " ")
 
 	to_chat(user, jointext(data, "<br>"), type = MESSAGE_TYPE_INFO)
-
-/obj/item/healthanalyzer/wound
-	name = "first aid analyzer"
-	icon_state = "adv_spectrometer"
-	desc = "A prototype MeLo-Tech medical scanner used to diagnose injuries and recommend treatment for serious wounds, but offers no further insight into the patient's health. You hope the final version is less annoying to read!"
-	var/next_encouragement
-	var/greedy
-
-/obj/item/healthanalyzer/wound/attack_self(mob/user)
-	if(next_encouragement < world.time)
-		playsound(src, 'sound/machines/ping.ogg', 50, FALSE)
-		var/list/encouragements = list("briefly displays a happy face, gazing emptily at you", "briefly displays a spinning cartoon heart", "displays an encouraging message about eating healthy and exercising", \
-				"reminds you that everyone is doing their best", "displays a message wishing you well", "displays a sincere thank-you for your interest in first-aid", "formally absolves you of all your sins")
-		to_chat(user, span_notice("\The [src] makes a happy ping and [pick(encouragements)]!"))
-		next_encouragement = world.time + 10 SECONDS
-		greedy = FALSE
-	else if(!greedy)
-		to_chat(user, span_warning("\The [src] displays an eerily high-definition frowny face, chastizing you for asking it for too much encouragement."))
-		greedy = TRUE
-	else
-		playsound(src, 'sound/machines/buzz-sigh.ogg', 50, FALSE)
-		if(isliving(user))
-			var/mob/living/L = user
-			to_chat(L, span_warning("\The [src] makes a disappointed buzz and pricks your finger for being greedy. Ow!"))
-			L.adjustBruteLoss(4)
-			L.dropItemToGround(src)
-
-/obj/item/healthanalyzer/wound/attack(mob/living/carbon/patient, mob/living/carbon/human/user)
-	add_fingerprint(user)
-	user.visible_message(span_notice("[user] scans [patient] for serious injuries."), span_notice("You scan [patient] for serious injuries."))
-
-	if(!istype(patient))
-		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
-		to_chat(user, span_notice("\The [src] makes a sad buzz and briefly displays a frowny face, indicating it can't scan [patient]."))
-		return
-
-	woundscan(user, patient, src)
 
 #undef SCANMODE_HEALTH
 #undef SCANMODE_CHEM

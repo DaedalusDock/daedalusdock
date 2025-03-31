@@ -38,7 +38,7 @@
 
 	update_action_buttons()
 
-/obj/item/clothing/head/helmet/space/hardsuit/dropped(mob/user)
+/obj/item/clothing/head/helmet/space/hardsuit/unequipped(mob/user)
 	..()
 	if(suit)
 		suit.RemoveHelmet()

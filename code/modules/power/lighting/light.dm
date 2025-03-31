@@ -15,6 +15,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	var/overlay_icon = 'icons/obj/lighting_overlay.dmi'
 	///base description and icon_state
 	var/base_state = "tube"
+
 	///Is the light on?
 	var/on = FALSE
 	///compared to the var/on for static calculations
@@ -29,10 +30,10 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	var/bulb_power = 0.6
 	///The falloff of the emitted light. Adjust until it looks good.
 	var/bulb_falloff = 1.85
-
 	///Default colour of the light.
-	var/bulb_colour = "#dfac72"
+	var/bulb_colour = LIGHTBULB_COLOR_WARM
 	///LIGHT_OK, _EMPTY, _BURNED or _BROKEN
+
 	var/status = LIGHT_OK
 	///Should we flicker?
 	var/flickering = FALSE
@@ -44,23 +45,14 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	var/switchcount = 0
 	///True if rigged to explode
 	var/rigged = FALSE
+	/// Is the bulb removable
+	var/removable_bulb = TRUE
+	/// Is it pixel shifted onto walls?
+	var/align_with_wall = TRUE
 	///Cell reference
 	var/obj/item/stock_parts/cell/cell
 	///If true, this fixture generates a very weak cell at roundstart
 	var/start_with_cell = TRUE
-	///Currently in night shift mode?
-	var/nightshift_enabled = FALSE
-	///Set to FALSE to never let this light get switched to night mode.
-	var/nightshift_allowed = TRUE
-	///Outer radius of the nightshift light
-	var/nightshift_outer_range = 6
-	///Inner, brightest radius of the nightshift light
-	var/nightshift_inner_range = 1.5
-	///Alpha of the nightshift light
-	var/nightshift_light_power = 0.5
-	///Basecolor of the nightshift light
-	var/nightshift_light_color = "#dfac72"
-	var/nightshift_falloff = 1.85
 
 	///If true, the light is in emergency mode
 	var/emergency_mode = FALSE
@@ -87,10 +79,6 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 /obj/machinery/light/Initialize(mapload)
 	. = ..()
 	SET_TRACKING(__TYPE__)
-	if(!mapload) //sync up nightshift lighting for player made lights
-		var/area/local_area = get_area(src)
-		var/obj/machinery/power/apc/temp_apc = local_area.apc
-		nightshift_enabled = temp_apc?.nightshift_lights
 
 	if(start_with_cell && !no_emergency)
 		cell = new/obj/item/stock_parts/cell/emergency_light(src)
@@ -153,10 +141,26 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	if(emergency_mode || firealarm) //PARIAH EDIT END
 		. += mutable_appearance(overlay_icon, "[base_state]_emergency")
 		return
-	if(nightshift_enabled)
-		. += mutable_appearance(overlay_icon, "[base_state]_nightshift")
-		return
 	. += mutable_appearance(overlay_icon, base_state)
+
+/obj/machinery/light/setDir(ndir)
+	. = ..()
+	if(!align_with_wall)
+		return
+
+	switch(dir)
+		if(NORTH)
+			pixel_y = 21
+			pixel_x = 0
+		if(SOUTH)
+			pixel_y = 0
+			pixel_x = 0
+		if(EAST)
+			pixel_x = 10
+			pixel_y = 0
+		if(WEST)
+			pixel_x = -10
+			pixel_y = 0
 
 //PARIAH EDIT ADDITION
 #define LIGHT_ON_DELAY_UPPER 3 SECONDS
@@ -172,19 +176,26 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	if(on)
 		if(instant)
 			turn_on(trigger, play_sound)
+
 		else if(maploaded)
 			turn_on(trigger)
 			maploaded = FALSE
+
 		else if(!turning_on)
 			turning_on = TRUE
 			addtimer(CALLBACK(src, PROC_REF(turn_on), trigger, play_sound), rand(LIGHT_ON_DELAY_LOWER, LIGHT_ON_DELAY_UPPER))
+
 	else if(has_emergency_power(LIGHT_EMERGENCY_POWER_USE) && !turned_off())
-		use_power = IDLE_POWER_USE
+		if(use_power != NO_POWER_USE)
+			use_power = IDLE_POWER_USE
 		emergency_mode = TRUE
 		START_PROCESSING(SSmachines, src)
+
 	else
-		use_power = IDLE_POWER_USE
+		if(use_power != NO_POWER_USE)
+			use_power = IDLE_POWER_USE
 		set_light(0)
+
 	update_appearance()
 
 	if(on != on_gs)
@@ -280,10 +291,14 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 
 	// attempt to insert light
 	if(istype(tool, /obj/item/light))
+		if(!removable_bulb)
+			to_chat(user, span_warning("[src]'s bulb does not appear to come out."))
 		if(status == LIGHT_OK)
-			to_chat(user, span_warning("There is a [fitting] already inserted!"))
+			to_chat(user, span_warning("There is a [fitting] already inserted."))
 			return TRUE
+
 		tool.leave_evidence(user, src)
+
 		var/obj/item/light/light_object = tool
 		if(!istype(light_object, light_type))
 			to_chat(user, span_warning("This type of light requires a [fitting]!"))
@@ -338,10 +353,12 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	if(flags_1 & NODECONSTRUCT_1)
 		qdel(src)
 		return
+
 	var/obj/structure/light_construct/new_light = null
 	var/current_stage = 2
 	if(!disassembled)
 		current_stage = 1
+
 	switch(fitting)
 		if("tube")
 			new_light = new /obj/structure/light_construct(loc)
@@ -350,16 +367,22 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 		if("bulb")
 			new_light = new /obj/structure/light_construct/small(loc)
 			new_light.icon_state = "bulb-construct-stage[current_stage]"
+
 	new_light.setDir(dir)
 	new_light.stage = current_stage
+
 	if(!disassembled)
 		new_light.take_damage(new_light.max_integrity * 0.5, sound_effect=FALSE)
 		if(status != LIGHT_BROKEN)
 			break_light_tube()
-		if(status != LIGHT_EMPTY)
+
+		if(status != LIGHT_EMPTY && removable_bulb)
 			drop_light_tube()
+
 		new /obj/item/stack/cable_coil(loc, 1, "red")
+
 	transfer_fingerprints_to(new_light)
+
 	if(!QDELETED(cell))
 		new_light.cell = cell
 		cell.forceMove(new_light)
@@ -447,11 +470,12 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 			if(status != LIGHT_OK)
 				break
 			on = !on
-			update(FALSE, TRUE) //PARIAH EDIT CHANGE
+			update(FALSE, TRUE)
 			sleep(rand(5, 15))
+
 		on = (status == LIGHT_OK)
-		update(FALSE, TRUE) //PARIAH EDIT CHANGE
-		. = TRUE //did we actually flicker?
+		update(FALSE, TRUE)
+
 	flickering = FALSE
 
 // ai attack - make lights flicker, because why not
@@ -473,14 +497,19 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 
 	if(status == LIGHT_EMPTY)
 		to_chat(user, span_warning("There is no [fitting] in this light!"))
-		return
+		return TRUE
+
+	if(!removable_bulb)
+		to_chat(user, span_warning("[src]'s bulb does not appear to come out."))
+		return TRUE
 
 	// make it burn hands unless you're wearing heat insulated gloves or have the RESISTHEAT/RESISTHEATHANDS traits
 	if(!on)
 		to_chat(user, span_notice("You remove the light [fitting]."))
 		// create a light tube/bulb item and put it in the user's hand
 		drop_light_tube(user)
-		return
+		return TRUE
+
 	var/protection_amount = 0
 	var/mob/living/carbon/human/electrician = user
 
@@ -525,6 +554,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 		else
 			to_chat(user, span_warning("You try to remove the light [fitting], but you burn your hand on it!"))
 			return
+
 	// create a light tube/bulb item and put it in the user's hand
 	drop_light_tube(user)
 	return TRUE
@@ -646,3 +676,94 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 		L.set_light(bulb_outer_range, bulb_inner_range, bulb_power, bulb_falloff, bulb_colour)
 		CHECK_TICK
 
+
+// DEBUG VERBS
+// /obj/machinery/light/verb/_change_color()
+// 	set name = "Mass Change Color"
+// 	set category = "Debug"
+// 	set src in view(5)
+
+// 	var/new_color = input(usr, "New Color", "Change Color", bulb_colour) as null|color
+// 	if(!new_color)
+// 		return
+
+// 	var/old_color = bulb_colour
+
+// 	for(var/obj/machinery/light/L as anything in INSTANCES_OF(/obj/machinery/light))
+// 		if(L.bulb_colour == old_color && is_station_level(L.z))
+// 			L.bulb_colour = new_color
+// 			L.set_light(L.bulb_outer_range, L.bulb_inner_range, L.bulb_power, L.bulb_falloff, L.bulb_colour)
+
+// 		CHECK_TICK
+
+// /obj/machinery/light/verb/_change_power()
+// 	set name = "Mass Change Power"
+// 	set category = "Debug"
+// 	set src in view(5)
+
+// 	var/new_power = input(usr, "New Color", "Change Color", bulb_power) as null|num
+// 	if(!new_power)
+// 		return
+
+// 	var/old_power = bulb_power
+
+// 	for(var/obj/machinery/light/L as anything in INSTANCES_OF(/obj/machinery/light))
+// 		if(L.bulb_power == old_power && is_station_level(L.z))
+// 			L.bulb_power = new_power
+// 			L.set_light(L.bulb_outer_range, L.bulb_inner_range, L.bulb_power, L.bulb_falloff, L.bulb_colour)
+
+// 		CHECK_TICK
+
+// /obj/machinery/light/verb/_change_orange()
+// 	set name = "Mass Change ORange"
+// 	set category = "Debug"
+// 	set src in view(5)
+
+// 	var/new_orange = input(usr, "New Color", "Change Color", bulb_outer_range) as null|num
+// 	if(!new_orange)
+// 		return
+
+// 	var/old_orange = bulb_outer_range
+
+// 	for(var/obj/machinery/light/L as anything in INSTANCES_OF(/obj/machinery/light))
+// 		if(L.bulb_outer_range == old_orange && is_station_level(L.z))
+// 			L.bulb_outer_range = new_orange
+// 			L.set_light(L.bulb_outer_range, L.bulb_inner_range, L.bulb_power, L.bulb_falloff, L.bulb_colour)
+
+// 		CHECK_TICK
+
+// /obj/machinery/light/verb/_change_irange()
+// 	set name = "Mass Change IRange"
+// 	set category = "Debug"
+// 	set src in view(5)
+
+// 	var/new_irange = input(usr, "New Color", "Change Color", bulb_inner_range) as null|num
+// 	if(!new_irange)
+// 		return
+
+// 	var/old_irange = bulb_inner_range
+
+// 	for(var/obj/machinery/light/L as anything in INSTANCES_OF(/obj/machinery/light))
+// 		if(L.bulb_inner_range == old_irange && is_station_level(L.z))
+// 			L.bulb_inner_range = new_irange
+// 			L.set_light(L.bulb_outer_range, L.bulb_inner_range, L.bulb_power, L.bulb_falloff, L.bulb_colour)
+
+// 		CHECK_TICK
+
+// /obj/machinery/light/verb/_change_falloff()
+// 	set name = "Mass Change Falloff"
+// 	set category = "Debug"
+// 	set src in view(5)
+
+// 	var/new_falloff = input(usr, "New Color", "Change Color", bulb_falloff) as null|num
+// 	if(!new_falloff)
+// 		return
+
+// 	var/old_falloff = bulb_falloff
+
+// 	for(var/obj/machinery/light/L as anything in INSTANCES_OF(/obj/machinery/light))
+// 		if(L.bulb_falloff == old_falloff && is_station_level(L.z))
+// 			L.bulb_falloff = new_falloff
+// 			L.set_light(L.bulb_outer_range, L.bulb_inner_range, L.bulb_power, L.bulb_falloff, L.bulb_colour)
+
+// 		CHECK_TICK

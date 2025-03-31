@@ -56,11 +56,9 @@
 
 
 //It has stable IN THE NAME. IT WAS MADE FOR THIS MOMENT.
-/datum/reagent/stabilizing_agent/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
-	. = ..()
-	if(myseed && chems.has_reagent(type, 1))
-		myseed.adjust_instability(-1)
-
+/datum/reagent/stabilizing_agent/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.mutation_power -= 1
 
 /datum/reagent/clf3
 	name = "Chlorine Trifluoride"
@@ -129,14 +127,6 @@
 		UnregisterSignal(holder.my_atom, COMSIG_ATOM_EX_ACT)
 	return ..()
 
-/datum/reagent/gunpowder/affect_blood(mob/living/carbon/C, removed)
-	. = ..()
-	if(!isplasmaman(C))
-		return
-	C.set_timed_status_effect(30 SECONDS * removed, /datum/status_effect/drugginess)
-	if(C.hallucination < volume)
-		C.hallucination += 5 * removed
-
 /datum/reagent/gunpowder/proc/on_ex_act(atom/source, severity, target)
 	SIGNAL_HANDLER
 	if(source.flags_1 & PREVENT_CONTENTS_EXPLOSION_1)
@@ -198,13 +188,10 @@
 
 
 	// why, just why
-/datum/reagent/napalm/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
-	. = ..()
-	if(chems.has_reagent(type, 1))
-		if(!(myseed.resistance_flags & FIRE_PROOF))
-			mytray.adjust_plant_health(-round(chems.get_reagent_amount(type) * 6))
-			mytray.adjust_toxic(round(chems.get_reagent_amount(type) * 7))
-		mytray.adjust_weedlevel(-rand(5,9)) //At least give them a small reward if they bother.
+/datum/reagent/napalm/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.fire_damage += 10
+
 
 /datum/reagent/napalm/affect_blood(mob/living/carbon/C, removed)
 	C.adjust_fire_stacks(1 * removed)

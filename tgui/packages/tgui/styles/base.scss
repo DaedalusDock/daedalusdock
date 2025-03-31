@@ -11,13 +11,19 @@ $color-bg: #333333 !default;
 $color-bg-section: rgba(0, 0, 0, 0.25) !default;
 $color-bg-grad-spread: 0% !default; //Dummied out at kapu's request
 $color-bg-start: color.adjust(
-  $color-bg, $lightness: $color-bg-grad-spread) !default;
+  $color-bg,
+  $lightness: $color-bg-grad-spread
+) !default;
 $color-bg-end: color.adjust(
-  $color-bg, $lightness: -$color-bg-grad-spread) !default;
+  $color-bg,
+  $lightness: -$color-bg-grad-spread
+) !default;
+
+$border-radius: 0em !default;
 
 $unit: 12px;
 $font-size: 1 * $unit !default;
-$border-radius: 0em !default;
+$font-family: (Verdana, Geneva, sans-serif) !default;
 
 @function em($px) {
   @return 1em * math.div($px, $unit);

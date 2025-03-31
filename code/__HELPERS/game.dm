@@ -294,7 +294,7 @@
 
 	ghost_player.client.prefs.safe_transfer_prefs_to(new_character)
 	new_character.dna.update_dna_identity()
-	new_character.key = ghost_player.key
+	new_character.PossessByPlayer(ghost_player.ckey)
 
 	return new_character
 
@@ -316,16 +316,29 @@
 
 ///Recursively checks if an item is inside a given type, even through layers of storage. Returns the atom if it finds it.
 /proc/recursive_loc_check(atom/movable/target, type)
-	var/atom/atom_to_find = target
-	if(istype(atom_to_find, type))
-		return atom_to_find
+	var/atom/atom_to_find = null
 
-	while(!istype(atom_to_find.loc, type))
-		if(!atom_to_find.loc)
-			return
-		atom_to_find = atom_to_find.loc
+	if(ispath(type))
+		atom_to_find = target
+		if(istype(atom_to_find, type))
+			return atom_to_find
 
-	return atom_to_find.loc
+		while(!istype(atom_to_find.loc, type))
+			if(!atom_to_find.loc)
+				return
+			atom_to_find = atom_to_find.loc
+
+	else if(isatom(type))
+		atom_to_find = target
+		if(atom_to_find.loc == type)
+			return atom_to_find
+
+		while(atom_to_find.loc != type)
+			if(!atom_to_find.loc)
+				return
+			atom_to_find = atom_to_find.loc
+
+	return atom_to_find
 
 ///Send a message in common radio when a player arrives
 /proc/announce_arrival(mob/living/carbon/human/character, rank)
@@ -372,28 +385,3 @@
 			continue
 
 		current_apc.energy_fail(rand(duration_min,duration_max))
-
-/**
- * Sends a round tip to a target. If selected_tip is null, a random tip will be sent instead (5% chance of it being silly).
- * Tips that starts with the @ character won't be html encoded. That's necessary for any tip containing markup tags,
- * just make sure they don't also have html characters like <, > and ' which will be garbled.
- */
-/proc/send_tip_of_the_round(target, selected_tip)
-	var/message
-	if(selected_tip)
-		message = selected_tip
-	else
-		var/list/randomtips = world.file2list("strings/tips.txt")
-		var/list/memetips = world.file2list("strings/sillytips.txt")
-		if(randomtips.len && prob(95))
-			message = pick(randomtips)
-		else if(memetips.len)
-			message = pick(memetips)
-
-	if(!message)
-		return
-	if(message[1] != "@")
-		message = html_encode(message)
-	else
-		message = copytext(message, 2)
-	to_chat(target, span_purple("<span class='oocplain'><b>Tip of the round: </b>[message]</span>"))

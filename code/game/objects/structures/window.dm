@@ -428,7 +428,7 @@
 /obj/structure/window/get_dumping_location()
 	return null
 
-/obj/structure/window/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
+/obj/structure/window/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
 	if(!density)
 		return TRUE
 	if(fulltile || (dir == to_dir))
@@ -488,7 +488,7 @@
 		qdel(grab)
 
 	var/obj/effect/decal/cleanable/blood/splatter/over_window/splatter = new(src, null, affecting_mob.get_blood_dna_list())
-	vis_contents += splatter
+	add_viscontents(splatter)
 	bloodied = TRUE
 	return TRUE
 

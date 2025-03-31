@@ -4,6 +4,7 @@
  * Applies and removes the glowing cult eyes
  */
 /datum/component/cult_eyes
+	dupe_mode = COMPONENT_DUPE_SOURCES
 	var/initial_right_color = ""
 	var/initial_left_color = ""
 

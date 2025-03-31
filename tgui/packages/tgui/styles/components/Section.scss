@@ -11,6 +11,9 @@
 $title-text-color: base.$color-fg !default;
 $background-color: base.$color-bg-section !default;
 $separator-color: colors.$primary !default;
+$title-font-size: base.em(14px) !default;
+$title-font-size-level2: base.em(13px) !default;
+$title-font-size-level3: base.em(12px) !default;
 
 .Section {
   position: relative;
@@ -30,8 +33,12 @@ $separator-color: colors.$primary !default;
   border-bottom: base.em(2px) solid $separator-color;
 }
 
+.Section--titleBorderless {
+  border-bottom: none;
+}
+
 .Section__titleText {
-  font-size: base.em(14px);
+  font-size: $title-font-size;
   font-weight: bold;
   color: $title-text-color;
 }
@@ -114,10 +121,10 @@ $separator-color: colors.$primary !default;
 
 // Level 2 section title
 .Section .Section .Section__titleText {
-  font-size: base.em(13px);
+  font-size: $title-font-size-level2;
 }
 
 // Level 3 section title
 .Section .Section .Section .Section__titleText {
-  font-size: base.em(12px);
+  font-size: $title-font-size-level3;
 }

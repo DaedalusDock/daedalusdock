@@ -43,6 +43,8 @@
 		CRASH("playsound(): source is an area")
 	if(isnull(vol))
 		CRASH("Playsound received a null volume, this is probably wrong!")
+	if(islist(soundin))
+		CRASH("Playsound received a list, this is unsupported")
 
 	var/turf/turf_source = get_turf(source)
 
@@ -79,7 +81,11 @@
 		if(below_turf && istransparentturf(turf_source))
 			listeners += get_hearers_in_view(maxdistance, below_turf)
 
-	for(var/mob/listening_mob in listeners | SSmobs.dead_players_by_zlevel[source_z])//observers always hear through walls
+	listeners |= SSmobs.dead_players_by_zlevel[source_z]
+	if(length(SSmobs.flock_cameras_by_zlevel[source_z]))
+		listeners |= SSmobs.flock_cameras_by_zlevel[source_z]
+
+	for(var/mob/listening_mob in listeners)//observers always hear through walls
 		if(get_dist(listening_mob, turf_source) <= maxdistance)
 			listening_mob.playsound_local(turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, S, maxdistance, falloff_distance, 1, use_reverb)
 			. += listening_mob
@@ -184,11 +190,11 @@
 		SEND_SOUND(src, sound(SSticker.login_music.path, repeat = 0, wait = 0, volume = vol, channel = CHANNEL_LOBBYMUSIC)) // MAD JAMS
 
 	UNTIL(SSticker.current_state >= GAME_STATE_PREGAME)
-	to_chat(src, span_greenannounce("Now Playing: <i>[SSticker.login_music.name]</i>[SSticker.login_music.author ? " by [SSticker.login_music.author]" : ""]"))
+	to_chat(src, systemtext("Now Playing: <i>[SSticker.login_music.name]</i>[SSticker.login_music.author ? " by [SSticker.login_music.author]" : ""]"))
 
 /client/proc/playcreditsmusic(vol = 85)
 	SEND_SOUND(src, sound(SSticker.credits_music.path, repeat = 0, wait = 0, volume = vol, channel = CHANNEL_LOBBYMUSIC))
-	to_chat(src, span_greenannounce("Now Playing: <i>[SSticker.credits_music.name]</i>[SSticker.credits_music.author ? " by [SSticker.credits_music.author]" : ""]"))
+	to_chat(src, systemtext("Now Playing: <i>[SSticker.credits_music.name]</i>[SSticker.credits_music.author ? " by [SSticker.credits_music.author]" : ""]"))
 
 /proc/get_rand_frequency()
 	return rand(32000, 55000) //Frequency stuff only works with 45kbps oggs.

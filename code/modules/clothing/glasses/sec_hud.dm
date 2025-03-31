@@ -182,7 +182,7 @@
 			owner.playsound_local(get_turf(owner), 'sound/items/sec_hud/inspect_unhighlight.mp3', 100, channel = used_channel)
 			owner.playsound_local(get_turf(owner), vol =  200, channel = used_channel, sound_to_use = loop, wait = TRUE)
 
-/datum/action/innate/investigate/do_ability(mob/living/caller, atom/clicked_on, list/params)
+/datum/action/innate/investigate/do_ability(mob/living/invoker, atom/clicked_on, list/params)
 	if(!ishuman(clicked_on) || params?[RIGHT_CLICK])
 		unset_ranged_ability(owner)
 		return TRUE
@@ -198,8 +198,8 @@
 	var/mob/living/carbon/human/H = clicked_on
 	var/name_to_search = H.get_idcard()?.registered_name
 
-	var/datum/data/record/general_record = find_record("name", name_to_search, GLOB.data_core.general)
-	var/datum/data/record/security_record = find_record("name", name_to_search, GLOB.data_core.security)
+	var/datum/data/record/general_record = SSdatacore.get_record_by_name(name_to_search, DATACORE_RECORDS_STATION)
+	var/datum/data/record/security_record = SSdatacore.get_record_by_name(name_to_search, DATACORE_RECORDS_SECURITY)
 
 	scan_record(general_record, security_record)
 	return TRUE
@@ -222,14 +222,14 @@
 	animate(dir = EAST, 0.5 SECONDS)
 	animate(dir = SOUTH, 0.5 SECONDS)
 
-	hud_obj.vis_contents += holder
+	hud_obj.add_viscontents(holder)
 
-	var/list/text = list("<span style='text-align:center'>[uppertext(general_record?.fields["name"]) || "UNKNOWN"]</span>")
+	var/list/text = list("<span style='text-align:center'>[uppertext(general_record?.fields[DATACORE_NAME]) || "UNKNOWN"]</span>")
 	text += "<br><br><br><br><br><br><br>"
 	if(!security_record)
 		text += "<br><span style='text-align:center'>NO DATA</span>"
 	else
-		var/wanted_status = security_record.fields["criminal"]
+		var/wanted_status = security_record.fields[DATACORE_CRIMINAL_STATUS]
 		if(wanted_status == CRIMINAL_WANTED)
 			wanted_status = "<span style='font-weight:bold'>WANTED</span>"
 		else
@@ -243,7 +243,7 @@
 
 /datum/action/innate/investigate/proc/print_message(datum/data/record/security)
 	var/list/text = list()
-	var/wanted = security?.fields["criminal"]
+	var/wanted = security?.fields[DATACORE_CRIMINAL_STATUS]
 	switch(wanted)
 		if(null)
 			wanted = "UNKNOWN"
@@ -258,12 +258,12 @@
 	if(isnull(security))
 		text += "<span class='warning' style='font-size: 120%'>NO DATA</span>"
 	else
-		text += "<div style='text-shadow: 0 0 0.3em #FF0000'><span class='warning' style='font-style:normal; font-size: 120%'>[security.fields["name"]]</span></div>"
+		text += "<div style='text-shadow: 0 0 0.3em #FF0000'><span class='warning' style='font-style:normal; font-size: 120%'>[security.fields[DATACORE_NAME]]</span></div>"
 
-		if(length(security.fields["crim"]))
+		if(length(security.fields[DATACORE_CRIMES]))
 			text += "<table style='min-width:100%;border: 2px solid rgba(255, 100, 100, 1);border-collapse: collapse;'>"
-			for(var/i in 1 to min(4, length(security.fields["crim"])))
-				var/datum/data/crime/crime = security.fields["crim"][i]
+			for(var/i in 1 to min(4, length(security.fields[DATACORE_CRIMES])))
+				var/datum/data/crime/crime = security.fields[DATACORE_CRIMES][i]
 				text += {"
 					<tr style='border: 2px solid rgba(255, 100, 100, 1)'>
 						<td style='vertical-align: middle; border: 2px solid rgba(255, 100, 100, 1); text-align:center; padding: 4px'><span class='warning' style='font-style:normal;style='font-size: 100%'>[crime.crimeName]</span></td>
@@ -277,8 +277,8 @@
 
 /datum/action/innate/investigate/proc/make_holder(datum/data/record/general_record)
 	var/atom/movable/screen/holder = new()
-	if(general_record?.fields["character_appearance"])
-		holder.appearance = new /mutable_appearance(general_record.fields["character_appearance"])
+	if(general_record?.fields[DATACORE_APPEARANCE])
+		holder.appearance = new /mutable_appearance(general_record.fields[DATACORE_APPEARANCE])
 	else
 		holder.icon = 'icons/hud/noimg.dmi'
 
@@ -302,7 +302,7 @@
 	if(hud_obj || !owner)
 		return
 
-	var/datum/data/record/general_record = find_record("id", R.fields["id"], GLOB.data_core.general)
+	var/datum/data/record/general_record = SSdatacore.find_record("id", R.fields[DATACORE_ID], DATACORE_RECORDS_STATION)
 	UNLINT(scan_record(general_record, R, FALSE)) //IT DOESNT SLEEP STUPID LINTER!!!
 
 	addtimer(CALLBACK(hud_obj, TYPE_PROC_REF(/atom/movable/screen/text/screen_text/atom_hud, fade_out)), 7 SECONDS)

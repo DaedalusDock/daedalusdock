@@ -172,13 +172,7 @@ SUBSYSTEM_DEF(id_access)
 		),
 		"[ACCESS_CMO]" = list(
 			"regions" = list(REGION_MEDBAY),
-			"head" = JOB_MEDICAL_DIRECTOR,
-			"templates" = list(),
-			"pdas" = list(),
-		),
-		"[ACCESS_RD]" = list(
-			"regions" = list(REGION_RESEARCH),
-			"head" = JOB_RESEARCH_DIRECTOR,
+			"head" = JOB_AUGUR,
 			"templates" = list(),
 			"pdas" = list(),
 		),
@@ -267,7 +261,7 @@ SUBSYSTEM_DEF(id_access)
 	desc_by_access["[ACCESS_AI_UPLOAD]"] = "AI Chambers"
 	desc_by_access["[ACCESS_TELEPORTER]"] = "Teleporter"
 	desc_by_access["[ACCESS_EVA]"] = "EVA"
-	desc_by_access["[ACCESS_HEADS]"] = "Bridge"
+	desc_by_access["[ACCESS_MANAGEMENT]"] = "Management"
 	desc_by_access["[ACCESS_CAPTAIN]"] = "Captain"
 	desc_by_access["[ACCESS_ALL_PERSONAL_LOCKERS]"] = "Personal Lockers"
 	desc_by_access["[ACCESS_CHAPEL_OFFICE]"] = "Chapel Office"

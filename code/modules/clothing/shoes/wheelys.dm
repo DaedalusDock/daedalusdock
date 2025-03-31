@@ -38,7 +38,7 @@
 	wheels.buckle_mob(user)
 	wheelToggle = TRUE
 
-/obj/item/clothing/shoes/wheelys/dropped(mob/user)
+/obj/item/clothing/shoes/wheelys/unequipped(mob/user)
 	if(wheelToggle)
 		wheels.unbuckle_mob(user)
 		wheelToggle = FALSE
@@ -63,7 +63,7 @@
 	greyscale_colors = null
 	greyscale_config = null
 	worn_icon_state = "rollerskates"
-	slowdown = SHOES_SLOWDOWN+1
+	slowdown = parent_type::slowdown + 1 // Slower than normal
 	wheels = /obj/vehicle/ridden/scooter/skateboard/wheelys/rollerskates
 	custom_premium_price = PAYCHECK_EASY * 5
 	custom_price = PAYCHECK_EASY * 5
@@ -75,7 +75,7 @@
 	greyscale_colors = null
 	greyscale_config = null
 	worn_icon_state = "skishoes"
-	slowdown = SHOES_SLOWDOWN+1
+	slowdown = parent_type::slowdown + 1 // Slower than normal
 	wheels = /obj/vehicle/ridden/scooter/skateboard/wheelys/skishoes
 	custom_premium_price = PAYCHECK_EASY * 1.6
 	custom_price = PAYCHECK_EASY * 1.6

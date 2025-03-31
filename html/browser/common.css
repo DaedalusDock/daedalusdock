@@ -34,6 +34,10 @@ a, button, a:link, a:visited, a:active, .linkOn, .linkOff
 	user-select: none;
 }
 
+.dmIcon
+{
+	-ms-interpolation-mode: nearest-neighbor;
+}
 
 a:hover
 {
@@ -71,7 +75,7 @@ a.white:hover
 
 .linkOff, a.linkOff:link, a.linkOff:visited, a.linkOff:active, a.linkOff:hover
 {
-	color: #ffffff;
+	color: #000000;
 	background: #999999;
 	border-color: #666666;
 }
@@ -94,6 +98,22 @@ a.genericLink:hover
 {
 	color: #ffffff;
 	background: #aa5f36;
+}
+
+a.rawLink
+{
+	color: inherit;
+	text-decoration: inherit;
+	background: inherit;
+	cursor: pointer;
+	white-space: nowrap !important;
+	text-shadow: inherit !important;
+	border: inherit;
+}
+
+a.rawLink:hover {
+	color: #ffffff;
+	text-decoration: underline;
 }
 
 a.icon, .linkOn.icon, .linkOff.icon
@@ -660,3 +680,29 @@ span.color_holder_box{
 	padding-left: 0.5em;
 	padding-right: 0.5em;
 }
+
+.consoleInput {
+	position: relative;
+	display: inline-block;
+}
+
+.consoleInput::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: -15px;
+	/* Remove display: inline-block if not required to be on the same line as text etc */
+	display: inline-block;
+	background-color: #606060;
+	vertical-align: top;
+	width: 10px;
+	/* Set height to the line height of .text */
+	height: 24px;
+	animation: blink 1s step-end infinite;
+  }
+
+@keyframes blink {
+	0% { opacity: 1.0; }
+	50% { opacity: 0.0; }
+	100% { opacity: 1.0; }
+  }

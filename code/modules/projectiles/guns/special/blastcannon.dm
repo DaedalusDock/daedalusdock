@@ -160,7 +160,7 @@
 		visible_message(span_warning("[src] lets out a little \"phut\"."))
 		return
 
-	if(!ismob(loc))
+	if(!equipped_to)
 		INVOKE_ASYNC(src, PROC_REF(fire_dropped), heavy, medium, light)
 		return
 

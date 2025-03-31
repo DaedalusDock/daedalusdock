@@ -132,26 +132,26 @@
 
 /obj/structure/filingcabinet/security/proc/add_entry(datum/data/record/general, datum/data/record/security)
 	var/obj/item/paper/P = new /obj/item/paper(src)
-	P.name = "paper - '[general.fields["name"]]'"
+	P.name = "paper - '[general.fields[DATACORE_NAME]]'"
 
 	P.info = {"<TT>
 		<CENTER><B>Security Record</B></CENTER><BR>
-		Name: [general.fields["name"]]<br>
-		ID: [general.fields["id"]]<BR>
-		Gender: [general.fields["gender"]]<BR>
-		Age: [general.fields["age"]]<BR>
-		Fingerprint: [general.fields["fingerprint"]]<BR>
-		Physical Status: [general.fields["p_stat"]]<BR>
-		Mental Status: [general.fields["m_stat"]]<BR>
+		Name: [general.fields[DATACORE_NAME]]<br>
+		ID: [general.fields[DATACORE_ID]]<BR>
+		Gender: [general.fields[DATACORE_GENDER]]<BR>
+		Age: [general.fields[DATACORE_AGE]]<BR>
+		Fingerprint: [general.fields[DATACORE_FINGERPRINT]]<BR>
+		Physical Status: [general.fields[DATACORE_PHYSICAL_HEALTH]]<BR>
+		Mental Status: [general.fields[DATACORE_MENTAL_HEALTH]]<BR>
 		<BR>
 		<CENTER><B>Security Data</B></CENTER><BR>
-		Criminal Status: [security.fields["criminal"]]<BR>
+		Criminal Status: [security.fields[DATACORE_CRIMINAL_STATUS]]<BR>
 		<BR>
 		Crimes:<br>
 	"}
 	// Crimes
-	if(length(security.fields["crim"]))
-		for(var/datum/data/crime/C in security.fields["crim"])
+	if(length(security.fields[DATACORE_CRIMES]))
+		for(var/datum/data/crime/C in security.fields[DATACORE_CRIMES])
 			P.info += "[FOURSPACES][C.crimeName] - [C.crimeDetails]<br>"
 	else
 		P.info += "[FOURSPACES]None<br>"
@@ -159,7 +159,7 @@
 	P.info += {"
 		<BR>
 		Important Notes:<BR>
-		[FOURSPACES][security.fields["notes"]]<BR>
+		[FOURSPACES][security.fields[DATACORE_NOTES]]<BR>
 		<BR>
 		<CENTER><B>Comments/Log</B></CENTER><BR>
 	"}
@@ -175,8 +175,8 @@
 	add_entry(general, security)
 
 /obj/structure/filingcabinet/security/proc/generate_all()
-	for(var/datum/data/record/G in GLOB.data_core.general)
-		var/datum/data/record/S = find_record("name", G.fields["name"], GLOB.data_core.security)
+	for(var/datum/data/record/G in SSdatacore.get_records(DATACORE_RECORDS_STATION))
+		var/datum/data/record/S = SSdatacore.get_record_by_name(G.fields[DATACORE_NAME], DATACORE_RECORDS_SECURITY)
 		if(!S)
 			continue
 		add_entry(G, S)
@@ -190,20 +190,20 @@
 
 /obj/structure/filingcabinet/medical/proc/populate()
 	if(virgin)
-		for(var/datum/data/record/G in GLOB.data_core.general)
-			var/datum/data/record/M = find_record("name", G.fields["name"], GLOB.data_core.medical)
+		for(var/datum/data/record/G in SSdatacore.get_records(DATACORE_RECORDS_STATION))
+			var/datum/data/record/M = SSdatacore.get_record_by_name(G.fields[DATACORE_NAME], DATACORE_RECORDS_MEDICAL)
 			if(!M)
 				continue
 			var/obj/item/paper/P = new /obj/item/paper(src)
 			P.info = "<CENTER><B>Medical Record</B></CENTER><BR>"
-			P.info += "Name: [G.fields["name"]] ID: [G.fields["id"]]<BR>\nGender: [G.fields["gender"]]<BR>\nAge: [G.fields["age"]]<BR>\nFingerprint: [G.fields["fingerprint"]]<BR>\nPhysical Status: [G.fields["p_stat"]]<BR>\nMental Status: [G.fields["m_stat"]]<BR>"
-			P.info += "<BR>\n<CENTER><B>Medical Data</B></CENTER><BR>\nBlood Type: [M.fields["blood_type"]]<BR>\nDNA: [M.fields["b_dna"]]<BR>\n<BR>\nDisabilities: [M.fields["disabilities"]]<BR>\nDetails: [M.fields["disabilities_details"]]<BR>\n<BR>\nAllergies: [M.fields["alg"]]<BR>\nDetails: [M.fields["alg_d"]]<BR>\n<BR>\nCurrent Diseases: [M.fields["cdi"]] (per disease info placed in log/comment section)<BR>\nDetails: [M.fields["cdi_d"]]<BR>\n<BR>\nImportant Notes:<BR>\n\t[M.fields["notes"]]<BR>\n<BR>\n<CENTER><B>Comments/Log</B></CENTER><BR>"
+			P.info += "Name: [G.fields[DATACORE_NAME]] ID: [G.fields[DATACORE_ID]]<BR>\nGender: [G.fields[DATACORE_GENDER]]<BR>\nAge: [G.fields[DATACORE_AGE]]<BR>\nFingerprint: [G.fields[DATACORE_FINGERPRINT]]<BR>\nPhysical Status: [G.fields[DATACORE_PHYSICAL_HEALTH]]<BR>\nMental Status: [G.fields[DATACORE_MENTAL_HEALTH]]<BR>"
+			P.info += "<BR>\n<CENTER><B>Medical Data</B></CENTER><BR>\nBlood Type: [M.fields[DATACORE_BLOOD_TYPE]]<BR>\nDNA: [M.fields[DATACORE_BLOOD_DNA]]<BR>\n<BR>\n\nDisabilities: [M.fields[DATACORE_DISABILITIES]]<BR>\nDetails: [M.fields[DATACORE_DISABILITIES_DETAILS]]<BR>\n<BR>\nAllergies: [M.fields["alg"]]<BR>\nDetails: [M.fields["alg_d"]]<BR>\n<BR>\nCurrent Diseases: [M.fields[DATACORE_DISEASES]] (per disease info placed in log/comment section)<BR>\nDetails: [M.fields[DATACORE_DISEASES_DETAILS]]<BR>\n<BR>\nImportant Notes:<BR>\n\t[M.fields[DATACORE_NOTES]]<BR>\n<BR>\n<CENTER><B>Comments/Log</B></CENTER><BR>"
 			var/counter = 1
 			while(M.fields["com_[counter]"])
 				P.info += "[M.fields["com_[counter]"]]<BR>"
 				counter++
 			P.info += "</TT>"
-			P.name = "paper - '[G.fields["name"]]'"
+			P.name = "paper - '[G.fields[DATACORE_NAME]]'"
 			virgin = FALSE //tabbing here is correct- it's possible for people to try and use it
 						//before the records have been generated, so we do this inside the loop.
 
@@ -237,11 +237,8 @@ GLOBAL_LIST_EMPTY(employmentCabinets)
 
 /obj/structure/filingcabinet/employment/proc/fillCurrent()
 	//This proc fills the cabinet with the current crew.
-	for(var/record in GLOB.data_core.locked)
-		var/datum/data/record/G = record
-		if(!G)
-			continue
-		var/datum/mind/M = G.fields["mindref"]
+	for(var/datum/data/record/G in SSdatacore.get_records(DATACORE_RECORDS_LOCKED))
+		var/datum/mind/M = G.fields[DATACORE_MINDREF]
 		if(M && ishuman(M.current))
 			addFile(M.current)
 

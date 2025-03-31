@@ -20,8 +20,8 @@
 	return GET_BLOOD_REF(path)
 
 /proc/get_blood_dna_color(list/blood_dna)
-	var/datum/blood/blood_type = blood_dna[blood_dna[length(blood_dna)]]
-	return blood_type.color
+	var/datum/blood/blood_type = blood_dna?[blood_dna[length(blood_dna)]]
+	return blood_type?.color
 
 /proc/random_eye_color()
 	switch(pick(20;"brown",20;"hazel",20;"grey",15;"blue",15;"green",1;"amber",1;"albino"))
@@ -158,13 +158,6 @@
 		if(!findname(.))
 			break
 
-/proc/random_unique_plasmaman_name(attempts_to_find_unique_name=10)
-	for(var/i in 1 to attempts_to_find_unique_name)
-		. = capitalize(plasmaman_name())
-
-		if(!findname(.))
-			break
-
 /proc/random_unique_ethereal_name(attempts_to_find_unique_name=10)
 	for(var/i in 1 to attempts_to_find_unique_name)
 		. = capitalize(ethereal_name())
@@ -244,197 +237,6 @@ GLOBAL_LIST_EMPTY(species_list)
 			return "elderly"
 		else
 			return "unknown"
-
-//some additional checks as a callback for for do_afters that want to break on losing health or on the mob taking action
-/mob/proc/break_do_after_checks(list/checked_health, check_clicks)
-	if(check_clicks && next_move > world.time)
-		return FALSE
-	return TRUE
-
-//pass a list in the format list("health" = mob's health var) to check health during this
-/mob/living/break_do_after_checks(list/checked_health, check_clicks)
-	if(islist(checked_health))
-		if(health < checked_health["health"])
-			return FALSE
-		checked_health["health"] = health
-	return ..()
-
-
-/**
- * Timed action involving one mob user. Target is optional, defaulting to user.
- *
- * Checks that `user` does not move, change hands, get stunned, etc. for the
- * given `time`. Returns `TRUE` on success or `FALSE` on failure.
- * Interaction_key is the assoc key under which the do_after is capped, with max_interact_count being the cap. Interaction key will default to target if not set.
- */
-/proc/do_after(atom/movable/user, atom/target, time, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1, image/display)
-	if(!user)
-		return FALSE
-
-	if(!target)
-		target = user
-	if(isnum(target))
-		CRASH("a do_after created by [user] had a target set as [target]- probably intended to be the time instead.")
-	if(isatom(time))
-		CRASH("a do_after created by [user] had a timer of [time]- probably intended to be the target instead.")
-
-	if(!interaction_key)
-		interaction_key = target //Use the direct ref to the target
-	if(interaction_key) //Do we have a interaction_key now?
-		var/current_interaction_count = LAZYACCESS(user.do_afters, interaction_key) || 0
-		if(current_interaction_count >= max_interact_count) //We are at our peak
-			return
-		LAZYSET(user.do_afters, interaction_key, current_interaction_count + 1)
-
-	var/atom/user_loc = user.loc
-	var/atom/target_loc = target.loc
-
-	var/drifting = FALSE
-	if(SSmove_manager.processing_on(user, SSspacedrift))
-		drifting = TRUE
-
-	var/holding
-	if(ismob(user))
-		var/mob/mobuser = user
-		holding = mobuser.get_active_held_item()
-		if(!(timed_action_flags & IGNORE_SLOWDOWNS))
-			time *= mobuser.cached_multiplicative_actions_slowdown
-	else
-		timed_action_flags |= IGNORE_HELD_ITEM|IGNORE_INCAPACITATED|IGNORE_SLOWDOWNS|DO_PUBLIC
-
-	var/datum/progressbar/progbar
-	if(progress)
-		if(timed_action_flags & DO_PUBLIC)
-			progbar = new /datum/world_progressbar(user, time, display)
-		else
-			progbar = new(user, time, target || user)
-
-	var/endtime = world.time + time
-	var/starttime = world.time
-	. = TRUE
-	while (world.time < endtime)
-		stoplag(1)
-
-		if(!QDELETED(progbar))
-			progbar.update(world.time - starttime)
-
-		if(drifting && !SSmove_manager.processing_on(user, SSspacedrift))
-			drifting = FALSE
-			user_loc = user.loc
-
-		if(
-			QDELETED(user) \
-			|| (!(timed_action_flags & IGNORE_USER_LOC_CHANGE) && !drifting && user.loc != user_loc) \
-			|| (!(timed_action_flags & IGNORE_HELD_ITEM) && user:get_active_held_item() != holding) \
-			|| (!(timed_action_flags & IGNORE_INCAPACITATED) && HAS_TRAIT(user, TRAIT_INCAPACITATED)) \
-			|| (extra_checks && !extra_checks.Invoke()) \
-		)
-			. = FALSE
-			break
-
-		if(user != target && \
-			(QDELETED(target) || (!(timed_action_flags & IGNORE_TARGET_LOC_CHANGE) && target.loc != target_loc)))
-			. = FALSE
-			break
-
-	if(!QDELETED(progbar))
-		progbar.end_progress()
-
-	if(interaction_key)
-		var/reduced_interaction_count = (LAZYACCESS(user.do_afters, interaction_key)) - 1
-		if(reduced_interaction_count > 0) // Not done yet!
-			LAZYSET(user.do_afters, interaction_key, reduced_interaction_count)
-			return
-		LAZYREMOVE(user.do_afters, interaction_key)
-
-
-///Timed action involving at least one mob user and a list of targets. interaction_key is the assoc key under which the do_after is capped under, and the max interaction count is how many of this interaction you can do at once.
-/proc/do_after_mob(mob/user, list/targets, time = 3 SECONDS, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1)
-	if(!user)
-		return FALSE
-	if(!islist(targets))
-		targets = list(targets)
-	if(!length(targets))
-		return FALSE
-	var/user_loc = user.loc
-
-	if(!(timed_action_flags & IGNORE_SLOWDOWNS))
-		time *= user.cached_multiplicative_actions_slowdown
-
-	var/drifting = FALSE
-	if(SSmove_manager.processing_on(user, SSspacedrift))
-		drifting = TRUE
-
-	var/list/originalloc = list()
-
-	for(var/atom/target in targets)
-		originalloc[target] = target.loc
-
-	if(interaction_key)
-		var/current_interaction_count = LAZYACCESS(user.do_afters, interaction_key) || 0
-		if(current_interaction_count >= max_interact_count) //We are at our peak
-			to_chat(user, span_warning("You can't do this at the moment!"))
-			return
-		LAZYSET(user.do_afters, interaction_key, current_interaction_count + 1)
-
-
-	var/holding = user.get_active_held_item()
-	var/datum/progressbar/progbar
-	if(progress)
-		progbar = new(user, time, targets[1])
-
-	var/endtime = world.time + time
-	var/starttime = world.time
-	. = TRUE
-	while(world.time < endtime)
-		stoplag(1)
-
-		if(!QDELETED(progbar))
-			progbar.update(world.time - starttime)
-		if(QDELETED(user) || !length(targets))
-			. = FALSE
-			break
-
-		if(drifting && !SSmove_manager.processing_on(user, SSspacedrift))
-			drifting = FALSE
-			user_loc = user.loc
-
-		if(
-			(!(timed_action_flags & IGNORE_USER_LOC_CHANGE) && !drifting && user_loc != user.loc) \
-			|| (!(timed_action_flags & IGNORE_HELD_ITEM) && user.get_active_held_item() != holding) \
-			|| (!(timed_action_flags & IGNORE_INCAPACITATED) && HAS_TRAIT(user, TRAIT_INCAPACITATED)) \
-			|| (extra_checks && !extra_checks.Invoke()) \
-			)
-			. = FALSE
-			break
-
-		for(var/atom/target as anything in targets)
-			if(
-				(QDELETED(target)) \
-				|| (!(timed_action_flags & IGNORE_TARGET_LOC_CHANGE) && originalloc[target] != target.loc) \
-				)
-				. = FALSE
-				break
-
-		if(!.) // In case the for-loop found a reason to break out of the while.
-			break
-
-	if(!QDELETED(progbar))
-		progbar.end_progress()
-
-	if(interaction_key)
-		var/reduced_interaction_count = (LAZYACCESS(user.do_afters, interaction_key)) - 1
-		if(reduced_interaction_count > 0) // Not done yet!
-			LAZYSET(user.do_afters, interaction_key, reduced_interaction_count)
-			return
-		LAZYREMOVE(user.do_afters, interaction_key)
-
-/// Returns the total amount of do_afters this mob is taking part in
-/mob/proc/do_after_count()
-	var/count = 0
-	for(var/key in do_afters)
-		count += do_afters[key]
-	return count
 
 /proc/is_species(A, species_datum)
 	. = FALSE
@@ -782,6 +584,49 @@ GLOBAL_LIST_EMPTY(species_list)
 			return "groin"
 		else
 			return zone
+
+///Returns a list of strings for a given slot flag.
+/proc/parse_slot_flags(slot_flags)
+	var/list/slot_strings = list()
+	if(slot_flags & ITEM_SLOT_BACK)
+		slot_strings += "back"
+	if(slot_flags & ITEM_SLOT_MASK)
+		slot_strings += "mask"
+	if(slot_flags & ITEM_SLOT_NECK)
+		slot_strings += "neck"
+	if(slot_flags & ITEM_SLOT_HANDCUFFED)
+		slot_strings += "handcuff"
+	if(slot_flags & ITEM_SLOT_LEGCUFFED)
+		slot_strings += "legcuff"
+	if(slot_flags & ITEM_SLOT_BELT)
+		slot_strings += "belt"
+	if(slot_flags & ITEM_SLOT_ID)
+		slot_strings += "id"
+	if(slot_flags & ITEM_SLOT_EARS)
+		slot_strings += "ear"
+	if(slot_flags & ITEM_SLOT_EYES)
+		slot_strings += "glasses"
+	if(slot_flags & ITEM_SLOT_GLOVES)
+		slot_strings += "glove"
+	if(slot_flags & ITEM_SLOT_HEAD)
+		slot_strings += "head"
+	if(slot_flags & ITEM_SLOT_FEET)
+		slot_strings += "shoe"
+	if(slot_flags & ITEM_SLOT_OCLOTHING)
+		slot_strings += "oversuit"
+	if(slot_flags & ITEM_SLOT_ICLOTHING)
+		slot_strings += "undersuit"
+	if(slot_flags & ITEM_SLOT_SUITSTORE)
+		slot_strings += "suit storage"
+	if(slot_flags & (ITEM_SLOT_LPOCKET|ITEM_SLOT_RPOCKET))
+		slot_strings += "pocket"
+	if(slot_flags & ITEM_SLOT_HANDS)
+		slot_strings += "hand"
+	if(slot_flags & ITEM_SLOT_DEX_STORAGE)
+		slot_strings += "dextrous storage"
+	if(slot_flags & ITEM_SLOT_BACKPACK)
+		slot_strings += "backpack"
+	return slot_strings
 
 ///Returns the direction that the initiator and the target are facing
 /proc/check_target_facings(mob/living/initiator, mob/living/target)

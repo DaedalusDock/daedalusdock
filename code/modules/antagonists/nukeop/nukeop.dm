@@ -7,7 +7,6 @@
 	antag_hud_name = "synd"
 	show_to_ghosts = TRUE
 	hijack_speed = 2 //If you can't take out the station, take the shuttle instead.
-	suicide_cry = "FOR THE SYNDICATE!!"
 
 	var/datum/team/nuclear/nuke_team
 	var/always_new_team = FALSE //If not assigned a team by default ops will try to join existing ones, set this to TRUE to always create new team.
@@ -37,9 +36,11 @@
 	return TRUE
 
 /datum/antagonist/nukeop/greet()
+	. = ..()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ops.ogg',100,0, use_reverb = FALSE)
-	to_chat(owner, span_big("You are a [nuke_team ? nuke_team.syndicate_name : "syndicate"] agent!"))
-	owner.announce_objectives()
+
+/datum/antagonist/nukeop/greeting_header()
+	return "<u><span style='font-size: 200%'>You are the [nuke_team ? nuke_team.syndicate_name : "syndicate"] agent</span>"
 
 /datum/antagonist/nukeop/on_gain()
 	give_alias()
@@ -105,7 +106,6 @@
 /datum/antagonist/nukeop/proc/memorize_code()
 	if(nuke_team && nuke_team.tracked_nuke && nuke_team.memorized_code)
 		antag_memory += "<B>[nuke_team.tracked_nuke] Code</B>: [nuke_team.memorized_code]<br>"
-		owner.add_memory(MEMORY_NUKECODE, list(DETAIL_NUKE_CODE = nuke_team.memorized_code, DETAIL_PROTAGONIST = owner.current), story_value = STORY_VALUE_AMAZING, memory_flags = MEMORY_FLAG_NOLOCATION | MEMORY_FLAG_NOPERSISTENCE)
 		to_chat(owner, "The nuclear authorization code is: <B>[nuke_team.memorized_code]</B>")
 	else
 		to_chat(owner, "Unfortunately the syndicate was unable to provide you with nuclear authorization code.")

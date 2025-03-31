@@ -4,7 +4,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf
 	icon = 'icons/turf/floors.dmi'
 	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE// Important for interaction with and visualization of openspace.
-	luminosity = 1
 	explosion_block = 1
 
 	// baseturfs can be either a list or a single turf type.
@@ -118,8 +117,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	// by default, vis_contents is inherited from the turf that was here before
 	if(length(vis_contents))
-		vis_contents.len = 0
-
+		cut_viscontents()
 	assemble_baseturfs()
 
 	if(length(contents))
@@ -134,21 +132,18 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	QUEUE_SMOOTH(src)
 
-	// visibilityChanged() will never hit any path with side effects during mapload
-	if (!mapload)
-		visibilityChanged()
-		if(length(contents))
-			for(var/atom/movable/AM as anything in src)
-				Entered(AM, null)
+	if (!mapload && length(contents))
+		for(var/atom/movable/AM as anything in src)
+			Entered(AM, null)
 
 	var/area/our_area = loc
-	if(!our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
+	if(!our_area.luminosity && always_lit) //Only provide your own lighting if the area doesn't for you
 		add_overlay(global.fullbright_overlay)
 
 	if (z_flags & Z_MIMIC_BELOW)
 		setup_zmimic(mapload)
 
-	if (light_power && light_outer_range)
+	if (light_power && light_outer_range && light_system == COMPLEX_LIGHT)
 		update_light()
 
 	if (opacity)
@@ -181,8 +176,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			qdel(A)
 		return
 
-	visibilityChanged()
-	QDEL_LIST(blueprint_data)
+	if(blueprint_data)
+		QDEL_LIST(blueprint_data)
 	initialized = FALSE
 
 	///ZAS THINGS
@@ -199,7 +194,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		GLOB.station_turfs += src
 	#endif
 
-	vis_contents.len = 0
+	if(length(vis_contents))
+		cut_viscontents()
 
 /// WARNING WARNING
 /// Turfs DO NOT lose their signals when they get replaced, REMEMBER THIS
@@ -637,24 +633,17 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		V.icon_state = "vomitpurp_[pick(1,4)]"
 	else if (toxvomit == VOMIT_TOXIC)
 		V.icon_state = "vomittox_[pick(1,4)]"
+
 	if (purge_ratio && iscarbon(M))
 		clear_reagents_to_vomit_pool(M, V, purge_ratio)
 
 /proc/clear_reagents_to_vomit_pool(mob/living/carbon/M, obj/effect/decal/cleanable/vomit/V, purge_ratio = 0.1)
-	var/obj/item/organ/stomach/belly = M.getorganslot(ORGAN_SLOT_STOMACH)
-	if(!belly?.reagents.total_volume)
+	var/datum/reagents/belly_reagents = M.get_ingested_reagents()
+	if(!belly_reagents?.total_volume)
 		return
-	var/chemicals_lost = belly.reagents.total_volume * purge_ratio
-	belly.reagents.trans_to(V, chemicals_lost, transfered_by = M)
-	//clear the stomach of anything even not food
-	for(var/bile in belly.reagents.reagent_list)
-		var/datum/reagent/reagent = bile
-		if(!belly.food_reagents[reagent.type])
-			belly.reagents.remove_reagent(reagent.type, min(reagent.volume, 10))
-		else
-			var/bit_vol = reagent.volume - belly.food_reagents[reagent.type]
-			if(bit_vol > 0)
-				belly.reagents.remove_reagent(reagent.type, min(bit_vol, 10))
+
+	var/chemicals_lost = belly_reagents.total_volume * purge_ratio
+	belly_reagents.trans_to(V, chemicals_lost, transfered_by = M)
 
 //Whatever happens after high temperature fire dies out or thermite reaction works.
 //Should return new turf
@@ -690,19 +679,20 @@ GLOBAL_LIST_EMPTY(station_turfs)
  * Returns adjacent turfs to this turf that are reachable, in all cardinal directions
  *
  * Arguments:
- * * caller: The movable, if one exists, being used for mobility checks to see what tiles it can reach
+ * * invoker: The movable, if one exists, being used for mobility checks to see what tiles it can reach
  * * ID: An ID card that decides if we can gain access to doors that would otherwise block a turf
  * * simulated_only: Do we only worry about turfs with simulated atmos, most notably things that aren't space?
  * * no_id: When true, doors with public access will count as impassible
 */
-/turf/proc/reachableAdjacentTurfs(atom/movable/caller, ID, simulated_only, no_id = FALSE)
+/turf/proc/reachableAdjacentTurfs(atom/movable/invoker, list/access, simulated_only, no_id = FALSE)
 	. = list()
 
+	var/datum/can_pass_info/pass_info = new(invoker, access, no_id)
 	for(var/iter_dir in GLOB.cardinals)
 		var/turf/turf_to_check = get_step(src,iter_dir)
 		if(!turf_to_check || (simulated_only && isspaceturf(turf_to_check)))
 			continue
-		if(turf_to_check.density || LinkBlockedWithAccess(turf_to_check, caller, ID, no_id = no_id))
+		if(turf_to_check.density || LinkBlockedWithAccess(turf_to_check, pass_info))
 			continue
 		. += turf_to_check
 
@@ -714,6 +704,15 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /turf/proc/TakeTemperature(temp)
 	temperature += temp
+
+/// Sets underfloor accessibility
+/turf/proc/update_underfloor_accessibility()
+	underfloor_accessibility = initial(underfloor_accessibility)
+	if(underfloor_accessibility == UNDERFLOOR_HIDDEN)
+		return
+
+	if(locate(/obj/structure/overfloor_catwalk) in src)
+		underfloor_accessibility = UNDERFLOOR_INTERACTABLE
 
 /turf/proc/is_below_sound_pressure()
 	var/datum/gas_mixture/GM = unsafe_return_air()

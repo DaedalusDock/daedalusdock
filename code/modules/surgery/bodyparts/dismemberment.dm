@@ -36,8 +36,6 @@
 			limb_owner.bleed(rand(20, 40))
 		stump = create_stump()
 
-	limb_owner.mind?.add_memory(MEMORY_DISMEMBERED, list(DETAIL_LOST_LIMB = src, DETAIL_PROTAGONIST = limb_owner), story_value = STORY_VALUE_AMAZING)
-
 	// At this point the limb has been removed from it's parent mob.
 	limb_owner.apply_pain(60, body_zone, "OH GOD MY [uppertext(plaintext_zone)]!!!", TRUE)
 	drop_limb()
@@ -170,6 +168,7 @@
 	bodypart_flags |= BP_CUT_AWAY
 
 	if(!special)
+		phantom_owner.hud_used?.update_locked_slots()
 		if(phantom_owner.dna)
 			for(var/datum/mutation/human/mutation as anything in phantom_owner.dna.mutations) //some mutations require having specific limbs to be kept.
 				if(mutation.limb_req && mutation.limb_req == body_zone)
@@ -184,7 +183,7 @@
 
 	remove_splint()
 
-	update_icon_dropped()
+	update_icon_dropped(update_limb = FALSE) // Limb updated above
 	synchronize_bodytypes(phantom_owner)
 
 	phantom_owner.update_health_hud() //update the healthdoll
@@ -283,10 +282,10 @@
 			var/atom/movable/screen/inventory/hand/associated_hand = arm_owner.hud_used.hand_slots["[held_index]"]
 			if(associated_hand)
 				associated_hand.update_appearance()
-		if(arm_owner.gloves)
-			arm_owner.dropItemToGround(arm_owner.gloves, TRUE)
-		arm_owner.update_worn_gloves() //to remove the bloody hands overlay
-	return ..()
+	. = ..()
+	if(arm_owner.num_hands == 0)
+		arm_owner.dropItemToGround(arm_owner.gloves, TRUE)
+	arm_owner.update_worn_gloves() //to remove the bloody hands overlay
 
 /obj/item/bodypart/leg/drop_limb(special)
 	if(owner && !special)
@@ -318,7 +317,7 @@
 	var/mob/living/carbon/human/old_owner = owner
 	. = ..()
 
-	old_owner.update_name()
+	old_owner.update_appearance(UPDATE_NAME)
 
 	if(!special)
 		if(brain?.brainmob)
@@ -389,6 +388,14 @@
 		remove_surgeries_from_mob(new_limb_owner)
 		bodypart_flags &= ~BP_CUT_AWAY
 
+	else
+		// Handle jaundiced limbs being dismembered.
+		if(can_be_jaundiced())
+			if(new_limb_owner.undergoing_jaundice() == JAUNDICE_SKIN)
+				add_color_override("#f4e97f", LIMB_COLOR_JAUNDICE)
+			else
+				remove_color_override(LIMB_COLOR_JAUNDICE)
+
 	for(var/obj/item/organ/limb_organ as anything in contained_organs)
 		limb_organ.Insert(new_limb_owner, special)
 
@@ -411,6 +418,9 @@
 	new_limb_owner.updatehealth()
 	new_limb_owner.update_body()
 	new_limb_owner.update_damage_overlays()
+
+	if(!special)
+		new_limb_owner.hud_used?.update_locked_slots()
 	return TRUE
 
 /obj/item/bodypart/head/attach_limb(mob/living/carbon/new_head_owner, special = FALSE, abort = FALSE)

@@ -133,6 +133,8 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			src << link(href_list["link"])
 	if (hsrc)
 		var/datum/real_src = hsrc
+		if(istext(real_src))
+			real_src = locate(real_src)
 		if(QDELETED(real_src))
 			return
 
@@ -233,6 +235,17 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	GLOB.clients += src
 	GLOB.directory[ckey] = src
 
+	var/reconnecting = FALSE
+	if(GLOB.persistent_clients_by_ckey[ckey])
+		reconnecting = TRUE
+		persistent_client = GLOB.persistent_clients_by_ckey[ckey]
+		persistent_client.byond_version = byond_build
+		persistent_client.byond_build = byond_build
+	else
+		persistent_client = new(ckey)
+		persistent_client.byond_version = byond_version
+		persistent_client.byond_build = byond_build
+
 	// Instantiate stat panel
 	stat_panel = new(src, "statbrowser")
 	stat_panel.subscribe(src, PROC_REF(on_stat_panel_message))
@@ -270,10 +283,12 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		if(isnull(address) || (address in localhost_addresses))
 			var/datum/admin_rank/localhost_rank = new("!localhost!", R_EVERYTHING, R_DBRANKS, R_EVERYTHING) //+EVERYTHING -DBRANKS *EVERYTHING
 			new /datum/admins(localhost_rank, ckey, 1, 1)
+
 	//preferences datum - also holds some persistent data for the client (because we may as well keep these datums to a minimum)
 	prefs = GLOB.preferences_datums[ckey]
 	if(prefs)
 		prefs.parent = src
+		prefs.load_savefile() // just to make sure we have the latest data
 		prefs.apply_all_client_preferences()
 	else
 		prefs = new /datum/preferences(src)
@@ -287,8 +302,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(fexists("data/server_last_roundend_report.html"))
 		add_verb(src, /client/proc/show_servers_last_roundend_report)
 
-	var/full_version = "[byond_version].[byond_build ? byond_build : "xxx"]"
-	log_access("Login: [key_name(src)] from [address ? address : "localhost"]-[computer_id] || BYOND v[full_version]")
+	log_access("Login: [key_name(src)] from [address ? address : "localhost"]-[computer_id] || BYOND v[persistent_client.full_byond_version()]")
 
 	var/alert_mob_dupe_login = FALSE
 	var/alert_admin_multikey = FALSE
@@ -329,18 +343,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 				else
 					message_admins(span_danger("<B>[message_type]: </B></span><span class='notice'>Connecting player [key_name_admin(src)] has the same [matches] as [joined_player_ckey](no longer logged in)<b>[in_round]</b>. "))
 					log_admin_private("[message_type]: Connecting player [key_name(src)] has the same [matches] as [joined_player_ckey](no longer logged in)[in_round].")
-	var/reconnecting = FALSE
-	if(GLOB.player_details[ckey])
-		reconnecting = TRUE
-		player_details = GLOB.player_details[ckey]
-		player_details.byond_version = full_version
-	else
-		player_details = new(ckey)
-		player_details.byond_version = full_version
-		GLOB.player_details[ckey] = player_details
-
 
 	. = ..() //calls mob.Login()
+
 	if (length(GLOB.stickybanadminexemptions))
 		GLOB.stickybanadminexemptions -= ckey
 		if (!length(GLOB.stickybanadminexemptions))
@@ -352,6 +357,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			add_system_note("Spoofed-Byond-Version", "Detected as using a spoofed byond version.")
 			log_suspicious_login("Failed Login: [key] - Spoofed byond version")
 			qdel(src)
+			return
 
 		if (num2text(byond_build) in GLOB.blacklisted_builds)
 			log_access("Failed login: [key] - blacklisted byond version")
@@ -363,44 +369,6 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			else
 				qdel(src)
 				return
-
-	if(CONFIG_GET(flag/panic_bunker) && CONFIG_GET(flag/panic_bunker_discord_require))
-		if(!SSdbcore.Connect())
-			var/msg = "Database connection failure. Key [key] not checked for Discord account requirement."
-
-			if(!CONFIG_GET(flag/sql_enabled))
-				msg += "\nDB IS NOT ENABLED - THIS IS NOT A BUG\nDiscord account links cannot be checked without a database!"
-
-			log_world(msg)
-			message_admins(msg)
-		else
-			if(!discord_is_link_valid(ckey))
-				restricted_mode = TRUE
-				var/discord_otp = discord_get_or_generate_one_time_token_for_ckey(ckey)
-				var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
-				//These need to be immediate because we're disposing of the client the second we're done with this.
-				usr << browse(
-					"<center>[("[CONFIG_GET(string/panic_bunker_discord_register_message)]")] \
-					<br><br><span style='color:red'>Your One-Time-Password is: [discord_otp]</span> \
-					<br><br>To link your Discord account, head to the Discord Server and paste the following message:<hr/></center><code> \
-					[discord_prefix]verify [discord_otp]</code><hr/> \
-					<center><span style='color:red'>discord.daedalus13.net</span> \
-					<br>Due to technical limitations, we cannot embed this link. Love byond.",
-					"window=discordauth;can_resize=0;can_minimize=0",
-				)
-				to_chat_immediate(src, span_boldnotice("Your One-Time-Password is: [discord_otp]"))
-				to_chat_immediate(src, span_userdanger("DO NOT SHARE THIS OTP WITH ANYONE"))
-				to_chat_immediate(src, span_notice("To link your Discord account, head to the Discord Server and paste the following message:<hr/><code>[discord_prefix]verify [discord_otp]</code><hr/>\n"))
-
-				if(connecting_admin)
-					log_admin("The admin [key] has been allowed to bypass the Discord account link requirement")
-					message_admins(span_adminnotice("The admin [key] has been allowed to bypass the Discord account link requirement"))
-					to_chat(src, "As an admin, you have been allowed to bypass the Discord account link requirement")
-
-				else
-					log_access("Failed Login: [key] - No valid Discord account link registered.")
-					qdel(src)
-					return
 
 	if(SSinput.initialized)
 		set_macros()
@@ -431,7 +399,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	connection_time = world.time
 	connection_realtime = world.realtime
 	connection_timeofday = world.timeofday
+
 	winset(src, null, "command=\".configure graphics-hwmode on\"")
+	winset(src, null, "browser-options=byondstorage,devtools,refresh,find")
 
 	var/breaking_version = CONFIG_GET(number/client_error_version)
 	var/breaking_build = CONFIG_GET(number/client_error_build)
@@ -485,6 +455,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		if(memo_message)
 			to_chat(src, memo_message)
 		adminGreet()
+
 	if (mob && reconnecting)
 		var/stealth_admin = mob.client?.holder?.fakekey
 		var/announce_leave = mob.client?.prefs?.read_preference(/datum/preference/toggle/broadcast_login_logout)
@@ -508,11 +479,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	var/cached_player_age = set_client_age_from_db(tdata) //we have to cache this because other shit may change it and we need it's current value now down below.
 	if (isnum(cached_player_age) && cached_player_age == -1) //first connection
 		player_age = 0
-		var/msg = "<b>This server changes default TG preference values to better fit the feel of our server.</b><br>"
-		msg += "We encourage you to try it out to see if you like it.<br>"
-		msg += "You may re-enable modern visuals in the preference menu.<br><br>"
-		msg += "<b>You will only see this message once</b>"
-		src << browse(msg, "window=warning_popup")
+		spawn(0)
+			if(!QDELETED(src))
+				show_soul_message()
 
 	var/nnpa = CONFIG_GET(number/notify_new_player_age)
 	if (isnum(cached_player_age) && cached_player_age == -1) //first connection
@@ -542,7 +511,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	apply_clickcatcher()
 
 	if(prefs.lastchangelog != GLOB.changelog_hash) //bolds the changelog button on the interface so we know there are updates.
-		to_chat(src, span_info("You have unread updates in the changelog."))
+		to_chat(src, systemtext("You have unread updates in the changelog."))
 		if(CONFIG_GET(flag/aggressive_changelog))
 			changelog()
 		else
@@ -573,12 +542,17 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	//Clear the credits browser if it's left over the from the previous round
 	clear_credits()
 
+	//Open to moving this: Pull the player's discord link if one exists:
+	discord_read_linked_id()
+
 	view_size = new(src, getScreenSize(prefs.read_preference(/datum/preference/toggle/widescreen)))
 	view_size.resetFormat()
 	view_size.setZoomMode()
 	Master.UpdateTickRate()
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CLIENT_CONNECT, src)
+
 	fully_created = TRUE
+	SSlobby.client_login(src)
 
 //////////////
 //DISCONNECT//
@@ -600,6 +574,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			deadchat_broadcast(" has disconnected.", "<b>[mob][mob.get_realname_string()]</b>", follow_target = mob, turf_target = get_turf(mob), message_type = DEADCHAT_LOGIN_LOGOUT, admin_only=!announce_join)
 		mob.become_uncliented()
 
+	if(persistent_client)
+		persistent_client.client = null
+
 	GLOB.clients -= src
 	GLOB.directory -= ckey
 	log_access("Logout: [key_name(src)]")
@@ -607,6 +584,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	GLOB.interviews.client_logout(src)
 	GLOB.requests.client_logout(src)
 	SSserver_maint.UpdateHubStatus()
+	if(fully_created)
+		SSlobby.client_logout(src)
+
 	if(obj_window)
 		QDEL_NULL(obj_window)
 	if(holder)
@@ -640,10 +620,82 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	QDEL_NULL(view_size)
 	QDEL_NULL(void)
 	QDEL_NULL(tooltips)
+	QDEL_NULL(parallax_master)
+	QDEL_LIST(parallax_layers_cached)
+	parallax_layers = null
 	seen_messages = null
 	Master.UpdateTickRate()
 	..() //Even though we're going to be hard deleted there are still some things that want to know the destroy is happening
 	return QDEL_HINT_HARDDEL_NOW
+
+/// Checks panic bunker status and applies restricted_mode if necessary. Returns TRUE if the client should be kicked.
+/client/proc/check_panic_bunker()
+	if(ckey in GLOB.interviews.approved_ckeys)
+		return FALSE
+
+	var/is_admin = !!holder
+
+	// Check if user should be added to interview queue
+	if (CONFIG_GET(flag/panic_bunker_interview))
+		if(is_admin)
+			return FALSE
+
+		var/required_living_minutes = CONFIG_GET(number/panic_bunker_living)
+		var/living_minutes = get_exp_living(TRUE)
+		if (required_living_minutes >= living_minutes)
+			restricted_mode = TRUE
+			return FALSE
+
+	// Discord linkage
+	if(CONFIG_GET(flag/panic_bunker_discord_require))
+		if(!SSdbcore.Connect())
+			var/msg = "Database connection failure. Key [key] not checked for Discord account requirement."
+
+			if(!CONFIG_GET(flag/sql_enabled))
+				msg += "\nDB IS NOT ENABLED - THIS IS NOT A BUG\nDiscord account links cannot be checked without a database!"
+
+			log_world(msg)
+			message_admins(msg)
+			return FALSE
+		else
+			if(!discord_is_link_valid())
+				if(is_admin)
+					log_admin("The admin [key] has been allowed to bypass the Discord account link requirement")
+					message_admins(span_adminnotice("The admin [key] has been allowed to bypass the Discord account link requirement"))
+					to_chat(src, "As an admin, you have been allowed to bypass the Discord account link requirement")
+					return FALSE
+				else
+					var/kick = SSlag_switch?.measures[KICK_GUESTS]
+					log_access("Failed Login: [key] - No valid Discord account link registered. [kick ? "" : "They have been permitted to connect as a guest."]")
+					if(kick)
+						restricted_mode = TRUE // Don't bother removing their verbs, theyre about to be booted anyway and verb altering is expensive.
+						var/discord_otp = discord_get_or_generate_one_time_token_for_ckey(ckey)
+						var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
+						//These need to be immediate because we're disposing of the client the second we're done with this.
+						usr << browse(
+							{"
+								<center>
+								<span style='color:red'>Your One-Time-Password is:<br> [discord_otp]</span>
+								<br><br>
+								To link your Discord account, head to the Discord Server and make an entry ticket if you have not already. Then, paste the following into any channel:
+								<hr/>
+								</center>
+								<code>
+									[discord_prefix]verify [discord_otp]
+								</code>
+								<hr/>
+								discord.daedalus13.net (We are unable to embed this link for security reasons.)
+								<br>
+							"},
+							"window=discordauth;can_close=0;can_resize=0;can_minimize=0",
+						)
+						to_chat_immediate(src, span_boldnotice("Your One-Time-Password is: [discord_otp]"))
+						to_chat_immediate(src, span_userdanger("DO NOT SHARE THIS OTP WITH ANYONE"))
+						to_chat_immediate(src, span_notice("To link your Discord account, head to the Discord Server (discord.daedalus13.net) and paste the following message:<hr/><code>[discord_prefix]verify [discord_otp]</code><hr/>\n"))
+						return TRUE
+					else
+						restricted_mode = TRUE
+						return FALSE
 
 /client/proc/set_client_age_from_db(connectiontopic)
 	if (is_guest_key(src.key))
@@ -1141,6 +1193,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=looc")
 				if("Me")
 					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=me")
+	calculate_move_dir()
 
 /client/proc/change_view(new_size)
 	if (isnull(new_size))
@@ -1172,11 +1225,11 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 ///Redirect proc that makes it easier to call the unlock achievement proc. Achievement type is the typepath to the award, user is the mob getting the award, and value is an optional variable used for leaderboard value increments
 /client/proc/give_award(achievement_type, mob/user, value = 1)
-	return player_details.achievements.unlock(achievement_type, user, value)
+	return persistent_client.achievements.unlock(achievement_type, user, value)
 
 ///Redirect proc that makes it easier to get the status of an achievement. Achievement type is the typepath to the award.
 /client/proc/get_award_status(achievement_type, mob/user, value = 1)
-	return player_details.achievements.get_achievement_status(achievement_type)
+	return persistent_client.achievements.get_achievement_status(achievement_type)
 
 ///Gives someone hearted status for OOC, from behavior commendations
 /client/proc/adjust_heart(duration = 24 HOURS)
@@ -1328,3 +1381,34 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	hints.Insert(1, "<div style='text-align: center;font-size: 200%;font-weight: bold'>Craftables<hr></div>")
 
 	to_chat(mob, examine_block("<span class='notice'>[jointext(hints, "<br>")]</span>"))
+
+/// Strip verbs from a client and it's mob.
+/client/proc/strip_verbs()
+	for (var/v in verbs)
+		var/procpath/verb_path = v
+		remove_verb(src, verb_path)
+
+	for (var/v in mob?.verbs)
+		var/procpath/verb_path = v
+		remove_verb(mob, verb_path)
+
+/client/proc/show_soul_message()
+	var/content = {"
+		<div style='width:100%;height:100%'>
+			<fieldset class='computerPane' style='height:100%'>
+				<div class='computerLegend' style='margin: auto;height: 100%'>
+				Welcome to Olympus Outpost, traveler.<br><br>
+
+				You may notice that the station is not run like other stations, and you may have some difficulty adjusting.
+				There's no need to fear, as we provide <b><i>Graphics and Accessibility</i></b> settings in the <b><i>Options</i></b> menu.
+				<br><br>
+				Please enjoy your stay.
+				</div>
+			</fieldset>
+		</div>
+	"}
+
+	var/datum/browser/popup = new(mob, "soulnotice", "Notice of Modification", 660, 270)
+	popup.set_window_options("can_close=1;can_resize=0")
+	popup.set_content(content)
+	popup.open()

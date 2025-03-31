@@ -1,18 +1,33 @@
 @use 'sass:color';
-@use "sass:math";
+@use 'sass:math';
 @use 'sass:meta';
 
-$font-family: monospace;
 $background-radial-opacity: 0.2 !default;
+$color-bg: #ffffff !default;
+$color-fg: #333333 !default;
+$dark-fg: darken($color-fg, 30);
 
-@use '../base.scss';
+@use '../base.scss' with (
+  $color-bg: $color-bg,
+  $color-fg: $color-fg,
+  $font-family: (
+    monospace,
+    Verdana,
+    sans-serif,
+  )
+);
 
 @use '../colors.scss' with (
   $primary: base.$color-fg,
-  $label: base.$color-fg
+  $label: base.$color-fg,
+  $good: base.$color-fg,
+  $bad: base.$color-fg,
+  $average: base.$color-fg
 );
 
 %theme-crt {
+  // Atomic classes
+  @include meta.load-css('../atomic/color.scss');
   @include meta.load-css(
     '../components/Divider.scss',
     $with: ('color': base.$color-fg)
@@ -33,8 +48,7 @@ $background-radial-opacity: 0.2 !default;
     $with: (
       'text-color': base.$color-fg,
       'background-color': base.$color-bg,
-      'border-color': base.$color-fg,
-      'font-family': $font-family
+      'border-color': base.$color-fg
     )
   );
 
@@ -59,7 +73,11 @@ $background-radial-opacity: 0.2 !default;
 
   @include meta.load-css(
     '../components/ProgressBar.scss',
-    $with: ('color-default-fill': base.$color-fg)
+    $with: (
+      'color-default-fill': base.$color-fg,
+      'background-color': $dark-fg,
+      'bg-map': colors.$bg-map
+    )
   );
 
   @include meta.load-css(
@@ -83,21 +101,23 @@ $background-radial-opacity: 0.2 !default;
   @include meta.load-css(
     '../components/Button.scss',
     $with: (
-      'color-default': base.$color-fg,
-      'color-disabled': darken(base.$color-fg, 30)
+      'color-default': $dark-fg,
+      'color-selected': base.$color-fg,
+      'color-disabled': rbga(base.$color-fg, 0),
+      'color-transparent-text': base.$color-fg
     )
   );
 
   @include meta.load-css(
     '../components/Tabs.scss',
     $with: (
-      'tab-color': base.$color-bg,
-      'tab-color-selected': base.$color-fg,
+      'tab-color': $dark-fg,
       'text-color': base.$color-fg,
       'text-color-selected': base.$color-bg,
       'tab-color-hovered': rgba(base.$color-fg, 0.3)
     )
   );
+  @include meta.load-css('../components/LabeledList.scss');
 
   .Layout__content {
     background-image: none;
@@ -110,7 +130,7 @@ $background-radial-opacity: 0.2 !default;
   .Layout__content::after {
     content: ' ';
     display: block;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
@@ -123,7 +143,7 @@ $background-radial-opacity: 0.2 !default;
   .Layout__content::before {
     content: ' ';
     display: block;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
@@ -139,7 +159,9 @@ $background-radial-opacity: 0.2 !default;
         rgba(0, 0, 255, 0.06)
       );
     z-index: 2;
-    background-size: 100% 2px, 3px 100%;
+    background-size:
+      100% 2px,
+      3px 100%;
     pointer-events: none;
   }
 
@@ -153,19 +175,18 @@ $background-radial-opacity: 0.2 !default;
 
   span {
     color: base.$color-fg;
-    font-family: $font-family;
+    font-family: base.$font-family;
     font-weight: bold;
   }
 
   .Button {
-    font-family: $font-family;
+    font-family: base.$font-family;
     font-weight: bold;
     border: 1px solid base.$color-fg;
     &:hover,
-    &:focus,
     &:visited,
     &:target {
-      background-color: base.$color-fg;
+      background-color: rgba(base.$color-fg, 0.5);
       color: base.$color-bg;
     }
   }
@@ -188,7 +209,7 @@ $background-radial-opacity: 0.2 !default;
   }
 
   .Tab__text {
-    font-family: $font-family;
+    font-family: base.$font-family;
   }
 
   .Tabs--horizontal {

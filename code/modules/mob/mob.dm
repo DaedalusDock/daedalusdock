@@ -25,6 +25,8 @@
  * Parent call
  */
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
+	persistent_client?.SetMob(null)
+
 	unset_machine()
 	remove_from_mob_list()
 	remove_from_dead_mob_list()
@@ -105,6 +107,17 @@
 	. = ..()
 	tag = "mob_[next_mob_id++]"
 
+/// Assigns a (c)key to this mob.
+/mob/proc/PossessByPlayer(ckey)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	if(isnull(ckey))
+		return
+
+	if(!istext(ckey))
+		CRASH("Tried to assign a mob a non-text ckey, wtf?!")
+
+	src.ckey = ckey(ckey)
+
 /**
  * set every hud image in the given category active so other people with the given hud can see it.
  * Arguments:
@@ -140,14 +153,13 @@
 	if(!istext(hud_category))
 		return FALSE
 
-	LAZYREMOVE(active_hud_list, hud_category)
-
 	if(ismovable(src))
 		var/atom/movable/AM = src
 		for(var/atom/movable/mimic as anything in AM.get_associated_mimics())
-			mimic.set_hud_image_active(arglist(args))
+			mimic.set_hud_image_inactive(arglist(args))
 
 	if(!update_huds)
+		LAZYREMOVE(active_hud_list, hud_category)
 		return TRUE
 
 	if(exclusive_hud)
@@ -156,6 +168,7 @@
 		for(var/datum/atom_hud/hud_to_update as anything in GLOB.huds_by_category[hud_category])
 			hud_to_update.remove_single_hud_category_on_atom(src, hud_category)
 
+	LAZYREMOVE(active_hud_list, hud_category)
 	return TRUE
 
 /**
@@ -176,26 +189,37 @@
 
 		else
 			var/image/I = image(hint, src, "")
-			I.appearance_flags = RESET_COLOR|RESET_TRANSFORM
+			I.appearance_flags = RESET_COLOR|RESET_TRANSFORM|KEEP_APART
 			hud_list[hud] = I
 
 		set_hud_image_active(hud, update_huds = FALSE) //by default everything is active. but dont add it to huds to keep control.
 
 /// Update the icon_state of an atom hud image.
-/atom/proc/set_hud_image_vars(hud_key, new_state = null, new_pixel_y = 0)
+/atom/proc/set_hud_image_vars(hud_key, new_state = null, new_pixel_y = (get_hud_pixel_y()), pixel_y_only = FALSE)
 	if(isnull(hud_list))
 		return
 
 	var/image/I = hud_list[hud_key]
-	if(isnull(I))
+	if(!isimage(I)) // The hud list can contain lists.
 		return
 
-	I.icon_state = new_state
+	if(!pixel_y_only)
+		I.icon_state = new_state
 	I.pixel_y = new_pixel_y
 
 	if(!isarea(src) && !isturf(src))
 		var/atom/movable/AM = src
-		AM.bound_overlay?.set_hud_image_vars(hud_key, new_state, new_pixel_y)
+		AM.bound_overlay?.set_hud_image_vars(hud_key, new_state, new_pixel_y, pixel_y_only)
+
+/// Update the pixel_y value of all huds attached to us.
+/atom/proc/update_hud_images_height()
+	var/new_pixel_y = get_hud_pixel_y()
+	for(var/hud in hud_list)
+		var/image/I = hud_list[hud]
+		if(!isimage(I) || I.override)
+			continue
+		set_hud_image_vars(hud, new_pixel_y = new_pixel_y, pixel_y_only = TRUE)
+
 /**
  * Return the desc of this mob for a photo
  */
@@ -533,6 +557,21 @@
 	SEND_SIGNAL(src, COMSIG_MOB_RESET_PERSPECTIVE)
 	return TRUE
 
+/// Can this mob examine the desired atom
+/mob/proc/can_examinate(atom/examinify)
+	if(isturf(examinify) && !(sight & SEE_TURFS) && !(examinify in view(client ? client.view : world.view, src)))
+		// shift-click catcher may issue examinate() calls for out-of-sight turfs
+		return FALSE
+
+	if(is_blind() && !blind_examine_check(examinify)) //blind people see things differently (through touch)
+		return FALSE
+
+	return TRUE
+
+/// Insert or change behavior prior to examine, after can_examine passes.
+/mob/proc/pre_examinate(atom/examinify)
+	return TRUE
+
 /**
  * Examine a mob
  *
@@ -547,15 +586,16 @@
 	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(run_examinate), examinify))
 
 /mob/proc/run_examinate(atom/examinify)
+	set waitfor = FALSE
 
-	if(isturf(examinify) && !(sight & SEE_TURFS) && !(examinify in view(client ? client.view : world.view, src)))
-		// shift-click catcher may issue examinate() calls for out-of-sight turfs
+	if(!can_examinate(examinify))
 		return
 
-	if(is_blind() && !blind_examine_check(examinify)) //blind people see things differently (through touch)
+	if(!pre_examinate(examinify))
 		return
 
 	face_atom(examinify)
+
 	var/list/result
 	if(client)
 		LAZYINITLIST(client.recent_examines)
@@ -576,12 +616,12 @@
 		result = examinify.examine(src) // if a tree is examined but no client is there to see it, did the tree ever really exist?
 
 
-	//PARIAH EDIT ADDITION
-	if(result.len)
-		for(var/i = 1, i <= result.len, i++)
-			if(!findtext(result[i], "<hr>"))
-				result[i] += "\n"
-	//PARIAH EDIT END
+	if(result[length(result)] == "") // Pop off a trailing space
+		result.len -= 1
+
+	for(var/i in 1 to length(result) - 1)
+		if(!findtext(result[i], "<hr>"))
+			result[i] += "\n"
 
 	to_chat(src, "<div class='examine_block'><span class='infoplain'>[result.Join()]</span></div>") //PARIAH EDIT CHANGE
 	SEND_SIGNAL(src, COMSIG_MOB_EXAMINATE, examinify)
@@ -590,6 +630,11 @@
 /mob/proc/broadcast_examine(atom/examined)
 	if(examined == src)
 		return
+
+	if(isobj(examined))
+		var/obj/examined_obj = examined
+		if(examined_obj.obj_flags & SECRET_EXAMINE)
+			return
 
 	// If TRUE, the usr's view() for the examined object too
 	var/examining_worn_item = FALSE
@@ -622,6 +667,11 @@
 			to_chat(M, can_see_str)
 		else
 			to_chat(M, cannot_see_str)
+
+/mob/living/broadcast_examine(atom/examined)
+	if(stat != CONSCIOUS)
+		return
+	return ..()
 
 /mob/dead/broadcast_examine(atom/examined)
 	return //Observers arent real the government is lying to you
@@ -744,8 +794,17 @@
 /// possibly delayed verb that finishes the pointing process starting in [/mob/verb/pointed()].
 /// either called immediately or in the tick after pointed() was called, as per the [DEFAULT_QUEUE_OR_CALL_VERB()] macro
 /mob/proc/_pointed(atom/pointing_at)
-	if(client && !(pointing_at in view(client.view, src)))
-		return FALSE
+	if(client)
+		var/list/viewlist = view(client.view, src)
+		if(!(pointing_at in viewlist))
+			if(!ismovable(pointing_at))
+				return FALSE
+
+			// This can also be a turf but, vis_contents bs
+			var/atom/movable/contained_within = pointing_at.loc
+			if(!(pointing_at in contained_within?.vis_contents) || !(contained_within in viewlist))
+				return FALSE
+
 
 	point_at(pointing_at)
 
@@ -843,7 +902,7 @@
 		qdel(M)
 		return
 
-	M.key = key
+	M.PossessByPlayer(key)
 
 
 /**
@@ -1173,12 +1232,12 @@
 	if(change_name)
 		name = real_name
 	if(update_name)
-		update_name()
+		update_appearance(UPDATE_NAME)
 
 /**
  * Fully update the name of a mob
  *
- * This will update a mob's name, real_name, mind.name, GLOB.data_core records, pda, id and traitor text
+ * This will update a mob's name, real_name, mind.name, SSdatacore records, pda, id and traitor text
  *
  * Calling this proc without an oldname will only update the mob and skip updating the pda, id and records ~Carn
  */
@@ -1221,7 +1280,7 @@
 
 	return TRUE
 
-///Updates GLOB.data_core records with new name , see mob/living/carbon/human
+///Updates SSdatacore records with new name , see mob/living/carbon/human
 /mob/proc/replace_records_name(oldname,newname)
 	return
 
@@ -1253,7 +1312,7 @@
 					break
 				search_pda = 0
 
-/mob/proc/update_stat()
+/mob/proc/update_stat(cause_of_death)
 	return
 
 /mob/proc/update_health_hud()
@@ -1294,19 +1353,23 @@
 		. = client.mouse_down_icon
 
 	// Second, mouse up icons
-	if(isnull(.) && (client.mouse_down == FALSE) && client.mouse_up_icon)
+	else if((client.mouse_down == FALSE) && client.mouse_up_icon)
 		. = client.mouse_up_icon
 
 	// Third, mouse override icons
-	if(isnull(.) && client.mouse_override_icon)
+	else if(client.mouse_override_icon)
 		. = client.mouse_override_icon
 
 	// Fourth, examine icon
-	if(isnull(.) && examine_cursor_icon && client.keys_held["Shift"])
+	else if(examine_cursor_icon && client.keys_held["Shift"])
 		. = examine_cursor_icon
 
+	// Fifth, throw_mode
+	else if(throw_mode != THROW_MODE_DISABLED)
+		. = 'icons/effects/mouse_pointers/interact.dmi'
+
 	// Last, the mob decides.
-	if(isnull(.))
+	else
 		. = get_mouse_pointer_icon()
 		. ||= 'icons/effects/mouse_pointers/default.dmi'
 
@@ -1448,7 +1511,7 @@
 
 ///Adjust the nutrition of a mob
 /mob/proc/adjust_nutrition(change) //Honestly FUCK the oldcoders for putting nutrition on /mob someone else can move it up because holy hell I'd have to fix SO many typechecks
-	nutrition = max(0, nutrition + change)
+	set_nutrition(max(0, nutrition + change))
 
 ///Force set the mob nutrition
 /mob/proc/set_nutrition(change) //Seriously fuck you oldcoders.
@@ -1532,7 +1595,7 @@
 	if(!canon_client)
 		return
 
-	for(var/foo in canon_client.player_details.post_logout_callbacks)
+	for(var/foo in persistent_client?.post_logout_callbacks)
 		var/datum/callback/CB = foo
 		CB.Invoke()
 
@@ -1544,25 +1607,25 @@
 	canon_client = null
 
 ///Shows a tgui window with memories
-/mob/verb/memory()
-	set name = "Memories"
+/mob/verb/notes()
+	set name = "Notes"
 	set category = "IC"
-	set desc = "View your character's memories."
+	set desc = "View your notes."
 	if(!mind)
 		var/fail_message = "You have no mind!"
 		if(isobserver(src))
 			fail_message += " You have to be in the current round at some point to have one."
 		to_chat(src, span_warning(fail_message))
 		return
-	if(!mind.memory_panel)
-		mind.memory_panel = new(usr, mind)
-	mind.memory_panel.ui_interact(usr)
+	if(!mind.note_panel)
+		mind.note_panel = new(usr, mind)
+	mind.note_panel.ui_interact(usr)
 
-/datum/memory_panel
+/datum/note_panel
 	var/datum/mind/mind_reference
 	var/client/holder //client of whoever is using this datum
 
-/datum/memory_panel/New(user, mind_reference)//user can either be a client or a mob due to byondcode(tm)
+/datum/note_panel/New(user, mind_reference)//user can either be a client or a mob due to byondcode(tm)
 	if (istype(user, /client))
 		var/client/user_client = user
 		holder = user_client //if its a client, assign it to holder
@@ -1571,35 +1634,69 @@
 		holder = user_mob.client //if its a mob, assign the mob's client to holder
 	src.mind_reference = mind_reference
 
-/datum/memory_panel/Destroy(force)
-	mind_reference.memory_panel = null
+/datum/note_panel/Destroy(force)
+	mind_reference.note_panel = null
 	. = ..()
 
-/datum/memory_panel/ui_state(mob/user)
-	return GLOB.always_state
+/datum/note_panel/ui_state(mob/user)
+	return GLOB.notes_state
 
-/datum/memory_panel/ui_close()
+/datum/note_panel/ui_close()
 	qdel(src)
 
-/datum/memory_panel/ui_interact(mob/user, datum/tgui/ui)
+/datum/note_panel/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "MemoryPanel")
+		ui = new(user, src, "NotePanel")
 		ui.open()
 
-/datum/memory_panel/ui_data(mob/user)
+/datum/note_panel/ui_data(mob/user)
 	var/list/data = list()
 	var/list/memories = list()
 
-	for(var/memory_key in user?.mind.memories)
-		var/datum/memory/memory = user.mind.memories[memory_key]
-		memories += list(list("name" = memory.name, "quality" = memory.story_value))
+	var/list/user_memories = user?.mind.get_notes()
+	for(var/memory_key in user_memories)
+		memories[++memories.len] = list("name" = memory_key, "content" = user_memories[memory_key])
 
 	data["memories"] = memories
 	return data
+
+/datum/note_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
+
+	switch(action)
+		if("UpdateNote")
+			mind_reference.set_note(NOTES_CUSTOM, params["newnote"])
+			return TRUE
 
 /mob/verb/view_skills()
 	set category = "IC"
 	set name = "View Skills"
 
 	mind?.print_levels(src)
+
+/// Makes a client temporarily aware of an appearance via and invisible vis contents object.
+/mob/proc/send_appearance(mutable_appearance/appearance)
+	RETURN_TYPE(/atom/movable/screen)
+	if(!hud_used || isnull(appearance))
+		return
+
+	var/atom/movable/screen/container
+	if(isatom(container))
+		container = appearance
+	else
+		container = new()
+		container.appearance = appearance
+
+	hud_used.vis_holder.add_viscontents(container)
+	addtimer(CALLBACK(src, PROC_REF(remove_appearance), appearance), 5 SECONDS, TIMER_DELETE_ME)
+
+	return container
+
+/mob/proc/remove_appearance(atom/movable/appearance)
+	if(!hud_used)
+		return
+
+	hud_used.vis_holder.remove_viscontents(appearance)

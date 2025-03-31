@@ -31,6 +31,7 @@ GLOBAL_PROTECT(admin_verbs_admin)
 // /datum/admins/proc/show_traitor_panel, /*interface which shows a mob's mind*/ -Removed due to rare practical use. Moved to debug verbs ~Errorage
 	/datum/admins/proc/show_lag_switch_panel,
 	/datum/admins/proc/show_player_panel, /*shows an interface for individual players, with various links (links require additional flags*/
+	/datum/admins/proc/check_death_info, /*Shows the Time of Death interface for the given player*/
 	/datum/verbs/menu/Admin/verb/playerpanel,
 	/client/proc/game_panel, /*game panel, allows to change game-mode etc*/
 	/client/proc/check_ai_laws, /*shows AI and borg laws*/
@@ -80,6 +81,7 @@ GLOBAL_PROTECT(admin_verbs_admin)
 	/datum/admins/proc/known_alts_panel,
 	/datum/admins/proc/paintings_manager,
 	/datum/admins/proc/display_tags,
+	/proc/browse_messages,
 	)
 GLOBAL_LIST_INIT(admin_verbs_ban, list(/client/proc/unban_panel, /client/proc/ban_panel, /client/proc/stickybanpanel))
 GLOBAL_PROTECT(admin_verbs_ban)
@@ -110,6 +112,7 @@ GLOBAL_LIST_INIT(admin_verbs_fun, list(
 	/client/proc/admin_away,
 	/client/proc/add_mob_ability,
 	/client/proc/set_title_music,
+	/client/proc/restore_ghost_character,
 	/datum/admins/proc/station_traits_panel,
 	))
 GLOBAL_PROTECT(admin_verbs_fun)
@@ -748,10 +751,10 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 	if(!istype(T))
 		to_chat(src, span_notice("You can only give a disease to a mob of type /mob/living."), confidential = TRUE)
 		return
-	var/datum/disease/D = input("Choose the disease to give to that guy", "ACHOO") as null|anything in sort_list(SSdisease.diseases, GLOBAL_PROC_REF(cmp_typepaths_asc))
+	var/datum/pathogen/D = input("Choose the disease to give to that guy", "ACHOO") as null|anything in sort_list(subtypesof(/datum/pathogen), GLOBAL_PROC_REF(cmp_typepaths_asc))
 	if(!D)
 		return
-	T.ForceContractDisease(new D, FALSE, TRUE)
+	T.try_contract_pathogen(new D, FALSE, TRUE)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Give Disease") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	log_admin("[key_name(usr)] gave [key_name(T)] the disease [D].")
 	message_admins(span_adminnotice("[key_name_admin(usr)] gave [key_name_admin(T)] the disease [D]."))
@@ -792,7 +795,7 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 
 	holder.deactivate()
 
-	to_chat(src, span_interface("You are now a normal player."))
+	to_chat(src, systemtext("You are now a normal player."))
 	log_admin("[src] deadminned themselves.")
 	message_admins("[src] deadminned themselves.")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Deadmin")
@@ -958,7 +961,7 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 		// Finally, ensure the minds are tracked and in the manifest.
 		SSticker.minds += character.mind
 		if(ishuman(character))
-			GLOB.data_core.manifest_inject(character)
+			SSdatacore.manifest_inject(character)
 
 		number_made++
 		CHECK_TICK
@@ -1014,7 +1017,12 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 		to_chat(usr, span_adminnotice("You cannot set the gamemode after the round has started!"))
 		return
 
-	var/gamemode_path = input(usr, "Select Gamemode", "Set Gamemode") as null|anything in subtypesof(/datum/game_mode)
+	var/list/selectable_gamemodes = subtypesof(/datum/game_mode)
+	for(var/datum/game_mode/path as anything in selectable_gamemodes)
+		if(isabstract(path))
+			selectable_gamemodes -= path
+
+	var/gamemode_path = input(usr, "Select Gamemode", "Set Gamemode") as null|anything in selectable_gamemodes
 	if(!gamemode_path)
 		return
 

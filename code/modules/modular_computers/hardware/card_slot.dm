@@ -10,16 +10,17 @@
 	var/current_identification = null
 	var/current_job = null
 
+/obj/item/computer_hardware/card_slot/Destroy()
+	if(stored_card) //If you didn't expect this behavior for some dumb reason, do something different instead of directly destroying the slot
+		QDEL_NULL(stored_card)
+	return ..()
+
 ///What happens when the ID card is removed (or deleted) from the module, through try_eject() or not.
 /obj/item/computer_hardware/card_slot/Exited(atom/movable/gone, direction)
 	if(stored_card == gone)
 		stored_card = null
 		if(holder)
-			if(holder.active_program)
-				holder.active_program.event_idremoved(0)
-			for(var/p in holder.idle_threads)
-				var/datum/computer_file/program/computer_program = p
-				computer_program.event_idremoved(1)
+			holder.notify_id_removed(device_type)
 
 			holder.update_slot_icon()
 
@@ -29,15 +30,11 @@
 					human_wearer.sec_hud_set_ID()
 	return ..()
 
-/obj/item/computer_hardware/card_slot/Destroy()
-	if(stored_card) //If you didn't expect this behavior for some dumb reason, do something different instead of directly destroying the slot
-		QDEL_NULL(stored_card)
-	return ..()
-
 /obj/item/computer_hardware/card_slot/GetAccess()
-	var/list/total_access
+	var/list/total_access = list()
 	if(stored_card)
 		total_access = stored_card.GetAccess()
+
 	var/obj/item/computer_hardware/card_slot/card_slot2 = holder?.all_components[MC_CARD2] //Best of both worlds
 	if(card_slot2?.stored_card)
 		total_access |= card_slot2.stored_card.GetAccess()
@@ -90,8 +87,8 @@
 			human_wearer.sec_hud_set_ID()
 	holder.update_slot_icon()
 
+	holder.notify_id_inserted(device_type)
 	return TRUE
-
 
 /obj/item/computer_hardware/card_slot/try_eject(mob/living/user = null, forced = FALSE)
 	if(!stored_card)
@@ -105,12 +102,13 @@
 
 	to_chat(user, span_notice("You remove the card from \the [src]."))
 	playsound(src, 'sound/machines/cardreader_desert.ogg', 50, FALSE)
-	holder.update_appearance()
+	holder?.update_appearance()
 
 	stored_card = null
 	current_identification = null
 	current_job = null
 
+	//holder.notify_id_removed(device_type) This is here as a reference, this is actually done in Exitted()
 	return TRUE
 
 /obj/item/computer_hardware/card_slot/screwdriver_act(mob/living/user, obj/item/tool)

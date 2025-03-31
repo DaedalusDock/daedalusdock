@@ -17,7 +17,7 @@
 	if(hud_trait)
 		ADD_TRAIT(user, hud_trait, GLASSES_TRAIT)
 
-/obj/item/clothing/glasses/hud/dropped(mob/living/carbon/human/user)
+/obj/item/clothing/glasses/hud/unequipped(mob/living/carbon/human/user)
 	..()
 	if(!istype(user) || user.glasses != src)
 		return

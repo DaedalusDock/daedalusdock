@@ -3,6 +3,8 @@
 	icon_state = "fullscreen_blocker" // Fullscreen semi transparent icon
 	plane = HUD_PLANE
 	mouse_opacity = MOUSE_OPACITY_ICON
+	private_screen = FALSE
+	default_click = TRUE
 	/// The mob whose cursor we are tracking.
 	var/mob/owner
 	/// Client view size of the scoping mob.

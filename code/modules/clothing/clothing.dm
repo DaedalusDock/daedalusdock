@@ -76,18 +76,6 @@
 	if(!icon_state)
 		item_flags |= ABSTRACT
 
-/obj/item/clothing/MouseDrop(atom/over_object)
-	. = ..()
-	var/mob/M = usr
-
-	if(ismecha(M.loc)) // stops inventory actions in a mech
-		return
-
-	if(!M.incapacitated() && loc == M && istype(over_object, /atom/movable/screen/inventory/hand))
-		var/atom/movable/screen/inventory/hand/H = over_object
-		if(M.putItemFromInventoryInHandIfPossible(src, H.held_index))
-			add_fingerprint(usr)
-
 //This code is cursed, moths are cursed, and someday I will destroy it. but today is not that day.
 /obj/item/food/clothing
 	name = "temporary moth clothing snack item"
@@ -201,12 +189,6 @@
 		(.):Insert(1, "Armor Information")
 		(.):Insert(2, jointext(armor_info, ""))
 
-	if(clothing_flags & STOPSPRESSUREDAMAGE)
-		. += "- Wearing [gender == PLURAL ? "these" : "it"] will protect you from the vacuum of space."
-
-	if(clothing_flags & THICKMATERIAL)
-		. += "- The material is exceptionally thick."
-
 	if(!isnull(min_cold_protection_temperature) && min_cold_protection_temperature >= SPACE_SUIT_MIN_TEMP_PROTECT)
 		. += "- [pronoun] provide[pronoun_s] very good protection against very cold temperatures."
 
@@ -217,8 +199,6 @@
 			. += "- [pronoun] offer[pronoun_s] the wearer some protection from fire."
 		if (1601 to 35000)
 			. += "- [pronoun] offer[pronoun_s] the wearer robust protection from fire."
-
-
 
 /// Set the clothing's integrity back to 100%, remove all damage to bodyparts, and generally fix it up
 /obj/item/clothing/proc/repair(mob/user, params)
@@ -307,14 +287,15 @@
 	QDEL_NULL(moth_snack)
 	return ..()
 
-/obj/item/clothing/dropped(mob/living/user)
+/obj/item/clothing/unequipped(mob/living/user)
 	..()
 	if(!istype(user))
 		return
-	UnregisterSignal(user, COMSIG_MOVABLE_MOVED)
-	for(var/trait in clothing_traits)
-		REMOVE_TRAIT(user, trait, "[CLOTHING_TRAIT] [REF(src)]")
 
+	UnregisterSignal(user, COMSIG_MOVABLE_MOVED)
+
+	for(var/trait in clothing_traits)
+		REMOVE_CLOTHING_TRAIT(user, trait)
 
 	if(LAZYLEN(user_vars_remembered))
 		for(var/variable in user_vars_remembered)
@@ -330,8 +311,10 @@
 	if(slot_flags & slot) //Was equipped to a valid slot for this item?
 		if(iscarbon(user) && LAZYLEN(zones_disabled))
 			RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(bristle), override = TRUE)
+
 		for(var/trait in clothing_traits)
-			ADD_TRAIT(user, trait, "[CLOTHING_TRAIT] [REF(src)]")
+			ADD_CLOTHING_TRAIT(user, trait)
+
 		if (LAZYLEN(user_vars_to_edit))
 			for(var/variable in user_vars_to_edit)
 				if(variable in user.vars)
@@ -512,21 +495,6 @@ BLIND     // can't see anything
 	flags_inv ^= visor_flags_inv
 	flags_cover ^= initial(flags_cover)
 	icon_state = "[initial(icon_state)][up ? "up" : ""]"
-	if(visor_vars_to_toggle & VISOR_FLASHPROTECT)
-		flash_protect ^= initial(flash_protect)
-	if(visor_vars_to_toggle & VISOR_TINT)
-		tint ^= initial(tint)
-
-	if(iscarbon(loc))
-		var/mob/living/carbon/C = loc
-		C.update_slots_for_item(src, force_obscurity_update = TRUE)
-
-/obj/item/clothing/head/helmet/space/plasmaman/visor_toggling() //handles all the actual toggling of flags
-	up = !up
-	SEND_SIGNAL(src, COMSIG_CLOTHING_VISOR_TOGGLE, up)
-	clothing_flags ^= visor_flags
-	flags_inv ^= visor_flags_inv
-	icon_state = "[initial(icon_state)]"
 	if(visor_vars_to_toggle & VISOR_FLASHPROTECT)
 		flash_protect ^= initial(flash_protect)
 	if(visor_vars_to_toggle & VISOR_TINT)

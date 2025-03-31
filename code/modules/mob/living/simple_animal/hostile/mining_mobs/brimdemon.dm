@@ -17,7 +17,7 @@
 	ranged_cooldown_time = 5 SECONDS
 	vision_range = 9
 	retreat_distance = 2
-	speed = 3
+	move_delay_modifier = 3
 	move_to_delay = 5
 	maxHealth = 250
 	health = 250
@@ -55,7 +55,7 @@
 	ranged = FALSE
 	return ..()
 
-/mob/living/simple_animal/hostile/asteroid/brimdemon/death()
+/mob/living/simple_animal/hostile/asteroid/brimdemon/death(gibbed, cause_of_death = "Unknown")
 	firing = FALSE
 	cut_overlay("brimdemon_telegraph_dir")
 	move_resist = initial(move_resist)
@@ -209,7 +209,7 @@
 	else
 		STOP_PROCESSING(SSobj, src)
 
-/obj/item/ore_sensor/dropped(mob/user, silent)
+/obj/item/ore_sensor/unequipped(mob/user, silent)
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 

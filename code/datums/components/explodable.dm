@@ -33,7 +33,7 @@
 			RegisterSignal(parent, list(COMSIG_ITEM_ATTACK, COMSIG_ITEM_ATTACK_OBJ, COMSIG_ITEM_HIT_REACT), PROC_REF(explodable_attack))
 			if(isclothing(parent))
 				RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
-				RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
+				RegisterSignal(parent, COMSIG_ITEM_UNEQUIPPED, PROC_REF(on_drop))
 
 	var/atom/atom_parent = parent
 	if(atom_parent.atom_storage)
@@ -89,10 +89,17 @@
 
 	if(!def_zone)
 		return
+
 	if(damagetype != BURN) //Don't bother if it's not fire.
 		return
+
+	if(isbodypart(def_zone))
+		var/obj/item/bodypart/hitting = def_zone
+		def_zone = hitting.body_zone
+
 	if(!is_hitting_zone(def_zone)) //You didn't hit us! ha!
 		return
+
 	detonate()
 
 /datum/component/explodable/proc/on_equip(datum/source, mob/equipper, slot)

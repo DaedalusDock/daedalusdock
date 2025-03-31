@@ -102,35 +102,14 @@
 	cell = locate(/obj/item/stock_parts/cell) in contents
 	update_power()
 
-/obj/item/defibrillator/ui_action_click()
-	INVOKE_ASYNC(src, PROC_REF(toggle_paddles))
+/obj/item/defibrillator/ui_action_click(mob/user, actiontype)
+	INVOKE_ASYNC(src, PROC_REF(toggle_paddles), user)
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/defibrillator/attack_hand(mob/user, list/modifiers)
-	if(loc == user)
-		if(slot_flags == ITEM_SLOT_BACK)
-			if(user.get_item_by_slot(ITEM_SLOT_BACK) == src)
-				ui_action_click()
-			else
-				to_chat(user, span_warning("Put the defibrillator on your back first!"))
-
-		else if(slot_flags == ITEM_SLOT_BELT)
-			if(user.get_item_by_slot(ITEM_SLOT_BELT) == src)
-				ui_action_click()
-			else
-				to_chat(user, span_warning("Strap the defibrillator's belt on first!"))
-		return
-	else if(istype(loc, /obj/machinery/defibrillator_mount))
-		ui_action_click() //checks for this are handled in defibrillator.mount.dm
+	if(equipped_to == user || istype(loc, /obj/machinery/defibrillator_mount))
+		toggle_paddles(user)
 	return ..()
-
-/obj/item/defibrillator/MouseDrop(obj/over_object)
-	. = ..()
-	if(ismob(loc))
-		var/mob/M = loc
-		if(!M.incapacitated() && istype(over_object, /atom/movable/screen/inventory/hand))
-			var/atom/movable/screen/inventory/hand/H = over_object
-			M.putItemFromInventoryInHandIfPossible(src, H.held_index)
 
 /obj/item/defibrillator/screwdriver_act(mob/living/user, obj/item/tool)
 	if(cell)
@@ -143,7 +122,8 @@
 
 /obj/item/defibrillator/attackby(obj/item/W, mob/user, params)
 	if(W == paddles)
-		toggle_paddles()
+		toggle_paddles(user)
+
 	else if(istype(W, /obj/item/stock_parts/cell))
 		var/obj/item/stock_parts/cell/C = W
 		if(cell)
@@ -159,6 +139,13 @@
 			update_power()
 	else
 		return ..()
+
+/obj/item/defibrillator/AltClick(mob/user)
+	. = ..()
+	if(on || !user.canUseTopic(src, USE_CLOSE|USE_NEED_HANDS))
+		return
+
+	toggle_paddles(user)
 
 /obj/item/defibrillator/emag_act(mob/user)
 	if(safety)
@@ -188,47 +175,52 @@
 		playsound(src, 'sound/machines/defib_saftyOn.ogg', 50, FALSE)
 	update_power()
 
-/obj/item/defibrillator/proc/toggle_paddles()
+/obj/item/defibrillator/verb/toggle_paddles_verb()
 	set name = "Toggle Paddles"
 	set category = "Object"
+	set src in view(1)
+
+	var/mob/living/user = usr
+	if(!istype(user) || !user.canUseTopic(src, USE_CLOSE|USE_NEED_HANDS))
+		return
+
+	toggle_paddles(user)
+
+/// Equips or unequips paddles. Overloaded AF.
+/obj/item/defibrillator/proc/toggle_paddles(mob/living/user)
 	on = !on
 
-	var/mob/living/carbon/user = usr
 	if(on)
 		//Detach the paddles into the user's hands
-		if(!usr.put_in_hands(paddles))
+		if(!user.put_in_hands(paddles))
 			on = FALSE
 			to_chat(user, span_warning("You need a free hand to hold the paddles!"))
 			update_power()
-			return
+			return FALSE
 	else
 		//Remove from their hands and back onto the defib unit
-		remove_paddles(user)
+		remove_paddles()
 
 	update_power()
 	update_action_buttons()
-
+	return TRUE
 
 /obj/item/defibrillator/equipped(mob/user, slot)
 	..()
 	if((slot_flags == ITEM_SLOT_BACK && slot != ITEM_SLOT_BACK) || (slot_flags == ITEM_SLOT_BELT && slot != ITEM_SLOT_BELT))
-		remove_paddles(user)
+		remove_paddles()
 		update_power()
 
 /obj/item/defibrillator/item_action_slot_check(slot, mob/user)
 	if(slot == user.getBackSlot())
 		return 1
 
-/obj/item/defibrillator/proc/remove_paddles(mob/user) //this fox the bug with the paddles when other player stole you the defib when you have the paddles equiped
-	if(ismob(paddles.loc))
-		var/mob/M = paddles.loc
-		M.dropItemToGround(paddles, TRUE)
-	return
+/obj/item/defibrillator/proc/remove_paddles() //this fox the bug with the paddles when other player stole you the defib when you have the paddles equiped
+	paddles.equipped_to?.dropItemToGround(paddles, TRUE)
 
 /obj/item/defibrillator/Destroy()
 	if(on)
-		var/M = get(paddles, /mob)
-		remove_paddles(M)
+		remove_paddles()
 	QDEL_NULL(paddles)
 	QDEL_NULL(cell)
 	return ..()
@@ -344,7 +336,17 @@
 
 /obj/item/shockpaddles/Initialize(mapload)
 	. = ..()
+	ADD_TRAIT(src, TRAIT_NO_STORAGE_INSERT, TRAIT_GENERIC) //stops shockpaddles from being inserted in BoH
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS|ITEM_SLOT_BACK)
+	if(!req_defib)
+		return
+
+	if (!loc || !istype(loc, /obj/item/defibrillator)) //To avoid weird issues from admin spawns
+		return INITIALIZE_HINT_QDEL
+
+	defib = loc
+	busy = FALSE
+	update_appearance()
 
 /obj/item/shockpaddles/Destroy()
 	defib = null
@@ -355,6 +357,17 @@
 	if(!req_defib)
 		return
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(check_range))
+
+/obj/item/shockpaddles/attack_self(mob/user, modifiers)
+	. = ..()
+	if(.)
+		return
+
+	if(wielded)
+		unwield(user)
+	else
+		wield(user)
+	return TRUE
 
 /obj/item/shockpaddles/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
@@ -390,17 +403,6 @@
 	cooldown = FALSE
 	update_appearance()
 
-/obj/item/shockpaddles/Initialize(mapload)
-	. = ..()
-	ADD_TRAIT(src, TRAIT_NO_STORAGE_INSERT, TRAIT_GENERIC) //stops shockpaddles from being inserted in BoH
-	if(!req_defib)
-		return //If it doesn't need a defib, just say it exists
-	if (!loc || !istype(loc, /obj/item/defibrillator)) //To avoid weird issues from admin spawns
-		return INITIALIZE_HINT_QDEL
-	defib = loc
-	busy = FALSE
-	update_appearance()
-
 /obj/item/shockpaddles/suicide_act(mob/user)
 	user.visible_message(span_danger("[user] is putting the live paddles on [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if(req_defib)
@@ -415,7 +417,7 @@
 		icon_state = "[base_icon_state][wielded]_cooldown"
 	return ..()
 
-/obj/item/shockpaddles/dropped(mob/user)
+/obj/item/shockpaddles/unequipped(mob/user)
 	. = ..()
 	if(user)
 		UnregisterSignal(user, COMSIG_MOVABLE_MOVED)
@@ -501,7 +503,7 @@
 
 /obj/item/shockpaddles/proc/shock_pulling(dmg, mob/H)
 	for(var/mob/living/M in H.recursively_get_all_grabbers())
-		if(M.electrocute_act(dmg, H))
+		if(M.electrocute_act(dmg))
 			M.visible_message(span_danger("[M] is electrocuted by [M.p_their()] contact with [H]!"))
 			M.emote("scream")
 

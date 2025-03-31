@@ -202,6 +202,9 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 
 /datum/objective/assassinate/update_explanation_text()
 	..()
+	if(target)
+		RegisterSignal(target, COMSIG_LIVING_DEATH, PROC_REF(register_target_death), TRUE)
+
 	if(target?.current)
 		explanation_text = "Assassinate [target.name], the [!target_role_type ? target.assigned_role.title : target.special_role]."
 	else
@@ -209,6 +212,11 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 
 /datum/objective/assassinate/admin_edit(mob/admin)
 	admin_simple_target_pick(admin)
+
+/datum/objective/assassinate/proc/register_target_death(mob/living/dead_guy, gibbed)
+	SIGNAL_HANDLER
+	completed = TRUE
+	UnregisterSignal(dead_guy, COMSIG_LIVING_DEATH)
 
 /datum/objective/mutiny
 	name = "mutiny"

@@ -48,7 +48,8 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/syndicate/bridge)
 "ak" = (
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/shuttle/syndicate/hallway)
 "al" = (
 /obj/machinery/computer/camera_advanced/syndie,
@@ -69,7 +70,8 @@
 /obj/structure/chair/office/tactical{
 	dir = 8
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/shuttle/syndicate/bridge)
 "ap" = (
 /turf/open/floor/iron/dark,
@@ -84,7 +86,8 @@
 /obj/structure/chair/office/tactical{
 	dir = 4
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/shuttle/syndicate/bridge)
 "as" = (
 /obj/effect/turf_decal/siding/thinplating_new/dark{
@@ -240,7 +243,8 @@
 /turf/open/floor/plating,
 /area/shuttle/syndicate/airlock)
 "bi" = (
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/shuttle/syndicate/engineering)
 "bj" = (
 /turf/closed/wall/r_wall/syndicate/nodiagonal,
@@ -631,7 +635,8 @@
 /turf/closed/wall/r_wall/syndicate,
 /area/shuttle/syndicate/engineering)
 "dz" = (
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/shuttle/syndicate/medical)
 "el" = (
 /obj/machinery/light/directional/east,
@@ -704,7 +709,8 @@
 /area/shuttle/syndicate/eva)
 "lJ" = (
 /obj/effect/turf_decal/siding/thinplating_new,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/shuttle/syndicate/medical)
 "mj" = (
 /obj/effect/turf_decal/tile/red/half{
@@ -769,7 +775,8 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/syndicate/eva)
 "tG" = (
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/shuttle/syndicate/bridge)
 "tM" = (
 /turf/open/floor/iron/dark/textured_corner{

@@ -32,7 +32,7 @@
 	if(!can_fire())
 		attempt_reload()
 
-/obj/item/gun/energy/recharge/dropped()
+/obj/item/gun/energy/recharge/unequipped()
 	. = ..()
 	if(!QDELING(src) && !holds_charge)
 		// Put it on a delay because moving item from slot to hand
@@ -44,7 +44,7 @@
 	attempt_reload()
 
 /obj/item/gun/energy/recharge/proc/empty_if_not_held()
-	if(!ismob(loc))
+	if(!equipped_to)
 		empty()
 		deltimer(recharge_timerid)
 

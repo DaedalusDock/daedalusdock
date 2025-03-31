@@ -155,6 +155,8 @@ GLOBAL_LIST_INIT(ai_employers, list(
 #define FACTION_SYNDICATE "syndicate"
 ///all the employers that are nanotrasen
 #define FACTION_NANOTRASEN "nanotrasen"
+///flock mobs
+#define FACTION_FLOCK "flock"
 
 #define UPLINK_THEME_SYNDICATE "syndicate"
 
@@ -193,6 +195,9 @@ GLOBAL_LIST_INIT(ai_employers, list(
 
 /// Checks if the given mob is a traitor
 #define IS_TRAITOR(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/traitor))
+
+/// Checks if the given mob is a vampire
+#define IS_VAMPIRE(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/vampire))
 
 /// The dimensions of the antagonist preview icon. Will be scaled to this size.
 #define ANTAGONIST_PREVIEW_ICON_SIZE 96

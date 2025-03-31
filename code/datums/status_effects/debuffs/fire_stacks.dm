@@ -19,7 +19,7 @@
 	/// A particle effect, for things like embers
 	var/obj/effect/abstract/particle_holder/particle_effect
 
-/datum/status_effect/fire_handler/refresh(mob/living/new_owner, new_stacks, forced = FALSE)
+/datum/status_effect/fire_handler/refresh(effect, mob/living/new_owner, new_stacks, forced = FALSE)
 	if(forced)
 		set_stacks(new_stacks)
 	else
@@ -212,7 +212,6 @@
 		amount_to_heat = amount_to_heat ** (BODYTEMP_FIRE_TEMP_SOFTCAP / owner.bodytemperature)
 
 	victim.adjust_bodytemperature(amount_to_heat)
-	victim.mind?.add_memory(MEMORY_FIRE, list(DETAIL_PROTAGONIST = victim), story_value = STORY_VALUE_OKAY)
 
 #undef BODYTEMP_FIRE_TEMP_SOFTCAP
 /**

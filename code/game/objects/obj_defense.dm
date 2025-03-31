@@ -157,8 +157,7 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 /obj/zap_act(power, zap_flags)
 	if(QDELETED(src))
 		return 0
-	obj_flags |= BEING_SHOCKED
-	addtimer(CALLBACK(src, PROC_REF(reset_shocked)), 1 SECONDS)
+	..()
 	return power / 2
 
 //The surgeon general warns that being buckled to certain objects receiving powerful shocks is greatly hazardous to your health
@@ -167,10 +166,7 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 	if(has_buckled_mobs())
 		for(var/m in buckled_mobs)
 			var/mob/living/buckled_mob = m
-			buckled_mob.electrocute_act((clamp(round(strength/400), 10, 90) + rand(-5, 5)), src, flags = SHOCK_TESLA)
-
-/obj/proc/reset_shocked()
-	obj_flags &= ~BEING_SHOCKED
+			buckled_mob.electrocute_act((clamp(round(strength/400), 10, 90) + rand(-5, 5)), flags = SHOCK_USE_AVG_SIEMENS)
 
 ///the obj is deconstructed into pieces, whether through careful disassembly or when destroyed.
 /obj/proc/deconstruct(disassembled = TRUE)

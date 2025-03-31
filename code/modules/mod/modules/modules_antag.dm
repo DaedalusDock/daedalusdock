@@ -26,49 +26,52 @@
 	var/list/spaceproofed = list()
 
 /obj/item/mod/module/armor_booster/on_suit_activation()
-	mod.helmet.flash_protect = FLASH_PROTECTION_WELDER
+	var/obj/item/clothing/head_cover = mod.get_part_from_slot(ITEM_SLOT_HEAD) || mod.get_part_from_slot(ITEM_SLOT_MASK) || mod.get_part_from_slot(ITEM_SLOT_EYES)
+	if(istype(head_cover))
+		head_cover.flash_protect = FLASH_PROTECTION_WELDER
 
 /obj/item/mod/module/armor_booster/on_suit_deactivation(deleting = FALSE)
 	if(deleting)
 		return
-	mod.helmet.flash_protect = initial(mod.helmet.flash_protect)
+
+	var/obj/item/clothing/head_cover = mod.get_part_from_slot(ITEM_SLOT_HEAD) || mod.get_part_from_slot(ITEM_SLOT_MASK) || mod.get_part_from_slot(ITEM_SLOT_EYES)
+	if(istype(head_cover))
+		head_cover.flash_protect = initial(head_cover.flash_protect)
 
 /obj/item/mod/module/armor_booster/on_activation()
-	. = ..()
-	if(!.)
-		return
 	playsound(src, 'sound/mecha/mechmove03.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	mod.slowdown += added_slowdown
 	mod.wearer.update_equipment_speed_mods()
-	var/list/parts = mod.mod_parts + mod
-	for(var/obj/item/part as anything in parts)
+
+	for(var/obj/item/part as anything in mod.get_parts(include_control = TRUE))
 		part.setArmor(part.returnArmor().modifyRating(arglist(armor_values)))
 		if(!remove_pressure_protection || !isclothing(part))
 			continue
+
 		var/obj/item/clothing/clothing_part = part
 		if(clothing_part.clothing_flags & STOPSPRESSUREDAMAGE)
 			clothing_part.clothing_flags &= ~STOPSPRESSUREDAMAGE
 			spaceproofed[clothing_part] = TRUE
 
 /obj/item/mod/module/armor_booster/on_deactivation(display_message = TRUE, deleting = FALSE)
-	. = ..()
-	if(!.)
-		return
 	if(!deleting)
 		playsound(src, 'sound/mecha/mechmove03.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+
 	mod.slowdown -= added_slowdown
 	mod.wearer.update_equipment_speed_mods()
-	var/list/parts = mod.mod_parts + mod
 	var/list/removed_armor = armor_values.Copy()
 	for(var/armor_type in removed_armor)
 		removed_armor[armor_type] = -removed_armor[armor_type]
-	for(var/obj/item/part as anything in parts)
+
+	for(var/obj/item/part as anything in mod.get_parts(include_control = TRUE))
 		part.setArmor(part.returnArmor().modifyRating(arglist(removed_armor)))
 		if(!remove_pressure_protection || !isclothing(part))
 			continue
+
 		var/obj/item/clothing/clothing_part = part
 		if(spaceproofed[clothing_part])
 			clothing_part.clothing_flags |= STOPSPRESSUREDAMAGE
+
 	spaceproofed = list()
 
 /obj/item/mod/module/armor_booster/generate_worn_overlay(mutable_appearance/standing)
@@ -88,6 +91,7 @@
 	idle_power_cost = DEFAULT_CHARGE_DRAIN * 0.5
 	use_power_cost = DEFAULT_CHARGE_DRAIN * 2
 	incompatible_modules = list(/obj/item/mod/module/energy_shield)
+	required_slots = list(ITEM_SLOT_BACK)
 	/// Max charges of the shield.
 	var/max_charges = 3
 	/// The time it takes for the first charge to recover.
@@ -114,18 +118,18 @@
 /obj/item/mod/module/energy_shield/on_suit_activation()
 	mod.AddComponent(/datum/component/shielded, max_charges = max_charges, recharge_start_delay = recharge_start_delay, charge_increment_delay = charge_increment_delay, \
 	charge_recovery = charge_recovery, lose_multiple_charges = lose_multiple_charges, recharge_path = recharge_path, starting_charges = charges, shield_icon_file = shield_icon_file, shield_icon = shield_icon)
-	RegisterSignal(mod.wearer, COMSIG_HUMAN_CHECK_SHIELDS, PROC_REF(shield_reaction))
+	RegisterSignal(mod.wearer, COMSIG_LIVING_CHECK_BLOCK, PROC_REF(shield_reaction))
 
 /obj/item/mod/module/energy_shield/on_suit_deactivation(deleting = FALSE)
 	var/datum/component/shielded/shield = mod.GetComponent(/datum/component/shielded)
 	charges = shield.current_charges
 	qdel(shield)
-	UnregisterSignal(mod.wearer, COMSIG_HUMAN_CHECK_SHIELDS)
+	UnregisterSignal(mod.wearer, COMSIG_LIVING_CHECK_BLOCK)
 
 /obj/item/mod/module/energy_shield/proc/shield_reaction(mob/living/carbon/human/owner, atom/movable/hitby, damage = 0, attack_text = "the attack", attack_type = MELEE_ATTACK, armor_penetration = 0)
 	if(SEND_SIGNAL(mod, COMSIG_ITEM_CHECK_BLOCK, owner, hitby, attack_text, 0, damage, attack_type) & COMPONENT_CHECK_BLOCK_BLOCKED)
 		drain_power(use_power_cost)
-		return SHIELD_BLOCK
+		return SUCCESSFUL_BLOCK
 	return NONE
 
 /obj/item/mod/module/energy_shield/wizard
@@ -143,6 +147,7 @@
 	shield_icon_file = 'icons/effects/magic.dmi'
 	shield_icon = "mageshield"
 	recharge_path = /obj/item/wizard_armour_charge
+	required_slots = list()
 
 ///Magic Nullifier - Protects you from magic.
 /obj/item/mod/module/anti_magic
@@ -155,6 +160,7 @@
 	icon_state = "magic_nullifier"
 	removable = FALSE
 	incompatible_modules = list(/obj/item/mod/module/anti_magic)
+	required_slots = list(ITEM_SLOT_BACK)
 
 /obj/item/mod/module/anti_magic/on_suit_activation()
 	ADD_TRAIT(mod.wearer, TRAIT_ANTIMAGIC, MOD_TRAIT)
@@ -171,6 +177,7 @@
 		The field will neutralize all magic that comes into contact with the user. \
 		It will not protect the caster from social ridicule."
 	icon_state = "magic_neutralizer"
+	required_slots = list()
 
 /obj/item/mod/module/anti_magic/wizard/on_suit_activation()
 	ADD_TRAIT(mod.wearer, TRAIT_ANTIMAGIC_NO_SELFBLOCK, MOD_TRAIT)
@@ -229,6 +236,7 @@
 	complexity = 1
 	idle_power_cost = DEFAULT_CHARGE_DRAIN * 0.1
 	incompatible_modules = list(/obj/item/mod/module/noslip)
+	required_slots = list(ITEM_SLOT_FEET)
 
 /obj/item/mod/module/noslip/on_suit_activation()
 	ADD_TRAIT(mod.wearer, TRAIT_NO_SLIP_WATER, MOD_TRAIT)
@@ -326,7 +334,7 @@
 		balloon_alert(mod.wearer, "parts cannot be deployed to use this!")
 		playsound(mod, 'sound/machines/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return FALSE
-	on_use()
+	used()
 	SEND_SIGNAL(mod, COMSIG_MOD_MODULE_SELECTED, src)
 
 /obj/item/mod/module/chameleon/on_use()

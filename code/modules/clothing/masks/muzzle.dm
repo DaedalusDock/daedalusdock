@@ -42,7 +42,7 @@
 	///The ammount of damage dealt when the tape piece is ripped off of someone.
 	var/stripping_damage = 0
 
-/obj/item/clothing/mask/muzzle/tape/dropped(mob/living/user)
+/obj/item/clothing/mask/muzzle/tape/unequipped(mob/living/user)
 	. = ..()
 	if(user.get_item_by_slot(ITEM_SLOT_MASK) != src)
 		return

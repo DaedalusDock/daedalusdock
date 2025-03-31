@@ -54,7 +54,7 @@
 		return
 	if(!istype(attacked_with, /obj/item/bodypart/leg/left/robot) && !istype(attacked_with, /obj/item/bodypart/leg/right/robot))
 		return
-	if(ismob(loc))
+	if(equipped_to)
 		user.balloon_alert(user, "drop the helmet first!")
 		return
 	user.balloon_alert(user, "leg attached")

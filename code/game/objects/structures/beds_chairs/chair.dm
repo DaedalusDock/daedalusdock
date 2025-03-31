@@ -235,7 +235,7 @@
 
 /obj/structure/chair/office/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
-	if(has_gravity())
+	if(!forced && !CHECK_MOVE_LOOP_FLAGS(src, MOVEMENT_LOOP_OUTSIDE_CONTROL) && has_gravity())
 		playsound(src, 'sound/effects/roll.ogg', 100, TRUE)
 
 /obj/structure/chair/office/electrify_self(obj/item/assembly/shock_kit/input_shock_kit, mob/user, list/overlays_from_child_procs)
@@ -349,7 +349,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	var/obj/structure/chair/C = new origin_type(get_turf(loc))
 	C.set_custom_materials(custom_materials)
 	TransferComponents(C)
-	C.setDir(dir)
+	C.setDir(user.dir)
 	qdel(src)
 
 /obj/item/chair/proc/smash(mob/living/user)
@@ -368,13 +368,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 /obj/item/chair/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	. = ..()
 	if(prob(50) && ((attack_type == UNARMED_ATTACK) || (attack_type == LEAP_ATTACK)))
-		return TRUE
+		return 100
 
 /obj/item/chair/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
 	if(do_message)
 		if(((attack_type == UNARMED_ATTACK) || (attack_type == LEAP_ATTACK)))
 			wielder.visible_message(span_danger("[wielder] fends off [attack_text] with [src]!"))
-			return ..(do_sound = FALSE)
+			do_sound = FALSE
+			return ..()
 	return ..()
 
 

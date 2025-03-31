@@ -5,15 +5,13 @@
 	faction = FACTION_STATION
 	total_positions = 0
 	spawn_positions = 2
-	supervisors = "the security team"
 	selection_color = "#bd630a"
 	exp_granted_type = EXP_TYPE_CREW
-	paycheck = PAYCHECK_PRISONER
+	paycheck = PAYCHECK_ZERO //This doesnt actually do anything since prisoners have no department
 
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/prisoner,
-			SPECIES_PLASMAMAN = /datum/outfit/job/prisoner/plasmaman,
 		),
 	)
 
@@ -26,6 +24,7 @@
 
 	family_heirlooms = list(/obj/item/pen/blue)
 	rpg_title = "Defeated Miniboss"
+	default_security_status = CRIMINAL_INCARCERATED
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
 
@@ -40,25 +39,7 @@
 	ears = null
 	shoes = /obj/item/clothing/shoes/sneakers/orange
 
-/datum/outfit/job/prisoner/plasmaman
-	name = "Prisoner (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/prisoner
-	gloves = /obj/item/clothing/gloves/color/plasmaman/black
-	head = /obj/item/clothing/head/helmet/space/plasmaman/prisoner
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
-
 /datum/outfit/job/prisoner/pre_equip(mob/living/carbon/human/H)
 	..()
 	if(prob(1)) // D BOYYYYSSSSS
 		head = /obj/item/clothing/head/beanie/black/dboy
-
-/datum/outfit/job/prisoner/post_equip(mob/living/carbon/human/new_prisoner, visualsOnly)
-	. = ..()
-	if(!length(SSpersistence.prison_tattoos_to_use) || visualsOnly)
-		return
-	var/obj/item/bodypart/tatted_limb = pick(new_prisoner.bodyparts)
-	var/list/tattoo = pick(SSpersistence.prison_tattoos_to_use)
-	tatted_limb.AddComponent(/datum/component/tattoo, tattoo["story"])
-	SSpersistence.prison_tattoos_to_use -= tattoo

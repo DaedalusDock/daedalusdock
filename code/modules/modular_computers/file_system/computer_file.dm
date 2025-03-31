@@ -35,3 +35,19 @@
 		temp.filename = filename
 	temp.filetype = filetype
 	return temp
+
+/// Called when this file is added to a hard drive.
+/datum/computer_file/proc/added_to_drive(obj/item/computer_hardware/hard_drive/drive)
+	return
+
+/// Called when this file is removed from a hard drive.
+/datum/computer_file/proc/deleted_from_drive(obj/item/computer_hardware/hard_drive/drive)
+	return
+
+/// Called when this file is added to a hard drive inside a computer or the hardrive containing it was added.
+/datum/computer_file/proc/added_to_computer(computer)
+	return
+
+/// Called when this file is removed from a hard drive inside a computer or the hardrive containing it was removed.
+/datum/computer_file/proc/removed_from_computer(computer)
+	return

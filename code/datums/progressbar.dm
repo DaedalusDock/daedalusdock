@@ -163,16 +163,14 @@
 			underlay = image(underlay, dir = SOUTH)
 			underlay.filters += filter(type = "outline", size = 1)
 
-		underlay.pixel_y += 2
+		underlay.pixel_y = 2
 		underlay.alpha = 200
 		underlay.plane = GAME_PLANE
 		underlay.layer = FLY_LAYER
 		underlay.appearance_flags = APPEARANCE_UI
 		bar.underlays += underlay
 
-	owner:vis_contents += bar
-	if(owner.bound_overlay)
-		owner.bound_overlay.vis_contents += bar
+	owner.add_viscontents(bar)
 
 	animate(bar, alpha = 255, time = PROGRESSBAR_ANIMATION_TIME, easing = SINE_EASING)
 

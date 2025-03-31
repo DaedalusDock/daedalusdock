@@ -5,6 +5,14 @@
  * Sorting
  */
 
+// Generic listoflist safe add and removal macros:
+///If value is a list, wrap it in a list so it can be used with list add/remove operations
+#define LIST_VALUE_WRAP_LISTS(value) (islist(value) ? list(value) : value)
+///Add an untyped item to a list, taking care to handle list items by wrapping them in a list to remove the footgun
+#define UNTYPED_LIST_ADD(list, item) (list += LIST_VALUE_WRAP_LISTS(item))
+///Remove an untyped item to a list, taking care to handle list items by wrapping them in a list to remove the footgun
+#define UNTYPED_LIST_REMOVE(list, item) (list -= LIST_VALUE_WRAP_LISTS(item))
+
 /*
  * Misc
  */
@@ -586,14 +594,6 @@
 		if(istype(item_type, type))
 			i++
 	return i
-
-/// Returns datum/data/record
-/proc/find_record(field, value, list/inserted_list)
-	for(var/datum/data/record/record_to_check in inserted_list)
-		if(record_to_check.fields[field] == value)
-			return record_to_check
-	return null
-
 
 /**
  * Move a single element from position from_index within a list, to position to_index

@@ -10,7 +10,6 @@
 		/obj/item/reagent_containers/pill/bicaridine = 7,
 		/obj/item/reagent_containers/pill/kelotane = 7,
 		/obj/item/reagent_containers/pill/dylovene = 2,
-		/obj/item/healthanalyzer/wound = 2,
 		/obj/item/stack/medical/bone_gel/twelve = 2
 	)
 	contraband = list(
@@ -18,8 +17,9 @@
 		/obj/item/reagent_containers/pill/morphine = 2,
 	)
 	refill_canister = /obj/item/vending_refill/wallmed
-	default_price = PAYCHECK_HARD //Double the medical price due to being meant for public consumption, not player specfic
-	extra_price = PAYCHECK_HARD * 1.5
+	// These are not meant to be used by medical staff, hence the large cost.
+	default_price = PAYCHECK_ASSISTANT * 4
+	extra_price = PAYCHECK_ASSISTANT * 6
 	payment_department = ACCOUNT_MED
 	tiltable = FALSE
 	light_mask = "wallmed-light-mask"

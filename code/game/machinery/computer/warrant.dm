@@ -6,7 +6,7 @@
 	circuit = /obj/item/circuitboard/computer/warrant
 	light_color = COLOR_SOFT_RED
 	var/screen = null
-	var/datum/data/record/current = null
+	var/datum/data/record/security/current = null
 
 /obj/machinery/computer/warrant/ui_interact(mob/user)
 	. = ..()
@@ -17,7 +17,7 @@
 		if(current)
 			var/background
 			var/notice = ""
-			switch(current.fields["criminal"])
+			switch(current.fields[DATACORE_CRIMINAL_STATUS])
 				if(CRIMINAL_WANTED)
 					background = "background-color:#990000;"
 					notice = "<br>**REPORT TO THE BRIG**"
@@ -35,12 +35,12 @@
 					background = "''" //"'background-color:#FFFFFF;'"
 			dat += "<font size='4'><b>Warrant Data</b></font>"
 			dat += {"<table>
-			<tr><td>Name:</td><td>&nbsp;[current.fields["name"]]&nbsp;</td></tr>
-			<tr><td>ID:</td><td>&nbsp;[current.fields["id"]]&nbsp;</td></tr>
+			<tr><td>Name:</td><td>&nbsp;[current.fields[DATACORE_NAME]]&nbsp;</td></tr>
+			<tr><td>ID:</td><td>&nbsp;[current.fields[DATACORE_ID]]&nbsp;</td></tr>
 			</table>"}
 			dat += {"Criminal Status:<br>
 			<div style='[background] padding: 3px; text-align: center;'>
-			<strong>[current.fields["criminal"]][notice]</strong>
+			<strong>[current.fields[DATACORE_CRIMINAL_STATUS]][notice]</strong>
 			</div>"}
 
 			dat += "<br><br>Citations:"
@@ -54,7 +54,7 @@
 			<th>Amount Due</th>
 			<th>Make Payment</th>
 			</tr>"}
-			for(var/datum/data/crime/c in current.fields["citation"])
+			for(var/datum/data/crime/c in current.fields[DATACORE_CITATIONS])
 				var/owed = c.fine - c.paid
 				dat += {"<tr><td>[c.crimeName]</td>
 				<td>[c.fine] cr</td>
@@ -76,7 +76,7 @@
 			<th>Author</th>
 			<th>Time Added</th>
 			</tr>"}
-			for(var/datum/data/crime/c in current.fields["crim"])
+			for(var/datum/data/crime/c in current.fields[DATACORE_CRIMES])
 				dat += {"<tr><td>[c.crimeName]</td>
 				<td>[c.crimeDetails]</td>
 				<td>[c.author]</td>
@@ -106,15 +106,16 @@
 					return
 				authenticated = scan.registered_name
 				if(authenticated)
-					current = find_record("name", authenticated, GLOB.data_core.security)
+					current = SSdatacore.get_record_by_name(authenticated, DATACORE_RECORDS_SECURITY)
 					playsound(src, 'sound/machines/terminal_on.ogg', 50, FALSE)
+
 		if("Logout")
 			current = null
 			authenticated = null
 			playsound(src, 'sound/machines/terminal_off.ogg', 50, FALSE)
 
 		if("Pay")
-			for(var/datum/data/crime/p in current.fields["citation"])
+			for(var/datum/data/crime/p in current.fields[DATACORE_CITATIONS])
 				if(p.dataId == text2num(href_list["cdataid"]))
 					var/obj/item/stack/spacecash/C = M.is_holding_item_of_type(/obj/item/stack/spacecash)
 					if(istype(C))
@@ -123,7 +124,7 @@
 							to_chat(M, span_warning("[C] doesn't seem to be worth anything!"))
 						else
 							var/diff = p.fine - p.paid
-							GLOB.data_core.payCitation(current.fields["id"], text2num(href_list["cdataid"]), pay)
+							current.pay_citation(text2num(href_list["cdataid"]), pay)
 							to_chat(M, span_notice("You have paid [pay] credit\s towards your fine."))
 							if (pay == diff || pay > diff || pay >= diff)
 								investigate_log("Citation Paid off: <strong>[p.crimeName]</strong> Fine: [p.fine] | Paid off by [key_name(usr)]", INVESTIGATE_RECORDS)
@@ -131,7 +132,7 @@
 
 								var/overflow = pay - diff
 								if(overflow)
-									SSeconomy.spawn_cash_for_amount(overflow, drop_location())
+									SSeconomy.spawn_ones_for_amount(overflow, drop_location())
 							SSblackbox.ReportCitation(text2num(href_list["cdataid"]),"","","","", 0, pay)
 							qdel(C)
 							playsound(src, SFX_TERMINAL_TYPE, 25, FALSE)

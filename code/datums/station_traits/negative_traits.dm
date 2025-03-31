@@ -17,46 +17,10 @@
 /datum/station_trait/distant_supply_lines/on_round_start()
 	SSeconomy.pack_price_modifier *= 1.2
 
-/datum/station_trait/hangover
-	name = "Hangover"
-	trait_type = STATION_TRAIT_NEGATIVE
-	weight = 2
-	show_in_report = TRUE
-	report_message = "Ohh....Man....That mandatory office party from last shift...God that was awesome..I woke up in some random toilet 3 sectors away..."
-	trait_to_give = STATION_TRAIT_HANGOVER
-
-/datum/station_trait/hangover/New()
-	. = ..()
-	RegisterSignal(SSdcs, COMSIG_GLOB_JOB_AFTER_LATEJOIN_SPAWN, PROC_REF(on_job_after_spawn))
-
-/datum/station_trait/hangover/revert()
-	for (var/obj/effect/landmark/start/hangover/hangover_spot in GLOB.start_landmarks_list)
-		QDEL_LIST(hangover_spot.debris)
-
-	return ..()
-
-/datum/station_trait/hangover/proc/on_job_after_spawn(datum/source, datum/job/job, mob/living/spawned_mob)
-	SIGNAL_HANDLER
-
-	if(!prob(35))
-		return
-	var/obj/item/hat = pick(
-		/obj/item/clothing/head/sombrero,
-		/obj/item/clothing/head/fedora,
-		/obj/item/clothing/mask/balaclava,
-		/obj/item/clothing/head/ushanka,
-		/obj/item/clothing/head/cardborg,
-		/obj/item/clothing/head/pirate,
-		/obj/item/clothing/head/cone,
-		)
-	hat = new hat(spawned_mob)
-	spawned_mob.equip_to_slot_or_del(hat, ITEM_SLOT_HEAD)
-
-
 /datum/station_trait/blackout
 	name = "Blackout"
 	trait_type = STATION_TRAIT_NEGATIVE
-	weight = 3
+	weight = 0
 	show_in_report = TRUE
 	report_message = "Station lights seem to be damaged, be safe when starting your shift today."
 
@@ -129,7 +93,7 @@
 	for(var/mob/living/simple_animal/bot/found_bot in GLOB.alive_mob_list)
 		/// The bot's language holder - so we can randomize and change their language
 		var/datum/language_holder/bot_languages = found_bot.get_language_holder()
-		bot_languages.selected_language = bot_languages.get_random_spoken_language()
+		bot_languages.set_selected_language(bot_languages.get_random_spoken_language())
 
 /datum/station_trait/revenge_of_pun_pun
 	name = "Revenge of Pun Pun"

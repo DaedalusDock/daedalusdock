@@ -4,8 +4,9 @@
  * @license MIT
  */
 
-import { BooleanLike, classes, pureComponentHooks } from 'common/react';
-import { InfernoNode } from 'inferno';
+import { BooleanLike, classes } from 'common/react';
+import { ReactNode } from 'react';
+
 import { Box, unit } from './Box';
 import { Divider } from './Divider';
 
@@ -15,25 +16,19 @@ type LabeledListProps = {
 
 export const LabeledList = (props: LabeledListProps) => {
   const { children } = props;
-  return (
-    <table className="LabeledList">
-      {children}
-    </table>
-  );
+  return <table className="LabeledList">{children}</table>;
 };
 
-LabeledList.defaultHooks = pureComponentHooks;
-
 type LabeledListItemProps = {
+  buttons?: ReactNode;
+  children?: ReactNode;
   className?: string | BooleanLike;
-  label?: string | InfernoNode | BooleanLike;
-  labelColor?: string | BooleanLike;
   color?: string | BooleanLike;
-  textAlign?: string | BooleanLike;
-  buttons?: InfernoNode,
   /** @deprecated */
-  content?: any,
-  children?: InfernoNode;
+  content?: any;
+  label?: string | ReactNode | BooleanLike;
+  labelColor?: string | BooleanLike;
+  textAlign?: string | BooleanLike;
   verticalAlign?: string;
 };
 
@@ -47,71 +42,57 @@ const LabeledListItem = (props: LabeledListItemProps) => {
     buttons,
     content,
     children,
-    verticalAlign = "baseline",
+    verticalAlign = 'baseline',
   } = props;
   return (
-    <tr
-      className={classes([
-        'LabeledList__row',
-        className,
-      ])}>
+    <tr className={classes(['LabeledList__row', className])}>
       <Box
         as="td"
         color={labelColor}
-        className={classes([
-          'LabeledList__cell',
-          'LabeledList__label',
-        ])}
-        verticalAlign={verticalAlign}>
-        {label ? typeof(label) === "string" ? label + ':' : label : null}
+        className={classes(['LabeledList__cell', 'LabeledList__label'])}
+        verticalAlign={verticalAlign}
+      >
+        {label ? (typeof label === 'string' ? label + ':' : label) : null}
       </Box>
       <Box
         as="td"
         color={color}
         textAlign={textAlign}
-        className={classes([
-          'LabeledList__cell',
-          'LabeledList__content',
-        ])}
+        className={classes(['LabeledList__cell', 'LabeledList__content'])}
+        // @ts-ignore
         colSpan={buttons ? undefined : 2}
-        verticalAlign={verticalAlign}>
+        verticalAlign={verticalAlign}
+      >
         {content}
         {children}
       </Box>
       {buttons && (
-        <td className="LabeledList__cell LabeledList__buttons">
-          {buttons}
-        </td>
+        <td className="LabeledList__cell LabeledList__buttons">{buttons}</td>
       )}
     </tr>
   );
 };
-
-LabeledListItem.defaultHooks = pureComponentHooks;
 
 type LabeledListDividerProps = {
   size?: number;
 };
 
 const LabeledListDivider = (props: LabeledListDividerProps) => {
-  const padding = props.size
-    ? unit(Math.max(0, props.size - 1))
-    : 0;
+  const padding = props.size ? unit(Math.max(0, props.size - 1)) : 0;
   return (
     <tr className="LabeledList__row">
       <td
         colSpan={3}
         style={{
-          'padding-top': padding,
-          'padding-bottom': padding,
-        }}>
+          paddingTop: padding,
+          paddingBottom: padding,
+        }}
+      >
         <Divider />
       </td>
     </tr>
   );
 };
-
-LabeledListDivider.defaultHooks = pureComponentHooks;
 
 LabeledList.Item = LabeledListItem;
 LabeledList.Divider = LabeledListDivider;

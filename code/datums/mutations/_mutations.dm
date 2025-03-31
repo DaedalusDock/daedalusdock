@@ -124,12 +124,19 @@
 /datum/mutation/human/proc/on_life(delta_time, times_fired)
 	return
 
-/datum/mutation/human/proc/on_losing(mob/living/carbon/human/owner)
+/datum/mutation/human/proc/remove_from_owner()
+	. = on_losing(owner)
+	qdel(src)
+
+/datum/mutation/human/proc/on_losing()
 	if(!istype(owner) || !(owner.dna.mutations.Remove(src)))
 		return TRUE
+
 	. = FALSE
+
 	if(text_lose_indication && owner.stat != DEAD)
 		to_chat(owner, text_lose_indication)
+
 	if(visual_indicators.len)
 		var/list/mut_overlay = list()
 		if(owner.overlays_standing[layer_used])
@@ -138,11 +145,6 @@
 		mut_overlay.Remove(get_visual_indicator())
 		owner.overlays_standing[layer_used] = mut_overlay
 		owner.apply_overlay(layer_used)
-	if(power_path)
-		// Any powers we made are linked to our mutation datum,
-		// so deleting ourself will also delete it and remove it
-		// ...Why don't all mutations delete on loss? Not sure.
-		qdel(src)
 
 /mob/living/carbon/proc/update_mutations_overlay()
 	return

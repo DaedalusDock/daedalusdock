@@ -26,7 +26,7 @@
 	check_amount()
 	return ..()
 
-/obj/item/borg/lollipop/dropped()
+/obj/item/borg/lollipop/unequipped()
 	check_amount()
 	return ..()
 

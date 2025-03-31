@@ -24,15 +24,36 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	GLOB.landmarks_list -= src
 	return ..()
 
+/// Helper for getting start landmarks.
+/proc/get_start_landmark_for(landmark_key, exclude_used = FALSE)
+	// High prio landmarks completely ignore the used var for some reason.
+	if(length(GLOB.high_priority_spawns[landmark_key]))
+		return pick(GLOB.high_priority_spawns[landmark_key])
+
+	for(var/obj/effect/landmark/start/point in GLOB.start_landmarks_by_name[landmark_key])
+		if(exclude_used && point.used)
+			continue
+
+		return point
+
 /obj/effect/landmark/start
 	name = "start"
-	icon = 'icons/mob/landmarks.dmi'
+	icon = 'icons/mob/autogen_landmarks.dmi'
 	icon_state = "x"
 	anchored = TRUE
 	layer = MOB_LAYER
-	var/jobspawn_override = FALSE
+
+	/// If TRUE, this will be used over other landmarks first.
+	var/high_priority = FALSE
+	/// Does what it says on the tin.
 	var/delete_after_roundstart = TRUE
+	/// Does this delete itself if the marked atom is deleted?
+	var/delete_if_marked_atom_deleted = FALSE
+	/// Tracks if this spawn has been used or not.
 	var/used = FALSE
+
+	/// The atom we're tracking.
+	var/atom/marked_atom
 
 /obj/effect/landmark/start/proc/after_round_start()
 	if(delete_after_roundstart)
@@ -40,17 +61,48 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 
 /obj/effect/landmark/start/Initialize(mapload)
 	. = ..()
+	set_marked_atom(find_marked_atom())
+
 	GLOB.start_landmarks_list += src
-	if(jobspawn_override)
-		LAZYADDASSOCLIST(GLOB.jobspawn_overrides, name, src)
-	if(name != "start")
-		tag = "start*[name]"
+	LAZYADD(GLOB.start_landmarks_by_name[name], src)
+	if(high_priority)
+		LAZYADD(GLOB.high_priority_spawns[name], src)
 
 /obj/effect/landmark/start/Destroy()
+	if(marked_atom)
+		unset_marked_atom()
+
 	GLOB.start_landmarks_list -= src
-	if(jobspawn_override)
-		LAZYREMOVEASSOC(GLOB.jobspawn_overrides, name, src)
+	LAZYREMOVE(GLOB.start_landmarks_by_name[name], src)
+	if(high_priority)
+		LAZYREMOVE(GLOB.high_priority_spawns[name], src)
 	return ..()
+
+/// Returns the landmark atom. Allows job landmarks to define the actual atom to call JoinPlayerHere() on.
+/obj/effect/landmark/start/proc/find_marked_atom()
+	return locate(/obj/structure/chair, loc) || src
+
+/// Call this to get the actual spawn location of the atom.
+/obj/effect/landmark/start/proc/get_spawn_location()
+	return marked_atom
+
+/obj/effect/landmark/start/proc/set_marked_atom(atom/new_atom)
+	PRIVATE_PROC(TRUE)
+
+	marked_atom = new_atom
+	if(marked_atom != src)
+		RegisterSignal(marked_atom, COMSIG_PARENT_QDELETING, PROC_REF(marked_gone))
+
+/obj/effect/landmark/start/proc/unset_marked_atom()
+	PRIVATE_PROC(TRUE)
+
+	marked_atom = null
+
+/obj/effect/landmark/start/proc/marked_gone(datum/source)
+	SIGNAL_HANDLER
+	unset_marked_atom()
+	if(delete_if_marked_atom_deleted)
+		qdel(src)
 
 // START LANDMARKS FOLLOW. Don't change the names unless
 // you are refactoring shitty landmark code.
@@ -59,144 +111,125 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = JOB_ASSISTANT //icon_state is case sensitive. why are all of these capitalized? because fuck you that's why
 
 /obj/effect/landmark/start/assistant/override
-	jobspawn_override = TRUE
+	high_priority = TRUE
 	delete_after_roundstart = FALSE
 
 /obj/effect/landmark/start/prisoner
-	name = "Prisoner"
-	icon_state = "Prisoner"
+	name = JOB_PRISONER
+	icon_state = JOB_PRISONER
 
 /obj/effect/landmark/start/janitor
-	name = "Janitor"
-	icon_state = "Janitor"
+	name = JOB_JANITOR
+	icon_state = JOB_JANITOR
 
 /obj/effect/landmark/start/cargo_technician
 	name = JOB_DECKHAND
-	icon_state = "Cargo Technician"
+	icon_state = JOB_DECKHAND
 
 /obj/effect/landmark/start/bartender
-	name = "Bartender"
-	icon_state = "Bartender"
+	name = JOB_BARTENDER
+	icon_state = JOB_BARTENDER
 
 /obj/effect/landmark/start/clown
-	name = "Clown"
-	icon_state = "Clown"
-
-/obj/effect/landmark/start/mime
-	name = "Mime"
-	icon_state = "Mime"
+	name = JOB_CLOWN
+	icon_state = JOB_CLOWN
 
 /obj/effect/landmark/start/quartermaster
-	name = "Quartermaster"
-	icon_state = "Quartermaster"
+	name = JOB_QUARTERMASTER
+	icon_state = JOB_QUARTERMASTER
 
 /obj/effect/landmark/start/atmospheric_technician
-	name = "Atmospheric Technician"
-	icon_state = "Atmospheric Technician"
+	name = JOB_ATMOSPHERIC_TECHNICIAN
+	icon_state = JOB_ATMOSPHERIC_TECHNICIAN
 
 /obj/effect/landmark/start/cook
-	name = "Cook"
-	icon_state = "Cook"
+	name = JOB_COOK
+	icon_state = JOB_COOK
 
 /obj/effect/landmark/start/shaft_miner
 	name = JOB_PROSPECTOR
-	icon_state = "Shaft Miner"
+	icon_state = JOB_PROSPECTOR
 
 /obj/effect/landmark/start/security_officer
-	name = "Security Officer"
-	icon_state = "Security Officer"
+	name = JOB_SECURITY_OFFICER
+	icon_state = JOB_SECURITY_OFFICER
 
 /obj/effect/landmark/start/botanist
-	name = "Botanist"
-	icon_state = "Botanist"
+	name = JOB_BOTANIST
+	icon_state = JOB_BOTANIST
 
 /obj/effect/landmark/start/head_of_security
 	name = JOB_SECURITY_MARSHAL
-	icon_state = "Head of Security"
+	icon_state = JOB_SECURITY_MARSHAL
 
 /obj/effect/landmark/start/captain
-	name = "Captain"
-	icon_state = "Captain"
+	name = JOB_CAPTAIN
+	icon_state = JOB_CAPTAIN
 
 /obj/effect/landmark/start/detective
-	name = "Detective"
-	icon_state = "Detective"
+	name = JOB_DETECTIVE
+	icon_state = JOB_DETECTIVE
 
 /obj/effect/landmark/start/warden
-	name = "Warden"
-	icon_state = "Warden"
+	name = JOB_WARDEN
+	icon_state = JOB_WARDEN
 
 /obj/effect/landmark/start/chief_engineer
 	name = JOB_CHIEF_ENGINEER
-	icon_state = "Chief Engineer"
+	icon_state = JOB_CHIEF_ENGINEER
 
 /obj/effect/landmark/start/head_of_personnel
-	name = "Head of Personnel"
-	icon_state = "Head of Personnel"
+	name = JOB_HEAD_OF_PERSONNEL
+	icon_state = JOB_HEAD_OF_PERSONNEL
 
 /obj/effect/landmark/start/librarian
 	name = JOB_ARCHIVIST
-	icon_state = "Curator"
+	icon_state = JOB_ARCHIVIST
 
 /obj/effect/landmark/start/lawyer
-	name = "Lawyer"
-	icon_state = "Lawyer"
+	name = JOB_LAWYER
+	icon_state = JOB_LAWYER
 
 /obj/effect/landmark/start/station_engineer
-	name = "Station Engineer"
-	icon_state = "Station Engineer"
+	name = JOB_STATION_ENGINEER
+	icon_state = JOB_STATION_ENGINEER
 
 /obj/effect/landmark/start/medical_doctor
-	name = JOB_MEDICAL_DOCTOR
-	icon_state = "Medical Doctor"
+	name = JOB_ACOLYTE
+	icon_state = JOB_ACOLYTE
 
 /obj/effect/landmark/start/paramedic
-	name = "Paramedic"
-	icon_state = "Paramedic"
-
-/obj/effect/landmark/start/scientist
-	name = "Scientist"
-	icon_state = "Scientist"
+	name = JOB_PARAMEDIC
+	icon_state = JOB_PARAMEDIC
 
 /obj/effect/landmark/start/chemist
-	name = "Chemist"
-	icon_state = "Chemist"
+	name = JOB_CHEMIST
+	icon_state = JOB_CHEMIST
 
-/obj/effect/landmark/start/roboticist
-	name = "Roboticist"
-	icon_state = "Roboticist"
-
-/obj/effect/landmark/start/research_director
-	name = JOB_RESEARCH_DIRECTOR
-	icon_state = JOB_RESEARCH_DIRECTOR
-
-/obj/effect/landmark/start/geneticist
-	name = "Geneticist"
-	icon_state = "Geneticist"
 
 /obj/effect/landmark/start/chief_medical_officer
-	name = "Medical Director"
-	icon_state = "Medical Director"
+	name = JOB_AUGUR
+	icon_state = JOB_AUGUR
 
 /obj/effect/landmark/start/virologist
-	name = "Virologist"
-	icon_state = "Virologist"
+	name = JOB_VIROLOGIST
+	icon_state = JOB_VIROLOGIST
 
 /obj/effect/landmark/start/psychologist
-	name = "Psychologist"
-	icon_state = "Psychologist"
+	name = JOB_PSYCHOLOGIST
+	icon_state = JOB_PSYCHOLOGIST
 
 /obj/effect/landmark/start/chaplain
-	name = "Chaplain"
-	icon_state = "Chaplain"
+	name = JOB_CHAPLAIN
+	icon_state = JOB_CHAPLAIN
 
 /obj/effect/landmark/start/cyborg
-	name = "Cyborg"
-	icon_state = "Cyborg"
+	name = JOB_CYBORG
+	icon_state = JOB_CYBORG
 
 /obj/effect/landmark/start/ai
-	name = "AI"
-	icon_state = "AI"
+	name = JOB_AI
+	icon_state = JOB_AI
 	delete_after_roundstart = FALSE
 	var/primary_ai = TRUE
 	var/latejoin_active = TRUE
@@ -211,38 +244,6 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "ai_spawn"
 	primary_ai = FALSE
 	latejoin_active = FALSE
-
-//Department Security spawns
-
-/obj/effect/landmark/start/depsec
-	name = "department_sec"
-	icon_state = "Security Officer"
-	/// What department this spawner is for
-	var/department
-
-/obj/effect/landmark/start/depsec/Initialize(mapload)
-	. = ..()
-	LAZYADDASSOCLIST(GLOB.department_security_spawns, department, src)
-
-/obj/effect/landmark/start/depsec/Destroy()
-	LAZYREMOVEASSOC(GLOB.department_security_spawns, department, src)
-	return ..()
-
-/obj/effect/landmark/start/depsec/supply
-	name = "supply_sec"
-	department = SEC_DEPT_SUPPLY
-
-/obj/effect/landmark/start/depsec/medical
-	name = "medical_sec"
-	department = SEC_DEPT_MEDICAL
-
-/obj/effect/landmark/start/depsec/engineering
-	name = "engineering_sec"
-	department = SEC_DEPT_ENGINEERING
-
-/obj/effect/landmark/start/depsec/science
-	name = "science_sec"
-	department = SEC_DEPT_SCIENCE
 
 //Antagonist spawns
 
@@ -452,74 +453,6 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 /// In landmarks.dm and not unit_test.dm so it is always active in the mapping tools.
 /obj/effect/landmark/unit_test_top_right
 	name = "unit test zone top right"
-
-
-/obj/effect/landmark/start/hangover
-	name = "hangover spawn"
-	icon_state = "hangover_spawn"
-
-	/// A list of everything this hangover spawn created
-	var/list/debris = list()
-
-/obj/effect/landmark/start/hangover/Initialize(mapload)
-	. = ..()
-	return INITIALIZE_HINT_LATELOAD
-
-/obj/effect/landmark/start/hangover/Destroy()
-	debris = null
-	return ..()
-
-/obj/effect/landmark/start/hangover/LateInitialize()
-	. = ..()
-	if(!HAS_TRAIT(SSstation, STATION_TRAIT_HANGOVER))
-		return
-	if(prob(60))
-		debris += new /obj/effect/decal/cleanable/vomit(get_turf(src))
-	if(prob(70))
-		var/bottle_count = rand(1, 3)
-		for(var/index in 1 to bottle_count)
-			var/turf/turf_to_spawn_on = get_step(src, pick(GLOB.alldirs))
-			if(!isopenturf(turf_to_spawn_on))
-				continue
-			var/dense_object = FALSE
-			for(var/atom/content in turf_to_spawn_on.contents)
-				if(content.density)
-					dense_object = TRUE
-					break
-			if(dense_object)
-				continue
-			debris += new /obj/item/reagent_containers/food/drinks/bottle/beer/almost_empty(turf_to_spawn_on)
-
-///Spawns the mob with some drugginess/drunkeness, and some disgust.
-/obj/effect/landmark/start/hangover/proc/make_hungover(mob/hangover_mob)
-	if(!iscarbon(hangover_mob))
-		return
-	var/mob/living/carbon/spawned_carbon = hangover_mob
-	spawned_carbon.set_resting(TRUE, silent = TRUE)
-	if(prob(50))
-		spawned_carbon.adjust_timed_status_effect(rand(30 SECONDS, 40 SECONDS), /datum/status_effect/drugginess)
-	else
-		spawned_carbon.adjust_drunk_effect(rand(15, 25))
-	spawned_carbon.adjust_disgust(rand(5, 55)) //How hungover are you?
-	if(spawned_carbon.head)
-		return
-
-/obj/effect/landmark/start/hangover/JoinPlayerHere(mob/joining_mob, buckle)
-	. = ..()
-	make_hungover(joining_mob)
-
-/obj/effect/landmark/start/hangover/closet
-	name = "hangover spawn closet"
-	icon_state = "hangover_spawn_closet"
-
-/obj/effect/landmark/start/hangover/closet/JoinPlayerHere(mob/joining_mob, buckle)
-	make_hungover(joining_mob)
-	for(var/obj/structure/closet/closet in contents)
-		if(closet.opened)
-			continue
-		joining_mob.forceMove(closet)
-		return
-	return ..() //Call parent as fallback
 
 //Landmark that creates destinations for the navigate verb to path to
 /obj/effect/landmark/navigate_destination

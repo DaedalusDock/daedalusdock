@@ -115,7 +115,7 @@
 	if(helmet && slot != ITEM_SLOT_OCLOTHING)
 		RemoveHelmet()
 
-/obj/item/clothing/suit/space/hardsuit/dropped(mob/user)
+/obj/item/clothing/suit/space/hardsuit/unequipped(mob/user)
 	..()
 	RemoveHelmet()
 

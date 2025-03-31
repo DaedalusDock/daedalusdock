@@ -221,7 +221,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	if(!cosmetic_only)
 		if((organ_flags & ORGAN_VITAL) && !special && !(organ_owner.status_flags & GODMODE) && organ_owner.needs_organ(slot))
-			organ_owner.death()
+			organ_owner.death(cause_of_death = "Brain removal")
 		organ_owner.processing_organs -= src
 		START_PROCESSING(SSobj, src)
 
@@ -269,17 +269,16 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	on_death(delta_time, times_fired) //Kinda hate doing it like this, but I really don't want to call process directly.
 
 
-/// This is on_life() but for when the organ is dead or outside of a mob. Bad name.
+/// This is on_life() but for when the owner is dead or outside of a mob. Bad name.
 /obj/item/organ/proc/on_death(delta_time, times_fired)
 	if(organ_flags & (ORGAN_SYNTHETIC|ORGAN_FROZEN|ORGAN_DEAD))
 		return
 
-	if(isnull(owner))
+	germ_level += rand(1,3)
+	if(germ_level >= INFECTION_LEVEL_TWO)
 		germ_level += rand(1,3)
-		if(germ_level >= INFECTION_LEVEL_TWO)
-			germ_level += rand(1,3)
-		if(germ_level >= INFECTION_LEVEL_THREE)
-			set_organ_dead(TRUE)
+	if(germ_level >= INFECTION_LEVEL_THREE)
+		set_organ_dead(TRUE, "Necrosis")
 
 /// Called once every life tick on every organ in a carbon's body
 /// NOTE: THIS IS VERY HOT. Be careful what you put in here
@@ -354,7 +353,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			ownerlimb.germ_level++
 
 		if (prob(3))	//about once every 30 seconds
-			. = applyOrganDamage(1,silent=prob(30), updating_health = FALSE)
+			applyOrganDamage(1,silent=prob(30), updating_health = FALSE)
 
 /obj/item/organ/examine(mob/user)
 	. = ..()
@@ -410,7 +409,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	damage = min(damage, maxHealth)
 
 ///Adjusts an organ's damage by the amount "damage_amount", up to a maximum amount, which is by default max damage
-/obj/item/organ/proc/applyOrganDamage(damage_amount, maximum = maxHealth, silent, updating_health = TRUE) //use for damaging effects
+/obj/item/organ/proc/applyOrganDamage(damage_amount, maximum = maxHealth, silent, updating_health = TRUE, cause_of_death = "Organ failure") //use for damaging effects
 	if(!damage_amount || cosmetic_only) //Micro-optimization.
 		return
 	if(maximum < damage)
@@ -420,11 +419,11 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return
 
 	var/old_damage = damage
-	damage = min(clamp(damage + damage_amount, 0, maximum), maxHealth)
+	damage = min(clamp(round(damage + damage_amount, DAMAGE_PRECISION), 0, maximum), maxHealth)
 	. = damage - old_damage
 
-	var/mess = check_damage_thresholds(owner)
-	check_failing_thresholds()
+	var/mess = damage_threshold_message(check_damage_thresholds(owner))
+	check_failing_thresholds(cause_of_death = cause_of_death)
 	prev_damage = damage
 	if(!silent && damage_amount > 0 && owner && owner.stat < UNCONSCIOUS && !(organ_flags & ORGAN_SYNTHETIC) && (damage_amount > 5 || prob(10)))
 		if(!mess)
@@ -439,10 +438,6 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 			owner.apply_pain(damage_amount, ownerlimb.body_zone, "Something inside your [BP.plaintext_zone] hurts[degree].", updating_health = FALSE)
 
-	if(updating_health && owner)
-		owner.updatehealth()
-
-
 ///SETS an organ's damage to the amount "damage_amount", and in doing so clears or sets the failing flag, good for when you have an effect that should fix an organ if broken
 /obj/item/organ/proc/setOrganDamage(damage_amount) //use mostly for admin heals
 	applyOrganDamage(damage_amount - damage)
@@ -452,39 +447,54 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	return organ_flags & ORGAN_SYNTHETIC ? damage * 0.5 : damage
 
 /** check_damage_thresholds
- * input: mob/organ_owner (a mob, the owner of the organ we call the proc on)
- * output: returns a message should get displayed.
+ * Returns the organ state change constant, read the proc.
  * description: By checking our current damage against our previous damage, we can decide whether we've passed an organ threshold.
- *  If we have, send the corresponding threshold message to the owner, if such a message exists.
  */
 /obj/item/organ/proc/check_damage_thresholds(mob/organ_owner)
 	if(damage == prev_damage)
-		return
+		return null
+
 	var/delta = damage - prev_damage
 	if(delta > 0)
 		if(damage >= maxHealth)
-			return now_failing
+			return ORGAN_NOW_FAILING
 		if(damage > (high_threshold * maxHealth) && prev_damage <= (high_threshold * maxHealth))
-			return high_threshold_passed
+			return ORGAN_HIGH_THRESHOLD_PASSED
 		if(damage > (low_threshold * maxHealth) && prev_damage <= (low_threshold * maxHealth))
-			return low_threshold_passed
+			return ORGAN_LOW_THRESHOLD_PASSED
 	else
-		if(prev_damage > (low_threshold * maxHealth)  && damage <= (low_threshold * maxHealth))
-			return low_threshold_cleared
-		if(prev_damage > (high_threshold * maxHealth) && damage <= (high_threshold * maxHealth))
-			return high_threshold_cleared
 		if(prev_damage == maxHealth)
+			return ORGAN_NOW_FIXED
+		if(prev_damage > (high_threshold * maxHealth) && damage <= (high_threshold * maxHealth))
+			return ORGAN_HIGH_THRESHOLD_CLEARED
+		if(prev_damage > (low_threshold * maxHealth) && damage <= (low_threshold * maxHealth))
+			return ORGAN_LOW_THRESHOLD_CLEARED
+
+/// Converts damage threshold state changes to text
+/obj/item/organ/proc/damage_threshold_message(state)
+	switch(state)
+		if(ORGAN_NOW_FAILING)
+			return now_failing
+		if(ORGAN_HIGH_THRESHOLD_PASSED)
+			return high_threshold_passed
+		if(ORGAN_LOW_THRESHOLD_PASSED)
+			return low_threshold_passed
+		if(ORGAN_LOW_THRESHOLD_CLEARED)
+			return low_threshold_cleared
+		if(ORGAN_HIGH_THRESHOLD_PASSED)
+			return high_threshold_cleared
+		if(ORGAN_NOW_FIXED)
 			return now_fixed
 
 ///Checks if an organ should/shouldn't be failing and gives the appropriate organ flag
-/obj/item/organ/proc/check_failing_thresholds(revivable)
+/obj/item/organ/proc/check_failing_thresholds(revivable, cause_of_death)
 	if(damage >= maxHealth)
-		set_organ_dead(TRUE)
+		set_organ_dead(TRUE, cause_of_death = cause_of_death)
 	else if(revivable)
 		set_organ_dead(FALSE)
 
 /// Set or unset the organ as failing. Returns TRUE on success.
-/obj/item/organ/proc/set_organ_dead(failing)
+/obj/item/organ/proc/set_organ_dead(failing, cause_of_death)
 	if(failing)
 		if(organ_flags & ORGAN_DEAD)
 			return FALSE
@@ -614,11 +624,12 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			germ_message =  "Acute Infection++"
 		if (INFECTION_LEVEL_THREE to INFINITY)
 			germ_message =  "Septic"
+
 	if (germ_message)
 		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_TOXIN]'>[germ_message]</span>" : germ_message
 
 	// Add more info if Technetium is in their blood
-	if(owner.has_reagent(/datum/reagent/technetium))
+	if(owner?.has_reagent(/datum/reagent/technetium))
 		. += tag ? "<span style='font-weight: bold; color:#E42426'> organ is [round((damage/maxHealth)*100, 1)]% damaged.</span>" : "[round((damage/maxHealth)*100, 1)]"
 	else if(damage > high_threshold)
 		. +=  tag ? "<span style='font-weight: bold; color:#ff9933'>Severely Damaged</span>" : "Severely Damaged"

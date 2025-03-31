@@ -216,7 +216,8 @@
 /datum/controller/subsystem/ticker/proc/declare_completion()
 	set waitfor = FALSE
 
-	to_chat(world, "<span class='infoplain'><BR><BR><BR><span class='big bold'>The round has ended.</span></span>")
+	to_chat(world, "<hr>")
+	to_chat(world, span_big(systemtext("The round has ended.")))
 	log_game("The round has ended.")
 
 	for(var/datum/callback/roundend_callbacks as anything in round_end_events)
@@ -652,7 +653,7 @@
 
 /datum/controller/subsystem/ticker/proc/give_show_report_button(client/C)
 	var/datum/action/report/R = new
-	C.player_details.player_actions += R
+	C.persistent_client.player_actions += R
 	R.Grant(C.mob)
 	to_chat(C,"<span class='infoplain'><a href='?src=[REF(R)];report=1'>Show roundend report again</a></span>")
 

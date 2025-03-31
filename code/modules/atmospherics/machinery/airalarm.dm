@@ -672,7 +672,7 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 			state = "alarm1"
 
 	. += mutable_appearance(icon, state)
-	. += emissive_appearance(icon, state, alpha = src.alpha)
+	. += emissive_appearance(icon, state, alpha = 90)
 
 /obj/machinery/airalarm/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()
@@ -907,6 +907,20 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 
 	return ..()
 
+/obj/machinery/airalarm/attack_hand_secondary(mob/user, list/modifiers)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+	if(!can_interact(user))
+		return
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH) || !isturf(loc))
+		return
+	if(!ishuman(user))
+		return
+
+	togglelock(user)
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
 /obj/machinery/airalarm/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	if((buildstage == AIRALARM_BUILD_NO_CIRCUIT) && (the_rcd.upgrade & RCD_UPGRADE_SIMPLE_CIRCUITS))
 		return list("mode" = RCD_UPGRADE_SIMPLE_CIRCUITS, "delay" = 20, "cost" = 1)
@@ -926,7 +940,7 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 	if(machine_stat & (NOPOWER|BROKEN))
 		to_chat(user, span_warning("It does nothing!"))
 	else
-		if(src.allowed(usr) && !wires.is_cut(WIRE_IDSCAN))
+		if(allowed(user) && !wires.is_cut(WIRE_IDSCAN))
 			locked = !locked
 			to_chat(user, span_notice("You [ locked ? "lock" : "unlock"] the air alarm interface."))
 			if(!locked)

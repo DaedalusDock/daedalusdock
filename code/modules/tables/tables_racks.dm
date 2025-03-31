@@ -48,6 +48,8 @@
 	. = ..()
 	if(_buildstack)
 		buildstack = _buildstack
+
+	AddElement(/datum/element/footstep_override, priority = STEP_SOUND_TABLE_PRIORITY)
 	AddElement(/datum/element/climbable)
 
 	var/static/list/loc_connections = list(
@@ -200,10 +202,14 @@
 	if(flipped == TRUE && !(border_dir & dir))
 		return TRUE
 
-/obj/structure/table/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
-	. = !density
-	if(caller)
-		. = . || (caller.pass_flags & PASSTABLE) || (flipped == TRUE && (dir != to_dir))
+/obj/structure/table/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	if(!density)
+		return TRUE
+
+	if((pass_info.pass_flags & PASSTABLE) || (flipped == TRUE && (dir != to_dir)))
+		return TRUE
+
+	return FALSE
 
 /obj/structure/table/proc/check_exit(datum/source, atom/movable/leaving, direction)
 	SIGNAL_HANDLER
@@ -925,7 +931,7 @@
 	patient = new_patient
 	if(patient)
 		ADD_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
-		patient.set_lying_angle(90)
+		patient.set_lying_angle(LYING_ANGLE_EAST)
 		patient.setDir(SOUTH)
 		RegisterSignal(patient, COMSIG_PARENT_QDELETING, PROC_REF(patient_deleted))
 

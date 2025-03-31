@@ -6,11 +6,11 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 	new/datum/stack_recipe("railing", /obj/structure/railing, 6, time = 18, window_checks = TRUE), \
 	new/datum/stack_recipe("tank holder", /obj/structure/tank_holder, 2, time = 5, one_per_turf = TRUE, on_floor = FALSE), \
 	new/datum/stack_recipe("ladder", /obj/structure/ladder/crafted, 15, time = 150, one_per_turf = TRUE, on_floor = FALSE), \
-	new/datum/stack_recipe("catwalk floor tile", /obj/item/stack/tile/catwalk_tile, 1, 4, 20), \
+	new/datum/stack_recipe("catwalk floor tile", /obj/item/stack/overfloor_catwalk, 1, 4, 20), \
 	))
 
 /obj/item/stack/rods
-	name = "iron rod"
+	name = "iron rods"
 	desc = "Some rods. Can be used for building or something."
 	singular_name = "iron rod"
 	icon_state = "rods"

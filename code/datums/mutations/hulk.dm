@@ -22,7 +22,7 @@
 	ADD_TRAIT(owner, TRAIT_IGNOREDAMAGESLOWDOWN, GENETIC_MUTATION)
 	ADD_TRAIT(owner, TRAIT_HULK, GENETIC_MUTATION)
 	for(var/obj/item/bodypart/part as anything in owner.bodyparts)
-		part.variable_color = "#00aa00"
+		part.add_color_override("#00aa00", LIMB_COLOR_HULK)
 	owner.update_body_parts()
 	RegisterSignal(owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK, PROC_REF(on_attack_hand))
 	RegisterSignal(owner, COMSIG_MOB_SAY, PROC_REF(handle_speech))
@@ -69,6 +69,7 @@
 	if(owner.health < owner.crit_threshold)
 		on_losing(owner)
 		to_chat(owner, span_danger("You suddenly feel very weak."))
+		remove_from_owner()
 
 /datum/mutation/human/hulk/on_losing(mob/living/carbon/human/owner)
 	if(..())
@@ -79,7 +80,7 @@
 	REMOVE_TRAIT(owner, TRAIT_IGNOREDAMAGESLOWDOWN, GENETIC_MUTATION)
 	REMOVE_TRAIT(owner, TRAIT_HULK, GENETIC_MUTATION)
 	for(var/obj/item/bodypart/part as anything in owner.bodyparts)
-		part.variable_color = null
+		part.remove_color_override(LIMB_COLOR_HULK)
 	owner.update_body_parts()
 	UnregisterSignal(owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK)
 	UnregisterSignal(owner, COMSIG_MOB_SAY)

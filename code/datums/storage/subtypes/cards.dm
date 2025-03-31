@@ -10,7 +10,7 @@
 	. = ..()
 	set_holdable(list(/obj/item/tcgcard))
 
-/datum/storage/tcg/attempt_remove(silent = FALSE)
+/datum/storage/tcg/attempt_remove(obj/item/thing, atom/newLoc, silent = FALSE, mob/living/user)
 	. = ..()
 	handle_empty_deck()
 

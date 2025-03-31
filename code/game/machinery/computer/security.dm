@@ -74,24 +74,24 @@
 		on_fail.set_output(COMPONENT_SIGNAL)
 		return
 
-	if(isnull(GLOB.data_core.general))
+	if(isnull(SSdatacore.get_records(DATACORE_RECORDS_STATION)))
 		on_fail.set_output(COMPONENT_SIGNAL)
 		return
 
 	var/list/new_table = list()
-	for(var/datum/data/record/player_record as anything in GLOB.data_core.general)
+	for(var/datum/data/record/player_record as anything in SSdatacore.get_records(DATACORE_RECORDS_STATION))
 		var/list/entry = list()
-		var/datum/data/record/player_security_record = find_record("id", player_record.fields["id"], GLOB.data_core.security)
+		var/datum/data/record/player_security_record = SSdatacore.find_record("id", player_record.fields[DATACORE_ID], DATACORE_RECORDS_SECURITY)
 		if(player_security_record)
-			entry["arrest_status"] = player_security_record.fields["criminal"]
+			entry["arrest_status"] = player_security_record.fields[DATACORE_CRIMINAL_STATUS]
 			entry["security_record"] = player_security_record
-		entry["name"] = player_record.fields["name"]
-		entry["id"] = player_record.fields["id"]
-		entry["rank"] = player_record.fields["rank"]
-		entry["gender"] = player_record.fields["gender"]
-		entry["age"] = player_record.fields["age"]
-		entry["species"] = player_record.fields["species"]
-		entry["fingerprint"] = player_record.fields["fingerprint"]
+		entry["name"] = player_record.fields[DATACORE_NAME]
+		entry["id"] = player_record.fields[DATACORE_ID]
+		entry["rank"] = player_record.fields[DATACORE_RANK]
+		entry["gender"] = player_record.fields[DATACORE_GENDER]
+		entry["age"] = player_record.fields[DATACORE_AGE]
+		entry["species"] = player_record.fields[DATACORE_SPECIES]
+		entry["fingerprint"] = player_record.fields[DATACORE_FINGERPRINT]
 
 		new_table += list(entry)
 
@@ -158,11 +158,11 @@
 	var/successful_set = 0
 	var/list/names_of_entries = list()
 	for(var/list/target in target_table)
-		var/datum/data/record/sec_record = target["security_record"]
+		var/datum/data/record/security/sec_record = target["security_record"]
 		if(!sec_record)
 			continue
 
-		if(sec_record.fields["criminal"] != status_to_set)
+		if(sec_record.fields[DATACORE_CRIMINAL_STATUS] != status_to_set)
 			successful_set++
 			names_of_entries += target["name"]
 		sec_record.set_criminal_status(status_to_set)
@@ -280,12 +280,12 @@
 <th><A href='?src=[REF(src)];choice=Sorting;sort=fingerprint'>Fingerprints</A></th>
 <th>Criminal Status</th>
 </tr>"}
-					if(!isnull(GLOB.data_core.general))
-						for(var/datum/data/record/R in sort_record(GLOB.data_core.general, sortBy, order))
+					if(!isnull(SSdatacore.get_records(DATACORE_RECORDS_STATION)))
+						for(var/datum/data/record/R in sort_record(SSdatacore.get_records(DATACORE_RECORDS_STATION), sortBy, order))
 							var/crimstat = ""
-							for(var/datum/data/record/E in GLOB.data_core.security)
-								if((E.fields["name"] == R.fields["name"]) && (E.fields["id"] == R.fields["id"]))
-									crimstat = E.fields["criminal"]
+							for(var/datum/data/record/E in SSdatacore.get_records(DATACORE_RECORDS_SECURITY))
+								if((E.fields[DATACORE_NAME] == R.fields[DATACORE_NAME]) && (E.fields[DATACORE_ID] == R.fields[DATACORE_ID]))
+									crimstat = E.fields[DATACORE_CRIMINAL_STATUS]
 							var/background
 							switch(crimstat)
 								if(CRIMINAL_WANTED)
@@ -304,10 +304,10 @@
 									background = "''" //"'background-color:#FFFFFF;'"
 									crimstat = "No Record."
 							dat += "<tr style=[background]>"
-							dat += "<td><input type='hidden' value='[R.fields["name"]] [R.fields["id"]] [R.fields["rank"]] [R.fields["fingerprint"]]'></input><A href='?src=[REF(src)];choice=Browse Record;d_rec=[REF(R)]'>[R.fields["name"]]</a></td>"
-							dat += "<td>[R.fields["id"]]</td>"
-							dat += "<td>[R.fields["rank"]]</td>"
-							dat += "<td>[R.fields["fingerprint"]]</td>"
+							dat += "<td><input type='hidden' value='[R.fields[DATACORE_NAME]] [R.fields[DATACORE_ID]] [R.fields[DATACORE_RANK]] [R.fields[DATACORE_FINGERPRINT]]'></input><A href='?src=[REF(src)];choice=Browse Record;d_rec=[REF(R)]'>[R.fields[DATACORE_NAME]]</a></td>"
+							dat += "<td>[R.fields[DATACORE_ID]]</td>"
+							dat += "<td>[R.fields[DATACORE_RANK]]</td>"
+							dat += "<td>[R.fields[DATACORE_FINGERPRINT]]</td>"
 							dat += "<td>[crimstat]</td></tr>"
 						dat += {"
 						</table></span>
@@ -323,7 +323,7 @@
 					dat += "<BR><A href='?src=[REF(src)];choice=Delete All Records'>Delete All Records</A><BR><BR><A href='?src=[REF(src)];choice=Return'>Back</A>"
 				if(3)
 					dat += "<font size='4'><b>Security Record</b></font><br>"
-					if(istype(active1, /datum/data/record) && GLOB.data_core.general.Find(active1))
+					if(istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_STATION).Find(active1))
 						var/front_photo = active1.get_front_photo()
 						if(istype(front_photo, /obj/item/photo))
 							var/obj/item/photo/photo_front = front_photo
@@ -333,16 +333,16 @@
 							var/obj/item/photo/photo_side = side_photo
 							user << browse_rsc(photo_side.picture.picture_image, "photo_side")
 						dat += {"<table><tr><td><table>
-						<tr><td>Name:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=name'>&nbsp;[active1.fields["name"]]&nbsp;</A></td></tr>
-						<tr><td>ID:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=id'>&nbsp;[active1.fields["id"]]&nbsp;</A></td></tr>
-						<tr><td>Gender:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=gender'>&nbsp;[active1.fields["gender"]]&nbsp;</A></td></tr>
-						<tr><td>Age:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=age'>&nbsp;[active1.fields["age"]]&nbsp;</A></td></tr>"}
-						dat += "<tr><td>Species:</td><td><A href ='?src=[REF(src)];choice=Edit Field;field=species'>&nbsp;[active1.fields["species"]]&nbsp;</A></td></tr>"
-						dat += {"<tr><td>Rank:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=rank'>&nbsp;[active1.fields["rank"]]&nbsp;</A></td></tr>
-						<tr><td>Initial Rank:</td><td>[active1.fields["initial_rank"]]</td>
-						<tr><td>Fingerprint:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=fingerprint'>&nbsp;[active1.fields["fingerprint"]]&nbsp;</A></td></tr>
-						<tr><td>Physical Status:</td><td>&nbsp;[active1.fields["p_stat"]]&nbsp;</td></tr>
-						<tr><td>Mental Status:</td><td>&nbsp;[active1.fields["m_stat"]]&nbsp;</td></tr>
+						<tr><td>Name:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=name'>&nbsp;[active1.fields[DATACORE_NAME]]&nbsp;</A></td></tr>
+						<tr><td>ID:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=id'>&nbsp;[active1.fields[DATACORE_ID]]&nbsp;</A></td></tr>
+						<tr><td>Gender:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=gender'>&nbsp;[active1.fields[DATACORE_GENDER]]&nbsp;</A></td></tr>
+						<tr><td>Age:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=age'>&nbsp;[active1.fields[DATACORE_AGE]]&nbsp;</A></td></tr>"}
+						dat += "<tr><td>Species:</td><td><A href ='?src=[REF(src)];choice=Edit Field;field=species'>&nbsp;[active1.fields[DATACORE_SPECIES]]&nbsp;</A></td></tr>"
+						dat += {"<tr><td>Rank:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=rank'>&nbsp;[active1.fields[DATACORE_RANK]]&nbsp;</A></td></tr>
+						<tr><td>Initial Rank:</td><td>[active1.fields[DATACORE_INITIAL_RANK]]</td>
+						<tr><td>Fingerprint:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=fingerprint'>&nbsp;[active1.fields[DATACORE_FINGERPRINT]]&nbsp;</A></td></tr>
+						<tr><td>Physical Status:</td><td>&nbsp;[active1.fields[DATACORE_PHYSICAL_HEALTH]]&nbsp;</td></tr>
+						<tr><td>Mental Status:</td><td>&nbsp;[active1.fields[DATACORE_MENTAL_HEALTH]]&nbsp;</td></tr>
 						</table></td>
 						<td><table><td align = center><a href='?src=[REF(src)];choice=Edit Field;field=show_photo_front'><img src=photo_front height=96 width=96 border=4 style="-ms-interpolation-mode:nearest-neighbor"></a><br>
 						<a href='?src=[REF(src)];choice=Edit Field;field=print_photo_front'>Print photo</a><br>
@@ -353,10 +353,10 @@
 						</td></tr></table></td></tr></table>"}
 					else
 						dat += "<br>General Record Lost!<br>"
-					if((istype(active2, /datum/data/record) && GLOB.data_core.security.Find(active2)))
+					if((istype(active2, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_SECURITY).Find(active2)))
 						dat += "<font size='4'><b>Security Data</b></font>"
-						dat += "<br>Criminal Status: <A href='?src=[REF(src)];choice=Edit Field;field=criminal'>[active2.fields["criminal"]]</A>"
-						if(active2.fields["criminal"] == CRIMINAL_WANTED)
+						dat += "<br>Criminal Status: <A href='?src=[REF(src)];choice=Edit Field;field=criminal'>[active2.fields[DATACORE_CRIMINAL_STATUS]]</A>"
+						if(active2.fields[DATACORE_CRIMINAL_STATUS] == CRIMINAL_WANTED)
 							dat += " [button_element(src, "BROADCAST", "choice=broadcast_criminal;criminal=[REF(active2)]")]"
 						dat += "<br><br>Citations: <A href='?src=[REF(src)];choice=Edit Field;field=citation_add'>Add New</A>"
 
@@ -369,7 +369,7 @@
 						<th>Amount Due</th>
 						<th>Del</th>
 						</tr>"}
-						for(var/datum/data/crime/c in active2.fields["citation"])
+						for(var/datum/data/crime/c in active2.fields[DATACORE_CITATIONS])
 							var/owed = c.fine - c.paid
 							dat += {"<tr><td>[c.crimeName]</td>
 							<td>[c.fine] cr</td><td>[c.author]</td>
@@ -395,7 +395,7 @@
 						<th>Time Added</th>
 						<th>Del</th>
 						</tr>"}
-						for(var/datum/data/crime/c in active2.fields["crim"])
+						for(var/datum/data/crime/c in active2.fields[DATACORE_CRIMES])
 							dat += "<tr><td>[c.crimeName]</td>"
 							if(!c.crimeDetails)
 								dat += "<td><A href='?src=[REF(src)];choice=Edit Field;field=add_details;cdataid=[c.dataId]'>\[+\]</A></td>"
@@ -407,7 +407,7 @@
 							dat += "</tr>"
 						dat += "</table>"
 
-						dat += "<br>\nImportant Notes:<br>\n\t<A href='?src=[REF(src)];choice=Edit Field;field=notes'>&nbsp;[active2.fields["notes"]]&nbsp;</A>"
+						dat += "<br>\nImportant Notes:<br>\n\t<A href='?src=[REF(src)];choice=Edit Field;field=notes'>&nbsp;[active2.fields[DATACORE_NOTES]]&nbsp;</A>"
 						dat += "<br><br><font size='4'><b>Comments/Log</b></font><br>"
 						var/counter = 1
 						while(active2.fields["com_[counter]"])
@@ -437,9 +437,9 @@ What a mess.*/
 	. = ..()
 	if(.)
 		return .
-	if(!( GLOB.data_core.general.Find(active1) ))
+	if(!( SSdatacore.get_records(DATACORE_RECORDS_STATION).Find(active1) ))
 		active1 = null
-	if(!( GLOB.data_core.security.Find(active2) ))
+	if(!( SSdatacore.get_records(DATACORE_RECORDS_SECURITY).Find(active2) ))
 		active2 = null
 	if(!authenticated && href_list["choice"] != "Log In") // logging in is the only action you can do if not logged in
 		return
@@ -502,12 +502,12 @@ What a mess.*/
 				playsound(src, 'sound/machines/terminal_on.ogg', 50, FALSE)
 
 			if("broadcast_criminal")
-				var/datum/data/record/R = locate(href_list["criminal"]) in GLOB.data_core.security
+				var/datum/data/record/R = locate(href_list["criminal"]) in SSdatacore.get_records(DATACORE_RECORDS_SECURITY)
 				if(!R)
 					return
-				if(!(R.fields["criminal"] == CRIMINAL_WANTED))
+				if(!(R.fields[DATACORE_CRIMINAL_STATUS] == CRIMINAL_WANTED))
 					return
-				investigate_log("[key_name(usr)] send a security status broadcast for [R.fields["name"]].", INVESTIGATE_RECORDS)
+				investigate_log("[key_name(usr)] send a security status broadcast for [R.fields[DATACORE_NAME]].", INVESTIGATE_RECORDS)
 
 				SEND_GLOBAL_SIGNAL(COMSIG_GLOB_WANTED_CRIMINAL, R)
 
@@ -518,18 +518,18 @@ What a mess.*/
 				active2 = null
 
 			if("Browse Record")
-				var/datum/data/record/R = locate(href_list["d_rec"]) in GLOB.data_core.general
+				var/datum/data/record/R = locate(href_list["d_rec"]) in SSdatacore.get_records(DATACORE_RECORDS_STATION)
 				if(!R)
 					temp = "Record Not Found!"
 				else
 					active1 = active2 = R
-					for(var/datum/data/record/E in GLOB.data_core.security)
-						if((E.fields["name"] == R.fields["name"] || E.fields["id"] == R.fields["id"]))
+					for(var/datum/data/record/E in SSdatacore.get_records(DATACORE_RECORDS_SECURITY))
+						if((E.fields[DATACORE_NAME] == R.fields[DATACORE_NAME] || E.fields[DATACORE_ID] == R.fields[DATACORE_ID]))
 							active2 = E
 					screen = 3
 
 			if("Pay")
-				for(var/datum/data/crime/p in active2.fields["citation"])
+				for(var/datum/data/crime/p in active2.fields[DATACORE_CITATIONS])
 					if(p.dataId == text2num(href_list["cdataid"]))
 						var/obj/item/stack/spacecash/S = usr.is_holding_item_of_type(/obj/item/stack/spacecash)
 						if(!istype(S))
@@ -540,7 +540,9 @@ What a mess.*/
 							to_chat(usr, span_warning("[S] doesn't seem to be worth anything!"))
 						else
 							var/diff = p.fine - p.paid
-							GLOB.data_core.payCitation(active2.fields["id"], text2num(href_list["cdataid"]), pay)
+							var/datum/data/record/security/security_record = active2
+							security_record.pay_citation(text2num(href_list["cdataid"]), pay)
+
 							to_chat(usr, span_notice("You have paid [pay] credit\s towards your fine."))
 							if (pay == diff || pay > diff || pay >= diff)
 								investigate_log("Citation Paid off: <strong>[p.crimeName]</strong> Fine: [p.fine] | Paid off by [key_name(usr)]", INVESTIGATE_RECORDS)
@@ -548,7 +550,7 @@ What a mess.*/
 
 								var/overflow = pay - diff
 								if(overflow)
-									SSeconomy.spawn_cash_for_amount(overflow, drop_location())
+									SSeconomy.spawn_ones_for_amount(overflow, drop_location())
 
 							SSblackbox.ReportCitation(text2num(href_list["cdataid"]),"","","","", 0, pay)
 							qdel(S)
@@ -559,24 +561,24 @@ What a mess.*/
 			if("Print Record")
 				if(!( printing ))
 					printing = 1
-					GLOB.data_core.securityPrintCount++
+					SSdatacore.securityPrintCount++
 					playsound(loc, 'sound/items/poster_being_created.ogg', 100, TRUE)
 					sleep(30)
 					var/obj/item/paper/P = new /obj/item/paper( loc )
-					P.info = "<CENTER><B>Security Record - (SR-[GLOB.data_core.securityPrintCount])</B></CENTER><BR>"
-					if((istype(active1, /datum/data/record) && GLOB.data_core.general.Find(active1)))
+					P.info = "<CENTER><B>Security Record - (SR-[SSdatacore.securityPrintCount])</B></CENTER><BR>"
+					if((istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_STATION).Find(active1)))
 
 						P.info += {"
-Name: [active1.fields["name"]] ID: [active1.fields["id"]]<BR>
-Gender: [active1.fields["gender"]]<BR>
-Age: [active1.fields["age"]]<BR>"}
+Name: [active1.fields[DATACORE_NAME]] ID: [active1.fields[DATACORE_ID]]<BR>
+Gender: [active1.fields[DATACORE_GENDER]]<BR>
+Age: [active1.fields[DATACORE_AGE]]<BR>"}
 
-						P.info += "\nSpecies: [active1.fields["species"]]<BR>"
-						P.info += "\nFingerprint: [active1.fields["fingerprint"]]<BR>\nPhysical Status: [active1.fields["p_stat"]]<BR>\nMental Status: [active1.fields["m_stat"]]<BR>"
+						P.info += "\nSpecies: [active1.fields[DATACORE_SPECIES]]<BR>"
+						P.info += "\nFingerprint: [active1.fields[DATACORE_FINGERPRINT]]<BR>\nPhysical Status: [active1.fields[DATACORE_PHYSICAL_HEALTH]]<BR>\nMental Status: [active1.fields[DATACORE_MENTAL_HEALTH]]<BR>"
 					else
 						P.info += "<B>General Record Lost!</B><BR>"
-					if((istype(active2, /datum/data/record) && GLOB.data_core.security.Find(active2)))
-						P.info += "<BR>\n<CENTER><B>Security Data</B></CENTER><BR>\nCriminal Status: [active2.fields["criminal"]]"
+					if((istype(active2, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_SECURITY).Find(active2)))
+						P.info += "<BR>\n<CENTER><B>Security Data</B></CENTER><BR>\nCriminal Status: [active2.fields[DATACORE_CRIMINAL_STATUS]]"
 
 						P.info += "<BR>\n<BR>\nCrimes:<BR>\n"
 						P.info +={"<table style="text-align:center;" border="1" cellspacing="0" width="100%">
@@ -586,7 +588,7 @@ Age: [active1.fields["age"]]<BR>"}
 <th>Author</th>
 <th>Time Added</th>
 </tr>"}
-						for(var/datum/data/crime/c in active2.fields["crim"])
+						for(var/datum/data/crime/c in active2.fields[DATACORE_CRIMES])
 							P.info += "<tr><td>[c.crimeName]</td>"
 							P.info += "<td>[c.crimeDetails]</td>"
 							P.info += "<td>[c.author]</td>"
@@ -594,27 +596,27 @@ Age: [active1.fields["age"]]<BR>"}
 							P.info += "</tr>"
 						P.info += "</table>"
 
-						P.info += "<BR>\nImportant Notes:<BR>\n\t[active2.fields["notes"]]<BR>\n<BR>\n<CENTER><B>Comments/Log</B></CENTER><BR>"
+						P.info += "<BR>\nImportant Notes:<BR>\n\t[active2.fields[DATACORE_NOTES]]<BR>\n<BR>\n<CENTER><B>Comments/Log</B></CENTER><BR>"
 						var/counter = 1
 						while(active2.fields["com_[counter]"])
 							P.info += "[active2.fields["com_[counter]"]]<BR>"
 							counter++
-						P.name = "SR-[GLOB.data_core.securityPrintCount] '[active1.fields["name"]]'"
+						P.name = "SR-[SSdatacore.securityPrintCount] '[active1.fields[DATACORE_NAME]]'"
 					else
 						P.info += "<B>Security Record Lost!</B><BR>"
-						P.name = "SR-[GLOB.data_core.securityPrintCount] 'Record Lost'"
+						P.name = "SR-[SSdatacore.securityPrintCount] 'Record Lost'"
 					P.info += "</TT>"
 					P.update_appearance()
 					printing = null
 			if("Print Poster")
 				if(!( printing ))
-					var/wanted_name = tgui_input_text(usr, "Enter an alias for the criminal", "Print Wanted Poster", active1.fields["name"])
+					var/wanted_name = tgui_input_text(usr, "Enter an alias for the criminal", "Print Wanted Poster", active1.fields[DATACORE_NAME])
 					if(wanted_name)
 						var/default_description = "A poster declaring [wanted_name] to be a dangerous individual, wanted by security. Report any sightings to security immediately."
-						var/list/crimes = active2.fields["crim"]
+						var/list/crimes = active2.fields[DATACORE_CRIMES]
 						if(length(crimes))
 							default_description += "\n[wanted_name] is wanted for the following crimes:\n"
-							for(var/datum/data/crime/c in active2.fields["crim"])
+							for(var/datum/data/crime/c in active2.fields[DATACORE_CRIMES])
 								default_description += "\n[c.crimeName]\n"
 								default_description += "[c.crimeDetails]\n"
 
@@ -625,13 +627,13 @@ Age: [active1.fields["age"]]<BR>"}
 							playsound(loc, 'sound/items/poster_being_created.ogg', 100, TRUE)
 							printing = 1
 							sleep(30)
-							if((istype(active1, /datum/data/record) && GLOB.data_core.general.Find(active1)))//make sure the record still exists.
+							if((istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_STATION).Find(active1)))//make sure the record still exists.
 								var/obj/item/photo/photo = active1.get_front_photo()
 								new /obj/item/poster/wanted(loc, photo.picture.picture_image, wanted_name, info, headerText)
 							printing = 0
 			if("Print Missing")
 				if(!( printing ))
-					var/missing_name = tgui_input_text(usr, "Enter an alias for the missing person", "Print Missing Persons Poster", active1.fields["name"])
+					var/missing_name = tgui_input_text(usr, "Enter an alias for the missing person", "Print Missing Persons Poster", active1.fields[DATACORE_NAME])
 					if(missing_name)
 						var/default_description = "A poster declaring [missing_name] to be a missing individual, missed by Nanotrasen. Report any sightings to security immediately."
 
@@ -642,7 +644,7 @@ Age: [active1.fields["age"]]<BR>"}
 							playsound(loc, 'sound/items/poster_being_created.ogg', 100, TRUE)
 							printing = 1
 							sleep(30)
-							if((istype(active1, /datum/data/record) && GLOB.data_core.general.Find(active1)))//make sure the record still exists.
+							if((istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_STATION).Find(active1)))//make sure the record still exists.
 								var/obj/item/photo/photo = active1.get_front_photo()
 								new /obj/item/poster/wanted/missing(loc, photo.picture.picture_image, missing_name, info, headerText)
 							printing = 0
@@ -656,9 +658,7 @@ Age: [active1.fields["age"]]<BR>"}
 
 			if("Purge All Records")
 				investigate_log("[key_name(usr)] has purged all the security records.", INVESTIGATE_RECORDS)
-				for(var/datum/data/record/R in GLOB.data_core.security)
-					qdel(R)
-				GLOB.data_core.security.Cut()
+				SSdatacore.wipe_records(DATACORE_RECORDS_SECURITY)
 				temp = "All Security records deleted."
 
 			if("Add Entry")
@@ -673,7 +673,7 @@ Age: [active1.fields["age"]]<BR>"}
 					counter++
 				active2.fields["com_[counter]"] = "Made by [src.authenticated] ([src.rank]) on [stationtime2text()] [stationdate2text()]<BR>[t1]"
 
-				investigate_log("[key_name(usr)] created a new comment for [active2.fields["name"]]: [html_encode(t1)].", INVESTIGATE_RECORDS)
+				investigate_log("[key_name(usr)] created a new comment for [active2.fields[DATACORE_NAME]]: [html_encode(t1)].", INVESTIGATE_RECORDS)
 
 			if("Delete Record (ALL)")
 				if(active1)
@@ -690,66 +690,66 @@ Age: [active1.fields["age"]]<BR>"}
 			if("Delete Entry")
 				if((istype(active2, /datum/data/record) && active2.fields["com_[href_list["del_c"]]"]))
 					active2.fields["com_[href_list["del_c"]]"] = "<B>Deleted</B>"
-					investigate_log("[key_name(usr)] deleted a record entry: [active2.fields["name"]].", INVESTIGATE_RECORDS)
+					investigate_log("[key_name(usr)] deleted a record entry: [active2.fields[DATACORE_NAME]].", INVESTIGATE_RECORDS)
 //RECORD CREATE
 			if("New Record (Security)")
-				if((istype(active1, /datum/data/record) && !( istype(active2, /datum/data/record) )))
-					var/datum/data/record/R = new /datum/data/record()
-					R.fields["name"] = active1.fields["name"]
-					R.fields["id"] = active1.fields["id"]
-					R.name = "Security Record #[R.fields["id"]]"
+				if((istype(active1, /datum/data/record) && !(istype(active2, /datum/data/record))))
+					var/datum/data/record/security/R = new /datum/data/record/security()
+					R.fields[DATACORE_NAME] = active1.fields[DATACORE_NAME]
+					R.fields[DATACORE_ID] = active1.fields[DATACORE_ID]
+					R.name = "Security Record #[R.fields[DATACORE_ID]]"
 					R.set_criminal_status(CRIMINAL_NONE)
-					R.fields["crim"] = list()
-					R.fields["notes"] = "No notes."
-					GLOB.data_core.security += R
+					R.fields[DATACORE_CRIMES] = list()
+					R.fields[DATACORE_NOTES] = "No notes."
+					SSdatacore.inject_record(R, DATACORE_RECORDS_SECURITY)
 					active2 = R
 					screen = 3
 					investigate_log("[key_name(usr)] created a new security record.", INVESTIGATE_RECORDS)
 
 			if("New Record (General)")
 				//General Record
-				var/datum/data/record/G = new /datum/data/record()
-				G.fields["name"] = "New Record"
-				G.fields["id"] = "[num2hex(rand(1, 1.6777215E7), 6)]"
-				G.fields["rank"] = "Unassigned"
-				G.fields["trim"] = "Unassigned"
-				G.fields["initial_rank"] = "Unassigned"
-				G.fields["gender"] = "Male"
-				G.fields["age"] = "Unknown"
-				G.fields["species"] = "Human"
+				var/datum/data/record/general/G = new /datum/data/record/general()
+				G.fields[DATACORE_NAME] = "New Record"
+				G.fields[DATACORE_ID] = "[num2hex(rand(1, 1.6777215E7), 6)]"
+				G.fields[DATACORE_RANK] = "Unassigned"
+				G.fields[DATACORE_TRIM] = "Unassigned"
+				G.fields[DATACORE_INITIAL_RANK] = "Unassigned"
+				G.fields[DATACORE_GENDER] = "Male"
+				G.fields[DATACORE_AGE] = "Unknown"
+				G.fields[DATACORE_SPECIES] = "Human"
 				G.fields["photo_front"] = new /icon()
 				G.fields["photo_side"] = new /icon()
-				G.fields["fingerprint"] = "?????"
-				G.fields["p_stat"] = "Active"
-				G.fields["m_stat"] = "Stable"
-				GLOB.data_core.general += G
+				G.fields[DATACORE_FINGERPRINT] = "?????"
+				G.fields[DATACORE_PHYSICAL_HEALTH] = "Active"
+				G.fields[DATACORE_MENTAL_HEALTH] = "Stable"
+				SSdatacore.inject_record(G, DATACORE_RECORDS_STATION)
 				active1 = G
 
 				//Security Record
-				var/datum/data/record/R = new /datum/data/record()
-				R.fields["name"] = active1.fields["name"]
-				R.fields["id"] = active1.fields["id"]
-				R.name = "Security Record #[R.fields["id"]]"
-				R.fields["criminal"] = CRIMINAL_NONE
-				R.fields["crim"] = list()
-				R.fields["notes"] = "No notes."
-				GLOB.data_core.security += R
+				var/datum/data/record/security/R = new /datum/data/record/security()
+				R.fields[DATACORE_NAME] = active1.fields[DATACORE_NAME]
+				R.fields[DATACORE_ID] = active1.fields[DATACORE_ID]
+				R.name = "Security Record #[R.fields[DATACORE_ID]]"
+				R.fields[DATACORE_CRIMINAL_STATUS] = CRIMINAL_NONE
+				R.fields[DATACORE_CRIMES] = list()
+				R.fields[DATACORE_NOTES] = "No notes."
+				SSdatacore.inject_record(R, DATACORE_RECORDS_SECURITY)
 				active2 = R
 
 				//Medical Record
-				var/datum/data/record/M = new /datum/data/record()
-				M.fields["id"] = active1.fields["id"]
-				M.fields["name"] = active1.fields["name"]
-				M.fields["blood_type"] = "?"
-				M.fields["b_dna"] = "?????"
-				M.fields["disabilities"] = "None"
-				M.fields["disabilities_details"] = "No disabilities have been declared."
+				var/datum/data/record/medical/M = new /datum/data/record/medical()
+				M.fields[DATACORE_ID] = active1.fields[DATACORE_ID]
+				M.fields[DATACORE_NAME] = active1.fields[DATACORE_NAME]
+				M.fields[DATACORE_BLOOD_TYPE] = "?"
+				M.fields[DATACORE_BLOOD_DNA] = "?????"
+				M.fields[DATACORE_DISABILITIES] = "None"
+				M.fields[DATACORE_DISABILITIES_DETAILS] = "No disabilities have been declared."
 				M.fields["alg"] = "None"
 				M.fields["alg_d"] = "No allergies have been detected in this patient."
-				M.fields["cdi"] = "None"
-				M.fields["cdi_d"] = "No diseases have been diagnosed at the moment."
-				M.fields["notes"] = "No notes."
-				GLOB.data_core.medical += M
+				M.fields[DATACORE_DISEASES] = "None"
+				M.fields[DATACORE_DISEASES_DETAILS] = "No diseases have been diagnosed at the moment."
+				M.fields[DATACORE_NOTES] = "No notes."
+				SSdatacore.inject_record(M, DATACORE_RECORDS_MEDICAL)
 
 				investigate_log("[key_name(usr)] created a new record of each type.", INVESTIGATE_RECORDS)
 
@@ -763,57 +763,63 @@ Age: [active1.fields["age"]]<BR>"}
 				switch(href_list["field"])
 					if("name")
 						if(istype(active1, /datum/data/record) || istype(active2, /datum/data/record))
-							var/t1 = tgui_input_text(usr, "Input a name", "Security Records", active1.fields["name"])
+							var/t1 = tgui_input_text(usr, "Input a name", "Security Records", active1.fields[DATACORE_NAME])
 							if(!canUseSecurityRecordsConsole(usr, t1, a1))
 								return
 							if(istype(active1, /datum/data/record))
-								investigate_log("[key_name(usr)] updated [active1.fields["name"]]'s record: Var: name | Old value:[active1.fields["name"]] | New value: [t1].", INVESTIGATE_RECORDS)
-								active1.fields["name"] = t1
+								investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s record: Var: name | Old value:[active1.fields[DATACORE_NAME]] | New value: [t1].", INVESTIGATE_RECORDS)
+								active1.fields[DATACORE_NAME] = t1
+
 							if(istype(active2, /datum/data/record))
-								investigate_log("[key_name(usr)] updated [active2.fields["name"]]'s record: Var: name | Old value:[active2.fields["name"]] | New value: [t1].", INVESTIGATE_RECORDS)
-								active2.fields["name"] = t1
+								investigate_log("[key_name(usr)] updated [active2.fields[DATACORE_NAME]]'s record: Var: name | Old value:[active2.fields[DATACORE_NAME]] | New value: [t1].", INVESTIGATE_RECORDS)
+								active2.fields[DATACORE_NAME] = t1
+
 					if("id")
 						if(istype(active2, /datum/data/record) || istype(active1, /datum/data/record))
-							var/t1 = tgui_input_text(usr, "Input an id", "Security Records", active1.fields["id"])
+							var/t1 = tgui_input_text(usr, "Input an id", "Security Records", active1.fields[DATACORE_ID])
 							if(!canUseSecurityRecordsConsole(usr, t1, a1))
 								return
 							if(istype(active1, /datum/data/record))
-								investigate_log("[key_name(usr)] updated [active1.fields["name"]]'s record: Var: id | Old value:[active1.fields["id"]] | New value: [t1].", INVESTIGATE_RECORDS)
-								active1.fields["id"] = t1
+								investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s record: Var: id | Old value:[active1.fields[DATACORE_ID]] | New value: [t1].", INVESTIGATE_RECORDS)
+								active1.fields[DATACORE_ID] = t1
+
 							if(istype(active2, /datum/data/record))
-								investigate_log("[key_name(usr)] updated [active2.fields["name"]]'s record: Var: id | Old value:[active2.fields["id"]] | New value: [t1].", INVESTIGATE_RECORDS)
-								active2.fields["id"] = t1
+								investigate_log("[key_name(usr)] updated [active2.fields[DATACORE_NAME]]'s record: Var: id | Old value:[active2.fields[DATACORE_ID]] | New value: [t1].", INVESTIGATE_RECORDS)
+								active2.fields[DATACORE_ID] = t1
 
 					if("fingerprint")
 						if(istype(active1, /datum/data/record))
-							var/t1 = tgui_input_text(usr, "Input a fingerprint hash", "Security Records", active1.fields["fingerprint"])
+							var/t1 = tgui_input_text(usr, "Input a fingerprint hash", "Security Records", active1.fields[DATACORE_FINGERPRINT])
 							if(!canUseSecurityRecordsConsole(usr, t1, a1))
 								return
-							investigate_log("[key_name(usr)] updated [active1.fields["name"]]'s record: Var: fingerprint | Old value:[active1.fields["fingerprint"]] | New value: [t1].", INVESTIGATE_RECORDS)
-							active1.fields["fingerprint"] = t1
+
+							investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s record: Var: fingerprint | Old value:[active1.fields[DATACORE_FINGERPRINT]] | New value: [t1].", INVESTIGATE_RECORDS)
+							active1.fields[DATACORE_FINGERPRINT] = t1
+
 
 					if("gender")
 						if(istype(active1, /datum/data/record))
 							var/new_gender
-							if(active1.fields["gender"] == "Male")
+							if(active1.fields[DATACORE_GENDER] == "Male")
 								new_gender = "Female"
-							else if(active1.fields["gender"] == "Female")
+							else if(active1.fields[DATACORE_GENDER] == "Female")
 								new_gender = "Other"
 							else
 								new_gender = "Male"
 
-							investigate_log("[key_name(usr)] updated [active1.fields["name"]]'s record: Var: gender | Old value:[active1.fields["gender"]] | New value: [new_gender].", INVESTIGATE_RECORDS)
-							active1.fields["gender"] = new_gender
+							investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s record: Var: gender | Old value:[active1.fields[DATACORE_GENDER]] | New value: [new_gender].", INVESTIGATE_RECORDS)
+							active1.fields[DATACORE_GENDER] = new_gender
 
 					if("age")
 						if(istype(active1, /datum/data/record))
-							var/t1 = tgui_input_number(usr, "Input age", "Security records", active1.fields["age"], AGE_MAX, AGE_MIN)
+							var/t1 = tgui_input_number(usr, "Input age", "Security records", active1.fields[DATACORE_AGE], AGE_MAX, AGE_MIN)
 							if (!t1)
 								return
 							if(!canUseSecurityRecordsConsole(usr, "age", a1))
 								return
-							investigate_log("[key_name(usr)] updated [active1.fields["name"]]'s record: Var: age | Old value:[active1.fields["age"]] | New value: [t1].", INVESTIGATE_RECORDS)
-							active1.fields["age"] = t1
+
+							investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s record: Var: age | Old value:[active1.fields[DATACORE_AGE]] | New value: [t1].", INVESTIGATE_RECORDS)
+							active1.fields[DATACORE_AGE] = t1
 
 					if("species")
 						if(istype(active1, /datum/data/record))
@@ -822,8 +828,8 @@ Age: [active1.fields["age"]]<BR>"}
 								return
 							if(!canUseSecurityRecordsConsole(usr, t1, a1))
 								return
-							investigate_log("[key_name(usr)] updated [active1.fields["name"]]'s record: Var: species | Old value:[active1.fields["species"]] | New value: [t1].", INVESTIGATE_RECORDS)
-							active1.fields["species"] = t1
+							investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s record: Var: species | Old value:[active1.fields[DATACORE_SPECIES]] | New value: [t1].", INVESTIGATE_RECORDS)
+							active1.fields[DATACORE_SPECIES] = t1
 
 					if("show_photo_front")
 						if(active1)
@@ -844,14 +850,14 @@ Age: [active1.fields["age"]]<BR>"}
 							var/dh = w - 32
 							I.Crop(dw/2, dh/2, w - dw/2, h - dh/2)
 							active1.fields["photo_front"] = photo
-							investigate_log("[key_name(usr)] updated [active1.fields["name"]]'s front photo.", INVESTIGATE_RECORDS)
+							investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s front photo.", INVESTIGATE_RECORDS)
 
 					if("print_photo_front")
 						if(active1)
 							var/front_photo = active1.get_front_photo()
 							if(istype(front_photo, /obj/item/photo))
 								var/obj/item/photo/photo_front = front_photo
-								print_photo(photo_front.picture.picture_image, active1.fields["name"])
+								print_photo(photo_front.picture.picture_image, active1.fields[DATACORE_NAME])
 
 					if("show_photo_side")
 						if(active1)
@@ -872,92 +878,116 @@ Age: [active1.fields["age"]]<BR>"}
 							var/dh = w - 32
 							I.Crop(dw/2, dh/2, w - dw/2, h - dh/2)
 							active1.fields["photo_side"] = photo
-							investigate_log("[key_name(usr)] updated [active1.fields["name"]]'s front photo.", INVESTIGATE_RECORDS)
+							investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s front photo.", INVESTIGATE_RECORDS)
 
 					if("print_photo_side")
 						if(active1)
 							var/side_photo = active1.get_side_photo()
 							if(istype(side_photo, /obj/item/photo))
 								var/obj/item/photo/photo_side = side_photo
-								print_photo(photo_side.picture.picture_image, active1.fields["name"])
+								print_photo(photo_side.picture.picture_image, active1.fields[DATACORE_NAME])
 
 					if("crim_add")
-						if(istype(active1, /datum/data/record))
-							var/t1 = tgui_input_text(usr, "Input crime names", "Security Records")
-							var/t2 = tgui_input_text(usr, "Input crime details", "Security Records")
-							if(!canUseSecurityRecordsConsole(usr, t1, null, a2))
-								return
-							var/crime = GLOB.data_core.createCrimeEntry(t1, t2, authenticated, stationtime2text())
-							GLOB.data_core.addCrime(active1.fields["id"], crime)
-							investigate_log("New Crime: <strong>[t1]</strong>: [t2] | Added to [active1.fields["name"]] by [key_name(usr)]", INVESTIGATE_RECORDS)
+						if(!istype(active1, /datum/data/record/security))
+							return
+
+						var/t1 = tgui_input_text(usr, "Input crime names", "Security Records")
+						var/t2 = tgui_input_text(usr, "Input crime details", "Security Records")
+						if(!canUseSecurityRecordsConsole(usr, t1, null, a2))
+							return
+
+						var/datum/data/record/security/security_record = active1
+						var/crime = SSdatacore.new_crime_entry(t1, t2, authenticated, stationtime2text())
+						security_record.add_crime(crime)
+
+						investigate_log("New Crime: <strong>[t1]</strong>: [t2] | Added to [active1.fields[DATACORE_NAME]] by [key_name(usr)]", INVESTIGATE_RECORDS)
 
 					if("crim_delete")
-						if(istype(active1, /datum/data/record))
-							if(href_list["cdataid"])
-								if(!canUseSecurityRecordsConsole(usr, "delete", null, a2))
-									return
-								var/crime_name = ""
-								var/crime_details = ""
-								var/list/crimes = active1.fields["citation"]
-								for(var/datum/data/crime/crime in crimes)
-									if(crime.dataId == text2num(href_list["cdataid"]))
-										crime_name = crime.crimeName
-										crime_details = crime.crimeDetails
-										break
+						if(!istype(active1, /datum/data/record/security) || !href_list["cdataid"])
+							return
 
-								investigate_log("[key_name(usr)] deleted a crime from [active1.fields["name"]]: ([crime_name]) | Details: [crime_details]", INVESTIGATE_RECORDS)
-								GLOB.data_core.removeCrime(active1.fields["id"],href_list["cdataid"])
+						if(!canUseSecurityRecordsConsole(usr, "delete", null, a2))
+							return
+
+						var/crime_name
+						var/crime_details
+						var/datum/data/record/security/security_record = active1
+						var/list/crimes = security_record.fields[DATACORE_CRIMES]
+						for(var/datum/data/crime/crime in crimes)
+							if(crime.dataId == text2num(href_list["cdataid"]))
+								crime_name = crime.crimeName
+								crime_details = crime.crimeDetails
+								break
+
+						investigate_log("[key_name(usr)] deleted a crime from [active1.fields[DATACORE_NAME]]: ([crime_name]) | Details: [crime_details]", INVESTIGATE_RECORDS)
+						security_record.remove_crime(href_list["cdataid"])
 
 					if("add_details")
-						if(istype(active1, /datum/data/record))
-							if(href_list["cdataid"])
-								var/t1 = tgui_input_text(usr, "Input crime details", "Security Records")
-								if(!canUseSecurityRecordsConsole(usr, t1, null, a2))
-									return
-								GLOB.data_core.addCrimeDetails(active1.fields["id"], href_list["cdataid"], t1)
-								investigate_log("New Crime details: [t1] | Added to [active1.fields["name"]] by [key_name(usr)]", INVESTIGATE_RECORDS)
+						if(!istype(active1, /datum/data/record/security) || !href_list["cdataid"])
+							return
+
+
+						var/t1 = tgui_input_text(usr, "Input crime details", "Security Records")
+						if(!canUseSecurityRecordsConsole(usr, t1, null, a2))
+							return
+
+						var/datum/data/record/security/security_record = active1
+						security_record.add_crime_details(href_list["cdataid"], t1)
+
+						investigate_log("New Crime details: [t1] | Added to [active1.fields[DATACORE_NAME]] by [key_name(usr)]", INVESTIGATE_RECORDS)
 
 					if("citation_add")
-						if(istype(active1, /datum/data/record))
-							var/maxFine = CONFIG_GET(number/maxfine)
+						if(!istype(active1, /datum/data/record/security))
+							return
 
-							var/t1 = tgui_input_text(usr, "Input citation crime", "Security Records")
-							if(!t1)
-								return
-							var/fine = tgui_input_number(usr, "Input citation fine", "Security Records", 50, maxFine)
-							if (!fine || QDELETED(usr) || QDELETED(src) || !canUseSecurityRecordsConsole(usr, t1, null, a2))
-								return
-							var/datum/data/crime/crime = GLOB.data_core.createCrimeEntry(t1, "", authenticated, stationtime2text(), fine)
-							var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
-							if(announcer)
-								announcer.notify_citation(active1.fields["name"], t1, fine)
-							GLOB.data_core.addCitation(active1.fields["id"], crime)
-							investigate_log("New Citation: <strong>[t1]</strong> Fine: [fine] | Added to [active1.fields["name"]] by [key_name(usr)]", INVESTIGATE_RECORDS)
-							SSblackbox.ReportCitation(crime.dataId, usr.ckey, usr.real_name, active1.fields["name"], t1, fine)
+						var/t1 = tgui_input_text(usr, "Input citation crime", "Security Records")
+						if(!t1)
+							return
+
+						var/maxFine = CONFIG_GET(number/maxfine)
+						var/fine = tgui_input_number(usr, "Input citation fine", "Security Records", 50, maxFine)
+						if (!fine || QDELETED(usr) || QDELETED(src) || !canUseSecurityRecordsConsole(usr, t1, null, a2))
+							return
+
+						var/datum/data/crime/crime = SSdatacore.new_crime_entry(t1, "", authenticated, stationtime2text(), fine)
+						var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
+						if(announcer)
+							announcer.notify_citation(active1.fields[DATACORE_NAME], t1, fine)
+
+						var/datum/data/record/security/security_record = active1
+						security_record.add_citation(crime)
+
+						investigate_log("New Citation: <strong>[t1]</strong> Fine: [fine] | Added to [active1.fields[DATACORE_NAME]] by [key_name(usr)]", INVESTIGATE_RECORDS)
+						SSblackbox.ReportCitation(crime.dataId, usr.ckey, usr.real_name, active1.fields[DATACORE_NAME], t1, fine)
 
 					if("citation_delete")
-						if(istype(active1, /datum/data/record))
-							if(href_list["cdataid"])
-								if(!canUseSecurityRecordsConsole(usr, "delete", null, a2))
-									return
-								var/crime_name = ""
-								var/crime_details = ""
-								var/list/crimes = active1.fields["citation"]
-								for(var/datum/data/crime/crime in crimes)
-									if(crime.dataId == text2num(href_list["cdataid"]))
-										crime_name = crime.crimeName
-										crime_details = crime.crimeDetails
-										break
+						if(!istype(active1, /datum/data/record/security) || !href_list["cdataid"])
+							return
 
-								investigate_log("[key_name(usr)] deleted a citation from [active1.fields["name"]]: ([crime_name]) | Details: [crime_details]", INVESTIGATE_RECORDS)
-								GLOB.data_core.removeCitation(active1.fields["id"], href_list["cdataid"])
+						if(!canUseSecurityRecordsConsole(usr, "delete", null, a2))
+							return
+
+						var/crime_name = ""
+						var/crime_details = ""
+						var/list/crimes = active1.fields[DATACORE_CITATIONS]
+						for(var/datum/data/crime/crime in crimes)
+							if(crime.dataId == text2num(href_list["cdataid"]))
+								crime_name = crime.crimeName
+								crime_details = crime.crimeDetails
+								break
+
+						investigate_log("[key_name(usr)] deleted a citation from [active1.fields[DATACORE_NAME]]: ([crime_name]) | Details: [crime_details]", INVESTIGATE_RECORDS)
+						var/datum/data/record/security/security_record = active1
+						security_record.remove_citation(href_list["cdataid"])
+
 					if("notes")
 						if(istype(active2, /datum/data/record))
-							var/t1 = tgui_input_text(usr, "Please summarize notes", "Security Records", active2.fields["notes"])
+							var/t1 = tgui_input_text(usr, "Please summarize notes", "Security Records", active2.fields[DATACORE_NOTES])
 							if(!canUseSecurityRecordsConsole(usr, t1, null, a2))
 								return
-							investigate_log("[key_name(usr)] updated [active2.fields["name"]]'s notes to: [t1]", INVESTIGATE_RECORDS)
-							active2.fields["notes"] = t1
+
+							active2.fields[DATACORE_NOTES] = t1
+							investigate_log("[key_name(usr)] updated [active2.fields[DATACORE_NAME]]'s notes to: [t1]", INVESTIGATE_RECORDS)
 
 					if("criminal")
 						if(istype(active2, /datum/data/record))
@@ -999,10 +1029,9 @@ Age: [active1.fields["age"]]<BR>"}
 							if(ispath(path))
 								var/rank = SSid_access.station_job_templates[path]
 								if(rank)
-									investigate_log("[key_name(usr)] updated [active1.fields["name"]]'s record: Var: rank | Old value:[active1.fields["rank"]] | New value: [rank].", INVESTIGATE_RECORDS)
-									active1.fields["rank"] = rank
-									active1.fields["trim"] = active1.fields["rank"]
-
+									active1.fields[DATACORE_RANK] = rank
+									active1.fields[DATACORE_TRIM] = active1.fields[DATACORE_RANK]
+									investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s record: Var: rank | Old value:[active1.fields[DATACORE_RANK]] | New value: [rank].", INVESTIGATE_RECORDS)
 								else
 									message_admins("Warning: possible href exploit by [key_name(usr)] - attempted to set change a crew member rank to an invalid path: [path]")
 									log_game("Warning: possible href exploit by [key_name(usr)] - attempted to set change a crew member rank to an invalid path: [path]")
@@ -1012,36 +1041,37 @@ Age: [active1.fields["age"]]<BR>"}
 
 					if("Change Criminal Status")
 						if(active2)
-							var/old_field = active2.fields["criminal"]
+							var/datum/data/record/security/security_record = active2
+							var/old_field = security_record.fields[DATACORE_CRIMINAL_STATUS]
 							switch(href_list["criminal2"])
 								if("none")
-									active2.set_criminal_status(CRIMINAL_NONE)
+									security_record.set_criminal_status(CRIMINAL_NONE)
 								if("arrest")
-									active2.set_criminal_status(CRIMINAL_WANTED)
+									security_record.set_criminal_status(CRIMINAL_WANTED)
 								if("incarcerated")
-									active2.set_criminal_status(CRIMINAL_INCARCERATED)
+									security_record.set_criminal_status(CRIMINAL_INCARCERATED)
 								if("suspected")
-									active2.set_criminal_status( CRIMINAL_SUSPECT)
+									security_record.set_criminal_status( CRIMINAL_SUSPECT)
 								if("paroled")
-									active2.set_criminal_status(CRIMINAL_PAROLE)
+									security_record.set_criminal_status(CRIMINAL_PAROLE)
 								if("released")
-									active2.set_criminal_status(CRIMINAL_DISCHARGED)
+									security_record.set_criminal_status(CRIMINAL_DISCHARGED)
 
-							investigate_log("[active1.fields["name"]] has been set from [old_field] to [active2.fields["criminal"]] by [key_name(usr)].", INVESTIGATE_RECORDS)
-							for(var/i in GLOB.human_list)
-								var/mob/living/carbon/human/H = i
+							investigate_log("[active1.fields[DATACORE_NAME]] has been set from [old_field] to [security_record.fields[DATACORE_CRIMINAL_STATUS]] by [key_name(usr)].", INVESTIGATE_RECORDS)
+							for(var/mob/living/carbon/human/H as anything in GLOB.human_list)
 								H.sec_hud_set_security_status()
+
 					if("Delete Record (Security) Execute")
-						investigate_log("[key_name(usr)] has deleted the security records for [active1.fields["name"]].", INVESTIGATE_RECORDS)
+						investigate_log("[key_name(usr)] has deleted the security records for [active1.fields[DATACORE_NAME]].", INVESTIGATE_RECORDS)
 						if(active2)
 							qdel(active2)
 							active2 = null
 
 					if("Delete Record (ALL) Execute")
 						if(active1)
-							investigate_log("[key_name(usr)] has deleted all records for [active1.fields["name"]].", INVESTIGATE_RECORDS)
-							for(var/datum/data/record/R in GLOB.data_core.medical)
-								if((R.fields["name"] == active1.fields["name"] || R.fields["id"] == active1.fields["id"]))
+							investigate_log("[key_name(usr)] has deleted all records for [active1.fields[DATACORE_NAME]].", INVESTIGATE_RECORDS)
+							for(var/datum/data/record/R in SSdatacore.get_records(DATACORE_RECORDS_MEDICAL))
+								if((R.fields[DATACORE_NAME] == active1.fields[DATACORE_NAME] || R.fields[DATACORE_ID] == active1.fields[DATACORE_ID]))
 									qdel(R)
 									break
 							qdel(active1)
@@ -1086,28 +1116,28 @@ Age: [active1.fields["age"]]<BR>"}
 	if(machine_stat & (BROKEN|NOPOWER) || . & EMP_PROTECT_SELF)
 		return
 
-	for(var/datum/data/record/R in GLOB.data_core.security)
+	for(var/datum/data/record/security/R in SSdatacore.get_records(DATACORE_RECORDS_SECURITY))
 		if(prob(10/severity))
 			switch(rand(1,8))
 				if(1)
 					if(prob(10))
-						R.fields["name"] = "[pick(lizard_name(MALE),lizard_name(FEMALE))]"
+						R.fields[DATACORE_NAME] = "[pick(lizard_name(MALE),lizard_name(FEMALE))]"
 					else
-						R.fields["name"] = "[pick(pick(GLOB.first_names_male), pick(GLOB.first_names_female))] [pick(GLOB.last_names)]"
+						R.fields[DATACORE_NAME] = "[pick(pick(GLOB.first_names_male), pick(GLOB.first_names_female))] [pick(GLOB.last_names)]"
 				if(2)
-					R.fields["gender"] = pick("Male", "Female", "Other")
+					R.fields[DATACORE_GENDER] = pick("Male", "Female", "Other")
 				if(3)
-					R.fields["age"] = rand(5, 85)
+					R.fields[DATACORE_AGE] = rand(5, 85)
 				if(4)
 					R.set_criminal_status(pick(CRIMINAL_NONE, CRIMINAL_WANTED, CRIMINAL_INCARCERATED, CRIMINAL_SUSPECT, CRIMINAL_PAROLE, CRIMINAL_DISCHARGED))
 				if(5)
-					R.fields["p_stat"] = pick("*Unconscious*", "Active", "Physically Unfit")
+					R.fields[DATACORE_PHYSICAL_HEALTH] = pick("*Unconscious*", "Active", "Physically Unfit")
 				if(6)
-					R.fields["m_stat"] = pick("*Insane*", "*Unstable*", "*Watch*", "Stable")
+					R.fields[DATACORE_MENTAL_HEALTH] = pick("*Insane*", "*Unstable*", "*Watch*", "Stable")
 				if(7)
-					R.fields["species"] = pick(get_selectable_species())
+					R.fields[DATACORE_SPECIES] = pick(get_selectable_species())
 				if(8)
-					var/datum/data/record/G = pick(GLOB.data_core.general)
+					var/datum/data/record/G = pick(SSdatacore.get_records(DATACORE_RECORDS_STATION))
 					R.fields["photo_front"] = G.fields["photo_front"]
 					R.fields["photo_side"] = G.fields["photo_side"]
 			continue

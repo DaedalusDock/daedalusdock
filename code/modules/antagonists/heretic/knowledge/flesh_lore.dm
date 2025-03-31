@@ -176,7 +176,7 @@
 		var/mob/dead/observer/chosen_candidate = pick(candidates)
 		message_admins("[key_name_admin(chosen_candidate)] has taken control of ([key_name_admin(soon_to_be_ghoul)]) to replace an AFK player.")
 		soon_to_be_ghoul.ghostize(FALSE)
-		soon_to_be_ghoul.key = chosen_candidate.key
+		soon_to_be_ghoul.PossessByPlayer(chosen_candidate.key)
 
 	selected_atoms -= soon_to_be_ghoul
 	make_ghoul(user, soon_to_be_ghoul)

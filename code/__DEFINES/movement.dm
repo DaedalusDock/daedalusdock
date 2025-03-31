@@ -34,6 +34,10 @@ GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 #define MOVEMENT_LOOP_IGNORE_PRIORITY (1<<1)
 ///Should we override the loop's glide?
 #define MOVEMENT_LOOP_IGNORE_GLIDE (1<<2)
+///Should we not update our movables dir on move?
+#define MOVEMENT_LOOP_NO_DIR_UPDATE (1<<3)
+///Is the loop moving the movable outside its control, like it's an external force? e.g. footsteps won't play if enabled.
+#define MOVEMENT_LOOP_OUTSIDE_CONTROL (1<<4)
 
 // Movement loop status flags
 /// Has the loop been paused, soon to be resumed?

@@ -118,7 +118,7 @@
 	return
 
 /obj/item/stack/medical/bruise_pack
-	name = "bruise pack"
+	name = "bruise packs"
 	singular_name = "bruise pack"
 	desc = "A therapeutic gel pack and bandages designed to treat blunt-force trauma."
 	icon_state = "brutepack"
@@ -130,28 +130,34 @@
 	grind_results = list(/datum/reagent/medicine/bicaridine = 10)
 	merge_type = /obj/item/stack/medical/bruise_pack
 
+	dynamically_set_name = TRUE
+
 /obj/item/stack/medical/bruise_pack/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is bludgeoning [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return (BRUTELOSS)
 
 /obj/item/stack/gauze
-	name = "medical gauze"
+	name = "medical gauze rolls"
 	desc = "A roll of elastic cloth, perfect for stabilizing all kinds of wounds, from cuts and burns, to broken bones. "
-	gender = PLURAL
-	singular_name = "medical gauze"
+
+	singular_name = "roll of medical gauze"
+	multiple_gender = NEUTER
+
 	icon_state = "gauze"
 	icon = 'icons/obj/stack_medical.dmi'
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
+
 	max_amount = 12
 	amount = 6
 	grind_results = list(/datum/reagent/cellulose = 2)
-	custom_price = PAYCHECK_ASSISTANT * 2
+	custom_price = PAYCHECK_ASSISTANT * 0.5
 	absorption_capacity = 50
 	absorption_rate_modifier = 0.5
-
 	burn_cleanliness_bonus = 0.35
+
 	merge_type = /obj/item/stack/gauze
+	dynamically_set_name = TRUE
 
 /obj/item/stack/gauze/twelve
 	amount = 12
@@ -162,7 +168,7 @@
 			to_chat(user, span_warning("You need at least two gauzes to do this!"))
 			return
 		new /obj/item/stack/sheet/cloth(I.drop_location())
-		if(user.CanReach(src))
+		if(IsReachableBy(user))
 			user.visible_message(span_notice("[user] cuts [src] into pieces of cloth with [I]."), \
 				span_notice("You cut [src] into pieces of cloth with [I]."), \
 				span_hear("You hear cutting."))
@@ -196,8 +202,8 @@
 		return 0 //Absorbed all blood, and bandage is still good.
 
 /obj/item/stack/gauze/improvised
-	name = "improvised gauze"
-	singular_name = "improvised gauze"
+	name = "improvised gauze rolls"
+	singular_name = "roll of improvised gauze"
 	desc = "A roll of cloth roughly cut from something that does a decent job of stabilizing wounds, but less efficiently so than real medical gauze."
 	burn_cleanliness_bonus = 0.7
 	absorption_capacity = 20
@@ -207,10 +213,10 @@
 
 /// Sutures close small cut or puncture wounds.
 /obj/item/stack/medical/suture
-	name = "suture"
+	name = "sutures"
 	desc = "Basic sterile sutures used to seal up cuts and stop bleeding."
-	gender = PLURAL
 	singular_name = "suture"
+
 	icon_state = "suture"
 	self_delay = 8 SECONDS
 	other_delay = 5 SECONDS
@@ -220,6 +226,8 @@
 	grind_results = list(/datum/reagent/medicine/spaceacillin = 2)
 	merge_type = /obj/item/stack/medical/suture
 	use_sound = 'sound/effects/sneedle.ogg'
+
+	dynamically_set_name = TRUE
 
 /obj/item/stack/medical/suture/heal_carbon(mob/living/carbon/C, mob/user, brute, burn)
 	var/obj/item/bodypart/affecting = C.get_bodypart(deprecise_zone(user.zone_selected), TRUE)
@@ -233,7 +241,7 @@
 
 	var/wound_desc
 	for(var/datum/wound/W as anything in shuffle(affecting.wounds))
-		if(W.wound_type != WOUND_CUT && W.wound_type != WOUND_PIERCE)
+		if(W.damage <= 0 || W.wound_type != WOUND_CUT && W.wound_type != WOUND_PIERCE)
 			continue
 		if(W.damage <= 15)
 			wound_desc = W.desc
@@ -252,10 +260,11 @@
 	return TRUE
 
 /obj/item/stack/medical/ointment
-	name = "ointment"
+	name = "tube of burn ointment"
 	desc = "Basic burn ointment, rated effective for second degree burns with proper bandaging, though it's still an effective stabilizer for worse burns. Not terribly good at outright healing burns though."
-	gender = PLURAL
-	singular_name = "ointment"
+	singular_name = "use"
+	multiple_gender = NEUTER
+
 	icon_state = "ointment"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
@@ -277,8 +286,10 @@
 /obj/item/stack/medical/mesh
 	name = "regenerative mesh"
 	desc = "A bacteriostatic mesh used to dress burns."
-	gender = PLURAL
+	gender = NEUTER
 	singular_name = "mesh piece"
+	stack_name = "packet"
+
 	icon_state = "regen_mesh"
 	self_delay = 3 SECONDS
 	other_delay = 1 SECONDS
@@ -349,11 +360,13 @@
 	icon_state = "aloe_mesh_closed"
 
 /obj/item/stack/medical/aloe
-	name = "aloe cream"
+	name = "tube of aloe cream"
 	desc = "A healing paste for minor cuts and burns."
 
-	gender = PLURAL
-	singular_name = "aloe cream"
+	multiple_gender = NEUTER
+	singular_name = "use"
+	stack_name = "tube"
+
 	icon_state = "aloe_paste"
 	self_delay = 2 SECONDS
 	other_delay = 1 SECONDS
@@ -367,9 +380,12 @@
 	merge_type = /obj/item/stack/medical/aloe
 
 /obj/item/stack/medical/bone_gel
-	name = "bone gel"
-	singular_name = "bone gel"
+	name = "tube of bone gel"
+	singular_name = "use"
+	stack_name = "tube"
+
 	desc = "A potent medical gel that, when applied to a damaged bone in a proper surgical setting, triggers an intense melding reaction to repair the wound. Can be directly applied alongside surgical sticky tape to a broken bone in dire circumstances, though this is very harmful to the patient and not recommended."
+	multiple_gender = NEUTER
 
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "bone-gel"

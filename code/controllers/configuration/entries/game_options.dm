@@ -133,6 +133,8 @@
 
 /datum/config_entry/flag/no_intercept_report //Whether or not to send a communications intercept report roundstart. This may be overridden by gamemodes.
 
+/datum/config_entry/flag/hide_gamemode_name //Whether or not to hide the gamemode name from players.
+
 /datum/config_entry/number/arrivals_shuttle_dock_window //Time from when a player late joins on the arrivals shuttle to when the shuttle docks on the station
 	default = 55
 	integer = FALSE
@@ -347,8 +349,6 @@
 
 /datum/config_entry/flag/roundstart_traits
 
-/datum/config_entry/flag/enable_night_shifts
-
 /datum/config_entry/flag/randomize_shift_time
 
 /datum/config_entry/flag/shift_time_realtime
@@ -396,3 +396,9 @@
 			else
 				//Set false, kill:tm:
 				STOP_PROCESSING(SSobj, dick)
+
+/// Require captain to start the round
+/datum/config_entry/flag/require_captain
+
+/// Require every department to have atleast one staff member to start the round
+/datum/config_entry/flag/require_departments_staffed

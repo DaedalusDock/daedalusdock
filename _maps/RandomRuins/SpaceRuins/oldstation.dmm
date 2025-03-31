@@ -1525,11 +1525,6 @@
 "ep" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/table,
-/obj/item/cultivator{
-	pixel_x = 4;
-	pixel_y = 4
-	},
-/obj/item/cultivator,
 /obj/item/shovel/spade,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
@@ -2202,8 +2197,6 @@
 /obj/effect/turf_decal/tile/green{
 	dir = 8
 	},
-/obj/item/reagent_containers/spray/weedspray,
-/obj/item/reagent_containers/spray/pestspray,
 /obj/structure/closet/crate/hydroponics,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hydro)

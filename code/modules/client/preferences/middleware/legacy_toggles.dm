@@ -118,15 +118,10 @@
 			else
 				user.stop_sound_channel(CHANNEL_LOBBYMUSIC)
 
+		if(legacy_flag == SOUND_SHIP_AMBIENCE)
+			user.refresh_looping_ambience()
+
+		if(legacy_flag == SOUND_AMBIENCE)
+			user.client.update_ambience_pref()
 		return TRUE
-
-	var/legacy_chat_flag = legacy_chat_toggles[preference]
-	if (!isnull(legacy_chat_flag))
-		if (value)
-			preferences.chat_toggles |= legacy_chat_flag
-		else
-			preferences.chat_toggles &= ~legacy_chat_flag
-
-		return TRUE
-
 	return FALSE

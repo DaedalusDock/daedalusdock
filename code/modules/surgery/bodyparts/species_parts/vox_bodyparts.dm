@@ -39,6 +39,7 @@
 	icon_greyscale = 'icons/mob/species/vox/bodyparts.dmi'
 	limb_id = "vox_digitigrade"
 	blood_print = BLOOD_PRINT_CLAWS
+	barefoot_step_type = FOOTSTEP_MOB_CLAW
 
 /obj/item/bodypart/leg/left/vox/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	. = ..()
@@ -63,6 +64,7 @@
 	icon_greyscale = 'icons/mob/species/vox/bodyparts.dmi'
 	limb_id = "vox_digitigrade"
 	blood_print = BLOOD_PRINT_CLAWS
+	barefoot_step_type = FOOTSTEP_MOB_CLAW
 
 /obj/item/bodypart/leg/right/vox/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	. = ..()

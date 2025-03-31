@@ -97,7 +97,7 @@
 		traits and data describes the traits per gas, how it interacts with the world, and some of its property constants.
 	"}
 	controls_text = {"
-	Alt Click - Activate barometer.
+	Alt Click - Activate barometer.<br>
 	Right Click - Open gas reference.
 	"}
 

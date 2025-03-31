@@ -7,6 +7,8 @@
 	var/list/associated_paths
 	//If TRUE, associated_paths will be passed into typesof first.
 	var/use_typesof = FALSE
+	//If TRUE, this is a dynamically created codex record, and will be stored in a different table.
+	var/dynamic
 	///IC information about the entry
 	var/lore_text
 	///OOC information about the entry.
@@ -22,9 +24,17 @@
 	//Codex entries support abstract_type.
 	//Since the basetype is used for dynamically generated entries, it is not abstract.
 
-/datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text, _disambiguator)
+/datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text, _disambiguator, _dynamic = FALSE)
 
 	SScodex.all_entries += src
+
+	if(SScodex.initialized && !_dynamic)
+		_dynamic = TRUE //Override post-init codex entries to be dynamic
+		stack_trace("Forced post-SSCodex init codex-entry record to be dynamic. This shouldn't need to happen. Check this call stack!")
+
+	if(!SScodex.initialized && _dynamic) //If we haven't initialized, but we're creating a dynamic record, something has gone wrong.
+		to_chat(world, span_warning("\tCodex: Attempted to create dynamic record before SSCodex init!"))
+		CRASH("Attempted to create dynamic record before SSCodex init | Entry Name: [_display_name]")
 
 	if(_display_name)
 		name = _display_name
@@ -42,6 +52,8 @@
 		controls_text = _controls_text
 	if(_disambiguator)
 		disambiguator = _disambiguator
+	if(_dynamic)
+		dynamic = _dynamic
 
 
 	if(use_typesof && length(associated_paths))
@@ -89,6 +101,10 @@
 			SScodex.entries_by_string[clean_string] = list(existing_entry, src)
 		else
 			SScodex.entries_by_string[clean_string] = src
+
+	if(_dynamic)
+		dynamic = TRUE
+		SScodex.cache_dynamic_record(src)
 
 	..()
 

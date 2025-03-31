@@ -316,7 +316,6 @@
 /obj/structure/closet/cardboard,
 /obj/item/knife/kitchen,
 /obj/item/knife/kitchen,
-/obj/item/cultivator,
 /obj/item/hatchet,
 /obj/item/kitchen/rollingpin,
 /obj/effect/turf_decal/delivery,
@@ -559,7 +558,6 @@
 /area/ruin/space/has_grav/deepstorage/hydroponics)
 "bB" = (
 /obj/structure/table,
-/obj/item/cultivator,
 /obj/item/hatchet,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/deepstorage/hydroponics)

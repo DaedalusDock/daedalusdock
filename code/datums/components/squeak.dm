@@ -40,7 +40,7 @@
 			RegisterSignal(parent, list(COMSIG_ITEM_ATTACK, COMSIG_ITEM_ATTACK_OBJ, COMSIG_ITEM_HIT_REACT), PROC_REF(play_squeak))
 			RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(use_squeak))
 			RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
-			RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
+			RegisterSignal(parent, COMSIG_ITEM_UNEQUIPPED, PROC_REF(on_drop))
 			if(istype(parent, /obj/item/clothing/shoes))
 				RegisterSignal(parent, COMSIG_SHOES_STEP_ACTION, PROC_REF(step_squeak))
 		else if(isstructure(parent))
@@ -79,8 +79,12 @@
 		else
 			playsound(parent, pick_weight(override_squeak_sounds), volume, TRUE, sound_extra_range, sound_falloff_exponent, falloff_distance = sound_falloff_distance)
 
-/datum/component/squeak/proc/step_squeak()
+/datum/component/squeak/proc/step_squeak(atom/movable/source)
 	SIGNAL_HANDLER
+
+	var/mob/living/carbon/human/owner = source.loc
+	if(CHECK_MOVE_LOOP_FLAGS(owner, MOVEMENT_LOOP_OUTSIDE_CONTROL))
+		return
 
 	if(steps > step_delay)
 		play_squeak()

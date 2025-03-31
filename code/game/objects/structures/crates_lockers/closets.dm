@@ -50,9 +50,9 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
 	var/mob_storage_capacity = 3 // how many human sized mob/living can fit together inside a closet.
 	var/storage_capacity = 30 //This is so that someone can't pack hundreds of items in a locker/crate then open it in a populated area to crash clients.
 	var/cutting_tool = /obj/item/weldingtool
-	var/open_sound = 'sound/machines/closet_open.ogg'
-	var/close_sound = 'sound/machines/closet_close.ogg'
-	var/open_sound_volume = 35
+	var/open_sound = 'sound/structures/locker_open.ogg'
+	var/close_sound = 'sound/structures/locker_close.ogg'
+	var/open_sound_volume = 50
 	var/close_sound_volume = 50
 	var/material_drop = /obj/item/stack/sheet/iron
 	var/material_drop_amount = 2
@@ -135,7 +135,7 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
 	if(broken || !secure)
 		return
 	//Overlay is similar enough for both that we can use the same mask for both
-	. += emissive_appearance(icon, "locked", alpha = src.alpha)
+	. += emissive_appearance(icon, "locked", alpha = 90)
 	. += locked ? "locked" : "unlocked"
 
 /// Animates the closet door opening and closing
@@ -145,7 +145,7 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
 	if(!door_obj)
 		door_obj = new
 	var/default_door_icon = "[icon_door || icon_state]_door"
-	vis_contents += door_obj
+	add_viscontents(door_obj)
 	door_obj.icon = icon
 	door_obj.icon_state = default_door_icon
 	is_animating_door = TRUE
@@ -177,7 +177,7 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
 /// Ends the door animation and removes the animated overlay
 /obj/structure/closet/proc/end_door_animation()
 	is_animating_door = FALSE
-	vis_contents -= door_obj
+	remove_viscontents(door_obj)
 	update_icon()
 
 /// Calculates the matrix to be applied to the animated door overlay
@@ -512,7 +512,7 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
 		span_warning("You [actuallyismob ? "try to ":""]stuff [O] into [src]."), \
 		span_hear("You hear clanging."))
 	if(actuallyismob)
-		if(do_after_mob(user, targets, 40))
+		if(do_after(user, targets, 40))
 			user.visible_message(span_notice("[user] stuffs [O] into [src]."), \
 				span_notice("You stuff [O] into [src]."), \
 				span_hear("You hear a loud metal bang."))

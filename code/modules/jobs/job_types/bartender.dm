@@ -5,24 +5,18 @@
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the head of personnel"
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(
-		/datum/employer/contractor,
-		/datum/employer/priapus
+		/datum/employer/none
 	)
 
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/bartender,
-			SPECIES_PLASMAMAN = /datum/outfit/job/bartender/plasmaman,
 		),
 	)
 
-	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_STATION_MASTER
-	bounty_types = CIV_JOB_DRINK
 	departments_list = list(
 		/datum/job_department/service,
 	)
@@ -64,16 +58,6 @@
 	ears = /obj/item/radio/headset/headset_srv
 	glasses = /obj/item/clothing/glasses/sunglasses/reagent
 	shoes = /obj/item/clothing/shoes/laceup
-
-/datum/outfit/job/bartender/plasmaman
-	name = "Bartender (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
-	gloves = /obj/item/clothing/gloves/color/plasmaman/white
-	head = /obj/item/clothing/head/helmet/space/plasmaman/white
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
-
 
 /datum/outfit/job/bartender/post_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()

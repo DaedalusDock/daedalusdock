@@ -551,15 +551,6 @@
 	attack_verb_simple = list("shoot", "nuke", "detonate")
 	squeak_override = list('sound/effects/hit_punch.ogg' = 1)
 
-/obj/item/toy/plush/plasmamanplushie
-	name = "plasmaman plushie"
-	desc = "A stuffed toy that resembles your purple coworkers. Mmm, yeah, in true plasmaman fashion, it's not cute at all despite the designer's best efforts."
-	icon_state = "plushie_pman"
-	inhand_icon_state = "plushie_pman"
-	attack_verb_continuous = list("burns", "space beasts", "fwooshes")
-	attack_verb_simple = list("burn", "space beast", "fwoosh")
-	squeak_override = list('sound/effects/extinguish.ogg' = 1)
-
 /obj/item/toy/plush/slimeplushie
 	name = "slime plushie"
 	desc = "An adorable stuffed toy that resembles a slime. It is practically just a hacky sack."

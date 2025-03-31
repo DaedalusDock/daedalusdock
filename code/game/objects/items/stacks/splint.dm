@@ -1,6 +1,7 @@
 /obj/item/stack/splint
-	name = "medical splint"
+	name = "medical splints"
 	singular_name = "splint"
+	stack_name = "pair"
 	icon_state = "splint"
 	novariants = TRUE
 	w_class = WEIGHT_CLASS_SMALL
@@ -55,9 +56,7 @@
 		user.visible_message(span_warning("[user] fumbles [src]."))
 		return
 
-	var/obj/item/stack/splint = split_stack(null, 1, null)
-	if(!BP.apply_splint(splint))
-		splint.merge(src)
+	if(!BP.apply_splint(src))
 		to_chat(user, span_warning("You fail to apply [src]."))
 		return
 

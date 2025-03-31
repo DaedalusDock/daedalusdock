@@ -39,7 +39,7 @@
 	if(dead_state && isliving(parent))
 		var/mob/living/living_parent = parent
 		src.dead_state = dead_state
-		RegisterSignal(living_parent, COMSIG_LIVING_POST_UPDATE_TRANSFORM, PROC_REF(on_modify_or_update_transform))
+		RegisterSignal(living_parent, COMSIG_MOB_POST_UPDATE_TRANSFORM, PROC_REF(on_modify_or_update_transform))
 		RegisterSignal(living_parent, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 		RegisterSignal(living_parent, COMSIG_LIVING_REVIVE, PROC_REF(on_revive))
 		if(living_parent.stat == DEAD)
@@ -48,7 +48,7 @@
 
 /datum/component/clickbox/UnregisterFromParent()
 	var/atom/movable/mov_parent = parent
-	UnregisterSignal(mov_parent, list(COMSIG_ATOM_VV_MODIFY_TRANSFORM, COMSIG_LIVING_POST_UPDATE_TRANSFORM, COMSIG_LIVING_DEATH, COMSIG_LIVING_REVIVE))
+	UnregisterSignal(mov_parent, list(COMSIG_ATOM_VV_MODIFY_TRANSFORM, COMSIG_MOB_POST_UPDATE_TRANSFORM, COMSIG_LIVING_DEATH, COMSIG_LIVING_REVIVE))
 	mov_parent.underlays -= clickbox_undelay
 
 /// Removes the old underlay and adds a new one if conditions are met. The underlay is scaled up/down if necessary

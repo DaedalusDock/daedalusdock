@@ -99,7 +99,7 @@
 /mob/living/simple_animal/bot/firebot/proc/soft_reset()
 	path = list()
 	target_fire = null
-	mode = BOT_IDLE
+	set_mode(BOT_IDLE)
 	last_found = world.time
 	update_appearance()
 
@@ -168,7 +168,7 @@
 	if(IsStun() || IsParalyzed())
 		old_target_fire = target_fire
 		target_fire = null
-		mode = BOT_IDLE
+		set_mode(BOT_IDLE)
 		return
 
 	if(prob(1) && target_fire == null)
@@ -219,7 +219,7 @@
 	// Target ran away
 	else if(target_fire && path.len && (get_dist(target_fire,path[path.len]) > 2))
 		path = list()
-		mode = BOT_IDLE
+		set_mode(BOT_IDLE)
 		last_found = world.time
 
 	else if(target_fire && stationary_mode)
@@ -227,9 +227,9 @@
 		return
 
 	if(target_fire && (get_dist(src, target_fire) > 2))
-
-		path = get_path_to(src, target_fire, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
-		mode = BOT_MOVING
+		set_mode(BOT_PATHING)
+		path = jps_path_to(src, target_fire, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
+		set_mode(BOT_MOVING)
 		if(!path.len)
 			soft_reset()
 

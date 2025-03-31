@@ -58,7 +58,7 @@
 	else
 		..()
 
-/obj/item/minigunpack/dropped(mob/user)
+/obj/item/minigunpack/unequipped(mob/user)
 	. = ..()
 	if(armed)
 		user.dropItemToGround(gun, TRUE)
@@ -132,7 +132,7 @@
 /obj/item/gun/energy/minigun/attack_self(mob/living/user)
 	return
 
-/obj/item/gun/energy/minigun/dropped(mob/user)
+/obj/item/gun/energy/minigun/unequipped(mob/user)
 	SHOULD_CALL_PARENT(FALSE)
 	if(ammo_pack)
 		ammo_pack.attach_gun(user)

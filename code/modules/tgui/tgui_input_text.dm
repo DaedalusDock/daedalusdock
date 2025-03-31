@@ -10,7 +10,7 @@
  * * message - The content of the text input, shown in the body of the TGUI window.
  * * title - The title of the text input modal, shown on the top of the TGUI window.
  * * default - The default (or current) value, shown as a placeholder.
- * * max_length - Specifies a max length for input. MAX_MESSAGE_LEN is default (1024)
+ * * max_length - Specifies a max length for input. MAX_MESSAGE_LEN is default (1024). Pass 0 or null to allow for any length.
  * * multiline -  Bool that determines if the input box is much larger. Good for large messages, laws, etc.
  * * encode - Toggling this determines if input is filtered via html_encode. Setting this to FALSE gives raw input.
  * * timeout - The timeout of the textbox, after which the modal will close and qdel itself. Set to zero for no timeout.
@@ -41,6 +41,7 @@
 	var/datum/tgui_input_text/text_input = new(user, message, title, default, max_length, multiline, encode, timeout)
 	text_input.ui_interact(user)
 	text_input.wait()
+
 	if (text_input)
 		. = text_input.entry
 		qdel(text_input)
@@ -187,7 +188,7 @@
 /datum/tgui_input_text/proc/set_entry(entry)
 	if(!isnull(entry))
 		var/converted_entry = encode ? html_encode(entry) : entry
-		src.entry = trim(converted_entry, max_length)
+		src.entry = max_length ? trim(converted_entry, max_length) : converted_entry
 
 /**
  * # async tgui_input_text

@@ -19,7 +19,7 @@
 
 	if(working)
 		. += "dna_working"
-		. += emissive_appearance(icon, "dna_screen_working")
+		. += emissive_appearance(icon, "dna_screen_working", alpha = 90)
 		. += "dna_screen_working"
 	else
 		. += "dna_closed"

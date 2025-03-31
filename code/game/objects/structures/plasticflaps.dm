@@ -16,7 +16,9 @@
 /obj/structure/plasticflaps/Initialize(mapload)
 	. = ..()
 	alpha = 0
-	SSvis_overlays.add_vis_overlay(src, icon, icon_state, ABOVE_MOB_LAYER, plane, dir, add_appearance_flags = RESET_ALPHA) //you see mobs under it, but you hit them like they are above it
+	var/obj/effect/overlay/vis/visual = new(icon, icon_state, ABOVE_MOB_LAYER)
+	visual.appearance_flags |= RESET_ALPHA
+	add_viscontents(visual) //you see mobs under it, but you hit them like they are above it
 
 /obj/structure/plasticflaps/examine(mob/user)
 	. = ..()
@@ -63,21 +65,17 @@
 		return FALSE
 	return TRUE
 
-/obj/structure/plasticflaps/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
-	if(isliving(caller))
-		if(isbot(caller))
+/obj/structure/plasticflaps/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	if(pass_info.is_living)
+		if(pass_info.is_bot)
 			return TRUE
 
-		var/mob/living/living_caller = caller
-		var/ventcrawler = HAS_TRAIT(living_caller, TRAIT_VENTCRAWLER_ALWAYS) || HAS_TRAIT(living_caller, TRAIT_VENTCRAWLER_NUDE)
-		if(!ventcrawler && living_caller.mob_size != MOB_SIZE_TINY)
+		if(pass_info.can_ventcrawl && pass_info.mob_size != MOB_SIZE_TINY)
 			return FALSE
 
-	if(isliving(caller))
-		var/mob/living/L = caller
-		var/list/grabs = L.active_grabs
-		for(var/obj/item/hand_item/grab/G in grabs)
-			if(!CanAStarPass(access, to_dir, G.affecting, no_id = no_id))
+	if(pass_info.grab_infos)
+		for(var/datum/can_pass_info/grab_info in pass_info.grab_infos)
+			if(!CanAStarPass(to_dir, grab_info))
 				return FALSE
 	return TRUE //diseases, stings, etc can pass
 

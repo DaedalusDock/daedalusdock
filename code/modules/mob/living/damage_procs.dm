@@ -5,35 +5,111 @@
  * Sends [COMSIG_MOB_APPLY_DAMAGE]
  *
  * Arguuments:
- * * damage - amount of damage
- * * damagetype - one of [BRUTE], [BURN], [TOX], [OXY], [CLONE], [STAMINA]
- * * def_zone - zone that is being hit if any
- * * blocked - armor value applied
- * * forced - bypass hit percentage
- * * spread_damage - used in overrides
+ * * damage - Amount of damage
+ * * damagetype - What type of damage to do. one of [BRUTE], [BURN], [TOX], [OXY], [CLONE], [STAMINA], [BRAIN].
+ * * def_zone - What body zone is being hit. Or a reference to what bodypart is being hit.
+ * * blocked - Percent modifier to damage. 100 = 100% less damage dealt, 50% = 50% less damage dealt.
+ * * forced - "Force" exactly the damage dealt. This means it skips damage modifier from blocked.
+ * * spread_damage - For carbons, spreads the damage across all bodyparts rather than just the targeted zone.
+ * * sharpness - Sharpness of the weapon.
+ * * attack_direction - Direction of the attack from the attacker to [src].
+ * * attacking_item - Item that is attacking [src].
  *
  * Returns TRUE if damage applied
  */
-/mob/living/proc/apply_damage(damage = 0,damagetype = BRUTE, def_zone = null, blocked = FALSE, forced = FALSE, spread_damage = FALSE, sharpness = NONE, attack_direction = null, cap_loss_at = 0)
-	SEND_SIGNAL(src, COMSIG_MOB_APPLY_DAMAGE, damage, damagetype, def_zone)
-	var/hit_percent = (100-blocked)/100
-	if(!damage || (!forced && hit_percent <= 0))
-		return FALSE
-	var/damage_amount = forced ? damage : damage * hit_percent
+/mob/living/proc/apply_damage(
+	damage = 0,
+	damagetype = BRUTE,
+	def_zone = null,
+	blocked = 0,
+	forced = FALSE,
+	spread_damage = FALSE,
+	sharpness = NONE,
+	attack_direction = null,
+	obj/item/attacking_item = null,
+)
+	SHOULD_CALL_PARENT(TRUE)
+
+	var/damage_amount = damage
+	if(!forced)
+		damage_amount *= ((100 - blocked) / 100)
+		damage_amount *= get_incoming_damage_modifier(damage_amount, damagetype, def_zone, sharpness, attack_direction, attacking_item)
+
+	if(damage_amount <= 0)
+		return 0
+
+	SEND_SIGNAL(src, COMSIG_MOB_APPLY_DAMAGE, damage_amount, damagetype, def_zone, blocked, sharpness, attack_direction, attacking_item)
+
+	var/damage_dealt = 0
 	switch(damagetype)
 		if(BRUTE)
-			adjustBruteLoss(damage_amount, forced = forced)
+			if(isbodypart(def_zone))
+				var/obj/item/bodypart/hit_part = def_zone
+				var/delta = hit_part.get_damage()
+				hit_part.receive_damage(brute = damage_amount, burn = 0, sharpness = sharpness, weapon_used = attacking_item)
+				damage_dealt = delta - hit_part.get_damage()
+			else
+				adjustBruteLoss(damage_amount, forced = forced)
 		if(BURN)
-			adjustFireLoss(damage_amount, forced = forced)
+			if(isbodypart(def_zone))
+				var/obj/item/bodypart/hit_part = def_zone
+				var/delta = hit_part.get_damage()
+				hit_part.receive_damage(brute = 0, burn = damage_amount, sharpness = sharpness, weapon_used = attacking_item)
+				damage_dealt = delta - hit_part.get_damage()
+			else
+				adjustFireLoss(damage_amount, forced = forced)
 		if(TOX)
-			adjustToxLoss(damage_amount, forced = forced)
+			damage_dealt = adjustToxLoss(damage_amount, forced = forced)
 		if(OXY)
-			adjustOxyLoss(damage_amount, forced = forced)
+			damage_dealt = adjustOxyLoss(damage_amount, forced = forced)
 		if(CLONE)
-			adjustCloneLoss(damage_amount, forced = forced)
+			damage_dealt = adjustCloneLoss(damage_amount, forced = forced)
 		if(STAMINA)
 			stamina.adjust(-damage)
-	return TRUE
+
+	SEND_SIGNAL(src, COMSIG_MOB_AFTER_APPLY_DAMAGE, damage_dealt, damagetype, def_zone, blocked, sharpness, attack_direction, attacking_item)
+	return damage_dealt
+
+/**
+ * Used in tandem with [/mob/living/proc/apply_damage] to calculate modifier applied into incoming damage
+ */
+/mob/living/proc/get_incoming_damage_modifier(
+	damage = 0,
+	damagetype = BRUTE,
+	def_zone = null,
+	sharpness = NONE,
+	attack_direction = null,
+	attacking_item,
+)
+	SHOULD_CALL_PARENT(TRUE)
+	SHOULD_BE_PURE(TRUE)
+
+	var/list/damage_mods = list()
+	SEND_SIGNAL(src, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS, damage_mods, damage, damagetype, def_zone, sharpness, attack_direction, attacking_item)
+
+	var/final_mod = 1
+	for(var/new_mod in damage_mods)
+		final_mod *= new_mod
+	return final_mod
+
+/**
+ * Simply a wrapper for calling mob adjustXLoss() procs to heal a certain damage type,
+ * when you don't know what damage type you're healing exactly.
+ */
+/mob/living/proc/heal_damage_type(heal_amount = 0, damagetype = BRUTE)
+	heal_amount = abs(heal_amount) * -1
+
+	switch(damagetype)
+		if(BRUTE)
+			return adjustBruteLoss(heal_amount)
+		if(BURN)
+			return adjustFireLoss(heal_amount)
+		if(TOX)
+			return adjustToxLoss(heal_amount)
+		if(OXY)
+			return adjustOxyLoss(heal_amount)
+		if(STAMINA)
+			stamina.adjust(-heal_amount)
 
 ///like [apply_damage][/mob/living/proc/apply_damage] except it always uses the damage procs
 /mob/living/proc/apply_damage_type(damage = 0, damagetype = BRUTE)
@@ -67,25 +143,26 @@
 		if(STAMINA)
 			return stamina.loss
 
-/// applies multiple damages at once via [/mob/living/proc/apply_damage]
-/mob/living/proc/apply_damages(brute = 0, burn = 0, tox = 0, oxy = 0, clone = 0, def_zone = null, blocked = FALSE, stamina = 0, brain = 0)
+/// Applies multiple damages at once via [apply_damage][/mob/living/proc/apply_damage]
+/mob/living/proc/apply_damages(brute = 0, burn = 0, tox = 0, oxy = 0, clone = 0, def_zone = null, blocked = 0, brain = 0)
 	if(blocked >= 100)
 		return 0
+
+	var/total_damage = 0
 	if(brute)
-		apply_damage(brute, BRUTE, def_zone, blocked)
+		total_damage += apply_damage(brute, BRUTE, def_zone, blocked)
 	if(burn)
-		apply_damage(burn, BURN, def_zone, blocked)
+		total_damage += apply_damage(burn, BURN, def_zone, blocked)
 	if(tox)
-		apply_damage(tox, TOX, def_zone, blocked)
+		total_damage += apply_damage(tox, TOX, def_zone, blocked)
 	if(oxy)
-		apply_damage(oxy, OXY, def_zone, blocked)
+		total_damage += apply_damage(oxy, OXY, def_zone, blocked)
 	if(clone)
-		apply_damage(clone, CLONE, def_zone, blocked)
-	if(stamina)
-		CRASH("Something is using apply_damages to apply stamina damage!")
+		total_damage += apply_damage(clone, CLONE, def_zone, blocked)
 	if(brain)
-		apply_damage(brain, BRAIN, def_zone, blocked)
-	return 1
+		total_damage += apply_damage(brain, BRAIN, def_zone, blocked)
+
+	return total_damage
 
 
 /// applies various common status effects or common hardcoded mob effects
@@ -162,6 +239,24 @@
 	return TRUE
 
 
+/mob/living/proc/getMaxHealth()
+	return maxHealth
+
+/mob/living/proc/setMaxHealth(newMaxHealth)
+	maxHealth = newMaxHealth
+
+// here be dragons
+/mob/living/proc/getHealthPercent()
+	var/max = getMaxHealth()
+	var/loss = getBruteLoss() + getFireLoss() + getToxLoss() + getCloneLoss() + getOxyLoss()
+	return ceil((max - loss) / max * 100)
+
+/// Returns the health of the mob while ignoring damage of non-organic (prosthetic) limbs
+/// Used by cryo cells to not permanently imprison those with damage from prosthetics,
+/// as they cannot be healed through chemicals.
+/mob/living/proc/get_organic_health()
+	return health
+
 /mob/living/proc/getBruteLoss()
 	return bruteloss
 
@@ -198,12 +293,12 @@
 /mob/living/proc/getToxLoss()
 	return toxloss
 
-/mob/living/proc/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE)
+/mob/living/proc/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE, cause_of_death = "Systemic organ failure")
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	toxloss = clamp((toxloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth)
 	if(updating_health)
-		updatehealth()
+		updatehealth(cause_of_death = cause_of_death)
 	return amount
 
 /mob/living/proc/setToxLoss(amount, updating_health = TRUE, forced = FALSE)

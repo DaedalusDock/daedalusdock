@@ -117,7 +117,7 @@
 	reject_topic = FALSE
 	visible_message(span_notice("[src] dispenses a wad of money."), vision_distance = COMBAT_MESSAGE_RANGE)
 
-	SSeconomy.spawn_cash_for_amount(amt, drop_location())
+	SSeconomy.spawn_ones_for_amount(amt, drop_location())
 
 /obj/machinery/atm/proc/try_authenticate(pin)
 	if((machine_stat & NOPOWER) || !inserted_card?.registered_account)
@@ -142,7 +142,8 @@
 	if(href_list["eject_id"])
 		if(isnull(inserted_card))
 			return TRUE
-		inserted_card.forceMove(drop_location())
+		if(!usr.put_in_hands(inserted_card))
+			inserted_card.forceMove(drop_location())
 		inserted_card = null
 		playsound(loc, 'sound/machines/cardreader_desert.ogg', 50)
 		updateUsrDialog()

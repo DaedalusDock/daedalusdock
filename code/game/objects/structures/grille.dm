@@ -102,7 +102,7 @@
 	if(!ismob(AM))
 		return
 	var/mob/M = AM
-	shock(M, 70)
+	shock(M, 70, M.get_empty_held_index() ? SHOCK_HANDS : SHOCK_USE_AVG_SIEMENS)
 
 /obj/structure/grille/attack_animal(mob/user, list/modifiers)
 	. = ..()
@@ -145,10 +145,13 @@
 	if(!. && istype(mover, /obj/projectile))
 		return prob(30)
 
-/obj/structure/grille/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
-	. = !density
-	if(caller)
-		. = . || (caller.pass_flags & PASSGRILLE)
+/obj/structure/grille/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	if(!density)
+		return TRUE
+
+	if(pass_info.pass_flags & PASSGRILLE)
+		return TRUE
+	return FALSE
 
 /obj/structure/grille/wirecutter_act(mob/living/user, obj/item/tool)
 	add_fingerprint(user)
@@ -221,7 +224,8 @@
 		rods_amount = 1
 		rods_broken = FALSE
 		var/obj/R = new rods_type(drop_location(), rods_broken)
-		transfer_fingerprints_to(R)
+		if(!QDELING(R))
+			transfer_fingerprints_to(R)
 		smoothing_flags = NONE
 		update_appearance()
 
@@ -240,7 +244,7 @@
 // shock user with probability prb (if all connections & power are working)
 // returns 1 if shocked, 0 otherwise
 
-/obj/structure/grille/proc/shock(mob/user, prb)
+/obj/structure/grille/proc/shock(mob/user, prb, shock_flags = SHOCK_HANDS)
 	if(!anchored || broken) // anchored/broken grilles are never connected
 		return FALSE
 	if(!prob(prb))
@@ -250,7 +254,7 @@
 	var/turf/T = get_turf(src)
 	var/obj/structure/cable/C = T.get_cable_node()
 	if(C)
-		if(electrocute_mob(user, C, src, 1, TRUE))
+		if(electrocute_mob(user, C, src, 1, TRUE, shock_flags = shock_flags))
 			var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
 			s.set_up(3, 1, src)
 			s.start()
@@ -274,6 +278,20 @@
 					playsound(src, 'sound/magic/lightningshock.ogg', 100, TRUE, extrarange = 5)
 					tesla_zap(src, 3, C.newavail() * 0.01, ZAP_MOB_DAMAGE | ZAP_OBJ_DAMAGE | ZAP_MOB_STUN | ZAP_LOW_POWER_GEN | ZAP_ALLOW_DUPLICATES) //Zap for 1/100 of the amount of power. At a million watts in the grid, it will be as powerful as a tesla revolver shot.
 					C.add_delayedload(C.newavail() * 0.0375) // you can gain up to 3.5 via the 4x upgrades power is halved by the pole so thats 2x then 1X then .5X for 3.5x the 3 bounces shock.
+	return ..()
+
+/obj/structure/grille/zap_act(power, zap_flags)
+	if(!anchored)
+		return ..()
+
+	var/turf/turfloc = loc
+	var/obj/structure/cable/C = turfloc.get_cable_node()
+	if(!C)
+		return ..()
+
+	zap_flags &= ~ZAP_OBJ_DAMAGE
+	C.add_avail(power / 7500)
+	power = power / 7500
 	return ..()
 
 /obj/structure/grille/get_dumping_location()

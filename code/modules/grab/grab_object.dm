@@ -10,6 +10,9 @@
 	/// The grab datum currently being used
 	var/datum/grab/current_grab
 
+	/// Set true after grab setup. Used for debugging.
+	var/is_valid = FALSE
+
 	/// Cooldown for actions
 	COOLDOWN_DECLARE(action_cd)
 	/// Cooldown for upgrade times
@@ -44,6 +47,8 @@
 	if(!current_grab.setup(src))
 		return INITIALIZE_HINT_QDEL
 
+	is_valid = TRUE
+
 	/// Apply any needed updates to the assailant
 	LAZYADD(affecting.grabbed_by, src) // This is how we handle affecting being deleted.
 	LAZYOR(assailant.active_grabs, src)
@@ -64,25 +69,31 @@
 
 	/// Spread diseases
 	if(isliving(affecting))
-		var/mob/living/affecting_mob = affecting
-		for(var/datum/disease/D as anything in assailant.diseases)
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-				affecting_mob.ContactContractDisease(D)
+		if(!ishuman(assailant) || !assailant:gloves)
+			var/mob/living/affecting_mob = affecting
+			for(var/datum/pathogen/D as anything in assailant.diseases)
+				if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
+					affecting_mob.try_contact_contract_pathogen(D)
 
-		for(var/datum/disease/D as anything in affecting_mob.diseases)
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-				assailant.ContactContractDisease(D)
+			for(var/datum/pathogen/D as anything in affecting_mob.diseases)
+				if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
+					assailant.try_contact_contract_pathogen(D)
 
 	/// Setup the effects applied by grab
 	current_grab.update_stage_effects(src, null)
 	current_grab.special_bodyzone_effects(src)
 
 	var/mob/living/L = get_affecting_mob()
-	if(L && assailant.combat_mode)
-		upgrade(TRUE)
+	if(L)
+		log_combat(assailant, L, "grabbed")
+		if(L != assailant && assailant.combat_mode)
+			upgrade(TRUE)
 
 	/// Update appearance
 	update_appearance(UPDATE_ICON_STATE)
+
+	// Leave forensics
+	leave_forensic_traces()
 
 	/// Setup signals
 	var/obj/item/bodypart/BP = get_targeted_bodypart()
@@ -95,23 +106,42 @@
 		RegisterSignal(affecting, COMSIG_PARENT_QDELETING, PROC_REF(target_or_owner_del))
 	RegisterSignal(affecting, COMSIG_MOVABLE_PRE_THROW, PROC_REF(target_thrown))
 	RegisterSignal(affecting, COMSIG_ATOM_ATTACK_HAND, PROC_REF(intercept_attack_hand))
+	RegisterSignal(affecting, COMSIG_PARENT_ATTACKBY, PROC_REF(resolve_item_attack))
 
 	RegisterSignal(assailant, COMSIG_MOB_SELECTED_ZONE_SET, PROC_REF(on_target_change))
 
 /obj/item/hand_item/grab/Destroy()
 	if(affecting)
 		LAZYREMOVE(affecting.grabbed_by, src)
-		affecting.update_offsets()
+
+	else if(is_valid)
+		stack_trace("Grab (\ref[src]) qdeleted while not having a victim.")
+
+	if(assailant)
+		LAZYREMOVE(assailant.active_grabs, src)
+	else
+		stack_trace("Grab (\ref[src]) qdeleted while not having an assailant.")
 
 	if(affecting && assailant && current_grab)
 		current_grab.let_go(src)
 
+	else if(is_valid && !current_grab)
+		stack_trace("Grab (\ref[src]) qdeleted while not having a grab datum.")
+
 	if(assailant)
-		LAZYREMOVE(assailant.active_grabs, src)
 		assailant.after_grab_release(affecting)
+
+	if(ismob(affecting))
+		log_combat(assailant, affecting, "dropped a grab on")
+
+	//DEBUG CODE
+	if(HAS_TRAIT_FROM(affecting, TRAIT_AGGRESSIVE_GRAB, ref(src)))
+		stack_trace("Somehow all other safeties failed and [affecting] still is marked as grabbed from a qdeling grab, removing!")
+		REMOVE_TRAIT(affecting, TRAIT_AGGRESSIVE_GRAB, ref(src))
 
 	affecting = null
 	assailant = null
+	current_grab = null
 	return ..()
 
 /obj/item/hand_item/grab/examine(mob/user)
@@ -123,6 +153,9 @@
 
 /obj/item/hand_item/grab/update_icon_state()
 	. = ..()
+	if(QDELING(src))
+		return
+
 	icon = current_grab.icon
 	if(current_grab.icon_state)
 		icon_state = current_grab.icon_state
@@ -156,7 +189,6 @@
 	if(src != assailant.get_active_held_item())
 		return // Note that because of this condition, there's no guarantee that target_zone = old_sel
 
-	new_sel = deprecise_zone(new_sel)
 	if(target_zone == new_sel)
 		return
 
@@ -177,13 +209,15 @@
 		to_chat(assailant, span_warning("You fail to grab \the [affecting] there as they do not have that bodypart!"))
 		return
 
-	name = "[initial(name)] ([BP.plaintext_zone])"
-	to_chat(assailant, span_notice("You are now holding \the [affecting] by \the [BP.plaintext_zone]."))
+	if(old_zone != target_zone)
+		name = "[initial(name)] ([BP.plaintext_zone])"
+		to_chat(assailant, span_notice("You are now holding \the [affecting] by \the [BP.plaintext_zone]."))
 
-	if(!isbodypart(get_targeted_bodypart()))
-		current_grab.let_go(src)
+	if(!isbodypart(BP))
+		qdel(src)
 		return
 
+	leave_forensic_traces()
 	current_grab.on_target_change(src, old_zone, target_zone)
 
 /obj/item/hand_item/grab/proc/on_limb_loss(mob/victim, obj/item/bodypart/lost)
@@ -194,11 +228,13 @@
 		return
 	var/obj/item/bodypart/BP = get_targeted_bodypart()
 	if(!istype(BP))
-		current_grab.let_go(src)
+		qdel(src)
 		return // Sanity check in case the lost organ was improperly removed elsewhere in the code.
+
 	if(lost != BP)
 		return
-	current_grab.let_go(src)
+
+	qdel(src)
 
 /// Intercepts attack_hand() calls on our target.
 /obj/item/hand_item/grab/proc/intercept_attack_hand(atom/movable/source, user, list/modifiers)
@@ -215,27 +251,59 @@
 	var/mob/living/L = get_affecting_mob()
 	return (L?.get_bodypart(deprecise_zone(target_zone)))
 
-/obj/item/hand_item/grab/proc/resolve_item_attack(mob/living/M, obj/item/I, target_zone)
-	if((M && ishuman(M)) && I)
-		return current_grab.resolve_item_attack(src, M, I, target_zone)
-	else
-		return 0
+// Intercepts attackby() calls on our target.
+/obj/item/hand_item/grab/proc/resolve_item_attack(datum/source, obj/item/I, mob/attacker, params)
+	SIGNAL_HANDLER
+
+	if(!ishuman(attacker))
+		return
+	var/mob/living/carbon/human/human_attacker = attacker
+	if(human_attacker.combat_mode)
+		return
+
+	if(current_grab.resolve_item_attack(src, attacker, I, human_attacker.zone_selected))
+		return COMPONENT_NO_AFTERATTACK
 
 /obj/item/hand_item/grab/proc/action_used()
 	COOLDOWN_START(src, action_cd, current_grab.action_cooldown)
 	leave_forensic_traces()
 
+/// Leave forensic traces on both the assailant and victim. You really don't want to read this proc and it's type fuckery.
 /obj/item/hand_item/grab/proc/leave_forensic_traces()
 	if (!affecting)
 		return
-	var/mob/living/carbon/carbo = get_affecting_mob()
-	if(istype(carbo))
-		var/obj/item/clothing/C = carbo.get_item_covering_zone(target_zone)
-		if(istype(C))
-			C.add_fingerprint(assailant)
+
+	var/mob/living/carbon/human/human_victim = get_affecting_mob()
+	var/mob/living/carbon/human/human_assailant = assailant
+	var/list/assailant_blood_dna
+
+	if(ishuman(assailant))
+		if(human_assailant.gloves)
+			assailant_blood_dna = human_assailant.gloves.return_blood_DNA()
+		else
+			assailant_blood_dna = human_assailant.return_blood_DNA()
+
+		//Add blood to the assailant
+		if(ishuman(human_victim))
+			var/obj/item/clothing/item_covering_grabbed_zone = human_victim.get_item_covering_zone(target_zone)
+			if(item_covering_grabbed_zone)
+				human_assailant.add_blood_DNA_to_items(item_covering_grabbed_zone.return_blood_DNA(), ITEM_SLOT_GLOVES)
+			else
+				human_assailant.add_blood_DNA_to_items(human_victim.return_blood_DNA(), ITEM_SLOT_GLOVES)
+
+	if(ishuman(human_victim))
+		// Add blood to the victim
+		var/obj/item/clothing/item_covering_grabbed_zone = human_victim.get_item_covering_zone(target_zone)
+
+		if(istype(item_covering_grabbed_zone))
+			item_covering_grabbed_zone.add_fingerprint(assailant)
+			item_covering_grabbed_zone.add_blood_DNA(assailant_blood_dna)
 			return
 
-	affecting.add_fingerprint(assailant) //If no clothing; add fingerprint to mob proper.
+	// If no clothing; add fingerprint to mob proper.
+	affecting.add_fingerprint(assailant)
+	// Add blood to the victim's body
+	affecting.add_blood_DNA(assailant_blood_dna)
 
 /obj/item/hand_item/grab/proc/upgrade(bypass_cooldown, silent)
 	if(!COOLDOWN_FINISHED(src, upgrade_cd) && !bypass_cooldown)
@@ -244,13 +312,15 @@
 		return
 
 	var/datum/grab/upgrab = current_grab.upgrade(src)
-	if(!upgrab)
+	var/datum/grab/oldgrab = current_grab
+	if(!upgrab || QDELETED(src))
 		return
 
 	if(is_grab_unique(current_grab))
-		current_grab.remove_unique_grab_effects(src)
+		current_grab.remove_unique_grab_effects(affecting)
 
 	current_grab = upgrab
+	current_grab.update_stage_effects(src, oldgrab)
 
 	COOLDOWN_START(src, upgrade_cd, current_grab.upgrade_cooldown)
 
@@ -263,30 +333,41 @@
 		return
 
 	if(is_grab_unique(current_grab))
-		current_grab.apply_unique_grab_effects(src)
+		current_grab.apply_unique_grab_effects(affecting)
 
 	adjust_position()
 	update_appearance()
 
+	if(ismob(affecting))
+		log_combat(assailant, affecting, "upgraded grab to [current_grab.type]")
+
+	SEND_SIGNAL(assailant, COMSIG_LIVING_GRAB_UPGRADE)
+
 /obj/item/hand_item/grab/proc/downgrade(silent)
 	var/datum/grab/downgrab = current_grab.downgrade(src)
+	var/datum/grab/oldgrab = current_grab
 	if(!downgrab)
 		return
 
 	if(is_grab_unique(current_grab))
-		current_grab.remove_unique_grab_effects(src)
+		current_grab.remove_unique_grab_effects(affecting)
 
 	current_grab = downgrab
+	current_grab.update_stage_effects(src, oldgrab)
 
-	if(!current_grab.enter_as_down(src))
+	if(!current_grab.enter_as_down(src, silent))
 		return
 
 	if(is_grab_unique(current_grab))
-		current_grab.apply_unique_grab_effects(src)
+		current_grab.apply_unique_grab_effects(affecting)
 
-	current_grab.enter_as_down(src, silent)
 	adjust_position()
 	update_appearance()
+
+	if(ismob(affecting))
+		log_combat(assailant, affecting, "downgraded grab to [current_grab.type]")
+
+	SEND_SIGNAL(assailant, COMSIG_LIVING_GRAB_DOWNGRADE)
 
 /// Used to prevent repeated effect application or early effect removal
 /obj/item/hand_item/grab/proc/is_grab_unique(datum/grab/grab_datum)

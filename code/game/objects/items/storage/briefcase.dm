@@ -18,6 +18,9 @@
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
 	resistance_flags = FLAMMABLE
 	max_integrity = 150
+
+	storage_type = /datum/storage/latched_box
+
 	var/folder_path = /obj/item/folder //this is the path of the folder that gets spawned in New()
 
 /obj/item/storage/briefcase/Initialize()

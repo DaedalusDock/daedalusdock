@@ -252,7 +252,7 @@
 	if(M.getorgan(/obj/item/organ/alien/hivenode))
 		return FALSE
 	var/mob/living/carbon/C = M
-	if(ishuman(C) && !(ITEM_SLOT_MASK in C.dna.species.no_equip))
+	if(ishuman(C) && !(ITEM_SLOT_MASK & C.dna.species.no_equip_flags))
 		var/mob/living/carbon/human/H = C
 		if(!H.has_mouth() || H.is_mouth_covered(head_only = 1))
 			return FALSE

@@ -236,7 +236,7 @@
 			else if(bot_cover_flags & BOT_COVER_EMAGGED && isfloorturf(target))
 				var/turf/open/floor/F = target
 				toggle_magnet()
-				mode = BOT_REPAIRING
+				set_mode(BOT_REPAIRING)
 				if(isplatingturf(F))
 					F.TryScrapeToLattice()
 				else
@@ -248,23 +248,23 @@
 		if(!length(path))
 			if(!isturf(target))
 				var/turf/TL = get_turf(target)
-				path = get_path_to(src, TL, max_distance=30, access = access_card?.GetAccess(), simulated_only = FALSE)
+				path = jps_path_to(src, TL, max_distance=30, access = access_card?.GetAccess(), simulated_only = FALSE)
 			else
-				path = get_path_to(src, target, max_distance=30, access = access_card?.GetAccess(), simulated_only = FALSE)
+				path = jps_path_to(src, target, max_distance=30, access = access_card?.GetAccess(), simulated_only = FALSE)
 
 			if(!bot_move(target))
 				add_to_ignore(target)
 				target = null
-				mode = BOT_IDLE
+				set_mode(BOT_IDLE)
 				return
 		else if( !bot_move(target) )
 			target = null
-			mode = BOT_IDLE
+			set_mode(BOT_IDLE)
 			return
 
 /mob/living/simple_animal/bot/floorbot/proc/go_idle()
 	toggle_magnet(FALSE)
-	mode = BOT_IDLE
+	set_mode(BOT_IDLE)
 	target = null
 
 /mob/living/simple_animal/bot/floorbot/proc/is_hull_breach(turf/t) //Ignore space tiles not considered part of a structure, also ignores shuttle docking areas.
@@ -324,7 +324,7 @@
 	if(isspaceturf(target_turf)) //If we are fixing an area not part of pure space, it is
 		toggle_magnet()
 		visible_message(span_notice("[targetdirection ? "[src] begins installing a bridge plating." : "[src] begins to repair the hole."] "))
-		mode = BOT_REPAIRING
+		set_mode(BOT_REPAIRING)
 		if(do_after(src, target_turf, 50) && mode == BOT_REPAIRING)
 			if(autotile) //Build the floor and include a tile.
 				if(replacetiles && tilestack)
@@ -345,14 +345,14 @@
 
 		if(F.broken || F.burnt || isplatingturf(F))
 			toggle_magnet()
-			mode = BOT_REPAIRING
+			set_mode(BOT_REPAIRING)
 			visible_message(span_notice("[src] begins [(F.broken || F.burnt) ? "repairing the floor" : "placing a floor tile"]."))
 			if(do_after(src, F, 50) && mode == BOT_REPAIRING)
 				success = TRUE
 
 		else if(replacetiles && tilestack && F.type != tilestack.turf_type)
 			toggle_magnet()
-			mode = BOT_REPAIRING
+			set_mode(BOT_REPAIRING)
 			visible_message(span_notice("[src] begins replacing the floor tiles."))
 			if(do_after(src, target_turf, 50) && mode == BOT_REPAIRING && tilestack)
 				success = TRUE
@@ -368,9 +368,7 @@
 				F.broken = FALSE
 				F.burnt = FALSE
 				F.icon_state = initial(F.icon_state)
-			else if(istype(is_this_maints, /area/station/maintenance))	//place catwalk if it's plating and we're in maints
-				F.PlaceOnTop(/turf/open/floor/catwalk_floor, flags = CHANGETURF_INHERIT_AIR)
-			else	//place normal tile if it's plating anywhere else
+			else if(!istype(is_this_maints, /area/station/maintenance)) // Don't plate maintenance
 				F = F.make_plating(TRUE) || F
 				F.PlaceOnTop(/turf/open/floor/iron, flags = CHANGETURF_INHERIT_AIR)
 

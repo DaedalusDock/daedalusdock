@@ -12,7 +12,7 @@
 	if(!lore && !mechanics && !antag && !controls)
 		return FALSE
 
-	var/datum/codex_entry/entry = new(name, list(type), _lore_text = lore, _mechanics_text = mechanics, _antag_text = antag)
+	var/datum/codex_entry/entry = new(name, list(type), _lore_text = lore, _mechanics_text = mechanics, _antag_text = antag, _controls_text = controls, _dynamic = TRUE)
 	return entry
 
 

@@ -17,17 +17,20 @@
 		/obj/item/reagent_containers/hypospray,
 		/obj/item/reagent_containers/pill,
 		/obj/item/reagent_containers/syringe,
-		/obj/item/gun/syringe,
 		/obj/item/sensor_device,
 		/obj/item/soap,
 		/obj/item/stack/medical,
 		/obj/item/storage/pill_bottle,
 		/obj/item/tank/internals/emergency_oxygen,
-		/obj/item/tank/internals/plasmaman
 	)
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 50, ACID = 50)
 
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+
+	equip_self_flags = EQUIP_ALLOW_MOVEMENT | EQUIP_SLOWDOWN
+	equip_delay_self = EQUIP_DELAY_COAT
+	equip_delay_other = EQUIP_DELAY_COAT * 1.5
+	strip_delay = EQUIP_DELAY_COAT * 1.5
 
 /obj/item/clothing/suit/toggle/labcoat/cmo
 	name = "medical director's labcoat"

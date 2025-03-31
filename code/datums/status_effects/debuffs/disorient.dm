@@ -23,15 +23,10 @@
 
 ///An animation for the object shaking wildly.
 /atom/movable/proc/twitch()
-	var/degrees = rand(-45,45)
-	transform = transform.Turn(degrees)
+	var/old_transform = transform
+	var/new_transform = transform.Turn(rand(-45,45))
 	var/old_x = pixel_x
 	var/old_y = pixel_y
-	pixel_x += rand(-3,3)
-	pixel_y += rand(-1,1)
-
-	sleep(0.2 SECONDS)
-
-	transform = transform.Turn(-degrees)
-	pixel_x = old_x
-	pixel_y = old_y
+	animate(src, time = 0, pixel_x = pixel_x + rand(-3, 3), pixel_y = pixel_y + rand(-3, 3), transform = new_transform)
+	animate(pixel_x = pixel_x, time = 0.2 SECONDS)
+	animate(pixel_x = old_x, pixel_y = old_y, transform = old_transform, time = 0)

@@ -84,16 +84,16 @@
 
 	else if(length(forensics?.blood_DNA))
 		if(num_hands)
-			. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a"] blood-stained hand[num_hands > 1 ? "s" : ""]!")
+			. += span_alert("[t_He] [t_has] [num_hands > 1 ? "" : "a"] blood-stained hand[num_hands > 1 ? "s" : ""]!")
 
 	//handcuffed?
 	if(handcuffed)
 		if(istype(handcuffed, /obj/item/restraints/handcuffs/cable))
-			. += span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] restrained with cable!")
+			. += span_alert("[t_He] [t_is] [icon2html(handcuffed, user)] restrained with cable!")
 		else if(istype(handcuffed, /obj/item/restraints/handcuffs/tape))
-			. += span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] bound by tape!")
+			. += span_alert("[t_He] [t_is] [icon2html(handcuffed, user)] bound by tape!")
 		else
-			. += span_warning("[t_He] [t_is] handcuffed with [icon2html(handcuffed, user)] [handcuffed] [EXAMINE_LINK(handcuffed)] !")
+			. += span_alert("[t_He] [t_is] handcuffed with [icon2html(handcuffed, user)] [handcuffed] [EXAMINE_LINK(handcuffed)] !")
 
 	//belt
 	if(belt && !(belt.item_flags & EXAMINE_SKIP))
@@ -114,10 +114,14 @@
 	if(!(obscured & ITEM_SLOT_EYES) )
 		if(glasses  && !(glasses.item_flags & EXAMINE_SKIP))
 			. += "[t_He] [t_has] [glasses.get_examine_string(user)] [EXAMINE_LINK(glasses)] covering [t_his] eyes."
-		else if(HAS_TRAIT(src, TRAIT_UNNATURAL_RED_GLOWY_EYES))
-			. += "<span class='warning'><B>[t_His] eyes are glowing with an unnatural red aura!</B></span>"
-		else if(HAS_TRAIT(src, TRAIT_BLOODSHOT_EYES))
-			. += "<span class='warning'><B>[t_His] eyes are bloodshot!</B></span>"
+
+		else if(getorganslot(ORGAN_SLOT_EYES))
+			if(HAS_TRAIT(src, TRAIT_UNNATURAL_RED_GLOWY_EYES))
+				. += "<span class='warning'><B>[t_His] eyes are glowing with an unnatural red aura!</B></span>"
+			else if(HAS_TRAIT(src, TRAIT_BLOODSHOT_EYES))
+				. += "<span class='warning'><B>[t_His] eyes are bloodshot!</B></span>"
+			else if(undergoing_jaundice())
+				. += span_alert("[t_His] eyes are yellow.")
 
 	//ears
 	if(ears && !(obscured & ITEM_SLOT_EARS) && !(ears.item_flags & EXAMINE_SKIP))
@@ -147,7 +151,7 @@
 				appears_dead = TRUE
 				. += span_danger("The spark of life has left [t_him].")
 				if(suiciding)
-					. += span_warning("[t_He] appear[t_s] to have committed suicide.")
+					. += span_alert("[t_He] appear[t_s] to have committed suicide.")
 
 	if(get_bodypart(BODY_ZONE_HEAD) && needs_organ(ORGAN_SLOT_BRAIN) && !getorgan(/obj/item/organ/brain))
 		. += span_deadsay("It appears that [t_his] brain is missing...")
@@ -172,16 +176,18 @@
 			var/is_bloody
 			for(var/datum/wound/W as anything in body_part.wounds)
 				if(W.bleeding())
-					msg += span_warning("Blood soaks through [t_his] [body_part.plaintext_zone] covering.\n")
+					msg += span_alert("Blood soaks through [t_his] [body_part.plaintext_zone] covering.\n")
 					is_bloody = TRUE
 					fucked_reasons["The blood soaking through [t_his] [body_part.plaintext_zone] indicates a dire wound."] = 1
 					break
+
 			if(!is_bloody)
 				msg += span_notice("[t_His] [body_part.plaintext_zone] is covered.\n")
 			for(var/string in body_part.mob_examine(viewer_hallucinating, TRUE))
 				msg += "[string]</br>"
 
 			continue
+
 		else
 			visible_bodyparts++
 			if((body_part.brute_dam + body_part.burn_dam) >= body_part.max_damage * 0.8)
@@ -193,12 +199,15 @@
 	for(var/X in disabled)
 		var/obj/item/bodypart/body_part = X
 		var/damage_text
+
 		if(HAS_TRAIT(body_part, TRAIT_DISABLED_BY_WOUND))
 			continue // skip if it's disabled by a wound (cuz we'll be able to see the bone sticking out!)
+
 		if(!(body_part.get_damage() >= body_part.max_damage)) //we don't care if it's stamcritted
 			damage_text = "limp and lifeless"
 		else
 			damage_text = (body_part.brute_dam >= body_part.burn_dam) ? body_part.heavy_brute_msg : body_part.heavy_burn_msg
+
 		msg += "<B>[capitalize(t_his)] [body_part.name] is [damage_text]!</B>\n"
 
 	//stores missing limbs
@@ -215,13 +224,6 @@
 
 		msg += "<B>[capitalize(t_his)] [parse_zone(t)] is missing!</B>\n"
 
-	if(l_limbs_missing >= 2 && r_limbs_missing == 0)
-		msg += "[t_He] look[t_s] all right now.\n"
-	else if(l_limbs_missing == 0 && r_limbs_missing >= 2)
-		msg += "[t_He] really keeps to the left.\n"
-	else if(l_limbs_missing >= 2 && r_limbs_missing >= 2)
-		msg += "[t_He] [p_do()]n't seem all there.\n"
-
 	var/temp
 	temp = getCloneLoss()
 	if(temp)
@@ -231,7 +233,6 @@
 			msg += "[t_He] [t_has] <b>moderate</b> cellular damage!\n"
 		else
 			msg += "<b>[t_He] [t_has] severe cellular damage!</b>\n"
-
 
 	if(has_status_effect(/datum/status_effect/fire_handler/fire_stacks))
 		msg += "[t_He] [t_is] covered in something flammable.\n"
@@ -311,7 +312,7 @@
 				msg += "[span_deadsay("[t_He] [t_is] totally catatonic. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely.")]\n"
 
 	if (length(msg))
-		. += span_warning("[msg.Join("")]")
+		. += span_alert("[msg.Join("")]")
 
 	var/trait_exam = common_trait_examine()
 	if (!isnull(trait_exam))

@@ -1,7 +1,17 @@
 /obj/item/diagnosis_book
 	name = "diagnosis book"
-	icon = 'goon/icons/obj/kinginyellow.dmi'
-	icon_state = "bookkiy"
+	desc = "A book containing information on diseases and disabilities."
+	icon = 'icons/obj/library.dmi'
+	icon_state ="bookdiagnosis"
+	worn_icon_state = "book"
+
+	drop_sound = 'sound/items/handling/book_drop.ogg'
+	pickup_sound = 'sound/items/handling/book_pickup.ogg'
+
+	resistance_flags = FLAMMABLE
+	w_class = WEIGHT_CLASS_NORMAL
+
+	throw_range = 5
 
 	/// Number of pages, just so you can't make infinite paper.
 	var/pages_remaining = 20

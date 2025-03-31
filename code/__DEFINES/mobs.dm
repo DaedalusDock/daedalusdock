@@ -498,6 +498,10 @@
 #define GETPULSE_TOOL 1 // More accurate. (med scanner, sleeper, etc.)
 #define PULSE_MAX_BPM 250 // Highest, readable BPM by machines and humans.
 
+/// Jaundice severities.
+#define JAUNDICE_EYES 1
+#define JAUNDICE_SKIN 2
+
 // Partial stasis sources
 #define STASIS_CRYOGENIC_FREEZING "cryo"
 

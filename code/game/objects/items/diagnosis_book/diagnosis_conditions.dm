@@ -35,6 +35,7 @@
 	symptoms = list(
 		/datum/diagnosis_symptom/blurred_vision,
 		/datum/diagnosis_symptom/jaundice,
+		/datum/diagnosis_symptom/yellow_eyes,
 		/datum/diagnosis_symptom/slurred_speech,
 		/datum/diagnosis_symptom/confusion,
 		/datum/diagnosis_symptom/nausea,

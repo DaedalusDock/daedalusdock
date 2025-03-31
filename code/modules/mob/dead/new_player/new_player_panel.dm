@@ -1,6 +1,6 @@
 #define LINKIFY_CONSOLE_OPTION(str, cmd) "<a class='rawLink' href='byond://?src=\ref[src];[cmd]' onmouseover='fillInput(\"[str]\");' onmouseout='fillInput(\"&#8203;\");'>[str]</a>"
 #define CONSOLE_BACK "<a class='rawLink' href='byond://?src=\ref[src];main_menu=1' onmouseover='fillInput(\"cd..\");' onmouseout='fillInput(\"&#8203;\");'>Back</a>"
-#define LINKIFY_READY(string, value) "<a style='cursor: pointer' href='byond://?src=\ref[src];ready=[value]'>[string]</a>"
+#define LINKIFY_READY(string, value) "<a class='cursorPointer' href='byond://?src=\ref[src];ready=[value]'>[string]</a>"
 
 #define NPP_TAB_MAIN "main"
 #define NPP_TAB_GAME "game"

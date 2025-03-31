@@ -15,7 +15,7 @@ body {
 
 html {
   overflow: hidden;
-  cursor: url('../../common/assets/default.cur'), auto; // Reset the cursor.
+  cursor: base.$cursor-default; // Reset the cursor.
 }
 
 body {
@@ -68,5 +68,5 @@ th {
 }
 
 a {
-  cursor: url('../../common/assets/link_select.cur'), auto;
+  cursor: base.$cursor-pointer;
 }

@@ -375,6 +375,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 	// Initialize stat panel
 	stat_panel.initialize(
+		assets = list(get_asset_datum(/datum/asset/simple/namespaced/cursors)),
 		inline_html = file2text('html/statbrowser.html'),
 		inline_js = file2text('html/statbrowser.js'),
 		inline_css = file2text('html/statbrowser.css'),

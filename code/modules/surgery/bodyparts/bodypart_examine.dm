@@ -11,7 +11,7 @@
 /obj/item/bodypart/proc/mob_examine(hallucinating, covered)
 	. = list()
 
-	if(body_zone in covered)
+	if(covered)
 		for(var/obj/item/I in embedded_objects)
 			if(I.isEmbedHarmless())
 				. += "<a href='?src=[REF(src)];embedded_object=[REF(I)]' class='danger'>There is \a [I] stuck to [owner.p_their()] [plaintext_zone]!</a>"

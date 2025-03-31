@@ -11,6 +11,7 @@
 	var/t_es = p_es()
 	var/t_s = p_s()
 	var/obscure_name
+	var/adjacent = get_dist(user, src) <= 1
 
 	var/viewer_hallucinating = FALSE
 	if(isliving(user))
@@ -117,11 +118,17 @@
 
 		else if(getorganslot(ORGAN_SLOT_EYES))
 			if(HAS_TRAIT(src, TRAIT_UNNATURAL_RED_GLOWY_EYES))
-				. += "<span class='warning'><B>[t_His] eyes are glowing with an unnatural red aura!</B></span>"
+				. += "<span class='alert'><B>[t_His] eyes are glowing red.</B></span>"
+
 			else if(HAS_TRAIT(src, TRAIT_BLOODSHOT_EYES))
-				. += "<span class='warning'><B>[t_His] eyes are bloodshot!</B></span>"
-			else if(undergoing_jaundice())
-				. += span_alert("[t_His] eyes are yellow.")
+				. += "<span class='alert'><B>[t_His] eyes are bloodshot.</B></span>"
+
+			else if(adjacent)
+				switch(undergoing_jaundice())
+					if(JAUNDICE_EYES)
+						. += span_alert("[t_His] sclerae are slightly yellow.")
+					if(JAUNDICE_SKIN)
+						. += span_alert("[t_His] sclerae are yellowed.")
 
 	//ears
 	if(ears && !(obscured & ITEM_SLOT_EARS) && !(ears.item_flags & EXAMINE_SKIP))
@@ -138,7 +145,6 @@
 		. += status_examines
 
 	var/appears_dead = isobserver(user)
-	var/adjacent = get_dist(user, src) <= 1
 	if(stat != CONSCIOUS || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
 		if(!adjacent)
 			. += span_alert("[t_He] is not moving.")
@@ -215,7 +221,7 @@
 	var/r_limbs_missing = 0
 	for(var/t in missing)
 		if(t==BODY_ZONE_HEAD)
-			msg += "<span class='deadsay'><B>[t_His] [parse_zone(t)] is missing!</B><span class='warning'>\n"
+			msg += "<span class='deadsay'><B>[t_His] [parse_zone(t)] is missing!</B>\n"
 			continue
 		if(t == BODY_ZONE_L_ARM || t == BODY_ZONE_L_LEG)
 			l_limbs_missing++

@@ -123,19 +123,6 @@
 		if(ORGAN_HIGH_THRESHOLD_CLEARED, ORGAN_NOW_FIXED)
 			remove_organ_trait(TRAIT_JAUNDICE_SKIN)
 
-/obj/item/organ/liver/on_owner_examine(datum/source, mob/user, list/examine_list)
-	if(!ishuman(owner) || !(organ_flags & ORGAN_DEAD))
-		return
-
-	var/mob/living/carbon/human/humie_owner = owner
-	if(!humie_owner.getorganslot(ORGAN_SLOT_EYES) || humie_owner.is_eyes_covered())
-		return
-
-	if(damage > maxHealth * low_threshold)
-		examine_list += span_notice("[owner]'s eyes are slightly yellow.")
-	else if(damage > maxHealth * high_threshold)
-		examine_list += span_notice("[owner]'s eyes are completely yellow, and he is visibly suffering.")
-
 #undef HAS_SILENT_TOXIN
 #undef HAS_NO_TOXIN
 #undef HAS_PAINFUL_TOXIN

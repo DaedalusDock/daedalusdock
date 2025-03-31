@@ -67,3 +67,7 @@
   - bugfix: Fixed slapcrafting recipes that have more than 2 steps.
   - code_imp: Cleaned up slapcrafting finalization code.
   - rscadd: Reworked the flamethrower to be more flamethrower-y.
+2025-03-31:
+  Kapu1178:
+  - rscadd: The diagnosis book, a tool for diagnosing patients.
+  - bugfix: Input fields in paper work mostly correctly.

@@ -42,16 +42,6 @@
 		return
 	AI.ai_camera_track(target_name)
 
-/atom/movable/screen/ai/camera_light
-	name = "Toggle Camera Light"
-	icon_state = "camera_light"
-
-/atom/movable/screen/ai/camera_light/Click()
-	if(..())
-		return
-	var/mob/living/silicon/ai/AI = usr
-	AI.toggle_camera_light()
-
 /atom/movable/screen/ai/modpc
 	name = "Messenger"
 	icon_state = "pda_send"
@@ -204,11 +194,6 @@
 //Track
 	using = new /atom/movable/screen/ai/camera_track(null, src)
 	using.screen_loc = ui_ai_track_with_camera
-	static_inventory += using
-
-//Camera light
-	using = new /atom/movable/screen/ai/camera_light(null, src)
-	using.screen_loc = ui_ai_camera_light
 	static_inventory += using
 
 //Crew Monitoring

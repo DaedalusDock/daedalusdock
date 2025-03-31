@@ -199,6 +199,7 @@
 		assembly.finished_items += item
 
 	after_create_items(results, assembly)
+	assembly.try_dump_completed(user)
 	dispose_assembly(assembly)
 
 	//Finally, CheckParts on the resulting items.

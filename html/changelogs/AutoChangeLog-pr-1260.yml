@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: The diagnosis book, a tool for diagnosing patients.
+  - bugfix: Input fields in paper work mostly correctly.

@@ -169,7 +169,7 @@
 
 
 	if(!forced)
-		if(!breath || (breath.total_moles == 0) || !lungs || nervous_system_failure())
+		if(!breath || (breath.total_moles == 0) || !lungs || undergoing_nervous_system_failure())
 			if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
 				adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS)
 
@@ -590,11 +590,15 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
 	if(liver && !(liver.organ_flags & ORGAN_DEAD))
 		remove_status_effect(/datum/status_effect/grouped/concussion, DEAD_LIVER_EFFECT)
+		REMOVE_TRAIT(src, TRAIT_JAUNDICE_SKIN, INNATE_TRAIT)
 		return
 
 	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || !needs_organ(ORGAN_SLOT_LIVER))
 		remove_status_effect(/datum/status_effect/grouped/concussion, DEAD_LIVER_EFFECT)
+		REMOVE_TRAIT(src, TRAIT_JAUNDICE_SKIN, INNATE_TRAIT)
 		return
+
+	ADD_TRAIT(src, TRAIT_JAUNDICE_SKIN, INNATE_TRAIT)
 
 	adjustToxLoss(0.6 * delta_time, TRUE, TRUE, cause_of_death = "Lack of a liver")
 
@@ -613,11 +617,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	var/datum/status_effect/grouped/concussion/existing = has_status_effect(/datum/status_effect/grouped/concussion)
 	if(isnull(existing) || !(DEAD_LIVER_EFFECT in existing.sources))
 		apply_status_effect(/datum/status_effect/grouped/concussion, DEAD_LIVER_EFFECT)
-
-/mob/living/carbon/proc/undergoing_liver_failure()
-	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
-	if(liver?.organ_flags & ORGAN_DEAD)
-		return TRUE
 
 /////////////
 //CREMATION//
@@ -692,26 +691,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		return FALSE
 	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
 	if(!heart || (heart.organ_flags & ORGAN_DEAD))
-		return FALSE
-	return TRUE
-
-/*
- * The mob is having a heart attack
- *
- * NOTE: this is true if the mob has no heart and needs one, which can be suprising,
- * you are meant to use it in combination with can_heartattack for heart attack
- * related situations (i.e not just cardiac arrest)
- */
-/mob/living/carbon/proc/undergoing_cardiac_arrest()
-	if(isipc(src))
-		var/obj/item/organ/cell/C = getorganslot(ORGAN_SLOT_CELL)
-		if(C && ((C.organ_flags & ORGAN_DEAD) || !C.get_percent()))
-			return TRUE
-
-	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
-	if(istype(heart) && heart.is_working())
-		return FALSE
-	else if(!needs_organ(ORGAN_SLOT_HEART))
 		return FALSE
 	return TRUE
 

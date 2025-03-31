@@ -46,7 +46,13 @@
 	var/obj/item/organ/O
 	var/organ_to_replace = -1
 	while(organ_to_replace == -1)
+
+		#ifndef UNIT_TESTS
 		organ_to_replace = input(user, "Which organ do you want to repair?") as null|anything in organs
+		#else
+		organ_to_replace = organs[1]
+		#endif
+
 		if(!organ_to_replace)
 			break
 		O = organs[organ_to_replace]
@@ -74,9 +80,13 @@
 	if (istype(tool, /obj/item/stack/medical/bruise_pack))
 		tool_name = "the bandaid"
 
-	var/obj/item/organ/O = target.getorganslot((LAZYACCESS(target.surgeries_in_progress, target_zone))[2])
+	var/obj/item/organ/O = (LAZYACCESS(target.surgeries_in_progress, target_zone))[2]
 	if(!O)
 		return
+
+	if(target.getorganslot(O.slot) != O)
+		return
+
 	if(!O.can_recover())
 		to_chat(user, span_warning("[O] is too far gone, it cannot be salvaged."))
 		return ..()

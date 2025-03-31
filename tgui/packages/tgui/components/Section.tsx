@@ -17,6 +17,7 @@ interface SectionProps extends BoxProps {
   fitted?: boolean;
   /** @deprecated This property no longer works, please remove it. */
   level?: boolean;
+  noTitleBorder?: boolean;
   /** @deprecated Please use `scrollable` property */
   overflowY?: any;
   scrollable?: boolean;
@@ -54,6 +55,7 @@ export class Section extends Component<SectionProps> {
       fitted,
       scrollable,
       children,
+      noTitleBorder,
       ...rest
     } = this.props;
     const hasTitle = canRender(title) || canRender(buttons);
@@ -70,7 +72,12 @@ export class Section extends Component<SectionProps> {
         {...computeBoxProps(rest)}
       >
         {hasTitle && (
-          <div className="Section__title">
+          <div
+            className={classes([
+              'Section__title',
+              noTitleBorder && 'Section--titleBorderless',
+            ])}
+          >
             <span className="Section__titleText">{title}</span>
             <div className="Section__buttons">{buttons}</div>
           </div>

@@ -147,8 +147,8 @@
 	var/species_color = ""
 	///Limbs need this information as a back-up incase they are generated outside of a carbon (limbgrower)
 	var/should_draw_greyscale = TRUE
-	///An "override" color that can be applied to ANY limb, greyscale or not.
-	var/variable_color = ""
+	/// An assoc list of priority (as a string because byond) -> color, used to override draw_color.
+	var/list/color_overrides
 
 	///whether it can be dismembered with a weapon.
 	var/dismemberable = 1
@@ -1359,3 +1359,7 @@
 
 	for(var/trait in bodypart_traits)
 		REMOVE_TRAIT(target, trait, bodypart_trait_source)
+
+/// Returns TRUE if this limb can be affected by jaundice.
+/obj/item/bodypart/proc/can_be_jaundiced()
+	return IS_ORGANIC_LIMB(src) && skin_tone

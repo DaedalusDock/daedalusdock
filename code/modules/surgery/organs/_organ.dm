@@ -422,7 +422,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	damage = min(clamp(round(damage + damage_amount, DAMAGE_PRECISION), 0, maximum), maxHealth)
 	. = damage - old_damage
 
-	var/mess = check_damage_thresholds(owner)
+	var/mess = damage_threshold_message(check_damage_thresholds(owner))
 	check_failing_thresholds(cause_of_death = cause_of_death)
 	prev_damage = damage
 	if(!silent && damage_amount > 0 && owner && owner.stat < UNCONSCIOUS && !(organ_flags & ORGAN_SYNTHETIC) && (damage_amount > 5 || prob(10)))
@@ -447,28 +447,43 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	return organ_flags & ORGAN_SYNTHETIC ? damage * 0.5 : damage
 
 /** check_damage_thresholds
- * input: mob/organ_owner (a mob, the owner of the organ we call the proc on)
- * output: returns a message should get displayed.
+ * Returns the organ state change constant, read the proc.
  * description: By checking our current damage against our previous damage, we can decide whether we've passed an organ threshold.
- *  If we have, send the corresponding threshold message to the owner, if such a message exists.
  */
 /obj/item/organ/proc/check_damage_thresholds(mob/organ_owner)
 	if(damage == prev_damage)
-		return
+		return null
+
 	var/delta = damage - prev_damage
 	if(delta > 0)
 		if(damage >= maxHealth)
-			return now_failing
+			return ORGAN_NOW_FAILING
 		if(damage > (high_threshold * maxHealth) && prev_damage <= (high_threshold * maxHealth))
-			return high_threshold_passed
+			return ORGAN_HIGH_THRESHOLD_PASSED
 		if(damage > (low_threshold * maxHealth) && prev_damage <= (low_threshold * maxHealth))
-			return low_threshold_passed
+			return ORGAN_LOW_THRESHOLD_PASSED
 	else
-		if(prev_damage > (low_threshold * maxHealth)  && damage <= (low_threshold * maxHealth))
-			return low_threshold_cleared
-		if(prev_damage > (high_threshold * maxHealth) && damage <= (high_threshold * maxHealth))
-			return high_threshold_cleared
 		if(prev_damage == maxHealth)
+			return ORGAN_NOW_FIXED
+		if(prev_damage > (high_threshold * maxHealth) && damage <= (high_threshold * maxHealth))
+			return ORGAN_HIGH_THRESHOLD_CLEARED
+		if(prev_damage > (low_threshold * maxHealth) && damage <= (low_threshold * maxHealth))
+			return ORGAN_LOW_THRESHOLD_CLEARED
+
+/// Converts damage threshold state changes to text
+/obj/item/organ/proc/damage_threshold_message(state)
+	switch(state)
+		if(ORGAN_NOW_FAILING)
+			return now_failing
+		if(ORGAN_HIGH_THRESHOLD_PASSED)
+			return high_threshold_passed
+		if(ORGAN_LOW_THRESHOLD_PASSED)
+			return low_threshold_passed
+		if(ORGAN_LOW_THRESHOLD_CLEARED)
+			return low_threshold_cleared
+		if(ORGAN_HIGH_THRESHOLD_PASSED)
+			return high_threshold_cleared
+		if(ORGAN_NOW_FIXED)
 			return now_fixed
 
 ///Checks if an organ should/shouldn't be failing and gives the appropriate organ flag

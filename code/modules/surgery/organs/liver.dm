@@ -67,6 +67,7 @@
 	//Detox can heal small amounts of damage
 	if (damage < maxHealth && !owner.chem_effects[CE_TOXIN])
 		applyOrganDamage(-0.2 * owner.chem_effects[CE_ANTITOX], updating_health = FALSE)
+		. = TRUE
 
 	// Get the effectiveness of the liver.
 	var/filter_effect = 3
@@ -74,6 +75,7 @@
 		filter_effect -= 1
 	if(damage > (high_threshold * maxHealth))
 		filter_effect -= 2
+
 	// Robotic organs filter better but don't get benefits from dylovene for filtering.
 	if(organ_flags & ORGAN_SYNTHETIC)
 		filter_effect += 1
@@ -83,10 +85,15 @@
 	// If you're not filtering well, you're in trouble. Ammonia buildup to toxic levels and damage from alcohol
 	if(filter_effect < 2)
 		if(owner.chem_effects[CE_ALCOHOL])
-			owner.adjustToxLoss(0.5 * max(2 - filter_effect, 0) * (owner.chem_effects[CE_ALCOHOL_TOXIC] + 0.5 * owner.chem_effects[CE_ALCOHOL]), cause_of_death = "Alcohol poisoning")
+			owner.adjustToxLoss(
+				0.5 * max(2 - filter_effect, 0) * (owner.chem_effects[CE_ALCOHOL_TOXIC] + 0.5 * owner.chem_effects[CE_ALCOHOL]),
+				cause_of_death = "Alcohol poisoning",
+			)
 
 	if(owner.chem_effects[CE_ALCOHOL_TOXIC])
 		applyOrganDamage(owner.chem_effects[CE_ALCOHOL_TOXIC], updating_health = FALSE)
+		. = TRUE
+
 	// Heal a bit if needed and we're not busy. This allows recovery from low amounts of toxloss.
 	if(!owner.chem_effects[CE_ALCOHOL] && !owner.chem_effects[CE_TOXIN] && !HAS_TRAIT(owner, TRAIT_IRRADIATED) && damage > 0)
 		if(damage < low_threshold * maxHealth)
@@ -94,7 +101,9 @@
 		else if(damage < high_threshold * maxHealth)
 			applyOrganDamage(-0.2, updating_health = FALSE)
 
-	if(damage > 10 && DT_PROB(damage/4, delta_time)) //the higher the damage the higher the probability
+		. = TRUE
+
+	if(damage > 10 && DT_PROB(damage/20, delta_time)) //the higher the damage the higher the probability
 		to_chat(liver_owner, span_warning("You feel a dull pain in your abdomen."))
 
 	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
@@ -106,18 +115,13 @@
 /obj/item/organ/liver/handle_regeneration()
 	return
 
-/obj/item/organ/liver/on_owner_examine(datum/source, mob/user, list/examine_list)
-	if(!ishuman(owner) || !(organ_flags & ORGAN_DEAD))
-		return
-
-	var/mob/living/carbon/human/humie_owner = owner
-	if(!humie_owner.getorganslot(ORGAN_SLOT_EYES) || humie_owner.is_eyes_covered())
-		return
-
-	if(damage > maxHealth * low_threshold)
-		examine_list += span_notice("[owner]'s eyes are slightly yellow.")
-	else if(damage > maxHealth * high_threshold)
-		examine_list += span_notice("[owner]'s eyes are completely yellow, and he is visibly suffering.")
+/obj/item/organ/liver/check_damage_thresholds(mob/organ_owner)
+	. = ..()
+	switch(.)
+		if(ORGAN_HIGH_THRESHOLD_PASSED, ORGAN_NOW_FAILING)
+			add_organ_trait(TRAIT_JAUNDICE_SKIN)
+		if(ORGAN_HIGH_THRESHOLD_CLEARED, ORGAN_NOW_FIXED)
+			remove_organ_trait(TRAIT_JAUNDICE_SKIN)
 
 #undef HAS_SILENT_TOXIN
 #undef HAS_NO_TOXIN

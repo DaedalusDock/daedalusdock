@@ -223,7 +223,7 @@
 	limb = new buildpath(loc)
 	limb.name = "\improper synthetic [selected_category] [limb.plaintext_zone]"
 	limb.limb_id = selected_category
-	limb.variable_color = "#62A262"
+	limb.add_color_override("#62A262", LIMB_COLOR_LIMBGROWER)
 	limb.update_icon_dropped()
 
 ///Returns a valid limb typepath based on the selected option

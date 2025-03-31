@@ -140,18 +140,9 @@
 
 	return 1
 
-#ifndef ZAS_COMPAT_515
 ///Returns the heat capacity of the gas mix based on the specific heat of the gases.
 /datum/gas_mixture/proc/getHeatCapacity()
 	return values_dot(xgm_gas_data.specific_heat, gas) * group_multiplier
-#else
-///Returns the heat capacity of the gas mix based on the specific heat of the gases.
-/datum/gas_mixture/proc/getHeatCapacity()
-	. = 0
-	for(var/g in gas)
-		. += xgm_gas_data.specific_heat[g] * gas[g]
-	. *= group_multiplier
-#endif
 
 ///Adds or removes thermal energy. Returns the actual thermal energy change, as in the case of removing energy we can't go below TCMB.
 /datum/gas_mixture/proc/adjustThermalEnergy(thermal_energy)
@@ -209,16 +200,10 @@
 	var/safe_temp = max(temperature, TCMB) // We're about to divide by this.
 	return R_IDEAL_GAS_EQUATION * ( log( (IDEAL_GAS_ENTROPY_CONSTANT*volume/(gas[gasid] * safe_temp)) * (molar_mass*specific_heat*safe_temp)**(2/3) + 1 ) +  15 )
 
-#ifndef ZAS_COMPAT_515
 ///Updates the total_moles count and trims any empty gases.
 /datum/gas_mixture/proc/garbageCollect()
 	values_cut_under(gas, ATMOS_PRECISION)
 	total_moles = values_sum(gas)
-#else
-///Updates the total_moles count and trims any empty gases.
-/datum/gas_mixture/proc/garbageCollect()
-	AIR_UPDATE_VALUES(src)
-#endif
 
 ///Returns the pressure of the gas mix.  Only accurate if there have been no gas modifications since updateValues() has been called.
 /datum/gas_mixture/proc/returnPressure()

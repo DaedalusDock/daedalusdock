@@ -450,8 +450,8 @@ AUTOADMIN_RANK Trial Admin
 #CLIENT_WARN_POPUP
 #CLIENT_WARN_MESSAGE This version of BYOND added new tools for manipulating sound and icons.
 
-CLIENT_ERROR_VERSION 515
-CLIENT_ERROR_BUILD 1509
+CLIENT_ERROR_VERSION 516
+CLIENT_ERROR_BUILD 1659
 CLIENT_ERROR_MESSAGE Your version of byond is not supported. Please upgrade.
 
 ## TOPIC RATE LIMITING

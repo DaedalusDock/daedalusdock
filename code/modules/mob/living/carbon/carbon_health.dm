@@ -18,6 +18,7 @@
 /mob/living/carbon/proc/undergoing_nervous_system_failure()
 	return getBrainLoss() >= maxHealth * 0.75
 
+/// Returns TRUE if the mob needs a liver and doesn't have one OR it is dead.
 /mob/living/carbon/proc/undergoing_liver_failure()
 	if(!needs_organ(ORGAN_SLOT_LIVER))
 		return FALSE
@@ -26,7 +27,6 @@
 	if(!liver || (liver.organ_flags & ORGAN_DEAD))
 		return TRUE
 
-	if(liver)
 	return FALSE
 
 /*

@@ -8,9 +8,14 @@
 	desc = "The patient is unable to speak clearly."
 	category = DIAGNOSIS_SYMPTOM_CATEGORY_BRAIN
 
-/datum/diagnosis_symptom/confusion
-	name = "Difficulty walking"
-	desc = "The patient is experiencing difficulty walking straight."
+/datum/diagnosis_symptom/stuttering
+	name = "Stuttery speech"
+	desc = "The patient is stuttering."
+	category = DIAGNOSIS_SYMPTOM_CATEGORY_BRAIN
+
+/datum/diagnosis_symptom/ataxia
+	name = "Ataxia"
+	desc = "The patient is experiencing impaired motor functions."
 	category = DIAGNOSIS_SYMPTOM_CATEGORY_BRAIN
 
 /datum/diagnosis_symptom/drowsiness

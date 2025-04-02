@@ -248,6 +248,7 @@
 	message = "gasps for air!"
 	emote_type = EMOTE_AUDIBLE
 	stat_allowed = UNCONSCIOUS
+	can_player_use = FALSE
 
 /datum/emote/living/gasp/unconscious/get_sound(mob/living/user, involuntary = TRUE)
 	return ..()

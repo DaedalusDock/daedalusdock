@@ -243,6 +243,15 @@
 					'goon/sounds/voice/gasp/female_gasp_5.ogg',
 					)
 
+/datum/emote/living/gasp/unconscious
+	key = "gasp_unconscious"
+	message = "gasps for air!"
+	emote_type = EMOTE_AUDIBLE
+	stat_allowed = UNCONSCIOUS
+
+/datum/emote/living/gasp/unconscious/get_sound(mob/living/user, involuntary = TRUE)
+	return ..()
+
 /datum/emote/living/giggle
 	key = "giggle"
 	key_third_person = "giggles"

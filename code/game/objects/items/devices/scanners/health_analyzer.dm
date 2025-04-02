@@ -224,6 +224,9 @@
 
 				if(limb.bodypart_flags & BP_BROKEN_BONES)
 					limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_BROKEN]'>fractured</span>\]"
+
+				if(limb.bodypart_flags & BP_ARTERY_CUT)
+					limb_string += " \[<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Ruptured [capitalize(limb.artery_name)]</span>\]"
 				data_string_list += (limb_string + "\n")
 
 

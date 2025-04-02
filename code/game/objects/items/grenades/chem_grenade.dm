@@ -398,8 +398,8 @@
 //////////////////////////////
 
 /obj/item/grenade/chem_grenade/metalfoam
-	name = "metal foam grenade"
-	desc = "Used for emergency sealing of hull breaches."
+	name = "BIGWELD rapid structual support canister"
+	desc = "A canister containing a small explosive charge designed to release BIGWELD™ Rapid Structural Support Foam. \"See a hole, fill a hole. BIGWELD™\" is embossed on the surface."
 	stage = GRENADE_READY
 
 /obj/item/grenade/chem_grenade/metalfoam/Initialize(mapload)

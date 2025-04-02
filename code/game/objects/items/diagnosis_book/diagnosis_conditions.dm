@@ -27,6 +27,7 @@
 		/datum/diagnosis_symptom/no_pulse,
 		/datum/diagnosis_symptom/syncope,
 		/datum/diagnosis_symptom/blurred_vision,
+		/datum/diagnosis_symptom/pale_skin,
 	)
 
 /datum/diagnosis_condition/liver_failure
@@ -37,7 +38,7 @@
 		/datum/diagnosis_symptom/jaundice,
 		/datum/diagnosis_symptom/yellow_eyes,
 		/datum/diagnosis_symptom/slurred_speech,
-		/datum/diagnosis_symptom/confusion,
+		/datum/diagnosis_symptom/ataxia,
 		/datum/diagnosis_symptom/nausea,
 		/datum/diagnosis_symptom/chest_pain,
 		/datum/diagnosis_symptom/drowsiness,
@@ -54,7 +55,7 @@
 		/datum/diagnosis_symptom/chest_pain,
 		/datum/diagnosis_symptom/dizziness,
 		/datum/diagnosis_symptom/jittering,
-		/datum/diagnosis_symptom/confusion,
+		/datum/diagnosis_symptom/ataxia,
 		/datum/diagnosis_symptom/blurred_vision,
 		/datum/diagnosis_symptom/syncope,
 		/datum/diagnosis_symptom/unconscious,
@@ -68,8 +69,21 @@
 		/datum/diagnosis_symptom/slurred_speech,
 		/datum/diagnosis_symptom/nausea,
 		/datum/diagnosis_symptom/blurred_vision,
-		/datum/diagnosis_symptom/confusion,
+		/datum/diagnosis_symptom/ataxia,
 		/datum/diagnosis_symptom/dizziness,
 		/datum/diagnosis_symptom/syncope,
 		/datum/diagnosis_symptom/unconscious,
+	)
+
+/datum/diagnosis_condition/shock
+	name = "Shock"
+	desc = "The patient is in severe pain."
+
+	symptoms = list(
+		/datum/diagnosis_symptom/blurred_vision,
+		/datum/diagnosis_symptom/stuttering,
+		/datum/diagnosis_symptom/syncope,
+		/datum/diagnosis_symptom/unconscious,
+		/datum/diagnosis_symptom/ataxia,
+		/datum/diagnosis_symptom/clammy_skin,
 	)

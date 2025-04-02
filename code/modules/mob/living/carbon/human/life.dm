@@ -106,10 +106,10 @@
 
 			// Failed a breath for one reason or another.
 			blur_eyes(3)
-			if(prob(20))
+			if(prob(20) && COOLDOWN_FINISHED(src, mob_cooldowns["check_breath_gasp"]))
 				spawn(-1)
-					emote("gasp")
-
+					emote(/datum/emote/living/carbon/gasp_air)
+					COOLDOWN_START(src, mob_cooldowns["check_breath_gasp"], 10 SECONDS)
 			return FALSE
 
 /// Environment handlers for species

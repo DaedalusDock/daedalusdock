@@ -96,10 +96,10 @@
 		if(!forced && prob(10) && COOLDOWN_FINISHED(src, mob_cooldowns["losebreath_gasp_cd"]))
 			spawn(-1)
 				if(asystole)
-					emote("gasp_unconscious")
+					emote(/datum/emote/living/carbon/gasp_air/allow_unconscious)
 					COOLDOWN_START(src, mob_cooldowns["losebreath_gasp_cd"], 30 SECONDS)
 				else
-					emote("gasp")
+					emote(/datum/emote/living/carbon/gasp_air)
 					COOLDOWN_START(src, mob_cooldowns["losebreath_gasp_cd"], 15 SECONDS)
 
 		if(istype(loc, /obj))
@@ -213,8 +213,6 @@
 
 	else //Enough oxygen
 		failed_last_breath = FALSE
-		if(health >= crit_threshold)
-			adjustOxyLoss(-5)
 		oxygen_used = breath_gases[GAS_OXYGEN]
 		clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 

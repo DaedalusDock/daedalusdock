@@ -1,4 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Updated the Inspect Limb grab function, it now tells you more information.

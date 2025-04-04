@@ -22,7 +22,7 @@
 	var/list/concurrent_users = list()
 
 	// Stuff needed to render the map
-	var/atom/movable/screen/map_view/cam_screen
+	var/atom/movable/screen/map_view/byondui/camera/cam_screen
 
 
 /datum/computer_file/program/secureye/New()
@@ -33,12 +33,10 @@
 		network -= i
 		network += lowertext(i)
 
-
 	var/map_name = "camera_console_[REF(src)]_map"
 	// Initialize map objects
 	cam_screen = new()
 	cam_screen.generate_view(map_name)
-
 
 /datum/computer_file/program/secureye/Destroy()
 	QDEL_NULL(cam_screen)
@@ -118,7 +116,7 @@
 	// Living creature or not, we remove you anyway.
 	concurrent_users -= user_ref
 	// Unregister map objects
-	user.client.clear_map(map_name)
+	cam_screen?.hide_from_client(user.client)
 	// Turn off the console
 	if(length(concurrent_users) == 0 && is_living)
 		camera_ref = null

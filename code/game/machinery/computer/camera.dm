@@ -155,6 +155,7 @@
 	var/is_living = isliving(user)
 	// Living creature or not, we remove you anyway.
 	concurrent_users -= user_ref
+	cam_screen?.hide_from_client(user.client)
 	// Turn off the console
 	if(length(concurrent_users) == 0 && is_living)
 		active_camera = null

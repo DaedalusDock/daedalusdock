@@ -108,6 +108,10 @@
 		"map_ref" = byondui_screen.assigned_map,
 	)
 
+/obj/item/diagnosis_book/ui_close(mob/user)
+	. = ..()
+	byondui_screen?.hide_from_client(user.client)
+
 /obj/item/diagnosis_book/ui_act(action, list/params, datum/tgui/ui)
 	. = ..()
 	if(.)

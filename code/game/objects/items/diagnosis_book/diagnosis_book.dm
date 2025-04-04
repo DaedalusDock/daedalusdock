@@ -29,6 +29,7 @@
 /obj/item/diagnosis_book/Initialize(mapload)
 	. = ..()
 	byondui_screen = new
+	byondui_screen.generate_view("byondui_diagnosisbook_[ref(src)]")
 	wipe_byondui()
 
 	if(isnull(static_data))
@@ -81,9 +82,9 @@
 
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		byondui_screen.register_to_client(user.client)
 		ui = new(user, src, "DiagnosisBook")
 		ui.open()
+		byondui_screen.render_to_tgui(user.client, ui.window)
 
 /obj/item/diagnosis_book/ui_status(mob/user)
 	// Even harder to read if your blind...braile? humm
@@ -106,6 +107,10 @@
 		"selected_symptoms" = selected_symptoms,
 		"map_ref" = byondui_screen.assigned_map,
 	)
+
+/obj/item/diagnosis_book/ui_close(mob/user)
+	. = ..()
+	byondui_screen?.hide_from_client(user.client)
 
 /obj/item/diagnosis_book/ui_act(action, list/params, datum/tgui/ui)
 	. = ..()
@@ -203,8 +208,8 @@
 	remove_non_canon_overlays(character_appearance)
 
 	var/matrix/new_transform = matrix()
-	new_transform.Scale(4, 4)
-	new_transform.Translate(18, -24)
+	new_transform.Scale(2, 2)
+	new_transform.Translate(1, -16)
 
 	character_appearance.transform = new_transform
 	character_appearance.dir = SOUTH
@@ -219,7 +224,7 @@
 	var/image/I = image('icons/hud/noimg.dmi', "png")
 	var/matrix/new_transform = matrix()
 	new_transform.Scale(2, 2)
-	new_transform.Translate(17, 17)
+	new_transform.Translate(1, -16)
 
 	I.transform = new_transform
 	I.color = list(rgb(77,77,77), rgb(150,150,150), rgb(28,28,28), rgb(0,0,0))

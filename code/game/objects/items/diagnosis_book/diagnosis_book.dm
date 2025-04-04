@@ -81,9 +81,9 @@
 
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		byondui_screen.register_to_client(user.client)
 		ui = new(user, src, "DiagnosisBook")
 		ui.open()
+		byondui_screen.render_to_tgui(user.client, ui.window)
 
 /obj/item/diagnosis_book/ui_status(mob/user)
 	// Even harder to read if your blind...braile? humm

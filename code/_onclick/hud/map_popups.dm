@@ -81,12 +81,35 @@
 
 	return ..()
 
-/atom/movable/screen/map_view/byondui/proc/register_to_client(client/client)
-	if (!client)
+/**
+ * Generates and displays the map view to a client
+ * Make sure you at least try to pass tgui_window if map view needed on UI,
+ * so it will wait a signal from TGUI, which tells windows is fully visible.
+ *
+ * * show_to - Mob which needs map view
+ * * window - Optional. TGUI window which needs map view
+ */
+/atom/movable/screen/map_view/byondui/proc/render_to_tgui(client/show_to, datum/tgui_window/window)
+	if (!show_to)
 		return
 
-	if(client.weak_reference in viewing_clients)
+	if(show_to.weak_reference in viewing_clients)
 		return
+
+	if(window && !window.visible)
+		RegisterSignal(window, COMSIG_TGUI_WINDOW_VISIBLE, PROC_REF(display_on_ui_visible))
+	else
+		render_to_client(show_to)
+
+/atom/movable/screen/map_view/byondui/proc/display_on_ui_visible(datum/tgui_window/window, client/show_to)
+	PRIVATE_PROC(TRUE)
+	SIGNAL_HANDLER
+
+	render_to_client(show_to)
+	UnregisterSignal(window, COMSIG_TGUI_WINDOW_VISIBLE)
+
+/atom/movable/screen/map_view/byondui/proc/render_to_client(client/client)
+	PRIVATE_PROC(TRUE)
 
 	viewing_clients += WEAKREF(client)
 	client.register_map_obj(src)

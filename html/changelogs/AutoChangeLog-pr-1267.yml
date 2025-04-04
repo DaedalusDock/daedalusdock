@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: The Daedalus cursor now works over all user interfaces.

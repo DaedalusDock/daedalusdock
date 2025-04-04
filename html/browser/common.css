@@ -27,7 +27,8 @@ a, button, a:link, a:visited, a:active, .linkOn, .linkOff
 	border: 1px solid rgba(255, 183, 0, 0.5);
 	padding: 1px 4px 1px 4px;
 	margin: 0 2px 0 0;
-	cursor: default;
+	/* Moved to cursors.css */
+	/* cursor: default; */
 	white-space: nowrap !important;
 	text-shadow: none !important;
 	-ms-user-select: none;
@@ -57,7 +58,8 @@ a.white, a.white:link, a.white:visited, a.white:active
 	border: 1px solid rgba(255, 183, 0, 0.3);
 	padding: 1px 4px 1px 4px;
 	margin: 0 2px 0 0;
-	cursor:default;
+	/* Moved to cursors.css */
+	/* cursor:default; */
 }
 
 a.white:hover
@@ -89,7 +91,8 @@ a.genericLink, a.genericLink:visited, a.genericLink:active
 	border: 1px solid #161616;
 	padding: 1px 4px 1px 4px;
 	margin: 0 2px 0 0;
-	cursor: default;
+	/* Moved to cursors.css */
+	/* cursor: default; */
 	white-space: nowrap !important;
 	text-shadow: none !important;
 }
@@ -105,7 +108,8 @@ a.rawLink
 	color: inherit;
 	text-decoration: inherit;
 	background: inherit;
-	cursor: pointer;
+	/* Moved to cursors.css */
+	/* cursor: pointer; */
 	white-space: nowrap !important;
 	text-shadow: inherit !important;
 	border: inherit;
@@ -442,7 +446,8 @@ div.notice
 
 .slider {
   position: absolute;
-  cursor: pointer;
+  /* Moved to cursors.css */
+  /* cursor: pointer; */
   top: 0;
   left: 0;
   right: 0;

@@ -21,6 +21,11 @@ declare module '*.svg' {
   export default content;
 }
 
+declare module '*.cur' {
+  const content: string;
+  export default content;
+}
+
 namespace JSX {
   interface IntrinsicElements {
     blink: any;

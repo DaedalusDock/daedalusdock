@@ -124,7 +124,7 @@ a.popt {
 .popup input[type='submit']:focus,
 .popup input[type='submit']:active {
   background: #aaa;
-  cursor: pointer;
+  cursor: url('shared_assets/link_select.cur'), auto;
 }
 
 .changeFont {

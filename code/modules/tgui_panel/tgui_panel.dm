@@ -51,7 +51,6 @@
 	window.send_asset(get_asset_datum(/datum/asset/simple/namespaced/fontawesome))
 	window.send_asset(get_asset_datum(/datum/asset/simple/namespaced/tgfont))
 	window.send_asset(get_asset_datum(/datum/asset/spritesheet/chat))
-	window.send_asset(get_asset_datum(/datum/asset/simple/namespaced/cursors))
 	window.send_asset(get_asset_datum(/datum/asset/simple/namespaced/chat_icons))
 
 	// Other setup

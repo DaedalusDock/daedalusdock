@@ -777,8 +777,8 @@
 		new /obj/item/light/bulb(src)
 
 /obj/item/storage/box/metalfoam
-	name = "box of metal foam grenades"
-	desc = "To be used to rapidly seal hull breaches."
+	name = "box of BIGWELD"
+	desc = "A box containing several BIGWELD™ Rapid Structual Support canisters."
 	illustration = "grenade"
 
 /obj/item/storage/box/metalfoam/PopulateContents()

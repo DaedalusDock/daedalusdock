@@ -17,3 +17,8 @@
 	name = "Syncope"
 	desc = "The patient suddenly lost consciousness."
 	category = DIAGNOSIS_SYMPTOM_CATEGORY_CIRCULATION
+
+/datum/diagnosis_symptom/pale_skin
+	name = "Pale skin"
+	desc = "The patient has desaturated skin."
+	category = DIAGNOSIS_SYMPTOM_CATEGORY_CIRCULATION

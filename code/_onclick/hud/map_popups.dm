@@ -48,31 +48,20 @@
 
 	/// Weakrefs to client(s) viewing thisUI
 	var/list/datum/weakref/viewing_clients = list()
+
 	/// The atom rendered.
 	var/atom/movable/screen/background/rendered_atom
 
 /atom/movable/screen/map_view/byondui/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
 
-	assigned_map = "byondui_[ref(src)]"
-	set_position(1, 1)
-
-	for (var/plane_master_type in subtypesof(/atom/movable/screen/plane_master) - /atom/movable/screen/plane_master/blackness)
-		var/atom/movable/screen/plane_master/plane_master = new plane_master_type()
-		plane_master.assigned_map = assigned_map
-		plane_master.screen_loc = "[assigned_map]:CENTER"
-		plane_master.del_on_map_removal = FALSE
-		plane_masters += plane_master
-
-	rendered_atom = new
-	rendered_atom.assigned_map = assigned_map
-	rendered_atom.del_on_map_removal = FALSE
-	rendered_atom.set_position(0, 0)
+	generate_view()
 
 /atom/movable/screen/map_view/byondui/Destroy()
 	for(var/datum/weakref/client_ref as anything in viewing_clients)
 		var/client/C = client_ref.resolve()
-		C?.clear_map(assigned_map)
+		if(C)
+			hide_from_client(C)
 
 	QDEL_LIST(plane_masters)
 
@@ -80,6 +69,32 @@
 	plane_masters = null
 
 	return ..()
+
+/atom/movable/screen/map_view/byondui/proc/generate_view(map_key)
+	assigned_map = map_key || "byondui_[ref(src)]"
+	set_position(1, 1)
+
+	for (var/plane_master_type in subtypesof(/atom/movable/screen/plane_master) - /atom/movable/screen/plane_master/blackness)
+		var/atom/movable/screen/plane_master/plane_master = new plane_master_type()
+		plane_master.assigned_map = assigned_map
+		if(plane_master.blend_mode_override)
+			plane_master.blend_mode = plane_master.blend_mode_override
+		plane_master.screen_loc = "[assigned_map]:CENTER"
+		plane_master.del_on_map_removal = FALSE
+		plane_masters += plane_master
+
+	rendered_atom = new
+	rendered_atom.assigned_map = assigned_map
+	rendered_atom.del_on_map_removal = FALSE
+	rendered_atom.set_position(1, 1)
+
+/// Returns a list of objects to shove into the client's screen.
+/atom/movable/screen/map_view/byondui/proc/get_screen_objects()
+	RETURN_TYPE(/list)
+	SHOULD_CALL_PARENT(TRUE)
+	. = list(src)
+	. += plane_masters
+	. += rendered_atom
 
 /**
  * Generates and displays the map view to a client
@@ -112,10 +127,15 @@
 	PRIVATE_PROC(TRUE)
 
 	viewing_clients += WEAKREF(client)
-	client.register_map_obj(src)
-	client.register_map_obj(rendered_atom)
-	for(var/plane in plane_masters)
-		client.register_map_obj(plane)
+
+	var/list/screen_objects = get_screen_objects()
+	for(var/screen_object in screen_objects)
+		client.register_map_obj(screen_object)
+
+/// Does what it says on the tin, removes this ui from their screen and removes them from us.
+/atom/movable/screen/map_view/byondui/proc/hide_from_client(client/C)
+	C.clear_map(assigned_map)
+	viewing_clients -= C.weak_reference
 
 /**
  * Registers screen obj with the client, which makes it visible on the

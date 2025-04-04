@@ -99,8 +99,10 @@
 	else
 		dat += "No datums tagged :("
 
-	dat = dat.Join("<br>")
-	usr << browse(dat, "window=tag;size=800x480")
+
+	var/datum/browser/browser = new(usr, "view_tags", "View Tags", 800, 480)
+	browser.set_content(dat.Join("<br>"))
+	browser.open()
 
 #undef TAG_DEL
 #undef TAG_MARK

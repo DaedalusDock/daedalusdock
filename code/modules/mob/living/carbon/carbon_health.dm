@@ -14,10 +14,15 @@
 	if(liver.damage > (liver.low_threshold * liver.maxHealth))
 		return JAUNDICE_EYES
 
+/// Returns TRUE if the target has pale skin due to reduced bloodflow.
+/mob/living/carbon/proc/undergoing_pale_skin()
+	return get_blood_circulation() <= 50
+
 /// Returns TRUE if the mob's nervous system is breaking down.
 /mob/living/carbon/proc/undergoing_nervous_system_failure()
 	return getBrainLoss() >= maxHealth * 0.75
 
+/// Returns TRUE if the mob needs a liver and doesn't have one OR it is dead.
 /mob/living/carbon/proc/undergoing_liver_failure()
 	if(!needs_organ(ORGAN_SLOT_LIVER))
 		return FALSE
@@ -26,7 +31,6 @@
 	if(!liver || (liver.organ_flags & ORGAN_DEAD))
 		return TRUE
 
-	if(liver)
 	return FALSE
 
 /*

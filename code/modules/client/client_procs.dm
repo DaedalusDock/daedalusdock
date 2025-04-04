@@ -401,7 +401,10 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	connection_timeofday = world.timeofday
 
 	winset(src, null, "command=\".configure graphics-hwmode on\"")
-	winset(src, null, "browser-options=find,devtools")
+
+	#if DM_VERSION >= 516
+	winset(src, null, "browser-options=byondstorage,devtools,find")
+	#endif
 
 	var/cev = CONFIG_GET(number/client_error_version)
 	var/ceb = CONFIG_GET(number/client_error_build)

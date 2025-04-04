@@ -54,7 +54,8 @@
 	backpack_contents = list(
 		/obj/item/roller = 1,
 		/obj/item/bodybag/stasis = 1,
-		/obj/item/pager/aether,
+		/obj/item/pager/aether = 1,
+		/obj/item/diagnosis_book = 1,
 	)
 	belt = /obj/item/storage/belt/medical/paramedic
 	ears = /obj/item/radio/headset/headset_med

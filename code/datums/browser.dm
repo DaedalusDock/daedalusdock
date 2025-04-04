@@ -32,8 +32,11 @@
 	SIGNAL_HANDLER
 	user = null
 
-/datum/browser/proc/add_head_content(nhead_content)
+/datum/browser/proc/set_head_content(nhead_content)
 	head_content = nhead_content
+
+/datum/browser/proc/add_head_content(nhead_content)
+	head_content += nhead_content
 
 /datum/browser/proc/set_window_options(nwindow_options)
 	window_options = nwindow_options

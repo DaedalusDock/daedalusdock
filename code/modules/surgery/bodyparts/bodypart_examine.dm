@@ -167,3 +167,67 @@
 
 
 	return flavor_text
+
+/obj/item/bodypart/proc/inspect(mob/user)
+	if(is_stump)
+		to_chat(user, span_notice("[owner] is missing that bodypart."))
+		return
+
+	user.visible_message(span_notice("[user] starts inspecting [owner]'s [plaintext_zone] carefully."))
+
+	if(!do_after(user, owner, 1 SECOND, DO_PUBLIC|DO_RESTRICT_USER_DIR_CHANGE))
+		return
+
+	if(LAZYLEN(wounds))
+		to_chat(user, span_warning("You find the following:"))
+		for(var/wound_desc in get_wound_descriptions())
+			to_chat(user, wound_desc)
+
+		var/list/stuff = list()
+		for(var/datum/wound/wound as anything in wounds)
+			if(LAZYLEN(wound.embedded_objects))
+				stuff |= wound.embedded_objects
+
+		if(length(stuff))
+			to_chat(user, span_warning("There's [english_list(stuff)] sticking out of [owner]'s [plaintext_zone]."))
+	else
+		to_chat(user, span_notice("You find no visible wounds."))
+
+	to_chat(user, span_notice("Checking skin now..."))
+
+	if(!do_after(user, owner, 1 SECOND, DO_PUBLIC|DO_RESTRICT_USER_DIR_CHANGE))
+		return
+
+	if(skin_tone)
+		if(owner.undergoing_cyanosis() && (body_part & (ARMS|LEGS)))
+			to_chat(user, span_alert("The digits are turning blue."))
+
+		if(owner.undergoing_pale_skin())
+			to_chat(user, span_alert("The skin is very pale."))
+
+		if(owner.undergoing_jaundice())
+			to_chat(user, span_alert("The skin is yellowed."))
+
+		if(owner.shock_stage >= SHOCK_TIER_2)
+			to_chat(user, span_alert("The skin is clammy and cool to the touch."))
+
+	if(IS_ORGANIC_LIMB(src) && (bodypart_flags & BP_NECROTIC))
+		to_chat(user, span_alert("The surface is rotting."))
+
+	to_chat(user, span_notice("Checking bones now..."))
+	if(!do_after(user, owner, 1 SECOND, DO_PUBLIC|DO_RESTRICT_USER_DIR_CHANGE))
+		return
+
+	if(bodypart_flags & BP_BROKEN_BONES)
+		to_chat(user, span_alert("The [encased ? encased : "bone in the [plaintext_zone]"] moves slightly when you poke it."))
+		owner.apply_pain(40, src, "Your [plaintext_zone] hurts where it's poked.")
+	else
+		to_chat(user, span_notice("The [encased ? encased : "bones in the [plaintext_zone]"] appear[encased && "s"] to be fine."))
+
+	if(bodypart_flags & BP_TENDON_CUT)
+		to_chat(user, span_alert("The tendons in the [plaintext_zone] are severed."))
+	if(bodypart_flags & BP_DISLOCATED)
+		to_chat(user, span_alert("The [joint_name] is dislocated."))
+	if(bodypart_flags & BP_ARTERY_CUT)
+		to_chat(user, span_alert("The [plaintext_zone] is gushing blood."))
+	return TRUE

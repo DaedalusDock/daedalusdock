@@ -52,6 +52,7 @@
 	jobtype = /datum/job/acolyte
 
 	id_trim = /datum/id_trim/job/medical_doctor
+	neck = /obj/item/clothing/neck/stethoscope
 	uniform = /obj/item/clothing/under/rank/medical/doctor
 	suit = /obj/item/clothing/suit/toggle/labcoat/md
 	suit_store = /obj/item/flashlight/pen

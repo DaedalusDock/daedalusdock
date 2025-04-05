@@ -443,6 +443,14 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	applyOrganDamage(damage_amount - damage)
 	check_failing_thresholds(TRUE)
 
+/// Returns TRUE if the organ is damaged above it's low threshold.
+/obj/item/organ/proc/passed_low_threshold()
+	return damage >= (maxHealth * low_threshold)
+
+/// Returns TRUE if the organ is damaged above it's high threshold.
+/obj/item/organ/proc/passed_high_threshold()
+	return damage >= (maxHealth * high_threshold)
+
 /obj/item/organ/proc/getToxLoss()
 	return organ_flags & ORGAN_SYNTHETIC ? damage * 0.5 : damage
 
@@ -648,3 +656,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			to_chat(user, span_warning("Not every part of [src] could be saved, some dead tissue had to be removed, making it more suspectable to damage in the future."))
 			set_max_health(new_max_dam)
 	applyOrganDamage(-damage)
+
+/obj/item/organ/proc/stethoscope_listen()
+	RETURN_TYPE(/list)
+	. = list()

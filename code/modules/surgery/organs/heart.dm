@@ -240,6 +240,33 @@
 	if(pulse == PULSE_NONE)
 		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Asystole</span>" : "Asystole"
 
+/obj/item/organ/heart/stethoscope_listen()
+	. = ..()
+
+	if((organ_flags & ORGAN_SYNTHETIC) && is_working())
+		if(passed_low_threshold())
+			. += "a sputtering pump"
+		else
+			. += "the steady whirr of a pump"
+		return
+
+	if((pulse == PULSE_NONE) || HAS_TRAIT(owner, TRAIT_FAKEDEATH))
+		. += "no pulse"
+		return
+
+	var/pulse_sound
+	switch(pulse)
+		if(PULSE_SLOW)
+			pulse_sound = "slow"
+		if(PULSE_FAST)
+			pulse_sound = "fast"
+		if(PULSE_2FAST)
+			pulse_sound = "very fast"
+		if(PULSE_THREADY)
+			pulse_sound = "extremely fast and faint"
+
+	. += "a [passed_low_threshold() ? "irregular" : "steady"][pulse_sound ? " [pulse_sound]" : ""] pulse"
+
 /datum/client_colour/cursed_heart_blood
 	priority = 100 //it's an indicator you're dying, so it's very high priority
 	colour = "red"

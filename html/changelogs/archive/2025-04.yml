@@ -4,3 +4,6 @@
 2025-04-03:
   Kapu1178:
   - rscadd: Updated the Inspect Limb grab function, it now tells you more information.
+2025-04-05:
+  Kapu1178:
+  - rscadd: The Daedalus cursor now works over all user interfaces.

@@ -201,47 +201,20 @@
 		return
 
 	if(user.gender == MALE)
-		if(!involuntary)
-			return pick('sound/emotes/male/gasp_m1.ogg',
-					'sound/emotes/male/gasp_m2.ogg',
-					'sound/emotes/male/gasp_m3.ogg',
-					'sound/emotes/male/gasp_m4.ogg',
-					'sound/emotes/male/gasp_m5.ogg',
-					'sound/emotes/male/gasp_m6.ogg',
-					)
-		else return pick('sound/emotes/male/gasp_m1.ogg',
-					'sound/emotes/male/gasp_m2.ogg',
-					'sound/emotes/male/gasp_m3.ogg',
-					'sound/emotes/male/gasp_m4.ogg',
-					'sound/emotes/male/gasp_m5.ogg',
-					'sound/emotes/male/gasp_m6.ogg',
-					'goon/sounds/voice/gasp/male_gasp_1.ogg',
-					'goon/sounds/voice/gasp/male_gasp_2.ogg',
-					'goon/sounds/voice/gasp/male_gasp_3.ogg',
-					'goon/sounds/voice/gasp/male_gasp_4.ogg',
-					'goon/sounds/voice/gasp/male_gasp_5.ogg',
-					)
+		return pick(
+			'sound/emotes/male/gasp_m1.ogg',
+			'sound/emotes/male/gasp_m3.ogg',
+			'sound/emotes/male/gasp_m4.ogg',
+			'sound/emotes/male/gasp_m5.ogg',
+		)
 	else
-		if(!involuntary)
-			return pick('sound/emotes/female/gasp_f1.ogg',
-					'sound/emotes/female/gasp_f2.ogg',
-					'sound/emotes/female/gasp_f3.ogg',
-					'sound/emotes/female/gasp_f4.ogg',
-					'sound/emotes/female/gasp_f5.ogg',
-					'sound/emotes/female/gasp_f6.ogg',
-					)
-		else return pick('sound/emotes/female/gasp_f1.ogg',
-					'sound/emotes/female/gasp_f2.ogg',
-					'sound/emotes/female/gasp_f3.ogg',
-					'sound/emotes/female/gasp_f4.ogg',
-					'sound/emotes/female/gasp_f5.ogg',
-					'sound/emotes/female/gasp_f6.ogg',
-					'goon/sounds/voice/gasp/female_gasp_1.ogg',
-					'goon/sounds/voice/gasp/female_gasp_2.ogg',
-					'goon/sounds/voice/gasp/female_gasp_3.ogg',
-					'goon/sounds/voice/gasp/female_gasp_4.ogg',
-					'goon/sounds/voice/gasp/female_gasp_5.ogg',
-					)
+		return pick(
+			'sound/emotes/female/gasp_f1.ogg',
+			'sound/emotes/female/gasp_f4.ogg',
+			'sound/emotes/female/gasp_f5.ogg',
+			'sound/emotes/female/gasp_f6.ogg',
+		)
+
 
 /datum/emote/living/giggle
 	key = "giggle"

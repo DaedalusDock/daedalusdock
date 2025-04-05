@@ -219,6 +219,9 @@
 	/// Used for tracking last uses of emotes for cooldown purposes
 	var/list/emotes_used
 
+	/// A list of cooldowns you can write to instead of making 100000 new variables.
+	var/list/mob_cooldowns = list()
+
 	///Whether the mob is updating glide size when movespeed updates or not
 	var/updating_glide_size = TRUE
 

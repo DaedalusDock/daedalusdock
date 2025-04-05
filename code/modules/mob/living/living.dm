@@ -691,7 +691,7 @@
 		. = TRUE
 
 		if(excess_healing)
-			INVOKE_ASYNC(src, PROC_REF(emote), "gasp")
+			INVOKE_ASYNC(src, PROC_REF(emote), /datum/emote/living/carbon/gasp_air)
 			log_combat(src, src, "revived")
 
 	else if(admin_revive)

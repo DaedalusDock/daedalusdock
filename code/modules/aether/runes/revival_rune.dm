@@ -91,7 +91,7 @@
 
 	if(target_mob.stat == CONSCIOUS)
 		spawn(-1)
-			target_mob.emote("gasp")
+			target_mob.emote(/datum/emote/living/carbon/gasp_air)
 			target_mob.manual_emote("coughs up blood onto [loc].")
 			target_mob.add_splatter_floor(loc)
 

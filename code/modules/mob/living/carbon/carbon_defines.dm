@@ -131,6 +131,6 @@
 	//stores flavor text here.
 	var/examine_text = ""
 
+	// TODO: remove and move to mob/var/mob_cooldowns
 	COOLDOWN_DECLARE(bleeding_message_cd)
 	COOLDOWN_DECLARE(blood_spray_cd)
-	COOLDOWN_DECLARE(breath_sound_cd)

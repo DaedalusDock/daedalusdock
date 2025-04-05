@@ -24,7 +24,7 @@
 			if(DT_PROB(2.5, delta_time))
 				to_chat(affected_mob, span_danger("You feel the urge to dance..."))
 			else if(DT_PROB(2.5, delta_time))
-				affected_mob.emote("gasp")
+				affected_mob.emote(/datum/emote/living/carbon/gasp_air)
 			else if(DT_PROB(5, delta_time))
 				to_chat(affected_mob, span_danger("You feel the need to chick chicky boom..."))
 		if(4)
@@ -33,7 +33,7 @@
 					affected_mob.adjust_fire_stacks(2)
 					affected_mob.ignite_mob()
 				else
-					affected_mob.emote("gasp")
+					affected_mob.emote(/datum/emote/living/carbon/gasp_air)
 					to_chat(affected_mob, span_danger("You feel a burning beat inside..."))
 		if(5)
 			to_chat(affected_mob, span_danger("Your body is unable to contain the Rhumba Beat..."))

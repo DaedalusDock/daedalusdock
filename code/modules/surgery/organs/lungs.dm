@@ -97,9 +97,6 @@
 	. = BREATH_OKAY
 
 	if(!breath || (breath.total_moles == 0))
-		if(!HAS_TRAIT(breather, TRAIT_NOCRITDAMAGE))
-			breather.adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS)
-
 		breather.failed_last_breath = TRUE
 		if(safe_oxygen_min)
 			breather.throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)
@@ -156,8 +153,6 @@
 			. = BREATH_DAMAGING
 		else
 			breather.failed_last_breath = FALSE
-			if(breather.health >= breather.crit_threshold)
-				breather.adjustOxyLoss(-5)
 			gas_breathed = O2_moles
 			breather.clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 
@@ -187,8 +182,6 @@
 			. = BREATH_DAMAGING
 		else
 			breather.failed_last_breath = FALSE
-			if(breather.health >= breather.crit_threshold)
-				breather.adjustOxyLoss(-5)
 			gas_breathed = N2_moles
 			breather.clear_alert(ALERT_NOT_ENOUGH_NITRO)
 
@@ -224,8 +217,6 @@
 			. = BREATH_DAMAGING
 		else
 			breather.failed_last_breath = FALSE
-			if(breather.health >= breather.crit_threshold)
-				breather.adjustOxyLoss(-5)
 			gas_breathed = CO2_moles
 			breather.clear_alert(ALERT_NOT_ENOUGH_CO2)
 
@@ -257,8 +248,6 @@
 			. = BREATH_DAMAGING
 		else
 			breather.failed_last_breath = FALSE
-			if(breather.health >= breather.crit_threshold)
-				breather.adjustOxyLoss(-5)
 			gas_breathed = plasma_moles
 			breather.clear_alert(ALERT_NOT_ENOUGH_PLASMA)
 

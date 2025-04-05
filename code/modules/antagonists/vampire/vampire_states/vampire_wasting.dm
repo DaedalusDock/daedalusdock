@@ -30,7 +30,7 @@
 
 	if(DT_PROB(1, delta_time))
 		spawn(-1)
-			host.emote("gasp")
+			host.emote(/datum/emote/living/carbon/gasp_air)
 
 	if(DT_PROB(2, delta_time) && !host.has_status_effect(/datum/status_effect/jitter))
 		host.adjust_jitter(20 SECONDS)

@@ -93,9 +93,14 @@
 	// Recover from breath loss
 	if(losebreath >= 1)
 		losebreath--
-		if(!forced && !asystole && prob(10))
+		if(!forced && prob(10) && COOLDOWN_FINISHED(src, mob_cooldowns["losebreath_gasp_cd"]))
 			spawn(-1)
-				emote("gasp")
+				if(asystole)
+					emote(/datum/emote/living/carbon/gasp_air/allow_unconscious)
+					COOLDOWN_START(src, mob_cooldowns["losebreath_gasp_cd"], 30 SECONDS)
+				else
+					emote(/datum/emote/living/carbon/gasp_air)
+					COOLDOWN_START(src, mob_cooldowns["losebreath_gasp_cd"], 15 SECONDS)
 
 		if(istype(loc, /obj))
 			var/obj/loc_as_obj = loc
@@ -145,9 +150,9 @@
 		loc.assume_air(breath)
 
 	var/static/sound/breathing = sound('sound/voice/breathing.ogg', volume = 50, channel = CHANNEL_BREATHING)
-	if((!forced && . && COOLDOWN_FINISHED(src, breath_sound_cd) && environment?.returnPressure() < SOUND_MINIMUM_PRESSURE))
+	if((!forced && . && COOLDOWN_FINISHED(src, mob_cooldowns["breath_sound_cd"]) && environment?.returnPressure() < SOUND_MINIMUM_PRESSURE))
 		src << breathing
-		COOLDOWN_START(src, breath_sound_cd, 3.5 SECONDS)
+		COOLDOWN_START(src, mob_cooldowns["breath_sound_cd"], 3.5 SECONDS)
 
 /mob/living/carbon/proc/has_smoke_protection()
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))
@@ -208,8 +213,6 @@
 
 	else //Enough oxygen
 		failed_last_breath = FALSE
-		if(health >= crit_threshold)
-			adjustOxyLoss(-5)
 		oxygen_used = breath_gases[GAS_OXYGEN]
 		clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 

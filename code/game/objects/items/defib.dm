@@ -519,7 +519,7 @@
 	M.apply_status_effect(/datum/status_effect/convulsing)
 	playsound(src,  'sound/machines/defib_zap.ogg', 50, TRUE, -1)
 	if(HAS_TRAIT(M,MOB_ORGANIC))
-		M.emote("gasp")
+		M.emote(/datum/emote/living/carbon/gasp_air)
 	log_combat(user, M, "zapped", src)
 	do_success()
 

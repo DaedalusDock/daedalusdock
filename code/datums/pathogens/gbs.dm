@@ -22,7 +22,7 @@
 				affected_mob.emote("cough")
 		if(3)
 			if(DT_PROB(2.5, delta_time))
-				affected_mob.emote("gasp")
+				affected_mob.emote(/datum/emote/living/carbon/gasp_air)
 			if(DT_PROB(5, delta_time))
 				affected_mob.apply_pain(10, BODY_ZONE_CHEST, "Your body aches with pain!")
 		if(4)

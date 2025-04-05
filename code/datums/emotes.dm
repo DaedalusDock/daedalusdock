@@ -57,6 +57,8 @@
 	var/sound
 	/// Used for the honk borg emote.
 	var/vary = FALSE
+	/// Determines if the player can use this emote via the *me command or keybinds.
+	var/can_player_use = TRUE
 	/// Can only code call this event instead of the player.
 	var/only_forced_audio = FALSE
 	/// The cooldown between the uses of the emote.

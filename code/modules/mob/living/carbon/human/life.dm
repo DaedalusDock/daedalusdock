@@ -97,19 +97,23 @@
 	else
 		if(istype(L, /obj/item/organ/lungs))
 			var/obj/item/organ/lungs/lun = L
-			. = lun.check_breath(breath, src, forced)
-			if(. == BREATH_OKAY)
-				adjustOxyLoss(-5)
+			var/breath_return = lun.check_breath(breath, src, forced)
+			if(breath_return == BREATH_OKAY)
+				adjustOxyLoss(HUMAN_OXYLOSS_RECOVERY)
 				return TRUE
-			if(. >= BREATH_SILENT_DAMAGING) // Breath succeeded
+
+			if(breath_return >= BREATH_SILENT_DAMAGING) // Breath succeeded
 				return TRUE
+
+			if((breath_return == BREATH_FAILED) && !HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
+				adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS)
 
 			// Failed a breath for one reason or another.
 			blur_eyes(3)
-			if(prob(20))
+			if(prob(20) && COOLDOWN_FINISHED(src, mob_cooldowns["check_breath_gasp"]))
 				spawn(-1)
-					emote("gasp")
-
+					emote(/datum/emote/living/carbon/gasp_air)
+					COOLDOWN_START(src, mob_cooldowns["check_breath_gasp"], 10 SECONDS)
 			return FALSE
 
 /// Environment handlers for species

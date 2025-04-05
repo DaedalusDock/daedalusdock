@@ -552,7 +552,7 @@
 		H.remove_status_effect(/datum/status_effect/neck_slice)
 
 	if(prob(10))
-		H.emote(pick("gasp", "gag", "choke"))
+		H.emote(pick(/datum/emote/living/carbon/gasp_air, "gag", "choke"))
 
 /mob/living/proc/apply_necropolis_curse(set_curse)
 	var/datum/status_effect/necropolis_curse/C = has_status_effect(/datum/status_effect/necropolis_curse)

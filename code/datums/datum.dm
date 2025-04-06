@@ -49,7 +49,7 @@
 	* cooldowns [ COOLDOWN_INDEX ] = add_timer()
 	* add_timer() returns the truthy value of -1 when not stoppable, and else a truthy numeric index
 	*/
-	var/list/cooldowns
+	var/list/timer_cooldowns
 
 	// Abstract types are expanded upon more in __DEFINES\abstract.dm
 	/// If this var's value is equivalent to the current type, it is considered abstract.

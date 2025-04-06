@@ -315,6 +315,7 @@
 #include "code\__DEFINES\dcs\signals\signals_spell.dm"
 #include "code\__DEFINES\dcs\signals\signals_storage.dm"
 #include "code\__DEFINES\dcs\signals\signals_subsystem.dm"
+#include "code\__DEFINES\dcs\signals\signals_tgui.dm"
 #include "code\__DEFINES\dcs\signals\signals_traitor.dm"
 #include "code\__DEFINES\dcs\signals\signals_tram.dm"
 #include "code\__DEFINES\dcs\signals\signals_transform.dm"

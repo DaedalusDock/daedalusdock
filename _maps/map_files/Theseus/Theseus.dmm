@@ -59907,6 +59907,7 @@
 /area/station/security/prison/workout)
 "wpP" = (
 /obj/structure/chair/office,
+/obj/effect/landmark/start/detective,
 /turf/open/floor/wood,
 /area/station/security/detectives_office/private_investigators_office)
 "wpX" = (

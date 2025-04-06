@@ -28,6 +28,9 @@
 
 	VAR_PRIVATE/datum/sip_call/current_call
 
+	/// Scratch space for storing packet flow context keys.
+	VAR_PRIVATE/list/sequence_keys
+
 	/* Master Interface:
 	 *
 	 * output:
@@ -84,6 +87,7 @@
 /datum/packet_handler/sip_registration/proc/locate_server()
 
 /datum/packet_handler/sip_registration/proc/attempt_registration()
+	var/seq_key = rand(1000,5000)
 	var/datum/signal/reg_packet = new(
 		null,
 		list(
@@ -91,9 +95,11 @@
 			PACKET_FIELD_PROTOCOL = PACKET_PROTOCOL_SIP,
 			PACKET_FIELD_VERB = PACKET_SIP_VERB_REGISTER,
 			PACKET_SIP_FIELD_USER = auth_name,
-			PACKET_SIP_FIELD_REGISTER_SECRET = auth_secret
+			PACKET_SIP_FIELD_REGISTER_SECRET = auth_secret,
+			PACKET_SIP_SEQUENCE_KEY = seq_key
 		)
 	)
+	sequence_keys[seq_key] = list(master_netid, PACKET_SIP_VERB_REGISTER)
 	master.receive_handler_packet(reg_packet)
 	ping_backoff_factor++
 	/* This factor will, after a few attmps, drastically slow down attempts to contact the exchange.
@@ -136,36 +142,66 @@
 
 /datum/packet_handler/sip_registration/receive_signal(datum/signal/signal)
 	var/list/data = signal.data
-	//Are you our SIP server?
-	if(data[PACKET_SOURCE_ADDRESS] == server_address)
-		// Do you have a token for us?
-		if((data[PACKET_FIELD_VERB] == PACKET_SIP_VERB_ACKNOWLEDGE) && (data[PACKET_SIP_FIELD_AUTH_TOKEN]))
-			// Our registered server is issuing us an auth token, sweet.
-			refresh_auth(data[PACKET_SIP_FIELD_AUTH_TOKEN])
-			return
+	var/list/sequence_key = sequence_keys[data[PACKET_SIP_SEQUENCE_KEY]]
 
-		// Do we have a token?
-		if(!auth_refresh_token)
-			//NACK from server before full auth? We probably did something wrong, Lock up and pass the cause up to the master to alert.
-			if((data[PACKET_FIELD_VERB] == PACKET_SIP_VERB_NEGATIVE_ACKNOWLEDGE) && (data[PACKET_SIP_FIELD_NACK_CAUSE]))
-				COOLDOWN_START(src, registration_timeout, INFINITY)
-				master.receive_handler_packet(src, null, list(SIP_STATE_REG_FAILURE, data[PACKET_SIP_FIELD_NACK_CAUSE]))
-				return
-			return
-
-		// We have a registration, and the server isn't here to renew one. Do we have an active call? If so, pass the packet to it.
-		if(current_call)
-			current_call.receive_signal(signal)
-			return
-		// No current call, are they trying to place one?
-		if((data[PACKET_FIELD_VERB] == PACKET_SIP_VERB_INVITE))
-			incoming_call(signal)
-
-		//Is this an *INCOMING* invite?
-		if(data[PACKET_FIELD_VERB] == PACKET_SIP_VERB_ACKNOWLEDGE)
-	else
-		// No? Who cares.
+	if(data[PACKET_SIP_FIELD_CALLID] == current_call.call_id)
+		current_call.receive_signal(signal)
 		return
+
+	//Were we talking to you?
+	if(!sequence_key)
+		// Are you here to start talking to us?
+		if(data[PACKET_FIELD_VERB])
+			incoming_conversation(data)
+		else
+			// Are you a ping reply?
+			if(data[PACKET_CMD] == NET_COMMAND_PING_REPLY)
+				#warn UNIMPLIMENTED: SERVER DISCOVERY
+			return
+
+	switch(sequence_keys[SEQ_KEY_VERB])
+		if(PACKET_SIP_VERB_REGISTER)
+			seq_handle_invite_reply(data, sequence_key)
+
+
+	// Do you have a token for us?
+	if((data[PACKET_SIP_FIELD_STATUS_CODE] == SIP_STATUS_OK) && (data[PACKET_SIP_FIELD_AUTH_TOKEN]))
+		// Our registered server is issuing us an auth token, sweet.
+		refresh_auth(data[PACKET_SIP_FIELD_AUTH_TOKEN])
+		return
+
+	// Do we have a token?
+	if(!auth_refresh_token)
+		//Non-OK from server before full auth? We probably did something wrong, Lock up and pass the cause up to the master to alert.
+		if((data[PACKET_SIP_FIELD_STATUS_CODE] =! SIP_STATUS_OK) && (data[PACKET_SIP_FIELD_REASON]))
+			COOLDOWN_START(src, registration_timeout, INFINITY)
+			master.receive_handler_packet(src, null, list(SIP_STATE_REG_FAILURE, data[PACKET_SIP_FIELD_REASON]))
+			return
+		return
+
+	// We have a registration, and the server isn't here to renew one. Do we have an active call? If so, pass the packet to it.
+	if(current_call)
+		current_call.receive_signal(signal)
+		return
+	// No current call, are they trying to place one?
+	if((data[PACKET_FIELD_VERB] == PACKET_SIP_VERB_INVITE))
+		incoming_call(signal)
+
+	//Is this an *INCOMING* invite?
+	if(data[PACKET_FIELD_VERB] == PACKET_SIP_VERB_ACKNOWLEDGE)
+
+/// Incoming packets with a verb and no current sequence number.
+/datum/packet_handler/sip_registration/proc/incoming_conversation(list/data)
+	switch(data[PACKET_FIELD_VERB])
+		// INVITE - Incoming Call
+		if(PACKET_SIP_VERB_INVITE)
+			incoming_call(data)
+			sequence_keys[data[PACKET_SIP_SEQUENCE_KEY]] = list(data[PACKET_SOURCE_ADDRESS], PACKET_SIP_VERB_INVITE)
+			return
+		if(PACKET_SIP_VERB_SESSION)
+
+
+/datum/packet_handler/sip_registration/proc/seq_handle_invite_reply(list/data, list/seq_key)
 
 /// Fully refresh the keepalive timeout, usually as part of initial registration or during a timeout.
 /datum/packet_handler/sip_registration/proc/refresh_auth(new_token)
@@ -179,6 +215,8 @@
 
 /// Place a call to a designated extension, Sets the active call, and sends an INVITE packet out the master.
 /datum/packet_handler/sip_registration/proc/place_call(destination)
+	if(current_call)
+		CRASH("what")
 	current_call = new(
 		src,
 		auth_name,
@@ -189,12 +227,12 @@
 	var/datum/signal/invite = current_call.place_call()
 	master.receive_handler_packet(src, invite)
 
-/datum/packet_handler/sip_registration/proc/incoming_call(datum/signal/signal)
+/datum/packet_handler/sip_registration/proc/incoming_call(list/data)
 	current_call = new(
 		src,
 		auth_name,
-		signal[PACKET_SIP_INVITE_FIELD_FROM],
+		data[PACKET_SIP_INVITE_FIELD_FROM],
 		server_address, //You think I'm gonna bother with direct media? You're high as fuck.
-		signal[PACKET_SIP_FIELD_CALLID]
+		data[PACKET_SIP_FIELD_CALLID]
 	)
-	master.receive_handler_packet(src, invite)
+	//master.receive_handler_packet(src, invite)

@@ -1,0 +1,27 @@
+[
+{
+	"s_addr":"deadbeef",
+	"d_addr":"badc0de",
+	"proto": "sip",
+
+	"call_id": "$CALLID",
+
+	"verb":"REGISTER",
+	"cseq": "235",
+
+	"reg_id":"0001",
+	"auth":"password"
+},
+{
+	"s_addr":"badc0de",
+	"d_addr":"deadbeef",
+	"proto": "sip",
+
+	"call_id": "$CALLID",
+
+	"status":"200", //OK
+	"cseq": "235",
+
+	"auth_token": "$AUTHTOKEN"
+}
+]

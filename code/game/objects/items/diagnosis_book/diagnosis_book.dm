@@ -1,5 +1,5 @@
 /obj/item/diagnosis_book
-	name = "diagnosis book"
+	name = "Codex Infirmitas"
 	desc = "A book containing information on diseases and disabilities."
 	icon = 'icons/obj/library.dmi'
 	icon_state ="bookdiagnosis"

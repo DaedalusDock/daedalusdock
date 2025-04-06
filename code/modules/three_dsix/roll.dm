@@ -64,7 +64,7 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	// 	to_chat(world, span_adminnotice(jointext(out, "")))
 
 	var/datum/roll_result/result = new()
-	result.success_prob = round(dice_probability(3, 6, requirement - modifier), 0.01)
+	result.success_prob = round(dice_probability(3, 6, clamp(requirement - modifier, 0, 18)), 0.01)
 	result.crit_success_prob = round(dice_probability(3, 6, crit_success), 0.01)
 	result.roll = dice
 	result.requirement = requirement
@@ -99,7 +99,7 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	/// Typepath of the skill used. Optional.
 	var/datum/rpg_skill/skill_type_used
 
-/datum/roll_result/proc/create_tooltip(body)
+/datum/roll_result/proc/create_tooltip(body, use_prefix = TRUE)
 	if(!skill_type_used)
 		if(outcome >= SUCCESS)
 			body = span_statsgood(body)
@@ -140,17 +140,17 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	var/finished_prob_string = "<span style='color: #bbbbad;font-style: italic'>\[[prob_string]: [success]\]</span>"
 	var/prefix
 	if(outcome >= SUCCESS)
-		prefix = "<span style='font-style: italic;color: #03fca1'>[uppertext(initial(skill_type_used.name))]</span>"
+		prefix = "<span style='font-style: italic;color: #03fca1'>[uppertext(initial(skill_type_used.name))]</span> "
 		body = span_statsgood(body)
 	else
-		prefix = "<span style='font-style: italic;color: #fc4b32'>[uppertext(initial(skill_type_used.name))]</span>"
+		prefix = "<span style='font-style: italic;color: #fc4b32'>[uppertext(initial(skill_type_used.name))]</span> "
 		body = span_statsbad(body)
 
 	var/color = (outcome >= SUCCESS) ? "#03fca1" : "#fc4b32"
 	var/tooltip_html = "[success_prob]% | Result: <span style='font-weight: bold;color: [color]'><b>[roll]</b></span> | Check: <b>[requirement]</b>"
 	var/seperator = "<span style='color: #bbbbad;font-style: italic'>: </span>"
 
-	return "[prefix] <span data-component=\"Tooltip\" data-innerhtml=\"[tooltip_html]\" class=\"tooltip\">[finished_prob_string]</span>[seperator][body]"
+	return "[use_prefix && prefix]<span data-component=\"Tooltip\" data-innerhtml=\"[tooltip_html]\" class=\"tooltip\">[finished_prob_string]</span>[seperator][body]"
 
 /// Play
 /datum/roll_result/proc/do_skill_sound(mob/user)
@@ -177,12 +177,12 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	if(!isnull(.))
 		return .
 
-	if(desired < num)
-		. = desired_cache["[num][sides][desired]"] = 0
+	if(desired < sides)
+		. = desired_cache["[num][sides][desired]"] = 100
 		return
 
 	if(desired > num * sides)
-		. = desired_cache["[num][sides][desired]"] = 100
+		. = desired_cache["[num][sides][desired]"] = 0
 		return
 
 	if(num > length(outcomes_cache))

@@ -10,6 +10,9 @@
 
 	VAR_PRIVATE/list/stat_cooldowns = list()
 
+	/// Cached results.
+	VAR_PRIVATE/list/result_stash = list()
+
 	/// A list of weakrefs to examined objects. Used for forensic rolls. THIS DOES JUST KEEP GETTING BIGGER, SO, CAREFUL.
 	var/list/examined_object_weakrefs = list()
 
@@ -92,3 +95,37 @@
 
 /datum/stats/proc/set_cooldown(index, value)
 	COOLDOWN_START(src, stat_cooldowns[index], value)
+
+/// Returns a cached result datum pr null
+/datum/stats/proc/get_stashed_result(id)
+	RETURN_TYPE(/datum/roll_result)
+	return result_stash[id]
+
+/// Cache a result datum. Duration <1 means infinite duration.
+/datum/stats/proc/cache_result(id, datum/roll_result/result, duration = -1)
+	result_stash[id] = result
+	if(duration > 0)
+		addtimer(CALLBACK(src, PROC_REF(uncache_result), id), duration, TIMER_UNIQUE|TIMER_OVERRIDE)
+
+/// Removes a result from the result cache.
+/datum/stats/proc/uncache_result(id)
+	result_stash -= id
+
+/// Helper for once-per-round examine checks.
+/datum/stats/proc/get_examine_result(id, requirement = STATS_BASELINE_VALUE, datum/rpg_skill/skill_path = /datum/rpg_skill/fourteen_eyes, modifier)
+	RETURN_TYPE(/datum/roll_result)
+
+	id = "[id]_[skill_path]_[requirement]_examine"
+
+	if(!cooldown_finished(id))
+		return get_stashed_result(id)
+
+
+	var/datum/roll_result/returned_result = get_stashed_result(id)
+	if(returned_result)
+		return returned_result
+
+	returned_result = owner.stat_roll(requirement, skill_path, modifier)
+	cache_result(id, returned_result, -1)
+	return returned_result
+

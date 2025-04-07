@@ -7,3 +7,8 @@
 2025-04-05:
   Kapu1178:
   - rscadd: The Daedalus cursor now works over all user interfaces.
+2025-04-07:
+  Kapu1178:
+  - bugfix: The latejoin menu renders correctly.
+  - rscadd: You will now gasp while asystole, even while unconscious.
+  - rscadd: Added a cooldown to gasping due to an inability to breathe.

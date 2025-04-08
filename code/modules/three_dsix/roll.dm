@@ -99,6 +99,9 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	/// Typepath of the skill used. Optional.
 	var/datum/rpg_skill/skill_type_used
 
+	/// How many times this result was pulled from a result cache.
+	var/cache_reads = 0
+
 /datum/roll_result/proc/create_tooltip(body, use_prefix = TRUE)
 	if(!skill_type_used)
 		if(outcome >= SUCCESS)
@@ -154,7 +157,7 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 
 /// Play
 /datum/roll_result/proc/do_skill_sound(mob/user)
-	if(isnull(skill_type_used))
+	if(isnull(skill_type_used) || cache_reads)
 		return
 
 	var/datum/rpg_stat/stat_path = initial(skill_type_used.parent_stat_type)
@@ -165,6 +168,13 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	outcome = SUCCESS
 	success_prob = 100
 	crit_success_prob = 0
+	roll = 18
+	requirement = 3
+
+/datum/roll_result/critical_success
+	outcome = CRIT_SUCCESS
+	success_prob = 100
+	crit_success_prob = 100
 	roll = 18
 	requirement = 3
 

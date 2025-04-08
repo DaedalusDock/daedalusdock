@@ -416,8 +416,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 			if(length(flavor_texts) && ishuman(M))
 				var/mob/living/carbon/human/H = M
-				var/datum/roll_result/result = H.stats?.get_examine_result(flavor_text_key, 17)
-				if(result.outcome >= SUCCESS)
+				var/datum/roll_result/result = H.get_examine_result(flavor_text_key, 17)
+				if(result?.outcome >= SUCCESS)
 					to_chat(H, result.create_tooltip(get_flavor_string()))
 					result.do_skill_sound(H)
 
@@ -500,7 +500,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	SHOULD_CALL_PARENT(TRUE)
 	if(prob(5) && boarder.client && ishuman(boarder))
 		var/mob/living/carbon/human/H = boarder
-		var/datum/roll_result/result = H.stats.get_examine_result(flavor_text_key, modifier = 999)
+		var/datum/roll_result/result = H.get_examine_result(flavor_text_key, modifier = 999)
 		to_chat(H, result.create_tooltip(get_flavor_string()))
 		result.do_skill_sound(H)
 

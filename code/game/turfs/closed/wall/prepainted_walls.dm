@@ -24,6 +24,14 @@
 /turf/closed/wall/prepainted
 	name = "Pre-Painted Wall"
 
+/turf/closed/wall/prepainted/examine(mob/user)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("prepainted_wall")
+	if(result?.cache_reads == 0 && result.outcome >= SUCCESS)
+		spawn(0)
+			result.do_skill_sound(user)
+			to_chat(user, result.create_tooltip("A man leans against a cold steel wall, the paint having long worn away. He lights the tip of a cigarette, and raises it to his mouth."))
+
 /turf/closed/wall/r_wall/prepainted
 	name = "PRe-Painted Reinforced Wall"
 

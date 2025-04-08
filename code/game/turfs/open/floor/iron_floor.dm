@@ -35,7 +35,7 @@
 			result.do_skill_sound(user)
 			to_chat(
 				user,
-				result.create_tooltip("Thousands of identical tiles litter the colony, each more weathered than the last."),
+				result.create_tooltip("A cold breeze seeps out of the gaps between the tiles."),
 			)
 
 

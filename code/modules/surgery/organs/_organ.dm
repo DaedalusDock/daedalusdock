@@ -532,7 +532,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	owner.grab_ghost()
 	if(!HAS_TRAIT(owner, TRAIT_NOBREATH))
 		spawn(-1)
-			owner.emote("gasp")
+			owner.emote(/datum/emote/living/carbon/gasp_air)
 
 /mob/living/proc/regenerate_organs()
 	return FALSE

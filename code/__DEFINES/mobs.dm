@@ -180,7 +180,10 @@
 ///Heartbeat is gone... He's dead Jim :(
 #define BEAT_NONE 0
 
+/// How much oxyloss is suffered on a failed breath.
 #define HUMAN_FAILBREATH_OXYLOSS 1
+/// How much oxyloss is recovered on a successful breath.
+#define HUMAN_OXYLOSS_RECOVERY -5
 
 #define HEAT_DAMAGE_LEVEL_1 1 //Amount of damage applied when your body temperature just passes the 360.15k safety point
 #define HEAT_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when your body temperature passes the 400K point
@@ -497,6 +500,10 @@
 #define GETPULSE_HAND 0 // Less accurate. (hand)
 #define GETPULSE_TOOL 1 // More accurate. (med scanner, sleeper, etc.)
 #define PULSE_MAX_BPM 250 // Highest, readable BPM by machines and humans.
+
+/// Jaundice severities.
+#define JAUNDICE_EYES 1
+#define JAUNDICE_SKIN 2
 
 // Partial stasis sources
 #define STASIS_CRYOGENIC_FREEZING "cryo"

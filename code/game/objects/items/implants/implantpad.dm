@@ -74,5 +74,7 @@
 			dat += "The implant casing is empty."
 	else
 		dat += "Please insert an implant casing!"
-	user << browse(dat, "window=implantpad")
-	onclose(user, "implantpad")
+
+	var/datum/browser/browser = new(user, "implantpad")
+	browser.set_content(dat)
+	browser.open()

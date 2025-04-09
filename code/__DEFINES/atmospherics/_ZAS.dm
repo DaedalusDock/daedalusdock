@@ -104,6 +104,10 @@ GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 #define FIRE_GAS_MIN_BURNRATE			0.01
 #define FIRE_LIQUID_MIN_BURNRATE			0.0025
 
+
+/// The minimum amount of fuel in mols required for a fire to exist.
+#define FIRE_MINIMUM_FUEL_MOL_TO_EXIST 0.005
+
 // Converts liquid fuel units to mols
 #define LIQUIDFUEL_AMOUNT_TO_MOL(amount) round(amount * 0.45, ATMOS_PRECISION)
 // Converts gaseous fuel mols to reagent units

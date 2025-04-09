@@ -67,6 +67,10 @@
 	box = /obj/item/storage/box/survival/medical
 	chameleon_extras = /obj/item/gun/syringe
 
+	backpack_contents = list(
+		/obj/item/diagnosis_book = 1,
+	)
+
 /datum/outfit/job/doctor/mod
 	name = JOB_ACOLYTE + " (MODsuit)"
 

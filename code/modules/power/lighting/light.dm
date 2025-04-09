@@ -31,7 +31,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	///The falloff of the emitted light. Adjust until it looks good.
 	var/bulb_falloff = 1.85
 	///Default colour of the light.
-	var/bulb_colour = "#dfac72"
+	var/bulb_colour = LIGHTBULB_COLOR_WARM
 	///LIGHT_OK, _EMPTY, _BURNED or _BROKEN
 
 	var/status = LIGHT_OK
@@ -53,19 +53,6 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	var/obj/item/stock_parts/cell/cell
 	///If true, this fixture generates a very weak cell at roundstart
 	var/start_with_cell = TRUE
-	///Currently in night shift mode?
-	var/nightshift_enabled = FALSE
-	///Set to FALSE to never let this light get switched to night mode.
-	var/nightshift_allowed = TRUE
-	///Outer radius of the nightshift light
-	var/nightshift_outer_range = 6
-	///Inner, brightest radius of the nightshift light
-	var/nightshift_inner_range = 1.5
-	///Alpha of the nightshift light
-	var/nightshift_light_power = 0.5
-	///Basecolor of the nightshift light
-	var/nightshift_light_color = "#dfac72"
-	var/nightshift_falloff = 1.85
 
 	///If true, the light is in emergency mode
 	var/emergency_mode = FALSE
@@ -92,10 +79,6 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 /obj/machinery/light/Initialize(mapload)
 	. = ..()
 	SET_TRACKING(__TYPE__)
-	if(!mapload) //sync up nightshift lighting for player made lights
-		var/area/local_area = get_area(src)
-		var/obj/machinery/power/apc/temp_apc = local_area.apc
-		nightshift_enabled = temp_apc?.nightshift_lights
 
 	if(start_with_cell && !no_emergency)
 		cell = new/obj/item/stock_parts/cell/emergency_light(src)
@@ -157,9 +140,6 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 
 	if(emergency_mode || firealarm) //PARIAH EDIT END
 		. += mutable_appearance(overlay_icon, "[base_state]_emergency")
-		return
-	if(nightshift_enabled)
-		. += mutable_appearance(overlay_icon, "[base_state]_nightshift")
 		return
 	. += mutable_appearance(overlay_icon, base_state)
 
@@ -696,3 +676,94 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 		L.set_light(bulb_outer_range, bulb_inner_range, bulb_power, bulb_falloff, bulb_colour)
 		CHECK_TICK
 
+
+// DEBUG VERBS
+// /obj/machinery/light/verb/_change_color()
+// 	set name = "Mass Change Color"
+// 	set category = "Debug"
+// 	set src in view(5)
+
+// 	var/new_color = input(usr, "New Color", "Change Color", bulb_colour) as null|color
+// 	if(!new_color)
+// 		return
+
+// 	var/old_color = bulb_colour
+
+// 	for(var/obj/machinery/light/L as anything in INSTANCES_OF(/obj/machinery/light))
+// 		if(L.bulb_colour == old_color && is_station_level(L.z))
+// 			L.bulb_colour = new_color
+// 			L.set_light(L.bulb_outer_range, L.bulb_inner_range, L.bulb_power, L.bulb_falloff, L.bulb_colour)
+
+// 		CHECK_TICK
+
+// /obj/machinery/light/verb/_change_power()
+// 	set name = "Mass Change Power"
+// 	set category = "Debug"
+// 	set src in view(5)
+
+// 	var/new_power = input(usr, "New Color", "Change Color", bulb_power) as null|num
+// 	if(!new_power)
+// 		return
+
+// 	var/old_power = bulb_power
+
+// 	for(var/obj/machinery/light/L as anything in INSTANCES_OF(/obj/machinery/light))
+// 		if(L.bulb_power == old_power && is_station_level(L.z))
+// 			L.bulb_power = new_power
+// 			L.set_light(L.bulb_outer_range, L.bulb_inner_range, L.bulb_power, L.bulb_falloff, L.bulb_colour)
+
+// 		CHECK_TICK
+
+// /obj/machinery/light/verb/_change_orange()
+// 	set name = "Mass Change ORange"
+// 	set category = "Debug"
+// 	set src in view(5)
+
+// 	var/new_orange = input(usr, "New Color", "Change Color", bulb_outer_range) as null|num
+// 	if(!new_orange)
+// 		return
+
+// 	var/old_orange = bulb_outer_range
+
+// 	for(var/obj/machinery/light/L as anything in INSTANCES_OF(/obj/machinery/light))
+// 		if(L.bulb_outer_range == old_orange && is_station_level(L.z))
+// 			L.bulb_outer_range = new_orange
+// 			L.set_light(L.bulb_outer_range, L.bulb_inner_range, L.bulb_power, L.bulb_falloff, L.bulb_colour)
+
+// 		CHECK_TICK
+
+// /obj/machinery/light/verb/_change_irange()
+// 	set name = "Mass Change IRange"
+// 	set category = "Debug"
+// 	set src in view(5)
+
+// 	var/new_irange = input(usr, "New Color", "Change Color", bulb_inner_range) as null|num
+// 	if(!new_irange)
+// 		return
+
+// 	var/old_irange = bulb_inner_range
+
+// 	for(var/obj/machinery/light/L as anything in INSTANCES_OF(/obj/machinery/light))
+// 		if(L.bulb_inner_range == old_irange && is_station_level(L.z))
+// 			L.bulb_inner_range = new_irange
+// 			L.set_light(L.bulb_outer_range, L.bulb_inner_range, L.bulb_power, L.bulb_falloff, L.bulb_colour)
+
+// 		CHECK_TICK
+
+// /obj/machinery/light/verb/_change_falloff()
+// 	set name = "Mass Change Falloff"
+// 	set category = "Debug"
+// 	set src in view(5)
+
+// 	var/new_falloff = input(usr, "New Color", "Change Color", bulb_falloff) as null|num
+// 	if(!new_falloff)
+// 		return
+
+// 	var/old_falloff = bulb_falloff
+
+// 	for(var/obj/machinery/light/L as anything in INSTANCES_OF(/obj/machinery/light))
+// 		if(L.bulb_falloff == old_falloff && is_station_level(L.z))
+// 			L.bulb_falloff = new_falloff
+// 			L.set_light(L.bulb_outer_range, L.bulb_inner_range, L.bulb_power, L.bulb_falloff, L.bulb_colour)
+
+// 		CHECK_TICK

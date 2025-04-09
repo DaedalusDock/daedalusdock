@@ -1,6 +1,6 @@
 #define LINKIFY_CONSOLE_OPTION(str, cmd) "<a class='rawLink' href='byond://?src=\ref[src];[cmd]' onmouseover='fillInput(\"[str]\");' onmouseout='fillInput(\"&#8203;\");'>[str]</a>"
 #define CONSOLE_BACK "<a class='rawLink' href='byond://?src=\ref[src];main_menu=1' onmouseover='fillInput(\"cd..\");' onmouseout='fillInput(\"&#8203;\");'>Back</a>"
-#define LINKIFY_READY(string, value) "<a style='cursor: pointer' href='byond://?src=\ref[src];ready=[value]'>[string]</a>"
+#define LINKIFY_READY(string, value) "<a class='cursorPointer' href='byond://?src=\ref[src];ready=[value]'>[string]</a>"
 
 #define NPP_TAB_MAIN "main"
 #define NPP_TAB_GAME "game"
@@ -448,18 +448,24 @@
 		if(prioritized_job.current_positions >= prioritized_job.total_positions)
 			SSjob.prioritized_jobs -= prioritized_job
 
-	dat += "<table><tr><td valign='top'>"
-	var/column_counter = 0
-
+	var/department_counter = 0
+	var/list/column_list = list(list())
 	for(var/datum/job_department/department as anything in SSjob.departments)
 		if(department.exclude_from_latejoin)
 			continue
 
-		var/department_color = department.latejoin_color
-		dat += "<fieldset style='width: 185px; border: 2px solid [department_color]; display: inline'>"
-		dat += "<legend align='center' style='color: [department_color]'>[department.department_name]</legend>"
-
+		var/list/current_column = column_list[length(column_list)]
 		var/list/dept_data = list()
+
+		var/department_color = department.latejoin_color
+		dept_data += {"
+			<fieldset style='border: 2px solid [department_color];'>
+				<legend align='center' style='color: [department_color]'>[department.department_name]</legend>
+				<div class='flexColumn'>
+		"}
+
+
+		var/list/job_data = list()
 		for(var/datum/job/job_datum as anything in department.department_jobs)
 			if(parent.IsJobUnavailable(job_datum.title, TRUE) != JOB_AVAILABLE)
 				continue
@@ -469,21 +475,38 @@
 				command_bold = " command"
 
 			if(job_datum in SSjob.prioritized_jobs)
-				dept_data += "<a class='genericLink job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'><span class='priority'>[job_datum.title] ([job_datum.current_positions])</span></a>"
+				job_data += "<a class='genericLink job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'><span class='priority'>[job_datum.title] ([job_datum.current_positions])</span></a>"
 			else
-				dept_data += "<a class='genericLink job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'>[job_datum.title] ([job_datum.current_positions])</a>"
-		if(!length(dept_data))
-			dept_data += "<span class='nopositions'>No positions open.</span>"
+				job_data += "<a class='genericLink job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'>[job_datum.title] ([job_datum.current_positions])</a>"
 
-		dat += dept_data.Join()
-		dat += "</fieldset><br>"
+		if(length(job_data))
+			dept_data += job_data
+		else
+			dept_data += "<div class='nopositions'>No positions open.</div>"
 
-		column_counter++
-		if(column_counter > 0 && (column_counter % 3 == 0))
-			dat += "</td><td valign='top'>"
+		dept_data += "</div></fieldset>"
+		current_column += dept_data.Join()
 
-	dat += "</td></tr></table></center>"
-	dat += "</div></div>"
+		department_counter++
+		if(department_counter > 0 && (department_counter % 3 == 0))
+			column_list[++column_list.len] = list()
+
+	dat += {"
+		<div style='display: grid; grid-template-columns: repeat(auto-fill, [round(100 / length(column_list), 1)]%);justify-content: center;'>
+	"}
+	for(var/list/column_data in column_list)
+		if(!length(column_data))
+			break
+
+		dat += {"
+			<div class='flexColumn'>
+				[column_data.Join()]
+			</div>
+		"}
+
+	dat += {"
+		</div>
+		"}
 
 	var/datum/browser/popup = new(parent, "latechoices", "Choose Profession", 680, 580)
 	popup.add_stylesheet("playeroptions", 'html/browser/playeroptions.css')

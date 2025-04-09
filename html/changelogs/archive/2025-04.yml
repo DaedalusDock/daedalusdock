@@ -1,0 +1,14 @@
+2025-04-01:
+  Kapu1178:
+  - rscadd: Aether members spawn with a diagnosis book in their backpack.
+2025-04-03:
+  Kapu1178:
+  - rscadd: Updated the Inspect Limb grab function, it now tells you more information.
+2025-04-05:
+  Kapu1178:
+  - rscadd: The Daedalus cursor now works over all user interfaces.
+2025-04-07:
+  Kapu1178:
+  - bugfix: The latejoin menu renders correctly.
+  - rscadd: You will now gasp while asystole, even while unconscious.
+  - rscadd: Added a cooldown to gasping due to an inability to breathe.

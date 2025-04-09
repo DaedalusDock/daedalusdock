@@ -43,10 +43,11 @@
 	for(var/atom/movable/AM as anything in T)
 		if(AM == src)
 			continue
+
 		if(isliving(AM))
-			AM.throw_at(get_edge_target_turf(T, direction), 7, 5) //Trolling
-		else
-			AM.throw_at(pick(targets), 1, 1)
+			AM.safe_throw_at(get_edge_target_turf(T, direction), 7, 5) //Trolling
+		else if(!AM.anchored)
+			AM.safe_throw_at(pick(targets), 1, 1)
 
 	flipped = TRUE
 	setDir(direction)

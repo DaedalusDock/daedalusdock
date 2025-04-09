@@ -1000,6 +1000,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// Given to items that are bodyparts attached to a mob, organs attached to a mob or inside a bodypart
 #define TRAIT_INSIDE_BODY "inside_body"
+#define TRAIT_JAUNDICE_SKIN "jaundice_skin"
 
 /// trait that prevents AI controllers from planning detached from ai_status to prevent weird state stuff.
 #define TRAIT_AI_PAUSED "TRAIT_AI_PAUSED"

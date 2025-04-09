@@ -161,36 +161,32 @@
 /obj/item/organ/eyes/check_damage_thresholds(mob/organ_owner)
 	. = ..()
 	var/mob/living/carbon/eye_owner = organ_owner
-	// Can't be a switch, these are non-constant :(
-	if(. == high_threshold_passed)
-		if(damaged)
-			return
-		eye_owner?.become_blind(EYE_DAMAGE)
-		damaged = TRUE
-		return
+	switch(.)
+		if(ORGAN_HIGH_THRESHOLD_PASSED)
+			if(damaged)
+				return
+			eye_owner?.become_blind(EYE_DAMAGE)
+			damaged = TRUE
 
-	else if(. == low_threshold_passed)
-		if(!eye_owner)
-			return
-		var/obj/item/clothing/glasses/eyewear = eye_owner.glasses
-		var/has_prescription_glasses = istype(eyewear) && eyewear.vision_correction
+		if(ORGAN_LOW_THRESHOLD_PASSED)
+			if(!eye_owner)
+				return
+			var/obj/item/clothing/glasses/eyewear = eye_owner.glasses
+			var/has_prescription_glasses = istype(eyewear) && eyewear.vision_correction
 
-		if(has_prescription_glasses)
-			return
+			if(has_prescription_glasses)
+				return
 
-		var/severity = damage > 30 ? 2 : 1
-		eye_owner.overlay_fullscreen("eye_damage", /atom/movable/screen/fullscreen/impaired, severity)
-		return
+			var/severity = damage > 30 ? 2 : 1
+			eye_owner.overlay_fullscreen("eye_damage", /atom/movable/screen/fullscreen/impaired, severity)
 
-	else if(. == low_threshold_cleared)
-		eye_owner?.clear_fullscreen("eye_damage")
-		return
+		if(ORGAN_LOW_THRESHOLD_CLEARED)
+			eye_owner?.clear_fullscreen("eye_damage")
 
-	else if(. == high_threshold_cleared)
-		if(damaged)
-			damaged = FALSE
-			eye_owner?.cure_blind(EYE_DAMAGE)
-		return
+		if(ORGAN_HIGH_THRESHOLD_CLEARED)
+			if(damaged)
+				damaged = FALSE
+				eye_owner?.cure_blind(EYE_DAMAGE)
 
 /obj/item/organ/eyes/night_vision
 	name = "shadow eyes"

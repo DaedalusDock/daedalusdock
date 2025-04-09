@@ -21,7 +21,6 @@
 	var/datum/hud/hud = null
 	/**
 	 * Map name assigned to this object.
-	 * Automatically set by /client/proc/add_obj_to_map.
 	 */
 	var/assigned_map
 	/**

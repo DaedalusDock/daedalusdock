@@ -15,7 +15,7 @@ body {
 
 html {
   overflow: hidden;
-  cursor: default; // Reset the cursor.
+  cursor: base.$cursor-default; // Reset the cursor.
 }
 
 body {
@@ -65,4 +65,8 @@ td,
 th {
   vertical-align: baseline;
   text-align: left;
+}
+
+a {
+  cursor: base.$cursor-pointer;
 }

@@ -11,37 +11,29 @@
 	status = LIGHT_EMPTY
 	update(FALSE, FALSE, FALSE)
 
-/obj/machinery/light/no_nightlight
-	nightshift_enabled = FALSE
-
 /obj/machinery/light/warm
-	bulb_colour = "#fae5c1"
+	bulb_colour = LIGHTBULB_COLOR_WARM
 
-/obj/machinery/light/warm/no_nightlight
-	nightshift_allowed = FALSE
+/obj/machinery/light/warm/bar
+	bulb_inner_range = 1.8
+	bulb_outer_range = 7
+	bulb_power = 0.75
 
 /obj/machinery/light/cold
 	bulb_colour = LIGHT_COLOR_FAINT_BLUE
-	nightshift_light_color = LIGHT_COLOR_FAINT_BLUE
-
-/obj/machinery/light/cold/no_nightlight
-	nightshift_allowed = FALSE
 
 /obj/machinery/light/red
 	bulb_colour = "#FF3232"
-	nightshift_allowed = FALSE
 	no_emergency = TRUE
 	bulb_inner_range = 4
 	bulb_power = 0.7
 
 /obj/machinery/light/blacklight
 	bulb_colour = "#A700FF"
-	nightshift_allowed = FALSE
 	bulb_inner_range = 4
 	bulb_power = 0.8
 
 /obj/machinery/light/dim
-	nightshift_allowed = FALSE
 	bulb_colour = "#FFDDCC"
 	bulb_power = 0.6
 
@@ -53,8 +45,6 @@
 	fitting = "bulb"
 	bulb_inner_range = 1
 	bulb_outer_range = 5
-	nightshift_inner_range = 0.5
-	nightshift_outer_range = 4
 	bulb_colour = "#FFD6AA"
 	desc = "A small lighting fixture."
 	light_type = /obj/item/light/bulb
@@ -62,6 +52,9 @@
 /obj/machinery/light/small/broken
 	status = LIGHT_BROKEN
 	icon_state = "bulb-broken"
+
+/obj/machinery/light/small/bar
+	bulb_colour = LIGHTBULB_COLOR_WARM
 
 /obj/machinery/light/small/built
 	icon_state = "bulb-empty"
@@ -75,18 +68,15 @@
 /obj/machinery/light/small/red
 	bulb_colour = "#FF3232"
 	no_emergency = TRUE
-	nightshift_allowed = FALSE
 	bulb_power = 0.8
 
 /obj/machinery/light/small/blacklight
 	bulb_colour = "#A700FF"
-	nightshift_allowed = FALSE
 	bulb_power = 0.9
 
 /obj/machinery/light/small/maintenance
 	color = "#FFCC66"
 	bulb_colour = "#e0a142"
-	nightshift_allowed = FALSE
 	bulb_power = 0.8
 
 /obj/machinery/light/small/maintenance/turn_on(trigger, play_sound)
@@ -108,20 +98,13 @@ MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/structure/light_construct, 21, 0, 10, -1
 // ---- Tube frames
 MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/built, 21, 0, 10, -10)
 
-// ---- No nightlight tubes
-MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/no_nightlight, 21, 0, 10, -10)
-
 // ---- Warm light tubes
 MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/warm, 21, 0, 10, -10)
 
-// ---- No nightlight warm light tubes
-MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/warm/no_nightlight, 21, 0, 10, -10)
+MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/warm/bar, 21, 0, 10, -10)
 
 // ---- Cold light tubes
 MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/cold, 21, 0, 10, -10)
-
-// ---- No nightlight cold light tubes
-MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/cold/no_nightlight, 21, 0, 10, -10)
 
 // ---- Red tubes
 MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/red, 21, 0, 10, -10)
@@ -135,6 +118,7 @@ MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/dim, 21, 0, 10, -10)
 
 // -------- Bulb lights
 MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/small, 21, 0, 10, -10)
+MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/machinery/light/small/bar, 21, 0, 10, -10)
 
 // ---- Bulb construct
 MAPPING_DIRECTIONAL_HELPERS_ROBUST(/obj/structure/light_construct/small, 21, 0, 10, -10)

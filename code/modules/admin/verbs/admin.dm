@@ -11,16 +11,16 @@
 
 	var/input = input(usr, "Please specify your tip that you want to send to the players.", "Tip", "") as message|null
 	if(!input)
-		SStitle.tip_adminbus = null
-		SStitle.update_tip()
+		SSlobby.tip_adminbus = null
+		SSlobby.update_tip()
 		return
 
 	if(!SSticker)
 		return
 
 	// If we've already tipped, then send it straight away.
-	SStitle.tip_adminbus = input
-	SStitle.update_tip()
+	SSlobby.tip_adminbus = input
+	SSlobby.update_tip()
 
 	message_admins("[key_name_admin(usr)] updated the title screen tip text.")
 	log_admin("[key_name(usr)] sent \"[input]\" as the title screen tip text.")

@@ -21,6 +21,9 @@ $color-bg-end: color.adjust(
 
 $border-radius: 0em !default;
 
+$cursor-default: (url('shared_assets/default.cur'), auto);
+$cursor-pointer: (url('shared_assets/link_select.cur'), pointer);
+
 $unit: 12px;
 $font-size: 1 * $unit !default;
 $font-family: (Verdana, Geneva, sans-serif) !default;

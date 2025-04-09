@@ -355,11 +355,11 @@ SUBSYSTEM_DEF(codex)
 /datum/controller/subsystem/codex/proc/prepare_search_database(drop_existing = FALSE)
 	if(GLOB.is_debug_server && !FORCE_CODEX_DATABASE)
 		index_disabled = TRUE
-		to_chat(world, span_debug("Codex: Debug server detected. DB operation disabled. See _compile_options.dm."))
+		to_chat(world, systemtext("Codex: Debug server detected. DB operation disabled. See _compile_options.dm."))
 		log_world("Codex: Codex DB generation Skipped")
 		return
 	#if FORCE_CODEX_DATABASE == TRUE
-	to_chat(world, span_debug("Codex: Debug server detected. Override flag set, Dropping and regenerating index."))
+	to_chat(world, systemtext("Codex: Debug server detected. Override flag set, Dropping and regenerating index."))
 	log_world("Codex: Codex DB generation forced by compile flag.")
 	drop_existing = TRUE
 	#endif
@@ -367,22 +367,22 @@ SUBSYSTEM_DEF(codex)
 		message_admins("Codex DB Indexing has been disabled, This doesn't seem right. Bailing.")
 		CRASH("Attempted to prepare search database, but codex index was disabled.")
 	if(drop_existing)
-		to_chat(world, span_debug("Codex: Deleting old index..."))
+		to_chat(world, systemtext("Codex: Deleting old index..."))
 		//Check if we've already opened one this round, if so, get rid of it.
 		if(codex_index)
 			log_world("Codex: Deleting old index file.")
 			del(codex_index)
 		fdel(CODEX_SEARCH_INDEX_FILE)
 	else
-		to_chat(world, span_debug("Codex: Preparing Search Database"))
+		to_chat(world, systemtext("Codex: Preparing Search Database"))
 		log_world("Codex: Preparing Search Database")
 
 	index_generating = TRUE
 	if(!rustg_file_exists(CODEX_SEARCH_INDEX_FILE))
 		if(!drop_existing)
-			to_chat(world, span_debug("Codex: Database missing, building..."))
+			to_chat(world, systemtext("Codex: Database missing, building..."))
 		else
-			to_chat(world, span_debug("Codex: Building new database..."))
+			to_chat(world, systemtext("Codex: Building new database..."))
 		create_db()
 		build_db_index()
 
@@ -393,7 +393,7 @@ SUBSYSTEM_DEF(codex)
 	if(!cursor.Execute(codex_index))
 		index_disabled = TRUE
 		can_fire = FALSE
-		to_chat(world, span_debug("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]"))
+		to_chat(world, systemtext("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]"))
 		CRASH("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]")
 
 	cursor.NextRow()
@@ -401,20 +401,20 @@ SUBSYSTEM_DEF(codex)
 	var/db_serial = revline["revision"]
 	if(db_serial != GLOB.revdata.commit)
 		if(db_serial == CODEX_SERIAL_FALLBACK)
-			to_chat(world, span_debug("Codex: Fallback Database Serial detected. Data may be inaccurate or out of date."))
+			to_chat(world, systemtext("Codex: Fallback Database Serial detected. Data may be inaccurate or out of date."))
 		else
 			if(drop_existing)
 				CRASH("Codex DB generation issue. Freshly generated index serial is bad. Is: [db_serial] | Expected: [GLOB.revdata.commit]")
-			to_chat(world, span_debug("Codex: Database out of date, Rebuilding..."))
+			to_chat(world, systemtext("Codex: Database out of date, Rebuilding..."))
 			prepare_search_database(TRUE) //recursiveness funny,,
 			return
 
 	if(!drop_existing)
 		//Loading an old database, we need to flush the dynamic cache.
-		to_chat(world, span_debug("Codex: Flushing Dynamic Index"))
+		to_chat(world, systemtext("Codex: Flushing Dynamic Index"))
 		cursor.Add("DELETE FROM dynamic_codex_entries") // Without a where, this is functionally TRUNCATE
 		if(!cursor.Execute(codex_index))
-			to_chat(world, span_debug("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]"))
+			to_chat(world, systemtext("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]"))
 			CRASH("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]")
 
 
@@ -422,18 +422,18 @@ SUBSYSTEM_DEF(codex)
 
 
 	if(drop_existing)
-		to_chat(world, span_debug("Codex: Collation complete.\nCodex: Index ready."))
+		to_chat(world, systemtext("Codex: Collation complete.\nCodex: Index ready."))
 	else
-		to_chat(world, span_debug("Codex: Database Serial validated.\nCodex: Loading complete."))
+		to_chat(world, systemtext("Codex: Database Serial validated.\nCodex: Loading complete."))
 
 /datum/controller/subsystem/codex/proc/create_db()
 	// No index? Make one.
 
-	to_chat(world, span_debug("Codex: Writing new database file..."))
+	to_chat(world, systemtext("Codex: Writing new database file..."))
 	//We explicitly store the DB in the root directory, so that TGS builds wipe it.
 	codex_index = new(CODEX_SEARCH_INDEX_FILE)
 
-	to_chat(world, span_debug("Codex: Writing Schema (1/3): Metadata"))
+	to_chat(world, systemtext("Codex: Writing Schema (1/3): Metadata"))
 	/// Holds the revision the index was compiled for. If it's different then live, we need to regenerate the index.
 	var/static/create_info_schema = {"
 	CREATE TABLE "_info" (
@@ -444,10 +444,10 @@ SUBSYSTEM_DEF(codex)
 	var/database/query/init_cursor = new(create_info_schema)
 
 	if(!init_cursor.Execute(codex_index))
-		to_chat(world, span_debug("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]"))
+		to_chat(world, systemtext("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]"))
 		CRASH("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]")
 
-	to_chat(world, span_debug("Codex: Writing Schema (2/3): Baked Index"))
+	to_chat(world, systemtext("Codex: Writing Schema (2/3): Baked Index"))
 	// Holds all codex entries to enable accelerated text search.
 	var/static/create_codex_schema = {"
 	CREATE TABLE "codex_entries" (
@@ -460,10 +460,10 @@ SUBSYSTEM_DEF(codex)
 
 	init_cursor.Add(create_codex_schema)
 	if(!init_cursor.Execute(codex_index))
-		to_chat(world, span_debug("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]"))
+		to_chat(world, systemtext("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]"))
 		CRASH("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]")
 
-	to_chat(world, span_debug("Codex: Writing Schema (3/3): Dynamic Index"))
+	to_chat(world, systemtext("Codex: Writing Schema (3/3): Dynamic Index"))
 	// Holds all dynamic codex entries to enable accelerated text search.
 	var/static/create_dynamic_codex_schema = {"
 	CREATE TABLE "dynamic_codex_entries" (
@@ -476,7 +476,7 @@ SUBSYSTEM_DEF(codex)
 
 	init_cursor.Add(create_dynamic_codex_schema)
 	if(!init_cursor.Execute(codex_index))
-		to_chat(world, span_debug("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]"))
+		to_chat(world, systemtext("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]"))
 		CRASH("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]")
 
 
@@ -485,19 +485,19 @@ SUBSYSTEM_DEF(codex)
 	if(!revid) //zip download, you're on your own pissboy, The serial is special and the database will never regenerate.
 		revid = CODEX_SERIAL_FALLBACK
 
-	to_chat(world, span_debug("Codex: Schema complete, Writing serial..."))
+	to_chat(world, systemtext("Codex: Schema complete, Writing serial..."))
 	//Insert the revision header.
 	init_cursor.Add("INSERT INTO _info (revision) VALUES (?)", revid)
 	if(!init_cursor.Execute(codex_index))
-		to_chat(world, span_debug("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]"))
+		to_chat(world, systemtext("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]"))
 		CRASH("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]")
 
 /datum/controller/subsystem/codex/proc/build_db_index()
-	to_chat(world, span_debug("Codex: Building search index."))
+	to_chat(world, systemtext("Codex: Building search index."))
 
 	var/database/query/cursor = new
 	var/total_entries = length(all_entries)
-	to_chat(world, span_debug("\tCodex: Collating [total_entries] records..."))
+	to_chat(world, systemtext("\tCodex: Collating [total_entries] records..."))
 	var/record_id = 0 //Counter for debugging.
 	for(var/datum/codex_entry/entry as anything in all_entries)
 		cursor.Add(
@@ -509,12 +509,12 @@ SUBSYSTEM_DEF(codex)
 		)
 
 		if(!cursor.Execute(codex_index))
-			to_chat(world, span_debug("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]"))
+			to_chat(world, systemtext("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]"))
 			CRASH("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]")
 
 		record_id++
 		if((!(record_id % 100)) || (record_id == total_entries))
-			to_chat(world, span_debug("\tCodex: [record_id]/[total_entries]..."))
+			to_chat(world, systemtext("\tCodex: [record_id]/[total_entries]..."))
 
 		CHECK_TICK //We'd deadlock the server otherwise.
 

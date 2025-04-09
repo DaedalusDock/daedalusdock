@@ -147,8 +147,8 @@
 	var/species_color = ""
 	///Limbs need this information as a back-up incase they are generated outside of a carbon (limbgrower)
 	var/should_draw_greyscale = TRUE
-	///An "override" color that can be applied to ANY limb, greyscale or not.
-	var/variable_color = ""
+	/// An assoc list of priority (as a string because byond) -> color, used to override draw_color.
+	var/list/color_overrides
 
 	///whether it can be dismembered with a weapon.
 	var/dismemberable = 1
@@ -237,7 +237,7 @@
 		grind_results = null
 
 	name = "[limb_id] [parse_zone(body_zone)]"
-	update_icon_dropped()
+	update_icon_dropped(update_limb = FALSE)
 	refresh_bleed_rate()
 
 /obj/item/bodypart/Destroy()
@@ -1209,13 +1209,13 @@
 		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL]'>Severed</span>" : "Severed"
 
 	if(check_tendon() & CHECKTENDON_SEVERED)
-		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Severed [tendon_name]</span>" : "Severed [tendon_name]"
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_LIGAMENT]'>Severed [tendon_name]</span>" : "Severed [tendon_name]"
 
 	if(check_artery() & CHECKARTERY_SEVERED)
-		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Severed [artery_name]</span>" : "Severed [artery_name]"
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Ruptured [capitalize(artery_name)]</span>" : "Ruptured [capitalize(artery_name)]"
 
 	if(check_bones() & CHECKBONES_BROKEN)
-		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Fractured</span>" : "Fractured"
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_BROKEN]'>Fractured</span>" : "Fractured"
 
 	if(bodypart_flags & BP_DISLOCATED)
 		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL]'>Dislocated</span>" : "Dislocated"
@@ -1289,48 +1289,6 @@
 				user.visible_message(span_notice("[user] removes [removed] from [owner]'s [plaintext_zone]."))
 		return
 
-/obj/item/bodypart/proc/inspect(mob/user)
-	if(is_stump)
-		to_chat(user, span_notice("[owner] is missing that bodypart."))
-		return
-
-	user.visible_message(span_notice("[user] starts inspecting [owner]'s [plaintext_zone] carefully."))
-	if(LAZYLEN(wounds))
-		to_chat(user, span_warning("You find the following:"))
-		for(var/wound_desc in get_wound_descriptions())
-			to_chat(user, wound_desc)
-
-		var/list/stuff = list()
-		for(var/datum/wound/wound as anything in wounds)
-			if(LAZYLEN(wound.embedded_objects))
-				stuff |= wound.embedded_objects
-
-		if(length(stuff))
-			to_chat(user, span_warning("There's [english_list(stuff)] sticking out of [owner]'s [plaintext_zone]."))
-	else
-		to_chat(user, span_notice("You find no visible wounds."))
-
-	to_chat(user, span_notice("Checking skin now..."))
-
-	if(!do_after(user, owner, 1 SECOND, DO_PUBLIC))
-		return
-
-	to_chat(user, span_notice("Checking bones now..."))
-	if(!do_after(user, owner, 1 SECOND, DO_PUBLIC))
-		return
-
-	if(bodypart_flags & BP_BROKEN_BONES)
-		to_chat(user, span_warning("The [encased ? encased : "bone in the [plaintext_zone]"] moves slightly when you poke it!"))
-		owner.apply_pain(40, body_zone, "Your [plaintext_zone] hurts where it's poked.")
-	else
-		to_chat(user, span_notice("The [encased ? encased : "bones in the [plaintext_zone]"] seem to be fine."))
-
-	if(bodypart_flags & BP_TENDON_CUT)
-		to_chat(user, span_warning("The tendons in the [plaintext_zone] are severed!"))
-	if(bodypart_flags & BP_DISLOCATED)
-		to_chat(user, span_warning("The [joint_name] is dislocated!"))
-	return TRUE
-
 /// Applies all bodypart traits to the target.
 /obj/item/bodypart/proc/apply_traits(mob/target)
 	if(isnull(target))
@@ -1359,3 +1317,7 @@
 
 	for(var/trait in bodypart_traits)
 		REMOVE_TRAIT(target, trait, bodypart_trait_source)
+
+/// Returns TRUE if this limb can be affected by jaundice.
+/obj/item/bodypart/proc/can_be_jaundiced()
+	return IS_ORGANIC_LIMB(src) && skin_tone

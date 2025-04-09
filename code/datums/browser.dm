@@ -13,6 +13,7 @@
 	var/head_content = ""
 	var/content = ""
 	var/static/datum/asset/simple/namespaced/common/common_asset = get_asset_datum(/datum/asset/simple/namespaced/common)
+	var/static/datum/asset/simple/namespaced/cursors/cursor_asset = get_asset_datum(/datum/asset/simple/namespaced/cursors)
 
 
 /datum/browser/New(nuser, nwindow_id, ntitle = 0, nwidth = 0, nheight = 0, atom/nref = null)
@@ -32,8 +33,11 @@
 	SIGNAL_HANDLER
 	user = null
 
-/datum/browser/proc/add_head_content(nhead_content)
+/datum/browser/proc/set_head_content(nhead_content)
 	head_content = nhead_content
+
+/datum/browser/proc/add_head_content(nhead_content)
+	head_content += nhead_content
 
 /datum/browser/proc/set_window_options(nwindow_options)
 	window_options = nwindow_options
@@ -63,6 +67,7 @@
 /datum/browser/proc/get_header()
 	var/file
 	head_content += "<link rel='stylesheet' type='text/css' href='[common_asset.get_url_mappings()["common.css"]]'>"
+	head_content += "<link rel='stylesheet' type='text/css' href='[cursor_asset.get_url_mappings()["cursors.css"]]'>"
 
 	for (file in stylesheets)
 		head_content += "<link rel='stylesheet' type='text/css' href='[SSassets.transport.get_asset_url(file)]'>"
@@ -104,14 +109,19 @@
 		WARNING("Browser [title] tried to open with a null ID")
 		to_chat(user, span_userdanger("The [title] browser you tried to open failed a sanity check! Please report this on github!"))
 		return
+
 	var/window_size = ""
 	if (width && height)
 		window_size = "size=[width]x[height];"
+
 	common_asset.send(user)
+	cursor_asset.send(user)
+
 	if (stylesheets.len)
 		SSassets.transport.send_assets(user, stylesheets)
 	if (scripts.len)
 		SSassets.transport.send_assets(user, scripts)
+
 	user << browse(get_content(), "window=[window_id];[window_size][window_options]")
 	if (use_onclose)
 		setup_onclose()

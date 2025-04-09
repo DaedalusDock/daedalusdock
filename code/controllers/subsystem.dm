@@ -275,9 +275,9 @@
 	initialized = TRUE
 	SEND_SIGNAL(src, COMSIG_SUBSYSTEM_POST_INITIALIZE, start_timeofday)
 	var/time = (REALTIMEOFDAY - start_timeofday) / 10
-	var/msg = "Initialized [name] subsystem within [time] second[time == 1 ? "" : "s"]!"
+	var/msg = "Initialized [name] subsystem within [time] second[time == 1 ? "" : "s"]."
 	if(GLOB.is_debug_server)
-		to_chat(world, span_debug("[msg]"))
+		to_chat(world, systemtext("[msg]"))
 	log_world(msg)
 	return time
 

@@ -399,7 +399,13 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	connection_time = world.time
 	connection_realtime = world.realtime
 	connection_timeofday = world.timeofday
+
 	winset(src, null, "command=\".configure graphics-hwmode on\"")
+
+	#if DM_VERSION >= 516
+	winset(src, null, "browser-options=byondstorage,devtools,find")
+	#endif
+
 	var/cev = CONFIG_GET(number/client_error_version)
 	var/ceb = CONFIG_GET(number/client_error_build)
 	var/cwv = CONFIG_GET(number/client_warn_version)
@@ -505,7 +511,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	apply_clickcatcher()
 
 	if(prefs.lastchangelog != GLOB.changelog_hash) //bolds the changelog button on the interface so we know there are updates.
-		to_chat(src, span_info("You have unread updates in the changelog."))
+		to_chat(src, systemtext("You have unread updates in the changelog."))
 		if(CONFIG_GET(flag/aggressive_changelog))
 			changelog()
 		else
@@ -544,7 +550,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	view_size.setZoomMode()
 	Master.UpdateTickRate()
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CLIENT_CONNECT, src)
+
 	fully_created = TRUE
+	SSlobby.client_login(src)
 
 //////////////
 //DISCONNECT//
@@ -576,6 +584,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	GLOB.interviews.client_logout(src)
 	GLOB.requests.client_logout(src)
 	SSserver_maint.UpdateHubStatus()
+	if(fully_created)
+		SSlobby.client_logout(src)
+
 	if(obj_window)
 		QDEL_NULL(obj_window)
 	if(holder)

@@ -97,7 +97,7 @@
 	if(!(locate(/turf/open/space) in get_adjacent_open_turfs(src)))
 		return
 
-	var/datum/roll_result/result = user.get_examine_result("window_flavor", only_once = TRUE)
+	var/datum/roll_result/result = user.get_examine_result("window_flavor", 13, only_once = TRUE)
 	if(result?.outcome >= SUCCESS)
 		result.do_skill_sound(user)
 		to_chat(

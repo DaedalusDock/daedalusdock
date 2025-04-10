@@ -632,7 +632,11 @@
 	if(!.)
 		return
 
-	examinify.disco_flavor(src, get_dist(src, examinify) >= 1)
+	examinify.disco_flavor(
+		src,
+		get_dist(src, examinify) >= 1,
+		is_station_level(get_step(examinify, 0)?.z)
+	)
 
 /// Tells nearby mobs about our examination.
 /mob/proc/broadcast_examine(atom/examined)

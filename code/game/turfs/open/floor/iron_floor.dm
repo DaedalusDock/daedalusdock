@@ -23,8 +23,8 @@
 	icon_state = base_icon_state
 	return ..()
 
-/turf/open/floor/iron/disco_flavor(mob/living/carbon/human/user)
-	if(!is_station_level(z))
+/turf/open/floor/iron/disco_flavor(mob/living/carbon/human/user, nearby = FALSE, is_station_level = FALSE)
+	if(!is_station_level)
 		return
 
 	var/datum/roll_result/result = user.get_examine_result("floor_flavor", only_once = TRUE)

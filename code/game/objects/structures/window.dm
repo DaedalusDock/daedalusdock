@@ -84,11 +84,8 @@
 		else
 			. += span_notice("The window is <i>unscrewed</i> from the floor, and could be deconstructed by <b>wrenching</b>.")
 
-/obj/structure/window/disco_flavor(mob/living/carbon/human/user, nearby)
-	if(!nearby)
-		return
-
-	if(!is_station_level(z))
+/obj/structure/window/disco_flavor(mob/living/carbon/human/user, nearby = FALSE, is_station_level = FALSE)
+	if(!nearby || !is_station_level)
 		return
 
 	if(isspaceturf(get_turf(user)))

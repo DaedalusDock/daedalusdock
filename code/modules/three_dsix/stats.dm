@@ -115,11 +115,11 @@
 	result_stash -= id
 
 /// Helper for once-per-round examine checks.
-/mob/proc/get_examine_result(id, requirement = 16, datum/rpg_skill/skill_path = /datum/rpg_skill/fourteen_eyes, modifier, trait_bypass, only_once)
+/mob/proc/get_examine_result(id, requirement = 14, datum/rpg_skill/skill_path = /datum/rpg_skill/fourteen_eyes, modifier, trait_bypass, only_once)
 	RETURN_TYPE(/datum/roll_result)
 	return null
 
-/mob/living/get_examine_result(id, requirement = 16, datum/rpg_skill/skill_path = /datum/rpg_skill/fourteen_eyes, modifier, trait_bypass, only_once)
+/mob/living/get_examine_result(id, requirement = 14, datum/rpg_skill/skill_path = /datum/rpg_skill/fourteen_eyes, modifier, trait_bypass, only_once)
 	if(!stats)
 		return null
 

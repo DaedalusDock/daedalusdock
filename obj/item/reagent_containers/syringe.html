@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;obj&#x2F;item&#x2F;reagent_containers&#x2F;syringe - Daedalus Dock</title>
+</head>
+<body>
+<header>
+    <a href="index.html">Daedalus Dock</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="obj/item/reagent_containers/syringe.html#var">Var Details</a> - <a href="obj/item/reagent_containers/syringe.html#proc">Proc Details</a></header>
+<main>
+<h1>syringe <aside>/<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/reagent_containers.html">reagent_containers</a>/<a href="obj/item/reagent_containers/syringe.html">syringe</a></aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/e32a9ef8f362c9807299452981639d9287cf98ce/code/modules/reagents/reagent_containers/syringes.dm#L1">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;reagents&#x2F;reagent_containers&#x2F;syringes.dm 1"/></a></h1>
+
+<table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="obj/item/reagent_containers/syringe.html#var/dirty_blood_DNA">dirty_blood_DNA</a></th><td>Lazylist. If it exists that means the syringe is non-sterile.</td></tr>
+            <tr><th><a href="obj/item/reagent_containers/syringe.html#var/dirty_pathogens">dirty_pathogens</a></th><td>Lazylist. Contains disease datums. K:V of disease_id : disease datum.</td></tr>
+            <tr><th><a href="obj/item/reagent_containers/syringe.html#var/inject_flags">inject_flags</a></th><td>Flags used by the injection</td></tr>
+            <tr><th><a href="obj/item/reagent_containers/syringe.html#var/sterile">sterile</a></th><td>Tracks if the below lists are populated.</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="obj/item/reagent_containers/syringe.html#proc/contaminate">contaminate</a></th><td>Contaminates the syringe with the given blood DNA and pathogens. Copies the pathogens.</td></tr>
+            <tr><th><a href="obj/item/reagent_containers/syringe.html#proc/contaminate_mob">contaminate_mob</a></th><td>Spread the icky bad stuff in the syringe to a mob.</td></tr>
+            <tr><th><a href="obj/item/reagent_containers/syringe.html#proc/get_rounded_vol">get_rounded_vol</a></th><td>Used by update_appearance() and update_overlays()</td></tr>
+            <tr><th><a href="obj/item/reagent_containers/syringe.html#proc/sterilize">sterilize</a></th><td>Remove unsterile things.</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/dirty_blood_DNA"><aside class="declaration">var </aside>dirty_blood_DNA
+            <aside>&ndash; /list</aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/e32a9ef8f362c9807299452981639d9287cf98ce/code/modules/reagents/reagent_containers/syringes.dm#L24">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;reagents&#x2F;reagent_containers&#x2F;syringes.dm 24"/></a></h3>
+        <p>Lazylist. If it exists that means the syringe is non-sterile.</p><h3 id="var/dirty_pathogens"><aside class="declaration">var </aside>dirty_pathogens
+            <aside>&ndash; /list</aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/e32a9ef8f362c9807299452981639d9287cf98ce/code/modules/reagents/reagent_containers/syringes.dm#L28">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;reagents&#x2F;reagent_containers&#x2F;syringes.dm 28"/></a></h3>
+        <p>Lazylist. Contains disease datums. K:V of disease_id : disease datum.</p><h3 id="var/inject_flags"><aside class="declaration">var </aside>inject_flags
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/e32a9ef8f362c9807299452981639d9287cf98ce/code/modules/reagents/reagent_containers/syringes.dm#L19">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;reagents&#x2F;reagent_containers&#x2F;syringes.dm 19"/></a></h3>
+        <p>Flags used by the injection</p><h3 id="var/sterile"><aside class="declaration">var </aside>sterile
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/e32a9ef8f362c9807299452981639d9287cf98ce/code/modules/reagents/reagent_containers/syringes.dm#L22">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;reagents&#x2F;reagent_containers&#x2F;syringes.dm 22"/></a></h3>
+        <p>Tracks if the below lists are populated.</p><h2 id="proc">Proc Details</h2><h3 id="proc/contaminate"><aside class="declaration">proc </aside>contaminate<aside>(/list/blood_DNA, /list/pathogens_to_copy) 
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/e32a9ef8f362c9807299452981639d9287cf98ce/code/modules/reagents/reagent_containers/syringes.dm#L226">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;reagents&#x2F;reagent_containers&#x2F;syringes.dm 226"/></a></aside>
+        </h3>
+        <p>Contaminates the syringe with the given blood DNA and pathogens. Copies the pathogens.</p><h3 id="proc/contaminate_mob"><aside class="declaration">proc </aside>contaminate_mob<aside>(/<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/<a href="mob/living/carbon.html">carbon</a>/<a href="mob/living/carbon/human.html">human</a>/H) 
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/e32a9ef8f362c9807299452981639d9287cf98ce/code/modules/reagents/reagent_containers/syringes.dm#L252">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;reagents&#x2F;reagent_containers&#x2F;syringes.dm 252"/></a></aside>
+        </h3>
+        <p>Spread the icky bad stuff in the syringe to a mob.</p><h3 id="proc/get_rounded_vol"><aside class="declaration">proc </aside>get_rounded_vol<aside>() 
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/e32a9ef8f362c9807299452981639d9287cf98ce/code/modules/reagents/reagent_containers/syringes.dm#L213">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;reagents&#x2F;reagent_containers&#x2F;syringes.dm 213"/></a></aside>
+        </h3>
+        <p>Used by update_appearance() and update_overlays()</p><h3 id="proc/sterilize"><aside class="declaration">proc </aside>sterilize<aside>() 
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/e32a9ef8f362c9807299452981639d9287cf98ce/code/modules/reagents/reagent_containers/syringes.dm#L219">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;reagents&#x2F;reagent_containers&#x2F;syringes.dm 219"/></a></aside>
+        </h3>
+        <p>Remove unsterile things.</p></main>
+<footer>
+    daedalus.dme
+    <a href="https://github.com/DaedalusDock/daedalusdock/tree/e32a9ef8f362c9807299452981639d9287cf98ce">e32a9ef</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.8.0</a></footer>
+</body>
+</html>

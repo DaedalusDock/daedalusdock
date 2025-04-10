@@ -1,0 +1,8 @@
+author: Doctor-Derp
+delete-after: true
+changes:
+  - rscadd: Added 25 new hairstyles.
+  - rscdel: Removed duplicate hairstyles.
+  - qol: icon_states present in hair.dmi are now in alphabetical order.
+  - code_imp: Added a hairstyle preference save migration.
+  - code_imp: Several hairstyle code paths and names have been sorted and simplified.

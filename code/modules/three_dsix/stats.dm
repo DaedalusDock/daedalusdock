@@ -146,11 +146,13 @@
 		returned_result = new /datum/roll_result/critical_success
 		returned_result.requirement = requirement
 		returned_result.skill_type_used = skill_path
+		returned_result.calculate_probability()
 
 	if(trait_fail && (HAS_TRAIT(src, trait_fail) || HAS_TRAIT(mind, trait_fail)))
 		returned_result = new /datum/roll_result/critical_failure
 		returned_result.requirement = requirement
 		returned_result.skill_type_used = skill_path
+		returned_result.calculate_probability()
 
 	returned_result ||= stat_roll(requirement, skill_path, modifier)
 	stats.cache_result(id, returned_result, -1)

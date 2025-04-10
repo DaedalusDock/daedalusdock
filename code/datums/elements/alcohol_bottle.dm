@@ -30,7 +30,9 @@
 /datum/element/alcoholism_magnet/proc/on_disco(datum/source, mob/living/carbon/human/user, nearby, is_station_level)
 	SIGNAL_HANDLER
 
-	var/datum/roll_result/result = user.get_examine_result(result_id, roll_difficulty, /datum/rpg_skill/willpower, trait_fail = TRAIT_DICK, only_once = TRUE)
+	var/modifier = HAS_TRAIT(user.mind, TRAIT_DICK) ? -STATS_BASELINE_VALUE : 0
+
+	var/datum/roll_result/result = user.get_examine_result(result_id, roll_difficulty, /datum/rpg_skill/willpower, modifier = modifier, only_once = TRUE)
 	if(result && result.outcome <= FAILURE)
 		result.do_skill_sound(user)
 		to_chat(

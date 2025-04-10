@@ -29,6 +29,7 @@
 	paycheck = PAYCHECK_MEDIUM
 
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)
+	mind_traits = list(TRAIT_DICK)
 
 	mail_goodies = list(
 		/obj/item/storage/fancy/cigarettes = 25,

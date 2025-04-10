@@ -86,6 +86,7 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 		. += result.create_tooltip("Some people wonder why we ventured beyond Gaia at all.", body_only = TRUE)
 
 /turf/open/space/disco_flavor(mob/living/carbon/human/user, nearby = FALSE, is_station_level = FALSE)
+	. = ..()
 	var/datum/roll_result/result = user.get_examine_result("space_onetime", only_once = TRUE)
 	if(result?.outcome >= SUCCESS)
 		result.do_skill_sound(user)

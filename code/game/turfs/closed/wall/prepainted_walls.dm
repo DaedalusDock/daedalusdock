@@ -25,6 +25,7 @@
 	name = "Pre-Painted Wall"
 
 /turf/closed/wall/prepainted/disco_flavor(mob/living/carbon/human/user, nearby = FALSE, is_station_level = FALSE)
+	. = ..()
 	var/datum/roll_result/result = user.get_examine_result("prepainted_wall", only_once = TRUE)
 	if(result?.outcome >= SUCCESS)
 		result.do_skill_sound(user)

@@ -114,13 +114,23 @@
 /datum/stats/proc/uncache_result(id)
 	result_stash -= id
 
-/// Helper for once-per-round examine checks.
-/mob/proc/get_examine_result(id, requirement = 14, datum/rpg_skill/skill_path = /datum/rpg_skill/fourteen_eyes, modifier, trait_bypass, only_once)
+
+/** Get and use cached result datums for examining objects in the world.
+ * Args:
+ * * id - A string identifier to cache.
+ * * requirement - The roll difficulty.
+ * * skill_path - Skill type to use.
+ * * modifier - See stat_roll().
+ * * trait_succeed - If the mob has this trait, it will automatically score a critical success.
+ * * trait_fail - If the mob has this trait, it will automatically score a critical failure.
+ * * only_once - If TRUE, this proc will only return a result for the given ID if it was not already returned before.
+ */
+/mob/proc/get_examine_result(id, requirement = 14, datum/rpg_skill/skill_path = /datum/rpg_skill/fourteen_eyes, modifier, trait_succeed, trait_fail, only_once)
 	RETURN_TYPE(/datum/roll_result)
 	return null
 
-/mob/living/get_examine_result(id, requirement = 14, datum/rpg_skill/skill_path = /datum/rpg_skill/fourteen_eyes, modifier, trait_bypass, only_once)
-	if(!stats)
+/mob/living/get_examine_result(id, requirement = 14, datum/rpg_skill/skill_path = /datum/rpg_skill/fourteen_eyes, modifier, trait_succeed, trait_fail, only_once)
+	if(!stats || !mind)
 		return null
 
 	id = "[id]_[skill_path]_[requirement]_examine"
@@ -132,8 +142,13 @@
 		return returned_result
 
 	// Trait that automatically triggers a critical success.
-	if(HAS_TRAIT(src, TRAIT_BIGBRAIN) || (trait_bypass && HAS_TRAIT(src, trait_bypass)))
+	if(HAS_TRAIT(src, TRAIT_BIGBRAIN) || (trait_succeed && (HAS_TRAIT(src, trait_succeed) || HAS_TRAIT(mind, trait_succeed))))
 		returned_result = new /datum/roll_result/critical_success
+		returned_result.requirement = requirement
+		returned_result.skill_type_used = skill_path
+
+	if(trait_fail && (HAS_TRAIT(src, trait_fail) || HAS_TRAIT(mind, trait_fail)))
+		returned_result = new /datum/roll_result/critical_failure
 		returned_result.requirement = requirement
 		returned_result.skill_type_used = skill_path
 

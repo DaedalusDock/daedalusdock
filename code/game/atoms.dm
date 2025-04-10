@@ -814,8 +814,10 @@
  * - nearby: Set to TRUE if the mob is within 1 turf.
  */
 /atom/proc/disco_flavor(mob/living/carbon/human/user, nearby = FALSE, is_station_level = FALSE)
-	RETURN_TYPE(/datum/roll_result)
-	return
+	SHOULD_CALL_PARENT(TRUE)
+
+	SEND_SIGNAL(src, COMSIG_DISCO_FLAVOR, user, nearby, is_station_level)
+
 
 /**
  * Updates the appearence of the icon

@@ -24,6 +24,7 @@
 	return ..()
 
 /turf/open/floor/iron/disco_flavor(mob/living/carbon/human/user, nearby = FALSE, is_station_level = FALSE)
+	. = ..()
 	if(!is_station_level)
 		return
 

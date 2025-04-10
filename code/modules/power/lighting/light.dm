@@ -277,6 +277,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 			. += result.create_tooltip("A ninety-three degree fire rages within a gaseous prison.", body_only = TRUE)
 
 /obj/machinery/light/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
 	if(!is_station_level)
 		return
 

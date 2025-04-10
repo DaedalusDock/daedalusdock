@@ -180,6 +180,13 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	roll = 18
 	requirement = 3
 
+/datum/roll_result/critical_failure
+	outcome = CRIT_FAILURE
+	success_prob = 0
+	crit_success_prob = 0
+	roll = 1
+	requirement = 18
+
 /// Returns a number between 0 and 100 to roll the desired value when rolling the given dice.
 /proc/dice_probability(num, sides, desired)
 	var/static/list/outcomes_cache = new /list(0, 0)

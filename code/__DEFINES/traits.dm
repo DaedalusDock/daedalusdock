@@ -259,6 +259,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_GOOD_HEARING "good_hearing"
 /// This mob's speech is heard through walls by dead players/observers even if it has no client. Idk a better name
 #define TRAIT_IMPORTANT_SPEAKER "important_speaker"
+/// This mob automatically succeeds rolls for get_examine_result()
+#define TRAIT_BIGBRAIN "big_brain"
 
 // Stops the mob from slipping on water, or banana peels, or pretty much anything that doesn't have [GALOSHES_DONT_HELP] set
 #define TRAIT_NO_SLIP_WATER "NO_SLIP_WATER"

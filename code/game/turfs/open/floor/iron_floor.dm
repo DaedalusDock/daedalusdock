@@ -23,21 +23,17 @@
 	icon_state = base_icon_state
 	return ..()
 
-/turf/open/floor/iron/examine(mob/user)
-	. = ..()
-
+/turf/open/floor/iron/disco_flavor(mob/living/carbon/human/user)
 	if(!is_station_level(z))
 		return
 
-	var/datum/roll_result/result = user.get_examine_result("floor_flavor")
-	if(result?.cache_reads == 0 && result.outcome >= SUCCESS)
-		spawn(0)
-			result.do_skill_sound(user)
-			to_chat(
-				user,
-				result.create_tooltip("A cold breeze seeps out of the gaps between the tiles."),
-			)
-
+	var/datum/roll_result/result = user.get_examine_result("floor_flavor", only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("A cold breeze seeps out of the gaps between the tiles."),
+		)
 
 /turf/open/floor/iron/airless
 	initial_gas = AIRLESS_ATMOS

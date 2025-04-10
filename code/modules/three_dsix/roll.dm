@@ -102,7 +102,7 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	/// How many times this result was pulled from a result cache.
 	var/cache_reads = 0
 
-/datum/roll_result/proc/create_tooltip(body, use_prefix = TRUE)
+/datum/roll_result/proc/create_tooltip(body, body_only = FALSE)
 	if(!skill_type_used)
 		if(outcome >= SUCCESS)
 			body = span_statsgood(body)
@@ -153,7 +153,9 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	var/tooltip_html = "[success_prob]% | Result: <span style='font-weight: bold;color: [color]'><b>[roll]</b></span> | Check: <b>[requirement]</b>"
 	var/seperator = "<span style='color: #bbbbad;font-style: italic'>: </span>"
 
-	return "[use_prefix && prefix]<span data-component=\"Tooltip\" data-innerhtml=\"[tooltip_html]\" class=\"tooltip\">[finished_prob_string]</span>[seperator][body]"
+	if(body_only)
+		return body
+	return "[prefix]<span data-component=\"Tooltip\" data-innerhtml=\"[tooltip_html]\" class=\"tooltip\">[finished_prob_string]</span>[seperator][body]"
 
 /// Play
 /datum/roll_result/proc/do_skill_sound(mob/user)

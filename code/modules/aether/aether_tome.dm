@@ -15,4 +15,4 @@
 	var/datum/roll_result/result = user.get_examine_result("aether_tome", trait_bypass = TRAIT_AETHERITE)
 	if(result?.outcome >= SUCCESS)
 		result.do_skill_sound(user)
-		. += result.create_tooltip("Biblion tou Hema. The Book of Blood. The Augur is awfully protective of it.", use_prefix = FALSE)
+		. += result.create_tooltip("Biblion tou Hema. The Book of Blood. The Augur is awfully protective of it.", body_only = TRUE)

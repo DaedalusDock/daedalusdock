@@ -115,11 +115,11 @@
 	result_stash -= id
 
 /// Helper for once-per-round examine checks.
-/mob/proc/get_examine_result(id, requirement = 16, datum/rpg_skill/skill_path = /datum/rpg_skill/fourteen_eyes, modifier, trait_bypass)
+/mob/proc/get_examine_result(id, requirement = 16, datum/rpg_skill/skill_path = /datum/rpg_skill/fourteen_eyes, modifier, trait_bypass, only_once)
 	RETURN_TYPE(/datum/roll_result)
 	return null
 
-/mob/living/get_examine_result(id, requirement = 16, datum/rpg_skill/skill_path = /datum/rpg_skill/fourteen_eyes, modifier, trait_bypass)
+/mob/living/get_examine_result(id, requirement = 16, datum/rpg_skill/skill_path = /datum/rpg_skill/fourteen_eyes, modifier, trait_bypass, only_once)
 	if(!stats)
 		return null
 
@@ -127,12 +127,15 @@
 
 	var/datum/roll_result/returned_result = stats.get_stashed_result(id)
 	if(returned_result)
+		if(only_once)
+			return null
 		return returned_result
 
 	// Trait that automatically triggers a critical success.
-	if(trait_bypass && HAS_TRAIT(src, trait_bypass))
+	if(HAS_TRAIT(src, TRAIT_BIGBRAIN) || (trait_bypass && HAS_TRAIT(src, trait_bypass)))
 		returned_result = new /datum/roll_result/critical_success
 		returned_result.requirement = requirement
+		returned_result.skill_type_used = skill_path
 
 	returned_result ||= stat_roll(requirement, skill_path, modifier)
 	stats.cache_result(id, returned_result, -1)

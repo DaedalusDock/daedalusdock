@@ -34,6 +34,8 @@ export const setClientTheme = (name) => {
   if (name === THEME_LIGHT) {
     return Byond.winset({
       // Main windows
+      'infobuttons.background-color': 'none',
+      'infobuttons.text-color': '#000000',
       'infowindow.background-color': 'none',
       'infowindow.text-color': '#000000',
       'info.background-color': 'none',

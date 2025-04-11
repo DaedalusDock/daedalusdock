@@ -226,6 +226,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	///////////
 
 /client/New(TopicData)
+	SHOULD_NOT_SLEEP(TRUE)
 	var/tdata = TopicData //save this for later use
 	TopicData = null //Prevent calls to client.Topic from connect
 
@@ -376,11 +377,13 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	// Initialize stat panel
 	stat_panel.initialize(
 		assets = list(get_asset_datum(/datum/asset/simple/namespaced/cursors)),
-		inline_html = file2text('html/statbrowser.html'),
-		inline_js = file2text('html/statbrowser.js'),
-		inline_css = file2text('html/statbrowser.css'),
+		inline_html = file("html/statbrowser.html"),
+		inline_js = file("html/statbrowser.js"),
+		inline_css = file("html/statbrowser.css"),
 	)
+
 	addtimer(CALLBACK(src, PROC_REF(check_panel_loaded)), 30 SECONDS)
+	INVOKE_ASYNC(src, PROC_REF(acquire_dpi))
 
 	// Initialize tgui panel
 	tgui_panel.initialize()
@@ -1412,3 +1415,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	popup.set_window_options("can_close=1;can_resize=0")
 	popup.set_content(content)
 	popup.open()
+
+/// This grabs the DPI of the user per their skin
+/client/proc/acquire_dpi()
+	window_scaling = text2num(winget(src, null, "dpi"))

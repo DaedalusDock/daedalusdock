@@ -282,3 +282,6 @@
 
 	/// Keeps track of what ambience we are playing. Yeah i know it sucks.
 	var/playing_ambience
+
+	/// The DPI scale of the client. 1 is equivalent to 100% window scaling, 2 will be 200% window scaling
+	var/window_scaling = null

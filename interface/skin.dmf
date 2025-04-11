@@ -164,7 +164,7 @@ window "info_and_buttons"
 window "infobuttons"
 	elem "infobuttons"
 		type = MAIN
-		pos = 291,0
+		pos = 382,280
 		size = 640x30
 		anchor1 = 0,0
 		anchor2 = 100,100
@@ -172,14 +172,14 @@ window "infobuttons"
 		saved-params = "pos;size;is-minimized;is-maximized"
 		is-pane = true
 		outer-size = 656x88
-		outer-pos = 291,0
+		outer-pos = 382,280
 		inner-size = 640x30
 		inner-pos = 8,31
 		screen-size = 1920x1040
 	elem "changelog"
 		type = BUTTON
-		pos = 17,5
-		size = 79x25
+		pos = 17,0
+		size = 79x30
 		anchor1 = 0,0
 		anchor2 = 15,100
 		background-color = none
@@ -188,8 +188,8 @@ window "infobuttons"
 		command = "changelog"
 	elem "report-issue"
 		type = BUTTON
-		pos = 95,5
-		size = 100x25
+		pos = 95,0
+		size = 100x30
 		anchor1 = 15,0
 		anchor2 = 30,100
 		background-color = none
@@ -198,8 +198,8 @@ window "infobuttons"
 		command = "report-issue"
 	elem "codex_button"
 		type = BUTTON
-		pos = 445,5
-		size = 50x25
+		pos = 445,0
+		size = 50x30
 		anchor1 = 70,0
 		anchor2 = 77,100
 		background-color = none
@@ -208,8 +208,8 @@ window "infobuttons"
 		command = "Codex"
 	elem "webmap"
 		type = BUTTON
-		pos = 545,5
-		size = 75x25
+		pos = 545,0
+		size = 75x30
 		anchor1 = 85,0
 		anchor2 = 97,100
 		background-color = none
@@ -218,8 +218,8 @@ window "infobuttons"
 		command = "webmap"
 	elem "rules"
 		type = BUTTON
-		pos = 395,5
-		size = 50x25
+		pos = 395,0
+		size = 50x30
 		anchor1 = 62,0
 		anchor2 = 70,100
 		background-color = none
@@ -228,8 +228,8 @@ window "infobuttons"
 		command = "rules"
 	elem "wiki"
 		type = BUTTON
-		pos = 495,5
-		size = 50x25
+		pos = 495,0
+		size = 50x30
 		anchor1 = 77,0
 		anchor2 = 85,100
 		background-color = none
@@ -238,8 +238,8 @@ window "infobuttons"
 		command = "wiki"
 	elem "forum"
 		type = BUTTON
-		pos = 295,5
-		size = 100x25
+		pos = 295,0
+		size = 100x30
 		anchor1 = 46,0
 		anchor2 = 62,100
 		background-color = none
@@ -248,8 +248,8 @@ window "infobuttons"
 		command = "forum"
 	elem "github"
 		type = BUTTON
-		pos = 195,5
-		size = 100x25
+		pos = 195,0
+		size = 100x30
 		anchor1 = 30,0
 		anchor2 = 46,100
 		background-color = none
@@ -264,21 +264,14 @@ window "infowindow"
 		size = 640x475
 		anchor1 = -1,-1
 		anchor2 = -1,-1
-		background-color = none
 		saved-params = "pos;size;is-minimized;is-maximized"
 		is-pane = true
-		outer-size = 656x533
-		outer-pos = 291,0
-		inner-size = 640x475
-		inner-pos = 8,31
-		screen-size = 1920x1040
 	elem "info"
 		type = CHILD
 		pos = 0,5
 		size = 640x475
 		anchor1 = 0,0
 		anchor2 = 100,100
-		background-color = none
 		saved-params = "splitter"
 		left = "statwindow"
 		right = "outputwindow"

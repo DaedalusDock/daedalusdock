@@ -271,7 +271,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 		. += span_alert("The lighting ballast appears to be damaged, this could be fixed with a multitool.")
 
 	if(is_station_level(z))
-		var/datum/roll_result/result = user.get_examine_result("light")
+		var/datum/roll_result/result = user.get_examine_result("light", 12)
 		if(result?.outcome >= SUCCESS)
 			result.do_skill_sound(user)
 			. += result.create_tooltip("A ninety-three degree fire rages within a gaseous prison.", body_only = TRUE)

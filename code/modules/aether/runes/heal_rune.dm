@@ -1,6 +1,12 @@
 /obj/effect/aether_rune/heal
 	rune_type = "heal"
 
+	invocation_phrases = list(
+		"Bes' arlo" = 1.5 SECONDS,
+		"Ta'ot evtza lobes hak kalbokshlo" = 4 SECONDS,
+		"Sha layef hokhinshshlokas" = 3 SECONDS,
+	)
+
 /obj/effect/aether_rune/wipe_state()
 	for(var/item in blackboard[RUNE_BB_HEAL_REAGENT_CONTAINERS])
 		unregister_item(item)

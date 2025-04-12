@@ -81,6 +81,7 @@
 
 	backpack_contents = list(
 		/obj/item/diagnosis_book = 1,
+		/obj/item/storage/box/chalk = 1,
 	)
 
 	chameleon_extras = list(

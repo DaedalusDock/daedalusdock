@@ -360,6 +360,37 @@
 	if((owner?.stat == CONSCIOUS) && owner.needs_organ(ORGAN_SLOT_LUNGS))
 		owner.manual_emote("[owner] begins choking and grabbing at [owner.p_their()] throat!")
 
+/obj/item/organ/lungs/stethoscope_listen()
+	. = ..()
+	if(owner.failed_last_breath)
+		. += "no respiration"
+		return
+
+	if(organ_flags & ORGAN_SYNTHETIC)
+		if(passed_low_threshold())
+			. += "malfunctioning fans"
+		else
+			. += "air flowing"
+		return
+
+	if(passed_low_threshold())
+		. += "[pick("wheezing", "gurgling")] sounds"
+
+	var/list/breath_info = list()
+	if(owner.getOxyLoss() > 50)
+		breath_info += pick("straining","labored")
+
+	if(owner.shock_stage > SHOCK_TIER_3)
+		breath_info += "shallow"
+		breath_info += "rapid"
+
+	if(!length(breath_info))
+		breath_info += "healthy"
+
+	. += "[english_list(breath_info)] breathing"
+
+	return english_list(.)
+
 /obj/item/organ/lungs/slime
 	name = "vacuole"
 	desc = "A large organelle designed to store oxygen and other important gasses."

@@ -12,3 +12,13 @@
   - bugfix: The latejoin menu renders correctly.
   - rscadd: You will now gasp while asystole, even while unconscious.
   - rscadd: Added a cooldown to gasping due to an inability to breathe.
+2025-04-11:
+  Doctor-Derp:
+  - rscadd: Added 25 new hairstyles.
+  - rscdel: Removed duplicate hairstyles.
+  - qol: icon_states present in hair.dmi are now in alphabetical order.
+  - code_imp: Added a hairstyle preference save migration.
+  - code_imp: Several hairstyle code paths and names have been sorted and simplified.
+  Kapu1178:
+  - bugfix: Fixed many cases of NumberInput fields in TGUI not working.
+  - rscadd: Stethoscopes can now be used to diagnose brainmed issues.

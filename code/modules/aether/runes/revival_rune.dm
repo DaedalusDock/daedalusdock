@@ -1,6 +1,9 @@
 /obj/effect/aether_rune/revival
 	rune_type = "revival"
 
+	required_helpers = 3
+	required_blood_amt = 60
+
 	invocation_phrases = list(
 		"Bes' arlo" = 1.5 SECONDS,
 		"Lahin shlotov sha layef" = 3 SECONDS,
@@ -73,17 +76,16 @@
 		return FALSE
 
 /obj/effect/aether_rune/revival/succeed_invoke(mob/living/carbon/human/target_mob)
-	var/obj/item/organ/brain/B = target_mob.getorganslot(ORGAN_SLOT_BRAIN)
-	B.applyOrganDamage(-INFINITY)
-	B.set_organ_dead(FALSE)
-
 	for(var/obj/item/organ/O in target_mob.processing_organs)
 		if(O.organ_flags & ORGAN_SYNTHETIC)
 			continue
 
-		B.applyOrganDamage(-INFINITY)
-		B.set_organ_dead(FALSE)
-		B.germ_level = 0
+		O.applyOrganDamage(-INFINITY)
+		O.set_organ_dead(FALSE)
+		O.germ_level = 0
+		if(istype(O, /obj/item/organ/brain))
+			var/obj/item/organ/brain/B = O
+			B.cure_all_traumas(TRAUMA_LIMIT_MAGIC)
 
 	target_mob.set_heartattack(FALSE)
 	target_mob.revive()

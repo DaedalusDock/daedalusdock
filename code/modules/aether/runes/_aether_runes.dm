@@ -25,7 +25,7 @@
 	/// How much blood the miracle needs.
 	var/required_blood_amt = 30
 	/// How many extra people are needed to invoke the rune.
-	var/required_helpers = 0
+	var/required_helpers = 1
 	/// A lazylist of mobs currently touching the rune.
 	var/list/touching_rune
 

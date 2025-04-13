@@ -2,7 +2,7 @@
 	rune_type = "revival"
 
 	required_helpers = 3
-	required_blood_amt = 60
+	required_blood_amt = 30
 
 	invocation_phrases = list(
 		"Bes' arlo" = 1.5 SECONDS,

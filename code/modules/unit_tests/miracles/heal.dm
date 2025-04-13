@@ -1,7 +1,7 @@
-/datum/unit_test/heal_miracle
+/datum/unit_test/miracle/heal
 	name = "MIRACLES/HEAL: Heal Miracle Works."
 
-/datum/unit_test/heal_miracle/Run()
+/datum/unit_test/miracle/heal/Run()
 	var/mob/living/carbon/human/invoker = ALLOCATE_BOTTOM_LEFT()
 	var/mob/living/carbon/human/target = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/aether_tome/tome = ALLOCATE_BOTTOM_LEFT()
@@ -12,8 +12,7 @@
 	var/obj/item/reagent_containers/glass/bottle/burnboil_bottle = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/reagent_containers/glass/bottle/calomel_bottle = ALLOCATE_BOTTOM_LEFT()
 
-	var/obj/effect/aether_rune/heal/heal_rune = ALLOCATE_BOTTOM_LEFT()
-	heal_rune.required_helpers = 0
+	var/obj/effect/aether_rune/heal/heal_rune = allocate_rune(__IMPLIED_TYPE__)
 
 	SSmobs.can_fire = FALSE
 
@@ -35,7 +34,7 @@
 	target.set_heartattack(TRUE)
 
 	invoker.ClickOn(heal_rune)
-	sleep(1 SECOND)
+	await_miracle(heal_rune)
 
 	TEST_ASSERT(!blood_bottle.reagents.has_reagent(/datum/reagent/blood), "Blood reagent was not consumed by the miracle.")
 

@@ -1,7 +1,7 @@
-/datum/unit_test/exchange_miracle
+/datum/unit_test/miracle/exchange
 	name = "MIRACLES/EXCHANGE: Exchange Miracle Works."
 
-/datum/unit_test/exchange_miracle/Run()
+/datum/unit_test/miracle/exchange/Run()
 	var/mob/living/carbon/human/invoker = ALLOCATE_BOTTOM_LEFT()
 	var/mob/living/carbon/human/target = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/aether_tome/tome = ALLOCATE_BOTTOM_LEFT()
@@ -10,8 +10,7 @@
 	var/obj/item/organ/heart/new_heart = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/bodypart/arm/right/new_arm = ALLOCATE_BOTTOM_LEFT()
 
-	var/obj/effect/aether_rune/exchange/exchange_rune = ALLOCATE_BOTTOM_LEFT()
-	exchange_rune.required_helpers = 0
+	var/obj/effect/aether_rune/exchange/exchange_rune = allocate_rune(__IMPLIED_TYPE__)
 
 	invoker.forceMove(get_step(invoker, NORTH))
 	invoker.put_in_active_hand(tome)
@@ -20,7 +19,7 @@
 	blood_bottle.reagents.add_reagent(/datum/reagent/blood, /obj/effect/aether_rune/exchange::required_blood_amt)
 
 	invoker.ClickOn(exchange_rune)
-	sleep(1 SECOND)
+	await_miracle(exchange_rune)
 
 	TEST_ASSERT(target.getorganslot(ORGAN_SLOT_HEART) == new_heart, "Heart was not swapped.")
 	TEST_ASSERT(target.get_bodypart(BODY_ZONE_R_ARM) == new_arm, "Arm was not swapped.")

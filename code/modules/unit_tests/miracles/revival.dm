@@ -1,7 +1,7 @@
-/datum/unit_test/revival_miracle
+/datum/unit_test/miracle/revival
 	name = "MIRACLES/REVIVAL: Revival Miracle Works."
 
-/datum/unit_test/revival_miracle/Run()
+/datum/unit_test/miracle/revival/Run()
 	var/mob/living/carbon/human/invoker = ALLOCATE_BOTTOM_LEFT()
 	var/mob/living/carbon/human/target = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/aether_tome/tome = ALLOCATE_BOTTOM_LEFT()
@@ -10,8 +10,8 @@
 	var/obj/item/reagent_containers/glass/bottle/woundseal_bottle = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/organ/heart/heart = ALLOCATE_BOTTOM_LEFT()
 
-	var/obj/effect/aether_rune/revival/revival_rune = ALLOCATE_BOTTOM_LEFT()
-	revival_rune.required_helpers = 0
+	var/obj/effect/aether_rune/revival/revival_rune = allocate_rune(__IMPLIED_TYPE__)
+
 
 	invoker.forceMove(get_step(invoker, NORTH))
 	invoker.put_in_active_hand(tome)
@@ -26,7 +26,7 @@
 	)
 
 	invoker.ClickOn(revival_rune)
-	sleep(1 SECOND)
+	await_miracle(revival_rune)
 
 	TEST_ASSERT(target.stat != DEAD, "Target was not revived by the miracle.")
 

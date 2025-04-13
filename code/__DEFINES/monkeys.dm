@@ -27,7 +27,7 @@
 #define MONKEY_RETALIATE_PROB 85
 
 /// amount of aggro to add to an enemy when they attack user
-#define MONKEY_HATRED_AMOUNT 4
+#define MONKEY_HATRED_AMOUNT 7
 /// amount of aggro to add to an enemy when a monkey is recruited
 #define MONKEY_RECRUIT_HATED_AMOUNT 2
 

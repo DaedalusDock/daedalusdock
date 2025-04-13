@@ -320,7 +320,7 @@
 /obj/projectile/tentacle/proc/tentacle_grab(mob/living/carbon/human/H, mob/living/carbon/C)
 	if(H.Adjacent(C))
 		if(H.get_active_held_item() && !H.get_inactive_held_item())
-			H.swap_hand()
+			H.try_swap_hand()
 		if(H.get_active_held_item())
 			return
 

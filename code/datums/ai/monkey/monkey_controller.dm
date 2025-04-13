@@ -13,6 +13,8 @@ have ways of interacting with a specific mob and control it.
 		/datum/ai_planning_subtree/monkey_shenanigans,
 	)
 	blackboard = list(
+		BB_TARGETING_STRATEGY = /datum/targeting_strategy/generic/monkey,
+		BB_TARGET_MINIMUM_STAT = DEAD,
 		BB_MONKEY_AGGRESSIVE = FALSE,
 		BB_MONKEY_BEST_FORCE_FOUND = 0,
 		BB_MONKEY_ENEMIES = list(),
@@ -107,6 +109,10 @@ have ways of interacting with a specific mob and control it.
 	for(var/obj/item/item in oview(2, living_pawn))
 		nearby_items += item
 
+	for(var/obj/item/item in living_pawn.held_items) // If we've got some garbage in out hands that's going to stop us from effectively attacking, we should get rid of it.
+		if(item.force < 2)
+			living_pawn.dropItemToGround(item)
+
 	weapon = GetBestWeapon(src, nearby_items, living_pawn.held_items)
 
 	var/pickpocket = FALSE
@@ -130,6 +136,9 @@ have ways of interacting with a specific mob and control it.
 
 ///Reactive events to being hit
 /datum/ai_controller/monkey/proc/retaliate(mob/living/L)
+	if(QDELETED(L))
+		return
+
 	add_blackboard_key_assoc(BB_MONKEY_ENEMIES, L, MONKEY_HATRED_AMOUNT)
 
 /datum/ai_controller/monkey/proc/on_attackby(datum/source, obj/item/I, mob/user)

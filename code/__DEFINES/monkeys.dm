@@ -32,7 +32,7 @@
 #define MONKEY_RECRUIT_HATED_AMOUNT 2
 
 /// probability of reducing aggro by one when the monkey attacks
-#define MONKEY_HATRED_REDUCTION_PROB 20
+#define MONKEY_HATRED_REDUCTION_PROB 35
 /// probability of reducing aggro by one when the monkey is unable to attack
 #define MONKEY_HATRED_REDUCTION_FAILATTACK_PROB 50
 

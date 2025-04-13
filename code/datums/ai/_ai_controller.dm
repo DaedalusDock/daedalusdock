@@ -131,7 +131,7 @@ multiple modular subtrees with behaviors
 
 ///Abstract proc for initializing the pawn to the new controller
 /datum/ai_controller/proc/TryPossessPawn(atom/new_pawn)
-	return
+	return NONE
 
 ///Proc for deinitializing the pawn to the old controller
 /datum/ai_controller/proc/UnpossessPawn(destroy)
@@ -147,14 +147,17 @@ multiple modular subtrees with behaviors
 ///Returns TRUE if the ai controller can actually run at the moment.
 /datum/ai_controller/proc/able_to_run()
 	if(HAS_TRAIT(pawn, TRAIT_AI_PAUSED))
+		DEBUG_AI_LOG(src, "Unable to run, paused.")
 		return FALSE
 
 	if(world.time < paused_until)
+		DEBUG_AI_LOG(src, "Unable to run, paused.")
 		return FALSE
 
 	if(isliving(pawn))
 		var/mob/living/living_pawn = pawn
 		if(IS_DEAD_OR_INCAP(living_pawn))
+			DEBUG_AI_LOG(src, "Unable to run, dead or incap pawn.")
 			return FALSE
 	return TRUE
 
@@ -255,12 +258,13 @@ multiple modular subtrees with behaviors
 			DEBUG_AI_LOG(src, "Processing paused.")
 
 	SEND_SIGNAL(src, COMSIG_AI_STATUS_CHANGE, ai_status)
+	return TRUE
 
 /datum/ai_controller/proc/PauseAi(time)
 	paused_until = world.time + time
 
 /datum/ai_controller/proc/set_move_target(atom/thing)
-	DEBUG_AI_LOG(src, isnull(thing) ? "Canceled movement plan" : "Moving towards [COORD(thing)]")
+	DEBUG_AI_LOG(src, isnull(thing) ? "Cancelled movement plan" : "Moving towards [COORD(thing)]")
 	current_movement_target = thing
 
 ///Call this to add a behavior to the stack.

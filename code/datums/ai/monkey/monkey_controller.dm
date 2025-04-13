@@ -40,6 +40,7 @@ have ways of interacting with a specific mob and control it.
 	. = ..()
 	if(. & AI_CONTROLLER_INCOMPATIBLE)
 		return
+
 	set_blackboard_key(BB_MONKEY_AGGRESSIVE, TRUE) //Angry cunt
 
 /datum/ai_controller/monkey/TryPossessPawn(atom/new_pawn)
@@ -59,6 +60,17 @@ have ways of interacting with a specific mob and control it.
 	RegisterSignal(new_pawn, COMSIG_ATOM_HULK_ATTACK, PROC_REF(on_attack_hulk))
 	RegisterSignal(new_pawn, COMSIG_CARBON_CUFF_ATTEMPTED, PROC_REF(on_attempt_cuff))
 	return ..() //Run parent at end
+
+/datum/ai_controller/monkey/set_ai_status(new_ai_status)
+	. = ..()
+	if(!.)
+		return
+
+	var/mob/living/living_pawn = pawn
+	if(ai_status == AI_STATUS_ON)
+		living_pawn.apply_status_effect(/datum/status_effect/monkey_retardation)
+	else
+		living_pawn.remove_status_effect(/datum/status_effect/monkey_retardation)
 
 /datum/ai_controller/monkey/UnpossessPawn(destroy)
 	UnregisterSignal(pawn, list(
@@ -140,6 +152,7 @@ have ways of interacting with a specific mob and control it.
 		return
 
 	add_blackboard_key_assoc(BB_MONKEY_ENEMIES, L, MONKEY_HATRED_AMOUNT)
+	DEBUG_AI_LOG(src, "Added hatred to [L].")
 
 /datum/ai_controller/monkey/proc/on_attackby(datum/source, obj/item/I, mob/user)
 	SIGNAL_HANDLER

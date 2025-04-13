@@ -11,6 +11,7 @@
 	var/obj/item/bodypart/arm/right/new_arm = ALLOCATE_BOTTOM_LEFT()
 
 	var/obj/effect/aether_rune/exchange/exchange_rune = ALLOCATE_BOTTOM_LEFT()
+	exchange_rune.required_helpers = 0
 
 	invoker.forceMove(get_step(invoker, NORTH))
 	invoker.put_in_active_hand(tome)

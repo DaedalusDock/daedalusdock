@@ -13,6 +13,7 @@
 	var/obj/item/reagent_containers/glass/bottle/calomel_bottle = ALLOCATE_BOTTOM_LEFT()
 
 	var/obj/effect/aether_rune/heal/heal_rune = ALLOCATE_BOTTOM_LEFT()
+	heal_rune.required_helpers = 0
 
 	SSmobs.can_fire = FALSE
 

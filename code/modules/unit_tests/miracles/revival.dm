@@ -11,6 +11,7 @@
 	var/obj/item/organ/heart/heart = ALLOCATE_BOTTOM_LEFT()
 
 	var/obj/effect/aether_rune/revival/revival_rune = ALLOCATE_BOTTOM_LEFT()
+	revival_rune.required_helpers = 0
 
 	invoker.forceMove(get_step(invoker, NORTH))
 	invoker.put_in_active_hand(tome)

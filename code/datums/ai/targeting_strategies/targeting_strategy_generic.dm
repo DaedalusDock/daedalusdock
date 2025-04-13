@@ -89,6 +89,7 @@
 	return pawn.faction_check_atom(the_target, exact_match = check_factions_exactly)
 
 /datum/targeting_strategy/generic/monkey
+	stop_attack_on_incap = TRUE
 
 /datum/targeting_strategy/generic/monkey/faction_check(datum/ai_controller/controller, mob/living/pawn, mob/living/the_target)
 	if(controller.blackboard[BB_MONKEY_ENEMIES][the_target])

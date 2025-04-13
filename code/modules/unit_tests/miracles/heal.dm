@@ -44,6 +44,6 @@
 	TEST_ASSERT(target.blood_volume == BLOOD_VOLUME_NORMAL, "Target does not have normal blood volume, [target.blood_volume].")
 	TEST_ASSERT(!target.undergoing_cardiac_arrest(), "Target is still undergoing a heartattack.")
 
-/datum/unit_test/heal_miracle/Destroy()
+/datum/unit_test/miracle/heal/Destroy()
 	SSmobs.can_fire = TRUE
 	return ..()

@@ -960,6 +960,12 @@
 	name = "\improper Ward (Central)"
 	icon_state = "med_central"
 
+	flavor_texts = list(
+		"A spectral waltz occurs out of sight. The dead walk these halls.",
+		"A masked man turns the corner, and removes his face. You see yourself.",
+		"Many lives have been lost here, yet none, found."
+	)
+
 /area/station/medical/medbay/lobby
 	name = "\improper Ward Foyer"
 	icon_state = "med_lobby"

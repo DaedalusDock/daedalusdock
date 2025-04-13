@@ -208,7 +208,7 @@
 	desc = "A box able to fit 9 syringes."
 	illustration = "syringe"
 
-	storage_type = /datum/storage/box/syringe
+	storage_type = /datum/storage/box/small_skinny
 
 /obj/item/storage/box/syringes/PopulateContents()
 	for(var/i in 1 to 9)
@@ -228,7 +228,7 @@
 	desc = "A box full of epinephrine MediPens."
 	illustration = "epipen"
 
-	storage_type = /datum/storage/box/syringe
+	storage_type = /datum/storage/box/small_skinny
 
 /obj/item/storage/box/medipens/PopulateContents()
 	for(var/i in 1 to 7)
@@ -1027,8 +1027,10 @@
 	name = "box of fountain pens"
 	illustration = "fpen"
 
+	storage_type = /datum/storage/box/small_skinny
+
 /obj/item/storage/box/fountainpens/PopulateContents()
-	for(var/i in 1 to 7)
+	for(var/i in 1 to 9)
 		new /obj/item/pen/fountain(src)
 
 /obj/item/storage/box/holy_grenades
@@ -1595,3 +1597,14 @@
 							  /obj/item/food/sustenance_bar/wonka = 1))
 		new randomFood(src)
 	new /obj/item/storage/box/gum/wake_up(src)
+
+/obj/item/storage/box/chalk
+	name = "box of chalk"
+	desc = "A box able to fit 9 sticks of chalk."
+	illustration = "fpen"
+
+	storage_type = /datum/storage/box/small_skinny
+
+/obj/item/storage/box/chalk/PopulateContents()
+	for(var/i in 1 to 9)
+		new /obj/item/chalk(src)

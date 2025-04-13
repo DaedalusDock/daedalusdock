@@ -74,6 +74,12 @@
 		if(T.IsReachableBy(reacher))
 			return TRUE
 
+/obj/effect/aether_rune/wash(clean_types)
+	. = ..()
+	if (. || (clean_types & CLEAN_TYPE_RUNES))
+		qdel(src)
+		return TRUE
+
 /obj/effect/aether_rune/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
 	if(.)

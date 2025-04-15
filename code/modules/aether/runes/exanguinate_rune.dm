@@ -55,7 +55,6 @@
 		return FALSE
 
 /obj/effect/aether_rune/exanguinate/succeed_invoke(mob/living/carbon/human/target_mob)
-#warn add sound effects and shit here
 	var/list/reagent_containers = blackboard[RUNE_BB_EXANGUINATE_CONTAINERS]
 	var/list/not_full_containers = reagent_containers.Copy()
 
@@ -77,5 +76,16 @@
 	for(var/obj/item/reagent_containers/container as anything in reagent_containers)
 		container.reagents.handle_reactions()
 
+	if(blood_to_disperse - blood_spent > 100) // 100+ blood remaining
+		blood_spent += 100
+		for(var/_dir in GLOB.alldirs)
+			if(prob(50))
+				target_mob.spray_blood(_dir, 3)
+
+	target_mob.add_splatter_floor(get_turf(target_mob))
 	target_mob.adjustBloodVolume(-blood_spent)
+
+	target_mob.visible_message(span_statsgood("Hundreds of blood globules spring out from [target_mob] and leap into the nearby containers."))
+	playsound(src, 'sound/effects/wounds/blood2.ogg', 50)
+	playsound(src, 'sound/effects/wounds/crack1.ogg', 50)
 	return ..()

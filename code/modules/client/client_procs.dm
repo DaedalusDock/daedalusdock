@@ -1412,3 +1412,5 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	popup.set_window_options("can_close=1;can_resize=0")
 	popup.set_content(content)
 	popup.open()
+
+

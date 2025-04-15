@@ -4611,6 +4611,7 @@
 #include "code\modules\three_dsix\skills\willpower.dm"
 #include "code\modules\three_dsix\stats\_stat.dm"
 #include "code\modules\three_dsix\stats\kinesis.dm"
+#include "code\modules\three_dsix\stats\pneuma.dm"
 #include "code\modules\three_dsix\stats\psyche.dm"
 #include "code\modules\three_dsix\stats\soma.dm"
 #include "code\modules\tooltip\tooltip.dm"

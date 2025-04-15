@@ -60,8 +60,6 @@
 	outer_ring.vis_flags = VIS_INHERIT_ID | VIS_INHERIT_LAYER | VIS_INHERIT_PLANE | VIS_INHERIT_ICON
 	add_viscontents(outer_ring)
 
-	setup_blackboard()
-
 /obj/effect/aether_rune/Destroy(force)
 	touching_rune = null
 	timed_action = null

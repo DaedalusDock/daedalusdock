@@ -1,7 +1,7 @@
 /obj/effect/aether_rune/exanguinate
 	rune_type = "exanguinate"
 
-	required_helpers = 0
+	required_helpers = 1
 	required_blood_amt = 0
 
 	invocation_phrases = list(

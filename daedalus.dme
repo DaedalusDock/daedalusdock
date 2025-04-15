@@ -2134,6 +2134,7 @@
 #include "code\modules\aether\aether_tome.dm"
 #include "code\modules\aether\chalk.dm"
 #include "code\modules\aether\runes\_aether_runes.dm"
+#include "code\modules\aether\runes\exanguinate_rune.dm"
 #include "code\modules\aether\runes\exchange_rune.dm"
 #include "code\modules\aether\runes\heal_rune.dm"
 #include "code\modules\aether\runes\revival_rune.dm"

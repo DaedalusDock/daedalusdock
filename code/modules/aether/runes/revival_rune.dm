@@ -13,6 +13,16 @@
 	var/required_woundseal_amt = 30
 	var/required_woundseal_potency = 80
 
+/obj/effect/aether_rune/revival/setup_blackboard()
+	blackboard = list(
+		RUNE_BB_TOME = null,
+		RUNE_BB_INVOKER = null,
+		RUNE_BB_TARGET_MOB = null,
+		RUNE_BB_BLOOD_CONTAINER = null,
+		RUNE_BB_REVIVAL_WOUNDSEAL_CONTAINER = null,
+		RUNE_BB_REVIVAL_HEART = null
+	)
+
 /obj/effect/aether_rune/revival/find_target_mob()
 	for(var/mob/living/carbon/human/H in loc)
 		if(H.stat != DEAD)

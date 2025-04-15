@@ -21,6 +21,10 @@
 /// List of reagents containers containing tinctures.
 #define RUNE_BB_HEAL_REAGENT_CONTAINERS "heal_reagent_containers"
 
+// Exanguinate rune
+/// List of reagent containers to put blood into.
+#define RUNE_BB_EXANGUINATE_CONTAINERS "exanguinate_containers"
+
 /// Graceful fails should have NO SIDE EFFECTS.
 #define RUNE_FAIL_GRACEFUL "graceful_fail"
 

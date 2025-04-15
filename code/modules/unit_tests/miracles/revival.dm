@@ -2,31 +2,20 @@
 	name = "MIRACLES/REVIVAL: Revival Miracle Works."
 
 /datum/unit_test/miracle/revival/Run()
-	var/mob/living/carbon/human/invoker = ALLOCATE_BOTTOM_LEFT()
-	var/mob/living/carbon/human/target = ALLOCATE_BOTTOM_LEFT()
-	var/obj/item/aether_tome/tome = ALLOCATE_BOTTOM_LEFT()
+	setup(/obj/effect/aether_rune/revival)
 
-	var/obj/item/reagent_containers/glass/bottle/blood_bottle = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/reagent_containers/glass/bottle/woundseal_bottle = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/organ/heart/heart = ALLOCATE_BOTTOM_LEFT()
 
-	var/obj/effect/aether_rune/revival/revival_rune = allocate_rune(__IMPLIED_TYPE__)
-
-
-	invoker.forceMove(get_step(invoker, NORTH))
-	invoker.put_in_active_hand(tome)
-
 	target.death()
 
-	blood_bottle.reagents.add_reagent(/datum/reagent/blood, /obj/effect/aether_rune/revival::required_blood_amt)
 	woundseal_bottle.reagents.add_reagent(
 		/datum/reagent/tincture/woundseal,
 		/obj/effect/aether_rune/revival::required_woundseal_amt,
 		list("potency" = /obj/effect/aether_rune/revival::required_woundseal_potency),
 	)
 
-	invoker.ClickOn(revival_rune)
-	await_miracle(revival_rune)
+	start_miracle()
 
 	TEST_ASSERT(target.stat != DEAD, "Target was not revived by the miracle.")
 

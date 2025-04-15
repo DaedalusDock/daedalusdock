@@ -57,6 +57,8 @@
 	outer_ring.vis_flags = VIS_INHERIT_ID | VIS_INHERIT_LAYER | VIS_INHERIT_PLANE | VIS_INHERIT_ICON
 	add_viscontents(outer_ring)
 
+	setup_blackboard()
+
 /obj/effect/aether_rune/Destroy(force)
 	touching_rune = null
 	try_cancel_invoke(RUNE_FAIL_GRACEFUL)
@@ -109,6 +111,9 @@
 		try_invoke(user, weapon)
 		return TRUE
 
+/obj/effect/aether_rune/proc/setup_blackboard()
+	CRASH("Unimplemented setup_blackboard on [type].")
+
 /obj/effect/aether_rune/proc/wipe_state()
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -130,6 +135,7 @@
 
 /// Attempt to invoke the rune.
 /obj/effect/aether_rune/proc/try_invoke(mob/living/user, obj/item/aether_tome/tome)
+	setup_blackboard()
 	pre_invoke(user, tome)
 
 	if(!can_invoke())
@@ -148,7 +154,7 @@
 	if(length(touching_rune) < required_helpers)
 		return FALSE
 
-	if(!blackboard[RUNE_BB_TARGET_MOB])
+	if((RUNE_BB_TARGET_MOB in blackboard) && !blackboard[RUNE_BB_TARGET_MOB])
 		return FALSE
 
 	if(required_blood_amt && !blackboard[RUNE_BB_BLOOD_CONTAINER])
@@ -172,14 +178,15 @@
 		blackboard[RUNE_BB_TARGET_MOB] = target_mob
 		register_target_mob(target_mob)
 
-	for(var/obj/item/reagent_containers/reagent_container in orange(1, src))
-		if(!reagent_container.is_open_container())
-			continue
+	if(required_blood_amt)
+		for(var/obj/item/reagent_containers/reagent_container in orange(1, src))
+			if(!reagent_container.is_open_container())
+				continue
 
-		if(reagent_container.reagents.has_reagent(/datum/reagent/blood, required_blood_amt))
-			blackboard[RUNE_BB_BLOOD_CONTAINER] = reagent_container
-			register_item(reagent_container)
-			break
+			if(reagent_container.reagents.has_reagent(/datum/reagent/blood, required_blood_amt))
+				blackboard[RUNE_BB_BLOOD_CONTAINER] = reagent_container
+				register_item(reagent_container)
+				break
 
 /// Begin invoking a rune.
 /obj/effect/aether_rune/proc/begin_invoke()

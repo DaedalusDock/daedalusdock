@@ -42,7 +42,6 @@
 /// Start the miracle by clicking on the rune.
 /datum/unit_test/miracle/proc/start_miracle()
 	invoker.ClickOn(rune)
-	await_miracle(rune)
 
-/datum/unit_test/miracle/proc/await_miracle(obj/effect/aether_rune/rune)
-	sleep(1 SECOND)
+	var/timeout = world.time + 1 SECOND
+	UNTIL(isnull(rune.timed_action) || (world.time >= timeout))

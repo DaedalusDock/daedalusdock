@@ -37,6 +37,9 @@
 
 	var/invoking = RUNE_INVOKING_IDLE
 
+	/// Timed action datum that manages the invocation process.
+	var/datum/timed_action/aether_rune/timed_action
+
 	var/obj/effect/abstract/particle_holder/particle_holder
 	/// Outer ring inside our vis_contents, to be animated seperately.
 	var/obj/effect/abstract/outer_ring
@@ -61,6 +64,7 @@
 
 /obj/effect/aether_rune/Destroy(force)
 	touching_rune = null
+	timed_action = null
 	try_cancel_invoke(RUNE_FAIL_GRACEFUL)
 	QDEL_NULL(outer_ring)
 	QDEL_NULL(particle_holder)
@@ -143,8 +147,7 @@
 		return FALSE
 
 	. = TRUE
-	spawn(-1)
-		begin_invoke(user, tome)
+	begin_invoke(user, tome)
 
 /// Returns TRUE if the rune can be invoked.
 /obj/effect/aether_rune/proc/can_invoke()
@@ -192,43 +195,11 @@
 /obj/effect/aether_rune/proc/begin_invoke()
 	set waitfor = FALSE
 
-	invoking = RUNE_INVOKING_ACTIVE
-
 	visible_message(span_statsgood("[src] erupts with an eerie glow, and begins to spin."))
 	var/mob/living/user = blackboard[RUNE_BB_INVOKER]
-
 	playsound(user, 'sound/magic/magic_block_mind.ogg', 50, TRUE)
-
-	var/time = 0
-	for(var/phrase in invocation_phrases)
-		time += invocation_phrases[phrase]
-
-	start_invoke_animation(time)
-
-	var/next_phrase_time = 1
-	var/next_phrase_index = 1
-	while(TRUE)
-		if(!user?.can_speak_vocal())
-			try_cancel_invoke(RUNE_FAIL_INVOKER_INCAP)
-
-		if(invoking == RUNE_INVOKING_PENDING_CANCEL)
-			fail_invoke(blackboard[RUNE_BB_CANCEL_REASON], blackboard[RUNE_BB_CANCEL_SOURCE])
-			return
-
-		if(next_phrase_time <= world.time)
-			if(next_phrase_index > length(invocation_phrases))
-				succeed_invoke(blackboard[RUNE_BB_TARGET_MOB])
-				return
-
-			var/phrase = invocation_phrases[next_phrase_index]
-			user.say(phrase, language = /datum/language/common, ignore_spam = TRUE, forced = "miracle invocation")
-			next_phrase_index++
-			#ifndef UNIT_TESTS
-			next_phrase_time = world.time + invocation_phrases[phrase]
-			#endif
-
-		//stoplag(world.tick_lag)
-		sleep(world.tick_lag)
+	timed_action = new(src)
+	timed_action.wait()
 
 /// Finish invoking a rune.
 /obj/effect/aether_rune/proc/succeed_invoke(mob/living/carbon/human/target_mob)
@@ -253,13 +224,13 @@
 
 /// Cancel the invocation if it wasn't cancelled already.
 /obj/effect/aether_rune/proc/try_cancel_invoke(reason, source)
-	if(invoking == RUNE_INVOKING_IDLE)
+	if(isnull(timed_action))
 		return
 
-	if((reason != RUNE_FAIL_GRACEFUL) && (invoking == RUNE_INVOKING_PENDING_CANCEL))
+	if(timed_action.status != ACTION_WORKING)
 		return
 
-	invoking = RUNE_INVOKING_PENDING_CANCEL
+	timed_action.cancel()
 	blackboard[RUNE_BB_CANCEL_REASON] = reason
 	blackboard[RUNE_BB_CANCEL_SOURCE] = source
 

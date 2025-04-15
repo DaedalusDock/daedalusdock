@@ -55,7 +55,7 @@
 		return FALSE
 
 /obj/effect/aether_rune/exanguinate/succeed_invoke(mob/living/carbon/human/target_mob)
-
+#warn add sound effects and shit here
 	var/list/reagent_containers = blackboard[RUNE_BB_EXANGUINATE_CONTAINERS]
 	var/list/not_full_containers = reagent_containers.Copy()
 

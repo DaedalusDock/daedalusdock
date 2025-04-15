@@ -1,7 +1,3 @@
-#define WORKING 0
-#define CANCELLED 1
-#define SUCCEEDED 2
-
 /datum/timed_action
 	var/atom/movable/user
 	var/list/targets
@@ -21,7 +17,7 @@
 
 	var/drifting = FALSE
 
-	var/status = WORKING
+	var/status = -1
 
 /datum/timed_action/New(_user, _targets, _time, _progress, _timed_action_flags, _extra_checks, image/_display)
 	user = _user
@@ -98,16 +94,25 @@
 			RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(target_moved))
 
 /datum/timed_action/proc/cancel()
-	status = CANCELLED
+	if(status == ACTION_CANCELLED)
+		return
+
+	status = ACTION_CANCELLED
 	STOP_PROCESSING(SStimed_action, src)
+	on_cancel()
+
+/// Called when the action is cancelled.
+/datum/timed_action/proc/on_cancel()
+	return
 
 /datum/timed_action/proc/wait()
 	START_PROCESSING(SStimed_action, src)
 
-	while(status == WORKING)
+	status = ACTION_WORKING
+	while(status == ACTION_WORKING)
 		sleep(world.tick_lag)
 
-	. = (status == CANCELLED) ? FALSE : TRUE
+	. = (status == ACTION_CANCELLED) ? FALSE : TRUE
 
 	if(!QDELETED(progbar))
 		progbar.end_progress()
@@ -115,10 +120,6 @@
 	qdel(src)
 
 /datum/timed_action/process(delta_time)
-	if(world.time >= end_time)
-		status = SUCCEEDED
-		return PROCESS_KILL
-
 	// Anything requiring a mob cannot happen if it isn't a mob in New() so this is safe.
 	var/mob/mob_user = user
 
@@ -130,8 +131,25 @@
 		cancel()
 		return
 
+	if(!on_process())
+		cancel()
+		return
+
+	if(world.time >= end_time)
+		status = ACTION_SUCCEEDED
+		on_success()
+		return PROCESS_KILL
+
 	if(!QDELETED(progbar))
 		progbar.update(world.time - start_time)
+
+/// For subtypes to implement behavior in process(). Return FALSE to cancel the timed action.
+/datum/timed_action/proc/on_process()
+	return TRUE
+
+/// Called when the timed action succeeds.
+/datum/timed_action/proc/on_success()
+	return
 
 /datum/timed_action/proc/user_gone(datum/source)
 	SIGNAL_HANDLER
@@ -172,7 +190,3 @@
 
 	if(source.loc != targets[source])
 		cancel()
-
-#undef WORKING
-#undef CANCELLED
-#undef SUCCEEDED

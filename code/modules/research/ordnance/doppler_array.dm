@@ -183,7 +183,7 @@
 
 /obj/machinery/doppler_array/Destroy()
 	inserted_drive = null
-	QDEL_NULL(records) //We only want the list nuked, not the contents.
+	records = null //We only want the list nuked, not the contents.
 	. = ..()
 
 /obj/machinery/doppler_array/proc/update_doppler_light()

@@ -197,7 +197,7 @@ const IDCardTarget = (props) => {
       {!!(has_id && authenticatedUser) && (
         <>
           <Stack mt={1}>
-            <Stack.Item align="center">Details:</Stack.Item>
+            <Stack.Item align="center">Name:</Stack.Item>
             <Stack.Item grow={1} mr={1} ml={1}>
               <Input
                 width="100%"

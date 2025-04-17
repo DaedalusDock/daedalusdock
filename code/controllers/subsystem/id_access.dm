@@ -200,10 +200,14 @@ SUBSYSTEM_DEF(id_access)
 			var/list/templates = manager["templates"]
 			templates[trim_path] = trim.assignment
 
+	sortTim(station_job_templates, associative = TRUE)
+
 	var/list/centcom_job_trims = typesof(/datum/access_template/centcom) - typesof(/datum/access_template/centcom/corpse)
 	for(var/trim_path in centcom_job_trims)
 		var/datum/access_template/trim = trim_singletons_by_path[trim_path]
 		centcom_job_templates[trim_path] = trim.assignment
+
+	sortTim(centcom_job_templates, associative = TRUE)
 
 	var/list/all_pda_paths = typesof(/obj/item/modular_computer/tablet/pda)
 	var/list/pda_regions = PDA_PAINTING_REGIONS
@@ -451,7 +455,15 @@ SUBSYSTEM_DEF(id_access)
 	var/datum/access_template/trim = trim_singletons_by_path[template_path]
 
 	id_card.clear_access()
+
+	id_card.trim = trim
+
+	if(trim.assignment)
+		id_card.assignment = trim.assignment
+
 	id_card.add_access(trim.access)
+	id_card.update_label()
+	id_card.update_icon()
 
 /**
  * Tallies up all accesses the card has that have flags greater than or equal to the access_flag supplied.

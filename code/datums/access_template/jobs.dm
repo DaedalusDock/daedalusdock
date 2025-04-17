@@ -95,7 +95,7 @@
 	minimal_access = list(ACCESS_ATMOSPHERICS, ACCESS_AUX_BASE, ACCESS_CONSTRUCTION, ACCESS_EXTERNAL_AIRLOCKS, ACCESS_MAINT_TUNNELS, ACCESS_MECH_ENGINE,
 					ACCESS_MINERAL_STOREROOM)
 	config_job = "atmospheric_technician"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_CE, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CE, ACCESS_CHANGE_IDS)
 	job = /datum/job/atmospheric_technician
 
 /datum/access_template/job/bartender
@@ -141,7 +141,7 @@
 	extra_access = list(ACCESS_QM, ACCESS_MINING, ACCESS_MINING_STATION)
 	minimal_access = list(ACCESS_CARGO, ACCESS_MAILSORTING, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MINING, ACCESS_MINERAL_STOREROOM)
 	config_job = "cargo_technician"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_QM, ACCESS_HOP, ACCESS_CHANGE_IDS)
 	job = /datum/job/cargo_technician
 
 /datum/access_template/job/chaplain
@@ -161,7 +161,7 @@
 	extra_access = list(ACCESS_SURGERY, ACCESS_VIROLOGY)
 	minimal_access = list(ACCESS_CHEMISTRY, ACCESS_MECH_MEDICAL, ACCESS_MEDICAL, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_PHARMACY)
 	config_job = "chemist"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_CMO, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CMO, ACCESS_CHANGE_IDS)
 	job = /datum/job/chemist
 
 /datum/access_template/job/chief_engineer
@@ -400,21 +400,6 @@
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
 	job = /datum/job/quartermaster
 
-/datum/access_template/job/research_director
-	assignment = "Research Director"
-	intern_alt_name = "Research Director-in-Training"
-	trim_state = "trim_researchdirector"
-	sechud_icon_state = SECHUD_RESEARCH_DIRECTOR
-	extra_access = list()
-	minimal_access = list(ACCESS_AI_UPLOAD, ACCESS_AUX_BASE, ACCESS_EVA, ACCESS_GATEWAY, ACCESS_GENETICS, ACCESS_KEYCARD_AUTH,
-					ACCESS_NETWORK, ACCESS_MAINT_TUNNELS, ACCESS_MECH_ENGINE, ACCESS_MECH_MINING, ACCESS_MECH_SECURITY, ACCESS_MECH_SCIENCE,
-					ACCESS_MEDICAL, ACCESS_MINERAL_STOREROOM, ACCESS_MINING, ACCESS_MINING_STATION, ACCESS_MINISAT, ACCESS_MORGUE,
-					ACCESS_ORDNANCE, ACCESS_ORDNANCE_STORAGE, ACCESS_RC_ANNOUNCE, ACCESS_RD, ACCESS_RESEARCH, ACCESS_RND, ACCESS_ROBOTICS,
-					ACCESS_BRIG_ENTRANCE, ACCESS_TECH_STORAGE, ACCESS_TELEPORTER, ACCESS_XENOBIOLOGY)
-	config_job = "research_director"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
-	job = /datum/job/research_director
-
 /// Sec officers have departmental variants. They each have their own trims with bonus departmental accesses.
 /datum/access_template/job/security_officer
 	assignment = "Security Officer"
@@ -469,7 +454,7 @@
 	minimal_access = list(ACCESS_AUX_BASE, ACCESS_MAILSORTING, ACCESS_MECH_MINING, ACCESS_MINERAL_STOREROOM, ACCESS_MINING,
 					ACCESS_MINING_STATION)
 	config_job = "shaft_miner"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_HOP, ACCESS_CHANGE_IDS)
 	job = /datum/job/shaft_miner
 
 /// ID card obtained from the mining Disney dollar points vending machine.
@@ -486,7 +471,7 @@
 	minimal_access = list(ACCESS_AUX_BASE, ACCESS_CONSTRUCTION, ACCESS_ENGINE, ACCESS_ENGINE_EQUIP, ACCESS_EXTERNAL_AIRLOCKS,
 					ACCESS_MAINT_TUNNELS, ACCESS_MECH_ENGINE, ACCESS_MINERAL_STOREROOM, ACCESS_TCOMSAT, ACCESS_TECH_STORAGE)
 	config_job = "station_engineer"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_CE, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CE, ACCESS_CHANGE_IDS)
 	job = /datum/job/station_engineer
 
 /datum/access_template/job/virologist
@@ -496,7 +481,7 @@
 	extra_access = list(ACCESS_CHEMISTRY, ACCESS_MORGUE, ACCESS_SURGERY)
 	minimal_access = list(ACCESS_MEDICAL, ACCESS_MECH_MEDICAL, ACCESS_MINERAL_STOREROOM, ACCESS_VIROLOGY)
 	config_job = "virologist"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_CMO, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CMO, ACCESS_CHANGE_IDS)
 	job = /datum/job/virologist
 
 /datum/access_template/job/warden

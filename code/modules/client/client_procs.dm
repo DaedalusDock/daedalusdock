@@ -403,7 +403,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	winset(src, null, "command=\".configure graphics-hwmode on\"")
 
 	#if DM_VERSION >= 516
-	winset(src, null, "browser-options=byondstorage,devtools,find")
+	winset(src, null, "browser-options=byondstorage,devtools,find,refresh")
 	#endif
 
 	var/cev = CONFIG_GET(number/client_error_version)

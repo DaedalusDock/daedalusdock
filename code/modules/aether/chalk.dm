@@ -21,7 +21,7 @@
 		return
 
 	rune_path = options[entry]
-	to_chat(user, "You will now draw \a [entry] rune.")
+	to_chat(user, span_notice("You will now draw \a [entry] rune."))
 
 /obj/item/chalk/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
 	. = ..()
@@ -36,6 +36,9 @@
 		if(isgroundlessturf(nearby_turf) || isclosedturf(nearby_turf) || (locate(/obj/effect/aether_rune) in nearby_turf) || (locate(/obj/structure/low_wall) in nearby_turf))
 			to_chat(user, span_warning("There is not enough space there."))
 			return
+
+	if(!do_after(user, T, 3 SECONDS, DO_PUBLIC|DO_RESTRICT_CLICKING|DO_RESTRICT_USER_DIR_CHANGE, display = src))
+		return
 
 	var/obj/effect/aether_rune/drawn_rune = new rune_path(T)
 	user.visible_message(span_notice("[user] draws \a [drawn_rune] with [src]."))

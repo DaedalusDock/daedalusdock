@@ -27,7 +27,7 @@
 #define ACCESS_TELEPORTER 17
 #define ACCESS_EVA 18
 /// Bridge, EVA storage windoors, gateway shutters, AI integrity restorer, comms console
-#define ACCESS_MANAGEMENT 19
+#define ACCESS_FACTION_LEADER 19
 #define ACCESS_CAPTAIN 20
 #define ACCESS_ALL_PERSONAL_LOCKERS 21
 #define ACCESS_CHAPEL_OFFICE 22
@@ -294,7 +294,7 @@
 	ACCESS_RC_ANNOUNCE, \
 	ACCESS_VAULT, \
 	ACCESS_TECH_STORAGE, \
-	ACCESS_MANAGEMENT, \
+	ACCESS_FACTION_LEADER, \
 	ACCESS_TELEPORTER, \
 	ACCESS_ARMORY, \
 	ACCESS_AI_UPLOAD, \
@@ -455,7 +455,7 @@
 #define REGION_COMMAND "Command"
 /// Used to seed the accesses_by_region list in SSid_access. A list of all command regional accesses that are overseen by the Captain.
 #define REGION_ACCESS_COMMAND list( \
-	ACCESS_MANAGEMENT, \
+	ACCESS_FACTION_LEADER, \
 	ACCESS_RC_ANNOUNCE, \
 	ACCESS_KEYCARD_AUTH, \
 	ACCESS_CHANGE_IDS, \

@@ -4,7 +4,7 @@
 	category = PROGRAM_CATEGORY_CREW
 	program_icon_state = "id"
 	extended_desc = "Program for programming employee ID cards to access parts of the station."
-	transfer_access = list(ACCESS_MANAGEMENT)
+	transfer_access = list(ACCESS_FACTION_LEADER)
 	requires_ntnet = 0
 	size = 8
 	tgui_id = "NtosCard"

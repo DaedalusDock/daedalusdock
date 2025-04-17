@@ -200,14 +200,14 @@ SUBSYSTEM_DEF(id_access)
 			var/list/templates = manager["templates"]
 			templates[trim_path] = trim.assignment
 
-	sortTim(station_job_templates, associative = TRUE)
+	sortTim(station_job_templates, GLOBAL_PROC_REF(cmp_text_asc), associative = TRUE)
 
 	var/list/centcom_job_trims = typesof(/datum/access_template/centcom) - typesof(/datum/access_template/centcom/corpse)
 	for(var/trim_path in centcom_job_trims)
 		var/datum/access_template/trim = trim_singletons_by_path[trim_path]
 		centcom_job_templates[trim_path] = trim.assignment
 
-	sortTim(centcom_job_templates, associative = TRUE)
+	sortTim(centcom_job_templates, GLOBAL_PROC_REF(cmp_text_asc), associative = TRUE)
 
 	var/list/all_pda_paths = typesof(/obj/item/modular_computer/tablet/pda)
 	var/list/pda_regions = PDA_PAINTING_REGIONS

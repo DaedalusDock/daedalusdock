@@ -166,7 +166,7 @@
 
 			// Set the new assignment then remove the trim.
 			target_id_card.assignment = is_centcom ? "Fired" : "Demoted"
-			SSid_access.remove_trim_from_card(target_id_card)
+			SSid_access.remove_template_from_card(target_id_card)
 
 			playsound(computer, 'sound/machines/terminal_prompt_deny.ogg', 50, FALSE)
 			return TRUE
@@ -267,7 +267,7 @@
 				if(trim.assignment != template_name)
 					continue
 
-				SSid_access.add_trim_access_to_card(target_id_card, trim_path)
+				SSid_access.apply_template_access_to_card(target_id_card, trim_path)
 				return TRUE
 
 			stack_trace("[key_name(usr)] ([usr]) attempted to apply invalid template \[[template_name]\] to [target_id_card]")

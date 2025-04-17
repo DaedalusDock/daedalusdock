@@ -344,7 +344,7 @@
 				if(!(card_trims[path] == selection))
 					continue
 
-				if(SSid_access.apply_trim_to_card(stored_id_card, path, copy_access = FALSE))
+				if(SSid_access.apply_template_to_card(stored_id_card, path, copy_access = FALSE))
 					return TRUE
 
 				to_chat(usr, span_warning("The trim you selected could not be added to \the [stored_id_card]. You will need a rarer ID card to imprint that trim data."))

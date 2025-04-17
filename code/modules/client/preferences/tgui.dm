@@ -61,4 +61,3 @@
 
 	spawn(-1)
 		client.refresh_tgui()
-		#warn TODO: window.jsx

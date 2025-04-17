@@ -31,8 +31,6 @@ export const NtosCardContent = (props) => {
     access_on_card = [],
     has_id,
     have_id_slot,
-    wildcardSlots,
-    wildcardFlags,
     trimAccess,
     accessFlags,
     accessFlagNames,
@@ -69,8 +67,7 @@ export const NtosCardContent = (props) => {
             <Button
               icon="question-circle"
               tooltip={
-                'Will attempt to apply all access for the template to the ID card.\n' +
-                'Does not use wildcards unless the template specifies them.'
+                'Will attempt to apply all access for the template to the ID card.\n'
               }
               tooltipPosition="left"
             />
@@ -86,8 +83,6 @@ export const NtosCardContent = (props) => {
               <AccessList
                 accesses={regions}
                 selectedList={access_on_card}
-                wildcardFlags={wildcardFlags}
-                wildcardSlots={wildcardSlots}
                 trimAccess={trimAccess}
                 accessFlags={accessFlags}
                 accessFlagNames={accessFlagNames}
@@ -100,10 +95,9 @@ export const NtosCardContent = (props) => {
                     onClick={() => act('PRG_terminate')}
                   />
                 }
-                accessMod={(ref, wildcard) =>
+                accessMod={(ref) =>
                   act('PRG_access', {
                     access_target: ref,
-                    access_wildcard: wildcard,
                   })
                 }
               />

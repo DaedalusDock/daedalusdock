@@ -79,14 +79,11 @@
 	/// The job name registered on the card (for example: Assistant). Set by trim usually.
 	var/assignment
 
-	/// Trim datum associated with the card. Controls which job icon is displayed on the card and which accesses do not require wildcards.
+	/// Trim datum associated with the card. Controls which job icon is displayed on the card.
 	var/datum/access_template/trim
 
 	/// Access levels held by this card.
 	var/list/access = list()
-
-	/// List of wildcard slot names as keys with lists of wildcard data as values.
-	var/list/wildcard_slots = list()
 
 	/// Boolean value. If TRUE, the [Intern] tag gets prepended to this ID card when the label is updated.
 	var/is_intern = FALSE
@@ -133,150 +130,6 @@
 	var/that_string = gender == PLURAL ? "Those are " : "That is "
 	return "[icon2html(get_cached_flat_icon(), user)] [thats ? that_string :""][get_examine_name(user)]"
 
-/**
- * Helper proc, checks whether the ID card can hold any given set of wildcards.
- *
- * Returns TRUE if the card can hold the wildcards, FALSE otherwise.
- * Arguments:
- * * wildcard_list - List of accesses to check.
- * * try_wildcard - If not null, will attempt to add wildcards for this wildcard specifically and will return FALSE if the card cannot hold all wildcards in this slot.
- */
-/obj/item/card/id/proc/can_add_wildcards(list/wildcard_list, try_wildcard = null)
-	if(!length(wildcard_list))
-		return TRUE
-
-	var/list/new_wildcard_limits = list()
-
-	for(var/flag_name in wildcard_slots)
-		if(try_wildcard && !(flag_name == try_wildcard))
-			continue
-		var/list/wildcard_info = wildcard_slots[flag_name]
-		new_wildcard_limits[flag_name] = wildcard_info["limit"] - length(wildcard_info["usage"])
-
-	if(!length(new_wildcard_limits))
-		return FALSE
-
-	var/wildcard_allocated
-	for(var/wildcard in wildcard_list)
-		var/wildcard_flag = SSid_access.get_access_flag(wildcard)
-		wildcard_allocated = FALSE
-		for(var/flag_name in new_wildcard_limits)
-			var/limit_flags = SSid_access.wildcard_flags_by_wildcard[flag_name]
-			if(!(wildcard_flag & limit_flags))
-				continue
-			// Negative limits mean infinite slots. Positive limits mean limited slots still available. 0 slots means no slots.
-			if(new_wildcard_limits[flag_name] == 0)
-				continue
-			new_wildcard_limits[flag_name]--
-			wildcard_allocated = TRUE
-			break
-		if(!wildcard_allocated)
-			return FALSE
-
-	return TRUE
-
-/**
- * Attempts to add the given wildcards to the ID card.
- *
- * Arguments:
- * * wildcard_list - List of accesses to add.
- * * try_wildcard - If not null, will attempt to add all wildcards to this wildcard slot only.
- * * mode - The method to use when adding wildcards. See define for ERROR_ON_FAIL
- */
-/obj/item/card/id/proc/add_wildcards(list/wildcard_list, try_wildcard = null, mode = ERROR_ON_FAIL)
-	var/wildcard_allocated
-	// Iterate through each wildcard in our list. Get its access flag. Then iterate over wildcard slots and try to fit it in.
-	for(var/wildcard in wildcard_list)
-		var/wildcard_flag = SSid_access.get_access_flag(wildcard)
-		wildcard_allocated = FALSE
-		for(var/flag_name in wildcard_slots)
-			if(flag_name == WILDCARD_NAME_FORCED)
-				continue
-
-			if(try_wildcard && !(flag_name == try_wildcard))
-				continue
-
-			var/limit_flags = SSid_access.wildcard_flags_by_wildcard[flag_name]
-
-			if(!(wildcard_flag & limit_flags))
-				continue
-
-			var/list/wildcard_info = wildcard_slots[flag_name]
-			var/wildcard_limit = wildcard_info["limit"]
-			var/list/wildcard_usage = wildcard_info["usage"]
-
-			var/wildcard_count = wildcard_limit - length(wildcard_usage)
-
-			// Negative limits mean infinite slots. Positive limits mean limited slots still available. 0 slots means no slots.
-			if(wildcard_count == 0)
-				continue
-
-			wildcard_usage |= wildcard
-			access |= wildcard
-			wildcard_allocated = TRUE
-			break
-		// Fallback for if we couldn't allocate the wildcard for some reason.
-		if(!wildcard_allocated)
-			if(mode == ERROR_ON_FAIL)
-				CRASH("Wildcard ([wildcard]) could not be added to [src].")
-
-			if(mode == TRY_ADD_ALL)
-				continue
-
-			// If the card has no info for historic forced wildcards, create the list.
-			if(!wildcard_slots[WILDCARD_NAME_FORCED])
-				wildcard_slots[WILDCARD_NAME_FORCED] = list(limit = 0, usage = list())
-
-			var/list/wildcard_info = wildcard_slots[WILDCARD_NAME_FORCED]
-			var/list/wildcard_usage = wildcard_info["usage"]
-			wildcard_usage |= wildcard
-			access |= wildcard
-			wildcard_info["limit"] = length(wildcard_usage)
-
-/**
- * Removes wildcards from the ID card.
- *
- * Arguments:
- * * wildcard_list - List of accesses to remove.
- */
-/obj/item/card/id/proc/remove_wildcards(list/wildcard_list)
-	var/wildcard_removed
-	// Iterate through each wildcard in our list. Get its access flag. Then iterate over wildcard slots and try to remove it.
-	for(var/wildcard in wildcard_list)
-		wildcard_removed = FALSE
-		for(var/flag_name in wildcard_slots)
-			if(flag_name == WILDCARD_NAME_FORCED)
-				continue
-
-			var/list/wildcard_info = wildcard_slots[flag_name]
-			var/wildcard_usage = wildcard_info["usage"]
-
-			if(!(wildcard in wildcard_usage))
-				continue
-
-			wildcard_usage -= wildcard
-			access -= wildcard
-			wildcard_removed = TRUE
-			break
-		// Fallback to see if this was a force-added wildcard.
-		if(!wildcard_removed)
-			// If the card has no info for historic forced wildcards, that's an error state.
-			if(!wildcard_slots[WILDCARD_NAME_FORCED])
-				stack_trace("Wildcard ([wildcard]) could not be removed from [src]. This card has no forced wildcard data and the wildcard is not in this card's wildcard lists.")
-
-			var/list/wildcard_info = wildcard_slots[WILDCARD_NAME_FORCED]
-			var/wildcard_usage = wildcard_info["usage"]
-
-			if(!(wildcard in wildcard_usage))
-				stack_trace("Wildcard ([wildcard]) could not be removed from [src]. This access is not a wildcard on this card.")
-
-			wildcard_usage -= wildcard
-			access -= wildcard
-			wildcard_info["limit"] = length(wildcard_usage)
-
-			if(!wildcard_info["limit"])
-				wildcard_slots -= WILDCARD_NAME_FORCED
-
 /// Adds a list of accesses to the ID's access
 /obj/item/card/id/proc/add_access(list/add_accesses)
 	access |= add_accesses
@@ -292,14 +145,8 @@
 	access = new_access_list.Copy()
 	return TRUE
 
-/// Clears all accesses from the ID card - both wildcard and normal.
+/// Clears all accesses from the ID card.
 /obj/item/card/id/proc/clear_access()
-	// Go through the wildcards and reset them.
-	for(var/flag_name in wildcard_slots)
-		var/list/wildcard_info = wildcard_slots[flag_name]
-		var/list/wildcard_usage = wildcard_info["usage"]
-		wildcard_usage.Cut()
-
 	// Hard reset access
 	access.Cut()
 
@@ -566,8 +413,6 @@
 	icon_state = "card_grey"
 	worn_icon_state = "card_grey"
 
-	wildcard_slots = WILDCARD_LIMIT_GREY
-
 	/// An overlay icon state for when the card is assigned to a name. Usually manifests itself as a little scribble to the right of the job icon.
 	var/assigned_icon_state = "assigned"
 
@@ -697,7 +542,6 @@
 	icon_state = "card_silver"
 	worn_icon_state = "card_silver"
 	inhand_icon_state = "silver_id"
-	wildcard_slots = WILDCARD_LIMIT_SILVER
 
 /datum/access_template/maint_reaper
 	access = list(ACCESS_MAINT_TUNNELS)
@@ -715,7 +559,6 @@
 	icon_state = "card_gold"
 	worn_icon_state = "card_gold"
 	inhand_icon_state = "gold_id"
-	wildcard_slots = WILDCARD_LIMIT_GOLD
 
 /obj/item/card/id/advanced/gold/captains_spare
 	name = "superintendent's spare ID"
@@ -740,7 +583,6 @@
 	registered_name = JOB_CENTCOM
 	registered_age = null
 	trim = /datum/access_template/centcom
-	wildcard_slots = WILDCARD_LIMIT_CENTCOM
 
 /obj/item/card/id/advanced/centcom/ert
 	name = "\improper CentCom ID"
@@ -783,14 +625,12 @@
 	icon_state = "card_black"
 	worn_icon_state = "card_black"
 	assigned_icon_state = "assigned_syndicate"
-	wildcard_slots = WILDCARD_LIMIT_GOLD
 
 /obj/item/card/id/advanced/black/deathsquad
 	name = "\improper Death Squad ID"
 	desc = "A Death Squad ID card."
 	registered_name = JOB_ERT_DEATHSQUAD
 	trim = /datum/access_template/centcom/deathsquad
-	wildcard_slots = WILDCARD_LIMIT_DEATHSQUAD
 
 /obj/item/card/id/advanced/black/syndicate_command
 	name = "syndicate ID card"
@@ -798,7 +638,6 @@
 	registered_name = "Syndicate"
 	registered_age = null
 	trim = /datum/access_template/syndicom
-	wildcard_slots = WILDCARD_LIMIT_SYNDICATE
 
 /obj/item/card/id/advanced/black/syndicate_command/crew_id
 	name = "syndicate ID card"
@@ -834,7 +673,6 @@
 	worn_icon_state = "card_centcom"
 	assigned_icon_state = "assigned_centcom"
 	trim = /datum/access_template/admin
-	wildcard_slots = WILDCARD_LIMIT_ADMIN
 
 /obj/item/card/id/advanced/debug/Initialize(mapload)
 	. = ..()
@@ -851,8 +689,6 @@
 	registered_name = "Scum"
 	registered_age = null
 	trim = /datum/access_template/job/prisoner
-
-	wildcard_slots = WILDCARD_LIMIT_PRISONER
 
 	/// Number of gulag points required to earn freedom.
 	var/goal = 0
@@ -958,11 +794,9 @@
 	worn_icon_state = "card_black"
 	assigned_icon_state = "assigned_syndicate"
 	trim = /datum/access_template/highlander
-	wildcard_slots = WILDCARD_LIMIT_ADMIN
 
 /obj/item/card/id/advanced/chameleon
 	trim = /datum/access_template/chameleon
-	wildcard_slots = WILDCARD_LIMIT_CHAMELEON
 
 	/// Have we set a custom name and job assignment, or will we use what we're given when we chameleon change?
 	var/forged = FALSE
@@ -1051,7 +885,6 @@
 
 /obj/item/card/id/advanced/chameleon/ui_static_data(mob/user)
 	var/list/data = list()
-	data["wildcardFlags"] = SSid_access.wildcard_flags_by_wildcard
 	data["accessFlagNames"] = SSid_access.access_flag_string_by_flag
 	data["accessFlags"] = SSid_access.flags_by_access
 	return data
@@ -1100,7 +933,6 @@
 	data["ourAccess"] = access
 	data["ourTrimAccess"] = trim ? trim.access : list()
 	data["theftAccess"] = target_card.access.Copy()
-	data["wildcardSlots"] = wildcard_slots
 	data["selectedList"] = access
 	data["trimAccess"] = list()
 
@@ -1128,8 +960,6 @@
 	switch(action)
 		if("mod_access")
 			var/access_type = params["access_target"]
-			var/try_wildcard = params["access_wildcard"]
-			#warn remove from tgui
 			if(access_type in access)
 				remove_access(list(access_type))
 				LOG_ID_ACCESS_CHANGE(usr, src, "removed [SSid_access.get_access_desc(access_type)]")
@@ -1273,7 +1103,6 @@
 	icon_state = "card_black"
 	worn_icon_state = "card_black"
 	assigned_icon_state = "assigned_syndicate"
-	wildcard_slots = WILDCARD_LIMIT_GOLD
 
 /obj/item/card/id/advanced/engioutpost
 	registered_name = "George 'Plastic' Miller"
@@ -1284,7 +1113,6 @@
 /obj/item/card/id/advanced/simple_bot
 	name = "simple bot ID card"
 	desc = "An internal ID card used by the station's non-sentient bots. You should report this to a coder if you're holding it."
-	wildcard_slots = WILDCARD_LIMIT_ADMIN
 
 /obj/item/card/id/red
 	name = "Red Team identification card"

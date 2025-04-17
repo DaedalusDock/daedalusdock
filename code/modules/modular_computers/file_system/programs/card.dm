@@ -232,8 +232,6 @@
 				return TRUE
 			playsound(computer, SFX_TERMINAL_TYPE, 50, FALSE)
 			var/access_type = params["access_target"]
-			var/try_wildcard = params["access_wildcard"]
-			#warn remove from tgui
 			if(!(access_type in valid_access))
 				stack_trace("[key_name(usr)] ([usr]) attempted to add invalid access \[[access_type]\] to [target_id_card]")
 				return TRUE
@@ -295,7 +293,6 @@
 
 
 	data["accessFlags"] = SSid_access.flags_by_access
-	data["wildcardFlags"] = SSid_access.wildcard_flags_by_wildcard
 	data["accessFlagNames"] = SSid_access.access_flag_string_by_flag
 	data["showBasic"] = TRUE
 	data["templates"] = job_templates
@@ -337,7 +334,6 @@
 		data["id_rank"] = id_card.assignment ? id_card.assignment : "Unassigned"
 		data["id_owner"] = id_card.registered_name ? id_card.registered_name : "-----"
 		data["access_on_card"] = id_card.access
-		data["wildcardSlots"] = id_card.wildcard_slots
 		data["id_age"] = id_card.registered_age
 
 		if(id_card.trim)

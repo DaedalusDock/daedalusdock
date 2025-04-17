@@ -43,7 +43,7 @@
 
 	// Doing this hurts my soul, but simplebot access reworks are for another day.
 	var/datum/access_template/job/engi_trim = SSid_access.trim_singletons_by_path[/datum/access_template/job/station_engineer]
-	access_card.add_access(engi_trim.access + engi_trim.wildcard_access)
+	access_card.add_access(engi_trim.access)
 	prev_access = access_card.access.Copy()
 
 	create_extinguisher()

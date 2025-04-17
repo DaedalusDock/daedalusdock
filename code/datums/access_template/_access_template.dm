@@ -13,4 +13,3 @@
 
 	/// Accesses that this trim unlocks on a card it is imprinted on.
 	var/list/access = list()
-	var/list/wildcard_access = list()

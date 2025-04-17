@@ -9,12 +9,8 @@
 
 	/// The extra access the card should have when CONFIG_GET(flag/jobs_have_minimal_access) is FALSE.
 	var/list/extra_access = list()
-	/// The extra wildcard_access the card should have when CONFIG_GET(flag/jobs_have_minimal_access) is FALSE.
-	var/list/extra_wildcard_access = list()
 	/// The base access the card should have when CONFIG_GET(flag/jobs_have_minimal_access) is TRUE.
 	var/list/minimal_access = list()
-	/// The base wildcard_access the card should have when CONFIG_GET(flag/jobs_have_minimal_access) is TRUE.
-	var/list/minimal_wildcard_access = list()
 	/// Static list. Cache of any mapping config job changes.
 	var/static/list/job_changes
 	/// What config entry relates to this job. Should be a lowercase job name with underscores for spaces, eg "prisoner" "research_director" "head_of_security"
@@ -45,10 +41,6 @@
 		extra_access |= access_changes["additional_access"]
 	if(islist(access_changes["additional_minimal_access"]))
 		minimal_access |= access_changes["additional_minimal_access"]
-	if(islist(access_changes["additional_wildcard_access"]))
-		extra_wildcard_access |= access_changes["additional_wildcard_access"]
-	if(islist(access_changes["additional_minimal_wildcard_access"]))
-		minimal_wildcard_access |= access_changes["additional_minimal_wildcard_access"]
 
 	refresh_trim_access()
 
@@ -61,16 +53,13 @@
 	// If there's no config loaded then assume minimal access.
 	if(!config)
 		access = minimal_access.Copy()
-		wildcard_access = minimal_wildcard_access.Copy()
 		return FALSE
 
 	// There is a config loaded. Check for the jobs_have_minimal_access flag being set.
 	if(CONFIG_GET(flag/jobs_have_minimal_access))
 		access = minimal_access.Copy()
-		wildcard_access = minimal_wildcard_access.Copy()
 	else
 		access = minimal_access | extra_access
-		wildcard_access = minimal_wildcard_access | extra_wildcard_access
 
 	// If the config has global maint access set, we always want to add maint access.
 	if(CONFIG_GET(flag/everyone_has_maint_access))
@@ -141,9 +130,7 @@
 /// Captain gets all station accesses hardcoded in because it's the Captain.
 /datum/access_template/job/captain/New()
 	extra_access |= (SSid_access.get_flag_access_list(ACCESS_FLAG_COMMON) + SSid_access.get_flag_access_list(ACCESS_FLAG_COMMAND))
-	extra_wildcard_access |= (SSid_access.get_flag_access_list(ACCESS_FLAG_PRV_COMMAND) + SSid_access.get_flag_access_list(ACCESS_FLAG_CAPTAIN))
 	minimal_access |= (SSid_access.get_flag_access_list(ACCESS_FLAG_COMMON) + SSid_access.get_flag_access_list(ACCESS_FLAG_COMMAND))
-	minimal_wildcard_access |= (SSid_access.get_flag_access_list(ACCESS_FLAG_PRV_COMMAND) + SSid_access.get_flag_access_list(ACCESS_FLAG_CAPTAIN))
 
 	return ..()
 
@@ -183,11 +170,9 @@
 	trim_state = "trim_chiefengineer"
 	sechud_icon_state = SECHUD_CHIEF_ENGINEER
 	extra_access = list(ACCESS_TELEPORTER)
-	extra_wildcard_access = list()
 	minimal_access = list(ACCESS_ATMOSPHERICS, ACCESS_AUX_BASE, ACCESS_CE, ACCESS_CONSTRUCTION, ACCESS_ENGINE, ACCESS_ENGINE_EQUIP, ACCESS_EVA,
 					ACCESS_EXTERNAL_AIRLOCKS, ACCESS_KEYCARD_AUTH, ACCESS_MAINT_TUNNELS, ACCESS_MECH_ENGINE,
 					ACCESS_MINERAL_STOREROOM, ACCESS_MINISAT, ACCESS_RC_ANNOUNCE, ACCESS_BRIG_ENTRANCE, ACCESS_TCOMSAT, ACCESS_TECH_STORAGE)
-	minimal_wildcard_access = list(ACCESS_CE)
 	config_job = "chief_engineer"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
 	job = /datum/job/chief_engineer
@@ -198,13 +183,11 @@
 	trim_state = "trim_chiefmedicalofficer"
 	sechud_icon_state = SECHUD_CHIEF_MEDICAL_OFFICER
 	extra_access = list(ACCESS_TELEPORTER)
-	extra_wildcard_access = list()
 	minimal_access = list(
-		ACCESS_CHEMISTRY, ACCESS_EVA, ACCESS_KEYCARD_AUTH, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MEDICAL,
+		ACCESS_CMO, ACCESS_CHEMISTRY, ACCESS_EVA, ACCESS_KEYCARD_AUTH, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MEDICAL,
 		ACCESS_MEDICAL, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_PHARMACY, ACCESS_PSYCHOLOGY, ACCESS_RC_ANNOUNCE,
 		ACCESS_BRIG_ENTRANCE, ACCESS_SURGERY, ACCESS_VIROLOGY, ACCESS_ROBOTICS
 	)
-	minimal_wildcard_access = list(ACCESS_CMO)
 	config_job = "chief_medical_officer"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
 	job = /datum/job/augur
@@ -275,14 +258,12 @@
 	trim_state = "trim_headofpersonnel"
 	sechud_icon_state = SECHUD_HEAD_OF_PERSONNEL
 	extra_access = list()
-	extra_wildcard_access = list()
 	minimal_access = list(ACCESS_AI_UPLOAD, ACCESS_ALL_PERSONAL_LOCKERS, ACCESS_AUX_BASE, ACCESS_BAR, ACCESS_BRIG, ACCESS_CHAPEL_OFFICE,
 					ACCESS_CHANGE_IDS, ACCESS_CONSTRUCTION, ACCESS_COURT, ACCESS_CREMATORIUM, ACCESS_ENGINE, ACCESS_EVA, ACCESS_GATEWAY,
-					ACCESS_HYDROPONICS, ACCESS_JANITOR, ACCESS_KEYCARD_AUTH, ACCESS_KITCHEN, ACCESS_LAWYER, ACCESS_LIBRARY,
+					ACCESS_HOP, ACCESS_HYDROPONICS, ACCESS_JANITOR, ACCESS_KEYCARD_AUTH, ACCESS_KITCHEN, ACCESS_LAWYER, ACCESS_LIBRARY,
 					ACCESS_MAINT_TUNNELS, ACCESS_MECH_ENGINE, ACCESS_MECH_MEDICAL, ACCESS_MECH_SCIENCE, ACCESS_MECH_SECURITY, ACCESS_MEDICAL,
 					ACCESS_MORGUE, ACCESS_PSYCHOLOGY, ACCESS_RC_ANNOUNCE, ACCESS_RESEARCH, ACCESS_BRIG_ENTRANCE, ACCESS_TELEPORTER,
 					ACCESS_THEATRE, ACCESS_VAULT, ACCESS_WEAPONS, ACCESS_FACTION_LEADER)
-	minimal_wildcard_access = list(ACCESS_HOP)
 	config_job = "head_of_personnel"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
 	job = /datum/job/head_of_personnel
@@ -293,12 +274,10 @@
 	trim_state = "trim_headofsecurity"
 	sechud_icon_state = SECHUD_HEAD_OF_SECURITY
 	extra_access = list(ACCESS_TELEPORTER)
-	extra_wildcard_access = list()
 	minimal_access = list(ACCESS_ALL_PERSONAL_LOCKERS, ACCESS_ARMORY, ACCESS_AUX_BASE, ACCESS_BRIG, ACCESS_CONSTRUCTION, ACCESS_COURT,
-					ACCESS_ENGINE, ACCESS_EVA, ACCESS_FORENSICS, ACCESS_GATEWAY, ACCESS_KEYCARD_AUTH,
+					ACCESS_ENGINE, ACCESS_EVA, ACCESS_FORENSICS, ACCESS_GATEWAY, ACCESS_HOS, ACCESS_KEYCARD_AUTH,
 					ACCESS_MAINT_TUNNELS, ACCESS_MECH_SECURITY, ACCESS_MEDICAL, ACCESS_MORGUE, ACCESS_RC_ANNOUNCE,
 					ACCESS_RESEARCH, ACCESS_SECURITY, ACCESS_BRIG_ENTRANCE, ACCESS_WEAPONS, ACCESS_FACTION_LEADER)
-	minimal_wildcard_access = list(ACCESS_HOS)
 	config_job = "head_of_security"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
 	job = /datum/job/head_of_security
@@ -427,13 +406,11 @@
 	trim_state = "trim_researchdirector"
 	sechud_icon_state = SECHUD_RESEARCH_DIRECTOR
 	extra_access = list()
-	extra_wildcard_access = list()
 	minimal_access = list(ACCESS_AI_UPLOAD, ACCESS_AUX_BASE, ACCESS_EVA, ACCESS_GATEWAY, ACCESS_GENETICS, ACCESS_KEYCARD_AUTH,
 					ACCESS_NETWORK, ACCESS_MAINT_TUNNELS, ACCESS_MECH_ENGINE, ACCESS_MECH_MINING, ACCESS_MECH_SECURITY, ACCESS_MECH_SCIENCE,
 					ACCESS_MEDICAL, ACCESS_MINERAL_STOREROOM, ACCESS_MINING, ACCESS_MINING_STATION, ACCESS_MINISAT, ACCESS_MORGUE,
-					ACCESS_ORDNANCE, ACCESS_ORDNANCE_STORAGE, ACCESS_RC_ANNOUNCE, ACCESS_RESEARCH, ACCESS_RND, ACCESS_ROBOTICS,
+					ACCESS_ORDNANCE, ACCESS_ORDNANCE_STORAGE, ACCESS_RC_ANNOUNCE, ACCESS_RD, ACCESS_RESEARCH, ACCESS_RND, ACCESS_ROBOTICS,
 					ACCESS_BRIG_ENTRANCE, ACCESS_TECH_STORAGE, ACCESS_TELEPORTER, ACCESS_XENOBIOLOGY)
-	minimal_wildcard_access = list(ACCESS_RD)
 	config_job = "research_director"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
 	job = /datum/job/research_director

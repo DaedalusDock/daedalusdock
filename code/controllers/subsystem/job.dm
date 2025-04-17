@@ -962,7 +962,7 @@ SUBSYSTEM_DEF(job)
 	var/datum/outfit/outfit_prototype = head_job.outfits["Default"][SPECIES_HUMAN]
 	var/datum/access_template/trim = SSid_access.trim_singletons_by_path[initial(outfit_prototype.id_trim)]
 
-	id_card.add_access(trim.access, mode=FORCE_ADD_ALL)
+	id_card.add_access(trim.access)
 
 	SSdatacore.OnReady(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(aas_pda_message_department), department.manifest_key, "Your boss called out of work today, and [new_head.real_name] [new_head.p_have()] been granted elevated access in their absence.", "Staff Notice"))
 	temporary_heads_by_dep[department.type] = new_head.real_name

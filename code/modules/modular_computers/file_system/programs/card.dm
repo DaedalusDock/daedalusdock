@@ -233,6 +233,7 @@
 			playsound(computer, SFX_TERMINAL_TYPE, 50, FALSE)
 			var/access_type = params["access_target"]
 			var/try_wildcard = params["access_wildcard"]
+			#warn remove from tgui
 			if(!(access_type in valid_access))
 				stack_trace("[key_name(usr)] ([usr]) attempted to add invalid access \[[access_type]\] to [target_id_card]")
 				return TRUE
@@ -242,9 +243,9 @@
 				LOG_ID_ACCESS_CHANGE(user, target_id_card, "removed [SSid_access.get_access_desc(access_type)]")
 				return TRUE
 
-			if(!target_id_card.add_access(list(access_type), try_wildcard))
+			if(!target_id_card.add_access(list(access_type)))
 				to_chat(usr, span_notice("ID error: ID card rejected your attempted access modification."))
-				LOG_ID_ACCESS_CHANGE(user, target_id_card, "failed to add [SSid_access.get_access_desc(access_type)][try_wildcard ? " with wildcard [try_wildcard]" : ""]")
+				LOG_ID_ACCESS_CHANGE(user, target_id_card, "failed to add [SSid_access.get_access_desc(access_type)]")
 				return TRUE
 
 			if(access_type in ACCESS_ALERT_ADMINS)

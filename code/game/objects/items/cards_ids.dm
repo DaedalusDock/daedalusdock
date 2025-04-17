@@ -277,75 +277,19 @@
 			if(!wildcard_info["limit"])
 				wildcard_slots -= WILDCARD_NAME_FORCED
 
-/**
- * Attempts to add the given accesses to the ID card as non-wildcards.
- *
- * Depending on the mode, may add accesses as wildcards or error if it can't add them as non-wildcards.
- * Arguments:
- * * add_accesses - List of accesses to check.
- * * try_wildcard - If not null, will attempt to add all accesses that require wildcard slots to this wildcard slot only.
- * * mode - The method to use when adding accesses. See define for ERROR_ON_FAIL
- */
-/obj/item/card/id/proc/add_access(list/add_accesses, try_wildcard = null, mode = ERROR_ON_FAIL)
-	var/list/wildcard_access = list()
-	var/list/normal_access = list()
-
-	build_access_lists(add_accesses, normal_access, wildcard_access)
-
-	// Check if we can add the wildcards.
-	if(mode == ERROR_ON_FAIL)
-		if(!can_add_wildcards(wildcard_access, try_wildcard))
-			CRASH("Cannot add wildcards from \[[add_accesses.Join(",")]\] to [src]")
-
-	// All clear to add the accesses.
-	access |= normal_access
-	if(mode != TRY_ADD_ALL_NO_WILDCARD)
-		add_wildcards(wildcard_access, try_wildcard, mode = mode)
-
+/// Adds a list of accesses to the ID's access
+/obj/item/card/id/proc/add_access(list/add_accesses)
+	access |= add_accesses
 	return TRUE
 
-/**
- * Removes the given accesses from the ID Card.
- *
- * Will remove the wildcards if the accesses given are on the card as wildcard accesses.
- * Arguments:
- * * rem_accesses - List of accesses to remove.
- */
+/// Removes the given list of accesses from the card
 /obj/item/card/id/proc/remove_access(list/rem_accesses)
-	var/list/wildcard_access = list()
-	var/list/normal_access = list()
+	access -= rem_accesses
 
-	build_access_lists(rem_accesses, normal_access, wildcard_access)
-
-	access -= normal_access
-	remove_wildcards(wildcard_access)
-
-/**
- * Attempts to set the card's accesses to the given accesses, clearing all accesses not in the given list.
- *
- * Depending on the mode, may add accesses as wildcards or error if it can't add them as non-wildcards.
- * Arguments:
- * * new_access_list - List of all accesses that this card should hold exclusively.
- * * mode - The method to use when setting accesses. See define for ERROR_ON_FAIL
- */
-/obj/item/card/id/proc/set_access(list/new_access_list, mode = ERROR_ON_FAIL)
-	var/list/wildcard_access = list()
-	var/list/normal_access = list()
-
-	build_access_lists(new_access_list, normal_access, wildcard_access)
-
-	// Check if we can add the wildcards.
-	if(mode == ERROR_ON_FAIL)
-		if(!can_add_wildcards(wildcard_access))
-			CRASH("Cannot add wildcards from \[[new_access_list.Join(",")]\] to [src]")
-
+/// Sets the access to the given list, removing any previous accesses.
+/obj/item/card/id/proc/set_access(list/new_access_list)
 	clear_access()
-
-	access = normal_access.Copy()
-
-	if(mode != TRY_ADD_ALL_NO_WILDCARD)
-		add_wildcards(wildcard_access, mode = mode)
-
+	access = new_access_list.Copy()
 	return TRUE
 
 /// Clears all accesses from the ID card - both wildcard and normal.
@@ -362,34 +306,6 @@
 /// Clears the economy account from the ID card.
 /obj/item/card/id/proc/clear_account()
 	registered_account = null
-
-
-/**
- * Helper proc. Creates access lists for the access procs.
- *
- * Takes the accesses list and compares it with the trim. Any basic accesses that match the trim are
- * added to basic_access_list and the rest are added to wildcard_access_list.
-
- * This proc directly modifies the lists passed in as args. It expects these lists to be instantiated.
- * There is no return value.
- * Arguments:
- * * accesses - List of accesses you want to stort into basic_access_list and wildcard_access_list. Should not be null.
- * * basic_access_list - Mandatory argument. The proc modifies the list passed in this argument and adds accesses the trim supports to it.
- * * wildcard_access_list - Mandatory argument. The proc modifies the list passed in this argument and adds accesses the trim does not support to it.
- */
-/obj/item/card/id/proc/build_access_lists(list/accesses, list/basic_access_list, list/wildcard_access_list)
-	if(!length(accesses) || isnull(basic_access_list) || isnull(wildcard_access_list))
-		CRASH("Invalid parameters passed to build_access_lists")
-
-	var/list/trim_accesses = trim?.access
-
-	// Populate the lists.
-	for(var/new_access in accesses)
-		if(new_access in trim_accesses)
-			basic_access_list |= new_access
-			continue
-
-		wildcard_access_list |= new_access
 
 /obj/item/card/id/attack_self(mob/user)
 	user.visible_message("<b>[user]</b> holds up [src]. <a href='?src=\ref[src];look_at_id=1'>\[Look at ID\]</a>", null, vision_distance = 1)
@@ -1213,6 +1129,7 @@
 		if("mod_access")
 			var/access_type = params["access_target"]
 			var/try_wildcard = params["access_wildcard"]
+			#warn remove from tgui
 			if(access_type in access)
 				remove_access(list(access_type))
 				LOG_ID_ACCESS_CHANGE(usr, src, "removed [SSid_access.get_access_desc(access_type)]")
@@ -1220,17 +1137,12 @@
 
 			if(!(access_type in target_card.access))
 				to_chat(usr, span_notice("ID error: ID card rejected your attempted access modification."))
-				LOG_ID_ACCESS_CHANGE(usr, src, "failed to add [SSid_access.get_access_desc(access_type)][try_wildcard ? " with wildcard [try_wildcard]" : ""]")
+				LOG_ID_ACCESS_CHANGE(usr, src, "failed to add [SSid_access.get_access_desc(access_type)]")
 				return TRUE
 
-			if(!can_add_wildcards(list(access_type), try_wildcard))
+			if(!add_access(list(access_type)))
 				to_chat(usr, span_notice("ID error: ID card rejected your attempted access modification."))
-				LOG_ID_ACCESS_CHANGE(usr, src, "failed to add [SSid_access.get_access_desc(access_type)][try_wildcard ? " with wildcard [try_wildcard]" : ""]")
-				return TRUE
-
-			if(!add_access(list(access_type), try_wildcard))
-				to_chat(usr, span_notice("ID error: ID card rejected your attempted access modification."))
-				LOG_ID_ACCESS_CHANGE(usr, src, "failed to add [SSid_access.get_access_desc(access_type)][try_wildcard ? " with wildcard [try_wildcard]" : ""]")
+				LOG_ID_ACCESS_CHANGE(usr, src, "failed to add [SSid_access.get_access_desc(access_type)]")
 				return TRUE
 
 			if(access_type in ACCESS_ALERT_ADMINS)

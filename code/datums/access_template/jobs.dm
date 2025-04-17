@@ -120,7 +120,7 @@
 
 /datum/access_template/job/captain
 	assignment = JOB_CAPTAIN
-	intern_alt_name = "Captain-in-Training"
+	intern_alt_name = "Subintendant"
 	trim_state = "trim_captain"
 	sechud_icon_state = SECHUD_CAPTAIN
 	config_job = "captain"
@@ -179,7 +179,7 @@
 
 /datum/access_template/job/chief_medical_officer
 	assignment = JOB_AUGUR
-	intern_alt_name = "Medical Director-in-Training"
+	intern_alt_name = "Registered Augur"
 	trim_state = "trim_chiefmedicalofficer"
 	sechud_icon_state = SECHUD_CHIEF_MEDICAL_OFFICER
 	extra_access = list(ACCESS_TELEPORTER)
@@ -425,26 +425,6 @@
 		access |= list(ACCESS_MAINT_TUNNELS)
 
 	access |= department_access
-
-/datum/access_template/job/security_officer/supply
-	assignment = "Security Officer (Cargo)"
-	trim_state = "trim_securityofficer_car"
-	department_access = list(ACCESS_AUX_BASE, ACCESS_CARGO, ACCESS_MAILSORTING, ACCESS_MINING, ACCESS_MINING_STATION)
-
-/datum/access_template/job/security_officer/engineering
-	assignment = "Security Officer (Engineering)"
-	trim_state = "trim_securityofficer_engi"
-	department_access = list(ACCESS_ATMOSPHERICS, ACCESS_AUX_BASE, ACCESS_CONSTRUCTION, ACCESS_ENGINE)
-
-/datum/access_template/job/security_officer/medical
-	assignment = "Security Officer (Medical)"
-	trim_state = "trim_securityofficer_med"
-	department_access = list(ACCESS_MEDICAL, ACCESS_MORGUE, ACCESS_SURGERY)
-
-/datum/access_template/job/security_officer/science
-	assignment = "Security Officer (Science)"
-	trim_state = "trim_securityofficer_sci"
-	department_access = list(ACCESS_AUX_BASE, ACCESS_RESEARCH, ACCESS_RND)
 
 /datum/access_template/job/shaft_miner
 	assignment = "Prospector"

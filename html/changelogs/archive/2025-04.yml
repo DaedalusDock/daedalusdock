@@ -30,3 +30,7 @@
       Sorry :(
   - bugfix: Fixes clipping security camera in the bar.
   - bugfix: Gave the PI their tape recorder back.
+2025-04-17:
+  francinum:
+  - balance: Allows all clients to use engine macros.
+  - admin: Don't make me regret this.

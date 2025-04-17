@@ -70,7 +70,7 @@ export const Bepis = (props) => {
                       maxValue={30000}
                       step={100}
                       stepPixelSize={2}
-                      onChange={(e, value) =>
+                      onChange={(value) =>
                         act('amount', {
                           amount: value,
                         })

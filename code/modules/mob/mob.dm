@@ -589,10 +589,10 @@
 	set waitfor = FALSE
 
 	if(!can_examinate(examinify))
-		return
+		return FALSE
 
 	if(!pre_examinate(examinify))
-		return
+		return FALSE
 
 	face_atom(examinify)
 
@@ -625,6 +625,18 @@
 
 	to_chat(src, "<div class='examine_block'><span class='infoplain'>[result.Join()]</span></div>") //PARIAH EDIT CHANGE
 	SEND_SIGNAL(src, COMSIG_MOB_EXAMINATE, examinify)
+	return TRUE
+
+/mob/living/carbon/human/run_examinate(atom/examinify)
+	. = ..()
+	if(!.)
+		return
+
+	examinify.disco_flavor(
+		src,
+		get_dist(src, examinify) >= 1,
+		is_station_level(get_step(examinify, 0)?.z)
+	)
 
 /// Tells nearby mobs about our examination.
 /mob/proc/broadcast_examine(atom/examined)

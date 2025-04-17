@@ -470,18 +470,23 @@ SUBSYSTEM_DEF(ticker)
 	return .
 
 /datum/controller/subsystem/ticker/proc/transfer_characters()
-	var/list/livings = list()
-	for(var/i in GLOB.new_player_list)
-		var/mob/dead/new_player/player = i
-		var/mob/living = player.transfer_character()
-		if(living)
-			qdel(player)
-			living.notransform = TRUE
-			living.client?.init_verbs()
-			livings += living
+	var/list/pawns = list()
+	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
+		if(!player.new_character)
+			continue
 
-	if(livings.len)
-		addtimer(CALLBACK(src, PROC_REF(release_characters), livings), 3 SECONDS, TIMER_CLIENT_TIME)
+		var/mob/pawn = player.new_character
+		pawn.mind.assigned_role?.before_roundstart_possess(pawn)
+
+		player.transfer_character()
+
+		pawn.mind.assigned_role?.after_roundstart_possess(pawn)
+		pawn.notransform = TRUE
+		pawn.client?.init_verbs()
+		pawns += pawn
+
+	if(pawns.len)
+		addtimer(CALLBACK(src, PROC_REF(release_characters), pawns), 3 SECONDS, TIMER_CLIENT_TIME)
 
 /datum/controller/subsystem/ticker/proc/release_characters(list/livings)
 	for(var/I in livings)

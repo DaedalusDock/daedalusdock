@@ -598,6 +598,22 @@
 		. += span_notice("Alt-click [src] to [ secondsElectrified ? "un-electrify" : "permanently electrify"] it.")
 		. += span_notice("Ctrl-Shift-click [src] to [ emergency ? "disable" : "enable"] emergency access.")
 
+	if(is_station_level(z))
+		var/datum/roll_result/result = user.get_examine_result("airlock", 12)
+		if(result?.outcome >= SUCCESS)
+			result.do_skill_sound(user)
+			. += result.create_tooltip("Nearly two thousand kilograms of cold steel, and a time-tested design.", body_only = TRUE)
+
+/obj/machinery/door/airlock/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("door_flavor", only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("An airlock by one name, a door by another, a threshold a third. You are not always certain what could be behind it."),
+		)
+
 /obj/machinery/door/airlock/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
 

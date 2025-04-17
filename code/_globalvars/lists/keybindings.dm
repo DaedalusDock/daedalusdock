@@ -27,7 +27,7 @@
 /proc/init_emote_keybinds()
 	for(var/i in subtypesof(/datum/emote))
 		var/datum/emote/faketype = i
-		if(!initial(faketype.key))
+		if(!initial(faketype.key) || !initial(faketype.can_player_use))
 			continue
 		var/datum/keybinding/emote/emote_kb = new
 		emote_kb.link_to_emote(faketype)

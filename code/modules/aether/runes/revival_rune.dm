@@ -1,6 +1,12 @@
 /obj/effect/aether_rune/revival
 	rune_type = "revival"
 
+	invocation_phrases = list(
+		"Bes' arlo" = 1.5 SECONDS,
+		"Lahin shlotov sha layef" = 3 SECONDS,
+		"shshloboksha racha" = 2.5 SECONDS,
+	)
+
 	var/required_woundseal_amt = 30
 	var/required_woundseal_potency = 80
 
@@ -91,7 +97,7 @@
 
 	if(target_mob.stat == CONSCIOUS)
 		spawn(-1)
-			target_mob.emote("gasp")
+			target_mob.emote(/datum/emote/living/carbon/gasp_air)
 			target_mob.manual_emote("coughs up blood onto [loc].")
 			target_mob.add_splatter_floor(loc)
 

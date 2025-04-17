@@ -180,7 +180,10 @@
 ///Heartbeat is gone... He's dead Jim :(
 #define BEAT_NONE 0
 
+/// How much oxyloss is suffered on a failed breath.
 #define HUMAN_FAILBREATH_OXYLOSS 1
+/// How much oxyloss is recovered on a successful breath.
+#define HUMAN_OXYLOSS_RECOVERY -5
 
 #define HEAT_DAMAGE_LEVEL_1 1 //Amount of damage applied when your body temperature just passes the 360.15k safety point
 #define HEAT_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when your body temperature passes the 400K point

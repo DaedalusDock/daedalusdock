@@ -168,6 +168,19 @@
 
 	return flavor_text
 
+/obj/item/bodypart/proc/stethoscope_listen()
+	RETURN_TYPE(/list)
+	. = list()
+	for(var/obj/item/organ/I in contained_organs)
+		. += I.stethoscope_listen()
+
+	if(bodypart_flags & BP_ARTERY_CUT)
+		. += "rushing fluid"
+
+	// The pulse is quiet
+	if(!length(.) && owner.pulse())
+		. += "a faint pulse"
+
 /obj/item/bodypart/proc/inspect(mob/user)
 	if(is_stump)
 		to_chat(user, span_notice("[owner] is missing that bodypart."))

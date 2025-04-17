@@ -38,23 +38,6 @@
 	///The amount of heat needed to start damaging the window
 	var/melting_point = T0C + 3000 //See, because some dipass decided to make the station 50% glass, NT opted to infuse all the windows with plasma.
 
-/obj/structure/window/examine(mob/user)
-	. = ..()
-	if(reinf)
-		if(anchored && state == WINDOW_SCREWED_TO_FRAME)
-			. += span_notice("The window is <b>bolted</b> to the frame.")
-		else if(anchored && state == WINDOW_IN_FRAME)
-			. += span_notice("The window is <i>unbolted</i> but still <b>pried</b> into the frame.")
-		else if(anchored && state == WINDOW_OUT_OF_FRAME)
-			. += span_notice("The window is out of the frame, but could be <i>pried</i> in. It is <b>screwed</b> to the floor.")
-		else if(!anchored)
-			. += span_notice("The window is <i>unscrewed</i> from the floor, and could be deconstructed by <b>wrenching</b>.")
-	else
-		if(anchored)
-			. += span_notice("The window is <b>screwed</b> to the floor.")
-		else
-			. += span_notice("The window is <i>unscrewed</i> from the floor, and could be deconstructed by <b>wrenching</b>.")
-
 /obj/structure/window/Initialize(mapload, direct)
 	. = ..()
 	if(direct)
@@ -83,6 +66,42 @@
 
 	if (flags_1 & ON_BORDER_1)
 		AddElement(/datum/element/connect_loc, loc_connections)
+
+/obj/structure/window/examine(mob/user)
+	. = ..()
+	if(reinf)
+		if(anchored && state == WINDOW_SCREWED_TO_FRAME)
+			. += span_notice("The window is <b>bolted</b> to the frame.")
+		else if(anchored && state == WINDOW_IN_FRAME)
+			. += span_notice("The window is <i>unbolted</i> but still <b>pried</b> into the frame.")
+		else if(anchored && state == WINDOW_OUT_OF_FRAME)
+			. += span_notice("The window is out of the frame, but could be <i>pried</i> in. It is <b>screwed</b> to the floor.")
+		else if(!anchored)
+			. += span_notice("The window is <i>unscrewed</i> from the floor, and could be deconstructed by <b>wrenching</b>.")
+	else
+		if(anchored)
+			. += span_notice("The window is <b>screwed</b> to the floor.")
+		else
+			. += span_notice("The window is <i>unscrewed</i> from the floor, and could be deconstructed by <b>wrenching</b>.")
+
+/obj/structure/window/disco_flavor(mob/living/carbon/human/user, nearby = FALSE, is_station_level = FALSE)
+	. = ..()
+	if(!nearby || !is_station_level)
+		return
+
+	if(isspaceturf(get_turf(user)))
+		return
+
+	if(!(locate(/turf/open/space) in get_adjacent_open_turfs(src)))
+		return
+
+	var/datum/roll_result/result = user.get_examine_result("window_flavor", 13, only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("The glass is cold to the touch. Cold eternity beckons you to the other side."),
+		)
 
 /obj/structure/window/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	switch(the_rcd.mode)

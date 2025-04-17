@@ -34,7 +34,7 @@
 	name = "Curator"
 	jobtype = /datum/job/curator
 
-	id_trim = /datum/id_trim/job/curator
+	id_trim = /datum/access_template/job/curator
 	uniform = /obj/item/clothing/under/rank/civilian/curator
 	backpack_contents = list(
 		/obj/item/barcodescanner = 1,

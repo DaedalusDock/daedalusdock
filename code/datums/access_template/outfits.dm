@@ -3,44 +3,44 @@
  */
 
 /// Trim for the assassin outfit.
-/datum/id_trim/reaper_assassin
+/datum/access_template/reaper_assassin
 	assignment = "Reaper"
 	trim_state = "trim_ert_deathcommando"
 
-/datum/id_trim/highlander/New()
+/datum/access_template/highlander/New()
 	. = ..()
 	access = SSid_access.get_region_access_list(list(REGION_ALL_STATION))
 
 /// Trim for the mobster outfit.
-/datum/id_trim/mobster
+/datum/access_template/mobster
 	assignment = "Mobster"
 	trim_state = "trim_assistant"
 
 /// Trim for VR outfits.
-/datum/id_trim/vr
+/datum/access_template/vr
 	assignment = "VR Participant"
 
-/datum/id_trim/vr/New()
+/datum/access_template/vr/New()
 	. = ..()
 	access |= SSid_access.get_region_access_list(list(REGION_ALL_STATION))
 
 /// Trim for VR outfits.
-/datum/id_trim/vr/operative
+/datum/access_template/vr/operative
 	assignment = "Syndicate VR Operative"
 
-/datum/id_trim/vr/operative/New()
+/datum/access_template/vr/operative/New()
 	. = ..()
 	access |= list(ACCESS_SYNDICATE, ACCESS_MAINT_TUNNELS)
 
 /// Trim for the Tunnel Clown! outfit. Has all access.
-/datum/id_trim/tunnel_clown
+/datum/access_template/tunnel_clown
 	assignment = "Tunnel Clown!"
 	trim_state = "trim_clown"
 
-/datum/id_trim/tunnel_clown/New()
+/datum/access_template/tunnel_clown/New()
 	. = ..()
 	access |= SSid_access.get_region_access_list(list(REGION_ALL_STATION))
 
 /// Trim for Bounty Hunters NOT hired by centcom. (?)
-/datum/id_trim/bounty_hunter
+/datum/access_template/bounty_hunter
 	assignment = "Bounty Hunter"

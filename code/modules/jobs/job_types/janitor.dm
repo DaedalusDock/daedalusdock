@@ -36,7 +36,7 @@
 	name = "Janitor"
 	jobtype = /datum/job/janitor
 
-	id_trim = /datum/id_trim/job/janitor
+	id_trim = /datum/access_template/job/janitor
 	uniform = /obj/item/clothing/under/rank/civilian/janitor
 	belt = /obj/item/modular_computer/tablet/pda/janitor
 	ears = /obj/item/radio/headset/headset_srv

@@ -332,11 +332,11 @@
 
 	chameleon_blacklist |= typecacheof(target.type)
 	for(var/trim_path in typesof(chameleon_type))
-		if(ispath(trim_path) && ispath(trim_path, /datum/id_trim))
+		if(ispath(trim_path) && ispath(trim_path, /datum/access_template))
 			if(chameleon_blacklist[trim_path])
 				continue
 
-			var/datum/id_trim/trim = SSid_access.trim_singletons_by_path[trim_path]
+			var/datum/access_template/trim = SSid_access.trim_singletons_by_path[trim_path]
 
 			if(trim && trim.trim_state && trim.assignment)
 				var/chameleon_item_name = "[trim.assignment] ([trim.trim_state])"

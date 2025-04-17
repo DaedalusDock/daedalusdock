@@ -60,7 +60,7 @@
 	jobtype = /datum/job/chief_engineer
 
 	id = /obj/item/card/id/advanced/silver
-	id_trim = /datum/id_trim/job/chief_engineer
+	id_trim = /datum/access_template/job/chief_engineer
 	uniform = /obj/item/clothing/under/rank/engineering/chief_engineer
 	backpack_contents = list(
 		/obj/item/assembly/flash/handheld

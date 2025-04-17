@@ -263,7 +263,7 @@
 				return TRUE
 
 			for(var/trim_path in job_templates)
-				var/datum/id_trim/trim = SSid_access.trim_singletons_by_path[trim_path]
+				var/datum/access_template/trim = SSid_access.trim_singletons_by_path[trim_path]
 				if(trim.assignment != template_name)
 					continue
 
@@ -340,7 +340,7 @@
 		data["id_age"] = id_card.registered_age
 
 		if(id_card.trim)
-			var/datum/id_trim/card_trim = id_card.trim
+			var/datum/access_template/card_trim = id_card.trim
 			data["hasTrim"] = TRUE
 			data["trimAssignment"] = card_trim.assignment ? card_trim.assignment : ""
 			data["trimAccess"] = card_trim.access ? card_trim.access : list()

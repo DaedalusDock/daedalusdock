@@ -31,7 +31,7 @@
 	. = ..()
 
 	// Doing this hurts my soul, but simplebot access reworks are for another day.
-	var/datum/id_trim/job/clown_trim = SSid_access.trim_singletons_by_path[/datum/id_trim/job/clown]
+	var/datum/access_template/job/clown_trim = SSid_access.trim_singletons_by_path[/datum/access_template/job/clown]
 	//We're doing set_access instead to overwrite the sec access they get.
 	access_card.set_access(clown_trim.access + clown_trim.wildcard_access)
 	prev_access = access_card.access.Copy()

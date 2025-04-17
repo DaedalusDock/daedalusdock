@@ -62,7 +62,7 @@
 	name = "Station Engineer"
 	jobtype = /datum/job/station_engineer
 
-	id_trim = /datum/id_trim/job/station_engineer
+	id_trim = /datum/access_template/job/station_engineer
 	uniform = /obj/item/clothing/under/rank/engineering/engineer
 	belt = /obj/item/storage/belt/utility/full/engi
 	ears = /obj/item/radio/headset/headset_eng

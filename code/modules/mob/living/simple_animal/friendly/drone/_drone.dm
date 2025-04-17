@@ -167,7 +167,7 @@
 	access_card = new /obj/item/card/id/advanced/simple_bot(src)
 
 	// Doing this hurts my soul, but simple_animal access reworks are for another day.
-	var/datum/id_trim/job/cap_trim = SSid_access.trim_singletons_by_path[/datum/id_trim/job/captain]
+	var/datum/access_template/job/cap_trim = SSid_access.trim_singletons_by_path[/datum/access_template/job/captain]
 	access_card.add_access(cap_trim.access + cap_trim.wildcard_access)
 
 	if(default_storage)

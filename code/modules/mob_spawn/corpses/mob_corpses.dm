@@ -18,7 +18,7 @@
 	head = /obj/item/clothing/head/helmet/swat
 	back = /obj/item/storage/backpack
 	id = /obj/item/card/id/advanced/chameleon
-	id_trim = /datum/id_trim/chameleon/operative
+	id_trim = /datum/access_template/chameleon/operative
 
 /obj/effect/mob_spawn/corpse/human/syndicatecommando
 	name = "Syndicate Commando"
@@ -36,7 +36,7 @@
 	back = /obj/item/mod/control/pre_equipped/nuclear
 	r_pocket = /obj/item/tank/internals/emergency_oxygen
 	id = /obj/item/card/id/advanced/chameleon
-	id_trim = /datum/id_trim/chameleon/operative
+	id_trim = /datum/access_template/chameleon/operative
 
 
 /obj/effect/mob_spawn/corpse/human/syndicatestormtrooper
@@ -54,7 +54,7 @@
 	mask = /obj/item/clothing/mask/gas/syndicate
 	back = /obj/item/mod/control/pre_equipped/elite
 	id = /obj/item/card/id/advanced/chameleon
-	id_trim = /datum/id_trim/chameleon/operative
+	id_trim = /datum/access_template/chameleon/operative
 
 /obj/effect/mob_spawn/corpse/human/pirate
 	name = "Pirate"
@@ -165,7 +165,7 @@
 	head = /obj/item/clothing/head/helmet/swat/nanotrasen
 	back = /obj/item/storage/backpack/security
 	id = /obj/item/card/id/advanced/centcom
-	id_trim = /datum/id_trim/centcom/corpse/private_security/tradepost_officer
+	id_trim = /datum/access_template/centcom/corpse/private_security/tradepost_officer
 
 /obj/effect/mob_spawn/corpse/human/nanotrasenassaultsoldier
 	name = "Nanotrasen Private Security Officer"
@@ -184,7 +184,7 @@
 	head = /obj/item/clothing/head/helmet/swat/nanotrasen
 	back = /obj/item/storage/backpack/security
 	id = /obj/item/card/id/advanced/centcom
-	id_trim = /datum/id_trim/centcom/corpse/assault
+	id_trim = /datum/access_template/centcom/corpse/assault
 
 /obj/effect/mob_spawn/corpse/human/cat_butcher
 	name = "The Cat Surgeon"
@@ -203,7 +203,7 @@
 	back = /obj/item/storage/backpack/satchel/med
 	id = /obj/item/card/id/advanced
 	glasses = /obj/item/clothing/glasses/hud/health
-	id_trim = /datum/id_trim/away/cat_surgeon
+	id_trim = /datum/access_template/away/cat_surgeon
 
 /obj/effect/mob_spawn/corpse/human/bee_terrorist
 	name = "BLF Operative"

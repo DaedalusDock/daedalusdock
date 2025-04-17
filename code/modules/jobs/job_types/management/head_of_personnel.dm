@@ -51,7 +51,7 @@
 	jobtype = /datum/job/head_of_personnel
 
 	id = /obj/item/card/id/advanced/silver
-	id_trim = /datum/id_trim/job/head_of_personnel
+	id_trim = /datum/access_template/job/head_of_personnel
 	uniform = /obj/item/clothing/under/suit/navy
 	suit = /obj/item/clothing/suit/toggle/lawyer
 	gloves = /obj/item/clothing/gloves/color/black

@@ -52,12 +52,12 @@ SUBSYSTEM_DEF(id_access)
 /**
  * Called by [/datum/controller/subsystem/ticker/proc/setup]
  *
- * This runs through every /datum/id_trim/job singleton and ensures that its access is setup according to
+ * This runs through every /datum/access_template/job singleton and ensures that its access is setup according to
  * appropriate config entries.
  */
 /datum/controller/subsystem/id_access/proc/refresh_job_trim_singletons()
-	for(var/trim in typesof(/datum/id_trim/job))
-		var/datum/id_trim/job/job_trim = trim_singletons_by_path[trim]
+	for(var/trim in typesof(/datum/access_template/job))
+		var/datum/access_template/job/job_trim = trim_singletons_by_path[trim]
 
 		if(QDELETED(job_trim))
 			stack_trace("Trim \[[trim]\] missing from trim singleton list. Reinitialising this trim.")
@@ -126,7 +126,7 @@ SUBSYSTEM_DEF(id_access)
 
 /// Instantiate trim singletons and add them to a list.
 /datum/controller/subsystem/id_access/proc/setup_trim_singletons()
-	for(var/trim in typesof(/datum/id_trim))
+	for(var/trim in typesof(/datum/access_template))
 		trim_singletons_by_path[trim] = new trim()
 
 /// Creates various data structures that primarily get fed to tgui interfaces, although these lists are used in other places.
@@ -184,9 +184,9 @@ SUBSYSTEM_DEF(id_access)
 		),
 	)
 
-	var/list/station_job_trims = subtypesof(/datum/id_trim/job)
+	var/list/station_job_trims = subtypesof(/datum/access_template/job)
 	for(var/trim_path in station_job_trims)
-		var/datum/id_trim/job/trim = trim_singletons_by_path[trim_path]
+		var/datum/access_template/job/trim = trim_singletons_by_path[trim_path]
 		if(!length(trim.template_access))
 			continue
 
@@ -200,9 +200,9 @@ SUBSYSTEM_DEF(id_access)
 			var/list/templates = manager["templates"]
 			templates[trim_path] = trim.assignment
 
-	var/list/centcom_job_trims = typesof(/datum/id_trim/centcom) - typesof(/datum/id_trim/centcom/corpse)
+	var/list/centcom_job_trims = typesof(/datum/access_template/centcom) - typesof(/datum/access_template/centcom/corpse)
 	for(var/trim_path in centcom_job_trims)
-		var/datum/id_trim/trim = trim_singletons_by_path[trim_path]
+		var/datum/access_template/trim = trim_singletons_by_path[trim_path]
 		centcom_job_templates[trim_path] = trim.assignment
 
 	var/list/all_pda_paths = typesof(/obj/item/modular_computer/tablet/pda)
@@ -377,7 +377,7 @@ SUBSYSTEM_DEF(id_access)
  * * copy_access - Boolean value. If true, the trim's access is also copied to the card.
  */
 /datum/controller/subsystem/id_access/proc/apply_trim_to_card(obj/item/card/id/id_card, trim_path, copy_access = TRUE)
-	var/datum/id_trim/trim = trim_singletons_by_path[trim_path]
+	var/datum/access_template/trim = trim_singletons_by_path[trim_path]
 
 	if(!id_card.can_add_wildcards(trim.wildcard_access))
 		return FALSE
@@ -419,7 +419,7 @@ SUBSYSTEM_DEF(id_access)
  * * check_forged - Boolean value. If TRUE, will not overwrite the card's assignment if the card has been forged.
  */
 /datum/controller/subsystem/id_access/proc/apply_trim_to_chameleon_card(obj/item/card/id/advanced/chameleon/id_card, trim_path, check_forged = TRUE)
-	var/datum/id_trim/trim = trim_singletons_by_path[trim_path]
+	var/datum/access_template/trim = trim_singletons_by_path[trim_path]
 	id_card.trim_icon_override = trim.trim_icon
 	id_card.trim_state_override = trim.trim_state
 	id_card.trim_assignment_override = trim.assignment
@@ -453,7 +453,7 @@ SUBSYSTEM_DEF(id_access)
  * * id_card - The ID card to remove the trim from.
  */
 /datum/controller/subsystem/id_access/proc/add_trim_access_to_card(obj/item/card/id/id_card, trim_path)
-	var/datum/id_trim/trim = trim_singletons_by_path[trim_path]
+	var/datum/access_template/trim = trim_singletons_by_path[trim_path]
 
 	id_card.clear_access()
 

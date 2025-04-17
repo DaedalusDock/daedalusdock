@@ -48,7 +48,7 @@
 	jobtype = /datum/job/paramedic
 
 	id = /obj/item/card/id/advanced
-	id_trim = /datum/id_trim/job/paramedic
+	id_trim = /datum/access_template/job/paramedic
 	uniform = /obj/item/clothing/under/rank/medical/paramedic
 	suit = /obj/item/clothing/suit/toggle/labcoat/paramedic
 	backpack_contents = list(

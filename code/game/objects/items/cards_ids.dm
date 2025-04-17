@@ -80,7 +80,7 @@
 	var/assignment
 
 	/// Trim datum associated with the card. Controls which job icon is displayed on the card and which accesses do not require wildcards.
-	var/datum/id_trim/trim
+	var/datum/access_template/trim
 
 	/// Access levels held by this card.
 	var/list/access = list()
@@ -520,7 +520,7 @@
 	fingerprint = R.fields[DATACORE_FINGERPRINT] || "UNSET"
 	blood_type = R.fields[DATACORE_BLOOD_TYPE] || "UNSET"
 	assignment = R.fields[DATACORE_TRIM] || "UNSET"
-	for(var/datum/id_trim/trim as anything in SSid_access.trim_singletons_by_path)
+	for(var/datum/access_template/trim as anything in SSid_access.trim_singletons_by_path)
 		trim = SSid_access.trim_singletons_by_path[trim]
 		if(trim.assignment == R.fields[DATACORE_TRIM])
 			if(visual)
@@ -574,18 +574,18 @@
 /obj/item/card/id/away
 	name = "\proper a perfectly generic identification card"
 	desc = "A perfectly generic identification card. Looks like it could use some flavor."
-	trim = /datum/id_trim/away
+	trim = /datum/access_template/away
 	icon_state = "retro"
 	registered_age = null
 
 /obj/item/card/id/away/hotel
 	name = "Staff ID"
 	desc = "A staff ID used to access the hotel's doors."
-	trim = /datum/id_trim/away/hotel
+	trim = /datum/access_template/away/hotel
 
 /obj/item/card/id/away/hotel/security
 	name = "Officer ID"
-	trim = /datum/id_trim/away/hotel/security
+	trim = /datum/access_template/away/hotel/security
 
 /obj/item/card/id/away/old
 	name = "\proper a perfectly generic identification card"
@@ -594,22 +594,22 @@
 /obj/item/card/id/away/old/sec
 	name = "Charlie Station Security Officer's ID card"
 	desc = "A faded Charlie Station ID card. You can make out the rank \"Security Officer\"."
-	trim = /datum/id_trim/away/old/sec
+	trim = /datum/access_template/away/old/sec
 
 /obj/item/card/id/away/old/sci
 	name = "Charlie Station Scientist's ID card"
 	desc = "A faded Charlie Station ID card. You can make out the rank \"Scientist\"."
-	trim = /datum/id_trim/away/old/sci
+	trim = /datum/access_template/away/old/sci
 
 /obj/item/card/id/away/old/eng
 	name = "Charlie Station Engineer's ID card"
 	desc = "A faded Charlie Station ID card. You can make out the rank \"Station Engineer\"."
-	trim = /datum/id_trim/away/old/eng
+	trim = /datum/access_template/away/old/eng
 
 /obj/item/card/id/away/old/apc
 	name = "APC Access ID"
 	desc = "A special ID card that allows access to APC terminals."
-	trim = /datum/id_trim/away/old/apc
+	trim = /datum/access_template/away/old/apc
 
 /obj/item/card/id/away/deep_storage //deepstorage.dmm space ruin
 	name = "bunker access ID"
@@ -766,7 +766,7 @@
 		return trim_assignment_override
 
 	if(ispath(trim))
-		var/datum/id_trim/trim_singleton = SSid_access.trim_singletons_by_path[trim]
+		var/datum/access_template/trim_singleton = SSid_access.trim_singletons_by_path[trim]
 		return trim_singleton.assignment
 
 	return ..()
@@ -783,14 +783,14 @@
 	inhand_icon_state = "silver_id"
 	wildcard_slots = WILDCARD_LIMIT_SILVER
 
-/datum/id_trim/maint_reaper
+/datum/access_template/maint_reaper
 	access = list(ACCESS_MAINT_TUNNELS)
 	trim_state = "trim_janitor"
 	assignment = "Reaper"
 
 /obj/item/card/id/advanced/silver/reaper
 	name = "Thirteen's ID Card (Reaper)"
-	trim = /datum/id_trim/maint_reaper
+	trim = /datum/access_template/maint_reaper
 	registered_name = "Thirteen"
 
 /obj/item/card/id/advanced/gold
@@ -805,7 +805,7 @@
 	name = "superintendent's spare ID"
 	desc = "The spare ID of the High Lord himself."
 	registered_name = JOB_CAPTAIN
-	trim = /datum/id_trim/job/captain
+	trim = /datum/access_template/job/captain
 	registered_age = null
 
 /obj/item/card/id/advanced/gold/captains_spare/update_label() //so it doesn't change to Captain's ID card (Captain) on a sneeze
@@ -823,7 +823,7 @@
 	assigned_icon_state = "assigned_centcom"
 	registered_name = JOB_CENTCOM
 	registered_age = null
-	trim = /datum/id_trim/centcom
+	trim = /datum/access_template/centcom
 	wildcard_slots = WILDCARD_LIMIT_CENTCOM
 
 /obj/item/card/id/advanced/centcom/ert
@@ -831,35 +831,35 @@
 	desc = "An ERT ID card."
 	registered_age = null
 	registered_name = "Emergency Response Intern"
-	trim = /datum/id_trim/centcom/ert
+	trim = /datum/access_template/centcom/ert
 
 /obj/item/card/id/advanced/centcom/ert
 	registered_name = JOB_ERT_COMMANDER
-	trim = /datum/id_trim/centcom/ert/commander
+	trim = /datum/access_template/centcom/ert/commander
 
 /obj/item/card/id/advanced/centcom/ert/security
 	registered_name = JOB_ERT_OFFICER
-	trim = /datum/id_trim/centcom/ert/security
+	trim = /datum/access_template/centcom/ert/security
 
 /obj/item/card/id/advanced/centcom/ert/engineer
 	registered_name = JOB_ERT_ENGINEER
-	trim = /datum/id_trim/centcom/ert/engineer
+	trim = /datum/access_template/centcom/ert/engineer
 
 /obj/item/card/id/advanced/centcom/ert/medical
 	registered_name = JOB_ERT_MEDICAL_DOCTOR
-	trim = /datum/id_trim/centcom/ert/medical
+	trim = /datum/access_template/centcom/ert/medical
 
 /obj/item/card/id/advanced/centcom/ert/chaplain
 	registered_name = JOB_ERT_CHAPLAIN
-	trim = /datum/id_trim/centcom/ert/chaplain
+	trim = /datum/access_template/centcom/ert/chaplain
 
 /obj/item/card/id/advanced/centcom/ert/janitor
 	registered_name = JOB_ERT_JANITOR
-	trim = /datum/id_trim/centcom/ert/janitor
+	trim = /datum/access_template/centcom/ert/janitor
 
 /obj/item/card/id/advanced/centcom/ert/clown
 	registered_name = JOB_ERT_CLOWN
-	trim = /datum/id_trim/centcom/ert/clown
+	trim = /datum/access_template/centcom/ert/clown
 
 /obj/item/card/id/advanced/black
 	name = "black identification card"
@@ -873,7 +873,7 @@
 	name = "\improper Death Squad ID"
 	desc = "A Death Squad ID card."
 	registered_name = JOB_ERT_DEATHSQUAD
-	trim = /datum/id_trim/centcom/deathsquad
+	trim = /datum/access_template/centcom/deathsquad
 	wildcard_slots = WILDCARD_LIMIT_DEATHSQUAD
 
 /obj/item/card/id/advanced/black/syndicate_command
@@ -881,20 +881,20 @@
 	desc = "An ID straight from the Syndicate."
 	registered_name = "Syndicate"
 	registered_age = null
-	trim = /datum/id_trim/syndicom
+	trim = /datum/access_template/syndicom
 	wildcard_slots = WILDCARD_LIMIT_SYNDICATE
 
 /obj/item/card/id/advanced/black/syndicate_command/crew_id
 	name = "syndicate ID card"
 	desc = "An ID straight from the Syndicate."
 	registered_name = "Syndicate"
-	trim = /datum/id_trim/syndicom/crew
+	trim = /datum/access_template/syndicom/crew
 
 /obj/item/card/id/advanced/black/syndicate_command/captain_id
 	name = "syndicate captain ID card"
 	desc = "An ID straight from the Syndicate."
 	registered_name = "Syndicate"
-	trim = /datum/id_trim/syndicom/captain
+	trim = /datum/access_template/syndicom/captain
 
 
 /obj/item/card/id/advanced/black/syndicate_command/captain_id/syndie_spare
@@ -917,7 +917,7 @@
 	icon_state = "card_centcom"
 	worn_icon_state = "card_centcom"
 	assigned_icon_state = "assigned_centcom"
-	trim = /datum/id_trim/admin
+	trim = /datum/access_template/admin
 	wildcard_slots = WILDCARD_LIMIT_ADMIN
 
 /obj/item/card/id/advanced/debug/Initialize(mapload)
@@ -934,7 +934,7 @@
 	righthand_file = 'icons/mob/inhands/equipment/idcards_righthand.dmi'
 	registered_name = "Scum"
 	registered_age = null
-	trim = /datum/id_trim/job/prisoner
+	trim = /datum/access_template/job/prisoner
 
 	wildcard_slots = WILDCARD_LIMIT_PRISONER
 
@@ -998,41 +998,41 @@
 /obj/item/card/id/advanced/prisoner/one
 	name = "Prisoner #13-001"
 	registered_name = "Prisoner #13-001"
-	trim = /datum/id_trim/job/prisoner/one
+	trim = /datum/access_template/job/prisoner/one
 
 /obj/item/card/id/advanced/prisoner/two
 	name = "Prisoner #13-002"
 	registered_name = "Prisoner #13-002"
-	trim = /datum/id_trim/job/prisoner/two
+	trim = /datum/access_template/job/prisoner/two
 
 /obj/item/card/id/advanced/prisoner/three
 	name = "Prisoner #13-003"
 	registered_name = "Prisoner #13-003"
-	trim = /datum/id_trim/job/prisoner/three
+	trim = /datum/access_template/job/prisoner/three
 
 /obj/item/card/id/advanced/prisoner/four
 	name = "Prisoner #13-004"
 	registered_name = "Prisoner #13-004"
-	trim = /datum/id_trim/job/prisoner/four
+	trim = /datum/access_template/job/prisoner/four
 
 /obj/item/card/id/advanced/prisoner/five
 	name = "Prisoner #13-005"
 	registered_name = "Prisoner #13-005"
-	trim = /datum/id_trim/job/prisoner/five
+	trim = /datum/access_template/job/prisoner/five
 
 /obj/item/card/id/advanced/prisoner/six
 	name = "Prisoner #13-006"
 	registered_name = "Prisoner #13-006"
-	trim = /datum/id_trim/job/prisoner/six
+	trim = /datum/access_template/job/prisoner/six
 
 /obj/item/card/id/advanced/prisoner/seven
 	name = "Prisoner #13-007"
 	registered_name = "Prisoner #13-007"
-	trim = /datum/id_trim/job/prisoner/seven
+	trim = /datum/access_template/job/prisoner/seven
 
 /obj/item/card/id/advanced/mining
 	name = "mining ID"
-	trim = /datum/id_trim/job/shaft_miner/spare
+	trim = /datum/access_template/job/shaft_miner/spare
 
 /obj/item/card/id/advanced/highlander
 	name = "highlander ID"
@@ -1041,11 +1041,11 @@
 	icon_state = "card_black"
 	worn_icon_state = "card_black"
 	assigned_icon_state = "assigned_syndicate"
-	trim = /datum/id_trim/highlander
+	trim = /datum/access_template/highlander
 	wildcard_slots = WILDCARD_LIMIT_ADMIN
 
 /obj/item/card/id/advanced/chameleon
-	trim = /datum/id_trim/chameleon
+	trim = /datum/access_template/chameleon
 	wildcard_slots = WILDCARD_LIMIT_CHAMELEON
 
 	/// Have we set a custom name and job assignment, or will we use what we're given when we chameleon change?
@@ -1270,11 +1270,11 @@
 							/obj/item/card/id/advanced/simple_bot,
 						))
 						var/list/trim_list = list()
-						for(var/trim_path in typesof(/datum/id_trim))
+						for(var/trim_path in typesof(/datum/access_template))
 							if(blacklist[trim_path])
 								continue
 
-							var/datum/id_trim/trim = SSid_access.trim_singletons_by_path[trim_path]
+							var/datum/access_template/trim = SSid_access.trim_singletons_by_path[trim_path]
 
 							if(trim && trim.trim_state && trim.assignment)
 								var/fake_trim_name = "[trim.assignment] ([trim.trim_state])"
@@ -1366,7 +1366,7 @@
 /obj/item/card/id/advanced/engioutpost
 	registered_name = "George 'Plastic' Miller"
 	desc = "A card used to provide ID and determine access across the station. There's blood dripping from the corner. Ew."
-	trim = /datum/id_trim/engioutpost
+	trim = /datum/access_template/engioutpost
 	registered_age = 47
 
 /obj/item/card/id/advanced/simple_bot

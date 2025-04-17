@@ -18,14 +18,14 @@
 	var/command_radio = FALSE
 	var/uplink_type = /obj/item/uplink/nuclear
 
-	id_trim = /datum/id_trim/chameleon/operative
+	id_trim = /datum/access_template/chameleon/operative
 
 /datum/outfit/syndicate/leader
 	name = "Syndicate Leader - Basic"
 	gloves = /obj/item/clothing/gloves/krav_maga/combatglovesplus
 	command_radio = TRUE
 
-	id_trim = /datum/id_trim/chameleon/operative/nuke_leader
+	id_trim = /datum/access_template/chameleon/operative/nuke_leader
 
 /datum/outfit/syndicate/no_crystals
 	name = "Syndicate Operative - Reinforcement"

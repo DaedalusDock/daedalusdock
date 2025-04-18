@@ -1,0 +1,4 @@
+author: hry-gh, Kapu1178
+delete-after: true
+changes:
+  - rscadd: Added support for High DPI monitors.

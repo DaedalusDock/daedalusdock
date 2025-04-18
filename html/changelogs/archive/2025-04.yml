@@ -34,3 +34,9 @@
   francinum:
   - balance: Allows all clients to use engine macros.
   - admin: Don't make me regret this.
+2025-04-18:
+  Kapu1178:
+  - tweak: The Revival miracle now cures brain traumas.
+  - rscadd: The Exanguinate sigil, now available from an Augur near you.
+  hry-gh, Kapu1178:
+  - rscadd: Added support for High DPI monitors.

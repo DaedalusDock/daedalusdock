@@ -32,6 +32,7 @@ type NtosCardContentData = {
   authenticatedUser: string;
   has_id: BooleanLike;
   have_id_slot: BooleanLike;
+  id_rank: string;
   regions: AccessRegion[];
   showBasic: BooleanLike;
   templates: Record<string, any>;
@@ -88,7 +89,10 @@ export const NtosCardContent = (props) => {
             />
           }
         >
-          <TemplateDropdown templates={templates} />
+          <TemplateDropdown
+            templates={templates}
+            selected_template={data.id_rank}
+          />
         </Section>
       )}
       <Stack mt={1}>
@@ -276,9 +280,14 @@ const IDCardTarget = (props) => {
   );
 };
 
-const TemplateDropdown = (props) => {
+type TemplateDropdownProps = {
+  selected_template?: string;
+  templates: Record<string, any>;
+};
+
+const TemplateDropdown = (props: TemplateDropdownProps) => {
   const { act } = useBackend();
-  const { templates } = props;
+  const { templates, selected_template } = props;
 
   const templateKeys = Object.keys(templates);
 
@@ -286,12 +295,14 @@ const TemplateDropdown = (props) => {
     return;
   }
 
+  const display_selected = Object.values(templates).includes(selected_template);
   return (
     <Stack>
       <Stack.Item grow>
         <Dropdown
           width="100%"
           displayText={'Select a template...'}
+          selected={display_selected && selected_template}
           options={templateKeys.map((path) => {
             return templates[path];
           })}

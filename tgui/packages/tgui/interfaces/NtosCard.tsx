@@ -1,3 +1,5 @@
+import { BooleanLike } from 'common/react';
+
 import { useBackend, useSharedState } from '../backend';
 import {
   Box,
@@ -11,7 +13,7 @@ import {
   Tabs,
 } from '../components';
 import { NtosWindow } from '../layouts';
-import { AccessList } from './common/AccessList';
+import { AccessList, AccessRegion } from './common/AccessList';
 
 export const NtosCard = (props) => {
   return (
@@ -23,8 +25,21 @@ export const NtosCard = (props) => {
   );
 };
 
+type NtosCardContentData = {
+  accessFlagNames: Record<string, any>;
+  accessFlags: Record<string, any>;
+  access_on_card: string[];
+  authenticatedUser: string;
+  has_id: BooleanLike;
+  have_id_slot: BooleanLike;
+  regions: AccessRegion[];
+  showBasic: BooleanLike;
+  templates: Record<string, any>;
+  trimAccess: string[];
+};
+
 export const NtosCardContent = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<NtosCardContentData>();
   const {
     authenticatedUser,
     regions = [],
@@ -136,8 +151,15 @@ const IDCardTabs = (props) => {
   );
 };
 
+type IDCardLoginData = {
+  authIDName: string;
+  authenticatedUser: string;
+  has_id: BooleanLike;
+  have_printer: BooleanLike;
+};
+
 export const IDCardLogin = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<IDCardLoginData>();
   const { authenticatedUser, has_id, have_printer, authIDName } = data;
 
   return (
@@ -180,8 +202,17 @@ export const IDCardLogin = (props) => {
   );
 };
 
+type IDCardTargetData = {
+  authenticatedUser: string;
+  has_id: BooleanLike;
+  id_age: string;
+  id_name: string;
+  id_owner: string;
+  id_rank: string;
+};
+
 const IDCardTarget = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<IDCardTargetData>();
   const { authenticatedUser, id_rank, id_owner, has_id, id_name, id_age } =
     data;
 
@@ -215,7 +246,8 @@ const IDCardTarget = (props) => {
                 unit="Years"
                 minValue={17}
                 maxValue={85}
-                onChange={(e, value) => {
+                step={1}
+                onChange={(value) => {
                   act('PRG_age', {
                     id_age: value,
                   });

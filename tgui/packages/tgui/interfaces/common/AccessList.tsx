@@ -15,7 +15,7 @@ type AccessListProps = {
   trimAccess: string[];
 };
 
-type AccessRegion = {
+export type AccessRegion = {
   accesses: AccessInstance[];
   name: string;
 };

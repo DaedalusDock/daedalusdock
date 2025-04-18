@@ -5,4 +5,4 @@
 
 /datum/access_template/space_police/New()
 	. = ..()
-	access = SSid_access.get_region_access_list(list(REGION_ALL_STATION))
+	access = SSid_access.get_access_for_group(list(/datum/access_group/station/all))

@@ -13,10 +13,10 @@ import {
   Tabs,
 } from '../components';
 import { NtosWindow } from '../layouts';
-import { AccessList, AccessRegion } from './common/AccessList';
+import { AccessGroup, AccessList } from './common/AccessList';
 export const NtosCard = (props) => {
   return (
-    <NtosWindow width={500} height={670}>
+    <NtosWindow width={800} height={670}>
       <NtosWindow.Content scrollable>
         <NtosCardContent />
       </NtosWindow.Content>
@@ -27,12 +27,12 @@ export const NtosCard = (props) => {
 type NtosCardContentData = {
   accessFlagNames: Record<string, any>;
   accessFlags: Record<string, any>;
+  accessGroups: AccessGroup[];
   access_on_card: string[];
   authenticatedUser: string;
   has_id: BooleanLike;
   have_id_slot: BooleanLike;
   id_rank: string;
-  regions: AccessRegion[];
   showBasic: BooleanLike;
   templates: Record<string, any>;
   trimAccess: string[];
@@ -42,13 +42,11 @@ export const NtosCardContent = (props) => {
   const { act, data } = useBackend<NtosCardContentData>();
   const {
     authenticatedUser,
-    regions = [],
+    accessGroups = [],
     access_on_card = [],
     has_id,
     have_id_slot,
     trimAccess,
-    accessFlags,
-    accessFlagNames,
     showBasic,
     templates = {},
   } = data;
@@ -99,11 +97,9 @@ export const NtosCardContent = (props) => {
           {!!has_id && !!authenticatedUser && (
             <Box>
               <AccessList
-                accesses={regions}
+                accessGroups={accessGroups}
                 selectedList={access_on_card}
                 trimAccess={trimAccess}
-                accessFlags={accessFlags}
-                accessFlagNames={accessFlagNames}
                 showBasic={!!showBasic}
                 extraButtons={
                   <Button.Confirm

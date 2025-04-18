@@ -51,22 +51,22 @@
 		authenticated_card = "[id_card.name]"
 		authenticated_user = id_card.registered_name ? id_card.registered_name : "Unknown"
 		job_templates = is_centcom ? SSid_access.centcom_job_templates.Copy() : SSid_access.station_job_templates.Copy()
-		valid_access = is_centcom ? SSid_access.get_region_access_list(list(REGION_CENTCOM)) : SSid_access.get_region_access_list(list(REGION_ALL_STATION))
+		valid_access = is_centcom ? SSid_access.get_access_for_group(list(/datum/access_group/centcom)) : SSid_access.get_access_for_group(list(/datum/access_group/station/all))
 		update_static_data(user)
 		return TRUE
 
 	// Otherwise, we're minor and now we have to build a list of restricted departments we can change access for.
 	var/list/managers = SSid_access.sub_department_managers_tgui
 	for(var/access_as_text in managers)
-		var/list/info = managers[access_as_text]
+		var/datum/access_group_manager/manager = managers[access_as_text]
 		var/access = text2num(access_as_text)
-		if((access in id_card.access) && ((target_dept in info["regions"]) || !target_dept))
-			region_access |= info["regions"]
-			job_templates |= info["templates"]
+		if((access in id_card.access) && ((target_dept in manager.access_groups) || !target_dept))
+			region_access |= manager.access_groups
+			job_templates |= manager.templates
 
 	if(length(region_access))
 		minor = TRUE
-		valid_access |= SSid_access.get_region_access_list(region_access)
+		valid_access |= SSid_access.get_access_for_group(region_access)
 		authenticated_card = "[id_card.name] \[LIMITED ACCESS\]"
 		update_static_data(user)
 		return TRUE
@@ -121,7 +121,7 @@
 						<u>Access:</u><br>
 						"}
 
-			var/list/known_access_rights = SSid_access.get_region_access_list(list(REGION_ALL_STATION))
+			var/list/known_access_rights = SSid_access.get_access_for_group(list(/datum/access_group/station/all))
 			for(var/A in target_id_card.access)
 				if(A in known_access_rights)
 					contents += "  [SSid_access.get_access_desc(A)]"
@@ -279,21 +279,17 @@
 	data["centcom_access"] = is_centcom
 	data["minor"] = target_dept || minor ? TRUE : FALSE
 
-	var/list/regions = list()
-	var/list/tgui_region_data = SSid_access.all_region_access_tgui
+	var/list/groups = list()
+	var/list/access_group_data = SSid_access.tgui_access_groups
 	if(is_centcom)
-		regions += tgui_region_data[REGION_CENTCOM]
+		groups += access_group_data[/datum/access_group/centcom]
 	else
-		for(var/region in SSid_access.station_regions)
-			if((minor || target_dept) && !(region in region_access))
+		for(var/datum/access_group/group_path as anything in SSid_access.station_groups)
+			if((minor || target_dept) && !(group_path in region_access))
 				continue
-			regions += tgui_region_data[region]
+			groups += access_group_data[group_path]
 
-	data["regions"] = regions
-
-
-	data["accessFlags"] = SSid_access.flags_by_access
-	data["accessFlagNames"] = SSid_access.access_flag_string_by_flag
+	data["accessGroups"] = groups
 	data["showBasic"] = TRUE
 	data["templates"] = job_templates
 

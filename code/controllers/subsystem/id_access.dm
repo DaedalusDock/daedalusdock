@@ -6,18 +6,12 @@ SUBSYSTEM_DEF(id_access)
 	init_order = INIT_ORDER_IDACCESS
 	flags = SS_NO_FIRE
 
-	/// Dictionary of access flags. Keys are accesses. Values are their associated bitflags.
-	var/list/flags_by_access = list()
-	/// Dictionary of access lists. Keys are access flag names. Values are lists of all accesses as part of that access.
-	var/list/accesses_by_flag = list()
-	/// Dictionary of access flag string representations. Keys are bitflags. Values are their associated names.
-	var/list/access_flag_string_by_flag = list()
+	/// Dictionary of access groups. Keys are typepaths. Values are instances.
+	var/list/access_groups = list()
 	/// Dictionary of trim singletons. Keys are paths. Values are their associated singletons.
 	var/list/trim_singletons_by_path = list()
-	/// Dictionary of accesses based on station region. Keys are region strings. Values are lists of accesses.
-	var/list/accesses_by_region = list()
 	/// Specially formatted list for sending access levels to tgui interfaces.
-	var/list/all_region_access_tgui = list()
+	var/list/tgui_access_groups = list()
 	/// Dictionary of access names. Keys are access levels. Values are their associated names.
 	var/list/desc_by_access = list()
 	/// List of accesses for the Heads of each sub-department alongside the regions they control and their job name.
@@ -28,16 +22,15 @@ SUBSYSTEM_DEF(id_access)
 	var/list/centcom_job_templates = list()
 	/// Helper list containing all PDA paths that can be painted by station machines. Intended to be used alongside logic for ACCESS_CHANGE_IDS. Grab templates from sub_department_managers_tgui for Head of Staff restrictions.
 	var/list/station_pda_templates = list()
-	/// Helper list containing all station regions.
-	var/list/station_regions = list()
+	/// Helper list containing all station groups.
+	var/list/station_groups = list()
 
 	/// The roundstart generated code for the spare ID safe. This is given to the Captain on shift start. If there's no Captain, it's given to the HoP. If there's no HoP
 	var/spare_id_safe_code = ""
 
 /datum/controller/subsystem/id_access/Initialize(timeofday)
+	setup_access_groups()
 	// We use this because creating the trim singletons requires the config to be loaded.
-	setup_access_flags()
-	setup_region_lists()
 	setup_trim_singletons()
 	setup_access_descriptions()
 	setup_tgui_lists()
@@ -63,64 +56,22 @@ SUBSYSTEM_DEF(id_access)
 
 		job_trim.refresh_trim_access()
 
-/// Build access flag lists.
-/datum/controller/subsystem/id_access/proc/setup_access_flags()
-	accesses_by_flag["[ACCESS_FLAG_COMMON]"] = COMMON_ACCESS
-	for(var/access in accesses_by_flag["[ACCESS_FLAG_COMMON]"])
-		flags_by_access |= list("[access]" = ACCESS_FLAG_COMMON)
+/// Initialize access groups.
+/datum/controller/subsystem/id_access/proc/setup_access_groups()
+	for(var/datum/access_group/path as anything in subtypesof(/datum/access_group))
+		if(isabstract(path))
+			continue
 
-	accesses_by_flag["[ACCESS_FLAG_MANAGEMENT]"] = MANAGEMENT_ACCESS
-	for(var/access in accesses_by_flag["[ACCESS_FLAG_MANAGEMENT]"])
-		flags_by_access |= list("[access]" = ACCESS_FLAG_MANAGEMENT)
+		access_groups[path] = new path
 
-	accesses_by_flag["[ACCESS_FLAG_FACTION_HEADS]"] = FACTION_HEAD_ACCESS
-	for(var/access in accesses_by_flag["[ACCESS_FLAG_FACTION_HEADS]"])
-		flags_by_access |= list("[access]" = ACCESS_FLAG_FACTION_HEADS)
-
-	accesses_by_flag["[ACCESS_FLAG_CAPTAIN]"] = CAPTAIN_ACCESS
-	for(var/access in accesses_by_flag["[ACCESS_FLAG_CAPTAIN]"])
-		flags_by_access |= list("[access]" = ACCESS_FLAG_CAPTAIN)
-
-	accesses_by_flag["[ACCESS_FLAG_CENTCOM]"] = CENTCOM_ACCESS
-	for(var/access in accesses_by_flag["[ACCESS_FLAG_CENTCOM]"])
-		flags_by_access |= list("[access]" = ACCESS_FLAG_CENTCOM)
-
-	accesses_by_flag["[ACCESS_FLAG_SYNDICATE]"] = SYNDICATE_ACCESS
-	for(var/access in accesses_by_flag["[ACCESS_FLAG_SYNDICATE]"])
-		flags_by_access |= list("[access]" = ACCESS_FLAG_SYNDICATE)
-
-	accesses_by_flag["[ACCESS_FLAG_AWAY]"] = AWAY_ACCESS
-	for(var/access in accesses_by_flag["[ACCESS_FLAG_AWAY]"])
-		flags_by_access |= list("[access]" = ACCESS_FLAG_AWAY)
-
-	accesses_by_flag["[ACCESS_FLAG_SPECIAL]"] = CULT_ACCESS
-	for(var/access in accesses_by_flag["[ACCESS_FLAG_SPECIAL]"])
-		flags_by_access |= list("[access]" = ACCESS_FLAG_SPECIAL)
-
-
-	access_flag_string_by_flag["[ACCESS_FLAG_COMMON]"] = ACCESS_FLAG_COMMON_NAME
-	access_flag_string_by_flag["[ACCESS_FLAG_MANAGEMENT]"] = ACCESS_FLAG_MANAGEMENT_NAME
-	access_flag_string_by_flag["[ACCESS_FLAG_FACTION_HEADS]"] = ACCESS_FLAG_FACTION_HEADS_NAME
-	access_flag_string_by_flag["[ACCESS_FLAG_CAPTAIN]"] = ACCESS_FLAG_CAPTAIN_NAME
-	access_flag_string_by_flag["[ACCESS_FLAG_CENTCOM]"] = ACCESS_FLAG_CENTCOM_NAME
-	access_flag_string_by_flag["[ACCESS_FLAG_SYNDICATE]"] = ACCESS_FLAG_SYNDICATE_NAME
-	access_flag_string_by_flag["[ACCESS_FLAG_AWAY]"] = ACCESS_FLAG_AWAY_NAME
-	access_flag_string_by_flag["[ACCESS_FLAG_SPECIAL]"] = ACCESS_FLAG_SPECIAL_NAME
-
-/// Populates the region lists with data about which accesses correspond to which regions.
-/datum/controller/subsystem/id_access/proc/setup_region_lists()
-	accesses_by_region[REGION_ALL_STATION] = REGION_ACCESS_ALL_STATION
-	accesses_by_region[REGION_ALL_GLOBAL] = REGION_ACCESS_ALL_GLOBAL
-	accesses_by_region[REGION_GENERAL] = REGION_ACCESS_GENERAL
-	accesses_by_region[REGION_SECURITY] = REGION_ACCESS_SECURITY
-	accesses_by_region[REGION_MEDBAY] = REGION_ACCESS_MEDBAY
-	accesses_by_region[REGION_RESEARCH] = REGION_ACCESS_RESEARCH
-	accesses_by_region[REGION_ENGINEERING] = REGION_ACCESS_ENGINEERING
-	accesses_by_region[REGION_SUPPLY] = REGION_ACCESS_SUPPLY
-	accesses_by_region[REGION_MANAGEMENT] = REGION_ACCESS_MANAGEMENT
-	accesses_by_region[REGION_CENTCOM] = REGION_ACCESS_CENTCOM
-
-	station_regions = REGION_AREA_STATION
+	station_groups = list(
+		/datum/access_group/station/security,
+		/datum/access_group/station/management,
+		/datum/access_group/station/engineering,
+		/datum/access_group/station/independent_areas,
+		/datum/access_group/station/cargo,
+		/datum/access_group/station/medical,
+	)
 
 /// Instantiate trim singletons and add them to a list.
 /datum/controller/subsystem/id_access/proc/setup_trim_singletons()
@@ -129,12 +80,14 @@ SUBSYSTEM_DEF(id_access)
 
 /// Creates various data structures that primarily get fed to tgui interfaces, although these lists are used in other places.
 /datum/controller/subsystem/id_access/proc/setup_tgui_lists()
-	for(var/region in accesses_by_region)
-		var/list/region_access = accesses_by_region[region]
+	for(var/path in access_groups)
+		var/datum/access_group/access_group = access_groups[path]
+
+		var/list/group_access = access_group.access
 
 		var/parsed_accesses = list()
 
-		for(var/access in region_access)
+		for(var/access in group_access)
 			var/access_desc = get_access_desc(access)
 			if(!access_desc)
 				continue
@@ -144,48 +97,19 @@ SUBSYSTEM_DEF(id_access)
 				"ref" = access,
 			))
 
-		all_region_access_tgui[region] = list(list(
-			"name" = region,
+		tgui_access_groups[path] = list(list(
+			"name" = access_group.name,
 			"accesses" = parsed_accesses,
+			"path" = path,
 		))
 
 	sub_department_managers_tgui = list(
-		"[ACCESS_CAPTAIN]" = list(
-			"regions" = list(REGION_MANAGEMENT),
-			"head" = JOB_CAPTAIN,
-			"templates" = list(),
-			"pdas" = list(),
-		),
-		"[ACCESS_HOP]" = list(
-			"regions" = list(REGION_GENERAL),
-			"head" = JOB_HEAD_OF_PERSONNEL,
-			"templates" = list(),
-			"pdas" = list(),
-		),
-		"[ACCESS_HOS]" = list(
-			"regions" = list(REGION_SECURITY),
-			"head" = JOB_SECURITY_MARSHAL,
-			"templates" = list(),
-			"pdas" = list(),
-		),
-		"[ACCESS_CMO]" = list(
-			"regions" = list(REGION_MEDBAY),
-			"head" = JOB_AUGUR,
-			"templates" = list(),
-			"pdas" = list(),
-		),
-		"[ACCESS_CE]" = list(
-			"regions" = list(REGION_ENGINEERING),
-			"head" = JOB_CHIEF_ENGINEER,
-			"templates" = list(),
-			"pdas" = list(),
-		),
-		"[ACCESS_QM]" = list(
-			"regions" = list(REGION_SUPPLY),
-			"head" = JOB_QUARTERMASTER,
-			"templates" = list(),
-			"pdas" = list(),
-		)
+		"[ACCESS_CAPTAIN]" = new /datum/access_group_manager/captain,
+		"[ACCESS_HOP]" = new /datum/access_group_manager/hop,
+		"[ACCESS_HOS]" = new /datum/access_group_manager/security,
+		"[ACCESS_CMO]" = new /datum/access_group_manager/medical,
+		"[ACCESS_CE]" = new /datum/access_group_manager/engineering,
+		"[ACCESS_QM]" = new /datum/access_group_manager/cargo,
 	)
 
 	var/list/station_job_trims = subtypesof(/datum/access_template/job)
@@ -196,12 +120,13 @@ SUBSYSTEM_DEF(id_access)
 
 		station_job_templates[trim_path] = trim.assignment
 		for(var/access in trim.template_access)
-			var/list/manager = sub_department_managers_tgui["[access]"]
+			var/datum/access_group_manager/manager = sub_department_managers_tgui["[access]"]
 			if(!manager)
 				if(access != ACCESS_CHANGE_IDS)
 					WARNING("Invalid template access access \[[access]\] registered with [trim_path]. Template added to global list anyway.")
 				continue
-			var/list/templates = manager["templates"]
+
+			var/list/templates = manager.templates
 			templates[trim_path] = trim.assignment
 
 	sortTim(station_job_templates, GLOBAL_PROC_REF(cmp_text_asc), associative = TRUE)
@@ -221,12 +146,13 @@ SUBSYSTEM_DEF(id_access)
 
 		var/list/region_whitelist = pda_regions[pda_path]
 		for(var/access_txt in sub_department_managers_tgui)
-			var/list/manager_info = sub_department_managers_tgui[access_txt]
-			var/list/manager_regions = manager_info["regions"]
+			var/datum/access_group_manager/manager = sub_department_managers_tgui[access_txt]
+			var/list/manager_regions = manager.access_groups
 			for(var/whitelisted_region in region_whitelist)
 				if(!(whitelisted_region in manager_regions))
 					continue
-				var/list/manager_pdas = manager_info["pdas"]
+
+				var/list/manager_pdas = manager.pdas
 				var/obj/item/modular_computer/tablet/pda/fake_pda = pda_path
 				manager_pdas[pda_path] = initial(fake_pda.name)
 				station_pda_templates[pda_path] = initial(fake_pda.name)
@@ -272,8 +198,8 @@ SUBSYSTEM_DEF(id_access)
 	desc_by_access["[ACCESS_ROBOTICS]"] = "Robotics"
 	desc_by_access["[ACCESS_VIROLOGY]"] = "Virology"
 	desc_by_access["[ACCESS_PSYCHOLOGY]"] = "Psychology"
-	desc_by_access["[ACCESS_CMO]"] = "CMO Office"
-	desc_by_access["[ACCESS_QM]"] = "Quartermaster"
+	desc_by_access["[ACCESS_CMO]"] = "Augur Office"
+	desc_by_access["[ACCESS_QM]"] = "Quartermaster's Office"
 	desc_by_access["[ACCESS_SURGERY]"] = "Surgery"
 	desc_by_access["[ACCESS_THEATRE]"] = "Theatre"
 	desc_by_access["[ACCESS_RESEARCH]"] = "Science"
@@ -282,15 +208,15 @@ SUBSYSTEM_DEF(id_access)
 	desc_by_access["[ACCESS_VAULT]"] = "Main Vault"
 	desc_by_access["[ACCESS_MINING_STATION]"] = "Mining EVA"
 	desc_by_access["[ACCESS_XENOBIOLOGY]"] = "Xenobiology Lab"
-	desc_by_access["[ACCESS_HOP]"] = "HoP Office"
-	desc_by_access["[ACCESS_HOS]"] = "HoS Office"
-	desc_by_access["[ACCESS_CE]"] = "CE Office"
+	desc_by_access["[ACCESS_HOP]"] = "Delegate Office"
+	desc_by_access["[ACCESS_HOS]"] = "S.Marshal Office"
+	desc_by_access["[ACCESS_CE]"] = "C.Engineer Office"
 	desc_by_access["[ACCESS_PHARMACY]"] = "Pharmacy"
 	desc_by_access["[ACCESS_RC_ANNOUNCE]"] = "RC Announcements"
 	desc_by_access["[ACCESS_KEYCARD_AUTH]"] = "Keycode Auth."
 	desc_by_access["[ACCESS_TCOMSAT]"] = "Telecommunications"
 	desc_by_access["[ACCESS_GATEWAY]"] = "Gateway"
-	desc_by_access["[ACCESS_BRIG_ENTRANCE]"] = "Brig"
+	desc_by_access["[ACCESS_BRIG_ENTRANCE]"] = "Brig Entrance"
 	desc_by_access["[ACCESS_MINERAL_STOREROOM]"] = "Mineral Storage"
 	desc_by_access["[ACCESS_MINISAT]"] = "AI Satellite"
 	desc_by_access["[ACCESS_WEAPONS]"] = "Weapon Permit"
@@ -313,17 +239,6 @@ SUBSYSTEM_DEF(id_access)
 	desc_by_access["[ACCESS_CENT_BAR]"] = "Code Scotch"
 
 /**
- * Returns the access bitflags associated with any given access level.
- *
- * In proc form due to accesses being stored in the list as text instead of numbers.
- * Arguments:
- * * access - Access as either pure number or as a string representation of the number.
- */
-/datum/controller/subsystem/id_access/proc/get_access_flag(access)
-	var/flag = flags_by_access["[access]"]
-	return flag
-
-/**
  * Returns the access description associated with any given access level.
  *
  * In proc form due to accesses being stored in the list as text instead of numbers.
@@ -334,34 +249,22 @@ SUBSYSTEM_DEF(id_access)
 	return desc_by_access["[access]"]
 
 /**
- * Builds and returns a list of accesses from a list of regions.
+ * Returns the list of all accesses associated with any given access group.
  *
  * Arguments:
- * * regions - A list of region defines.
+ * * group_paths - The group type to retrieve access for. Or a list of them
  */
-/datum/controller/subsystem/id_access/proc/get_region_access_list(list/regions)
-	if(!islist(regions))
-		regions = list(regions)
+/datum/controller/subsystem/id_access/proc/get_access_for_group(group_paths)
+	if(!islist(group_paths))
+		var/datum/access_group/retrieved_group = access_groups[group_paths]
+		return retrieved_group?.access.Copy() || list()
 
-	if(!length(regions))
-		return
+	. = list()
 
-	var/list/built_region_list = list()
+	for(var/iter_path in group_paths)
+		var/datum/access_group/retrieved_group = access_groups[iter_path]
+		. |= retrieved_group.access
 
-	for(var/region in regions)
-		built_region_list |= accesses_by_region[region]
-
-	return built_region_list
-
-/**
- * Returns the list of all accesses associated with any given access flag.
- *
- * In proc form due to accesses being stored in the list as text instead of numbers.
- * Arguments:
- * * flag - The flag to get access for as either a pure number of string representation of the flag.
- */
-/datum/controller/subsystem/id_access/proc/get_flag_access_list(flag)
-	return accesses_by_flag["[flag]"]
 
 /**
  * Applies a trim singleton to a card.
@@ -458,17 +361,16 @@ SUBSYSTEM_DEF(id_access)
 /**
  * Tallies up all accesses the card has that have flags greater than or equal to the access_flag supplied.
  *
- * Returns the number of accesses that have flags matching access_flag or a higher tier access.
+ * Returns the number of accesses that are in the given access group.
  * Arguments:
  * * id_card - The ID card to tally up access for.
- * * access_flag - The minimum access flag required for an access to be tallied up.
+ * * access_group - A typepath to check access for.
  */
-/datum/controller/subsystem/id_access/proc/tally_access(obj/item/card/id/id_card, access_flag = NONE)
+/datum/controller/subsystem/id_access/proc/tally_access(obj/item/card/id/id_card, access_group)
 	var/tally = 0
-
-	var/list/id_card_access = id_card.access
-	for(var/access in id_card_access)
-		if(flags_by_access["[access]"] >= access_flag)
+	var/datum/access_group/group = access_groups[access_group]
+	for(var/access in id_card.access)
+		if(access in group.access)
 			tally++
 
 	return tally

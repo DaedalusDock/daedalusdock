@@ -36,8 +36,7 @@
 
 /datum/access_template/centcom/intern/head/New()
 	. = ..()
-
-	access |= SSid_access.get_flag_access_list(ACCESS_FLAG_COMMON)
+	access |= SSid_access.get_access_for_group(/datum/access_group/station/common_areas)
 
 /// Trim for Bounty Hunters hired by centcom.
 /datum/access_template/centcom/bounty_hunter
@@ -66,7 +65,7 @@
 /datum/access_template/centcom/specops_officer/New()
 	. = ..()
 
-	access = SSid_access.get_region_access_list(list(REGION_CENTCOM, REGION_ALL_STATION))
+	access = SSid_access.get_access_for_group(list(/datum/access_group/centcom, /datum/access_group/station/all))
 
 /// Trim for Centcom (Soviet) Admirals. All Centcom and Station Access.
 /datum/access_template/centcom/admiral
@@ -75,7 +74,7 @@
 /datum/access_template/centcom/admiral/New()
 	. = ..()
 
-	access = SSid_access.get_region_access_list(list(REGION_CENTCOM, REGION_ALL_STATION))
+	access = SSid_access.get_access_for_group(list(/datum/access_group/centcom, /datum/access_group/station/all))
 
 /// Trim for Centcom Commanders. All Centcom and Station Access.
 /datum/access_template/centcom/commander
@@ -84,7 +83,7 @@
 /datum/access_template/centcom/commander/New()
 	. = ..()
 
-	access = SSid_access.get_region_access_list(list(REGION_CENTCOM, REGION_ALL_STATION))
+	access = SSid_access.get_access_for_group(list(/datum/access_group/centcom, /datum/access_group/station/all))
 
 /// Trim for Deathsquad officers. All Centcom and Station Access.
 /datum/access_template/centcom/deathsquad
@@ -95,7 +94,7 @@
 /datum/access_template/centcom/deathsquad/New()
 	. = ..()
 
-	access = SSid_access.get_region_access_list(list(REGION_CENTCOM, REGION_ALL_STATION))
+	access = SSid_access.get_access_for_group(list(/datum/access_group/centcom, /datum/access_group/station/all))
 
 /// Trim for generic ERT interns. No universal ID card changing access.
 /datum/access_template/centcom/ert
@@ -104,7 +103,7 @@
 /datum/access_template/centcom/ert/New()
 	. = ..()
 
-	access = list(ACCESS_CENT_GENERAL) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)) - ACCESS_CHANGE_IDS)
+	access = list(ACCESS_CENT_GENERAL) | (SSid_access.get_access_for_group(list(/datum/access_group/station/all)) - ACCESS_CHANGE_IDS)
 
 /// Trim for ERT Commanders. All station and centcom access.
 /datum/access_template/centcom/ert/commander
@@ -115,7 +114,7 @@
 /datum/access_template/centcom/ert/commander/New()
 	. = ..()
 
-	access = SSid_access.get_region_access_list(list(REGION_CENTCOM, REGION_ALL_STATION))
+	access = SSid_access.get_access_for_group(list(/datum/access_group/centcom, /datum/access_group/station/all))
 
 /// Trim for generic ERT seccies. No universal ID card changing access.
 /datum/access_template/centcom/ert/security
@@ -126,7 +125,7 @@
 /datum/access_template/centcom/ert/security/New()
 	. = ..()
 
-	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_SPECOPS, ACCESS_CENT_LIVING) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)) - ACCESS_CHANGE_IDS)
+	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_SPECOPS, ACCESS_CENT_LIVING) | (SSid_access.get_access_for_group(list(/datum/access_group/station/all)) - ACCESS_CHANGE_IDS)
 
 /// Trim for generic ERT engineers. No universal ID card changing access.
 /datum/access_template/centcom/ert/engineer
@@ -137,7 +136,7 @@
 /datum/access_template/centcom/ert/engineer/New()
 	. = ..()
 
-	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_SPECOPS, ACCESS_CENT_LIVING, ACCESS_CENT_STORAGE) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)) - ACCESS_CHANGE_IDS)
+	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_SPECOPS, ACCESS_CENT_LIVING, ACCESS_CENT_STORAGE) | (SSid_access.get_access_for_group(list(/datum/access_group/station/all)) - ACCESS_CHANGE_IDS)
 
 /// Trim for generic ERT medics. No universal ID card changing access.
 /datum/access_template/centcom/ert/medical
@@ -148,7 +147,7 @@
 /datum/access_template/centcom/ert/medical/New()
 	. = ..()
 
-	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_SPECOPS, ACCESS_CENT_MEDICAL, ACCESS_CENT_LIVING) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)) - ACCESS_CHANGE_IDS)
+	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_SPECOPS, ACCESS_CENT_MEDICAL, ACCESS_CENT_LIVING) | (SSid_access.get_access_for_group(list(/datum/access_group/station/all)) - ACCESS_CHANGE_IDS)
 
 /// Trim for generic ERT chaplains. No universal ID card changing access.
 /datum/access_template/centcom/ert/chaplain
@@ -159,7 +158,7 @@
 /datum/access_template/centcom/ert/chaplain/New()
 	. = ..()
 
-	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_SPECOPS, ACCESS_CENT_LIVING) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)) - ACCESS_CHANGE_IDS)
+	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_SPECOPS, ACCESS_CENT_LIVING) | (SSid_access.get_access_for_group(list(/datum/access_group/station/all)) - ACCESS_CHANGE_IDS)
 
 /// Trim for generic ERT janitors. No universal ID card changing access.
 /datum/access_template/centcom/ert/janitor
@@ -170,7 +169,7 @@
 /datum/access_template/centcom/ert/janitor/New()
 	. = ..()
 
-	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_LIVING) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)) - ACCESS_CHANGE_IDS)
+	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_LIVING) | (SSid_access.get_access_for_group(list(/datum/access_group/station/all)) - ACCESS_CHANGE_IDS)
 
 /// Trim for generic ERT clowns. No universal ID card changing access.
 /datum/access_template/centcom/ert/clown
@@ -181,4 +180,4 @@
 /datum/access_template/centcom/ert/clown/New()
 	. = ..()
 
-	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_LIVING) | (SSid_access.get_region_access_list(list(REGION_ALL_STATION)) - ACCESS_CHANGE_IDS)
+	access = list(ACCESS_CENT_GENERAL, ACCESS_CENT_LIVING) | (SSid_access.get_access_for_group(list(/datum/access_group/station/all)) - ACCESS_CHANGE_IDS)

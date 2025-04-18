@@ -9,7 +9,7 @@
 
 /datum/access_template/highlander/New()
 	. = ..()
-	access = SSid_access.get_region_access_list(list(REGION_ALL_STATION))
+	access = SSid_access.get_access_for_group(list(/datum/access_group/station/all))
 
 /// Trim for the mobster outfit.
 /datum/access_template/mobster
@@ -22,7 +22,7 @@
 
 /datum/access_template/vr/New()
 	. = ..()
-	access |= SSid_access.get_region_access_list(list(REGION_ALL_STATION))
+	access |= SSid_access.get_access_for_group(list(/datum/access_group/station/all))
 
 /// Trim for VR outfits.
 /datum/access_template/vr/operative
@@ -39,7 +39,7 @@
 
 /datum/access_template/tunnel_clown/New()
 	. = ..()
-	access |= SSid_access.get_region_access_list(list(REGION_ALL_STATION))
+	access |= SSid_access.get_access_for_group(list(/datum/access_group/station/all))
 
 /// Trim for Bounty Hunters NOT hired by centcom. (?)
 /datum/access_template/bounty_hunter

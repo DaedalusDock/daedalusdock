@@ -5,17 +5,15 @@ import { useSharedState } from '../../backend';
 import { Button, Flex, Section, Tabs } from '../../components';
 
 type AccessListProps = {
-  accessFlagNames: Record<string, any>;
-  accessFlags: Record<string, any>;
+  accessGroups?: AccessGroup[];
   accessMod: Function;
-  accesses?: AccessRegion[];
   extraButtons: React.JSX.Element;
   selectedList: string[];
   showBasic: BooleanLike;
   trimAccess: string[];
 };
 
-export type AccessRegion = {
+export type AccessGroup = {
   accesses: AccessInstance[];
   name: string;
 };
@@ -25,7 +23,7 @@ type AccessInstance = {
   ref: string;
 };
 
-type ParsedRegion = {
+type ParsedAccessGroup = {
   accesses: AccessInstance[];
   allSelected: BooleanLike;
   hasSelected: BooleanLike;
@@ -34,22 +32,20 @@ type ParsedRegion = {
 
 export const AccessList = (props: AccessListProps) => {
   const {
-    accesses = [],
+    accessGroups = [],
     selectedList = [],
     accessMod,
     trimAccess = [],
-    accessFlags = {},
-    accessFlagNames = {},
     extraButtons,
     showBasic,
   } = props;
 
-  const parsedRegions: ParsedRegion[] = [];
+  const parsedGroups: ParsedAccessGroup[] = [];
   const selectedTrimAccess: string[] = [];
-  accesses.forEach((region) => {
-    const regionName = region.name;
-    const regionAccess = region.accesses;
-    const parsedRegion: ParsedRegion = {
+  accessGroups.forEach((group) => {
+    const regionName = group.name;
+    const regionAccess = group.accesses;
+    const parsedGroup: ParsedAccessGroup = {
       name: regionName,
       accesses: [],
       hasSelected: false,
@@ -75,15 +71,15 @@ export const AccessList = (props: AccessListProps) => {
       if (!trimAccess.includes(access.ref)) {
         return;
       }
-      parsedRegion.accesses.push(access);
+      parsedGroup.accesses.push(access);
       if (selectedList.includes(access.ref)) {
-        parsedRegion.hasSelected = true;
+        parsedGroup.hasSelected = true;
       } else {
-        parsedRegion.allSelected = false;
+        parsedGroup.allSelected = false;
       }
     });
-    if (parsedRegion.accesses.length) {
-      parsedRegions.push(parsedRegion);
+    if (parsedGroup.accesses.length) {
+      parsedGroups.push(parsedGroup);
     }
     return;
   });
@@ -92,16 +88,14 @@ export const AccessList = (props: AccessListProps) => {
     <Section title="Access" buttons={extraButtons}>
       <Flex wrap="wrap">
         <Flex.Item>
-          <RegionTabList accesses={parsedRegions} />
+          <RegionTabList parsedAccessGroups={parsedGroups} />
         </Flex.Item>
-        <Flex.Item grow={1}>
+        <Flex.Item grow={1} style={{ paddingLeft: '1rem' }}>
           <RegionAccessList
-            accesses={parsedRegions}
+            parsedAccessGroups={parsedGroups}
             selectedList={selectedList}
             accessMod={accessMod}
             trimAccess={trimAccess}
-            accessFlags={accessFlags}
-            accessFlagNames={accessFlagNames}
           />
         </Flex.Item>
       </Flex>
@@ -109,17 +103,21 @@ export const AccessList = (props: AccessListProps) => {
   );
 };
 
-const RegionTabList = (props) => {
-  const { accesses = [] } = props;
+type RegionTabListProps = {
+  parsedAccessGroups: ParsedAccessGroup[];
+};
+
+const RegionTabList = (props: RegionTabListProps) => {
+  const { parsedAccessGroups } = props;
 
   const [selectedAccessName, setSelectedAccessName] = useSharedState(
     'accessName',
-    accesses[0]?.name,
+    parsedAccessGroups[0]?.name,
   );
 
   return (
     <Tabs vertical>
-      {accesses.map((access) => {
+      {parsedAccessGroups.map((access) => {
         const icon =
           (access.allSelected && 'check') ||
           (access.hasSelected && 'minus') ||
@@ -142,47 +140,42 @@ const RegionTabList = (props) => {
 };
 
 type RegionAccessListProps = {
-  accessFlagNames: Record<string, any>;
-  accessFlags: Record<string, any>;
   accessMod: Function;
-  accesses?: AccessRegion[];
+  parsedAccessGroups?: ParsedAccessGroup[];
   selectedList: string[];
   trimAccess: string[];
 };
 
 const RegionAccessList = (props: RegionAccessListProps) => {
   const {
-    accesses = [],
+    parsedAccessGroups = [],
     selectedList = [],
     accessMod,
     trimAccess = [],
-    accessFlags = {},
-    accessFlagNames = {},
   } = props;
 
-  const [selectedAccessName] = useSharedState('accessName', accesses[0]?.name);
+  const [selectedAccessName] = useSharedState(
+    'accessName',
+    parsedAccessGroups[0]?.name,
+  );
 
-  const selectedAccess = accesses.find(
+  const selectedGroup = parsedAccessGroups.find(
     (access) => access.name === selectedAccessName,
   );
 
-  const selectedAccessEntries = sortBy((entry: AccessInstance) => entry.desc)(
-    selectedAccess?.accesses || [],
+  const selectedGroupEntries = sortBy((entry: AccessInstance) => entry.desc)(
+    selectedGroup?.accesses || [],
   );
 
-  console.log(selectedAccessEntries);
-  return selectedAccessEntries.map((entry) => {
+  return selectedGroupEntries.map((entry) => {
     const id = entry.ref;
-    const entryName = trimAccess.includes(id)
-      ? entry.desc
-      : entry.desc + ' (' + accessFlagNames[accessFlags[id]] + ')';
 
     return (
       <Button.Checkbox
         ml={1}
         fluid
         key={entry.desc}
-        content={entryName}
+        content={entry.desc}
         checked={selectedList.includes(entry.ref)}
         onClick={() => accessMod(entry.ref)}
       />

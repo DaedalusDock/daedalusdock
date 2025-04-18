@@ -883,12 +883,6 @@
 		ui = new(user, src, "ChameleonCard", name)
 		ui.open()
 
-/obj/item/card/id/advanced/chameleon/ui_static_data(mob/user)
-	var/list/data = list()
-	data["accessFlagNames"] = SSid_access.access_flag_string_by_flag
-	data["accessFlags"] = SSid_access.flags_by_access
-	return data
-
 /obj/item/card/id/advanced/chameleon/ui_host(mob/user)
 	// Hook our UI to the theft target ID card for UI state checks.
 	return theft_target?.resolve()
@@ -925,8 +919,8 @@
 
 	var/obj/item/card/id/target_card = theft_target.resolve()
 	if(target_card)
-		var/list/tgui_region_data = SSid_access.all_region_access_tgui
-		for(var/region in SSid_access.station_regions)
+		var/list/tgui_region_data = SSid_access.tgui_access_groups
+		for(var/region in SSid_access.station_groups)
 			regions += tgui_region_data[region]
 
 	data["accesses"] = regions

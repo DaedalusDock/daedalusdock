@@ -14,8 +14,6 @@ SUBSYSTEM_DEF(id_access)
 	var/list/access_flag_string_by_flag = list()
 	/// Dictionary of trim singletons. Keys are paths. Values are their associated singletons.
 	var/list/trim_singletons_by_path = list()
-	/// Dictionary of wildcard compatibility flags. Keys are strings for the wildcards. Values are their associated flags.
-	var/list/wildcard_flags_by_wildcard = list()
 	/// Dictionary of accesses based on station region. Keys are region strings. Values are lists of accesses.
 	var/list/accesses_by_region = list()
 	/// Specially formatted list for sending access levels to tgui interfaces.
@@ -41,7 +39,6 @@ SUBSYSTEM_DEF(id_access)
 	setup_access_flags()
 	setup_region_lists()
 	setup_trim_singletons()
-	setup_wildcard_dict()
 	setup_access_descriptions()
 	setup_tgui_lists()
 
@@ -100,6 +97,10 @@ SUBSYSTEM_DEF(id_access)
 	for(var/access in accesses_by_flag["[ACCESS_FLAG_SPECIAL]"])
 		flags_by_access |= list("[access]" = ACCESS_FLAG_SPECIAL)
 
+	accesses_by_flag["[ACCESS_FLAG_ALL_STATION]"] = ALL_STATION_ACCESS
+	for(var/access in accesses_by_flag["[ACCESS_FLAG_ALL_STATION]"])
+		flags_by_access |= list("[access]" = ACCESS_FLAG_ALL_STATION)
+
 	access_flag_string_by_flag["[ACCESS_FLAG_COMMON]"] = ACCESS_FLAG_COMMON_NAME
 	access_flag_string_by_flag["[ACCESS_FLAG_COMMAND]"] = ACCESS_FLAG_COMMAND_NAME
 	access_flag_string_by_flag["[ACCESS_FLAG_PRV_COMMAND]"] = ACCESS_FLAG_PRV_COMMAND_NAME
@@ -108,6 +109,7 @@ SUBSYSTEM_DEF(id_access)
 	access_flag_string_by_flag["[ACCESS_FLAG_SYNDICATE]"] = ACCESS_FLAG_SYNDICATE_NAME
 	access_flag_string_by_flag["[ACCESS_FLAG_AWAY]"] = ACCESS_FLAG_AWAY_NAME
 	access_flag_string_by_flag["[ACCESS_FLAG_SPECIAL]"] = ACCESS_FLAG_SPECIAL_NAME
+	access_flag_string_by_flag["[ACCESS_FLAG_ALL_STATION]"] = ACCESS_FLAG_ALL_STATION_NAME
 
 /// Populates the region lists with data about which accesses correspond to which regions.
 /datum/controller/subsystem/id_access/proc/setup_region_lists()
@@ -226,19 +228,6 @@ SUBSYSTEM_DEF(id_access)
 				var/obj/item/modular_computer/tablet/pda/fake_pda = pda_path
 				manager_pdas[pda_path] = initial(fake_pda.name)
 				station_pda_templates[pda_path] = initial(fake_pda.name)
-
-/// Set up dictionary to convert wildcard names to flags.
-/datum/controller/subsystem/id_access/proc/setup_wildcard_dict()
-	wildcard_flags_by_wildcard[WILDCARD_NAME_ALL] = WILDCARD_FLAG_ALL
-	wildcard_flags_by_wildcard[WILDCARD_NAME_COMMON] = WILDCARD_FLAG_COMMON
-	wildcard_flags_by_wildcard[WILDCARD_NAME_COMMAND] = WILDCARD_FLAG_COMMAND
-	wildcard_flags_by_wildcard[WILDCARD_NAME_PRV_COMMAND] = WILDCARD_FLAG_PRV_COMMAND
-	wildcard_flags_by_wildcard[WILDCARD_NAME_CAPTAIN] = WILDCARD_FLAG_CAPTAIN
-	wildcard_flags_by_wildcard[WILDCARD_NAME_CENTCOM] = WILDCARD_FLAG_CENTCOM
-	wildcard_flags_by_wildcard[WILDCARD_NAME_SYNDICATE] = WILDCARD_FLAG_SYNDICATE
-	wildcard_flags_by_wildcard[WILDCARD_NAME_AWAY] = WILDCARD_FLAG_AWAY
-	wildcard_flags_by_wildcard[WILDCARD_NAME_SPECIAL] = WILDCARD_FLAG_SPECIAL
-	wildcard_flags_by_wildcard[WILDCARD_NAME_FORCED] = WILDCARD_FLAG_FORCED
 
 /// Setup dictionary that converts access levels to text descriptions.
 /datum/controller/subsystem/id_access/proc/setup_access_descriptions()
@@ -372,9 +361,6 @@ SUBSYSTEM_DEF(id_access)
 /**
  * Applies a trim singleton to a card.
  *
- * Returns FALSE if the trim could not be applied due to being incompatible with the card.
- * Incompatibility is defined as a card not being able to hold all the trim's required wildcards.
- * Returns TRUE otherwise.
  * Arguments:
  * * id_card - ID card to apply the template_path to.
  * * template_path - A trim path to apply to the card. Grabs the trim's associated singleton and applies it.
@@ -444,8 +430,7 @@ SUBSYSTEM_DEF(id_access)
  * Adds the accesses associated with a trim to an ID card.
  *
  * Clears the card's existing access levels first.
- * Primarily intended for applying trim templates to cards. Will attempt to add as many ordinary access
- * levels as it can, without consuming any wildcards. Will then attempt to apply the trim-specific wildcards after.
+ * Primarily intended for applying trim templates to cards.
  *
  * Arguments:
  * * id_card - The ID card to remove the trim from.

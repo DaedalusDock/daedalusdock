@@ -191,47 +191,10 @@
 #define ACCESS_FLAG_SPECIAL_NAME "Special"
 /// Bitflag for Special accesses that ordinaryily shouldn't be on ID cards. See CULT_ACCESS.
 #define ACCESS_FLAG_SPECIAL (1 << 7)
-
-/// This wildcraft flag accepts any access level.
-#define WILDCARD_FLAG_ALL ALL
-/// Name associated with the all wildcard bitflag.
-#define WILDCARD_NAME_ALL "All"
-/// Access flags that can be applied to common wildcard slots.
-#define WILDCARD_FLAG_COMMON ACCESS_FLAG_COMMON
-/// Name associated with the common wildcard bitflag.
-#define WILDCARD_NAME_COMMON ACCESS_FLAG_COMMON_NAME
-/// Access flags that can be applied to command wildcard slots.
-#define WILDCARD_FLAG_COMMAND ACCESS_FLAG_COMMON | ACCESS_FLAG_COMMAND
-/// Name associated with the command wildcard bitflag.
-#define WILDCARD_NAME_COMMAND ACCESS_FLAG_COMMAND_NAME
-/// Access flags that can be applied to private command wildcard slots.
-#define WILDCARD_FLAG_PRV_COMMAND ACCESS_FLAG_COMMON | ACCESS_FLAG_COMMAND | ACCESS_FLAG_PRV_COMMAND
-/// Name associated with the private command wildcard bitflag.
-#define WILDCARD_NAME_PRV_COMMAND ACCESS_FLAG_PRV_COMMAND_NAME
-/// Access flags that can be applied to captain wildcard slots.
-#define WILDCARD_FLAG_CAPTAIN ACCESS_FLAG_COMMON | ACCESS_FLAG_COMMAND | ACCESS_FLAG_PRV_COMMAND | ACCESS_FLAG_CAPTAIN
-/// Name associated with the captain wildcard bitflag.
-#define WILDCARD_NAME_CAPTAIN ACCESS_FLAG_CAPTAIN_NAME
-/// Access flags that can be applied to centcom wildcard slots.
-#define WILDCARD_FLAG_CENTCOM ACCESS_FLAG_COMMON | ACCESS_FLAG_COMMAND | ACCESS_FLAG_PRV_COMMAND | ACCESS_FLAG_CAPTAIN | ACCESS_FLAG_CENTCOM
-/// Name associated with the centcom wildcard bitflag.
-#define WILDCARD_NAME_CENTCOM ACCESS_FLAG_CENTCOM_NAME
-/// Access flags that can be applied to syndicate wildcard slots.
-#define WILDCARD_FLAG_SYNDICATE ACCESS_FLAG_COMMON | ACCESS_FLAG_COMMAND | ACCESS_FLAG_PRV_COMMAND | ACCESS_FLAG_CAPTAIN | ACCESS_FLAG_SYNDICATE
-/// Name associated with the syndicate wildcard bitflag.
-#define WILDCARD_NAME_SYNDICATE ACCESS_FLAG_SYNDICATE_NAME
-/// Access flags that can be applied to offstation wildcard slots.
-#define WILDCARD_FLAG_AWAY ACCESS_FLAG_AWAY
-/// Name associated with the offstation wildcard bitflag.
-#define WILDCARD_NAME_AWAY ACCESS_FLAG_AWAY_NAME
-/// Access flags that can be applied to super special weird wildcard slots.
-#define WILDCARD_FLAG_SPECIAL ACCESS_FLAG_SPECIAL
-/// Name associated with the super special weird wildcard bitflag.
-#define WILDCARD_NAME_SPECIAL ACCESS_FLAG_SPECIAL_NAME
-/// Access flag that indicates a wildcard was forced onto an ID card.
-#define WILDCARD_FLAG_FORCED ALL
-/// Name associated with the wildcard bitflag that covers wildcards that have been forced onto an ID card that could not accept them.
-#define WILDCARD_NAME_FORCED "Hacked"
+/// Displayed name for all station accesses.
+#define ACCESS_FLAG_ALL_STATION_NAME "All Access"
+/// Bitflag for all station accesses.
+#define ACCESS_FLAG_ALL_STATION (1<<8)
 
 /// Departmental/general/common area accesses. Do not use direct, access via SSid_access.get_flag_access_list(ACCESS_FLAG_COMMON)
 #define COMMON_ACCESS list( \
@@ -304,6 +267,72 @@
 	ACCESS_ALL_PERSONAL_LOCKERS, \
 )
 
+/// All station-related accesses.
+#define ALL_STATION_ACCESS list( \
+	ACCESS_MECH_MINING, \
+	ACCESS_MECH_MEDICAL, \
+	ACCESS_MECH_SECURITY, \
+	ACCESS_MECH_SCIENCE, \
+	ACCESS_MECH_ENGINE, \
+	ACCESS_AUX_BASE, \
+	ACCESS_PSYCHOLOGY, \
+	ACCESS_PHARMACY, \
+	ACCESS_NETWORK, \
+	ACCESS_WEAPONS, \
+	ACCESS_MINERAL_STOREROOM, \
+	ACCESS_BRIG_ENTRANCE, \
+	ACCESS_XENOBIOLOGY, \
+	ACCESS_MINING_STATION, \
+	ACCESS_MAILSORTING, \
+	ACCESS_MINING, \
+	ACCESS_RESEARCH, \
+	ACCESS_THEATRE, \
+	ACCESS_SURGERY, \
+	ACCESS_COURT, \
+	ACCESS_QM, \
+	ACCESS_VIROLOGY, \
+	ACCESS_LAWYER, \
+	ACCESS_LIBRARY, \
+	ACCESS_HYDROPONICS, \
+	ACCESS_CHEMISTRY, \
+	ACCESS_CONSTRUCTION, \
+	ACCESS_CARGO, \
+	ACCESS_ROBOTICS, \
+	ACCESS_KITCHEN, \
+	ACCESS_CREMATORIUM, \
+	ACCESS_JANITOR, \
+	ACCESS_BAR, \
+	ACCESS_CHAPEL_OFFICE, \
+	ACCESS_EXTERNAL_AIRLOCKS, \
+	ACCESS_MAINT_TUNNELS, \
+	ACCESS_ENGINE_EQUIP, \
+	ACCESS_ENGINE, \
+	ACCESS_GENETICS, \
+	ACCESS_RND, \
+	ACCESS_MORGUE, \
+	ACCESS_MEDICAL, \
+	ACCESS_FORENSICS, \
+	ACCESS_BRIG, \
+	ACCESS_SECURITY, \
+	ACCESS_ATMOSPHERICS, \
+	ACCESS_ORDNANCE_STORAGE, \
+	ACCESS_ORDNANCE, \
+	ACCESS_SERVICE, \
+	ACCESS_MINISAT, \
+	ACCESS_TCOMSAT, \
+	ACCESS_KEYCARD_AUTH, \
+	ACCESS_RC_ANNOUNCE, \
+	ACCESS_VAULT, \
+	ACCESS_TECH_STORAGE, \
+	ACCESS_FACTION_LEADER, \
+	ACCESS_TELEPORTER, \
+	ACCESS_ARMORY, \
+	ACCESS_AI_UPLOAD, \
+	ACCESS_CHANGE_IDS, \
+	ACCESS_EVA, \
+	ACCESS_GATEWAY, \
+	ACCESS_ALL_PERSONAL_LOCKERS, \
+)
 /// Private head of staff offices, usually only granted to most cards by trimming. Do not use direct, access via SSid_access.get_flag_access_list(ACCESS_FLAG_PRV_COMMAND)
 #define PRIVATE_COMMAND_ACCESS list( \
 	ACCESS_HOS, \

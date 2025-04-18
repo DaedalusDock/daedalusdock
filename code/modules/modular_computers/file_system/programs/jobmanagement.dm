@@ -8,6 +8,7 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 	program_icon_state = "id"
 	extended_desc = "Program for viewing and changing job slot availability."
 	transfer_access = list(ACCESS_FACTION_LEADER)
+	#warn make this accessible to faction leaders to open their own faction job slots.
 	requires_ntnet = TRUE
 	size = 4
 	tgui_id = "NtosJobManager"
@@ -15,7 +16,7 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 
 	var/change_position_cooldown = 30
 	///Jobs blacklisted from having their slots edited.
-	var/list/blacklisted = list(
+	var/static/list/blacklisted = list(
 		JOB_CAPTAIN,
 		JOB_HEAD_OF_PERSONNEL,
 		JOB_SECURITY_MARSHAL,
@@ -31,7 +32,7 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 
 	//This is used to keep track of opened positions for jobs to allow instant closing
 	//Assoc array: "JobName" = (int)<Opened Positions>
-	var/list/opened_positions = list()
+	var/static/list/opened_positions = list()
 
 /datum/computer_file/program/job_management/New()
 	..()

@@ -3,7 +3,7 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 
 /datum/computer_file/program/job_management
 	filename = "plexagoncore"
-	filedesc = "Plexagon HR Core"
+	filedesc = "ThinkDOS HR Core"
 	category = PROGRAM_CATEGORY_CREW
 	program_icon_state = "id"
 	extended_desc = "Program for viewing and changing job slot availability."

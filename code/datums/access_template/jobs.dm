@@ -140,7 +140,7 @@
 	extra_access = list(ACCESS_QM, ACCESS_MINING, ACCESS_MINING_STATION)
 	minimal_access = list(ACCESS_CARGO, ACCESS_MAILSORTING, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MINING, ACCESS_MINERAL_STOREROOM)
 	config_job = "cargo_technician"
-	template_access = list(ACCESS_QM, ACCESS_HOP, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_QM, ACCESS_CHANGE_IDS)
 	job = /datum/job/cargo_technician
 
 /datum/access_template/job/chaplain
@@ -433,7 +433,7 @@
 	minimal_access = list(ACCESS_AUX_BASE, ACCESS_MAILSORTING, ACCESS_MECH_MINING, ACCESS_MINERAL_STOREROOM, ACCESS_MINING,
 					ACCESS_MINING_STATION)
 	config_job = "shaft_miner"
-	template_access = list(ACCESS_HOP, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_QM, ACCESS_CHANGE_IDS)
 	job = /datum/job/shaft_miner
 
 /// ID card obtained from the mining Disney dollar points vending machine.

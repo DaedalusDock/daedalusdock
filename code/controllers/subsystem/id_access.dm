@@ -73,9 +73,9 @@ SUBSYSTEM_DEF(id_access)
 	for(var/access in accesses_by_flag["[ACCESS_FLAG_MANAGEMENT]"])
 		flags_by_access |= list("[access]" = ACCESS_FLAG_MANAGEMENT)
 
-	accesses_by_flag["[ACCESS_FLAG_PRV_MANAGEMENT]"] = PRIVATE_MANAGEMENT_ACCESS
-	for(var/access in accesses_by_flag["[ACCESS_FLAG_PRV_MANAGEMENT]"])
-		flags_by_access |= list("[access]" = ACCESS_FLAG_PRV_MANAGEMENT)
+	accesses_by_flag["[ACCESS_FLAG_FACTION_HEADS]"] = FACTION_HEAD_ACCESS
+	for(var/access in accesses_by_flag["[ACCESS_FLAG_FACTION_HEADS]"])
+		flags_by_access |= list("[access]" = ACCESS_FLAG_FACTION_HEADS)
 
 	accesses_by_flag["[ACCESS_FLAG_CAPTAIN]"] = CAPTAIN_ACCESS
 	for(var/access in accesses_by_flag["[ACCESS_FLAG_CAPTAIN]"])
@@ -97,19 +97,15 @@ SUBSYSTEM_DEF(id_access)
 	for(var/access in accesses_by_flag["[ACCESS_FLAG_SPECIAL]"])
 		flags_by_access |= list("[access]" = ACCESS_FLAG_SPECIAL)
 
-	accesses_by_flag["[ACCESS_FLAG_ALL_STATION]"] = ALL_STATION_ACCESS
-	for(var/access in accesses_by_flag["[ACCESS_FLAG_ALL_STATION]"])
-		flags_by_access |= list("[access]" = ACCESS_FLAG_ALL_STATION)
 
 	access_flag_string_by_flag["[ACCESS_FLAG_COMMON]"] = ACCESS_FLAG_COMMON_NAME
 	access_flag_string_by_flag["[ACCESS_FLAG_MANAGEMENT]"] = ACCESS_FLAG_MANAGEMENT_NAME
-	access_flag_string_by_flag["[ACCESS_FLAG_PRV_MANAGEMENT]"] = ACCESS_FLAG_PRV_MANAGEMENT_NAME
+	access_flag_string_by_flag["[ACCESS_FLAG_FACTION_HEADS]"] = ACCESS_FLAG_FACTION_HEADS_NAME
 	access_flag_string_by_flag["[ACCESS_FLAG_CAPTAIN]"] = ACCESS_FLAG_CAPTAIN_NAME
 	access_flag_string_by_flag["[ACCESS_FLAG_CENTCOM]"] = ACCESS_FLAG_CENTCOM_NAME
 	access_flag_string_by_flag["[ACCESS_FLAG_SYNDICATE]"] = ACCESS_FLAG_SYNDICATE_NAME
 	access_flag_string_by_flag["[ACCESS_FLAG_AWAY]"] = ACCESS_FLAG_AWAY_NAME
 	access_flag_string_by_flag["[ACCESS_FLAG_SPECIAL]"] = ACCESS_FLAG_SPECIAL_NAME
-	access_flag_string_by_flag["[ACCESS_FLAG_ALL_STATION]"] = ACCESS_FLAG_ALL_STATION_NAME
 
 /// Populates the region lists with data about which accesses correspond to which regions.
 /datum/controller/subsystem/id_access/proc/setup_region_lists()
@@ -344,6 +340,9 @@ SUBSYSTEM_DEF(id_access)
  * * regions - A list of region defines.
  */
 /datum/controller/subsystem/id_access/proc/get_region_access_list(list/regions)
+	if(!islist(regions))
+		regions = list(regions)
+
 	if(!length(regions))
 		return
 

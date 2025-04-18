@@ -168,9 +168,9 @@
 /// Bitflag for Command ID card accesses. See MANAGEMENT_ACCESS.
 #define ACCESS_FLAG_MANAGEMENT (1 << 1)
 /// Displayed name for Private Command ID card accesses.
-#define ACCESS_FLAG_PRV_MANAGEMENT_NAME "Private Management"
-/// Bitflag for Private Command ID card accesses. See PRIVATE_MANAGEMENT_ACCESS.
-#define ACCESS_FLAG_PRV_MANAGEMENT (1 << 2)
+#define ACCESS_FLAG_FACTION_HEADS_NAME "Private Management"
+/// Bitflag for faction head ID card accesses. See FACTION_HEAD_ACCESS.
+#define ACCESS_FLAG_FACTION_HEADS (1 << 2)
 /// Displayed name for Captain ID card accesses.
 #define ACCESS_FLAG_CAPTAIN_NAME "Superintendent"
 /// Bitflag for Captain ID card accesses. See CAPTAIN_ACCESS.
@@ -191,10 +191,6 @@
 #define ACCESS_FLAG_SPECIAL_NAME "Special"
 /// Bitflag for Special accesses that ordinaryily shouldn't be on ID cards. See CULT_ACCESS.
 #define ACCESS_FLAG_SPECIAL (1 << 7)
-/// Displayed name for all station accesses.
-#define ACCESS_FLAG_ALL_STATION_NAME "All Access"
-/// Bitflag for all station accesses.
-#define ACCESS_FLAG_ALL_STATION (1<<8)
 
 /// Departmental/general/common area accesses. Do not use direct, access via SSid_access.get_flag_access_list(ACCESS_FLAG_COMMON)
 #define COMMON_ACCESS list( \
@@ -264,78 +260,12 @@
 	ACCESS_EVA, \
 	ACCESS_GATEWAY, \
 	ACCESS_ALL_PERSONAL_LOCKERS, \
+	ACCESS_HOP, \
 )
 
-/// All station-related accesses.
-#define ALL_STATION_ACCESS list( \
-	ACCESS_MECH_MINING, \
-	ACCESS_MECH_MEDICAL, \
-	ACCESS_MECH_SECURITY, \
-	ACCESS_MECH_SCIENCE, \
-	ACCESS_MECH_ENGINE, \
-	ACCESS_AUX_BASE, \
-	ACCESS_PSYCHOLOGY, \
-	ACCESS_PHARMACY, \
-	ACCESS_NETWORK, \
-	ACCESS_WEAPONS, \
-	ACCESS_MINERAL_STOREROOM, \
-	ACCESS_BRIG_ENTRANCE, \
-	ACCESS_XENOBIOLOGY, \
-	ACCESS_MINING_STATION, \
-	ACCESS_MAILSORTING, \
-	ACCESS_MINING, \
-	ACCESS_RESEARCH, \
-	ACCESS_THEATRE, \
-	ACCESS_SURGERY, \
-	ACCESS_COURT, \
-	ACCESS_QM, \
-	ACCESS_VIROLOGY, \
-	ACCESS_LAWYER, \
-	ACCESS_LIBRARY, \
-	ACCESS_HYDROPONICS, \
-	ACCESS_CHEMISTRY, \
-	ACCESS_CONSTRUCTION, \
-	ACCESS_CARGO, \
-	ACCESS_ROBOTICS, \
-	ACCESS_KITCHEN, \
-	ACCESS_CREMATORIUM, \
-	ACCESS_JANITOR, \
-	ACCESS_BAR, \
-	ACCESS_CHAPEL_OFFICE, \
-	ACCESS_EXTERNAL_AIRLOCKS, \
-	ACCESS_MAINT_TUNNELS, \
-	ACCESS_ENGINE_EQUIP, \
-	ACCESS_ENGINE, \
-	ACCESS_GENETICS, \
-	ACCESS_RND, \
-	ACCESS_MORGUE, \
-	ACCESS_MEDICAL, \
-	ACCESS_FORENSICS, \
-	ACCESS_BRIG, \
-	ACCESS_SECURITY, \
-	ACCESS_ATMOSPHERICS, \
-	ACCESS_ORDNANCE_STORAGE, \
-	ACCESS_ORDNANCE, \
-	ACCESS_SERVICE, \
-	ACCESS_MINISAT, \
-	ACCESS_TCOMSAT, \
-	ACCESS_KEYCARD_AUTH, \
-	ACCESS_RC_ANNOUNCE, \
-	ACCESS_VAULT, \
-	ACCESS_TECH_STORAGE, \
-	ACCESS_FACTION_LEADER, \
-	ACCESS_TELEPORTER, \
-	ACCESS_ARMORY, \
-	ACCESS_AI_UPLOAD, \
-	ACCESS_CHANGE_IDS, \
-	ACCESS_EVA, \
-	ACCESS_GATEWAY, \
-	ACCESS_ALL_PERSONAL_LOCKERS, \
-)
 /// Private head of staff offices, usually only granted to most cards by trimming. Do not use direct, access via SSid_access.get_flag_access_list(ACCESS_FLAG_PRV_MANAGEMENT)
-#define PRIVATE_MANAGEMENT_ACCESS list( \
+#define FACTION_HEAD_ACCESS list( \
 	ACCESS_HOS, \
-	ACCESS_HOP, \
 	ACCESS_CE, \
 	ACCESS_CMO, \
 	ACCESS_RD, \
@@ -384,12 +314,12 @@
 
 /// Name for the Global region.
 #define REGION_ALL_GLOBAL "All"
-/// Used to seed the accesses_by_region list in SSid_access. A list of every single access in the game.
-#define REGION_ACCESS_ALL_GLOBAL REGION_ACCESS_ALL_STATION + CENTCOM_ACCESS + SYNDICATE_ACCESS + AWAY_ACCESS + CULT_ACCESS
 /// Name for the Station All Access region.
 #define REGION_ALL_STATION "Station"
 /// Used to seed the accesses_by_region list in SSid_access. A list of all station accesses.
-#define REGION_ACCESS_ALL_STATION COMMON_ACCESS + MANAGEMENT_ACCESS + PRIVATE_MANAGEMENT_ACCESS + CAPTAIN_ACCESS
+#define REGION_ACCESS_ALL_STATION COMMON_ACCESS + MANAGEMENT_ACCESS + FACTION_HEAD_ACCESS + CAPTAIN_ACCESS
+/// Used to seed the accesses_by_region list in SSid_access. A list of every single access in the game.
+#define REGION_ACCESS_ALL_GLOBAL REGION_ACCESS_ALL_STATION + CENTCOM_ACCESS + SYNDICATE_ACCESS + AWAY_ACCESS + CULT_ACCESS
 /// Name for the General region.
 #define REGION_GENERAL "General"
 /// Used to seed the accesses_by_region list in SSid_access. A list of general service accesses that are overseen by the HoP.

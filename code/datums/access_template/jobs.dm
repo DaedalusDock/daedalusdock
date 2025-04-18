@@ -129,9 +129,8 @@
 
 /// Captain gets all station accesses hardcoded in because it's the Captain.
 /datum/access_template/job/captain/New()
-	extra_access |= SSid_access.get_flag_access_list(ACCESS_FLAG_ALL_STATION)
-	minimal_access |= SSid_access.get_flag_access_list(ACCESS_FLAG_ALL_STATION)
-
+	extra_access |= SSid_access.get_region_access_list(REGION_ALL_STATION)
+	minimal_access |= SSid_access.get_region_access_list(REGION_ALL_STATION)
 	return ..()
 
 /datum/access_template/job/cargo_technician

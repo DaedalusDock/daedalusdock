@@ -164,13 +164,13 @@
 /// Bitflag for Common ID card accesses. See COMMON_ACCESS.
 #define ACCESS_FLAG_COMMON (1 << 0)
 /// Displayed name for Command ID card accesses.
-#define ACCESS_FLAG_COMMAND_NAME "Command"
-/// Bitflag for Command ID card accesses. See COMMAND_ACCESS.
-#define ACCESS_FLAG_COMMAND (1 << 1)
+#define ACCESS_FLAG_MANAGEMENT_NAME "Management"
+/// Bitflag for Command ID card accesses. See MANAGEMENT_ACCESS.
+#define ACCESS_FLAG_MANAGEMENT (1 << 1)
 /// Displayed name for Private Command ID card accesses.
-#define ACCESS_FLAG_PRV_COMMAND_NAME "Private Command"
-/// Bitflag for Private Command ID card accesses. See PRIVATE_COMMAND_ACCESS.
-#define ACCESS_FLAG_PRV_COMMAND (1 << 2)
+#define ACCESS_FLAG_PRV_MANAGEMENT_NAME "Private Management"
+/// Bitflag for Private Command ID card accesses. See PRIVATE_MANAGEMENT_ACCESS.
+#define ACCESS_FLAG_PRV_MANAGEMENT (1 << 2)
 /// Displayed name for Captain ID card accesses.
 #define ACCESS_FLAG_CAPTAIN_NAME "Superintendent"
 /// Bitflag for Captain ID card accesses. See CAPTAIN_ACCESS.
@@ -249,8 +249,8 @@
 	ACCESS_SERVICE, \
 )
 
-/// Command staff/secure accesses, think bridge/armoury, AI upload, notably access to modify ID cards themselves. Do not use direct, access via SSid_access.get_flag_access_list(ACCESS_FLAG_COMMAND)
-#define COMMAND_ACCESS list( \
+/// Management staff/secure accesses, think bridge/armoury, AI upload, notably access to modify ID cards themselves. Do not use direct, access via SSid_access.get_flag_access_list(ACCESS_FLAG_MANAGEMENT)
+#define MANAGEMENT_ACCESS list( \
 	ACCESS_MINISAT, \
 	ACCESS_TCOMSAT, \
 	ACCESS_KEYCARD_AUTH, \
@@ -333,8 +333,8 @@
 	ACCESS_GATEWAY, \
 	ACCESS_ALL_PERSONAL_LOCKERS, \
 )
-/// Private head of staff offices, usually only granted to most cards by trimming. Do not use direct, access via SSid_access.get_flag_access_list(ACCESS_FLAG_PRV_COMMAND)
-#define PRIVATE_COMMAND_ACCESS list( \
+/// Private head of staff offices, usually only granted to most cards by trimming. Do not use direct, access via SSid_access.get_flag_access_list(ACCESS_FLAG_PRV_MANAGEMENT)
+#define PRIVATE_MANAGEMENT_ACCESS list( \
 	ACCESS_HOS, \
 	ACCESS_HOP, \
 	ACCESS_CE, \
@@ -390,7 +390,7 @@
 /// Name for the Station All Access region.
 #define REGION_ALL_STATION "Station"
 /// Used to seed the accesses_by_region list in SSid_access. A list of all station accesses.
-#define REGION_ACCESS_ALL_STATION COMMON_ACCESS + COMMAND_ACCESS + PRIVATE_COMMAND_ACCESS + CAPTAIN_ACCESS
+#define REGION_ACCESS_ALL_STATION COMMON_ACCESS + MANAGEMENT_ACCESS + PRIVATE_MANAGEMENT_ACCESS + CAPTAIN_ACCESS
 /// Name for the General region.
 #define REGION_GENERAL "General"
 /// Used to seed the accesses_by_region list in SSid_access. A list of general service accesses that are overseen by the HoP.
@@ -421,7 +421,7 @@
 	ACCESS_HOS, \
 )
 /// Name for the Medbay region.
-#define REGION_MEDBAY "Medbay"
+#define REGION_MEDBAY "Ward"
 /// Used to seed the accesses_by_region list in SSid_access. A list of all medbay regional accesses that are overseen by the CMO.
 #define REGION_ACCESS_MEDBAY list( \
 	ACCESS_MEDICAL, \
@@ -468,7 +468,7 @@
 	ACCESS_CE, \
 )
 /// Name for the Supply region.
-#define REGION_SUPPLY "Supply"
+#define REGION_SUPPLY "Cargo"
 /// Used to seed the accesses_by_region list in SSid_access. A list of all cargo regional accesses that are overseen by the HoP.
 #define REGION_ACCESS_SUPPLY list( \
 	ACCESS_MAILSORTING, \
@@ -481,9 +481,9 @@
 	ACCESS_VAULT, \
 )
 /// Name for the Command region.
-#define REGION_COMMAND "Command"
+#define REGION_MANAGEMENT "Management"
 /// Used to seed the accesses_by_region list in SSid_access. A list of all command regional accesses that are overseen by the Captain.
-#define REGION_ACCESS_COMMAND list( \
+#define REGION_ACCESS_MANAGEMENT list( \
 	ACCESS_FACTION_LEADER, \
 	ACCESS_RC_ANNOUNCE, \
 	ACCESS_KEYCARD_AUTH, \
@@ -524,12 +524,12 @@ Comment here because it really doesn't like them anywhere else here
 	/obj/item/modular_computer/tablet/pda/warden = list(REGION_SECURITY), \
 	/obj/item/modular_computer/tablet/pda/janitor = list(REGION_GENERAL), \
 	/obj/item/modular_computer/tablet/pda/science = list(REGION_RESEARCH), \
-	/obj/item/modular_computer/tablet/pda/heads/hop = list(REGION_COMMAND), \
-	/obj/item/modular_computer/tablet/pda/heads/hos = list(REGION_COMMAND), \
-	/obj/item/modular_computer/tablet/pda/heads/cmo = list(REGION_COMMAND), \
-	/obj/item/modular_computer/tablet/pda/heads/ce = list(REGION_COMMAND), \
-	/obj/item/modular_computer/tablet/pda/heads/rd = list(REGION_COMMAND), \
-	/obj/item/modular_computer/tablet/pda/captain = list(REGION_COMMAND), \
+	/obj/item/modular_computer/tablet/pda/heads/hop = list(REGION_MANAGEMENT), \
+	/obj/item/modular_computer/tablet/pda/heads/hos = list(REGION_MANAGEMENT), \
+	/obj/item/modular_computer/tablet/pda/heads/cmo = list(REGION_MANAGEMENT), \
+	/obj/item/modular_computer/tablet/pda/heads/ce = list(REGION_MANAGEMENT), \
+	/obj/item/modular_computer/tablet/pda/heads/rd = list(REGION_MANAGEMENT), \
+	/obj/item/modular_computer/tablet/pda/captain = list(REGION_MANAGEMENT), \
 	/obj/item/modular_computer/tablet/pda/cargo = list(REGION_SUPPLY), \
 	/obj/item/modular_computer/tablet/pda/shaftminer = list(REGION_SUPPLY), \
 	/obj/item/modular_computer/tablet/pda/chaplain = list(REGION_GENERAL), \
@@ -552,7 +552,7 @@ Comment here because it really doesn't like them anywhere else here
 	REGION_RESEARCH, \
 	REGION_ENGINEERING, \
 	REGION_SUPPLY, \
-	REGION_COMMAND, \
+	REGION_MANAGEMENT, \
 )
 
 /// Used in ID card access adding procs. Will try to add all accesses and utilises free wildcards, skipping over any accesses it can't add.

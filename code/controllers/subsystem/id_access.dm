@@ -69,13 +69,13 @@ SUBSYSTEM_DEF(id_access)
 	for(var/access in accesses_by_flag["[ACCESS_FLAG_COMMON]"])
 		flags_by_access |= list("[access]" = ACCESS_FLAG_COMMON)
 
-	accesses_by_flag["[ACCESS_FLAG_COMMAND]"] = COMMAND_ACCESS
-	for(var/access in accesses_by_flag["[ACCESS_FLAG_COMMAND]"])
-		flags_by_access |= list("[access]" = ACCESS_FLAG_COMMAND)
+	accesses_by_flag["[ACCESS_FLAG_MANAGEMENT]"] = MANAGEMENT_ACCESS
+	for(var/access in accesses_by_flag["[ACCESS_FLAG_MANAGEMENT]"])
+		flags_by_access |= list("[access]" = ACCESS_FLAG_MANAGEMENT)
 
-	accesses_by_flag["[ACCESS_FLAG_PRV_COMMAND]"] = PRIVATE_COMMAND_ACCESS
-	for(var/access in accesses_by_flag["[ACCESS_FLAG_PRV_COMMAND]"])
-		flags_by_access |= list("[access]" = ACCESS_FLAG_PRV_COMMAND)
+	accesses_by_flag["[ACCESS_FLAG_PRV_MANAGEMENT]"] = PRIVATE_MANAGEMENT_ACCESS
+	for(var/access in accesses_by_flag["[ACCESS_FLAG_PRV_MANAGEMENT]"])
+		flags_by_access |= list("[access]" = ACCESS_FLAG_PRV_MANAGEMENT)
 
 	accesses_by_flag["[ACCESS_FLAG_CAPTAIN]"] = CAPTAIN_ACCESS
 	for(var/access in accesses_by_flag["[ACCESS_FLAG_CAPTAIN]"])
@@ -102,8 +102,8 @@ SUBSYSTEM_DEF(id_access)
 		flags_by_access |= list("[access]" = ACCESS_FLAG_ALL_STATION)
 
 	access_flag_string_by_flag["[ACCESS_FLAG_COMMON]"] = ACCESS_FLAG_COMMON_NAME
-	access_flag_string_by_flag["[ACCESS_FLAG_COMMAND]"] = ACCESS_FLAG_COMMAND_NAME
-	access_flag_string_by_flag["[ACCESS_FLAG_PRV_COMMAND]"] = ACCESS_FLAG_PRV_COMMAND_NAME
+	access_flag_string_by_flag["[ACCESS_FLAG_MANAGEMENT]"] = ACCESS_FLAG_MANAGEMENT_NAME
+	access_flag_string_by_flag["[ACCESS_FLAG_PRV_MANAGEMENT]"] = ACCESS_FLAG_PRV_MANAGEMENT_NAME
 	access_flag_string_by_flag["[ACCESS_FLAG_CAPTAIN]"] = ACCESS_FLAG_CAPTAIN_NAME
 	access_flag_string_by_flag["[ACCESS_FLAG_CENTCOM]"] = ACCESS_FLAG_CENTCOM_NAME
 	access_flag_string_by_flag["[ACCESS_FLAG_SYNDICATE]"] = ACCESS_FLAG_SYNDICATE_NAME
@@ -121,7 +121,7 @@ SUBSYSTEM_DEF(id_access)
 	accesses_by_region[REGION_RESEARCH] = REGION_ACCESS_RESEARCH
 	accesses_by_region[REGION_ENGINEERING] = REGION_ACCESS_ENGINEERING
 	accesses_by_region[REGION_SUPPLY] = REGION_ACCESS_SUPPLY
-	accesses_by_region[REGION_COMMAND] = REGION_ACCESS_COMMAND
+	accesses_by_region[REGION_MANAGEMENT] = REGION_ACCESS_MANAGEMENT
 	accesses_by_region[REGION_CENTCOM] = REGION_ACCESS_CENTCOM
 
 	station_regions = REGION_AREA_STATION
@@ -155,13 +155,13 @@ SUBSYSTEM_DEF(id_access)
 
 	sub_department_managers_tgui = list(
 		"[ACCESS_CAPTAIN]" = list(
-			"regions" = list(REGION_COMMAND),
+			"regions" = list(REGION_MANAGEMENT),
 			"head" = JOB_CAPTAIN,
 			"templates" = list(),
 			"pdas" = list(),
 		),
 		"[ACCESS_HOP]" = list(
-			"regions" = list(REGION_GENERAL, REGION_SUPPLY),
+			"regions" = list(REGION_GENERAL),
 			"head" = JOB_HEAD_OF_PERSONNEL,
 			"templates" = list(),
 			"pdas" = list(),
@@ -184,6 +184,12 @@ SUBSYSTEM_DEF(id_access)
 			"templates" = list(),
 			"pdas" = list(),
 		),
+		"[ACCESS_QM]" = list(
+			"regions" = list(REGION_SUPPLY),
+			"head" = JOB_QUARTERMASTER,
+			"templates" = list(),
+			"pdas" = list(),
+		)
 	)
 
 	var/list/station_job_trims = subtypesof(/datum/access_template/job)

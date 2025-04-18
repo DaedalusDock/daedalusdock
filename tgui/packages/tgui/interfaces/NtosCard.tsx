@@ -14,7 +14,6 @@ import {
 } from '../components';
 import { NtosWindow } from '../layouts';
 import { AccessList, AccessRegion } from './common/AccessList';
-
 export const NtosCard = (props) => {
   return (
     <NtosWindow width={500} height={670}>
@@ -219,7 +218,6 @@ const IDCardTarget = (props) => {
   const { act, data } = useBackend<IDCardTargetData>();
   const { authenticatedUser, id_rank, id_owner, has_id, id_name, id_age } =
     data;
-
   return (
     <Section title="Modify ID">
       <Button
@@ -301,8 +299,9 @@ const TemplateDropdown = (props: TemplateDropdownProps) => {
       <Stack.Item grow>
         <Dropdown
           width="100%"
-          displayText={'Select a template...'}
-          selected={display_selected && selected_template}
+          displayText={
+            (!!display_selected && selected_template) || 'Select a template...'
+          }
           options={templateKeys.map((path) => {
             return templates[path];
           })}

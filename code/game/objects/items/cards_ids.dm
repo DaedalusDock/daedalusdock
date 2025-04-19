@@ -130,6 +130,10 @@
 	var/that_string = gender == PLURAL ? "Those are " : "That is "
 	return "[icon2html(get_cached_flat_icon(), user)] [thats ? that_string :""][get_examine_name(user)]"
 
+/// Returns the trim assignment name.
+/obj/item/card/id/proc/get_trim_assignment()
+	return trim?.assignment || assignment
+
 /// Adds a list of accesses to the ID's access
 /obj/item/card/id/proc/add_access(list/add_accesses)
 	access |= add_accesses

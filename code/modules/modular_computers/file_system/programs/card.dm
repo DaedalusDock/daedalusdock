@@ -155,6 +155,7 @@
 				if(istype(I, /obj/item/card/id))
 					return card_slot2.try_insert(I, user)
 			return TRUE
+
 		// Used to fire someone. Wipes all access from their card and modifies their assignment.
 		if("PRG_terminate")
 			if(!computer || !authenticated_card)
@@ -170,6 +171,7 @@
 
 			playsound(computer, 'sound/machines/terminal_prompt_deny.ogg', 50, FALSE)
 			return TRUE
+
 		// Change ID card assigned name.
 		if("PRG_edit")
 			if(!computer || !authenticated_card || !target_id_card)
@@ -204,6 +206,7 @@
 			if(!old_name)
 				target_id_card.update_icon()
 			return TRUE
+
 		// Change age
 		if("PRG_age")
 			if(!computer || !authenticated_card || !target_id_card)
@@ -216,20 +219,28 @@
 
 			target_id_card.registered_age = new_age
 			playsound(computer, SFX_TERMINAL_TYPE, 50, FALSE)
+			update_records()
 			return TRUE
+
 		// Change assignment
 		if("PRG_assign")
 			if(!computer || !authenticated_card || !target_id_card)
 				return TRUE
+
 			var/new_asignment = sanitize(params["assignment"])
 			target_id_card.assignment = new_asignment
+
 			playsound(computer, SFX_TERMINAL_TYPE, 50, FALSE)
+
 			target_id_card.update_label()
+			update_records()
 			return TRUE
+
 		// Add/remove access.
 		if("PRG_access")
 			if(!computer || !authenticated_card || !target_id_card)
 				return TRUE
+
 			playsound(computer, SFX_TERMINAL_TYPE, 50, FALSE)
 			var/access_type = params["access_target"]
 			if(!(access_type in valid_access))
@@ -250,6 +261,7 @@
 				message_admins("[ADMIN_LOOKUPFLW(user)] just added [SSid_access.get_access_desc(access_type)] to an ID card [ADMIN_VV(target_id_card)] [(target_id_card.registered_name) ? "belonging to [target_id_card.registered_name]." : "with no registered name."]")
 			LOG_ID_ACCESS_CHANGE(user, target_id_card, "added [SSid_access.get_access_desc(access_type)]")
 			return TRUE
+
 		// Apply template to ID card.
 		if("PRG_template")
 			if(!computer || !authenticated_card || !target_id_card)
@@ -267,10 +279,10 @@
 					continue
 
 				SSid_access.apply_template_access_to_card(target_id_card, trim_path)
+				update_records()
 				return TRUE
 
 			stack_trace("[key_name(usr)] ([usr]) attempted to apply invalid template \[[template_name]\] to [target_id_card]")
-
 			return TRUE
 
 /datum/computer_file/program/card_mod/ui_static_data(mob/user)
@@ -343,3 +355,19 @@
 			data["trimAccess"] = list()
 
 	return data
+
+/// Update the datacore entry for the given ID.
+/datum/computer_file/program/card_mod/proc/update_records()
+	var/obj/item/card/id/target_id_card = card_slot2?.stored_card
+	if(!target_id_card)
+		return FALSE
+
+	var/datum/data/record/record = SSdatacore.get_record_by_name(target_id_card.registered_name, DATACORE_RECORDS_STATION)
+	#warn MAKE THIS NOT HARDCODED TO STATION smileyface
+	if(!record)
+		return FALSE
+
+	record.fields[DATACORE_RANK] = target_id_card.assignment
+	record.fields[DATACORE_TRIM] = target_id_card.trim?.type
+	record.fields[DATACORE_AGE] = target_id_card.registered_age
+	return TRUE

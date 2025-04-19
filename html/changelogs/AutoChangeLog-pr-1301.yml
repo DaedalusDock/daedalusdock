@@ -1,0 +1,6 @@
+author: tontyGH
+delete-after: true
+changes:
+  - bugfix: teleporting while buckling to something will bring the buckled object
+      with you
+  - bugfix: you can buckle to things if you are on the same turf

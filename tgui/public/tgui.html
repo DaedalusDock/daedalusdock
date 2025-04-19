@@ -357,7 +357,7 @@
 
   Byond.saveBlob = function (blob, filename, ext) {
     if (window.navigator.msSaveBlob) {
-      window.navigator.msSaveBlob(blob, filename);
+      window.navigator.msSaveBlob(blob, filename); //515/IE11 compatibility
     } else if (window.showSaveFilePicker) {
       var accept = {};
       accept[blob.type] = [ext];

@@ -358,13 +358,16 @@
 
 /// Update the datacore entry for the given ID.
 /datum/computer_file/program/card_mod/proc/update_records()
+	var/obj/item/computer_hardware/card_slot/card_slot2
+	if(computer)
+		card_slot2 = computer.all_components[MC_CARD2]
+
 	var/obj/item/card/id/target_id_card = card_slot2?.stored_card
 	if(!target_id_card)
 		return FALSE
 
 	var/datum/data/record/record = SSdatacore.get_record_by_name(target_id_card.registered_name, DATACORE_RECORDS_STATION)
 	#warn MAKE THIS NOT HARDCODED TO STATION smileyface
-	#warn chameleon ids fuck
 	if(!record)
 		return FALSE
 

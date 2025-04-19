@@ -8,7 +8,7 @@ import { logger } from '../../logging';
 type AccessListProps = {
   accessGroups?: AccessGroup[];
   accessMod: Function;
-  extraButtons: React.JSX.Element;
+  extraButtons?: React.JSX.Element;
   //Access on the card itself.
   selectedList: string[];
   showBasic: BooleanLike;
@@ -20,7 +20,7 @@ export type AccessGroup = {
   name: string;
 };
 
-type AccessInstance = {
+export type AccessInstance = {
   desc: string;
   ref: string;
 };
@@ -187,7 +187,7 @@ export const FormatWildcards = (props: WildcardProps) => {
           selected={wildcardTab === 'None'}
           onClick={() => setWildcardTab('None')}
         >
-          Template:
+          Template
         </Tabs.Tab>
       )}
 
@@ -195,7 +195,7 @@ export const FormatWildcards = (props: WildcardProps) => {
         selected={wildcardTab === 'All'}
         onClick={() => setWildcardTab('All')}
       >
-        Other:
+        Other
       </Tabs.Tab>
     </Tabs>
   );

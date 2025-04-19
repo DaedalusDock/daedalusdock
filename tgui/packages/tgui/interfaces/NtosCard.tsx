@@ -25,8 +25,6 @@ export const NtosCard = (props) => {
 };
 
 type NtosCardContentData = {
-  accessFlagNames: Record<string, any>;
-  accessFlags: Record<string, any>;
   accessGroups: AccessGroup[];
   access_on_card: string[];
   authenticatedUser: string;

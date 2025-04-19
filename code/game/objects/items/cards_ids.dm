@@ -130,10 +130,6 @@
 	var/that_string = gender == PLURAL ? "Those are " : "That is "
 	return "[icon2html(get_cached_flat_icon(), user)] [thats ? that_string :""][get_examine_name(user)]"
 
-/// Returns the trim assignment name.
-/obj/item/card/id/proc/get_trim_assignment()
-	return trim?.assignment || assignment
-
 /// Adds a list of accesses to the ID's access
 /obj/item/card/id/proc/add_access(list/add_accesses)
 	access |= add_accesses
@@ -915,24 +911,22 @@
 	return status
 
 /obj/item/card/id/advanced/chameleon/ui_data(mob/user)
+	var/obj/item/card/id/target_card = theft_target.resolve()
+	if(QDELETED(target_card))
+		return
+
+	var/list/tgui_region_data = SSid_access.tgui_access_groups
+	var/list/access_groups = list()
+	for(var/region in SSid_access.station_groups)
+		access_groups += tgui_region_data[region]
+
 	var/list/data = list()
 
 	data["showBasic"] = FALSE
-
-	var/list/regions = list()
-
-	var/obj/item/card/id/target_card = theft_target.resolve()
-	if(target_card)
-		var/list/tgui_region_data = SSid_access.tgui_access_groups
-		for(var/region in SSid_access.station_groups)
-			regions += tgui_region_data[region]
-
-	data["accesses"] = regions
-	data["ourAccess"] = access
+	data["accessGroups"] = access_groups
+	data["accessOnCard"] = access
 	data["ourTrimAccess"] = trim ? trim.access : list()
 	data["theftAccess"] = target_card.access.Copy()
-	data["selectedList"] = access
-	data["trimAccess"] = list()
 
 	return data
 

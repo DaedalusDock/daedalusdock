@@ -364,6 +364,7 @@
 
 	var/datum/data/record/record = SSdatacore.get_record_by_name(target_id_card.registered_name, DATACORE_RECORDS_STATION)
 	#warn MAKE THIS NOT HARDCODED TO STATION smileyface
+	#warn chameleon ids fuck
 	if(!record)
 		return FALSE
 

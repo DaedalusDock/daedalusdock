@@ -90,7 +90,7 @@ DEFINE_BITFIELD(turret_flags, list(
 	/// Determines if our projectiles hit our faction
 	var/ignore_faction = FALSE
 	/// Same faction mobs will never be shot at, no matter the other settings
-	var/list/faction = list("turret")
+	faction = list("turret")
 	/// The spark system, used for generating... sparks?
 	var/datum/effect_system/spark_spread/spark_system
 	/// The turret will try to shoot from a turf in that direction when in a wall

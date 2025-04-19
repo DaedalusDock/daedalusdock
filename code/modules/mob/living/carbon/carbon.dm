@@ -36,31 +36,6 @@
 	touching = new /datum/reagents{metabolism_class = CHEM_TOUCH}(1000)
 	touching.my_atom = src
 
-/mob/living/carbon/swap_hand(held_index)
-	. = ..()
-	if(!.)
-		return
-
-	if(!held_index)
-		held_index = (active_hand_index % held_items.len)+1
-
-	if(!isnum(held_index))
-		CRASH("You passed [held_index] into swap_hand instead of a number. WTF man")
-
-	var/oindex = active_hand_index
-	active_hand_index = held_index
-
-	if(hud_used)
-		var/atom/movable/screen/inventory/hand/H
-		H = hud_used.hand_slots["[oindex]"]
-		if(H)
-			H.update_appearance()
-		H = hud_used.hand_slots["[held_index]"]
-		if(H)
-			H.update_appearance()
-
-	update_mouse_pointer()
-
 /mob/living/carbon/activate_hand(selhand) //l/r OR 1-held_items.len
 	if(!selhand)
 		selhand = (active_hand_index % held_items.len)+1
@@ -73,7 +48,7 @@
 			selhand = 1
 
 	if(selhand != active_hand_index)
-		swap_hand(selhand)
+		try_swap_hand(selhand)
 	else
 		mode() // Activate held item
 

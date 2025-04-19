@@ -118,7 +118,7 @@
 
 	if(ismob(usr))
 		var/mob/M = usr
-		M.swap_hand()
+		M.try_swap_hand()
 	return 1
 
 /atom/movable/screen/navigate
@@ -320,7 +320,7 @@
 		if(I)
 			I.Click(location, control, params)
 	else
-		user.swap_hand(held_index)
+		user.try_swap_hand(held_index)
 	return TRUE
 
 /atom/movable/screen/inventory/hand/MouseDroppedOn(atom/dropping, mob/user, params)

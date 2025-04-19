@@ -83,6 +83,9 @@
 	var/verb_yell = "yells"
 	var/speech_span
 
+	/// The list of factions this atom belongs to
+	var/list/faction
+
 	///Delay in deciseconds between inertia based movement
 	var/inertia_move_delay = 5
 

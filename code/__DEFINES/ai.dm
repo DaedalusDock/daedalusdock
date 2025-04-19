@@ -1,4 +1,5 @@
 #define GET_AI_BEHAVIOR(behavior_type) SSai_behaviors.ai_behaviors[behavior_type]
+#define GET_TARGETING_STRATEGY(targeting_type) SSai_behaviors.targeting_strategies[targeting_type]
 #define HAS_AI_CONTROLLER_TYPE(thing, type) istype(thing?.ai_controller, type)
 
 #ifdef DEBUG_AI
@@ -72,9 +73,8 @@
 #define BB_FRIENDS_LIST "BB_FRIENDS_LIST"
 /// World.time of the last movement + the pawn's movement delay
 #define BB_NEXT_MOVE_TIME "BB_NEXT_MOVE_TIME"
-s
-//for songs
 
+//for songs
 ///song instrument blackboard, set by instrument subtrees
 #define BB_SONG_INSTRUMENT "BB_SONG_INSTRUMENT"
 ///song lines blackboard, set by default on controllers
@@ -157,12 +157,19 @@ s
 
 
 ///Hostile AI controller blackboard keys
+#define BB_TARGETING_STRATEGY "BB_TARGETING_STRATEGY"
+#define BB_TARGET_MINIMUM_STAT "BB_TARGET_MINIMUM_STAT"
 #define BB_HOSTILE_ORDER_MODE "BB_HOSTILE_ORDER_MODE"
 #define BB_HOSTILE_FRIEND "BB_HOSTILE_FRIEND"
 #define BB_HOSTILE_ATTACK_WORD "BB_HOSTILE_ATTACK_WORD"
 #define BB_FOLLOW_TARGET "BB_FOLLOW_TARGET"
 #define BB_ATTACK_TARGET "BB_ATTACK_TARGET"
 #define BB_VISION_RANGE "BB_VISION_RANGE"
+
+///should we skip the faction check for the targeting strategy?
+#define BB_ALWAYS_IGNORE_FACTION "BB_always_ignore_factions"
+///are we in some kind of temporary state of ignoring factions when targeting? can result in volatile results if multiple behaviours touch this
+#define BB_TEMPORARILY_IGNORE_FACTION "BB_temporarily_ignore_factions"
 
 /// Basically, what is our vision/hearing range.
 #define BB_HOSTILE_VISION_RANGE 10
@@ -240,7 +247,6 @@ s
 ///Targetting subtrees
 #define BB_BASIC_MOB_CURRENT_TARGET "BB_basic_current_target"
 #define BB_BASIC_MOB_CURRENT_TARGET_HIDING_LOCATION "BB_basic_current_target_hiding_location"
-#define BB_TARGETTING_DATUM "targetting_datum"
 
 /// The list of behaviors for the planners to select from. THIS IS ACTUALLY A SUBKEY!! See _behavior_planner.dm
 #define BB_PLANNER_BEHAVIORS "BB_planner_behaviors"

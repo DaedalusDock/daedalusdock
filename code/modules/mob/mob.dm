@@ -1076,10 +1076,41 @@
 	return TRUE
 //PARIAH EDIT END
 
-/mob/proc/swap_hand()
+/// Attempt to swap hand slots to the desired held index.
+/mob/proc/try_swap_hand(held_index, silent = FALSE)
+	SHOULD_NOT_OVERRIDE(TRUE) // Override perform_hand_swap instead
+
 	var/obj/item/held_item = get_active_held_item()
-	if(SEND_SIGNAL(src, COMSIG_MOB_SWAP_HANDS, held_item) & COMPONENT_BLOCK_SWAP)
+	if(SEND_SIGNAL(src, COMSIG_MOB_SWAPPING_HANDS, held_item) & COMPONENT_BLOCK_SWAP)
+		if (!silent)
+			to_chat(src, span_warning("Your other hand is too busy holding [held_item]."))
 		return FALSE
+
+	var/result = perform_hand_swap(held_index)
+	if (result)
+		SEND_SIGNAL(src, COMSIG_MOB_SWAP_HANDS)
+
+	return result
+
+/// Performs the actual ritual of swapping hands, such as setting the held index variables
+/mob/proc/perform_hand_swap(held_index)
+	PROTECTED_PROC(TRUE)
+	if(!held_index)
+		held_index = (active_hand_index % held_items.len) + 1
+
+	if(!isnum(held_index))
+		CRASH("You passed [held_index] into swap_hand instead of a number. WTF man")
+
+	var/previous_index = active_hand_index
+	active_hand_index = held_index
+	if(hud_used)
+		var/atom/movable/screen/inventory/hand/held_location
+		held_location = hud_used.hand_slots["[previous_index]"]
+		if(!isnull(held_location))
+			held_location.update_appearance()
+		held_location = hud_used.hand_slots["[held_index]"]
+		if(!isnull(held_location))
+			held_location.update_appearance()
 	return TRUE
 
 /mob/proc/activate_hand(selhand)
@@ -1198,21 +1229,6 @@
 ///Can this mob use storage
 /mob/proc/canUseStorage()
 	return FALSE
-/**
- * Check if the other mob has any factions the same as us
- *
- * If exact match is set, then all our factions must match exactly
- */
-/mob/proc/faction_check_mob(mob/target, exact_match)
-	if(exact_match) //if we need an exact match, we need to do some bullfuckery.
-		var/list/faction_src = faction.Copy()
-		var/list/faction_target = target.faction.Copy()
-		if(!("[REF(src)]" in faction_target)) //if they don't have our ref faction, remove it from our factions list.
-			faction_src -= "[REF(src)]" //if we don't do this, we'll never have an exact match.
-		if(!("[REF(target)]" in faction_src))
-			faction_target -= "[REF(target)]" //same thing here.
-		return faction_check(faction_src, faction_target, TRUE)
-	return faction_check(faction, target.faction, FALSE)
 /*
  * Compare two lists of factions, returning true if any match
  *
@@ -1229,6 +1245,23 @@
 		match_list = faction_A&faction_B
 		return LAZYLEN(match_list)
 	return FALSE
+
+/**
+ * Check if the other atom/movable has any factions the same as us. Defined at the atom/movable level so it can be defined for just about anything.
+ *
+ * If exact match is set, then all our factions must match exactly
+ */
+/atom/movable/proc/faction_check_atom(atom/movable/target, exact_match)
+	if(!exact_match)
+		return faction_check(faction, target.faction, FALSE)
+
+	var/list/faction_src = LAZYCOPY(faction)
+	var/list/faction_target = LAZYCOPY(target.faction)
+	if(!("[REF(src)]" in faction_target)) //if they don't have our ref faction, remove it from our factions list.
+		faction_src -= "[REF(src)]" //if we don't do this, we'll never have an exact match.
+	if(!("[REF(target)]" in faction_src))
+		faction_target -= "[REF(target)]" //same thing here.
+	return faction_check(faction_src, faction_target, TRUE)
 
 
 /mob/update_name(updates)

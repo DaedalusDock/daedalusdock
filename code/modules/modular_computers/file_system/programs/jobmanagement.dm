@@ -8,7 +8,6 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 	program_icon_state = "id"
 	extended_desc = "Program for viewing and changing job slot availability."
 	transfer_access = list(ACCESS_FACTION_LEADER)
-	#warn make this accessible to faction leaders to open their own faction job slots.
 	requires_ntnet = TRUE
 	size = 4
 	tgui_id = "NtosJobManager"

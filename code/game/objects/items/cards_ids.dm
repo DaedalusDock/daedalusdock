@@ -282,10 +282,10 @@
 	dna_hash = R.fields[DATACORE_DNA_IDENTITY] || "UNSET"
 	fingerprint = R.fields[DATACORE_FINGERPRINT] || "UNSET"
 	blood_type = R.fields[DATACORE_BLOOD_TYPE] || "UNSET"
-	assignment = R.fields[DATACORE_TRIM] || "UNSET"
+	assignment = R.fields[DATACORE_TEMPLATE_RANK] || "UNSET"
 	for(var/datum/access_template/trim as anything in SSid_access.trim_singletons_by_path)
 		trim = SSid_access.trim_singletons_by_path[trim]
-		if(trim.assignment == R.fields[DATACORE_TRIM])
+		if(trim.assignment == R.fields[DATACORE_TEMPLATE_RANK])
 			if(visual)
 				SSid_access.apply_template_to_chameleon_card(src, trim.type)
 			else

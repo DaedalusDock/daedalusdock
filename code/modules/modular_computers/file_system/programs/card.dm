@@ -389,6 +389,6 @@
 		return FALSE
 
 	record.fields[DATACORE_RANK] = target_id_card.assignment
-	record.fields[DATACORE_TRIM] = target_id_card.trim?.type
+	record.fields[DATACORE_TEMPLATE_RANK] = target_id_card.trim?.assignment
 	record.fields[DATACORE_AGE] = target_id_card.registered_age
 	return TRUE

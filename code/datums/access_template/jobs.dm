@@ -68,7 +68,7 @@
 	return TRUE
 
 /datum/access_template/job/assistant
-	assignment = "Assistant"
+	assignment = JOB_ASSISTANT
 	trim_state = "trim_assistant"
 	sechud_icon_state = SECHUD_ASSISTANT
 	extra_access = list(ACCESS_MAINT_TUNNELS)
@@ -88,7 +88,7 @@
 		access |= list(ACCESS_MAINT_TUNNELS)
 
 /datum/access_template/job/atmospheric_technician
-	assignment = "Atmospheric Technician"
+	assignment = JOB_ATMOSPHERIC_TECHNICIAN
 	trim_state = "trim_atmospherictechnician"
 	sechud_icon_state = SECHUD_ATMOSPHERIC_TECHNICIAN
 	extra_access = list(ACCESS_ENGINE, ACCESS_ENGINE_EQUIP, ACCESS_MINERAL_STOREROOM, ACCESS_TECH_STORAGE)
@@ -100,7 +100,7 @@
 	datacore_record_key = DATACORE_RECORDS_DAEDALUS
 
 /datum/access_template/job/bartender
-	assignment = "Bartender"
+	assignment = JOB_BARTENDER
 	trim_state = "trim_bartender"
 	sechud_icon_state = SECHUD_BARTENDER
 	extra_access = list(ACCESS_HYDROPONICS, ACCESS_KITCHEN, ACCESS_MORGUE)
@@ -110,7 +110,7 @@
 	job = /datum/job/bartender
 
 /datum/access_template/job/botanist
-	assignment = "Botanist"
+	assignment = JOB_BOTANIST
 	trim_state = "trim_botanist"
 	sechud_icon_state = SECHUD_BOTANIST
 	extra_access = list(ACCESS_BAR, ACCESS_KITCHEN)
@@ -146,7 +146,7 @@
 	datacore_record_key = DATACORE_RECORDS_HERMES
 
 /datum/access_template/job/chaplain
-	assignment = "Chaplain"
+	assignment = JOB_CHAPLAIN
 	trim_state = "trim_chaplain"
 	sechud_icon_state = SECHUD_CHAPLAIN
 	extra_access = list()
@@ -156,7 +156,7 @@
 	job = /datum/job/chaplain
 
 /datum/access_template/job/chemist
-	assignment = "Chemist"
+	assignment = JOB_CHEMIST
 	trim_state = "trim_chemist"
 	sechud_icon_state = SECHUD_CHEMIST
 	extra_access = list(ACCESS_SURGERY, ACCESS_VIROLOGY)
@@ -197,7 +197,7 @@
 	datacore_record_key = DATACORE_RECORDS_AETHER
 
 /datum/access_template/job/clown
-	assignment = "Clown"
+	assignment = JOB_CLOWN
 	trim_state = "trim_clown"
 	sechud_icon_state = SECHUD_CLOWN
 	extra_access = list()
@@ -207,7 +207,7 @@
 	job = /datum/job/clown
 
 /datum/access_template/job/cook
-	assignment = "Cook"
+	assignment = JOB_COOK
 	trim_state = "trim_cook"
 	sechud_icon_state = SECHUD_COOK
 	extra_access = list(ACCESS_BAR, ACCESS_HYDROPONICS)
@@ -298,7 +298,7 @@
 		access |= list(ACCESS_MAINT_TUNNELS)
 
 /datum/access_template/job/janitor
-	assignment = "Janitor"
+	assignment = JOB_JANITOR
 	trim_state = "trim_janitor"
 	sechud_icon_state = SECHUD_JANITOR
 	extra_access = list()
@@ -308,7 +308,7 @@
 	job = /datum/job/janitor
 
 /datum/access_template/job/lawyer
-	assignment = "Lawyer"
+	assignment = JOB_LAWYER
 	trim_state = "trim_lawyer"
 	sechud_icon_state = SECHUD_LAWYER
 	extra_access = list()
@@ -339,7 +339,7 @@
 	job = /datum/job/clown
 
 /datum/access_template/job/paramedic
-	assignment = "Paramedic"
+	assignment = JOB_PARAMEDIC
 	trim_state = "trim_paramedic"
 	sechud_icon_state = SECHUD_PARAMEDIC
 	extra_access = list(ACCESS_SURGERY)
@@ -351,7 +351,7 @@
 	datacore_record_key = DATACORE_RECORDS_AETHER
 
 /datum/access_template/job/prisoner
-	assignment = "Prisoner"
+	assignment = JOB_PRISONER
 	trim_state = "trim_prisoner"
 	sechud_icon_state = SECHUD_PRISONER
 	config_job = "prisoner"
@@ -388,7 +388,7 @@
 	template_access = null
 
 /datum/access_template/job/psychologist
-	assignment = "Psychologist"
+	assignment = JOB_PSYCHOLOGIST
 	trim_state = "trim_psychologist"
 	sechud_icon_state = SECHUD_PSYCHOLOGIST
 	extra_access = list()
@@ -399,7 +399,7 @@
 	datacore_record_key = DATACORE_RECORDS_AETHER
 
 /datum/access_template/job/quartermaster
-	assignment = "Quartermaster"
+	assignment = JOB_QUARTERMASTER
 	trim_state = "trim_quartermaster"
 	sechud_icon_state = SECHUD_QUARTERMASTER
 	extra_access = list()
@@ -412,7 +412,7 @@
 
 /// Sec officers have departmental variants. They each have their own trims with bonus departmental accesses.
 /datum/access_template/job/security_officer
-	assignment = "Security Officer"
+	assignment = JOB_SECURITY_OFFICER
 	trim_state = "trim_securityofficer"
 	sechud_icon_state = SECHUD_SECURITY_OFFICER
 	extra_access = list(ACCESS_FORENSICS, ACCESS_MAINT_TUNNELS, ACCESS_MORGUE)
@@ -438,7 +438,7 @@
 	access |= department_access
 
 /datum/access_template/job/shaft_miner
-	assignment = "Prospector"
+	assignment = JOB_PROSPECTOR
 	trim_state = "trim_shaftminer"
 	sechud_icon_state = SECHUD_SHAFT_MINER
 	extra_access = list(ACCESS_CARGO, ACCESS_MAINT_TUNNELS, ACCESS_QM)
@@ -456,7 +456,7 @@
 	template_access = null
 
 /datum/access_template/job/station_engineer
-	assignment = "Station Engineer"
+	assignment = JOB_STATION_ENGINEER
 	trim_state = "trim_stationengineer"
 	sechud_icon_state = SECHUD_STATION_ENGINEER
 	extra_access = list(ACCESS_ATMOSPHERICS)
@@ -468,7 +468,7 @@
 	datacore_record_key = DATACORE_RECORDS_DAEDALUS
 
 /datum/access_template/job/virologist
-	assignment = "Virologist"
+	assignment = JOB_VIROLOGIST
 	trim_state = "trim_virologist"
 	sechud_icon_state = SECHUD_VIROLOGIST
 	extra_access = list(ACCESS_CHEMISTRY, ACCESS_MORGUE, ACCESS_SURGERY)
@@ -479,7 +479,7 @@
 	datacore_record_key = DATACORE_RECORDS_AETHER
 
 /datum/access_template/job/warden
-	assignment = "Warden"
+	assignment = JOB_WARDEN
 	trim_state = "trim_warden"
 	sechud_icon_state = SECHUD_WARDEN
 	extra_access = list(ACCESS_FORENSICS, ACCESS_MAINT_TUNNELS, ACCESS_MORGUE)

@@ -97,6 +97,7 @@
 	config_job = "atmospheric_technician"
 	template_access = list(ACCESS_CE, ACCESS_CHANGE_IDS)
 	job = /datum/job/atmospheric_technician
+	datacore_record_key = DATACORE_RECORDS_DAEDALUS
 
 /datum/access_template/job/bartender
 	assignment = "Bartender"
@@ -142,6 +143,7 @@
 	config_job = "cargo_technician"
 	template_access = list(ACCESS_QM, ACCESS_CHANGE_IDS)
 	job = /datum/job/cargo_technician
+	datacore_record_key = DATACORE_RECORDS_HERMES
 
 /datum/access_template/job/chaplain
 	assignment = "Chaplain"
@@ -162,6 +164,7 @@
 	config_job = "chemist"
 	template_access = list(ACCESS_CMO, ACCESS_CHANGE_IDS)
 	job = /datum/job/chemist
+	datacore_record_key = DATACORE_RECORDS_AETHER
 
 /datum/access_template/job/chief_engineer
 	assignment = JOB_CHIEF_ENGINEER
@@ -175,6 +178,7 @@
 	config_job = "chief_engineer"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
 	job = /datum/job/chief_engineer
+	datacore_record_key = DATACORE_RECORDS_DAEDALUS
 
 /datum/access_template/job/chief_medical_officer
 	assignment = JOB_AUGUR
@@ -190,6 +194,7 @@
 	config_job = "chief_medical_officer"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
 	job = /datum/job/augur
+	datacore_record_key = DATACORE_RECORDS_AETHER
 
 /datum/access_template/job/clown
 	assignment = "Clown"
@@ -280,6 +285,7 @@
 	config_job = "head_of_security"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
 	job = /datum/job/head_of_security
+	datacore_record_key = DATACORE_RECORDS_MARS
 
 /datum/access_template/job/head_of_security/refresh_trim_access()
 	. = ..()
@@ -320,6 +326,7 @@
 	config_job = "medical_doctor"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CMO, ACCESS_CHANGE_IDS)
 	job = /datum/job/acolyte
+	datacore_record_key = DATACORE_RECORDS_AETHER
 
 /datum/access_template/job/mime
 	assignment = JOB_CLOWN
@@ -341,6 +348,7 @@
 	config_job = "paramedic"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CMO, ACCESS_CHANGE_IDS)
 	job = /datum/job/paramedic
+	datacore_record_key = DATACORE_RECORDS_AETHER
 
 /datum/access_template/job/prisoner
 	assignment = "Prisoner"
@@ -349,6 +357,7 @@
 	config_job = "prisoner"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_HOS, ACCESS_CHANGE_IDS)
 	job = /datum/job/prisoner
+	datacore_record_key = DATACORE_RECORDS_MARS
 
 /datum/access_template/job/prisoner/one
 	trim_state = "trim_prisoner_1"
@@ -387,6 +396,7 @@
 	config_job = "psychologist"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CMO, ACCESS_CHANGE_IDS)
 	job = /datum/job/psychologist
+	datacore_record_key = DATACORE_RECORDS_AETHER
 
 /datum/access_template/job/quartermaster
 	assignment = "Quartermaster"
@@ -398,6 +408,7 @@
 	config_job = "quartermaster"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
 	job = /datum/job/quartermaster
+	datacore_record_key = DATACORE_RECORDS_HERMES
 
 /// Sec officers have departmental variants. They each have their own trims with bonus departmental accesses.
 /datum/access_template/job/security_officer
@@ -412,6 +423,7 @@
 	config_job = "security_officer"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOS, ACCESS_CHANGE_IDS)
 	job = /datum/job/security_officer
+	datacore_record_key = DATACORE_RECORDS_MARS
 
 /datum/access_template/job/security_officer/refresh_trim_access()
 	. = ..()
@@ -435,6 +447,7 @@
 	config_job = "shaft_miner"
 	template_access = list(ACCESS_QM, ACCESS_CHANGE_IDS)
 	job = /datum/job/shaft_miner
+	datacore_record_key = DATACORE_RECORDS_HERMES
 
 /// ID card obtained from the mining Disney dollar points vending machine.
 /datum/access_template/job/shaft_miner/spare
@@ -452,6 +465,7 @@
 	config_job = "station_engineer"
 	template_access = list(ACCESS_CE, ACCESS_CHANGE_IDS)
 	job = /datum/job/station_engineer
+	datacore_record_key = DATACORE_RECORDS_DAEDALUS
 
 /datum/access_template/job/virologist
 	assignment = "Virologist"
@@ -462,6 +476,7 @@
 	config_job = "virologist"
 	template_access = list(ACCESS_CMO, ACCESS_CHANGE_IDS)
 	job = /datum/job/virologist
+	datacore_record_key = DATACORE_RECORDS_AETHER
 
 /datum/access_template/job/warden
 	assignment = "Warden"
@@ -473,6 +488,7 @@
 	config_job = "warden"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOS, ACCESS_CHANGE_IDS)
 	job = /datum/job/warden
+	datacore_record_key = DATACORE_RECORDS_MARS
 
 /datum/access_template/job/warden/refresh_trim_access()
 	. = ..()

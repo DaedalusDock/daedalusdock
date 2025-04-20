@@ -373,4 +373,29 @@ SUBSYSTEM_DEF(datacore)
 	c.dataId = ++securityCrimeCounter
 	return c
 
+/// Checks if using the given access, something can access the given datacore key.
+/datum/controller/subsystem/datacore/proc/can_modify_records(record_key, list/access)
+	switch(record_key)
+		if(DATACORE_RECORDS_STATION)
+			if((ACCESS_CAPTAIN in access) || (ACCESS_HOP in access)) // HACK, need to split ACCESS_FACTION_LEADER away from a new ACCESS_MANAGEMENT
+				return TRUE
+
+		if(DATACORE_RECORDS_AETHER, DATACORE_RECORDS_MEDICAL)
+			if(ACCESS_MEDICAL in access)
+				return TRUE
+
+		if(DATACORE_RECORDS_DAEDALUS)
+			if(ACCESS_ENGINE in access)
+				return TRUE
+
+		if(DATACORE_RECORDS_HERMES)
+			if(ACCESS_CARGO in access)
+				return TRUE
+
+		if(DATACORE_RECORDS_SECURITY, DATACORE_RECORDS_MARS)
+			if(ACCESS_SECURITY in access)
+				return TRUE
+
+	return FALSE
+
 #undef DUMMY_HUMAN_SLOT_MANIFEST

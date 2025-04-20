@@ -4,8 +4,12 @@
 	var/trim_icon = 'icons/obj/card.dmi'
 	/// Icon state for this trim. Overlayed on advanced ID cards.
 	var/trim_state
+
 	/// Job/assignment associated with this trim. Can be transferred to ID cards holding this trim.
 	var/assignment
+	/// What segment of the datacore this job belongs to.
+	var/datacore_record_key = DATACORE_RECORDS_STATION
+
 	/// The name of the job for interns. If unset it will default to "[assignment] (Intern)".
 	var/intern_alt_name = null
 	/// The icon_state associated with this trim, as it will show on the security HUD.

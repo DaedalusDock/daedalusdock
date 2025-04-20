@@ -16,6 +16,10 @@
 	var/minor = FALSE
 	/// The name/assignment combo of the ID card used to authenticate.
 	var/authenticated_card
+	/// The access of the card used to authenticate.
+	var/authenticated_card_access
+	/// The template belonging to the authenticated card.
+	var/datum/access_template/authenticated_card_template
 	/// The name of the registered user, related to `authenticated_card`.
 	var/authenticated_user
 	/// The regions this program has access to based on the authenticated ID.
@@ -46,9 +50,11 @@
 	job_templates.Cut()
 
 	// If the program isn't locked to a specific department or is_centcom and we have ACCESS_CHANGE_IDS in our auth card, we're not minor.
-	if((!target_dept || is_centcom) && (ACCESS_CHANGE_IDS in id_card.access))
+	if((!target_dept || is_centcom) && (ACCESS_CHANGE_IDS in id_card.GetAccess()))
 		minor = FALSE
 		authenticated_card = "[id_card.name]"
+		authenticated_card_access = id_card.GetAccess()
+		authenticated_card_template = id_card.trim
 		authenticated_user = id_card.registered_name ? id_card.registered_name : "Unknown"
 		job_templates = is_centcom ? SSid_access.centcom_job_templates.Copy() : SSid_access.station_job_templates.Copy()
 		valid_access = is_centcom ? SSid_access.get_access_for_group(list(/datum/access_group/centcom)) : SSid_access.get_access_for_group(list(/datum/access_group/station/all))
@@ -68,6 +74,8 @@
 		minor = TRUE
 		valid_access |= SSid_access.get_access_for_group(region_access)
 		authenticated_card = "[id_card.name] \[LIMITED ACCESS\]"
+		authenticated_card_access = id_card.GetAccess()
+		authenticated_card_template = id_card.trim
 		update_static_data(user)
 		return TRUE
 
@@ -105,6 +113,8 @@
 		if("PRG_logout")
 			authenticated_card = null
 			authenticated_user = null
+			authenticated_card_template = null
+			authenticated_card_access = null
 			playsound(computer, 'sound/machines/terminal_off.ogg', 50, FALSE)
 			return TRUE
 		// Print a report.
@@ -358,16 +368,23 @@
 
 /// Update the datacore entry for the given ID.
 /datum/computer_file/program/card_mod/proc/update_records()
-	var/obj/item/computer_hardware/card_slot/card_slot2
-	if(computer)
-		card_slot2 = computer.all_components[MC_CARD2]
+	if(!computer || !authenticated_card_template?.datacore_record_key)
+		return FALSE
 
-	var/obj/item/card/id/target_id_card = card_slot2?.stored_card
+	var/obj/item/computer_hardware/card_slot/card_slot2
+
+	card_slot2 = computer.all_components[MC_CARD2]
+	if(!card_slot2)
+		return FALSE
+
+	var/obj/item/card/id/target_id_card = card_slot2.stored_card
 	if(!target_id_card)
 		return FALSE
 
-	var/datum/data/record/record = SSdatacore.get_record_by_name(target_id_card.registered_name, DATACORE_RECORDS_STATION)
-	#warn MAKE THIS NOT HARDCODED TO STATION smileyface
+	if(!SSdatacore.can_modify_records(authenticated_card_template.datacore_record_key, authenticated_card_access))
+		return FALSE
+
+	var/datum/data/record/record = SSdatacore.get_record_by_name(target_id_card.registered_name, authenticated_card_template.datacore_record_key)
 	if(!record)
 		return FALSE
 

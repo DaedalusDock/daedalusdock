@@ -40,3 +40,8 @@
   - rscadd: The Exanguinate sigil, now available from an Augur near you.
   hry-gh, Kapu1178:
   - rscadd: Added support for High DPI monitors.
+2025-04-20:
+  tontyGH:
+  - bugfix: teleporting while buckling to something will bring the buckled object
+      with you
+  - bugfix: you can buckle to things if you are on the same turf

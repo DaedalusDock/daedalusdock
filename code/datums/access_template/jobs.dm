@@ -5,7 +5,7 @@
 
 /// ID Trims for station jobs.
 /datum/access_template/job
-	trim_state = "trim_assistant"
+	template_state = "trim_assistant"
 
 	/// The extra access the card should have when CONFIG_GET(flag/jobs_have_minimal_access) is FALSE.
 	var/list/extra_access = list()
@@ -28,13 +28,13 @@
 		job_changes = SSmapping.config.job_changes
 
 	if(!length(job_changes) || !config_job)
-		refresh_trim_access()
+		refresh_template_access()
 		return
 
 	var/list/access_changes = job_changes[config_job]
 
 	if(!length(access_changes))
-		refresh_trim_access()
+		refresh_template_access()
 		return
 
 	if(islist(access_changes["additional_access"]))
@@ -42,14 +42,14 @@
 	if(islist(access_changes["additional_minimal_access"]))
 		minimal_access |= access_changes["additional_minimal_access"]
 
-	refresh_trim_access()
+	refresh_template_access()
 
 /**
  * Goes through various non-map config settings and modifies the trim's access based on this.
  *
  * Returns TRUE if the config is loaded, FALSE otherwise.
  */
-/datum/access_template/job/proc/refresh_trim_access()
+/datum/access_template/job/proc/refresh_template_access()
 	// If there's no config loaded then assume minimal access.
 	if(!config)
 		access = minimal_access.Copy()
@@ -69,7 +69,7 @@
 
 /datum/access_template/job/assistant
 	assignment = JOB_ASSISTANT
-	trim_state = "trim_assistant"
+	template_state = "trim_assistant"
 	sechud_icon_state = SECHUD_ASSISTANT
 	extra_access = list(ACCESS_MAINT_TUNNELS)
 	minimal_access = list()
@@ -77,7 +77,7 @@
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
 	job = /datum/job/assistant
 
-/datum/access_template/job/assistant/refresh_trim_access()
+/datum/access_template/job/assistant/refresh_template_access()
 	. = ..()
 
 	if(!.)
@@ -89,7 +89,7 @@
 
 /datum/access_template/job/atmospheric_technician
 	assignment = JOB_ATMOSPHERIC_TECHNICIAN
-	trim_state = "trim_atmospherictechnician"
+	template_state = "trim_atmospherictechnician"
 	sechud_icon_state = SECHUD_ATMOSPHERIC_TECHNICIAN
 	extra_access = list(ACCESS_ENGINE, ACCESS_ENGINE_EQUIP, ACCESS_MINERAL_STOREROOM, ACCESS_TECH_STORAGE)
 	minimal_access = list(ACCESS_ATMOSPHERICS, ACCESS_AUX_BASE, ACCESS_CONSTRUCTION, ACCESS_EXTERNAL_AIRLOCKS, ACCESS_MAINT_TUNNELS, ACCESS_MECH_ENGINE,
@@ -101,7 +101,7 @@
 
 /datum/access_template/job/bartender
 	assignment = JOB_BARTENDER
-	trim_state = "trim_bartender"
+	template_state = "trim_bartender"
 	sechud_icon_state = SECHUD_BARTENDER
 	extra_access = list(ACCESS_HYDROPONICS, ACCESS_KITCHEN, ACCESS_MORGUE)
 	minimal_access = list(ACCESS_BAR, ACCESS_MINERAL_STOREROOM, ACCESS_THEATRE, ACCESS_WEAPONS, ACCESS_SERVICE)
@@ -111,7 +111,7 @@
 
 /datum/access_template/job/botanist
 	assignment = JOB_BOTANIST
-	trim_state = "trim_botanist"
+	template_state = "trim_botanist"
 	sechud_icon_state = SECHUD_BOTANIST
 	extra_access = list(ACCESS_BAR, ACCESS_KITCHEN)
 	minimal_access = list(ACCESS_HYDROPONICS, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_SERVICE)
@@ -122,7 +122,7 @@
 /datum/access_template/job/captain
 	assignment = JOB_CAPTAIN
 	intern_alt_name = "Subintendant"
-	trim_state = "trim_captain"
+	template_state = "trim_captain"
 	sechud_icon_state = SECHUD_CAPTAIN
 	config_job = "captain"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
@@ -136,7 +136,7 @@
 
 /datum/access_template/job/cargo_technician
 	assignment = JOB_DECKHAND
-	trim_state = "trim_cargotechnician"
+	template_state = "trim_cargotechnician"
 	sechud_icon_state = SECHUD_CARGO_TECHNICIAN
 	extra_access = list(ACCESS_QM, ACCESS_MINING, ACCESS_MINING_STATION)
 	minimal_access = list(ACCESS_CARGO, ACCESS_MAILSORTING, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MINING, ACCESS_MINERAL_STOREROOM)
@@ -147,7 +147,7 @@
 
 /datum/access_template/job/chaplain
 	assignment = JOB_CHAPLAIN
-	trim_state = "trim_chaplain"
+	template_state = "trim_chaplain"
 	sechud_icon_state = SECHUD_CHAPLAIN
 	extra_access = list()
 	minimal_access = list(ACCESS_CHAPEL_OFFICE, ACCESS_CREMATORIUM, ACCESS_MORGUE, ACCESS_THEATRE, ACCESS_SERVICE)
@@ -157,7 +157,7 @@
 
 /datum/access_template/job/chemist
 	assignment = JOB_CHEMIST
-	trim_state = "trim_chemist"
+	template_state = "trim_chemist"
 	sechud_icon_state = SECHUD_CHEMIST
 	extra_access = list(ACCESS_SURGERY, ACCESS_VIROLOGY)
 	minimal_access = list(ACCESS_CHEMISTRY, ACCESS_MECH_MEDICAL, ACCESS_MEDICAL, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_PHARMACY)
@@ -169,7 +169,7 @@
 /datum/access_template/job/chief_engineer
 	assignment = JOB_CHIEF_ENGINEER
 	intern_alt_name = JOB_CHIEF_ENGINEER + "-in-Training"
-	trim_state = "trim_chiefengineer"
+	template_state = "trim_chiefengineer"
 	sechud_icon_state = SECHUD_CHIEF_ENGINEER
 	extra_access = list(ACCESS_TELEPORTER)
 	minimal_access = list(ACCESS_ATMOSPHERICS, ACCESS_AUX_BASE, ACCESS_CE, ACCESS_CONSTRUCTION, ACCESS_ENGINE, ACCESS_ENGINE_EQUIP, ACCESS_EVA,
@@ -183,7 +183,7 @@
 /datum/access_template/job/chief_medical_officer
 	assignment = JOB_AUGUR
 	intern_alt_name = "Registered Augur"
-	trim_state = "trim_chiefmedicalofficer"
+	template_state = "trim_chiefmedicalofficer"
 	sechud_icon_state = SECHUD_CHIEF_MEDICAL_OFFICER
 	extra_access = list(ACCESS_TELEPORTER)
 	minimal_access = list(
@@ -198,7 +198,7 @@
 
 /datum/access_template/job/clown
 	assignment = JOB_CLOWN
-	trim_state = "trim_clown"
+	template_state = "trim_clown"
 	sechud_icon_state = SECHUD_CLOWN
 	extra_access = list()
 	minimal_access = list(ACCESS_THEATRE, ACCESS_SERVICE)
@@ -208,7 +208,7 @@
 
 /datum/access_template/job/cook
 	assignment = JOB_COOK
-	trim_state = "trim_cook"
+	template_state = "trim_cook"
 	sechud_icon_state = SECHUD_COOK
 	extra_access = list(ACCESS_BAR, ACCESS_HYDROPONICS)
 	minimal_access = list(ACCESS_KITCHEN, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_SERVICE)
@@ -222,7 +222,7 @@
 
 /datum/access_template/job/curator
 	assignment = JOB_ARCHIVIST
-	trim_state = "trim_curator"
+	template_state = "trim_curator"
 	sechud_icon_state = SECHUD_CURATOR
 	extra_access = list()
 	minimal_access = list(ACCESS_AUX_BASE, ACCESS_LIBRARY, ACCESS_MINING_STATION, ACCESS_SERVICE)
@@ -232,7 +232,7 @@
 
 /datum/access_template/job/detective
 	assignment = JOB_DETECTIVE
-	trim_state = "trim_detective"
+	template_state = "trim_detective"
 	sechud_icon_state = SECHUD_DETECTIVE
 	extra_access = list()
 	minimal_access = list(
@@ -246,7 +246,7 @@
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOS, ACCESS_CHANGE_IDS)
 	job = /datum/job/detective
 
-/datum/access_template/job/detective/refresh_trim_access()
+/datum/access_template/job/detective/refresh_template_access()
 	. = ..()
 
 	if(!.)
@@ -259,7 +259,7 @@
 /datum/access_template/job/head_of_personnel
 	assignment = JOB_HEAD_OF_PERSONNEL
 	intern_alt_name = JOB_HEAD_OF_PERSONNEL + "-in-Training"
-	trim_state = "trim_headofpersonnel"
+	template_state = "trim_headofpersonnel"
 	sechud_icon_state = SECHUD_HEAD_OF_PERSONNEL
 	extra_access = list()
 	minimal_access = list(ACCESS_AI_UPLOAD, ACCESS_ALL_PERSONAL_LOCKERS, ACCESS_AUX_BASE, ACCESS_BAR, ACCESS_BRIG, ACCESS_CHAPEL_OFFICE,
@@ -275,7 +275,7 @@
 /datum/access_template/job/head_of_security
 	assignment = JOB_SECURITY_MARSHAL
 	intern_alt_name = JOB_SECURITY_MARSHAL + "-in-Training"
-	trim_state = "trim_headofsecurity"
+	template_state = "trim_headofsecurity"
 	sechud_icon_state = SECHUD_HEAD_OF_SECURITY
 	extra_access = list(ACCESS_TELEPORTER)
 	minimal_access = list(ACCESS_ALL_PERSONAL_LOCKERS, ACCESS_ARMORY, ACCESS_AUX_BASE, ACCESS_BRIG, ACCESS_CONSTRUCTION, ACCESS_COURT,
@@ -287,7 +287,7 @@
 	job = /datum/job/head_of_security
 	datacore_record_key = DATACORE_RECORDS_MARS
 
-/datum/access_template/job/head_of_security/refresh_trim_access()
+/datum/access_template/job/head_of_security/refresh_template_access()
 	. = ..()
 
 	if(!.)
@@ -299,7 +299,7 @@
 
 /datum/access_template/job/janitor
 	assignment = JOB_JANITOR
-	trim_state = "trim_janitor"
+	template_state = "trim_janitor"
 	sechud_icon_state = SECHUD_JANITOR
 	extra_access = list()
 	minimal_access = list(ACCESS_JANITOR, ACCESS_MAINT_TUNNELS, ACCESS_MINERAL_STOREROOM, ACCESS_SERVICE)
@@ -309,7 +309,7 @@
 
 /datum/access_template/job/lawyer
 	assignment = JOB_LAWYER
-	trim_state = "trim_lawyer"
+	template_state = "trim_lawyer"
 	sechud_icon_state = SECHUD_LAWYER
 	extra_access = list()
 	minimal_access = list(ACCESS_COURT, ACCESS_LAWYER, ACCESS_BRIG_ENTRANCE, ACCESS_SERVICE)
@@ -319,7 +319,7 @@
 
 /datum/access_template/job/medical_doctor
 	assignment = JOB_ACOLYTE
-	trim_state = "trim_medicaldoctor"
+	template_state = "trim_medicaldoctor"
 	sechud_icon_state = SECHUD_MEDICAL_DOCTOR
 	extra_access = list(ACCESS_CHEMISTRY, ACCESS_VIROLOGY, ACCESS_ROBOTICS)
 	minimal_access = list(ACCESS_MECH_MEDICAL, ACCESS_MEDICAL, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_PHARMACY, ACCESS_SURGERY)
@@ -330,7 +330,7 @@
 
 /datum/access_template/job/mime
 	assignment = JOB_CLOWN
-	trim_state = "trim_mime"
+	template_state = "trim_mime"
 	sechud_icon_state = SECHUD_MIME
 	extra_access = list()
 	minimal_access = list(ACCESS_THEATRE, ACCESS_SERVICE)
@@ -340,7 +340,7 @@
 
 /datum/access_template/job/paramedic
 	assignment = JOB_PARAMEDIC
-	trim_state = "trim_paramedic"
+	template_state = "trim_paramedic"
 	sechud_icon_state = SECHUD_PARAMEDIC
 	extra_access = list(ACCESS_SURGERY)
 	minimal_access = list(ACCESS_CONSTRUCTION, ACCESS_HYDROPONICS, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MEDICAL,
@@ -352,7 +352,7 @@
 
 /datum/access_template/job/prisoner
 	assignment = JOB_PRISONER
-	trim_state = "trim_prisoner"
+	template_state = "trim_prisoner"
 	sechud_icon_state = SECHUD_PRISONER
 	config_job = "prisoner"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_HOS, ACCESS_CHANGE_IDS)
@@ -360,36 +360,36 @@
 	datacore_record_key = DATACORE_RECORDS_MARS
 
 /datum/access_template/job/prisoner/one
-	trim_state = "trim_prisoner_1"
+	template_state = "trim_prisoner_1"
 	template_access = null
 
 /datum/access_template/job/prisoner/two
-	trim_state = "trim_prisoner_2"
+	template_state = "trim_prisoner_2"
 	template_access = null
 
 /datum/access_template/job/prisoner/three
-	trim_state = "trim_prisoner_3"
+	template_state = "trim_prisoner_3"
 	template_access = null
 
 /datum/access_template/job/prisoner/four
-	trim_state = "trim_prisoner_4"
+	template_state = "trim_prisoner_4"
 	template_access = null
 
 /datum/access_template/job/prisoner/five
-	trim_state = "trim_prisoner_5"
+	template_state = "trim_prisoner_5"
 	template_access = null
 
 /datum/access_template/job/prisoner/six
-	trim_state = "trim_prisoner_6"
+	template_state = "trim_prisoner_6"
 	template_access = null
 
 /datum/access_template/job/prisoner/seven
-	trim_state = "trim_prisoner_7"
+	template_state = "trim_prisoner_7"
 	template_access = null
 
 /datum/access_template/job/psychologist
 	assignment = JOB_PSYCHOLOGIST
-	trim_state = "trim_psychologist"
+	template_state = "trim_psychologist"
 	sechud_icon_state = SECHUD_PSYCHOLOGIST
 	extra_access = list()
 	minimal_access = list(ACCESS_MEDICAL, ACCESS_PSYCHOLOGY, ACCESS_SERVICE)
@@ -400,7 +400,7 @@
 
 /datum/access_template/job/quartermaster
 	assignment = JOB_QUARTERMASTER
-	trim_state = "trim_quartermaster"
+	template_state = "trim_quartermaster"
 	sechud_icon_state = SECHUD_QUARTERMASTER
 	extra_access = list()
 	minimal_access = list(ACCESS_AUX_BASE, ACCESS_BRIG_ENTRANCE, ACCESS_CARGO, ACCESS_KEYCARD_AUTH, ACCESS_MAILSORTING, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MINING, ACCESS_MINING_STATION,
@@ -413,7 +413,7 @@
 /// Sec officers have departmental variants. They each have their own trims with bonus departmental accesses.
 /datum/access_template/job/security_officer
 	assignment = JOB_SECURITY_OFFICER
-	trim_state = "trim_securityofficer"
+	template_state = "trim_securityofficer"
 	sechud_icon_state = SECHUD_SECURITY_OFFICER
 	extra_access = list(ACCESS_FORENSICS, ACCESS_MAINT_TUNNELS, ACCESS_MORGUE)
 	minimal_access = list(ACCESS_BRIG, ACCESS_COURT, ACCESS_SECURITY, ACCESS_BRIG_ENTRANCE, ACCESS_MECH_SECURITY,
@@ -425,7 +425,7 @@
 	job = /datum/job/security_officer
 	datacore_record_key = DATACORE_RECORDS_MARS
 
-/datum/access_template/job/security_officer/refresh_trim_access()
+/datum/access_template/job/security_officer/refresh_template_access()
 	. = ..()
 
 	if(!.)
@@ -439,7 +439,7 @@
 
 /datum/access_template/job/shaft_miner
 	assignment = JOB_PROSPECTOR
-	trim_state = "trim_shaftminer"
+	template_state = "trim_shaftminer"
 	sechud_icon_state = SECHUD_SHAFT_MINER
 	extra_access = list(ACCESS_CARGO, ACCESS_MAINT_TUNNELS, ACCESS_QM)
 	minimal_access = list(ACCESS_AUX_BASE, ACCESS_MAILSORTING, ACCESS_MECH_MINING, ACCESS_MINERAL_STOREROOM, ACCESS_MINING,
@@ -457,7 +457,7 @@
 
 /datum/access_template/job/station_engineer
 	assignment = JOB_STATION_ENGINEER
-	trim_state = "trim_stationengineer"
+	template_state = "trim_stationengineer"
 	sechud_icon_state = SECHUD_STATION_ENGINEER
 	extra_access = list(ACCESS_ATMOSPHERICS)
 	minimal_access = list(ACCESS_AUX_BASE, ACCESS_CONSTRUCTION, ACCESS_ENGINE, ACCESS_ENGINE_EQUIP, ACCESS_EXTERNAL_AIRLOCKS,
@@ -469,7 +469,7 @@
 
 /datum/access_template/job/virologist
 	assignment = JOB_VIROLOGIST
-	trim_state = "trim_virologist"
+	template_state = "trim_virologist"
 	sechud_icon_state = SECHUD_VIROLOGIST
 	extra_access = list(ACCESS_CHEMISTRY, ACCESS_MORGUE, ACCESS_SURGERY)
 	minimal_access = list(ACCESS_MEDICAL, ACCESS_MECH_MEDICAL, ACCESS_MINERAL_STOREROOM, ACCESS_VIROLOGY)
@@ -480,7 +480,7 @@
 
 /datum/access_template/job/warden
 	assignment = JOB_WARDEN
-	trim_state = "trim_warden"
+	template_state = "trim_warden"
 	sechud_icon_state = SECHUD_WARDEN
 	extra_access = list(ACCESS_FORENSICS, ACCESS_MAINT_TUNNELS, ACCESS_MORGUE)
 	minimal_access = list(ACCESS_ARMORY, ACCESS_BRIG, ACCESS_COURT, ACCESS_MECH_SECURITY, ACCESS_MINERAL_STOREROOM,
@@ -490,7 +490,7 @@
 	job = /datum/job/warden
 	datacore_record_key = DATACORE_RECORDS_MARS
 
-/datum/access_template/job/warden/refresh_trim_access()
+/datum/access_template/job/warden/refresh_template_access()
 	. = ..()
 
 	if(!.)

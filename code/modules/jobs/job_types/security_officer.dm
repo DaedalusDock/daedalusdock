@@ -50,7 +50,7 @@
 	name = "Security Officer"
 	jobtype = /datum/job/security_officer
 
-	id_trim = /datum/access_template/job/security_officer
+	id_template = /datum/access_template/job/security_officer
 	uniform = /obj/item/clothing/under/rank/security/officer
 	suit = /obj/item/clothing/suit/armor/vest/sec
 	suit_store = /obj/item/gun/energy/disabler

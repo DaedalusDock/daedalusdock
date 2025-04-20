@@ -54,7 +54,7 @@
 		minor = FALSE
 		authenticated_card = "[id_card.name]"
 		authenticated_card_access = id_card.GetAccess()
-		authenticated_card_template = id_card.trim
+		authenticated_card_template = id_card.template
 		authenticated_user = id_card.registered_name ? id_card.registered_name : "Unknown"
 		job_templates = is_centcom ? SSid_access.centcom_job_templates.Copy() : SSid_access.station_job_templates.Copy()
 		valid_access = is_centcom ? SSid_access.get_access_for_group(list(/datum/access_group/centcom)) : SSid_access.get_access_for_group(list(/datum/access_group/station/all))
@@ -75,7 +75,7 @@
 		valid_access |= SSid_access.get_access_for_group(region_access)
 		authenticated_card = "[id_card.name] \[LIMITED ACCESS\]"
 		authenticated_card_access = id_card.GetAccess()
-		authenticated_card_template = id_card.trim
+		authenticated_card_template = id_card.template
 		update_static_data(user)
 		return TRUE
 
@@ -158,7 +158,7 @@
 			if(!computer || !card_slot2)
 				return TRUE
 			if(target_id_card)
-				SSdatacore.manifest_modify(target_id_card.registered_name, target_id_card.assignment, target_id_card.get_trim_assignment())
+				SSdatacore.manifest_modify(target_id_card.registered_name, target_id_card.assignment, target_id_card.get_template_assignment())
 				return card_slot2.try_eject(user)
 			else
 				var/obj/item/I = user.get_active_held_item()
@@ -171,11 +171,11 @@
 			if(!computer || !authenticated_card)
 				return TRUE
 			if(minor)
-				if(!(target_id_card.trim?.type in job_templates))
+				if(!(target_id_card.template?.type in job_templates))
 					to_chat(usr, span_notice("Software error: You do not have the necessary permissions to demote this card."))
 					return TRUE
 
-			// Set the new assignment then remove the trim.
+			// Set the new assignment then remove the template.
 			target_id_card.assignment = is_centcom ? "Fired" : "Demoted"
 			SSid_access.remove_template_from_card(target_id_card)
 
@@ -283,12 +283,12 @@
 			if(!template_name)
 				return TRUE
 
-			for(var/trim_path in job_templates)
-				var/datum/access_template/trim = SSid_access.trim_singletons_by_path[trim_path]
-				if(trim.assignment != template_name)
+			for(var/template_path in job_templates)
+				var/datum/access_template/template = SSid_access.template_singletons_by_path[template_path]
+				if(template.assignment != template_name)
 					continue
 
-				SSid_access.apply_template_access_to_card(target_id_card, trim_path)
+				SSid_access.apply_template_access_to_card(target_id_card, template_path)
 				update_records()
 				return TRUE
 
@@ -354,15 +354,15 @@
 		data["access_on_card"] = id_card.access
 		data["id_age"] = id_card.registered_age
 
-		if(id_card.trim)
-			var/datum/access_template/card_trim = id_card.trim
-			data["hasTrim"] = TRUE
-			data["trimAssignment"] = card_trim.assignment ? card_trim.assignment : ""
-			data["trimAccess"] = card_trim.access ? card_trim.access : list()
+		if(id_card.template)
+			var/datum/access_template/card_template = id_card.template
+			data["hastemplate"] = TRUE
+			data["templateAssignment"] = card_template.assignment ? card_template.assignment : ""
+			data["templateAccess"] = card_template.access ? card_template.access : list()
 		else
-			data["hasTrim"] = FALSE
-			data["trimAssignment"] = ""
-			data["trimAccess"] = list()
+			data["hastemplate"] = FALSE
+			data["templateAssignment"] = ""
+			data["templateAccess"] = list()
 
 	return data
 
@@ -389,6 +389,6 @@
 		return FALSE
 
 	record.fields[DATACORE_RANK] = target_id_card.assignment
-	record.fields[DATACORE_TEMPLATE_RANK] = target_id_card.trim?.assignment
+	record.fields[DATACORE_TEMPLATE_RANK] = target_id_card.template?.assignment
 	record.fields[DATACORE_AGE] = target_id_card.registered_age
 	return TRUE

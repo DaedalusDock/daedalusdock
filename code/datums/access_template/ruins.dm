@@ -32,13 +32,13 @@
 /// Trim for the cat surgeon ruin.
 /datum/access_template/away/cat_surgeon
 	assignment = "Cat Surgeon"
-	trim_state = "trim_medicaldoctor"
+	template_state = "trim_medicaldoctor"
 	access = list(ACCESS_AWAY_GENERAL, ACCESS_AWAY_MAINT)
 
 /// Trim for Hilber in Hilbert's Hotel.
 /datum/access_template/away/hilbert
 	assignment = "Head Researcher"
-	trim_state = "trim_researchdirector"
+	template_state = "trim_researchdirector"
 	access = list(ACCESS_AWAY_GENERIC3, ACCESS_RESEARCH)
 
 /// Trim for beach bum lifeguards.
@@ -48,7 +48,7 @@
 /// Trim for beach bum bartenders.
 /datum/access_template/space_bartender
 	assignment = "Space Bartender"
-	trim_state = "trim_bartender"
+	template_state = "trim_bartender"
 	access = list(ACCESS_BAR)
 
 /// Trim for various Centcom corpses.
@@ -78,7 +78,7 @@
 /// Trim for various various ruins.
 /datum/access_template/engioutpost
 	assignment = "Senior Station Engineer"
-	trim_state = "trim_stationengineer"
+	template_state = "trim_stationengineer"
 	access = list(ACCESS_AWAY_GENERAL, ACCESS_AWAY_ENGINE, ACCESS_ENGINE, ACCESS_ENGINE_EQUIP, ACCESS_MAINT_TUNNELS)
 
 /// Trim for various various ruins.
@@ -89,7 +89,7 @@
 /// Trim for pirates.
 /datum/access_template/pirate
 	assignment = "Pirate"
-	trim_state = "trim_unknown"
+	template_state = "trim_unknown"
 	access = list(ACCESS_SYNDICATE)
 
 /// Trim for pirates.
@@ -99,7 +99,7 @@
 /// Trim for the pirate captain.
 /datum/access_template/pirate/captain
 	assignment = "Pirate Captain"
-	trim_state = "trim_captain"
+	template_state = "trim_captain"
 
 /// Trim for the pirate captain.
 /datum/access_template/pirate/captain/silverscale

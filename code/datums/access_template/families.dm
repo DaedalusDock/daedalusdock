@@ -1,6 +1,6 @@
 /// Trim for the families space police. Has all access.
 /datum/access_template/space_police
-	trim_state = "trim_ert_security"
+	template_state = "trim_ert_security"
 	assignment = "Space Police"
 
 /datum/access_template/space_police/New()

@@ -1,9 +1,9 @@
 /// Simple datum that holds the basic information associated with an ID card trim.
 /datum/access_template
 	/// Icon file for this trim.
-	var/trim_icon = 'icons/obj/card.dmi'
+	var/template_icon = 'icons/obj/card.dmi'
 	/// Icon state for this trim. Overlayed on advanced ID cards.
-	var/trim_state
+	var/template_state
 
 	/// Job/assignment associated with this trim. Can be transferred to ID cards holding this trim.
 	var/assignment
@@ -17,3 +17,8 @@
 
 	/// Accesses that this trim unlocks on a card it is imprinted on.
 	var/list/access = list()
+
+/datum/access_template/Destroy(force, ...)
+	SHOULD_CALL_PARENT(FALSE)
+	. = QDEL_HINT_LETMELIVE
+	CRASH("DO NOT FUCKING DELETE ACCESS TEMPLATES YOU STUPID BROAD.")

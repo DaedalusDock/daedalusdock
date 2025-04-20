@@ -228,7 +228,7 @@
 /obj/item/card/id/advanced/bountyhunter
 	assignment = "Bounty Hunter"
 	icon_state = "card_flames" //oh SHIT
-	trim = /datum/access_template/bounty_hunter
+	template = /datum/access_template/bounty_hunter
 
 /datum/outfit/bountyarmor/ert
 	id = /obj/item/card/id/advanced/bountyhunter/ert
@@ -240,4 +240,4 @@
 	id = /obj/item/card/id/advanced/bountyhunter/ert
 
 /obj/item/card/id/advanced/bountyhunter/ert
-	trim = /datum/access_template/centcom/bounty_hunter
+	template = /datum/access_template/centcom/bounty_hunter

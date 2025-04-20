@@ -43,7 +43,7 @@
 	name = JOB_DECKHAND
 	jobtype = /datum/job/cargo_technician
 
-	id_trim = /datum/access_template/job/cargo_technician
+	id_template = /datum/access_template/job/cargo_technician
 	uniform = /obj/item/clothing/under/rank/cargo/tech
 	belt = /obj/item/modular_computer/tablet/pda/cargo
 	ears = /obj/item/radio/headset/headset_cargo

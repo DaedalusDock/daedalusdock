@@ -1,5 +1,5 @@
 /**
- * Non-processing subsystem that holds various procs and data structures to manage ID cards, trims and access.
+ * Non-processing subsystem that holds various procs and data structures to manage ID cards, templates and access.
  */
 SUBSYSTEM_DEF(id_access)
 	name = "IDs and Access"
@@ -8,17 +8,17 @@ SUBSYSTEM_DEF(id_access)
 
 	/// Dictionary of access groups. Keys are typepaths. Values are instances.
 	var/list/access_groups = list()
-	/// Dictionary of trim singletons. Keys are paths. Values are their associated singletons.
-	var/list/trim_singletons_by_path = list()
+	/// Dictionary of template singletons. Keys are paths. Values are their associated singletons.
+	var/list/template_singletons_by_path = list()
 	/// Specially formatted list for sending access levels to tgui interfaces.
 	var/list/tgui_access_groups = list()
 	/// Dictionary of access names. Keys are access levels. Values are their associated names.
 	var/list/desc_by_access = list()
 	/// List of accesses for the Heads of each sub-department alongside the regions they control and their job name.
 	var/list/sub_department_managers_tgui = list()
-	/// Helper list containing all trim paths that can be used as job templates. Intended to be used alongside logic for ACCESS_CHANGE_IDS. Grab templates from sub_department_managers_tgui for Head of Staff restrictions.
+	/// Helper list containing all template paths that can be used as job templates. Intended to be used alongside logic for ACCESS_CHANGE_IDS. Grab templates from sub_department_managers_tgui for Head of Staff restrictions.
 	var/list/station_job_templates = list()
-	/// Helper list containing all trim paths that can be used as Centcom templates.
+	/// Helper list containing all template paths that can be used as Centcom templates.
 	var/list/centcom_job_templates = list()
 	/// Helper list containing all PDA paths that can be painted by station machines. Intended to be used alongside logic for ACCESS_CHANGE_IDS. Grab templates from sub_department_managers_tgui for Head of Staff restrictions.
 	var/list/station_pda_templates = list()
@@ -30,8 +30,8 @@ SUBSYSTEM_DEF(id_access)
 
 /datum/controller/subsystem/id_access/Initialize(timeofday)
 	setup_access_groups()
-	// We use this because creating the trim singletons requires the config to be loaded.
-	setup_trim_singletons()
+	// We use this because creating the template singletons requires the config to be loaded.
+	setup_template_singletons()
 	setup_access_descriptions()
 	setup_tgui_lists()
 
@@ -45,16 +45,16 @@ SUBSYSTEM_DEF(id_access)
  * This runs through every /datum/access_template/job singleton and ensures that its access is setup according to
  * appropriate config entries.
  */
-/datum/controller/subsystem/id_access/proc/refresh_job_trim_singletons()
-	for(var/trim in typesof(/datum/access_template/job))
-		var/datum/access_template/job/job_trim = trim_singletons_by_path[trim]
+/datum/controller/subsystem/id_access/proc/refresh_job_template_singletons()
+	for(var/template in typesof(/datum/access_template/job))
+		var/datum/access_template/job/job_template = template_singletons_by_path[template]
 
-		if(QDELETED(job_trim))
-			stack_trace("Trim \[[trim]\] missing from trim singleton list. Reinitialising this trim.")
-			trim_singletons_by_path[trim] = new trim()
+		if(QDELETED(job_template))
+			stack_trace("template \[[template]\] missing from template singleton list. Reinitialising this template.")
+			template_singletons_by_path[template] = new template()
 			continue
 
-		job_trim.refresh_trim_access()
+		job_template.refresh_template_access()
 
 /// Initialize access groups.
 /datum/controller/subsystem/id_access/proc/setup_access_groups()
@@ -73,10 +73,10 @@ SUBSYSTEM_DEF(id_access)
 		/datum/access_group/station/medical,
 	)
 
-/// Instantiate trim singletons and add them to a list.
-/datum/controller/subsystem/id_access/proc/setup_trim_singletons()
-	for(var/trim in typesof(/datum/access_template))
-		trim_singletons_by_path[trim] = new trim()
+/// Instantiate template singletons and add them to a list.
+/datum/controller/subsystem/id_access/proc/setup_template_singletons()
+	for(var/template in typesof(/datum/access_template))
+		template_singletons_by_path[template] = new template()
 
 /// Creates various data structures that primarily get fed to tgui interfaces, although these lists are used in other places.
 /datum/controller/subsystem/id_access/proc/setup_tgui_lists()
@@ -112,29 +112,29 @@ SUBSYSTEM_DEF(id_access)
 		"[ACCESS_QM]" = new /datum/access_group_manager/cargo,
 	)
 
-	var/list/station_job_trims = subtypesof(/datum/access_template/job)
-	for(var/trim_path in station_job_trims)
-		var/datum/access_template/job/trim = trim_singletons_by_path[trim_path]
-		if(!length(trim.template_access))
+	var/list/station_job_templates = subtypesof(/datum/access_template/job)
+	for(var/template_path in station_job_templates)
+		var/datum/access_template/job/template = template_singletons_by_path[template_path]
+		if(!length(template.template_access))
 			continue
 
-		station_job_templates[trim_path] = trim.assignment
-		for(var/access in trim.template_access)
+		station_job_templates[template_path] = template.assignment
+		for(var/access in template.template_access)
 			var/datum/access_group_manager/manager = sub_department_managers_tgui["[access]"]
 			if(!manager)
 				if(access != ACCESS_CHANGE_IDS)
-					WARNING("Invalid template access access \[[access]\] registered with [trim_path]. Template added to global list anyway.")
+					WARNING("Invalid template access access \[[access]\] registered with [template_path]. Template added to global list anyway.")
 				continue
 
 			var/list/templates = manager.templates
-			templates[trim_path] = trim.assignment
+			templates[template_path] = template.assignment
 
 	sortTim(station_job_templates, GLOBAL_PROC_REF(cmp_text_asc), associative = TRUE)
 
-	var/list/centcom_job_trims = typesof(/datum/access_template/centcom) - typesof(/datum/access_template/centcom/corpse)
-	for(var/trim_path in centcom_job_trims)
-		var/datum/access_template/trim = trim_singletons_by_path[trim_path]
-		centcom_job_templates[trim_path] = trim.assignment
+	var/list/centcom_job_templates = typesof(/datum/access_template/centcom) - typesof(/datum/access_template/centcom/corpse)
+	for(var/template_path in centcom_job_templates)
+		var/datum/access_template/template = template_singletons_by_path[template_path]
+		centcom_job_templates[template_path] = template.assignment
 
 	sortTim(centcom_job_templates, GLOBAL_PROC_REF(cmp_text_asc), associative = TRUE)
 
@@ -267,23 +267,23 @@ SUBSYSTEM_DEF(id_access)
 
 
 /**
- * Applies a trim singleton to a card.
+ * Applies a template singleton to a card.
  *
  * Arguments:
  * * id_card - ID card to apply the template_path to.
- * * template_path - A trim path to apply to the card. Grabs the trim's associated singleton and applies it.
- * * copy_access - Boolean value. If true, the trim's access is also copied to the card.
+ * * template_path - A template path to apply to the card. Grabs the template's associated singleton and applies it.
+ * * copy_access - Boolean value. If true, the template's access is also copied to the card.
  */
 /datum/controller/subsystem/id_access/proc/apply_template_to_card(obj/item/card/id/id_card, template_path, copy_access = TRUE)
-	var/datum/access_template/trim = trim_singletons_by_path[template_path]
+	var/datum/access_template/template = template_singletons_by_path[template_path]
 
-	id_card.trim = trim
+	id_card.template = template
 
 	if(copy_access)
 		apply_template_access_to_card(id_card, template_path)
 
-	if(trim.assignment)
-		id_card.assignment = trim.assignment
+	if(template.assignment)
+		id_card.assignment = template.assignment
 
 	id_card.update_label()
 	id_card.update_icon()
@@ -291,70 +291,70 @@ SUBSYSTEM_DEF(id_access)
 	return TRUE
 
 /**
- * Removes a trim from an ID card. Also removes all accesses from it too.
+ * Removes a template from an ID card. Also removes all accesses from it too.
  *
  * Arguments:
- * * id_card - The ID card to remove the trim from.
+ * * id_card - The ID card to remove the template from.
  */
 /datum/controller/subsystem/id_access/proc/remove_template_from_card(obj/item/card/id/id_card)
-	id_card.trim = null
+	id_card.template = null
 	id_card.clear_access()
 	id_card.update_label()
 	id_card.update_icon()
 
 /**
- * Applies a trim to a chameleon card. This is purely visual, utilising the card's override vars.
+ * Applies a template to a chameleon card. This is purely visual, utilising the card's override vars.
  *
  * Arguments:
- * * id_card - The chameleon card to apply the trim visuals to.
-* * template_path - A trim path to apply to the card. Grabs the trim's associated singleton and applies it.
+ * * id_card - The chameleon card to apply the template visuals to.
+* * template_path - A template path to apply to the card. Grabs the template's associated singleton and applies it.
  * * check_forged - Boolean value. If TRUE, will not overwrite the card's assignment if the card has been forged.
  */
 /datum/controller/subsystem/id_access/proc/apply_template_to_chameleon_card(obj/item/card/id/advanced/chameleon/id_card, template_path, check_forged = TRUE)
-	var/datum/access_template/trim = trim_singletons_by_path[template_path]
-	id_card.trim_icon_override = trim.trim_icon
-	id_card.trim_state_override = trim.trim_state
-	id_card.trim_assignment_override = trim.assignment
-	id_card.sechud_icon_state_override = trim.sechud_icon_state
+	var/datum/access_template/template = template_singletons_by_path[template_path]
+	id_card.template_icon_override = template.template_icon
+	id_card.template_state_override = template.template_state
+	id_card.template_assignment_override = template.assignment
+	id_card.sechud_icon_state_override = template.sechud_icon_state
 
 	if(!check_forged || !id_card.forged)
-		id_card.assignment = trim.assignment
+		id_card.assignment = template.assignment
 
 	// We'll let the chameleon action update the card's label as necessary instead of doing it here.
 
 /**
- * Removes a trim from a chameleon ID card.
+ * Removes a template from a chameleon ID card.
  *
  * Arguments:
- * * id_card - The ID card to remove the trim from.
+ * * id_card - The ID card to remove the template from.
  */
 /datum/controller/subsystem/id_access/proc/remove_template_from_chameleon_card(obj/item/card/id/advanced/chameleon/id_card)
-	id_card.trim_icon_override = null
-	id_card.trim_state_override = null
-	id_card.trim_assignment_override = null
+	id_card.template_icon_override = null
+	id_card.template_state_override = null
+	id_card.template_assignment_override = null
 	id_card.sechud_icon_state_override = null
 
 /**
- * Adds the accesses associated with a trim to an ID card.
+ * Adds the accesses associated with a template to an ID card.
  *
  * Clears the card's existing access levels first.
- * Primarily intended for applying trim templates to cards.
+ * Primarily intended for applying template templates to cards.
  *
  * Arguments:
- * * id_card - The ID card to remove the trim from.
+ * * id_card - The ID card to remove the template from.
  * * template_path - Typepath of the template to use.
  */
 /datum/controller/subsystem/id_access/proc/apply_template_access_to_card(obj/item/card/id/id_card, template_path)
-	var/datum/access_template/trim = trim_singletons_by_path[template_path]
+	var/datum/access_template/template = template_singletons_by_path[template_path]
 
 	id_card.clear_access()
 
-	id_card.trim = trim
+	id_card.template = template
 
-	if(trim.assignment)
-		id_card.assignment = trim.assignment
+	if(template.assignment)
+		id_card.assignment = template.assignment
 
-	id_card.add_access(trim.access)
+	id_card.add_access(template.access)
 	id_card.update_label()
 	id_card.update_icon()
 

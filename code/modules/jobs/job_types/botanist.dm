@@ -39,7 +39,7 @@
 	name = "Botanist"
 	jobtype = /datum/job/botanist
 
-	id_trim = /datum/access_template/job/botanist
+	id_template = /datum/access_template/job/botanist
 	uniform = /obj/item/clothing/under/rank/civilian/hydroponics
 	suit = /obj/item/clothing/suit/apron
 	suit_store = /obj/item/plant_analyzer

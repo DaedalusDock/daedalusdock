@@ -92,7 +92,7 @@
 	var/obj/item/computer_hardware/card_slot/card_slot = parent.all_components[MC_CARD] || parent.all_components[MC_CARD2]
 	var/obj/item/card/id/card = card_slot?.stored_card
 
-	manifest_key = card?.trim?.datacore_record_key
+	manifest_key = card?.template?.datacore_record_key
 
 	if(. != manifest_key)
 		update_static_data_for_all()

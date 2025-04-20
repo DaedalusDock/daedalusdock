@@ -2,7 +2,7 @@
 /datum/access_template/centcom
 	access = list(ACCESS_CENT_GENERAL)
 	assignment = JOB_CENTCOM
-	trim_state = "trim_centcom"
+	template_state = "trim_centcom"
 	sechud_icon_state = SECHUD_CENTCOM
 
 /// Trim for Centcom VIPs
@@ -88,7 +88,7 @@
 /// Trim for Deathsquad officers. All Centcom and Station Access.
 /datum/access_template/centcom/deathsquad
 	assignment = JOB_ERT_DEATHSQUAD
-	trim_state = "trim_ert_commander"
+	template_state = "trim_ert_commander"
 	sechud_icon_state = SECHUD_DEATH_COMMANDO
 
 /datum/access_template/centcom/deathsquad/New()
@@ -108,7 +108,7 @@
 /// Trim for ERT Commanders. All station and centcom access.
 /datum/access_template/centcom/ert/commander
 	assignment = JOB_ERT_COMMANDER
-	trim_state = "trim_ert_commander"
+	template_state = "trim_ert_commander"
 	sechud_icon_state = SECHUD_EMERGENCY_RESPONSE_TEAM_COMMANDER
 
 /datum/access_template/centcom/ert/commander/New()
@@ -119,7 +119,7 @@
 /// Trim for generic ERT seccies. No universal ID card changing access.
 /datum/access_template/centcom/ert/security
 	assignment = JOB_ERT_OFFICER
-	trim_state = "trim_ert_security"
+	template_state = "trim_ert_security"
 	sechud_icon_state = SECHUD_SECURITY_RESPONSE_OFFICER
 
 /datum/access_template/centcom/ert/security/New()
@@ -130,7 +130,7 @@
 /// Trim for generic ERT engineers. No universal ID card changing access.
 /datum/access_template/centcom/ert/engineer
 	assignment = JOB_ERT_ENGINEER
-	trim_state = "trim_ert_engineering"
+	template_state = "trim_ert_engineering"
 	sechud_icon_state = SECHUD_ENGINEERING_RESPONSE_OFFICER
 
 /datum/access_template/centcom/ert/engineer/New()
@@ -141,7 +141,7 @@
 /// Trim for generic ERT medics. No universal ID card changing access.
 /datum/access_template/centcom/ert/medical
 	assignment = JOB_ERT_MEDICAL_DOCTOR
-	trim_state = "trim_ert_medical"
+	template_state = "trim_ert_medical"
 	sechud_icon_state = SECHUD_MEDICAL_RESPONSE_OFFICER
 
 /datum/access_template/centcom/ert/medical/New()
@@ -152,7 +152,7 @@
 /// Trim for generic ERT chaplains. No universal ID card changing access.
 /datum/access_template/centcom/ert/chaplain
 	assignment = JOB_ERT_CHAPLAIN
-	trim_state = "trim_ert_religious"
+	template_state = "trim_ert_religious"
 	sechud_icon_state = SECHUD_RELIGIOUS_RESPONSE_OFFICER
 
 /datum/access_template/centcom/ert/chaplain/New()
@@ -163,7 +163,7 @@
 /// Trim for generic ERT janitors. No universal ID card changing access.
 /datum/access_template/centcom/ert/janitor
 	assignment = JOB_ERT_JANITOR
-	trim_state = "trim_ert_janitor"
+	template_state = "trim_ert_janitor"
 	sechud_icon_state = SECHUD_JANITORIAL_RESPONSE_OFFICER
 
 /datum/access_template/centcom/ert/janitor/New()
@@ -174,7 +174,7 @@
 /// Trim for generic ERT clowns. No universal ID card changing access.
 /datum/access_template/centcom/ert/clown
 	assignment = JOB_ERT_CLOWN
-	trim_state = "trim_ert_entertainment"
+	template_state = "trim_ert_entertainment"
 	sechud_icon_state = SECHUD_ENTERTAINMENT_RESPONSE_OFFICER
 
 /datum/access_template/centcom/ert/clown/New()

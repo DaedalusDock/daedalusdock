@@ -60,7 +60,7 @@
 	allow_jumpskirt = FALSE
 
 	id = /obj/item/card/id/advanced/gold
-	id_trim = /datum/access_template/job/captain
+	id_template = /datum/access_template/job/captain
 	uniform = /obj/item/clothing/under/suit/charcoal
 	backpack_contents = list(
 		/obj/item/assembly/flash/handheld = 1

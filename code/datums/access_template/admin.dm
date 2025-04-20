@@ -1,7 +1,7 @@
 /// Trim for admins and debug cards. Has every single access in the game.
 /datum/access_template/admin
 	assignment = "Jannie"
-	trim_state = "trim_ert_janitor"
+	template_state = "trim_ert_janitor"
 
 /datum/access_template/admin/New()
 	. = ..()
@@ -11,7 +11,7 @@
 /// Trim for highlander cards, used during the highlander adminbus event.
 /datum/access_template/highlander
 	assignment = "Highlander"
-	trim_state = "trim_ert_deathcommando"
+	template_state = "trim_ert_deathcommando"
 
 /datum/access_template/highlander/New()
 	. = ..()

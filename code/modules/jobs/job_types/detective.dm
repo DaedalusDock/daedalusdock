@@ -58,7 +58,7 @@
 	name = JOB_DETECTIVE
 	jobtype = /datum/job/detective
 
-	id_trim = /datum/access_template/job/detective
+	id_template = /datum/access_template/job/detective
 	uniform = /obj/item/clothing/under/rank/security/detective
 	suit = /obj/item/clothing/suit/det_suit
 	belt = /obj/item/modular_computer/tablet/pda/detective

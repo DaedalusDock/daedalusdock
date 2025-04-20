@@ -960,7 +960,7 @@ SUBSYSTEM_DEF(job)
 
 	var/datum/job/head_job = SSjob.GetJobType(department.department_head)
 	var/datum/outfit/outfit_prototype = head_job.outfits["Default"][SPECIES_HUMAN]
-	var/datum/access_template/trim = SSid_access.trim_singletons_by_path[initial(outfit_prototype.id_trim)]
+	var/datum/access_template/trim = SSid_access.template_singletons_by_path[initial(outfit_prototype.id_template)]
 
 	id_card.add_access(trim.access)
 

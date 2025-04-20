@@ -5,7 +5,7 @@
 /// Trim for the assassin outfit.
 /datum/access_template/reaper_assassin
 	assignment = "Reaper"
-	trim_state = "trim_ert_deathcommando"
+	template_state = "trim_ert_deathcommando"
 
 /datum/access_template/highlander/New()
 	. = ..()
@@ -14,7 +14,7 @@
 /// Trim for the mobster outfit.
 /datum/access_template/mobster
 	assignment = "Mobster"
-	trim_state = "trim_assistant"
+	template_state = "trim_assistant"
 
 /// Trim for VR outfits.
 /datum/access_template/vr
@@ -35,7 +35,7 @@
 /// Trim for the Tunnel Clown! outfit. Has all access.
 /datum/access_template/tunnel_clown
 	assignment = "Tunnel Clown!"
-	trim_state = "trim_clown"
+	template_state = "trim_clown"
 
 /datum/access_template/tunnel_clown/New()
 	. = ..()

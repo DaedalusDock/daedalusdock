@@ -48,7 +48,7 @@
 	name = "Virologist"
 	jobtype = /datum/job/virologist
 
-	id_trim = /datum/access_template/job/virologist
+	id_template = /datum/access_template/job/virologist
 	uniform = /obj/item/clothing/under/rank/medical/virologist
 	suit = /obj/item/clothing/suit/toggle/labcoat/virologist
 	suit_store = /obj/item/flashlight/pen

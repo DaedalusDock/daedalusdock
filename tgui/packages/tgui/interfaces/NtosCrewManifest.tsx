@@ -3,18 +3,7 @@ import { BooleanLike } from 'common/react';
 import { useBackend } from '../backend';
 import { Button, NoticeBox, Section, Table } from '../components';
 import { NtosWindow } from '../layouts';
-// PARIAH EDIT
-//
-// width={500} - Original: width={400}
-//
-// Original: entry.rank
-// {entry.rank === entry.trim ? entry.rank : <>{entry.rank} ({entry.trim})</>}
-
-type ManifestEntry = {
-  name: string;
-  rank: string;
-  template_rank: string;
-};
+import { ManifestEntry } from './CrewManifest';
 
 type NtosCrewManifestData = {
   have_printer: BooleanLike;

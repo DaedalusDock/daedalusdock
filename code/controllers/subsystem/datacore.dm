@@ -135,7 +135,7 @@ SUBSYSTEM_DEF(datacore)
 	for(var/datum/data/record/record as anything in SSdatacore.get_records(record_type))
 		var/name = record.fields[DATACORE_NAME]
 		var/rank = record.fields[DATACORE_RANK] // user-visible job
-		var/template_name = record.fields[DATACORE_TEMPLATE_RANK] // internal jobs by trim type
+		var/template_name = record.fields[DATACORE_TEMPLATE_RANK] // internal jobs by trim name
 		var/datum/job/job = SSjob.GetJob(template_name)
 
 		// Filter out jobs that aren't on the manifest, move them to "unassigned"
@@ -145,6 +145,8 @@ SUBSYSTEM_DEF(datacore)
 				"name" = name,
 				"rank" = rank,
 				"template_rank" = template_name,
+				"is_faction_leader" = FALSE,
+				"is_captain" = FALSE,
 				)
 			continue
 
@@ -162,6 +164,8 @@ SUBSYSTEM_DEF(datacore)
 				"name" = name,
 				"rank" = rank,
 				"template_rank" = template_name,
+				"is_faction_leader" = (job.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER),
+				"is_captain" = istype(job, /datum/job/captain),
 				)
 
 			var/list/department_list = manifest_out[department.department_name]

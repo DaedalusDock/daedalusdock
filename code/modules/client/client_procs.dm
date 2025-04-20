@@ -376,11 +376,13 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	// Initialize stat panel
 	stat_panel.initialize(
 		assets = list(get_asset_datum(/datum/asset/simple/namespaced/cursors)),
-		inline_html = file2text('html/statbrowser.html'),
-		inline_js = file2text('html/statbrowser.js'),
-		inline_css = file2text('html/statbrowser.css'),
+		inline_html = file("html/statbrowser.html"),
+		inline_js = file("html/statbrowser.js"),
+		inline_css = file("html/statbrowser.css"),
 	)
+
 	addtimer(CALLBACK(src, PROC_REF(check_panel_loaded)), 30 SECONDS)
+	INVOKE_ASYNC(src, PROC_REF(acquire_dpi))
 
 	// Initialize tgui panel
 	tgui_panel.initialize()
@@ -401,10 +403,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	connection_timeofday = world.timeofday
 
 	winset(src, null, "command=\".configure graphics-hwmode on\"")
-
-	#if DM_VERSION >= 516
-	winset(src, null, "browser-options=byondstorage,devtools,find,refresh")
-	#endif
+	winset(src, null, "browser-options=byondstorage,refresh,devtools,find")
 
 	var/cev = CONFIG_GET(number/client_error_version)
 	var/ceb = CONFIG_GET(number/client_error_build)
@@ -515,7 +514,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		if(CONFIG_GET(flag/aggressive_changelog))
 			changelog()
 		else
-			winset(src, "infowindow.changelog", "font-style=bold")
+			winset(src, "infobuttons.changelog", "font-style=bold")
 
 	if(ckey in GLOB.clientmessages)
 		for(var/message in GLOB.clientmessages[ckey])
@@ -1413,4 +1412,6 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	popup.set_content(content)
 	popup.open()
 
-
+/// This grabs the DPI of the user per their skin
+/client/proc/acquire_dpi()
+	window_scaling = text2num(winget(src, null, "dpi"))

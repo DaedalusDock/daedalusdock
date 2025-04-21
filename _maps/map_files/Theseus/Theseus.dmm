@@ -46535,7 +46535,6 @@
 /obj/machinery/door/airlock/maintenance{
 	name = "Crematorium Maintenance"
 	},
-/obj/machinery/door/airlock/maintenance,
 /obj/effect/mapping_helpers/airlock/access/any/service/crematorium,
 /turf/open/floor/plating,
 /area/station/service/chapel/office)
@@ -48710,10 +48709,6 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "12"
-	},
-/obj/machinery/door/airlock/external{
-	name = "Solar Maintenance";
-	req_access_txt = "10"
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/solars/port/aft)

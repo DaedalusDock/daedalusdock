@@ -1,0 +1,12 @@
+/datum/access_group/station/cargo
+	name = "Cargo Bay"
+	access = list(
+		ACCESS_MAILSORTING,
+		ACCESS_MINING,
+		ACCESS_MINING_STATION,
+		ACCESS_MECH_MINING,
+		ACCESS_MINERAL_STOREROOM,
+		ACCESS_CARGO,
+		ACCESS_QM,
+		ACCESS_VAULT,
+	)

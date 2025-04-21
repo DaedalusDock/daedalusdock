@@ -109,4 +109,4 @@
 /obj/item/proc/get_sechud_job_icon_state()
 	var/obj/item/card/id/id_card = GetID()
 
-	return id_card?.get_trim_sechud_icon_state() || SECHUD_NO_ID
+	return id_card?.get_template_sechud_icon_state() || SECHUD_NO_ID

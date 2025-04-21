@@ -51,7 +51,7 @@
 	name = JOB_ACOLYTE
 	jobtype = /datum/job/acolyte
 
-	id_trim = /datum/id_trim/job/medical_doctor
+	id_template = /datum/access_template/job/medical_doctor
 	neck = /obj/item/clothing/neck/stethoscope
 	uniform = /obj/item/clothing/under/rank/medical/doctor
 	suit = /obj/item/clothing/suit/toggle/labcoat/md

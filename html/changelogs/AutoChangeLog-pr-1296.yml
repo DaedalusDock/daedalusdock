@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscdel: Removed ID Trim functionality, there is now no access limitation for an
+      ID.

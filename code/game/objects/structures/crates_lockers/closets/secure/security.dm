@@ -250,7 +250,7 @@
 /obj/structure/closet/secure_closet/contraband/heads
 	anchored = TRUE
 	name = "Contraband Locker"
-	req_access = list(ACCESS_MANAGEMENT)
+	req_access = list(ACCESS_FACTION_LEADER)
 
 /obj/structure/closet/secure_closet/armory1
 	name = "armory armor locker"

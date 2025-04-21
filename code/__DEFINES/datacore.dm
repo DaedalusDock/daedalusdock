@@ -23,7 +23,7 @@
 
 #define DATACORE_RANK "rank"
 #define DATACORE_INITIAL_RANK "initial_rank"
-#define DATACORE_TRIM "trim"
+#define DATACORE_TEMPLATE_RANK "trim"
 #define DATACORE_PDA_ID "pda_id"
 
 #define DATACORE_CRIMES "crim"

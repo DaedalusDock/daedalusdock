@@ -689,7 +689,7 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
 				open()
 			else
 				req_access = list()
-				req_access += pick(SSid_access.get_region_access_list(list(REGION_ALL_STATION)))
+				req_access += pick(SSid_access.get_access_for_group(list(/datum/access_group/station/all)))
 
 /obj/structure/closet/singularity_act()
 	dump_contents()

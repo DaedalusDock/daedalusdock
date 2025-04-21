@@ -180,8 +180,8 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 
 	// We have two IDs, pick the one with the most command accesses, preferring the primary slot.
 	if(first_id && second_id)
-		var/first_id_tally = SSid_access.tally_access(first_id, ACCESS_FLAG_COMMAND)
-		var/second_id_tally = SSid_access.tally_access(second_id, ACCESS_FLAG_COMMAND)
+		var/first_id_tally = SSid_access.tally_access(first_id, /datum/access_group/station/management)
+		var/second_id_tally = SSid_access.tally_access(second_id, /datum/access_group/station/management)
 
 		return (first_id_tally >= second_id_tally) ? first_id : second_id
 

@@ -76,12 +76,12 @@
 	var/list/data = list()
 
 	var/list/regions = list()
-	var/list/tgui_region_data = SSid_access.all_region_access_tgui
-	for(var/region in SSid_access.station_regions)
+	var/list/tgui_region_data = SSid_access.tgui_access_groups
+	for(var/region in SSid_access.station_groups)
 		regions += tgui_region_data[region]
 	if(parent?.admin_only)
-		regions += tgui_region_data[REGION_CENTCOM]
-		regions += tgui_region_data[REGION_ALL_GLOBAL]
+		regions += tgui_region_data[/datum/access_group/centcom]
+		regions += tgui_region_data[/datum/access_group/all]
 	data["regions"] = regions
 	return data
 
@@ -102,7 +102,7 @@
 			check_any.set_value(0)
 			. = TRUE
 		if("grant_all")
-			required_accesses.set_value(SSid_access.get_region_access_list(list(REGION_ALL_STATION)))
+			required_accesses.set_value(SSid_access.get_access_for_group(list(/datum/access_group/station/all)))
 			. = TRUE
 		if("one_access")
 			check_any.set_value(!check_any.value)
@@ -123,7 +123,7 @@
 			var/region = params["region"]
 			if(isnull(region))
 				return
-			required_accesses.set_value(required_accesses_value | SSid_access.get_region_access_list(list(region)))
+			required_accesses.set_value(required_accesses_value | SSid_access.get_access_for_group(list(region)))
 			. = TRUE
 		if("deny_region")
 			var/list/required_accesses_list = required_accesses.value
@@ -131,7 +131,7 @@
 			var/region = params["region"]
 			if(isnull(region))
 				return
-			required_accesses.set_value(required_accesses_value - SSid_access.get_region_access_list(list(region)))
+			required_accesses.set_value(required_accesses_value - SSid_access.get_access_for_group(list(region)))
 			. = TRUE
 	if(.)
 		regenerate_access()

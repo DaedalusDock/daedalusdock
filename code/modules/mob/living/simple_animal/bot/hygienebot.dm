@@ -42,8 +42,8 @@
 	update_appearance(UPDATE_ICON)
 
 	// Doing this hurts my soul, but simplebot access reworks are for another day.
-	var/datum/id_trim/job/jani_trim = SSid_access.trim_singletons_by_path[/datum/id_trim/job/janitor]
-	access_card.add_access(jani_trim.access + jani_trim.wildcard_access)
+	var/datum/access_template/job/jani_trim = SSid_access.template_singletons_by_path[/datum/access_template/job/janitor]
+	access_card.add_access(jani_trim.access)
 	prev_access = access_card.access.Copy()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),

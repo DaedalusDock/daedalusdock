@@ -53,7 +53,7 @@
 	name = "Brig Lieutenant"
 	jobtype = /datum/job/warden
 
-	id_trim = /datum/id_trim/job/warden
+	id_template = /datum/access_template/job/warden
 	uniform = /obj/item/clothing/under/rank/security/warden
 	suit = /obj/item/clothing/suit/armor/vest/warden/alt
 	suit_store = /obj/item/gun/energy/disabler

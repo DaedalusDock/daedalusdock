@@ -118,7 +118,7 @@ SUBSYSTEM_DEF(datacore)
 	var/datum/data/record/foundrecord = library[DATACORE_RECORDS_STATION].get_record_by_name(name)
 	if(foundrecord)
 		foundrecord.fields[DATACORE_RANK] = assignment
-		foundrecord.fields[DATACORE_TRIM] = trim
+		foundrecord.fields[DATACORE_TEMPLATE_RANK] = trim
 
 /datum/controller/subsystem/datacore/proc/get_manifest(record_type = DATACORE_RECORDS_STATION)
 	// First we build up the order in which we want the departments to appear in.
@@ -135,8 +135,8 @@ SUBSYSTEM_DEF(datacore)
 	for(var/datum/data/record/record as anything in SSdatacore.get_records(record_type))
 		var/name = record.fields[DATACORE_NAME]
 		var/rank = record.fields[DATACORE_RANK] // user-visible job
-		var/trim = record.fields[DATACORE_TRIM] // internal jobs by trim type
-		var/datum/job/job = SSjob.GetJob(trim)
+		var/template_name = record.fields[DATACORE_TEMPLATE_RANK] // internal jobs by trim name
+		var/datum/job/job = SSjob.GetJob(template_name)
 
 		// Filter out jobs that aren't on the manifest, move them to "unassigned"
 		if(!job || !(job.job_flags & JOB_CREW_MANIFEST) || !LAZYLEN(job.departments_list))
@@ -144,7 +144,9 @@ SUBSYSTEM_DEF(datacore)
 			misc_list[++misc_list.len] = list(
 				"name" = name,
 				"rank" = rank,
-				"trim" = trim,
+				"template_rank" = template_name,
+				"is_faction_leader" = FALSE,
+				"is_captain" = FALSE,
 				)
 			continue
 
@@ -161,7 +163,9 @@ SUBSYSTEM_DEF(datacore)
 			var/list/entry = list(
 				"name" = name,
 				"rank" = rank,
-				"trim" = trim,
+				"template_rank" = template_name,
+				"is_faction_leader" = (job.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER),
+				"is_captain" = istype(job, /datum/job/captain),
 				)
 
 			var/list/department_list = manifest_out[department.department_name]
@@ -234,7 +238,7 @@ SUBSYSTEM_DEF(datacore)
 
 	G.fields[DATACORE_NAME] = H.real_name
 	G.fields[DATACORE_RANK] = chosen_assignment //PARIAH EDIT
-	G.fields[DATACORE_TRIM] = assignment
+	G.fields[DATACORE_TEMPLATE_RANK] = assignment
 	G.fields[DATACORE_INITIAL_RANK] = assignment
 	G.fields[DATACORE_AGE] = H.age
 	G.fields[DATACORE_SPECIES] = H.dna.species.name
@@ -292,7 +296,7 @@ SUBSYSTEM_DEF(datacore)
 	L.fields[DATACORE_NAME] = H.real_name
 	// L.fields[DATACORE_RANK] = assignment //ORIGINAL
 	L.fields[DATACORE_RANK] = chosen_assignment  //PARIAH EDIT
-	L.fields[DATACORE_TRIM] = assignment
+	L.fields[DATACORE_TEMPLATE_RANK] = assignment
 	G.fields[DATACORE_INITIAL_RANK] = assignment
 	L.fields[DATACORE_AGE] = H.age
 	L.fields[DATACORE_GENDER] = H.gender
@@ -372,5 +376,30 @@ SUBSYSTEM_DEF(datacore)
 	c.paid = 0
 	c.dataId = ++securityCrimeCounter
 	return c
+
+/// Checks if using the given access, something can access the given datacore key.
+/datum/controller/subsystem/datacore/proc/can_modify_records(record_key, list/access)
+	switch(record_key)
+		if(DATACORE_RECORDS_STATION)
+			if((ACCESS_CAPTAIN in access) || (ACCESS_HOP in access)) // HACK, need to split ACCESS_FACTION_LEADER away from a new ACCESS_MANAGEMENT
+				return TRUE
+
+		if(DATACORE_RECORDS_AETHER, DATACORE_RECORDS_MEDICAL)
+			if(ACCESS_MEDICAL in access)
+				return TRUE
+
+		if(DATACORE_RECORDS_DAEDALUS)
+			if(ACCESS_ENGINE in access)
+				return TRUE
+
+		if(DATACORE_RECORDS_HERMES)
+			if(ACCESS_CARGO in access)
+				return TRUE
+
+		if(DATACORE_RECORDS_SECURITY, DATACORE_RECORDS_MARS)
+			if(ACCESS_SECURITY in access)
+				return TRUE
+
+	return FALSE
 
 #undef DUMMY_HUMAN_SLOT_MANIFEST

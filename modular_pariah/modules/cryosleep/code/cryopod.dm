@@ -81,7 +81,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 		var/mob/living/living_user = user
 		var/obj/item/card/id/id = living_user.get_idcard()
 		if(id)
-			if((ACCESS_MANAGEMENT in id.access) || (ACCESS_ARMORY in id.access))
+			if((ACCESS_FACTION_LEADER in id.access) || (ACCESS_ARMORY in id.access))
 				item_retrieval_allowed = TRUE
 	data["item_retrieval_allowed"] = item_retrieval_allowed
 

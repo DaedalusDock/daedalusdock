@@ -45,7 +45,7 @@
 	name = "Atmospheric Technician"
 	jobtype = /datum/job/atmospheric_technician
 
-	id_trim = /datum/id_trim/job/atmospheric_technician
+	id_template = /datum/access_template/job/atmospheric_technician
 	uniform = /obj/item/clothing/under/rank/engineering/atmospheric_technician
 	belt = /obj/item/storage/belt/utility/atmostech
 	ears = /obj/item/radio/headset/headset_eng

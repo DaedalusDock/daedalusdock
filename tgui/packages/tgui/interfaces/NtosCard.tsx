@@ -1,3 +1,5 @@
+import { BooleanLike } from 'common/react';
+
 import { useBackend, useSharedState } from '../backend';
 import {
   Box,
@@ -11,11 +13,10 @@ import {
   Tabs,
 } from '../components';
 import { NtosWindow } from '../layouts';
-import { AccessList } from './common/AccessList';
-
+import { AccessGroup, AccessList } from './common/AccessList';
 export const NtosCard = (props) => {
   return (
-    <NtosWindow width={500} height={670}>
+    <NtosWindow width={800} height={670}>
       <NtosWindow.Content scrollable>
         <NtosCardContent />
       </NtosWindow.Content>
@@ -23,19 +24,27 @@ export const NtosCard = (props) => {
   );
 };
 
+type NtosCardContentData = {
+  accessGroups: AccessGroup[];
+  access_on_card: string[];
+  authenticatedUser: string;
+  has_id: BooleanLike;
+  have_id_slot: BooleanLike;
+  id_rank: string;
+  showBasic: BooleanLike;
+  templates: Record<string, any>;
+  trimAccess: string[];
+};
+
 export const NtosCardContent = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<NtosCardContentData>();
   const {
     authenticatedUser,
-    regions = [],
+    accessGroups = [],
     access_on_card = [],
     has_id,
     have_id_slot,
-    wildcardSlots,
-    wildcardFlags,
     trimAccess,
-    accessFlags,
-    accessFlagNames,
     showBasic,
     templates = {},
   } = data;
@@ -69,14 +78,16 @@ export const NtosCardContent = (props) => {
             <Button
               icon="question-circle"
               tooltip={
-                'Will attempt to apply all access for the template to the ID card.\n' +
-                'Does not use wildcards unless the template specifies them.'
+                'Will attempt to apply all access for the template to the ID card.\n'
               }
               tooltipPosition="left"
             />
           }
         >
-          <TemplateDropdown templates={templates} />
+          <TemplateDropdown
+            templates={templates}
+            selected_template={data.id_rank}
+          />
         </Section>
       )}
       <Stack mt={1}>
@@ -84,13 +95,9 @@ export const NtosCardContent = (props) => {
           {!!has_id && !!authenticatedUser && (
             <Box>
               <AccessList
-                accesses={regions}
+                accessGroups={accessGroups}
                 selectedList={access_on_card}
-                wildcardFlags={wildcardFlags}
-                wildcardSlots={wildcardSlots}
                 trimAccess={trimAccess}
-                accessFlags={accessFlags}
-                accessFlagNames={accessFlagNames}
                 showBasic={!!showBasic}
                 extraButtons={
                   <Button.Confirm
@@ -100,10 +107,9 @@ export const NtosCardContent = (props) => {
                     onClick={() => act('PRG_terminate')}
                   />
                 }
-                accessMod={(ref, wildcard) =>
+                accessMod={(ref) =>
                   act('PRG_access', {
                     access_target: ref,
-                    access_wildcard: wildcard,
                   })
                 }
               />
@@ -142,8 +148,15 @@ const IDCardTabs = (props) => {
   );
 };
 
+type IDCardLoginData = {
+  authIDName: string;
+  authenticatedUser: string;
+  has_id: BooleanLike;
+  have_printer: BooleanLike;
+};
+
 export const IDCardLogin = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<IDCardLoginData>();
   const { authenticatedUser, has_id, have_printer, authIDName } = data;
 
   return (
@@ -186,11 +199,19 @@ export const IDCardLogin = (props) => {
   );
 };
 
+type IDCardTargetData = {
+  authenticatedUser: string;
+  has_id: BooleanLike;
+  id_age: string;
+  id_name: string;
+  id_owner: string;
+  id_rank: string;
+};
+
 const IDCardTarget = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<IDCardTargetData>();
   const { authenticatedUser, id_rank, id_owner, has_id, id_name, id_age } =
     data;
-
   return (
     <Section title="Modify ID">
       <Button
@@ -203,7 +224,7 @@ const IDCardTarget = (props) => {
       {!!(has_id && authenticatedUser) && (
         <>
           <Stack mt={1}>
-            <Stack.Item align="center">Details:</Stack.Item>
+            <Stack.Item align="center">Name:</Stack.Item>
             <Stack.Item grow={1} mr={1} ml={1}>
               <Input
                 width="100%"
@@ -221,7 +242,8 @@ const IDCardTarget = (props) => {
                 unit="Years"
                 minValue={17}
                 maxValue={85}
-                onChange={(e, value) => {
+                step={1}
+                onChange={(value) => {
                   act('PRG_age', {
                     id_age: value,
                   });
@@ -250,9 +272,14 @@ const IDCardTarget = (props) => {
   );
 };
 
-const TemplateDropdown = (props) => {
+type TemplateDropdownProps = {
+  selected_template?: string;
+  templates: Record<string, any>;
+};
+
+const TemplateDropdown = (props: TemplateDropdownProps) => {
   const { act } = useBackend();
-  const { templates } = props;
+  const { templates, selected_template } = props;
 
   const templateKeys = Object.keys(templates);
 
@@ -260,12 +287,15 @@ const TemplateDropdown = (props) => {
     return;
   }
 
+  const display_selected = Object.values(templates).includes(selected_template);
   return (
     <Stack>
       <Stack.Item grow>
         <Dropdown
           width="100%"
-          displayText={'Select a template...'}
+          displayText={
+            (!!display_selected && selected_template) || 'Select a template...'
+          }
           options={templateKeys.map((path) => {
             return templates[path];
           })}

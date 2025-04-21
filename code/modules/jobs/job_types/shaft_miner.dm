@@ -36,7 +36,7 @@
 	name = JOB_PROSPECTOR
 	jobtype = /datum/job/shaft_miner
 
-	id_trim = /datum/id_trim/job/shaft_miner
+	id_template = /datum/access_template/job/shaft_miner
 	uniform = /obj/item/clothing/under/rank/cargo/miner
 	backpack_contents = list(
 		/obj/item/flashlight/seclite = 1,

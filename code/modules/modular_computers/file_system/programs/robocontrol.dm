@@ -136,7 +136,7 @@
 			if(!computer || !card_slot)
 				return
 			if(id_card)
-				SSdatacore.manifest_modify(id_card.registered_name, id_card.assignment, id_card.get_trim_assignment())
+				SSdatacore.manifest_modify(id_card.registered_name, id_card.assignment, id_card.get_template_assignment())
 				card_slot.try_eject(current_user)
 			else
 				playsound(get_turf(ui_host()) , 'sound/machines/buzz-sigh.ogg', 25, FALSE)

@@ -12,14 +12,8 @@
 	name = "Ward (Areas)"
 	access = list(
 		ACCESS_MEDICAL,
-		ACCESS_MORGUE,
-		ACCESS_CHEMISTRY,
-		ACCESS_VIROLOGY,
-		ACCESS_SURGERY,
-		ACCESS_ROBOTICS,
 		ACCESS_CMO,
 		ACCESS_PHARMACY,
-		ACCESS_PSYCHOLOGY,
 	)
 
 /// Medical non-areas

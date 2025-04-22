@@ -167,7 +167,7 @@
 
 /obj/structure/closet/secure_closet/brig
 	name = "brig locker"
-	req_access = list(ACCESS_BRIG)
+	req_access = list(ACCESS_SECURITY)
 	anchored = TRUE
 	var/id = null
 
@@ -208,7 +208,7 @@
 	. = ..()
 
 	var/list/id_access = used_id.GetAccess()
-	if(assigned_id_ref && (ACCESS_BRIG in id_access))
+	if(assigned_id_ref && (ACCESS_SECURITY in id_access))
 		say("Authorized ID detected. Unlocking locker and resetting ID.")
 		locked = FALSE
 		assigned_id_ref = null

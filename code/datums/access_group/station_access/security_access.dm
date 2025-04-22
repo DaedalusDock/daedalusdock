@@ -11,13 +11,9 @@
 /datum/access_group/station/security/areas
 	name = "Security (Areas)"
 	access = list(
-		ACCESS_BRIG_ENTRANCE,
 		ACCESS_SECURITY,
-		ACCESS_BRIG,
 		ACCESS_ARMORY,
-		ACCESS_FORENSICS,
 		ACCESS_COURT,
-		ACCESS_MECH_SECURITY,
 		ACCESS_HOS,
 	)
 

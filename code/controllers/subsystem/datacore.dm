@@ -389,7 +389,7 @@ SUBSYSTEM_DEF(datacore)
 				return TRUE
 
 		if(DATACORE_RECORDS_DAEDALUS)
-			if(ACCESS_ENGINE in access)
+			if(ACCESS_ENGINEERING in access)
 				return TRUE
 
 		if(DATACORE_RECORDS_HERMES)

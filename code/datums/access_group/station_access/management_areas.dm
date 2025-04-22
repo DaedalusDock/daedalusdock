@@ -10,16 +10,15 @@
 /datum/access_group/station/management/areas
 	name = "Management (Areas)"
 	access = list(
-		ACCESS_MINISAT,
-		ACCESS_TCOMSAT,
 		ACCESS_VAULT,
-		ACCESS_TECH_STORAGE,
+		ACCESS_SECURE_ENGINEERING,
 		ACCESS_TELEPORTER,
 		ACCESS_ARMORY,
 		ACCESS_AI_UPLOAD,
 		ACCESS_EVA,
 		ACCESS_GATEWAY,
 		ACCESS_HOP,
+		ACCESS_VAULT,
 	)
 
 /datum/access_group/station/management/other

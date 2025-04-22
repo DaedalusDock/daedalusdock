@@ -306,7 +306,7 @@
 	name = "Forensics Crate"
 	desc = "Stay hot on the criminal's heels with Mars' Detective Essentials(tm). Contains a crime scene kit, six evidence bags, camera, tape recorder, white crayon, and of course, a fedora. Requires Security access to open."
 	cost = CARGO_CRATE_VALUE * 2.5
-	access_view = ACCESS_MORGUE
+	access_view = ACCESS_FORENSICS
 	contains = list(/obj/item/storage/scene_cards,
 					/obj/item/storage/box/evidence,
 					/obj/item/camera,
@@ -338,7 +338,7 @@
 /datum/supply_pack/security/securitybarriers
 	name = "Security Barrier Grenades"
 	desc = "Stem the tide with four Security Barrier grenades. Requires Security access to open."
-	access_view = ACCESS_BRIG
+	access_view = ACCESS_SECURITY
 	contains = list(/obj/item/grenade/barrier,
 					/obj/item/grenade/barrier,
 					/obj/item/grenade/barrier,
@@ -693,7 +693,7 @@
 	name = "Engineering Gear Crate"
 	desc = "Gear up with three toolbelts, high-visibility vests, welding helmets, hardhats, and two pairs of meson goggles!"
 	cost = CARGO_CRATE_VALUE * 4
-	access_view = ACCESS_ENGINE
+	access_view = ACCESS_ENGINEERING
 	contains = list(/obj/item/storage/belt/utility,
 					/obj/item/storage/belt/utility,
 					/obj/item/storage/belt/utility,
@@ -733,7 +733,7 @@
 	name = "P.A.C.M.A.N Generator Crate"
 	desc = "Engineers can't set up the engine? Not an issue for you, once you get your hands on this P.A.C.M.A.N. Generator! Takes in plasma and spits out sweet sweet energy."
 	cost = CARGO_CRATE_VALUE * 5
-	access_view = ACCESS_ENGINE
+	access_view = ACCESS_ENGINEERING
 	contains = list(/obj/machinery/power/port_gen/pacman)
 	crate_name = "\improper PACMAN generator crate"
 	crate_type = /obj/structure/closet/crate/engineering/electrical
@@ -881,7 +881,7 @@
 
 /datum/supply_pack/engine
 	group = "Engine Construction"
-	access_view = ACCESS_ENGINE
+	access_view = ACCESS_ENGINEERING
 	crate_type = /obj/structure/closet/crate/engineering
 
 /datum/supply_pack/engine/emitter
@@ -1012,7 +1012,7 @@
 	name = "50 Empty License Plates"
 	desc = "Create a bunch of boxes."
 	cost = CARGO_CRATE_VALUE * 2  // 50 * 25 + 700 - 1000 = 950 credits profit
-	access_view = ACCESS_BRIG_ENTRANCE
+	access_view = ACCESS_SECURITY
 	contains = list(/obj/item/stack/license_plates/empty/fifty)
 	crate_name = "empty license plate crate"
 
@@ -1089,7 +1089,7 @@
 	name = "Large Fuel Tank Crate"
 	desc = "Contains a high-capacity fuel tank. Keep contents away from open flame."
 	cost = CARGO_CRATE_VALUE * 4
-	access_view = ACCESS_ENGINE
+	access_view = ACCESS_ENGINEERING
 	contains = list(/obj/structure/reagent_dispensers/fueltank/large)
 	crate_name = "high-capacity fuel tank crate"
 	crate_type = /obj/structure/closet/crate/large
@@ -1382,7 +1382,7 @@
 	desc = "Contains twelve different bottles, containing several viral samples for virology research. Also includes seven beakers and syringes. Balled-up jeans not included. Requires CMO access to open."
 	cost = CARGO_CRATE_VALUE * 5
 	access = ACCESS_CMO
-	access_view = ACCESS_VIROLOGY
+	access_view = ACCESS_MEDICAL
 	contains = list(/obj/item/reagent_containers/glass/bottle/flu_virion,
 					/obj/item/reagent_containers/glass/bottle/cold,
 					/obj/item/reagent_containers/glass/bottle/random_virus,
@@ -1766,7 +1766,7 @@
 	desc = "All the miners died too fast? Assistant wants to get a taste of life off-station? Either way, this kit is the best way to turn a regular crewman into an ore-producing, monster-slaying machine. Contains meson goggles, a pickaxe, advanced mining scanner, cargo headset, ore bag, gasmask, an explorer suit and a miner ID upgrade. Requires QM access to open."
 	cost = CARGO_CRATE_VALUE * 4
 	access = ACCESS_QM
-	access_view = ACCESS_MINING_STATION
+	access_view = ACCESS_CARGO
 	contains = list(/obj/item/storage/backpack/duffelbag/mining_conscript)
 	crate_name = "shaft miner starter kit"
 	crate_type = /obj/structure/closet/crate/secure
@@ -3132,7 +3132,7 @@
 
 /datum/supply_pack/data_disk/preloaded/engineering
 	name = "Data Disk (Engifab)"
-	access = ACCESS_ENGINE
+	access = ACCESS_ENGINEERING
 	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/engineering)
 	crate_name = "engifab disk crate"
 
@@ -3162,6 +3162,6 @@
 
 /datum/supply_pack/data_disk/preloaded/imprinter
 	name = "Data Disk (Imprinter)"
-	access = ACCESS_ENGINE
+	access = ACCESS_ENGINEERING
 	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/imprinter)
 	crate_name = "imprinter disk crate"

@@ -29,13 +29,13 @@
 	icon_state = "access_helper_eng"
 
 /obj/effect/mapping_helpers/airlock/access/all/engineering/general
-	granted_all_access = list(ACCESS_ENGINE)
+	granted_all_access = list(ACCESS_ENGINEERING)
 
 /obj/effect/mapping_helpers/airlock/access/all/engineering/engine_equipment
 	granted_all_access = list(ACCESS_ENGINE_EQUIP)
 
+#warn DEPRECATED: use /obj/effect/mapping_helpers/airlock/access/all/engineering/general
 /obj/effect/mapping_helpers/airlock/access/all/engineering/construction
-	granted_all_access = list(ACCESS_CONSTRUCTION)
 
 /obj/effect/mapping_helpers/airlock/access/all/engineering/aux_base
 	granted_all_access = list(ACCESS_AUX_BASE)
@@ -46,14 +46,15 @@
 /obj/effect/mapping_helpers/airlock/access/all/engineering/external
 	granted_all_access = list(ACCESS_EXTERNAL_AIRLOCKS)
 
+#warn RENAME: Secure Engineering
 /obj/effect/mapping_helpers/airlock/access/all/engineering/tech_storage
-	granted_all_access = list(ACCESS_TECH_STORAGE)
+	granted_all_access = list(ACCESS_SECURE_ENGINEERING)
 
 /obj/effect/mapping_helpers/airlock/access/all/engineering/atmos
 	granted_all_access = list(ACCESS_ATMOSPHERICS)
 
+#warn DEPRECATED: use /obj/effect/mapping_helpers/airlock/access/all/engineering/tech_storage
 /obj/effect/mapping_helpers/airlock/access/all/engineering/tcoms
-	granted_all_access = list(ACCESS_TCOMSAT)
 
 /obj/effect/mapping_helpers/airlock/access/all/engineering/ce
 	granted_all_access = list(ACCESS_CE)
@@ -65,17 +66,17 @@
 /obj/effect/mapping_helpers/airlock/access/all/medical/general
 	granted_all_access = list(ACCESS_MEDICAL)
 
+#warn DEPRECATED: use /obj/effect/mapping_helpers/airlock/access/all/medical/general
 /obj/effect/mapping_helpers/airlock/access/all/medical/morgue
-	granted_all_access = list(ACCESS_MORGUE)
 
 /obj/effect/mapping_helpers/airlock/access/all/medical/chemistry
-	granted_all_access = list(ACCESS_CHEMISTRY)
+	granted_all_access = list(ACCESS_PHARMACY)
 
+#warn DEPRECATED: use /obj/effect/mapping_helpers/airlock/access/all/medical/general
 /obj/effect/mapping_helpers/airlock/access/all/medical/virology
-	granted_all_access = list(ACCESS_VIROLOGY)
 
+#warn DEPRECATED: use /obj/effect/mapping_helpers/airlock/access/all/medical/general
 /obj/effect/mapping_helpers/airlock/access/all/medical/surgery
-	granted_all_access = list(ACCESS_SURGERY)
 
 /obj/effect/mapping_helpers/airlock/access/all/medical/cmo
 	granted_all_access = list(ACCESS_CMO)
@@ -83,8 +84,8 @@
 /obj/effect/mapping_helpers/airlock/access/all/medical/pharmacy
 	granted_all_access = list(ACCESS_PHARMACY)
 
+#warn DEPRECATED: use /obj/effect/mapping_helpers/airlock/access/all/medical/general
 /obj/effect/mapping_helpers/airlock/access/all/medical/psychology
-	granted_all_access = list(ACCESS_PSYCHOLOGY)
 
 // -------------------- Science access helpers
 /obj/effect/mapping_helpers/airlock/access/all/science
@@ -111,8 +112,8 @@
 /obj/effect/mapping_helpers/airlock/access/all/science/xenobio
 	granted_all_access = list(ACCESS_XENOBIOLOGY)
 
+#warn DEPRECATED: use /obj/effect/mapping_helpers/airlock/access/all/engineering/tech_storage
 /obj/effect/mapping_helpers/airlock/access/all/science/minisat
-	granted_all_access = list(ACCESS_MINISAT)
 
 /obj/effect/mapping_helpers/airlock/access/all/science/rd
 	granted_all_access = list(ACCESS_RD)
@@ -124,11 +125,11 @@
 /obj/effect/mapping_helpers/airlock/access/all/security/general
 	granted_all_access = list(ACCESS_SECURITY)
 
+#warn DEPRECATED: use /obj/effect/mapping_helpers/airlock/access/all/security/general
 /obj/effect/mapping_helpers/airlock/access/all/security/entrance
-	granted_all_access = list(ACCESS_BRIG_ENTRANCE)
 
+#warn DEPRECATED: use /obj/effect/mapping_helpers/airlock/access/all/security/general
 /obj/effect/mapping_helpers/airlock/access/all/security/brig
-	granted_all_access = list(ACCESS_BRIG)
 
 /obj/effect/mapping_helpers/airlock/access/all/security/armory
 	granted_all_access = list(ACCESS_ARMORY)
@@ -164,8 +165,8 @@
 /obj/effect/mapping_helpers/airlock/access/all/service/chapel_office
 	granted_all_access = list(ACCESS_CHAPEL_OFFICE)
 
+#warn DEPRECATED: use /obj/effect/mapping_helpers/airlock/access/all/service/chapel_office
 /obj/effect/mapping_helpers/airlock/access/all/service/crematorium
-	granted_all_access = list(ACCESS_CREMATORIUM)
 
 /obj/effect/mapping_helpers/airlock/access/all/service/library
 	granted_all_access = list(ACCESS_LIBRARY)
@@ -183,14 +184,14 @@
 /obj/effect/mapping_helpers/airlock/access/all/supply/general
 	granted_all_access = list(ACCESS_CARGO)
 
+#warn DEPRECATED: use /obj/effect/mapping_helpers/airlock/access/all/supply/general
 /obj/effect/mapping_helpers/airlock/access/all/supply/mail_sorting
-	granted_all_access = list(ACCESS_MAILSORTING)
 
+#warn DEPRECATED: use /obj/effect/mapping_helpers/airlock/access/all/supply/general
 /obj/effect/mapping_helpers/airlock/access/all/supply/mining
-	granted_all_access = list(ACCESS_MINING)
 
+#warn DEPRECATED: use /obj/effect/mapping_helpers/airlock/access/all/supply/general
 /obj/effect/mapping_helpers/airlock/access/all/supply/mining_station
-	granted_all_access = list(ACCESS_MINING_STATION)
 
 /obj/effect/mapping_helpers/airlock/access/all/supply/mineral_storage
 	granted_all_access = list(ACCESS_MINERAL_STOREROOM)

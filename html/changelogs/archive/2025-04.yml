@@ -45,3 +45,7 @@
   - bugfix: teleporting while buckling to something will bring the buckled object
       with you
   - bugfix: you can buckle to things if you are on the same turf
+2025-04-22:
+  Kapu1178:
+  - rscdel: Removed ID Trim functionality, there is now no access limitation for an
+      ID.

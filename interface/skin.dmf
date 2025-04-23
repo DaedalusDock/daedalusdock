@@ -297,7 +297,7 @@ window "outputwindow"
 		left = "output_selector"
 		right = "input_and_buttons"
 		is-vert = false
-		splitter = 96
+		splitter = 94.9
 		show-splitter = false
 
 window "output_selector"
@@ -358,7 +358,7 @@ window "inputwindow"
 		anchor1 = 0,0
 		anchor2 = 100,100
 		is-default = true
-		border = line
+		border = sunken
 		saved-params = "command"
 
 window "inputbuttons"

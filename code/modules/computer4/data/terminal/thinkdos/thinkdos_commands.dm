@@ -1,0 +1,226 @@
+/datum/shell_command
+	/// Command names.
+	var/list/aliases
+
+/// Attempt to execute the command. Return TRUE if *any* action is taken.
+/datum/shell_command/proc/try_run(obj/machinery/computer/computer, command_name, list/arguments)
+	if(!(command_name in aliases))
+		return FALSE
+
+	run(computer, arguments)
+	return TRUE
+
+/// Execute the command.
+/datum/shell_command/proc/run(obj/machinery/computer/computer, list/arguments)
+	CRASH("Unimplimented run()")
+
+/// Clear the screen
+/datum/shell_command/thinkdos/home
+	aliases = list("home", "cls")
+
+/datum/shell_command/thinkdos/home/run(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+	//system.clear_screen()
+
+/// Print the contents of the current directory.
+/datum/shell_command/thinkdos/dir
+	aliases = list("dir")
+
+/datum/shell_command/thinkdos/dir/run(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+	system.println("<b>Current folder: [current_directory.name]</b>", FALSE)
+
+	var/list/directory_text = list()
+	for(var/datum/c4_file in current_directory.contents)
+		if(file == system)
+			directory_text += "[system] - SYSTEM"
+			continue
+
+		if(istype(file, /datum/c4_file/folder))
+			directory_text += "[file.name] - FOLDER"
+		else
+			directory_text += "[file.name] - [file.extension]"
+
+
+	if(length(directory_text))
+		system.println(jointext(directory_text, "<br>"))
+
+/// Change the current directory to the root of the current folder.
+/datum/shell_command/thinkdos/root
+	aliases = list("root")
+
+/datum/shell_command/thinkdos/root/run(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+	system.change_dir(system.current_folder.drive.root)
+	system.println("<b>Current Directory is now [system.current_folder.name]</b>")
+	return
+
+/// Change directory.
+/datum/shell_command/thinkdos/ch
+	aliases = list("cd", "chdir")
+
+/datum/shell_command/thinkdos/ch/run(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+	if(!length(arguments))
+		system.println("<b>Syntax:</b> \"cd \[directory string\]\" String is relative to current directory.")
+		return
+
+	var/target_dir = jointext(arguments, " ")
+
+	if(target_dir == "/")
+		system.change_dir(system.drive.root)
+		system.println("<b>Current Directory is now [system.current_folder.name]</b>")
+		return
+
+	// TODO: directory parsing
+
+/// Create a folder.
+/datum/shell_command/thinkdos/makedir
+	aliases = list("makedir", "mkdir")
+
+/datum/shell_command/thinkdos/makedir/run(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+	if(!length(arguments))
+		system.println("<b>Syntax:</b> \"makedir \[new directory name\]\"")
+		return
+
+	var/folder_name = ckey(trim(jointext(arguments, " "), 16))
+
+	if(system.resolve_filepath(folder_name))
+		system.println("<b>Error:</b> File name in use.")
+		return
+
+	if(!system.validate_file_name(folder_name))
+		system.println("<b>Error:</b> Invalid character(s).")
+		return
+
+	var/datum/computer/folder/new_folder = new
+	F.name = folder_name
+
+	if(!system.current_directory.try_add_file(F))
+		qdel(F)
+		system.println("<b>Error:</b> Unable to create new directory.")
+		return
+
+	system.println("New directory created.")
+
+/// Rename a file
+/datum/shell_command/thinkdos/rename
+	aliases = list("rename", "ren", "move")
+
+/datum/shell_command/thinkdos/rename/run(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+	if(length(arguments) != 2)
+		system.println("<b>Syntax:</b> \"rename \[name of target] \[new name]\"")
+		return
+
+	var/old_name = arguments[1]
+	var/new_name = arguments[2]
+
+	if(!system.validate_file_name(new_name))
+		system.println("<b>Error:</b> Invalid character in name.")
+		return
+
+	var/datum/c4_file/file = system.resolve_filepath(old_name)
+	if(!file)
+		system.println("<b>Error:</b> File not found.")
+		return
+
+	if(system.resolve_filepath(new_name))
+		system.println("<b>Error:</b> Name in use.")
+		return
+
+	var/datum/file_path/info = system.text_to_filepath(new_name)
+	var/datum/c4_file/folder/destination_folder = system.parse_directory(info.directory)
+	if(!destination_folder)
+		system.println("<b>Error:</b> Directory does not exist.")
+		return
+
+	if(!system.move_file(file, destination_folder))
+		system.println("<b>Error:</b> AAAAAAAAAAAAAAAAAAAAAA.")
+		return
+
+	file.name = info.file_name
+	system.println("Done.")
+
+
+/// Delete a file
+/datum/shell_command/thinkdos/delete
+	aliases = list("delete", "del", "era", "erase", "rm")
+
+/datum/shell_command/thinkdos/delete/run(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+	if(!length(arguments))
+		system.println("<b>Syntax:</b> \"del \[-f\] \[file name].\"")
+		return
+
+	var/force = (lowertext(arguments[1]) == "-f") || (lowertext(arguments[1]) == "--force")
+	if(force)
+		arguments = arguments.Copy(2)
+
+	var/file_name = ckey(jointext(arguments))
+	var/datum/c4_file/file = system.resolve_filepath(old_name)
+	if(!file)
+		if(!force)
+			system.println("<b>Error:</b> File not found.")
+		return
+
+	if(istype(file, /datum/c4_file/folder))
+		var/datum/c4_file/folder/to_delete = file
+		if(length(folder.contents))
+			system.println("<b>Error:</b> Folder is not empty. Use -f to delete anyway.")
+			return
+
+	if(file == system && !force)
+		system.println("<b>Error:</b> Access denied.")
+		return
+
+	if(system.drive.try_delete_file(file))
+		system.println("File deleted.")
+	else
+		system.println("<b>Error:</b> Unable to delete file.")
+
+/datum/shell_command/thinkdos/initlogs
+	aliases = list("initlogs")
+
+/datum/shell_command/thinkdos/initlogs/run(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+	if(system.command_log)
+		system.println("<b>Error:</b> File already exists.")
+		return
+
+	if(!system.initialize_logs())
+		system.println("<b>Error:</b> File already exists.")
+		return
+
+	system.println("Logging re-initialized.")
+
+/datum/shell_command/thinkdos/print
+	aliases = list("print", "echo")
+
+/datum/shell_command/thinkdos/print/run(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+	if(!length(arguments))
+		system.println("<b>Syntax:</b> \"print \[text to be printed]\"")
+		return
+
+	var/text = html_encode(jointext(arguments, " "))
+	system.println(text)
+
+/datum/shell_command/thinkdos/read
+	aliases = list("read", "type")
+
+/datum/shell_command/thinkdos/read/run(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+	if(!length(arguments))
+		system.println("<b>Syntax:</b> \"read \[file name].\"")
+		return
+
+	var/datum/c4_file/file = system.resolve_filepath(ckey(jointext(arguments, "")))
+	if(!file)
+		system.println("<b>Error</b>: No file found.")
+		return
+
+	system.println(html_encode(file.to_string()))
+
+/datum/shell_command/thinkdos/version
+	aliases = list("version", "ver")
+
+/datum/shell_command/thinkdos/version/run(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+	system.println("[system_version]<br>Copyright Thinktronic Systems, LTD.")
+
+/datum/shell_command/thinkdos/time
+	aliases = list("time")
+
+/datum/shell_command/thinkdos/time/run(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+	system.println("[stationtime2text()], [stationdate2text()]")

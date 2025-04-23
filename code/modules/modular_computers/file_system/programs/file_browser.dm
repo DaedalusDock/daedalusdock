@@ -25,7 +25,7 @@
 		if("PRG_deletefile")
 			if(!HDD)
 				return
-			var/datum/computer_file/file = HDD.find_file_by_name(params["name"])
+			var/datum/computer_file = HDD.find_file_by_name(params["name"])
 			if(!file || file.undeletable)
 				return
 			HDD.remove_file(file)
@@ -33,7 +33,7 @@
 		if("PRG_usbdeletefile")
 			if(!RHDD)
 				return
-			var/datum/computer_file/file = RHDD.find_file_by_name(params["name"])
+			var/datum/computer_file = RHDD.find_file_by_name(params["name"])
 			if(!file || file.undeletable)
 				return
 			RHDD.remove_file(file)
@@ -41,7 +41,7 @@
 		if("PRG_renamefile")
 			if(!HDD)
 				return
-			var/datum/computer_file/file = HDD.find_file_by_name(params["name"])
+			var/datum/computer_file = HDD.find_file_by_name(params["name"])
 			if(!file)
 				return
 			var/newname = reject_bad_name(params["new_name"])
@@ -53,7 +53,7 @@
 		if("PRG_usbrenamefile")
 			if(!RHDD)
 				return
-			var/datum/computer_file/file = RHDD.find_file_by_name(params["name"])
+			var/datum/computer_file = RHDD.find_file_by_name(params["name"])
 			if(!file)
 				return
 			var/newname = reject_bad_name(params["new_name"])

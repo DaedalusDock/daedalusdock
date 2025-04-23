@@ -102,7 +102,7 @@
 		return FALSE
 
 	var/name = F.filename + "." + F.filetype
-	for(var/datum/computer_file/file in stored_files)
+	for(var/datum/computer_file in stored_files)
 		if((file.filename + "." + file.filetype) == name)
 			return FALSE
 

@@ -5,6 +5,9 @@
 	icon_state = "datadisk0"
 	custom_materials = list(/datum/material/iron =300, /datum/material/glass =100)
 	item_flags = NOBLUDGEON
+
+	var/datum/computer_file/folder/root
+
 	/// How many THIIINGGGS can we store in memory
 	VAR_PROTECTED/storage = 32
 	/// The actual storage of the disk.
@@ -18,7 +21,15 @@
 		name = "[storage] KB [name]"
 	base_pixel_x = base_pixel_x + rand(-5, 5)
 	base_pixel_y = base_pixel_y + rand(-5, 5)
+
+	root = new
+	root.drive = src
+	root.name = "root"
 	return INITIALIZE_HINT_LATELOAD
+
+/obj/item/disk/data/Destroy(force)
+	QDEL_NULL(root)
+	return ..()
 
 /obj/item/disk/data/LateInitialize()
 	update_appearance(UPDATE_OVERLAYS)

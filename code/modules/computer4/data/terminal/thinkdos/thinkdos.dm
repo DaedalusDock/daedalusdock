@@ -60,32 +60,23 @@
 
 	// Parse out options
 	for(var/str in split_list)
-		if(length(str) == 1)
-			break
-
-		if(str[1] != "-")
+		// Dangling "-" is considered an argument per POSIX, so do not trim it from the arguments list.
+		if(length(str) == 1 || str[1] != "-")
 			break
 
 		if(str[2] == "-")
-			if(length(str) < 3) // Double --, stop parsing
+			if(length(str) == 2) // "--", cease parsing options
 				split_list.Cut(1,2)
 				break
 
-			if(str[3] == "-")
+			if(str[3] == "-") //This is an argument, not an option.
 				break
 
 			output.options += copytext(str, 3)
 			split_list.Cut(1, 2)
 			continue
 
-		// Single dash, but multiple letters. Rip it apart and pass all of them.
-		if(length(str) != 2)
-			var/list/letters = splittext(copytext(str, 2), "", 1)
-			output.options |= letters
-			split_list.Cut(1, 2)
-			continue
-
-		output.options += copytext(str, 2)
+		output.options |= splittext(copytext(str, 2), "")
 		split_list.Cut(1, 2)
 
 	output.arguments = split_list

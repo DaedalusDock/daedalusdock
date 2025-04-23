@@ -81,8 +81,7 @@
 		// Single dash, but multiple letters. Rip it apart and pass all of them.
 		if(length(str) != 2)
 			var/list/letters = splittext(copytext(str, 2), "", 1)
-			for(var/letter in letters)
-				output.options |= letter
+			output.options |= letters
 			split_list.Cut(1, 2)
 			continue
 

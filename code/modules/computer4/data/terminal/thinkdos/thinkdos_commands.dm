@@ -224,3 +224,18 @@
 
 /datum/shell_command/thinkdos/time/run(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
 	system.println("[stationtime2text()], [stationdate2text()]")
+
+/datum/shell_command/thinkdos/sizeof
+	aliases = list("sizeof", "du")
+
+/datum/shell_command/thinkdos/sizeof/run(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+	if(!length(arguments))
+		system.println("<b>Syntax:</b> \"sizeof \[file path].\"")
+		return
+
+	var/datum/c4_file/file = system.resolve_filepath(ckey(jointext(arguments, "")))
+	if(!file)
+		system.println("<b>Error:</b> File does not exist.")
+		return
+
+	system.println(file.size)

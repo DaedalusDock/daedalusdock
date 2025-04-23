@@ -147,11 +147,11 @@
 		system.println("<b>Syntax:</b> \"del \[-f\] \[file name].\"")
 		return
 
-	var/force = options.Find("f") || options.Find("force")
-	if(force)
-		arguments = arguments.Copy(2)
+	var/force = !!(options & list("f", "force"))
+	var/recursive = !!(options & list("r", "R", "recursive"))
 
 	var/file_name = ckey(jointext(arguments, ""))
+
 	var/datum/c4_file/file = system.resolve_filepath(file_name)
 	if(!file)
 		if(!force)
@@ -159,6 +159,10 @@
 		return
 
 	if(istype(file, /datum/c4_file/folder))
+		if(!recursive)
+			system.println("<b>Error: Use -r option to delete folders.")
+			return
+
 		var/datum/c4_file/folder/to_delete = file
 		if(length(to_delete.contents))
 			system.println("<b>Error:</b> Folder is not empty. Use -f to delete anyway.")

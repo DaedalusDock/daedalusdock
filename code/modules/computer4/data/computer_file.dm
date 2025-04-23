@@ -17,7 +17,7 @@
 	/// Folder the file is in, if any.
 	var/datum/c4_file/folder/containing_folder
 	/// TEMP, will likely end up it's own machine. Here to access machine shit while deving for now.
-	var/obj/machinery/computer/computer
+	var/obj/machinery/computer4/computer
 
 /datum/c4_file/New()
 	metadata = new()
@@ -79,8 +79,8 @@
 
 		switch (prefix)
 			if ("hd0") // Magic value for "the hard drive"
-				if(computer.hard_drive)
-					destination = computer.hard_drive.root
+				if(computer.internal_disk)
+					destination = computer.internal_disk.root
 				else
 					return null
 

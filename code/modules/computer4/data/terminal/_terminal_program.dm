@@ -109,7 +109,7 @@
 		return FALSE
 
 
-	//computer.text_buffer += "[text]<br>"
+	computer.text_buffer += "[text]<br>"
 	if(update_ui)
 		SStgui.update_uis(computer)
 	return TRUE
@@ -119,7 +119,7 @@
 	if(!is_operational())
 		return FALSE
 
-	//computer.text_buffer = null
+	computer.text_buffer = ""
 	println("Screen cleared.")
 	return TRUE
 

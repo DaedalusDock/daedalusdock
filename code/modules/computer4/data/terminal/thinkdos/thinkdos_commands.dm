@@ -147,8 +147,8 @@
 		system.println("<b>Syntax:</b> \"del \[-f\] \[file name].\"")
 		return
 
-	var/force = !!(options & list("f", "force"))
-	var/recursive = !!(options & list("r", "R", "recursive"))
+	var/force = !!length(options & list("f", "force"))
+	var/recursive = !!length(options & list("r", "R", "recursive"))
 
 	var/file_name = ckey(jointext(arguments, ""))
 

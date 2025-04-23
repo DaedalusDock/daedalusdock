@@ -2922,7 +2922,7 @@
 #include "code\modules\codex\entries\power.dm"
 #include "code\modules\codex\entries\structure.dm"
 #include "code\modules\codex\entries\tools.dm"
-#include "code\modules\computer4\computer.dm"
+#include "code\modules\computer4\computer4.dm"
 #include "code\modules\computer4\data\computer_file.dm"
 #include "code\modules\computer4\data\folder.dm"
 #include "code\modules\computer4\data\metadata.dm"

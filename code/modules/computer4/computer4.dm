@@ -17,6 +17,7 @@
 		ui.open()
 
 /obj/machinery/computer4/ui_data(mob/user)
+	// TODO: input history
 	var/list/data = list(
 		"displayHTML" = text_buffer,
 		"terminalActive" = !!active_program,

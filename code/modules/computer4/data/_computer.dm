@@ -5,8 +5,10 @@
 
 	var/extension = "DAT"
 
+	var/size = 0
+
 	/// If the file is copyable by default.
-	var/copyable = TRUE
+	var/copyable = TRUE // Don't copy that floppy.
 
 	/// Metadata about this thing
 	var/datum/computer_metadata/metadata

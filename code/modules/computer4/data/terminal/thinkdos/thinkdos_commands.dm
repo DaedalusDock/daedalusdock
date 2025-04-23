@@ -23,7 +23,7 @@
 
 /// Print the contents of the current directory.
 /datum/shell_command/thinkdos/dir
-	aliases = list("dir")
+	aliases = list("dir", "catalog", "ls")
 
 /datum/shell_command/thinkdos/dir/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	system.println("<b>Current folder: [system.current_directory.name]</b>", FALSE)
@@ -35,9 +35,9 @@
 			continue
 
 		if(istype(file, /datum/c4_file/folder))
-			directory_text += "[file.name] - FOLDER"
+			directory_text += "[file.name] - FOLDER - \[Size:[file.size]\]"
 		else
-			directory_text += "[file.name] - [file.extension]"
+			directory_text += "[file.name] - [file.extension] - \[Size:[file.size]\]"
 
 
 	if(length(directory_text))

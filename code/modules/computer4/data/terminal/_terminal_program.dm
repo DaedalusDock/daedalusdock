@@ -35,7 +35,7 @@
 	var/logged_in = FALSE
 
 	/// Current directory being operated on.
-	var/datum/computer/folder/current_directory
+	var/datum/c4_file/folder/current_directory
 
 /// Should run this before executing any commands.
 /datum/c4_file/terminal_program/operating_system/proc/is_operational()
@@ -46,13 +46,13 @@
 	current_directory = directory
 	return TRUE
 
-/datum/c4_file/terminal_program/operating_system/proc/move_file(datum/c4_file, datum/c4_file/folder/destination)
-	var/datum/c4_file/folder/old_directory = c4_file.containing_folder
-	if(!c4_file.containing_folder.try_delete_file(c4_file, qdel = FALSE))
+/datum/c4_file/terminal_program/operating_system/proc/move_file(datum/c4_file/file, datum/c4_file/folder/destination)
+	var/datum/c4_file/folder/old_directory = file.containing_folder
+	if(!file.containing_folder.try_delete_file(file, qdel = FALSE))
 		return null
 
-	if(!destination_folder.try_add_file(c4_file))
-		if(!old_directory.try_add_file(c4_file))
+	if(!destination.try_add_file(file))
+		if(!old_directory.try_add_file(file))
 			CRASH("bruh???")
 		return null
 
@@ -97,7 +97,7 @@
 
 /// Sanitize a file name.
 /datum/c4_file/terminal_program/operating_system/proc/sanitize_filename(file_name)
-	return ckey(trim(file_name), 16)
+	return ckey(trim(file_name, 16))
 
 /// Returns TRUE if a given file name is OK.
 /datum/c4_file/terminal_program/operating_system/proc/validate_file_name(file_name)

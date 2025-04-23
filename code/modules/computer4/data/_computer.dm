@@ -1,8 +1,7 @@
 /// Computer files.
 /datum/c4_file
 
-	name = "file"
-
+	var/name = "file"
 	var/extension = "DAT"
 
 	var/size = 0
@@ -24,6 +23,14 @@
 	metadata = new()
 	metadata.date = stationdate2text()
 
+/datum/c4_file/Destroy()
+	if(containing_folder)
+		var/datum/c4_file/folder/dont_recursively_delete_thanks = containing_folder
+		containing_folder = null
+		dont_recursively_delete_thanks.try_delete_file(src, TRUE)
+
+	return ..()
+
 /// Attempt to stringify the data.
 /datum/c4_file/proc/to_string()
 	return "Error: Cannot convert type 'unknown' to 'string'"
@@ -43,7 +50,7 @@
 	var/datum/file_path/path = new
 	path.directory = directory
 	path.file_name = file_name
-	return file_path
+	return path
 
 /// Take a directory, vomit out a folder at that directory or null
 /datum/c4_file/proc/parse_directory(text, datum/c4_file/folder/origin) as /datum/c4_file/folder
@@ -61,7 +68,7 @@
 		destination = origin.drive.root
 		text = copytext(text, 2)
 
-	var/list/split_by_slash = splittext(string,"/")
+	var/list/split_by_slash = splittext(text,"/")
 	if (length(split_by_slash) && split_by_slash[1][4] == ":")
 		var/prefix = lowertext(copytext(split_by_slash[1], 1, 4) )
 

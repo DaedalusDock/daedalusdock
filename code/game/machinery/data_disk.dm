@@ -6,7 +6,7 @@
 	custom_materials = list(/datum/material/iron =300, /datum/material/glass =100)
 	item_flags = NOBLUDGEON
 
-	var/datum/computer_file/folder/root
+	var/datum/c4_file/folder/root
 
 	/// How many THIIINGGGS can we store in memory
 	VAR_PROTECTED/storage = 32

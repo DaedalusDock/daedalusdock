@@ -11,7 +11,7 @@
 	QDEL_LIST(contents)
 	return ..()
 
-/datum/c4_file/folder/try_add_file(datum/c4_file/new_file)
+/datum/c4_file/folder/proc/try_add_file(datum/c4_file/new_file)
 	// if(not_enough_space) TODO
 	// 	return FALSE
 
@@ -22,3 +22,14 @@
 		new_folder.generation = generation + 1
 
 	return TRUE
+
+/datum/c4_file/folder/proc/try_delete_file(datum/c4_file/file, force, qdel = TRUE)
+	if(file.containing_folder != src)
+		CRASH("Dawg what the FUCK happened here?")
+
+	if(drive.read_only && !force)
+		return FALSE
+
+	contents -= file
+	if(qdel)
+		qdel(file)

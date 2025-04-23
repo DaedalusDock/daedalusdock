@@ -24,18 +24,18 @@
 	if(!log_dir)
 		log_dir = new /datum/c4_file/folder
 		log_dir.name = "logs"
-		if(!drive.root.add_file(log_dir))
+		if(!drive.root.try_add_file(log_dir))
 			return FALSE
 
-	var/datum/computer/file/text/log_file = get_file("syslog", log_dir)
+	var/datum/c4_file/text/log_file = get_file("syslog", log_dir)
 	if(!log_file)
-		log_file = new /datum/computer/file/text()
-		the_log.name = "syslog"
-		if(!log_dir.try_add_file(the_log))
+		log_file = new /datum/c4_file/text()
+		log_file.name = "syslog"
+		if(!log_dir.try_add_file(log_file))
 			return FALSE
 
-	command_log = the_log
-	the_log.data += "<br><b>STARTUP:</b> [stationtime2text()], [stationdate2text()]"
+	command_log = log_file
+	log_file.data += "<br><b>STARTUP:</b> [stationtime2text()], [stationdate2text()]"
 	return TRUE
 
 /datum/c4_file/terminal_program/operating_system/thinkdos/std_in(text)
@@ -48,8 +48,8 @@
 	var/command = lowertext(command_list[1])
 	var/list/arguments = length(command_list) > 1 ? command_list.Copy(2) : null
 
-	for(var/datum/computer_command/potential_command as anything in commands)
-		if(potential_command.try_run(src, command_name, arguments))
+	for(var/datum/shell_command/potential_command as anything in commands)
+		if(potential_command.try_exec(src, command, arguments))
 			return TRUE
 
 	println("'[html_encode(command_raw)]' is not recognized as an internal or external command.")

@@ -53,10 +53,10 @@
 	return
 
 /// Change directory.
-/datum/shell_command/thinkdos/ch
+/datum/shell_command/thinkdos/cd
 	aliases = list("cd", "chdir")
 
-/datum/shell_command/thinkdos/ch/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
+/datum/shell_command/thinkdos/cd/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	if(!length(arguments))
 		system.println("<b>Syntax:</b> \"cd \[directory string\]\" String is relative to current directory.")
 		return
@@ -68,7 +68,14 @@
 		system.println("<b>Current Directory is now [system.current_directory.name]</b>")
 		return
 
-	// TODO: directory parsing
+	var/datum/c4_file/folder/new_dir = system.parse_directory(target_dir)
+	if(!new_dir)
+		system.print_error("<b>Error:</b> Invalid directory or path.")
+		return
+
+	system.change_dir(new_dir)
+	system.println("<b>Current Directory is now [system.current_directory.name]</b>")
+
 
 /// Create a folder.
 /datum/shell_command/thinkdos/makedir
@@ -82,11 +89,11 @@
 	var/folder_name = ckey(trim(jointext(arguments, ""), 16))
 
 	if(system.resolve_filepath(folder_name))
-		system.println("<b>Error:</b> File name in use.")
+		system.print_error("<b>Error:</b> File name in use.")
 		return
 
 	if(!system.validate_file_name(folder_name))
-		system.println("<b>Error:</b> Invalid character(s).")
+		system.print_error("<b>Error:</b> Invalid character(s).")
 		return
 
 	var/datum/c4_file/folder/new_folder = new
@@ -94,7 +101,7 @@
 
 	if(!system.current_directory.try_add_file(new_folder))
 		qdel(new_folder)
-		system.println("<b>Error:</b> Unable to create new directory.")
+		system.print_error("<b>Error:</b> Unable to create new directory.")
 		return
 
 	system.println("New directory created.")
@@ -112,26 +119,26 @@
 	var/new_name = arguments[2]
 
 	if(!system.validate_file_name(new_name))
-		system.println("<b>Error:</b> Invalid character in name.")
+		system.print_error("<b>Error:</b> Invalid character in name.")
 		return
 
 	var/datum/c4_file/file = system.resolve_filepath(old_name)
 	if(!file)
-		system.println("<b>Error:</b> File not found.")
+		system.print_error("<b>Error:</b> File not found.")
 		return
 
 	if(system.resolve_filepath(new_name))
-		system.println("<b>Error:</b> Name in use.")
+		system.print_error("<b>Error:</b> Name in use.")
 		return
 
 	var/datum/file_path/info = system.text_to_filepath(new_name)
 	var/datum/c4_file/folder/destination_folder = system.parse_directory(info.directory)
 	if(!destination_folder)
-		system.println("<b>Error:</b> Directory does not exist.")
+		system.print_error("<b>Error:</b> Directory does not exist.")
 		return
 
 	if((destination_folder != file.containing_folder) && !system.move_file(file, destination_folder))
-		system.println("<b>Error:</b> AAAAAAAAAAAAAAAAAAAAAA.")
+		system.print_error("<b>Error:</b> AAAAAAAAAAAAAAAAAAAAAA.")
 		return
 
 	file.name = info.file_name
@@ -155,38 +162,38 @@
 	var/datum/c4_file/file = system.resolve_filepath(file_name)
 	if(!file)
 		if(!force)
-			system.println("<b>Error:</b> File not found.")
+			system.print_error("<b>Error:</b> File not found.")
 		return
 
 	if(istype(file, /datum/c4_file/folder))
 		if(!recursive)
-			system.println("<b>Error: Use -r option to delete folders.")
+			system.print_error("<b>Error: Use -r option to delete folders.")
 			return
 
 		var/datum/c4_file/folder/to_delete = file
 		if(length(to_delete.contents))
-			system.println("<b>Error:</b> Folder is not empty. Use -f to delete anyway.")
+			system.print_error("<b>Error:</b> Folder is not empty. Use -f to delete anyway.")
 			return
 
 	if(file == system && !force)
-		system.println("<b>Error:</b> Access denied.")
+		system.print_error("<b>Error:</b> Access denied.")
 		return
 
 	if(file.containing_folder.try_delete_file(file))
 		system.println("File deleted.")
 	else
-		system.println("<b>Error:</b> Unable to delete file.")
+		system.print_error("<b>Error:</b> Unable to delete file.")
 
 /datum/shell_command/thinkdos/initlogs
 	aliases = list("initlogs")
 
 /datum/shell_command/thinkdos/initlogs/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	if(system.command_log)
-		system.println("<b>Error:</b> File already exists.")
+		system.print_error("<b>Error:</b> File already exists.")
 		return
 
 	if(!system.initialize_logs())
-		system.println("<b>Error:</b> File already exists.")
+		system.print_error("<b>Error:</b> File already exists.")
 		return
 
 	system.println("Logging re-initialized.")
@@ -239,7 +246,7 @@
 
 	var/datum/c4_file/file = system.resolve_filepath(ckey(jointext(arguments, "")))
 	if(!file)
-		system.println("<b>Error:</b> File does not exist.")
+		system.print_error("<b>Error:</b> File does not exist.")
 		return
 
 	system.println(file.size)

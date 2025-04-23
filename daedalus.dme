@@ -2923,6 +2923,7 @@
 #include "code\modules\codex\entries\structure.dm"
 #include "code\modules\codex\entries\tools.dm"
 #include "code\modules\computer4\data\_computer.dm"
+#include "code\modules\computer4\data\folder.dm"
 #include "code\modules\computer4\data\metadata.dm"
 #include "code\modules\computer4\data\file\folder.dm"
 #include "code\modules\computer4\data\file\terminal\_terminal_program.dm"

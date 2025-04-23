@@ -107,7 +107,7 @@
 			if(F.name == ckey(split_by_slash[1]))
 				split_by_slash -= split_by_slash[1]
 				destination = F
-				new_current = TRUE
+				found_next_folder = TRUE
 				break
 
 		if(!found_next_folder)

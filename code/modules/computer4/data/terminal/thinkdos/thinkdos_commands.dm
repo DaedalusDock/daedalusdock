@@ -19,7 +19,7 @@
 	aliases = list("home", "cls")
 
 /datum/shell_command/thinkdos/home/run(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
-	//system.clear_screen()
+	system.clear_screen()
 
 /// Print the contents of the current directory.
 /datum/shell_command/thinkdos/dir
@@ -130,7 +130,7 @@
 		system.println("<b>Error:</b> Directory does not exist.")
 		return
 
-	if(!system.move_file(file, destination_folder))
+	if((destination_folder != file.containing_folder) && !system.move_file(file, destination_folder))
 		system.println("<b>Error:</b> AAAAAAAAAAAAAAAAAAAAAA.")
 		return
 

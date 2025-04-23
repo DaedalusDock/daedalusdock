@@ -3,11 +3,11 @@
 	var/list/aliases
 
 /// Attempt to execute the command. Return TRUE if *any* action is taken.
-/datum/shell_command/proc/try_exec(obj/machinery/computer/computer, command_name, list/arguments)
+/datum/shell_command/proc/try_exec(obj/machinery/computer/computer, command_name, list/arguments, list/options)
 	if(!(command_name in aliases))
 		return FALSE
 
-	exec(computer, arguments)
+	exec(computer, arguments, options)
 	return TRUE
 
 /// Execute the command.
@@ -18,14 +18,14 @@
 /datum/shell_command/thinkdos/home
 	aliases = list("home", "cls")
 
-/datum/shell_command/thinkdos/home/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+/datum/shell_command/thinkdos/home/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	system.clear_screen()
 
 /// Print the contents of the current directory.
 /datum/shell_command/thinkdos/dir
 	aliases = list("dir")
 
-/datum/shell_command/thinkdos/dir/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+/datum/shell_command/thinkdos/dir/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	system.println("<b>Current folder: [system.current_directory.name]</b>", FALSE)
 
 	var/list/directory_text = list()
@@ -47,7 +47,7 @@
 /datum/shell_command/thinkdos/root
 	aliases = list("root")
 
-/datum/shell_command/thinkdos/root/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+/datum/shell_command/thinkdos/root/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	system.change_dir(system.current_directory.drive.root)
 	system.println("<b>Current Directory is now [system.current_directory.name]</b>")
 	return
@@ -56,7 +56,7 @@
 /datum/shell_command/thinkdos/ch
 	aliases = list("cd", "chdir")
 
-/datum/shell_command/thinkdos/ch/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+/datum/shell_command/thinkdos/ch/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	if(!length(arguments))
 		system.println("<b>Syntax:</b> \"cd \[directory string\]\" String is relative to current directory.")
 		return
@@ -74,7 +74,7 @@
 /datum/shell_command/thinkdos/makedir
 	aliases = list("makedir", "mkdir")
 
-/datum/shell_command/thinkdos/makedir/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+/datum/shell_command/thinkdos/makedir/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	if(!length(arguments))
 		system.println("<b>Syntax:</b> \"makedir \[new directory name\]\"")
 		return
@@ -103,7 +103,7 @@
 /datum/shell_command/thinkdos/rename
 	aliases = list("rename", "ren", "move")
 
-/datum/shell_command/thinkdos/rename/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+/datum/shell_command/thinkdos/rename/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	if(length(arguments) != 2)
 		system.println("<b>Syntax:</b> \"rename \[name of target] \[new name]\"")
 		return
@@ -142,12 +142,12 @@
 /datum/shell_command/thinkdos/delete
 	aliases = list("delete", "del", "era", "erase", "rm")
 
-/datum/shell_command/thinkdos/delete/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+/datum/shell_command/thinkdos/delete/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	if(!length(arguments))
 		system.println("<b>Syntax:</b> \"del \[-f\] \[file name].\"")
 		return
 
-	var/force = (lowertext(arguments[1]) == "-f") || (lowertext(arguments[1]) == "--force")
+	var/force = options.Find("f") || options.Find("force")
 	if(force)
 		arguments = arguments.Copy(2)
 
@@ -176,7 +176,7 @@
 /datum/shell_command/thinkdos/initlogs
 	aliases = list("initlogs")
 
-/datum/shell_command/thinkdos/initlogs/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+/datum/shell_command/thinkdos/initlogs/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	if(system.command_log)
 		system.println("<b>Error:</b> File already exists.")
 		return
@@ -190,7 +190,7 @@
 /datum/shell_command/thinkdos/print
 	aliases = list("print", "echo")
 
-/datum/shell_command/thinkdos/print/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+/datum/shell_command/thinkdos/print/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	if(!length(arguments))
 		system.println("<b>Syntax:</b> \"print \[text to be printed]\"")
 		return
@@ -201,7 +201,7 @@
 /datum/shell_command/thinkdos/read
 	aliases = list("read", "type")
 
-/datum/shell_command/thinkdos/read/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+/datum/shell_command/thinkdos/read/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	if(!length(arguments))
 		system.println("<b>Syntax:</b> \"read \[file name].\"")
 		return
@@ -216,19 +216,19 @@
 /datum/shell_command/thinkdos/version
 	aliases = list("version", "ver")
 
-/datum/shell_command/thinkdos/version/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+/datum/shell_command/thinkdos/version/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	system.println("[system.system_version]<br>Copyright Thinktronic Systems, LTD.")
 
 /datum/shell_command/thinkdos/time
 	aliases = list("time")
 
-/datum/shell_command/thinkdos/time/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+/datum/shell_command/thinkdos/time/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	system.println("[stationtime2text()], [stationdate2text()]")
 
 /datum/shell_command/thinkdos/sizeof
 	aliases = list("sizeof", "du")
 
-/datum/shell_command/thinkdos/sizeof/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments)
+/datum/shell_command/thinkdos/sizeof/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	if(!length(arguments))
 		system.println("<b>Syntax:</b> \"sizeof \[file path].\"")
 		return

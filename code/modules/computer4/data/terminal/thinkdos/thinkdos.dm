@@ -38,19 +38,72 @@
 	log_file.data += "<br><b>STARTUP:</b> [stationtime2text()], [stationdate2text()]"
 	return TRUE
 
+/// Struct for the parsed stdin
+/datum/thinkdos_stdin
+	var/raw = ""
+	var/command = ""
+	var/list/arguments = list()
+	var/list/options = list()
+
+/datum/c4_file/terminal_program/operating_system/thinkdos/parse_std_in(text)
+	var/list/split_list = splittext(text, " ")
+	var/datum/thinkdos_stdin/output = new
+
+	output.raw = text
+	output.command = split_list[1]
+
+	if(length(split_list) == 1)
+		return output
+
+
+	split_list.Cut(1, 2)
+
+	// Parse out options
+	for(var/str in split_list)
+		if(length(str) == 1)
+			break
+
+		if(str[1] != "-")
+			break
+
+		if(str[2] == "-")
+			if(length(str) < 3) // Double --, stop parsing
+				split_list.Cut(1,2)
+				break
+
+			if(str[3] == "-")
+				break
+
+			output.options += copytext(str, 3)
+			split_list.Cut(1, 2)
+			continue
+
+		// Single dash, but multiple letters. Rip it apart and pass all of them.
+		if(length(str) != 2)
+			var/list/letters = splittext(copytext(str, 2), "", 1)
+			for(var/letter in letters)
+				output.options |= letter
+			split_list.Cut(1, 2)
+			continue
+
+		output.options += copytext(str, 2)
+		split_list.Cut(1, 2)
+
+	output.arguments = split_list
+	return output
+
 /datum/c4_file/terminal_program/operating_system/thinkdos/std_in(text)
 	. = ..()
 	if(.)
 		return
 
-	var/list/command_list = parse_std_in(text)
-	var/command_raw = command_list[1]
+	var/datum/thinkdos_stdin/parsed_stdin = parse_std_in(text)
 	var/command = lowertext(command_list[1])
 	var/list/arguments = length(command_list) > 1 ? command_list.Copy(2) : null
 
 	for(var/datum/shell_command/potential_command as anything in commands)
-		if(potential_command.try_exec(src, command, arguments))
+		if(potential_command.try_exec(src, parsed_stdin.command, parsed_stdin.arguments, parsed_stdin.options))
 			return TRUE
 
-	println("'[html_encode(command_raw)]' is not recognized as an internal or external command.")
+	println("'[html_encode(parsed_stdin.raw)]' is not recognized as an internal or external command.")
 	return TRUE

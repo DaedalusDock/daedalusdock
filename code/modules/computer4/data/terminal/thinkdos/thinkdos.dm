@@ -50,7 +50,7 @@
 	var/datum/thinkdos_stdin/output = new
 
 	output.raw = text
-	output.command = split_list[1]
+	output.command = lowertext(split_list[1])
 
 	if(length(split_list) == 1)
 		return output
@@ -97,9 +97,6 @@
 		return
 
 	var/datum/thinkdos_stdin/parsed_stdin = parse_std_in(text)
-	var/command = lowertext(command_list[1])
-	var/list/arguments = length(command_list) > 1 ? command_list.Copy(2) : null
-
 	for(var/datum/shell_command/potential_command as anything in commands)
 		if(potential_command.try_exec(src, parsed_stdin.command, parsed_stdin.arguments, parsed_stdin.options))
 			return TRUE

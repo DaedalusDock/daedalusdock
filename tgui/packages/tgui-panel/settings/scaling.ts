@@ -33,7 +33,7 @@ export async function setDisplayScaling() {
 const PANE_SPLITTERS = {
   info_button_child: 2,
   input_buttons_child: 80,
-  output_input_child: 96,
+  output_input_child: 94.9,
 };
 
 export function setEditPaneSplitters(editing: boolean) {

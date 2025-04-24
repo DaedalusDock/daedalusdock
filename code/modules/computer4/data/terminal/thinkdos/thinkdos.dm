@@ -18,8 +18,10 @@
 		for(var/datum/shell_command/thinkdos/command_path as anything in subtypesof(/datum/shell_command/thinkdos))
 			commands += new command_path
 
-/datum/c4_file/terminal_program/operating_system/thinkdos/on_run()
+/datum/c4_file/terminal_program/operating_system/thinkdos/execute()
 	initialize_logs()
+	if(!current_directory)
+		change_dir(containing_folder)
 
 /// Struct for the parsed stdin
 /datum/thinkdos_stdin

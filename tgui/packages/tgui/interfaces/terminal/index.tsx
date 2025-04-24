@@ -14,7 +14,7 @@ import { PeripheralsSection } from './PeripheralsSection';
 import { TerminalOutputSection } from './TerminalOutputSection';
 import type { TerminalData } from './types';
 
-export const Terminal = () => {
+export const Terminal = (props) => {
   const { data } = useBackend<TerminalData>();
   const { bgColor, displayHTML, fontColor, peripherals, windowName } = data;
 

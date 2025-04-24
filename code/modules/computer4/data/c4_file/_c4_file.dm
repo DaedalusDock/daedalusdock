@@ -64,12 +64,12 @@
 
 	var/datum/c4_file/folder/destination = origin
 
-	if(copytext(text, 1, "/"))
+	if(copytext(text, 1) == "/")
 		destination = origin.drive.root
 		text = copytext(text, 2)
 
 	var/list/split_by_slash = splittext(text,"/")
-	if (length(split_by_slash) && split_by_slash[1][4] == ":")
+	if (length(split_by_slash) && copytext(split_by_slash[1], 4, 5) == ":")
 		var/prefix = lowertext(copytext(split_by_slash[1], 1, 4) )
 
 		if (length(split_by_slash[1]) > 4)
@@ -95,17 +95,22 @@
 			return destination
 
 		// This handles ../../ shit
-		if(split_by_slash[1] == "..")
-			if (destination == origin)
-				return null
+		switch(split_by_slash[1])
+			if("..")
+				if(!destination.containing_folder) // current folder is the root folder
+					return
 
-			destination = destination.containing_folder
-			split_by_slash -= split_by_slash[1]
-			continue
+				destination = destination.containing_folder
+				split_by_slash.Cut(1, 2)
+				continue
 
-		else if (split_by_slash[1] == ".")
-			split_by_slash -= split_by_slash[1]
-			continue
+			// Remain at current directory
+			if(".")
+				split_by_slash.Cut(1, 2)
+				continue
+
+			if("")
+				return destination
 
 		// End period handling
 

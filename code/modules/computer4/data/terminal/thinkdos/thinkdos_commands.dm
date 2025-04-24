@@ -68,7 +68,7 @@
 		system.println("<b>Current Directory is now [system.current_directory.name]</b>")
 		return
 
-	var/datum/c4_file/folder/new_dir = system.parse_directory(target_dir)
+	var/datum/c4_file/folder/new_dir = system.parse_directory(target_dir, system.current_directory)
 	if(!new_dir)
 		system.print_error("<b>Error:</b> Invalid directory or path.")
 		return
@@ -132,7 +132,7 @@
 		return
 
 	var/datum/file_path/info = system.text_to_filepath(new_name)
-	var/datum/c4_file/folder/destination_folder = system.parse_directory(info.directory)
+	var/datum/c4_file/folder/destination_folder = system.parse_directory(info.directory, system.current_directory)
 	if(!destination_folder)
 		system.print_error("<b>Error:</b> Directory does not exist.")
 		return
@@ -171,7 +171,7 @@
 			return
 
 		var/datum/c4_file/folder/to_delete = file
-		if(length(to_delete.contents))
+		if(length(to_delete.contents) && !force)
 			system.print_error("<b>Error:</b> Folder is not empty. Use -f to delete anyway.")
 			return
 

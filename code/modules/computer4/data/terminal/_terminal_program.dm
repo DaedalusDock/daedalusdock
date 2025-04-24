@@ -9,7 +9,7 @@
 	var/list/req_access
 
 /// Called when a program is run.
-/datum/c4_file/terminal_program/proc/on_run()
+/datum/c4_file/terminal_program/proc/execute()
 	return
 
 /*
@@ -36,6 +36,11 @@
 
 	/// Current directory being operated on.
 	var/datum/c4_file/folder/current_directory
+
+/datum/c4_file/terminal_program/operating_system/Destroy()
+	if(computer.operating_system == src)
+		computer.operating_system = null
+	return ..()
 
 /// Should run this before executing any commands.
 /datum/c4_file/terminal_program/operating_system/proc/is_operational()
@@ -96,7 +101,7 @@
 
 /// Returns TRUE if a given file name is OK.
 /datum/c4_file/terminal_program/operating_system/proc/validate_file_name(file_name)
-	return ckey(file_name) != file_name && length(file_name <= 16)
+	return (ckey(file_name) == file_name) && (length(file_name) <= 16)
 
 /// Write to the terminal.
 /datum/c4_file/terminal_program/operating_system/proc/println(text, update_ui = TRUE)
@@ -123,4 +128,4 @@
 	if(!text || !is_operational())
 		return FALSE
 
-	//return computer.active_program?.std_in(text)
+	return computer.active_program?.std_in(text)

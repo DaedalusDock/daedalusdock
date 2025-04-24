@@ -16,17 +16,19 @@
 		return FALSE
 
 	contents += new_file
-	new_file.drive = drive
+
 	new_file.containing_folder = src
+	new_file.drive = drive
+	new_file.computer = computer
 
 	if(istype(new_file, /datum/c4_file/folder))
-		var/datum/c4_file/folder/new_folder
+		var/datum/c4_file/folder/new_folder = new_file
 		new_folder.generation = generation + 1
 
 	return TRUE
 
 /datum/c4_file/folder/proc/can_add_file(datum/c4_file/new_file)
-	if(drive.disk_capacity > (drive.disk_used + new_file.size))
+	if(drive.disk_capacity < (drive.disk_used + new_file.size))
 		return FALSE
 
 	return TRUE
@@ -34,6 +36,9 @@
 /datum/c4_file/folder/proc/try_delete_file(datum/c4_file/file, force, qdel = TRUE)
 	if(file.containing_folder != src)
 		CRASH("Dawg what the FUCK happened here?")
+
+	if(file == src && !containing_folder) // No you cannot delete the root directory.
+		return FALSE
 
 	if(drive.read_only && !force)
 		return FALSE

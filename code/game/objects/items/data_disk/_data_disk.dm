@@ -43,3 +43,7 @@
 
 	var
 		storage
+
+#warn idk what fran did but these dont exist anymore so im leaving a warning here
+/obj/item/disk/data/medium
+/obj/item/disk/data/extra_large

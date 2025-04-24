@@ -12,14 +12,22 @@
 	return ..()
 
 /datum/c4_file/folder/proc/try_add_file(datum/c4_file/new_file)
-	// if(not_enough_space) TODO
-	// 	return FALSE
+	if(!can_add_file(new_file))
+		return FALSE
 
 	contents += new_file
+	new_file.drive = drive
+	new_file.containing_folder = src
 
 	if(istype(new_file, /datum/c4_file/folder))
 		var/datum/c4_file/folder/new_folder
 		new_folder.generation = generation + 1
+
+	return TRUE
+
+/datum/c4_file/folder/proc/can_add_file(datum/c4_file/new_file)
+	if(drive.disk_capacity > (drive.disk_used + new_file.size))
+		return FALSE
 
 	return TRUE
 
@@ -31,5 +39,8 @@
 		return FALSE
 
 	contents -= file
+	file.containing_folder = null
+	size -= file.size
+	drive.disk_used -= file.size
 	if(qdel)
 		qdel(file)

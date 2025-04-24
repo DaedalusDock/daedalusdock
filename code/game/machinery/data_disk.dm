@@ -13,6 +13,9 @@
 	/// The actual storage of the disk.
 	VAR_PROTECTED/list/memory[ALL_DATA_INDEXES]
 
+	VAR_PROTECTED/disk_capacity = 32
+	VAR_PROTECTED/disk_used = 0
+
 	var/read_only = FALSE //Well,it's still a floppy disk
 
 /obj/item/disk/data/Initialize(mapload)

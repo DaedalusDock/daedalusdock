@@ -123,7 +123,7 @@
 
 /// Rename a file
 /datum/shell_command/thinkdos/rename
-	aliases = list("rename", "ren", "move")
+	aliases = list("rename", "ren", "move", "mv")
 
 /datum/shell_command/thinkdos/rename/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	if(length(arguments) != 2)

@@ -116,7 +116,7 @@
 	command_log = null
 
 /// Handles the log file being moved.
-/datum/c4_file/terminal_program/operating_system/thinkdos/proc/log_file_del(datum/source)
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/log_file_moved(datum/source)
 	SIGNAL_HANDLER
 
 	UnregisterSignal(command_log, list(COMSIG_COMPUTER4_FILE_MOVED, COMSIG_PARENT_QDELETING))

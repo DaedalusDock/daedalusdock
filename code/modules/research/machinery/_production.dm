@@ -420,19 +420,6 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 	if(ls["toggle_disk"])
 		toggle_disk(usr)
 
-	if(ls["mem_trg"])
-		var/datum/design/target = locate(ls["mem_trg"]) in selected_disk.read(DATA_IDX_DESIGNS)
-		if(!target)
-			CRASH("Tried to perform a data operation on data we don't have. Potential HREF exploit.")
-
-		switch(ls["mem_act"])
-			if("mem_del")
-				disk_del(usr, DATA_IDX_DESIGNS, target)
-			if("mem_copy")
-				disk_copy(usr, DATA_IDX_DESIGNS, target, TRUE)
-			if("mem_move")
-				disk_move(usr, DATA_IDX_DESIGNS, target, TRUE)
-
 	updateUsrDialog()
 
 /obj/machinery/rnd/production/proc/eject_sheets(eject_sheet, eject_amt)
@@ -505,9 +492,6 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 		l += "<table>[RDSCREEN_NOBREAK]"
 		for(var/datum/design/D as anything in designs)
 			l += "<tr><td>[D.name]<td>[RDSCREEN_NOBREAK]"
-			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_move'>MOVE</A></td>[RDSCREEN_NOBREAK]"
-			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_copy'>COPY</A></td>[RDSCREEN_NOBREAK]"
-			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_del'>DELETE</A></td></tr>[RDSCREEN_NOBREAK]"
 		l += "</table>[RDSCREEN_NOBREAK]"
 
 	else
@@ -563,27 +547,27 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 		if(!isnull(D.category))
 			categories |= D.category
 
-/obj/machinery/rnd/production/disk_move(mob/user, index, data, unique)
-	. = ..()
-	if(!.)
-		return
-	compile_categories()
-	updateUsrDialog()
+// /obj/machinery/rnd/production/disk_move(mob/user, index, data, unique)
+// 	. = ..()
+// 	if(!.)
+// 		return
+// 	compile_categories()
+// 	updateUsrDialog()
 
 
-/obj/machinery/rnd/production/disk_del(mob/user, index, data)
-	. = ..()
-	if(!.)
-		return
-	compile_categories()
-	updateUsrDialog()
+// /obj/machinery/rnd/production/disk_del(mob/user, index, data)
+// 	. = ..()
+// 	if(!.)
+// 		return
+// 	compile_categories()
+// 	updateUsrDialog()
 
 
-/obj/machinery/rnd/production/disk_copy(mob/user, index, data, unique)
-	. = ..()
-	if(!.)
-		return
-	compile_categories()
+// /obj/machinery/rnd/production/disk_copy(mob/user, index, data, unique)
+// 	. = ..()
+// 	if(!.)
+// 		return
+// 	compile_categories()
 
 #undef MODE_BUILD
 #undef MODE_QUEUE

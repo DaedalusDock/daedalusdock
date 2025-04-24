@@ -44,3 +44,11 @@
 	drive.disk_used -= file.size
 	if(qdel)
 		qdel(file)
+
+/datum/c4_file/folder/proc/get_file(file_name, include_folders = TRUE)
+	for(var/datum/c4_file/file as anything in src.contents)
+		if(istype(file, /datum/c4_file/folder) && !include_folders)
+			continue
+
+		if(file.name == file_name)
+			return file

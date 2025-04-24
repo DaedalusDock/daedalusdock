@@ -152,12 +152,10 @@
 	AddComponent(/datum/component/material_container, allowed_materials, INFINITY, MATCONTAINER_EXAMINE|BREAKDOWN_FLAGS_ORE_PROCESSOR, allowed_items=/obj/item/stack)
 	selected_material = GET_MATERIAL_REF(/datum/material/iron)
 
-	internal_disk = new /obj/item/disk/data/medium(src)
-	internal_disk.set_data(
-		DATA_IDX_DESIGNS,
-		SStech.fetch_designs(subtypesof(/datum/design/alloy)
-		),
-	)
+	internal_disk = new /obj/item/disk/data(src)
+	var/datum/c4_file/fab_design_bundle/file_bundle = new(SStech.fetch_designs(subtypesof(/datum/design/alloy)))
+	file_bundle.name = "fabrec"
+	internal_disk.root.try_add_file(file_bundle)
 
 /obj/machinery/mineral/processing_unit/Destroy()
 	CONSOLE = null

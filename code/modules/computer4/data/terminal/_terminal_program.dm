@@ -66,12 +66,7 @@
 	if(!working_directory)
 		working_directory = current_directory
 
-	for(var/datum/c4_file/file as anything in working_directory.contents)
-		if(istype(file, /datum/c4_file/folder) && !include_folders)
-			continue
-
-		if(file.name == file_name)
-			return file
+	return working_directory.get_file(file_name, include_folders)
 
 /// Returns a file or folder with the given name inside of the given filepath relative to the working directory.
 /datum/c4_file/terminal_program/operating_system/proc/resolve_filepath(file_path, datum/c4_file/folder/working_directory)

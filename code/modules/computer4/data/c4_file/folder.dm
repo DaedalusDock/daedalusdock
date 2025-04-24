@@ -27,6 +27,7 @@
 		var/datum/c4_file/folder/new_folder = new_file
 		new_folder.generation = generation + 1
 
+	SEND_SIGNAL(new_file, COMSIG_COMPUTER4_FILE_MOVED)
 	return TRUE
 
 /datum/c4_file/folder/proc/can_add_file(datum/c4_file/new_file)

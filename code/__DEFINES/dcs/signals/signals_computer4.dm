@@ -1,0 +1,1 @@
+#define COMSIG_COMPUTER4_FILE_MOVED "computer4_file_moved"

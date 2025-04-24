@@ -104,6 +104,7 @@
 
 	command_log = log_file
 	RegisterSignal(command_log, COMSIG_PARENT_QDELETING, PROC_REF(log_file_del))
+	RegisterSignal(command_log, COMSIG_COMPUTER4_FILE_MOVED, PROC_REF(log_file_moved))
 
 	log_file.data += "<br><b>STARTUP:</b> [stationtime2text()], [stationdate2text()]"
 	return TRUE
@@ -111,10 +112,14 @@
 /// Handles the log file being deleted. Harddels bad.
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/log_file_del(datum/source)
 	SIGNAL_HANDLER
-	if(source != command_log)
-		UnregisterSignal(source, COMSIG_PARENT_QDELETING)
-		return
 
+	command_log = null
+
+/// Handles the log file being moved.
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/log_file_del(datum/source)
+	SIGNAL_HANDLER
+
+	UnregisterSignal(command_log, list(COMSIG_COMPUTER4_FILE_MOVED, COMSIG_PARENT_QDELETING))
 	command_log = null
 
 /// Write to the command log.

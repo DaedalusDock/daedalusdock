@@ -279,6 +279,7 @@
 #include "code\__DEFINES\dcs\signals\signals_circuit.dm"
 #include "code\__DEFINES\dcs\signals\signals_client.dm"
 #include "code\__DEFINES\dcs\signals\signals_clothing.dm"
+#include "code\__DEFINES\dcs\signals\signals_computer4.dm"
 #include "code\__DEFINES\dcs\signals\signals_container.dm"
 #include "code\__DEFINES\dcs\signals\signals_customizable.dm"
 #include "code\__DEFINES\dcs\signals\signals_datum.dm"

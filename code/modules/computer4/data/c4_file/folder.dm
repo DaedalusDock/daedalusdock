@@ -40,10 +40,7 @@
 	if(file.containing_folder != src)
 		CRASH("Dawg what the FUCK happened here?")
 
-	if(file == src && !containing_folder) // No you cannot delete the root directory.
-		return FALSE
-
-	if(drive.read_only && !force)
+	if(!force && !can_delete_file(file, force))
 		return FALSE
 
 	contents -= file
@@ -51,6 +48,12 @@
 	drive.disk_used -= file.size
 	if(qdel && !QDELING(file))
 		qdel(file)
+
+	return TRUE
+
+/datum/c4_file/folder/proc/can_delete_file(datum/c4_file/file)
+	if(drive.read_only)
+		return FALSE
 
 	return TRUE
 

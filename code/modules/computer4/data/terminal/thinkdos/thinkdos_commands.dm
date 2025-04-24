@@ -133,30 +133,46 @@
 	var/old_path = arguments[1]
 	var/new_path = arguments[2]
 
+	var/overwrite = !!length(options & list("f", "force"))
+
 	var/datum/c4_file/file = system.resolve_filepath(old_path)
 	if(!file)
-		system.print_error("<b>Error:</b> File not found.")
+		system.print_error("<b>Error:</b> Source file not found.")
 		return
 
-	if(system.resolve_filepath(new_path))
-		system.print_error("<b>Error:</b> Name in use.")
-		return
-
-	var/datum/file_path/info = system.text_to_filepath(new_path)
-	var/datum/c4_file/folder/destination_folder = system.parse_directory(info.directory, system.current_directory)
+	var/datum/file_path/destination_info = system.text_to_filepath(new_path)
+	var/datum/c4_file/folder/destination_folder = system.parse_directory(destination_info.directory, system.current_directory)
 	if(!destination_folder)
-		system.print_error("<b>Error:</b> Directory does not exist.")
+		system.print_error("<b>Error:</b> Target directory not found.")
 		return
 
-	if(!system.validate_file_name(info.file_name))
+	if(!system.validate_file_name(destination_info.file_name))
 		system.print_error("<b>Error:</b> Invalid character in name.")
 		return
 
-	if((destination_folder != file.containing_folder) && !system.move_file(file, destination_folder))
-		system.print_error("<b>Error:</b> AAAAAAAAAAAAAAAAAAAAAA.")
+	if((destination_folder != file.containing_folder))
+		var/err
+		if(system.move_file(file, destination_folder, &err, overwrite, new_name = destination_info.file_name))
+			system.println("Done.")
+			return
+
+		if(err == "Target in use.")
+			err += " Use -f to overwrite."
+
+		system.print_error("<b>Error:</b> [err]")
 		return
 
-	file.name = info.file_name
+	var/datum/c4_file/shares_name = destination_folder.get_file(file)
+	if(shares_name)
+		if(!overwrite)
+			system.print_error("<b>Error:</b> Target in use. Use -f to overwrite.")
+			return
+
+		if(!destination_folder.try_delete_file(shares_name))
+			system.print_error("<b>Error:</b> Unable to delete target.")
+			return
+
+	file.name = destination_info.file_name
 	system.println("Done.")
 
 

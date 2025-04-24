@@ -56,16 +56,35 @@
 	current_directory = directory
 	return TRUE
 
-/datum/c4_file/terminal_program/operating_system/proc/move_file(datum/c4_file/file, datum/c4_file/folder/destination)
-	var/datum/c4_file/folder/old_directory = file.containing_folder
-	if(!file.containing_folder.try_delete_file(file, qdel = FALSE))
-		return null
+/// Move a file to another location.
+/datum/c4_file/terminal_program/operating_system/proc/move_file(datum/c4_file/file, datum/c4_file/folder/destination, error_pointer, overwrite = FALSE, new_name = "")
+	if(file.containing_folder == destination)
+		return FALSE
 
-	if(!destination.try_add_file(file))
-		if(!old_directory.try_add_file(file))
-			CRASH("bruh???")
-		return null
+	if(!destination.can_add_file(file))
+		return FALSE
 
+	var/datum/c4_file/file_at_dest = destination.get_file(new_name || file.name, TRUE)
+	if(file_at_dest)
+		if(!overwrite)
+			*error_pointer = "Target in use."
+			return FALSE
+
+		if(!destination.can_delete_file(file_at_dest))
+			*error_pointer = "Unable to delete target."
+			return FALSE
+
+	if(!file.containing_folder.can_delete_file(file))
+		*error_pointer = "Unable to delete source."
+		return FALSE
+
+	if(file_at_dest)
+		destination.try_delete_file(file_at_dest)
+
+	file.containing_folder.try_delete_file(file, qdel = FALSE)
+	destination.try_add_file(file)
+
+	file.name = new_name
 	return TRUE
 
 /// Find a file by it's name in the given directory. Defaults to the current directory.
@@ -93,7 +112,6 @@
 
 	var/datum/file_path/path_info = text_to_filepath(file_path)
 	var/file_name = split_path[length(split_path)]
-	var/searched_filepath = copytext(file_path, 1, length(file_path) - length(file_name) + 1)
 
 	var/datum/c4_file/folder/found_folder = parse_directory(path_info.directory, working_directory)
 	if(!found_folder)

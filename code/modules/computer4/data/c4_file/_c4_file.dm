@@ -16,24 +16,33 @@
 	var/obj/item/disk/data/drive
 	/// Folder the file is in, if any.
 	var/datum/c4_file/folder/containing_folder
-	/// TEMP, will likely end up it's own machine. Here to access machine shit while deving for now.
-	var/obj/machinery/computer4/computer
 
 /datum/c4_file/New()
 	metadata = new()
 	metadata.date = stationdate2text()
 
 /datum/c4_file/Destroy()
-	if(containing_folder)
-		var/datum/c4_file/folder/dont_recursively_delete_thanks = containing_folder
-		containing_folder = null
-		dont_recursively_delete_thanks.try_delete_file(src, TRUE)
+	if(!QDELETED(containing_folder))
+		containing_folder.try_delete_file(src, TRUE)
 
 	return ..()
 
 /// Attempt to stringify the data.
 /datum/c4_file/proc/to_string()
 	return "Error: Cannot convert type 'unknown' to 'string'"
+
+/// Returns a string that is the file's path
+/datum/c4_file/proc/path_to_string()
+	var/list/out = list()
+	if(containing_folder) // not root
+		out += name
+
+	var/datum/c4_file/folder/current_folder = containing_folder
+	while(current_folder?.containing_folder) // Get every folder that isn't the root
+		out.Insert(1, current_folder.name)
+		current_folder = current_folder.containing_folder
+
+	return "[drive.title]:/[jointext(out, "/")]"
 
 /datum/file_path
 	var/directory
@@ -56,11 +65,11 @@
 /datum/c4_file/proc/parse_directory(text, datum/c4_file/folder/origin) as /datum/c4_file/folder
 	RETURN_TYPE(/datum/c4_file/folder)
 
-	if(!text)
-		return
-
 	if(!origin)
 		origin = containing_folder
+
+	if(!text)
+		return origin
 
 	var/datum/c4_file/folder/destination = origin
 
@@ -79,14 +88,14 @@
 
 		switch (prefix)
 			if ("hd0") // Magic value for "the hard drive"
-				if(computer.internal_disk)
-					destination = computer.internal_disk.root
+				if(containing_folder.computer.internal_disk)
+					destination = containing_folder.computer.internal_disk.root
 				else
 					return null
 
 			if ("fd0") // Magic value for "the floppy"
-				if(computer.inserted_disk)
-					destination = computer.inserted_disk.root
+				if(containing_folder.computer.inserted_disk)
+					destination = containing_folder.computer.inserted_disk.root
 				else
 					return null
 

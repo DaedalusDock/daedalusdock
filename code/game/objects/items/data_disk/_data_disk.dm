@@ -8,6 +8,9 @@
 
 	var/datum/c4_file/folder/root
 
+	/// Title of drive within a computer4 system.
+	var/title = "sys"
+
 	var/disk_capacity = 32
 	var/disk_used = 0
 

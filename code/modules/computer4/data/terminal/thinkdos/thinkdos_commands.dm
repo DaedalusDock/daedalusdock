@@ -26,19 +26,34 @@
 	aliases = list("dir", "catalog", "ls")
 
 /datum/shell_command/thinkdos/dir/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
-	system.println("<b>Current folder: [system.current_directory.name]</b>", FALSE)
+	system.println("<b>Current folder: [system.current_directory.path_to_string()]</b>", FALSE)
 
 	var/list/directory_text = list()
+	var/list/cache_spaces = new /list(16)
+
+	var/longest_name_length = 0
 	for(var/datum/c4_file/file in system.current_directory.contents)
+		if(length(file.name) > longest_name_length)
+			longest_name_length = length(file.name)
+
+	for(var/datum/c4_file/file in system.current_directory.contents)
+		var/str = ""
 		if(file == system)
-			directory_text += "[system] - SYSTEM"
-			continue
-
-		if(istype(file, /datum/c4_file/folder))
-			directory_text += "[file.name] - FOLDER - \[Size:[file.size]\]"
+			str = "[file.name] - SYSTEM"
+		else if(istype(file, /datum/c4_file/folder))
+			str = "[file.name] - FOLDER - \[Size:[file.size]\]"
 		else
-			directory_text += "[file.name] - [file.extension] - \[Size:[file.size]\]"
+			str = "[file.name] - [file.extension] - \[Size:[file.size]\]"
 
+		// Big block o' stupid to pad the front end of the strings to line up
+		var/name_length = length(file.name)
+		if(name_length < longest_name_length)
+			if(isnull(cache_spaces[name_length]))
+				cache_spaces[name_length] = jointext(new /list(longest_name_length - name_length + 1), "&nbsp")
+
+			str = "[cache_spaces[name_length]][str]"
+
+		directory_text += str
 
 	if(length(directory_text))
 		system.println(jointext(directory_text, "<br>"))
@@ -49,7 +64,7 @@
 
 /datum/shell_command/thinkdos/root/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
 	system.change_dir(system.current_directory.drive.root)
-	system.println("<b>Current Directory is now [system.current_directory.name]</b>")
+	system.println("<b>Current Directory is now [system.current_directory.path_to_string()]</b>")
 	return
 
 /// Change directory.
@@ -65,7 +80,7 @@
 
 	if(target_dir == "/")
 		system.change_dir(system.drive.root)
-		system.println("<b>Current Directory is now [system.current_directory.name]</b>")
+		system.println("<b>Current Directory is now [system.current_directory.path_to_string()]</b>")
 		return
 
 	var/datum/c4_file/folder/new_dir = system.parse_directory(target_dir, system.current_directory)
@@ -74,7 +89,7 @@
 		return
 
 	system.change_dir(new_dir)
-	system.println("<b>Current Directory is now [system.current_directory.name]</b>")
+	system.println("<b>Current Directory is now [system.current_directory.path_to_string()]</b>")
 
 
 /// Create a folder.
@@ -115,26 +130,26 @@
 		system.println("<b>Syntax:</b> \"rename \[name of target] \[new name]\"")
 		return
 
-	var/old_name = arguments[1]
-	var/new_name = arguments[2]
+	var/old_path = arguments[1]
+	var/new_path = arguments[2]
 
-	if(!system.validate_file_name(new_name))
-		system.print_error("<b>Error:</b> Invalid character in name.")
-		return
-
-	var/datum/c4_file/file = system.resolve_filepath(old_name)
+	var/datum/c4_file/file = system.resolve_filepath(old_path)
 	if(!file)
 		system.print_error("<b>Error:</b> File not found.")
 		return
 
-	if(system.resolve_filepath(new_name))
+	if(system.resolve_filepath(new_path))
 		system.print_error("<b>Error:</b> Name in use.")
 		return
 
-	var/datum/file_path/info = system.text_to_filepath(new_name)
+	var/datum/file_path/info = system.text_to_filepath(new_path)
 	var/datum/c4_file/folder/destination_folder = system.parse_directory(info.directory, system.current_directory)
 	if(!destination_folder)
 		system.print_error("<b>Error:</b> Directory does not exist.")
+		return
+
+	if(!system.validate_file_name(info.file_name))
+		system.print_error("<b>Error:</b> Invalid character in name.")
 		return
 
 	if((destination_folder != file.containing_folder) && !system.move_file(file, destination_folder))
@@ -222,7 +237,7 @@
 		system.println("<b>Error</b>: No file found.")
 		return
 
-	system.println(html_encode(file.to_string()))
+	system.println(file.to_string())
 
 /datum/shell_command/thinkdos/version
 	aliases = list("version", "ver")
@@ -250,3 +265,20 @@
 		return
 
 	system.println(file.size)
+
+/// Renames the drive title
+/datum/shell_command/thinkdos/title
+	aliases = list("title")
+
+/datum/shell_command/thinkdos/title/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, list/arguments, list/options)
+	if(!length(arguments))
+		system.println("<b>Syntax:</b> \"title \[title name]\" Set name of active drive to given title.")
+		return
+
+	if(system.drive.read_only)
+		system.print_error("<b>Error:</b> Unable to set title string.")
+		return
+
+	var/new_title = sanitize(trim(jointext(arguments, ""), 8))
+	system.drive.title = new_title
+	system.println("Drive title set to <b>[new_title]</b>.")

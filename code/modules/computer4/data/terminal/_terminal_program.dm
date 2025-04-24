@@ -8,6 +8,11 @@
 	/// Behaves identically to req_access on /obj
 	var/list/req_access
 
+/datum/c4_file/terminal_program/Destroy()
+	if(containing_folder?.computer?.active_program == src)
+		containing_folder.computer.active_program = null
+	return ..()
+
 /// Called when a program is run.
 /datum/c4_file/terminal_program/proc/execute()
 	return
@@ -38,13 +43,13 @@
 	var/datum/c4_file/folder/current_directory
 
 /datum/c4_file/terminal_program/operating_system/Destroy()
-	if(computer.operating_system == src)
-		computer.operating_system = null
+	if(containing_folder?.computer?.operating_system == src)
+		containing_folder.computer.operating_system = null
 	return ..()
 
 /// Should run this before executing any commands.
 /datum/c4_file/terminal_program/operating_system/proc/is_operational()
-	return !!computer?.is_operational
+	return !!containing_folder?.computer?.is_operational
 
 /// Change active directory.
 /datum/c4_file/terminal_program/operating_system/proc/change_dir(datum/c4_file/folder/directory)
@@ -86,14 +91,15 @@
 	if(length(split_path) == 1)
 		return get_file(split_path[1], working_directory, include_folders = TRUE)
 
+	var/datum/file_path/path_info = text_to_filepath(file_path)
 	var/file_name = split_path[length(split_path)]
 	var/searched_filepath = copytext(file_path, 1, length(file_path) - length(file_name) + 1)
 
-	var/datum/c4_file/folder/found_folder = parse_directory(searched_filepath)
+	var/datum/c4_file/folder/found_folder = parse_directory(path_info.directory, working_directory)
 	if(!found_folder)
 		return null
 
-	return get_file(file_name, found_folder, include_folders = TRUE)
+	return get_file(path_info.file_name, found_folder, include_folders = TRUE)
 
 /// Sanitize a file name.
 /datum/c4_file/terminal_program/operating_system/proc/sanitize_filename(file_name)
@@ -109,9 +115,9 @@
 		return FALSE
 
 
-	computer.text_buffer += "[text]<br>"
+	containing_folder.computer.text_buffer += "[text]<br>"
 	if(update_ui)
-		SStgui.update_uis(computer)
+		SStgui.update_uis(containing_folder.computer)
 	return TRUE
 
 /// Clear the screen completely.
@@ -119,7 +125,7 @@
 	if(!is_operational())
 		return FALSE
 
-	computer.text_buffer = ""
+	containing_folder.computer.text_buffer = ""
 	println("Screen cleared.")
 	return TRUE
 
@@ -128,4 +134,4 @@
 	if(!text || !is_operational())
 		return FALSE
 
-	return computer.active_program?.std_in(text)
+	return containing_folder.computer.active_program?.std_in(text)

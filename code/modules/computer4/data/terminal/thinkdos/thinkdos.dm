@@ -122,7 +122,7 @@
 	if(!command_log || drive.read_only)
 		return FALSE
 
-	command_log.data += text
+	command_log.data += "html_encode(text)"
 	return TRUE
 
 /// Write to the command log if it's enabled, then print to the screen.

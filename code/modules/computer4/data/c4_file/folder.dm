@@ -7,6 +7,9 @@
 	/// Homework
 	var/list/datum/computer/file/contents = list()
 
+	/// TEMP, will likely end up it's own machine. Here to access machine shit while deving for now.
+	var/obj/machinery/computer4/computer
+
 /datum/c4_file/folder/Destroy(force, ...)
 	QDEL_LIST(contents)
 	return ..()
@@ -19,7 +22,6 @@
 
 	new_file.containing_folder = src
 	new_file.drive = drive
-	new_file.computer = computer
 
 	if(istype(new_file, /datum/c4_file/folder))
 		var/datum/c4_file/folder/new_folder = new_file
@@ -44,16 +46,17 @@
 		return FALSE
 
 	contents -= file
-	file.containing_folder = null
 	size -= file.size
 	drive.disk_used -= file.size
-	if(qdel)
+	if(qdel && !QDELING(file))
 		qdel(file)
+
+	return TRUE
 
 /datum/c4_file/folder/proc/get_file(file_name, include_folders = TRUE)
 	for(var/datum/c4_file/file as anything in src.contents)
 		if(istype(file, /datum/c4_file/folder) && !include_folders)
 			continue
 
-		if(file.name == file_name)
+		if(ckey(file.name) == file_name)
 			return file

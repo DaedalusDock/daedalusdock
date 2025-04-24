@@ -22,6 +22,7 @@
 	var/list/tgui_last_accessed = list()
 
 /obj/machinery/computer4/Initialize(mapload)
+	#warn debug
 	internal_disk = new /obj/item/disk/data
 	internal_disk.root.computer = src
 	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/operating_system/thinkdos)

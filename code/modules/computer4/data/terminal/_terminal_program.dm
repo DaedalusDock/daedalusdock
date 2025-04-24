@@ -59,9 +59,11 @@
 /// Move a file to another location.
 /datum/c4_file/terminal_program/operating_system/proc/move_file(datum/c4_file/file, datum/c4_file/folder/destination, error_pointer, overwrite = FALSE, new_name = "")
 	if(file.containing_folder == destination)
+		*error_pointer = "Cannot move folder into itself."
 		return FALSE
 
 	if(!destination.can_add_file(file))
+		*error_pointer = "Unable to move file to target."
 		return FALSE
 
 	var/datum/c4_file/file_at_dest = destination.get_file(new_name || file.name, TRUE)

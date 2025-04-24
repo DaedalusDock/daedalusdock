@@ -31,6 +31,9 @@
 	return TRUE
 
 /datum/c4_file/folder/proc/can_add_file(datum/c4_file/new_file)
+	if(new_file == src)
+		return FALSE
+
 	if(drive.disk_capacity < (drive.disk_used + new_file.size))
 		return FALSE
 

@@ -66,6 +66,13 @@
 			playsound(loc, SFX_KEYBOARD, 50, 1, -15)
 			return TRUE
 
+		if("history")
+			if (params["direction"] == "prev")
+				return traverse_history(usr.ckey, -1)
+
+			if (params["direction"] == "next")
+				return traverse_history(usr.ckey,  1)
+
 /// Get the history entry at a certain index. Returns null if the index is out of bounds or the ckey is null. Will return an empty string for length+1
 /obj/machinery/computer4/proc/get_history(ckey, index)
 	if (isnull(ckey))

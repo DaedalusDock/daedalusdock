@@ -1,6 +1,9 @@
 /obj/machinery/computer4
+	name = "computer"
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "computer"
+
+	network_flags = NETWORK_FLAGS_STANDARD_CONNECTION
 
 	/// The current running/focused program.
 	var/tmp/datum/c4_file/terminal_program/active_program
@@ -23,12 +26,24 @@
 
 /obj/machinery/computer4/Initialize(mapload)
 	#warn debug
+	. = ..()
 	set_internal_disk(new /obj/item/disk/data)
 	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/operating_system/thinkdos)
 	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/notepad)
+	return INITIALIZE_HINT_LATELOAD
 
+/obj/machinery/computer4/LateInitialize()
 	. = ..()
-	post_system()
+	if(is_operational)
+		post_system()
+
+/obj/machinery/computer4/on_set_is_operational(old_value)
+	if(is_operational)
+		post_system()
+	else
+		unload_program(active_program)
+		set_operating_system(null)
+		text_buffer = ""
 
 /obj/machinery/computer4/set_internal_disk(obj/item/disk/data/disk)
 	if(internal_disk)
@@ -135,13 +150,12 @@
 	return TRUE
 
 /obj/machinery/computer4/proc/post_system()
-	var/list/new_text_buffer = list()
 	text_buffer = ""
 
-	new_text_buffer += "Initializing system..."
+	text_buffer += "Initializing system...<br>"
 
 	if(!internal_disk)
-		new_text_buffer = "<font color=red>1701 - NO FIXED DISK</font>"
+		text_buffer = "<font color=red>1701 - NO FIXED DISK</font><br>"
 
 	// Os already known.
 	if(operating_system)
@@ -154,27 +168,26 @@
 		var/datum/c4_file/terminal_program/operating_system/new_os = locate() in inserted_disk?.root.contents
 
 		if(new_os)
-			new_text_buffer += "Booting from inserted drive..."
+			text_buffer += "Booting from inserted drive...<br>"
 			execute_program(new_os)
 		else
-			new_text_buffer += "<font color=red>Non-system disk or disk error.</font>"
+			text_buffer += "<font color=red>Non-system disk or disk error.</font><br>"
 
 	// Okay how about the internal drive?
 	if(!operating_system && internal_disk)
 		var/datum/c4_file/terminal_program/operating_system/new_os = locate() in internal_disk?.root.contents
 
 		if(new_os)
-			new_text_buffer += "Booting from fixed drive..."
+			text_buffer += "Booting from fixed drive...<br>"
 			execute_program(new_os)
 		else
-			new_text_buffer += "<font color=red>Unable to boot from fixed drive.</font>"
+			text_buffer += "<font color=red>Unable to boot from fixed drive.</font><br>"
 
 
 	// Fuck.
 	if(!operating_system)
-		new_text_buffer += "<font color=red>ERR - BOOT FAILURE</font>"
+		text_buffer += "<font color=red>ERR - BOOT FAILURE</font><br>"
 
-	text_buffer = jointext(new_text_buffer, "<br>") + "<br>"
 	SStgui.update_uis(src)
 
 /// Run a program.

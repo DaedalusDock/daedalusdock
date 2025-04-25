@@ -20,8 +20,15 @@
 
 /datum/c4_file/terminal_program/operating_system/thinkdos/execute()
 	initialize_logs()
-	if(!current_directory)
-		change_dir(containing_folder)
+	change_dir(containing_folder)
+
+	var/gamertext = @{"<pre>
+ ___  _    _       _    ___  ___  ___
+|_ _|| |_ &lt;_&gt;._ _ | |__| . \| . |/ __&gt;
+ | | | . || || &#39; || / /| | || | |\__ \
+ |_| |_|_||_||_|_||_\_\|___/`___&#39;&lt;___/
+	</pre>"}
+	println(gamertext)
 
 /// Struct for the parsed stdin
 /datum/shell_stdin
@@ -86,6 +93,9 @@
 
 /// Create the log file, or append a startup log.
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/initialize_logs()
+	if(command_log)
+		return FALSE
+
 	var/datum/c4_file/folder/log_dir = parse_directory("logs", drive.root)
 	if(!log_dir)
 		log_dir = new /datum/c4_file/folder
@@ -94,7 +104,7 @@
 			qdel(log_dir)
 			return FALSE
 
-	var/datum/c4_file/text/log_file = get_file("syslog", log_dir)
+	var/datum/c4_file/text/log_file = log_dir.get_file("syslog")
 	if(!log_file)
 		log_file = new /datum/c4_file/text()
 		log_file.name = "syslog"

@@ -48,15 +48,16 @@
 /obj/machinery/proc/link_to_jack()
 	if(!(src.network_flags & NETWORK_FLAG_USE_DATATERMINAL))
 		CRASH("Machine that doesn't use data networks attempted to link to network terminal!")
+
 	if(!loc)
 		CRASH("Attempted to link to a network jack while in nullspace!")
+
 	var/obj/machinery/power/data_terminal/new_transmission_terminal = locate() in get_turf(src)
 	if(netjack == new_transmission_terminal)
 		return NETJACK_CONNECT_SUCCESS //Already connected, pretend it's a success.
-	unlink_from_jack()//If our new jack is null, then we've somehow lost it? Don't care and just go along with it.
-	if(!new_transmission_terminal)
-		return
-	return new_transmission_terminal.connect_machine(src)
+
+	unlink_from_jack() //If our new jack is null, then we've somehow lost it? Don't care and just go along with it.
+	return new_transmission_terminal?.connect_machine(src)
 
 /// Unlink from a network terminal
 /// `ignore_check` is used as part of machinery destroy.

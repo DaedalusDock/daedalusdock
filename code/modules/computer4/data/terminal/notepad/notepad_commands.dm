@@ -1,101 +1,43 @@
-/datum/c4_file/terminal_program/notepad
-	name = "WizWrite"
-	size = 2
+/datum/shell_command/notepad/edit_cmd/help
+	aliases = list("help")
+	help_text = "Lists all available commands. Use help \[command\] to view information about a specific command."
 
-	var/help_text = {"
-		Commands:
-		<br> \"!view\" to view note
-		<br> \"!del\" to remove current line
-		<br> \"!\[integer]" to set current line
-		<br> \"!save \[name]\" to save note
-		<br> \"!load \[name]\" to load note
-		<br> \"!print\" to print current note.
-		<br> \"!config\" to configure network printing.
-		<br> Anything else to type.
-	"}
+/datum/shell_command/notepad/edit_cmd/help/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	var/datum/c4_file/terminal_program/notepad/notepad = program
+	var/list/output = list()
 
-	/// Commands in edit mode, executed with a ! prefix
-	var/static/list/edit_commands
+	if(length(arguments))
+		var/found = FALSE
+		var/searching_for = jointext(arguments, "")
+		for(var/datum/shell_command/command_iter as anything in notepad.edit_commands)
+			if(searching_for in command_iter.aliases)
+				found = TRUE
+				output += "Displaying information for '[command_iter.aliases[1]]':"
+				output += command_iter.help_text
+				break
 
-	var/list/note_list = list()
-	var/working_line = 0
-
-/datum/c4_file/terminal_program/notepad/New()
-	if(!edit_commands)
-		edit_commands = list()
-		for(var/path as anything in subtypesof(/datum/shell_command/notepad/edit_cmd))
-			edit_commands += new path
-
-/datum/c4_file/terminal_program/notepad/execute()
-	. = ..()
-	if(.)
-		return
-
-	var/datum/c4_file/terminal_program/operating_system/os = get_os()
-	os.println("WizWrite V4.0")
-	os.println(help_text)
-
-/datum/c4_file/terminal_program/notepad/std_in(text)
-	. = ..()
-	var/list/arguments = parse_std_in(text)
-	var/command = arguments[1]
-	arguments.Cut(1,2)
-
-	var/datum/c4_file/terminal_program/operating_system/os = get_os()
-
-	if(command[1] == "!")
-		command = copytext(command, 2)
-		for(var/datum/shell_command/potential_command as anything in edit_commands)
-			if(potential_command.try_exec(command, os, src, arguments, null))
-				return TRUE
-
-		var/line_number = text2num(command)
-		if(!isnum(line_number))
-			os.println("Unrecognized command.")
+		if(!found)
+			system.println("This command is not supported by the help utility. To see a list of commands, type !help.")
 			return
-
-		line_number = floor(line_number)
-		if(line_number <= 0)
-			working_line = 0
-			os.println("Now working from end of document.")
-			return
-
-		if(line_number > length(note_list))
-			os.println("Line index out of bounds.")
-			return
-
-		working_line = line_number
-		os.println("\[[fit_with_zeros("[working_line]", 3)]\] [note_list[working_line]]")
-		return TRUE
-
-	var/adding_text = html_encode(text)
-	var/adding_assoc_text = ""
-
-	os.println("\[[fit_with_zeros("[working_line == 0 ? length(note_list) + 1 : working_line]", 3)]\] [adding_text]")
-
-	var/split_pos = findtext_char(adding_text, "=")
-	if(split_pos)
-		adding_assoc_text = copytext_char(adding_text, 1, split_pos)
-		adding_assoc_text = html_encode(copytext_char(adding_assoc_text, 1, 257))
-
-		adding_text = copytext_char(adding_text, split_pos + 1)
-		adding_text = html_encode(copytext_char(adding_text, 1, 257))
-	else
-		adding_text = html_encode(copytext_char(adding_text, 1, 257))
-
-	if(working_line == 0)
-		note_list += adding_text
-		if(adding_assoc_text)
-			note_list[adding_text] = adding_assoc_text
 
 	else
-		note_list[working_line] = adding_text
-		if(adding_assoc_text)
-			note_list[adding_text] = adding_assoc_text
+		for(var/datum/shell_command/command_iter as anything in notepad.edit_commands)
+			if(length(command_iter.aliases) == 1)
+				output += command_iter.aliases[1]
+				continue
 
-		working_line += 1
-		if(working_line >= length(note_list))
-			working_line = 0
+			output += "[command_iter.aliases[1]] ([jointext(command_iter.aliases.Copy(2), ", ")])"
+
+		sortTim(output, GLOBAL_PROC_REF(cmp_text_asc))
+		output.Insert(1,
+			"Typing text without a '!' prefix will write to the current line.",
+			"You can change lines by typing '!\[number\]'. Zero will change to highest line number.<br>",
+			"Use help \[command\] to see specific information about a command.",
+			"List of available commands:"
+		)
+
+
+	system.println(jointext(output, "<br>"))
 
 /datum/shell_command/notepad/edit_cmd/quit
 	aliases = list("quit", "q", "exit")

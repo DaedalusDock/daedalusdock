@@ -5,6 +5,7 @@
 
 	network_flags = NETWORK_FLAG_USE_DATATERMINAL // Does not get a net ID
 
+	#warn TODO: move all but operating_system into the operating system itself. No reason a computer needs to control these.
 	/// The current focused program.
 	var/tmp/datum/c4_file/terminal_program/active_program
 	/// The operating system.

@@ -135,7 +135,7 @@
 
 /// Write to the terminal.
 /datum/c4_file/terminal_program/operating_system/proc/println(text, update_ui = TRUE)
-	if(!text || !is_operational())
+	if(isnull(text) || !is_operational())
 		return FALSE
 
 

@@ -23,13 +23,30 @@
 
 /obj/machinery/computer4/Initialize(mapload)
 	#warn debug
-	internal_disk = new /obj/item/disk/data
-	internal_disk.root.computer = src
+	set_internal_disk(new /obj/item/disk/data)
 	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/operating_system/thinkdos)
 	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/notepad)
 
 	. = ..()
 	post_system()
+
+/obj/machinery/computer4/set_internal_disk(obj/item/disk/data/disk)
+	if(internal_disk)
+		internal_disk.computer = null
+
+	. = ..()
+
+	if(internal_disk)
+		internal_disk.computer = src
+
+/obj/machinery/computer4/set_inserted_disk(obj/item/disk/data/disk)
+	if(inserted_disk)
+		inserted_disk.computer = null
+
+	. = ..()
+
+	if(inserted_disk)
+		inserted_disk.computer = src
 
 /obj/machinery/computer4/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src)

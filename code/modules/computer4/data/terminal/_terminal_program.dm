@@ -8,11 +8,6 @@
 	/// Behaves identically to req_access on /obj
 	var/list/req_access
 
-/datum/c4_file/terminal_program/Destroy()
-	if(containing_folder?.computer?.active_program == src)
-		containing_folder.computer.active_program = null
-	return ..()
-
 /// Called when a program is run.
 /datum/c4_file/terminal_program/proc/execute()
 	return
@@ -20,7 +15,7 @@
 /// Returns the operating system.
 /datum/c4_file/terminal_program/proc/get_os()
 	RETURN_TYPE(/datum/c4_file/terminal_program/operating_system)
-	return containing_folder?.computer?.operating_system
+	return get_computer()?.operating_system
 
 /*
  * Called by the operating system when a user enters text into the input field.
@@ -47,14 +42,9 @@
 	/// Current directory being operated on.
 	var/datum/c4_file/folder/current_directory
 
-/datum/c4_file/terminal_program/operating_system/Destroy()
-	if(containing_folder?.computer?.operating_system == src)
-		containing_folder.computer.operating_system = null
-	return ..()
-
 /// Should run this before executing any commands.
 /datum/c4_file/terminal_program/operating_system/proc/is_operational()
-	return !!containing_folder?.computer?.is_operational
+	return !!get_computer()?.is_operational
 
 /// Change active directory.
 /datum/c4_file/terminal_program/operating_system/proc/change_dir(datum/c4_file/folder/directory)
@@ -142,9 +132,10 @@
 		return FALSE
 
 
-	containing_folder.computer.text_buffer += "[text]<br>"
+	var/obj/machinery/computer4/computer = get_computer()
+	computer.text_buffer += "[text]<br>"
 	if(update_ui)
-		SStgui.update_uis(containing_folder.computer)
+		SStgui.update_uis(computer)
 	return TRUE
 
 /// Clear the screen completely.
@@ -152,7 +143,7 @@
 	if(!is_operational())
 		return FALSE
 
-	containing_folder.computer.text_buffer = ""
+	get_computer().text_buffer = ""
 	println("Screen cleared.")
 	return TRUE
 
@@ -161,4 +152,4 @@
 	if(!text || !is_operational())
 		return FALSE
 
-	return containing_folder.computer.active_program?.std_in(text)
+	return get_computer().active_program?.std_in(text)

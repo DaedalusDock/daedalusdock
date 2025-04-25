@@ -7,9 +7,6 @@
 	/// Homework
 	var/list/datum/computer/file/contents = list()
 
-	/// TEMP, will likely end up it's own machine. Here to access machine shit while deving for now.
-	var/obj/machinery/computer4/computer
-
 /datum/c4_file/folder/Destroy(force, ...)
 	QDEL_LIST(contents)
 	return ..()

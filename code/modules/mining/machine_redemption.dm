@@ -180,7 +180,7 @@
 
 	if(istype(W, /obj/item/disk/data))
 		if(user.transferItemToLoc(W, src))
-			inserted_disk = W
+			set_inserted_disk(W)
 			return TRUE
 
 	var/obj/item/stack/ore/O = W

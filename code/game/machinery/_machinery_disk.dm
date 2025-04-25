@@ -1,3 +1,10 @@
+/// Setter for internal disk.
+/obj/machinery/proc/set_internal_disk(obj/item/disk/data/disk)
+	internal_disk = disk
+
+/// Setter for inserted disk.
+/obj/machinery/proc/set_inserted_disk(obj/item/disk/data/disk)
+	inserted_disk = disk
 
 /obj/machinery/proc/insert_disk(mob/user, obj/item/disk/data/floppy/disk)
 	if(!istype(disk))
@@ -12,11 +19,12 @@
 			span_notice("[user] inserts [disk] into [src]."),
 			span_notice("You insert [disk] into [src]."),
 		)
-		inserted_disk = disk
+		set_inserted_disk(disk)
 		updateUsrDialog()
 		return TRUE
 
-	inserted_disk = disk
+	set_inserted_disk(disk)
+
 	disk.forceMove(src)
 	updateUsrDialog()
 	return TRUE
@@ -29,7 +37,7 @@
 	if(user)
 		if(Adjacent(user) && user.put_in_active_hand(inserted_disk))
 			. = inserted_disk
-			inserted_disk = null
+			set_inserted_disk(null)
 		else
 			return FALSE
 

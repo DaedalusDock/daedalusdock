@@ -25,7 +25,8 @@
 		var/disk = fab.circuit.def_components?[/obj/item/disk/data]
 		if(!disk)
 			continue
-		fab.internal_disk = new disk
+
+		fab.set_internal_disk(new disk)
 
 		if(UNLINT(fab.internal_disk.storage) < length(fab.internal_disk.read(DATA_IDX_DESIGNS)))
 			TEST_FAIL("[type_of_fab] has too many designs ([length(fab.internal_disk.read(DATA_IDX_DESIGNS))]) for it's storage type [UNLINT(fab.internal_disk.storage)]")

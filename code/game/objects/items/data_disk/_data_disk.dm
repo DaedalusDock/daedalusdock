@@ -6,6 +6,9 @@
 	custom_materials = list(/datum/material/iron =300, /datum/material/glass =100)
 	item_flags = NOBLUDGEON
 
+	/// Ref to the computer it may be contained in. This is handled by /obj/machinery/proc/set_internal_disk.
+	var/obj/machinery/computer4/computer
+
 	var/datum/c4_file/folder/root
 
 	/// Title of drive within a computer4 system.

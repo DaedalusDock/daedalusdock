@@ -748,6 +748,9 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	update_current_power_usage()
 
 	internal_disk = locate() in component_parts
+	if(internal_disk)
+		set_internal_disk(internal_disk)
+
 	selected_disk = internal_disk
 
 /obj/machinery/proc/default_pry_open(obj/item/crowbar)
@@ -777,7 +780,8 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 		part.forceMove(loc)
 	LAZYCLEARLIST(component_parts)
 
-	internal_disk = null //Component parts removes this.
+	if(internal_disk)
+		set_internal_disk(null)
 	eject_disk()
 	return ..()
 

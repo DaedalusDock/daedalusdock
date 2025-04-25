@@ -391,7 +391,7 @@
 		system.print_error("<b>Error: Cannot find executable.")
 		return
 
-	system.containing_folder.computer.execute_program(program_to_run)
+	program.get_computer().execute_program(program_to_run)
 
 /datum/shell_command/thinkdos/tree
 	aliases = list("tree")

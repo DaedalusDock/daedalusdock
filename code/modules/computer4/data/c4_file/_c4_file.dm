@@ -44,6 +44,11 @@
 
 	return "[drive.title]:/[jointext(out, "/")]"
 
+/// Returns the computer this file is in, if any.
+/datum/c4_file/proc/get_computer()
+	RETURN_TYPE(/obj/machinery/computer4)
+	return drive?.computer
+
 /datum/file_path
 	var/directory
 	var/file_name
@@ -88,16 +93,17 @@
 		else
 			split_by_slash.Cut(1,2)
 
+		var/obj/machinery/computer4/computer = get_computer()
 		switch (prefix)
 			if ("hd0") // Magic value for "the hard drive"
-				if(containing_folder.computer.internal_disk)
-					destination = containing_folder.computer.internal_disk.root
+				if(computer.internal_disk)
+					destination = computer.internal_disk.root
 				else
 					return null
 
 			if ("fd0") // Magic value for "the floppy"
-				if(containing_folder.computer.inserted_disk)
-					destination = containing_folder.computer.inserted_disk.root
+				if(computer.inserted_disk)
+					destination = computer.inserted_disk.root
 				else
 					return null
 

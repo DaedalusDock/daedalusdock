@@ -46,7 +46,7 @@
 	// Parse out options
 	for(var/str in split_list)
 		// Dangling "-" is considered an argument per POSIX, so do not trim it from the arguments list.
-		if(length(str) == 1 || str[1] != "-")
+		if(length(str) <= 1 || str[1] != "-")
 			break
 
 		if(str[2] == "-")

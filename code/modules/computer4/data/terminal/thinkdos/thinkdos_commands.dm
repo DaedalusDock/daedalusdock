@@ -282,7 +282,7 @@
 		system.println("<b>Syntax:</b> \"sizeof \[file path].\"")
 		return
 
-	var/datum/c4_file/file = system.resolve_filepath(ckey(jointext(arguments, "")))
+	var/datum/c4_file/file = system.resolve_filepath(jointext(arguments, ""))
 	if(!file)
 		system.print_error("<b>Error:</b> File does not exist.")
 		return
@@ -323,3 +323,26 @@
 
 	system.containing_folder.computer.execute_program(program_to_run)
 
+/datum/shell_command/thinkdos/tree
+	aliases = list("tree")
+
+/datum/shell_command/thinkdos/tree/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	var/show_files = !!length(options & list("f", "files"))
+
+	var/list/output = list(system.current_directory == system.drive.root ? system.drive.title : system.current_directory.name)
+
+	search_dir(system.current_directory, output, show_files, 1)
+
+	system.println(jointext(output, "<br>"))
+
+/datum/shell_command/thinkdos/tree/proc/search_dir(datum/c4_file/folder/folder, list/output, show_files, depth)
+	var/spaces = jointext(new /list((depth * 2) + 1), "&nbsp")
+
+	for(var/datum/c4_file/file as anything in folder.contents)
+		var/is_folder = istype(file, /datum/c4_file/folder)
+		if(!is_folder && !show_files)
+			continue
+
+		output += "[spaces]↳ [file.name]"
+		if(is_folder)
+			search_dir(file, output, show_files, depth + 1)

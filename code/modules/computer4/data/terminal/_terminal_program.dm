@@ -2,8 +2,12 @@
 	name = "program"
 	extension = "TPROG"
 
+
 	/// Set to FALSE if the program can't actually be run.
 	var/is_executable = TRUE
+
+	/// Set to TRUE if the program is able to be run in the background.
+	var/can_be_backgrounded = FALSE
 
 	/// Behaves identically to req_access on /obj
 	var/list/req_access
@@ -29,6 +33,10 @@
 	RETURN_TYPE(/list)
 
 	return splittext(text, " ")
+
+/// Called by computers to forward commands from peripherals to programs. Should probably be on OS but oh well.
+/datum/c4_file/terminal_program/proc/peripheral_input(obj/item/peripheral/invoker, command, datum/signal/packet)
+	return
 
 /datum/c4_file/terminal_program/operating_system
 	name = "operating system"

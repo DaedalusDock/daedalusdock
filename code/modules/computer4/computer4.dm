@@ -3,12 +3,17 @@
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "computer"
 
-	network_flags = NETWORK_FLAGS_STANDARD_CONNECTION
+	network_flags = NETWORK_FLAG_USE_DATATERMINAL // Does not get a net ID
 
-	/// The current running/focused program.
+	/// The current focused program.
 	var/tmp/datum/c4_file/terminal_program/active_program
 	/// The operating system.
 	var/tmp/datum/c4_file/terminal_program/operating_system/thinkdos/operating_system
+	/// All programs currently running on the machine.
+	var/tmp/list/datum/c4_file/terminal_program/processing_programs = list()
+
+	/// k:v list of peripherals where key is the peripheral type and v is a reference.
+	var/tmp/list/obj/item/peripheral/peripherals = list()
 
 	/// Screen text buffer.
 	var/text_buffer = ""
@@ -62,6 +67,47 @@
 
 	if(inserted_disk)
 		inserted_disk.computer = src
+
+/// Getter for retrieving peripherals in program code.
+/obj/machinery/computer4/proc/get_peripheral(peripheral_type)
+	return peripherals[peripheral_type]
+
+/// Adds a peripheral to the peripherals list. Does not handle physical location.
+/obj/machinery/computer4/proc/add_peripheral(obj/item/peripheral/new_peri)
+	peripherals[new_peri.peripheral_type] = new_peri
+	RegisterSignal(new_peri, COMSIG_MOVABLE_MOVED, PROC_REF(peripheral_gone))
+
+	new_peri.on_attach(src)
+
+/// Removes a peripheral from the peripherals list. Does not handle physical location.
+/obj/machinery/computer4/proc/remove_peripheral(obj/item/peripheral/to_remove)
+	peripherals -= to_remove.peripheral_type
+	UnregisterSignal(to_remove, COMSIG_MOVABLE_MOVED)
+
+	to_remove.on_detach(src)
+
+/obj/machinery/computer4/attackby(obj/item/weapon, mob/user, params)
+	. = ..()
+	if(.)
+		return
+
+	if(istype(weapon, /obj/item/peripheral))
+		var/obj/item/peripheral/peripheral = weapon
+		if(peripherals[peripheral])
+			to_chat(user, span_warning("There is already a peripheral in that slot."))
+			return TRUE
+
+		if(!user.transferItemToLoc(peripheral, src))
+			return TRUE
+
+		add_peripheral(peripheral)
+		user.visible_message(span_notice("[user] inserts [peripheral] into [src]."))
+		return TRUE
+
+/// Called by peripherals to interface with the computer
+/obj/machinery/computer4/proc/peripheral_input(obj/item/peripheral/invoker, command, datum/signal/packet)
+	for(var/datum/c4_file/terminal_program/program as anything in processing_programs)
+		program.peripheral_input(invoker, command, packet)
 
 /obj/machinery/computer4/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src)
@@ -195,8 +241,14 @@
 	if(!program)
 		return FALSE
 
+	if(program in processing_programs)
+		CRASH("Tried to add an already running program to the processing programs list.")
+
+	add_processing_program(program)
+
 	if(!operating_system && istype(program, /datum/c4_file/terminal_program/operating_system))
-		set_operating_system(program) // Hard dels are avoided by os Destroy
+		set_operating_system(program)
+
 
 	set_active_program(program)
 	program.execute()
@@ -207,57 +259,83 @@
 	if(!program)
 		return FALSE
 
+	if(!(program in processing_programs))
+		CRASH("Tried tried to remove a program we aren't even running.")
+
+	remove_processing_program(program)
+
 	if(active_program == program)
 		set_active_program(operating_system)
 
 	return TRUE
 
+/// Move a program to background
+/obj/machinery/computer4/proc/try_background_program(datum/c4_file/terminal_program/program)
+	if(length(processing_programs) > 6) // Sane limit IMO
+		return FALSE
+
+	if(active_program == program)
+		set_active_program(operating_system)
+
+	return TRUE
+
+/// Setter for the processing programs list. Use execute_program() instead!
+/obj/machinery/computer4/proc/add_processing_program(datum/c4_file/terminal_program/program)
+	PRIVATE_PROC(TRUE)
+
+	processing_programs += program
+	RegisterSignal(program, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_MOVED), PROC_REF(processing_program_moved))
+
+/// Setter for the processing programs list. Use unload_program() instead!
+/obj/machinery/computer4/proc/remove_processing_program(datum/c4_file/terminal_program/program)
+	processing_programs -= program
+	UnregisterSignal(program, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_MOVED))
+
 /// Setter for active program. Use execute_program() or unload_program() instead!
 /obj/machinery/computer4/proc/set_active_program(datum/c4_file/terminal_program/program)
 	PRIVATE_PROC(TRUE)
 
-	if(active_program)
-		UnregisterSignal(active_program, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_MOVED))
-
 	active_program = program
 
-	if(active_program && active_program != operating_system) // set_operating_system already does all of this.
-		RegisterSignal(active_program, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_MOVED), PROC_REF(active_program_moved))
-
+/// Setter for operating system.
 /obj/machinery/computer4/proc/set_operating_system(datum/c4_file/terminal_program/operating_system/os)
 	PRIVATE_PROC(TRUE)
 
-	if(os)
-		UnregisterSignal(os, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_MOVED))
-
+	var/datum/c4_file/terminal_program/operating_system/old_os = operating_system
 	operating_system = os
 
-	if(os)
-		RegisterSignal(operating_system, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_MOVED), PROC_REF(operating_system_moved))
-	else
+	if(!operating_system)
+		for(var/datum/c4_file/terminal_program/program as anything in processing_programs)
+			unload_program(program)
+
+		unload_program(old_os)
 		text_buffer = ""
 
-/obj/machinery/computer4/proc/active_program_moved(datum/source)
+/// Handles any running programs being moved in the filesystem.
+/obj/machinery/computer4/proc/processing_program_moved(datum/source)
 	SIGNAL_HANDLER
 
-	unload_program(active_program)
+	if(source == operating_system)
+		if(QDELING(source))
+			set_operating_system(null)
+			return
 
-/obj/machinery/computer4/proc/operating_system_moved(datum/source)
-	SIGNAL_HANDLER
+		// Check if it's still in the root of either disk, this is fine :)
+		if(operating_system in internal_disk?.root.contents)
+			return
 
-	if(QDELING(operating_system))
+		if(operating_system in inserted_disk?.root.contents)
+			return
+
+		// OS is not in a root folder, KILL!!!
 		set_operating_system(null)
 		return
 
-	// Check if it's still in the root of either disk, this is fine :)
-	if(operating_system in internal_disk?.root.contents)
-		return
 
-	if(operating_system in inserted_disk?.root.contents)
-		return
+	unload_program(active_program)
 
-	// OS is not in a root folder, KILL!!!
-	if(operating_system == active_program)
-		set_active_program(null)
+/// Handles a peripheral moving.
+/obj/machinery/computer4/proc/peripheral_gone(obj/item/peripheral/source)
+	SIGNAL_HANDLER
 
-	set_operating_system(null)
+	remove_peripheral(source.peripheral_type)

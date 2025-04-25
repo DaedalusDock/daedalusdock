@@ -29,7 +29,7 @@
 
 /// Attempt to stringify the data.
 /datum/c4_file/proc/to_string()
-	return "Error: Cannot convert type 'unknown' to 'string'"
+	return "Error: Cannot convert type 'unknown' to 'string'" //readable_corrupted_text() maybe?
 
 /// Returns a string that is the file's path
 /datum/c4_file/proc/path_to_string()
@@ -47,6 +47,7 @@
 /datum/file_path
 	var/directory
 	var/file_name
+	var/raw
 
 /datum/c4_file/proc/text_to_filepath(text)
 	if(!text)
@@ -59,6 +60,7 @@
 	var/datum/file_path/path = new
 	path.directory = directory
 	path.file_name = file_name
+	path.raw = text
 	return path
 
 /// Take a directory, vomit out a folder at that directory or null
@@ -77,7 +79,7 @@
 		destination = origin.drive.root
 		text = copytext(text, 2)
 
-	var/list/split_by_slash = splittext(text,"/")
+	var/list/split_by_slash = splittext(text, "/")
 	if (length(split_by_slash) && copytext(split_by_slash[1], 4, 5) == ":")
 		var/prefix = lowertext(copytext(split_by_slash[1], 1, 4) )
 
@@ -125,7 +127,7 @@
 
 		var/found_next_folder = FALSE
 		for(var/datum/c4_file/folder/F in destination.contents)
-			if(F.name == ckey(split_by_slash[1]))
+			if(ckey(F.name) == ckey(split_by_slash[1]))
 				split_by_slash -= split_by_slash[1]
 				destination = F
 				found_next_folder = TRUE

@@ -1190,3 +1190,18 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 		final_string += copytext(string, second_spot, second_spot + 1)
 		final_string += copytext(string, second_spot + 2, string_len)
 	return scramble_text(final_string.Join(), intensity - 1)
+
+/// Prepends zeros to the front of a string until it reaches a given size.
+/proc/fit_with_zeros(text, size)
+	var/lentext = length(text)
+	var/len_diff = (size - lentext)
+	if(len_diff <= 0)
+		return text
+
+	return "[num2text(0, len_diff, 10)][text]"
+
+/// Prepends the string with the given character until the specified length is met.
+/proc/fit_with(text, length, char = " ")
+	var/delta = length - length_char(.)
+	var/list/characters = new /list(max(delta + 1, 0))
+	return "[jointext(characters, char)][text]"

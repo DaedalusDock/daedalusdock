@@ -26,6 +26,7 @@
 	internal_disk = new /obj/item/disk/data
 	internal_disk.root.computer = src
 	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/operating_system/thinkdos)
+	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/notepad)
 
 	. = ..()
 	post_system()
@@ -159,13 +160,74 @@
 	text_buffer = jointext(new_text_buffer, "<br>") + "<br>"
 	SStgui.update_uis(src)
 
+/// Run a program.
 /obj/machinery/computer4/proc/execute_program(datum/c4_file/terminal_program/program)
 	if(!program)
 		return FALSE
 
 	if(!operating_system && istype(program, /datum/c4_file/terminal_program/operating_system))
-		operating_system = program // Hard dels are avoided by os Destroy
+		set_operating_system(program) // Hard dels are avoided by os Destroy
 
-	active_program = program
+	set_active_program(program)
 	program.execute()
 	return TRUE
+
+/// Close a program.
+/obj/machinery/computer4/proc/unload_program(datum/c4_file/terminal_program/program)
+	if(!program)
+		return FALSE
+
+	if(active_program == program)
+		set_active_program(operating_system)
+
+	return TRUE
+
+/// Setter for active program. Use execute_program() or unload_program() instead!
+/obj/machinery/computer4/proc/set_active_program(datum/c4_file/terminal_program/program)
+	PRIVATE_PROC(TRUE)
+
+	if(active_program)
+		UnregisterSignal(active_program, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_MOVED))
+
+	active_program = program
+
+	if(active_program && active_program != operating_system) // set_operating_system already does all of this.
+		RegisterSignal(active_program, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_MOVED), PROC_REF(active_program_moved))
+
+/obj/machinery/computer4/proc/set_operating_system(datum/c4_file/terminal_program/operating_system/os)
+	PRIVATE_PROC(TRUE)
+
+	if(os)
+		UnregisterSignal(os, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_MOVED))
+
+	operating_system = os
+
+	if(os)
+		RegisterSignal(operating_system, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_MOVED), PROC_REF(operating_system_moved))
+	else
+		text_buffer = ""
+
+/obj/machinery/computer4/proc/active_program_moved(datum/source)
+	SIGNAL_HANDLER
+
+	unload_program(active_program)
+
+/obj/machinery/computer4/proc/operating_system_moved(datum/source)
+	SIGNAL_HANDLER
+
+	if(QDELING(operating_system))
+		set_operating_system(null)
+		return
+
+	// Check if it's still in the root of either disk, this is fine :)
+	if(operating_system in internal_disk?.root.contents)
+		return
+
+	if(operating_system in inserted_disk?.root.contents)
+		return
+
+	// OS is not in a root folder, KILL!!!
+	if(operating_system == active_program)
+		set_active_program(null)
+
+	set_operating_system(null)

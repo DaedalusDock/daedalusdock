@@ -24,7 +24,7 @@
 		change_dir(containing_folder)
 
 /// Struct for the parsed stdin
-/datum/thinkdos_stdin
+/datum/shell_stdin
 	var/raw = ""
 	var/command = ""
 	var/list/arguments = list()
@@ -32,7 +32,7 @@
 
 /datum/c4_file/terminal_program/operating_system/thinkdos/parse_std_in(text)
 	var/list/split_list = splittext(text, " ")
-	var/datum/thinkdos_stdin/output = new
+	var/datum/shell_stdin/output = new
 
 	output.raw = text
 	output.command = lowertext(split_list[1])
@@ -76,9 +76,9 @@
 	println(encoded_in)
 	write_log(encoded_in)
 
-	var/datum/thinkdos_stdin/parsed_stdin = parse_std_in(text)
+	var/datum/shell_stdin/parsed_stdin = parse_std_in(text)
 	for(var/datum/shell_command/potential_command as anything in commands)
-		if(potential_command.try_exec(src, parsed_stdin.command, parsed_stdin.arguments, parsed_stdin.options))
+		if(potential_command.try_exec(parsed_stdin.command, src, src, parsed_stdin.arguments, parsed_stdin.options))
 			return TRUE
 
 	println("'[html_encode(parsed_stdin.raw)]' is not recognized as an internal or external command.")

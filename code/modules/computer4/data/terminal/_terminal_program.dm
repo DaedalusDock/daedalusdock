@@ -17,6 +17,11 @@
 /datum/c4_file/terminal_program/proc/execute()
 	return
 
+/// Returns the operating system.
+/datum/c4_file/terminal_program/proc/get_os()
+	RETURN_TYPE(/datum/c4_file/terminal_program/operating_system)
+	return containing_folder?.computer?.operating_system
+
 /*
  * Called by the operating system when a user enters text into the input field.
  * Don't call directly, call os.try_std_in() instead
@@ -113,7 +118,6 @@
 		return get_file(split_path[1], working_directory, include_folders = TRUE)
 
 	var/datum/file_path/path_info = text_to_filepath(file_path)
-	var/file_name = split_path[length(split_path)]
 
 	var/datum/c4_file/folder/found_folder = parse_directory(path_info.directory, working_directory)
 	if(!found_folder)

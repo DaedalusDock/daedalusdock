@@ -162,7 +162,7 @@
 		system.print_error("<b>Error:</b> [err]")
 		return
 
-	var/datum/c4_file/shares_name = destination_folder.get_file(fdestination_info.file_name)
+	var/datum/c4_file/shares_name = destination_folder.get_file(destination_info.file_name)
 	if(shares_name)
 		if(!overwrite)
 			system.print_error("<b>Error:</b> Target in use. Use -f to overwrite.")

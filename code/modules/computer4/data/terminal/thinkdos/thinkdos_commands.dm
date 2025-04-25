@@ -2,6 +2,9 @@
 	/// Command names.
 	var/list/aliases
 
+	/// How to use this command, usually printed by a "help" command.
+	var/help_text = "N/A"
+
 /// Attempt to execute the command. Return TRUE if *any* action is taken.
 /datum/shell_command/proc/try_exec(command_name, datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!(command_name in aliases))
@@ -14,9 +17,45 @@
 /datum/shell_command/proc/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	CRASH("Unimplimented run()")
 
+/datum/shell_command/thinkdos/help
+	aliases = list("help")
+	help_text = "Lists all available commands. Use help \[command\] to view information about a specific command."
+
+/datum/shell_command/thinkdos/help/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	var/list/output = list()
+
+	if(length(arguments))
+		var/found = FALSE
+		var/searching_for = jointext(arguments, "")
+		for(var/datum/shell_command/command_iter as anything in system.commands)
+			if(searching_for in command_iter.aliases)
+				found = TRUE
+				output += "Displaying information for '[command_iter.aliases[1]]':"
+				output += command_iter.help_text
+				break
+
+		if(!found)
+			system.print_error("This command is not supported by the help utility. To see a list of commands, type help.")
+			return
+
+	else
+		for(var/datum/shell_command/command_iter as anything in system.commands)
+			if(length(command_iter.aliases) == 1)
+				output += command_iter.aliases[1]
+				continue
+
+			output += "[command_iter.aliases[1]] ([jointext(command_iter.aliases.Copy(2), ", ")])"
+
+		sortTim(output, GLOBAL_PROC_REF(cmp_text_asc))
+		output.Insert(1, "Use help \[command\] to see specific information about a command.", "List of available commands:")
+
+
+	system.println(jointext(output, "<br>"))
+
 /// Clear the screen
 /datum/shell_command/thinkdos/home
 	aliases = list("home", "cls")
+	help_text = "Clears the screen of all text."
 
 /datum/shell_command/thinkdos/home/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	system.clear_screen()
@@ -24,6 +63,7 @@
 /// Print the contents of the current directory.
 /datum/shell_command/thinkdos/dir
 	aliases = list("dir", "catalog", "ls")
+	help_text = "Prints the contents of the current directory."
 
 /datum/shell_command/thinkdos/dir/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	system.println("<b>Current folder: [system.current_directory.path_to_string()]</b>", FALSE)
@@ -61,6 +101,7 @@
 /// Change the current directory to the root of the current folder.
 /datum/shell_command/thinkdos/root
 	aliases = list("root")
+	help_text = "Changes the current directory to the root of the file system."
 
 /datum/shell_command/thinkdos/root/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	system.change_dir(system.current_directory.drive.root)
@@ -70,10 +111,11 @@
 /// Change directory.
 /datum/shell_command/thinkdos/cd
 	aliases = list("cd", "chdir")
+	help_text = "Changes the current directory.<br>Usage: 'cd \[directory\]'<br><br>'.' refers to the current directory.<br>'../' refers to the parent directory."
 
 /datum/shell_command/thinkdos/cd/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
-		system.println("<b>Syntax:</b> \"cd \[directory string\]\" String is relative to current directory.")
+		system.println("<b>Syntax:</b> \"cd \[directory string\]\".")
 		return
 
 	var/target_dir = jointext(arguments, " ")
@@ -95,6 +137,7 @@
 /// Create a folder.
 /datum/shell_command/thinkdos/makedir
 	aliases = list("makedir", "mkdir")
+	help_text = "Creates a new folder.<br>Usage: 'makedir \[directory\]'<br><br>See 'cd' for more information."
 
 /datum/shell_command/thinkdos/makedir/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
@@ -123,7 +166,8 @@
 
 /// Rename a file
 /datum/shell_command/thinkdos/rename
-	aliases = list("rename", "ren", "move", "mv")
+	aliases = list("move","mv", "rename", "ren")
+	help_text = "Moves or renames a file or folder.<br>Usage: 'move \[options?\] \[path\] \[destination path\]'<br><br>See 'cd' for more information.<br>-f, --force &nbsp&nbsp&nbsp&nbsp&nbsp&nbspOverwrite any existing files in the destination location."
 
 /datum/shell_command/thinkdos/rename/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(length(arguments) != 2)
@@ -187,6 +231,17 @@
 /datum/shell_command/thinkdos/delete
 	aliases = list("delete", "del", "era", "erase", "rm")
 
+/datum/shell_command/thinkdos/delete/New()
+	..()
+	var/list/help_list = list(
+		"Deletes the specified file from the drive.",
+		"Usage: 'delete \[options?\] \[path\]'",
+		"<br>See 'cd' for more information.",
+	)
+	help_list += "[fit_with("-f, --force", 20, "&nbsp", TRUE)]Overwrite any existing files in the destination location."
+	help_list += "[fit_with("-r, -R, --recursive", 20, "&nbsp", TRUE)]Allow deletion of folders."
+	help_text = jointext(help_list, "<br>")
+
 /datum/shell_command/thinkdos/delete/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
 		system.println("<b>Syntax:</b> \"del \[-f\] \[file name].\"")
@@ -195,12 +250,10 @@
 	var/force = !!length(options & list("f", "force"))
 	var/recursive = !!length(options & list("r", "R", "recursive"))
 
-	var/file_name = ckey(jointext(arguments, ""))
+	var/datum/c4_file/file = system.resolve_filepath(jointext(arguments, ""))
 
-	var/datum/c4_file/file = system.resolve_filepath(file_name)
 	if(!file)
-		if(!force)
-			system.print_error("<b>Error:</b> File not found.")
+		system.print_error("<b>Error:</b> File not found.")
 		return
 
 	if(istype(file, /datum/c4_file/folder))
@@ -217,6 +270,15 @@
 		system.print_error("<b>Error:</b> Access denied.")
 		return
 
+	if(!file.containing_folder) // is root
+		var/datum/c4_file/folder/root_dir = file
+		for(var/datum/c4_file/file_iter as anything in root_dir.contents)
+			root_dir.try_delete_file(file_iter)
+
+		if(!QDELETED(system))
+			system.println("File deleted.")
+		return
+
 	if(file.containing_folder.try_delete_file(file))
 		system.println("File deleted.")
 	else
@@ -224,6 +286,7 @@
 
 /datum/shell_command/thinkdos/initlogs
 	aliases = list("initlogs")
+	help_text = "Creates the system log file."
 
 /datum/shell_command/thinkdos/initlogs/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(system.command_log)
@@ -238,6 +301,7 @@
 
 /datum/shell_command/thinkdos/print
 	aliases = list("print", "echo")
+	help_text = "Displays the specified text."
 
 /datum/shell_command/thinkdos/print/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
@@ -249,6 +313,7 @@
 
 /datum/shell_command/thinkdos/read
 	aliases = list("read", "type")
+	help_text = "Displays the contents of a file.<br>Usage: 'read \[directory\]'"
 
 /datum/shell_command/thinkdos/read/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
@@ -264,18 +329,21 @@
 
 /datum/shell_command/thinkdos/version
 	aliases = list("version", "ver")
+	help_text = "Displays the version of the operating system."
 
 /datum/shell_command/thinkdos/version/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	system.println("[system.system_version]<br>Copyright Thinktronic Systems, LTD.")
 
 /datum/shell_command/thinkdos/time
 	aliases = list("time")
+	help_text = "Displays the current time."
 
 /datum/shell_command/thinkdos/time/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	system.println("[stationtime2text()], [stationdate2text()]")
 
 /datum/shell_command/thinkdos/sizeof
 	aliases = list("sizeof", "du")
+	help_text = "Displays the size of a file on disk.<br>Usage: 'sizeof \[directory\]'"
 
 /datum/shell_command/thinkdos/sizeof/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
@@ -292,6 +360,7 @@
 /// Renames the drive title
 /datum/shell_command/thinkdos/title
 	aliases = list("title")
+	help_text = "Changes the name of the current drivee.<br>Usage: 'title \[new name\]'"
 
 /datum/shell_command/thinkdos/title/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
@@ -308,6 +377,7 @@
 
 /datum/shell_command/thinkdos/run_prog
 	aliases = list("run")
+	help_text = "Runs an executable file.<br>Usage: 'run \[file\]'"
 
 /datum/shell_command/thinkdos/run_prog/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
@@ -325,6 +395,7 @@
 
 /datum/shell_command/thinkdos/tree
 	aliases = list("tree")
+	help_text = "Displays the file system structure relative to the current directory.<br>Usage: 'tree \[options?\]'<br><br>-f, --file &nbsp&nbsp&nbsp&nbsp&nbsp&nbspDisplay files."
 
 /datum/shell_command/thinkdos/tree/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/show_files = !!length(options & list("f", "files"))

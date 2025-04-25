@@ -123,6 +123,9 @@
 	if(!found_folder)
 		return null
 
+	if(!path_info.file_name)
+		return found_folder
+
 	return get_file(path_info.file_name, found_folder, include_folders = TRUE)
 
 /// Sanitize a file name.

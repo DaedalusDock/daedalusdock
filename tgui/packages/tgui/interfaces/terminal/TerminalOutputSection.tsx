@@ -41,6 +41,7 @@ export const TerminalOutputSection = (props: TerminalOutputSectionProps) => {
         fontFamily="Consolas"
         height="100%"
         color={fontColor}
+        fontSize="1.2em"
         dangerouslySetInnerHTML={{ __html: displayHTML }}
       />
     </Section>

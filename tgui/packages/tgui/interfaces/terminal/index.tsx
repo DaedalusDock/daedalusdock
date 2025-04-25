@@ -19,7 +19,7 @@ export const Terminal = (props) => {
   const { bgColor, displayHTML, fontColor, peripherals, windowName } = data;
 
   return (
-    <Window theme="retro-dark" title={windowName} width={380} height={350}>
+    <Window theme="retro-dark" title={windowName} width={670} height={500}>
       <Window.Content fontFamily="Consolas">
         <Stack vertical fill>
           <Stack.Item grow>

@@ -102,7 +102,7 @@
 					return null
 
 	// Account for trailing slash meaning "gimmie the folder."
-	if(split_by_slash[length(split_by_slash)] == "")
+	if(length(split_by_slash) && split_by_slash[length(split_by_slash)] == "")
 		split_by_slash.len--
 
 	while(destination)

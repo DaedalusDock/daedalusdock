@@ -141,18 +141,23 @@
 		return
 
 	var/datum/file_path/destination_info = system.text_to_filepath(new_path)
+	var/desired_name = destination_info.file_name
+
 	var/datum/c4_file/folder/destination_folder = system.parse_directory(destination_info.directory, system.current_directory)
 	if(!destination_folder)
 		system.print_error("<b>Error:</b> Target directory not found.")
 		return
 
-	if(!system.validate_file_name(destination_info.file_name))
+	if(desired_name && !system.validate_file_name(desired_name))
 		system.print_error("<b>Error:</b> Invalid character in name.")
 		return
 
+	// Preserve the existing file name if we didn't specify a new name.
+	desired_name ||= file.name
+
 	if((destination_folder != file.containing_folder))
 		var/err
-		if(system.move_file(file, destination_folder, &err, overwrite, new_name = destination_info.file_name))
+		if(system.move_file(file, destination_folder, &err, overwrite, new_name = desired_name))
 			system.println("Done.")
 			return
 
@@ -162,7 +167,7 @@
 		system.print_error("<b>Error:</b> [err]")
 		return
 
-	var/datum/c4_file/shares_name = destination_folder.get_file(destination_info.file_name)
+	var/datum/c4_file/shares_name = destination_folder.get_file(desired_name)
 	if(shares_name)
 		if(!overwrite)
 			system.print_error("<b>Error:</b> Target in use. Use -f to overwrite.")
@@ -172,7 +177,7 @@
 			system.print_error("<b>Error:</b> Unable to delete target.")
 			return
 
-	file.name = destination_info.file_name
+	file.name = desired_name
 	system.println("Done.")
 
 

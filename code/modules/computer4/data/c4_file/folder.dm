@@ -23,6 +23,9 @@
 	new_file.containing_folder = src
 	new_file.drive = drive
 
+	size += new_file.size
+	drive.disk_used += new_file.size
+
 	if(istype(new_file, /datum/c4_file/folder))
 		var/datum/c4_file/folder/new_folder = new_file
 		new_folder.generation = generation + 1

@@ -152,13 +152,15 @@
 		system.print_error("<b>Error:</b> Invalid character in name.")
 		return
 
+	var/old_name = file.name
+
 	// Preserve the existing file name if we didn't specify a new name.
 	desired_name ||= file.name
 
 	if((destination_folder != file.containing_folder))
 		var/err
 		if(system.move_file(file, destination_folder, &err, overwrite, new_name = desired_name))
-			system.println("Done.")
+			system.println("Moved [old_name] to [file.path_to_string()].")
 			return
 
 		if(err == "Target in use.")
@@ -178,7 +180,7 @@
 			return
 
 	file.name = desired_name
-	system.println("Done.")
+	system.println("Moved [old_name] to [file.path_to_string()].")
 
 
 /// Delete a file

@@ -37,7 +37,7 @@
 			if(!isnull(tmp_filter) && tmp_filter != net_class)
 				return RECEIVE_SIGNAL_FINISHED
 			//Blame kapu for how stupid this looks :3
-			post_signal(create_signal(sigdat[PACKET_SOURCE_ADDRESS], list("command"=NET_COMMAND_PING_REPLY,"netclass"=src.net_class,"netaddr"=src.net_id)+src.ping_addition))
+			post_signal(create_signal(sigdat[PACKET_SOURCE_ADDRESS], list("command"=NET_COMMAND_PING_REPLY,PACKET_NETCLASS=src.net_class,"netaddr"=src.net_id)+src.ping_addition))
 		return RECEIVE_SIGNAL_FINISHED//regardless, return 1 so that machines don't process packets not intended for them.
 	return RECEIVE_SIGNAL_CONTINUE // We are the designated recipient of this packet, we need to handle it.
 

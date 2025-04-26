@@ -2935,6 +2935,8 @@
 #include "code\modules\computer4\data\c4_file\genetics.dm"
 #include "code\modules\computer4\data\c4_file\record.dm"
 #include "code\modules\computer4\data\c4_file\text.dm"
+#include "code\modules\computer4\data\probe\probe.dm"
+#include "code\modules\computer4\data\probe\probe_commands.dm"
 #include "code\modules\computer4\data\terminal\_terminal_program.dm"
 #include "code\modules\computer4\data\terminal\notepad\notepad.dm"
 #include "code\modules\computer4\data\terminal\notepad\notepad_commands.dm"

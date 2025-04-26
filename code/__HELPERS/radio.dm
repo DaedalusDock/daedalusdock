@@ -1,6 +1,6 @@
 /// Ensure the frequency is within bounds of what it should be sending/receiving at
 /proc/sanitize_frequency(frequency, free = FALSE)
-	frequency = round(frequency, 1)
+	frequency = floor(frequency)
 	if(free)
 		. = clamp(frequency, MIN_FREE_FREQ, MAX_FREE_FREQ)
 	else

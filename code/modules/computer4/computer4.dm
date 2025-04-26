@@ -36,6 +36,9 @@
 	set_internal_disk(new /obj/item/disk/data)
 	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/operating_system/thinkdos)
 	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/notepad)
+	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/probe)
+
+	add_peripheral(new /obj/item/peripheral/network_card/wireless)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/computer4/LateInitialize()
@@ -242,10 +245,8 @@
 	if(!program)
 		return FALSE
 
-	if(program in processing_programs)
-		CRASH("Tried to add an already running program to the processing programs list.")
-
-	add_processing_program(program)
+	if(!(program in processing_programs))
+		add_processing_program(program)
 
 	if(!operating_system && istype(program, /datum/c4_file/terminal_program/operating_system))
 		set_operating_system(program)

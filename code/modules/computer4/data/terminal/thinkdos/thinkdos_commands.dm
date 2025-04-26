@@ -417,3 +417,86 @@
 		output += "[spaces]↳ [file.name]"
 		if(is_folder)
 			search_dir(file, output, show_files, depth + 1)
+
+/datum/shell_command/thinkdos/backprog
+	aliases = list("backprog", "bp")
+	help_text = "Displays the file system structure relative to the current directory.<br>Usage: 'tree \[options?\]'<br><br>-f, --file &nbsp&nbsp&nbsp&nbsp&nbsp&nbspDisplay files."
+
+	var/list/sub_commands = list()
+
+/datum/shell_command/thinkdos/backprog/New()
+	..()
+	for(var/path in subtypesof(/datum/shell_command/thinkdos_backprog))
+		sub_commands += new path
+
+/datum/shell_command/thinkdos/backprog/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	if(!length(arguments))
+		system.println("<b>Syntax:</b> backprog \[argument\]<br><b>Valid arguments:</b> view, kill, switch")
+		return
+
+	var/sub_name = arguments[1]
+	var/list/inner_arguments = arguments.Copy()
+	inner_arguments.Cut(1,2)
+
+	for(var/datum/shell_command/sub_command as anything in sub_commands)
+		if(sub_command.try_exec(sub_name, system, program, inner_arguments, null))
+			return
+
+	system.println("<b>Syntax:</b> backprog \[argument\]<br><b>Valid arguments:</b> view, kill, switch")
+
+/datum/shell_command/thinkdos_backprog/view
+	aliases = list("view", "v")
+
+/datum/shell_command/thinkdos_backprog/view/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	var/list/out = list("<b>Current programs in memory:</b>")
+
+	var/obj/machinery/computer4/computer = system.get_computer()
+	var/count = 0
+	for(var/datum/c4_file/terminal_program/running_program as anything in computer.processing_programs)
+		count++
+		out += "<b>ID: [count]</b> [running_program == system ? "SYSTEM" : running_program.name]"
+
+	system.println(jointext(out, "<br>"))
+
+/datum/shell_command/thinkdos_backprog/kill
+	aliases = list("kill", "k")
+
+/datum/shell_command/thinkdos_backprog/kill/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	var/id = text2num(jointext(arguments, ""))
+	if(isnull(id))
+		system.println("<b>Syntax:</b> backprog kill \[program id\]")
+		return
+
+	var/obj/machinery/computer4/computer = system.get_computer()
+	if(!(id in 1 to length(computer.processing_programs)))
+		system.print_error("<b>Error:</b> Array index out of bounds.")
+		return
+
+	var/datum/c4_file/terminal_program/to_kill = computer.processing_programs[id]
+	if(to_kill == system)
+		system.print_error("<b>Error:</b> Unable to terminate process.")
+		return
+
+	computer.unload_program(to_kill)
+	system.println("Terminated [to_kill.name].")
+
+/datum/shell_command/thinkdos_backprog/switch_prog
+	aliases = list("switch", "s")
+
+/datum/shell_command/thinkdos_backprog/switch_prog/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	var/id = text2num(jointext(arguments, ""))
+	if(isnull(id))
+		system.println("<b>Syntax:</b> backprog switch \[program id\]")
+		return
+
+	var/obj/machinery/computer4/computer = system.get_computer()
+	if(!(id in 1 to length(computer.processing_programs)))
+		system.print_error("<b>Error:</b> Array index out of bounds.")
+		return
+
+	var/datum/c4_file/terminal_program/to_run = computer.processing_programs[id]
+	if(to_run == system)
+		system.print_error("<b>Error:</b> Process already focused.")
+		return
+
+	computer.execute_program(to_run)

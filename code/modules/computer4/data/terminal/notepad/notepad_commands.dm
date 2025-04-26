@@ -3,7 +3,16 @@
 	help_text = "Lists all available commands. Use help \[command\] to view information about a specific command."
 
 /datum/shell_command/notepad/edit_cmd/help/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	// Stupid fucking byond compiler bug
+#if !defined(SPACEMAN_DMM) && !defined(OPENDREAM)
+#pragma push
+#pragma ignore unused_var
+#endif
 	var/datum/c4_file/terminal_program/notepad/notepad = program
+#if !defined(SPACEMAN_DMM) && !defined(OPENDREAM)
+#pragma pop
+#endif
+
 	var/list/output = list()
 
 	if(length(arguments))

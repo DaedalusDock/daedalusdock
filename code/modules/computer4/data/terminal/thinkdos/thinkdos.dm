@@ -37,42 +37,42 @@
 	var/list/arguments = list()
 	var/list/options = list()
 
-/datum/c4_file/terminal_program/operating_system/thinkdos/parse_std_in(text)
-	var/list/split_list = splittext(text, " ")
-	var/datum/shell_stdin/output = new
+/datum/shell_stdin/New(text)
+	arguments = splittext(text, " ")
 
-	output.raw = text
-	output.command = lowertext(split_list[1])
+	raw = text
+	command = lowertext(arguments[1])
+	options = list()
 
-	if(length(split_list) == 1)
-		return output
+	if(length(arguments) == 1)
+		return
 
 
-	split_list.Cut(1, 2)
+	arguments.Cut(1, 2)
 
 	// Parse out options
-	for(var/str in split_list)
+	for(var/str in arguments)
 		// Dangling "-" is considered an argument per POSIX, so do not trim it from the arguments list.
 		if(length(str) <= 1 || str[1] != "-")
 			break
 
 		if(str[2] == "-")
 			if(length(str) == 2) // "--", cease parsing options
-				split_list.Cut(1,2)
+				arguments.Cut(1,2)
 				break
 
 			if(str[3] == "-") //This is an argument, not an option.
 				break
 
-			output.options += copytext(str, 3)
-			split_list.Cut(1, 2)
+			options += copytext(str, 3)
+			arguments.Cut(1, 2)
 			continue
 
-		output.options |= splittext(copytext(str, 2), "")
-		split_list.Cut(1, 2)
+		options |= splittext(copytext(str, 2), "")
+		arguments.Cut(1, 2)
 
-	output.arguments = split_list
-	return output
+/datum/c4_file/terminal_program/operating_system/thinkdos/parse_std_in(text)
+	return new /datum/shell_stdin(text)
 
 /datum/c4_file/terminal_program/operating_system/thinkdos/std_in(text)
 	. = ..()

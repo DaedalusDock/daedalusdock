@@ -9,10 +9,10 @@
 /obj/item/peripheral/network_card/wireless
 	name = "wireless card"
 	desc = "A wireless computer card. It has a bit of a limited range."
-	icon_state = "radio_mod"
 
 	peripheral_type = PERIPHERAL_TYPE_WIRELESS_CARD
 
+	COOLDOWN_DECLARE(ping_cooldown)
 
 	/// Use set_frequency()
 	var/frequency = FREQ_COMMON
@@ -80,3 +80,17 @@
 
 	var/datum/signal/clone = signal.Copy()
 	master_pc.peripheral_input(src, PERIPHERAL_CMD_RECEIVE_PACKET, clone)
+
+/obj/item/peripheral/network_card/wireless/proc/ping()
+	if(!COOLDOWN_FINISHED(src, ping_cooldown))
+		return FALSE
+
+	COOLDOWN_START(src, ping_cooldown, 2 SECONDS)
+	var/list/data = list(
+		PACKET_SOURCE_ADDRESS = network_id,
+		PACKET_DESTINATION_ADDRESS = NET_ADDRESS_PING,
+	)
+
+	var/datum/signal/packet = new(src, data)
+	post_signal(packet)
+	return TRUE

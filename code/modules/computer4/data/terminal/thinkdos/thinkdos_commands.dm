@@ -420,7 +420,6 @@
 
 /datum/shell_command/thinkdos/backprog
 	aliases = list("backprog", "bp")
-	help_text = "Displays the file system structure relative to the current directory.<br>Usage: 'tree \[options?\]'<br><br>-f, --file &nbsp&nbsp&nbsp&nbsp&nbsp&nbspDisplay files."
 
 	var/list/sub_commands = list()
 
@@ -428,6 +427,15 @@
 	..()
 	for(var/path in subtypesof(/datum/shell_command/thinkdos_backprog))
 		sub_commands += new path
+
+	var/list/help_list = list(
+		"Manage background processes.",
+		"Usage: 'backprog \[argument 1\] \[argument 2?\]'",
+	)
+	help_list += "[fit_with("k, kill", 20, "&nbsp", TRUE)]Terminate a background process."
+	help_list += "[fit_with("s, switch", 20, "&nbsp", TRUE)]Focus a background process."
+	help_list += "[fit_with("v, view", 20, "&nbsp", TRUE)]Display background processes."
+	help_text = jointext(help_list, "<br>")
 
 /datum/shell_command/thinkdos/backprog/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))

@@ -19,6 +19,10 @@
 	if(.)
 		return
 
+	// Hope you saved your work motherfucker.
+	working_line = 0
+	note_list = list()
+
 	var/datum/c4_file/terminal_program/operating_system/os = get_os()
 	os.println("DocDock V4.0")
 	os.println("Welcome to DocDock, type !help to get started.")

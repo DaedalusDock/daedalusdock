@@ -101,6 +101,7 @@
 		var/assoc_note = notepad.note_list[note]
 		print += "\[[fit_with_zeros("[i]", 3)]\] [note] [assoc_note ? "=[assoc_note]" : ""]"
 
+	system.clear_screen(TRUE)
 	system.println(jointext(print, "<br>"))
 
 /datum/shell_command/notepad/edit_cmd/load_note

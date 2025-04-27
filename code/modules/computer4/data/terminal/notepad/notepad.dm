@@ -24,7 +24,14 @@
 	note_list = list()
 
 	var/datum/c4_file/terminal_program/operating_system/os = get_os()
-	os.println("DocDock V4.0")
+	var/title_text = @{"<pre>
+__________________________________________________
+    _____                _____
+    /    )               /    )               /
+---/----/----__----__---/----/----__----__---/-__-
+  /    /   /   ) /   ' /    /   /   ) /   ' /(
+_/____/___(___/_(___ _/____/___(___/_(___ _/___\__</pre>"}
+	os.println(title_text)
 	os.println("Welcome to DocDock, type !help to get started.")
 
 /datum/c4_file/terminal_program/notepad/parse_std_in(text)

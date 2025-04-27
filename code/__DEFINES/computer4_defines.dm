@@ -8,3 +8,4 @@
 // MedTrak menus
 #define MEDTRAK_MENU_HOME 1
 #define MEDTRAK_MENU_INDEX 2
+#define MEDTRAK_MENU_RECORD 3

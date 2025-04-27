@@ -270,6 +270,9 @@ SUBSYSTEM_DEF(datacore)
 	var/datum/data/record/medical/M = new()
 	M.fields[DATACORE_ID] = id
 	M.fields[DATACORE_NAME] = H.real_name
+	M.fields[DATACORE_GENDER] = H.gender
+	M.fields[DATACORE_AGE] = H.age
+	M.fields[DATACORE_SPECIES] = H.dna.species.name
 	M.fields[DATACORE_BLOOD_TYPE] = H.dna.blood_type.name
 	M.fields[DATACORE_BLOOD_DNA] = H.dna.unique_enzymes
 	M.fields[DATACORE_DISABILITIES] = H.get_quirk_string(FALSE, CAT_QUIRK_DISABILITIES)

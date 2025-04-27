@@ -33,6 +33,10 @@
 /datum/c4_file/terminal_program/proc/execute(datum/c4_file/terminal_program/operating_system/thinkdos/system)
 	system.clear_screen(TRUE)
 
+/// Called when a program is no longer running
+/datum/c4_file/terminal_program/proc/on_close(datum/c4_file/terminal_program/operating_system/thinkdos/system)
+	return
+
 /// Returns the operating system.
 /datum/c4_file/terminal_program/proc/get_os()
 	RETURN_TYPE(/datum/c4_file/terminal_program/operating_system)

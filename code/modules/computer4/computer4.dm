@@ -333,6 +333,7 @@
 /// Setter for the processing programs list. Use unload_program() instead!
 /obj/machinery/computer4/proc/remove_processing_program(datum/c4_file/terminal_program/program)
 	processing_programs -= program
+	program.on_close(operating_system)
 	UnregisterSignal(program, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_ADDED))
 
 /// Setter for active program. Use execute_program() or unload_program() instead!

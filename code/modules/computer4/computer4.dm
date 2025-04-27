@@ -39,6 +39,7 @@
 	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/probe)
 
 	add_peripheral(new /obj/item/peripheral/network_card/wireless)
+	add_peripheral(new /obj/item/peripheral/card_reader)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/computer4/LateInitialize()
@@ -78,6 +79,8 @@
 
 /// Adds a peripheral to the peripherals list. Does not handle physical location.
 /obj/machinery/computer4/proc/add_peripheral(obj/item/peripheral/new_peri)
+	new_peri.forceMove(src)
+
 	peripherals[new_peri.peripheral_type] = new_peri
 	RegisterSignal(new_peri, COMSIG_MOVABLE_MOVED, PROC_REF(peripheral_gone))
 
@@ -110,6 +113,9 @@
 
 /// Called by peripherals to interface with the computer
 /obj/machinery/computer4/proc/peripheral_input(obj/item/peripheral/invoker, command, datum/signal/packet)
+	if(!is_operational)
+		return
+
 	for(var/datum/c4_file/terminal_program/program as anything in processing_programs)
 		program.peripheral_input(invoker, command, packet)
 
@@ -340,4 +346,4 @@
 /obj/machinery/computer4/proc/peripheral_gone(obj/item/peripheral/source)
 	SIGNAL_HANDLER
 
-	remove_peripheral(source.peripheral_type)
+	remove_peripheral(source)

@@ -162,7 +162,7 @@
 		return
 
 	existing_file = new
-	existing_file.name = new_name
+	existing_file.set_name(new_name)
 	existing_file.stored_record.fields = notepad.note_list.Copy()
 	if(dest_folder.try_add_file(existing_file))
 		system.println("File saved to [existing_file.path_to_string()].")

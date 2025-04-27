@@ -155,7 +155,7 @@
 		return
 
 	var/datum/c4_file/folder/new_folder = new
-	new_folder.name = folder_name
+	new_folder.set_name(folder_name)
 
 	if(!system.current_directory.try_add_file(new_folder))
 		qdel(new_folder)
@@ -223,7 +223,7 @@
 			system.print_error("<b>Error:</b> Unable to delete target.")
 			return
 
-	file.name = desired_name
+	file.set_name(desired_name)
 	system.println("Moved [old_name] to [file.path_to_string()].")
 
 
@@ -508,3 +508,30 @@
 		return
 
 	computer.execute_program(to_run)
+
+/datum/shell_command/thinkdos/login
+	aliases = list("login", "logon")
+
+/datum/shell_command/thinkdos/login/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	if(usr?.has_unlimited_silicon_privilege)
+		system.login("AIUSR", "Colony Intelligence")
+		return
+
+	var/obj/item/peripheral/card_reader/reader = system.get_computer().get_peripheral(PERIPHERAL_TYPE_CARD_READER)
+	if(!reader)
+		system.println("<b>Error:</b> No card reader detected.")
+		return
+
+	var/datum/signal/login_packet = reader.scan_card()
+	if(istype(login_packet))
+		system.login(login_packet.data["name"], login_packet.data["job"], login_packet.data["access"])
+
+	else if(login_packet == "nocard")
+		system.print_error("<b>Error:</b> No ID card inserted.")
+
+/datum/shell_command/thinkdos/logout
+	aliases = list("logout", "logoff")
+
+/datum/shell_command/thinkdos/logout/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	system.logout()
+	system.println("Logout complete. Have a secure day.<br><br>Authentication required.<br>Please insert card and 'login'.")

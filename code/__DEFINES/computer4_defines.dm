@@ -1,4 +1,6 @@
-#define PERIPHERAL_TYPE_WIRELESS_CARD "wirelesscard"
+#define PERIPHERAL_TYPE_WIRELESS_CARD "WNET_ADAPTER"
+#define PERIPHERAL_TYPE_CARD_READER "ID_SCANNER"
 
-/// See proc/peripheral_input
+// See proc/peripheral_input
 #define PERIPHERAL_CMD_RECEIVE_PACKET "receive_packet"
+#define PERIPHERAL_CMD_SCAN_CARD "scan_card"

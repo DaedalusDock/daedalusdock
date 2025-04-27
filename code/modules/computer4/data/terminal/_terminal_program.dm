@@ -89,7 +89,7 @@
 	file.containing_folder.try_delete_file(file, qdel = FALSE)
 	destination.try_add_file(file)
 
-	file.name = new_name
+	file.set_name(new_name)
 	return TRUE
 
 /// Find a file by it's name in the given directory. Defaults to the current directory.
@@ -147,12 +147,13 @@
 	return TRUE
 
 /// Clear the screen completely.
-/datum/c4_file/terminal_program/operating_system/proc/clear_screen()
+/datum/c4_file/terminal_program/operating_system/proc/clear_screen(fully = FALSE)
 	if(!is_operational())
 		return FALSE
 
 	get_computer().text_buffer = ""
-	println("Screen cleared.")
+	if(!fully)
+		println("Screen cleared.")
 	return TRUE
 
 /// Wrapper around handling text input to make sure we can actually handle it.

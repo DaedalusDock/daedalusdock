@@ -9,6 +9,9 @@
 	/// Boolean, determines if errors are written to the log file.
 	var/log_errors = TRUE
 
+	/// Current logged in user, if any.
+	var/datum/c4_file/user/current_user
+
 	/// The command log.
 	var/datum/c4_file/text/command_log
 
@@ -19,15 +22,19 @@
 			commands += new command_path
 
 /datum/c4_file/terminal_program/operating_system/thinkdos/execute()
-	initialize_logs()
+	if(!initialize_logs())
+		println("<font color=red>Log system failure.</font>")
+
+	if(!initialize_accounts())
+		println("<font color=red>Unable to start account system.</font>")
+
 	change_dir(containing_folder)
 
 	var/gamertext = @{"<pre>
  ___  _    _       _    ___  ___  ___
 |_ _|| |_ &lt;_&gt;._ _ | |__| . \| . |/ __&gt;
  | | | . || || &#39; || / /| | || | |\__ \
- |_| |_|_||_||_|_||_\_\|___/`___&#39;&lt;___/
-	</pre>"}
+ |_| |_|_||_||_|_||_\_\|___/`___&#39;&lt;___/</pre>"}
 	println(gamertext)
 
 /// Struct for the parsed stdin
@@ -84,11 +91,72 @@
 	write_log(encoded_in)
 
 	var/datum/shell_stdin/parsed_stdin = parse_std_in(text)
+	if(!current_user)
+		var/datum/shell_command/thinkdos/login/login_command = locate() in commands
+		if(!login_command.try_exec(parsed_stdin.command, src, src, parsed_stdin.arguments, parsed_stdin.options))
+			println("Login required. Please login using 'login'.")
+		return
+
 	for(var/datum/shell_command/potential_command as anything in commands)
 		if(potential_command.try_exec(parsed_stdin.command, src, src, parsed_stdin.arguments, parsed_stdin.options))
 			return TRUE
 
 	println("'[html_encode(parsed_stdin.raw)]' is not recognized as an internal or external command.")
+	return TRUE
+
+/// Write to the command log.
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/write_log(text)
+	if(!command_log || drive.read_only)
+		return FALSE
+
+	command_log.data += text
+	return TRUE
+
+/// Write to the command log if it's enabled, then print to the screen.
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/print_error(text)
+	if(log_errors)
+		write_log(text)
+
+	return println(text)
+
+/// Schedule a callback for the system to invoke after the specified time if able.
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/schedule_proc(datum/callback/callback, time)
+	addtimer(CALLBACK(src, PROC_REF(execute_scheduled_proc)), time)
+
+/// See schedule_proc()
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/execute_scheduled_proc(datum/callback/callback)
+	PRIVATE_PROC(TRUE)
+
+	if(!is_operational())
+		return
+
+	callback.Invoke()
+
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/login(account_name, account_occupation, account_access)
+	if(!account_name || !account_occupation)
+		return FALSE
+
+	if(!initialize_accounts())
+		return FALSE
+
+	var/datum/c4_file/user/login_user = resolve_filepath("users/admin", drive.root)
+
+	login_user.registered_name = account_name
+	login_user.assignment = account_occupation
+	login_user.access = text2access(account_access)
+	set_current_user(login_user)
+
+	write_log("<b>LOGIN</b>: [html_encode(account_name)] | [html_encode(account_occupation)]")
+	println("Welcome [html_encode(account_name)]!<br><b>Current Directory: [current_directory.path_to_string()]</b>")
+	return TRUE
+
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/logout()
+	if(!current_user)
+		print_error("<b>Error:</b> Account system inactive.")
+		return FALSE
+
+	write_log("<b>LOGOUT:</b> [html_encode(current_user.registered_name)]")
+	set_current_user(null)
 	return TRUE
 
 /// Create the log file, or append a startup log.
@@ -99,7 +167,7 @@
 	var/datum/c4_file/folder/log_dir = parse_directory("logs", drive.root)
 	if(!log_dir)
 		log_dir = new /datum/c4_file/folder
-		log_dir.name = "logs"
+		log_dir.set_name("logs")
 		if(!drive.root.try_add_file(log_dir))
 			qdel(log_dir)
 			return FALSE
@@ -107,42 +175,64 @@
 	var/datum/c4_file/text/log_file = log_dir.get_file("syslog")
 	if(!log_file)
 		log_file = new /datum/c4_file/text()
-		log_file.name = "syslog"
+		log_file.set_name("syslog")
 		if(!log_dir.try_add_file(log_file))
 			qdel(log_file)
 			return FALSE
 
 	command_log = log_file
-	RegisterSignal(command_log, COMSIG_PARENT_QDELETING, PROC_REF(log_file_del))
-	RegisterSignal(command_log, COMSIG_COMPUTER4_FILE_MOVED, PROC_REF(log_file_moved))
+	RegisterSignal(command_log, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_MOVED, COMSIG_PARENT_QDELETING), PROC_REF(log_file_gone))
 
 	log_file.data += "<br><b>STARTUP:</b> [stationtime2text()], [stationdate2text()]"
 	return TRUE
 
-/// Handles the log file being deleted. Harddels bad.
-/datum/c4_file/terminal_program/operating_system/thinkdos/proc/log_file_del(datum/source)
-	SIGNAL_HANDLER
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/initialize_accounts()
+	var/datum/c4_file/folder/account_dir = parse_directory("users")
+	if(!istype(account_dir))
+		if(account_dir && !account_dir.containing_folder.try_delete_file(account_dir))
+			print_error("<b>Error:</b> Unable to write account folder.")
+			return FALSE
 
-	command_log = null
+		account_dir = new
+		account_dir.set_name("users")
 
-/// Handles the log file being moved.
-/datum/c4_file/terminal_program/operating_system/thinkdos/proc/log_file_moved(datum/source)
-	SIGNAL_HANDLER
+		if(!containing_folder.try_add_file(account_dir))
+			qdel(account_dir)
+			print_error("<b>Error:</b> Unable to write account folder.")
+			return FALSE
 
-	UnregisterSignal(command_log, list(COMSIG_COMPUTER4_FILE_MOVED, COMSIG_PARENT_QDELETING))
-	command_log = null
+		RegisterSignal(account_dir, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_MOVED, COMSIG_COMPUTER4_FILE_DEL), PROC_REF(user_folder_gone))
 
-/// Write to the command log.
-/datum/c4_file/terminal_program/operating_system/thinkdos/proc/write_log(text)
-	if(!command_log || drive.read_only)
-		return FALSE
+	var/datum/c4_file/user/user_data = account_dir.get_file("admin", FALSE)
+	if(!istype(user_data))
+		if(user_data && !user_data.containing_folder.try_delete_file(user_data))
+			print_error("<b>Error:</b> Unable to write account folder.")
+			return FALSE
 
-	command_log.data += "html_encode(text)"
+		user_data = new
+		user_data.set_name("admin")
+
+		if(!account_dir.try_add_file(user_data))
+			qdel(user_data)
+			print_error("<b>Error:</b> Unable to write account file.")
+			return FALSE
+
+		//set_current_user(user_data)
 	return TRUE
 
-/// Write to the command log if it's enabled, then print to the screen.
-/datum/c4_file/terminal_program/operating_system/thinkdos/proc/print_error(text)
-	if(log_errors)
-		write_log(text)
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/set_current_user(datum/c4_file/user/new_user)
+	if(current_user)
+		UnregisterSignal(current_user, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_MOVED, COMSIG_COMPUTER4_FILE_DEL))
 
-	return println(text)
+	current_user = new_user
+
+	if(current_user)
+		RegisterSignal(current_user, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_MOVED, COMSIG_COMPUTER4_FILE_DEL), PROC_REF(user_file_gone))
+	else
+		var/obj/machinery/computer4/computer = get_computer()
+		for(var/datum/c4_file/terminal_program/running_program as anything in computer.processing_programs)
+			if(running_program == src)
+				continue
+
+			computer.unload_program(running_program)
+

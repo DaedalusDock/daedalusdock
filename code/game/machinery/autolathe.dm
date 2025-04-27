@@ -419,7 +419,7 @@
 		)
 		hacked_designs = SStech.fetch_designs(L)
 	var/datum/c4_file/fab_design_bundle/hacked_design_bundle = new(hacked_designs.Copy())
-	hacked_design_bundle.name = "fabrec_dev" //'development' he says.
+	hacked_design_bundle.set_name("fabrec_dev") //'development' he says.
 	root.try_add_file(hacked_design_bundle)
 
 /obj/item/disk/data/hyper/preloaded/autolathe/compile_designs()

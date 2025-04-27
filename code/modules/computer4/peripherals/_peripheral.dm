@@ -19,6 +19,11 @@
 	/// Computer we're attached to.
 	var/obj/machinery/computer4/master_pc
 
+/obj/item/peripheral/Destroy(force)
+	if(master_pc)
+		master_pc.remove_peripheral(src)
+	return ..()
+
 /// Called when a peripheral is attached to a computer
 /obj/item/peripheral/proc/on_attach(obj/machinery/computer4/computer)
 	SHOULD_CALL_PARENT(TRUE)
@@ -28,3 +33,11 @@
 /obj/item/peripheral/proc/on_detach(obj/machinery/computer4/computer)
 	SHOULD_CALL_PARENT(TRUE)
 	master_pc = null
+
+/// Call peripheral_input after a specified amount of time
+/obj/item/peripheral/proc/deferred_peripheral_input(command, datum/signal/packet, time, completed)
+	if(!completed)
+		addtimer(CALLBACK(src, PROC_REF(deferred_peripheral_input), packet, 0, TRUE), time)
+		return
+
+	master_pc?.peripheral_input(src, command, packet)

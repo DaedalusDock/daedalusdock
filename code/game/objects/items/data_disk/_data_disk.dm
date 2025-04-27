@@ -30,7 +30,7 @@
 
 	root = new
 	root.drive = src
-	root.name = "root"
+	root.set_name("root")
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/item/disk/data/Destroy(force)

@@ -27,6 +27,11 @@
 
 	return ..()
 
+/// Setter for name for raising the paired event.
+/datum/c4_file/proc/set_name(new_name)
+	name = new_name
+	SEND_SIGNAL(src, COMSIG_COMPUTER4_FILE_RENAMED)
+
 /// Attempt to stringify the data.
 /datum/c4_file/proc/to_string()
 	return "Error: Cannot convert type 'unknown' to 'string'" //readable_corrupted_text() maybe?

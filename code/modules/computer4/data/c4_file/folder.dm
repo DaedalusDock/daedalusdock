@@ -49,6 +49,9 @@
 	contents -= file
 	size -= file.size
 	drive.disk_used -= file.size
+
+	SEND_SIGNAL(file, COMSIG_COMPUTER4_FILE_DEL)
+
 	if(qdel && !QDELING(file))
 		qdel(file)
 

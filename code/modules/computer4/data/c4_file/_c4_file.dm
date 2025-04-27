@@ -25,6 +25,8 @@
 	if(!QDELETED(containing_folder))
 		containing_folder.try_delete_file(src, TRUE)
 
+	if(drive)
+		drive = null
 	return ..()
 
 /// Setter for name for raising the paired event.

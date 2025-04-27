@@ -34,6 +34,13 @@
 	SHOULD_CALL_PARENT(TRUE)
 	master_pc = null
 
+/obj/item/peripheral/proc/return_ui_data()
+	return list()
+
+/// Called when the peripheral's ui button is clicked.
+/obj/item/peripheral/proc/on_ui_click(mob/user, list/params)
+	return
+
 /// Call peripheral_input after a specified amount of time
 /obj/item/peripheral/proc/deferred_peripheral_input(command, datum/signal/packet, time, completed)
 	if(!completed)

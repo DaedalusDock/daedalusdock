@@ -39,7 +39,6 @@
 	var/default_program_dir = "/programs"
 
 /obj/machinery/computer4/Initialize(mapload)
-	#warn debug
 	. = ..()
 	set_internal_disk(new /obj/item/disk/data)
 
@@ -97,6 +96,7 @@
 	RegisterSignal(new_peri, COMSIG_MOVABLE_MOVED, PROC_REF(peripheral_gone))
 
 	new_peri.on_attach(src)
+	update_static_data_for_all()
 
 /// Removes a peripheral from the peripherals list. Does not handle physical location.
 /obj/machinery/computer4/proc/remove_peripheral(obj/item/peripheral/to_remove)
@@ -104,6 +104,7 @@
 	UnregisterSignal(to_remove, COMSIG_MOVABLE_MOVED)
 
 	to_remove.on_detach(src)
+	update_static_data_for_all()
 
 /obj/machinery/computer4/attackby(obj/item/weapon, mob/user, params)
 	. = ..()
@@ -148,8 +149,19 @@
 		"fontColor" = screen_font_color,
 		"bgColor" = screen_bg_color,
 		"inputValue" = tgui_last_accessed[user.ckey],
-		"peripherals" = list(),
 	)
+	return data
+
+/obj/machinery/computer4/ui_static_data(mob/user)
+	var/list/data = list(
+		"peripherals" = list()
+	)
+	for(var/peripheral_type in peripherals)
+		var/obj/item/peripheral/peri = peripherals[peripheral_type]
+		var/list/peripheral_data = peri.return_ui_data()
+		if(isnull(peripheral_data))
+			continue
+		data["peripherals"] += list(peripheral_data)
 	return data
 
 /obj/machinery/computer4/ui_act(action, list/params)
@@ -173,6 +185,14 @@
 
 			if (params["direction"] == "next")
 				return traverse_history(usr.ckey,  1)
+
+		if("buttonPressed")
+			var/obj/item/peripheral/peri = get_peripheral(params["kind"])
+			if(!peri)
+				return
+
+			peri.on_ui_click(usr, params)
+			return TRUE
 
 /// Get the history entry at a certain index. Returns null if the index is out of bounds or the ckey is null. Will return an empty string for length+1
 /obj/machinery/computer4/proc/get_history(ckey, index)

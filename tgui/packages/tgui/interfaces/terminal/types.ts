@@ -8,11 +8,12 @@
 import { BooleanLike } from 'common/react';
 
 export type PeripheralData = {
-  Clown?: BooleanLike;
-  card: string;
-  color: any;
+  clown?: BooleanLike;
+  color?: string;
+  disabled?: BooleanLike;
+  extraInfo?: Record<string, any>;
   icon: string;
-  index: number;
+  kind: string;
   label: string;
 };
 

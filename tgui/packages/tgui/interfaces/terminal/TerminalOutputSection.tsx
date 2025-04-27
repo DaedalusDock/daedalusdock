@@ -7,8 +7,7 @@
 
 import { useEffect } from 'react';
 
-import { Section } from '../../components';
-import { Box } from '../../components';
+import { Box, Section } from '../../components';
 import type { TerminalData } from './types';
 
 type TerminalOutputSectionProps = Pick<

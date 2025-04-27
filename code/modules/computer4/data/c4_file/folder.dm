@@ -47,7 +47,7 @@
 	if(file.containing_folder != src)
 		CRASH("Dawg what the FUCK happened here?")
 
-	if(!force && !can_delete_file(file))
+	if(!force && !can_remove_file(file))
 		return FALSE
 
 	contents -= file

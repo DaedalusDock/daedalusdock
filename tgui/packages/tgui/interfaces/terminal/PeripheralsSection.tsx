@@ -21,7 +21,7 @@ export const PeripheralsSection = (props: PeripheralsSectionProps) => {
 
   const handlePeripheralClick = useCallback(
     (peripheral: PeripheralData) =>
-      act('buttonPressed', { card: peripheral.card, index: peripheral.index }),
+      act('buttonPressed', { kind: peripheral.kind }),
     [act],
   );
 
@@ -30,10 +30,11 @@ export const PeripheralsSection = (props: PeripheralsSectionProps) => {
       {peripherals.map((peripheral) => {
         return (
           <Button
-            key={peripheral.card}
+            key={peripheral.kind}
             icon={peripheral.icon}
-            fontFamily={peripheral.Clown ? 'Comic Sans MS' : 'Consolas'}
-            color={peripheral.color ? 'green' : 'grey'}
+            fontFamily={peripheral.clown ? 'Comic Sans MS' : 'Consolas'}
+            color={!peripheral.disabled && peripheral.color}
+            disabled={peripheral.disabled}
             onClick={() => handlePeripheralClick(peripheral)}
           >
             {peripheral.label}

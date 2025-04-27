@@ -13,6 +13,19 @@
 	. = ..()
 	UnregisterSignal(computer, COMSIG_PARENT_ATTACKBY)
 
+/obj/item/peripheral/card_reader/return_ui_data()
+	return list(
+		"label" = "Card Reader",
+		"icon" = "edit",
+		"extraInfo" = list("card" = !!inserted_card),
+		"disabled" = !inserted_card,
+	)
+/obj/item/peripheral/card_reader/on_ui_click(mob/user, list/params)
+	if(!inserted_card)
+		return
+
+	try_eject_card(user)
+
 /// Handles behavior for inserting the card
 /obj/item/peripheral/card_reader/proc/on_computer_attackby(datum/source, obj/item/I, mob/living/user)
 	SIGNAL_HANDLER
@@ -33,6 +46,7 @@
 		new_card.forceMove(src)
 
 	inserted_card = new_card
+	master_pc?.update_static_data_for_all()
 	return TRUE
 
 /obj/item/peripheral/card_reader/proc/try_eject_card(mob/user)
@@ -43,6 +57,7 @@
 		inserted_card.forceMove(drop_location())
 
 	inserted_card = null
+	master_pc?.update_static_data_for_all()
 	return TRUE
 
 /obj/item/peripheral/card_reader/proc/scan_card()

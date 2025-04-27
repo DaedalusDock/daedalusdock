@@ -25,6 +25,8 @@
 	if(!QDELETED(containing_folder))
 		containing_folder.try_delete_file(src, TRUE)
 
+	containing_folder = null
+
 	if(drive)
 		drive = null
 	return ..()

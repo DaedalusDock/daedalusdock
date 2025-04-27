@@ -345,7 +345,7 @@
 	operating_system = os
 
 	if(!operating_system)
-		for(var/datum/c4_file/terminal_program/program as anything in processing_programs)
+		for(var/datum/c4_file/terminal_program/program as anything in processing_programs - old_os) // Old os isnt guarenteed to be in the processing list.
 			unload_program(program)
 
 		unload_program(old_os)

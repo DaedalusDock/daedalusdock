@@ -304,12 +304,12 @@
 	PRIVATE_PROC(TRUE)
 
 	processing_programs += program
-	RegisterSignal(program, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_MOVED), PROC_REF(processing_program_moved))
+	RegisterSignal(program, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_ADDED), PROC_REF(processing_program_moved))
 
 /// Setter for the processing programs list. Use unload_program() instead!
 /obj/machinery/computer4/proc/remove_processing_program(datum/c4_file/terminal_program/program)
 	processing_programs -= program
-	UnregisterSignal(program, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_MOVED))
+	UnregisterSignal(program, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_ADDED))
 
 /// Setter for active program. Use execute_program() or unload_program() instead!
 /obj/machinery/computer4/proc/set_active_program(datum/c4_file/terminal_program/program)

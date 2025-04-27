@@ -14,6 +14,7 @@
 	QDEL_LIST(contents)
 	return ..()
 
+/// Attempt to add a file to the folder.
 /datum/c4_file/folder/proc/try_add_file(datum/c4_file/new_file)
 	if(!can_add_file(new_file))
 		return FALSE
@@ -29,7 +30,7 @@
 		var/datum/c4_file/folder/new_folder = new_file
 		new_folder.generation = generation + 1
 
-	SEND_SIGNAL(new_file, COMSIG_COMPUTER4_FILE_MOVED)
+	SEND_SIGNAL(new_file, COMSIG_COMPUTER4_FILE_ADDED)
 	return TRUE
 
 /datum/c4_file/folder/proc/can_add_file(datum/c4_file/new_file)
@@ -41,11 +42,12 @@
 
 	return TRUE
 
-/datum/c4_file/folder/proc/try_delete_file(datum/c4_file/file, force, qdel = TRUE)
+/// Attempt to remove a file from the disk. Does not qdel the file, use try_delete_file() for that.
+/datum/c4_file/folder/proc/try_remove_file(datum/c4_file/file, force)
 	if(file.containing_folder != src)
 		CRASH("Dawg what the FUCK happened here?")
 
-	if(!force && !can_delete_file(file, force))
+	if(!force && !can_delete_file(file))
 		return FALSE
 
 	contents -= file
@@ -54,17 +56,20 @@
 
 	adjust_size(-file.size)
 
-	SEND_SIGNAL(file, COMSIG_COMPUTER4_FILE_DEL)
+	SEND_SIGNAL(file, COMSIG_COMPUTER4_FILE_REMOVED)
 
-	if(qdel && !QDELING(file))
-		qdel(file)
-
-	return TRUE
-
-/datum/c4_file/folder/proc/can_delete_file(datum/c4_file/file)
+/datum/c4_file/folder/proc/can_remove_file(datum/c4_file/file)
 	if(drive.read_only)
 		return FALSE
 
+	return TRUE
+
+/// Attempt to remove a file from the folder and delete it.
+/datum/c4_file/folder/proc/try_delete_file(datum/c4_file/file, force)
+	if(!try_remove_file(file, force))
+		return FALSE
+
+	qdel(file)
 	return TRUE
 
 /// Adjusts the size of this folder and all parent folders.

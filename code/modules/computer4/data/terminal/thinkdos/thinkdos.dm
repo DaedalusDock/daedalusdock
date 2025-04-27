@@ -181,7 +181,7 @@
 			return FALSE
 
 	command_log = log_file
-	RegisterSignal(command_log, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_MOVED, COMSIG_PARENT_QDELETING), PROC_REF(log_file_gone))
+	RegisterSignal(command_log, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_ADDED, COMSIG_PARENT_QDELETING), PROC_REF(log_file_gone))
 
 	log_file.data += "<br><b>STARTUP:</b> [stationtime2text()], [stationdate2text()]"
 	return TRUE
@@ -201,7 +201,7 @@
 			print_error("<b>Error:</b> Unable to write account folder.")
 			return FALSE
 
-		RegisterSignal(account_dir, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_MOVED, COMSIG_COMPUTER4_FILE_DEL), PROC_REF(user_folder_gone))
+		RegisterSignal(account_dir, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_ADDED, COMSIG_COMPUTER4_FILE_REMOVED), PROC_REF(user_folder_gone))
 
 	var/datum/c4_file/user/user_data = account_dir.get_file("admin", FALSE)
 	if(!istype(user_data))
@@ -222,12 +222,12 @@
 
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/set_current_user(datum/c4_file/user/new_user)
 	if(current_user)
-		UnregisterSignal(current_user, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_MOVED, COMSIG_COMPUTER4_FILE_DEL))
+		UnregisterSignal(current_user, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_ADDED, COMSIG_COMPUTER4_FILE_REMOVED))
 
 	current_user = new_user
 
 	if(current_user)
-		RegisterSignal(current_user, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_MOVED, COMSIG_COMPUTER4_FILE_DEL), PROC_REF(user_file_gone))
+		RegisterSignal(current_user, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_ADDED, COMSIG_COMPUTER4_FILE_REMOVED), PROC_REF(user_file_gone))
 	else
 		var/obj/machinery/computer4/computer = get_computer()
 		for(var/datum/c4_file/terminal_program/running_program as anything in computer.processing_programs)

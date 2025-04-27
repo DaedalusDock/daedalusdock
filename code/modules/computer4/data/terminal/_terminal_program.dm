@@ -76,18 +76,18 @@
 			*error_pointer = "Target in use."
 			return FALSE
 
-		if(!destination.can_delete_file(file_at_dest))
+		if(!destination.can_remove_file(file_at_dest))
 			*error_pointer = "Unable to delete target."
 			return FALSE
 
-	if(!file.containing_folder.can_delete_file(file))
+	if(!file.containing_folder.can_remove_file(file))
 		*error_pointer = "Unable to delete source."
 		return FALSE
 
 	if(file_at_dest)
 		destination.try_delete_file(file_at_dest)
 
-	file.containing_folder.try_delete_file(file, qdel = FALSE)
+	file.containing_folder.try_remove_file(file)
 	destination.try_add_file(file)
 
 	file.set_name(new_name)

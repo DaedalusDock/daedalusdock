@@ -275,12 +275,9 @@ SUBSYSTEM_DEF(datacore)
 	M.fields[DATACORE_SPECIES] = H.dna.species.name
 	M.fields[DATACORE_BLOOD_TYPE] = H.dna.blood_type.name
 	M.fields[DATACORE_BLOOD_DNA] = H.dna.unique_enzymes
-	M.fields[DATACORE_DISABILITIES] = H.get_quirk_string(FALSE, CAT_QUIRK_DISABILITIES)
-	M.fields[DATACORE_DISABILITIES_DETAILS] = H.get_quirk_string(TRUE, CAT_QUIRK_DISABILITIES)
+	M.fields[DATACORE_DISABILITIES] = H.get_quirk_string(TRUE, CAT_QUIRK_DISABILITIES)
 	M.fields[DATACORE_DISEASES] = "None"
-	M.fields[DATACORE_DISEASES_DETAILS] = "No diseases have been diagnosed at the moment."
-	M.fields[DATACORE_NOTES] = H.get_quirk_string(FALSE, CAT_QUIRK_NOTES)
-	M.fields[DATACORE_NOTES_DETAILS] = H.get_quirk_string(TRUE, CAT_QUIRK_NOTES)
+	M.fields[DATACORE_NOTES] = H.get_quirk_string(TRUE, CAT_QUIRK_NOTES)
 	library[DATACORE_RECORDS_MEDICAL].inject_record(M)
 
 	//Security Record
@@ -309,7 +306,7 @@ SUBSYSTEM_DEF(datacore)
 		G.fields[DATACORE_GENDER] = "Female"
 	else
 		G.fields[DATACORE_GENDER] = "Other"
-	L.fields[DATACORE_BLOOD_TYPE] = H.dna.blood_type
+	L.fields[DATACORE_BLOOD_TYPE] = H.dna.blood_type.name
 	L.fields[DATACORE_BLOOD_DNA] = H.dna.unique_enzymes
 	L.fields[DATACORE_DNA_IDENTITY] = H.dna.unique_identity
 	L.fields[DATACORE_SPECIES] = H.dna.species.type

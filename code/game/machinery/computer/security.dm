@@ -743,11 +743,9 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				M.fields[DATACORE_BLOOD_TYPE] = "?"
 				M.fields[DATACORE_BLOOD_DNA] = "?????"
 				M.fields[DATACORE_DISABILITIES] = "None"
-				M.fields[DATACORE_DISABILITIES_DETAILS] = "No disabilities have been declared."
 				M.fields["alg"] = "None"
 				M.fields["alg_d"] = "No allergies have been detected in this patient."
 				M.fields[DATACORE_DISEASES] = "None"
-				M.fields[DATACORE_DISEASES_DETAILS] = "No diseases have been diagnosed at the moment."
 				M.fields[DATACORE_NOTES] = "No notes."
 				SSdatacore.inject_record(M, DATACORE_RECORDS_MEDICAL)
 

@@ -216,11 +216,9 @@ _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 		"\[04\] Species: [fields[DATACORE_SPECIES]]",
 		"\[05\] Blood Type: [fields[DATACORE_BLOOD_TYPE]]",
 		"\[06\] Blood DNA: [fields[DATACORE_BLOOD_DNA]]",
-		"\[06\] Disabilities: [fields[DATACORE_DISABILITIES]]",
-		"\[07\] Disabilities (Details): [fields[DATACORE_DISABILITIES_DETAILS]]",
+		"\[07\] Disabilities: [fields[DATACORE_DISABILITIES]]",
 		"\[08\] Diseases: [fields[DATACORE_DISEASES]]",
-		"\[09\] Diseases (Details): [fields[DATACORE_DISEASES_DETAILS]]",
-		"\[10\] Notes: [fields[DATACORE_NOTES_DETAILS]]",
+		"\[09\] Notes: [fields[DATACORE_NOTES]]",
 		"<br>Enter field number to edit a field",
 		"(R) Refresh | (D) Delete | (P) Print | (0) Return to index"
 	)
@@ -232,7 +230,18 @@ _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 		if(1)
 			await_input("Enter a new Name (Max Length: [MAX_NAME_LEN])", CALLBACK(src, PROC_REF(edit_name)))
 		if(2)
-			await_input("Enter a new Sex", CALLBACK(src, PROC_REF(edit_sex)))
+			await_input("Enter a new Sex (Max Length: [MAX_NAME_LEN])", CALLBACK(src, PROC_REF(edit_sex)))
 		if(3)
 			await_input("Enter a new Age (1-200)", CALLBACK(src, PROC_REF(edit_age)))
-
+		if(4)
+			await_input("Enter a new Species (Max Length: [MAX_NAME_LEN])", CALLBACK(src, PROC_REF(edit_species)))
+		if(5)
+			await_input("Enter a new Blood Type (Max Length: [MAX_NAME_LEN])", CALLBACK(src, PROC_REF(edit_blood_type)))
+		if(6)
+			await_input("Enter new Blood DNA (Max Length: [MAX_NAME_LEN])", CALLBACK(src, PROC_REF(edit_blood_dna)))
+		if(7)
+			await_input("Enter new Disabilities (Max Length: [MAX_MESSAGE_LEN])", CALLBACK(src, PROC_REF(edit_disabilities)))
+		if(8)
+			await_input("Enter new Diseases (Max Length: [MAX_MESSAGE_LEN])", CALLBACK(src, PROC_REF(edit_diseases)))
+		if(9)
+			await_input("Enter new Notes (Max Length: [MAX_MESSAGE_LEN])", CALLBACK(src, PROC_REF(edit_notes)))

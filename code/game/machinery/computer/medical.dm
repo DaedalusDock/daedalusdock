@@ -123,11 +123,8 @@
 						dat += "<tr><td>Blood Type:</td><td><A href='?src=[REF(src)];field=blood_type'>&nbsp;[active2.fields[DATACORE_BLOOD_TYPE]]&nbsp;</A></td></tr>"
 						dat += "<tr><td>DNA:</td><td><A href='?src=[REF(src)];field=b_dna'>&nbsp;[active2.fields[DATACORE_BLOOD_DNA]]&nbsp;</A></td></tr>"
 						dat += "<tr><td><br>Disabilities:</td><td><br><A href='?src=[REF(src)];field=disabilities'>&nbsp;[active2.fields[DATACORE_DISABILITIES]]&nbsp;</A></td></tr>"
-						dat += "<tr><td>Details:</td><td><A href='?src=[REF(src)];field=disabilities_details'>&nbsp;[active2.fields[DATACORE_DISABILITIES_DETAILS]]&nbsp;</A></td></tr>"
 						dat += "<tr><td><br>Current Diseases:</td><td><br><A href='?src=[REF(src)];field=cdi'>&nbsp;[active2.fields[DATACORE_DISEASES]]&nbsp;</A></td></tr>" //(per disease info placed in log/comment section)
-						dat += "<tr><td>Details:</td><td><A href='?src=[REF(src)];field=cdi_d'>&nbsp;[active2.fields[DATACORE_DISEASES_DETAILS]]&nbsp;</A></td></tr>"
 						dat += "<tr><td><br>Important Notes:</td><td><br><A href='?src=[REF(src)];field=notes'>&nbsp;[active2.fields[DATACORE_NOTES]]&nbsp;</A></td></tr>"
-						dat += "<tr><td><br>Notes Cont'd:</td><td><br><A href='?src=[REF(src)];field=notes'>&nbsp;[active2.fields[DATACORE_NOTES_DETAILS]]&nbsp;</A></td></tr>"
 
 						dat += "<tr><td><br><b><font size='4'>Comments/Log</font></b></td></tr>"
 						var/counter = 1
@@ -306,12 +303,6 @@
 							if(!canUseMedicalRecordsConsole(usr, t1, null, a2))
 								return
 							active2.fields[DATACORE_DISABILITIES] = t1
-					if(DATACORE_DISABILITIES_DETAILS)
-						if(active2)
-							var/t1 = stripped_input("Please summarize dis.:", "Med. records", active2.fields["disabilities_details"], null)
-							if(!canUseMedicalRecordsConsole(usr, t1, null, a2))
-								return
-							active2.fields[DATACORE_DISABILITIES_DETAILS] = t1
 					if("alg")
 						if(active2)
 							var/t1 = stripped_input("Please state allergies:", "Med. records", active2.fields["alg"], null)
@@ -330,12 +321,6 @@
 							if(!canUseMedicalRecordsConsole(usr, t1, null, a2))
 								return
 							active2.fields[DATACORE_DISEASES] = t1
-					if("cdi_d")
-						if(active2)
-							var/t1 = stripped_input("Please summarize diseases:", "Med. records", active2.fields[DATACORE_DISEASES_DETAILS], null)
-							if(!canUseMedicalRecordsConsole(usr, t1, null, a2))
-								return
-							active2.fields[DATACORE_DISEASES_DETAILS] = t1
 					if("notes")
 						if(active2)
 							var/t1 = stripped_input("Please summarize notes:", "Med. records", active2.fields[DATACORE_NOTES], null)
@@ -446,11 +431,9 @@
 					R.fields[DATACORE_BLOOD_TYPE] = "Unknown"
 					R.fields[DATACORE_BLOOD_DNA] = "Unknown"
 					R.fields[DATACORE_DISABILITIES] = "None"
-					R.fields[DATACORE_DISABILITIES_DETAILS] = "No disabilities have been diagnosed."
 					R.fields["alg"] = "None"
 					R.fields["alg_d"] = "No allergies have been detected in this patient."
 					R.fields[DATACORE_DISEASES] = "None"
-					R.fields[DATACORE_DISEASES_DETAILS] = "No diseases have been diagnosed at the moment."
 					R.fields[DATACORE_NOTES] = "No notes."
 					active2 = R
 					screen = 4
@@ -530,7 +513,6 @@ Details: [active2.fields["disabilities_details"]]<BR><BR>
 Allergies: [active2.fields["alg"]]<BR>
 Details: [active2.fields["alg_d"]]<BR><BR>
 Current Diseases: [active2.fields[DATACORE_DISEASES]] (per disease info placed in log/comment section)<BR>
-Details: [active2.fields[DATACORE_DISEASES_DETAILS]]<BR><BR>
 Important Notes:<BR>
 \t[active2.fields[DATACORE_NOTES]]<BR><BR>
 <CENTER><B>Comments/Log</B></CENTER><BR>"}
@@ -567,7 +549,7 @@ Important Notes:<BR>
 					if(3)
 						R.fields[DATACORE_AGE] = rand(AGE_MIN, AGE_MAX)
 					if(4)
-						R.fields[DATACORE_BLOOD_TYPE] = random_blood_type()
+						R.fields[DATACORE_BLOOD_TYPE] = random_blood_type().name
 					if(5)
 						R.fields[DATACORE_PHYSICAL_HEALTH] = pick("*Unconscious*", "Active", "Physically Unfit")
 					if(6)

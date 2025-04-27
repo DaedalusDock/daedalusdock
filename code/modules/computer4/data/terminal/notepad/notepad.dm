@@ -27,6 +27,9 @@
 	os.println("DocDock V4.0")
 	os.println("Welcome to DocDock, type !help to get started.")
 
+/datum/c4_file/terminal_program/notepad/parse_std_in(text)
+	return splittext(text, " ")
+
 /datum/c4_file/terminal_program/notepad/std_in(text)
 	. = ..()
 	var/list/arguments = parse_std_in(text)

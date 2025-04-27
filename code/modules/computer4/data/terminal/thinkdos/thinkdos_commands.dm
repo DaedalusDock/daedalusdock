@@ -384,7 +384,7 @@
 		system.println("<b>Syntax:</b> \"run \[program filepath].\"")
 		return
 
-	var/file_path = ckey(jointext(arguments, ""))
+	var/file_path = jointext(arguments, "")
 
 	var/datum/c4_file/terminal_program/program_to_run = system.resolve_filepath(file_path, system.current_directory)
 	if(!istype(program_to_run) || istype(program_to_run, /datum/c4_file/terminal_program/operating_system))

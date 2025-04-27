@@ -13,6 +13,8 @@
 
 /datum/c4_file/terminal_program/probe/execute()
 	. = ..()
+	if(!.)
+		return
 
 	var/datum/c4_file/terminal_program/operating_system/os = get_os()
 	os.println("NetProbe V2.4", FALSE)
@@ -25,9 +27,6 @@
 /datum/c4_file/terminal_program/probe/proc/get_adapter()
 	RETURN_TYPE(/obj/item/peripheral/network_card)
 	return get_computer().get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD)
-
-/datum/c4_file/terminal_program/probe/parse_std_in(text)
-	return new /datum/shell_stdin(text)
 
 /datum/c4_file/terminal_program/probe/std_in(text)
 	. = ..()

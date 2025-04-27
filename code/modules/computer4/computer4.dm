@@ -34,6 +34,7 @@
 	var/list/default_programs = list(
 		/datum/c4_file/terminal_program/notepad,
 		/datum/c4_file/terminal_program/probe,
+		/datum/c4_file/terminal_program/medtrak,
 	)
 	/// The directory to install them in
 	var/default_program_dir = "/programs"
@@ -283,6 +284,9 @@
 	if(!program)
 		return FALSE
 
+	if(!program.can_execute(operating_system))
+		return FALSE
+
 	if(!(program in processing_programs))
 		add_processing_program(program)
 
@@ -291,7 +295,7 @@
 
 
 	set_active_program(program)
-	program.execute()
+	program.execute(operating_system)
 	return TRUE
 
 /// Close a program.

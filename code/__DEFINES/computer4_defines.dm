@@ -4,3 +4,7 @@
 // See proc/peripheral_input
 #define PERIPHERAL_CMD_RECEIVE_PACKET "receive_packet"
 #define PERIPHERAL_CMD_SCAN_CARD "scan_card"
+
+// MedTrak menus
+#define MEDTRAK_MENU_HOME 1
+#define MEDTRAK_MENU_INDEX 2

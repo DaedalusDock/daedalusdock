@@ -55,7 +55,7 @@
 			. += n
 
 /proc/access2text(list/access)
-	return jointext(access, ":")
+	return jointext(access, ";")
 
 //Call this before using req_access or req_one_access directly
 /obj/proc/gen_access()

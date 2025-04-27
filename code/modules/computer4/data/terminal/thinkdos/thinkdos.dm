@@ -37,50 +37,6 @@
  |_| |_|_||_||_|_||_\_\|___/`___&#39;&lt;___/</pre>"}
 	println(gamertext)
 
-/// Struct for the parsed stdin
-/datum/shell_stdin
-	var/raw = ""
-	var/command = ""
-	var/list/arguments = list()
-	var/list/options = list()
-
-/datum/shell_stdin/New(text)
-	arguments = splittext(text, " ")
-
-	raw = text
-	command = lowertext(arguments[1])
-	options = list()
-
-	if(length(arguments) == 1)
-		return
-
-
-	arguments.Cut(1, 2)
-
-	// Parse out options
-	for(var/str in arguments)
-		// Dangling "-" is considered an argument per POSIX, so do not trim it from the arguments list.
-		if(length(str) <= 1 || str[1] != "-")
-			break
-
-		if(str[2] == "-")
-			if(length(str) == 2) // "--", cease parsing options
-				arguments.Cut(1,2)
-				break
-
-			if(str[3] == "-") //This is an argument, not an option.
-				break
-
-			options += copytext(str, 3)
-			arguments.Cut(1, 2)
-			continue
-
-		options |= splittext(copytext(str, 2), "")
-		arguments.Cut(1, 2)
-
-/datum/c4_file/terminal_program/operating_system/thinkdos/parse_std_in(text)
-	return new /datum/shell_stdin(text)
-
 /datum/c4_file/terminal_program/operating_system/thinkdos/std_in(text)
 	. = ..()
 	if(.)
@@ -159,19 +115,24 @@
 	set_current_user(null)
 	return TRUE
 
-/// Create the log file, or append a startup log.
-/datum/c4_file/terminal_program/operating_system/thinkdos/proc/initialize_logs()
-	if(command_log)
-		return FALSE
-
+/// Returns the logging folder, attempting to create it if it doesn't already exist.
+/datum/c4_file/terminal_program/operating_system/thinkdos/get_log_folder()
 	var/datum/c4_file/folder/log_dir = parse_directory("logs", drive.root)
 	if(!log_dir)
 		log_dir = new /datum/c4_file/folder
 		log_dir.set_name("logs")
 		if(!drive.root.try_add_file(log_dir))
 			qdel(log_dir)
-			return FALSE
+			return null
 
+	return log_dir
+
+/// Create the log file, or append a startup log.
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/initialize_logs()
+	if(command_log)
+		return FALSE
+
+	var/datum/c4_file/folder/log_dir = get_log_folder()
 	var/datum/c4_file/text/log_file = log_dir.get_file("syslog")
 	if(!log_file)
 		log_file = new /datum/c4_file/text()

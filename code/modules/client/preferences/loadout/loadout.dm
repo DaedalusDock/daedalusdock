@@ -9,6 +9,7 @@
 	return list()
 
 /datum/preference/blob/loadout/deserialize(input, datum/preferences/preferences)
+	#warn input is a list here not a fucking json
 	var/list/json
 	try
 		json = json_decode(input)

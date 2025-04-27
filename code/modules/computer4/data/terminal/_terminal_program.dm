@@ -126,14 +126,6 @@
 
 	return get_file(path_info.file_name, found_folder, include_folders = TRUE)
 
-/// Sanitize a file name.
-/datum/c4_file/terminal_program/operating_system/proc/sanitize_filename(file_name)
-	return ckey(trim(file_name, 16))
-
-/// Returns TRUE if a given file name is OK.
-/datum/c4_file/terminal_program/operating_system/proc/validate_file_name(file_name)
-	return (ckey(file_name) == file_name) && (length(file_name) <= 16)
-
 /// Write to the terminal.
 /datum/c4_file/terminal_program/operating_system/proc/println(text, update_ui = TRUE)
 	if(isnull(text) || !is_operational())

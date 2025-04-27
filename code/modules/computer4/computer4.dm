@@ -30,13 +30,25 @@
 	/// k:v list of ckey to the last used command.
 	var/list/tgui_last_accessed = list()
 
+	/// List of program typepaths to install by default
+	var/list/default_programs = list(
+		/datum/c4_file/terminal_program/notepad,
+		/datum/c4_file/terminal_program/probe,
+	)
+	/// The directory to install them in
+	var/default_program_dir = "/programs"
+
 /obj/machinery/computer4/Initialize(mapload)
 	#warn debug
 	. = ..()
 	set_internal_disk(new /obj/item/disk/data)
+
 	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/operating_system/thinkdos)
-	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/notepad)
-	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/probe)
+
+	if(length(default_programs))
+		var/datum/c4_file/folder/program_dir = internal_disk.root.parse_directory(default_program_dir, internal_disk.root, create_if_missing = TRUE)
+		for(var/program_path in default_programs)
+			program_dir.try_add_file(new program_path)
 
 	add_peripheral(new /obj/item/peripheral/network_card/wireless)
 	add_peripheral(new /obj/item/peripheral/card_reader)

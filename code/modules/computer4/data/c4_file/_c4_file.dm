@@ -54,6 +54,14 @@
 	RETURN_TYPE(/obj/machinery/computer4)
 	return drive?.computer
 
+/// Sanitize a file name.
+/datum/c4_file/proc/sanitize_filename(file_name)
+	return ckey(trim(file_name, 16))
+
+/// Returns TRUE if a given file name is OK.
+/datum/c4_file/proc/validate_file_name(file_name)
+	return (ckey(file_name) == file_name) && (length(file_name) <= 16)
+
 /datum/file_path
 	var/directory
 	var/file_name
@@ -74,7 +82,7 @@
 	return path
 
 /// Take a directory, vomit out a folder at that directory or null
-/datum/c4_file/proc/parse_directory(text, datum/c4_file/folder/origin) as /datum/c4_file/folder
+/datum/c4_file/proc/parse_directory(text, datum/c4_file/folder/origin, create_if_missing = FALSE) as /datum/c4_file/folder
 	RETURN_TYPE(/datum/c4_file/folder)
 
 	if(!origin)
@@ -85,7 +93,7 @@
 
 	var/datum/c4_file/folder/destination = origin
 
-	if(copytext(text, 1) == "/")
+	if(text[1] == "/")
 		destination = origin.drive.root
 		text = copytext(text, 2)
 
@@ -136,7 +144,8 @@
 				continue
 
 			if("")
-				return destination
+				if(!create_if_missing)
+					return destination
 
 		// End period handling
 
@@ -149,4 +158,18 @@
 				break
 
 		if(!found_next_folder)
-			return null
+			if(!create_if_missing)
+				return null
+
+			if(!validate_file_name(split_by_slash[1]))
+				return null
+
+			var/datum/c4_file/folder/new_folder = new
+			new_folder.set_name(split_by_slash[1])
+
+			if(!destination.try_add_file(new_folder))
+				qdel(new_folder)
+				return null
+
+			split_by_slash.Cut(1,2)
+			destination = new_folder

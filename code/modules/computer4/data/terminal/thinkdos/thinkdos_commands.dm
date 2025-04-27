@@ -144,7 +144,7 @@
 		system.println("<b>Syntax:</b> \"makedir \[new directory name\]\"")
 		return
 
-	var/folder_name = ckey(trim(jointext(arguments, ""), 16))
+	var/folder_name = trim(jointext(arguments, ""), 16)
 
 	if(system.resolve_filepath(folder_name))
 		system.print_error("<b>Error:</b> File name in use.")
@@ -320,12 +320,12 @@
 		system.println("<b>Syntax:</b> \"read \[file name].\"")
 		return
 
-	var/datum/c4_file/file = system.resolve_filepath(ckey(jointext(arguments, "")))
+	var/datum/c4_file/file = system.resolve_filepath(jointext(arguments, ""))
 	if(!file)
 		system.println("<b>Error</b>: No file found.")
 		return
 
-	system.println(file.to_string())
+	system.println(html_encode(file.to_string()))
 
 /datum/shell_command/thinkdos/version
 	aliases = list("version", "ver")

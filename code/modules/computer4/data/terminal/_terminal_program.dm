@@ -113,6 +113,8 @@
 	var/list/split_path = splittext(file_path, "/")
 
 	if(length(split_path) == 1)
+		if(split_path[1] == ".")
+			return working_directory
 		return get_file(split_path[1], working_directory, include_folders = TRUE)
 
 	var/datum/file_path/path_info = text_to_filepath(file_path)

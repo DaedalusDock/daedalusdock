@@ -2,6 +2,9 @@
 	name = "folder"
 	extension = ""
 
+	// Folders do not take up any size inherently.
+	size = 0
+
 	/// This is used to prevent people from making a file system 100 folders deep.
 	var/generation = 1
 	/// Homework
@@ -20,8 +23,7 @@
 	new_file.containing_folder = src
 	new_file.drive = drive
 
-	size += new_file.size
-	drive.disk_used += new_file.size
+	adjust_size(new_file.size)
 
 	if(istype(new_file, /datum/c4_file/folder))
 		var/datum/c4_file/folder/new_folder = new_file
@@ -34,7 +36,7 @@
 	if(new_file == src)
 		return FALSE
 
-	if(drive.disk_capacity < (drive.disk_used + new_file.size))
+	if(drive.disk_capacity < (drive.root.size))
 		return FALSE
 
 	return TRUE
@@ -47,8 +49,10 @@
 		return FALSE
 
 	contents -= file
-	size -= file.size
-	drive.disk_used -= file.size
+	file.containing_folder = null
+	file.drive = null
+
+	adjust_size(-file.size)
 
 	SEND_SIGNAL(file, COMSIG_COMPUTER4_FILE_DEL)
 
@@ -62,6 +66,11 @@
 		return FALSE
 
 	return TRUE
+
+/// Adjusts the size of this folder and all parent folders.
+/datum/c4_file/folder/proc/adjust_size(amt)
+	size += amt
+	containing_folder?.adjust_size(amt)
 
 /datum/c4_file/folder/proc/get_file(file_name, include_folders = TRUE)
 	for(var/datum/c4_file/file as anything in src.contents)

@@ -15,7 +15,6 @@
 	var/title = "sys"
 
 	var/disk_capacity = 32
-	var/disk_used = 0
 
 	var/read_only = FALSE //Well,it's still a floppy disk
 

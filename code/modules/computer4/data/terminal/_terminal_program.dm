@@ -41,6 +41,7 @@
 /datum/c4_file/terminal_program/operating_system
 	name = "operating system"
 	extension = "TSYS"
+	size = 0
 
 	is_executable = FALSE
 

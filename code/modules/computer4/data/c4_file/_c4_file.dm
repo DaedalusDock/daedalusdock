@@ -4,7 +4,7 @@
 	var/name = "file"
 	var/extension = "DAT"
 
-	var/size = 0
+	var/size = 2
 
 	/// If the file is copyable by default.
 	var/copyable = TRUE // Don't copy that floppy.

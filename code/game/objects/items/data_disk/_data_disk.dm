@@ -34,6 +34,7 @@
 
 /obj/item/disk/data/Destroy(force)
 	QDEL_NULL(root)
+	computer = null
 	return ..()
 
 // Stub functions to ensure this shit still builds.

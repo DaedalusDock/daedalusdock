@@ -2954,6 +2954,7 @@
 #include "code\modules\computer4\peripherals\_peripheral.dm"
 #include "code\modules\computer4\peripherals\card_reader.dm"
 #include "code\modules\computer4\peripherals\network_card.dm"
+#include "code\modules\computer4\peripherals\printer.dm"
 #include "code\modules\credits_roll\credits_client_procs.dm"
 #include "code\modules\credits_roll\credits_core.dm"
 #include "code\modules\credits_roll\episode_name.dm"

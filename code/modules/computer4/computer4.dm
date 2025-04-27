@@ -1,5 +1,5 @@
 /obj/machinery/computer4
-	name = "computer"
+	name = "voidcomputer"
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "computer"
 
@@ -52,6 +52,7 @@
 
 	add_peripheral(new /obj/item/peripheral/network_card/wireless)
 	add_peripheral(new /obj/item/peripheral/card_reader)
+	add_peripheral(new /obj/item/peripheral/printer)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/computer4/LateInitialize()

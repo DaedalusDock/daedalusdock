@@ -19,6 +19,13 @@
 	var/datum/c4_file/terminal_program/medtrak/medtrak = program
 	medtrak.view_index()
 
+/datum/shell_command/medtrak/record/home
+	aliases = list("home")
+
+/datum/shell_command/medtrak/index/record/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	var/datum/c4_file/terminal_program/medtrak/medtrak = program
+	medtrak.view_home()
+
 /datum/shell_command/medtrak/record/delete
 	aliases = list("D", "d", "del", "delete")
 
@@ -38,4 +45,4 @@
 			medtrak.view_index()
 
 		else
-			medtrak.await_input("Are you sure? (Y/N)", CALLBACK(src, PROC_REF(confirm_delete), medtrak))
+			medtrak.await_input("Are you sure? (Y/N)", CALLBACK(src, PROC_REF(confirm_delete)))

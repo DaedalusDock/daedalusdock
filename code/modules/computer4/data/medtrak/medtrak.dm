@@ -55,7 +55,7 @@
 			qdel(log_file)
 			system.println("<b>Error: Unable to write log file.")
 
-	write_log("[stationtime2text()]| [html_encode(system.current_user.registered_name)] accessed the records database.")
+	write_log("[system.current_user.registered_name] accessed the records database.")
 
 	home_text()
 
@@ -72,14 +72,19 @@
 
 	return record_log
 
-/// Write to the MedTrak log.
+/// Write to the MedTrak log. Encodes the inputted text.
 /datum/c4_file/terminal_program/medtrak/proc/write_log(text)
 	var/datum/c4_file/text/log = get_log_file()
 	if(!istype(log))
 		return FALSE
 
-	log.data += text
+	log.data += "[stationtime2text()]| [html_encode(text)]"
 	return TRUE
+
+/// Updates the current record and logs it.
+/datum/c4_file/terminal_program/medtrak/proc/update_record(field, field_name, new_value)
+	write_log("Updated record [current_record.fields[DATACORE_ID]] Field: [field_name] | Old: [current_record.fields[field]] | New: [new_value]")
+	current_record.fields[field] = new_value
 
 /datum/c4_file/terminal_program/medtrak/std_in(text)
 	. = ..()
@@ -92,7 +97,7 @@
 	if(awaiting_input)
 		var/datum/callback/_awaiting = awaiting_input // Null beforehand incase the awaiting input awaits another input.
 		awaiting_input = null
-		_awaiting.Invoke(parsed_stdin)
+		_awaiting.Invoke(src, parsed_stdin)
 		return
 
 	switch(current_menu)
@@ -192,9 +197,14 @@ _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 	system.println(jointext(out, "<br>"))
 
 /datum/c4_file/terminal_program/medtrak/proc/view_record(datum/data/record/R)
-	get_os().clear_screen(TRUE)
-	current_record = R
+	if(isnull(R))
+		R = current_record
+	else
+		current_record = R
+
 	current_menu = MEDTRAK_MENU_RECORD
+
+	get_os().clear_screen(TRUE)
 
 	var/list/fields = current_record.fields
 	#warn add mental/physical health
@@ -211,7 +221,6 @@ _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 		"\[08\] Diseases: [fields[DATACORE_DISEASES]]",
 		"\[09\] Diseases (Details): [fields[DATACORE_DISEASES_DETAILS]]",
 		"\[10\] Notes: [fields[DATACORE_NOTES_DETAILS]]",
-		"\[11\] Age: [fields[DATACORE_AGE]]",
 		"<br>Enter field number to edit a field",
 		"(R) Refresh | (D) Delete | (P) Print | (0) Return to index"
 	)
@@ -219,3 +228,11 @@ _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 	get_os().println(jointext(out, "<br>"))
 
 /datum/c4_file/terminal_program/medtrak/proc/record_input_num(number)
+	switch(number)
+		if(1)
+			await_input("Enter a new Name (Max Length: [MAX_NAME_LEN])", CALLBACK(src, PROC_REF(edit_name)))
+		if(2)
+			await_input("Enter a new Sex", CALLBACK(src, PROC_REF(edit_sex)))
+		if(3)
+			await_input("Enter a new Age (1-200)", CALLBACK(src, PROC_REF(edit_age)))
+

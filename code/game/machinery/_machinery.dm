@@ -230,6 +230,7 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	unset_static_power()
 	unlink_from_jack(ignore_check = TRUE)
 	selected_disk = null
+	QDEL_NULL(internal_disk)
 	QDEL_NULL(inserted_disk)
 	return ..()
 

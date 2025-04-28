@@ -9,6 +9,7 @@
 /obj/item/peripheral/network_card/wireless
 	name = "wireless card"
 	desc = "A wireless computer card. It has a bit of a limited range."
+	icon_state = "radio"
 
 	peripheral_type = PERIPHERAL_TYPE_WIRELESS_CARD
 

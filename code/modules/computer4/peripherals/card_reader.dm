@@ -1,6 +1,8 @@
 /obj/item/peripheral/card_reader
 	name = "card reader"
 	desc = "A peripheral board for scanning ID cards."
+
+	icon_state = "card_mod"
 	peripheral_type = PERIPHERAL_TYPE_CARD_READER
 
 	var/obj/item/card/id/inserted_card

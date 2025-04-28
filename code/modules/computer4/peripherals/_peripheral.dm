@@ -1,5 +1,5 @@
 /obj/item/peripheral
-	name = "Peripheral card"
+	name = "peripheral card"
 	desc = "A computer circuit board."
 
 	icon = 'icons/obj/module.dmi'

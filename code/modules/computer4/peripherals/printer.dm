@@ -1,6 +1,7 @@
 /obj/item/peripheral/printer
 	name = "printer module"
-	desc = "A small printer designed for voidcomputers"
+	desc = "A small printer designed for voidcomputers."
+	icon_state = "card_mod"
 
 	peripheral_type = PERIPHERAL_TYPE_PRINTER
 

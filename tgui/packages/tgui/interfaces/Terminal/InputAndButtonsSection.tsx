@@ -79,7 +79,7 @@ export const InputAndButtonsSection = () => {
         <Flex.Item>
           <Button
             icon="share"
-            disabled={terminalActive}
+            disabled={!terminalActive}
             onClick={handleEnterClick}
             mr="0.5rem"
             my={0.25}

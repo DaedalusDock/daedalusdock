@@ -997,7 +997,7 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 	name = "engine air alarm"
 	locked = FALSE
 	req_access = null
-	req_one_access = list(ACCESS_ATMOSPHERICS, ACCESS_ENGINE)
+	req_one_access = list(ACCESS_ATMOSPHERICS, ACCESS_ENGINEERING)
 
 /obj/machinery/airalarm/mixingchamber
 	name = "chamber air alarm"

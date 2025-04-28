@@ -10,15 +10,10 @@
 /datum/access_group/station/engineering/areas
 	name = "Engineering (Areas)"
 	access = list(
-		ACCESS_CONSTRUCTION,
-		ACCESS_AUX_BASE,
 		ACCESS_MAINT_TUNNELS,
-		ACCESS_ENGINE,
-		ACCESS_TECH_STORAGE,
+		ACCESS_ENGINEERING,
 		ACCESS_ATMOSPHERICS,
-		ACCESS_MECH_ENGINE,
-		ACCESS_TCOMSAT,
-		ACCESS_MINISAT,
+		ACCESS_SECURE_ENGINEERING,
 		ACCESS_CE,
 	)
 
@@ -26,4 +21,6 @@
 	name = "Engineering (Other)"
 	access = list(
 		ACCESS_ENGINE_EQUIP,
+		ACCESS_MECH_ENGINE,
+		ACCESS_RC_ANNOUNCE
 	)

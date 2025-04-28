@@ -79,7 +79,7 @@
 /datum/access_template/engioutpost
 	assignment = "Senior Station Engineer"
 	template_state = "trim_stationengineer"
-	access = list(ACCESS_AWAY_GENERAL, ACCESS_AWAY_ENGINE, ACCESS_ENGINE, ACCESS_ENGINE_EQUIP, ACCESS_MAINT_TUNNELS)
+	access = list(ACCESS_AWAY_GENERAL, ACCESS_AWAY_ENGINE, ACCESS_ENGINEERING, ACCESS_ENGINE_EQUIP, ACCESS_MAINT_TUNNELS)
 
 /// Trim for various various ruins.
 /datum/access_template/job/station_engineer/gunner

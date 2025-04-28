@@ -21,6 +21,8 @@
 #define ACCESS_CAPTAIN 20
 #define ACCESS_ALL_PERSONAL_LOCKERS 21
 #define ACCESS_CHAPEL_OFFICE 22
+/// Faction access for Management
+#define ACCESS_MANAGEMENT 23
 #define ACCESS_ATMOSPHERICS 24
 #define ACCESS_BAR 25
 #define ACCESS_JANITOR 26
@@ -37,13 +39,13 @@
 #define ACCESS_THEATRE 46
 #define ACCESS_VAULT 53
 #define ACCESS_CE 56
-#define ACCESS_HOP 57
+#define ACCESS_DELEGATE 57
 #define ACCESS_HOS 58
 /// Request console announcements
 #define ACCESS_RC_ANNOUNCE 59
 /// Used for events which require at least two people to confirm them
 #define ACCESS_KEYCARD_AUTH 60
-/// Has access to the satellite.
+/// Has access to the satellite and secure tech storage.
 #define ACCESS_SECURE_ENGINEERING 61
 #define ACCESS_GATEWAY 62
 /// For releasing minerals from the ORM

@@ -22,7 +22,7 @@
 
 /obj/structure/closet/secure_closet/hop
 	name = "\proper head of personnel's locker"
-	req_access = list(ACCESS_HOP)
+	req_access = list(ACCESS_DELEGATE)
 	icon_state = "hop"
 
 /obj/structure/closet/secure_closet/hop/PopulateContents()
@@ -250,7 +250,7 @@
 /obj/structure/closet/secure_closet/contraband/heads
 	anchored = TRUE
 	name = "Contraband Locker"
-	req_access = list(ACCESS_FACTION_LEADER)
+	req_access = list(ACCESS_MANAGEMENT)
 
 /obj/structure/closet/secure_closet/armory1
 	name = "armory armor locker"

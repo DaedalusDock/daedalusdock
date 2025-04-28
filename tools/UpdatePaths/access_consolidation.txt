@@ -33,3 +33,6 @@
 /obj/effect/mapping_helpers/airlock/access/any/supply/mail_sorting : /obj/effect/mapping_helpers/airlock/access/any/supply/general
 /obj/effect/mapping_helpers/airlock/access/any/supply/mining : /obj/effect/mapping_helpers/airlock/access/any/supply/general
 /obj/effect/mapping_helpers/airlock/access/any/supply/mining_station : /obj/effect/mapping_helpers/airlock/access/any/supply/general
+
+/obj/effect/mapping_helpers/airlock/access/any/command/gateway : /obj/effect/mapping_helpers/airlock/access/any/command/general
+/obj/effect/mapping_helpers/airlock/access/all/command/gateway : /obj/effect/mapping_helpers/airlock/access/all/command/general

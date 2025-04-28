@@ -23,4 +23,7 @@
 	access = list(
 		ACCESS_MECH_SECURITY,
 		ACCESS_WEAPONS,
+		// This should probably just be on a physical card in security and not actually grantable.
+		ACCESS_ALL_PERSONAL_LOCKERS,
+		ACCESS_RC_ANNOUNCE,
 	)

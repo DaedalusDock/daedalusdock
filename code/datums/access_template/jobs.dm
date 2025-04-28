@@ -65,6 +65,8 @@
 	if(CONFIG_GET(flag/everyone_has_maint_access))
 		access |= list(ACCESS_MAINT_TUNNELS)
 
+	access |= ACCESS_EVA
+
 	return TRUE
 
 /datum/access_template/job/assistant
@@ -74,7 +76,7 @@
 	extra_access = list(ACCESS_MAINT_TUNNELS)
 	minimal_access = list()
 	config_job = "assistant"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CAPTAIN, ACCESS_DELEGATE, ACCESS_CHANGE_IDS)
 	job = /datum/job/assistant
 
 /datum/access_template/job/assistant/refresh_template_access()
@@ -106,7 +108,7 @@
 	extra_access = list(ACCESS_HYDROPONICS, ACCESS_KITCHEN)
 	minimal_access = list(ACCESS_BAR, ACCESS_MINERAL_STOREROOM, ACCESS_THEATRE, ACCESS_WEAPONS, ACCESS_SERVICE)
 	config_job = "bartender"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CAPTAIN, ACCESS_DELEGATE, ACCESS_CHANGE_IDS)
 	job = /datum/job/bartender
 
 /datum/access_template/job/botanist
@@ -116,7 +118,7 @@
 	extra_access = list(ACCESS_BAR, ACCESS_KITCHEN)
 	minimal_access = list(ACCESS_HYDROPONICS, ACCESS_MINERAL_STOREROOM, ACCESS_SERVICE)
 	config_job = "botanist"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CAPTAIN, ACCESS_DELEGATE, ACCESS_CHANGE_IDS)
 	job = /datum/job/botanist
 
 /datum/access_template/job/captain
@@ -152,7 +154,7 @@
 	sechud_icon_state = SECHUD_CHAPLAIN
 	minimal_access = list(ACCESS_CHAPEL_OFFICE, ACCESS_THEATRE, ACCESS_SERVICE)
 	config_job = "chaplain"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CAPTAIN, ACCESS_DELEGATE, ACCESS_CHANGE_IDS)
 	job = /datum/job/chaplain
 
 /datum/access_template/job/chemist
@@ -202,7 +204,7 @@
 	extra_access = list()
 	minimal_access = list(ACCESS_THEATRE, ACCESS_SERVICE)
 	config_job = "clown"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CAPTAIN, ACCESS_DELEGATE, ACCESS_CHANGE_IDS)
 	job = /datum/job/clown
 
 /datum/access_template/job/cook
@@ -212,7 +214,7 @@
 	extra_access = list(ACCESS_BAR, ACCESS_HYDROPONICS)
 	minimal_access = list(ACCESS_KITCHEN, ACCESS_MINERAL_STOREROOM, ACCESS_SERVICE)
 	config_job = "cook"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CAPTAIN, ACCESS_DELEGATE, ACCESS_CHANGE_IDS)
 	job = /datum/job/cook
 
 /datum/access_template/job/cook/chef
@@ -226,7 +228,7 @@
 	extra_access = list()
 	minimal_access = list(ACCESS_AUX_BASE, ACCESS_LIBRARY, ACCESS_SERVICE)
 	config_job = "curator"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CAPTAIN, ACCESS_DELEGATE, ACCESS_CHANGE_IDS)
 	job = /datum/job/curator
 
 /datum/access_template/job/detective
@@ -261,11 +263,11 @@
 	sechud_icon_state = SECHUD_HEAD_OF_PERSONNEL
 	extra_access = list()
 	minimal_access = list(ACCESS_AI_UPLOAD, ACCESS_ALL_PERSONAL_LOCKERS, ACCESS_AUX_BASE, ACCESS_BAR, ACCESS_CHAPEL_OFFICE,
-					ACCESS_CHANGE_IDS, ACCESS_COURT, ACCESS_ENGINEERING, ACCESS_EVA, ACCESS_GATEWAY,
-					ACCESS_HOP, ACCESS_HYDROPONICS, ACCESS_JANITOR, ACCESS_KEYCARD_AUTH, ACCESS_KITCHEN, ACCESS_LAWYER, ACCESS_LIBRARY,
+					ACCESS_CHANGE_IDS, ACCESS_COURT, ACCESS_ENGINEERING, ACCESS_EVA,
+					ACCESS_DELEGATE, ACCESS_HYDROPONICS, ACCESS_JANITOR, ACCESS_KEYCARD_AUTH, ACCESS_KITCHEN, ACCESS_LAWYER, ACCESS_LIBRARY,
 					ACCESS_MAINT_TUNNELS, ACCESS_MECH_ENGINE, ACCESS_MECH_MEDICAL, ACCESS_MECH_SCIENCE, ACCESS_MECH_SECURITY, ACCESS_MEDICAL,
 					ACCESS_RC_ANNOUNCE, ACCESS_RESEARCH, ACCESS_TELEPORTER,
-					ACCESS_THEATRE, ACCESS_VAULT, ACCESS_WEAPONS, ACCESS_FACTION_LEADER)
+					ACCESS_THEATRE, ACCESS_VAULT, ACCESS_WEAPONS, ACCESS_FACTION_LEADER, ACCESS_MANAGEMENT)
 	config_job = "head_of_personnel"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
 	job = /datum/job/head_of_personnel
@@ -277,9 +279,9 @@
 	sechud_icon_state = SECHUD_HEAD_OF_SECURITY
 	extra_access = list(ACCESS_TELEPORTER)
 	minimal_access = list(ACCESS_ALL_PERSONAL_LOCKERS, ACCESS_ARMORY, ACCESS_AUX_BASE, ACCESS_COURT,
-					ACCESS_ENGINEERING, ACCESS_EVA, ACCESS_FORENSICS, ACCESS_GATEWAY, ACCESS_HOS, ACCESS_KEYCARD_AUTH,
+					ACCESS_ENGINEERING, ACCESS_EVA, ACCESS_FORENSICS, ACCESS_HOS, ACCESS_KEYCARD_AUTH,
 					ACCESS_MAINT_TUNNELS, ACCESS_MECH_SECURITY, ACCESS_MEDICAL, ACCESS_RC_ANNOUNCE,
-					ACCESS_RESEARCH, ACCESS_SECURITY, ACCESS_WEAPONS, ACCESS_FACTION_LEADER)
+					ACCESS_RESEARCH, ACCESS_SECURITY, ACCESS_WEAPONS, ACCESS_FACTION_LEADER, ACCESS_ALL_PERSONAL_LOCKERS, ACCESS_MANAGEMENT)
 	config_job = "head_of_security"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
 	job = /datum/job/head_of_security
@@ -302,7 +304,7 @@
 	extra_access = list()
 	minimal_access = list(ACCESS_JANITOR, ACCESS_MAINT_TUNNELS, ACCESS_MINERAL_STOREROOM, ACCESS_SERVICE)
 	config_job = "janitor"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CAPTAIN, ACCESS_DELEGATE, ACCESS_CHANGE_IDS)
 	job = /datum/job/janitor
 
 /datum/access_template/job/lawyer
@@ -312,7 +314,7 @@
 	extra_access = list()
 	minimal_access = list(ACCESS_COURT, ACCESS_LAWYER, ACCESS_SERVICE)
 	config_job = "lawyer"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_HOS, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CAPTAIN, ACCESS_DELEGATE, ACCESS_HOS, ACCESS_CHANGE_IDS)
 	job = /datum/job/lawyer
 
 /datum/access_template/job/medical_doctor
@@ -333,7 +335,7 @@
 	extra_access = list()
 	minimal_access = list(ACCESS_THEATRE, ACCESS_SERVICE)
 	config_job = "mime"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CAPTAIN, ACCESS_DELEGATE, ACCESS_CHANGE_IDS)
 	job = /datum/job/clown
 
 /datum/access_template/job/paramedic
@@ -352,7 +354,7 @@
 	template_state = "trim_prisoner"
 	sechud_icon_state = SECHUD_PRISONER
 	config_job = "prisoner"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_HOS, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CAPTAIN, ACCESS_DELEGATE, ACCESS_HOS, ACCESS_CHANGE_IDS)
 	job = /datum/job/prisoner
 	datacore_record_key = DATACORE_RECORDS_MARS
 
@@ -391,7 +393,7 @@
 	extra_access = list()
 	minimal_access = list(ACCESS_MEDICAL, ACCESS_SERVICE)
 	config_job = "psychologist"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CMO, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CAPTAIN, ACCESS_DELEGATE, ACCESS_CMO, ACCESS_CHANGE_IDS)
 	job = /datum/job/psychologist
 	datacore_record_key = DATACORE_RECORDS_AETHER
 
@@ -403,7 +405,7 @@
 	minimal_access = list(ACCESS_CARGO, ACCESS_KEYCARD_AUTH, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MINING,
 					ACCESS_MINERAL_STOREROOM, ACCESS_QM, ACCESS_RC_ANNOUNCE, ACCESS_VAULT)
 	config_job = "quartermaster"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
+	template_access = list(ACCESS_CAPTAIN, ACCESS_DELEGATE, ACCESS_CHANGE_IDS)
 	job = /datum/job/quartermaster
 	datacore_record_key = DATACORE_RECORDS_HERMES
 

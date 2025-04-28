@@ -62,7 +62,7 @@
 /area/station/maintenance/starboard/fore)
 "aaN" = (
 /obj/machinery/door/airlock/maintenance,
-/obj/effect/mapping_helpers/airlock/access/all/medical/psychology,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "aaV" = (
@@ -1640,7 +1640,7 @@
 /obj/machinery/door/airlock/mining/glass{
 	name = "Mining Dock"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/supply/mining,
+/obj/effect/mapping_helpers/airlock/access/all/supply/general,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
 "aAQ" = (
@@ -2024,7 +2024,7 @@
 /obj/machinery/door/airlock/security/glass{
 	name = "Genpop Brig"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/brig,
+/obj/effect/mapping_helpers/airlock/access/all/security/general,
 /turf/open/floor/iron/dark,
 /area/station/security/brig)
 "aIK" = (
@@ -3300,7 +3300,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/virology,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "biu" = (
@@ -3703,7 +3703,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/surgery,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/iron/freezer,
 /area/station/medical/surgery/port)
 "bnW" = (
@@ -6169,7 +6169,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/virology,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "chg" = (
@@ -7032,7 +7032,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/virology,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "cyf" = (
@@ -8659,7 +8659,6 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/greater)
 "dfl" = (
-/obj/machinery/computer/bank_machine,
 /obj/effect/turf_decal/bot_white,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
@@ -10551,7 +10550,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/mapping_helpers/airlock/access/all/security/brig,
+/obj/effect/mapping_helpers/airlock/access/all/security/general,
 /turf/open/floor/iron/dark,
 /area/station/security/isolation_cells)
 "dPS" = (
@@ -10760,7 +10759,7 @@
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig Access"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/brig,
+/obj/effect/mapping_helpers/airlock/access/all/security/general,
 /turf/open/floor/iron/dark,
 /area/station/security/prison/rec)
 "dUK" = (
@@ -11071,7 +11070,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/mapping_helpers/airlock/access/all/security/brig,
+/obj/effect/mapping_helpers/airlock/access/all/security/general,
 /turf/open/floor/iron/dark,
 /area/station/security/isolation_cells)
 "eaY" = (
@@ -15298,7 +15297,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/engineering/tcoms,
+/obj/effect/mapping_helpers/airlock/access/all/engineering/general,
 /turf/open/floor/iron/dark,
 /area/station/engineering/storage/tcomms)
 "fDG" = (
@@ -16109,7 +16108,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "9"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/entrance,
+/obj/effect/mapping_helpers/airlock/access/all/security/general,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit/departure_lounge)
 "fUF" = (
@@ -19684,7 +19683,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "9"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/virology,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "hnm" = (
@@ -19868,7 +19867,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "6"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/virology,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "hsq" = (
@@ -20593,7 +20592,7 @@
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/mapping_helpers/airlock/access/all/supply/mining,
+/obj/effect/mapping_helpers/airlock/access/all/supply/general,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
 "hJr" = (
@@ -22765,7 +22764,7 @@
 /obj/machinery/door/airlock/security/glass{
 	name = "Genpop Brig"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/brig,
+/obj/effect/mapping_helpers/airlock/access/all/security/general,
 /turf/open/floor/iron/dark,
 /area/station/security/brig)
 "ivZ" = (
@@ -22776,7 +22775,7 @@
 	icon_state = "12"
 	},
 /obj/machinery/door/firedoor,
-/obj/effect/mapping_helpers/airlock/access/all/security/brig,
+/obj/effect/mapping_helpers/airlock/access/all/security/general,
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig Access"
 	},
@@ -22799,7 +22798,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/mapping_helpers/airlock/access/all/security/brig,
+/obj/effect/mapping_helpers/airlock/access/all/security/general,
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig Access"
 	},
@@ -22906,8 +22905,7 @@
 "ixH" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/hatch{
-	name = "MiniSat Access";
-	req_one_access_txt = "32;19"
+	name = "MiniSat Access"
 	},
 /obj/effect/landmark/navigate_destination,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -22917,6 +22915,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
+/obj/effect/mapping_helpers/airlock/access/any/engineering/tech_storage,
 /turf/open/floor/iron/dark,
 /area/station/engineering/transit_tube)
 "ixT" = (
@@ -24001,7 +24000,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/door/firedoor,
-/obj/effect/mapping_helpers/airlock/access/all/security/brig,
+/obj/effect/mapping_helpers/airlock/access/all/security/general,
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig Access"
 	},
@@ -24090,7 +24089,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/supply/mail_sorting,
+/obj/effect/mapping_helpers/airlock/access/all/supply/general,
 /turf/open/floor/iron,
 /area/station/cargo/sorting)
 "iVy" = (
@@ -25130,7 +25129,7 @@
 	name = "Genpop Shutter";
 	id = "cell1genpop"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/brig,
+/obj/effect/mapping_helpers/airlock/access/all/security/general,
 /turf/open/floor/iron/dark,
 /area/station/security/brig)
 "jpJ" = (
@@ -27893,7 +27892,7 @@
 	icon_state = "3"
 	},
 /obj/structure/overfloor_catwalk/iron_dark,
-/obj/effect/mapping_helpers/airlock/access/all/supply/mining,
+/obj/effect/mapping_helpers/airlock/access/all/supply/general,
 /obj/machinery/door/airlock/maintenance{
 	name = "Mining Dock Maintenance"
 	},
@@ -28424,8 +28423,7 @@
 /area/station/hallway/primary/fore)
 "kzS" = (
 /obj/machinery/door/airlock/engineering/glass{
-	name = "Shared Engineering Storage";
-	req_one_access_txt = "32;19"
+	name = "Shared Engineering Storage"
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -28434,6 +28432,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
+/obj/effect/mapping_helpers/airlock/access/any/engineering/general,
 /turf/open/floor/iron,
 /area/station/engineering/storage_shared)
 "kzV" = (
@@ -30038,7 +30037,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "6"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/virology,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "lel" = (
@@ -31293,7 +31292,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/door/firedoor,
-/obj/effect/mapping_helpers/airlock/access/all/security/entrance,
+/obj/effect/mapping_helpers/airlock/access/all/security/general,
 /obj/machinery/door/airlock/security/glass{
 	name = "Security Lobby"
 	},
@@ -33887,7 +33886,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/psychology,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/wood,
 /area/station/medical/psychology)
 "mzU" = (
@@ -34340,7 +34339,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/surgery,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/starboard)
 "mIS" = (
@@ -38137,7 +38136,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/supply/mining,
+/obj/effect/mapping_helpers/airlock/access/all/supply/general,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
 "ocA" = (
@@ -39732,7 +39731,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/segment,
-/obj/effect/mapping_helpers/airlock/access/all/supply/mining,
+/obj/effect/mapping_helpers/airlock/access/all/supply/general,
 /obj/machinery/door/airlock/mining{
 	name = "Mining Office"
 	},
@@ -40352,7 +40351,7 @@
 /obj/machinery/door/airlock/freezer{
 	name = "Cold Storage"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/surgery,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/iron/freezer,
 /area/station/medical/surgery/starboard)
 "oPZ" = (
@@ -41343,7 +41342,7 @@
 /obj/machinery/door/airlock/freezer{
 	name = "Cold Storage"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/surgery,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/iron/freezer,
 /area/station/medical/coldroom/starboard)
 "pjX" = (
@@ -41627,7 +41626,7 @@
 /area/station/ai_monitored/aisat/exterior)
 "prp" = (
 /obj/machinery/door/firedoor,
-/obj/effect/mapping_helpers/airlock/access/all/medical/surgery,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /obj/machinery/door/airlock/freezer{
 	name = "Cold Storage"
 	},
@@ -41740,7 +41739,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/supply/mining,
+/obj/effect/mapping_helpers/airlock/access/all/supply/general,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
 "pts" = (
@@ -44817,8 +44816,7 @@
 /area/station/maintenance/starboard/fore)
 "qAi" = (
 /obj/machinery/door/airlock/engineering/glass{
-	name = "Engineering Foyer";
-	req_one_access_txt = "32;19"
+	name = "Engineering Foyer"
 	},
 /obj/machinery/door/firedoor,
 /obj/structure/disposalpipe/segment{
@@ -44833,6 +44831,8 @@
 /obj/structure/cable/yellow{
 	icon_state = "10"
 	},
+/obj/effect/mapping_helpers/airlock/access/any/engineering/general,
+/obj/effect/mapping_helpers/airlock/access/any/engineering/tech_storage,
 /turf/open/floor/iron,
 /area/station/engineering/break_room)
 "qAm" = (
@@ -45096,7 +45096,7 @@
 /obj/machinery/door/airlock/mining{
 	name = "Deliveries"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/supply/mail_sorting,
+/obj/effect/mapping_helpers/airlock/access/all/supply/general,
 /turf/open/floor/iron,
 /area/station/cargo/sorting)
 "qFd" = (
@@ -46535,7 +46535,7 @@
 /obj/machinery/door/airlock/maintenance{
 	name = "Crematorium Maintenance"
 	},
-/obj/effect/mapping_helpers/airlock/access/any/service/crematorium,
+/obj/effect/mapping_helpers/airlock/access/any/service/chapel_office,
 /turf/open/floor/plating,
 /area/station/service/chapel/office)
 "rjc" = (
@@ -48928,7 +48928,7 @@
 	icon_state = "12"
 	},
 /obj/machinery/door/firedoor,
-/obj/effect/mapping_helpers/airlock/access/all/security/entrance,
+/obj/effect/mapping_helpers/airlock/access/all/security/general,
 /turf/open/floor/iron/dark,
 /area/station/security/brig)
 "sbJ" = (
@@ -57160,7 +57160,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "5"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/virology,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "vfX" = (
@@ -59103,7 +59103,7 @@
 /obj/machinery/door/airlock/mining/glass{
 	name = "Mining Dock"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/supply/mining,
+/obj/effect/mapping_helpers/airlock/access/all/supply/general,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
 "vTa" = (
@@ -59188,7 +59188,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/mapping_helpers/airlock/access/all/security/brig,
+/obj/effect/mapping_helpers/airlock/access/all/security/general,
 /turf/open/floor/iron/dark,
 /area/station/security/isolation_cells)
 "vTY" = (
@@ -60945,7 +60945,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/morgue,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/iron/dark,
 /area/station/medical/morgue)
 "wAP" = (
@@ -62143,7 +62143,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/morgue,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "wXr" = (
@@ -63909,7 +63909,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/surgery,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/port)
 "xDQ" = (
@@ -65559,7 +65559,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/medical/surgery,
+/obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "ylX" = (

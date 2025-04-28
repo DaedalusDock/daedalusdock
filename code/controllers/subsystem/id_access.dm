@@ -105,7 +105,7 @@ SUBSYSTEM_DEF(id_access)
 
 	sub_department_managers_tgui = list(
 		"[ACCESS_CAPTAIN]" = new /datum/access_group_manager/captain,
-		"[ACCESS_HOP]" = new /datum/access_group_manager/hop,
+		"[ACCESS_DELEGATE]" = new /datum/access_group_manager/hop,
 		"[ACCESS_HOS]" = new /datum/access_group_manager/security,
 		"[ACCESS_CMO]" = new /datum/access_group_manager/medical,
 		"[ACCESS_CE]" = new /datum/access_group_manager/engineering,
@@ -179,6 +179,7 @@ SUBSYSTEM_DEF(id_access)
 	desc_by_access["[ACCESS_TELEPORTER]"] = "Teleporter"
 	desc_by_access["[ACCESS_EVA]"] = "EVA"
 	desc_by_access["[ACCESS_FACTION_LEADER]"] = "Faction Leader"
+	desc_by_access["[ACCESS_MANAGEMENT]"] = "Management"
 	desc_by_access["[ACCESS_CAPTAIN]"] = "Captain"
 	desc_by_access["[ACCESS_ALL_PERSONAL_LOCKERS]"] = "Personal Lockers"
 	desc_by_access["[ACCESS_CHAPEL_OFFICE]"] = "Chapel Office"
@@ -194,12 +195,11 @@ SUBSYSTEM_DEF(id_access)
 	desc_by_access["[ACCESS_THEATRE]"] = "Theatre"
 	desc_by_access["[ACCESS_RESEARCH]"] = "Science"
 	desc_by_access["[ACCESS_VAULT]"] = "Main Vault"
-	desc_by_access["[ACCESS_HOP]"] = "Delegate Office"
+	desc_by_access["[ACCESS_DELEGATE]"] = "Delegate Office"
 	desc_by_access["[ACCESS_HOS]"] = "S.Marshal Office"
 	desc_by_access["[ACCESS_CE]"] = "C.Engineer Office"
 	desc_by_access["[ACCESS_RC_ANNOUNCE]"] = "RC Announcements"
 	desc_by_access["[ACCESS_KEYCARD_AUTH]"] = "Keycode Auth."
-	desc_by_access["[ACCESS_GATEWAY]"] = "Gateway"
 	desc_by_access["[ACCESS_MINERAL_STOREROOM]"] = "Mineral Storage"
 	desc_by_access["[ACCESS_WEAPONS]"] = "Weapon Permit"
 	desc_by_access["[ACCESS_NETWORK]"] = "Network Access"

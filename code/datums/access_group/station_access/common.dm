@@ -44,6 +44,7 @@
 		ACCESS_ORDNANCE, \
 		ACCESS_SERVICE, \
 		ACCESS_MAINT_TUNNELS,
+		ACCESS_EVA,
 	)
 
 /// Access on the station that is not related to an area's access.
@@ -59,10 +60,10 @@
 /datum/access_group/station/faction_heads
 	name = "Faction Heads"
 	access = list(
-		ACCESS_HOS, \
-		ACCESS_CE, \
-		ACCESS_CMO, \
-		ACCESS_RD, \
+		ACCESS_HOS,
+		ACCESS_CE,
+		ACCESS_CMO,
+		ACCESS_RD,
 	)
 
 /// Areas of the station belonging to independant groups.

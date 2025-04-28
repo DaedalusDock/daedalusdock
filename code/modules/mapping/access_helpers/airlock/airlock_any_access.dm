@@ -4,7 +4,7 @@
 	icon_state = "access_helper_com"
 
 /obj/effect/mapping_helpers/airlock/access/any/command/general
-	granted_any_access = list(ACCESS_FACTION_LEADER)
+	granted_any_access = list(ACCESS_MANAGEMENT)
 
 /obj/effect/mapping_helpers/airlock/access/any/command/ai_upload
 	granted_any_access = list(ACCESS_AI_UPLOAD)
@@ -15,11 +15,8 @@
 /obj/effect/mapping_helpers/airlock/access/any/command/eva
 	granted_any_access = list(ACCESS_EVA)
 
-/obj/effect/mapping_helpers/airlock/access/any/command/gateway
-	granted_any_access = list(ACCESS_GATEWAY)
-
 /obj/effect/mapping_helpers/airlock/access/any/command/hop
-	granted_any_access = list(ACCESS_HOP)
+	granted_any_access = list(ACCESS_DELEGATE)
 
 /obj/effect/mapping_helpers/airlock/access/any/command/captain
 	granted_any_access = list(ACCESS_CAPTAIN)

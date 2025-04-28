@@ -21,4 +21,5 @@
 	name = "Ward (Other)"
 	access = list(
 		ACCESS_MECH_MEDICAL,
+		ACCESS_RC_ANNOUNCE,
 	)

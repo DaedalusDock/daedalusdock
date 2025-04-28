@@ -1,5 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - qol: The chat splitter has been adjusted to return it to the old size. You may
-      need to reset or adjust the sizing splitters in your chat settings window.

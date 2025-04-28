@@ -170,3 +170,21 @@
 	else
 		qdel(existing_file)
 		system.println("<b>Error</b>: Unable to save to directory.")
+
+/datum/shell_command/notepad/edit_cmd/print
+	aliases = list("print", "p")
+	help_text = "Prints the current note to a local printer. Accepts a title as an argument."
+
+/datum/shell_command/notepad/edit_cmd/print/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	var/datum/c4_file/terminal_program/notepad/notepad = program
+	var/obj/item/peripheral/printer/printer = system.get_computer().get_peripheral(PERIPHERAL_TYPE_PRINTER)
+	if(!printer)
+		system.println("<b>Error:</b> Unable to locate printer.")
+		return
+
+	if(printer.busy)
+		system.println("<b>Error:</b> Printer is busy.")
+		return
+
+	printer.print(jointext(notepad.note_list, "<br>"), html_encode(trim(jointext(arguments, ""))) || "printout")
+	system.println("Printing...")

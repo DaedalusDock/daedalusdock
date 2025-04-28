@@ -94,7 +94,7 @@ GLOBAL_LIST_EMPTY(loadout_category_to_subcategory_to_items)
 /// Converts a loadout entry to a list of vars for saving.
 /datum/loadout_entry/proc/to_list()
 	return list(
-		"path" = path,
+		"path" = "[path]",
 		"name" = custom_name,
 		"desc" = custom_desc,
 		"color" = custom_color,

@@ -1239,6 +1239,7 @@
 #include "code\datums\storage\subtypes\cards.dm"
 #include "code\datums\storage\subtypes\cigarette_box.dm"
 #include "code\datums\storage\subtypes\extract_inventory.dm"
+#include "code\datums\storage\subtypes\floppy_box.dm"
 #include "code\datums\storage\subtypes\holster.dm"
 #include "code\datums\storage\subtypes\implant.dm"
 #include "code\datums\storage\subtypes\latched_box.dm"

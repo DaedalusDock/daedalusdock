@@ -1608,3 +1608,16 @@
 /obj/item/storage/box/chalk/PopulateContents()
 	for(var/i in 1 to 9)
 		new /obj/item/chalk(src)
+
+/obj/item/storage/box/floppy
+	name = "box of floppy disks"
+	desc = "A box able to fit 8 floppy disks."
+
+	icon_state = "floopybox-closed"
+	illustration = null
+
+	storage_type = /datum/storage/box/small_skinny
+
+/obj/item/storage/box/floppy/PopulateContents()
+	for(var/i in 1 to 9)
+		new /obj/item/disk/data(src)

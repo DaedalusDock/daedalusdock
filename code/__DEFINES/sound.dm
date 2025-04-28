@@ -174,8 +174,6 @@ GLOBAL_LIST_INIT(announcer_keys, list(
 #define SFX_PAINT "paint"
 #define SFX_BLOCK_BIG_METAL "big_metal_block"
 #define SFX_KEYBOARD "keyboard"
-#warn dont forget
-
 
 #define LOOPING_SOUND_DIRECT 1
 #define LOOPING_SOUND_NORMAL 2

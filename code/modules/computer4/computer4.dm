@@ -18,7 +18,6 @@
 	light_power = 0.8
 	light_color = LIGHT_COLOR_GREEN
 
-	#warn TODO: move all but operating_system into the operating system itself. No reason a computer needs to control these.
 	/// The current focused program.
 	var/tmp/datum/c4_file/terminal_program/active_program
 	/// The operating system.

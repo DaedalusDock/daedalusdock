@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { useBackend } from '../../backend';
-import { Button, Flex, Section, Tooltip } from '../../components';
+import { Button, Flex, Section } from '../../components';
 import { TerminalInput } from './TerminalInput';
 import type { TerminalData } from './types';
 
@@ -77,25 +77,22 @@ export const InputAndButtonsSection = () => {
           />
         </Flex.Item>
         <Flex.Item>
-          <Tooltip content="Enter">
-            <Button
-              icon="share"
-              color={terminalActive ? 'positive' : 'negative'}
-              onClick={handleEnterClick}
-              mr="0.5rem"
-              my={0.25}
-            />
-          </Tooltip>
+          <Button
+            icon="share"
+            disabled={terminalActive}
+            onClick={handleEnterClick}
+            mr="0.5rem"
+            my={0.25}
+            tooltip="Enter"
+          />
         </Flex.Item>
         <Flex.Item>
-          <Tooltip content="Restart">
-            <Button
-              icon="repeat"
-              color={terminalActive ? 'positive' : 'negative'}
-              onClick={handleRestartClick}
-              my={0.25}
-            />
-          </Tooltip>
+          <Button
+            icon="repeat"
+            onClick={handleRestartClick}
+            my={0.25}
+            tooltip="Restart"
+          />
         </Flex.Item>
       </Flex>
     </Section>

@@ -53,6 +53,9 @@
 	/// Soundloop. Self explanatory.
 	var/datum/looping_sound/computer/soundloop
 
+	/// Set to TRUE during restart, prevents inputting commands.
+	var/rebooting = FALSE
+
 /obj/machinery/computer4/Initialize(mapload)
 	. = ..()
 	soundloop = new(src)
@@ -223,7 +226,7 @@
 
 	switch(action)
 		if("text")
-			if(!active_program || !params["value"])
+			if(rebooting || !active_program || !params["value"])
 				return
 
 			operating_system.try_std_in(params["value"])
@@ -244,6 +247,11 @@
 				return
 
 			peri.on_ui_click(usr, params)
+			return TRUE
+
+		if("restart")
+			playsound(src, 'goon/sounds/button.ogg', 100)
+			reboot()
 			return TRUE
 
 /// Get the history entry at a certain index. Returns null if the index is out of bounds or the ckey is null. Will return an empty string for length+1
@@ -329,6 +337,27 @@
 		text_buffer += "<font color=red>ERR - BOOT FAILURE</font><br>"
 
 	SStgui.update_uis(src)
+
+/obj/machinery/computer4/proc/reboot()
+	if(rebooting)
+		return
+
+	if(operating_system)
+		set_operating_system(null)
+
+	text_buffer = "Rebooting system...<br>"
+
+	tgui_input_history = list()
+	tgui_input_index = list()
+
+	addtimer(CALLBACK(src, PROC_REF(finish_reboot)), 5 SECONDS)
+
+/obj/machinery/computer4/proc/finish_reboot()
+	rebooting = FALSE
+	if(!is_operational || operating_system)
+		return
+
+	post_system()
 
 /// Run a program.
 /obj/machinery/computer4/proc/execute_program(datum/c4_file/terminal_program/program)

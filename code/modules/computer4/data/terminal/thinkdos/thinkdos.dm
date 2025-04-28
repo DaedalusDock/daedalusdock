@@ -130,7 +130,7 @@
 /// Create the log file, or append a startup log.
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/initialize_logs()
 	if(command_log)
-		return FALSE
+		return TRUE
 
 	var/datum/c4_file/folder/log_dir = get_log_folder()
 	var/datum/c4_file/text/log_file = log_dir.get_file("syslog")

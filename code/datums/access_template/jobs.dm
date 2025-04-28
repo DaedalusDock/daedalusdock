@@ -140,7 +140,6 @@
 	assignment = JOB_DECKHAND
 	template_state = "trim_cargotechnician"
 	sechud_icon_state = SECHUD_CARGO_TECHNICIAN
-	#warn isnt this handled by the thing that makes people heads?
 	extra_access = list(ACCESS_QM)
 	minimal_access = list(ACCESS_CARGO, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MINING, ACCESS_MINERAL_STOREROOM)
 	config_job = "cargo_technician"

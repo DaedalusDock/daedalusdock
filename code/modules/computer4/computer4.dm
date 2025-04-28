@@ -3,7 +3,18 @@
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "computer"
 
+	density = TRUE
+	max_integrity = 200
+	integrity_failure = 0.5
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 40, ACID = 20)
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	network_flags = NETWORK_FLAG_USE_DATATERMINAL // Does not get a net ID
+
+	light_inner_range = 0.1
+	light_outer_range = 2
+	light_power = 0.8
+	light_color = LIGHT_COLOR_GREEN
 
 	#warn TODO: move all but operating_system into the operating system itself. No reason a computer needs to control these.
 	/// The current focused program.
@@ -39,8 +50,12 @@
 	/// The directory to install them in
 	var/default_program_dir = "/programs"
 
+	/// Soundloop. Self explanatory.
+	var/datum/looping_sound/computer/soundloop
+
 /obj/machinery/computer4/Initialize(mapload)
 	. = ..()
+	soundloop = new(src)
 	set_internal_disk(new /obj/item/disk/data)
 
 	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/operating_system/thinkdos)
@@ -55,18 +70,27 @@
 	add_peripheral(new /obj/item/peripheral/printer)
 	return INITIALIZE_HINT_LATELOAD
 
+/obj/machinery/computer4/Destroy()
+	QDEL_NULL(soundloop)
+	return ..()
+
 /obj/machinery/computer4/LateInitialize()
 	. = ..()
 	if(is_operational)
 		post_system()
+		soundloop.start()
+		set_light(l_on = TRUE)
 
 /obj/machinery/computer4/on_set_is_operational(old_value)
 	if(is_operational)
 		post_system()
+		soundloop.start()
+		set_light(l_on = TRUE)
 	else
-		unload_program(active_program)
+		soundloop.stop()
 		set_operating_system(null)
 		text_buffer = ""
+		set_light(l_on = FALSE)
 
 /obj/machinery/computer4/set_internal_disk(obj/item/disk/data/disk)
 	if(internal_disk)
@@ -85,6 +109,32 @@
 
 	if(inserted_disk)
 		inserted_disk.computer = src
+
+/obj/machinery/computer4/update_overlays()
+	. = ..()
+	if(machine_stat & NOPOWER)
+		. += "med_key_off"
+	else
+		. += "med_key"
+
+	// This whole block lets screens ignore lighting and be visible even in the darkest room
+	if(machine_stat & BROKEN)
+		. += image(icon, "[icon_state]_broken")
+		return // If we don't do this broken computers glow in the dark.
+
+	if(machine_stat & NOPOWER) // Your screen can't be on if you've got no damn charge
+		return
+
+	. += mutable_appearance(icon, "generic")
+	. += emissive_appearance(icon, "generic", alpha = 90)
+
+/obj/machinery/computer4/on_deconstruction()
+	if(!(flags_1 & NODECONSTRUCT_1))
+		for(var/peri_type in peripherals)
+			var/obj/item/peripheral/peri = peripherals[peri_type]
+			remove_peripheral(peri)
+			peri.forceMove(drop_location())
+
 
 /// Getter for retrieving peripherals in program code.
 /obj/machinery/computer4/proc/get_peripheral(peripheral_type)

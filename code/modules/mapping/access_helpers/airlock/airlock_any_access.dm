@@ -119,6 +119,9 @@
 /obj/effect/mapping_helpers/airlock/access/any/service/general
 	granted_any_access = list(ACCESS_SERVICE)
 
+/obj/effect/mapping_helpers/airlock/access/any/service/general_and_maint
+	granted_any_access = list(ACCESS_SERVICE, ACCESS_MAINT_TUNNELS)
+
 /obj/effect/mapping_helpers/airlock/access/any/service/kitchen
 	granted_any_access = list(ACCESS_KITCHEN)
 

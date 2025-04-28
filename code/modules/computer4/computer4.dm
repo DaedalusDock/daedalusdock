@@ -1,5 +1,7 @@
 /obj/machinery/computer4
 	name = "voidcomputer"
+	desc = "An older voidcomputer model produced by ThinkTronic LTD."
+
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "computer"
 

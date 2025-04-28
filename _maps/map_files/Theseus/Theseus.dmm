@@ -22915,7 +22915,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/airlock/access/any/engineering/tech_storage,
+/obj/effect/mapping_helpers/airlock/access/any/engineering/secure,
 /turf/open/floor/iron/dark,
 /area/station/engineering/transit_tube)
 "ixT" = (
@@ -44832,7 +44832,7 @@
 	icon_state = "10"
 	},
 /obj/effect/mapping_helpers/airlock/access/any/engineering/general,
-/obj/effect/mapping_helpers/airlock/access/any/engineering/tech_storage,
+/obj/effect/mapping_helpers/airlock/access/any/engineering/secure,
 /turf/open/floor/iron,
 /area/station/engineering/break_room)
 "qAm" = (

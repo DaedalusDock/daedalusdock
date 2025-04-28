@@ -36,3 +36,6 @@
 
 /obj/effect/mapping_helpers/airlock/access/any/command/gateway : /obj/effect/mapping_helpers/airlock/access/any/command/general
 /obj/effect/mapping_helpers/airlock/access/all/command/gateway : /obj/effect/mapping_helpers/airlock/access/all/command/general
+
+/obj/effect/mapping_helpers/airlock/access/all/engineering/tech_storage : /obj/effect/mapping_helpers/airlock/access/all/engineering/secure
+/obj/effect/mapping_helpers/airlock/access/any/engineering/tech_storage : /obj/effect/mapping_helpers/airlock/access/any/engineering/secure

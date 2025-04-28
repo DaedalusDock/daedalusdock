@@ -40,8 +40,7 @@
 /obj/effect/mapping_helpers/airlock/access/all/engineering/external
 	granted_all_access = list(ACCESS_EXTERNAL_AIRLOCKS)
 
-#warn RENAME: Secure Engineering
-/obj/effect/mapping_helpers/airlock/access/all/engineering/tech_storage
+/obj/effect/mapping_helpers/airlock/access/all/engineering/secure
 	granted_all_access = list(ACCESS_SECURE_ENGINEERING)
 
 /obj/effect/mapping_helpers/airlock/access/all/engineering/atmos

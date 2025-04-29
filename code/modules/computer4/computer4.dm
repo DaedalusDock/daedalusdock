@@ -1,3 +1,9 @@
+#warn oh boy this will be fun to implement
+/obj/item/circuitboard/computer/voidcomputer
+	name = "Voidcomputer (Computer Board)"
+	greyscale_colors = CIRCUIT_COLOR_GENERIC
+	build_path = /obj/machinery/computer4
+
 /obj/machinery/computer4
 	name = "voidcomputer"
 	desc = "An older voidcomputer model produced by ThinkTronic LTD."
@@ -139,6 +145,53 @@
 			remove_peripheral(peri)
 			peri.forceMove(drop_location())
 
+/obj/machinery/computer4/spawn_frame(disassembled, mob/user)
+	var/obj/structure/frame/computer/new_frame = new(loc)
+	transfer_fingerprints_to(new_frame)
+
+	new_frame.setDir(dir)
+	new_frame.circuit = circuit
+
+	if(machine_stat & BROKEN)
+		if(user)
+			to_chat(user, span_notice("The broken glass falls out."))
+		else
+			playsound(src, 'sound/effects/hit_on_shattered_glass.ogg', 70, TRUE)
+
+		new /obj/item/shard(drop_location())
+		new /obj/item/shard(drop_location())
+
+		new_frame.state = 3
+		new_frame.icon_state = "3"
+	else
+		if(user)
+			to_chat(user, span_notice("You disconnect the monitor."))
+		new_frame.state = 4
+		new_frame.icon_state = "4"
+
+	// If the new frame shouldn't be able to fit here due to the turf being blocked, spawn the frame deconstructed.
+	if(isturf(loc))
+		var/turf/machine_turf = loc
+		// We're spawning a frame before this machine is qdeleted, so we want to ignore it. We've also just spawned a new frame, so ignore that too.
+		if(machine_turf.is_blocked_turf(TRUE, source_atom = new_frame, ignore_atoms = list(src)))
+			new_frame.deconstruct(disassembled)
+			return
+
+	. = new_frame
+	new_frame.set_anchored(anchored)
+
+	if(!disassembled)
+		new_frame.update_integrity(new_frame.max_integrity * 0.5) //the frame is already half broken
+
+/obj/machinery/computer4/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	switch(damage_type)
+		if(BRUTE)
+			if(machine_stat & BROKEN)
+				playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 70, TRUE)
+			else
+				playsound(src.loc, 'sound/effects/glasshit.ogg', 75, TRUE)
+		if(BURN)
+			playsound(src.loc, 'sound/items/welder.ogg', 100, TRUE)
 
 /// Getter for retrieving peripherals in program code.
 /obj/machinery/computer4/proc/get_peripheral(peripheral_type)

@@ -769,18 +769,20 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	crowbar.play_tool_sound(src, 50)
 	deconstruct(TRUE)
 
-/obj/machinery/deconstruct(disassembled = TRUE)
+/obj/machinery/deconstruct(disassembled = TRUE, mob/user)
 	if(flags_1 & NODECONSTRUCT_1)
 		return ..() //Just delete us, no need to call anything else.
 
 	on_deconstruction()
 	if(!LAZYLEN(component_parts))
 		return ..() //we don't have any parts.
-	spawn_frame(disassembled)
+
+	spawn_frame(disassembled, user)
+
 	for(var/obj/item/part in component_parts)
 		part.forceMove(loc)
-	LAZYCLEARLIST(component_parts)
 
+	LAZYCLEARLIST(component_parts)
 	if(internal_disk)
 		set_internal_disk(null)
 	eject_disk()
@@ -793,8 +795,9 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
  *
  * Arguments:
  * * disassembled - If FALSE, the machine was destroyed instead of disassembled and the frame spawns at reduced integrity.
+ * * user - The mob that initiated the disassembly, if any.
  */
-/obj/machinery/proc/spawn_frame(disassembled)
+/obj/machinery/proc/spawn_frame(disassembled, mob/user)
 	var/obj/structure/frame/machine/new_frame = new /obj/structure/frame/machine(loc)
 
 	new_frame.state = 2

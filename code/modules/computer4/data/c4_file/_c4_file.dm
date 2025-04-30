@@ -31,6 +31,20 @@
 		drive = null
 	return ..()
 
+/// Creates a copy of this file. Depth is used for folders to prevent copying gigantic folders from lagging the game.
+/datum/c4_file/proc/copy(depth)
+	RETURN_TYPE(/datum/c4_file)
+	var/datum/c4_file/clone = new type
+	clone.set_name(name)
+	clone.extension = extension
+	clone.size = size
+	clone.copyable = copyable
+
+	// Clone non-date metadata
+	clone.metadata.owner = metadata.owner
+	clone.metadata.group = metadata.group
+	return clone
+
 /// Setter for name for raising the paired event.
 /datum/c4_file/proc/set_name(new_name)
 	name = new_name

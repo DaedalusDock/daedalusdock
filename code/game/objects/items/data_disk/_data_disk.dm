@@ -15,14 +15,14 @@
 	/// How many arbitrary size units we can store. We call them KB because we are evil.
 	var/disk_capacity = 32
 
+	/// List of program typepaths to load on spawn.
+	var/list/preloaded_programs
+
 	/// Ref to the computer it may be contained in. This is handled by /obj/machinery/proc/set_internal_disk.
 	var/obj/machinery/computer4/computer
 
 	/// The root folder of the disk. This is *in theory* indestructable. Please never qdel it outside of this disk's destructor.
 	var/datum/c4_file/folder/root
-
-	/// List of program typepaths to load on spawn.
-	var/list/preloaded_programs
 
 	/// Title of drive within a computer4 system.
 	var/title = "sys"

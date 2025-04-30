@@ -226,6 +226,72 @@
 	file.set_name(desired_name)
 	system.println("Moved [old_name] to [file.path_to_string()].")
 
+/// Copy a file (opens can of worms and begins eating them).
+/datum/shell_command/thinkdos/copy
+	aliases = list("copy","cp")
+	help_text = "Copies a file to another location.<br>Usage: 'move \[options?\] \[path\] \[destination path\]'<br><br>See 'cd' for more information.<br>-f, --force &nbsp&nbsp&nbsp&nbsp&nbsp&nbspOverwrite any existing files in the destination location."
+
+/datum/shell_command/thinkdos/copy/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	if(length(arguments) != 2)
+		system.println("<b>Syntax:</b> \"rename \[name of target] \[new name]\"")
+		return
+
+	var/old_path = arguments[1]
+	var/new_path = arguments[2]
+
+	var/overwrite = !!length(options & list("f", "force"))
+
+	var/datum/c4_file/to_copy = system.resolve_filepath(old_path)
+	if(!to_copy)
+		system.print_error("<b>Error:</b> Source file not found.")
+		return
+
+	if(to_copy.size + system.drive.root.size > system.drive.disk_capacity)
+		system.print_error("<b>Error:</b> Copy operation would exceed disk storage.")
+		return
+
+	var/datum/file_path/destination_info = system.text_to_filepath(new_path)
+	var/desired_name = destination_info.file_name
+
+	var/datum/c4_file/folder/destination_folder = system.parse_directory(destination_info.directory, system.current_directory)
+	if(!destination_folder)
+		system.print_error("<b>Error:</b> Target directory not found.")
+		return
+
+	if(desired_name && !system.validate_file_name(desired_name))
+		system.print_error("<b>Error:</b> Invalid character in name.")
+		return
+
+	// Preserve the existing file name if we didn't specify a new name.
+	desired_name ||= to_copy.name
+
+	var/datum/c4_file/shares_name = destination_folder.get_file(desired_name)
+	if(shares_name)
+		if(shares_name == to_copy)
+			system.print_error("<b>Error:</b> Cannot copy in-place.")
+			return
+
+		if(!overwrite)
+			system.print_error("<b>Error:</b> Target in use. Use -f to overwrite.")
+			return
+
+		if(!destination_folder.try_delete_file(shares_name))
+			system.print_error("<b>Error:</b> Unable to delete target.")
+			return
+
+	var/datum/c4_file/copy = to_copy.copy()
+	copy?.set_name(desired_name)
+
+	if(isnull(copy))
+		system.print_error("<b>Error:</b> Unable to copy file.")
+		return
+
+	if(!destination_folder.try_add_file(copy))
+		qdel(copy)
+		system.print_error("<b>Error:</b> Unable to copy file.")
+		return
+
+	system.println("Copied [to_copy.name] to [copy.path_to_string()].")
 
 /// Delete a file
 /datum/shell_command/thinkdos/delete

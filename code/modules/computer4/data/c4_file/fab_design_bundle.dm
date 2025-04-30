@@ -12,5 +12,7 @@
 		designs_to_include = list()
 	included_designs = designs_to_include
 
-/datum/c4_file/fab_design_bundle/to_string()
-	return "--PLACEHOLDER--"
+/datum/c4_file/fab_design_bundle/copy()
+	var/datum/c4_file/fab_design_bundle/clone = ..()
+	clone.included_designs = included_designs.Copy()
+	return clone

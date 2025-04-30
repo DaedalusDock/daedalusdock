@@ -19,3 +19,8 @@
 			out += "|n"
 
 	return jointext(out, "")
+
+/datum/c4_file/record/copy()
+	var/datum/c4_file/record/clone = ..()
+	clone.stored_record = stored_record
+	return clone

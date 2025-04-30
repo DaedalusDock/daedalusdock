@@ -9,3 +9,10 @@
 	var/assignment
 	/// Access o- okay you get the idea.
 	var/list/access
+
+/datum/c4_file/user/copy()
+	var/datum/c4_file/user/clone = ..()
+	clone.registered_name = registered_name
+	clone.assignment = assignment
+	clone.access = access.Copy()
+	return clone

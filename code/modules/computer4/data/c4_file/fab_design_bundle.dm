@@ -1,5 +1,5 @@
 /datum/c4_file/fab_design_bundle
-	name = "design"
+	name = "fabrec"
 	extension = "FDB"
 
 	size = 16

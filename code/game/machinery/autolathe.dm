@@ -403,9 +403,9 @@
 /obj/item/proc/autolathe_crafted(obj/machinery/autolathe/A)
 	return
 
-/obj/item/disk/data/hyper/preloaded/autolathe
+/obj/item/disk/data/fabricator/autolathe
 
-/obj/item/disk/data/hyper/preloaded/autolathe/Initialize(mapload)
+/obj/item/disk/data/fabricator/autolathe/Initialize(mapload)
 	. = ..()
 	var/static/list/datum/design/hacked_designs
 	if(!hacked_designs)
@@ -422,7 +422,7 @@
 	hacked_design_bundle.set_name("fabrec_dev") //'development' he says.
 	root.try_add_file(hacked_design_bundle)
 
-/obj/item/disk/data/hyper/preloaded/autolathe/compile_designs()
+/obj/item/disk/data/fabricator/autolathe/compile_designs()
 	. = ..()
 	. += list(
 		/datum/design/bucket,

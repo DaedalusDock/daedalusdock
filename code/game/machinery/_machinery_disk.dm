@@ -79,11 +79,41 @@
 		target_disk = selected_disk
 	selected_disk.root.get_file(file_name)
 
-/// Returns valid fabrication designs stored on the disk at the specified file.
+/obj/machinery/proc/disk_delete_file(file_name, obj/item/disk/data/target_disk)
+	if(!target_disk)
+		target_disk = selected_disk
+	var/datum/c4_file/found_file = selected_disk.root.get_file(file_name)
+	if(!found_file)
+		return FALSE
+	found_file.containing_folder.try_delete_file(found_file)
+
+// Meta-file access helpers. Does pre-processing and verification of file types.
+
+/// Returns valid fabrication designs stored on the disk at the specified file. Returns the real list!
 /obj/machinery/proc/disk_get_designs(file_name, obj/item/disk/data/target_disk)
 	if(!file_name)
 		return
-	var/datum/c4_file/fab_design_bundle/fab_bundle = disk_get_file(file_name)
+	var/datum/c4_file/fab_design_bundle/fab_bundle = disk_get_file(file_name, target_disk)
 	if(!istype(fab_bundle))
 		return
 	return fab_bundle.included_designs
+
+/// Returns stored genetic mutations. Returns the real list!
+/obj/machinery/proc/disk_get_gene_mutations(file_name, obj/item/disk/data/target_disk) as list
+	RETURN_TYPE(/list)
+	if(!file_name)
+		return
+	var/datum/c4_file/gene_mutation_db/mut_db = disk_get_file(file_name, target_disk)
+	if(!istype(mut_db))
+		return
+	return mut_db.stored_mutations
+
+/// Returns stored genetic mutations. Returns the real list!
+/obj/machinery/proc/disk_get_gene_buffer(file_name, obj/item/disk/data/target_disk) as list
+	RETURN_TYPE(/list)
+	if(!file_name)
+		return
+	var/datum/c4_file/gene_buffer/gene_buffer = disk_get_file(file_name, target_disk)
+	if(!istype(gene_buffer))
+		return
+	return gene_buffer.buffer_data

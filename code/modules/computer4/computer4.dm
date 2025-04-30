@@ -146,6 +146,8 @@
 			peri.forceMove(drop_location())
 
 /obj/machinery/computer4/spawn_frame(disassembled, mob/user)
+	component_parts = null // deconstruct() will otherwise move shit like our internal disk
+
 	var/obj/structure/frame/computer/new_frame = new(loc)
 	transfer_fingerprints_to(new_frame)
 

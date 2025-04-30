@@ -848,11 +848,33 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	// The circuit should also be in component parts, so don't early return.
 	if(deleting_atom == circuit)
 		circuit = null
+
+	// The drive should also be in component parts.
+	if(deleting_atom == internal_disk)
+		set_internal_disk(null)
+
 	if((deleting_atom in component_parts) && !QDELETED(src))
 		component_parts.Remove(deleting_atom)
 		// It would be unusual for a component_part to be qdel'd ordinarily.
 		deconstruct(FALSE)
 	return ..()
+
+/**
+ * This should be called before mass qdeling components to make space for replacements.
+ * If not done, things will go awry as Exited() destroys the machine when it detects
+ * even a single component exiting the atom.
+ */
+/obj/machinery/proc/clear_components()
+	if(!component_parts)
+		return
+
+	var/list/old_components = component_parts
+
+	circuit = null
+	component_parts = null
+
+	for(var/atom/atom_part in old_components)
+		qdel(atom_part)
 
 /obj/machinery/proc/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/screwdriver)
 	if((flags_1 & NODECONSTRUCT_1) || screwdriver.tool_behaviour != TOOL_SCREWDRIVER)

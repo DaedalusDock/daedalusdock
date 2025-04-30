@@ -9,7 +9,11 @@
 	/// Ref to the computer it may be contained in. This is handled by /obj/machinery/proc/set_internal_disk.
 	var/obj/machinery/computer4/computer
 
+	/// The root folder of the disk. This is *in theory* indestructable. Please never qdel it outside of this disk's destructor.
 	var/datum/c4_file/folder/root
+
+	/// List of program typepaths to load on spawn.
+	var/list/preloaded_programs
 
 	/// Title of drive within a computer4 system.
 	var/title = "sys"
@@ -17,8 +21,6 @@
 	var/disk_capacity = 32
 
 	var/read_only = FALSE //Well,it's still a floppy disk
-
-
 
 /obj/item/disk/data/Initialize(mapload)
 	. = ..()
@@ -30,12 +32,20 @@
 	root = new
 	root.drive = src
 	root.set_name("root")
+
+	for(var/path in preloaded_programs)
+		root.try_add_file(new path)
+
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/item/disk/data/Destroy(force)
 	QDEL_NULL(root)
 	computer = null
 	return ..()
+
+/// Comes loaded with ThinkDOS
+/obj/item/disk/data/terminal_drive
+	preloaded_programs = list(/datum/c4_file/terminal_program/operating_system/thinkdos)
 
 // Stub functions to ensure this shit still builds.
 // /obj/item/disk/data

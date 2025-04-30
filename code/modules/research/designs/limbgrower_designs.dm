@@ -204,17 +204,15 @@
 	category = list("other","emagged")
 
 /// Design disks and designs - for adding limbs and organs to the limbgrower.
-/obj/item/disk/data/limbs
+/obj/item/disk/data/fabricator/limbs
 	name = "limb design data disk"
 	desc = "A disk containing limb and organ designs for a limbgrower."
 	icon_state = "datadisk1"
 	/// List of all limb designs this disk will contain on init.
 	var/list/limb_designs = list()
 
-/obj/item/disk/data/limbs/Initialize(mapload)
-	. = ..()
-	storage = limb_designs.len
-	set_data(SStech.fetch_designs(limb_designs))
+/obj/item/disk/data/fabricator/limbs/compile_designs(mapload)
+	. = SStech.fetch_designs(limb_designs)
 	limb_designs = null
 
 /datum/design/limb_disk
@@ -223,11 +221,11 @@
 	id = "limbdesign_parent"
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 300, /datum/material/glass = 100)
-	build_path = /obj/item/disk/data/limbs
+	build_path = /obj/item/disk/data/fabricator/limbs
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL
 
-/obj/item/disk/data/limbs/lizard
+/obj/item/disk/data/fabricator/limbs/lizard
 	name = "Jinan Organ Design Disk"
 	limb_designs = list(/datum/design/lizard_tail, /datum/design/lizard_tongue)
 
@@ -235,9 +233,9 @@
 	name = "Jinan Organ Design Disk"
 	desc = "Contains designs for Jinan organs for the limbgrower - Jinan tongue, and tail"
 	id = "limbdesign_unathi"
-	build_path = /obj/item/disk/data/limbs/lizard
+	build_path = /obj/item/disk/data/fabricator/limbs/lizard
 
-/obj/item/disk/data/limbs/ethereal
+/obj/item/disk/data/fabricator/limbs/ethereal
 	name = "Ethereal Organ Design Disk"
 	limb_designs = list(/datum/design/ethereal_stomach, /datum/design/ethereal_tongue, /datum/design/ethereal_lungs)
 
@@ -245,4 +243,4 @@
 	name = "Ethereal Organ Design Disk"
 	desc = "Contains designs for ethereal organs for the limbgrower - Ethereal tongue and stomach."
 	id = "limbdesign_ethereal"
-	build_path = /obj/item/disk/data/limbs/ethereal
+	build_path = /obj/item/disk/data/fabricator/limbs/ethereal

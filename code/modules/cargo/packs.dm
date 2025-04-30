@@ -3116,52 +3116,52 @@
 	desc = "Contains an extremely expensive data disk for use in fabricators."
 	cost = CARGO_CRATE_VALUE * 5
 	access = ACCESS_RESEARCH
-	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/omni)
+	contains = list(/obj/item/disk/data/fabricator/omni)
 	crate_name = "omnifab disk crate"
 
 /datum/supply_pack/data_disk/preloaded/robotics
 	name = "Data Disk (Robofab)"
 	access = ACCESS_MECH_SCIENCE
-	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/robotics)
+	contains = list(/obj/item/disk/data/fabricator/robotics)
 	crate_name = "robofab disk crate"
 
 /datum/supply_pack/data_disk/preloaded/civ
 	name = "Data Disk (Civfab)"
-	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/civ)
+	contains = list(/obj/item/disk/data/fabricator/civ)
 	crate_name = "civfab disk crate"
 
 /datum/supply_pack/data_disk/preloaded/engineering
 	name = "Data Disk (Engifab)"
 	access = ACCESS_ENGINE
-	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/engineering)
+	contains = list(/obj/item/disk/data/fabricator/engineering)
 	crate_name = "engifab disk crate"
 
 /datum/supply_pack/data_disk/preloaded/medical
 	name = "Data Disk (Medifab)"
 	access = ACCESS_MEDICAL
-	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/medical)
+	contains = list(/obj/item/disk/data/fabricator/medical)
 	crate_name = "medifab disk crate"
 
 /datum/supply_pack/data_disk/preloaded/supply
 	name = "Data Disk (Supplyfab)"
 	access = ACCESS_CARGO
-	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/supply)
+	contains = list(/obj/item/disk/data/fabricator/supply)
 	crate_name = "supplyfab disk crate"
 
 /datum/supply_pack/data_disk/preloaded/security
 	name = "Data Disk (Secfab)"
 	access = ACCESS_SECURITY
-	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/security)
+	contains = list(/obj/item/disk/data/fabricator/security)
 	crate_name = "secfab disk crate"
 
 /datum/supply_pack/data_disk/preloaded/service
 	name = "Data Disk (Servicefab)"
 	access = ACCESS_SERVICE
-	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/service)
+	contains = list(/obj/item/disk/data/fabricator/service)
 	crate_name = "servicefab disk crate"
 
 /datum/supply_pack/data_disk/preloaded/imprinter
 	name = "Data Disk (Imprinter)"
 	access = ACCESS_ENGINE
-	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/imprinter)
+	contains = list(/obj/item/disk/data/fabricator/imprinter)
 	crate_name = "imprinter disk crate"

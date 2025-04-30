@@ -38,18 +38,19 @@
 	return ..()
 
 // Stub functions to ensure this shit still builds.
-/obj/item/disk/data
-	proc
-		read()
-		write()
-		set_data()
-		check_memory()
-		remove()
-		clear()
+// /obj/item/disk/data
+// 	proc
+// 		read()
+// 		write()
+// 		set_data()
+// 		check_memory()
+// 		remove()
+// 		clear()
 
-	var
-		storage
+// 	var
+// 		storage
 
 #warn idk what fran did but these dont exist anymore so im leaving a warning here
+#warn These just need to be given sizes, they were premade types that I moved up to floppies.
 /obj/item/disk/data/medium
 /obj/item/disk/data/extra_large

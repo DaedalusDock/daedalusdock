@@ -241,7 +241,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 	var/datum/design/D = SStech.designs_by_id[id]
 	if(!istype(D))
 		return FALSE
-	if(!(D in internal_disk.read(DATA_IDX_DESIGNS)))
+	if(!(D in disk_get_designs("fabrec")))
 		CRASH("Tried to print a design we don't have! Potential exploit?")
 
 	playsound(src, 'goon/sounds/button.ogg', 100)
@@ -251,7 +251,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 
 /obj/machinery/rnd/production/proc/search(string)
 	matching_designs.Cut()
-	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
+	for(var/datum/design/D as anything in disk_get_designs("fabrec"))
 		if(!(D.build_type & allowed_buildtypes))
 			continue
 		if(findtext(D.name,string))
@@ -458,7 +458,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 	var/list/l = list()
 	l += "<div class='computerPaneSimple'><h3>Browsing [selected_category]:</h3>"
 	var/coeff = efficiency_coeff
-	for(var/datum/design/D as anything in sortTim(internal_disk.read(DATA_IDX_DESIGNS), GLOBAL_PROC_REF(cmp_name_asc)))
+	for(var/datum/design/D as anything in sortTim(disk_get_designs("fabrec"), GLOBAL_PROC_REF(cmp_name_asc)))
 		if(!(selected_category in D.category)|| !(D.build_type & allowed_buildtypes))
 			continue
 		l += design_menu_entry(D, coeff)
@@ -486,7 +486,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 
 /obj/machinery/rnd/production/proc/ui_screen_modify_memory()
 	var/list/l = list()
-	var/list/designs = sortTim(selected_disk.read(DATA_IDX_DESIGNS), GLOBAL_PROC_REF(cmp_design_name))
+	var/list/designs = sortTim(disk_get_designs("fabrec"), GLOBAL_PROC_REF(cmp_design_name))
 	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><A href='?src=[REF(src)];toggle_disk=1'>Selected Disk: [selected_disk == internal_disk ? "Internal" : "Foreign"]</A></legend>[RDSCREEN_NOBREAK]"
 	if(selected_disk)
 		l += "<table>[RDSCREEN_NOBREAK]"
@@ -543,7 +543,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 
 /obj/machinery/rnd/production/proc/compile_categories()
 	categories = list()
-	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
+	for(var/datum/design/D as anything in disk_get_designs("fabrec"))
 		if(!isnull(D.category))
 			categories |= D.category
 

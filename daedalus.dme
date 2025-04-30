@@ -85,7 +85,6 @@
 #include "code\__DEFINES\diagnosis_defines.dm"
 #include "code\__DEFINES\direction_junctions.dm"
 #include "code\__DEFINES\directional.dm"
-#include "code\__DEFINES\disk.dm"
 #include "code\__DEFINES\DNA.dm"
 #include "code\__DEFINES\do_afters.dm"
 #include "code\__DEFINES\dream.dm"

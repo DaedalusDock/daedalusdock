@@ -155,7 +155,7 @@
 	set_internal_disk(new /obj/item/disk/data(src))
 	var/datum/c4_file/fab_design_bundle/file_bundle = new(SStech.fetch_designs(subtypesof(/datum/design/alloy)))
 	file_bundle.name = "fabrec"
-	internal_disk.root.try_add_file(file_bundle)
+	disk_write_file(file_bundle, internal_disk)
 
 /obj/machinery/mineral/processing_unit/Destroy()
 	CONSOLE = null
@@ -195,7 +195,9 @@
 	dat += "<br><br>"
 	dat += "<b>Smelt Alloys</b><br>"
 
-	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
+	var/list/datum/design/design_list = disk_get_designs("fabrec", internal_disk)
+
+	for(var/datum/design/D as anything in design_list)
 		dat += "<span class=\"res_name\">[D.name] "
 		if (selected_alloy == D.id)
 			dat += " <i>Smelting</i>"

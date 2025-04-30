@@ -1,7 +1,7 @@
 //Just for transferring between genetics machines.
 /obj/item/disk/data
-	name = "data disk"
-	desc = "A disk for storing device data."
+	name = "hard disk drive"
+	desc = "A device that stores data inside of machinery."
 	icon_state = "harddisk"
 	custom_materials = list(/datum/material/iron =300, /datum/material/glass =100)
 	item_flags = NOBLUDGEON
@@ -58,13 +58,19 @@
 	QDEL_NULL(root)
 	computer = null
 	return ..()
-	#warn TODO: desc
 
 /// Comes loaded with ThinkDOS
 /obj/item/disk/data/drive/terminal_drive
 	preloaded_programs = list(/datum/c4_file/terminal_program/operating_system/thinkdos)
 
-#warn idk what fran did but these dont exist anymore so im leaving a warning here
-#warn These just need to be given sizes, they were premade types that I moved up to floppies.
 /obj/item/disk/data/medium
+	custom_materials = list(/datum/material/iron =300, /datum/material/glass = 100, /datum/material/gold = 50)
+	disk_capacity = 64
+
+/obj/item/disk/data/large
+	custom_materials = list(/datum/material/iron =300, /datum/material/glass = 100, /datum/material/gold = 50, /datum/material/diamond = 100)
+	disk_capacity = 128
+
 /obj/item/disk/data/extra_large
+	custom_materials = list(/datum/material/iron =300, /datum/material/glass = 100, /datum/material/gold = 100, /datum/material/diamond = 200)
+	disk_capacity = 256

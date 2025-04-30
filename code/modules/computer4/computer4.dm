@@ -1,4 +1,3 @@
-#warn oh boy this will be fun to implement
 /obj/item/circuitboard/computer/voidcomputer
 	name = "Voidcomputer (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_GENERIC

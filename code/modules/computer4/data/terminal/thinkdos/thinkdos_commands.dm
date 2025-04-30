@@ -233,7 +233,7 @@
 
 /datum/shell_command/thinkdos/copy/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(length(arguments) != 2)
-		system.println("<b>Syntax:</b> \"rename \[name of target] \[new name]\"")
+		system.println("<b>Syntax:</b> \"copy \[name of target] \[new location]\"")
 		return
 
 	var/old_path = arguments[1]

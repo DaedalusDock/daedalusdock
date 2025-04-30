@@ -34,7 +34,6 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 /obj/machinery/rnd/production/Initialize(mapload)
 	. = ..()
 	queue = list()
-	selected_disk = internal_disk
 	create_reagents(0, OPENCONTAINER)
 	matching_designs = list()
 	materials = AddComponent(/datum/component/remote_materials, "lathe", mapload, mat_container_flags=BREAKDOWN_FLAGS_LATHE)
@@ -487,8 +486,9 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 /obj/machinery/rnd/production/proc/ui_screen_modify_memory()
 	var/list/l = list()
 	var/list/designs = sortTim(disk_get_designs("fabrec"), GLOBAL_PROC_REF(cmp_design_name))
-	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><A href='?src=[REF(src)];toggle_disk=1'>Selected Disk: [selected_disk == internal_disk ? "Internal" : "Foreign"]</A></legend>[RDSCREEN_NOBREAK]"
-	if(selected_disk)
+
+	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><A href='?src=[REF(src)];toggle_disk=1'>Selected Disk: [selected_disk == DISK_INTERNAL ? "Internal" : "Foreign"]</A></legend>[RDSCREEN_NOBREAK]"
+	if(get_selected_disk())
 		l += "<table>[RDSCREEN_NOBREAK]"
 		for(var/datum/design/D as anything in designs)
 			l += "<tr><td>[D.name]<td>[RDSCREEN_NOBREAK]"

@@ -6,6 +6,14 @@
 /obj/machinery/proc/set_inserted_disk(obj/item/disk/data/disk)
 	inserted_disk = disk
 
+/// Gets the currently selected disk according to the selected disk var.
+/obj/machinery/proc/get_selected_disk()
+	RETURN_TYPE(/obj/item/disk/data)
+	if(selected_disk == DISK_INTERNAL)
+		return internal_disk
+
+	return inserted_disk
+
 /obj/machinery/proc/insert_disk(mob/user, obj/item/disk/data/floppy/disk)
 	if(!istype(disk))
 		return FALSE
@@ -46,46 +54,50 @@
 		. = inserted_disk
 
 	if(.)
-		selected_disk = internal_disk
+		selected_disk = DISK_INTERNAL
 		updateUsrDialog()
 	return .
 
 /// Toggle the selected disk between internal and inserted.
 /obj/machinery/proc/toggle_disk(mob/user)
-	if(selected_disk == internal_disk)
+	if(selected_disk == DISK_INTERNAL)
 		if(inserted_disk)
-			selected_disk = inserted_disk
+			selected_disk = DISK_EXTERNAL
 			updateUsrDialog()
 			return
 		else if(user)
 			alert(user, "No disk inserted!","ERROR", "OK")
 			return
 
-	if(selected_disk == inserted_disk)
-		selected_disk = internal_disk
+	if(selected_disk == DISK_EXTERNAL)
+		selected_disk = DISK_INTERNAL
 		updateUsrDialog()
 		return
 
 /// Attempt to write a file to disk. May fail due to size limits.
 /obj/machinery/proc/disk_write_file(datum/c4_file/new_file, obj/item/disk/data/target_disk)
 	if(!target_disk)
-		target_disk = selected_disk
-	return selected_disk.root.try_add_file(new_file)
+		target_disk = get_selected_disk()
+
+	return target_disk?.root.try_add_file(new_file)
 
 /// Get a file by name. Caller must assure type.
 /obj/machinery/proc/disk_get_file(file_name, obj/item/disk/data/target_disk) as /datum/c4_file
 	RETURN_TYPE(/datum/c4_file)
 	if(!target_disk)
-		target_disk = selected_disk
-	selected_disk.root.get_file(file_name)
+		target_disk = get_selected_disk()
+
+	return target_disk?.root.get_file(file_name)
 
 /obj/machinery/proc/disk_delete_file(file_name, obj/item/disk/data/target_disk)
 	if(!target_disk)
-		target_disk = selected_disk
-	var/datum/c4_file/found_file = selected_disk.root.get_file(file_name)
+		target_disk = get_selected_disk()
+
+	var/datum/c4_file/found_file = target_disk?.root.get_file(file_name)
 	if(!found_file)
 		return FALSE
-	found_file.containing_folder.try_delete_file(found_file)
+
+	return found_file.containing_folder.try_delete_file(found_file)
 
 // Meta-file access helpers. Does pre-processing and verification of file types.
 

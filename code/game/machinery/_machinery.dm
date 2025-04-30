@@ -125,8 +125,8 @@
 	var/obj/item/disk/data/internal_disk = null
 	/// A design disk that may-or-may-not be inserted into this machine.
 	var/obj/item/disk/data/floppy/inserted_disk = null
-	/// Used for data management.
-	var/obj/item/disk/data/selected_disk = null
+	/// Used for data management. Use get_selected_disk() to get the actual disk ref.
+	var/selected_disk = DISK_INTERNAL
 	/// Can insert a disk into this machine
 	var/has_disk_slot = FALSE
 
@@ -229,7 +229,6 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	QDEL_NULL(circuit)
 	unset_static_power()
 	unlink_from_jack(ignore_check = TRUE)
-	selected_disk = null
 	QDEL_NULL(internal_disk)
 	QDEL_NULL(inserted_disk)
 	return ..()
@@ -751,8 +750,6 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	internal_disk = locate() in component_parts
 	if(internal_disk)
 		set_internal_disk(internal_disk)
-
-	selected_disk = internal_disk
 
 /obj/machinery/proc/default_pry_open(obj/item/crowbar)
 	. = !(state_open || panel_open || is_operational || (flags_1 & NODECONSTRUCT_1)) && crowbar.tool_behaviour == TOOL_CROWBAR

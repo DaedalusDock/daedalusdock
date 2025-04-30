@@ -238,7 +238,7 @@
 	if(inserted_disk)
 		data["hasDisk"] = TRUE
 		var/index = 1
-		for (var/datum/design/thisdesign in disk_get_designs("fabrec", inserted_disk))
+		for (var/datum/design/thisdesign in disk_get_designs(FABRICATOR_FILE_NAME, inserted_disk))
 			data["diskDesigns"] += list(list("name" = thisdesign.name, "index" = index, "canupload" = thisdesign.build_type&SMELTER))
 			index++
 	return data
@@ -311,8 +311,8 @@
 		if("diskUpload")
 			var/n = text2num(params["design"])
 			if(inserted_disk)
-				var/datum/design/to_add = disk_get_designs("fabrec", inserted_disk)[n]
-				var/datum/c4_file/fab_design_bundle/dundle = disk_get_file("fabrec", internal_disk)
+				var/datum/design/to_add = disk_get_designs(FABRICATOR_FILE_NAME, inserted_disk)[n]
+				var/datum/c4_file/fab_design_bundle/dundle = disk_get_file(FABRICATOR_FILE_NAME, internal_disk)
 				if(!istype(dundle))
 					to_chat(usr, span_warning("Internal design database missing or corrupt. Operation failed."))
 				else
@@ -329,7 +329,7 @@
 
 			var/alloy_id = params["id"]
 			var/datum/design/alloy = SStech.designs_by_id[alloy_id]
-			if(!(alloy in disk_get_designs("fabrec")))
+			if(!(alloy in disk_get_designs(FABRICATOR_FILE_NAME)))
 				CRASH("Attempted to smelt an alloy we don't have a design for. HREF exploit?")
 
 			var/obj/item/card/id/I

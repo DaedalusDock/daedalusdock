@@ -1,3 +1,8 @@
+/obj/item/circuitboard/computer
+	req_components = list(
+		/obj/item/disk/data = 1
+	)
+
 //Command
 
 /obj/item/circuitboard/computer/aiupload

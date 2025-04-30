@@ -1062,8 +1062,7 @@
 			// If it's already discovered, end here. Otherwise, add it to the list of
 			//  discovered mutations
 			// We've already checked for stored_designs earlier
-			#warn This is internal_disk but the later statement adds it to the inserted disk, what?
-			if(result_path in disk_get_gene_mutations("mutate", internal_disk))
+			if(result_path in disk_get_gene_mutations("mutate", inserted_disk))
 				return
 
 			var/datum/mutation/human/HM = GET_INITIALIZED_MUTATION(result_path)

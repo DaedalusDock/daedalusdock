@@ -111,7 +111,7 @@
 
 	var/list/designs = list()
 
-	for (var/datum/design/design as anything in disk_get_designs("fabrec"))
+	for (var/datum/design/design as anything in disk_get_designs(FABRICATOR_FILE_NAME))
 		if (!(design.build_type & COMPONENT_PRINTER))
 			continue
 

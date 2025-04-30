@@ -24,6 +24,8 @@
 	light_power = 0.8
 	light_color = LIGHT_COLOR_GREEN
 
+	circuit = /obj/item/circuitboard/computer/voidcomputer
+
 	/// The current focused program.
 	var/tmp/datum/c4_file/terminal_program/active_program
 	/// The operating system.
@@ -66,8 +68,6 @@
 /obj/machinery/computer4/Initialize(mapload)
 	. = ..()
 	soundloop = new(src)
-	set_internal_disk(new /obj/item/disk/data)
-
 	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/operating_system/thinkdos)
 
 	if(length(default_programs))

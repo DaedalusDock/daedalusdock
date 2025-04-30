@@ -248,3 +248,5 @@
 
 #define DISK_INTERNAL "internal"
 #define DISK_EXTERNAL "external"
+
+#define FABRICATOR_FILE_NAME "fabrec"

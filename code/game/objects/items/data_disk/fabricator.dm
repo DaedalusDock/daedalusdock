@@ -5,7 +5,7 @@
 /obj/item/disk/data/fabricator/Initialize(mapload)
 	. = ..()
 	var/datum/c4_file/fab_design_bundle/fab_bundle = new(SStech.fetch_designs(compile_designs()))
-	fab_bundle.name = "fabrec"
+	fab_bundle.name = FABRICATOR_FILE_NAME
 	root.try_add_file(fab_bundle)
 
 

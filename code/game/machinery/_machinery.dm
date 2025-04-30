@@ -124,7 +124,7 @@
 	/// The place that designs are stored. This will be created by apply_default_parts().
 	var/obj/item/disk/data/internal_disk = null
 	/// A design disk that may-or-may-not be inserted into this machine.
-	var/obj/item/disk/data/floppy/inserted_disk = null
+	var/obj/item/disk/data/inserted_disk = null
 	/// Used for data management. Use get_selected_disk() to get the actual disk ref.
 	var/selected_disk = DISK_INTERNAL
 	/// Can insert a disk into this machine

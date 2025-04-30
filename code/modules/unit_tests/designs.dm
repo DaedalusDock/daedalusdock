@@ -31,6 +31,6 @@
 		#warn Dummied this out because disk storage works differently. Reevaluate.
 		// if(UNLINT(fab.internal_disk.storage) < length(fab.internal_disk.read(DATA_IDX_DESIGNS)))
 		// 	TEST_FAIL("[type_of_fab] has too many designs ([length(fab.internal_disk.read(DATA_IDX_DESIGNS))]) for it's storage type [UNLINT(fab.internal_disk.storage)]")
-		for(var/datum/design/D as anything in fab.disk_get_designs("fabrec"))
+		for(var/datum/design/D as anything in fab.disk_get_designs(FABRICATOR_FILE_NAME))
 			if(!(D.build_type & fab.allowed_buildtypes))
 				TEST_FAIL("[type_of_fab] has a design it cannot print: [D.type]")

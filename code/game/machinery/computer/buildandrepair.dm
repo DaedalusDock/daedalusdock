@@ -201,7 +201,8 @@
 	return TRUE
 
 /obj/structure/frame/computer/proc/try_place_drive(obj/item/I, mob/living/user, params)
-	if(istype(I, /obj/item/disk/data/floppy))
+	var/obj/item/disk/data/data_disk = I
+	if(!data_disk.is_hard_drive)
 		to_chat(user, span_warning("A floppy disk is not a suitable hard drive."))
 		return TRUE
 

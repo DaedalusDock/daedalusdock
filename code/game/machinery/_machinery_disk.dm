@@ -14,7 +14,7 @@
 
 	return inserted_disk
 
-/obj/machinery/proc/insert_disk(mob/user, obj/item/disk/data/floppy/disk)
+/obj/machinery/proc/insert_disk(mob/user, obj/item/disk/data/disk)
 	if(!istype(disk))
 		return FALSE
 
@@ -24,8 +24,7 @@
 
 	if(user && user.transferItemToLoc(disk, src))
 		user.visible_message(
-			span_notice("[user] inserts [disk] into [src]."),
-			span_notice("You insert [disk] into [src]."),
+			span_notice("[user] inserts [disk] into [src]'s [disk.is_hard_drive ? "external drive slot" : "disk reader"]."),
 		)
 		set_inserted_disk(disk)
 		updateUsrDialog()

@@ -298,7 +298,7 @@
 
 /obj/machinery/autolathe/proc/get_valid_designs()
 	var/list/datum/design/valid_designs = list()
-	var/datum/c4_file/fab_design_bundle/target_bundle = disk_get_file("fabrec", internal_disk)
+	var/datum/c4_file/fab_design_bundle/target_bundle = disk_get_file(FABRICATOR_FILE_NAME, internal_disk)
 	if(istype(target_bundle))
 		valid_designs += target_bundle.included_designs
 

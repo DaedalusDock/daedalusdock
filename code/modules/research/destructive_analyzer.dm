@@ -45,7 +45,7 @@ Note: Must be placed within 3 tiles of the R&D Console
 	if(QDELETED(thing) || QDELETED(src))
 		return FALSE
 
-	var/datum/c4_file/fab_design_bundle/dundle = disk_get_file("fabrec", inserted_disk)
+	var/datum/c4_file/fab_design_bundle/dundle = disk_get_file(FABRICATOR_FILE_NAME, inserted_disk)
 	if(!istype(dundle))
 		if(isnull(dundle))
 			dundle = new(list()) //If we can create the new record DB, just silently continue...

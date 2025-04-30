@@ -6,6 +6,15 @@
 	custom_materials = list(/datum/material/iron =300, /datum/material/glass =100)
 	item_flags = NOBLUDGEON
 
+	/// If TRUE, automagically pre-pend the size of the disk to the name.
+	var/auto_name = TRUE
+
+	/// If FALSE, it can be inserted into disk readers (Voidcomputers).
+	var/is_hard_drive = TRUE
+
+	/// How many arbitrary size units we can store. We call them KB because we are evil.
+	var/disk_capacity = 32
+
 	/// Ref to the computer it may be contained in. This is handled by /obj/machinery/proc/set_internal_disk.
 	var/obj/machinery/computer4/computer
 
@@ -18,14 +27,20 @@
 	/// Title of drive within a computer4 system.
 	var/title = "sys"
 
-	var/disk_capacity = 32
-
 	var/read_only = FALSE //Well,it's still a floppy disk
 
 /obj/item/disk/data/Initialize(mapload)
 	. = ..()
-	if(name != "data disk")
-		name = "[disk_capacity] KB [name]"
+
+	if(auto_name)
+		var/device_name
+		if(name != /obj/item/disk/data::name) // Name has been changed, assume that we want to keep that change.
+			device_name = name
+		else
+			device_name = is_hard_drive ? "hard disk drive" : "floppy disk"
+
+		name = "[disk_capacity] KB [device_name]"
+
 	base_pixel_x = base_pixel_x + rand(-5, 5)
 	base_pixel_y = base_pixel_y + rand(-5, 5)
 
@@ -36,29 +51,18 @@
 	for(var/path in preloaded_programs)
 		root.try_add_file(new path)
 
-	return INITIALIZE_HINT_LATELOAD
+	if(isabstract(src))
+		CRASH("Bad data disk [type] at [COORD(src)]")
 
 /obj/item/disk/data/Destroy(force)
 	QDEL_NULL(root)
 	computer = null
 	return ..()
+	#warn TODO: desc
 
 /// Comes loaded with ThinkDOS
-/obj/item/disk/data/terminal_drive
+/obj/item/disk/data/drive/terminal_drive
 	preloaded_programs = list(/datum/c4_file/terminal_program/operating_system/thinkdos)
-
-// Stub functions to ensure this shit still builds.
-// /obj/item/disk/data
-// 	proc
-// 		read()
-// 		write()
-// 		set_data()
-// 		check_memory()
-// 		remove()
-// 		clear()
-
-// 	var
-// 		storage
 
 #warn idk what fran did but these dont exist anymore so im leaving a warning here
 #warn These just need to be given sizes, they were premade types that I moved up to floppies.

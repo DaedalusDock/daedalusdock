@@ -10,8 +10,8 @@
 	icon_state = "disk"
 	spawn_all_loot = FALSE
 	loot = list(
-		/obj/item/disk/data = 49,
-		/obj/item/disk/nuclear/fake/obvious = 1,
+		/obj/item/disk/data/floppy = 2,
+		/obj/item/disk/data = 1,
 	)
 
 /obj/effect/spawner/random/techstorage/arcade_boards

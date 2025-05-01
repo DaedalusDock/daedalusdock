@@ -84,21 +84,24 @@
 
 	target.adjust_blurriness(3)
 	eyes.applyOrganDamage(rand(2,4))
+	// extra dose of pain because WOW THAT FUCKING HURT!!!!
+	target.apply_pain(damage * 0.5, target_limb)
+	target.notify_pain(PAIN_CLASS_AGONIZING, "MY EYES!!!")
 
 	if(eyes.damage < EYESTAB_BLEEDING_THRESHOLD)
 		return
 
 	target.adjust_blurriness(15)
-	if (target.stat != DEAD)
+	if (target.stat == CONSCIOUS)
 		to_chat(target, span_danger("Your eyes start to bleed profusely!"))
 
 	if (!target.is_blind() && !HAS_TRAIT(target, TRAIT_NEARSIGHT))
-		to_chat(target, span_danger("You become nearsighted!"))
+		to_chat(target, span_danger("You have become nearsighted."))
 
 	target.become_nearsighted(EYE_DAMAGE)
 
 	if (prob(50))
-		if (target.stat != DEAD && target.drop_all_held_items())
+		if (target.stat == CONSCIOUS && target.drop_all_held_items())
 			to_chat(target, span_danger("You drop what you're holding and clutch at your eyes!"))
 		target.adjust_blurriness(10)
 		target.Unconscious(20)
@@ -106,7 +109,7 @@
 
 	if (prob(eyes.damage - EYESTAB_BLEEDING_THRESHOLD + 1))
 		target.become_blind(EYE_DAMAGE)
-		to_chat(target, span_danger("You go blind!"))
+		to_chat(target, span_danger("You have become blind."))
 
 #undef CLUMSY_ATTACK_SELF_CHANCE
 #undef EYESTAB_BLEEDING_THRESHOLD

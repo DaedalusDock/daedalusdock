@@ -68,22 +68,22 @@
 	return TRUE
 
 /obj/item/gun/syringe/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	if(istype(A, /obj/item/reagent_containers/syringe/bluespace))
-		to_chat(user, span_notice("[A] is too big to load into [src]."))
+	if(istype(tool, /obj/item/reagent_containers/syringe/bluespace))
+		to_chat(user, span_warning("[tool] is too big to load into [src]."))
 		return ITEM_INTERACT_BLOCKING
 
-	if(!istype(A, /obj/item/reagent_containers/syringe))
+	if(!istype(tool, /obj/item/reagent_containers/syringe))
 		return NONE
 
 	if(syringes.len >= max_syringes)
 		to_chat(user, span_warning("[src] can not hold any more syringes."))
 		return ITEM_INTERACT_BLOCKING
 
-	if(!user.transferItemToLoc(A, src))
+	if(!user.transferItemToLoc(tool, src))
 		return ITEM_INTERACT_BLOCKING
 
-	to_chat(user, span_notice("You load [A] into \the [src]."))
-	syringes += A
+	to_chat(user, span_notice("You load [tool] into \the [src]."))
+	syringes += tool
 	recharge_newshot()
 	update_appearance()
 	playsound(loc, load_sound, 40)
@@ -159,11 +159,11 @@
 	. = ..()
 	chambered = new /obj/item/ammo_casing/dnainjector(src)
 
-/obj/item/gun/syringe/dna/attackby(obj/item/A, mob/user, params, show_msg = TRUE)
-	if(!istype(A, /obj/item/dnainjector))
+/obj/item/gun/syringe/dna/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!istype(tool, /obj/item/dnainjector))
 		return NONE
 
-	var/obj/item/dnainjector/D = A
+	var/obj/item/dnainjector/D = tool
 	if(D.used)
 		to_chat(user, span_warning("This injector is used up."))
 		return ITEM_INTERACT_BLOCKING

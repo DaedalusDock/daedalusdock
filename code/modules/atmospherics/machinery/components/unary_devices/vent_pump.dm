@@ -133,9 +133,8 @@
 
 		else //external -> internal
 			var/transfer_moles = calculate_transfer_moles(environment, air_contents, pressure_delta, parents[1]?.combined_volume || 0)
+			transfer_moles /= environment.group_multiplier // Limit flow rate to 1 turf of air
 
-			//limit flow rate from turfs
-			transfer_moles = min(transfer_moles, environment.total_moles*air_contents.volume/environment.volume)	//group_multiplier gets divided out here
 			var/draw = pump_gas(environment, air_contents, transfer_moles, power_rating)
 			if(draw > -1)
 				ATMOS_USE_POWER(draw)

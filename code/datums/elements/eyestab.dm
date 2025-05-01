@@ -86,7 +86,9 @@
 	eyes.applyOrganDamage(rand(2,4))
 	// extra dose of pain because WOW THAT FUCKING HURT!!!!
 	target.apply_pain(damage * 0.5, target_limb)
-	target.notify_pain(PAIN_CLASS_AGONIZING, "MY EYES!!!")
+	if(ishuman(target))
+		var/mob/living/carbon/human/human_target = target
+		human_target.notify_pain(PAIN_CLASS_AGONIZING, "MY EYES!!!")
 
 	if(eyes.damage < EYESTAB_BLEEDING_THRESHOLD)
 		return

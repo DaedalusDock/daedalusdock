@@ -96,6 +96,8 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	///Item flags for the item
 	var/item_flags = NONE
+	/// If set to TRUE, skip item interaction and just attack the target. See ATTACK_IF_COMBAT_MODE()
+	var/combat_mode_force_attack = FALSE
 
 	///Sound played when you hit something with the item
 	var/hitsound

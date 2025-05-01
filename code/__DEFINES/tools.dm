@@ -32,6 +32,10 @@
 /// Similar to [ITEM_INTERACT_SUCCESS], but does not necessarily indicate success.
 #define ITEM_INTERACT_BLOCKING (1<<1)
 /// Return to skip the rest of the interaction chain, going straight to attack.
-#define ITEM_INTERACT_SKIP_TO_ATTACK (1<<2)
+#define ITEM_INTERACT_ATTACK (1<<2)
+
 /// Combination flag for any item interaction that blocks the rest of the attack chain
 #define ITEM_INTERACT_ANY_BLOCKER (ITEM_INTERACT_SUCCESS | ITEM_INTERACT_BLOCKING)
+
+/// Put this in interact_with_atom to just attack instead of interacting if the user has combat mode on.
+#define ATTACK_IF_COMBAT_MODE(user, item) if(user.combat_mode && item.combat_mode_force_attack) { return ITEM_INTERACT_ATTACK }

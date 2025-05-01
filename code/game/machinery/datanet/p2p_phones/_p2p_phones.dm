@@ -174,14 +174,14 @@
 		if("Set Caller ID")
 			var/new_friendly_name = input(user, "New Name?", "Renaming [friendly_name]", friendly_name) as null|text
 			if(!new_friendly_name)
-				return TOOL_ACT_TOOLTYPE_SUCCESS
+				return ITEM_INTERACT_SUCCESS
 			friendly_name = new_friendly_name
 			recalculate_name()
 
 		if("Set Placard")
 			var/new_placard_name = input(user, "New Placard?", "Re-writing [placard_name]", placard_name) as null|text
 			if(!new_placard_name)
-				return TOOL_ACT_TOOLTYPE_SUCCESS
+				return ITEM_INTERACT_SUCCESS
 			placard_name = new_placard_name
 
 		if("Reconnect to terminal")
@@ -204,7 +204,7 @@
 			else
 				to_chat(user, span_notice("You disabled the display of network IDs."))
 		//else fall through
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 
 

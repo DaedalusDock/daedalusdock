@@ -81,7 +81,7 @@
 	SIGNAL_HANDLER
 
 	if(check_if_detonate(tool))
-		return COMPONENT_BLOCK_TOOL_ATTACK
+		return ITEM_INTERACT_BLOCKING
 
 ///Called when you attack a specific body part of the thing this is equipped on. Useful for exploding pants.
 /datum/component/explodable/proc/explodable_attack_zone(datum/source, damage, damagetype, def_zone)

@@ -26,7 +26,7 @@
 		return
 	/// Oop, we have a connected machine, make sure they're sure.
 	if(connected_machine && !(tgui_alert(user, "The link light is on, deconstructing this will disconnect the device.", "Disconnect?",list("Disconnect","Abort")) == "Disconnect"))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	user.visible_message(
 		"[user] starts unscrewing [src] from \the [src.loc].",
@@ -35,13 +35,13 @@
 	tool.play_tool_sound(src, 50)
 	if(!do_after(user, src, 10 SECONDS, DO_PUBLIC))
 		to_chat(user, span_warning("You need to stand still to unscrew [src]!"))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	playsound(src.loc, 'sound/machines/click.ogg', 75, TRUE)
 	user.visible_message("[user] unscrewed \the [src] from \the [src.loc]", "You unscrewed \the [src] from \the [src.loc]")
 	new /obj/item/data_terminal_construct(src.loc)
 	qdel(src)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/data_terminal/receive_signal(datum/signal/signal)
 	SHOULD_CALL_PARENT(FALSE) //We *ARE* the signal poster.
@@ -114,12 +114,12 @@
 
 	if(HAS_TRAIT(src, TRAIT_NODROP) && loc == user)
 		to_chat(user, span_warning("\The [src] is stuck to your hand!"))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	var/turf/T = get_turf(src)
 	if(T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE && isfloorturf(T))
 		to_chat(user, span_warning("You can only install the [src] if the floor plating is removed!"))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	user.visible_message(
 		"[user] starts screwing [src] into \the [T].",
@@ -128,10 +128,10 @@
 	tool.play_tool_sound(src, 50)
 	if(!do_after(user, src, 10 SECONDS, DO_PUBLIC))
 		to_chat(user, span_warning("You need to stand still to install [src]!"))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	playsound(src.loc, 'sound/machines/click.ogg', 75, TRUE)
 	user.visible_message("[user] installed \the [src] on \the [T]", "You installed \the [src] on \the [T]")
 	new /obj/machinery/power/data_terminal(T)
 	qdel(src)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS

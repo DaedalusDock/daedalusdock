@@ -1,0 +1,7 @@
+author: LemonInTheDark, Ben10omintrix, Ghommie, Smartkar, Kapu1178
+delete-after: true
+changes:
+  - balance: Monkeys will now lose hatred over time if they aren't able to attack
+      their target. (This includes attempting to attack while the target is incapacitated!)
+  - balance: Monkeys attack 50% slower.
+  - balance: Monkeys have a higher initial hatred, but it decays sooner.

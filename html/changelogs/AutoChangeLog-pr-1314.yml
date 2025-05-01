@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Syringes can now be used as weapons.
+  - balance: Increased the damage of wrenches, screwdrivers, and wirecutters.

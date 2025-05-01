@@ -1,0 +1,12 @@
+2025-05-01:
+  Kapu1178:
+  - bugfix: Fixed (hopefully) all instances of run-away floating point precision issues
+      in atmospherics. All molar and pressure values should now always be rounded
+      to the ten-thousandths place.
+  - bugfix: Fixed a mathematical error in Vent Pump code that made them siphon slower
+      than intended.
+  LemonInTheDark, Ben10omintrix, Ghommie, Smartkar, Kapu1178:
+  - balance: Monkeys will now lose hatred over time if they aren't able to attack
+      their target. (This includes attempting to attack while the target is incapacitated!)
+  - balance: Monkeys attack 50% slower.
+  - balance: Monkeys have a higher initial hatred, but it decays sooner.

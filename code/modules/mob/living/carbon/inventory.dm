@@ -219,7 +219,7 @@
 
 	if(offered)
 		if(offered == src)
-			if(!swap_hand(get_inactive_hand_index())) //have to swap hands first to take something
+			if(!try_swap_hand(get_inactive_hand_index())) //have to swap hands first to take something
 				to_chat(src, span_warning("You try to take [offered_item] from yourself, but fail."))
 				return
 			if(!put_in_active_hand(offered_item))

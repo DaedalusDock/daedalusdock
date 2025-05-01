@@ -89,10 +89,12 @@
 	icon_state = "forge"
 	anchored = TRUE
 	max_integrity = 200
+
+	var/checked_faction = ROLE_WIZARD
+
 	var/mob/living/current_wizard = null
 	var/next_check = 0
 	var/cooldown = 600
-	var/faction = ROLE_WIZARD
 	var/braindead_check = 0
 
 /obj/structure/academy_wizard_spawner/New()
@@ -107,7 +109,7 @@
 	if(next_check < world.time)
 		if(!current_wizard)
 			for(var/mob/living/L in GLOB.player_list)
-				if(L.z == src.z && L.stat != DEAD && !(faction in L.faction))
+				if(L.z == src.z && L.stat != DEAD && !(checked_faction in L.faction))
 					summon_wizard()
 					break
 		else

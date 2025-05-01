@@ -33,7 +33,7 @@
 	if(.)
 		return
 	var/mob/M = user.mob
-	M.swap_hand()
+	M.try_swap_hand()
 	return TRUE
 
 /datum/keybinding/mob/activate_inhand

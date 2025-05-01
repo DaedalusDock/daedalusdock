@@ -16,7 +16,7 @@
 
 	hitsound = 'sound/weapons/attack/flesh_stab.ogg'
 	throwforce = 1
-	force = 10
+	force = 5
 	sharpness = SHARP_POINTY
 
 	combat_mode_force_attack = TRUE
@@ -34,6 +34,7 @@
 /obj/item/reagent_containers/syringe/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
+	AddElement(/datum/element/eyestab)
 
 /obj/item/reagent_containers/syringe/attackby(obj/item/I, mob/user, params)
 	return

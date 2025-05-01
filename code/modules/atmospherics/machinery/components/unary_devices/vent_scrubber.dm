@@ -350,7 +350,7 @@
 	if(!can_hibernate)
 		COOLDOWN_RESET(src, hibernating)
 
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/layer2
 	piping_layer = 2

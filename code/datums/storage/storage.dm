@@ -831,6 +831,15 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		INVOKE_ASYNC(src, PROC_REF(open_storage), user, try_quickdraw)
 		return TRUE
 
+/// Called directly from the attack chain if [insert_on_attack] is TRUE.
+/// Handles inserting an item into the storage when clicked.
+/datum/storage/proc/item_interact_insert(mob/living/user, obj/item/thing)
+	if(iscyborg(user))
+		return ITEM_INTERACT_BLOCKING
+
+	attempt_insert(thing, user)
+	return ITEM_INTERACT_SUCCESS
+
 /// Generates the numbers on an item in storage to show stacking.
 /datum/storage/proc/process_numerical_display()
 	var/list/toreturn = list()

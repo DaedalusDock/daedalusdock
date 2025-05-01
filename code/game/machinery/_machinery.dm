@@ -713,13 +713,14 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 			)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-/obj/machinery/tool_act(mob/living/user, obj/item/tool, tool_type)
+/obj/machinery/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(SEND_SIGNAL(user, COMSIG_TRY_USE_MACHINE, src) & COMPONENT_CANT_USE_MACHINE_TOOLS)
-		return TOOL_ACT_MELEE_CHAIN_BLOCKING
+		return ITEM_INTERACT_BLOCKING
+
 	. = ..()
-	if(. & TOOL_ACT_SIGNAL_BLOCKING)
-		return
-	update_last_used(user)
+
+	if(.)
+		update_last_used(user)
 
 /obj/machinery/_try_interact(mob/user)
 	if((interaction_flags_machine & INTERACT_MACHINE_WIRES_IF_OPEN) && panel_open && (attempt_wire_interaction(user) == WIRE_INTERACTION_BLOCK))

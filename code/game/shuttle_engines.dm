@@ -39,7 +39,7 @@
 /obj/structure/shuttle/engine/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/shuttle/engine/welder_act(mob/living/user, obj/item/I)
 	. = ..()

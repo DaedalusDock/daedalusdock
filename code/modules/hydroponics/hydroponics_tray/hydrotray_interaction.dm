@@ -195,7 +195,7 @@
 /obj/machinery/hydroponics/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/hydroponics/wirecutter_act(mob/living/user, obj/item/tool)
 	. = ..()
@@ -203,7 +203,7 @@
 		return
 	if (!anchored)
 		to_chat(user, "<span class='warning'>Anchor the tray first!</span>")
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	using_irrigation = !using_irrigation
 	tool.play_tool_sound(src)
@@ -211,7 +211,7 @@
 	"<span class='notice'>You [using_irrigation ? "" : "dis"]connect [src]'s irrigation hoses.</span>")
 	for(var/obj/machinery/hydroponics/h in range(1,src))
 		h.update_icon_state()
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/hydroponics/proc/try_harvest(mob/living/user)
 	if(!growing)

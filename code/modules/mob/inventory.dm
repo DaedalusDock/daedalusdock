@@ -158,7 +158,8 @@
 		return
 
 	//If the item is in a storage item, take it out
-	var/was_in_storage = I.item_flags & IN_STORAGE
+	var/was_in_storage = !!(I.item_flags & IN_STORAGE)
+	var/atom/item_old_loc = I.loc
 	if(was_in_storage && !I.loc.atom_storage?.attempt_remove(I, src, user = src))
 		return
 
@@ -171,6 +172,10 @@
 	if(I.loc == src)
 		if(!I.allow_attack_hand_drop(src) || !temporarilyRemoveItemFromInventory(I, use_unequip_delay = TRUE))
 			return
+
+	// If the item was in a storage object the mob isn't holding, play the pickup animation
+	if(was_in_storage && item_old_loc && (get(item_old_loc.atom_storage?.real_location, /mob) != src))
+		I.do_pickup_animation(src, get_turf(item_old_loc))
 
 	I.pickup(src)
 	. = put_in_hand(I, hand_index, ignore_anim = ignore_anim || was_in_storage)

@@ -1748,6 +1748,10 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(!in_range(target, source))
 		return
 
+	// If you're at the stage where you're picking up the item, just remove the outline.
+	if(length(filter_data))
+		remove_filter("hover_outline")
+
 	var/image/pickup_animation = image(icon = src)
 	pickup_animation.plane = GAME_PLANE
 	pickup_animation.transform.Scale(0.75)

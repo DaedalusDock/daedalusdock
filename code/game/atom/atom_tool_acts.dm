@@ -16,6 +16,8 @@
 
 	var/is_right_clicking = text2num(LAZYACCESS(modifiers, RIGHT_CLICK))
 	var/is_left_clicking = !is_right_clicking
+
+	// Firstly, see what signals have to say about this.
 	var/early_sig_return = NONE
 	if(is_left_clicking)
 		/*
@@ -36,12 +38,14 @@
 	if(early_sig_return)
 		return early_sig_return
 
+	// Second, see what WE have to say about this.
 	var/self_interaction = is_left_clicking \
 		? item_interaction(user, tool, modifiers) \
 		: item_interaction_secondary(user, tool, modifiers)
 	if(self_interaction)
 		return self_interaction
 
+	// Finally, see what the tool has to say about this
 	var/interact_return = is_left_clicking \
 		? tool.interact_with_atom(src, user, modifiers) \
 		: tool.interact_with_atom_secondary(src, user, modifiers)

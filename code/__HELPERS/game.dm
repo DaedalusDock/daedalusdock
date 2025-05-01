@@ -128,13 +128,38 @@
 		add_to.images += image_to_show
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(remove_images_from_clients), image_to_show, show_to), duration, TIMER_CLIENT_TIME)
 
-///wrapper for flick_overlay(), flicks to everyone who can see the target atom
-/proc/flick_overlay_view(image/image_to_show, atom/target, duration)
-	var/list/viewing = list()
-	for(var/mob/viewer as anything in viewers(target))
-		if(viewer.client)
-			viewing += viewer.client
-	flick_overlay(image_to_show, viewing, duration)
+/**
+ * Helper atom that copies an appearance and exists for a period
+*/
+/atom/movable/flick_visual
+
+/// Takes the passed in MA/icon_state, mirrors it onto ourselves, and displays that in world for duration seconds
+/// Returns the displayed object, you can animate it and all, but you don't own it, we'll delete it after the duration
+/atom/proc/flick_overlay_view(mutable_appearance/display, duration)
+	if(!display)
+		return null
+
+	var/mutable_appearance/passed_appearance = \
+		istext(display) \
+			? mutable_appearance(icon, display, layer) \
+			: display
+
+	// If you don't give it a layer, we assume you want it to layer on top of this atom
+	// Because this is vis_contents, we need to set the layer manually (you can just set it as you want on return if this is a problem)
+	if(passed_appearance.layer == FLOAT_LAYER)
+		passed_appearance.layer = layer + 0.1
+	// This is faster then pooling. I promise
+	var/atom/movable/flick_visual/visual = new()
+	visual.appearance = passed_appearance
+	visual.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	// I hate /area
+	var/atom/movable/lies_to_children = src
+	lies_to_children.vis_contents += visual
+	QDEL_IN_CLIENT_TIME(visual, duration)
+	return visual
+
+/area/flick_overlay_view(mutable_appearance/display, duration)
+	return
 
 ///Get active players who are playing in the round
 /proc/get_active_player_count(alive_check = 0, afk_check = 0, human_check = 0)

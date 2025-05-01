@@ -372,7 +372,7 @@
 		I.pixel_y = clamp(text2num(LAZYACCESS(user_click_modifiers, ICON_Y)) - 16, -(world.icon_size/2), world.icon_size/2)
 
 	if(animate)
-		I.do_drop_animation(src)
+		I.do_pickup_animation(newloc, get_turf(src))
 
 //visibly unequips I but it is NOT MOVED AND REMAINS IN SRC
 //item MUST BE FORCEMOVE'D OR QDEL'D

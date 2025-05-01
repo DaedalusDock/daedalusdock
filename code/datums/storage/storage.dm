@@ -410,6 +410,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	item_insertion_feedback(user, to_insert, override)
 	real_location.update_appearance()
 	SEND_SIGNAL(src, COMSIG_STORAGE_INSERTED_ITEM, to_insert, user, override, force)
+
+	if(get(real_location, /mob) != user)
+		to_insert.do_pickup_animation(real_location, get_turf(user))
 	return TRUE
 
 /**

@@ -162,6 +162,7 @@
 		if(!istype(underlay))
 			underlay = image(underlay, dir = SOUTH)
 			underlay.filters += filter(type = "outline", size = 1)
+			underlay.maptext = null
 
 		underlay.pixel_y = 2
 		underlay.alpha = 200

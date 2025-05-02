@@ -20,12 +20,17 @@
 
 	unflip(usr)
 
+/obj/structure/table/proc/is_flipped()
+	return flipped == 1
+
 /obj/structure/table/proc/flip(user, direction, skip_delay)
 	if(flipped == -1)
 		to_chat(user, span_warning("[src] won't budge."))
 		return FALSE
-	if(flipped == TRUE)
+
+	if(is_flipped())
 		return FALSE
+
 	if(!straight_table_check(turn(direction,90)) || !straight_table_check(turn(direction,-90)) )
 		return FALSE
 
@@ -57,7 +62,7 @@
 		var/obj/structure/table/neighbor = locate() in get_step(src, D)
 		if(!neighbor)
 			continue
-		if(!neighbor.flipped && neighbor.buildstack == buildstack)
+		if(!neighbor.is_flipped() && neighbor.buildstack == buildstack)
 			neighbor.flip(user, direction, TRUE)
 
 	smoothing_flags = null
@@ -67,7 +72,7 @@
 	update_icon()
 
 /obj/structure/table/proc/unflip(user, skip_delay)
-	if(!flipped)
+	if(!is_flipped())
 		return FALSE
 	if(!skip_delay && !do_after(user, src, 1 SECOND, DO_PUBLIC, extra_checks = CALLBACK(src, PROC_REF(unflipping_check), user)))
 		return FALSE
@@ -82,7 +87,7 @@
 
 	for(var/D in list(turn(dir, 90), turn(dir, -90)))
 		var/obj/structure/table/neighbor = locate() in get_step(src.loc,D)
-		if(neighbor && neighbor.flipped == 1 && neighbor.dir == src.dir && neighbor.buildstack == buildstack)
+		if(neighbor && neighbor.is_flipped() && neighbor.dir == src.dir && neighbor.buildstack == buildstack)
 			neighbor.unflip(user, TRUE)
 
 	smoothing_flags = initial(smoothing_flags)
@@ -101,7 +106,7 @@
 			return FALSE
 
 	T = locate() in get_step(src.loc,direction)
-	if (!T || T.flipped == 1 || T.buildstack != buildstack)
+	if (!T || T.is_flipped()|| T.buildstack != buildstack)
 		return TRUE
 
 	return T.straight_table_check(direction)
@@ -124,7 +129,7 @@
 	for(var/new_dir in L)
 		var/obj/structure/table/T = locate() in get_step(src.loc,new_dir)
 		if(T && T.buildstack == T.buildstack)
-			if(T.flipped == 1 && T.dir == src.dir && !T.unflipping_check(user, new_dir, TRUE))
+			if(T.is_flipped() && T.dir == src.dir && !T.unflipping_check(user, new_dir, TRUE))
 				return FALSE
 
 	return TRUE

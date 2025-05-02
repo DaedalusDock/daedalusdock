@@ -1,7 +1,7 @@
 /obj/item/sample
 	name = "forensic sample"
 	icon = 'icons/obj/forensics.dmi'
-	item_flags = parent_type::item_flags | NOBLUDGEON
+	item_flags = parent_type::item_flags | NOBLUDGEON | NO_EVIDENCE_ON_INTERACTION
 	w_class = WEIGHT_CLASS_TINY
 
 	fingerprint_flags_item_interaction = NONE
@@ -109,7 +109,7 @@
 
 /obj/item/sample/print/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!ishuman(interacting_with))
-		return ITEM_INTERACT_BLOCKING
+		return NONE
 
 	if(length(evidence))
 		return ITEM_INTERACT_BLOCKING
@@ -173,6 +173,17 @@
 	to_chat(user, span_notice("You transfer [length(S.evidence)] [length(S.evidence) > 1 ? "[evidence_type]s" : "[evidence_type]"] to \the [S]."))
 
 /obj/item/sample_kit/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(istable(interacting_with))
+		return NONE
+
+	if(!can_take_sample(user, interacting_with))
+		to_chat(user, span_warning("There is no evidence on [interacting_with]."))
+		return ITEM_INTERACT_BLOCKING
+
+	take_sample(user, interacting_with)
+	return ITEM_INTERACT_SUCCESS
+
+/obj/item/sample_kit/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!can_take_sample(user, interacting_with))
 		to_chat(user, span_warning("There is no evidence on [interacting_with]."))
 		return ITEM_INTERACT_BLOCKING

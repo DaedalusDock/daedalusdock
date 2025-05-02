@@ -4,7 +4,7 @@
 	icon = 'icons/obj/forensics.dmi'
 	icon_state = "swab"
 
-	item_flags = parent_type::item_flags | NOBLUDGEON
+	item_flags = parent_type::item_flags | NOBLUDGEON | NO_EVIDENCE_ON_INTERACTION
 
 	fingerprint_flags_interact_with_atom = NONE
 
@@ -31,15 +31,21 @@
 		icon_state = "swab_used"
 
 /obj/item/swab/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	if(used)
-		to_chat(user, span_warning("This swab has been used."))
-		return ITEM_INTERACT_BLOCKING
+	if(used || istable(interacting_with))
+		return NONE
 
-	if(!ishuman(interacting_with))
-		return swab_atom(interacting_with, user)
+	if(ishuman(interacting_with))
+		return swab_human(interacting_with, user)
 
-	var/mob/living/carbon/human/target = interacting_with
+	return swab_atom(interacting_with, user)
 
+/obj/item/swab/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	if(ishuman(interacting_with))
+		return swab_human(interacting_with, user)
+
+	return swab_atom(interacting_with, user)
+
+/obj/item/swab/proc/swab_human(mob/living/carbon/human/target, mob/living/user)
 	// Resisting
 	if(user != target && (target.combat_mode && target.body_position == STANDING_UP && !target.incapacitated()))
 		user.visible_message(span_warning("<b>[user]</b> tries to swab <b>[target]</b>, but they move away."))
@@ -58,7 +64,6 @@
 		if(!target.has_dna())
 			to_chat(user, span_warning("You feel like this wouldn't be useful."))
 			return ITEM_INTERACT_BLOCKING
-
 
 		user.visible_message(span_notice("<b>[user]</b> attempts to insert [src] into <b>[target]</b>'s mouth."))
 		if(!do_after(user, target, 2 SECONDS, DO_PUBLIC|DO_RESTRICT_CLICKING|DO_RESTRICT_USER_DIR_CHANGE, display = src))
@@ -82,8 +87,6 @@
 	if(!is_valid_target(target))
 		to_chat(user, span_warning("[target] has nothing to swab on their body."))
 		return ITEM_INTERACT_BLOCKING
-
-	return swab_atom(target, user)
 
 /obj/item/swab/proc/swab_atom(atom/target, mob/user)
 	if(ishuman(target))

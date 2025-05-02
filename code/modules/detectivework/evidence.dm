@@ -27,6 +27,19 @@
 	return user.pickup_item(contents[1], user.get_empty_held_index())
 
 /obj/item/storage/evidencebag/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(istable(interacting_with))
+		return NONE
+
+	// If it has storage and isnt an item OR it can't possibly hold us, try to insert into it.
+	if(interacting_with.atom_storage && (!isitem(interacting_with) || (interacting_with.atom_storage.max_specific_storage >= w_class)))
+		return NONE
+
+	return on_interact_with_atom(interacting_with, user, modifiers)
+
+/obj/item/storage/evidencebag/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	return on_interact_with_atom(interacting_with, user, modifiers)
+
+/obj/item/storage/evidencebag/proc/on_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(length(contents))
 		if(isitem(interacting_with))
 			return ITEM_INTERACT_BLOCKING

@@ -10,3 +10,7 @@
       their target. (This includes attempting to attack while the target is incapacitated!)
   - balance: Monkeys attack 50% slower.
   - balance: Monkeys have a higher initial hatred, but it decays sooner.
+2025-05-02:
+  Kapu1178:
+  - rscadd: Syringes can now be used as weapons.
+  - balance: Increased the damage of wrenches, screwdrivers, and wirecutters.

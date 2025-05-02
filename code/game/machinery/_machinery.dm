@@ -389,9 +389,9 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
  * * object (obj) The object to be moved in to the users hand.
  * * user (mob/living) The user to recive the object
  */
-/obj/machinery/proc/try_put_in_hand(obj/object, mob/living/user)
-	if(!issilicon(user) && in_range(src, user))
-		user.put_in_hands(object)
+/obj/machinery/proc/try_put_in_hand(obj/item/object, mob/living/user)
+	if(!issilicon(user) && IsReachableBy(user) && user.put_in_hands(object))
+		object.do_pickup_animation(user, get_turf(src))
 	else
 		object.forceMove(drop_location())
 

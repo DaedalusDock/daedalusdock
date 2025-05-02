@@ -1,7 +1,7 @@
 /obj/item/sample
 	name = "forensic sample"
 	icon = 'icons/obj/forensics.dmi'
-	item_flags = parent_type::item_flags | NOBLUDGEON | NO_EVIDENCE_ON_ATTACK
+	item_flags = parent_type::item_flags | NOBLUDGEON | NO_EVIDENCE_ON_INTERACTION
 	w_class = WEIGHT_CLASS_TINY
 	var/list/evidence = list()
 	var/label
@@ -149,7 +149,7 @@
 	icon = 'icons/obj/forensics.dmi'
 	icon_state = "m_glass"
 	w_class = WEIGHT_CLASS_SMALL
-	item_flags = parent_type::item_flags | NOBLUDGEON | NO_EVIDENCE_ON_ATTACK
+	item_flags = parent_type::item_flags | NOBLUDGEON | NO_EVIDENCE_ON_INTERACTION
 
 	var/evidence_type = "fiber"
 	var/evidence_path = /obj/item/sample/fibers

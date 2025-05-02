@@ -40,7 +40,7 @@
 	trace_DNA |= dna
 
 /// Adds the fingerprint of M to our fingerprint list
-/datum/forensics/proc/add_fingerprint(mob/living/M, ignoregloves = FALSE)
+/datum/forensics/proc/add_fingerprint(mob/living/M, ignoregloves = FALSE, log_touch = TRUE)
 	if(!isliving(M))
 		if(!iscameramob(M))
 			return
@@ -64,7 +64,7 @@
 			ignoregloves = TRUE
 
 		if(!ignoregloves)
-			H.gloves.add_fingerprint(H, TRUE) //ignoregloves = 1 to avoid infinite loop.
+			H.gloves.add_fingerprint(H, TRUE, FALSE) //ignoregloves = 1 to avoid infinite loop.
 			return
 
 	add_partial_print(H.get_fingerprints(ignoregloves, H.get_active_hand()))
@@ -73,6 +73,10 @@
 /datum/forensics/proc/add_partial_print(full_print)
 	PRIVATE_PROC(TRUE)
 	LAZYINITLIST(fingerprints)
+
+	#warn debug
+	if(usr?.client)
+		to_chat(world, "Added partial print to [parent].")
 
 	if(!fingerprints[full_print])
 		fingerprints[full_print] = stars(full_print, rand(0, 70)) //Initial touch, not leaving much evidence the first time.

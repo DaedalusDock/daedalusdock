@@ -12,6 +12,7 @@
 	if(!user.combat_mode)
 		var/tool_return = tool_act(user, tool, modifiers)
 		if(tool_return)
+			interaction_fingerprints(user, tool, tool.fingerprint_flags_tool_act, !!tool_return)
 			return tool_return
 
 	var/is_right_clicking = text2num(LAZYACCESS(modifiers, RIGHT_CLICK))
@@ -42,14 +43,18 @@
 	var/self_interaction = is_left_clicking \
 		? item_interaction(user, tool, modifiers) \
 		: item_interaction_secondary(user, tool, modifiers)
+
 	if(self_interaction)
+		interaction_fingerprints(user, tool, fingerprint_flags_item_interaction, !!(self_interaction & ITEM_INTERACT_SUCCESS))
 		return self_interaction
 
 	// Finally, see what the tool has to say about this
 	var/interact_return = is_left_clicking \
 		? tool.interact_with_atom(src, user, modifiers) \
 		: tool.interact_with_atom_secondary(src, user, modifiers)
+
 	if(interact_return)
+		interaction_fingerprints(user, tool, tool.fingerprint_flags_interact_with_atom, !!(interact_return & ITEM_INTERACT_SUCCESS))
 		return interact_return
 
 	// We have to manually handle storage in item_interaction because storage is blocking in 99% of interactions, which stifles a lot
@@ -62,6 +67,43 @@
 				return ITEM_INTERACT_SUCCESS
 
 	return NONE
+
+/**
+ * Handles conditionally adding fingerprints during base_item_interaction()
+ *
+ * args:
+ * * user - The living user of the tool.
+ * * tool - The item used for the interaction.
+ * * checking_field - The bitfield we are checking against. Will be whatever is in a fingerprint_flags_FOO var.
+ * * was_success - If the interaction was successful or not.
+ */
+/atom/proc/interaction_fingerprints(mob/living/user, obj/item/tool, checking_field, was_success)
+	. = FALSE
+
+	if(was_success)
+		if(checking_field & FINGERPRINT_ITEM_SUCCESS)
+			tool.add_fingerprint(user)
+			. = TRUE
+		else
+			tool.log_touch(user)
+
+		if(checking_field & FINGERPRINT_OBJECT_SUCCESS)
+			tool.leave_evidence(user, src)
+			. = TRUE
+		else
+			log_touch(user)
+
+	else
+		if(checking_field & FINGERPRINT_ITEM_FAILURE)
+			tool.add_fingerprint(user)
+			. = TRUE
+
+		if(checking_field & FINGERPRINT_OBJECT_FAILURE)
+			tool.leave_evidence(user, src)
+			. = TRUE
+
+	return .
+
 
 /**
  *

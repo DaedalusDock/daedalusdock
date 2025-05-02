@@ -4,7 +4,7 @@
 	icon = 'icons/obj/forensics.dmi'
 	icon_state = "swab"
 
-	item_flags = parent_type::item_flags | NOBLUDGEON | NO_EVIDENCE_ON_ATTACK
+	item_flags = parent_type::item_flags | NOBLUDGEON | NO_EVIDENCE_ON_INTERACTION
 
 	var/used = FALSE
 

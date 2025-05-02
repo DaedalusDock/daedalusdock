@@ -74,10 +74,6 @@
 	PRIVATE_PROC(TRUE)
 	LAZYINITLIST(fingerprints)
 
-	#warn debug
-	if(usr?.client)
-		to_chat(world, "Added partial print to [parent].")
-
 	if(!fingerprints[full_print])
 		fingerprints[full_print] = stars(full_print, rand(0, 70)) //Initial touch, not leaving much evidence the first time.
 		return

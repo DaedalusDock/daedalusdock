@@ -4,7 +4,7 @@
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "evidenceobj"
 	inhand_icon_state = ""
-	w_class = WEIGHT_CLASS_TINY
+	w_class = WEIGHT_CLASS_SMALL
 
 	// Don't leave fingerprints on items moved into or out of the evidence bag.
 	fingerprint_flags_interact_with_atom = parent_type::fingerprint_flags_interact_with_atom &~ (FINGERPRINT_OBJECT_SUCCESS|FINGERPRINT_OBJECT_FAILURE)
@@ -38,8 +38,11 @@
 	if(!isitem(interacting_with))
 		return NONE
 
+	var/obj/item/I = interacting_with
+	var/old_item_turf = get_turf(I)
 	var/inserted = atom_storage.attempt_insert(interacting_with, user)
 	if(inserted)
+		I.do_pickup_animation(user, old_item_turf)
 		return ITEM_INTERACT_SUCCESS
 
 	return ITEM_INTERACT_BLOCKING
@@ -61,6 +64,6 @@
 /obj/item/storage/evidencebag/Exited(atom/movable/gone, direction)
 	. = ..()
 	cut_overlays() //remove the overlays
-	w_class = WEIGHT_CLASS_TINY
+	w_class = initial(w_class)
 	icon_state = "evidenceobj"
 	desc = "An empty evidence bag."

@@ -31,7 +31,7 @@
 		icon_state = "swab_used"
 
 /obj/item/swab/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	if(used || istable(interacting_with))
+	if(used || ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
 		return NONE
 
 	if(ishuman(interacting_with))

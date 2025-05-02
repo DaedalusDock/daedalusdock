@@ -173,7 +173,7 @@
 	to_chat(user, span_notice("You transfer [length(S.evidence)] [length(S.evidence) > 1 ? "[evidence_type]s" : "[evidence_type]"] to \the [S]."))
 
 /obj/item/sample_kit/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	if(istable(interacting_with))
+	if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
 		return NONE
 
 	if(!can_take_sample(user, interacting_with))

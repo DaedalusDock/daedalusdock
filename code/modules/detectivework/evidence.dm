@@ -4,7 +4,7 @@
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "evidenceobj"
 	inhand_icon_state = ""
-	w_class = WEIGHT_CLASS_SMALL
+	w_class = WEIGHT_CLASS_TINY
 
 	// Don't leave fingerprints on items moved into or out of the evidence bag.
 	fingerprint_flags_interact_with_atom = parent_type::fingerprint_flags_interact_with_atom &~ (FINGERPRINT_OBJECT_SUCCESS|FINGERPRINT_OBJECT_FAILURE)

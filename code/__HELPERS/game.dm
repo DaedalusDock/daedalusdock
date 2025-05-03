@@ -148,13 +148,17 @@
 	// Because this is vis_contents, we need to set the layer manually (you can just set it as you want on return if this is a problem)
 	if(passed_appearance.layer == FLOAT_LAYER)
 		passed_appearance.layer = layer + 0.1
+
 	// This is faster then pooling. I promise
 	var/atom/movable/flick_visual/visual = new()
 	visual.appearance = passed_appearance
 	visual.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	visual.vis_flags = NONE
+
 	// I hate /area
 	var/atom/movable/lies_to_children = src
 	lies_to_children.vis_contents += visual
+
 	QDEL_IN_CLIENT_TIME(visual, duration)
 	return visual
 

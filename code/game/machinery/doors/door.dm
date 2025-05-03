@@ -292,6 +292,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		return
 
 	add_fingerprint(user)
+	user.animate_interact(src)
 	if(!density || (obj_flags & EMAGGED))
 		return
 

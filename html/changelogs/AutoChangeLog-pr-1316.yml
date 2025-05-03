@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: You can now click on items with an Evidence Bag to pick them up without
+      leaving your own prints on them. Additionally, you may click on another location
+      to drop the item there.

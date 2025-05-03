@@ -968,6 +968,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		if(open_sound)
 			playsound(parent, open_sound, 50, TRUE, -5)
 
+		if(!silent && isturf(real_location.loc))
+			to_show.animate_interact(real_location)
 		return TRUE
 
 	var/obj/item/to_remove = get_quickdraw_item()
@@ -980,7 +982,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	INVOKE_ASYNC(src, PROC_REF(put_in_hands_async), to_show, to_remove)
 
 	if(!silent)
-		to_show.visible_message(span_warning("[to_show] draws [to_remove] from [parent]!"), span_notice("You draw [to_remove] from [parent]."))
+		to_show.visible_message(span_warning("[to_show] draws [to_remove] from [parent]."))
+		if(isturf(real_location.loc))
+			to_show.animate_interact(real_location)
 
 	return TRUE
 

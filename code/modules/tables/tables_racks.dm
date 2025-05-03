@@ -372,20 +372,25 @@
 	log_combat(user, pushed_mob, "head slammed", null, "against [src]")
 
 /obj/structure/table/screwdriver_act_secondary(mob/living/user, obj/item/tool)
-	if(flags_1 & NODECONSTRUCT_1 || !deconstruction_ready)
+	if((flags_1 & NODECONSTRUCT_1) || !deconstruction_ready)
 		return FALSE
+
 	to_chat(user, span_notice("You start disassembling [src]..."))
 	if(tool.use_tool(src, user, 2 SECONDS, volume=50))
 		deconstruct(TRUE)
+
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/table/wrench_act_secondary(mob/living/user, obj/item/tool)
-	if(flags_1 & NODECONSTRUCT_1 || !deconstruction_ready)
-		return FALSE
+	if((flags_1 & NODECONSTRUCT_1) || !deconstruction_ready)
+		return NONE
+
 	to_chat(user, span_notice("You start deconstructing [src]..."))
+
 	if(tool.use_tool(src, user, 4 SECONDS, volume=50))
 		playsound(loc, 'sound/items/deconstruct.ogg', 50, TRUE)
 		deconstruct(TRUE, 1)
+
 	return ITEM_INTERACT_SUCCESS
 
 // This extends base item interaction because tables default to blocking 99% of interactions

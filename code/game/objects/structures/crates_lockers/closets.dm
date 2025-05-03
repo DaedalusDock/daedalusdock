@@ -348,6 +348,9 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
  * Toggles a closet open or closed, to the opposite state. Does not respect locked or welded states, however.
  */
 /obj/structure/closet/proc/toggle(mob/living/user)
+	if(user)
+		user.animate_interact(src)
+
 	if(opened)
 		return close(user)
 	else

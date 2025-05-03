@@ -377,39 +377,53 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 		if("lock")
 			if(usr.has_unlimited_silicon_privilege && !wires.is_cut(WIRE_IDSCAN))
 				locked = !locked
+				usr.animate_interact(src)
 				. = TRUE
+
 		if("power", "toggle_filter", "quicksucc", "scrubbing", "direction")
 			AALARM_UIACT_COOLDOWNCHECK
 			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("[action]" = params["val"]), usr)
+			usr.animate_interact(src)
 			. = TRUE
+
 		if("excheck")
 			AALARM_UIACT_COOLDOWNCHECK
 			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("checks" = text2num(params["val"])^1), usr)
+			usr.animate_interact(src)
 			. = TRUE
+
 		if("incheck")
 			AALARM_UIACT_COOLDOWNCHECK
 			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("checks" = text2num(params["val"])^2), usr)
+			usr.animate_interact(src)
 			. = TRUE
+
 		if("set_external_pressure", "set_internal_pressure")
 			AALARM_UIACT_COOLDOWNCHECK
 			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			var/target = params["value"]
 			if(!isnull(target))
 				send_signal(device_id, list("[action]" = target), usr)
+				usr.animate_interact(src)
 				. = TRUE
+
 		if("reset_external_pressure")
 			AALARM_UIACT_COOLDOWNCHECK
 			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("reset_external_pressure"), usr)
+			usr.animate_interact(src)
 			. = TRUE
+
 		if("reset_internal_pressure")
 			AALARM_UIACT_COOLDOWNCHECK
 			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("reset_internal_pressure"), usr)
+			usr.animate_interact(src)
 			. = TRUE
+
 		if("threshold")
 			var/env = params["env"]
 			if(text2path(env))
@@ -429,6 +443,7 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 				var/turf/our_turf = get_turf(src)
 				var/datum/gas_mixture/environment = our_turf.unsafe_return_air()
 				check_air_dangerlevel(environment)
+				usr.animate_interact(src)
 				. = TRUE
 		if("mode")
 			AALARM_UIACT_COOLDOWNCHECK
@@ -437,17 +452,21 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 			COOLDOWN_START(src, ui_cooldown, 3 SECONDS)
 			investigate_log("was turned to [get_mode_name(mode)] mode by [key_name(usr)]",INVESTIGATE_ATMOS)
 			apply_mode(usr)
+			usr.animate_interact(src)
 			. = TRUE
 		if("alarm")
 			if(alarm_manager.send_alarm(ALARM_ATMOS))
 				post_alert(2)
+			usr.animate_interact(src)
 			. = TRUE
 		if("reset")
 			if(alarm_manager.clear_alarm(ALARM_ATMOS))
 				post_alert(0)
+			usr.animate_interact(src)
 			. = TRUE
 		if("fire_alarm")
 			my_area.communicate_fire_alert(alert_type ? FIRE_CLEAR : FIRE_RAISED_GENERIC)
+			usr.animate_interact(src)
 			. = TRUE
 
 	update_appearance()

@@ -120,6 +120,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 	if(opened && broken)
 		to_chat(user, span_warning("[src] is broken open."))
 	else
+		user.animate_interact(src)
 		playsound(loc, 'sound/machines/click.ogg', 15, TRUE, -3)
 		opened = !opened
 		update_appearance()

@@ -1763,6 +1763,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	var/image/pickup_animation = image(icon = src)
 	pickup_animation.plane = GAME_PLANE
+	pickup_animation.layer = ABOVE_MOB_LAYER
 	pickup_animation.transform.Scale(0.75)
 	pickup_animation.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 

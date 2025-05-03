@@ -292,6 +292,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		return
 
 	add_fingerprint(user)
+	user.animate_interact(src)
 	if(!density || (obj_flags & EMAGGED))
 		return
 
@@ -325,6 +326,8 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		attackedby.leave_evidence(user, src)
 	else
 		add_fingerprint(user)
+
+	user.animate_interact(src)
 
 	if(operating || (obj_flags & EMAGGED) || !can_open_with_hands)
 		return

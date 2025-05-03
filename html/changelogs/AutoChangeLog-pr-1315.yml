@@ -1,6 +1,0 @@
-author: Metek, Kapu1178
-delete-after: true
-changes:
-  - rscadd: Removing items from and placing items into storage containers now has
-      an animation.
-  - bugfix: Public do_after() strips maptext.

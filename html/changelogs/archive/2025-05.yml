@@ -14,3 +14,12 @@
   Kapu1178:
   - rscadd: Syringes can now be used as weapons.
   - balance: Increased the damage of wrenches, screwdrivers, and wirecutters.
+2025-05-03:
+  Kapu1178:
+  - rscadd: You can now click on items with an Evidence Bag to pick them up without
+      leaving your own prints on them. Additionally, you may click on another location
+      to drop the item there.
+  Metek, Kapu1178:
+  - rscadd: Removing items from and placing items into storage containers now has
+      an animation.
+  - bugfix: Public do_after() strips maptext.

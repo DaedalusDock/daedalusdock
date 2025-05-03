@@ -342,24 +342,31 @@
 			flush = FALSE
 			update_appearance()
 			. = TRUE
+
 		if("handle-1")
 			if(!panel_open)
 				flush = TRUE
 				update_appearance()
 			. = TRUE
+
 		if("pump-0")
 			if(pressure_charging)
 				pressure_charging = FALSE
 				update_appearance()
 			. = TRUE
+
 		if("pump-1")
 			if(!pressure_charging)
 				pressure_charging = TRUE
 				update_appearance()
 			. = TRUE
+
 		if("eject")
 			eject()
 			. = TRUE
+
+	if(.)
+		usr.animate_interact(src)
 
 
 /obj/machinery/disposal/bin/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)

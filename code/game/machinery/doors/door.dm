@@ -326,6 +326,8 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	else
 		add_fingerprint(user)
 
+	user.animate_interact(src)
+
 	if(operating || (obj_flags & EMAGGED) || !can_open_with_hands)
 		return
 

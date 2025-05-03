@@ -1257,6 +1257,9 @@ GLOBAL_LIST_EMPTY(vending_products)
 /obj/machinery/vending/custom/proc/vend_act(mob/living/user, choice)
 	if(!vend_ready)
 		return
+
+	user.animate_interact(src)
+
 	var/obj/item/dispensed_item
 	var/obj/item/card/id/id_card = user.get_idcard(TRUE)
 	vend_ready = FALSE
@@ -1264,11 +1267,13 @@ GLOBAL_LIST_EMPTY(vending_products)
 		balloon_alert(usr, "no card found")
 		z_flick(icon_deny, src)
 		return TRUE
+
 	var/datum/bank_account/payee = id_card.registered_account
 	for(var/obj/stock in contents)
 		if(format_text(stock.name) == choice)
 			dispensed_item = stock
 			break
+
 	if(!dispensed_item)
 		return FALSE
 

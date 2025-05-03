@@ -96,6 +96,9 @@
 	///Intearaction flags
 	var/interaction_flags_atom = NONE
 
+	/// Determines behavior for how fingerprints are given during item_interaction()
+	var/fingerprint_flags_item_interaction = ALL
+
 	var/flags_ricochet = NONE
 
 	///When a projectile tries to ricochet off this atom, the projectile ricochet chance is multiplied by this

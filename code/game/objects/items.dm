@@ -96,6 +96,15 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	///Item flags for the item
 	var/item_flags = NONE
+
+	/// Determines behavior for how fingerprints are given during interact_with_atom().
+	var/fingerprint_flags_interact_with_atom = ALL
+	/// Determines behavior for how fingerprints are given during attack_self().
+	// Currently unimplemented as attack self is fucked.
+	// var/fingerprint_flags_attack_self = ALL
+	/// Determines behavior for how fingerprints are given during tool_act()
+	var/fingerprint_flags_tool_act = FINGERPRINT_ITEM_SUCCESS | FINGERPRINT_OBJECT_SUCCESS
+
 	/// If set to TRUE, skip item interaction and just attack the target. See ATTACK_IF_COMBAT_MODE()
 	var/combat_mode_force_attack = FALSE
 
@@ -1948,7 +1957,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /// Leave evidence of a user on a target
 /obj/item/proc/leave_evidence(mob/user, atom/target)
-	if(!(item_flags & NO_EVIDENCE_ON_ATTACK))
+	if(!(item_flags & NO_EVIDENCE_ON_INTERACTION))
 		target.add_fingerprint(user)
 	else
 		target.log_touch(user)

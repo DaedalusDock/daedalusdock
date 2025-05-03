@@ -100,6 +100,7 @@
 #include "code\__DEFINES\exports.dm"
 #include "code\__DEFINES\external_organs.dm"
 #include "code\__DEFINES\fantasy_affixes.dm"
+#include "code\__DEFINES\fingerprint_flags.dm"
 #include "code\__DEFINES\firealarm.dm"
 #include "code\__DEFINES\flags.dm"
 #include "code\__DEFINES\flavor.dm"

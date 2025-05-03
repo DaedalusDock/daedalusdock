@@ -139,9 +139,10 @@
 			return
 
 /obj/machinery/telephone/proc/remove_handset(mob/user)//this prevent the bug with the handset when the phone move stole the i stole this from defib code is this funny yet
-	if(ismob(handset.loc))
-		M.transferItemToLoc(handset, src, TRUE)
+	if(!ismob(handset.loc))
+		return
 
+	user.transferItemToLoc(handset, src, TRUE)
 
 /// Process the fact that the handset has changed states.
 /obj/machinery/telephone/proc/handset_statechange(newstate)

@@ -350,7 +350,6 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
 /obj/structure/closet/proc/toggle(mob/living/user)
 	if(user)
 		user.animate_interact(src)
-		return
 
 	if(opened)
 		return close(user)

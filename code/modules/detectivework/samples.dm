@@ -23,7 +23,7 @@
 
 /obj/item/sample/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(tool.type != type)
-		return ITEM_INTERACT_BLOCKING
+		return NONE
 
 	if(user.canUnequipItem(tool) && merge_evidence(tool, user))
 		qdel(tool)

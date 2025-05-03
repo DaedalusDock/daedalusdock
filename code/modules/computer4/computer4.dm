@@ -287,6 +287,7 @@
 			operating_system.try_std_in(params["value"])
 			add_history(usr.ckey, params["value"])
 			playsound(loc, SFX_KEYBOARD, 50, 1, -15)
+			usr.animate_interact(src)
 			return TRUE
 
 		if("history")
@@ -302,11 +303,13 @@
 				return
 
 			peri.on_ui_click(usr, params)
+			usr.animate_interact(src)
 			return TRUE
 
 		if("restart")
 			playsound(src, 'goon/sounds/button.ogg', 100)
 			reboot()
+			usr.animate_interact(src)
 			return TRUE
 
 /// Get the history entry at a certain index. Returns null if the index is out of bounds or the ckey is null. Will return an empty string for length+1

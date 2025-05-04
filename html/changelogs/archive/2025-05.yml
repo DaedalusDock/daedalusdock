@@ -23,3 +23,6 @@
   - rscadd: Removing items from and placing items into storage containers now has
       an animation.
   - bugfix: Public do_after() strips maptext.
+2025-05-04:
+  Kapu1178:
+  - rscadd: Added interaction animations to many common interactions.

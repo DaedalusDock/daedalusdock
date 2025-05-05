@@ -6,7 +6,7 @@
 	circuit = /obj/item/circuitboard/computer/pager
 	light_color = LIGHT_COLOR_GREEN
 
-	var/pager_class = "common"
+	var/pager_class = PAGER_CLASS_COMMON
 
 	var/text_content = ""
 

@@ -11,17 +11,16 @@
 		for(var/path as anything in subtypesof(/datum/shell_command/probe_cmd))
 			commands += new path
 
-/datum/c4_file/terminal_program/probe/execute()
+/datum/c4_file/terminal_program/probe/execute(datum/c4_file/terminal_program/operating_system/thinkdos/system)
 	. = ..()
 	if(!.)
 		return
 
-	var/datum/c4_file/terminal_program/operating_system/os = get_os()
-	os.println("NetProbe V2.4", FALSE)
-	os.println("Welcome to NetProbe, type 'help' to get started.")
+	system.println("NetProbe V2.4", FALSE)
+	system.println("Welcome to NetProbe, type 'help' to get started.")
 
 	if(!get_adapter())
-		os.println("<b>Error:</b> No network adapter found.")
+		system.println("<b>Error:</b> No network adapter found.")
 
 /// Getter for a network adapter.
 /datum/c4_file/terminal_program/probe/proc/get_adapter()

@@ -32,7 +32,14 @@
 			if(str[3] == "-") //This is an argument, not an option.
 				break
 
-			options += copytext(str, 3)
+			var/option = copytext(str, 3)
+			// Option-argument parsing
+			var/list/option_argument_split = splittext(option, "=")
+			if(length(option_argument_split) > 1)
+				options[option_argument_split[1]] = jointext(option_argument_split.Copy(2), "")
+			else
+				options += option
+
 			arguments.Cut(1, 2)
 			continue
 

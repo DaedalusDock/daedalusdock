@@ -15,3 +15,16 @@
 		/obj/item/peripheral/card_reader,
 		/obj/item/peripheral/printer,
 	)
+
+/obj/machinery/computer4/medical/augur
+	default_programs = list(
+		/datum/c4_file/terminal_program/medtrak,
+		/datum/c4_file/terminal_program/notepad,
+		/datum/c4_file/terminal_program/netpage,
+	)
+
+	default_peripherals = list(
+		/obj/item/peripheral/card_reader,
+		/obj/item/peripheral/printer,
+		/obj/item/peripheral/network_card/wireless,
+	)

@@ -49,11 +49,15 @@
 	radio_connection = SSpackets.add_object(src, new_frequency)
 
 /// Post a signal. Has safety checks, so calling this with a timer is OK.
-/obj/item/peripheral/network_card/wireless/proc/post_signal(datum/signal/packet)
+/obj/item/peripheral/network_card/wireless/proc/post_signal(datum/signal/packet, filter)
 	if(!master_pc?.is_operational || !radio_connection)
 		return
 
-	radio_connection.post_signal(packet)
+	packet.data[PACKET_SOURCE_ADDRESS] = network_id
+	radio_connection.post_signal(packet, filter)
+
+/obj/item/peripheral/network_card/wireless/proc/deferred_post_signal(datum/signal/packet, filter, time)
+	addtimer(CALLBACK(src, PROC_REF(post_signal), packet, filter), time)
 
 /obj/item/peripheral/network_card/wireless/receive_signal(datum/signal/signal)
 	if(!master_pc)

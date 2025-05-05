@@ -2943,6 +2943,7 @@
 #include "code\modules\computer4\data\terminal\medtrak\medtrak_menu_commands.dm"
 #include "code\modules\computer4\data\terminal\medtrak\medtrak_record_commands.dm"
 #include "code\modules\computer4\data\terminal\netpage\netpage.dm"
+#include "code\modules\computer4\data\terminal\netpage\netpage_commands.dm"
 #include "code\modules\computer4\data\terminal\probe\probe.dm"
 #include "code\modules\computer4\data\terminal\probe\probe_commands.dm"
 #include "code\modules\computer4\data\terminal\_terminal_program.dm"

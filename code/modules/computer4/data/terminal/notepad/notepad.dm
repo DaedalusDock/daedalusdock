@@ -14,7 +14,7 @@
 		for(var/path as anything in subtypesof(/datum/shell_command/notepad/edit_cmd))
 			edit_commands += new path
 
-/datum/c4_file/terminal_program/notepad/execute()
+/datum/c4_file/terminal_program/notepad/execute(datum/c4_file/terminal_program/operating_system/thinkdos/system)
 	. = ..()
 	if(.)
 		return
@@ -22,8 +22,6 @@
 	// Hope you saved your work motherfucker.
 	working_line = 0
 	note_list = list()
-
-	var/datum/c4_file/terminal_program/operating_system/os = get_os()
 	var/title_text = @{"<pre>
 __________________________________________________
     _____                _____
@@ -31,8 +29,8 @@ __________________________________________________
 ---/----/----__----__---/----/----__----__---/-__-
   /    /   /   ) /   ' /    /   /   ) /   ' /(
 _/____/___(___/_(___ _/____/___(___/_(___ _/___\__</pre>"}
-	os.println(title_text)
-	os.println("Welcome to DocDock, type !help to get started.")
+	system.println(title_text)
+	system.println("Welcome to DocDock, type !help to get started.")
 
 /datum/c4_file/terminal_program/notepad/parse_std_in(text)
 	return splittext(text, " ")

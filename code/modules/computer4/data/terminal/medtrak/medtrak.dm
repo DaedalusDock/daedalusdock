@@ -193,7 +193,7 @@ _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 		var/datum/data/record/R = medical_records.records[i]
 		out +="<b>\[[fit_with_zeros("[i]", zeros)]\]</b>[R.fields[DATACORE_ID]]: [R.fields[DATACORE_NAME]]"
 
-	out += "<br>Enter a record number or 'back' to return."
+	out += "<br>(#) View record | (new) New record | (back) Return to home"
 	system.println(jointext(out, "<br>"))
 
 #warn remove med data console

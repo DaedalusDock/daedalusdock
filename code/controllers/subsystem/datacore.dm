@@ -210,6 +210,10 @@ SUBSYSTEM_DEF(datacore)
 	dat = replacetext(dat, "\t", "")
 	return dat
 
+/datum/controller/subsystem/datacore/proc/next_record_id()
+	var/static/record_id_num = 1001
+	return num2hex(record_id_num++,6)
+
 /datum/controller/subsystem/datacore/proc/manifest_inject(mob/living/carbon/human/H, client/C)
 	SHOULD_NOT_SLEEP(TRUE)
 	var/static/list/show_directions = list(SOUTH, WEST)
@@ -224,8 +228,7 @@ SUBSYSTEM_DEF(datacore)
 	var/chosen_assignment = C?.prefs.alt_job_titles[assignment] || assignment
 	//PARIAH EDIT END
 
-	var/static/record_id_num = 1001
-	var/id = num2hex(record_id_num++,6)
+	var/id = next_record_id()
 	if(!C)
 		C = H.client
 

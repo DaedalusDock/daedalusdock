@@ -328,7 +328,7 @@
 
 	if(inserted_disk != null)
 		data["hasDisk"] = TRUE
-		#warn Hardwiring this to TRUE for now, This needs a more complicated check since DB files don't really grow in size.
+		/* Hardwired to TRUE in Computer4: Original meaning, "Does this disk have any space left" */
 		data["diskCapacity"] = TRUE
 		data["diskReadOnly"] = inserted_disk.read_only
 		//data["diskMutations"] = tgui_inserted_disk_mutations

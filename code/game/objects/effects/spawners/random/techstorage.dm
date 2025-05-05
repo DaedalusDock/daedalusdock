@@ -52,9 +52,7 @@
 		/obj/item/circuitboard/machine/fabricator/omni,
 		/obj/item/circuitboard/machine/circuit_imprinter,
 		/obj/item/circuitboard/computer/teleporter,
-		/obj/item/circuitboard/machine/destructive_analyzer,
-		/obj/item/circuitboard/computer/scan_consolenew,
-		/obj/item/circuitboard/machine/dnascanner,
+		/obj/item/circuitboard/machine/destructive_analyzer
 	)
 
 /obj/effect/spawner/random/techstorage/security_all

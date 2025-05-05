@@ -80,3 +80,10 @@
 
 	medtrak.write_log("Printed record: [fields[DATACORE_ID]]")
 	system.println("Printing...")
+
+/datum/shell_command/medtrak/record/view_comments
+	aliases = list("comments", "c")
+
+/datum/shell_command/medtrak/record/view_comments/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	var/datum/c4_file/terminal_program/medtrak/medtrak = program
+	medtrak.view_comments()

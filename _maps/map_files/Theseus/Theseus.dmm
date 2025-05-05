@@ -5333,9 +5333,6 @@
 /turf/open/floor/wood,
 /area/station/service/library)
 "bRi" = (
-/obj/machinery/computer4/medical{
-	dir = 8
-	},
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
@@ -18199,7 +18196,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "9"
 	},
-/obj/machinery/computer/pager/aether{
+/obj/machinery/computer4/medical/augur{
 	dir = 8
 	},
 /turf/open/floor/carpet/blue,

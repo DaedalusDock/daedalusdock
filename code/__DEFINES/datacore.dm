@@ -16,6 +16,7 @@
 #define DATACORE_DISEASES "cdi"
 #define DATACORE_DISABILITIES "ma_dis"
 #define DATACORE_ALLERGIES "allergies"
+#define DATACORE_COMMENTS "comments"
 
 #define DATACORE_NOTES "notes"
 

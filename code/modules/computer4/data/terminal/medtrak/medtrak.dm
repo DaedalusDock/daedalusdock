@@ -12,9 +12,10 @@
 	/// Callback to fulfill on std in
 	var/datum/callback/awaiting_input
 
-	var/list/home_commands
-	var/list/index_commands
-	var/list/record_commands
+	var/static/list/home_commands
+	var/static/list/index_commands
+	var/static/list/record_commands
+	var/static/list/comment_commands
 
 	var/current_menu = MEDTRAK_MENU_HOME
 
@@ -34,6 +35,11 @@
 		record_commands = list()
 		for(var/path in subtypesof(/datum/shell_command/medtrak/record))
 			record_commands += new path
+
+	if(!comment_commands)
+		comment_commands = list()
+		for(var/path in subtypesof(/datum/shell_command/medtrak/comment))
+			comment_commands += new path
 
 /datum/c4_file/terminal_program/medtrak/on_close()
 	awaiting_input = null
@@ -100,10 +106,12 @@
 		_awaiting.Invoke(src, parsed_stdin)
 		return
 
+	var/lowertext_command = lowertext(parsed_stdin.command)
+
 	switch(current_menu)
 		if(MEDTRAK_MENU_HOME)
 			for(var/datum/shell_command/command as anything in home_commands)
-				if(command.try_exec(parsed_stdin.command, system, src, parsed_stdin.arguments, parsed_stdin.options))
+				if(command.try_exec(lowertext_command, system, src, parsed_stdin.arguments, parsed_stdin.options))
 					return TRUE
 
 		if(MEDTRAK_MENU_INDEX)
@@ -123,7 +131,7 @@
 				return TRUE
 
 			for(var/datum/shell_command/command as anything in index_commands)
-				if(command.try_exec(parsed_stdin.command, system, src, parsed_stdin.arguments, parsed_stdin.options))
+				if(command.try_exec(lowertext_command, system, src, parsed_stdin.arguments, parsed_stdin.options))
 					return TRUE
 
 		if(MEDTRAK_MENU_RECORD)
@@ -137,7 +145,12 @@
 				return TRUE
 
 			for(var/datum/shell_command/command as anything in record_commands)
-				if(command.try_exec(parsed_stdin.command, system, src, parsed_stdin.arguments, parsed_stdin.options))
+				if(command.try_exec(lowertext_command, system, src, parsed_stdin.arguments, parsed_stdin.options))
+					return TRUE
+
+		if(MEDTRAK_MENU_COMMENTS)
+			for(var/datum/shell_command/command as anything in comment_commands)
+				if(command.try_exec(lowertext_command, system, src, parsed_stdin.arguments, parsed_stdin.options))
 					return TRUE
 
 /// Prints the home menu options
@@ -196,8 +209,6 @@ _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 	out += "<br>(#) View record | (new) New record | (back) Return to home"
 	system.println(jointext(out, "<br>"))
 
-#warn remove med data console
-#warn improve comments
 /datum/c4_file/terminal_program/medtrak/proc/view_record(datum/data/record/R)
 	if(isnull(R))
 		R = current_record
@@ -224,7 +235,7 @@ _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 		"\[11\] Mental Status: [fields[DATACORE_MENTAL_HEALTH]]",
 		"\[12\] Notes: [fields[DATACORE_NOTES]]",
 		"<br>Enter field number to edit a field",
-		"(R) Refresh | (D) Delete | (P) Print | (0) Return to index"
+		"(C) Comments | (R) Refresh | (D) Delete | (P) Print | (0) Return to index"
 	)
 
 	get_os().println(jointext(out, "<br>"))
@@ -270,3 +281,24 @@ _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 			)
 		if(12)
 			await_input("Enter new Notes (Max Length: [MAX_MESSAGE_LEN])", CALLBACK(src, PROC_REF(edit_notes)))
+
+/datum/c4_file/terminal_program/medtrak/proc/view_comments()
+	current_menu = MEDTRAK_MENU_COMMENTS
+
+	var/datum/c4_file/terminal_program/operating_system/thinkdos/system = get_os()
+	system.clear_screen(TRUE)
+
+	if(!length(current_record.fields[DATACORE_COMMENTS]))
+		system.println("No comments to display.")
+
+	else
+		var/list/out = list()
+
+		var/count = 0
+		for(var/comment in current_record.fields[DATACORE_COMMENTS])
+			count++
+			out += "\[[fit_with_zeros("[count]", 2)]\] [comment]"
+
+		system.println(jointext(out, "<br>"))
+
+	system.println("(N) New comment  | (0) Return to record")

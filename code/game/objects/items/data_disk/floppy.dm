@@ -1,6 +1,6 @@
 /obj/item/disk/data/floppy
 	name = "floppy disk"
-	#warn TODO: desc
+	desc = "A portable storage device for voidcomputers."
 	icon_state = "datadisk0"
 
 /obj/item/disk/data/floppy/attack_self(mob/user)

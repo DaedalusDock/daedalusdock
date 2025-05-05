@@ -83,32 +83,44 @@
 	air_contents.merge(removed)
 	trunk_check()
 
-/obj/machinery/disposal/attackby(obj/item/I, mob/living/user, params)
-	I.leave_evidence(user, src)
-	if(!pressure_charging && !full_pressure && !flush)
-		if(I.tool_behaviour == TOOL_SCREWDRIVER)
-			panel_open = !panel_open
-			I.play_tool_sound(src)
-			to_chat(user, span_notice("You [panel_open ? "remove":"attach"] the screws around the power connection."))
-			return
-		else if(I.tool_behaviour == TOOL_WELDER && panel_open)
-			if(!I.tool_start_check(user, amount=0))
-				return
+/obj/machinery/disposal/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(user.combat_mode)
+		return NONE
 
-			to_chat(user, span_notice("You start slicing the floorweld off \the [src]..."))
-			if(I.use_tool(src, user, 20, volume=100) && panel_open)
-				to_chat(user, span_notice("You slice the floorweld off \the [src]."))
-				deconstruct()
-			return
+	if((tool.item_flags & ABSTRACT))
+		return NONE
 
-	if(!user.combat_mode)
-		if((I.item_flags & ABSTRACT) || !user.temporarilyRemoveItemFromInventory(I))
-			return
-		place_item_in_disposal(I, user)
+	if(place_item_in_disposal(tool, user))
 		update_appearance()
-		return 1 //no afterattack
-	else
-		return ..()
+		return ITEM_INTERACT_SUCCESS
+
+	return ITEM_INTERACT_BLOCKING
+
+/obj/machinery/disposal/screwdriver_act_secondary(mob/living/user, obj/item/tool)
+	if(pressure_charging || full_pressure || flush)
+		return ITEM_INTERACT_BLOCKING
+
+	panel_open = !panel_open
+	tool.play_tool_sound(src)
+	user.do_item_attack_animation(src, used_item = tool)
+	visible_message(span_notice("[user] [panel_open ? "removes":"attachs"] the screws from the base of [src]."))
+	return ITEM_INTERACT_SUCCESS
+
+/obj/machinery/disposal/welder_act_secondary(mob/living/user, obj/item/tool)
+	if(!panel_open)
+		to_chat(user, span_warning("\The [src] is secured to the floor with screws."))
+		return ITEM_INTERACT_BLOCKING
+
+	if(!tool.tool_start_check(user, amount=0))
+		return ITEM_INTERACT_BLOCKING
+
+	to_chat(user, span_notice("You start slicing the floorweld off \the [src]..."))
+	if(!tool.use_tool(src, user, 20, volume=100) && panel_open)
+		return ITEM_INTERACT_BLOCKING
+
+	to_chat(user, span_notice("You slice the floorweld off \the [src]."))
+	deconstruct()
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/disposal/proc/rat_rummage(mob/living/simple_animal/hostile/regalrat/king)
 	king.visible_message(span_warning("[king] starts rummaging through [src]."),span_notice("You rummage through [src]..."))
@@ -130,8 +142,10 @@
 				new pickedtrash(get_turf(king))
 
 /obj/machinery/disposal/proc/place_item_in_disposal(obj/item/I, mob/user)
-	I.forceMove(src)
-	user.visible_message(span_notice("[user.name] places \the [I] into \the [src]."), span_notice("You place \the [I] into \the [src]."))
+	if(user.transferItemToLoc(I, src))
+		user.visible_message(span_notice("[user.name] places \the [I] into \the [src]."), span_notice("You place \the [I] into \the [src]."))
+		return TRUE
+	return FALSE
 
 //mouse drop another mob or self
 /obj/machinery/disposal/MouseDroppedOn(mob/living/target, mob/living/user)
@@ -328,24 +342,31 @@
 			flush = FALSE
 			update_appearance()
 			. = TRUE
+
 		if("handle-1")
 			if(!panel_open)
 				flush = TRUE
 				update_appearance()
 			. = TRUE
+
 		if("pump-0")
 			if(pressure_charging)
 				pressure_charging = FALSE
 				update_appearance()
 			. = TRUE
+
 		if("pump-1")
 			if(!pressure_charging)
 				pressure_charging = TRUE
 				update_appearance()
 			. = TRUE
+
 		if("eject")
 			eject()
 			. = TRUE
+
+	if(.)
+		usr.animate_interact(src)
 
 
 /obj/machinery/disposal/bin/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
@@ -471,8 +492,11 @@
 		trunk.linked = src // link the pipe trunk to self
 
 /obj/machinery/disposal/delivery_chute/place_item_in_disposal(obj/item/I, mob/user)
-	if(I.CanEnterDisposals())
-		..()
+	if(!I.CanEnterDisposals())
+		return FALSE
+
+	. = ..()
+	if(.)
 		flush()
 
 /obj/machinery/disposal/delivery_chute/BumpedBy(atom/movable/AM) //Go straight into the chute

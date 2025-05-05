@@ -100,7 +100,7 @@
 	if(locate(/obj/structure/low_wall) in get_turf(mover))
 		return TRUE
 	var/obj/structure/table/T = locate() in get_turf(mover)
-	if(T && T.flipped != TRUE)
+	if(T && !T.is_flipped())
 		return TRUE
 
 /obj/structure/low_wall/IsObscured()

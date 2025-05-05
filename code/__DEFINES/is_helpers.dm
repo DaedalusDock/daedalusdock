@@ -244,6 +244,8 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define isgrab(A) (istype(A, /obj/item/hand_item/grab))
 
+#define istable(A) (istype(A, /obj/structure/table))
+
 //Assemblies
 #define isassembly(O) (istype(O, /obj/item/assembly))
 

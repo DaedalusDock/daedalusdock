@@ -40,7 +40,7 @@
 	trace_DNA |= dna
 
 /// Adds the fingerprint of M to our fingerprint list
-/datum/forensics/proc/add_fingerprint(mob/living/M, ignoregloves = FALSE)
+/datum/forensics/proc/add_fingerprint(mob/living/M, ignoregloves = FALSE, log_touch = TRUE)
 	if(!isliving(M))
 		if(!iscameramob(M))
 			return
@@ -64,7 +64,7 @@
 			ignoregloves = TRUE
 
 		if(!ignoregloves)
-			H.gloves.add_fingerprint(H, TRUE) //ignoregloves = 1 to avoid infinite loop.
+			H.gloves.add_fingerprint(H, TRUE, FALSE) //ignoregloves = 1 to avoid infinite loop.
 			return
 
 	add_partial_print(H.get_fingerprints(ignoregloves, H.get_active_hand()))

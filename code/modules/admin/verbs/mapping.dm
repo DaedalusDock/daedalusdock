@@ -581,10 +581,10 @@ GLOBAL_VAR_INIT(say_disabled, FALSE)
 
 
 		if(length(bad_access) && length(bad_one_access))
-			to_chat(src, "[ADMIN_COORDJMP(D)] <a href='?_src_=vars;[HrefToken()];Vars=\"+ref+\"'>VV</a> Bad Access: [jointext(bad_access, "")] | Bad One Access: [jointext(bad_one_access, "")]")
+			to_chat(src, "[ADMIN_COORDJMP(D)] <a href='?_src_=vars;[HrefToken()];Vars=\"+ref+\"'>VV</a> Bad Access: [jointext(bad_access, ",")] | Bad One Access: [jointext(bad_one_access, ",")]")
 		else if(length(bad_access))
-			to_chat(src, "[ADMIN_COORDJMP(D)] <a href='?_src_=vars;[HrefToken()];Vars=\"+ref+\"'>VV</a> Bad Access: [jointext(bad_access, "")]")
+			to_chat(src, "[ADMIN_COORDJMP(D)] <a href='?_src_=vars;[HrefToken()];Vars=\"+ref+\"'>VV</a> Bad Access: [jointext(bad_access, ",")]")
 		else if(length(bad_one_access))
-			to_chat(src, "[ADMIN_COORDJMP(D)] <a href='?_src_=vars;[HrefToken()];Vars=\"+ref+\"'>VV</a> Bad One Access: [jointext(bad_access, "")]")
+			to_chat(src, "[ADMIN_COORDJMP(D)] <a href='?_src_=vars;[HrefToken()];Vars=\"+ref+\"'>VV</a> Bad One Access: [jointext(bad_one_access, ",")]")
 
 	to_chat(src, span_debug("Searched [doors] doors."))

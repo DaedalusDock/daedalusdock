@@ -53,3 +53,7 @@
   francinum:
   - qol: The chat splitter has been adjusted to return it to the old size. You may
       need to reset or adjust the sizing splitters in your chat settings window.
+2025-04-29:
+  Kapu1178:
+  - bugfix: Loadouts save and load.
+  - refactor: Completely overhauled access.

@@ -196,6 +196,7 @@ _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 	out += "<br>Enter a record number or 'back' to return."
 	system.println(jointext(out, "<br>"))
 
+#warn remove med data console
 /datum/c4_file/terminal_program/medtrak/proc/view_record(datum/data/record/R)
 	if(isnull(R))
 		R = current_record
@@ -207,7 +208,6 @@ _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 	get_os().clear_screen(TRUE)
 
 	var/list/fields = current_record.fields
-	#warn add mental/physical health
 	var/list/out = list(
 		"<b>Record Data:</b>",
 		"\[01\] Name: [fields[DATACORE_NAME]] | ID: [fields[DATACORE_ID]]",
@@ -218,7 +218,10 @@ _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 		"\[06\] Blood DNA: [fields[DATACORE_BLOOD_DNA]]",
 		"\[07\] Disabilities: [fields[DATACORE_DISABILITIES]]",
 		"\[08\] Diseases: [fields[DATACORE_DISEASES]]",
-		"\[09\] Notes: [fields[DATACORE_NOTES]]",
+		"\[09\] Allergies: [fields[DATACORE_ALLERGIES]]",
+		"\[10\] Physical Status: [fields[DATACORE_PHYSICAL_HEALTH]]",
+		"\[11\] Mental Status: [fields[DATACORE_MENTAL_HEALTH]]",
+		"\[12\] Notes: [fields[DATACORE_NOTES]]",
 		"<br>Enter field number to edit a field",
 		"(R) Refresh | (D) Delete | (P) Print | (0) Return to index"
 	)
@@ -244,4 +247,25 @@ _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 		if(8)
 			await_input("Enter new Diseases (Max Length: [MAX_MESSAGE_LEN])", CALLBACK(src, PROC_REF(edit_diseases)))
 		if(9)
+			await_input("Enter new Allergies (Max Length: [MAX_MESSAGE_LEN])", CALLBACK(src, PROC_REF(edit_allergies)))
+		if(10)
+			await_input(
+				{"Edit Physical Status<br>
+				\[1\] [PHYSHEALTH_OK]<br>
+				\[2\] [PHYSHEALTH_CARE]<br>
+				\[3\] [PHYSHEALTH_DECEASED]
+				"},
+				CALLBACK(src, PROC_REF(edit_physical_health))
+			)
+		if(11)
+			await_input(
+				{"Edit Mental Status<br>
+				\[1\] [MENHEALTH_OK]<br>
+				\[2\] [MENHEALTH_WATCH]<br>
+				\[3\] [MENHEALTH_UNSTABLE]<br>
+				\[4\] [MENHEALTH_INSANE]
+				"},
+				CALLBACK(src, PROC_REF(edit_mental_health))
+			)
+		if(12)
 			await_input("Enter new Notes (Max Length: [MAX_MESSAGE_LEN])", CALLBACK(src, PROC_REF(edit_notes)))

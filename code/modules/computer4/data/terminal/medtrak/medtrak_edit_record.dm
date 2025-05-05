@@ -78,6 +78,62 @@
 	medtrak.update_record(DATACORE_DISEASES, "DISEASES", new_diseases)
 	medtrak.view_record()
 
+/datum/c4_file/terminal_program/medtrak/proc/edit_allergies(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+	var/new_allergies = trim(html_encode(stdin.raw), MAX_MESSAGE_LEN)
+
+	if(!length(new_allergies))
+		await_input("Enter new Allergies (Max Length: [MAX_MESSAGE_LEN])", CALLBACK(src, PROC_REF(edit_allergies)))
+		return
+
+	medtrak.update_record(DATACORE_ALLERGIES, "ALLERGIES", new_allergies)
+	medtrak.view_record()
+
+/datum/c4_file/terminal_program/medtrak/proc/edit_physical_health(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+	var/choice = text2num(stdin.raw)
+	var/list/options = list(
+		PHYSHEALTH_OK,
+		PHYSHEALTH_CARE,
+		PHYSHEALTH_DECEASED,
+	)
+
+	if(!(choice in 1 to length(options)))
+		await_input(
+			{"Edit Physical Status<br>
+			\[1\] [PHYSHEALTH_OK]<br>
+			\[2\] [PHYSHEALTH_CARE]<br>
+			\[3\] [PHYSHEALTH_DECEASED]
+			"},
+			CALLBACK(src, PROC_REF(edit_physical_health))
+		)
+		return
+
+	medtrak.update_record(DATACORE_PHYSICAL_HEALTH, "PHYSICAL_STATUS", options[choice])
+	medtrak.view_record()
+
+/datum/c4_file/terminal_program/medtrak/proc/edit_mental_health(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+	var/choice = text2num(stdin.raw)
+	var/list/options = list(
+		MENHEALTH_OK,
+		MENHEALTH_WATCH,
+		MENHEALTH_UNSTABLE,
+		MENHEALTH_INSANE,
+	)
+
+	if(!(choice in 1 to length(options)))
+		await_input(
+			{"Edit Mental Status<br>
+			\[1\] [MENHEALTH_OK]<br>
+			\[2\] [MENHEALTH_WATCH]<br>
+			\[3\] [MENHEALTH_UNSTABLE]<br>
+			\[4\] [MENHEALTH_INSANE]
+			"},
+			CALLBACK(src, PROC_REF(edit_mental_health))
+		)
+		return
+
+	medtrak.update_record(DATACORE_MENTAL_HEALTH, "MENTAL_STATUS", options[choice])
+	medtrak.view_record()
+
 /datum/c4_file/terminal_program/medtrak/proc/edit_notes(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
 	var/new_notes = trim(html_encode(stdin.raw), MAX_MESSAGE_LEN)
 

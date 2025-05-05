@@ -243,8 +243,6 @@ SUBSYSTEM_DEF(datacore)
 	G.fields[DATACORE_AGE] = H.age
 	G.fields[DATACORE_SPECIES] = H.dna.species.name
 	G.fields[DATACORE_FINGERPRINT] = H.get_fingerprints(TRUE)
-	G.fields[DATACORE_PHYSICAL_HEALTH] = "Active"
-	G.fields[DATACORE_MENTAL_HEALTH] = "Stable"
 	G.fields[DATACORE_GENDER] = H.gender
 	if(H.gender == "male")
 		G.fields[DATACORE_GENDER] = "Male"
@@ -276,6 +274,9 @@ SUBSYSTEM_DEF(datacore)
 	M.fields[DATACORE_BLOOD_TYPE] = H.dna.blood_type.name
 	M.fields[DATACORE_BLOOD_DNA] = H.dna.unique_enzymes
 	M.fields[DATACORE_DISABILITIES] = H.get_quirk_string(TRUE, CAT_QUIRK_DISABILITIES)
+	M.fields[DATACORE_ALLERGIES] = "None"
+	M.fields[DATACORE_PHYSICAL_HEALTH] = PHYSHEALTH_OK
+	M.fields[DATACORE_MENTAL_HEALTH] = MENHEALTH_OK
 	M.fields[DATACORE_DISEASES] = "None"
 	M.fields[DATACORE_NOTES] = H.get_quirk_string(TRUE, CAT_QUIRK_NOTES)
 	library[DATACORE_RECORDS_MEDICAL].inject_record(M)
@@ -333,13 +334,20 @@ SUBSYSTEM_DEF(datacore)
 	/// The array of records
 	var/list/general_records_out = list()
 	for(var/datum/data/record/gen_record as anything in get_records(DATACORE_RECORDS_STATION))
+		var/datum/data/record/medical_record = get_record_by_name(gen_record.fields[DATACORE_NAME])
+
 		/// The object containing the crew info
 		var/list/crew_record = list()
+
 		crew_record["ref"] = REF(gen_record)
 		crew_record["name"] = gen_record.fields[DATACORE_NAME]
-		crew_record["physical_health"] = gen_record.fields[DATACORE_PHYSICAL_HEALTH]
-		crew_record["mental_health"] = gen_record.fields[DATACORE_MENTAL_HEALTH]
+
+		if(medical_record)
+			crew_record["physical_health"] = medical_record.fields[DATACORE_PHYSICAL_HEALTH]
+			crew_record["mental_health"] = medical_record.fields[DATACORE_MENTAL_HEALTH]
+
 		general_records_out += list(crew_record)
+
 	return general_records_out
 
 /**

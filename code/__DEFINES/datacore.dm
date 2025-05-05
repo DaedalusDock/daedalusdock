@@ -15,6 +15,7 @@
 #define DATACORE_BLOOD_DNA "b_dna"
 #define DATACORE_DISEASES "cdi"
 #define DATACORE_DISABILITIES "ma_dis"
+#define DATACORE_ALLERGIES "allergies"
 
 #define DATACORE_NOTES "notes"
 
@@ -37,3 +38,12 @@
 #define DATACORE_RECORDS_DAEDALUS "daedalus"
 #define DATACORE_RECORDS_HERMES "hermes"
 #define DATACORE_RECORDS_MARS "mars"
+
+#define PHYSHEALTH_OK "OK"
+#define PHYSHEALTH_CARE "Under Care"
+#define PHYSHEALTH_DECEASED "Deceased"
+
+#define MENHEALTH_OK "OK"
+#define MENHEALTH_WATCH "Watch"
+#define MENHEALTH_UNSTABLE "Unstable"
+#define MENHEALTH_INSANE "Insane"

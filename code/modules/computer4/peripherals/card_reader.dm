@@ -17,11 +17,13 @@
 
 /obj/item/peripheral/card_reader/return_ui_data()
 	return list(
+		"kind" = peripheral_type,
 		"label" = "Card Reader",
 		"icon" = "edit",
 		"extraInfo" = list("card" = !!inserted_card),
 		"disabled" = !inserted_card,
 	)
+
 /obj/item/peripheral/card_reader/on_ui_click(mob/user, list/params)
 	if(!inserted_card)
 		return

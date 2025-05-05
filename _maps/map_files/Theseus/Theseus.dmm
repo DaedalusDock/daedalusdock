@@ -4452,7 +4452,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/secondary/service)
 "bBO" = (
-/obj/machinery/computer/med_data,
+/obj/machinery/computer4/medical,
 /obj/effect/turf_decal/tile/green/half/contrasted{
 	dir = 1
 	},
@@ -5333,7 +5333,7 @@
 /turf/open/floor/wood,
 /area/station/service/library)
 "bRi" = (
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 8
 	},
 /obj/structure/disposalpipe/segment{
@@ -6970,7 +6970,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/port)
 "cxg" = (
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 8
 	},
 /obj/machinery/airalarm/directional/east,
@@ -7399,7 +7399,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/greater)
 "cFa" = (
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 1
 	},
 /obj/item/radio/intercom/directional/south,
@@ -12622,7 +12622,6 @@
 /area/station/security/prison/rec)
 "eDE" = (
 /obj/structure/table/wood,
-/obj/machinery/computer/med_data/laptop,
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/hos)
 "eDJ" = (
@@ -18622,7 +18621,7 @@
 /turf/open/floor/iron,
 /area/station/cargo/sorting)
 "gNZ" = (
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 4
 	},
 /obj/machinery/airalarm/directional/west,
@@ -41225,7 +41224,6 @@
 	dir = 4
 	},
 /obj/structure/table,
-/obj/machinery/computer/med_data/laptop,
 /turf/open/floor/iron,
 /area/station/security/medical)
 "pid" = (
@@ -45081,7 +45079,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/port)
 "qFa" = (
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 8
 	},
 /obj/item/radio/intercom/directional/north,
@@ -53265,7 +53263,7 @@
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/cmo)
 "tJb" = (
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 1
 	},
 /turf/open/floor/wood,

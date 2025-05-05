@@ -89,7 +89,6 @@
 	name = "medical circuit board spawner"
 	loot = list(
 		/obj/item/circuitboard/machine/chem_dispenser,
-		/obj/item/circuitboard/computer/med_data,
 		/obj/item/circuitboard/machine/smoke_machine,
 		/obj/item/circuitboard/machine/chem_master,
 		/obj/item/circuitboard/computer/pandemic,

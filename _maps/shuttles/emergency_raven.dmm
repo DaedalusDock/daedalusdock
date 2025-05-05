@@ -112,7 +112,7 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "ap" = (
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 4
 	},
 /obj/effect/turf_decal/bot_white,
@@ -416,7 +416,7 @@
 /area/shuttle/escape)
 "bd" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 4
 	},
 /turf/open/floor/iron/white/side{

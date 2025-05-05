@@ -197,6 +197,7 @@ _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 	system.println(jointext(out, "<br>"))
 
 #warn remove med data console
+#warn improve comments
 /datum/c4_file/terminal_program/medtrak/proc/view_record(datum/data/record/R)
 	if(isnull(R))
 		R = current_record

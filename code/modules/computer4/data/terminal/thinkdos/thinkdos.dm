@@ -1,7 +1,13 @@
+/datum/c4_file/terminal_program/operating_system/thinkdos/no_login
+	needs_login = FALSE
+
 /datum/c4_file/terminal_program/operating_system/thinkdos
 	name = "ThinkDOS"
 
 	var/system_version = "ThinkDOS 0.7.2"
+
+	/// If you need to login to use the computer.
+	var/needs_login = TRUE
 
 	/// Shell commmands for std_in, built on new.
 	var/static/list/commands
@@ -25,7 +31,10 @@
 	if(!initialize_logs())
 		println("<font color=red>Log system failure.</font>")
 
-	if(!initialize_accounts())
+	if(!needs_login)
+		println("Account system disabled.")
+
+	else if(!initialize_accounts())
 		println("<font color=red>Unable to start account system.</font>")
 
 	change_dir(containing_folder)
@@ -36,6 +45,10 @@
  | | | . || || &#39; || / /| | || | |\__ \
  |_| |_|_||_||_|_||_\_\|___/`___&#39;&lt;___/</pre>"}
 	println(gamertext)
+	if(needs_login)
+		println("Authenticated required. Insert an identification card and type 'login'.")
+	else
+		println("Type 'help' to get started.")
 
 /datum/c4_file/terminal_program/operating_system/thinkdos/std_in(text)
 	. = ..()
@@ -47,7 +60,7 @@
 	write_log(encoded_in)
 
 	var/datum/shell_stdin/parsed_stdin = parse_std_in(text)
-	if(!current_user)
+	if(!current_user && needs_login)
 		var/datum/shell_command/thinkdos/login/login_command = locate() in commands
 		if(!login_command.try_exec(parsed_stdin.command, src, src, parsed_stdin.arguments, parsed_stdin.options))
 			println("Login required. Please login using 'login'.")

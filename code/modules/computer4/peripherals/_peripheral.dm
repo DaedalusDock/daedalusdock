@@ -35,7 +35,7 @@
 	master_pc = null
 
 /obj/item/peripheral/proc/return_ui_data()
-	return list()
+	return
 
 /// Called when the peripheral's ui button is clicked.
 /obj/item/peripheral/proc/on_ui_click(mob/user, list/params)

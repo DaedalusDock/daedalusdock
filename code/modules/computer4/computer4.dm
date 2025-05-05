@@ -49,12 +49,19 @@
 	/// k:v list of ckey to the last used command.
 	var/list/tgui_last_accessed = list()
 
-	/// List of program typepaths to install by default
+	/// Default operating system to install by default.
+	var/default_operating_system = /datum/c4_file/terminal_program/operating_system/thinkdos
+
+	/// List of program typepaths to install by default.
 	var/list/default_programs = list(
 		/datum/c4_file/terminal_program/notepad,
 		/datum/c4_file/terminal_program/probe,
 		/datum/c4_file/terminal_program/medtrak,
 	)
+
+	/// List of peripheral typepaths to install by default.
+	var/list/default_peripherals
+
 	/// The directory to install them in
 	var/default_program_dir = "/programs"
 
@@ -67,16 +74,19 @@
 /obj/machinery/computer4/Initialize(mapload)
 	. = ..()
 	soundloop = new(src)
-	internal_disk.root.try_add_file(new /datum/c4_file/terminal_program/operating_system/thinkdos)
+
+	if(default_operating_system)
+		internal_disk.root.try_add_file(new default_operating_system)
 
 	if(length(default_programs))
 		var/datum/c4_file/folder/program_dir = internal_disk.root.parse_directory(default_program_dir, internal_disk.root, create_if_missing = TRUE)
 		for(var/program_path in default_programs)
 			program_dir.try_add_file(new program_path)
 
-	add_peripheral(new /obj/item/peripheral/network_card/wireless)
-	add_peripheral(new /obj/item/peripheral/card_reader)
-	add_peripheral(new /obj/item/peripheral/printer)
+	if(length(default_peripherals))
+		for(var/path in default_peripherals)
+			add_peripheral(new path)
+
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/computer4/Destroy()

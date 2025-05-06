@@ -22,12 +22,13 @@
 	if(.)
 		return
 
-	var/title_text = @{"<pre>
-      ___ ___  __        __   ___
-|\ | |__   |  |__)  /\  / _` |__
-| \| |___  |  |    /~~\ \__> |___
-</pre>"}
+	var/title_text = list(
+		@"<pre style='margin: 0px'>      ___ ___  __        __   ___</pre>",
+		@"<pre style='margin: 0px'>|\ | |__   |  |__)  /\  / _` |__ </pre>",
+		@"<pre style='margin: 0px'>| \| |___  |  |    /~~\ \__> |___</pre>",
+	).Join("")
 	system.println(title_text)
+
 	check_for_errors()
 	system.println("Available commands: help, post, networks, quit")
 

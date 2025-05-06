@@ -39,12 +39,14 @@
 
 	change_dir(containing_folder)
 
-	var/gamertext = @{"<pre>
- ___  _    _       _    ___  ___  ___
-|_ _|| |_ &lt;_&gt;._ _ | |__| . \| . |/ __&gt;
- | | | . || || &#39; || / /| | || | |\__ \
- |_| |_|_||_||_|_||_\_\|___/`___&#39;&lt;___/</pre>"}
-	println(gamertext)
+	var/title_text = list(
+		@"<pre style='margin: 0px'> ___  _    _       _    ___  ___  ___</pre>",
+		@"<pre style='margin: 0px'>|_ _|| |_ &lt;_&gt;._ _ | |__| . \| . |/ __&gt;</pre>",
+		@"<pre style='margin: 0px'> | | | . || || &#39; || / /| | || | |\__ \</pre>",
+		@"<pre style='margin: 0px'> |_| |_|_||_||_|_||_\_\|___/`___&#39;&lt;___/</pre>",
+	).Join("")
+	println(title_text)
+
 	if(needs_login)
 		println("Authenticated required. Insert an identification card and type 'login'.")
 	else

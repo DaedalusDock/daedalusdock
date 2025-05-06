@@ -22,13 +22,15 @@
 	// Hope you saved your work motherfucker.
 	working_line = 0
 	note_list = list()
-	var/title_text = @{"<pre>
-__________________________________________________
-    _____                _____
-    /    )               /    )               /
----/----/----__----__---/----/----__----__---/-__-
-  /    /   /   ) /   ' /    /   /   ) /   ' /(
-_/____/___(___/_(___ _/____/___(___/_(___ _/___\__</pre>"}
+
+	var/title_text = list(
+		@"<pre style='margin: 0px'>__________________________________________________</pre>",
+		@"<pre style='margin: 0px'>    _____                _____                    </pre>",
+		@"<pre style='margin: 0px'>    /    )               /    )               /   </pre>",
+		@"<pre style='margin: 0px'>---/----/----__----__---/----/----__----__---/-__-</pre>",
+		@"<pre style='margin: 0px'>  /    /   /   ) /   ' /    /   /   ) /   ' /(    </pre>",
+		@"<pre style='margin: 0px'>_/____/___(___/_(___ _/____/___(___/_(___ _/___\__</pre>",
+	).Join("")
 	system.println(title_text)
 	system.println("Welcome to DocDock, type !help to get started.")
 

@@ -156,12 +156,12 @@
 /// Prints the home menu options
 /datum/c4_file/terminal_program/medtrak/proc/home_text()
 	var/title_text = list(
-		@"<pre style='margin: 0px'> __  __              _    _____                    _</pre>",
-		@"<pre style='margin: 0px'>|  \/  |   ___    __| |  |_   _|    _ _   __ _    | |__</pre>",
-		@"<pre style='margin: 0px'>| |\/| |  / -_)  / _` |    | |     | '_| / _` |   | / /</pre>",
-		@"<pre style='margin: 0px'>|_|__|_|  \___|  \__,_|   _|_|_   _|_|_  \__,_|   |_\_\</pre>",
-		@"<pre style='margin: 0px'>_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|</pre>",
-		@"<pre style='margin: 0px'>`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'</pre>",
+		@(eol)"<pre style='margin: 0px'> __  __              _    _____                    _</pre>"eol,
+		@(eol)"<pre style='margin: 0px'>|  \/  |   ___    __| |  |_   _|    _ _   __ _    | |__</pre>"eol,
+		@(eol)"<pre style='margin: 0px'>| |\/| |  / -_)  / _` |    | |     | '_| / _` |   | / /</pre>"eol,
+		@(eol)"<pre style='margin: 0px'>|_|__|_|  \___|  \__,_|   _|_|_   _|_|_  \__,_|   |_\_\</pre>"eol,
+		@(eol)"<pre style='margin: 0px'>_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|</pre>"eol,
+		@(eol)"<pre style='margin: 0px'>`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'</pre>"eol,
 	).Join("")
 	current_menu = MEDTRAK_MENU_HOME
 

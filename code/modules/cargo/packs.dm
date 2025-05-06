@@ -3132,7 +3132,7 @@
 
 /datum/supply_pack/data_disk/preloaded/engineering
 	name = "Hard Disk Drive (Engifab)"
-	access = ACCESS_ENGINEERNG
+	access = ACCESS_ENGINEERING
 	contains = list(/obj/item/disk/data/fabricator/engineering)
 	crate_name = "engifab disk crate"
 

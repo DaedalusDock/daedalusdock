@@ -110,7 +110,7 @@
 	return fab_bundle.included_designs
 
 /// Returns stored genetic mutations. Returns the real list!
-/obj/machinery/proc/disk_get_gene_mutations(file_name, obj/item/disk/data/target_disk) as list
+/obj/machinery/proc/disk_get_gene_mutations(file_name, obj/item/disk/data/target_disk) as /list
 	RETURN_TYPE(/list)
 	if(!file_name)
 		return
@@ -120,7 +120,7 @@
 	return mut_db.stored_mutations
 
 /// Returns stored genetic mutations. Returns the real list!
-/obj/machinery/proc/disk_get_gene_buffer(file_name, obj/item/disk/data/target_disk) as list
+/obj/machinery/proc/disk_get_gene_buffer(file_name, obj/item/disk/data/target_disk) as /list
 	RETURN_TYPE(/list)
 	if(!file_name)
 		return

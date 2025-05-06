@@ -161,7 +161,7 @@
 		@(eol)"<pre style='margin: 0px'>| |\/| |  / -_)  / _` |    | |     | '_| / _` |   | / /</pre>"eol,
 		@(eol)"<pre style='margin: 0px'>|_|__|_|  \___|  \__,_|   _|_|_   _|_|_  \__,_|   |_\_\</pre>"eol,
 		@(eol)"<pre style='margin: 0px'>_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|</pre>"eol,
-		@(eol)"<pre style='margin: 0px'>`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'</pre>"eol,
+		@(eol)"<pre style='margin: 0px'> `-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'</pre>"eol,
 	).Join("")
 	current_menu = MEDTRAK_MENU_HOME
 

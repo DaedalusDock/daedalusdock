@@ -54,6 +54,7 @@
 		/obj/item/stack/tile/iron/sepia,
 		/obj/item/stack/tile/iron/ported/techfloor,
 		/obj/item/stack/tile/iron/ported/techfloor_grid,
+		/obj/item/stack/tile/iron/ported/techfloor_maint,
 		/obj/item/stack/tile/iron/ported/tcomms,
 		/obj/item/stack/tile/iron/ported/lino,
 	)
@@ -372,6 +373,14 @@
 	icon_state = "techfloor_grid_tile"
 	turf_type = /turf/open/floor/iron/ported/techfloor_grid
 	merge_type = /obj/item/stack/tile/iron/ported/techfloor_grid
+
+/obj/item/stack/tile/iron/ported/techfloor_maint
+	name = "techfloor maintenance tile"
+	singular_name = "techfloor maintenance tile"
+	desc = "A techy-looking floor tile."
+	icon_state = "techfloor_maint"
+	turf_type = /turf/open/floor/iron/ported/techfloor_maint
+	merge_type = /obj/item/stack/tile/iron/ported/techfloor_maint
 
 /obj/item/stack/tile/iron/ported/lino
 	name = "linoleum tile"

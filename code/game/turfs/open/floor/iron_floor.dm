@@ -337,6 +337,11 @@
 	base_icon_state = "techfloor_grid"
 	floor_tile = /obj/item/stack/tile/iron/ported/techfloor_grid
 
+/turf/open/floor/iron/ported/techfloor_maint
+	icon_state = "techfloor_maint"
+	base_icon_state = "techfloor_maint"
+	floor_tile = /obj/item/stack/tile/iron/ported/techfloor_maint
+
 /turf/open/floor/iron/ported/lino
 	icon_state = "lino"
 	base_icon_state = "lino"

@@ -71,6 +71,26 @@
 	base_icon_state = "textured_large"
 	floor_tile = /obj/item/stack/tile/iron/textured_large
 
+/turf/open/floor/iron/edge
+	icon_state = "iron_edge"
+	base_icon_state = "iron_edge"
+	floor_tile = /obj/item/stack/tile/iron/edge
+
+/turf/open/floor/iron/half
+	icon_state = "iron_half"
+	base_icon_state = "iron_half"
+	floor_tile = /obj/item/stack/tile/iron/half
+
+/turf/open/floor/iron/corner
+	icon_state = "iron_corner"
+	base_icon_state = "iron_corner"
+	floor_tile = /obj/item/stack/tile/iron/corner
+
+/turf/open/floor/iron/large
+	icon_state = "iron_large"
+	base_icon_state = "iron_large"
+	floor_tile = /obj/item/stack/tile/iron/large
+
 /turf/open/floor/iron/dark
 	icon_state = "darkfull"
 	base_icon_state = "darkfull"
@@ -115,6 +135,26 @@
 	icon_state = "textured_dark_large"
 	base_icon_state = "textured_dark_large"
 	floor_tile = /obj/item/stack/tile/iron/dark/textured_large
+
+/turf/open/floor/iron/dark/edge
+	icon_state = "dark_edge"
+	base_icon_state = "dark_edge"
+	floor_tile = /obj/item/stack/tile/iron/dark/edge
+
+/turf/open/floor/iron/dark/half
+	icon_state = "dark_half"
+	base_icon_state = "dark_half"
+	floor_tile = /obj/item/stack/tile/iron/dark/half
+
+/turf/open/floor/iron/dark/corner
+	icon_state = "dark_corner"
+	base_icon_state = "dark_corner"
+	floor_tile = /obj/item/stack/tile/iron/dark/corner
+
+/turf/open/floor/iron/dark/large
+	icon_state = "dark_large"
+	base_icon_state = "dark_large"
+	floor_tile = /obj/item/stack/tile/iron/dark/large
 
 /turf/open/floor/iron/dark/airless
 	initial_gas = AIRLESS_ATMOS
@@ -175,6 +215,26 @@
 	icon_state = "textured_white_large"
 	base_icon_state = "textured_white_large"
 	floor_tile = /obj/item/stack/tile/iron/white/textured_large
+
+/turf/open/floor/iron/white/edge
+	icon_state = "white_edge"
+	base_icon_state = "white_edge"
+	floor_tile = /obj/item/stack/tile/iron/white/edge
+
+/turf/open/floor/iron/white/half
+	icon_state = "white_half"
+	base_icon_state = "white_half"
+	floor_tile = /obj/item/stack/tile/iron/white/half
+
+/turf/open/floor/iron/white/corner
+	icon_state = "white_corner"
+	base_icon_state = "white_corner"
+	floor_tile = /obj/item/stack/tile/iron/white/corner
+
+/turf/open/floor/iron/white/large
+	icon_state = "white_large"
+	base_icon_state = "white_large"
+	floor_tile = /obj/item/stack/tile/iron/white/large
 
 /turf/open/floor/iron/white/airless
 	initial_gas = AIRLESS_ATMOS

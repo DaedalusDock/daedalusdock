@@ -12440,7 +12440,7 @@
 /area/station/service/bar)
 "eyk" = (
 /obj/structure/rack,
-/obj/effect/spawner/random/techstorage/rnd_secure_all,
+/obj/item/disk/data/floppy/thinkdos,
 /turf/open/floor/iron/dark,
 /area/station/engineering/storage/tech)
 "eyI" = (
@@ -13743,8 +13743,14 @@
 /area/station/commons/toilet/auxiliary)
 "eVM" = (
 /obj/structure/rack,
-/obj/effect/spawner/random/techstorage/rnd_all,
 /obj/machinery/light/small/directional/north,
+/obj/item/circuitboard/computer/voidcomputer{
+	pixel_y = 5
+	},
+/obj/item/circuitboard/computer/voidcomputer,
+/obj/item/circuitboard/computer/voidcomputer{
+	pixel_y = -4
+	},
 /turf/open/floor/iron/dark,
 /area/station/engineering/storage/tech)
 "eVO" = (

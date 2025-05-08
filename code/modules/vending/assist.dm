@@ -15,6 +15,7 @@
 		/obj/item/stock_parts/micro_laser = 3,
 		/obj/item/stock_parts/scanning_module = 3,
 		/obj/item/stock_parts/capacitor = 3
+		/obj/item/disk/data/floppy/thinkdos = 1,
 	)
 	contraband = list(
 		/obj/item/assembly/timer = 2,

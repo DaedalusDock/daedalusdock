@@ -63,7 +63,7 @@
 	var/list/default_peripherals
 
 	/// The directory to install them in
-	var/default_program_dir = "/programs"
+	var/default_program_dir = "/bin"
 
 	/// Soundloop. Self explanatory.
 	var/datum/looping_sound/computer/soundloop

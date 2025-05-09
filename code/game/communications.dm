@@ -226,3 +226,8 @@ GLOBAL_LIST_INIT(freq2icon, list(
 	src.data = data || list()
 	src.transmission_method = transmission_method
 	src.logging_data = logging_data
+
+/// Returns a copy of this signal.
+/datum/signal/proc/Copy()
+	var/datum/signal/clone = new type(author, data, transmission_method, logging_data)
+	return clone

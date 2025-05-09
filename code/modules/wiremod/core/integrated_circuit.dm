@@ -301,7 +301,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	if(!printer)
 		return
 	var/list/ids = list()
-	for(var/datum/design/D as anything in printer.internal_disk.read(DATA_IDX_DESIGNS))
+	var/list/datum/design/designs = printer.disk_get_designs(FABRICATOR_FILE_NAME)
+	for(var/datum/design/D as anything in designs)
 		ids += D.id
 	.["stored_designs"] = ids
 

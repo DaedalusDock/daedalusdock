@@ -53,12 +53,6 @@
 	materials = list(/datum/material/glass = 1000, /datum/material/gold = 2000, /datum/material/diamond = 2000, /datum/material/bluespace = 2000)
 	build_path = /obj/item/circuitboard/computer/borgupload
 
-/datum/design/board/med_data
-	name = "Circuit Board (Medical Records)"
-	desc = "Allows for the construction of circuit boards used to build a medical records console."
-	id = "med_data"
-	build_path = /obj/item/circuitboard/computer/med_data
-
 /datum/design/board/pandemic
 	name = "Circuit Board (PanD.E.M.I.C. 2200)"
 	desc = "Allows for the construction of circuit boards used to build a PanD.E.M.I.C. 2200 console."

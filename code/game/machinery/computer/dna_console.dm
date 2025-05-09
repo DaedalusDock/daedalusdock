@@ -328,12 +328,13 @@
 
 	if(inserted_disk != null)
 		data["hasDisk"] = TRUE
-		data["diskCapacity"] = inserted_disk.check_memory()
+		/* Hardwired to TRUE in Computer4: Original meaning, "Does this disk have any space left" */
+		data["diskCapacity"] = TRUE
 		data["diskReadOnly"] = inserted_disk.read_only
 		//data["diskMutations"] = tgui_inserted_disk_mutations
 		data["storage"]["disk"] = tgui_inserted_disk_mutations
-		data["diskHasMakeup"] = (LAZYLEN(inserted_disk.read(DATA_IDX_GENE_BUFFER)) > 0)
-		data["diskMakeupBuffer"] = inserted_disk.read(DATA_IDX_GENE_BUFFER)?.Copy() || list()
+		data["diskHasMakeup"] = (LAZYLEN(disk_get_gene_buffer("gbuf", inserted_disk)) > 0)
+		data["diskMakeupBuffer"] = disk_get_gene_buffer("gbuf", inserted_disk)?.Copy() || list()
 	else
 		data["hasDisk"] = FALSE
 		data["diskCapacity"] = 0
@@ -845,9 +846,10 @@
 			if(!inserted_disk)
 				return
 
-			// GUARD CHECK - Make sure the disk is not full
-			if(!inserted_disk.check_memory())
-				to_chat(usr,span_warning("Disk storage is full."))
+			// GUARD CHECK - Assure a valid mutation database
+			var/datum/c4_file/gene_mutation_db/mut_db = disk_get_file("mutate", inserted_disk)
+			if(!istype(mut_db) && !isnull(mut_db)) //If it's null we'll just quietly create it.
+				to_chat(usr,span_warning("Disk mutation database corrupt."))
 				return
 
 			// GUARD CHECK - Make sure the disk isn't set to read only, as we're
@@ -855,6 +857,10 @@
 			if(!inserted_disk.read_only)
 				to_chat(usr,span_warning("Disk is set to read only mode."))
 				return
+
+			if(isnull(mut_db)) //Doesn't exist, just create it.
+				mut_db = new()
+				disk_write_file(mut_db, inserted_disk)
 
 			var/search_flags = 0
 
@@ -877,7 +883,8 @@
 				return
 
 			var/datum/mutation/human/A = new HM.type(MUT_EXTRA, null, HM)
-			inserted_disk.write(DATA_IDX_MUTATIONS, A, TRUE)
+			var/list/datum/mutation/human/mut_list = disk_get_gene_mutations("mutate")
+			mut_list |= A
 			to_chat(usr,span_notice("Mutation successfully stored to disk."))
 			return
 
@@ -928,6 +935,12 @@
 			if(!inserted_disk)
 				return
 
+			// GUARD CHECK - Assure a valid mutation database
+			var/datum/c4_file/gene_mutation_db/mut_db = disk_get_file("mutate", inserted_disk)
+			if(!istype(mut_db))
+				to_chat(usr,span_warning("Disk mutation database corrupt or missing."))
+				return
+
 			// GUARD CHECK - Make sure the disk isn't set to read only, as we're
 			//  attempting to write to it (via deletion)
 			if(inserted_disk.read_only)
@@ -938,7 +951,8 @@
 			var/datum/mutation/human/HM = get_mut_by_ref(bref, SEARCH_inserted_disk)
 
 			if(HM)
-				inserted_disk.remove(DATA_IDX_MUTATIONS, HM)
+				var/list/datum/mutation/human/disk_record = disk_get_gene_mutations("mutate", inserted_disk)
+				disk_record -= HM
 				qdel(HM)
 
 			return
@@ -984,14 +998,15 @@
 			if(!result_path)
 				return
 
+			var/list/datum/mutation/human/mut_db = disk_get_gene_mutations("mutate", internal_disk)
 			// If it's already discovered, end here. Otherwise, add it to the list of
 			//  discovered mutations.
 			// We've already checked for stored_designs earlier
-			if(locate(result_path) in internal_disk.read(DATA_IDX_MUTATIONS))
+			if(locate(result_path) in mut_db)
 				return
 
 			var/datum/mutation/human/HM = GET_INITIALIZED_MUTATION(result_path)
-			internal_disk.write(DATA_IDX_MUTATIONS, HM)
+			mut_db += HM
 			to_chat(usr, span_boldnotice("Success! New mutation has been added to console storage."))
 			say("Successfully mutated [HM.name].")
 			connected_scanner.use_power(connected_scanner.active_power_usage)
@@ -1008,9 +1023,10 @@
 			if(!inserted_disk)
 				return
 
-			// GUARD CHECK - Make sure the disk is not full.
-			if(!inserted_disk.check_memory())
-				to_chat(usr,span_warning("Disk storage is full."))
+			// GUARD CHECK - Assure a valid mutation database
+			var/datum/c4_file/gene_mutation_db/mut_db = disk_get_file("mutate", inserted_disk)
+			if(!istype(mut_db))
+				to_chat(usr,span_warning("Disk mutation database corrupt or missing."))
 				return
 
 			// GUARD CHECK - Make sure the disk isn't set to read only, as we're
@@ -1046,11 +1062,11 @@
 			// If it's already discovered, end here. Otherwise, add it to the list of
 			//  discovered mutations
 			// We've already checked for stored_designs earlier
-			if(result_path in internal_disk.read(DATA_IDX_MUTATIONS))
+			if(result_path in disk_get_gene_mutations("mutate", inserted_disk))
 				return
 
 			var/datum/mutation/human/HM = GET_INITIALIZED_MUTATION(result_path)
-			inserted_disk.write(DATA_IDX_MUTATIONS, HM, TRUE)
+			mut_db += HM //Inserted disk mutation DB from guard statement.
 			to_chat(usr, span_boldnotice("Success! New mutation has been added to the disk."))
 			say("Successfully mutated [HM.name].")
 			connected_scanner.use_power(connected_scanner.active_power_usage)
@@ -1101,7 +1117,7 @@
 			if(!istype(buffer_slot))
 				return
 
-			inserted_disk.set_data(DATA_IDX_GENE_BUFFER, buffer_slot.Copy())
+			disk_get_gene_buffer("gbuf", inserted_disk)
 			return
 
 		// Loads Genetic Makeup from disk to a console buffer
@@ -1116,14 +1132,14 @@
 
 			// GUARD CHECK - This should not be possible to activate on a inserted_disk
 			//that doesn't have any genetic data. Unexpected result
-			if(LAZYLEN(inserted_disk.read(DATA_IDX_GENE_BUFFER)) == 0)
+			if(isnull(disk_get_gene_buffer("gbuf", inserted_disk)))
 				return
 
 			// Convert the index to a number and clamp within the array range, then
 			//  copy the data from the disk to that buffer
 			var/buffer_index = text2num(params["index"])
 			buffer_index = clamp(buffer_index, 1, NUMBER_OF_BUFFERS)
-			genetic_makeup_buffer[buffer_index] = inserted_disk.read(DATA_IDX_GENE_BUFFER).Copy()
+			genetic_makeup_buffer[buffer_index] = disk_get_gene_buffer("gbuf", inserted_disk).Copy()
 			return
 
 		// Deletes genetic makeup buffer from the inserted inserted_disk
@@ -1139,7 +1155,8 @@
 				to_chat(usr,span_warning("Disk is set to read only mode."))
 				return
 
-			inserted_disk.clear(DATA_IDX_GENE_BUFFER)
+			var/datum/c4_file/gene_buffer/gbuf = disk_get_file("gbuf", inserted_disk)
+			gbuf.containing_folder.try_delete_file(gbuf)
 			return
 
 		// Saves the scanner occupant's genetic makeup to a given console buffer
@@ -1814,7 +1831,7 @@
 			var/list/mutation_data = list()
 			var/text_sequence = scanner_occupant.dna.mutation_index[mutation_type]
 			var/default_sequence = scanner_occupant.dna.default_mutation_genes[mutation_type]
-			var/discovered = (internal_disk && (locate(mutation_type) in internal_disk.read(DATA_IDX_MUTATIONS)))
+			var/discovered = (internal_disk && (locate(mutation_type) in disk_get_gene_mutations("mutate")))
 
 			mutation_data["Alias"] = HM.alias
 			mutation_data["Sequence"] = text_sequence
@@ -1955,7 +1972,7 @@
 	// ------------------------------------------------------------------------ //
 	// Build the list of mutations stored on any inserted inserted_disks
 	if(inserted_disk)
-		for(var/datum/mutation/human/HM as anything in inserted_disk.read(DATA_IDX_MUTATIONS))
+		for(var/datum/mutation/human/HM as anything in disk_get_gene_mutations("mutate", inserted_disk))
 			var/list/mutation_data = list()
 
 			var/datum/mutation/human/A = GET_INITIALIZED_MUTATION(HM.type)
@@ -2056,9 +2073,10 @@
 		return FALSE
 	if(M.scrambled)
 		return FALSE
-	if(internal_disk && !(locate(path) in internal_disk.read(DATA_IDX_MUTATIONS)))
+	var/list/datum/mutation/human/mut_db = disk_get_gene_mutations("mutate", internal_disk)
+	if(internal_disk && !(locate(path) in mut_db))
 		var/datum/mutation/human/HM = GET_INITIALIZED_MUTATION(path)
-		internal_disk.write(DATA_IDX_MUTATIONS, HM, TRUE)
+		mut_db |= HM
 		say("Successfully discovered [HM.name].")
 		return TRUE
 
@@ -2090,7 +2108,7 @@
 			return mutation
 
 	if(inserted_disk && (target_flags & SEARCH_inserted_disk))
-		mutation = (locate(ref) in inserted_disk.read(DATA_IDX_MUTATIONS))
+		mutation = (locate(ref) in disk_get_gene_mutations("mutate"))
 		if(mutation)
 			return mutation
 

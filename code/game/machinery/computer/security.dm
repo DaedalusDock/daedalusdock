@@ -341,8 +341,6 @@
 						dat += {"<tr><td>Rank:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=rank'>&nbsp;[active1.fields[DATACORE_RANK]]&nbsp;</A></td></tr>
 						<tr><td>Initial Rank:</td><td>[active1.fields[DATACORE_INITIAL_RANK]]</td>
 						<tr><td>Fingerprint:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=fingerprint'>&nbsp;[active1.fields[DATACORE_FINGERPRINT]]&nbsp;</A></td></tr>
-						<tr><td>Physical Status:</td><td>&nbsp;[active1.fields[DATACORE_PHYSICAL_HEALTH]]&nbsp;</td></tr>
-						<tr><td>Mental Status:</td><td>&nbsp;[active1.fields[DATACORE_MENTAL_HEALTH]]&nbsp;</td></tr>
 						</table></td>
 						<td><table><td align = center><a href='?src=[REF(src)];choice=Edit Field;field=show_photo_front'><img src=photo_front height=96 width=96 border=4 style="-ms-interpolation-mode:nearest-neighbor"></a><br>
 						<a href='?src=[REF(src)];choice=Edit Field;field=print_photo_front'>Print photo</a><br>
@@ -574,7 +572,7 @@ Gender: [active1.fields[DATACORE_GENDER]]<BR>
 Age: [active1.fields[DATACORE_AGE]]<BR>"}
 
 						P.info += "\nSpecies: [active1.fields[DATACORE_SPECIES]]<BR>"
-						P.info += "\nFingerprint: [active1.fields[DATACORE_FINGERPRINT]]<BR>\nPhysical Status: [active1.fields[DATACORE_PHYSICAL_HEALTH]]<BR>\nMental Status: [active1.fields[DATACORE_MENTAL_HEALTH]]<BR>"
+						P.info += "\nFingerprint: [active1.fields[DATACORE_FINGERPRINT]]<BR>"
 					else
 						P.info += "<B>General Record Lost!</B><BR>"
 					if((istype(active2, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_SECURITY).Find(active2)))
@@ -720,8 +718,6 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				G.fields["photo_front"] = new /icon()
 				G.fields["photo_side"] = new /icon()
 				G.fields[DATACORE_FINGERPRINT] = "?????"
-				G.fields[DATACORE_PHYSICAL_HEALTH] = "Active"
-				G.fields[DATACORE_MENTAL_HEALTH] = "Stable"
 				SSdatacore.inject_record(G, DATACORE_RECORDS_STATION)
 				active1 = G
 
@@ -743,11 +739,9 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				M.fields[DATACORE_BLOOD_TYPE] = "?"
 				M.fields[DATACORE_BLOOD_DNA] = "?????"
 				M.fields[DATACORE_DISABILITIES] = "None"
-				M.fields[DATACORE_DISABILITIES_DETAILS] = "No disabilities have been declared."
 				M.fields["alg"] = "None"
 				M.fields["alg_d"] = "No allergies have been detected in this patient."
 				M.fields[DATACORE_DISEASES] = "None"
-				M.fields[DATACORE_DISEASES_DETAILS] = "No diseases have been diagnosed at the moment."
 				M.fields[DATACORE_NOTES] = "No notes."
 				SSdatacore.inject_record(M, DATACORE_RECORDS_MEDICAL)
 
@@ -1118,7 +1112,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 
 	for(var/datum/data/record/security/R in SSdatacore.get_records(DATACORE_RECORDS_SECURITY))
 		if(prob(10/severity))
-			switch(rand(1,8))
+			switch(rand(1,6))
 				if(1)
 					if(prob(10))
 						R.fields[DATACORE_NAME] = "[pick(lizard_name(MALE),lizard_name(FEMALE))]"
@@ -1131,12 +1125,8 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				if(4)
 					R.set_criminal_status(pick(CRIMINAL_NONE, CRIMINAL_WANTED, CRIMINAL_INCARCERATED, CRIMINAL_SUSPECT, CRIMINAL_PAROLE, CRIMINAL_DISCHARGED))
 				if(5)
-					R.fields[DATACORE_PHYSICAL_HEALTH] = pick("*Unconscious*", "Active", "Physically Unfit")
-				if(6)
-					R.fields[DATACORE_MENTAL_HEALTH] = pick("*Insane*", "*Unstable*", "*Watch*", "Stable")
-				if(7)
 					R.fields[DATACORE_SPECIES] = pick(get_selectable_species())
-				if(8)
+				if(6)
 					var/datum/data/record/G = pick(SSdatacore.get_records(DATACORE_RECORDS_STATION))
 					R.fields["photo_front"] = G.fields["photo_front"]
 					R.fields["photo_side"] = G.fields["photo_side"]

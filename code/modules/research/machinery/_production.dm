@@ -34,7 +34,6 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 /obj/machinery/rnd/production/Initialize(mapload)
 	. = ..()
 	queue = list()
-	selected_disk = internal_disk
 	create_reagents(0, OPENCONTAINER)
 	matching_designs = list()
 	materials = AddComponent(/datum/component/remote_materials, "lathe", mapload, mat_container_flags=BREAKDOWN_FLAGS_LATHE)
@@ -241,7 +240,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 	var/datum/design/D = SStech.designs_by_id[id]
 	if(!istype(D))
 		return FALSE
-	if(!(D in internal_disk.read(DATA_IDX_DESIGNS)))
+	if(!(D in disk_get_designs(FABRICATOR_FILE_NAME)))
 		CRASH("Tried to print a design we don't have! Potential exploit?")
 
 	playsound(src, 'goon/sounds/button.ogg', 100)
@@ -251,7 +250,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 
 /obj/machinery/rnd/production/proc/search(string)
 	matching_designs.Cut()
-	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
+	for(var/datum/design/D as anything in disk_get_designs(FABRICATOR_FILE_NAME))
 		if(!(D.build_type & allowed_buildtypes))
 			continue
 		if(findtext(D.name,string))
@@ -420,19 +419,6 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 	if(ls["toggle_disk"])
 		toggle_disk(usr)
 
-	if(ls["mem_trg"])
-		var/datum/design/target = locate(ls["mem_trg"]) in selected_disk.read(DATA_IDX_DESIGNS)
-		if(!target)
-			CRASH("Tried to perform a data operation on data we don't have. Potential HREF exploit.")
-
-		switch(ls["mem_act"])
-			if("mem_del")
-				disk_del(usr, DATA_IDX_DESIGNS, target)
-			if("mem_copy")
-				disk_copy(usr, DATA_IDX_DESIGNS, target, TRUE)
-			if("mem_move")
-				disk_move(usr, DATA_IDX_DESIGNS, target, TRUE)
-
 	updateUsrDialog()
 
 /obj/machinery/rnd/production/proc/eject_sheets(eject_sheet, eject_amt)
@@ -471,7 +457,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 	var/list/l = list()
 	l += "<div class='computerPaneSimple'><h3>Browsing [selected_category]:</h3>"
 	var/coeff = efficiency_coeff
-	for(var/datum/design/D as anything in sortTim(internal_disk.read(DATA_IDX_DESIGNS), GLOBAL_PROC_REF(cmp_name_asc)))
+	for(var/datum/design/D as anything in sortTim(disk_get_designs(FABRICATOR_FILE_NAME), GLOBAL_PROC_REF(cmp_name_asc)))
 		if(!(selected_category in D.category)|| !(D.build_type & allowed_buildtypes))
 			continue
 		l += design_menu_entry(D, coeff)
@@ -499,15 +485,13 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 
 /obj/machinery/rnd/production/proc/ui_screen_modify_memory()
 	var/list/l = list()
-	var/list/designs = sortTim(selected_disk.read(DATA_IDX_DESIGNS), GLOBAL_PROC_REF(cmp_design_name))
-	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><A href='?src=[REF(src)];toggle_disk=1'>Selected Disk: [selected_disk == internal_disk ? "Internal" : "Foreign"]</A></legend>[RDSCREEN_NOBREAK]"
-	if(selected_disk)
+	var/list/designs = sortTim(disk_get_designs(FABRICATOR_FILE_NAME), GLOBAL_PROC_REF(cmp_design_name))
+
+	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><A href='?src=[REF(src)];toggle_disk=1'>Selected Disk: [selected_disk == DISK_INTERNAL ? "Internal" : "Foreign"]</A></legend>[RDSCREEN_NOBREAK]"
+	if(get_selected_disk())
 		l += "<table>[RDSCREEN_NOBREAK]"
 		for(var/datum/design/D as anything in designs)
 			l += "<tr><td>[D.name]<td>[RDSCREEN_NOBREAK]"
-			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_move'>MOVE</A></td>[RDSCREEN_NOBREAK]"
-			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_copy'>COPY</A></td>[RDSCREEN_NOBREAK]"
-			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_del'>DELETE</A></td></tr>[RDSCREEN_NOBREAK]"
 		l += "</table>[RDSCREEN_NOBREAK]"
 
 	else
@@ -559,31 +543,31 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 
 /obj/machinery/rnd/production/proc/compile_categories()
 	categories = list()
-	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
+	for(var/datum/design/D as anything in disk_get_designs(FABRICATOR_FILE_NAME))
 		if(!isnull(D.category))
 			categories |= D.category
 
-/obj/machinery/rnd/production/disk_move(mob/user, index, data, unique)
-	. = ..()
-	if(!.)
-		return
-	compile_categories()
-	updateUsrDialog()
+// /obj/machinery/rnd/production/disk_move(mob/user, index, data, unique)
+// 	. = ..()
+// 	if(!.)
+// 		return
+// 	compile_categories()
+// 	updateUsrDialog()
 
 
-/obj/machinery/rnd/production/disk_del(mob/user, index, data)
-	. = ..()
-	if(!.)
-		return
-	compile_categories()
-	updateUsrDialog()
+// /obj/machinery/rnd/production/disk_del(mob/user, index, data)
+// 	. = ..()
+// 	if(!.)
+// 		return
+// 	compile_categories()
+// 	updateUsrDialog()
 
 
-/obj/machinery/rnd/production/disk_copy(mob/user, index, data, unique)
-	. = ..()
-	if(!.)
-		return
-	compile_categories()
+// /obj/machinery/rnd/production/disk_copy(mob/user, index, data, unique)
+// 	. = ..()
+// 	if(!.)
+// 		return
+// 	compile_categories()
 
 #undef MODE_BUILD
 #undef MODE_QUEUE

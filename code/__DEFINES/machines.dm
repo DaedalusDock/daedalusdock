@@ -245,3 +245,8 @@
 #define DCAT_SAVANNAH "Savannah-Ivanov"
 #define DCAT_EXOSUIT_MOD "Exosuit Modules"
 #define DCAT_AUGMENT "Augmentation"
+
+#define DISK_INTERNAL "internal"
+#define DISK_EXTERNAL "external"
+
+#define FABRICATOR_FILE_NAME "fabrec"

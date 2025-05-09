@@ -152,12 +152,10 @@
 	AddComponent(/datum/component/material_container, allowed_materials, INFINITY, MATCONTAINER_EXAMINE|BREAKDOWN_FLAGS_ORE_PROCESSOR, allowed_items=/obj/item/stack)
 	selected_material = GET_MATERIAL_REF(/datum/material/iron)
 
-	internal_disk = new /obj/item/disk/data/medium(src)
-	internal_disk.set_data(
-		DATA_IDX_DESIGNS,
-		SStech.fetch_designs(subtypesof(/datum/design/alloy)
-		),
-	)
+	set_internal_disk(new /obj/item/disk/data(src))
+	var/datum/c4_file/fab_design_bundle/file_bundle = new(SStech.fetch_designs(subtypesof(/datum/design/alloy)))
+	file_bundle.name = FABRICATOR_FILE_NAME
+	disk_write_file(file_bundle, internal_disk)
 
 /obj/machinery/mineral/processing_unit/Destroy()
 	CONSOLE = null
@@ -197,7 +195,9 @@
 	dat += "<br><br>"
 	dat += "<b>Smelt Alloys</b><br>"
 
-	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
+	var/list/datum/design/design_list = disk_get_designs(FABRICATOR_FILE_NAME, internal_disk)
+
+	for(var/datum/design/D as anything in design_list)
 		dat += "<span class=\"res_name\">[D.name] "
 		if (selected_alloy == D.id)
 			dat += " <i>Smelting</i>"

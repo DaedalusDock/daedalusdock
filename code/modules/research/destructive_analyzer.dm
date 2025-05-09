@@ -45,8 +45,16 @@ Note: Must be placed within 3 tiles of the R&D Console
 	if(QDELETED(thing) || QDELETED(src))
 		return FALSE
 
-	if(!inserted_disk.check_memory())
-		return FALSE
+	var/datum/c4_file/fab_design_bundle/dundle = disk_get_file(FABRICATOR_FILE_NAME, inserted_disk)
+	if(!istype(dundle))
+		if(isnull(dundle))
+			dundle = new(list()) //If we can create the new record DB, just silently continue...
+			if(!disk_write_file(dundle, inserted_disk))
+				say("Cannot write to disk. Check write protect or disk capacity. Aborting.")
+				return FALSE
+		else
+			say("Disk design database corrupt or unreadable. Aborting.")
+			return FALSE
 
 	var/datum/design/D = SStech.designs_by_product[loaded_item.type]
 	if(!innermode)
@@ -64,7 +72,7 @@ Note: Must be placed within 3 tiles of the R&D Console
 
 	qdel(thing)
 	loaded_item = null
-	inserted_disk.write(DATA_IDX_DESIGNS, D, TRUE)
+	dundle.included_designs |= D
 	if (!innermode)
 		update_appearance()
 	return TRUE

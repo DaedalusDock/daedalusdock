@@ -80,10 +80,6 @@
 	},
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
-"ft" = (
-/obj/machinery/computer/med_data,
-/turf/open/floor/mineral/titanium/tiled/blue,
-/area/shuttle/escape)
 "fL" = (
 /obj/effect/turf_decal/stripes/corner,
 /turf/open/floor/plating,
@@ -312,6 +308,13 @@
 "ls" = (
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape)
+"ma" = (
+/obj/machinery/door/airlock/security/glass{
+	name = "Brig"
+	},
+/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/turf/open/floor/mineral/plastitanium/red/brig,
+/area/shuttle/escape/brig)
 "mq" = (
 /obj/structure/railing{
 	dir = 1
@@ -470,6 +473,10 @@
 	dir = 1
 	},
 /turf/template_noop,
+/area/shuttle/escape)
+"tZ" = (
+/obj/machinery/computer4/medical,
+/turf/open/floor/mineral/titanium/tiled/blue,
 /area/shuttle/escape)
 "un" = (
 /obj/structure/bed/roller,
@@ -1074,13 +1081,6 @@
 	},
 /turf/open/floor/wood,
 /area/shuttle/escape/simulation)
-"RK" = (
-/obj/machinery/door/airlock/security/glass{
-	name = "Brig"
-	},
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
-/turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape/brig)
 "RV" = (
 /obj/structure/rack,
 /obj/item/tank/internals/oxygen/red,
@@ -1733,7 +1733,7 @@ EN
 (13,1,1) = {"
 EN
 Xv
-ft
+tZ
 il
 nA
 nA
@@ -1747,7 +1747,7 @@ Rl
 Rl
 Rl
 ls
-RK
+ma
 Xb
 Xb
 Xb

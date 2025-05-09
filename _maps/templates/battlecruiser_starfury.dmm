@@ -32,7 +32,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/machinery/computer/med_data/syndie,
+/obj/machinery/computer4/medical,
 /turf/open/floor/iron/dark{
 	initial_gas = list("nitrogen" = 100);
 	temperature = 80

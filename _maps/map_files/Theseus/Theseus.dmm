@@ -9975,7 +9975,6 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/green/fourcorners,
-/obj/effect/mapping_helpers/windoor/access/any/service/hydroponics,
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
 "dDQ" = (
@@ -20988,7 +20987,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/service/kitchen,
 /turf/open/floor/iron/cafeteria,
 /area/station/hallway/secondary/service)
 "hPD" = (
@@ -24114,7 +24112,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/service/bar,
 /obj/machinery/door/airlock{
 	name = "Bar"
 	},
@@ -26412,7 +26409,6 @@
 	name = "Custodial Closet";
 	stripe_paint = "#A1149A"
 	},
-/obj/effect/mapping_helpers/airlock/access/any/service/janitor,
 /turf/open/floor/iron,
 /area/station/maintenance/starboard/lesser)
 "jPJ" = (
@@ -26999,7 +26995,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/windoor/access/any/service/general,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/service)
 "jZd" = (
@@ -27371,7 +27366,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/detective,
 /turf/open/floor/iron,
 /area/station/security/detectives_office/private_investigators_office)
 "kgQ" = (
@@ -28538,7 +28532,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/service,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/service)
 "kCX" = (
@@ -32461,7 +32454,6 @@
 	name = "Theater Backstage"
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/airlock/access/all/service/theatre,
 /turf/open/floor/wood,
 /area/station/maintenance/starboard/greater)
 "lZo" = (
@@ -42887,7 +42879,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/airlock/access/any/service/janitor,
 /turf/open/floor/iron,
 /area/station/service/janitor)
 "pRf" = (
@@ -45067,7 +45058,6 @@
 /obj/machinery/door/airlock{
 	name = "Service Hall"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/service,
 /turf/open/floor/iron,
 /area/station/maintenance/starboard/greater)
 "qFh" = (
@@ -46581,8 +46571,7 @@
 "rld" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock{
-	name = "Kitchen";
-	req_one_access_txt = "25;28"
+	name = "Kitchen"
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/landmark/navigate_destination/kitchen,
@@ -51763,7 +51752,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/service/lawyer,
 /turf/open/floor/plating,
 /area/station/maintenance/fore)
 "tdz" = (
@@ -55704,7 +55692,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/service/hydroponics,
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
 "uEO" = (
@@ -62176,7 +62163,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/service/lawyer,
 /obj/machinery/door/airlock{
 	name = "Law Office"
 	},
@@ -63142,7 +63128,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/disposalpipe/segment,
-/obj/effect/mapping_helpers/airlock/access/all/service/theatre,
 /obj/machinery/door/airlock{
 	name = "Theater Backstage"
 	},
@@ -64931,7 +64916,6 @@
 	pixel_y = -3
 	},
 /obj/effect/turf_decal/tile/green/fourcorners,
-/obj/effect/mapping_helpers/windoor/access/any/service/hydroponics,
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
 "xZo" = (
@@ -65313,7 +65297,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/service/kitchen,
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen/coldroom)
 "yia" = (

@@ -26,3 +26,8 @@
 2025-05-04:
   Kapu1178:
   - rscadd: Added interaction animations to many common interactions.
+2025-05-09:
+  Doctor-Derp:
+  - rscadd: Added variants of existing iron, dark and white tiles.
+  - rscadd: Added a missing grey techfloor tile.
+  - rscadd: A new fancy spline decal.

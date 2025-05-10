@@ -233,7 +233,7 @@
 	//Ping response handled in parent.
 	switch(signal.data[PACKET_CMD])
 		if(NET_COMMAND_PING_REPLY)//Add new phone to database
-			if(signal.data["netclass"] == NETCLASS_P2P_PHONE) //Another phone!
+			if(signal.data[PACKET_NETCLASS] == NETCLASS_P2P_PHONE) //Another phone!
 				discovered_phones[signal.data[PACKET_SOURCE_ADDRESS]]=signal.data["user_id"]
 				return RECEIVE_SIGNAL_FINISHED
 		if("tel_ring")//Incoming ring

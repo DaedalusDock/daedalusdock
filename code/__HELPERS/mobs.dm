@@ -7,6 +7,7 @@
 #define FACING_INIT_FACING_TARGET_TARGET_FACING_PERPENDICULAR 3 //Do I win the most informative but also most stupid define award?
 
 /proc/random_blood_type()
+	RETURN_TYPE(/datum/blood)
 	var/datum/blood/path = pick(\
 		4;/datum/blood/human/omin, \
 		36;/datum/blood/human/opos, \

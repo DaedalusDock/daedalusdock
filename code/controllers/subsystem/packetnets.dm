@@ -60,7 +60,7 @@ SUBSYSTEM_DEF(packets)
 	if(!invoker)
 		CRASH("Attempted to generate netid for null")
 	. = ref(invoker)
-	. = "[copytext(.,4,(length(.)))]0"
+	. = "[fit_with_zeros(copytext(.,4,(length(.))), 8, TRUE)]"
 
 /datum/controller/subsystem/packets/PreInit(timeofday)
 	hibernate_checks = list(

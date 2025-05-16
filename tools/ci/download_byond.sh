@@ -19,6 +19,7 @@ then
     echo "No windows fallback provided, but a linux fallback exists. Did you forget?"
   else
     echo "Download failed without fallback, Aborting."
+  fi
   exit 22
 fi
 set -e #Do or die time.

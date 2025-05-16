@@ -13,8 +13,8 @@ export FALLBACK_URL=$(printenv "DL_FALLBACK_${BYOND_MAJOR}_${BYOND_MINOR}_WIN")
 if [ -z $FALLBACK_URL];
 then
   #Do we have a linux fallback?
-  export FALLBACK_URL=$(printenv "DL_FALLBACK_${BYOND_MAJOR}_${BYOND_MINOR}_WIN")
-  if [ -z $FALLBACK_URL ];
+  export FALLBACK_URL=$(printenv "DL_FALLBACK_${BYOND_MAJOR}_${BYOND_MINOR}")
+  if [ -nz $FALLBACK_URL ];
   then
     echo "No windows fallback provided, but a linux fallback exists. Did you forget?"
   else

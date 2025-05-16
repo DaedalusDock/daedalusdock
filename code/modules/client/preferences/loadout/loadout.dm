@@ -9,15 +9,11 @@
 	return list()
 
 /datum/preference/blob/loadout/deserialize(input, datum/preferences/preferences)
-	var/list/json
-	try
-		json = json_decode(input)
-
-	catch
+	if(!islist(input))
 		return create_default_value()
 
 	var/list/loadout_entries = list()
-	for(var/list/entry as anything in json)
+	for(var/list/entry as anything in input)
 		var/path = text2path(entry["path"])
 		if(!path || !(locate(path) in GLOB.loadout_items))
 			continue
@@ -46,7 +42,7 @@
 	for(var/datum/loadout_entry/entry in input)
 		out[++out.len] = entry.to_list()
 
-	return json_encode(out)
+	return out
 
 /datum/preference/blob/loadout/button_act(mob/user, datum/preferences/prefs, list/params)
 	if(params["toggle_show_equipped"])

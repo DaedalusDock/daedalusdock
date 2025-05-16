@@ -1,7 +1,6 @@
 /datum/job/detective
 	title = JOB_DETECTIVE
-	description = "Help security solve crimes or take on private cases for wealthy clients. \
-		Look badass and abuse every substance."
+	description = "Investigate crimes. Solve crimes. Cover up crimes."
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
@@ -30,6 +29,7 @@
 	paycheck = PAYCHECK_MEDIUM
 
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)
+	mind_traits = list(TRAIT_DICK)
 
 	mail_goodies = list(
 		/obj/item/storage/fancy/cigarettes = 25,
@@ -46,11 +46,19 @@
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
 
+/datum/job/detective/after_spawn(mob/living/spawned, client/player_client)
+	. = ..()
+	spawned.apply_status_effect(/datum/status_effect/skill_mod/detective)
+
+/datum/job/detective/before_roundstart_possess(mob/living/spawning)
+	. = ..()
+	spawning.Sleeping(10 SECONDS)
+
 /datum/outfit/job/detective
 	name = JOB_DETECTIVE
 	jobtype = /datum/job/detective
 
-	id_trim = /datum/id_trim/job/detective
+	id_template = /datum/access_template/job/detective
 	uniform = /obj/item/clothing/under/rank/security/detective
 	suit = /obj/item/clothing/suit/det_suit
 	belt = /obj/item/modular_computer/tablet/pda/detective

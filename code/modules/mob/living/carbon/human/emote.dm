@@ -300,3 +300,36 @@
 	vary = TRUE
 	sound = 'sound/voice/bird/chirp2.ogg'
 	species_type_whitelist_typecache = list(/datum/species/teshari)
+
+/datum/emote/living/carbon/gasp_air
+	key = "gasp_air"
+	message = "gasps for air!"
+	emote_type = EMOTE_AUDIBLE
+	can_player_use = FALSE
+
+/datum/emote/living/carbon/gasp_air/get_sound(mob/living/user, involuntary)
+	if(user.gender == MALE)
+		return pick(
+			'sound/emotes/male/gasp_m2.ogg',
+			'sound/emotes/male/gasp_m6.ogg',
+			'goon/sounds/voice/gasp/male_gasp_1.ogg',
+			'goon/sounds/voice/gasp/male_gasp_2.ogg',
+			'goon/sounds/voice/gasp/male_gasp_3.ogg',
+			'goon/sounds/voice/gasp/male_gasp_4.ogg',
+			'goon/sounds/voice/gasp/male_gasp_5.ogg',
+		)
+	else
+		return pick(
+			'sound/emotes/female/gasp_f2.ogg',
+			'sound/emotes/female/gasp_f3.ogg',
+			'goon/sounds/voice/gasp/female_gasp_1.ogg',
+			'goon/sounds/voice/gasp/female_gasp_2.ogg',
+			'goon/sounds/voice/gasp/female_gasp_3.ogg',
+			'goon/sounds/voice/gasp/female_gasp_4.ogg',
+			'goon/sounds/voice/gasp/female_gasp_5.ogg',
+		)
+
+/datum/emote/living/carbon/gasp_air/allow_unconscious
+	key = "gasp_air_unconscious"
+	message = "gasps for air!"
+	stat_allowed = UNCONSCIOUS

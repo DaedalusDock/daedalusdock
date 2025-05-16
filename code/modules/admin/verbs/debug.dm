@@ -472,7 +472,10 @@
 	for(var/datum/station_goal/S in GLOB.station_goals)
 		dat += "[S.name] - <a href='?src=[REF(S)];[HrefToken()];announce=1'>Announce</a> | <a href='?src=[REF(S)];[HrefToken()];remove=1'>Remove</a><br>"
 	dat += "<br><a href='?src=[REF(src)];[HrefToken()];add_station_goal=1'>Add New Goal</a>"
-	usr << browse(dat, "window=goals;size=400x400")
+
+	var/datum/browser/browser = new(usr, "modify_goals", "Modify Goals", 400, 400)
+	browser.set_content(dat)
+	browser.open()
 
 /client/proc/cmd_debug_mob_lists()
 	set category = "Debug"

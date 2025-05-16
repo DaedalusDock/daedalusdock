@@ -17,7 +17,7 @@
 	/// Set to TRUE upon receiving a message, set to FALSE when opening the UI
 	var/has_unread_messages = FALSE
 	/// Filter for what kind of pager messages we get
-	var/pager_class = "common"
+	var/pager_class = PAGER_CLASS_COMMON
 	/// FIFO list of recent messages
 	var/list/recent_messages
 

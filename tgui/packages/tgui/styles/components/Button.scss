@@ -56,6 +56,8 @@ $bg-map: colors.$bg-map !default;
   outline: 0;
   border-radius: $border-radius;
   margin-bottom: base.em(2px);
+  cursor: base.$cursor-pointer;
+
   // Disable selection in buttons
   user-select: none;
   -ms-user-select: none;
@@ -139,6 +141,7 @@ $bg-map: colors.$bg-map !default;
 
 .Button--disabled {
   background-color: $color-disabled !important;
+  cursor: base.$cursor-default;
 }
 
 .Button--selected {

@@ -101,12 +101,18 @@
 //Disk boxes
 
 /obj/item/storage/box/disks
-	name = "diskette box"
-	illustration = "disk_kit"
+	name = "box of floppy disks"
+	desc = "A box able to fit 4 floppy disks."
+
+	icon_state = "floopybox-closed"
+	illustration = null
+
+	storage_type = /datum/storage/box/small_skinny
+
 
 /obj/item/storage/box/disks/PopulateContents()
-	for(var/i in 1 to 7)
-		new /obj/item/disk/data(src)
+	for(var/i in 1 to 4)
+		new /obj/item/disk/data/floppy(src)
 
 // Ordinary survival box
 /obj/item/storage/box/survival
@@ -208,7 +214,7 @@
 	desc = "A box able to fit 9 syringes."
 	illustration = "syringe"
 
-	storage_type = /datum/storage/box/syringe
+	storage_type = /datum/storage/box/small_skinny
 
 /obj/item/storage/box/syringes/PopulateContents()
 	for(var/i in 1 to 9)
@@ -228,7 +234,7 @@
 	desc = "A box full of epinephrine MediPens."
 	illustration = "epipen"
 
-	storage_type = /datum/storage/box/syringe
+	storage_type = /datum/storage/box/small_skinny
 
 /obj/item/storage/box/medipens/PopulateContents()
 	for(var/i in 1 to 7)
@@ -1027,8 +1033,10 @@
 	name = "box of fountain pens"
 	illustration = "fpen"
 
+	storage_type = /datum/storage/box/small_skinny
+
 /obj/item/storage/box/fountainpens/PopulateContents()
-	for(var/i in 1 to 7)
+	for(var/i in 1 to 9)
 		new /obj/item/pen/fountain(src)
 
 /obj/item/storage/box/holy_grenades
@@ -1595,3 +1603,14 @@
 							  /obj/item/food/sustenance_bar/wonka = 1))
 		new randomFood(src)
 	new /obj/item/storage/box/gum/wake_up(src)
+
+/obj/item/storage/box/chalk
+	name = "box of chalk"
+	desc = "A box able to fit 9 sticks of chalk."
+	illustration = "fpen"
+
+	storage_type = /datum/storage/box/small_skinny
+
+/obj/item/storage/box/chalk/PopulateContents()
+	for(var/i in 1 to 9)
+		new /obj/item/chalk(src)

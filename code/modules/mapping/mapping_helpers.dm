@@ -241,6 +241,27 @@
 	else
 		airlock.autoname = TRUE
 
+// Windoors
+/obj/effect/mapping_helpers/windoor
+	layer = WINDOW_HELPER_LAYER
+	late = TRUE
+
+/obj/effect/mapping_helpers/windoor/Initialize(mapload)
+	. = ..()
+	if(!mapload)
+		log_mapping("[src] spawned outside of mapload!")
+		return
+
+	var/obj/machinery/door/window/windoor = locate() in loc
+	if(!windoor)
+		log_mapping("[src] failed to find a windoor at [AREACOORD(src)]")
+	else
+		payload(windoor)
+	return INITIALIZE_HINT_QDEL
+
+/obj/effect/mapping_helpers/windoor/proc/payload(obj/machinery/door/window/windoor)
+	return
+
 //needs to do its thing before spawn_rivers() is called
 INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 

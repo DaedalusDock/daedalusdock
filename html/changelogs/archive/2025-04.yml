@@ -4,3 +4,56 @@
 2025-04-03:
   Kapu1178:
   - rscadd: Updated the Inspect Limb grab function, it now tells you more information.
+2025-04-05:
+  Kapu1178:
+  - rscadd: The Daedalus cursor now works over all user interfaces.
+2025-04-07:
+  Kapu1178:
+  - bugfix: The latejoin menu renders correctly.
+  - rscadd: You will now gasp while asystole, even while unconscious.
+  - rscadd: Added a cooldown to gasping due to an inability to breathe.
+2025-04-11:
+  Doctor-Derp:
+  - rscadd: Added 25 new hairstyles.
+  - rscdel: Removed duplicate hairstyles.
+  - qol: icon_states present in hair.dmi are now in alphabetical order.
+  - code_imp: Added a hairstyle preference save migration.
+  - code_imp: Several hairstyle code paths and names have been sorted and simplified.
+  Kapu1178:
+  - bugfix: Fixed many cases of NumberInput fields in TGUI not working.
+  - rscadd: Stethoscopes can now be used to diagnose brainmed issues.
+2025-04-13:
+  Doctor-Derp:
+  - rscadd: New dormitories design! Medical's lobby and the PI's office have also
+      been tweaked.
+  - rscdel: Removes the holodeck from Theseus on account of how out of place it was.
+      Sorry :(
+  - bugfix: Fixes clipping security camera in the bar.
+  - bugfix: Gave the PI their tape recorder back.
+2025-04-17:
+  francinum:
+  - balance: Allows all clients to use engine macros.
+  - admin: Don't make me regret this.
+2025-04-18:
+  Kapu1178:
+  - tweak: The Revival miracle now cures brain traumas.
+  - rscadd: The Exanguinate sigil, now available from an Augur near you.
+  hry-gh, Kapu1178:
+  - rscadd: Added support for High DPI monitors.
+2025-04-20:
+  tontyGH:
+  - bugfix: teleporting while buckling to something will bring the buckled object
+      with you
+  - bugfix: you can buckle to things if you are on the same turf
+2025-04-22:
+  Kapu1178:
+  - rscdel: Removed ID Trim functionality, there is now no access limitation for an
+      ID.
+2025-04-24:
+  francinum:
+  - qol: The chat splitter has been adjusted to return it to the old size. You may
+      need to reset or adjust the sizing splitters in your chat settings window.
+2025-04-29:
+  Kapu1178:
+  - bugfix: Loadouts save and load.
+  - refactor: Completely overhauled access.

@@ -317,6 +317,7 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(BLUNT = 20, PUNCTURE = 20, SLASH = 0, 
 
 	if(. || !can_use(usr, 1) || (locked && !usr.has_unlimited_silicon_privilege && !failure_timer && !(action in locked_actions)))
 		return
+
 	switch(action)
 		if("lock")
 			if(usr.has_unlimited_silicon_privilege)
@@ -325,19 +326,26 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(BLUNT = 20, PUNCTURE = 20, SLASH = 0, 
 				else
 					locked = !locked
 					update_appearance()
+					usr.animate_interact(src)
 					. = TRUE
 		if("cover")
 			coverlocked = !coverlocked
+			usr.animate_interact(src)
 			. = TRUE
+
 		if("breaker")
 			toggle_breaker(usr)
+			usr.animate_interact(src)
 			. = TRUE
+
 		if("charge")
 			chargemode = !chargemode
 			if(!chargemode)
 				charging = APC_NOT_CHARGING
 				update_appearance()
+			usr.animate_interact(src)
 			. = TRUE
+
 		if("channel")
 			if(params["eqp"])
 				equipment = setsubsystem(text2num(params["eqp"]))
@@ -351,38 +359,51 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(BLUNT = 20, PUNCTURE = 20, SLASH = 0, 
 				environ = setsubsystem(text2num(params["env"]))
 				update_appearance()
 				update()
+			usr.animate_interact(src)
 			. = TRUE
+
 		if("overload")
 			if(usr.has_unlimited_silicon_privilege)
 				overload_lighting()
+				usr.animate_interact(src)
 				. = TRUE
+
 		if("hack")
 			if(get_malf_status(usr))
 				malfhack(usr)
+
 		if("occupy")
 			if(get_malf_status(usr))
 				malfoccupy(usr)
+
 		if("deoccupy")
 			if(get_malf_status(usr))
 				malfvacate()
+
 		if("reboot")
 			failure_timer = 0
 			force_update = FALSE
 			update_appearance()
 			update()
+			usr.animate_interact(src)
+
 		if("main_lights")
 			area.lightswitch = !area.lightswitch
 			area.power_change()
+			usr.animate_interact(src)
 			for(var/obj/machinery/light_switch/light_switch in area.light_switches)
 				light_switch.update_appearance()
 				SEND_SIGNAL(light_switch, COMSIG_LIGHT_SWITCH_SET, area.lightswitch)
+
 		if("emergency_lighting")
 			emergency_lights = !emergency_lights
+			usr.animate_interact(src)
 			for(var/obj/machinery/light/L in area.lights)
 				if(!initial(L.no_emergency)) //If there was an override set on creation, keep that override
 					L.no_emergency = emergency_lights
 					INVOKE_ASYNC(L, TYPE_PROC_REF(/obj/machinery/light, update), FALSE)
 				CHECK_TICK
+
 	return TRUE
 
 /obj/machinery/power/apc/process()

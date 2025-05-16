@@ -49,11 +49,11 @@
 			else
 				to_chat(M, span_warning("You feel very [pick("dizzy","woozy","faint")].")) //fake bloodloss messages
 			Choke_stage_3_4(M, A)
-			M.emote("gasp")
+			M.emote(/datum/emote/living/carbon/gasp_air)
 		else
 			to_chat(M, span_userdanger("[pick("You're choking!", "You can't breathe!")]"))
 			Choke(M, A)
-			M.emote("gasp")
+			M.emote(/datum/emote/living/carbon/gasp_air)
 
 /datum/symptom/choking/proc/Choke_stage_3_4(mob/living/M, datum/pathogen/advance/A)
 	M.adjustOxyLoss(rand(6,13))
@@ -118,11 +118,11 @@ Bonus
 		if(3, 4)
 			to_chat(M, span_warning("<b>[pick("Your windpipe feels thin.", "Your lungs feel small.")]"))
 			Asphyxiate_stage_3_4(M, A)
-			M.emote("gasp")
+			M.emote(/datum/emote/living/carbon/gasp_air)
 		if(5)
 			to_chat(M, span_userdanger("[pick("Your lungs hurt!", "It hurts to breathe!")]"))
 			Asphyxiate(M, A)
-			M.emote("gasp")
+			M.emote(/datum/emote/living/carbon/gasp_air)
 			if(M.getOxyLoss() >= 120)
 				M.visible_message(span_warning("[M] stops breathing, as if their lungs have totally collapsed!"))
 				Asphyxiate_death(M, A)

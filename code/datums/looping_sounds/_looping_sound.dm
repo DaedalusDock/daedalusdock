@@ -130,7 +130,7 @@
 			playsound(
 				parent,
 				sound_to_play,
-				volume,
+				volume_override || volume,
 				vary,
 				extra_range,
 				falloff_exponent = falloff_exponent,
@@ -147,7 +147,7 @@
 			M.playsound_local(
 				get_turf(M),
 				sound_to_play,
-				volume,
+				volume_override || volume,
 				vary,
 				extra_range,
 				falloff_exponent = falloff_exponent,

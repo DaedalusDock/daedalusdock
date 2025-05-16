@@ -13,6 +13,9 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 	desc = "Used to order supplies for a department. Crates ordered this way will be locked until they reach their destination."
 	icon_screen = "supply"
 	light_color = COLOR_BRIGHT_ORANGE
+
+	/// A /datum/access_group path to pull access from on init.
+	var/req_one_access_group
 	///reference to the order we've made UNTIL it gets sent on the supply shuttle. this is so heads can cancel it
 	var/datum/supply_order/department_order
 	///access required to override an order - this should be a head of staff for the department
@@ -21,6 +24,7 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 	var/list/department_delivery_areas = list()
 	///which groups this computer can order from
 	var/list/dep_groups = list()
+
 
 /obj/machinery/computer/department_orders/Initialize(mapload, obj/item/circuitboard/board)
 	. = ..()
@@ -31,6 +35,9 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 		//every area fallback didn't exist on this map so throw a mapping error and set some generic area that uuuh please exist okay
 		log_mapping("[src] has no valid areas to deliver to on this map, add some more fallback areas to its \"department_delivery_areas\" var.")
 		department_delivery_areas = list(/area/station/hallway/primary/central) //if this doesn't exist like honestly fuck your map man
+
+	if(req_one_access_group)
+		req_one_access = SSid_access.get_access_for_group(req_one_access_group)
 
 /obj/machinery/computer/department_orders/ui_interact(mob/user, datum/tgui/ui)
 	. = ..()
@@ -188,8 +195,8 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 	name = "service order console"
 	circuit = /obj/item/circuitboard/computer/service_orders
 	department_delivery_areas = list(/area/station/hallway/secondary/service, /area/station/service/bar/atrium)
-	override_access = ACCESS_HOP
-	req_one_access = ACCESS_SERVICE
+	override_access = ACCESS_DELEGATE
+	req_one_access_group = /datum/access_group/station/independent_areas
 	dep_groups = list("Service", "Food & Hydroponics", "Livestock", "Costumes & Toys")
 
 /obj/machinery/computer/department_orders/engineering
@@ -197,7 +204,7 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 	circuit = /obj/item/circuitboard/computer/engineering_orders
 	department_delivery_areas = list(/area/station/engineering/main)
 	override_access = ACCESS_CE
-	req_one_access = REGION_ACCESS_ENGINEERING
+	req_one_access_group = /datum/access_group/station/engineering
 	dep_groups = list("Engineering", "Engine Construction", "Materials")
 
 /obj/machinery/computer/department_orders/science
@@ -205,7 +212,6 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 	circuit = /obj/item/circuitboard/computer/science_orders
 	department_delivery_areas = list(/area/station/science/research)
 	override_access = ACCESS_RD
-	req_one_access = REGION_ACCESS_RESEARCH
 	dep_groups = list("Science", "Livestock")
 
 /obj/machinery/computer/department_orders/security
@@ -213,7 +219,7 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 	circuit = /obj/item/circuitboard/computer/security_orders
 	department_delivery_areas = list(/area/station/security/brig)
 	override_access = ACCESS_HOS
-	req_one_access = REGION_ACCESS_SECURITY
+	req_one_access_group = /datum/access_group/station/security
 	dep_groups = list("Security", "Armory")
 
 /obj/machinery/computer/department_orders/medical
@@ -221,5 +227,5 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 	circuit = /obj/item/circuitboard/computer/medical_orders
 	department_delivery_areas = list(/area/station/medical/medbay/central)
 	override_access = ACCESS_CMO
-	req_one_access = REGION_ACCESS_MEDBAY
+	req_one_access_group = /datum/access_group/station/medical
 	dep_groups = list("Medical", "Reagents")

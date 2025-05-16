@@ -36,7 +36,7 @@
 	extra_price = PAYCHECK_COMMAND * 1.25
 	payment_department = ACCOUNT_ENG
 
-	discount_access = ACCESS_ENGINE
+	discount_access = ACCESS_ENGINEERING
 
 /obj/item/vending_refill/youtool
 	machine_name = "YouTool"

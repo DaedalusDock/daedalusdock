@@ -144,7 +144,7 @@
 /obj/item/rupee/proc/put_in_crossers_hands(mob/crosser)
 	if(crosser.put_in_hands(src))
 		if(src != crosser.get_active_held_item())
-			crosser.swap_hand()
+			crosser.try_swap_hand()
 		equip_to_best_slot(crosser)
 
 /obj/item/rupee/equipped(mob/user, slot)

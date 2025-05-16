@@ -43,13 +43,14 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 /proc/roll_3d6(requirement = STATS_BASELINE_VALUE, modifier, crit_fail_modifier = -10, datum/rpg_skill/skill_type_used)
 	RETURN_TYPE(/datum/roll_result)
 
-	var/dice = roll("3d6") + modifier
+	var/dice = roll("3d6")
+	var/dice_after_mod = dice + modifier
 	var/crit_fail = max((requirement + crit_fail_modifier), 4)
 	var/crit_success = min((requirement + 7), 17)
 
 	// if(dice >= requirement)
 	// 	var/list/out = list(
-	// 		"ROLL: [dice]",
+	// 		"ROLL: [dice] ([modifier >= 0 ? "+[modifier]" : "-[modifier]"])",
 	// 		"SUCCESS PROB: %[round(dice_probability(3, 6, requirement - modifier), 0.01)]",
 	// 		"CRIT SP: %[round(dice_probability(3, 6, crit_success), 0.01)]",
 	// 		"MOD: [modifier]",
@@ -64,20 +65,20 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	// 	to_chat(world, span_adminnotice(jointext(out, "")))
 
 	var/datum/roll_result/result = new()
-	result.success_prob = round(dice_probability(3, 6, requirement - modifier), 0.01)
-	result.crit_success_prob = round(dice_probability(3, 6, crit_success), 0.01)
 	result.roll = dice
+	result.modifier = modifier
 	result.requirement = requirement
 	result.skill_type_used = skill_type_used
+	result.calculate_probability()
 
-	if(dice >= requirement)
-		if(dice >= crit_success)
+	if(dice_after_mod >= requirement)
+		if(dice_after_mod >= crit_success)
 			result.outcome = CRIT_SUCCESS
 		else
 			result.outcome = SUCCESS
 
 	else
-		if(dice <= crit_fail)
+		if(dice_after_mod <= crit_fail)
 			result.outcome = CRIT_FAILURE
 		else
 			result.outcome = FAILURE
@@ -89,17 +90,23 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	var/outcome
 	/// The % chance to have rolled a success (0-100)
 	var/success_prob
-	/// The % chance to have rolled a critical success (0-100)
-	var/crit_success_prob
 	/// The numerical value rolled.
 	var/roll
 	/// The value required to pass the roll.
 	var/requirement
+	/// The modifier attached to the roll.
+	var/modifier
 
 	/// Typepath of the skill used. Optional.
 	var/datum/rpg_skill/skill_type_used
 
-/datum/roll_result/proc/create_tooltip(body)
+	/// How many times this result was pulled from a result cache.
+	var/cache_reads = 0
+
+/datum/roll_result/proc/calculate_probability()
+	success_prob = round(dice_probability(3, 6, clamp(requirement - modifier, 0, 18)), 0.01)
+
+/datum/roll_result/proc/create_tooltip(body, body_only = FALSE)
 	if(!skill_type_used)
 		if(outcome >= SUCCESS)
 			body = span_statsgood(body)
@@ -140,21 +147,30 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	var/finished_prob_string = "<span style='color: #bbbbad;font-style: italic'>\[[prob_string]: [success]\]</span>"
 	var/prefix
 	if(outcome >= SUCCESS)
-		prefix = "<span style='font-style: italic;color: #03fca1'>[uppertext(initial(skill_type_used.name))]</span>"
+		prefix = "<span style='font-style: italic;color: #03fca1'>[uppertext(initial(skill_type_used.name))]</span> "
 		body = span_statsgood(body)
 	else
-		prefix = "<span style='font-style: italic;color: #fc4b32'>[uppertext(initial(skill_type_used.name))]</span>"
+		prefix = "<span style='font-style: italic;color: #fc4b32'>[uppertext(initial(skill_type_used.name))]</span> "
 		body = span_statsbad(body)
 
-	var/color = (outcome >= SUCCESS) ? "#03fca1" : "#fc4b32"
-	var/tooltip_html = "[success_prob]% | Result: <span style='font-weight: bold;color: [color]'><b>[roll]</b></span> | Check: <b>[requirement]</b>"
+	var/modifier_string = ""
+	if(modifier != 0)
+		var/modifier_string_inner = modifier > 0 ? "+[modifier]" : "[modifier]"
+		var/modifier_color = (modifier >= 0) ? "#03fca1" : "#fc4b32"
+		modifier_string = " (<span style='font-weight: bold;color: [modifier_color]'>[modifier_string_inner]</span>)"
+
+	var/result_color = (outcome >= SUCCESS) ? "#03fca1" : "#fc4b32"
+	var/result_string = "Result: <span style='font-weight: bold;color: [result_color]'><b>[roll]</b></span>[modifier_string]"
+	var/tooltip_html = "[success_prob]% | [result_string] | Check: <b>[requirement]</b>"
 	var/seperator = "<span style='color: #bbbbad;font-style: italic'>: </span>"
 
-	return "[prefix] <span data-component=\"Tooltip\" data-innerhtml=\"[tooltip_html]\" class=\"tooltip\">[finished_prob_string]</span>[seperator][body]"
+	if(body_only)
+		return body
+	return "[prefix]<span data-component=\"Tooltip\" data-innerhtml=\"[tooltip_html]\" class=\"tooltip\">[finished_prob_string]</span>[seperator][body]"
 
 /// Play
 /datum/roll_result/proc/do_skill_sound(mob/user)
-	if(isnull(skill_type_used))
+	if(isnull(skill_type_used) || cache_reads)
 		return
 
 	var/datum/rpg_stat/stat_path = initial(skill_type_used.parent_stat_type)
@@ -164,9 +180,20 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 /datum/roll_result/success
 	outcome = SUCCESS
 	success_prob = 100
-	crit_success_prob = 0
 	roll = 18
 	requirement = 3
+
+/datum/roll_result/critical_success
+	outcome = CRIT_SUCCESS
+	success_prob = 100
+	roll = 18
+	requirement = 3
+
+/datum/roll_result/critical_failure
+	outcome = CRIT_FAILURE
+	success_prob = 0
+	roll = 1
+	requirement = 18
 
 /// Returns a number between 0 and 100 to roll the desired value when rolling the given dice.
 /proc/dice_probability(num, sides, desired)
@@ -177,12 +204,12 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	if(!isnull(.))
 		return .
 
-	if(desired < num)
-		. = desired_cache["[num][sides][desired]"] = 0
+	if(desired < sides)
+		. = desired_cache["[num][sides][desired]"] = 100
 		return
 
 	if(desired > num * sides)
-		. = desired_cache["[num][sides][desired]"] = 100
+		. = desired_cache["[num][sides][desired]"] = 0
 		return
 
 	if(num > length(outcomes_cache))

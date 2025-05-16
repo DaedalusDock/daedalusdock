@@ -107,7 +107,8 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	var/paycheck = PAYCHECK_MINIMAL
 	var/paycheck_department = null
 
-	var/list/mind_traits // Traits added to the mind of the mob assigned this job
+	/// Traits added to the mind of the mob assigned this job.
+	var/list/mind_traits
 
 	///Lazylist of traits added to the liver of the mob assigned this job (used for the classic "cops heal from donuts" reaction, among others)
 	var/list/liver_traits = null
@@ -600,6 +601,21 @@ GLOBAL_LIST_INIT(job_display_order, list(
 /datum/job/proc/after_roundstart_spawn(mob/living/spawning, client/player_client)
 	SHOULD_CALL_PARENT(TRUE)
 
+/**
+ * Called during roundstart, before the client has possessed the mob.
+ * Client is in the mob.
+ * This happens after after_spawn()
+ */
+/datum/job/proc/before_roundstart_possess(mob/living/spawning)
+	SHOULD_CALL_PARENT(TRUE)
+
+/**
+ * Called during roundstart, after the client has possessed the mob.
+ * Client is in the mob.
+ * This happens after after_spawn()
+ */
+/datum/job/proc/after_roundstart_possess(mob/living/spawning)
+	SHOULD_CALL_PARENT(TRUE)
 
 /**
  * Called after a successful latejoin spawn.

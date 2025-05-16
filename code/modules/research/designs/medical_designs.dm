@@ -61,16 +61,6 @@
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
-/datum/design/dna_disk
-	name = "Genetic Data Disk"
-	desc = "Produce additional disks for storing genetic data."
-	id = "dna_disk"
-	build_type = FABRICATOR
-	materials = list(/datum/material/iron = 300, /datum/material/glass = 100, /datum/material/silver = 50)
-	build_path = /obj/item/disk/data
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
-
 /datum/design/crewpinpointerprox
 	name = "Proximity Crew Pinpointer"
 	desc = "Displays your approximate proximity to someone if their suit sensors are turned to tracking beacon."

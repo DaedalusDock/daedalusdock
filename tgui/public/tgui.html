@@ -354,6 +354,37 @@
   Byond.loadCss = function (url, sync) {
     loadAsset({ url: url, sync: sync, type: 'css' });
   };
+
+  Byond.saveBlob = function (blob, filename, ext) {
+    if (window.navigator.msSaveBlob) {
+      window.navigator.msSaveBlob(blob, filename); //515/IE11 compatibility
+    } else if (window.showSaveFilePicker) {
+      var accept = {};
+      accept[blob.type] = [ext];
+
+      var opts = {
+        suggestedName: filename,
+        types: [
+          {
+            description: 'SS13 file',
+            accept: accept,
+          },
+        ],
+      };
+
+      window
+        .showSaveFilePicker(opts)
+        .then(function (file) {
+          return file.createWritable();
+        })
+        .then(function (file) {
+          return file.write(blob).then(function () {
+            return file.close();
+          });
+        })
+        .catch(function () {});
+    }
+  };
 })();
 
 // Error handling
@@ -616,7 +647,7 @@ blink {
 <div id="FatalError" class="FatalError">
 <div class="FatalError__logo">
 <pre>
-    ___  _    _       _    ___  ___  ___
+   ___  _    _       _    ___  ___  ___
   |_ _|| |_ &lt;_&gt;._ _ | |__| . \| . |/ __&gt;
    | | | . || || &#39; || / /| | || | |\__ \
    |_| |_|_||_||_|_||_\_\|___/`___&#39;&lt;___/

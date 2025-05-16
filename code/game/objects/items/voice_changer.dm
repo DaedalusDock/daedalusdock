@@ -42,4 +42,4 @@
 	tool.play_tool_sound(tool, 50)
 	item = null
 	qdel(src)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS

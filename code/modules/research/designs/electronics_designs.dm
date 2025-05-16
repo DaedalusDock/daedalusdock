@@ -38,8 +38,8 @@
 //////////Disk Construction Disks///////
 ////////////////////////////////////////
 /datum/design/data
-	name = "Data Storage Disk"
-	desc = "Produce additional disks for storing data."
+	name = "Hard Disk Drive"
+	desc = "Produce additional hard disks for storing data."
 	id = "design_disk"
 	build_type = FABRICATOR  | AUTOLATHE
 	materials = list(/datum/material/iron = 300, /datum/material/glass = 100)
@@ -47,8 +47,18 @@
 	category = list("Electronics")
 	mapload_design_flags = DESIGN_FAB_OMNI
 
+/datum/design/data/floppy
+	name = "Floppy Disk"
+	desc = "Produce additional disks for storing data."
+	id = "design_disk_floppy"
+	build_type = FABRICATOR  | AUTOLATHE
+	materials = list(/datum/material/iron = 100, /datum/material/glass = 100)
+	build_path = /obj/item/disk/data/floppy
+	category = list("Electronics")
+	mapload_design_flags = DESIGN_FAB_OMNI
+
 /datum/design/data_adv
-	name = "Advanced Design Storage Disk"
+	name = "Medium Hard Disk Drive"
 	desc = "Produce additional disks for storing device designs."
 	id = "design_disk_adv"
 	build_type = FABRICATOR

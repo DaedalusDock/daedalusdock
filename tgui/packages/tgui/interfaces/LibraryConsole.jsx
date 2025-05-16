@@ -299,7 +299,7 @@ const CheckoutModal = (props) => {
             unit=" Minutes"
             minValue={1}
             stepPixelSize={10}
-            onChange={(e, value) => setCheckoutPeriod(value)}
+            onChange={(value) => setCheckoutPeriod(value)}
           />
         </LabeledList.Item>
       </LabeledList>

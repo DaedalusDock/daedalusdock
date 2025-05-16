@@ -64,7 +64,7 @@
 	jobtype = /datum/job/augur
 
 	id = /obj/item/card/id/advanced/silver
-	id_trim = /datum/id_trim/job/chief_medical_officer
+	id_template = /datum/access_template/job/chief_medical_officer
 	uniform = /obj/item/clothing/under/rank/medical/chief_medical_officer
 	suit = /obj/item/clothing/suit/toggle/labcoat/cmo
 	belt = /obj/item/pager/aether
@@ -81,6 +81,7 @@
 
 	backpack_contents = list(
 		/obj/item/diagnosis_book = 1,
+		/obj/item/storage/box/chalk = 1,
 	)
 
 	chameleon_extras = list(

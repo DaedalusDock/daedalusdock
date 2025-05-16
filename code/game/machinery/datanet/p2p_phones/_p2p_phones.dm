@@ -108,12 +108,15 @@
 	if(handset_state == HANDSET_ONHOOK)
 		toggle_handset(user)
 
-/obj/machinery/telephone/attackby(obj/item/weapon, mob/user, params)
-	. = ..()
-	if(weapon == src.handset)// Impolite hangup.
-		if(handset_state == HANDSET_ONHOOK)
-			CRASH("Tried to return a handset that was already on-hook???")
-		toggle_handset(user) //Can't really happen if handset is on-hook.
+/obj/machinery/telephone/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if((tool != handset) || user.combat_mode)
+		return NONE
+
+	if(handset_state == HANDSET_ONHOOK)
+		CRASH("Tried to return a handset that was already on-hook???")
+
+	toggle_handset(user) //Can't really happen if handset is on-hook.
+	return ITEM_INTERACT_SUCCESS
 
 /// Toggle the state of the handset.
 /obj/machinery/telephone/proc/toggle_handset(mob/user)
@@ -125,19 +128,21 @@
 				return
 			//Hands free, Register the handset as off-hook
 			handset_statechange(HANDSET_OFFHOOK)
+			handset.do_pickup_animation(user, get_turf(src))
+
 		if(HANDSET_OFFHOOK)
 			remove_handset(user)
 			handset_statechange(HANDSET_ONHOOK)
+
 		if(HANDSET_MISSING)// Nothing to grab?
 			to_chat(user, span_warning("The handset is completely missing!"))
 			return
 
 /obj/machinery/telephone/proc/remove_handset(mob/user)//this prevent the bug with the handset when the phone move stole the i stole this from defib code is this funny yet
-	if(ismob(handset.loc))
-		var/mob/M = handset.loc
-		M.dropItemToGround(handset, TRUE)
-	return
+	if(!ismob(handset.loc))
+		return
 
+	user.transferItemToLoc(handset, src, TRUE)
 
 /// Process the fact that the handset has changed states.
 /obj/machinery/telephone/proc/handset_statechange(newstate)
@@ -174,14 +179,14 @@
 		if("Set Caller ID")
 			var/new_friendly_name = input(user, "New Name?", "Renaming [friendly_name]", friendly_name) as null|text
 			if(!new_friendly_name)
-				return TOOL_ACT_TOOLTYPE_SUCCESS
+				return ITEM_INTERACT_SUCCESS
 			friendly_name = new_friendly_name
 			recalculate_name()
 
 		if("Set Placard")
 			var/new_placard_name = input(user, "New Placard?", "Re-writing [placard_name]", placard_name) as null|text
 			if(!new_placard_name)
-				return TOOL_ACT_TOOLTYPE_SUCCESS
+				return ITEM_INTERACT_SUCCESS
 			placard_name = new_placard_name
 
 		if("Reconnect to terminal")
@@ -204,7 +209,7 @@
 			else
 				to_chat(user, span_notice("You disabled the display of network IDs."))
 		//else fall through
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 
 
@@ -228,7 +233,7 @@
 	//Ping response handled in parent.
 	switch(signal.data[PACKET_CMD])
 		if(NET_COMMAND_PING_REPLY)//Add new phone to database
-			if(signal.data["netclass"] == NETCLASS_P2P_PHONE) //Another phone!
+			if(signal.data[PACKET_NETCLASS] == NETCLASS_P2P_PHONE) //Another phone!
 				discovered_phones[signal.data[PACKET_SOURCE_ADDRESS]]=signal.data["user_id"]
 				return RECEIVE_SIGNAL_FINISHED
 		if("tel_ring")//Incoming ring

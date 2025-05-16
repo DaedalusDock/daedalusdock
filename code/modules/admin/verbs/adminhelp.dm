@@ -234,6 +234,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 	statclick = new(null, src)
 	ticket_interactions = list()
+	_interactions_player = list()
 
 	if(is_bwoink)
 		AddInteraction("<span class='internal'>[key_name_admin(usr)] PM'd [LinkedReplyName()]</span>")

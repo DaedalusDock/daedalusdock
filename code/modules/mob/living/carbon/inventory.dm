@@ -219,7 +219,7 @@
 
 	if(offered)
 		if(offered == src)
-			if(!swap_hand(get_inactive_hand_index())) //have to swap hands first to take something
+			if(!try_swap_hand(get_inactive_hand_index())) //have to swap hands first to take something
 				to_chat(src, span_warning("You try to take [offered_item] from yourself, but fail."))
 				return
 			if(!put_in_active_hand(offered_item))
@@ -282,6 +282,8 @@
 
 	visible_message(span_notice("[src] takes [I] from [offerer]."), \
 					span_notice("You take [I] from [offerer]."))
+
+	I.do_pickup_animation(src, get_turf(src))
 	put_in_hands(I)
 
 ///Returns a list of all body_zones covered by clothing

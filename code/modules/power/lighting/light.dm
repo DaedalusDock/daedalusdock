@@ -270,6 +270,24 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	if(constant_flickering)
 		. += span_alert("The lighting ballast appears to be damaged, this could be fixed with a multitool.")
 
+	if(is_station_level(z))
+		var/datum/roll_result/result = user.get_examine_result("light", 12)
+		if(result?.outcome >= SUCCESS)
+			result.do_skill_sound(user)
+			. += result.create_tooltip("A ninety-three degree fire rages within a gaseous prison.", body_only = TRUE)
+
+/obj/machinery/light/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	if(!is_station_level)
+		return
+
+	var/datum/roll_result/result = user.get_examine_result("light_flavor", only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("These lightbulbs are ancient. Their filaments hum with the weary resolve of a thousand nights endured. Each one a tiny sun, bolted to the wall to light a colony that has long forgotten them. They illuminate the cracked walls and faces bathed in time, their faint flickering revealing the uncertainty in the air."),
+		)
 
 // attack with item - insert light (if right type), otherwise try to break the light
 

@@ -60,7 +60,7 @@
 /obj/machinery/bodyscanner/wrench_act(mob/living/user, obj/item/tool)
 	tool.play_tool_sound(src, 50)
 	setDir(turn(dir, 180))
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/bodyscanner/MouseDroppedOn(mob/living/carbon/human/target, mob/user)
 	if(!istype(target) || !can_interact(user) || HAS_TRAIT(user, TRAIT_UI_BLOCKED) || !Adjacent(user, mover = target) || target.buckled || target.has_buckled_mobs())
@@ -173,7 +173,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 /obj/machinery/bodyscanner_console/wrench_act(mob/living/user, obj/item/tool)
 	tool.play_tool_sound(src, 50)
 	setDir(turn(dir, 180))
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/bodyscanner_console/deconstruct(disassembled)
 	. = ..()

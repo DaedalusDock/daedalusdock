@@ -21,8 +21,17 @@
 	isGlass = TRUE
 	foodtype = ALCOHOL
 	age_restricted = TRUE // wrryy can't set an init value to see if foodtype contains ALCOHOL so here we go
+
 	///Directly relates to the 'knockdown' duration. Lowered by armor (i.e. helmets)
 	var/bottle_knockdown_duration = 1.3 SECONDS
+
+	var/alcoholism_key = ""
+	var/alcoholism_message =""
+
+/obj/item/reagent_containers/food/drinks/bottle/Initialize(mapload)
+	. = ..()
+	if(alcoholism_key && alcoholism_message)
+		AddElement(/datum/element/alcoholism_magnet, alcoholism_key, alcoholism_message)
 
 /obj/item/reagent_containers/food/drinks/bottle/small
 	name = "small glass bottle"
@@ -165,6 +174,9 @@
 	foodtype = GRAIN | ALCOHOL
 	custom_price = PAYCHECK_ASSISTANT * 1.3
 
+	alcoholism_key = "alcoholism_beer"
+	alcoholism_message = "That bottle won't empty itself."
+
 /obj/item/reagent_containers/food/drinks/bottle/beer/almost_empty
 	list_reagents = list(/datum/reagent/consumable/ethanol/beer = 1)
 
@@ -182,6 +194,9 @@
 	custom_price = PAYCHECK_ASSISTANT * 0.7
 	custom_premium_price = PAYCHECK_ASSISTANT * 1.3
 
+	alcoholism_key = "alcoholism_rootbeer"
+	alcoholism_message = "If only it was the real deal."
+
 /obj/item/reagent_containers/food/drinks/bottle/ale
 	name = "Magm-Ale"
 	desc = "A true dorf's drink of choice."
@@ -191,17 +206,26 @@
 	foodtype = GRAIN | ALCOHOL
 	custom_price = PAYCHECK_EASY
 
+	alcoholism_key = "alcoholism_ale"
+	alcoholism_message = "Amber and frothy. You know you want it."
+
 /obj/item/reagent_containers/food/drinks/bottle/gin
 	name = "Griffeater gin"
 	desc = "A bottle of high quality gin, produced in the New London Space Station."
 	icon_state = "ginbottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/gin = 100)
 
+	alcoholism_key = "alcoholism_gin"
+	alcoholism_message = "An orchestra of citrus calls your name, why deprive yourself?"
+
 /obj/item/reagent_containers/food/drinks/bottle/whiskey
 	name = "Uncle Git's special reserve"
 	desc = "A premium single-malt whiskey, gently matured inside the tunnels of a nuclear shelter. TUNNEL WHISKEY RULES."
 	icon_state = "whiskeybottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/whiskey = 100)
+
+	alcoholism_key = "alcoholism_whiskey"
+	alcoholism_message = "Whiskey. A beautiful golden nectar, waiting to meet your tongue with a smokey caramel kiss."
 
 /obj/item/reagent_containers/food/drinks/bottle/kong
 	name = "Kong"
@@ -219,6 +243,9 @@
 	icon_state = "vodkabottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/vodka = 100)
 
+	alcoholism_key = "alcoholism_vodka"
+	alcoholism_message = "The purest of spirits, a blank canvas with a bite. Crystal clear liquid courage, waiting to start a fire in your throat. One shot..."
+
 /obj/item/reagent_containers/food/drinks/bottle/vodka/badminka
 	name = "Badminka vodka"
 	desc = "The label's written in Cyrillic. All you can make out is the name and a word that looks vaguely like 'Vodka'."
@@ -230,6 +257,9 @@
 	desc = "Made from premium petroleum distillates, pure thalidomide and other fine quality ingredients!"
 	icon_state = "tequilabottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/tequila = 100)
+
+	alcoholism_key = "alcoholism_tequila"
+	alcoholism_message = "Let the agave's sweet fire ignite your senses. Perhaps a little sugar and lime, one shot cannot hurt. Nor will two."
 
 /obj/item/reagent_containers/food/drinks/bottle/bottleofnothing
 	name = "bottle of nothing"
@@ -250,6 +280,9 @@
 	desc = "This isn't just rum, oh no. It's practically GRIFF in a bottle."
 	icon_state = "rumbottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/rum = 100)
+
+	alcoholism_key = "alcoholism_rum"
+	alcoholism_message = "Sail the Great Pool with me. A lively port of celebration and raised glasses awaits in our paradise."
 
 /obj/item/reagent_containers/food/drinks/bottle/maltliquor
 	name = "\improper Rabid Bear malt liquor"
@@ -290,12 +323,18 @@
 	icon_state = "cognacbottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/cognac = 100)
 
+	alcoholism_key = "alcoholism_cognac"
+	alcoholism_message = "We shall dine like the kings of old. Someone like yourself deserves such a dignified beverage. Pour a glass, let's savor excellence."
+
 /obj/item/reagent_containers/food/drinks/bottle/wine
 	name = "Doublebeard's bearded special wine"
 	desc = "A faint aura of unease and asspainery surrounds the bottle."
 	icon_state = "winebottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/wine = 100)
 	foodtype = FRUIT | ALCOHOL
+
+	alcoholism_key = "alcoholism_wine"
+	alcoholism_message = "Wine. Oh the nector of the gods, a symphony of crushed grapes, sunlit vineyards and ancient traditions. It is not just a drink—it's a masterpiece in a bottle. One you have earned."
 
 /obj/item/reagent_containers/food/drinks/bottle/wine/add_initial_reagents()
 	. = ..()
@@ -323,6 +362,9 @@
 	desc = "A strong alcoholic drink brewed and distributed by"
 	icon_state = "absinthebottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/absinthe = 100)
+
+	alcoholism_key = "alcoholism_wine"
+	alcoholism_message = "The forbidden fruit beckons. It is no mere drink—it's a portal to a world of verdant splendor. This isn't for the faint of heart. It's for the curious, the bold, the thrillseeker. And it has your name on it."
 
 /obj/item/reagent_containers/food/drinks/bottle/absinthe/Initialize(mapload)
 	. = ..()

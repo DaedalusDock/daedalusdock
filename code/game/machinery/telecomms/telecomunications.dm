@@ -173,3 +173,28 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 
 /obj/machinery/telecomms/proc/de_emp()
 	set_machine_stat(machine_stat & ~EMPED)
+
+
+/obj/machinery/telecomms/examine(mob/user)
+	. = ..()
+
+	var/datum/roll_result/result = user.get_examine_result("telecom_equipment", 11)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		. += result.create_tooltip("Lit in lights, the facade of complexity. Nothing more.", body_only = TRUE)
+
+/obj/machinery/telecomms/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("telecom_equipment_flavor", 11, only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("The hum sounds hollow, as if there was almost nothing inside it. You wonder if it's doing that much at all."),
+		)
+	if(result?.outcome == CRIT_FAILURE)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("It glows! It hums! Surely, this is the most complex and important equipment around."),
+		)

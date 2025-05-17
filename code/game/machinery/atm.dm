@@ -68,43 +68,43 @@
 	spark_system.start()
 	dispense_cash(rand(20, 200))
 
-/obj/machinery/atm/attackby(obj/item/I, mob/user, params)
-	if(!isidcard(I) && !iscash(I))
-		return ..()
+/obj/machinery/atm/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!isidcard(tool) && !iscash(tool))
+		return NONE
 
 	if(machine_stat & NOPOWER)
-		to_chat(user, span_warning("You attempt to insert [I] into [src], but nothing happens."))
-		return TRUE
+		to_chat(user, span_warning("You attempt to insert [tool] into [src], but nothing happens."))
+		return ITEM_INTERACT_BLOCKING
 
-	if(isidcard(I))
+	if(isidcard(tool))
 		if(inserted_card)
-			to_chat(user, span_warning("You attempt to insert [I] into [src], but there's already something in the slot."))
-			return TRUE
-		if(!user.transferItemToLoc(I, src))
-			return TRUE
+			to_chat(user, span_warning("You attempt to insert [tool] into [src], but there's already something in the slot."))
+			return ITEM_INTERACT_BLOCKING
+		if(!user.transferItemToLoc(tool, src))
+			return ITEM_INTERACT_BLOCKING
 
-		inserted_card = I
+		inserted_card = tool
 		updateUsrDialog()
 		playsound(loc, 'sound/machines/cardreader_insert.ogg', 50)
-		to_chat(user, span_notice("You insert [I] into [src]."))
-		return TRUE
+		to_chat(user, span_notice("You insert [tool] into [src]."))
+		return ITEM_INTERACT_SUCCESS
 
-	if(iscash(I))
-		if(!authenticated_account)
-			to_chat(user, span_warning("You attempt to insert [I] into [src], but nothing happens."))
-			return TRUE
+	//iscash
+	if(!authenticated_account)
+		to_chat(user, span_warning("You attempt to insert [tool] into [src], but nothing happens."))
+		return ITEM_INTERACT_BLOCKING
 
-		if(!user.transferItemToLoc(I, src))
-			return TRUE
+	if(!user.transferItemToLoc(tool, src))
+		return ITEM_INTERACT_BLOCKING
 
-		var/value = I.get_item_credit_value()
-		qdel(I)
-		authenticated_account.adjust_money(value)
+	var/value = tool.get_item_credit_value()
+	qdel(tool)
+	authenticated_account.adjust_money(value)
 
-		to_chat(user, span_notice("You deposit [value] into [src]."))
-		updateUsrDialog()
-		playsound(loc, 'sound/machines/cash_insert.ogg', 50)
-		return TRUE
+	to_chat(user, span_notice("You deposit [value] into [src]."))
+	updateUsrDialog()
+	playsound(loc, 'sound/machines/cash_insert.ogg', 50)
+	return ITEM_INTERACT_SUCCESS
 
 /// Dispense the given amount of cash and give feedback.
 /obj/machinery/atm/proc/dispense_cash(amt)
@@ -142,7 +142,9 @@
 	if(href_list["eject_id"])
 		if(isnull(inserted_card))
 			return TRUE
-		if(!usr.put_in_hands(inserted_card))
+		if(usr.pickup_item(inserted_card))
+			inserted_card.do_pickup_animation(usr, get_turf(src))
+		else
 			inserted_card.forceMove(drop_location())
 		inserted_card = null
 		playsound(loc, 'sound/machines/cardreader_desert.ogg', 50)

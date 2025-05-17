@@ -1,10 +1,10 @@
 /datum/computer_file/program/card_mod
 	filename = "plexagonidwriter"
-	filedesc = "Plexagon Access Management"
+	filedesc = "ThinkDOS Access Management"
 	category = PROGRAM_CATEGORY_CREW
 	program_icon_state = "id"
 	extended_desc = "Program for programming employee ID cards to access parts of the station."
-	transfer_access = list(ACCESS_MANAGEMENT)
+	transfer_access = list(ACCESS_FACTION_LEADER)
 	requires_ntnet = 0
 	size = 8
 	tgui_id = "NtosCard"
@@ -16,6 +16,10 @@
 	var/minor = FALSE
 	/// The name/assignment combo of the ID card used to authenticate.
 	var/authenticated_card
+	/// The access of the card used to authenticate.
+	var/authenticated_card_access
+	/// The template belonging to the authenticated card.
+	var/datum/access_template/authenticated_card_template
 	/// The name of the registered user, related to `authenticated_card`.
 	var/authenticated_user
 	/// The regions this program has access to based on the authenticated ID.
@@ -46,28 +50,32 @@
 	job_templates.Cut()
 
 	// If the program isn't locked to a specific department or is_centcom and we have ACCESS_CHANGE_IDS in our auth card, we're not minor.
-	if((!target_dept || is_centcom) && (ACCESS_CHANGE_IDS in id_card.access))
+	if((!target_dept || is_centcom) && (ACCESS_CHANGE_IDS in id_card.GetAccess()))
 		minor = FALSE
 		authenticated_card = "[id_card.name]"
+		authenticated_card_access = id_card.GetAccess()
+		authenticated_card_template = id_card.template
 		authenticated_user = id_card.registered_name ? id_card.registered_name : "Unknown"
 		job_templates = is_centcom ? SSid_access.centcom_job_templates.Copy() : SSid_access.station_job_templates.Copy()
-		valid_access = is_centcom ? SSid_access.get_region_access_list(list(REGION_CENTCOM)) : SSid_access.get_region_access_list(list(REGION_ALL_STATION))
+		valid_access = is_centcom ? SSid_access.get_access_for_group(list(/datum/access_group/centcom)) : SSid_access.get_access_for_group(list(/datum/access_group/station/all))
 		update_static_data(user)
 		return TRUE
 
 	// Otherwise, we're minor and now we have to build a list of restricted departments we can change access for.
 	var/list/managers = SSid_access.sub_department_managers_tgui
 	for(var/access_as_text in managers)
-		var/list/info = managers[access_as_text]
+		var/datum/access_group_manager/manager = managers[access_as_text]
 		var/access = text2num(access_as_text)
-		if((access in id_card.access) && ((target_dept in info["regions"]) || !target_dept))
-			region_access |= info["regions"]
-			job_templates |= info["templates"]
+		if((access in id_card.access) && ((target_dept in manager.access_groups) || !target_dept))
+			region_access |= manager.access_groups
+			job_templates |= manager.templates
 
 	if(length(region_access))
 		minor = TRUE
-		valid_access |= SSid_access.get_region_access_list(region_access)
+		valid_access |= SSid_access.get_access_for_group(region_access)
 		authenticated_card = "[id_card.name] \[LIMITED ACCESS\]"
+		authenticated_card_access = id_card.GetAccess()
+		authenticated_card_template = id_card.template
 		update_static_data(user)
 		return TRUE
 
@@ -105,6 +113,8 @@
 		if("PRG_logout")
 			authenticated_card = null
 			authenticated_user = null
+			authenticated_card_template = null
+			authenticated_card_access = null
 			playsound(computer, 'sound/machines/terminal_off.ogg', 50, FALSE)
 			return TRUE
 		// Print a report.
@@ -121,7 +131,7 @@
 						<u>Access:</u><br>
 						"}
 
-			var/list/known_access_rights = SSid_access.get_region_access_list(list(REGION_ALL_STATION))
+			var/list/known_access_rights = SSid_access.get_access_for_group(list(/datum/access_group/station/all))
 			for(var/A in target_id_card.access)
 				if(A in known_access_rights)
 					contents += "  [SSid_access.get_access_desc(A)]"
@@ -148,28 +158,30 @@
 			if(!computer || !card_slot2)
 				return TRUE
 			if(target_id_card)
-				SSdatacore.manifest_modify(target_id_card.registered_name, target_id_card.assignment, target_id_card.get_trim_assignment())
+				SSdatacore.manifest_modify(target_id_card.registered_name, target_id_card.assignment, target_id_card.get_template_assignment())
 				return card_slot2.try_eject(user)
 			else
 				var/obj/item/I = user.get_active_held_item()
 				if(istype(I, /obj/item/card/id))
 					return card_slot2.try_insert(I, user)
 			return TRUE
+
 		// Used to fire someone. Wipes all access from their card and modifies their assignment.
 		if("PRG_terminate")
 			if(!computer || !authenticated_card)
 				return TRUE
 			if(minor)
-				if(!(target_id_card.trim?.type in job_templates))
+				if(!(target_id_card.template?.type in job_templates))
 					to_chat(usr, span_notice("Software error: You do not have the necessary permissions to demote this card."))
 					return TRUE
 
-			// Set the new assignment then remove the trim.
+			// Set the new assignment then remove the template.
 			target_id_card.assignment = is_centcom ? "Fired" : "Demoted"
-			SSid_access.remove_trim_from_card(target_id_card)
+			SSid_access.remove_template_from_card(target_id_card)
 
 			playsound(computer, 'sound/machines/terminal_prompt_deny.ogg', 50, FALSE)
 			return TRUE
+
 		// Change ID card assigned name.
 		if("PRG_edit")
 			if(!computer || !authenticated_card || !target_id_card)
@@ -204,6 +216,7 @@
 			if(!old_name)
 				target_id_card.update_icon()
 			return TRUE
+
 		// Change age
 		if("PRG_age")
 			if(!computer || !authenticated_card || !target_id_card)
@@ -216,23 +229,30 @@
 
 			target_id_card.registered_age = new_age
 			playsound(computer, SFX_TERMINAL_TYPE, 50, FALSE)
+			update_records()
 			return TRUE
+
 		// Change assignment
 		if("PRG_assign")
 			if(!computer || !authenticated_card || !target_id_card)
 				return TRUE
+
 			var/new_asignment = sanitize(params["assignment"])
 			target_id_card.assignment = new_asignment
+
 			playsound(computer, SFX_TERMINAL_TYPE, 50, FALSE)
+
 			target_id_card.update_label()
+			update_records()
 			return TRUE
+
 		// Add/remove access.
 		if("PRG_access")
 			if(!computer || !authenticated_card || !target_id_card)
 				return TRUE
+
 			playsound(computer, SFX_TERMINAL_TYPE, 50, FALSE)
 			var/access_type = params["access_target"]
-			var/try_wildcard = params["access_wildcard"]
 			if(!(access_type in valid_access))
 				stack_trace("[key_name(usr)] ([usr]) attempted to add invalid access \[[access_type]\] to [target_id_card]")
 				return TRUE
@@ -242,15 +262,16 @@
 				LOG_ID_ACCESS_CHANGE(user, target_id_card, "removed [SSid_access.get_access_desc(access_type)]")
 				return TRUE
 
-			if(!target_id_card.add_access(list(access_type), try_wildcard))
+			if(!target_id_card.add_access(list(access_type)))
 				to_chat(usr, span_notice("ID error: ID card rejected your attempted access modification."))
-				LOG_ID_ACCESS_CHANGE(user, target_id_card, "failed to add [SSid_access.get_access_desc(access_type)][try_wildcard ? " with wildcard [try_wildcard]" : ""]")
+				LOG_ID_ACCESS_CHANGE(user, target_id_card, "failed to add [SSid_access.get_access_desc(access_type)]")
 				return TRUE
 
 			if(access_type in ACCESS_ALERT_ADMINS)
 				message_admins("[ADMIN_LOOKUPFLW(user)] just added [SSid_access.get_access_desc(access_type)] to an ID card [ADMIN_VV(target_id_card)] [(target_id_card.registered_name) ? "belonging to [target_id_card.registered_name]." : "with no registered name."]")
 			LOG_ID_ACCESS_CHANGE(user, target_id_card, "added [SSid_access.get_access_desc(access_type)]")
 			return TRUE
+
 		// Apply template to ID card.
 		if("PRG_template")
 			if(!computer || !authenticated_card || !target_id_card)
@@ -262,16 +283,16 @@
 			if(!template_name)
 				return TRUE
 
-			for(var/trim_path in job_templates)
-				var/datum/id_trim/trim = SSid_access.trim_singletons_by_path[trim_path]
-				if(trim.assignment != template_name)
+			for(var/template_path in job_templates)
+				var/datum/access_template/template = SSid_access.template_singletons_by_path[template_path]
+				if(template.assignment != template_name)
 					continue
 
-				SSid_access.add_trim_access_to_card(target_id_card, trim_path)
+				SSid_access.apply_template_access_to_card(target_id_card, template_path)
+				update_records()
 				return TRUE
 
 			stack_trace("[key_name(usr)] ([usr]) attempted to apply invalid template \[[template_name]\] to [target_id_card]")
-
 			return TRUE
 
 /datum/computer_file/program/card_mod/ui_static_data(mob/user)
@@ -280,22 +301,17 @@
 	data["centcom_access"] = is_centcom
 	data["minor"] = target_dept || minor ? TRUE : FALSE
 
-	var/list/regions = list()
-	var/list/tgui_region_data = SSid_access.all_region_access_tgui
+	var/list/groups = list()
+	var/list/access_group_data = SSid_access.tgui_access_groups
 	if(is_centcom)
-		regions += tgui_region_data[REGION_CENTCOM]
+		groups += access_group_data[/datum/access_group/centcom]
 	else
-		for(var/region in SSid_access.station_regions)
-			if((minor || target_dept) && !(region in region_access))
+		for(var/datum/access_group/group_path as anything in SSid_access.station_groups)
+			if((minor || target_dept) && !(group_path in region_access))
 				continue
-			regions += tgui_region_data[region]
+			groups += access_group_data[group_path]
 
-	data["regions"] = regions
-
-
-	data["accessFlags"] = SSid_access.flags_by_access
-	data["wildcardFlags"] = SSid_access.wildcard_flags_by_wildcard
-	data["accessFlagNames"] = SSid_access.access_flag_string_by_flag
+	data["accessGroups"] = groups
 	data["showBasic"] = TRUE
 	data["templates"] = job_templates
 
@@ -336,17 +352,43 @@
 		data["id_rank"] = id_card.assignment ? id_card.assignment : "Unassigned"
 		data["id_owner"] = id_card.registered_name ? id_card.registered_name : "-----"
 		data["access_on_card"] = id_card.access
-		data["wildcardSlots"] = id_card.wildcard_slots
 		data["id_age"] = id_card.registered_age
 
-		if(id_card.trim)
-			var/datum/id_trim/card_trim = id_card.trim
-			data["hasTrim"] = TRUE
-			data["trimAssignment"] = card_trim.assignment ? card_trim.assignment : ""
-			data["trimAccess"] = card_trim.access ? card_trim.access : list()
+		if(id_card.template)
+			var/datum/access_template/card_template = id_card.template
+			data["hastemplate"] = TRUE
+			data["templateAssignment"] = card_template.assignment ? card_template.assignment : ""
+			data["templateAccess"] = card_template.access ? card_template.access : list()
 		else
-			data["hasTrim"] = FALSE
-			data["trimAssignment"] = ""
-			data["trimAccess"] = list()
+			data["hastemplate"] = FALSE
+			data["templateAssignment"] = ""
+			data["templateAccess"] = list()
 
 	return data
+
+/// Update the datacore entry for the given ID.
+/datum/computer_file/program/card_mod/proc/update_records()
+	if(!computer || !authenticated_card_template?.datacore_record_key)
+		return FALSE
+
+	var/obj/item/computer_hardware/card_slot/card_slot2
+
+	card_slot2 = computer.all_components[MC_CARD2]
+	if(!card_slot2)
+		return FALSE
+
+	var/obj/item/card/id/target_id_card = card_slot2.stored_card
+	if(!target_id_card)
+		return FALSE
+
+	if(!SSdatacore.can_modify_records(authenticated_card_template.datacore_record_key, authenticated_card_access))
+		return FALSE
+
+	var/datum/data/record/record = SSdatacore.get_record_by_name(target_id_card.registered_name, authenticated_card_template.datacore_record_key)
+	if(!record)
+		return FALSE
+
+	record.fields[DATACORE_RANK] = target_id_card.assignment
+	record.fields[DATACORE_TEMPLATE_RANK] = target_id_card.template?.assignment
+	record.fields[DATACORE_AGE] = target_id_card.registered_age
+	return TRUE

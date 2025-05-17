@@ -10,8 +10,8 @@
 	icon_state = "disk"
 	spawn_all_loot = FALSE
 	loot = list(
-		/obj/item/disk/data = 49,
-		/obj/item/disk/nuclear/fake/obvious = 1,
+		/obj/item/disk/data/floppy = 2,
+		/obj/item/disk/data = 1,
 	)
 
 /obj/effect/spawner/random/techstorage/arcade_boards
@@ -52,9 +52,7 @@
 		/obj/item/circuitboard/machine/fabricator/omni,
 		/obj/item/circuitboard/machine/circuit_imprinter,
 		/obj/item/circuitboard/computer/teleporter,
-		/obj/item/circuitboard/machine/destructive_analyzer,
-		/obj/item/circuitboard/computer/scan_consolenew,
-		/obj/item/circuitboard/machine/dnascanner,
+		/obj/item/circuitboard/machine/destructive_analyzer
 	)
 
 /obj/effect/spawner/random/techstorage/security_all
@@ -91,7 +89,6 @@
 	name = "medical circuit board spawner"
 	loot = list(
 		/obj/item/circuitboard/machine/chem_dispenser,
-		/obj/item/circuitboard/computer/med_data,
 		/obj/item/circuitboard/machine/smoke_machine,
 		/obj/item/circuitboard/machine/chem_master,
 		/obj/item/circuitboard/computer/pandemic,

@@ -85,7 +85,7 @@
 /obj/structure/table/update_icon(updates=ALL)
 	. = ..()
 
-	if(flipped == TRUE)
+	if(is_flipped())
 		icon = 'icons/obj/flipped_tables.dmi'
 		icon_state = base_icon_state
 	else
@@ -119,7 +119,7 @@
 	if(!over.Adjacent(src))
 		return
 
-	if(flipped)
+	if(is_flipped())
 		if(get_turf(over) == loc)
 			unflip(L)
 			return
@@ -193,20 +193,21 @@
 		return TRUE
 
 	var/obj/structure/table/T = locate() in get_turf(mover)
-	if(T && T.flipped != TRUE)
+	if(T && !T.is_flipped())
 		return TRUE
+
 	var/obj/structure/low_wall/L = locate() in get_turf(mover)
 	if(L)
 		return TRUE
 
-	if(flipped == TRUE && !(border_dir & dir))
+	if(is_flipped() && !(border_dir & dir))
 		return TRUE
 
 /obj/structure/table/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
 	if(!density)
 		return TRUE
 
-	if((pass_info.pass_flags & PASSTABLE) || (flipped == TRUE && (dir != to_dir)))
+	if((pass_info.pass_flags & PASSTABLE) || (is_flipped() && (dir != to_dir)))
 		return TRUE
 
 	return FALSE
@@ -220,13 +221,13 @@
 		leaving.Bump(src)
 		return COMPONENT_ATOM_BLOCK_EXIT
 
-	if(flipped == TRUE && (direction & dir))
+	if(is_flipped() && (direction & dir))
 		return COMPONENT_ATOM_BLOCK_EXIT
 
 //checks if projectile 'P' from turf 'from' can hit whatever is behind the table. Returns 1 if it can, 0 if bullet stops.
 /obj/structure/table/proc/check_cover(obj/projectile/P, turf/from)
 	var/turf/cover
-	if(flipped == TRUE)
+	if(is_flipped())
 		cover = get_turf(src)
 	else
 		cover = get_step(loc, get_dir(from, loc))
@@ -241,7 +242,7 @@
 		if (L.body_position == LYING_DOWN)
 			chance += 40 //Lying down lets you catch less bullets
 
-	if(flipped == TRUE)
+	if(is_flipped())
 		if(get_dir(loc, from) == dir || get_dir(loc, from) == turn(dir, 180)) //Flipped tables catch more bullets
 			chance += 30
 
@@ -269,7 +270,7 @@
 
 /obj/structure/table/setDir(ndir)
 	. = ..()
-	if(dir != NORTH && dir != 0 && (flipped > 0))
+	if(dir != NORTH && dir != 0 && (is_flipped()))
 		layer = ABOVE_MOB_LAYER
 	else
 		layer = TABLE_LAYER
@@ -371,107 +372,134 @@
 	log_combat(user, pushed_mob, "head slammed", null, "against [src]")
 
 /obj/structure/table/screwdriver_act_secondary(mob/living/user, obj/item/tool)
-	if(flags_1 & NODECONSTRUCT_1 || !deconstruction_ready)
+	if((flags_1 & NODECONSTRUCT_1) || !deconstruction_ready)
 		return FALSE
+
 	to_chat(user, span_notice("You start disassembling [src]..."))
 	if(tool.use_tool(src, user, 2 SECONDS, volume=50))
 		deconstruct(TRUE)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+
+	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/table/wrench_act_secondary(mob/living/user, obj/item/tool)
-	if(flags_1 & NODECONSTRUCT_1 || !deconstruction_ready)
-		return FALSE
+	if((flags_1 & NODECONSTRUCT_1) || !deconstruction_ready)
+		return NONE
+
 	to_chat(user, span_notice("You start deconstructing [src]..."))
+
 	if(tool.use_tool(src, user, 4 SECONDS, volume=50))
 		playsound(loc, 'sound/items/deconstruct.ogg', 50, TRUE)
 		deconstruct(TRUE, 1)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
 
-/obj/structure/table/attackby(obj/item/I, mob/living/user, params)
-	var/list/modifiers = params2list(params)
-	if(flipped == TRUE)
-		return ..()
+	return ITEM_INTERACT_SUCCESS
 
-	if(istype(I, /obj/item/storage/bag/tray))
-		var/obj/item/storage/bag/tray/T = I
-		if(T.contents.len > 0) // If the tray isn't empty
-			for(var/x in T.contents)
-				var/obj/item/item = x
-				AfterPutItemOnTable(item, user)
-			I.atom_storage.remove_all(drop_location())
-			user.visible_message(span_notice("[user] empties [I] on [src]."))
-			return
-		// If the tray IS empty, continue on (tray will be placed on the table like other items)
+// This extends base item interaction because tables default to blocking 99% of interactions
+/obj/structure/table/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	. = ..()
+	if(.)
+		return .
 
-	if(istype(I, /obj/item/toy/cards/deck))
-		var/obj/item/toy/cards/deck/dealer_deck = I
-		if(dealer_deck.wielded) // deal a card facedown on the table
-			var/obj/item/toy/singlecard/card = dealer_deck.draw(user)
-			if(card)
-				attackby(card, user, params)
-			return
+	if(is_flipped())
+		return .
 
-	if(istype(I, /obj/item/riding_offhand))
-		var/obj/item/riding_offhand/riding_item = I
-		var/mob/living/carried_mob = riding_item.rider
-		if(carried_mob == user) //Piggyback user.
-			return
-		if(user.combat_mode)
-			user.unbuckle_mob(carried_mob)
-			tablelimbsmash(user, carried_mob)
-		else
-			var/tableplace_delay = 3.5 SECONDS
-			var/skills_space = ""
-			if(HAS_TRAIT(user, TRAIT_QUICKER_CARRY))
-				tableplace_delay = 2 SECONDS
-				skills_space = " expertly"
-			else if(HAS_TRAIT(user, TRAIT_QUICK_CARRY))
-				tableplace_delay = 2.75 SECONDS
-				skills_space = " quickly"
-			carried_mob.visible_message(span_notice("[user] begins to[skills_space] place [carried_mob] onto [src]..."),
-				span_userdanger("[user] begins to[skills_space] place [carried_mob] onto [src]..."))
-			if(do_after(user, carried_mob, tableplace_delay, DO_PUBLIC))
-				user.unbuckle_mob(carried_mob)
-				tableplace(user, carried_mob)
-		return TRUE
+	if(istype(tool, /obj/item/toy/cards/deck))
+		. = deck_interact(user, tool, modifiers, !!LAZYACCESS(modifiers, RIGHT_CLICK))
 
-	if(!user.combat_mode && !(I.item_flags & ABSTRACT))
-		if(user.transferItemToLoc(I, drop_location(), silent = FALSE))
-			//Center the icon where the user clicked.
-			if(!LAZYACCESS(modifiers, ICON_X) || !LAZYACCESS(modifiers, ICON_Y))
-				return
+	else if(istype(tool, /obj/item/storage/bag/tray))
+		. = tray_interact(user, tool, modifiers)
 
-			var/list/center = I.get_icon_center()
-			var/half_icon_width = world.icon_size / 2
+	else if(istype(tool, /obj/item/riding_offhand))
+		. = riding_interact(user, tool, modifiers)
 
-			var/x_offset = center["x"] - half_icon_width
-			var/y_offset = center["y"] - half_icon_width
+	// Continue to placing if we don't do anything else
+	if(.)
+		return .
 
-			var/x_diff = (text2num(modifiers[ICON_X]) - half_icon_width)
-			var/y_diff = (text2num(modifiers[ICON_Y]) - half_icon_width)
+	if(!user.combat_mode || (tool.item_flags & NOBLUDGEON))
+		return place_item(user, tool, modifiers)
 
-			var/list/bounds = get_placable_bounds()
-			var/new_x = clamp(pixel_x + x_diff, bounds["x1"] - half_icon_width, bounds["x2"] - half_icon_width)
-			var/new_y = clamp(pixel_y + y_diff, bounds["y1"] - half_icon_width, bounds["y2"] - half_icon_width)
+	return NONE
 
-			I.pixel_x = new_x + x_offset
-			I.pixel_y = new_y + y_offset
-			AfterPutItemOnTable(I, user)
-			return TRUE
+/obj/structure/table/proc/place_item(mob/living/user, obj/item/I, list/modifiers)
+	if(!user.transferItemToLoc(I, drop_location(), silent = FALSE))
+		return ITEM_INTERACT_BLOCKING
 
-	return ..()
+	//Center the icon where the user clicked.
+	if(LAZYACCESS(modifiers, ICON_X) && LAZYACCESS(modifiers, ICON_Y))
+		var/list/center = I.get_icon_center()
+		var/half_icon_width = world.icon_size / 2
 
-/obj/structure/table/attackby_secondary(obj/item/weapon, mob/user, params)
-	if(istype(weapon, /obj/item/toy/cards/deck))
-		var/obj/item/toy/cards/deck/dealer_deck = weapon
-		if(dealer_deck.wielded) // deal a card faceup on the table
-			var/obj/item/toy/singlecard/card = dealer_deck.draw(user)
-			if(card)
-				card.Flip()
-				attackby(card, user, params)
-			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-	..()
-	return SECONDARY_ATTACK_CONTINUE_CHAIN
+		var/x_offset = center["x"] - half_icon_width
+		var/y_offset = center["y"] - half_icon_width
+
+		var/x_diff = (text2num(modifiers[ICON_X]) - half_icon_width)
+		var/y_diff = (text2num(modifiers[ICON_Y]) - half_icon_width)
+
+		var/list/bounds = get_placable_bounds()
+		var/new_x = clamp(pixel_x + x_diff, bounds["x1"] - half_icon_width, bounds["x2"] - half_icon_width)
+		var/new_y = clamp(pixel_y + y_diff, bounds["y1"] - half_icon_width, bounds["y2"] - half_icon_width)
+
+		I.pixel_x = new_x + x_offset
+		I.pixel_y = new_y + y_offset
+
+	AfterPutItemOnTable(I, user)
+	return ITEM_INTERACT_SUCCESS
+
+/obj/structure/table/proc/tray_interact(mob/living/user, obj/item/storage/bag/tray/tray, list/modifiers)
+	if(!length(tray.contents)) // If the tray isn't empty
+		return NONE // If the tray IS empty, continue on (tray will be placed on the table like other items)
+
+	for(var/obj/item/I in tray.contents)
+		AfterPutItemOnTable(I, user)
+
+	tray.atom_storage.remove_all(drop_location())
+	user.visible_message(span_notice("[user] empties [tray] on [src]."))
+	return ITEM_INTERACT_SUCCESS
+
+/obj/structure/table/proc/deck_interact(mob/living/user, obj/item/toy/cards/deck/deck, list/modifiers, flip)
+	if(!deck.wielded)
+		return NONE
+
+	// deal a card facedown on the table
+	var/obj/item/toy/singlecard/card = deck.draw(user)
+	if(!card)
+		return ITEM_INTERACT_BLOCKING
+
+	if(flip)
+		card.Flip()
+
+	return place_item(user, card, modifiers)
+
+/obj/structure/table/proc/riding_interact(mob/living/user, obj/item/riding_offhand/riding_item, list/modifiers)
+	var/mob/living/carried_mob = riding_item.rider
+	if(carried_mob == user) //Piggyback user.
+		return NONE
+
+	if(user.combat_mode)
+		user.unbuckle_mob(carried_mob)
+		tablelimbsmash(user, carried_mob)
+		return ITEM_INTERACT_SUCCESS
+
+	var/tableplace_delay = 3.5 SECONDS
+	var/skills_space = ""
+	if(HAS_TRAIT(user, TRAIT_QUICKER_CARRY))
+		tableplace_delay = 2 SECONDS
+		skills_space = " expertly"
+
+	else if(HAS_TRAIT(user, TRAIT_QUICK_CARRY))
+		tableplace_delay = 2.75 SECONDS
+		skills_space = " quickly"
+
+		carried_mob.visible_message(
+			span_notice("<b>[user]</b> begins to[skills_space] place <b>[carried_mob]</b> onto [src]..."),
+		)
+
+	if(!do_after(user, carried_mob, tableplace_delay, DO_PUBLIC))
+		return ITEM_INTERACT_BLOCKING
+
+	user.unbuckle_mob(carried_mob)
+	tableplace(user, carried_mob)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/table/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
 	if(istype(held_item, /obj/item/toy/cards/deck))
@@ -595,14 +623,14 @@
 
 /obj/structure/table/glass/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()
-	if(. || !flipped)
+	if(. || !is_flipped())
 		return
 	if(mover.pass_flags & PASSGLASS)
 		return TRUE
 
 /obj/structure/table/glass/check_exit(datum/source, atom/movable/leaving, direction)
 	. = ..()
-	if(. || !flipped)
+	if(. || !is_flipped())
 		return
 	if(leaving.pass_flags & PASSGLASS)
 		return COMPONENT_ATOM_BLOCK_EXIT

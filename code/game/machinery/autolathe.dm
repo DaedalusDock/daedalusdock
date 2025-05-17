@@ -73,7 +73,8 @@
 		)
 		data["materials"] += list(material_data)
 	if(selected_category != "None" && !length(matching_designs))
-		data["designs"] = handle_designs(internal_disk.read(DATA_IDX_DESIGNS), TRUE)
+		data["designs"] = handle_designs(get_valid_designs(), TRUE)
+
 	else
 		data["designs"] = handle_designs(matching_designs, FALSE)
 	return data
@@ -146,7 +147,7 @@
 	if(action == "search")
 		matching_designs.Cut()
 
-		for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
+		for(var/datum/design/D as anything in get_valid_designs())
 			if(findtext(D.name,params["to_search"]))
 				matching_designs.Add(D)
 		. = TRUE
@@ -156,7 +157,7 @@
 			/////////////////
 			//href protection
 			being_built = SStech.designs_by_id[params["id"]]
-			if(!being_built || !(being_built in internal_disk.read(DATA_IDX_DESIGNS)))
+			if(!being_built || !(being_built in get_valid_designs()))
 				return
 
 			var/multiplier = text2num(params["multiplier"])
@@ -295,6 +296,20 @@
 	icon_state = "autolathe"
 	busy = FALSE
 
+/obj/machinery/autolathe/proc/get_valid_designs()
+	var/list/datum/design/valid_designs = list()
+	var/datum/c4_file/fab_design_bundle/target_bundle = disk_get_file(FABRICATOR_FILE_NAME, internal_disk)
+	if(istype(target_bundle))
+		valid_designs += target_bundle.included_designs
+
+	if(!hacked)
+		return
+
+	target_bundle = disk_get_file("fabrec_dev", internal_disk)
+	if(istype(target_bundle))
+		valid_designs += target_bundle.included_designs
+
+
 /obj/machinery/autolathe/RefreshParts()
 	. = ..()
 	var/mat_capacity = 0
@@ -345,7 +360,7 @@
 
 /obj/machinery/autolathe/proc/compile_categories()
 	categories = list()
-	for(var/datum/design/D as anything in internal_disk.read(DATA_IDX_DESIGNS))
+	for(var/datum/design/D as anything in get_valid_designs())
 		if(!isnull(D.category))
 			categories |= D.category
 	sortTim(categories, GLOBAL_PROC_REF(cmp_text_asc))
@@ -377,22 +392,6 @@
 
 /obj/machinery/autolathe/proc/adjust_hacked(state)
 	hacked = state
-	var/static/list/datum/design/hacked_designs
-	if(!hacked_designs)
-		var/list/L = list(
-			/datum/design/large_welding_tool,
-			/datum/design/handcuffs,
-			/datum/design/receiver,
-			/datum/design/cleaver,
-			/datum/design/toygun,
-			/datum/design/capbox,
-		)
-		hacked_designs = SStech.fetch_designs(L)
-
-	if(hacked)
-		internal_disk.write(DATA_IDX_DESIGNS, hacked_designs, TRUE)
-	else
-		internal_disk.remove(DATA_IDX_DESIGNS, hacked_designs, TRUE)
 
 
 /obj/machinery/autolathe/hacked/Initialize(mapload)
@@ -404,9 +403,26 @@
 /obj/item/proc/autolathe_crafted(obj/machinery/autolathe/A)
 	return
 
-/obj/item/disk/data/hyper/preloaded/autolathe
+/obj/item/disk/data/fabricator/autolathe
 
-/obj/item/disk/data/hyper/preloaded/autolathe/compile_designs()
+/obj/item/disk/data/fabricator/autolathe/Initialize(mapload)
+	. = ..()
+	var/static/list/datum/design/hacked_designs
+	if(!hacked_designs)
+		var/list/L = list(
+			/datum/design/large_welding_tool,
+			/datum/design/handcuffs,
+			/datum/design/receiver,
+			/datum/design/cleaver,
+			/datum/design/toygun,
+			/datum/design/capbox,
+		)
+		hacked_designs = SStech.fetch_designs(L)
+	var/datum/c4_file/fab_design_bundle/hacked_design_bundle = new(hacked_designs.Copy())
+	hacked_design_bundle.set_name("fabrec_dev") //'development' he says.
+	root.try_add_file(hacked_design_bundle)
+
+/obj/item/disk/data/fabricator/autolathe/compile_designs()
 	. = ..()
 	. += list(
 		/datum/design/bucket,

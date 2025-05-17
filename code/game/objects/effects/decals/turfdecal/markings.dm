@@ -421,6 +421,42 @@
 /obj/effect/turf_decal/siding/wideplating_new/dark/end
 	icon_state = "siding_wideplating_new_end"
 
+/obj/effect/turf_decal/siding/fancy
+	icon_state = "siding_fancy"
+
+/obj/effect/turf_decal/siding/fancy/corner
+	icon_state = "siding_fancy_corner"
+
+/obj/effect/turf_decal/siding/fancy/end
+	icon_state = "siding_fancy_end"
+
+/obj/effect/turf_decal/siding/fancy/full
+	icon_state = "siding_fancy_full"
+
+/obj/effect/turf_decal/siding/fancy/grey
+	color = "#8d8c8c"
+
+/obj/effect/turf_decal/siding/fancy/grey/corner
+	icon_state = "siding_fancy_corner"
+
+/obj/effect/turf_decal/siding/fancy/grey/end
+	icon_state = "siding_fancy_end"
+
+/obj/effect/turf_decal/siding/fancy/grey/full
+	icon_state = "siding_fancy_full"
+
+/obj/effect/turf_decal/siding/fancy/wood
+	color = "#cb9e04"
+
+/obj/effect/turf_decal/siding/fancy/wood/corner
+	icon_state = "siding_fancy_corner"
+
+/obj/effect/turf_decal/siding/fancy/wood/end
+	icon_state = "siding_fancy_end"
+
+/obj/effect/turf_decal/siding/fancy/wood/full
+	icon_state = "siding_fancy_full"
+
 //Ported Markings
 
 /obj/effect/turf_decal/ported

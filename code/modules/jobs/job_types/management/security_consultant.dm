@@ -51,7 +51,7 @@
 // 	allow_jumpskirt = FALSE
 
 // 	id = /obj/item/card/id/advanced/silver
-// 	id_trim = /datum/id_trim/job/head_of_personnel
+// 	id_template = /datum/access_template/job/head_of_personnel
 // 	uniform = /obj/item/clothing/under/suit/burgundy
 // 	suit = /obj/item/clothing/suit/armor/vest/ballistic
 // 	belt = /obj/item/modular_computer/tablet/pda

@@ -97,6 +97,17 @@ DEFINE_INTERACTABLE(/obj/item)
 	///Item flags for the item
 	var/item_flags = NONE
 
+	/// Determines behavior for how fingerprints are given during interact_with_atom().
+	var/fingerprint_flags_interact_with_atom = ALL
+	/// Determines behavior for how fingerprints are given during attack_self().
+	// Currently unimplemented as attack self is fucked.
+	// var/fingerprint_flags_attack_self = ALL
+	/// Determines behavior for how fingerprints are given during tool_act()
+	var/fingerprint_flags_tool_act = FINGERPRINT_ITEM_SUCCESS | FINGERPRINT_OBJECT_SUCCESS
+
+	/// If set to TRUE, skip item interaction and just attack the target. See ATTACK_IF_COMBAT_MODE()
+	var/combat_mode_force_attack = FALSE
+
 	///Sound played when you hit something with the item
 	var/hitsound
 	var/wielded_hitsound
@@ -1738,16 +1749,25 @@ DEFINE_INTERACTABLE(/obj/item)
 /obj/item/proc/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
 	return TRUE
 
-/obj/item/proc/do_pickup_animation(atom/target)
-	if(!istype(loc, /turf))
+/obj/item/proc/do_pickup_animation(atom/target, turf/source)
+	if(!source && !isturf(loc))
 		return
-	var/image/pickup_animation = image(icon = src, loc = loc, layer = layer + 0.1)
+
+	source ||= loc
+	if(!in_range(target, source))
+		return
+
+	// If you're at the stage where you're picking up the item, just remove the outline.
+	if(length(filter_data))
+		remove_filter("hover_outline")
+
+	var/image/pickup_animation = image(icon = src)
 	pickup_animation.plane = GAME_PLANE
+	pickup_animation.layer = ABOVE_MOB_LAYER
 	pickup_animation.transform.Scale(0.75)
 	pickup_animation.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 
-	var/turf/current_turf = get_turf(src)
-	var/direction = get_dir(current_turf, target)
+	var/direction = get_dir(source, target)
 	var/to_x = target.base_pixel_x
 	var/to_y = target.base_pixel_y
 
@@ -1763,12 +1783,12 @@ DEFINE_INTERACTABLE(/obj/item)
 		to_y += 10
 		pickup_animation.pixel_x += 6 * (prob(50) ? 1 : -1) //6 to the right or left, helps break up the straight upward move
 
-	flick_overlay(pickup_animation, GLOB.clients, 4)
-	var/matrix/animation_matrix = new(pickup_animation.transform)
+	var/atom/movable/flick_visual/pickup = source.flick_overlay_view(pickup_animation, 0.4 SECONDS)
+	var/matrix/animation_matrix = new(pickup.transform)
 	animation_matrix.Turn(pick(-30, 30))
 	animation_matrix.Scale(0.65)
 
-	animate(pickup_animation, alpha = 175, pixel_x = to_x, pixel_y = to_y, time = 3, transform = animation_matrix, easing = CUBIC_EASING)
+	animate(pickup, alpha = 175, pixel_x = to_x, pixel_y = to_y, time = 3, transform = animation_matrix, easing = CUBIC_EASING)
 	animate(alpha = 0, transform = matrix().Scale(0.7), time = 1)
 
 /obj/item/proc/do_drop_animation(atom/moving_from)
@@ -1938,7 +1958,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /// Leave evidence of a user on a target
 /obj/item/proc/leave_evidence(mob/user, atom/target)
-	if(!(item_flags & NO_EVIDENCE_ON_ATTACK))
+	if(!(item_flags & NO_EVIDENCE_ON_INTERACTION))
 		target.add_fingerprint(user)
 	else
 		target.log_touch(user)

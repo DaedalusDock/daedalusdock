@@ -249,6 +249,7 @@ type BackendState<TData> = {
       fancy: boolean;
       key: string;
       locked: boolean;
+      scale: boolean;
       size: [number, number];
     };
   };

@@ -72,8 +72,8 @@
 	wires = new /datum/wires/mulebot(src)
 
 	// Doing this hurts my soul, but simplebot access reworks are for another day.
-	var/datum/id_trim/job/cargo_trim = SSid_access.trim_singletons_by_path[/datum/id_trim/job/cargo_technician]
-	access_card.add_access(cargo_trim.access + cargo_trim.wildcard_access)
+	var/datum/access_template/job/cargo_trim = SSid_access.template_singletons_by_path[/datum/access_template/job/cargo_technician]
+	access_card.add_access(cargo_trim.access)
 	prev_access = access_card.access.Copy()
 
 	cell = new /obj/item/stock_parts/cell/upgraded(src, 2000)
@@ -152,7 +152,7 @@
 		return
 	if(!cell)
 		to_chat(user, span_warning("[src] doesn't have a power cell!"))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 	cell.add_fingerprint(user)
 	if(Adjacent(user) && !issilicon(user))
 		user.put_in_hands(cell)
@@ -162,7 +162,7 @@
 					span_notice("You pry [cell] out of [src]."))
 	cell = null
 	diag_hud_set_mulebotcell()
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /mob/living/simple_animal/bot/mulebot/attackby(obj/item/I, mob/living/user, params)
 	if(istype(I, /obj/item/stock_parts/cell) && bot_cover_flags & BOT_COVER_OPEN)

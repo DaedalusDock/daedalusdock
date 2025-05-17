@@ -1,0 +1,36 @@
+2025-05-01:
+  Kapu1178:
+  - bugfix: Fixed (hopefully) all instances of run-away floating point precision issues
+      in atmospherics. All molar and pressure values should now always be rounded
+      to the ten-thousandths place.
+  - bugfix: Fixed a mathematical error in Vent Pump code that made them siphon slower
+      than intended.
+  LemonInTheDark, Ben10omintrix, Ghommie, Smartkar, Kapu1178:
+  - balance: Monkeys will now lose hatred over time if they aren't able to attack
+      their target. (This includes attempting to attack while the target is incapacitated!)
+  - balance: Monkeys attack 50% slower.
+  - balance: Monkeys have a higher initial hatred, but it decays sooner.
+2025-05-02:
+  Kapu1178:
+  - rscadd: Syringes can now be used as weapons.
+  - balance: Increased the damage of wrenches, screwdrivers, and wirecutters.
+2025-05-03:
+  Kapu1178:
+  - rscadd: You can now click on items with an Evidence Bag to pick them up without
+      leaving your own prints on them. Additionally, you may click on another location
+      to drop the item there.
+  Metek, Kapu1178:
+  - rscadd: Removing items from and placing items into storage containers now has
+      an animation.
+  - bugfix: Public do_after() strips maptext.
+2025-05-04:
+  Kapu1178:
+  - rscadd: Added interaction animations to many common interactions.
+2025-05-09:
+  Doctor-Derp:
+  - rscadd: Added variants of existing iron, dark and white tiles.
+  - rscadd: Added a missing grey techfloor tile.
+  - rscadd: A new fancy spline decal.
+2025-05-11:
+  Kapu1178, AngriestIBM, ZeWaka:
+  - rscadd: Computer4 version 1, feat. ThinkDOS.

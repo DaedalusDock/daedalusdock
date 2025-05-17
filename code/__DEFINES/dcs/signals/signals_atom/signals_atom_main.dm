@@ -15,6 +15,8 @@
 #define COMSIG_PARENT_EXAMINE_MORE "atom_examine_more"
 	//End positions
 	#define COMPONENT_EXNAME_CHANGED (1<<0)
+///from base of /atom/disco_flavor(): (/mob/living/carbon/human/user, nearby, is_station_level)
+#define COMSIG_DISCO_FLAVOR "atom_disco_flavor"
 ///from base of [/atom/proc/update_appearance]: (updates)
 #define COMSIG_ATOM_UPDATE_APPEARANCE "atom_update_appearance"
 	/// If returned from [COMSIG_ATOM_UPDATE_APPEARANCE] it prevents the atom from updating its name.

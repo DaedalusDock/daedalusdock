@@ -97,11 +97,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Restore BYOND cache
-        uses: actions/cache@v4
-        with:
-          path: ~/BYOND
-          key: ${{ runner.os }}-byond
+      - name: Prepare BYOND
+        uses: ./.github/actions/restore_or_install_byond
       - name: Compile All Maps
         run: |
           bash tools/ci/install_byond.sh

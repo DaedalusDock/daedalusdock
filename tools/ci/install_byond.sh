@@ -22,7 +22,7 @@ else
   then
     #Try and retrieve the fallback download location.
     export FALLBACK_URL=$(printenv "DL_FALLBACK_${BYOND_MAJOR}_${BYOND_MINOR}")
-    if [ -z $FALLBACK_URL];
+    if [ -z "$FALLBACK_URL" ];
     then
       echo "Download failed without fallback, Aborting"
       exit 22

@@ -1728,20 +1728,10 @@
 	if(!hud_used || isnull(appearance))
 		return
 
-	var/atom/movable/screen/container
-	if(isatom(container))
-		container = appearance
-	else
-		container = new()
-		container.appearance = appearance
+	var/atom/movable/screen/container = new
+	container.appearance = appearance
 
 	hud_used.vis_holder.add_viscontents(container)
-	addtimer(CALLBACK(src, PROC_REF(remove_appearance), appearance), 5 SECONDS, TIMER_DELETE_ME)
+	addtimer(CALLBACK(hud_used.vis_holder, TYPE_PROC_REF(/atom, remove_viscontents), container), 5 SECONDS, TIMER_DELETE_ME)
 
 	return container
-
-/mob/proc/remove_appearance(atom/movable/appearance)
-	if(!hud_used)
-		return
-
-	hud_used.vis_holder.remove_viscontents(appearance)

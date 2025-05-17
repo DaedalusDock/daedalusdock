@@ -369,6 +369,8 @@ SUBSYSTEM_DEF(garbage)
 /// Datums passed to this will be given a chance to clean up references to allow the GC to collect them.
 /proc/qdel(datum/to_delete, force = FALSE, ...)
 	if(!istype(to_delete))
+		if(isnull(to_delete))
+			return
 		non_datum_qdel(to_delete)
 		return
 

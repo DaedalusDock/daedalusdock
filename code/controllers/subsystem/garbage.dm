@@ -342,10 +342,6 @@ SUBSYSTEM_DEF(garbage)
 	var/qdel_flags = 0 //!Flags related to this type's trip thru qdel.
 	var/list/extra_details //!Lazylist of string metadata about the deleted objects
 
-/proc/test_qdel()
-	var/list/L = new()
-	qdel(L)
-
 /datum/qdel_item/New(mytype)
 	name = "[mytype]"
 
@@ -367,8 +363,8 @@ SUBSYSTEM_DEF(garbage)
 		if(ispath(to_delete))
 			found_type = "typepath"
 		del(to_delete)
-		throw UNLINT(EXCEPTION("Bad qdel ([found_type]) at [caller.file], Line: [caller.line]."))
-		return
+
+		CRASH("Bad qdel ([found_type])")
 
 	var/datum/qdel_item/trash = SSgarbage.items[to_delete.type]
 	if (isnull(trash))

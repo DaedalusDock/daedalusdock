@@ -8,7 +8,7 @@ $(curl --fail -H "User-Agent: daedalus/1.0 CI Script" "http://www.byond.com/down
 #22 - Unacceptable status code.
 if [ $? -eq 22 ];
 then
-source .github/actions/restore_or_install_byond/fallbacks.sh
+source fallbacks.sh
 #Try and retrieve the fallback download location.
 export FALLBACK_URL=$(printenv "DL_FALLBACK_${BYOND_MAJOR}_${BYOND_MINOR}_WIN")
 if [ -z "$FALLBACK_URL" ];

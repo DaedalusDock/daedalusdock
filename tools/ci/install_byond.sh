@@ -20,6 +20,7 @@ else
   #22 - Unacceptable status code.
   if [ $? -eq 22 ];
   then
+    source .github/actions/restore_or_install_byond/fallbacks.sh
     #Try and retrieve the fallback download location.
     export FALLBACK_URL=$(printenv "DL_FALLBACK_${BYOND_MAJOR}_${BYOND_MINOR}")
     if [ -z "$FALLBACK_URL" ];

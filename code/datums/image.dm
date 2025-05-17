@@ -1,5 +1,6 @@
 /image/Destroy(force, ...)
-	SHOULD_CALL_PARENT(FALSE)
+	if(force)
+		return ..()
 
 	. = QDEL_HINT_LETMELIVE
 	CRASH("Image Destroy() invoked.")

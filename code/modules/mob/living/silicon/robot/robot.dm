@@ -145,7 +145,6 @@
 			radio.keyslot = null
 	QDEL_NULL(wires)
 	QDEL_NULL(model)
-	QDEL_NULL(eye_lights)
 	QDEL_NULL(inv1)
 	QDEL_NULL(inv2)
 	QDEL_NULL(inv3)
@@ -153,6 +152,7 @@
 	QDEL_NULL(spark_system)
 	QDEL_NULL(alert_control)
 	QDEL_LIST(upgrades)
+	eye_lights = null
 	cell = null
 	return ..()
 

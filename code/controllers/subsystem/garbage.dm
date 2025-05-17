@@ -345,26 +345,32 @@ SUBSYSTEM_DEF(garbage)
 /datum/qdel_item/New(mytype)
 	name = "[mytype]"
 
+/proc/non_datum_qdel(to_delete)
+	var/found_type = "unable to determine type"
+	var/delable = FALSE
+
+	if(islist(to_delete))
+		found_type = "list"
+		delable = TRUE
+
+	if(isnum(to_delete))
+		found_type = "number"
+
+	if(ispath(to_delete))
+		found_type = "typepath"
+
+	if(delable)
+		del(to_delete)
+
+	CRASH("Bad qdel ([found_type])")
+
 /// Should be treated as a replacement for the 'del' keyword.
 ///
 /// Datums passed to this will be given a chance to clean up references to allow the GC to collect them.
 /proc/qdel(datum/to_delete, force = FALSE, ...)
 	if(!istype(to_delete))
-		if(isnull(to_delete))
-			return
-
-		var/found_type = "unable to determine type"
-		if(islist(to_delete))
-			found_type = "list"
-		if(isimage(to_delete))
-			found_type = "image"
-		if(isnum(to_delete))
-			found_type = "number"
-		if(ispath(to_delete))
-			found_type = "typepath"
-		del(to_delete)
-
-		CRASH("Bad qdel ([found_type])")
+		non_datum_qdel(to_delete)
+		return
 
 	var/datum/qdel_item/trash = SSgarbage.items[to_delete.type]
 	if (isnull(trash))

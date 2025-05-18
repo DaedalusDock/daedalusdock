@@ -242,7 +242,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		persistent_client.byond_version = byond_build
 		persistent_client.byond_build = byond_build
 	else
-		persistent_client = new(ckey)
+		persistent_client = new(ckey, src)
 		persistent_client.byond_version = byond_version
 		persistent_client.byond_build = byond_build
 

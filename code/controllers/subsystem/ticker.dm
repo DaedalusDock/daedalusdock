@@ -142,6 +142,7 @@ SUBSYSTEM_DEF(ticker)
 			SEND_SIGNAL(src, COMSIG_TICKER_ENTER_PREGAME)
 
 			fire()
+
 		if(GAME_STATE_PREGAME)
 				//lobby stats for statpanels
 			if(isnull(timeLeft))
@@ -722,8 +723,9 @@ SUBSYSTEM_DEF(ticker)
 		if(!player.client)
 			continue
 
-		player.persistent_client.title_next_in_line = track
-		player.client.cycle_title_music()
+		player.persistent_client.playlist.push_to_front(track)
+		player.persistent_client.playlist.cycle_track()
+		player.persistent_client.playlist.play_track()
 
 /datum/controller/subsystem/ticker/proc/pick_login_music()
 	var/list/title_music_data = SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_COMMON)

@@ -16,18 +16,23 @@
 
 /// Plays the current selected track.
 /datum/playlist/proc/play_track()
-	if(!selected_track || !(parent.client?.prefs.toggles & SOUND_LOBBY))
+	if(!selected_track || !(parent.client?.prefs.toggles & SOUND_LOBBY) || !isnewplayer(parent.client.mob))
 		return
 
 	var/sound/S = sound(selected_track.path, repeat = 0, wait = 0, volume = 85, channel = CHANNEL_LOBBYMUSIC)
-	S.params = "on-end=.cycle_title_music&on-preempt="
+	S.params = list(
+		"on-end" = ".cycle_title_music",
+		"on-preempt" = null,
+	)
+
 	SEND_SOUND(parent.client, S)
 
 	announce_track()
 
 /// Stops the current track.
 /datum/playlist/proc/stop_track()
-	SEND_SOUND(parent.client, sound(wait = FALSE, channel = CHANNEL_LOBBYMUSIC))
+	var/sound/S = sound(wait = FALSE, channel = CHANNEL_LOBBYMUSIC)
+	SEND_SOUND(parent.client, S)
 
 /// Cycles the playlist, refreshing the queue if it is empty.
 /datum/playlist/proc/cycle_track()

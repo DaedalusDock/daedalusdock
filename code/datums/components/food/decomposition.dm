@@ -39,7 +39,7 @@
 		COMSIG_ATOM_ENTERED), //Object enters a storage object (boxes, etc.)
 		PROC_REF(picked_up))
 	RegisterSignal(parent, list(
-		COMSIG_ITEM_DROPPED, //Object is dropped anywhere
+		COMSIG_ITEM_UNEQUIPPED, //Object is dropped anywhere
 		COMSIG_ATOM_EXITED), //Object exits a storage object (boxes, etc)
 		PROC_REF(dropped))
 	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, PROC_REF(examine))
@@ -61,7 +61,7 @@
 		COMSIG_ITEM_PICKUP,
 		COMSIG_ATOM_ENTERED,
 		COMSIG_MOVABLE_MOVED,
-		COMSIG_ITEM_DROPPED,
+		COMSIG_ITEM_UNEQUIPPED,
 		COMSIG_ATOM_EXITED,
 		COMSIG_PARENT_EXAMINE))
 

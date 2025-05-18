@@ -335,17 +335,24 @@
 /turf/proc/make_air()
 	if(simulated)
 		air = new/datum/gas_mixture
-		air.temperature = temperature
 		if(initial_gas)
 			air.gas = initial_gas.Copy()
-		AIR_UPDATE_VALUES(air)
+			air.temperature = temperature
+		air.garbageCollect()
 
 	else
-		if(!isnull(air))
+		if(air)
 			return air
 
 		// Grab an existing mixture from the cache
-		var/gas_key = json_encode(initial_gas + temperature)
+		var/gas_key
+		if(isnull(initial_gas))
+			gas_key = "VACUUM_ATMOS"
+		else
+			var/list/initial_gas_copy = initial_gas.Copy()
+			initial_gas_copy["temperature"] = temperature
+			gas_key = json_encode(initial_gas)
+
 		var/datum/gas_mixture/GM = SSzas.unsimulated_gas_cache[gas_key]
 		if(GM)
 			air = GM
@@ -356,8 +363,11 @@
 		air = GM
 		if(!isnull(initial_gas))
 			GM.gas = initial_gas.Copy()
-		GM.temperature = temperature
-		AIR_UPDATE_VALUES(GM)
+			GM.temperature = temperature
+		else
+			GM.temperature = TCMB
+
+		GM.garbageCollect()
 		SSzas.unsimulated_gas_cache[gas_key] = air
 
 ///Copies this turf's group share from the zone. Usually used before removing it from the zone.

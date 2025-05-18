@@ -44,10 +44,16 @@
 
 	//the time a key was pressed isn't actually used anywhere (as of 2019-9-10) but this allows easier access usage/checking
 	keys_held[_key] = world.time
-	if(!movement_locked)
-		var/movement = movement_keys[_key]
-		if(!(next_move_dir_sub & movement))
+	var/movement = movement_keys[_key]
+	if(movement)
+		calculate_move_dir()
+		if(!movement_locked && !(next_move_dir_sub & movement))
 			next_move_dir_add |= movement
+
+	// Raw keys are handled first
+	var/datum/keybinding/rawkey/raw_keybind = GLOB.raw_keybindings_by_key[_key]
+	if(raw_keybind)
+		raw_keybind.down(src)
 
 	// Client-level keybindings are ones anyone should be able to do at any time
 	// Things like taking screenshots, hitting tab, and adminhelps.
@@ -73,8 +79,6 @@
 
 	holder?.key_down(_key, src)
 	mob.focus?.key_down(_key, src)
-	if(ShiftMod)
-		mob.update_mouse_pointer()
 
 
 /client/verb/keyUp(_key as text)
@@ -89,26 +93,28 @@
 	if(!keys_held[_key])
 		return
 
-	var/update_pointer = FALSE
-	if(keys_held["Shift"])
-		update_pointer = TRUE
-
 	keys_held -= _key
 
-	if(update_pointer == TRUE)
-		mob.update_mouse_pointer()
-
-	if(!movement_locked)
-		var/movement = movement_keys[_key]
-		if(!(next_move_dir_add & movement))
+	var/movement = movement_keys[_key]
+	if(movement)
+		calculate_move_dir()
+		if(!movement_locked && !(next_move_dir_add & movement))
 			next_move_dir_sub |= movement
+
+	// Raw keys are handled first
+	var/datum/keybinding/rawkey/raw_keybind = GLOB.raw_keybindings_by_key[_key]
+	if(raw_keybind)
+		raw_keybind.up(src)
 
 	// We don't do full key for release, because for mod keys you
 	// can hold different keys and releasing any should be handled by the key binding specifically
+	var/keycount = 0
 	for (var/kb_name in prefs.key_bindings_by_key[_key])
+		keycount++
 		var/datum/keybinding/kb = GLOB.keybindings_by_name[kb_name]
-		if(kb.can_use(src) && kb.up(src))
+		if(kb.can_use(src) && kb.up(src) && keycount >= MAX_COMMANDS_PER_KEY)
 			break
+
 	holder?.key_up(_key, src)
 	mob.focus?.key_up(_key, src)
 

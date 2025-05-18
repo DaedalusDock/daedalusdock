@@ -23,14 +23,9 @@ The console is located at computer/gulag_teleporter.dm
 	var/jumpsuit_type = /obj/item/clothing/under/rank/prisoner
 	var/jumpskirt_type = /obj/item/clothing/under/rank/prisoner/skirt
 	var/shoes_type = /obj/item/clothing/shoes/sneakers/orange
-	var/emergency_plasglove_type = /obj/item/clothing/gloves/color/plasmaman
 	var/obj/machinery/gulag_item_reclaimer/linked_reclaimer
 	var/static/list/telegulag_required_items = typecacheof(list(
 		/obj/item/implant,
-		/obj/item/clothing/suit/space/eva/plasmaman,
-		/obj/item/clothing/under/plasmaman,
-		/obj/item/clothing/head/helmet/space/plasmaman,
-		/obj/item/clothing/gloves/color/plasmaman,
 		/obj/item/tank/internals,
 		/obj/item/clothing/mask/breath,
 		/obj/item/clothing/mask/gas,
@@ -146,16 +141,14 @@ The console is located at computer/gulag_teleporter.dm
 				else
 					W.forceMove(src)
 
-/obj/machinery/gulag_teleporter/proc/handle_prisoner(obj/item/id, datum/data/record/R)
+/obj/machinery/gulag_teleporter/proc/handle_prisoner(obj/item/id, datum/data/record/security/R)
 	if(!ishuman(occupant))
 		return
 	strip_occupant()
 	var/mob/living/carbon/human/prisoner = occupant
-	if(!isplasmaman(prisoner) && jumpsuit_type)
+	if(jumpsuit_type)
 		var/suit_or_skirt = prisoner.jumpsuit_style == PREF_SKIRT ? jumpskirt_type : jumpsuit_type //Check player prefs for jumpsuit or jumpskirt toggle, then give appropriate prison outfit.
 		prisoner.equip_to_appropriate_slot(new suit_or_skirt, qdel_on_fail = TRUE)
-	if(isplasmaman(prisoner) && !prisoner.gloves && emergency_plasglove_type)
-		prisoner.equip_to_appropriate_slot(new emergency_plasglove_type, qdel_on_fail = TRUE)
 	if(shoes_type)
 		prisoner.equip_to_appropriate_slot(new shoes_type, qdel_on_fail = TRUE)
 	if(id)

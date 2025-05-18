@@ -43,10 +43,13 @@
 	var/list/pinned_to = list()
 	/// If we're allowed to use this module while phased out.
 	var/allowed_in_phaseout = FALSE
+	/// A list of slots required in the suit to work. Formatted like list(x|y, z, ...) where either x or y are required and z is required.
+	var/list/required_slots = list()
 	/// Timer for the cooldown
 	COOLDOWN_DECLARE(cooldown_timer)
 	/// If this module can be used while the suit is inactive
 	var/allowed_inactive = FALSE
+
 
 /obj/item/mod/module/Initialize(mapload)
 	. = ..()
@@ -69,6 +72,35 @@
 	. = ..()
 	if(HAS_TRAIT(user, TRAIT_DIAGNOSTIC_HUD))
 		. += span_notice("Complexity level: [complexity]")
+
+	if(length(required_slots))
+		var/list/slot_strings = list()
+		for(var/slot in required_slots)
+			var/list/slot_list = parse_slot_flags(slot)
+			slot_strings += (length(slot_list) == 1 ? "" : "one of ") + english_list(slot_list, and_text = " or ")
+		. += span_notice("Requires the MOD unit to have the following slots: [english_list(slot_strings)]")
+
+/// Looks through the MODsuit's parts to see if it has the parts required to support this module
+/obj/item/mod/module/proc/has_required_parts(list/parts, need_extended = FALSE)
+	if(!length(required_slots))
+		return TRUE
+
+	var/total_slot_flags = NONE
+	for(var/part_slot in parts)
+		if(need_extended)
+			var/datum/mod_part/part_datum = parts[part_slot]
+			if(part_datum.part_item.loc == mod)
+				continue
+
+		total_slot_flags |= text2num(part_slot)
+
+	var/list/needed_slots = required_slots.Copy()
+	for(var/needed_slot in needed_slots)
+		if(!(needed_slot & total_slot_flags))
+			break
+		needed_slots -= needed_slot
+
+	return !length(needed_slots)
 
 /// Called from MODsuit's install() proc, so when the module is installed.
 /obj/item/mod/module/proc/on_install()
@@ -96,37 +128,50 @@
 
 /// Called when the module is selected from the TGUI, radial or the action button
 /obj/item/mod/module/proc/on_select()
+	if(!mod.wearer)
+		if(ismob(mod.loc))
+			balloon_alert(mod.loc, "not equipped!")
+		return
+
 	if(!allowed_inactive && (!mod.active || mod.activating || module_type == MODULE_PASSIVE))
 		if(mod.wearer)
 			balloon_alert(mod.wearer, "not active!")
 		return
+
 	if(module_type != MODULE_USABLE)
 		if(active)
-			on_deactivation()
+			deactivate()
 		else
-			on_activation()
+			activate()
 	else
-		on_use()
+		used()
+
 	SEND_SIGNAL(mod, COMSIG_MOD_MODULE_SELECTED, src)
 
 /// Called when the module is activated
-/obj/item/mod/module/proc/on_activation()
+/obj/item/mod/module/proc/activate()
 	if(!COOLDOWN_FINISHED(src, cooldown_timer))
 		balloon_alert(mod.wearer, "on cooldown!")
 		return FALSE
+
 	if(!allowed_inactive && (!mod.active || mod.activating || !mod.get_charge()))
 		balloon_alert(mod.wearer, "unpowered!")
 		return FALSE
+
 	if(!allowed_in_phaseout && istype(mod.wearer.loc, /obj/effect/dummy/phased_mob))
 		//specifically a to_chat because the user is phased out.
 		to_chat(mod.wearer, span_warning("You cannot activate this right now."))
 		return FALSE
+
 	if(SEND_SIGNAL(src, COMSIG_MODULE_TRIGGERED) & MOD_ABORT_USE)
 		return FALSE
+
 	if(module_type == MODULE_ACTIVE)
-		if(mod.selected_module && !mod.selected_module.on_deactivation(display_message = FALSE))
+		if(mod.selected_module && !mod.selected_module.deactivate(display_message = FALSE))
 			return FALSE
+
 		mod.selected_module = src
+
 		if(device)
 			if(mod.wearer.put_in_hands(device))
 				balloon_alert(mod.wearer, "[device] extended")
@@ -140,19 +185,23 @@
 			var/used_button = mod.wearer.client?.prefs.read_preference(/datum/preference/choiced/mod_select) || MIDDLE_CLICK
 			update_signal(used_button)
 			balloon_alert(mod.wearer, "[src] activated, [used_button]-click to use")
+
 	active = TRUE
 	COOLDOWN_START(src, cooldown_timer, cooldown_time)
 	mod.wearer.update_worn_back()
 	SEND_SIGNAL(src, COMSIG_MODULE_ACTIVATED)
+	on_activation()
 	return TRUE
 
 /// Called when the module is deactivated
-/obj/item/mod/module/proc/on_deactivation(display_message = TRUE, deleting = FALSE)
+/obj/item/mod/module/proc/deactivate(display_message = TRUE, deleting = FALSE)
 	active = FALSE
+
 	if(module_type == MODULE_ACTIVE)
 		mod.selected_module = null
 		if(display_message)
 			balloon_alert(mod.wearer, device ? "[device] retracted" : "[src] deactivated")
+
 		if(device)
 			mod.wearer.transferItemToLoc(device, src, force = TRUE)
 			UnregisterSignal(mod.wearer, COMSIG_ATOM_EXITED)
@@ -160,36 +209,47 @@
 		else
 			UnregisterSignal(mod.wearer, used_signal)
 			used_signal = null
+
 	mod.wearer.update_worn_back()
 	SEND_SIGNAL(src, COMSIG_MODULE_DEACTIVATED)
+	on_deactivation(display_message = TRUE, deleting = FALSE)
 	return TRUE
 
 /// Called when the module is used
-/obj/item/mod/module/proc/on_use()
+/obj/item/mod/module/proc/used()
 	if(!COOLDOWN_FINISHED(src, cooldown_timer))
 		balloon_alert(mod.wearer, "on cooldown!")
 		return FALSE
+
 	if(!check_power(use_power_cost))
 		balloon_alert(mod.wearer, "not enough charge!")
 		return FALSE
+
 	if(!allowed_in_phaseout && istype(mod.wearer.loc, /obj/effect/dummy/phased_mob))
 		//specifically a to_chat because the user is phased out.
 		to_chat(mod.wearer, span_warning("You cannot activate this right now."))
 		return FALSE
+
 	if(SEND_SIGNAL(src, COMSIG_MODULE_TRIGGERED) & MOD_ABORT_USE)
 		return FALSE
+
 	COOLDOWN_START(src, cooldown_timer, cooldown_time)
 	addtimer(CALLBACK(mod.wearer, TYPE_PROC_REF(/mob, update_worn_back)), cooldown_time+1) //need to run it a bit after the cooldown starts to avoid conflicts
+
 	mod.wearer.update_worn_back()
+
 	SEND_SIGNAL(src, COMSIG_MODULE_USED)
+	on_use()
 	return TRUE
 
 /// Called when an activated module without a device is used
 /obj/item/mod/module/proc/on_select_use(atom/target)
 	if(mod.wearer.incapacitated(IGNORE_GRAB))
 		return FALSE
+
 	mod.wearer.face_atom(target)
-	if(!on_use())
+
+	if(!used())
 		return FALSE
 	return TRUE
 
@@ -203,12 +263,25 @@
 /obj/item/mod/module/proc/on_process(delta_time)
 	if(active)
 		if(!drain_power(active_power_cost * delta_time))
-			on_deactivation()
+			deactivate()
 			return FALSE
 		on_active_process(delta_time)
+
 	else
 		drain_power(idle_power_cost * delta_time)
 	return TRUE
+
+/// Called from the module's activate()
+/obj/item/mod/module/proc/on_activation()
+	return
+
+/// Called from the module's deactivate()
+/obj/item/mod/module/proc/on_deactivation(display_message = TRUE, deleting = FALSE)
+	return
+
+/// Called from the module's used()
+/obj/item/mod/module/proc/on_use()
+	return
 
 /// Called on the MODsuit's process if it is an active module
 /obj/item/mod/module/proc/on_active_process(delta_time)
@@ -255,7 +328,7 @@
 	if(part.loc == mod.wearer)
 		return
 	if(part == device)
-		on_deactivation(display_message = FALSE)
+		deactivate(display_message = FALSE)
 
 /// Called when the device gets deleted on active modules
 /obj/item/mod/module/proc/on_device_deletion(datum/source)
@@ -309,7 +382,7 @@
 
 	if(user.get_active_held_item() != device)
 		return
-	on_deactivation()
+	deactivate()
 	return COMSIG_KB_ACTIVATED
 
 ///Anomaly Locked - Causes the module to not function without an anomaly.

@@ -37,7 +37,7 @@
 	SIGNAL_HANDLER
 
 	if(occupant)
-		vis_contents -= occupant
+		remove_viscontents(occupant)
 		REMOVE_TRAIT(occupant, TRAIT_IMMOBILIZED, CRYO_TRAIT)
 		REMOVE_TRAIT(occupant, TRAIT_FORCED_STANDING, CRYO_TRAIT)
 
@@ -46,7 +46,7 @@
 		return
 
 	occupant.setDir(SOUTH)
-	vis_contents += occupant
+	add_viscontents(occupant)
 	pixel_y = 22
 	ADD_TRAIT(occupant, TRAIT_IMMOBILIZED, CRYO_TRAIT)
 	// Keep them standing! They'll go sideways in the tube when they fall asleep otherwise.
@@ -122,7 +122,7 @@
 	radio.recalculateChannels()
 
 	occupant_vis = new(null, src)
-	vis_contents += occupant_vis
+	add_viscontents(occupant_vis)
 	if(airs[1])
 		airs[1].volume = 200
 
@@ -158,7 +158,7 @@
 		. += span_notice("The status display reads: Efficiency at <b>[efficiency*100]%</b>.")
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/Destroy()
-	vis_contents.Cut()
+	cut_viscontents()
 
 	QDEL_NULL(occupant_vis)
 	QDEL_NULL(radio)
@@ -340,20 +340,20 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 	else
 		to_chat(user, "<span class='warning'>You can't access the maintenance panel while the pod is " \
 		+ (on ? "active" : (occupant ? "full" : "open")) + "!</span>")
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/crowbar_act(mob/living/user, obj/item/tool)
 	if(on || occupant || state_open)
 		return FALSE
 	if(default_pry_open(tool) || default_deconstruction_crowbar(tool))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/wrench_act(mob/living/user, obj/item/tool)
 	if(on || occupant || state_open)
 		return FALSE
 	if(default_change_direction_wrench(user, tool))
 		update_appearance()
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/reagent_containers/glass))

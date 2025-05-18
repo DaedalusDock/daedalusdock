@@ -10,12 +10,12 @@
 	update_icons()
 
 
-/mob/living/carbon/alien/larva/update_stat()
+/mob/living/carbon/alien/larva/update_stat(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)
 		if(health<= -maxHealth || !getorgan(/obj/item/organ/brain))
-			death()
+			death(cause_of_death = cause_of_death)
 			return
 		if((HAS_TRAIT(src, TRAIT_KNOCKEDOUT)))
 			set_stat(UNCONSCIOUS)

@@ -51,7 +51,7 @@
 
 	// by default, vis_contents is inherited from the turf that was here before
 	if(length(vis_contents))
-		vis_contents.len = 0
+		cut_viscontents()
 
 	assemble_baseturfs()
 
@@ -66,12 +66,8 @@
 
 	QUEUE_SMOOTH(src)
 
-	// visibilityChanged() will never hit any path with side effects during mapload
-	if (!mapload)
-		visibilityChanged()
-
 	var/area/our_area = loc
-	if(!our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
+	if(!our_area.luminosity && always_lit) //Only provide your own lighting if the area doesn't for you
 		add_overlay(global.fullbright_overlay)
 
 	if (light_power && light_outer_range)

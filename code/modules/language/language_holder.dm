@@ -62,6 +62,9 @@ Key procs
 		if(M.current)
 			update_atom_languages(M.current)
 
+	if(selected_language)
+		set_selected_language(GET_LANGUAGE_DATUM(selected_language))
+
 	// If we have an owner, we'll set a default selected language
 	if(owner)
 		get_selected_language()
@@ -70,6 +73,13 @@ Key procs
 	QDEL_NULL(language_menu)
 	owner = null
 	return ..()
+
+/// Setter for selected language.
+/datum/language_holder/proc/set_selected_language(datum/language/new_selected)
+	if(!istype(new_selected))
+		CRASH("Tried to set selected language to a [new_selected].")
+
+	selected_language = new_selected
 
 /// Grants the supplied language.
 /datum/language_holder/proc/grant_language(datum/language/language, understood = TRUE, spoken = TRUE, source = LANGUAGE_MIND)
@@ -177,7 +187,7 @@ Key procs
 /// Checks if you can speak the language. Tongue limitations should be supplied as an argument.
 /datum/language_holder/proc/can_speak_language(datum/language/language)
 	var/atom/movable/ouratom = get_atom()
-	var/can_speak_language = language.can_speak_language(ouratom)
+	var/can_speak_language = language.can_speak_language(ouratom, ignore_mute = TRUE)
 
 	if((bypass_speaking_limitations || can_speak_language) && has_language(language, TRUE))
 		return TRUE
@@ -185,6 +195,8 @@ Key procs
 
 /// Returns selected language if it can be spoken, or decides, sets and returns a new selected language if possible.
 /datum/language_holder/proc/get_selected_language()
+	RETURN_TYPE(/datum/language)
+
 	if(selected_language && can_speak_language(selected_language))
 		return selected_language
 
@@ -197,7 +209,7 @@ Key procs
 
 		if((!highest_priority || (priority > highest_priority)) && !(language.type in blocked_languages))
 			if(can_speak_language(language))
-				selected_language = language
+				set_selected_language(language)
 				highest_priority = priority
 
 	return selected_language
@@ -368,20 +380,6 @@ Key procs
 	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
 							/datum/language/voltaic = list(LANGUAGE_ATOM))
 
-/datum/language_holder/golem
-	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-								/datum/language/terrum = list(LANGUAGE_ATOM))
-	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-							/datum/language/terrum = list(LANGUAGE_ATOM))
-
-/datum/language_holder/golem/runic
-	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-								/datum/language/terrum = list(LANGUAGE_ATOM),
-								/datum/language/narsie = list(LANGUAGE_ATOM))
-	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-							/datum/language/terrum = list(LANGUAGE_ATOM),
-							/datum/language/narsie = list(LANGUAGE_ATOM))
-
 /datum/language_holder/fly
 	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
 								/datum/language/buzzwords = list(LANGUAGE_ATOM))
@@ -433,3 +431,12 @@ Key procs
 /datum/language_holder/universal/New()
 	..()
 	grant_all_languages()
+
+/datum/language_holder/flock
+	understood_languages = list(
+		/datum/language/common = list(LANGUAGE_ATOM),
+		/datum/language/flock = list(LANGUAGE_ATOM),
+	)
+	spoken_languages = list(
+		/datum/language/flock = list(LANGUAGE_ATOM),
+	)

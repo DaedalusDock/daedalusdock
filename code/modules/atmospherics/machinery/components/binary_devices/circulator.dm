@@ -188,7 +188,7 @@
 	to_chat(user, span_notice("You change the circuitboard to layer [piping_layer]."))
 	reset_connections()
 	update_appearance()
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/components/binary/circulator/multitool_act_secondary(mob/living/user, obj/item/I)
 	color_index = (color_index >= GLOB.pipe_paint_colors.len) ? (color_index = 1) : (color_index = 1 + color_index)
@@ -196,7 +196,7 @@
 	visible_message("<span class='notice'>You set [src]'s pipe color to [GLOB.pipe_color_name[pipe_color]].")
 	reset_connections()
 	update_appearance()
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/components/binary/circulator/screwdriver_act(mob/living/user, obj/item/I)
 	if(..())
@@ -207,7 +207,7 @@
 	to_chat(user, span_notice("You switch [src] to [mode ? "cold" : "hot"] mode."))
 	I.play_tool_sound(src)
 	update_appearance()
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/components/binary/circulator/welder_act(mob/living/user, obj/item/I)
 	if(atom_integrity >= max_integrity)

@@ -985,7 +985,7 @@
 		if(linked.saved_mind)
 			linked.saved_mind.transfer_to(familiar)
 			familiar.update_atom_languages()
-			familiar.ckey = linked.saved_mind.key
+			familiar.PossessByPlayer(linked.saved_mind.key)
 	else
 		if(familiar.mind)
 			linked.saved_mind = familiar.mind

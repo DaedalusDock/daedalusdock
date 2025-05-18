@@ -20,7 +20,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 	// circuit = /obj/item/circuitboard/cryopodcontrol
 	density = FALSE
 	interaction_flags_machine = INTERACT_MACHINE_OFFLINE
-	req_one_access = list(ACCESS_HEADS, ACCESS_ARMORY) // Heads of staff or the warden can go here to claim recover items from their department that people went were cryodormed with.
+	req_one_access = list(ACCESS_SECURITY) // Security can reclaim objects.
 	var/mode = null
 
 	/// Used for logging people entering cryosleep and important items they are carrying.
@@ -81,7 +81,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 		var/mob/living/living_user = user
 		var/obj/item/card/id/id = living_user.get_idcard()
 		if(id)
-			if((ACCESS_HEADS in id.access) || (ACCESS_ARMORY in id.access))
+			if((ACCESS_FACTION_LEADER in id.access) || (ACCESS_ARMORY in id.access))
 				item_retrieval_allowed = TRUE
 	data["item_retrieval_allowed"] = item_retrieval_allowed
 
@@ -273,17 +273,8 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 		crew_member["job"] = "N/A"
 
 	// Delete them from datacore.
-	var/announce_rank = null
-	for(var/datum/data/record/medical_record as anything in GLOB.data_core.medical)
-		if(medical_record.fields["name"] == mob_occupant.real_name)
-			qdel(medical_record)
-	for(var/datum/data/record/security_record as anything in GLOB.data_core.security)
-		if(security_record.fields["name"] == mob_occupant.real_name)
-			qdel(security_record)
-	for(var/datum/data/record/general_record as anything in GLOB.data_core.general)
-		if(general_record.fields["name"] == mob_occupant.real_name)
-			announce_rank = general_record.fields["rank"]
-			qdel(general_record)
+	var/announce_rank = SSdatacore.get_record_by_name(mob_occupant.real_name, DATACORE_RECORDS_STATION)?.fields[DATACORE_RANK]
+	SSdatacore.demanifest(mob_occupant.real_name)
 
 	var/obj/machinery/computer/cryopod/control_computer = control_computer_weakref?.resolve()
 	if(!control_computer)
@@ -304,7 +295,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 		if (issilicon(mob_occupant) && istype(item_content, /obj/item/mmi))
 			continue
 		if(control_computer)
-			item_content.dropped(mob_occupant)
+			item_content.unequipped(mob_occupant)
 			mob_occupant.transferItemToLoc(item_content, control_computer, force = TRUE, silent = TRUE)
 			control_computer.frozen_item += item_content
 		else mob_occupant.transferItemToLoc(item_content, drop_location(), force = TRUE, silent = TRUE)
@@ -341,7 +332,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 			tgui_alert(target, "You're an important role! [AHELP_FIRST_MESSAGE]")
 		var/datum/antagonist/antag = target.mind.has_antag_datum(/datum/antagonist)
 		if(antag)
-			tgui_alert(target, "You're \a [antag.name]! [AHELP_FIRST_MESSAGE]")
+			tgui_alert(target, "You're [antag.get_name()]! [AHELP_FIRST_MESSAGE]")
 
 	if(!istype(target) || !can_interact(user) || !target.Adjacent(user) || !ismob(target) || isanimal(target) || !istype(user.loc, /turf) || target.buckled)
 		return

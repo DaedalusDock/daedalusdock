@@ -232,6 +232,17 @@
 	fade_in = 20
 	fade_out = 20
 
+/datum/client_colour/flockmind
+	colour = list(
+		1.00, 0.00, 0.00, 0.00,
+		0.00, 1.00, 0.00, 0.00,
+		0.00, 0.00, 1.00, 0.00,
+		0.00, 0.00, 0.00, 1.00,
+		0.00, 0.10, 0.20, 0.00
+	)
+	override = TRUE
+	priority = PRIORITY_ABSOLUTE
+
 #undef PRIORITY_ABSOLUTE
 #undef PRIORITY_HIGH
 #undef PRIORITY_NORMAL

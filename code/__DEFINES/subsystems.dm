@@ -120,10 +120,10 @@
 #define INIT_ORDER_SERVER_MAINT 93
 #define INIT_ORDER_INPUT 85
 #define INIT_ORDER_MODMANAGER 84
-#define INIT_ORDER_SOUNDS 83
-#define INIT_ORDER_INSTRUMENTS 82
-#define INIT_ORDER_GREYSCALE 81
-#define INIT_ORDER_VIS 79
+#define INIT_ORDER_SOUND_CACHE 83
+#define INIT_ORDER_SOUNDS 82
+#define INIT_ORDER_INSTRUMENTS 81
+#define INIT_ORDER_GREYSCALE 80
 #define INIT_ORDER_DISCORD 78
 #define INIT_ORDER_ACHIEVEMENTS 77
 #define INIT_ORDER_STATION 74 //This is high priority because it manipulates a lot of the subsystems that will initialize after it.
@@ -131,15 +131,16 @@
 #define INIT_ORDER_MATERIALS 72 //HAS to be before reagents, reagents have materials
 #define INIT_ORDER_REAGENTS 71 //HAS to be before mapping and assets - both create objects, which creates reagents, which relies on lists made in this subsystem
 #define INIT_ORDER_EVENTS 70
-#define INIT_ORDER_IDACCESS 66
-#define INIT_ORDER_JOBS 65 // Must init before atoms, to set up properly the dynamic job lists.
-#define INIT_ORDER_AI_MOVEMENT 56 //We need the movement setup
-#define INIT_ORDER_MEDIA 56 //Needs to init before ticker to generate the login music pool
-#define INIT_ORDER_AI_CONTROLLERS 55 //So the controller can get the ref
-#define INIT_ORDER_TICKER 55
+#define INIT_ORDER_IDACCESS 68
+#define INIT_ORDER_JOBS 67 // Must init before atoms, to set up properly the dynamic job lists.
+#define INIT_ORDER_AI_MOVEMENT 66 //We need the movement setup
+#define INIT_ORDER_MEDIA 64 //Needs to init before ticker to generate the login music pool
+#define INIT_ORDER_DATACORE 63 // Must come before SSticker so datacore reading things can access it
+#define INIT_ORDER_AI_CONTROLLERS 62 //So the controller can get the ref
+#define INIT_ORDER_TICKER 61
 #define INIT_ORDER_TCG 55
 #define INIT_ORDER_MAPPING 50
-#define INIT_ORDER_EARLY_ASSETS 48
+#define INIT_ORDER_EARLY_ASSETS 49
 #define INIT_ORDER_RESEARCH 47
 #define INIT_ORDER_TIMETRACK 46
 #define INIT_ORDER_NETWORKS 45
@@ -148,7 +149,9 @@
 #define INIT_ORDER_OUTPUTS 36
 #define INIT_ORDER_RESTAURANT 35
 #define INIT_ORDER_TECH 33 //Must init before atoms, so design datums are ready.
+#define INIT_ORDER_HYDROPONICS 32 // Must init before atoms, so mutations are ready.
 #define INIT_ORDER_ATOMS 30
+#define INIT_ORDER_HOLOMAP 29 // Must init after atoms
 #define INIT_ORDER_LANGUAGE 25
 #define INIT_ORDER_MACHINES 20
 #define INIT_ORDER_AIRMACHINES 17
@@ -189,6 +192,7 @@
 #define FIRE_PRIORITY_CHAT 400
 #define FIRE_PRIORITY_SPEECH_CONTROLLER 300
 #define FIRE_PRIORITY_RUNECHAT 250
+#define FIRE_PRIORITY_DO_AFTERS 100
 #define FIRE_PRIORITY_THROWING 20
 /* DEFAULT WOULD BE HERE */
 #define FIRE_PRIORITY_SPACEDRIFT 15
@@ -217,7 +221,6 @@
 #define FIRE_PRIORITY_REAGENTS 30
 #define FIRE_PRIORITY_ACID 27
 #define FIRE_PRIORITY_WET_FLOORS 25
-#define FIRE_PRIORITY_VIS 20
 #define FIRE_PRIORITY_ASSETS 20
 #define FIRE_PRIORITY_RESEARCH 15
 #define FIRE_PRIORITY_SERVER_MAINT 10
@@ -230,9 +233,12 @@
 #define FIRE_PRIORITY_PROCESS 30
 #define FIRE_PRIORITY_NPC_ACTIONS 25
 #define FIRE_PRIORITY_NPC 20
+#define FIRE_PRIORITY_SLOW_PROCESS 12
 #define FIRE_PRIORITY_IDLE_NPC 10
 #define FIRE_PRIORITY_GARBAGE 10
 #define FIRE_PRIORITY_AMBIENCE 5
+#define FIRE_PRIORITY_CODEX 5
+#define FIRE_PRIORITY_TITLE 5
 
 
 

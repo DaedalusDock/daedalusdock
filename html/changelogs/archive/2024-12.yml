@@ -1,0 +1,102 @@
+2024-12-01:
+  Kapu1178:
+  - bugfix: Stamina damage is dealt when attacking with items again.
+  - bugfix: You can no longer bypass movement speed from equip delays.
+  ToasterBan:
+  - rscadd: New, non-gameplay changing augments in the character creator
+2024-12-03:
+  Kapu1178:
+  - bugfix: Kinesis works again
+2024-12-04:
+  Kapu1178:
+  - qol: Improved the visual fidelity of many light sources.
+  - bugfix: quick equip works properly with items with equip delays
+2024-12-05:
+  Kapu1178:
+  - qol: Redid how space cash works because it was too annoying to play with. Large
+      bills do exist but are intended to be difficult to obtain and mostly for flair.
+      Space Cash now stacks up to 500, and is mostly given out in 1's.
+  - qol: Put FAR too much effort into making item stacks look prettier.
+  - qol: Item stacks now display the amount in the stack as a number on the sprite
+      if you are holding it.
+  - bugfix: Removed the text shadow from links using the obvious notice css class.
+  jlsnow301:
+  - bugfix: Fixed a modsuit bluescreen
+2024-12-06:
+  Kapu1178:
+  - rscadd: Added "examine properties", generic information displayed about objects
+      in the form of tooltips.
+  - qol: Removed several examine texts describing controls into their respective codex
+      entries.
+  - bugfix: Fixed cable coil grammar.
+  - bugfix: Removed extra newlines from the end of examine blocks.
+2024-12-08:
+  Kapu1178:
+  - code_imp: Rewrote the code that handles if you can click on things. REPORT BUGS.
+2024-12-09:
+  Kapu1178:
+  - rscadd: You can steal from people's backpacks from behind using the strip menu.
+  - rscadd: You can now smash a plate over someone else's head.
+  - bugfix: Fixed being unable to point to food on plates.
+2024-12-11:
+  Kapu1178:
+  - qol: Added a screen alert for being prone.
+2024-12-13:
+  Kapu1178:
+  - tweak: Change the combat mode icons from "Combat" to "Help" and "Harm".
+  - rscadd: The combat mode icon now becomes "Grab" while holding CTRL.
+  - rscadd: Having throw mode on how changes your mouse icon.
+  - bugfix: Fixed having multiple hotkeys bound to one key not firing all keyUp events.
+2024-12-15:
+  francinum:
+  - qol: Chairs now point the correct way.
+  - bugfix: Robotics is now a Medical access.
+  - bugfix: Prisoners are now targeted by security robots automatically.
+2024-12-20:
+  Kapu1178:
+  - rscadd: Replaced Initropidril with Adenosine.
+  francinum:
+  - code_imp: There are now special unit tests for enforcing mapping standards.
+2024-12-23:
+  Kapu1178:
+  - bugfix: Huds (ie, the health hud) no longer rotate with the mob they are shown
+      over.
+  - bugfix: Headsets are no longer off by default.
+2024-12-27:
+  Kapu1178:
+  - bugfix: Fixed a deadlock in pathfinding code.
+  - bugfix: Fixed a hud positioning issue.
+  - bugfix: Tricordrazine math is no longer insane.
+  - balance: Adjusted Tricordrazine heal ramp-up to compensate.
+  - bugfix: Medbots now chase their targets for a bit instead of giving up instantly
+      if they moved.
+  - bugfix: Medbots now re-attempt healing their previously given-up-on target after
+      a specific time period.
+  - balance: Medbots no longer magically heal their target, opting to inject chems
+      instead.
+  - rscadd: Medbots now voice their displeasure if you move out of their range.
+  - rscadd: Silver Sulfadiazine, a fast-acting but inefficient topical burn healing
+      reagent.
+  - rscadd: Styptic Powder, a fast-acting but inefficient topical brute healing reagent.
+  - bugfix: Fixed coagulant effects causing errors.
+  - balance: Doubled the metabolization rates of Dermaline and Meralyne. I felt they
+      weren't impactful enough for how annoying they are to make.
+  - rscadd: Silver Sulfadiazine now has a byproduct of silicon.
+2024-12-29:
+  Kapu1178:
+  - tweak: Removed the Nanotrasen logo from TGUI interfaces.
+2024-12-30:
+  Kapu1178:
+  - code_imp: The code now compiles on 516. The server is not currently running 516
+      and does not recommend developing on it.
+  Zion362:
+  - imageadd: Updated the mouse cursor to a higher quality version.
+  francinum:
+  - bugfix: Various instances of doubled-up firelocks or airlocks.
+2024-12-31:
+  Kapu1178:
+  - rscadd: 'Added species descriptions for: Human, Jinan, and Vox.'
+  - rscadd: Playable species are now in the Codex.
+  - rscadd: Upon waking up, your eyes will be blurry for a short time.
+  - code_imp: vis_contents is managed by wrappers
+  - rscdel: Removed Plasmamen

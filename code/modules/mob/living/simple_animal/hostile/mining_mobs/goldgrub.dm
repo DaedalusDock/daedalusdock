@@ -116,7 +116,7 @@
 		return TRUE
 	return FALSE
 
-/mob/living/simple_animal/hostile/asteroid/goldgrub/death(gibbed)
+/mob/living/simple_animal/hostile/asteroid/goldgrub/death(gibbed, cause_of_death = "Unknown")
 	barf_contents()
 	return ..()
 

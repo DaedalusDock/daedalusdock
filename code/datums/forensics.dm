@@ -21,16 +21,17 @@
 	parent = null
 	return ..()
 
+/// Adds blood dna. Returns TRUE if the blood dna list expanded.
 /datum/forensics/proc/add_blood_DNA(list/dna)
 	if(!length(dna))
 		return
-
+	var/old_len = length(blood_DNA)
 	LAZYINITLIST(blood_DNA)
 	for(var/dna_hash in dna)
 		blood_DNA[dna_hash] = dna[dna_hash]
 
 	check_blood()
-	return TRUE
+	return old_len < length(blood_DNA)
 
 /datum/forensics/proc/add_trace_DNA(list/dna)
 	if(!length(dna))
@@ -39,7 +40,7 @@
 	trace_DNA |= dna
 
 /// Adds the fingerprint of M to our fingerprint list
-/datum/forensics/proc/add_fingerprint(mob/living/M, ignoregloves = FALSE)
+/datum/forensics/proc/add_fingerprint(mob/living/M, ignoregloves = FALSE, log_touch = TRUE)
 	if(!isliving(M))
 		if(!iscameramob(M))
 			return
@@ -63,7 +64,7 @@
 			ignoregloves = TRUE
 
 		if(!ignoregloves)
-			H.gloves.add_fingerprint(H, TRUE) //ignoregloves = 1 to avoid infinite loop.
+			H.gloves.add_fingerprint(H, TRUE, FALSE) //ignoregloves = 1 to avoid infinite loop.
 			return
 
 	add_partial_print(H.get_fingerprints(ignoregloves, H.get_active_hand()))
@@ -275,6 +276,11 @@
 /// Clear fibers list.
 /datum/forensics/proc/wipe_fibers()
 	LAZYNULL(fibers)
+	return TRUE
+
+/// Clear the trace DNA list
+/datum/forensics/proc/wipe_trace_DNA()
+	LAZYNULL(trace_DNA)
 	return TRUE
 
 /// Clear the gunshot residue list.

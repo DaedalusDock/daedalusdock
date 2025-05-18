@@ -6,11 +6,11 @@
 	)
 	min_duration = 1 SECOND
 	max_duration = 3 SECONDS
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/insert_pill/begin_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	. = ..()
-	user.visible_message(span_notice("[user] begins inserting [tool] into [target]'s tooth."))
+	user.visible_message(span_notice("[user] begins inserting [tool] into [target]'s tooth."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 /datum/surgery_step/insert_pill/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!istype(tool, /obj/item/reagent_containers/pill)) //what
@@ -24,7 +24,7 @@
 	pill_action.target = tool
 	pill_action.Grant(target) //The pill never actually goes in an inventory slot, so the owner doesn't inherit actions from it
 
-	user.visible_message(span_notice("[user] inserts [tool] into [target]'s tooth."))
+	user.visible_message(span_notice("[user] inserts [tool] into [target]'s tooth."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/insert_pill/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -32,8 +32,8 @@
 		return
 
 	var/obj/item/reagent_containers/pill/pill = tool
-	pill.on_consumption(target, user)
-	user.visible_message(span_warning("[pill] slips out of [user]'s hand, right down [target]'s throat!"))
+	pill.consume(target, user)
+	user.visible_message(span_warning("[pill] slips out of [user]'s hand, right down [target]'s throat!"), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/action/item_action/hands_free/activate_pill

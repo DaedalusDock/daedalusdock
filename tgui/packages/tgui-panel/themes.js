@@ -4,7 +4,7 @@
  * @license MIT
  */
 
-import { THEME_LIGHT, THEME_DARK } from "./settings/constants";
+import { THEME_DARK, THEME_LIGHT } from './settings/constants';
 
 const COLOR_DARK_BG = '#222020';
 const COLOR_DARK_BG_DARKER = '#171717';
@@ -22,7 +22,7 @@ let setClientThemeTimer = null;
  * There's no way round it. We're essentially changing the skin by hand.
  * It's painful but it works, and is the way Lummox suggested.
  */
-export const setClientTheme = name => {
+export const setClientTheme = (name) => {
   // Transmit once for fast updates and again in a little while in case we won
   // the race against statbrowser init.
   clearInterval(setClientThemeTimer);
@@ -34,6 +34,8 @@ export const setClientTheme = name => {
   if (name === THEME_LIGHT) {
     return Byond.winset({
       // Main windows
+      'infobuttons.background-color': 'none',
+      'infobuttons.text-color': '#000000',
       'infowindow.background-color': 'none',
       'infowindow.text-color': '#000000',
       'info.background-color': 'none',
@@ -84,10 +86,13 @@ export const setClientTheme = name => {
   if (name === THEME_DARK) {
     Byond.winset({
       // Main windows
+      'infobuttons.background-color': COLOR_DARK_BG,
+      'infobuttons.text-color': COLOR_DARK_TEXT,
       'infowindow.background-color': COLOR_DARK_BG,
       'infowindow.text-color': COLOR_DARK_TEXT,
       'info.background-color': COLOR_DARK_BG,
       'info.text-color': COLOR_DARK_TEXT,
+      'info_and_buttons.background-color': COLOR_DARK_BG,
       'browseroutput.background-color': COLOR_DARK_BG,
       'browseroutput.text-color': COLOR_DARK_TEXT,
       'outputwindow.background-color': COLOR_DARK_BG,
@@ -103,10 +108,14 @@ export const setClientTheme = name => {
       'wiki.text-color': COLOR_DARK_TEXT,
       'forum.background-color': '#494949',
       'forum.text-color': COLOR_DARK_TEXT,
-      'github.background-color': '#3a3a3a',
+      'github.background-color': '#494949',
       'github.text-color': COLOR_DARK_TEXT,
       'report-issue.background-color': '#492020',
       'report-issue.text-color': COLOR_DARK_TEXT,
+      'codex_button.background-color': '#494949',
+      'codex_button.text-color': COLOR_DARK_TEXT,
+      'webmap.background-color': '#494949',
+      'webmap.text-color': COLOR_DARK_TEXT,
       // Status and verb tabs
       'output.background-color': COLOR_DARK_BG_DARKER,
       'output.text-color': COLOR_DARK_TEXT,

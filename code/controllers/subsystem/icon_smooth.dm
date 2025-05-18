@@ -39,7 +39,9 @@ SUBSYSTEM_DEF(icon_smooth)
 /datum/controller/subsystem/icon_smooth/Initialize()
 	hibernate_checks = list(
 		NAMEOF(src, smooth_queue),
-		NAMEOF(src, deferred)
+		NAMEOF(src, deferred),
+		NAMEOF(src, blueprint_queue),
+		NAMEOF(src, deferred_by_source)
 	)
 
 	var/list/queue = smooth_queue

@@ -86,7 +86,7 @@
 			possible_headwear += item
 	if(!length(possible_headwear))
 		for(var/obj/item/item in orange(1))
-			if(ispath(item.dog_fashion, /datum/dog_fashion/head) && CanReach(item))
+			if(ispath(item.dog_fashion, /datum/dog_fashion/head) && item.IsReachableBy(src))
 				possible_headwear += item
 	if(!length(possible_headwear))
 		return
@@ -176,7 +176,7 @@
 		var/newcolor = rgb(rand(0, 255), rand(0, 255), rand(0, 255))
 		add_atom_colour(newcolor, FIXED_COLOUR_PRIORITY)
 
-/mob/living/simple_animal/pet/dog/corgi/death(gibbed)
+/mob/living/simple_animal/pet/dog/corgi/death(gibbed, cause_of_death = "Unknown")
 	..(gibbed)
 	regenerate_icons()
 
@@ -487,7 +487,7 @@ GLOBAL_LIST_INIT(strippable_corgi_items, create_strippable_list(list(
 		memory_saved = TRUE
 	..()
 
-/mob/living/simple_animal/pet/dog/corgi/ian/death()
+/mob/living/simple_animal/pet/dog/corgi/ian/death(gibbed, cause_of_death = "Unknown")
 	if(!memory_saved)
 		Write_Memory(TRUE)
 	..()

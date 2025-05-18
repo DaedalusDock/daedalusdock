@@ -62,13 +62,11 @@
 			collar_type = "[initial(collar_type)]"
 		regenerate_icons()
 
-/mob/living/simple_animal/pet/death(gibbed)
+/mob/living/simple_animal/pet/death(gibbed, cause_of_death = "Unknown")
 	. = ..()
 	if(collar_type)
 		collar_type = "[initial(collar_type)]_dead"
 	regenerate_icons()
-
-	add_memory_in_range(src, 7, MEMORY_PET_DEAD, list(DETAIL_DEUTERAGONIST = src), story_value = STORY_VALUE_AMAZING, memory_flags = MEMORY_CHECK_BLIND_AND_DEAF) //Protagonist is the person memorizing it
 
 /mob/living/simple_animal/pet/regenerate_icons()
 	cut_overlays()

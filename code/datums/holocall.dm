@@ -43,9 +43,9 @@
 	var/head_call = FALSE
 
 //creates a holocall made by `caller` from `calling_pad` to `callees`
-/datum/holocall/New(mob/living/caller, obj/machinery/holopad/calling_pad, list/callees, elevated_access = FALSE)
+/datum/holocall/New(mob/living/calling_mob, obj/machinery/holopad/calling_pad, list/callees, elevated_access = FALSE)
 	call_start_time = world.time
-	user = caller
+	user = calling_mob
 	calling_pad.outgoing_call = src
 	calling_holopad = calling_pad
 	head_call = elevated_access
@@ -363,9 +363,6 @@
 
 /datum/preset_holoimage/engineer/atmos/mod
 	outfit_type = /datum/outfit/job/atmos/mod
-
-/datum/preset_holoimage/researcher
-	outfit_type = /datum/outfit/job/scientist
 
 /datum/preset_holoimage/captain
 	outfit_type = /datum/outfit/job/captain

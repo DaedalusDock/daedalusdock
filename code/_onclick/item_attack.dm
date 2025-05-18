@@ -2,17 +2,20 @@
  * This is the proc that handles the order of an item_attack.
  *
  * The order of procs called is:
- * * [/atom/proc/tool_act] on the target. If it returns TOOL_ACT_TOOLTYPE_SUCCESS or TOOL_ACT_SIGNAL_BLOCKING, the chain will be stopped.
+ * * [/atom/proc/tool_act] on the target. If it returns ITEM_INTERACT_SUCCESS or ITEM_INTERACT_BLOCKING, the chain will be stopped.
  * * [/obj/item/proc/pre_attack] on src. If this returns TRUE, the chain will be stopped.
  * * [/atom/proc/attackby] on the target. If it returns TRUE, the chain will be stopped.
  * * [/obj/item/proc/afterattack]. The return value does not matter.
  */
 /obj/item/proc/melee_attack_chain(mob/user, atom/target, params)
-	var/is_right_clicking = LAZYACCESS(params2list(params), RIGHT_CLICK)
+	var/list/modifiers = params2list(params)
+	var/is_right_clicking = LAZYACCESS(modifiers, RIGHT_CLICK)
 
-	var/mob/living/L = user
-	if(tool_behaviour && (!istype(L) || !L.combat_mode) && (target.tool_act(user, src, tool_behaviour, is_right_clicking) & TOOL_ACT_MELEE_CHAIN_BLOCKING))
+	var/item_interact_result = target.base_item_interaction(user, src, modifiers)
+	if(item_interact_result & ITEM_INTERACT_SUCCESS)
 		return TRUE
+	if(item_interact_result & ITEM_INTERACT_BLOCKING)
+		return FALSE
 
 	var/pre_attack_result
 	if (is_right_clicking)
@@ -147,12 +150,19 @@
 	return SECONDARY_ATTACK_CALL_NORMAL
 
 /obj/attackby(obj/item/attacking_item, mob/user, params)
-	return ..() || ((obj_flags & CAN_BE_HIT) && attacking_item.attack_obj(src, user, params))
+	. = ..()
+	if(.)
+		return TRUE
+
+	if(!(obj_flags & CAN_BE_HIT))
+		return FALSE
+
+	return attacking_item.attack_obj(src, user, params)
 
 /mob/living/attackby(obj/item/attacking_item, mob/living/user, params)
 	if(..())
 		return TRUE
-	if (user.can_operate_on(src) && attacking_item.attempt_surgery(src, user))
+	if (user.can_perform_surgery_on(src) && attacking_item.attempt_surgery(src, user))
 		return TRUE
 
 	user.changeNext_move(attacking_item.combat_click_delay)
@@ -237,11 +247,20 @@
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(attacked_obj)
-	attacked_obj.attacked_by(src, user)
+	return attacked_obj.attacked_by(src, user)
 
 /// The equivalent of the standard version of [/obj/item/proc/attack] but for /turf targets.
 /obj/item/proc/attack_turf(turf/attacked_turf, mob/living/user, params)
-	return
+	if(!attacked_turf.uses_integrity)
+		return
+
+	if(item_flags & NOBLUDGEON)
+		return
+
+	// This probably needs to be changed later on, but it should work for now because only flock walls use integrity.
+	user.changeNext_move(CLICK_CD_MELEE)
+	user.do_attack_animation(attacked_turf)
+	return attacked_turf.attacked_by(src, user)
 
 /// Called from [/obj/item/proc/attack_atom] and [/obj/item/proc/attack] if the attack succeeds
 /atom/proc/attacked_by(obj/item/attacking_item, mob/living/user)
@@ -261,34 +280,10 @@
 	)
 
 	log_combat(user, src, "attacked ([damage] damage)", attacking_item)
+	return damage
 
 /area/attacked_by(obj/item/attacking_item, mob/living/user)
 	CRASH("areas are NOT supposed to have attacked_by() called on them!")
-
-/mob/living/attacked_by(obj/item/I, mob/living/user)
-	send_item_attack_message(I, user)
-	if(I.force)
-		apply_damage(I.force, I.damtype)
-		if(I.damtype == BRUTE)
-			if(prob(33))
-				I.add_mob_blood(src)
-				var/turf/location = get_turf(src)
-				add_splatter_floor(location)
-				if(get_dist(user, src) <= 1) //people with TK won't get smeared with blood
-					user.add_mob_blood(src)
-		return TRUE //successful attack
-
-/mob/living/simple_animal/attacked_by(obj/item/I, mob/living/user)
-	if(!attack_threshold_check(I.force, I.damtype, BLUNT, FALSE))
-		playsound(loc, 'sound/weapons/tap.ogg', I.get_clamped_volume(), TRUE, -1)
-	else
-		return ..()
-
-/mob/living/basic/attacked_by(obj/item/I, mob/living/user)
-	if(!attack_threshold_check(I.force, I.damtype, BLUNT, FALSE))
-		playsound(loc, 'sound/weapons/tap.ogg', I.get_clamped_volume(), TRUE, -1)
-	else
-		return ..()
 
 /**
  * Last proc in the [/obj/item/proc/melee_attack_chain]
@@ -336,9 +331,10 @@
 		else
 			return clamp(w_class * 6, 10, 100) // Multiply the item's weight class by 6, then clamp the value between 10 and 100
 
-/mob/living/proc/send_item_attack_message(obj/item/I, mob/living/user, hit_area, obj/item/bodypart/hit_bodypart)
+/mob/living/proc/send_item_attack_message(obj/item/I, mob/living/user, hit_area)
 	if(!I.force && !length(I.attack_verb_simple) && !length(I.attack_verb_continuous))
 		return
+
 	var/message_verb_continuous = length(I.attack_verb_continuous) ? "[pick(I.attack_verb_continuous)]" : "attacks"
 	var/message_verb_simple = length(I.attack_verb_simple) ? "[pick(I.attack_verb_simple)]" : "attack"
 	var/message_hit_area = ""
@@ -347,11 +343,10 @@
 
 	var/attack_message_spectator = "<b>[src]</b> [message_verb_continuous][message_hit_area] with [I]!"
 
-	if(user in viewers(src))
-		attack_message_spectator = "<b>[user]</b> [message_verb_continuous] <b>[src]</b>[message_hit_area] with [I]!"
-
 	if(user == src)
 		attack_message_spectator = "<b>[user]</b> [message_verb_simple] [user.p_them()]self[message_hit_area] with [I]!"
+	else if(user in viewers(src))
+		attack_message_spectator = "<b>[user]</b> [message_verb_continuous] <b>[src]</b>[message_hit_area] with [I]!"
 
 	visible_message(span_danger("[attack_message_spectator]"), vision_distance = COMBAT_MESSAGE_RANGE)
 	return 1

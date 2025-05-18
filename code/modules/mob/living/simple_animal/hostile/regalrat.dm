@@ -53,7 +53,7 @@
 	var/list/mob/dead/observer/candidates = poll_ghost_candidates("Do you want to play as the Royal Rat, cheesey be their crown?", ROLE_SENTIENCE, FALSE, 100, POLL_IGNORE_SENTIENCE_POTION)
 	if(LAZYLEN(candidates) && !mind)
 		var/mob/dead/observer/C = pick(candidates)
-		key = C.key
+		PossessByPlayer(C.key)
 		notify_ghosts("All rise for the rat king, ascendant to the throne in \the [get_area(src)].", source = src, action = NOTIFY_ORBIT, flashwindow = FALSE, header = "Sentient Rat Created")
 	to_chat(src, span_notice("You are an independent, invasive force on the station! Horde coins, trash, cheese, and the like from the safety of darkness!"))
 
@@ -80,7 +80,7 @@
 	if(key)
 		to_chat(user, span_warning("Someone else already took the rat!"))
 		return
-	key = user.key
+	PossessByPlayer(user.key)
 	log_game("[key_name(src)] took control of [name].")
 
 /mob/living/simple_animal/hostile/regalrat/handle_automated_action()
@@ -97,7 +97,7 @@
 			return TRUE
 		if(istype(the_target, /mob/living/simple_animal/hostile/rat) && A.stat == CONSCIOUS)
 			var/mob/living/simple_animal/hostile/rat/R = the_target
-			if(R.faction_check_mob(src, TRUE))
+			if(R.faction_check_atom(src, TRUE))
 				return FALSE
 			else
 				return TRUE
@@ -107,7 +107,7 @@
 	. = ..()
 	if(istype(user,/mob/living/simple_animal/hostile/rat))
 		var/mob/living/simple_animal/hostile/rat/ratself = user
-		if(ratself.faction_check_mob(src, TRUE))
+		if(ratself.faction_check_atom(src, TRUE))
 			. += span_notice("This is your king. Long live their majesty!")
 		else
 			. += span_warning("This is a false king! Strike them down!")
@@ -306,7 +306,7 @@
 	SSmobs.cheeserats -= src
 	return ..()
 
-/mob/living/simple_animal/hostile/rat/death(gibbed)
+/mob/living/simple_animal/hostile/rat/death(gibbed, cause_of_death = "Unknown")
 	if(!ckey)
 		..(TRUE)
 		if(!gibbed)
@@ -329,13 +329,13 @@
 	. = ..()
 	if(istype(user,/mob/living/simple_animal/hostile/rat))
 		var/mob/living/simple_animal/hostile/rat/ratself = user
-		if(ratself.faction_check_mob(src, TRUE))
+		if(ratself.faction_check_atom(src, TRUE))
 			. += span_notice("You both serve the same king.")
 		else
 			. += span_warning("This fool serves a different king!")
 	else if(istype(user,/mob/living/simple_animal/hostile/regalrat))
 		var/mob/living/simple_animal/hostile/regalrat/ratking = user
-		if(ratking.faction_check_mob(src, TRUE))
+		if(ratking.faction_check_atom(src, TRUE))
 			. += span_notice("This rat serves under you.")
 		else
 			. += span_warning("This peasant serves a different king! Strike them down!")
@@ -345,13 +345,13 @@
 		var/mob/living/A = the_target
 		if(istype(the_target, /mob/living/simple_animal/hostile/regalrat) && A.stat == CONSCIOUS)
 			var/mob/living/simple_animal/hostile/regalrat/ratking = the_target
-			if(ratking.faction_check_mob(src, TRUE))
+			if(ratking.faction_check_atom(src, TRUE))
 				return FALSE
 			else
 				return TRUE
 		if(istype(the_target, /mob/living/simple_animal/hostile/rat) && A.stat == CONSCIOUS)
 			var/mob/living/simple_animal/hostile/rat/R = the_target
-			if(R.faction_check_mob(src, TRUE))
+			if(R.faction_check_atom(src, TRUE))
 				return FALSE
 			else
 				return TRUE

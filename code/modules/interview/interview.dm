@@ -62,7 +62,7 @@
 	log_admin_private("[key_name(approved_by)] has approved interview #[id] for [owner_ckey][!owner ? "(DC)": ""].")
 	message_admins(span_adminnotice("[key_name(approved_by)] has approved [link_self()] for [owner_ckey][!owner ? "(DC)": ""]."))
 	if (owner)
-		SEND_SOUND(owner, sound('sound/effects/adminhelp.ogg'))
+		SEND_SOUND(owner, sound('goon/sounds/adminhelp.ogg'))
 		to_chat(owner, "<font color='red' size='4'><b>-- Interview Update --</b></font>" \
 			+ "\n[span_adminsay("Your interview was approved, you will now be reconnected in 5 seconds.")]", confidential = TRUE)
 		addtimer(CALLBACK(src, PROC_REF(reconnect_owner)), 50)
@@ -82,7 +82,7 @@
 	message_admins(span_adminnotice("[key_name(denied_by)] has denied [link_self()] for [owner_ckey][!owner ? "(DC)": ""]."))
 	addtimer(CALLBACK(GLOB.interviews, TYPE_PROC_REF(/datum/interview_manager, release_from_cooldown), owner_ckey), 180)
 	if (owner)
-		SEND_SOUND(owner, sound('sound/effects/adminhelp.ogg'))
+		SEND_SOUND(owner, sound('goon/sounds/adminhelp.ogg'))
 		to_chat(owner, "<font color='red' size='4'><b>-- Interview Update --</b></font>" \
 			+ "\n<span class='adminsay'>Unfortunately your interview was denied. Please try submitting another questionnaire." \
 			+ " You may do this in three minutes.</span>", confidential = TRUE)

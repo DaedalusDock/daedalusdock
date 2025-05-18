@@ -132,8 +132,6 @@
 		shrapnel_initialized = TRUE
 		AddComponent(/datum/component/pellet_cloud, projectile_type = shrapnel_type, magnitude = shrapnel_radius)
 	playsound(src, 'sound/weapons/armbomb.ogg', volume, TRUE)
-	if(istype(user))
-		user.mind?.add_memory(MEMORY_BOMB_PRIMED, list(DETAIL_BOMB_TYPE = src), story_value = STORY_VALUE_OKAY)
 	active = TRUE
 	icon_state = initial(icon_state) + "_active"
 	SEND_SIGNAL(src, COMSIG_GRENADE_ARMED, det_time, delayoverride)
@@ -163,9 +161,8 @@
 	return TRUE
 
 /obj/item/grenade/proc/update_mob()
-	if(ismob(loc))
-		var/mob/mob = loc
-		mob.dropItemToGround(src)
+	if(equipped_to)
+		equipped_to.dropItemToGround(src)
 
 /obj/item/grenade/screwdriver_act(mob/living/user, obj/item/tool)
 	if(active)
@@ -216,10 +213,10 @@
 /obj/item/grenade/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	var/obj/projectile/hit_projectile = hitby
 	if(!istype(hitby))
-		return FALSE
+		return 0
 
 	if(damage && attack_type == PROJECTILE_ATTACK && hit_projectile.damage_type != STAMINA && prob(15))
-		return TRUE
+		return 100
 
 /obj/item/grenade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK, block_success = TRUE)
 	. = ..()

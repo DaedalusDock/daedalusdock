@@ -39,7 +39,7 @@
 /obj/machinery/recycler/LateInitialize()
 	. = ..()
 	update_appearance(UPDATE_ICON)
-	req_one_access = SSid_access.get_region_access_list(list(REGION_ALL_STATION, REGION_CENTCOM))
+	req_one_access = SSid_access.get_access_for_group(list(/datum/access_group/station/all, /datum/access_group/centcom))
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
@@ -71,7 +71,7 @@
 /obj/machinery/recycler/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/recycler/attackby(obj/item/I, mob/user, params)
 	if(default_deconstruction_screwdriver(user, "grinder-oOpen", "grinder-o0", I))
@@ -172,9 +172,10 @@
 	var/obj/item/grown/log/L = I
 	if(istype(L))
 		var/seed_modifier = 0
-		if(L.seed)
-			seed_modifier = round(L.seed.potency / 25)
+		if(L.plant_datum)
+			seed_modifier = round(L.cached_potency / 25)
 		new L.plank_type(loc, 1 + seed_modifier)
+
 	else
 		var/datum/component/material_container/materials = GetComponent(/datum/component/material_container)
 		var/material_amount = materials.get_item_material_amount(I, BREAKDOWN_FLAGS_RECYCLER)
@@ -182,6 +183,7 @@
 			return
 		materials.insert_item(I, material_amount, multiplier = (amount_produced / 100), breakdown_flags=BREAKDOWN_FLAGS_RECYCLER)
 		materials.retrieve_all()
+
 	qdel(I)
 
 

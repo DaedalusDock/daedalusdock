@@ -16,11 +16,6 @@
 	outfit = /datum/outfit/job/doctor
 	icon_state = "corpsedoctor"
 
-/obj/effect/mob_spawn/corpse/human/geneticist
-	name = "Geneticist"
-	outfit = /datum/outfit/job/geneticist
-	icon_state = "corpsescientist"
-
 /obj/effect/mob_spawn/corpse/human/engineer
 	name = "Engineer"
 	outfit = /datum/outfit/job/engineer
@@ -30,14 +25,9 @@
 	outfit = /datum/outfit/job/engineer/mod
 
 /obj/effect/mob_spawn/corpse/human/clown
-	name = "Clown"
+	name = JOB_CLOWN
 	outfit = /datum/outfit/job/clown
 	icon_state = "corpseclown"
-
-/obj/effect/mob_spawn/corpse/human/scientist
-	name = "Scientist"
-	outfit = /datum/outfit/job/scientist
-	icon_state = "corpsescientist"
 
 /obj/effect/mob_spawn/corpse/human/miner
 	name = JOB_PROSPECTOR
@@ -50,10 +40,6 @@
 /obj/effect/mob_spawn/corpse/human/miner/explorer
 	outfit = /datum/outfit/job/miner/equipped
 
-/obj/effect/mob_spawn/corpse/human/plasmaman
-	mob_species = /datum/species/plasmaman
-	outfit = /datum/outfit/plasmaman
-
 /obj/effect/mob_spawn/corpse/human/assistant
 	name = JOB_ASSISTANT
 	outfit = /datum/outfit/job/assistant
@@ -61,12 +47,12 @@
 
 /obj/effect/mob_spawn/corpse/human/assistant/beesease_infection/special(mob/living/spawned_mob)
 	. = ..()
-	spawned_mob.ForceContractDisease(new /datum/disease/beesease)
+	spawned_mob.try_contract_pathogen(new /datum/pathogen/beesease)
 
 /obj/effect/mob_spawn/corpse/human/assistant/brainrot_infection/special(mob/living/spawned_mob)
 	. = ..()
-	spawned_mob.ForceContractDisease(new /datum/disease/brainrot)
+	spawned_mob.try_contract_pathogen(new /datum/pathogen/brainrot)
 
 /obj/effect/mob_spawn/corpse/human/assistant/spanishflu_infection/special(mob/living/spawned_mob)
 	. = ..()
-	spawned_mob.ForceContractDisease(new /datum/disease/fluspanish)
+	spawned_mob.try_contract_pathogen(new /datum/pathogen/fluspanish)

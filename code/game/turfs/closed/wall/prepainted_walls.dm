@@ -24,6 +24,18 @@
 /turf/closed/wall/prepainted
 	name = "Pre-Painted Wall"
 
+/turf/closed/wall/prepainted/disco_flavor(mob/living/carbon/human/user, nearby = FALSE, is_station_level = FALSE)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("prepainted_wall", only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip(
+				"Somewhere across the Pool, a man leans against a cold steel wall, the paint having long worn away. He lights the tip of a cigarette, and raises it to his mouth."
+			)
+		)
+
 /turf/closed/wall/r_wall/prepainted
 	name = "PRe-Painted Reinforced Wall"
 
@@ -59,3 +71,13 @@
 	color = PAINT_WALL_COMMAND
 	wall_paint = PAINT_WALL_COMMAND
 	stripe_paint = PAINT_STRIPE_COMMAND
+
+/turf/closed/wall/prepainted/mars
+	color = PAINT_WALL_MARS
+	wall_paint = PAINT_WALL_MARS
+	stripe_paint = PAINT_STRIPE_MARS
+
+/turf/closed/wall/r_wall/prepainted/mars
+	color = PAINT_WALL_MARS
+	wall_paint = PAINT_WALL_MARS
+	stripe_paint = PAINT_STRIPE_MARS

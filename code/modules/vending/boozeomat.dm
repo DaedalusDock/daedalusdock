@@ -43,7 +43,7 @@
 		/obj/item/reagent_containers/food/drinks/bottle/small = 15
 	)
 	contraband = list(
-		/obj/item/reagent_containers/food/drinks/mug/tea = 12,
+		/obj/item/reagent_containers/glass/mug/tea = 12,
 		/obj/item/reagent_containers/food/drinks/bottle/fernet = 5,
 	)
 	premium = list(
@@ -58,7 +58,7 @@
 	req_access = list(ACCESS_BAR)
 	refill_canister = /obj/item/vending_refill/boozeomat
 	default_price = PAYCHECK_ASSISTANT * 0.9
-	extra_price = PAYCHECK_COMMAND
+	extra_price = PAYCHECK_ASSISTANT * 15 //it's the good shit
 	payment_department = ACCOUNT_STATION_MASTER
 	light_mask = "boozeomat-light-mask"
 

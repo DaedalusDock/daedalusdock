@@ -1,0 +1,15 @@
+/obj/item/clothing/gloves/color/plasmaman/@SUBTYPES : @DELETE
+/obj/item/clothing/suit/space/eva/plasmaman/@SUBTYPES : @DELETE
+/obj/item/clothing/head/helmet/space/plasmaman/@SUBTYPES : @DELETE
+/obj/item/tank/internals/plasmaman/@SUBTYPES : @DELETE
+/obj/item/clothing/under/plasmaman/@SUBTYPES : @DELETE
+/obj/item/organ/lungs/plasmaman/@SUBTYPES : @DELETE
+/obj/item/toy/plush/plasmamanplushie/@SUBTYPES : @DELETE
+/obj/item/gas_filter/plasmaman/@SUBTYPES : @DELETE
+/obj/item/clothing/mask/gas/clown_hat/plasmaman/@SUBTYPES : @DELETE
+/obj/item/clothing/mask/gas/mime/plasmaman/@SUBTYPES : @DELETE
+/mob/living/carbon/human/species/plasma/@SUBTYPES : @DELETE
+/obj/effect/mob_spawn/corpse/human/plasmaman/ : /obj/effect/mob_spawn/corpse/human
+/obj/item/mod/module/plasma_stabilizer/@SUBTYPES : @DELETE
+/obj/item/disk/data/limbs/plasmaman/@SUBTYPES : @DELETE
+/obj/item/book/granter/martial/plasma_fist/@SUBTYPES : /obj/item/book/granter/martial/carp

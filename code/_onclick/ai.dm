@@ -77,10 +77,6 @@
 	if(world.time <= next_move)
 		return
 
-	if(aicamera.in_camera_mode)
-		aicamera.camera_mode_off()
-		aicamera.captureimage(pixel_turf, usr)
-		return
 	if(waypoint_mode)
 		waypoint_mode = 0
 		set_waypoint(A)
@@ -121,10 +117,15 @@
 
 /mob/living/silicon/ai/CtrlShiftClickOn(atom/A)
 	A.AICtrlShiftClick(src)
+
 /mob/living/silicon/ai/ShiftClickOn(atom/A)
-	A.AIShiftClick(src)
+	if(A.AIShiftClick(src))
+		return
+	return ..()
+
 /mob/living/silicon/ai/CtrlClickOn(atom/A, list/params)
 	A.AICtrlClick(src)
+
 /mob/living/silicon/ai/AltClickOn(atom/A)
 	A.AIAltClick(src)
 
@@ -136,12 +137,15 @@
 
 /* Atom Procs */
 /atom/proc/AICtrlClick()
-	return
+	return FALSE
+
 /atom/proc/AIAltClick(mob/living/silicon/ai/user)
 	AltClick(user)
 	return
+
 /atom/proc/AIShiftClick()
 	return
+
 /atom/proc/AICtrlShiftClick()
 	return
 
@@ -164,10 +168,11 @@
 
 /obj/machinery/door/airlock/AIShiftClick()  // Opens and closes doors!
 	if(obj_flags & EMAGGED)
-		return
+		return FALSE
 
 	user_toggle_open(usr)
 	log_touch(usr)
+	return TRUE
 
 /obj/machinery/door/airlock/AICtrlShiftClick()  // Sets/Unsets Emergency Access Override
 	if(obj_flags & EMAGGED)

@@ -66,7 +66,7 @@
 			SSmove_manager.stop_looping(src)
 			look_for_perp() // see if any criminals are in range
 			if(!mode && bot_mode_flags & BOT_MODE_AUTOPATROL) // still idle, and set to patrol
-				mode = BOT_START_PATROL // switch to patrol mode
+				set_mode(BOT_START_PATROL)
 		if(BOT_HUNT) // hunting for perp
 			update_appearance()
 			playsound(src,'sound/effects/beepskyspinsabre.ogg',100,TRUE,-1)
@@ -123,7 +123,7 @@
 			visible_message(span_warning("[src] ignites his energy swords!"))
 			icon_state = "grievous-c"
 			visible_message("<b>[src]</b> points at [C.name]!")
-			mode = BOT_HUNT
+			set_mode(BOT_HUNT)
 			INVOKE_ASYNC(src, PROC_REF(handle_automated_action))
 			break
 		else

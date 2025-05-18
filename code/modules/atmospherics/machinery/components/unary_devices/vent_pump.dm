@@ -133,9 +133,8 @@
 
 		else //external -> internal
 			var/transfer_moles = calculate_transfer_moles(environment, air_contents, pressure_delta, parents[1]?.combined_volume || 0)
+			transfer_moles /= environment.group_multiplier // Limit flow rate to 1 turf of air
 
-			//limit flow rate from turfs
-			transfer_moles = min(transfer_moles, environment.total_moles*air_contents.volume/environment.volume)	//group_multiplier gets divided out here
 			var/draw = pump_gas(environment, air_contents, transfer_moles, power_rating)
 			if(draw > -1)
 				ATMOS_USE_POWER(draw)
@@ -197,7 +196,7 @@
 	if(!GLOB.air_vent_names[id_tag])
 		// If we do not have a name, assign one.
 		// Produces names like "Port Quarter Solar vent pump hZ2l6".
-		update_name()
+		update_appearance(UPDATE_NAME)
 		GLOB.air_vent_names[id_tag] = name
 
 	vent_area.air_vent_info[id_tag] = signal.data
@@ -351,7 +350,7 @@
 	if(!can_hibernate)
 		COOLDOWN_RESET(src, hibernating)
 
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 // mapping
 /obj/machinery/atmospherics/components/unary/vent_pump/layer2
 	piping_layer = 2

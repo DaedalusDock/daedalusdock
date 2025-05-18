@@ -24,8 +24,8 @@
 		/datum/job_department/silicon,
 		)
 
-	random_spawns_possible = FALSE
-	job_flags = JOB_NEW_PLAYER_JOINABLE | JOB_EQUIP_RANK | JOB_BOLD_SELECT_TEXT
+	spawn_logic = JOBSPAWN_FORCE_FIXED
+	job_flags = JOB_NEW_PLAYER_JOINABLE | JOB_EQUIP_RANK
 	var/do_special_check = TRUE
 
 /datum/job/ai/after_spawn(mob/living/spawned, client/player_client)
@@ -39,9 +39,8 @@
 	ai_spawn.log_current_laws()
 
 
-/datum/job/ai/get_roundstart_spawn_point()
+/datum/job/ai/get_roundstart_spawn_point_fixed()
 	return get_latejoin_spawn_point()
-
 
 /datum/job/ai/get_latejoin_spawn_point()
 	var/list/primary_spawn_points = list() // Ideal locations.

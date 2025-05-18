@@ -149,14 +149,6 @@
 	taste_description = "the night"
 	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
-/datum/reagent/mutationtoxin/plasma
-	name = "Plasma Mutation Toxin"
-	description = "A plasma-based toxin."
-	color = "#5EFF3B" //RGB: 94, 255, 59
-	race = /datum/species/plasmaman
-	taste_description = "plasma"
-	chemical_flags = REAGENT_NO_RANDOM_RECIPE
-
 #undef MUT_MSG_IMMEDIATE
 #undef MUT_MSG_EXTENDED
 #undef MUT_MSG_ABOUT2TURN

@@ -368,6 +368,9 @@
 	qdel(query_find_message_secret)
 
 /proc/browse_messages(type, target_ckey, index, linkless = FALSE, filter, agegate = FALSE)
+	set name = "Messages Panel"
+	set category = "Admin"
+
 	if(!SSdbcore.Connect())
 		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
 		return

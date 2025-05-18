@@ -17,13 +17,10 @@ jobs:
         echo "::set-output name=SECRETS_ENABLED::$SECRET_EXISTS"
     - name: Checkout
       if: steps.secrets_set.outputs.SECRETS_ENABLED
-      uses: actions/checkout@v3
-    - name: Restore BYOND cache
+      uses: actions/checkout@v4
+    - name: Prepare BYOND
       if: steps.secrets_set.outputs.SECRETS_ENABLED
-      uses: actions/cache@v3
-      with:
-        path: ~/BYOND
-        key: ${{ runner.os }}-byond-${{ secrets.CACHE_PURGE_KEY }}
+      uses: ./.github/actions/restore_or_install_byond
     - name: Install rust-g
       if: steps.secrets_set.outputs.SECRETS_ENABLED
       run: |

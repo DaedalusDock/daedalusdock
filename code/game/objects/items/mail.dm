@@ -20,8 +20,8 @@
 	var/goodie_count = 1
 	/// Goodies which can be given to anyone. The base weight for cash is 56. For there to be a 50/50 chance of getting a department item, they need 56 weight as well.
 	var/list/generic_goodies = list(
-		/obj/item/stack/spacecash/c10 = 50,
-		/obj/item/stack/spacecash/c20 = 5,
+		/obj/item/stack/spacecash/c1/ten = 50,
+		/obj/item/stack/spacecash/c1/twenty= 5,
 		/obj/item/stack/spacecash/c100 = 1,
 	)
 	// Overlays (pure fluff)
@@ -54,11 +54,8 @@
 	AddElement(/datum/element/item_scaling, 0.75, 1)
 	if(isnull(department_colors))
 		department_colors = list(
-			ACCOUNT_CIV = COLOR_WHITE,
 			ACCOUNT_ENG = COLOR_PALE_ORANGE,
-			ACCOUNT_SCI = COLOR_PALE_PURPLE_GRAY,
 			ACCOUNT_MED = COLOR_PALE_BLUE_GRAY,
-			ACCOUNT_SRV = COLOR_PALE_GREEN_GRAY,
 			ACCOUNT_CAR = COLOR_BEIGE,
 			ACCOUNT_SEC = COLOR_PALE_RED_GRAY,
 		)

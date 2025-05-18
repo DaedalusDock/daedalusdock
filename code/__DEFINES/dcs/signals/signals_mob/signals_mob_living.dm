@@ -9,8 +9,8 @@
 /// Called on the organ when it is removed from someone (mob/living/carbon/old_owner)
 #define COMSIG_ORGAN_REMOVED "comsig_organ_removed"
 
-///from base of mob/update_transform()
-#define COMSIG_LIVING_POST_UPDATE_TRANSFORM "living_post_update_transform"
+///from base of mob/living/update_transform()
+#define COMSIG_MOB_POST_UPDATE_TRANSFORM "mob_post_update_transform"
 
 ///from /obj/structure/door/crush(): (mob/living/crushed, /obj/machinery/door/crushing_door)
 #define COMSIG_LIVING_DOORCRUSHED "living_doorcrush"
@@ -105,3 +105,13 @@
 
 /// from base of [/mob/living/changeNext_Move()] (next_move)
 #define COMSIG_LIVING_CHANGENEXT_MOVE "living_changenext_move"
+
+/// From /mob/living/befriend() : (mob/living/new_friend)
+#define COMSIG_LIVING_BEFRIENDED "living_befriended"
+
+/// From /mob/living/unfriend() : (mob/living/old_friend)
+#define COMSIG_LIVING_UNFRIENDED "living_unfriended"
+
+///from /mob/living/proc/check_block(): (atom/hit_by, damage, attack_text, attack_type, armour_penetration)
+#define COMSIG_LIVING_CHECK_BLOCK "living_check_block"
+	#define SUCCESSFUL_BLOCK (1<<0)

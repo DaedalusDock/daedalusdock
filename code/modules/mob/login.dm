@@ -27,7 +27,10 @@
 /mob/Login()
 	if(!client)
 		return FALSE
+
 	canon_client = client
+	client.persistent_client.SetMob(src)
+
 	add_to_player_list()
 	lastKnownIP = client.address
 	computer_id = client.computer_id
@@ -66,8 +69,6 @@
 
 	SEND_SIGNAL(src, COMSIG_MOB_LOGIN)
 
-	if (key != client.key)
-		key = client.key
 	reset_perspective(loc)
 
 	if(loc)
@@ -91,19 +92,21 @@
 
 	update_client_colour()
 	update_mouse_pointer()
+	update_ambience_area(get_area(src))
+
 	if(client)
 		if(client.view_size)
 			client.view_size.resetToDefault() // Resets the client.view in case it was changed.
 		else
 			client.change_view(getScreenSize(client.prefs.read_preference(/datum/preference/toggle/widescreen)))
 
-		if(client.player_details.player_actions.len)
-			for(var/datum/action/A in client.player_details.player_actions)
-				A.Grant(src)
+		for(var/datum/action/A in client.persistent_client.player_actions)
+			A.Grant(src)
 
-		for(var/foo in client.player_details.post_login_callbacks)
+		for(var/foo in persistent_client.post_login_callbacks)
 			var/datum/callback/CB = foo
 			CB.Invoke()
+
 		log_played_names(client.ckey,name,real_name)
 		auto_deadmin_on_login()
 

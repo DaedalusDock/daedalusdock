@@ -299,6 +299,8 @@
 /datum/config_entry/string/discordbotcommandprefix
 	default = "?"
 
+/datum/config_entry/string/panic_bunker_discord_link
+
 /datum/config_entry/string/roundstatsurl
 
 /datum/config_entry/string/gamelogurl
@@ -404,10 +406,6 @@
 /// Flag to enable the whitelist, only allowing registered players to enter the server
 /datum/config_entry/flag/panic_bunker_discord_require
 
-/// String to show the user if they were denied access due to the WAS
-/datum/config_entry/string/panic_bunker_discord_register_message
-	default = "Sorry but this server requires players to link their Discord account before playing! Please enter the following command, including the token, into this Server's Discord Guild."
-
 /datum/config_entry/string/panic_bunker_message
 	default = "Sorry but the server is currently not accepting connections from never before seen players."
 
@@ -469,6 +467,10 @@
 /datum/config_entry/number/client_warn_version
 	default = null
 	min_val = 500
+
+/datum/config_entry/number/client_warn_build
+	default = null
+	min_val = 0
 
 /datum/config_entry/string/client_warn_message
 	default = "Your version of byond may have issues or be blocked from accessing this server in the future."

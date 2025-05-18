@@ -89,13 +89,6 @@
 	else
 		return ..()
 
-/obj/item/watertank/MouseDrop(obj/over_object)
-	var/mob/M = loc
-	if(istype(M) && istype(over_object, /atom/movable/screen/inventory/hand))
-		var/atom/movable/screen/inventory/hand/H = over_object
-		M.putItemFromInventoryInHandIfPossible(src, H.held_index)
-	return ..()
-
 /obj/item/watertank/attackby(obj/item/attacking_item, mob/user, params)
 	if(attacking_item == noz)
 		remove_noz()
@@ -103,7 +96,7 @@
 	else
 		return ..()
 
-/obj/item/watertank/dropped(mob/user)
+/obj/item/watertank/unequipped(mob/user)
 	..()
 	remove_noz()
 
@@ -147,7 +140,7 @@
 	desc = "A janitorial cleaner backpack with nozzle to clean blood and graffiti."
 	icon_state = "waterbackpackjani"
 	inhand_icon_state = "waterbackpackjani"
-	custom_price = PAYCHECK_EASY * 5
+	custom_price = PAYCHECK_ASSISTANT * 5
 
 /obj/item/watertank/janitor/Initialize(mapload)
 	. = ..()
@@ -225,7 +218,7 @@
 /obj/item/watertank/atmos/make_noz()
 	return new /obj/item/extinguisher/mini/nozzle(src)
 
-/obj/item/watertank/atmos/dropped(mob/user)
+/obj/item/watertank/atmos/unequipped(mob/user)
 	..()
 	icon_state = "waterbackpackatmos"
 	if(istype(noz, /obj/item/extinguisher/mini/nozzle))
@@ -444,14 +437,14 @@
 /obj/item/reagent_containers/chemtank/proc/turn_on()
 	on = TRUE
 	START_PROCESSING(SSobj, src)
-	if(ismob(loc))
-		to_chat(loc, span_notice("[src] turns on."))
+	if(equipped_to)
+		to_chat(equipped_to, span_notice("[src] turns on."))
 
 /obj/item/reagent_containers/chemtank/proc/turn_off()
 	on = FALSE
 	STOP_PROCESSING(SSobj, src)
-	if(ismob(loc))
-		to_chat(loc, span_notice("[src] turns off."))
+	if(equipped_to)
+		to_chat(equipped_to, span_notice("[src] turns off."))
 
 /obj/item/reagent_containers/chemtank/process(delta_time)
 	if(!ishuman(loc))

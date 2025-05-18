@@ -4,14 +4,21 @@
 * Set drowsyness of a mob to passed value
 */
 /mob/proc/set_drowsyness(amount)
+	. = drowsyness
 	drowsyness = max(amount, 0)
 
+	if(!!. != !!drowsyness)
+		if(drowsyness)
+			add_movespeed_modifier(/datum/movespeed_modifier/status_effect/drowsy)
+		else
+			remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/drowsy)
 /**
  * Adds passed value to the drowsyness of a mob
  */
-/mob/proc/adjust_drowsyness(amount)
-	drowsyness = max(drowsyness + amount, 0)
-
+/mob/proc/adjust_drowsyness(amount, up_to = INFINITY)
+	if(amount + drowsyness > up_to)
+		amount = max(up_to - drowsyness, 0)
+	set_drowsyness(max(drowsyness + amount, 0))
 
 ///Blind a mobs eyes by amount
 /mob/proc/blind_eyes(amount)

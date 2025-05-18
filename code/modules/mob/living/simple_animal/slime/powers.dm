@@ -144,7 +144,7 @@
 			var/datum/action/innate/slime/reproduce/reproduce_action = new
 			reproduce_action.Grant(src)
 			regenerate_icons()
-			update_name()
+			update_appearance(UPDATE_NAME)
 		else
 			to_chat(src, "<i>I am not ready to evolve yet...</i>")
 	else
@@ -203,7 +203,7 @@
 			if(src.mind)
 				src.mind.transfer_to(new_slime)
 			else
-				new_slime.key = src.key
+				new_slime.PossessByPlayer(src.key)
 			qdel(src)
 		else
 			to_chat(src, "<i>I am not ready to reproduce yet...</i>")

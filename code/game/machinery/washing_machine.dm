@@ -292,7 +292,7 @@ GLOBAL_LIST_INIT(dye_registry, list(
 /obj/item/clothing/shoes/sneakers/machine_wash(obj/machinery/washing_machine/washer)
 	if(chained)
 		chained = FALSE
-		slowdown = SHOES_SLOWDOWN
+		slowdown = initial(slowdown)
 		new /obj/item/restraints/handcuffs(loc)
 	..()
 
@@ -326,7 +326,7 @@ GLOBAL_LIST_INIT(dye_registry, list(
 	if(!panel_open || busy)
 		return FALSE
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/washing_machine/attackby(obj/item/W, mob/living/user, params)
 	if(default_deconstruction_screwdriver(user, null, null, W))

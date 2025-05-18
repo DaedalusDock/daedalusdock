@@ -14,7 +14,6 @@
 	throw_range = 7
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron=75, /datum/material/glass=25)
-	obj_flags = USES_TGUI
 
 	///if FALSE, broadcasting and listening dont matter and this radio shouldnt do anything
 	VAR_PRIVATE/on = TRUE
@@ -468,8 +467,8 @@
 		return
 	emped++ //There's been an EMP; better count it
 	var/curremp = emped //Remember which EMP this was
-	if (listening && ismob(loc)) // if the radio is turned on and on someone's person they notice
-		to_chat(loc, span_warning("\The [src] overloads."))
+	if (listening && equipped_to) // if the radio is turned on and on someone's person they notice
+		to_chat(equipped_to, span_warning("\The [src] overloads."))
 	for (var/ch_name in channels)
 		channels[ch_name] = 0
 	set_on(FALSE)

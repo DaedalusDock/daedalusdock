@@ -56,11 +56,11 @@ SUBSYSTEM_DEF(packets)
 
 /// Generates a unique (at time of read) ID for an atom, It just plays silly with the ref.
 /// Pass the target atom in as arg[1]
-/datum/controller/subsystem/packets/proc/generate_net_id(caller)
-	if(!caller)
+/datum/controller/subsystem/packets/proc/generate_net_id(invoker)
+	if(!invoker)
 		CRASH("Attempted to generate netid for null")
-	. = REF(caller)
-	. = "[copytext(.,4,(length(.)))]0"
+	. = ref(invoker)
+	. = "[fit_with_zeros(copytext(.,4,(length(.))), 8, TRUE)]"
 
 /datum/controller/subsystem/packets/PreInit(timeofday)
 	hibernate_checks = list(

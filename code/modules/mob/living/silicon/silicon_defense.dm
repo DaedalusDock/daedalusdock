@@ -23,20 +23,15 @@
 
 /mob/living/silicon/attack_animal(mob/living/simple_animal/user, list/modifiers)
 	. = ..()
-	if(.)
-		var/damage = rand(user.melee_damage_lower, user.melee_damage_upper)
-		if(prob(damage))
-			for(var/mob/living/buckled in buckled_mobs)
-				buckled.Paralyze(20)
-				unbuckle_mob(buckled)
-				buckled.visible_message(span_danger("[buckled] is knocked off of [src] by [user]!"), \
-								span_userdanger("You're knocked off of [src] by [user]!"), null, null, user)
-				to_chat(user, span_danger("You knock [buckled] off of [src]!"))
-		switch(user.melee_damage_type)
-			if(BRUTE)
-				adjustBruteLoss(damage)
-			if(BURN)
-				adjustFireLoss(damage)
+	var/damage_received = .
+	if(prob(damage_received))
+		for(var/mob/living/buckled in buckled_mobs)
+			buckled.Paralyze(2 SECONDS)
+			unbuckle_mob(buckled)
+			buckled.visible_message(
+				span_danger("[buckled] is knocked off of [src] by [user]!"),
+				ignored_mobs = user,
+			)
 
 /mob/living/silicon/attack_paw(mob/living/user, list/modifiers)
 	return attack_hand(user, modifiers)
@@ -79,11 +74,22 @@
 		return
 	return ..()
 
-/mob/living/silicon/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)
+/mob/living/silicon/check_block(atom/hitby, damage, attack_text, attack_type, armour_penetration, damage_type, attack_flag)
+	. = ..()
+	if(.)
+		return TRUE
+
+	if(damage_type == BRUTE && attack_type == UNARMED_ATTACK && damage <= 10)
+		playsound(src, 'sound/effects/bang.ogg', 10, TRUE)
+		visible_message(span_danger("[attack_text] doesn't leave a dent on [src]!"), vision_distance = COMBAT_MESSAGE_RANGE)
+		return TRUE
+	return FALSE
+
+/mob/living/silicon/electrocute_act(shock_damage, siemens_coeff = 1, flags = SHOCK_HANDS, stun_multiplier = 1)
 	if(buckled_mobs)
 		for(var/mob/living/M in buckled_mobs)
 			unbuckle_mob(M)
-			M.electrocute_act(shock_damage/100, source, siemens_coeff, flags) //Hard metal shell conducts!
+			M.electrocute_act(shock_damage/100, siemens_coeff, flags) //Hard metal shell conducts!
 	return 0 //So borgs they don't die trying to fix wiring
 
 /mob/living/silicon/emp_act(severity)

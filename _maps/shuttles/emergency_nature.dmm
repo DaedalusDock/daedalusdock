@@ -694,7 +694,7 @@
 /obj/machinery/door/airlock/security{
 	name = "Brig"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/brig,
+/obj/effect/mapping_helpers/airlock/access/all/security/general,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape/brig)
 "Ai" = (
@@ -835,7 +835,6 @@
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
 "Fo" = (
-/obj/item/cultivator,
 /mob/living/simple_animal/hostile/lizard,
 /turf/open/floor/grass,
 /area/shuttle/escape)

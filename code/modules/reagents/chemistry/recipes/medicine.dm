@@ -197,3 +197,28 @@
 	// Chlorine is a good enough substitute for bromine right?
 	required_reagents = list(/datum/reagent/fuel/oil = 1, /datum/reagent/carbon = 1, /datum/reagent/chlorine = 1, /datum/reagent/diethylamine = 1, /datum/reagent/consumable/ethanol = 1)
 	mix_message = "The mixture fizzes gently."
+
+/datum/chemical_reaction/styptic_powder
+	results = list(/datum/reagent/medicine/styptic_powder = 2)
+	required_reagents = list(
+		/datum/reagent/aluminium = 1,
+		/datum/reagent/hydrogen = 1,
+		/datum/reagent/oxygen = 1,
+		/datum/reagent/medicine/bicaridine = 1,
+	)
+	mix_message = "The solution yields an astringent powder."
+
+/datum/chemical_reaction/silver_sulfadiazine
+	results = list(
+		/datum/reagent/medicine/silver_sulfadiazine = 5,
+		/datum/reagent/silicon = 1, // The silicon from the kelotane gets left over.
+	)
+	// 	C10H9AgN4O2S is the chemical compound for silver sulf in real life. we conveniently have all of these chemicals, so let's replicate it here
+	required_reagents = list(
+		/datum/reagent/medicine/kelotane = 1, // Kelotane brings the carbon
+		/datum/reagent/ammonia = 1, // Ammonia brings the hydrogen and nitrogen
+		/datum/reagent/silver = 1,
+		/datum/reagent/oxygen = 1,
+		/datum/reagent/sulfur = 1
+	)
+	mix_message = "A strong and cloying odor begins to bubble from the mixture."

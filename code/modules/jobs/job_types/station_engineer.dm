@@ -14,7 +14,6 @@
 
 	employers = list(
 		/datum/employer/daedalus,
-		/datum/employer/contractor
 	)
 
 	outfits = list(
@@ -22,7 +21,6 @@
 			SPECIES_HUMAN = /datum/outfit/job/engineer,
 			SPECIES_TESHARI = /datum/outfit/job/engineer,
 			SPECIES_VOX = /datum/outfit/job/engineer,
-			SPECIES_PLASMAMAN = /datum/outfit/job/engineer/plasmaman,
 		),
 		"Engine Technician" = list(
 			SPECIES_HUMAN = /datum/outfit/job/engineer/enginetech,
@@ -40,11 +38,10 @@
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_ENG
 
 	liver_traits = list(TRAIT_ENGINEER_METABOLISM)
 
-	bounty_types = CIV_JOB_ENG
 	departments_list = list(
 		/datum/job_department/engineering,
 		)
@@ -65,7 +62,7 @@
 	name = "Station Engineer"
 	jobtype = /datum/job/station_engineer
 
-	id_trim = /datum/id_trim/job/station_engineer
+	id_template = /datum/access_template/job/station_engineer
 	uniform = /obj/item/clothing/under/rank/engineering/engineer
 	belt = /obj/item/storage/belt/utility/full/engi
 	ears = /obj/item/radio/headset/headset_eng
@@ -82,15 +79,6 @@
 	box = /obj/item/storage/box/survival/engineer
 	pda_slot = ITEM_SLOT_LPOCKET
 	skillchips = list(/obj/item/skillchip/job/engineer)
-
-/datum/outfit/job/engineer/plasmaman
-	name = "Station Engineer (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/engineering
-	gloves = /obj/item/clothing/gloves/color/plasmaman/engineer
-	head = /obj/item/clothing/head/helmet/space/plasmaman/engineering
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/engineer/mod
 	name = "Station Engineer (MODsuit)"

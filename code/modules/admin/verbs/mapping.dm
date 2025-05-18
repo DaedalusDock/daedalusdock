@@ -54,6 +54,7 @@ GLOBAL_LIST_INIT(admin_verbs_debug_mapping, list(
 	/client/proc/station_food_debug,
 	/client/proc/station_stack_debug,
 	/client/proc/check_atmos_controls,
+	/client/proc/find_bad_access,
 ))
 GLOBAL_PROTECT(admin_verbs_debug_mapping)
 
@@ -292,28 +293,62 @@ GLOBAL_VAR_INIT(say_disabled, FALSE)
 /client/proc/create_mapping_job_icons()
 	set name = "Generate job landmarks icons"
 	set category = "Mapping"
-	var/icon/final = icon()
+
+	var/icon/compiled_icon = icon()
 	var/mob/living/carbon/human/dummy/D = new(locate(1,1,1)) //spawn on 1,1,1 so we don't have runtimes when items are deleted
 	D.setDir(SOUTH)
+
+	var/list/completed = list()
+
+	// Handle AI and borg specially
+	compiled_icon.Insert(icon('icons/mob/ai.dmi', "ai", SOUTH, 1), "AI")
+	compiled_icon.Insert(icon('icons/mob/robots.dmi', "robot", SOUTH, 1), "Cyborg")
+
 	for(var/job in subtypesof(/datum/job))
 		var/datum/job/JB = new job
 		switch(JB.title)
-			if(JOB_AI)
-				final.Insert(icon('icons/mob/ai.dmi', "ai", SOUTH, 1), "AI")
-			if(JOB_CYBORG)
-				final.Insert(icon('icons/mob/robots.dmi', "robot", SOUTH, 1), "Cyborg")
+			if(JOB_AI, JOB_CYBORG)
+				continue
+
 			else
-				for(var/obj/item/I in D)
-					qdel(I)
+				D.wipe_inventory()
 				randomize_human(D)
 				D.dress_up_as_job(JB, TRUE)
-				var/icon/I = icon(getFlatIcon(D), frame = 1)
-				final.Insert(I, JB.title)
+				var/icon/I = getFlatIcon(D, no_anim = TRUE)
+				fcopy(I, "icons/mob/job_icons_temp/[JB.title].dmi")
+				completed += JB.title
+
 	qdel(D)
+
+	// Byond bug. Need to put it back into the icon cache, since all the stuff above pushes it out.
+	compiled_icon = icon(compiled_icon)
+
+	for(var/title in completed)
+		var/icon/I = icon("icons/mob/job_icons_temp/[title].dmi")
+		compiled_icon.Insert(I, title)
+
+	// Clear out the temp folder
+	fdel("icons/mob/job_icons_temp/")
+
 	//Also add the x
 	for(var/x_number in 1 to 4)
-		final.Insert(icon('icons/hud/screen_gen.dmi', "x[x_number == 1 ? "" : x_number]"), "x[x_number == 1 ? "" : x_number]")
-	fcopy(final, "icons/mob/landmarks.dmi")
+		compiled_icon.Insert(icon('icons/hud/screen_gen.dmi', "x[x_number == 1 ? "" : x_number]"), "x[x_number == 1 ? "" : x_number]")
+
+	var/list/old_states = icon_states("icons/mob/autogen_landmarks.dmi")
+
+	fcopy(compiled_icon, "icons/mob/autogen_landmarks.dmi")
+
+	var/list/new_states = icon_states("icons/mob/autogen_landmarks.dmi")
+	var/list/removed_states = old_states - new_states
+	var/list/added_states = new_states - old_states
+	if(length(added_states) || length(removed_states))
+		to_chat(world, span_danger("Icon states have been added and/or removed. Ensure this is correct."))
+		for(var/state in removed_states)
+			to_chat(world, span_obviousnotice("REMOVED: [state]."))
+		for(var/state in added_states)
+			to_chat(world, span_obviousnotice("ADDED: [state]."))
+
+	to_chat(world, "All done :)")
 
 /client/proc/debug_z_levels()
 	set name = "Debug Z-Levels"
@@ -515,3 +550,41 @@ GLOBAL_VAR_INIT(say_disabled, FALSE)
 		to_chat(usr, "Atmos control frequency check passed without encountering problems.", confidential=TRUE)
 	else
 		to_chat(usr, "Total errors: [invalid_machine + invalid_tag + tagless + duplicate_tag + not_heard + not_told]", confidential=TRUE)
+
+/client/proc/find_bad_access()
+	set name = "Find Bad Access"
+	set category = "Mapping"
+
+	var/list/zlevel_cache = new /list(world.maxz)
+	for(var/zlevel in SSmapping.get_zstack(get_random_station_turf(), FALSE))
+		zlevel_cache[zlevel] = TRUE
+
+	var/doors = 0
+	for(var/obj/machinery/door/D as anything in INSTANCES_OF(/obj/machinery/door))
+		if(!zlevel_cache[D.z])
+			continue
+
+		doors++
+
+		var/list/bad_access = list()
+		var/list/bad_one_access = list()
+
+		D.gen_access()
+
+		for(var/access_num in D.req_access)
+			if(!SSid_access.desc_by_access["[access_num]"])
+				bad_access += num2text(access_num)
+
+		for(var/access_num in D.req_one_access)
+			if(!SSid_access.desc_by_access["[access_num]"])
+				bad_one_access += num2text(access_num)
+
+
+		if(length(bad_access) && length(bad_one_access))
+			to_chat(src, "[ADMIN_COORDJMP(D)] <a href='?_src_=vars;[HrefToken()];Vars=\"+ref+\"'>VV</a> Bad Access: [jointext(bad_access, ",")] | Bad One Access: [jointext(bad_one_access, ",")]")
+		else if(length(bad_access))
+			to_chat(src, "[ADMIN_COORDJMP(D)] <a href='?_src_=vars;[HrefToken()];Vars=\"+ref+\"'>VV</a> Bad Access: [jointext(bad_access, ",")]")
+		else if(length(bad_one_access))
+			to_chat(src, "[ADMIN_COORDJMP(D)] <a href='?_src_=vars;[HrefToken()];Vars=\"+ref+\"'>VV</a> Bad One Access: [jointext(bad_one_access, ",")]")
+
+	to_chat(src, span_debug("Searched [doors] doors."))

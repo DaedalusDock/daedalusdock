@@ -19,7 +19,6 @@
 	coldmod = 6   // = 3x cold damage
 	heatmod = 0.5 // = 1/4x heat damage
 	burnmod = 0.5 // = 1/2x generic burn damage
-	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	inherent_factions = list("slime")
 	species_language_holder = /datum/language_holder/jelly
@@ -261,7 +260,7 @@
 
 	H.notransform = TRUE
 
-	if(do_after(owner, time = 6 SECONDS, timed_action_flags = IGNORE_HELD_ITEM))
+	if(do_after(owner, time = 6 SECONDS, timed_action_flags = DO_IGNORE_HELD_ITEM))
 		if(H.blood_volume >= BLOOD_VOLUME_SLIME_SPLIT)
 			make_dupe()
 		else

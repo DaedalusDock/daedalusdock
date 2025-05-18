@@ -22,7 +22,7 @@
 	var/list/pda_types = list()
 	/// A list of the card trims that this machine can currently imprint onto a card.
 	var/list/card_trims = list()
-	/// Set to a region define (REGION_SECURITY for example) to create a departmental variant, limited to departmental options. If null, this is unrestricted.
+	/// Set to an access_group datum to create a departmental variant, limited to departmental options. If null, this is unrestricted.
 	var/target_dept
 
 /obj/machinery/pdapainter/update_icon_state()
@@ -53,11 +53,11 @@
 	// If we get a region match, add their trim templates and PDA paths to our lists.
 	var/list/manager_cache = SSid_access.sub_department_managers_tgui
 	for(var/access_txt in manager_cache)
-		var/list/manager_info = manager_cache[access_txt]
-		var/list/manager_regions = manager_info["regions"]
+		var/datum/access_group_manager/manager = manager_cache[access_txt]
+		var/list/manager_regions = manager.access_groups
 		if(target_dept in manager_regions)
-			var/list/pda_list = manager_info["pdas"]
-			var/list/trim_list = manager_info["templates"]
+			var/list/pda_list = manager.pdas
+			var/list/trim_list = manager.templates
 			pda_types |= pda_list
 			card_trims |= trim_list
 
@@ -105,7 +105,7 @@
 	. = ..()
 	if(default_unfasten_wrench(user, tool))
 		power_change()
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/pdapainter/attackby(obj/item/O, mob/living/user, params)
 	if(machine_stat & BROKEN)
@@ -344,7 +344,7 @@
 				if(!(card_trims[path] == selection))
 					continue
 
-				if(SSid_access.apply_trim_to_card(stored_id_card, path, copy_access = FALSE))
+				if(SSid_access.apply_template_to_card(stored_id_card, path, copy_access = FALSE))
 					return TRUE
 
 				to_chat(usr, span_warning("The trim you selected could not be added to \the [stored_id_card]. You will need a rarer ID card to imprint that trim data."))
@@ -361,19 +361,14 @@
 /// Security departmental variant. Limited to PDAs defined in the SSid_access.sub_department_managers_tgui data structure.
 /obj/machinery/pdapainter/security
 	name = "\improper Security PDA & ID Painter"
-	target_dept = REGION_SECURITY
+	target_dept = /datum/access_group/station/security::name
 
 /// Medical departmental variant. Limited to PDAs defined in the SSid_access.sub_department_managers_tgui data structure.
 /obj/machinery/pdapainter/medbay
 	name = "\improper Medbay PDA & ID Painter"
-	target_dept = REGION_MEDBAY
-
-/// Science departmental variant. Limited to PDAs defined in the SSid_access.sub_department_managers_tgui data structure.
-/obj/machinery/pdapainter/research
-	name = "\improper Research PDA & ID Painter"
-	target_dept = REGION_RESEARCH
+	target_dept = /datum/access_group/station/medical::name
 
 /// Engineering departmental variant. Limited to PDAs defined in the SSid_access.sub_department_managers_tgui data structure.
 /obj/machinery/pdapainter/engineering
 	name = "\improper Engineering PDA & ID Painter"
-	target_dept = REGION_ENGINEERING
+	target_dept = /datum/access_group/station/engineering::name

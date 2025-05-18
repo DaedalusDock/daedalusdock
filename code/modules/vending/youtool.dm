@@ -32,11 +32,11 @@
 		/obj/item/clothing/gloves/color/yellow = 1
 	)
 	refill_canister = /obj/item/vending_refill/youtool
-	default_price = PAYCHECK_ASSISTANT
-	extra_price = PAYCHECK_COMMAND * 1.5
+	default_price = PAYCHECK_ASSISTANT * 1.5
+	extra_price = PAYCHECK_COMMAND * 1.25
 	payment_department = ACCOUNT_ENG
 
-	discount_access = ACCESS_ENGINE
+	discount_access = ACCESS_ENGINEERING
 
 /obj/item/vending_refill/youtool
 	machine_name = "YouTool"

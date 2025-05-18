@@ -1,20 +1,21 @@
-import { Component, createRef } from "inferno";
+import { Component, createRef } from 'react';
 
 export class TrackOutsideClicks extends Component<{
-  onOutsideClick: () => void,
+  children: React.ReactNode;
+  onOutsideClick: () => void;
 }> {
   ref = createRef<HTMLDivElement>();
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
 
-    document.addEventListener("click", this.handleOutsideClick);
+    document.addEventListener('click', this.handleOutsideClick);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("click", this.handleOutsideClick);
+    document.removeEventListener('click', this.handleOutsideClick);
   }
 
   handleOutsideClick(event: MouseEvent) {
@@ -28,11 +29,6 @@ export class TrackOutsideClicks extends Component<{
   }
 
   render() {
-    return (
-      <div ref={this.ref}>
-        {this.props.children}
-      </div>
-    );
+    return <div ref={this.ref}>{this.props.children}</div>;
   }
 }
-

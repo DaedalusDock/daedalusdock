@@ -30,7 +30,6 @@
 		/obj/item/organ/tail/vox = "Vox Tail"
 	)
 	liked_food = MEAT | FRIED
-	payday_modifier = 0.75
 	outfit_important_for_life = /datum/outfit/vox
 	species_language_holder = /datum/language_holder/vox
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
@@ -114,26 +113,13 @@
 
 	return randname
 
-/datum/species/vox/get_species_description()
-	return "'The Vox' refers to, in most sectors, the most commonly seen type: Vox Primalis. A peculiar hybrid of reptilian and avian characteristics hailing from massive space vessels often known as Arkships. \
-		Most work with utter loyalty to their creators, the Vox Auralis, though some have been known to reject it entirely and try to shape their own lives, but this is an uncommon occurrence. \
-		Either way, regardless of their loyalty to their creators, Vox are condemned to an eternity of life so long as their stack exists and can be placed in a new gene form, \
-		and the pigmented serial upon them will always be a reminder of their artificial origins."
+/datum/species/vox/get_species_mechanics()
+	return "Oxygen is poisonous to Vox, requiring them to use respirators connected to a source of Nitrogen."
 
 /datum/species/vox/get_species_lore()
 	return list(
-		"The Vox hail from massive, planetoid-like ships known simply as Arks. They drift silently through the universe, and have seemingly existed since before the rise of most space-faring species of the modern era. \
-		Each Primalis is created with a pre-determined destiny in mind, a function that they will fulfill until the end of their body's lifetime, whereupon they have their cortical stack extracted and implanted into a new larval form. \
-		This new body will grow into the Vox according to the encoded genetic data, preserving the skills and recreating a body best fitting for their function.",
-
-		"Historically, the Arks have been mostly silent to the majority of species, beyond the occasional garbled warning about approaching, or the smallest of trades and exchanges. \
-		This has changed in recent years, with several Arkships opening communications with Nanotrasen, with discussions behind closed doors. \
-		One of the first long-term deals with the Vox came in the form of a charity named Val-Biotechnica, created and sponsored by Nanotrasen. Using advanced Vox bio-technology to provide healthcare and genetic therapy at low to no cost.",
-
-		"Conspiracy theorists have suggested that this Vox charity is a guise for kidnappings and harvestings, though Nanotrasen denies all claims, as does Val-Biotechnica. \
-		A labor deal was also reached, allowing Ark-Vox to work for Nanotrasen, which can be difficult for those Vox now having to adjust to the inorganic nature of non-Vox technology. \
-		Their presence brings some conflict between Ark-Vox and the Free-Vox who have fled from their creators and their homes, living in places such as The Shoal, or any station that will accept them. \
-		Nanotrasen Public Relations takes great care in assuring the public that everything is fine, and that they're working in perfect harmony.",
+		"A reclusive race of tall humanoid nomads, rare to see in person. Most Vox have been observed to be highly xenophobic and unwilling to share information about their kind. \
+		They possess a strong attraction to material goods, with the vast majority of known Vox being acclaimed tradesmen or pirates."
 	)
 
 /datum/species/vox/get_scream_sound(mob/living/carbon/human/vox)

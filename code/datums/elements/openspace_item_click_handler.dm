@@ -21,4 +21,4 @@
 		return
 	var/turf/turf_above = GetAbove(target)
 	if(turf_above?.z == user.z)
-		INVOKE_ASYNC(source, TYPE_PROC_REF(/obj/item, handle_openspace_click), turf_above, user, user.CanReach(turf_above, source), click_parameters)
+		INVOKE_ASYNC(source, TYPE_PROC_REF(/obj/item, handle_openspace_click), turf_above, user, turf_above.IsReachableBy(user, source?.reach), click_parameters)

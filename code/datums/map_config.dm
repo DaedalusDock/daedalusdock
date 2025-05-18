@@ -25,6 +25,9 @@
 
 	var/minetype = "lavaland"
 
+	/// X,Y values for the holomap offset. The holomap draws to a 480x480 image, so by default the offset is 480 / 4.
+	var/holomap_offsets = list(120, 120)
+
 	var/allow_custom_shuttles = TRUE
 	var/shuttles = list(
 		"cargo" = "cargo_box",
@@ -36,6 +39,9 @@
 	var/job_changes = list()
 	/// List of additional areas that count as a part of the library
 	var/library_areas = list()
+
+	/// Do we run mapping standards unit tests on this map?
+	var/run_mapping_tests = FALSE
 
 /**
  * Proc that simply loads the default map config, which should always be functional.
@@ -193,8 +199,24 @@
 				continue
 			library_areas += path
 
+	if("holomap_offset" in json)
+		if(!islist(json["holomap_offset"]) || length(json["holomap_offset"] != 2))
+			log_world("map_config \"holomap_offset\" field is invalid!")
+			return
+		temp = json["holomap_offset"]
+		if(!isnum(temp[1]) || !isnum(temp[2]))
+			log_world("map_config \"holomap_offset\" contains non-numbers!")
+			return
+
+		holomap_offsets = temp
+
+	if("run_mapping_tests" in json)
+		//This should be true, but just in case...
+		run_mapping_tests = json["run_mapping_tests"]
+
 	defaulted = FALSE
 	return TRUE
+
 #undef CHECK_EXISTS
 
 /datum/map_config/proc/GetFullMapPaths()

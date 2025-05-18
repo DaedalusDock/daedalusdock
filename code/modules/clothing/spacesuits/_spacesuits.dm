@@ -65,7 +65,7 @@
 		update_hud_icon(user) // update the hud
 
 // On removal stop processing, save battery
-/obj/item/clothing/suit/space/dropped(mob/user)
+/obj/item/clothing/suit/space/unequipped(mob/user)
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 	var/mob/living/carbon/human/human = user
@@ -137,13 +137,13 @@
 
 /obj/item/clothing/suit/space/crowbar_act(mob/living/user, obj/item/tool)
 	toggle_spacesuit_cell(user)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/clothing/suit/space/screwdriver_act(mob/living/user, obj/item/tool)
 	if(cell_cover_open)
 		if(cell)
 			remove_cell(user)
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	var/range_low = 20 // Default min temp c
 	var/range_high = 45 // default max temp c
@@ -156,7 +156,7 @@
 	if(deg_c && deg_c >= range_low && deg_c <= range_high)
 		temperature_setting = round(T0C + deg_c, 0.1)
 		to_chat(user, span_notice("You see the readout change to [deg_c] c."))
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 // object handling for accessing features of the suit
 /obj/item/clothing/suit/space/attackby(obj/item/I, mob/user, params)
@@ -262,8 +262,8 @@
 	if(!ishuman(user))
 		return FIRELOSS
 	var/mob/living/carbon/human/humanafterall = user
-	var/datum/disease/advance/cold/pun = new //in the show, arnold survives his stunt, but catches a cold because of it
-	humanafterall.ForceContractDisease(pun, FALSE, TRUE) //this'll show up on health analyzers and the like
+	var/datum/pathogen/advance/cold/pun = new //in the show, arnold survives his stunt, but catches a cold because of it
+	humanafterall.try_contract_pathogen(pun, FALSE, TRUE) //this'll show up on health analyzers and the like
 	return FIRELOSS
 
 #undef THERMAL_REGULATOR_COST

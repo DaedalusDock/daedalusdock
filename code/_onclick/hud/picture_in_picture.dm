@@ -64,7 +64,7 @@
 	M = matrix()
 	M.Translate((max(4, width) - 0.75) * world.icon_size, (height + 0.25) * world.icon_size)
 	button_x.transform = M
-	vis_contents += button_x
+	add_viscontents(button_x)
 
 	if(!button_expand)
 		button_expand = new /atom/movable/screen/component_button(null, src)
@@ -77,7 +77,7 @@
 	M = matrix()
 	M.Translate(world.icon_size, (height + 0.25) * world.icon_size)
 	button_expand.transform = M
-	vis_contents += button_expand
+	add_viscontents(button_expand)
 
 	if(!button_shrink)
 		button_shrink = new /atom/movable/screen/component_button(null, src)
@@ -90,7 +90,7 @@
 	M = matrix()
 	M.Translate(2 * world.icon_size, (height + 0.25) * world.icon_size)
 	button_shrink.transform = M
-	vis_contents += button_shrink
+	add_viscontents(button_shrink)
 
 /atom/movable/screen/movable/pic_in_pic/proc/add_background()
 	if((width > 0) && (height > 0))
@@ -122,11 +122,11 @@
 		refresh_view()
 
 /atom/movable/screen/movable/pic_in_pic/proc/refresh_view()
-	vis_contents -= viewing_turfs
+	remove_viscontents(viewing_turfs)
 	if(!width || !height)
 		return
 	viewing_turfs = get_visible_turfs()
-	vis_contents += viewing_turfs
+	add_viscontents(viewing_turfs)
 
 /atom/movable/screen/movable/pic_in_pic/proc/get_visible_turfs()
 	var/turf/T = get_turf(center)

@@ -80,7 +80,7 @@
 	caliber = CALIBER_ARROW
 	heavy_metal = FALSE
 
-/obj/item/ammo_casing/caseless/arrow/despawning/dropped()
+/obj/item/ammo_casing/caseless/arrow/despawning/unequipped()
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(floor_vanish)), 5 SECONDS)
 

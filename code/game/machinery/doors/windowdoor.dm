@@ -170,8 +170,8 @@
 		return ZONE_BLOCKED
 
 //used in the AStar algorithm to determinate if the turf the door is on is passable
-/obj/machinery/door/window/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
-	return !density || (dir != to_dir) || (check_access_list(access) && hasPower() && !no_id)
+/obj/machinery/door/window/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	return !density || (dir != to_dir) || (check_access_list(pass_info.access) && hasPower() && !pass_info.no_id)
 
 /obj/machinery/door/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
 	SIGNAL_HANDLER
@@ -413,11 +413,11 @@
 /obj/machinery/door/window/brigdoor/security/cell
 	name = "cell door"
 	desc = "For keeping in criminal scum."
-	req_access = list(ACCESS_BRIG)
+	req_access = list(ACCESS_SECURITY)
 
 /obj/machinery/door/window/brigdoor/security/holding
 	name = "holding cell door"
-	req_one_access = list(ACCESS_BRIG_ENTRANCE) //lawyer also gets brig_entrance
+	req_one_access = list(ACCESS_SECURITY)
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/door/window/left, 0)
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/door/window/right, 0)

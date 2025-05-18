@@ -170,7 +170,7 @@ SUBSYSTEM_DEF(zas)
 	settings = zas_settings
 	gas_data = xgm_gas_data
 
-	to_chat(world, span_debug("ZAS: Processing Geometry..."))
+	to_chat(world, systemtext("ZAS: Processing Geometry..."))
 
 	var/simulated_turf_count = 0
 
@@ -181,19 +181,22 @@ SUBSYSTEM_DEF(zas)
 		simulated_turf_count++
 		S.update_air_properties()
 
-		CHECK_TICK
+		if(TICK_CHECK)
+			SSlobby.set_game_status_text(sub_text = "Propagating atmospheric zones")
+			stoplag()
 
-	to_chat(world, span_debug("ZAS:\n - Total Simulated Turfs: [simulated_turf_count]\n - Total Zones: [zones.len]\n - Total Edges: [edges.len]\n - Total Active Edges: [active_edges.len ? "<span class='danger'>[active_edges.len]</span>" : "None"]\n - Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_count]"))
+	to_chat(world, systemtext("ZAS:\n - Total Simulated Turfs: [simulated_turf_count]\n - Total Zones: [zones.len]\n - Total Edges: [edges.len]\n - Total Active Edges: [active_edges.len ? "<span class='danger'>[active_edges.len]</span>" : "None"]\n - Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_count]"))
 
-	to_chat(world, span_debug("ZAS: Geometry processing completed in [(REALTIMEOFDAY - starttime)/10] seconds!"))
+	to_chat(world, systemtext("ZAS: Geometry processing completed in [(REALTIMEOFDAY - starttime)/10] seconds!"))
 
 	if (simulate)
-		to_chat(world, span_debug("ZAS: Firing once..."))
+		to_chat(world, systemtext("ZAS: Firing once..."))
 
+		SSlobby.set_game_status_text(sub_text = "Settling air")
 		starttime = REALTIMEOFDAY
 		fire(FALSE, TRUE)
 
-		to_chat(world, span_debug("ZAS: Air settling completed in [(REALTIMEOFDAY - starttime)/10] seconds!"))
+		to_chat(world, systemtext("ZAS: Air settling completed in [(REALTIMEOFDAY - starttime)/10] seconds!"))
 
 	..(timeofday)
 
@@ -243,7 +246,7 @@ SUBSYSTEM_DEF(zas)
 		T.post_update_air_properties()
 		T.needs_air_update = 0
 		#ifdef ZASDBG
-		T.vis_contents -= zasdbgovl_mark
+		T.remove_viscontents(zasdbgovl_mark)
 		//updated++
 		#endif
 
@@ -267,7 +270,7 @@ SUBSYSTEM_DEF(zas)
 		T.post_update_air_properties()
 		T.needs_air_update = 0
 		#ifdef ZASDBG
-		T.vis_contents -= zasdbgovl_mark
+		T.remove_viscontents(zasdbgovl_mark)
 		//updated++
 		#endif
 
@@ -490,7 +493,7 @@ SUBSYSTEM_DEF(zas)
 		return
 	tiles_to_update += T
 	#ifdef ZASDBG
-	T.vis_contents += zasdbgovl_mark
+	T.add_viscontents(zasdbgovl_mark)
 	#endif
 	T.needs_air_update = 1
 
@@ -514,6 +517,11 @@ SUBSYSTEM_DEF(zas)
 	active_edges -= E
 	E.excited = FALSE
 
+	#ifdef ZASDBG
+	for(var/turf/T as anything in E.connecting_turfs)
+		T.remove_viscontents(zasdbgovl_edge)
+	#endif
+
 ///Wakes an edge, adding it to the active process list.
 /datum/controller/subsystem/zas/proc/excite_edge(connection_edge/E)
 	#ifdef ZASDBG
@@ -523,6 +531,11 @@ SUBSYSTEM_DEF(zas)
 		return
 	active_edges += E
 	E.excited = TRUE
+
+	#ifdef ZASDBG
+	for(var/turf/T as anything in E.connecting_turfs)
+		T.add_viscontents(zasdbgovl_edge)
+	#endif
 
 ///Returns the edge between zones A and B.  If one doesn't exist, it creates one. See header for more information
 /datum/controller/subsystem/zas/proc/get_edge(zone/A, zone/B) //Note: B can also be a turf.

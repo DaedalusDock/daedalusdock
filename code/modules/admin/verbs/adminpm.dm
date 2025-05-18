@@ -203,13 +203,6 @@
 		if(!msg)
 			return
 
-	var/list/chat_tag_recipients = GLOB.admins | recipient
-
-	// Outbound PM icon
-	var/tag_out = icon2html('icons/misc/chattags.dmi', chat_tag_recipients, "pm_out", realsize = TRUE)
-	// Inbound PM icon
-	var/tag_in = icon2html('icons/misc/chattags.dmi', chat_tag_recipients, "pm_in", realsize = TRUE)
-
 	var/rawmsg = msg
 
 	if(holder)
@@ -220,7 +213,7 @@
 	if(external)
 		to_chat(src,
 			type = MESSAGE_TYPE_ADMINPM,
-			html = span_notice("[tag_out] <span class='linkify'>[rawmsg]</span>"),
+			html = span_notice("[CHAT_TAG("pm_out.png")] <span class='linkify'>[rawmsg]</span>"),
 			confidential = TRUE
 		)
 
@@ -239,13 +232,13 @@
 			if(holder)
 				to_chat(recipient,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_alert("[tag_in] <b>[key_name(src, TRUE, TRUE)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"),
+					html = span_alert("[CHAT_TAG("pm_in.png")] <b>[key_name(src, TRUE, TRUE)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"),
 					confidential = TRUE
 				)
 
 				to_chat(src,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_notice("[tag_out] <b>[key_name(src, TRUE, TRUE)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"),
+					html = span_notice("[CHAT_TAG("pm_out.png")] <b>[key_name(src, TRUE, TRUE)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"),
 					confidential = TRUE
 				)
 
@@ -264,13 +257,13 @@
 
 				to_chat(recipient,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_alert("[tag_in] [replymsg]"),
+					html = span_alert("[CHAT_TAG("pm_in.png")] [replymsg]"),
 					confidential = TRUE
 				)
 
 				to_chat(src,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_notice("[tag_out] <b>Admins</b>: <span class='linkify'>[msg]</span>"),
+					html = span_notice("[CHAT_TAG("pm_out.png")] <b>Admins</b>: <span class='linkify'>[msg]</span>"),
 					confidential = TRUE
 				)
 
@@ -278,7 +271,7 @@
 
 			//play the receiving admin the adminhelp sound (if they have them enabled)
 			if(recipient.prefs.toggles & SOUND_ADMINHELP)
-				SEND_SOUND(recipient, sound('sound/effects/adminhelp.ogg'))
+				SEND_SOUND(recipient, sound('goon/sounds/adminhelp.ogg'))
 		else
 			if(holder) //sender is an admin but recipient is not. Do BIG RED TEXT
 				var/already_logged = FALSE
@@ -299,7 +292,7 @@
 				var/recipient_message = "\
 				<div class='adminpmbox'>\
 				<div class='' style='color: black; background: #f88; padding: 0.2em 0.5em;'>\
-				Administrator PM from [admin_pm_href(src, key_name(src, FALSE, FALSE), "color:#00379e")]\
+				Gamemaster PM from [admin_pm_href(src, key_name(src, FALSE, FALSE), "color:#00379e")]\
 				</div>\
 				<div style='padding: 0.2em 0.5em;text-align: left'>\
 				[span_adminsay(msg)]\
@@ -316,7 +309,7 @@
 
 				to_chat(src,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_notice("[tag_out] <b>[key_name(recipient, src, 1)]</b>: <span class='linkify'>[msg]</span>"),
+					html = span_notice("[CHAT_TAG("pm_out.png")] <b>[key_name(recipient, src, 1)]</b>: <span class='linkify'>[msg]</span>"),
 					confidential = TRUE
 				)
 
@@ -326,7 +319,7 @@
 					SSblackbox.LogAhelp(recipient.current_ticket.id, "Reply", msg, recipient.ckey, src.ckey)
 
 				//always play non-admin recipients the adminhelp sound
-				SEND_SOUND(recipient, sound('sound/effects/adminhelp.ogg'))
+				SEND_SOUND(recipient, sound('goon/sounds/adminhelp.ogg'))
 
 			else //neither are admins
 				if(!current_ticket)
@@ -357,14 +350,12 @@
 		window_flash(recipient, ignorepref = TRUE)
 		log_admin_private("PM: [key_name(src)]->[key_name(recipient)]: [rawmsg]")
 
-		var/tag_shared = icon2html('icons/misc/chattags.dmi', GLOB.admins, "pm_other", realsize = TRUE)
-
 		//we don't use message_admins here because the sender/receiver might get it too
 		for(var/client/X in GLOB.admins)
 			if(X.key!=key && X.key!=recipient.key) //check client/X is an admin and isn't the sender or recipient
 				to_chat(X,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_notice("[tag_shared]<B>: [key_name(src, X, 0)]-&gt;[key_name(recipient, X, 0)]:</B> [keywordparsedmsg]") ,
+					html = span_notice("[CHAT_TAG("pm_other.png")] <B>: [key_name(src, X, 0)]-&gt;[key_name(recipient, X, 0)]:</B> [keywordparsedmsg]") ,
 					confidential = TRUE
 				)
 
@@ -463,7 +454,7 @@
 
 	window_flash(C, ignorepref = TRUE)
 	//always play non-admin recipients the adminhelp sound
-	SEND_SOUND(C, 'sound/effects/adminhelp.ogg')
+	SEND_SOUND(C, 'goon/sounds/adminhelp.ogg')
 
 	C.externalreplyamount = EXTERNALREPLYCOUNT
 

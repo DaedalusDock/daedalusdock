@@ -26,7 +26,7 @@
 	minbodytemp = 0
 	maxbodytemp = INFINITY
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	speed = -1 //they don't have to lug a body made of runed metal around
+	move_delay_modifier = -1 //they don't have to lug a body made of runed metal around
 	stop_automated_movement = 1
 	faction = list("cult")
 	status_flags = CANPUSH
@@ -41,7 +41,7 @@
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
-/mob/living/simple_animal/shade/death()
+/mob/living/simple_animal/shade/death(gibbed, cause_of_death = "Unknown")
 	if(deathmessage == initial(deathmessage))
 		deathmessage = "lets out a contented sigh as [p_their()] form unwinds."
 	..()

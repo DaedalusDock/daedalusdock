@@ -45,6 +45,10 @@
 			full_version = "[M.client.byond_version].[M.client.byond_build ? M.client.byond_build : "xxx"]"
 		body += "<br>\[<b>Byond version:</b> [full_version]\]<br>"
 		body += "<br><b>Input Mode:</b> [M.client.hotkeys ? "Using Hotkeys" : "Using Classic Input"]<br>"
+		if(isnull(M.client.linked_discord_account))
+			body += "<br><b>Linked Discord ID:</b> <code>MISSING RESPONSE DATUM, HAVE THEY JUST JOINED OR IS SQL DISABLED?</code><br>"
+		else
+			body += "<br><b>Linked Discord ID:</b> <code>[M.client.linked_discord_account.valid ? M.client.linked_discord_account.discord_id : "NONE"]</code><br>"
 
 
 	body += "<br><br>\[ "
@@ -146,6 +150,21 @@
 	usr << browse(body, "window=adminplayeropts-[REF(M)];size=550x515")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Player Panel") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
+/datum/admins/proc/check_death_info(mob/living/carbon/human/H in GLOB.mob_list)
+	set category = "Admin.Game"
+	set name = "Show Death Info"
+
+	if(!check_rights())
+		return
+
+	if(!ishuman(H))
+		return
+	if(!H.time_of_death_stats)
+		to_chat(usr, span_warning("[H] has not died."))
+		return
+
+	H.show_death_stats(usr)
+
 /client/proc/cmd_admin_godmode(mob/M in GLOB.mob_list)
 	set category = "Admin.Game"
 	set name = "Godmode"
@@ -194,7 +213,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 				var/mob/living/carbon/human/species/monkey/new_monkey = new
 				SSjob.SendToLateJoin(new_monkey)
 				G_found.mind.transfer_to(new_monkey) //be careful when doing stuff like this! I've already checked the mind isn't in use
-				new_monkey.key = G_found.key
+				new_monkey.PossessByPlayer(G_found.key)
 				to_chat(new_monkey, "You have been fully respawned. Enjoy the game.", confidential = TRUE)
 				var/msg = span_adminnotice("[key_name_admin(usr)] has respawned [new_monkey.key] as a filthy monkey.")
 				message_admins(msg)
@@ -208,17 +227,17 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	var/datum/data/record/record_found //Referenced to later to either randomize or not randomize the character.
 	if(G_found.mind && !G_found.mind.active) //mind isn't currently in use by someone/something
-		/*Try and locate a record for the person being respawned through GLOB.data_core.
+		/*Try and locate a record for the person being respawned through SSdatacore.
 		This isn't an exact science but it does the trick more often than not.*/
 		var/id = md5("[G_found.real_name][G_found.mind.assigned_role.title]")
 
-		record_found = find_record("id", id, GLOB.data_core.locked)
+		record_found = SSdatacore.find_record("id", id, DATACORE_RECORDS_LOCKED)
 
 	if(record_found)//If they have a record we can determine a few things.
-		new_character.set_real_name(record_found.fields["name"])
-		new_character.gender = record_found.fields["gender"]
-		new_character.age = record_found.fields["age"]
-		new_character.hardset_dna(record_found.fields["identity"], record_found.fields["enzymes"], null, record_found.fields["name"], record_found.fields["blood_type"], new record_found.fields["species"], record_found.fields["features"])
+		new_character.set_real_name(record_found.fields[DATACORE_NAME])
+		new_character.gender = record_found.fields[DATACORE_GENDER]
+		new_character.age = record_found.fields[DATACORE_AGE]
+		new_character.hardset_dna(record_found.fields[DATACORE_DNA_IDENTITY], record_found.fields["enzymes"], null, record_found.fields[DATACORE_NAME], record_found.fields[DATACORE_BLOOD_TYPE], new record_found.fields[DATACORE_SPECIES], record_found.fields[DATACORE_DNA_FEATURES])
 	else
 		new_character.randomize_human_appearance()
 		new_character.dna.update_dna_identity()
@@ -232,7 +251,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	if(is_unassigned_job(new_character.mind.assigned_role))
 		new_character.mind.set_assigned_role(SSjob.GetJobType(SSjob.overflow_role))
 
-	new_character.key = G_found.key
+	new_character.PossessByPlayer(G_found.key)
 
 	/*
 	The code below functions with the assumption that the mob is already a traitor if they have a special role.
@@ -282,7 +301,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	if(!record_found && (new_character.mind.assigned_role.job_flags & JOB_CREW_MEMBER))
 		//Power to the user!
 		if(tgui_alert(new_character,"Warning: No data core entry detected. Would you like to announce the arrival of this character by adding them to various databases, such as medical records?",,list("No","Yes"))=="Yes")
-			GLOB.data_core.manifest_inject(new_character)
+			SSdatacore.manifest_inject(new_character)
 
 		if(tgui_alert(new_character,"Would you like an active AI to announce this character?",,list("No","Yes"))=="Yes")
 			announce_arrival(new_character, new_character.mind.assigned_role.title)

@@ -72,7 +72,7 @@
 /obj/item/clothing/shoes/sneakers/orange/attack_self(mob/user)
 	if (chained)
 		chained = FALSE
-		slowdown = SHOES_SLOWDOWN
+		slowdown = initial(slowdown)
 		new /obj/item/restraints/handcuffs( user.loc )
 		icon_state = initial(icon_state)
 	return

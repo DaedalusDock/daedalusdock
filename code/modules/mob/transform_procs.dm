@@ -131,7 +131,7 @@
 			mind.active = FALSE
 		mind.transfer_to(R)
 	else if(transfer_after)
-		R.key = key
+		R.PossessByPlayer(key)
 
 	if(R.mmi)
 		R.mmi.name = "[initial(R.mmi.name)]: [real_name]"
@@ -174,7 +174,7 @@
 	if(LAZYLEN(candidates))
 		var/mob/dead/observer/chosen_candidate = pick(candidates)
 		message_admins("[key_name_admin(chosen_candidate)] has taken control of ([key_name_admin(src)]) to replace a jobbanned player.")
-		key = chosen_candidate.key
+		PossessByPlayer(chosen_candidate.key)
 
 //human -> alien
 /mob/living/carbon/human/proc/Alienize()
@@ -202,7 +202,7 @@
 			new_xeno = new /mob/living/carbon/alien/humanoid/drone(loc)
 
 	new_xeno.set_combat_mode(TRUE)
-	new_xeno.key = key
+	new_xeno.PossessByPlayer(key)
 	update_atom_languages()
 
 	to_chat(new_xeno, "<B>You are now an alien.</B>")
@@ -236,7 +236,7 @@
 	else
 		new_slime = new /mob/living/simple_animal/slime(loc)
 	new_slime.set_combat_mode(TRUE)
-	new_slime.key = key
+	new_slime.PossessByPlayer(key)
 
 	to_chat(new_slime, "<B>You are now a slime. Skreee!</B>")
 	. = new_slime
@@ -244,7 +244,7 @@
 
 /mob/proc/become_overmind(starting_points = OVERMIND_STARTING_POINTS)
 	var/mob/camera/blob/B = new /mob/camera/blob(get_turf(src), starting_points)
-	B.key = key
+	B.PossessByPlayer(key)
 	. = B
 	qdel(src)
 
@@ -264,7 +264,7 @@
 
 	var/mob/living/simple_animal/pet/dog/corgi/new_corgi = new /mob/living/simple_animal/pet/dog/corgi (loc)
 	new_corgi.set_combat_mode(TRUE)
-	new_corgi.key = key
+	new_corgi.PossessByPlayer(key)
 
 	to_chat(new_corgi, "<B>You are now a Corgi. Yap Yap!</B>")
 	. = new_corgi
@@ -291,7 +291,7 @@
 	if(mind)
 		mind.transfer_to(new_gorilla)
 	else
-		new_gorilla.key = key
+		new_gorilla.PossessByPlayer(key)
 	to_chat(new_gorilla, "<B>You are now a gorilla. Ooga ooga!</B>")
 	. = new_gorilla
 	qdel(src)
@@ -323,7 +323,7 @@
 
 	var/mob/living/new_mob = new mobpath(src.loc)
 
-	new_mob.key = key
+	new_mob.PossessByPlayer(key)
 	new_mob.set_combat_mode(TRUE)
 
 	to_chat(new_mob, span_boldnotice("You suddenly feel more... animalistic."))

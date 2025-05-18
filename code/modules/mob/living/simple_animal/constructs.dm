@@ -14,7 +14,7 @@
 	response_harm_simple = "punch"
 	speak_chance = 1
 	icon = 'icons/mob/cult.dmi'
-	speed = 0
+	move_delay_modifier = 0
 	combat_mode = TRUE
 	stop_automated_movement = 1
 	status_flags = CANPUSH
@@ -120,7 +120,7 @@
 /mob/living/simple_animal/hostile/construct/narsie_act()
 	return
 
-/mob/living/simple_animal/hostile/construct/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)
+/mob/living/simple_animal/hostile/construct/electrocute_act(shock_damage, siemens_coeff = 1, flags = SHOCK_HANDS, stun_multiplier = 1)
 	return 0
 
 /////////////////Juggernaut///////////////
@@ -140,12 +140,11 @@
 	melee_damage_upper = 25
 	attack_verb_continuous = "smashes their armored gauntlet into"
 	attack_verb_simple = "smash your armored gauntlet into"
-	speed = 2.5
+	move_delay_modifier = 2.5
 	environment_smash = ENVIRONMENT_SMASH_WALLS
 	attack_sound = 'sound/weapons/punch3.ogg'
 	status_flags = 0
 	mob_size = MOB_SIZE_LARGE
-	force_threshold = 10
 	construct_spells = list(
 		/datum/action/cooldown/spell/forcewall/cult,
 		/datum/action/cooldown/spell/basic_projectile/juggernaut,
@@ -153,6 +152,10 @@
 	)
 	playstyle_string = "<b>You are a Juggernaut. Though slow, your shell can withstand heavy punishment, \
 						create shield walls, rip apart enemies and walls alike, and even deflect energy weapons.</b>"
+
+/mob/living/simple_animal/hostile/construct/juggernaut/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/damage_threshold, 10)
 
 /mob/living/simple_animal/hostile/construct/juggernaut/hostile //actually hostile, will move around, hit things
 	AIStatus = AI_ON

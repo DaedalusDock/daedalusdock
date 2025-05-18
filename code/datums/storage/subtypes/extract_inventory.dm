@@ -5,7 +5,9 @@
 	attack_hand_interact = FALSE
 	quickdraw = FALSE
 	locked = TRUE
-	rustle_sound = FALSE
+	rustle_sound = null
+	open_sound = null
+	close_sound = null
 	silent = TRUE
 
 /datum/storage/extract_inventory/New()

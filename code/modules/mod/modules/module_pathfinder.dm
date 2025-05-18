@@ -13,6 +13,7 @@
 	complexity = 2
 	use_power_cost = DEFAULT_CHARGE_DRAIN * 10
 	incompatible_modules = list(/obj/item/mod/module/pathfinder)
+	required_slots = list(ITEM_SLOT_BACK|ITEM_SLOT_BELT)
 	/// The pathfinding implant.
 	var/obj/item/implant/mod/implant
 
@@ -143,9 +144,9 @@
 
 	var/datum/ai_controller/mod_ai = new /datum/ai_controller/mod(module.mod)
 	module.mod.ai_controller = mod_ai
-	mod_ai.current_movement_target = imp_in
-	mod_ai.blackboard[BB_MOD_TARGET] = imp_in
-	mod_ai.blackboard[BB_MOD_IMPLANT] = src
+	mod_ai.set_move_target(imp_in)
+	mod_ai.set_blackboard_key(BB_MOD_TARGET, imp_in)
+	mod_ai.set_blackboard_key(BB_MOD_IMPLANT, src)
 	module.mod.interaction_flags_item &= ~INTERACT_ITEM_ATTACK_HAND_PICKUP
 	module.mod.AddElement(/datum/element/movetype_handler)
 	ADD_TRAIT(module.mod, TRAIT_MOVE_FLYING, MOD_TRAIT)

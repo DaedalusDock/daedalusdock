@@ -80,7 +80,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	if(is_operational)
 		var/target_state = "[base_icon_state]-[(area.lightswitch ? "on" : "off")]"
 		. += mutable_appearance(icon, target_state, alpha = src.alpha)
-		. += emissive_appearance(icon, target_state, alpha = src.alpha)
+		. += emissive_appearance(icon, target_state, alpha = 90)
 	else
 		if(panel_open && has_wires)
 			. += mutable_appearance(icon, "[base_icon_state]-wires")
@@ -120,7 +120,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 		return ..()
 
 	if(has_wires)
-		if(user.electrocute_act(10, src))
+		if(user.electrocute_act(10))
 			return TRUE
 
 	new /obj/item/wallframe/light_switch(get_turf(user))

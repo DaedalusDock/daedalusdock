@@ -1,5 +1,6 @@
 ///Delete one of every type, sleep a while, then check to see if anything has gone fucky
 /datum/unit_test/create_and_destroy
+	name = "DEL THE WORLD: All Atoms Shall Cleanly Initialize and Destroy"
 	//You absolutely must run last
 	priority = TEST_DEL_WORLD
 
@@ -31,6 +32,8 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 		/obj/merge_conflict_marker,
 		// Haha, no
 		/obj/item/hand_item/grab,
+		// Base seed type is abstract
+		/obj/item/seeds,
 	)
 	//Say it with me now, type template
 	ignore += typesof(/obj/effect/mapping_helpers)

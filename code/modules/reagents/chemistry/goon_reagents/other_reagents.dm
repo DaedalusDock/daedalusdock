@@ -10,7 +10,7 @@
 
 
 /datum/reagent/uranium/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(tox_damage * removed, FALSE)
+	C.adjustToxLoss(tox_damage * removed, FALSE, cause_of_death = "Uranium poisoning")
 	return TRUE
 
 /datum/reagent/uranium/expose_turf(turf/exposed_turf, reac_volume)
@@ -25,12 +25,16 @@
 		glow.reagents.add_reagent(type, reac_volume)
 
 //Mutagenic chem side-effects.
-/datum/reagent/uranium/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
+/datum/reagent/uranium/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.radiation_damage += 2
+		plant_tick.mutation_power += 0.2
+
+/datum/reagent/uranium/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref)
 	. = ..()
-	mytray.mutation_roll(user)
-	if(chems.has_reagent(src.type, 1))
-		mytray.adjust_plant_health(-round(chems.get_reagent_amount(src.type) * 1))
-		mytray.adjust_toxic(round(chems.get_reagent_amount(src.type) * 2))
+	plant_dna.try_mutate_stats(1)
+	plant_dna.try_activate_latent_gene(2)
+	return plant_dna.try_mutate_type(1)
 
 /datum/reagent/uranium/radium
 	name = "Radium"
@@ -42,11 +46,10 @@
 	material = null
 
 
-/datum/reagent/uranium/radium/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
-	. = ..()
-	if(chems.has_reagent(src.type, 1))
-		mytray.adjust_plant_health(-round(chems.get_reagent_amount(src.type) * 1))
-		mytray.adjust_toxic(round(chems.get_reagent_amount(src.type) * 1))
+/datum/reagent/uranium/radium/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.radiation_damage += 2
+		plant_tick.mutation_power += 0.2
 
 /datum/reagent/fuel/oil
 	name = "Oil"
@@ -91,7 +94,7 @@
 		exposed_mob.adjust_fire_stacks(reac_volume / 10)
 
 /datum/reagent/fuel/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(0.5 * removed, 0)
+	C.adjustToxLoss(0.5 * removed, 0, cause_of_death = "Ingesting fuel")
 	return TRUE
 
 /datum/reagent/space_cleaner
@@ -145,7 +148,7 @@
 /datum/reagent/space_cleaner/ez_clean/affect_blood(mob/living/carbon/C, removed)
 	C.adjustBruteLoss(1.665*removed, FALSE)
 	C.adjustFireLoss(1.665*removed, FALSE)
-	C.adjustToxLoss(1.665*removed, FALSE)
+	C.adjustToxLoss(1.665*removed, FALSE, cause_of_death = "Ingesting space cleaner")
 	return TRUE
 
 /datum/reagent/space_cleaner/ez_clean/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
@@ -217,7 +220,7 @@
 /datum/reagent/stimulants/overdose_process(mob/living/carbon/C)
 	if(prob(25))
 		C.stamina.adjust(2.5)
-		C.adjustToxLoss(1, 0)
+		C.adjustToxLoss(1, 0, cause_of_death = "Stimulant overdose")
 		C.losebreath++
 		. = TRUE
 
@@ -228,13 +231,10 @@
 	color = "#515151"
 	taste_description = "ash"
 
-
-// Ash is also used IRL in gardening, as a fertilizer enhancer and weed killer
-/datum/reagent/ash/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
-	. = ..()
-	if(chems.has_reagent(src.type, 1))
-		mytray.adjust_plant_health(round(chems.get_reagent_amount(src.type) * 1))
-		mytray.adjust_weedlevel(-1)
+/datum/reagent/ash/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.plant_growth_delta += 0.4
+		plant_tick.plant_health_delta += 0.2
 
 // [Original ants concept by Keelin on Goon]
 /datum/reagent/ants
@@ -331,7 +331,7 @@
 	value = DISPENSER_REAGENT_VALUE
 
 /datum/reagent/acetone/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(removed * 3, FALSE)
+	C.adjustToxLoss(removed * 3, FALSE, cause_of_death = "Ingesting acetone")
 	return TRUE
 
 /datum/reagent/acetone/expose_obj(obj/exposed_obj, reac_volume, exposed_temperature)

@@ -6,6 +6,9 @@
 	inhand_icon_state = ""
 	w_class = WEIGHT_CLASS_TINY
 
+	// Don't leave fingerprints on items moved into or out of the evidence bag.
+	fingerprint_flags_interact_with_atom = parent_type::fingerprint_flags_interact_with_atom &~ (FINGERPRINT_OBJECT_SUCCESS|FINGERPRINT_OBJECT_FAILURE)
+
 /obj/item/storage/evidencebag/Initialize(mapload)
 	. = ..()
 	atom_storage.max_slots = 1
@@ -13,12 +16,49 @@
 	atom_storage.max_total_storage = WEIGHT_CLASS_SMALL
 	atom_storage.set_holdable(null, list(type))
 
-/obj/item/storage/evidencebag/attack_obj(obj/attacked_obj, mob/living/user, params)
+/obj/item/storage/evidencebag/attack_self(mob/user, modifiers)
 	. = ..()
 	if(.)
 		return
 
-	return atom_storage.attempt_insert(attacked_obj, user)
+	if(!length(contents))
+		return
+
+	return user.pickup_item(contents[1], user.get_empty_held_index())
+
+/obj/item/storage/evidencebag/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(istable(interacting_with))
+		return NONE
+
+	// If it has storage and isnt an item OR it can't possibly hold us, try to insert into it.
+	if(interacting_with.atom_storage && (!isitem(interacting_with) || (interacting_with.atom_storage.max_specific_storage >= w_class)))
+		return NONE
+
+	return on_interact_with_atom(interacting_with, user, modifiers)
+
+/obj/item/storage/evidencebag/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	return on_interact_with_atom(interacting_with, user, modifiers)
+
+/obj/item/storage/evidencebag/proc/on_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(length(contents))
+		if(isitem(interacting_with))
+			return ITEM_INTERACT_BLOCKING
+
+		var/obj/item/stored = contents[1]
+		atom_storage.attempt_remove(stored, get_turf(interacting_with), user = user)
+		return ITEM_INTERACT_SUCCESS
+
+	if(!isitem(interacting_with))
+		return NONE
+
+	var/obj/item/I = interacting_with
+	var/old_item_turf = get_turf(I)
+	var/inserted = atom_storage.attempt_insert(interacting_with, user)
+	if(inserted)
+		I.do_pickup_animation(user, old_item_turf)
+		return ITEM_INTERACT_SUCCESS
+
+	return ITEM_INTERACT_BLOCKING
 
 /obj/item/storage/evidencebag/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	. = ..()
@@ -37,6 +77,6 @@
 /obj/item/storage/evidencebag/Exited(atom/movable/gone, direction)
 	. = ..()
 	cut_overlays() //remove the overlays
-	w_class = WEIGHT_CLASS_TINY
+	w_class = initial(w_class)
 	icon_state = "evidenceobj"
 	desc = "An empty evidence bag."

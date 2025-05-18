@@ -25,12 +25,20 @@
 // tool sound is only played when op is started. If not, it's played twice.
 #define MIN_TOOL_SOUND_DELAY 20
 
-// tool_act chain flags
+/// Return when an item interaction is successful.
+/// This cancels the rest of the chain entirely and indicates success.
+#define ITEM_INTERACT_SUCCESS (1<<0) // Same as TRUE, as most tool (legacy) tool acts return TRUE on success
+/// Return to prevent the rest of the attacck chain from being executed / preventing the item user from thwacking the target.
+/// Similar to [ITEM_INTERACT_SUCCESS], but does not necessarily indicate success.
+#define ITEM_INTERACT_BLOCKING (1<<1)
+/// Return to skip the rest of the interaction chain, going straight to attack.
+#define ITEM_INTERACT_ATTACK (1<<2)
 
-/// When a tooltype_act proc is successful
-#define TOOL_ACT_TOOLTYPE_SUCCESS (1<<0)
-/// When [COMSIG_ATOM_TOOL_ACT] blocks the act
-#define TOOL_ACT_SIGNAL_BLOCKING (1<<1)
+/// Combination flag for any item interaction that blocks the rest of the attack chain
+#define ITEM_INTERACT_ANY_BLOCKER (ITEM_INTERACT_SUCCESS | ITEM_INTERACT_BLOCKING)
 
-/// When [TOOL_ACT_TOOLTYPE_SUCCESS] or [TOOL_ACT_SIGNAL_BLOCKING] are set
-#define TOOL_ACT_MELEE_CHAIN_BLOCKING (TOOL_ACT_TOOLTYPE_SUCCESS | TOOL_ACT_SIGNAL_BLOCKING)
+/// Put this in interact_with_atom to just attack instead of interacting if the user has combat mode on.
+#define ATTACK_IF_COMBAT_MODE(user, item) if(user.combat_mode && item.combat_mode_force_attack) { return ITEM_INTERACT_ATTACK }
+
+/// Helper for if an atom has a first class interaction like placing onto a table or into storage.
+#define ATOM_HAS_FIRST_CLASS_INTERACTION(atom) (istable(atom) || atom.atom_storage)

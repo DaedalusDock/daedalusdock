@@ -58,7 +58,7 @@
 	playsound(get_turf(cast_on), charge_sound, 50, FALSE)
 
 	currently_channeling = TRUE
-	if(!do_after(cast_on, channel_time, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_HELD_ITEM)))
+	if(!do_after(cast_on, channel_time, timed_action_flags = (DO_IGNORE_USER_LOC_CHANGE|DO_IGNORE_HELD_ITEM)))
 		reset_tesla(cast_on)
 		return . | SPELL_CANCEL_CAST
 
@@ -94,9 +94,7 @@
 
 /// Zaps a target, the bolt originating from origin.
 /datum/action/cooldown/spell/tesla/proc/zap_target(atom/origin, mob/living/carbon/to_zap, bolt_energy = 30, bounces = 5)
-	origin.Beam(to_zap, icon_state = "lightning[rand(1,12)]", time = 0.5 SECONDS)
 	playsound(get_turf(to_zap), 'sound/magic/lightningshock.ogg', 50, TRUE, -1)
-
 	if(to_zap.can_block_magic(antimagic_flags))
 		to_zap.visible_message(
 			span_warning("[to_zap] absorbs the spell, remaining unharmed!"),
@@ -104,7 +102,7 @@
 		)
 
 	else
-		to_zap.electrocute_act(bolt_energy, "Lightning Bolt", flags = SHOCK_NOGLOVES)
+		tesla_zap_target(origin, to_zap, TESLA_MOB_DAMAGE_TO_POWER(bolt_energy))
 
 	if(bounces >= 1)
 		var/mob/living/carbon/to_zap_next = get_target(to_zap)
@@ -117,7 +115,7 @@
 	for(var/mob/living/carbon/to_check in view(shock_radius, center))
 		if(to_check == center || to_check == owner)
 			continue
-		if(!length(get_path_to(center, to_check, max_distance = shock_radius, simulated_only = FALSE)))
+		if(!length(jps_path_to(center, to_check, max_distance = shock_radius, simulated_only = FALSE)))
 			continue
 
 		possibles += to_check

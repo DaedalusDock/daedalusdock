@@ -557,7 +557,7 @@ world
 		else
 			return icon(flat, "", SOUTH)
 	else if (render_icon) // There's no overlays.
-		var/icon/final_icon = icon(icon(curicon, curstate, base_icon_dir), "", SOUTH, no_anim ? TRUE : null)
+		var/icon/final_icon = icon(icon(curicon, curstate, base_icon_dir), "", SOUTH, no_anim ? 1 : null)
 
 		if (appearance.alpha < 255)
 			final_icon.Blend(rgb(255,255,255, appearance.alpha), ICON_MULTIPLY)
@@ -966,6 +966,67 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 
 GLOBAL_LIST_EMPTY(transformation_animation_objects)
 
+///given a text string, returns whether it is a valid dmi icons folder path
+/proc/is_valid_dmi_file(icon_path)
+	if(!istext(icon_path) || !length(icon_path))
+		return FALSE
+
+	var/is_in_icon_folder = findtextEx(icon_path, "icons/")
+	var/is_dmi_file = findtextEx(icon_path, ".dmi")
+
+	if(is_in_icon_folder && is_dmi_file)
+		return TRUE
+	return FALSE
+
+/// given an icon object, dmi file path, or atom/image/mutable_appearance, attempts to find and return an associated dmi file path.
+/// a weird quirk about dm is that /icon objects represent both compile-time or dynamic icons in the rsc,
+/// but stringifying rsc references returns a dmi file path
+/// ONLY if that icon represents a completely unchanged dmi file from when the game was compiled.
+/// so if the given object is associated with an icon that was in the rsc when the game was compiled, this returns a path. otherwise it returns ""
+/proc/get_icon_dmi_path(icon/icon)
+	/// the dmi file path we attempt to return if the given object argument is associated with a stringifiable icon
+	/// if successful, this looks like "icons/path/to/dmi_file.dmi"
+	var/icon_path = ""
+
+	if(isatom(icon) || istype(icon, /image) || istype(icon, /mutable_appearance))
+		var/atom/atom_icon = icon
+		icon = atom_icon.icon
+		//atom icons compiled in from 'icons/path/to/dmi_file.dmi' are weird and not really icon objects that you generate with icon().
+		//if theyre unchanged dmi's then they're stringifiable to "icons/path/to/dmi_file.dmi"
+
+	if(isicon(icon) && isfile(icon))
+		//icons compiled in from 'icons/path/to/dmi_file.dmi' at compile time are weird and arent really /icon objects,
+		///but they pass both isicon() and isfile() checks. theyre the easiest case since stringifying them gives us the path we want
+		var/icon_ref = ref(icon)
+		var/locate_icon_string = "[locate(icon_ref)]"
+
+		icon_path = locate_icon_string
+
+	else if(isicon(icon) && "[icon]" == "/icon")
+		// icon objects generated from icon() at runtime are icons, but they ARENT files themselves, they represent icon files.
+		// if the files they represent are compile time dmi files in the rsc, then
+		// the rsc reference returned by fcopy_rsc() will be stringifiable to "icons/path/to/dmi_file.dmi"
+		var/rsc_ref = fcopy_rsc(icon)
+
+		var/icon_ref = ref(rsc_ref)
+
+		var/icon_path_string = "[locate(icon_ref)]"
+
+		icon_path = icon_path_string
+
+	else if(istext(icon))
+		var/rsc_ref = fcopy_rsc(icon)
+		//if its the text path of an existing dmi file, the rsc reference returned by fcopy_rsc() will be stringifiable to a dmi path
+
+		var/rsc_ref_ref = ref(rsc_ref)
+		var/rsc_ref_string = "[locate(rsc_ref_ref)]"
+
+		icon_path = rsc_ref_string
+
+	if(is_valid_dmi_file(icon_path))
+		return icon_path
+
+	return FALSE
 
 /*
  * Creates animation that turns current icon into result appearance from top down.
@@ -1003,7 +1064,7 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 
 	GLOB.transformation_animation_objects[src] = transformation_objects
 	for(var/A in transformation_objects)
-		vis_contents += A
+		add_viscontents(A)
 	if(reset_after)
 		addtimer(CALLBACK(src, PROC_REF(_reset_transformation_animation), filter_index),time)
 
@@ -1013,7 +1074,7 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 /atom/movable/proc/_reset_transformation_animation(filter_index)
 	var/list/transformation_objects = GLOB.transformation_animation_objects[src]
 	for(var/A in transformation_objects)
-		vis_contents -= A
+		remove_viscontents(A)
 		qdel(A)
 	transformation_objects.Cut()
 	GLOB.transformation_animation_objects -= src
@@ -1065,15 +1126,17 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 	sleep(duration)
 	source.cut_overlay(overlay_image)
 
-///Perform a shake on an atom, resets its position afterwards
-/atom/proc/Shake(pixelshiftx = 15, pixelshifty = 15, duration = 250)
+/// Perform a shake on an atom, resets its position afterwards
+/atom/proc/Shake(pixelshiftx = 2, pixelshifty = 2, duration = 2.5 SECONDS, shake_interval = 0.02 SECONDS)
 	var/initialpixelx = pixel_x
 	var/initialpixely = pixel_y
-	var/shiftx = rand(-pixelshiftx,pixelshiftx)
-	var/shifty = rand(-pixelshifty,pixelshifty)
-	animate(src, pixel_x = pixel_x + shiftx, pixel_y = pixel_y + shifty, time = 0.2, loop = duration)
-	pixel_x = initialpixelx
-	pixel_y = initialpixely
+
+	animate(src, pixel_x = initialpixelx + rand(-pixelshiftx,pixelshiftx), pixel_y = initialpixelx + rand(-pixelshifty,pixelshifty), time = shake_interval, flags = ANIMATION_PARALLEL)
+
+	for (var/i in 3 to ((duration / shake_interval))) // Start at 3 because we already applied one, and need another to reset
+		animate(pixel_x = initialpixelx + rand(-pixelshiftx,pixelshiftx), pixel_y = initialpixely + rand(-pixelshifty,pixelshifty), time = shake_interval)
+
+	animate(pixel_x = initialpixelx, pixel_y = initialpixely, time = shake_interval)
 
 ///Checks if the given iconstate exists in the given file, caching the result. Setting scream to TRUE will print a stack trace ONCE.
 /proc/icon_exists(file, state, scream)

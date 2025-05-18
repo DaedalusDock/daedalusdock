@@ -23,13 +23,17 @@ DEFINE_INTERACTABLE(/obj/machinery/computer)
 
 	power_change()
 
-/obj/machinery/computer/Destroy()
-	. = ..()
-
 /obj/machinery/computer/process()
 	if(machine_stat & (NOPOWER|BROKEN))
 		return FALSE
 	return TRUE
+
+/obj/machinery/computer/examine(mob/user)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("computer", 10)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		. += result.create_tooltip("An older model from ThinkTronic's <i>Laika</i> series of computers. The chassis is large and difficult to move, yet remains popular due to it's reliability.", body_only = TRUE)
 
 /obj/machinery/computer/update_overlays()
 	. = ..()
@@ -48,7 +52,7 @@ DEFINE_INTERACTABLE(/obj/machinery/computer)
 		return
 
 	. += mutable_appearance(icon, icon_screen)
-	. += emissive_appearance(icon, icon_screen)
+	. += emissive_appearance(icon, icon_screen, alpha = 90)
 
 /obj/machinery/computer/power_change()
 	. = ..()

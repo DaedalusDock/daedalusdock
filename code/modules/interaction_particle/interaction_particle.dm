@@ -6,7 +6,7 @@
 	alpha = 180
 	layer = ABOVE_ALL_MOB_LAYER
 
-/mob/proc/animate_interact(atom/target, state, atom/reference)
+/mob/proc/animate_interact(atom/target, state = INTERACT_GENERIC, atom/reference)
 	set waitfor = FALSE
 
 	var/list/origin_coords = get_hand_pixels()
@@ -62,7 +62,7 @@
 
 	sleep(destroy_after)
 
-	particle.loc = null
+	qdel(particle)
 
 ///Returns a list of (x,y) coordinates, in pixel offsets.
 /mob/proc/get_hand_pixels()

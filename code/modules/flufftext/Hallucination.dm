@@ -1614,7 +1614,7 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 
 /datum/hallucination/husks/Destroy()
 	target?.client?.images -= halbody
-	QDEL_NULL(halbody)
+	halbody = null
 	return ..()
 
 //hallucination projectile code in code/modules/projectiles/projectile/special.dm

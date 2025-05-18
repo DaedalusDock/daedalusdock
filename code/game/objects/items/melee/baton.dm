@@ -99,7 +99,7 @@
 	var/mob/living/L = user
 	user_flip(L, L.combat_mode)
 
-/obj/item/melee/baton/dropped(mob/user, silent)
+/obj/item/melee/baton/unequipped(mob/user, silent)
 	. = ..()
 	UnregisterSignal(user, COMSIG_LIVING_TOGGLE_COMBAT_MODE)
 	user_flip(null, FALSE)
@@ -185,11 +185,11 @@
 /obj/item/melee/baton/proc/check_parried(mob/living/carbon/human/human_target, mob/living/user)
 	if(!ishuman(human_target))
 		return
-	if (human_target.check_shields(src, 0, "[user]'s [name]", MELEE_ATTACK))
+	if (human_target.check_block(src, 0, "[user]'s [name]", MELEE_ATTACK))
 		playsound(human_target, 'sound/weapons/genhit.ogg', 50, TRUE)
 		return TRUE
-	if(check_martial_counter(human_target, user))
-		return TRUE
+
+	return FALSE
 
 /obj/item/melee/baton/proc/baton_effect(mob/living/target, mob/living/user)
 	if(on_stun_sound)
@@ -266,7 +266,7 @@
 	desc = "A strange box containing wood working tools and an instruction paper to turn stun batons into something else."
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "uk"
-	custom_price = PAYCHECK_HARD * 4.5
+	custom_price = PAYCHECK_ASSISTANT * 7
 
 /obj/item/melee/baton/telescopic
 	name = "telescopic baton"
@@ -553,7 +553,7 @@
 
 /obj/item/melee/baton/security/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	. = ..()
-	if(active && prob(throw_stun_chance) && isliving(hit_atom))
+	if(!. && active && prob(throw_stun_chance) && isliving(hit_atom))
 		baton_effect(hit_atom, thrownby?.resolve())
 
 /obj/item/melee/baton/security/emp_act(severity)

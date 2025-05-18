@@ -93,10 +93,10 @@
 	for(var/obj/item/assembly/assembly as anything in assemblies)
 		assembly.holder_movement()
 
-/obj/item/assembly_holder/dropped(mob/user)
+/obj/item/assembly_holder/unequipped(mob/user)
 	. = ..()
 	for(var/obj/item/assembly/assembly as anything in assemblies)
-		assembly.dropped()
+		assembly.unequipped()
 
 /obj/item/assembly_holder/attack_hand(mob/living/user, list/modifiers)//Perhapse this should be a holder_pickup proc instead, can add if needbe I guess
 	. = ..()

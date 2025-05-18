@@ -99,7 +99,11 @@
 <A href='?src=[REF(src)];type=R'>R</A>
 -<A href='?src=[REF(src)];type=0'>0</A>
 -<A href='?src=[REF(src)];type=E'>E</A><BR>\n</TT>"}
-	user << browse(dat, "window=caselock;size=300x280")
+
+	var/datum/browser/browser = new(user, "caselock", "[name]", 300, 280)
+	browser.set_content(dat)
+	browser.open()
+
 
 /obj/item/storage/secure/Topic(href, href_list)
 	..()
@@ -149,6 +153,8 @@
 	w_class = WEIGHT_CLASS_BULKY
 	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "whacks")
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
+
+	storage_type = /datum/storage/latched_box
 
 /obj/item/storage/secure/briefcase/PopulateContents()
 	new /obj/item/paper(src)

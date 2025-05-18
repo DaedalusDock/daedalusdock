@@ -5,15 +5,13 @@
 	faction = FACTION_STATION
 	total_positions = 2
 	spawn_positions = 1
-	supervisors = "the head of personnel"
 	exp_granted_type = EXP_TYPE_CREW
 	var/cooks = 0 //Counts cooks amount
 	/// List of areas that are counted as the kitchen for the purposes of CQC. Defaults to just the kitchen. Mapping configs can and should override this.
 	var/list/kitchen_areas = list(/area/station/service/kitchen)
 
 	employers = list(
-		/datum/employer/contractor,
-		/datum/employer/priapus
+		/datum/employer/none
 	)
 
 	outfits = list(
@@ -21,28 +19,21 @@
 			SPECIES_HUMAN = /datum/outfit/job/cook,
 			SPECIES_TESHARI = /datum/outfit/job/cook,
 			SPECIES_VOX = /datum/outfit/job/cook,
-			SPECIES_PLASMAMAN = /datum/outfit/job/cook/plasmaman,
 		),
 		"Chef" = list(
 			SPECIES_HUMAN = /datum/outfit/job/cook/chef,
 			SPECIES_TESHARI = /datum/outfit/job/cook/chef,
 			SPECIES_VOX = /datum/outfit/job/cook/chef,
-			SPECIES_PLASMAMAN = /datum/outfit/job/cook/chef/plasmaman,
 		),
 		"Culinary Artist" = list(
 			SPECIES_HUMAN = /datum/outfit/job/cook/chef,
 			SPECIES_TESHARI = /datum/outfit/job/cook/chef,
 			SPECIES_VOX = /datum/outfit/job/cook/chef,
-			SPECIES_PLASMAMAN = /datum/outfit/job/cook/chef/plasmaman,
 		),
 	)
 
-	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_STATION_MASTER
-
 	liver_traits = list(TRAIT_CULINARY_METABOLISM)
 
-	bounty_types = CIV_JOB_CHEF
 	departments_list = list(
 		/datum/job_department/service,
 		)
@@ -108,7 +99,7 @@
 	name = "Cook"
 	jobtype = /datum/job/cook
 
-	id_trim = /datum/id_trim/job/cook
+	id_template = /datum/access_template/job/cook
 	uniform = /obj/item/clothing/under/rank/civilian/chef
 	suit = /obj/item/clothing/suit/apron/chef
 	backpack_contents = list(
@@ -122,22 +113,13 @@
 
 	skillchips = list(/obj/item/skillchip/job/chef)
 
-/datum/outfit/job/cook/plasmaman
-	name = "Cook (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/chef
-	gloves = /obj/item/clothing/gloves/color/plasmaman/white
-	head = /obj/item/clothing/head/helmet/space/plasmaman/white
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
-
 /* Commenting this out for now, since it overrides alternate job title outfits
 /datum/outfit/job/cook/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()
 	var/datum/job/cook/J = SSjob.GetJobType(jobtype)
 	if(J) // Fix for runtime caused by invalid job being passed
 		if(J.cooks>0)//Cooks
-			id_trim = /datum/id_trim/job/cook
+			id_template = /datum/access_template/job/cook
 			suit = /obj/item/clothing/suit/apron/chef
 			head = /obj/item/clothing/head/soft/mime
 		if(!visualsOnly)
@@ -150,14 +132,5 @@
 
 /datum/outfit/job/cook/chef
 	name = "Chef"
-	id_trim = /datum/id_trim/job/cook/chef
-	suit = /obj/item/clothing/suit/toggle/chef
-
-/datum/outfit/job/cook/chef/plasmaman
-	name = "Chef (Plasmaman)"
-
-	id_trim = /datum/id_trim/job/cook/chef
-	uniform = /obj/item/clothing/under/plasmaman/chef
-	gloves = /obj/item/clothing/gloves/color/plasmaman/white
-	head = /obj/item/clothing/head/helmet/space/plasmaman/white
+	id_template = /datum/access_template/job/cook/chef
 	suit = /obj/item/clothing/suit/toggle/chef

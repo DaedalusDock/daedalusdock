@@ -27,10 +27,10 @@
 	if(busy)
 		. += image(icon, "fab-work3")
 		. += image(icon, "light-working")
-		. += emissive_appearance(icon, "light-working")
+		. += emissive_appearance(icon, "light-working", alpha = 90)
 	else
 		. += image(icon, "light-ready")
-		. += emissive_appearance(icon, "light-ready")
+		. += emissive_appearance(icon, "light-ready", alpha = 90)
 
 /// Special subtype fabricator for offstation use. Has a more limited available design selection.
 /obj/machinery/rnd/production/fabricator/offstation

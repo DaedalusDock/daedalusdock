@@ -1,10 +1,16 @@
 /obj/item/stack/spacecash  //Don't use base space cash stacks. Any other space cash stack can merge with them, and could cause potential money duping exploits.
-	name = "space cash"
-	singular_name = "bill"
+	name = "wad of space cash"
+	singular_name = "space cash bill"
+
+	stack_name = "wad"
+	multiple_gender = NEUTER
+
+	abstract_type = /obj/item/stack/spacecash
+
 	icon = 'icons/obj/economy.dmi'
 	icon_state = null
 	amount = 1
-	max_amount = INFINITY
+	max_amount = 500
 	throwforce = 0
 	throw_speed = 0.7
 	throw_range = 2
@@ -13,28 +19,20 @@
 	resistance_flags = FLAMMABLE
 	grind_results = list(/datum/reagent/cellulose = 10)
 
+	dynamically_set_name = TRUE
+
 	/// How much money one "amount" of this is worth. Use get_item_credit_value().
 	VAR_PROTECTED/value = 0
 
-/obj/item/stack/spacecash/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
-	. = ..()
-	update_desc()
-
 /obj/item/stack/spacecash/update_desc()
 	. = ..()
-	var/total_worth = get_item_credit_value()
-	desc = "It's worth [total_worth] credit[(total_worth > 1) ? "s" : null] in total."
+	if(amount == 1)
+		desc = "It is worth [value]."
+	else
+		desc = "There are [amount] bills each worth [value]."
 
 /obj/item/stack/spacecash/get_item_credit_value()
 	return (amount*value)
-
-/obj/item/stack/spacecash/merge(obj/item/stack/S)
-	. = ..()
-	update_desc()
-
-/obj/item/stack/spacecash/use(used, transfer = FALSE, check = TRUE)
-	. = ..()
-	update_desc()
 
 /// Like use(), but for financial amounts. use_cash(20) on a stack of 10s will use 2. use_cash(22) on a stack of 10s will use 3.
 /obj/item/stack/spacecash/proc/use_cash(value_to_pay)
@@ -59,17 +57,11 @@
 	value = 1
 	merge_type = /obj/item/stack/spacecash/c1
 
-/obj/item/stack/spacecash/c10
-	icon_state = "spacecash10"
-	singular_name = "ten credit bill"
-	value = 10
-	merge_type = /obj/item/stack/spacecash/c10
+/obj/item/stack/spacecash/c1/ten
+	amount = 10
 
-/obj/item/stack/spacecash/c20
-	icon_state = "spacecash20"
-	singular_name = "twenty credit bill"
-	value = 20
-	merge_type = /obj/item/stack/spacecash/c20
+/obj/item/stack/spacecash/c1/twenty
+	amount = 20
 
 /obj/item/stack/spacecash/c100
 	icon_state = "spacecash100"
@@ -83,8 +75,5 @@
 	value = 1000
 	merge_type = /obj/item/stack/spacecash/c1000
 
-/obj/item/stack/spacecash/c10000
-	icon_state = "spacecash10000"
-	singular_name = "ten thousand credit bill"
-	value = 10000
-	merge_type = /obj/item/stack/spacecash/c10000
+/obj/item/stack/spacecash/c1000/ten
+	amount = 10

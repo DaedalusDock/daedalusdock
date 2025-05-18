@@ -1659,7 +1659,10 @@
 		var/list/dat = list("Related accounts by [uppertext(href_list["showrelatedacc"])]:")
 		dat += thing_to_check
 
-		usr << browse(dat.Join("<br>"), "window=related_[C];size=420x300")
+		var/datum/browser/browser = new(usr, "related_[C]", "Related Accounts: [C.ckey]|[href_list["showrelatedacc"]]", 420, 300)
+		browser.set_content(dat.Join("<br>"))
+		browser.open()
+		return
 
 	else if(href_list["centcomlookup"])
 		if(!check_rights(R_ADMIN))
@@ -1692,7 +1695,7 @@
 			if(response.body == "[]")
 				dat += "<center><b>0 bans detected for [ckey]</b></center>"
 			else
-				bans = json_decode(response["body"])
+				bans = json_decode(response.body)
 
 				//Ignore bans from non-whitelisted sources, if a whitelist exists
 				var/list/valid_sources

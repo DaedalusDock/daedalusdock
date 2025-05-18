@@ -18,7 +18,6 @@
 	toxic_food = NONE
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/fly
-	payday_modifier = 0.75
 	job_outfit_type = SPECIES_HUMAN
 
 	mutant_organs = list(/obj/item/organ/fly, /obj/item/organ/fly/groin)
@@ -44,30 +43,19 @@
 		ORGAN_SLOT_LIVER = /obj/item/organ/liver/fly,
 	)
 
-/datum/species/fly/check_species_weakness(obj/item/weapon, mob/living/attacker)
-	if(istype(weapon, /obj/item/melee/flyswatter))
-		return 30 //Flyswatters deal 30x damage to flypeople.
-	return 1
+/datum/species/fly/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
+	. = ..()
+	RegisterSignal(human_who_gained_species, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS, PROC_REF(damage_weakness))
 
-/datum/species/fly/get_species_description()
-	return "With no official documentation or knowledge of the origin of \
-		this species, they remain a mystery to most. Any and all rumours among \
-		Nanotrasen staff regarding flypeople are often quickly silenced by high \
-		ranking staff or officials."
+/datum/species/fly/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
+	. = ..()
+	UnregisterSignal(C, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS)
 
-/datum/species/fly/get_species_lore()
-	return list(
-		"Flypeople are a curious species with a striking resemblance to the insect order of Diptera, \
-		commonly known as flies. With no publically known origin, flypeople are rumored to be a side effect of bluespace travel, \
-		despite statements from Nanotrasen officials.",
+/datum/species/fly/proc/damage_weakness(datum/source, list/damage_mods, damage_amount, damagetype, def_zone, sharpness, attack_direction, obj/item/attacking_item)
+	SIGNAL_HANDLER
 
-		"Little is known about the origins of this race, \
-		however they posess the ability to communicate with giant spiders, originally discovered in the Australicus sector \
-		and now a common occurence in black markets as a result of a breakthrough in syndicate bioweapon research.",
-
-		"Flypeople are often feared or avoided among other species, their appearance often described as unclean or frightening in some cases, \
-		and their eating habits even more so with an insufferable accent to top it off.",
-	)
+	if(istype(attacking_item, /obj/item/melee/flyswatter))
+		damage_mods += 30 // Yes, a 30x damage modifier
 
 /datum/species/fly/create_pref_unique_perks()
 	var/list/to_add = list()

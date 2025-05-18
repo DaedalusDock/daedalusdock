@@ -208,9 +208,8 @@
 /obj/structure/railing{
 	dir = 6
 	},
-/turf/open/floor/catwalk_floor/iron_smooth{
-	temperature = 2.7
-	},
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership)
 "aJ" = (
 /obj/structure/chair/stool/directional/north,
@@ -267,7 +266,8 @@
 	network = list("nukie")
 	},
 /obj/structure/cable/smart_cable/color/yellow,
-/turf/open/floor/catwalk_floor/iron_smooth,
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "aP" = (
 /obj/structure/chair{
@@ -490,7 +490,8 @@
 /area/centcom/syndicate_mothership)
 "bz" = (
 /obj/item/stack/sheet/mineral/sandbags,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "bA" = (
 /obj/structure/table/reinforced,
@@ -622,16 +623,6 @@
 	anchored = 1;
 	name = "Plasmaman suits"
 	},
-/obj/item/clothing/under/plasmaman,
-/obj/item/clothing/under/plasmaman/engineering,
-/obj/item/clothing/under/plasmaman/botany,
-/obj/item/clothing/under/plasmaman/janitor,
-/obj/item/clothing/under/plasmaman/chef,
-/obj/item/clothing/head/helmet/space/plasmaman,
-/obj/item/clothing/head/helmet/space/plasmaman/engineering,
-/obj/item/clothing/head/helmet/space/plasmaman/botany,
-/obj/item/clothing/head/helmet/space/plasmaman/janitor,
-/obj/item/clothing/head/helmet/space/plasmaman/white,
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
@@ -654,7 +645,7 @@
 /area/centcom/central_command_areas/briefing)
 "bV" = (
 /obj/structure/table/reinforced,
-/obj/machinery/computer/med_data/laptop,
+/obj/machinery/computer4/medical,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/control)
@@ -1046,7 +1037,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/yellow/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/hidden/layer5,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "db" = (
 /obj/structure/table/wood,
@@ -1099,7 +1091,8 @@
 /obj/structure/sign/painting/library{
 	pixel_y = 32
 	},
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "di" = (
 /obj/structure/table/reinforced,
@@ -1237,11 +1230,13 @@
 /turf/open/misc/asteroid/snow/airless,
 /area/centcom/syndicate_mothership)
 "dE" = (
-/turf/open/floor/catwalk_floor/titanium,
+/obj/structure/overfloor_catwalk/titanium,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "dF" = (
 /obj/machinery/icecream_vat,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "dG" = (
 /obj/structure/table/wood,
@@ -1283,7 +1278,8 @@
 /area/centcom/central_command_areas/holding)
 "dP" = (
 /obj/machinery/light/cold/directional/east,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "dQ" = (
 /obj/structure/chair/office,
@@ -1529,7 +1525,8 @@
 /area/centcom/central_command_areas/courtroom)
 "ev" = (
 /obj/machinery/photocopier,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "ew" = (
 /obj/effect/light_emitter{
@@ -1899,7 +1896,8 @@
 /obj/item/stack/sheet/glass/fifty,
 /obj/item/stack/sheet/glass/fifty,
 /obj/item/multitool,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "fu" = (
 /obj/effect/turf_decal/tile/yellow/half{
@@ -2188,7 +2186,8 @@
 "go" = (
 /obj/structure/table/reinforced/plastitaniumglass,
 /obj/item/storage/crayons,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "gp" = (
 /obj/structure/table/wood,
@@ -2496,7 +2495,7 @@
 	pixel_y = 17
 	},
 /obj/structure/fluff/tram_rail,
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "hm" = (
 /obj/structure/flora/ausbushes/lavendergrass,
@@ -2626,11 +2625,6 @@
 /obj/item/clothing/mask/breath,
 /obj/item/clothing/mask/breath,
 /obj/item/clothing/mask/breath,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
@@ -2770,7 +2764,8 @@
 "hU" = (
 /obj/structure/mopbucket,
 /obj/item/mop,
-/turf/open/floor/catwalk_floor/iron_smooth,
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "hW" = (
 /obj/structure/chair/office,
@@ -2989,7 +2984,8 @@
 "iC" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/yellow/hidden/layer2,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "iD" = (
 /obj/structure/closet/secure_closet/security,
@@ -3547,7 +3543,8 @@
 /area/centcom/syndicate_mothership/control)
 "jY" = (
 /obj/machinery/vending/cigarette/syndicate,
-/turf/open/floor/catwalk_floor/titanium,
+/obj/structure/overfloor_catwalk/titanium,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "ka" = (
 /obj/effect/turf_decal/stripes/line{
@@ -4259,7 +4256,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/yellow/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/hidden/layer5,
-/turf/open/floor/catwalk_floor/titanium,
+/obj/structure/overfloor_catwalk/titanium,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "mi" = (
 /obj/effect/turf_decal/tile/brown{
@@ -4510,7 +4508,8 @@
 	desc = "A gift from your benefactors.";
 	force = 20
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "mQ" = (
 /obj/structure/flora/ausbushes/lavendergrass,
@@ -4646,7 +4645,8 @@
 /area/centcom/tdome/observation)
 "nk" = (
 /obj/machinery/processor,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "nl" = (
 /obj/machinery/computer/security/mining{
@@ -4725,7 +4725,8 @@
 /turf/open/misc/asteroid/snow,
 /area/centcom/syndicate_mothership/control)
 "nw" = (
-/turf/open/floor/catwalk_floor/iron_smooth,
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "nz" = (
 /turf/closed/indestructible/opsglass,
@@ -4832,7 +4833,8 @@
 	pixel_y = 8
 	},
 /obj/item/reagent_containers/glass/bucket,
-/turf/open/floor/catwalk_floor/iron_smooth,
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "nQ" = (
 /obj/effect/turf_decal/tile/bar,
@@ -4964,7 +4966,8 @@
 	dir = 1
 	},
 /obj/structure/cable/smart_cable/color/yellow,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "oh" = (
 /obj/structure/table/wood,
@@ -5149,8 +5152,6 @@
 /obj/item/food/grown/tomato,
 /obj/item/food/grown/rice,
 /obj/item/food/grown/rice,
-/obj/item/food/grown/icepepper,
-/obj/item/food/grown/icepepper,
 /obj/item/food/grown/citrus/lemon,
 /obj/item/food/grown/citrus/lime,
 /obj/item/food/grown/citrus/orange,
@@ -5312,7 +5313,8 @@
 /obj/item/food/meat/slab/synthmeat,
 /obj/item/food/meat/slab/synthmeat,
 /obj/item/food/meat/slab/synthmeat,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "pa" = (
 /obj/effect/turf_decal/siding/wideplating/dark{
@@ -5672,7 +5674,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/yellow/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/hidden/layer5,
-/turf/open/floor/catwalk_floor/titanium,
+/obj/structure/overfloor_catwalk/titanium,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "qb" = (
 /turf/open/floor/iron/stairs/old,
@@ -5952,7 +5955,8 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/hidden/layer5,
-/turf/open/floor/catwalk_floor/titanium,
+/obj/structure/overfloor_catwalk/titanium,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "qO" = (
 /obj/item/kirbyplants{
@@ -6033,7 +6037,7 @@
 	dir = 1
 	},
 /obj/structure/railing,
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "ri" = (
 /obj/effect/turf_decal/stripes/full,
@@ -6258,7 +6262,8 @@
 	dir = 8
 	},
 /obj/structure/fans/tiny,
-/turf/open/floor/catwalk_floor/titanium,
+/obj/structure/overfloor_catwalk/titanium,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "rS" = (
 /obj/effect/turf_decal/stripes/line{
@@ -6673,7 +6678,8 @@
 /obj/item/food/meat/slab/monkey,
 /obj/item/food/meat/slab/monkey,
 /obj/structure/closet/secure_closet/freezer/meat/open,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "td" = (
 /obj/structure/sign/departments/drop,
@@ -7014,7 +7020,8 @@
 /area/centcom/central_command_areas/ferry)
 "uo" = (
 /obj/machinery/light/floor/has_bulb,
-/turf/open/floor/catwalk_floor/titanium,
+/obj/structure/overfloor_catwalk/titanium,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "up" = (
 /obj/structure/table/wood,
@@ -7210,7 +7217,7 @@
 /obj/structure/railing{
 	dir = 10
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "uX" = (
 /obj/machinery/shower{
@@ -7386,7 +7393,8 @@
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
 	},
-/turf/open/floor/catwalk_floor/titanium,
+/obj/structure/overfloor_catwalk/titanium,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "vy" = (
 /obj/machinery/door/airlock/centcom{
@@ -7481,7 +7489,8 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/hidden/layer5,
-/turf/open/floor/catwalk_floor/iron_smooth,
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "vL" = (
 /obj/machinery/light/floor/has_bulb,
@@ -7814,7 +7823,8 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/hidden/layer5,
-/turf/open/floor/catwalk_floor/iron,
+/obj/structure/overfloor_catwalk/iron,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "wG" = (
 /obj/effect/turf_decal/tile/green{
@@ -8387,7 +8397,8 @@
 /area/centcom/syndicate_mothership/control)
 "yu" = (
 /obj/machinery/light/cold/directional/west,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "yw" = (
 /turf/closed/indestructible/fakedoor{
@@ -8570,7 +8581,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/yellow/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/hidden/layer5,
-/turf/open/floor/catwalk_floor/titanium,
+/obj/structure/overfloor_catwalk/titanium,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "yY" = (
 /obj/structure/chair,
@@ -8590,7 +8602,7 @@
 /turf/open/floor/iron,
 /area/centcom/syndicate_mothership/control)
 "zb" = (
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -8828,7 +8840,7 @@
 /turf/open/floor/iron/white,
 /area/centcom/central_command_areas/control)
 "zK" = (
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 8
 	},
 /obj/machinery/firealarm/directional/east,
@@ -8950,7 +8962,7 @@
 /obj/structure/railing{
 	dir = 9
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "zZ" = (
 /obj/effect/turf_decal/tile/brown{
@@ -9141,7 +9153,7 @@
 /obj/item/reagent_containers/food/condiment/peppermill{
 	pixel_x = -8
 	},
-/obj/item/reagent_containers/food/drinks/britcup,
+/obj/item/reagent_containers/glass/mug/brit,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
 /area/centcom/tdome/observation)
@@ -9244,7 +9256,8 @@
 /obj/structure/chair/office/light{
 	dir = 8
 	},
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "AR" = (
 /obj/machinery/light/cold/directional/south,
@@ -9255,7 +9268,8 @@
 "AS" = (
 /obj/item/kirbyplants/random,
 /obj/structure/cable/smart_cable/color/yellow,
-/turf/open/floor/catwalk_floor/iron_smooth,
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "AT" = (
 /obj/structure/sign/departments/medbay/alt,
@@ -9783,7 +9797,8 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/hidden/layer5,
-/turf/open/floor/catwalk_floor/iron,
+/obj/structure/overfloor_catwalk/iron,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "Cl" = (
 /obj/effect/turf_decal/siding/wideplating{
@@ -10053,7 +10068,8 @@
 /turf/open/floor/mineral/plastitanium/red,
 /area/centcom/syndicate_mothership/expansion_bombthreat)
 "CQ" = (
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "CR" = (
 /obj/effect/turf_decal/siding/thinplating_new/dark{
@@ -10170,7 +10186,8 @@
 /obj/structure/sign/poster/contraband/busty_backdoor_xeno_babes_6{
 	pixel_x = 32
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "Di" = (
 /turf/closed/indestructible/reinforced/centcom,
@@ -10231,7 +10248,7 @@
 "Du" = (
 /obj/structure/table/reinforced,
 /obj/machinery/door/firedoor,
-/obj/item/reagent_containers/food/drinks/britcup,
+/obj/item/reagent_containers/glass/mug/brit,
 /obj/structure/window/reinforced{
 	dir = 8
 	},
@@ -10537,7 +10554,7 @@
 /obj/structure/railing{
 	dir = 1
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Es" = (
 /obj/effect/light_emitter{
@@ -10578,10 +10595,6 @@
 /obj/machinery/light/cold/directional/west,
 /obj/item/seeds/cannabis{
 	pixel_y = 8
-	},
-/obj/item/cultivator{
-	pixel_x = -6;
-	pixel_y = 11
 	},
 /turf/open/floor/mineral/titanium/tiled,
 /area/centcom/syndicate_mothership/expansion_bioterrorism)
@@ -10699,7 +10712,7 @@
 /obj/structure/railing{
 	dir = 8
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "ES" = (
 /obj/structure/sign/poster/contraband/lamarr{
@@ -10907,7 +10920,7 @@
 /obj/structure/railing{
 	dir = 9
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Fy" = (
 /obj/structure/chair/stool/directional/south,
@@ -11061,12 +11074,14 @@
 	pixel_x = -5;
 	pixel_y = -3
 	},
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "FT" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/hidden/layer5,
-/turf/open/floor/catwalk_floor/iron,
+/obj/structure/overfloor_catwalk/iron,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "FU" = (
 /obj/effect/turf_decal/siding/wood{
@@ -11549,14 +11564,16 @@
 /area/centcom/syndicate_mothership/expansion_chemicalwarfare)
 "Ht" = (
 /obj/item/kirbyplants/random,
-/turf/open/floor/catwalk_floor/iron_smooth,
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "Hv" = (
 /turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/courtroom)
 "Hy" = (
 /obj/machinery/recharge_station,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "Hz" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -11612,10 +11629,7 @@
 /obj/effect/turf_decal/siding/red,
 /obj/structure/table/reinforced,
 /obj/machinery/recharger,
-/obj/item/stack/spacecash/c10{
-	pixel_x = -19;
-	pixel_y = 10
-	},
+/obj/item/stack/spacecash/c1/ten,
 /turf/open/floor/iron/dark/textured_large,
 /area/centcom/syndicate_mothership/control)
 "HJ" = (
@@ -12101,7 +12115,8 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/yellow/hidden/layer2,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "Jg" = (
 /obj/effect/spawner/structure/window/reinforced,
@@ -12142,7 +12157,7 @@
 /obj/structure/railing{
 	dir = 10
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Jo" = (
 /obj/machinery/door/airlock/centcom{
@@ -12407,7 +12422,7 @@
 /turf/open/misc/asteroid/snow/airless,
 /area/centcom/syndicate_mothership)
 "Ki" = (
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Kk" = (
 /obj/docking_port/stationary{
@@ -12511,7 +12526,8 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 10
 	},
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "Kz" = (
 /obj/item/kirbyplants{
@@ -12528,7 +12544,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/yellow/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/hidden/layer5,
-/turf/open/floor/catwalk_floor/iron_smooth,
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "KC" = (
 /obj/machinery/status_display/evac/directional/south,
@@ -12938,7 +12955,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/yellow/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/hidden/layer5,
-/turf/open/floor/catwalk_floor/iron_smooth,
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "Mb" = (
 /obj/structure/table/reinforced,
@@ -13361,7 +13379,7 @@
 /obj/structure/railing{
 	dir = 6
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Np" = (
 /obj/structure/bookcase/random,
@@ -13389,7 +13407,7 @@
 /obj/structure/railing{
 	dir = 6
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "Nt" = (
 /obj/structure/filingcabinet/medical,
@@ -13470,7 +13488,8 @@
 	network = list("nukie")
 	},
 /obj/structure/cable/smart_cable/color/yellow,
-/turf/open/floor/catwalk_floor/iron_smooth,
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "NJ" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -13732,7 +13751,6 @@
 /obj/item/shovel/spade{
 	pixel_y = -14
 	},
-/obj/item/cultivator,
 /turf/open/floor/wood,
 /area/centcom/central_command_areas/holding)
 "Ox" = (
@@ -14080,7 +14098,8 @@
 /area/centcom/central_command_areas/supplypod)
 "PA" = (
 /obj/structure/cable/smart_cable/color/yellow,
-/turf/open/floor/catwalk_floor/iron,
+/obj/structure/overfloor_catwalk/iron,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "PB" = (
 /obj/structure/chair/sofa/bench/left{
@@ -14090,7 +14109,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/yellow/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/hidden/layer5,
-/turf/open/floor/catwalk_floor/titanium,
+/obj/structure/overfloor_catwalk/titanium,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "PC" = (
 /obj/structure/table/wood,
@@ -14150,7 +14170,8 @@
 	},
 /obj/item/reagent_containers/glass/bucket,
 /obj/effect/turf_decal/siding/wood,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "PJ" = (
 /obj/structure/chair/comfy/black,
@@ -14185,7 +14206,8 @@
 "PO" = (
 /obj/structure/kitchenspike,
 /obj/item/gun/magic/hook,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "PP" = (
 /obj/structure/closet/secure_closet/freezer/fridge/open,
@@ -14235,7 +14257,7 @@
 /area/centcom/central_command_areas/admin)
 "PS" = (
 /obj/machinery/newscaster/directional/south,
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -14252,9 +14274,8 @@
 /obj/structure/railing{
 	dir = 4
 	},
-/turf/open/floor/catwalk_floor/iron_smooth{
-	temperature = 2.7
-	},
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership)
 "PV" = (
 /obj/effect/turf_decal/stripes/line{
@@ -14471,7 +14492,8 @@
 /obj/item/watertank{
 	pixel_x = -10
 	},
-/turf/open/floor/catwalk_floor/iron_smooth,
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "QC" = (
 /turf/closed/indestructible/reinforced/centcom,
@@ -14619,7 +14641,7 @@
 /turf/open/misc/asteroid/snow/airless,
 /area/centcom/syndicate_mothership)
 "QX" = (
-/obj/item/stack/spacecash/c20,
+/obj/item/stack/spacecash/c1/twenty,
 /turf/open/misc/asteroid/snow,
 /area/centcom/syndicate_mothership/control)
 "QY" = (
@@ -14653,7 +14675,8 @@
 /area/centcom/tdome/observation)
 "Rc" = (
 /obj/machinery/light/small/directional/east,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "Rd" = (
 /obj/structure/railing{
@@ -14925,7 +14948,8 @@
 /obj/machinery/camera/autoname/directional/west{
 	network = list("nukie")
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "RK" = (
 /turf/closed/indestructible/opsglass,
@@ -15095,7 +15119,7 @@
 /area/centcom/central_command_areas/holding)
 "So" = (
 /obj/structure/table/wood,
-/obj/machinery/computer/med_data/laptop,
+/obj/machinery/computer4/medical,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/briefing)
@@ -15164,7 +15188,8 @@
 /obj/machinery/light/small/directional/north,
 /obj/structure/easel,
 /obj/item/canvas/twentythree_twentythree,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "Sz" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -15221,7 +15246,7 @@
 /obj/structure/railing{
 	dir = 9
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "SL" = (
 /obj/structure/rack,
@@ -15415,7 +15440,8 @@
 	layer = 5
 	},
 /obj/item/food/grown/redbeet,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "Tg" = (
 /obj/item/storage/briefcase{
@@ -15654,7 +15680,8 @@
 	pixel_y = 4
 	},
 /obj/item/reagent_containers/glass/bucket,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "TM" = (
 /obj/effect/turf_decal/tile/yellow/half{
@@ -15685,7 +15712,7 @@
 /obj/structure/railing{
 	dir = 10
 	},
-/turf/open/lava/plasma,
+/turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
 "TO" = (
 /obj/machinery/keycard_auth/directional/south,
@@ -15713,7 +15740,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/yellow/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/hidden/layer5,
-/turf/open/floor/catwalk_floor/titanium,
+/obj/structure/overfloor_catwalk/titanium,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "TS" = (
 /obj/structure/table/wood,
@@ -15987,13 +16015,15 @@
 "UD" = (
 /obj/effect/turf_decal/siding/wood,
 /obj/item/clothing/suit/apron,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "UE" = (
 /obj/structure/table/reinforced/plastitaniumglass,
 /obj/item/paper_bin,
 /obj/item/pen/fountain,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "UF" = (
 /obj/structure/table,
@@ -16037,7 +16067,7 @@
 /obj/machinery/camera/autoname/directional/west{
 	network = list("nukie")
 	},
-/obj/item/stack/spacecash/c20,
+/obj/item/stack/spacecash/c1/twenty,
 /turf/open/floor/iron/dark/textured_half,
 /area/centcom/syndicate_mothership/control)
 "UL" = (
@@ -16058,7 +16088,8 @@
 /area/centcom/central_command_areas/supplypod)
 "UN" = (
 /obj/structure/cable/smart_cable/color/yellow,
-/turf/open/floor/catwalk_floor/iron_smooth,
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "UO" = (
 /obj/machinery/door/airlock/centcom{
@@ -16347,7 +16378,8 @@
 "VD" = (
 /obj/structure/table/reinforced/plastitaniumglass,
 /obj/item/stack/cable_coil/red,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "VF" = (
 /obj/machinery/computer/crew{
@@ -16375,7 +16407,8 @@
 /area/centcom/syndicate_mothership/control)
 "VI" = (
 /obj/machinery/autolathe,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "VJ" = (
 /obj/effect/turf_decal/siding/thinplating_new/dark,
@@ -16544,9 +16577,7 @@
 	},
 /obj/structure/noticeboard/directional/east,
 /obj/item/folder/red,
-/obj/item/stack/spacecash/c20{
-	pixel_y = 9
-	},
+/obj/item/stack/spacecash/c1/twenty,
 /obj/item/assembly/flash/handheld,
 /turf/open/floor/iron,
 /area/centcom/syndicate_mothership/control)
@@ -17472,13 +17503,13 @@
 /area/centcom/syndicate_mothership/control)
 "YF" = (
 /obj/machinery/gibber,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "YG" = (
 /obj/structure/railing,
-/turf/open/floor/catwalk_floor/iron_smooth{
-	temperature = 2.7
-	},
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership)
 "YI" = (
 /obj/structure/sign/warning/nosmoking,
@@ -17515,7 +17546,8 @@
 	dir = 4
 	},
 /obj/machinery/light/directional/west,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "YN" = (
 /obj/structure/table/reinforced,
@@ -17634,7 +17666,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/yellow/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/hidden/layer5,
-/turf/open/floor/catwalk_floor/iron_smooth,
+/obj/structure/overfloor_catwalk/iron_smooth,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "Ze" = (
 /obj/effect/turf_decal/tile/red,
@@ -17690,7 +17723,7 @@
 /obj/item/food/grown/chili,
 /obj/item/food/grown/carrot,
 /obj/item/food/grown/apple,
-/obj/item/food/grown/ambrosia/vulgaris,
+/obj/item/food/grown/ambrosia,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/status_display/evac/directional/north,
 /turf/open/floor/iron/dark,
@@ -17742,7 +17775,8 @@
 /area/centcom/central_command_areas/holding)
 "Zo" = (
 /obj/machinery/light/small/directional/west,
-/turf/open/floor/catwalk_floor,
+/obj/structure/overfloor_catwalk,
+/turf/open/floor/plating,
 /area/centcom/central_command_areas/holding)
 "Zp" = (
 /obj/effect/turf_decal/stripes/line{
@@ -17799,7 +17833,8 @@
 /area/centcom/central_command_areas/holding)
 "Zz" = (
 /obj/machinery/vending/dinnerware,
-/turf/open/floor/catwalk_floor/titanium,
+/obj/structure/overfloor_catwalk/titanium,
+/turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
 "ZA" = (
 /obj/structure/table/wood,

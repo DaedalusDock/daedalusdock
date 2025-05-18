@@ -37,7 +37,7 @@
 	fallback_colors = list(list(16, 20))
 	fallback_icon_state = "tie"
 	w_class = WEIGHT_CLASS_SMALL
-	custom_price = PAYCHECK_EASY
+	custom_price = PAYCHECK_ASSISTANT * 1.4
 
 /obj/item/clothing/neck/tie/blue
 	name = "blue tie"
@@ -68,7 +68,7 @@
 
 /obj/item/clothing/neck/stethoscope
 	name = "stethoscope"
-	desc = "An outdated medical apparatus for listening to the sounds of the human body. It also makes you look like you know what you're doing."
+	desc = "A tool for auscultation of the body."
 	icon_state = "stethoscope"
 
 /obj/item/clothing/neck/stethoscope/suicide_act(mob/living/carbon/user)
@@ -79,30 +79,21 @@
 	if(!ishuman(M) || !isliving(user))
 		return ..()
 	if(user.combat_mode)
+		return ..()
+
+	var/mob/living/carbon/human/patient = M
+	var/obj/item/bodypart/listening_to = M.get_bodypart(user.zone_selected)
+
+	if(!do_after(user, M, 5 SECONDS, DO_RESTRICT_USER_DIR_CHANGE|DO_PUBLIC, display = src))
 		return
 
-	var/mob/living/carbon/carbon_patient = M
-	var/body_part = parse_zone(user.zone_selected)
+	user.visible_message(
+		span_subtle("[user] places [src] against [patient]'s [listening_to.plaintext_zone]."),
+	)
 
-	var/heart_strength = span_danger("no")
-	var/lung_strength = span_danger("no")
-
-	var/obj/item/organ/heart/heart = carbon_patient.getorganslot(ORGAN_SLOT_HEART)
-	var/obj/item/organ/lungs/lungs = carbon_patient.getorganslot(ORGAN_SLOT_LUNGS)
-
-	if(carbon_patient.stat != DEAD && !(HAS_TRAIT(carbon_patient, TRAIT_FAKEDEATH)))
-		if(istype(heart))
-			heart_strength = (heart.pulse == PULSE_NORM ? "a healthy" : span_danger("an unstable"))
-		if(istype(lungs))
-			lung_strength = ((carbon_patient.failed_last_breath || carbon_patient.losebreath) ? span_danger("strained") : "healthy")
-
-	user.visible_message(span_notice("[user] places [src] against [carbon_patient]'s [body_part] and listens attentively."), ignored_mobs = user)
-
-	var/diagnosis = (body_part == BODY_ZONE_CHEST ? "You hear [heart_strength] pulse and [lung_strength] respiration" : "You faintly hear [heart_strength] pulse")
-	if(!user.can_hear())
-		diagnosis = "You don't hear anything."
-
-	to_chat(user, span_notice("You place [src] against [carbon_patient]'s [body_part]. [diagnosis]."))
+	if(user.can_hear())
+		var/list/heard = listening_to.stethoscope_listen()
+		to_chat(user, span_hear("You hear [english_list(heard)]."))
 
 ///////////
 //SCARVES//
@@ -114,7 +105,7 @@
 	desc = "A stylish scarf. The perfect winter accessory for those with a keen fashion sense, and those who just can't handle a cold breeze on their necks."
 	w_class = WEIGHT_CLASS_TINY
 	dog_fashion = /datum/dog_fashion/head
-	custom_price = PAYCHECK_EASY
+	custom_price = PAYCHECK_ASSISTANT * 1.6
 
 /obj/item/clothing/neck/scarf/black
 	name = "black scarf"
@@ -238,7 +229,7 @@
 		var/true_price = round(price*profit_scaling)
 		to_chat(user, span_notice("[selling ? "Sold" : "Getting the price of"] [I], value: <b>[true_price]</b> credits[I.contents.len ? " (exportable contents included)" : ""].[profit_scaling < 1 && selling ? "<b>[round(price-true_price)]</b> credit\s taken as processing fee\s." : ""]"))
 		if(selling)
-			SSeconomy.spawn_cash_for_amount(true_price, get_turf(user))
+			SSeconomy.spawn_ones_for_amount(true_price, get_turf(user))
 	else
 		to_chat(user, span_warning("There is no export value for [I] or any items within it."))
 

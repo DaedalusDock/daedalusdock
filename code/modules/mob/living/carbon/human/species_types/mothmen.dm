@@ -25,7 +25,6 @@
 	species_language_holder = /datum/language_holder/moth
 	wings_icons = list("Megamoth", "Mothra")
 	has_innate_wings = TRUE
-	payday_modifier = 0.75
 	job_outfit_type = SPECIES_HUMAN
 	family_heirlooms = list(/obj/item/flashlight/lantern/heirloom_moth)
 
@@ -51,6 +50,20 @@
 		ORGAN_SLOT_KIDNEYS = /obj/item/organ/kidneys,
 	)
 
+/datum/species/moth/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load)
+	. = ..()
+	RegisterSignal(human_who_gained_species, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS, PROC_REF(damage_weakness))
+
+/datum/species/moth/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
+	. = ..()
+	UnregisterSignal(C, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS)
+
+/datum/species/moth/proc/damage_weakness(datum/source, list/damage_mods, damage_amount, damagetype, def_zone, sharpness, attack_direction, obj/item/attacking_item)
+	SIGNAL_HANDLER
+
+	if(istype(attacking_item, /obj/item/melee/flyswatter))
+		damage_mods += 10 // Yes, a 10x damage modifier
+
 /datum/species/moth/random_name(gender,unique,lastname)
 	if(unique)
 		return random_unique_moth_name()
@@ -62,11 +75,6 @@
 
 	return randname
 
-/datum/species/moth/check_species_weakness(obj/item/weapon, mob/living/attacker)
-	if(istype(weapon, /obj/item/melee/flyswatter))
-		return 10 //flyswatters deal 10x damage to moths
-	return 1
-
 /datum/species/moth/randomize_main_appearance_element(mob/living/carbon/human/human_mob)
 	var/wings = pick(GLOB.moth_wings_list)
 	mutant_bodyparts["wings"] = wings
@@ -77,28 +85,6 @@
 
 /datum/species/moth/get_scream_sound(mob/living/carbon/human/human)
 	return 'sound/voice/moth/scream_moth.ogg'
-
-/datum/species/moth/get_species_description()
-	return "The Gamuioda, also known as Mothpeople in various sectors due to their appearance, are a species hailing from the planet Paraco in the Orion Spur. \
-		The Gamuioda are a large part of labour within various space stations and shuttles, providing materials, fuel, parts, and produce."
-
-/datum/species/moth/get_species_lore()
-	return list(
-		"The native language of Gamuioda is referred to as 'Gamuid' by their population. However, 'Moffic' is used as an exonym among other species.",
-
-		"Written transcripts of Gamuioda history remain largely untranslated to modern Gamuid, that most of the populace knows. \
-		However, more recent transcripts detail the progress of Gamuioda working to accelerate the process of first contact - to get in touch with extra-terrestrials. \
-		There is a long history of research and scientific development done by Gamuioda, with lower-class Gamuioda focusing on providing materials and other needed produce for upper-class researchers to utilize in advancements.",
-
-		"Upon meeting other lifeforms outside of their planet, notably Humans, the Gamuioda would begin to offer their population as a labor force for stations, ships, and other facilities requiring employment. \
-		There wasn't a fixed paycheck at first for moths when they first began work. This led to an economic crisis and a huge spike in inflation on their homeworld when converting credits into their currency, the Posis, \
-		With some careful consideration, Gamuioda working on Nanotrasen facilities are paid 20% less than most, and are given a weekly lamp to supplement the unpaid money. \
-		This has pleased 98% of surveyed moths, including the upper class.",
-
-		"The working, lower, and upper classes of Gamuioda are scattered across their homeworld of Paraco, including other under-studied planets, with the wealthy more focused on settling down in rain forests, primarily to take shelter in tall trees. \
-		The variety in weather and temperature endemic to Paraco has given rise to a vast amount of clothing styles, with a key focus on embroidered designs on cloth, \
-		though most often those working on stations and other facilities wear heavy-duty equipment or their assigned uniforms.",
-	)
 
 /datum/species/moth/create_pref_unique_perks()
 	var/list/to_add = list()

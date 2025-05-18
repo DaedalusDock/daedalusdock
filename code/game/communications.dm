@@ -124,6 +124,20 @@ GLOBAL_LIST_INIT(reverseradiochannels, list(
 	"[FREQ_CTF_YELLOW]" = RADIO_CHANNEL_CTF_YELLOW
 ))
 
+/// Frequency to file name. See chat_icons.dm
+GLOBAL_LIST_INIT(freq2icon, list(
+	"[FREQ_COMMON]" = "radio.png",
+	// Companies
+	"[FREQ_ENGINEERING]" = "eng.png",
+	"[FREQ_MEDICAL]" = "med.png",
+	"[FREQ_SUPPLY]" = "mail.png",
+	"[FREQ_SECURITY]" = "sec.png",
+	"[FREQ_COMMAND]" = "ntboss.png",
+	// Other
+	"[FREQ_AI_PRIVATE]" = "ai.png",
+	"[FREQ_SYNDICATE]" = "syndieboss.png",
+))
+
 /datum/radio_frequency
 	var/frequency
 	/// List of filters -> list of devices
@@ -212,3 +226,8 @@ GLOBAL_LIST_INIT(reverseradiochannels, list(
 	src.data = data || list()
 	src.transmission_method = transmission_method
 	src.logging_data = logging_data
+
+/// Returns a copy of this signal.
+/datum/signal/proc/Copy()
+	var/datum/signal/clone = new type(author, data, transmission_method, logging_data)
+	return clone

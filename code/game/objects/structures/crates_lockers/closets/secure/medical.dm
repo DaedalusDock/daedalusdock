@@ -21,7 +21,7 @@
 /obj/structure/closet/secure_closet/medical2
 	name = "anesthetic closet"
 	desc = "Used to knock people out."
-	req_access = list(ACCESS_SURGERY)
+	req_access = list(ACCESS_MEDICAL)
 
 /obj/structure/closet/secure_closet/medical2/PopulateContents()
 	..()
@@ -32,7 +32,7 @@
 
 /obj/structure/closet/secure_closet/medical3
 	name = "'s locker"
-	req_access = list(ACCESS_SURGERY)
+	req_access = list(ACCESS_MEDICAL)
 	icon_state = "med_secure"
 
 /obj/structure/closet/secure_closet/medical3/PopulateContents()
@@ -46,7 +46,7 @@
 
 /obj/structure/closet/secure_closet/psychology
 	name = "psychology locker"
-	req_access = list(ACCESS_PSYCHOLOGY)
+	req_access = list(ACCESS_MEDICAL)
 	icon_state = "cabinet"
 	open_sound = 'sound/machines/wooden_closet_open.ogg'
 	close_sound = 'sound/machines/wooden_closet_close.ogg'
@@ -59,7 +59,6 @@
 	new /obj/item/clothing/under/suit/black/skirt(src)
 	new /obj/item/clothing/shoes/laceup(src)
 	new /obj/item/storage/backpack/medic(src)
-	new /obj/item/radio/headset/headset_srvmed(src)
 	new /obj/item/clipboard(src)
 	new /obj/item/clothing/suit/straight_jacket(src)
 	new /obj/item/clothing/ears/earmuffs(src)
@@ -82,23 +81,18 @@
 	new /obj/item/megaphone/command(src)
 	new /obj/item/defibrillator/compact/loaded(src)
 	new /obj/item/assembly/flash/handheld(src)
-	// new /obj/item/reagent_containers/hypospray/cmo(src) //ORIGINAL
-	new /obj/item/storage/hypospraykit/cmo(src) //PARIAH EDIT
-	new /obj/item/autosurgeon/organ/cmo(src)
-	new /obj/item/clothing/neck/petcollar(src)
-	new /obj/item/pet_carrier(src)
+	new /obj/item/reagent_containers/hypospray/cmo(src)
 	new /obj/item/wallframe/defib_mount(src)
 	new /obj/item/circuitboard/machine/fabricator/department/medical(src)
 	new /obj/item/storage/photo_album/cmo(src)
 	new /obj/item/storage/lockbox/medal/med(src)
 	new /obj/item/gun/ballistic/rifle/tranqrifle(src)
-	new /obj/item/ammo_box/magazine/tranq_rifle(src)
 	new /obj/item/ammo_box/magazine/tranq_rifle/ryetalyn(src)
-
+	new /obj/item/ammo_box/magazine/tranq_rifle/ryetalyn(src)
 
 /obj/structure/closet/secure_closet/animal
 	name = "animal control"
-	req_access = list(ACCESS_SURGERY)
+	req_access = list(ACCESS_MEDICAL)
 
 /obj/structure/closet/secure_closet/animal/PopulateContents()
 	..()
@@ -122,7 +116,7 @@
 
 /obj/structure/closet/secure_closet/chemical/heisenberg //contains one of each beaker, syringe etc.
 	name = "advanced chemical closet"
-	req_access = list(ACCESS_CHEMISTRY)
+	req_access = list(ACCESS_PHARMACY)
 
 /obj/structure/closet/secure_closet/chemical/heisenberg/PopulateContents()
 	..()

@@ -115,7 +115,7 @@
 			var/obj/item/clothing/suit/cardborg/CB = H.wear_suit
 			CB.disguise(user, src)
 
-/obj/item/clothing/head/cardborg/dropped(mob/living/user)
+/obj/item/clothing/head/cardborg/unequipped(mob/living/user)
 	..()
 	user.remove_alt_appearance("standard_borg_disguise")
 

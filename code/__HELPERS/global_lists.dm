@@ -69,8 +69,6 @@
 		if(!isabstract(path))
 			path = new path()
 			GLOB.surgeries_list += path
-			if(!length(path.allowed_tools))
-				stack_trace("Surgery type [path.type] has no allowed_items list.")
 
 	sort_list(GLOB.surgeries_list, GLOBAL_PROC_REF(cmp_typepaths_asc))
 
@@ -110,6 +108,8 @@
 	init_blood_types()
 
 	init_language_datums()
+
+	init_employers()
 
 /// Inits the crafting recipe list, sorting crafting recipe requirements in the process.
 /proc/init_crafting_recipes(list/crafting_recipes)
@@ -265,3 +265,8 @@ GLOBAL_LIST_INIT(magnet_error_codes, list(
 
 		if(instance.flags & (LANGUAGE_SELECTABLE_SPEAK | LANGUAGE_SELECTABLE_UNDERSTAND))
 			GLOB.preference_language_types += language
+
+GLOBAL_LIST_EMPTY(employers_by_name)
+/proc/init_employers()
+	for(var/datum/employer/path as anything in subtypesof(/datum/employer))
+		GLOB.employers_by_name[initial(path.name)] = path

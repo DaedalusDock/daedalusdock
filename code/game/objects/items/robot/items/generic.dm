@@ -21,7 +21,7 @@
 /obj/item/borg/stun/attack(mob/living/attacked_mob, mob/living/user)
 	if(ishuman(attacked_mob))
 		var/mob/living/carbon/human/human = attacked_mob
-		if(human.check_shields(src, 0, "[attacked_mob]'s [name]", MELEE_ATTACK))
+		if(human.check_block(src, 0, "[attacked_mob]'s [name]", MELEE_ATTACK))
 			playsound(attacked_mob, 'sound/weapons/genhit.ogg', 50, TRUE)
 			return FALSE
 	if(iscyborg(user))
@@ -129,7 +129,7 @@
 			if (!COOLDOWN_FINISHED(src, shock_cooldown))
 				return
 			if(ishuman(attacked_mob))
-				attacked_mob.electrocute_act(5, "[user]", flags = SHOCK_NOGLOVES)
+				attacked_mob.electrocute_act(5, "[user]", flags = NONE)
 				user.visible_message(span_userdanger("[user] electrocutes [attacked_mob] with [user.p_their()] touch!"), \
 					span_danger("You electrocute [attacked_mob] with your touch!"))
 			else

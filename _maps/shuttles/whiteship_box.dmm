@@ -306,7 +306,7 @@
 	melee_damage_lower = 11;
 	melee_damage_upper = 11;
 	name = "Rotting Carcass";
-	zombiejob = "Assistant"
+	zombiejob = "Civilian"
 	},
 /turf/open/floor/iron/white/corner{
 	dir = 1
@@ -860,7 +860,7 @@
 "bM" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 4
 	},
 /turf/open/floor/iron/white,
@@ -1558,7 +1558,7 @@
 	melee_damage_lower = 11;
 	melee_damage_upper = 11;
 	name = "Rotting Carcass";
-	zombiejob = "Assistant"
+	zombiejob = "Civilian"
 	},
 /turf/open/floor/iron,
 /area/shuttle/abandoned/medbay)

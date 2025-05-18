@@ -10,7 +10,7 @@
 	icon_state = "glassbottle"
 	worn_icon_state = "bottle"
 	fill_icon_thresholds = list(0, 10, 20, 30, 40, 50, 60, 70, 80, 90)
-	custom_price = PAYCHECK_EASY * 1.1
+	custom_price = PAYCHECK_ASSISTANT * 1.2
 	amount_per_transfer_from_this = 10
 	volume = 100
 	force = 15 //Smashing bottles over someone's head hurts.
@@ -21,15 +21,24 @@
 	isGlass = TRUE
 	foodtype = ALCOHOL
 	age_restricted = TRUE // wrryy can't set an init value to see if foodtype contains ALCOHOL so here we go
+
 	///Directly relates to the 'knockdown' duration. Lowered by armor (i.e. helmets)
 	var/bottle_knockdown_duration = 1.3 SECONDS
+
+	var/alcoholism_key = ""
+	var/alcoholism_message =""
+
+/obj/item/reagent_containers/food/drinks/bottle/Initialize(mapload)
+	. = ..()
+	if(alcoholism_key && alcoholism_message)
+		AddElement(/datum/element/alcoholism_magnet, alcoholism_key, alcoholism_message)
 
 /obj/item/reagent_containers/food/drinks/bottle/small
 	name = "small glass bottle"
 	desc = "This blank bottle is unyieldingly anonymous, offering no clues to its contents."
 	icon_state = "glassbottlesmall"
 	volume = 50
-	custom_price = PAYCHECK_EASY * 0.9
+	custom_price = PAYCHECK_ASSISTANT * 0.8
 
 /obj/item/reagent_containers/food/drinks/bottle/smash(mob/living/target, mob/thrower, ranged = FALSE)
 	if(bartender_check(target) && ranged)
@@ -163,7 +172,10 @@
 	volume = 30
 	list_reagents = list(/datum/reagent/consumable/ethanol/beer = 30)
 	foodtype = GRAIN | ALCOHOL
-	custom_price = PAYCHECK_EASY
+	custom_price = PAYCHECK_ASSISTANT * 1.3
+
+	alcoholism_key = "alcoholism_beer"
+	alcoholism_message = "That bottle won't empty itself."
 
 /obj/item/reagent_containers/food/drinks/bottle/beer/almost_empty
 	list_reagents = list(/datum/reagent/consumable/ethanol/beer = 1)
@@ -179,8 +191,11 @@
 	volume = 30
 	list_reagents = list(/datum/reagent/consumable/rootbeer = 30)
 	foodtype = SUGAR | JUNKFOOD
-	custom_price = PAYCHECK_HARD * 1.5
-	custom_premium_price = PAYCHECK_HARD * 2
+	custom_price = PAYCHECK_ASSISTANT * 0.7
+	custom_premium_price = PAYCHECK_ASSISTANT * 1.3
+
+	alcoholism_key = "alcoholism_rootbeer"
+	alcoholism_message = "If only it was the real deal."
 
 /obj/item/reagent_containers/food/drinks/bottle/ale
 	name = "Magm-Ale"
@@ -191,17 +206,26 @@
 	foodtype = GRAIN | ALCOHOL
 	custom_price = PAYCHECK_EASY
 
+	alcoholism_key = "alcoholism_ale"
+	alcoholism_message = "Amber and frothy. You know you want it."
+
 /obj/item/reagent_containers/food/drinks/bottle/gin
 	name = "Griffeater gin"
 	desc = "A bottle of high quality gin, produced in the New London Space Station."
 	icon_state = "ginbottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/gin = 100)
 
+	alcoholism_key = "alcoholism_gin"
+	alcoholism_message = "An orchestra of citrus calls your name, why deprive yourself?"
+
 /obj/item/reagent_containers/food/drinks/bottle/whiskey
 	name = "Uncle Git's special reserve"
 	desc = "A premium single-malt whiskey, gently matured inside the tunnels of a nuclear shelter. TUNNEL WHISKEY RULES."
 	icon_state = "whiskeybottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/whiskey = 100)
+
+	alcoholism_key = "alcoholism_whiskey"
+	alcoholism_message = "Whiskey. A beautiful golden nectar, waiting to meet your tongue with a smokey caramel kiss."
 
 /obj/item/reagent_containers/food/drinks/bottle/kong
 	name = "Kong"
@@ -219,6 +243,9 @@
 	icon_state = "vodkabottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/vodka = 100)
 
+	alcoholism_key = "alcoholism_vodka"
+	alcoholism_message = "The purest of spirits, a blank canvas with a bite. Crystal clear liquid courage, waiting to start a fire in your throat. One shot..."
+
 /obj/item/reagent_containers/food/drinks/bottle/vodka/badminka
 	name = "Badminka vodka"
 	desc = "The label's written in Cyrillic. All you can make out is the name and a word that looks vaguely like 'Vodka'."
@@ -230,6 +257,9 @@
 	desc = "Made from premium petroleum distillates, pure thalidomide and other fine quality ingredients!"
 	icon_state = "tequilabottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/tequila = 100)
+
+	alcoholism_key = "alcoholism_tequila"
+	alcoholism_message = "Let the agave's sweet fire ignite your senses. Perhaps a little sugar and lime, one shot cannot hurt. Nor will two."
 
 /obj/item/reagent_containers/food/drinks/bottle/bottleofnothing
 	name = "bottle of nothing"
@@ -250,6 +280,9 @@
 	desc = "This isn't just rum, oh no. It's practically GRIFF in a bottle."
 	icon_state = "rumbottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/rum = 100)
+
+	alcoholism_key = "alcoholism_rum"
+	alcoholism_message = "Sail the Great Pool with me. A lively port of celebration and raised glasses awaits in our paradise."
 
 /obj/item/reagent_containers/food/drinks/bottle/maltliquor
 	name = "\improper Rabid Bear malt liquor"
@@ -290,12 +323,18 @@
 	icon_state = "cognacbottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/cognac = 100)
 
+	alcoholism_key = "alcoholism_cognac"
+	alcoholism_message = "We shall dine like the kings of old. Someone like yourself deserves such a dignified beverage. Pour a glass, let's savor excellence."
+
 /obj/item/reagent_containers/food/drinks/bottle/wine
 	name = "Doublebeard's bearded special wine"
 	desc = "A faint aura of unease and asspainery surrounds the bottle."
 	icon_state = "winebottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/wine = 100)
 	foodtype = FRUIT | ALCOHOL
+
+	alcoholism_key = "alcoholism_wine"
+	alcoholism_message = "Wine. Oh the nector of the gods, a symphony of crushed grapes, sunlit vineyards and ancient traditions. It is not just a drink—it's a masterpiece in a bottle. One you have earned."
 
 /obj/item/reagent_containers/food/drinks/bottle/wine/add_initial_reagents()
 	. = ..()
@@ -323,6 +362,9 @@
 	desc = "A strong alcoholic drink brewed and distributed by"
 	icon_state = "absinthebottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/absinthe = 100)
+
+	alcoholism_key = "alcoholism_wine"
+	alcoholism_message = "The forbidden fruit beckons. It is no mere drink—it's a portal to a world of verdant splendor. This isn't for the faint of heart. It's for the curious, the bold, the thrillseeker. And it has your name on it."
 
 /obj/item/reagent_containers/food/drinks/bottle/absinthe/Initialize(mapload)
 	. = ..()
@@ -437,7 +479,7 @@
 /obj/item/reagent_containers/food/drinks/bottle/orangejuice
 	name = "orange juice"
 	desc = "Full of vitamins and deliciousness!"
-	custom_price = PAYCHECK_ASSISTANT
+	custom_price = PAYCHECK_ASSISTANT * 0.6
 	icon_state = "orangejuice"
 	inhand_icon_state = "carton"
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
@@ -450,7 +492,7 @@
 /obj/item/reagent_containers/food/drinks/bottle/cream
 	name = "milk cream"
 	desc = "It's cream. Made from milk. What else did you think you'd find in there?"
-	custom_price = PAYCHECK_ASSISTANT
+	custom_price = PAYCHECK_ASSISTANT * 0.6
 	icon_state = "cream"
 	inhand_icon_state = "carton"
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
@@ -463,7 +505,7 @@
 /obj/item/reagent_containers/food/drinks/bottle/tomatojuice
 	name = "tomato juice"
 	desc = "Well, at least it LOOKS like tomato juice. You can't tell with all that redness."
-	custom_price = PAYCHECK_ASSISTANT
+	custom_price = PAYCHECK_ASSISTANT * 0.6
 	icon_state = "tomatojuice"
 	inhand_icon_state = "carton"
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
@@ -476,7 +518,7 @@
 /obj/item/reagent_containers/food/drinks/bottle/limejuice
 	name = "lime juice"
 	desc = "Sweet-sour goodness."
-	custom_price = PAYCHECK_ASSISTANT
+	custom_price = PAYCHECK_ASSISTANT * 0.6
 	icon_state = "limejuice"
 	inhand_icon_state = "carton"
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
@@ -489,7 +531,7 @@
 /obj/item/reagent_containers/food/drinks/bottle/pineapplejuice
 	name = "pineapple juice"
 	desc = "Extremely tart, yellow juice."
-	custom_price = PAYCHECK_ASSISTANT
+	custom_price = PAYCHECK_ASSISTANT * 0.6
 	icon_state = "pineapplejuice"
 	inhand_icon_state = "carton"
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
@@ -502,7 +544,7 @@
 /obj/item/reagent_containers/food/drinks/bottle/menthol
 	name = "menthol"
 	desc = "Tastes naturally minty, and imparts a very mild numbing sensation."
-	custom_price = PAYCHECK_ASSISTANT
+	custom_price = PAYCHECK_ASSISTANT * 0.6
 	icon_state = "mentholbox"
 	inhand_icon_state = "carton"
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
@@ -513,7 +555,7 @@
 /obj/item/reagent_containers/food/drinks/bottle/grenadine
 	name = "Jester Grenadine"
 	desc = "Contains 0% real cherries!"
-	custom_price = PAYCHECK_ASSISTANT
+	custom_price = PAYCHECK_ASSISTANT * 0.6
 	icon_state = "grenadine"
 	isGlass = TRUE
 	list_reagents = list(/datum/reagent/consumable/grenadine = 100)
@@ -523,7 +565,7 @@
 /obj/item/reagent_containers/food/drinks/bottle/applejack
 	name = "Buckin' Bronco's Applejack"
 	desc = "Kicks like a horse, tastes like an apple!"
-	custom_price = PAYCHECK_ASSISTANT
+	custom_price = PAYCHECK_ASSISTANT * 1.6
 	icon_state = "applejack_bottle"
 	isGlass = TRUE
 	list_reagents = list(/datum/reagent/consumable/ethanol/applejack = 100)

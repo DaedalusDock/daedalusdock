@@ -10,14 +10,20 @@
 	complexity = 1
 	incompatible_modules = list(/obj/item/mod/module/welding)
 	overlay_state_inactive = "module_welding"
+	required_slots = list(ITEM_SLOT_HEAD|ITEM_SLOT_EYES|ITEM_SLOT_MASK)
 
 /obj/item/mod/module/welding/on_suit_activation()
-	mod.helmet.flash_protect = FLASH_PROTECTION_WELDER
+	var/obj/item/clothing/head_cover = mod.get_part_from_slot(ITEM_SLOT_HEAD) || mod.get_part_from_slot(ITEM_SLOT_MASK) || mod.get_part_from_slot(ITEM_SLOT_EYES)
+	if(istype(head_cover))
+		head_cover.flash_protect = FLASH_PROTECTION_WELDER
 
 /obj/item/mod/module/welding/on_suit_deactivation(deleting = FALSE)
 	if(deleting)
 		return
-	mod.helmet.flash_protect = initial(mod.helmet.flash_protect)
+
+	var/obj/item/clothing/head_cover = mod.get_part_from_slot(ITEM_SLOT_HEAD) || mod.get_part_from_slot(ITEM_SLOT_MASK) || mod.get_part_from_slot(ITEM_SLOT_EYES)
+	if(istype(head_cover))
+		head_cover.flash_protect = initial(head_cover.flash_protect)
 
 ///T-Ray Scan - Scans the terrain for undertile objects.
 /obj/item/mod/module/t_ray
@@ -31,6 +37,7 @@
 	active_power_cost = DEFAULT_CHARGE_DRAIN * 0.2
 	incompatible_modules = list(/obj/item/mod/module/t_ray)
 	cooldown_time = 0.5 SECONDS
+	required_slots = list(ITEM_SLOT_HEAD|ITEM_SLOT_EYES|ITEM_SLOT_MASK)
 	/// T-ray scan range.
 	var/range = 2
 
@@ -50,24 +57,19 @@
 	active_power_cost = DEFAULT_CHARGE_DRAIN * 0.5
 	incompatible_modules = list(/obj/item/mod/module/magboot, /obj/item/mod/module/atrocinator)
 	cooldown_time = 0.5 SECONDS
+	required_slots = list(ITEM_SLOT_FEET)
 	/// Slowdown added onto the suit.
 	var/slowdown_active = 0.5
 	/// A list of traits to add to the wearer when we're active (see: Magboots)
 	var/list/active_traits = list(TRAIT_NO_SLIP_WATER, TRAIT_NO_SLIP_ICE, TRAIT_NO_SLIP_SLIDE, TRAIT_NEGATES_GRAVITY)
 
 /obj/item/mod/module/magboot/on_activation()
-	. = ..()
-	if(!.)
-		return
 	for(var/new_trait in active_traits)
 		ADD_TRAIT(mod.wearer, new_trait, MOD_TRAIT)
 	mod.slowdown += slowdown_active
 	mod.wearer.update_equipment_speed_mods()
 
 /obj/item/mod/module/magboot/on_deactivation(display_message = TRUE, deleting = FALSE)
-	. = ..()
-	if(!.)
-		return
 	for(var/old_trait in active_traits)
 		REMOVE_TRAIT(mod.wearer, old_trait, MOD_TRAIT)
 	mod.slowdown -= slowdown_active
@@ -91,8 +93,9 @@
 	use_power_cost = DEFAULT_CHARGE_DRAIN
 	incompatible_modules = list(/obj/item/mod/module/tether)
 	cooldown_time = 1.5 SECONDS
+	required_slots = list(ITEM_SLOT_GLOVES)
 
-/obj/item/mod/module/tether/on_use()
+/obj/item/mod/module/tether/used()
 	if(mod.wearer.has_gravity(get_turf(src)))
 		balloon_alert(mod.wearer, "too much gravity!")
 		playsound(src, 'sound/weapons/gun/general/dry_fire.ogg', 25, TRUE)
@@ -126,7 +129,7 @@
 /obj/projectile/tether/fire(setAngle)
 	if(firer)
 		line = firer.Beam(src, "line", 'icons/obj/clothing/modsuit/mod_modules.dmi', emissive = FALSE)
-	..()
+	return ..()
 
 /obj/projectile/tether/on_hit(atom/target)
 	. = ..()
@@ -155,14 +158,14 @@
 	AddComponent(/datum/component/geiger_sound)
 	ADD_TRAIT(mod.wearer, TRAIT_BYPASS_EARLY_IRRADIATED_CHECK, MOD_TRAIT)
 	RegisterSignal(mod.wearer, COMSIG_IN_RANGE_OF_IRRADIATION, PROC_REF(on_pre_potential_irradiation))
-	for(var/obj/item/part in mod.mod_parts)
+	for(var/obj/item/part in mod.get_parts(include_control = TRUE))
 		ADD_TRAIT(part, TRAIT_RADIATION_PROTECTED_CLOTHING, MOD_TRAIT)
 
 /obj/item/mod/module/rad_protection/on_suit_deactivation(deleting = FALSE)
 	qdel(GetComponent(/datum/component/geiger_sound))
 	REMOVE_TRAIT(mod.wearer, TRAIT_BYPASS_EARLY_IRRADIATED_CHECK, MOD_TRAIT)
 	UnregisterSignal(mod.wearer, COMSIG_IN_RANGE_OF_IRRADIATION)
-	for(var/obj/item/part in mod.mod_parts)
+	for(var/obj/item/part in mod.get_parts(include_control = TRUE))
 		REMOVE_TRAIT(part, TRAIT_RADIATION_PROTECTED_CLOTHING, MOD_TRAIT)
 
 /obj/item/mod/module/rad_protection/add_ui_data()
@@ -192,6 +195,7 @@
 	use_power_cost = DEFAULT_CHARGE_DRAIN * 2
 	incompatible_modules = list(/obj/item/mod/module/constructor, /obj/item/mod/module/quick_carry)
 	cooldown_time = 11 SECONDS
+	required_slots = list(ITEM_SLOT_GLOVES)
 
 /obj/item/mod/module/constructor/on_suit_activation()
 	ADD_TRAIT(mod.wearer, TRAIT_QUICK_BUILD, MOD_TRAIT)
@@ -200,9 +204,6 @@
 	REMOVE_TRAIT(mod.wearer, TRAIT_QUICK_BUILD, MOD_TRAIT)
 
 /obj/item/mod/module/constructor/on_use()
-	. = ..()
-	if(!.)
-		return
 	rcd_scan(src, fade_time = 10 SECONDS)
 	drain_power(use_power_cost)
 

@@ -11,8 +11,12 @@
 	supports_variations_flags = CLOTHING_VOX_VARIATION
 	attack_verb_continuous = list("challenges")
 	attack_verb_simple = list("challenge")
-	strip_delay = 20
-	equip_delay_other = 40
+
+	equip_delay_self = EQUIP_ALLOW_MOVEMENT
+	equip_delay_self = EQUIP_DELAY_GLOVES
+	equip_delay_other = EQUIP_DELAY_GLOVES + (3 SECONDS)
+	strip_delay = EQUIP_DELAY_GLOVES + (3 SECONDS)
+
 	// Path variable. If defined, will produced the type through interaction with wirecutters.
 	var/cut_type = null
 	/// Used for handling bloody gloves leaving behind bloodstains on objects. Will be decremented whenever a bloodstain is left behind, and be incremented when the gloves become bloody.
@@ -30,7 +34,7 @@
 
 /obj/item/clothing/gloves/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
-	if(!isinhands)
+	if(isinhands)
 		return
 
 	if(damaged_clothes)

@@ -38,79 +38,54 @@
 	translate_binary = TRUE
 
 /obj/item/encryptionkey/headset_sec
-	name = "security radio encryption key"
+	name = "\improper Mars radio encryption key"
 	icon_state = "sec_cypherkey"
 	channels = list(RADIO_CHANNEL_SECURITY = 1)
 
 /obj/item/encryptionkey/headset_eng
-	name = "engineering radio encryption key"
+	name = "\improper Daedalus radio encryption key"
 	icon_state = "eng_cypherkey"
 	channels = list(RADIO_CHANNEL_ENGINEERING = 1)
 
-/obj/item/encryptionkey/headset_rob
-	name = "robotics radio encryption key"
-	icon_state = "rob_cypherkey"
-	channels = list(RADIO_CHANNEL_SCIENCE = 1, RADIO_CHANNEL_ENGINEERING = 1)
-
 /obj/item/encryptionkey/headset_med
-	name = "medical radio encryption key"
+	name = "\improper Aether radio encryption key"
 	icon_state = "med_cypherkey"
 	channels = list(RADIO_CHANNEL_MEDICAL = 1)
 
-/obj/item/encryptionkey/headset_sci
-	name = "science radio encryption key"
-	icon_state = "sci_cypherkey"
-	channels = list(RADIO_CHANNEL_SCIENCE = 1)
-
-/obj/item/encryptionkey/headset_medsci
-	name = "medical research radio encryption key"
-	icon_state = "medsci_cypherkey"
-	channels = list(RADIO_CHANNEL_SCIENCE = 1, RADIO_CHANNEL_MEDICAL = 1)
-
-/obj/item/encryptionkey/headset_srvsec
-	name = "law and order radio encryption key"
-	icon_state = "srvsec_cypherkey"
-	channels = list(RADIO_CHANNEL_SERVICE = 1, RADIO_CHANNEL_SECURITY = 1)
-
-/obj/item/encryptionkey/headset_srvmed
-	name = "psychology radio encryption key"
-	icon_state = "srvmed_cypherkey"
-	channels = list(RADIO_CHANNEL_MEDICAL = 1, RADIO_CHANNEL_SERVICE = 1)
-
 /obj/item/encryptionkey/headset_com
-	name = "command radio encryption key"
+	name = "\improper Management radio encryption key"
 	icon_state = "com_cypherkey"
 	channels = list(RADIO_CHANNEL_COMMAND = 1)
 
 /obj/item/encryptionkey/heads/captain
-	name = "\proper the captain's encryption key"
+	name = "\proper the superintendent's encryption key"
 	icon_state = "cap_cypherkey"
-	channels = list(RADIO_CHANNEL_COMMAND = 1, RADIO_CHANNEL_SECURITY = 1, RADIO_CHANNEL_ENGINEERING = 0, RADIO_CHANNEL_SCIENCE = 0, RADIO_CHANNEL_MEDICAL = 0, RADIO_CHANNEL_SUPPLY = 0, RADIO_CHANNEL_SERVICE = 0)
-
-/obj/item/encryptionkey/heads/rd
-	name = "\proper the research director's encryption key"
-	icon_state = "rd_cypherkey"
-	channels = list(RADIO_CHANNEL_SCIENCE = 1, RADIO_CHANNEL_COMMAND = 1)
+	channels = list(RADIO_CHANNEL_COMMAND = 1, RADIO_CHANNEL_SECURITY = 1)
 
 /obj/item/encryptionkey/heads/hos
-	name = "\proper the security marshal's encryption key"
+	name = "security marshal's encryption key"
 	icon_state = "hos_cypherkey"
-	channels = list(RADIO_CHANNEL_SECURITY = 1, RADIO_CHANNEL_COMMAND = 1)
+	channels = list(RADIO_CHANNEL_SECURITY = 1)
 
 /obj/item/encryptionkey/heads/ce
-	name = "\proper the chief engineer's encryption key"
+	name = "chief engineer's encryption key"
 	icon_state = "ce_cypherkey"
-	channels = list(RADIO_CHANNEL_ENGINEERING = 1, RADIO_CHANNEL_COMMAND = 1)
+	channels = list(RADIO_CHANNEL_ENGINEERING = 1)
 
 /obj/item/encryptionkey/heads/cmo
-	name = "\proper the medical director's encryption key"
+	name = "medical director's encryption key"
 	icon_state = "cmo_cypherkey"
-	channels = list(RADIO_CHANNEL_MEDICAL = 1, RADIO_CHANNEL_COMMAND = 1)
+	channels = list(RADIO_CHANNEL_MEDICAL = 1)
 
 /obj/item/encryptionkey/heads/hop
-	name = "\proper the head of personnel's encryption key"
+	name = "head of personnel's encryption key"
 	icon_state = "hop_cypherkey"
-	channels = list(RADIO_CHANNEL_SUPPLY = 1, RADIO_CHANNEL_SERVICE = 1, RADIO_CHANNEL_COMMAND = 1) //PARIAH EDIT
+	channels = list(RADIO_CHANNEL_SUPPLY = 1)
+
+/obj/item/encryptionkey/heads/qm
+	name = "quartermaster's encryption key"
+	icon_state = "hop_cypherkey"
+	channels = list(RADIO_CHANNEL_SUPPLY = 1)
 
 /obj/item/encryptionkey/headset_cargo
 	name = "supply radio encryption key"
@@ -120,7 +95,7 @@
 /obj/item/encryptionkey/headset_mining
 	name = "mining radio encryption key"
 	icon_state = "cargo_cypherkey"
-	channels = list(RADIO_CHANNEL_SUPPLY = 1, RADIO_CHANNEL_SCIENCE = 1)
+	channels = list(RADIO_CHANNEL_SUPPLY = 1)
 
 /obj/item/encryptionkey/headset_service
 	name = "service radio encryption key"

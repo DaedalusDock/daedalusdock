@@ -203,7 +203,7 @@
 	desc = "A british looking helmet."
 	icon_state = "constable"
 	inhand_icon_state = "constable"
-	custom_price = PAYCHECK_HARD * 1.5
+	custom_price = PAYCHECK_ASSISTANT * 4.25
 	worn_y_offset = 4
 
 /obj/item/clothing/head/helmet/swat/nanotrasen
@@ -449,7 +449,7 @@
 		user.dropItemToGround(src)
 		return
 	var/mob/picked = pick(candidates)
-	magnification.key = picked.key
+	magnification.PossessByPlayer(picked.key)
 	playsound(src, 'sound/machines/microwave/microwave-end.ogg', 100, FALSE)
 	to_chat(magnification, span_notice("You're a mind magnified monkey! Protect your helmet with your life- if you lose it, your sentience goes with it!"))
 	var/policy = get_policy(ROLE_MONKEY_HELMET)
@@ -471,7 +471,7 @@
 		if(prob(10))
 			switch(rand(1,4))
 				if(1) //blood rage
-					magnification.ai_controller.blackboard[BB_MONKEY_AGGRESSIVE] = TRUE
+					magnification.ai_controller.set_blackboard_key(BB_MONKEY_AGGRESSIVE, TRUE)
 				if(2) //brain death
 					magnification.apply_damage(500,BRAIN,BODY_ZONE_HEAD,FALSE,FALSE,FALSE)
 				if(3) //primal gene (gorilla)
@@ -486,7 +486,7 @@
 	magnification = null
 	new /obj/effect/decal/cleanable/ash/crematorium(drop_location()) //just in case they're in a locker or other containers it needs to use crematorium ash, see the path itself for an explanation
 
-/obj/item/clothing/head/helmet/monkey_sentience/dropped(mob/user)
+/obj/item/clothing/head/helmet/monkey_sentience/unequipped(mob/user)
 	. = ..()
 	if(magnification || polling)
 		qdel(src)//runs disconnect code

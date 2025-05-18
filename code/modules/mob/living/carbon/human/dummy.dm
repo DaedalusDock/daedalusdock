@@ -74,6 +74,8 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		qdel(delete)
 
 /mob/living/carbon/human/dummy/afterEquipItem(obj/item/item, slot, initial = FALSE)
+	item.item_flags |= IN_INVENTORY
+	item.equipped_to = src
 	return item.visual_equipped(src, slot, initial)
 
 /mob/living/carbon/human/dummy/proc/wipe_state()

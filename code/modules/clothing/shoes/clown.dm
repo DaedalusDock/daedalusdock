@@ -3,7 +3,7 @@
 	name = "clown shoes"
 	icon_state = "clown"
 	inhand_icon_state = "clown_shoes"
-	slowdown = SHOES_SLOWDOWN+1
+	slowdown = parent_type::slowdown + 1 // Slower than normal
 	var/enabled_waddle = TRUE
 	lace_time = 20 SECONDS // how the hell do these laces even work??
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
@@ -20,7 +20,7 @@
 		if(enabled_waddle)
 			ADD_WADDLE(user, WADDLE_SOURCE_CLOWNSHOES)
 
-/obj/item/clothing/shoes/clown_shoes/dropped(mob/user)
+/obj/item/clothing/shoes/clown_shoes/unequipped(mob/user)
 	. = ..()
 	REMOVE_WADDLE(user, WADDLE_SOURCE_CLOWNSHOES)
 

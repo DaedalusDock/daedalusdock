@@ -7,7 +7,6 @@
 	siemens_coeff = 0.5 //They thrive on energy
 	brutemod = 1.25 //They're weak to punches
 
-	payday_modifier = 0.75
 	job_outfit_type = SPECIES_HUMAN
 
 	species_traits = list(DYNCOLORS, AGENDER, NO_UNDERWEAR, HAIR, FACEHAIR, HAIRCOLOR, FACEHAIRCOLOR) // i mean i guess they have blood so they can have wounds too
@@ -192,18 +191,6 @@
 		'sound/voice/ethereal/ethereal_scream_1.ogg',
 		'sound/voice/ethereal/ethereal_scream_2.ogg',
 		'sound/voice/ethereal/ethereal_scream_3.ogg',
-	)
-
-/datum/species/ethereal/get_species_description()
-	return "Coming from the planet of Sprout, the theocratic ethereals are \
-		separated socially by caste, and espouse a dogma of aiding the weak and \
-		downtrodden."
-
-/datum/species/ethereal/get_species_lore()
-	return list(
-		"Ethereals are a species native to the planet Sprout. \
-		When they were originally discovered, they were at a medieval level of technological progression, \
-		but due to their natural acclimation with electricity, they felt easy among the large Daedalus installations.",
 	)
 
 /datum/species/ethereal/create_pref_unique_perks()

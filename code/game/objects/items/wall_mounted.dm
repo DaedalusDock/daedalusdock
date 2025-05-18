@@ -63,7 +63,7 @@
 	var/turf/T = get_step(get_turf(user), user.dir)
 	if(iswallturf(T))
 		T.attackby(src, user)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/wallframe/wrench_act(mob/living/user, obj/item/tool)
 	var/metal_amt = round(custom_materials[GET_MATERIAL_REF(/datum/material/iron)]/MINERAL_MATERIAL_AMOUNT) //Replace this shit later
@@ -77,7 +77,7 @@
 	if(glass_amt)
 		new /obj/item/stack/sheet/glass(get_turf(src), glass_amt)
 	qdel(src)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/electronics
 	desc = "Looks like a circuit. Probably is."
@@ -90,4 +90,4 @@
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron=50, /datum/material/glass=50)
 	grind_results = list(/datum/reagent/iron = 10, /datum/reagent/silicon = 10)
-	custom_price = PAYCHECK_EASY * 0.5
+	custom_price = PAYCHECK_ASSISTANT * 1.2

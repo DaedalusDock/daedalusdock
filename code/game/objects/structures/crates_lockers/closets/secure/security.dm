@@ -22,7 +22,7 @@
 
 /obj/structure/closet/secure_closet/hop
 	name = "\proper head of personnel's locker"
-	req_access = list(ACCESS_HOP)
+	req_access = list(ACCESS_DELEGATE)
 	icon_state = "hop"
 
 /obj/structure/closet/secure_closet/hop/PopulateContents()
@@ -114,28 +114,24 @@
 /obj/structure/closet/secure_closet/security/cargo/PopulateContents()
 	..()
 	new /obj/item/clothing/accessory/armband/cargo(src)
-	new /obj/item/encryptionkey/headset_cargo(src)
 
 /obj/structure/closet/secure_closet/security/engine
 
 /obj/structure/closet/secure_closet/security/engine/PopulateContents()
 	..()
 	new /obj/item/clothing/accessory/armband/engine(src)
-	new /obj/item/encryptionkey/headset_eng(src)
 
 /obj/structure/closet/secure_closet/security/science
 
 /obj/structure/closet/secure_closet/security/science/PopulateContents()
 	..()
 	new /obj/item/clothing/accessory/armband/science(src)
-	new /obj/item/encryptionkey/headset_sci(src)
 
 /obj/structure/closet/secure_closet/security/med
 
 /obj/structure/closet/secure_closet/security/med/PopulateContents()
 	..()
 	new /obj/item/clothing/accessory/armband/medblue(src)
-	new /obj/item/encryptionkey/headset_med(src)
 
 /obj/structure/closet/secure_closet/detective
 	name = "\improper investigator's cabinet"
@@ -171,7 +167,7 @@
 
 /obj/structure/closet/secure_closet/brig
 	name = "brig locker"
-	req_access = list(ACCESS_BRIG)
+	req_access = list(ACCESS_SECURITY)
 	anchored = TRUE
 	var/id = null
 
@@ -212,7 +208,7 @@
 	. = ..()
 
 	var/list/id_access = used_id.GetAccess()
-	if(assigned_id_ref && (ACCESS_BRIG in id_access))
+	if(assigned_id_ref && (ACCESS_SECURITY in id_access))
 		say("Authorized ID detected. Unlocking locker and resetting ID.")
 		locked = FALSE
 		assigned_id_ref = null
@@ -254,7 +250,7 @@
 /obj/structure/closet/secure_closet/contraband/heads
 	anchored = TRUE
 	name = "Contraband Locker"
-	req_access = list(ACCESS_HEADS)
+	req_access = list(ACCESS_MANAGEMENT)
 
 /obj/structure/closet/secure_closet/armory1
 	name = "armory armor locker"

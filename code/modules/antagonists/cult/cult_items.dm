@@ -37,11 +37,10 @@ Striking a noncultist, however, will tear their flesh."}
 
 	AddComponent(/datum/component/cult_ritual_item, span_cult(examine_text))
 
-/obj/item/melee/cultblade/dagger/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
-	if(IS_CULTIST(wielder) && attack_type != PROJECTILE_ATTACK)
-		return ..()
-
-	return FALSE
+/obj/item/melee/cultblade/dagger/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
+	if(attack_type == PROJECTILE_ATTACK)
+		return FALSE
+	return ..()
 
 /obj/item/melee/cultblade/dagger/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
 	if(do_message)
@@ -78,7 +77,7 @@ Striking a noncultist, however, will tear their flesh."}
 	. = ..()
 	AddComponent(/datum/component/butchering, 40, 100)
 
-/obj/item/melee/cultblade/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+/obj/item/melee/cultblade/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
 	if(IS_CULTIST(wielder))
 		return ..()
 
@@ -193,7 +192,7 @@ Striking a noncultist, however, will tear their flesh."}
 	linked_action.Grant(user, src)
 	user.update_icons()
 
-/obj/item/cult_bastard/dropped(mob/user)
+/obj/item/cult_bastard/unequipped(mob/user)
 	. = ..()
 	linked_action.Remove(user)
 	jaunt.Remove(user)
@@ -278,6 +277,7 @@ Striking a noncultist, however, will tear their flesh."}
 	holder.apply_status_effect(/datum/status_effect/sword_spin)
 	sword.spinning = TRUE
 	sword.block_chance = 100
+	sword.block_angle = 180
 	sword.slowdown += 1.5
 	addtimer(CALLBACK(src, PROC_REF(stop_spinning)), 50)
 	holder?.update_mob_action_buttons()
@@ -285,6 +285,7 @@ Striking a noncultist, however, will tear their flesh."}
 /datum/action/innate/cult/spin2win/proc/stop_spinning()
 	sword.spinning = FALSE
 	sword.block_chance = 50
+	sword.block_angle = 45
 	sword.slowdown -= 1.5
 	sleep(sword.spin_cooldown)
 	holder?.update_mob_action_buttons()
@@ -775,8 +776,6 @@ Striking a noncultist, however, will tear their flesh."}
 	qdel(src)
 
 /obj/item/melee/cultblade/halberd/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
-	if(!IS_CULTIST(wielder))
-		return FALSE
 	. = ..()
 	if(wielded)
 		. *= 2

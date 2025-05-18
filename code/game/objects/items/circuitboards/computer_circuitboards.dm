@@ -1,3 +1,8 @@
+/obj/item/circuitboard/computer
+	req_components = list(
+		/obj/item/disk/data = 1
+	)
+
 //Command
 
 /obj/item/circuitboard/computer/aiupload
@@ -343,11 +348,6 @@
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
 	build_path = /obj/machinery/computer/crew
 
-/obj/item/circuitboard/computer/med_data
-	name = "Medical Records Console (Computer Board)"
-	greyscale_colors = CIRCUIT_COLOR_MEDICAL
-	build_path = /obj/machinery/computer/med_data
-
 /obj/item/circuitboard/computer/pandemic
 	name = "PanD.E.M.I.C. 2200 (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
@@ -466,19 +466,13 @@
 	name = "Supply Console (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_SUPPLY
 	build_path = /obj/machinery/computer/cargo
-	var/contraband = FALSE
 
-/obj/item/circuitboard/computer/cargo/multitool_act(mob/living/user)
-	. = ..()
-	if(!(obj_flags & EMAGGED))
-		contraband = !contraband
-		to_chat(user, span_notice("Receiver spectrum set to [contraband ? "Broad" : "Standard"]."))
-	else
-		to_chat(user, span_alert("The spectrum chip is unresponsive."))
+	/// Matches supply pack flags.
+	var/supply_flags = NONE
 
 /obj/item/circuitboard/computer/cargo/emag_act(mob/living/user)
 	if(!(obj_flags & EMAGGED))
-		contraband = TRUE
+		supply_flags |= SUPPLY_PACK_CONTRABAND|SUPPLY_PACK_EMAG
 		obj_flags |= EMAGGED
 		to_chat(user, span_notice("You adjust [src]'s routing and receiver spectrum, unlocking special supplies and contraband."))
 
@@ -486,7 +480,7 @@
 	if(!istype(machine))
 		CRASH("Cargo board attempted to configure incorrect machine type: [machine] ([machine?.type])")
 
-	machine.contraband = contraband
+	machine.supply_flags = supply_flags
 	if (obj_flags & EMAGGED)
 		machine.obj_flags |= EMAGGED
 	else
@@ -498,17 +492,17 @@
 
 /obj/item/circuitboard/computer/cargo/express/emag_act(mob/living/user)
 	if(!(obj_flags & EMAGGED))
-		contraband = TRUE
+		supply_flags |= SUPPLY_PACK_EMAG
 		obj_flags |= EMAGGED
 		to_chat(user, span_notice("You change the routing protocols, allowing the Drop Pod to land anywhere on the station."))
 
 /obj/item/circuitboard/computer/cargo/express/multitool_act(mob/living/user)
 	if (!(obj_flags & EMAGGED))
-		contraband = !contraband
-		to_chat(user, span_notice("Receiver spectrum set to [contraband ? "Broad" : "Standard"]."))
+		supply_flags ^= SUPPLY_PACK_CONTRABAND
+		to_chat(user, span_notice("Receiver spectrum set to [(supply_flags & SUPPLY_PACK_CONTRABAND) ? "Broad" : "Standard"]."))
 	else
 		to_chat(user, span_notice("You reset the destination-routing protocols and receiver spectrum to factory defaults."))
-		contraband = FALSE
+		supply_flags &= ~(SUPPLY_PACK_CONTRABAND|SUPPLY_PACK_EMAG)
 		obj_flags &= ~EMAGGED
 
 /obj/item/circuitboard/computer/cargo/request

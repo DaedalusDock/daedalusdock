@@ -12,28 +12,28 @@
 	var/chem_color //Used for hypospray overlay
 
 /obj/item/reagent_containers/glass/vial/update_overlays()
-    . = ..()
-    if(!fill_icon_thresholds)
-        return
-    if(reagents.total_volume)
-        var/fill_name = fill_icon_state? fill_icon_state : icon_state
-        var/fill_overlay = 10
-        switch(round((reagents.total_volume / volume)*100))
-            if(1 to 24)
-                fill_overlay = 10
-            if(25 to 49)
-                fill_overlay = 25
-            if(50 to 74)
-                fill_overlay = 50
-            if(75 to 89)
-                fill_overlay = 75
-            if(89 to 100)
-                fill_overlay = 100
-        var/mutable_appearance/filling = mutable_appearance('modular_pariah/modules/hyposprays/icons/hypospray_fillings.dmi', "[fill_name][fill_overlay]")
+	. = ..()
+	if(!fill_icon_thresholds)
+		return
+	if(reagents.total_volume)
+		var/fill_name = fill_icon_state? fill_icon_state : icon_state
+		var/fill_overlay = 10
+		switch(round((reagents.total_volume / volume)*100))
+			if(1 to 24)
+				fill_overlay = 10
+			if(25 to 49)
+				fill_overlay = 25
+			if(50 to 74)
+				fill_overlay = 50
+			if(75 to 89)
+				fill_overlay = 75
+			if(89 to 100)
+				fill_overlay = 100
+		var/mutable_appearance/filling = mutable_appearance('modular_pariah/modules/hyposprays/icons/hypospray_fillings.dmi', "[fill_name][fill_overlay]")
 
-        filling.color = mix_color_from_reagents(reagents.reagent_list)
-        chem_color = filling.color
-        . += filling
+		filling.color = mix_color_from_reagents(reagents.reagent_list)
+		chem_color = filling.color
+		. += filling
 
 /obj/item/reagent_containers/glass/vial/Initialize()
 	. = ..()
@@ -61,16 +61,24 @@
 //Hypos that are in the CMO's kit round start
 /obj/item/reagent_containers/glass/vial/large/deluxe
 	name = "deluxe hypovial"
-	list_reagents = list(/datum/reagent/medicine/tricordrazine = 20, /datum/reagent/medicine/leporazine = 20, /datum/reagent/medicine/atropine = 20)
+	list_reagents = list(/datum/reagent/medicine/tricordrazine = 40, /datum/reagent/medicine/leporazine = 40, /datum/reagent/medicine/atropine = 40)
 
 /obj/item/reagent_containers/glass/vial/large/salglu
-	name = "large green hypovial (saline glucose)"
-	list_reagents = list(/datum/reagent/medicine/saline_glucose = 60)
+	name = "large white hypovial (saline glucose)"
+	list_reagents = list(/datum/reagent/medicine/saline_glucose = 120)
 
 /obj/item/reagent_containers/glass/vial/large/synthflesh
 	name = "large orange hypovial (synthflesh)"
-	list_reagents = list(/datum/reagent/medicine/synthflesh = 60)
+	list_reagents = list(/datum/reagent/medicine/synthflesh = 120)
 
 /obj/item/reagent_containers/glass/vial/large/dylovene
-	name = "large black hypovial (dylovene)"
-	list_reagents = list(/datum/reagent/medicine/dylovene = 60)
+	name = "large green hypovial (dylovene)"
+	list_reagents = list(/datum/reagent/medicine/dylovene = 120)
+
+/obj/item/reagent_containers/glass/vial/large/tricordrazine
+	name = "large purple hypovial (tricordrazine)"
+	list_reagents = list(/datum/reagent/medicine/tricordrazine = 120)
+
+/obj/item/reagent_containers/glass/vial/large/meralyne
+	name = "large red hypovial (meralyne)"
+	list_reagents = list(/datum/reagent/medicine/meralyne = 120)

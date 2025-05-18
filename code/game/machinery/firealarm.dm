@@ -129,25 +129,25 @@ DEFINE_INTERACTABLE(/obj/machinery/firealarm)
 	. += mutable_appearance(icon, "fire_overlay")
 	if(is_station_level(z))
 		. += mutable_appearance(icon, "fire_[SSsecurity_level.current_level]")
-		. += emissive_appearance(icon, "fire_[SSsecurity_level.current_level]", alpha = src.alpha)
+		. += emissive_appearance(icon, "fire_[SSsecurity_level.current_level]", alpha = 90)
 	else
 		. += mutable_appearance(icon, "fire_[SEC_LEVEL_GREEN]")
-		. += emissive_appearance(icon, "fire_[SEC_LEVEL_GREEN]", alpha = src.alpha)
+		. += emissive_appearance(icon, "fire_[SEC_LEVEL_GREEN]", alpha = 90)
 
 	if(!alert_type)
 		if(my_area?.fire_detect) //If this is false, leave the green light missing. A good hint to anyone paying attention.
 			. += mutable_appearance(icon, "fire_off")
-			. += emissive_appearance(icon, "fire_off", alpha = src.alpha)
+			. += emissive_appearance(icon, "fire_off", alpha = 90)
 	else if(obj_flags & EMAGGED)
 		. += mutable_appearance(icon, "fire_emagged")
-		. += emissive_appearance(icon, "fire_emagged", alpha = src.alpha)
+		. += emissive_appearance(icon, "fire_emagged", alpha = 90)
 	else
 		. += mutable_appearance(icon, "fire_on")
-		. += emissive_appearance(icon, "fire_on", alpha = src.alpha)
+		. += emissive_appearance(icon, "fire_on", alpha = 90)
 
 	if(!panel_open && alert_type) //It just looks horrible with the panel open
 		. += mutable_appearance(icon, "fire_detected")
-		. += emissive_appearance(icon, "fire_detected", alpha = src.alpha) //Pain
+		. += emissive_appearance(icon, "fire_detected", alpha = 90) //Pain
 
 /obj/machinery/firealarm/emp_act(severity)
 	. = ..()
@@ -247,6 +247,8 @@ DEFINE_INTERACTABLE(/obj/machinery/firealarm)
 			else
 				my_area.communicate_fire_alert(FIRE_RAISED_GENERIC)
 				log_game("[user] triggered a fire alarm at [COORD(src)]")
+
+	user.animate_interact(src)
 	return TRUE
 
 /obj/machinery/firealarm/attack_hand_secondary(mob/user, list/modifiers)

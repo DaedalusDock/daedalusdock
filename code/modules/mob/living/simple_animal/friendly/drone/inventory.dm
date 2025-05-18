@@ -6,7 +6,7 @@
 //Drone hands
 
 
-/mob/living/simple_animal/drone/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+/mob/living/simple_animal/drone/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE, slot = get_slot_by_item(I))
 	if(..())
 		update_held_items()
 		if(I == head)
@@ -19,7 +19,7 @@
 	return FALSE
 
 
-/mob/living/simple_animal/drone/can_equip(obj/item/I, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE)
+/mob/living/simple_animal/drone/can_equip(obj/item/I, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, use_unequip_delay = FALSE)
 	switch(slot)
 		if(ITEM_SLOT_HEAD)
 			if(head)

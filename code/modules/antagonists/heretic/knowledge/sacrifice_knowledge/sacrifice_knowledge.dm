@@ -124,7 +124,7 @@
 
 	// First target, any command.
 	for(var/datum/mind/head_mind as anything in shuffle(valid_targets))
-		if(head_mind.assigned_role?.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+		if(head_mind.assigned_role?.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER)
 			final_targets += head_mind
 			valid_targets -= head_mind
 			break
@@ -188,7 +188,7 @@
 
 	to_chat(user, span_hypnophrase("Your patrons accepts your offer."))
 
-	if(sacrifice.mind?.assigned_role?.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+	if(sacrifice.mind?.assigned_role?.departments_bitflags & (DEPARTMENT_BITFLAG_MANAGEMENT))
 		heretic_datum.knowledge_points++
 		heretic_datum.high_value_sacrifices++
 

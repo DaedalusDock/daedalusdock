@@ -95,7 +95,7 @@
 	healing_beam.do_fire_gun(target, user)
 	return FALSE
 
-/obj/item/gun/magic/staff/healing/dropped(mob/user)
+/obj/item/gun/magic/staff/healing/unequipped(mob/user)
 	healing_beam.LoseTarget()
 	return ..()
 
@@ -182,7 +182,7 @@
 	. = ..()
 	AddComponent(/datum/component/butchering, 15, 125, 0, hitsound)
 
-/obj/item/gun/magic/staff/spellblade/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+/obj/item/gun/magic/staff/spellblade/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
 	if(attack_type == PROJECTILE_ATTACK)
 		return FALSE
 

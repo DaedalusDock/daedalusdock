@@ -68,7 +68,7 @@
 /obj/machinery/power/energy_accumulator/tesla_coil/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/energy_accumulator/tesla_coil/attackby(obj/item/W, mob/user, params)
 	if(default_deconstruction_screwdriver(user, "coil_open[anchored]", "coil[anchored]", W))
@@ -91,8 +91,8 @@
 /obj/machinery/power/energy_accumulator/tesla_coil/zap_act(power, zap_flags)
 	if(!anchored || panel_open)
 		return ..()
-	obj_flags |= BEING_SHOCKED
-	addtimer(CALLBACK(src, PROC_REF(reset_shocked)), 1 SECONDS)
+	ADD_TRAIT(src, TRAIT_BEING_SHOCKED, WAS_SHOCKED)
+	addtimer(TRAIT_CALLBACK_REMOVE(src, TRAIT_BEING_SHOCKED, WAS_SHOCKED), 1 SECONDS)
 	flick("coilhit", src)
 	if(!(zap_flags & ZAP_GENERATES_POWER)) //Prevent infinite recursive power
 		return 0
@@ -148,7 +148,7 @@
 /obj/machinery/power/energy_accumulator/grounding_rod/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/energy_accumulator/grounding_rod/attackby(obj/item/W, mob/user, params)
 	if(default_deconstruction_screwdriver(user, "grounding_rod_open[anchored]", "grounding_rod[anchored]", W))

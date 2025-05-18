@@ -26,7 +26,7 @@
 	msg = keywords_lookup(msg)
 	var/asay_color = prefs.read_preference(/datum/preference/color/asay_color)
 	var/custom_asay_color = (CONFIG_GET(flag/allow_admin_asaycolor) && asay_color) ? "<font color=[asay_color]>" : "<font color='[DEFAULT_ASAY_COLOR]'>"
-	msg = "[span_adminsay("[icon2html('icons/misc/chattags.dmi', GLOB.admins, "admin", realsize = TRUE)] <EM>[key_name(usr, 1)]</EM> [ADMIN_FLW(mob)]: [custom_asay_color]<span class='message linkify'>[msg]")]</span>[custom_asay_color ? "</font>":null]"
+	msg = "[span_adminsay("[CHAT_TAG("admin.png")] <EM>[key_name(usr, 1)]</EM> [ADMIN_FLW(mob)]: [custom_asay_color]<span class='message linkify'>[msg]")]</span>[custom_asay_color ? "</font>":null]"
 	to_chat(GLOB.admins,
 		type = MESSAGE_TYPE_ADMINCHAT,
 		html = msg,

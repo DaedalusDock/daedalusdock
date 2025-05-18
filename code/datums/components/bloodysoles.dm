@@ -30,7 +30,7 @@
 	parent_atom = parent
 
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
-	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
+	RegisterSignal(parent, COMSIG_ITEM_UNEQUIPPED, PROC_REF(on_drop))
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
 
 /**
@@ -99,7 +99,17 @@
 	if(HAS_TRAIT(parent_atom, TRAIT_LIGHT_STEP)) //the character is agile enough to don't mess their clothing and hands just from one blood splatter at floor
 		return TRUE
 
-	parent_atom.add_blood_DNA(pool.return_blood_DNA())
+	if(ishuman(parent_atom))
+		var/bloody_slots = ITEM_SLOT_OCLOTHING|ITEM_SLOT_ICLOTHING|ITEM_SLOT_FEET
+		var/mob/living/carbon/human/to_bloody = parent_atom
+		if(to_bloody.body_position == LYING_DOWN)
+			bloody_slots |= ITEM_SLOT_HEAD|ITEM_SLOT_MASK|ITEM_SLOT_GLOVES
+
+		to_bloody.add_blood_DNA_to_items(pool.return_blood_DNA(), bloody_slots)
+
+	else
+		parent_atom.add_blood_DNA(pool.return_blood_DNA())
+
 	if(pool.bloodiness <= 0)
 		qdel(pool)
 

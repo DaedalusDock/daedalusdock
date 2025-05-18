@@ -94,7 +94,7 @@ GLOBAL_VAR(restart_counter)
 	#endif
 
 /world/proc/InitTgs()
-	TgsNew(new /datum/tgs_event_handler/impl, TGS_SECURITY_TRUSTED)
+	TgsNew(new /datum/tgs_event_handler/impl, TGS_SECURITY_TRUSTED, new /datum/tgs_http_handler/rustg)
 	GLOB.revdata.load_tgs_info()
 
 /world/proc/HandleTestRun()
@@ -272,16 +272,16 @@ GLOBAL_VAR(restart_counter)
 	else
 		log_world("Test run failed!\n[fail_reasons.Join("\n")]")
 	sleep(0) //yes, 0, this'll let Reboot finish and prevent byond memes
-	qdel(src) //shut it down
+	del(src) //shut it down
 
 /world/Reboot(reason = 0, fast_track = FALSE)
 	if (reason || fast_track) //special reboot, do none of the normal stuff
 		if (usr)
 			log_admin("[key_name(usr)] Has requested an immediate world restart via client side debugging tools")
 			message_admins("[key_name_admin(usr)] Has requested an immediate world restart via client side debugging tools")
-		to_chat(world, span_boldannounce("Rebooting World immediately due to host request."))
+		to_chat(world, systemtext("Rebooting World immediately due to host request."))
 	else
-		to_chat(world, span_boldannounce("Rebooting world..."))
+		to_chat(world, systemtext("Rebooting world..."))
 		Master.Shutdown() //run SS shutdowns
 
 	#ifdef UNIT_TESTS
@@ -426,7 +426,7 @@ GLOBAL_VAR(restart_counter)
 		else
 			CRASH("Unsupported platform: [system_type]")
 
-	var/init_result = call(library, "init")()
+	var/init_result = call_ext(library, "init")()
 	if (init_result != "0")
 		CRASH("Error initializing byond-tracy: [init_result]")
 

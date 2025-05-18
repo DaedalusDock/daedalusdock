@@ -14,7 +14,8 @@
 		/obj/item/stock_parts/manipulator = 3,
 		/obj/item/stock_parts/micro_laser = 3,
 		/obj/item/stock_parts/scanning_module = 3,
-		/obj/item/stock_parts/capacitor = 3
+		/obj/item/stock_parts/capacitor = 3,
+		/obj/item/disk/data/floppy/thinkdos = 1,
 	)
 	contraband = list(
 		/obj/item/assembly/timer = 2,
@@ -31,8 +32,7 @@
 
 	refill_canister = /obj/item/vending_refill/assist
 	product_ads = "Only the finest!;Have some tools.;The most robust equipment.;The finest gear in space!"
-	default_price = PAYCHECK_ASSISTANT * 0.7 //Default of 35.
-	extra_price = PAYCHECK_EASY
+	default_price = PAYCHECK_ASSISTANT * 0.7
 	payment_department = ACCOUNT_STATION_MASTER
 	light_mask = "parts-light-mask"
 

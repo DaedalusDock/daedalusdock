@@ -70,6 +70,9 @@
 	bluespace = TRUE
 	explosionSize = list(0,0,0,0)
 
+/obj/structure/closet/supplypod/safe
+	explosionSize = list(0,0,0,0)
+
 /obj/structure/closet/supplypod/extractionpod
 	name = "Syndicate Extraction Pod"
 	desc = "A specalised, blood-red styled pod for extracting high-value targets out of active mission areas. <b>Targets must be manually stuffed inside the pod for proper delivery.</b>"
@@ -457,7 +460,7 @@
 		return
 	glow_effect = new(src)
 	glow_effect.icon_state = "pod_glow_" + GLOB.podstyles[style][POD_GLOW]
-	vis_contents += glow_effect
+	add_viscontents(glow_effect)
 	glow_effect.layer = GASFIRE_LAYER
 	RegisterSignal(glow_effect, COMSIG_PARENT_QDELETING, PROC_REF(remove_glow))
 
@@ -471,7 +474,7 @@
 /obj/structure/closet/supplypod/proc/remove_glow()
 	SIGNAL_HANDLER
 	UnregisterSignal(glow_effect, COMSIG_PARENT_QDELETING)
-	vis_contents -= glow_effect
+	remove_viscontents(glow_effect)
 	glow_effect = null
 
 /obj/structure/closet/supplypod/Destroy()

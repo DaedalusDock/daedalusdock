@@ -31,9 +31,9 @@
 	clothes_set = pick(customer_info.clothing_sets)
 	ai_controller = customer_info.ai_controller_used
 	. = ..()
-	ai_controller.blackboard[BB_CUSTOMER_CUSTOMERINFO] = customer_info
-	ai_controller.blackboard[BB_CUSTOMER_ATTENDING_VENUE] = attending_venue
-	ai_controller.blackboard[BB_CUSTOMER_PATIENCE] = customer_info.total_patience
+	ai_controller.set_blackboard_key(BB_CUSTOMER_CUSTOMERINFO, customer_info)
+	ai_controller.set_blackboard_key(BB_CUSTOMER_ATTENDING_VENUE, attending_venue)
+	ai_controller.set_blackboard_key(BB_CUSTOMER_PATIENCE, customer_info.total_patience)
 	icon = customer_info.base_icon
 	icon_state = customer_info.base_icon_state
 	name = "[pick(customer_info.name_prefixes)]-bot"
@@ -44,8 +44,7 @@
 /mob/living/simple_animal/robot_customer/Destroy()
 	var/datum/venue/attending_venue = ai_controller.blackboard[BB_CUSTOMER_ATTENDING_VENUE]
 	attending_venue.current_visitors -= src
-	var/datum/weakref/seat_ref = ai_controller.blackboard[BB_CUSTOMER_MY_SEAT]
-	var/obj/structure/holosign/robot_seat/our_seat = seat_ref?.resolve()
+	var/obj/structure/holosign/robot_seat/our_seat = ai_controller.blackboard[BB_CUSTOMER_MY_SEAT]
 	if(attending_venue.linked_seats[our_seat])
 		attending_venue.linked_seats[our_seat] = null
 	QDEL_NULL(hud_to_show_on_hover)

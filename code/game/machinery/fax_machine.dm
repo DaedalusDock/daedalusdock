@@ -54,7 +54,6 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	icon_state = "fax"
 	idle_power_usage = 10
 	active_power_usage = 100
-	req_one_access = list(ACCESS_HEADS, ACCESS_LAWYER)
 	circuit = /obj/item/circuitboard/machine/fax_machine
 	/// Whether this machine can send faxes
 	var/sending_enabled = TRUE
@@ -510,9 +509,9 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		. = FALSE
 	else
 		if(prob(50))
-			new /obj/item/stack/spacecash/c10(drop_location())
+			new /obj/item/stack/spacecash/c1/ten(drop_location())
 		else
-			new /obj/item/stack/spacecash/c20(drop_location())
+			new /obj/item/stack/spacecash/c1/twenty(drop_location())
 
 		playsound(src, 'sound/machines/ping.ogg', 60)
 		. = TRUE
@@ -591,7 +590,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	if(!paper)
 		return
 
-	if(user && user.CanReach(src))
+	if(user && IsReachableBy(user))
 		user.put_in_hands(paper)
 	else
 		paper.forceMove(drop_location())
@@ -623,7 +622,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	if(!silent)
 		z_flick("fax_receive", src)
 		balloon_alert_to_viewers("removed [stored_paper]")
-	if(user && user.CanReach(src))
+	if(user && IsReachableBy(user))
 		user.put_in_hands(stored_paper)
 	else
 		stored_paper.forceMove(drop_location())
@@ -643,7 +642,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	if(!silent)
 		z_flick("fax_receive", src)
 		balloon_alert_to_viewers("removed [received_paper]")
-	if(user && user.CanReach(src))
+	if(user && IsReachableBy(user))
 		user.put_in_hands(received_paper)
 	else
 		received_paper.forceMove(drop_location())

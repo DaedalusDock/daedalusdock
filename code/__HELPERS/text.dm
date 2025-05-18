@@ -284,24 +284,6 @@
 			return copytext(text, 1, i + 1)
 	return ""
 
-//Returns a string with reserved characters and spaces after the first and last letters removed
-//Like trim(), but very slightly faster. worth it for niche usecases
-/proc/trim_reduced(text)
-	var/starting_coord = 1
-	var/text_len = length(text)
-	for (var/i in 1 to text_len)
-		if (text2ascii(text, i) > 32)
-			starting_coord = i
-			break
-
-	for (var/i = text_len, i >= starting_coord, i--)
-		if (text2ascii(text, i) > 32)
-			return copytext(text, starting_coord, i + 1)
-
-	if(starting_coord > 1)
-		return copytext(text, starting_coord)
-	return ""
-
 /**
  * Truncate a string to the given length
  *
@@ -321,8 +303,9 @@
 //Returns a string with reserved characters and spaces before the first word and after the last word removed.
 /proc/trim(text, max_length)
 	if(max_length)
-		text = copytext_char(text, 1, max_length)
-	return trim_reduced(text)
+		// Copytext's 'End' argument is exclusive, not inclusive.
+		text = copytext_char(text, 1, max_length + 1)
+	return trimtext(text) || ""
 
 //Returns a string with the first element of the string capitalized.
 /proc/capitalize(t)
@@ -370,6 +353,10 @@ GLOBAL_LIST_INIT(zero_character_only, list("0"))
 GLOBAL_LIST_INIT(hex_characters, list("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"))
 GLOBAL_LIST_INIT(alphabet, list("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"))
 GLOBAL_LIST_INIT(alphabet_upper, list("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"))
+GLOBAL_LIST_INIT(vowels_lower, list("a","e","i","o","u"))
+GLOBAL_LIST_INIT(vowels_upper, list("A","E","I","O","U"))
+GLOBAL_LIST_INIT(consonants_lower, list("b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","y","z"))
+GLOBAL_LIST_INIT(consonants_upper, list("B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Y","Z"))
 GLOBAL_LIST_INIT(numerals, list("1","2","3","4","5","6","7","8","9","0"))
 GLOBAL_LIST_INIT(space, list(" "))
 GLOBAL_LIST_INIT(binary, list("0","1"))
@@ -1203,3 +1190,22 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 		final_string += copytext(string, second_spot, second_spot + 1)
 		final_string += copytext(string, second_spot + 2, string_len)
 	return scramble_text(final_string.Join(), intensity - 1)
+
+/// Prepends zeros to the front of a string until it reaches a given size.
+/proc/fit_with_zeros(text, size, append = FALSE)
+	var/lentext = length(text)
+	var/len_diff = (size - lentext)
+	if(len_diff <= 0)
+		return text
+
+	if(append)
+		return "[text][num2text(0, len_diff, 10)]"
+	return "[num2text(0, len_diff, 10)][text]"
+
+/// Prepends the string with the given character until the specified length is met.
+/proc/fit_with(text, length, char = " ", append = FALSE)
+	var/delta = length - length_char(text)
+	var/list/characters = new /list(max(delta + 1, 0))
+	if(append)
+		return "[text][jointext(characters, char)]"
+	return "[jointext(characters, char)][text]"

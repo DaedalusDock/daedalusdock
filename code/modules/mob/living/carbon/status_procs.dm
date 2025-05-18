@@ -44,7 +44,6 @@
 /mob/living/carbon/set_disgust(amount)
 	disgust = clamp(amount, 0, DISGUST_LEVEL_MAXEDOUT)
 
-
 ////////////////////////////////////////TRAUMAS/////////////////////////////////////////
 
 /mob/living/carbon/proc/get_traumas()

@@ -162,7 +162,7 @@
 /////////////////////
 
 /atom/movable/proc/orbit(atom/A, radius = 10, clockwise = FALSE, rotation_speed = 20, rotation_segments = 36, pre_rotation = TRUE)
-	if(!istype(A) || !get_turf(A) || A == src)
+	if(!istype(A) || !get_turf(A) || A == src || isarea(A))
 		return
 
 	if(istype(A, /atom/movable/openspace/mimic))

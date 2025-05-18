@@ -21,7 +21,7 @@
 	var/preset_wall_colors= list(
 		"Daedalus Industries" = list("wall" = PAINT_WALL_DAEDALUS, "trim" = PAINT_STRIPE_DAEDALUS),
 		"Priapus Recreational Solutions" = list("wall" = PAINT_WALL_PRIAPUS, "trim" = PAINT_STRIPE_PRIAPUS),
-		"Mars Executive Outcomes" = list("wall" = PAINT_WALL_MARSEXECUTIVE, "trim" = PAINT_STRIPE_MARSEXECUTIVE),
+		"Mars People's Coalition" = list("wall" = PAINT_WALL_MARS, "trim" = PAINT_STRIPE_MARS),
 		"Command" = list("wall" = PAINT_WALL_COMMAND, "trim" = PAINT_STRIPE_COMMAND),
 		"Medical" = list("wall" = PAINT_WALL_MEDICAL, "trim" = PAINT_STRIPE_MEDICAL),
 	)

@@ -335,7 +335,7 @@
 /obj/item/soulstone/proc/check_menu(mob/user, obj/structure/constructshell/shell)
 	if(!istype(user))
 		return FALSE
-	if(user.incapacitated() || !user.is_holding(src) || !user.CanReach(shell, src))
+	if(user.incapacitated() || !user.is_holding(src) || !shell.IsReachableBy(user, reach))
 		return FALSE
 	return TRUE
 
@@ -388,7 +388,7 @@
 		newstruct.master = stoner
 		var/datum/action/innate/seek_master/SM = new()
 		SM.Grant(newstruct)
-	newstruct.key = target.key
+	newstruct.PossessByPlayer(target.key)
 	var/atom/movable/screen/alert/bloodsense/BS
 	if(newstruct.mind && ((stoner && IS_CULTIST(stoner)) || cultoverride) && SSticker?.mode)
 		newstruct.mind.add_antag_datum(/datum/antagonist/cult)
@@ -410,7 +410,7 @@
 	var/mob/living/simple_animal/shade/soulstone_spirit = new /mob/living/simple_animal/shade(src)
 	soulstone_spirit.AddComponent(/datum/component/soulstoned, src)
 	soulstone_spirit.set_real_name("Shade of [victim.real_name]")
-	soulstone_spirit.key = shade_controller.key
+	soulstone_spirit.PossessByPlayer(shade_controller.key)
 	soulstone_spirit.copy_languages(victim, LANGUAGE_MIND)//Copies the old mobs languages into the new mob holder.
 	if(user)
 		soulstone_spirit.copy_languages(user, LANGUAGE_MASTER)
@@ -448,7 +448,7 @@
 		var/list/consenting_candidates = poll_ghost_candidates("Would you like to play as a Shade?", "Cultist", ROLE_CULTIST, 50, POLL_IGNORE_SHADE)
 		if(consenting_candidates.len)
 			chosen_ghost = pick(consenting_candidates)
-	if(!victim || user.incapacitated() || !user.is_holding(src) || !user.CanReach(victim, src))
+	if(!victim || user.incapacitated() || !user.is_holding(src) || !victim.IsReachableBy(user, reach))
 		return FALSE
 	if(!chosen_ghost || !chosen_ghost.client)
 		to_chat(user, span_danger("There were no spirits willing to become a shade."))

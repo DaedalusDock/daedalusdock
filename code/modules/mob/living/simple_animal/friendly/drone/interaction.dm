@@ -74,16 +74,16 @@
 		return FALSE
 	if(health >= maxHealth)
 		to_chat(user, span_warning("[src]'s screws can't get any tighter!"))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 	to_chat(user, span_notice("You start to tighten loose screws on [src]..."))
 
 	if(!tool.use_tool(src, user, 8 SECONDS, volume=50))
 		to_chat(user, span_warning("You need to remain still to tighten [src]'s screws!"))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	adjustBruteLoss(-getBruteLoss())
 	visible_message(span_notice("[user] tightens [src == user ? "[user.p_their()]" : "[src]'s"] loose screws!"), span_notice("[src == user ? "You tighten" : "[user] tightens"] your loose screws."))
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /mob/living/simple_animal/drone/wrench_act(mob/living/user, obj/item/tool)
 	if(user == src)
@@ -98,7 +98,7 @@
 			span_notice("You reset [src]'s directives to factory defaults!")
 			)
 		update_drone_hack(FALSE)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /mob/living/simple_animal/drone/transferItemToLoc(obj/item/item, newloc, force, silent)
 	return !(item.type in drone_item_whitelist_flat) && ..()
@@ -145,7 +145,7 @@
 		set_shy(FALSE)
 		mind.special_role = "hacked drone"
 		REMOVE_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
-		speed = 1 //gotta go slow
+		set_simple_move_delay(1)
 		message_admins("[ADMIN_LOOKUPFLW(src)] became a hacked drone hellbent on destroying the station!")
 	else
 		if(!hacked)
@@ -161,7 +161,7 @@
 		set_shy(initial(shy))
 		mind.special_role = null
 		ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
-		speed = initial(speed)
+		set_simple_move_delay(initial(move_delay_modifier))
 		message_admins("[ADMIN_LOOKUPFLW(src)], a hacked drone, was restored to factory defaults!")
 	update_drone_icon_hacked()
 

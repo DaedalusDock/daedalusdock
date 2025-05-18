@@ -8,21 +8,21 @@
 	name = ".38 DumDum Speedloader"
 	desc = "Contains one speedloader of .38 DumDum ammunition, good for embedding in soft targets."
 	cost = PAYCHECK_MEDIUM * 2
-	access_view = ACCESS_BRIG
+	access_view = ACCESS_SECURITY
 	contains = list(/obj/item/ammo_box/c38/dumdum)
 
 /datum/supply_pack/goody/match38
 	name = ".38 Match Grade Speedloader"
 	desc = "Contains one speedloader of match grade .38 ammunition, perfect for showing off trickshots."
 	cost = PAYCHECK_MEDIUM * 2
-	access_view = ACCESS_BRIG
+	access_view = ACCESS_SECURITY
 	contains = list(/obj/item/ammo_box/c38/match)
 
 /datum/supply_pack/goody/rubber
 	name = ".38 Rubber Speedloader"
 	desc = "Contains one speedloader of bouncy rubber .38 ammunition, for when you want to bounce your shots off anything and everything."
 	cost = PAYCHECK_MEDIUM * 1.5
-	access_view = ACCESS_BRIG
+	access_view = ACCESS_SECURITY
 	contains = list(/obj/item/ammo_box/c38/match/bouncy)
 
 /datum/supply_pack/goody/mars_single
@@ -36,7 +36,7 @@
 	name = "Stingbang Single-Pack"
 	desc = "Contains one \"stingbang\" grenade, perfect for playing meanhearted pranks."
 	cost = PAYCHECK_HARD * 2.5
-	access_view = ACCESS_BRIG
+	access_view = ACCESS_SECURITY
 	contains = list(/obj/item/grenade/stingbang)
 
 /datum/supply_pack/goody/Survivalknives_single

@@ -60,7 +60,7 @@
 	user.add_atom_colour("#00FF00", ADMIN_COLOUR_PRIORITY)
 	START_PROCESSING(SSobj, src)
 
-/obj/item/greentext/dropped(mob/user, silent = FALSE)
+/obj/item/greentext/unequipped(mob/user, silent = FALSE)
 	if(user in color_altered_mobs)
 		to_chat(user, span_warning("A sudden wave of failure washes over you..."))
 		user.add_atom_colour("#FF0000", ADMIN_COLOUR_PRIORITY) //ya blew it

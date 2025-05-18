@@ -1,4 +1,4 @@
-/mob/living/simple_animal/slime/death(gibbed)
+/mob/living/simple_animal/slime/death(gibbed, cause_of_death = "Unknown")
 	if(stat == DEAD)
 		return
 	if(!gibbed)
@@ -15,7 +15,7 @@
 			E.Grant(src)
 			revive(full_heal = TRUE, admin_revive = FALSE)
 			regenerate_icons()
-			update_name()
+			update_appearance(UPDATE_NAME)
 			return
 
 	if(buckled)

@@ -127,6 +127,9 @@
 		RegisterSignal(get_turf(src), COMSIG_ATOM_HITBY, PROC_REF(AddThrownItemToGrill))
 	. = ..()
 
+/obj/machinery/griddle/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	return ..() || (contained in griddled_objects)
+
 /obj/machinery/griddle/proc/AddThrownItemToGrill(datum/source, atom/movable/hitting_atom, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	SIGNAL_HANDLER
 	if(!isitem(hitting_atom) || griddled_objects.len >= max_items)
@@ -137,9 +140,8 @@
 		to_chat(throwingdatum.thrower, span_notice("You throw [hitting_atom] onto [src]."))
 
 /obj/machinery/griddle/proc/AddToGrill(obj/item/item_to_grill)
-	vis_contents += item_to_grill
+	add_viscontents(item_to_grill)
 	griddled_objects += item_to_grill
-	item_to_grill.flags_1 |= IS_ONTOP_1
 	RegisterSignal(item_to_grill, COMSIG_MOVABLE_MOVED, PROC_REF(ItemMoved))
 	RegisterSignal(item_to_grill, COMSIG_GRILL_COMPLETED, PROC_REF(GrillCompleted))
 	RegisterSignal(item_to_grill, COMSIG_PARENT_QDELETING, PROC_REF(ItemRemovedFromGrill))
@@ -148,9 +150,8 @@
 
 /obj/machinery/griddle/proc/ItemRemovedFromGrill(obj/item/I)
 	SIGNAL_HANDLER
-	I.flags_1 &= ~IS_ONTOP_1
 	griddled_objects -= I
-	vis_contents -= I
+	remove_viscontents(I)
 	UnregisterSignal(I, list(COMSIG_GRILL_COMPLETED, COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING))
 	update_grill_audio()
 
@@ -171,7 +172,7 @@
 /obj/machinery/griddle/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool, time = 2 SECONDS)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/griddle/proc/on_storage_dump(datum/source, obj/item/storage_source, mob/user)
 	SIGNAL_HANDLER

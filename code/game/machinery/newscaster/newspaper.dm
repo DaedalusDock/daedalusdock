@@ -110,8 +110,10 @@
 				dat+="<BR><I>There is a small scribble near the end of this page... It reads: \"[scribble]\"</I>"
 			dat+= "<HR><DIV STYLE='float:left;'><A href='?src=[REF(src)];prev_page=1'>Previous Page</A></DIV>"
 	dat+="<BR><HR><div align='center'>[curr_page+1]</div>"
-	human_user << browse(dat, "window=newspaper_main;size=300x400")
-	onclose(human_user, "newspaper_main")
+
+	var/datum/browser/browser = new(human_user, "newspaper_main", "Newspaper", 300, 400)
+	browser.set_content(dat)
+	browser.open()
 
 /obj/item/newspaper/proc/notContent(list/L)
 	if(!L.len)
@@ -152,8 +154,9 @@
 					screen = 1
 			curr_page--
 			playsound(loc, SFX_PAGE_TURN, 50, TRUE)
-		if(ismob(loc))
-			attack_self(loc)
+
+		if(equipped_to)
+			attack_self(equipped_to)
 
 /obj/item/newspaper/attackby(obj/item/W, mob/living/user, params)
 	if(burn_paper_product_attackby_check(W, user))

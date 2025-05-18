@@ -5,12 +5,11 @@
 @use 'sass:meta';
 
 @use '../base.scss' with (
-  $border-radius: 0.16em,
+  $border-radius: 0.16em
 );
 
 //We have to import a copy of every component that reads $border-radius.
 .theme-rounded_base {
-
   @include meta.load-css('../components/Button.scss');
   @include meta.load-css('../components/Input.scss');
   @include meta.load-css('../components/NumberInput.scss');

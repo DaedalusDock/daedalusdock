@@ -377,39 +377,53 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 		if("lock")
 			if(usr.has_unlimited_silicon_privilege && !wires.is_cut(WIRE_IDSCAN))
 				locked = !locked
+				usr.animate_interact(src)
 				. = TRUE
+
 		if("power", "toggle_filter", "quicksucc", "scrubbing", "direction")
 			AALARM_UIACT_COOLDOWNCHECK
 			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("[action]" = params["val"]), usr)
+			usr.animate_interact(src)
 			. = TRUE
+
 		if("excheck")
 			AALARM_UIACT_COOLDOWNCHECK
 			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("checks" = text2num(params["val"])^1), usr)
+			usr.animate_interact(src)
 			. = TRUE
+
 		if("incheck")
 			AALARM_UIACT_COOLDOWNCHECK
 			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("checks" = text2num(params["val"])^2), usr)
+			usr.animate_interact(src)
 			. = TRUE
+
 		if("set_external_pressure", "set_internal_pressure")
 			AALARM_UIACT_COOLDOWNCHECK
 			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			var/target = params["value"]
 			if(!isnull(target))
 				send_signal(device_id, list("[action]" = target), usr)
+				usr.animate_interact(src)
 				. = TRUE
+
 		if("reset_external_pressure")
 			AALARM_UIACT_COOLDOWNCHECK
 			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("reset_external_pressure"), usr)
+			usr.animate_interact(src)
 			. = TRUE
+
 		if("reset_internal_pressure")
 			AALARM_UIACT_COOLDOWNCHECK
 			COOLDOWN_START(src, ui_cooldown, 0.2 SECONDS)
 			send_signal(device_id, list("reset_internal_pressure"), usr)
+			usr.animate_interact(src)
 			. = TRUE
+
 		if("threshold")
 			var/env = params["env"]
 			if(text2path(env))
@@ -429,6 +443,7 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 				var/turf/our_turf = get_turf(src)
 				var/datum/gas_mixture/environment = our_turf.unsafe_return_air()
 				check_air_dangerlevel(environment)
+				usr.animate_interact(src)
 				. = TRUE
 		if("mode")
 			AALARM_UIACT_COOLDOWNCHECK
@@ -437,17 +452,21 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 			COOLDOWN_START(src, ui_cooldown, 3 SECONDS)
 			investigate_log("was turned to [get_mode_name(mode)] mode by [key_name(usr)]",INVESTIGATE_ATMOS)
 			apply_mode(usr)
+			usr.animate_interact(src)
 			. = TRUE
 		if("alarm")
 			if(alarm_manager.send_alarm(ALARM_ATMOS))
 				post_alert(2)
+			usr.animate_interact(src)
 			. = TRUE
 		if("reset")
 			if(alarm_manager.clear_alarm(ALARM_ATMOS))
 				post_alert(0)
+			usr.animate_interact(src)
 			. = TRUE
 		if("fire_alarm")
 			my_area.communicate_fire_alert(alert_type ? FIRE_CLEAR : FIRE_RAISED_GENERIC)
+			usr.animate_interact(src)
 			. = TRUE
 
 	update_appearance()
@@ -672,7 +691,7 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 			state = "alarm1"
 
 	. += mutable_appearance(icon, state)
-	. += emissive_appearance(icon, state, alpha = src.alpha)
+	. += emissive_appearance(icon, state, alpha = 90)
 
 /obj/machinery/airalarm/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()
@@ -907,6 +926,20 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 
 	return ..()
 
+/obj/machinery/airalarm/attack_hand_secondary(mob/user, list/modifiers)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+	if(!can_interact(user))
+		return
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH) || !isturf(loc))
+		return
+	if(!ishuman(user))
+		return
+
+	togglelock(user)
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
 /obj/machinery/airalarm/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	if((buildstage == AIRALARM_BUILD_NO_CIRCUIT) && (the_rcd.upgrade & RCD_UPGRADE_SIMPLE_CIRCUITS))
 		return list("mode" = RCD_UPGRADE_SIMPLE_CIRCUITS, "delay" = 20, "cost" = 1)
@@ -926,7 +959,7 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 	if(machine_stat & (NOPOWER|BROKEN))
 		to_chat(user, span_warning("It does nothing!"))
 	else
-		if(src.allowed(usr) && !wires.is_cut(WIRE_IDSCAN))
+		if(allowed(user) && !wires.is_cut(WIRE_IDSCAN))
 			locked = !locked
 			to_chat(user, span_notice("You [ locked ? "lock" : "unlock"] the air alarm interface."))
 			if(!locked)
@@ -983,7 +1016,7 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 	name = "engine air alarm"
 	locked = FALSE
 	req_access = null
-	req_one_access = list(ACCESS_ATMOSPHERICS, ACCESS_ENGINE)
+	req_one_access = list(ACCESS_ATMOSPHERICS, ACCESS_ENGINEERING)
 
 /obj/machinery/airalarm/mixingchamber
 	name = "chamber air alarm"

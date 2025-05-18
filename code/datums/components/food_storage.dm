@@ -31,8 +31,8 @@
 
 /datum/component/food_storage/Destroy(force, silent)
 	if(stored_item)
+		stored_item.unequipped()
 		stored_item.forceMove(stored_item.drop_location())
-		stored_item.dropped()
 		stored_item = null
 	. = ..()
 
@@ -131,7 +131,7 @@
 		user.visible_message(span_warning("[user.name] slowly pulls [stored_item.name] out of \the [parent]."), \
 							span_warning("You slowly pull [stored_item.name] out of \the [parent]."))
 	else
-		stored_item.dropped()
+		stored_item.unequipped()
 		stored_item.visible_message(span_warning("[stored_item.name] falls out of \the [parent]."))
 
 	update_stored_item()

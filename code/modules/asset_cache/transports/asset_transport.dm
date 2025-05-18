@@ -76,6 +76,10 @@
 /// asset_list - A list of asset filenames to be sent to the client. Can optionally be assoicated with the asset's asset_cache_item datum.
 /// Returns TRUE if any assets were sent.
 /datum/asset_transport/proc/send_assets(client/client, list/asset_list)
+#if defined(UNIT_TESTS)
+	return
+#endif
+
 	if (!istype(client))
 		if (ismob(client))
 			var/mob/M = client
@@ -115,7 +119,7 @@
 
 	if (unreceived.len)
 		if (unreceived.len >= ASSET_CACHE_TELL_CLIENT_AMOUNT)
-			to_chat(client, "<span class='infoplain'>Sending Resources...</span>")
+			to_chat(client, systemtext("Sending resources..."))
 
 		for (var/asset_name in unreceived)
 			var/new_asset_name = asset_name

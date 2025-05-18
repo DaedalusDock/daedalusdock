@@ -27,6 +27,7 @@ GLOBAL_LIST_INIT(trash_loot, list(//junk: useless, very easy to get, or ghetto c
 
 		/obj/item/c_tube = 1,
 		/obj/item/disk/data = 1,
+		/obj/item/disk/data/floppy = 1,
 		/obj/item/folder/yellow = 1,
 		/obj/item/hand_labeler = 1,
 		/obj/item/paper = 1,
@@ -145,7 +146,7 @@ GLOBAL_LIST_INIT(common_loot, list( //common: basic items
 		/obj/item/extinguisher = 1,
 		/obj/item/grenade/smokebomb = 1,
 		/obj/item/radio/off = 1,
-		/obj/item/stack/spacecash/c10 = 1,
+		/obj/item/stack/spacecash/c1/ten = 1,
 		/obj/item/stack/sticky_tape = 1,
 		/obj/item/tank/internals/emergency_oxygen = 1,
 
@@ -313,7 +314,6 @@ GLOBAL_LIST_INIT(rarity_loot, list(//rare: really good items
 		/obj/item/book/granter/crafting_recipe/trash_cannon = 1,
 		/obj/item/disk/nuclear/fake = 1,
 		/obj/item/skillchip/brainwashing = 1,
-		/obj/item/tattoo_kit = 1,
 		) = 1,
 
 ))

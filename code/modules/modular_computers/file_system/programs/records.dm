@@ -17,7 +17,7 @@
 	filename = "medrecords"
 	program_icon = "book-medical"
 	extended_desc = "Allows the user to view several basic medical records from the crew."
-	transfer_access = list(ACCESS_MEDICAL, ACCESS_FLAG_COMMAND)
+	transfer_access = list(ACCESS_MEDICAL)
 	available_on_ntnet = TRUE
 	mode = "medical"
 
@@ -25,7 +25,7 @@
 	filedesc = "Security Records"
 	filename = "secrecords"
 	extended_desc = "Allows the user to view several basic security records from the crew."
-	transfer_access = list(ACCESS_SECURITY, ACCESS_FLAG_COMMAND)
+	transfer_access = list(ACCESS_SECURITY, ACCESS_CAPTAIN)
 	available_on_ntnet = TRUE
 	mode = "security"
 
@@ -34,31 +34,30 @@
 
 	switch(mode)
 		if("security")
-			for(var/datum/data/record/person in GLOB.data_core.general)
-				var/datum/data/record/security_person = find_record("id", person.fields["id"], GLOB.data_core.security)
+			for(var/datum/data/record/person in SSdatacore.get_records(DATACORE_RECORDS_STATION))
+				var/datum/data/record/security_person = SSdatacore.find_record("id", person.fields[DATACORE_ID], DATACORE_RECORDS_SECURITY)
 				var/list/current_record = list()
 
 				if(security_person)
-					current_record["wanted"] = security_person.fields["criminal"]
+					current_record["wanted"] = security_person.fields[DATACORE_CRIMINAL_STATUS]
 
-				current_record["id"] = person.fields["id"]
-				current_record["name"] = person.fields["name"]
-				current_record["rank"] = person.fields["rank"]
-				current_record["gender"] = person.fields["gender"]
-				current_record["age"] = person.fields["age"]
-				current_record["species"] = person.fields["species"]
-				current_record["fingerprint"] = person.fields["fingerprint"]
+				current_record["id"] = person.fields[DATACORE_ID]
+				current_record["name"] = person.fields[DATACORE_NAME]
+				current_record["rank"] = person.fields[DATACORE_RANK]
+				current_record["gender"] = person.fields[DATACORE_GENDER]
+				current_record["age"] = person.fields[DATACORE_AGE]
+				current_record["species"] = person.fields[DATACORE_SPECIES]
+				current_record["fingerprint"] = person.fields[DATACORE_FINGERPRINT]
 
 				all_records += list(current_record)
 		if("medical")
-			for(var/datum/data/record/person in GLOB.data_core.medical)
+			for(var/datum/data/record/person in SSdatacore.get_records(DATACORE_RECORDS_MEDICAL))
 				var/list/current_record = list()
 
-				current_record["name"] = person.fields["name"]
-				current_record["bloodtype"] = person.fields["blood_type"]
-				current_record["disabilities"] = person.fields["disabilities"]
-				current_record["notes"] = person.fields["notes"]
-				current_record["cnotes"] = person.fields["notes_d"]
+				current_record["name"] = person.fields[DATACORE_NAME]
+				current_record["bloodtype"] = person.fields[DATACORE_BLOOD_TYPE]
+				current_record["ma_dis"] = person.fields[DATACORE_DISABILITIES]
+				current_record["notes"] = person.fields[DATACORE_NOTES]
 
 				all_records += list(current_record)
 

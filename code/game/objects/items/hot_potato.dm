@@ -128,7 +128,7 @@
 		user.visible_message(span_boldwarning("[user] tried to force [src] onto [victim], but it could not attach!"), span_boldwarning("You try to force [src] onto [victim], but it is unable to attach!"), span_boldwarning("You hear a mechanical click and two buzzes."))
 		user.put_in_hands(src)
 
-/obj/item/hot_potato/dropped(mob/user)
+/obj/item/hot_potato/unequipped(mob/user)
 	. = ..()
 	colorize(null)
 

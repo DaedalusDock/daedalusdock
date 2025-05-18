@@ -1,14 +1,14 @@
 ## Daedalus Dock codebase
 
-[![CI Suite](https://github.com/DaedalusDock/Gameserver/actions/workflows/ci_suite.yml/badge.svg)](https://github.com/DaedalusDock/Gameserver/actions/workflows/ci_suite.yml)
-[![Percentage of issues still open](https://isitmaintained.com/badge/open/tgstation/tgstation.svg)](https://isitmaintained.com/project/tgstation/tgstation "Percentage of issues still open")
-[![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/tgstation/tgstation.svg)](https://isitmaintained.com/project/tgstation/tgstation "Average time to resolve an issue")
+[![CI Suite](https://github.com/DaedalusDock/daedalusdock/actions/workflows/ci_suite.yml/badge.svg)](https://github.com/DaedalusDock/daedalusdock/actions/workflows/ci_suite.yml)
+[![Percentage of issues still open](https://isitmaintained.com/badge/open/DaedalusDock/daedalusdock.svg)](https://isitmaintained.com/project/DaedalusDock/daedalusdock "Percentage of issues still open")
+[![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/DaedalusDock/daedalusdock.svg)](https://isitmaintained.com/project/DaedalusDock/daedalusdock "Average time to resolve an issue")
 ![Coverage](https://img.shields.io/badge/coverage-no%25-red.svg)
 
 [![resentment](.github/images/badges/built-with-resentment.svg)](.github/images/comics/131-bug-free.png) [![technical debt](.github/images/badges/contains-technical-debt.svg)](.github/images/comics/106-tech-debt-modified.png) [![forinfinityandbyond](.github/images/badges/made-in-byond.gif)](https://www.reddit.com/r/SS13/comments/5oplxp/what_is_the_main_problem_with_byond_as_an_engine/dclbu1a)
 
 * **Website:** https://daedalus13.net
-* **Code:** https://github.com/DaedalusDock/Gameserver
+* **Code:** https://github.com/DaedalusDock/daedalusdock
 * **Wiki:** https://wiki.daedalus13.net/Main_Page
 * **Codedocs:** https://codedoc.daedalus13.net/
 * **Daedalus Dock Discord:** https://discord.gg/bttwJmfznH

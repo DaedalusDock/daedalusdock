@@ -6,24 +6,23 @@
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the head of personnel and the medical director"
+	supervisors = "the medical director"
 	selection_color = "#013d3b"
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(
 		/datum/employer/aether,
-		/datum/employer/contractor
+		/datum/employer/none
 	)
 
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/psychologist,
-			SPECIES_PLASMAMAN = /datum/outfit/job/psychologist/plasmaman,
 		),
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_MED
 
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 
@@ -47,7 +46,7 @@
 	jobtype = /datum/job/psychologist
 
 	id = /obj/item/card/id/advanced
-	id_trim = /datum/id_trim/job/psychologist
+	id_template = /datum/access_template/job/psychologist
 	uniform = /obj/item/clothing/under/suit/black
 	backpack_contents = list(
 		/obj/item/storage/pill_bottle/lsdpsych,
@@ -56,7 +55,7 @@
 		/obj/item/storage/pill_bottle/haloperidol,
 		)
 	belt = /obj/item/modular_computer/tablet/pda/medical
-	ears = /obj/item/radio/headset/headset_srvmed
+	ears = /obj/item/radio/headset/headset_med
 	shoes = /obj/item/clothing/shoes/laceup
 	l_hand = /obj/item/clipboard
 
@@ -66,12 +65,3 @@
 
 	pda_slot = ITEM_SLOT_BELT
 	skillchips = list(/obj/item/skillchip/job/psychology)
-
-/datum/outfit/job/psychologist/plasmaman
-	name = "Psychologist (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
-	gloves = /obj/item/clothing/gloves/color/plasmaman/white
-	head = /obj/item/clothing/head/helmet/space/plasmaman/medical
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full

@@ -104,7 +104,7 @@
 
 /datum/tgui_modal/Destroy(force, ...)
 	SStgui.close_uis(src)
-	QDEL_NULL(buttons)
+	buttons = null
 	. = ..()
 
 /**

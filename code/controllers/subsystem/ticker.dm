@@ -787,11 +787,6 @@ SUBSYSTEM_DEF(ticker)
 	if(!credits_music)
 		credits_music = login_music
 
-/datum/controller/subsystem/ticker/proc/get_login_song(idx)
-	RETURN_TYPE(/datum/media)
-	idx = (idx %% (length(login_music) + 1)) || 1
-	return login_music[idx]
-
 ///Generate a list of gamemodes we can play.
 /datum/controller/subsystem/ticker/proc/draft_gamemodes()
 	var/list/datum/game_mode/runnable_modes = list()

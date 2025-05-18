@@ -718,12 +718,12 @@ SUBSYSTEM_DEF(ticker)
 	login_music -= track
 	login_music.Insert(1, track)
 
-	var/sound/S = sound(channel = CHANNEL_LOBBYMUSIC)
 	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
 		if(!player.client)
 			continue
-		player.client.next_in_line = track
-		SEND_SOUND(player.client, S) //triggers the client's callback
+
+		player.persistent_client.title_next_in_line = track
+		player.client.cycle_title_music()
 
 /datum/controller/subsystem/ticker/proc/pick_login_music()
 	var/list/title_music_data = SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_COMMON)

@@ -6,14 +6,14 @@
 	UNTIL(length(SSticker.login_music)) //wait for SSticker init to set the login music
 
 	if(prefs && (prefs.toggles & SOUND_LOBBY))
-		next_in_line = SSticker.login_music[1]
+		persistent_client.title_next_in_line = SSticker.login_music[1]
 		cycle_title_music()
 
 /client/proc/stoptitlemusic()
 	set instant = TRUE
 	set hidden = TRUE
 
-	next_in_line = null
+	persistent_client.title_next_in_line = null
 	SEND_SOUND(src, sound(wait = FALSE, channel = CHANNEL_LOBBYMUSIC))
 
 /client/proc/playcreditsmusic()
@@ -29,7 +29,7 @@
 	set hidden = TRUE
 	set waitfor = FALSE
 
-	var/datum/media/song = next_in_line
+	var/datum/media/song = persistent_client.title_next_in_line
 	if(!song)
 		return
 
@@ -37,7 +37,7 @@
 	S.params = "on-end=.cycle_title_music&on-preempt="
 	SEND_SOUND(src, S)
 
-	next_in_line = SSticker.get_login_song(SSticker.login_music.Find(song) + 1)
+	persistent_client.title_next_in_line = SSticker.get_login_song(SSticker.login_music.Find(song) + 1)
 
 	UNTIL(SSticker.current_state >= GAME_STATE_PREGAME)
 	to_chat(src, span_greenannounce("Now Playing: <i>[song.name]</i>[song.author ? " by [song.author]" : ""]"))

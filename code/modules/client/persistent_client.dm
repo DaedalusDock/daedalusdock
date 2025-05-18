@@ -29,6 +29,9 @@ GLOBAL_LIST_EMPTY(persistent_clients)
 	/// The preferences of the client.
 	var/datum/preferences/prefs
 
+	/// The next in line media datum to play for lobby music
+	var/datum/media/title_next_in_line
+
 /datum/persistent_client/New(ckey, client/_client)
 	client = _client
 	achievements = new(ckey)

@@ -29,11 +29,16 @@ GLOBAL_LIST_EMPTY(persistent_clients)
 	/// The preferences of the client.
 	var/datum/preferences/prefs
 
+	/// Lobby music playlist.
+	var/datum/playlist/playlist
+
 /datum/persistent_client/New(ckey, client/_client)
 	client = _client
 	achievements = new(ckey)
 	GLOB.persistent_clients_by_ckey[ckey] = src
 	GLOB.persistent_clients += src
+
+	playlist = new(src)
 
 /datum/persistent_client/Destroy(force, ...)
 	SHOULD_CALL_PARENT(FALSE)

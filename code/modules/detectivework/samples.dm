@@ -1,8 +1,12 @@
 /obj/item/sample
 	name = "forensic sample"
 	icon = 'icons/obj/forensics.dmi'
-	item_flags = parent_type::item_flags | NOBLUDGEON | NO_EVIDENCE_ON_ATTACK
+	item_flags = parent_type::item_flags | NOBLUDGEON | NO_EVIDENCE_ON_INTERACTION
 	w_class = WEIGHT_CLASS_TINY
+
+	fingerprint_flags_item_interaction = NONE
+	fingerprint_flags_interact_with_atom = NONE
+
 	var/list/evidence = list()
 	var/label
 
@@ -17,13 +21,15 @@
 	. = ..()
 	. += span_notice("It is labelled: <b>[label]</b>.")
 
+/obj/item/sample/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(tool.type != type)
+		return NONE
 
-/obj/item/sample/attackby(obj/item/item, mob/living/user, params)
-	if(item.type == type)
-		if(user.temporarilyRemoveItemFromInventory(item) && merge_evidence(item, user))
-			qdel(item)
-		return TRUE
-	return ..()
+	if(user.canUnequipItem(tool) && merge_evidence(tool, user))
+		qdel(tool)
+		return ITEM_INTERACT_SUCCESS
+
+	return ITEM_INTERACT_BLOCKING
 
 /obj/item/sample/proc/copy_evidence(atom/supplied)
 	var/list/fibers = supplied.return_fibers()
@@ -101,41 +107,42 @@
 	name = "[initial(name)] ([H.get_face_name()])"
 	update_appearance(UPDATE_ICON_STATE)
 
-/obj/item/sample/print/attack(mob/living/M, mob/living/user, params)
-	if(!ishuman(M))
-		return ..()
+/obj/item/sample/print/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ishuman(interacting_with))
+		return NONE
 
 	if(length(evidence))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	if(!(user.zone_selected in list(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM)))
-		return
+		return ITEM_INTERACT_BLOCKING
 
-	var/mob/living/carbon/human/H = M
+	var/mob/living/carbon/human/H = interacting_with
 	if((H.check_obscured_slots(TRUE) & ITEM_SLOT_GLOVES) || H.gloves)
 		to_chat(user, span_warning("Their hands are covered."))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	if(user != H && H.combat_mode && (H.body_position == STANDING_UP))
 		user.visible_message(span_warning("[user] tries to take prints from [H], but they move away."))
-		return TRUE
+		return ITEM_INTERACT_BLOCKING
 
 	var/obj/item/bodypart/arm/hand
 	hand = H.get_bodypart(user.zone_selected, TRUE)
 	if(!hand)
 		to_chat(user, span_warning("They don't have a [parse_zone(user.zone_selected)]."))
-		return TRUE
+		return ITEM_INTERACT_BLOCKING
 
 	if(hand.is_stump)
 		to_chat(user, span_warning("You don't think that has any fingerprints."))
-		return TRUE
+		return ITEM_INTERACT_BLOCKING
+
 	var/hand_string = user.zone_selected == BODY_ZONE_L_ARM ? "left hand" : "right hand"
 	user.visible_message(span_notice("[user] takes a copy of \the [H]'s [hand_string] fingerprints."))
 
 	evidence[hand.fingerprints] = hand.fingerprints
 	name = "[initial(name)] ([H.get_face_name()]'s [hand_string])"
 	update_appearance(UPDATE_ICON_STATE)
-	return TRUE
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/sample/print/copy_evidence(atom/supplied)
 	var/list/prints = supplied.return_fingerprints()
@@ -145,11 +152,13 @@
 
 /obj/item/sample_kit
 	name = "fiber collection kit"
-	desc = "A magnifying glass and tweezers. Used to lift suit fibers."
+	desc = "A magnifying glass and tweezers."
 	icon = 'icons/obj/forensics.dmi'
 	icon_state = "m_glass"
 	w_class = WEIGHT_CLASS_SMALL
-	item_flags = parent_type::item_flags | NOBLUDGEON | NO_EVIDENCE_ON_ATTACK
+	item_flags = parent_type::item_flags | NOBLUDGEON
+
+	fingerprint_flags_interact_with_atom = NONE
 
 	var/evidence_type = "fiber"
 	var/evidence_path = /obj/item/sample/fibers
@@ -163,17 +172,24 @@
 		S.forceMove(drop_location())
 	to_chat(user, span_notice("You transfer [length(S.evidence)] [length(S.evidence) > 1 ? "[evidence_type]s" : "[evidence_type]"] to \the [S]."))
 
-/obj/item/sample_kit/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-	if(!proximity_flag)
-		return
+/obj/item/sample_kit/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+		return NONE
 
-	if(!can_take_sample(user, target))
-		to_chat(user, span_warning("There is no evidence on [target]."))
-		return TRUE
+	if(!can_take_sample(user, interacting_with))
+		to_chat(user, span_warning("There is no evidence on [interacting_with]."))
+		return ITEM_INTERACT_BLOCKING
 
-	take_sample(user, target)
-	return TRUE
+	take_sample(user, interacting_with)
+	return ITEM_INTERACT_SUCCESS
+
+/obj/item/sample_kit/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!can_take_sample(user, interacting_with))
+		to_chat(user, span_warning("There is no evidence on [interacting_with]."))
+		return ITEM_INTERACT_BLOCKING
+
+	take_sample(user, interacting_with)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/sample_kit/powder
 	name = "fingerprint powder"

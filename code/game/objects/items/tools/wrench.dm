@@ -9,7 +9,7 @@
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
 
-	force = 5
+	force = 10
 	throwforce = 7
 	stamina_damage = 40
 	stamina_cost = 14

@@ -193,8 +193,8 @@
 	. = ..()
 	ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 
-/turf/open/floor/plating/foam/tool_act(mob/living/user, obj/item/I, tool_type)
-	return
+/turf/open/floor/plating/foam/welder_act(mob/living/user, obj/item/I)
+	return NONE // Fuck you
 
 //reinforced plating deconstruction states
 #define PLATE_INTACT 0

@@ -31,13 +31,9 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 	var/average_click_delay = 0
 
 /datum/controller/subsystem/verb_manager/input/Initialize()
+	. = ..()
 	setup_default_macro_sets()
-
-	initialized = TRUE
-
 	refresh_client_macro_sets()
-
-	return ..()
 
 // This is for when macro sets are eventualy datumized
 /datum/controller/subsystem/verb_manager/input/proc/setup_default_macro_sets()

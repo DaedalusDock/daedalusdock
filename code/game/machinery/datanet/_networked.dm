@@ -37,7 +37,7 @@
 			if(!isnull(tmp_filter) && tmp_filter != net_class)
 				return RECEIVE_SIGNAL_FINISHED
 			//Blame kapu for how stupid this looks :3
-			post_signal(create_signal(sigdat[PACKET_SOURCE_ADDRESS], list("command"=NET_COMMAND_PING_REPLY,"netclass"=src.net_class,"netaddr"=src.net_id)+src.ping_addition))
+			post_signal(create_signal(sigdat[PACKET_SOURCE_ADDRESS], list("command"=NET_COMMAND_PING_REPLY,PACKET_NETCLASS=src.net_class,"netaddr"=src.net_id)+src.ping_addition))
 		return RECEIVE_SIGNAL_FINISHED//regardless, return 1 so that machines don't process packets not intended for them.
 	return RECEIVE_SIGNAL_CONTINUE // We are the designated recipient of this packet, we need to handle it.
 
@@ -48,15 +48,16 @@
 /obj/machinery/proc/link_to_jack()
 	if(!(src.network_flags & NETWORK_FLAG_USE_DATATERMINAL))
 		CRASH("Machine that doesn't use data networks attempted to link to network terminal!")
+
 	if(!loc)
 		CRASH("Attempted to link to a network jack while in nullspace!")
+
 	var/obj/machinery/power/data_terminal/new_transmission_terminal = locate() in get_turf(src)
 	if(netjack == new_transmission_terminal)
 		return NETJACK_CONNECT_SUCCESS //Already connected, pretend it's a success.
-	unlink_from_jack()//If our new jack is null, then we've somehow lost it? Don't care and just go along with it.
-	if(!new_transmission_terminal)
-		return
-	return new_transmission_terminal.connect_machine(src)
+
+	unlink_from_jack() //If our new jack is null, then we've somehow lost it? Don't care and just go along with it.
+	return new_transmission_terminal?.connect_machine(src)
 
 /// Unlink from a network terminal
 /// `ignore_check` is used as part of machinery destroy.

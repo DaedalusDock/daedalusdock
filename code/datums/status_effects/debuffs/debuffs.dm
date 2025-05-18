@@ -1256,3 +1256,14 @@
 /datum/status_effect/discoordinated/on_remove()
 	REMOVE_TRAIT(owner, TRAIT_DISCOORDINATED_TOOL_USER, "[type]")
 	return ..()
+
+/// Applied to monkeys to make them attack slower.
+/datum/status_effect/monkey_retardation
+	id = "monkey_retardation"
+	alert_type = null
+	duration = -1
+	status_type = STATUS_EFFECT_UNIQUE
+
+/datum/status_effect/monkey_retardation/nextmove_modifier()
+	return 2
+

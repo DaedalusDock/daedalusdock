@@ -2,17 +2,20 @@
  * This is the proc that handles the order of an item_attack.
  *
  * The order of procs called is:
- * * [/atom/proc/tool_act] on the target. If it returns TOOL_ACT_TOOLTYPE_SUCCESS or TOOL_ACT_SIGNAL_BLOCKING, the chain will be stopped.
+ * * [/atom/proc/tool_act] on the target. If it returns ITEM_INTERACT_SUCCESS or ITEM_INTERACT_BLOCKING, the chain will be stopped.
  * * [/obj/item/proc/pre_attack] on src. If this returns TRUE, the chain will be stopped.
  * * [/atom/proc/attackby] on the target. If it returns TRUE, the chain will be stopped.
  * * [/obj/item/proc/afterattack]. The return value does not matter.
  */
 /obj/item/proc/melee_attack_chain(mob/user, atom/target, params)
-	var/is_right_clicking = LAZYACCESS(params2list(params), RIGHT_CLICK)
+	var/list/modifiers = params2list(params)
+	var/is_right_clicking = LAZYACCESS(modifiers, RIGHT_CLICK)
 
-	var/mob/living/L = user
-	if(tool_behaviour && (!istype(L) || !L.combat_mode) && (target.tool_act(user, src, tool_behaviour, is_right_clicking) & TOOL_ACT_MELEE_CHAIN_BLOCKING))
+	var/item_interact_result = target.base_item_interaction(user, src, modifiers)
+	if(item_interact_result & ITEM_INTERACT_SUCCESS)
 		return TRUE
+	if(item_interact_result & ITEM_INTERACT_BLOCKING)
+		return FALSE
 
 	var/pre_attack_result
 	if (is_right_clicking)
@@ -147,7 +150,14 @@
 	return SECONDARY_ATTACK_CALL_NORMAL
 
 /obj/attackby(obj/item/attacking_item, mob/user, params)
-	return ..() || ((obj_flags & CAN_BE_HIT) && attacking_item.attack_obj(src, user, params))
+	. = ..()
+	if(.)
+		return TRUE
+
+	if(!(obj_flags & CAN_BE_HIT))
+		return FALSE
+
+	return attacking_item.attack_obj(src, user, params)
 
 /mob/living/attackby(obj/item/attacking_item, mob/living/user, params)
 	if(..())

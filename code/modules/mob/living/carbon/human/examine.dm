@@ -321,24 +321,27 @@
 	var/perpname = get_face_name(get_id_name(""))
 	if(perpname && (HAS_TRAIT(user, TRAIT_SECURITY_HUD) || HAS_TRAIT(user, TRAIT_MEDICAL_HUD)))
 		var/datum/data/record/R = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_STATION)
+		var/datum/data/record/medical_record = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_MEDICAL)
 		if(R)
 			. += "<span class='deptradio'>Rank:</span> [R.fields[DATACORE_RANK]]\n<a href='?src=[REF(src)];hud=1;photo_front=1'>\[Front photo\]</a><a href='?src=[REF(src)];hud=1;photo_side=1'>\[Side photo\]</a>"
+
 		if(HAS_TRAIT(user, TRAIT_MEDICAL_HUD))
 			var/cyberimp_detect
 			for(var/obj/item/organ/cyberimp/CI in processing_organs)
 				if((CI.organ_flags & ORGAN_SYNTHETIC) && !CI.syndicate_implant)
 					cyberimp_detect += "[!cyberimp_detect ? "[CI.get_examine_string(user)]" : ", [CI.get_examine_string(user)]"]"
+
 			if(cyberimp_detect)
 				. += "<span class='notice ml-1'>Detected cybernetic modifications:</span>"
 				. += "<span class='notice ml-2'>[cyberimp_detect]</span>"
-			if(R)
-				var/health_r = R.fields[DATACORE_PHYSICAL_HEALTH]
-				. += "<a href='?src=[REF(src)];hud=m;p_stat=1'>\[[health_r]\]</a>"
-				health_r = R.fields[DATACORE_MENTAL_HEALTH]
-				. += "<a href='?src=[REF(src)];hud=m;m_stat=1'>\[[health_r]\]</a>"
-			R = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_MEDICAL)
-			if(R)
+
+			if(medical_record)
+				var/health_r = medical_record.fields[DATACORE_PHYSICAL_HEALTH]
+				. += "<a href='?src=[REF(src)];hud=m;[DATACORE_PHYSICAL_HEALTH]=1'>\[[health_r]\]</a>"
+				health_r = medical_record.fields[DATACORE_MENTAL_HEALTH]
+				. += "<a href='?src=[REF(src)];hud=m;[DATACORE_MENTAL_HEALTH]=1'>\[[health_r]\]</a>"
 				. += "<a href='?src=[REF(src)];hud=m;evaluation=1'>\[Medical evaluation\]</a><br>"
+
 			. += "<a href='?src=[REF(src)];hud=m;quirk=1'>\[See quirks\]</a>"
 
 		if(HAS_TRAIT(user, TRAIT_SECURITY_HUD))

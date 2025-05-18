@@ -141,8 +141,6 @@
 		Gender: [general.fields[DATACORE_GENDER]]<BR>
 		Age: [general.fields[DATACORE_AGE]]<BR>
 		Fingerprint: [general.fields[DATACORE_FINGERPRINT]]<BR>
-		Physical Status: [general.fields[DATACORE_PHYSICAL_HEALTH]]<BR>
-		Mental Status: [general.fields[DATACORE_MENTAL_HEALTH]]<BR>
 		<BR>
 		<CENTER><B>Security Data</B></CENTER><BR>
 		Criminal Status: [security.fields[DATACORE_CRIMINAL_STATUS]]<BR>
@@ -195,9 +193,26 @@
 			if(!M)
 				continue
 			var/obj/item/paper/P = new /obj/item/paper(src)
-			P.info = "<CENTER><B>Medical Record</B></CENTER><BR>"
-			P.info += "Name: [G.fields[DATACORE_NAME]] ID: [G.fields[DATACORE_ID]]<BR>\nGender: [G.fields[DATACORE_GENDER]]<BR>\nAge: [G.fields[DATACORE_AGE]]<BR>\nFingerprint: [G.fields[DATACORE_FINGERPRINT]]<BR>\nPhysical Status: [G.fields[DATACORE_PHYSICAL_HEALTH]]<BR>\nMental Status: [G.fields[DATACORE_MENTAL_HEALTH]]<BR>"
-			P.info += "<BR>\n<CENTER><B>Medical Data</B></CENTER><BR>\nBlood Type: [M.fields[DATACORE_BLOOD_TYPE]]<BR>\nDNA: [M.fields[DATACORE_BLOOD_DNA]]<BR>\n<BR>\n\nDisabilities: [M.fields[DATACORE_DISABILITIES]]<BR>\nDetails: [M.fields[DATACORE_DISABILITIES_DETAILS]]<BR>\n<BR>\nAllergies: [M.fields["alg"]]<BR>\nDetails: [M.fields["alg_d"]]<BR>\n<BR>\nCurrent Diseases: [M.fields[DATACORE_DISEASES]] (per disease info placed in log/comment section)<BR>\nDetails: [M.fields[DATACORE_DISEASES_DETAILS]]<BR>\n<BR>\nImportant Notes:<BR>\n\t[M.fields[DATACORE_NOTES]]<BR>\n<BR>\n<CENTER><B>Comments/Log</B></CENTER><BR>"
+			P.info = "<CENTER><B>Medical Record</B></CENTER><BR><br>"
+			P.info += {"
+			Name: [G.fields[DATACORE_NAME]] ID: [G.fields[DATACORE_ID]]<BR>
+			Gender: [G.fields[DATACORE_GENDER]]<BR>\nAge: [G.fields[DATACORE_AGE]]<BR>
+			Fingerprint: [G.fields[DATACORE_FINGERPRINT]]<BR>
+			"}
+
+			P.info += {"
+			<BR><br><CENTER><B>Medical Data</B></CENTER><BR><br>
+			Blood Type: [M.fields[DATACORE_BLOOD_TYPE]]<BR>
+			DNA: [M.fields[DATACORE_BLOOD_DNA]]<BR><BR>
+			Disabilities: [M.fields[DATACORE_DISABILITIES]]<BR>
+			Allergies: [M.fields[DATACORE_ALLERGIES]]<BR>
+			Physical Status: [M.fields[DATACORE_PHYSICAL_HEALTH]]<BR>
+			Mental Status: [M.fields[DATACORE_MENTAL_HEALTH]]<BR>
+			Current Diseases: [M.fields[DATACORE_DISEASES]]<BR><BR>
+			Important Notes:<BR>\n\t[M.fields[DATACORE_NOTES]]<BR><BR>
+			<CENTER><B>Comments/Log</B></CENTER><BR>
+		"}
+
 			var/counter = 1
 			while(M.fields["com_[counter]"])
 				P.info += "[M.fields["com_[counter]"]]<BR>"

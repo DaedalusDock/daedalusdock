@@ -118,7 +118,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			return FALSE
 
 	var/needs_update = save_data_needs_update(savefile.get_entry())
-	if(needs_update == -2) //fatal, can't load any data
+	if(load_and_save && (needs_update == -2)) //fatal, can't load any data
 		var/bacpath = "[path].updatebac" //todo: if the savefile version is higher then the server, check the backup, and give the player a prompt to load the backup
 		if (fexists(bacpath))
 			fdel(bacpath) //only keep 1 version of backup
@@ -248,8 +248,9 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		value_cache -= preference_type
 		read_preference(preference_type)
 
-	//Load prefs
-	alt_job_titles = save_data["alt_job_titles"]
+	if(islist(save_data)) // Guest client, does not have a character.
+		//Load prefs
+		alt_job_titles = save_data["alt_job_titles"]
 
 	//try to fix any outdated data if necessary
 	//preference updating will handle saving the updated data for us.

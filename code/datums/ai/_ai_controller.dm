@@ -131,7 +131,7 @@ multiple modular subtrees with behaviors
 
 ///Abstract proc for initializing the pawn to the new controller
 /datum/ai_controller/proc/TryPossessPawn(atom/new_pawn)
-	return
+	return NONE
 
 ///Proc for deinitializing the pawn to the old controller
 /datum/ai_controller/proc/UnpossessPawn(destroy)
@@ -147,14 +147,17 @@ multiple modular subtrees with behaviors
 ///Returns TRUE if the ai controller can actually run at the moment.
 /datum/ai_controller/proc/able_to_run()
 	if(HAS_TRAIT(pawn, TRAIT_AI_PAUSED))
+		DEBUG_AI_LOG(src, "Unable to run, paused.")
 		return FALSE
 
 	if(world.time < paused_until)
+		DEBUG_AI_LOG(src, "Unable to run, paused.")
 		return FALSE
 
 	if(isliving(pawn))
 		var/mob/living/living_pawn = pawn
 		if(IS_DEAD_OR_INCAP(living_pawn))
+			DEBUG_AI_LOG(src, "Unable to run, dead or incap pawn.")
 			return FALSE
 	return TRUE
 
@@ -255,12 +258,13 @@ multiple modular subtrees with behaviors
 			DEBUG_AI_LOG(src, "Processing paused.")
 
 	SEND_SIGNAL(src, COMSIG_AI_STATUS_CHANGE, ai_status)
+	return TRUE
 
 /datum/ai_controller/proc/PauseAi(time)
 	paused_until = world.time + time
 
 /datum/ai_controller/proc/set_move_target(atom/thing)
-	DEBUG_AI_LOG(src, isnull(thing) ? "Canceled movement plan" : "Moving towards [COORD(thing)]")
+	DEBUG_AI_LOG(src, isnull(thing) ? "Cancelled movement plan" : "Moving towards [COORD(thing)]")
 	current_movement_target = thing
 
 ///Call this to add a behavior to the stack.
@@ -351,6 +355,33 @@ multiple modular subtrees with behaviors
 
 	if(.)
 		set_blackboard_key(BB_NEXT_MOVE_TIME, world.time + get_movement_delay())
+
+///Can this pawn interact with objects?
+/datum/ai_controller/proc/ai_can_interact()
+	SHOULD_CALL_PARENT(TRUE)
+	return !QDELETED(pawn)
+
+///Interact with objects
+/datum/ai_controller/proc/PawnClick(target, combat_mode, list/modifiers)
+	if(!ai_can_interact())
+		return FALSE
+
+	var/atom/final_target = isdatum(target) ? target : blackboard[target] //incase we got a blackboard key instead
+
+	if(QDELETED(final_target))
+		return FALSE
+
+	var/params = list2params(modifiers)
+	var/mob/living/living_pawn = pawn
+	if(isnull(combat_mode))
+		living_pawn.ClickOn(final_target, params)
+		return TRUE
+
+	var/old_combat_mode = living_pawn.combat_mode
+	living_pawn.set_combat_mode(combat_mode)
+	living_pawn.ClickOn(final_target, params)
+	living_pawn.set_combat_mode(old_combat_mode)
+	return TRUE
 
 /datum/ai_controller/proc/on_sentience_gained()
 	SIGNAL_HANDLER

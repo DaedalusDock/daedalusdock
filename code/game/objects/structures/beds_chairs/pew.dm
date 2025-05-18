@@ -28,7 +28,7 @@
 	return mutable_appearance('icons/obj/sofa.dmi', "pewend_left_armrest")
 
 /obj/structure/chair/pew/left/Destroy()
-	QDEL_NULL(leftpewarmrest)
+	leftpewarmrest = null
 	return ..()
 
 /obj/structure/chair/pew/left/post_buckle_mob(mob/living/M)
@@ -60,7 +60,7 @@
 	return mutable_appearance('icons/obj/sofa.dmi', "pewend_right_armrest")
 
 /obj/structure/chair/pew/right/Destroy()
-	QDEL_NULL(rightpewarmrest)
+	rightpewarmrest = null
 	return ..()
 
 /obj/structure/chair/pew/right/post_buckle_mob(mob/living/M)

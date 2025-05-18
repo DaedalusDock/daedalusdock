@@ -49,7 +49,7 @@
 	tool.play_tool_sound(src)
 	to_chat(user, span_notice("[storedcutter] has been [cuttersecured ? "unsecured" : "secured"]."))
 	cuttersecured = !cuttersecured
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 
 /obj/item/papercutter/attackby(obj/item/P, mob/user, params)

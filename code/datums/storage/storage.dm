@@ -410,6 +410,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	item_insertion_feedback(user, to_insert, override)
 	real_location.update_appearance()
 	SEND_SIGNAL(src, COMSIG_STORAGE_INSERTED_ITEM, to_insert, user, override, force)
+
+	if(get(real_location, /mob) != user)
+		to_insert.do_pickup_animation(real_location, get_turf(user))
 	return TRUE
 
 /**
@@ -831,6 +834,15 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		INVOKE_ASYNC(src, PROC_REF(open_storage), user, try_quickdraw)
 		return TRUE
 
+/// Called directly from the attack chain if [insert_on_attack] is TRUE.
+/// Handles inserting an item into the storage when clicked.
+/datum/storage/proc/item_interact_insert(mob/living/user, obj/item/thing)
+	if(iscyborg(user))
+		return ITEM_INTERACT_BLOCKING
+
+	attempt_insert(thing, user)
+	return ITEM_INTERACT_SUCCESS
+
 /// Generates the numbers on an item in storage to show stacking.
 /datum/storage/proc/process_numerical_display()
 	var/list/toreturn = list()
@@ -956,6 +968,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		if(open_sound)
 			playsound(parent, open_sound, 50, TRUE, -5)
 
+		if(!silent && isturf(real_location.loc))
+			to_show.animate_interact(real_location)
 		return TRUE
 
 	var/obj/item/to_remove = get_quickdraw_item()
@@ -968,7 +982,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	INVOKE_ASYNC(src, PROC_REF(put_in_hands_async), to_show, to_remove)
 
 	if(!silent)
-		to_show.visible_message(span_warning("[to_show] draws [to_remove] from [parent]!"), span_notice("You draw [to_remove] from [parent]."))
+		to_show.visible_message(span_warning("[to_show] draws [to_remove] from [parent]."))
+		if(isturf(real_location.loc))
+			to_show.animate_interact(real_location)
 
 	return TRUE
 

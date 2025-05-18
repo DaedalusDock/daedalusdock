@@ -81,7 +81,8 @@
 		observer.set_real_name(observer.client.prefs.read_preference(/datum/preference/name/real_name))
 		observer.client.init_verbs()
 
-	observer.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+	observer.client?.stoptitlemusic()
+
 	deadchat_broadcast(" has observed.", "<b>[observer.real_name]</b>", follow_target = observer, turf_target = get_turf(observer), message_type = DEADCHAT_DEATHRATTLE)
 	QDEL_NULL(mind)
 	qdel(src)
@@ -256,7 +257,7 @@
 
 /mob/dead/new_player/proc/transfer_character()
 	new_character.PossessByPlayer(key)
-	new_character.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+	new_character.client?.stoptitlemusic()
 	new_character.client?.show_location_blurb()
 
 	var/area/joined_area = get_area(new_character.loc)

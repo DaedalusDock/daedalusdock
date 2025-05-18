@@ -2162,7 +2162,7 @@
 /turf/open/floor/iron/white,
 /area/station/medical/cryo)
 "hg" = (
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 4
 	},
 /turf/open/floor/iron/dark,
@@ -2609,7 +2609,7 @@
 /obj/machinery/light_switch/directional/west{
 	pixel_x = -20
 	},
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/red/fourcorners,
@@ -5102,7 +5102,7 @@
 /area/station/medical/medbay/central)
 "qn" = (
 /obj/structure/table/glass,
-/obj/machinery/computer/med_data/laptop,
+/obj/machinery/computer4/medical,
 /obj/effect/turf_decal/tile/blue/half/contrasted{
 	dir = 8
 	},
@@ -8949,7 +8949,7 @@
 "Cd" = (
 /obj/structure/noticeboard/directional/south,
 /obj/structure/table/wood,
-/obj/machinery/computer/med_data/laptop{
+/obj/machinery/computer4/medical{
 	dir = 1;
 	pixel_y = 4
 	},

@@ -44,7 +44,7 @@
 /obj/item/proc/InsertID()
 	return FALSE
 
-/obj/proc/text2access(access_text)
+/proc/text2access(access_text)
 	. = list()
 	if(!access_text)
 		return
@@ -53,6 +53,9 @@
 		var/n = text2num(x)
 		if(n)
 			. += n
+
+/proc/access2text(list/access)
+	return jointext(access, ";")
 
 //Call this before using req_access or req_one_access directly
 /obj/proc/gen_access()

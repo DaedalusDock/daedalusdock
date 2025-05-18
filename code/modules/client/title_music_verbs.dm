@@ -34,7 +34,7 @@
 		return
 
 	var/sound/S = sound(song.path, repeat = 0, wait = 0, volume = 85, channel = CHANNEL_LOBBYMUSIC)
-	S.params = "on-end=.cycle_title_music"
+	S.params = "on-end=.cycle_title_music&on-preempt="
 	SEND_SOUND(src, S)
 
 	next_in_line = SSticker.get_login_song(SSticker.login_music.Find(song) + 1)

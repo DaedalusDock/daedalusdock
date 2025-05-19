@@ -62,7 +62,10 @@
 	var/explosive = FALSE //does the AI explode when it dies?
 
 	var/mob/living/silicon/ai/parent
-	var/camera_light_on = FALSE
+	/// If we are lighting cameras as our eye passes by.
+	var/camera_light_on = TRUE
+
+	/// Cameras that are lit by our presence.
 	var/list/obj/machinery/camera/lit_cameras = list()
 
 	var/datum/trackable/track = new
@@ -110,6 +113,8 @@
 
 	///Command report cooldown
 	COOLDOWN_DECLARE(command_report_cd)
+	/// An image to add to client.images so the AI player can see their own eye sprite.
+	var/image/sense_of_self
 
 /mob/living/silicon/ai/Initialize(mapload, datum/ai_laws/L, mob/target_ai)
 	. = ..()
@@ -234,7 +239,51 @@
 	if(ai_voicechanger)
 		ai_voicechanger.owner = null
 		ai_voicechanger = null
+	lit_cameras = null
 	return ..()
+
+/mob/living/silicon/ai/pre_examinate(atom/examinify)
+	if(client?.eye == src) // Not using a camera
+		return ..()
+
+	if(!isliving(examinify))
+		return ..()
+
+	if(!do_after(src, examinify, 1.5 SECONDS, DO_IGNORE_TARGET_LOC_CHANGE|DO_IGNORE_USER_LOC_CHANGE|DO_IGNORE_HELD_ITEM|DO_IGNORE_SLOWDOWNS|DO_IGNORE_INCAPACITATED))
+		return FALSE
+
+	if(!can_examinate(examinify))
+		return FALSE
+
+	if(!can_interact_with(examinify)) // Checks cameranet visibility
+		return FALSE
+
+	var/obj/machinery/camera/viewing_camera = get_nearest_lit_camera_to_mob(examinify)
+
+	if(viewing_camera)
+		viewing_camera.visible_message("[src]'s lens rotates and zooms into something.")
+		playsound(viewing_camera, 'sound/machines/camera_zoom.ogg', 50, FALSE, ignore_walls = FALSE)
+
+	var/mob/living/target_examined = examinify
+	if(target_examined.stats.cooldown_finished("ai_examine"))
+		var/datum/roll_result/result = target_examined.stat_roll(13, /datum/rpg_skill/extrasensory)
+		switch(result.outcome)
+			if(SUCCESS, CRIT_SUCCESS)
+				target_examined.stats.set_cooldown("ai_examine", 1 MINUTE)
+				result.do_skill_sound(target_examined)
+				to_chat(target_examined, result.create_tooltip("A nearby camera has fixated on you."))
+
+	return TRUE
+
+/mob/living/silicon/ai/broadcast_examine(atom/examined)
+	return
+
+/// Returns the nearest lit camera to a mob, as long as the camera can see that mob.
+/mob/living/silicon/ai/proc/get_nearest_lit_camera_to_mob(mob/M)
+	var/smallest_dist = INFINITY
+	for(var/obj/machinery/camera/C as anything in lit_cameras)
+		if(get_dist(get_turf(M), get_turf(C)) < smallest_dist && (M in viewers(C)))
+			. = C
 
 /// Removes all malfunction-related abilities from the AI
 /mob/living/silicon/ai/proc/remove_malf_abilities()
@@ -709,20 +758,22 @@
 
 	if (!camera_light_on)
 		to_chat(src, "Camera lights deactivated.")
-		var/list/old_cams = lit_cameras.Copy() //Togglelight will fail if the camera is in a lit_cameras list.
-		lit_cameras.Cut()
-		for (var/obj/machinery/camera/C in old_cams)
-			C.Togglelight(0)
+		for (var/obj/machinery/camera/C in lit_cameras)
+			C.set_ai_light(FALSE, src)
 
+		lit_cameras.Cut()
 		return
 
-	light_cameras()
+	update_lit_cameras()
 
 	to_chat(src, "Camera lights activated.")
 
 //AI_CAMERA_LUMINOSITY
 
-/mob/living/silicon/ai/proc/light_cameras()
+/mob/living/silicon/ai/proc/update_lit_cameras()
+	if(isnull(eyeobj)) // Initialize
+		return
+
 	var/list/obj/machinery/camera/add = list()
 	var/list/obj/machinery/camera/remove = list()
 	var/list/obj/machinery/camera/visible = list()
@@ -736,10 +787,11 @@
 	remove = lit_cameras - visible
 
 	for (var/obj/machinery/camera/C in remove)
-		lit_cameras -= C //Removed from list before turning off the light so that it doesn't check the AI looking away.
-		C.Togglelight(0)
+		lit_cameras -= C
+		C.set_ai_light(FALSE, src)
+
 	for (var/obj/machinery/camera/C in add)
-		C.Togglelight(1)
+		C.set_ai_light(TRUE, src)
 		lit_cameras |= C
 
 /mob/living/silicon/ai/proc/control_integrated_radio()
@@ -869,33 +921,43 @@
 
 /mob/living/silicon/ai/reset_perspective(atom/new_eye)
 	if(camera_light_on)
-		light_cameras()
+		update_lit_cameras()
+
 	if(istype(new_eye, /obj/machinery/camera))
 		current = new_eye
-	if(client)
-		if(ismovable(new_eye))
-			if(new_eye != GLOB.ai_camera_room_landmark)
-				end_multicam()
-			client.perspective = EYE_PERSPECTIVE
-			client.eye = new_eye
-		else
+
+	if(!client)
+		return
+
+	client.images -= sense_of_self
+
+	if(ismovable(new_eye))
+		if(new_eye != GLOB.ai_camera_room_landmark)
 			end_multicam()
-			if(isturf(loc))
-				if(eyeobj)
-					client.eye = eyeobj
-					client.perspective = EYE_PERSPECTIVE
-				else
-					client.eye = client.mob
-					client.perspective = MOB_PERSPECTIVE
-			else
+		client.perspective = EYE_PERSPECTIVE
+		client.eye = new_eye
+
+	else
+		end_multicam()
+		if(isturf(loc))
+			if(eyeobj)
+				client.eye = eyeobj
 				client.perspective = EYE_PERSPECTIVE
-				client.eye = loc
-		update_sight()
-		if(client.eye != src)
-			var/atom/AT = client.eye
-			AT.get_remote_view_fullscreens(src)
+				client.images += sense_of_self
+			else
+				client.eye = client.mob
+				client.perspective = MOB_PERSPECTIVE
 		else
-			clear_fullscreen("remote_view", 0)
+			client.perspective = EYE_PERSPECTIVE
+			client.eye = loc
+
+	update_sight()
+
+	if(client.eye != src)
+		var/atom/AT = client.eye
+		AT.get_remote_view_fullscreens(src)
+	else
+		clear_fullscreen("remote_view", 0)
 
 /mob/living/silicon/ai/revive(full_heal = FALSE, admin_revive = FALSE)
 	. = ..()

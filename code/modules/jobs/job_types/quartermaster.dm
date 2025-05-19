@@ -18,7 +18,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/quartermaster,
-			SPECIES_PLASMAMAN = /datum/outfit/job/quartermaster/plasmaman,
 		),
 	)
 
@@ -45,7 +44,7 @@
 	jobtype = /datum/job/quartermaster
 
 	id = /obj/item/card/id/advanced/silver
-	id_trim = /datum/id_trim/job/quartermaster
+	id_template = /datum/access_template/job/quartermaster
 	uniform = /obj/item/clothing/under/rank/cargo/qm
 	belt = /obj/item/modular_computer/tablet/pda/quartermaster
 	ears = /obj/item/radio/headset/heads/qm
@@ -54,12 +53,3 @@
 	l_hand = /obj/item/clipboard
 
 	chameleon_extras = /obj/item/stamp/qm
-
-/datum/outfit/job/quartermaster/plasmaman
-	name = "Quartermaster (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/cargo
-	gloves = /obj/item/clothing/gloves/color/plasmaman/cargo
-	head = /obj/item/clothing/head/helmet/space/plasmaman/cargo
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full

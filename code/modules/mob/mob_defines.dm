@@ -23,6 +23,8 @@
 	/// We also need to clear this var/do other cleanup in client/Destroy, since that happens before logout
 	/// HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
 	var/client/canon_client
+	/// Persistent client.
+	var/datum/persistent_client/persistent_client
 
 	var/shift_to_open_context_menu = TRUE
 
@@ -93,6 +95,8 @@
 	var/eye_blurry = 0 //Carbon
 	/// What is the mobs real name (name is overridden for disguises etc)
 	var/real_name = null
+	/// The name this mob had when it died. Used by dead say.
+	var/died_as_name = ""
 
 	/**
 	  * back up of the real name during admin possession
@@ -156,7 +160,7 @@
 	var/job = null//Living
 
 	/// A list of factions that this mob is currently in, for hostile mob targetting, amongst other things
-	var/list/faction = list("neutral")
+	faction = list("neutral")
 
 	/// Can this mob enter shuttles
 	var/move_on_shuttle = 1
@@ -214,6 +218,9 @@
 
 	/// Used for tracking last uses of emotes for cooldown purposes
 	var/list/emotes_used
+
+	/// A list of cooldowns you can write to instead of making 100000 new variables.
+	var/list/mob_cooldowns = list()
 
 	///Whether the mob is updating glide size when movespeed updates or not
 	var/updating_glide_size = TRUE

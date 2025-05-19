@@ -12,7 +12,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/prisoner,
-			SPECIES_PLASMAMAN = /datum/outfit/job/prisoner/plasmaman,
 		),
 	)
 
@@ -34,20 +33,11 @@
 	jobtype = /datum/job/prisoner
 
 	id = /obj/item/card/id/advanced/prisoner
-	id_trim = /datum/id_trim/job/prisoner
+	id_template = /datum/access_template/job/prisoner
 	uniform = /obj/item/clothing/under/rank/prisoner
 	belt = null
 	ears = null
 	shoes = /obj/item/clothing/shoes/sneakers/orange
-
-/datum/outfit/job/prisoner/plasmaman
-	name = "Prisoner (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/prisoner
-	gloves = /obj/item/clothing/gloves/color/plasmaman/black
-	head = /obj/item/clothing/head/helmet/space/plasmaman/prisoner
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/prisoner/pre_equip(mob/living/carbon/human/H)
 	..()

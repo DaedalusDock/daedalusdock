@@ -41,7 +41,7 @@
 
 	if(isitem(parent))
 		RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
-		RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
+		RegisterSignal(parent, COMSIG_ITEM_UNEQUIPPED, PROC_REF(on_drop))
 	else if(ismob(parent))
 		RegisterSignal(parent, COMSIG_MOB_RECEIVE_MAGIC, PROC_REF(block_receiving_magic), override = TRUE)
 		RegisterSignal(parent, COMSIG_MOB_RESTRICT_MAGIC, PROC_REF(restrict_casting_magic), override = TRUE)

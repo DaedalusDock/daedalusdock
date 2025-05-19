@@ -217,7 +217,7 @@
 		var/delta = world.time - last_dead_time
 		var/new_timeofdeath = owner.timeofdeath + delta
 		owner.timeofdeath = new_timeofdeath
-		owner.tod = stationtime2text(reference_time=new_timeofdeath)
+		owner.timeofdeath_as_ingame = stationtime2text(reference_time=new_timeofdeath)
 		last_dead_time = null
 	if(owner.stat == DEAD)
 		last_dead_time = world.time
@@ -489,14 +489,18 @@
 
 /datum/status_effect/stacking/saw_bleed
 	id = "saw_bleed"
-	tick_interval = 6
+
+	tick_interval = 0.6 SECONDS
+
+	stack_decay = 1
 	delay_before_decay = 5
 	stack_threshold = 10
 	max_stacks = 10
+
+	consumed_on_threshold = TRUE
+
 	overlay_file = 'icons/effects/bleed.dmi'
-	underlay_file = 'icons/effects/bleed.dmi'
 	overlay_state = "bleed"
-	underlay_state = "bleed"
 	var/bleed_damage = 200
 
 /datum/status_effect/stacking/saw_bleed/fadeout_effect()
@@ -509,6 +513,15 @@
 	for(var/d in GLOB.alldirs)
 		new /obj/effect/temp_visual/dir_setting/bloodsplatter(T, d)
 	playsound(T, SFX_DESECRATION, 100, TRUE, -1)
+
+/// Return FALSE if the owner is not in a valid state (self-deletes the effect), or TRUE otherwise
+/datum/status_effect/stacking/saw_bleed/can_have_status()
+	return owner.stat != DEAD
+
+/// Whether the owner can currently gain stacks or not
+/// Return FALSE if the owner is not in a valid state, or TRUE otherwise
+/datum/status_effect/stacking/saw_bleed/can_gain_stacks()
+	return owner.stat != DEAD
 
 /datum/status_effect/stacking/saw_bleed/bloodletting
 	id = "bloodletting"
@@ -539,7 +552,7 @@
 		H.remove_status_effect(/datum/status_effect/neck_slice)
 
 	if(prob(10))
-		H.emote(pick("gasp", "gag", "choke"))
+		H.emote(pick(/datum/emote/living/carbon/gasp_air, "gag", "choke"))
 
 /mob/living/proc/apply_necropolis_curse(set_curse)
 	var/datum/status_effect/necropolis_curse/C = has_status_effect(/datum/status_effect/necropolis_curse)
@@ -1243,3 +1256,14 @@
 /datum/status_effect/discoordinated/on_remove()
 	REMOVE_TRAIT(owner, TRAIT_DISCOORDINATED_TOOL_USER, "[type]")
 	return ..()
+
+/// Applied to monkeys to make them attack slower.
+/datum/status_effect/monkey_retardation
+	id = "monkey_retardation"
+	alert_type = null
+	duration = -1
+	status_type = STATUS_EFFECT_UNIQUE
+
+/datum/status_effect/monkey_retardation/nextmove_modifier()
+	return 2
+

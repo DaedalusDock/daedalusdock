@@ -59,7 +59,7 @@ try:
     cl_list = CL_SPLIT.findall(cl.group(2))
 except AttributeError:
     print("No CL found!")
-    exit(1)  # Change to '0' if you do not want the action to fail when no CL is provided
+    exit(0)  # Change to '1' if you want the action to fail when no CL is provided
 
 
 if cl.group(1) is not None:

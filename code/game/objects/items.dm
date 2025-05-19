@@ -97,6 +97,17 @@ DEFINE_INTERACTABLE(/obj/item)
 	///Item flags for the item
 	var/item_flags = NONE
 
+	/// Determines behavior for how fingerprints are given during interact_with_atom().
+	var/fingerprint_flags_interact_with_atom = ALL
+	/// Determines behavior for how fingerprints are given during attack_self().
+	// Currently unimplemented as attack self is fucked.
+	// var/fingerprint_flags_attack_self = ALL
+	/// Determines behavior for how fingerprints are given during tool_act()
+	var/fingerprint_flags_tool_act = FINGERPRINT_ITEM_SUCCESS | FINGERPRINT_OBJECT_SUCCESS
+
+	/// If set to TRUE, skip item interaction and just attack the target. See ATTACK_IF_COMBAT_MODE()
+	var/combat_mode_force_attack = FALSE
+
 	///Sound played when you hit something with the item
 	var/hitsound
 	var/wielded_hitsound
@@ -783,7 +794,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	if(block_effect)
 		var/obj/effect/effect = new block_effect()
-		wielder.vis_contents += effect
+		wielder.add_viscontents(effect)
 
 /// Plays the block sound effect
 /obj/item/proc/play_block_sound(mob/living/carbon/human/wielder, attack_type)
@@ -805,7 +816,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	return ITALICS | REDUCE_RANGE
 
 /// Called when a mob drops an item.
-/obj/item/proc/dropped(mob/user, silent = FALSE)
+/obj/item/proc/unequipped(mob/user, silent = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(wielded)
@@ -820,7 +831,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	item_flags &= ~IN_INVENTORY
 	equipped_to = null
-	SEND_SIGNAL(src, COMSIG_ITEM_DROPPED, user)
+	SEND_SIGNAL(src, COMSIG_ITEM_UNEQUIPPED, user)
 
 	if(!silent)
 		playsound(src, drop_sound, DROP_SOUND_VOLUME, ignore_walls = FALSE)
@@ -1006,13 +1017,14 @@ DEFINE_INTERACTABLE(/obj/item)
  * * slot is the slot we are trying to equip to
  * * equipper is the mob trying to equip the item
  * * bypass_equip_delay_self for whether we want to bypass the equip delay
+ * * ignore_equipped ignores any already equipped items in that slot
  */
-/obj/item/proc/mob_can_equip(mob/living/M, mob/living/equipper, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE)
+/obj/item/proc/mob_can_equip(mob/living/M, mob/living/equipper, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE)
 	if(!M)
 		return FALSE
 	if((item_flags & HAND_ITEM) && slot != ITEM_SLOT_HANDS)
 		return FALSE
-	return M.can_equip(src, slot, disable_warning, bypass_equip_delay_self)
+	return M.can_equip(src, slot, disable_warning, bypass_equip_delay_self, ignore_equipped)
 
 /obj/item/verb/verb_pickup()
 	set src in oview(1)
@@ -1198,13 +1210,73 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/proc/grind_requirements(obj/machinery/reagentgrinder/R) //Used to check for extra requirements for grinding an object
 	return TRUE
+///Grind item, adding grind_results to item's reagents and transfering to target_holder if specified
+/obj/item/proc/grind(datum/reagents/target_holder, mob/user, atom/movable/grinder = loc)
+	SHOULD_NOT_OVERRIDE(TRUE)
+
+	SEND_SIGNAL(src, COMSIG_ITEM_PRE_GRIND)
+
+	. = FALSE
+	if(!can_be_ground() || target_holder.holder_full())
+		return
+
+	return do_grind(target_holder, user)
 
 ///Called BEFORE the object is ground up - use this to change grind results based on conditions. Use "return -1" to prevent the grinding from occurring
-/obj/item/proc/on_grind()
-	return SEND_SIGNAL(src, COMSIG_ITEM_ON_GRIND)
+/obj/item/proc/can_be_ground()
+	if(!length(grind_results))
+		return FALSE
 
-/obj/item/proc/on_juice()
-	return SEND_SIGNAL(src, COMSIG_ITEM_ON_JUICE)
+	return TRUE
+
+///Subtypes override his proc for custom grinding
+/obj/item/proc/do_grind(datum/reagents/target_holder, mob/user)
+	PROTECTED_PROC(TRUE)
+
+	. = FALSE
+	if(length(grind_results))
+		target_holder.add_reagent_list(grind_results)
+		. = TRUE
+
+	if(reagents?.trans_to(target_holder, reagents.total_volume, transfered_by = user))
+		. = TRUE
+
+///Juice item, converting nutriments into juice_typepath and transfering to target_holder if specified
+/obj/item/proc/juice(datum/reagents/target_holder, mob/user, atom/movable/juicer = loc)
+	SHOULD_NOT_OVERRIDE(TRUE)
+
+	SEND_SIGNAL(src, COMSIG_ITEM_PRE_JUICE)
+
+	. = FALSE
+	if(!can_be_juiced() || !reagents?.total_volume)
+		return
+
+	return do_juice(target_holder, user)
+
+
+/obj/item/proc/can_be_juiced()
+	if(!length(juice_results))
+		return FALSE
+
+	return TRUE
+
+/// Subtypes override his proc for custom juicing
+/obj/item/proc/do_juice(datum/reagents/target_holder, mob/user)
+	PROTECTED_PROC(TRUE)
+
+	. = FALSE
+
+	var/mult = round(1 / length(juice_results), CHEMICAL_QUANTISATION_LEVEL)
+
+	for(var/reagent_type in juice_results)
+		reagents.convert_reagent(/datum/reagent/consumable/nutriment, reagent_type, mult, include_source_subtypes = FALSE)
+		reagents.convert_reagent(/datum/reagent/consumable/nutriment/vitamin, reagent_type, mult, include_source_subtypes = FALSE)
+		. = TRUE
+
+	if(!QDELETED(target_holder))
+		reagents.trans_to(target_holder, reagents.total_volume, transfered_by = user)
+
+	juice_results = null
 
 /obj/item/proc/damagetype2text()
 	. += list()
@@ -1677,16 +1749,25 @@ DEFINE_INTERACTABLE(/obj/item)
 /obj/item/proc/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
 	return TRUE
 
-/obj/item/proc/do_pickup_animation(atom/target)
-	if(!istype(loc, /turf))
+/obj/item/proc/do_pickup_animation(atom/target, turf/source)
+	if(!source && !isturf(loc))
 		return
-	var/image/pickup_animation = image(icon = src, loc = loc, layer = layer + 0.1)
+
+	source ||= loc
+	if(!in_range(target, source))
+		return
+
+	// If you're at the stage where you're picking up the item, just remove the outline.
+	if(length(filter_data))
+		remove_filter("hover_outline")
+
+	var/image/pickup_animation = image(icon = src)
 	pickup_animation.plane = GAME_PLANE
+	pickup_animation.layer = ABOVE_MOB_LAYER
 	pickup_animation.transform.Scale(0.75)
 	pickup_animation.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 
-	var/turf/current_turf = get_turf(src)
-	var/direction = get_dir(current_turf, target)
+	var/direction = get_dir(source, target)
 	var/to_x = target.base_pixel_x
 	var/to_y = target.base_pixel_y
 
@@ -1702,12 +1783,12 @@ DEFINE_INTERACTABLE(/obj/item)
 		to_y += 10
 		pickup_animation.pixel_x += 6 * (prob(50) ? 1 : -1) //6 to the right or left, helps break up the straight upward move
 
-	flick_overlay(pickup_animation, GLOB.clients, 4)
-	var/matrix/animation_matrix = new(pickup_animation.transform)
+	var/atom/movable/flick_visual/pickup = source.flick_overlay_view(pickup_animation, 0.4 SECONDS)
+	var/matrix/animation_matrix = new(pickup.transform)
 	animation_matrix.Turn(pick(-30, 30))
 	animation_matrix.Scale(0.65)
 
-	animate(pickup_animation, alpha = 175, pixel_x = to_x, pixel_y = to_y, time = 3, transform = animation_matrix, easing = CUBIC_EASING)
+	animate(pickup, alpha = 175, pixel_x = to_x, pixel_y = to_y, time = 3, transform = animation_matrix, easing = CUBIC_EASING)
 	animate(alpha = 0, transform = matrix().Scale(0.7), time = 1)
 
 /obj/item/proc/do_drop_animation(atom/moving_from)
@@ -1877,7 +1958,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /// Leave evidence of a user on a target
 /obj/item/proc/leave_evidence(mob/user, atom/target)
-	if(!(item_flags & NO_EVIDENCE_ON_ATTACK))
+	if(!(item_flags & NO_EVIDENCE_ON_INTERACTION))
 		target.add_fingerprint(user)
 	else
 		target.log_touch(user)

@@ -110,6 +110,11 @@
 
 	var/datum/alarm_handler/alarm_manager
 
+	/// A weighted list of flavor texts for display_flavor().
+	var/list/flavor_texts
+	/// Cache key. Set in init.
+	var/flavor_text_key = ""
+
 /**
  * A list of teleport locations
  *
@@ -190,6 +195,9 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 	reg_in_areas_in_z()
 	update_base_lighting()
+
+	if(flavor_texts)
+		flavor_text_key = jointext(flavor_texts, "-")
 
 	return INITIALIZE_HINT_LATELOAD
 
@@ -402,6 +410,17 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		var/mob/M = arrived
 		M.update_ambience_area(src)
 
+		if(M.client && old_area)
+			if(area_flags & SHOW_NAME)
+				M.client.show_location_blurb(2 SECONDS, FALSE, TRUE)
+
+			if(length(flavor_texts) && ishuman(M))
+				var/mob/living/carbon/human/H = M
+				var/datum/roll_result/result = H.get_examine_result(flavor_text_key, 17)
+				if(result?.outcome >= SUCCESS)
+					to_chat(H, result.create_tooltip(get_flavor_string()))
+					result.do_skill_sound(H)
+
 	if(!arrived.important_recursive_contents?[RECURSIVE_CONTENTS_AREA_SENSITIVE])
 		return
 
@@ -478,7 +497,12 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 /// Called when a living mob that spawned here, joining the round, receives the player client.
 /area/proc/on_joining_game(mob/living/boarder)
-	return
+	SHOULD_CALL_PARENT(TRUE)
+	if(prob(5) && boarder.client && ishuman(boarder))
+		var/mob/living/carbon/human/H = boarder
+		var/datum/roll_result/result = H.get_examine_result(flavor_text_key, modifier = 999)
+		to_chat(H, result.create_tooltip(get_flavor_string()))
+		result.do_skill_sound(H)
 
 ///Called by airalarms and firealarms to communicate the status of the area to relevant machines
 /area/proc/communicate_fire_alert(code)
@@ -488,8 +512,27 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	for(var/datum/listener in airalarms + firealarms + firedoors)
 		SEND_SIGNAL(listener, COMSIG_FIRE_ALERT, code)
 
+/area/add_viscontents(atom/A)
+	CRASH("Tried to mutate area vis_contents.")
+
+/area/distinct_add_viscontents(atom/A)
+	CRASH("Tried to mutate area vis_contents.")
+
+/area/remove_viscontents(atom/A)
+	CRASH("Tried to mutate area vis_contents.")
+
+/area/cut_viscontents()
+	CRASH("Tried to mutate area vis_contents.")
+
 /// Adjusts the spook level and sends out a signal
 /area/proc/adjust_spook_level(adj)
 	var/old = spook_level
 	spook_level += adj
 	SEND_SIGNAL(src, AREA_SPOOK_LEVEL_CHANGED, src, old)
+
+/// Returns a string to display
+/area/proc/get_flavor_string()
+	if(!length(flavor_texts))
+		return
+
+	return pick_weight(flavor_texts)

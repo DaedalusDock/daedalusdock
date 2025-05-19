@@ -35,6 +35,7 @@
 	var/static/list/languages_possible_base = typecacheof(list(
 		/datum/language/common,
 		/datum/language/uncommon,
+		/datum/language/aether,
 		/datum/language/draconic,
 		/datum/language/codespeak,
 		/datum/language/monkey,
@@ -400,12 +401,6 @@
 			speech_args[SPEECH_SPANS] |= SPAN_SANS
 		if("papyrus")
 			speech_args[SPEECH_SPANS] |= SPAN_PAPYRUS
-
-/obj/item/organ/tongue/bone/plasmaman
-	name = "plasma bone \"tongue\""
-	desc = "Like animated skeletons, Plasmamen vibrate their teeth in order to produce speech."
-	icon_state = "tongueplasma"
-	modifies_speech = FALSE
 
 /obj/item/organ/tongue/robot
 	name = "robotic voicebox"

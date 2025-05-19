@@ -2,7 +2,7 @@
 	title = JOB_PARAMEDIC
 	description = "Run around the station looking for patients, respond to \
 		emergencies, give patients a roller bed ride to medbay."
-	department_head = list(JOB_MEDICAL_DIRECTOR)
+	department_head = list(JOB_AUGUR)
 	faction = FACTION_STATION
 	total_positions = 2
 	spawn_positions = 2
@@ -17,7 +17,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/paramedic,
-			SPECIES_PLASMAMAN = /datum/outfit/job/paramedic/plasmaman,
 		),
 	)
 
@@ -49,20 +48,20 @@
 	jobtype = /datum/job/paramedic
 
 	id = /obj/item/card/id/advanced
-	id_trim = /datum/id_trim/job/paramedic
+	id_template = /datum/access_template/job/paramedic
 	uniform = /obj/item/clothing/under/rank/medical/paramedic
 	suit = /obj/item/clothing/suit/toggle/labcoat/paramedic
-	suit_store = /obj/item/flashlight/pen/paramedic
 	backpack_contents = list(
 		/obj/item/roller = 1,
 		/obj/item/bodybag/stasis = 1,
+		/obj/item/pager/aether = 1,
+		/obj/item/diagnosis_book = 1,
 	)
 	belt = /obj/item/storage/belt/medical/paramedic
 	ears = /obj/item/radio/headset/headset_med
 	head = /obj/item/clothing/head/soft/paramedic
 	gloves = /obj/item/clothing/gloves/color/latex/nitrile
 	shoes = /obj/item/clothing/shoes/sneakers/blue
-	l_pocket = /obj/item/modular_computer/tablet/pda/medical
 
 	backpack = /obj/item/storage/backpack/medic
 	satchel = /obj/item/storage/backpack/satchel/med
@@ -71,12 +70,3 @@
 	box = /obj/item/storage/box/survival/medical
 	chameleon_extras = /obj/item/gun/syringe
 	pda_slot = ITEM_SLOT_LPOCKET
-
-/datum/outfit/job/paramedic/plasmaman
-	name = "Paramedic (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/paramedic
-	gloves = /obj/item/clothing/gloves/color/plasmaman/plasmanitrile
-	head = /obj/item/clothing/head/helmet/space/plasmaman/paramedic
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full

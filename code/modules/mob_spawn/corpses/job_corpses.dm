@@ -40,10 +40,6 @@
 /obj/effect/mob_spawn/corpse/human/miner/explorer
 	outfit = /datum/outfit/job/miner/equipped
 
-/obj/effect/mob_spawn/corpse/human/plasmaman
-	mob_species = /datum/species/plasmaman
-	outfit = /datum/outfit/plasmaman
-
 /obj/effect/mob_spawn/corpse/human/assistant
 	name = JOB_ASSISTANT
 	outfit = /datum/outfit/job/assistant

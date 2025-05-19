@@ -1,5 +1,6 @@
 /// Tests that guns (bayonetted or otherwise) are able to be used as melee weapons in close range
 /datum/unit_test/combat/pistol_whip
+	name = "COMBAT/GUNS: Guns Shall Melee With Combat Mode and Point-Blank Without"
 
 /datum/unit_test/combat/pistol_whip/Run()
 	var/mob/living/carbon/human/consistent/attacker = ALLOCATE_BOTTOM_LEFT()

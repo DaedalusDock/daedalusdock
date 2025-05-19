@@ -124,7 +124,6 @@
 #define INIT_ORDER_SOUNDS 82
 #define INIT_ORDER_INSTRUMENTS 81
 #define INIT_ORDER_GREYSCALE 80
-#define INIT_ORDER_VIS 79
 #define INIT_ORDER_DISCORD 78
 #define INIT_ORDER_ACHIEVEMENTS 77
 #define INIT_ORDER_STATION 74 //This is high priority because it manipulates a lot of the subsystems that will initialize after it.
@@ -150,6 +149,7 @@
 #define INIT_ORDER_OUTPUTS 36
 #define INIT_ORDER_RESTAURANT 35
 #define INIT_ORDER_TECH 33 //Must init before atoms, so design datums are ready.
+#define INIT_ORDER_HYDROPONICS 32 // Must init before atoms, so mutations are ready.
 #define INIT_ORDER_ATOMS 30
 #define INIT_ORDER_HOLOMAP 29 // Must init after atoms
 #define INIT_ORDER_LANGUAGE 25
@@ -221,7 +221,6 @@
 #define FIRE_PRIORITY_REAGENTS 30
 #define FIRE_PRIORITY_ACID 27
 #define FIRE_PRIORITY_WET_FLOORS 25
-#define FIRE_PRIORITY_VIS 20
 #define FIRE_PRIORITY_ASSETS 20
 #define FIRE_PRIORITY_RESEARCH 15
 #define FIRE_PRIORITY_SERVER_MAINT 10
@@ -234,10 +233,12 @@
 #define FIRE_PRIORITY_PROCESS 30
 #define FIRE_PRIORITY_NPC_ACTIONS 25
 #define FIRE_PRIORITY_NPC 20
+#define FIRE_PRIORITY_SLOW_PROCESS 12
 #define FIRE_PRIORITY_IDLE_NPC 10
 #define FIRE_PRIORITY_GARBAGE 10
 #define FIRE_PRIORITY_AMBIENCE 5
 #define FIRE_PRIORITY_CODEX 5
+#define FIRE_PRIORITY_TITLE 5
 
 
 

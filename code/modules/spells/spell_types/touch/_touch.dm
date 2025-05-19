@@ -20,7 +20,7 @@
 	return ..()
 
 /datum/action/cooldown/spell/touch/Remove(mob/living/remove_from)
-	remove_hand(remove_from)
+	remove_hand(remove_from, TRUE)
 	return ..()
 
 // PreActivate is overridden to not check is_valid_target on the caster, as it makes less sense.
@@ -72,7 +72,7 @@
 	RegisterSignal(attached_hand, COMSIG_ITEM_AFTERATTACK, PROC_REF(on_hand_hit))
 	RegisterSignal(attached_hand, COMSIG_ITEM_AFTERATTACK_SECONDARY, PROC_REF(on_secondary_hand_hit))
 	RegisterSignal(attached_hand, COMSIG_PARENT_QDELETING, PROC_REF(on_hand_deleted))
-	RegisterSignal(attached_hand, COMSIG_ITEM_DROPPED, PROC_REF(on_hand_dropped))
+	RegisterSignal(attached_hand, COMSIG_ITEM_UNEQUIPPED, PROC_REF(on_hand_dropped))
 	to_chat(cast_on, draw_message)
 	return TRUE
 
@@ -84,12 +84,12 @@
  */
 /datum/action/cooldown/spell/touch/proc/remove_hand(mob/living/hand_owner, reset_cooldown_after = FALSE)
 	if(!QDELETED(attached_hand))
-		UnregisterSignal(attached_hand, list(COMSIG_ITEM_AFTERATTACK, COMSIG_ITEM_AFTERATTACK_SECONDARY, COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED))
+		UnregisterSignal(attached_hand, list(COMSIG_ITEM_AFTERATTACK, COMSIG_ITEM_AFTERATTACK_SECONDARY, COMSIG_PARENT_QDELETING, COMSIG_ITEM_UNEQUIPPED))
 		hand_owner?.temporarilyRemoveItemFromInventory(attached_hand)
 		QDEL_NULL(attached_hand)
 
 	if(reset_cooldown_after)
-		if(hand_owner)
+		if(hand_owner && attached_hand)
 			to_chat(hand_owner, drop_message)
 		reset_spell_cooldown()
 	else
@@ -206,7 +206,7 @@
 	remove_hand(reset_cooldown_after = TRUE)
 
 /**
- * Signal proc for [COMSIG_ITEM_DROPPED] from our attached hand.
+ * Signal proc for [COMSIG_ITEM_UNEQUIPPED] from our attached hand.
  *
  * If our caster drops the hand, remove the hand / revert the cast
  * Basically gives them an easy hotkey to lose their hand without needing to click the button
@@ -224,8 +224,10 @@
 	righthand_file = 'icons/mob/inhands/misc/touchspell_righthand.dmi'
 	icon_state = "latexballon"
 	inhand_icon_state = null
+
 	item_flags = NEEDS_PERMIT | ABSTRACT
 	w_class = WEIGHT_CLASS_HUGE
+
 	force = 0
 	throwforce = 0
 	throw_range = 0

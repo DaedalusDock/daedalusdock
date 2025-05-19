@@ -14,7 +14,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/janitor,
-			SPECIES_PLASMAMAN = /datum/outfit/job/janitor/plasmaman,
 		),
 	)
 
@@ -37,19 +36,10 @@
 	name = "Janitor"
 	jobtype = /datum/job/janitor
 
-	id_trim = /datum/id_trim/job/janitor
+	id_template = /datum/access_template/job/janitor
 	uniform = /obj/item/clothing/under/rank/civilian/janitor
 	belt = /obj/item/modular_computer/tablet/pda/janitor
 	ears = /obj/item/radio/headset/headset_srv
-
-/datum/outfit/job/janitor/plasmaman
-	name = "Janitor (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/janitor
-	gloves = /obj/item/clothing/gloves/color/plasmaman/janny
-	head = /obj/item/clothing/head/helmet/space/plasmaman/janitor
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/janitor/pre_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()

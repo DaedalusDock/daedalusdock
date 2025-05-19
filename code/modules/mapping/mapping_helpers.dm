@@ -241,6 +241,27 @@
 	else
 		airlock.autoname = TRUE
 
+// Windoors
+/obj/effect/mapping_helpers/windoor
+	layer = WINDOW_HELPER_LAYER
+	late = TRUE
+
+/obj/effect/mapping_helpers/windoor/Initialize(mapload)
+	. = ..()
+	if(!mapload)
+		log_mapping("[src] spawned outside of mapload!")
+		return
+
+	var/obj/machinery/door/window/windoor = locate() in loc
+	if(!windoor)
+		log_mapping("[src] failed to find a windoor at [AREACOORD(src)]")
+	else
+		payload(windoor)
+	return INITIALIZE_HINT_QDEL
+
+/obj/effect/mapping_helpers/windoor/proc/payload(obj/machinery/door/window/windoor)
+	return
+
 //needs to do its thing before spawn_rivers() is called
 INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 
@@ -863,11 +884,9 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/mapping_helpers/lightsout/LateInitialize()
-	var/obj/machinery/power/apc/gaypc = locate() in loc
-	if(!gaypc)
-		CRASH("Lights-Out Helper missing APC at [COORD(src)]")
-	gaypc.lighting = gaypc.setsubsystem(1) //fuck you oldcode
-	gaypc.update()
+	var/area/A = get_area(src)
+	A.lightswitch = FALSE
+	A.power_change()
 	qdel(src)
 
 // -----------

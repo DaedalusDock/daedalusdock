@@ -7,6 +7,7 @@
 #define FACING_INIT_FACING_TARGET_TARGET_FACING_PERPENDICULAR 3 //Do I win the most informative but also most stupid define award?
 
 /proc/random_blood_type()
+	RETURN_TYPE(/datum/blood)
 	var/datum/blood/path = pick(\
 		4;/datum/blood/human/omin, \
 		36;/datum/blood/human/opos, \
@@ -154,13 +155,6 @@
 /proc/random_unique_vox_name(attempts_to_find_unique_name=10)
 	for(var/i in 1 to attempts_to_find_unique_name)
 		. = capitalize(vox_name())
-
-		if(!findname(.))
-			break
-
-/proc/random_unique_plasmaman_name(attempts_to_find_unique_name=10)
-	for(var/i in 1 to attempts_to_find_unique_name)
-		. = capitalize(plasmaman_name())
 
 		if(!findname(.))
 			break

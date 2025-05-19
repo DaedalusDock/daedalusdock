@@ -180,8 +180,8 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 
 	// We have two IDs, pick the one with the most command accesses, preferring the primary slot.
 	if(first_id && second_id)
-		var/first_id_tally = SSid_access.tally_access(first_id, ACCESS_FLAG_COMMAND)
-		var/second_id_tally = SSid_access.tally_access(second_id, ACCESS_FLAG_COMMAND)
+		var/first_id_tally = SSid_access.tally_access(first_id, /datum/access_group/station/management)
+		var/second_id_tally = SSid_access.tally_access(second_id, /datum/access_group/station/management)
 
 		return (first_id_tally >= second_id_tally) ? first_id : second_id
 
@@ -462,7 +462,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	visible_message(span_notice("The [src] displays a [calling_program.filedesc] notification: [alerttext]"))
 	var/mob/living/holder = loc
 	if(istype(holder))
-		to_chat(holder, "[icon2html(src)] [span_notice("The [src] displays a [calling_program.filedesc] notification: [alerttext]")]")
+		to_chat(holder, "[icon2html(src, loc)] [span_notice("The [src] displays a [calling_program.filedesc] notification: [alerttext]")]")
 
 /obj/item/modular_computer/proc/ring(ringtone) // bring bring
 	if(HAS_TRAIT(SSstation, STATION_TRAIT_PDA_GLITCHED))

@@ -36,31 +36,6 @@
 	touching = new /datum/reagents{metabolism_class = CHEM_TOUCH}(1000)
 	touching.my_atom = src
 
-/mob/living/carbon/swap_hand(held_index)
-	. = ..()
-	if(!.)
-		return
-
-	if(!held_index)
-		held_index = (active_hand_index % held_items.len)+1
-
-	if(!isnum(held_index))
-		CRASH("You passed [held_index] into swap_hand instead of a number. WTF man")
-
-	var/oindex = active_hand_index
-	active_hand_index = held_index
-
-	if(hud_used)
-		var/atom/movable/screen/inventory/hand/H
-		H = hud_used.hand_slots["[oindex]"]
-		if(H)
-			H.update_appearance()
-		H = hud_used.hand_slots["[held_index]"]
-		if(H)
-			H.update_appearance()
-
-	update_mouse_pointer()
-
 /mob/living/carbon/activate_hand(selhand) //l/r OR 1-held_items.len
 	if(!selhand)
 		selhand = (active_hand_index % held_items.len)+1
@@ -73,7 +48,7 @@
 			selhand = 1
 
 	if(selhand != active_hand_index)
-		swap_hand(selhand)
+		try_swap_hand(selhand)
 	else
 		mode() // Activate held item
 
@@ -400,9 +375,6 @@
 	var/obj/item/organ/alien/plasmavessel/vessel = getorgan(/obj/item/organ/alien/plasmavessel)
 	if(vessel)
 		. += "Plasma Stored: [vessel.stored_plasma]/[vessel.max_plasma]"
-	var/obj/item/organ/heart/vampire/darkheart = getorgan(/obj/item/organ/heart/vampire)
-	if(darkheart)
-		. += "Current blood level: [blood_volume]/[BLOOD_VOLUME_MAXIMUM]."
 	if(locate(/obj/item/assembly/health) in src)
 		. += "Health: [health]"
 
@@ -411,26 +383,24 @@
 		return 0
 	return ..()
 
-/mob/living/carbon/proc/vomit(lost_nutrition = 10, blood = FALSE, stun = TRUE, distance = 1, message = TRUE, vomit_type = VOMIT_TOXIC, harm = TRUE, force = FALSE, purge_ratio = 0.1)
+/mob/living/carbon/proc/vomit(lost_nutrition = 10, blood = FALSE, stun = TRUE, distance = 1, message = TRUE, vomit_type = VOMIT_TOXIC, harm = TRUE, force = FALSE, purge_ratio = 0.4)
 	if((HAS_TRAIT(src, TRAIT_NOHUNGER) || HAS_TRAIT(src, TRAIT_TOXINLOVER)) && !force)
 		return TRUE
 
 	if(nutrition < 100 && !blood && !force)
 		if(message)
-			visible_message(span_warning("[src] dry heaves!"), \
-							span_userdanger("You try to throw up, but there's nothing in your stomach!"))
+			visible_message(span_notice("<b>[src]</b> dry heaves."), blind_message = span_hear("You hear someone dry heave."))
 		if(stun)
 			Paralyze(200)
 		return TRUE
 
 	if(is_mouth_covered()) //make this add a blood/vomit overlay later it'll be hilarious
 		if(message)
-			visible_message(span_danger("[src] throws up all over [p_them()]self!"), \
-							span_userdanger("You throw up all over yourself!"))
+			visible_message(span_warning("<b>[src]</b> vomits onto [p_them()]self."))
 		distance = 0
 	else
 		if(message)
-			visible_message(span_danger("[src] throws up!"), span_userdanger("You throw up!"))
+			visible_message(span_warning("<b>[src]</b> vomits onto the floor."))
 
 	if(stun)
 		Paralyze(80)
@@ -811,11 +781,11 @@
 		return FALSE
 
 	// We can't heal them if they're missing their lungs
-	if(!HAS_TRAIT(src, TRAIT_NOBREATH) && !getorganslot(ORGAN_SLOT_LUNGS))
+	if(needs_organ(ORGAN_SLOT_LUNGS) && !getorganslot(ORGAN_SLOT_LUNGS))
 		return FALSE
 
 	// And we can't heal them if they're missing their liver
-	if(!getorganslot(ORGAN_SLOT_LIVER))
+	if(needs_organ(ORGAN_SLOT_LIVER) && !getorganslot(ORGAN_SLOT_LIVER))
 		return FALSE
 
 	return ..()
@@ -945,7 +915,6 @@
 		set_num_hands(num_hands - 1)
 		if(!old_bodypart.bodypart_disabled)
 			set_usable_hands(usable_hands - 1)
-
 
 /mob/living/carbon/proc/create_internal_organs()
 	for(var/obj/item/organ/organ in organs)
@@ -1287,7 +1256,7 @@
 	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc)
 	if(QDELETED(our_splatter))
 		return
-	our_splatter.add_blood_DNA(return_blood_DNA())
+	our_splatter.add_blood_DNA(get_blood_dna_list())
 	our_splatter.blood_dna_info = get_blood_dna_list()
 	var/turf/targ = get_ranged_target_turf(src, splatter_direction, splatter_strength)
 	our_splatter.fly_towards(targ, splatter_strength)
@@ -1315,23 +1284,6 @@
 	remove_overlay(FIRE_LAYER)
 	apply_overlay(FIRE_LAYER)
 	return null
-
-/mob/living/carbon/proc/can_autoheal(damtype)
-	if(!damtype)
-		CRASH("No damage type given to can_autoheal")
-
-	switch(damtype)
-		if(BRUTE)
-			return getBruteLoss() < (maxHealth/2)
-		if(BURN)
-			return getFireLoss() < (maxHealth/2)
-
-/mob/living/carbon/proc/get_wounds()
-	RETURN_TYPE(/list)
-	. = list()
-	for(var/obj/item/bodypart/BP as anything in bodyparts)
-		if(LAZYLEN(BP.wounds))
-			. += BP.wounds
 
 /mob/living/carbon/ZImpactDamage(turf/T, levels)
 	. = ..()
@@ -1368,78 +1320,6 @@
 /mob/living/carbon/get_ingested_reagents()
 	RETURN_TYPE(/datum/reagents)
 	return getorganslot(ORGAN_SLOT_STOMACH)?.reagents
-
-///generates realistic-ish pulse output based on preset levels as text
-/mob/living/carbon/proc/get_pulse(method)	//method 0 is for hands, 1 is for machines, more accurate
-	var/obj/item/organ/heart/heart_organ = getorganslot(ORGAN_SLOT_HEART)
-	if(!heart_organ)
-		// No heart, no pulse
-		return "0"
-
-	var/bpm = get_pulse_as_number()
-	if(bpm >= PULSE_MAX_BPM)
-		return method ? ">[PULSE_MAX_BPM]" : "extremely weak and fast, patient's artery feels like a thread"
-
-	return "[method ? bpm : bpm + rand(-10, 10)]"
-// output for machines ^	 ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ output for people
-
-/mob/living/carbon/proc/pulse()
-	if (stat == DEAD)
-		return PULSE_NONE
-	var/obj/item/organ/heart/H = getorganslot(ORGAN_SLOT_HEART)
-	return H ? H.pulse : PULSE_NONE
-
-/mob/living/carbon/proc/get_pulse_as_number()
-	var/obj/item/organ/heart/heart_organ = getorganslot(ORGAN_SLOT_HEART)
-	if(!heart_organ)
-		return 0
-
-	switch(pulse())
-		if(PULSE_NONE)
-			return 0
-		if(PULSE_SLOW)
-			return rand(40, 60)
-		if(PULSE_NORM)
-			return rand(60, 90)
-		if(PULSE_FAST)
-			return rand(90, 120)
-		if(PULSE_2FAST)
-			return rand(120, 160)
-		if(PULSE_THREADY)
-			return PULSE_MAX_BPM
-	return 0
-
-//Get fluffy numbers
-/mob/living/carbon/proc/get_blood_pressure()
-	if(HAS_TRAIT(src, TRAIT_FAKEDEATH))
-		return "[FLOOR(120+rand(-5,5), 1)*0.25]/[FLOOR(80+rand(-5,5)*0.25, 1)]"
-	var/blood_result = get_blood_circulation()
-	return "[FLOOR((120+rand(-5,5))*(blood_result/100), 1)]/[FLOOR((80+rand(-5,5))*(blood_result/100), 1)]"
-
-/mob/living/carbon/proc/resuscitate()
-	if(!undergoing_cardiac_arrest())
-		return
-
-	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
-	if(istype(heart) && !(heart.organ_flags & ORGAN_DEAD))
-		if(!nervous_system_failure())
-			visible_message("\The [src] jerks and gasps for breath!")
-		else
-			visible_message("\The [src] twitches a bit as \his heart restarts!")
-
-		shock_stage = min(shock_stage, SHOCK_AMT_FOR_FIBRILLATION - 25)
-
-		// Clamp oxy loss to 70 for 200 health mobs. This is a 0.65 modifier for blood oxygenation.
-		if(getOxyLoss() >= maxHealth * 0.35)
-			setOxyLoss(maxHealth * 0.35)
-
-		COOLDOWN_START(heart, arrhythmia_grace_period, 10 SECONDS)
-		heart.Restart()
-		heart.handle_pulse()
-		return TRUE
-
-/mob/living/carbon/proc/nervous_system_failure()
-	return getBrainLoss() >= maxHealth * 0.75
 
 /mob/living/carbon/has_mouth()
 	var/obj/item/bodypart/head/H = get_bodypart(BODY_ZONE_HEAD)

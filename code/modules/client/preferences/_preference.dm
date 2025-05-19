@@ -186,13 +186,13 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 
 /// Given a savefile, return either the saved data or an acceptable default.
 /// This will write to the savefile if a value was not found with the new value.
-/datum/preference/proc/read(savefile/savefile, datum/preferences/preferences)
+/datum/preference/proc/read(list/save_data, datum/preferences/preferences)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	var/value
 
-	if (!isnull(savefile))
-		READ_FILE(savefile[savefile_key], value)
+	if (!isnull(save_data))
+		value = save_data[savefile_key]
 
 	if (isnull(value))
 		return null
@@ -202,14 +202,14 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /// Given a savefile, writes the inputted value.
 /// Returns TRUE for a successful application.
 /// Return FALSE if it is invalid.
-/datum/preference/proc/write(savefile/savefile, value)
+/datum/preference/proc/write(list/save_data, value)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if (!is_valid(value))
 		return FALSE
 
-	if (!isnull(savefile))
-		WRITE_FILE(savefile[savefile_key], serialize(value))
+	if (!isnull(save_data))
+		save_data[savefile_key] = serialize(value)
 
 	return TRUE
 
@@ -234,32 +234,22 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("`apply_to_human()` was not implemented for [type]!")
 
-/// Returns which savefile to use for a given savefile identifier
-/datum/preferences/proc/get_savefile_for_savefile_identifier(savefile_identifier)
-	RETURN_TYPE(/savefile)
+/datum/preferences/proc/get_save_data_for_savefile_identifier(savefile_identifier)
+	RETURN_TYPE(/list)
 
 	if (!parent)
 		return null
+	if(!savefile)
+		CRASH("Attempted to get the savedata for [savefile_identifier] of [parent] without a savefile. This should have been handled by load_preferences()")
 
 	// Both of these will cache savefiles, but only for a tick.
 	// This is because storing a savefile will lock it, causing later issues down the line.
 	// Do not change them to addtimer, since the timer SS might not be running at this time.
-
 	switch (savefile_identifier)
 		if (PREFERENCE_CHARACTER)
-			if (!character_savefile)
-				character_savefile = new /savefile(path)
-				character_savefile.cd = "/character[default_slot]"
-				spawn (1)
-					character_savefile = null
-			return character_savefile
+			return savefile.get_entry("character[default_slot]")
 		if (PREFERENCE_PLAYER)
-			if (!game_savefile)
-				game_savefile = new /savefile(path)
-				game_savefile.cd = "/"
-				spawn (1)
-					game_savefile = null
-			return game_savefile
+			return savefile.get_entry()
 		else
 			CRASH("Unknown savefile identifier [savefile_identifier]")
 
@@ -283,16 +273,15 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 		. = value_cache[preference_type]
 		if(islist(.))
 			return (.):Copy()
-		return
+		return .
 
-	var/value = preference_entry.read(get_savefile_for_savefile_identifier(preference_entry.savefile_identifier), src)
+	var/value = preference_entry.read(get_save_data_for_savefile_identifier(preference_entry.savefile_identifier), src)
 	if (isnull(value))
 		value = preference_entry.create_informed_default_value(src)
 		if (write_preference(preference_entry, value))
 			return value
 		else
 			CRASH("Couldn't write the default value for [preference_type] (received [value])")
-
 	value_cache[preference_type] = value
 	if(islist(value))
 		return value:Copy()
@@ -304,9 +293,9 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /datum/preferences/proc/write_preference(datum/preference/preference, preference_value)
 	if(ispath(preference))
 		preference = GLOB.preference_entries[preference]
-	var/savefile = get_savefile_for_savefile_identifier(preference.savefile_identifier)
+	var/save_data = get_save_data_for_savefile_identifier(preference.savefile_identifier)
 	var/new_value = preference.deserialize(preference_value, src)
-	var/success = preference.write(savefile, new_value)
+	var/success = preference.write(save_data, new_value)
 	if (success)
 		value_cache[preference.type] = new_value
 	return success
@@ -622,3 +611,4 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 
 /datum/preference/blob/apply_to_human(mob/living/carbon/human/target, value)
 	return
+

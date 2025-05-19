@@ -22,7 +22,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/hos,
-			SPECIES_PLASMAMAN = /datum/outfit/job/hos/plasmaman,
 		),
 	)
 
@@ -68,7 +67,7 @@
 	jobtype = /datum/job/head_of_security
 
 	id = /obj/item/card/id/advanced/silver
-	id_trim = /datum/id_trim/job/head_of_security
+	id_template = /datum/access_template/job/head_of_security
 	uniform = /obj/item/clothing/under/rank/security/marshal
 	suit = /obj/item/clothing/suit/armor/vest/ballistic
 	suit_store = /obj/item/gun/energy/e_gun
@@ -94,15 +93,6 @@
 		/obj/item/stamp/hos,
 		)
 	implants = list(/obj/item/implant/mindshield)
-
-/datum/outfit/job/hos/plasmaman
-	name = "Security Marshal (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/security/head_of_security
-	gloves = /obj/item/clothing/gloves/color/plasmaman/black
-	head = /obj/item/clothing/head/helmet/space/plasmaman/security/head_of_security
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/hos/mod
 	name = "Security Marshal (MODsuit)"

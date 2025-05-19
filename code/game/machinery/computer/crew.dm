@@ -106,10 +106,10 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 		JOB_SECURITY_OFFICER_SUPPLY = 16,
 		JOB_DETECTIVE = 17,
 		// 20-29: Medbay
-		JOB_MEDICAL_DIRECTOR = 20,
+		JOB_AUGUR = 20,
 		JOB_CHEMIST = 21,
 		JOB_VIROLOGIST = 22,
-		JOB_MEDICAL_DOCTOR = 23,
+		JOB_ACOLYTE = 23,
 		JOB_PARAMEDIC = 24,
 		// 40-49: Engineering
 		JOB_CHIEF_ENGINEER = 40,
@@ -232,7 +232,7 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 		if (id_card)
 			entry["name"] = id_card.registered_name
 			entry["assignment"] = id_card.assignment
-			var/trim_assignment = id_card.get_trim_assignment()
+			var/trim_assignment = id_card.get_template_assignment()
 			if (jobs[trim_assignment] != null)
 				entry["ijob"] = jobs[trim_assignment]
 

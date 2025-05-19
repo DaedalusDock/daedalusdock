@@ -112,6 +112,7 @@ GLOBAL_LIST_INIT(admin_verbs_fun, list(
 	/client/proc/admin_away,
 	/client/proc/add_mob_ability,
 	/client/proc/set_title_music,
+	/client/proc/restore_ghost_character,
 	/datum/admins/proc/station_traits_panel,
 	))
 GLOBAL_PROTECT(admin_verbs_fun)
@@ -290,7 +291,6 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 
 /client/proc/add_admin_verbs()
 	if(holder)
-		control_freak = CONTROL_FREAK_SKIN | CONTROL_FREAK_MACROS
 
 		var/rights = holder.rank.rights
 		add_verb(src, GLOB.admin_verbs_default)
@@ -795,7 +795,7 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 
 	holder.deactivate()
 
-	to_chat(src, span_interface("You are now a normal player."))
+	to_chat(src, systemtext("You are now a normal player."))
 	log_admin("[src] deadminned themselves.")
 	message_admins("[src] deadminned themselves.")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Deadmin")
@@ -1017,7 +1017,12 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 		to_chat(usr, span_adminnotice("You cannot set the gamemode after the round has started!"))
 		return
 
-	var/gamemode_path = input(usr, "Select Gamemode", "Set Gamemode") as null|anything in subtypesof(/datum/game_mode)
+	var/list/selectable_gamemodes = subtypesof(/datum/game_mode)
+	for(var/datum/game_mode/path as anything in selectable_gamemodes)
+		if(isabstract(path))
+			selectable_gamemodes -= path
+
+	var/gamemode_path = input(usr, "Select Gamemode", "Set Gamemode") as null|anything in selectable_gamemodes
 	if(!gamemode_path)
 		return
 

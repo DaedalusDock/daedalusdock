@@ -598,6 +598,22 @@
 		. += span_notice("Alt-click [src] to [ secondsElectrified ? "un-electrify" : "permanently electrify"] it.")
 		. += span_notice("Ctrl-Shift-click [src] to [ emergency ? "disable" : "enable"] emergency access.")
 
+	if(is_station_level(z))
+		var/datum/roll_result/result = user.get_examine_result("airlock", 12)
+		if(result?.outcome >= SUCCESS)
+			result.do_skill_sound(user)
+			. += result.create_tooltip("Nearly two thousand kilograms of cold steel, and a time-tested design.", body_only = TRUE)
+
+/obj/machinery/door/airlock/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("door_flavor", only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("An airlock by one name, a door by another, a threshold a third. You are not always certain what could be behind it."),
+		)
+
 /obj/machinery/door/airlock/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
 
@@ -775,16 +791,16 @@
 /obj/machinery/door/airlock/screwdriver_act(mob/living/user, obj/item/tool)
 	if(panel_open && detonated)
 		to_chat(user, span_warning("[src] has no maintenance panel!"))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 	panel_open = !panel_open
 	to_chat(user, span_notice("You [panel_open ? "open":"close"] the maintenance panel of the airlock."))
 	tool.play_tool_sound(src)
 	update_appearance()
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/airlock/wirecutter_act(mob/living/user, obj/item/tool)
 	if(panel_open && security_level == AIRLOCK_SECURITY_PLASTEEL)
-		. = TOOL_ACT_TOOLTYPE_SUCCESS  // everything after this shouldn't result in attackby
+		. = ITEM_INTERACT_SUCCESS  // everything after this shouldn't result in attackby
 		if(hasPower() && shock(user, 60)) // Protective grille of wiring is electrified
 			return .
 		user.visible_message(
@@ -812,7 +828,7 @@
 		note.forceMove(tool.drop_location())
 		note = null
 		update_appearance()
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/airlock/crowbar_act(mob/living/user, obj/item/tool)
 
@@ -832,14 +848,14 @@
 			layer_flavor = "inner layer of shielding"
 			next_level = AIRLOCK_SECURITY_NONE
 		else
-			return TOOL_ACT_TOOLTYPE_SUCCESS
+			return ITEM_INTERACT_SUCCESS
 
 	user.visible_message(span_notice("You start prying away [src]'s [layer_flavor]."))
 	if(!tool.use_tool(src, user, 40, volume=100))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 	if(!panel_open || security_level != starting_level)
 		// if the plating's already been broken, don't break it again
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 	user.visible_message(span_notice("[user] removes [src]'s shielding."),
 							span_notice("You remove [src]'s [layer_flavor]."))
 	security_level = next_level
@@ -848,7 +864,7 @@
 		modify_max_integrity(max_integrity / AIRLOCK_INTEGRITY_MULTIPLIER)
 		damage_deflection = AIRLOCK_DAMAGE_DEFLECTION_N
 		update_appearance()
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/airlock/welder_act(mob/living/user, obj/item/tool)
 
@@ -875,19 +891,19 @@
 			layer_flavor = "inner layer of shielding"
 			next_level = AIRLOCK_SECURITY_PLASTEEL_I_S
 		else
-			return TOOL_ACT_TOOLTYPE_SUCCESS
+			return ITEM_INTERACT_SUCCESS
 
 	if(!tool.tool_start_check(user, amount=2))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	to_chat(user, span_notice("You begin cutting the [layer_flavor]..."))
 
 	if(!tool.use_tool(src, user, 4 SECONDS, volume=50, amount=2))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	if(!panel_open || security_level != starting_level)
 		// see if anyone's screwing with us
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	user.visible_message(
 		span_notice("[user] cuts through [src]'s shielding."),  // passers-by don't get the full picture
@@ -903,7 +919,7 @@
 	if(security_level == AIRLOCK_SECURITY_NONE)
 		update_appearance()
 
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/airlock/proc/try_reinforce(mob/user, obj/item/stack/sheet/material, amt_required, new_security_level)
 	if(material.get_amount() < amt_required)
@@ -1413,7 +1429,6 @@
 		A.state = AIRLOCK_ASSEMBLY_NEEDS_ELECTRONICS
 		A.created_name = name
 		A.previous_assembly = previous_airlock
-		A.update_name()
 		A.update_appearance()
 
 		if(!disassembled)

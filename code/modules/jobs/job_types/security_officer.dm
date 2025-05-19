@@ -21,7 +21,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/security,
-			SPECIES_PLASMAMAN = /datum/outfit/job/security/plasmaman,
 		),
 	)
 
@@ -51,7 +50,7 @@
 	name = "Security Officer"
 	jobtype = /datum/job/security_officer
 
-	id_trim = /datum/id_trim/job/security_officer
+	id_template = /datum/access_template/job/security_officer
 	uniform = /obj/item/clothing/under/rank/security/officer
 	suit = /obj/item/clothing/suit/armor/vest/sec
 	suit_store = /obj/item/gun/energy/disabler
@@ -78,15 +77,6 @@
 		)
 		//The helmet is necessary because /obj/item/clothing/head/helmet/sec is overwritten in the chameleon list by the standard helmet, which has the same name and icon state
 	implants = list(/obj/item/implant/mindshield)
-
-/datum/outfit/job/security/plasmaman
-	name = "Security Officer (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/security
-	gloves = /obj/item/clothing/gloves/color/plasmaman/black
-	head = /obj/item/clothing/head/helmet/space/plasmaman/security
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/security/mod
 	name = "Security Officer (MODsuit)"

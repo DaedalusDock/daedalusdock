@@ -129,7 +129,6 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 		/obj/item/clothing/mask/gas/clown_hat,
 		/obj/item/clothing/shoes/clown_shoes,
 		/obj/item/clothing/suit/chaplainsuit/clownpriest,
-		/obj/item/clothing/under/plasmaman/clown,
 		/obj/item/clothing/under/rank/civilian/clown,
 		/obj/item/food/cheesiehonkers,
 		/obj/item/food/pie/cream,
@@ -493,7 +492,6 @@ GLOBAL_LIST_INIT(phobia_species, list(
 	"lizards" = typecacheof(list(/datum/species/lizard)),
 	"robots" = typecacheof(list(/datum/species/android)),
 	"skeletons" = typecacheof(list(
-		/datum/species/plasmaman,
 		/datum/species/skeleton,
 	)),
 ))

@@ -235,6 +235,17 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	GLOB.clients += src
 	GLOB.directory[ckey] = src
 
+	var/reconnecting = FALSE
+	if(GLOB.persistent_clients_by_ckey[ckey])
+		reconnecting = TRUE
+		persistent_client = GLOB.persistent_clients_by_ckey[ckey]
+		persistent_client.byond_version = byond_build
+		persistent_client.byond_build = byond_build
+	else
+		persistent_client = new(ckey, src)
+		persistent_client.byond_version = byond_version
+		persistent_client.byond_build = byond_build
+
 	// Instantiate stat panel
 	stat_panel = new(src, "statbrowser")
 	stat_panel.subscribe(src, PROC_REF(on_stat_panel_message))
@@ -272,10 +283,12 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		if(isnull(address) || (address in localhost_addresses))
 			var/datum/admin_rank/localhost_rank = new("!localhost!", R_EVERYTHING, R_DBRANKS, R_EVERYTHING) //+EVERYTHING -DBRANKS *EVERYTHING
 			new /datum/admins(localhost_rank, ckey, 1, 1)
+
 	//preferences datum - also holds some persistent data for the client (because we may as well keep these datums to a minimum)
 	prefs = GLOB.preferences_datums[ckey]
 	if(prefs)
 		prefs.parent = src
+		prefs.load_savefile() // just to make sure we have the latest data
 		prefs.apply_all_client_preferences()
 	else
 		prefs = new /datum/preferences(src)
@@ -289,8 +302,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(fexists("data/server_last_roundend_report.html"))
 		add_verb(src, /client/proc/show_servers_last_roundend_report)
 
-	var/full_version = "[byond_version].[byond_build ? byond_build : "xxx"]"
-	log_access("Login: [key_name(src)] from [address ? address : "localhost"]-[computer_id] || BYOND v[full_version]")
+	log_access("Login: [key_name(src)] from [address ? address : "localhost"]-[computer_id] || BYOND v[persistent_client.full_byond_version()]")
 
 	var/alert_mob_dupe_login = FALSE
 	var/alert_admin_multikey = FALSE
@@ -331,15 +343,6 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 				else
 					message_admins(span_danger("<B>[message_type]: </B></span><span class='notice'>Connecting player [key_name_admin(src)] has the same [matches] as [joined_player_ckey](no longer logged in)<b>[in_round]</b>. "))
 					log_admin_private("[message_type]: Connecting player [key_name(src)] has the same [matches] as [joined_player_ckey](no longer logged in)[in_round].")
-	var/reconnecting = FALSE
-	if(GLOB.player_details[ckey])
-		reconnecting = TRUE
-		player_details = GLOB.player_details[ckey]
-		player_details.byond_version = full_version
-	else
-		player_details = new(ckey)
-		player_details.byond_version = full_version
-		GLOB.player_details[ckey] = player_details
 
 	. = ..() //calls mob.Login()
 
@@ -373,11 +376,13 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	// Initialize stat panel
 	stat_panel.initialize(
 		assets = list(get_asset_datum(/datum/asset/simple/namespaced/cursors)),
-		inline_html = file2text('html/statbrowser.html'),
-		inline_js = file2text('html/statbrowser.js'),
-		inline_css = file2text('html/statbrowser.css'),
+		inline_html = file("html/statbrowser.html"),
+		inline_js = file("html/statbrowser.js"),
+		inline_css = file("html/statbrowser.css"),
 	)
+
 	addtimer(CALLBACK(src, PROC_REF(check_panel_loaded)), 30 SECONDS)
+	INVOKE_ASYNC(src, PROC_REF(acquire_dpi))
 
 	// Initialize tgui panel
 	tgui_panel.initialize()
@@ -396,34 +401,40 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	connection_time = world.time
 	connection_realtime = world.realtime
 	connection_timeofday = world.timeofday
+
 	winset(src, null, "command=\".configure graphics-hwmode on\"")
-	var/cev = CONFIG_GET(number/client_error_version)
-	var/ceb = CONFIG_GET(number/client_error_build)
-	var/cwv = CONFIG_GET(number/client_warn_version)
-	if (byond_version < cev || (byond_version == cev && byond_build < ceb)) //Out of date client.
+	winset(src, null, "browser-options=byondstorage,devtools,refresh,find")
+
+	var/breaking_version = CONFIG_GET(number/client_error_version)
+	var/breaking_build = CONFIG_GET(number/client_error_build)
+	var/warn_version = CONFIG_GET(number/client_warn_version)
+	var/warn_build = CONFIG_GET(number/client_warn_build)
+
+	if (byond_version < breaking_version || (byond_version == breaking_version && byond_build < breaking_build)) //Out of date client.
 		to_chat(src, span_danger("<b>Your version of BYOND is too old:</b>"))
 		to_chat(src, CONFIG_GET(string/client_error_message))
 		to_chat(src, "Your version: [byond_version].[byond_build]")
-		to_chat(src, "Required version: [cev].[ceb] or later")
+		to_chat(src, "Required version: [breaking_version].[breaking_build] or later")
 		to_chat(src, "Visit <a href=\"https://secure.byond.com/download\">BYOND's website</a> to get the latest version of BYOND.")
 		if (connecting_admin)
 			to_chat(src, "Because you are an admin, you are being allowed to walk past this limitation, But it is still STRONGLY suggested you upgrade")
 		else
 			qdel(src)
 			return
-	else if (byond_version < cwv) //We have words for this client.
+
+	else if (byond_version < warn_version || (byond_version == warn_version && byond_build < warn_build)) //We have words for this client.
 		if(CONFIG_GET(flag/client_warn_popup))
 			var/msg = "<b>Your version of byond may be getting out of date:</b><br>"
 			msg += CONFIG_GET(string/client_warn_message) + "<br><br>"
-			msg += "Your version: [byond_version]<br>"
-			msg += "Required version to remove this message: [cwv] or later<br>"
+			msg += "Your version: [byond_version].[byond_build]<br>"
+			msg += "Required version to remove this message: [warn_version].[warn_build] or later<br>"
 			msg += "Visit <a href=\"https://secure.byond.com/download\">BYOND's website</a> to get the latest version of BYOND.<br>"
 			src << browse(msg, "window=warning_popup")
 		else
 			to_chat(src, span_danger("<b>Your version of byond may be getting out of date:</b>"))
 			to_chat(src, CONFIG_GET(string/client_warn_message))
-			to_chat(src, "Your version: [byond_version]")
-			to_chat(src, "Required version to remove this message: [cwv] or later")
+			to_chat(src, "Your version: [byond_version].[byond_build]")
+			to_chat(src, "Required version to remove this message: [warn_version].[warn_build] or later")
 			to_chat(src, "Visit <a href=\"https://secure.byond.com/download\">BYOND's website</a> to get the latest version of BYOND.")
 
 	if (connection == "web" && !connecting_admin)
@@ -502,11 +513,11 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	apply_clickcatcher()
 
 	if(prefs.lastchangelog != GLOB.changelog_hash) //bolds the changelog button on the interface so we know there are updates.
-		to_chat(src, span_info("You have unread updates in the changelog."))
+		to_chat(src, systemtext("You have unread updates in the changelog."))
 		if(CONFIG_GET(flag/aggressive_changelog))
 			changelog()
 		else
-			winset(src, "infowindow.changelog", "font-style=bold")
+			winset(src, "infobuttons.changelog", "font-style=bold")
 
 	if(ckey in GLOB.clientmessages)
 		for(var/message in GLOB.clientmessages[ckey])
@@ -541,7 +552,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	view_size.setZoomMode()
 	Master.UpdateTickRate()
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CLIENT_CONNECT, src)
+
 	fully_created = TRUE
+	SSlobby.client_login(src)
 
 //////////////
 //DISCONNECT//
@@ -563,6 +576,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			deadchat_broadcast(" has disconnected.", "<b>[mob][mob.get_realname_string()]</b>", follow_target = mob, turf_target = get_turf(mob), message_type = DEADCHAT_LOGIN_LOGOUT, admin_only=!announce_join)
 		mob.become_uncliented()
 
+	if(persistent_client)
+		persistent_client.client = null
+
 	GLOB.clients -= src
 	GLOB.directory -= ckey
 	log_access("Logout: [key_name(src)]")
@@ -570,6 +586,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	GLOB.interviews.client_logout(src)
 	GLOB.requests.client_logout(src)
 	SSserver_maint.UpdateHubStatus()
+	if(fully_created)
+		SSlobby.client_logout(src)
+
 	if(obj_window)
 		QDEL_NULL(obj_window)
 	if(holder)
@@ -1208,11 +1227,11 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 ///Redirect proc that makes it easier to call the unlock achievement proc. Achievement type is the typepath to the award, user is the mob getting the award, and value is an optional variable used for leaderboard value increments
 /client/proc/give_award(achievement_type, mob/user, value = 1)
-	return player_details.achievements.unlock(achievement_type, user, value)
+	return persistent_client.achievements.unlock(achievement_type, user, value)
 
 ///Redirect proc that makes it easier to get the status of an achievement. Achievement type is the typepath to the award.
 /client/proc/get_award_status(achievement_type, mob/user, value = 1)
-	return player_details.achievements.get_achievement_status(achievement_type)
+	return persistent_client.achievements.get_achievement_status(achievement_type)
 
 ///Gives someone hearted status for OOC, from behavior commendations
 /client/proc/adjust_heart(duration = 24 HOURS)
@@ -1395,3 +1414,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	popup.set_window_options("can_close=1;can_resize=0")
 	popup.set_content(content)
 	popup.open()
+
+/// This grabs the DPI of the user per their skin
+/client/proc/acquire_dpi()
+	window_scaling = text2num(winget(src, null, "dpi"))

@@ -1,3 +1,8 @@
+/obj/item/circuitboard/computer
+	req_components = list(
+		/obj/item/disk/data = 1
+	)
+
 //Command
 
 /obj/item/circuitboard/computer/aiupload
@@ -342,11 +347,6 @@
 	name = "Crew Monitoring Console (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
 	build_path = /obj/machinery/computer/crew
-
-/obj/item/circuitboard/computer/med_data
-	name = "Medical Records Console (Computer Board)"
-	greyscale_colors = CIRCUIT_COLOR_MEDICAL
-	build_path = /obj/machinery/computer/med_data
 
 /obj/item/circuitboard/computer/pandemic
 	name = "PanD.E.M.I.C. 2200 (Computer Board)"

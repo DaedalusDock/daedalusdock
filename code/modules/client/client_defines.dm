@@ -93,8 +93,8 @@
 		////////////
 		//SECURITY//
 		////////////
-	// comment out the line below when debugging locally to enable the options & messages menu
-	control_freak = 1
+
+	control_freak = CONTROL_FREAK_SKIN
 
 		////////////////////////////////////
 		//things that require the database//
@@ -151,7 +151,7 @@
 	var/list/clicklimiter
 
 	///these persist between logins/logouts during the same round.
-	var/datum/player_details/player_details
+	var/datum/persistent_client/persistent_client
 
 	///Should only be a key-value list of north/south/east/west = atom/movable/screen.
 	var/list/char_render_holders
@@ -282,3 +282,6 @@
 
 	/// Keeps track of what ambience we are playing. Yeah i know it sucks.
 	var/playing_ambience
+
+	/// The DPI scale of the client. 1 is equivalent to 100% window scaling, 2 will be 200% window scaling
+	var/window_scaling = null

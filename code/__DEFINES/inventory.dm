@@ -114,6 +114,10 @@
 //defines for the index of hands
 #define LEFT_HANDS 1
 #define RIGHT_HANDS 2
+/// Checks if the value is "left" - same as ISEVEN, but used primarily for hand or foot index contexts
+#define IS_RIGHT_INDEX(value) (value % 2 == 0)
+/// Checks if the value is "right" - same as ISODD, but used primarily for hand or foot index contexts
+#define IS_LEFT_INDEX(value) (value % 2 != 0)
 
 //flags for female outfits: How much the game can safely "take off" the uniform without it looking weird
 /// For when there's simply no need for a female version of this uniform.
@@ -182,7 +186,6 @@ GLOBAL_LIST_INIT(detective_vest_allowed, typecacheof(list(
 	/obj/item/storage/fancy/cigarettes,
 	/obj/item/taperecorder,
 	/obj/item/tank/internals/emergency_oxygen,
-	/obj/item/tank/internals/plasmaman,
 	/obj/item/storage/belt/holster/shoulder,
 	/obj/item/storage/belt/holster/shoulder/nukie,
 	/obj/item/storage/belt/holster/shoulder/thermal,
@@ -199,7 +202,6 @@ GLOBAL_LIST_INIT(security_vest_allowed, typecacheof(list(
 	/obj/item/reagent_containers/spray/pepper,
 	/obj/item/restraints/handcuffs,
 	/obj/item/tank/internals/emergency_oxygen,
-	/obj/item/tank/internals/plasmaman,
 	/obj/item/storage/belt/holster/shoulder,
 	/obj/item/storage/belt/holster/shoulder/nukie,
 	/obj/item/storage/belt/holster/shoulder/thermal,

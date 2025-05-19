@@ -1,5 +1,6 @@
 /// Test EMP flashlight EMPs people you point it at
 /datum/unit_test/combat/emp_flashlight
+	name = "COMBAT/MISC: EMP Flashlight Shall EMP On Click"
 	var/sig_caught = 0
 
 /datum/unit_test/combat/emp_flashlight/Run()

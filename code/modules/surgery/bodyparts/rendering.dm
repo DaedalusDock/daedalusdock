@@ -5,17 +5,15 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 /obj/item/bodypart/proc/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
-	if(HAS_TRAIT(owner, TRAIT_HUSK) && IS_ORGANIC_LIMB(src))
+	if(owner && HAS_TRAIT(owner, TRAIT_HUSK) && IS_ORGANIC_LIMB(src))
 		is_husked = TRUE
 	else
 		is_husked = FALSE
 
-	if(variable_color)
-		draw_color = variable_color
-	else if(should_draw_greyscale)
-		draw_color = (species_color) || (skin_tone && skintone2hex(skin_tone))
-	else
-		draw_color = null
+
+	draw_color = get_override_color()
+	if(should_draw_greyscale)
+		draw_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
 
 	if(!is_creating || !owner)
 		return
@@ -42,7 +40,7 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	else
 		species_color = null
 
-	draw_color = variable_color
+	draw_color = get_override_color()
 	if(should_draw_greyscale) //Should the limb be colored?
 		draw_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
 
@@ -50,10 +48,14 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	return TRUE
 
 //to update the bodypart's icon when not attached to a mob
-/obj/item/bodypart/proc/update_icon_dropped()
+/obj/item/bodypart/proc/update_icon_dropped(update_limb = TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
+	if(update_limb)
+		update_limb()
+
 	cut_overlays()
+
 	if(is_stump)
 		return
 
@@ -307,3 +309,24 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
 	new_leg_appearance_lower.dir = image_dir
 	. += new_leg_appearance_lower
 	return .
+
+/obj/item/bodypart/proc/get_override_color()
+	PRIVATE_PROC(TRUE)
+
+	if(!LAZYLEN(color_overrides))
+		return null
+
+	var/priority = null
+	var/out_color = null
+	for (var/override_priority in color_overrides)
+		if (text2num(override_priority) > priority)
+			priority = text2num(override_priority)
+			out_color = color_overrides[override_priority]
+
+	return out_color
+
+/obj/item/bodypart/proc/add_color_override(new_color, color_priority)
+	LAZYSET(color_overrides, "[color_priority]", new_color)
+
+/obj/item/bodypart/proc/remove_color_override(color_priority)
+	LAZYREMOVE(color_overrides, "[color_priority]")

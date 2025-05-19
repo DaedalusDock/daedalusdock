@@ -81,7 +81,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 		var/mob/living/living_user = user
 		var/obj/item/card/id/id = living_user.get_idcard()
 		if(id)
-			if((ACCESS_MANAGEMENT in id.access) || (ACCESS_ARMORY in id.access))
+			if((ACCESS_FACTION_LEADER in id.access) || (ACCESS_ARMORY in id.access))
 				item_retrieval_allowed = TRUE
 	data["item_retrieval_allowed"] = item_retrieval_allowed
 
@@ -295,7 +295,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 		if (issilicon(mob_occupant) && istype(item_content, /obj/item/mmi))
 			continue
 		if(control_computer)
-			item_content.dropped(mob_occupant)
+			item_content.unequipped(mob_occupant)
 			mob_occupant.transferItemToLoc(item_content, control_computer, force = TRUE, silent = TRUE)
 			control_computer.frozen_item += item_content
 		else mob_occupant.transferItemToLoc(item_content, drop_location(), force = TRUE, silent = TRUE)
@@ -332,7 +332,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 			tgui_alert(target, "You're an important role! [AHELP_FIRST_MESSAGE]")
 		var/datum/antagonist/antag = target.mind.has_antag_datum(/datum/antagonist)
 		if(antag)
-			tgui_alert(target, "You're \a [antag.name]! [AHELP_FIRST_MESSAGE]")
+			tgui_alert(target, "You're [antag.get_name()]! [AHELP_FIRST_MESSAGE]")
 
 	if(!istype(target) || !can_interact(user) || !target.Adjacent(user) || !ismob(target) || isanimal(target) || !istype(user.loc, /turf) || target.buckled)
 		return

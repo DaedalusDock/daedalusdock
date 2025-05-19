@@ -47,7 +47,7 @@ SUBSYSTEM_DEF(job)
 		JOB_CAPTAIN = 1,
 		JOB_HEAD_OF_PERSONNEL = 2,
 		JOB_CHIEF_ENGINEER = 3,
-		JOB_MEDICAL_DIRECTOR = 4,
+		JOB_AUGUR = 4,
 		JOB_SECURITY_MARSHAL = 5,
 		JOB_QUARTERMASTER = 6,
 	)
@@ -438,6 +438,7 @@ SUBSYSTEM_DEF(job)
 
 	. = assign_captain()
 	if(!.)
+		SSticker.mode.setup_error += "Failed to assign captain. See JobDebug for more information."
 		return FALSE
 
 	//People who wants to be the overflow role, sure, go on.
@@ -528,6 +529,7 @@ SUBSYSTEM_DEF(job)
 			if(!AssignRole(player, GetJobType(overflow_role))) //If everything is already filled, make them an assistant
 				JobDebug("DO, Forced antagonist could not be assigned any random job or the overflow role. DivideOccupations failed.")
 				JobDebug("---------------------------------------------------")
+				SSticker.mode.setup_error += "An unassigned player could not be given a random or overflow role. See JobDebug for more information."
 				return FALSE //Living on the edge, the forced antagonist couldn't be assigned to overflow role (bans, client age) - just reroll
 
 	JobDebug("DO, Ending handle unrejectable unassigned")
@@ -543,6 +545,8 @@ SUBSYSTEM_DEF(job)
 					we_fucked = TRUE
 
 			if(we_fucked)
+				JobDebug("DO, could not fill all departments.")
+				SSticker.mode.setup_error += "Could not fill all required departments. See JobDebug for more information."
 				return FALSE
 
 			JobDebug("DO, all departments have atleast one player.")
@@ -758,21 +762,23 @@ SUBSYSTEM_DEF(job)
 	if(buckle && isliving(joining_mob))
 		buckle_mob(joining_mob, FALSE, FALSE)
 
+/// Send an existing mob to their latejoin spawnpoint. Returns FALSE if it couldn't find a proper one, and resorted to the last resort.
 /datum/controller/subsystem/job/proc/SendToLateJoin(mob/M, buckle = TRUE)
 	var/atom/destination
 
-	if(M.mind && !is_unassigned_job(M.mind.assigned_role) && length(GLOB.high_priority_spawns)) //We're doing something special today.
-		destination = pick(GLOB.high_priority_spawns[M.mind.assigned_role.title])
+	if(M.mind?.assigned_role && !is_unassigned_job(M.mind.assigned_role)) //We're doing something special today.
+		destination = M.mind.assigned_role.get_latejoin_spawn_point()
 		destination.JoinPlayerHere(M, FALSE)
 		return TRUE
 
-	if(latejoin_trackers.len)
+	if(length(latejoin_trackers))
 		destination = pick(latejoin_trackers)
 		destination.JoinPlayerHere(M, buckle)
 		return TRUE
 
 	destination = get_last_resort_spawn_points()
 	destination.JoinPlayerHere(M, buckle)
+	return FALSE
 
 
 /datum/controller/subsystem/job/proc/get_last_resort_spawn_points()
@@ -934,7 +940,7 @@ SUBSYSTEM_DEF(job)
 	if(id_slot)
 		var/obj/item/card/id/id_card = id_slot.GetID(TRUE) || locate() in id_slot
 		if(id_card && !(ACCESS_MANAGEMENT in id_card.access))
-			id_card.add_wildcards(list(ACCESS_MANAGEMENT), mode=FORCE_ADD_ALL)
+			id_card.add_access(ACCESS_MANAGEMENT)
 
 	assigned_captain = TRUE
 
@@ -954,9 +960,9 @@ SUBSYSTEM_DEF(job)
 
 	var/datum/job/head_job = SSjob.GetJobType(department.department_head)
 	var/datum/outfit/outfit_prototype = head_job.outfits["Default"][SPECIES_HUMAN]
-	var/datum/id_trim/trim = SSid_access.trim_singletons_by_path[initial(outfit_prototype.id_trim)]
+	var/datum/access_template/trim = SSid_access.template_singletons_by_path[initial(outfit_prototype.id_template)]
 
-	id_card.add_access(trim.access, mode=FORCE_ADD_ALL)
+	id_card.add_access(trim.access)
 
 	SSdatacore.OnReady(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(aas_pda_message_department), department.manifest_key, "Your boss called out of work today, and [new_head.real_name] [new_head.p_have()] been granted elevated access in their absence.", "Staff Notice"))
 	temporary_heads_by_dep[department.type] = new_head.real_name
@@ -1074,12 +1080,12 @@ SUBSYSTEM_DEF(job)
 		for(var/rank in required_group)
 			var/datum/job/J = GetJob(rank)
 			if(!J)
-				SSticker.mode.setup_error = "Invalid job [rank] in gamemode required jobs."
+				SSticker.mode.setup_error += "Invalid job [rank] in gamemode required jobs."
 				return FALSE
 			if(J.current_positions < required_group[rank])
 				group_ok = FALSE
 				break
 		if(group_ok)
 			return TRUE
-	SSticker.mode.setup_error = "Required jobs not present."
+	SSticker.mode.setup_error += "Required jobs not present."
 	return FALSE

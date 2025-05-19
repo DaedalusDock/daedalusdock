@@ -20,7 +20,7 @@
 	visuals.add_filter("crop_square", 1, alpha_mask_filter(icon = icon('icons/effects/effects.dmi', "modlink_filter")))
 	visuals.maptext_height = 6
 	visuals.alpha = 0
-	user.vis_contents += visuals
+	user.add_viscontents(visuals)
 	visuals.forceMove(user)
 	animate(visuals, 0.5 SECONDS, alpha = 255)
 	var/datum/callback/setdir_callback = CALLBACK(mod_link.holder, proc_path)
@@ -179,7 +179,7 @@
 	if(slot != ITEM_SLOT_NECK)
 		mod_link?.end_call()
 
-/obj/item/clothing/neck/link_scryer/dropped(mob/living/user)
+/obj/item/clothing/neck/link_scryer/unequipped(mob/living/user)
 	. = ..()
 	mod_link?.end_call()
 
@@ -190,7 +190,7 @@
 		return
 	label = new_label
 	balloon_alert(user, "name set")
-	update_name()
+	update_appearance(UPDATE_NAME)
 
 /obj/item/clothing/neck/link_scryer/process(delta_time)
 	if(!mod_link.link_call)

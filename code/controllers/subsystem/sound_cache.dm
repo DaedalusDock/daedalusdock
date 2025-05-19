@@ -44,10 +44,12 @@ SUBSYSTEM_DEF(sound_cache)
 	for(var/i in 1 to length(paths))
 		reconstructed[i] = "[paths[i]]"
 
-	var/list/out = rustg_sound_length_list(paths)
+	var/list/out = rustg_sound_length_list(reconstructed)
 	var/list/successes = out[RUSTG_SOUNDLEN_SUCCESSES]
 	for(var/sound_path in successes)
 		sound_lengths[sound_path] = text2num(successes[sound_path])
+
+	return sound_lengths
 
 /// Cache and return a single sound.
 /datum/controller/subsystem/sound_cache/proc/get_sound_length(file_path)

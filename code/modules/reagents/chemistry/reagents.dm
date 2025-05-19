@@ -255,13 +255,32 @@ Primarily used in reagents/reaction_agents
  * Defined on a per-chem level as opposed to by the tray.
  * Can affect plant's health, stats, or cause the plant to react in certain ways.
  */
-/datum/reagent/proc/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
+/datum/reagent/proc/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
 	if(!mytray)
 		return
+
+/**
+ * Called by the Plantmaster to infuse a plant.
+ * Returns an amount to damage the plant.
+ * Args:
+ * * plant_datum: The plant being infused.
+ * * plant_dna: The plant's gene holder.
+ * * damage_ref: Lists are references abuse. Add a number to the list to deal damage to the seed.
+ */
+/datum/reagent/proc/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref) as /obj/item/seeds
+	RETURN_TYPE(/obj/item/seeds)
+	return
 
 /// Should return a associative list where keys are taste descriptions and values are strength ratios
 /datum/reagent/proc/get_taste_description(mob/living/taster)
 	return list("[taste_description]" = 1)
+
+/// Removes OTHER reagents from the given holder.
+/datum/reagent/proc/purge_others(datum/reagents/holder, amount)
+	for(var/datum/reagent/R as anything in holder.reagent_list)
+		if(istype(R, type))
+			continue
+		holder.remove_reagent(R.type, amount)
 
 /proc/pretty_string_from_reagent_list(list/reagent_list)
 	//Convert reagent list to a printable string for logging etc

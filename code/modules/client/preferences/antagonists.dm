@@ -5,7 +5,7 @@
 /datum/preference/blob/antagonists/create_default_value()
 	. = list()
 	for(var/antagonist in GLOB.special_roles)
-		.[antagonist] = FALSE
+		.[antagonist] = TRUE
 
 /datum/preference/blob/antagonists/deserialize(input, datum/preferences/preferences)
 	var/list/reference = create_default_value()

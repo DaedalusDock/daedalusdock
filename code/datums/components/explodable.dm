@@ -33,7 +33,7 @@
 			RegisterSignal(parent, list(COMSIG_ITEM_ATTACK, COMSIG_ITEM_ATTACK_OBJ, COMSIG_ITEM_HIT_REACT), PROC_REF(explodable_attack))
 			if(isclothing(parent))
 				RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
-				RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
+				RegisterSignal(parent, COMSIG_ITEM_UNEQUIPPED, PROC_REF(on_drop))
 
 	var/atom/atom_parent = parent
 	if(atom_parent.atom_storage)
@@ -81,7 +81,7 @@
 	SIGNAL_HANDLER
 
 	if(check_if_detonate(tool))
-		return COMPONENT_BLOCK_TOOL_ATTACK
+		return ITEM_INTERACT_BLOCKING
 
 ///Called when you attack a specific body part of the thing this is equipped on. Useful for exploding pants.
 /datum/component/explodable/proc/explodable_attack_zone(datum/source, damage, damagetype, def_zone)

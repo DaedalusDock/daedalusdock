@@ -222,7 +222,7 @@
 	animate(dir = EAST, 0.5 SECONDS)
 	animate(dir = SOUTH, 0.5 SECONDS)
 
-	hud_obj.vis_contents += holder
+	hud_obj.add_viscontents(holder)
 
 	var/list/text = list("<span style='text-align:center'>[uppertext(general_record?.fields[DATACORE_NAME]) || "UNKNOWN"]</span>")
 	text += "<br><br><br><br><br><br><br>"

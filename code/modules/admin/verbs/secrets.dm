@@ -74,7 +74,7 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 				M.check_access()
 				if (ACCESS_MAINT_TUNNELS in M.req_access)
 					M.req_access = list()
-					M.req_one_access = list(ACCESS_BRIG,ACCESS_ENGINE)
+					M.req_one_access = list(ACCESS_SECURITY, ACCESS_ENGINEERING)
 			message_admins("[key_name_admin(holder)] made all maint doors engineering and brig access-only.")
 		if("maint_access_brig")
 			if(!is_debugger)
@@ -82,7 +82,7 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 			for(var/obj/machinery/door/airlock/maintenance/M in INSTANCES_OF(/obj/machinery/door))
 				M.check_access()
 				if (ACCESS_MAINT_TUNNELS in M.req_access)
-					M.req_access = list(ACCESS_BRIG)
+					M.req_access = list(ACCESS_SECURITY)
 			message_admins("[key_name_admin(holder)] made all maint doors brig access-only.")
 		if("infinite_sec")
 			if(!is_debugger)
@@ -121,7 +121,7 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 			var/dat = "<B>Showing Crew Manifest.</B><HR>"
 			dat += "<table cellspacing=5><tr><th>Name</th><th>Position</th></tr>"
 			for(var/datum/data/record/t in SSdatacore.get_records(DATACORE_RECORDS_STATION))
-				dat += "<tr><td>[t.fields[DATACORE_NAME]]</td><td>[t.fields[DATACORE_RANK]][t.fields[DATACORE_RANK] != t.fields[DATACORE_TRIM] ? " ([t.fields[DATACORE_TRIM]])" : ""]</td></tr>"
+				dat += "<tr><td>[t.fields[DATACORE_NAME]]</td><td>[t.fields[DATACORE_RANK]][t.fields[DATACORE_RANK] != t.fields[DATACORE_TEMPLATE_RANK] ? " ([t.fields[DATACORE_TEMPLATE_RANK]])" : ""]</td></tr>"
 			dat += "</table>"
 			holder << browse(dat, "window=manifest;size=440x410")
 		if("dna")
@@ -180,21 +180,6 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 			log_admin("[key_name(holder)] reset the station name.")
 			message_admins(span_adminnotice("[key_name_admin(holder)] reset the station name."))
 			priority_announce("[command_name()] has renamed the station to \"[new_name]\".", PA_TITLE_COMMAND_REPORT, sound_type = ANNOUNCER_CENTCOM)
-		if("night_shift_set")
-			var/val = tgui_alert(holder, "What do you want to set night shift to? This will override the automatic system until set to automatic again.", "Night Shift", list("On", "Off", "Automatic"))
-			switch(val)
-				if("Automatic")
-					if(CONFIG_GET(flag/enable_night_shifts))
-						SSnightshift.can_fire = TRUE
-						SSnightshift.fire()
-					else
-						SSnightshift.update_nightshift(FALSE, TRUE)
-				if("On")
-					SSnightshift.can_fire = FALSE
-					SSnightshift.update_nightshift(TRUE, TRUE)
-				if("Off")
-					SSnightshift.can_fire = FALSE
-					SSnightshift.update_nightshift(FALSE, TRUE)
 		if("moveferry")
 			SSblackbox.record_feedback("nested tally", "admin_secrets_fun_used", 1, list("Send CentCom Ferry"))
 			if(!SSshuttle.toggleShuttle("ferry","ferry_home","ferry_away"))
@@ -571,7 +556,7 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 				chosen_candidate = pick(candidates)
 				candidates -= chosen_candidate
 				nerd = new /mob/living/simple_animal/drone/classic(spawnpoint)
-				nerd.key = chosen_candidate.key
+				nerd.PossessByPlayer(chosen_candidate.key)
 				log_game("[key_name(nerd)] has been selected as a Nanotrasen emergency response drone")
 				teamsize--
 
@@ -609,7 +594,7 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 			var/mob/chosen = players[1]
 			if (chosen.client)
 				chosen.client.prefs.safe_transfer_prefs_to(spawnedMob, is_antag = TRUE)
-				spawnedMob.key = chosen.key
+				spawnedMob.PossessByPlayer(chosen.key)
 			players -= chosen
 		if (ishuman(spawnedMob) && ispath(humanoutfit, /datum/outfit))
 			var/mob/living/carbon/human/H = spawnedMob

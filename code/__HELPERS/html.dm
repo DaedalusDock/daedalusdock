@@ -1,8 +1,8 @@
 /proc/button_element(trg, text, action, class, style)
-	return "<a href='byond://?src=\ref[trg];[action]' onClick='event.stopPropagation();' [class ? "class='[class]'" : ""] style='cursor:pointer;[style]'>[text]</a>"
+	return "<a href='byond://?src=\ref[trg];[action]' onClick='event.stopPropagation();' class='[class] cursorPointer' style='[style]'>[text]</a>"
 
 /proc/color_button_element(trg, color, action)
-	return "<a href='byond://?src=\ref[trg];[action]' onClick='event.stopPropagation();' class='box' style='background-color: [color];cursor: pointer'></a>"
+	return "<a href='byond://?src=\ref[trg];[action]' onClick='event.stopPropagation();' class='box cursorPointer' style='background-color: [color];'></a>"
 
 /// Display a DM icon in a a browser.
 /proc/icon_element(icon, state, dir, moving, frame, style)
@@ -11,7 +11,7 @@
 #define onclick_callback(trg, arguments) "\"(function(){window.location = 'byond://?src=[ref(trg)];[arguments]'})();\""
 
 /proc/clickable_element(tag, class, style, trg, arguments)
-	return "<[tag] onClick=[onclick_callback(trg, arguments)] class='[class]' style='cursor: pointer;[style]'>"
+	return "<[tag] onClick=[onclick_callback(trg, arguments)] class='[class] cursorPointer' style='[style]'>"
 
 /// Inline script for an animated ellipsis
 /proc/ellipsis(number_of_dots = 3, millisecond_delay = 500)

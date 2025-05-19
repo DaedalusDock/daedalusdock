@@ -117,8 +117,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	// by default, vis_contents is inherited from the turf that was here before
 	if(length(vis_contents))
-		vis_contents.len = 0
-
+		cut_viscontents()
 	assemble_baseturfs()
 
 	if(length(contents))
@@ -195,7 +194,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		GLOB.station_turfs += src
 	#endif
 
-	vis_contents.len = 0
+	if(length(vis_contents))
+		cut_viscontents()
 
 /// WARNING WARNING
 /// Turfs DO NOT lose their signals when they get replaced, REMEMBER THIS
@@ -633,24 +633,17 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		V.icon_state = "vomitpurp_[pick(1,4)]"
 	else if (toxvomit == VOMIT_TOXIC)
 		V.icon_state = "vomittox_[pick(1,4)]"
+
 	if (purge_ratio && iscarbon(M))
 		clear_reagents_to_vomit_pool(M, V, purge_ratio)
 
 /proc/clear_reagents_to_vomit_pool(mob/living/carbon/M, obj/effect/decal/cleanable/vomit/V, purge_ratio = 0.1)
-	var/obj/item/organ/stomach/belly = M.getorganslot(ORGAN_SLOT_STOMACH)
-	if(!belly?.reagents.total_volume)
+	var/datum/reagents/belly_reagents = M.get_ingested_reagents()
+	if(!belly_reagents?.total_volume)
 		return
-	var/chemicals_lost = belly.reagents.total_volume * purge_ratio
-	belly.reagents.trans_to(V, chemicals_lost, transfered_by = M)
-	//clear the stomach of anything even not food
-	for(var/bile in belly.reagents.reagent_list)
-		var/datum/reagent/reagent = bile
-		if(!belly.food_reagents[reagent.type])
-			belly.reagents.remove_reagent(reagent.type, min(reagent.volume, 10))
-		else
-			var/bit_vol = reagent.volume - belly.food_reagents[reagent.type]
-			if(bit_vol > 0)
-				belly.reagents.remove_reagent(reagent.type, min(bit_vol, 10))
+
+	var/chemicals_lost = belly_reagents.total_volume * purge_ratio
+	belly_reagents.trans_to(V, chemicals_lost, transfered_by = M)
 
 //Whatever happens after high temperature fire dies out or thermite reaction works.
 //Should return new turf

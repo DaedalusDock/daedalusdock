@@ -13,6 +13,10 @@
 
 //The code execution of the emote datum is located at code/datums/emotes.dm
 /mob/proc/emote(act, m_type = null, message = null, intentional = FALSE, force_silence = FALSE)
+	if(ispath(act, /datum/emote))
+		var/datum/emote/path_cast = act
+		act = initial(path_cast.key)
+
 	var/param = message
 	var/custom_param = findchar(act, " ")
 	if(custom_param)
@@ -26,15 +30,21 @@
 		if(intentional && !force_silence)
 			to_chat(src, span_notice("'[act]' emote does not exist. Say *help for a list."))
 		return FALSE
+
 	var/silenced = FALSE
 	for(var/datum/emote/P in key_emotes)
+		if(intentional && !P.can_player_use)
+			continue
+
 		if(!P.check_cooldown(src, intentional))
 			silenced = TRUE
 			continue
+
 		if(P.run_emote(src, param, m_type, intentional))
 			SEND_SIGNAL(src, COMSIG_MOB_EMOTE, P, act, m_type, message, intentional)
 			SEND_SIGNAL(src, COMSIG_MOB_EMOTED(P.key))
 			return TRUE
+
 	if(intentional && !silenced && !force_silence)
 		to_chat(src, span_notice("Unusable emote '[act]'. Say *help for a list."))
 	return FALSE

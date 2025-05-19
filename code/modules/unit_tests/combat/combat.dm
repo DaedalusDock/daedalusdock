@@ -1,3 +1,6 @@
+/datum/unit_test/combat/harm_punch
+	name = "COMBAT: Punching Shall Deal Damage"
+
 /datum/unit_test/combat/harm_punch/Run()
 	var/mob/living/carbon/human/puncher = allocate(/mob/living/carbon/human)
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human)
@@ -10,6 +13,9 @@
 
 	TEST_ASSERT(victim.getBruteLoss() > 0, "Victim took no brute damage after being punched")
 
+/datum/unit_test/combat/harm_melee
+	name = "COMBAT: Toolboxes Shall Deal Damage"
+
 /datum/unit_test/combat/harm_melee/Run()
 	var/mob/living/carbon/human/tider = allocate(/mob/living/carbon/human)
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human)
@@ -20,6 +26,9 @@
 	victim.attackby(toolbox, tider)
 
 	TEST_ASSERT(victim.getBruteLoss() > 0, "Victim took no brute damage after being hit by a toolbox")
+
+/datum/unit_test/combat/harm_different_damage
+	name = "COMBAT: Welding Tools Shall Deal Burn Damage"
 
 /datum/unit_test/combat/harm_different_damage/Run()
 	var/mob/living/carbon/human/attacker = allocate(/mob/living/carbon/human)
@@ -36,6 +45,7 @@
 	TEST_ASSERT(victim.getFireLoss() > 0, "Victim took no burn damage after being hit by a lit welding tool")
 
 /datum/unit_test/combat/attack_chain
+	name = "COMBAT: Attack Chain Sanity"
 	var/attack_hit
 	var/post_attack_hit
 	var/pre_attack_hit
@@ -69,6 +79,9 @@
 	TEST_ASSERT(attack_hit, "Attack signal was not fired")
 	TEST_ASSERT(post_attack_hit, "Post-attack signal was not fired")
 
+/datum/unit_test/combat/non_standard_damage
+	name = "COMBAT: Brain Damage Shall Kill"
+
 /datum/unit_test/combat/non_standard_damage/Run()
 	var/mob/living/carbon/human/man = allocate(/mob/living/carbon/human)
 
@@ -77,6 +90,7 @@
 
 /// Tests you can punch yourself
 /datum/unit_test/combat/self_punch
+	name = "COMBAT: You Can Punch Yourself"
 
 /datum/unit_test/combat/self_punch/Run()
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)

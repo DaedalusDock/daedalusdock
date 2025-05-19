@@ -233,7 +233,7 @@
 	. = ..()
 	if (movable)
 		default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/supermatter/BumpedBy(atom/AM as mob|obj)
 	if(istype(AM, /obj/effect))

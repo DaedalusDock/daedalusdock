@@ -28,7 +28,7 @@
 	. = ..()
 	AddComponent(/datum/component/geiger_sound)
 
-/obj/item/clothing/suit/space/hardsuit/engine/dropped()
+/obj/item/clothing/suit/space/hardsuit/engine/unequipped()
 	. = ..()
 	var/datum/component/geiger_sound/GS = GetComponent(/datum/component/geiger_sound)
 	if(GS)
@@ -60,7 +60,7 @@
 	. = ..()
 	AddComponent(/datum/component/geiger_sound)
 
-/obj/item/clothing/suit/space/hardsuit/atmos/dropped()
+/obj/item/clothing/suit/space/hardsuit/atmos/unequipped()
 	. = ..()
 	var/datum/component/geiger_sound/GS = GetComponent(/datum/component/geiger_sound)
 	if(GS)

@@ -21,7 +21,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/hop,
-			SPECIES_PLASMAMAN = /datum/outfit/job/hop/plasmaman,
 		),
 	)
 

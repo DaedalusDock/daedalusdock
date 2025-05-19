@@ -1,0 +1,41 @@
+/obj/effect/mapping_helpers/airlock/access/all/engineering/construction : /obj/effect/mapping_helpers/airlock/access/all/engineering/general
+/obj/effect/mapping_helpers/airlock/access/all/engineering/tcoms : /obj/effect/mapping_helpers/airlock/access/all/engineering/general
+
+/obj/effect/mapping_helpers/airlock/access/any/engineering/construction : /obj/effect/mapping_helpers/airlock/access/any/engineering/general
+/obj/effect/mapping_helpers/airlock/access/any/engineering/tcoms : /obj/effect/mapping_helpers/airlock/access/any/engineering/tech_storage
+
+/obj/effect/mapping_helpers/airlock/access/all/science/minisat : /obj/effect/mapping_helpers/airlock/access/all/engineering/tech_storage
+/obj/effect/mapping_helpers/airlock/access/any/science/minisat : /obj/effect/mapping_helpers/airlock/access/any/engineering/tech_storage
+
+/obj/effect/mapping_helpers/airlock/access/all/medical/morgue : /obj/effect/mapping_helpers/airlock/access/all/medical/general
+/obj/effect/mapping_helpers/airlock/access/all/medical/virology : /obj/effect/mapping_helpers/airlock/access/all/medical/general
+/obj/effect/mapping_helpers/airlock/access/all/medical/surgery : /obj/effect/mapping_helpers/airlock/access/all/medical/general
+/obj/effect/mapping_helpers/airlock/access/all/medical/psychology : /obj/effect/mapping_helpers/airlock/access/all/medical/general
+
+/obj/effect/mapping_helpers/airlock/access/any/medical/morgue : /obj/effect/mapping_helpers/airlock/access/any/medical/general
+/obj/effect/mapping_helpers/airlock/access/any/medical/virology : /obj/effect/mapping_helpers/airlock/access/any/medical/general
+/obj/effect/mapping_helpers/airlock/access/any/medical/surgery : /obj/effect/mapping_helpers/airlock/access/any/medical/general
+/obj/effect/mapping_helpers/airlock/access/any/medical/psychology : /obj/effect/mapping_helpers/airlock/access/any/medical/general
+
+/obj/effect/mapping_helpers/airlock/access/all/security/entrance : /obj/effect/mapping_helpers/airlock/access/all/security/general
+/obj/effect/mapping_helpers/airlock/access/all/security/brig : /obj/effect/mapping_helpers/airlock/access/all/security/general
+
+/obj/effect/mapping_helpers/airlock/access/any/security/entrance : /obj/effect/mapping_helpers/airlock/access/any/security/general
+/obj/effect/mapping_helpers/airlock/access/any/security/brig : /obj/effect/mapping_helpers/airlock/access/any/security/general
+
+/obj/effect/mapping_helpers/airlock/access/all/service/crematorium : /obj/effect/mapping_helpers/airlock/access/all/service/chapel_office
+/obj/effect/mapping_helpers/airlock/access/any/service/crematorium : /obj/effect/mapping_helpers/airlock/access/any/service/chapel_office
+
+/obj/effect/mapping_helpers/airlock/access/all/supply/mail_sorting : /obj/effect/mapping_helpers/airlock/access/all/supply/general
+/obj/effect/mapping_helpers/airlock/access/all/supply/mining : /obj/effect/mapping_helpers/airlock/access/all/supply/general
+/obj/effect/mapping_helpers/airlock/access/all/supply/mining_station : /obj/effect/mapping_helpers/airlock/access/all/supply/general
+
+/obj/effect/mapping_helpers/airlock/access/any/supply/mail_sorting : /obj/effect/mapping_helpers/airlock/access/any/supply/general
+/obj/effect/mapping_helpers/airlock/access/any/supply/mining : /obj/effect/mapping_helpers/airlock/access/any/supply/general
+/obj/effect/mapping_helpers/airlock/access/any/supply/mining_station : /obj/effect/mapping_helpers/airlock/access/any/supply/general
+
+/obj/effect/mapping_helpers/airlock/access/any/command/gateway : /obj/effect/mapping_helpers/airlock/access/any/command/general
+/obj/effect/mapping_helpers/airlock/access/all/command/gateway : /obj/effect/mapping_helpers/airlock/access/all/command/general
+
+/obj/effect/mapping_helpers/airlock/access/all/engineering/tech_storage : /obj/effect/mapping_helpers/airlock/access/all/engineering/secure
+/obj/effect/mapping_helpers/airlock/access/any/engineering/tech_storage : /obj/effect/mapping_helpers/airlock/access/any/engineering/secure

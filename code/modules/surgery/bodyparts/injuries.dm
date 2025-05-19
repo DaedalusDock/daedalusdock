@@ -53,6 +53,9 @@
 
 	update_interaction_speed()
 
+	if(splint) // If the bodypart is splinted, start the timer to heal it.
+		set_splint_timer()
+
 	if(owner)
 		apply_bone_break(owner)
 	return TRUE
@@ -91,6 +94,7 @@
 	bodypart_flags &= ~BP_BROKEN_BONES
 
 	update_interaction_speed()
+	clear_splint_timer()
 
 	if(owner)
 		apply_bone_heal(owner)
@@ -130,16 +134,13 @@
 
 /// Updates the interaction speed modifier of this limb, used by Limping and similar to determine delay.
 /obj/item/bodypart/proc/update_interaction_speed()
-	if(bodypart_flags & BP_BROKEN_BONES)
-		if(!splint)
-			interaction_speed_modifier = 7
-		else
-			if(istype(splint, /obj/item/stack))
-				var/obj/item/stack/S = splint
-				interaction_speed_modifier = 2 * (1 + S.splint_slowdown)
+	interaction_speed_modifier = initial(interaction_speed_modifier)
 
-	else
-		interaction_speed_modifier = initial(interaction_speed_modifier)
+	if(splint)
+		interaction_speed_modifier += splint.splint_slowdown
+
+	else if(bodypart_flags & BP_BROKEN_BONES)
+		interaction_speed_modifier += 7
 
 	SEND_SIGNAL(src, COMSIG_LIMB_UPDATE_INTERACTION_SPEED, interaction_speed_modifier)
 	return interaction_speed_modifier
@@ -202,7 +203,7 @@
 		if(!painless)
 			owner?.apply_pain(max_damage * DISLOCATED_LIMB_PAIN_FACTOR, body_zone, "A surge of pain shoots through your [plaintext_zone].")
 	else
-		bodypart_flags &= BP_DISLOCATED
+		bodypart_flags &= ~BP_DISLOCATED
 
 	return TRUE
 
@@ -237,12 +238,13 @@
 
 	var/smol_threshold = minimum_break_damage * 0.4
 	var/beeg_threshold = minimum_break_damage * 0.6
+	var/incision_max_size = incision.damage_list[length(incision.damage_list)]
 	// Clamp it to the largest that the wound can be
-	beeg_threshold = min(beeg_threshold, incision.damage_list[1])
+	beeg_threshold = min(beeg_threshold, incision_max_size)
 
 	if(!(incision.autoheal_cutoff == 0)) //not clean incision
 		smol_threshold *= 1.5
-		beeg_threshold = max(beeg_threshold, min(beeg_threshold * 1.5, incision.damage_list[1])) //wounds can't achieve bigger
+		beeg_threshold = max(beeg_threshold, min(beeg_threshold * 1.5, incision_max_size)) //wounds can't achieve bigger
 
 	if(incision.damage >= smol_threshold) //smol incision
 		. = SURGERY_OPEN
@@ -259,7 +261,7 @@
 	var/datum/wound/incision
 
 	for(var/datum/wound/cut/W in wounds)
-		if(W.current_stage > W.max_bleeding_stage) // Shit's unusable
+		if(W.current_stage < W.min_bleeding_stage) // Shit's unusable
 			continue
 		if(strict && !W.is_surgical()) //We don't need dirty ones
 			continue
@@ -279,7 +281,8 @@
 	var/datum/wound/W = get_incision()
 	if(!W)
 		return
-	W.open_wound(min(W.damage * 2, W.damage_list[1] - W.damage))
+
+	W.open_wound(min(W.damage * 2, W.damage_list[length(W.damage_list)] - W.damage))
 
 /obj/item/bodypart/proc/jointlock(mob/living/user)
 	if(!IS_ORGANIC_LIMB(src))

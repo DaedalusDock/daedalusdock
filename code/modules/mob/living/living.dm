@@ -167,6 +167,7 @@
 			var/oldMloc = M.loc
 			forceMove(oldMloc)
 			M.forceMove(oldloc)
+			M.update_offsets()
 
 			now_pushing = FALSE
 			return TRUE
@@ -690,7 +691,7 @@
 		. = TRUE
 
 		if(excess_healing)
-			INVOKE_ASYNC(src, PROC_REF(emote), "gasp")
+			INVOKE_ASYNC(src, PROC_REF(emote), /datum/emote/living/carbon/gasp_air)
 			log_combat(src, src, "revived")
 
 	else if(admin_revive)
@@ -1298,7 +1299,7 @@
 	if(mind)
 		mind.transfer_to(new_mob)
 	else
-		new_mob.key = key
+		new_mob.PossessByPlayer(key)
 
 	for(var/para in hasparasites())
 		var/mob/living/simple_animal/hostile/guardian/G = para
@@ -1820,13 +1821,17 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			if(. >= UNCONSCIOUS)
 				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
 				mob_mood?.update_mood()
+				blur_eyes(4)
+
 			REMOVE_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_NO_SPRINT, STAT_TRAIT)
+
 		if(UNCONSCIOUS)
 			become_blind(UNCONSCIOUS_TRAIT)
 			ADD_TRAIT(src, TRAIT_DEAF, STAT_TRAIT)
+
 		if(DEAD)
 			remove_from_alive_mob_list()
 			add_to_dead_mob_list()

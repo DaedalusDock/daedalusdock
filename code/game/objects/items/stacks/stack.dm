@@ -61,7 +61,7 @@
 	var/obj/structure/table/tableVariant // we tables now (stores table variant to be built from this stack)
 
 	// The following are all for medical treatment, they're here instead of /stack/medical because sticky tape can be used as a makeshift bandage or splint
-	/// If set and this used as a splint for a broken bone wound, this is used as a multiplier for applicable slowdowns (lower = better) (also for speeding up burn recoveries)
+	/// If set and this used as a splint for a broken bone wound, this is used as a modifier for applicable slowdowns (lower = better) (also for speeding up burn recoveries)
 	var/splint_slowdown = null
 	/// Like splint_factor but for burns instead of bone wounds. This is a multiplier used to speed up burn recoveries
 	var/burn_cleanliness_bonus
@@ -128,6 +128,7 @@
 /obj/item/stack/update_appearance(updates)
 	. = ..()
 	update_gender()
+	update_maptext()
 
 /obj/item/stack/update_name(updates)
 	if(dynamically_set_name)
@@ -148,7 +149,7 @@
 	. = ..()
 	update_maptext()
 
-/obj/item/stack/dropped(mob/user, silent)
+/obj/item/stack/unequipped(mob/user, silent)
 	. = ..()
 	update_maptext()
 
@@ -193,10 +194,38 @@
 	return is_update ? ..() : set_mats_per_unit(materials, multiplier/(amount || 1))
 
 
-/obj/item/stack/on_grind()
-	. = ..()
-	for(var/i in 1 to length(grind_results)) //This should only call if it's ground, so no need to check if grind_results exists
-		grind_results[grind_results[i]] *= get_amount() //Gets the key at position i, then the reagent amount of that key, then multiplies it by stack size
+/obj/item/stack/do_grind(datum/reagents/target_holder, mob/user)
+	var/current_amount = get_amount()
+	if(current_amount <= 0 || QDELETED(src)) //just to get rid of this 0 amount/deleted stack we return success
+		return TRUE
+
+	if(reagents)
+		reagents.trans_to(target_holder, reagents.total_volume, transfered_by = user)
+	var/available_volume = target_holder.maximum_volume - target_holder.total_volume
+
+	//compute total volume of reagents that will be occupied by grind_results
+	var/total_volume = 0
+	for(var/reagent in grind_results)
+		total_volume += grind_results[reagent]
+
+	//compute number of pieces(or sheets) from available_volume
+	var/available_amount = min(current_amount, round(available_volume / total_volume))
+	if(available_amount <= 0)
+		return FALSE
+
+	//Now transfer the grind results scaled by available_amount
+	var/list/grind_reagents = grind_results.Copy()
+	for(var/reagent in grind_reagents)
+		grind_reagents[reagent] *= available_amount
+	target_holder.add_reagent_list(grind_reagents)
+
+	/**
+	 * use available_amount of sheets/pieces, return TRUE only if all sheets/pieces of this stack were used
+	 * we don't delete this stack when it reaches 0 because we expect the all in one grinder, etc to delete
+	 * this stack if grinding was successful
+	 */
+	use(available_amount, check = FALSE)
+	return available_amount == current_amount
 
 /obj/item/stack/grind_requirements()
 	if(is_cyborg)
@@ -460,15 +489,21 @@
 /obj/item/stack/use(used, transfer = FALSE, check = TRUE) // return 0 = borked; return 1 = had enough
 	if(check && is_zero_amount(delete_if_zero = TRUE))
 		return FALSE
+
 	if(is_cyborg)
 		return source.use_charge(used * cost)
+
 	if (amount < used)
 		return FALSE
+
 	amount -= used
+
 	if(check && is_zero_amount(delete_if_zero = TRUE))
 		return TRUE
+
 	if(length(mats_per_unit))
 		update_custom_materials()
+
 	update_appearance()
 	update_weight()
 	return TRUE

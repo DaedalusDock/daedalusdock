@@ -125,6 +125,28 @@
 	if(recipe.is_finished(step_states))
 		recipe.finish_recipe(user, src)
 
+/// If the assembly is completed, move the completed items to where they belong.
+/obj/item/slapcraft_assembly/proc/try_dump_completed(mob/living/user)
+	if(!being_finished)
+		return FALSE
+
+	var/atom/fallback_loc = drop_location()
+	// So we may put the resulting item in the user's hand
+	user?.temporarilyRemoveItemFromInventory(src, TRUE)
+
+	var/in_hands = FALSE
+	if(length(finished_items) == 1)
+		var/obj/item/finished_item = finished_items[1]
+		if(isitem(finished_item) && user?.put_in_hands(finished_item))
+			in_hands = TRUE
+
+	if(!in_hands)
+		for(var/obj/item/finished_item as anything in finished_items)
+			finished_item.forceMove(fallback_loc)
+
+	finished_items = null
+	return TRUE
+
 /// Sets the recipe of this assembly aswell making the name and description matching.
 /obj/item/slapcraft_assembly/proc/set_recipe(datum/slapcraft_recipe/set_recipe)
 	recipe = set_recipe

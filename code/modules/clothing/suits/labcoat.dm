@@ -22,7 +22,6 @@
 		/obj/item/stack/medical,
 		/obj/item/storage/pill_bottle,
 		/obj/item/tank/internals/emergency_oxygen,
-		/obj/item/tank/internals/plasmaman
 	)
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 50, ACID = 50)
 

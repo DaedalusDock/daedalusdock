@@ -21,7 +21,6 @@
 	var/datum/hud/hud = null
 	/**
 	 * Map name assigned to this object.
-	 * Automatically set by /client/proc/add_obj_to_map.
 	 */
 	var/assigned_map
 	/**
@@ -119,7 +118,7 @@
 
 	if(ismob(usr))
 		var/mob/M = usr
-		M.swap_hand()
+		M.try_swap_hand()
 	return 1
 
 /atom/movable/screen/navigate
@@ -321,7 +320,7 @@
 		if(I)
 			I.Click(location, control, params)
 	else
-		user.swap_hand(held_index)
+		user.try_swap_hand(held_index)
 	return TRUE
 
 /atom/movable/screen/inventory/hand/MouseDroppedOn(atom/dropping, mob/user, params)
@@ -654,7 +653,7 @@
 
 	if(hovering == choice)
 		return
-	vis_contents -= hover_overlays_cache[hovering]
+	remove_viscontents(hover_overlays_cache[hovering])
 	hovering = choice
 
 	var/obj/effect/overlay/zone_sel/overlay_object = hover_overlays_cache[choice]
@@ -662,7 +661,7 @@
 		overlay_object = new
 		overlay_object.icon_state = "[choice]"
 		hover_overlays_cache[choice] = overlay_object
-	vis_contents += overlay_object
+	add_viscontents(overlay_object)
 
 /obj/effect/overlay/zone_sel
 	icon = 'icons/hud/screen_gen.dmi'
@@ -674,7 +673,7 @@
 /atom/movable/screen/zone_sel/MouseExited(location, control, params)
 	. = ..()
 	if(!isobserver(usr) && hovering)
-		vis_contents -= hover_overlays_cache[hovering]
+		remove_viscontents(hover_overlays_cache[hovering])
 		hovering = null
 
 /atom/movable/screen/zone_sel/proc/get_zone_at(icon_x, icon_y)

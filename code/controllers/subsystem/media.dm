@@ -5,7 +5,8 @@ SUBSYSTEM_DEF(media)
 	flags = SS_NO_FIRE
 
 	/// Media definitions grouped by their `media_tags`, All tracks share the implicit tag `all`
-	VAR_PRIVATE/list/datum/media/tracks_by_tag
+	VAR_PRIVATE/list/datum/media/tracks_by_tag = list()
+	VAR_PRIVATE/list/datum/media/all_tracks = list()
 
 	/// Only notify admins once per init about invalid jsons
 	VAR_PRIVATE/invalid_jsons_exist
@@ -33,12 +34,21 @@ SUBSYSTEM_DEF(media)
 #define MEDIA_LOAD_FAILED -1
 
 /datum/controller/subsystem/media/Initialize(start_timeofday)
-	//Reset warnings to clear any past runs.
+	SSlobby.set_game_status_text(sub_text = "Setting up track list")
+	to_chat(world, systemtext("Media: Setting up track list..."))
+	setup_tracks()
+
+	SSlobby.set_game_status_text(sub_text = "Caching sound durations")
+	to_chat(world, systemtext("Media: Caching sound durations..."))
+	cache_tracks()
+	return ..()
+
+/datum/controller/subsystem/media/proc/setup_tracks()
+//Reset warnings to clear any past runs.
 	invalid_jsons_exist = FALSE
 	errored_files = null
 
 	//I'm not even going to bother supporting the existing jukebox shit. Jsons are easier.
-	tracks_by_tag = list()
 	var/basedir = "[global.config.directory]/media/jsons/"
 	//Fetch
 	for(var/json_record in flist(basedir))
@@ -58,7 +68,7 @@ SUBSYSTEM_DEF(media)
 			continue
 
 		//Pre-Validation Fixups
-		var/jd_tag_cache = json_data["media_tags"]+MEDIA_TAG_ALLMEDIA //cache for sanic speed, We add the allmedia check here for universal validations.
+		var/list/jd_tag_cache = json_data["media_tags"]+MEDIA_TAG_ALLMEDIA //cache for sanic speed, We add the allmedia check here for universal validations.
 		var/jd_full_filepath = "[global.config.directory]/media/[json_data["file"]]"
 
 		//Validation
@@ -80,11 +90,21 @@ SUBSYSTEM_DEF(media)
 			json_data["rare"],
 			json_data["duration"],
 			json_record
-			)
+		)
+
+		all_tracks += media_datum
 		for(var/jd_tag in jd_tag_cache)
 			LAZYADD(tracks_by_tag[jd_tag], media_datum)
 
-	return ..()
+/datum/controller/subsystem/media/proc/cache_tracks()
+	var/list/path_to_track = list()
+	for(var/datum/media/track as anything in all_tracks)
+		path_to_track[track.path] = track
+
+	var/list/cached_filepaths = SSsound_cache.cache_sounds(path_to_track)
+	for(var/filepath in path_to_track)
+		var/datum/media/track = path_to_track[filepath]
+		track.duration = cached_filepaths[filepath]
 
 /// Quarantine proc for json decoding, Has handling code for most reasonable issues with file structure, and can safely die.
 /// Returns -1/MEDIA_LOAD_FAILED on error, a list on success, and null on suicide.

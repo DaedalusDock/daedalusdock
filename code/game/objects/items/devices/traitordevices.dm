@@ -227,7 +227,7 @@ effective or pretty fucking useless.
 	on = FALSE
 	user = null
 
-/obj/item/shadowcloak/dropped(mob/user)
+/obj/item/shadowcloak/unequipped(mob/user)
 	..()
 	if(user && user.get_item_by_slot(ITEM_SLOT_BELT) != src)
 		Deactivate()

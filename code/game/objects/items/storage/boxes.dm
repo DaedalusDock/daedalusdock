@@ -101,12 +101,18 @@
 //Disk boxes
 
 /obj/item/storage/box/disks
-	name = "diskette box"
-	illustration = "disk_kit"
+	name = "box of floppy disks"
+	desc = "A box able to fit 4 floppy disks."
+
+	icon_state = "floopybox-closed"
+	illustration = null
+
+	storage_type = /datum/storage/box/small_skinny
+
 
 /obj/item/storage/box/disks/PopulateContents()
-	for(var/i in 1 to 7)
-		new /obj/item/disk/data(src)
+	for(var/i in 1 to 4)
+		new /obj/item/disk/data/floppy(src)
 
 // Ordinary survival box
 /obj/item/storage/box/survival
@@ -119,9 +125,7 @@
 	var/medipen_type = /obj/item/reagent_containers/hypospray/medipen
 
 /obj/item/storage/box/survival/PopulateContents()
-	if(isplasmaman(loc))
-		new /obj/item/tank/internals/plasmaman/belt(src)
-	else if(isvox(loc))
+	if(isvox(loc))
 		new /obj/item/tank/internals/nitrogen/belt/emergency(src)
 	else
 		new mask_type(src)
@@ -139,13 +143,7 @@
 	new /obj/item/radio/off(src)
 
 /obj/item/storage/box/survival/proc/wardrobe_removal()
-	if(isplasmaman(loc)) //We need to specially fill the box with plasmaman gear, since it's intended for one
-		var/obj/item/mask = locate(mask_type) in src
-		var/obj/item/internals = locate(internal_type) in src
-		new /obj/item/tank/internals/plasmaman/belt(src)
-		qdel(mask) // Get rid of the items that shouldn't be
-		qdel(internals)
-	else if(isvox(loc))
+	if(isvox(loc))
 		var/obj/item/mask = locate(mask_type) in src
 		var/obj/item/internals = locate(internal_type) in src
 		new /obj/item/tank/internals/nitrogen/belt/emergency(src)
@@ -213,11 +211,13 @@
 
 /obj/item/storage/box/syringes
 	name = "box of syringes"
-	desc = "A box full of syringes."
+	desc = "A box able to fit 9 syringes."
 	illustration = "syringe"
 
+	storage_type = /datum/storage/box/small_skinny
+
 /obj/item/storage/box/syringes/PopulateContents()
-	for(var/i in 1 to 7)
+	for(var/i in 1 to 9)
 		new /obj/item/reagent_containers/syringe(src)
 
 /obj/item/storage/box/syringes/variety
@@ -233,6 +233,8 @@
 	name = "box of medipens"
 	desc = "A box full of epinephrine MediPens."
 	illustration = "epipen"
+
+	storage_type = /datum/storage/box/small_skinny
 
 /obj/item/storage/box/medipens/PopulateContents()
 	for(var/i in 1 to 7)
@@ -781,8 +783,8 @@
 		new /obj/item/light/bulb(src)
 
 /obj/item/storage/box/metalfoam
-	name = "box of metal foam grenades"
-	desc = "To be used to rapidly seal hull breaches."
+	name = "box of BIGWELD"
+	desc = "A box containing several BIGWELD™ Rapid Structual Support canisters."
 	illustration = "grenade"
 
 /obj/item/storage/box/metalfoam/PopulateContents()
@@ -844,10 +846,9 @@
 /obj/item/storage/box/hug/survival/PopulateContents()
 	new /obj/item/reagent_containers/hypospray/medipen(src)
 
-	if(isplasmaman(loc))
-		new /obj/item/tank/internals/plasmaman/belt(src)
-	else if(isvox(loc))
+	if(isvox(loc))
 		new /obj/item/tank/internals/nitrogen/belt/emergency(src)
+		new /obj/item/clothing/mask/breath(src)
 	else
 		new /obj/item/clothing/mask/breath(src)
 		new /obj/item/tank/internals/emergency_oxygen(src)
@@ -862,14 +863,15 @@
 	for Medical Officers who just take the box for themselves."
 
 	/// the plushies that aren't of things trying to kill you
-	var/list/static/approved_by_corporate = list(/obj/item/toy/plush/carpplushie, // well, maybe they can be something that tries to kill you a little bit
+	var/list/static/approved_by_corporate = list(
+		/obj/item/toy/plush/carpplushie, // well, maybe they can be something that tries to kill you a little bit
 		/obj/item/toy/plush/slimeplushie,
 		/obj/item/toy/plush/lizard_plushie,
 		/obj/item/toy/plush/snakeplushie,
-		/obj/item/toy/plush/plasmamanplushie,
 		/obj/item/toy/plush/beeplushie,
 		/obj/item/toy/plush/moth,
-		/obj/item/toy/plush/pkplush)
+		/obj/item/toy/plush/pkplush
+	)
 
 /obj/item/storage/box/hug/plushes/PopulateContents()
 	for(var/i in 1 to 7)
@@ -1031,8 +1033,10 @@
 	name = "box of fountain pens"
 	illustration = "fpen"
 
+	storage_type = /datum/storage/box/small_skinny
+
 /obj/item/storage/box/fountainpens/PopulateContents()
-	for(var/i in 1 to 7)
+	for(var/i in 1 to 9)
 		new /obj/item/pen/fountain(src)
 
 /obj/item/storage/box/holy_grenades
@@ -1599,3 +1603,14 @@
 							  /obj/item/food/sustenance_bar/wonka = 1))
 		new randomFood(src)
 	new /obj/item/storage/box/gum/wake_up(src)
+
+/obj/item/storage/box/chalk
+	name = "box of chalk"
+	desc = "A box able to fit 9 sticks of chalk."
+	illustration = "fpen"
+
+	storage_type = /datum/storage/box/small_skinny
+
+/obj/item/storage/box/chalk/PopulateContents()
+	for(var/i in 1 to 9)
+		new /obj/item/chalk(src)

@@ -8,6 +8,7 @@
 	density = TRUE
 	circuit = /obj/item/circuitboard/machine/limbgrower
 
+	var/allowed_buildtypes = LIMBGROWER
 	/// The category of limbs we're browing in our UI.
 	var/selected_category = SPECIES_HUMAN
 	/// If we're currently printing something.
@@ -20,14 +21,13 @@
 	var/datum/design/being_built
 
 	/// All the categories of organs we can print.
-	var/list/categories = list(SPECIES_HUMAN, SPECIES_LIZARD, SPECIES_MOTH, SPECIES_PLASMAMAN, SPECIES_ETHEREAL, "other")
+	var/list/categories = list(SPECIES_HUMAN, SPECIES_LIZARD, SPECIES_MOTH, SPECIES_ETHEREAL, "other")
 
 /obj/machinery/limbgrower/Initialize(mapload)
 	create_reagents(100, OPENCONTAINER)
 	. = ..()
 
-	internal_disk.set_data(
-		DATA_IDX_DESIGNS,
+	var/datum/c4_file/fab_design_bundle/dundle = new(
 		SStech.fetch_designs(
 			list(
 				/datum/design/leftarm,
@@ -45,6 +45,8 @@
 			)
 		)
 	)
+	dundle.name = FABRICATOR_FILE_NAME
+	disk_write_file(dundle, internal_disk)
 
 /obj/machinery/limbgrower/ui_interact(mob/user, datum/tgui/ui)
 	. = ..()
@@ -80,7 +82,8 @@
 	var/species_categories = categories.Copy()
 	for(var/species in species_categories)
 		species_categories[species] = list()
-	for(var/datum/design/limb_design as anything in internal_disk.read(DATA_IDX_DESIGNS))
+	var/list/datum/design/design_list = disk_get_designs(FABRICATOR_FILE_NAME, internal_disk)
+	for(var/datum/design/limb_design as anything in design_list)
 		for(var/found_category in species_categories)
 			if(found_category in limb_design.category)
 				species_categories[found_category] += limb_design
@@ -150,7 +153,7 @@
 			. = TRUE
 
 		if("make_limb")
-			being_built = SStech.sanitize_design_id(params["design_id"])
+			being_built = SStech.sanitize_design_id(src, params["design_id"])
 			if(!being_built)
 				CRASH("[src] was passed an invalid design id!")
 
@@ -222,7 +225,7 @@
 	limb = new buildpath(loc)
 	limb.name = "\improper synthetic [selected_category] [limb.plaintext_zone]"
 	limb.limb_id = selected_category
-	limb.variable_color = "#62A262"
+	limb.add_color_override("#62A262", LIMB_COLOR_LIMBGROWER)
 	limb.update_icon_dropped()
 
 ///Returns a valid limb typepath based on the selected option
@@ -277,7 +280,8 @@
 	for(var/datum/design/found_design as anything in SStech.designs)
 		if((found_design.build_type & LIMBGROWER) && !("emagged" in found_design.category))
 			L += found_design
-	internal_disk.set_data(DATA_IDX_DESIGNS, L)
+	var/datum/c4_file/fab_design_bundle/dundle = disk_get_file(FABRICATOR_FILE_NAME)
+	dundle.included_designs = L //This should be safe?
 
 /// Emagging a limbgrower allows you to build synthetic armblades.
 /obj/machinery/limbgrower/emag_act(mob/user)
@@ -290,9 +294,16 @@
 		)
 	)
 
-	if(!internal_disk.write(DATA_IDX_DESIGNS, designs_on_emag, TRUE))
-		to_chat(user, span_warning("[src] doesn't have enough storage left!"))
+	var/datum/c4_file/fab_design_bundle/dundle = disk_get_file(FABRICATOR_FILE_NAME)
+	if(isnull(dundle)) //If the file just doesn't exist for some reason...
+		dundle = new(list())
+		dundle.name = FABRICATOR_FILE_NAME
+		disk_write_file(dundle, internal_disk)
+	if(!istype(dundle)) //But if it's completely the wrong type...
+		to_chat(user, span_warning("Disk partition error, Design database unreadable!"))
 		return
+
+	dundle.included_designs += designs_on_emag
 
 	to_chat(user, span_warning("Safety overrides have been deactivated!"))
 	obj_flags |= EMAGGED

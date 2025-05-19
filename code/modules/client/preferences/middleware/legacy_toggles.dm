@@ -116,7 +116,7 @@
 			if (value && isnewplayer(user))
 				user.client?.playtitlemusic()
 			else
-				user.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+				user.client?.stoptitlemusic()
 
 		if(legacy_flag == SOUND_SHIP_AMBIENCE)
 			user.refresh_looping_ambience()

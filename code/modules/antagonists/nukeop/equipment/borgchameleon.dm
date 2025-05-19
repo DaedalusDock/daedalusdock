@@ -35,7 +35,7 @@
 	listeningTo = null
 	return ..()
 
-/obj/item/borg_chameleon/dropped(mob/user)
+/obj/item/borg_chameleon/unequipped(mob/user)
 	. = ..()
 	disrupt(user)
 

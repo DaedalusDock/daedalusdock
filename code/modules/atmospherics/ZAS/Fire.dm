@@ -11,10 +11,10 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 /turf
 	var/obj/effect/hotspot/active_hotspot = null
 
-/turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
+/turf/proc/hotspot_expose(exposed_temperature, exposed_volume)
 	return
 
-/turf/open/hotspot_expose(exposed_temperature, exposed_volume, soh)
+/turf/open/hotspot_expose(exposed_temperature, exposed_volume)
 	if(!simulated)
 		return 0
 	if(fire_protection > world.time-300)
@@ -82,7 +82,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	var/firelevel = 1 //Calculated by gas_mixture.calculate_firelevel()
 	var/temperature = 0
 
-/obj/effect/hotspot/Initialize(fl)
+/obj/effect/hotspot/Initialize(mapload, fl)
 	. = ..()
 	var/turf/open/T = loc
 	if(!isopenturf(T))
@@ -249,7 +249,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 			total_oxidizers += gas[g]
 
 	total_fuel = gas_fuel + liquid_fuel_amt
-	if(total_fuel <= 0.005)
+	if(total_fuel <= FIRE_MINIMUM_FUEL_MOL_TO_EXIST)
 		return 0
 
 	//*** Determine how fast the fire burns

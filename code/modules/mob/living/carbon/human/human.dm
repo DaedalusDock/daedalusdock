@@ -92,6 +92,12 @@
 			. += "Chemical Storage: [changeling.chem_charges]/[changeling.total_chem_storage]"
 			. += "Absorbed DNA: [changeling.absorbed_count]"
 
+		var/datum/antagonist/vampire/vampire = mind.has_antag_datum(/datum/antagonist/vampire)
+		if(vampire)
+			. += ""
+			. += "State: [vampire.get_thirst_stage_string()]"
+			. += "Thirst: [vampire.thirst_level.has_points() - THIRST_THRESHOLD_SATED]/[THIRST_THRESHOLD_DEAD - THIRST_THRESHOLD_SATED]"
+
 /mob/living/carbon/human/reset_perspective(atom/new_eye, force_reset = FALSE)
 	if(dna?.species?.prevent_perspective_change && !force_reset) // This is in case a species needs to prevent perspective changes in certain cases, like Dullahans preventing perspective changes when they're looking through their head.
 		update_fullscreen()
@@ -123,6 +129,7 @@
 			return
 
 		var/datum/data/record/general_record = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_STATION)
+		var/datum/data/record/medical_record = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_MEDICAL)
 
 		if(href_list["photo_front"] || href_list["photo_side"])
 			if(!general_record)
@@ -188,32 +195,36 @@
 			if(!H.wear_id) //You require access from here on out.
 				to_chat(H, span_warning("ERROR: Invalid access"))
 				return
+
 			var/list/access = H.wear_id.GetAccess()
 			if(!(ACCESS_MEDICAL in access))
 				to_chat(H, span_warning("ERROR: Invalid access"))
 				return
-			if(href_list["p_stat"])
-				var/health_status = input(usr, "Specify a new physical status for this person.", "Medical HUD", general_record.fields[DATACORE_PHYSICAL_HEALTH]) in list("Active", "Physically Unfit", "*Unconscious*", "*Deceased*", "Cancel")
-				if(!general_record)
+
+			if(href_list[DATACORE_PHYSICAL_HEALTH])
+				var/health_status = input(usr, "Specify a new physical status for this person.", "Medical HUD", medical_record.fields[DATACORE_PHYSICAL_HEALTH]) in list(PHYSHEALTH_OK, PHYSHEALTH_CARE, PHYSHEALTH_DECEASED, "Cancel")
+				if(!medical_record)
 					return
 				if(!H.canUseHUD())
 					return
 				if(!HAS_TRAIT(H, TRAIT_MEDICAL_HUD))
 					return
 				if(health_status && health_status != "Cancel")
-					general_record.fields[DATACORE_PHYSICAL_HEALTH] = health_status
+					medical_record.fields[DATACORE_PHYSICAL_HEALTH] = health_status
 				return
-			if(href_list["m_stat"])
-				var/health_status = input(usr, "Specify a new mental status for this person.", "Medical HUD", general_record.fields[DATACORE_MENTAL_HEALTH]) in list("Stable", "*Watch*", "*Unstable*", "*Insane*", "Cancel")
-				if(!general_record)
+
+			if(href_list[DATACORE_MENTAL_HEALTH])
+				var/health_status = input(usr, "Specify a new mental status for this person.", "Medical HUD", general_record.fields[DATACORE_MENTAL_HEALTH]) in list(MENHEALTH_OK, MENHEALTH_WATCH, MENHEALTH_UNSTABLE, MENHEALTH_INSANE, "Cancel")
+				if(!medical_record)
 					return
 				if(!H.canUseHUD())
 					return
 				if(!HAS_TRAIT(H, TRAIT_MEDICAL_HUD))
 					return
 				if(health_status && health_status != "Cancel")
-					general_record.fields[DATACORE_MENTAL_HEALTH] = health_status
+					medical_record.fields[DATACORE_MENTAL_HEALTH] = health_status
 				return
+
 			if(href_list["quirk"])
 				var/quirkstring = get_quirk_string(TRUE, CAT_QUIRK_ALL)
 				if(quirkstring)
@@ -815,7 +826,11 @@
 		if(HM.quality != POSITIVE)
 			dna.remove_mutation(HM.name)
 	set_coretemperature(get_body_temp_normal(apply_change=FALSE))
-	return ..()
+
+	. = ..()
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
+		for(var/datum/wound/W as anything in BP.wounds)
+			qdel(W)
 
 /mob/living/carbon/human/vomit(lost_nutrition = 10, blood = FALSE, stun = TRUE, distance = 1, message = TRUE, vomit_type = VOMIT_TOXIC, harm = TRUE, force = FALSE, purge_ratio = 0.1)
 	if(blood && (NOBLOOD in dna.species.species_traits) && !HAS_TRAIT(src, TRAIT_TOXINLOVER))
@@ -1069,9 +1084,6 @@
 /mob/living/carbon/human/species/moth
 	race = /datum/species/moth
 
-/mob/living/carbon/human/species/plasma
-	race = /datum/species/plasmaman
-
 /mob/living/carbon/human/species/pod
 	race = /datum/species/pod
 
@@ -1086,9 +1098,6 @@
 
 /mob/living/carbon/human/species/skeleton
 	race = /datum/species/skeleton
-
-/mob/living/carbon/human/species/vampire
-	race = /datum/species/vampire
 
 /mob/living/carbon/human/species/zombie
 	race = /datum/species/zombie
@@ -1224,8 +1233,8 @@
 		)
 	else
 		visible_message(
-			span_warning("The [W.desc] on [src]'s [W.parent.plaintext_zone] widens with a nasty ripping noise."),
-			span_warning("The [W.desc] on your [W.parent.plaintext_zone] widens with a nasty ripping noise."),
+			span_warning("The [W.desc] on [src]'s [W.wound_location()] widens with a nasty ripping noise."),
+			span_warning("The [W.desc] on your [W.wound_location()] widens with a nasty ripping noise."),
 			span_hear("You hear a nasty ripping noise, as if flesh is being torn apart."),
 			COMBAT_MESSAGE_RANGE,
 		)
@@ -1280,6 +1289,7 @@
 		I.add_trace_DNA(user.get_trace_dna())
 	else
 		add_trace_DNA(user.get_trace_dna())
+
 /mob/living/carbon/human/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()
 	var/head_exposure = 1

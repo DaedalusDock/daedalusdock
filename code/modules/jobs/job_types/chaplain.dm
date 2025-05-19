@@ -15,7 +15,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/chaplain,
-			SPECIES_PLASMAMAN = /datum/outfit/job/chaplain/plasmaman,
 		),
 	)
 
@@ -116,7 +115,7 @@
 	name = "Chaplain"
 	jobtype = /datum/job/chaplain
 
-	id_trim = /datum/id_trim/job/chaplain
+	id_template = /datum/access_template/job/chaplain
 	uniform = /obj/item/clothing/under/rank/civilian/chaplain
 	backpack_contents = list(
 		/obj/item/camera/spooky = 1,
@@ -129,13 +128,3 @@
 	satchel = /obj/item/storage/backpack/cultpack
 
 	chameleon_extras = /obj/item/stamp/chap
-	skillchips = list(/obj/item/skillchip/entrails_reader)
-
-/datum/outfit/job/chaplain/plasmaman
-	name = "Chaplain (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/chaplain
-	gloves = /obj/item/clothing/gloves/color/plasmaman/black
-	head = /obj/item/clothing/head/helmet/space/plasmaman/chaplain
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full

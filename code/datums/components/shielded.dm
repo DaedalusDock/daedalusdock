@@ -64,7 +64,7 @@
 
 /datum/component/shielded/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equipped))
-	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(lost_wearer))
+	RegisterSignal(parent, COMSIG_ITEM_UNEQUIPPED, PROC_REF(lost_wearer))
 	RegisterSignal(parent, COMSIG_ITEM_CHECK_BLOCK, PROC_REF(on_check_block))
 	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, PROC_REF(check_recharge_rune))
 	var/atom/shield = parent
@@ -75,7 +75,7 @@
 		set_wearer(holder)
 
 /datum/component/shielded/UnregisterFromParent()
-	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED, COMSIG_ITEM_CHECK_BLOCK, COMSIG_PARENT_ATTACKBY))
+	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_UNEQUIPPED, COMSIG_ITEM_CHECK_BLOCK, COMSIG_PARENT_ATTACKBY))
 	var/atom/shield = parent
 	if(shield.loc == wearer)
 		lost_wearer(src, wearer)

@@ -623,16 +623,6 @@
 	anchored = 1;
 	name = "Plasmaman suits"
 	},
-/obj/item/clothing/under/plasmaman,
-/obj/item/clothing/under/plasmaman/engineering,
-/obj/item/clothing/under/plasmaman/botany,
-/obj/item/clothing/under/plasmaman/janitor,
-/obj/item/clothing/under/plasmaman/chef,
-/obj/item/clothing/head/helmet/space/plasmaman,
-/obj/item/clothing/head/helmet/space/plasmaman/engineering,
-/obj/item/clothing/head/helmet/space/plasmaman/botany,
-/obj/item/clothing/head/helmet/space/plasmaman/janitor,
-/obj/item/clothing/head/helmet/space/plasmaman/white,
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
@@ -655,7 +645,7 @@
 /area/centcom/central_command_areas/briefing)
 "bV" = (
 /obj/structure/table/reinforced,
-/obj/machinery/computer/med_data/laptop,
+/obj/machinery/computer4/medical,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/control)
@@ -2635,11 +2625,6 @@
 /obj/item/clothing/mask/breath,
 /obj/item/clothing/mask/breath,
 /obj/item/clothing/mask/breath,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
-/obj/item/tank/internals/plasmaman/belt/full,
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
@@ -5167,8 +5152,6 @@
 /obj/item/food/grown/tomato,
 /obj/item/food/grown/rice,
 /obj/item/food/grown/rice,
-/obj/item/food/grown/icepepper,
-/obj/item/food/grown/icepepper,
 /obj/item/food/grown/citrus/lemon,
 /obj/item/food/grown/citrus/lime,
 /obj/item/food/grown/citrus/orange,
@@ -8619,7 +8602,7 @@
 /turf/open/floor/iron,
 /area/centcom/syndicate_mothership/control)
 "zb" = (
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -8857,7 +8840,7 @@
 /turf/open/floor/iron/white,
 /area/centcom/central_command_areas/control)
 "zK" = (
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 8
 	},
 /obj/machinery/firealarm/directional/east,
@@ -10612,10 +10595,6 @@
 /obj/machinery/light/cold/directional/west,
 /obj/item/seeds/cannabis{
 	pixel_y = 8
-	},
-/obj/item/cultivator{
-	pixel_x = -6;
-	pixel_y = 11
 	},
 /turf/open/floor/mineral/titanium/tiled,
 /area/centcom/syndicate_mothership/expansion_bioterrorism)
@@ -13772,7 +13751,6 @@
 /obj/item/shovel/spade{
 	pixel_y = -14
 	},
-/obj/item/cultivator,
 /turf/open/floor/wood,
 /area/centcom/central_command_areas/holding)
 "Ox" = (
@@ -14279,7 +14257,7 @@
 /area/centcom/central_command_areas/admin)
 "PS" = (
 /obj/machinery/newscaster/directional/south,
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -15141,7 +15119,7 @@
 /area/centcom/central_command_areas/holding)
 "So" = (
 /obj/structure/table/wood,
-/obj/machinery/computer/med_data/laptop,
+/obj/machinery/computer4/medical,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/briefing)
@@ -17745,7 +17723,7 @@
 /obj/item/food/grown/chili,
 /obj/item/food/grown/carrot,
 /obj/item/food/grown/apple,
-/obj/item/food/grown/ambrosia/vulgaris,
+/obj/item/food/grown/ambrosia,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/status_display/evac/directional/north,
 /turf/open/floor/iron/dark,

@@ -219,7 +219,7 @@
 
 	mag_type = /obj/item/ammo_box/magazine/internal/arcane_barrage
 
-/obj/item/gun/ballistic/rifle/enchanted/dropped()
+/obj/item/gun/ballistic/rifle/enchanted/unequipped()
 	. = ..()
 	guns_left = 0
 	magazine = null
@@ -242,7 +242,7 @@
 		var/obj/item/gun/ballistic/rifle/enchanted/gun = new type
 		gun.guns_left = guns_left - 1
 		discard_gun(user)
-		user.swap_hand()
+		user.try_swap_hand()
 		user.put_in_hands(gun)
 	else
 		user.dropItemToGround(src, TRUE)

@@ -12,13 +12,14 @@
 #define ROLE_CHANGELING "Changeling"
 #define ROLE_CULTIST "Cultist"
 #define ROLE_FAMILIES "Gangster"
+#define ROLE_FLOCK "Flock"
 #define ROLE_HERETIC "Heretic"
 #define ROLE_MALF "Malf AI"
 #define ROLE_OPERATIVE "Operative"
 #define ROLE_THIEF "Thief"
 #define ROLE_TRAITOR "Traitor"
+#define ROLE_VAMPIRE "Vampire"
 #define ROLE_WIZARD "Wizard"
-#define ROLE_FLOCK "Flock"
 
 // Midround roles
 #define ROLE_ABDUCTOR "Abductor"
@@ -116,6 +117,7 @@ GLOBAL_LIST_INIT(special_roles, list(
 	ROLE_THIEF = 0,
 	ROLE_TRAITOR = 0,
 	ROLE_WIZARD = 14,
+	ROLE_VAMPIRE = 0,
 
 	// Midround
 	ROLE_ABDUCTOR = 0,

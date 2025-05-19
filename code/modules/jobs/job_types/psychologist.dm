@@ -18,7 +18,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/psychologist,
-			SPECIES_PLASMAMAN = /datum/outfit/job/psychologist/plasmaman,
 		),
 	)
 
@@ -47,7 +46,7 @@
 	jobtype = /datum/job/psychologist
 
 	id = /obj/item/card/id/advanced
-	id_trim = /datum/id_trim/job/psychologist
+	id_template = /datum/access_template/job/psychologist
 	uniform = /obj/item/clothing/under/suit/black
 	backpack_contents = list(
 		/obj/item/storage/pill_bottle/lsdpsych,
@@ -66,12 +65,3 @@
 
 	pda_slot = ITEM_SLOT_BELT
 	skillchips = list(/obj/item/skillchip/job/psychology)
-
-/datum/outfit/job/psychologist/plasmaman
-	name = "Psychologist (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
-	gloves = /obj/item/clothing/gloves/color/plasmaman/white
-	head = /obj/item/clothing/head/helmet/space/plasmaman/medical
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full

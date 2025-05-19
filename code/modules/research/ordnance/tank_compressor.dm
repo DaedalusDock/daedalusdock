@@ -253,7 +253,7 @@
 	inserted_tank = null
 	inserted_drive = null
 	leaked_gas_buffer = null
-	QDEL_NULL(compressor_record) //We only want the list nuked, not the contents.
+	compressor_record = null //We only want the list nuked, not the contents.
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/tank_compressor/update_icon_state()

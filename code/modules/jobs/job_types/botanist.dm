@@ -14,7 +14,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/botanist,
-			SPECIES_PLASMAMAN = /datum/outfit/job/botanist/plasmaman,
 		),
 	)
 
@@ -22,7 +21,7 @@
 		/datum/job_department/service,
 		)
 
-	family_heirlooms = list(/obj/item/cultivator, /obj/item/reagent_containers/glass/bucket, /obj/item/toy/plush/beeplushie)
+	family_heirlooms = list(/obj/item/reagent_containers/glass/bucket, /obj/item/toy/plush/beeplushie)
 
 	mail_goodies = list(
 		/obj/item/reagent_containers/glass/bottle/mutagen = 20,
@@ -40,7 +39,7 @@
 	name = "Botanist"
 	jobtype = /datum/job/botanist
 
-	id_trim = /datum/id_trim/job/botanist
+	id_template = /datum/access_template/job/botanist
 	uniform = /obj/item/clothing/under/rank/civilian/hydroponics
 	suit = /obj/item/clothing/suit/apron
 	suit_store = /obj/item/plant_analyzer
@@ -51,12 +50,3 @@
 	backpack = /obj/item/storage/backpack/botany
 	satchel = /obj/item/storage/backpack/satchel/hyd
 	duffelbag = /obj/item/storage/backpack/duffelbag/hydroponics
-
-/datum/outfit/job/botanist/plasmaman
-	name = "Botanist (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/botany
-	gloves = /obj/item/clothing/gloves/botanic_leather/plasmaman
-	head = /obj/item/clothing/head/helmet/space/plasmaman/botany
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full

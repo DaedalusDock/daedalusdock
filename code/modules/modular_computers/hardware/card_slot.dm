@@ -31,9 +31,10 @@
 	return ..()
 
 /obj/item/computer_hardware/card_slot/GetAccess()
-	var/list/total_access
+	var/list/total_access = list()
 	if(stored_card)
 		total_access = stored_card.GetAccess()
+
 	var/obj/item/computer_hardware/card_slot/card_slot2 = holder?.all_components[MC_CARD2] //Best of both worlds
 	if(card_slot2?.stored_card)
 		total_access |= card_slot2.stored_card.GetAccess()
@@ -114,10 +115,10 @@
 	if(stored_card)
 		to_chat(user, span_notice("You press down on the manual eject button with [tool]."))
 		try_eject(user)
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 	swap_slot()
 	to_chat(user, span_notice("You adjust the connecter to fit into [expansion_hw ? "an expansion bay" : "the primary ID bay"]."))
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /**
  *Swaps the card_slot hardware between using the dedicated card slot bay on a computer, and using an expansion bay.

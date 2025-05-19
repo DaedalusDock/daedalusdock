@@ -21,13 +21,6 @@
 		CO = color
 	if (firealarm)
 		CO = bulb_emergency_colour
-	else if (nightshift_enabled)
-		OR = nightshift_outer_range
-		IR = nightshift_inner_range
-		PO = nightshift_light_power
-		if(!color)
-			CO = nightshift_light_color
-		FC = nightshift_falloff
 
 	var/matching = light && OR == light.light_outer_range && IR == light.light_inner_range && PO == light.light_power && CO == light.light_color && FC == light.light_falloff_curve
 	if(!matching)
@@ -46,6 +39,9 @@
 				playsound(src.loc, 'modular_pariah/modules/aesthetics/lights/sound/light_on.ogg', 65, 1)
 
 /obj/machinery/light/proc/start_flickering()
+	if(constant_flickering)
+		return
+
 	on = FALSE
 	update(FALSE, TRUE, FALSE)
 
@@ -54,6 +50,9 @@
 	flicker_timer = addtimer(CALLBACK(src, PROC_REF(flicker_on)), rand(5, 10))
 
 /obj/machinery/light/proc/stop_flickering()
+	if(!constant_flickering)
+		return
+
 	constant_flickering = FALSE
 
 	if(flicker_timer)

@@ -143,7 +143,7 @@
 
 
 //Returns if a certain item can be equipped to a certain slot.
-/mob/proc/can_equip(obj/item/I, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE)
+/mob/proc/can_equip(obj/item/I, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE)
 	return FALSE
 
 /mob/proc/can_put_in_hand(obj/item/I, hand_index)
@@ -158,7 +158,8 @@
 		return
 
 	//If the item is in a storage item, take it out
-	var/was_in_storage = I.item_flags & IN_STORAGE
+	var/was_in_storage = !!(I.item_flags & IN_STORAGE)
+	var/atom/item_old_loc = I.loc
 	if(was_in_storage && !I.loc.atom_storage?.attempt_remove(I, src, user = src))
 		return
 
@@ -171,6 +172,10 @@
 	if(I.loc == src)
 		if(!I.allow_attack_hand_drop(src) || !temporarilyRemoveItemFromInventory(I, use_unequip_delay = TRUE))
 			return
+
+	// If the item was in a storage object the mob isn't holding, play the pickup animation
+	if(was_in_storage && item_old_loc && (get(item_old_loc, /mob) != src))
+		I.do_pickup_animation(src, get_turf(item_old_loc))
 
 	I.pickup(src)
 	. = put_in_hand(I, hand_index, ignore_anim = ignore_anim || was_in_storage)
@@ -293,10 +298,10 @@
 	if(del_on_fail)
 		qdel(I)
 		return FALSE
-	I.forceMove(drop_location())
 	I.layer = initial(I.layer)
 	I.plane = initial(I.plane)
-	I.dropped(src)
+	I.unequipped(src)
+	I.forceMove(drop_location())
 	return FALSE
 
 /mob/proc/drop_all_held_items()
@@ -305,17 +310,7 @@
 		. |= dropItemToGround(I)
 
 /mob/proc/putItemFromInventoryInHandIfPossible(obj/item/I, hand_index, force_removal = FALSE, use_unequip_delay = FALSE)
-	if(!can_put_in_hand(I, hand_index))
-		return FALSE
-	if(!temporarilyRemoveItemFromInventory(I, force_removal, use_unequip_delay = use_unequip_delay))
-		return FALSE
-
-	I.remove_item_from_storage(src)
-
-	if(!pickup_item(I, hand_index, ignore_anim = TRUE))
-		qdel(I)
-		CRASH("Assertion failure: putItemFromInventoryInHandIfPossible") //should never be possible
-	return TRUE
+	return pickup_item(I, hand_index, ignore_anim = TRUE)
 
 /// Switches the items inside of two hand indexes.
 /mob/proc/swapHeldIndexes(index_A, index_B)
@@ -382,7 +377,7 @@
 		I.pixel_y = clamp(text2num(LAZYACCESS(user_click_modifiers, ICON_Y)) - 16, -(world.icon_size/2), world.icon_size/2)
 
 	if(animate)
-		I.do_drop_animation(src)
+		I.do_pickup_animation(newloc, get_turf(src))
 
 //visibly unequips I but it is NOT MOVED AND REMAINS IN SRC
 //item MUST BE FORCEMOVE'D OR QDEL'D
@@ -414,6 +409,14 @@
 	if(!I) //If there's nothing to drop, the drop is automatically succesfull. If(unEquip) should generally be used to check for TRAIT_NODROP.
 		return TRUE
 
+	if(I.equipped_to != src) // It isn't even equipped to us.
+		if(!no_move && !QDELETED(I))
+			if (isnull(newloc))
+				I.moveToNullspace()
+			else
+				I.forceMove(newloc)
+		return TRUE
+
 	if(!force && !canUnequipItem(I, newloc, no_move, invdrop, silent))
 		return FALSE
 
@@ -437,13 +440,13 @@
 		I.plane = initial(I.plane)
 		I.appearance_flags &= ~NO_CLIENT_COLOR
 
-		I.dropped(src, silent)
-
 		if(!no_move && !(I.item_flags & DROPDEL) && !QDELETED(I)) //item may be moved/qdel'd immedietely, don't bother moving it
 			if (isnull(newloc))
 				I.moveToNullspace()
 			else
 				I.forceMove(newloc)
+
+		I.unequipped(src, silent)
 
 	SEND_SIGNAL(I, COMSIG_ITEM_POST_UNEQUIP, force, newloc, no_move, invdrop, silent)
 	SEND_SIGNAL(src, COMSIG_MOB_UNEQUIPPED_ITEM, I, force, newloc, no_move, invdrop, silent)
@@ -555,9 +558,6 @@
 	if(M.equip_to_appropriate_slot(src))
 		M.update_held_items()
 		return TRUE
-	else
-		if(equip_delay_self)
-			return
 
 	if(M.active_storage?.attempt_insert(src, M))
 		return TRUE
@@ -570,7 +570,7 @@
 		if(I.atom_storage?.attempt_insert(src, M))
 			return TRUE
 
-	to_chat(M, span_warning("You are unable to equip that!"))
+	to_chat(M, span_warning("You are unable to equip that."))
 	return FALSE
 
 
@@ -584,16 +584,10 @@
 /mob/proc/execute_quick_equip()
 	var/obj/item/I = get_active_held_item()
 	if(!I)
-		to_chat(src, span_warning("You are not holding anything to equip!"))
+		to_chat(src, span_warning("You are not holding anything to equip."))
 		return
 
-	if(I.equip_to_best_slot(src))
-		return
-
-	if(put_in_active_hand(I))
-		return
-
-	I.forceMove(drop_location())
+	return I.equip_to_best_slot(src)
 
 //used in code for items usable by both carbon and drones, this gives the proper back slot for each mob.(defibrillator, backpack watertank, ...)
 /mob/proc/getBackSlot()

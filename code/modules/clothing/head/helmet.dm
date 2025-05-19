@@ -449,7 +449,7 @@
 		user.dropItemToGround(src)
 		return
 	var/mob/picked = pick(candidates)
-	magnification.key = picked.key
+	magnification.PossessByPlayer(picked.key)
 	playsound(src, 'sound/machines/microwave/microwave-end.ogg', 100, FALSE)
 	to_chat(magnification, span_notice("You're a mind magnified monkey! Protect your helmet with your life- if you lose it, your sentience goes with it!"))
 	var/policy = get_policy(ROLE_MONKEY_HELMET)
@@ -486,7 +486,7 @@
 	magnification = null
 	new /obj/effect/decal/cleanable/ash/crematorium(drop_location()) //just in case they're in a locker or other containers it needs to use crematorium ash, see the path itself for an explanation
 
-/obj/item/clothing/head/helmet/monkey_sentience/dropped(mob/user)
+/obj/item/clothing/head/helmet/monkey_sentience/unequipped(mob/user)
 	. = ..()
 	if(magnification || polling)
 		qdel(src)//runs disconnect code

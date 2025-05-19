@@ -712,7 +712,7 @@
 
 	if(!is_listed)
 		ckey_list += user.ckey
-	newcarp.key = user.key
+	newcarp.PossessByPlayer(user.key)
 	newcarp.give_unique_name()
 	var/datum/antagonist/space_dragon/S = dragon?.mind?.has_antag_datum(/datum/antagonist/space_dragon)
 	if(S)

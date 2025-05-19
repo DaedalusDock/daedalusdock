@@ -170,7 +170,7 @@
 	var/area/scrub_area = get_area(src)
 	if(!GLOB.air_scrub_names[id_tag])
 		// If we do not have a name, assign one
-		update_name()
+		update_appearance(UPDATE_NAME)
 		GLOB.air_scrub_names[id_tag] = name
 
 	scrub_area.air_scrub_info[id_tag] = signal.data
@@ -350,7 +350,7 @@
 	if(!can_hibernate)
 		COOLDOWN_RESET(src, hibernating)
 
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/layer2
 	piping_layer = 2

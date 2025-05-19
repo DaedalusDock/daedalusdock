@@ -37,3 +37,8 @@
 2025-05-18:
   Kapu1178:
   - server: You now require byond 516.1659+ to connect to the server.
+2025-05-19:
+  Kapu1178:
+  - bugfix: Fixed cases where title music would continue to play into the round.
+  - qol: Title music is now an automatically playing playlist.
+  - bugfix: Fixed a hard del.

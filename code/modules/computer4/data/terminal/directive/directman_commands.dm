@@ -13,6 +13,14 @@
 	system.clear_screen(TRUE)
 	directman.view_home()
 
+/datum/shell_command/directman/main/refresh
+	aliases = list("r", "R")
+
+/datum/shell_command/directman/main/refresh/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	var/datum/c4_file/terminal_program/directman/directman = program
+	system.clear_screen(TRUE)
+	directman.view_home()
+
 /datum/shell_command/directman/main/show_current
 	aliases = list("1")
 

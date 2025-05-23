@@ -109,11 +109,12 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 /// Sends a message to the appropriate channels.
 /obj/machinery/announcement_system/proc/broadcast(message, list/channels)
 	use_power(active_power_usage)
-	if(channels.len == 0)
+	if(!length(channels))
 		radio.talk_into(src, message, null)
 	else
 		for(var/channel in channels)
 			radio.talk_into(src, message, channel)
+	return TRUE
 
 /obj/machinery/announcement_system/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -312,3 +313,10 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 			. += id
 
 	return aas_mass_pda_message(., message, reason)
+
+/proc/aas_radio_message(message, list/channels)
+	var/obj/machinery/announcement_system/AAS = pick(GLOB.announcement_systems)
+	if(!AAS)
+		return FALSE
+
+	return AAS.broadcast(message, channels)

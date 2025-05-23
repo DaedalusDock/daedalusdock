@@ -51,7 +51,7 @@
 				view_home()
 				return TRUE
 
-			if(!(number in 1 to length(SSdirectives.active_directives)))
+			if(!(number in 1 to length(SSdirectives.get_active_directives())))
 				return
 
 			view_directive(number)
@@ -65,7 +65,7 @@
 
 		if(DIRECTMAN_MENU_NEW_DIRECTIVES)
 			var/number = text2num(parsed_stdin.raw)
-			if(!(number in 1 to length(SSdirectives.selectable_directives)))
+			if(!(number in 1 to length(SSdirectives.get_directives_for_selection())))
 				return
 
 			if(number == 0)
@@ -92,8 +92,7 @@
 					return
 
 				addtimer(CALLBACK(SSdirectives, TYPE_PROC_REF(/datum/controller/subsystem/directives, enact_directive), viewing_directive), rand(3, 10) SECONDS)
-				//SSdirectives.selectable_directives = null
-				#warn temp
+				SSdirectives.selectable_directives = null
 				system.clear_screen()
 				view_home()
 				return TRUE
@@ -109,8 +108,10 @@
 		"\[1\] View Current Directives<br>",
 	)
 
-	if(SSdirectives.selectable_directives)
+	if(SSdirectives.get_directives_for_selection())
 		out += "\[2\] View New Directives<br>"
+
+	out += "<br>\[R\] Refresh"
 
 	get_os().println(jointext(out, null))
 
@@ -124,7 +125,7 @@
 	var/list/out = list()
 
 	var/i
-	for(var/datum/directive/directive as anything in SSdirectives.active_directives)
+	for(var/datum/directive/directive as anything in SSdirectives.get_active_directives())
 		i++
 		out += "\[[fit_with_zeros("[i]", 2)]\] [directive.name]"
 	out += "<br>\[B\] Return"
@@ -138,11 +139,13 @@
 
 	current_menu = DIRECTMAN_MENU_ACTIVE_DIRECTIVE
 
-	var/datum/directive/directive = SSdirectives.active_directives[1]
+	var/list/active_directives = SSdirectives.get_active_directives()
+	var/datum/directive/directive = active_directives[1]
 	var/list/out = list(
 		"Name: [directive.name]",
 		"Description: [directive.desc]",
-		"Time Given: [SSdirectives.active_directives[directive]]",
+		"Severity: [directive.severity]",
+		"Time Given: [active_directives[directive]]",
 		"<br>\[B\] Return",
 	)
 
@@ -153,7 +156,7 @@
 		get_os().println("<b>Error:</b> Unable to locate wireless adapter.")
 		return
 
-	if(!SSdirectives.selectable_directives)
+	if(!SSdirectives.get_directives_for_selection())
 		get_os().println("<b>Error:</b> No new directives to display.")
 		return
 
@@ -162,7 +165,7 @@
 	var/list/out = list()
 
 	var/i
-	for(var/datum/directive/directive as anything in SSdirectives.selectable_directives)
+	for(var/datum/directive/directive as anything in SSdirectives.get_directives_for_selection())
 		i++
 		out += "\[[fit_with_zeros("[i]", 2)]\] [directive.name]"
 	out += "<br>\[B\] Return"
@@ -177,10 +180,11 @@
 
 	current_menu = DIRECTMAN_MENU_NEW_DIRECTIVE
 
-	viewing_directive = SSdirectives.selectable_directives[index]
+	viewing_directive = SSdirectives.get_directives_for_selection()[index]
 	var/list/out = list(
 		"Name: [viewing_directive.name]",
 		"Description: [viewing_directive.desc]",
+		"Severity: [viewing_directive.severity]",
 		"<br>\[B\] Return | \[S\] Select"
 	)
 

@@ -105,17 +105,20 @@
 		hidden_turfs = new_hidden_turfs
 	/****************************************************************************************************************/
 
-	check_poddoors()
-	new_dock.last_dock_time = world.time
-	setDir(new_dock.dir)
-
+	CHECK_TICK
 	// remove any stragglers just in case, and clear the list
 	remove_ripples()
+
+	setDir(new_dock.dir)
 	return DOCKING_SUCCESS
 
 /// Called during Dock(), after the shuttle has moved, the ripples are gone, and the runway is cleaned up.
 /obj/docking_port/mobile/proc/post_dock(obj/docking_port/stationary/new_dock, dock_status)
-	return
+	SHOULD_CALL_PARENT(TRUE)
+	if(!(dock_status & DOCKING_SUCCESS))
+		return
+
+	check_poddoors()
 
 /obj/docking_port/mobile/proc/preflight_check(list/old_turfs, list/new_turfs, list/areas_to_move, rotation)
 	for(var/i in 1 to length(old_turfs))

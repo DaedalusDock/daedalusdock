@@ -242,7 +242,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 			var/obj/item/computer_hardware/network_card/packetnet/rfcard = tablet.all_components[MC_NET]
 			if(!istype(rfcard))
 				break //No RF card to send to.
-			var/message = "You have been fined [fine_amount] credits for '[cite_message]'. Fines may be paid at security."
+			var/message = "You have been fined [fine_amount] marks for '[cite_message]'. Fines may be paid at security."
 			var/datum/signal/outgoing = create_signal(rfcard.hardware_id, list(
 				PACKET_CMD = NETCMD_PDAMESSAGE,
 				"name" = "Automated Announcement System",

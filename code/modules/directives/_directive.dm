@@ -7,6 +7,9 @@
 	/// The grace period before security is allowed to enforce it.
 	var/enact_delay = 0 MINUTES
 
+	/// How many marks management gets for choosing this flavor of CBT.
+	var/reward = 100
+
 /// Determines if the directive is elligible to roll at this time.
 /datum/directive/proc/can_roll()
 	return TRUE

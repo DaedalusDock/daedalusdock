@@ -1,5 +1,16 @@
+/obj/docking_port/mobile/proc/Dock(obj/docking_port/stationary/new_dock, movement_direction, force=FALSE)
+	pre_dock(new_dock, movement_direction, force)
+	. = perform_dock(new_dock, movement_direction, force)
+	post_dock(new_dock, .)
+
+/// Called during Dock(), before the shuttle attempts to dock.
+/obj/docking_port/mobile/proc/pre_dock(obj/docking_port/stationary/new_dock, movement_direction, force=FALSE)
+	return
+
 /// This is the main proc. It instantly moves our mobile port to stationary port `new_dock`.
-/obj/docking_port/mobile/proc/initiate_docking(obj/docking_port/stationary/new_dock, movement_direction, force=FALSE)
+/obj/docking_port/mobile/proc/perform_dock(obj/docking_port/stationary/new_dock, movement_direction, force=FALSE)
+	PROTECTED_PROC(TRUE)
+
 	// Crashing this ship with NO SURVIVORS
 
 	if(new_dock.get_docked() == src)
@@ -101,6 +112,10 @@
 	// remove any stragglers just in case, and clear the list
 	remove_ripples()
 	return DOCKING_SUCCESS
+
+/// Called during Dock(), after the shuttle has moved, the ripples are gone, and the runway is cleaned up.
+/obj/docking_port/mobile/proc/post_dock(obj/docking_port/stationary/new_dock, dock_status)
+	return
 
 /obj/docking_port/mobile/proc/preflight_check(list/old_turfs, list/new_turfs, list/areas_to_move, rotation)
 	for(var/i in 1 to length(old_turfs))

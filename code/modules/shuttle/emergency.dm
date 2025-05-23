@@ -443,7 +443,7 @@
 		if(SHUTTLE_CALL)
 			if(time_left <= 0)
 				//move emergency shuttle to station
-				if(initiate_docking(SSshuttle.getDock("emergency_home")) != DOCKING_SUCCESS)
+				if(Dock(SSshuttle.getDock("emergency_home")) != DOCKING_SUCCESS)
 					setTimer(20)
 					return
 				mode = SHUTTLE_DOCKED
@@ -761,7 +761,7 @@
 
 /obj/docking_port/mobile/emergency/shuttle_build/register()
 	. = ..()
-	initiate_docking(SSshuttle.getDock("emergency_home"))
+	Dock(SSshuttle.getDock("emergency_home"))
 
 #undef TIME_LEFT
 #undef ENGINES_START_TIME

@@ -1,0 +1,3 @@
+#define DIRECTIVE_SEVERITY_LOW "low"
+#define DIRECTIVE_SEVERITY_MED "medium"
+#define DIRECTIVE_SEVERITY_HIGH "high"

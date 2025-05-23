@@ -15,6 +15,7 @@
 		ACCESS_AI_UPLOAD,
 		ACCESS_DELEGATE,
 		ACCESS_VAULT,
+		ACCESS_CAPTAIN,
 	)
 
 /datum/access_group/station/management/other

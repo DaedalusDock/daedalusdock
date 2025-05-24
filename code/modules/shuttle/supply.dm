@@ -79,11 +79,18 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 	if(getDockedId() == "supply_away") // Buy when we leave home.
 		buy()
 		create_mail()
+		return
+
+	if(new_dock.id != "supply_away" && !istype(new_dock, /obj/docking_port/stationary/transit) && mode != SHUTTLE_PREARRIVAL)
+		var/datum/atc_conversation/convo = new()
+		convo.chatter()
+		qdel(convo)
 
 /obj/docking_port/mobile/supply/post_dock(obj/docking_port/stationary/new_dock, dock_status)
 	. = ..()
 	if(dock_status != DOCKING_SUCCESS)
 		return
+
 	if(getDockedId() == "supply_away") // Sell when we get home
 		sell()
 

@@ -688,7 +688,7 @@
 	else
 		. = null
 
-//used by shuttle subsystem to check timers
+// Called every tick of SSshuttle.
 /obj/docking_port/mobile/proc/check()
 	check_effects()
 

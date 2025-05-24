@@ -122,6 +122,8 @@
 	)
 	var/turf/T = get_turf(author.resolve())
 	if(!T)
+		#warn temp
+		levels = list(2)
 		CRASH("Uh oh, no source!")
 	levels = list(T.z)
 

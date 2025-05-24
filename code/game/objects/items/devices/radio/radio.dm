@@ -73,6 +73,8 @@
 	var/list/channels
 	/// associative list of the encrypted radio channels this radio can listen/broadcast to, of the form: list(channel name = channel frequency)
 	var/list/secure_radio_connections
+	/// Overrides the zlevel(s) that receive the signal.
+	var/list/broadcast_z_override
 
 /obj/item/radio/Initialize(mapload)
 	wires = new /datum/wires/radio(src)
@@ -290,7 +292,8 @@
 	var/atom/movable/virtualspeaker/speaker = new(null, talking_movable, src)
 
 	// Construct the signal
-	var/datum/signal/subspace/vocal/signal = new(src, freq, speaker, language, message, spans, message_mods)
+	var/list/broadcast_levels = broadcast_z_override || list(get_step(src, 0)?.z)
+	var/datum/signal/subspace/vocal/signal = new(src, freq, speaker, language, message, spans, message_mods, broadcast_levels)
 
 	// Independent radios, on the CentCom frequency, reach all independent radios
 	if (independent && (freq == FREQ_CENTCOM || freq == FREQ_CTF_RED || freq == FREQ_CTF_BLUE || freq == FREQ_CTF_GREEN || freq == FREQ_CTF_YELLOW))

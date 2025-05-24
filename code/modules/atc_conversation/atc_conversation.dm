@@ -15,6 +15,7 @@ GLOBAL_LIST_INIT(whole_ship_names, world.file2list("[global.config.directory]/at
 /datum/atc_conversation/New()
 	atc_name = "[capitalize(station_name())]"
 	radio = new /obj/item/radio/headset/silicon/ai
+	radio.broadcast_z_override = list(SSmapping.levels_by_trait(ZTRAIT_STATION)[1])
 	generate_vessel_name()
 
 /datum/atc_conversation/Destroy()

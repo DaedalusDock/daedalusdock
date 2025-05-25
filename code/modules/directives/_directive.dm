@@ -1,4 +1,5 @@
 /datum/directive
+	abstract_type = /datum/directive
 	var/name = "Executive Order"
 	var/desc = "Cock and ball torture (no erp)"
 
@@ -10,8 +11,15 @@
 	/// How many marks management gets for choosing this flavor of CBT.
 	var/reward = 100
 
+	/// A list of directive types this directive cannot coexist with.
+	var/list/mutual_blacklist
+
 /// Determines if the directive is elligible to roll at this time.
 /datum/directive/proc/can_roll()
+	SHOULD_CALL_PARENT(TRUE)
+	for(var/path in mutual_blacklist)
+		if(locate(path) in SSdirectives.active_directives)
+			return FALSE
 	return TRUE
 
 /// Announce the enaction of how fucked they are.
@@ -48,6 +56,7 @@
 /// Called when a directive is enacted.
 /datum/directive/proc/start()
 	SHOULD_CALL_PARENT(TRUE)
+	announce_start()
 
 /// Idk if this will ever be used but you never know!
 /datum/directive/proc/end(successful)
@@ -55,4 +64,14 @@
 
 /// Just so it doesnt call datum process and throw a runtime.
 /datum/directive/process()
-	return
+	SHOULD_CALL_PARENT(TRUE)
+	. = 0 && ..()
+
+	switch(check_completion())
+		if(DIRECTIVE_SUCCESS)
+			SSdirectives.end_directive(src, TRUE)
+		if(DIRECTIVE_FAILURE)
+			SSdirectives.end_directive(src, FALSE)
+
+/datum/directive/proc/check_completion()
+	return DIRECTIVE_CONTINUE

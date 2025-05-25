@@ -12,6 +12,9 @@ SUBSYSTEM_DEF(directives)
 
 	/// Currently active directives.
 	var/list/datum/directive/active_directives = list()
+	/// Finished directives, successful or unsuccessful.
+	var/list/datum/directive/finished_directives = list()
+
 	/// Directives awaiting selection via directMAN program.
 	var/list/datum/directive/selectable_directives
 
@@ -58,7 +61,7 @@ SUBSYSTEM_DEF(directives)
 /// Enact a directive, with all the bells and whistles.
 /datum/controller/subsystem/directives/proc/enact_directive(datum/directive/to_enact)
 	active_directives[to_enact] = stationtime2text("hh:mm")
-	to_enact.announce_start()
+	to_enact.start()
 
 	if(to_enact.enact_delay)
 		addtimer(CALLBACK(src, PROC_REF(announce_delayed_enaction), to_enact), to_enact.enact_delay)
@@ -75,10 +78,20 @@ SUBSYSTEM_DEF(directives)
 		do_not_modify = TRUE,
 	)
 
+/// End an active directive
+/datum/controller/subsystem/directives/proc/end_directive(datum/directive/to_end, successful)
+	if(!(to_end in active_directives))
+		return FALSE
+
+	to_end.end(successful)
+	active_directives -= to_end
+	finished_directives += to_end
+	return TRUE
+
 /// Selects new selectable directives.
 /datum/controller/subsystem/directives/proc/choosing_time()
 
-	var/list/directive_pool = all_directives - active_directives
+	var/list/directive_pool = all_directives - active_directives - finished_directives
 	var/list/severity_sort = list(
 		DIRECTIVE_SEVERITY_LOW = list(),
 		DIRECTIVE_SEVERITY_MED = list(),

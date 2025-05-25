@@ -77,6 +77,7 @@
 
 		if(DIRECTMAN_MENU_NEW_DIRECTIVE)
 			if(lowertext(parsed_stdin.raw) == "b")
+				system.clear_screen(TRUE)
 				if(!system.get_computer().get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD))
 					view_home()
 					system.println("<b>Error:</b> Unable to locate wireless adapter.")
@@ -93,7 +94,7 @@
 
 				addtimer(CALLBACK(SSdirectives, TYPE_PROC_REF(/datum/controller/subsystem/directives, enact_directive), viewing_directive), rand(3, 10) SECONDS)
 				SSdirectives.selectable_directives = null
-				system.clear_screen()
+				system.clear_screen(TRUE)
 				view_home()
 				return TRUE
 
@@ -177,6 +178,8 @@
 		view_home()
 		get_os().println("<b>Error:</b> Unable to locate wireless adapter.")
 		return
+
+	get_os().clear_screen(TRUE)
 
 	current_menu = DIRECTMAN_MENU_NEW_DIRECTIVE
 

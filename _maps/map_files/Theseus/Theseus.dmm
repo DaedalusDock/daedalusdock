@@ -212,15 +212,15 @@
 /turf/open/floor/iron/smooth_large,
 /area/station/commons/toilet/restrooms)
 "acT" = (
-/obj/machinery/modular_computer/console/preset/id{
-	dir = 8
-	},
 /obj/machinery/light/small/directional/east,
 /obj/machinery/requests_console/directional/east{
 	name = "Captain's Requests Console";
 	department = "Captain's Desk";
 	departmentType = 5;
 	announcementConsole = 1
+	},
+/obj/machinery/computer4/management/superintendent{
+	dir = 8
 	},
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain/private)

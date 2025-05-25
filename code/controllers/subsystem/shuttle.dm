@@ -190,6 +190,7 @@ SUBSYSTEM_DEF(shuttle)
 			continue
 		var/obj/docking_port/mobile/P = thing
 		P.check()
+
 	for(var/thing in transit_docking_ports)
 		var/obj/docking_port/stationary/transit/T = thing
 		if(!T.owner)
@@ -509,7 +510,7 @@ SUBSYSTEM_DEF(shuttle)
 		if(shuttle_port.request(getDock(destination)))
 			return DOCKING_IMMOBILIZED
 	else
-		if(shuttle_port.initiate_docking(getDock(destination)) != DOCKING_SUCCESS)
+		if(shuttle_port.Dock(getDock(destination)) != DOCKING_SUCCESS)
 			return DOCKING_IMMOBILIZED
 	return DOCKING_SUCCESS //dock successful
 
@@ -524,7 +525,7 @@ SUBSYSTEM_DEF(shuttle)
 		if(shuttle_port.request(docking_target))
 			return DOCKING_IMMOBILIZED
 	else
-		if(shuttle_port.initiate_docking(docking_target) != DOCKING_SUCCESS)
+		if(shuttle_port.Dock(docking_target) != DOCKING_SUCCESS)
 			return DOCKING_IMMOBILIZED
 	return DOCKING_SUCCESS //dock successful
 
@@ -816,7 +817,7 @@ SUBSYSTEM_DEF(shuttle)
 	var/list/force_memory = preview_shuttle.movement_force
 	preview_shuttle.movement_force = list("KNOCKDOWN" = 0, "THROW" = 0)
 	preview_shuttle.mode = SHUTTLE_PREARRIVAL//No idle shuttle moving. Transit dock get removed if shuttle moves too long.
-	preview_shuttle.initiate_docking(D)
+	preview_shuttle.Dock(D)
 	preview_shuttle.movement_force = force_memory
 
 	. = preview_shuttle

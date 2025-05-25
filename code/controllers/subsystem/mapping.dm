@@ -242,7 +242,7 @@ SUBSYSTEM_DEF(mapping)
 
 /datum/controller/subsystem/mapping/proc/safety_clear_transit_dock(obj/docking_port/stationary/transit/T, obj/docking_port/mobile/M, list/returning)
 	M.setTimer(0)
-	var/error = M.initiate_docking(M.destination, M.preferred_direction)
+	var/error = M.Dock(M.destination, M.preferred_direction)
 	if(!error)
 		returning += M
 		qdel(T, TRUE)

@@ -148,7 +148,8 @@
 		hyperspace_sound(HYPERSPACE_LAUNCH, areas) //for the new guy
 		setTimer(dockTime)
 
-/obj/docking_port/mobile/arrivals/initiate_docking(obj/docking_port/stationary/S1, force=FALSE)
+/obj/docking_port/mobile/arrivals/perform_dock(obj/docking_port/stationary/S1, movement_direction, force)
+	. = ..()
 	var/docked = S1 == assigned_transit
 	sound_played = FALSE
 	if(docked) //about to launch

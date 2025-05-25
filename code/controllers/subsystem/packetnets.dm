@@ -88,7 +88,7 @@ SUBSYSTEM_DEF(packets)
 	gprs_broadcast_packet = random_string(rand(16,32), GLOB.hex_characters)
 	pda_exploitable_register = pick_list(PACKET_STRING_FILE, "packet_field_names")
 
-	virtual_ratio = new /obj/item/radio/headset/silicon/ai
+	virtual_radio = new /obj/item/radio/headset/silicon/ai
 	. = ..()
 
 /datum/controller/subsystem/packets/Recover()
@@ -509,3 +509,7 @@ SUBSYSTEM_DEF(packets)
 				ASSOC_UNSETEMPTY(recursive_contents, RECURSIVE_CONTENTS_RADIO_NONATMOS)
 				UNSETEMPTY(location.important_recursive_contents)
 
+/datum/controller/subsystem/packets/proc/virtual_radio_speak(speaker_name, message, list/channels = list(RADIO_CHANNEL_COMMON), list/levels = list(2))
+	virtual_radio.name = speaker_name
+	virtual_radio.broadcast_z_override = levels
+	virtual_radio.talk_into(virtual_radio, message, channels)

@@ -60,6 +60,7 @@
 
 	var/datum/bank_account/fed_account = SSeconomy.bank_accounts_by_id[ACCOUNT_GOV]
 	fed_account.adjust_money(reward)
+	aas_radio_message("[reward] marks have been deposited into the Federation account.", list(RADIO_CHANNEL_COMMAND))
 
 /// Idk if this will ever be used but you never know!
 /datum/directive/proc/end(successful)

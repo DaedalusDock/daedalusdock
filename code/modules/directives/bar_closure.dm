@@ -5,6 +5,8 @@
 	severity = DIRECTIVE_SEVERITY_HIGH
 	enact_delay = 5 MINUTES
 
+	reward = 5000
+
 /datum/directive/bar_closure/get_announce_start_text()
 	return "The Bar is now closed to the public indefinitely."
 

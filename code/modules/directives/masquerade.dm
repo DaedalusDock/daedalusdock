@@ -5,6 +5,8 @@
 	severity = DIRECTIVE_SEVERITY_MED
 	enact_delay = 5 MINUTES
 
+	reward = 3000
+
 /datum/directive/masquerade/get_announce_start_text()
 	return "All colonists are required to wear identity-concealing masks in public, unless their physiology prohibits such."
 

@@ -19,12 +19,18 @@
 
 /datum/directive/prohibition/alcohol
 	prohibited_thing = "alcohol"
+	reward = 1000
 
 /datum/directive/prohibition/cigarettes
 	prohibited_thing = "tobacco"
+	reward = 1000
 
 /datum/directive/prohibition/weed
 	prohibited_thing = "marijuana"
+	reward = 1000
 
 /datum/directive/prohibition/painkillers
 	prohibited_thing = "painkillers"
+
+	severity = DIRECTIVE_SEVERITY_MED
+	reward = 3000

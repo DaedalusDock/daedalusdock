@@ -58,6 +58,9 @@
 	SHOULD_CALL_PARENT(TRUE)
 	announce_start()
 
+	var/datum/bank_account/fed_account = SSeconomy.bank_accounts_by_id[ACCOUNT_GOV]
+	fed_account.adjust_money(reward)
+
 /// Idk if this will ever be used but you never know!
 /datum/directive/proc/end(successful)
 	SHOULD_CALL_PARENT(TRUE)

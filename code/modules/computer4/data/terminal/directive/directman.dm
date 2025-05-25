@@ -187,6 +187,7 @@
 	var/list/out = list(
 		"Name: [viewing_directive.name]",
 		"Description: [viewing_directive.desc]",
+		"Payout: [viewing_directive.reward] mark\s",
 		"Severity: [viewing_directive.severity]",
 		"<br>\[B\] Return | \[S\] Select"
 	)

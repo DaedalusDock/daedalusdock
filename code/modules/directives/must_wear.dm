@@ -3,6 +3,7 @@
 
 	severity = DIRECTIVE_SEVERITY_LOW
 
+	reward = 1000
 	/// The name of the thing all colonists must wear.
 	var/object_name
 

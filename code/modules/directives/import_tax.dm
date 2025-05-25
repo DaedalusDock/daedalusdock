@@ -3,6 +3,8 @@
 
 	severity = DIRECTIVE_SEVERITY_MED
 
+	reward = 3000
+
 	var/tax_low = 15
 	var/tax_high = 45
 

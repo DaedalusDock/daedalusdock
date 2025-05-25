@@ -5,6 +5,8 @@
 	severity = DIRECTIVE_SEVERITY_LOW
 	enact_delay = 8 MINUTES
 
+	reward = 1000
+
 	var/duration = 8 MINUTES
 	var/end_time
 

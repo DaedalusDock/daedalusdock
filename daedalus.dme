@@ -2994,6 +2994,7 @@
 #include "code\modules\detectivework\swab.dm"
 #include "code\modules\directives\bar_closure.dm"
 #include "code\modules\directives\church.dm"
+#include "code\modules\directives\import_tax.dm"
 #include "code\modules\directives\must_wear.dm"
 #include "code\modules\directives\masquerade.dm"
 #include "code\modules\directives\no_cussing.dm"

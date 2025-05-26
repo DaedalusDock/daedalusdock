@@ -1,5 +1,5 @@
 /obj/item/clothing/mask/utopia
-	name = "comedy mask"
+	name = "aetherite mask"
 	desc = "A jovial stage mask."
 
 	icon_state = "utopiacomedy"
@@ -18,6 +18,6 @@
 	permeability_coefficient = 0.5
 
 /obj/item/clothing/mask/utopia/tragedy
-	name = "tragedy mask"
+	name = "aetherite mask"
 	desc = "A stage mask depicting utter despair."
 	icon_state = "utopiatragedy"

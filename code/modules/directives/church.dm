@@ -2,7 +2,7 @@
 	name = "Mandatory Church Service"
 	desc = "The local Chaplain must hold a service for all colonists to attend."
 
-	severity = DIRECTIVE_SEVERITY_LOW
+	severity = DIRECTIVE_SEVERITY_MED
 	enact_delay = 8 MINUTES
 
 	reward = 1000

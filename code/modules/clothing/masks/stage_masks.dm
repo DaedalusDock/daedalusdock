@@ -5,17 +5,16 @@
 	icon_state = "utopiacomedy"
 	inhand_icon_state = null
 
+	armor = list(BLUNT = 0, PUNCTURE = 5, SLASH = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 10, ACID = 10)
+
 	w_class = WEIGHT_CLASS_SMALL
 	resistance_flags = FLAMMABLE
 
 	body_parts_covered = NONE
 	flags_cover = MASKCOVERSEYES | MASKCOVERSMOUTH
-	clothing_flags = MASKINTERNALS
-	visor_flags = MASKINTERNALS
 	flags_inv = HIDESNOUT | HIDEEYES | HIDEFACE
 
-	w_class = WEIGHT_CLASS_SMALL
-	permeability_coefficient = 0.5
+	permeability_coefficient = 0.25
 
 /obj/item/clothing/mask/utopia/tragedy
 	name = "aetherite mask"

@@ -2824,6 +2824,7 @@
 #include "code\modules\clothing\masks\hailer.dm"
 #include "code\modules\clothing\masks\moustache.dm"
 #include "code\modules\clothing\masks\muzzle.dm"
+#include "code\modules\clothing\masks\stage_masks.dm"
 #include "code\modules\clothing\masks\surgical.dm"
 #include "code\modules\clothing\neck\_neck.dm"
 #include "code\modules\clothing\outfits\ert.dm"

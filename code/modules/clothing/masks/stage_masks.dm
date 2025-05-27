@@ -16,7 +16,10 @@
 
 	permeability_coefficient = 0.25
 
-/obj/item/clothing/mask/utopia/tragedy
-	name = "aetherite mask"
+/obj/item/clothing/mask/utopia/augur
+	name = "aetherite augur mask"
 	desc = "A stage mask depicting utter despair."
 	icon_state = "utopiatragedy"
+
+	permeability_coefficient = 0.01
+	clothing_flags = parent_type::clothing_flags | MASKINTERNALS

@@ -59,6 +59,10 @@
 /datum/job/augur/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
 
+/datum/job/augur/after_spawn(mob/living/spawned, client/player_client)
+	. = ..()
+	spawned.AddComponent(/datum/component/clothing_lover, list(/obj/item/clothing/mask/utopia/augur), "aether_maskless", /datum/mood_event/aether_maskless/augur, ITEM_SLOT_MASK)
+
 /datum/outfit/job/cmo
 	name = JOB_AUGUR
 	jobtype = /datum/job/augur
@@ -72,7 +76,7 @@
 	shoes = /obj/item/clothing/shoes/sneakers/blue
 	l_pocket = /obj/item/pinpointer/crew
 	l_hand = /obj/item/aether_tome
-	mask = /obj/item/clothing/mask/utopia/tragedy
+	mask = /obj/item/clothing/mask/utopia/augur
 
 	backpack = /obj/item/storage/backpack/medic
 	satchel = /obj/item/storage/backpack/satchel/med

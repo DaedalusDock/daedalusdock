@@ -9,11 +9,11 @@
 
 /datum/mood_event/wellfed
 	description = "You are well fed."
-	mood_change = MOOD_LEVEL_HAPPY2
+	mood_change = MOOD_LEVEL_HAPPY1
 
 /datum/mood_event/fed
 	description = "You have recently eaten."
-	mood_change = MOOD_LEVEL_HAPPY1
+	mood_change = MOOD_LEVEL_NEUTRAL
 
 /datum/mood_event/hungry
 	description = "You getting a rather hungry."

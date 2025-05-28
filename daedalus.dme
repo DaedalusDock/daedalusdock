@@ -3002,6 +3002,7 @@
 #include "code\modules\dreams\_dream.dm"
 #include "code\modules\dreams\aether_dream.dm"
 #include "code\modules\dreams\detective_nightmare.dm"
+#include "code\modules\dreams\king_in_yellow_dream.dm"
 #include "code\modules\dreams\mob_dream_procs.dm"
 #include "code\modules\dreams\random.dm"
 #include "code\modules\dreams\simple_dream.dm"

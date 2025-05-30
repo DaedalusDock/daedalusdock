@@ -110,17 +110,21 @@
 	if(HAS_TRAIT(human, TRAIT_NOHUNGER))
 		return //hunger is for BABIES
 
+	var/show_feedback = !CHEM_EFFECT_MAGNITUDE(human, CE_HIDE_HUNGER)
+
 	//The fucking TRAIT_FAT mutation is the dumbest shit ever. It makes the code so difficult to work with
 	if(HAS_TRAIT_FROM(human, TRAIT_FAT, OBESITY))//I share your pain, past coder.
 		if(human.overeatduration < (200 SECONDS))
-			to_chat(human, span_notice("You feel fit again!"))
+			if(show_feedback)
+				to_chat(human, span_notice("You feel fit again!"))
 			REMOVE_TRAIT(human, TRAIT_FAT, OBESITY)
 			human.remove_movespeed_modifier(/datum/movespeed_modifier/obesity)
 			human.update_worn_undersuit()
 			human.update_worn_oversuit()
 	else
 		if(human.overeatduration >= (200 SECONDS))
-			to_chat(human, span_danger("You suddenly feel blubbery!"))
+			if(show_feedback)
+				to_chat(human, span_danger("You suddenly feel blubbery!"))
 			ADD_TRAIT(human, TRAIT_FAT, OBESITY)
 			human.add_movespeed_modifier(/datum/movespeed_modifier/obesity)
 			human.update_worn_undersuit()
@@ -171,22 +175,25 @@
 
 	handle_hunger_slowdown(human)
 
-	// If we did anything more then just set and throw alerts here I would add bracketing
-	// But well, it is all we do, so there's not much point bothering with it you get me?
-	switch(nutrition)
-		if(NUTRITION_LEVEL_FULL to INFINITY)
-			human.throw_alert(ALERT_NUTRITION, /atom/movable/screen/alert/fat)
-		if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_FULL)
-			human.clear_alert(ALERT_NUTRITION)
-		if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_HUNGRY)
-			human.throw_alert(ALERT_NUTRITION, /atom/movable/screen/alert/hungry)
-		if(0 to NUTRITION_LEVEL_STARVING)
-			human.throw_alert(ALERT_NUTRITION, /atom/movable/screen/alert/starving)
+	if(show_feedback)
+		// If we did anything more then just set and throw alerts here I would add bracketing
+		// But well, it is all we do, so there's not much point bothering with it you get me?
+		switch(nutrition)
+			if(NUTRITION_LEVEL_FULL to INFINITY)
+				human.throw_alert(ALERT_NUTRITION, /atom/movable/screen/alert/fat)
+			if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_FULL)
+				human.clear_alert(ALERT_NUTRITION)
+			if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_HUNGRY)
+				human.throw_alert(ALERT_NUTRITION, /atom/movable/screen/alert/hungry)
+			if(0 to NUTRITION_LEVEL_STARVING)
+				human.throw_alert(ALERT_NUTRITION, /atom/movable/screen/alert/starving)
+	else
+		human.clear_alert(ALERT_NUTRITION)
 
 ///for when mood is disabled and hunger should handle slowdowns
 /obj/item/organ/stomach/proc/handle_hunger_slowdown(mob/living/carbon/human/human)
 	var/hungry = (500 - human.nutrition) / 5 //So overeat would be 100 and default level would be 80
-	if(hungry >= 70)
+	if(!CHEM_EFFECT_MAGNITUDE(human, CE_HIDE_HUNGER) && (hungry >= 70))
 		human.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/hunger, slowdown = (hungry / 50))
 	else
 		human.remove_movespeed_modifier(/datum/movespeed_modifier/hunger)

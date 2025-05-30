@@ -903,7 +903,7 @@
 /datum/mod_theme/magnate
 	name = "magnate"
 	desc = "A fancy, very protective suit for Daedalus' captains. Shock, fire and acid-proof while also having a large capacity and high speed."
-	extended_desc = "They say it costs four hundred thousand credits to run this MODsuit... for twelve seconds. \
+	extended_desc = "They say it costs four hundred thousand marks to run this MODsuit... for twelve seconds. \
 		The Magnate suit is designed for protection, comfort, and luxury for Daedalus Captains. \
 		The onboard air filters have been preprogrammed with an additional five hundred different fragrances that can \
 		be pumped into the helmet, all of highly-endangered flowers. A bespoke Tralex mechanical clock has been placed \

@@ -67,7 +67,7 @@
 				to_chat(user, span_warning("ID Card lacks funds. Aborting."))
 		return COMPONENT_OBJ_CANCEL_CHARGE
 	target_acc.transfer_money(card.registered_account, cost + extra_fees)
-	card.registered_account.bank_card_talk("[cost + extra_fees] credits deducted from your account.")
+	card.registered_account.bank_card_talk("[cost + extra_fees] marks deducted from your account.")
 	playsound(src, 'sound/effects/cashregister.ogg', 20, TRUE)
 	SSeconomy.track_purchase(card.registered_account, cost + extra_fees, parent)
 

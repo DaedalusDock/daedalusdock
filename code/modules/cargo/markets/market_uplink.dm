@@ -59,7 +59,7 @@
 	if(market)
 		for(var/delivery in market.shipping)
 			data["delivery_methods"] += list(list("name" = delivery, "price" = market.shipping[delivery]))
-	data["money"] = "N/A cr"
+	data["money"] = "N/A FM"
 	if(current_user)
 		data["money"] = current_user.account_balance
 	data["buying"] = buying

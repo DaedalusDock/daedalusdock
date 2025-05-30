@@ -226,7 +226,7 @@
 		if(!user.temporarilyRemoveItemFromInventory(c))
 			return
 		credits += c.get_item_credit_value()
-		visible_message(span_info("[span_name("[user]")] inserts [c.get_item_credit_value()] cr into [src]."))
+		visible_message(span_info("[span_name("[user]")] inserts [c.get_item_credit_value()] FM into [src]."))
 		qdel(c)
 		return
 
@@ -237,17 +237,17 @@
 		var/datum/bank_account/account = ID.registered_account
 		var/target_credits = total_price - credits
 		if(!account.adjust_money(-target_credits))
-			say("Insufficient credits on card to purchase!")
+			say("Insufficient marks on card to purchase!")
 			return
 		credits += target_credits
-		say("[target_credits] cr have been withdrawn from your account.")
+		say("[target_credits] FM have been withdrawn from your account.")
 		return
 	return ..()
 
 // Simplified payment processing, returns 1 on success.
 /obj/machinery/lapvend/proc/process_payment()
 	if(total_price > credits)
-		say("Insufficient credits.")
+		say("Insufficient marks.")
 		return FALSE
 	else
 		return TRUE

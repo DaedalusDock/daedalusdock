@@ -136,6 +136,9 @@
 	if(!damtype)
 		CRASH("No damage type given to can_autoheal")
 
+	if(nutrition <= NUTRITION_LEVEL_STARVING)
+		return FALSE
+
 	switch(damtype)
 		if(BRUTE)
 			return getBruteLoss() < (maxHealth/2)

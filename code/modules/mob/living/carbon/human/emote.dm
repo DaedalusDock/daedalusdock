@@ -41,7 +41,7 @@
 /datum/emote/living/carbon/human/mumble
 	key = "mumble"
 	key_third_person = "mumbles"
-	message = "mumbles!"
+	message = "mumbles."
 	emote_type = EMOTE_AUDIBLE
 
 /datum/emote/living/carbon/human/scream
@@ -333,3 +333,9 @@
 	key = "gasp_air_unconscious"
 	message = "gasps for air!"
 	stat_allowed = UNCONSCIOUS
+
+/datum/emote/living/carbon/gasp_air/dry_heave
+	key = "dry_heave"
+	message = "dry heaves."
+	emote_type = EMOTE_AUDIBLE
+	can_player_use = FALSE

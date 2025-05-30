@@ -60,6 +60,13 @@
 	if((organ_flags & ORGAN_DEAD) && owner)
 		reagents.end_metabolization(owner)
 
+/obj/item/organ/stomach/is_causing_pain()
+	if((owner.nutrition > NUTRITION_LEVEL_STARVING) || !COOLDOWN_FINISHED(owner, mob_cooldowns["hunger_pain"]))
+		return ..()
+
+	COOLDOWN_START(owner, mob_cooldowns["hunger_pain"], rand(40, 120) SECONDS)
+	return TRUE
+
 /obj/item/organ/stomach/on_life(delta_time, times_fired)
 	. = ..()
 
@@ -187,8 +194,18 @@
 				human.throw_alert(ALERT_NUTRITION, /atom/movable/screen/alert/hungry)
 			if(0 to NUTRITION_LEVEL_STARVING)
 				human.throw_alert(ALERT_NUTRITION, /atom/movable/screen/alert/starving)
+
+		if(nutrition <= NUTRITION_LEVEL_STARVING)
+			human.apply_status_effect(/datum/status_effect/grouped/concussion, HUNGER_EFFECT)
+			if(COOLDOWN_FINISHED(human, mob_cooldowns["hunger_vomit"]) && DT_PROB(5, delta_time))
+				COOLDOWN_START(human, mob_cooldowns["hunger_vomit"], rand(40, 120) SECONDS)
+				human.vomit(0, FALSE, FALSE, 0, TRUE, VOMIT_TOXIC, FALSE, FALSE, 0)
+		else
+			human.remove_status_effect(/datum/status_effect/grouped/concussion, HUNGER_EFFECT)
+
 	else
 		human.clear_alert(ALERT_NUTRITION)
+		human.remove_status_effect(/datum/status_effect/grouped/concussion, HUNGER_EFFECT)
 
 ///for when mood is disabled and hunger should handle slowdowns
 /obj/item/organ/stomach/proc/handle_hunger_slowdown(mob/living/carbon/human/human)

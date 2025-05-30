@@ -55,7 +55,7 @@
 
 /// Handles mood given by nutrition
 /datum/mood/proc/update_nutrition_moodlets()
-	if(HAS_TRAIT(mob_parent, TRAIT_NOHUNGER))
+	if(HAS_TRAIT(mob_parent, TRAIT_NOHUNGER) || CHEM_EFFECT_MAGNITUDE(mob_parent, CE_HIDE_HUNGER))
 		clear_mood_event(MOOD_CATEGORY_NUTRITION)
 		return FALSE
 

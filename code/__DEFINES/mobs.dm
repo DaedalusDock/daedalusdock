@@ -489,6 +489,8 @@
 #define CE_ANTICOAGULANT "anticoagulant"
 /// Enables brain regeneration even in poor circumstances
 #define CE_BRAIN_REGEN "brainregen"
+/// Suppresses the VISIBLE effects of hunger, hunger is still happening tho.
+#define CE_HIDE_HUNGER "hide_hunger"
 
 // Pulse levels, very simplified.
 #define PULSE_NONE 0 // So !M.pulse checks would be possible.

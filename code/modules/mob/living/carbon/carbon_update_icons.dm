@@ -1,4 +1,6 @@
 /mob/living/carbon/human/update_clothing(slot_flags)
+	var/update_body_parts = FALSE // digi leg snowflake :(
+
 	if(slot_flags & ITEM_SLOT_BACK)
 		update_worn_back()
 	if(slot_flags & ITEM_SLOT_MASK)
@@ -23,16 +25,22 @@
 		update_worn_head()
 	if(slot_flags & ITEM_SLOT_FEET)
 		update_worn_shoes()
+		update_body_parts = TRUE
 	if(slot_flags & ITEM_SLOT_OCLOTHING)
 		update_worn_oversuit()
+		update_body_parts = TRUE
 	if(slot_flags & ITEM_SLOT_ICLOTHING)
 		update_worn_undersuit()
+		update_body_parts = TRUE
 	if(slot_flags & ITEM_SLOT_SUITSTORE)
 		update_suit_storage()
 	if(slot_flags & (ITEM_SLOT_LPOCKET|ITEM_SLOT_RPOCKET))
 		update_pockets()
 	if(slot_flags & ITEM_SLOT_HANDS)
 		update_held_items()
+
+	if(update_body_parts)
+		update_body_parts()
 
 /mob/living/carbon
 	var/list/overlays_standing[TOTAL_LAYERS]

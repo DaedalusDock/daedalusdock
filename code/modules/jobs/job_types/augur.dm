@@ -77,7 +77,7 @@
 	l_hand = /obj/item/aether_tome
 	mask = /obj/item/clothing/mask/utopia/augur
 
-	backpack = /obj/item/storage/backpack/medic
+	backpack = /obj/item/storage/backpack/satchel/leather
 	satchel = /obj/item/storage/backpack/satchel/med
 	duffelbag = /obj/item/storage/backpack/duffelbag/med
 

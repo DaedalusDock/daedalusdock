@@ -339,6 +339,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 
 	var/pda_slot = ITEM_SLOT_BELT
 
+#warn remove this
 /datum/outfit/job/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(ispath(back, /obj/item/storage/backpack))
 		switch(H.backpack)

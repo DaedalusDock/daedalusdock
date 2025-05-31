@@ -65,7 +65,7 @@
 	l_hand = /obj/item/storage/medkit/surgery
 	mask = /obj/item/clothing/mask/utopia
 
-	backpack = /obj/item/storage/backpack/medic
+	backpack = /obj/item/storage/backpack/satchel/leather
 	satchel = /obj/item/storage/backpack/satchel/med
 	duffelbag = /obj/item/storage/backpack/duffelbag/med
 

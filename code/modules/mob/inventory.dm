@@ -176,9 +176,6 @@
 		if(!temporarilyRemoveItemFromInventory(I, use_unequip_delay = TRUE))
 			return
 
-		if(!isnull(I.loc)) // Item was moved somewhere else during temporarilyRemoveItemFromInventory
-			return
-
 	// If the item was in a storage object the mob isn't holding, play the pickup animation
 	if(was_in_storage && item_old_loc && (get(item_old_loc, /mob) != src))
 		I.do_pickup_animation(src, get_turf(item_old_loc))

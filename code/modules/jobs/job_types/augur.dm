@@ -72,7 +72,7 @@
 	uniform = /obj/item/clothing/under/aether_robes
 	belt = /obj/item/pager/aether
 	ears = /obj/item/radio/headset/heads/cmo
-	shoes = /obj/item/clothing/shoes/sneakers/blue
+	shoes = /obj/item/clothing/shoes/really_blue_sneakers
 	l_pocket = /obj/item/pinpointer/crew
 	l_hand = /obj/item/aether_tome
 	mask = /obj/item/clothing/mask/utopia/augur
@@ -93,7 +93,7 @@
 		/obj/item/stamp/cmo,
 	)
 
-/datum/outfit/job/augur/post_equip(mob/living/carbon/human/H, visualsOnly)
+/datum/outfit/job/cmo/post_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()
 	astype(H.w_uniform.GetComponent(/datum/component/hooded), /datum/component/hooded)?.try_equip_hood(H.w_uniform, H)
 

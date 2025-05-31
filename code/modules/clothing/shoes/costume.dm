@@ -86,6 +86,11 @@
 	icon_state = "morningstar_shoes"
 	inhand_icon_state = "morningstar_shoes"
 
+/obj/item/clothing/shoes/really_blue_sneakers
+	name = "blue shoes"
+	icon_state = "sneakers_blue"
+	inhand_icon_state = "sneakers_blue"
+
 /obj/item/clothing/shoes/deckers
 	name = "deckers rollerskates"
 	desc = "t3h c00L3st sh03z j00'LL 3v3r f1nd."

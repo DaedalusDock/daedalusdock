@@ -43,6 +43,7 @@
 	RegisterSignal(clothing_parent, COMSIG_ITEM_POST_UNEQUIP, PROC_REF(parent_unequipped))
 
 /datum/component/hooded/Destroy(force, silent)
+	UnregisterSignal(parent, list(COMSIG_ITEM_UI_ACTION_CLICK, COMSIG_ITEM_POST_UNEQUIP))
 	QDEL_NULL(hood)
 
 	var/obj/item/clothing/clothing_parent = parent
@@ -54,7 +55,8 @@
 /datum/component/hooded/proc/create_hood()
 	hood = new hood_type(parent)
 	RegisterSignal(hood, COMSIG_PARENT_QDELETING, PROC_REF(hood_gone))
-	RegisterSignal(hood, COMSIG_ITEM_UNEQUIPPED, PROC_REF(hood_unequipped))
+	RegisterSignal(hood, COMSIG_ITEM_POST_UNEQUIP, PROC_REF(hood_unequipped))
+	RegisterSignal(hood, COMSIG_ITEM_EQUIPPED, PROC_REF(hood_equipped))
 
 	on_hood_created?.Invoke(hood)
 
@@ -94,11 +96,14 @@
 	hood_active = FALSE
 
 	if(!QDELETED(hood))
-		wearer.transferItemToLoc(hood, clothing_parent, TRUE, animate = FALSE)
+		if(wearer)
+			wearer.transferItemToLoc(hood, clothing_parent, TRUE, animate = FALSE)
+		else
+			hood.forceMove(parent)
 
 	if(parent_icon_suffix)
 		clothing_parent.icon_state = initial(clothing_parent.icon_state)
-		wearer.update_clothing(clothing_parent.slot_flags)
+		wearer?.update_clothing(clothing_parent.slot_flags)
 
 	if(!QDELETED(hood) && delete_unequipped_hood)
 		QDEL_NULL(hood)
@@ -125,14 +130,22 @@
 	hood = null
 
 /// Handles the hood being unequipped.
-/datum/component/hooded/proc/hood_unequipped(datum/source, mob/living/wearer)
+/datum/component/hooded/proc/hood_unequipped(datum/source)
 	SIGNAL_HANDLER
 
 	if(hood_active)
+		must_unequip_hood(parent, null)
+
+/datum/component/hooded/proc/hood_equipped(datum/source, mob/living/wearer, slot)
+	SIGNAL_HANDLER
+	if(slot & hood.slot_flags)
+		return
+
+	spawn(0)
 		must_unequip_hood(parent, wearer)
 
 /datum/component/hooded/proc/parent_unequipped(datum/source, mob/living/wearer)
 	SIGNAL_HANDLER
 
 	if(hood_active)
-		must_unequip_hood(parent, wearer)
+		must_unequip_hood(parent, null)

@@ -99,13 +99,9 @@
 	new /obj/item/clothing/suit/hooded/wintercoat/science/rd(src)
 
 /obj/item/storage/bag/garment/chief_medical/PopulateContents()
-	new /obj/item/clothing/head/beret/medical/cmo(src)
-	new /obj/item/clothing/under/rank/medical/chief_medical_officer(src)
-	new /obj/item/clothing/under/rank/medical/chief_medical_officer/skirt(src)
-	new /obj/item/clothing/suit/toggle/labcoat/cmo(src)
+	new /obj/item/clothing/under/aether_robes(src)
 	new /obj/item/clothing/gloves/color/latex/nitrile(src)
-	new /obj/item/clothing/neck/cloak/cmo(src)
-	new /obj/item/clothing/shoes/sneakers/blue (src)
+	new /obj/item/clothing/shoes/really_blue_sneakers (src)
 	new /obj/item/clothing/suit/hooded/wintercoat/medical/cmo(src)
 
 /obj/item/storage/bag/garment/engineering_chief/PopulateContents()

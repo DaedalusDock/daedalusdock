@@ -1,7 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: 'The "Starving" state of hunger now has the following effects: Stomach
-      pain, vision impairment, an dry heaving.'
-  - bugfix: Fixed an issue that caused pain messages induced by damaged organs to
-      appear far more often than intended.

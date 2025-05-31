@@ -46,3 +46,10 @@
   Kapu1178:
   - rscadd: Cargo shuttles that are landing now have audible exchanges with air traffic
       control.
+2025-05-31:
+  Kapu1178:
+  - rscadd: Nicotine suppresses the effects of hunger.
+  - rscadd: 'The "Starving" state of hunger now has the following effects: Stomach
+      pain, vision impairment, an dry heaving.'
+  - bugfix: Fixed an issue that caused pain messages induced by damaged organs to
+      appear far more often than intended.

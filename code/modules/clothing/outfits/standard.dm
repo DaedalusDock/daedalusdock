@@ -489,7 +489,6 @@
 	shoes = /obj/item/clothing/shoes/sandal/gamemaster
 
 /datum/outfit/gamemaster/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
-	var/obj/item/clothing/suit/hooded/gamemaster/robe = H.wear_suit
-	robe.ToggleHood()
+	astype(H.wear_suit.GetComponent(/datum/component/hooded), /datum/component/hooded)?.try_equip_hood(H.wear_suit, H)
 
 	H.set_real_name("Gamemaster", TRUE)

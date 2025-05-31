@@ -443,14 +443,18 @@
 //In case colors are changed after initialization
 /obj/item/clothing/suit/hooded/wintercoat/custom/set_greyscale(list/colors, new_config, queue, new_worn_config, new_inhand_left, new_inhand_right)
 	. = ..()
-	if(hood)
-		var/list/coat_colors = SSgreyscale.ParseColorString(greyscale_colors)
-		var/list/new_coat_colors = coat_colors.Copy(1,4)
-		hood.set_greyscale(new_coat_colors) //Adopt the suit's grayscale coloring for visual clarity.
+	// It's 5 am i really cannot be bothered rn.
+	var/datum/component/hooded/hood_component = GetComponent(/datum/component/hooded)
+	var/obj/item/clothing/hood = hood_component?.hood
+	if(!hood)
+		return
+
+	var/list/coat_colors = SSgreyscale.ParseColorString(greyscale_colors)
+	var/list/new_coat_colors = coat_colors.Copy(1,4)
+	hood.set_greyscale(new_coat_colors) //Adopt the suit's grayscale coloring for visual clarity.
 
 //But also keep old method in case the hood is (re-)created later
-/obj/item/clothing/suit/hooded/wintercoat/custom/MakeHood()
-	. = ..()
+/obj/item/clothing/suit/hooded/wintercoat/custom/on_hood_creation(obj/item/clothing/hood)
 	var/list/coat_colors = (SSgreyscale.ParseColorString(greyscale_colors))
 	var/list/new_coat_colors = coat_colors.Copy(1,4)
 	hood.set_greyscale(new_coat_colors) //Adopt the suit's grayscale coloring for visual clarity.

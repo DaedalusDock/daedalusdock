@@ -711,10 +711,6 @@
 /datum/outfit/heretic
 	name = "Heretic (Preview only)"
 
+	head = /obj/item/clothing/head/hooded/cult_hoodie/eldritch
 	suit = /obj/item/clothing/suit/hooded/cultrobes/eldritch
 	r_hand = /obj/item/melee/touch_attack/mansus_fist
-
-/datum/outfit/heretic/post_equip(mob/living/carbon/human/equipper, visualsOnly)
-	var/obj/item/clothing/suit/hooded/hooded = locate() in equipper
-	hooded.MakeHood() // This is usually created on Initialize, but we run before atoms
-	hooded.ToggleHood()

@@ -38,7 +38,7 @@
 /obj/item/clothing/suit/hooded/proc/on_hood_equip(mob/living/wearer, obj/item/clothing/hood)
 	return
 
-#warn remove
+// Old now unused type from when hoods were a hardcoded concept and not a component.
 /obj/item/clothing/head/hooded
 
 // Toggle exosuits for different aesthetic styles (hoodies, suit jacket buttons, etc)

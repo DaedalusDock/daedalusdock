@@ -59,3 +59,10 @@
 
 	permeability_coefficient = 0.8
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 25, FIRE = 0, ACID = 0)
+
+/obj/item/clothing/shoes/really_blue_sneakers
+	name = "blue shoes"
+	icon_state = "sneakers_blue"
+	inhand_icon_state = "sneakers_blue"
+
+	permeability_coefficient = 0.01

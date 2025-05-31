@@ -28,14 +28,14 @@
 		check_slots = _check_slots
 
 	RegisterSignal(parent, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(on_equip_item))
-	RegisterSignal(parent, COMSIG_MOB_UNEQUIPPED_ITEM, PROC_REF(on_unequip_item))
+	RegisterSignal(parent, COMSIG_ITEM_POST_UNEQUIP, PROC_REF(on_unequip_item))
 
 	recheck_slots()
 
 /datum/component/clothing_lover/Destroy(force, silent)
 	var/mob/living/carbon/human/H = parent
 	H.mob_mood.clear_mood_event(moodlet_category)
-	UnregisterSignal(H, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_MOB_UNEQUIPPED_ITEM))
+	UnregisterSignal(H, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_ITEM_POST_UNEQUIP))
 	return ..()
 
 /datum/component/clothing_lover/proc/recheck_slots()
@@ -70,5 +70,5 @@
 
 /datum/component/clothing_lover/proc/on_unequip_item(datum/source, obj/item/I)
 	SIGNAL_HANDLER
-	spawn(0) // I don't want to touch core inventory code at 2 am bro
-		recheck_slots()
+
+	recheck_slots()

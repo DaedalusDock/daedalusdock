@@ -40,7 +40,7 @@
 		create_hood()
 
 	RegisterSignal(clothing_parent, COMSIG_ITEM_UI_ACTION_CLICK, PROC_REF(on_action_click))
-	RegisterSignal(clothing_parent, COMSIG_ITEM_UNEQUIPPED, PROC_REF(parent_unequipped))
+	RegisterSignal(clothing_parent, COMSIG_ITEM_POST_UNEQUIP, PROC_REF(parent_unequipped))
 
 /datum/component/hooded/Destroy(force, silent)
 	QDEL_NULL(hood)

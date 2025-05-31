@@ -58,9 +58,7 @@
 
 	id_template = /datum/access_template/job/medical_doctor
 	neck = /obj/item/clothing/neck/stethoscope
-	uniform = /obj/item/clothing/under/rank/medical/doctor
-	suit = /obj/item/clothing/suit/toggle/labcoat/md
-	suit_store = /obj/item/flashlight/pen
+	uniform = /obj/item/clothing/under/aether_robes
 	belt = /obj/item/pager/aether
 	ears = /obj/item/radio/headset/headset_med
 	shoes = /obj/item/clothing/shoes/sneakers/white
@@ -77,6 +75,10 @@
 	backpack_contents = list(
 		/obj/item/diagnosis_book = 1,
 	)
+
+/datum/outfit/job/doctor/post_equip(mob/living/carbon/human/H, visualsOnly)
+	. = ..()
+	astype(H.w_uniform.GetComponent(/datum/component/hooded), /datum/component/hooded)?.try_equip_hood(H.w_uniform, H)
 
 /datum/outfit/job/doctor/mod
 	name = JOB_ACOLYTE + " (MODsuit)"

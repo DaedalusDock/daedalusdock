@@ -47,6 +47,11 @@
 	<span style='color:[/datum/job/augur::selection_color]'>Augur</span> in maintaining the Sacred Cycle. \
 	Aid those who are not yet ready to pass unto the Ephemeral Twilight, and condemn those who attempt to avoid it."
 
+/datum/job/acolyte/after_spawn(mob/living/spawned, client/player_client)
+	. = ..()
+	if(!isvox(spawned))
+		spawned.AddComponent(/datum/component/clothing_lover, list(/obj/item/clothing/mask/utopia), "aether_maskless", /datum/mood_event/aether_maskless, ITEM_SLOT_MASK)
+
 /datum/outfit/job/doctor
 	name = JOB_ACOLYTE
 	jobtype = /datum/job/acolyte
@@ -60,6 +65,7 @@
 	ears = /obj/item/radio/headset/headset_med
 	shoes = /obj/item/clothing/shoes/sneakers/white
 	l_hand = /obj/item/storage/medkit/surgery
+	mask = /obj/item/clothing/mask/utopia
 
 	backpack = /obj/item/storage/backpack/medic
 	satchel = /obj/item/storage/backpack/satchel/med

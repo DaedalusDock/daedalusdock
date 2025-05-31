@@ -42,6 +42,9 @@
 	if(mind?.assigned_role?.title == JOB_DETECTIVE)
 		dream_pool = GLOB.dream_controller.get_dreams(DREAM_CLASS_DETECTIVE).Copy()
 
+	else if(has_status_effect(/datum/status_effect/grouped/king_in_yellow))
+		dream_pool += GLOB.dream_controller.get_dreams(DREAM_CLASS_KING_IN_YELLOW).Copy()
+
 	else if(mind && HAS_TRAIT(mind, TRAIT_AETHERITE))
 		dream_pool = GLOB.dream_controller.get_dreams(DREAM_CLASS_AETHERITE).Copy()
 

@@ -1,6 +1,6 @@
 
 ///assoc list of ckey -> /datum/persistent_client
-GLOBAL_LIST_EMPTY(persistent_clients_by_ckey)
+GLOBAL_LIST_EMPTY_TYPED(persistent_clients_by_ckey, /datum/persistent_client)
 GLOBAL_LIST_EMPTY(persistent_clients)
 
 /datum/persistent_client

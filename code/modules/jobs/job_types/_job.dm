@@ -333,10 +333,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	id_in_wallet = TRUE
 	preload = TRUE // These are used by the prefs ui, and also just kinda could use the extra help at roundstart
 
-	var/backpack = /obj/item/storage/backpack
-	var/satchel = /obj/item/storage/backpack/satchel
-	var/duffelbag = /obj/item/storage/backpack/duffelbag
-
 	var/pda_slot = ITEM_SLOT_BELT
 
 /datum/outfit/job/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
@@ -392,19 +388,8 @@ GLOBAL_LIST_INIT(job_display_order, list(
 			spawn(-1) //Ssshhh linter don't worry about the lack of a user it's all gonna be okay.
 				PDA.turn_on()
 
-/datum/outfit/job/get_chameleon_disguise_info()
-	var/list/types = ..()
-	types -= /obj/item/storage/backpack //otherwise this will override the actual backpacks
-	types += backpack
-	types += satchel
-	types += duffelbag
-	return types
-
 /datum/outfit/job/get_types_to_preload()
 	var/list/preload = ..()
-	preload += backpack
-	preload += satchel
-	preload += duffelbag
 	preload += /obj/item/storage/backpack/satchel/leather
 	var/skirtpath = "[uniform]/skirt"
 	preload += text2path(skirtpath)

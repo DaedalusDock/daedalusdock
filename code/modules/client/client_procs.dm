@@ -239,12 +239,10 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(GLOB.persistent_clients_by_ckey[ckey])
 		reconnecting = TRUE
 		persistent_client = GLOB.persistent_clients_by_ckey[ckey]
-		persistent_client.byond_version = byond_build
-		persistent_client.byond_build = byond_build
 	else
 		persistent_client = new(ckey, src)
-		persistent_client.byond_version = byond_version
-		persistent_client.byond_build = byond_build
+
+	persistent_client.SetClient(src)
 
 	// Instantiate stat panel
 	stat_panel = new(src, "statbrowser")
@@ -577,7 +575,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		mob.become_uncliented()
 
 	if(persistent_client)
-		persistent_client.client = null
+		persistent_client.SetClient(null)
 
 	GLOB.clients -= src
 	GLOB.directory -= ckey

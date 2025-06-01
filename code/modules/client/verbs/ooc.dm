@@ -78,27 +78,29 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 
 	if(prefs.unlock_content)
 		if(prefs.toggles & MEMBER_PUBLIC)
-			keyname = "<font color='[prefs.read_preference(/datum/preference/color/ooc_color) || GLOB.normal_ooc_colour]'>[icon2html('icons/ui_icons/chat/member_content.dmi', world, "blag")][keyname]</font>"
+			keyname = "<font color='[prefs.read_preference(/datum/preference/color/ooc_color) || GLOB.normal_ooc_colour]'>[keyname]</font>"
 
 	if(prefs.hearted)
 		var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/chat)
 		keyname = "[sheet.icon_tag("emoji-heart")][keyname]"
 
 	/// Message sent to non-admins.
-	var/parsed_message_default = span_ooc("<b>USER:</b> <b>[holder?.fakekey || key]:</b> <span class='message linkify'>[msg]")
+	var/parsed_message_default = span_ooc("<b>OOC/[holder?.fakekey || key]:</b> <span class='message linkify'>[msg]")
 	/// Message sent to admins.
 	var/parsed_message_admin = parsed_message_default
+
 
 	if(holder)
 		if(check_rights_for(src, R_ADMIN))
 			var/ooc_color = prefs.read_preference(/datum/preference/color/ooc_color)
-			parsed_message_admin = span_systemfont(span_adminooc("[CONFIG_GET(flag/allow_admin_ooccolor) && ooc_color ? "<font color=[ooc_color]>" :"" ]<b>ADMIN:</b> <b>[keyname][holder.fakekey ? " (as [holder.fakekey])" : ""]:</b> <span class='message linkify'>[msg]</span>"))
+			parsed_message_admin = span_systemfont(span_adminooc("[CONFIG_GET(flag/allow_admin_ooccolor) && ooc_color ? "<font color=[ooc_color]>" :"" ]<b>OOC/ADMIN/[keyname][holder.fakekey ? "/~[holder.fakekey]" : ""]:</b> <span class='message linkify'>[msg]</span>"))
 			if(!holder.fakekey)
 				parsed_message_default = parsed_message_admin
 
 		else
-			parsed_message_admin = span_systemfont(span_adminobserverooc("<b>USER:</b> <b>[keyname][holder.fakekey ? " (as [holder.fakekey])" : ""]:</b> <span class='message linkify'>[msg]"))
-			parsed_message_default = parsed_message_admin
+			parsed_message_admin = span_systemfont(span_adminobserverooc("<b>OOC/[keyname][holder.fakekey ? "/~[holder.fakekey]" : ""]:</b> <span class='message linkify'>[msg]"))
+			if(!holder.fakekey)
+				parsed_message_default = parsed_message_admin
 
 	//The linkify span classes and linkify=TRUE below make ooc text get clickable chat href links if you pass in something resembling a url
 	for(var/client/receiver as anything in GLOB.clients)

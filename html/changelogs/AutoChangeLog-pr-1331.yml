@@ -1,0 +1,5 @@
+author: BigBimmer, PiotrTheTchaikowsky, Kapu1178
+delete-after: true
+changes:
+  - rscadd: The Augur and Acolytes now have their outfits, courtesy of BigBimmer.
+  - bugfix: Fixed wallet opening/closing not updating the player's name.

@@ -4,8 +4,8 @@
  * @license MIT
  */
 
-import { flow } from 'common/fp';
 import { applyMiddleware, combineReducers, createStore } from 'common/redux';
+import { flow } from 'tgui-core/fp';
 
 import { assetMiddleware } from './assets';
 import { backendMiddleware, backendReducer } from './backend';

@@ -1,7 +1,14 @@
 import { Component, KeyboardEvent } from 'react';
+import {
+  Box,
+  Button,
+  Dropdown,
+  Input,
+  Section,
+  Stack,
+} from 'tgui-core/components';
 
 import { useBackend } from '../backend';
-import { Box, Button, Dropdown, Input, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 type Response = {
@@ -67,7 +74,7 @@ export class CircuitSignalHandler extends Component<
                     placeholder="Signal ID"
                     value={signal_id}
                     fluid
-                    onChange={(e, value) => this.setState({ signal_id: value })}
+                    onBlur={(value) => this.setState({ signal_id: value })}
                   />
                 </Stack.Item>
                 <Stack.Item>
@@ -93,7 +100,7 @@ export class CircuitSignalHandler extends Component<
                             responseList.splice(index, 1);
                             this.setState({ parameterList });
                           }}
-                          onChange={(e, value) => {
+                          onBlur={(value) => {
                             const param = responseList[index];
                             param.name = value;
                             this.setState({ parameterList });
@@ -142,7 +149,7 @@ export class CircuitSignalHandler extends Component<
                             param.datatype = type;
                             this.setState({ parameterList });
                           }}
-                          onChange={(e, value) => {
+                          onBlur={(value) => {
                             const param = parameterList[index];
                             param.name = value;
                             this.setState({ parameterList });

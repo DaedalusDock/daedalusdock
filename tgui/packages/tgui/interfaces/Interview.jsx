@@ -1,11 +1,12 @@
-import { useBackend } from '../backend';
 import {
   BlockQuote,
   Button,
   NoticeBox,
   Section,
   TextArea,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 export const Interview = (props) => {
@@ -116,7 +117,7 @@ export const Interview = (props) => {
                   height={10}
                   maxLength={500}
                   placeholder="Write your response here, max of 500 characters."
-                  onChange={(e, input) =>
+                  onBlur={(e, input) =>
                     input !== response &&
                     act('update_answer', {
                       qidx: qidx,

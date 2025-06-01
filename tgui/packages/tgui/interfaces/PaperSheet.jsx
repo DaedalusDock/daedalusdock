@@ -9,13 +9,13 @@
  * @license MIT
  */
 
-import { clamp } from 'common/math';
-import { classes } from 'common/react';
 import { marked } from 'marked';
 import { Component } from 'react';
+import { Box, Flex, Table, Tabs, TextArea } from 'tgui-core/components';
+import { clamp } from 'tgui-core/math';
+import { classes } from 'tgui-core/react';
 
 import { useBackend } from '../backend';
-import { Box, Flex, Table, Tabs, TextArea } from '../components';
 import { Window } from '../layouts';
 import { createLogger } from '../logging';
 import { sanitizeText } from '../sanitize';
@@ -645,7 +645,7 @@ class PaperSheetEdit extends Component {
               fontFamily={fontFamily}
               height={window.innerHeight - 80 + 'px'}
               backgroundColor={backgroundColor}
-              onInput={this.onInputHandler.bind(this)}
+              onChange={this.onInputHandler.bind(this)}
             />
           )) || (
             <PaperSheetView

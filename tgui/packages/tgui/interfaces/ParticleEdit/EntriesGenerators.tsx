@@ -1,12 +1,13 @@
 /* eslint-disable react/jsx-no-undef */
-import { useBackend, useLocalState } from '../../backend';
 import {
   Button,
   ColorBox,
   LabeledList,
   NumberInput,
   Stack,
-} from '../../components';
+} from 'tgui-core/components';
+
+import { useBackend, useLocalState } from '../../backend';
 import {
   EntryGeneratorNumbersListProps,
   FloatGeneratorColorProps,

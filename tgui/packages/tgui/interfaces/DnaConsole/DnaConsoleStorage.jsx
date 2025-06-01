@@ -1,7 +1,4 @@
 import { uniqBy } from 'common/collections';
-import { capitalize } from 'common/string';
-
-import { useBackend } from '../../backend';
 import {
   Box,
   Button,
@@ -10,7 +7,10 @@ import {
   Flex,
   LabeledList,
   Section,
-} from '../../components';
+} from 'tgui-core/components';
+import { capitalize } from 'tgui-core/string';
+
+import { useBackend } from '../../backend';
 import {
   STORAGE_CONS_SUBMODE_CHROMOSOMES,
   STORAGE_CONS_SUBMODE_MUTATIONS,

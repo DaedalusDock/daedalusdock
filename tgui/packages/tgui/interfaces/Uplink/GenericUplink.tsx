@@ -1,6 +1,3 @@
-import { BooleanLike } from 'common/react';
-
-import { useLocalState, useSharedState } from '../../backend';
 import {
   Box,
   Button,
@@ -9,7 +6,10 @@ import {
   Section,
   Stack,
   Tabs,
-} from '../../components';
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+
+import { useLocalState, useSharedState } from '../../backend';
 
 type GenericUplinkProps = {
   categories: string[];
@@ -50,7 +50,7 @@ export const GenericUplink = (props: GenericUplinkProps) => {
           <Input
             autoFocus
             value={searchText}
-            onInput={(e, value) => setSearchText(value)}
+            onChange={(value) => setSearchText(value)}
             mx={1}
           />
           <Button

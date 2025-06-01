@@ -1,5 +1,6 @@
+import { Box, Button, Dropdown, Section, Stack } from 'tgui-core/components';
+
 import { useBackend, useSharedState } from '../backend';
-import { Box, Button, Dropdown, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 export const LoadoutManager = (props) => {

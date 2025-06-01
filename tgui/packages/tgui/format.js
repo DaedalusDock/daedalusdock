@@ -4,7 +4,7 @@
  * @license MIT
  */
 
-import { clamp, round, toFixed } from 'common/math';
+import { clamp, round, toFixed } from 'tgui-core/math';
 
 const SI_SYMBOLS = [
   'f', // femto

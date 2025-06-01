@@ -1,5 +1,6 @@
+import { Button, LabeledList, Section } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Button, LabeledList, Section } from '../components';
 import { NtosWindow } from '../layouts';
 
 export const NtosRevelation = (props) => {

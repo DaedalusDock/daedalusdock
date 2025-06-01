@@ -1,8 +1,15 @@
-import { shallowDiffers } from 'common/react';
 import { Component } from 'react';
+import {
+  Box,
+  Button,
+  Dropdown,
+  Input,
+  Section,
+  Stack,
+} from 'tgui-core/components';
+import { shallowDiffers } from 'tgui-core/react';
 
 import { resolveAsset } from '../../assets';
-import { Box, Button, Dropdown, Input, Section, Stack } from '../../components';
 import { fetchRetry } from '../../http';
 import { DEFAULT_COMPONENT_MENU_LIMIT, noop } from './constants';
 import { Port } from './Port';
@@ -124,7 +131,7 @@ export class ComponentMenu extends Component {
               placeholder="Search.."
               value={currentSearch}
               fluid
-              onInput={(e, val) =>
+              onChange={(val) =>
                 this.setState({
                   currentSearch: val,
                   selectedTab: 'All',

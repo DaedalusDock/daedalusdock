@@ -1,7 +1,8 @@
-import { classes } from 'common/react';
+import { Box, Button, NumberInput, Table } from 'tgui-core/components';
+import { classes } from 'tgui-core/react';
 
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Grid, NumberInput, Table } from '../components';
+import { Grid } from '../components/Grid';
 import { Window } from '../layouts';
 
 const getNumberColor = (number) => {
@@ -262,7 +263,7 @@ export const RouletteBetTable = (props) => {
                   step={10}
                   stepPixelSize={4}
                   width="40px"
-                  onChange={(e, value) => setCustomBet(value)}
+                  onBlur={(value) => setCustomBet(value)}
                 />
               </Grid.Column>
             </Grid>

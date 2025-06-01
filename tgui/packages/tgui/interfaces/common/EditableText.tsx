@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useBackend } from 'tgui/backend';
-
-import { Box, Button, Input, Stack } from '../../components';
+import { Box, Button, Input, Stack } from 'tgui-core/components';
 
 type Props = {
   color?: string;
@@ -35,7 +34,7 @@ export const EditableText = (props: Props) => {
       width="50%"
       maxLength={512}
       onEscape={() => setEditing(false)}
-      onEnter={(event, value) => {
+      onEnter={(value) => {
         setEditing(false);
         act('edit_field', { field: field, ref: target_ref, value: value });
       }}

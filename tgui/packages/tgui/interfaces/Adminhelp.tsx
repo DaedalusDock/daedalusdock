@@ -1,7 +1,14 @@
-import { BooleanLike } from 'common/react';
+import {
+  Box,
+  Button,
+  Input,
+  NoticeBox,
+  Stack,
+  TextArea,
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
 
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Input, NoticeBox, Stack, TextArea } from '../components';
 import { Window } from '../layouts';
 
 type AdminhelpData = {
@@ -44,7 +51,7 @@ export const Adminhelp = (props) => {
               height="100%"
               value={ahelpMessage}
               placeholder="Admin help"
-              onChange={(e, value) => setAhelpMessage(value)}
+              onBlur={(value) => setAhelpMessage(value)}
             />
           </Stack.Item>
           {urgentAhelpEnabled && adminCount <= 0 && (
@@ -66,7 +73,7 @@ export const Adminhelp = (props) => {
                       placeholder="Confirmation Prompt"
                       autoFocus
                       fluid
-                      onChange={(e, value) => {
+                      onBlur={(value) => {
                         if (value === confirmationText) {
                           setRequestForAdmin(true);
                         }

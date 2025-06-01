@@ -1,8 +1,8 @@
 import { map, sortBy } from 'common/collections';
-import { flow } from 'common/fp';
+import { Button, Section, Stack } from 'tgui-core/components';
+import { flow } from 'tgui-core/fp';
 
 import { useBackend } from '../backend';
-import { Button, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 type DestinationTaggerData = {

@@ -1,13 +1,21 @@
 import {
+  Autofocus,
+  Box,
+  Button,
+  Flex,
+  Section,
+  Stack,
+} from 'tgui-core/components';
+
+import {
   KEY_ENTER,
   KEY_ESCAPE,
   KEY_LEFT,
   KEY_RIGHT,
   KEY_SPACE,
   KEY_TAB,
-} from '../../common/keycodes';
+} from 'tgui-core/keycodes';
 import { useBackend, useLocalState } from '../backend';
-import { Autofocus, Box, Button, Flex, Section, Stack } from '../components';
 import { Window } from '../layouts';
 import { Loader } from './common/Loader';
 

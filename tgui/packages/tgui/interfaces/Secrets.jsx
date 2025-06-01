@@ -1,6 +1,3 @@
-import { toFixed } from 'common/math';
-
-import { useBackend, useLocalState } from '../backend';
 import {
   Button,
   Flex,
@@ -9,7 +6,10 @@ import {
   RoundGauge,
   Section,
   Stack,
-} from '../components';
+} from 'tgui-core/components';
+import { toFixed } from 'tgui-core/math';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 const TAB2NAME = [

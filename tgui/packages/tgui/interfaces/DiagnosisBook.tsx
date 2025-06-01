@@ -1,8 +1,15 @@
-import { classes } from 'common/react';
 import React from 'react';
+import {
+  Box,
+  Button,
+  ByondUi,
+  Flex,
+  Section,
+  TextArea,
+} from 'tgui-core/components';
+import { classes } from 'tgui-core/react';
 
 import { useBackend } from '../backend';
-import { Box, Button, ByondUi, Flex, Section, TextArea } from '../components';
 import { Window } from '../layouts';
 
 type Condition = {
@@ -124,7 +131,7 @@ export const PatientEntry = (props) => {
             height="1.8rem"
             maxLength={15}
             value={actValue}
-            onChange={(e, value) => act('update_mob', { [actName]: value })}
+            onBlur={(value) => act('update_mob', { [actName]: value })}
             noborder
             innerClassName="DiagnosisBook__textAreaInner"
           />
@@ -152,14 +159,12 @@ export const DiagnoseButton = (_) => {
         </Box>
         <Box width="60%" className="DiagnosisBook__textFieldContainer">
           <TextArea
-            innerClassName="DiagnosisBook__textAreaInner"
             top="3px"
             width="100%"
             height="1.8rem"
             maxLength={15}
             value={diagnosis || ''}
-            onChange={(e, value) => act('update_mob', { diagnosis: value })}
-            noborder
+            onBlur={(value) => act('update_mob', { diagnosis: value })}
           />
         </Box>
         <Flex.Item>

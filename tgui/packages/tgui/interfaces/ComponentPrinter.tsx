@@ -1,7 +1,7 @@
-import { createSearch } from 'common/string';
+import { Box, Button, Input, Section, Stack, Tabs } from 'tgui-core/components';
+import { createSearch } from 'tgui-core/string';
 
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Input, Section, Stack, Tabs } from '../components';
 import { Window } from '../layouts';
 import {
   Material,
@@ -118,7 +118,6 @@ export const ComponentPrinter = (props) => {
                             key={category}
                             onClick={() => setCurrentCategory(category)}
                             selected={category === currentCategory}
-                            fluid
                           >
                             {category}
                           </Tabs.Tab>
@@ -137,7 +136,7 @@ export const ComponentPrinter = (props) => {
                         autoFocus
                         fluid
                         value={searchText}
-                        onInput={(_, value) => setSearchText(value)}
+                        onChange={(value) => setSearchText(value)}
                       />
                     </Stack.Item>
 

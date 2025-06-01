@@ -1,7 +1,4 @@
 import { map, sortBy } from 'common/collections';
-import { flow } from 'common/fp';
-
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -11,7 +8,10 @@ import {
   Section,
   Stack,
   Table,
-} from '../components';
+} from 'tgui-core/components';
+import { flow } from 'tgui-core/fp';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 import { PageSelect } from './LibraryConsole';
 
@@ -99,7 +99,7 @@ const SearchAndDisplay = (props) => {
                 value={title}
                 placeholder={title || 'Title'}
                 mt={0.5}
-                onChange={(e, value) =>
+                onBlur={(value) =>
                   act('set_search_title', {
                     title: value,
                   })
@@ -111,7 +111,7 @@ const SearchAndDisplay = (props) => {
                 value={author}
                 placeholder={author || 'Author'}
                 mt={0.5}
-                onChange={(e, value) =>
+                onBlur={(value) =>
                   act('set_search_author', {
                     author: value,
                   })

@@ -4,10 +4,10 @@
  * @license MIT
  */
 
-import { decodeHtmlEntities } from 'common/string';
+import { Button, Input, Section, Table } from 'tgui-core/components';
+import { decodeHtmlEntities } from 'tgui-core/string';
 
 import { useBackend, useLocalState } from '../backend';
-import { Button, Input, Section, Table } from '../components';
 import { Popper } from '../components/Popper';
 import { Window } from '../layouts';
 
@@ -46,7 +46,7 @@ export const RequestManager = (props) => {
             <>
               <Input
                 value={searchText}
-                onInput={(_, value) => setSearchText(value)}
+                onChange={(value) => setSearchText(value)}
                 placeholder={'Search...'}
                 mr={1}
               />

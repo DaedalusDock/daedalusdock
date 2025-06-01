@@ -1,6 +1,6 @@
 import { sortBy, sortStrings } from 'common/collections';
-import { BooleanLike, classes } from 'common/react';
 import { ComponentType, createElement, ReactNode } from 'react';
+import { BooleanLike, classes } from 'tgui-core/react';
 
 import { sendAct, useBackend, useLocalState } from '../../../../backend';
 import {
@@ -350,7 +350,7 @@ export const FeatureTextInput = (props: FeatureValueProps<string>) => {
     <TextArea
       height="100px"
       value={props.value}
-      onChange={(_, value) => props.handleSetValue(value)}
+      onBlur={(value) => props.handleSetValue(value)}
     />
   );
 };
@@ -360,7 +360,7 @@ export const FeatureShortTextInput = (props: FeatureValueProps<string>) => {
     <Input
       width="100%"
       value={props.value}
-      onChange={(_, value) => props.handleSetValue(value)}
+      onBlur={(value) => props.handleSetValue(value)}
     />
   );
 };

@@ -1,7 +1,4 @@
 import { sortBy } from 'common/collections';
-import { createSearch } from 'common/string';
-
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -10,7 +7,10 @@ import {
   NoticeBox,
   Section,
   Table,
-} from '../components';
+} from 'tgui-core/components';
+import { createSearch } from 'tgui-core/string';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 export const Stack = (props) => {
@@ -47,7 +47,7 @@ export const Stack = (props) => {
               <Input
                 autoFocus
                 value={searchText}
-                onInput={(e, value) => setSearchText(value)}
+                onChange={(value) => setSearchText(value)}
                 mx={1}
               />
             </>

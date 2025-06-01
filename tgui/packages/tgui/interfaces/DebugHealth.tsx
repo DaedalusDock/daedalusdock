@@ -1,6 +1,3 @@
-import { toTitleCase } from 'common/string';
-
-import { useBackend, useLocalState } from '../backend';
 import {
   Button,
   Collapsible,
@@ -10,7 +7,10 @@ import {
   Stack,
   Tabs,
   Tooltip,
-} from '../components';
+} from 'tgui-core/components';
+import { toTitleCase } from 'tgui-core/string';
+
+import { useBackend, useLocalState } from '../backend';
 import { TableCell, TableRow } from '../components/Table';
 import { Window } from '../layouts';
 

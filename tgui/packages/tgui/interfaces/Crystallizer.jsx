@@ -1,6 +1,3 @@
-import { toFixed } from 'common/math';
-
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -8,7 +5,10 @@ import {
   NumberInput,
   ProgressBar,
   Section,
-} from '../components';
+} from 'tgui-core/components';
+import { toFixed } from 'tgui-core/math';
+
+import { useBackend } from '../backend';
 import { getGasColor, getGasLabel } from '../constants';
 import { Window } from '../layouts';
 

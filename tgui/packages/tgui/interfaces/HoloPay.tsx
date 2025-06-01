@@ -1,4 +1,3 @@
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -11,7 +10,9 @@ import {
   Table,
   TextArea,
   Tooltip,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 type HoloPayData = {
@@ -76,7 +77,7 @@ const AccountDisplay = (_) => {
 
   return (
     <Section>
-      <Table fill>
+      <Table>
         <Table.Row>
           <Table.Cell>
             <Box color="label">
@@ -124,7 +125,7 @@ const TerminalDisplay = (props) => {
     >
       <Stack fill vertical>
         <Stack.Item align="center">
-          <Icon color="good" name={shop_logo} size="5" />
+          <Icon color="good" name={shop_logo} size={5} />
         </Stack.Item>
         <Stack.Item grow textAlign="center">
           <Tooltip content={description} position="bottom">
@@ -167,11 +168,9 @@ const TerminalDisplay = (props) => {
           )}
         </Stack.Item>
         <Stack.Item>
-          <marquee scrollamount="2">
-            <Box color="darkgray" fontSize="8px">
-              {COPYRIGHT_SCROLLER}
-            </Box>
-          </marquee>
+          <Box color="darkgray" fontSize="8px">
+            {COPYRIGHT_SCROLLER}
+          </Box>
         </Stack.Item>
       </Stack>
     </Section>
@@ -226,7 +225,7 @@ const SetupDisplay = (props) => {
             fluid
             height="3rem"
             maxLength={42}
-            onChange={(_, value) => {
+            onBlur={(value) => {
               value?.length > 3 && act('rename', { name: value });
             }}
             placeholder={decodedName}
@@ -240,7 +239,7 @@ const SetupDisplay = (props) => {
             <RestrictedInput
               fluid
               maxValue={max_fee}
-              onChange={(_, value) => act('fee', { amount: value })}
+              onBlur={(value) => act('fee', { amount: value })}
               value={force_fee}
             />
           </Tooltip>

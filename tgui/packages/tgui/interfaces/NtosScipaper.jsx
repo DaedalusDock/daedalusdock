@@ -1,4 +1,3 @@
-import { useBackend } from '../backend';
 import {
   BlockQuote,
   Box,
@@ -14,7 +13,9 @@ import {
   Table,
   Tabs,
   Tooltip,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { TableCell, TableRow } from '../components/Table';
 import { NtosWindow } from '../layouts';
 
@@ -55,7 +56,7 @@ const PaperPublishing = (props) => {
             <Input
               fluid
               value={title}
-              onChange={(e, value) =>
+              onBlur={(value) =>
                 act('rewrite', {
                   title: value,
                 })
@@ -66,7 +67,7 @@ const PaperPublishing = (props) => {
             <Input
               fluid
               value={author}
-              onChange={(e, value) =>
+              onBlur={(value) =>
                 act('rewrite', {
                   author: value,
                 })
@@ -80,7 +81,7 @@ const PaperPublishing = (props) => {
             <Input
               fluid
               value={abstract}
-              onChange={(e, value) =>
+              onBlur={(value) =>
                 act('rewrite', {
                   abstract: value,
                 })

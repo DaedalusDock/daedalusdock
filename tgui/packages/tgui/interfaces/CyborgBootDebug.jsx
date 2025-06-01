@@ -1,5 +1,6 @@
+import { Button, Input, LabeledList, Section } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Button, Input, LabeledList, Section } from '../components';
 import { Window } from '../layouts';
 
 const TOOLTIP_NAME = `
@@ -53,7 +54,7 @@ export const CyborgBootDebug = (props) => {
               <Input
                 fluid
                 value={designation || 'Default Cyborg'}
-                onChange={(e, value) =>
+                onBlur={(value) =>
                   act('rename', {
                     new_name: value,
                   })

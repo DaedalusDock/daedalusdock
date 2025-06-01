@@ -1,5 +1,6 @@
+import { NoticeBox } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { NoticeBox } from '../components';
 import { Window } from '../layouts';
 import { LaunchpadControl } from './LaunchpadConsole';
 

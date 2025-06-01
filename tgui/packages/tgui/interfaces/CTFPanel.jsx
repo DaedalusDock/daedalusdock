@@ -1,5 +1,13 @@
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Section,
+  Stack,
+} from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Box, Button, Divider, Flex, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 export const CTFPanel = (props) => {

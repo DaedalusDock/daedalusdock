@@ -5,7 +5,6 @@
  * @license MIT
  */
 
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -15,7 +14,9 @@ import {
   Stack,
   Tabs,
   Tooltip,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 const FlockPartitions = (props) => {

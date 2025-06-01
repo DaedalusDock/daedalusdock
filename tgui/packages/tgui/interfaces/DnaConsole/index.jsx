@@ -1,4 +1,3 @@
-import { useBackend } from '../../backend';
 import {
   Box,
   Button,
@@ -6,7 +5,9 @@ import {
   Icon,
   LabeledList,
   Section,
-} from '../../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../../backend';
 import { Window } from '../../layouts';
 import {
   CONSOLE_MODE_ENZYMES,

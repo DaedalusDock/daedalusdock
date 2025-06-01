@@ -1,5 +1,6 @@
+import { Section, TextArea } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Section, TextArea } from '../components';
 import { Window } from '../layouts';
 
 type PagerConsoleContext = {
@@ -22,12 +23,12 @@ export const PagerConsole = (_) => {
             height="2em"
             value={content}
             maxLength={42}
-            onInput={(e, value) =>
+            onBlur={(value) =>
               act('UpdateContent', {
                 message: value,
               })
             }
-            onEnter={(e, value) =>
+            onEnter={(value) =>
               act('Post', {
                 message: value,
               })

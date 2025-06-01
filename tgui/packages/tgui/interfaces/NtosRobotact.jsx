@@ -1,4 +1,3 @@
-import { useBackend, useSharedState } from '../backend';
 import {
   AnimatedNumber,
   Box,
@@ -9,7 +8,9 @@ import {
   Section,
   Slider,
   Tabs,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend, useSharedState } from '../backend';
 import { NtosWindow } from '../layouts';
 
 export const NtosRobotact = (props) => {
@@ -128,7 +129,7 @@ export const NtosRobotactContent = (props) => {
                   stepPixelSize={25}
                   maxValue={5}
                   minValue={1}
-                  onChange={(e, value) =>
+                  onBlur={(value) =>
                     act('lampIntensity', {
                       ref: value,
                     })

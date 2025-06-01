@@ -1,8 +1,5 @@
 import { uniqBy } from 'common/collections';
-import { createSearch } from 'common/string';
 import { Fragment } from 'react';
-
-import { useBackend, useSharedState } from '../backend';
 import {
   Box,
   Button,
@@ -11,7 +8,10 @@ import {
   ProgressBar,
   Section,
   Stack,
-} from '../components';
+} from 'tgui-core/components';
+import { createSearch } from 'tgui-core/string';
+
+import { useBackend, useSharedState } from '../backend';
 import { formatMoney } from '../format';
 import { Window } from '../layouts';
 import {
@@ -291,7 +291,7 @@ const PartLists = (props) => {
               <Input
                 fluid
                 placeholder="Search for..."
-                onInput={(e, v) => setSearchText(v)}
+                onChange={(v) => setSearchText(v)}
               />
             </Stack.Item>
           </Stack>

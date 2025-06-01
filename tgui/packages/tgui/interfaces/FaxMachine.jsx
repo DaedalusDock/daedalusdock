@@ -1,4 +1,3 @@
-import { useBackend, useLocalState, useSharedState } from '../backend';
 import {
   BlockQuote,
   Box,
@@ -8,7 +7,9 @@ import {
   Section,
   Stack,
   Tabs,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend, useLocalState, useSharedState } from '../backend';
 import { Window } from '../layouts';
 
 export const FaxMachine = (props) => {

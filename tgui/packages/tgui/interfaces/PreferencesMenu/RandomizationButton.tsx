@@ -1,6 +1,6 @@
-import { exhaustiveCheck } from 'common/exhaustive';
+import { Dropdown, Icon } from 'tgui-core/components';
+import { exhaustiveCheck } from 'tgui-core/exhaustive';
 
-import { Dropdown, Icon } from '../../components';
 import { RandomSetting } from './data';
 
 export const RandomizationButton = (props: {

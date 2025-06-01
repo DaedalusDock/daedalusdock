@@ -1,5 +1,6 @@
+import { Box, Flex, Icon, Section, Stack, Tooltip } from 'tgui-core/components';
+
 import { useBackend } from '../../backend';
-import { Box, Flex, Icon, Section, Stack, Tooltip } from '../../components';
 import { to_exponential_if_big } from './helpers';
 
 /*

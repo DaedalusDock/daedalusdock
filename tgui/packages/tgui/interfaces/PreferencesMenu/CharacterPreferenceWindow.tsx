@@ -1,7 +1,7 @@
-import { exhaustiveCheck } from 'common/exhaustive';
+import { Dropdown, Flex, Stack } from 'tgui-core/components';
+import { exhaustiveCheck } from 'tgui-core/exhaustive';
 
 import { useBackend, useLocalState } from '../../backend';
-import { Dropdown, Flex, Stack } from '../../components';
 import { Window } from '../../layouts';
 import { AntagsPage } from './AntagsPage';
 import { PreferencesMenuData } from './data';

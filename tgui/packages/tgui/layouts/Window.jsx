@@ -4,12 +4,12 @@
  * @license MIT
  */
 
-import { classes } from 'common/react';
-import { decodeHtmlEntities, toTitleCase } from 'common/string';
 import { Component } from 'react';
+import { Icon } from 'tgui-core/components';
+import { classes } from 'tgui-core/react';
+import { decodeHtmlEntities, toTitleCase } from 'tgui-core/string';
 
 import { backendSuspendStart, globalStore, useBackend } from '../backend';
-import { Icon } from '../components';
 import { UI_DISABLED, UI_INTERACTIVE, UI_UPDATE } from '../constants';
 import { useDebug } from '../debug';
 import { toggleKitchenSink } from '../debug/actions';

@@ -1,22 +1,22 @@
-import { capitalize } from 'common/string';
 import { Fragment } from 'react';
-
-import { resolveAsset } from '../assets';
-import nt_logo from '../assets/bg-nanotrasen.svg';
-import { useBackend, useLocalState } from '../backend';
 import {
   BlockQuote,
   Box,
   Button,
   Dimmer,
   Icon,
+  Image,
   LabeledList,
   Modal,
   ProgressBar,
   Section,
   Stack,
-} from '../components';
-import { Image } from '../components/Image';
+} from 'tgui-core/components';
+import { capitalize } from 'tgui-core/string';
+
+import { resolveAsset } from '../assets';
+import nt_logo from '../assets/bg-nanotrasen.svg';
+import { useBackend, useLocalState } from '../backend';
 import { formatTime } from '../format';
 import { Window } from '../layouts';
 

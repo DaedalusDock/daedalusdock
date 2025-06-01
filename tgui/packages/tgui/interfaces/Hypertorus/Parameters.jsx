@@ -1,7 +1,12 @@
-import { toFixed } from 'common/math';
+import {
+  Flex,
+  LabeledControls,
+  RoundGauge,
+  Section,
+} from 'tgui-core/components';
+import { toFixed } from 'tgui-core/math';
 
 import { useBackend } from '../../backend';
-import { Flex, LabeledControls, RoundGauge, Section } from '../../components';
 import { formatSiUnit } from '../../format';
 
 /*

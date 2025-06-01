@@ -1,5 +1,6 @@
+import { Button, LabeledList, Section } from 'tgui-core/components';
+
 import { useBackend, useLocalState } from '../../backend';
-import { Button, LabeledList, Section } from '../../components';
 import { Window } from '../../layouts';
 import { ParticleUIData } from './data';
 import {

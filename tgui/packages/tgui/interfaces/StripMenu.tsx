@@ -1,9 +1,9 @@
 import { range } from 'common/collections';
-import { BooleanLike } from 'common/react';
+import { Box, Button, Icon, Stack } from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
 
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
-import { Box, Button, Icon, Stack } from '../components';
 import { Image } from '../components/Image';
 import { Window } from '../layouts';
 

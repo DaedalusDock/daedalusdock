@@ -1,4 +1,3 @@
-import { useBackend } from '../../backend';
 import {
   Box,
   Button,
@@ -9,7 +8,9 @@ import {
   NumberInput,
   Section,
   Tooltip,
-} from '../../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../../backend';
 import { getGasLabel } from '../../constants';
 import { HelpDummy, HoverHelp } from './helpers';
 

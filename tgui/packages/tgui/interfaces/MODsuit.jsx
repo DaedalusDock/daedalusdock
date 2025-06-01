@@ -1,4 +1,3 @@
-import { useBackend, useLocalState } from '../backend';
 import {
   AnimatedNumber,
   Box,
@@ -15,7 +14,9 @@ import {
   Section,
   Stack,
   Table,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 const capitalize = (string) => {
@@ -51,7 +52,7 @@ const ConfigureNumberEntry = (props) => {
       maxValue={50}
       stepPixelSize={5}
       width="39px"
-      onChange={(e, value) =>
+      onBlur={(value) =>
         act('configure', {
           key: name,
           value: value,

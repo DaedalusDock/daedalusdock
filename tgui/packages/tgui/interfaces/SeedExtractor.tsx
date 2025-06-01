@@ -1,10 +1,5 @@
 import { sortBy } from 'common/collections';
-import { flow } from 'common/fp';
-import { BooleanLike } from 'common/react';
-import { createSearch } from 'common/string';
 import { useState } from 'react';
-
-import { useBackend } from '../backend';
 import {
   AnimatedNumber,
   Box,
@@ -12,7 +7,12 @@ import {
   Flex,
   Section,
   Table,
-} from '../components';
+} from 'tgui-core/components';
+import { flow } from 'tgui-core/fp';
+import { BooleanLike } from 'tgui-core/react';
+import { createSearch } from 'tgui-core/string';
+
+import { useBackend } from '../backend';
 import { truncate } from '../format';
 import { Window } from '../layouts';
 

@@ -1,3 +1,4 @@
+import { Button, Input, Section, Stack } from 'tgui-core/components';
 import {
   KEY_A,
   KEY_DOWN,
@@ -5,9 +6,9 @@ import {
   KEY_ESCAPE,
   KEY_UP,
   KEY_Z,
-} from '../../common/keycodes';
+} from 'tgui-core/keycodes';
+
 import { useBackend, useLocalState } from '../backend';
-import { Button, Input, Section, Stack } from '../components';
 import { Window } from '../layouts';
 import { InputButtons } from './common/InputButtons';
 import { Loader } from './common/Loader';
@@ -204,10 +205,6 @@ const ListDisplay = (props) => {
             id={index}
             key={index}
             onClick={() => onClick(index)}
-            onDblClick={(event) => {
-              event.preventDefault();
-              act('submit', { entry: filteredItems[selected] });
-            }}
             onKeyDown={(event) => {
               const keyCode = window.event ? event.which : event.keyCode;
               if (searchBarVisible && keyCode >= KEY_A && keyCode <= KEY_Z) {
@@ -242,11 +239,10 @@ const SearchBar = (props) => {
       autoFocus
       autoSelect
       fluid
-      onEnter={(event) => {
-        event.preventDefault();
+      onEnter={() => {
         act('submit', { entry: filteredItems[selected] });
       }}
-      onInput={(_, value) => onSearch(value)}
+      onChange={(value) => onSearch(value)}
       placeholder="Search..."
       value={searchQuery}
     />

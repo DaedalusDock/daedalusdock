@@ -1,9 +1,16 @@
-import { BooleanLike } from 'common/react';
 import { Component } from 'react';
+import {
+  Box,
+  Button,
+  Section,
+  Stack,
+  Tabs,
+  Tooltip,
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
 
 import { resolveAsset } from '../../assets';
 import { useBackend } from '../../backend';
-import { Box, Button, Section, Stack, Tabs, Tooltip } from '../../components';
 import { fetchRetry } from '../../http';
 import { Window } from '../../layouts';
 import {

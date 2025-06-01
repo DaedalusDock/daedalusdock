@@ -1,9 +1,9 @@
-import { BooleanLike } from 'common/react';
-import { classes } from 'common/react';
+import { ComponentProps } from 'react';
+import { Box, Button, Flex, NumberInput } from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+import { classes } from 'tgui-core/react';
 
 import { useSharedState } from '../../backend';
-import { Box, Button, Flex, NumberInput } from '../../components';
-import { BoxProps } from '../../components/Box';
 import { formatMoney, formatSiUnit } from '../../format';
 
 export const MATERIAL_KEYS = {
@@ -28,7 +28,7 @@ export type Material = {
   sheets: number;
 };
 
-interface MaterialIconProps extends BoxProps {
+interface MaterialIconProps extends ComponentProps<typeof Box> {
   material: keyof typeof MATERIAL_KEYS;
 }
 

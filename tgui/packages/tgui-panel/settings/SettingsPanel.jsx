@@ -4,7 +4,6 @@
  * @license MIT
  */
 
-import { toFixed } from 'common/math';
 import { useLocalState } from 'tgui/backend';
 import { useDispatch, useSelector } from 'tgui/backend';
 import {
@@ -21,7 +20,8 @@ import {
   Stack,
   Tabs,
   TextArea,
-} from 'tgui/components';
+} from 'tgui-core/components';
+import { toFixed } from 'tgui-core/math';
 
 import { ChatPageSettings } from '../chat';
 import { rebuildChat, saveChatToDisk } from '../chat/actions';
@@ -135,7 +135,7 @@ export const SettingsGeneral = (props) => {
               )) || (
                 <Input
                   value={fontFamily}
-                  onChange={(e, value) =>
+                  onBlur={(value) =>
                     dispatch(
                       updateSettings({
                         fontFamily: value,
@@ -207,7 +207,7 @@ export const SettingsGeneral = (props) => {
               monospace
               placeholder="#ffffff"
               value={highlightColor}
-              onInput={(e, value) =>
+              onChange={(value) =>
                 dispatch(
                   updateSettings({
                     highlightColor: value,
@@ -220,7 +220,7 @@ export const SettingsGeneral = (props) => {
         <TextArea
           height="3em"
           value={highlightText}
-          onChange={(e, value) =>
+          onBlur={(value) =>
             dispatch(
               updateSettings({
                 highlightText: value,

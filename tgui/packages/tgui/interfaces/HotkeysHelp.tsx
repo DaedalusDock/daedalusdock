@@ -1,5 +1,7 @@
+import React from 'react';
+import { Box, Section, Table, Tooltip } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Box, Section, Table, Tooltip } from '../components';
 import { Window } from '../layouts';
 
 type BindingInfo = {
@@ -33,7 +35,7 @@ const addColorModifier = (
   content: string,
   regex: RegExp,
   color: string,
-): JSX.Element | null => {
+): React.JSX.Element | null => {
   const match = content.match(regex);
 
   if (match) {
@@ -51,7 +53,7 @@ const addColorModifier = (
   return null;
 };
 
-const processColorModifiers = (content: string): string | JSX.Element => {
+const processColorModifiers = (content: string): string | React.JSX.Element => {
   const shifted = addColorModifier(content, shiftRegex, '#88f');
 
   if (shifted) {

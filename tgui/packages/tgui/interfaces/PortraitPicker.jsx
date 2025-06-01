@@ -1,6 +1,7 @@
+import { Button, Flex, Input, NoticeBox, Section } from 'tgui-core/components';
+
 import { resolveAsset } from '../assets';
 import { useBackend, useLocalState } from '../backend';
-import { Button, Flex, Input, NoticeBox, Section } from '../components';
 import { Window } from '../layouts';
 
 export const PortraitPicker = (props) => {
@@ -23,7 +24,7 @@ export const PortraitPicker = (props) => {
                 fluid
                 placeholder="Search Paintings..."
                 value={search_string}
-                onChange={(e, value) => {
+                onBlur={(value) => {
                   act('search', {
                     to_search: value,
                   });

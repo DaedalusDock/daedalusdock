@@ -1,8 +1,8 @@
 import { sortBy } from 'common/collections';
-import { BooleanLike } from 'common/react';
+import { Button, Flex, Section, Tabs } from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
 
 import { useSharedState } from '../../backend';
-import { Button, Flex, Section, Tabs } from '../../components';
 import { logger } from '../../logging';
 
 type AccessListProps = {
@@ -225,7 +225,6 @@ const RegionTabList = (props: RegionTabListProps) => {
             key={access.name}
             icon={icon}
             minWidth={'100%'}
-            altSelection
             selected={access.name === selectedAccessName}
             onClick={() => setSelectedAccessName(access.name)}
           >

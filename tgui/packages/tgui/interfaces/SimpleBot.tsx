@@ -1,4 +1,3 @@
-import { useBackend } from '../backend';
 import {
   Button,
   Icon,
@@ -8,7 +7,9 @@ import {
   Slider,
   Stack,
   Tooltip,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 type SimpleBotContext = {
@@ -300,7 +301,7 @@ const MedbotThreshold = (props) => {
         step={5}
         unit="%"
         value={control[1]}
-        onChange={(_, value) => act(control[0], { threshold: value })}
+        onBlur={(value) => act(control[0], { threshold: value })}
       />
     </Tooltip>
   );

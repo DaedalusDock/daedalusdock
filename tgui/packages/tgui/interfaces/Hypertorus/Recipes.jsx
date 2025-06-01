@@ -1,4 +1,5 @@
-import { Box, Button, Icon, Table, Tooltip } from '../../components';
+import { Box, Button, Icon, Table, Tooltip } from 'tgui-core/components';
+
 import { getGasColor, getGasLabel } from '../../constants';
 
 /*

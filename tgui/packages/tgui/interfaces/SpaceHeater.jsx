@@ -1,4 +1,3 @@
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -6,7 +5,9 @@ import {
   NumberInput,
   ProgressBar,
   Section,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 export const SpaceHeater = (props) => {
@@ -85,7 +86,7 @@ export const SpaceHeater = (props) => {
                   unit="°C"
                   minValue={data.minTemp}
                   maxValue={data.maxTemp}
-                  onChange={(e, value) =>
+                  onBlur={(value) =>
                     act('target', {
                       target: value,
                     })

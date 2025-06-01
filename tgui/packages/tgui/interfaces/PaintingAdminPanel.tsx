@@ -1,8 +1,8 @@
-import { decodeHtmlEntities } from 'common/string';
+import { Box, Button, LabeledList, Section, Table } from 'tgui-core/components';
+import { decodeHtmlEntities } from 'tgui-core/string';
 
 import { resolveAsset } from '../assets';
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, LabeledList, Section, Table } from '../components';
 import { Image } from '../components/Image';
 import { Window } from '../layouts';
 

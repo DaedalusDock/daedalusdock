@@ -81,7 +81,7 @@ export type OperatorData = {
   mineral_material_amount: number;
   name: string;
   port_connected: boolean | null;
-  power_level: number | null;
+  power_level: number;
   power_max: number | null;
   right_arm_weapon: MechWeapon | null;
 };

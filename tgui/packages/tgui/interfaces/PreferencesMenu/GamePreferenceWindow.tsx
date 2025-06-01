@@ -1,7 +1,7 @@
-import { exhaustiveCheck } from 'common/exhaustive';
+import { Stack } from 'tgui-core/components';
+import { exhaustiveCheck } from 'tgui-core/exhaustive';
 
 import { useBackend, useLocalState } from '../../backend';
-import { Stack } from '../../components';
 import { Window } from '../../layouts';
 import { GamePreferencesSelectedPage, PreferencesMenuData } from './data';
 import { GamePreferencesPage } from './GamePreferencesPage';

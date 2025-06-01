@@ -6,9 +6,9 @@
  */
 
 import { useCallback } from 'react';
+import { Button, Section } from 'tgui-core/components';
 
 import { useBackend } from '../../backend';
-import { Button, Section } from '../../components';
 import type { PeripheralData, TerminalData } from './types';
 
 interface PeripheralsSectionProps {

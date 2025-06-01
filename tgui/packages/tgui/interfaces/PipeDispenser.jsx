@@ -1,5 +1,12 @@
+import {
+  Button,
+  LabeledList,
+  Section,
+  Stack,
+  Tabs,
+} from 'tgui-core/components';
+
 import { useBackend, useLocalState } from '../backend';
-import { Button, LabeledList, Section, Stack, Tabs } from '../components';
 import { Window } from '../layouts';
 import {
   ColorItem,

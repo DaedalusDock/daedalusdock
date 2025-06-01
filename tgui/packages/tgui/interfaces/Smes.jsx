@@ -1,4 +1,3 @@
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -7,7 +6,9 @@ import {
   ProgressBar,
   Section,
   Slider,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { formatPower } from '../format';
 import { Window } from '../layouts';
 

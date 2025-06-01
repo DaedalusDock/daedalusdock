@@ -1,6 +1,3 @@
-import { capitalize } from 'common/string';
-
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -13,7 +10,10 @@ import {
   ProgressBar,
   Section,
   Table,
-} from '../components';
+} from 'tgui-core/components';
+import { capitalize } from 'tgui-core/string';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 export const Autolathe = (props) => {
@@ -88,7 +88,7 @@ export const Autolathe = (props) => {
             fluid
             placeholder="Search Recipes..."
             selfClear
-            onChange={(e, value) => {
+            onBlur={(value) => {
               if (value.length) {
                 act('search', {
                   to_search: value,

@@ -1,6 +1,4 @@
 import { binaryInsertWith, sortBy } from 'common/collections';
-
-import { useLocalState } from '../../backend';
 import {
   Box,
   Button,
@@ -12,7 +10,9 @@ import {
   Section,
   Stack,
   TrackOutsideClicks,
-} from '../../components';
+} from 'tgui-core/components';
+
+import { useLocalState } from '../../backend';
 import { Name } from './data';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 

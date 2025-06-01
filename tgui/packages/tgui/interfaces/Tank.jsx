@@ -1,13 +1,13 @@
-import { toFixed } from 'common/math';
-
-import { useBackend } from '../backend';
 import {
   Button,
   LabeledControls,
   NumberInput,
   RoundGauge,
   Section,
-} from '../components';
+} from 'tgui-core/components';
+import { toFixed } from 'tgui-core/math';
+
+import { useBackend } from '../backend';
 import { formatSiUnit } from '../format';
 import { Window } from '../layouts';
 
@@ -67,7 +67,7 @@ export const Tank = (props) => {
                 unit="kPa"
                 minValue={data.minReleasePressure}
                 maxValue={data.maxReleasePressure}
-                onChange={(e, value) =>
+                onBlur={(value) =>
                   act('pressure', {
                     pressure: value,
                   })

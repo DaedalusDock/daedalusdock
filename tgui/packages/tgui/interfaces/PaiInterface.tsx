@@ -1,4 +1,3 @@
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -11,7 +10,9 @@ import {
   Table,
   Tabs,
   Tooltip,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 type PaiInterfaceData = {

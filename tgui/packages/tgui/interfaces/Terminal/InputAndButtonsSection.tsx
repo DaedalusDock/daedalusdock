@@ -6,9 +6,9 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
+import { Button, Flex, Section } from 'tgui-core/components';
 
 import { useBackend } from '../../backend';
-import { Button, Flex, Section } from '../../components';
 import { TerminalInput } from './TerminalInput';
 import type { TerminalData } from './types';
 

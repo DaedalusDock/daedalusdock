@@ -1,11 +1,12 @@
-import { useBackend } from '../backend';
 import {
   Button,
   LabeledList,
   NumberInput,
   ProgressBar,
   Section,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { getGasLabel } from '../constants';
 import { formatSiUnit } from '../format';
 import { Window } from '../layouts';

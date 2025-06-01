@@ -5,10 +5,9 @@
  * @license ISC
  */
 
-import { KEY } from 'common/keys';
 import { KeyboardEventHandler, useCallback } from 'react';
-
-import { Input } from '../../components';
+import { Input } from 'tgui-core/components';
+import { KEY } from 'tgui-core/keys';
 
 export const TerminalInput = (props) => {
   const { onKeyUp, onKeyDown, onKey, ...rest } = props;

@@ -1,14 +1,15 @@
-import { resolveAsset } from '../../assets';
-import { useLocalState } from '../../backend';
 import {
   Box,
   Button,
+  Image,
   LabeledList,
   Modal,
   Section,
   Stack,
-} from '../../components';
-import { Image } from '../../components/Image';
+} from 'tgui-core/components';
+
+import { resolveAsset } from '../../assets';
+import { useLocalState } from '../../backend';
 
 export const ShowDesc = (props) => {
   const [desc, setdesc] = useLocalState('desc', '');

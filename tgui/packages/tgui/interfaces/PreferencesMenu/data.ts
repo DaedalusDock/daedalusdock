@@ -1,4 +1,4 @@
-import { BooleanLike } from 'common/react';
+import { BooleanLike } from 'tgui-core/react';
 
 import { sendAct } from '../../backend';
 import { Gender } from './preferences/gender';

@@ -1,8 +1,4 @@
 import { map } from 'common/collections';
-import { toFixed } from 'common/math';
-
-import { numberOfDecimalDigits } from '../../common/math';
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -14,7 +10,11 @@ import {
   NoticeBox,
   NumberInput,
   Section,
-} from '../components';
+} from 'tgui-core/components';
+import { toFixed } from 'tgui-core/math';
+
+import { numberOfDecimalDigits } from 'tgui-core/math';
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 const FilterIntegerEntry = (props) => {
@@ -84,7 +84,7 @@ const FilterTextEntry = (props) => {
     <Input
       value={value}
       width="250px"
-      onInput={(e, value) =>
+      onBlur={(value) =>
         act('modify_filter_value', {
           name: filterName,
           new_data: {
@@ -113,7 +113,7 @@ const FilterColorEntry = (props) => {
       <Input
         value={value}
         width="90px"
-        onInput={(e, value) =>
+        onBlur={(value) =>
           act('transition_filter_value', {
             name: filterName,
             new_data: {
@@ -302,7 +302,7 @@ export const Filteriffic = (props) => {
                 <Input
                   value={massApplyPath}
                   width="100px"
-                  onInput={(e, value) => setMassApplyPath(value)}
+                  onChange={(value) => setMassApplyPath(value)}
                 />
                 <Button.Confirm
                   content="Apply"

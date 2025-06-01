@@ -200,21 +200,9 @@ export const TguiPrettierTarget = new Juke.Target({
   executes: () => yarn("tgui:prettier"),
 });
 
-export const TguiSonarTarget = new Juke.Target({
-  dependsOn: [YarnTarget],
-  executes: () => yarn("tgui:sonar"),
-});
-
 export const TguiTscTarget = new Juke.Target({
   dependsOn: [YarnTarget],
   executes: () => yarn("tgui:tsc"),
-});
-
-export const TguiTestTarget = new Juke.Target({
-  parameters: [CiParameter],
-  dependsOn: [YarnTarget],
-  executes: ({ get }) =>
-    yarn(`tgui:test-${get(CiParameter) ? "ci" : "simple"}`),
 });
 
 export const TguiLintTarget = new Juke.Target({
@@ -237,7 +225,7 @@ export const TguiBenchTarget = new Juke.Target({
 });
 
 export const TestTarget = new Juke.Target({
-  dependsOn: [DmTestTarget, TguiTestTarget],
+  dependsOn: [DmTestTarget],
 });
 
 export const LintTarget = new Juke.Target({

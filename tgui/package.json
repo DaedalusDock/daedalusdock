@@ -2,7 +2,7 @@
   "private": true,
   "name": "tgui-workspace",
   "version": "5.0.1",
-  "packageManager": "yarn@4.2.2",
+  "packageManager": "yarn@4.9.1",
   "workspaces": [
     "packages/*"
   ],
@@ -26,7 +26,7 @@
     "@swc/jest": "^0.2.36",
     "@types/jest": "^29.5.12",
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^20.14.1",
+    "@types/node": "^22.15.29",
     "@types/webpack": "^5.28.5",
     "@types/webpack-env": "^1.18.5",
     "@typescript-eslint/parser": "^7.12.0",
@@ -51,7 +51,7 @@
     "sass-loader": "^14.2.1",
     "style-loader": "^4.0.0",
     "swc-loader": "^0.2.6",
-    "typescript": "5.4.3",
+    "typescript": "^5.8.3",
     "url-loader": "^4.1.1",
     "webpack": "^5.91.0",
     "webpack-bundle-analyzer": "^4.10.2",

@@ -551,9 +551,9 @@ GLOBAL_LIST_EMPTY(species_list)
 	if(!key)
 		return
 
-	var/mob/mob = GLOB.persistent_clients_by_ckey[key]?.mob
-	if(mob)
-		return mob
+	var/mob/pmob = GLOB.persistent_clients_by_ckey[key]?.mob
+	if(pmob)
+		return pmob
 
 	var/list/mobs = sort_mobs()
 	for(var/mob/mob in mobs)

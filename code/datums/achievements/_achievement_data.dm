@@ -68,13 +68,16 @@
 
 	if(!SSachievements.achievements_enabled)
 		return
+
 	var/datum/award/A = SSachievements.awards[achievement_type]
 	get_data(achievement_type) //Get the current status first if necessary
 	if(istype(A, /datum/award/achievement))
 		if(data[achievement_type]) //You already unlocked it so don't bother running the unlock proc
 			return
+
 		data[achievement_type] = TRUE
 		A.on_unlock(user) //Only on default achievement, as scores keep going up.
+
 	else if(istype(A, /datum/award/score))
 		data[achievement_type] += value
 
@@ -88,10 +91,7 @@
 		return
 	var/datum/award/A = SSachievements.awards[achievement_type]
 	get_data(achievement_type)
-	if(istype(A, /datum/award/achievement))
-		data[achievement_type] = FALSE
-	else if(istype(A, /datum/award/score))
-		data[achievement_type] = 0
+	data[achievement_type] = A.default_value
 
 /datum/achievement_data/ui_assets(mob/user)
 	return list(
@@ -143,7 +143,7 @@
 
 /client/verb/checkachievements()
 	set category = "OOC"
-	set name = "Check achievements"
-	set desc = "See all of your achievements!"
+	set name = "Check accolades"
+	set desc = "See all of your achievements."
 
 	persistent_client.achievements.ui_interact(usr)

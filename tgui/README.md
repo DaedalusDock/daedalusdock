@@ -92,7 +92,6 @@ Run `yarn install` once to install tgui dependencies.
 - `yarn tgui:analyze` - Run a bundle analyzer.
 - `yarn tgui:bench` - Run benchmarks.
 - `yarn tgfont:build` - Build icon fonts.
-- `yarn tgui-polyfill:build` - Build polyfills. You need to run it when updating any of the static (numbered) polyfills.
 
 ## Important Memo
 

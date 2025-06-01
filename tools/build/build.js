@@ -175,7 +175,8 @@ export const TguiTarget = new Juke.Target({
   dependsOn: [YarnTarget],
   inputs: [
     "tgui/.yarn/install-target",
-    "tgui/webpack.config.js",
+    "tgui/rspack.config.js",
+    "tgui/rspack.config-dev.js",
     "tgui/**/package.json",
     "tgui/packages/**/*.+(js|jsx|cjs|ts|tsx|scss)",
   ],
@@ -265,7 +266,7 @@ export const TguiCleanTarget = new Juke.Target({
     Juke.rm("tgui/public/*.map");
     Juke.rm("tgui/public/*.{chunk,bundle,hot-update}.*");
     Juke.rm("tgui/packages/tgfont/dist", { recursive: true });
-    Juke.rm("tgui/.yarn/{cache,unplugged,webpack}", { recursive: true });
+    Juke.rm("tgui/.yarn/{cache,unplugged,rspack}", { recursive: true });
     Juke.rm("tgui/.yarn/build-state.yml");
     Juke.rm("tgui/.yarn/install-state.gz");
     Juke.rm("tgui/.yarn/install-target");

@@ -17,6 +17,9 @@
  * Misc
  */
 
+/// pick() that doesn't runtime on enmpty lists. Fucking lummox.
+#define pick_safe(L) (length(L) ? pick(L) : null)
+
 ///Initialize the lazylist
 #define LAZYINITLIST(L) if (!L) { L = list(); }
 ///If the provided list is empty, set it to null

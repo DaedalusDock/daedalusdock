@@ -551,4 +551,4 @@
 /datum/outfit/cultist/post_equip(mob/living/carbon/human/equipped, visualsOnly)
 	equipped.eye_color_left = BLOODCULT_EYE
 	equipped.eye_color_right = BLOODCULT_EYE
-	equipped.update_body()
+	equipped.update_eyes(TRUE)

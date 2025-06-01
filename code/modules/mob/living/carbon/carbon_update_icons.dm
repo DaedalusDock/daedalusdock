@@ -290,9 +290,6 @@
 
 	apply_overlay(BODYPARTS_LAYER)
 
-/mob/living/carbon/add_overlay(list/add_overlays)
-	. = ..()
-
 ///Update the eye sprite on the carbon. Calling with refresh = TRUE will update the sprite information of the eye organ first.
 /mob/living/carbon/proc/update_eyes(refresh = TRUE)
 	remove_overlay(EYE_LAYER)

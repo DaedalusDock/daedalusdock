@@ -209,7 +209,6 @@
  */
 /datum/mafia_controller/proc/check_trial(verbose = TRUE)
 	var/datum/mafia_role/loser = get_vote_winner("Day")//, majority_of_town = TRUE)
-	var/loser_votes = get_vote_count(loser,"Day")
 	if(loser)
 		send_message("<b>[loser.body.real_name] wins the day vote, Listen to their defense and vote \"INNOCENT\" or \"GUILTY\"!</b>")
 		//refresh the lists

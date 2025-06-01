@@ -70,9 +70,6 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/socks, GLOB.socks_list)
 	return pick(GLOB.socks_list)
 
-/proc/random_backpack()
-	return pick(GLOB.backpacklist)
-
 /proc/random_features()
 	//For now we will always return none for tail_human and ears. | "For now" he says.
 	return(list(

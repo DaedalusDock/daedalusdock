@@ -11,7 +11,6 @@
 
 	var/list/clothing = list(
 		/datum/preference/choiced/jumpsuit,
-		/datum/preference/choiced/backpack,
 		/datum/preference/choiced/undershirt = TRUE,
 		/datum/preference/choiced/underwear = TRUE,
 		/datum/preference/choiced/socks = TRUE,

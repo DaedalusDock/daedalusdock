@@ -1,8 +1,6 @@
 {
 	"eslint.nodePath": "./tgui/.yarn/sdks",
-	"eslint.workingDirectories": [
-		"./tgui"
-	],
+	"eslint.workingDirectories": ["./tgui"],
 	"typescript.tsdk": "./tgui/.yarn/sdks/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
 	"search.exclude": {
@@ -15,13 +13,11 @@
 	},
 	"files.eol": "\n",
 	"files.insertFinalNewline": true,
-	"gitlens.advanced.blame.customArguments": [
-		"-w"
-	],
+	"gitlens.advanced.blame.customArguments": ["-w"],
 	"tgstationTestExplorer.project.resultsType": "json",
 	"[javascript][typescript][typescriptreact][javascriptreact][html][scss][css][json][jsonc][markdown][yaml]": {
 		"editor.rulers": [80],
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.formatOnSave": true
-	},
+	}
 }

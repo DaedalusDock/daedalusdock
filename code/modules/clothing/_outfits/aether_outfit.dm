@@ -55,7 +55,6 @@
 	M.remove_status_effect(/datum/status_effect/augur_mask)
 
 // Robes
-#warn do not remove until bimmer fixes the pixels
 /obj/item/clothing/under/aether_robes
 	name = "aether uniform"
 	desc = "A baggy, button-up coat made out of a heavy fabric."

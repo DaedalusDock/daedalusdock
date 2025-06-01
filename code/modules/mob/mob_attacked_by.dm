@@ -139,6 +139,7 @@
 				blur_eyes(damage_done)
 				adjust_confusion_up_to(effect_duration SECONDS, 20 SECONDS)
 				Unconscious(effect_duration SECONDS)
+				client?.give_award(/datum/award/achivement/head_trauma)
 
 				if(prob(10))
 					gain_trauma(/datum/brain_trauma/mild/concussion)

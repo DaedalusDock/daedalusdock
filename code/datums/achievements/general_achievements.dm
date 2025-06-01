@@ -34,3 +34,15 @@
 	name = "Enter The Pool"
 	desc = "Took your first step into the great pool."
 	database_id = "joinedaround"
+
+// Slip.
+/datum/award/achievement/slip
+	name = "Watch Your Step"
+	desc = "Slip and eat shit."
+	database_id = "slipnslide"
+
+// Get knocked out by head trauma.
+/datum/award/achievement/head_trauma
+	name = "Oh, dat's a skull fracture for sure!"
+	desc = "Get knocked out by physical trauma."
+	database_id = "headtraumako"

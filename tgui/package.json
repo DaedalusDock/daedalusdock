@@ -7,19 +7,19 @@
     "packages/*"
   ],
   "scripts": {
-    "tgui:build": "rspack build",
     "tgui:analyze": "rspack --analyze",
+    "tgui:bench": "webpack --env TGUI_BENCH=1 && node packages/tgui-bench/index.js",
+    "tgui:build": "rspack build",
     "tgui:dev": "node --experimental-modules packages/tgui-dev-server/index.js",
+    "tgui:eslint-fix": "eslint --fix packages --ext .js,.jsx,.cjs,.ts,.tsx",
     "tgui:lint": "eslint packages --ext .js,.cjs,.ts,.tsx",
+    "tgui:prettier-fix": "prettier --write .",
     "tgui:prettier": "prettier --check .",
     "tgui:sonar": "eslint packages --ext .js,.cjs,.ts,.tsx -c .eslintrc-sonar.yml",
-    "tgui:tsc": "tsc",
-    "tgui:test": "jest --watch",
-    "tgui:test-simple": "CI=true jest --color",
-    "tgui:test-ci": "CI=true jest --color --collect-coverage",
-    "tgui:bench": "webpack --env TGUI_BENCH=1 && node packages/tgui-bench/index.js",
-    "tgui:prettier-fix": "prettier --write .",
-    "tgui:eslint-fix": "eslint --fix packages --ext .js,.jsx,.cjs,.ts,.tsx"
+    "tgui:test-ci": "CI=true vitest",
+    "tgui:test-simple": "CI=true vitest",
+    "tgui:test": "vitest",
+    "tgui:tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@rspack/cli": "^1.3.13",
@@ -35,10 +35,14 @@
     "eslint-plugin-sonarjs": "^1.0.3",
     "eslint-plugin-typescript-sort-keys": "^3.2.0",
     "eslint-plugin-unused-imports": "^3.2.0",
+    "jsdom": "^26.1.0",
     "prettier": "^3.5.3",
     "sass": "^1.89.1",
     "sass-embedded": "^1.89.1",
     "sass-loader": "^16.0.5",
     "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "vitest": "^3.1.4"
   }
 }

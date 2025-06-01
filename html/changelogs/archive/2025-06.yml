@@ -1,4 +1,3 @@
-author: Kapu1178
-delete-after: true
-changes:
+2025-06-01:
+  Kapu1178:
   - bugfix: Fixed a rare bug that caused people to not get paid.

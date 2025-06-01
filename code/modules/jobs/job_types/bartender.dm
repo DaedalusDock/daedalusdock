@@ -33,17 +33,6 @@
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 	rpg_title = "Tavernkeeper"
 
-/datum/job/bartender/award_service(client/winner, award)
-	winner.give_award(award, winner.mob)
-
-	var/datum/venue/bar = SSrestaurant.all_venues[/datum/venue/bar]
-	var/award_score = bar.total_income
-	var/award_status = winner.get_award_status(/datum/award/score/bartender_tourist_score)
-	if(award_score - award_status > 0)
-		award_score -= award_status
-	winner.give_award(/datum/award/score/bartender_tourist_score, winner.mob, award_score)
-
-
 /datum/outfit/job/bartender
 	name = "Bartender"
 	jobtype = /datum/job/bartender

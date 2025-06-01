@@ -505,8 +505,6 @@
 /datum/controller/subsystem/ticker/proc/market_report()
 	var/list/parts = list()
 
-	///total service income
-	var/tourist_income = 0
 	///This is the richest account on station at roundend.
 	var/datum/bank_account/mr_moneybags
 	///This is the station's total wealth at the end of the round.

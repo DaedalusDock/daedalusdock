@@ -881,7 +881,6 @@
 	SIGNAL_HANDLER
 
 	if(game_status == MAFIA_ALIVE)
-		game.award_role(winner_award, src)
 		game.send_message("<span class='big comradio'>!! FUGITIVE VICTORY !!</span>")
 
 #undef FUGITIVE_NOT_PRESERVING
@@ -930,7 +929,6 @@
 		return
 	if(lynch)
 		game.send_message("<span class='big comradio'>!! OBSESSED VICTORY !!</span>")
-		game.award_role(winner_award, src)
 		reveal_role(game, FALSE)
 	else
 		to_chat(body, span_userdanger("You have failed your objective to lynch [obsession.body.real_name]!"))
@@ -957,5 +955,4 @@
 		var/datum/mafia_role/victim = pick(game.judgement_guilty_votes + game.judgement_abstain_votes)
 		game.send_message("<span class='big clown'>[body.real_name] WAS A CLOWN! HONK! They take down [victim.body.real_name] with their last prank.</span>")
 		game.send_message("<span class='big clown'>!! CLOWN VICTORY !!</span>")
-		game.award_role(winner_award, src)
 		victim.kill(game,FALSE)

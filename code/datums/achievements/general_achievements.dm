@@ -23,6 +23,12 @@
 	desc = "Took your first step into the great pool."
 	database_id = "joinedaround"
 
+// Survive a round.
+/datum/award/achievement/survive_the_night
+	name = "Survive The Night"
+	desc = "Survived a round."
+	database_id = "survivethenight"
+
 // Slip.
 /datum/award/achievement/slip
 	name = "Watch Your Step"

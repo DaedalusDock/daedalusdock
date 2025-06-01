@@ -65,25 +65,21 @@
 
 	create_storage(type = /datum/storage/pockets/void_cloak)
 
-/obj/item/clothing/suit/hooded/cultrobes/void/RemoveHood()
+/obj/item/clothing/suit/hooded/cultrobes/void/on_hood_unequip(mob/living/wearer, obj/item/clothing/hood)
 	if (!HAS_TRAIT(src, TRAIT_NO_STRIP))
-		return ..()
-	var/mob/living/carbon/carbon_user = loc
-	to_chat(carbon_user, span_notice("The kaleidoscope of colours collapses around you, as the cloak shifts to visibility!"))
-	item_flags &= ~EXAMINE_SKIP
-	REMOVE_TRAIT(src, TRAIT_NO_STRIP, src)
-	return ..()
-
-/obj/item/clothing/suit/hooded/cultrobes/void/MakeHood()
-	if(!iscarbon(loc))
-		CRASH("[src] attempted to make a hood on a non-carbon thing: [loc]")
-
-	var/mob/living/carbon/carbon_user = loc
-	if(IS_HERETIC_OR_MONSTER(carbon_user))
-		. = ..()
-		to_chat(carbon_user,span_notice("The light shifts around you making the cloak invisible!"))
-		item_flags |= EXAMINE_SKIP
-		ADD_TRAIT(src, TRAIT_NO_STRIP, src)
 		return
 
-	to_chat(carbon_user,span_danger("You can't force the hood onto your head!"))
+	to_chat(wearer, span_notice("The kaleidoscope of colours collapses around you, as the cloak shifts to visibility!"))
+	item_flags &= ~EXAMINE_SKIP
+	REMOVE_TRAIT(src, TRAIT_NO_STRIP, src)
+
+/obj/item/clothing/suit/hooded/cultrobes/void/pre_hood_equip(mob/living/wearer, obj/item/clothing/hood)
+	if(!IS_HERETIC_OR_MONSTER(wearer))
+		to_chat(wearer, span_warning("You can't force the hood onto your head."))
+		return FALSE
+	return TRUE
+
+/obj/item/clothing/suit/hooded/cultrobes/void/on_hood_equip(mob/living/wearer, obj/item/clothing/hood)
+	to_chat(wearer, span_notice("The light shifts around you, rendering the cloak hidden from sight."))
+	item_flags |= EXAMINE_SKIP
+	ADD_TRAIT(src, TRAIT_NO_STRIP, src)

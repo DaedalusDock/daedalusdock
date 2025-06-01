@@ -65,9 +65,7 @@
 	mask = /obj/item/clothing/mask/gas/clown_hat
 	l_pocket = /obj/item/bikehorn
 
-	backpack = /obj/item/storage/backpack/clown
-	satchel = /obj/item/storage/backpack/clown
-	duffelbag = /obj/item/storage/backpack/duffelbag/clown //strangely has a duffel
+	back = /obj/item/storage/backpack/clown
 
 	box = /obj/item/storage/box/hug/survival
 	chameleon_extras = /obj/item/stamp/clown
@@ -123,9 +121,7 @@
 	mask = /obj/item/clothing/mask/gas/mime
 	shoes = /obj/item/clothing/shoes/laceup
 
-	backpack = /obj/item/storage/backpack/mime
-	satchel = /obj/item/storage/backpack/mime
-
+	back = /obj/item/storage/backpack/mime
 	chameleon_extras = /obj/item/stamp/mime
 
 /datum/outfit/job/mime/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)

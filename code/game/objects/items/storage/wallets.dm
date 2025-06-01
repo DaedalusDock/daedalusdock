@@ -123,9 +123,11 @@
 
 	is_open = TRUE
 	update_appearance()
+
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
 		H.sec_hud_set_ID()
+		H.update_appearance(UPDATE_NAME)
 
 /obj/item/storage/wallet/proc/close()
 	if(!is_open)
@@ -138,9 +140,11 @@
 	is_open = FALSE
 	atom_storage.close_all()
 	update_appearance()
+
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
 		H.sec_hud_set_ID()
+		H.update_appearance(UPDATE_NAME)
 
 /obj/item/storage/wallet/proc/get_cached_flat_icon()
 	if(!cached_flat_icon)
@@ -194,6 +198,7 @@
 		var/mob/living/carbon/human/wearing_human = loc
 		if(wearing_human.wear_id == src)
 			wearing_human.sec_hud_set_ID()
+			wearing_human.update_appearance(UPDATE_NAME)
 
 	update_appearance()
 	update_slot_icon()

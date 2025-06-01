@@ -18,6 +18,9 @@
 	//Value returned on db connection failure, in case we want to differ 0 and nonexistent later on
 	var/default_value = FALSE
 
+	/// If set to TRUE, the award will not be visible in the achievement viewer until it is already unlocked.
+	var/hidden_until_unlocked = TRUE
+
 ///This proc loads the achievement data from the hub.
 /datum/award/proc/load(key)
 	if(!SSdbcore.Connect())
@@ -83,7 +86,7 @@
 
 /datum/award/achievement/on_unlock(mob/user)
 	. = ..()
-	to_chat(world, systemtext("[capitalize(user.ckey)] was awarded the \"<b>[name]</b>\" accolade."))
+	to_chat(world, systemtext("[capitalize(user.ckey)] was awarded the \"<b>[name]</b>\" achievement."))
 
 ///Scores are for leaderboarded things, such as killcount of a specific boss
 /datum/award/score
@@ -92,33 +95,11 @@
 	desc = "you did it sooo many times."
 	category = "Scores"
 	default_value = 0
-
-	var/track_high_scores = TRUE
-	var/list/high_scores = list()
-
-/datum/award/score/New()
-	. = ..()
-	if(track_high_scores)
-		LoadHighScores()
+	hidden_until_unlocked = FALSE
 
 /datum/award/score/get_metadata_row()
 	. = ..()
 	.["achievement_type"] = "score"
-
-/datum/award/score/proc/LoadHighScores()
-	var/datum/db_query/Q = SSdbcore.NewQuery(
-		"SELECT ckey,value FROM [format_table_name("achievements")] WHERE achievement_key = :achievement_key ORDER BY value DESC LIMIT 50",
-		list("achievement_key" = database_id)
-	)
-	if(!Q.Execute(async = TRUE))
-		qdel(Q)
-		return
-	else
-		while(Q.NextRow())
-			var/key = Q.item[1]
-			var/score = text2num(Q.item[2])
-			high_scores[key] = score
-		qdel(Q)
 
 /datum/award/score/parse_value(raw_value)
 	return isnum(raw_value) ? raw_value : 0

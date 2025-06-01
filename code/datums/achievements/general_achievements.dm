@@ -4,23 +4,11 @@
 	database_id = MEDAL_METEOR
 	icon = "meteors"
 
-/datum/award/achievement/time_waste
-	name = "Time waster"
-	desc = "Speak no evil, hear no evil, see just errors."
-	database_id = MEDAL_TIMEWASTE
-	icon = "timewaste"
-
 /datum/award/achievement/lookoutsir
 	name = "Look Out, Sir!"
 	desc = "Either awarded for making the ultimate sacrifice for your comrades, or a really dumb attempt at grenade jumping."
 	database_id = MEDAL_LOOKOUTSIR
 	icon = "martyr" // purple heart on an explosive danger warning sign (well, sort of)
-
-/datum/award/achievement/clickbait
-	name = "Clickbait"
-	desc = "Where's my free smartphone?!?"
-	database_id = MEDAL_CLICKBAIT
-	icon = "bait"
 
 // Awarded for taking a bullet for someone.
 /datum/award/achievement/mr_president

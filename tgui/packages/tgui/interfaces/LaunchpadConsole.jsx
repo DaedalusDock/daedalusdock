@@ -3,7 +3,6 @@ import {
   Button,
   Divider,
   Flex,
-  Grid,
   Input,
   NoticeBox,
   NumberInput,
@@ -11,6 +10,7 @@ import {
 } from 'tgui-core/components';
 
 import { useBackend } from '../backend';
+import { Grid } from '../components/Grid';
 import { Window } from '../layouts';
 
 const LaunchpadButtonPad = (props) => {

@@ -2,7 +2,6 @@ import {
   AnimatedNumber,
   Box,
   Button,
-  Grid,
   LabeledList,
   ProgressBar,
   Section,
@@ -10,6 +9,7 @@ import {
 
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
+import { Grid } from '../components/Grid';
 import { NtosWindow } from '../layouts';
 
 export const NtosArcade = (props) => {

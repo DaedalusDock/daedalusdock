@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Flex,
-  Grid,
   Icon,
   LabeledList,
   Modal,
@@ -14,6 +13,7 @@ import {
 } from 'tgui-core/components';
 
 import { useBackend, useLocalState } from '../backend';
+import { Grid } from '../components/Grid';
 import { NtosWindow } from '../layouts';
 
 const CONTRACT_STATUS_INACTIVE = 1;

@@ -17,6 +17,16 @@
 
 	permeability_coefficient = 0.25
 
+/obj/item/clothing/mask/utopia/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("acolyte_mask_flavor", 13, /datum/rpg_skill/extrasensory, trait_succeed = TRAIT_AETHERITE, only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("O wise Minerva, may we glorify thy name."),
+		)
+
 /obj/item/clothing/mask/utopia/augur
 	name = "augur mask"
 	desc = "A jovial stage mask."
@@ -24,6 +34,16 @@
 
 	permeability_coefficient = 0.01
 	clothing_flags = parent_type::clothing_flags | MASKINTERNALS
+
+/obj/item/clothing/mask/utopia/augur/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("auger_mask_flavor", 15, only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("A cold wind blows through a twilight forest. A gilded man rises to his feet, and walks into the darkness."),
+		)
 
 /obj/item/clothing/mask/utopia/augur/equipped(mob/living/M, slot)
 	. = ..()
@@ -35,9 +55,10 @@
 	M.remove_status_effect(/datum/status_effect/augur_mask)
 
 // Robes
-#warn descs for lore n shiet
+#warn do not remove until bimmer fixes the pixels
 /obj/item/clothing/under/aether_robes
-	name = "aether robes"
+	name = "aether uniform"
+	desc = "A baggy, button-up coat made out of a heavy fabric."
 	icon = 'icons/obj/clothing/under/medical.dmi'
 	worn_icon = 'icons/mob/clothing/under/medical.dmi'
 	icon_state = "aetherrobe"
@@ -51,8 +72,26 @@
 	. = ..()
 	AddComponent(/datum/component/hooded, /obj/item/clothing/head/aether_hood)
 
+/obj/item/clothing/under/aether_robes/examine(mob/user)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("aether_robe", trait_succeed = TRAIT_AETHERITE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		. += result.create_tooltip("It is made out of the fibers of a Minervan domestic plant.", body_only = TRUE)
+
+/obj/item/clothing/under/aether_robes/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("aether_robe_flavor", 11, only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("The fabric is old and brittle. It has seen hundreds of light-years."),
+		)
+
 /obj/item/clothing/head/aether_hood
 	name = "aether robe veil"
+	desc = "A hood made out of heavy fabric."
 	icon_state = "aetherhood"
 
 	flags_inv = HIDEHAIR | HIDEEARS

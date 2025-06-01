@@ -43,6 +43,12 @@
 
 // Get knocked out by head trauma.
 /datum/award/achievement/head_trauma
-	name = "Oh, dat's a skull fracture for sure!"
+	name = "Oh, dat's a skull fracture for sure."
 	desc = "Get knocked out by physical trauma."
 	database_id = "headtraumako"
+
+// Get denied access to a door
+/datum/award/achievement/ai_door
+	name = "AI, DOOR"
+	desc = "Have a door deny you entry."
+	database_id = "aidoor"

@@ -1,3 +1,9 @@
 2025-06-01:
   Kapu1178:
   - bugfix: Fixed a rare bug that caused people to not get paid.
+2025-06-02:
+  BigBimmer, PiotrTheTchaikowsky, Kapu1178:
+  - rscadd: The Augur and Acolytes now have their outfits, courtesy of BigBimmer.
+  - bugfix: Fixed wallet opening/closing not updating the player's name.
+  francinum:
+  - qol: OOC messages are now more clearly marked.

@@ -281,6 +281,11 @@
 
 	CHECK_TICK
 
+	for(var/mob/M in popcount["human_escapees_list"])
+		M.client?.give_award(/datum/award/achievement/survive_the_night, M)
+
+	CHECK_TICK
+
 	SSdbcore.SetRoundEnd()
 
 	//Collects persistence features
@@ -337,7 +342,7 @@
 		var/statspage = CONFIG_GET(string/roundstatsurl)
 		var/info = statspage ? "<a href='?action=openLink&link=[url_encode(statspage)][GLOB.round_id]'>[GLOB.round_id]</a>" : GLOB.round_id
 		parts += "[FOURSPACES]Round ID: <b>[info]</b>"
-	parts += "[FOURSPACES]Shift Duration: <B>[DisplayTimeText(world.time - SSticker.round_start_time)]</B>"
+	parts += "[FOURSPACES]Round Duration: <B>[DisplayTimeText(world.time - SSticker.round_start_time)]</B>"
 	parts += "[FOURSPACES]Station Integrity: <B>[GLOB.station_was_nuked ? span_redtext("Destroyed") : "[popcount["station_integrity"]]%"]</B>"
 	var/total_players = GLOB.joined_player_list.len
 	if(total_players)
@@ -352,7 +357,7 @@
 				parts += "[FOURSPACES]First Death: <b>[ded["name"]], [ded["role"]], at [ded["area"]]. Damage taken: [ded["damage"]].[ded["last_words"] ? " Their last words were: \"[ded["last_words"]]\"" : ""]</b>"
 			//ignore this comment, it fixes the broken sytax parsing caused by the " above
 			else
-				parts += "[FOURSPACES]<i>Nobody died this shift!</i>"
+				parts += "[FOURSPACES]<i>Nobody died this round!</i>"
 	if(GAMEMODE_WAS_DYNAMIC)
 		var/datum/game_mode/dynamic/mode = SSticker.mode
 		parts += "[FOURSPACES]Threat level: [mode.threat_level]"
@@ -505,10 +510,10 @@
 /datum/controller/subsystem/ticker/proc/market_report()
 	var/list/parts = list()
 
-	///total service income
-	var/tourist_income = 0
 	///This is the richest account on station at roundend.
 	var/datum/bank_account/mr_moneybags
+	var/most_marks
+
 	///This is the station's total wealth at the end of the round.
 	var/station_vault = 0
 	///How many players joined the round.
@@ -518,56 +523,36 @@
 		var/datum/bank_account/current_acc = SSeconomy.bank_accounts_by_id[i]
 		if(typecache_bank[current_acc.type])
 			continue
-		station_vault += current_acc.account_balance
-		if(!mr_moneybags || mr_moneybags.account_balance < current_acc.account_balance)
+
+		var/mark_sum = current_acc.account_balance
+		var/datum/data/record/account_holder_record = SSdatacore.get_record_by_name(current_acc.account_holder, DATACORE_RECORDS_LOCKED)
+		if(account_holder_record)
+			var/datum/mind/account_holder_mind = account_holder_record.fields[DATACORE_MINDREF]
+			if(account_holder_mind)
+				var/mob/living/carbon/human/account_holder_mob = account_holder_mind.current
+				if(istype(account_holder_mob))
+					for(var/obj/item/stack/spacecash/mark_stack in account_holder_mob.get_all_contents())
+						mark_sum += mark_stack.get_item_credit_value()
+
+		station_vault += mark_sum
+
+		if(!mr_moneybags || mark_sum > most_marks)
 			mr_moneybags = current_acc
-	parts += "<div class='panel stationborder'><span class='header'>Station Economic Summary:</span><br>"
-	parts += "<span class='service'>Service Statistics:</span><br>"
-	for(var/venue_path in SSrestaurant.all_venues)
-		var/datum/venue/venue = SSrestaurant.all_venues[venue_path]
-		tourist_income += venue.total_income
-		parts += "The [venue] served [venue.customers_served] customer\s and made [venue.total_income] marks.<br>"
-	parts += "In total, they earned [tourist_income] marks[tourist_income ? "!" : "..."]<br>"
-	log_econ("Roundend service income: [tourist_income] marks.")
-	switch(tourist_income)
-		if(0)
-			parts += "[span_redtext("Service did not earn any marks...")]<br>"
-		if(1 to 2000)
-			parts += "[span_redtext("Centcom is displeased. Come on service, surely you can do better than that.")]<br>"
-			award_service(/datum/award/achievement/jobs/service_bad)
-		if(2001 to 4999)
-			parts += "[span_greentext("Centcom is satisfied with service's job today.")]<br>"
-			award_service(/datum/award/achievement/jobs/service_okay)
-		else
-			parts += "<span class='reallybig greentext'>Centcom is incredibly impressed with service today! What a team!</span><br>"
-			award_service(/datum/award/achievement/jobs/service_good)
+			most_marks = mark_sum
 
+
+	parts += "<div class='panel stationborder'><span class='header'>Colony Economic Summary:</span><br>"
 	parts += "<b>General Statistics:</b><br>"
-	parts += "There were [station_vault] marks collected by crew this shift.<br>"
+	parts += "There were [station_vault] marks collected by citizens this round.<br>"
+
 	if(total_players > 0)
-		parts += "An average of [station_vault/total_players] marks were collected.<br>"
-		log_econ("Roundend credit total: [station_vault] marks. Average Marks: [station_vault/total_players]")
+		parts += "An average of [station_vault/total_players] marks were collected per citizen.<br>"
+		log_econ("Roundend credit total: [station_vault] marks. Average marks: [station_vault/total_players]")
+
 	if(mr_moneybags)
-		parts += "The most affluent crew member at shift end was <b>[mr_moneybags.account_holder] with [mr_moneybags.account_balance]</b>FM!</div>"
-	else
-		parts += "Somehow, nobody made any money this shift! This'll result in some budget cuts...</div>"
+		parts += "The richest motherfucker at round end was <b>[mr_moneybags.account_holder] with [most_marks]</b> fm.</div>"
+
 	return parts
-
-/**
- * Awards the service department an achievement and updates the chef and bartender's highscore for tourists served.
- *
- * Arguments:
- * * award: Achievement to give service department
- */
-/datum/controller/subsystem/ticker/proc/award_service(award)
-	for(var/mob/living/carbon/human/human as anything in GLOB.human_list)
-		if(!human.client || !human.mind)
-			continue
-		var/datum/job/human_job = human.mind.assigned_role
-		if(!(human_job.departments_bitflags & DEPARTMENT_BITFLAG_SERVICE))
-			continue
-		human_job.award_service(human.client, award)
-
 
 /datum/controller/subsystem/ticker/proc/medal_report()
 	if(GLOB.commendations.len)

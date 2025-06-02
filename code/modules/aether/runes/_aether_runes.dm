@@ -209,7 +209,12 @@
 
 	playsound(src, 'sound/magic/voidblink.ogg', 50, TRUE)
 	visible_message(span_statsbad("[src] stops moving, and dulls in color."))
+
 	invoke_success_visual_effect()
+
+	for(var/mob/living/carbon/human/H in touching_rune + blackboard[RUNE_BB_INVOKER])
+		H.client?.give_award(/datum/award/achievement/jobs/ritual_participation, H)
+
 	wipe_state()
 
 /// Called when invocation fails.

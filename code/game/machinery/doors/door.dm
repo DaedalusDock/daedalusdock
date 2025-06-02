@@ -300,6 +300,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		open()
 	else
 		do_animate("deny")
+		user.client?.give_award(/datum/award/achievement/ai_door, user)
 
 /obj/machinery/door/attack_hand(mob/user, list/modifiers)
 	. = ..()
@@ -339,8 +340,10 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		else
 			close()
 		return .
+
 	if(density)
 		do_animate("deny")
+		user.client?.give_award(/datum/award/achievement/ai_door, user)
 
 /obj/machinery/door/allowed(mob/M)
 	if(emergency)

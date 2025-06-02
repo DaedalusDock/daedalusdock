@@ -78,7 +78,9 @@
 		directory = _directory
 	if(entries)
 		CRASH("/datum/controller/configuration/Load() called more than once!")
+
 	InitEntries()
+
 	if(fexists("[directory]/config.txt") && LoadEntries("config.txt") <= 1)
 		var/list/legacy_configs = list("game_options.txt", "dbconfig.txt", "comms.txt")
 		for(var/I in legacy_configs)
@@ -87,6 +89,10 @@
 				for(var/J in legacy_configs)
 					LoadEntries(J)
 				break
+
+	if (fexists("[directory]/ezdb.txt"))
+		LoadEntries("ezdb.txt")
+
 	loadmaplist(CONFIG_MAPS_FILE)
 	LoadMOTD()
 	LoadTopicRateWhitelist()

@@ -542,6 +542,10 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		spawn(-1)
 			owner.emote(/datum/emote/living/carbon/gasp_air)
 
+/// Returns TRUE if this organ is able to cause pain to the parent during handle_pain()
+/obj/item/organ/proc/is_causing_pain()
+	return prob(1) && (damage >= 5) && !(organ_flags & (ORGAN_SYNTHETIC|ORGAN_DEAD))
+
 /mob/living/proc/regenerate_organs()
 	return FALSE
 

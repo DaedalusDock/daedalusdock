@@ -61,11 +61,9 @@
 	ears = /obj/item/radio/headset/headset_med
 	head = /obj/item/clothing/head/soft/paramedic
 	gloves = /obj/item/clothing/gloves/color/latex/nitrile
-	shoes = /obj/item/clothing/shoes/sneakers/blue
+	shoes = /obj/item/clothing/shoes/really_blue_sneakers
 
-	backpack = /obj/item/storage/backpack/medic
-	satchel = /obj/item/storage/backpack/satchel/med
-	duffelbag = /obj/item/storage/backpack/duffelbag/med
+	back = /obj/item/storage/backpack/medic
 
 	box = /obj/item/storage/box/survival/medical
 	chameleon_extras = /obj/item/gun/syringe

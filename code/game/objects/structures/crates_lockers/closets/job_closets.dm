@@ -178,23 +178,18 @@
 	return
 
 /obj/structure/closet/wardrobe/white/medical
-	name = "medical doctor's wardrobe"
+	name = "acolyte wardrobe"
 
 /obj/structure/closet/wardrobe/white/medical/PopulateContents()
 	var/static/items_inside = list(
-		/obj/item/clothing/accessory/pocketprotector = 1,
-		/obj/item/storage/backpack/duffelbag/med = 1,
-		/obj/item/storage/backpack/medic = 1,
-		/obj/item/storage/backpack/satchel/med = 1,
+		/obj/item/storage/backpack/satchel/leather = 1,
+		/obj/item/clothing/under/aether_robes = 3,
+		/obj/item/clothing/mask/utopia = 3,
 		/obj/item/clothing/suit/hooded/wintercoat/medical = 1,
-		/obj/item/clothing/head/nursehat = 1,
-		/obj/item/clothing/under/rank/medical/scrubs/blue = 1,
-		/obj/item/clothing/under/rank/medical/scrubs/green = 1,
-		/obj/item/clothing/under/rank/medical/scrubs/purple = 1,
-		/obj/item/clothing/suit/toggle/labcoat = 3,
 		/obj/item/clothing/suit/toggle/labcoat/paramedic = 3,
-		/obj/item/clothing/shoes/sneakers/white = 3,
-		/obj/item/clothing/head/soft/paramedic = 3)
+		/obj/item/clothing/shoes/really_blue_sneakers = 3,
+		/obj/item/clothing/head/soft/paramedic = 3
+	)
 	generate_items_inside(items_inside,src)
 	return
 

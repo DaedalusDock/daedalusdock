@@ -944,7 +944,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 							return
 
 						var/datum/data/crime/crime = SSdatacore.new_crime_entry(t1, "", authenticated, stationtime2text(), fine)
-						var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
+						var/obj/machinery/announcement_system/announcer = pick_safe(GLOB.announcement_systems)
 						if(announcer)
 							announcer.notify_citation(active1.fields[DATACORE_NAME], t1, fine)
 

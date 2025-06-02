@@ -276,6 +276,10 @@
 
 	label = "[name_string], [assignment_string]"
 
+	var/mob/living/wearer = get(src, /mob)
+	if(wearer)
+		wearer.update_appearance(UPDATE_NAME)
+
 /obj/item/card/id/proc/set_data_by_record(datum/data/record/R, set_access, visual)
 	registered_name = R.fields[DATACORE_NAME]
 	registered_age = R.fields[DATACORE_AGE] || "UNSET"
@@ -290,6 +294,7 @@
 				SSid_access.apply_template_to_chameleon_card(src, template.type)
 			else
 				SSid_access.apply_template_to_card(src, template.type, set_access)
+
 	update_label()
 	update_icon()
 

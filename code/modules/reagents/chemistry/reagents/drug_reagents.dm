@@ -79,6 +79,7 @@
 		var/smoke_message = pick("You feel relaxed.", "You feel calmed.","You feel alert.","You feel rugged.")
 		to_chat(C, span_notice("[smoke_message]"))
 
+	APPLY_CHEM_EFFECT(C, CE_HIDE_HUNGER, 1)
 	C.remove_status_effect(/datum/status_effect/jitter)
 	C.AdjustStun(-10 * removed)
 	C.AdjustKnockdown(-10 * removed)

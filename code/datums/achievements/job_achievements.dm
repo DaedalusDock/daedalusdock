@@ -23,3 +23,8 @@
 	name = "He's dead, Jim."
 	desc = "Have a patient die on you as an Acolyte."
 	database_id = "hesdeadjim"
+
+/datum/award/achievement/jobs/the_medicine_drug
+	name = "Did you try the medicine drug?"
+	desc = "This vexes me."
+	database_id = "themedicinedrug"

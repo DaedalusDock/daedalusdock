@@ -132,7 +132,11 @@
 			user.visible_message(span_subtle("Blood fills [src]'s needle."), vision_distance = 1)
 		contaminate(living_target.get_blood_dna_list(), living_target.diseases)
 
+	var/contains_morphine = reagents.has_reagent(/datum/reagent/medicine/morphine)
 	if(reagents.trans_to(interacting_with, amount_per_transfer_from_this, transfered_by = user, methods = INJECT))
+		if(contains_morphine && (user == interacting_with))
+			user.client?.give_award(/datum/award/achievement/jobs/the_medicine_drug)
+
 		to_chat(user, span_obviousnotice("You inject [amount_per_transfer_from_this] units of the solution. \The [src] now contains [reagents.total_volume] units."))
 		return ITEM_INTERACT_SUCCESS
 

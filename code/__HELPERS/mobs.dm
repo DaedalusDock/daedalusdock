@@ -550,6 +550,11 @@ GLOBAL_LIST_EMPTY(species_list)
 /proc/get_mob_by_ckey(key)
 	if(!key)
 		return
+
+	var/mob/pmob = GLOB.persistent_clients_by_ckey[key]?.mob
+	if(pmob)
+		return pmob
+
 	var/list/mobs = sort_mobs()
 	for(var/mob/mob in mobs)
 		if(mob.ckey == key)

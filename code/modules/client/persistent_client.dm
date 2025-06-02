@@ -1,6 +1,6 @@
 
 ///assoc list of ckey -> /datum/persistent_client
-GLOBAL_LIST_EMPTY(persistent_clients_by_ckey)
+GLOBAL_LIST_EMPTY_TYPED(persistent_clients_by_ckey, /datum/persistent_client)
 GLOBAL_LIST_EMPTY(persistent_clients)
 
 /datum/persistent_client
@@ -55,6 +55,18 @@ GLOBAL_LIST_EMPTY(persistent_clients)
 
 	mob = new_mob
 	new_mob?.persistent_client = src
+
+/datum/persistent_client/proc/SetClient(client/new_client)
+	if(client == new_client)
+		return
+
+	client?.persistent_client = null
+	client = new_client
+
+	if(client)
+		client.persistent_client = src
+		byond_build = client.byond_build
+		byond_version = client.byond_version
 
 /// Returns the full version string (i.e 515.1642) of the BYOND version and build.
 /datum/persistent_client/proc/full_byond_version()

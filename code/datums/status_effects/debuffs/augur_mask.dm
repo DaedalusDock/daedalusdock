@@ -16,6 +16,7 @@
 
 /// OOOOHHHH YEAAAAHHHH
 /datum/status_effect/augur_mask/proc/here_comes_the_king()
+	owner.client?.give_award(/datum/award/achievement/jobs/see_kiy, owner)
 	var/datum/status_effect/grouped/king_in_yellow/curse = owner.has_status_effect(/datum/status_effect/grouped/king_in_yellow)
 	curse ||= owner.apply_status_effect(/datum/status_effect/grouped/king_in_yellow, ref(src))
 

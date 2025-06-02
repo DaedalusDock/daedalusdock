@@ -46,3 +46,9 @@
 	name = "AI, DOOR"
 	desc = "Have a door deny you entry."
 	database_id = "aidoor"
+
+// Get bwoinked
+/datum/award/achievement/the_jig_is_up
+	name = "I didn't do it!"
+	desc = "Receive a gamemaster PM."
+	database_id = "thejigisup"

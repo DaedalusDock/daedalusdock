@@ -144,6 +144,8 @@
 
 	thirst_level.remove_points(INFINITY)
 
+	host.client?.give_award(/datum/award/achievement/antag/thirsty, host)
+
 /// Setter for the thirst stage.
 /datum/antagonist/vampire/proc/set_thirst_stage(new_stage)
 	var/old_stage = thirst_stage

@@ -7,8 +7,8 @@
 import { EventEmitter } from 'common/events';
 import { classes } from 'common/react';
 import { createRoot } from 'react-dom/client';
-import { Tooltip } from 'tgui/components';
 import { createLogger } from 'tgui/logging';
+import { Tooltip } from 'tgui-core/components';
 
 import {
   COMBINE_MAX_MESSAGES,
@@ -179,9 +179,9 @@ class ChatRenderer {
     // Find scrollable parent
     this.scrollNode = findNearestScrollableParent(this.rootNode);
     this.scrollNode.addEventListener('scroll', this.handleScroll);
-    setImmediate(() => {
+    setTimeout(() => {
       this.scrollToBottom();
-    });
+    }, 0);
     // Flush the queue
     this.tryFlushQueue();
   }
@@ -444,7 +444,7 @@ class ChatRenderer {
         this.rootNode.appendChild(fragment);
       }
       if (this.scrollTracking) {
-        setImmediate(() => this.scrollToBottom());
+        setTimeout(() => this.scrollToBottom(), 0);
       }
     }
     // Notify listeners that we have processed the batch

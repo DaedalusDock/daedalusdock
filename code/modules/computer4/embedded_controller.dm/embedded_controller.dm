@@ -4,7 +4,7 @@
 	/// Ref to our magic internal computer :)
 	var/tmp/obj/machinery/computer4/embedded_controller/internal_computer
 
-	var/tmp/default_operating_system
+	var/tmp/default_operating_system = /datum/c4_file/terminal_program/operating_system/thinkdos // temp lol
 	var/radio_frequency
 
 /obj/machinery/c4_embedded_controller/Initialize(mapload)

@@ -35,7 +35,6 @@
 	aliases = list("quit", "q")
 
 /datum/shell_command/probe_cmd/quit/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
-	var/obj/machinery/computer4/computer = system.get_computer()
 	var/force = !!length(options & list("f", "force"))
 
 	if(force)

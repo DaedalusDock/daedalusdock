@@ -51,8 +51,6 @@
 	/// List of program typepaths to install by default.
 	var/list/default_programs = list(
 		/datum/c4_file/terminal_program/notepad,
-		/datum/c4_file/terminal_program/probe,
-		/datum/c4_file/terminal_program/medtrak,
 	)
 
 	/// List of peripheral typepaths to install by default.

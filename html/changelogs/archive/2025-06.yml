@@ -7,3 +7,11 @@
   - bugfix: Fixed wallet opening/closing not updating the player's name.
   francinum:
   - qol: OOC messages are now more clearly marked.
+2025-06-03:
+  Kapu1178, LemonInTheDark, Mothblocks:
+  - rscdel: Removed most of the remaining TG achievements.
+  - rscadd: Added new achievements.
+  - rscadd: Achievements are now announced to the whole server.
+  - rscadd: Achievements are descriptions are hidden until unlocked.
+  - tweak: Changed the achievement view verb to "view achievements.
+  - rscadd: ezdb.

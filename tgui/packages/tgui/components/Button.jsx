@@ -7,11 +7,11 @@
 import { KEY_ENTER, KEY_ESCAPE, KEY_SPACE } from 'common/keycodes';
 import { classes } from 'common/react';
 import { Component, createRef } from 'react';
+import { Tooltip } from 'tgui-core/components';
 
 import { createLogger } from '../logging';
 import { Box, computeBoxClassName, computeBoxProps } from './Box';
 import { Icon } from './Icon';
-import { Tooltip } from './Tooltip';
 
 const logger = createLogger('Button');
 

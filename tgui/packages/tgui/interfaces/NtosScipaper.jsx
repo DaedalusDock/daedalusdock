@@ -1,3 +1,5 @@
+import { Tooltip } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
 import {
   BlockQuote,
@@ -13,7 +15,6 @@ import {
   Stack,
   Table,
   Tabs,
-  Tooltip,
 } from '../components';
 import { TableCell, TableRow } from '../components/Table';
 import { NtosWindow } from '../layouts';

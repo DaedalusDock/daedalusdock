@@ -1,3 +1,5 @@
+import { Tooltip } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
 import {
   Button,
@@ -7,7 +9,6 @@ import {
   Section,
   Slider,
   Stack,
-  Tooltip,
 } from '../components';
 import { Window } from '../layouts';
 

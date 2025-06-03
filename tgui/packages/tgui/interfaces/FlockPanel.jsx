@@ -4,6 +4,7 @@
  * @author LeahTheTech (https://github.com/TobleroneSwordfish)
  * @license MIT
  */
+import { Tooltip } from 'tgui-core/components';
 
 import { useBackend, useLocalState } from '../backend';
 import {
@@ -14,7 +15,6 @@ import {
   Section,
   Stack,
   Tabs,
-  Tooltip,
 } from '../components';
 import { Window } from '../layouts';
 

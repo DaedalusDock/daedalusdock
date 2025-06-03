@@ -16,13 +16,16 @@
 	/// All programs currently running on the machine.
 	var/tmp/list/datum/c4_file/terminal_program/processing_programs = list()
 
+	/// Halt And Catch Fire (Prevents STDIN, closest we can get to a HALT state.)
+	var/deadlocked = FALSE
+
 /datum/c4_file/terminal_program/operating_system/Destroy()
 	clean_up()
 	return ..()
 
 /// Should run this before executing any commands.
 /datum/c4_file/terminal_program/operating_system/proc/is_operational()
-	return !!get_computer()?.is_operational
+	return (!!get_computer()?.is_operational) && (!deadlocked)
 
 /// Change active directory.
 /datum/c4_file/terminal_program/operating_system/proc/change_dir(datum/c4_file/folder/directory)

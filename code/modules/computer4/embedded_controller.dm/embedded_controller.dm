@@ -35,9 +35,8 @@
 /obj/machinery/c4_embedded_controller/ui_static_data(mob/user)
 	return internal_computer.ui_static_data(user)
 
-
 /obj/machinery/c4_embedded_controller/proc/setup_default_configuration()
-	CRASH()
+	return
 
 /obj/machinery/computer4/embedded_controller
 	default_operating_system = null

@@ -17,6 +17,9 @@
 
 
 /datum/browser/New(nuser, nwindow_id, ntitle = 0, nwidth = 0, nheight = 0, atom/nref = null)
+	if(istype(nuser, /client))
+		var/client/user_client = nuser
+		nuser = user_client.mob
 	user = nuser
 	RegisterSignal(user, COMSIG_PARENT_QDELETING, PROC_REF(user_deleted))
 	window_id = nwindow_id

@@ -51,9 +51,7 @@
 	l_pocket = /obj/item/reagent_containers/hypospray/medipen/survival
 	r_pocket = /obj/item/storage/bag/ore //causes issues if spawned in backpack
 
-	backpack = /obj/item/storage/backpack/explorer
-	satchel = /obj/item/storage/backpack/satchel/explorer
-	duffelbag = /obj/item/storage/backpack/duffelbag/explorer
+	back = /obj/item/storage/backpack/explorer
 
 	box = /obj/item/storage/box/survival/mining
 

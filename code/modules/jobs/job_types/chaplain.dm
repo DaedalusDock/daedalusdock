@@ -124,7 +124,6 @@
 	belt = /obj/item/modular_computer/tablet/pda/chaplain
 	ears = /obj/item/radio/headset/headset_srv
 
-	backpack = /obj/item/storage/backpack/cultpack
-	satchel = /obj/item/storage/backpack/cultpack
+	back = /obj/item/storage/backpack/cultpack
 
 	chameleon_extras = /obj/item/stamp/chap

@@ -16,6 +16,10 @@
 	/// All programs currently running on the machine.
 	var/tmp/list/datum/c4_file/terminal_program/processing_programs = list()
 
+/datum/c4_file/terminal_program/operating_system/Destroy()
+	clean_up()
+	return ..()
+
 /// Should run this before executing any commands.
 /datum/c4_file/terminal_program/operating_system/proc/is_operational()
 	return !!get_computer()?.is_operational

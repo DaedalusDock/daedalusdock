@@ -17,7 +17,8 @@
 	var/tmp/list/datum/c4_file/terminal_program/processing_programs = list()
 
 /datum/c4_file/terminal_program/operating_system/Destroy()
-	clean_up()
+	if(length(processing_programs))
+		clean_up()
 	return ..()
 
 /// Should run this before executing any commands.
@@ -135,7 +136,9 @@
 	for(var/datum/c4_file/terminal_program/program as anything in processing_programs - src)
 		unload_program(program)
 
-	unload_program(src)
+	if(src in processing_programs)
+		unload_program(src)
+
 	get_computer()?.text_buffer = ""
 	get_computer()?.operating_system = null
 
@@ -165,7 +168,11 @@
 	remove_processing_program(program)
 
 	if(active_program == program)
-		set_active_program(src)
+		if(active_program == src)
+			set_active_program(null)
+			clean_up()
+		else
+			set_active_program(src)
 
 	return TRUE
 

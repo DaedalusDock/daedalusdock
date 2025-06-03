@@ -25,6 +25,8 @@
 
 	circuit = /obj/item/circuitboard/computer/voidcomputer
 
+	has_disk_slot = TRUE
+
 	/// The operating system.
 	var/tmp/datum/c4_file/terminal_program/operating_system/thinkdos/operating_system
 

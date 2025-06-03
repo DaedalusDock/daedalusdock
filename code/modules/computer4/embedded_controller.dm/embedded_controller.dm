@@ -20,7 +20,10 @@
 	floppy.root.try_add_file(new default_operating_system)
 
 	internal_computer.set_inserted_disk(floppy) // Maybe this needs to be on src?
-	setup_default_configuration()
+	var/datum/c4_file/record/conf_db = new
+	conf_db.name = "config"
+	setup_default_configuration(conf_db)
+	floppy.root.try_add_file(conf_db)
 
 	if(!mapload)
 		internal_computer.post_system()
@@ -35,7 +38,7 @@
 /obj/machinery/c4_embedded_controller/ui_static_data(mob/user)
 	return internal_computer.ui_static_data(user)
 
-/obj/machinery/c4_embedded_controller/proc/setup_default_configuration()
+/obj/machinery/c4_embedded_controller/proc/setup_default_configuration(datum/c4_file/record/conf_db)
 	return
 
 /obj/machinery/computer4/embedded_controller

@@ -3,7 +3,7 @@
 
 /datum/shell_command/netpage/quit/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	system.println("Quitting...")
-	program.get_computer().unload_program(program)
+	system.unload_program(program)
 
 /datum/shell_command/netpage/broadcast
 	aliases = list("post", "broadcast")

@@ -40,10 +40,10 @@
 
 	if(force)
 		system.println("Quitting...")
-		computer.unload_program(program)
+		system.unload_program(program)
 		return
 
-	if(computer.try_background_program(program))
+	if(system.try_background_program(program))
 		system.println("Moved [program.name] to background processes.")
 	else
 		system.println("<b>Error: RAM is full.</b>")

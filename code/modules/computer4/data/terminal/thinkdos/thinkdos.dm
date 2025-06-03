@@ -205,10 +205,9 @@
 	if(current_user)
 		RegisterSignal(current_user, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_ADDED, COMSIG_COMPUTER4_FILE_REMOVED), PROC_REF(user_file_gone))
 	else
-		var/obj/machinery/computer4/computer = get_computer()
-		for(var/datum/c4_file/terminal_program/running_program as anything in computer.processing_programs)
+		for(var/datum/c4_file/terminal_program/running_program as anything in processing_programs)
 			if(running_program == src)
 				continue
 
-			computer.unload_program(running_program)
+			unload_program(running_program)
 

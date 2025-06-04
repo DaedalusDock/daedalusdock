@@ -42,6 +42,7 @@ export const TerminalOutputSection = (props: TerminalOutputSectionProps) => {
         height="100%"
         color={fontColor}
         fontSize="1.2em"
+        preserveWhitespace
         dangerouslySetInnerHTML={{ __html: displayHTML }}
       />
     </Section>

@@ -1,13 +1,18 @@
 /obj/machinery/c4_embedded_controller
-	name = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+	name = "control panel"
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "computer"
+	#warn Steal bay's sprites later.
+	has_disk_slot = TRUE
 
 	/// Ref to our magic internal computer :)
 	var/tmp/obj/machinery/computer4/embedded_controller/internal_computer
 
 	var/tmp/default_operating_system = /datum/c4_file/terminal_program/operating_system/thinkdos // temp lol
 	var/radio_frequency
+
+	/// Is our disk slot locked?
+	var/panel_locked = TRUE
 
 /obj/machinery/c4_embedded_controller/Initialize(mapload)
 	. = ..()
@@ -24,11 +29,34 @@
 	internal_computer.set_inserted_disk(floppy) // Maybe this needs to be on src?
 	var/datum/c4_file/record/conf_db = new
 	conf_db.name = "config"
-	setup_default_configuration(conf_db)
+	setup_default_configuration(conf_db, floppy)
 	floppy.root.try_add_file(conf_db)
 
 	if(!mapload)
 		internal_computer.post_system()
+
+/obj/machinery/c4_embedded_controller/examine(mob/user)
+	. = ..()
+	if(panel_locked)
+		. += span_info("The panel is locked.")
+	else
+		. += span_info("The panel is unlocked.")
+
+
+/obj/machinery/c4_embedded_controller/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!istype(tool, /obj/item/key/embedded_controller))
+		return NONE
+
+	panel_locked = !panel_locked
+	playsound(src, 'sound/machines/locktoggle.ogg', 50, TRUE)
+
+	if(panel_locked)
+		user.visible_message(span_notice("[user] locks [src]'s panel."), blind_message = span_hear("You hear a metal click."))
+	else
+		user.visible_message(span_notice("[user] unlocks [src]'s panel."), blind_message = span_hear("You hear a metal click."))
+
+	return ITEM_INTERACT_SUCCESS
+
 
 /obj/machinery/c4_embedded_controller/Destroy()
 	QDEL_NULL(internal_computer)
@@ -50,8 +78,39 @@
 /obj/machinery/c4_embedded_controller/ui_static_data(mob/user)
 	return internal_computer.ui_static_data(user)
 
-/obj/machinery/c4_embedded_controller/proc/setup_default_configuration(datum/c4_file/record/conf_db)
+/obj/machinery/c4_embedded_controller/proc/setup_default_configuration(datum/c4_file/record/conf_db, obj/item/disk/data/floppy)
 	return
+
+/obj/machinery/c4_embedded_controller/insert_disk(mob/user, obj/item/disk/data/disk)
+	if(panel_locked)
+		to_chat(user, span_warning("[src]'s panel is locked."))
+		return FALSE
+	return internal_computer.insert_disk(user, disk)
+
+
+/obj/machinery/c4_embedded_controller/screwdriver_act(mob/living/user, obj/item/tool)
+	if(panel_locked)
+		return FALSE
+
+	var/obj/item/disk/data/floppy/froppy = internal_computer.eject_disk(null) //We aren't legally adjacent.
+	if(froppy)
+		user.visible_message(
+			span_notice("[user] [pick("stuffs", "crams", "stabs")] [tool]'s tip into [src], ejecting [froppy]."),
+			blind_message = span_hear("You hear a metallic click, and scraping plastic.")
+			)
+		if(!user.pickup_item(froppy, user.get_empty_held_index()))
+			//Nice job, butterfingers.
+			playsound(src, froppy.drop_sound, DROP_SOUND_VOLUME, ignore_walls = FALSE)
+		return TRUE
+
+/obj/machinery/c4_embedded_controller/multitool_act(mob/living/user, obj/item/tool)
+	if(panel_locked)
+		return
+	user.visible_message(span_notice("[user] [pick("pulses", "bonks", "frobulates")] [src]'s motherboard with [tool]"))
+	internal_computer.reboot()
+	playsound(src, SFX_SPARKS, 30)
+	user.animate_interact(src, INTERACT_GENERIC, tool)
+	return TRUE
 
 /obj/machinery/computer4/embedded_controller
 	default_operating_system = null
@@ -60,9 +119,30 @@
 		/obj/item/peripheral/network_card/wireless,
 	)
 
+	screen_bg_color = "#69755A"
+	screen_font_color = "#000000"
+
 	/// The parent.
 	var/obj/machinery/c4_embedded_controller/controller
 
 /obj/machinery/computer4/embedded_controller/Destroy()
 	controller = null
 	return ..()
+
+// da keeeeyyyy
+
+/obj/item/key/embedded_controller
+	name = "bell-crested key"
+	desc = " There's a small Daedalus logo on the bow."
+	icon_state = "ec_key"
+
+/obj/item/key/embedded_controller/examine(mob/user)
+	. = ..()
+	if(user.mind?.assigned_role?.title == JOB_CHIEF_ENGINEER)
+		. += span_alert("Even in space, everything is CH751...")
+	#warn kapu: endisco this thing.
+	// else
+	// 	var/datum/roll_result/result = user.get_examine_result("embedded_controller_key", trait_succeed = )
+	// 	if(result?.outcome >= SUCCESS)
+	// 		result.do_skill_sound(user)
+	// 		. += result.create_tooltip("", body_only = TRUE)

@@ -165,6 +165,9 @@
 	if(!program)
 		return FALSE
 
+	// Un-deadlock ourselves.
+	deadlocked = FALSE
+
 	if(!(program in processing_programs))
 		CRASH("Tried tried to remove a program we aren't even running.")
 

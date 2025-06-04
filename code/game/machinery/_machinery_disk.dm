@@ -31,7 +31,7 @@
 		return TRUE
 
 	set_inserted_disk(disk)
-
+	playsound(loc, 'sound/machines/cardreader_insert.ogg', 50)
 	disk.forceMove(src)
 	updateUsrDialog()
 	return TRUE
@@ -54,6 +54,7 @@
 		set_inserted_disk(null)
 
 	if(.)
+		playsound(loc, 'sound/machines/cardreader_desert.ogg', 50)
 		selected_disk = DISK_INTERNAL
 		updateUsrDialog()
 	return .

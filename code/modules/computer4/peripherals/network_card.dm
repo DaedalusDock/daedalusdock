@@ -57,6 +57,8 @@
 		return
 
 	packet.data[PACKET_SOURCE_ADDRESS] = network_id
+	// Rewrite the author so we don't get the packet we just sent back.
+	packet.author = WEAKREF(src)
 	radio_connection.post_signal(packet, filter)
 
 /obj/item/peripheral/network_card/wireless/proc/deferred_post_signal(datum/signal/packet, filter, time)

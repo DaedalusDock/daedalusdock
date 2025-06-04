@@ -7,7 +7,7 @@
 	/// Target airlock ID
 	var/target_tag
 
-/obj/machinery/c4_embedded_controller/simple_door_control/setup_default_configuration(datum/c4_file/record/conf_db)
+/obj/machinery/c4_embedded_controller/simple_door_control/setup_default_configuration(datum/c4_file/record/conf_db, obj/item/disk/data/floppy)
 	var/datum/data/record/db_record = conf_db.stored_record
 
 	db_record.fields[EC_CONFIG_ID_TAG_GENERIC] = target_tag

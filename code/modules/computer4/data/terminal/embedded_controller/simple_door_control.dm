@@ -56,19 +56,24 @@
 			statchar = "#"
 		if("unlocked")
 			print_history[2] = "* -  LOCK  | >UNLCK<"
+		else
+			print_history[2] = "* - ? CHECK   DOOR ?"
 
 	switch(dooropen_state)
 		if("closed")
 			print_history[3] = "# -  OPEN  | [statchar]CLOSE[char_mirror[statchar]]"
 		if("open")
 			print_history[3] = "# - [statchar]OPEN[char_mirror[statchar]] |  CLOSE "
+		else
+			print_history[3] = "# - ? CHECK   DOOR ?"
 
 	redraw_screen(TRUE)
 
 
 /datum/c4_file/terminal_program/operating_system/embedded/simple_door_control/proc/update_netstate(datum/signal/packet)
-	//One last sanity check:
-	if(packet.data["tag"] != id_tag)
+	//make sure it's updating it's status.
+	// I should probably modify the protocol but it's 5am. suck me.
+	if((packet.data["tag"] != id_tag) && (packet.data["timestamp"]))
 		return
 
 	// We're gonna blindly trust this, We'll validate it someday. Maybe.
@@ -76,6 +81,16 @@
 	dooropen_state = packet.data["door_status"]
 
 	redraw_status()
+
+/datum/c4_file/terminal_program/operating_system/embedded/simple_door_control/proc/probe_airlock_status()
+	var/datum/signal/signal = new(
+		src,
+		list(
+			"tag" = id_tag,
+			PACKET_CMD = "update" //Doesn't matter.
+		)
+	)
+	post_signal(signal, RADIO_AIRLOCK)
 
 /datum/c4_file/terminal_program/operating_system/embedded/simple_door_control/try_std_in(text)
 	. = ..()
@@ -97,6 +112,9 @@
 					PACKET_CMD = (dooropen_state == "closed") ? "open" : "close"
 				)
 			)
+		else //Just probe the airlock to update state.
+			probe_airlock_status()
+
 	if(signal)
 		post_signal(signal, RADIO_AIRLOCK)
 

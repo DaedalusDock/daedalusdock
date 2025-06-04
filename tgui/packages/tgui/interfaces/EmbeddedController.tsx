@@ -55,9 +55,16 @@ export const EmbeddedController = (props) => {
     <Window width={368} height={552} theme="retro">
       <Window.Content>
         <Box m="6px">
-          <Box mb="6px" height="6em" className="NuclearBomb__displayBox" style={{padding: "0px"}}>
+          <Box
+            mb="6px"
+            height="6em"
+            className="NuclearBomb__displayBox"
+            style={{
+              padding: "0px",
+              borderRight: "#949180 solid"
+            }}>
             <TerminalOutputSection
-              bgColor="#1B1E1B"
+              bgColor="#69755A"
               displayHTML={displayHTML}
               fontColor="#19A319"
               noscroll

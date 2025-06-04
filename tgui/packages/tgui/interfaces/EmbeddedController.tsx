@@ -50,7 +50,7 @@ const ControllerKeypad = (props) => {
 
 export const EmbeddedController = (props) => {
   const { act, data } = useBackend<TerminalData>();
-  const { displayHTML } = data;
+  const { displayHTML, fontColor } = data;
   return (
     <Window width={368} height={570} theme="retro">
       <Window.Content style={{ border: 'outset grey' }}>
@@ -66,7 +66,7 @@ export const EmbeddedController = (props) => {
             <TerminalOutputSection
               bgColor="#69755A"
               displayHTML={displayHTML}
-              fontColor="#19A319"
+              fontColor={fontColor}
               noscroll
             />
           </Box>

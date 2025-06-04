@@ -1,4 +1,5 @@
-import { useBackend } from '../../../../../backend';
+import { useBackend } from 'tgui/backend';
+
 import { PreferencesMenuData } from '../../../data';
 import {
   CheckboxInput,

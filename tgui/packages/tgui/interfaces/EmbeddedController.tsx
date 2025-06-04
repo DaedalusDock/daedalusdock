@@ -38,7 +38,7 @@ const ControllerKeypad = (props) => {
                   'EmbeddedController__Button--keypad',
                   'EmbeddedController__Button--' + key,
                 ])}
-                onClick={() => act('keypad', { text: key })}
+                onClick={() => act('text', { value: key })}
               />
             ))}
           </Grid.Column>

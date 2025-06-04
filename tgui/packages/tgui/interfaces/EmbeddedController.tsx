@@ -34,9 +34,9 @@ const ControllerKeypad = (props) => {
                 lineHeight={1.25}
                 width="55px"
                 className={classes([
-                  'NuclearBomb__Button',
-                  'NuclearBomb__Button--keypad',
-                  'NuclearBomb__Button--' + key,
+                  'EmbeddedController__Button',
+                  'EmbeddedController__Button--keypad',
+                  'EmbeddedController__Button--' + key,
                 ])}
                 onClick={() => act('keypad', { text: key })}
               />
@@ -53,14 +53,13 @@ export const EmbeddedController = (props) => {
   const { displayHTML } = data;
   return (
     <Window width={368} height={552} theme="retro">
-      <Window.Content>
+      <Window.Content style={{border: "outset grey"}}>
         <Box m="6px">
           <Box
             mb="6px"
             height="6em"
-            className="NuclearBomb__displayBox"
+            className="EmbeddedController__displayBox"
             style={{
-              padding: "0px",
               borderRight: "#949180 solid"
             }}>
             <TerminalOutputSection
@@ -86,8 +85,8 @@ export const EmbeddedController = (props) => {
                       lineHeight={1.25}
                       width="55px"
                       className={classes([
-                        'NuclearBomb__Button',
-                        'NuclearBomb__Button--keypad',
+                        'EmbeddedController__Button',
+                        'EmbeddedController__Button--keypad',
                       ])}
                       onClick={() => act('eject')}
                     />

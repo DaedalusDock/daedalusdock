@@ -1,5 +1,7 @@
 /obj/machinery/c4_embedded_controller
 	name = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+	icon = 'icons/obj/computer.dmi'
+	icon_state = "computer"
 
 	/// Ref to our magic internal computer :)
 	var/tmp/obj/machinery/computer4/embedded_controller/internal_computer
@@ -31,6 +33,16 @@
 /obj/machinery/c4_embedded_controller/Destroy()
 	QDEL_NULL(internal_computer)
 	return ..()
+
+/obj/machinery/c4_embedded_controller/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "EmbeddedController")
+		ui.open()
+
+/obj/machinery/c4_embedded_controller/ui_act(action, list/params)
+	SHOULD_CALL_PARENT(FALSE) // Relaying already
+	return internal_computer.ui_act(arglist(args))
 
 /obj/machinery/c4_embedded_controller/ui_data(mob/user)
 	return internal_computer.ui_data(user)

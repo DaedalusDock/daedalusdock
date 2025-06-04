@@ -30,9 +30,9 @@ const ControllerKeypad = (props) => {
                 mb="6px"
                 content={key}
                 textAlign="center"
-                fontSize="40px"
+                fontSize="3.5rem"
                 lineHeight={1.25}
-                width="55px"
+                width="4.5rem"
                 className={classes([
                   'EmbeddedController__Button',
                   'EmbeddedController__Button--keypad',
@@ -81,9 +81,9 @@ export const EmbeddedController = (props) => {
                       icon="eject"
                       mb="6px"
                       textAlign="center"
-                      fontSize="40px"
+                      fontSize="3.5rem"
                       lineHeight={1.25}
-                      width="55px"
+                      width="4.5rem"
                       className={classes([
                         'EmbeddedController__Button',
                         'EmbeddedController__Button--keypad',

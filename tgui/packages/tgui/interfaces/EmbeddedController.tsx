@@ -52,7 +52,7 @@ export const EmbeddedController = (props) => {
   const { act, data } = useBackend<TerminalData>();
   const { displayHTML } = data;
   return (
-    <Window width={350} height={550} theme="retro">
+    <Window width={368} height={552} theme="retro">
       <Window.Content>
         <Box m="6px">
           <Box mb="6px" height="6em" className="NuclearBomb__displayBox" style={{padding: "0px"}}>
@@ -63,8 +63,7 @@ export const EmbeddedController = (props) => {
               noscroll
             />
           </Box>
-          <Flex mb={1.5} />
-          <Flex ml="3px">
+          <Flex mb={1.5} justify="center">
             <Flex.Item>
               <ControllerKeypad />
               <Flex.Item>
@@ -88,10 +87,6 @@ export const EmbeddedController = (props) => {
                   </Flex.Item>
                 </Flex>
               </Flex.Item>
-            </Flex.Item>
-            <Flex.Item ml="6px" width="129px">
-              <Box> {/* Put side buttons here*/}
-              </Box>
             </Flex.Item>
           </Flex>
         </Box>

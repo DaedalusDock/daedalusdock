@@ -51,6 +51,7 @@
 	if(!.)
 		inserted_disk.forceMove(drop_location())
 		. = inserted_disk
+		set_inserted_disk(null)
 
 	if(.)
 		selected_disk = DISK_INTERNAL

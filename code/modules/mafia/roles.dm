@@ -21,8 +21,6 @@
 	///action = uses
 	var/list/actions = list()
 	var/list/targeted_actions = list()
-	///what the role gets when it wins a game
-	var/winner_award = /datum/award/achievement/mafia/assistant
 
 	///so mafia have to also kill them to have a majority
 	var/game_status = MAFIA_ALIVE
@@ -148,7 +146,6 @@
 	desc = "You can investigate a single person each night to learn their team."
 	revealed_outfit = /datum/outfit/mafia/detective
 	role_type = TOWN_INVEST
-	winner_award = /datum/award/achievement/mafia/detective
 
 	hud_icon = "huddetective"
 	revealed_icon = "detective"
@@ -208,7 +205,6 @@
 	desc = "You can visit someone ONCE PER GAME to reveal their true role in the morning!"
 	revealed_outfit = /datum/outfit/mafia/psychologist
 	role_type = TOWN_INVEST
-	winner_award = /datum/award/achievement/mafia/psychologist
 
 	hud_icon = "hudpsychologist"
 	revealed_icon = "psychologist"
@@ -252,7 +248,6 @@
 	role_type = TOWN_INVEST
 	hud_icon = "hudchaplain"
 	revealed_icon = "chaplain"
-	winner_award = /datum/award/achievement/mafia/chaplain
 
 	targeted_actions = list("Pray")
 	var/datum/mafia_role/current_target
@@ -291,7 +286,6 @@
 	role_type = TOWN_PROTECT
 	hud_icon = "hudmedicaldoctor"
 	revealed_icon = "medicaldoctor"
-	winner_award = /datum/award/achievement/mafia/md
 
 	targeted_actions = list("Protect")
 	var/datum/mafia_role/current_protected
@@ -354,7 +348,6 @@
 	hud_icon = "hudsecurityofficer"
 	role_type = TOWN_PROTECT
 	role_flags = ROLE_CAN_KILL
-	winner_award = /datum/award/achievement/mafia/officer
 
 	targeted_actions = list("Defend")
 	var/datum/mafia_role/current_defended
@@ -419,7 +412,6 @@
 	role_type = TOWN_SUPPORT
 	hud_icon = "hudlawyer"
 	revealed_icon = "lawyer"
-	winner_award = /datum/award/achievement/mafia/lawyer
 
 	targeted_actions = list("Advise")
 	var/datum/mafia_role/current_target
@@ -479,7 +471,6 @@
 	hud_icon = "hudheadofpersonnel"
 	revealed_icon = "headofpersonnel"
 	revealed_outfit = /datum/outfit/mafia/hop
-	winner_award = /datum/award/achievement/mafia/hop
 
 	targeted_actions = list("Reveal")
 	vote_potential = 3
@@ -503,7 +494,6 @@
 	revealed_outfit = /datum/outfit/mafia/hos
 	revealed_icon = "headofsecurity"
 	hud_icon = "hudheadofsecurity"
-	winner_award = /datum/award/achievement/mafia/hos
 
 	targeted_actions = list("Execute")
 	var/datum/mafia_role/execute_target
@@ -565,7 +555,6 @@
 	revealed_outfit = /datum/outfit/mafia/warden
 	revealed_icon = "warden"
 	hud_icon = "hudwarden"
-	winner_award = /datum/award/achievement/mafia/warden
 
 	actions = list("Lockdown")
 	var/charges = 1
@@ -627,7 +616,6 @@
 	role_type = MAFIA_REGULAR
 	hud_icon = "hudchangeling"
 	revealed_icon = "changeling"
-	winner_award = /datum/award/achievement/mafia/changeling
 
 	revealed_outfit = /datum/outfit/mafia/changeling
 	special_theme = "syndicate"
@@ -649,7 +637,6 @@
 	role_type = MAFIA_SPECIAL
 	hud_icon = "hudthoughtfeeder"
 	revealed_icon = "thoughtfeeder"
-	winner_award = /datum/award/achievement/mafia/thoughtfeeder
 
 	targeted_actions = list("Learn Role")
 	var/datum/mafia_role/current_investigation
@@ -692,7 +679,6 @@
 	team = MAFIA_TEAM_SOLO
 	role_type = NEUTRAL_KILL
 	role_flags = ROLE_CAN_KILL
-	winner_award = /datum/award/achievement/mafia/traitor
 	revealed_outfit = /datum/outfit/mafia/traitor
 	revealed_icon = "traitor"
 	hud_icon = "hudtraitor"
@@ -757,7 +743,6 @@
 	special_theme = "neutral"
 	hud_icon = "hudnightmare"
 	revealed_icon = "nightmare"
-	winner_award = /datum/award/achievement/mafia/nightmare
 
 	targeted_actions = list("Flicker", "Hunt")
 	var/list/flickering = list()
@@ -844,7 +829,6 @@
 	special_theme = "neutral"
 	hud_icon = "hudfugitive"
 	revealed_icon = "fugitive"
-	winner_award = /datum/award/achievement/mafia/fugitive
 
 	actions = list("Self Preservation")
 	var/charges = 2
@@ -897,7 +881,6 @@
 	SIGNAL_HANDLER
 
 	if(game_status == MAFIA_ALIVE)
-		game.award_role(winner_award, src)
 		game.send_message("<span class='big comradio'>!! FUGITIVE VICTORY !!</span>")
 
 #undef FUGITIVE_NOT_PRESERVING
@@ -914,7 +897,6 @@
 	hud_icon = "hudobsessed"
 	revealed_icon = "obsessed"
 
-	winner_award = /datum/award/achievement/mafia/obsessed
 	var/datum/mafia_role/obsession
 	var/lynched_target = FALSE
 
@@ -947,7 +929,6 @@
 		return
 	if(lynch)
 		game.send_message("<span class='big comradio'>!! OBSESSED VICTORY !!</span>")
-		game.award_role(winner_award, src)
 		reveal_role(game, FALSE)
 	else
 		to_chat(body, span_userdanger("You have failed your objective to lynch [obsession.body.real_name]!"))
@@ -962,7 +943,6 @@
 	special_theme = "neutral"
 	hud_icon = "hudclown"
 	revealed_icon = "clown"
-	winner_award = /datum/award/achievement/mafia/clown
 
 /datum/mafia_role/clown/New(datum/mafia_controller/game)
 	. = ..()
@@ -975,5 +955,4 @@
 		var/datum/mafia_role/victim = pick(game.judgement_guilty_votes + game.judgement_abstain_votes)
 		game.send_message("<span class='big clown'>[body.real_name] WAS A CLOWN! HONK! They take down [victim.body.real_name] with their last prank.</span>")
 		game.send_message("<span class='big clown'>!! CLOWN VICTORY !!</span>")
-		game.award_role(winner_award, src)
 		victim.kill(game,FALSE)

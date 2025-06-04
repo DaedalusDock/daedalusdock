@@ -5,13 +5,13 @@ import {
   NoticeBox,
   Section,
   Stack,
+  Table,
   Tabs,
   Tooltip,
 } from 'tgui-core/components';
 import { toTitleCase } from 'tgui-core/string';
 
 import { useBackend, useLocalState } from '../backend';
-import { TableCell, TableRow } from '../components/Table';
 import { Window } from '../layouts';
 
 export const DebugHealth = (props) => {
@@ -101,9 +101,9 @@ const ArrayDisplay = (props: { items: any[]; label: string }) => {
         }
 
         return (
-          <TableRow key={index}>
-            <TableCell key={index}>{item}</TableCell>
-          </TableRow>
+          <Table.Row key={index}>
+            <Table.Cell key={index}>{item}</Table.Cell>
+          </Table.Row>
         );
       })}
     </LabeledList.Item>

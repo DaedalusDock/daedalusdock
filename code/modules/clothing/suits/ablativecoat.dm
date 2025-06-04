@@ -34,22 +34,14 @@
 	if (prob(hit_reflect_chance))
 		return TRUE
 
-/obj/item/clothing/suit/hooded/ablative/ToggleHood()
-	if (hood_up)
-		return ..()
+/obj/item/clothing/suit/hooded/ablative/on_hood_equip(mob/living/wearer, obj/item/clothing/hood)
 	var/mob/living/carbon/user = loc
 	var/datum/atom_hud/hud = GLOB.huds[DATA_HUD_SECURITY_ADVANCED]
 	ADD_TRAIT(user, TRAIT_SECURITY_HUD, HELMET_TRAIT)
 	hud.show_to(user)
-	balloon_alert(user, "you put on the hood, and enable the hud")
-	return ..()
 
-/obj/item/clothing/suit/hooded/ablative/RemoveHood()
-	if (!hood_up)
-		return ..()
-	var/mob/living/carbon/user = loc
+/obj/item/clothing/suit/hooded/ablative/on_hood_unequip(obj/item/clothing/hood)
+	var/mob/living/carbon/user = equipped_to
 	var/datum/atom_hud/hud = GLOB.huds[DATA_HUD_SECURITY_ADVANCED]
 	REMOVE_TRAIT(user, TRAIT_SECURITY_HUD, HELMET_TRAIT)
 	hud.hide_from(user)
-	balloon_alert(user, "you take off the hood, and disable the hud")
-	return ..()

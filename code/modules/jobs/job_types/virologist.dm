@@ -57,8 +57,6 @@
 	mask = /obj/item/clothing/mask/surgical
 	shoes = /obj/item/clothing/shoes/sneakers/white
 
-	backpack = /obj/item/storage/backpack/virology
-	satchel = /obj/item/storage/backpack/satchel/vir
-	duffelbag = /obj/item/storage/backpack/duffelbag/virology
+	back = /obj/item/storage/backpack/virology
 
 	box = /obj/item/storage/box/survival/medical

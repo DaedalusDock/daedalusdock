@@ -1,19 +1,25 @@
 /datum/award
-	///Name of the achievement, If null it won't show up in the achievement browser. (Handy for inheritance trees)
+	abstract_type = /datum/award
+
+	///Name of the achievement.
 	var/name
 	var/desc = "You did it."
+
 	///The icon state for this award. The icon file is found in ui_icons/achievements.
 	var/icon = "default"
 
-	var/category = "Normal"
+	var/category = "General"
 
 	///What ID do we use in db, limited to 32 characters
 	var/database_id
 	//Bump this up if you're changing outdated table identifier and/or achievement type
-	var/achievement_version = 2
+	var/achievement_version = 3
 
 	//Value returned on db connection failure, in case we want to differ 0 and nonexistent later on
 	var/default_value = FALSE
+
+	/// If set to TRUE, the award will not be visible in the achievement viewer until it is already unlocked.
+	var/hidden_until_unlocked = TRUE
 
 ///This proc loads the achievement data from the hub.
 /datum/award/proc/load(key)
@@ -68,8 +74,8 @@
 
 ///Achievements are one-off awards for usually doing cool things.
 /datum/award/achievement
+	abstract_type = /datum/award/achievement
 	desc = "Achievement for epic people"
-	icon = "" // This should warn contributors that do not declare an icon when contributing new achievements.
 
 /datum/award/achievement/get_metadata_row()
 	. = ..()
@@ -80,40 +86,20 @@
 
 /datum/award/achievement/on_unlock(mob/user)
 	. = ..()
-	to_chat(user, span_greenannounce("<B>Achievement unlocked: [name]!</B>"))
+	to_chat(world, systemtext("[capitalize(user.ckey)] was awarded the \"<b>[name]</b>\" achievement."))
 
 ///Scores are for leaderboarded things, such as killcount of a specific boss
 /datum/award/score
+	abstract_type = /datum/award/score
+
 	desc = "you did it sooo many times."
 	category = "Scores"
 	default_value = 0
-
-	var/track_high_scores = TRUE
-	var/list/high_scores = list()
-
-/datum/award/score/New()
-	. = ..()
-	if(track_high_scores)
-		LoadHighScores()
+	hidden_until_unlocked = FALSE
 
 /datum/award/score/get_metadata_row()
 	. = ..()
 	.["achievement_type"] = "score"
-
-/datum/award/score/proc/LoadHighScores()
-	var/datum/db_query/Q = SSdbcore.NewQuery(
-		"SELECT ckey,value FROM [format_table_name("achievements")] WHERE achievement_key = :achievement_key ORDER BY value DESC LIMIT 50",
-		list("achievement_key" = database_id)
-	)
-	if(!Q.Execute(async = TRUE))
-		qdel(Q)
-		return
-	else
-		while(Q.NextRow())
-			var/key = Q.item[1]
-			var/score = text2num(Q.item[2])
-			high_scores[key] = score
-		qdel(Q)
 
 /datum/award/score/parse_value(raw_value)
 	return isnum(raw_value) ? raw_value : 0

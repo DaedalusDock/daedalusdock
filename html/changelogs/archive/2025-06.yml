@@ -1,0 +1,17 @@
+2025-06-01:
+  Kapu1178:
+  - bugfix: Fixed a rare bug that caused people to not get paid.
+2025-06-02:
+  BigBimmer, PiotrTheTchaikowsky, Kapu1178:
+  - rscadd: The Augur and Acolytes now have their outfits, courtesy of BigBimmer.
+  - bugfix: Fixed wallet opening/closing not updating the player's name.
+  francinum:
+  - qol: OOC messages are now more clearly marked.
+2025-06-03:
+  Kapu1178, LemonInTheDark, Mothblocks:
+  - rscdel: Removed most of the remaining TG achievements.
+  - rscadd: Added new achievements.
+  - rscadd: Achievements are now announced to the whole server.
+  - rscadd: Achievements are descriptions are hidden until unlocked.
+  - tweak: Changed the achievement view verb to "view achievements.
+  - rscadd: ezdb.

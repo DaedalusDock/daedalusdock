@@ -170,7 +170,10 @@
 		I.throwing.finalize(FALSE)
 
 	if(I.loc == src)
-		if(!I.allow_attack_hand_drop(src) || !temporarilyRemoveItemFromInventory(I, use_unequip_delay = TRUE))
+		if(!I.allow_attack_hand_drop(src))
+			return
+
+		if(!temporarilyRemoveItemFromInventory(I, use_unequip_delay = TRUE))
 			return
 
 	// If the item was in a storage object the mob isn't holding, play the pickup animation

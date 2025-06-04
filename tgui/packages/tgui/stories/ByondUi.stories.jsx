@@ -47,7 +47,7 @@ const Story = (props) => {
                 } catch (err) {
                   logger.log(err);
                 }
-              })
+              }, 0)
             }
           >
             Evaluate

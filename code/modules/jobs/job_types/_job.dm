@@ -333,30 +333,9 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	id_in_wallet = TRUE
 	preload = TRUE // These are used by the prefs ui, and also just kinda could use the extra help at roundstart
 
-	var/backpack = /obj/item/storage/backpack
-	var/satchel = /obj/item/storage/backpack/satchel
-	var/duffelbag = /obj/item/storage/backpack/duffelbag
-
 	var/pda_slot = ITEM_SLOT_BELT
 
 /datum/outfit/job/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
-	if(ispath(back, /obj/item/storage/backpack))
-		switch(H.backpack)
-			if(GBACKPACK)
-				back = /obj/item/storage/backpack //Grey backpack
-			if(GSATCHEL)
-				back = /obj/item/storage/backpack/satchel //Grey satchel
-			if(GDUFFELBAG)
-				back = /obj/item/storage/backpack/duffelbag //Grey Duffel bag
-			if(LSATCHEL)
-				back = /obj/item/storage/backpack/satchel/leather //Leather Satchel
-			if(DSATCHEL)
-				back = satchel //Department satchel
-			if(DDUFFELBAG)
-				back = duffelbag //Department duffel bag
-			else
-				back = backpack //Department backpack
-
 	/// Handles jumpskirt pref
 	if(allow_jumpskirt && H.jumpsuit_style == PREF_SKIRT)
 		uniform = text2path("[uniform]/skirt") || uniform
@@ -409,19 +388,8 @@ GLOBAL_LIST_INIT(job_display_order, list(
 			spawn(-1) //Ssshhh linter don't worry about the lack of a user it's all gonna be okay.
 				PDA.turn_on()
 
-/datum/outfit/job/get_chameleon_disguise_info()
-	var/list/types = ..()
-	types -= /obj/item/storage/backpack //otherwise this will override the actual backpacks
-	types += backpack
-	types += satchel
-	types += duffelbag
-	return types
-
 /datum/outfit/job/get_types_to_preload()
 	var/list/preload = ..()
-	preload += backpack
-	preload += satchel
-	preload += duffelbag
 	preload += /obj/item/storage/backpack/satchel/leather
 	var/skirtpath = "[uniform]/skirt"
 	preload += text2path(skirtpath)

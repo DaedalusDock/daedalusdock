@@ -5,7 +5,6 @@ import {
   Button,
   KeyListener,
   Stack,
-  Tooltip,
   TrackOutsideClicks,
 } from 'tgui-core/components';
 import { isEscape, KEY } from 'tgui-core/keys';

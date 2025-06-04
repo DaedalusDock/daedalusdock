@@ -208,7 +208,7 @@ export const backendMiddleware = (store) => {
             perf.measure('render/finish', 'resume/finish'),
           );
         }
-      });
+      }, 0);
     }
 
     return next(action);

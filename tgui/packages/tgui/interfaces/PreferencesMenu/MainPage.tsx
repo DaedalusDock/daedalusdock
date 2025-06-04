@@ -7,9 +7,7 @@ import {
   Dropdown,
   Flex,
   LabeledList,
-  Popper,
   Stack,
-  Tooltip,
   TrackOutsideClicks,
 } from 'tgui-core/components';
 import { classes } from 'tgui-core/react';
@@ -224,10 +222,9 @@ const GenderButton = (props: {
 
   return (
     <Popper
-      options={{
-        placement: 'right-end',
-      }}
-      popperContent={
+      isOpen={genderMenuOpen}
+      placement="right-end"
+      content={
         genderMenuOpen && (
           <Stack backgroundColor="white" ml={0.5} p={0.3}>
             {[Gender.Male, Gender.Female, Gender.Other].map((gender) => {
@@ -294,10 +291,9 @@ const MainFeature = (props: {
 
   return (
     <Popper
-      options={{
-        placement: 'bottom-start',
-      }}
-      popperContent={
+      isOpen={isOpen}
+      placement="bottom-start"
+      content={
         isOpen && (
           <TrackOutsideClicks onOutsideClick={props.handleClose}>
             <ChoicedSelection

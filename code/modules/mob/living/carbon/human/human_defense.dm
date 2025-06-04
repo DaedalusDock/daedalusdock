@@ -98,9 +98,16 @@
 
 		if(check_block(P, P.damage, "the [P.name]", PROJECTILE_ATTACK, P.armor_penetration))
 			P.on_hit(src, 100, def_zone, piercing_hit)
+			if(!piercing_hit && ismob(P.original) && (P.original != src))
+				client?.give_award(/datum/award/achievement/mr_president, src)
 			return BULLET_ACT_HIT
 
-	return ..()
+	. = ..()
+
+	// If the shot isn't piercing, and we take it, let's try to award the Mr President achievement.
+	if(!piercing_hit && ((. == BULLET_ACT_HIT) || (. == BULLET_ACT_BLOCK)))
+		if(ismob(P.original) && (P.original != src))
+			client?.give_award(/datum/award/achievement/mr_president, src)
 
 ///Reflection checks for anything in your l_hand, r_hand, or wear_suit based on the reflection chance of the object
 /mob/living/carbon/human/proc/check_reflect(def_zone)

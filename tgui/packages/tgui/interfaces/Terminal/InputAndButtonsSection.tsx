@@ -12,6 +12,17 @@ import { Button, Flex, Section } from '../../components';
 import { TerminalInput } from './TerminalInput';
 import type { TerminalData } from './types';
 
+export function setDOMInputValue(value) {
+  // In theory, only calling setLocalInputValue(...) should work, but it doesn't, and requires the below hack to work.
+  // I think the cause of this is the useEffect() in tgui's Input.tsx. I couldn't find a workaround.
+  const domInput = document.querySelector(
+    ".terminalInput input[class^='_inner']",
+  );
+  if (domInput) {
+    (domInput as HTMLInputElement).value = value;
+  }
+}
+
 export const InputAndButtonsSection = () => {
   const { act, data } = useBackend<TerminalData>();
   const { terminalActive, inputValue, ckey } = data;

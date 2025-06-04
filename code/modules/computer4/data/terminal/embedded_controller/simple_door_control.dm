@@ -43,24 +43,24 @@
 
 
 /datum/c4_file/terminal_program/operating_system/embedded/simple_door_control/proc/redraw_status()
-	var/static/list/statcharpairs = list(
-		list(">","<"),
-		list("#","#")
+	var/static/list/char_mirror = list(
+		">" = "<",
+		"#" = "#",
 	)
 
-	var/statchar = 1
+	var/statchar = ">"
 	switch(doorbolt_state)
 		if("locked")
 			print_history[2] = "* - >LOCK< |  UNLCK "
-			statchar = 2
+			statchar = "#"
 		if("unlocked")
 			print_history[2] = "* -  LOCK  | >UNLCK<"
 
 	switch(dooropen_state)
 		if("closed")
-			print_history[3] = "# -  OPEN  | [statcharpairs[statchar][1]]CLOSE[statcharpairs[statchar][2]]"
+			print_history[3] = "# -  OPEN  | [statchar]CLOSE[char_mirror[statchar]]"
 		if("open")
-			print_history[3] = "# - [statcharpairs[statchar][1]]OPEN[statcharpairs[statchar][2]] |  CLOSE "
+			print_history[3] = "# - [statchar]OPEN[char_mirror[statchar]] |  CLOSE "
 
 	redraw_screen(TRUE)
 

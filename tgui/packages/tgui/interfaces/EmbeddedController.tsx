@@ -18,7 +18,7 @@ const ControllerKeypad = (props) => {
     ['3', '6', '9', '*'],
   ];
   return (
-    <Box width="185px">
+    <Box>
       <Grid width="1px">
         {keypadKeys.map((keyColumn) => (
           <Grid.Column key={keyColumn[0]}>

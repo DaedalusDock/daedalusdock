@@ -11,3 +11,13 @@
 	var/datum/data/record/db_record = conf_db.stored_record
 
 	db_record.fields[EC_CONFIG_ID_TAG_GENERIC] = target_tag
+
+/obj/item/disk/data/floppy/doorcon_test
+
+	preloaded_programs = list(/datum/c4_file/terminal_program/operating_system/embedded/simple_door_control)
+
+/obj/item/disk/data/floppy/doorcon_test/Initialize(mapload)
+	. = ..()
+	var/datum/c4_file/record/rec = new()
+	rec.name = "config"
+	root.try_add_file(rec)

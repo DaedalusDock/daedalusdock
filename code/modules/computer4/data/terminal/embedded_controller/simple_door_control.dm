@@ -41,6 +41,7 @@
 	print_history = new /list(RTOS_OUTPUT_ROWS)
 	print_history[1] = "  > DOOR CONTROL <  "
 
+	redraw_status()
 
 /datum/c4_file/terminal_program/operating_system/embedded/simple_door_control/proc/redraw_status()
 	var/static/list/char_mirror = list(

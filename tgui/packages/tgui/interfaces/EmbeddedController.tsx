@@ -53,15 +53,16 @@ export const EmbeddedController = (props) => {
   const { displayHTML } = data;
   return (
     <Window width={368} height={570} theme="retro">
-      <Window.Content style={{border: "outset grey"}}>
+      <Window.Content style={{ border: 'outset grey' }}>
         <Box m="6px">
           <Box
             mb="6px"
             height="6em"
             className="EmbeddedController__displayBox"
             style={{
-              borderRight: "#949180 solid"
-            }}>
+              borderRight: '#949180 solid',
+            }}
+          >
             <TerminalOutputSection
               bgColor="#69755A"
               displayHTML={displayHTML}

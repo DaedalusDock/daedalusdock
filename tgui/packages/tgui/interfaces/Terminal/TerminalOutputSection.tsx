@@ -14,7 +14,7 @@ import type { TerminalData } from './types';
 type TerminalOutputSectionProps = Pick<
   TerminalData,
   'bgColor' | 'displayHTML' | 'fontColor'
-> & { noscroll?: BooleanLike};
+> & { noscroll?: BooleanLike };
 
 export const TerminalOutputSection = (props: TerminalOutputSectionProps) => {
   const { displayHTML, fontColor, bgColor, noscroll } = props;

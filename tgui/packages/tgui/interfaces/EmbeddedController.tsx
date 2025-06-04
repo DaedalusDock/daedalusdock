@@ -52,7 +52,7 @@ export const EmbeddedController = (props) => {
   const { act, data } = useBackend<TerminalData>();
   const { displayHTML } = data;
   return (
-    <Window width={368} height={552} theme="retro">
+    <Window width={368} height={570} theme="retro">
       <Window.Content style={{border: "outset grey"}}>
         <Box m="6px">
           <Box

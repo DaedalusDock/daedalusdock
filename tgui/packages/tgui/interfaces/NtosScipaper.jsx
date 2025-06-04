@@ -16,7 +16,6 @@ import {
 } from 'tgui-core/components';
 
 import { useBackend } from '../backend';
-import { TableCell, TableRow } from '../components/Table';
 import { NtosWindow } from '../layouts';
 
 export const NtosScipaper = (props) => {
@@ -323,13 +322,13 @@ const PartnersBrowser = (props) => {
           <LabeledList.Item label="Technology Sharing">
             <Table>
               {partner.boostedNodes.map((node) => (
-                <TableRow key={node.id}>
-                  <TableCell>
+                <Table.Row key={node.id}>
+                  <Table.Cell>
                     {visibleNodes.includes(node.id)
                       ? node.name
                       : 'Unknown Technology'}
-                  </TableCell>
-                  <TableCell>
+                  </Table.Cell>
+                  <Table.Cell>
                     <Button
                       fluid
                       tooltipPosition="left"
@@ -346,8 +345,8 @@ const PartnersBrowser = (props) => {
                         })
                       }
                     />
-                  </TableCell>
-                </TableRow>
+                  </Table.Cell>
+                </Table.Row>
               ))}
             </Table>
           </LabeledList.Item>

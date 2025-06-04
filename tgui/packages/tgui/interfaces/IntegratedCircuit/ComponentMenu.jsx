@@ -7,10 +7,10 @@ import {
   Section,
   Stack,
 } from 'tgui-core/components';
+import { fetchRetry } from 'tgui-core/http';
 import { shallowDiffers } from 'tgui-core/react';
 
 import { resolveAsset } from '../../assets';
-import { fetchRetry } from '../../http';
 import { DEFAULT_COMPONENT_MENU_LIMIT, noop } from './constants';
 import { Port } from './Port';
 

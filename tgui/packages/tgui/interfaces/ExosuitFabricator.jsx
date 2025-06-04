@@ -9,10 +9,10 @@ import {
   Section,
   Stack,
 } from 'tgui-core/components';
+import { formatMoney } from 'tgui-core/format';
 import { createSearch } from 'tgui-core/string';
 
 import { useBackend, useSharedState } from '../backend';
-import { formatMoney } from '../format';
 import { Window } from '../layouts';
 import {
   MaterialAmount,

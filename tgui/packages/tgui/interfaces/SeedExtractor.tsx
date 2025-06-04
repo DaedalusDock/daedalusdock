@@ -8,12 +8,12 @@ import {
   Section,
   Table,
 } from 'tgui-core/components';
+import { truncate } from 'tgui-core/format';
 import { flow } from 'tgui-core/fp';
 import { BooleanLike } from 'tgui-core/react';
 import { createSearch } from 'tgui-core/string';
 
 import { useBackend } from '../backend';
-import { truncate } from '../format';
 import { Window } from '../layouts';
 
 type Seed = {

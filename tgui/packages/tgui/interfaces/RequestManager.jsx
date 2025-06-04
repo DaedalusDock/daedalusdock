@@ -4,11 +4,10 @@
  * @license MIT
  */
 
-import { Button, Input, Section, Table } from 'tgui-core/components';
+import { Button, Input, Popper, Section, Table } from 'tgui-core/components';
 import { decodeHtmlEntities } from 'tgui-core/string';
 
 import { useBackend, useLocalState } from '../backend';
-import { Popper } from '../components/Popper';
 import { Window } from '../layouts';
 
 export const RequestManager = (props) => {
@@ -136,10 +135,8 @@ const FilterPanel = (_) => {
 
   return (
     <Popper
-      options={{
-        placement: 'bottom-start',
-      }}
-      popperContent={
+      placement="bottom-start"
+      content={
         <div
           className="RequestManager__filterPanel"
           style={{

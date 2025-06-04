@@ -12,8 +12,8 @@ import {
   Section,
 } from 'tgui-core/components';
 import { toFixed } from 'tgui-core/math';
-
 import { numberOfDecimalDigits } from 'tgui-core/math';
+
 import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 

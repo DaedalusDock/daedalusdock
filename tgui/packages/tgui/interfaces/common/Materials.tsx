@@ -1,10 +1,10 @@
 import { ComponentProps } from 'react';
 import { Box, Button, Flex, NumberInput } from 'tgui-core/components';
+import { formatMoney, formatSiUnit } from 'tgui-core/format';
 import { BooleanLike } from 'tgui-core/react';
 import { classes } from 'tgui-core/react';
 
 import { useSharedState } from '../../backend';
-import { formatMoney, formatSiUnit } from '../../format';
 
 export const MATERIAL_KEYS = {
   iron: 'sheet-metal_3',

@@ -13,10 +13,10 @@ import {
   Table,
   Tabs,
 } from 'tgui-core/components';
+import { formatMoney } from 'tgui-core/format';
 import { flow } from 'tgui-core/fp';
 
 import { useBackend, useSharedState } from '../backend';
-import { formatMoney } from '../format';
 import { Window } from '../layouts';
 
 export const Cargo = (props) => {

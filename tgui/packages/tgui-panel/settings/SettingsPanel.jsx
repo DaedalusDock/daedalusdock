@@ -21,7 +21,6 @@ import {
   Tabs,
   TextArea,
 } from 'tgui-core/components';
-import { toFixed } from 'tgui-core/math';
 
 import { ChatPageSettings } from '../chat';
 import { rebuildChat, saveChatToDisk } from '../chat/actions';
@@ -167,7 +166,7 @@ export const SettingsGeneral = (props) => {
             maxValue={32}
             value={fontSize}
             unit="px"
-            format={(value) => toFixed(value)}
+            format={(value) => value.toFixed(2)}
             onChange={(value) =>
               dispatch(
                 updateSettings({

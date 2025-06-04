@@ -5,8 +5,7 @@
  */
 
 import { classes } from 'tgui-core/react';
-
-import { computeBoxClassName, computeBoxProps } from '../components/Box';
+import { computeBoxClassName, computeBoxProps } from 'tgui-core/ui';
 
 export const Layout = (props) => {
   const { className, theme = 'nanotrasen', children, ...rest } = props;

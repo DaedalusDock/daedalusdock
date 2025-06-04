@@ -4,10 +4,10 @@ import {
   RoundGauge,
   Section,
 } from 'tgui-core/components';
+import { formatSiUnit } from 'tgui-core/format';
 import { toFixed } from 'tgui-core/math';
 
 import { useBackend } from '../../backend';
-import { formatSiUnit } from '../../format';
 
 /*
  * Parameter display

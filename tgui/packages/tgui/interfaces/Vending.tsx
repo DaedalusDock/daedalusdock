@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  DmIcon,
   Icon,
   LabeledList,
   NoticeBox,
@@ -10,7 +11,6 @@ import {
 } from 'tgui-core/components';
 
 import { useBackend } from '../backend';
-import { DmIcon } from '../components/DMIcon';
 import { Window } from '../layouts';
 
 type VendingData = {

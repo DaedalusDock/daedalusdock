@@ -1,10 +1,10 @@
 import { range } from 'common/collections';
-import { Box, Button, Icon, Stack } from 'tgui-core/components';
+import React from 'react';
+import { Box, Button, Icon, Image, Stack } from 'tgui-core/components';
 import { BooleanLike } from 'tgui-core/react';
 
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
-import { Image } from '../components/Image';
 import { Window } from '../layouts';
 
 const ROWS = 5;
@@ -21,7 +21,7 @@ const getGridSpotKey = (spot: [number, number]): GridSpotKey => {
 const CornerText = (props: {
   align: 'left' | 'right';
   children: string;
-}): JSX.Element => {
+}): React.JSX.Element => {
   const { align, children } = props;
 
   return (
@@ -83,7 +83,7 @@ const ALTERNATE_ACTIONS: Record<string, AlternateAction> = {
 const SLOTS: Record<
   string,
   {
-    additionalComponent?: JSX.Element;
+    additionalComponent?: React.JSX.Element;
     displayName: string;
     gridSpot: GridSpotKey;
     image?: string;

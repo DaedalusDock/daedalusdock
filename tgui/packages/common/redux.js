@@ -4,7 +4,7 @@
  * @license MIT
  */
 
-import { compose } from './fp';
+import { compose } from 'tgui-core/fp';
 
 /**
  * Creates a Redux store.

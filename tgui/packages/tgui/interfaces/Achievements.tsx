@@ -1,7 +1,7 @@
-import { BooleanLike } from 'common/react';
+import { Box, Table, Tabs } from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
 
 import { useBackend, useLocalState } from '../backend';
-import { Box, Table, Tabs } from '../components';
 import { Window } from '../layouts';
 
 type AchievementDatum = {

@@ -5,14 +5,15 @@ import {
   Button,
   KeyListener,
   Stack,
+  Tooltip,
   TrackOutsideClicks,
 } from 'tgui-core/components';
+import { KeyEvent } from 'tgui-core/events';
+import { fetchRetry } from 'tgui-core/http';
 import { isEscape, KEY } from 'tgui-core/keys';
 
 import { resolveAsset } from '../../assets';
 import { useBackend } from '../../backend';
-import { KeyEvent } from '../../events';
-import { fetchRetry } from '../../http';
 import { PreferencesMenuData } from './data';
 import { TabbedMenu } from './TabbedMenu';
 

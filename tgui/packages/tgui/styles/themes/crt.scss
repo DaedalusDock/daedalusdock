@@ -5,7 +5,7 @@
 $background-radial-opacity: 0.2 !default;
 $color-bg: #ffffff !default;
 $color-fg: #333333 !default;
-$dark-fg: darken($color-fg, 30);
+$dark-fg: color.adjust($color-fg, $lightness: -30%, $space: hsl);
 
 @use '../base.scss' with (
   $color-bg: $color-bg,
@@ -37,7 +37,7 @@ $dark-fg: darken($color-fg, 30);
   @include meta.load-css(
     '../components/Slider.scss',
     $with: (
-      'cursor-color': darken(base.$color-fg, 0.2),
+      'cursor-color': color.adjust(base.$color-fg, $lightness: -20%),
       'popup-background-color': base.$color-bg,
       'popup-text-color': base.$color-fg
     )

@@ -98,6 +98,7 @@
 				write_buffer = "  PRESS # FOR HOLD  "
 			else
 				write_buffer = " DOOR HOLD DISABLED "
+
 			print_history[ROW_PINOUT] = write_buffer
 
 		if(STATE_DOORSTOP)
@@ -143,6 +144,7 @@
 
 	var/seconds_left = (COOLDOWN_TIMELEFT(src, door_timer)*0.1)
 	print_history[ROW_HEADER] = " ! DOOR OPEN: [fit_with_zeros(seconds_left, 2)]S ! "
+
 	if(redraw)
 		redraw_screen(TRUE)
 
@@ -150,6 +152,7 @@
 	. = ..()
 	if(text2num(text))
 		return pin_input(text)
+
 	switch(current_state)
 		if(STATE_SET_PIN)
 			if(text == "*")
@@ -159,6 +162,7 @@
 				conf_file.stored_record.fields[RTOS_CONFIG_PINCODE] = pin_buffer
 			else // "#"
 				pin_buffer = "" //Reset the buffer
+
 		if(STATE_AWAIT_PIN)
 			if(text == "*")
 				if(pin_buffer == correct_pin)
@@ -168,6 +172,7 @@
 					pin_buffer = ""
 			else // "#"
 				pin_buffer = ""
+
 		if(STATE_AUTOCLOSE)
 			if(text == "*")
 				close_door()
@@ -176,7 +181,9 @@
 		if(STATE_DOORSTOP)
 			if(text == "*")
 				close_door()
+
 			else // "#"
+				noop()
 				#warn Restart the auto close timer
 
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/open_door()
@@ -190,9 +197,9 @@
 			if(length(pin_buffer) == effective_max_length)
 				return //Drop the overrunning character.
 			pin_buffer += text
+
 		else //We don't care.
 			return
-
 
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/on_close(datum/c4_file/terminal_program/operating_system/thinkdos/system)
 	. = ..()

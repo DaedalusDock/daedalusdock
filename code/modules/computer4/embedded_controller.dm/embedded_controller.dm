@@ -35,6 +35,28 @@
 	if(!mapload)
 		internal_computer.post_system()
 
+/obj/machinery/c4_embedded_controller/LateInitialize()
+	. = ..()
+	if(!req_access_txt && !req_one_access_txt)
+		return
+
+	var/datum/c4_file/record/access_file = new()
+	access_file.name = "access"
+	internal_computer.inserted_disk.root.try_add_file(access_file)
+
+	if(req_access_txt)
+		var/list/actual_fucking_access_please = text2access(req_access_txt)
+		access_file.stored_record.fields["access"] = actual_fucking_access_please
+		access_file.stored_record.fields["acc_mode"] = RTOS_ACCESS_CALC_MODE_ALL
+	else //if you define both I'm going for your throat.
+		var/list/actual_fucking_access_please = text2access(req_one_access_txt)
+		access_file.stored_record.fields["access"] = actual_fucking_access_please
+		access_file.stored_record.fields["acc_mode"] = RTOS_ACCESS_CALC_MODE_ANY
+
+
+
+
+
 /obj/machinery/c4_embedded_controller/examine(mob/user)
 	. = ..()
 	if(panel_locked)

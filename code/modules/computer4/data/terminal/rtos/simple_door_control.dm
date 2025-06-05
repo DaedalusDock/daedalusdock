@@ -6,7 +6,7 @@
  *  | # - [CLOSED] X OPEN
  */
 
-/datum/c4_file/terminal_program/operating_system/embedded/simple_door_control
+/datum/c4_file/terminal_program/operating_system/rtos/simple_door_control
 	name = "sairctl"
 
 	// Target airlock ID Tag
@@ -15,15 +15,15 @@
 	var/doorbolt_state
 	var/dooropen_state
 
-/datum/c4_file/terminal_program/operating_system/embedded/simple_door_control/populate_memory(datum/c4_file/record/conf_record)
+/datum/c4_file/terminal_program/operating_system/rtos/simple_door_control/populate_memory(datum/c4_file/record/conf_record)
 	var/datum/data/record/record = conf_record.stored_record
 
-	id_tag = record.fields[EC_CONFIG_ID_TAG_GENERIC]
+	id_tag = record.fields[RTOS_CONFIG_ID_TAG_GENERIC]
 
 	if(!id_tag)
 		return "HALT SYS0001 - NO_IDTAG"
 
-/datum/c4_file/terminal_program/operating_system/embedded/simple_door_control/peripheral_input(obj/item/peripheral/invoker, command, datum/signal/packet)
+/datum/c4_file/terminal_program/operating_system/rtos/simple_door_control/peripheral_input(obj/item/peripheral/invoker, command, datum/signal/packet)
 	. = ..()
 	if(command == PERIPHERAL_CMD_RECEIVE_PACKET)
 		update_netstate(packet)
@@ -31,7 +31,7 @@
 	// if(command == PERIPHERAL_CMD_SCAN_CARD)
 	// 	on_cardscan(packet)
 
-/datum/c4_file/terminal_program/operating_system/embedded/simple_door_control/finish_startup()
+/datum/c4_file/terminal_program/operating_system/rtos/simple_door_control/finish_startup()
 
 
 	var/obj/item/peripheral/network_card/wireless/wcard = get_computer()?.get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD)
@@ -43,7 +43,7 @@
 
 	redraw_status()
 
-/datum/c4_file/terminal_program/operating_system/embedded/simple_door_control/proc/redraw_status()
+/datum/c4_file/terminal_program/operating_system/rtos/simple_door_control/proc/redraw_status()
 	var/static/list/char_mirror = list(
 		">" = "<",
 		"#" = "#",
@@ -70,7 +70,7 @@
 	redraw_screen(TRUE)
 
 
-/datum/c4_file/terminal_program/operating_system/embedded/simple_door_control/proc/update_netstate(datum/signal/packet)
+/datum/c4_file/terminal_program/operating_system/rtos/simple_door_control/proc/update_netstate(datum/signal/packet)
 	//make sure it's updating it's status.
 	// I should probably modify the protocol but it's 5am. suck me.
 	if((packet.data["tag"] != id_tag) && (packet.data["timestamp"]))
@@ -82,7 +82,7 @@
 
 	redraw_status()
 
-/datum/c4_file/terminal_program/operating_system/embedded/simple_door_control/proc/probe_airlock_status()
+/datum/c4_file/terminal_program/operating_system/rtos/simple_door_control/proc/probe_airlock_status()
 	var/datum/signal/signal = new(
 		src,
 		list(
@@ -92,7 +92,7 @@
 	)
 	post_signal(signal, RADIO_AIRLOCK)
 
-/datum/c4_file/terminal_program/operating_system/embedded/simple_door_control/try_std_in(text)
+/datum/c4_file/terminal_program/operating_system/rtos/simple_door_control/try_std_in(text)
 	. = ..()
 	var/datum/signal/signal
 	switch(text)
@@ -118,4 +118,4 @@
 	if(signal)
 		post_signal(signal, RADIO_AIRLOCK)
 
-// /datum/c4_file/terminal_program/operating_system/embedded/simple_door_control/proc/on_cardscan(datum/signal/packet)
+// /datum/c4_file/terminal_program/operating_system/rtos/simple_door_control/proc/on_cardscan(datum/signal/packet)

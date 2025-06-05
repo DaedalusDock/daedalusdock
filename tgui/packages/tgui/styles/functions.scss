@@ -94,11 +94,3 @@
 @function vp($viewportUnit) {
   @return calc(var(--scaling-amount) * $viewportUnit);
 }
-
-.testold {
-  color: OLD_lighten(#000000, 15%);
-}
-
-.testnew {
-  color: lightennew(#000000, 15%);
-}

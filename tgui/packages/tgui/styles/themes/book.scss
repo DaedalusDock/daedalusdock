@@ -8,7 +8,7 @@
 @use '../functions.scss' as *;
 
 $color-pencil: #454442;
-$text-color: lighten($color-pencil, 15%);
+$text-color: OLD_lighten($color-pencil, 15%);
 
 $color-paper: rgba(248, 240, 227, 255);
 

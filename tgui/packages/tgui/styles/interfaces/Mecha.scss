@@ -37,7 +37,7 @@ $color-danger: #c92020 !default;
   padding-left: 0 !important;
   padding-right: 0 !important;
   &:hover {
-    background-color: lighten($color-danger, 15%) !important;
-    border-color: lighten($color-danger, 15%) !important;
+    background-color: OLD_lighten($color-danger, 15%) !important;
+    border-color: OLD_lighten($color-danger, 15%) !important;
   }
 }

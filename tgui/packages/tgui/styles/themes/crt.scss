@@ -1,6 +1,6 @@
-@use 'sass:color';
 @use 'sass:math';
 @use 'sass:meta';
+@use '../functions.scss' as *;
 
 $background-radial-opacity: 0.2 !default;
 $color-bg: #ffffff !default;

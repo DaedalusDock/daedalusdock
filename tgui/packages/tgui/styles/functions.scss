@@ -26,8 +26,8 @@
 //  Color
 // --------------------------------------------------------
 
-// Increases perceptual color lightness.
-@function lighten($color, $percent) {
+// DEPRECATED, WHAT THE FUCK WAS STYLEMISTAKE THINKING?
+@function OLD_lighten($color, $percent) {
   $old-lightness: color.channel($color, 'lightness', $space: hsl);
   $scaled-lightness: ($old-lightness) * (1 + num($percent));
   $scaled: hsl(
@@ -37,6 +37,16 @@
   );
   $mixed: color.mix(#ffffff, $color, 100% * num($percent));
   @return color.mix($scaled, $mixed, 75%);
+}
+
+// Increases perceptual color lightness.
+@function lighten($color, $amount) {
+  @return color.adjust($color, $lightness: $amount * 1%, $space: hsl);
+}
+
+// Decreases perceptual color lightness.
+@function darken($color, $amount) {
+  @return color.adjust($color, $lightness: -$amount * 1%, $space: hsl);
 }
 
 // Returns the NTSC luminance of `$color` as a float (between 0 and 1).
@@ -86,7 +96,7 @@
 }
 
 .testold {
-  color: lighten(#000000, 15%);
+  color: OLD_lighten(#000000, 15%);
 }
 
 .testnew {

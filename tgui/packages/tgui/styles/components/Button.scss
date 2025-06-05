@@ -41,7 +41,7 @@ $bg-map: colors.$bg-map !default;
 
   &:hover,
   &:active {
-    background-color: lighten($color, 30%);
+    background-color: OLD_lighten($color, 30%);
     color: $text-color;
   }
 }

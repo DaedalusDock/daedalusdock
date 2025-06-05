@@ -52,3 +52,9 @@
 	name = "I didn't do it!"
 	desc = "Receive a gamemaster PM."
 	database_id = "thejigisup"
+
+// Get a disco flavor message.
+/datum/award/achievement/disco_inferno
+	name = "Disco Inferno"
+	desc = "See the pool through another's eyes."
+	database_id = "discoinfereno"

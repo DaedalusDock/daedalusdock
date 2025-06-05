@@ -4,8 +4,6 @@
  * @license MIT
  */
 
-import { compose } from 'tgui-core/fp';
-
 /**
  * Creates a Redux store.
  */
@@ -65,7 +63,10 @@ export const applyMiddleware = (...middlewares) => {
       };
 
       const chain = middlewares.map((middleware) => middleware(storeApi));
-      dispatch = compose(...chain)(store.dispatch);
+      dispatch = chain.reduceRight(
+        (next, middleware) => middleware(next),
+        store.dispatch,
+      );
 
       return {
         ...store,

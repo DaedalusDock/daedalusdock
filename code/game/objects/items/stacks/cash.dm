@@ -1,5 +1,5 @@
 /obj/item/stack/spacecash  //Don't use base space cash stacks. Any other space cash stack can merge with them, and could cause potential money duping exploits.
-	name = "wad of space cash"
+	name = "wad of Federation marks"
 	singular_name = "space cash bill"
 
 	stack_name = "wad"
@@ -53,7 +53,7 @@
 
 /obj/item/stack/spacecash/c1
 	icon_state = "spacecash1"
-	singular_name = "one credit bill"
+	singular_name = "one mark bill"
 	value = 1
 	merge_type = /obj/item/stack/spacecash/c1
 
@@ -65,13 +65,13 @@
 
 /obj/item/stack/spacecash/c100
 	icon_state = "spacecash100"
-	singular_name = "one hundred credit bill"
+	singular_name = "one hundred mark bill"
 	value = 100
 	merge_type = /obj/item/stack/spacecash/c100
 
 /obj/item/stack/spacecash/c1000
 	icon_state = "spacecash1000"
-	singular_name = "one thousand credit bill"
+	singular_name = "one thousand mark bill"
 	value = 1000
 	merge_type = /obj/item/stack/spacecash/c1000
 

@@ -3,7 +3,7 @@
 /datum/bank_account
 	///Name listed on the account, reflected on the ID card.
 	var/account_holder = "Rusty Venture"
-	///How many credits are currently held in the bank account.
+	///How many marks are currently held in the bank account.
 	var/account_balance = 0
 	///If there are things effecting how much income a player will get, it's reflected here 1 is standard for humans.
 	var/payday_modifier = 1
@@ -103,15 +103,15 @@
 	return FALSE
 
 /**
- * Performs a transfer of credits to the bank_account datum from another bank account.
- * *datum/bank_account/from: The bank account that is sending the credits to this bank_account datum.
- * *amount: the quantity of credits that are being moved between bank_account datums.
+ * Performs a transfer of marks to the bank_account datum from another bank account.
+ * *datum/bank_account/from: The bank account that is sending the marks to this bank_account datum.
+ * *amount: the quantity of marks that are being moved between bank_account datums.
  */
 /datum/bank_account/proc/transfer_money(datum/bank_account/from, amount)
 	if(from.has_money(amount))
 		adjust_money(amount)
 		SSblackbox.record_feedback("amount", "credits_transferred", amount)
-		log_econ("[amount] credits were transferred from [from.account_holder]'s account to [src.account_holder]")
+		log_econ("[amount] marks were transferred from [from.account_holder]'s account to [src.account_holder]")
 		from.adjust_money(-amount)
 		return TRUE
 	return FALSE
@@ -132,7 +132,7 @@
 		return TRUE
 	else
 		if(transfer_money(drain_from, money_to_transfer))
-			log_econ("[money_to_transfer] credits were given to [src.account_holder]'s account from [drain_from.account_holder].")
+			log_econ("[money_to_transfer] marks were given to [src.account_holder]'s account from [drain_from.account_holder].")
 			return TRUE
 	return FALSE
 

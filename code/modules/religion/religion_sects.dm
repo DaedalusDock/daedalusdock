@@ -241,7 +241,7 @@
 		to_chat(chap, span_warning("You need a way to pay for the heal!"))
 		return TRUE
 	if(account.account_balance < GREEDY_HEAL_COST)
-		to_chat(chap, span_warning("Healing from [GLOB.deity] costs [GREEDY_HEAL_COST] credits for 30 health!"))
+		to_chat(chap, span_warning("Healing from [GLOB.deity] costs [GREEDY_HEAL_COST] marks for 30 health!"))
 		return TRUE
 	if(!ishuman(blessed_living))
 		return FALSE

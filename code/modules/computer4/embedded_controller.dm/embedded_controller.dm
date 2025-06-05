@@ -28,7 +28,7 @@
 
 	internal_computer.set_inserted_disk(floppy) // Maybe this needs to be on src?
 	var/datum/c4_file/record/conf_db = new
-	conf_db.name = "config"
+	conf_db.name = RTOS_CONFIG_FILE
 	setup_default_configuration(conf_db, floppy)
 	floppy.root.try_add_file(conf_db)
 
@@ -41,17 +41,17 @@
 		return
 
 	var/datum/c4_file/record/access_file = new()
-	access_file.name = "access"
+	access_file.name = RTOS_ACCESS_FILE
 	internal_computer.inserted_disk.root.try_add_file(access_file)
 
 	if(req_access_txt)
 		var/list/actual_fucking_access_please = text2access(req_access_txt)
-		access_file.stored_record.fields["access"] = actual_fucking_access_please
-		access_file.stored_record.fields["acc_mode"] = RTOS_ACCESS_CALC_MODE_ALL
+		access_file.stored_record.fields[RTOS_ACCESS_LIST] = actual_fucking_access_please
+		access_file.stored_record.fields[RTOS_ACCESS_MODE] = RTOS_ACCESS_CALC_MODE_ALL
 	else //if you define both I'm going for your throat.
 		var/list/actual_fucking_access_please = text2access(req_one_access_txt)
-		access_file.stored_record.fields["access"] = actual_fucking_access_please
-		access_file.stored_record.fields["acc_mode"] = RTOS_ACCESS_CALC_MODE_ANY
+		access_file.stored_record.fields[RTOS_ACCESS_LIST] = actual_fucking_access_please
+		access_file.stored_record.fields[RTOS_ACCESS_MODE] = RTOS_ACCESS_CALC_MODE_ANY
 
 
 

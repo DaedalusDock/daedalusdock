@@ -28,7 +28,7 @@
 	//Populate our working directory
 	change_dir(containing_folder)
 	//Load our config file
-	var/datum/c4_file/record/conf_record = get_file("config")
+	var/datum/c4_file/record/conf_record = get_file(RTOS_CONFIG_FILE)
 	if(!istype(conf_record))
 		halt(RTOS_HALT_NO_CONFIG, "MISSING_CONFIG")
 		return
@@ -72,9 +72,6 @@
 /datum/c4_file/terminal_program/operating_system/rtos/on_close(datum/c4_file/terminal_program/operating_system/thinkdos/system)
 	. = ..()
 	print_history.Cut()
-
-/// Finish starting up, as the execute function is sealed.
-/datum/c4_file/terminal_program/operating_system/rtos/finish_startup()
 
 /*
  * RTOS.h - RTOS Helper Functions
@@ -121,13 +118,36 @@
 
 /** RTOS.h - Check Access
  *  Softcode allowed(), takes an ID access list from the ID peripheral.
- *  Deadlocks if the Access DB is missing.
+ *  Deadlocks if the Access DB is missing or invalid
  */
 /datum/c4_file/terminal_program/operating_system/rtos/proc/check_access(var/list/access_list)
-	var/datum/c4_file/record/access_file
+	var/datum/c4_file/record/access_file = get_file(RTOS_ACCESS_FILE)
+	if(!istype(access_file))
+		halt(RTOS_HALT_NO_ACCESS, "ACCESS_FILE_MISSING")
+		return
+	var/list/auth_list = access_file.stored_record.fields[RTOS_ACCESS_LIST]
+	if(!auth_list)
+		halt(RTOS_HALT_NO_ACCESS, "BAD_ACCESS_LIST")
+		return
+
+	var/mode = access_file.stored_record.fields[RTOS_ACCESS_MODE]
+	switch(mode)
+		// Got these from Lohi looking over my shoulder.
+		// Consider replacing actual access code with these?
+		if(RTOS_ACCESS_CALC_MODE_ALL)
+			if (length(auth_list & access_list) != length(auth_list))
+				return FALSE
+		if(RTOS_ACCESS_CALC_MODE_ANY)
+			if (length(auth_list & access_list))
+				return TRUE
+		else
+			halt(RTOS_HALT_BAD_CONFIG, "BAD_ACCESS_MODE")
+			return FALSE
+
 
 /** RTOS.h - Check ID
  *  Check if an inserted ID is allowed. Wrapps rtos/check_access()
  *  Deadlocks if there is no card reader.
  */
 /datum/c4_file/terminal_program/operating_system/rtos/proc/check_id()
+	#warn UNIMPLIMENTED

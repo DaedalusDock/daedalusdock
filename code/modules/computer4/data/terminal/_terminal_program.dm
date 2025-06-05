@@ -34,6 +34,10 @@
 /datum/c4_file/terminal_program/proc/on_close(datum/c4_file/terminal_program/operating_system/thinkdos/system)
 	return
 
+/// Processing function, Called by the OS, or the computer if src is the OS.
+/datum/c4_file/terminal_program/proc/tick(delta_time)
+	return
+
 /// Returns the operating system.
 /datum/c4_file/terminal_program/proc/get_os()
 	RETURN_TYPE(/datum/c4_file/terminal_program/operating_system)

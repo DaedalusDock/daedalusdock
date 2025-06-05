@@ -19,5 +19,5 @@
 /obj/item/disk/data/floppy/doorcon_test/Initialize(mapload)
 	. = ..()
 	var/datum/c4_file/record/rec = new()
-	rec.name = "config"
+	rec.name = RTOS_CONFIG_FILE
 	root.try_add_file(rec)

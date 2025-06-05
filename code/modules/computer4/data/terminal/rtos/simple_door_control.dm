@@ -21,7 +21,8 @@
 	id_tag = record.fields[RTOS_CONFIG_ID_TAG_GENERIC]
 
 	if(!id_tag)
-		return "HALT SYS0001 - NO_IDTAG"
+		halt(RTOS_HALT_BAD_CONFIG, "BAD_CONFIG")
+		return TRUE
 
 /datum/c4_file/terminal_program/operating_system/rtos/simple_door_control/peripheral_input(obj/item/peripheral/invoker, command, datum/signal/packet)
 	. = ..()
@@ -92,7 +93,7 @@
 	)
 	post_signal(signal, RADIO_AIRLOCK)
 
-/datum/c4_file/terminal_program/operating_system/rtos/simple_door_control/try_std_in(text)
+/datum/c4_file/terminal_program/operating_system/rtos/simple_door_control/std_in(text)
 	. = ..()
 	var/datum/signal/signal
 	switch(text)

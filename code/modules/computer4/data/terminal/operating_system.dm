@@ -199,6 +199,7 @@
 	processing_programs += program
 	RegisterSignal(program, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_ADDED), PROC_REF(processing_program_moved))
 
+
 /// Setter for the processing programs list. Use unload_program() instead!
 /datum/c4_file/terminal_program/operating_system/proc/remove_processing_program(datum/c4_file/terminal_program/program)
 	processing_programs -= program

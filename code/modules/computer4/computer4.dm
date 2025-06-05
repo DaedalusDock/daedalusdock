@@ -436,6 +436,10 @@
 	if(old_os)
 		old_os?.clean_up()
 
+/obj/machinery/computer4/process(delta_time)
+	if(operating_system)
+		operating_system.tick(delta_time)
+
 /// Handles a peripheral moving.
 /obj/machinery/computer4/proc/peripheral_gone(obj/item/peripheral/source)
 	SIGNAL_HANDLER

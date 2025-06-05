@@ -168,7 +168,7 @@
 				if(pin_buffer == correct_pin)
 					open_door()
 				else
-					#warn play a buzz here or smth.
+					#warn play a buzz here or smth
 					pin_buffer = ""
 			else // "#"
 				pin_buffer = ""
@@ -177,7 +177,9 @@
 			if(text == "*")
 				close_door()
 			else // "#"
-				#warn check allowed and move to doorstop.
+				#warn check allowed and move to doorstop
+				noop()
+
 		if(STATE_DOORSTOP)
 			if(text == "*")
 				close_door()

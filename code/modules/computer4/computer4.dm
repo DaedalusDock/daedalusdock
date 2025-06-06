@@ -27,6 +27,9 @@
 
 	has_disk_slot = TRUE
 
+	/// Typing sound/sfx key
+	var/typing_sfx = SFX_KEYBOARD
+
 	/// The operating system.
 	var/tmp/datum/c4_file/terminal_program/operating_system/thinkdos/operating_system
 
@@ -292,7 +295,7 @@
 
 			operating_system.try_std_in(params["value"])
 			add_history(usr.ckey, params["value"])
-			playsound(loc, SFX_KEYBOARD, 50, 1, -15)
+			playsound(loc, typing_sfx, 50, 1, -15)
 			usr.animate_interact(src)
 			return TRUE
 

@@ -143,6 +143,7 @@
 
 	screen_bg_color = "#69755A"
 	screen_font_color = "#000000"
+	typing_sfx = SFX_TERMINAL_TYPE //Single button click vs keyboard.
 
 	/// The parent.
 	var/obj/machinery/c4_embedded_controller/controller

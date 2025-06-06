@@ -1211,8 +1211,7 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 	return "[jointext(characters, char)][text]"
 
 /proc/fixed_center(input_str, size, pad = " ")
-	ASSERT(length(input_str) < size)
-	if(length(input_str) < size)
+	if(length(input_str) > size)
 		return input_str
 
 	var/makeup = (size - length(input_str)) / 2

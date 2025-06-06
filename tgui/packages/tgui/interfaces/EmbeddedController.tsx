@@ -13,9 +13,9 @@ import { type TerminalData } from './Terminal/types';
 const ControllerKeypad = (props) => {
   const { act } = useBackend();
   const keypadKeys = [
-    ['1', '4', '7', '#'],
+    ['1', '4', '7', '*'],
     ['2', '5', '8', '0'],
-    ['3', '6', '9', '*'],
+    ['3', '6', '9', '#'],
   ];
   return (
     <Box>

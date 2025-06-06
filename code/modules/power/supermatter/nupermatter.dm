@@ -184,11 +184,11 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 		if(!H.client || (H.stat != CONSCIOUS) || !(H.mind?.assigned_role?.title in alerted_jobs))
 			continue
 
-		var/datum/roll_result/outcome = H.stat_roll(16, /datum/rpg_skill/extrasensory)
-		if(outcome.result >= SUCCESS)
+		var/datum/roll_result/result = H.stat_roll(16, /datum/rpg_skill/extrasensory)
+		if(result.outcome >= SUCCESS)
 			continue
 
-		outcome.do_skill_sound(H)
+		result.do_skill_sound(H)
 		to_chat(
 			H,
 			result.create_tooltip("<b>Something is wrong</b>."),

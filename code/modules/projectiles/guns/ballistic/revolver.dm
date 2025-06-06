@@ -102,7 +102,7 @@
 
 /obj/item/gun/ballistic/revolver/detective
 	name = "\improper Colt Detective Special"
-	desc = "A classic, if not outdated, law enforcement firearm. Uses .38 Special rounds. \nSome spread rumors that if you loosen the barrel with a wrench, you can \"improve\" it."
+	desc = "A classic, if not outdated, law enforcement firearm."
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev38
 	icon_state = "detective"
 	fire_sound = 'sound/weapons/gun/revolver/shot.ogg'
@@ -114,6 +114,26 @@
 	alternative_ammo_misfires = TRUE
 	misfire_probability = 0
 	misfire_percentage_increment = 25 //about 1 in 4 rounds, which increases rapidly every shot
+
+/obj/item/gun/ballistic/revolver/detective/examine(mob/user)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("detgun_examine",)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		. += result.create_tooltip("No mere firearm – a cultural artifact. An all-time classic, chambered in .38 Special and packing six rounds, perfect for six criminals. ", body_only = TRUE)
+
+/obj/item/gun/ballistic/revolver/detective/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	if(user.mind?.assigned_role?.title != JOB_DETECTIVE)
+		return
+
+	var/datum/roll_result/result = user.get_examine_result("detgun_suicide_flavor", /datum/rpg_skill/extrasensory, only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("Your head falls numb as the bullet passes through your skull. Your body looks <b>wrong</b>."),
+		)
 
 /obj/item/gun/ballistic/revolver/syndicate
 	name = "\improper Syndicate Revolver"

@@ -3512,6 +3512,7 @@
 #include "code\modules\mapping\access_helpers\airlock\_airlock_access.dm"
 #include "code\modules\mapping\access_helpers\airlock\airlock_all_access.dm"
 #include "code\modules\mapping\access_helpers\airlock\airlock_any_access.dm"
+#include "code\modules\mapping\access_helpers\embedded_controller\_embedded_controller_access.dm"
 #include "code\modules\mapping\access_helpers\windoor\_windoor_access.dm"
 #include "code\modules\mapping\access_helpers\windoor\windoor_any_access.dm"
 #include "code\modules\mapping\modular_map_loader\modular_map_loader.dm"

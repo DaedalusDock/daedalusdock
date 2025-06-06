@@ -41,10 +41,10 @@
 	allow_lock_open = fields[RTOS_CONFIG_ALLOW_HOLD_OPEN]
 	correct_pin = fields[RTOS_CONFIG_PINCODE]
 	pin_length = length(correct_pin)
-	if(!correct_pin) //If we don't have a known pin, get ready to learn one.
-		current_state = STATE_SET_PIN
-	else
+	if(correct_pin) //If we don't have a known pin, get ready to learn one.
 		current_state = STATE_AWAIT_PIN
+	else
+		current_state = STATE_SET_PIN
 
 	if((pin_length > MAX_PIN_LENGTH) || (dwell_time > 99))
 		halt(RTOS_HALT_DATA_TOO_LONG, "CFG_OVERRUN")

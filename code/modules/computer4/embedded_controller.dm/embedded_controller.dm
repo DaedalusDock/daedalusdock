@@ -162,9 +162,15 @@
 	. = ..()
 	if(user.mind?.assigned_role?.title == JOB_CHIEF_ENGINEER)
 		. += span_alert("Even in space, everything is CH751...")
-	#warn kapu: endisco this thing.
-	// else
-	// 	var/datum/roll_result/result = user.get_examine_result("embedded_controller_key", trait_succeed = )
-	// 	if(result?.outcome >= SUCCESS)
-	// 		result.do_skill_sound(user)
-	// 		. += result.create_tooltip("", body_only = TRUE)
+	else
+		var/datum/roll_result/result = user.get_examine_result("embed_control_key_examine")
+		if(result?.outcome >= SUCCESS)
+			result.do_skill_sound(user)
+			. += result.create_tooltip("Debossed on the bow of the key rests \"CH751\", a universal key code. Millions of similar keys float around the pool, with millions more locks to match.", body_only = TRUE)
+
+/obj/item/key/embedded_controller/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("embed_control_key_disco", only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(user, result.create_tooltip("A young woman lies still on the couch, her clammy skin reflecting the moonlight piercing the window. On the other side of the door, a man turns a key inside the doorknob."))

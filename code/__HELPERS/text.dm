@@ -1210,10 +1210,12 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 		return "[text][jointext(characters, char)]"
 	return "[jointext(characters, char)][text]"
 
+/proc/fixed_center(input_str, size, pad = " ")
+	ASSERT(length(input_str) < size)
+	if(length(input_str) < size)
+		return input_str
 
-/proc/fixed_center(input_str, target, pad = " ")
-  ASSERT(length(input_str) < target)
-  var/makeup = (target - length(input_str)) / 2
-  var/pad_l = new /list(floor(makeup)+1).Join(pad)
-  var/pad_r = new /list(ceil(makeup)+1).Join(pad)
-  return pad_l + input_str + pad_r
+	var/makeup = (size - length(input_str)) / 2
+	var/pad_l = jointext(new /list(floor(makeup)+1), pad)
+	var/pad_r = jointext(new /list(ceil(makeup)+1), pad)
+	return "[pad_l][input_str][pad_r]"

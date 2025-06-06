@@ -4,45 +4,15 @@
  * Modified 12/3/2022 from ntos to flock
  */
 
-@use 'sass:color';
-@use 'sass:meta';
-
-$flock: #14aa94;
-
-@use '../colors.scss' with (
-  $fg-map-keys: (),
-  $bg-map-keys: ()
-);
-@use '../base.scss' with (
-  $color-bg: color.scale($flock, $lightness: -45%)
-);
-
 .theme-flock {
+  --flock-color: hsl(171, 79%, 37%);
+  // Base
+  --color-base: hsl(from var(--flock-color) h s calc(l - 17.5));
+  --color-primary: var(--flock-color);
   // Components
-  @include meta.load-css(
-    '../components/Button.scss',
-    $with: (
-      'color-default': $flock,
-      'color-transparent-text': rgba(227, 240, 255, 0.75)
-    )
-  );
-  @include meta.load-css(
-    '../components/ProgressBar.scss',
-    $with: (
-      'color-default-fill': $flock,
-      'background-color': rgba(0, 0, 0, 0.5)
-    )
-  );
-  @include meta.load-css('../components/Section.scss');
+  --button-color-transparent: hsla(var(--primary-hue), 100%, 95%, 0.75);
+  --progress-bar-background: hsla(0, 0%, 0%, 0.5);
 
-  // Layouts
-  @include meta.load-css('../layouts/Layout.scss');
-  @include meta.load-css('../layouts/Window.scss');
-  @include meta.load-css(
-    '../layouts/TitleBar.scss',
-    $with: ('background-color': color.scale($flock, $lightness: -25%))
-  );
-  color: 26FFE7;
   .Layout__content {
     background-image: none;
   }

@@ -8,7 +8,6 @@ import {
   Section,
   Table,
 } from 'tgui-core/components';
-import { truncate } from 'tgui-core/format';
 import { flow } from 'tgui-core/fp';
 import { BooleanLike } from 'tgui-core/react';
 import { createSearch } from 'tgui-core/string';
@@ -165,7 +164,6 @@ export const SeedList = (props) => {
                       tooltip="Click to rename"
                       color="transparent"
                       textColor="#FFFFFF"
-                      content={truncate(item.name, 15)}
                       defaultValue={item.name}
                       currentValue={item.name}
                       onCommit={(new_name) =>
@@ -174,7 +172,9 @@ export const SeedList = (props) => {
                           name: new_name,
                         })
                       }
-                    />
+                    >
+                      {item.name}
+                    </Button.Input>
                   </Table.Cell>
                   <Table.Cell width="10%" textAlign="center">
                     {item.damage}

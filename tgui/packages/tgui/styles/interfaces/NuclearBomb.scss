@@ -2,8 +2,8 @@
 @use '../colors.scss';
 @use '../functions.scss' as *;
 
-$color-danger: colors.bg(colors.$red) !default;
-$color-caution: colors.bg(colors.$yellow) !default;
+$color-danger: colors.bg(var(--color-red)) !default;
+$color-caution: colors.bg(var(--color-yellow)) !default;
 
 $background-beige: #e8e4c9;
 

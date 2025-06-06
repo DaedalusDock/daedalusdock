@@ -1,15 +1,15 @@
 @use '../colors.scss';
 
 $department_map: (
-  'Management': colors.$yellow,
-  'MarsPrivateSecurity': colors.$red,
-  'DaedalusIndustries': colors.$orange,
-  'AetherPharmaceuticals': colors.$teal,
-  'Misc': colors.$white,
-  'Science': colors.$purple,
-  'HermesGalacticFreight': colors.$brown,
-  'Independant': colors.$green,
-  'Silicon': colors.$pink,
+  'Management': var(--color-yellow),
+  'MarsPrivateSecurity': var(--color-red),
+  'DaedalusIndustries': var(--color-orange),
+  'AetherPharmaceuticals': var(--color-teal),
+  'Misc': var(--color-white),
+  'Science': var(--color-purple),
+  'HermesGalacticFreight': var(--color-brown),
+  'Independant': var(--color-green),
+  'Silicon': var(--color-pink),
 );
 
 .CrewManifest {
@@ -30,7 +30,7 @@ $department_map: (
     padding: 3px 0;
 
     &--Rank {
-      color: colors.$label;
+      color: var(--color-label);
     }
   }
 
@@ -40,7 +40,7 @@ $department_map: (
   }
 
   &__Icon {
-    color: colors.$label;
+    color: var(--color-label);
     position: relative;
 
     &:not(:last-child) {
@@ -52,7 +52,7 @@ $department_map: (
     }
 
     &--Command {
-      color: colors.$yellow;
+      color: var(--color-yellow);
     }
   }
 }

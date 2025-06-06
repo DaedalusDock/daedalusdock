@@ -156,5 +156,8 @@
 
 	returned_result ||= stat_roll(requirement, skill_path, modifier)
 	stats.cache_result(id, returned_result, -1)
+
+	if(returned_result.outcome >= SUCCESS)
+		client?.give_award(/datum/award/achievement/disco_inferno)
 	return returned_result
 

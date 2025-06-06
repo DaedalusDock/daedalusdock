@@ -231,7 +231,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/item/storage/secure/safe/caps_spare, 32)
 /obj/item/storage/secure/safe/caps_spare/Initialize(mapload)
 	. = ..()
 
-	lock_code = SSid_access.spare_id_safe_code
+	lock_code = SSid_access.get_static_pincode(PINCODE_SPARE_ID_SAFE, 5)
 	lock_set = TRUE
 	atom_storage.locked = TRUE
 

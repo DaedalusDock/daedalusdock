@@ -1,4 +1,3 @@
-import { sortBy } from 'common/collections';
 import { useState } from 'react';
 import {
   AnimatedNumber,
@@ -8,7 +7,6 @@ import {
   Section,
   Table,
 } from 'tgui-core/components';
-import { flow } from 'tgui-core/fp';
 import { BooleanLike } from 'tgui-core/react';
 import { createSearch } from 'tgui-core/string';
 
@@ -75,11 +73,14 @@ export const SeedList = (props) => {
 
   const seeds_filtered =
     searchText.length > 0 ? data.seeds.filter(search) : data.seeds;
-  const seeds = flow([sortBy((item: Seed) => item[sortField as keyof Seed])])(
-    seeds_filtered || [],
-  );
-  sortField !== 'name' && seeds.reverse();
 
+  const sorted = seeds_filtered.sort((itemA, itemB) =>
+    itemA[sortField as keyof Seed] < itemB[sortField as keyof Seed] ? -1 : 1,
+  );
+
+  if (sortField !== 'name') {
+    sorted.reverse();
+  }
   return (
     <Flex direction="row" height="100%">
       <Flex.Item width="75%" height="100%">
@@ -156,25 +157,22 @@ export const SeedList = (props) => {
                 </Table.Cell>
               </Table.Row>
               <Table.Cell height="1em" />
-              {seeds.map((item) => (
+              {sorted.map((item) => (
                 <Table.Row key={item.ref}>
                   <Table.Cell bold width="15%" textAlign="left">
                     <Button.Input
                       width="100px"
+                      value={item.name}
                       tooltip="Click to rename"
                       color="transparent"
                       textColor="#FFFFFF"
-                      value={item.name}
-                      buttonText={item.name}
                       onCommit={(new_name) =>
                         act('label', {
                           ref: item.ref,
                           name: new_name,
                         })
                       }
-                    >
-                      {item.name}
-                    </Button.Input>
+                    />
                   </Table.Cell>
                   <Table.Cell width="10%" textAlign="center">
                     {item.damage}

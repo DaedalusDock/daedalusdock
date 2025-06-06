@@ -1,3 +1,4 @@
+import React from 'react';
 import { createRenderer } from 'tgui/renderer';
 import { Button } from 'tgui-core/components';
 
@@ -16,7 +17,7 @@ export const SingleButtonWithCallback = () => {
 };
 
 export const ListOfButtons = () => {
-  const nodes: JSX.Element[] = [];
+  const nodes: React.JSX.Element[] = [];
   for (let i = 0; i < 100; i++) {
     const node = <Button key={i}>Hello world! {i}</Button>;
     nodes.push(node);
@@ -25,7 +26,7 @@ export const ListOfButtons = () => {
 };
 
 export const ListOfButtonsWithCallback = () => {
-  const nodes: JSX.Element[] = [];
+  const nodes: React.JSX.Element[] = [];
   for (let i = 0; i < 100; i++) {
     const node = (
       <Button key={i} onClick={() => undefined}>
@@ -38,7 +39,7 @@ export const ListOfButtonsWithCallback = () => {
 };
 
 export const ListOfButtonsWithIcons = () => {
-  const nodes: JSX.Element[] = [];
+  const nodes: React.JSX.Element[] = [];
   for (let i = 0; i < 100; i++) {
     const node = (
       <Button key={i} icon={'arrow-left'}>
@@ -51,7 +52,7 @@ export const ListOfButtonsWithIcons = () => {
 };
 
 export const ListOfButtonsWithTooltips = () => {
-  const nodes: JSX.Element[] = [];
+  const nodes: React.JSX.Element[] = [];
   for (let i = 0; i < 100; i++) {
     const node = (
       <Button key={i} tooltip={'Hello world!'}>

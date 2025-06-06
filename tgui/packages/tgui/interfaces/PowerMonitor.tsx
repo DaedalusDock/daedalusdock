@@ -213,15 +213,9 @@ function StationAreas(props) {
               <Table.Cell>Area</Table.Cell>
               <Table.Cell collapsing>Charge</Table.Cell>
               <Table.Cell textAlign="right">Draw</Table.Cell>
-              <Table.Cell collapsing title="Equipment">
-                Eqp
-              </Table.Cell>
-              <Table.Cell collapsing title="Lighting">
-                Lgt
-              </Table.Cell>
-              <Table.Cell collapsing title="Environment">
-                Env
-              </Table.Cell>
+              <Table.Cell collapsing>Eqp</Table.Cell>
+              <Table.Cell collapsing>Lgt</Table.Cell>
+              <Table.Cell collapsing>Env</Table.Cell>
             </Table.Row>
             {areas.map((area) => (
               <tr key={area.id} className="Table__row candystripe">
@@ -271,7 +265,8 @@ export function AreaCharge(props: AreaChargeProps) {
           (charging === NOT_CHARGING &&
             (charge > 50 ? 'battery-half' : 'battery-quarter')) ||
           (charging === CHARGING && 'bolt') ||
-          (charging === CHARGED && 'battery-full')
+          (charging === CHARGED && 'battery-full') ||
+          'battery-empty' // fallback
         }
         color={
           (charging === NOT_CHARGING && (charge > 50 ? 'yellow' : 'red')) ||
@@ -298,10 +293,8 @@ function AreaStatusColorBox(props: AreaStatusColorBoxProps) {
   const tooltipText = (power ? 'On' : 'Off') + ` [${mode ? 'auto' : 'manual'}]`;
 
   return (
-    <ColorBox
-      color={power ? 'good' : 'bad'}
-      content={mode ? undefined : 'M'}
-      title={tooltipText}
-    />
+    <ColorBox color={power ? 'good' : 'bad'} content={mode ? undefined : 'M'}>
+      {tooltipText}
+    </ColorBox>
   );
 }

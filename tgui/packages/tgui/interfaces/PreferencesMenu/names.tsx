@@ -23,7 +23,9 @@ type NameWithKey = {
 
 const binaryInsertName = binaryInsertWith<NameWithKey>(({ key }) => key);
 
-const sortNameWithKeyEntries = sortBy<[string, NameWithKey[]]>(([key]) => key);
+function sortNameWithKeyEntries(array: [string, NameWithKey[]][]) {
+  return sortBy(array, ([key]) => key);
+}
 
 export const MultiNameInput = (props: {
   handleClose: () => void;
@@ -78,7 +80,7 @@ export const MultiNameInput = (props: {
                           let content;
 
                           if (currentlyEditingName === key) {
-                            const updateName = (event, value) => {
+                            const updateName = (value) => {
                               props.handleUpdateName(key, value);
 
                               setCurrentlyEditingName(null);
@@ -163,7 +165,7 @@ export const NameInput = (props: {
   >('lastNameBeforeEdit', null);
   const editing = lastNameBeforeEdit === props.name;
 
-  const updateName = (e, value) => {
+  const updateName = (value) => {
     setLastNameBeforeEdit(null);
     props.handleUpdateName(value);
   };

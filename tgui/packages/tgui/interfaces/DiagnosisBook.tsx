@@ -132,8 +132,7 @@ export const PatientEntry = (props) => {
             maxLength={15}
             value={actValue}
             onBlur={(value) => act('update_mob', { [actName]: value })}
-            noborder
-            innerClassName="DiagnosisBook__textAreaInner"
+            className="DiagnosisBook__textAreaInner"
           />
         </Box>
       </Flex>
@@ -196,7 +195,6 @@ export const SymptomInfo = (_) => {
         height="100%"
         fill
         scrollable
-        noTitleBorder
       >
         <Flex direction="column">
           {symptom_categories
@@ -264,7 +262,6 @@ export const ConditionInfo = (_) => {
         height="100%"
         fill
         scrollable
-        noTitleBorder
         style={{ backgroundColor: 'black', color: '#B7A486' }}
       >
         <Flex

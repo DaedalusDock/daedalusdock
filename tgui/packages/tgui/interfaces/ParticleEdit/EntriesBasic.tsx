@@ -132,7 +132,7 @@ export const EntryGradient = (props: EntryGradientProps) => {
           <Button
             tooltip={'Loop'}
             icon={'sync'}
-            selected={isLooping}
+            selected={!!isLooping}
             onClick={() =>
               act('edit', {
                 var: var_name,
@@ -168,7 +168,7 @@ export const EntryGradient = (props: EntryGradientProps) => {
                 <Input
                   key={index}
                   maxWidth={'70px'}
-                  value={entry}
+                  value={entry.toString()}
                   onBlur={(value) =>
                     act('edit', {
                       var: var_name,

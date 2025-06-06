@@ -44,6 +44,7 @@ export const ProcCallMenu = (props) => {
                 <Stack.Item color="label">Expected Output:</Stack.Item>
                 <Stack.Item>
                   <Dropdown
+                    selected={expected_output}
                     width="100%"
                     displayText={expected_output}
                     options={possible_types}
@@ -139,6 +140,7 @@ const PortEntry = (props) => {
         </Stack.Item>
         <Stack.Item>
           <Dropdown
+            selected={datatype}
             displayText={datatype}
             options={datatypeOptions}
             onSelected={onSetType}

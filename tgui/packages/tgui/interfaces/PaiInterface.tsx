@@ -451,16 +451,20 @@ const RecordLabels = (props) => {
   );
 };
 
-const RecordRow = (props) => {
-  const { record = [] } = props;
+type RecordRowProps = {
+  record: CrewRecord;
+};
+
+const RecordRow = (props: RecordRowProps) => {
+  const { record } = props;
   const convertedRecord = Object.values(record);
   /** I do not want to show the ref here */
   const filteredRecord = convertedRecord.splice(1);
 
   return (
     <Table.Row className="candystripe">
-      {filteredRecord?.map((value) => {
-        return <Table.Cell key={value}>{value}</Table.Cell>;
+      {filteredRecord?.map((value, i) => {
+        return <Table.Cell key={i}>{value}</Table.Cell>;
       })}
     </Table.Row>
   );
@@ -505,7 +509,7 @@ const SoftwareButtons = (props) => {
       return (
         <>
           <Button
-            disabled={door_jack}
+            disabled={!!door_jack}
             icon="plug"
             onClick={() => act('door_jack', { jack: 'cable' })}
           >
@@ -645,12 +649,12 @@ const AvailableRow = (props) => {
 
   return (
     <Table.Row className="candystripe">
-      <Table.Cell collapsible>
+      <Table.Cell collapsing>
         <Box color="label">
           {software.name.replace(/^\w/, (c) => c.toUpperCase())}
         </Box>
       </Table.Cell>
-      <Table.Cell collapsible>
+      <Table.Cell collapsing>
         <Box color={ram < software.value && 'bad'} textAlign="right">
           {!purchased && software.value}{' '}
           <Icon
@@ -659,7 +663,7 @@ const AvailableRow = (props) => {
           />
         </Box>
       </Table.Cell>
-      <Table.Cell collapsible>
+      <Table.Cell collapsing>
         <Button
           fluid
           mb={0.5}

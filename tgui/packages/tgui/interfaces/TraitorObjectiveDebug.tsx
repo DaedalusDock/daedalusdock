@@ -1,3 +1,4 @@
+import React from 'react';
 import { Box, LabeledList, Stack, Tabs, Tooltip } from 'tgui-core/components';
 
 import { useBackend, useLocalState } from '../backend';
@@ -130,7 +131,7 @@ const sortingOptions: SortingOption[] = [
 export const TraitorObjectiveDebug = (props) => {
   const { data, act } = useBackend<ObjectiveData>();
   const { objective_data, player_data, current_progression } = data;
-  const lines: JSX.Element[] = [];
+  const lines: React.JSX.Element[] = [];
   lines.sort();
   for (let i = 10; i < 100; i += 10) {
     lines.push(
@@ -209,9 +210,9 @@ export const TraitorObjectiveDebug = (props) => {
           <Stack vertical>
             <Stack.Item>
               <Tabs width="100%" fluid textAlign="center">
-                {sortingOptions.map((value) => (
+                {sortingOptions.map((value, i) => (
                   <Tabs.Tab
-                    key={value.sort}
+                    key={i}
                     selected={value.name === sortingFunc}
                     onClick={() => setSortingFunc(value.name)}
                   >

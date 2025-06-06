@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import React from 'react';
 import {
   Box,
   Button,
@@ -347,8 +348,8 @@ type ObjectiveElementProps = {
   description: string;
   finalObjective: BooleanLike;
   grow: boolean;
-  handleAbort: (event: MouseEvent) => void;
-  handleCompletion: (event: MouseEvent) => void;
+  handleAbort: (event: React.MouseEvent) => void;
+  handleCompletion: (event: React.MouseEvent) => void;
   name: string;
   objectiveState: ObjectiveState;
   originalProgression: number;
@@ -357,7 +358,7 @@ type ObjectiveElementProps = {
   telecrystalPenalty: number;
 
   telecrystalReward: number;
-  uiButtons?: JSX.Element;
+  uiButtons?: React.JSX.Element;
 };
 
 const ObjectiveElement = (props: ObjectiveElementProps) => {

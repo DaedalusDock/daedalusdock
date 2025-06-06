@@ -1,4 +1,4 @@
-import { Component, KeyboardEvent } from 'react';
+import { Component } from 'react';
 import {
   Box,
   Button,
@@ -79,10 +79,11 @@ export class CircuitSignalHandler extends Component<
                 </Stack.Item>
                 <Stack.Item>
                   <Button.Checkbox
-                    checked={global}
-                    content="Global"
+                    checked={!!global}
                     onClick={(e) => this.setState({ global: !global })}
-                  />
+                  >
+                    Global
+                  </Button.Checkbox>
                 </Stack.Item>
               </Stack>
             </Stack.Item>
@@ -100,6 +101,7 @@ export class CircuitSignalHandler extends Component<
                             responseList.splice(index, 1);
                             this.setState({ parameterList });
                           }}
+                          onSetOption={() => {}}
                           onBlur={(value) => {
                             const param = responseList[index];
                             param.name = value;
@@ -201,9 +203,10 @@ export class CircuitSignalHandler extends Component<
 type EntryProps = {
   current_option: string;
   name: string;
-  onChange: (e: KeyboardEvent<HTMLInputElement>, value: string) => any;
-  onRemove: (e: MouseEvent) => any;
-  onSetOption?: (type: string) => any;
+  onBlur: (value: string) => void;
+  onChange?: (value: string) => void;
+  onRemove: (e: React.MouseEvent) => any;
+  onSetOption: (type: string) => void;
   options?: string[];
 };
 
@@ -225,13 +228,14 @@ const Entry = (props: EntryProps) => {
           <Input placeholder="Name" value={name} onChange={onChange} fluid />
         </Stack.Item>
         <Stack.Item>
-          {(options.length && (
+          {options.length ? (
             <Dropdown
               displayText={current_option}
               options={options}
               onSelected={onSetOption}
+              selected={current_option}
             />
-          )) || (
+          ) : (
             <Box textAlign="center" py="2px" px={2}>
               {current_option}
             </Box>

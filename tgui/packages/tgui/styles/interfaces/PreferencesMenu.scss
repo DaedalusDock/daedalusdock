@@ -1,19 +1,18 @@
 @use 'sass:color';
 @use 'sass:map';
-@use '../components/Button.scss';
 @use '../colors.scss';
 
 $department_map: (
-  'Assistant': colors.$grey,
-  'Captain': colors.fg(colors.$blue),
-  'Cargo': colors.$brown,
-  'Command': colors.$yellow,
-  'Security': colors.$red,
-  'Engineering': #f1a839,
-  'Medical': colors.$teal,
-  'Science': colors.fg(colors.$purple),
-  'Service': colors.$green,
-  'Silicon': colors.$pink,
+  'Assistant': var(--color-grey),
+  'Captain': colors.fg(var(--color-blue)),
+  'Cargo': var(--color-brown),
+  'Command': var(--color-yellow),
+  'Security': var(--color-red),
+  'Engineering': hsl(36, 87%, 58%),
+  'Medical': var(--color-teal),
+  'Science': colors.fg(var(--color-purple)),
+  'Service': var(--color-green),
+  'Silicon': var(--color-pink),
 );
 
 .PreferencesMenu {
@@ -59,7 +58,7 @@ $department_map: (
           @include animate-hover;
 
           .antagonist-icon-parent {
-            border-color: colors.$red;
+            border-color: var(--color-red);
 
             .antagonist-icon {
               opacity: 0.5;
@@ -75,13 +74,13 @@ $department_map: (
           @include animate-hover;
 
           .antagonist-icon-parent {
-            border-color: colors.$green;
+            border-color: var(--color-green);
           }
         }
 
         &--banned {
           .antagonist-icon-parent {
-            border-color: colors.$grey;
+            border-color: var(--color-grey);
           }
 
           .antagonist-icon {
@@ -90,7 +89,7 @@ $department_map: (
         }
 
         .antagonist-banned-slash {
-          background: colors.$grey;
+          background: var(--color-grey);
 
           width: 100%;
           height: 3px;
@@ -105,7 +104,7 @@ $department_map: (
 
         .antagonist-days-left {
           text-align: center;
-          text-shadow: 1px 1px 1px #222;
+          text-shadow: 1px 1px 1px hsl(0, 0%, 13%);
 
           width: 100%;
 
@@ -218,21 +217,21 @@ $department_map: (
 
   &__Quirks {
     &__QuirkList {
-      background-color: colors.$light-grey;
+      background-color: var(--color-grey);
       height: calc(90vh - 170px);
       min-height: 100%;
       overflow-y: scroll;
 
       &__quirk {
-        background-color: colors.$white;
+        background-color: var(--color-white);
         border-bottom: 1px solid black;
         color: #111;
         transition: background-color 0.1s ease-in;
 
         $quality_map: (
-          'positive': colors.$green,
-          'neutral': colors.$white,
-          'negative': colors.$red,
+          'positive': var(--color-green),
+          'neutral': var(--color-white),
+          'negative': var(--color-red),
         );
 
         @each $quality, $color-value in $quality_map {
@@ -243,12 +242,12 @@ $department_map: (
         }
 
         &:hover {
-          background-color: colors.$grey;
+          background-color: var(--color-grey);
           transition: background-color 0.1s ease-out;
 
           @each $quality, $color-value in $quality_map {
             .PreferencesMenu__Quirks__QuirkList__quirk--#{$quality} {
-              background-color: color.scale($color-value, $lightness: -25%);
+              background-color: hsl(from $color-value h s calc(l - 10));
               transition: background-color 0.1s ease-out;
             }
           }

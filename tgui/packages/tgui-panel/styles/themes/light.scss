@@ -29,5 +29,5 @@
   --tooltip-background-lightness: 90;
 
   // Chat styles
-  @include meta.load-css('../goon/chat-light.scss');
+  @include meta.load-css('../tgchat/chat-light.scss');
 }

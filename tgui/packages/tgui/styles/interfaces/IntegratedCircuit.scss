@@ -1,33 +1,27 @@
 @use '../colors.scss';
 @use '../base.scss';
 
-$fg-map: colors.$fg-map !default;
+$map-keys: colors.$color-map !default;
 
 .CircuitInfo__Examined {
-  background-color: rgba(0, 0, 0, 1);
-  padding: 8px;
-  border-radius: 5px;
-
   user-select: none;
   pointer-events: none;
+  background-color: var(--color-black);
+  padding: var(--space-ml);
+  border-radius: var(--border-radius-large);
 }
 
 .ObjectComponent__Titlebar {
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-
-  white-space: nowrap;
-
-  -ms-user-select: none;
   user-select: none;
+  white-space: nowrap;
+  border-top-left-radius: var(--border-radius-huge);
+  border-top-right-radius: var(--border-radius-huge);
 }
 
 .ObjectComponent__Content {
-  white-space: nowrap;
-  background-color: rgba(0, 0, 0, 0.5);
-
-  -ms-user-select: none;
   user-select: none;
+  white-space: nowrap;
+  background-color: hsla(0, 0%, 0%, 0.5);
 }
 
 .ObjectComponent__Port {
@@ -38,27 +32,24 @@ $fg-map: colors.$fg-map !default;
 
 .ObjectComponent__PortPos {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
 }
 
-@each $color-name, $color-value in $fg-map {
+@each $color-name, $color-value in $map-keys {
   .color-stroke-#{$color-name} {
-    stroke: $color-value !important;
+    stroke: hsl(from $color-value h s calc(l + var(--adjust-color))) !important;
   }
 
   .color-fill-#{$color-name} {
-    fill: $color-value !important;
+    fill: hsl(from $color-value h s calc(l + var(--adjust-color))) !important;
   }
 }
 
-$border-color: #88bfff !default;
-$border-radius: base.$border-radius !default;
+$border-color: hsl(var(--primary-hue), 100%, 77%) !default;
+$border-radius: var(--border-radius-tiny) !default;
 
 .IntegratedCircuit__BlueBorder {
   border: base.em(1px) solid $border-color;
-  border: base.em(1px) solid rgba($border-color, 0.75);
+  border: base.em(1px) solid hsl(from $border-color h s l / 0.75);
   border-radius: $border-radius;
 }

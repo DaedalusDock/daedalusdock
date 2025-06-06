@@ -2,7 +2,7 @@ import { sortBy } from 'common/collections';
 import { Button, Flex, Section, Tabs } from 'tgui-core/components';
 
 import { useLocalState } from '../../backend';
-import { Grid } from '../components/Grid';
+import { Grid } from '../../components/Grid';
 
 export const AccessConfig = (props) => {
   const {

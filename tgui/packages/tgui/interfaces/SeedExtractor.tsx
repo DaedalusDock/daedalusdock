@@ -8,7 +8,6 @@ import {
   Section,
   Table,
 } from 'tgui-core/components';
-import { truncate } from 'tgui-core/format';
 import { flow } from 'tgui-core/fp';
 import { BooleanLike } from 'tgui-core/react';
 import { createSearch } from 'tgui-core/string';
@@ -37,7 +36,7 @@ type Beaker = {
   loaded: BooleanLike;
   max_volume?: number;
   reagents?: Reagent[];
-  volume?: number;
+  volume: number;
 };
 
 type SeedExtractorData = {
@@ -86,7 +85,7 @@ export const SeedList = (props) => {
       <Flex.Item width="75%" height="100%">
         <Section title="Stored Seeds" height="100%" overflowY="scroll">
           <Box textAlign="center" height="100%">
-            <Table cellpadding="3" height="100%">
+            <Table height="100%" style={{ padding: '3px' }}>
               <Table.Row header>
                 <Table.Cell width="15%" textAlign="left">
                   <Box
@@ -165,16 +164,17 @@ export const SeedList = (props) => {
                       tooltip="Click to rename"
                       color="transparent"
                       textColor="#FFFFFF"
-                      content={truncate(item.name, 15)}
-                      defaultValue={item.name}
-                      currentValue={item.name}
+                      value={item.name}
+                      buttonText={item.name}
                       onCommit={(new_name) =>
                         act('label', {
                           ref: item.ref,
                           name: new_name,
                         })
                       }
-                    />
+                    >
+                      {item.name}
+                    </Button.Input>
                   </Table.Cell>
                   <Table.Cell width="10%" textAlign="center">
                     {item.damage}
@@ -200,33 +200,36 @@ export const SeedList = (props) => {
                   <Table.Cell width="25%" textAlign="center">
                     <Button
                       icon="search"
-                      title="Analyze"
                       onClick={() =>
                         act('analyze', {
                           ref: item.ref,
                         })
                       }
-                    />
+                    >
+                      Analyze
+                    </Button>
                     <Button
                       icon="fill-drip"
-                      title="Infuse"
                       disabled={!beaker.loaded || !has_enough_reagent}
                       onClick={() =>
                         act('infuse', {
                           ref: item.ref,
                         })
                       }
-                    />
+                    >
+                      Infuse
+                    </Button>
                     {SpliceButton(item, splicing)}
                     <Button
                       icon="eject"
-                      title="Eject"
                       onClick={() =>
                         act('eject', {
                           ref: item.ref,
                         })
                       }
-                    />
+                    >
+                      Eject
+                    </Button>
                   </Table.Cell>
                 </Table.Row>
               ))}
@@ -320,13 +323,14 @@ function SpliceButton(item: Seed, splicing?: Seed) {
   return (
     <Button
       icon={icon}
-      title={title}
       color={color}
       onClick={() =>
         act('splice', {
           ref: item.ref,
         })
       }
-    />
+    >
+      {title}
+    </Button>
   );
 }

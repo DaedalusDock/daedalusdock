@@ -3,10 +3,11 @@
 a {
   &:link,
   &:visited {
-    color: colors.$blue;
+    color: var(--color-blue);
   }
+
   &:hover,
   &:active {
-    color: colors.$primary;
+    color: var(--color-primary);
   }
 }

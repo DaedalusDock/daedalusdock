@@ -308,7 +308,7 @@
 
 	user.visible_message("<b>[user]</b> begins dumping [T] into [src].", blind_message = span_hear("You hear a plastic bag rustling."))
 	var/time_taken = 0.5 SECONDS * (1 + log(2, length(T.contents))) // Logarithmically scaling time, because linear would be kind of insane.
-	if(!do_after(user, src, time_taken, DO_PUBLIC|DO_RESTRICT_CLICKING|DO_RESTRICT_USER_DIR_CHANGE, image = tool))
+	if(!do_after(user, src, time_taken, DO_PUBLIC|DO_RESTRICT_CLICKING|DO_RESTRICT_USER_DIR_CHANGE, display = tool))
 		return ITEM_INTERACT_BLOCKING
 
 	T.atom_storage.remove_all(src)

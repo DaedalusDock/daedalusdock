@@ -34,18 +34,23 @@
 	desc = "It's the heavy-duty black polymer kind. Time to take out the trash!"
 	icon = 'icons/obj/janitor.dmi'
 	icon_state = "trashbag"
+	base_icon_state = "trashbag"
 	inhand_icon_state = "trashbag"
 	lefthand_file = 'icons/mob/inhands/equipment/custodial_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/custodial_righthand.dmi'
 	slot_flags = null
+
+	///max_total_storage of the storage datum.
+	var/total_holdable_weight = 30
+
 	///If true, can be inserted into the janitor cart
 	var/insertable = TRUE
 
 /obj/item/storage/bag/trash/Initialize()
 	. = ..()
-	atom_storage.max_specific_storage = WEIGHT_CLASS_SMALL
-	atom_storage.max_total_storage = 30
-	atom_storage.max_slots = 30
+	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
+	atom_storage.max_total_storage = total_holdable_weight
+	atom_storage.max_slots = 12
 	atom_storage.set_holdable(cant_hold_list = list(/obj/item/disk/nuclear))
 
 /obj/item/storage/bag/trash/suicide_act(mob/user)
@@ -54,15 +59,18 @@
 	return (TOXLOSS)
 
 /obj/item/storage/bag/trash/update_icon_state()
-	switch(contents.len)
-		if(20 to INFINITY)
-			icon_state = "[initial(icon_state)]3"
-		if(11 to 20)
-			icon_state = "[initial(icon_state)]2"
-		if(1 to 11)
-			icon_state = "[initial(icon_state)]1"
-		else
-			icon_state = "[initial(icon_state)]"
+	var/num_items = length(contents)
+	if(num_items == 0)
+		icon_state = base_icon_state
+
+	else if(num_items <= ceil(total_holdable_weight * 0.33))
+		icon_state = "[base_icon_state]1"
+
+	else if(num_items <= ceil(total_holdable_weight * 0.66))
+		icon_state = "[base_icon_state]2"
+
+	else
+		icon_state = "[base_icon_state]3"
 	return ..()
 
 /obj/item/storage/bag/trash/cyborg/Initialize(mapload)

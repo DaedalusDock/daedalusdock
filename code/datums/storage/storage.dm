@@ -339,39 +339,39 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 	if(!check_weight_class(to_insert))
 		if(messages && user)
-			to_chat(user, span_warning("\The [to_insert] is too big for \the [parent]!"))
+			to_chat(user, span_warning("\The [to_insert] is too large for \the [parent]."))
 		return FALSE
 
 	if(!check_slots_full(to_insert))
 		if(messages && user)
-			to_chat(user, span_warning("\The [to_insert] can't fit into \the [parent]! Make some space!"))
+			to_chat(user, span_warning("\The [to_insert] cannot fit into \the [parent]."))
 		return FALSE
 
 	if(!check_total_weight(to_insert))
 		if(messages && user)
-			to_chat(user, span_warning("\The [to_insert] can't fit into \the [parent]! Make some space!"))
+			to_chat(user, span_warning("\The [to_insert] cannot fit into \the [parent]."))
 		return FALSE
 
 	if(!check_typecache_for_item(to_insert))
 		if(messages && user)
-			to_chat(user, span_warning("\The [parent] cannot hold \the [to_insert]!"))
+			to_chat(user, span_warning("\The [parent] cannot hold \the [to_insert]."))
 		return FALSE
 
 	if(is_type_in_typecache(to_insert, cant_hold) || HAS_TRAIT(to_insert, TRAIT_NO_STORAGE_INSERT) || (can_hold_trait && !HAS_TRAIT(to_insert, can_hold_trait)))
 		if(messages && user)
-			to_chat(user, span_warning("\The [parent] cannot hold \the [to_insert]!"))
+			to_chat(user, span_warning("\The [parent] cannot hold \the [to_insert]."))
 		return FALSE
 
 	if(HAS_TRAIT(to_insert, TRAIT_NODROP))
 		if(messages)
-			to_chat(user, span_warning("\The [to_insert] is stuck on your hand!"))
+			to_chat(user, span_warning("\The [to_insert] is stuck on your hand."))
 		return FALSE
 
 	var/datum/storage/biggerfish = parent.loc.atom_storage // this is valid if the container our parent is being held in is a storage item
 
 	if(biggerfish && biggerfish.max_specific_storage < max_specific_storage)
 		if(messages && user)
-			to_chat(user, span_warning("[to_insert] can't fit in [parent] while [parent.loc] is in the way!"))
+			to_chat(user, span_warning("[to_insert] cannot fit in [parent] while [parent.loc] is in the way."))
 		return FALSE
 
 	if(isitem(parent))
@@ -453,15 +453,17 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Checks if the total weight would exceed our capacity when adding the item.
 /datum/storage/proc/check_total_weight(obj/item/to_insert)
-	var/total_weight = to_insert.w_class
-
-	for(var/obj/item/thing in real_location)
-		total_weight += thing.w_class
-
-	if(total_weight > max_total_storage)
+	if((get_total_weight() + (to_insert?.w_class || 0)) > max_total_storage)
 		return FALSE
 
 	return TRUE
+
+/// Returns a sum of all of our content's weight classes.
+/datum/storage/proc/get_total_weight()
+	var/total_weight = 0
+	for(var/obj/item/thing in real_location)
+		total_weight += thing.w_class
+	return total_weight
 
 /// Checks if the item is in our can_hold list.
 /datum/storage/proc/check_typecache_for_item(obj/item/to_insert)

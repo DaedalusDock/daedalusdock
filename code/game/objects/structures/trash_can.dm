@@ -135,6 +135,7 @@
 		if(!user.transferItemToLoc(tool, src))
 			return ITEM_INTERACT_BLOCKING
 
+		set_trash_bag(tool)
 		user.visible_message(span_notice("<b>[user]</b> lines [src] with [tool]."))
 		return ITEM_INTERACT_SUCCESS
 

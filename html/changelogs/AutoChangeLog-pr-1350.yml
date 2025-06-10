@@ -1,0 +1,7 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Syringes can now be stepped on while barefoot, contaminated syringes will
+      infect the victim.
+  - tweak: All "caltrop" items now no longer trigger while walking. This does NOT
+      apply to crawling over them.

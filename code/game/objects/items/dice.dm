@@ -94,7 +94,7 @@
 /obj/item/dice/d4/Initialize(mapload)
 	. = ..()
 	// 1d4 damage
-	AddComponent(/datum/component/caltrop, min_damage = 1, max_damage = 4, probability = 4)
+	AddComponent(/datum/component/caltrop, min_damage = 1, max_damage = 4, probability = 4, flags = CALTROP_IGNORE_WALKERS)
 
 /obj/item/dice/d6
 	name = "d6"

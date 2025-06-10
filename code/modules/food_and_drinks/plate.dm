@@ -163,4 +163,4 @@
 
 /obj/item/plate_shard/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/caltrop, min_damage = force, probability = 4)
+	AddComponent(/datum/component/caltrop, min_damage = force, probability = 4, flags = CALTROP_IGNORE_WALKERS)

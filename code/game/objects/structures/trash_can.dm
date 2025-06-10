@@ -48,6 +48,14 @@
 			user,
 			result.create_tooltip("An envelope falls into it's metal tomb, staring up at its previous owner as a tear falls upon it. Soft weeping echoes throughout the hollow chamber as the man fades into the cityscape."),
 		)
+	else
+		var/datum/roll_result/other_result = user.get_examine_result("trashcan_federation_flavor", 12, only_once = TRUE)
+		if(other_result?.outcome >= SUCCESS)
+			other_result.do_skill_sound(user)
+			to_chat(
+				user,
+				other_result.create_tooltip("A faceless worker bearing the emblem of the Federation stands up, admiring his work with a wide smile."),
+			)
 
 /obj/structure/trash_can/update_overlays()
 	. = ..()

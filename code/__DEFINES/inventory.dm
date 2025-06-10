@@ -11,7 +11,7 @@
 #define WEIGHT_CLASS_BULKY 4
 /// Usually represents objects that require two hands to operate, (e.g. shotgun, two-handed melee weapons)
 #define WEIGHT_CLASS_HUGE 5
-/// Essentially means it cannot be picked up or placed in an inventory, (e.g. mech parts, safe)
+/// Essentially means it cannot be placed in an inventory, (e.g. mech parts, safe)
 #define WEIGHT_CLASS_GIGANTIC 6
 
 /// Weight class that can fit in pockets

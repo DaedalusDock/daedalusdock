@@ -39,6 +39,7 @@
 	lefthand_file = 'icons/mob/inhands/equipment/custodial_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/custodial_righthand.dmi'
 	slot_flags = null
+	w_class = WEIGHT_CLASS_TINY
 
 	///max_total_storage of the storage datum.
 	var/total_holdable_weight = 30
@@ -52,6 +53,21 @@
 	atom_storage.max_total_storage = total_holdable_weight
 	atom_storage.max_slots = 12
 	atom_storage.set_holdable(cant_hold_list = list(/obj/item/disk/nuclear))
+	RegisterSignal(src, list(COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED, COMSIG_ATOM_REMOVED_ITEM, COMSIG_ATOM_STORED_ITEM), PROC_REF(update_weight_class))
+
+/// Called when an item enters/exits storage, or a stored item changes weight class.
+/obj/item/storage/bag/trash/proc/update_weight_class(datum/source)
+	SIGNAL_HANDLER
+
+	if(QDELETED(src)) // Waste of time.
+		return
+
+	var/highest_weight = initial(w_class)
+	for(var/obj/item/I in src)
+		if(I.w_class > highest_weight)
+			highest_weight = I.w_class
+
+	set_weight_class(highest_weight)
 
 /obj/item/storage/bag/trash/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] puts [src] over [user.p_their()] head and starts chomping at the insides! Disgusting!"))

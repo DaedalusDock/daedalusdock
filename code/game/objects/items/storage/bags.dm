@@ -78,16 +78,21 @@
 	var/num_items = length(contents)
 	if(num_items == 0)
 		icon_state = base_icon_state
-
-	else if(num_items <= ceil(total_holdable_weight * 0.33))
-		icon_state = "[base_icon_state]1"
-
-	else if(num_items <= ceil(total_holdable_weight * 0.66))
-		icon_state = "[base_icon_state]2"
-
 	else
-		icon_state = "[base_icon_state]3"
+		var/used_ratio = round(get_used_storage_ratio(), 0.01)
+		if(used_ratio <= 0.33)
+			icon_state = "[base_icon_state]1"
+
+		else if(used_ratio <= 0.66)
+			icon_state = "[base_icon_state]2"
+
+		else
+			icon_state = "[base_icon_state]3"
 	return ..()
+
+/// Returns the ratio of the bag's used storage, roughly.
+/obj/item/storage/bag/trash/proc/get_used_storage_ratio()
+	return max(length(contents) / atom_storage.max_slots, atom_storage.get_total_weight() / atom_storage.max_total_storage)
 
 /obj/item/storage/bag/trash/cyborg/Initialize(mapload)
 	. = ..()

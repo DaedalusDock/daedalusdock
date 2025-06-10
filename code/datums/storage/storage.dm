@@ -193,8 +193,12 @@
 		return
 
 	gone.item_flags &= ~IN_STORAGE
+
 	remove_and_refresh(gone)
 	gone.on_exit_storage(src)
+
+	SEND_SIGNAL(parent, COMSIG_ATOM_REMOVED_ITEM, gone)
+	SEND_SIGNAL(src, COMSIG_STORAGE_REMOVED_ITEM, gone)
 
 	parent.update_appearance()
 
@@ -554,7 +558,6 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		thing.unequipped(mobparent, TRUE)
 
 	if(newLoc)
-		reset_item(thing)
 		thing.forceMove(newLoc)
 
 		if(rustle_sound && !silent)
@@ -566,14 +569,6 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 	if(animated)
 		animate_parent()
-
-	refresh_views()
-
-	if(isobj(parent))
-		parent.update_appearance()
-
-	SEND_SIGNAL(parent, COMSIG_ATOM_REMOVED_ITEM, thing, newLoc, silent)
-	SEND_SIGNAL(src, COMSIG_STORAGE_REMOVED_ITEM, thing, newLoc, silent)
 	return TRUE
 
 /**
@@ -664,7 +659,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 			cuser.screen -= gone
 
 	reset_item(gone)
-	attempt_remove(gone, silent = TRUE)
+	refresh_views()
 
 /// Signal handler for the emp_act() of all contents
 /datum/storage/proc/on_emp_act(datum/source, severity)

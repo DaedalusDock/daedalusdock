@@ -1,6 +1,11 @@
 /obj/structure/trash_can
 	name = "trash can"
 	desc = "I'm the trash can."
+	icon = 'icons/obj/janitor.dmi'
+	icon_state = "trashcan"
+
+	density = TRUE
+	anchored = TRUE
 
 	max_integrity = 200
 	armor = list(BLUNT = 20, PUNCTURE = 50, SLASH = 70, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 60)
@@ -11,10 +16,30 @@
 /obj/structure/trash_can/Initialize(mapload)
 	. = ..()
 	set_trash_bag(new /obj/item/storage/bag/trash(src))
+	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/trash_can/examine(mob/user)
 	. = ..()
 	#warn trash text
+
+/obj/structure/trash_can/update_overlays()
+	. = ..()
+	if(length(trash_bag?.contents))
+		var/used_ratio = round(trash_bag.get_used_storage_ratio(), 0.01)
+		var/trash_state
+
+		if(used_ratio <= 0.33)
+			trash_state = "1"
+
+		else if(used_ratio <= 0.66)
+			trash_state = "2"
+
+		else
+			trash_state = "3"
+
+		. += image(icon = icon, icon_state = "trashcan_trash_[trash_state]")
+
+	. += image(icon = icon, icon_state = "trashcan_overlay")
 
 /obj/structure/trash_can/IsContainedAtomAccessible(atom/contained, atom/movable/user)
 	return (contained.loc == trash_bag) || (contained.loc ==  src)
@@ -48,12 +73,9 @@
 		user.visible_message(span_notice("<b>[user]</b> lines [src] with [tool]."))
 		return ITEM_INTERACT_SUCCESS
 
-	#warn animation
 	if(!trash_bag.atom_storage.attempt_insert(tool, user))
 		return NONE
 
-	update_appearance()
-	trash_bag.update_appearance()
 	user.visible_message(span_notice("<b>[user]</b> [pick("discards", "dumps", "places", "drops")] [tool] into [src]."))
 	return ITEM_INTERACT_SUCCESS
 
@@ -61,16 +83,20 @@
 /obj/structure/trash_can/proc/set_trash_bag(obj/item/new_bag)
 	if(trash_bag)
 		UnregisterSignal(trash_bag, COMSIG_MOVABLE_MOVED)
-		UnregisterSignal(trash_bag.atom_storage, COMSIG_STORAGE_INSERTED_ITEM)
+		UnregisterSignal(trash_bag.atom_storage, list(COMSIG_STORAGE_INSERTED_ITEM, COMSIG_STORAGE_REMOVED_ITEM))
+		trash_bag.atom_storage.open_sound = initial(trash_bag.atom_storage.open_sound)
+		trash_bag.atom_storage.rustle_sound = initial(trash_bag.atom_storage.rustle_sound)
 
 	trash_bag = new_bag
 
 	if(!isnull(trash_bag))
 		RegisterSignal(trash_bag, COMSIG_MOVABLE_MOVED, PROC_REF(bag_moved))
-		RegisterSignal(trash_bag.atom_storage, COMSIG_STORAGE_INSERTED_ITEM, PROC_REF(on_item_inserted))
+		RegisterSignal(trash_bag.atom_storage, list(COMSIG_STORAGE_INSERTED_ITEM, COMSIG_STORAGE_REMOVED_ITEM), PROC_REF(contents_change))
+		trash_bag.atom_storage.open_sound = null
+		trash_bag.atom_storage.rustle_sound = null
 
-/// Called when an object is inserted into the trash bag.
-/obj/structure/trash_can/proc/on_item_inserted(datum/source)
+/// Called when an object is inserted or removed into/from the trash bag.
+/obj/structure/trash_can/proc/contents_change(datum/source)
 	SIGNAL_HANDLER
 	update_appearance()
 

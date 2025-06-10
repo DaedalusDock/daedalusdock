@@ -1,6 +1,6 @@
 /obj/structure/trash_can
 	name = "trash can"
-	desc = "I'm the trash can."
+	desc = "A steel framed bin for discarded items."
 	icon = 'icons/obj/janitor.dmi'
 	icon_state = "trashcan"
 
@@ -20,7 +20,34 @@
 
 /obj/structure/trash_can/examine(mob/user)
 	. = ..()
-	#warn trash text
+	if(anchored)
+		. += span_notice("It is bolted to the floor.")
+
+	if(!trash_bag)
+		. += span_alert("There is no trash bag inside.")
+	else
+		switch(round(trash_bag.get_used_storage_ratio(), 0.01))
+			if(0 to 0.49)
+				. += span_info("There is some trash at the bottom.")
+			if(0.5 to 0.8)
+				. += span_info("It is about half full.")
+			else
+				. += span_info("It is almost overflowing.")
+
+	var/datum/roll_result/result = user.get_examine_result("trashcan_examine", 11)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		. += result.create_tooltip("A relic of municipal design, the steel trash can stands stoic and immovable. Chipped paint and rust's first blossom rides along the rim, a symbol time has long forgotten, faded away on the side.", body_only = TRUE)
+
+/obj/structure/trash_can/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("trashcan_flavor", 11, only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("An envelope falls into it's metal tomb, staring up at its previous owner as a tear falls upon it. Soft weeping echoes throughout the hollow chamber as the man fades into the cityscape."),
+		)
 
 /obj/structure/trash_can/update_overlays()
 	. = ..()
@@ -104,6 +131,10 @@
 
 	user.visible_message(span_notice("<b>[user]</b> [pick("discards", "dumps", "places", "drops")] [tool] into [src]."))
 	return ITEM_INTERACT_SUCCESS
+
+/obj/structure/trash_can/wrench_act(mob/living/user, obj/item/tool)
+	. = ..()
+	return default_unfasten_wrench(user, tool, 4 SECONDS)
 
 /// Setter for the trash_bag var.
 /obj/structure/trash_can/proc/set_trash_bag(obj/item/new_bag)

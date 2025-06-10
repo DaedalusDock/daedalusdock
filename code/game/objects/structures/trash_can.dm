@@ -21,7 +21,7 @@
 /obj/structure/trash_can/examine(mob/user)
 	. = ..()
 	if(anchored)
-		. += span_notice("It is bolted to the floor.")
+		. += span_info("It is bolted to the floor.")
 
 	if(!trash_bag)
 		. += span_alert("There is no trash bag inside.")

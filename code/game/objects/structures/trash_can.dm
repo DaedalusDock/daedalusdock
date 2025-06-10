@@ -16,7 +16,6 @@
 /obj/structure/trash_can/Initialize(mapload)
 	. = ..()
 	set_trash_bag(new /obj/item/storage/bag/trash(src))
-	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/trash_can/Destroy()
 	QDEL_NULL(trash_bag)
@@ -159,6 +158,7 @@
 
 	trash_bag = new_bag
 
+	update_appearance()
 	if(!isnull(trash_bag))
 		RegisterSignal(trash_bag, COMSIG_MOVABLE_MOVED, PROC_REF(bag_moved))
 		RegisterSignal(trash_bag.atom_storage, list(COMSIG_STORAGE_INSERTED_ITEM, COMSIG_STORAGE_REMOVED_ITEM), PROC_REF(contents_change))

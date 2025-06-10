@@ -165,6 +165,7 @@
 	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY_SECONDARY, PROC_REF(open_storage_attackby_secondary))
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(update_viewability))
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(update_actions))
+	RegisterSignal(parent, COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED, PROC_REF(contents_changed_w_class))
 
 /datum/storage/proc/on_deconstruct()
 	SIGNAL_HANDLER
@@ -409,6 +410,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	to_insert.forceMove(real_location)
 	item_insertion_feedback(user, to_insert, override)
 	real_location.update_appearance()
+
+	SEND_SIGNAL(parent, COMSIG_ATOM_STORED_ITEM, to_insert, user, force)
 	SEND_SIGNAL(src, COMSIG_STORAGE_INSERTED_ITEM, to_insert, user, override, force)
 
 	if(get(real_location, /mob) != user)
@@ -569,6 +572,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	if(isobj(parent))
 		parent.update_appearance()
 
+	SEND_SIGNAL(parent, COMSIG_ATOM_REMOVED_ITEM, thing, newLoc, silent)
+	SEND_SIGNAL(src, COMSIG_STORAGE_REMOVED_ITEM, thing, newLoc, silent)
 	return TRUE
 
 /**
@@ -659,7 +664,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 			cuser.screen -= gone
 
 	reset_item(gone)
-	refresh_views()
+	attempt_remove(gone, silent = TRUE)
 
 /// Signal handler for the emp_act() of all contents
 /datum/storage/proc/on_emp_act(datum/source, severity)
@@ -1116,3 +1121,19 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 /datum/storage/proc/animate_parent()
 	animate(parent, time = 1.5, loop = 0, transform = matrix().Scale(1.07, 0.9))
 	animate(time = 2, transform = null)
+
+/// Signal proc for [COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED] to drop items out of our storage if they're suddenly too heavy.
+/datum/storage/proc/contents_changed_w_class(datum/source, obj/item/changed, old_w_class, new_w_class)
+	SIGNAL_HANDLER
+
+	if(check_weight_class(changed) && check_total_weight()) // The object is not passed because we're already containing it and it's weight is accounted for.
+		return
+
+	if(!attempt_remove(changed, parent.drop_location()))
+		return
+
+	changed.visible_message(
+		span_warning("[changed] falls out of [parent]."),
+		blind_message = span_hear("You hear an object hit the floor."),
+		vision_distance = COMBAT_MESSAGE_RANGE,
+	)

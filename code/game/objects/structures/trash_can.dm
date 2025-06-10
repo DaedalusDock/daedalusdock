@@ -44,6 +44,32 @@
 /obj/structure/trash_can/IsContainedAtomAccessible(atom/contained, atom/movable/user)
 	return (contained.loc == trash_bag) || (contained.loc ==  src)
 
+/obj/structure/trash_can/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	if(!isitem(AM) || !trash_bag)
+		return ..()
+
+	if(isliving(throwingdatum.thrower))
+		var/mob/living/thrower = throwingdatum.thrower
+		var/datum/roll_result/result = thrower.stat_roll(4, /datum/rpg_skill/handicraft, -ceil(get_dist_euclidean(src, throwingdatum.origin_turf)))
+		if(result.outcome < SUCCESS)
+			visible_message(span_warning("[AM] bounces off of [src]'s rim."))
+			return ..()
+
+	else if(prob(25))
+		visible_message(span_warning("[AM] bounces off of [src]'s rim."))
+		return ..()
+
+	if(trash_bag.atom_storage.attempt_insert(AM))
+		visible_message(span_notice("[AM] lands in [src]."))
+	else
+		visible_message(span_notice("[AM] lands on top of [src]."))
+		AM.forceMove(loc)
+
+/obj/structure/trash_can/MouseDroppedOn(atom/dropped, mob/living/user)
+	. = ..()
+	if(isitem(dropped))
+		item_interaction(user, dropped)
+
 /obj/structure/trash_can/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
 	if(.)

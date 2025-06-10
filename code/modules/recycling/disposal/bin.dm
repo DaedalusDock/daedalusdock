@@ -381,7 +381,7 @@
 			visible_message(span_notice("[AM] lands in [src]."))
 			update_appearance()
 		else
-			visible_message(span_notice("[AM] bounces off of [src]'s rim!"))
+			visible_message(span_warning("[AM] bounces off of [src]'s rim."))
 			return ..()
 	else
 		return ..()

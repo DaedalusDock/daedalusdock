@@ -41,6 +41,8 @@
 	slot_flags = null
 	w_class = WEIGHT_CLASS_TINY
 
+	storage_type = /datum/storage/trash_bag
+
 	///max_total_storage of the storage datum.
 	var/total_holdable_weight = 30
 

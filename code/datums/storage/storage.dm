@@ -741,10 +741,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * @param mob/user the user who is dumping the contents
  */
 /datum/storage/proc/dump_content_at(atom/dest_object, mob/user)
-	if(locked || (dest_object == parent))
-		return
-
-	if(!can_be_reached_by(user) || !dest_object.IsReachableBy(user))
+	if(!can_dump_contents(dest_object, user))
 		return
 
 	if(SEND_SIGNAL(dest_object, COMSIG_STORAGE_DUMP_CONTENT, real_location, user) & STORAGE_DUMP_HANDLED)
@@ -773,6 +770,15 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		return
 
 	remove_all(dump_loc)
+
+/datum/storage/proc/can_dump_contents(atom/destination, mob/user)
+	if(locked || (destination == parent))
+		return FALSE
+
+	if(!can_be_reached_by(user) || !destination.IsReachableBy(user))
+		return FALSE
+
+	return TRUE
 
 /datum/storage/proc/is_reachable(mob/user)
 	return parent.IsReachableBy(user)

@@ -18,6 +18,10 @@
 	set_trash_bag(new /obj/item/storage/bag/trash(src))
 	update_appearance(UPDATE_OVERLAYS)
 
+/obj/structure/trash_can/Destroy()
+	QDEL_NULL(trash_bag)
+	return ..()
+
 /obj/structure/trash_can/examine(mob/user)
 	. = ..()
 	if(anchored)

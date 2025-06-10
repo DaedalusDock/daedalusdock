@@ -140,7 +140,7 @@
 
 /obj/item/broken_bottle/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/caltrop, min_damage = force, probability = 4)
+	AddComponent(/datum/component/caltrop, min_damage = force, probability = 4, flags = CALTROP_IGNORE_WALKERS)
 	AddComponent(/datum/component/butchering, 200, 55)
 
 /// Mimics the appearance and properties of the passed in bottle.

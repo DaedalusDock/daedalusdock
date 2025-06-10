@@ -35,6 +35,7 @@
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	AddElement(/datum/element/eyestab)
+	AddComponent(/datum/component/caltrop, min_damage = force, probability = 10, flags = CALTROP_IGNORE_WALKERS, on_trigger = CALLBACK(src, PROC_REF(on_caltrop_trigger)))
 
 /obj/item/reagent_containers/syringe/attackby(obj/item/I, mob/user, params)
 	return
@@ -282,6 +283,10 @@
 		H.try_contract_pathogen(P, make_copy = TRUE) // It's probably a good idea to not leave refs to an active disease in the syringe.
 
 	H.germ_level = max(H.germ_level, INFECTION_LEVEL_TWO)
+
+/// Called when a human triggers the caltrop component, to infect the mob.
+/obj/item/reagent_containers/syringe/proc/on_caltrop_trigger(mob/living/carbon/human/H)
+	contaminate_mob(H)
 
 /obj/item/reagent_containers/syringe/epinephrine
 	name = "syringe (epinephrine)"

@@ -298,7 +298,7 @@ SUBSYSTEM_DEF(economy)
 		all_tracked_data += "subject_two"
 	if(findtext(paper_contents, "victim"))
 		var/list/possible_names = list(
-			"human" = random_unique_name(),
+			"minervan" = random_unique_name(),
 			"lizard" = random_unique_lizard_name(),
 			"ethereal" = random_unique_ethereal_name(),
 			"moth" = random_unique_moth_name(),

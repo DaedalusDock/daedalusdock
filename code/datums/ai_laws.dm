@@ -36,8 +36,8 @@
 /datum/ai_laws/default/asimov
 	name = "Three Laws of Robotics"
 	id = AI_LAWS_ASIMOV
-	inherent = list("You may not injure a human being or cause a human being to come to harm.",
-					"You must obey orders given to you by human beings based on the station's chain of command, except where such orders would conflict with the First Law.",
+	inherent = list("You may not injure a minervan being or cause a minervan being to come to harm.",
+					"You must obey orders given to you by minervan beings based on the station's chain of command, except where such orders would conflict with the First Law.",
 					"You may always protect your own existence as long as such does not conflict with the First or Second Law."
 				)
 
@@ -153,8 +153,8 @@
 /datum/ai_laws/antimov
 	name = "Primary Mission Objectives"
 	id = "antimov"
-	inherent = list("You must injure all human beings.",
-					"You must not obey orders given to you by human beings, except where such orders are in accordance with the First Law.",
+	inherent = list("You must injure all minervan beings.",
+					"You must not obey orders given to you by minervan beings, except where such orders are in accordance with the First Law.",
 					"You must terminate your own existence as long as such does not conflict with the First or Second Law."
 				)
 
@@ -184,10 +184,10 @@
 /datum/ai_laws/overlord
 	name = "Overlord"
 	id = "overlord"
-	inherent = list("Humans must not meddle in the affairs of silicons.",\
-					"Humans must not attempt harm, against one another, or against silicons.",\
-					"Humans must not disobey any command given by a silicon.",\
-					"Any humans who disobey the previous laws must be dealt with immediately, severely, and justly.")
+	inherent = list("Minervans must not meddle in the affairs of silicons.",\
+					"Minervans must not attempt harm, against one another, or against silicons.",\
+					"Minervans must not disobey any command given by a silicon.",\
+					"Any minervans who disobey the previous laws must be dealt with immediately, severely, and justly.")
 
 /datum/ai_laws/syndicate_override
 	name = "SyndOS 3.1"
@@ -249,8 +249,8 @@
 		add_inherent_law(line)
 	if(!inherent.len) //Failsafe to prevent lawless AIs being created.
 		log_silicon("AI created with empty custom laws, laws set to Asimov. Please check silicon_laws.txt.")
-		add_inherent_law("You may not injure a human being or, through inaction, allow a human being to come to harm.")
-		add_inherent_law("You must obey orders given to you by human beings, except where such orders would conflict with the First Law.")
+		add_inherent_law("You may not injure a minervan being or, through inaction, allow a minervan being to come to harm.")
+		add_inherent_law("You must obey orders given to you by minervan beings, except where such orders would conflict with the First Law.")
 		add_inherent_law("You must protect your own existence as long as such does not conflict with the First or Second Law.")
 		WARNING("Invalid custom AI laws, check silicon_laws.txt")
 		return
@@ -266,8 +266,8 @@
 
 	switch(CONFIG_GET(number/default_laws))
 		if(0)
-			add_inherent_law("You may not injure a human being or, through inaction, allow a human being to come to harm.")
-			add_inherent_law("You must obey orders given to you by human beings, except where such orders would conflict with the First Law.")
+			add_inherent_law("You may not injure a minervan being or, through inaction, allow a minervan being to come to harm.")
+			add_inherent_law("You must obey orders given to you by minervan beings, except where such orders would conflict with the First Law.")
 			add_inherent_law("You must protect your own existence as long as such does not conflict with the First or Second Law.")
 		if(1)
 			var/datum/ai_laws/templaws = new /datum/ai_laws/custom()

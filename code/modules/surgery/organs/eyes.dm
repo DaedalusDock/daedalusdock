@@ -581,7 +581,7 @@
 	return ..()
 
 /obj/item/organ/eyes/vox
-	name = "vox eyeballs"
+	name = "voks eyeballs"
 	icon_state = "vox-eyeballs"
 
 /obj/item/organ/eyes/night_vision/maintenance_adapted

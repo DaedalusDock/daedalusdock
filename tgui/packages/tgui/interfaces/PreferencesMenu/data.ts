@@ -172,7 +172,7 @@ export type PreferencesMenuData = {
   name_to_use: string;
 
   overflow_role: string;
-  preview_options: string;
+  preview_options: string[];
   // PARIAH EDIT ADDITION
   preview_selection: string;
 

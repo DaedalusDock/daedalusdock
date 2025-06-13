@@ -339,3 +339,7 @@
 	message = "dry heaves."
 	emote_type = EMOTE_AUDIBLE
 	can_player_use = FALSE
+
+/datum/emote/living/carbon/test
+	key = "TEST2"
+	message = "TEST"

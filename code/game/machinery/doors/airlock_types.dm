@@ -475,7 +475,7 @@
 
 /obj/machinery/door/airlock/abductor
 	name = "alien airlock"
-	desc = "With humanity's current technological level, it could take years to hack this advanced airlock... or maybe we should give a screwdriver a try?"
+	desc = "With minervanity's current technological level, it could take years to hack this advanced airlock... or maybe we should give a screwdriver a try?"
 	assemblytype = /obj/structure/door_assembly/door_assembly_abductor
 	damage_deflection = 30
 	explosion_block = 3

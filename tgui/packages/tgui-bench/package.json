@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "tgui-bench",
-  "version": "5.0.1",
+  "version": "6.0.0",
   "dependencies": {
     "@types/react-dom": "^19.1.5",
     "common": "workspace:*",

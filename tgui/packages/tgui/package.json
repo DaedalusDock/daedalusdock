@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "tgui",
-  "version": "5.0.1",
+  "version": "6.0.0",
   "dependencies": {
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",

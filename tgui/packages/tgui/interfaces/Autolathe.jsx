@@ -215,7 +215,7 @@ export const Autolathe = (props) => {
                           backgroundColor={
                             design.buildable ? '#999999' : 'default'
                           }
-                          onCommit={(e, value) =>
+                          onCommit={(value) =>
                             act('make', {
                               id: design.id,
                               multiplier: value,

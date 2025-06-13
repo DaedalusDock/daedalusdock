@@ -165,7 +165,8 @@
 		if(A_is_item.w_class < max_weight_of_contents)
 			continue
 		max_weight_of_contents = A_is_item.w_class
-	B.w_class = max_weight_of_contents
+
+	B.set_weight_class(max_weight_of_contents)
 	usr.put_in_hands(B)
 
 /// Environmental bags. They protect against bad weather.

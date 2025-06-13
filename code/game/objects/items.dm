@@ -1982,3 +1982,25 @@ DEFINE_INTERACTABLE(/obj/item)
 /// Returns TRUE if the passed mob can interact with this item's storage via pickpocketing.
 /obj/item/proc/can_pickpocket(mob/living/user)
 	return FALSE
+
+/**
+ * Used to update the weight class of the item in a way that other atoms can react to the change.
+ *
+ * Arguments:
+ * * new_w_class - The new weight class of the item.
+ *
+ * Returns:
+ * * TRUE if weight class was successfully updated
+ * * FALSE otherwise
+ */
+/obj/item/proc/set_weight_class(new_w_class)
+	if(w_class == new_w_class)
+		return FALSE
+
+	var/old_w_class = w_class
+	w_class = new_w_class
+
+	SEND_SIGNAL(src, COMSIG_ITEM_WEIGHT_CLASS_CHANGED, old_w_class, new_w_class)
+	if(!isnull(loc))
+		SEND_SIGNAL(loc, COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED, src, old_w_class, new_w_class)
+	return TRUE

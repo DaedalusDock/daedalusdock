@@ -44,6 +44,8 @@ SUBSYSTEM_DEF(throwing)
 	var/datum/weakref/initial_target
 	///The turf that the target was on, if it's not a turf itself.
 	var/turf/target_turf
+	///The turf the thrown object was on when it started moving.
+	var/turf/origin_turf
 	///If the target happens to be a carbon and that carbon has a body zone aimed at, this is carried on here.
 	var/target_zone
 	///The initial direction of the thrower of the thrownthing for building the trajectory of the throw.

@@ -72,11 +72,11 @@
 	add_overlay("evidence") //should look nicer for transparent stuff. not really that important, but hey.
 
 	desc = "An evidence bag containing [I]. [I.desc]"
-	w_class = I.w_class
+	set_weight_class(I.w_class)
 
 /obj/item/storage/evidencebag/Exited(atom/movable/gone, direction)
 	. = ..()
 	cut_overlays() //remove the overlays
-	w_class = initial(w_class)
+	set_weight_class(initial(w_class))
 	icon_state = "evidenceobj"
 	desc = "An empty evidence bag."

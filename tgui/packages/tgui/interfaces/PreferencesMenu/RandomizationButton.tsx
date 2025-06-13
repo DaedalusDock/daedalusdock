@@ -28,6 +28,7 @@ export const RandomizationButton = (props: {
 
   return (
     <Dropdown
+      selected={value.toString()}
       backgroundColor={color}
       {...dropdownProps}
       clipSelectedText={false}
@@ -48,7 +49,7 @@ export const RandomizationButton = (props: {
           value: RandomSetting.AntagOnly,
         },
       ]}
-      nochevron
+      noChevron
       onSelected={setValue}
       width="auto"
     />

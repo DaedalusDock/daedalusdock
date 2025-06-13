@@ -5,14 +5,12 @@
  */
 
 import { Component } from 'react';
-import { Icon } from 'tgui-core/components';
 import { classes } from 'tgui-core/react';
-import { decodeHtmlEntities, toTitleCase } from 'tgui-core/string';
+import { decodeHtmlEntities } from 'tgui-core/string';
 
 import { backendSuspendStart, globalStore, useBackend } from '../backend';
 import { UI_DISABLED, UI_INTERACTIVE, UI_UPDATE } from '../constants';
 import { useDebug } from '../debug';
-import { toggleKitchenSink } from '../debug/actions';
 import {
   dragStartHandler,
   recallWindowGeometry,
@@ -21,6 +19,7 @@ import {
 } from '../drag';
 import { createLogger } from '../logging';
 import { Layout } from './Layout';
+import { TitleBar } from './TitleBar';
 
 const logger = createLogger('Window');
 
@@ -157,55 +156,4 @@ const statusToColor = (status) => {
     default:
       return 'bad';
   }
-};
-
-const TitleBar = (props) => {
-  const {
-    className,
-    title,
-    status,
-    canClose,
-    fancy,
-    onDragStart,
-    onClose,
-    children,
-  } = props;
-  const { dispatch } = globalStore;
-  return (
-    <div className={classes(['TitleBar', className])}>
-      {(status === undefined && (
-        <Icon className="TitleBar__statusIcon" name="tools" opacity={0.5} />
-      )) || (
-        <Icon
-          className="TitleBar__statusIcon"
-          color={statusToColor(status)}
-          name="eye"
-        />
-      )}
-      <div
-        className="TitleBar__dragZone"
-        onMouseDown={(e) => fancy && onDragStart(e)}
-      />
-      <div className="TitleBar__title">
-        {(typeof title === 'string' &&
-          title === title.toLowerCase() &&
-          toTitleCase(title)) ||
-          title}
-        {!!children && <div className="TitleBar__buttons">{children}</div>}
-      </div>
-      {process.env.NODE_ENV !== 'production' && (
-        <div
-          className="TitleBar__devBuildIndicator"
-          onClick={() => dispatch(toggleKitchenSink())}
-        >
-          <Icon name="bug" />
-        </div>
-      )}
-      {Boolean(fancy && canClose) && (
-        <div className="TitleBar__close TitleBar__clickable" onClick={onClose}>
-          {'×'}
-        </div>
-      )}
-    </div>
-  );
 };

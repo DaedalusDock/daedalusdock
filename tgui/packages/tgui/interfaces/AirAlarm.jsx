@@ -8,6 +8,7 @@ import {
   LabeledList,
   RoundGauge,
   Section,
+  Stack,
 } from 'tgui-core/components';
 import { toFixed } from 'tgui-core/math';
 
@@ -215,60 +216,68 @@ const AirAlarmControlHome = (props) => {
   const [screen, setScreen] = useLocalState('screen');
   const { mode, atmos_alarm, fire_alarm } = data;
   return (
-    <>
-      <Button
-        icon="exclamation-triangle"
-        color={fire_alarm ? 'danger' : 'caution'}
-        content="Fire Alarm"
-        onClick={() =>
-          act('fire_alarm', {
-            fire_alarm: fire_alarm === 1 ? 0 : 1,
-          })
-        }
-      />
-      <Box mt={1} />
-      <Button
-        icon={atmos_alarm ? 'exclamation-triangle' : 'exclamation'}
-        color={atmos_alarm && 'caution'}
-        content="Area Atmosphere Alarm"
-        onClick={() => act(atmos_alarm ? 'reset' : 'alarm')}
-      />
-      <Box mt={1} />
-      <Button
-        icon={mode === 3 ? 'exclamation-triangle' : 'exclamation'}
-        color={mode === 3 && 'danger'}
-        content="Panic Siphon"
-        onClick={() =>
-          act('mode', {
-            mode: mode === 3 ? 1 : 3,
-          })
-        }
-      />
-      <Box mt={2} />
-      <Button
-        icon="sign-out-alt"
-        content="Vent Controls"
-        onClick={() => setScreen('vents')}
-      />
-      <Box mt={1} />
-      <Button
-        icon="filter"
-        content="Scrubber Controls"
-        onClick={() => setScreen('scrubbers')}
-      />
-      <Box mt={1} />
-      <Button
-        icon="cog"
-        content="Operating Mode"
-        onClick={() => setScreen('modes')}
-      />
-      <Box mt={1} />
-      <Button
-        icon="chart-bar"
-        content="Alarm Thresholds"
-        onClick={() => setScreen('thresholds')}
-      />
-    </>
+    <Stack fill vertical>
+      <Stack.Item>
+        <Button
+          icon="exclamation-triangle"
+          color={fire_alarm ? 'danger' : 'caution'}
+          content="Fire Alarm"
+          onClick={() =>
+            act('fire_alarm', {
+              fire_alarm: fire_alarm === 1 ? 0 : 1,
+            })
+          }
+        />
+      </Stack.Item>
+      <Stack.Item>
+        <Button
+          icon={atmos_alarm ? 'exclamation-triangle' : 'exclamation'}
+          color={atmos_alarm && 'caution'}
+          content="Area Atmosphere Alarm"
+          onClick={() => act(atmos_alarm ? 'reset' : 'alarm')}
+        />
+      </Stack.Item>
+      <Stack.Item>
+        <Button
+          icon={mode === 3 ? 'exclamation-triangle' : 'exclamation'}
+          color={mode === 3 && 'danger'}
+          content="Panic Siphon"
+          onClick={() =>
+            act('mode', {
+              mode: mode === 3 ? 1 : 3,
+            })
+          }
+        />
+      </Stack.Item>
+      <Stack.Item>
+        <Button
+          icon="sign-out-alt"
+          content="Vent Controls"
+          onClick={() => setScreen('vents')}
+        />
+      </Stack.Item>
+      <Stack.Item>
+        <Button
+          icon="filter"
+          content="Scrubber Controls"
+          onClick={() => setScreen('scrubbers')}
+        />
+      </Stack.Item>
+      <Stack.Item>
+        <Button
+          icon="cog"
+          content="Operating Mode"
+          onClick={() => setScreen('modes')}
+        />
+      </Stack.Item>
+      <Stack.Item>
+        <Button
+          icon="chart-bar"
+          content="Alarm Thresholds"
+          onClick={() => setScreen('thresholds')}
+        />
+      </Stack.Item>
+    </Stack>
   );
 };
 

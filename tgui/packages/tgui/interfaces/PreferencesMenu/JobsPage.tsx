@@ -1,6 +1,7 @@
 import { sortBy } from 'common/collections';
 import { FC, ReactNode } from 'react';
-import { Box, Button, Dropdown, Stack, Tooltip } from 'tgui-core/components';
+import { Tooltip } from 'tgui-core/components';
+import { Box, Button, Dropdown, Stack } from 'tgui-core/components';
 import { classes } from 'tgui-core/react';
 
 import { useBackend } from '../../backend';
@@ -14,13 +15,11 @@ import {
 } from './data';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 
-function sortJobs(entries: [string, Job][], head?: string) {
-  return sortBy(
-    entries,
+const sortJobs = (entries: [string, Job][], head?: string) =>
+  sortBy<[string, Job]>(
     ([key, _]) => (key === head ? -1 : 1),
     ([key, _]) => key,
-  );
-}
+  )(entries);
 
 const PRIORITY_BUTTON_SIZE = '18px';
 
@@ -264,8 +263,8 @@ const JobRow = (props: { className?: string; job: Job; name: string }) => {
                 name
               ) : (
                 <Dropdown
+                  selected={alt_title_selected}
                   width="100%"
-                  selected={name}
                   options={job.alt_titles}
                   displayText={alt_title_selected}
                   onSelected={(value) =>

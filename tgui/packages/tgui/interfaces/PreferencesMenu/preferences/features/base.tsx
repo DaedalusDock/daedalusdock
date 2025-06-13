@@ -15,9 +15,7 @@ import { BooleanLike, classes } from 'tgui-core/react';
 import { createSetPreference, PreferencesMenuData } from '../../data';
 import { ServerPreferencesFetcher } from '../../ServerPreferencesFetcher';
 
-export function sortChoices(array: [string, ReactNode][]) {
-  return sortBy(array, ([name]) => name);
-}
+export const sortChoices = sortBy<[string, ReactNode]>(([name]) => name);
 
 export type Feature<
   TReceiving,
@@ -352,7 +350,7 @@ export const FeatureTextInput = (props: FeatureValueProps<string>) => {
     <TextArea
       height="100px"
       value={props.value}
-      onBlur={(value) => props.handleSetValue(value)}
+      onChange={(value) => props.handleSetValue(value)}
     />
   );
 };
@@ -362,7 +360,7 @@ export const FeatureShortTextInput = (props: FeatureValueProps<string>) => {
     <Input
       width="100%"
       value={props.value}
-      onBlur={(value) => props.handleSetValue(value)}
+      onChange={(value) => props.handleSetValue(value)}
     />
   );
 };

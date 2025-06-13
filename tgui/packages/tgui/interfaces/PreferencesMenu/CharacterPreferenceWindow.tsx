@@ -30,6 +30,7 @@ const CharacterProfiles = (props: {
     <Flex justify="center">
       <Flex.Item width="25%">
         <Dropdown
+          selected={activeSlot.toString()}
           width="100%"
           displayText={profiles[activeSlot]}
           options={profiles.map((profile, slot) => ({

@@ -309,6 +309,7 @@ const ProductButton = (props) => {
           item: product.name,
         })
       }
+      mb={0.5}
     >
       {customPrice}
     </Button>
@@ -316,6 +317,7 @@ const ProductButton = (props) => {
     <Button
       fluid
       disabled={disabled}
+      mb={0.5}
       onClick={() =>
         act('vend', {
           ref: product.ref,

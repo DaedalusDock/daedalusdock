@@ -23,9 +23,7 @@ type NameWithKey = {
 
 const binaryInsertName = binaryInsertWith<NameWithKey>(({ key }) => key);
 
-function sortNameWithKeyEntries(array: [string, NameWithKey[]][]) {
-  return sortBy(array, ([key]) => key);
-}
+const sortNameWithKeyEntries = sortBy<[string, NameWithKey[]]>(([key]) => key);
 
 export const MultiNameInput = (props: {
   handleClose: () => void;
@@ -90,7 +88,7 @@ export const MultiNameInput = (props: {
                               <Input
                                 autoSelect
                                 onEnter={updateName}
-                                onChange={updateName}
+                                onBlur={updateName}
                                 onEscape={() => {
                                   setCurrentlyEditingName(null);
                                 }}
@@ -196,7 +194,7 @@ export const NameInput = (props: {
             <Input
               autoSelect
               onEnter={updateName}
-              onChange={updateName}
+              onBlur={updateName}
               onEscape={() => {
                 setLastNameBeforeEdit(null);
               }}

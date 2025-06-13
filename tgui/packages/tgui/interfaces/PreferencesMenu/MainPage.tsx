@@ -1,5 +1,6 @@
 import { filterMap, sortBy } from 'common/collections';
 import { ReactNode } from 'react';
+import { Popper, Tooltip } from 'tgui-core/components';
 import {
   Autofocus,
   Box,
@@ -7,9 +8,7 @@ import {
   Dropdown,
   Flex,
   LabeledList,
-  Popper,
   Stack,
-  Tooltip,
   TrackOutsideClicks,
 } from 'tgui-core/components';
 import { classes } from 'tgui-core/react';
@@ -378,12 +377,10 @@ const createSetRandomization =
     });
   };
 
-function sortPreferences(array: [string, unknown][]) {
-  return sortBy(array, ([featureId, _]) => {
-    const feature = features[featureId];
-    return feature?.name;
-  });
-}
+const sortPreferences = sortBy<[string, unknown]>(([featureId, _]) => {
+  const feature = features[featureId];
+  return feature?.name;
+});
 
 const PreferenceList = (props: {
   act: typeof sendAct;
@@ -603,6 +600,7 @@ export const MainPage = (props: { openSpecies: () => void }) => {
                   <Dropdown
                     // PARIAH EDIT ADDITION
                     width="100%"
+                    position="relative"
                     selected={data.preview_selection}
                     options={data.preview_options}
                     onSelected={(value) =>

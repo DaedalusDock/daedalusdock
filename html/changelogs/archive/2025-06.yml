@@ -24,3 +24,7 @@
       infect the victim.
   - tweak: All "caltrop" items now no longer trigger while walking. This does NOT
       apply to crawling over them.
+2025-06-14:
+  Kapu1178:
+  - bugfix: Players are no longer alerted that keys which are unbound by default need
+      binding.

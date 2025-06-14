@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Players are no longer alerted that keys which are unbound by default need
-      binding.

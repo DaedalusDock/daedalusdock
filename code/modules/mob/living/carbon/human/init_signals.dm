@@ -12,6 +12,7 @@
 
 	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_JAUNDICE_SKIN), PROC_REF(on_jaundice_gain))
 	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_JAUNDICE_SKIN), PROC_REF(on_jaundice_loss))
+	RegisterSignal(src, COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED, PROC_REF(check_pocket_weight))
 
 /mob/living/carbon/human/proc/signal_update_name(datum/source)
 	SIGNAL_HANDLER
@@ -38,3 +39,24 @@
 		BP.remove_color_override(LIMB_COLOR_JAUNDICE)
 
 	update_body_parts()
+
+
+/// Signal proc for [COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED] to check if an item is suddenly too heavy for our pockets
+/mob/living/carbon/human/proc/check_pocket_weight(datum/source, obj/item/changed, old_w_class, new_w_class)
+	SIGNAL_HANDLER
+	if(changed != r_store && changed != l_store)
+		return
+
+	if(new_w_class <= POCKET_WEIGHT_CLASS)
+		return
+
+	if(!dropItemToGround(changed, force = TRUE))
+		return
+
+	visible_message(
+		span_warning("[changed] falls out of <b>[src]</b>'s pockets."),
+		blind_message = span_hear("You hear an object hit the floor."),
+		vision_distance = COMBAT_MESSAGE_RANGE,
+	)
+
+	playsound(src, SFX_RUSTLE, 50, TRUE, -5, frequency = 0.8)

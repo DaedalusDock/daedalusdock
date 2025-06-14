@@ -779,6 +779,7 @@ There are several things that need to be remembered:
 			hand_overlay = worn_item.build_worn_icon(src, default_layer = HANDS_LAYER, default_icon_file = icon_file, isinhands = TRUE)
 
 		hands += hand_overlay
+
 	overlays_standing[HANDS_LAYER] = hands
 	apply_overlay(HANDS_LAYER)
 

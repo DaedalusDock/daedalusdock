@@ -300,17 +300,22 @@
 	icon_state = "disposal"
 	zmm_flags = ZMM_MANGLE_PLANES
 
-// attack by item places it in to disposal
-/obj/machinery/disposal/bin/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/storage/bag/trash)) //Not doing component overrides because this is a specific type.
-		var/obj/item/storage/bag/trash/T = I
-		to_chat(user, span_warning("You empty the bag."))
-		for(var/obj/item/O in T.contents)
-			T.atom_storage.attempt_remove(O,src)
-		T.update_appearance()
-		update_appearance()
-	else
+/obj/machinery/disposal/bin/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!istype(tool, /obj/item/storage/bag/trash) || !modifiers?[RIGHT_CLICK])
 		return ..()
+
+	var/obj/item/storage/bag/trash/T = tool
+
+	user.visible_message("<b>[user]</b> begins dumping [T] into [src].", blind_message = span_hear("You hear a plastic bag rustling."))
+	var/time_taken = 0.5 SECONDS * (1 + log(2, length(T.contents))) // Logarithmically scaling time, because linear would be kind of insane.
+	if(!do_after(user, src, time_taken, DO_PUBLIC|DO_RESTRICT_CLICKING|DO_RESTRICT_USER_DIR_CHANGE, display = tool))
+		return ITEM_INTERACT_BLOCKING
+
+	T.atom_storage.remove_all(src)
+
+	T.update_appearance()
+	update_appearance()
+	return ITEM_INTERACT_SUCCESS
 
 // handle machine interaction
 
@@ -376,7 +381,7 @@
 			visible_message(span_notice("[AM] lands in [src]."))
 			update_appearance()
 		else
-			visible_message(span_notice("[AM] bounces off of [src]'s rim!"))
+			visible_message(span_warning("[AM] bounces off of [src]'s rim."))
 			return ..()
 	else
 		return ..()

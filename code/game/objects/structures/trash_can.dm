@@ -1,3 +1,5 @@
+DEFINE_INTERACTABLE(/obj/structure/trash_can)
+
 /obj/structure/trash_can
 	name = "trash can"
 	desc = "A steel framed bin for discarded items."
@@ -30,7 +32,9 @@
 		. += span_alert("There is no trash bag inside.")
 	else
 		switch(round(trash_bag.get_used_storage_ratio(), 0.01))
-			if(0 to 0.49)
+			if(0)
+				. += span_info("It is empty.")
+			if(0.01 to 0.49)
 				. += span_info("There is some trash at the bottom.")
 			if(0.5 to 0.8)
 				. += span_info("It is about half full.")
@@ -103,10 +107,24 @@
 		visible_message(span_notice("[AM] lands on top of [src]."))
 		AM.forceMove(loc)
 
+/obj/structure/trash_can/MouseDrop(atom/over, src_location, over_location, src_control, over_control, params)
+	. = ..()
+	if(!.)
+		return
+
+	if(over == usr)
+		trash_bag?.atom_storage.open_storage(usr)
+
 /obj/structure/trash_can/MouseDroppedOn(atom/dropped, mob/living/user)
 	. = ..()
 	if(isitem(dropped))
 		item_interaction(user, dropped)
+
+/obj/structure/trash_can/AltClick(mob/user)
+	if(trash_bag?.atom_storage.open_storage(user))
+		return
+
+	return ..()
 
 /obj/structure/trash_can/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
@@ -117,7 +135,10 @@
 		return
 
 	if(modifiers?[RIGHT_CLICK])
-		return user.pickup_item(trash_bag, user.get_empty_held_index())
+		var/obj/item/bag_ref = trash_bag
+		if(user.pickup_item(trash_bag, user.get_empty_held_index()))
+			bag_ref.do_pickup_animation(user, loc)
+			return TRUE
 
 	trash_bag.atom_storage.open_storage(user)
 	return TRUE

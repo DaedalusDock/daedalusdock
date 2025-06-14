@@ -5,10 +5,7 @@
  * @license MIT
  */
 
-import { decodeHtmlEntities } from 'common/string';
 import { marked } from 'marked';
-
-import { useBackend, useLocalState, useSharedState } from '../backend';
 import {
   BlockQuote,
   Box,
@@ -20,7 +17,10 @@ import {
   Stack,
   Tabs,
   TextArea,
-} from '../components';
+} from 'tgui-core/components';
+import { decodeHtmlEntities } from 'tgui-core/string';
+
+import { useBackend, useLocalState, useSharedState } from '../backend';
 import { sanitizeText } from '../sanitize';
 import { BountyBoardContent } from './BountyBoard';
 import { UserDetails } from './Vending';
@@ -101,7 +101,7 @@ const NewscasterChannelCreation = (props) => {
               backgroundColor="black"
               textColor="white"
               maxLength={42}
-              onChange={(e, name) =>
+              onBlur={(name) =>
                 act('setChannelName', {
                   channeltext: name,
                 })
@@ -119,7 +119,7 @@ const NewscasterChannelCreation = (props) => {
               backgroundColor="black"
               textColor="white"
               maxLength={512}
-              onChange={(e, desc) =>
+              onBlur={(desc) =>
                 act('setChannelDesc', {
                   channeldesc: desc,
                 })

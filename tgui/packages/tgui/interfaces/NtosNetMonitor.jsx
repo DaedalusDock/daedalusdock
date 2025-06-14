@@ -1,4 +1,3 @@
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -6,7 +5,9 @@ import {
   NoticeBox,
   NumberInput,
   Section,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { NtosWindow } from '../layouts';
 
 export const NtosNetMonitor = (props) => {
@@ -139,7 +140,7 @@ export const NtosNetMonitor = (props) => {
                   minValue={minlogs}
                   maxValue={maxlogs}
                   width="39px"
-                  onChange={(e, value) =>
+                  onBlur={(value) =>
                     act('updatemaxlogs', {
                       new_number: value,
                     })

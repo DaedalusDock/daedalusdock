@@ -1,7 +1,13 @@
-import { BooleanLike } from 'common/react';
+import {
+  BlockQuote,
+  Button,
+  Dropdown,
+  Section,
+  Stack,
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
 
 import { useBackend, useLocalState } from '../backend';
-import { BlockQuote, Button, Dropdown, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 // defined this so the code is more readable

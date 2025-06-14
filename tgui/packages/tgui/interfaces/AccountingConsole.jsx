@@ -1,5 +1,3 @@
-import { useBackend } from '../backend';
-import { useLocalState } from '../backend';
 import {
   BlockQuote,
   Collapsible,
@@ -7,7 +5,10 @@ import {
   Modal,
   Section,
   Tabs,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
+import { useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 export const AccountingConsole = (props) => {

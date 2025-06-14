@@ -1,5 +1,6 @@
+import { Dropdown, NumberInput, Stack } from 'tgui-core/components';
+
 import { useBackend } from '../../backend';
-import { Dropdown, NumberInput, Stack } from '../../components';
 import {
   GeneratorProps,
   GeneratorTypes,
@@ -212,7 +213,7 @@ export const GeneratorListEntry = (props: GeneratorProps) => {
         <Dropdown
           options={RandTypes}
           selected={rand_type}
-          onSelected={(e, value) =>
+          onSelected={(value) =>
             act('edit', {
               var: var_name,
               var_mod: P_DATA_GENERATOR,

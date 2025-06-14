@@ -1,5 +1,6 @@
+import { Stack } from 'tgui-core/components';
+
 import { useBackend, useLocalState } from '../backend';
-import { Stack } from '../components';
 import { Window } from '../layouts';
 import { ChemFilterPane } from './ChemFilter';
 

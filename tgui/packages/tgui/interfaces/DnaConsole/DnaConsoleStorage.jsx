@@ -1,7 +1,4 @@
 import { uniqBy } from 'common/collections';
-import { capitalize } from 'common/string';
-
-import { useBackend } from '../../backend';
 import {
   Box,
   Button,
@@ -10,7 +7,10 @@ import {
   Flex,
   LabeledList,
   Section,
-} from '../../components';
+} from 'tgui-core/components';
+import { capitalize } from 'tgui-core/string';
+
+import { useBackend } from '../../backend';
 import {
   STORAGE_CONS_SUBMODE_CHROMOSOMES,
   STORAGE_CONS_SUBMODE_MUTATIONS,
@@ -71,7 +71,7 @@ const DnaConsoleAdvancedInjectors = (props) => {
           minWidth="200px"
           content="Create new injector"
           disabled={advInjectors.length >= maxAdvInjectors}
-          onCommit={(e, value) =>
+          onCommit={(value) =>
             act('new_adv_inj', {
               name: value,
             })

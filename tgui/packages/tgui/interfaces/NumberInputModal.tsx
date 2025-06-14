@@ -1,8 +1,14 @@
-import { isEscape, KEY } from 'common/keys';
 import { useState } from 'react';
+import {
+  Box,
+  Button,
+  RestrictedInput,
+  Section,
+  Stack,
+} from 'tgui-core/components';
+import { isEscape, KEY } from 'tgui-core/keys';
 
 import { useBackend } from '../backend';
-import { Box, Button, RestrictedInput, Section, Stack } from '../components';
 import { Window } from '../layouts';
 import { InputButtons } from './common/InputButtons';
 import { Loader } from './common/Loader';
@@ -10,9 +16,9 @@ import { Loader } from './common/Loader';
 type NumberInputData = {
   init_value: number;
   large_buttons: boolean;
-  max_value: number | null;
+  max_value: number;
   message: string;
-  min_value: number | null;
+  min_value: number;
   round_value: boolean;
   timeout: number;
   title: string;
@@ -75,7 +81,7 @@ export const NumberInputModal = (props) => {
 /** Gets the user input and invalidates if there's a constraint. */
 const InputArea = (props) => {
   const { act, data } = useBackend<NumberInputData>();
-  const { min_value, max_value, init_value, round_value } = data;
+  const { min_value = 0, max_value = 10000, init_value, round_value } = data;
   const { input, onClick, onChange, onBlur } = props;
 
   return (
@@ -96,9 +102,9 @@ const InputArea = (props) => {
           allowFloats={!round_value}
           minValue={min_value}
           maxValue={max_value}
-          onChange={(_, value) => onChange(value)}
-          onBlur={(_, value) => onBlur(value)}
-          onEnter={(_, value) => act('submit', { entry: value })}
+          onChange={(value) => onChange(value)}
+          onBlur={(value) => onBlur(value)}
+          onEnter={(value) => act('submit', { entry: value })}
           value={input}
         />
       </Stack.Item>

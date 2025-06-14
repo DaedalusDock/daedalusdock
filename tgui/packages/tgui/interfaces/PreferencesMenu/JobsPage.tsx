@@ -1,10 +1,10 @@
 import { sortBy } from 'common/collections';
-import { classes } from 'common/react';
 import { FC, ReactNode } from 'react';
 import { Tooltip } from 'tgui-core/components';
+import { Box, Button, Dropdown, Stack } from 'tgui-core/components';
+import { classes } from 'tgui-core/react';
 
 import { useBackend } from '../../backend';
-import { Box, Button, Dropdown, Stack } from '../../components';
 import { logger } from '../../logging';
 import {
   createSetPreference,
@@ -263,6 +263,7 @@ const JobRow = (props: { className?: string; job: Job; name: string }) => {
                 name
               ) : (
                 <Dropdown
+                  selected={alt_title_selected}
                   width="100%"
                   options={job.alt_titles}
                   displayText={alt_title_selected}
@@ -374,7 +375,7 @@ const JoblessRoleDropdown = (props) => {
     <Box position="absolute" right={0} width="30%">
       <Dropdown
         width="100%"
-        selected={selected}
+        selected={selected.toString()}
         onSelected={createSetPreference(act, 'joblessrole')}
         options={options}
         displayText={

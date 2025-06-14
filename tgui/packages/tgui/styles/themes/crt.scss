@@ -122,8 +122,8 @@ $dark-fg: darken($color-fg, 30);
   .Layout__content {
     background-image: none;
     background: radial-gradient(
-      rgba(colors.$primary, $background-radial-opacity),
-      rgba(colors.$primary, math.div($background-radial-opacity, 5))
+      rgba(var(--color-primary), $background-radial-opacity),
+      rgba(var(--color-primary), math.div($background-radial-opacity, 5))
     );
   }
 

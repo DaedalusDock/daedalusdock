@@ -1,6 +1,4 @@
-import { BooleanLike } from 'common/react';
-
-import { useLocalState, useSharedState } from '../../backend';
+import React from 'react';
 import {
   Box,
   Button,
@@ -9,11 +7,14 @@ import {
   Section,
   Stack,
   Tabs,
-} from '../../components';
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+
+import { useLocalState, useSharedState } from '../../backend';
 
 type GenericUplinkProps = {
   categories: string[];
-  currency?: string | JSX.Element;
+  currency?: string | React.JSX.Element;
   handleBuy: (item: Item) => void;
 
   items: Item[];
@@ -50,7 +51,7 @@ export const GenericUplink = (props: GenericUplinkProps) => {
           <Input
             autoFocus
             value={searchText}
-            onInput={(e, value) => setSearchText(value)}
+            onChange={(value) => setSearchText(value)}
             mx={1}
           />
           <Button
@@ -98,8 +99,8 @@ export const GenericUplink = (props: GenericUplinkProps) => {
 
 export type Item<ItemData = {}> = {
   category: string;
-  cost: JSX.Element | string;
-  desc: JSX.Element | string;
+  cost: React.JSX.Element | string;
+  desc: React.JSX.Element | string;
   disabled: BooleanLike;
   extraData?: ItemData;
   id: string | number;

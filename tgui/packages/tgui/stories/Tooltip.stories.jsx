@@ -3,9 +3,8 @@
  * @copyright 2021 Aleksej Komarov
  * @license MIT
  */
-import { Tooltip } from 'tgui-core/components';
 
-import { Box, Button, Section } from '../components';
+import { Box, Button, Section, Tooltip } from 'tgui-core/components';
 
 export const meta = {
   title: 'Tooltip',

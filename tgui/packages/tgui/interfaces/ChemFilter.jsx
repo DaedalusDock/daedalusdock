@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
+import { Button, Input, Section, Stack } from 'tgui-core/components';
 
 import { useBackend, useLocalState } from '../backend';
-import { Button, Input, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 export const ChemFilterPane = (props) => {
@@ -17,7 +17,7 @@ export const ChemFilterPane = (props) => {
           <Input
             placeholder="Reagent"
             width="140px"
-            onInput={(e, value) => onReagentInput(value)}
+            onChange={(value) => onReagentInput(value)}
           />
           <Button
             ml={1}

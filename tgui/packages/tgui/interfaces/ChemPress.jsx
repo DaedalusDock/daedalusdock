@@ -1,4 +1,3 @@
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -6,7 +5,9 @@ import {
   LabeledList,
   NumberInput,
   Section,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 export const ChemPress = (props) => {
@@ -85,7 +86,7 @@ export const ChemPress = (props) => {
               <Input
                 value={product_name}
                 placeholder={product_name}
-                onChange={(e, value) =>
+                onBlur={(value) =>
                   act('change_product_name', {
                     name: value,
                   })

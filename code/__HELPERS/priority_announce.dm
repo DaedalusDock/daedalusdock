@@ -4,13 +4,13 @@
  *
  * args:
  * * text (string) The body of the announcement
- * * title (string) The title of the announcement. Default: "Staton Announcement"
+ * * title (string) The title of the announcement. Default: "Colony Announcement"
  * * sound_type (string OR sound) The sound to play alongside the message. If given a string like PA_COMMAND, it will pick the sound for you.
  * * send_to_newscaster (boolean) Whether or not to post this to newscasters
  * * do_not_modify (boolean) Whether or not station announcers can add to this message.
  * * players (list or null) The players we're sending to. If null, send to all players.
  */
-/proc/priority_announce(text = "", super_title = "Station Announcement", sub_title = "", sound_type = ANNOUNCER_DEFAULT, send_to_newscaster, do_not_modify = FALSE, list/players)
+/proc/priority_announce(text = "", super_title = "Colony Announcement", sub_title = "", sound_type = ANNOUNCER_DEFAULT, send_to_newscaster, do_not_modify = FALSE, list/players)
 	if(!text)
 		return
 
@@ -58,9 +58,9 @@
 
 	if(send_to_newscaster)
 		if(sub_title == "")
-			GLOB.news_network.submit_article(text, super_title, "Station Announcements", null)
+			GLOB.news_network.submit_article(text, super_title, "Colony Announcements", null)
 		else
-			GLOB.news_network.submit_article(sub_title + "<br><br>" + text, super_title, "Station Announcements", null)
+			GLOB.news_network.submit_article(sub_title + "<br><br>" + text, super_title, "Colony Announcements", null)
 
 /**
  * Summon the crew for an emergency meeting

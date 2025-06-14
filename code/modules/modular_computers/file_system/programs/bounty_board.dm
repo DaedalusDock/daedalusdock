@@ -105,7 +105,7 @@
 				playsound(computer, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
 				return
 			request_target.transfer_money(current_user, active_request.value)
-			computer.say("Paid out [active_request.value] credits.")
+			computer.say("Paid out [active_request.value] marks.")
 			GLOB.request_list.Remove(active_request)
 			return TRUE
 		if("clear")

@@ -26,7 +26,7 @@
 	/// The name of the UI
 	var/ui_title = "Supply Console"
 	/// The currency displayed
-	var/ui_currency = "credits"
+	var/ui_currency = "marks"
 
 	/// An optional extended travel time for supply pods.
 	var/travel_time_in_minutes = 0

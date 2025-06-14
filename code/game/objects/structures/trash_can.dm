@@ -66,6 +66,9 @@ DEFINE_INTERACTABLE(/obj/structure/trash_can)
 
 /obj/structure/trash_can/update_overlays()
 	. = ..()
+	if(trash_bag)
+		. += image(icon = icon, icon_state = "trashcan_bag")
+
 	if(length(trash_bag?.contents))
 		var/used_ratio = round(trash_bag.get_used_storage_ratio(), 0.01)
 		var/trash_state

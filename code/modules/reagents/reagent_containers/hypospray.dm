@@ -280,7 +280,7 @@
 
 /obj/item/reagent_containers/hypospray/medipen/survival/luxury
 	name = "luxury autoinjector"
-	desc = "Cutting edge technology allowed humanity to compact 50u of volume into a single medipen. Contains rare and powerful chemicals used to aid in exploration of very hard enviroments."
+	desc = "Cutting edge technology allowed minervanity to compact 50u of volume into a single medipen. Contains rare and powerful chemicals used to aid in exploration of very hard enviroments."
 	icon_state = "luxpen"
 	inhand_icon_state = "atropen"
 	base_icon_state = "luxpen"

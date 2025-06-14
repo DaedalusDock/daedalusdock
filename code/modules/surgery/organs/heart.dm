@@ -273,7 +273,7 @@
 
 /obj/item/organ/heart/cybernetic
 	name = "basic cybernetic heart"
-	desc = "A basic electronic device designed to mimic the functions of an organic human heart."
+	desc = "A basic electronic device designed to mimic the functions of an organic minervan heart."
 	base_icon_state = "heart-c"
 	icon_state = "heart-c-on"
 	organ_flags = ORGAN_SYNTHETIC
@@ -285,7 +285,7 @@
 
 /obj/item/organ/heart/cybernetic/tier2
 	name = "cybernetic heart"
-	desc = "An electronic device designed to mimic the functions of an organic human heart. Also holds an emergency dose of epinephrine, used automatically after facing severe trauma."
+	desc = "An electronic device designed to mimic the functions of an organic minervan heart. Also holds an emergency dose of epinephrine, used automatically after facing severe trauma."
 	icon_state = "heart-c-u-on"
 	base_icon_state = "heart-c-u"
 	maxHealth = 60
@@ -294,7 +294,7 @@
 
 /obj/item/organ/heart/cybernetic/tier3
 	name = "upgraded cybernetic heart"
-	desc = "An electronic device designed to mimic the functions of an organic human heart. Also holds an emergency dose of epinephrine, used automatically after facing severe trauma. This upgraded model can regenerate its dose after use."
+	desc = "An electronic device designed to mimic the functions of an organic minervan heart. Also holds an emergency dose of epinephrine, used automatically after facing severe trauma. This upgraded model can regenerate its dose after use."
 	icon_state = "heart-c-u2-on"
 	base_icon_state = "heart-c-u2"
 	maxHealth = 90
@@ -515,7 +515,7 @@
 	stop_crystalization_process(ethereal)
 
 /obj/item/organ/heart/vox
-	name = "vox heart"
+	name = "voks heart"
 	icon_state = "vox-heart-on"
 	base_icon_state = "vox-heart"
 

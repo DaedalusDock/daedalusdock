@@ -13,7 +13,7 @@
 	<fieldset class='computerPaneNested' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
 		<legend class='computerLegend tooltip'>
 			<b>Aliases</b>
-			<span class='tooltiptext'>A mask will not hide who you are from us.</span>
+			<span class='tooltiptext'>A mask will not hide your true identity.</span>
 		</legend>
 	<table style='border-collapse: collapse;width: 100%'>
 	"}

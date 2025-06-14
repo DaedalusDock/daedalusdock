@@ -21,7 +21,7 @@
 /obj/item/grown/shrub
 	plant_datum = /datum/plant/shrub
 	name = "shrub"
-	desc = "A shrubbery, it looks nice and it was only a few credits too. Plant it on the ground to grow a hedge, shrubbing skills not required."
+	desc = "A shrubbery, it looks nice and it was only a few marks too. Plant it on the ground to grow a hedge, shrubbing skills not required."
 	icon_state = "shrub"
 
 /obj/item/grown/shrub/attack_self(mob/user)

@@ -8,7 +8,7 @@ SUBSYSTEM_DEF(economy)
 
 	var/payday_interval = 8 // How many fires between paydays
 
-	/// How many credits to give to each department at round start.
+	/// How many marks to give to each department at round start.
 	var/roundstart_budget_amt = 4000
 
 	var/list/department_id2name = list(
@@ -44,7 +44,7 @@ SUBSYSTEM_DEF(economy)
 	///List of the departmental budget cards in existance.
 	var/list/dep_cards = list()
 
-	/// A var that collects the total amount of credits owned in player accounts on station, reset and recounted on fire()
+	/// A var that collects the total amount of marks owned in player accounts on station, reset and recounted on fire()
 	var/station_total = 0
 
 	/// Contains the message to send to newscasters about price inflation and earnings, updated on price_update()

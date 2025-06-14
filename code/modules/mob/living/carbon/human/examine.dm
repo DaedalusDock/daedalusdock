@@ -397,7 +397,7 @@
 						to_chat(living_user, result.create_tooltip("[t_He] does not look long for this world. [pick_weight(fucked_reasons)]"))
 
 					else
-						to_chat(living_user, result.create_tooltip("[t_He] appears to be in great health, a testament to the endurance of humanity in these trying times."))
+						to_chat(living_user, result.create_tooltip("[t_He] appears to be in great health."))
 
 		living_user.stats.set_cooldown("examine_medical_flavortext_[REF(src)]", 20 MINUTES)
 

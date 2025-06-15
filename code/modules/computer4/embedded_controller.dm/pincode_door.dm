@@ -9,18 +9,19 @@
 	/// Request-Exit Button ID
 	var/request_exit_tag
 	/// Airlock open duration
-	var/dwell_time = 10 SECONDS
+	var/dwell_time
 	/// Is this door allowed to be held open (Press * while unlocked)
 	var/allow_lock_open = TRUE
 	/// Static pin ID to use.
 	var/static_pin_id
 	/// Static pin length.
-	var/static_pin_length = 4
+	var/static_pin_length
 	/// Manually assigned pin number. Ignores static pin config. Auto-calculates length.
 	var/forced_pin
 	/// Control mode: 1 - Secure Open/Close (Airlock), 2 - Toggle Bolts (Soft Security)
 	var/control_mode
 
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/c4_embedded_controller/airlock_pinpad, 24)
 
 /obj/machinery/c4_embedded_controller/airlock_pinpad/setup_default_configuration(datum/c4_file/record/conf_db, obj/item/disk/data/floppy)
 	. = ..()

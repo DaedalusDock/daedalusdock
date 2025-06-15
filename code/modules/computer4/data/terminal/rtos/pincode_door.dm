@@ -196,6 +196,38 @@
 	print_history[ROW_STATUS] = status_rows[current_state]
 	redraw_screen(TRUE)
 
+	// Visuals
+
+	/// Base color for displays. Mode-based.
+	var/new_display = null
+	switch(control_mode)
+		if(CMODE_SECURE)
+			new_display = "red"
+		if(CMODE_BOLTS)
+			new_display = "blue"
+
+	switch(current_state)
+		if(STATE_SET_PIN)
+			display_icon = "screen_dots_yellow"
+			display_indicators = RTOS_YELLOW
+
+		if(STATE_AWAIT_PIN)
+			display_icon = "screen_blank_[new_display]"
+			display_indicators = RTOS_RED
+
+		if(STATE_COUNTDOWN)
+			display_icon = "screen_cycle_[new_display]"
+			display_indicators = RTOS_GREEN
+
+		if(STATE_HOLD)
+			display_icon = "screen_hold_[new_display]"
+			display_indicators = RTOS_YELLOW | RTOS_GREEN
+		if(STATE_FAULT)
+			display_icon = "screen_!_yellow"
+			display_indicators = RTOS_RED | RTOS_YELLOW | RTOS_GREEN
+
+	update_visuals()
+
 /// Draws the pin position indicators, Cut out for cleanliness so it can be called in std_in().
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/draw_pin_dots(redraw = TRUE)
 	var/list/char_list = list()

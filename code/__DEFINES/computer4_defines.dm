@@ -11,3 +11,10 @@
 #define MEDTRAK_MENU_INDEX 2
 #define MEDTRAK_MENU_RECORD 3
 #define MEDTRAK_MENU_COMMENTS 4
+
+// Wireless card incoming filter modes
+#define WIRELESS_FILTER_PROMISC 0 //! Forward all packets
+#define WIRELESS_FILTER_NETADDR 1 //! Forward only bcast/unicast matched GPRS packets
+#define WIRELESS_FILTER_ID_TAGS 2 //! id_tag based filtering, for non-GPRS Control.
+
+#define WIRELESS_FILTER_MODEMAX 2 //! Max of WIRELESS_FILTER_* Defines.

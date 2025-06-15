@@ -2,8 +2,9 @@
 
 #define STATE_SET_PIN "SET"
 #define STATE_AWAIT_PIN "AWAIT"
-#define STATE_AUTOCLOSE "AUTO"
-#define STATE_DOORSTOP "HOLD"
+#define STATE_COUNTDOWN "AUTO"
+#define STATE_HOLD "HOLD"
+#define STATE_FAULT "FAULT"
 
 #define ROW_HEADER 1
 #define ROW_PINOUT 2
@@ -11,6 +12,12 @@
 
 #define AC_COMMAND_OPEN 1
 #define AC_COMMAND_CLOSE 2
+#define AC_COMMAND_UPDATE 3
+#define AC_COMMAND_BOLT 4
+#define AC_COMMAND_UNBOLT 5
+
+#define CMODE_SECURE 1
+#define CMODE_BOLTS 2
 
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door
 	name = "pinworks-v1"
@@ -29,16 +36,33 @@
 	var/pin_buffer
 	/// Pin length
 	var/pin_length
+	/// Control Mode
+	var/control_mode
 
 	/// Current state machine state
 	var/tmp/current_state
+
 	/// Current airlock state from update packets. If it's mismatched, we correct our state.
 	var/tmp/airlock_state
+	/// Current airlock bolt state from update packets. If it's mismatched, we correct our state.
+	var/tmp/airlock_bolt_state
 
 	/// Door autoclose timer
 	COOLDOWN_DECLARE(door_timer)
 	/// Timestamp for 4-second grace period.
 	var/command_time
+
+	/// Get our initial airlock state within 10 seconds.
+	COOLDOWN_DECLARE(door_state_timeout)
+
+	/// Recoverable fault string
+	var/fault_string
+
+	/// Expected airlock state
+	var/expected_airlock_state
+	/// Expected bolt state
+	var/expected_bolt_state
+
 
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/populate_memory(datum/c4_file/record/conf_record)
 	var/list/fields = conf_record.stored_record.fields
@@ -48,6 +72,7 @@
 	dwell_time = fields[RTOS_CONFIG_HOLD_OPEN_TIME]
 	allow_lock_open = fields[RTOS_CONFIG_ALLOW_HOLD_OPEN] //OPTIONAL
 	correct_pin = fields[RTOS_CONFIG_PINCODE] //OPTIONAL
+	control_mode = fields[RTOS_CONFIG_CMODE]
 	pin_length = length(correct_pin)
 	if(correct_pin) //If we don't have a known pin, get ready to learn one.
 		current_state = STATE_AWAIT_PIN
@@ -59,8 +84,9 @@
 		return TRUE
 
 	// there *HAS* to be a better way than this but it's 3am
-	if(target_tag && dwell_time && allow_lock_open)
+	if(target_tag && allow_lock_open && control_mode)
 		return
+
 	halt(RTOS_HALT_BAD_CONFIG, "BAD_CONFIG")
 	return TRUE
 
@@ -72,33 +98,44 @@
 	wcard.id_tags = list(target_tag, request_exit_tag)
 
 	print_history = new /list(RTOS_OUTPUT_ROWS)
+	fault_string = null
 
+	COOLDOWN_START(src, door_state_timeout, (10 SECONDS))
+	control_airlock(AC_COMMAND_UPDATE)
 	update_screen()
 
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/tick(delta_time)
-	if(!is_operational())
+	if(!is_operational() || current_state == STATE_FAULT)
 		return
-	if(current_state == STATE_AUTOCLOSE)
+	if(current_state == STATE_COUNTDOWN)
 		if(COOLDOWN_FINISHED(src, door_timer))
-			close_door()
+			timer_expire()
 			return
 		fast_update_doortimer(TRUE)
+
+	// We give 5 seconds to get initial state.
+	if(COOLDOWN_FINISHED(src, door_state_timeout) && !airlock_state)
+		fault("DOOR NOT RESPONDING?")
+		return
+
 	// 4-second grace period for commands and packets to go through.
 	if(airlock_state && ((command_time + 4 SECONDS) < world.time))
 
-		var/static/list/state_lut = list(
-			STATE_SET_PIN =   "closed",
-			STATE_AWAIT_PIN = "closed",
-			STATE_AUTOCLOSE = "open",
-			STATE_DOORSTOP =  "open"
-		)
-		if(state_lut[current_state] != airlock_state)
-			// If the airlock isn't open, complain.
-			halt(RTOS_HALT_STATE_VIOLATION, "CHECK_AIRLOCK")
+		//If we have an expected state, verify it.
+		if((expected_airlock_state && (expected_airlock_state != airlock_state)) || (expected_bolt_state && (expected_bolt_state != airlock_bolt_state)))
+			// If the airlock state is mismatched, complain
+			fault("DOOR NOT RESPONDING?")
 			return
+
 	return
 
 
+/// Soft-Halt
+/datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/fault(error_text)
+	playsound(get_computer(), 'sound/machines/nuke/angry_beep.ogg', 50, FALSE)
+	current_state = STATE_FAULT
+	fault_string = error_text
+	update_screen()
 
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/update_screen()
 	if(!is_operational())
@@ -108,13 +145,14 @@
 
 	var/static/list/headers = list(
 		//                "--------------------"
-		STATE_SET_PIN =   " > PLEASE SET PIN < ",
+		STATE_SET_PIN =   " ? PLEASE SET PIN ? ",
 		STATE_AWAIT_PIN = " > INPUT PIN CODE < ",
-	//	STATE_AUTOCLOSE = " ! DOOR OPEN: %SS ! ",
-		STATE_DOORSTOP =  " # DOOR HELD OPEN # "
+	//	STATE_COUNTDOWN =  " ! DOOR OPEN: %SS ! ",
+		STATE_HOLD =      " # TIMER  STOPPED # ",
+		STATE_FAULT =     " !! SYSTEM FAULT !! "
 	)
 
-	if(current_state == STATE_AUTOCLOSE)
+	if(current_state == STATE_COUNTDOWN)
 		fast_update_doortimer(FALSE)
 	else
 		print_history[ROW_HEADER] = headers[current_state]
@@ -125,18 +163,21 @@
 	switch(current_state)
 		if(STATE_SET_PIN, STATE_AWAIT_PIN)
 			draw_pin_dots(FALSE)
-		if(STATE_AUTOCLOSE)
+		if(STATE_COUNTDOWN)
 
 
 			if(allow_lock_open)
 				write_buffer = "  PRESS # FOR HOLD  "
 			else
-				write_buffer = " DOOR HOLD DISABLED "
+				write_buffer = " TIME HOLD DISABLED "
 
 			print_history[ROW_PINOUT] = write_buffer
 
-		if(STATE_DOORSTOP)
-			print_history[ROW_PINOUT] = "  PRESS # TO CLOSE  "
+		if(STATE_HOLD)
+			print_history[ROW_PINOUT] = "  PRESS # TO START  "
+		if(STATE_FAULT)
+			// Recoverable faults (Door in unexpected state, etc.)
+			print_history[ROW_PINOUT] = "[fixed_center(fault_string, 20)]"
 		else
 			halt(RTOS_HALT_STATE_VIOLATION, "BAD_STATE")
 			return
@@ -147,8 +188,9 @@
 		//                "--------------------"
 		STATE_SET_PIN =   " * - SET || # - CLR ",
 		STATE_AWAIT_PIN = "* - SUBMIT | # - CLR",
-		STATE_AUTOCLOSE = "   * TO CLOSE NOW   ",
-		STATE_DOORSTOP =  "   * TO CLOSE NOW   "
+		STATE_COUNTDOWN =  "    * TO END NOW    ",
+		STATE_HOLD =      "   * TO START NOW   ",
+		STATE_FAULT =     "  PRESS * TO RESET  "
 	)
 
 	print_history[ROW_STATUS] = status_rows[current_state]
@@ -157,7 +199,7 @@
 /// Draws the pin position indicators, Cut out for cleanliness so it can be called in std_in().
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/draw_pin_dots(redraw = TRUE)
 	var/list/char_list = list()
-	#warn THIS ROUTINE SUCKS. NEED TO WRITE A SPACE-CENTERING HELPER.
+
 	var/buffer_len = length(pin_buffer)
 	//If we're setting the pin, show an illusory extra empty position.
 	var/left_to_print = min((max(buffer_len, pin_length) + (current_state == STATE_SET_PIN)), MAX_PIN_LENGTH)
@@ -174,7 +216,7 @@
 
 /// Calculate the door open header, Cut out so it can safely be placed in tick()
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/fast_update_doortimer(redraw = TRUE)
-	if(current_state != STATE_AUTOCLOSE)
+	if(current_state != STATE_COUNTDOWN)
 		return
 
 	var/seconds_left = "[round((COOLDOWN_TIMELEFT(src, door_timer)*0.1))]"
@@ -201,66 +243,88 @@
 				update_screen(TRUE)
 			else // "#"
 				pin_buffer = "" //Reset the buffer
+				draw_pin_dots(TRUE)
 
 		if(STATE_AWAIT_PIN)
 			if(text == "*")
 				if(pin_buffer == correct_pin)
-					open_door()
+					pin_accepted()
 					pin_buffer = ""
+					update_screen()
 				else
-					#warn play a buzz here or smth
+					playsound(get_computer(),'sound/machines/deniedbeep.ogg',50,FALSE,3)
 					pin_buffer = ""
 					draw_pin_dots(TRUE)
 			else // "#"
 				pin_buffer = ""
 				draw_pin_dots(TRUE)
 
-		if(STATE_AUTOCLOSE)
+		if(STATE_COUNTDOWN)
 			if(text == "*")
-				close_door()
+				timer_expire()
 			else // "#"
 				if(allow_lock_open)
 					doorstop()
 
-		if(STATE_DOORSTOP)
+		if(STATE_HOLD)
 			if(text == "*")
-				close_door()
+				timer_expire()
 
 			else // "#"
-				open_door(TRUE)
-
-/// Open the door, sets state to autoclose and starts the cooldown.
-/// `skip_open` - Skip opening the door.
-/datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/open_door(skip_open = FALSE)
-
-	if(!skip_open)
-		control_airlock(AC_COMMAND_OPEN)
-
-	command_time = world.time
-	current_state = STATE_AUTOCLOSE
-	COOLDOWN_START(src, door_timer, (dwell_time SECONDS))
-	update_screen()
-	return
+				// Start time timer back up again, but don't actually do any actions.
+				pin_accepted(TRUE)
+		if(STATE_FAULT)
+			if(text == "*")
+				get_computer().reboot()
 
 
-/// Closes the door, sets state to await pin.
-/datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/close_door()
-	if(!(current_state in list(STATE_AUTOCLOSE, STATE_DOORSTOP)))
+/// Fired on accepting a pin, If we have a dwell time, start the timer.
+/// `skip_action` - Skip action, just perform mode behaviour.
+/datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/pin_accepted(skip_action = FALSE)
+
+	if(!skip_action)
+		switch(control_mode)
+			if(CMODE_SECURE)
+				control_airlock(AC_COMMAND_OPEN)
+			if(CMODE_BOLTS)
+				if(airlock_bolt_state == "locked") //If locked
+					control_airlock(AC_COMMAND_UNBOLT)
+				else
+					control_airlock(AC_COMMAND_BOLT)
+
+
+
+	// If we have a set dwell time, we'll start the timer.
+	if(dwell_time)
+		current_state = STATE_COUNTDOWN
+		COOLDOWN_START(src, door_timer, (dwell_time SECONDS))
+	// Else, we don't change state and will never fire timer_expire().
+
+/// Fired upon the expiration (or manual triggering therein) of the door timer.
+/// This never gets called if the dwell time is zero.
+/datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/timer_expire()
+	if(!(current_state in list(STATE_COUNTDOWN, STATE_HOLD)))
 		halt(RTOS_HALT_STATE_VIOLATION, "BAD_STATE")
 
-	command_time = world.time
-	control_airlock(AC_COMMAND_CLOSE)
+	switch(control_mode)
+		if(CMODE_SECURE)
+			control_airlock(AC_COMMAND_CLOSE)
+		if(CMODE_BOLTS) //This, doesn't make a whole lot of sense but we support it anyways!
+			if(airlock_bolt_state == "locked") //If locked
+				control_airlock(AC_COMMAND_UNBOLT)
+			else
+				control_airlock(AC_COMMAND_BOLT)
+
 	current_state = STATE_AWAIT_PIN
 	update_screen()
-	return
 
 /// (if allowed) stop the timer and hold the door open.
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/doorstop()
-	if((current_state != STATE_AUTOCLOSE) && (!allow_lock_open))
+	if((current_state != STATE_COUNTDOWN) && (!allow_lock_open))
 		halt(RTOS_HALT_STATE_VIOLATION, "BAD_STATE")
 
 	COOLDOWN_RESET(src, door_timer)
-	current_state = STATE_DOORSTOP
+	current_state = STATE_HOLD
 	update_screen()
 	return
 
@@ -287,18 +351,20 @@
 	if((data["tag"] == target_tag) && data["timestamp"])
 		//State update from airlock
 		airlock_state = packet.data["door_status"]
+		airlock_bolt_state = packet.data["lock_status"]
 		return
 
 	if((data["tag"] == request_exit_tag) && (current_state == STATE_AWAIT_PIN))
-		// Request to exit, Attempt to open the door if in valid state.
-		open_door()
+		// Request to exit, Act as if we just accepted a pin.
+		pin_accepted()
 		return
 
 
 
 
-/// Send airlock control packet.
+/// Send airlock control packet. Also updates expected states.
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/control_airlock(airlock_command)
+	command_time = world.time
 	var/datum/signal/signal
 	switch(airlock_command)
 		if(AC_COMMAND_OPEN)
@@ -309,6 +375,7 @@
 					PACKET_CMD = "secure_open"
 				)
 			)
+			expected_airlock_state = "open"
 		if(AC_COMMAND_CLOSE)
 			signal = new(
 				src,
@@ -317,6 +384,33 @@
 					PACKET_CMD = "secure_close"
 				)
 			)
+			expected_airlock_state = "closed"
+		if(AC_COMMAND_UPDATE)
+			signal = new(
+				src,
+				list(
+					"tag" = target_tag,
+					PACKET_CMD = "status"
+				)
+			)
+		if(AC_COMMAND_BOLT)
+			signal = new(
+				src,
+				list(
+					"tag" = target_tag,
+					PACKET_CMD = "lock"
+				)
+			)
+			expected_bolt_state = "locked"
+		if(AC_COMMAND_UNBOLT)
+			signal = new(
+				src,
+				list(
+					"tag" = target_tag,
+					PACKET_CMD = "unlock"
+				)
+			)
+			expected_bolt_state = "unlocked"
 	if(signal)
 		post_signal(signal, RADIO_AIRLOCK)
 
@@ -331,14 +425,30 @@
 	correct_pin = null
 	pin_length = null
 
+	airlock_state = null
+	airlock_bolt_state = null
+	expected_airlock_state = null
+	expected_bolt_state = null
+
+	fault_string = null
 
 #undef MAX_PIN_LENGTH
+
 #undef STATE_SET_PIN
 #undef STATE_AWAIT_PIN
-#undef STATE_AUTOCLOSE
-#undef STATE_DOORSTOP
+#undef STATE_COUNTDOWN
+#undef STATE_HOLD
+#undef STATE_FAULT
+
 #undef ROW_HEADER
 #undef ROW_PINOUT
 #undef ROW_STATUS
+
 #undef AC_COMMAND_OPEN
 #undef AC_COMMAND_CLOSE
+#undef AC_COMMAND_UPDATE
+#undef AC_COMMAND_BOLT
+#undef AC_COMMAND_UNBOLT
+
+#undef CMODE_SECURE
+#undef CMODE_BOLTS

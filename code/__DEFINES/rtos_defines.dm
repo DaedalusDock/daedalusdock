@@ -14,6 +14,7 @@
 #define RTOS_CONFIG_REQUEST_EXIT_ID "rexit_id"
 #define RTOS_CONFIG_ALLOW_HOLD_OPEN "allow_doorstop"
 #define RTOS_CONFIG_HOLD_OPEN_TIME "doorstop_time"
+#define RTOS_CONFIG_CMODE "control_mode"
 
 #define RTOS_ACCESS_LIST "access"
 #define RTOS_ACCESS_MODE "acc_mode"

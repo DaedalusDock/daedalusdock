@@ -92,6 +92,7 @@
 	)
 	redraw_screen(TRUE)
 	deadlocked = TRUE
+	playsound(get_computer(), 'sound/machines/nuke/confirm_beep.ogg', 50, FALSE)
 
 /** RTOS.h - Post Signal
  *  Follows standard post_signal calling conventions.

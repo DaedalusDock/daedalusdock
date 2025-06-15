@@ -279,7 +279,7 @@
 
 
 /// Fired on accepting a pin, If we have a dwell time, start the timer.
-/// `skip_action` - Skip action, just perform mode behaviour.
+/// `skip_action` - Skip action, just restart the timer.
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/pin_accepted(skip_action = FALSE)
 
 	if(!skip_action)

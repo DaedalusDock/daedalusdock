@@ -21,6 +21,7 @@ import {
   Tabs,
   TextArea,
 } from 'tgui-core/components';
+import { toFixed } from 'tgui-core/math';
 
 import { ChatPageSettings } from '../chat';
 import { rebuildChat, saveChatToDisk } from '../chat/actions';

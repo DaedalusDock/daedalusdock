@@ -1,8 +1,14 @@
 import { filter, uniqBy } from 'common/collections';
-import { flow } from 'common/fp';
+import {
+  Box,
+  Button,
+  Divider,
+  Dropdown,
+  LabeledList,
+} from 'tgui-core/components';
+import { flow } from 'tgui-core/fp';
 
 import { useBackend } from '../../backend';
-import { Box, Button, Divider, Dropdown, LabeledList } from '../../components';
 import {
   CHROMOSOME_NEVER,
   CHROMOSOME_NONE,

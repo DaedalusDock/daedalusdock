@@ -1,6 +1,6 @@
-import { exhaustiveCheck } from 'common/exhaustive';
+import { Dropdown, Icon } from 'tgui-core/components';
+import { exhaustiveCheck } from 'tgui-core/exhaustive';
 
-import { Dropdown, Icon } from '../../components';
 import { RandomSetting } from './data';
 
 export const RandomizationButton = (props: {
@@ -28,6 +28,7 @@ export const RandomizationButton = (props: {
 
   return (
     <Dropdown
+      selected={value.toString()}
       backgroundColor={color}
       {...dropdownProps}
       clipSelectedText={false}
@@ -48,7 +49,7 @@ export const RandomizationButton = (props: {
           value: RandomSetting.AntagOnly,
         },
       ]}
-      nochevron
+      noChevron
       onSelected={setValue}
       width="auto"
     />

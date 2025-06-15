@@ -1,7 +1,7 @@
-import { createSearch } from 'common/string';
+import { Box, Icon, Input, Section } from 'tgui-core/components';
+import { createSearch } from 'tgui-core/string';
 
 import { useBackend, useLocalState } from '../backend';
-import { Box, Icon, Input, Section } from '../components';
 import { NtosWindow } from '../layouts';
 
 export const NtosRecords = (props) => {
@@ -23,7 +23,7 @@ export const NtosRecords = (props) => {
             value={searchTerm}
             fluid
             textAlign="center"
-            onInput={(e, value) => setSearchTerm(value)}
+            onChange={(value) => setSearchTerm(value)}
           />
         </Section>
         {mode === 'security' &&

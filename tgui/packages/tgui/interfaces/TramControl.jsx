@@ -1,5 +1,13 @@
+import {
+  Box,
+  Button,
+  Dimmer,
+  Icon,
+  Section,
+  Stack,
+} from 'tgui-core/components';
+
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Dimmer, Icon, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 const DEPARTMENT2COLOR = {

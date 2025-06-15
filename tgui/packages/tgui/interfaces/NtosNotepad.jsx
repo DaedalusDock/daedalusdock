@@ -1,5 +1,6 @@
+import { Input, Section, Stack } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Input, Section, Stack } from '../components';
 import { NtosWindow } from '../layouts';
 
 export const NtosNotepad = (props) => {
@@ -19,7 +20,7 @@ export const NtosNotepad = (props) => {
               <Input
                 value={note}
                 fluid
-                onInput={(e, value) =>
+                onChange={(value) =>
                   act('UpdateNote', {
                     newnote: value,
                   })

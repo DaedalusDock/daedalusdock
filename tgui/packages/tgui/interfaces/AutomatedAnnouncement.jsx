@@ -1,5 +1,6 @@
+import { Button, Input, LabeledList, Section } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Button, Input, LabeledList, Section } from '../components';
 import { Window } from '../layouts';
 
 const TOOLTIP_TEXT = `
@@ -38,7 +39,7 @@ export const AutomatedAnnouncement = (props) => {
               <Input
                 fluid
                 value={arrival}
-                onChange={(e, value) =>
+                onBlur={(value) =>
                   act('ArrivalText', {
                     newText: value,
                   })
@@ -72,7 +73,7 @@ export const AutomatedAnnouncement = (props) => {
               <Input
                 fluid
                 value={newhead}
-                onChange={(e, value) =>
+                onBlur={(value) =>
                   act('NewheadText', {
                     newText: value,
                   })

@@ -1,15 +1,16 @@
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
+  DmIcon,
   Icon,
   LabeledList,
   NoticeBox,
   Section,
   Stack,
   Table,
-} from '../components';
-import { DmIcon } from '../components/DMIcon';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 type VendingData = {
@@ -308,6 +309,7 @@ const ProductButton = (props) => {
           item: product.name,
         })
       }
+      mb={0.5}
     >
       {customPrice}
     </Button>
@@ -315,6 +317,7 @@ const ProductButton = (props) => {
     <Button
       fluid
       disabled={disabled}
+      mb={0.5}
       onClick={() =>
         act('vend', {
           ref: product.ref,

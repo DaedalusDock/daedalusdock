@@ -1,6 +1,3 @@
-import { Tooltip } from 'tgui-core/components';
-
-import { useBackend } from '../backend';
 import {
   BlockQuote,
   Box,
@@ -15,8 +12,10 @@ import {
   Stack,
   Table,
   Tabs,
-} from '../components';
-import { TableCell, TableRow } from '../components/Table';
+  Tooltip,
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { NtosWindow } from '../layouts';
 
 export const NtosScipaper = (props) => {
@@ -56,7 +55,7 @@ const PaperPublishing = (props) => {
             <Input
               fluid
               value={title}
-              onChange={(e, value) =>
+              onBlur={(value) =>
                 act('rewrite', {
                   title: value,
                 })
@@ -67,7 +66,7 @@ const PaperPublishing = (props) => {
             <Input
               fluid
               value={author}
-              onChange={(e, value) =>
+              onBlur={(value) =>
                 act('rewrite', {
                   author: value,
                 })
@@ -81,7 +80,7 @@ const PaperPublishing = (props) => {
             <Input
               fluid
               value={abstract}
-              onChange={(e, value) =>
+              onBlur={(value) =>
                 act('rewrite', {
                   abstract: value,
                 })
@@ -323,13 +322,13 @@ const PartnersBrowser = (props) => {
           <LabeledList.Item label="Technology Sharing">
             <Table>
               {partner.boostedNodes.map((node) => (
-                <TableRow key={node.id}>
-                  <TableCell>
+                <Table.Row key={node.id}>
+                  <Table.Cell>
                     {visibleNodes.includes(node.id)
                       ? node.name
                       : 'Unknown Technology'}
-                  </TableCell>
-                  <TableCell>
+                  </Table.Cell>
+                  <Table.Cell>
                     <Button
                       fluid
                       tooltipPosition="left"
@@ -346,8 +345,8 @@ const PartnersBrowser = (props) => {
                         })
                       }
                     />
-                  </TableCell>
-                </TableRow>
+                  </Table.Cell>
+                </Table.Row>
               ))}
             </Table>
           </LabeledList.Item>

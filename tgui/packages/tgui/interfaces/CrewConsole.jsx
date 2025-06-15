@@ -1,7 +1,7 @@
 import { sortBy } from 'common/collections';
+import { Button, Icon, Section, Table } from 'tgui-core/components';
 
 import { useBackend } from '../backend';
-import { Button, Icon, Section, Table } from '../components';
 import { COLORS } from '../constants';
 import { Window } from '../layouts';
 

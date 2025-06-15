@@ -1,7 +1,8 @@
-import { toTitleCase } from 'common/string';
+import { Box, Button, NoticeBox, Section } from 'tgui-core/components';
+import { toTitleCase } from 'tgui-core/string';
 
 import { useBackend } from '../backend';
-import { Box, Button, Grid, NoticeBox, Section } from '../components';
+import { Grid } from '../components/Grid';
 import { Window } from '../layouts';
 
 export const EightBallVote = (props) => {

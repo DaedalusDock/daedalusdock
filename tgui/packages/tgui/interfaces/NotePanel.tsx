@@ -1,5 +1,6 @@
+import { Box, Section, Tabs, TextArea } from 'tgui-core/components';
+
 import { useBackend, useSharedState } from '../backend';
-import { Box, Section, Tabs, TextArea } from '../components';
 import { Window } from '../layouts';
 
 type NoteData = {
@@ -57,7 +58,7 @@ export const CustomNoteTab = (props) => {
         height={'400px'}
         value={memories[tab].content}
         maxLength={2048}
-        onInput={(e, value) =>
+        onBlur={(value) =>
           act('UpdateNote', {
             newnote: value,
           })

@@ -1,7 +1,7 @@
-import { toFixed } from 'common/math';
+import { Button, LabeledList, NumberInput } from 'tgui-core/components';
+import { toFixed } from 'tgui-core/math';
 
 import { useBackend } from '../../backend';
-import { Button, LabeledList, NumberInput } from '../../components';
 import { OperatorData } from './data';
 
 export const RadioPane = (props) => {

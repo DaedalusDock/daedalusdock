@@ -12,7 +12,7 @@ import {
   Input,
   Section,
   Stack,
-} from 'tgui/components';
+} from 'tgui-core/components';
 
 import { removeChatPage, toggleAcceptedType, updateChatPage } from './actions';
 import { MESSAGE_TYPES } from './constants';
@@ -28,7 +28,7 @@ export const ChatPageSettings = (props) => {
           <Input
             fluid
             value={page.name}
-            onChange={(e, value) =>
+            onBlur={(value) =>
               dispatch(
                 updateChatPage({
                   pageId: page.id,

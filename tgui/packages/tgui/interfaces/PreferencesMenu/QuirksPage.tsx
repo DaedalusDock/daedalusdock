@@ -1,7 +1,6 @@
-import { Tooltip } from 'tgui-core/components';
+import { Box, Icon, Stack, Tooltip } from 'tgui-core/components';
 
 import { useBackend, useLocalState } from '../../backend';
-import { Box, Icon, Stack } from '../../components';
 import { PreferencesMenuData, Quirk } from './data';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 

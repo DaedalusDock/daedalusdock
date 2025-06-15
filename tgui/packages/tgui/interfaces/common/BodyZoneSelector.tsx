@@ -1,6 +1,7 @@
 import { Component, createRef } from 'react';
+import { Image } from 'tgui-core/components';
 
-import { DmIcon } from './DMIcon';
+import { resolveAsset } from '../../assets';
 
 export enum BodyZone {
   Chest = 'chest',
@@ -14,10 +15,7 @@ export enum BodyZone {
   RightLeg = 'r_leg',
 }
 
-const bodyZonePixelToZone: (x: number, y: number) => BodyZone | null = (
-  x,
-  y,
-) => {
+function bodyZonePixelToZone(x: number, y: number): BodyZone | null {
   // TypeScript translation of /atom/movable/screen/zone_sel/proc/get_zone_at
   if (y < 1) {
     return null;
@@ -54,12 +52,13 @@ const bodyZonePixelToZone: (x: number, y: number) => BodyZone | null = (
   }
 
   return null;
-};
+}
 
 type BodyZoneSelectorProps = {
   onClick?: (zone: BodyZone) => void;
   scale?: number;
   selectedZone: BodyZone | null;
+  theme?: string;
 };
 
 type BodyZoneSelectorState = {
@@ -77,7 +76,7 @@ export class BodyZoneSelector extends Component<
 
   render() {
     const { hoverZone } = this.state;
-    const { scale = 3, selectedZone } = this.props;
+    const { scale = 3, selectedZone, theme = 'midnight' } = this.props;
 
     return (
       <div
@@ -88,9 +87,8 @@ export class BodyZoneSelector extends Component<
           position: 'relative',
         }}
       >
-        <DmIcon
-          icon="icons/hud/screen_midnight.dmi"
-          icon_state="zone_sel"
+        <Image
+          src={resolveAsset(`body_zones.base_${theme}.png`)}
           onClick={() => {
             const onClick = this.props.onClick;
             if (onClick && this.state.hoverZone) {
@@ -122,9 +120,8 @@ export class BodyZoneSelector extends Component<
         />
 
         {selectedZone && (
-          <DmIcon
-            icon="icons/hud/screen_gen.dmi"
-            icon_state={selectedZone}
+          <Image
+            src={resolveAsset(`body_zones.${selectedZone}.png`)}
             style={{
               pointerEvents: 'none',
               position: 'absolute',
@@ -135,9 +132,8 @@ export class BodyZoneSelector extends Component<
         )}
 
         {hoverZone && hoverZone !== selectedZone && (
-          <DmIcon
-            icon="icons/hud/screen_gen.dmi"
-            icon_state={hoverZone}
+          <Image
+            src={resolveAsset(`body_zones.${hoverZone}.png`)}
             style={{
               opacity: '0.5',
               pointerEvents: 'none',

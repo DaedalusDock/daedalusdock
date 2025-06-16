@@ -89,7 +89,7 @@ export const EmbeddedController = (props) => {
                         'EmbeddedController__Button',
                         'EmbeddedController__Button--keypad',
                       ])}
-                      onClick={() => act('eject')}
+                      onClick={() => act('ec_eject_id')}
                     />
                   </Flex.Item>
                 </Flex>

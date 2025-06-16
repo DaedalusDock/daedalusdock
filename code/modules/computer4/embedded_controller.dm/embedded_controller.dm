@@ -53,9 +53,9 @@
 		access_file.stored_record.fields[RTOS_ACCESS_LIST] = actual_fucking_access_please
 		access_file.stored_record.fields[RTOS_ACCESS_MODE] = RTOS_ACCESS_CALC_MODE_ANY
 
-
-
-
+/obj/machinery/c4_embedded_controller/Destroy()
+	QDEL_NULL(internal_computer)
+	return ..()
 
 /obj/machinery/c4_embedded_controller/examine(mob/user)
 	. = ..()
@@ -64,8 +64,13 @@
 	else
 		. += span_info("The panel is unlocked.")
 
-
 /obj/machinery/c4_embedded_controller/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(user.combat_mode)
+		return NONE
+
+	if(istype(tool, /obj/item/card/id))
+		return try_insert_card(user, tool)
+
 	if(!istype(tool, /obj/item/key/embedded_controller))
 		return NONE
 
@@ -79,10 +84,14 @@
 
 	return ITEM_INTERACT_SUCCESS
 
+/obj/machinery/c4_embedded_controller/proc/try_insert_card(mob/living/user, obj/item/tool)
+	var/obj/item/peripheral/card_reader/reader = internal_computer.get_peripheral(PERIPHERAL_TYPE_CARD_READER)
+	if(!reader.try_insert_card(user, tool))
+		return ITEM_INTERACT_BLOCKING
 
-/obj/machinery/c4_embedded_controller/Destroy()
-	QDEL_NULL(internal_computer)
-	return ..()
+	playsound(loc, 'sound/machines/cardreader_insert.ogg', 50)
+	user.visible_message(span_notice("[user] inserts [tool] into [src]."))
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/c4_embedded_controller/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -92,7 +101,11 @@
 
 /obj/machinery/c4_embedded_controller/ui_act(action, list/params)
 	SHOULD_CALL_PARENT(FALSE) // Relaying already
-	return internal_computer.ui_act(arglist(args))
+	if(action == "ec_eject_id")
+		var/obj/item/peripheral/card_reader/reader = internal_computer.get_peripheral(PERIPHERAL_TYPE_CARD_READER)
+		. = reader.try_eject_card(usr)
+
+	return internal_computer.ui_act(arglist(args)) || .
 
 /obj/machinery/c4_embedded_controller/ui_data(mob/user)
 	return internal_computer.ui_data(user)
@@ -139,6 +152,7 @@
 	default_programs = null
 	default_peripherals = list(
 		/obj/item/peripheral/network_card/wireless,
+		/obj/item/peripheral/card_reader,
 	)
 
 	screen_bg_color = "#69755A"

@@ -1,5 +1,5 @@
 /datum/keybinding
-	var/list/hotkey_keys
+	var/list/hotkey_keys = list("Unbound")
 	var/list/classic_keys
 	var/name
 	var/full_name

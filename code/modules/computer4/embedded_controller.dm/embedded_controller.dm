@@ -1,18 +1,22 @@
 /obj/machinery/c4_embedded_controller
 	name = "control panel"
-	icon = 'icons/obj/computer.dmi'
-	icon_state = "computer"
-	#warn Steal bay's sprites later.
+	icon = 'icons/obj/airlock_machines.dmi'
+	icon_state = "embedded_base"
+
 	has_disk_slot = TRUE
 
 	/// Ref to our magic internal computer :)
 	var/tmp/obj/machinery/computer4/embedded_controller/internal_computer
 
-	var/tmp/default_operating_system = /datum/c4_file/terminal_program/operating_system/thinkdos // temp lol
+	var/default_operating_system = /datum/c4_file/terminal_program/operating_system/rtos
 	var/radio_frequency
 
 	/// Is our disk slot locked?
 	var/panel_locked = TRUE
+
+	var/display_icon = null
+
+	var/display_indicators = NONE
 
 /obj/machinery/c4_embedded_controller/Initialize(mapload)
 	. = ..()
@@ -20,13 +24,13 @@
 	internal_computer.controller = src
 
 	var/obj/item/peripheral/network_card/wireless/netcard = internal_computer.get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD)
-	netcard.frequency = radio_frequency
-	netcard.set_radio_connection(radio_frequency)
+	netcard.frequency = radio_frequency || netcard.frequency
+	netcard.set_radio_connection(netcard.frequency)
 
 	var/obj/item/disk/data/floppy/floppy = new(internal_disk)
 	floppy.root.try_add_file(new default_operating_system)
 
-	internal_computer.set_inserted_disk(floppy) // Maybe this needs to be on src?
+	internal_computer.set_inserted_disk(floppy)
 	var/datum/c4_file/record/conf_db = new
 	conf_db.name = RTOS_CONFIG_FILE
 	setup_default_configuration(conf_db, floppy)
@@ -56,6 +60,22 @@
 /obj/machinery/c4_embedded_controller/Destroy()
 	QDEL_NULL(internal_computer)
 	return ..()
+
+/obj/machinery/c4_embedded_controller/update_overlays(updates)
+	. = ..()
+	if(display_icon)
+		. += display_icon
+	if(display_indicators & RTOS_RED)
+		. += "indicator_red"
+	if(display_indicators & RTOS_YELLOW)
+		. += "indicator_yellow"
+	if(display_indicators & RTOS_GREEN)
+		. += "indicator_green"
+
+/obj/machinery/c4_embedded_controller/proc/reset_visuals()
+	display_icon = null
+	display_indicators = NONE
+	update_icon()
 
 /obj/machinery/c4_embedded_controller/examine(mob/user)
 	. = ..()
@@ -165,6 +185,10 @@
 /obj/machinery/computer4/embedded_controller/Destroy()
 	controller = null
 	return ..()
+
+/obj/machinery/computer4/embedded_controller/reboot()
+	. = ..()
+	controller?.reset_visuals()
 
 // da keeeeyyyy
 

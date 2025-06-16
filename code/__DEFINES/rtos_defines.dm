@@ -14,12 +14,17 @@
 #define RTOS_CONFIG_REQUEST_EXIT_ID "rexit_id"
 #define RTOS_CONFIG_ALLOW_HOLD_OPEN "allow_doorstop"
 #define RTOS_CONFIG_HOLD_OPEN_TIME "doorstop_time"
+#define RTOS_CONFIG_CMODE "control_mode"
 
 #define RTOS_ACCESS_LIST "access"
 #define RTOS_ACCESS_MODE "acc_mode"
 
 #define RTOS_ACCESS_CALC_MODE_ALL 1
 #define RTOS_ACCESS_CALC_MODE_ANY 2
+
+#define RTOS_RED (1 << 0)
+#define RTOS_YELLOW (1 << 1)
+#define RTOS_GREEN (1 << 2)
 
 // Generic halt codes
 
@@ -30,5 +35,6 @@
 	#define RTOS_HALT_DATA_TOO_LONG 1901
 #define RTOS_HALT_GENERIC_HARDWARE_FAULT 2000
 	#define RTOS_HALT_MISSING_NETWORK_CARD 2001
+	#define RTOS_HALT_WRONG_COMPUTER_TYPE 2999
 #define RTOS_HALT_GENERIC_SOFTWARE_EXCEPTION 3000
 	#define RTOS_HALT_STATE_VIOLATION 3001

@@ -23,6 +23,12 @@
 	/// List containing the last RTOS_OUTPUT_ROWS lines, FIFO queue.
 	var/tmp/list/print_history = list()
 
+	/// Icon state for the containing controller's screen.
+	var/display_icon = null
+
+	/// Bitflag (RTOS_RED, RTOS_YELLOW, RTOS_GREEN) for indicator lights.
+	var/display_indicators = NONE
+
 /datum/c4_file/terminal_program/operating_system/rtos/execute(datum/c4_file/terminal_program/operating_system/thinkdos/system)
 	. = ..()
 	//Populate our working directory
@@ -92,6 +98,7 @@
 	)
 	redraw_screen(TRUE)
 	deadlocked = TRUE
+	playsound(get_computer(), 'sound/machines/nuke/confirm_beep.ogg', 50, FALSE)
 
 /** RTOS.h - Post Signal
  *  Follows standard post_signal calling conventions.
@@ -144,6 +151,23 @@
 			halt(RTOS_HALT_BAD_CONFIG, "BAD_ACCESS_MODE")
 			return FALSE
 
+/** RTOS.h - Update Visuals
+ *  Updates the visual-related vars, and triggers an icon update for the parent machine. Otherwise, halts.
+ */
+/datum/c4_file/terminal_program/operating_system/rtos/proc/update_visuals()
+	var/obj/machinery/computer4/embedded_controller/computer = get_computer()
+	if(!istype(computer))
+		halt(RTOS_HALT_WRONG_COMPUTER_TYPE, "BAD_MACHINE")
+		return
+	var/obj/machinery/c4_embedded_controller/overmachine = computer.controller
+	if(!istype(overmachine))
+		halt(RTOS_HALT_WRONG_COMPUTER_TYPE, "BAD_MACHINE")
+		return
+
+	overmachine.display_icon = display_icon
+	overmachine.display_indicators = display_indicators
+
+	overmachine.update_icon()
 
 /** RTOS.h - Check ID
  *  Check if an inserted ID is allowed. Wrapps rtos/check_access()

@@ -1,4 +1,4 @@
- // frag grenades
+// frag grenades
 TYPEINFO_DEF(/obj/item/shrapnel)
 	default_materials = list(/datum/material/iron=50)
 

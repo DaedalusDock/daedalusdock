@@ -597,7 +597,7 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 		if(handle_modifications)
 			name = "sawn-off [src.name]"
 			desc = sawn_desc
-			w_class = WEIGHT_CLASS_NORMAL
+			set_weight_class(WEIGHT_CLASS_NORMAL)
 			//The file might not have a "gun" icon, let's prepare for this
 			lefthand_file = 'icons/mob/inhands/weapons/guns_lefthand.dmi'
 			righthand_file = 'icons/mob/inhands/weapons/guns_righthand.dmi'

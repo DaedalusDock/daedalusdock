@@ -50,7 +50,7 @@
 	if(!.)
 		return
 
-	w_class = w_class_on
+	set_weight_class(w_class_on)
 	hitsound = 'sound/weapons/blade1.ogg'
 	START_PROCESSING(SSobj, src)
 	set_light_on(TRUE)
@@ -63,7 +63,7 @@
 	if(!.)
 		return
 
-	w_class = initial(w_class)
+	set_weight_class(initial(w_class))
 	hitsound = SFX_SWING_HIT
 	STOP_PROCESSING(SSobj, src)
 	set_light_on(FALSE)

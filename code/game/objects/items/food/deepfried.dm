@@ -31,7 +31,7 @@
 	righthand_file = fried.righthand_file
 	inhand_icon_state = fried.inhand_icon_state
 	desc = fried.desc
-	w_class = fried.w_class
+	set_weight_class(fried.w_class)
 	slowdown = fried.slowdown
 	equip_self_flags = fried.equip_self_flags
 	equip_delay_self = fried.equip_delay_self

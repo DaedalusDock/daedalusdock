@@ -179,7 +179,7 @@
 
 	source.hitsound = hitsound_on
 	source.wielded_hitsound = hitsound_on
-	source.w_class = w_class_on
+	source.set_weight_class(w_class_on)
 	source.icon_state = "[source.icon_state]_on"
 
 /*
@@ -205,7 +205,7 @@
 
 	source.hitsound = initial(source.hitsound)
 	source.wielded_hitsound = initial(source.wielded_hitsound)
-	source.w_class = initial(source.w_class)
+	source.set_weight_class(initial(source.w_class))
 	source.icon_state = initial(source.icon_state)
 
 /*

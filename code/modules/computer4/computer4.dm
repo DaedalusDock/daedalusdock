@@ -3,6 +3,7 @@
 	greyscale_colors = CIRCUIT_COLOR_GENERIC
 	build_path = /obj/machinery/computer4
 
+DEFINE_INTERACTABLE(/obj/machinery/computer4)
 /obj/machinery/computer4
 	name = "voidcomputer"
 	desc = "An older voidcomputer model produced by ThinkTronic LTD."

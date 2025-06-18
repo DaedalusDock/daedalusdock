@@ -1128,61 +1128,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@module-federation/error-codes@npm:0.14.3":
-  version: 0.14.3
-  resolution: "@module-federation/error-codes@npm:0.14.3"
-  checksum: 10c0/3cb4a0d82c40439a8bdbd1d83802f3e8153a56f7f153a5bed2fba526acc894cc7db10ce4eea95b36aeadb5634d954e851fabb6a7162671da2475518126dfee4a
-  languageName: node
-  linkType: hard
-
-"@module-federation/runtime-core@npm:0.14.3":
-  version: 0.14.3
-  resolution: "@module-federation/runtime-core@npm:0.14.3"
-  dependencies:
-    "@module-federation/error-codes": "npm:0.14.3"
-    "@module-federation/sdk": "npm:0.14.3"
-  checksum: 10c0/15d1e853d9d492c84e302543ff38606aa84ad2ad18c4539a2cbe02979c3a726ce82a25f4a18acd367a93f8228527ed75d318dfc3ebc42d94e87d3481f9826e66
-  languageName: node
-  linkType: hard
-
-"@module-federation/runtime-tools@npm:0.14.3":
-  version: 0.14.3
-  resolution: "@module-federation/runtime-tools@npm:0.14.3"
-  dependencies:
-    "@module-federation/runtime": "npm:0.14.3"
-    "@module-federation/webpack-bundler-runtime": "npm:0.14.3"
-  checksum: 10c0/6cecbbbf001dc302c0031a6f20c21ce2120aa7813944a7c88065993988578085a47554e3e04c80aee32c96eeba5295c6332fe23230bac2acbc03b25335d4e997
-  languageName: node
-  linkType: hard
-
-"@module-federation/runtime@npm:0.14.3":
-  version: 0.14.3
-  resolution: "@module-federation/runtime@npm:0.14.3"
-  dependencies:
-    "@module-federation/error-codes": "npm:0.14.3"
-    "@module-federation/runtime-core": "npm:0.14.3"
-    "@module-federation/sdk": "npm:0.14.3"
-  checksum: 10c0/813e3cd10c5176fd566341012e8d6b9aa61811f1b1384794ca88f4f4ea8c2b52e5315f5026314f641e2a42bd8bbc22705e4bf9010633e043429d5240426468f3
-  languageName: node
-  linkType: hard
-
-"@module-federation/sdk@npm:0.14.3":
-  version: 0.14.3
-  resolution: "@module-federation/sdk@npm:0.14.3"
-  checksum: 10c0/76e1ef78bfb4fe0a94b91c4c9ed6402021466bacfed4f2f00db29d3985b3546dd5b781547c849c917b51820941a312280c6f6e815cbdf7c766686b9641016fac
-  languageName: node
-  linkType: hard
-
-"@module-federation/webpack-bundler-runtime@npm:0.14.3":
-  version: 0.14.3
-  resolution: "@module-federation/webpack-bundler-runtime@npm:0.14.3"
-  dependencies:
-    "@module-federation/runtime": "npm:0.14.3"
-    "@module-federation/sdk": "npm:0.14.3"
-  checksum: 10c0/7aabe66bf0fd841b57816faaf5df115d98da2c2189e96c1d460edd5d4761cc0b8d6cc75065ab31fcd7368f097cbaafe279ccdd6e6a10bbdc2f22bd3d54382e7a
-  languageName: node
-  linkType: hard
-
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -1414,128 +1359,6 @@ __metadata:
   version: 1.0.0-next.29
   resolution: "@polka/url@npm:1.0.0-next.29"
   checksum: 10c0/0d58e081844095cb029d3c19a659bfefd09d5d51a2f791bc61eba7ea826f13d6ee204a8a448c2f5a855c17df07b37517373ff916dd05801063c0568ae9937684
-  languageName: node
-  linkType: hard
-
-"@rspack/binding-darwin-arm64@npm:1.3.13":
-  version: 1.3.13
-  resolution: "@rspack/binding-darwin-arm64@npm:1.3.13"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@rspack/binding-darwin-x64@npm:1.3.13":
-  version: 1.3.13
-  resolution: "@rspack/binding-darwin-x64@npm:1.3.13"
-  conditions: os=darwin & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@rspack/binding-linux-arm64-gnu@npm:1.3.13":
-  version: 1.3.13
-  resolution: "@rspack/binding-linux-arm64-gnu@npm:1.3.13"
-  conditions: os=linux & cpu=arm64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@rspack/binding-linux-arm64-musl@npm:1.3.13":
-  version: 1.3.13
-  resolution: "@rspack/binding-linux-arm64-musl@npm:1.3.13"
-  conditions: os=linux & cpu=arm64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@rspack/binding-linux-x64-gnu@npm:1.3.13":
-  version: 1.3.13
-  resolution: "@rspack/binding-linux-x64-gnu@npm:1.3.13"
-  conditions: os=linux & cpu=x64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@rspack/binding-linux-x64-musl@npm:1.3.13":
-  version: 1.3.13
-  resolution: "@rspack/binding-linux-x64-musl@npm:1.3.13"
-  conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@rspack/binding-win32-arm64-msvc@npm:1.3.13":
-  version: 1.3.13
-  resolution: "@rspack/binding-win32-arm64-msvc@npm:1.3.13"
-  conditions: os=win32 & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@rspack/binding-win32-ia32-msvc@npm:1.3.13":
-  version: 1.3.13
-  resolution: "@rspack/binding-win32-ia32-msvc@npm:1.3.13"
-  conditions: os=win32 & cpu=ia32
-  languageName: node
-  linkType: hard
-
-"@rspack/binding-win32-x64-msvc@npm:1.3.13":
-  version: 1.3.13
-  resolution: "@rspack/binding-win32-x64-msvc@npm:1.3.13"
-  conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@rspack/binding@npm:1.3.13":
-  version: 1.3.13
-  resolution: "@rspack/binding@npm:1.3.13"
-  dependencies:
-    "@rspack/binding-darwin-arm64": "npm:1.3.13"
-    "@rspack/binding-darwin-x64": "npm:1.3.13"
-    "@rspack/binding-linux-arm64-gnu": "npm:1.3.13"
-    "@rspack/binding-linux-arm64-musl": "npm:1.3.13"
-    "@rspack/binding-linux-x64-gnu": "npm:1.3.13"
-    "@rspack/binding-linux-x64-musl": "npm:1.3.13"
-    "@rspack/binding-win32-arm64-msvc": "npm:1.3.13"
-    "@rspack/binding-win32-ia32-msvc": "npm:1.3.13"
-    "@rspack/binding-win32-x64-msvc": "npm:1.3.13"
-  dependenciesMeta:
-    "@rspack/binding-darwin-arm64":
-      optional: true
-    "@rspack/binding-darwin-x64":
-      optional: true
-    "@rspack/binding-linux-arm64-gnu":
-      optional: true
-    "@rspack/binding-linux-arm64-musl":
-      optional: true
-    "@rspack/binding-linux-x64-gnu":
-      optional: true
-    "@rspack/binding-linux-x64-musl":
-      optional: true
-    "@rspack/binding-win32-arm64-msvc":
-      optional: true
-    "@rspack/binding-win32-ia32-msvc":
-      optional: true
-    "@rspack/binding-win32-x64-msvc":
-      optional: true
-  checksum: 10c0/aa5855dc6d17520d1c36a692a93d508259a072a7c9a988ce884b3b7287d130f0e511ff32ca6963408e523ef2d0cc9008f47b539bbfabd0d137270018ba09d59c
-  languageName: node
-  linkType: hard
-
-"@rspack/core@npm:^1.3.13":
-  version: 1.3.13
-  resolution: "@rspack/core@npm:1.3.13"
-  dependencies:
-    "@module-federation/runtime-tools": "npm:0.14.3"
-    "@rspack/binding": "npm:1.3.13"
-    "@rspack/lite-tapable": "npm:1.0.1"
-  peerDependencies:
-    "@swc/helpers": ">=0.5.1"
-  peerDependenciesMeta:
-    "@swc/helpers":
-      optional: true
-  checksum: 10c0/df7662d5b24e4465001b59ca7336044402d2966790b8d4f73dcf634a2905df56297cd097719e8846fdb2d51be338de979361dbe23bf02916759e4b6dd168ba8a
-  languageName: node
-  linkType: hard
-
-"@rspack/lite-tapable@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@rspack/lite-tapable@npm:1.0.1"
-  checksum: 10c0/90bb1bc414dc51ea2d0933e09f78d25584f3f50a85f4cb8228930bd29e5931bf55eff4f348a06c51dd3149fc73b8ae3920bf0ae5ae8a0c9fe1d9b404e6ecf5b7
   languageName: node
   linkType: hard
 
@@ -9002,20 +8825,20 @@ __metadata:
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
     tgui: "workspace:*"
-    tgui-core: "npm:^4.2.3"
+    tgui-core: "npm:^4.3.1"
   languageName: unknown
   linkType: soft
 
-"tgui-core@npm:^4.2.3":
-  version: 4.2.3
-  resolution: "tgui-core@npm:4.2.3"
+"tgui-core@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "tgui-core@npm:4.3.1"
   dependencies:
     "@floating-ui/react": "npm:^0.27.12"
     "@nozbe/microfuzz": "npm:^1.0.0"
   peerDependencies:
     react: ^19.1.0
     react-dom: ^19.1.0
-  checksum: 10c0/53fcbd635dee2013654ca1cebfb9a41d60de78870039cc5dd0118d20a42c90c1c558de5a78bc59531a8ca82d83cbfd2e843866275fdfe1c2102003cf3e110e78
+  checksum: 10c0/c5eff791c5a9580e349f65c884e24c42b091459b6eefd3707a51862d0b54969c9ac1cecfd556bbab4566dfd6ad3b1e43d2951e2114922b0668f639c6322cb087
   languageName: node
   linkType: hard
 
@@ -9023,7 +8846,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tgui-dev-server@workspace:packages/tgui-dev-server"
   dependencies:
-    "@rspack/core": "npm:^1.3.13"
     "@types/ws": "npm:^8.18.1"
     axios: "npm:^1.7.2"
     source-map: "npm:^0.7.4"
@@ -9043,7 +8865,7 @@ __metadata:
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
     tgui: "workspace:*"
-    tgui-core: "npm:^4.2.3"
+    tgui-core: "npm:^4.3.1"
     tgui-dev-server: "workspace:*"
   languageName: unknown
   linkType: soft
@@ -9110,7 +8932,7 @@ __metadata:
     marked: "npm:^4.3.0"
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
-    tgui-core: "npm:^4.2.3"
+    tgui-core: "npm:^4.3.1"
     tgui-dev-server: "workspace:*"
   languageName: unknown
   linkType: soft

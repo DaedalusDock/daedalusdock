@@ -218,7 +218,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/item/storage/secure/safe, 32)
  * get access to it.
  */
 
-TYPEINFO_DEF()
+TYPEINFO_DEF(/obj/item/storage/secure/safe/caps_spare)
 	default_armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 70, BIO = 100, FIRE = 80, ACID = 70)
 
 /obj/item/storage/secure/safe/caps_spare

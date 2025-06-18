@@ -2,117 +2,134 @@ import os
 import re
 
 def normalize_line_endings(text):
-    # Replace CRLF and CR with LF
     return text.replace('\r\n', '\n').replace('\r', '\n')
+
+def is_comment_line(line, in_multiline_comment):
+    # Single-line comment
+    if line.strip().startswith('//'):
+        return True, in_multiline_comment
+    # Start of multiline comment
+    if not in_multiline_comment and '/*' in line:
+        if '*/' in line:
+            return True, in_multiline_comment
+        else:
+            return True, True
+    # Inside multiline comment
+    if in_multiline_comment:
+        if '*/' in line:
+            return True, False
+        else:
+            return True, True
+    return False, in_multiline_comment
 
 def process_dm_file(filepath):
     with open(filepath, "r", encoding="utf-8") as f:
         content = normalize_line_endings(f.read())
-
     lines = content.split('\n')
     output = []
-    i = 0
     n = len(lines)
 
-    # Track all TYPEINFO_DEF blocks and path blocks
-    typeinfo_blocks = {}  # path -> (block_start_idx, block_end_idx)
     armor_found = {}      # path -> armor_value (string)
-    path_blocks = []      # (path, first_line_idx, last_line_idx, armor_idx)
+    path_blocks = []      # (path, first_line_idx, last_line_idx, [armor_start_idx, armor_end_idx])
 
-    # Find all TYPEINFO_DEF and path blocks, and armor to remove
+    # Match DM path lines, allowing for special characters, spaces, and indent
+    path_line_regex = re.compile(r'^\s*/([^\s{]+)')
+
+    i = 0
+    in_multiline_comment = False
     while i < n:
         line = lines[i]
-        typeinfo_match = re.match(r'^\s*TYPEINFO_DEF\s*\(\s*([^\)]+)\s*\)', line)
-        path_match = re.match(r'^\s*/([a-zA-Z0-9_/]+)', line)
-
-        # Detect TYPEINFO_DEF block
-        if typeinfo_match:
-            path = typeinfo_match.group(1).strip()
-            block_start = i
-            block_end = i
-            # Find the end of TYPEINFO_DEF block (next non-indented or empty line)
-            while (
-                block_end + 1 < n and
-                (lines[block_end + 1].startswith(' ') or lines[block_end + 1].startswith('\t')) and
-                lines[block_end + 1].strip() != ''
-            ):
-                block_end += 1
-            typeinfo_blocks[path] = (block_start, block_end)
-            i = block_end + 1
-            continue
-
-        # Detect path block
-        elif path_match:
-            path = '/' + path_match.group(1)
-            block_start = i
-            block_end = i
-            # Find the end of the path block (next line that is not more indented, or is blank, or is a blank line)
-            while (
-                block_end + 1 < n and
-                (lines[block_end + 1].startswith(' ') or lines[block_end + 1].startswith('\t'))
-            ):
-                block_end += 1
-                # Allow blank lines at end of block
-                if lines[block_end].strip() == '':
-                    # If the next line after blank is not indented, block ends here, else keep searching
-                    if block_end + 1 < n and not (lines[block_end + 1].startswith(' ') or lines[block_end + 1].startswith('\t')):
-                        break
-            # Look for armor in block, including blocks with blank lines at the end
-            armor_idx = None
-            armor_val = None
-            j = block_start + 1
-            while j <= block_end:
-                line_j = lines[j]
-                armor_start_match = re.match(r'^\s*armor\s*=\s*list\s*\((.*)', line_j)
-                if armor_start_match:
-                    armor_idx = j
-                    armor_lines = [armor_start_match.group(1)]
-                    # Read until we find the matching closing parenthesis
-                    paren_count = armor_lines[0].count('(') - armor_lines[0].count(')')
-                    while paren_count > 0 and j + 1 <= block_end:
+        is_comment, in_multiline_comment = is_comment_line(line, in_multiline_comment)
+        if not is_comment:
+            path_match = path_line_regex.match(line)
+            if path_match:
+                path = '/' + path_match.group(1)
+                block_start = i
+                block_end = i
+                # Find the end of the block: next line that's NOT indented and not blank, or EOF
+                j = i + 1
+                in_block_multiline_comment = in_multiline_comment
+                while j < n:
+                    next_line = lines[j]
+                    is_block_comment, in_block_multiline_comment = is_comment_line(next_line, in_block_multiline_comment)
+                    if is_block_comment:
                         j += 1
-                        armor_lines.append(lines[j])
-                        paren_count += lines[j].count('(') - lines[j].count(')')
-                    # Join lines and remove trailing parenthesis, comments, etc.
-                    armor_val_joined = '\n'.join(armor_lines)
-                    # Remove trailing parenthesis and anything after
-                    armor_val = re.sub(r'\)\s*.*$', '', armor_val_joined, flags=re.DOTALL)
-                    # Remove leading/trailing whitespace and newlines
-                    armor_val = armor_val.strip()
-                    break
-                j += 1
-            if armor_idx is not None:
-                armor_found[path] = armor_val
-            path_blocks.append((path, block_start, block_end, armor_idx))
-            i = block_end + 1
-            continue
+                        continue
+                    # A block member line is indented (space or tab) or blank
+                    if (next_line.startswith(' ') or next_line.startswith('\t')) or next_line.strip() == '':
+                        j += 1
+                    else:
+                        break
+                block_end = j - 1
 
+                # Now search for armor inside this block, skipping comment lines
+                armor_start_idx = None
+                armor_end_idx = None
+                armor_val = None
+                j = block_start + 1
+                in_block_multiline_comment = in_multiline_comment
+                while j <= block_end:
+                    l = lines[j]
+                    is_block_comment, in_block_multiline_comment = is_comment_line(l, in_block_multiline_comment)
+                    if not is_block_comment:
+                        # Match the armor assignment
+                        armor_start_match = re.match(r'^\s*armor\s*=\s*list\s*\((.*)', l)
+                        if armor_start_match:
+                            armor_start_idx = j
+                            armor_lines = [armor_start_match.group(1)]
+                            if ')' in armor_lines[0]:
+                                armor_val = armor_lines[0].split(')',1)[0].strip()
+                                armor_end_idx = j
+                            else:
+                                paren_count = armor_lines[0].count('(') - armor_lines[0].count(')')
+                                k = j
+                                while paren_count > 0 and k + 1 <= block_end:
+                                    k += 1
+                                    nextl = lines[k]
+                                    armor_lines.append(nextl)
+                                    paren_count += nextl.count('(') - nextl.count(')')
+                                armor_val_joined = '\n'.join(armor_lines)
+                                armor_val = armor_val_joined.split(')',1)[0].strip()
+                                armor_end_idx = k
+                            break
+                    j += 1
+                if armor_start_idx is not None and armor_val is not None:
+                    armor_found[path] = armor_val
+                    path_blocks.append((path, block_start, block_end, armor_start_idx, armor_end_idx))
+                else:
+                    path_blocks.append((path, block_start, block_end, None, None))
+                i = block_end + 1
+                continue
         i += 1
 
-    # Remove armor lines from path blocks
+    # Remove armor lines from path blocks (but not comments)
     lines_mod = lines[:]
-    for path, start, end, armor_idx in path_blocks:
-        if armor_idx is not None:
-            lines_mod[armor_idx] = None  # Remove the line
+    for path, start, end, armor_start_idx, armor_end_idx in path_blocks:
+        if armor_start_idx is not None and armor_end_idx is not None:
+            for idx in range(armor_start_idx, armor_end_idx + 1):
+                l = lines[idx]
+                in_multiline_comment = False
+                is_comment, in_multiline_comment = is_comment_line(l, in_multiline_comment)
+                if not is_comment:
+                    lines_mod[idx] = None  # Remove the line
 
     # For each path with armor, ensure it is in TYPEINFO_DEF, insert/appends if needed
     i = 0
     n = len(lines_mod)
     already_inserted = set()
+    typeinfo_def_regex = re.compile(r'^\s*TYPEINFO_DEF\s*\(\s*([^\)]+)\s*\)')
     while i < n:
         line = lines_mod[i]
         if line is None:
             i += 1
             continue
 
-        # If this is a TYPEINFO_DEF for a path with armor, append default_armor to it
-        typeinfo_match = re.match(r'^\s*TYPEINFO_DEF\s*\(\s*([^\)]+)\s*\)', line)
+        typeinfo_match = typeinfo_def_regex.match(line)
         if typeinfo_match:
             path = typeinfo_match.group(1).strip()
             output.append(line)
             block_start = i
             block_end = i
-            # Find the end of TYPEINFO_DEF block (as above)
             while (
                 block_end + 1 < n and
                 lines_mod[block_end + 1] is not None and
@@ -121,43 +138,34 @@ def process_dm_file(filepath):
                 block_end += 1
                 output.append(lines_mod[block_end])
             if path in armor_found and path not in already_inserted:
-                # Insert default_armor after TYPEINFO_DEF and before any existing lines in block
                 output.insert(len(output) - (block_end - block_start), f'	default_armor = list({armor_found[path]})')
                 already_inserted.add(path)
             i = block_end + 1
             continue
 
-        # If this is a path block and needs TYPEINFO_DEF above it
-        path_match = re.match(r'^\s*/([a-zA-Z0-9_/]+)', line)
+        path_match = path_line_regex.match(line)
         if path_match:
             path = '/' + path_match.group(1)
             if path in armor_found and path not in already_inserted:
-                # Insert TYPEINFO_DEF block before this line
                 output.append(f'TYPEINFO_DEF({path})')
                 output.append(f'	default_armor = list({armor_found[path]})')
-                output.append('')  # Trailing new line as required
+                output.append('')
                 already_inserted.add(path)
         output.append(line)
         i += 1
 
-    # Remove any None lines (armor removed)
     output = [l for l in output if l is not None]
 
-    # --- Do NOT trim blank lines from the end! ---
-    # Instead, preserve the original count of trailing blank lines
     trailing_blanks = 0
     for l in reversed(lines):
         if l.strip() == '':
             trailing_blanks += 1
         else:
             break
-    # Remove all trailing blanks from output
     while output and output[-1] == '':
         output.pop()
-    # Add back the original number of trailing blank lines
     output.extend([''] * trailing_blanks)
 
-    # Write file with LF newlines only
     with open(filepath, "w", encoding="utf-8", newline='\n') as f:
         f.write('\n'.join(output))
 
@@ -165,7 +173,9 @@ def process_all_dm_files():
     for root, dirs, files in os.walk('.'):
         for file in files:
             if file.endswith('.dm'):
+                print(f"Processing {file}")
                 process_dm_file(os.path.join(root, file))
 
 if __name__ == "__main__":
     process_all_dm_files()
+    print("Done!")

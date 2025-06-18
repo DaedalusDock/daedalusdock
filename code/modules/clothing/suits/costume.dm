@@ -253,12 +253,14 @@ TYPEINFO_DEF(/obj/item/clothing/suit/justice)
 	if (user.head == src)
 		user.faction -= "carp"
 
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/carp_costume/spaceproof)
+	default_armor = list(BLUNT = -20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 60, ACID = 75)
+
 /obj/item/clothing/suit/hooded/carp_costume/spaceproof
 	name = "carp space suit"
 	desc = "A slimming piece of dubious space carp technology, you suspect it won't stand up to hand-to-hand blows."
 	icon_state = "carp_suit"
 	inhand_icon_state = "space_suit_syndicate"
-	armor = list(BLUNT = -20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 60, ACID = 75) //As whimpy whimpy whoo
 	allowed = list(/obj/item/tank/internals, /obj/item/gun/ballistic/rifle/boltaction/harpoon) //I'm giving you a hint here
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	cold_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
@@ -270,11 +272,13 @@ TYPEINFO_DEF(/obj/item/clothing/suit/justice)
 	hoodtype = /obj/item/clothing/head/hooded/carp_hood/spaceproof
 	resistance_flags = NONE
 
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/carp_hood/spaceproof)
+	default_armor = list(BLUNT = -20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 60, ACID = 75)
+
 /obj/item/clothing/head/hooded/carp_hood/spaceproof
 	name = "carp helmet"
 	desc = "Spaceworthy and it looks like a space carp's head, smells like one too."
 	icon_state = "carp_helm"
-	armor = list(BLUNT = -20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 60, ACID = 75) //As whimpy as a space carp
 	flags_inv = HIDEEARS|HIDEHAIR|HIDEFACIALHAIR //facial hair will clip with the helm, this'll need a dynamic_fhair_suffix at some point.
 	min_cold_protection_temperature = SPACE_HELM_MIN_TEMP_PROTECT
 	heat_protection = HEAD

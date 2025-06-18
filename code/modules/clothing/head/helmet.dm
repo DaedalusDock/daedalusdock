@@ -317,12 +317,14 @@ TYPEINFO_DEF(/obj/item/clothing/head/helmet/bluetaghelm)
 	// Offer about the same protection as a hardhat.
 	dog_fashion = null
 
+TYPEINFO_DEF(/obj/item/clothing/head/helmet/knight)
+	default_armor = list(BLUNT = 50, PUNCTURE = 0, SLASH = 50, LASER = 10, ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)
+
 /obj/item/clothing/head/helmet/knight
 	name = "medieval helmet"
 	desc = "A classic metal helmet."
 	icon_state = "knight_green"
 	inhand_icon_state = "knight_green"
-	armor = list(BLUNT = 50, PUNCTURE = 0, SLASH = 50, LASER = 10, ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80) // no wound armor cause getting domed in a bucket head sounds like concussion city
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDESNOUT
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 	strip_delay = 80

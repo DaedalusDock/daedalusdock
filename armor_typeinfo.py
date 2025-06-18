@@ -17,7 +17,7 @@ def process_dm_file(filepath):
     # Track all TYPEINFO_DEF blocks and path blocks
     typeinfo_blocks = {}  # path -> (block_start_idx, block_end_idx)
     armor_found = {}      # path -> armor_value (string)
-    path_blocks = []      # (path, first_line_idx, last_line_idx)
+    path_blocks = []      # (path, first_line_idx, last_line_idx, armor_idx)
 
     # Find all TYPEINFO_DEF and path blocks, and armor to remove
     while i < n:
@@ -31,7 +31,11 @@ def process_dm_file(filepath):
             block_start = i
             block_end = i
             # Find the end of TYPEINFO_DEF block (next non-indented or empty line)
-            while block_end + 1 < n and (lines[block_end+1].startswith(' ') or lines[block_end+1].startswith('\t')) and lines[block_end+1].strip() != '':
+            while (
+                block_end + 1 < n and
+                (lines[block_end + 1].startswith(' ') or lines[block_end + 1].startswith('\t')) and
+                lines[block_end + 1].strip() != ''
+            ):
                 block_end += 1
             typeinfo_blocks[path] = (block_start, block_end)
             i = block_end + 1
@@ -42,18 +46,41 @@ def process_dm_file(filepath):
             path = '/' + path_match.group(1)
             block_start = i
             block_end = i
-            # Find the end of the path block (next line that is not more indented or is blank)
-            while block_end + 1 < n and (lines[block_end+1].startswith(' ') or lines[block_end+1].startswith('\t')) and lines[block_end+1].strip() != '':
+            # Find the end of the path block (next line that is not more indented, or is blank, or is a blank line)
+            while (
+                block_end + 1 < n and
+                (lines[block_end + 1].startswith(' ') or lines[block_end + 1].startswith('\t'))
+            ):
                 block_end += 1
-            # Look for armor in block
+                # Allow blank lines at end of block
+                if lines[block_end].strip() == '':
+                    # If the next line after blank is not indented, block ends here, else keep searching
+                    if block_end + 1 < n and not (lines[block_end + 1].startswith(' ') or lines[block_end + 1].startswith('\t')):
+                        break
+            # Look for armor in block, including blocks with blank lines at the end
             armor_idx = None
             armor_val = None
-            for j in range(block_start+1, block_end+1):
-                armor_match = re.match(r'^\s*armor\s*=\s*list\((.*)\)\s*$', lines[j])
-                if armor_match:
+            j = block_start + 1
+            while j <= block_end:
+                line_j = lines[j]
+                armor_start_match = re.match(r'^\s*armor\s*=\s*list\s*\((.*)', line_j)
+                if armor_start_match:
                     armor_idx = j
-                    armor_val = armor_match.group(1)
+                    armor_lines = [armor_start_match.group(1)]
+                    # Read until we find the matching closing parenthesis
+                    paren_count = armor_lines[0].count('(') - armor_lines[0].count(')')
+                    while paren_count > 0 and j + 1 <= block_end:
+                        j += 1
+                        armor_lines.append(lines[j])
+                        paren_count += lines[j].count('(') - lines[j].count(')')
+                    # Join lines and remove trailing parenthesis, comments, etc.
+                    armor_val_joined = '\n'.join(armor_lines)
+                    # Remove trailing parenthesis and anything after
+                    armor_val = re.sub(r'\)\s*.*$', '', armor_val_joined, flags=re.DOTALL)
+                    # Remove leading/trailing whitespace and newlines
+                    armor_val = armor_val.strip()
                     break
+                j += 1
             if armor_idx is not None:
                 armor_found[path] = armor_val
             path_blocks.append((path, block_start, block_end, armor_idx))
@@ -69,7 +96,6 @@ def process_dm_file(filepath):
             lines_mod[armor_idx] = None  # Remove the line
 
     # For each path with armor, ensure it is in TYPEINFO_DEF, insert/appends if needed
-    # We'll do this by creating a new output list line by line, inserting as we go
     i = 0
     n = len(lines_mod)
     already_inserted = set()
@@ -86,12 +112,17 @@ def process_dm_file(filepath):
             output.append(line)
             block_start = i
             block_end = i
-            while block_end + 1 < n and lines_mod[block_end+1] and (lines_mod[block_end+1].startswith(' ') or lines_mod[block_end+1].startswith('\t')):
+            # Find the end of TYPEINFO_DEF block (as above)
+            while (
+                block_end + 1 < n and
+                lines_mod[block_end + 1] is not None and
+                (lines_mod[block_end + 1].startswith(' ') or lines_mod[block_end + 1].startswith('\t'))
+            ):
                 block_end += 1
                 output.append(lines_mod[block_end])
             if path in armor_found and path not in already_inserted:
                 # Insert default_armor after TYPEINFO_DEF and before any existing lines in block
-                output.insert(len(output)-(block_end-block_start), f'	default_armor = list({armor_found[path]})')
+                output.insert(len(output) - (block_end - block_start), f'	default_armor = list({armor_found[path]})')
                 already_inserted.add(path)
             i = block_end + 1
             continue

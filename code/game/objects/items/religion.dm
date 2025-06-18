@@ -302,12 +302,14 @@ TYPEINFO_DEF(/obj/item/clothing/head/helmet/plate/crusader)
 	icon_state = "crusader-red"
 
 //Prophet helmet
+TYPEINFO_DEF(/obj/item/clothing/head/helmet/plate/crusader/prophet)
+	default_armor = list(BLUNT = 60, PUNCTURE = 60, SLASH = 0, LASER = 60, ENERGY = 60, BOMB = 70, BIO = 50, FIRE = 60, ACID = 60)
+
 /obj/item/clothing/head/helmet/plate/crusader/prophet
 	name = "Prophet's Hat"
 	desc = "A religious-looking hat."
 	icon_state = null
 	flags_1 = 0
-	armor = list(BLUNT = 60, PUNCTURE = 60, SLASH = 0, LASER = 60, ENERGY = 60, BOMB = 70, BIO = 50, FIRE = 60, ACID = 60) //religion protects you from disease, honk.
 	worn_y_offset = 6
 
 /obj/item/clothing/head/helmet/plate/crusader/prophet/red
@@ -361,12 +363,14 @@ TYPEINFO_DEF(/obj/item/clothing/head/helmet/plate/crusader)
 /obj/item/clothing/gloves/plate/blue
 	icon_state = "crusader-blue"
 
+TYPEINFO_DEF(/obj/item/clothing/shoes/plate)
+	default_armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 50, BOMB = 60, BIO = 0, FIRE = 60, ACID = 60)
+
 /obj/item/clothing/shoes/plate
 	name = "Plate Boots"
 	desc = "Metal boots, they look heavy."
 	icon_state = "crusader"
 	w_class = WEIGHT_CLASS_NORMAL
-	armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 50, BOMB = 60, BIO = 0, FIRE = 60, ACID = 60) //does this even do anything on boots?
 	clothing_traits = list(TRAIT_NO_SLIP_WATER)
 	cold_protection = FEET
 	min_cold_protection_temperature = SHOES_MIN_TEMP_PROTECT

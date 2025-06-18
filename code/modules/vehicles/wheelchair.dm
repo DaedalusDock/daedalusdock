@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/vehicle/ridden/wheelchair)
+	default_armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 30)
+
 /obj/vehicle/ridden/wheelchair //ported from Hippiestation (by Jujumatic)
 	name = "wheelchair"
 	desc = "A chair with big wheels. It looks like you can move in this on your own."
@@ -5,7 +8,6 @@
 	icon_state = "wheelchair"
 	layer = OBJ_LAYER
 	max_integrity = 100
-	armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 30) //Wheelchairs aren't super tough yo
 	density = FALSE //Thought I couldn't fix this one easily, phew
 	/// Run speed delay is multiplied with this for vehicle move delay.
 	var/delay_multiplier = 6.7

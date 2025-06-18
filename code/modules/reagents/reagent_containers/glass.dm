@@ -264,6 +264,7 @@ TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/bluespace)
 	list_reagents = list(/datum/reagent/medicine/synthflesh = 50)
 
 TYPEINFO_DEF(/obj/item/reagent_containers/glass/bucket)
+	default_armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 75, ACID = 50)
 	default_materials = list(/datum/material/iron=200)
 
 /obj/item/reagent_containers/glass/bucket
@@ -281,7 +282,6 @@ TYPEINFO_DEF(/obj/item/reagent_containers/glass/bucket)
 	flags_inv = HIDEHAIR
 	slot_flags = ITEM_SLOT_HEAD
 	resistance_flags = NONE
-	armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 75, ACID = 50) //Weak melee protection, because you can wear it on your head
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 	slot_equipment_priority = list( \
 		ITEM_SLOT_BACK, ITEM_SLOT_ID,\

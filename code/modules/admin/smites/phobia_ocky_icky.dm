@@ -8,3 +8,5 @@
 	ocker.gain_trauma(/datum/brain_trauma/mild/phobia/ocky_icky, TRAUMA_RESILIENCE_LOBOTOMY)
 	
 
+
+

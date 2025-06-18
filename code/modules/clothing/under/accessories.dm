@@ -236,6 +236,7 @@ TYPEINFO_DEF(/obj/item/clothing/accessory/medal/gold)
 	desc = "An extremely rare golden medal awarded only by CentCom. To receive such a medal is the highest honor and as such, very few exist. This medal is almost never awarded to anybody but commanders."
 
 TYPEINFO_DEF(/obj/item/clothing/accessory/medal/plasma)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = -10, ACID = 0)
 	default_materials = list(/datum/material/plasma=1000)
 
 /obj/item/clothing/accessory/medal/plasma
@@ -243,7 +244,6 @@ TYPEINFO_DEF(/obj/item/clothing/accessory/medal/plasma)
 	desc = "An eccentric medal made of plasma."
 	icon_state = "plasma"
 	medaltype = "medal-plasma"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = -10, ACID = 0) //It's made of plasma. Of course it's flammable.
 
 /obj/item/clothing/accessory/medal/plasma/Initialize(mapload)
 	. = ..()

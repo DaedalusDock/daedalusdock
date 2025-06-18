@@ -1,6 +1,9 @@
 #define LOCKER_FULL -1
 
 DEFINE_INTERACTABLE(/obj/structure/closet)
+TYPEINFO_DEF(/obj/structure/closet)
+	default_armor = list(BLUNT = 20, PUNCTURE = 10, SLASH = 70, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 60)
+
 /obj/structure/closet
 	name = "closet"
 	desc = "It's a basic storage unit."
@@ -10,7 +13,6 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
 	drag_slowdown = 1.5 // Same as a prone mob
 	max_integrity = 200
 	integrity_failure = 0.25
-	armor = list(BLUNT = 20, PUNCTURE = 10, SLASH = 70, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 60)
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	pass_flags_self = PASSSTRUCTURE|LETPASSCLICKS
 	zmm_flags = ZMM_MANGLE_PLANES

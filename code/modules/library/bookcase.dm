@@ -2,6 +2,9 @@
 #define BOOKCASE_ANCHORED 1
 #define BOOKCASE_FINISHED 2
 
+TYPEINFO_DEF(/obj/structure/bookcase)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 0)
+
 /obj/structure/bookcase
 	name = "bookcase"
 	icon = 'icons/obj/library.dmi'
@@ -12,7 +15,6 @@
 	opacity = FALSE
 	resistance_flags = FLAMMABLE
 	max_integrity = 200
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 0)
 	var/state = BOOKCASE_UNANCHORED
 	/// When enabled, books_to_load number of random books will be generated for this bookcase
 	var/load_random_books = FALSE

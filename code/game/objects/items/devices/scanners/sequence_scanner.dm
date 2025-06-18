@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/sequence_scanner)
+	default_materials = list(/datum/material/iron=200)
+
 /obj/item/sequence_scanner
 	name = "genetic sequence scanner"
 	icon = 'icons/obj/device.dmi'
@@ -13,7 +16,6 @@
 	throwforce = 3
 	w_class = WEIGHT_CLASS_TINY
 	throw_range = 7
-	custom_materials = list(/datum/material/iron=200)
 	var/list/discovered = list() //hit a dna console to update the scanners database
 	var/list/buffer
 	var/ready = TRUE

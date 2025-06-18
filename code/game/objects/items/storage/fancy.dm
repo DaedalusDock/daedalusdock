@@ -12,12 +12,14 @@
  * Heart Shaped Box w/ Chocolates
  */
 
+TYPEINFO_DEF(/obj/item/storage/fancy)
+	default_materials = list(/datum/material/cardboard = 2000)
+
 /obj/item/storage/fancy
 	icon = 'icons/obj/food/containers.dmi'
 	icon_state = "donutbox"
 	base_icon_state = "donutbox"
 	resistance_flags = FLAMMABLE
-	custom_materials = list(/datum/material/cardboard = 2000)
 	/// Used by examine to report what this thing is holding.
 	var/contents_tag = "errors"
 	/// What type of thing to fill this storage with.

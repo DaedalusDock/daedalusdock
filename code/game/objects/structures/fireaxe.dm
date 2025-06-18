@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/structure/fireaxecabinet)
+	default_armor = list(BLUNT = 50, PUNCTURE = 20, SLASH = 90, LASER = 0, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 90, ACID = 50)
+
 /obj/structure/fireaxecabinet
 	name = "fire axe cabinet"
 	desc = "There is a small label that reads \"For Emergency use only\" along with details for safe use of the axe. As if."
@@ -5,7 +8,6 @@
 	icon_state = "fireaxe"
 	anchored = TRUE
 	density = FALSE
-	armor = list(BLUNT = 50, PUNCTURE = 20, SLASH = 90, LASER = 0, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 90, ACID = 50)
 	max_integrity = 150
 	integrity_failure = 0.33
 	var/locked = TRUE

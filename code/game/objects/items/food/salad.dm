@@ -127,13 +127,15 @@
 	foodtypes = GRAIN | MEAT | VEGETABLES
 
 
+TYPEINFO_DEF(/obj/item/reagent_containers/glass/bowl)
+	default_materials = list(/datum/material/glass = 500)
+
 /obj/item/reagent_containers/glass/bowl
 	name = "bowl"
 	desc = "A simple bowl, used for soups and salads."
 	icon = 'icons/obj/food/soupsalad.dmi'
 	icon_state = "bowl"
 	reagent_flags = OPENCONTAINER
-	custom_materials = list(/datum/material/glass = 500)
 	w_class = WEIGHT_CLASS_NORMAL
 	custom_price = PAYCHECK_ASSISTANT * 0.6
 

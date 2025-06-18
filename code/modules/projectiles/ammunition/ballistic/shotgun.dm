@@ -1,12 +1,14 @@
 // Shotgun
 
+TYPEINFO_DEF(/obj/item/ammo_casing/shotgun)
+	default_materials = list(/datum/material/iron=4000)
+
 /obj/item/ammo_casing/shotgun
 	name = "shotgun slug"
 	desc = "A 12 gauge lead slug."
 	icon_state = "blshell"
 	worn_icon_state = "shell"
 	caliber = CALIBER_12GAUGE
-	custom_materials = list(/datum/material/iron=4000)
 	projectile_type = /obj/projectile/bullet/shotgun_slug
 
 /obj/item/ammo_casing/shotgun/executioner
@@ -21,11 +23,13 @@
 	icon_state = "stunshell"
 	projectile_type = /obj/projectile/bullet/shotgun_slug/pulverizer
 
+TYPEINFO_DEF(/obj/item/ammo_casing/shotgun/beanbag)
+	default_materials = list(/datum/material/iron=250)
+
 /obj/item/ammo_casing/shotgun/beanbag
 	name = "beanbag slug"
 	desc = "A weak beanbag slug for riot control."
 	icon_state = "bshell"
-	custom_materials = list(/datum/material/iron=250)
 	projectile_type = /obj/projectile/bullet/shotgun_beanbag
 
 /obj/item/ammo_casing/shotgun/incendiary
@@ -42,12 +46,14 @@
 	pellets = 4
 	variance = 35
 
+TYPEINFO_DEF(/obj/item/ammo_casing/shotgun/stunslug)
+	default_materials = list(/datum/material/iron=250)
+
 /obj/item/ammo_casing/shotgun/stunslug
 	name = "taser slug"
 	desc = "A stunning taser slug."
 	icon_state = "stunshell"
 	projectile_type = /obj/projectile/bullet/shotgun_stunslug
-	custom_materials = list(/datum/material/iron=250)
 
 /obj/item/ammo_casing/shotgun/meteorslug
 	name = "meteorslug shell"
@@ -77,6 +83,9 @@
 	pellets = 6
 	variance = 25
 
+TYPEINFO_DEF(/obj/item/ammo_casing/shotgun/rubbershot)
+	default_materials = list(/datum/material/iron=4000)
+
 /obj/item/ammo_casing/shotgun/rubbershot
 	name = "rubber shot"
 	desc = "A shotgun casing filled with densely-packed rubber balls, used to incapacitate crowds from a distance."
@@ -84,7 +93,9 @@
 	projectile_type = /obj/projectile/bullet/pellet/shotgun_rubbershot
 	pellets = 6
 	variance = 20
-	custom_materials = list(/datum/material/iron=4000)
+
+TYPEINFO_DEF(/obj/item/ammo_casing/shotgun/incapacitate)
+	default_materials = list(/datum/material/iron=4000)
 
 /obj/item/ammo_casing/shotgun/incapacitate
 	name = "custom incapacitating shot"
@@ -93,14 +104,15 @@
 	projectile_type = /obj/projectile/bullet/pellet/shotgun_incapacitate
 	pellets = 12//double the pellets, but half the stun power of each, which makes this best for just dumping right in someone's face.
 	variance = 25
-	custom_materials = list(/datum/material/iron=4000)
+
+TYPEINFO_DEF(/obj/item/ammo_casing/shotgun/improvised)
+	default_materials = list(/datum/material/iron=250)
 
 /obj/item/ammo_casing/shotgun/improvised
 	name = "improvised shell"
 	desc = "An extremely weak shotgun shell with multiple small pellets made out of metal shards."
 	icon_state = "improvshell"
 	projectile_type = /obj/projectile/bullet/pellet/shotgun_improvised
-	custom_materials = list(/datum/material/iron=250)
 	pellets = 10
 	variance = 25
 

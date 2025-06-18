@@ -79,6 +79,9 @@
 			chaplain_string += "[potential_chap] ([potential_chap.key])"
 	return chaplain_string
 
+TYPEINFO_DEF(/obj/item/ritual_totem)
+	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT)
+
 /obj/item/ritual_totem
 	name = "ritual totem"
 	desc = "A wooden totem with strange carvings on it."
@@ -87,7 +90,6 @@
 	lefthand_file = 'icons/mob/inhands/misc/sheets_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/sheets_righthand.dmi'
 	//made out of a single sheet of wood
-	custom_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT)
 	item_flags = NO_PIXEL_RANDOM_DROP
 
 /obj/item/ritual_totem/Initialize(mapload)

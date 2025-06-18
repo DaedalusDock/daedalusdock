@@ -430,15 +430,20 @@
 	icon = 'icons/obj/artstuff_64x64.dmi'
 	icon_state = "45x27"
 
+TYPEINFO_DEF(/obj/item/wallframe/painting)
+	default_materials = list(/datum/material/wood = 2000)
+
 /obj/item/wallframe/painting
 	name = "painting frame"
 	desc = "The perfect showcase for your favorite deathtrap memories."
 	icon = 'icons/obj/decals.dmi'
-	custom_materials = list(/datum/material/wood = 2000)
 	flags_1 = NONE
 	icon_state = "frame-empty"
 	result_path = /obj/structure/sign/painting
 	pixel_shift = 30
+
+TYPEINFO_DEF(/obj/structure/sign/painting)
+	default_materials = list(/datum/material/wood = 2000)
 
 /obj/structure/sign/painting
 	name = "Painting"
@@ -446,7 +451,6 @@
 	icon = 'icons/obj/decals.dmi'
 	icon_state = "frame-empty"
 	base_icon_state = "frame"
-	custom_materials = list(/datum/material/wood = 2000)
 	buildable_sign = FALSE
 	///Canvas we're currently displaying.
 	var/obj/item/canvas/current_canvas
@@ -619,10 +623,12 @@
 		for(var/y in 1 to height)
 			grid[x][y] = I.GetPixel(x,h-y)
 
+TYPEINFO_DEF(/obj/item/wallframe/painting/large)
+	default_materials = list(/datum/material/wood = 4000)
+
 /obj/item/wallframe/painting/large
 	name = "large painting frame"
 	desc = "The perfect showcase for your favorite deathtrap memories. Make sure you have enough space to mount this one to the wall."
-	custom_materials = list(/datum/material/wood = 4000)
 	icon_state = "frame-large-empty"
 	result_path = /obj/structure/sign/painting/large
 	pixel_shift = 0 //See [/obj/structure/sign/painting/large/proc/finalize_size]
@@ -646,9 +652,11 @@
 	var/obj/structure/sign/painting/large/our_frame = object
 	our_frame.finalize_size()
 
+TYPEINFO_DEF(/obj/structure/sign/painting/large)
+	default_materials = list(/datum/material/wood = 4000)
+
 /obj/structure/sign/painting/large
 	icon = 'icons/obj/artstuff_64x64.dmi'
-	custom_materials = list(/datum/material/wood = 4000)
 	accepted_canvas_types = list(
 		/obj/item/canvas/thirtysix_twentyfour,
 		/obj/item/canvas/fortyfive_twentyseven,

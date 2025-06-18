@@ -1,4 +1,5 @@
 import { classes } from 'common/react';
+import { Tooltip } from 'tgui-core/components';
 
 import { useBackend } from '../../backend';
 import {
@@ -9,7 +10,6 @@ import {
   Icon,
   Section,
   Stack,
-  Tooltip,
 } from '../../components';
 import { CharacterPreview } from './CharacterPreview';
 import {

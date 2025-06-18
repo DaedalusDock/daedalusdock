@@ -192,8 +192,6 @@
 /obj/docking_port/stationary
 	name = "dock"
 
-	var/last_dock_time
-
 	var/datum/map_template/shuttle/roundstart_template
 	var/json_key
 
@@ -590,7 +588,7 @@
 	var/obj/docking_port/stationary/S0 = get_docked()
 	var/obj/docking_port/stationary/S1 = assigned_transit
 	if(S1)
-		if(initiate_docking(S1) != DOCKING_SUCCESS)
+		if(Dock(S1) != DOCKING_SUCCESS)
 			WARNING("shuttle \"[id]\" could not enter transit space. Docked at [S0 ? S0.id : "null"]. Transit dock [S1 ? S1.id : "null"].")
 		else if(S0)
 			if(S0.delete_after)
@@ -686,11 +684,11 @@
 /obj/docking_port/mobile/proc/dock_id(id)
 	var/port = SSshuttle.getDock(id)
 	if(port)
-		. = initiate_docking(port)
+		. = Dock(port)
 	else
 		. = null
 
-//used by shuttle subsystem to check timers
+// Called every tick of SSshuttle.
 /obj/docking_port/mobile/proc/check()
 	check_effects()
 
@@ -699,6 +697,7 @@
 
 	if(timeLeft(1) > 0)
 		return
+
 	// If we can't dock or we don't have a transit slot, wait for 20 ds,
 	// then try again
 	switch(mode)
@@ -707,9 +706,9 @@
 				mode = SHUTTLE_PREARRIVAL
 				setTimer(prearrivalTime)
 				return
-			var/error = initiate_docking(destination, preferred_direction)
-			if(error && error & (DOCKING_NULL_DESTINATION | DOCKING_NULL_SOURCE))
-				var/msg = "A mobile dock in transit exited initiate_docking() with an error. This is most likely a mapping problem: Error: [error],  ([src]) ([previous][ADMIN_JMP(previous)] -> [destination][ADMIN_JMP(destination)])"
+			var/error = Dock(destination, preferred_direction)
+			if(error && (error & (DOCKING_NULL_DESTINATION | DOCKING_NULL_SOURCE)))
+				var/msg = "A mobile dock in transit exited Dock() with an error. This is most likely a mapping problem: Error: [error],  ([src]) ([previous][ADMIN_JMP(previous)] -> [destination][ADMIN_JMP(destination)])"
 				WARNING(msg)
 				message_admins(msg)
 				mode = SHUTTLE_IDLE
@@ -722,7 +721,7 @@
 				setTimer(rechargeTime)
 				return
 		if(SHUTTLE_RECALL)
-			if(initiate_docking(previous) != DOCKING_SUCCESS)
+			if(Dock(previous) != DOCKING_SUCCESS)
 				setTimer(20)
 				return
 		if(SHUTTLE_IGNITING)
@@ -1040,7 +1039,7 @@
 
 /obj/docking_port/mobile/pod/on_emergency_dock()
 	if(launch_status == ENDGAME_LAUNCHED)
-		initiate_docking(SSshuttle.getDock("[id]_away")) //Escape pods dock at centcom
+		Dock(SSshuttle.getDock("[id]_away")) //Escape pods dock at centcom
 		mode = SHUTTLE_ENDGAME
 
 /obj/docking_port/mobile/emergency/on_emergency_dock()

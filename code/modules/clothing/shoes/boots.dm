@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/clothing/shoes/combat)
+	default_armor = list(BLUNT = 25, PUNCTURE = 25, SLASH = 0, LASER = 25, ENERGY = 25, BOMB = 50, BIO = 10, FIRE = 70, ACID = 50)
+
 /obj/item/clothing/shoes/combat //basic syndicate combat boots for nuke ops and mob corpses
 	name = "combat boots"
 	desc = "High speed, low drag combat boots."
@@ -5,7 +8,6 @@
 	inhand_icon_state = "jackboots"
 	lefthand_file = 'icons/mob/inhands/equipment/security_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/security_righthand.dmi'
-	armor = list(BLUNT = 25, PUNCTURE = 25, SLASH = 0, LASER = 25, ENERGY = 25, BOMB = 50, BIO = 10, FIRE = 70, ACID = 50)
 	strip_delay = 40
 	resistance_flags = NONE
 	lace_time = 12 SECONDS
@@ -25,12 +27,17 @@
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	clothing_traits = list(TRAIT_SILENT_FOOTSTEPS)
 
+TYPEINFO_DEF(/obj/item/clothing/shoes/combat/swat)
+	default_armor = list(BLUNT = 40, PUNCTURE = 30, SLASH = 0, LASER = 25, ENERGY = 25, BOMB = 50, BIO = 30, FIRE = 90, ACID = 50)
+
 /obj/item/clothing/shoes/combat/swat //overpowered boots for death squads
 	name = "\improper SWAT boots"
 	desc = "High speed, no drag combat boots."
 	permeability_coefficient = 0.01
 	clothing_traits = list(TRAIT_NO_SLIP_WATER)
-	armor = list(BLUNT = 40, PUNCTURE = 30, SLASH = 0, LASER = 25, ENERGY = 25, BOMB = 50, BIO = 30, FIRE = 90, ACID = 50)
+
+TYPEINFO_DEF(/obj/item/clothing/shoes/jackboots)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 90, FIRE = 0, ACID = 0)
 
 /obj/item/clothing/shoes/jackboots
 	name = "jackboots"
@@ -42,7 +49,6 @@
 	strip_delay = 30
 	equip_delay_other = 50
 	resistance_flags = NONE
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 90, FIRE = 0, ACID = 0)
 	can_be_tied = FALSE
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 

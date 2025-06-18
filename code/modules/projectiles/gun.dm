@@ -16,6 +16,9 @@
 	velocity = list(50, 0)
 	friction = generator(GEN_NUM, 0.3, 0.6)
 
+TYPEINFO_DEF(/obj/item/gun)
+	default_materials = list(/datum/material/iron=2000)
+
 /obj/item/gun
 	name = "gun"
 	desc = "It's a gun. It's pretty terrible, though."
@@ -29,7 +32,6 @@
 	flags_1 = CONDUCT_1
 	item_flags = NEEDS_PERMIT
 	slot_flags = ITEM_SLOT_BELT
-	custom_materials = list(/datum/material/iron=2000)
 
 	w_class = WEIGHT_CLASS_NORMAL
 	throwforce = 5

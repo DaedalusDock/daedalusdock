@@ -119,6 +119,9 @@
 	..()
 	user.remove_alt_appearance("standard_borg_disguise")
 
+TYPEINFO_DEF(/obj/item/clothing/head/bronze)
+	default_armor = list(BLUNT = 5, PUNCTURE = 0, SLASH = 0, LASER = -5, ENERGY = -15, BOMB = 10, BIO = 0, FIRE = 20, ACID = 20)
+
 /obj/item/clothing/head/bronze
 	name = "bronze hat"
 	desc = "A crude helmet made out of bronze plates. It offers very little in the way of protection."
@@ -126,7 +129,6 @@
 	icon_state = "clockwork_helmet_old"
 	clothing_flags = SNUG_FIT
 	flags_inv = HIDEEARS|HIDEHAIR
-	armor = list(BLUNT = 5, PUNCTURE = 0, SLASH = 0, LASER = -5, ENERGY = -15, BOMB = 10, BIO = 0, FIRE = 20, ACID = 20)
 
 /obj/item/clothing/head/irs
 	name = "internal revenue service cap"

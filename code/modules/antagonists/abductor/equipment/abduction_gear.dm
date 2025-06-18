@@ -6,6 +6,9 @@
 #define MIND_DEVICE_CONTROL 2
 
 //AGENT VEST
+TYPEINFO_DEF(/obj/item/clothing/suit/armor/abductor/vest)
+	default_armor = list(BLUNT = 15, PUNCTURE = 15, SLASH = 0, LASER = 15, ENERGY = 25, BOMB = 15, BIO = 15, FIRE = 70, ACID = 70)
+
 /obj/item/clothing/suit/armor/abductor/vest
 	name = "agent vest"
 	desc = "A vest outfitted with advanced stealth technology. It has two modes - combat and stealth."
@@ -13,7 +16,6 @@
 	icon_state = "vest_stealth"
 	inhand_icon_state = "armor"
 	blood_overlay_type = "armor"
-	armor = list(BLUNT = 15, PUNCTURE = 15, SLASH = 0, LASER = 15, ENERGY = 25, BOMB = 15, BIO = 15, FIRE = 70, ACID = 70)
 	actions_types = list(/datum/action/item_action/hands_free/activate)
 	allowed = list(
 		/obj/item/abductor,
@@ -784,6 +786,9 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			new /obj/structure/table/optable/abductor(src.loc)
 			qdel(src)
 
+TYPEINFO_DEF(/obj/structure/table/abductor)
+	default_materials = list(/datum/material/silver = 2000)
+
 /obj/structure/table/abductor
 	name = "alien table"
 	desc = "Advanced flat surface technology at work!"
@@ -797,7 +802,6 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	smoothing_groups = SMOOTH_GROUP_ABDUCTOR_TABLES
 	canSmoothWith = SMOOTH_GROUP_ABDUCTOR_TABLES
 	frame = /obj/structure/table_frame/abductor
-	custom_materials = list(/datum/material/silver = 2000)
 
 /obj/structure/table/optable/abductor
 	name = "alien operating table"
@@ -858,6 +862,9 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	material_type = /obj/item/stack/sheet/mineral/abductor
 	noglass = TRUE
 
+TYPEINFO_DEF(/obj/item/clothing/under/abductor)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 10, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/under/abductor
 	desc = "The most advanced form of jumpsuit known to reality, looks uncomfortable."
 	name = "alien jumpsuit"
@@ -865,5 +872,4 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	icon_state = "abductor"
 	inhand_icon_state = "bl_suit"
 	worn_icon = 'icons/mob/clothing/under/syndicate.dmi'
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 10, FIRE = 0, ACID = 0)
 	can_adjust = FALSE

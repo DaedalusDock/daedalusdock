@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/structure/light_construct)
+	default_armor = list(BLUNT = 50, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 50)
+
 /obj/structure/light_construct
 	name = "light fixture frame"
 	desc = "A light fixture under construction."
@@ -6,7 +9,6 @@
 	anchored = TRUE
 	layer = WALL_OBJ_LAYER
 	max_integrity = 200
-	armor = list(BLUNT = 50, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 50)
 
 	///Light construction stage (LIGHT_CONSTRUCT_EMPTY, LIGHT_CONSTRUCT_WIRED, LIGHT_CONSTRUCT_CLOSED)
 	var/stage = LIGHT_CONSTRUCT_EMPTY

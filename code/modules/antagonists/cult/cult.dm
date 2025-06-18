@@ -542,6 +542,7 @@
 /datum/outfit/cultist
 	name = "Cultist (Preview only)"
 
+	head = /obj/item/clothing/head/hooded/cult_hoodie/alt
 	uniform = /obj/item/clothing/under/color/black
 	suit = /obj/item/clothing/suit/hooded/cultrobes/alt
 	shoes = /obj/item/clothing/shoes/cult/alt
@@ -550,8 +551,4 @@
 /datum/outfit/cultist/post_equip(mob/living/carbon/human/equipped, visualsOnly)
 	equipped.eye_color_left = BLOODCULT_EYE
 	equipped.eye_color_right = BLOODCULT_EYE
-	equipped.update_body()
-
-	var/obj/item/clothing/suit/hooded/hooded = locate() in equipped
-	hooded.MakeHood() // This is usually created on Initialize, but we run before atoms
-	hooded.ToggleHood()
+	equipped.update_eyes(TRUE)

@@ -1,3 +1,4 @@
+
 /**
  * The absolute base class for everything
  *
@@ -16,6 +17,9 @@
 	  * a hard del by the GC subsystme, or to be autocollected (if it has no references)
 	  */
 	var/gc_destroyed
+
+	/// The typepath of the typeinfo struct
+	var/__typeinfo_path
 
 	/// Active timers with this datum as the target
 	var/list/active_timers

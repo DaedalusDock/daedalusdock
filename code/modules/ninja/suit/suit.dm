@@ -8,6 +8,9 @@
  * the variables.  Check suit_attackby to see radium interaction, disk copying, and cell replacement.
  *
  */
+TYPEINFO_DEF(/obj/item/clothing/suit/space/space_ninja)
+	default_armor = list(BLUNT = 40, PUNCTURE = 30, SLASH = 0, LASER = 20, ENERGY = 30, BOMB = 30, BIO = 30, FIRE = 100, ACID = 100)
+
 /obj/item/clothing/suit/space/space_ninja
 	name = "ninja suit"
 	desc = "A unique, vacuum-proof suit of nano-enhanced armor designed specifically for Spider Clan assassins."
@@ -16,7 +19,6 @@
 	allowed = list(/obj/item/gun, /obj/item/ammo_box, /obj/item/ammo_casing, /obj/item/melee/baton, /obj/item/restraints/handcuffs, /obj/item/tank/internals, /obj/item/stock_parts/cell)
 	resistance_flags = LAVA_PROOF | ACID_PROOF
 	flags_inv = HIDESHOES|HIDEJUMPSUIT
-	armor = list(BLUNT = 40, PUNCTURE = 30, SLASH = 0, LASER = 20, ENERGY = 30, BOMB = 30, BIO = 30, FIRE = 100, ACID = 100)
 	strip_delay = 12
 	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT
 	actions_types = list(/datum/action/item_action/initialize_ninja_suit, /datum/action/item_action/ninjastatus, /datum/action/item_action/ninjaboost, /datum/action/item_action/ninjapulse, /datum/action/item_action/ninjastar, /datum/action/item_action/ninjanet, /datum/action/item_action/ninja_sword_recall, /datum/action/item_action/ninja_stealth)

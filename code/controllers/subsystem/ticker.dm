@@ -325,13 +325,11 @@ SUBSYSTEM_DEF(ticker)
 			stack_trace("[S] [S.type] found in start landmarks list, which isn't a start landmark!")
 
 	// handle persistence stuff that requires ckeys, in this case hardcore mode and temporal scarring
-	for(var/i in GLOB.player_list)
-		if(!ishuman(i))
-			continue
-		var/mob/living/carbon/human/iter_human = i
-
+	for(var/mob/living/carbon/human/iter_human in GLOB.player_list)
+		iter_human.client?.give_award(/datum/award/achievement/enter_the_pool, iter_human)
 		if(!iter_human.hardcore_survival_score)
 			continue
+
 		if(iter_human.mind?.special_role)
 			to_chat(iter_human, span_notice("You will gain [round(iter_human.hardcore_survival_score) * 2] hardcore random points if you greentext this round!"))
 		else

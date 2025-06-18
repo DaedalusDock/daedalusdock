@@ -301,7 +301,8 @@
 	for(var/M in purple_hearts)
 		var/mob/living/martyr = M
 		if(martyr.stat == DEAD && martyr.client)
-			martyr.client.give_award(/datum/award/achievement/misc/lookoutsir, martyr)
+			martyr.client.give_award(/datum/award/achievement/lookoutsir, martyr)
+
 	UnregisterSignal(parent, COMSIG_PARENT_PREQDELETED)
 	if(queued_delete)
 		qdel(parent)

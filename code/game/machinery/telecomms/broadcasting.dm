@@ -105,7 +105,8 @@
 	datum/language/language,  // the language of the message
 	message,  // the text content of the message
 	spans,  // the list of spans applied to the message
-	list/message_mods // the list of modification applied to the message. Whispering, singing, ect
+	list/message_mods, // the list of modification applied to the message. Whispering, singing, ect
+	list/levels,
 )
 	src.author = WEAKREF(source)
 	src.frequency = frequency
@@ -120,16 +121,13 @@
 		"spans" = spans,
 		"mods" = message_mods
 	)
-	var/turf/T = get_turf(author.resolve())
-	if(!T)
-		CRASH("Uh oh, no source!")
-	levels = list(T.z)
+	src.levels = levels
 
 /datum/signal/subspace/vocal/copy()
 	var/datum/signal/subspace/vocal/copy = new(author, frequency, virt, language)
 	copy.original = src
 	copy.data = data.Copy()
-	copy.levels = levels
+	copy.levels = levels.Copy()
 	return copy
 
 /// This is the meat function for making radios hear vocal transmissions.

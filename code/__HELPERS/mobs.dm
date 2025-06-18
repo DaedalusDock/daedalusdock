@@ -70,9 +70,6 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/socks, GLOB.socks_list)
 	return pick(GLOB.socks_list)
 
-/proc/random_backpack()
-	return pick(GLOB.backpacklist)
-
 /proc/random_features()
 	//For now we will always return none for tail_human and ears. | "For now" he says.
 	return(list(
@@ -553,6 +550,11 @@ GLOBAL_LIST_EMPTY(species_list)
 /proc/get_mob_by_ckey(key)
 	if(!key)
 		return
+
+	var/mob/pmob = GLOB.persistent_clients_by_ckey[key]?.mob
+	if(pmob)
+		return pmob
+
 	var/list/mobs = sort_mobs()
 	for(var/mob/mob in mobs)
 		if(mob.ckey == key)

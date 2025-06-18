@@ -40,6 +40,9 @@
 	to_fire.forceMove(spike)
 	spike.throw_at(get_edge_target_turf(cast_on, cast_on.dir), 14, 4, cast_on)
 
+TYPEINFO_DEF(/obj/item/hardened_spike)
+	default_materials = list(/datum/material/biomass = 500)
+
 /obj/item/hardened_spike
 	name = "biomass spike"
 	desc = "Hardened biomass, shaped into a spike. Very pointy!"
@@ -55,7 +58,6 @@
 	)
 	w_class = WEIGHT_CLASS_SMALL
 	sharpness = SHARP_POINTY
-	custom_materials = list(/datum/material/biomass = 500)
 	/// What mob "fired" our tongue
 	var/datum/weakref/fired_by_ref
 	/// if we missed our target

@@ -37,3 +37,19 @@
 2025-05-18:
   Kapu1178:
   - server: You now require byond 516.1659+ to connect to the server.
+2025-05-19:
+  Kapu1178:
+  - bugfix: Fixed cases where title music would continue to play into the round.
+  - qol: Title music is now an automatically playing playlist.
+  - bugfix: Fixed a hard del.
+2025-05-25:
+  Kapu1178:
+  - rscadd: Cargo shuttles that are landing now have audible exchanges with air traffic
+      control.
+2025-05-31:
+  Kapu1178:
+  - rscadd: Nicotine suppresses the effects of hunger.
+  - rscadd: 'The "Starving" state of hunger now has the following effects: Stomach
+      pain, vision impairment, an dry heaving.'
+  - bugfix: Fixed an issue that caused pain messages induced by damaged organs to
+      appear far more often than intended.

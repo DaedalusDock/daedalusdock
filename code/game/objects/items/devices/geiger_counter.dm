@@ -1,3 +1,7 @@
+//DISCLAIMER: I know nothing about how real-life Geiger counters work. This will not be realistic. ~Xhuis
+TYPEINFO_DEF(/obj/item/geiger_counter)
+	default_materials = list(/datum/material/iron = 150, /datum/material/glass = 150)
+
 /obj/item/geiger_counter //DISCLAIMER: I know nothing about how real-life Geiger counters work. This will not be realistic. ~Xhuis
 	name = "\improper Geiger counter"
 	desc = "A handheld device used for detecting and measuring radiation pulses."
@@ -10,7 +14,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	slot_flags = ITEM_SLOT_BELT
 	item_flags = NOBLUDGEON
-	custom_materials = list(/datum/material/iron = 150, /datum/material/glass = 150)
 
 	var/last_perceived_radiation_danger = null
 

@@ -1,4 +1,7 @@
 DEFINE_INTERACTABLE(/obj/machinery/computer)
+TYPEINFO_DEF(/obj/machinery/computer)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 40, ACID = 20)
+
 /obj/machinery/computer
 	name = "computer"
 	icon = 'icons/obj/computer.dmi'
@@ -6,7 +9,6 @@ DEFINE_INTERACTABLE(/obj/machinery/computer)
 	density = TRUE
 	max_integrity = 200
 	integrity_failure = 0.5
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 40, ACID = 20)
 	zmm_flags = ZMM_MANGLE_PLANES
 
 	light_inner_range = 0.1

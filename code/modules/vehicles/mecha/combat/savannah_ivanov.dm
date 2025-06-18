@@ -12,6 +12,9 @@
  * A two person mecha that delegates moving to the driver and shooting to the pilot.
  * ...Hilarious, right?
  */
+TYPEINFO_DEF(/obj/vehicle/sealed/mecha/combat/savannah_ivanov)
+	default_armor = list(BLUNT = 45, PUNCTURE = 40, SLASH = 0, LASER = 30, ENERGY = 30, BOMB = 40, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/vehicle/sealed/mecha/combat/savannah_ivanov
 	name = "\improper Savannah-Ivanov"
 	desc = "An insanely overbulked mecha that handily crushes single-pilot opponents. The price is that you need two pilots to use it."
@@ -22,7 +25,6 @@
 	mecha_flags = ADDING_ACCESS_POSSIBLE | CANSTRAFE | IS_ENCLOSED | HAS_LIGHTS
 	movedelay = 3
 	max_integrity = 450 //really tanky, like damn
-	armor = list(BLUNT = 45, PUNCTURE = 40, SLASH = 0, LASER = 30, ENERGY = 30, BOMB = 40, BIO = 0, FIRE = 100, ACID = 100)
 	max_temperature = 30000
 	wreckage = /obj/structure/mecha_wreckage/savannah_ivanov
 	max_occupants = 2

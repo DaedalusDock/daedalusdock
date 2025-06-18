@@ -598,8 +598,10 @@
 	tastes = list("tex-mex" = 3, "cumin" = 2)
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 12, /datum/reagent/consumable/nutriment/vitamin = 6, /datum/reagent/consumable/capsaicin = 3)
 
+TYPEINFO_DEF(/obj/item/food/meat)
+	default_materials = list(/datum/material/meat = MINERAL_MATERIAL_AMOUNT * 4)
+
 /obj/item/food/meat
-	custom_materials = list(/datum/material/meat = MINERAL_MATERIAL_AMOUNT * 4)
 	w_class = WEIGHT_CLASS_SMALL
 	var/subjectname = ""
 	var/subjectjob = null

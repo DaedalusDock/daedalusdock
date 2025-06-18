@@ -12,6 +12,9 @@
 	desc = "Designed to quickly reload revolvers. These rounds are manufactured within extremely tight tolerances, making them easy to show off trickshots with."
 	ammo_type = /obj/item/ammo_casing/a357/match
 
+TYPEINFO_DEF(/obj/item/ammo_box/c38)
+	default_materials = list(/datum/material/iron = 20000)
+
 /obj/item/ammo_box/c38
 	name = "speed loader (.38)"
 	desc = "Designed to quickly reload revolvers."
@@ -19,7 +22,6 @@
 	ammo_type = /obj/item/ammo_casing/c38
 	max_ammo = 6
 	multiple_sprites = AMMO_BOX_PER_BULLET
-	custom_materials = list(/datum/material/iron = 20000)
 
 /obj/item/ammo_box/c38/trac
 	name = "speed loader (.38 TRAC)"
@@ -90,10 +92,12 @@
 	ammo_type = /obj/item/ammo_casing/n762
 	max_ammo = 14
 
+TYPEINFO_DEF(/obj/item/ammo_box/foambox)
+	default_materials = list(/datum/material/iron = 500)
+
 /obj/item/ammo_box/foambox
 	name = "ammo box (Foam Darts)"
 	icon = 'icons/obj/guns/toy.dmi'
 	icon_state = "foambox"
 	ammo_type = /obj/item/ammo_casing/caseless/foam_dart
 	max_ammo = 40
-	custom_materials = list(/datum/material/iron = 500)

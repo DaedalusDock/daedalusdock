@@ -1,6 +1,9 @@
 /**
  * Item used to store implants. Can be renamed with a pen. Implants are moved between those and implanters when a mob uses an implanter on a case.
  */
+TYPEINFO_DEF(/obj/item/implantcase)
+	default_materials = list(/datum/material/glass=500)
+
 /obj/item/implantcase
 	name = "implant case"
 	desc = "A glass case containing an implant."
@@ -11,7 +14,6 @@
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	throw_range = 5
 	w_class = WEIGHT_CLASS_TINY
-	custom_materials = list(/datum/material/glass=500)
 	///the implant within the case
 	var/obj/item/implant/imp = null
 	///Type of implant this will spawn as imp upon being spawned

@@ -1,10 +1,12 @@
+TYPEINFO_DEF(/obj/item/clothing/head/centhat)
+	default_armor = list(BLUNT = 30, PUNCTURE = 15, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/head/centhat
 	name = "\improper CentCom hat"
 	icon_state = "centcom"
 	desc = "It's good to be emperor."
 	inhand_icon_state = "that"
 	flags_inv = 0
-	armor = list(BLUNT = 30, PUNCTURE = 15, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
 	strip_delay = 80
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
@@ -66,13 +68,15 @@
 	greyscale_colors = "#8F7654"
 	inhand_icon_state = "detective"
 
+TYPEINFO_DEF(/obj/item/clothing/head/hunter)
+	default_armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 15, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/head/hunter
 	name = "bounty hunting hat"
 	desc = "Ain't nobody gonna cheat the hangman in my town."
 	icon_state = "cowboy"
 	worn_icon_state = "hunter"
 	inhand_icon_state = "hunter"
-	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 15, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 
 /obj/item/clothing/head/cowboy_hat_black
@@ -160,12 +164,14 @@
 	icon_state = "intern_hat"
 	inhand_icon_state = "intern_hat"
 
+TYPEINFO_DEF(/obj/item/clothing/head/coordinator)
+	default_armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/head/coordinator
 	name = "coordinator cap"
 	desc = "A cap for a party coordinator, stylish!."
 	icon_state = "capcap"
 	inhand_icon_state = "that"
-	armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/head/jackbros
@@ -181,13 +187,15 @@
 	inhand_icon_state = "weddingveil"
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
+TYPEINFO_DEF(/obj/item/clothing/head/centcom_cap)
+	default_armor = list(BLUNT = 30, PUNCTURE = 15, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/head/centcom_cap
 	name = "\improper CentCom commander cap"
 	icon_state = "centcom_cap"
 	desc = "Worn by the finest of CentCom commanders. Inside the lining of the cap, lies two faint initials."
 	inhand_icon_state = "that"
 	flags_inv = 0
-	armor = list(BLUNT = 30, PUNCTURE = 15, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
 	strip_delay = (8 SECONDS)
 
 /obj/item/clothing/head/human_leather

@@ -68,13 +68,16 @@
 
 	if(!SSachievements.achievements_enabled)
 		return
+
 	var/datum/award/A = SSachievements.awards[achievement_type]
 	get_data(achievement_type) //Get the current status first if necessary
 	if(istype(A, /datum/award/achievement))
 		if(data[achievement_type]) //You already unlocked it so don't bother running the unlock proc
 			return
+
 		data[achievement_type] = TRUE
 		A.on_unlock(user) //Only on default achievement, as scores keep going up.
+
 	else if(istype(A, /datum/award/score))
 		data[achievement_type] += value
 
@@ -88,10 +91,7 @@
 		return
 	var/datum/award/A = SSachievements.awards[achievement_type]
 	get_data(achievement_type)
-	if(istype(A, /datum/award/achievement))
-		data[achievement_type] = FALSE
-	else if(istype(A, /datum/award/score))
-		data[achievement_type] = 0
+	data[achievement_type] = A.default_value
 
 /datum/achievement_data/ui_assets(mob/user)
 	return list(
@@ -109,24 +109,28 @@
 
 /datum/achievement_data/ui_data(mob/user)
 	var/ret_data = list() // screw standards (qustinnus you must rename src.data ok)
-	ret_data["categories"] = list("Bosses", "Jobs", "Misc", "Mafia", "Scores")
 	ret_data["achievements"] = list()
 	ret_data["user_key"] = user.ckey
 
 	var/datum/asset/spritesheet/simple/assets = get_asset_datum(/datum/asset/spritesheet/simple/achievements)
+	ret_data["undiscovered_icon_class"] = assets.icon_class_name("undiscovered")
+
 	//This should be split into static data later
 	for(var/achievement_type in SSachievements.awards)
-		if(!SSachievements.awards[achievement_type].name) //No name? we a subtype.
+		if(isabstract(SSachievements.awards[achievement_type])) //No name? we a subtype.
 			continue
 		if(isnull(data[achievement_type])) //We're still loading
 			continue
+
+		var/datum/award/award_datum = SSachievements.awards[achievement_type]
 		var/list/this = list(
-			"name" = SSachievements.awards[achievement_type].name,
-			"desc" = SSachievements.awards[achievement_type].desc,
-			"category" = SSachievements.awards[achievement_type].category,
-			"icon_class" = assets.icon_class_name(SSachievements.awards[achievement_type].icon),
+			"name" = award_datum.name,
+			"desc" = award_datum.desc,
+			"category" = award_datum.category,
+			"icon_class" = assets.icon_class_name(award_datum.icon),
 			"value" = data[achievement_type],
-			"score" = ispath(achievement_type,/datum/award/score)
+			"score" = ispath(achievement_type,/datum/award/score),
+			"hidden" = award_datum.hidden_until_unlocked,
 			)
 		ret_data["achievements"] += list(this)
 
@@ -134,16 +138,11 @@
 
 /datum/achievement_data/ui_static_data(mob/user)
 	. = ..()
-	.["highscore"] = list()
-	for(var/score in SSachievements.scores)
-		var/datum/award/score/S = SSachievements.scores[score]
-		if(!S.name || !S.track_high_scores || !S.high_scores.len)
-			continue
-		.["highscore"] += list(list("name" = S.name,"scores" = S.high_scores))
+	.["categories"] = SSachievements.achievement_category_data
 
 /client/verb/checkachievements()
 	set category = "OOC"
-	set name = "Check achievements"
-	set desc = "See all of your achievements!"
+	set name = "View Achievements"
+	set desc = "See all of your achievements."
 
 	persistent_client.achievements.ui_interact(usr)

@@ -11,9 +11,13 @@ SUBSYSTEM_DEF(achievements)
 	///List of all awards
 	var/list/datum/award/awards = list()
 
+	/// TGUI data.
+	var/list/achievement_category_data = list()
+
 /datum/controller/subsystem/achievements/Initialize(timeofday)
 	if(!SSdbcore.Connect())
 		return ..()
+
 	achievements_enabled = TRUE
 
 	for(var/T in subtypesof(/datum/award/achievement))
@@ -25,6 +29,11 @@ SUBSYSTEM_DEF(achievements)
 		var/instance = new T
 		scores[T] = instance
 		awards[T] = instance
+
+	for(var/datum/award/award_type as anything in subtypesof(/datum/award))
+		if(isabstract(award_type))
+			continue
+		achievement_category_data |= initial(award_type.category)
 
 	update_metadata()
 

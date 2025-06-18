@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/clothing/head/hardhat/cakehat)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/head/hardhat/cakehat
 	name = "cakehat"
 	desc = "You put the cake on your head. Brilliant."
@@ -13,7 +16,6 @@
 	var/throwforce_on = 15
 	var/damtype_on = BURN
 	flags_inv = HIDEEARS|HIDEHAIR
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	light_outer_range = 2 //luminosity when on
 	light_system = OVERLAY_LIGHT
 	flags_cover = HEADCOVERSEYES

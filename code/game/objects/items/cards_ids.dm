@@ -39,6 +39,9 @@
  */
 
 /// "Retro" ID card that renders itself as the icon state with no overlays.
+TYPEINFO_DEF(/obj/item/card/id)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/item/card/id
 	name = "identification card"
 	desc = "A card used to provide ID and determine access across the station."
@@ -48,7 +51,6 @@
 	lefthand_file = 'icons/mob/inhands/equipment/idcards_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/idcards_righthand.dmi'
 	slot_flags = ITEM_SLOT_ID
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 
 	/// Cached icon that has been built for this card. Intended for use in chat.
@@ -276,6 +278,10 @@
 
 	label = "[name_string], [assignment_string]"
 
+	var/mob/living/wearer = get(src, /mob)
+	if(wearer)
+		wearer.update_appearance(UPDATE_NAME)
+
 /obj/item/card/id/proc/set_data_by_record(datum/data/record/R, set_access, visual)
 	registered_name = R.fields[DATACORE_NAME]
 	registered_age = R.fields[DATACORE_AGE] || "UNSET"
@@ -290,6 +296,7 @@
 				SSid_access.apply_template_to_chameleon_card(src, template.type)
 			else
 				SSid_access.apply_template_to_card(src, template.type, set_access)
+
 	update_label()
 	update_icon()
 

@@ -79,11 +79,6 @@
 			SpeakPeace(list("The darkness in your heart won't be filled by simple platitudes.","You won't stop now, you're in this to the end.", "Will you reach the finish line before the round ends?"))
 		if(1000)
 			SpeakPeace(list("The ends exists somewhere beyond meaningful milestones.", "There will be no more messages until then.", "You disgust me."))
-		if(5643)
-			user.client.give_award(/datum/award/achievement/misc/time_waste, user)
-			var/obj/item/reagent_containers/food/drinks/trophy/gold_cup/never_ends = new(get_turf(user))
-			never_ends.name = "Overextending The Joke: First Place"
-			never_ends.desc = "And so we are left alone with our regrets."
 		else
 			y += 2
 	speaking = FALSE
@@ -116,13 +111,15 @@
 		if(i != statements.len)
 			sleep(30)
 
+TYPEINFO_DEF(/obj/item/rupee)
+	default_materials = list(/datum/material/glass = 500)
+
 /obj/item/rupee
 	name = "weird crystal"
 	desc = "Your excitement boils away as you realize it's just colored glass. Why would someone hoard these things?"
 	icon = 'icons/obj/economy.dmi'
 	icon_state = "rupee"
 	w_class = WEIGHT_CLASS_SMALL
-	custom_materials = list(/datum/material/glass = 500)
 
 /obj/item/rupee/Initialize(mapload)
 	. = ..()

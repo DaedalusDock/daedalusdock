@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/machinery/door/window)
+	default_armor = list(BLUNT = 20, PUNCTURE = 50, SLASH = 90, LASER = 50, ENERGY = 50, BOMB = 10, BIO = 100, FIRE = 70, ACID = 100)
+
 /obj/machinery/door/window
 	name = "interior door"
 	desc = "A strong door."
@@ -9,7 +12,6 @@
 	var/base_state = "left"
 	max_integrity = 150 //If you change this, consider changing ../door/window/brigdoor/ max_integrity at the bottom of this .dm file
 	integrity_failure = 0
-	armor = list(BLUNT = 20, PUNCTURE = 50, SLASH = 90, LASER = 50, ENERGY = 50, BOMB = 10, BIO = 100, FIRE = 70, ACID = 100)
 	visible = FALSE
 	flags_1 = ON_BORDER_1
 	opacity = FALSE

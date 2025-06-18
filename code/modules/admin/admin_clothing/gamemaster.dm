@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/gamemaster)
+	default_armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
+
 /obj/item/clothing/head/hooded/gamemaster
 	name = "old wizard hood"
 	icon_state = "culthood"
@@ -6,7 +9,6 @@
 
 	flags_inv = HIDEFACE|HIDEHAIR|HIDEEARS
 	flags_cover = HEADCOVERSEYES
-	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
 
 	clothing_traits = list(TRAIT_NODROP)
 
@@ -16,6 +18,9 @@
 	max_heat_protection_temperature = HELMET_MAX_TEMP_PROTECT
 	resistance_flags = ALL
 
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/gamemaster)
+	default_armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
+
 /obj/item/clothing/suit/hooded/gamemaster
 	name = "old wizard robes"
 	desc = "A ragged, dusty set of robes. Strange letters line the inside."
@@ -23,7 +28,6 @@
 	icon_state = "cultrobes"
 	worn_icon_state = "adminrobes"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
-	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
 	flags_inv = HIDEJUMPSUIT
 	resistance_flags = ALL
 
@@ -35,8 +39,10 @@
 	max_heat_protection_temperature = ARMOR_MAX_TEMP_PROTECT
 	hoodtype = /obj/item/clothing/head/hooded/gamemaster
 
+TYPEINFO_DEF(/obj/item/clothing/shoes/sandal/gamemaster)
+	default_armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
+
 /obj/item/clothing/shoes/sandal/gamemaster
 	resistance_flags = ALL
-	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
 
 	clothing_traits = list(TRAIT_NODROP)

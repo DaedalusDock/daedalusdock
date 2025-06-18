@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/vehicle/sealed/mecha/combat/gygax)
+	default_armor = list(BLUNT = 25, PUNCTURE = 20, SLASH = 0, LASER = 30, ENERGY = 15, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/vehicle/sealed/mecha/combat/gygax
 	desc = "A lightweight, security exosuit. Popular among private and corporate security."
 	name = "\improper Gygax"
@@ -7,7 +10,6 @@
 	movedelay = 3
 	dir_in = 1 //Facing North.
 	max_integrity = 250
-	armor = list(BLUNT = 25, PUNCTURE = 20, SLASH = 0, LASER = 30, ENERGY = 15, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
 	max_temperature = 25000
 	leg_overload_coeff = 80
 	force = 25
@@ -46,13 +48,15 @@
 		chassis.balloon_alert(owner, "you disable the overload")
 	build_all_button_icons()
 
+TYPEINFO_DEF(/obj/vehicle/sealed/mecha/combat/gygax/dark)
+	default_armor = list(BLUNT = 40, PUNCTURE = 40, SLASH = 0, LASER = 50, ENERGY = 35, BOMB = 20, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/vehicle/sealed/mecha/combat/gygax/dark
 	desc = "A lightweight exosuit, painted in a dark scheme. This model appears to have some modifications."
 	name = "\improper Dark Gygax"
 	icon_state = "darkgygax"
 	base_icon_state = "darkgygax"
 	max_integrity = 300
-	armor = list(BLUNT = 40, PUNCTURE = 40, SLASH = 0, LASER = 50, ENERGY = 35, BOMB = 20, BIO = 0, FIRE = 100, ACID = 100)
 	max_temperature = 35000
 	leg_overload_coeff = 70
 	force = 30

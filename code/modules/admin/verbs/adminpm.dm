@@ -12,8 +12,10 @@
 		return
 	if(!ismob(M) || !M.client)
 		return
+
 	cmd_admin_pm(M.client,null)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Admin PM Mob") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	M.client.give_award(/datum/award/achievement/the_jig_is_up, M)
 
 //shows a list of clients we could send PMs to, then forwards our choice to cmd_admin_pm
 /client/proc/cmd_admin_pm_panel()

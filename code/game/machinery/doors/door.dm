@@ -1,3 +1,8 @@
+
+
+TYPEINFO_DEF(/obj/machinery/door)
+	default_armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 80, ACID = 70)
+
 DEFINE_INTERACTABLE(/obj/machinery/door)
 /obj/machinery/door
 	name = "door"
@@ -15,7 +20,6 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	power_channel = AREA_USAGE_ENVIRON
 	pass_flags_self = PASSDOORS
 	max_integrity = 350
-	armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 80, ACID = 70)
 	can_atmos_pass = CANPASS_PROC
 	flags_1 = PREVENT_CLICK_UNDER_1
 	receive_ricochet_chance_mod = 0.8
@@ -300,6 +304,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		open()
 	else
 		do_animate("deny")
+		user.client?.give_award(/datum/award/achievement/ai_door, user)
 
 /obj/machinery/door/attack_hand(mob/user, list/modifiers)
 	. = ..()
@@ -339,8 +344,10 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		else
 			close()
 		return .
+
 	if(density)
 		do_animate("deny")
+		user.client?.give_award(/datum/award/achievement/ai_door, user)
 
 /obj/machinery/door/allowed(mob/M)
 	if(emergency)

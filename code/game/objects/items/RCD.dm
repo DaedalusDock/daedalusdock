@@ -9,6 +9,10 @@ ARCD
 RLD
 */
 
+TYPEINFO_DEF(/obj/item/construction)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+	default_materials = list(/datum/material/iron=100000)
+
 /obj/item/construction
 	name = "not for ingame use"
 	desc = "A device used to rapidly build and deconstruct. Reload with iron, plasteel, glass or compressed matter cartridges."
@@ -21,9 +25,7 @@ RLD
 	throwforce = 10
 	throw_range = 5
 	w_class = WEIGHT_CLASS_NORMAL
-	custom_materials = list(/datum/material/iron=100000)
 	req_access_txt = "11"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 	var/datum/effect_system/spark_spread/spark_system
 	var/matter = 0
@@ -871,6 +873,9 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	canRturf = TRUE
 	upgrade = RCD_UPGRADE_FRAMES | RCD_UPGRADE_SIMPLE_CIRCUITS | RCD_UPGRADE_FURNISHING
 
+TYPEINFO_DEF(/obj/item/rcd_ammo)
+	default_materials = list(/datum/material/iron=12000, /datum/material/glass=8000)
+
 /obj/item/rcd_ammo
 	name = "compressed matter cartridge"
 	desc = "Compressed matter for the RCD."
@@ -879,13 +884,14 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	w_class = WEIGHT_CLASS_TINY
 	lefthand_file = 'icons/mob/inhands/equipment/tools_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/tools_righthand.dmi'
-	custom_materials = list(/datum/material/iron=12000, /datum/material/glass=8000)
 	var/ammoamt = 40
+
+TYPEINFO_DEF(/obj/item/rcd_ammo/large)
+	default_materials = list(/datum/material/iron=48000, /datum/material/glass=32000)
 
 /obj/item/rcd_ammo/large
 	name = "highly compressed matter cartridge"
 	desc = "Tightly compressed matter for the RCD."
-	custom_materials = list(/datum/material/iron=48000, /datum/material/glass=32000)
 	ammoamt = 160
 
 

@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/extinguisher)
+	default_materials = list(/datum/material/iron = 90)
+
 /obj/item/extinguisher
 	name = "fire extinguisher"
 	desc = "A traditional red fire extinguisher."
@@ -16,7 +19,6 @@
 	stamina_cost = 20
 	stamina_critical_chance = 35
 
-	custom_materials = list(/datum/material/iron = 90)
 	attack_verb_continuous = list("slams", "whacks", "bashes", "thunks", "batters", "bludgeons", "thrashes")
 	attack_verb_simple = list("slam", "whack", "bash", "thunk", "batter", "bludgeon", "thrash")
 	dog_fashion = /datum/dog_fashion/back
@@ -34,6 +36,9 @@
 	/// Icon state when inside a tank holder
 	var/tank_holder_icon_state = "holder_extinguisher"
 
+TYPEINFO_DEF(/obj/item/extinguisher/mini)
+	default_materials = list(/datum/material/iron = 50, /datum/material/glass = 40)
+
 /obj/item/extinguisher/mini
 	name = "pocket fire extinguisher"
 	desc = "A light and compact fibreglass-framed model fire extinguisher."
@@ -45,10 +50,12 @@
 	throwforce = 2
 	w_class = WEIGHT_CLASS_SMALL
 	force = 3
-	custom_materials = list(/datum/material/iron = 50, /datum/material/glass = 40)
 	max_water = 30
 	sprite_name = "miniFE"
 	dog_fashion = null
+
+TYPEINFO_DEF(/obj/item/extinguisher/crafted)
+	default_materials = list(/datum/material/iron = 50, /datum/material/glass = 40)
 
 /obj/item/extinguisher/crafted
 	name = "Improvised cooling spray"
@@ -61,7 +68,6 @@
 	throwforce = 1
 	w_class = WEIGHT_CLASS_SMALL
 	force = 3
-	custom_materials = list(/datum/material/iron = 50, /datum/material/glass = 40)
 	max_water = 30
 	sprite_name = "coolant"
 	dog_fashion = null

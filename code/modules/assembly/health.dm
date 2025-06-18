@@ -1,8 +1,10 @@
+TYPEINFO_DEF(/obj/item/assembly/health)
+	default_materials = list(/datum/material/iron=800, /datum/material/glass=200)
+
 /obj/item/assembly/health
 	name = "health sensor"
 	desc = "Used for scanning and monitoring health."
 	icon_state = "health"
-	custom_materials = list(/datum/material/iron=800, /datum/material/glass=200)
 	attachable = TRUE
 
 	var/scanning = FALSE

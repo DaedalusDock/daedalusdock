@@ -2,8 +2,6 @@ name: "Check for merge conflicts"
 on:
   # So that PRs touching the same files as the push are updated
   push:
-    branches-ignore:
-      - master
   # So that the `dirtyLabel` is removed if conflicts are resolve
   # We recommend `pull_request_target` so that github secrets are available.
   # In `pull_request` we wouldn't be able to change labels of fork PRs
@@ -19,3 +17,4 @@ jobs:
         with:
           dirtyLabel: "Merge Conflict"
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          commentOnDirty: "This pull request conflicts with the merge target."

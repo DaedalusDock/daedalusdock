@@ -72,7 +72,8 @@
 
 /obj/machinery/computer4/Initialize(mapload)
 	. = ..()
-	soundloop = new(src)
+	// re-add when the soundloop isnt ass
+	// soundloop = new(src)
 
 	if(default_operating_system)
 		internal_disk.root.try_add_file(new default_operating_system)
@@ -96,16 +97,16 @@
 	. = ..()
 	if(is_operational)
 		post_system()
-		soundloop.start()
+		soundloop?.start()
 		set_light(l_on = TRUE)
 
 /obj/machinery/computer4/on_set_is_operational(old_value)
 	if(is_operational)
 		post_system()
-		soundloop.start()
+		soundloop?.start()
 		set_light(l_on = TRUE)
 	else
-		soundloop.stop()
+		soundloop?.stop()
 		set_operating_system(null)
 		text_buffer = ""
 		set_light(l_on = FALSE)

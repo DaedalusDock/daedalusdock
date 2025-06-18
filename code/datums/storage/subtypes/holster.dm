@@ -43,7 +43,7 @@ GLOBAL_LIST_EMPTY(cached_holster_typecaches)
 	return ..()
 
 /datum/storage/holster/check_total_weight(obj/item/to_insert)
-	var/total_weight = to_insert.w_class
+	var/total_weight = to_insert?.w_class || 0
 
 	for(var/obj/item/thing in real_location)
 		if(thing in holstered_items)

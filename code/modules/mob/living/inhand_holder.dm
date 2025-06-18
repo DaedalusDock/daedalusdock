@@ -23,7 +23,7 @@
 	if(worn_slot_flags)
 		slot_flags = worn_slot_flags
 
-	w_class = target_mob.held_w_class
+	set_weight_class(target_mob.held_w_class)
 	deposit(target_mob)
 
 /obj/item/mob_holder/Destroy(force)

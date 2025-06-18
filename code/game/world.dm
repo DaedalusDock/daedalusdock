@@ -6,6 +6,7 @@
 #define NO_INIT_PARAMETER "no-init"
 
 GLOBAL_VAR(restart_counter)
+GLOBAL_REAL_VAR(list/__typeinfo_cache)
 
 /**
  * World creation
@@ -40,6 +41,8 @@ GLOBAL_VAR(restart_counter)
 #endif
 
 	log_world("World loaded at [time_stamp()]!")
+
+	__typeinfo_cache = new()
 
 	make_datum_references_lists() //initialises global lists for referencing frequently used datums (so that we only ever do it once)
 

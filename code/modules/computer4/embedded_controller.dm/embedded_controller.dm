@@ -1,3 +1,4 @@
+DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 /obj/machinery/c4_embedded_controller
 	name = "control panel"
 	icon = 'icons/obj/airlock_machines.dmi'

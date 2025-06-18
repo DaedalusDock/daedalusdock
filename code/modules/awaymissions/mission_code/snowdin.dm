@@ -341,10 +341,12 @@
 	icon_state = "woodenbarricade-snow"
 	max_integrity = 125
 
+TYPEINFO_DEF(/obj/item/clothing/under/syndicate/coldres)
+	default_armor = list(BLUNT = 20, PUNCTURE = 10, SLASH = 0, LASER = 0, ENERGY = 5, BOMB = 0, BIO = 0, FIRE = 25, ACID = 25)
+
 /obj/item/clothing/under/syndicate/coldres
 	name = "insulated tactical turtleneck"
 	desc = "A nondescript and slightly suspicious-looking turtleneck with digital camouflage cargo pants. The interior has been padded with special insulation for both warmth and protection."
-	armor = list(BLUNT = 20, PUNCTURE = 10, SLASH = 0, LASER = 0, ENERGY = 5, BOMB = 0, BIO = 0, FIRE = 25, ACID = 25)
 	cold_protection = CHEST|GROIN|ARMS|LEGS
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 

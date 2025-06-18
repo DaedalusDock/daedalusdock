@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/clothing/head/helmet/space/hardsuit/toxins)
+	default_armor = list(BLUNT = 10, PUNCTURE = 5, SLASH = 0, LASER = 10, ENERGY = 20, BOMB = 100, BIO = 100, FIRE = 60, ACID = 30)
+
 /obj/item/clothing/head/helmet/space/hardsuit/toxins
 	name = "prototype voidsuit helmet"
 	desc = "A prototype helmet designed for research in a hazardous, low pressure environment. Scientific data flashes across the visor."
@@ -5,7 +8,6 @@
 	hardsuit_type = "toxins"
 	resistance_flags = ACID_PROOF | FIRE_PROOF
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
-	armor = list(BLUNT = 10, PUNCTURE = 5, SLASH = 0, LASER = 10, ENERGY = 20, BOMB = 100, BIO = 100, FIRE = 60, ACID = 30)
 	clothing_traits = list(TRAIT_REAGENT_SCANNER, TRAIT_RESEARCH_SCANNER)
 	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL | SNUG_FIT
 	actions_types = list(/datum/action/item_action/toggle_helmet_light)
@@ -38,6 +40,9 @@
 		return
 	display_visor_message("Explosion detected! Epicenter: [devastation_range], Outer: [heavy_impact_range], Shock: [light_impact_range]")
 
+TYPEINFO_DEF(/obj/item/clothing/suit/space/hardsuit/toxins)
+	default_armor = list(BLUNT = 10, PUNCTURE = 5, SLASH = 0, LASER = 10, ENERGY = 20, BOMB = 100, BIO = 100, FIRE = 60, ACID = 30)
+
 /obj/item/clothing/suit/space/hardsuit/toxins
 	name = "prototype voidsuit"
 	desc = "A prototype suit that protects against hazardous, low pressure environments. Fitted with extensive plating for handling explosives and dangerous research materials."
@@ -47,6 +52,5 @@
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT //Same as an emergency firesuit. Not ideal for extended exposure.
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/gun/energy/wormhole_projector,
 	/obj/item/hand_tele, /obj/item/aicard)
-	armor = list(BLUNT = 10, PUNCTURE = 5, SLASH = 0, LASER = 10, ENERGY = 20, BOMB = 100, BIO = 100, FIRE = 60, ACID = 30)
 	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/toxins
 	cell = /obj/item/stock_parts/cell/super

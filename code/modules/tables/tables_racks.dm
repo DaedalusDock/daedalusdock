@@ -609,6 +609,7 @@ TYPEINFO_DEF(/obj/structure/table)
  * Glass tables
  */
 TYPEINFO_DEF(/obj/structure/table/glass)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 100)
 	default_materials = list(/datum/material/glass = 2000)
 
 /obj/structure/table/glass
@@ -622,7 +623,6 @@ TYPEINFO_DEF(/obj/structure/table/glass)
 	canSmoothWith = SMOOTH_GROUP_GLASS_TABLES
 	max_integrity = 70
 	resistance_flags = ACID_PROOF
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 100)
 	var/glass_shard_type = /obj/item/shard
 
 /obj/structure/table/glass/CanAllowThrough(atom/movable/mover, border_dir)
@@ -804,6 +804,9 @@ TYPEINFO_DEF(/obj/structure/table/glass/plasmaglass)
 /*
  * Reinforced tables
  */
+TYPEINFO_DEF(/obj/structure/table/reinforced)
+	default_armor = list(BLUNT = 10, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 100, BOMB = 20, BIO = 0, FIRE = 80, ACID = 70)
+
 /obj/structure/table/reinforced
 	name = "reinforced table"
 	desc = "A reinforced version of the four legged table."
@@ -814,7 +817,6 @@ TYPEINFO_DEF(/obj/structure/table/glass/plasmaglass)
 	buildstack = /obj/item/stack/sheet/plasteel
 	max_integrity = 200
 	integrity_failure = 0.25
-	armor = list(BLUNT = 10, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 100, BOMB = 20, BIO = 0, FIRE = 80, ACID = 70)
 	flipped = -1
 
 /obj/structure/table/reinforced/deconstruction_hints(mob/user)

@@ -35,8 +35,10 @@
 	max_heat_protection_temperature = ARMOR_MAX_TEMP_PROTECT
 	hoodtype = /obj/item/clothing/head/hooded/gamemaster
 
+TYPEINFO_DEF(/obj/item/clothing/shoes/sandal/gamemaster)
+	default_armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
+
 /obj/item/clothing/shoes/sandal/gamemaster
 	resistance_flags = ALL
-	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
 
 	clothing_traits = list(TRAIT_NODROP)

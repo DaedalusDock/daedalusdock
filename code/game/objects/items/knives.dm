@@ -1,5 +1,6 @@
 // Knife Template, should not appear in game normaly //
 TYPEINFO_DEF(/obj/item/knife)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	default_materials = list(/datum/material/iron=12000)
 
 /obj/item/knife
@@ -21,7 +22,6 @@ TYPEINFO_DEF(/obj/item/knife)
 	attack_verb_continuous = list("slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	sharpness = SHARP_EDGED
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	var/bayonet = FALSE //Can this be attached to a gun?
 	tool_behaviour = TOOL_KNIFE
 
@@ -144,6 +144,7 @@ TYPEINFO_DEF(/obj/item/knife/combat/bone)
 	desc = "A cyborg-mounted plasteel knife. Extremely sharp and durable."
 
 TYPEINFO_DEF(/obj/item/knife/shiv)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	default_materials = list(/datum/material/glass=400)
 
 /obj/item/knife/shiv
@@ -158,7 +159,6 @@ TYPEINFO_DEF(/obj/item/knife/shiv)
 	throwforce = 12
 	attack_verb_continuous = list("shanks", "shivs")
 	attack_verb_simple = list("shank", "shiv")
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
 /obj/item/knife/shiv/CheckParts(list/parts_list)
 	var/obj/item/shard/shard = locate() in contents

@@ -239,6 +239,9 @@
 		)
 
 //Curator
+TYPEINFO_DEF(/obj/item/clothing/suit/curator)
+	default_armor = list(BLUNT = 25, PUNCTURE = 10, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 0, BIO = 0, FIRE = 0, ACID = 45)
+
 /obj/item/clothing/suit/curator
 	name = "treasure hunter's coat"
 	desc = "Both fashionable and lightly armoured, this jacket is favoured by treasure hunters the galaxy over."
@@ -247,7 +250,6 @@
 	blood_overlay_type = "coat"
 	body_parts_covered = CHEST|ARMS
 	allowed = list(/obj/item/tank/internals, /obj/item/melee/curator_whip, /obj/item/storage/bag/books)
-	armor = list(BLUNT = 25, PUNCTURE = 10, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 0, BIO = 0, FIRE = 0, ACID = 45)
 	cold_protection = CHEST|ARMS
 	heat_protection = CHEST|ARMS
 
@@ -289,12 +291,14 @@
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 //Xenobiologist
+TYPEINFO_DEF(/obj/item/clothing/suit/overalls_sci)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/suit/overalls_sci
 	name = "xenobiologist's overalls"
 	desc = "A tacky set of purple overalls, ideal for wearing while wrangling slimes."
 	icon_state = "overalls_sci"
 	inhand_icon_state = "p_suit"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 50, ACID = 50)
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION
 
 	equip_self_flags = EQUIP_ALLOW_MOVEMENT | EQUIP_SLOWDOWN

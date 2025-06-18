@@ -99,6 +99,7 @@ TYPEINFO_DEF(/obj/item/locator)
  * Hand-tele
  */
 TYPEINFO_DEF(/obj/item/hand_tele)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 100, ACID = 100)
 	default_materials = list(/datum/material/iron=10000)
 
 /obj/item/hand_tele
@@ -113,7 +114,6 @@ TYPEINFO_DEF(/obj/item/hand_tele)
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
 	throw_range = 5
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 100, ACID = 100)
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	var/list/active_portal_pairs
 	var/max_portal_pairs = 3

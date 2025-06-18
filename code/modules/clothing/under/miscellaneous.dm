@@ -40,6 +40,9 @@
 	inhand_icon_state = "gy_suit"
 	can_adjust = FALSE
 
+TYPEINFO_DEF(/obj/item/clothing/under/misc/adminsuit)
+	default_armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
+
 /obj/item/clothing/under/misc/adminsuit
 	name = "administrative cybernetic jumpsuit"
 	icon = 'icons/obj/clothing/under/syndicate.dmi'
@@ -49,7 +52,6 @@
 	desc = "A cybernetically enhanced jumpsuit used for administrative duties."
 	permeability_coefficient = 0.01
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
 	cold_protection = CHEST | GROIN | LEGS | FEET | ARMS | HANDS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT
 	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
@@ -80,13 +82,18 @@
 	inhand_icon_state = "gy_suit"
 	can_adjust = FALSE
 
+TYPEINFO_DEF(/obj/item/clothing/under/misc/durathread)
+	default_armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 5, BIO = 0, FIRE = 40, ACID = 10)
+
 /obj/item/clothing/under/misc/durathread
 	name = "durathread jumpsuit"
 	desc = "A jumpsuit made from durathread, its resilient fibres provide some protection to the wearer."
 	icon_state = "durathread"
 	inhand_icon_state = "durathread"
 	can_adjust = FALSE
-	armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 5, BIO = 0, FIRE = 40, ACID = 10)
+
+TYPEINFO_DEF(/obj/item/clothing/under/misc/bouncer)
+	default_armor = list(BLUNT = 5, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 30, ACID = 30)
 
 /obj/item/clothing/under/misc/bouncer
 	name = "bouncer uniform"
@@ -94,7 +101,6 @@
 	icon_state = "bouncer"
 	inhand_icon_state = "bouncer"
 	can_adjust = FALSE
-	armor = list(BLUNT = 5, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 30, ACID = 30)
 
 /obj/item/clothing/under/misc/coordinator
 	name = "coordinator jumpsuit"

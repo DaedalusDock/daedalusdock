@@ -1,8 +1,10 @@
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/ablative)
+	default_armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 60, ENERGY = 60, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/item/clothing/head/hooded/ablative
 	name = "ablative hood"
 	desc = "Hood hopefully belonging to an ablative trenchcoat. Includes a visor for cool-o-vision."
 	icon_state = "ablativehood"
-	armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 60, ENERGY = 60, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
 	strip_delay = 30
 	var/hit_reflect_chance = 50
 
@@ -12,13 +14,15 @@
 	if (prob(hit_reflect_chance))
 		return TRUE
 
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/ablative)
+	default_armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 60, ENERGY = 60, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/item/clothing/suit/hooded/ablative
 	name = "ablative trenchcoat"
 	desc = "Experimental trenchcoat specially crafted to reflect and absorb laser and disabler shots. Don't expect it to do all that much against an axe or a shotgun, however."
 	icon_state = "ablativecoat"
 	inhand_icon_state = "ablativecoat"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
-	armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 60, ENERGY = 60, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
 	hoodtype = /obj/item/clothing/head/hooded/ablative
 	strip_delay = 30
 	equip_delay_other = 40

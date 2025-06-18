@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/structure/closet/crate/secure)
+	default_armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 100, LASER = 50, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)
+
 /obj/structure/closet/crate/secure
 	desc = "A secure crate."
 	name = "secure crate"
@@ -5,7 +8,6 @@
 	secure = TRUE
 	locked = TRUE
 	max_integrity = 500
-	armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 100, LASER = 50, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)
 	var/tamperproof = 0
 
 	damage_deflection = 18

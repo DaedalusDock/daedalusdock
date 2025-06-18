@@ -1,5 +1,8 @@
 #define ALERT_DELAY 50 SECONDS
 
+TYPEINFO_DEF(/obj/machinery/newscaster)
+	default_armor = list(BLUNT = 50, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
+
 /obj/machinery/newscaster
 	name = "newscaster"
 	desc = "A standard newsfeed handler for use in commercial space stations. All the news you absolutely have no use for, in one place!"
@@ -9,7 +12,6 @@
 	verb_say = "beeps"
 	verb_ask = "beeps"
 	verb_exclaim = "beeps"
-	armor = list(BLUNT = 50, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	max_integrity = 200
 	integrity_failure = 0.25
 	zmm_flags = ZMM_MANGLE_PLANES

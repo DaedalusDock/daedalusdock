@@ -187,6 +187,9 @@ TYPEINFO_DEF(/obj/item/clothing/head/hardhat/red/upgraded)
 	inhand_icon_state = "hardhat0_dblue"
 	hat_type = "dblue"
 
+TYPEINFO_DEF(/obj/item/clothing/head/hardhat/pumpkinhead)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/head/hardhat/pumpkinhead
 	name = "carved pumpkin"
 	desc = "A jack o' lantern! Believed to ward off evil spirits."
@@ -195,7 +198,6 @@ TYPEINFO_DEF(/obj/item/clothing/head/hardhat/red/upgraded)
 	hat_type = "pumpkin"
 	clothing_flags = SNUG_FIT | STACKABLE_HELMET_EXEMPT
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	light_outer_range = 2 //luminosity when on
 	flags_cover = HEADCOVERSEYES
 	light_color = "#fff2bf"
@@ -243,6 +245,9 @@ TYPEINFO_DEF(/obj/item/clothing/head/hardhat/red/upgraded)
 	. = ..()
 	dog_fashion = /datum/dog_fashion/head/blumpkin/unlit
 
+TYPEINFO_DEF(/obj/item/clothing/head/hardhat/reindeer)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/head/hardhat/reindeer
 	name = "novelty reindeer hat"
 	desc = "Some fake antlers and a very fake red nose."
@@ -250,7 +255,6 @@ TYPEINFO_DEF(/obj/item/clothing/head/hardhat/red/upgraded)
 	inhand_icon_state = "hardhat0_reindeer"
 	hat_type = "reindeer"
 	flags_inv = 0
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	light_outer_range = 1 //luminosity when on
 
 

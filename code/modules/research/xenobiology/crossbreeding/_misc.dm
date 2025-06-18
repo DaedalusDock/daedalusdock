@@ -146,6 +146,9 @@ TYPEINFO_DEF(/obj/item/stock_parts/cell/high/slime_hypercharged)
 	icon_state = "rainbowbarrier"
 
 //Ice stasis block - Chilling Dark Blue
+TYPEINFO_DEF(/obj/structure/ice_stasis)
+	default_armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = -50, ENERGY = -50, BOMB = 0, BIO = 100, FIRE = -80, ACID = 30)
+
 /obj/structure/ice_stasis
 	name = "ice block"
 	desc = "A massive block of ice. You can see something vaguely humanoid inside."
@@ -153,7 +156,6 @@ TYPEINFO_DEF(/obj/item/stock_parts/cell/high/slime_hypercharged)
 	icon_state = "frozen"
 	density = TRUE
 	max_integrity = 100
-	armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = -50, ENERGY = -50, BOMB = 0, BIO = 100, FIRE = -80, ACID = 30)
 
 /obj/structure/ice_stasis/Initialize(mapload)
 	. = ..()

@@ -5,6 +5,7 @@
  * as much as possible to the components/elements system
  */
 TYPEINFO_DEF(/atom)
+	var/list/default_armor
 	var/list/default_materials
 
 /atom
@@ -178,7 +179,7 @@ TYPEINFO_DEF(/atom)
 	var/uses_integrity = FALSE
 
 	///Atom armor. Use returnArmor()
-	var/tmp/datum/armor/armor
+	VAR_PRIVATE/tmp/datum/armor/armor
 	VAR_PRIVATE/atom_integrity //defaults to max_integrity
 	var/max_integrity = 500
 	var/integrity_failure = 0 //0 if we have no special broken behavior, otherwise is a percentage of at what point the atom breaks. 0.5 being 50%

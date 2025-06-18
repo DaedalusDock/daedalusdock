@@ -45,6 +45,9 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
  *
  * Captalism in the year 2525, everything in a vending machine, even love
  */
+TYPEINFO_DEF(/obj/machinery/vending)
+	default_armor = list(BLUNT = 20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
+
 /obj/machinery/vending
 	name = "\improper Vendomat"
 	desc = "A generic vending machine."
@@ -57,7 +60,6 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
 	verb_exclaim = "beeps"
 	max_integrity = 300
 	integrity_failure = 0.33
-	armor = list(BLUNT = 20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
 	circuit = /obj/item/circuitboard/machine/vendor
 	payment_department = ACCOUNT_STATION_MASTER
 	light_power = 0.5

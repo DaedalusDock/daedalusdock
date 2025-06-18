@@ -75,6 +75,9 @@
 
 
 DEFINE_INTERACTABLE(/obj/machinery/airalarm)
+TYPEINFO_DEF(/obj/machinery/airalarm)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
+
 /obj/machinery/airalarm
 	name = "air alarm"
 	desc = "A machine that monitors atmosphere levels. Goes off if the area is dangerous."
@@ -86,7 +89,6 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 	req_access = list(ACCESS_ATMOSPHERICS)
 	max_integrity = 250
 	integrity_failure = 0.33
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
 	resistance_flags = FIRE_PROOF
 	zmm_flags = ZMM_MANGLE_PLANES
 

@@ -6,6 +6,9 @@
 #define MIND_DEVICE_CONTROL 2
 
 //AGENT VEST
+TYPEINFO_DEF(/obj/item/clothing/suit/armor/abductor/vest)
+	default_armor = list(BLUNT = 15, PUNCTURE = 15, SLASH = 0, LASER = 15, ENERGY = 25, BOMB = 15, BIO = 15, FIRE = 70, ACID = 70)
+
 /obj/item/clothing/suit/armor/abductor/vest
 	name = "agent vest"
 	desc = "A vest outfitted with advanced stealth technology. It has two modes - combat and stealth."
@@ -13,7 +16,6 @@
 	icon_state = "vest_stealth"
 	inhand_icon_state = "armor"
 	blood_overlay_type = "armor"
-	armor = list(BLUNT = 15, PUNCTURE = 15, SLASH = 0, LASER = 15, ENERGY = 25, BOMB = 15, BIO = 15, FIRE = 70, ACID = 70)
 	actions_types = list(/datum/action/item_action/hands_free/activate)
 	allowed = list(
 		/obj/item/abductor,
@@ -860,6 +862,9 @@ TYPEINFO_DEF(/obj/structure/table/abductor)
 	material_type = /obj/item/stack/sheet/mineral/abductor
 	noglass = TRUE
 
+TYPEINFO_DEF(/obj/item/clothing/under/abductor)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 10, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/under/abductor
 	desc = "The most advanced form of jumpsuit known to reality, looks uncomfortable."
 	name = "alien jumpsuit"
@@ -867,5 +872,4 @@ TYPEINFO_DEF(/obj/structure/table/abductor)
 	icon_state = "abductor"
 	inhand_icon_state = "bl_suit"
 	worn_icon = 'icons/mob/clothing/under/syndicate.dmi'
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 10, FIRE = 0, ACID = 0)
 	can_adjust = FALSE

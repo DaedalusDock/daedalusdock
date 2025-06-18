@@ -1,6 +1,7 @@
 /// How many seconds between each fuel depletion tick ("use" proc)
 #define WELDER_FUEL_BURN_INTERVAL 9
 TYPEINFO_DEF(/obj/item/weldingtool)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 30)
 	default_materials = list(/datum/material/iron=70, /datum/material/glass=30)
 
 /obj/item/weldingtool
@@ -27,7 +28,6 @@ TYPEINFO_DEF(/obj/item/weldingtool)
 	light_on = FALSE
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 30)
 	resistance_flags = FIRE_PROOF
 	heat = 3800
 	tool_behaviour = TOOL_WELDER

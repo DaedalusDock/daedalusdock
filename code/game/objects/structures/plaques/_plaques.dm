@@ -1,5 +1,6 @@
 //This is a plaque you can craft with gold, then permanently engrave a title and description on, with a fountain pen.
 TYPEINFO_DEF(/obj/structure/plaque)
+	default_armor = list(BLUNT = 50, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	default_materials = list(/datum/material/gold = 2000)
 
 /obj/structure/plaque //This is a plaque you can craft with gold, then permanently engrave a title and description on, with a fountain pen.
@@ -12,12 +13,12 @@ TYPEINFO_DEF(/obj/structure/plaque)
 	density = FALSE
 	layer = SIGN_LAYER
 	max_integrity = 200 //Twice as durable as regular signs.
-	armor = list(BLUNT = 50, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	///Custom plaque structures and items both start "unengraved", once engraved with a fountain pen their text can't be altered again. Static plaques are already engraved.
 	var/engraved = FALSE
 
 //The item version of the above
 TYPEINFO_DEF(/obj/item/plaque)
+	default_armor = list(BLUNT = 50, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	default_materials = list(/datum/material/gold = 2000)
 
 /obj/item/plaque //The item version of the above.
@@ -30,7 +31,6 @@ TYPEINFO_DEF(/obj/item/plaque)
 	desc = "A blank plaque, use a fancy pen to engrave it. It can be placed on a wall."
 	w_class = WEIGHT_CLASS_NORMAL
 	max_integrity = 200
-	armor = list(BLUNT = 50, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	///This points the item to make the proper structure when placed on a wall.
 	var/plaque_path = /obj/structure/plaque
 	///Custom plaque structures and items both start "unengraved", once engraved with a fountain pen their text can't be altered again.

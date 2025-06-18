@@ -18,6 +18,7 @@
 	ADD_TRAIT(src, TRAIT_APC_SHOCKING, INNATE_TRAIT)
 
 TYPEINFO_DEF(/obj/item/kitchen/fork)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	default_materials = list(/datum/material/iron=80)
 
 /obj/item/kitchen/fork
@@ -33,7 +34,6 @@ TYPEINFO_DEF(/obj/item/kitchen/fork)
 	attack_verb_continuous = list("attacks", "stabs", "pokes")
 	attack_verb_simple = list("attack", "stab", "poke")
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	sharpness = SHARP_POINTY
 	var/datum/reagent/forkload //used to eat omelette
 	custom_price = PAYCHECK_ASSISTANT * 0.7
@@ -133,6 +133,7 @@ TYPEINFO_DEF(/obj/item/kitchen/rollingpin)
 /* Trays  moved to /obj/item/storage/bag */
 
 TYPEINFO_DEF(/obj/item/kitchen/spoon)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	default_materials = list(/datum/material/iron=120)
 
 /obj/item/kitchen/spoon
@@ -146,7 +147,6 @@ TYPEINFO_DEF(/obj/item/kitchen/spoon)
 	throw_range = 5
 	attack_verb_simple = list("whack", "spoon", "tap")
 	attack_verb_continuous = list("whacks", "spoons", "taps")
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	custom_price = PAYCHECK_ASSISTANT * 0.7
 	tool_behaviour = TOOL_MINING
 	toolspeed = 25 // Literally 25 times worse than the base pickaxe

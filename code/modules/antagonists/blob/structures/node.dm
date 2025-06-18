@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/structure/blob/special/node)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 65, ACID = 90)
+
 /obj/structure/blob/special/node
 	name = "blob node"
 	icon = 'icons/mob/blob.dmi'
@@ -5,7 +8,6 @@
 	desc = "A large, pulsating yellow mass."
 	max_integrity = BLOB_NODE_MAX_HP
 	health_regen = BLOB_NODE_HP_REGEN
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 65, ACID = 90)
 	point_return = BLOB_REFUND_NODE_COST
 	claim_range = BLOB_NODE_CLAIM_RANGE
 	pulse_range = BLOB_NODE_PULSE_RANGE

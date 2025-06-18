@@ -1,11 +1,13 @@
 // CHAPLAIN CUSTOM ARMORS //
 
+TYPEINFO_DEF(/obj/item/clothing/head/helmet/chaplain/clock)
+	default_armor = list(BLUNT = 50, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)
+
 /obj/item/clothing/head/helmet/chaplain/clock
 	name = "forgotten helmet"
 	desc = "It has the unyielding gaze of a god eternally forgotten."
 	icon_state = "clockwork_helmet"
 	inhand_icon_state = "clockwork_helmet_inhand"
-	armor = list(BLUNT = 50, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDESNOUT
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 	strip_delay = 8 SECONDS
@@ -20,12 +22,14 @@
 	slowdown = 0
 	clothing_flags = NONE
 
+TYPEINFO_DEF(/obj/item/clothing/head/helmet/chaplain)
+	default_armor = list(BLUNT = 50, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)
+
 /obj/item/clothing/head/helmet/chaplain
 	name = "crusader helmet"
 	desc = "Deus Vult."
 	icon_state = "knight_templar"
 	inhand_icon_state = "knight_templar"
-	armor = list(BLUNT = 50, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDESNOUT
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 	strip_delay = 80

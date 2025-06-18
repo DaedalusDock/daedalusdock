@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/machinery/door/poddoor)
+	default_armor = list(BLUNT = 50, PUNCTURE = 100, SLASH = 100, LASER = 100, ENERGY = 100, BOMB = 50, BIO = 100, FIRE = 100, ACID = 70)
+
 /obj/machinery/door/poddoor
 	name = "blast door"
 	desc = "A heavy duty blast door that opens mechanically."
@@ -10,7 +13,6 @@
 	heat_proof = TRUE
 	dont_close_on_dense_objects = FALSE
 	max_integrity = 600
-	armor = list(BLUNT = 50, PUNCTURE = 100, SLASH = 100, LASER = 100, ENERGY = 100, BOMB = 50, BIO = 100, FIRE = 100, ACID = 70)
 	resistance_flags = FIRE_PROOF
 	damage_deflection = 70
 	can_open_with_hands = FALSE

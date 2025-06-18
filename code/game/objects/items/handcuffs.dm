@@ -24,6 +24,7 @@
  * Clicking people with those will cause an attempt at handcuffing them to occur
 */
 TYPEINFO_DEF(/obj/item/restraints/handcuffs)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	default_materials = list(/datum/material/iron=500)
 
 /obj/item/restraints/handcuffs
@@ -40,7 +41,6 @@ TYPEINFO_DEF(/obj/item/restraints/handcuffs)
 	w_class = WEIGHT_CLASS_SMALL
 	throw_range = 5
 	breakouttime = 1 MINUTES
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	custom_price = PAYCHECK_HARD * 0.35
 
 	/// Time it takes to apply handcuffs.

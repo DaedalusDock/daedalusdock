@@ -21,8 +21,10 @@
 	allowed = list(/obj/item/melee/energy/sword/pirate, /obj/item/clothing/glasses/eyepatch, /obj/item/reagent_containers/food/drinks/bottle/rum)
 
 
+TYPEINFO_DEF(/obj/item/clothing/suit/pirate/armored)
+	default_armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 30, BIO = 30, FIRE = 60, ACID = 75)
+
 /obj/item/clothing/suit/pirate/armored
-	armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 30, BIO = 30, FIRE = 60, ACID = 75)
 	strip_delay = 40
 	equip_delay_other = 20
 
@@ -32,8 +34,10 @@
 	icon_state = "hgpirate"
 	inhand_icon_state = "hgpirate"
 
+TYPEINFO_DEF(/obj/item/clothing/suit/pirate/captain/armored)
+	default_armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 30, BIO = 30, FIRE = 60, ACID = 75)
+
 /obj/item/clothing/suit/pirate/captain/armored
-	armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 30, BIO = 30, FIRE = 60, ACID = 75)
 	strip_delay = 40
 	equip_delay_other = 20
 
@@ -46,13 +50,15 @@
 	fire_resist = T0C+5200
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 
+TYPEINFO_DEF(/obj/item/clothing/suit/justice)
+	default_armor = list(BLUNT = 35, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/suit/justice
 	name = "justice suit"
 	desc = "this pretty much looks ridiculous" //Needs no fixing
 	icon_state = "justice"
 	inhand_icon_state = "justice"
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
-	armor = list(BLUNT = 35, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
 
 /obj/item/clothing/suit/judgerobe
 	name = "judge's robe"
@@ -431,12 +437,14 @@
 	inhand_icon_state = "cheongsam_blue"
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS
 
+TYPEINFO_DEF(/obj/item/clothing/suit/bronze)
+	default_armor = list(BLUNT = 5, PUNCTURE = 0, SLASH = 0, LASER = -5, ENERGY = -15, BOMB = 10, BIO = 0, FIRE = 20, ACID = 20)
+
 /obj/item/clothing/suit/bronze
 	name = "bronze suit"
 	desc = "A big and clanky suit made of bronze that offers no protection and looks very unfashionable. Nice."
 	icon = 'icons/obj/clothing/suits.dmi'
 	icon_state = "clockwork_cuirass_old"
-	armor = list(BLUNT = 5, PUNCTURE = 0, SLASH = 0, LASER = -5, ENERGY = -15, BOMB = 10, BIO = 0, FIRE = 20, ACID = 20)
 
 /obj/item/clothing/suit/hooded/mysticrobe
 	name = "mystic's robe"
@@ -456,12 +464,14 @@
 	body_parts_covered = HEAD
 	flags_inv = HIDEHAIR|HIDEEARS|HIDEFACIALHAIR|HIDEFACE|HIDEMASK
 
+TYPEINFO_DEF(/obj/item/clothing/suit/coordinator)
+	default_armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/suit/coordinator
 	name = "coordinator jacket"
 	desc = "A jacket for a party ooordinator, stylish!."
 	icon_state = "capformal"
 	inhand_icon_state = "capspacesuit"
-	armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
 
 /obj/item/clothing/suit/hawaiian
 	name = "hawaiian overshirt"

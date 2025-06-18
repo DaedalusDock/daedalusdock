@@ -32,6 +32,9 @@
 //*****Doors*****
 //***************
 
+TYPEINFO_DEF(/obj/machinery/door/puzzle)
+	default_armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
+
 /obj/machinery/door/puzzle
 	name = "locked door"
 	desc = "This door only opens under certain conditions. It looks virtually indestructable."
@@ -40,7 +43,6 @@
 	explosion_block = 3
 	heat_proof = TRUE
 	max_integrity = 600
-	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
 	resistance_flags = INDESTRUCTIBLE | FIRE_PROOF | ACID_PROOF | LAVA_PROOF
 	damage_deflection = 70
 	/// Make sure that the puzzle has the same puzzle_id as the keycard door!
@@ -169,6 +171,9 @@
 		QDEL_IN(AM, 15)
 
 //Light puzzle
+TYPEINFO_DEF(/obj/structure/light_puzzle)
+	default_armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
+
 /obj/structure/light_puzzle
 	name = "light mechanism"
 	desc = "It's a mechanism that seems to power something when all the lights are lit up. It looks virtually indestructable."
@@ -176,7 +181,6 @@
 	icon_state = "light_puzzle"
 	anchored = TRUE
 	explosion_block = 3
-	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
 	resistance_flags = INDESTRUCTIBLE | FIRE_PROOF | ACID_PROOF | LAVA_PROOF
 	light_outer_range = MINIMUM_USEFUL_LIGHT_RANGE
 	light_power = 3

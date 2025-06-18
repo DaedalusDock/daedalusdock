@@ -584,12 +584,14 @@ TYPEINFO_DEF(/obj/machinery/door/airlock/plasma)
 /obj/machinery/door/airlock/cult/unruned/glass/friendly
 	friendly = TRUE
 
+TYPEINFO_DEF(/obj/machinery/door/airlock/cult/weak)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/machinery/door/airlock/cult/weak
 	name = "brittle cult airlock"
 	desc = "An airlock hastily corrupted by blood magic, it is unusually brittle in this state."
 	normal_integrity = 150
 	damage_deflection = 5
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
 //////////////////////////////////
 /*

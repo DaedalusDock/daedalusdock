@@ -63,6 +63,7 @@
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/wheelchair/hand)
 
 TYPEINFO_DEF(/obj/vehicle/ridden/wheelchair/gold)
+	default_armor = list(BLUNT = 20, PUNCTURE = 20, SLASH = 0, LASER = 20, ENERGY = 0, BOMB = 20, BIO = 0, FIRE = 30, ACID = 40)
 	default_materials = list(/datum/material/gold = 10000)
 
 /obj/vehicle/ridden/wheelchair/gold
@@ -71,7 +72,6 @@ TYPEINFO_DEF(/obj/vehicle/ridden/wheelchair/gold)
 	icon_state = "gold_wheelchair"
 	overlay_icon = "gold_wheelchair_overlay"
 	max_integrity = 200
-	armor = list(BLUNT = 20, PUNCTURE = 20, SLASH = 0, LASER = 20, ENERGY = 0, BOMB = 20, BIO = 0, FIRE = 30, ACID = 40)
 	foldabletype = /obj/item/wheelchair/gold
 
 TYPEINFO_DEF(/obj/item/wheelchair)

@@ -12,12 +12,14 @@
 
 //COMBAT CLOWN SHOES
 //Clown shoes with combat stats and noslip. Of course they still squeak.
+TYPEINFO_DEF(/obj/item/clothing/shoes/clown_shoes/combat)
+	default_armor = list(BLUNT = 25, PUNCTURE = 25, SLASH = 0, LASER = 25, ENERGY = 25, BOMB = 50, BIO = 10, FIRE = 70, ACID = 50)
+
 /obj/item/clothing/shoes/clown_shoes/combat
 	name = "combat clown shoes"
 	desc = "advanced clown shoes that protect the wearer and render them nearly immune to slipping on their own peels. They also squeak at 100% capacity."
 	clothing_traits = list(TRAIT_NO_SLIP_WATER)
 	slowdown = /obj/item/clothing/shoes::slowdown
-	armor = list(BLUNT = 25, PUNCTURE = 25, SLASH = 0, LASER = 25, ENERGY = 25, BOMB = 50, BIO = 10, FIRE = 70, ACID = 50)
 	strip_delay = 70
 	resistance_flags = NONE
 
@@ -31,11 +33,13 @@
 #define BANANA_SHOES_MAX_CHARGE 3000
 
 //The super annoying version
+TYPEINFO_DEF(/obj/item/clothing/shoes/clown_shoes/banana_shoes/combat)
+	default_armor = list(BLUNT = 25, PUNCTURE = 25, SLASH = 0, LASER = 25, ENERGY = 25, BOMB = 50, BIO = 10, FIRE = 70, ACID = 50)
+
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/combat
 	name = "mk-honk combat shoes"
 	desc = "The culmination of years of clown combat research, these shoes leave a trail of chaos in their wake. They will slowly recharge themselves over time, or can be manually charged with bananium."
 	slowdown = /obj/item/clothing/shoes::slowdown
-	armor = list(BLUNT = 25, PUNCTURE = 25, SLASH = 0, LASER = 25, ENERGY = 25, BOMB = 50, BIO = 10, FIRE = 70, ACID = 50)
 	strip_delay = 70
 	resistance_flags = NONE
 	always_noslip = TRUE

@@ -89,13 +89,15 @@ Slimecrossing Items
 	. = ..()
 
 //Hypercharged slime cell - Charged Yellow
+TYPEINFO_DEF(/obj/item/stock_parts/cell/high/slime_hypercharged)
+	default_materials = null
+
 /obj/item/stock_parts/cell/high/slime_hypercharged
 	name = "hypercharged slime core"
 	desc = "A charged yellow slime extract, infused with plasma. It almost hurts to touch."
 	icon = 'icons/mob/slimes.dmi'
 	icon_state = "yellow slime extract"
 	rating = 7
-	custom_materials = null
 	maxcharge = 50000
 	chargerate = 2500
 	charge_light_type = null
@@ -144,6 +146,9 @@ Slimecrossing Items
 	icon_state = "rainbowbarrier"
 
 //Ice stasis block - Chilling Dark Blue
+TYPEINFO_DEF(/obj/structure/ice_stasis)
+	default_armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = -50, ENERGY = -50, BOMB = 0, BIO = 100, FIRE = -80, ACID = 30)
+
 /obj/structure/ice_stasis
 	name = "ice block"
 	desc = "A massive block of ice. You can see something vaguely humanoid inside."
@@ -151,7 +156,6 @@ Slimecrossing Items
 	icon_state = "frozen"
 	density = TRUE
 	max_integrity = 100
-	armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = -50, ENERGY = -50, BOMB = 0, BIO = 100, FIRE = -80, ACID = 30)
 
 /obj/structure/ice_stasis/Initialize(mapload)
 	. = ..()

@@ -1,4 +1,7 @@
 // Plant analyzer
+TYPEINFO_DEF(/obj/item/plant_analyzer)
+	default_materials = list(/datum/material/iron = 30, /datum/material/glass = 20)
+
 /obj/item/plant_analyzer
 	name = "plant analyzer"
 	desc = "A scanner used to evaluate a plant's various areas of growth, and genetic traits. Comes with a growth scanning mode and a chemical scanning mode."
@@ -10,7 +13,6 @@
 	righthand_file = 'icons/mob/inhands/equipment/tools_righthand.dmi'
 	w_class = WEIGHT_CLASS_TINY
 	slot_flags = ITEM_SLOT_BELT
-	custom_materials = list(/datum/material/iron = 30, /datum/material/glass = 20)
 
 /// When we attack something, first - try to scan something we hit with left click. Left-clicking uses scans for stats
 /obj/item/plant_analyzer/pre_attack(atom/target, mob/living/user)

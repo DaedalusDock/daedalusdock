@@ -1,4 +1,7 @@
 // Wintercoat
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 10, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/suit/hooded/wintercoat
 	name = "winter coat"
 	desc = "A heavy jacket made from 'synthetic' animal furs."
@@ -10,7 +13,6 @@
 	cold_protection = CHEST|GROIN|ARMS
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	allowed = list()
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 10, FIRE = 0, ACID = 0)
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/suit/hooded/wintercoat/Initialize(mapload)
@@ -26,6 +28,9 @@
 		/obj/item/storage/bag/books,
 	)
 
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/winterhood)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 10, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/head/hooded/winterhood
 	name = "winter hood"
 	desc = "A cozy winter hood attached to a heavy winter jacket."
@@ -36,16 +41,17 @@
 	cold_protection = HEAD
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	flags_inv = HIDEHAIR|HIDEEARS
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 10, FIRE = 0, ACID = 0)
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 // CentCom
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/centcom)
+	default_armor = list(BLUNT = 35, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 50, BOMB = 35, BIO = 10, FIRE = 10, ACID = 60)
+
 /obj/item/clothing/suit/hooded/wintercoat/centcom
 	name = "centcom winter coat"
 	desc = "A luxurious winter coat woven in the bright green and gold colours of Central Command. It has a small pin in the shape of the Nanotrasen logo for a zipper."
 	icon_state = "coatcentcom"
 	inhand_icon_state = "coatcentcom"
-	armor = list(BLUNT = 35, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 50, BOMB = 35, BIO = 10, FIRE = 10, ACID = 60)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/centcom
 	supports_variations_flags = NONE
 
@@ -53,12 +59,17 @@
 	. = ..()
 	allowed += GLOB.security_wintercoat_allowed
 
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/winterhood/centcom)
+	default_armor = list(BLUNT = 35, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 50, BOMB = 35, BIO = 10, FIRE = 10, ACID = 60)
+
 /obj/item/clothing/head/hooded/winterhood/centcom
 	icon_state = "hood_centcom"
-	armor = list(BLUNT = 35, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 50, BOMB = 35, BIO = 10, FIRE = 10, ACID = 60)
 	supports_variations_flags = NONE
 
 // Captain
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/captain)
+	default_armor = list(BLUNT = 25, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 0, ACID = 50)
+
 /obj/item/clothing/suit/hooded/wintercoat/captain
 	name = "captain's winter coat"
 	desc = "A luxurious winter coat, stuffed with the down of the endangered Uka bird and trimmed with genuine sable. The fabric is an indulgently soft micro-fiber, \
@@ -66,7 +77,6 @@
 			Extremely lavish, and extremely durable."
 	icon_state = "coatcaptain"
 	inhand_icon_state = "coatcaptain"
-	armor = list(BLUNT = 25, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 0, ACID = 50)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/captain
 	supports_variations_flags = NONE
 
@@ -74,18 +84,22 @@
 	. = ..()
 	allowed += GLOB.security_wintercoat_allowed
 
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/winterhood/captain)
+	default_armor = list(BLUNT = 25, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 0, ACID = 50)
+
 /obj/item/clothing/head/hooded/winterhood/captain
 	icon_state = "hood_captain"
-	armor = list(BLUNT = 25, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 0, ACID = 50)
 	supports_variations_flags = NONE
 
 // Head of Personnel
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/hop)
+	default_armor = list(BLUNT = 10, PUNCTURE = 15, SLASH = 0, LASER = 15, ENERGY = 25, BOMB = 10, BIO = 0, FIRE = 0, ACID = 35)
+
 /obj/item/clothing/suit/hooded/wintercoat/hop
 	name = "head of personnel's winter coat"
 	desc = "A cozy winter coat, covered in thick fur. The breast features a proud yellow chevron, reminding everyone that you're the second banana."
 	icon_state = "coathop"
 	inhand_icon_state = "coathop"
-	armor = list(BLUNT = 10, PUNCTURE = 15, SLASH = 0, LASER = 15, ENERGY = 25, BOMB = 10, BIO = 0, FIRE = 0, ACID = 35)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/hop
 	supports_variations_flags = NONE
 
@@ -134,31 +148,37 @@
 	icon_state = "hood_janitor"
 
 // Security Officer
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/security)
+	default_armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 0, ACID = 45)
+
 /obj/item/clothing/suit/hooded/wintercoat/security
 	name = "security winter coat"
 	desc = "A red, armour-padded winter coat. It glitters with a mild ablative coating and a robust air of authority.  The zipper tab is a pair of jingly little handcuffs that get annoying after the first ten seconds."
 	icon_state = "coatsecurity"
 	inhand_icon_state = "coatsecurity"
-	armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 0, ACID = 45)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/security
 
 /obj/item/clothing/suit/hooded/wintercoat/security/Initialize(mapload)
 	. = ..()
 	allowed += GLOB.security_wintercoat_allowed
 
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/winterhood/security)
+	default_armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 0, ACID = 45)
+
 /obj/item/clothing/head/hooded/winterhood/security
 	desc = "A red, armour-padded winter hood. Definitely not bulletproof, especially not the part where your face goes."
 	icon_state = "hood_security"
-	armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 0, ACID = 45)
 	supports_variations_flags = NONE
 
 // Security Marshal
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/security/hos)
+	default_armor = list(BLUNT = 35, PUNCTURE = 25, SLASH = 0, LASER = 40, ENERGY = 50, BOMB = 35, BIO = 0, FIRE = 0, ACID = 55)
+
 /obj/item/clothing/suit/hooded/wintercoat/security/hos
 	name = "security marshal's winter coat"
 	desc = "A red, armour-padded winter coat, lovingly woven with a Kevlar interleave and reinforced with semi-ablative polymers and a silver azide fill material. The zipper tab looks like a tiny replica of Beepsky."
 	icon_state = "coathos"
 	inhand_icon_state = "coathos"
-	armor = list(BLUNT = 35, PUNCTURE = 25, SLASH = 0, LASER = 40, ENERGY = 50, BOMB = 35, BIO = 0, FIRE = 0, ACID = 55)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/security/hos
 	supports_variations_flags = NONE
 
@@ -167,6 +187,9 @@
 	icon_state = "hood_hos"
 
 // Medical Doctor
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/medical)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 40, FIRE = 10, ACID = 20)
+
 /obj/item/clothing/suit/hooded/wintercoat/medical
 	name = "medical winter coat"
 	desc = "An arctic white winter coat with a small blue caduceus instead of a plastic zipper tab. Snazzy."
@@ -186,29 +209,34 @@
 		/obj/item/sensor_device,
 		/obj/item/storage/pill_bottle,
 	)
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 40, FIRE = 10, ACID = 20)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/medical
 	supports_variations_flags = NONE
+
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/winterhood/medical)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 40, FIRE = 10, ACID = 20)
 
 /obj/item/clothing/head/hooded/winterhood/medical
 	desc = "A white winter coat hood."
 	icon_state = "hood_medical"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 40, FIRE = 10, ACID = 20)
 	supports_variations_flags = NONE
 
 // Medical Director
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/medical/cmo)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 20, ACID = 30)
+
 /obj/item/clothing/suit/hooded/wintercoat/medical/cmo
 	name = "medical director's winter coat"
 	desc = "A winter coat in a vibrant shade of blue with a small silver caduceus instead of a plastic zipper tab. The normal liner is replaced with an exceptionally thick, soft layer of fur."
 	icon_state = "coatcmo"
 	inhand_icon_state = "coatcmo"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 20, ACID = 30)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/medical/cmo
+
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/winterhood/medical/cmo)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 20, ACID = 30)
 
 /obj/item/clothing/head/hooded/winterhood/medical/cmo
 	desc = "A blue winter coat hood."
 	icon_state = "hood_cmo"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 20, ACID = 30)
 
 // Chemist
 /obj/item/clothing/suit/hooded/wintercoat/medical/chemistry
@@ -257,6 +285,9 @@
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 // Scientist
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/science)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 0)
+
 /obj/item/clothing/suit/hooded/wintercoat/science
 	name = "science winter coat"
 	desc = "A white winter coat with an outdated atomic model instead of a plastic zipper tab."
@@ -275,29 +306,34 @@
 		/obj/item/storage/pill_bottle,
 		/obj/item/storage/bag/xeno,
 	)
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 0)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/science
 
 	supports_variations_flags = NONE
 
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/winterhood/science)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 0)
+
 /obj/item/clothing/head/hooded/winterhood/science
 	desc = "A white winter coat hood. This one will keep your brain warm. About as much as the others, really."
 	icon_state = "hood_science"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 0)
 
 // Research Director
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/science/rd)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 20, BIO = 0, FIRE = 30, ACID = 0)
+
 /obj/item/clothing/suit/hooded/wintercoat/science/rd
 	name = "research director's winter coat"
 	desc = "A thick arctic winter coat with an outdated atomic model instead of a plastic zipper tab. Most in the know are heavily aware that Bohr's model of the atom was outdated by the time of the 1930s when the Heisenbergian and Schrodinger models were generally accepted for true. Nevertheless, we still see its use in anachronism, roleplaying, and, in this case, as a zipper tab. At least it should keep you warm on your ivory pillar."
 	icon_state = "coatrd"
 	inhand_icon_state = "coatrd"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 20, BIO = 0, FIRE = 30, ACID = 0)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/science/rd
+
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/winterhood/science/rd)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 20, BIO = 0, FIRE = 30, ACID = 0)
 
 /obj/item/clothing/head/hooded/winterhood/science/rd
 	desc = "A white winter coat hood. It smells faintly of hair gel."
 	icon_state = "hood_rd"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 20, BIO = 0, FIRE = 30, ACID = 0)
 
 // Roboticist
 /obj/item/clothing/suit/hooded/wintercoat/science/robotics
@@ -324,6 +360,9 @@
 	icon_state = "hood_genetics"
 
 // Station Engineer
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/engineering)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 20, ACID = 0)
+
 /obj/item/clothing/suit/hooded/wintercoat/engineering
 	name = "engineering winter coat"
 	desc = "A surprisingly heavy yellow winter coat with reflective orange stripes. It has a small wrench for its zipper tab, and the inside layer is covered with a radiation-resistant silver-nylon blend. Because you're worth it."
@@ -337,7 +376,6 @@
 		/obj/item/t_scanner,
 		/obj/item/storage/bag/construction,
 	)
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 20, ACID = 0)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/engineering
 	supports_variations_flags = NONE
 
@@ -346,10 +384,12 @@
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = 90)
 
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/winterhood/engineering)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 20, ACID = 0)
+
 /obj/item/clothing/head/hooded/winterhood/engineering
 	desc = "A yellow winter coat hood. Definitely not a replacement for a hard hat."
 	icon_state = "hood_engineer"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 20, ACID = 0)
 	zmm_flags = ZMM_MANGLE_PLANES
 
 /obj/item/clothing/head/hooded/winterhood/engineering/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
@@ -358,18 +398,22 @@
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = 90)
 
 // Chief Engineer
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/engineering/ce)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 30, ACID = 10)
+
 /obj/item/clothing/suit/hooded/wintercoat/engineering/ce
 	name = "chief engineer's winter coat"
 	desc = "A white winter coat with reflective green and yellow stripes. Stuffed with asbestos, treated with fire retardant PBDE, lined with a micro thin sheet of lead foil and snugly fitted to your body's measurements. This baby's ready to save you from anything except the thyroid cancer and systemic fibrosis you'll get from wearing it. The zipper tab is a tiny golden wrench."
 	icon_state = "coatce"
 	inhand_icon_state = "coatce"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 30, ACID = 10)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/engineering/ce
+
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/winterhood/engineering/ce)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 30, ACID = 10)
 
 /obj/item/clothing/head/hooded/winterhood/engineering/ce
 	desc = "A white winter coat hood. Feels surprisingly heavy. The tag says that it's not child safe."
 	icon_state = "hood_ce"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 30, ACID = 10)
 
 // Atmospherics Technician
 /obj/item/clothing/suit/hooded/wintercoat/engineering/atmos
@@ -410,6 +454,9 @@
 	icon_state = "hood_qm"
 
 // Shaft Miner
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/miner)
+	default_armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/suit/hooded/wintercoat/miner
 	name = "mining winter coat"
 	desc = "A dusty button up winter coat. The zipper tab looks like a tiny pickaxe."
@@ -423,13 +470,14 @@
 		/obj/item/tank/internals,
 		/obj/item/storage/bag/ore,
 	)
-	armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/miner
+
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/winterhood/miner)
+	default_armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
 /obj/item/clothing/head/hooded/winterhood/miner
 	desc = "A dusty winter coat hood."
 	icon_state = "hood_miner"
-	armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
 /obj/item/clothing/suit/hooded/wintercoat/custom
 	name = "tailored winter coat"

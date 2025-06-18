@@ -10,6 +10,9 @@
 
 
 
+TYPEINFO_DEF(/obj/item/multitool)
+	default_materials = list(/datum/material/iron=50, /datum/material/glass=20)
+
 /obj/item/multitool
 	name = "multitool"
 	desc = "Used for pulsing wires to test which to cut. Not recommended by doctors."
@@ -27,7 +30,6 @@
 
 	drop_sound = 'sound/items/handling/multitool_drop.ogg'
 	pickup_sound = 'sound/items/handling/multitool_pickup.ogg'
-	custom_materials = list(/datum/material/iron=50, /datum/material/glass=20)
 	custom_premium_price = PAYCHECK_HARD * 3
 	toolspeed = 1
 	usesound = 'sound/weapons/empty.ogg'
@@ -161,13 +163,15 @@
 		M.toggle_hud(owner)
 	return TRUE
 
+TYPEINFO_DEF(/obj/item/multitool/abductor)
+	default_materials = list(/datum/material/iron = 5000, /datum/material/silver = 2500, /datum/material/plasma = 5000, /datum/material/titanium = 2000, /datum/material/diamond = 2000)
+
 /obj/item/multitool/abductor
 	name = "alien multitool"
 	desc = "An omni-technological interface."
 	icon = 'icons/obj/abductor.dmi'
 	icon_state = "multitool"
 	belt_icon_state = "multitool_alien"
-	custom_materials = list(/datum/material/iron = 5000, /datum/material/silver = 2500, /datum/material/plasma = 5000, /datum/material/titanium = 2000, /datum/material/diamond = 2000)
 	toolspeed = 0.1
 
 /obj/item/multitool/cyborg

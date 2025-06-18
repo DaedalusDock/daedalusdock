@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/machinery/button)
+	default_armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 90, LASER = 50, ENERGY = 50, BOMB = 10, BIO = 100, FIRE = 90, ACID = 70)
+
 /obj/machinery/button
 	name = "button"
 	desc = "A remote control switch."
@@ -11,7 +14,6 @@
 	var/id = null
 	var/initialized_button = 0
 	var/silicon_access_disabled = FALSE
-	armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 90, LASER = 50, ENERGY = 50, BOMB = 10, BIO = 100, FIRE = 90, ACID = 70)
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.02
 	resistance_flags = LAVA_PROOF | FIRE_PROOF
 
@@ -288,12 +290,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/button/door, 24)
 /obj/machinery/button/crematorium/indestructible
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
+TYPEINFO_DEF(/obj/item/wallframe/button)
+	default_materials = list(/datum/material/iron=MINERAL_MATERIAL_AMOUNT)
+
 /obj/item/wallframe/button
 	name = "button frame"
 	desc = "Used for building buttons."
 	icon_state = "button"
 	result_path = /obj/machinery/button
-	custom_materials = list(/datum/material/iron=MINERAL_MATERIAL_AMOUNT)
 	pixel_shift = 24
 
 /obj/machinery/button/elevator

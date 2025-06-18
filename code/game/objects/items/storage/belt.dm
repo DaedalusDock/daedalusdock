@@ -479,13 +479,15 @@
 	for(var/i in 1 to 6)
 		new /obj/item/soulstone/anybody/chaplain(src)
 
+TYPEINFO_DEF(/obj/item/storage/belt/champion)
+	default_materials = list(/datum/material/gold=400)
+
 /obj/item/storage/belt/champion
 	name = "championship belt"
 	desc = "Proves to the world that you are the strongest!"
 	icon_state = "championbelt"
 	inhand_icon_state = "championbelt"
 	worn_icon_state = "championbelt"
-	custom_materials = list(/datum/material/gold=400)
 
 /obj/item/storage/belt/champion/Initialize()
 	. = ..()

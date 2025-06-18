@@ -592,13 +592,15 @@
  * Crayon Box
  */
 
+TYPEINFO_DEF(/obj/item/storage/crayons)
+	default_materials = list(/datum/material/cardboard = 2000)
+
 /obj/item/storage/crayons
 	name = "box of crayons"
 	desc = "A box of crayons for all your rune drawing needs."
 	icon = 'icons/obj/crayons.dmi'
 	icon_state = "crayonbox"
 	w_class = WEIGHT_CLASS_SMALL
-	custom_materials = list(/datum/material/cardboard = 2000)
 
 /obj/item/storage/crayons/Initialize(mapload)
 	. = ..()

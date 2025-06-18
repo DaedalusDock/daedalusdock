@@ -1,12 +1,14 @@
+TYPEINFO_DEF(/obj/structure/sign)
+	default_armor = list(BLUNT = 50, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+	default_materials = list(/datum/material/plastic = 2000)
+
 /obj/structure/sign
 	icon = 'icons/obj/decals.dmi'
 	anchored = TRUE
 	opacity = FALSE
 	density = FALSE
 	layer = SIGN_LAYER
-	custom_materials = list(/datum/material/plastic = 2000)
 	max_integrity = 100
-	armor = list(BLUNT = 50, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	///Determines if a sign is unwrenchable.
 	var/buildable_sign = TRUE
 	resistance_flags = FLAMMABLE
@@ -22,6 +24,10 @@
 	is_editable = TRUE
 	sign_change_name = "Blank Sign"
 
+TYPEINFO_DEF(/obj/item/sign)
+	default_armor = list(BLUNT = 50, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+	default_materials = list(/datum/material/plastic = 2000)
+
 /obj/item/sign
 	name = "sign backing"
 	desc = "A plastic sign backing, use a pen to change the decal. It can be placed on a wall."
@@ -31,8 +37,6 @@
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
-	custom_materials = list(/datum/material/plastic = 2000)
-	armor = list(BLUNT = 50, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	resistance_flags = FLAMMABLE
 	max_integrity = 100
 	///The type of sign structure that will be created when placed on a turf, the default looks just like a sign backing item.

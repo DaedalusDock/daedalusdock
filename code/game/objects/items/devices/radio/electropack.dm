@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/electropack)
+	default_materials = list(/datum/material/iron=10000, /datum/material/glass=2500)
+
 /obj/item/electropack
 	name = "electropack"
 	desc = "Dance my monkeys! DANCE!!!"
@@ -9,7 +12,6 @@
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BACK
 	w_class = WEIGHT_CLASS_HUGE
-	custom_materials = list(/datum/material/iron=10000, /datum/material/glass=2500)
 
 	var/on = TRUE
 	var/code = 2

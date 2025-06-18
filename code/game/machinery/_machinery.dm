@@ -56,7 +56,7 @@
  *		used in the other power updating procs to then readd the correct power usage.
  *
  *
- *     Default definition uses 'use_power', 'power_channel', 'active_power_usage',
+ * 	default definition uses 'use_power', 'power_channel', 'active_power_usage',
  *     'idle_power_usage', 'powered()', and 'use_power()' implement behavior.
  *
  *  powered(chan = -1)         'modules/power/power.dm'
@@ -75,7 +75,7 @@
  *     contained in the component_parts list. (example: glass and material amounts for
  *     the autolathe)
  *
- *     Default definition does nothing.
+ * 	default definition does nothing.
  *
  *  process()                  'game/machinery/machine.dm'
  *     Called by the 'machinery subsystem' once per machinery tick for each machine that is listed in its 'machines' list.
@@ -176,11 +176,7 @@
 	///Used by SSairmachines for optimizing scrubbers and vent pumps.
 	COOLDOWN_DECLARE(hibernating)
 
-GLOBAL_REAL_VAR(machinery_default_armor) = list()
 /obj/machinery/Initialize(mapload)
-	if(!armor)
-		armor = machinery_default_armor
-
 	. = ..()
 
 	SETUP_SMOOTHING()

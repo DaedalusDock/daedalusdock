@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/machinery/igniter)
+	default_armor = list(BLUNT = 50, PUNCTURE = 30, SLASH = 90, LASER = 70, ENERGY = 50, BOMB = 20, BIO = 0, FIRE = 100, ACID = 70)
+
 /obj/machinery/igniter
 	name = "igniter"
 	desc = "It's useful for igniting plasma."
@@ -6,7 +9,6 @@
 	base_icon_state = "igniter"
 	plane = FLOOR_PLANE
 	max_integrity = 300
-	armor = list(BLUNT = 50, PUNCTURE = 30, SLASH = 90, LASER = 70, ENERGY = 50, BOMB = 20, BIO = 0, FIRE = 100, ACID = 70)
 	resistance_flags = FIRE_PROOF
 	var/id = null
 	var/on = FALSE

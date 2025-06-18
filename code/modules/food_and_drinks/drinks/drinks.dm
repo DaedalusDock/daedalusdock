@@ -166,6 +166,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
+TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/trophy)
+	default_materials = list(/datum/material/iron=100)
+
 /obj/item/reagent_containers/food/drinks/trophy
 	name = "pewter cup"
 	desc = "Everyone gets a trophy."
@@ -174,13 +177,15 @@
 	force = 1
 	throwforce = 1
 	amount_per_transfer_from_this = 5
-	custom_materials = list(/datum/material/iron=100)
 	possible_transfer_amounts = list(5)
 	volume = 5
 	flags_1 = CONDUCT_1
 	spillable = TRUE
 	resistance_flags = FIRE_PROOF
 	isGlass = FALSE
+
+TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/trophy/gold_cup)
+	default_materials = list(/datum/material/gold=1000)
 
 /obj/item/reagent_containers/food/drinks/trophy/gold_cup
 	name = "gold cup"
@@ -190,8 +195,10 @@
 	force = 14
 	throwforce = 10
 	amount_per_transfer_from_this = 20
-	custom_materials = list(/datum/material/gold=1000)
 	volume = 150
+
+TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/trophy/silver_cup)
+	default_materials = list(/datum/material/silver=800)
 
 /obj/item/reagent_containers/food/drinks/trophy/silver_cup
 	name = "silver cup"
@@ -201,9 +208,11 @@
 	force = 10
 	throwforce = 8
 	amount_per_transfer_from_this = 15
-	custom_materials = list(/datum/material/silver=800)
 	volume = 100
 
+
+TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/trophy/bronze_cup)
+	default_materials = list(/datum/material/iron=400)
 
 /obj/item/reagent_containers/food/drinks/trophy/bronze_cup
 	name = "bronze cup"
@@ -213,7 +222,6 @@
 	force = 5
 	throwforce = 4
 	amount_per_transfer_from_this = 10
-	custom_materials = list(/datum/material/iron=400)
 	volume = 25
 
 ///////////////////////////////////////////////Drinks
@@ -254,6 +262,9 @@
 	isGlass = FALSE
 	custom_price = PAYCHECK_ASSISTANT * 0.4
 
+TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/waterbottle)
+	default_materials = list(/datum/material/plastic=1000)
+
 /obj/item/reagent_containers/food/drinks/waterbottle
 	name = "bottle of water"
 	desc = "A bottle of water filled at an old Earth bottling facility."
@@ -261,7 +272,6 @@
 	icon_state = "smallbottle"
 	inhand_icon_state = "bottle"
 	list_reagents = list(/datum/reagent/water = 49.5, /datum/reagent/fluorine = 0.5)//see desc, don't think about it too hard
-	custom_materials = list(/datum/material/plastic=1000)
 	volume = 50
 	amount_per_transfer_from_this = 10
 	fill_icon_thresholds = list(0, 10, 25, 50, 75, 80, 90)
@@ -365,10 +375,12 @@
 	list_reagents = list()
 	cap_on = FALSE
 
+TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/waterbottle/large)
+	default_materials = list(/datum/material/plastic=3000)
+
 /obj/item/reagent_containers/food/drinks/waterbottle/large
 	desc = "A fresh commercial-sized bottle of water."
 	icon_state = "largebottle"
-	custom_materials = list(/datum/material/plastic=3000)
 	list_reagents = list(/datum/reagent/water = 100)
 	volume = 100
 	amount_per_transfer_from_this = 10
@@ -514,6 +526,9 @@
 	qdel(src)
 	target.BumpedBy(B)
 
+TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/colocup)
+	default_materials = list(/datum/material/plastic = 1000)
+
 /obj/item/reagent_containers/food/drinks/colocup
 	name = "colo cup"
 	desc = "A cheap, mass produced style of cup, typically used at parties. They never seem to come out red, for some reason..."
@@ -522,7 +537,6 @@
 	lefthand_file = 'icons/mob/inhands/misc/food_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/food_righthand.dmi'
 	inhand_icon_state = "colocup"
-	custom_materials = list(/datum/material/plastic = 1000)
 	possible_transfer_amounts = list(5, 10, 15, 20)
 	volume = 20
 	amount_per_transfer_from_this = 5
@@ -544,29 +558,35 @@
 // itself), in Chemistry-Recipes.dm (for the reaction that changes the components into the drink), and here (for the drinking glass
 // icon states.
 
+TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/shaker)
+	default_materials = list(/datum/material/iron=1500)
+
 /obj/item/reagent_containers/food/drinks/shaker
 	name = "shaker"
 	desc = "A metal shaker to mix drinks in."
 	icon_state = "shaker"
-	custom_materials = list(/datum/material/iron=1500)
 	amount_per_transfer_from_this = 10
 	volume = 100
 	isGlass = FALSE
+
+TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/flask)
+	default_materials = list(/datum/material/iron=250)
 
 /obj/item/reagent_containers/food/drinks/flask
 	name = "flask"
 	desc = "Every good spaceman knows it's a good idea to bring along a couple of pints of whiskey wherever they go."
 	custom_price = PAYCHECK_ASSISTANT * 3.5
 	icon_state = "flask"
-	custom_materials = list(/datum/material/iron=250)
 	volume = 60
 	isGlass = FALSE
+
+TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/flask/gold)
+	default_materials = list(/datum/material/gold=500)
 
 /obj/item/reagent_containers/food/drinks/flask/gold
 	name = "captain's flask"
 	desc = "A gold flask belonging to the captain."
 	icon_state = "flask_gold"
-	custom_materials = list(/datum/material/gold=500)
 
 /obj/item/reagent_containers/food/drinks/flask/det
 	name = "detective's flask"

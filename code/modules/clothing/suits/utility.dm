@@ -9,6 +9,9 @@
  * Fire protection
  */
 
+TYPEINFO_DEF(/obj/item/clothing/suit/fire)
+	default_armor = list(BLUNT = 15, PUNCTURE = 5, SLASH = 0, LASER = 20, ENERGY = 20, BOMB = 20, BIO = 10, FIRE = 100, ACID = 50)
+
 /obj/item/clothing/suit/fire
 	name = "emergency firesuit"
 	desc = "A suit that helps protect against fire and heat."
@@ -20,7 +23,6 @@
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/extinguisher, /obj/item/crowbar)
 	slowdown = 1
-	armor = list(BLUNT = 15, PUNCTURE = 5, SLASH = 0, LASER = 20, ENERGY = 20, BOMB = 20, BIO = 10, FIRE = 100, ACID = 50)
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL
 	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
@@ -55,12 +57,14 @@
 /*
  * Bomb protection
  */
+TYPEINFO_DEF(/obj/item/clothing/head/bomb_hood)
+	default_armor = list(BLUNT = 20, PUNCTURE = 0, SLASH = 0, LASER = 20, ENERGY = 30, BOMB = 100, BIO = 0, FIRE = 80, ACID = 50)
+
 /obj/item/clothing/head/bomb_hood
 	name = "bomb hood"
 	desc = "Use in case of bomb."
 	icon_state = "bombsuit"
 	clothing_flags = THICKMATERIAL | SNUG_FIT
-	armor = list(BLUNT = 20, PUNCTURE = 0, SLASH = 0, LASER = 20, ENERGY = 30, BOMB = 100, BIO = 0, FIRE = 80, ACID = 50)
 	flags_inv = HIDEFACE|HIDEMASK|HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 
 	cold_protection = HEAD
@@ -73,6 +77,9 @@
 	resistance_flags = NONE
 
 
+TYPEINFO_DEF(/obj/item/clothing/suit/bomb_suit)
+	default_armor = list(BLUNT = 20, PUNCTURE = 0, SLASH = 0, LASER = 20, ENERGY = 30, BOMB = 100, BIO = 0, FIRE = 80, ACID = 50)
+
 /obj/item/clothing/suit/bomb_suit
 	name = "bomb suit"
 	desc = "A suit designed for safety when handling explosives."
@@ -83,7 +90,6 @@
 	clothing_flags = THICKMATERIAL
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	slowdown = 2
-	armor = list(BLUNT = 20, PUNCTURE = 0, SLASH = 0, LASER = 20, ENERGY = 30, BOMB = 100, BIO = 0, FIRE = 80, ACID = 50)
 	flags_inv = HIDEJUMPSUIT
 	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = ARMOR_MAX_TEMP_PROTECT
@@ -116,13 +122,15 @@
 * Radiation protection
 */
 
+TYPEINFO_DEF(/obj/item/clothing/head/radiation)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 60, FIRE = 30, ACID = 30)
+
 /obj/item/clothing/head/radiation
 	name = "radiation hood"
 	icon_state = "rad"
 	desc = "A hood with radiation protective properties. The label reads, 'Made with lead. Please do not consume insulation.'"
 	clothing_flags = THICKMATERIAL | SNUG_FIT
 	flags_inv = HIDEMASK|HIDEEARS|HIDEFACE|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 60, FIRE = 30, ACID = 30)
 	strip_delay = 60
 	equip_delay_other = 60
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
@@ -132,6 +140,9 @@
 /obj/item/clothing/head/radiation/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/radiation_protected_clothing)
+
+TYPEINFO_DEF(/obj/item/clothing/suit/radiation)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 60, FIRE = 30, ACID = 30)
 
 /obj/item/clothing/suit/radiation
 	name = "radiation suit"
@@ -145,7 +156,6 @@
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/geiger_counter)
 	slowdown = 1.5
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 60, FIRE = 30, ACID = 30)
 	strip_delay = 60
 	equip_delay_other = 60
 	flags_inv = HIDEJUMPSUIT

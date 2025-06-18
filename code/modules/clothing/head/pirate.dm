@@ -25,8 +25,10 @@
 		user.remove_language(/datum/language/piratespeak/, TRUE, TRUE, LANGUAGE_HAT)
 		to_chat(user, span_boldnotice("You can no longer speak like a pirate."))
 
+TYPEINFO_DEF(/obj/item/clothing/head/pirate/armored)
+	default_armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 30, BIO = 30, FIRE = 60, ACID = 75)
+
 /obj/item/clothing/head/pirate/armored
-	armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 30, BIO = 30, FIRE = 60, ACID = 75)
 	strip_delay = 40
 	equip_delay_other = 20
 
@@ -42,7 +44,9 @@
 	inhand_icon_state = "bandana"
 
 
+TYPEINFO_DEF(/obj/item/clothing/head/bandana/armored)
+	default_armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 30, BIO = 30, FIRE = 60, ACID = 75)
+
 /obj/item/clothing/head/bandana/armored
-	armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 30, BIO = 30, FIRE = 60, ACID = 75)
 	strip_delay = 40
 	equip_delay_other = 20

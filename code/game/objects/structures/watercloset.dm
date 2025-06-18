@@ -247,10 +247,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	icon_state = "urinalcake_squish"
 	addtimer(VARSET_CALLBACK(src, icon_state, "urinalcake"), 8)
 
+TYPEINFO_DEF(/obj/item/bikehorn/rubberducky/plasticducky)
+	default_materials = list(/datum/material/plastic = 1000)
+
 /obj/item/bikehorn/rubberducky/plasticducky
 	name = "plastic ducky"
 	desc = "It's a cheap plastic knockoff of a loveable bathtime toy."
-	custom_materials = list(/datum/material/plastic = 1000)
 
 /obj/item/bikehorn/rubberducky
 	name = "rubber ducky"

@@ -8,6 +8,9 @@
 
 #define AIMING_BEAM_ANGLE_CHANGE_THRESHOLD 0.1
 
+TYPEINFO_DEF(/obj/item/gun/energy/beam_rifle)
+	default_materials = null
+
 /obj/item/gun/energy/beam_rifle
 	name = "particle acceleration rifle"
 	desc = "An energy-based anti material marksman rifle that uses highly charged particle beams moving at extreme velocities to decimate whatever is unfortunate enough to be targeted by one."
@@ -18,7 +21,6 @@
 	fire_sound = 'sound/weapons/beam_sniper.ogg'
 	slot_flags = ITEM_SLOT_BACK
 	force = 15
-	custom_materials = null
 	recoil = 4
 	ammo_x_offset = 3
 	ammo_y_offset = 3

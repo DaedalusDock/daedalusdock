@@ -1148,13 +1148,15 @@
 		)
 	generate_items_inside(items_inside,src)
 
+TYPEINFO_DEF(/obj/item/storage/box/plastic)
+	default_materials = list(/datum/material/plastic = 1000)
+
 /obj/item/storage/box/plastic
 	name = "plastic box"
 	desc = "It's a solid, plastic shell box."
 	icon_state = "plasticbox"
 	foldable = null
 	illustration = "writing"
-	custom_materials = list(/datum/material/plastic = 1000) //You lose most if recycled.
 
 
 /obj/item/storage/box/fireworks

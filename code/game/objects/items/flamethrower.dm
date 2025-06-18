@@ -1,6 +1,9 @@
 /// Ratio of gas removed from the tank for every turf.
 #define FLAMETHROWER_RELEASE_RATIO 0.05
 
+TYPEINFO_DEF(/obj/item/flamethrower)
+	default_materials = list(/datum/material/iron=500)
+
 /obj/item/flamethrower
 	name = "flamethrower"
 	desc = "You are a firestarter!"
@@ -15,7 +18,6 @@
 	throw_speed = 1
 	throw_range = 5
 	w_class = WEIGHT_CLASS_NORMAL
-	custom_materials = list(/datum/material/iron=500)
 	resistance_flags = FIRE_PROOF
 	trigger_guard = TRIGGER_GUARD_NORMAL
 	light_system = OVERLAY_LIGHT

@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/flashlight)
+	default_materials = list(/datum/material/iron=50, /datum/material/glass=20)
+
 /obj/item/flashlight
 	name = "flashlight"
 	desc = "A hand-held emergency light."
@@ -11,7 +14,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
-	custom_materials = list(/datum/material/iron=50, /datum/material/glass=20)
 	actions_types = list(/datum/action/item_action/toggle_light)
 	light_system = OVERLAY_LIGHT_DIRECTIONAL
 	light_outer_range = 4
@@ -190,6 +192,9 @@
 	hitsound = 'sound/weapons/genhit1.ogg'
 
 // the desk lamps are a bit special
+TYPEINFO_DEF(/obj/item/flashlight/lamp)
+	default_materials = null
+
 /obj/item/flashlight/lamp
 	name = "desk lamp"
 	desc = "A desk lamp with an adjustable mount."
@@ -204,7 +209,6 @@
 	light_color = LIGHT_COLOR_FAINT_BLUE
 	w_class = WEIGHT_CLASS_BULKY
 	flags_1 = CONDUCT_1
-	custom_materials = null
 	on = TRUE
 
 
@@ -351,6 +355,9 @@
 	color = LIGHT_COLOR_GREEN
 	light_color = LIGHT_COLOR_GREEN
 
+TYPEINFO_DEF(/obj/item/flashlight/slime)
+	default_materials = null
+
 /obj/item/flashlight/slime
 	gender = PLURAL
 	name = "glowing slime extract"
@@ -360,7 +367,6 @@
 	inhand_icon_state = "slime"
 	w_class = WEIGHT_CLASS_SMALL
 	slot_flags = ITEM_SLOT_BELT
-	custom_materials = null
 	light_outer_range = 7 //luminosity when on
 	light_system = OVERLAY_LIGHT
 

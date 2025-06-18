@@ -7,6 +7,9 @@
  *
  **/
 
+/// This needs to be run as soon as physically possible
+GLOBAL_REAL_VAR(list/__typeinfo_cache) = new
+
 //Init the debugger datum first so we can debug Master
 //You might wonder why not just create the debugger datum global in its own file, since its loaded way earlier than this DM file
 //Well for whatever reason then the Master gets created first and then the debugger when doing that

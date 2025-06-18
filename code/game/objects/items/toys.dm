@@ -280,6 +280,9 @@
 /*
  * Toy gun: Why isn't this an /obj/item/gun?
  */
+TYPEINFO_DEF(/obj/item/toy/gun)
+	default_materials = list(/datum/material/iron=10, /datum/material/glass=10)
+
 /obj/item/toy/gun
 	name = "cap gun"
 	desc = "Looks almost like the real thing! Ages 8 and up. Please recycle in an autolathe when you're out of caps."
@@ -292,7 +295,6 @@
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
 	w_class = WEIGHT_CLASS_NORMAL
-	custom_materials = list(/datum/material/iron=10, /datum/material/glass=10)
 	attack_verb_continuous = list("strikes", "pistol whips", "hits", "bashes")
 	attack_verb_simple = list("strike", "pistol whip", "hit", "bash")
 	var/bullets = 7
@@ -341,13 +343,15 @@
 		span_danger("You fire [src] at [target]!"), \
 		span_hear("You hear a gunshot!"))
 
+TYPEINFO_DEF(/obj/item/toy/ammo/gun)
+	default_materials = list(/datum/material/iron=10, /datum/material/glass=10)
+
 /obj/item/toy/ammo/gun
 	name = "capgun ammo"
 	desc = "Make sure to recyle the box in an autolathe when it gets empty."
 	icon = 'icons/obj/guns/ammo.dmi'
 	icon_state = "357OLD-7"
 	w_class = WEIGHT_CLASS_TINY
-	custom_materials = list(/datum/material/iron=10, /datum/material/glass=10)
 	var/amount_left = 7
 
 /obj/item/toy/ammo/gun/update_icon_state()

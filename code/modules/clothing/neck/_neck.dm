@@ -233,6 +233,9 @@
 	else
 		to_chat(user, span_warning("There is no export value for [I] or any items within it."))
 
+TYPEINFO_DEF(/obj/item/clothing/neck/beads)
+	default_materials = list(/datum/material/plastic = 500)
+
 /obj/item/clothing/neck/beads
 	name = "plastic bead necklace"
 	desc = "A cheap, plastic bead necklace. Show team spirit! Collect them! Throw them away! The possibilites are endless!"
@@ -240,7 +243,6 @@
 	icon_state = "beads"
 	color = "#ffffff"
 	custom_price = PAYCHECK_ASSISTANT * 0.2
-	custom_materials = (list(/datum/material/plastic = 500))
 
 /obj/item/clothing/neck/beads/Initialize(mapload)
 	. = ..()

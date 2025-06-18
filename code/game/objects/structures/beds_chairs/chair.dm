@@ -423,6 +423,9 @@ TYPEINFO_DEF(/obj/item/chair)
 /obj/item/chair/stool/narsie_act()
 	return //sturdy enough to ignore a god
 
+TYPEINFO_DEF(/obj/item/chair/wood)
+	default_materials = null
+
 /obj/item/chair/wood
 	name = "wooden chair"
 	icon_state = "wooden_chair_toppled"
@@ -431,7 +434,6 @@ TYPEINFO_DEF(/obj/item/chair)
 	max_integrity = 70
 	hitsound = 'sound/weapons/genhit1.ogg'
 	origin_type = /obj/structure/chair/wood
-	custom_materials = null
 	break_chance = 50
 
 /obj/item/chair/wood/narsie_act()

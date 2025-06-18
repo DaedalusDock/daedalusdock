@@ -31,8 +31,10 @@ TYPEINFO_DEF(/obj/item/hatchet)
 	playsound(src, 'sound/weapons/bladeslice.ogg', 50, TRUE, -1)
 	return (BRUTELOSS)
 
+TYPEINFO_DEF(/obj/item/hatchet/wooden)
+	default_materials = null
+
 /obj/item/hatchet/wooden
 	desc = "A crude axe blade upon a short wooden handle."
 	icon_state = "woodhatchet"
-	custom_materials = null
 	flags_1 = NONE

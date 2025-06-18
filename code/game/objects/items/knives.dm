@@ -122,6 +122,9 @@ TYPEINFO_DEF(/obj/item/knife/butcher)
 	throwforce = 15
 	bayonet = TRUE
 
+TYPEINFO_DEF(/obj/item/knife/combat/bone)
+	default_materials = null
+
 /obj/item/knife/combat/bone
 	name = "bone dagger"
 	inhand_icon_state = "bone_dagger"
@@ -133,7 +136,6 @@ TYPEINFO_DEF(/obj/item/knife/butcher)
 	embedding = list("pain_mult" = 4, "embed_chance" = 35, "fall_chance" = 10)
 	force = 15
 	throwforce = 15
-	custom_materials = null
 
 /obj/item/knife/combat/cyborg
 	name = "cyborg knife"
@@ -186,13 +188,15 @@ TYPEINFO_DEF(/obj/item/knife/shiv)
 		qdel(shard)
 	return ..()
 
+TYPEINFO_DEF(/obj/item/knife/shiv/carrot)
+	default_materials = null
+
 /obj/item/knife/shiv/carrot
 	name = "carrot shiv"
 	icon_state = "carrotshiv"
 	inhand_icon_state = "carrotshiv"
 	icon = 'icons/obj/kitchen.dmi'
 	desc = "Unlike other carrots, you should probably keep this far away from your eyes."
-	custom_materials = null
 
 /obj/item/knife/shiv/carrot/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] forcefully drives \the [src] into [user.p_their()] eye! It looks like [user.p_theyre()] trying to commit suicide!"))

@@ -89,13 +89,15 @@ Slimecrossing Items
 	. = ..()
 
 //Hypercharged slime cell - Charged Yellow
+TYPEINFO_DEF(/obj/item/stock_parts/cell/high/slime_hypercharged)
+	default_materials = null
+
 /obj/item/stock_parts/cell/high/slime_hypercharged
 	name = "hypercharged slime core"
 	desc = "A charged yellow slime extract, infused with plasma. It almost hurts to touch."
 	icon = 'icons/mob/slimes.dmi'
 	icon_state = "yellow slime extract"
 	rating = 7
-	custom_materials = null
 	maxcharge = 50000
 	chargerate = 2500
 	charge_light_type = null

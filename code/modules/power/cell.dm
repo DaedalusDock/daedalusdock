@@ -352,6 +352,9 @@ TYPEINFO_DEF(/obj/item/stock_parts/cell/infinite)
 	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
 
+TYPEINFO_DEF(/obj/item/stock_parts/cell/potato)
+	default_materials = null
+
 /obj/item/stock_parts/cell/potato
 	name = "potato battery"
 	desc = "A rechargeable starch based power cell."
@@ -361,7 +364,6 @@ TYPEINFO_DEF(/obj/item/stock_parts/cell/infinite)
 	maxcharge = 300
 	charge_light_type = null
 	connector_type = null
-	custom_materials = null
 	grown_battery = TRUE //it has the overlays for wires
 	custom_premium_price = PAYCHECK_ASSISTANT
 
@@ -380,12 +382,14 @@ TYPEINFO_DEF(/obj/item/stock_parts/cell/infinite)
 /obj/item/stock_parts/cell/emproof/corrupt()
 	return
 
+TYPEINFO_DEF(/obj/item/stock_parts/cell/emproof/slime)
+	default_materials = null
+
 /obj/item/stock_parts/cell/emproof/slime
 	name = "EMP-proof slime core"
 	desc = "A yellow slime core infused with plasma. Its organic nature makes it immune to EMPs."
 	icon = 'icons/mob/slimes.dmi'
 	icon_state = "yellow slime extract"
-	custom_materials = null
 	maxcharge = 5000
 	charge_light_type = null
 	connector_type = "slimecore"
@@ -420,6 +424,9 @@ TYPEINFO_DEF(/obj/item/stock_parts/cell/emergency_light)
 	if(!A.lightswitch || !A.light_power)
 		charge = 0 //For naturally depowered areas, we start with no power
 
+TYPEINFO_DEF(/obj/item/stock_parts/cell/crystal_cell)
+	default_materials = null
+
 /obj/item/stock_parts/cell/crystal_cell
 	name = "crystal power cell"
 	desc = "A very high power cell made from crystallized plasma"
@@ -428,7 +435,6 @@ TYPEINFO_DEF(/obj/item/stock_parts/cell/emergency_light)
 	chargerate = 0
 	charge_light_type = null
 	connector_type = "crystal"
-	custom_materials = null
 	grind_results = null
 
 /obj/item/stock_parts/cell/inducer_supply

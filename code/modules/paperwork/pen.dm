@@ -90,13 +90,15 @@ TYPEINFO_DEF(/obj/item/pen)
 	icon_state = "pen-fountain"
 	font = FOUNTAIN_PEN_FONT
 
+TYPEINFO_DEF(/obj/item/pen/charcoal)
+	default_materials = null
+
 /obj/item/pen/charcoal
 	name = "charcoal stylus"
 	desc = "It's just a wooden stick with some compressed ash on the end. At least it can write."
 	icon_state = "pen-charcoal"
 	colour = "#696969"
 	font = CHARCOAL_FONT
-	custom_materials = null
 	grind_results = list(/datum/reagent/ash = 5, /datum/reagent/cellulose = 10)
 
 /datum/crafting_recipe/charcoal_stylus

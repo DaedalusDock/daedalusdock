@@ -164,12 +164,14 @@ TYPEINFO_DEF(/obj/item/restraints/handcuffs/cable)
  *
  * Just cable restraints that look differently and can't be recycled.
 */
+TYPEINFO_DEF(/obj/item/restraints/handcuffs/cable/sinew)
+	default_materials = null
+
 /obj/item/restraints/handcuffs/cable/sinew
 	name = "sinew restraints"
 	desc = "A pair of restraints fashioned from long strands of flesh."
 	icon_state = "sinewcuff"
 	inhand_icon_state = "sinewcuff"
-	custom_materials = null
 	color = null
 
 /**
@@ -225,13 +227,15 @@ TYPEINFO_DEF(/obj/item/restraints/handcuffs/cable)
  *
  * One-use handcuffs that take 45 seconds to resist out of instead of one minute. This turns into the used version when applied.
 */
+TYPEINFO_DEF(/obj/item/restraints/handcuffs/cable/zipties)
+	default_materials = null
+
 /obj/item/restraints/handcuffs/cable/zipties
 	name = "zipties"
 	desc = "Plastic, disposable zipties that can be used to restrain temporarily but are destroyed after use."
 	icon_state = "cuff"
 	lefthand_file = 'icons/mob/inhands/equipment/security_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/security_righthand.dmi'
-	custom_materials = null
 	breakouttime = 45 SECONDS
 	trashtype = /obj/item/restraints/handcuffs/cable/zipties/used
 	color = null

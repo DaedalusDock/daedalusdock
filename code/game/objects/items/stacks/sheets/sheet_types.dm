@@ -287,6 +287,9 @@ GLOBAL_LIST_INIT(wood_recipes, list ( \
 	null, \
 	))
 
+TYPEINFO_DEF(/obj/item/stack/sheet/mineral/wood)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 0)
+
 /obj/item/stack/sheet/mineral/wood
 	name = "wooden planks"
 	desc = "One can only guess that this is a bunch of wood."
@@ -302,7 +305,6 @@ GLOBAL_LIST_INIT(wood_recipes, list ( \
 
 	mats_per_unit = list(/datum/material/wood=MINERAL_MATERIAL_AMOUNT)
 	sheettype = "wood"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 0)
 	resistance_flags = FLAMMABLE
 	merge_type = /obj/item/stack/sheet/mineral/wood
 	novariants = TRUE

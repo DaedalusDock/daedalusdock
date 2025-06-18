@@ -1,4 +1,7 @@
 // Masks
+TYPEINFO_DEF(/obj/item/clothing/mask/utopia)
+	default_armor = list(BLUNT = 0, PUNCTURE = 5, SLASH = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 10, ACID = 10)
+
 /obj/item/clothing/mask/utopia
 	name = "acolyte mask"
 	desc = "A stage mask depicting utter despair."
@@ -6,7 +9,6 @@
 	icon_state = "aethertragedy"
 	inhand_icon_state = null
 
-	armor = list(BLUNT = 0, PUNCTURE = 5, SLASH = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 10, ACID = 10)
 
 	w_class = WEIGHT_CLASS_SMALL
 	resistance_flags = FLAMMABLE
@@ -55,6 +57,9 @@
 	M.remove_status_effect(/datum/status_effect/augur_mask)
 
 // Robes
+TYPEINFO_DEF(/obj/item/clothing/under/aether_robes)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/under/aether_robes
 	name = "aether uniform"
 	desc = "A baggy, button-up coat made out of a heavy fabric."
@@ -65,7 +70,6 @@
 	supports_variations_flags = NONE
 
 	permeability_coefficient = 0.5
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 0, ACID = 0)
 
 /obj/item/clothing/under/aether_robes/Initialize(mapload)
 	. = ..()
@@ -88,6 +92,9 @@
 			result.create_tooltip("The fabric is old and brittle. It has seen hundreds of light-years."),
 		)
 
+TYPEINFO_DEF(/obj/item/clothing/head/aether_hood)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 25, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/head/aether_hood
 	name = "aether robe veil"
 	desc = "A hood made out of heavy fabric."
@@ -96,7 +103,6 @@
 	flags_inv = HIDEHAIR | HIDEEARS
 
 	permeability_coefficient = 0.8
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 25, FIRE = 0, ACID = 0)
 
 /obj/item/clothing/shoes/really_blue_sneakers
 	name = "blue shoes"

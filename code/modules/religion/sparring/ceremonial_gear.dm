@@ -1,4 +1,5 @@
 TYPEINFO_DEF(/obj/item/ceremonial_blade)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	default_materials = list(/datum/material/iron = 12000)
 
 ///ritual weapons. they're really bad, but they become normal weapons when sparring.
@@ -25,7 +26,6 @@ TYPEINFO_DEF(/obj/item/ceremonial_blade)
 	sharpness = SHARP_EDGED
 	max_integrity = 200
 	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX | MATERIAL_GREYSCALE //doesn't affect stats of the weapon as to avoid gamering your opponent with a dope weapon
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 
 /obj/item/ceremonial_blade/Initialize(mapload)

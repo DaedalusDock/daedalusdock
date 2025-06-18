@@ -4,6 +4,9 @@
 	build_path = /obj/machinery/computer4
 
 DEFINE_INTERACTABLE(/obj/machinery/computer4)
+TYPEINFO_DEF(/obj/machinery/computer4)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 40, ACID = 20)
+
 /obj/machinery/computer4
 	name = "voidcomputer"
 	desc = "An older voidcomputer model produced by ThinkTronic LTD."
@@ -14,7 +17,6 @@ DEFINE_INTERACTABLE(/obj/machinery/computer4)
 	density = TRUE
 	max_integrity = 200
 	integrity_failure = 0.5
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 40, ACID = 20)
 	zmm_flags = ZMM_MANGLE_PLANES
 
 	network_flags = NETWORK_FLAG_USE_DATATERMINAL // Does not get a net ID

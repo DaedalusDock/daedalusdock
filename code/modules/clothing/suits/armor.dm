@@ -48,6 +48,9 @@ TYPEINFO_DEF(/obj/item/clothing/suit/armor/vest/ballistic)
 	icon_state = "armoralt"
 	inhand_icon_state = "armoralt"
 
+TYPEINFO_DEF(/obj/item/clothing/suit/armor/vest/marine)
+	default_armor = list(BLUNT = 50, PUNCTURE = 20, SLASH = 70, LASER = 30, ENERGY = 25, BOMB = 50, BIO = 100, FIRE = 40, ACID = 50)
+
 /obj/item/clothing/suit/armor/vest/marine
 	name = "tactical armor vest"
 	desc = "A set of the finest mass produced, stamped plasteel armor plates, containing an environmental protection unit for all-condition door kicking."
@@ -62,7 +65,6 @@ TYPEINFO_DEF(/obj/item/clothing/suit/armor/vest/ballistic)
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_VOX_VARIATION | CLOTHING_TESHARI_VARIATION
 
 
-	armor = list(BLUNT = 50, PUNCTURE = 20, SLASH = 70, LASER = 30, ENERGY = 25, BOMB = 50, BIO = 100, FIRE = 40, ACID = 50)
 
 /obj/item/clothing/suit/armor/vest/marine/security
 	name = "large tactical armor vest"

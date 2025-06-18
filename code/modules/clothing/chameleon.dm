@@ -480,6 +480,9 @@ TYPEINFO_DEF(/obj/item/clothing/glasses/chameleon)
 	. = ..()
 	chameleon_action.emp_randomise(INFINITY)
 
+TYPEINFO_DEF(/obj/item/clothing/gloves/chameleon)
+	default_armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/gloves/chameleon
 	desc = "These gloves provide protection against electric shock."
 	name = "insulated gloves"
@@ -487,7 +490,6 @@ TYPEINFO_DEF(/obj/item/clothing/glasses/chameleon)
 	inhand_icon_state = "ygloves"
 
 	resistance_flags = NONE
-	armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	var/datum/action/item_action/chameleon/change/chameleon_action
@@ -515,13 +517,15 @@ TYPEINFO_DEF(/obj/item/clothing/glasses/chameleon)
 	. = ..()
 	chameleon_action.emp_randomise(INFINITY)
 
+TYPEINFO_DEF(/obj/item/clothing/head/chameleon)
+	default_armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/head/chameleon
 	name = "grey cap"
 	desc = "It's a baseball hat in a tasteful grey colour."
 	icon_state = "greysoft"
 
 	resistance_flags = NONE
-	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 
 	var/datum/action/item_action/chameleon/change/chameleon_action
 

@@ -8,6 +8,7 @@
  * Can rupture explosively if overpressurized
  */
 TYPEINFO_DEF(/obj/item/tank)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 80, ACID = 30)
 	default_materials = list(/datum/material/iron = 500)
 
 /obj/item/tank
@@ -31,7 +32,6 @@ TYPEINFO_DEF(/obj/item/tank)
 	stamina_critical_chance = 10
 
 	actions_types = list(/datum/action/item_action/set_internals)
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 80, ACID = 30)
 	integrity_failure = 0.5
 
 	/// The gases this tank contains. Don't modify this directly, use return_air() to get it instead

@@ -1,4 +1,7 @@
 //Pinpointers are used to track atoms from a distance as long as they're on the same z-level. The captain and nuke ops have ones that track the nuclear authentication disk.
+TYPEINFO_DEF(/obj/item/pinpointer)
+	default_materials = list(/datum/material/iron = 500, /datum/material/glass = 250)
+
 /obj/item/pinpointer
 	name = "pinpointer"
 	desc = "A handheld tracking device that locks onto certain signals."
@@ -12,7 +15,6 @@
 	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
 	throw_range = 7
-	custom_materials = list(/datum/material/iron = 500, /datum/material/glass = 250)
 	var/active = FALSE
 	var/atom/movable/target //The thing we're searching for
 	var/minimum_range = 0 //at what range the pinpointer declares you to be at your destination

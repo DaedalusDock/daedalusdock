@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/ammo_casing/caseless/foam_dart)
+	default_materials = list(/datum/material/iron = 11.25)
+
 /obj/item/ammo_casing/caseless/foam_dart
 	name = "foam dart"
 	desc = "It's Donk or Don't! Ages 8 and up."
@@ -6,7 +9,6 @@
 	icon = 'icons/obj/guns/toy.dmi'
 	icon_state = "foamdart"
 	base_icon_state = "foamdart"
-	custom_materials = list(/datum/material/iron = 11.25)
 	harmful = FALSE
 	var/modified = FALSE
 

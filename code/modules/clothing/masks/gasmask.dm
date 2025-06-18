@@ -116,12 +116,14 @@
 
 // **** Welding gas mask ****
 
+TYPEINFO_DEF(/obj/item/clothing/mask/gas/welding)
+	default_materials = list(/datum/material/iron=4000, /datum/material/glass=2000)
+
 /obj/item/clothing/mask/gas/welding
 	name = "welding mask"
 	desc = "A gas mask with built-in welding goggles and a face shield. Looks like a skull - clearly designed by a nerd."
 	icon_state = "weldingmask"
 	flash_protect = FLASH_PROTECTION_WELDER
-	custom_materials = list(/datum/material/iron=4000, /datum/material/glass=2000)
 	tint = 2
 	armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 55)
 	actions_types = list(/datum/action/item_action/toggle)
@@ -297,12 +299,14 @@
 	icon_state = "carp_mask"
 	flags_cover = MASKCOVERSEYES
 
+TYPEINFO_DEF(/obj/item/clothing/mask/gas/tiki_mask)
+	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 1.25)
+
 /obj/item/clothing/mask/gas/tiki_mask
 	name = "tiki mask"
 	desc = "A creepy wooden mask. Surprisingly expressive for a poorly carved bit of wood."
 	icon_state = "tiki_eyebrow"
 	inhand_icon_state = "tiki_eyebrow"
-	custom_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 1.25)
 	resistance_flags = FLAMMABLE
 	flags_cover = MASKCOVERSEYES
 	max_integrity = 100

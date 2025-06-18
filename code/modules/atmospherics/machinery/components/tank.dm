@@ -1,5 +1,8 @@
 #define TANK_PLATING_SHEETS 12
 
+TYPEINFO_DEF(/obj/machinery/atmospherics/components/tank)
+	default_materials = list(/datum/material/iron = TANK_PLATING_SHEETS * MINERAL_MATERIAL_AMOUNT)
+
 /obj/machinery/atmospherics/components/tank
 	icon = 'icons/obj/atmospherics/stationary_canisters.dmi'
 	icon_state = "smooth"
@@ -12,7 +15,6 @@
 	density = TRUE
 	layer = ABOVE_WINDOW_LAYER
 
-	custom_materials = list(/datum/material/iron = TANK_PLATING_SHEETS * MINERAL_MATERIAL_AMOUNT) // plasteel is not a material to prevent two bugs: one where the default pressure is 1.5 times higher as plasteel's material modifier is added, and a second one where the tank names could be "plasteel plasteel" tanks
 	material_flags = MATERIAL_EFFECTS | MATERIAL_GREYSCALE | MATERIAL_ADD_PREFIX | MATERIAL_AFFECT_STATISTICS
 
 	pipe_flags = PIPING_ONE_PER_TURF
@@ -487,12 +489,14 @@
 ///////////////////////////////////////////////////////////////////
 // Tank Frame Structure
 
+TYPEINFO_DEF(/obj/structure/tank_frame)
+	default_materials = list(/datum/material/alloy/plasteel = 4 * MINERAL_MATERIAL_AMOUNT)
+
 /obj/structure/tank_frame
 	icon = 'icons/obj/atmospherics/stationary_canisters.dmi'
 	icon_state = "frame"
 	anchored = FALSE
 	density = TRUE
-	custom_materials = list(/datum/material/alloy/plasteel = 4 * MINERAL_MATERIAL_AMOUNT)
 	var/construction_state = TANK_FRAME
 	var/datum/material/material_end_product
 

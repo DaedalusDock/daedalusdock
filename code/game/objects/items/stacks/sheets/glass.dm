@@ -268,6 +268,9 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	material_type = /datum/material/gnesis_glass
 	merge_type = /obj/item/stack/sheet/gnesis_glass
 
+TYPEINFO_DEF(/obj/item/shard)
+	default_materials = list(/datum/material/glass=MINERAL_MATERIAL_AMOUNT)
+
 /obj/item/shard
 	name = "shard"
 	desc = "A nasty looking shard of glass."
@@ -279,7 +282,6 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	inhand_icon_state = "shard-glass"
 	lefthand_file = 'icons/mob/inhands/weapons/melee_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
-	custom_materials = list(/datum/material/glass=MINERAL_MATERIAL_AMOUNT)
 	attack_verb_continuous = list("stabs", "slashes", "slices", "cuts")
 	attack_verb_simple = list("stab", "slash", "slice", "cut")
 	hitsound = 'sound/weapons/bladeslice.ogg'
@@ -377,6 +379,9 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 		if(!(L.movement_type & (FLYING|FLOATING)) || L.buckled)
 			playsound(src, pick('sound/effects/glass_step_1.ogg', 'sound/effects/glass_step_2.ogg'), HAS_TRAIT(L, TRAIT_LIGHT_STEP) ? 30 : 50, TRUE)
 
+TYPEINFO_DEF(/obj/item/shard/plasma)
+	default_materials = list(/datum/material/alloy/plasmaglass=MINERAL_MATERIAL_AMOUNT)
+
 /obj/item/shard/plasma
 	name = "purple shard"
 	desc = "A nasty looking shard of plasma glass."
@@ -384,10 +389,12 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	throwforce = 11
 	icon_state = "plasmalarge"
 	inhand_icon_state = "shard-plasma"
-	custom_materials = list(/datum/material/alloy/plasmaglass=MINERAL_MATERIAL_AMOUNT)
 	icon_prefix = "plasma"
 	weld_material = /obj/item/stack/sheet/plasmaglass
 	craft_time = 7 SECONDS
+
+TYPEINFO_DEF(/obj/item/shard/titanium)
+	default_materials = list(/datum/material/alloy/titaniumglass=MINERAL_MATERIAL_AMOUNT)
 
 /obj/item/shard/titanium
 	name = "bright shard"
@@ -395,10 +402,12 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	throwforce = 12
 	icon_state = "titaniumlarge"
 	inhand_icon_state = "shard-titanium"
-	custom_materials = list(/datum/material/alloy/titaniumglass=MINERAL_MATERIAL_AMOUNT)
 	icon_prefix = "titanium"
 	weld_material = /obj/item/stack/sheet/titaniumglass
 	craft_time = 7 SECONDS
+
+TYPEINFO_DEF(/obj/item/shard/plastitanium)
+	default_materials = list(/datum/material/alloy/plastitaniumglass=MINERAL_MATERIAL_AMOUNT)
 
 /obj/item/shard/plastitanium
 	name = "dark shard"
@@ -407,10 +416,12 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	throwforce = 12
 	icon_state = "plastitaniumlarge"
 	inhand_icon_state = "shard-plastitanium"
-	custom_materials = list(/datum/material/alloy/plastitaniumglass=MINERAL_MATERIAL_AMOUNT)
 	icon_prefix = "plastitanium"
 	weld_material = /obj/item/stack/sheet/plastitaniumglass
 	craft_time = 14 SECONDS
+
+TYPEINFO_DEF(/obj/item/shard/gnesis_glass)
+	default_materials = list(/datum/material/gnesis_glass=MINERAL_MATERIAL_AMOUNT)
 
 /obj/item/shard/gnesis_glass
 	name = "bright shard"
@@ -419,7 +430,6 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	force = 7
 	throwforce = 12
 
-	custom_materials = list(/datum/material/gnesis_glass=MINERAL_MATERIAL_AMOUNT)
 	weld_material = /obj/item/stack/sheet/gnesis_glass
 	craft_time = 7 SECONDS
 

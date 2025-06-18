@@ -1,6 +1,9 @@
 /*
  * Film
  */
+TYPEINFO_DEF(/obj/item/camera_film)
+	default_materials = list(/datum/material/iron = 10, /datum/material/glass = 10)
+
 /obj/item/camera_film
 	name = "film cartridge"
 	icon = 'icons/obj/items_and_weapons.dmi'
@@ -11,4 +14,3 @@
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
 	w_class = WEIGHT_CLASS_TINY
 	resistance_flags = FLAMMABLE
-	custom_materials = list(/datum/material/iron = 10, /datum/material/glass = 10)

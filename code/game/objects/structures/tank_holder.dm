@@ -1,11 +1,13 @@
 ///?
+TYPEINFO_DEF(/obj/structure/tank_holder)
+	default_materials = list(/datum/material/iron = 2000)
+
 /obj/structure/tank_holder
 	name = "tank holder"
 	desc = "A metallic frame that can hold tanks and extinguishers."
 	icon = 'icons/obj/tank.dmi'
 	icon_state = "holder"
 
-	custom_materials = list(/datum/material/iron = 2000)
 
 	density = FALSE
 	anchored = FALSE

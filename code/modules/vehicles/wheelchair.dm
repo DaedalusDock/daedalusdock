@@ -62,6 +62,9 @@
 /obj/vehicle/ridden/wheelchair/proc/make_ridable()
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/wheelchair/hand)
 
+TYPEINFO_DEF(/obj/vehicle/ridden/wheelchair/gold)
+	default_materials = list(/datum/material/gold = 10000)
+
 /obj/vehicle/ridden/wheelchair/gold
 	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX | MATERIAL_AFFECT_STATISTICS
 	desc = "Damn, he's been through a lot."
@@ -69,8 +72,10 @@
 	overlay_icon = "gold_wheelchair_overlay"
 	max_integrity = 200
 	armor = list(BLUNT = 20, PUNCTURE = 20, SLASH = 0, LASER = 20, ENERGY = 0, BOMB = 20, BIO = 0, FIRE = 30, ACID = 40)
-	custom_materials = list(/datum/material/gold = 10000)
 	foldabletype = /obj/item/wheelchair/gold
+
+TYPEINFO_DEF(/obj/item/wheelchair)
+	default_materials = list(/datum/material/iron = 10000)
 
 /obj/item/wheelchair
 	name = "wheelchair"
@@ -82,9 +87,11 @@
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
 	force = 8 //Force is same as a chair
-	custom_materials = list(/datum/material/iron = 10000)
 	///The wheelchair vehicle type we create when we unfold this chair
 	var/unfolded_type = /obj/vehicle/ridden/wheelchair
+
+TYPEINFO_DEF(/obj/item/wheelchair/gold)
+	default_materials = list(/datum/material/gold = 10000)
 
 /obj/item/wheelchair/gold
 	name = "gold wheelchair"
@@ -95,7 +102,6 @@
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	force = 10
-	custom_materials = list(/datum/material/gold = 10000)
 	unfolded_type = /obj/vehicle/ridden/wheelchair/gold
 
 /obj/vehicle/ridden/wheelchair/MouseDrop(over_object, src_location, over_location)  //Lets you collapse wheelchair

@@ -1,6 +1,8 @@
+TYPEINFO_DEF(/obj/item/wallframe)
+	default_materials = list(/datum/material/iron=MINERAL_MATERIAL_AMOUNT*2)
+
 /obj/item/wallframe
 	icon = 'icons/obj/wallframe.dmi'
-	custom_materials = list(/datum/material/iron=MINERAL_MATERIAL_AMOUNT*2)
 	flags_1 = CONDUCT_1
 	inhand_icon_state = "syringe_kit"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
@@ -79,6 +81,9 @@
 	qdel(src)
 	return ITEM_INTERACT_SUCCESS
 
+TYPEINFO_DEF(/obj/item/electronics)
+	default_materials = list(/datum/material/iron=50, /datum/material/glass=50)
+
 /obj/item/electronics
 	desc = "Looks like a circuit. Probably is."
 	icon = 'icons/obj/module.dmi'
@@ -88,6 +93,5 @@
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
 	flags_1 = CONDUCT_1
 	w_class = WEIGHT_CLASS_SMALL
-	custom_materials = list(/datum/material/iron=50, /datum/material/glass=50)
 	grind_results = list(/datum/reagent/iron = 10, /datum/reagent/silicon = 10)
 	custom_price = PAYCHECK_ASSISTANT * 1.2

@@ -7,6 +7,9 @@
  * Handheld gas canisters
  * Can rupture explosively if overpressurized
  */
+TYPEINFO_DEF(/obj/item/tank)
+	default_materials = list(/datum/material/iron = 500)
+
 /obj/item/tank
 	name = "tank"
 	icon = 'icons/obj/tank.dmi'
@@ -27,7 +30,6 @@
 	stamina_cost = 23
 	stamina_critical_chance = 10
 
-	custom_materials = list(/datum/material/iron = 500)
 	actions_types = list(/datum/action/item_action/set_internals)
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 80, ACID = 30)
 	integrity_failure = 0.5

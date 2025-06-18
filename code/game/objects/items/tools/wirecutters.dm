@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/wirecutters)
+	default_materials = list(/datum/material/iron=80)
+
 /obj/item/wirecutters
 	name = "wirecutters"
 	desc = "This cuts wires."
@@ -20,7 +23,6 @@
 	stamina_critical_chance = 30
 
 	w_class = WEIGHT_CLASS_SMALL
-	custom_materials = list(/datum/material/iron=80)
 	attack_verb_continuous = list("pinches", "nips")
 	attack_verb_simple = list("pinch", "nip")
 	hitsound = 'sound/items/wirecutter.ogg'
@@ -63,11 +65,13 @@
 	playsound(loc, usesound, 50, TRUE, -1)
 	return (BRUTELOSS)
 
+TYPEINFO_DEF(/obj/item/wirecutters/abductor)
+	default_materials = list(/datum/material/iron = 5000, /datum/material/silver = 2500, /datum/material/plasma = 1000, /datum/material/titanium = 2000, /datum/material/diamond = 2000)
+
 /obj/item/wirecutters/abductor
 	name = "alien wirecutters"
 	desc = "Extremely sharp wirecutters, made out of a silvery-green metal."
 	icon = 'icons/obj/abductor.dmi'
-	custom_materials = list(/datum/material/iron = 5000, /datum/material/silver = 2500, /datum/material/plasma = 1000, /datum/material/titanium = 2000, /datum/material/diamond = 2000)
 	icon_state = "cutters"
 	toolspeed = 0.1
 	random_color = FALSE

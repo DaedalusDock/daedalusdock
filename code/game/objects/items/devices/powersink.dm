@@ -8,6 +8,9 @@
 
 // Powersink - used to drain station power
 
+TYPEINFO_DEF(/obj/item/powersink)
+	default_materials = list(/datum/material/iron=750)
+
 /obj/item/powersink
 	name = "power sink"
 	desc = "A power sink which drains energy from electrical systems and converts it to heat. Ensure short workloads and ample time to cool down if used in high energy systems."
@@ -22,7 +25,6 @@
 	throwforce = 5
 	throw_speed = 1
 	throw_range = 2
-	custom_materials = list(/datum/material/iron=750)
 	var/max_heat = 5e7 // Maximum contained heat before exploding. Not actual temperature.
 	var/internal_heat = 0 // Contained heat, goes down every tick.
 	var/mode = DISCONNECTED // DISCONNECTED, CLAMPED_OFF, OPERATING

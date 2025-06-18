@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/ceremonial_blade)
+	default_materials = list(/datum/material/iron = 12000)
+
 ///ritual weapons. they're really bad, but they become normal weapons when sparring.
 /obj/item/ceremonial_blade
 	name = "ceremonial blade"
@@ -13,7 +16,6 @@
 	greyscale_colors = "#FFFFFF"
 
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	custom_materials = list(/datum/material/iron = 12000)  //Defaults to an Iron blade.
 	force = 2 //20
 	throwforce = 1 //10
 	w_class = WEIGHT_CLASS_NORMAL

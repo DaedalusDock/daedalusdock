@@ -63,10 +63,12 @@
 //////////////////////////////////////STATUES/////////////////////////////////////////////////////////////
 ////////////////////////uranium///////////////////////////////////
 
+TYPEINFO_DEF(/obj/structure/statue/uranium)
+	default_materials = list(/datum/material/uranium=MINERAL_MATERIAL_AMOUNT*5)
+
 /obj/structure/statue/uranium
 	max_integrity = 300
 	light_outer_range = 2
-	custom_materials = list(/datum/material/uranium=MINERAL_MATERIAL_AMOUNT*5)
 	impressiveness = 25 // radiation makes an impression
 	abstract_type = /obj/structure/statue/uranium
 
@@ -82,11 +84,13 @@
 
 ////////////////////////////plasma///////////////////////////////////////////////////////////////////////
 
+TYPEINFO_DEF(/obj/structure/statue/plasma)
+	default_materials = list(/datum/material/plasma=MINERAL_MATERIAL_AMOUNT*5)
+
 /obj/structure/statue/plasma
 	max_integrity = 200
 	impressiveness = 20
 	desc = "This statue is suitably made from plasma."
-	custom_materials = list(/datum/material/plasma=MINERAL_MATERIAL_AMOUNT*5)
 	abstract_type = /obj/structure/statue/plasma
 
 /obj/structure/statue/plasma/scientist
@@ -99,11 +103,13 @@
 
 //////////////////////gold///////////////////////////////////////
 
+TYPEINFO_DEF(/obj/structure/statue/gold)
+	default_materials = list(/datum/material/gold=MINERAL_MATERIAL_AMOUNT*5)
+
 /obj/structure/statue/gold
 	max_integrity = 300
 	impressiveness = 25
 	desc = "This is a highly valuable statue made from gold."
-	custom_materials = list(/datum/material/gold=MINERAL_MATERIAL_AMOUNT*5)
 	abstract_type = /obj/structure/statue/gold
 
 /obj/structure/statue/gold/hos
@@ -128,11 +134,13 @@
 
 //////////////////////////silver///////////////////////////////////////
 
+TYPEINFO_DEF(/obj/structure/statue/silver)
+	default_materials = list(/datum/material/silver=MINERAL_MATERIAL_AMOUNT*5)
+
 /obj/structure/statue/silver
 	max_integrity = 300
 	impressiveness = 25
 	desc = "This is a valuable statue made from silver."
-	custom_materials = list(/datum/material/silver=MINERAL_MATERIAL_AMOUNT*5)
 	abstract_type = /obj/structure/statue/silver
 
 /obj/structure/statue/silver/md
@@ -157,11 +165,13 @@
 
 /////////////////////////diamond/////////////////////////////////////////
 
+TYPEINFO_DEF(/obj/structure/statue/diamond)
+	default_materials = list(/datum/material/diamond=MINERAL_MATERIAL_AMOUNT*5)
+
 /obj/structure/statue/diamond
 	max_integrity = 1000
 	impressiveness = 50
 	desc = "This is a very expensive diamond statue."
-	custom_materials = list(/datum/material/diamond=MINERAL_MATERIAL_AMOUNT*5)
 	abstract_type = /obj/structure/statue/diamond
 
 /obj/structure/statue/diamond/captain
@@ -178,11 +188,13 @@
 
 ////////////////////////bananium///////////////////////////////////////
 
+TYPEINFO_DEF(/obj/structure/statue/bananium)
+	default_materials = list(/datum/material/bananium=MINERAL_MATERIAL_AMOUNT*5)
+
 /obj/structure/statue/bananium
 	max_integrity = 300
 	impressiveness = 50
 	desc = "A bananium statue with a small engraving:'HOOOOOOONK'."
-	custom_materials = list(/datum/material/bananium=MINERAL_MATERIAL_AMOUNT*5)
 	abstract_type = /obj/structure/statue/bananium
 
 /obj/structure/statue/bananium/clown
@@ -191,10 +203,12 @@
 
 /////////////////////sandstone/////////////////////////////////////////
 
+TYPEINFO_DEF(/obj/structure/statue/sandstone)
+	default_materials = list(/datum/material/sandstone=MINERAL_MATERIAL_AMOUNT*5)
+
 /obj/structure/statue/sandstone
 	max_integrity = 50
 	impressiveness = 15
-	custom_materials = list(/datum/material/sandstone=MINERAL_MATERIAL_AMOUNT*5)
 	abstract_type = /obj/structure/statue/sandstone
 
 /obj/structure/statue/sandstone/assistant
@@ -211,9 +225,11 @@
 
 /////////////////////snow/////////////////////////////////////////
 
+TYPEINFO_DEF(/obj/structure/statue/snow)
+	default_materials = list(/datum/material/snow=MINERAL_MATERIAL_AMOUNT*5)
+
 /obj/structure/statue/snow
 	max_integrity = 50
-	custom_materials = list(/datum/material/snow=MINERAL_MATERIAL_AMOUNT*5)
 	abstract_type = /obj/structure/statue/snow
 
 /obj/structure/statue/snow/snowman
@@ -228,8 +244,10 @@
 
 ///////////////////////////////bronze///////////////////////////////////
 
+TYPEINFO_DEF(/obj/structure/statue/bronze)
+	default_materials = list(/datum/material/bronze=MINERAL_MATERIAL_AMOUNT*5)
+
 /obj/structure/statue/bronze
-	custom_materials = list(/datum/material/bronze=MINERAL_MATERIAL_AMOUNT*5)
 	abstract_type = /obj/structure/statue/bronze
 
 /obj/structure/statue/bronze/marx
@@ -240,14 +258,19 @@
 
 ///////////Elder Atmosian///////////////////////////////////////////
 
+TYPEINFO_DEF(/obj/structure/statue/elder_atmosian)
+	default_materials = list(/datum/material/metalhydrogen = MINERAL_MATERIAL_AMOUNT*10)
+
 /obj/structure/statue/elder_atmosian
 	name = "Elder Atmosian"
 	desc = "A statue of an Elder Atmosian, capable of bending the laws of thermodynamics to their will."
 	icon_state = "eng"
-	custom_materials = list(/datum/material/metalhydrogen = MINERAL_MATERIAL_AMOUNT*10)
 	max_integrity = 1000
 	impressiveness = 100
 	can_be_carved = FALSE //Created by a crafting recipe instead of the standard system.
+
+TYPEINFO_DEF(/obj/item/chisel)
+	default_materials = list(/datum/material/iron=75)
 
 /obj/item/chisel
 	name = "chisel"
@@ -263,7 +286,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	throwforce = 5
 	throw_range = 5
-	custom_materials = list(/datum/material/iron=75)
 	attack_verb_continuous = list("stabs")
 	attack_verb_simple = list("stab")
 	hitsound = 'sound/weapons/bladeslice.ogg'

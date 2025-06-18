@@ -1,4 +1,7 @@
 // Knife Template, should not appear in game normaly //
+TYPEINFO_DEF(/obj/item/knife)
+	default_materials = list(/datum/material/iron=12000)
+
 /obj/item/knife
 	name = "knife"
 	icon = 'icons/obj/kitchen.dmi'
@@ -15,7 +18,6 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	throw_speed = 1.5
 	throw_range = 6
-	custom_materials = list(/datum/material/iron=12000)
 	attack_verb_continuous = list("slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	sharpness = SHARP_EDGED
@@ -75,6 +77,9 @@
 	else
 		B.add_stacks(bleed_stacks_per_hit)
 
+TYPEINFO_DEF(/obj/item/knife/butcher)
+	default_materials = list(/datum/material/iron=18000)
+
 /obj/item/knife/butcher
 	name = "butcher's cleaver"
 	icon_state = "butch"
@@ -83,7 +88,6 @@
 	flags_1 = CONDUCT_1
 	force = 15
 	throwforce = 10
-	custom_materials = list(/datum/material/iron=18000)
 	attack_verb_continuous = list("cleaves", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("cleave", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	w_class = WEIGHT_CLASS_NORMAL
@@ -137,6 +141,9 @@
 	icon_state = "knife_cyborg"
 	desc = "A cyborg-mounted plasteel knife. Extremely sharp and durable."
 
+TYPEINFO_DEF(/obj/item/knife/shiv)
+	default_materials = list(/datum/material/glass=400)
+
 /obj/item/knife/shiv
 	name = "glass shiv"
 	icon = 'icons/obj/shards.dmi'
@@ -150,7 +157,6 @@
 	attack_verb_continuous = list("shanks", "shivs")
 	attack_verb_simple = list("shank", "shiv")
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
-	custom_materials = list(/datum/material/glass=400)
 
 /obj/item/knife/shiv/CheckParts(list/parts_list)
 	var/obj/item/shard/shard = locate() in contents
@@ -160,13 +166,13 @@
 			throwforce = 13
 			icon_state = "plasmashiv"
 			inhand_icon_state = "plasmashiv"
-			custom_materials = list(/datum/material/glass=400, /datum/material/plasma=200)
+			set_custom_materials(list(/datum/material/glass=400, /datum/material/plasma=200))
 		else if (istype(shard, /obj/item/shard/titanium))
 			throwforce = 14
 			throw_range = 7
 			icon_state = "titaniumshiv"
 			inhand_icon_state = "titaniumshiv"
-			custom_materials = list(/datum/material/glass=400, /datum/material/titanium=200)
+			set_custom_materials(list(/datum/material/glass=400, /datum/material/titanium=200))
 		else if (istype(shard, /obj/item/shard/plastitanium))
 			force = 10
 			throwforce = 15
@@ -174,7 +180,7 @@
 			throw_range = 8
 			icon_state = "plastitaniumshiv"
 			inhand_icon_state = "plastitaniumshiv"
-			custom_materials = list(/datum/material/glass=400, /datum/material/alloy/plastitanium=200)
+			set_custom_materials(list(/datum/material/glass=400, /datum/material/alloy/plastitanium=200))
 		update_appearance()
 		parts_list -= shard
 		qdel(shard)

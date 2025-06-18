@@ -1029,13 +1029,15 @@ DEFINE_BITFIELD(turret_flags, list(
 	icon_state = "[base_icon_state]_standby"
 	return ..()
 
+TYPEINFO_DEF(/obj/item/wallframe/turret_control)
+	default_materials = list(/datum/material/iron=MINERAL_MATERIAL_AMOUNT)
+
 /obj/item/wallframe/turret_control
 	name = "turret control frame"
 	desc = "Used for building turret control panels."
 	icon = 'icons/obj/machines/turret_control.dmi'
 	icon_state = "control_frame"
 	result_path = /obj/machinery/turretid
-	custom_materials = list(/datum/material/iron=MINERAL_MATERIAL_AMOUNT)
 	pixel_shift = 29
 
 /obj/item/gun/proc/get_turret_properties()

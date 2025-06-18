@@ -3,12 +3,14 @@
 #define STATE_WIRED 3
 #define STATE_FINISHED 4
 
+TYPEINFO_DEF(/obj/item/wallframe/camera)
+	default_materials = list(/datum/material/iron=400, /datum/material/glass=250)
+
 /obj/item/wallframe/camera
 	name = "camera assembly"
 	desc = "The basic construction for cameras."
 	icon = 'icons/obj/machines/camera.dmi'
 	icon_state = "cameracase"
-	custom_materials = list(/datum/material/iron=400, /datum/material/glass=250)
 	result_path = /obj/structure/camera_assembly
 	wall_external = TRUE
 

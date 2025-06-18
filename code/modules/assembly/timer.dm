@@ -1,8 +1,10 @@
+TYPEINFO_DEF(/obj/item/assembly/timer)
+	default_materials = list(/datum/material/iron=500, /datum/material/glass=50)
+
 /obj/item/assembly/timer
 	name = "timer"
 	desc = "Used to time things. Works well with contraptions which has to count down. Tick tock."
 	icon_state = "timer"
-	custom_materials = list(/datum/material/iron=500, /datum/material/glass=50)
 	attachable = TRUE
 	drop_sound = 'sound/items/handling/component_drop.ogg'
 	pickup_sound = 'sound/items/handling/component_pickup.ogg'

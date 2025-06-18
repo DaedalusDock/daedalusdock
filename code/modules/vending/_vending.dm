@@ -1345,12 +1345,14 @@ GLOBAL_LIST_EMPTY(vending_products)
 		I.custom_price = price
 		to_chat(user, span_notice("You set the price of [I] to [price] cr."))
 
+TYPEINFO_DEF(/obj/machinery/vending/custom/greed)
+	default_materials = list(/datum/material/gold = MINERAL_MATERIAL_AMOUNT * 5)
+
 /obj/machinery/vending/custom/greed //name and like decided by the spawn
 	icon_state = "greed"
 	icon_deny = "greed-deny"
 	panel_type = "panel4"
 	light_mask = "greed-light-mask"
-	custom_materials = list(/datum/material/gold = MINERAL_MATERIAL_AMOUNT * 5)
 
 /obj/machinery/vending/custom/greed/Initialize(mapload)
 	. = ..()

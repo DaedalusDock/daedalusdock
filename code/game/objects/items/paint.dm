@@ -2,6 +2,9 @@
 //IT SUCKS A BIT LESS -GIACOM
 //IT SUCKED SO MUCH WE CHANGED IT ENTIRELY
 
+TYPEINFO_DEF(/obj/item/paint_sprayer)
+	default_materials = list(/datum/material/iron=50, /datum/material/glass=50)
+
 /obj/item/paint_sprayer
 	name = "paint sprayer"
 	desc = "A slender and none-too-sophisticated device capable of applying paint onto walls and various other things. Applied paint can be removed by the Janitor."
@@ -9,7 +12,6 @@
 	icon_state = "paint_sprayer"
 	inhand_icon_state = "paint_sprayer"
 	worn_icon_state = "painter"
-	custom_materials = list(/datum/material/iron=50, /datum/material/glass=50)
 	item_flags = NOBLUDGEON
 	w_class = WEIGHT_CLASS_NORMAL
 	flags_1 = CONDUCT_1

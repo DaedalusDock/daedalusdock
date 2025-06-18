@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/door_seal)
+	default_materials = list(/datum/material/iron=5000,/datum/material/plasma=500)
+
 /obj/item/door_seal
 	name = "pneumatic airlock seal"
 	desc = "A brace used to seal and reinforce an airlock. Useful for making areas inaccessible to those without opposable thumbs."
@@ -13,7 +16,6 @@
 	throw_range = 1
 
 	w_class = WEIGHT_CLASS_NORMAL
-	custom_materials = list(/datum/material/iron=5000,/datum/material/plasma=500)
 	/// how long the seal takes to place on the door
 	var/seal_time = 3 SECONDS
 	/// how long it takes to remove the seal from a door

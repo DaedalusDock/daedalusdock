@@ -629,6 +629,9 @@
 		QDEL_NULL(sparkler)
 	return ..()
 
+TYPEINFO_DEF(/obj/item/melee/baton/security/boomerang)
+	default_materials = list(/datum/material/iron = 10000, /datum/material/glass = 4000, /datum/material/silver = 10000, /datum/material/gold = 2000)
+
 /obj/item/melee/baton/security/boomerang
 	name = "\improper OZtek Boomerang"
 	desc = "A device invented in 2486 for the great Space Emu War by the confederacy of Australicus, these high-tech boomerangs also work exceptionally well at stunning crewmembers. Just be careful to catch it when thrown!"
@@ -644,7 +647,6 @@
 	cell_hit_cost = 2000
 	throw_stun_chance = 99  //Have you prayed today?
 	convertible = FALSE
-	custom_materials = list(/datum/material/iron = 10000, /datum/material/glass = 4000, /datum/material/silver = 10000, /datum/material/gold = 2000)
 	can_be_flipped = FALSE
 
 /obj/item/melee/baton/security/boomerang/Initialize(mapload)

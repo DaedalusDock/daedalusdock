@@ -23,6 +23,9 @@
  *
  * Clicking people with those will cause an attempt at handcuffing them to occur
 */
+TYPEINFO_DEF(/obj/item/restraints/handcuffs)
+	default_materials = list(/datum/material/iron=500)
+
 /obj/item/restraints/handcuffs
 	name = "handcuffs"
 	desc = "Use this to keep prisoners in line."
@@ -36,7 +39,6 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
 	throw_range = 5
-	custom_materials = list(/datum/material/iron=500)
 	breakouttime = 1 MINUTES
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	custom_price = PAYCHECK_HARD * 0.35
@@ -141,6 +143,9 @@
  *
  * Ghetto handcuffs. Removing those is faster.
 */
+TYPEINFO_DEF(/obj/item/restraints/handcuffs/cable)
+	default_materials = list(/datum/material/iron=150, /datum/material/glass=75)
+
 /obj/item/restraints/handcuffs/cable
 	name = "cable restraints"
 	desc = "Looks like some cables tied together. Could be used to tie something up."
@@ -149,7 +154,6 @@
 	color = "#ff0000"
 	lefthand_file = 'icons/mob/inhands/equipment/tools_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/tools_righthand.dmi'
-	custom_materials = list(/datum/material/iron=150, /datum/material/glass=75)
 	breakouttime = 30 SECONDS
 	cuffsound = 'sound/weapons/cablecuff.ogg'
 

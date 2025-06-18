@@ -772,11 +772,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	GLOB.request_list.Remove(active_request)
 	qdel(active_request)
 
+TYPEINFO_DEF(/obj/item/wallframe/newscaster)
+	default_materials = list(/datum/material/iron=14000, /datum/material/glass=8000)
+
 /obj/item/wallframe/newscaster
 	name = "newscaster frame"
 	desc = "Used to build newscasters, just secure to the wall."
 	icon_state = "newscaster"
-	custom_materials = list(/datum/material/iron=14000, /datum/material/glass=8000)
 	result_path = /obj/machinery/newscaster
 	pixel_shift = 30
 

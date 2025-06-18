@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/drinkingglass)
+	default_materials = list(/datum/material/glass=500)
+
 /obj/item/reagent_containers/food/drinks/drinkingglass
 	name = "drinking glass"
 	desc = "Your standard drinking glass."
@@ -7,7 +10,6 @@
 	fill_icon_thresholds = list(0)
 	fill_icon_state = "drinking_glass"
 	volume = 50
-	custom_materials = list(/datum/material/glass=500)
 	max_integrity = 20
 	spillable = TRUE
 	resistance_flags = ACID_PROOF
@@ -64,6 +66,9 @@
 //  You can only mix the ported-over drinks in shot glasses for now (they'll mix in a shaker, but the sprite won't change for glasses). //
 //  This is on a case-by-case basis, and you can even make a separate sprite for shot glasses if you want. //
 
+TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass)
+	default_materials = list(/datum/material/glass=100)
+
 /obj/item/reagent_containers/food/drinks/drinkingglass/shotglass
 	name = "shot glass"
 	desc = "A shot glass - the universal symbol for bad decisions."
@@ -74,7 +79,6 @@
 	possible_transfer_amounts = list(15)
 	fill_icon_state = "shot_glass"
 	volume = 15
-	custom_materials = list(/datum/material/glass=100)
 	custom_price = PAYCHECK_ASSISTANT * 0.2
 
 /obj/item/reagent_containers/food/drinks/drinkingglass/shotglass/update_name(updates)

@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/structure/chair)
+	default_materials = list(/datum/material/iron = 2000)
+
 /obj/structure/chair
 	name = "chair"
 	desc = "You sit in this. Either by will or force."
@@ -9,7 +12,6 @@
 	resistance_flags = NONE
 	max_integrity = 250
 	integrity_failure = 0.1
-	custom_materials = list(/datum/material/iron = 2000)
 	layer = OBJ_LAYER
 	mouse_drop_pointer = TRUE
 
@@ -299,6 +301,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	buildstackamount = 2
 	item_chair = /obj/item/chair/stool/bamboo
 
+TYPEINFO_DEF(/obj/item/chair)
+	default_materials = list(/datum/material/iron = 2000)
+
 /obj/item/chair
 	name = "chair"
 	desc = "Bar brawl essential."
@@ -312,7 +317,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	throwforce = 10
 	throw_range = 3
 	hitsound = 'sound/items/trayhit1.ogg'
-	custom_materials = list(/datum/material/iron = 2000)
 
 	block_sound = SFX_BLOCK_BIG_METAL
 
@@ -499,13 +503,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	M.pixel_y -= 5
 
 
+TYPEINFO_DEF(/obj/structure/chair/plastic)
+	default_materials = list(/datum/material/plastic = 2000)
+
 /obj/structure/chair/plastic
 	icon_state = "plastic_chair"
 	name = "folding plastic chair"
 	desc = "No matter how much you squirm, it'll still be uncomfortable."
 	resistance_flags = FLAMMABLE
 	max_integrity = 50
-	custom_materials = list(/datum/material/plastic = 2000)
 	buildstacktype = /obj/item/stack/sheet/plastic
 	buildstackamount = 2
 	item_chair = /obj/item/chair/plastic
@@ -527,6 +533,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 			new /obj/effect/decal/cleanable/plastic(loc)
 			qdel(src)
 
+TYPEINFO_DEF(/obj/item/chair/plastic)
+	default_materials = list(/datum/material/plastic = 2000)
+
 /obj/item/chair/plastic
 	name = "folding plastic chair"
 	desc = "Somehow, you can always find one under the wrestling ring."
@@ -538,7 +547,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	w_class = WEIGHT_CLASS_NORMAL
 	force = 7
 	throw_range = 5 //Lighter Weight --> Flies Farther.
-	custom_materials = list(/datum/material/plastic = 2000)
 	break_chance = 25
 	origin_type = /obj/structure/chair/plastic
 

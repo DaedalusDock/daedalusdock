@@ -2,6 +2,9 @@
 #define CELL_POWER_GAIN 60
 #define CELL_POWER_DRAIN 750
 
+TYPEINFO_DEF(/obj/item/stock_parts/cell)
+	default_materials = list(/datum/material/iron=700, /datum/material/glass=50)
+
 /**
  * # Power cell
  *
@@ -23,7 +26,6 @@
 	var/charge = 0
 	///Maximum charge in cell units
 	var/maxcharge = 1000
-	custom_materials = list(/datum/material/iron=700, /datum/material/glass=50)
 	grind_results = list(/datum/reagent/lithium = 15, /datum/reagent/iron = 5, /datum/reagent/silicon = 5)
 	///If the cell has been booby-trapped by injecting it with plasma. Chance on use() to explode.
 	var/rigged = FALSE
@@ -220,20 +222,24 @@
 /obj/item/stock_parts/cell/empty
 	empty = TRUE
 
+TYPEINFO_DEF(/obj/item/stock_parts/cell/crap)
+	default_materials = list(/datum/material/glass=40)
+
 /obj/item/stock_parts/cell/crap
 	name = "\improper Nanotrasen brand rechargeable AA battery"
 	desc = "You can't top the plasma top." //TOTALLY TRADEMARK INFRINGEMENT
 	maxcharge = 500
-	custom_materials = list(/datum/material/glass=40)
 
 /obj/item/stock_parts/cell/crap/empty
 	empty = TRUE
+
+TYPEINFO_DEF(/obj/item/stock_parts/cell/upgraded)
+	default_materials = list(/datum/material/glass=50)
 
 /obj/item/stock_parts/cell/upgraded
 	name = "upgraded power cell"
 	desc = "A power cell with a slightly higher capacity than normal!"
 	maxcharge = 2500
-	custom_materials = list(/datum/material/glass=50)
 	chargerate = 1000
 
 /obj/item/stock_parts/cell/upgraded/plus
@@ -241,10 +247,12 @@
 	desc = "A power cell with an even higher capacity than the base model!"
 	maxcharge = 5000
 
+TYPEINFO_DEF(/obj/item/stock_parts/cell/secborg)
+	default_materials = list(/datum/material/glass=40)
+
 /obj/item/stock_parts/cell/secborg
 	name = "security borg rechargeable D battery"
 	maxcharge = 600 //600 max charge / 100 charge per shot = six shots
-	custom_materials = list(/datum/material/glass=40)
 
 /obj/item/stock_parts/cell/secborg/empty
 	empty = TRUE
@@ -270,52 +278,62 @@
 	name = "pulse pistol power cell"
 	maxcharge = 2000
 
+TYPEINFO_DEF(/obj/item/stock_parts/cell/high)
+	default_materials = list(/datum/material/glass=60)
+
 /obj/item/stock_parts/cell/high
 	name = "high-capacity power cell"
 	icon_state = "hcell"
 	maxcharge = 10000
-	custom_materials = list(/datum/material/glass=60)
 	chargerate = 1500
 
 /obj/item/stock_parts/cell/high/empty
 	empty = TRUE
 
+TYPEINFO_DEF(/obj/item/stock_parts/cell/super)
+	default_materials = list(/datum/material/glass=300)
+
 /obj/item/stock_parts/cell/super
 	name = "super-capacity power cell"
 	icon_state = "scell"
 	maxcharge = 20000
-	custom_materials = list(/datum/material/glass=300)
 	chargerate = 2000
 
 /obj/item/stock_parts/cell/super/empty
 	empty = TRUE
 
+TYPEINFO_DEF(/obj/item/stock_parts/cell/hyper)
+	default_materials = list(/datum/material/glass=400)
+
 /obj/item/stock_parts/cell/hyper
 	name = "hyper-capacity power cell"
 	icon_state = "hpcell"
 	maxcharge = 30000
-	custom_materials = list(/datum/material/glass=400)
 	chargerate = 3000
 
 /obj/item/stock_parts/cell/hyper/empty
 	empty = TRUE
+
+TYPEINFO_DEF(/obj/item/stock_parts/cell/bluespace)
+	default_materials = list(/datum/material/glass=600)
 
 /obj/item/stock_parts/cell/bluespace
 	name = "bluespace power cell"
 	desc = "A rechargeable transdimensional power cell."
 	icon_state = "bscell"
 	maxcharge = 40000
-	custom_materials = list(/datum/material/glass=600)
 	chargerate = 4000
 
 /obj/item/stock_parts/cell/bluespace/empty
 	empty = TRUE
 
+TYPEINFO_DEF(/obj/item/stock_parts/cell/infinite)
+	default_materials = list(/datum/material/glass=1000)
+
 /obj/item/stock_parts/cell/infinite
 	name = "infinite-capacity power cell"
 	icon_state = "icell"
 	maxcharge = INFINITY //little disappointing if you examine it and it's not huge
-	custom_materials = list(/datum/material/glass=1000)
 	chargerate = INFINITY
 	ratingdesc = FALSE
 
@@ -387,11 +405,13 @@
 		return
 	charge = clamp((charge-(10000/severity)),0,maxcharge)
 
+TYPEINFO_DEF(/obj/item/stock_parts/cell/emergency_light)
+	default_materials = list(/datum/material/glass = 20)
+
 /obj/item/stock_parts/cell/emergency_light
 	name = "miniature power cell"
 	desc = "A tiny power cell with a very low power capacity. Used in light fixtures to power them in the event of an outage."
 	maxcharge = 120 //Emergency lights use 0.2 W per tick, meaning ~10 minutes of emergency power from a cell
-	custom_materials = list(/datum/material/glass = 20)
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/stock_parts/cell/emergency_light/Initialize(mapload)

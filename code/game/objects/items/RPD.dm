@@ -168,6 +168,9 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 	if(dt == PIPE_UNARY_FLIPPABLE)
 		icon_state = "[icon_state]_preview"
 
+TYPEINFO_DEF(/obj/item/pipe_dispenser)
+	default_materials = list(/datum/material/iron=75000, /datum/material/glass=37500)
+
 /obj/item/pipe_dispenser
 	name = "Rapid Pipe Dispenser (RPD)"
 	desc = "A device used to rapidly pipe things."
@@ -183,7 +186,6 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 	throw_range = 5
 	w_class = WEIGHT_CLASS_NORMAL
 	slot_flags = ITEM_SLOT_BELT
-	custom_materials = list(/datum/material/iron=75000, /datum/material/glass=37500)
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 	///Sparks system used when changing device in the UI

@@ -4,6 +4,9 @@
  * Lots and lots of functionality lives here, although in general we are striving to move
  * as much as possible to the components/elements system
  */
+TYPEINFO_DEF(/atom)
+	var/list/default_materials
+
 /atom
 	layer = TURF_LAYER
 	plane = GAME_PLANE
@@ -273,12 +276,15 @@
 
 		atom_integrity = max_integrity
 
+	// Not typeinfo() for speed reasons. Hot ass code!
+	var/datum/typeinfo/atom/typeinfo = __typeinfo_cache[type] ||= new __typeinfo_path
+
 	// apply materials properly from the default custom_materials value
 	// This MUST come after atom_integrity is set above, as if old materials get removed,
 	// atom_integrity is checked against max_integrity and can BREAK the atom.
 	// The integrity to max_integrity ratio is still preserved.
-	if(length(custom_materials))
-		set_custom_materials(custom_materials)
+	if(length(typeinfo.default_materials) || islist(custom_materials))
+		set_custom_materials(typeinfo.default_materials)
 
 	return INITIALIZE_HINT_NORMAL
 

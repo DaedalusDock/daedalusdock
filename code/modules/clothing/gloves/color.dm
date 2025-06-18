@@ -249,6 +249,9 @@
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
+TYPEINFO_DEF(/obj/item/clothing/gloves/color/latex/engineering)
+	default_materials = list(/datum/material/iron=2000, /datum/material/silver=1500, /datum/material/gold = 1000)
+
 /obj/item/clothing/gloves/color/latex/engineering
 	name = "tinker's gloves"
 	desc = "Overdesigned engineering gloves that have automated construction subrutines dialed in, allowing for faster construction while worn."
@@ -258,7 +261,6 @@
 	siemens_coefficient = 0.8
 	permeability_coefficient = 0.3
 	clothing_traits = list(TRAIT_QUICK_BUILD)
-	custom_materials = list(/datum/material/iron=2000, /datum/material/silver=1500, /datum/material/gold = 1000)
 
 /obj/item/clothing/gloves/color/white
 	name = "white gloves"

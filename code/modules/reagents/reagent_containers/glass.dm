@@ -147,6 +147,9 @@
 		set_custom_materials(list(GET_MATERIAL_REF(/datum/material/glass) = 5))//sets it to glass so, later on, it gets picked up by the glass catch (hope it doesn't 'break' things lol)
 	return ..()
 
+TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker)
+	default_materials = list(/datum/material/glass=500)
+
 /obj/item/reagent_containers/glass/beaker
 	name = "beaker"
 	desc = "A beaker. It can hold up to 60 units."
@@ -154,7 +157,6 @@
 	icon_state = "beaker"
 	inhand_icon_state = "beaker"
 	worn_icon_state = "beaker"
-	custom_materials = list(/datum/material/glass=500)
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
 	possible_transfer_amounts = list(5, 10, 15, 20, 25, 30, 60)
 	volume = 60
@@ -172,45 +174,56 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "vapour"
 
+TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/large)
+	default_materials = list(/datum/material/glass=2500)
+
 /obj/item/reagent_containers/glass/beaker/large
 	name = "large beaker"
 	desc = "A large beaker. Can hold up to 120 units."
 	icon_state = "beakerlarge"
-	custom_materials = list(/datum/material/glass=2500)
 	volume = 120
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,25,30,40,60,120)
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
 
+TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/plastic)
+	default_materials = list(/datum/material/glass=2500, /datum/material/plastic=3000)
+
 /obj/item/reagent_containers/glass/beaker/plastic
 	name = "x-large beaker"
 	desc = "An extra-large beaker. Can hold up to 150 units."
 	icon_state = "beakerwhite"
-	custom_materials = list(/datum/material/glass=2500, /datum/material/plastic=3000)
 	volume = 150
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,30,50,60,120,150)
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
 
+TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/meta)
+	default_materials = list(/datum/material/glass=2500, /datum/material/plastic=3000, /datum/material/gold=1000, /datum/material/titanium=1000)
+
 /obj/item/reagent_containers/glass/beaker/meta
 	name = "metamaterial beaker"
 	desc = "A large beaker. Can hold up to 180 units."
 	icon_state = "beakergold"
-	custom_materials = list(/datum/material/glass=2500, /datum/material/plastic=3000, /datum/material/gold=1000, /datum/material/titanium=1000)
 	volume = 180
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,30,40,60,120,180)
 	fill_icon_thresholds = list(0, 1, 10, 25, 35, 50, 60, 80, 100)
+
+TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/noreact)
+	default_materials = list(/datum/material/iron=3000)
 
 /obj/item/reagent_containers/glass/beaker/noreact
 	name = "cryostasis beaker"
 	desc = "A cryostasis beaker that allows for chemical storage without \
 		reactions. Can hold up to 50 units."
 	icon_state = "beakernoreact"
-	custom_materials = list(/datum/material/iron=3000)
 	reagent_flags = OPENCONTAINER | NO_REACT
 	volume = 50
 	amount_per_transfer_from_this = 10
+
+TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/bluespace)
+	default_materials = list(/datum/material/glass = 5000, /datum/material/plasma = 3000, /datum/material/diamond = 1000, /datum/material/bluespace = 1000)
 
 /obj/item/reagent_containers/glass/beaker/bluespace
 	name = "bluespace beaker"
@@ -218,7 +231,6 @@
 		and Element Cuban combined with the Compound Pete. Can hold up to \
 		300 units."
 	icon_state = "beakerbluespace"
-	custom_materials = list(/datum/material/glass = 5000, /datum/material/plasma = 3000, /datum/material/diamond = 1000, /datum/material/bluespace = 1000)
 	volume = 300
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,25,30,50,100,300)
@@ -251,6 +263,9 @@
 /obj/item/reagent_containers/glass/beaker/synthflesh
 	list_reagents = list(/datum/reagent/medicine/synthflesh = 50)
 
+TYPEINFO_DEF(/obj/item/reagent_containers/glass/bucket)
+	default_materials = list(/datum/material/iron=200)
+
 /obj/item/reagent_containers/glass/bucket
 	name = "bucket"
 	desc = "It's a bucket."
@@ -259,7 +274,6 @@
 	inhand_icon_state = "bucket"
 	lefthand_file = 'icons/mob/inhands/equipment/custodial_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/custodial_righthand.dmi'
-	custom_materials = list(/datum/material/iron=200)
 	w_class = WEIGHT_CLASS_NORMAL
 	amount_per_transfer_from_this = 20
 	possible_transfer_amounts = list(5,10,15,20,25,30,50,70)
@@ -280,11 +294,13 @@
 		ITEM_SLOT_DEX_STORAGE
 	)
 
+TYPEINFO_DEF(/obj/item/reagent_containers/glass/bucket/wooden)
+	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 2)
+
 /obj/item/reagent_containers/glass/bucket/wooden
 	name = "wooden bucket"
 	icon_state = "woodbucket"
 	inhand_icon_state = "woodbucket"
-	custom_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 2)
 	armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 50)
 	resistance_flags = FLAMMABLE
 	supports_variations_flags = NONE
@@ -335,6 +351,9 @@
 	icon_state = "pestle"
 	force = 7
 
+TYPEINFO_DEF(/obj/item/reagent_containers/glass/mortar)
+	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT)
+
 /obj/item/reagent_containers/glass/mortar
 	name = "mortar"
 	desc = "A specially formed bowl of ancient design. It is possible to crush or juice items placed in it using a pestle; however the process, unlike modern methods, is slow and physically exhausting. Alt click to eject the item."
@@ -342,7 +361,6 @@
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5, 10, 15, 20, 25, 30, 50, 100)
 	volume = 100
-	custom_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT)
 	reagent_flags = OPENCONTAINER
 	spillable = TRUE
 	var/obj/item/grinded

@@ -12,6 +12,9 @@
  * Tables
  */
 
+TYPEINFO_DEF(/obj/structure/table)
+	default_materials = list(/datum/material/iron = 2000)
+
 /obj/structure/table
 	name = "table"
 	desc = "A square piece of iron standing on four metal legs. It can not move."
@@ -22,7 +25,6 @@
 	anchored = TRUE
 	pass_flags_self = PASSTABLE | LETPASSTHROW
 	layer = TABLE_LAYER
-	custom_materials = list(/datum/material/iron = 2000)
 	max_integrity = 100
 	integrity_failure = 0.33
 	smoothing_flags = SMOOTH_BITMASK
@@ -606,13 +608,15 @@
 /*
  * Glass tables
  */
+TYPEINFO_DEF(/obj/structure/table/glass)
+	default_materials = list(/datum/material/glass = 2000)
+
 /obj/structure/table/glass
 	name = "glass table"
 	desc = "What did I say about leaning on the glass tables? Now you need surgery."
 	icon = 'icons/obj/smooth_structures/glass_table.dmi'
 	icon_state = "glass_table-0"
 	base_icon_state = "glass_table"
-	custom_materials = list(/datum/material/glass = 2000)
 	buildstack = /obj/item/stack/sheet/glass
 	smoothing_groups = SMOOTH_GROUP_GLASS_TABLES
 	canSmoothWith = SMOOTH_GROUP_GLASS_TABLES
@@ -685,13 +689,15 @@
 /obj/structure/table/glass/narsie_act()
 	color = NARSIE_WINDOW_COLOUR
 
+TYPEINFO_DEF(/obj/structure/table/glass/plasmaglass)
+	default_materials = list(/datum/material/alloy/plasmaglass = 2000)
+
 /obj/structure/table/glass/plasmaglass
 	name = "plasma glass table"
 	desc = "Someone thought this was a good idea."
 	icon = 'icons/obj/smooth_structures/plasmaglass_table.dmi'
 	icon_state = "plasmaglass_table-0"
 	base_icon_state = "plasmaglass_table"
-	custom_materials = list(/datum/material/alloy/plasmaglass = 2000)
 	buildstack = /obj/item/stack/sheet/plasmaglass
 	max_integrity = 100
 	glass_shard_type = /obj/item/shard/plasma
@@ -850,15 +856,20 @@
 	..()
 	playsound(src, 'sound/magic/clockwork/fellowship_armory.ogg', 50, TRUE)
 
+TYPEINFO_DEF(/obj/structure/table/reinforced/rglass)
+	default_materials = list(/datum/material/glass = 2000, /datum/material/iron = 2000)
+
 /obj/structure/table/reinforced/rglass
 	name = "reinforced glass table"
 	desc = "A reinforced version of the glass table."
 	icon = 'icons/obj/smooth_structures/rglass_table.dmi'
 	icon_state = "rglass_table-0"
 	base_icon_state = "rglass_table"
-	custom_materials = list(/datum/material/glass = 2000, /datum/material/iron = 2000)
 	buildstack = /obj/item/stack/sheet/rglass
 	max_integrity = 150
+
+TYPEINFO_DEF(/obj/structure/table/reinforced/plasmarglass)
+	default_materials = list(/datum/material/alloy/plasmaglass = 2000, /datum/material/iron = 2000)
 
 /obj/structure/table/reinforced/plasmarglass
 	name = "reinforced plasma glass table"
@@ -866,8 +877,10 @@
 	icon = 'icons/obj/smooth_structures/rplasmaglass_table.dmi'
 	icon_state = "rplasmaglass_table-0"
 	base_icon_state = "rplasmaglass_table"
-	custom_materials = list(/datum/material/alloy/plasmaglass = 2000, /datum/material/iron = 2000)
 	buildstack = /obj/item/stack/sheet/plasmarglass
+
+TYPEINFO_DEF(/obj/structure/table/reinforced/titaniumglass)
+	default_materials = list(/datum/material/alloy/titaniumglass = 2000)
 
 /obj/structure/table/reinforced/titaniumglass
 	name = "titanium glass table"
@@ -875,9 +888,11 @@
 	icon = 'icons/obj/smooth_structures/titaniumglass_table.dmi'
 	icon_state = "titaniumglass_table-o"
 	base_icon_state = "titaniumglass_table"
-	custom_materials = list(/datum/material/alloy/titaniumglass = 2000)
 	buildstack = /obj/item/stack/sheet/titaniumglass
 	max_integrity = 250
+
+TYPEINFO_DEF(/obj/structure/table/reinforced/plastitaniumglass)
+	default_materials = list(/datum/material/alloy/plastitaniumglass = 2000)
 
 /obj/structure/table/reinforced/plastitaniumglass
 	name = "plastitanium glass table"
@@ -885,13 +900,15 @@
 	icon = 'icons/obj/smooth_structures/plastitaniumglass_table.dmi'
 	icon_state = "plastitaniumglass_table-0"
 	base_icon_state = "plastitaniumglass_table"
-	custom_materials = list(/datum/material/alloy/plastitaniumglass = 2000)
 	buildstack = /obj/item/stack/sheet/plastitaniumglass
 	max_integrity = 300
 
 /*
  * Surgery Tables
  */
+
+TYPEINFO_DEF(/obj/structure/table/optable)
+	default_materials = list(/datum/material/silver = 2000)
 
 /obj/structure/table/optable
 	name = "operating table"
@@ -906,7 +923,6 @@
 	can_buckle = 1
 	buckle_lying = NO_BUCKLE_LYING
 	buckle_requires_restraints = TRUE
-	custom_materials = list(/datum/material/silver = 2000)
 	flipped = -1
 
 	var/obj/machinery/vitals_monitor/connected_monitor
@@ -1063,13 +1079,15 @@
  * Rack Parts
  */
 
+TYPEINFO_DEF(/obj/item/rack_parts)
+	default_materials = list(/datum/material/iron=2000)
+
 /obj/item/rack_parts
 	name = "rack parts"
 	desc = "Parts of a rack."
 	icon = 'icons/obj/items_and_weapons.dmi'
 	icon_state = "rack_parts"
 	flags_1 = CONDUCT_1
-	custom_materials = list(/datum/material/iron=2000)
 	var/building = FALSE
 
 /obj/item/rack_parts/attackby(obj/item/W, mob/user, params)

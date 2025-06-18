@@ -2,6 +2,9 @@
 /obj/item/melee
 	item_flags = NEEDS_PERMIT
 
+TYPEINFO_DEF(/obj/item/melee/chainofcommand)
+	default_materials = list(/datum/material/iron = 1000)
+
 /obj/item/melee/chainofcommand
 	name = "chain of command"
 	desc = "A tool used by great men to placate the frothing masses."
@@ -18,7 +21,6 @@
 	attack_verb_continuous = list("flogs", "whips", "lashes", "disciplines")
 	attack_verb_simple = list("flog", "whip", "lash", "discipline")
 	hitsound = 'sound/weapons/chainhit.ogg'
-	custom_materials = list(/datum/material/iron = 1000)
 
 /obj/item/melee/chainofcommand/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is strangling [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -44,6 +46,9 @@
 	. = ..()
 	AddComponent(/datum/component/butchering, 60, 80) //very imprecise
 
+TYPEINFO_DEF(/obj/item/melee/sabre)
+	default_materials = list(/datum/material/iron = 1000)
+
 /obj/item/melee/sabre
 	name = "officer's sabre"
 	desc = "An elegant weapon, its monomolecular edge is capable of cutting through flesh and bone with ease."
@@ -63,7 +68,6 @@
 	attack_verb_continuous = list("slashes", "cuts")
 	attack_verb_simple = list("slash", "cut")
 	hitsound = 'sound/weapons/rapierhit.ogg'
-	custom_materials = list(/datum/material/iron = 1000)
 
 /obj/item/melee/sabre/Initialize(mapload)
 	. = ..()
@@ -410,6 +414,9 @@
 		to_chat(user, span_notice("You put [src] away."))
 
 
+TYPEINFO_DEF(/obj/item/melee/cleric_mace)
+	default_materials = list(/datum/material/iron = 12000)
+
 /obj/item/melee/cleric_mace
 	name = "cleric mace"
 	desc = "The grandson of the club, yet the grandfather of the baseball bat. Most notably used by holy orders in days past."
@@ -425,7 +432,6 @@
 	greyscale_colors = "#FFFFFF"
 
 	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX | MATERIAL_GREYSCALE | MATERIAL_AFFECT_STATISTICS //Material type changes the prefix as well as the color.
-	custom_materials = list(/datum/material/iron = 12000)  //Defaults to an Iron Mace.
 	slot_flags = ITEM_SLOT_BELT
 	force = 14
 	w_class = WEIGHT_CLASS_BULKY

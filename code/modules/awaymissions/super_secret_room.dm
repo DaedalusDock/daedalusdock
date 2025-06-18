@@ -111,13 +111,15 @@
 		if(i != statements.len)
 			sleep(30)
 
+TYPEINFO_DEF(/obj/item/rupee)
+	default_materials = list(/datum/material/glass = 500)
+
 /obj/item/rupee
 	name = "weird crystal"
 	desc = "Your excitement boils away as you realize it's just colored glass. Why would someone hoard these things?"
 	icon = 'icons/obj/economy.dmi'
 	icon_state = "rupee"
 	w_class = WEIGHT_CLASS_SMALL
-	custom_materials = list(/datum/material/glass = 500)
 
 /obj/item/rupee/Initialize(mapload)
 	. = ..()

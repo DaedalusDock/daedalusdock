@@ -784,6 +784,9 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			new /obj/structure/table/optable/abductor(src.loc)
 			qdel(src)
 
+TYPEINFO_DEF(/obj/structure/table/abductor)
+	default_materials = list(/datum/material/silver = 2000)
+
 /obj/structure/table/abductor
 	name = "alien table"
 	desc = "Advanced flat surface technology at work!"
@@ -797,7 +800,6 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	smoothing_groups = SMOOTH_GROUP_ABDUCTOR_TABLES
 	canSmoothWith = SMOOTH_GROUP_ABDUCTOR_TABLES
 	frame = /obj/structure/table_frame/abductor
-	custom_materials = list(/datum/material/silver = 2000)
 
 /obj/structure/table/optable/abductor
 	name = "alien operating table"

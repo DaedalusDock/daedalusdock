@@ -10,6 +10,9 @@
 /*
  * Pens
  */
+TYPEINFO_DEF(/obj/item/pen)
+	default_materials = list(/datum/material/iron=10)
+
 /obj/item/pen
 	desc = "It's a normal black ink pen."
 	name = "pen"
@@ -27,7 +30,6 @@
 	stamina_cost = 0
 	stamina_critical_chance = 0
 
-	custom_materials = list(/datum/material/iron=10)
 	//pressure_resistance = 2
 	grind_results = list(/datum/reagent/iron = 2, /datum/reagent/iodine = 1)
 	var/colour = "#000000" //what colour the ink is!
@@ -104,6 +106,9 @@
 	time = 30
 	category = CAT_PRIMAL
 
+TYPEINFO_DEF(/obj/item/pen/fountain/captain)
+	default_materials = list(/datum/material/gold = 750)
+
 /obj/item/pen/fountain/captain
 	name = "captain's fountain pen"
 	desc = "It's an expensive Oak fountain pen. The nib is quite sharp."
@@ -112,7 +117,6 @@
 	throwforce = 5
 	throw_speed = 1.5
 	colour = "#DC143C"
-	custom_materials = list(/datum/material/gold = 750)
 	sharpness = SHARP_EDGED
 	resistance_flags = FIRE_PROOF
 	unique_reskin = list("Oak" = "pen-fountain-o",
@@ -304,6 +308,9 @@
 	to energy weapons, but it's still surprisingly deadly."
 	hidden_icon = "eprototypedagger"
 
+TYPEINFO_DEF(/obj/item/pen/survival)
+	default_materials = list(/datum/material/iron=10, /datum/material/diamond=100, /datum/material/titanium = 10)
+
 /obj/item/pen/survival
 	name = "survival pen"
 	desc = "The latest in portable survival technology, this pen was designed as a miniature diamond pickaxe. Watchers find them very desirable for their diamond exterior."
@@ -313,7 +320,6 @@
 	worn_icon_state = "pen"
 	force = 3
 	w_class = WEIGHT_CLASS_TINY
-	custom_materials = list(/datum/material/iron=10, /datum/material/diamond=100, /datum/material/titanium = 10)
 	//pressure_resistance = 2
 	grind_results = list(/datum/reagent/iron = 2, /datum/reagent/iodine = 1)
 	tool_behaviour = TOOL_MINING //For the classic "digging out of prison with a spoon but you're in space so this analogy doesn't work" situation.

@@ -111,11 +111,13 @@
 //Medals//
 //////////
 
+TYPEINFO_DEF(/obj/item/clothing/accessory/medal)
+	default_materials = list(/datum/material/iron=1000)
+
 /obj/item/clothing/accessory/medal
 	name = "bronze medal"
 	desc = "A bronze medal."
 	icon_state = "bronze"
-	custom_materials = list(/datum/material/iron=1000)
 	resistance_flags = FIRE_PROOF
 	var/medaltype = "medal" //Sprite used for medalbox
 	var/commended = FALSE
@@ -178,12 +180,14 @@
 	name = "\"deckhand of the shift\" award"
 	desc = "An award bestowed only upon those cargotechs who have exhibited devotion to their duty in keeping with the highest traditions of Cargonia."
 
+TYPEINFO_DEF(/obj/item/clothing/accessory/medal/silver)
+	default_materials = list(/datum/material/silver=1000)
+
 /obj/item/clothing/accessory/medal/silver
 	name = "silver medal"
 	desc = "A silver medal."
 	icon_state = "silver"
 	medaltype = "medal-silver"
-	custom_materials = list(/datum/material/silver=1000)
 
 /obj/item/clothing/accessory/medal/silver/valor
 	name = "medal of valor"
@@ -201,12 +205,14 @@
 	name = "\improper Excellence in Bureaucracy Medal"
 	desc = "Awarded for exemplary managerial services rendered while under contract with Nanotrasen."
 
+TYPEINFO_DEF(/obj/item/clothing/accessory/medal/gold)
+	default_materials = list(/datum/material/gold=1000)
+
 /obj/item/clothing/accessory/medal/gold
 	name = "gold medal"
 	desc = "A prestigious golden medal."
 	icon_state = "gold"
 	medaltype = "medal-gold"
-	custom_materials = list(/datum/material/gold=1000)
 
 /obj/item/clothing/accessory/medal/med_medal
 	name = "exemplary performance medal"
@@ -229,13 +235,15 @@
 	name = "medal of exceptional heroism"
 	desc = "An extremely rare golden medal awarded only by CentCom. To receive such a medal is the highest honor and as such, very few exist. This medal is almost never awarded to anybody but commanders."
 
+TYPEINFO_DEF(/obj/item/clothing/accessory/medal/plasma)
+	default_materials = list(/datum/material/plasma=1000)
+
 /obj/item/clothing/accessory/medal/plasma
 	name = "plasma medal"
 	desc = "An eccentric medal made of plasma."
 	icon_state = "plasma"
 	medaltype = "medal-plasma"
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = -10, ACID = 0) //It's made of plasma. Of course it's flammable.
-	custom_materials = list(/datum/material/plasma=1000)
 
 /obj/item/clothing/accessory/medal/plasma/Initialize(mapload)
 	. = ..()

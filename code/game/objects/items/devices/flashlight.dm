@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/flashlight)
+	default_materials = list(/datum/material/iron=50, /datum/material/glass=20)
+
 /obj/item/flashlight
 	name = "flashlight"
 	desc = "A hand-held emergency light."
@@ -11,7 +14,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
-	custom_materials = list(/datum/material/iron=50, /datum/material/glass=20)
 	actions_types = list(/datum/action/item_action/toggle_light)
 	light_system = OVERLAY_LIGHT_DIRECTIONAL
 	light_outer_range = 4

@@ -114,11 +114,13 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/match/get_temperature()
 	return lit * heat
 
+TYPEINFO_DEF(/obj/item/match/firebrand)
+	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT)
+
 /obj/item/match/firebrand
 	name = "firebrand"
 	desc = "An unlit firebrand. It makes you wonder why it's not just called a stick."
 	smoketime = 40 SECONDS
-	custom_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/carbon = 2)
 
 /obj/item/match/firebrand/Initialize(mapload)

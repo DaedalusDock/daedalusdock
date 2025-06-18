@@ -1,5 +1,8 @@
 /// How many seconds between each fuel depletion tick ("use" proc)
 #define WELDER_FUEL_BURN_INTERVAL 9
+TYPEINFO_DEF(/obj/item/weldingtool)
+	default_materials = list(/datum/material/iron=70, /datum/material/glass=30)
+
 /obj/item/weldingtool
 	name = "welding tool"
 	desc = "A standard edition welder provided by Nanotrasen."
@@ -29,7 +32,6 @@
 	heat = 3800
 	tool_behaviour = TOOL_WELDER
 	toolspeed = 1
-	custom_materials = list(/datum/material/iron=70, /datum/material/glass=30)
 	///Whether the welding tool is on or off.
 	var/welding = FALSE
 	var/status = TRUE //Whether the welder is secured or unsecured (able to attach rods to it to make a flamethrower)
@@ -310,12 +312,14 @@
 	else
 		return ""
 
+TYPEINFO_DEF(/obj/item/weldingtool/largetank)
+	default_materials = list(/datum/material/glass=60)
+
 /obj/item/weldingtool/largetank
 	name = "industrial welding tool"
 	desc = "A slightly larger welder with a larger tank."
 	icon_state = "indwelder"
 	max_fuel = 40
-	custom_materials = list(/datum/material/glass=60)
 
 /obj/item/weldingtool/largetank/flamethrower_screwdriver()
 	return
@@ -333,17 +337,22 @@
 	switched_on(user)
 
 
+TYPEINFO_DEF(/obj/item/weldingtool/mini)
+	default_materials = list(/datum/material/iron=30, /datum/material/glass=10)
+
 /obj/item/weldingtool/mini
 	name = "emergency welding tool"
 	desc = "A miniature welder used during emergencies."
 	icon_state = "miniwelder"
 	max_fuel = 10
 	w_class = WEIGHT_CLASS_TINY
-	custom_materials = list(/datum/material/iron=30, /datum/material/glass=10)
 	change_icons = FALSE
 
 /obj/item/weldingtool/mini/flamethrower_screwdriver()
 	return
+
+TYPEINFO_DEF(/obj/item/weldingtool/abductor)
+	default_materials = list(/datum/material/iron = 5000, /datum/material/silver = 2500, /datum/material/plasma = 5000, /datum/material/titanium = 2000, /datum/material/diamond = 2000)
 
 /obj/item/weldingtool/abductor
 	name = "alien welding tool"
@@ -351,7 +360,6 @@
 	icon = 'icons/obj/abductor.dmi'
 	icon_state = "welder"
 	toolspeed = 0.1
-	custom_materials = list(/datum/material/iron = 5000, /datum/material/silver = 2500, /datum/material/plasma = 5000, /datum/material/titanium = 2000, /datum/material/diamond = 2000)
 	light_system = NO_LIGHT_SUPPORT
 	light_outer_range = 0
 	change_icons = FALSE
@@ -361,13 +369,18 @@
 		reagents.add_reagent(/datum/reagent/fuel, 1)
 	..()
 
+TYPEINFO_DEF(/obj/item/weldingtool/hugetank)
+	default_materials = list(/datum/material/iron=70, /datum/material/glass=120)
+
 /obj/item/weldingtool/hugetank
 	name = "upgraded industrial welding tool"
 	desc = "An upgraded welder based of the industrial welder."
 	icon_state = "upindwelder"
 	inhand_icon_state = "upindwelder"
 	max_fuel = 80
-	custom_materials = list(/datum/material/iron=70, /datum/material/glass=120)
+
+TYPEINFO_DEF(/obj/item/weldingtool/experimental)
+	default_materials = list(/datum/material/iron = 1000, /datum/material/glass = 500, /datum/material/plasma = 1500, /datum/material/uranium = 200)
 
 /obj/item/weldingtool/experimental
 	name = "experimental welding tool"
@@ -375,7 +388,6 @@
 	icon_state = "exwelder"
 	inhand_icon_state = "exwelder"
 	max_fuel = 40
-	custom_materials = list(/datum/material/iron = 1000, /datum/material/glass = 500, /datum/material/plasma = 1500, /datum/material/uranium = 200)
 	change_icons = 0
 	can_off_process = 1
 	light_outer_range = 1

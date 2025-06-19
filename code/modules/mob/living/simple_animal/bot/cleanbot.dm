@@ -386,7 +386,7 @@
 
 /mob/living/simple_animal/bot/cleanbot/explode()
 	var/atom/drop_loc = drop_location()
-	new /obj/item/reagent_containers/glass/bucket(drop_loc)
+	new /obj/item/reagent_containers/cup/bucket(drop_loc)
 	new /obj/item/assembly/prox_sensor(drop_loc)
 	return ..()
 

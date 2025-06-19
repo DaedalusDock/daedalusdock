@@ -53,7 +53,7 @@
 /obj/machinery/chem_master/RefreshParts()
 	. = ..()
 	reagents.maximum_volume = 0
-	for(var/obj/item/reagent_containers/glass/beaker/B in component_parts)
+	for(var/obj/item/reagent_containers/cup/beaker/B in component_parts)
 		reagents.maximum_volume += B.reagents.maximum_volume
 
 /obj/machinery/chem_master/ex_act(severity, target)
@@ -419,18 +419,18 @@
 				reagents.trans_to(P, vol_each, transfered_by = usr)
 			return TRUE
 		if(item_type == "bottle")
-			var/obj/item/reagent_containers/glass/bottle/P
+			var/obj/item/reagent_containers/cup/bottle/P
 			for(var/i in 1 to amount)
-				P = new/obj/item/reagent_containers/glass/bottle(drop_location())
+				P = new/obj/item/reagent_containers/cup/bottle(drop_location())
 				P.name = trim("[name] bottle")
 				adjust_item_drop_location(P)
 				reagents.trans_to(P, vol_each, transfered_by = usr)
 			return TRUE
 		//PARIAH EDIT ADDTION
 		if(item_type == "vial")
-			var/obj/item/reagent_containers/glass/vial/small/P
+			var/obj/item/reagent_containers/cup/vial/small/P
 			for(var/i = 0; i < amount; i++)
-				P = new/obj/item/reagent_containers/glass/vial/small(drop_location())
+				P = new/obj/item/reagent_containers/cup/vial/small(drop_location())
 				P.name = trim("[name] vial")
 				adjust_item_drop_location(P)
 				reagents.trans_to(P, vol_each, transfered_by = usr)

@@ -4,7 +4,7 @@
 /datum/unit_test/miracle/revival/Run()
 	setup(/obj/effect/aether_rune/revival)
 
-	var/obj/item/reagent_containers/glass/bottle/woundseal_bottle = ALLOCATE_BOTTOM_LEFT()
+	var/obj/item/reagent_containers/cup/bottle/woundseal_bottle = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/organ/heart/heart = ALLOCATE_BOTTOM_LEFT()
 
 	target.death()

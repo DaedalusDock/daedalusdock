@@ -116,7 +116,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/hop)
 		/obj/item/hatchet,
 		/obj/item/plant_analyzer,
 		/obj/item/reagent_containers/spray/plantbgone,
-		/obj/item/reagent_containers/glass/bottle,
+		/obj/item/reagent_containers/cup/bottle,
 		/obj/item/seeds,
 		/obj/item/storage/bag/plants,
 	)
@@ -136,8 +136,8 @@ TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/hop)
 	allowed = list(
 		/obj/item/grenade/chem_grenade,
 		/obj/item/holosign_creator,
-		/obj/item/reagent_containers/glass/beaker,
-		/obj/item/reagent_containers/glass/bottle,
+		/obj/item/reagent_containers/cup/beaker,
+		/obj/item/reagent_containers/cup/bottle,
 		/obj/item/reagent_containers/spray,
 	)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/janitor
@@ -199,8 +199,8 @@ TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/medical)
 		/obj/item/flashlight/pen,
 		/obj/item/healthanalyzer,
 		/obj/item/reagent_containers/dropper,
-		/obj/item/reagent_containers/glass/beaker,
-		/obj/item/reagent_containers/glass/bottle,
+		/obj/item/reagent_containers/cup/beaker,
+		/obj/item/reagent_containers/cup/bottle,
 		/obj/item/reagent_containers/hypospray,
 		/obj/item/reagent_containers/pill,
 		/obj/item/reagent_containers/syringe,
@@ -298,8 +298,8 @@ TYPEINFO_DEF(/obj/item/clothing/suit/hooded/wintercoat/science)
 		/obj/item/dnainjector,
 		/obj/item/paper,
 		/obj/item/reagent_containers/dropper,
-		/obj/item/reagent_containers/glass/beaker,
-		/obj/item/reagent_containers/glass/bottle,
+		/obj/item/reagent_containers/cup/beaker,
+		/obj/item/reagent_containers/cup/bottle,
 		/obj/item/reagent_containers/hypospray,
 		/obj/item/reagent_containers/pill,
 		/obj/item/reagent_containers/syringe,

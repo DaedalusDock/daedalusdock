@@ -50,7 +50,7 @@
 	if(I.resistance_flags & INDESTRUCTIBLE)
 		to_chat(user, span_warning("You don't feel it would be wise to grill [I]..."))
 		return ..()
-	if(istype(I, /obj/item/reagent_containers/food/drinks))
+	if(istype(I, /obj/item/reagent_containers/cup/glass))
 		if(I.reagents.has_reagent(/datum/reagent/consumable/monkey_energy))
 			grill_fuel += (20 * (I.reagents.get_reagent_amount(/datum/reagent/consumable/monkey_energy)))
 			to_chat(user, span_notice("You pour the Monkey Energy in [src]."))

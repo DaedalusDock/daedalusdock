@@ -205,7 +205,7 @@ GLOBAL_LIST_INIT(medicine_reagents, build_medicine_reagents())
 	persistent = TRUE
 	persistence_period = 7 //Reset every week
 	randomize_container = TRUE
-	possible_containers = list(/obj/item/reagent_containers/glass/bucket) //easy way to ensure no common conflicts
+	possible_containers = list(/obj/item/reagent_containers/cup/bucket) //easy way to ensure no common conflicts
 	randomize_req_temperature = TRUE
 	results = list(/datum/reagent/consumable/secretsauce=1)
 

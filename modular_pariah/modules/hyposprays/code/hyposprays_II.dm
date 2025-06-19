@@ -22,13 +22,13 @@
 	icon = 'modular_pariah/modules/hyposprays/icons/hyposprays.dmi'
 	desc = "An experimental high-capacity refillable auto injector."
 	w_class = WEIGHT_CLASS_TINY
-	var/list/allowed_containers = list(/obj/item/reagent_containers/glass/vial/small)
+	var/list/allowed_containers = list(/obj/item/reagent_containers/cup/vial/small)
 	/// Is the hypospray only able to use small vials. Relates to the loaded overlays
 	var/small_only = TRUE
 	//Inject or spray?
 	var/mode = HYPO_INJECT
-	var/obj/item/reagent_containers/glass/vial/vial
-	var/start_vial = /obj/item/reagent_containers/glass/vial/small
+	var/obj/item/reagent_containers/cup/vial/vial
+	var/start_vial = /obj/item/reagent_containers/cup/vial/small
 	var/spawnwithvial = TRUE
 
 	//Time taken to inject others
@@ -47,10 +47,10 @@
 
 /obj/item/hypospray/mkii/cmo
 	name = "hypospray mk.II"
-	allowed_containers = list(/obj/item/reagent_containers/glass/vial/small, /obj/item/reagent_containers/glass/vial/large)
+	allowed_containers = list(/obj/item/reagent_containers/cup/vial/small, /obj/item/reagent_containers/cup/vial/large)
 	icon_state = "cmo2"
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
-	start_vial = /obj/item/reagent_containers/glass/vial/large/deluxe
+	start_vial = /obj/item/reagent_containers/cup/vial/large/deluxe
 	small_only = FALSE
 	inject_wait = DELUXE_WAIT_INJECT
 	spray_wait = DELUXE_WAIT_SPRAY
@@ -100,8 +100,8 @@
 		. += "It has no vial loaded in."
 
 /obj/item/hypospray/mkii/proc/unload_hypo(obj/item/hypo, mob/user)
-	if((istype(hypo, /obj/item/reagent_containers/glass/vial)))
-		var/obj/item/reagent_containers/glass/vial/container = hypo
+	if((istype(hypo, /obj/item/reagent_containers/cup/vial)))
+		var/obj/item/reagent_containers/cup/vial/container = hypo
 		container.forceMove(user.loc)
 		user.put_in_hands(container)
 		to_chat(user, span_notice("You remove [vial] from [src]."))
@@ -113,14 +113,14 @@
 		return
 
 /obj/item/hypospray/mkii/proc/insert_vial(obj/item/new_vial, mob/living/user, obj/item/current_vial)
-	var/obj/item/reagent_containers/glass/vial/container = new_vial
+	var/obj/item/reagent_containers/cup/vial/container = new_vial
 	var/old_loc //The location of and old vial.
 	if(!is_type_in_list(container, allowed_containers))
 		to_chat(user, span_notice("[src] doesn't accept this type of vial."))
 		return FALSE
 	if(current_vial)
 		old_loc = container.loc
-		var/obj/item/reagent_containers/glass/vial/old_container = current_vial
+		var/obj/item/reagent_containers/cup/vial/old_container = current_vial
 		old_container.forceMove(drop_location())
 	if(!user.transferItemToLoc(container, src))
 		return FALSE
@@ -135,7 +135,7 @@
 			current_vial.forceMove(old_loc)
 
 /obj/item/hypospray/mkii/attackby(obj/item/used_item, mob/living/user)
-	if((istype(used_item, /obj/item/reagent_containers/glass/vial) && vial != null))
+	if((istype(used_item, /obj/item/reagent_containers/cup/vial) && vial != null))
 		if(!quickload)
 			to_chat(user, span_warning("[src] can not hold more than one vial!"))
 			return FALSE
@@ -143,7 +143,7 @@
 			insert_vial(used_item, user, vial)
 			return TRUE
 
-	if((istype(used_item, /obj/item/reagent_containers/glass/vial)))
+	if((istype(used_item, /obj/item/reagent_containers/cup/vial)))
 		insert_vial(used_item, user)
 		return TRUE
 
@@ -183,7 +183,7 @@
 	return SECONDARY_ATTACK_CONTINUE_CHAIN
 
 /obj/item/hypospray/mkii/afterattack(atom/target, mob/living/user, proximity)
-	if(istype(target, /obj/item/reagent_containers/glass/vial))
+	if(istype(target, /obj/item/reagent_containers/cup/vial))
 		insert_vial(target, user, vial)
 		return TRUE
 

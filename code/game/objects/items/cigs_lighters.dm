@@ -218,7 +218,7 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 	else
 		to_chat(user, span_warning("There is nothing to smoke!"))
 
-/obj/item/clothing/mask/cigarette/afterattack(obj/item/reagent_containers/glass/glass, mob/user, proximity)
+/obj/item/clothing/mask/cigarette/afterattack(obj/item/reagent_containers/cup/glass, mob/user, proximity)
 	. = ..()
 	if(!proximity || lit) //can't dip if cigarette is lit (it will heat the reagents in the glass instead)
 		return

@@ -1,5 +1,5 @@
 
-/obj/item/reagent_containers/glass
+/obj/item/reagent_containers/cup
 	name = "glass"
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5, 10, 15, 20, 25, 30, 50)
@@ -8,7 +8,7 @@
 	spillable = TRUE
 	resistance_flags = ACID_PROOF
 
-/obj/item/reagent_containers/glass/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+/obj/item/reagent_containers/cup/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(user.combat_mode)
 		return NONE
 
@@ -66,7 +66,7 @@
 
 	return ITEM_INTERACT_SUCCESS
 
-/obj/item/reagent_containers/glass/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+/obj/item/reagent_containers/cup/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
 	. = ..()
 	if(.)
 		return
@@ -74,7 +74,7 @@
 	return try_refill_with(interacting_with, user)
 
 /// Attempt to refill a container with this glass.
-/obj/item/reagent_containers/glass/proc/try_refill_container(atom/target, mob/living/user)
+/obj/item/reagent_containers/cup/proc/try_refill_container(atom/target, mob/living/user)
 	if(!check_allowed_items(target, target_self=1))
 		return NONE
 
@@ -110,7 +110,7 @@
 	return ITEM_INTERACT_SUCCESS
 
 /// Try to refill this container using another.
-/obj/item/reagent_containers/glass/proc/try_refill_with(atom/transfer_from, mob/living/user)
+/obj/item/reagent_containers/cup/proc/try_refill_with(atom/transfer_from, mob/living/user)
 	if(!check_allowed_items(transfer_from, target_self=1))
 		return NONE
 
@@ -132,7 +132,7 @@
 	transfer_from.update_appearance()
 	return ITEM_INTERACT_SUCCESS
 
-/obj/item/reagent_containers/glass/attackby(obj/item/I, mob/user, params)
+/obj/item/reagent_containers/cup/attackby(obj/item/I, mob/user, params)
 	var/hotness = I.get_temperature()
 	if(hotness && reagents)
 		reagents.expose_temperature(hotness)
@@ -167,15 +167,15 @@
 /*
  * On accidental consumption, make sure the container is partially glass, and continue to the reagent_container proc
  */
-/obj/item/reagent_containers/glass/on_accidental_consumption(mob/living/carbon/M, mob/living/carbon/user, obj/item/source_item, discover_after = TRUE)
+/obj/item/reagent_containers/cup/on_accidental_consumption(mob/living/carbon/M, mob/living/carbon/user, obj/item/source_item, discover_after = TRUE)
 	if(!custom_materials)
 		set_custom_materials(list(GET_MATERIAL_REF(/datum/material/glass) = 5))//sets it to glass so, later on, it gets picked up by the glass catch (hope it doesn't 'break' things lol)
 	return ..()
 
-TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker)
+TYPEINFO_DEF(/obj/item/reagent_containers/cup/beaker)
 	default_materials = list(/datum/material/glass=500)
 
-/obj/item/reagent_containers/glass/beaker
+/obj/item/reagent_containers/cup/beaker
 	name = "beaker"
 	desc = "A beaker. It can hold up to 60 units."
 	icon = 'icons/obj/chemical.dmi'
@@ -186,23 +186,23 @@ TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker)
 	possible_transfer_amounts = list(5, 10, 15, 20, 25, 30, 60)
 	volume = 60
 
-/obj/item/reagent_containers/glass/beaker/Initialize(mapload)
+/obj/item/reagent_containers/cup/beaker/Initialize(mapload)
 	. = ..()
 	update_appearance()
 
-/obj/item/reagent_containers/glass/beaker/get_part_rating()
+/obj/item/reagent_containers/cup/beaker/get_part_rating()
 	return reagents.maximum_volume
 
-/obj/item/reagent_containers/glass/beaker/jar
+/obj/item/reagent_containers/cup/beaker/jar
 	name = "honey jar"
 	desc = "A jar for honey. It can hold up to 50 units of sweet delight."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "vapour"
 
-TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/large)
+TYPEINFO_DEF(/obj/item/reagent_containers/cup/beaker/large)
 	default_materials = list(/datum/material/glass=2500)
 
-/obj/item/reagent_containers/glass/beaker/large
+/obj/item/reagent_containers/cup/beaker/large
 	name = "large beaker"
 	desc = "A large beaker. Can hold up to 120 units."
 	icon_state = "beakerlarge"
@@ -211,10 +211,10 @@ TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/large)
 	possible_transfer_amounts = list(5,10,15,20,25,30,40,60,120)
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
 
-TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/plastic)
+TYPEINFO_DEF(/obj/item/reagent_containers/cup/beaker/plastic)
 	default_materials = list(/datum/material/glass=2500, /datum/material/plastic=3000)
 
-/obj/item/reagent_containers/glass/beaker/plastic
+/obj/item/reagent_containers/cup/beaker/plastic
 	name = "x-large beaker"
 	desc = "An extra-large beaker. Can hold up to 150 units."
 	icon_state = "beakerwhite"
@@ -223,10 +223,10 @@ TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/plastic)
 	possible_transfer_amounts = list(5,10,15,20,30,50,60,120,150)
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
 
-TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/meta)
+TYPEINFO_DEF(/obj/item/reagent_containers/cup/beaker/meta)
 	default_materials = list(/datum/material/glass=2500, /datum/material/plastic=3000, /datum/material/gold=1000, /datum/material/titanium=1000)
 
-/obj/item/reagent_containers/glass/beaker/meta
+/obj/item/reagent_containers/cup/beaker/meta
 	name = "metamaterial beaker"
 	desc = "A large beaker. Can hold up to 180 units."
 	icon_state = "beakergold"
@@ -235,10 +235,10 @@ TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/meta)
 	possible_transfer_amounts = list(5,10,15,20,30,40,60,120,180)
 	fill_icon_thresholds = list(0, 1, 10, 25, 35, 50, 60, 80, 100)
 
-TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/noreact)
+TYPEINFO_DEF(/obj/item/reagent_containers/cup/beaker/noreact)
 	default_materials = list(/datum/material/iron=3000)
 
-/obj/item/reagent_containers/glass/beaker/noreact
+/obj/item/reagent_containers/cup/beaker/noreact
 	name = "cryostasis beaker"
 	desc = "A cryostasis beaker that allows for chemical storage without \
 		reactions. Can hold up to 50 units."
@@ -247,10 +247,10 @@ TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/noreact)
 	volume = 50
 	amount_per_transfer_from_this = 10
 
-TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/bluespace)
+TYPEINFO_DEF(/obj/item/reagent_containers/cup/beaker/bluespace)
 	default_materials = list(/datum/material/glass = 5000, /datum/material/plasma = 3000, /datum/material/diamond = 1000, /datum/material/bluespace = 1000)
 
-/obj/item/reagent_containers/glass/beaker/bluespace
+/obj/item/reagent_containers/cup/beaker/bluespace
 	name = "bluespace beaker"
 	desc = "A bluespace beaker, powered by experimental bluespace technology \
 		and Element Cuban combined with the Compound Pete. Can hold up to \
@@ -260,39 +260,39 @@ TYPEINFO_DEF(/obj/item/reagent_containers/glass/beaker/bluespace)
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,25,30,50,100,300)
 
-/obj/item/reagent_containers/glass/beaker/cryoxadone
+/obj/item/reagent_containers/cup/beaker/cryoxadone
 	list_reagents = list(/datum/reagent/medicine/cryoxadone = 30)
 
-/obj/item/reagent_containers/glass/beaker/sulfuric
+/obj/item/reagent_containers/cup/beaker/sulfuric
 	list_reagents = list(/datum/reagent/toxin/acid = 50)
 
-/obj/item/reagent_containers/glass/beaker/slime
+/obj/item/reagent_containers/cup/beaker/slime
 	list_reagents = list(/datum/reagent/toxin/slimejelly = 50)
 
-/obj/item/reagent_containers/glass/beaker/large/bicaridine
+/obj/item/reagent_containers/cup/beaker/large/bicaridine
 	name = "bicaridine reserve tank"
 	list_reagents = list(/datum/reagent/medicine/bicaridine = 50)
 
-/obj/item/reagent_containers/glass/beaker/large/kelotane
+/obj/item/reagent_containers/cup/beaker/large/kelotane
 	name = "kelotane reserve tank"
 	list_reagents = list(/datum/reagent/medicine/kelotane = 50)
 
-/obj/item/reagent_containers/glass/beaker/large/dylovene
+/obj/item/reagent_containers/cup/beaker/large/dylovene
 	name = "dylovene reserve tank"
 	list_reagents = list(/datum/reagent/medicine/dylovene = 50)
 
-/obj/item/reagent_containers/glass/beaker/large/epinephrine
+/obj/item/reagent_containers/cup/beaker/large/epinephrine
 	name = "epinephrine reserve tank"
 	list_reagents = list(/datum/reagent/medicine/epinephrine = 50)
 
-/obj/item/reagent_containers/glass/beaker/synthflesh
+/obj/item/reagent_containers/cup/beaker/synthflesh
 	list_reagents = list(/datum/reagent/medicine/synthflesh = 50)
 
-TYPEINFO_DEF(/obj/item/reagent_containers/glass/bucket)
+TYPEINFO_DEF(/obj/item/reagent_containers/cup/bucket)
 	default_armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 75, ACID = 50)
 	default_materials = list(/datum/material/iron=200)
 
-/obj/item/reagent_containers/glass/bucket
+/obj/item/reagent_containers/cup/bucket
 	name = "bucket"
 	desc = "It's a bucket."
 	icon = 'icons/obj/janitor.dmi'
@@ -319,18 +319,18 @@ TYPEINFO_DEF(/obj/item/reagent_containers/glass/bucket)
 		ITEM_SLOT_DEX_STORAGE
 	)
 
-TYPEINFO_DEF(/obj/item/reagent_containers/glass/bucket/wooden)
+TYPEINFO_DEF(/obj/item/reagent_containers/cup/bucket/wooden)
 	default_armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 50)
 	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 2)
 
-/obj/item/reagent_containers/glass/bucket/wooden
+/obj/item/reagent_containers/cup/bucket/wooden
 	name = "wooden bucket"
 	icon_state = "woodbucket"
 	inhand_icon_state = "woodbucket"
 	resistance_flags = FLAMMABLE
 	supports_variations_flags = NONE
 
-/obj/item/reagent_containers/glass/bucket/attackby(obj/O, mob/user, params)
+/obj/item/reagent_containers/cup/bucket/attackby(obj/O, mob/user, params)
 	if(istype(O, /obj/item/mop))
 		if(reagents.total_volume < 1)
 			to_chat(user, span_warning("[src] is out of water!"))
@@ -346,7 +346,7 @@ TYPEINFO_DEF(/obj/item/reagent_containers/glass/bucket/wooden)
 	else
 		..()
 
-/obj/item/reagent_containers/glass/bucket/equipped(mob/user, slot)
+/obj/item/reagent_containers/cup/bucket/equipped(mob/user, slot)
 	..()
 	if (slot == ITEM_SLOT_HEAD)
 		if(reagents.total_volume)
@@ -355,11 +355,11 @@ TYPEINFO_DEF(/obj/item/reagent_containers/glass/bucket/wooden)
 			reagents.clear_reagents()
 		reagents.flags = NONE
 
-/obj/item/reagent_containers/glass/bucket/unequipped(mob/user)
+/obj/item/reagent_containers/cup/bucket/unequipped(mob/user)
 	. = ..()
 	reagents.flags = initial(reagent_flags)
 
-/obj/item/reagent_containers/glass/bucket/equip_to_best_slot(mob/M)
+/obj/item/reagent_containers/cup/bucket/equip_to_best_slot(mob/M)
 	if(reagents.total_volume) //If there is water in a bucket, don't quick equip it to the head
 		var/index = slot_equipment_priority.Find(ITEM_SLOT_HEAD)
 		slot_equipment_priority.Remove(ITEM_SLOT_HEAD)
@@ -376,10 +376,10 @@ TYPEINFO_DEF(/obj/item/reagent_containers/glass/bucket/wooden)
 	icon_state = "pestle"
 	force = 7
 
-TYPEINFO_DEF(/obj/item/reagent_containers/glass/mortar)
+TYPEINFO_DEF(/obj/item/reagent_containers/cup/mortar)
 	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT)
 
-/obj/item/reagent_containers/glass/mortar
+/obj/item/reagent_containers/cup/mortar
 	name = "mortar"
 	desc = "A specially formed bowl of ancient design. It is possible to crush or juice items placed in it using a pestle; however the process, unlike modern methods, is slow and physically exhausting. Alt click to eject the item."
 	icon_state = "mortar"
@@ -390,13 +390,13 @@ TYPEINFO_DEF(/obj/item/reagent_containers/glass/mortar)
 	spillable = TRUE
 	var/obj/item/grinded
 
-/obj/item/reagent_containers/glass/mortar/AltClick(mob/user)
+/obj/item/reagent_containers/cup/mortar/AltClick(mob/user)
 	if(grinded)
 		grinded.forceMove(drop_location())
 		grinded = null
 		to_chat(user, span_notice("You eject the item inside."))
 
-/obj/item/reagent_containers/glass/mortar/attackby(obj/item/I, mob/living/carbon/human/user)
+/obj/item/reagent_containers/cup/mortar/attackby(obj/item/I, mob/living/carbon/human/user)
 	..()
 	if(istype(I,/obj/item/pestle))
 		if(grinded)
@@ -432,7 +432,7 @@ TYPEINFO_DEF(/obj/item/reagent_containers/glass/mortar)
 	to_chat(user, span_warning("You can't grind this!"))
 
 //TRUE MUGS for REAL MUG FANS !!!
-/obj/item/reagent_containers/glass/mug
+/obj/item/reagent_containers/cup/mug
 	name = "mug"
 	desc = "A generic porcelain mug, ready to hold your warm beverage."
 	icon = 'icons/obj/drinks.dmi'
@@ -442,25 +442,25 @@ TYPEINFO_DEF(/obj/item/reagent_containers/glass/mortar)
 	fill_icon_thresholds = list(0, 40, 80, 100)
 	volume = 30
 
-/obj/item/reagent_containers/glass/mug/Initialize(mapload)
+/obj/item/reagent_containers/cup/mug/Initialize(mapload)
 	. = ..()
 	update_appearance()
 
-/obj/item/reagent_containers/glass/mug/tea
+/obj/item/reagent_containers/cup/mug/tea
 	name = "Duke Purple tea"
 	list_reagents = list(/datum/reagent/consumable/tea = 30)
 
-/obj/item/reagent_containers/glass/mug/coco
+/obj/item/reagent_containers/cup/mug/coco
 	name = "Duke Purple tea"
 	list_reagents = list(/datum/reagent/consumable/hot_coco = 15, /datum/reagent/consumable/sugar = 5)
 
-/obj/item/reagent_containers/glass/mug/brit
+/obj/item/reagent_containers/cup/mug/brit
 	name = "mug"
 	desc = "A mug with the british flag emblazoned on it."
 	icon = 'icons/obj/drinks.dmi'
 	icon_state = "britcup"
 
-/obj/item/reagent_containers/glass/mug/beagle
+/obj/item/reagent_containers/cup/mug/beagle
 	name = "beagle mug"
 	desc = "A mug, shaped like the head of a claymation beagle. What will they think of next?"
 	icon = 'icons/obj/drinks.dmi'

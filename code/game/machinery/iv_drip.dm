@@ -30,7 +30,7 @@
 	var/static/list/drip_containers = typecacheof(list(
 		/obj/item/reagent_containers/blood,
 		/obj/item/reagent_containers/food,
-		/obj/item/reagent_containers/glass,
+		/obj/item/reagent_containers/cup,
 		/obj/item/reagent_containers/chem_pack,
 	))
 	// If the blood draining tab should be greyed out

@@ -1,0 +1,7 @@
+author: JohnFulpWillard, Kapu1178
+delete-after: true
+changes:
+  - refactor: Refactored drink containers, interactions are now consistent across
+      them.
+  - rscadd: You can now smash bottles over peoples heads and objects.
+  - bugfix: Turf AO no longer stacks on itself once.

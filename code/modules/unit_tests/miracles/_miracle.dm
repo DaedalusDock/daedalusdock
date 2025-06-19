@@ -4,7 +4,7 @@
 	var/mob/living/carbon/human/invoker
 	var/mob/living/carbon/human/target
 	var/obj/item/aether_tome/tome
-	var/obj/item/reagent_containers/glass/bottle/blood_bottle
+	var/obj/item/reagent_containers/cup/bottle/blood_bottle
 	var/obj/effect/aether_rune/rune
 
 /datum/unit_test/miracle/Destroy()

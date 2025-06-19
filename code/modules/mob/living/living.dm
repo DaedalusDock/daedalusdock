@@ -2265,7 +2265,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	var/offset_y = pixel_y + pick(-3, -2, -1, 1, 2, 3)
 
 	for(var/atom/movable/AM as anything in get_associated_mimics() + src)
-		animate(AM, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4))
+		animate(AM, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4), flags = ANIMATION_PARALLEL)
 		animate(pixel_x = pixel_x, pixel_y = pixel_y, time = 2)
 
 /mob/living/proc/get_blood_print()

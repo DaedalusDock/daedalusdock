@@ -41,7 +41,7 @@
 		var/mob/living/carbon/human/victim = A
 		if(user.zone_selected == BODY_ZONE_HEAD)
 			user.do_attack_animation(victim, used_item = src)
-			user.visible_message(span_danger("[user] smashes [src] over [victim]'s head."))
+			user.visible_message(span_danger("<b>[user]</b> smashes [src] over <b>[victim]</b>'s head."))
 			shatter(victim, BODY_ZONE_HEAD)
 			return TRUE
 

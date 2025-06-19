@@ -90,7 +90,7 @@
 		/obj/item/storage/box/fingerprints,
 		/obj/item/storage/box/evidence,
 		/obj/item/reagent_containers/syringe,
-		/obj/item/reagent_containers/glass/beaker,
+		/obj/item/reagent_containers/cup/beaker,
 		/obj/item/swab,
 		/obj/item/sample/print,
 		/obj/item/sample/fibers,

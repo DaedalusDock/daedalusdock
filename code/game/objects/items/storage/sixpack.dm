@@ -29,10 +29,10 @@ TYPEINFO_DEF(/obj/item/storage/cans)
 	atom_storage.max_total_storage = 12
 	atom_storage.max_slots = 6
 	atom_storage.set_holdable(list(
-		/obj/item/reagent_containers/food/drinks/soda_cans,
-		/obj/item/reagent_containers/food/drinks/bottle/beer,
-		/obj/item/reagent_containers/food/drinks/bottle/ale,
-		/obj/item/reagent_containers/food/drinks/waterbottle
+		/obj/item/reagent_containers/cup/soda_cans,
+		/obj/item/reagent_containers/cup/glass/bottle/beer,
+		/obj/item/reagent_containers/cup/glass/bottle/ale,
+		/obj/item/reagent_containers/cup/glass/waterbottle
 		))
 
 /obj/item/storage/cans/sixsoda
@@ -41,7 +41,7 @@ TYPEINFO_DEF(/obj/item/storage/cans)
 
 /obj/item/storage/cans/sixsoda/PopulateContents()
 	for(var/i in 1 to 6)
-		new /obj/item/reagent_containers/food/drinks/soda_cans/cola(src)
+		new /obj/item/reagent_containers/cup/soda_cans/cola(src)
 
 /obj/item/storage/cans/sixbeer
 	name = "beer bottle ring"
@@ -49,4 +49,4 @@ TYPEINFO_DEF(/obj/item/storage/cans)
 
 /obj/item/storage/cans/sixbeer/PopulateContents()
 	for(var/i in 1 to 6)
-		new /obj/item/reagent_containers/food/drinks/bottle/beer(src)
+		new /obj/item/reagent_containers/cup/glass/bottle/beer(src)

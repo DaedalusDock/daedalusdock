@@ -226,10 +226,10 @@
 
 	if(!missed)
 		var/list/modifiers = params2list(params)
-		SEND_SIGNAL(src, COMSIG_ITEM_AFTERATTACK, target_mob, user, modifiers,)
-		SEND_SIGNAL(target_mob, COMSIG_ATOM_AFTER_ATTACKEDBY, src, user, modifiers)
+		SEND_SIGNAL(src, COMSIG_ITEM_AFTERATTACK, M, user, modifiers,)
+		SEND_SIGNAL(M, COMSIG_ATOM_AFTER_ATTACKEDBY, src, user, modifiers)
 
-		afterattack(target_mob, user, modifiers)
+		afterattack(M, user, modifiers)
 
 	/// If we missed or the attack failed, interrupt attack chain.
 	return missed
@@ -252,34 +252,41 @@
 		return
 
 	if(item_flags & NOBLUDGEON)
-		return
-
-	var/list/modifiers = params2list(params)
-	SEND_SIGNAL(src, COMSIG_ITEM_AFTERATTACK, attacked_obj, user, modifiers)
-	SEND_SIGNAL(attacked_obj, COMSIG_ATOM_AFTER_ATTACKEDBY, src, user, modifiers)
-	afterattack(attacked_obj, user, modifiers)
+		return FALSE
 
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(attacked_obj)
-	return attacked_obj.attacked_by(src, user)
+
+	if(!attacked_obj.uses_integrity)
+		return FALSE
+
+	. = attacked_obj.attacked_by(src, user)
+
+	if(.)
+		var/list/modifiers = params2list(params)
+		SEND_SIGNAL(src, COMSIG_ITEM_AFTERATTACK, attacked_obj, user, modifiers)
+		SEND_SIGNAL(attacked_obj, COMSIG_ATOM_AFTER_ATTACKEDBY, src, user, modifiers)
+		afterattack(attacked_obj, user, modifiers)
+
 
 /// The equivalent of the standard version of [/obj/item/proc/attack] but for /turf targets.
 /obj/item/proc/attack_turf(turf/attacked_turf, mob/living/user, params)
-	if(!attacked_turf.uses_integrity)
-		return
-
 	if(item_flags & NOBLUDGEON)
-		return
+		return FALSE
 
-	var/list/modifiers = params2list(params)
-	SEND_SIGNAL(src, COMSIG_ITEM_AFTERATTACK, attacked_turf, user, modifiers)
-	SEND_SIGNAL(attacked_turf, COMSIG_ATOM_AFTER_ATTACKEDBY, src, user, modifiers)
-	afterattack(attacked_turf, user, modifiers)
-
-	// This probably needs to be changed later on, but it should work for now because only flock walls use integrity.
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(attacked_turf)
-	return attacked_turf.attacked_by(src, user)
+
+	if(!attacked_turf.uses_integrity)
+		return FALSE
+
+	// This probably needs to be changed later on, but it should work for now because only flock walls use integrity.
+	. = attacked_turf.attacked_by(src, user)
+	if(.)
+		var/list/modifiers = params2list(params)
+		SEND_SIGNAL(src, COMSIG_ITEM_AFTERATTACK, attacked_turf, user, modifiers)
+		SEND_SIGNAL(attacked_turf, COMSIG_ATOM_AFTER_ATTACKEDBY, src, user, modifiers)
+		afterattack(attacked_turf, user, modifiers)
 
 /// Called from [/obj/item/proc/attack_atom] and [/obj/item/proc/attack] if the attack succeeds
 /atom/proc/attacked_by(obj/item/attacking_item, mob/living/user)

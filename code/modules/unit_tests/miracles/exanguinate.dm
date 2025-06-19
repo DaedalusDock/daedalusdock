@@ -4,7 +4,7 @@
 /datum/unit_test/miracle/exanguinate/Run()
 	setup(/obj/effect/aether_rune/exanguinate)
 
-	var/obj/item/reagent_containers/food/drinks/bottle/bottle_to_fill = ALLOCATE_BOTTOM_LEFT()
+	var/obj/item/reagent_containers/cup/glass/bottle/bottle_to_fill = ALLOCATE_BOTTOM_LEFT()
 
 	start_miracle()
 

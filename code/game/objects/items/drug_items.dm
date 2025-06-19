@@ -18,7 +18,7 @@
 	icon_state = "saturnx_glob" //tell kryson to sprite two more variants in the future.
 	food_reagents = list(/datum/reagent/drug/saturnx = 10)
 
-/obj/item/reagent_containers/glass/blastoff_ampoule
+/obj/item/reagent_containers/cup/blastoff_ampoule
 	name = "bLaSToFF ampoule" //stylized name
 	desc = "A small ampoule. The liquid inside appears to be boiling violently.\nYou suspect it contains bLasSToFF; the drug thought to be the cause of the infamous Luna nightclub mass casualty incident."
 	icon = 'icons/obj/drugs.dmi'
@@ -29,7 +29,7 @@
 	spillable = FALSE
 	list_reagents = list(/datum/reagent/drug/blastoff = 10)
 
-/obj/item/reagent_containers/glass/blastoff_ampoule/update_icon_state()
+/obj/item/reagent_containers/cup/blastoff_ampoule/update_icon_state()
 	. = ..()
 	if(!reagents.total_volume)
 		icon_state = "[base_icon_state]_empty"
@@ -38,7 +38,7 @@
 	else
 		icon_state = base_icon_state
 
-/obj/item/reagent_containers/glass/blastoff_ampoule/attack_self(mob/user)
+/obj/item/reagent_containers/cup/blastoff_ampoule/attack_self(mob/user)
 	if(!user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY) || spillable)
 		return ..()
 	reagent_flags |= OPENCONTAINER
@@ -46,7 +46,7 @@
 	playsound(src, 'sound/items/ampoule_snap.ogg', 40)
 	update_appearance()
 
-/obj/item/reagent_containers/glass/blastoff_ampoule/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+/obj/item/reagent_containers/cup/blastoff_ampoule/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	. = ..()
 	if(.)
 		return

@@ -372,7 +372,7 @@
 /datum/surgery_step/internal/brain_revival/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	. = FALSE
 
-	var/obj/item/reagent_containers/glass/S = tool
+	var/obj/item/reagent_containers/cup/S = tool
 	if(!S.reagents.has_reagent(/datum/reagent/medicine/alkysine, 5))
 		to_chat(user, span_warning("\The [S] doesn't contain enough alkysine!"))
 		return

@@ -219,9 +219,6 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 		to_chat(user, span_warning("There is nothing to smoke!"))
 
 /obj/item/clothing/mask/cigarette/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	if(user.combat_mode)
-		return NONE
-
 	if(lit) //can't dip if cigarette is lit (it will heat the reagents in the glass instead)
 		return NONE
 

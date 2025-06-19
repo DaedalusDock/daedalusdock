@@ -138,19 +138,30 @@
 	if(!.) //if the bottle wasn't caught
 		smash(hit_atom, throwingdatum?.thrower, TRUE)
 
-
-/obj/item/reagent_containers/food/drinks/proc/smash(atom/target, mob/thrower, ranged = FALSE)
+/// Smashes the container
+/obj/item/reagent_containers/food/drinks/proc/smash(atom/target, mob/thrower, ranged = FALSE, extra_bump = TRUE)
 	if(!isGlass)
 		return
 	if(QDELING(src) || !target) //Invalid loc
 		return
 	if(bartender_check(target) && ranged)
 		return
+
 	SplashReagents(target, ranged, override_spillable = TRUE)
+
 	var/obj/item/broken_bottle/B = new (loc)
 	B.mimic_broken(src, target)
+
+	if(prob(33))
+		var/obj/item/shard/stab_with = new(drop_location())
+		if(extra_bump)
+			target.BumpedBy(stab_with)
+
+	playsound(src, SFX_SHATTER, 70, TRUE)
+
 	qdel(src)
-	target.BumpedBy(B)
+	if(extra_bump)
+		target.BumpedBy(B)
 
 /obj/item/reagent_containers/food/drinks/bullet_act(obj/projectile/P)
 	. = ..()
@@ -520,6 +531,7 @@ TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/waterbottle/large)
 /obj/item/reagent_containers/food/drinks/sillycup/smallcarton/smash(atom/target, mob/thrower, ranged = FALSE)
 	if(bartender_check(target) && ranged)
 		return
+
 	SplashReagents(target, ranged, override_spillable = TRUE)
 	var/obj/item/broken_bottle/B = new (loc)
 	B.mimic_broken(src, target)

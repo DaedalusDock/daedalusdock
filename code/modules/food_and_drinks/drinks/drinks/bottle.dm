@@ -22,8 +22,11 @@
 	foodtype = ALCOHOL
 	age_restricted = TRUE // wrryy can't set an init value to see if foodtype contains ALCOHOL so here we go
 
-	///Directly relates to the 'knockdown' duration. Lowered by armor (i.e. helmets)
-	var/bottle_knockdown_duration = 1.3 SECONDS
+	/// How long the bottle stuns for when smashed over someone's head.
+	var/bottle_stun_duration = 2 SECONDS
+
+	/// Armor required to not stun at all
+	var/armor_to_block_stun = 10
 
 	var/alcoholism_key = ""
 	var/alcoholism_message =""
@@ -33,24 +36,65 @@
 	if(alcoholism_key && alcoholism_message)
 		AddElement(/datum/element/alcoholism_magnet, alcoholism_key, alcoholism_message)
 
-/obj/item/reagent_containers/food/drinks/bottle/small
-	name = "small glass bottle"
-	desc = "This blank bottle is unyieldingly anonymous, offering no clues to its contents."
-	icon_state = "glassbottlesmall"
-	volume = 50
-	custom_price = PAYCHECK_ASSISTANT * 0.8
+/obj/item/reagent_containers/food/drinks/bottle/attack_turf(turf/attacked_turf, mob/living/user, params)
+	. = ..()
+	if(!isGlass)
+		return
 
-/obj/item/reagent_containers/food/drinks/bottle/smash(mob/living/target, mob/thrower, ranged = FALSE)
+	if(!isfloorturf(attacked_turf) && iswallturf(attacked_turf))
+		return
+
+	user.do_attack_animation(attacked_turf)
+	smash(attacked_turf, user, extra_bump = FALSE)
+
+/obj/item/reagent_containers/food/drinks/bottle/attack_obj(obj/attacked_obj, mob/living/user, params)
+	. = ..()
+	if(!isGlass)
+		return
+
+	var/list/break_types = list(
+		/obj/machinery,
+		/obj/structure,
+	)
+
+	var/shatter = FALSE
+	for(var/path in break_types)
+		if(istype(attacked_obj, path))
+			shatter = TRUE
+			break
+
+	if(!shatter)
+		return
+
+	user.do_attack_animation(attacked_obj)
+	smash(attacked_obj, user, extra_bump = FALSE)
+
+/obj/item/reagent_containers/food/drinks/bottle/smash(mob/living/target, mob/thrower, ranged = FALSE, extra_bump = TRUE)
 	if(bartender_check(target) && ranged)
 		return
+
 	SplashReagents(target, ranged, override_spillable = TRUE)
+
+	var/atom/drop_loc = drop_location()
 	var/obj/item/broken_bottle/B = new (loc)
+
 	if(!ranged && thrower)
-		thrower.put_in_hands(B)
+		thrower.temporarilyRemoveItemFromInventory(src, TRUE)
+		if(!thrower.put_in_hands(B))
+			B.forceMove(drop_loc)
+
+	if(isGlass)
+		playsound(src, SFX_SHATTER, 70, TRUE)
+
+		var/obj/item/shard/shank = new(drop_loc)
+		if(extra_bump)
+			target?.BumpedBy(shank)
+
 	B.mimic_broken(src, target)
 
 	qdel(src)
-	target.BumpedBy(B)
+	if(extra_bump)
+		target.BumpedBy(B)
 
 /obj/item/reagent_containers/food/drinks/bottle/attack_secondary(atom/target, mob/living/user, params)
 
@@ -64,58 +108,33 @@
 	if(!isliving(target) || !isGlass)
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 
+	user.do_attack_animation(target, used_item = src)
+
 	var/mob/living/living_target = target
 	var/obj/item/bodypart/affecting = user.zone_selected //Find what the player is aiming at
-
-	var/armor_block = 0 //Get the target's armor values for normal attack damage.
-	var/armor_duration = 0 //The more force the bottle has, the longer the duration.
-
-	//Calculating duration and calculating damage.
-	if(ishuman(target))
-
-		var/mob/living/carbon/human/H = target
-		var/headarmor = 0 // Target's head armor
-		armor_block = H.run_armor_check(affecting, BLUNT,"","", armor_penetration) // For normal attack damage
-
-		//If they have a hat/helmet and the user is targeting their head.
-		if(istype(H.head, /obj/item/clothing/head) && affecting == BODY_ZONE_HEAD)
-			headarmor = H.head.returnArmor().getRating(BLUNT)
-		else
-			headarmor = 0
-
-		//Calculate the knockdown duration for the target.
-		armor_duration = (bottle_knockdown_duration - headarmor) + force
-
-	else
-		//Only humans can have armor, right?
-		armor_block = living_target.run_armor_check(affecting, BLUNT)
-		if(affecting == BODY_ZONE_HEAD)
-			armor_duration = bottle_knockdown_duration + force
+	var/armor_block = living_target.run_armor_check(affecting, BLUNT,"","", armor_penetration)
 
 	//Apply the damage!
 	armor_block = min(90,armor_block)
 	living_target.apply_damage(force, BRUTE, affecting, armor_block)
 
 	// You are going to knock someone down for longer if they are not wearing a helmet.
-	var/head_attack_message = ""
-	if(affecting == BODY_ZONE_HEAD && istype(target, /mob/living/carbon/))
-		head_attack_message = " on the head"
-		if(armor_duration)
-			living_target.apply_effect(min(armor_duration, 200) , EFFECT_KNOCKDOWN)
+	var/extra_attack_message = ""
+	if(affecting == BODY_ZONE_HEAD && ishuman(target) && (armor_block < armor_to_block_stun))
+		extra_attack_message = "'s head"
+		living_target.Paralyze(bottle_stun_duration)
 
 	//Display an attack message.
 	if(target != user)
-		target.visible_message(span_danger("[user] hits [target][head_attack_message] with a bottle of [src.name]!"), \
-				span_userdanger("[user] hits you [head_attack_message] with a bottle of [src.name]!"))
+		target.visible_message(span_danger("<b>[user]</b> smashes [src] over <b>[target]</b>[extra_attack_message]."))
 	else
-		target.visible_message(span_danger("[target] hits [target.p_them()]self with a bottle of [src.name][head_attack_message]!"), \
-				span_userdanger("You hit yourself with a bottle of [src.name][head_attack_message]!"))
+		target.visible_message(span_danger("<b>[target]</b> smashes [src] over [affecting == BODY_ZONE_HEAD ? "[target.p_them()]self" : "[target.p_their()] head"]."))
 
 	//Attack logs
 	log_combat(user, target, "attacked", src)
 
-	//Finally, smash the bottle. This kills (del) the bottle.
-	smash(target, user)
+	//Break the bottle over the mob.
+	smash(target, user, extra_bump = FALSE)
 
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
@@ -152,18 +171,20 @@
 	drink_icon.SwapColor(rgb(255, 0, 220, 255), rgb(0, 0, 0, 0))
 	icon = drink_icon
 
-	if(to_mimic.isGlass)
-		if(prob(33))
-			var/obj/item/shard/stab_with = new(to_mimic.drop_location())
-			target.BumpedBy(stab_with)
-		playsound(src, SFX_SHATTER, 70, TRUE)
-	else
+	if(!to_mimic.isGlass)
 		force = 0
 		throwforce = 0
 		desc = "A carton with the bottom half burst open. Might give you a papercut."
 
 	name = "broken [to_mimic.name]"
-	to_mimic.transfer_fingerprints_to(src)
+	to_mimic.transfer_evidence_to(src)
+
+/obj/item/reagent_containers/food/drinks/bottle/small
+	name = "small glass bottle"
+	desc = "This blank bottle is unyieldingly anonymous, offering no clues to its contents."
+	icon_state = "glassbottlesmall"
+	volume = 50
+	custom_price = PAYCHECK_ASSISTANT * 0.8
 
 /obj/item/reagent_containers/food/drinks/bottle/beer
 	name = "space beer"

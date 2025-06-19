@@ -26,6 +26,29 @@
 	if(user.combat_mode)
 		return NONE
 
+	var/hotness = tool.get_temperature()
+	if(hotness && reagents)
+		reagents.expose_temperature(hotness)
+		to_chat(user, span_notice("You heat [name] with [tool]!"))
+		return ITEM_INTERACT_SUCCESS
+
+	//Cooling method
+	if(istype(tool, /obj/item/extinguisher))
+		var/obj/item/extinguisher/extinguisher = tool
+		if(extinguisher.safety)
+			return ITEM_INTERACT_BLOCKING
+
+		if(extinguisher.reagents.total_volume < 1)
+			to_chat(user, span_warning("\The [extinguisher] is empty!"))
+			return ITEM_INTERACT_BLOCKING
+
+		var/cooling = (0 - reagents.chem_temp) * (extinguisher.cooling_power * 2)
+		reagents.expose_temperature(cooling)
+		to_chat(user, span_notice("You cool the [name] with the [tool]!"))
+		playsound(loc, 'sound/effects/extinguish.ogg', 75, TRUE, -3)
+		extinguisher.reagents.remove_all(1)
+		return ITEM_INTERACT_SUCCESS
+
 	if(!istype(tool, /obj/item/food/egg)) //breaking eggs
 		return NONE
 

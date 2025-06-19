@@ -35,21 +35,64 @@
 	if(alcoholism_key && alcoholism_message)
 		AddElement(/datum/element/alcoholism_magnet, alcoholism_key, alcoholism_message)
 
+/obj/item/reagent_containers/cup/glass/bottle/pre_attack(atom/A, mob/living/user, params)
+	. = ..()
+	if(.)
+		return
+
+	if(!user.combat_mode)
+		return
+
+	if(!ismob(A))
+		return
+
+	var/mob/target = A
+
+	if(HAS_TRAIT(user, TRAIT_PACIFISM))
+		to_chat(user, span_warning("You don't want to harm [target]!"))
+		return
+
+	if(!ishuman(target) || !isGlass || !(user.zone_selected == BODY_ZONE_HEAD))
+		return
+
+	user.do_attack_animation(target, used_item = src)
+
+	var/mob/living/living_target = target
+	var/armor_block = living_target.run_armor_check(user.zone_selected, BLUNT,"","", armor_penetration)
+
+	//Apply the damage!
+	armor_block = min(90,armor_block)
+	living_target.apply_damage(force, BRUTE, user.zone_selected, armor_block)
+
+	if((armor_block < armor_to_block_stun))
+		living_target.Paralyze(bottle_stun_duration)
+
+	if(target != user)
+		target.visible_message(span_danger("<b>[user]</b> smashes [src] over <b>[target]</b>'s head."))
+	else
+		target.visible_message(span_danger("<b>[target]</b> smashes [src] over [target.p_their()] own head."))
+
+	//Attack logs
+	log_combat(user, target, "smashed a bottle over", src)
+
+	//Break the bottle over the mob.
+	smash(target, user, extra_bump = FALSE)
+	return TRUE
+
+/obj/item/reagent_containers/cup/glass/bottle/attack(mob/living/M, mob/living/user, params)
+	. = ..()
+	if(. && !QDELING(src))
+		smash(M, user)
+
 /obj/item/reagent_containers/cup/glass/bottle/attack_turf(turf/attacked_turf, mob/living/user, params)
 	. = ..()
-	if(!isGlass)
+	if(!isfloorturf(attacked_turf) && !iswallturf(attacked_turf))
 		return
 
-	if(!isfloorturf(attacked_turf) && iswallturf(attacked_turf))
-		return
-
-	user.do_attack_animation(attacked_turf)
 	smash(attacked_turf, user, extra_bump = FALSE)
 
 /obj/item/reagent_containers/cup/glass/bottle/attack_obj(obj/attacked_obj, mob/living/user, params)
 	. = ..()
-	if(!isGlass)
-		return
 
 	var/list/break_types = list(
 		/obj/machinery,
@@ -65,7 +108,6 @@
 	if(!shatter)
 		return
 
-	user.do_attack_animation(attacked_obj)
 	smash(attacked_obj, user, extra_bump = FALSE)
 
 /obj/item/reagent_containers/cup/glass/bottle/smash(mob/living/target, mob/thrower, ranged = FALSE, extra_bump = TRUE)
@@ -94,48 +136,6 @@
 	qdel(src)
 	if(extra_bump)
 		target.BumpedBy(B)
-
-/obj/item/reagent_containers/cup/glass/bottle/attack_secondary(atom/target, mob/living/user, params)
-
-	if(!target)
-		return ..()
-
-	if(HAS_TRAIT(user, TRAIT_PACIFISM))
-		to_chat(user, span_warning("You don't want to harm [target]!"))
-		return SECONDARY_ATTACK_CONTINUE_CHAIN
-
-	if(!isliving(target) || !isGlass)
-		return SECONDARY_ATTACK_CONTINUE_CHAIN
-
-	user.do_attack_animation(target, used_item = src)
-
-	var/mob/living/living_target = target
-	var/obj/item/bodypart/affecting = user.zone_selected //Find what the player is aiming at
-	var/armor_block = living_target.run_armor_check(affecting, BLUNT,"","", armor_penetration)
-
-	//Apply the damage!
-	armor_block = min(90,armor_block)
-	living_target.apply_damage(force, BRUTE, affecting, armor_block)
-
-	// You are going to knock someone down for longer if they are not wearing a helmet.
-	var/extra_attack_message = ""
-	if(affecting == BODY_ZONE_HEAD && ishuman(target) && (armor_block < armor_to_block_stun))
-		extra_attack_message = "'s head"
-		living_target.Paralyze(bottle_stun_duration)
-
-	//Display an attack message.
-	if(target != user)
-		target.visible_message(span_danger("<b>[user]</b> smashes [src] over <b>[target]</b>[extra_attack_message]."))
-	else
-		target.visible_message(span_danger("<b>[target]</b> smashes [src] over [affecting == BODY_ZONE_HEAD ? "[target.p_them()]self" : "[target.p_their()] head"]."))
-
-	//Attack logs
-	log_combat(user, target, "attacked", src)
-
-	//Break the bottle over the mob.
-	smash(target, user, extra_bump = FALSE)
-
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 //Keeping this here for now, I'll ask if I should keep it here.
 /obj/item/broken_bottle

@@ -105,9 +105,7 @@
 
 	var/reagent_text
 	user.visible_message(
-		span_danger("[user] splashes the contents of [src] onto [target == user ? "themself" : target][punctuation]"),
-		span_danger("You splash the contents of [src] onto [target == user ? "themself" : target][punctuation]"),
-		ignored_mobs = target,
+		span_danger("<b>[user]</b> splashes the contents of [src] onto <b>[target == user ? "themself" : target]</b>[punctuation]"),
 	)
 	if(user != target && ismob(target))
 		var/mob/living/L = target

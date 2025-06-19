@@ -21,68 +21,6 @@
 		set_custom_materials(list(GET_MATERIAL_REF(/datum/material/glass) = 5))
 	return ..()
 
-/obj/item/reagent_containers/cup/glass/afterattack(obj/target, mob/user , proximity)
-	. = ..()
-	if(!proximity)
-		return
-
-	if(target.is_refillable() && is_drainable()) //Something like a glass. Player probably wants to transfer TO it.
-		if(!reagents.total_volume)
-			to_chat(user, span_warning("[src] is empty."))
-			return
-
-		if(target.reagents.holder_full())
-			to_chat(user, span_warning("[target] is full."))
-			return
-
-		var/refill = reagents.get_master_reagent_id()
-		var/trans = src.reagents.trans_to(target, amount_per_transfer_from_this, transfered_by = user)
-		to_chat(user, span_notice("You transfer [trans] units of the solution to [target]."))
-
-		if(iscyborg(user)) //Cyborg modules that include drinks automatically refill themselves (and only with consumable drinks), but drain the borg's cell
-			if (!ispath(refill, /datum/reagent/consumable))
-				return
-			var/mob/living/silicon/robot/bro = user
-			bro.cell.use(30)
-			addtimer(CALLBACK(reagents, TYPE_PROC_REF(/datum/reagents, add_reagent), refill, trans), 600)
-
-	else if(target.is_drainable()) //A dispenser. Transfer FROM it TO us.
-		if (!is_refillable())
-			to_chat(user, span_warning("[src]'s tab isn't open!"))
-			return
-
-		if(!target.reagents.total_volume)
-			to_chat(user, span_warning("[target] is empty."))
-			return
-
-		if(reagents.holder_full())
-			to_chat(user, span_warning("[src] is full."))
-			return
-
-		var/trans = target.reagents.trans_to(src, amount_per_transfer_from_this, transfered_by = user)
-		to_chat(user, span_notice("You fill [src] with [trans] units of the contents of [target]."))
-
-/obj/item/reagent_containers/cup/glass/attackby(obj/item/I, mob/user, params)
-	var/hotness = I.get_temperature()
-	if(hotness && reagents)
-		reagents.expose_temperature(hotness)
-		to_chat(user, span_notice("You heat [name] with [I]!"))
-
-	//Cooling method
-	if(istype(I, /obj/item/extinguisher))
-		var/obj/item/extinguisher/extinguisher = I
-		if(extinguisher.safety)
-			return
-		if(extinguisher.reagents.total_volume < 1)
-			to_chat(user, span_warning("\The [extinguisher] is empty!"))
-			return
-		var/cooling = (0 - reagents.chem_temp) * (extinguisher.cooling_power * 2)
-		reagents.expose_temperature(cooling)
-		to_chat(user, span_notice("You cool the [name] with the [I]!"))
-		playsound(loc, 'sound/effects/extinguish.ogg', 75, TRUE, -3)
-		extinguisher.reagents.remove_all(1)
-	..()
-
 /obj/item/reagent_containers/cup/glass/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	. = ..()
 	if(!.) //if the bottle wasn't caught

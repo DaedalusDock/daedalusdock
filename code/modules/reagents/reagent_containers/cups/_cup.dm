@@ -83,7 +83,7 @@
 	SEND_SIGNAL(src, COMSIG_GLASS_DRANK, living_target, user)
 
 	var/fraction = min(gulp_size/reagents.total_volume, 1)
-	reagents.trans_to(target_mob, gulp_size, transfered_by = user, methods = INGEST)
+	reagents.trans_to(living_target, gulp_size, transfered_by = user, methods = INGEST)
 
 	checkLiked(fraction, interacting_with)
 

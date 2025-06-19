@@ -8,65 +8,87 @@
 	spillable = TRUE
 	resistance_flags = ACID_PROOF
 
+/obj/item/reagent_containers/glass/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(user.combat_mode)
+		return NONE
 
-/obj/item/reagent_containers/glass/attack(mob/M, mob/living/user, obj/target)
-	if(!canconsume(M, user))
-		return
+	if(!ismob(interacting_with))
+		return try_refill_container(interacting_with, user)
 
 	if(!spillable)
-		return
+		return NONE
+
+	if(!canconsume(interacting_with, user))
+		return NONE
+
+	if(!ismob(interacting_with))
+		return NONE
 
 	if(!reagents || !reagents.total_volume)
 		to_chat(user, span_warning("[src] is empty!"))
-		return
+		return NONE
 
-	if(istype(M))
-		if(M != user)
-			M.visible_message(span_danger("[user] attempts to feed [M] something from [src]."), \
-						span_userdanger("[user] attempts to feed you something from [src]."))
-			if(!do_after(user, M, 3 SECONDS))
-				return
-			if(!reagents || !reagents.total_volume)
-				return // The drink might be empty after the delay, such as by spam-feeding
+	var/mob/living/living_target = interacting_with
 
-			M.visible_message(span_danger("[user] feeds [M] something from [src]."), \
-						span_userdanger("[user] feeds you something from [src]."))
-			log_combat(user, M, "fed", reagents.get_reagent_log_string())
-		else
-			to_chat(user, span_notice("You swallow a gulp of [src]."))
+	if(living_target != user)
+		living_target.visible_message(span_danger("<b>[user]</b> attempts to feed <b>[living_target]</b> something from [src]."))
 
-		add_trace_DNA(M.get_trace_dna())
-		SEND_SIGNAL(src, COMSIG_GLASS_DRANK, M, user)
-		addtimer(CALLBACK(reagents, TYPE_PROC_REF(/datum/reagents, trans_to), M, 5, TRUE, TRUE, FALSE, user, FALSE, INGEST), 5)
-		playsound(M.loc,'sound/items/drink.ogg', rand(10,50), TRUE)
-		if(iscarbon(M))
-			var/mob/living/carbon/carbon_drinker = M
-			var/list/diseases = carbon_drinker.get_static_viruses()
-			if(LAZYLEN(diseases))
-				var/list/datum/pathogen/diseases_to_add = list()
-				for(var/d in diseases)
-					var/datum/pathogen/malady = d
-					if(malady.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
-						diseases_to_add += malady
-				if(LAZYLEN(diseases_to_add))
-					AddComponent(/datum/component/infective, diseases_to_add)
+		if(!do_after(user, living_target, 3 SECONDS))
+			return ITEM_INTERACT_BLOCKING
+		if(!reagents || !reagents.total_volume)
+			return ITEM_INTERACT_BLOCKING // The drink might be empty after the delay, such as by spam-feeding
 
-/obj/item/reagent_containers/glass/afterattack(obj/target, mob/living/user, proximity)
+		living_target.visible_message(span_danger("<b>[user]</b> feeds [living_target] something from [src]."))
+		log_combat(user, living_target, "fed", reagents.get_reagent_log_string())
+	else
+		to_chat(user, span_notice("You swallow a gulp of [src]."))
+
+	add_trace_DNA(living_target.get_trace_dna())
+	SEND_SIGNAL(src, COMSIG_GLASS_DRANK, living_target, user)
+	addtimer(CALLBACK(reagents, TYPE_PROC_REF(/datum/reagents, trans_to), living_target, 5, TRUE, TRUE, FALSE, user, FALSE, INGEST), 5)
+	playsound(living_target.loc,'sound/items/drink.ogg', rand(10,50), TRUE)
+
+	if(!iscarbon(living_target))
+		return ITEM_INTERACT_SUCCESS
+
+	var/mob/living/carbon/carbon_drinker = living_target
+	var/list/diseases = carbon_drinker.get_static_viruses()
+
+	if(LAZYLEN(diseases))
+		var/list/datum/pathogen/diseases_to_add = list()
+		for(var/d in diseases)
+			var/datum/pathogen/malady = d
+			if(malady.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
+				diseases_to_add += malady
+
+		if(LAZYLEN(diseases_to_add))
+			AddComponent(/datum/component/infective, diseases_to_add)
+
+	return ITEM_INTERACT_SUCCESS
+
+/obj/item/reagent_containers/glass/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
 	. = ..()
-	if((!proximity) || !check_allowed_items(target,target_self=1))
+	if(.)
 		return
+
+	return try_refill_with(interacting_with, user)
+
+/// Attempt to refill a container with this glass.
+/obj/item/reagent_containers/glass/proc/try_refill_container(atom/target, mob/living/user)
+	if(!check_allowed_items(target, target_self=1))
+		return NONE
 
 	if(!spillable)
-		return
+		return NONE
 
 	if(target.is_refillable()) //Something like a glass. Player probably wants to transfer TO it.
 		if(!reagents.total_volume)
 			to_chat(user, span_warning("[src] is empty!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		if(target.reagents.holder_full())
 			to_chat(user, span_warning("[target] is full."))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		var/trans = reagents.trans_to(target, amount_per_transfer_from_this, transfered_by = user)
 		to_chat(user, span_notice("You transfer [trans] unit\s of the solution to [target]."))
@@ -74,38 +96,41 @@
 	else if(target.is_drainable()) //A dispenser. Transfer FROM it TO us.
 		if(!target.reagents.total_volume)
 			to_chat(user, span_warning("[target] is empty and can't be refilled!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		if(reagents.holder_full())
 			to_chat(user, span_warning("[src] is full."))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		var/trans = target.reagents.trans_to(src, amount_per_transfer_from_this, transfered_by = user)
 		to_chat(user, span_notice("You fill [src] with [trans] unit\s of the contents of [target]."))
 
 	target.update_appearance()
 
-/obj/item/reagent_containers/glass/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
-	if((!proximity_flag) || !check_allowed_items(target,target_self=1))
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	return ITEM_INTERACT_SUCCESS
+
+/// Try to refill this container using another.
+/obj/item/reagent_containers/glass/proc/try_refill_with(atom/transfer_from, mob/living/user)
+	if(!check_allowed_items(transfer_from, target_self=1))
+		return NONE
 
 	if(!spillable)
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+		return NONE
 
-	if(target.is_drainable()) //A dispenser. Transfer FROM it TO us.
-		if(!target.reagents.total_volume)
-			to_chat(user, span_warning("[target] is empty!"))
-			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	if(transfer_from.is_drainable()) //A dispenser. Transfer FROM it TO us.
+		if(!transfer_from.reagents.total_volume)
+			to_chat(user, span_warning("[transfer_from] is empty!"))
+			return ITEM_INTERACT_BLOCKING
 
 		if(reagents.holder_full())
 			to_chat(user, span_warning("[src] is full."))
-			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+			return ITEM_INTERACT_BLOCKING
 
-		var/trans = target.reagents.trans_to(src, amount_per_transfer_from_this, transfered_by = user)
-		to_chat(user, span_notice("You fill [src] with [trans] unit\s of the contents of [target]."))
+		var/trans = transfer_from.reagents.trans_to(src, amount_per_transfer_from_this, transfered_by = user)
+		to_chat(user, span_notice("You fill [src] with [trans] unit\s of the contents of [transfer_from]."))
 
-	target.update_appearance()
-	return SECONDARY_ATTACK_CONTINUE_CHAIN
+	transfer_from.update_appearance()
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/glass/attackby(obj/item/I, mob/user, params)
 	var/hotness = I.get_temperature()

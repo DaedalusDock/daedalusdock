@@ -24,7 +24,7 @@
 	// INGEST
 	TEST_ASSERT_EQUAL(human.fire_stacks, 0, "Human has fire stacks before taking phlogiston")
 	drink.reagents.add_reagent(/datum/reagent/phlogiston, 10)
-	drink.attack(human, human)
+	drink.interact_with_atom(human, human)
 	TEST_ASSERT_EQUAL(human.fire_stacks, 1, "Human does not have fire stacks after taking phlogiston")
 	human.Life(SSMOBS_DT)
 	TEST_ASSERT(human.fire_stacks > 1, "Human fire stacks did not increase after life tick")

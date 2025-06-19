@@ -18,7 +18,6 @@
 	inhand_icon_state = "beer" //Generic held-item sprite until unique ones are made.
 	lefthand_file = 'icons/mob/inhands/misc/food_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/food_righthand.dmi'
-	isGlass = TRUE
 	drink_type = ALCOHOL
 	age_restricted = TRUE // wrryy can't set an init value to see if drink_type contains ALCOHOL so here we go
 
@@ -495,84 +494,6 @@
 	icon_state = "navy_rum_bottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/navy_rum = 100)
 
-//////////////////////////JUICES AND STUFF ///////////////////////
-
-/obj/item/reagent_containers/cup/glass/bottle/orangejuice
-	name = "orange juice"
-	desc = "Full of vitamins and deliciousness!"
-	custom_price = PAYCHECK_ASSISTANT * 0.6
-	icon_state = "orangejuice"
-	inhand_icon_state = "carton"
-	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
-	isGlass = FALSE
-	list_reagents = list(/datum/reagent/consumable/orangejuice = 100)
-	drink_type = FRUIT | BREAKFAST
-	age_restricted = FALSE
-
-/obj/item/reagent_containers/cup/glass/bottle/cream
-	name = "milk cream"
-	desc = "It's cream. Made from milk. What else did you think you'd find in there?"
-	custom_price = PAYCHECK_ASSISTANT * 0.6
-	icon_state = "cream"
-	inhand_icon_state = "carton"
-	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
-	isGlass = FALSE
-	list_reagents = list(/datum/reagent/consumable/cream = 100)
-	drink_type = DAIRY
-	age_restricted = FALSE
-
-/obj/item/reagent_containers/cup/glass/bottle/tomatojuice
-	name = "tomato juice"
-	desc = "Well, at least it LOOKS like tomato juice. You can't tell with all that redness."
-	custom_price = PAYCHECK_ASSISTANT * 0.6
-	icon_state = "tomatojuice"
-	inhand_icon_state = "carton"
-	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
-	isGlass = FALSE
-	list_reagents = list(/datum/reagent/consumable/tomatojuice = 100)
-	drink_type = VEGETABLES
-	age_restricted = FALSE
-
-/obj/item/reagent_containers/cup/glass/bottle/limejuice
-	name = "lime juice"
-	desc = "Sweet-sour goodness."
-	custom_price = PAYCHECK_ASSISTANT * 0.6
-	icon_state = "limejuice"
-	inhand_icon_state = "carton"
-	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
-	isGlass = FALSE
-	list_reagents = list(/datum/reagent/consumable/limejuice = 100)
-	drink_type = FRUIT
-	age_restricted = FALSE
-
-/obj/item/reagent_containers/cup/glass/bottle/pineapplejuice
-	name = "pineapple juice"
-	desc = "Extremely tart, yellow juice."
-	custom_price = PAYCHECK_ASSISTANT * 0.6
-	icon_state = "pineapplejuice"
-	inhand_icon_state = "carton"
-	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
-	isGlass = FALSE
-	list_reagents = list(/datum/reagent/consumable/pineapplejuice = 100)
-	drink_type = FRUIT | PINEAPPLE
-	age_restricted = FALSE
-
-/obj/item/reagent_containers/cup/glass/bottle/menthol
-	name = "menthol"
-	desc = "Tastes naturally minty, and imparts a very mild numbing sensation."
-	custom_price = PAYCHECK_ASSISTANT * 0.6
-	icon_state = "mentholbox"
-	inhand_icon_state = "carton"
-	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
-	isGlass = FALSE
-	list_reagents = list(/datum/reagent/consumable/menthol = 100)
-
 /obj/item/reagent_containers/cup/glass/bottle/grenadine
 	name = "Jester Grenadine"
 	desc = "Contains 0% real cherries!"
@@ -699,7 +620,7 @@
 	if(B)
 		icon_state = B.icon_state
 		B.reagents.copy_to(src,100)
-		if(!B.isGlass)
+		if(istype(B, /obj/item/reagent_containers/cup/glass/bottle/juice))
 			desc += " You're not sure if making this out of a carton was the brightest idea."
 			isGlass = FALSE
 	return
@@ -804,3 +725,66 @@
 	for (var/mob/living/M in view(2, get_turf(src))) // letting people and/or narcs know when the pruno is done
 		to_chat(M, span_info("A pungent smell emanates from [src], like fruit puking out its guts."))
 		playsound(get_turf(src), 'sound/effects/bubbles2.ogg', 25, TRUE)
+
+/**
+ * Cartons
+ * Subtype of glass that don't break, and share a common carton hand state.
+ * Meant to be a subtype for use in Molotovs
+ */
+/obj/item/reagent_containers/cup/glass/bottle/juice
+	custom_price = PAYCHECK_ASSISTANT * 0.6
+
+	inhand_icon_state = "carton"
+	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
+
+	isGlass = FALSE
+	age_restricted = FALSE
+
+/obj/item/reagent_containers/cup/glass/bottle/juice/orangejuice
+	name = "orange juice"
+	desc = "Full of vitamins and deliciousness!"
+	icon_state = "orangejuice"
+
+	list_reagents = list(/datum/reagent/consumable/orangejuice = 100)
+	drink_type = FRUIT | BREAKFAST
+
+/obj/item/reagent_containers/cup/glass/bottle/juice/cream
+	name = "milk cream"
+	desc = "It's cream. Made from milk. What else did you think you'd find in there?"
+	icon_state = "cream"
+
+	list_reagents = list(/datum/reagent/consumable/cream = 100)
+	drink_type = DAIRY
+
+/obj/item/reagent_containers/cup/glass/bottle/juice/tomatojuice
+	name = "tomato juice"
+	desc = "Well, at least it LOOKS like tomato juice. You can't tell with all that redness."
+	icon_state = "tomatojuice"
+
+	list_reagents = list(/datum/reagent/consumable/tomatojuice = 100)
+	drink_type = VEGETABLES
+
+/obj/item/reagent_containers/cup/glass/bottle/juice/limejuice
+	name = "lime juice"
+	desc = "Sweet-sour goodness."
+	icon_state = "limejuice"
+
+	list_reagents = list(/datum/reagent/consumable/limejuice = 100)
+	drink_type = FRUIT
+
+/obj/item/reagent_containers/cup/glass/bottle/juice/pineapplejuice
+	name = "pineapple juice"
+	desc = "Extremely tart, yellow juice."
+	icon_state = "pineapplejuice"
+
+	list_reagents = list(/datum/reagent/consumable/pineapplejuice = 100)
+	drink_type = FRUIT | PINEAPPLE
+
+/obj/item/reagent_containers/cup/glass/bottle/juice/menthol
+	name = "menthol"
+	desc = "Tastes naturally minty, and imparts a very mild numbing sensation."
+	icon_state = "mentholbox"
+
+	age_restricted = TRUE
+	list_reagents = list(/datum/reagent/consumable/menthol = 100)

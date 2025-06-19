@@ -22,6 +22,28 @@
 		var/list/types = bitfield_to_list(drink_type, FOOD_FLAGS)
 		. += span_info("It is [lowertext(english_list(types))].")
 
+/obj/item/reagent_containers/cup/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(user.combat_mode)
+		return NONE
+
+	if(!istype(tool, /obj/item/food/egg)) //breaking eggs
+		return NONE
+
+	var/obj/item/food/egg/E = tool
+	if(!reagents)
+		return NONE
+
+	if(reagents.total_volume >= reagents.maximum_volume)
+		to_chat(user, span_notice("[src] is full."))
+		return ITEM_INTERACT_BLOCKING
+
+	to_chat(user, span_notice("You break [E] into [src]."))
+	reagents.add_reagent(E.food_reagents)
+	reagents.add_reagent(/datum/reagent/consumable/eggyolk, 2)
+	reagents.add_reagent(/datum/reagent/consumable/eggwhite, 4)
+	qdel(E)
+	return ITEM_INTERACT_SUCCESS
+
 /obj/item/reagent_containers/cup/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(user.combat_mode)
 		return NONE
@@ -171,16 +193,6 @@
 		playsound(loc, 'sound/effects/extinguish.ogg', 75, TRUE, -3)
 		extinguisher.reagents.remove_all(1)
 
-	if(istype(I, /obj/item/food/egg)) //breaking eggs
-		var/obj/item/food/egg/E = I
-		if(reagents)
-			if(reagents.total_volume >= reagents.maximum_volume)
-				to_chat(user, span_notice("[src] is full."))
-			else
-				to_chat(user, span_notice("You break [E] in [src]."))
-				E.reagents.trans_to(src, E.reagents.total_volume, transfered_by = user)
-				qdel(E)
-			return
 	..()
 
 /*

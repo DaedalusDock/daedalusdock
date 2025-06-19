@@ -1,5 +1,0 @@
-author: Kapu1178, MrMelbert
-delete-after: true
-changes:
-  - rscadd: trashcans
-  - refactor: Fixed some exploits/issues with item weights.

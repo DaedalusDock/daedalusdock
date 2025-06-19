@@ -28,3 +28,7 @@
   Kapu1178:
   - bugfix: Players are no longer alerted that keys which are unbound by default need
       binding.
+2025-06-19:
+  Kapu1178, MrMelbert:
+  - rscadd: trashcans
+  - refactor: Fixed some exploits/issues with item weights.

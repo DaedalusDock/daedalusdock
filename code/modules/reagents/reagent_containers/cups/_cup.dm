@@ -67,14 +67,14 @@
 	var/mob/living/living_target = interacting_with
 
 	if(living_target != user)
-		living_target.visible_message(span_danger("<b>[user]</b> attempts to feed <b>[living_target]</b> something from [src]."))
+		living_target.visible_message(span_danger("<b>[user]</b> attempts to feed <b>[living_target]</b> the contents of [src]."))
 
 		if(!do_after(user, living_target, 3 SECONDS))
 			return ITEM_INTERACT_BLOCKING
 		if(!reagents || !reagents.total_volume)
 			return ITEM_INTERACT_BLOCKING // The drink might be empty after the delay, such as by spam-feeding
 
-		living_target.visible_message(span_danger("<b>[user]</b> feeds [living_target] something from [src]."))
+		living_target.visible_message(span_danger("<b>[user]</b> feeds [living_target] the contents of [src]."))
 		log_combat(user, living_target, "fed", reagents.get_reagent_log_string())
 	else
 		to_chat(user, span_notice("You swallow a gulp of [src]."))

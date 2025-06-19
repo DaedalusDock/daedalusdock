@@ -13,54 +13,6 @@
 	volume = 50
 	resistance_flags = NONE
 
-/obj/item/reagent_containers/cup/glass/attack(mob/living/M, mob/user, def_zone)
-
-	if(!reagents || !reagents.total_volume)
-		to_chat(user, span_warning("[src] is empty!"))
-		return FALSE
-
-	if(!canconsume(M, user))
-		return FALSE
-
-	if (!is_drainable())
-		to_chat(user, span_warning("[src]'s lid hasn't been opened!"))
-		return FALSE
-
-	if(M == user)
-		user.visible_message(span_notice("[user] swallows a gulp of [src]."), \
-			span_notice("You swallow a gulp of [src]."))
-
-	else
-		M.visible_message(span_danger("[user] attempts to feed [M] the contents of [src]."), \
-			span_userdanger("[user] attempts to feed you the contents of [src]."))
-		if(!do_after(user, M, 3 SECONDS))
-			return
-		if(!reagents || !reagents.total_volume)
-			return // The drink might be empty after the delay, such as by spam-feeding
-		M.visible_message(span_danger("[user] fed [M] the contents of [src]."), \
-			span_userdanger("[user] fed you the contents of [src]."))
-		log_combat(user, M, "fed", reagents.get_reagent_log_string())
-
-	SEND_SIGNAL(src, COMSIG_DRINK_DRANK, M, user)
-
-	var/fraction = min(gulp_size/reagents.total_volume, 1)
-	reagents.trans_to(M, gulp_size, transfered_by = user, methods = INGEST)
-	checkLiked(fraction, M)
-
-	playsound(M.loc,'sound/items/drink.ogg', rand(10,50), TRUE)
-	if(iscarbon(M))
-		var/mob/living/carbon/carbon_drinker = M
-		var/list/diseases = carbon_drinker.get_static_viruses()
-		if(LAZYLEN(diseases))
-			var/list/datum/pathogen/diseases_to_add = list()
-			for(var/d in diseases)
-				var/datum/pathogen/malady = d
-				if(malady.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
-					diseases_to_add += malady
-			if(LAZYLEN(diseases_to_add))
-				AddComponent(/datum/component/infective, diseases_to_add)
-	return TRUE
-
 /*
  * On accidental consumption, make sure the container is partially glass, and continue to the reagent_container proc
  */

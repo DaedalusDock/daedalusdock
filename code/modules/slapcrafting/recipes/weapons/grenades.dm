@@ -12,7 +12,7 @@
 /datum/slapcraft_step/reagent_container/ied_can
 	desc = "Start with a soda can filled with welding fuel."
 	finished_desc = "A soda can filled with welding fuel has been added."
-	item_types = list(/obj/item/reagent_containers/cup/glass/soda_cans)
+	item_types = list(/obj/item/reagent_containers/cup/soda_cans)
 	reagent_type = /datum/reagent/fuel
 	reagent_volume = 50
 	insert_item_into_result = TRUE

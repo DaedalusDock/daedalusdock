@@ -8,6 +8,20 @@
 	spillable = TRUE
 	resistance_flags = ACID_PROOF
 
+	var/isGlass = TRUE //Whether the 'bottle' is made of glass or not so that milk cartons dont shatter when someone gets hit by it
+	var/gulp_size = 5 //This is now officially broken ... need to think of a nice way to fix it.
+
+	///Like Edible's food type, what kind of drink is this?
+	var/drink_type = NONE
+	///The last time we have checked for taste
+	var/last_check_time
+
+/obj/item/reagent_containers/cup/examine()
+	. = ..()
+	if(drink_type)
+		var/list/types = bitfield_to_list(drink_type, FOOD_FLAGS)
+		. += span_info("It is [lowertext(english_list(types))].")
+
 /obj/item/reagent_containers/cup/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(user.combat_mode)
 		return NONE
@@ -45,7 +59,12 @@
 
 	add_trace_DNA(living_target.get_trace_dna())
 	SEND_SIGNAL(src, COMSIG_GLASS_DRANK, living_target, user)
-	addtimer(CALLBACK(reagents, TYPE_PROC_REF(/datum/reagents, trans_to), living_target, 5, TRUE, TRUE, FALSE, user, FALSE, INGEST), 5)
+
+	var/fraction = min(gulp_size/reagents.total_volume, 1)
+	addtimer(CALLBACK(reagents, TYPE_PROC_REF(/datum/reagents, trans_to), interacting_with, gulp_size, TRUE, TRUE, FALSE, user, FALSE, INGEST), 5)
+
+	checkLiked(fraction, interacting_with)
+
 	playsound(living_target.loc,'sound/items/drink.ogg', rand(10,50), TRUE)
 
 	if(!iscarbon(living_target))
@@ -168,9 +187,33 @@
  * On accidental consumption, make sure the container is partially glass, and continue to the reagent_container proc
  */
 /obj/item/reagent_containers/cup/on_accidental_consumption(mob/living/carbon/M, mob/living/carbon/user, obj/item/source_item, discover_after = TRUE)
-	if(!custom_materials)
+	if(isGlass && !custom_materials)
 		set_custom_materials(list(GET_MATERIAL_REF(/datum/material/glass) = 5))//sets it to glass so, later on, it gets picked up by the glass catch (hope it doesn't 'break' things lol)
 	return ..()
+
+/obj/item/reagent_containers/cup/proc/checkLiked(fraction, mob/M)
+	if(!ishuman(M))
+		return
+
+	if(!(last_check_time + 50 < world.time))
+		return
+
+	var/mob/living/carbon/human/H = M
+	if(!HAS_TRAIT(H, TRAIT_AGEUSIA))
+		if(drink_type & H.dna.species.toxic_food)
+			to_chat(H,span_warning("What the hell was that thing?!"))
+			H.adjust_disgust(25 + 30 * fraction)
+		else if(drink_type & H.dna.species.disliked_food)
+			to_chat(H,span_notice("That didn't taste very good..."))
+			H.adjust_disgust(11 + 15 * fraction)
+		else if(drink_type & H.dna.species.liked_food)
+			to_chat(H,span_notice("I love this taste!"))
+			H.adjust_disgust(-5 + -2.5 * fraction)
+	else
+		if(drink_type & H.dna.species.toxic_food)
+			to_chat(H, span_warning("You don't feel so good..."))
+			H.adjust_disgust(25 + 30 * fraction)
+	last_check_time = world.time
 
 TYPEINFO_DEF(/obj/item/reagent_containers/cup/beaker)
 	default_materials = list(/datum/material/glass=500)

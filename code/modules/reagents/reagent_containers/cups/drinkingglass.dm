@@ -111,17 +111,24 @@ TYPEINFO_DEF(/obj/item/reagent_containers/cup/glass/drinkingglass/shotglass)
 	name = "Nuka Cola"
 	list_reagents = list(/datum/reagent/consumable/nuka_cola = 50)
 
-/obj/item/reagent_containers/cup/glass/drinkingglass/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/food/egg)) //breaking eggs
-		var/obj/item/food/egg/E = I
-		if(reagents)
-			if(reagents.total_volume >= reagents.maximum_volume)
-				to_chat(user, span_notice("[src] is full."))
-			else
-				to_chat(user, span_notice("You break [E] in [src]."))
-				reagents.add_reagent(/datum/reagent/consumable/eggyolk, 2)
-				reagents.add_reagent(/datum/reagent/consumable/eggwhite, 4)
-				qdel(E)
-			return
-	else
-		..()
+/obj/item/reagent_containers/cup/glass/drinkingglass/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(user.combat_mode)
+		return NONE
+
+	if(!istype(tool, /obj/item/food/egg)) //breaking eggs
+		return NONE
+
+	var/obj/item/food/egg/E = tool
+	if(!reagents)
+		return NONE
+
+	if(reagents.total_volume >= reagents.maximum_volume)
+		to_chat(user, span_notice("[src] is full."))
+		return ITEM_INTERACT_BLOCKING
+
+	to_chat(user, span_notice("You break [E] into [src]."))
+	reagents.add_reagent(E.food_reagents)
+	reagents.add_reagent(/datum/reagent/consumable/eggyolk, 2)
+	reagents.add_reagent(/datum/reagent/consumable/eggwhite, 4)
+	qdel(E)
+	return ITEM_INTERACT_SUCCESS

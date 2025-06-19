@@ -551,12 +551,12 @@ TYPEINFO_DEF(/obj/item/storage/belt/champion)
 		/obj/item/food/spaghetti/pastatomato,
 		/obj/item/food/rofflewaffles,
 		/obj/item/food/donkpocket,
-		/obj/item/reagent_containers/cup/glass/soda_cans/cola,
-		/obj/item/reagent_containers/cup/glass/soda_cans/space_mountain_wind,
-		/obj/item/reagent_containers/cup/glass/soda_cans/dr_gibb,
-		/obj/item/reagent_containers/cup/glass/soda_cans/starkist,
-		/obj/item/reagent_containers/cup/glass/soda_cans/space_up,
-		/obj/item/reagent_containers/cup/glass/soda_cans/lemon_lime,
+		/obj/item/reagent_containers/cup/soda_cans/cola,
+		/obj/item/reagent_containers/cup/soda_cans/space_mountain_wind,
+		/obj/item/reagent_containers/cup/soda_cans/dr_gibb,
+		/obj/item/reagent_containers/cup/soda_cans/starkist,
+		/obj/item/reagent_containers/cup/soda_cans/space_up,
+		/obj/item/reagent_containers/cup/soda_cans/lemon_lime,
 		/obj/item/reagent_containers/cup/glass/drinkingglass/filled/nuka_cola
 		))
 		new rig_snacks(src)

@@ -9,11 +9,23 @@
 	lefthand_file = 'icons/mob/inhands/misc/food_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/food_righthand.dmi'
 	reagent_flags = OPENCONTAINER | DUNKABLE
-	var/gulp_size = 5 //This is now officially broken ... need to think of a nice way to fix it.
 	possible_transfer_amounts = list(5,10,15,20,25,30,50)
 	volume = 50
 	resistance_flags = NONE
+
 	var/isGlass = TRUE //Whether the 'bottle' is made of glass or not so that milk cartons dont shatter when someone gets hit by it
+	var/gulp_size = 5 //This is now officially broken ... need to think of a nice way to fix it.
+
+	///Like Edible's food type, what kind of drink is this?
+	var/drink_type = NONE
+	///The last time we have checked for taste
+	var/last_check_time
+
+/obj/item/reagent_containers/food/drinks/examine()
+	. = ..()
+	if(drink_type)
+		var/list/types = bitfield_to_list(drink_type, FOOD_FLAGS)
+		. += span_info("It is [lowertext(english_list(types))].")
 
 /obj/item/reagent_containers/food/drinks/attack(mob/living/M, mob/user, def_zone)
 
@@ -170,6 +182,29 @@
 		smash(T)
 		return
 
+/obj/item/reagent_containers/food/drinks/proc/checkLiked(fraction, mob/M)
+	if(!ishuman(M))
+		return
+
+	if(!(last_check_time + 50 < world.time))
+		return
+
+	var/mob/living/carbon/human/H = M
+	if(!HAS_TRAIT(H, TRAIT_AGEUSIA))
+		if(drink_type & H.dna.species.toxic_food)
+			to_chat(H,span_warning("What the hell was that thing?!"))
+			H.adjust_disgust(25 + 30 * fraction)
+		else if(drink_type & H.dna.species.disliked_food)
+			to_chat(H,span_notice("That didn't taste very good..."))
+			H.adjust_disgust(11 + 15 * fraction)
+		else if(drink_type & H.dna.species.liked_food)
+			to_chat(H,span_notice("I love this taste!"))
+			H.adjust_disgust(-5 + -2.5 * fraction)
+	else
+		if(drink_type & H.dna.species.toxic_food)
+			to_chat(H, span_warning("You don't feel so good..."))
+			H.adjust_disgust(25 + 30 * fraction)
+	last_check_time = world.time
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -248,7 +283,7 @@ TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/trophy/bronze_cup)
 	spillable = TRUE
 	resistance_flags = FREEZE_PROOF
 	isGlass = FALSE
-	foodtype = BREAKFAST
+	drink_type = BREAKFAST
 
 /obj/item/reagent_containers/food/drinks/ice
 	name = "ice cup"
@@ -269,7 +304,7 @@ TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/trophy/bronze_cup)
 	desc = "Just add 5ml of water, self heats! A taste that reminds you of your school years. Now new with salty flavour!"
 	icon_state = "ramen"
 	list_reagents = list(/datum/reagent/consumable/dry_ramen = 15, /datum/reagent/consumable/salt = 3)
-	foodtype = GRAIN
+	drink_type = GRAIN
 	isGlass = FALSE
 	custom_price = PAYCHECK_ASSISTANT * 0.4
 
@@ -310,11 +345,11 @@ TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/waterbottle)
 /obj/item/reagent_containers/food/drinks/waterbottle/examine(mob/user)
 	. = ..()
 	if(cap_lost)
-		. += span_notice("The cap seems to be missing.")
+		. += span_alert("The cap is missing.")
 	else if(cap_on)
-		. += span_notice("The cap is firmly on to prevent spilling. Alt-click to remove the cap.")
+		. += span_info("The cap is on.")
 	else
-		. += span_notice("The cap has been taken off. Alt-click to put a cap on.")
+		. += span_alert("The cap has been taken off.")
 
 /obj/item/reagent_containers/food/drinks/waterbottle/AltClick(mob/user)
 	. = ..()
@@ -440,24 +475,24 @@ TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/waterbottle/large)
 /obj/item/reagent_containers/food/drinks/sillycup/smallcarton/on_reagent_change(datum/reagents/holder, ...)
 	. = ..()
 	if(!length(reagents.reagent_list))
-		foodtype = NONE /// Why are food types on the _container_? TODO: move these to the reagents
+		drink_type = NONE /// Why are food types on the _container_? TODO: move these to the reagents
 		return
 
 	switch(reagents.get_master_reagent_id())
 		if(/datum/reagent/consumable/orangejuice)
-			foodtype = FRUIT | BREAKFAST
+			drink_type = FRUIT | BREAKFAST
 		if(/datum/reagent/consumable/milk)
-			foodtype = DAIRY | BREAKFAST
+			drink_type = DAIRY | BREAKFAST
 		if(/datum/reagent/consumable/applejuice)
-			foodtype = FRUIT
+			drink_type = FRUIT
 		if(/datum/reagent/consumable/grapejuice)
-			foodtype = FRUIT
+			drink_type = FRUIT
 		if(/datum/reagent/consumable/pineapplejuice)
-			foodtype = FRUIT | PINEAPPLE
+			drink_type = FRUIT | PINEAPPLE
 		if(/datum/reagent/consumable/milk/chocolate_milk)
-			foodtype = SUGAR
+			drink_type = SUGAR
 		if(/datum/reagent/consumable/ethanol/eggnog)
-			foodtype = MEAT
+			drink_type = MEAT
 
 /obj/item/reagent_containers/food/drinks/sillycup/smallcarton/update_name(updates)
 	. = ..()
@@ -754,14 +789,14 @@ TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/flask/gold)
 	desc = "Cola. in space."
 	icon_state = "cola"
 	list_reagents = list(/datum/reagent/consumable/space_cola = 30)
-	foodtype = SUGAR
+	drink_type = SUGAR
 
 /obj/item/reagent_containers/food/drinks/soda_cans/tonic
 	name = "T-Borg's tonic water"
 	desc = "Quinine tastes funny, but at least it'll keep that Space Malaria away."
 	icon_state = "tonic"
 	list_reagents = list(/datum/reagent/consumable/tonic = 50)
-	foodtype = ALCOHOL
+	drink_type = ALCOHOL
 
 /obj/item/reagent_containers/food/drinks/soda_cans/sodawater
 	name = "soda water"
@@ -774,7 +809,7 @@ TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/flask/gold)
 	desc = "You wanted ORANGE. It gave you Lemon Lime."
 	icon_state = "lemon-lime"
 	list_reagents = list(/datum/reagent/consumable/lemon_lime = 30)
-	foodtype = FRUIT
+	drink_type = FRUIT
 
 /obj/item/reagent_containers/food/drinks/soda_cans/lemon_lime/Initialize(mapload)
 	. = ..()
@@ -785,49 +820,49 @@ TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/flask/gold)
 	desc = "Maybe this will help your tummy feel better. Maybe not."
 	icon_state = "sol_dry"
 	list_reagents = list(/datum/reagent/consumable/sol_dry = 30)
-	foodtype = SUGAR
+	drink_type = SUGAR
 
 /obj/item/reagent_containers/food/drinks/soda_cans/space_up
 	name = "Space-Up!"
 	desc = "Tastes like a hull breach in your mouth."
 	icon_state = "space-up"
 	list_reagents = list(/datum/reagent/consumable/space_up = 30)
-	foodtype = SUGAR | JUNKFOOD
+	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/food/drinks/soda_cans/starkist
 	name = "Star-kist"
 	desc = "The taste of a star in liquid form. And, a bit of tuna...?"
 	icon_state = "starkist"
 	list_reagents = list(/datum/reagent/consumable/space_cola = 15, /datum/reagent/consumable/orangejuice = 15)
-	foodtype = SUGAR | FRUIT | JUNKFOOD
+	drink_type = SUGAR | FRUIT | JUNKFOOD
 
 /obj/item/reagent_containers/food/drinks/soda_cans/space_mountain_wind
 	name = "Space Mountain Wind"
 	desc = "Blows right through you like a space wind."
 	icon_state = "space_mountain_wind"
 	list_reagents = list(/datum/reagent/consumable/spacemountainwind = 30)
-	foodtype = SUGAR | JUNKFOOD
+	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/food/drinks/soda_cans/dr_gibb
 	name = "Dr. Gibb"
 	desc = "A delicious mixture of 42 different flavors."
 	icon_state = "dr_gibb"
 	list_reagents = list(/datum/reagent/consumable/dr_gibb = 30)
-	foodtype = SUGAR | JUNKFOOD
+	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/food/drinks/soda_cans/shamblers
 	name = "Shambler's juice"
 	desc = "~Shake me up some of that Shambler's Juice!~"
 	icon_state = "shamblers"
 	list_reagents = list(/datum/reagent/consumable/shamblers = 30)
-	foodtype = SUGAR | JUNKFOOD
+	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/food/drinks/soda_cans/grey_bull
 	name = "Grey Bull"
 	desc = "Grey Bull, it gives you gloves!"
 	icon_state = "energy_drink"
 	list_reagents = list(/datum/reagent/consumable/grey_bull = 20)
-	foodtype = SUGAR | JUNKFOOD
+	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/food/drinks/soda_cans/monkey_energy
 	name = "Monkey Energy"
@@ -835,7 +870,7 @@ TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/flask/gold)
 	icon_state = "monkey_energy"
 	inhand_icon_state = "monkey_energy"
 	list_reagents = list(/datum/reagent/consumable/monkey_energy = 50)
-	foodtype = SUGAR | JUNKFOOD
+	drink_type = SUGAR | JUNKFOOD
 
 /obj/item/reagent_containers/food/drinks/soda_cans/air
 	name = "canned air"

@@ -229,7 +229,7 @@
 		/obj/item/instrument/trombone/spectral = 10000,
 	)
 	wanted_items = list(
-		/obj/item/reagent_containers/food/condiment/milk = 1000,
+		/obj/item/reagent_containers/condiment/milk = 1000,
 		/obj/item/stack/sheet/bone = 420
 	)
 	buyphrase = "Bone appetit!"

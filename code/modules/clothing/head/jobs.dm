@@ -112,7 +112,7 @@ TYPEINFO_DEF(/obj/item/clothing/head/fedora/det_hat)
 
 	create_storage(type = /datum/storage/pockets/small/fedora/detective)
 
-	new /obj/item/reagent_containers/food/drinks/flask/det(src)
+	new /obj/item/reagent_containers/cup/glass/flask/det(src)
 
 /obj/item/clothing/head/fedora/det_hat/examine(mob/user)
 	. = ..()

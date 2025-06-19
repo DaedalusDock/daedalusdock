@@ -4,7 +4,7 @@
 /datum/unit_test/reagents/dropper_use/Run()
 	var/mob/living/carbon/human/consistent/chemist = ALLOCATE_BOTTOM_LEFT()
 	var/obj/item/reagent_containers/dropper/dropper = ALLOCATE_BOTTOM_LEFT()
-	var/obj/item/reagent_containers/glass/beaker/large/beaker = ALLOCATE_BOTTOM_LEFT()
+	var/obj/item/reagent_containers/cup/beaker/large/beaker = ALLOCATE_BOTTOM_LEFT()
 
 	var/starting_volume = 50
 	beaker.reagents.add_reagent(/datum/reagent/water, starting_volume)

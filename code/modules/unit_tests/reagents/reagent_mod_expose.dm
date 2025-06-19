@@ -17,14 +17,14 @@
 
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human)
 	var/obj/item/reagent_containers/dropper/dropper = allocate(/obj/item/reagent_containers/dropper)
-	var/obj/item/reagent_containers/food/drinks/drink = allocate(/obj/item/reagent_containers/food/drinks/bottle)
+	var/obj/item/reagent_containers/cup/glass/drink = allocate(/obj/item/reagent_containers/cup/glass/bottle)
 	var/obj/item/reagent_containers/pill/patch/patch = allocate(/obj/item/reagent_containers/pill/patch)
 	var/obj/item/reagent_containers/syringe/syringe = allocate(/obj/item/reagent_containers/syringe)
 
 	// INGEST
 	TEST_ASSERT_EQUAL(human.fire_stacks, 0, "Human has fire stacks before taking phlogiston")
 	drink.reagents.add_reagent(/datum/reagent/phlogiston, 10)
-	drink.attack(human, human)
+	drink.interact_with_atom(human, human)
 	TEST_ASSERT_EQUAL(human.fire_stacks, 1, "Human does not have fire stacks after taking phlogiston")
 	human.Life(SSMOBS_DT)
 	TEST_ASSERT(human.fire_stacks > 1, "Human fire stacks did not increase after life tick")

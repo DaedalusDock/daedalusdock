@@ -536,7 +536,7 @@
 /turf/open/floor/iron,
 /area/ruin/space/derelict/bridge/access)
 "dq" = (
-/obj/item/reagent_containers/food/drinks/bottle/beer,
+/obj/item/reagent_containers/cup/glass/bottle/beer,
 /obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/derelict/bridge/access)
@@ -658,7 +658,7 @@
 /turf/open/floor/plating/airless,
 /area/ruin/space/derelict/singularity_engine)
 "dZ" = (
-/obj/item/reagent_containers/food/drinks/bottle/beer,
+/obj/item/reagent_containers/cup/glass/bottle/beer,
 /turf/open/floor/iron,
 /area/ruin/space/derelict/bridge)
 "ea" = (
@@ -817,7 +817,7 @@
 /area/ruin/space/derelict/bridge)
 "eU" = (
 /obj/structure/table,
-/obj/item/reagent_containers/food/drinks/bottle/beer,
+/obj/item/reagent_containers/cup/glass/bottle/beer,
 /obj/structure/window/reinforced{
 	dir = 4
 	},
@@ -1473,7 +1473,7 @@
 	dir = 8
 	},
 /obj/structure/window/reinforced,
-/obj/item/reagent_containers/glass/beaker,
+/obj/item/reagent_containers/cup/beaker,
 /turf/open/floor/iron/white/airless,
 /area/ruin/space/derelict/medical)
 "iC" = (
@@ -1611,7 +1611,7 @@
 /turf/open/floor/iron/white/airless,
 /area/ruin/space/derelict/medical)
 "jk" = (
-/obj/item/reagent_containers/glass/beaker,
+/obj/item/reagent_containers/cup/beaker,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/iron/airless,
 /area/ruin/space/derelict/medical)
@@ -1991,7 +1991,7 @@
 /area/ruin/space/derelict/hallway/primary)
 "lq" = (
 /obj/structure/table,
-/obj/item/reagent_containers/glass/beaker{
+/obj/item/reagent_containers/cup/beaker{
 	list_reagents = list(/datum/reagent/toxin/acid = 50)
 	},
 /obj/item/paper/crumpled/bloody/ruins/thederelict/unfinished,

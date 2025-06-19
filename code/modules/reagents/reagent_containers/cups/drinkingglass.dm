@@ -1,7 +1,7 @@
-TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/drinkingglass)
+TYPEINFO_DEF(/obj/item/reagent_containers/cup/glass/drinkingglass)
 	default_materials = list(/datum/material/glass=500)
 
-/obj/item/reagent_containers/food/drinks/drinkingglass
+/obj/item/reagent_containers/cup/glass/drinkingglass
 	name = "drinking glass"
 	desc = "Your standard drinking glass."
 	icon_state = "glass_empty"
@@ -18,26 +18,26 @@ TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/drinkingglass)
 	pickup_sound = 'sound/items/handling/drinkglass_pickup.ogg'
 	custom_price = PAYCHECK_ASSISTANT * 0.3
 
-/obj/item/reagent_containers/food/drinks/drinkingglass/on_reagent_change(datum/reagents/holder, ...)
+/obj/item/reagent_containers/cup/glass/drinkingglass/on_reagent_change(datum/reagents/holder, ...)
 	. = ..()
 	if(!length(reagents.reagent_list))
 		renamedByPlayer = FALSE //so new drinks can rename the glass
 
-/obj/item/reagent_containers/food/drinks/drinkingglass/update_name(updates)
+/obj/item/reagent_containers/cup/glass/drinkingglass/update_name(updates)
 	if(renamedByPlayer)
 		return
 	. = ..()
 	var/datum/reagent/largest_reagent = reagents.get_master_reagent()
 	name = largest_reagent?.glass_name || initial(name)
 
-/obj/item/reagent_containers/food/drinks/drinkingglass/update_desc(updates)
+/obj/item/reagent_containers/cup/glass/drinkingglass/update_desc(updates)
 	if(renamedByPlayer)
 		return
 	. = ..()
 	var/datum/reagent/largest_reagent = reagents.get_master_reagent()
 	desc = largest_reagent?.glass_desc || initial(desc)
 
-/obj/item/reagent_containers/food/drinks/drinkingglass/update_icon_state()
+/obj/item/reagent_containers/cup/glass/drinkingglass/update_icon_state()
 	if(!reagents.total_volume)
 		icon_state = base_icon_state
 		return ..()
@@ -56,7 +56,7 @@ TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/drinkingglass)
 		icon_state = base_icon_state
 	return ..()
 
-/obj/item/reagent_containers/food/drinks/drinkingglass/proc/get_glass_icon(datum/reagent/largest_reagent)
+/obj/item/reagent_containers/cup/glass/drinkingglass/proc/get_glass_icon(datum/reagent/largest_reagent)
 	return largest_reagent?.glass_icon_state
 
 //Shot glasses!//
@@ -66,10 +66,10 @@ TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/drinkingglass)
 //  You can only mix the ported-over drinks in shot glasses for now (they'll mix in a shaker, but the sprite won't change for glasses). //
 //  This is on a case-by-case basis, and you can even make a separate sprite for shot glasses if you want. //
 
-TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass)
+TYPEINFO_DEF(/obj/item/reagent_containers/cup/glass/drinkingglass/shotglass)
 	default_materials = list(/datum/material/glass=100)
 
-/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass
+/obj/item/reagent_containers/cup/glass/drinkingglass/shotglass
 	name = "shot glass"
 	desc = "A shot glass - the universal symbol for bad decisions."
 	icon_state = "shotglass"
@@ -81,13 +81,13 @@ TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass)
 	volume = 15
 	custom_price = PAYCHECK_ASSISTANT * 0.2
 
-/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass/update_name(updates)
+/obj/item/reagent_containers/cup/glass/drinkingglass/shotglass/update_name(updates)
 	if(renamedByPlayer)
 		return
 	. = ..()
 	name = "[length(reagents.reagent_list) ? "filled " : null]shot glass"
 
-/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass/update_desc(updates)
+/obj/item/reagent_containers/cup/glass/drinkingglass/shotglass/update_desc(updates)
 	if(renamedByPlayer)
 		return
 	. = ..()
@@ -96,32 +96,17 @@ TYPEINFO_DEF(/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass)
 	else
 		desc = "The challenge is not taking as many as you can, but guessing what it is before you pass out."
 
-/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass/get_glass_icon(datum/reagent/largest_reagent)
+/obj/item/reagent_containers/cup/glass/drinkingglass/shotglass/get_glass_icon(datum/reagent/largest_reagent)
 	return largest_reagent?.shot_glass_icon_state
 
-/obj/item/reagent_containers/food/drinks/drinkingglass/filled/soda
+/obj/item/reagent_containers/cup/glass/drinkingglass/filled/soda
 	name = "Soda Water"
 	list_reagents = list(/datum/reagent/consumable/sodawater = 50)
 
-/obj/item/reagent_containers/food/drinks/drinkingglass/filled/cola
+/obj/item/reagent_containers/cup/glass/drinkingglass/filled/cola
 	name = "Space Cola"
 	list_reagents = list(/datum/reagent/consumable/space_cola = 50)
 
-/obj/item/reagent_containers/food/drinks/drinkingglass/filled/nuka_cola
+/obj/item/reagent_containers/cup/glass/drinkingglass/filled/nuka_cola
 	name = "Nuka Cola"
 	list_reagents = list(/datum/reagent/consumable/nuka_cola = 50)
-
-/obj/item/reagent_containers/food/drinks/drinkingglass/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/food/egg)) //breaking eggs
-		var/obj/item/food/egg/E = I
-		if(reagents)
-			if(reagents.total_volume >= reagents.maximum_volume)
-				to_chat(user, span_notice("[src] is full."))
-			else
-				to_chat(user, span_notice("You break [E] in [src]."))
-				reagents.add_reagent(/datum/reagent/consumable/eggyolk, 2)
-				reagents.add_reagent(/datum/reagent/consumable/eggwhite, 4)
-				qdel(E)
-			return
-	else
-		..()

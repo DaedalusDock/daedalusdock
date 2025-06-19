@@ -7,7 +7,7 @@
 	id = "bucket"
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/iron = 200)
-	build_path = /obj/item/reagent_containers/glass/bucket
+	build_path = /obj/item/reagent_containers/cup/bucket
 	category = list(DCAT_JANITORIAL, DCAT_MISC_TOOL)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
@@ -386,7 +386,7 @@
 	id = "bowl"
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/glass = 500)
-	build_path = /obj/item/reagent_containers/glass/bowl
+	build_path = /obj/item/reagent_containers/cup/bowl
 	category = list(DCAT_DINNERWARE)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
@@ -395,7 +395,7 @@
 	id = "drinking_glass"
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/glass = 500)
-	build_path = /obj/item/reagent_containers/food/drinks/drinkingglass
+	build_path = /obj/item/reagent_containers/cup/glass/drinkingglass
 	category = list(DCAT_DINNERWARE)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
@@ -404,7 +404,7 @@
 	id = "shot_glass"
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/glass = 100)
-	build_path = /obj/item/reagent_containers/food/drinks/drinkingglass/shotglass
+	build_path = /obj/item/reagent_containers/cup/glass/drinkingglass/shotglass
 	category = list(DCAT_DINNERWARE)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
@@ -413,7 +413,7 @@
 	id = "shaker"
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/iron = 1500)
-	build_path = /obj/item/reagent_containers/food/drinks/shaker
+	build_path = /obj/item/reagent_containers/cup/glass/shaker
 	category = list(DCAT_DINNERWARE)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
@@ -539,7 +539,7 @@
 	id = "beaker"
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/glass = 500)
-	build_path = /obj/item/reagent_containers/glass/beaker
+	build_path = /obj/item/reagent_containers/cup/beaker
 	category = list(DCAT_REAGENTS)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_SERVICE
 
@@ -548,7 +548,7 @@
 	id = "large_beaker"
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/glass = 2500)
-	build_path = /obj/item/reagent_containers/glass/beaker/large
+	build_path = /obj/item/reagent_containers/cup/beaker/large
 	category = list(DCAT_REAGENTS)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_SERVICE
 

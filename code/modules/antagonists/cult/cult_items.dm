@@ -525,7 +525,7 @@ TYPEINFO_DEF(/obj/item/clothing/head/hooded/cult_hoodie/berserkerhood)
 		user.Paralyze(100)
 		user.blind_eyes(30)
 
-/obj/item/reagent_containers/glass/beaker/unholywater
+/obj/item/reagent_containers/cup/beaker/unholywater
 	name = "flask of unholy water"
 	desc = "Toxic to nonbelievers; reinvigorating to the faithful - this flask may be sipped or thrown."
 	icon = 'icons/obj/drinks.dmi'

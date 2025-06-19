@@ -117,17 +117,23 @@ TYPEINFO_DEF(/obj/item/rsf)
 		return FALSE
 	return TRUE
 
-/obj/item/rsf/afterattack(atom/A, mob/user, proximity)
+/obj/item/rsf/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(user.combat_mode)
+		return
+
 	if(cooldown > world.time)
-		return
-	. = ..()
-	if(!proximity || !is_allowed(A))
-		return
+		return NONE
+
+	if (!is_allowed(interacting_with))
+		return NONE
+
 	if(use_matter(dispense_cost, user))//If we can charge that amount of charge, we do so and return true
 		playsound(loc, 'sound/machines/click.ogg', 10, TRUE)
-		var/atom/meme = new to_dispense(get_turf(A))
+		var/atom/meme = new to_dispense(get_turf(interacting_with))
 		to_chat(user, span_notice("[action_type] [meme.name]..."))
 		cooldown = world.time + cooldowndelay
+		return ITEM_INTERACT_SUCCESS
+	return ITEM_INTERACT_BLOCKING
 
 ///A helper proc. checks to see if we can afford the amount of charge that is passed, and if we can docs the charge from our base, and returns TRUE. If we can't we return FALSE
 /obj/item/rsf/proc/use_matter(charge, mob/user)

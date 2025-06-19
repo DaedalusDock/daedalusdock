@@ -153,10 +153,7 @@ TYPEINFO_DEF(/obj/item/melee/sabre)
 	attack_verb_simple = list("slash", "sting", "prickle", "poke")
 	hitsound = 'sound/weapons/rapierhit.ogg'
 
-/obj/item/melee/beesword/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/melee/beesword/afterattack(atom/target, mob/user, list/modifiers)
 	user.changeNext_move(CLICK_CD_RAPID)
 	if(iscarbon(target))
 		var/mob/living/carbon/carbon_target = target
@@ -206,12 +203,12 @@ TYPEINFO_DEF(/obj/item/melee/sabre)
 		if(!isspaceturf(turf))
 			consume_turf(turf)
 
-/obj/item/melee/supermatter_sword/afterattack(target, mob/user, proximity_flag)
+/obj/item/melee/supermatter_sword/afterattack(atom/target, mob/user, list/modifiers)
 	. = ..()
 	if(user && target == user)
 		user.dropItemToGround(src)
-	if(proximity_flag)
-		consume_everything(target)
+
+	consume_everything(target)
 
 /obj/item/melee/supermatter_sword/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	..()
@@ -287,9 +284,8 @@ TYPEINFO_DEF(/obj/item/melee/sabre)
 	attack_verb_simple = list("flog", "whip", "lash", "discipline")
 	hitsound = 'sound/weapons/whip.ogg'
 
-/obj/item/melee/curator_whip/afterattack(target, mob/user, proximity_flag)
-	. = ..()
-	if(ishuman(target) && proximity_flag)
+/obj/item/melee/curator_whip/afterattack(atom/target, mob/user, list/modifiers)
+	if(ishuman(target))
 		var/mob/living/carbon/human/human_target = target
 		human_target.drop_all_held_items()
 		human_target.visible_message(span_danger("[user] disarms [human_target]!"), span_userdanger("[user] disarmed you!"))

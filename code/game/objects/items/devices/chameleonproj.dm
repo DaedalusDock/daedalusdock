@@ -35,9 +35,9 @@
 	else
 		to_chat(user, span_warning("You can't use [src] while inside something!"))
 
-/obj/item/chameleon/afterattack(atom/target, mob/user , proximity)
-	. = ..()
-	if(!proximity)
+/obj/item/chameleon/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	. = NONE
+	if(user.combat_mode)
 		return
 	if(!check_sprite(target))
 		return
@@ -56,6 +56,7 @@
 	if(iseffect(target))
 		if(!(istype(target, /obj/effect/decal))) //be a footprint
 			return
+
 	playsound(get_turf(src), 'sound/weapons/flash.ogg', 100, TRUE, -6)
 	to_chat(user, span_notice("Scanned [target]."))
 	var/obj/temp = new/obj()
@@ -63,6 +64,7 @@
 	temp.layer = initial(target.layer) // scanning things in your inventory
 	temp.plane = initial(target.plane)
 	saved_appearance = temp.appearance
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/chameleon/proc/check_sprite(atom/target)
 	if(target.icon_state in icon_states(target.icon))

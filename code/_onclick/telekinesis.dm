@@ -149,39 +149,43 @@
 	update_appearance()
 
 
-/obj/item/tk_grab/afterattack(atom/target, mob/living/carbon/user, proximity, params)//TODO: go over this
-	. = ..()
-	if(.)
-		return
+/obj/item/tk_grab/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	return ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 
-	if(!target || !user)
-		return
-
+/obj/item/tk_grab/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!focus)
 		focus_object(target)
-		return TRUE
+		return ITEM_INTERACT_BLOCKING
 
 	if(!check_if_focusable(focus))
-		return
+		return NONE
 
-	if(target == focus)
-		if(target.attack_self_tk(user) & COMPONENT_CANCEL_ATTACK_CHAIN)
-			. = TRUE
-		update_appearance()
-		return
+	if(interacting_with == focus)
+		if(LAZYACCESS(modifiers, RIGHT_CLICK))
+			. = focus.attack_self_secondary_tk(user) || NONE
+		else
+			. = interacting_with.attack_self_tk(user) || NONE
 
-	if(isitem(focus))
+
+	else if(isitem(focus))
 		var/obj/item/I = focus
 		apply_focus_overlay()
+
 		if(target.Adjacent(focus))
-			. = I.melee_attack_chain(tk_user, target, params) //isn't copying the attack chain fun. we should do it more often.
+			. = focused_item.melee_attack_chain(user, interacting_with, modifiers) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
+
 			if(check_if_focusable(focus))
 				focus.do_attack_animation(target, null, focus)
-		else if(isgun(I)) //I've only tested this with guns, and it took some doing to make it work
-			. = I.afterattack(target, tk_user, 0, params)
+
+		// isgun check lets us shoot guns at range
+		// quoting the old comment: "I've only tested this with guns, and it took some doing to make it work"
+		// reader beware if trying to add other snowflake cases
+		else if(isgun(focused_item))
+			. = interacting_with.base_ranged_item_interaction(user, focus, modifiers)
 
 	user.changeNext_move(CLICK_CD_MELEE)
 	update_appearance()
+	return .
 
 /obj/item/tk_grab/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
 	. = ..()

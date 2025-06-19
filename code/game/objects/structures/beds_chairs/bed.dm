@@ -142,12 +142,10 @@
 /obj/item/roller/attack_self(mob/user)
 	deploy_roller(user, user.loc)
 
-/obj/item/roller/afterattack(obj/target, mob/user , proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(isopenturf(target))
-		deploy_roller(user, target)
+/obj/item/roller/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(isopenturf(interacting_with))
+		deploy_roller(user, interacting_with)
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/roller/proc/deploy_roller(mob/user, atom/location)
 	var/obj/structure/bed/roller/R = new /obj/structure/bed/roller(location)

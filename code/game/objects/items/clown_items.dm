@@ -126,17 +126,23 @@
 	to_chat(user, span_warning("The soap has ran out of chemicals"))
 
 
-/obj/item/soap/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!proximity || !check_allowed_items(target))
-		return
+/obj/item/soap/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(user.combat_mode)
+		return NONE
+
+	if(!check_allowed_items(target))
+		return NONE
+
+
 	var/clean_speedies = 1 * cleanspeed
 	if(user.mind)
 		clean_speedies = cleanspeed * min(user.mind.get_skill_modifier(/datum/skill/cleaning, SKILL_SPEED_MODIFIER)+0.1,1) //less scaling for soapies
+
 	//I couldn't feasibly  fix the overlay bugs caused by cleaning items we are wearing.
 	//So this is a workaround. This also makes more sense from an IC standpoint. ~Carn
 	if(user.client && ((target in user.client.screen) && !user.is_holding(target)))
 		to_chat(user, span_warning("You need to take that [target.name] off before cleaning it!"))
+
 	else if(istype(target, /obj/effect/decal/cleanable))
 		user.visible_message(span_notice("[user] begins to scrub \the [target.name] out with [src]."), span_warning("You begin to scrub \the [target.name] out with [src]..."))
 		if(do_after(user, target, clean_speedies))
@@ -145,6 +151,7 @@
 			user.mind?.adjust_experience(/datum/skill/cleaning, max(round(cleanies.beauty/CLEAN_SKILL_BEAUTY_ADJUSTMENT),0)) //again, intentional that this does NOT round but mops do.
 			qdel(target)
 			decreaseUses(user)
+			return ITEM_INTERACT_SUCCESS
 
 	else if(ishuman(target) && user.zone_selected == BODY_ZONE_PRECISE_MOUTH)
 		var/mob/living/carbon/human/human_target = target
@@ -153,7 +160,8 @@
 			user.mind?.adjust_experience(/datum/skill/cleaning, CLEAN_SKILL_GENERIC_WASH_XP)
 			human_target.update_lips(null)
 		decreaseUses(user)
-		return
+		return ITEM_INTERACT_SUCCESS
+
 	else if(istype(target, /obj/structure/window))
 		user.visible_message(span_notice("[user] begins to clean \the [target.name] with [src]..."), span_notice("You begin to clean \the [target.name] with [src]..."))
 		if(do_after(user, target, clean_speedies))
@@ -168,6 +176,7 @@
 					our_window.bloodied = FALSE
 			user.mind?.adjust_experience(/datum/skill/cleaning, CLEAN_SKILL_GENERIC_WASH_XP)
 			decreaseUses(user)
+			return ITEM_INTERACT_SUCCESS
 	else
 		user.visible_message(span_notice("[user] begins to clean \the [target.name] with [src]..."), span_notice("You begin to clean \the [target.name] with [src]..."))
 		if(do_after(user, target, clean_speedies))
@@ -179,13 +188,15 @@
 			target.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
 			user.mind?.adjust_experience(/datum/skill/cleaning, CLEAN_SKILL_GENERIC_WASH_XP)
 			decreaseUses(user)
-	return
+			return ITEM_INTERACT_SUCCESS
 
-/obj/item/soap/nanotrasen/cyborg/afterattack(atom/target, mob/user, proximity)
+	return ITEM_INTERACT_BLOCKING
+
+/obj/item/soap/nanotrasen/cyborg/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(uses <= 0)
 		to_chat(user, span_warning("No good, you need to recharge!"))
-		return
-	. = ..()
+		return NONE
+	return ..()
 
 
 /*

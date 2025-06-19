@@ -135,20 +135,23 @@ TYPEINFO_DEF(/obj/item/spear)
 			if(input)
 				src.war_cry = input
 
-/obj/item/spear/explosive/afterattack(atom/movable/AM, mob/user, proximity)
+/obj/item/spear/explosive/afterattack(atom/target, mob/user, list/modifiers)
 	. = ..()
-	if(!proximity || !wielded || !istype(AM))
+	if(!wielded || !ismovable(target))
 		return
-	if(AM.resistance_flags & INDESTRUCTIBLE) //due to the lich incident of 2021, embedding grenades inside of indestructible structures is forbidden
+	if(target.resistance_flags & INDESTRUCTIBLE) //due to the lich incident of 2021, embedding grenades inside of indestructible structures is forbidden
 		return
-	if(ismob(AM))
-		var/mob/mob_target = AM
+
+	if(ismob(target))
+		var/mob/mob_target = target
 		if(mob_target.status_flags & GODMODE) //no embedding grenade phylacteries inside of ghost poly either
 			return
-	if(iseffect(AM)) //and no accidentally wasting your moment of glory on graffiti
+
+	if(iseffect(target)) //and no accidentally wasting your moment of glory on graffiti
 		return
+
 	user.say("[war_cry]", forced="spear warcry")
-	explosive.forceMove(AM)
+	explosive.forceMove(target)
 	explosive.detonate(lanced_by=user)
 	qdel(src)
 
@@ -162,20 +165,23 @@ TYPEINFO_DEF(/obj/item/spear)
 	force = 15
 	force_wielded = 25
 
-/obj/item/spear/grey_tide/afterattack(atom/movable/AM, mob/living/user, proximity)
+/obj/item/spear/grey_tide/afterattack(atom/target, mob/user, list/modifiers)
 	. = ..()
-	if(!proximity)
-		return
+
 	user.faction |= "greytide([REF(user)])"
-	if(isliving(AM))
-		var/mob/living/L = AM
-		if(istype (L, /mob/living/simple_animal/hostile/illusion))
-			return
-		if(!L.stat && prob(50))
-			var/mob/living/simple_animal/hostile/illusion/M = new(user.loc)
-			M.faction = user.faction.Copy()
-			M.Copy_Parent(user, 100, user.health/2.5, 12, 30)
-			M.GiveTarget(L)
+
+	if(!isliving(target))
+		return
+
+	var/mob/living/L = target
+	if(istype (L, /mob/living/simple_animal/hostile/illusion))
+		return
+
+	if(!L.stat && prob(50))
+		var/mob/living/simple_animal/hostile/illusion/M = new(user.loc)
+		M.faction = user.faction.Copy()
+		M.Copy_Parent(user, 100, user.health/2.5, 12, 30)
+		M.GiveTarget(L)
 
 /*
  * Bone Spear

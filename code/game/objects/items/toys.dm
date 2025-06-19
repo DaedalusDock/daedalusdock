@@ -816,10 +816,10 @@ TYPEINFO_DEF(/obj/item/toy/ammo/gun)
 	throwforce = 20 //the same damage as a disabler shot
 	damtype = STAMINA //maybe someday we can add stuffing rocks (or perhaps ore?) into snowballs to make them deal brute damage
 
-/obj/item/toy/snowball/afterattack(atom/target as mob|obj|turf|area, mob/user)
-	. = ..()
+/obj/item/toy/snowball/ranged_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(user.dropItemToGround(src))
 		throw_at(target, throw_range, throw_speed)
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/toy/snowball/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	if(!..())

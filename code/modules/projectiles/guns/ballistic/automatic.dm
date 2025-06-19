@@ -280,13 +280,13 @@
 	. += "l6_door_[cover_open ? "open" : "closed"]"
 
 
-/obj/item/gun/ballistic/automatic/l6_saw/afterattack(atom/target as mob|obj|turf, mob/living/user as mob|obj, flag, params)
+/obj/item/gun/ballistic/automatic/l6_saw/try_fire_gun(atom/target, mob/living/user, proximity, params)
 	if(cover_open)
 		to_chat(user, span_warning("[src]'s cover is open! Close it before firing!"))
-		return
-	else
-		. = ..()
-		update_appearance()
+		return FALSE
+
+	. = ..()
+	update_appearance()
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/gun/ballistic/automatic/l6_saw/attack_hand(mob/user, list/modifiers)

@@ -239,16 +239,15 @@
 			if(istype(WH))
 				WH.gun = WEAKREF(src)
 
-/obj/item/gun/energy/wormhole_projector/afterattack(atom/target, mob/living/user, flag, params)
-	if(select == AMMO_SELECT_ORANGE) //Last fired in right click mode. Switch to blue wormhole (left click).
-		select_fire()
-	return ..()
+/obj/item/gun/energy/wormhole_projector/try_fire_gun(atom/target, mob/living/user, proximity, params)
+	if(LAZYACCESS(params2list(params), RIGHT_CLICK))
+		if(select == AMMO_SELECT_BLUE) //Last fired in left click mode. Switch to orange wormhole (right click).
+			select_fire()
+	else
+		if(select == AMMO_SELECT_ORANGE) //Last fired in right click mode. Switch to blue wormhole (left click).
+			select_fire()
 
-/obj/item/gun/energy/wormhole_projector/afterattack_secondary(atom/target, mob/living/user, flag, params)
-	if(select == AMMO_SELECT_BLUE) //Last fired in left click mode. Switch to orange wormhole (right click).
-		select_fire()
-	try_fire_gun(target, user, flag, params)
-	return SECONDARY_ATTACK_CONTINUE_CHAIN
+	. = ..()
 
 /obj/item/gun/energy/wormhole_projector/proc/on_portal_destroy(obj/effect/portal/P)
 	SIGNAL_HANDLER

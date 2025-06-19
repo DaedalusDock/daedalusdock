@@ -232,12 +232,9 @@
 	else
 		return 0
 
-/obj/item/lightreplacer/afterattack(atom/T, mob/U, proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/lightreplacer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!isturf(T))
-		return
+		return NONE
 
 	var/used = FALSE
 	for(var/atom/A in T)
@@ -249,6 +246,8 @@
 
 	if(!used)
 		to_chat(U, span_warning("\The [src]'s refill light blinks red."))
+		return ITEM_INTERACT_BLOCKING
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/lightreplacer/cyborg/Initialize(mapload)
 	. = ..()

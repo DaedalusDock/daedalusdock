@@ -83,7 +83,7 @@
 	SEND_SIGNAL(src, COMSIG_GLASS_DRANK, living_target, user)
 
 	var/fraction = min(gulp_size/reagents.total_volume, 1)
-	addtimer(CALLBACK(reagents, TYPE_PROC_REF(/datum/reagents, trans_to), interacting_with, gulp_size, TRUE, TRUE, FALSE, user, FALSE, INGEST), 5)
+	reagents.trans_to(target_mob, gulp_size, transfered_by = user, methods = INGEST)
 
 	checkLiked(fraction, interacting_with)
 

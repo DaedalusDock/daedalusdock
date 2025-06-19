@@ -14,6 +14,10 @@
 	custom_price = PAYCHECK_ASSISTANT * 0.9
 	obj_flags = CAN_BE_HIT
 	throwforce = 12 // set to 0 upon being opened. Have you ever been domed by a soda can? Those things fucking hurt
+
+	possible_transfer_amounts = list(5, 10, 15, 25, 30)
+	volume = 30
+
 	/// If the can hasn't been opened yet, this is the measure of how fizzed up it is from being shaken or thrown around. When opened, this is rolled as a percentage chance to burst
 	var/fizziness = 0
 

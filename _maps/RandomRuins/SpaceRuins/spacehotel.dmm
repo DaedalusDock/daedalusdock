@@ -584,11 +584,11 @@
 "fZ" = (
 /obj/structure/table/wood,
 /obj/structure/table/wood/fancy,
-/obj/item/reagent_containers/food/condiment/saltshaker{
+/obj/item/reagent_containers/condiment/saltshaker{
 	pixel_x = 7;
 	pixel_y = 9
 	},
-/obj/item/reagent_containers/food/condiment/peppermill{
+/obj/item/reagent_containers/condiment/peppermill{
 	pixel_x = 7;
 	pixel_y = 5
 	},
@@ -862,7 +862,7 @@
 "if" = (
 /obj/structure/table/reinforced,
 /obj/item/storage/bag/tray,
-/obj/item/reagent_containers/glass/beaker{
+/obj/item/reagent_containers/cup/beaker{
 	pixel_x = 5
 	},
 /turf/open/floor/iron/cafeteria,
@@ -933,7 +933,7 @@
 	pixel_x = 6;
 	pixel_y = 6
 	},
-/obj/item/reagent_containers/food/condiment/enzyme{
+/obj/item/reagent_containers/condiment/enzyme{
 	layer = 5
 	},
 /obj/structure/cable/smart_cable/color/yellow,
@@ -967,7 +967,7 @@
 	dir = 10
 	},
 /obj/structure/table/wood,
-/obj/item/reagent_containers/glass/mug/tea,
+/obj/item/reagent_containers/cup/mug/tea,
 /turf/open/floor/stone,
 /area/ruin/space/has_grav/hotel/bar)
 "iI" = (
@@ -1102,13 +1102,13 @@
 /obj/structure/window/reinforced/survival_pod{
 	dir = 8
 	},
-/obj/item/reagent_containers/food/condiment/milk,
-/obj/item/reagent_containers/food/condiment/milk,
+/obj/item/reagent_containers/condiment/milk,
+/obj/item/reagent_containers/condiment/milk,
 /obj/machinery/light/directional/south,
 /turf/open/floor/iron/kitchen_coldroom/freezerfloor,
 /area/ruin/space/has_grav/hotel/bar)
 "jq" = (
-/obj/item/reagent_containers/food/condiment/flour,
+/obj/item/reagent_containers/condiment/flour,
 /obj/effect/decal/cleanable/food/flour,
 /turf/open/floor/iron/kitchen_coldroom/freezerfloor,
 /area/ruin/space/has_grav/hotel/bar)
@@ -1511,7 +1511,7 @@
 /area/ruin/space/has_grav/hotel/dock)
 "mW" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/glass/mug/tea,
+/obj/item/reagent_containers/cup/mug/tea,
 /turf/open/floor/carpet/blue,
 /area/ruin/space/has_grav/hotel)
 "mX" = (
@@ -2511,7 +2511,7 @@
 	pixel_x = -4;
 	pixel_y = 2
 	},
-/obj/item/reagent_containers/food/drinks/shaker{
+/obj/item/reagent_containers/cup/glass/shaker{
 	pixel_x = 6;
 	pixel_y = 17
 	},
@@ -2684,7 +2684,7 @@
 	pixel_x = -4;
 	pixel_y = 0
 	},
-/obj/item/reagent_containers/glass/rag{
+/obj/item/reagent_containers/cup/rag{
 	pixel_x = 10;
 	pixel_y = 17
 	},
@@ -2936,11 +2936,11 @@
 "EC" = (
 /obj/structure/table/wood,
 /obj/structure/table/wood/fancy,
-/obj/item/reagent_containers/food/condiment/saltshaker{
+/obj/item/reagent_containers/condiment/saltshaker{
 	pixel_x = 7;
 	pixel_y = 9
 	},
-/obj/item/reagent_containers/food/condiment/peppermill{
+/obj/item/reagent_containers/condiment/peppermill{
 	pixel_x = 7;
 	pixel_y = 5
 	},
@@ -3042,7 +3042,7 @@
 	},
 /obj/structure/table/wood/fancy/orange,
 /obj/machinery/light/directional/north,
-/obj/item/reagent_containers/glass/mug/tea,
+/obj/item/reagent_containers/cup/mug/tea,
 /turf/open/floor/carpet/royalblue,
 /area/ruin/space/has_grav/hotel/guestroom/room_4)
 "FB" = (
@@ -3149,7 +3149,7 @@
 /area/ruin/space/has_grav/hotel/guestroom/room_6)
 "Gz" = (
 /obj/structure/table/wood/fancy/royalblue,
-/obj/item/reagent_containers/glass/mug/tea,
+/obj/item/reagent_containers/cup/mug/tea,
 /turf/open/floor/carpet/orange,
 /area/ruin/space/has_grav/hotel/guestroom/room_6)
 "GB" = (
@@ -3347,7 +3347,7 @@
 /area/template_noop)
 "Je" = (
 /obj/structure/cable/smart_cable/color/yellow,
-/obj/item/reagent_containers/glass/bucket,
+/obj/item/reagent_containers/cup/bucket,
 /obj/structure/overfloor_catwalk,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/custodial)
@@ -3706,11 +3706,11 @@
 "OJ" = (
 /obj/structure/table/wood,
 /obj/structure/table/wood/fancy,
-/obj/item/reagent_containers/food/condiment/saltshaker{
+/obj/item/reagent_containers/condiment/saltshaker{
 	pixel_x = 7;
 	pixel_y = 9
 	},
-/obj/item/reagent_containers/food/condiment/peppermill{
+/obj/item/reagent_containers/condiment/peppermill{
 	pixel_x = 7;
 	pixel_y = 5
 	},

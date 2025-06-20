@@ -120,25 +120,25 @@
 /datum/orderable_item/milk
 	name = "Milk"
 	category_index = CATEGORY_MILK_EGGS
-	item_path = /obj/item/reagent_containers/food/condiment/milk
+	item_path = /obj/item/reagent_containers/condiment/milk
 	cost_per_order = 30
 
 /datum/orderable_item/soymilk
 	name = "Soy Milk"
 	category_index = CATEGORY_MILK_EGGS
-	item_path = /obj/item/reagent_containers/food/condiment/soymilk
+	item_path = /obj/item/reagent_containers/condiment/soymilk
 	cost_per_order = 30
 
 /datum/orderable_item/cream
 	name = "Cream"
 	category_index = CATEGORY_MILK_EGGS
-	item_path = /obj/item/reagent_containers/food/drinks/bottle/cream
+	item_path = /obj/item/reagent_containers/cup/glass/bottle/juice/cream
 	cost_per_order = 40
 
 /datum/orderable_item/yoghurt
 	name = "Yoghurt"
 	category_index = CATEGORY_MILK_EGGS
-	item_path = /obj/item/reagent_containers/food/condiment/yoghurt
+	item_path = /obj/item/reagent_containers/condiment/yoghurt
 	cost_per_order = 40
 
 /datum/orderable_item/eggs
@@ -217,65 +217,65 @@
 /datum/orderable_item/flour
 	name = "Flour Sack"
 	category_index = CATEGORY_SAUCES_REAGENTS
-	item_path = /obj/item/reagent_containers/food/condiment/flour
+	item_path = /obj/item/reagent_containers/condiment/flour
 	cost_per_order = 30
 
 /datum/orderable_item/sugar
 	name = "Sugar Sack"
 	category_index = CATEGORY_SAUCES_REAGENTS
-	item_path = /obj/item/reagent_containers/food/condiment/sugar
+	item_path = /obj/item/reagent_containers/condiment/sugar
 	cost_per_order = 30
 
 /datum/orderable_item/rice
 	name = "Rice Sack"
 	category_index = CATEGORY_SAUCES_REAGENTS
-	item_path = /obj/item/reagent_containers/food/condiment/rice
+	item_path = /obj/item/reagent_containers/condiment/rice
 	cost_per_order = 30
 
 /datum/orderable_item/cornmeal
 	name = "Cornmeal Box"
 	category_index = CATEGORY_SAUCES_REAGENTS
-	item_path = /obj/item/reagent_containers/food/condiment/cornmeal
+	item_path = /obj/item/reagent_containers/condiment/cornmeal
 	cost_per_order = 30
 
 /datum/orderable_item/enzyme
 	name = "Universal Enzyme"
 	category_index = CATEGORY_SAUCES_REAGENTS
-	item_path = /obj/item/reagent_containers/food/condiment/enzyme
+	item_path = /obj/item/reagent_containers/condiment/enzyme
 	cost_per_order = 40
 
 /datum/orderable_item/salt
 	name = "Salt Shaker"
 	category_index = CATEGORY_SAUCES_REAGENTS
-	item_path = /obj/item/reagent_containers/food/condiment/saltshaker
+	item_path = /obj/item/reagent_containers/condiment/saltshaker
 	cost_per_order = 15
 
 /datum/orderable_item/pepper
 	name = "Pepper Mill"
 	category_index = CATEGORY_SAUCES_REAGENTS
-	item_path = /obj/item/reagent_containers/food/condiment/peppermill
+	item_path = /obj/item/reagent_containers/condiment/peppermill
 	cost_per_order = 15
 
 /datum/orderable_item/soysauce
 	name = "Soy Sauce"
 	category_index = CATEGORY_SAUCES_REAGENTS
-	item_path = /obj/item/reagent_containers/food/condiment/soysauce
+	item_path = /obj/item/reagent_containers/condiment/soysauce
 	cost_per_order = 15
 
 /datum/orderable_item/bbqsauce
 	name = "BBQ Sauce"
 	category_index = CATEGORY_SAUCES_REAGENTS
-	item_path = /obj/item/reagent_containers/food/condiment/bbqsauce
+	item_path = /obj/item/reagent_containers/condiment/bbqsauce
 	cost_per_order = 60
 
 /datum/orderable_item/vinegar
 	name = "Vinegar"
 	category_index = CATEGORY_SAUCES_REAGENTS
-	item_path = /obj/item/reagent_containers/food/condiment/vinegar
+	item_path = /obj/item/reagent_containers/condiment/vinegar
 	cost_per_order = 30
 
 /datum/orderable_item/quality_oil
 	name = "Quality Oil"
 	category_index = CATEGORY_SAUCES_REAGENTS
-	item_path = /obj/item/reagent_containers/food/condiment/quality_oil
+	item_path = /obj/item/reagent_containers/condiment/quality_oil
 	cost_per_order = 120 //Extra Virgin, just like you, the reader

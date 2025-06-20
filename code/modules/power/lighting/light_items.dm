@@ -2,12 +2,14 @@
 // can be tube or bulb subtypes
 // will fit into empty /obj/machinery/light of the corresponding type
 
+TYPEINFO_DEF(/obj/item/light)
+	default_materials = list(/datum/material/glass=100)
+
 /obj/item/light
 	icon = 'icons/obj/lighting.dmi'
 	force = 2
 	throwforce = 5
 	w_class = WEIGHT_CLASS_TINY
-	custom_materials = list(/datum/material/glass=100)
 	grind_results = list(/datum/reagent/silicon = 5, /datum/reagent/nitrogen = 10) //Nitrogen is used as a cheaper alternative to argon in incandescent lighbulbs
 	///True if rigged to explode
 	var/rigged = FALSE
@@ -79,7 +81,7 @@
 /obj/item/light/Initialize(mapload)
 	. = ..()
 	create_reagents(LIGHT_REAGENT_CAPACITY, INJECTABLE | DRAINABLE)
-	AddComponent(/datum/component/caltrop, min_damage = force)
+	AddComponent(/datum/component/caltrop, min_damage = force, flags = CALTROP_IGNORE_WALKERS)
 	update()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),

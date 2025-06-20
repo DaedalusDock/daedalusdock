@@ -1,15 +1,20 @@
 //Biosuit complete with shoes (in the item sprite)
+TYPEINFO_DEF(/obj/item/clothing/head/bio_hood)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 30, ACID = 100)
+
 /obj/item/clothing/head/bio_hood
 	name = "bio hood"
 	icon_state = "bio"
 	desc = "A hood that protects the head and face from biological contaminants."
 	permeability_coefficient = 0.01
 	clothing_flags = THICKMATERIAL | BLOCK_GAS_SMOKE_EFFECT | SNUG_FIT | STACKABLE_HELMET_EXEMPT | HEADINTERNALS | FIBERLESS
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 30, ACID = 100)
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDEFACE|HIDESNOUT
 	resistance_flags = ACID_PROOF
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+
+TYPEINFO_DEF(/obj/item/clothing/suit/bio_suit)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 30, ACID = 100)
 
 /obj/item/clothing/suit/bio_suit
 	name = "bio suit"
@@ -21,8 +26,7 @@
 	clothing_flags = THICKMATERIAL | FIBERLESS
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	slowdown = 0.5
-	allowed = list(/obj/item/tank/internals, /obj/item/reagent_containers/dropper, /obj/item/flashlight/pen, /obj/item/reagent_containers/syringe, /obj/item/reagent_containers/hypospray, /obj/item/reagent_containers/glass/beaker, /obj/item/gun/syringe)
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 30, ACID = 100)
+	allowed = list(/obj/item/tank/internals, /obj/item/reagent_containers/dropper, /obj/item/flashlight/pen, /obj/item/reagent_containers/syringe, /obj/item/reagent_containers/hypospray, /obj/item/reagent_containers/cup/beaker, /obj/item/gun/syringe)
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	resistance_flags = ACID_PROOF
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
@@ -44,12 +48,16 @@
 
 
 //Security biosuit, grey with red stripe across the chest
+TYPEINFO_DEF(/obj/item/clothing/head/bio_hood/security)
+	default_armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 100, FIRE = 30, ACID = 100)
+
 /obj/item/clothing/head/bio_hood/security
-	armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 100, FIRE = 30, ACID = 100)
 	icon_state = "bio_security"
 
+TYPEINFO_DEF(/obj/item/clothing/suit/bio_suit/security)
+	default_armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 100, FIRE = 30, ACID = 100)
+
 /obj/item/clothing/suit/bio_suit/security
-	armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 100, FIRE = 30, ACID = 100)
 	icon_state = "bio_security"
 
 /obj/item/clothing/suit/bio_suit/security/Initialize(mapload)

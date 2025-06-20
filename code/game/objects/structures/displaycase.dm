@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/structure/displaycase)
+	default_armor = list(BLUNT = 30, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 100)
+
 /obj/structure/displaycase
 	name = "display case"
 	icon = 'icons/obj/stationobjs.dmi'
@@ -6,7 +9,6 @@
 	density = TRUE
 	anchored = TRUE
 	resistance_flags = ACID_PROOF
-	armor = list(BLUNT = 30, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 100)
 	max_integrity = 200
 	integrity_failure = 0.25
 	var/obj/item/showpiece = null

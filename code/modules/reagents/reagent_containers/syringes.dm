@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/reagent_containers/syringe)
+	default_materials = list(/datum/material/iron=10, /datum/material/glass=20)
+
 /obj/item/reagent_containers/syringe
 	name = "syringe"
 	desc = "A syringe that can hold up to 15 units."
@@ -10,7 +13,6 @@
 	amount_per_transfer_from_this = 5
 	possible_transfer_amounts = list(5, 10, 15)
 	volume = 15
-	custom_materials = list(/datum/material/iron=10, /datum/material/glass=20)
 	reagent_flags = TRANSPARENT
 	custom_price = PAYCHECK_EASY * 0.5
 
@@ -35,6 +37,7 @@
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	AddElement(/datum/element/eyestab)
+	AddComponent(/datum/component/caltrop, min_damage = force, probability = 10, flags = CALTROP_IGNORE_WALKERS, on_trigger = CALLBACK(src, PROC_REF(on_caltrop_trigger)))
 
 /obj/item/reagent_containers/syringe/attackby(obj/item/I, mob/user, params)
 	return
@@ -79,6 +82,8 @@
 
 /obj/item/reagent_containers/syringe/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	ATTACK_IF_COMBAT_MODE(user, src)
+	if(!interacting_with.reagents)
+		return NONE
 
 	if(!try_syringe(interacting_with, user))
 		return ITEM_INTERACT_BLOCKING
@@ -282,6 +287,10 @@
 		H.try_contract_pathogen(P, make_copy = TRUE) // It's probably a good idea to not leave refs to an active disease in the syringe.
 
 	H.germ_level = max(H.germ_level, INFECTION_LEVEL_TWO)
+
+/// Called when a human triggers the caltrop component, to infect the mob.
+/obj/item/reagent_containers/syringe/proc/on_caltrop_trigger(mob/living/carbon/human/H)
+	contaminate_mob(H)
 
 /obj/item/reagent_containers/syringe/epinephrine
 	name = "syringe (epinephrine)"

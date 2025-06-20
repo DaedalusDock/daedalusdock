@@ -3,11 +3,13 @@
 #define RECOGNIZER_MODE 3
 #define VOICE_SENSOR_MODE 4
 
+TYPEINFO_DEF(/obj/item/assembly/voice)
+	default_materials = list(/datum/material/iron=500, /datum/material/glass=50)
+
 /obj/item/assembly/voice
 	name = "voice analyzer"
 	desc = "A small electronic device able to record a voice sample, and send a signal when that sample is repeated."
 	icon_state = "voice"
-	custom_materials = list(/datum/material/iron=500, /datum/material/glass=50)
 	attachable = TRUE
 	verb_say = "beeps"
 	verb_ask = "beeps"

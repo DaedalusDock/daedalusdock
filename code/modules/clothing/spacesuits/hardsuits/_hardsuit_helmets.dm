@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/clothing/head/helmet/space/hardsuit)
+	default_armor = list(BLUNT = 10, PUNCTURE = 5, SLASH = 0, LASER = 10, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 50, ACID = 75)
+
 /obj/item/clothing/head/helmet/space/hardsuit
 	name = "voidsuit helmet"
 	desc = "A special helmet designed for work in a hazardous, low-pressure environment. Has radiation shielding."
@@ -6,7 +9,6 @@
 	icon_state = "hardsuit0-engineering"
 	inhand_icon_state = "eng_helm"
 	max_integrity = 300
-	armor = list(BLUNT = 10, PUNCTURE = 5, SLASH = 0, LASER = 10, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 50, ACID = 75)
 	light_system = OVERLAY_LIGHT_DIRECTIONAL
 	light_outer_range = 4
 	light_power = 1

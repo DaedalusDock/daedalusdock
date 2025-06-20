@@ -95,8 +95,8 @@
 	name = "beaker storage apparatus"
 	desc = "A special apparatus for carrying beakers without spilling the contents."
 	icon_state = "borg_beaker_apparatus"
-	storable = list(/obj/item/reagent_containers/glass/beaker,
-					/obj/item/reagent_containers/glass/bottle)
+	storable = list(/obj/item/reagent_containers/cup/beaker,
+					/obj/item/reagent_containers/cup/bottle)
 
 /obj/item/borg/apparatus/beaker/Initialize(mapload)
 	add_glass()
@@ -105,7 +105,7 @@
 	return ..()
 
 /obj/item/borg/apparatus/beaker/proc/add_glass()
-	stored = new /obj/item/reagent_containers/glass/beaker/large(src)
+	stored = new /obj/item/reagent_containers/cup/beaker/large(src)
 
 /obj/item/borg/apparatus/beaker/Destroy()
 	if(stored)
@@ -135,7 +135,7 @@
 		stored.pixel_x = 0
 		stored.pixel_y = 0
 		var/mutable_appearance/stored_copy = new /mutable_appearance(stored)
-		if(istype(stored, /obj/item/reagent_containers/glass/beaker))
+		if(istype(stored, /obj/item/reagent_containers/cup/beaker))
 			arm.pixel_y = arm.pixel_y - 3
 		stored_copy.layer = FLOAT_LAYER
 		stored_copy.plane = FLOAT_PLANE
@@ -161,11 +161,11 @@
 	name = "beverage storage apparatus"
 	desc = "A special apparatus for carrying drinks without spilling the contents. Will resynthesize any drinks you pour out!"
 	icon_state = "borg_beaker_apparatus"
-	storable = list(/obj/item/reagent_containers/food/drinks,
-					/obj/item/reagent_containers/food/condiment)
+	storable = list(/obj/item/reagent_containers/cup/glass,
+					/obj/item/reagent_containers/condiment)
 
 /obj/item/borg/apparatus/beaker/servive/add_glass()
-	stored = new /obj/item/reagent_containers/food/drinks/drinkingglass(src)
+	stored = new /obj/item/reagent_containers/cup/glass/drinkingglass(src)
 
 /// allows medical cyborgs to manipulate organs without hands
 /obj/item/borg/apparatus/organ_storage

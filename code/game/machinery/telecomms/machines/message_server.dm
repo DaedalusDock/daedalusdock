@@ -6,12 +6,14 @@
 */
 
 // A decorational representation of SSblackbox, usually placed alongside the message server. Also contains a traitor theft item.
+TYPEINFO_DEF(/obj/machinery/blackbox_recorder)
+	default_armor = list(BLUNT = 25, PUNCTURE = 10, SLASH = 90, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
+
 /obj/machinery/blackbox_recorder
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "blackbox"
 	name = "Blackbox Recorder"
 	density = TRUE
-	armor = list(BLUNT = 25, PUNCTURE = 10, SLASH = 90, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
 	var/obj/item/stored
 
 /obj/machinery/blackbox_recorder/Initialize(mapload)

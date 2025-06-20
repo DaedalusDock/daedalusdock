@@ -238,12 +238,15 @@
 	return list()//empty list
 
 /obj/item/stack/proc/update_weight()
+	var/new_w_class
 	if(amount <= (max_amount * (1/3)))
-		w_class = clamp(full_w_class-2, WEIGHT_CLASS_TINY, full_w_class)
+		new_w_class = clamp(full_w_class-2, WEIGHT_CLASS_TINY, full_w_class)
 	else if (amount <= (max_amount * (2/3)))
-		w_class = clamp(full_w_class-1, WEIGHT_CLASS_TINY, full_w_class)
+		new_w_class = clamp(full_w_class-1, WEIGHT_CLASS_TINY, full_w_class)
 	else
-		w_class = full_w_class
+		new_w_class = full_w_class
+
+	set_weight_class(new_w_class)
 
 /obj/item/stack/update_icon_state()
 	if(novariants)

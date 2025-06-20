@@ -1,5 +1,8 @@
 // Disposal pipes
 
+TYPEINFO_DEF(/obj/structure/disposalpipe)
+	default_armor = list(BLUNT = 25, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
+
 /obj/structure/disposalpipe
 	name = "disposal pipe"
 	desc = "An underfloor disposal pipe."
@@ -9,7 +12,6 @@
 	obj_flags = CAN_BE_HIT
 	dir = NONE // dir will contain dominant direction for junction pipes
 	max_integrity = 200
-	armor = list(BLUNT = 25, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
 	layer = DISPOSAL_PIPE_LAYER // slightly lower than wires and other pipes
 	damage_deflection = 5
 	var/dpdir = NONE // bitmask of pipe directions

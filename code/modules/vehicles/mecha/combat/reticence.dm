@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/vehicle/sealed/mecha/combat/reticence)
+	default_armor = list(BLUNT = 25, PUNCTURE = 20, SLASH = 0, LASER = 30, ENERGY = 15, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/vehicle/sealed/mecha/combat/reticence
 	desc = "A silent, fast, and nigh-invisible miming exosuit. Popular among mimes and mime assassins."
 	name = "\improper reticence"
@@ -6,7 +9,6 @@
 	movedelay = 2
 	dir_in = 1 //Facing North.
 	max_integrity = 100
-	armor = list(BLUNT = 25, PUNCTURE = 20, SLASH = 0, LASER = 30, ENERGY = 15, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
 	max_temperature = 15000
 	wreckage = /obj/structure/mecha_wreckage/reticence
 	operation_req_access = list(ACCESS_THEATRE)

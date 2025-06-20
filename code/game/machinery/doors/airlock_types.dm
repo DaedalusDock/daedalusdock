@@ -226,6 +226,9 @@
 /obj/machinery/door/airlock/uranium/glass/safe
 	actually_radioactive = FALSE
 
+TYPEINFO_DEF(/obj/machinery/door/airlock/plasma)
+	default_materials = list(/datum/material/plasma = 20000)
+
 /obj/machinery/door/airlock/plasma
 	name = "plasma airlock"
 	desc = "No way this can end badly."
@@ -233,10 +236,6 @@
 	airlock_paint = "#65217B"
 	material_flags = MATERIAL_EFFECTS
 	material_modifier = 0.25
-
-/obj/machinery/door/airlock/plasma/Initialize(mapload)
-	custom_materials = custom_materials ? custom_materials : list(/datum/material/plasma = 20000)
-	. = ..()
 
 /obj/machinery/door/airlock/plasma/block_superconductivity() //we don't stop the heat~
 	return 0
@@ -585,12 +584,14 @@
 /obj/machinery/door/airlock/cult/unruned/glass/friendly
 	friendly = TRUE
 
+TYPEINFO_DEF(/obj/machinery/door/airlock/cult/weak)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/machinery/door/airlock/cult/weak
 	name = "brittle cult airlock"
 	desc = "An airlock hastily corrupted by blood magic, it is unusually brittle in this state."
 	normal_integrity = 150
 	damage_deflection = 5
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
 //////////////////////////////////
 /*

@@ -28,29 +28,32 @@
 		gun.pin = null
 	return ..()
 
-/obj/item/firing_pin/afterattack(atom/target, mob/user, proximity_flag)
-	. = ..()
-	if(proximity_flag)
-		if(isgun(target))
-			var/obj/item/gun/targetted_gun = target
-			var/obj/item/firing_pin/old_pin = targetted_gun.pin
-			if(old_pin && (force_replace || old_pin.pin_removeable))
-				to_chat(user, span_notice("You remove [old_pin] from [targetted_gun]."))
-				if(Adjacent(user))
-					user.put_in_hands(old_pin)
-				else
-					old_pin.forceMove(targetted_gun.drop_location())
-				old_pin.gun_remove(user)
+/obj/item/firing_pin/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
 
-			if(!targetted_gun.pin)
-				if(!user.temporarilyRemoveItemFromInventory(src))
-					return .
-				if(gun_insert(user, targetted_gun))
-					to_chat(user, span_notice("You insert [src] into [targetted_gun]."))
-			else
-				to_chat(user, span_notice("This firearm already has a firing pin installed."))
+	if(!isgun(target))
+		return NONE
 
-			return .
+	var/obj/item/gun/targetted_gun = target
+	var/obj/item/firing_pin/old_pin = targetted_gun.pin
+	if(old_pin && (force_replace || old_pin.pin_removeable))
+		to_chat(user, span_notice("You remove [old_pin] from [targetted_gun]."))
+		if(Adjacent(user))
+			user.put_in_hands(old_pin)
+		else
+			old_pin.forceMove(targetted_gun.drop_location())
+		old_pin.gun_remove(user)
+
+	if(!targetted_gun.pin)
+		if(!user.temporarilyRemoveItemFromInventory(src))
+			return ITEM_INTERACT_BLOCKING
+
+		if(gun_insert(user, targetted_gun))
+			to_chat(user, span_notice("You insert [src] into [targetted_gun]."))
+	else
+		to_chat(user, span_notice("This firearm already has a firing pin installed."))
+
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/firing_pin/emag_act(mob/user)
 	if(obj_flags & EMAGGED)
@@ -97,13 +100,17 @@
 	fail_message = "dna check failed!"
 	var/unique_enzymes = null
 
-/obj/item/firing_pin/dna/afterattack(atom/target, mob/user, proximity_flag)
+/obj/item/firing_pin/dna/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	. = ..()
-	if(proximity_flag && iscarbon(target))
-		var/mob/living/carbon/M = target
+	if(. & ITEM_INTERACT_ANY_BLOCKER)
+		return
+
+	if(iscarbon(interacting_with))
+		var/mob/living/carbon/M = interacting_with
 		if(M.dna && M.dna.unique_enzymes)
 			unique_enzymes = M.dna.unique_enzymes
 			to_chat(user, span_notice("DNA-LOCK SET."))
+			return ITEM_INTERACT_SUCCESS
 
 /obj/item/firing_pin/dna/pin_auth(mob/living/carbon/user)
 	if(user && user.dna && user.dna.unique_enzymes)

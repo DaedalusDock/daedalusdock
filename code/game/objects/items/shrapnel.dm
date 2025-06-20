@@ -1,6 +1,9 @@
+// frag grenades
+TYPEINFO_DEF(/obj/item/shrapnel)
+	default_materials = list(/datum/material/iron=50)
+
 /obj/item/shrapnel // frag grenades
 	name = "shrapnel shard"
-	custom_materials = list(/datum/material/iron=50)
 	weak_against_armor = 2
 	icon = 'icons/obj/shards.dmi'
 	icon_state = "large"
@@ -78,8 +81,10 @@
 	embedding = list(embed_chance=90, fall_chance=0, jostle_chance=7, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.7, pain_mult=5, jostle_pain_mult=6, rip_time=15)
 	embed_adjustment_tile = 0
 
+TYPEINFO_DEF(/obj/item/shrapnel/capmine)
+	default_materials = list(/datum/material/iron=50)
+
 /obj/item/shrapnel/capmine
 	name = "\improper AP shrapnel shard"
-	custom_materials = list(/datum/material/iron=50)
 	weak_against_armor = 2
 

@@ -9,6 +9,10 @@ ARCD
 RLD
 */
 
+TYPEINFO_DEF(/obj/item/construction)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+	default_materials = list(/datum/material/iron=100000)
+
 /obj/item/construction
 	name = "not for ingame use"
 	desc = "A device used to rapidly build and deconstruct. Reload with iron, plasteel, glass or compressed matter cartridges."
@@ -21,9 +25,7 @@ RLD
 	throwforce = 10
 	throw_range = 5
 	w_class = WEIGHT_CLASS_NORMAL
-	custom_materials = list(/datum/material/iron=100000)
 	req_access_txt = "11"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 	var/datum/effect_system/spark_spread/spark_system
 	var/matter = 0
@@ -59,21 +61,33 @@ RLD
 	silo_mats = null
 	return ..()
 
-/obj/item/construction/pre_attack(atom/target, mob/user, params)
-	if(istype(target, /obj/item/rcd_upgrade))
-		install_upgrade(target, user)
-		return TRUE
-	if(insert_matter(target, user))
-		return TRUE
-	return ..()
+/obj/item/construction/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(user.combat_mode)
+		return NONE
 
-/obj/item/construction/attackby(obj/item/W, mob/user, params)
-	if(istype(W, /obj/item/rcd_upgrade))
-		install_upgrade(W, user)
-		return TRUE
-	if(insert_matter(W, user))
-		return TRUE
-	return ..()
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
+	if(istype(interacting_with, /obj/item/rcd_upgrade))
+		install_upgrade(target, user)
+		return ITEM_INTERACT_SUCCESS
+
+	if(insert_matter(target, user))
+		return ITEM_INTERACT_SUCCESS
+
+	return NONE
+
+/obj/item/construction/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(user.combat_mode)
+		return NONE
+
+	if(istype(tool, /obj/item/rcd_upgrade))
+		install_upgrade(tool, user)
+		return ITEM_INTERACT_SUCCESS
+
+	if(insert_matter(tool, user))
+		return ITEM_INTERACT_SUCCESS
+
+	return NONE
 
 /// Installs an upgrade into the RCD checking if it is already installed, or if it is a banned upgrade
 /obj/item/construction/proc/install_upgrade(obj/item/rcd_upgrade/rcd_up, mob/user)
@@ -275,10 +289,34 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	. = ..()
 	AddElement(/datum/element/openspace_item_click_handler)
 
-/obj/item/construction/rcd/handle_openspace_click(turf/target, mob/user, proximity_flag, click_parameters)
-	if(proximity_flag)
-		mode = construction_mode
-		rcd_create(target, user)
+/obj/item/construction/rcd/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	. = ..()
+	if(. & ITEM_INTERACT_ANY_BLOCKER)
+		return .
+
+	mode = construction_mode
+	return rcd_create(interacting_with, user)
+
+/obj/item/construction/rcd/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ranged || !range_check(interacting_with, user))
+		return ITEM_INTERACT_BLOCKING
+
+	mode = construction_mode
+	return rcd_create(interacting_with, user)
+
+/obj/item/construction/rcd/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	mode = RCD_DECONSTRUCT
+	return rcd_create(interacting_with, user)
+
+/obj/item/construction/rcd/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ranged || !range_check(interacting_with, user))
+		return ITEM_INTERACT_BLOCKING
+
+	mode = RCD_DECONSTRUCT
+	return rcd_create(interacting_with, user)
+
+/obj/item/construction/rcd/handle_openspace_click(turf/target, mob/user, list/modifiers)
+	interact_with_atom(target, user, modifiers)
 
 /obj/item/construction/rcd/ui_action_click(mob/user, actiontype)
 	if (!COOLDOWN_FINISHED(src, destructive_scan_cooldown))
@@ -776,21 +814,31 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	else
 		return FALSE
 
-/obj/item/construction/rcd/pre_attack(atom/A, mob/user, params)
+/obj/item/construction/rcd/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	. = ..()
-	mode = construction_mode
-	if(!A.rcd_vals(user, src))
-		return
-	rcd_create(A, user)
-	return TRUE
+	if(. & ITEM_INTERACT_ANY_BLOCKER)
+		return .
 
-/obj/item/construction/rcd/pre_attack_secondary(atom/target, mob/living/user, params)
-	. = ..()
+	mode = construction_mode
+	return rcd_create(interacting_with, user)
+
+/obj/item/construction/rcd/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ranged || !range_check(interacting_with, user))
+		return ITEM_INTERACT_BLOCKING
+
+	mode = construction_mode
+	return rcd_create(interacting_with, user)
+
+/obj/item/construction/rcd/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
 	mode = RCD_DECONSTRUCT
-	if(!target.rcd_vals(user, src))
-		return
-	rcd_create(target, user)
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	return rcd_create(interacting_with, user)
+
+/obj/item/construction/rcd/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ranged || !range_check(interacting_with, user))
+		return ITEM_INTERACT_BLOCKING
+
+	mode = RCD_DECONSTRUCT
+	return rcd_create(interacting_with, user)
 
 
 /obj/item/construction/rcd/proc/detonate_pulse()
@@ -871,6 +919,9 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	canRturf = TRUE
 	upgrade = RCD_UPGRADE_FRAMES | RCD_UPGRADE_SIMPLE_CIRCUITS | RCD_UPGRADE_FURNISHING
 
+TYPEINFO_DEF(/obj/item/rcd_ammo)
+	default_materials = list(/datum/material/iron=12000, /datum/material/glass=8000)
+
 /obj/item/rcd_ammo
 	name = "compressed matter cartridge"
 	desc = "Compressed matter for the RCD."
@@ -879,13 +930,14 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	w_class = WEIGHT_CLASS_TINY
 	lefthand_file = 'icons/mob/inhands/equipment/tools_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/tools_righthand.dmi'
-	custom_materials = list(/datum/material/iron=12000, /datum/material/glass=8000)
 	var/ammoamt = 40
+
+TYPEINFO_DEF(/obj/item/rcd_ammo/large)
+	default_materials = list(/datum/material/iron=48000, /datum/material/glass=32000)
 
 /obj/item/rcd_ammo/large
 	name = "highly compressed matter cartridge"
 	desc = "Tightly compressed matter for the RCD."
-	custom_materials = list(/datum/material/iron=48000, /datum/material/glass=32000)
 	ammoamt = 160
 
 
@@ -910,16 +962,6 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	inhand_icon_state = "oldrcd"
 	has_ammobar = FALSE
 
-/obj/item/construction/rcd/arcd/afterattack(atom/A, mob/user)
-	. = ..()
-	if(range_check(A,user))
-		pre_attack(A, user)
-
-/obj/item/construction/rcd/arcd/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
-	if(range_check(target,user))
-		pre_attack_secondary(target, user)
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-
 /obj/item/construction/rcd/arcd/handle_openspace_click(turf/target, mob/user, proximity_flag, click_parameters)
 	if(ranged && range_check(target, user))
 		mode = construction_mode
@@ -929,7 +971,6 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	. = ..()
 	if(.)
 		user.Beam(A,icon_state="rped_upgrade", time = 3 SECONDS)
-
 
 
 // RAPID LIGHTING DEVICE
@@ -986,6 +1027,16 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 			mode = REMOVE_MODE
 			to_chat(user, span_notice("You change RLD's mode to 'Deconstruct'."))
 
+/obj/item/construction/rld/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!range_check(interacting_with, user))
+		return NONE
+	return try_lighting(interacting_with, user)
+
+/obj/item/construction/rld/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	. = ..()
+	if(. & ITEM_INTERACT_ANY_BLOCKER)
+		return .
+	return try_lighting(interacting_with, user)
 
 /obj/item/construction/rld/proc/checkdupes(target)
 	. = list()
@@ -995,11 +1046,10 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 			. |= dupe
 
 
-/obj/item/construction/rld/afterattack(atom/A, mob/user)
-	. = ..()
-	if(!range_check(A,user))
-		return
+/obj/item/construction/rld/proc/try_lighting(atom/A, mob/user)
+	PRIVATE_PROC(TRUE)
 	var/turf/start = get_turf(src)
+
 	switch(mode)
 		if(REMOVE_MODE)
 			if(istype(A, /obj/machinery/light/))

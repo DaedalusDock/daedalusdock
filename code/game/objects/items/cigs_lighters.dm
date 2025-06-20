@@ -114,11 +114,13 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/match/get_temperature()
 	return lit * heat
 
+TYPEINFO_DEF(/obj/item/match/firebrand)
+	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT)
+
 /obj/item/match/firebrand
 	name = "firebrand"
 	desc = "An unlit firebrand. It makes you wonder why it's not just called a stick."
 	smoketime = 40 SECONDS
-	custom_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/carbon = 2)
 
 /obj/item/match/firebrand/Initialize(mapload)
@@ -216,20 +218,26 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	else
 		to_chat(user, span_warning("There is nothing to smoke!"))
 
-/obj/item/clothing/mask/cigarette/afterattack(obj/item/reagent_containers/glass/glass, mob/user, proximity)
-	. = ..()
-	if(!proximity || lit) //can't dip if cigarette is lit (it will heat the reagents in the glass instead)
-		return
-	if(!istype(glass)) //you can dip cigarettes into beakers
-		return
+/obj/item/clothing/mask/cigarette/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(lit) //can't dip if cigarette is lit (it will heat the reagents in the glass instead)
+		return NONE
+
+	if(!istype(interacting_with, /obj/item/reagent_containers/cup)) //you can dip cigarettes into beakers
+		return NONE
+
+	var/obj/item/reagent_containers/cup/glass = interacting_with
 
 	if(glass.reagents.trans_to(src, chem_volume, transfered_by = user)) //if reagents were transfered, show the message
 		to_chat(user, span_notice("You dip \the [src] into \the [glass]."))
+		return ITEM_INTERACT_SUCCESS
+
 	//if not, either the beaker was empty, or the cigarette was full
 	else if(!glass.reagents.total_volume)
 		to_chat(user, span_warning("[glass] is empty!"))
 	else
 		to_chat(user, span_warning("[src] is full!"))
+
+	return ITEM_INTERACT_BLOCKING
 
 /obj/item/clothing/mask/cigarette/update_icon_state()
 	. = ..()

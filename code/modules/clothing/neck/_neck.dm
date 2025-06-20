@@ -216,10 +216,12 @@
 	selling = !selling
 	to_chat(user, span_notice("[src] has been set to [selling ? "'Sell'" : "'Get Price'"] mode."))
 
-/obj/item/clothing/neck/necklace/dope/merchant/afterattack(obj/item/I, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/clothing/neck/necklace/dope/merchant/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+		return NONE
+
+	var/atom/I = interacting_with // Yes i am supremely lazy
+
 	var/datum/export_report/ex = export_item_and_contents(I, delete_unsold = selling, dry_run = !selling)
 	var/price = 0
 	for(var/x in ex.total_amount)
@@ -233,6 +235,11 @@
 	else
 		to_chat(user, span_warning("There is no export value for [I] or any items within it."))
 
+	return ITEM_INTERACT_SUCCESS
+
+TYPEINFO_DEF(/obj/item/clothing/neck/beads)
+	default_materials = list(/datum/material/plastic = 500)
+
 /obj/item/clothing/neck/beads
 	name = "plastic bead necklace"
 	desc = "A cheap, plastic bead necklace. Show team spirit! Collect them! Throw them away! The possibilites are endless!"
@@ -240,7 +247,6 @@
 	icon_state = "beads"
 	color = "#ffffff"
 	custom_price = PAYCHECK_ASSISTANT * 0.2
-	custom_materials = (list(/datum/material/plastic = 500))
 
 /obj/item/clothing/neck/beads/Initialize(mapload)
 	. = ..()

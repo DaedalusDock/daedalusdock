@@ -228,12 +228,14 @@
 	caller_image = image(user)
 	user.setDir(olddir)
 
+TYPEINFO_DEF(/obj/item/disk/holodisk)
+	default_materials = list(/datum/material/iron = 100, /datum/material/glass = 100)
+
 /obj/item/disk/holodisk
 	name = "holorecord disk"
 	desc = "Stores recorder holocalls."
 	icon_state = "holodisk"
 	obj_flags = UNIQUE_RENAME
-	custom_materials = list(/datum/material/iron = 100, /datum/material/glass = 100)
 	var/datum/holorecord/record
 	//Preset variables
 	var/preset_image_type

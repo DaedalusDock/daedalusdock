@@ -21,7 +21,7 @@
 		/datum/job_department/service,
 		)
 
-	family_heirlooms = list(/obj/item/mop, /obj/item/clothing/suit/caution, /obj/item/reagent_containers/glass/bucket, /obj/item/paper/fluff/stations/soap)
+	family_heirlooms = list(/obj/item/mop, /obj/item/clothing/suit/caution, /obj/item/reagent_containers/cup/bucket, /obj/item/paper/fluff/stations/soap)
 
 	mail_goodies = list(
 		/obj/item/grenade/chem_grenade/cleaner = 30,
@@ -40,6 +40,7 @@
 	uniform = /obj/item/clothing/under/rank/civilian/janitor
 	belt = /obj/item/modular_computer/tablet/pda/janitor
 	ears = /obj/item/radio/headset/headset_srv
+	gloves = /obj/item/clothing/gloves/cleaning
 
 /datum/outfit/job/janitor/pre_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()

@@ -203,11 +203,13 @@
 	name = "black floor"
 	icon_state = "black"
 
+TYPEINFO_DEF(/turf/open/floor/plastic)
+	default_materials = list(/datum/material/plastic=500)
+
 /turf/open/floor/plastic
 	name = "plastic floor"
 	desc = "Cheap, lightweight flooring. Melts easily."
 	icon_state = "plastic"
-	custom_materials = list(/datum/material/plastic=500)
 	floor_tile = /obj/item/stack/tile/plastic
 
 /turf/open/floor/eighties

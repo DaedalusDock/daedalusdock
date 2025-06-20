@@ -86,59 +86,63 @@
 	return ..()
 
 // Copy-pasted from beakers. This should probably be changed to a basetype thing later.
-/obj/item/reagent_containers/chem_cartridge/afterattack(obj/target, mob/living/user, proximity)
-	. = ..()
-	if((!proximity) || !check_allowed_items(target,target_self=1))
-		return
+/obj/item/reagent_containers/chem_cartridge/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
+	if(!check_allowed_items(target,target_self=1))
+		return NONE
 
 	if(target.is_refillable()) //Something like a glass. Player probably wants to transfer TO it.
 		if(!reagents.total_volume)
-			to_chat(user, span_warning("[src] is empty!"))
-			return
+			to_chat(user, span_warning("[src] is empty."))
+			return ITEM_INTERACT_BLOCKING
 
 		if(target.reagents.holder_full())
 			to_chat(user, span_warning("[target] is full."))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		var/trans = reagents.trans_to(target, amount_per_transfer_from_this, transfered_by = user)
 		to_chat(user, span_notice("You transfer [trans] unit\s of the solution to [target]."))
 
 	else if(target.is_drainable()) //A dispenser. Transfer FROM it TO us.
 		if(!target.reagents.total_volume)
-			to_chat(user, span_warning("[target] is empty and can't be refilled!"))
-			return
+			to_chat(user, span_warning("[target] is empty and can't be refilled."))
+			return ITEM_INTERACT_BLOCKING
 
 		if(reagents.holder_full())
 			to_chat(user, span_warning("[src] is full."))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		var/trans = target.reagents.trans_to(src, amount_per_transfer_from_this, transfered_by = user)
 		to_chat(user, span_notice("You fill [src] with [trans] unit\s of the contents of [target]."))
 
 	target.update_appearance()
+	return ITEM_INTERACT_SUCCESS
 
 // Also copy-pasted from beakers.
-/obj/item/reagent_containers/chem_cartridge/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
-	if((!proximity_flag) || !check_allowed_items(target,target_self=1))
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+/obj/item/reagent_containers/chem_cartridge/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
+	if(!check_allowed_items(target,target_self=1))
+		return NONE
 
 	if(!spillable)
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+		return NONE
 
 	if(target.is_drainable()) //A dispenser. Transfer FROM it TO us.
 		if(!target.reagents.total_volume)
-			to_chat(user, span_warning("[target] is empty!"))
-			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+			to_chat(user, span_warning("[target] is empty."))
+			return ITEM_INTERACT_BLOCKING
 
 		if(reagents.holder_full())
 			to_chat(user, span_warning("[src] is full."))
-			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+			return ITEM_INTERACT_BLOCKING
 
 		var/trans = target.reagents.trans_to(src, amount_per_transfer_from_this, transfered_by = user)
 		to_chat(user, span_notice("You fill [src] with [trans] unit\s of the contents of [target]."))
 
 	target.update_appearance()
-	return SECONDARY_ATTACK_CONTINUE_CHAIN
+	return ITEM_INTERACT_SUCCESS
 
 //Dispenser lists
 GLOBAL_LIST_INIT(cartridge_list_chems, list(

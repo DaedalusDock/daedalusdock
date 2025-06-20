@@ -45,6 +45,9 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
  *
  * Captalism in the year 2525, everything in a vending machine, even love
  */
+TYPEINFO_DEF(/obj/machinery/vending)
+	default_armor = list(BLUNT = 20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
+
 /obj/machinery/vending
 	name = "\improper Vendomat"
 	desc = "A generic vending machine."
@@ -57,7 +60,6 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
 	verb_exclaim = "beeps"
 	max_integrity = 300
 	integrity_failure = 0.33
-	armor = list(BLUNT = 20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
 	circuit = /obj/item/circuitboard/machine/vendor
 	payment_department = ACCOUNT_STATION_MASTER
 	light_power = 0.5
@@ -1336,21 +1338,21 @@ GLOBAL_LIST_EMPTY(vending_products)
 	price = chosen_price
 	to_chat(user, span_notice(" The [src] will now give things a [price] FM tag."))
 
-/obj/item/price_tagger/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(isitem(target))
-		var/obj/item/I = target
+/obj/item/price_tagger/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(isitem(interacting_with))
+		var/obj/item/I = interacting_with
 		I.custom_price = price
 		to_chat(user, span_notice("You set the price of [I] to [price] FM."))
+		return ITEM_INTERACT_SUCCESS
+
+TYPEINFO_DEF(/obj/machinery/vending/custom/greed)
+	default_materials = list(/datum/material/gold = MINERAL_MATERIAL_AMOUNT * 5)
 
 /obj/machinery/vending/custom/greed //name and like decided by the spawn
 	icon_state = "greed"
 	icon_deny = "greed-deny"
 	panel_type = "panel4"
 	light_mask = "greed-light-mask"
-	custom_materials = list(/datum/material/gold = MINERAL_MATERIAL_AMOUNT * 5)
 
 /obj/machinery/vending/custom/greed/Initialize(mapload)
 	. = ..()

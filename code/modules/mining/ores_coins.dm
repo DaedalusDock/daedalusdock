@@ -322,6 +322,9 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 // The coin's value is a value of it's materials.
 // Yes, the gold standard makes a come-back!
 // This is the only way to make coins that are possible to produce on station actually worth anything.
+TYPEINFO_DEF(/obj/item/coin)
+	default_materials = list(/datum/material/iron = 400)
+
 /obj/item/coin
 	icon = 'icons/obj/economy.dmi'
 	name = "coin"
@@ -330,7 +333,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	force = 1
 	throwforce = 2
 	w_class = WEIGHT_CLASS_TINY
-	custom_materials = list(/datum/material/iron = 400)
 	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX | MATERIAL_COLOR | MATERIAL_AFFECT_STATISTICS
 	var/string_attached
 	var/list/sideslist = list("heads","tails")
@@ -425,52 +427,76 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 				span_hear("You hear the clattering of loose change."))
 	return TRUE//did the coin flip? useful for suicide_act
 
+TYPEINFO_DEF(/obj/item/coin/gold)
+	default_materials = list(/datum/material/gold = 400)
+
 /obj/item/coin/gold
-	custom_materials = list(/datum/material/gold = 400)
+
+TYPEINFO_DEF(/obj/item/coin/silver)
+	default_materials = list(/datum/material/silver = 400)
 
 /obj/item/coin/silver
-	custom_materials = list(/datum/material/silver = 400)
+
+TYPEINFO_DEF(/obj/item/coin/diamond)
+	default_materials = list(/datum/material/diamond = 400)
 
 /obj/item/coin/diamond
-	custom_materials = list(/datum/material/diamond = 400)
+
+TYPEINFO_DEF(/obj/item/coin/plasma)
+	default_materials = list(/datum/material/plasma = 400)
 
 /obj/item/coin/plasma
-	custom_materials = list(/datum/material/plasma = 400)
+
+TYPEINFO_DEF(/obj/item/coin/uranium)
+	default_materials = list(/datum/material/uranium = 400)
 
 /obj/item/coin/uranium
-	custom_materials = list(/datum/material/uranium = 400)
+
+TYPEINFO_DEF(/obj/item/coin/titanium)
+	default_materials = list(/datum/material/titanium = 400)
 
 /obj/item/coin/titanium
-	custom_materials = list(/datum/material/titanium = 400)
+
+TYPEINFO_DEF(/obj/item/coin/bananium)
+	default_materials = list(/datum/material/bananium = 400)
 
 /obj/item/coin/bananium
-	custom_materials = list(/datum/material/bananium = 400)
+
+TYPEINFO_DEF(/obj/item/coin/mythril)
+	default_materials = list(/datum/material/mythril = 400)
 
 /obj/item/coin/mythril
-	custom_materials = list(/datum/material/mythril = 400)
+
+TYPEINFO_DEF(/obj/item/coin/plastic)
+	default_materials = list(/datum/material/plastic = 400)
 
 /obj/item/coin/plastic
-	custom_materials = list(/datum/material/plastic = 400)
+
+TYPEINFO_DEF(/obj/item/coin/runite)
+	default_materials = list(/datum/material/runite = 400)
 
 /obj/item/coin/runite
-	custom_materials = list(/datum/material/runite = 400)
 
 /obj/item/coin/twoheaded
 	desc = "Hey, this coin's the same on both sides!"
 	sideslist = list("heads")
 
+TYPEINFO_DEF(/obj/item/coin/antagtoken)
+	default_materials = list(/datum/material/plastic = 400)
+
 /obj/item/coin/antagtoken
 	name = "antag token"
 	desc = "A novelty coin that helps the heart know what hard evidence cannot prove."
 	icon_state = "coin_valid"
-	custom_materials = list(/datum/material/plastic = 400)
 	sideslist = list("valid", "salad")
 	material_flags = NONE
 
 /obj/item/coin/iron
 
+TYPEINFO_DEF(/obj/item/coin/gold/debug)
+	default_materials = list(/datum/material/gold = 400)
+
 /obj/item/coin/gold/debug
-	custom_materials = list(/datum/material/gold = 400)
 	desc = "If you got this somehow, be aware that it will dust you. Almost certainly."
 
 /obj/item/coin/gold/debug/attack_self(mob/user)

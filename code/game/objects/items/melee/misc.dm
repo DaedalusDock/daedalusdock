@@ -2,6 +2,9 @@
 /obj/item/melee
 	item_flags = NEEDS_PERMIT
 
+TYPEINFO_DEF(/obj/item/melee/chainofcommand)
+	default_materials = list(/datum/material/iron = 1000)
+
 /obj/item/melee/chainofcommand
 	name = "chain of command"
 	desc = "A tool used by great men to placate the frothing masses."
@@ -18,7 +21,6 @@
 	attack_verb_continuous = list("flogs", "whips", "lashes", "disciplines")
 	attack_verb_simple = list("flog", "whip", "lash", "discipline")
 	hitsound = 'sound/weapons/chainhit.ogg'
-	custom_materials = list(/datum/material/iron = 1000)
 
 /obj/item/melee/chainofcommand/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is strangling [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -44,6 +46,9 @@
 	. = ..()
 	AddComponent(/datum/component/butchering, 60, 80) //very imprecise
 
+TYPEINFO_DEF(/obj/item/melee/sabre)
+	default_materials = list(/datum/material/iron = 1000)
+
 /obj/item/melee/sabre
 	name = "officer's sabre"
 	desc = "An elegant weapon, its monomolecular edge is capable of cutting through flesh and bone with ease."
@@ -63,7 +68,6 @@
 	attack_verb_continuous = list("slashes", "cuts")
 	attack_verb_simple = list("slash", "cut")
 	hitsound = 'sound/weapons/rapierhit.ogg'
-	custom_materials = list(/datum/material/iron = 1000)
 
 /obj/item/melee/sabre/Initialize(mapload)
 	. = ..()
@@ -149,10 +153,7 @@
 	attack_verb_simple = list("slash", "sting", "prickle", "poke")
 	hitsound = 'sound/weapons/rapierhit.ogg'
 
-/obj/item/melee/beesword/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/melee/beesword/afterattack(atom/target, mob/user, list/modifiers)
 	user.changeNext_move(CLICK_CD_RAPID)
 	if(iscarbon(target))
 		var/mob/living/carbon/carbon_target = target
@@ -202,12 +203,12 @@
 		if(!isspaceturf(turf))
 			consume_turf(turf)
 
-/obj/item/melee/supermatter_sword/afterattack(target, mob/user, proximity_flag)
+/obj/item/melee/supermatter_sword/afterattack(atom/target, mob/user, list/modifiers)
 	. = ..()
 	if(user && target == user)
 		user.dropItemToGround(src)
-	if(proximity_flag)
-		consume_everything(target)
+
+	consume_everything(target)
 
 /obj/item/melee/supermatter_sword/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	..()
@@ -283,9 +284,8 @@
 	attack_verb_simple = list("flog", "whip", "lash", "discipline")
 	hitsound = 'sound/weapons/whip.ogg'
 
-/obj/item/melee/curator_whip/afterattack(target, mob/user, proximity_flag)
-	. = ..()
-	if(ishuman(target) && proximity_flag)
+/obj/item/melee/curator_whip/afterattack(atom/target, mob/user, list/modifiers)
+	if(ishuman(target))
 		var/mob/living/carbon/human/human_target = target
 		human_target.drop_all_held_items()
 		human_target.visible_message(span_danger("[user] disarms [human_target]!"), span_userdanger("[user] disarmed you!"))
@@ -379,22 +379,27 @@
 		held_sausage = null
 		update_appearance()
 
-/obj/item/melee/roastingstick/afterattack(atom/target, mob/user, proximity)
-	. = ..()
+/obj/item/melee/roastingstick/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if (!extended)
-		return
-	if (!is_type_in_typecache(target, ovens))
-		return
-	if (istype(target, /obj/singularity) && get_dist(user, target) < 10)
-		to_chat(user, span_notice("You send [held_sausage] towards [target]."))
-		playsound(src, 'sound/items/rped.ogg', 50, TRUE)
-		beam = user.Beam(target, icon_state = "rped_upgrade", time = 10 SECONDS)
-	else if (user.Adjacent(target))
-		to_chat(user, span_notice("You extend [src] towards [target]."))
-		playsound(src.loc, 'sound/weapons/batonextend.ogg', 50, TRUE)
-	else
-		return
-	finish_roasting(user, target)
+		return NONE
+	if (!is_type_in_typecache(interacting_with, ovens))
+		return NONE
+	if (istype(interacting_with, /obj/singularity) || istype(interacting_with, /obj/energy_ball) && get_dist(user, interacting_with) < 10)
+		to_chat(user, span_notice("You send [held_sausage] towards [interacting_with]."))
+		beam = user.Beam(interacting_with, icon_state = "rped_upgrade", time = 10 SECONDS)
+		finish_roasting(user, interacting_with)
+		return ITEM_INTERACT_SUCCESS
+	return NONE
+
+/obj/item/melee/roastingstick/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if (!extended)
+		return NONE
+	if (!is_type_in_typecache(interacting_with, ovens))
+		return NONE
+	to_chat(user, span_notice("You extend [src] towards [interacting_with]."))
+	playsound(src, 'sound/weapons/batonextend.ogg', 50, TRUE)
+	finish_roasting(user, interacting_with)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/melee/roastingstick/proc/finish_roasting(user, atom/target)
 	if(do_after(user, time = 10 SECONDS))
@@ -409,6 +414,9 @@
 		playsound(src, 'sound/weapons/batonextend.ogg', 50, TRUE)
 		to_chat(user, span_notice("You put [src] away."))
 
+
+TYPEINFO_DEF(/obj/item/melee/cleric_mace)
+	default_materials = list(/datum/material/iron = 12000)
 
 /obj/item/melee/cleric_mace
 	name = "cleric mace"
@@ -425,7 +433,6 @@
 	greyscale_colors = "#FFFFFF"
 
 	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX | MATERIAL_GREYSCALE | MATERIAL_AFFECT_STATISTICS //Material type changes the prefix as well as the color.
-	custom_materials = list(/datum/material/iron = 12000)  //Defaults to an Iron Mace.
 	slot_flags = ITEM_SLOT_BELT
 	force = 14
 	w_class = WEIGHT_CLASS_BULKY

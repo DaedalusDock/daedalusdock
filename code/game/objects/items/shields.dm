@@ -1,13 +1,18 @@
+TYPEINFO_DEF(/obj/item/shield)
+	default_armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 70)
+
 /obj/item/shield
 	name = "shield"
 	icon = 'icons/obj/shields.dmi'
 	block_chance = 50
 	block_sound = 'sound/weapons/block/block_shield.ogg'
-	armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 70)
 	var/transparent = FALSE // makes beam projectiles pass through the shield
 
 /obj/item/shield/proc/on_shield_block(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK)
 	return TRUE
+
+TYPEINFO_DEF(/obj/item/shield/riot)
+	default_materials = list(/datum/material/glass=7500, /datum/material/iron=1000)
 
 /obj/item/shield/riot
 	name = "riot shield"
@@ -20,7 +25,6 @@
 	throwforce = 5
 	throw_range = 3
 	w_class = WEIGHT_CLASS_BULKY
-	custom_materials = list(/datum/material/glass=7500, /datum/material/iron=1000)
 	attack_verb_continuous = list("shoves", "bashes")
 	attack_verb_simple = list("shove", "bash")
 	var/cooldown = 0 //shield bash cooldown. based on world.time
@@ -89,6 +93,9 @@
 	take_damage(damage)
 	return ..()
 
+TYPEINFO_DEF(/obj/item/shield/riot/roman)
+	default_materials = list(/datum/material/iron=8500)
+
 /obj/item/shield/riot/roman
 	name = "\improper Roman shield"
 	desc = "Bears an inscription on the inside: <i>\"Romanes venio domus\"</i>."
@@ -97,18 +104,22 @@
 	lefthand_file = 'icons/mob/inhands/equipment/shields_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/shields_righthand.dmi'
 	transparent = FALSE
-	custom_materials = list(/datum/material/iron=8500)
 	max_integrity = 65
+
+TYPEINFO_DEF(/obj/item/shield/riot/roman/fake)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
 /obj/item/shield/riot/roman/fake
 	desc = "Bears an inscription on the inside: <i>\"Romanes venio domus\"</i>. It appears to be a bit flimsy."
 	block_chance = 0
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	max_integrity = 30
 
 /obj/item/shield/riot/roman/shatter(mob/living/carbon/human/owner)
 	playsound(owner, 'sound/effects/grillehit.ogg', 100)
 	new /obj/item/stack/sheet/iron(get_turf(src))
+
+TYPEINFO_DEF(/obj/item/shield/riot/buckler)
+	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 10)
 
 /obj/item/shield/riot/buckler
 	name = "wooden buckler"
@@ -117,7 +128,6 @@
 	inhand_icon_state = "buckler"
 	lefthand_file = 'icons/mob/inhands/equipment/shields_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/shields_righthand.dmi'
-	custom_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 10)
 	resistance_flags = FLAMMABLE
 	block_chance = 30
 	transparent = FALSE
@@ -244,6 +254,9 @@
 	playsound(user ? user : src, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 35, TRUE)
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
+TYPEINFO_DEF(/obj/item/shield/riot/tele)
+	default_materials = list(/datum/material/iron = 3600, /datum/material/glass = 3600, /datum/material/silver = 270, /datum/material/titanium = 180)
+
 /obj/item/shield/riot/tele
 	name = "telescopic shield"
 	desc = "An advanced riot shield made of lightweight materials that collapses for easy storage."
@@ -251,7 +264,6 @@
 	worn_icon_state = "teleriot"
 	lefthand_file = 'icons/mob/inhands/equipment/shields_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/shields_righthand.dmi'
-	custom_materials = list(/datum/material/iron = 3600, /datum/material/glass = 3600, /datum/material/silver = 270, /datum/material/titanium = 180)
 	slot_flags = null
 	force = 3
 	throwforce = 3

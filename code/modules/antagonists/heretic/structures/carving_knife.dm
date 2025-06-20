@@ -44,21 +44,20 @@
 		var/potion_string = span_info("\tThe " + initial(trap.name) + " - " + initial(trap.carver_tip))
 		. += potion_string
 
-/obj/item/melee/rune_carver/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-	if(!proximity_flag)
-		return
-
+/obj/item/melee/rune_carver/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!IS_HERETIC_OR_MONSTER(user))
-		return
+		return NONE
+
+	var/atom/target = interacting_with // Yes i am supremely lazy
 
 	if(!isopenturf(target))
-		return
+		return NONE
 
 	if(is_type_in_typecache(target, blacklisted_turfs))
-		return
+		return NONE
 
 	INVOKE_ASYNC(src, PROC_REF(try_carve_rune), target, user)
+	return ITEM_INTERACT_SUCCESS
 
 /*
  * Begin trying to carve a rune. Go through a few checks, then call do_carve_rune if successful.

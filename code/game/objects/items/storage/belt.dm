@@ -244,8 +244,8 @@
 		/obj/item/healthanalyzer,
 		/obj/item/dnainjector,
 		/obj/item/reagent_containers/dropper,
-		/obj/item/reagent_containers/glass/beaker,
-		/obj/item/reagent_containers/glass/bottle,
+		/obj/item/reagent_containers/cup/beaker,
+		/obj/item/reagent_containers/cup/bottle,
 		/obj/item/reagent_containers/pill,
 		/obj/item/reagent_containers/syringe,
 		/obj/item/reagent_containers/medigel,
@@ -265,7 +265,7 @@
 		/obj/item/clothing/mask/surgical,
 		/obj/item/clothing/mask/breath,
 		/obj/item/clothing/mask/breath/medical,
-		/obj/item/reagent_containers/glass/vial, //PARIAH EDIT ADDITION
+		/obj/item/reagent_containers/cup/vial, //PARIAH EDIT ADDITION
 		/obj/item/hypospray/mkii, //PARIAH EDIT ADDITION
 		/obj/item/scalpel,
 		/obj/item/circular_saw,
@@ -417,7 +417,7 @@
 		/obj/item/stack/sheet/bone,
 		/obj/item/lighter,
 		/obj/item/storage/fancy/cigarettes,
-		/obj/item/reagent_containers/food/drinks/bottle,
+		/obj/item/reagent_containers/cup/glass/bottle,
 		/obj/item/stack/medical,
 		/obj/item/knife,
 		/obj/item/reagent_containers/hypospray,
@@ -428,7 +428,7 @@
 		/obj/item/reagent_containers/pill,
 		/obj/item/storage/pill_bottle,
 		/obj/item/stack/ore,
-		/obj/item/reagent_containers/food/drinks,
+		/obj/item/reagent_containers/cup/glass,
 		/obj/item/organ/regenerative_core,
 		/obj/item/wormhole_jaunter,
 		/obj/item/stack/marker_beacon,
@@ -479,13 +479,15 @@
 	for(var/i in 1 to 6)
 		new /obj/item/soulstone/anybody/chaplain(src)
 
+TYPEINFO_DEF(/obj/item/storage/belt/champion)
+	default_materials = list(/datum/material/gold=400)
+
 /obj/item/storage/belt/champion
 	name = "championship belt"
 	desc = "Proves to the world that you are the strongest!"
 	icon_state = "championbelt"
 	inhand_icon_state = "championbelt"
 	worn_icon_state = "championbelt"
-	custom_materials = list(/datum/material/gold=400)
 
 /obj/item/storage/belt/champion/Initialize()
 	. = ..()
@@ -528,7 +530,7 @@
 	atom_storage.max_specific_storage = WEIGHT_CLASS_SMALL
 	atom_storage.set_holdable(list(
 		/obj/item/food,
-		/obj/item/reagent_containers/food/drinks
+		/obj/item/reagent_containers/cup/glass
 		))
 
 	var/amount = 5
@@ -536,7 +538,7 @@
 	while(contents.len <= amount)
 		rig_snacks = pick(list(
 		/obj/item/food/candy,
-		/obj/item/reagent_containers/food/drinks/dry_ramen,
+		/obj/item/reagent_containers/cup/glass/dry_ramen,
 		/obj/item/food/chips,
 		/obj/item/food/sosjerky,
 		/obj/item/food/syndicake,
@@ -549,13 +551,13 @@
 		/obj/item/food/spaghetti/pastatomato,
 		/obj/item/food/rofflewaffles,
 		/obj/item/food/donkpocket,
-		/obj/item/reagent_containers/food/drinks/soda_cans/cola,
-		/obj/item/reagent_containers/food/drinks/soda_cans/space_mountain_wind,
-		/obj/item/reagent_containers/food/drinks/soda_cans/dr_gibb,
-		/obj/item/reagent_containers/food/drinks/soda_cans/starkist,
-		/obj/item/reagent_containers/food/drinks/soda_cans/space_up,
-		/obj/item/reagent_containers/food/drinks/soda_cans/lemon_lime,
-		/obj/item/reagent_containers/food/drinks/drinkingglass/filled/nuka_cola
+		/obj/item/reagent_containers/cup/soda_cans/cola,
+		/obj/item/reagent_containers/cup/soda_cans/space_mountain_wind,
+		/obj/item/reagent_containers/cup/soda_cans/dr_gibb,
+		/obj/item/reagent_containers/cup/soda_cans/starkist,
+		/obj/item/reagent_containers/cup/soda_cans/space_up,
+		/obj/item/reagent_containers/cup/soda_cans/lemon_lime,
+		/obj/item/reagent_containers/cup/glass/drinkingglass/filled/nuka_cola
 		))
 		new rig_snacks(src)
 
@@ -624,7 +626,7 @@
 		/obj/item/screwdriver,
 		/obj/item/lighter,
 		/obj/item/multitool,
-		/obj/item/reagent_containers/food/drinks/bottle/molotov,
+		/obj/item/reagent_containers/cup/glass/bottle/molotov,
 		/obj/item/grenade/c4,
 		/obj/item/food/grown/cherry_bomb,
 		/obj/item/food/grown/firelemon
@@ -872,13 +874,13 @@
 		/obj/item/gun/energy/floragun,
 		/obj/item/hatchet,
 		/obj/item/plant_analyzer,
-		/obj/item/reagent_containers/glass/beaker,
-		/obj/item/reagent_containers/glass/bottle,
+		/obj/item/reagent_containers/cup/beaker,
+		/obj/item/reagent_containers/cup/bottle,
 		/obj/item/reagent_containers/spray/plantbgone,
 		/obj/item/plant_analyzer,
 		/obj/item/seeds,
-		/obj/item/reagent_containers/glass/bottle,
-		/obj/item/reagent_containers/glass/beaker,
+		/obj/item/reagent_containers/cup/bottle,
+		/obj/item/reagent_containers/cup/beaker,
 		/obj/item/hatchet,
 		/obj/item/shovel/spade,
 		/obj/item/gun/energy/floragun

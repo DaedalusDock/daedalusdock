@@ -34,19 +34,42 @@
 	desc = "It's the heavy-duty black polymer kind. Time to take out the trash!"
 	icon = 'icons/obj/janitor.dmi'
 	icon_state = "trashbag"
+	base_icon_state = "trashbag"
 	inhand_icon_state = "trashbag"
 	lefthand_file = 'icons/mob/inhands/equipment/custodial_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/custodial_righthand.dmi'
 	slot_flags = null
+	w_class = WEIGHT_CLASS_TINY
+
+	storage_type = /datum/storage/trash_bag
+
+	///max_total_storage of the storage datum.
+	var/total_holdable_weight = 30
+
 	///If true, can be inserted into the janitor cart
 	var/insertable = TRUE
 
 /obj/item/storage/bag/trash/Initialize()
 	. = ..()
-	atom_storage.max_specific_storage = WEIGHT_CLASS_SMALL
-	atom_storage.max_total_storage = 30
-	atom_storage.max_slots = 30
+	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
+	atom_storage.max_total_storage = total_holdable_weight
+	atom_storage.max_slots = 12
 	atom_storage.set_holdable(cant_hold_list = list(/obj/item/disk/nuclear))
+	RegisterSignal(src, list(COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED, COMSIG_ATOM_REMOVED_ITEM, COMSIG_ATOM_STORED_ITEM), PROC_REF(update_weight_class))
+
+/// Called when an item enters/exits storage, or a stored item changes weight class.
+/obj/item/storage/bag/trash/proc/update_weight_class(datum/source)
+	SIGNAL_HANDLER
+
+	if(QDELETED(src)) // Waste of time.
+		return
+
+	var/highest_weight = initial(w_class)
+	for(var/obj/item/I in src)
+		if(I.w_class > highest_weight)
+			highest_weight = I.w_class
+
+	set_weight_class(highest_weight)
 
 /obj/item/storage/bag/trash/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] puts [src] over [user.p_their()] head and starts chomping at the insides! Disgusting!"))
@@ -54,16 +77,24 @@
 	return (TOXLOSS)
 
 /obj/item/storage/bag/trash/update_icon_state()
-	switch(contents.len)
-		if(20 to INFINITY)
-			icon_state = "[initial(icon_state)]3"
-		if(11 to 20)
-			icon_state = "[initial(icon_state)]2"
-		if(1 to 11)
-			icon_state = "[initial(icon_state)]1"
+	var/num_items = length(contents)
+	if(num_items == 0)
+		icon_state = base_icon_state
+	else
+		var/used_ratio = round(get_used_storage_ratio(), 0.01)
+		if(used_ratio <= 0.33)
+			icon_state = "[base_icon_state]1"
+
+		else if(used_ratio <= 0.66)
+			icon_state = "[base_icon_state]2"
+
 		else
-			icon_state = "[initial(icon_state)]"
+			icon_state = "[base_icon_state]3"
 	return ..()
+
+/// Returns the ratio of the bag's used storage, roughly.
+/obj/item/storage/bag/trash/proc/get_used_storage_ratio()
+	return max(length(contents) / atom_storage.max_slots, atom_storage.get_total_weight() / atom_storage.max_total_storage)
 
 /obj/item/storage/bag/trash/cyborg/Initialize(mapload)
 	. = ..()
@@ -302,6 +333,9 @@
 /*
  * Trays - Agouri
  */
+TYPEINFO_DEF(/obj/item/storage/bag/tray)
+	default_materials = list(/datum/material/iron=3000)
+
 /obj/item/storage/bag/tray
 	name = "serving tray"
 	icon = 'icons/obj/food/containers.dmi'
@@ -313,7 +347,6 @@
 	throw_range = 5
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
-	custom_materials = list(/datum/material/iron=3000)
 	custom_price = PAYCHECK_ASSISTANT * 0.6
 
 /obj/item/storage/bag/tray/Initialize()
@@ -327,7 +360,7 @@
 		/obj/item/organ,
 		/obj/item/plate,
 		/obj/item/reagent_containers/food,
-		/obj/item/reagent_containers/glass,
+		/obj/item/reagent_containers/cup,
 		/obj/item/clothing/mask/cigarette,
 		/obj/item/storage/fancy,
 		/obj/item/storage/box/gum,
@@ -415,10 +448,10 @@
 	atom_storage.set_holdable(list(
 		/obj/item/reagent_containers/chem_pack,
 		/obj/item/reagent_containers/dropper,
-		/obj/item/reagent_containers/food/drinks/waterbottle,
-		/obj/item/reagent_containers/glass/beaker,
-		/obj/item/reagent_containers/glass/bottle,
-		/obj/item/reagent_containers/food/drinks/waterbottle,
+		/obj/item/reagent_containers/cup/glass/waterbottle,
+		/obj/item/reagent_containers/cup/beaker,
+		/obj/item/reagent_containers/cup/bottle,
+		/obj/item/reagent_containers/cup/glass/waterbottle,
 		/obj/item/reagent_containers/medigel,
 		/obj/item/reagent_containers/syringe,
 		/obj/item/reagent_containers/dropper,
@@ -451,8 +484,8 @@
 		/obj/item/organ,
 		/obj/item/reagent_containers/blood,
 		/obj/item/reagent_containers/dropper,
-		/obj/item/reagent_containers/glass/beaker,
-		/obj/item/reagent_containers/glass/bottle,
+		/obj/item/reagent_containers/cup/beaker,
+		/obj/item/reagent_containers/cup/bottle,
 		/obj/item/reagent_containers/blood,
 		/obj/item/reagent_containers/hypospray/medipen,
 		/obj/item/food/monkeycube,
@@ -482,8 +515,8 @@
 		/obj/item/food/monkeycube,
 		/obj/item/organ,
 		/obj/item/reagent_containers/dropper,
-		/obj/item/reagent_containers/glass/beaker,
-		/obj/item/reagent_containers/glass/bottle,
+		/obj/item/reagent_containers/cup/beaker,
+		/obj/item/reagent_containers/cup/bottle,
 		/obj/item/food/deadmouse,
 		/obj/item/food/monkeycube,
 		/obj/item/organ,
@@ -511,7 +544,7 @@
 	atom_storage.set_holdable(list(
 		/obj/item/assembly,
 		/obj/item/stock_parts,
-		/obj/item/reagent_containers/glass/beaker,
+		/obj/item/reagent_containers/cup/beaker,
 		/obj/item/stack/cable_coil,
 		/obj/item/circuitboard,
 		/obj/item/electronics,

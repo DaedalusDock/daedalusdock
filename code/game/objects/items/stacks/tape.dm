@@ -69,14 +69,16 @@
 			CuffAttack(victim, user)
 			return
 
-/obj/item/stack/sticky_tape/afterattack(obj/item/target, mob/living/user, proximity)
-	if(!proximity)
+/obj/item/stack/sticky_tape/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isitem(interacting_with))
 		return
-	if(!istype(target))
-		return
+
+	var/obj/item/target = interacting_with
+
 	if(target.embedding && target.embedding == conferred_embed)
 		to_chat(user, span_warning("[target] is already coated in [src]!"))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	user.visible_message(span_notice("[user] begins wrapping [target] with [src]."), span_notice("You begin wrapping [target] with [src]."))
 	playsound(user, usesound, 50, TRUE)
 	if(do_after(user, target, 3 SECONDS, DO_PUBLIC, display = src))
@@ -86,11 +88,11 @@
 			to_chat(user, span_notice("You turn [target] into [O] with [src]."))
 			QDEL_NULL(target)
 			user.put_in_hands(O)
-			return
+			return ITEM_INTERACT_SUCCESS
 
 		if(target.embedding && target.embedding == conferred_embed)
 			to_chat(user, span_warning("[target] is already coated in [src]!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		target.embedding = conferred_embed
 		target.updateEmbedding()
@@ -100,6 +102,9 @@
 		if(istype(target, /obj/item/grenade))
 			var/obj/item/grenade/sticky_bomb = target
 			sticky_bomb.sticky = TRUE
+		return ITEM_INTERACT_SUCCESS
+
+	return ITEM_INTERACT_BLOCKING
 
 /obj/item/stack/sticky_tape/proc/MuzzleAttack(mob/living/carbon/victim, mob/living/user)
 	playsound(loc, usesound, 30, TRUE, -2)

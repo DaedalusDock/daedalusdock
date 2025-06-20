@@ -13,6 +13,9 @@
 	desc = "A black beret with thick armor padding inside. Stylish and robust."
 	greyscale_colors = "#3F3C40#DB2929"
 
+TYPEINFO_DEF(/obj/item/clothing/head/beret/sec/navywarden)
+	default_armor = list(BLUNT = 40, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 30, ACID = 50)
+
 /obj/item/clothing/head/beret/sec/navywarden
 	name = "warden's beret"
 	desc = "A special beret with the Warden's insignia emblazoned on it. For wardens with class."
@@ -20,7 +23,6 @@
 	greyscale_config = /datum/greyscale_config/beret_badge_fancy
 	greyscale_config_worn = /datum/greyscale_config/beret_badge_fancy/worn
 	greyscale_colors = "#3C485A#FF0000#00AEEF"
-	armor = list(BLUNT = 40, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 30, ACID = 50)
 	strip_delay = 60
 
 /obj/item/clothing/head/beret/sec/navyofficer

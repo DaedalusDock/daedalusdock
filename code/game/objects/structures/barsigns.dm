@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/structure/sign/barsign)
+	default_armor = list(BLUNT = 20, PUNCTURE = 20, SLASH = 90, LASER = 20, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/structure/sign/barsign // All Signs are 64 by 32 pixels, they take two tiles
 	name = "bar sign"
 	desc = "A bar sign which has not been initialized, somehow. Complain at a coder!"
@@ -6,7 +9,6 @@
 	req_access = list(ACCESS_BAR)
 	max_integrity = 500
 	integrity_failure = 0.5
-	armor = list(BLUNT = 20, PUNCTURE = 20, SLASH = 90, LASER = 20, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	buildable_sign = FALSE
 
 	var/panel_open = FALSE

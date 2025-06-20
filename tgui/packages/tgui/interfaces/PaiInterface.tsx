@@ -1,3 +1,5 @@
+import { Tooltip } from 'tgui-core/components';
+
 import { useBackend, useLocalState } from '../backend';
 import {
   Box,
@@ -10,7 +12,6 @@ import {
   Stack,
   Table,
   Tabs,
-  Tooltip,
 } from '../components';
 import { Window } from '../layouts';
 

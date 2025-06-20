@@ -2,7 +2,7 @@
 ////////////////////////////////////////////SALAD////////////////////////////////////////////
 /obj/item/food/salad
 	icon = 'icons/obj/food/soupsalad.dmi'
-	trash_type = /obj/item/reagent_containers/glass/bowl
+	trash_type = /obj/item/reagent_containers/cup/bowl
 	bite_consumption = 3
 	w_class = WEIGHT_CLASS_NORMAL
 	food_reagents = list(/datum/reagent/consumable/nutriment = 7, /datum/reagent/consumable/nutriment/vitamin = 2)
@@ -127,17 +127,19 @@
 	foodtypes = GRAIN | MEAT | VEGETABLES
 
 
-/obj/item/reagent_containers/glass/bowl
+TYPEINFO_DEF(/obj/item/reagent_containers/cup/bowl)
+	default_materials = list(/datum/material/glass = 500)
+
+/obj/item/reagent_containers/cup/bowl
 	name = "bowl"
 	desc = "A simple bowl, used for soups and salads."
 	icon = 'icons/obj/food/soupsalad.dmi'
 	icon_state = "bowl"
 	reagent_flags = OPENCONTAINER
-	custom_materials = list(/datum/material/glass = 500)
 	w_class = WEIGHT_CLASS_NORMAL
 	custom_price = PAYCHECK_ASSISTANT * 0.6
 
-/obj/item/reagent_containers/glass/bowl/Initialize(mapload)
+/obj/item/reagent_containers/cup/bowl/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/customizable_reagent_holder, /obj/item/food/salad/empty, CUSTOM_INGREDIENT_ICON_FILL, max_ingredients = 6)
 

@@ -6,6 +6,9 @@
 #define SCANNER_CONDENSED 0
 #define SCANNER_VERBOSE 1
 
+TYPEINFO_DEF(/obj/item/healthanalyzer)
+	default_materials = list(/datum/material/iron=200)
+
 /obj/item/healthanalyzer
 	name = "health analyzer"
 	icon = 'icons/obj/device.dmi'
@@ -21,7 +24,6 @@
 	throwforce = 3
 	w_class = WEIGHT_CLASS_TINY
 	throw_range = 7
-	custom_materials = list(/datum/material/iron=200)
 	var/mode = SCANNER_VERBOSE
 	var/scanmode = SCANMODE_HEALTH
 	var/advanced = FALSE

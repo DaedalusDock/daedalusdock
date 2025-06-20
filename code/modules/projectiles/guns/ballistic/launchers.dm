@@ -69,7 +69,7 @@
 	desc = "A reusable rocket propelled grenade launcher. This one has been fitted with a special coolant loop to avoid embarassing teamkill 'accidents' from backblast."
 	backblast = FALSE
 
-/obj/item/gun/ballistic/rocketlauncher/afterattack()
+/obj/item/gun/ballistic/rocketlauncher/try_fire_gun(atom/target, mob/living/user, proximity, params)
 	. = ..()
 	magazine.get_round(FALSE) //Hack to clear the mag after it's fired
 

@@ -70,29 +70,45 @@
 /datum/status_effect/stoned/on_apply()
 	if(!ishuman(owner))
 		CRASH("[type] status effect added to non-human owner: [owner ? owner.type : "null owner"]")
+
 	var/mob/living/carbon/human/human_owner = owner
 	original_eye_color_left = human_owner.eye_color_left
 	original_eye_color_right = human_owner.eye_color_right
+
 	human_owner.add_movespeed_modifier(/datum/movespeed_modifier/reagent/cannabis) //slows you down
+
 	human_owner.eye_color_left = BLOODCULT_EYE //makes cult eyes less obvious
 	human_owner.eye_color_right = BLOODCULT_EYE //makes cult eyes less obvious
 	human_owner.update_body() //updates eye color
+
 	ADD_TRAIT(human_owner, TRAIT_BLOODSHOT_EYES, type) //dilates blood vessels in eyes
 	ADD_TRAIT(human_owner, TRAIT_CLUMSY, type) //impairs motor coordination
+
 	human_owner.sound_environment_override = SOUND_ENVIRONMENT_DRUGGED //not realistic but very immersive
+
+	human_owner.apply_status_effect(/datum/status_effect/skill_mod/cannabis_magic)
+	human_owner.apply_status_effect(/datum/status_effect/skill_mod/cannabis_eyes)
 	return TRUE
 
 /datum/status_effect/stoned/on_remove()
 	if(!ishuman(owner))
 		stack_trace("[type] status effect being removed from non-human owner: [owner ? owner.type : "null owner"]")
+
 	var/mob/living/carbon/human/human_owner = owner
 	human_owner.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/cannabis)
+
 	human_owner.eye_color_left = original_eye_color_left
 	human_owner.eye_color_right = original_eye_color_right
+
 	human_owner.update_body()
+
 	REMOVE_TRAIT(human_owner, TRAIT_BLOODSHOT_EYES, type)
 	REMOVE_TRAIT(human_owner, TRAIT_CLUMSY, type)
+
 	human_owner.sound_environment_override = SOUND_ENVIRONMENT_NONE
+
+	human_owner.remove_status_effect(/datum/status_effect/skill_mod/cannabis_magic)
+	human_owner.remove_status_effect(/datum/status_effect/skill_mod/cannabis_eyes)
 
 /atom/movable/screen/alert/status_effect/stoned
 	name = "Stoned"

@@ -50,24 +50,27 @@
 /obj/item/toy/waterballoon/attack(mob/living/carbon/human/M, mob/user)
 	return
 
-/obj/item/toy/waterballoon/afterattack(atom/A as mob|obj, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if (istype(A, /obj/structure/reagent_dispensers))
-		var/obj/structure/reagent_dispensers/RD = A
-		if(RD.reagents.total_volume <= 0)
-			to_chat(user, span_warning("[RD] is empty."))
-		else if(reagents.total_volume >= 10)
-			to_chat(user, span_warning("[src] is full."))
-		else
-			A.reagents.trans_to(src, 10, transfered_by = user)
-			to_chat(user, span_notice("You fill the balloon with the contents of [A]."))
-			desc = "A translucent balloon with some form of liquid sloshing around in it."
-			update_appearance()
+/obj/item/toy/waterballoon/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+
+	var/atom/A = interacting_with // Yes i am supremely lazy
+
+	if (!istype(A, /obj/structure/reagent_dispensers))
+		return NONE
+
+	var/obj/structure/reagent_dispensers/RD = A
+	if(RD.reagents.total_volume <= 0)
+		to_chat(user, span_warning("[RD] is empty."))
+	else if(reagents.total_volume >= 10)
+		to_chat(user, span_warning("[src] is full."))
+	else
+		A.reagents.trans_to(src, 10, transfered_by = user)
+		to_chat(user, span_notice("You fill the balloon with the contents of [A]."))
+		desc = "A translucent balloon with some form of liquid sloshing around in it."
+		update_appearance()
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/toy/waterballoon/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/reagent_containers/glass))
+	if(istype(I, /obj/item/reagent_containers/cup))
 		if(I.reagents)
 			if(I.reagents.total_volume <= 0)
 				to_chat(user, span_warning("[I] is empty."))
@@ -280,6 +283,9 @@
 /*
  * Toy gun: Why isn't this an /obj/item/gun?
  */
+TYPEINFO_DEF(/obj/item/toy/gun)
+	default_materials = list(/datum/material/iron=10, /datum/material/glass=10)
+
 /obj/item/toy/gun
 	name = "cap gun"
 	desc = "Looks almost like the real thing! Ages 8 and up. Please recycle in an autolathe when you're out of caps."
@@ -292,7 +298,6 @@
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
 	w_class = WEIGHT_CLASS_NORMAL
-	custom_materials = list(/datum/material/iron=10, /datum/material/glass=10)
 	attack_verb_continuous = list("strikes", "pistol whips", "hits", "bashes")
 	attack_verb_simple = list("strike", "pistol whip", "hit", "bash")
 	var/bullets = 7
@@ -323,23 +328,29 @@
 	else
 		return ..()
 
-/obj/item/toy/gun/afterattack(atom/target as mob|obj|turf|area, mob/user, flag)
-	. = ..()
-	if (flag)
-		return
+/obj/item/toy/gun/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if (!ISADVANCEDTOOLUSER(user))
 		to_chat(user, span_warning("You don't have the dexterity to do this!"))
-		return
+		return NONE
+
 	src.add_fingerprint(user)
+
 	if (src.bullets < 1)
 		user.show_message(span_warning("*click*"), MSG_AUDIBLE)
 		playsound(src, 'sound/weapons/gun/revolver/dry_fire.ogg', 30, TRUE)
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	playsound(user, 'sound/weapons/gun/revolver/shot.ogg', 100, TRUE)
 	src.bullets--
-	user.visible_message(span_danger("[user] fires [src] at [target]!"), \
-		span_danger("You fire [src] at [target]!"), \
-		span_hear("You hear a gunshot!"))
+	user.visible_message(
+		span_danger("[user] fires [src] at [interacting_with]."),
+		span_danger("You fire [src] at [interacting_with]."),
+		span_hear("You hear a gunshot.")
+	)
+	return ITEM_INTERACT_SUCCESS
+
+TYPEINFO_DEF(/obj/item/toy/ammo/gun)
+	default_materials = list(/datum/material/iron=10, /datum/material/glass=10)
 
 /obj/item/toy/ammo/gun
 	name = "capgun ammo"
@@ -347,7 +358,6 @@
 	icon = 'icons/obj/guns/ammo.dmi'
 	icon_state = "357OLD-7"
 	w_class = WEIGHT_CLASS_TINY
-	custom_materials = list(/datum/material/iron=10, /datum/material/glass=10)
 	var/amount_left = 7
 
 /obj/item/toy/ammo/gun/update_icon_state()
@@ -812,10 +822,10 @@
 	throwforce = 20 //the same damage as a disabler shot
 	damtype = STAMINA //maybe someday we can add stuffing rocks (or perhaps ore?) into snowballs to make them deal brute damage
 
-/obj/item/toy/snowball/afterattack(atom/target as mob|obj|turf|area, mob/user)
-	. = ..()
+/obj/item/toy/snowball/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(user.dropItemToGround(src))
-		throw_at(target, throw_range, throw_speed)
+		throw_at(interacting_with, throw_range, throw_speed)
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/toy/snowball/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	if(!..())

@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/fuel_rod)
+	default_materials = list(/datum/material/iron = 500)
+
 /obj/item/fuel_rod
 	name = "fuel rod"
 	desc = "A heavy container filled with a reactive substance"
@@ -8,7 +11,6 @@
 	throwforce = 10
 	throw_speed = 1
 	throw_range = 4
-	custom_materials = list(/datum/material/iron = 500)
 
 	var/obj/machinery/power/reactor_core/parent
 	///Fuel, Control, Moderator

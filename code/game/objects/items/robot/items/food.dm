@@ -117,23 +117,43 @@
 	user.visible_message(span_warning("[user] shoots a high-velocity gumball at [target]!"))
 	check_amount()
 
-/obj/item/borg/lollipop/afterattack(atom/target, mob/living/user, proximity, click_params)
+/obj/item/borg/lollipop/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	check_amount()
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/robot_user = user
 		if(!robot_user.cell.use(12))
 			to_chat(user, span_warning("Not enough power."))
-			return FALSE
+			return ITEM_INTERACT_BLOCKING
+
+	if(dispense_lolli(interacting_with, user, FALSE))
+		return ITEM_INTERACT_SUCCESS
+
+/obj/item/borg/lollipop/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	check_amount()
+	if(iscyborg(user))
+		var/mob/living/silicon/robot/robot_user = user
+		if(!robot_user.cell.use(12))
+			to_chat(user, span_warning("Not enough power."))
+			return ITEM_INTERACT_BLOCKING
+
+	if(dispense_lolli(interacting_with, user, TRUE))
+		return ITEM_INTERACT_SUCCESS
+
+/obj/item/borg/lollipop/proc/dispense_lolli(atom/target, mob/living/user, adjacent, modifiers)
 	switch(mode)
 		if(DISPENSE_LOLLIPOP_MODE, DISPENSE_ICECREAM_MODE)
-			if(!proximity)
+			if(!adjacent)
 				return FALSE
+
 			dispense(target, user)
+
 		if(THROW_LOLLIPOP_MODE)
-			shootL(target, user, click_params)
+			shootL(target, user, modifiers)
 		if(THROW_GUMBALL_MODE)
-			shootG(target, user, click_params)
-	return ..()
+			shootG(target, user, modifiers)
+
+	return TRUE
+
 
 /obj/item/borg/lollipop/attack_self(mob/living/user)
 	switch(mode)

@@ -39,6 +39,9 @@
  */
 
 /// "Retro" ID card that renders itself as the icon state with no overlays.
+TYPEINFO_DEF(/obj/item/card/id)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/item/card/id
 	name = "identification card"
 	desc = "A card used to provide ID and determine access across the station."
@@ -48,7 +51,6 @@
 	lefthand_file = 'icons/mob/inhands/equipment/idcards_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/idcards_righthand.dmi'
 	slot_flags = ITEM_SLOT_ID
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 
 	/// Cached icon that has been built for this card. Intended for use in chat.
@@ -822,16 +824,11 @@
 	theft_target = null
 	. = ..()
 
-/obj/item/card/id/advanced/chameleon/afterattack(atom/target, mob/user, proximity)
-	if(!proximity)
-		return
-
-	if(istype(target, /obj/item/card/id))
-		theft_target = WEAKREF(target)
+/obj/item/card/id/advanced/chameleon/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(istype(interacting_with, /obj/item/card/id))
+		theft_target = WEAKREF(interacting_with)
 		ui_interact(user)
-		return
-
-	return ..()
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/card/id/advanced/chameleon/pre_attack_secondary(atom/target, mob/living/user, params)
 	// If we're attacking a human, we want it to be covert. We're not ATTACKING them, we're trying

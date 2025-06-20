@@ -5,6 +5,9 @@
 /// Full deviation. Flashed from directly behind or behind-left/behind-rack. Not flashed at all.
 #define DEVIATION_FULL 2
 
+TYPEINFO_DEF(/obj/item/assembly/flash)
+	default_materials = list(/datum/material/iron = 300, /datum/material/glass = 300)
+
 /obj/item/assembly/flash
 	name = "flash"
 	desc = "A powerful and versatile flashbulb device, with applications ranging from disorienting attackers to acting as visual receptors in robot production."
@@ -14,7 +17,6 @@
 	righthand_file = 'icons/mob/inhands/equipment/security_righthand.dmi'
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
-	custom_materials = list(/datum/material/iron = 300, /datum/material/glass = 300)
 	light_system = OVERLAY_LIGHT //Used as a flash here.
 	light_outer_range = FLASH_LIGHT_RANGE
 	light_color = COLOR_WHITE

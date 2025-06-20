@@ -2,6 +2,9 @@
 
 //Used to transport little animals without having to drag them across the station.
 //Comes with a handy lock to prevent them from running off.
+TYPEINFO_DEF(/obj/item/pet_carrier)
+	default_materials = list(/datum/material/iron = 7500, /datum/material/glass = 100)
+
 /obj/item/pet_carrier
 	name = "pet carrier"
 	desc = "A big white-and-blue pet carrier. Good for carrying <s>meat to the chef</s> cute animals around."
@@ -16,7 +19,6 @@
 	attack_verb_simple = list("bash", "carry")
 	w_class = WEIGHT_CLASS_BULKY
 	throw_range = 3
-	custom_materials = list(/datum/material/iron = 7500, /datum/material/glass = 100)
 	var/open = TRUE
 	var/locked = FALSE
 	var/list/occupants = list()

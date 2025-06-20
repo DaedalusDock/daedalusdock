@@ -10,8 +10,8 @@
 	var/icon_deny = "mining-deny"
 	var/obj/item/card/id/inserted_id
 	var/list/prize_list = list( //if you add something to this, please, for the love of god, sort it by price/type. use tabs and not spaces.
-		new /datum/data/mining_equipment("Whiskey", /obj/item/reagent_containers/food/drinks/bottle/whiskey, 100),
-		new /datum/data/mining_equipment("Absinthe", /obj/item/reagent_containers/food/drinks/bottle/absinthe/premium, 100),
+		new /datum/data/mining_equipment("Whiskey", /obj/item/reagent_containers/cup/glass/bottle/whiskey, 100),
+		new /datum/data/mining_equipment("Absinthe", /obj/item/reagent_containers/cup/glass/bottle/absinthe/premium, 100),
 		new /datum/data/mining_equipment("Bubblegum Gum Packet", /obj/item/storage/box/gum/bubblegum, 100),
 		new /datum/data/mining_equipment("Cigar", /obj/item/clothing/mask/cigarette/cigar/havana, 150),
 		new /datum/data/mining_equipment("Soap", /obj/item/soap/nanotrasen, 200),

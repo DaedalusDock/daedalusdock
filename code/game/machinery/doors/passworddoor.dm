@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/machinery/door/password)
+	default_armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
+
 /obj/machinery/door/password
 	name = "door"
 	desc = "This door only opens when provided a password."
@@ -6,7 +9,6 @@
 	explosion_block = 3
 	heat_proof = TRUE
 	max_integrity = 600
-	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
 	resistance_flags = INDESTRUCTIBLE | FIRE_PROOF | ACID_PROOF | LAVA_PROOF
 	damage_deflection = 70
 	var/password = "Swordfish"

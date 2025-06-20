@@ -70,7 +70,7 @@
 			SpeakPeace(list("Congratulations.", "By my very loose calculations you've now wasted a decent chunk of the round doing this.", "But you've seen this meme to its conclusion, and that's an experience in itself, right?"))
 		if(251)
 			SpeakPeace(list("Anyway, here.", "I can't give you anything that would impact the progression of the round.","But you've earned this at least."))
-			var/obj/item/reagent_containers/food/drinks/trophy/silver_cup/the_ride = new(get_turf(user))
+			var/obj/item/reagent_containers/cup/glass/trophy/silver_cup/the_ride = new(get_turf(user))
 			the_ride.name = "Overextending The Joke: Second Place"
 			the_ride.desc = "There's a point where this needed to stop, and we've clearly passed it."
 		if(252)
@@ -111,13 +111,15 @@
 		if(i != statements.len)
 			sleep(30)
 
+TYPEINFO_DEF(/obj/item/rupee)
+	default_materials = list(/datum/material/glass = 500)
+
 /obj/item/rupee
 	name = "weird crystal"
 	desc = "Your excitement boils away as you realize it's just colored glass. Why would someone hoard these things?"
 	icon = 'icons/obj/economy.dmi'
 	icon_state = "rupee"
 	w_class = WEIGHT_CLASS_SMALL
-	custom_materials = list(/datum/material/glass = 500)
 
 /obj/item/rupee/Initialize(mapload)
 	. = ..()

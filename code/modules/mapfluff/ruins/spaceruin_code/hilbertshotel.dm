@@ -471,25 +471,25 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	icon_state = "hilbertsanalyzer"
 	worn_icon_state = "analyzer"
 
-/obj/item/analyzer/hilbertsanalyzer/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(istype(target, /obj/item/hilbertshotel))
-		if(!proximity)
-			to_chat(user, span_warning("It's to far away to scan!"))
-			return
-		var/obj/item/hilbertshotel/sphere = target
-		if(sphere.activeRooms.len)
-			to_chat(user, "Currently Occupied Rooms:")
-			for(var/roomnumber in sphere.activeRooms)
-				to_chat(user, roomnumber)
-		else
-			to_chat(user, "No currenty occupied rooms.")
-		if(sphere.storedRooms.len)
-			to_chat(user, "Vacated Rooms:")
-			for(var/roomnumber in sphere.storedRooms)
-				to_chat(user, roomnumber)
-		else
-			to_chat(user, "No vacated rooms.")
+/obj/item/analyzer/hilbertsanalyzer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/area/A = get_area(interacting_with)
+	if(!istype(A, /obj/item/hilbertshotel))
+		return NONE
+
+	var/obj/item/hilbertshotel/sphere = interacting_with
+	if(sphere.activeRooms.len)
+		to_chat(user, "Currently Occupied Rooms:")
+		for(var/roomnumber in sphere.activeRooms)
+			to_chat(user, roomnumber)
+	else
+		to_chat(user, "No currenty occupied rooms.")
+	if(sphere.storedRooms.len)
+		to_chat(user, "Vacated Rooms:")
+		for(var/roomnumber in sphere.storedRooms)
+			to_chat(user, roomnumber)
+	else
+		to_chat(user, "No vacated rooms.")
+	return ITEM_INTERACT_SUCCESS
 
 /obj/effect/landmark/lift_id/hilbert
 	specific_lift_id = HILBERT_TRAM

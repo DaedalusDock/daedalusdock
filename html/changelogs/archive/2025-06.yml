@@ -7,3 +7,34 @@
   - bugfix: Fixed wallet opening/closing not updating the player's name.
   francinum:
   - qol: OOC messages are now more clearly marked.
+2025-06-03:
+  Kapu1178, LemonInTheDark, Mothblocks:
+  - rscdel: Removed most of the remaining TG achievements.
+  - rscadd: Added new achievements.
+  - rscadd: Achievements are now announced to the whole server.
+  - rscadd: Achievements are descriptions are hidden until unlocked.
+  - tweak: Changed the achievement view verb to "view achievements.
+  - rscadd: ezdb.
+2025-06-10:
+  Kapu1178:
+  - rscadd: More disco flavor interactions.
+2025-06-11:
+  Kapu1178:
+  - rscadd: Syringes can now be stepped on while barefoot, contaminated syringes will
+      infect the victim.
+  - tweak: All "caltrop" items now no longer trigger while walking. This does NOT
+      apply to crawling over them.
+2025-06-14:
+  Kapu1178:
+  - bugfix: Players are no longer alerted that keys which are unbound by default need
+      binding.
+2025-06-19:
+  Kapu1178, MrMelbert:
+  - rscadd: trashcans
+  - refactor: Fixed some exploits/issues with item weights.
+2025-06-20:
+  JohnFulpWillard, Kapu1178:
+  - refactor: Refactored drink containers, interactions are now consistent across
+      them.
+  - rscadd: You can now smash bottles over peoples heads and objects.
+  - bugfix: Turf AO no longer stacks on itself once.

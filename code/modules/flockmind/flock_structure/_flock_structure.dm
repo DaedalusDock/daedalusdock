@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/structure/flock)
+	default_armor = list(BLUNT = -20, PUNCTURE = -20, SLASH = -20, LASER = 80, ENERGY = 80, BOMB = 0, BIO = 100, FIRE = 80, ACID = 100)
+
 /obj/structure/flock
 	name = "CALL A CODER AAAAAAAAAA"
 	icon = 'goon/icons/mob/featherzone.dmi'
@@ -5,17 +8,6 @@
 	density = TRUE
 
 	max_integrity = 50
-	armor = list(
-		BLUNT = -20,
-		PUNCTURE = -20,
-		SLASH = -20,
-		LASER = 80,
-		ENERGY = 80,
-		BOMB = 0,
-		BIO = 100,
-		FIRE = 80,
-		ACID = 100,
-	)
 
 	var/datum/flock/flock
 

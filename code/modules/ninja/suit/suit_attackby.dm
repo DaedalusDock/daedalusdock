@@ -2,7 +2,7 @@
 	if(ninja!=affecting)//Safety, in case you try doing this without wearing the suit/being the person with the suit.
 		return ..()
 
-	if(istype(I, /obj/item/reagent_containers/glass) && I.reagents.has_reagent(/datum/reagent/uranium/radium, a_transfer) && a_boost != TRUE)//If it's a glass beaker, and what we're transferring is radium.
+	if(istype(I, /obj/item/reagent_containers/cup) && I.reagents.has_reagent(/datum/reagent/uranium/radium, a_transfer) && a_boost != TRUE)//If it's a glass beaker, and what we're transferring is radium.
 		I.reagents.remove_reagent(/datum/reagent/uranium/radium, a_transfer)
 		a_boost = TRUE;
 		to_chat(ninja, span_notice("The suit's adrenaline boost is now reloaded."))

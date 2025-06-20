@@ -29,7 +29,7 @@
 	path = /obj/item/storage/fancy/cigarettes
 
 /datum/loadout_item/backpack/flask
-	path = /obj/item/reagent_containers/food/drinks/flask
+	path = /obj/item/reagent_containers/cup/glass/flask
 	cost = 2
 
 /datum/loadout_item/backpack/skub

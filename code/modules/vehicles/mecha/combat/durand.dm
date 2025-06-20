@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/vehicle/sealed/mecha/combat/durand)
+	default_armor = list(BLUNT = 40, PUNCTURE = 35, SLASH = 0, LASER = 15, ENERGY = 10, BOMB = 20, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/vehicle/sealed/mecha/combat/durand
 	desc = "An aging combat exosuit utilized by the Nanotrasen corporation. Originally developed to combat hostile alien lifeforms."
 	name = "\improper Durand"
@@ -6,7 +9,6 @@
 	movedelay = 4
 	dir_in = 1 //Facing North.
 	max_integrity = 400
-	armor = list(BLUNT = 40, PUNCTURE = 35, SLASH = 0, LASER = 15, ENERGY = 10, BOMB = 20, BIO = 0, FIRE = 100, ACID = 100)
 	max_temperature = 30000
 	force = 40
 	wreckage = /obj/structure/mecha_wreckage/durand

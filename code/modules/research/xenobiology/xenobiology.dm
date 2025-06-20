@@ -851,15 +851,6 @@
 	qdel(src)
 	return ITEM_INTERACT_SUCCESS
 
-/obj/item/slimepotion/speed/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
-	if(!isitem(storage_holder))
-		return TRUE
-	if(istype(storage_holder, /obj/item/mod/control))
-		var/obj/item/mod/control/mod = storage_holder
-		return mod.slowdown_inactive <= 0
-	var/obj/item/storage_item = storage_holder
-	return storage_item.slowdown <= 0
-
 /obj/item/slimepotion/fireproof
 	name = "slime chill potion"
 	desc = "A potent chemical mix that will fireproof any article of clothing. Has three uses."

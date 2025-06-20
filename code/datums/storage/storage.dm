@@ -157,7 +157,6 @@
 	RegisterSignal(parent, COMSIG_MOUSEDROP_ONTO, PROC_REF(on_mousedrop_onto))
 	RegisterSignal(parent, COMSIG_MOUSEDROPPED_ONTO, PROC_REF(on_mousedropped_onto))
 	RegisterSignal(parent, COMSIG_ATOM_EMP_ACT, PROC_REF(on_emp_act))
-	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, PROC_REF(on_attackby))
 	RegisterSignal(parent, COMSIG_ITEM_PRE_ATTACK, PROC_REF(on_preattack))
 	RegisterSignal(parent, COMSIG_OBJ_DECONSTRUCT, PROC_REF(on_deconstruct))
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(mass_empty))
@@ -801,19 +800,6 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		return
 
 	attempt_insert(dropping, user)
-
-/// Signal handler for whenever we're attacked by an object.
-/datum/storage/proc/on_attackby(datum/source, obj/item/thing, mob/user, params)
-	SIGNAL_HANDLER
-
-	if(!thing.attackby_storage_insert(src, parent, user))
-		return FALSE
-
-	if(iscyborg(user))
-		return TRUE
-
-	attempt_insert(thing, user)
-	return TRUE
 
 /// Signal handler for whenever we're attacked by a mob.
 /datum/storage/proc/on_attack(datum/source, mob/user, list/modifiers)

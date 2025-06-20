@@ -82,6 +82,8 @@ TYPEINFO_DEF(/obj/item/reagent_containers/syringe)
 
 /obj/item/reagent_containers/syringe/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	ATTACK_IF_COMBAT_MODE(user, src)
+	if(!interacting_with.reagents)
+		return NONE
 
 	if(!try_syringe(interacting_with, user))
 		return ITEM_INTERACT_BLOCKING

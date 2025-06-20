@@ -37,9 +37,6 @@
 	return OXYLOSS
 
 /obj/item/hand_labeler/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
-		return NONE
-
 	if(!mode) //if it's off, give up.
 		return NONE
 
@@ -87,9 +84,6 @@
 		to_chat(user, span_notice("You insert [I] into [src]."))
 		qdel(I)
 		labels_left = initial(labels_left) //Yes, it's capped at its initial value
-
-/obj/item/hand_labeler/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
-	return !mode
 
 /obj/item/hand_labeler/borg
 	name = "cyborg-hand labeler"

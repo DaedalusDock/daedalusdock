@@ -858,9 +858,6 @@ TYPEINFO_DEF(/obj/item/storage/crayons)
 
 	return ITEM_INTERACT_BLOCKING
 
-/obj/item/toy/crayon/spraycan/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
-	return is_capped
-
 /obj/item/toy/crayon/spraycan/update_icon_state()
 	icon_state = is_capped ? icon_capped : icon_uncapped
 	return ..()

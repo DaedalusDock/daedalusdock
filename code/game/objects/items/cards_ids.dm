@@ -217,7 +217,7 @@ TYPEINFO_DEF(/obj/item/card/id)
 
 	account.bank_cards += src
 	registered_account = account
-	to_chat(user, span_notice("The provided account has been linked to this ID card. It contains [account.account_balance] credits."))
+	to_chat(user, span_notice("The provided account has been linked to this ID card. It contains [account.account_balance] marks."))
 	return TRUE
 
 /obj/item/card/id/examine(mob/user)

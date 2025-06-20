@@ -63,7 +63,7 @@ Then the player gets the profit from selling his own wasted time.
 	/// Unit name. Only used in "Received [total_amount] [name]s [message]." message
 	var/unit_name = ""
 	var/message = ""
-	/// Cost of item, in cargo credits. Must not allow for infinite price dupes, see above.
+	/// Cost of item, in marks. Must not allow for infinite price dupes, see above.
 	var/cost = 1
 	/// whether this export can have a negative impact on the cargo budget or not
 	var/allow_negative_cost = FALSE
@@ -170,7 +170,7 @@ Then the player gets the profit from selling his own wasted time.
 	var/total_value = ex.total_value[src]
 	var/total_amount = ex.total_amount[src]
 
-	var/msg = "[total_value] credits: Received [total_amount] "
+	var/msg = "[total_value] marks: Received [total_amount] "
 	if(total_value > 0)
 		msg = "+" + msg
 

@@ -1,0 +1,7 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Management now receives Directives for the colonists to adhere to. Accepting
+      a Directive awards a lump sum of money to the management bank account. The payout
+      and delay between directives is proportional to the severity of the directive
+      chosen.

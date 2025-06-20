@@ -44,7 +44,7 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 		var/obj/structure/frame/machine/attacked_frame = interacting_with
 
 		if(!LAZYLEN(attacked_frame.components))
-			return ..()
+			return ITEM_INTERACT_BLOCKING
 
 		if(works_from_distance)
 			user.Beam(attacked_frame, icon_state = "rped_upgrade", time = 5)

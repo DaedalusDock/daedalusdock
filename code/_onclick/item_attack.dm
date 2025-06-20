@@ -154,8 +154,6 @@
 /mob/living/attackby(obj/item/attacking_item, mob/living/user, params)
 	if(..())
 		return TRUE
-	if (user.can_perform_surgery_on(src) && attacking_item.attempt_surgery(src, user))
-		return TRUE
 
 	user.changeNext_move(attacking_item.combat_click_delay)
 	return attacking_item.attack(src, user, params)

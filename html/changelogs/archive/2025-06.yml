@@ -32,3 +32,9 @@
   Kapu1178, MrMelbert:
   - rscadd: trashcans
   - refactor: Fixed some exploits/issues with item weights.
+2025-06-20:
+  JohnFulpWillard, Kapu1178:
+  - refactor: Refactored drink containers, interactions are now consistent across
+      them.
+  - rscadd: You can now smash bottles over peoples heads and objects.
+  - bugfix: Turf AO no longer stacks on itself once.

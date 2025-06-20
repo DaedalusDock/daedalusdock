@@ -2,9 +2,6 @@
 // When the signal is called: (signal arguments)
 // All signals send the source datum of the signal as the first argument
 
-#warn temp
-#define COMSIG_ITEM_AFTERATTACK_SECONDARY "temp"
-
 ///from base of atom/attackby(): (/obj/item, /mob/living, params)
 #define COMSIG_PARENT_ATTACKBY "atom_attackby"
 /// From base of [atom/proc/attacby_secondary()]: (/obj/item/weapon, /mob/user, params)

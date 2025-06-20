@@ -28,12 +28,13 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 
 	circuit = /obj/item/circuitboard/computer/voidcomputer
 
-	/// The current focused program.
-	var/tmp/datum/c4_file/terminal_program/active_program
+	has_disk_slot = TRUE
+
+	/// Typing sound/sfx key
+	var/typing_sfx = SFX_KEYBOARD
+
 	/// The operating system.
 	var/tmp/datum/c4_file/terminal_program/operating_system/thinkdos/operating_system
-	/// All programs currently running on the machine.
-	var/tmp/list/datum/c4_file/terminal_program/processing_programs = list()
 
 	/// k:v list of peripherals where key is the peripheral type and v is a reference.
 	var/tmp/list/obj/item/peripheral/peripherals = list()
@@ -58,8 +59,6 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 	/// List of program typepaths to install by default.
 	var/list/default_programs = list(
 		/datum/c4_file/terminal_program/notepad,
-		/datum/c4_file/terminal_program/probe,
-		/datum/c4_file/terminal_program/medtrak,
 	)
 
 	/// List of peripheral typepaths to install by default.
@@ -76,7 +75,8 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 
 /obj/machinery/computer4/Initialize(mapload)
 	. = ..()
-	soundloop = new(src)
+	// re-add when the soundloop isnt ass
+	// soundloop = new(src)
 
 	if(default_operating_system)
 		internal_disk.root.try_add_file(new default_operating_system)
@@ -100,16 +100,16 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 	. = ..()
 	if(is_operational)
 		post_system()
-		soundloop.start()
+		soundloop?.start()
 		set_light(l_on = TRUE)
 
 /obj/machinery/computer4/on_set_is_operational(old_value)
 	if(is_operational)
 		post_system()
-		soundloop.start()
+		soundloop?.start()
 		set_light(l_on = TRUE)
 	else
-		soundloop.stop()
+		soundloop?.stop()
 		set_operating_system(null)
 		text_buffer = ""
 		set_light(l_on = FALSE)
@@ -252,7 +252,7 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 	if(!is_operational)
 		return
 
-	for(var/datum/c4_file/terminal_program/program as anything in processing_programs)
+	for(var/datum/c4_file/terminal_program/program as anything in operating_system?.processing_programs)
 		program.peripheral_input(invoker, command, packet)
 
 /obj/machinery/computer4/ui_interact(mob/user, datum/tgui/ui)
@@ -265,7 +265,7 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 	tgui_last_accessed[user.ckey] ||= ""
 	var/list/data = list(
 		"displayHTML" = text_buffer,
-		"terminalActive" = !!active_program,
+		"terminalActive" = !!operating_system?.active_program,
 		"floppy" = inserted_disk,
 		"windowName" = name,
 		"user" = user,
@@ -294,12 +294,12 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 
 	switch(action)
 		if("text")
-			if(rebooting || !active_program || !params["value"])
+			if(rebooting || !operating_system?.active_program || !params["value"])
 				return
 
 			operating_system.try_std_in(params["value"])
 			add_history(usr.ckey, params["value"])
-			playsound(loc, SFX_KEYBOARD, 50, 1, -15)
+			playsound(loc, typing_sfx, 50, 1, -15)
 			usr.animate_interact(src)
 			return TRUE
 
@@ -378,9 +378,9 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 
 	// Os already known.
 	if(operating_system)
-		var/existing_active_program = active_program
-		execute_program(operating_system)
-		execute_program(existing_active_program)
+		var/existing_active_program = operating_system?.active_program
+		operating_system.execute_program(operating_system)
+		operating_system.execute_program(existing_active_program)
 
 	// Okay let's try the foreign disk.
 	if(!operating_system && inserted_disk)
@@ -388,7 +388,7 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 
 		if(new_os)
 			text_buffer += "Booting from inserted drive...<br>"
-			execute_program(new_os)
+			set_operating_system(new_os)
 		else
 			text_buffer += "<font color=red>Non-system disk or disk error.</font><br>"
 
@@ -398,7 +398,7 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 
 		if(new_os)
 			text_buffer += "Booting from fixed drive...<br>"
-			execute_program(new_os)
+			set_operating_system(new_os)
 		else
 			text_buffer += "<font color=red>Unable to boot from fixed drive.</font><br>"
 
@@ -430,69 +430,6 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 
 	post_system()
 
-/// Run a program.
-/obj/machinery/computer4/proc/execute_program(datum/c4_file/terminal_program/program)
-	if(!program)
-		return FALSE
-
-	if(!program.can_execute(operating_system))
-		return FALSE
-
-	if(!(program in processing_programs))
-		add_processing_program(program)
-
-	if(!operating_system && istype(program, /datum/c4_file/terminal_program/operating_system))
-		set_operating_system(program)
-
-
-	set_active_program(program)
-	program.execute(operating_system)
-	return TRUE
-
-/// Close a program.
-/obj/machinery/computer4/proc/unload_program(datum/c4_file/terminal_program/program)
-	if(!program)
-		return FALSE
-
-	if(!(program in processing_programs))
-		CRASH("Tried tried to remove a program we aren't even running.")
-
-	remove_processing_program(program)
-
-	if(active_program == program)
-		set_active_program(operating_system)
-
-	return TRUE
-
-/// Move a program to background
-/obj/machinery/computer4/proc/try_background_program(datum/c4_file/terminal_program/program)
-	if(length(processing_programs) > 6) // Sane limit IMO
-		return FALSE
-
-	if(active_program == program)
-		set_active_program(operating_system)
-
-	return TRUE
-
-/// Setter for the processing programs list. Use execute_program() instead!
-/obj/machinery/computer4/proc/add_processing_program(datum/c4_file/terminal_program/program)
-	PRIVATE_PROC(TRUE)
-
-	processing_programs += program
-	RegisterSignal(program, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_ADDED), PROC_REF(processing_program_moved))
-
-/// Setter for the processing programs list. Use unload_program() instead!
-/obj/machinery/computer4/proc/remove_processing_program(datum/c4_file/terminal_program/program)
-	processing_programs -= program
-	program.on_close(operating_system)
-	UnregisterSignal(program, list(COMSIG_PARENT_QDELETING, COMSIG_COMPUTER4_FILE_ADDED))
-
-/// Setter for active program. Use execute_program() or unload_program() instead!
-/obj/machinery/computer4/proc/set_active_program(datum/c4_file/terminal_program/program)
-	PRIVATE_PROC(TRUE)
-
-	active_program = program
-
 /// Setter for operating system.
 /obj/machinery/computer4/proc/set_operating_system(datum/c4_file/terminal_program/operating_system/os)
 	PRIVATE_PROC(TRUE)
@@ -500,35 +437,15 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 	var/datum/c4_file/terminal_program/operating_system/old_os = operating_system
 	operating_system = os
 
-	if(!operating_system)
-		for(var/datum/c4_file/terminal_program/program as anything in processing_programs - old_os) // Old os isnt guarenteed to be in the processing list.
-			unload_program(program)
+	if(operating_system)
+		operating_system.execute_program(operating_system)
 
-		unload_program(old_os)
-		text_buffer = ""
+	if(old_os)
+		old_os?.clean_up()
 
-/// Handles any running programs being moved in the filesystem.
-/obj/machinery/computer4/proc/processing_program_moved(datum/source)
-	SIGNAL_HANDLER
-
-	if(source == operating_system)
-		if(QDELING(source))
-			set_operating_system(null)
-			return
-
-		// Check if it's still in the root of either disk, this is fine :)
-		if(operating_system in internal_disk?.root.contents)
-			return
-
-		if(operating_system in inserted_disk?.root.contents)
-			return
-
-		// OS is not in a root folder, KILL!!!
-		set_operating_system(null)
-		return
-
-
-	unload_program(active_program)
+/obj/machinery/computer4/process(delta_time)
+	if(operating_system)
+		operating_system.tick(delta_time)
 
 /// Handles a peripheral moving.
 /obj/machinery/computer4/proc/peripheral_gone(obj/item/peripheral/source)

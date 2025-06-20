@@ -35,15 +35,14 @@
 	aliases = list("quit", "q")
 
 /datum/shell_command/probe_cmd/quit/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
-	var/obj/machinery/computer4/computer = system.get_computer()
 	var/force = !!length(options & list("f", "force"))
 
 	if(force)
 		system.println("Quitting...")
-		computer.unload_program(program)
+		system.unload_program(program)
 		return
 
-	if(computer.try_background_program(program))
+	if(system.try_background_program(program))
 		system.println("Moved [program.name] to background processes.")
 	else
 		system.println("<b>Error: RAM is full.</b>")

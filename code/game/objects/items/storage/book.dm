@@ -193,21 +193,25 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 		playsound(src.loc, SFX_PUNCH, 25, TRUE, -1)
 		log_combat(user, M, "attacked", src)
 
-/obj/item/storage/book/bible/afterattack(atom/bible_smacked, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(SEND_SIGNAL(bible_smacked, COMSIG_BIBLE_SMACKED, user, proximity) & COMSIG_END_BIBLE_CHAIN)
-		return
+/obj/item/storage/book/bible/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+
+	var/atom/bible_smacked = interacting_with // Yes i am supremely lazy
+
+	if(SEND_SIGNAL(bible_smacked, COMSIG_BIBLE_SMACKED, user) & COMSIG_END_BIBLE_CHAIN)
+		return ITEM_INTERACT_SUCCESS
+
 	if(isfloorturf(bible_smacked))
 		if(user.mind && (user.mind.holy_role))
 			var/area/current_area = get_area(bible_smacked)
 			if(!GLOB.chaplain_altars.len && istype(current_area, /area/station/service/chapel))
 				make_new_altar(bible_smacked, user)
-				return
+				return ITEM_INTERACT_SUCCESS
+
 			for(var/obj/effect/rune/nearby_runes in orange(2,user))
 				nearby_runes.invisibility = 0
+
 		to_chat(user, span_notice("You hit the floor with the bible."))
+		return ITEM_INTERACT_SUCCESS
 
 	if(user?.mind?.holy_role)
 		if(bible_smacked.reagents && bible_smacked.reagents.has_reagent(/datum/reagent/water)) // blesses all the water in the holder
@@ -226,6 +230,7 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 			B.name = name
 			B.icon_state = icon_state
 			B.inhand_icon_state = inhand_icon_state
+		return ITEM_INTERACT_SUCCESS
 
 	if(istype(bible_smacked, /obj/item/cult_bastard) && !IS_CULTIST(user))
 		var/obj/item/cult_bastard/sword = bible_smacked
@@ -248,6 +253,8 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 			new /obj/item/nullrod/claymore(get_turf(sword))
 			user.visible_message(span_notice("[user] purifies [sword]!"))
 			qdel(sword)
+			return ITEM_INTERACT_SUCCESS
+		return ITEM_INTERACT_BLOCKING
 
 /obj/item/storage/book/bible/booze
 	desc = "To be applied to the head repeatedly."

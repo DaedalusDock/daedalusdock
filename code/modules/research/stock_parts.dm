@@ -53,6 +53,7 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 	attacked_frame.attackby(src, user)
 	return TRUE
 
+#warn fuck you i hate you fuck FUCK
 /obj/item/storage/part_replacer/afterattack(obj/attacked_object, mob/living/user, adjacent, params)
 	if(!istype(attacked_object, /obj/machinery) && !istype(attacked_object, /obj/structure/frame/machine))
 		return ..()

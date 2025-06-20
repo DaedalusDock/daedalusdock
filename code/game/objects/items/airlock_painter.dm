@@ -215,6 +215,8 @@ TYPEINFO_DEF(/obj/item/airlock_painter/decal)
 	if(user.combat_mode)
 		return NONE
 
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(isfloorturf(target) && use_paint(user))
 		paint_floor(target)
 		return ITEM_INTERACT_SUCCESS

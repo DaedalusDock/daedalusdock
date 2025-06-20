@@ -146,6 +146,7 @@ Striking a noncultist, however, will tear their flesh."}
 	inhand_y_dimension = 64
 	actions_types = list()
 	item_flags = SLOWS_WHILE_IN_HAND
+	has_combat_mode_interaction = TRUE
 	var/datum/action/innate/dash/cult/jaunt
 	var/datum/action/innate/cult/spin2win/linked_action
 	var/spinning = FALSE
@@ -211,13 +212,12 @@ Striking a noncultist, however, will tear their flesh."}
 
 	return ..()
 
+/obj/item/cult_bastard/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(dash_toggled)
+		jaunt.teleport(user, interacting_with)
+		return ITEM_INTERACT_SUCCESS
+
 /obj/item/cult_bastard/afterattack(atom/target, mob/user, proximity, click_parameters)
-	. = ..()
-	if(dash_toggled && !proximity)
-		jaunt.teleport(user, target)
-		return
-	if(!proximity)
-		return
 	if(ishuman(target))
 		var/mob/living/carbon/human/human_target = target
 		if(human_target.stat != CONSCIOUS)
@@ -225,10 +225,12 @@ Striking a noncultist, however, will tear their flesh."}
 			stone.attack(human_target, user)
 			if(!LAZYLEN(stone.contents))
 				qdel(stone)
+
 	if(istype(target, /obj/structure/constructshell) && length(contents))
 		var/obj/item/soulstone/stone = contents[1]
 		if(!istype(stone))
 			stone.forceMove(drop_location())
+
 		else if(!stone.transfer_to_construct(target, user) && !(locate(/mob/living/simple_animal/shade) in stone))
 			qdel(stone)
 
@@ -676,46 +678,55 @@ TYPEINFO_DEF(/obj/item/clothing/head/hooded/cult_hoodie/berserkerhood)
 	on = TRUE
 	var/charges = 5
 
-/obj/item/flashlight/flare/culttorch/afterattack(atom/movable/A, mob/user, proximity)
-	if(!proximity)
-		return
-	if(!IS_CULTIST(user))
-		to_chat(user, "That doesn't seem to do anything useful.")
-		return
+/obj/item/flashlight/flare/culttorch/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+		return  NONE
 
-	if(!istype(A, /obj/item))
-		..()
-		to_chat(user, span_warning("\The [src] can only transport items!"))
-		return
+	if(!IS_CULTIST(user))
+		return ITEM_INTERACT_BLOCKING
+
+	var/atom/A = interacting_with // Yes i am supremely lazy
+
+	if(!isitem(interacting_with))
+		to_chat(user, span_warning("\The [src] can only transport items."))
+		return ITEM_INTERACT_BLOCKING
 
 	var/list/cultists = list()
 	for(var/datum/mind/M as anything in get_antag_minds(/datum/antagonist/cult))
 		if(M.current && M.current.stat != DEAD)
 			cultists |= M.current
+
 	var/mob/living/cultist_to_receive = tgui_input_list(user, "Who do you wish to call to [src]?", "Followers of the Geometer", (cultists - user))
 	if(!Adjacent(user) || !src || QDELETED(src) || user.incapacitated())
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(isnull(cultist_to_receive))
 		to_chat(user, "<span class='cult italic'>You require a destination!</span>")
 		log_game("Void torch failed - no target")
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(cultist_to_receive.stat == DEAD)
 		to_chat(user, "<span class='cult italic'>[cultist_to_receive] has died!</span>")
 		log_game("Void torch failed - target died")
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(!IS_CULTIST(cultist_to_receive))
 		to_chat(user, "<span class='cult italic'>[cultist_to_receive] is not a follower of the Geometer!</span>")
 		log_game("Void torch failed - target was deconverted")
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(A in user.get_all_contents())
 		to_chat(user, "<span class='cult italic'>[A] must be on a surface in order to teleport it!</span>")
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	to_chat(user, "<span class='cult italic'>You ignite [A] with \the [src], turning it to ash, but through the torch's flames you see that [A] has reached [cultist_to_receive]!</span>")
 	cultist_to_receive.put_in_hands(A)
 	charges--
 	to_chat(user, "\The [src] now has [charges] charge\s.")
 	if(charges == 0)
 		qdel(src)
+
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/melee/cultblade/halberd
 	name = "bloody halberd"
@@ -920,21 +931,22 @@ TYPEINFO_DEF(/obj/item/clothing/head/hooded/cult_hoodie/berserkerhood)
 	ADD_TRAIT(src, TRAIT_NODROP, CULT_TRAIT)
 
 
-/obj/item/blood_beam/afterattack(atom/A, mob/living/user, proximity_flag, clickparams)
-	. = ..()
+/obj/item/blood_beam/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(firing || charging)
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(ishuman(user))
-		angle = get_angle(user, A)
+		angle = get_angle(user, interacting_with)
 	else
 		qdel(src)
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	charging = TRUE
 	INVOKE_ASYNC(src, PROC_REF(charge), user)
 	if(do_after(user, user, 9 SECONDS))
 		firing = TRUE
 		ADD_TRAIT(user, TRAIT_IMMOBILIZED, CULT_TRAIT)
-		INVOKE_ASYNC(src, PROC_REF(pewpew), user, clickparams)
+		INVOKE_ASYNC(src, PROC_REF(pewpew), user, list2params(modifiers))
 		var/obj/structure/emergency_shield/cult/weak/N = new(user.loc)
 		if(do_after(user, user, 9 SECONDS))
 			user.Paralyze(40)
@@ -944,7 +956,9 @@ TYPEINFO_DEF(/obj/item/clothing/head/hooded/cult_hoodie/berserkerhood)
 		if(N)
 			qdel(N)
 		qdel(src)
+
 	charging = FALSE
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/blood_beam/proc/charge(mob/user)
 	var/obj/O

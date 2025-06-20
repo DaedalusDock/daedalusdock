@@ -400,6 +400,9 @@ TYPEINFO_DEF(/obj/item/flashlight/slime)
 	return
 
 /obj/item/flashlight/emp/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+
+	var/atom/A = interacting_with // Yes i am supremely lazy
+
 	if(emp_cur_charges > 0)
 		emp_cur_charges -= 1
 		if(ismob(A))

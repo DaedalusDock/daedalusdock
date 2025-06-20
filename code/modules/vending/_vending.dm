@@ -1339,8 +1339,8 @@ GLOBAL_LIST_EMPTY(vending_products)
 	to_chat(user, span_notice(" The [src] will now give things a [price] cr tag."))
 
 /obj/item/price_tagger/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	if(isitem(target))
-		var/obj/item/I = target
+	if(isitem(interacting_with))
+		var/obj/item/I = interacting_with
 		I.custom_price = price
 		to_chat(user, span_notice("You set the price of [I] to [price] cr."))
 		return ITEM_INTERACT_SUCCESS

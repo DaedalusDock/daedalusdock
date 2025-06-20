@@ -164,6 +164,8 @@ TYPEINFO_DEF(/obj/item/plaque)
 	return ..()
 
 /obj/item/plaque/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(!iswallturf(target))
 		return NONE
 

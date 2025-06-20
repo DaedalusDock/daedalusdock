@@ -368,9 +368,8 @@ TYPEINFO_DEF(/obj/machinery/space_heater)
 	//Dropper tools
 	if(beaker)
 		if(is_type_in_list(item, list(/obj/item/reagent_containers/dropper, /obj/item/reagent_containers/syringe)))
-			item.afterattack(beaker, user, 1)
+			item.interact_with_atom(beaker, user)
 		return
-
 
 /obj/machinery/space_heater/improvised_chem_heater/on_deconstruction(disassembled = TRUE)
 	. = ..()

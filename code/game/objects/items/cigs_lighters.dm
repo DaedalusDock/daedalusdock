@@ -222,10 +222,10 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 	if(lit) //can't dip if cigarette is lit (it will heat the reagents in the glass instead)
 		return NONE
 
-	if(!istype(interacting_with, /obj/item/reagent_containers/glass)) //you can dip cigarettes into beakers
+	if(!istype(interacting_with, /obj/item/reagent_containers/cup)) //you can dip cigarettes into beakers
 		return NONE
 
-	var/obj/item/reagent_containers/glass/glass = interacting_with
+	var/obj/item/reagent_containers/cup/glass = interacting_with
 
 	if(glass.reagents.trans_to(src, chem_volume, transfered_by = user)) //if reagents were transfered, show the message
 		to_chat(user, span_notice("You dip \the [src] into \the [glass]."))

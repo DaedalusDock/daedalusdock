@@ -169,9 +169,10 @@
 	QDEL_NULL(underbarrel)
 	return ..()
 
-/obj/item/gun/ballistic/automatic/m90/afterattack_secondary(atom/target, mob/living/user, flag, params)
-	underbarrel.afterattack(target, user, flag, params)
-	return SECONDARY_ATTACK_CONTINUE_CHAIN
+/obj/item/gun/ballistic/automatic/m90/try_fire_gun(atom/target, mob/living/user, proximity, params)
+	if(params2list(params)?[RIGHT_CLICK])
+		return underbarrel.try_fire_gun(target, user, proximity, params)
+	return ..()
 
 /obj/item/gun/ballistic/automatic/m90/attackby(obj/item/A, mob/user, params)
 	if(isammocasing(A))

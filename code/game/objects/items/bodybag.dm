@@ -16,6 +16,7 @@
 /obj/item/bodybag/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(user.combat_mode)
 		return
+	var/atom/target = interacting_with // Yes i am supremely lazy
 
 	if(isopenturf(target))
 		deploy_bodybag(user, target)

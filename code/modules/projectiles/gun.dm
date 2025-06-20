@@ -220,9 +220,11 @@ TYPEINFO_DEF(/obj/item/gun)
 			O.emp_act(severity)
 
 /obj/item/gun/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
-	return interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	return interact_with_atom_secondary(interacting_with, user, modifiers)
 
 /obj/item/gun/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	var/mob/living/victim = interacting_with
+
 	if(!isliving(victim))
 		return
 
@@ -242,7 +244,7 @@ TYPEINFO_DEF(/obj/item/gun)
 	return
 
 /obj/item/gun/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	return interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	return interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/gun/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(get_dist(user, interacting_with) <= 1)
@@ -254,10 +256,10 @@ TYPEINFO_DEF(/obj/item/gun)
 			return NONE
 
 	if(user.use_gunpoint)
-		interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+		interact_with_atom_secondary(interacting_with, user, modifiers)
 		return ITEM_INTERACT_SUCCESS
 
-	if(try_fire_gun(target, user, flag, list2params(modifiers)))
+	if(try_fire_gun(interacting_with, user, get_dist(user, interacting_with) <= 1, list2params(modifiers)))
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/can_trigger_gun(mob/living/user, akimbo_usage)

@@ -300,6 +300,8 @@
 	if(!sliver)
 		return
 
+	var/atom/O = interacting_with // Yes i am supremely lazy
+
 	if(ismovable(O) && O != sliver)
 		Consume(O, user)
 		return ITEM_INTERACT_SUCCESS

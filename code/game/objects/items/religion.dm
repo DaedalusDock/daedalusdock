@@ -339,7 +339,7 @@ TYPEINFO_DEF(/obj/item/clothing/head/helmet/plate/crusader/prophet)
 
 	user.visible_message(span_notice("[user] chants deeply and waves [user.p_their()] staff!"))
 	if(do_after(user, src, 2 SECONDS, DO_PUBLIC, display = src))
-		target.add_atom_colour(conversion_color, WASHABLE_COLOUR_PRIORITY) //wololo
+		interacting_with.add_atom_colour(conversion_color, WASHABLE_COLOUR_PRIORITY) //wololo
 		return ITEM_INTERACT_SUCCESS
 
 	staffcooldown = world.time

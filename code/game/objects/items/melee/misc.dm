@@ -379,22 +379,27 @@ TYPEINFO_DEF(/obj/item/melee/sabre)
 		held_sausage = null
 		update_appearance()
 
-/obj/item/melee/roastingstick/afterattack(atom/target, mob/user, proximity)
-	. = ..()
+/obj/item/melee/roastingstick/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if (!extended)
-		return
-	if (!is_type_in_typecache(target, ovens))
-		return
-	if (istype(target, /obj/singularity) && get_dist(user, target) < 10)
-		to_chat(user, span_notice("You send [held_sausage] towards [target]."))
-		playsound(src, 'sound/items/rped.ogg', 50, TRUE)
-		beam = user.Beam(target, icon_state = "rped_upgrade", time = 10 SECONDS)
-	else if (user.Adjacent(target))
-		to_chat(user, span_notice("You extend [src] towards [target]."))
-		playsound(src.loc, 'sound/weapons/batonextend.ogg', 50, TRUE)
-	else
-		return
-	finish_roasting(user, target)
+		return NONE
+	if (!is_type_in_typecache(interacting_with, ovens))
+		return NONE
+	if (istype(interacting_with, /obj/singularity) || istype(interacting_with, /obj/energy_ball) && get_dist(user, interacting_with) < 10)
+		to_chat(user, span_notice("You send [held_sausage] towards [interacting_with]."))
+		beam = user.Beam(interacting_with, icon_state = "rped_upgrade", time = 10 SECONDS)
+		finish_roasting(user, interacting_with)
+		return ITEM_INTERACT_SUCCESS
+	return NONE
+
+/obj/item/melee/roastingstick/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if (!extended)
+		return NONE
+	if (!is_type_in_typecache(interacting_with, ovens))
+		return NONE
+	to_chat(user, span_notice("You extend [src] towards [interacting_with]."))
+	playsound(src, 'sound/weapons/batonextend.ogg', 50, TRUE)
+	finish_roasting(user, interacting_with)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/melee/roastingstick/proc/finish_roasting(user, atom/target)
 	if(do_after(user, time = 10 SECONDS))

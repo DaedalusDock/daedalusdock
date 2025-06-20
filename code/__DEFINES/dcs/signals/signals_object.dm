@@ -406,10 +406,8 @@
 	#define COMPONENT_SECONDARY_CALL_NORMAL_ATTACK_CHAIN (1<<2)
 /// From base of [/obj/item/proc/attack_secondary()]: (atom/target, mob/user, params)
 #define COMSIG_ITEM_ATTACK_SECONDARY "item_pre_attack_secondary"
-///from base of obj/item/afterattack(): (atom/target, mob/user, proximity_flag, click_parameters)
+///from base of [obj/item/attack()]: (atom/target, mob/user, proximity_flag, list/modifiers)
 #define COMSIG_ITEM_AFTERATTACK "item_afterattack"
-///from base of obj/item/afterattack_secondary(): (atom/target, mob/user, proximity_flag, click_parameters)
-#define COMSIG_ITEM_AFTERATTACK_SECONDARY "item_afterattack_secondary"
 ///from base of obj/item/attack_qdeleted(): (atom/target, mob/user, params)
 #define COMSIG_ITEM_ATTACK_QDELETED "item_attack_qdeleted"
 

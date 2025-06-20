@@ -28,10 +28,8 @@
 	///List of all Human DNA scanned with this sampler.
 	var/list/stored_dna_human = list()
 
-/obj/item/dna_probe/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-	if(!proximity_flag || !target)
-		return
+/obj/item/dna_probe/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
 
 	if(allowed_scans & DNA_PROBE_SCAN_ANIMALS)
 		var/static/list/non_simple_animals = typecacheof(list(/mob/living/carbon/alien))
@@ -47,6 +45,7 @@
 				return
 			stored_dna_animal[living_target.type] = TRUE
 			to_chat(user, span_notice("Animal data added to local storage."))
+			return ITEM_INTERACT_SUCCESS
 
 	if((allowed_scans & DNA_PROBE_SCAN_HUMANS) && ishuman(target))
 		var/mob/living/carbon/human/human_target = target
@@ -58,7 +57,7 @@
 			return
 		stored_dna_human[human_target.dna.unique_identity] = TRUE
 		to_chat(user, span_notice("Humanoid data added to local storage."))
-
+		return ITEM_INTERACT_SUCCESS
 
 #define CARP_MIX_DNA_TIMER (15 SECONDS)
 

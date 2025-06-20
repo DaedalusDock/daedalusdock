@@ -191,6 +191,8 @@ TYPEINFO_DEF(/obj/item/sign)
 	if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
 		return NONE
 
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	var/turf/target_turf = target
 	var/turf/user_turf = get_turf(user)
 	var/obj/structure/sign/placed_sign = new sign_path(user_turf) //We place the sign on the turf the user is standing, and pixel shift it to the target wall, as below.

@@ -23,34 +23,44 @@ TYPEINFO_DEF(/obj/item/forcefield_projector)
 	/// Checks to make sure the projector isn't busy with making another forcefield.
 	var/force_proj_busy = FALSE
 
-/obj/item/forcefield_projector/afterattack(atom/target, mob/user, proximity_flag)
-	. = ..()
+/obj/item/forcefield_projector/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(!check_allowed_items(target, 1))
-		return
+		return NONE
+
 	if(istype(target, /obj/structure/projected_forcefield))
 		var/obj/structure/projected_forcefield/F = target
 		if(F.generator == src)
 			to_chat(user, span_notice("You deactivate [F]."))
 			qdel(F)
-			return
+			return ITEM_INTERACT_SUCCESS
+
 	var/turf/T = get_turf(target)
 	var/obj/structure/projected_forcefield/found_field = locate() in T
 	if(found_field)
 		to_chat(user, span_warning("There is already a forcefield in that location!"))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(T.density)
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(get_dist(T,src) > field_distance_limit)
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if (get_turf(src) == T)
 		to_chat(user, span_warning("Target is too close, aborting!"))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(LAZYLEN(current_fields) >= max_fields)
 		to_chat(user, span_warning("[src] cannot sustain any more forcefields!"))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(force_proj_busy)
 		to_chat(user, span_notice("[src] is busy creating a forcefield."))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	playsound(loc, 'sound/machines/click.ogg', 20, TRUE)
 	if(creation_time)
 		force_proj_busy = TRUE
@@ -64,6 +74,7 @@ TYPEINFO_DEF(/obj/item/forcefield_projector)
 	var/obj/structure/projected_forcefield/F = new(T, src)
 	current_fields += F
 	user.changeNext_move(CLICK_CD_MELEE)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/forcefield_projector/attack_self(mob/user)
 	if(LAZYLEN(current_fields))

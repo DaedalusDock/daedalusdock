@@ -63,13 +63,9 @@ TYPEINFO_DEF(/obj/item/paint_sprayer)
 	update_appearance()
 	return TRUE
 
-/obj/item/paint_sprayer/afterattack(atom/target, mob/user, proximity, params)
-	. = ..()
-	if(.)
-		return
-	if(!proximity)
-		return
-	var/list/modifiers = params2list(params)
+/obj/item/paint_sprayer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(istype(target, /obj/structure/low_wall))
 		var/obj/structure/low_wall/target_low_wall = target
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
@@ -80,18 +76,21 @@ TYPEINFO_DEF(/obj/item/paint_sprayer)
 		user.visible_message(span_notice("[user] paints \the [target_low_wall]."), \
 			span_notice("You paint \the [target_low_wall]."))
 		playsound(src, SFX_PAINT, 50, TRUE)
-		return TRUE
+		return ITEM_INTERACT_SUCCESS
+
 	if(iswall(target))
 		var/turf/closed/wall/target_wall = target
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
 			target_wall.paint_stripe(stripe_color)
 		else
 			target_wall.paint_wall(wall_color)
+
 		user.changeNext_move(CLICK_CD_MELEE)
 		user.visible_message(span_notice("[user] paints \the [target_wall]."), \
 			span_notice("You paint \the [target_wall]."))
 		playsound(src, SFX_PAINT, 50, TRUE)
-		return TRUE
+		return ITEM_INTERACT_SUCCESS
+
 	if(isfalsewall(target))
 		var/obj/structure/falsewall/target_falsewall = target
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
@@ -102,10 +101,13 @@ TYPEINFO_DEF(/obj/item/paint_sprayer)
 		user.visible_message(span_notice("[user] paints \the [target_falsewall]."), \
 			span_notice("You paint \the [target_falsewall]."))
 		playsound(src, SFX_PAINT, 50, TRUE)
-		return TRUE
+		return ITEM_INTERACT_SUCCESS
+
 	if(!isturf(target) || isspaceturf(target))
-		return TRUE
+		return NONE
+
 	target.add_atom_colour(wall_color, WASHABLE_COLOUR_PRIORITY)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/paint_remover
 	gender = PLURAL
@@ -122,62 +124,69 @@ TYPEINFO_DEF(/obj/item/paint_sprayer)
 	. = ..()
 	. += span_notice("Remove wall stripe paint by right-clicking a wall.")
 
-/obj/item/paint_remover/afterattack(atom/target, mob/user, proximity, params)
-	. = ..()
-	if(.)
-		return
-	if(!proximity)
-		return
-	var/list/modifiers = params2list(params)
+/obj/item/paint_remover/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(istype(target, /obj/structure/low_wall))
 		var/obj/structure/low_wall/target_low_wall = target
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
 			if(!target_low_wall.stripe_paint)
-				to_chat(user, span_warning("There is no paint to strip!"))
-				return TRUE
+				to_chat(user, span_warning("There is no paint to strip."))
+				return ITEM_INTERACT_BLOCKING
+
 			target_low_wall.paint_stripe(null)
 		else
 			if(!target_low_wall.wall_paint)
-				to_chat(user, span_warning("There is no paint to strip!"))
-				return TRUE
+				to_chat(user, span_warning("There is no paint to strip."))
+				return ITEM_INTERACT_BLOCKING
+
 			target_low_wall.paint_wall(null)
 		user.changeNext_move(CLICK_CD_MELEE)
 		user.visible_message(span_notice("[user] strips the paint from \the [target_low_wall]."), \
 			span_notice("You strip the paint from \the [target_low_wall]."))
-		return TRUE
+		return ITEM_INTERACT_SUCCESS
+
 	if(iswall(target))
 		var/turf/closed/wall/target_wall = target
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
 			if(!target_wall.stripe_paint)
 				to_chat(user, span_warning("There is no paint to strip!"))
-				return TRUE
+				return ITEM_INTERACT_BLOCKING
+
 			target_wall.paint_stripe(null)
 		else
 			if(!target_wall.wall_paint)
 				to_chat(user, span_warning("There is no paint to strip!"))
-				return TRUE
+				return ITEM_INTERACT_BLOCKING
+
 			target_wall.paint_wall(null)
 		user.changeNext_move(CLICK_CD_MELEE)
 		user.visible_message(span_notice("[user] strips the paint from \the [target_wall]."), \
 			span_notice("You strip the paint from \the [target_wall]."))
-		return TRUE
+		return ITEM_INTERACT_SUCCESS
+
 	if(isfalsewall(target))
 		var/obj/structure/falsewall/target_falsewall = target
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
 			if(!target_falsewall.stripe_paint)
 				to_chat(user, span_warning("There is no paint to strip!"))
-				return TRUE
+				return ITEM_INTERACT_BLOCKING
+
 			target_falsewall.paint_stripe(null)
 		else
 			if(!target_falsewall.wall_paint)
 				to_chat(user, span_warning("There is no paint to strip!"))
-				return TRUE
+				return ITEM_INTERACT_BLOCKING
+
 			target_falsewall.paint_wall(null)
 		user.changeNext_move(CLICK_CD_MELEE)
 		user.visible_message(span_notice("[user] strips the paint from \the [target_falsewall]."), \
 			span_notice("You strip the paint from \the [target_falsewall]."))
-		return TRUE
+		return ITEM_INTERACT_SUCCESS
+
 	if(!isturf(target) && !isobj(target))
-		return
+		return NONE
+
 	if(target.color != initial(target.color))
 		target.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
+		return ITEM_INTERACT_SUCCESS

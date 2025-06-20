@@ -56,6 +56,8 @@ TYPEINFO_DEF(/obj/item/electroadaptive_pseudocircuit)
 	if(user.combat_mode)
 		return NONE
 
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(!is_type_in_typecache(target, recycleable_circuits))
 		return NONE
 

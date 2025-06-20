@@ -41,7 +41,7 @@
 	spark_system.attach(src)
 
 /obj/item/energy_katana/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
-	if(!target.density && jaunt.teleport(user, target))
+	if(!interacting_with.density && jaunt.teleport(user, interacting_with))
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/energy_katana/pickup(mob/living/user)

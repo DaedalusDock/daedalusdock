@@ -52,6 +52,7 @@
 /datum/action/cooldown/spell/touch/is_valid_target(atom/cast_on)
 	return iscarbon(cast_on)
 
+
 /**
  * Creates a new hand_path hand and equips it to the caster.
  *

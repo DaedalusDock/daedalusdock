@@ -94,6 +94,8 @@
 		to_chat(user, span_userdanger("You have a really bad feeling about [src]!"))
 
 /obj/item/hot_potato/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(!ismob(target))
 		return NONE
 

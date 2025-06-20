@@ -172,37 +172,44 @@
 		can_drop = TRUE
 	AddComponent(/datum/component/butchering, 60, 80)
 
-/obj/item/melee/arm_blade/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/melee/arm_blade/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(istype(target, /obj/structure/table))
+		user.do_attack_animation(interacting_with, used_item = src)
 		var/obj/structure/table/T = target
 		T.deconstruct(FALSE)
+		return ITEM_INTERACT_SUCCESS
 
-	else if(istype(target, /obj/machinery/computer))
+	if(istype(target, /obj/machinery/computer))
 		var/obj/machinery/computer/C = target
 		C.attack_alien(user) //muh copypasta
+		return ITEM_INTERACT_SUCCESS
 
-	else if(istype(target, /obj/machinery/door/airlock))
+	if(istype(target, /obj/machinery/door/airlock))
 		var/obj/machinery/door/airlock/A = target
 
 		if((!A.requiresID() || A.allowed(user)) && A.hasPower()) //This is to prevent stupid shit like hitting a door with an arm blade, the door opening because you have acces and still getting a "the airlocks motors resist our efforts to force it" message, power requirement is so this doesn't stop unpowered doors from being pried open if you have access
-			return
+			return ITEM_INTERACT_BLOCKING
+
 		if(A.locked)
 			to_chat(user, span_warning("The airlock's bolts prevent it from being forced!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		if(A.hasPower())
 			user.visible_message(span_warning("[user] jams [src] into the airlock and starts prying it open!"), span_warning("We start forcing the [A] open."), \
 			span_hear("You hear a metal screeching sound."))
 			playsound(A, 'sound/machines/airlock_alien_prying.ogg', 100, TRUE)
 			if(!do_after(user, A, 100))
-				return
+				return ITEM_INTERACT_BLOCKING
+
+		user.do_attack_animation(interacting_with, used_item = src)
 		//user.say("Heeeeeeeeeerrre's Johnny!")
 		user.visible_message(span_warning("[user] forces the airlock to open with [user.p_their()] [src]!"), span_warning("We force the [A] to open."), \
 		span_hear("You hear a metal screeching sound."))
 		A.open(2)
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/melee/arm_blade/unequipped(mob/user)
 	..()

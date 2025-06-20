@@ -9,6 +9,9 @@
 	var/taste_sensitivity = 15
 
 /obj/item/taster/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+
+	var/atom/O = interacting_with // Yes i am supremely lazy
+
 	if(!O.reagents)
 		to_chat(user, span_notice("[src] cannot taste [O], since [O.p_they()] [O.p_have()] have no reagents."))
 		return NONE

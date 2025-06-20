@@ -778,6 +778,8 @@
 	apply_buff(user)
 
 /obj/item/food/canned/envirochow/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(!isanimal(target))
 		return NONE
 	if(!check_buffability(target))

@@ -15,6 +15,8 @@
 	return TRUE
 
 /obj/item/mcobject/messaging/button/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(!isturf(target))
 		return NONE
 

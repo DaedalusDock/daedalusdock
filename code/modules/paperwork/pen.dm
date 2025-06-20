@@ -162,56 +162,66 @@ TYPEINFO_DEF(/obj/item/pen/fountain/captain)
 	log_combat(user, M, "stabbed", src)
 	return TRUE
 
-/obj/item/pen/afterattack(obj/O, mob/living/user, proximity)
-	. = ..()
+/obj/item/pen/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isobj(interacting_with) || ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+		return NONE
+
+	var/obj/O = interacting_with
+
 	//Changing name/description of items. Only works if they have the UNIQUE_RENAME object flag set
-	if(isobj(O) && proximity && (O.obj_flags & UNIQUE_RENAME))
-		var/penchoice = tgui_input_list(user, "What would you like to edit?", "Pen Setting", list("Rename", "Description", "Reset"))
+	if(!(O.obj_flags & UNIQUE_RENAME))
+		return ITEM_INTERACT_BLOCKING
+
+	var/penchoice = tgui_input_list(user, "What would you like to edit?", "Pen Setting", list("Rename", "Description", "Reset"))
+	if(QDELETED(O) || !user.canUseTopic(O, USE_CLOSE))
+		return ITEM_INTERACT_BLOCKING
+
+	if(penchoice == "Rename")
+		var/input = tgui_input_text(user, "What do you want to name [O]?", "Object Name", "[O.name]", MAX_NAME_LEN)
+		var/oldname = O.name
 		if(QDELETED(O) || !user.canUseTopic(O, USE_CLOSE))
-			return
-		if(penchoice == "Rename")
-			var/input = tgui_input_text(user, "What do you want to name [O]?", "Object Name", "[O.name]", MAX_NAME_LEN)
-			var/oldname = O.name
-			if(QDELETED(O) || !user.canUseTopic(O, USE_CLOSE))
-				return
-			if(input == oldname || !input)
-				to_chat(user, span_notice("You changed [O] to... well... [O]."))
-			else
-				O.AddComponent(/datum/component/rename, input, O.desc)
-				var/datum/component/label/label = O.GetComponent(/datum/component/label)
-				if(label)
-					label.remove_label()
-					label.apply_label()
-				to_chat(user, span_notice("You have successfully renamed \the [oldname] to [O]."))
-				O.renamedByPlayer = TRUE
+			return ITEM_INTERACT_BLOCKING
 
-		if(penchoice == "Description")
-			var/input = tgui_input_text(user, "Describe [O]", "Description", "[O.desc]", 140)
-			var/olddesc = O.desc
-			if(QDELETED(O) || !user.canUseTopic(O, USE_CLOSE))
-				return
-			if(input == olddesc || !input)
-				to_chat(user, span_notice("You decide against changing [O]'s description."))
-			else
-				O.AddComponent(/datum/component/rename, O.name, input)
-				to_chat(user, span_notice("You have successfully changed [O]'s description."))
-				O.renamedByPlayer = TRUE
-
-		if(penchoice == "Reset")
-			if(QDELETED(O) || !user.canUseTopic(O, USE_CLOSE))
-				return
-
-			qdel(O.GetComponent(/datum/component/rename))
-
-			//reapply any label to name
+		if(input == oldname || !input)
+			to_chat(user, span_notice("You changed [O] to... well... [O]."))
+		else
+			O.AddComponent(/datum/component/rename, input, O.desc)
 			var/datum/component/label/label = O.GetComponent(/datum/component/label)
 			if(label)
 				label.remove_label()
 				label.apply_label()
 
-			to_chat(user, span_notice("You have successfully reset [O]'s name and description."))
-			O.renamedByPlayer = FALSE
+			to_chat(user, span_notice("You have successfully renamed \the [oldname] to [O]."))
+			O.renamedByPlayer = TRUE
 
+	if(penchoice == "Description")
+		var/input = tgui_input_text(user, "Describe [O]", "Description", "[O.desc]", 140)
+		var/olddesc = O.desc
+		if(QDELETED(O) || !user.canUseTopic(O, USE_CLOSE))
+			return ITEM_INTERACT_BLOCKING
+		if(input == olddesc || !input)
+			to_chat(user, span_notice("You decide against changing [O]'s description."))
+		else
+			O.AddComponent(/datum/component/rename, O.name, input)
+			to_chat(user, span_notice("You have successfully changed [O]'s description."))
+			O.renamedByPlayer = TRUE
+
+	if(penchoice == "Reset")
+		if(QDELETED(O) || !user.canUseTopic(O, USE_CLOSE))
+			return ITEM_INTERACT_BLOCKING
+
+		qdel(O.GetComponent(/datum/component/rename))
+
+		//reapply any label to name
+		var/datum/component/label/label = O.GetComponent(/datum/component/label)
+		if(label)
+			label.remove_label()
+			label.apply_label()
+
+		to_chat(user, span_notice("You have successfully reset [O]'s name and description."))
+		O.renamedByPlayer = FALSE
+
+	return ITEM_INTERACT_SUCCESS
 /*
  * Sleepypens
  */

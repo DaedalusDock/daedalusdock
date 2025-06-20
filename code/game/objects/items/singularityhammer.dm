@@ -60,13 +60,14 @@ TYPEINFO_DEF(/obj/item/singularityhammer)
 
 	charged = FALSE
 
-	if(istype(A, /mob/living/))
-		var/mob/living/Z = A
+	if(istype(target, /mob/living))
+		var/mob/living/Z = target
 		Z.take_bodypart_damage(20,0)
 
 	playsound(user, 'sound/weapons/marauder.ogg', 50, TRUE)
-	var/turf/target = get_turf(A)
-	vortex(target,user)
+
+	var/turf/turf = get_turf(target)
+	vortex(turf,user)
 	addtimer(CALLBACK(src, PROC_REF(recharge)), 100)
 
 /obj/item/mjollnir

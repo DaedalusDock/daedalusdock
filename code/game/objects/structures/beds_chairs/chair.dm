@@ -384,15 +384,12 @@ TYPEINFO_DEF(/obj/item/chair)
 
 
 /obj/item/chair/afterattack(atom/target, mob/living/carbon/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
 	if(prob(break_chance))
-		user.visible_message(span_danger("[user] smashes \the [src] to pieces against \the [target]"))
+		user.visible_message(span_danger("<b>[user] smashes \the [src] to pieces against <b>[target]</b>."))
 		if(iscarbon(target))
 			var/mob/living/carbon/C = target
-			if(C.health < C.maxHealth*0.5)
-				C.Paralyze(20)
+			C.Paralyze(2 SECONDS)
+
 		smash(user)
 
 /obj/item/chair/greyscale

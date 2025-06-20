@@ -132,12 +132,12 @@
 	user.visible_message(span_suicide("[user] is smothering [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return (OXYLOSS)
 
-/obj/item/reagent_containers/cup/rag/afterattack(atom/A as obj|turf|area, mob/living/user,proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(iscarbon(A) && reagents?.total_volume)
-		var/mob/living/carbon/C = A
+/obj/item/reagent_containers/cup/rag/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+		return NONE
+
+	if(iscarbon(interacting_with) && reagents?.total_volume)
+		var/mob/living/carbon/C = interacting_with
 		var/reagentlist = pretty_string_from_reagent_list(reagents)
 		var/log_object = "containing [reagentlist]"
 		if(user.combat_mode && C.has_mouth() && !C.is_mouth_covered())
@@ -149,9 +149,12 @@
 			reagents.clear_reagents()
 			C.visible_message(span_notice("[user] touches \the [C] with \the [src]."))
 			log_combat(user, C, "touched", src, log_object)
+		return ITEM_INTERACT_SUCCESS
 
-	else if(istype(A) && (src in user))
-		user.visible_message(span_notice("[user] starts to wipe down [A] with [src]!"), span_notice("You start to wipe down [A] with [src]..."))
-		if(do_after(user, A, 30))
-			user.visible_message(span_notice("[user] finishes wiping off [A]!"), span_notice("You finish wiping off [A]."))
-			A.wash(CLEAN_SCRUB)
+	else if(istype(interacting_with) && (src in user))
+		user.visible_message(span_notice("[user] starts to wipe down [interacting_with] with [src]!"), span_notice("You start to wipe down [interacting_with] with [src]..."))
+		if(do_after(user, interacting_with, 30))
+			user.visible_message(span_notice("[user] finishes wiping off [interacting_with]!"), span_notice("You finish wiping off [interacting_with]."))
+			interacting_with.wash(CLEAN_SCRUB)
+			return ITEM_INTERACT_SUCCESS
+		return ITEM_INTERACT_BLOCKING

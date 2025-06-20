@@ -337,10 +337,12 @@ Moving interrupts
 		return TRUE
 
 // We aim at something distant.
-/obj/item/chisel/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-	if(!proximity_flag && !sculpting && prepared_block && ismovable(target) && prepared_block.completion == 0)
+/obj/item/chisel/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
+	if(!sculpting && prepared_block && ismovable(target) && prepared_block.completion == 0)
 		prepared_block.set_target(target,user)
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/chisel/proc/start_sculpting(mob/living/user)
 	to_chat(user,span_notice("You start sculpting [prepared_block]."),type=MESSAGE_TYPE_INFO)

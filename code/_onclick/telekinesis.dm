@@ -150,11 +150,11 @@
 
 
 /obj/item/tk_grab/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	return ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	return ranged_interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/tk_grab/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!focus)
-		focus_object(target)
+		focus_object(interacting_with)
 		return ITEM_INTERACT_BLOCKING
 
 	if(!check_if_focusable(focus))
@@ -168,14 +168,14 @@
 
 
 	else if(isitem(focus))
-		var/obj/item/I = focus
+		var/obj/item/focused_item = focus
 		apply_focus_overlay()
 
-		if(target.Adjacent(focus))
+		if(interacting_with.Adjacent(focus))
 			. = focused_item.melee_attack_chain(user, interacting_with, modifiers) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 			if(check_if_focusable(focus))
-				focus.do_attack_animation(target, null, focus)
+				focus.do_attack_animation(interacting_with, null, focus)
 
 		// isgun check lets us shoot guns at range
 		// quoting the old comment: "I've only tested this with guns, and it took some doing to make it work"
@@ -186,40 +186,6 @@
 	user.changeNext_move(CLICK_CD_MELEE)
 	update_appearance()
 	return .
-
-/obj/item/tk_grab/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
-		return
-
-	if(!target || !user)
-		return
-
-	if(!focus)
-		focus_object(target)
-		return TRUE
-
-	if(!check_if_focusable(focus))
-		return
-
-	if(target == focus)
-		if(target.attack_self_secondary_tk(user) & COMPONENT_CANCEL_ATTACK_CHAIN)
-			. = TRUE
-		update_appearance()
-		return
-
-	if(isitem(focus))
-		var/obj/item/I = focus
-		apply_focus_overlay()
-		if(target.Adjacent(focus))
-			. = I.melee_attack_chain(tk_user, target, click_parameters) //isn't copying the attack chain fun. we should do it more often.
-			if(check_if_focusable(focus))
-				focus.do_attack_animation(target, null, focus)
-		else if(isgun(I)) //I've only tested this with guns, and it took some doing to make it work
-			. = I.afterattack_secondary(target, tk_user, 0, click_parameters)
-
-	user.changeNext_move(CLICK_CD_MELEE)
-	update_appearance()
 
 /obj/item/tk_grab/on_thrown(mob/living/carbon/user, atom/target)
 	if(!target || !user)

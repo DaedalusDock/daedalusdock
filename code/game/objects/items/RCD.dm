@@ -65,6 +65,8 @@ TYPEINFO_DEF(/obj/item/construction)
 	if(user.combat_mode)
 		return NONE
 
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(istype(interacting_with, /obj/item/rcd_upgrade))
 		install_upgrade(target, user)
 		return ITEM_INTERACT_SUCCESS

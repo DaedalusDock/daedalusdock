@@ -43,10 +43,9 @@ TYPEINFO_DEF(/obj/item/fireaxe)
 	if(!wielded) //destroys windows and grilles in one hit
 		return
 
-	if(istype(A, /obj/structure/window) || istype(A, /obj/structure/grille))
-		var/obj/structure/W = A
+	if(istype(target, /obj/structure/window) || istype(target, /obj/structure/grille))
+		var/obj/structure/W = target
 		W.atom_destruction("fireaxe")
-
 
 /*
  * Bone Axe

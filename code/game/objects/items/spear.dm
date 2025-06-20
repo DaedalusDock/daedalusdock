@@ -165,7 +165,7 @@ TYPEINFO_DEF(/obj/item/spear)
 	force = 15
 	force_wielded = 25
 
-/obj/item/spear/grey_tide/afterattack(atom/target, mob/user, list/modifiers)
+/obj/item/spear/grey_tide/afterattack(atom/target, mob/living/user, list/modifiers)
 	. = ..()
 
 	user.faction |= "greytide([REF(user)])"

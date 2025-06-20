@@ -46,7 +46,7 @@
 	if(user.combat_mode)
 		return
 
-	sweep(user, A)
+	sweep(user, interacting_with)
 	return ITEM_INTERACT_SUCCESS
 
 /**

@@ -71,6 +71,8 @@ TYPEINFO_DEF(/obj/item/geiger_counter)
 	to_chat(user, span_notice("[icon2html(src, user)] You switch [scanning ? "on" : "off"] [src]."))
 
 /obj/item/geiger_counter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if (!CAN_IRRADIATE(target))
 		return NONE
 

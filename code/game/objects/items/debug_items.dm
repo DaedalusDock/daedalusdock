@@ -13,8 +13,8 @@
 	var/valid_species = list()
 
 /obj/item/debug/human_spawner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	if(isturf(target))
-		var/mob/living/carbon/human/H = new /mob/living/carbon/human(target)
+	if(isturf(interacting_with))
+		var/mob/living/carbon/human/H = new /mob/living/carbon/human(interacting_with)
 		if(selected_species)
 			H.set_species(selected_species)
 		return ITEM_INTERACT_SUCCESS

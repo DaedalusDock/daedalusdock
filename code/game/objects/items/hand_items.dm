@@ -409,6 +409,8 @@
 		kiss_type = /obj/projectile/kiss/french
 
 	var/obj/projectile/blown_kiss = new kiss_type(get_turf(user))
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	user.visible_message("<b>[user]</b> blows \a [blown_kiss] at [target]!", span_notice("You blow \a [blown_kiss] at [target]!"))
 
 	//Shooting Code:

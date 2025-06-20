@@ -345,9 +345,6 @@ TYPEINFO_DEF(/obj/item/shard)
 		SSblackbox.record_feedback("tally", "station_mess_destroyed", 1, name)
 
 /obj/item/shard/afterattack(atom/target, mob/user, list/modifiers)
-	if(isturf(A))
-		return
-
 	var/hit_hand = ((user.active_hand_index % 2 == 0) ? "r_" : "l_") + "arm"
 
 	if(ishuman(user))

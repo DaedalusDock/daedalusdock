@@ -244,16 +244,20 @@ TYPEINFO_DEF(/obj/item/reagent_containers/cup/glass/waterbottle)
 
 	return ..()
 
-/obj/item/reagent_containers/cup/glass/waterbottle/afterattack(obj/target, mob/living/user, proximity)
-	if(cap_on && (target.is_refillable() || target.is_drainable() || (reagents.total_volume && !user.combat_mode)))
-		to_chat(user, span_warning("You must remove the cap before you can do that!"))
-		return
+/obj/item/reagent_containers/cup/glass/waterbottle/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
+	if(cap_on && (target.is_refillable() || target.is_drainable() || (reagents.total_volume)))
+		to_chat(user, span_warning("You must remove the cap before you can do that."))
+		return ITEM_INTERACT_BLOCKING
 
 	else if(istype(target, /obj/item/reagent_containers/cup/glass/waterbottle))
 		var/obj/item/reagent_containers/cup/glass/waterbottle/WB = target
 		if(WB.cap_on)
-			to_chat(user, span_warning("[WB] has a cap firmly twisted on!"))
-	. = ..()
+			to_chat(user, span_warning("[WB] has a cap firmly twisted on."))
+			return ITEM_INTERACT_BLOCKING
+
+	return ..()
 
 // heehoo bottle flipping
 /obj/item/reagent_containers/cup/glass/waterbottle/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)

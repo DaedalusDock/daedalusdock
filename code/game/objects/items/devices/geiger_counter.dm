@@ -70,17 +70,15 @@ TYPEINFO_DEF(/obj/item/geiger_counter)
 	update_appearance(UPDATE_ICON)
 	to_chat(user, span_notice("[icon2html(src, user)] You switch [scanning ? "on" : "off"] [src]."))
 
-/obj/item/geiger_counter/afterattack(atom/target, mob/living/user, params)
-	. = ..()
-
-	if (user.combat_mode)
-		return
+/obj/item/geiger_counter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
 
 	if (!CAN_IRRADIATE(target))
-		return
+		return NONE
 
 	user.visible_message(span_notice("[user] scans [target] with [src]."), span_notice("You scan [target]'s radiation levels with [src]..."))
 	addtimer(CALLBACK(src, PROC_REF(scan), target, user), 20, TIMER_UNIQUE) // Let's not have spamming GetAllContents
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/geiger_counter/equipped(mob/user, slot, initial)
 	. = ..()

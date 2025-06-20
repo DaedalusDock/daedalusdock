@@ -211,14 +211,15 @@ TYPEINFO_DEF(/obj/item/airlock_painter/decal)
 	. = ..()
 	stored_custom_color = stored_color
 
-/obj/item/airlock_painter/decal/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		to_chat(user, span_notice("You need to get closer!"))
-		return
+/obj/item/airlock_painter/decal/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(user.combat_mode)
+		return NONE
+
+	var/atom/target = interacting_with // Yes i am supremely lazy
 
 	if(isfloorturf(target) && use_paint(user))
 		paint_floor(target)
+		return ITEM_INTERACT_SUCCESS
 
 /**
  * Actually add current decal to the floor.

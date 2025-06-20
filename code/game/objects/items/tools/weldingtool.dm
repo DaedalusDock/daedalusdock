@@ -136,22 +136,24 @@ TYPEINFO_DEF(/obj/item/weldingtool)
 	else
 		return ..()
 
-/obj/item/weldingtool/afterattack(atom/attacked_atom, mob/user, proximity)
+/obj/item/weldingtool/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!status && interacting_with.is_refillable())
+		reagents.trans_to(interacting_with, reagents.total_volume, transfered_by = user)
+		to_chat(user, span_notice("You empty [src]'s fuel tank into [interacting_with]."))
+		update_appearance()
+		return ITEM_INTERACT_SUCCESS
+
+/obj/item/weldingtool/afterattack(atom/target, mob/user, list/modifiers)
 	. = ..()
-	if(!proximity)
+	if(!isOn() || QDELETED(target) || !isliving(target)) // can't ignite something that doesn't exist
 		return
 
-	if(isOn() && !QDELETED(attacked_atom) && isliving(attacked_atom)) // can't ignite something that doesn't exist
-		handle_fuel_and_temps(1, user)
-		var/mob/living/attacked_mob = attacked_atom
-		if(attacked_mob.ignite_mob())
-			message_admins("[ADMIN_LOOKUPFLW(user)] set [key_name_admin(attacked_mob)] on fire with [src] at [AREACOORD(user)]")
-			log_game("[key_name(user)] set [key_name(attacked_mob)] on fire with [src] at [AREACOORD(user)]")
+	handle_fuel_and_temps(1, user)
 
-	if(!status && attacked_atom.is_refillable())
-		reagents.trans_to(attacked_atom, reagents.total_volume, transfered_by = user)
-		to_chat(user, span_notice("You empty [src]'s fuel tank into [attacked_atom]."))
-		update_appearance()
+	var/mob/living/attacked_mob = target
+	if(attacked_mob.ignite_mob())
+		message_admins("[ADMIN_LOOKUPFLW(user)] set [key_name_admin(attacked_mob)] on fire with [src] at [AREACOORD(user)]")
+		log_game("[key_name(user)] set [key_name(attacked_mob)] on fire with [src] at [AREACOORD(user)]")
 
 /obj/item/weldingtool/attack_qdeleted(atom/attacked_atom, mob/user, proximity)
 	. = ..()

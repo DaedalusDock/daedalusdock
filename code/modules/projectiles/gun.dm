@@ -38,6 +38,8 @@ TYPEINFO_DEF(/obj/item/gun)
 	throw_range = 5
 	force = 5
 
+	has_combat_mode_interaction = TRUE
+
 	attack_verb_continuous = list("strikes", "hits", "bashes")
 	attack_verb_simple = list("strike", "hit", "bash")
 
@@ -217,10 +219,16 @@ TYPEINFO_DEF(/obj/item/gun)
 		for(var/obj/O in contents)
 			O.emp_act(severity)
 
-/obj/item/gun/afterattack_secondary(mob/living/victim, mob/living/user, params)
-	. = SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+/obj/item/gun/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	return interact_with_atom_secondary(interacting_with, user, modifiers)
+
+/obj/item/gun/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	var/mob/living/victim = interacting_with
+
 	if(!isliving(victim))
 		return
+
+	. = ITEM_INTERACT_SUCCESS
 
 	if(user.gunpoint)
 		if(user.gunpoint.target == victim)
@@ -235,13 +243,24 @@ TYPEINFO_DEF(/obj/item/gun)
 	user.gunpoint = new(null, user, victim, src)
 	return
 
-/obj/item/gun/afterattack(atom/target, mob/living/user, flag, params)
-	..()
-	if(user.use_gunpoint)
-		afterattack_secondary(target, user, params)
-		return TRUE //Cancel the shot!
+/obj/item/gun/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	return interact_with_atom(interacting_with, user, modifiers)
 
-	return try_fire_gun(target, user, flag, params)
+/obj/item/gun/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(get_dist(user, interacting_with) <= 1)
+		if(user.combat_mode)
+			if(!modifiers?[RIGHT_CLICK])
+				return ITEM_INTERACT_ATTACK
+
+		if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+			return NONE
+
+	if(user.use_gunpoint)
+		interact_with_atom_secondary(interacting_with, user, modifiers)
+		return ITEM_INTERACT_SUCCESS
+
+	if(try_fire_gun(interacting_with, user, get_dist(user, interacting_with) <= 1, list2params(modifiers)))
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/can_trigger_gun(mob/living/user, akimbo_usage)
 	. = ..()

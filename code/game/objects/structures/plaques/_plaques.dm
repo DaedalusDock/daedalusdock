@@ -163,10 +163,12 @@ TYPEINFO_DEF(/obj/item/plaque)
 		return
 	return ..()
 
-/obj/item/plaque/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!iswallturf(target) || !proximity)
-		return
+/obj/item/plaque/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
+	if(!iswallturf(target))
+		return NONE
+
 	var/turf/target_turf = target
 	var/turf/user_turf = get_turf(user)
 	var/obj/structure/plaque/placed_plaque = new plaque_path(user_turf) //We place the plaque on the turf the user is standing, and pixel shift it to the target wall, as below.
@@ -191,3 +193,4 @@ TYPEINFO_DEF(/obj/item/plaque)
 	placed_plaque.update_integrity(get_integrity())
 	placed_plaque.setDir(dir)
 	qdel(src)
+	return ITEM_INTERACT_SUCCESS

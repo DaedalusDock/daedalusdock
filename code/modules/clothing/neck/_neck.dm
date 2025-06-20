@@ -216,10 +216,12 @@
 	selling = !selling
 	to_chat(user, span_notice("[src] has been set to [selling ? "'Sell'" : "'Get Price'"] mode."))
 
-/obj/item/clothing/neck/necklace/dope/merchant/afterattack(obj/item/I, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/clothing/neck/necklace/dope/merchant/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+		return NONE
+
+	var/atom/I = interacting_with // Yes i am supremely lazy
+
 	var/datum/export_report/ex = export_item_and_contents(I, delete_unsold = selling, dry_run = !selling)
 	var/price = 0
 	for(var/x in ex.total_amount)
@@ -232,6 +234,8 @@
 			SSeconomy.spawn_ones_for_amount(true_price, get_turf(user))
 	else
 		to_chat(user, span_warning("There is no export value for [I] or any items within it."))
+
+	return ITEM_INTERACT_SUCCESS
 
 TYPEINFO_DEF(/obj/item/clothing/neck/beads)
 	default_materials = list(/datum/material/plastic = 500)

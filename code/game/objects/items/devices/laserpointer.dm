@@ -69,9 +69,10 @@ TYPEINFO_DEF(/obj/item/laser_pointer)
 		else
 			. += span_notice("A class <b>[diode.rating]</b> laser diode is installed. It is <i>screwed</i> in place.")
 
-/obj/item/laser_pointer/afterattack(atom/target, mob/living/user, flag, params)
-	. = ..()
-	laser_act(target, user, params)
+/obj/item/laser_pointer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	laser_act(interacting_with, user)
+	return ITEM_INTERACT_SUCCESS
+
 
 /obj/item/laser_pointer/proc/laser_act(atom/target, mob/living/user, params)
 	if( !(user in (viewers(7,target))) )
@@ -85,6 +86,7 @@ TYPEINFO_DEF(/obj/item/laser_pointer)
 	if(HAS_TRAIT(user, TRAIT_CHUNKYFINGERS))
 		to_chat(user, span_warning("Your fingers can't press the button!"))
 		return
+
 	add_fingerprint(user)
 
 	//nothing happens if the battery is drained

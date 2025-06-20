@@ -330,14 +330,20 @@ TYPEINFO_DEF(/obj/item/clothing/head/helmet/plate/crusader/prophet)
 	var/staffwait = 30
 
 
-/obj/item/godstaff/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
+/obj/item/godstaff/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	return interact_with_atom(interacting_with, user, modifiers)
+
+/obj/item/godstaff/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(staffcooldown + staffwait > world.time)
-		return
+		return NONE
+
 	user.visible_message(span_notice("[user] chants deeply and waves [user.p_their()] staff!"))
 	if(do_after(user, src, 2 SECONDS, DO_PUBLIC, display = src))
-		target.add_atom_colour(conversion_color, WASHABLE_COLOUR_PRIORITY) //wololo
+		interacting_with.add_atom_colour(conversion_color, WASHABLE_COLOUR_PRIORITY) //wololo
+		return ITEM_INTERACT_SUCCESS
+
 	staffcooldown = world.time
+	return ITEM_INTERACT_BLOCKING
 
 /obj/item/godstaff/red
 	icon_state = "godstaff-red"

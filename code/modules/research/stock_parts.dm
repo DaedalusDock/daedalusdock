@@ -25,62 +25,36 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 	atom_storage.numerical_stacking = TRUE
 	atom_storage.set_holdable(list(/obj/item/stock_parts), null)
 
-/obj/item/storage/part_replacer/pre_attack(obj/attacked_object, mob/living/user, params)
-	if(!istype(attacked_object, /obj/machinery) && !istype(attacked_object, /obj/structure/frame/machine))
-		return ..()
+/obj/item/storage/part_replacer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!istype(interacting_with, /obj/machinery) && !istype(interacting_with, /obj/structure/frame/machine))
+		return NONE
 
-	if(!user.Adjacent(attacked_object)) // no TK upgrading.
-		return ..()
+	if(istype(interacting_with, /obj/machinery))
+		var/obj/machinery/attacked_machinery = interacting_with
 
-	if(istype(attacked_object, /obj/machinery))
-		var/obj/machinery/attacked_machinery = attacked_object
-
-		if(!attacked_machinery.component_parts)
-			return ..()
+		if(!LAZYLEN(attacked_machinery.component_parts))
+			return ITEM_INTERACT_BLOCKING
 
 		if(works_from_distance)
 			user.Beam(attacked_machinery, icon_state = "rped_upgrade", time = 5)
-		attacked_machinery.exchange_parts(user, src)
-		return TRUE
 
-	var/obj/structure/frame/machine/attacked_frame = attacked_object
+		return attacked_machinery.exchange_parts(user, src) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
-	if(!attacked_frame.components)
-		return ..()
+	if(istype(interacting_with, /obj/structure/frame/machine))
+		var/obj/structure/frame/machine/attacked_frame = interacting_with
 
-	if(works_from_distance)
-		user.Beam(attacked_frame, icon_state = "rped_upgrade", time = 5)
-	attacked_frame.attackby(src, user)
-	return TRUE
-
-/obj/item/storage/part_replacer/afterattack(obj/attacked_object, mob/living/user, adjacent, params)
-	if(!istype(attacked_object, /obj/machinery) && !istype(attacked_object, /obj/structure/frame/machine))
-		return ..()
-
-	if(adjacent)
-		return ..()
-
-	if(istype(attacked_object, /obj/machinery))
-		var/obj/machinery/attacked_machinery = attacked_object
-
-		if(!attacked_machinery.component_parts)
-			return ..()
+		if(!LAZYLEN(attacked_frame.components))
+			return ITEM_INTERACT_BLOCKING
 
 		if(works_from_distance)
-			user.Beam(attacked_machinery, icon_state = "rped_upgrade", time = 5)
-			attacked_machinery.exchange_parts(user, src)
-			return
+			user.Beam(attacked_frame, icon_state = "rped_upgrade", time = 5)
 
-	var/obj/structure/frame/machine/attacked_frame = attacked_object
+		attacked_frame.attackby(src, user)
+		return ITEM_INTERACT_SUCCESS
 
-	if(!attacked_frame.components)
-		return ..()
-
+/obj/item/storage/part_replacer/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(works_from_distance)
-		user.Beam(attacked_frame, icon_state = "rped_upgrade", time = 5)
-	attacked_frame.attackby(src, user)
-
-	return
+		return interact_with_atom(interacting_with, user, modifiers)
 
 /obj/item/storage/part_replacer/proc/play_rped_sound()
 	//Plays the sound for RPED exhanging or installing parts.

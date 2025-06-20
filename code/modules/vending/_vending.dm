@@ -1338,14 +1338,12 @@ GLOBAL_LIST_EMPTY(vending_products)
 	price = chosen_price
 	to_chat(user, span_notice(" The [src] will now give things a [price] cr tag."))
 
-/obj/item/price_tagger/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(isitem(target))
-		var/obj/item/I = target
+/obj/item/price_tagger/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(isitem(interacting_with))
+		var/obj/item/I = interacting_with
 		I.custom_price = price
 		to_chat(user, span_notice("You set the price of [I] to [price] cr."))
+		return ITEM_INTERACT_SUCCESS
 
 TYPEINFO_DEF(/obj/machinery/vending/custom/greed)
 	default_materials = list(/datum/material/gold = MINERAL_MATERIAL_AMOUNT * 5)

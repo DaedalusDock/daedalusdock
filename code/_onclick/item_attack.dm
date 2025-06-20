@@ -55,15 +55,7 @@
 	if(QDELETED(src) || QDELETED(target))
 		attack_qdeleted(target, user, TRUE, params)
 		return TRUE
-
-	if (is_right_clicking)
-		var/after_attack_secondary_result = afterattack_secondary(target, user, TRUE, params)
-
-		// There's no chain left to continue at this point, so CANCEL_ATTACK_CHAIN and CONTINUE_CHAIN are functionally the same.
-		if (after_attack_secondary_result == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || after_attack_secondary_result == SECONDARY_ATTACK_CONTINUE_CHAIN)
-			return TRUE
-
-	return afterattack(target, user, TRUE, params)
+	return TRUE
 
 /// Called when the item is in the active hand, and clicked; alternately, there is an 'activate held object' verb or you can hit pagedown.
 /obj/item/proc/attack_self(mob/user, modifiers)
@@ -224,6 +216,13 @@
 
 	add_fingerprint(user)
 
+	if(!missed)
+		var/list/modifiers = params2list(params)
+		SEND_SIGNAL(src, COMSIG_ITEM_AFTERATTACK, M, user, modifiers,)
+		SEND_SIGNAL(M, COMSIG_ATOM_AFTER_ATTACKEDBY, src, user, modifiers)
+
+		afterattack(M, user, modifiers)
+
 	/// If we missed or the attack failed, interrupt attack chain.
 	return missed
 
@@ -253,7 +252,14 @@
 	if(!attacked_obj.uses_integrity)
 		return FALSE
 
-	return attacked_obj.attacked_by(src, user)
+	. = attacked_obj.attacked_by(src, user)
+
+	if(.)
+		var/list/modifiers = params2list(params)
+		SEND_SIGNAL(src, COMSIG_ITEM_AFTERATTACK, attacked_obj, user, modifiers)
+		SEND_SIGNAL(attacked_obj, COMSIG_ATOM_AFTER_ATTACKEDBY, src, user, modifiers)
+		afterattack(attacked_obj, user, modifiers)
+
 
 /// The equivalent of the standard version of [/obj/item/proc/attack] but for /turf targets.
 /obj/item/proc/attack_turf(turf/attacked_turf, mob/living/user, params)
@@ -267,7 +273,12 @@
 		return FALSE
 
 	// This probably needs to be changed later on, but it should work for now because only flock walls use integrity.
-	return attacked_turf.attacked_by(src, user)
+	. = attacked_turf.attacked_by(src, user)
+	if(.)
+		var/list/modifiers = params2list(params)
+		SEND_SIGNAL(src, COMSIG_ITEM_AFTERATTACK, attacked_turf, user, modifiers)
+		SEND_SIGNAL(attacked_turf, COMSIG_ATOM_AFTER_ATTACKEDBY, src, user, modifiers)
+		afterattack(attacked_turf, user, modifiers)
 
 /// Called from [/obj/item/proc/attack_atom] and [/obj/item/proc/attack] if the attack succeeds
 /atom/proc/attacked_by(obj/item/attacking_item, mob/living/user)
@@ -293,38 +304,17 @@
 	CRASH("areas are NOT supposed to have attacked_by() called on them!")
 
 /**
- * Last proc in the [/obj/item/proc/melee_attack_chain]
+ * Last proc in the [/obj/item/proc/melee_attack_chain].
+ * Returns a bitfield containing AFTERATTACK_PROCESSED_ITEM if the user is likely intending to use this item on another item.
+ * Some consumers currently return TRUE to mean "processed". These are not consistent and should be taken with a grain of salt.
  *
  * Arguments:
  * * atom/target - The thing that was hit
  * * mob/user - The mob doing the hitting
- * * proximity_flag - is 1 if this afterattack was called on something adjacent, in your square, or on your person.
- * * click_parameters - is the params string from byond [/atom/proc/Click] code, see that documentation.
+ * * modifiers - The list of click parameters
  */
-/obj/item/proc/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	SEND_SIGNAL(src, COMSIG_ITEM_AFTERATTACK, target, user, proximity_flag, click_parameters)
-	SEND_SIGNAL(user, COMSIG_MOB_ITEM_AFTERATTACK, target, src, proximity_flag, click_parameters)
-
-/**
- * Called at the end of the attack chain if the user right-clicked.
- *
- * Arguments:
- * * atom/target - The thing that was hit
- * * mob/user - The mob doing the hitting
- * * proximity_flag - is 1 if this afterattack was called on something adjacent, in your square, or on your person.
- * * click_parameters - is the params string from byond [/atom/proc/Click] code, see that documentation.
- */
-/obj/item/proc/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
-	var/signal_result = SEND_SIGNAL(src, COMSIG_ITEM_AFTERATTACK_SECONDARY, target, user, proximity_flag, click_parameters)
-	SEND_SIGNAL(user, COMSIG_MOB_ITEM_AFTERATTACK_SECONDARY, target, src, proximity_flag, click_parameters)
-
-	if(signal_result & COMPONENT_SECONDARY_CANCEL_ATTACK_CHAIN)
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-
-	if(signal_result & COMPONENT_SECONDARY_CONTINUE_ATTACK_CHAIN)
-		return SECONDARY_ATTACK_CONTINUE_CHAIN
-
-	return SECONDARY_ATTACK_CALL_NORMAL
+/obj/item/proc/afterattack(atom/target, mob/user, list/modifiers)
+	PROTECTED_PROC(TRUE)
 
 /// Called if the target gets deleted by our attack
 /obj/item/proc/attack_qdeleted(atom/target, mob/user, proximity_flag, click_parameters)

@@ -182,33 +182,36 @@
 	mode = HYPO_SPRAY
 	return SECONDARY_ATTACK_CONTINUE_CHAIN
 
-/obj/item/hypospray/mkii/afterattack(atom/target, mob/living/user, proximity)
-	if(istype(target, /obj/item/reagent_containers/cup/vial))
-		insert_vial(target, user, vial)
-		return TRUE
+/obj/item/hypospray/mkii/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(istype(interacting_with, /obj/item/reagent_containers/cup/vial))
+		insert_vial(interacting_with, user, vial)
+		return ITEM_INTERACT_SUCCESS
 
-	if(!vial || !proximity || !isliving(target))
-		return
-	var/mob/living/injectee = target
+	if(!vial || !isliving(interacting_with))
+		return NONE
+
+	var/mob/living/injectee = interacting_with
 
 	if(!injectee.reagents || !injectee.can_inject(user, user.zone_selected, penetrates))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	if(iscarbon(injectee))
 		var/obj/item/bodypart/affecting = injectee.get_bodypart(deprecise_zone(user.zone_selected))
 		if(!affecting)
 			to_chat(user, span_warning("The limb is missing!"))
-			return
+			return ITEM_INTERACT_BLOCKING
+
 	//Always log attemped injections for admins
 	var/contained = vial.reagents.get_reagent_log_string()
 	log_combat(user, injectee, "attemped to inject", src, addition="which had [contained]")
 
 	if(!vial)
 		to_chat(user, span_notice("[src] doesn't have any vial installed!"))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(!vial.reagents.total_volume)
 		to_chat(user, span_notice("[src]'s vial is empty!"))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	var/fp_verb = mode == HYPO_SPRAY ? "spray" : "inject"
 
@@ -216,9 +219,11 @@
 		injectee.visible_message(span_danger("[user] is trying to [fp_verb] [injectee] with [src]!"), \
 						span_userdanger("[user] is trying to [fp_verb] you with [src]!"))
 	if(!do_after(user, injectee, inject_wait, extra_checks = CALLBACK(injectee, TYPE_PROC_REF(/mob/living, can_inject), user, user.zone_selected, penetrates)))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(!vial.reagents.total_volume)
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	log_attack("<font color='red'>[user.name] ([user.ckey]) applied [src] to [injectee.name] ([injectee.ckey]), which had [contained] (COMBAT MODE: [uppertext(user.combat_mode)]) (MODE: [mode])</font>")
 	if(injectee != user)
 		injectee.visible_message(span_danger("[user] uses the [src] on [injectee]!"), \
@@ -236,9 +241,7 @@
 	playsound(loc, long_sound ? 'modular_pariah/modules/hyposprays/sound/hypospray_long.ogg' : pick('modular_pariah/modules/hyposprays/sound/hypospray.ogg','modular_pariah/modules/hyposprays/sound/hypospray2.ogg'), 50, 1, -1)
 	to_chat(user, span_notice("You [fp_verb] [vial.amount_per_transfer_from_this] units of the solution. The hypospray's cartridge now contains [vial.reagents.total_volume] units."))
 	update_appearance()
-
-/obj/item/hypospray/mkii/afterattack_secondary(atom/target, mob/living/user, proximity)
-	return SECONDARY_ATTACK_CALL_NORMAL
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/hypospray/mkii/attack_hand(mob/living/user)
 	if(user && loc == user && user.is_holding(src))

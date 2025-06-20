@@ -14,14 +14,17 @@
 	log_message("triggered by [key_name(user)]", LOG_MECHCOMP)
 	return TRUE
 
-/obj/item/mcobject/messaging/button/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
+/obj/item/mcobject/messaging/button/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(!isturf(target))
-		return
+		return NONE
 
 	if(!user.dropItemToGround(src))
-		return
+		return NONE
+
 	forceMove(target)
+
 	if(isclosedturf(target))
 		icon_up = "comp_switch"
 		icon_down = "comp_switch2"
@@ -29,6 +32,8 @@
 		icon_up = "comp_button"
 		icon_down = "comp_button2"
 		update_icon_state()
+
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/mcobject/messaging/button/update_icon_state()
 	. = ..()

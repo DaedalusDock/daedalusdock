@@ -8,6 +8,8 @@
 #define COMSIG_PARENT_ATTACKBY_SECONDARY "atom_attackby_secondary"
 /// From base of [/atom/proc/attack_hand_secondary]: (mob/user, list/modifiers) - Called when the atom receives a secondary unarmed attack.
 #define COMSIG_ATOM_ATTACK_HAND_SECONDARY "atom_attack_hand_secondary"
+/// From [/item/attack()], sent by an atom which was just attacked by an item: (/obj/item/weapon, /mob/user, list/modifiers)
+#define COMSIG_ATOM_AFTER_ATTACKEDBY "atom_after_attackby"
 ///Return this in response if you don't want afterattack to be called
 	#define COMPONENT_NO_AFTERATTACK (1<<0)
 ///from base of atom/attack_hulk(): (/mob/living/carbon/human)

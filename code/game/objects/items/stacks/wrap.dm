@@ -100,24 +100,24 @@
 /obj/item/delivery/can_be_package_wrapped()
 	return FALSE
 
-/obj/item/stack/package_wrap/afterattack(obj/target, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(!istype(target))
-		return
+/obj/item/stack/package_wrap/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isobj(interacting_with) || ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+		return NONE
+
+	var/obj/target = interacting_with
 	if(target.anchored)
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	if(isitem(target))
 		var/obj/item/I = target
 		if(!I.can_be_package_wrapped())
-			return
+			return ITEM_INTERACT_BLOCKING
 		if(user.is_holding(I))
 			if(!user.dropItemToGround(I))
-				return
+				return ITEM_INTERACT_BLOCKING
 		else if(!isturf(I.loc))
-			return
+			return ITEM_INTERACT_BLOCKING
+
 		if(use(1))
 			var/obj/item/delivery/small/P = new(get_turf(I.loc))
 			if(user.Adjacent(I))
@@ -132,13 +132,13 @@
 			P.base_icon_state = "deliverypackage[size]"
 			P.update_icon()
 
-	else if(istype (target, /obj/structure/closet))
+	else if(istype(target, /obj/structure/closet))
 		var/obj/structure/closet/O = target
 		if(O.opened)
-			return
+			return ITEM_INTERACT_BLOCKING
 		if(!O.delivery_icon) //no delivery icon means unwrappable closet (e.g. body bags)
 			to_chat(user, span_warning("You can't wrap this!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 		if(use(3))
 			var/obj/item/delivery/big/P = new(get_turf(O.loc))
 			P.base_icon_state = O.delivery_icon
@@ -149,13 +149,14 @@
 			O.add_fingerprint(user)
 		else
 			to_chat(user, span_warning("You need more paper!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 	else
 		to_chat(user, span_warning("The object you are trying to wrap is unsuitable for the sorting machinery!"))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	user.visible_message(span_notice("[user] wraps [target]."))
 	user.log_message("has used [name] on [key_name(target)]", LOG_ATTACK, color="blue")
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/package_wrap/use(used, transfer = FALSE, check = TRUE)
 	var/turf/T = get_turf(src)

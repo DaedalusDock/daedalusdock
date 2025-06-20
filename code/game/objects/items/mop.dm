@@ -47,28 +47,35 @@
 	reagents.remove_all(val2remove) //reaction() doesn't use up the reagents
 
 
-/obj/item/mop/afterattack(atom/A, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/mop/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+		return NONE
+
+	var/atom/A = interacting_with // Yes i am supremely lazy
+
+	if(istype(A, /obj/item/reagent_containers/cup/bucket) || istype(A, /obj/structure/janitorialcart))
+		return NONE
 
 	if(reagents.total_volume < 0.1)
 		to_chat(user, span_warning("Your mop is dry!"))
-		return
+		return NONE
 
 	var/turf/T = get_turf(A)
 
-	if(istype(A, /obj/item/reagent_containers/cup/bucket) || istype(A, /obj/structure/janitorialcart))
-		return
+	if(!T)
+		return NONE
 
-	if(T)
-		user.visible_message(span_notice("[user] begins to clean \the [T] with [src]."), span_notice("You begin to clean \the [T] with [src]..."))
-		var/clean_speedies = 1
-		if(user.mind)
-			clean_speedies = user.mind.get_skill_modifier(/datum/skill/cleaning, SKILL_SPEED_MODIFIER)
-		if(do_after(user, T, mopspeed*clean_speedies, DO_PUBLIC, display = src))
-			to_chat(user, span_notice("You finish mopping."))
-			clean(T, user)
+	user.visible_message(span_notice("[user] begins to clean \the [T] with [src]."), span_notice("You begin to clean \the [T] with [src]..."))
+	var/clean_speedies = 1
+	if(user.mind)
+		clean_speedies = user.mind.get_skill_modifier(/datum/skill/cleaning, SKILL_SPEED_MODIFIER)
+
+	if(do_after(user, T, mopspeed*clean_speedies, DO_PUBLIC, display = src))
+		to_chat(user, span_notice("You finish mopping."))
+		clean(T, user)
+		return ITEM_INTERACT_SUCCESS
+
+	return ITEM_INTERACT_BLOCKING
 
 /obj/item/mop/cyborg/Initialize(mapload)
 	. = ..()

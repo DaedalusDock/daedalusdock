@@ -54,20 +54,21 @@ TYPEINFO_DEF(/obj/item/singularityhammer)
 				step_towards(A,pull)
 				step_towards(A,pull)
 
-/obj/item/singularityhammer/afterattack(atom/A as mob|obj|turf|area, mob/living/user, proximity)
-	. = ..()
-	if(!proximity)
+/obj/item/singularityhammer/afterattack(atom/target, mob/user, list/modifiers)
+	if(!wielded || !charged)
 		return
-	if(wielded)
-		if(charged)
-			charged = FALSE
-			if(istype(A, /mob/living/))
-				var/mob/living/Z = A
-				Z.take_bodypart_damage(20,0)
-			playsound(user, 'sound/weapons/marauder.ogg', 50, TRUE)
-			var/turf/target = get_turf(A)
-			vortex(target,user)
-			addtimer(CALLBACK(src, PROC_REF(recharge)), 100)
+
+	charged = FALSE
+
+	if(istype(target, /mob/living))
+		var/mob/living/Z = target
+		Z.take_bodypart_damage(20,0)
+
+	playsound(user, 'sound/weapons/marauder.ogg', 50, TRUE)
+
+	var/turf/turf = get_turf(target)
+	vortex(turf,user)
+	addtimer(CALLBACK(src, PROC_REF(recharge)), 100)
 
 /obj/item/mjollnir
 	name = "Mjolnir"

@@ -40,59 +40,67 @@
 	user.visible_message(span_suicide("[user] is trying to eat the entire [src]! It looks like [user.p_they()] forgot how food works!"))
 	return OXYLOSS
 
-/obj/item/reagent_containers/condiment/attack(mob/M, mob/user, def_zone)
+/obj/item/reagent_containers/condiment/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+
+	if(istype(interacting_with, /obj/structure/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
+
+		if(!interacting_with.reagents.total_volume)
+			to_chat(user, span_warning("[interacting_with] is empty."))
+			return ITEM_INTERACT_BLOCKING
+
+		if(reagents.total_volume >= reagents.maximum_volume)
+			to_chat(user, span_warning("[src] is full."))
+			return ITEM_INTERACT_BLOCKING
+
+		var/trans = interacting_with.reagents.trans_to(src, amount_per_transfer_from_this, transfered_by = user)
+		to_chat(user, span_notice("You fill [src] with [trans] units of the contents of [interacting_with]."))
+		return ITEM_INTERACT_SUCCESS
+
+	//Something like a glass or a food item. Player probably wants to transfer TO it.
+	if(interacting_with.is_drainable() || IS_EDIBLE(interacting_with))
+		if(!reagents.total_volume)
+			to_chat(user, span_warning("[src] is empty."))
+			return ITEM_INTERACT_BLOCKING
+
+		if(interacting_with.reagents.total_volume >= interacting_with.reagents.maximum_volume)
+			to_chat(user, span_warning("you can't add anymore to [interacting_with]."))
+			return ITEM_INTERACT_BLOCKING
+
+		var/trans = src.reagents.trans_to(interacting_with, amount_per_transfer_from_this, transfered_by = user)
+		to_chat(user, span_notice("You transfer [trans] units of the condiment to [interacting_with]."))
+		return ITEM_INTERACT_SUCCESS
+
+	if(!isliving(interacting_with) || user.combat_mode)
+		return NONE
 
 	if(!reagents || !reagents.total_volume)
-		to_chat(user, span_warning("None of [src] left, oh no!"))
-		return FALSE
+		to_chat(user, span_warning("None of [src] left."))
+		return ITEM_INTERACT_BLOCKING
 
+	var/mob/living/M = interacting_with
 	if(!canconsume(M, user))
-		return FALSE
+		return ITEM_INTERACT_BLOCKING
 
 	if(M == user)
 		user.visible_message(span_notice("[user] swallows some of the contents of \the [src]."), \
 			span_notice("You swallow some of the contents of \the [src]."))
 	else
-		M.visible_message(span_warning("[user] attempts to feed [M] from [src]."), \
+		M.visible_message(span_warning("[user] attempts to feed <b>[M]</b> from [src]."), \
 			span_warning("[user] attempts to feed you from [src]."))
 		if(!do_after(user, M, 3 SECONDS))
-			return
+			return ITEM_INTERACT_BLOCKING
+
 		if(!reagents || !reagents.total_volume)
-			return // The condiment might be empty after the delay.
-		M.visible_message(span_warning("[user] fed [M] from [src]."), \
-			span_warning("[user] fed you from [src]."))
+			return ITEM_INTERACT_BLOCKING// The condiment might be empty after the delay.
+
+		M.visible_message(
+			span_warning("<b>[user]</b> fed <b>[M]</b> from [src]."),
+		)
 		log_combat(user, M, "fed", reagents.get_reagent_log_string())
+
 	reagents.trans_to(M, 10, transfered_by = user, methods = INGEST)
 	playsound(M.loc,'sound/items/drink.ogg', rand(10,50), TRUE)
-	return TRUE
-
-/obj/item/reagent_containers/condiment/afterattack(obj/target, mob/user , proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(istype(target, /obj/structure/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
-
-		if(!target.reagents.total_volume)
-			to_chat(user, span_warning("[target] is empty!"))
-			return
-
-		if(reagents.total_volume >= reagents.maximum_volume)
-			to_chat(user, span_warning("[src] is full!"))
-			return
-
-		var/trans = target.reagents.trans_to(src, amount_per_transfer_from_this, transfered_by = user)
-		to_chat(user, span_notice("You fill [src] with [trans] units of the contents of [target]."))
-
-	//Something like a glass or a food item. Player probably wants to transfer TO it.
-	else if(target.is_drainable() || IS_EDIBLE(target))
-		if(!reagents.total_volume)
-			to_chat(user, span_warning("[src] is empty!"))
-			return
-		if(target.reagents.total_volume >= target.reagents.maximum_volume)
-			to_chat(user, span_warning("you can't add anymore to [target]!"))
-			return
-		var/trans = src.reagents.trans_to(target, amount_per_transfer_from_this, transfered_by = user)
-		to_chat(user, span_notice("You transfer [trans] units of the condiment to [target]."))
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/condiment/enzyme
 	name = "universal enzyme"
@@ -147,18 +155,22 @@
 	desc = "Salt. From dead crew, presumably."
 	return (TOXLOSS)
 
-/obj/item/reagent_containers/condiment/saltshaker/afterattack(obj/target, mob/living/user, proximity)
+/obj/item/reagent_containers/condiment/saltshaker/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	. = ..()
-	if(!proximity)
+	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return
+
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(isturf(target))
 		if(!reagents.has_reagent(/datum/reagent/consumable/salt, 2))
-			to_chat(user, span_warning("You don't have enough salt to make a pile!"))
-			return
+			to_chat(user, span_warning("You don't have enough salt to make a pile."))
+			return ITEM_INTERACT_BLOCKING
+
 		user.visible_message(span_notice("[user] shakes some salt onto [target]."), span_notice("You shake some salt onto [target]."))
 		reagents.remove_reagent(/datum/reagent/consumable/salt, 2)
 		new/obj/effect/decal/cleanable/food/salt(target)
-		return
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/condiment/peppermill
 	name = "pepper mill"

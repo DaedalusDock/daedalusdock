@@ -107,6 +107,8 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	/// If set to TRUE, skip item interaction and just attack the target. See ATTACK_IF_COMBAT_MODE()
 	var/combat_mode_force_attack = FALSE
+	/// If set to FALSE, interact_with_atom will not be called when the user has combat mode on.
+	var/has_combat_mode_interaction = FALSE
 
 	///Sound played when you hit something with the item
 	var/hitsound
@@ -1744,10 +1746,6 @@ DEFINE_INTERACTABLE(/obj/item)
 /// Special stuff you want to do when an outfit equips this item.
 /obj/item/proc/on_outfit_equip(mob/living/carbon/human/outfit_wearer, visuals_only, item_slot)
 	return
-
-/// Whether or not this item can be put into a storage item through attackby
-/obj/item/proc/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
-	return TRUE
 
 /obj/item/proc/do_pickup_animation(atom/target, turf/source)
 	if(!source && !isturf(loc))

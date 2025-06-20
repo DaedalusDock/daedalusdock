@@ -54,20 +54,24 @@ Slimecrossing Items
 		ret[part.body_zone] = saved_part
 	return ret
 
-/obj/item/camera/rewind/afterattack(atom/target, mob/user, flag)
+/obj/item/camera/rewind/try_take_picture(atom/interacting_with, mob/living/user)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(!on || !pictures_left || !isturf(target.loc))
-		return
+		return FALSE
+
 	if(!used)//selfie time
 		if(user == target)
-			to_chat(user, span_notice("You take a selfie!"))
+			to_chat(user, span_notice("You take a selfie."))
 		else
-			to_chat(user, span_notice("You take a photo with [target]!"))
-			to_chat(target, span_notice("[user] takes a photo with you!"))
+			to_chat(user, span_notice("You take a photo with [target]."))
+			to_chat(target, span_notice("[user] takes a photo with you."))
 		to_chat(target, span_boldnotice("You'll remember this moment forever!"))
 
 		used = TRUE
 		target.AddComponent(/datum/component/dejavu, 2)
-	.=..()
+
+	return ..()
 
 
 
@@ -79,11 +83,12 @@ Slimecrossing Items
 	pictures_max = 1
 	var/used = FALSE
 
-/obj/item/camera/timefreeze/afterattack(atom/target, mob/user, flag)
-	if(!on || !pictures_left || !isturf(target.loc))
-		return
+/obj/item/camera/timefreeze/try_take_picture(atom/interacting_with, mob/living/user)
+	if(!on || !pictures_left || !isturf(interacting_with.loc))
+		return FALSE
+
 	if(!used) //refilling the film does not refill the timestop
-		new /obj/effect/timestop(get_turf(target), 2, 50, list(user))
+		new /obj/effect/timestop(get_turf(interacting_with), 2, 50, list(user))
 		used = TRUE
 		desc = "This camera has seen better days."
 	. = ..()

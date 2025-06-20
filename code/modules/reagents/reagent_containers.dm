@@ -4,6 +4,9 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = null
 	w_class = WEIGHT_CLASS_TINY
+
+	has_combat_mode_interaction = TRUE
+
 	var/amount_per_transfer_from_this = 5
 	var/list/possible_transfer_amounts = list(5,10,15,20,25,30)
 	/// Where we are in the possible transfer amount list.

@@ -678,10 +678,7 @@ TYPEINFO_DEF(/obj/item/melee/baseball_bat)
 	))
 
 
-/obj/item/melee/flyswatter/afterattack(atom/target, mob/user, proximity_flag)
-	. = ..()
-	if(!proximity_flag)
-		return
+/obj/item/melee/flyswatter/afterattack(atom/target, mob/user, list/modifiers)
 	if(!is_type_in_typecache(target, strong_against))
 		return
 	if (HAS_TRAIT(user, TRAIT_PACIFISM))
@@ -823,12 +820,13 @@ TYPEINFO_DEF(/obj/item/melee/baseball_bat)
 		return
 	return ..()
 
-/obj/item/highfrequencyblade/afterattack(atom/target, mob/user, proximity_flag, params)
+/obj/item/highfrequencyblade/afterattack(atom/target, mob/user, list/modifiers)
 	if(!wielded)
 		return ..()
-	if(!proximity_flag || !(isclosedturf(target) || isitem(target) || ismachinery(target) || isstructure(target) || isvehicle(target)))
+	if(!(isclosedturf(target) || isitem(target) || ismachinery(target) || isstructure(target) || isvehicle(target)))
 		return
-	slash(target, user, params)
+
+	slash(target, user, list2params(modifiers))
 
 /// triggered on wield of two handed item
 /obj/item/highfrequencyblade/proc/on_wield(obj/item/source, mob/user)

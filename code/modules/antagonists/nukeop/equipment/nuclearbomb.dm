@@ -556,7 +556,7 @@ GLOBAL_VAR(nuke_time_left)
 
 /obj/machinery/nuclearbomb/beer/attackby(obj/item/W, mob/user, params)
 	if(W.is_refillable())
-		W.afterattack(keg, user, TRUE) // redirect refillable containers to the keg, allowing them to be filled
+		W.interact_with_atom(keg, user) // redirect refillable containers to the keg, allowing them to be filled
 		return TRUE // pretend we handled the attack, too.
 	if(istype(W, /obj/item/nuke_core_container))
 		to_chat(user, span_notice("[src] has had its plutonium core removed as a part of being decommissioned."))

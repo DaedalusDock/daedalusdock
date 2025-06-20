@@ -824,16 +824,11 @@ TYPEINFO_DEF(/obj/item/card/id)
 	theft_target = null
 	. = ..()
 
-/obj/item/card/id/advanced/chameleon/afterattack(atom/target, mob/user, proximity)
-	if(!proximity)
-		return
-
-	if(istype(target, /obj/item/card/id))
-		theft_target = WEAKREF(target)
+/obj/item/card/id/advanced/chameleon/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(istype(interacting_with, /obj/item/card/id))
+		theft_target = WEAKREF(interacting_with)
 		ui_interact(user)
-		return
-
-	return ..()
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/card/id/advanced/chameleon/pre_attack_secondary(atom/target, mob/living/user, params)
 	// If we're attacking a human, we want it to be covert. We're not ATTACKING them, we're trying

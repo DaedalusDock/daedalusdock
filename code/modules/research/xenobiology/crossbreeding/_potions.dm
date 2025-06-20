@@ -11,26 +11,30 @@ Slimecrossing Potions
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potpurple"
 
-/obj/item/slimepotion/extract_cloner/afterattack(obj/item/target, mob/user , proximity)
-	if(!proximity)
-		return
+/obj/item/slimepotion/extract_cloner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(istype(target, /obj/item/reagent_containers))
-		return ..(target, user, proximity)
+		return NONE
+
 	if(istype(target, /obj/item/slimecross))
-		to_chat(user, span_warning("[target] is too complex for the potion to clone!"))
-		return
+		to_chat(user, span_warning("[target] is too complex for the potion to clone."))
+		return ITEM_INTERACT_BLOCKING
+
 	if(!istype(target, /obj/item/slime_extract))
-		return
+		return NONE
+
 	var/obj/item/slime_extract/S = target
 	if(S.recurring)
-		to_chat(user, span_warning("[target] is too complex for the potion to clone!"))
-		return
+		to_chat(user, span_warning("[target] is too complex for the potion to clone."))
+		return ITEM_INTERACT_BLOCKING
+
 	var/path = S.type
 	var/obj/item/slime_extract/C = new path(get_turf(target))
 	C.Uses = S.Uses
-	to_chat(user, span_notice("You pour the potion onto [target], and the fluid solidifies into a copy of it!"))
+	to_chat(user, span_notice("You pour the potion onto [target], and the fluid solidifies into a copy of it."))
 	qdel(src)
-	return
+	return ITEM_INTERACT_SUCCESS
 
 //Peace potion - Charged Light Pink
 /obj/item/slimepotion/peacepotion
@@ -106,22 +110,25 @@ Slimecrossing Potions
 	icon_state = "potblue"
 	var/uses = 2
 
-/obj/item/slimepotion/spaceproof/afterattack(obj/item/clothing/C, mob/user, proximity)
-	. = ..()
+/obj/item/slimepotion/spaceproof/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!uses)
 		qdel(src)
-		return
-	if(!proximity)
-		return
-	if(!istype(C))
-		to_chat(user, span_warning("The potion can only be used on clothing!"))
-		return
+		return ITEM_INTERACT_BLOCKING
+
+	var/obj/item/clothing/C = interacting_with
+
+	if(!isclothing(C))
+		to_chat(user, span_warning("The potion can only be used on clothing."))
+		return ITEM_INTERACT_BLOCKING
+
 	if(istype(C, /obj/item/clothing/suit/space))
-		to_chat(user, span_warning("The [C] is already pressure-resistant!"))
-		return ..()
+		to_chat(user, span_warning("The [C] is already pressure-resistant."))
+		return ITEM_INTERACT_BLOCKING
+
 	if(C.min_cold_protection_temperature == SPACE_SUIT_MIN_TEMP_PROTECT && C.clothing_flags & STOPSPRESSUREDAMAGE)
-		to_chat(user, span_warning("The [C] is already pressure-resistant!"))
-		return ..()
+		to_chat(user, span_warning("The [C] is already pressure-resistant."))
+		return ITEM_INTERACT_BLOCKING
+
 	to_chat(user, span_notice("You slather the blue gunk over the [C], making it airtight."))
 	C.name = "pressure-resistant [C.name]"
 	C.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
@@ -132,6 +139,8 @@ Slimecrossing Potions
 	uses--
 	if(!uses)
 		qdel(src)
+
+	return ITEM_INTERACT_SUCCESS
 
 //Enhancer potion - Charged Cerulean
 /obj/item/slimepotion/enhancer/max
@@ -149,16 +158,17 @@ Slimecrossing Potions
 	resistance_flags = LAVA_PROOF | FIRE_PROOF
 	var/uses = 2
 
-/obj/item/slimepotion/lavaproof/afterattack(obj/item/C, mob/user, proximity)
-	. = ..()
+/obj/item/slimepotion/lavaproof/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!uses)
 		qdel(src)
-		return ..()
-	if(!proximity)
-		return ..()
-	if(!istype(C))
-		to_chat(user, span_warning("You can't coat this with lavaproofing fluid!"))
-		return ..()
+		return ITEM_INTERACT_BLOCKING
+
+	if(!isclothing(interacting_with))
+		to_chat(user, span_warning("You can't coat this with lavaproofing fluid."))
+		return ITEM_INTERACT_BLOCKING
+
+	var/obj/item/clothing/C = interacting_with
+
 	to_chat(user, span_notice("You slather the red gunk over the [C], making it lavaproof."))
 	C.name = "lavaproof [C.name]"
 	C.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
@@ -170,6 +180,8 @@ Slimecrossing Potions
 	uses--
 	if(!uses)
 		qdel(src)
+
+	return ITEM_INTERACT_SUCCESS
 
 //Revival potion - Charged Grey
 /obj/item/slimepotion/slime_reviver

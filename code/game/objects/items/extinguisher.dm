@@ -157,64 +157,71 @@ TYPEINFO_DEF(/obj/item/extinguisher/crafted)
 	else
 		return FALSE
 
-/obj/item/extinguisher/afterattack(atom/target, mob/user , flag)
-	. = ..()
-	// Make it so the extinguisher doesn't spray yourself when you click your inventory items
-	if (target.loc == user)
-		return
-	//TODO; Add support for reagents in water.
+/obj/item/extinguisher/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(interacting_with.loc == user)
+		return NONE
 
+	// Always skip interaction if it's a bag or table (that's not on fire)
+	if(!(interacting_with.resistance_flags & ON_FIRE) && ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+		return NONE
+
+	return ranged_interact_with_atom(interacting_with, user, modifiers)
+
+/obj/item/extinguisher/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	//TODO; Add support for reagents in water.
 	if(refilling)
 		refilling = FALSE
-		return
-	if (!safety)
+		return NONE
 
+	if (safety)
+		return NONE
 
-		if (src.reagents.total_volume < 1)
-			to_chat(usr, span_warning("\The [src] is empty!"))
-			return
+	if (src.reagents.total_volume < 1)
+		to_chat(usr, span_warning("\The [src] is empty!"))
+		return ITEM_INTERACT_BLOCKING
 
-		if (world.time < src.last_use + 12)
-			return
+	if (world.time < src.last_use + 12)
+		return ITEM_INTERACT_BLOCKING
 
-		src.last_use = world.time
+	src.last_use = world.time
 
-		playsound(src.loc, 'sound/effects/extinguish.ogg', 75, TRUE, -3)
+	playsound(src.loc, 'sound/effects/extinguish.ogg', 75, TRUE, -3)
 
-		var/direction = get_dir(src,target)
+	var/direction = get_dir(src,interacting_with)
 
-		if(user.buckled && isobj(user.buckled) && !user.buckled.anchored)
-			var/obj/B = user.buckled
-			var/movementdirection = turn(direction,180)
-			addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/extinguisher, move_chair), B, movementdirection), 1)
-		else
-			user.newtonian_move(turn(direction, 180))
+	if(user.buckled && isobj(user.buckled) && !user.buckled.anchored)
+		var/obj/B = user.buckled
+		var/movementdirection = turn(direction,180)
+		addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/extinguisher, move_chair), B, movementdirection), 1)
+	else
+		user.newtonian_move(turn(direction, 180))
 
-		//Get all the turfs that can be shot at
-		var/turf/T = get_turf(target)
-		var/turf/T1 = get_step(T,turn(direction, 90))
-		var/turf/T2 = get_step(T,turn(direction, -90))
-		var/list/the_targets = list(T,T1,T2)
+	//Get all the turfs that can be shot at
+	var/turf/T = get_turf(interacting_with)
+	var/turf/T1 = get_step(T,turn(direction, 90))
+	var/turf/T2 = get_step(T,turn(direction, -90))
+	var/list/the_targets = list(T,T1,T2)
+	if(precision)
+		var/turf/T3 = get_step(T1, turn(direction, 90))
+		var/turf/T4 = get_step(T2,turn(direction, -90))
+		the_targets.Add(T3,T4)
+
+	var/list/water_particles = list()
+	for(var/a in 1 to 5)
+		var/obj/effect/particle_effect/water/extinguisher/water = new /obj/effect/particle_effect/water/extinguisher(get_turf(src))
+		var/my_target = pick(the_targets)
+		water_particles[water] = my_target
+		// If precise, remove turf from targets so it won't be picked more than once
 		if(precision)
-			var/turf/T3 = get_step(T1, turn(direction, 90))
-			var/turf/T4 = get_step(T2,turn(direction, -90))
-			the_targets.Add(T3,T4)
+			the_targets -= my_target
+		var/datum/reagents/water_reagents = new /datum/reagents(5)
+		water.reagents = water_reagents
+		water_reagents.my_atom = water
+		reagents.trans_to(water, 1, transfered_by = user)
 
-		var/list/water_particles = list()
-		for(var/a in 1 to 5)
-			var/obj/effect/particle_effect/water/extinguisher/water = new /obj/effect/particle_effect/water/extinguisher(get_turf(src))
-			var/my_target = pick(the_targets)
-			water_particles[water] = my_target
-			// If precise, remove turf from targets so it won't be picked more than once
-			if(precision)
-				the_targets -= my_target
-			var/datum/reagents/water_reagents = new /datum/reagents(5)
-			water.reagents = water_reagents
-			water_reagents.my_atom = water
-			reagents.trans_to(water, 1, transfered_by = user)
-
-		//Make em move dat ass, hun
-		move_particles(water_particles)
+	//Make em move dat ass, hun
+	move_particles(water_particles)
+	return ITEM_INTERACT_SUCCESS
 
 //Particle movement loop
 /obj/item/extinguisher/proc/move_particles(list/particles)

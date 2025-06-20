@@ -399,14 +399,12 @@ TYPEINFO_DEF(/obj/item/flashlight/slime)
 		..()
 	return
 
-/obj/item/flashlight/emp/afterattack(atom/movable/A, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/flashlight/emp/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+
+	var/atom/A = interacting_with // Yes i am supremely lazy
 
 	if(emp_cur_charges > 0)
 		emp_cur_charges -= 1
-
 		if(ismob(A))
 			var/mob/M = A
 			log_combat(user, M, "attacked", "EMP-light")
@@ -418,7 +416,7 @@ TYPEINFO_DEF(/obj/item/flashlight/slime)
 		A.emp_act(EMP_HEAVY)
 	else
 		to_chat(user, span_warning("\The [src] needs time to recharge!"))
-	return
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/flashlight/emp/debug //for testing emp_act()
 	name = "debug EMP flashlight"

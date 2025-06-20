@@ -187,10 +187,12 @@ TYPEINFO_DEF(/obj/item/sign)
 	icon_state = initial(fake_type.icon_state)
 	sign_path = fake_type
 
-/obj/item/sign/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!iswallturf(target) || !proximity)
-		return
+/obj/item/sign/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+		return NONE
+
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	var/turf/target_turf = target
 	var/turf/user_turf = get_turf(user)
 	var/obj/structure/sign/placed_sign = new sign_path(user_turf) //We place the sign on the turf the user is standing, and pixel shift it to the target wall, as below.
@@ -204,12 +206,14 @@ TYPEINFO_DEF(/obj/item/sign)
 		placed_sign.pixel_x = 32
 	else if(dir & WEST)
 		placed_sign.pixel_x = -32
+
 	user.visible_message(span_notice("[user] fastens [src] to [target_turf]."), \
 		span_notice("You attach the sign to [target_turf]."))
 	playsound(target_turf, 'sound/items/deconstruct.ogg', 50, TRUE)
 	placed_sign.update_integrity(get_integrity())
 	placed_sign.setDir(dir)
 	qdel(src)
+	return TRUE
 
 /obj/item/sign/random/Initialize(mapload)
 	. = ..()

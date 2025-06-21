@@ -39,7 +39,7 @@ TYPEINFO_DEF(/obj/item/restraints/handcuffs)
 	slot_flags = ITEM_SLOT_BELT
 
 	throwforce = 2
-	force = 5
+	force = 6
 
 	w_class = WEIGHT_CLASS_SMALL
 	throw_range = 5
@@ -60,7 +60,7 @@ TYPEINFO_DEF(/obj/item/restraints/handcuffs)
 
 	SEND_SIGNAL(C, COMSIG_CARBON_CUFF_ATTEMPTED, user)
 
-	user.do_attack_animation(interacting_with, src, do_hurt = FALSE)
+	user.do_item_attack_animation(interacting_with, used_item = src)
 
 	if(iscarbon(user) && (HAS_TRAIT(user, TRAIT_CLUMSY) && prob(50))) //Clumsy people have a 50% chance to handcuff themselves instead of their target.
 		to_chat(user, span_warning("Uh... how do those things work?!"))

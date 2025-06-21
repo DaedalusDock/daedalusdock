@@ -819,11 +819,11 @@ DEFINE_INTERACTABLE(/obj/item)
 			return TRUE
 
 		if(MOB_ATTACKEDBY_MISS)
-			playsound(loc, get_misssound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
+			playsound(loc, get_misssound(), 50, TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
 			return TRUE
 
 		if(MOB_ATTACKEDBY_NO_DAMAGE)
-			playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
+			playsound(loc, 'sound/weapons/tap.ogg', 50, TRUE, -1)
 			return TRUE
 
 		//if(MOB_ATTACKEDBY_BLOCKED) blocking usually already plays a sound.

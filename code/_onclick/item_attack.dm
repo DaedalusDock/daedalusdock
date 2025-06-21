@@ -19,6 +19,9 @@
 
 	var/pre_attack_result
 	if (is_right_clicking)
+		if(try_special_attack(user, target, modifiers))
+			return TRUE
+
 		switch (pre_attack_secondary(target, user, params))
 			if (SECONDARY_ATTACK_CALL_NORMAL)
 				pre_attack_result = pre_attack(target, user, params)
@@ -123,9 +126,6 @@
 
 	if(signal_result & COMPONENT_SECONDARY_CONTINUE_ATTACK_CHAIN)
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
-
-	if(user?.combat_mode && try_special_attack(user, target, params2list(params)))
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	return SECONDARY_ATTACK_CALL_NORMAL
 

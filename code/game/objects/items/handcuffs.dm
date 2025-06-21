@@ -39,7 +39,7 @@ TYPEINFO_DEF(/obj/item/restraints/handcuffs)
 	slot_flags = ITEM_SLOT_BELT
 
 	throwforce = 2
-	force = 6
+	force = 8
 
 	w_class = WEIGHT_CLASS_SMALL
 	throw_range = 5

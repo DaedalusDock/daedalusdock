@@ -21,7 +21,7 @@ TYPEINFO_DEF(/obj/item/melee/energy)
 	/// Whether our blade is active or not.
 	var/blade_active = FALSE
 	/// Force while active.
-	var/active_force = 30
+	var/active_force = 22
 	/// Throwforce while active.
 	var/active_throwforce = 20
 	/// Sharpness while active.

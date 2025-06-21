@@ -30,6 +30,9 @@
 
 	var/interacted_with_anything = FALSE
 	for(var/turf/T in list(one, two, three))
+		if(!sanity_check(user, weapon, clicked_atom))
+			break
+
 		var/list/mobs_in_turf = list()
 		for(var/mob/living/L in T)
 			mobs_in_turf += L

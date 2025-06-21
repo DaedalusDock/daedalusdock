@@ -68,6 +68,9 @@
 
 	var/obj/effect/temp_visual/special_attack/swipe/visual = new(get_step(one, direction))
 	visual.dir = direction
+	if(istype(weapon, /obj/item/melee/energy/sword/saber))
+		var/obj/item/melee/energy/sword/saber/sword = weapon
+		visual.color = sword.possible_colors[sword.sword_color_icon]
 
 	user.do_attack_animation(one, no_effect = TRUE)
 

@@ -73,7 +73,11 @@
 
 	var/params = list2params(modifiers)
 
+	var/interacted_with_anything = FALSE
 	for(var/turf/T in list(one, two, three))
 		for(var/mob/living/L as anything in T)
 			weapon.attack_multiple(L, user, params)
+			interacted_with_anything = TRUE
 
+	if(!interacted_with_anything)
+		weapon.play_combat_sound(MOB_ATTACKEDBY_MISS)

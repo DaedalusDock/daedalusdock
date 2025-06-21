@@ -50,10 +50,7 @@
 	else
 		attackby_result = target.attackby(src, user, params)
 
-	if (attackby_result)
-		return TRUE
-
-	return TRUE
+	return attackby_result
 
 /// Called when clicking on something outside of reach.
 /obj/item/proc/ranged_attack_chain(mob/user, atom/target, modifiers)
@@ -182,7 +179,17 @@
 	if(..())
 		return TRUE
 
+	if(!user.combat_mode)
+		return FALSE
+
+	if(attacking_item.force && HAS_TRAIT(user, TRAIT_PACIFISM))
+		to_chat(user, span_warning("You don't want to harm other living beings."))
+		return FALSE
+
+	user.do_attack_animation(src, attacking_item, do_hurt = FALSE)
 	user.changeNext_move(attacking_item.combat_click_delay)
+	user.stamina_swing(attacking_item.stamina_cost)
+
 	return attacking_item.attack(src, user, params)
 
 /mob/living/attackby_secondary(obj/item/weapon, mob/living/user, params)
@@ -209,28 +216,20 @@
 	if(signal_return & COMPONENT_SKIP_ATTACK_STEP)
 		return
 
-	if(!user.combat_mode)
-		return
-
 	SEND_SIGNAL(user, COMSIG_MOB_ITEM_ATTACK, M, user, params)
 
 	if(item_flags & NOBLUDGEON)
 		return
 
-	if(force && HAS_TRAIT(user, TRAIT_PACIFISM))
-		to_chat(user, span_warning("You don't want to harm other living beings!"))
-		return
-
 	M.lastattacker = user.real_name
 	M.lastattackerckey = user.ckey
-
-	user.stamina_swing(stamina_cost)
 
 	var/attack_return = M.attacked_by(src, user)
 	play_combat_sound(attack_return)
 
 	var/missed = (attack_return == MOB_ATTACKEDBY_MISS || attack_return == MOB_ATTACKEDBY_FAIL)
-	user.do_attack_animation(M, fov_effect = !missed, do_hurt = !missed)
+	if(!missed)
+		M.do_hurt_animation()
 
 	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [missed ? "YES" : "NO"])")
 	add_fingerprint(user)
@@ -244,27 +243,6 @@
 
 	/// If we missed or the attack failed, interrupt attack chain.
 	return missed
-
-/obj/item/proc/attack_multiple(mob/living/target, mob/living/user, list/modifiers)
-	target.lastattacker = user.real_name
-	target.lastattackerckey = user.ckey
-
-	var/attack_return = target.attacked_by(src, user)
-	play_combat_sound(attack_return)
-
-	var/missed = (attack_return == MOB_ATTACKEDBY_MISS || attack_return == MOB_ATTACKEDBY_FAIL)
-	if(!missed)
-		target.do_hurt_animation()
-
-	log_combat(user, target, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [missed ? "YES" : "NO"])")
-
-	if(!missed)
-		SEND_SIGNAL(src, COMSIG_ITEM_AFTERATTACK, target, user, modifiers,)
-		SEND_SIGNAL(target, COMSIG_ATOM_AFTER_ATTACKEDBY, src, user, modifiers)
-
-		afterattack(target, user, modifiers)
-
-	return attack_return
 
 /// The equivalent of [/obj/item/proc/attack] but for alternate attacks, AKA right clicking
 /obj/item/proc/attack_secondary(mob/living/victim, mob/living/user, params)

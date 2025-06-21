@@ -30,6 +30,9 @@
 	post_attack(user, weapon, clicked_atom, modifiers)
 
 /datum/special_attack/proc/can_use(mob/living/user, obj/item/weapon, atom/clicked, list/modifiers)
+	if(HAS_TRAIT(user, TRAIT_PACIFISM))
+		return FALSE
+
 	if(user.stamina.current < stamina_cost)
 		return FALSE
 

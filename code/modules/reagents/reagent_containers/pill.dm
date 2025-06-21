@@ -24,10 +24,11 @@
 	if(reagents.total_volume && rename_with_volume)
 		name += " ([reagents.total_volume]u)"
 
-/obj/item/reagent_containers/pill/attack(mob/M, mob/user, def_zone)
-	if(!canconsume(M, user))
-		return FALSE
+/obj/item/reagent_containers/pill/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!canconsume(interacting_with, user))
+		return NONE
 
+	var/mob/living/carbon/M = interacting_with
 	if(M == user)
 		M.visible_message(span_notice("[user] attempts to [apply_method] [src]."))
 		if(self_delay)
@@ -49,7 +50,7 @@
 			span_userdanger("[user] forces you to [apply_method] [src].")
 		)
 
-	return consume(M, user)
+	return consume(M, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 /// Consume the pill.
 /obj/item/reagent_containers/pill/proc/consume(mob/M, mob/user)

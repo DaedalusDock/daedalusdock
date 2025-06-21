@@ -53,7 +53,7 @@
 						break
 
 		if(target_in_turf)
-			weapon.attack_multiple(target_in_turf, user, params)
+			weapon.attack(target_in_turf, user, params)
 			interacted_with_anything = TRUE
 
 	if(!interacted_with_anything)

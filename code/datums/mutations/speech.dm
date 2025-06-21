@@ -242,7 +242,7 @@
 
 /datum/mutation/human/piglatin
 	name = "Pig Latin"
-	desc = "Historians say back in the 2020's humanity spoke entirely in this mystical language."
+	desc = "Historians say back in the 2020's minervanity spoke entirely in this mystical language."
 	quality = MINOR_NEGATIVE
 	text_gain_indication = span_notice("Omethingsay eelsfay offyay.")
 	text_lose_indication = span_notice("The off sensation passes.")

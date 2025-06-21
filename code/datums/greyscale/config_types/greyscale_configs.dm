@@ -78,7 +78,7 @@
 	json_config = 'code/datums/greyscale/json_configs/jumpsuit_worn.json'
 
 /datum/greyscale_config/jumpsuit_worn/vox
-	name = "Worn Jumpsuit - Vox"
+	name = "Worn Jumpsuit - Voks"
 	icon_file = VOX_GAGS_FILE
 
 /datum/greyscale_config/jumpsuit_inhand_left
@@ -468,7 +468,7 @@
 	json_config = 'code/datums/greyscale/json_configs/bandana_worn.json'
 
 /datum/greyscale_config/bandana_worn/vox
-	name = "Worn Bandana - Vox"
+	name = "Worn Bandana - Voks"
 	icon_file = VOX_GAGS_FILE
 
 /datum/greyscale_config/bandstriped
@@ -482,7 +482,7 @@
 	json_config = 'code/datums/greyscale/json_configs/bandstriped_worn.json'
 
 /datum/greyscale_config/bandstriped_worn/vox
-	name = "Worn Striped Bandana - Vox"
+	name = "Worn Striped Bandana - Voks"
 	icon_file = VOX_GAGS_FILE
 
 /datum/greyscale_config/bandskull
@@ -496,7 +496,7 @@
 	json_config = 'code/datums/greyscale/json_configs/bandskull_worn.json'
 
 /datum/greyscale_config/bandskull_worn/vox
-	name = "Worn Skull Bandana - Vox"
+	name = "Worn Skull Bandana - Voks"
 	icon_file = VOX_GAGS_FILE
 
 

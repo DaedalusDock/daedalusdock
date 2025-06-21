@@ -1,8 +1,7 @@
 /datum/species/vox
-	// Bird-like humanoids
-	name = "Vox"
+	name = "Voks"
 	id = SPECIES_VOX
-	plural_form = "Vox"
+	plural_form = "Voks"
 	say_mod = "skrees"
 	scream_verb = "shrieks"
 	default_color = "#1e5404"

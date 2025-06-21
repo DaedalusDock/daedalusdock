@@ -212,8 +212,9 @@
  * * mob/living/M - The mob being hit by this item
  * * mob/living/user - The mob hitting with this item
  * * params - Click params of this attack
+ * * datum/special_attack/used_special - The special attack instance used, if any.
  */
-/obj/item/proc/attack(mob/living/M, mob/living/user, params)
+/obj/item/proc/attack(mob/living/M, mob/living/user, params, datum/special_attack/used_special)
 	var/signal_return = SEND_SIGNAL(src, COMSIG_ITEM_ATTACK, M, user, params)
 	if(signal_return & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
@@ -228,7 +229,7 @@
 	M.lastattacker = user.real_name
 	M.lastattackerckey = user.ckey
 
-	var/attack_return = M.attacked_by(src, user)
+	var/attack_return = M.attacked_by(src, user, used_special)
 	play_combat_sound(attack_return)
 
 	var/missed = (attack_return == MOB_ATTACKEDBY_MISS || attack_return == MOB_ATTACKEDBY_FAIL)

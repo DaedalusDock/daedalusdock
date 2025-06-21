@@ -12,3 +12,6 @@
 
 /obj/effect/temp_visual/special_attack/swipe
 	icon_state = "sabre"
+
+/obj/effect/temp_visual/special_attack/stab
+	icon_state = "dagger"

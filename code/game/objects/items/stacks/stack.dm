@@ -637,7 +637,7 @@
 		merge(hitting)
 	. = ..()
 
-/obj/item/stack/attack(mob/living/M, mob/living/user, params)
+/obj/item/stack/attack(mob/living/M, mob/living/user, params, datum/special_attack/used_special)
 	if(splint_slowdown)
 		return try_splint(M, user)
 

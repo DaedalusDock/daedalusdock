@@ -19,7 +19,8 @@
 	var/turf/three = get_step(one, turn(direction, -90))
 
 	var/obj/effect/temp_visual/special_attack/swipe/visual = new(get_step(one, direction))
-	visual.dir = direction
+	visual.setDir(direction)
+
 	if(istype(weapon, /obj/item/melee/energy/sword/saber))
 		var/obj/item/melee/energy/sword/saber/sword = weapon
 		visual.color = sword.possible_colors[sword.sword_color_icon]
@@ -53,7 +54,7 @@
 						break
 
 		if(target_in_turf)
-			weapon.attack(target_in_turf, user, params)
+			weapon.attack(target_in_turf, user, params, src)
 			interacted_with_anything = TRUE
 
 	if(!interacted_with_anything)

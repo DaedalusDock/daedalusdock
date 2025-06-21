@@ -23,12 +23,14 @@
 	if(istype(container) && container.reagent_flags & DUNKABLE) // container should be a valid target for dunking
 		if(!container.is_drainable())
 			to_chat(user, span_warning("[container] is unable to be dunked in!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 		var/obj/item/I = source // the item that has the dunkable element
 		if(container.reagents.trans_to(I, dunk_amount, transfered_by = user)) //if reagents were transfered, show the message
 			to_chat(user, span_notice("You dunk \the [I] into \the [container]."))
-			return
+			return ITEM_INTERACT_SUCCESS
 		if(!container.reagents.total_volume)
 			to_chat(user, span_warning("[container] is empty!"))
 		else
 			to_chat(user, span_warning("[I] is full!"))
+		return ITEM_INTERACT_BLOCKING
+	return NONE

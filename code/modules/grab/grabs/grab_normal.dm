@@ -282,10 +282,10 @@
 		total_damage += damage
 
 	if(total_damage)
-		user.visible_message("<span class='danger'>\The [user] slit [affecting]'s throat open with \the [W]!</span>")
+		user.visible_message("<span class='danger'>\The [user] slices [affecting]'s throat open with \the [W].</span>")
 		affecting.apply_status_effect(/datum/status_effect/neck_slice)
 		if(W.hitsound)
-			playsound(affecting.loc, W.hitsound, 50, 1, -1)
+			W.play_combat_sound(MOB_ATTACKEDBY_SUCCESS)
 
 	COOLDOWN_START(G, action_cd, action_cooldown)
 

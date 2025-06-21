@@ -4,6 +4,8 @@
 
 	/// changeNext_move() time after use.
 	var/click_cooldown = CLICK_CD_MELEE
+	/// If TRUE, use the item's click cooldown instead of the attack's.
+	var/use_item_click_cooldown = FALSE
 
 	// Stamina consumed on use.
 	var/stamina_cost = 0
@@ -60,6 +62,11 @@
 
 	return TRUE
 
+/// Modify an attack's properties.
+/datum/special_attack/proc/modifiy_damage_packet(datum/damage_packet/packet, mob/living/victim, mob/living/iser)
+	return
+
+/// Called before execute_attack.
 /datum/special_attack/proc/pre_attack(mob/living/user, obj/item/weapon, atom/clicked_atom, list/modifiers)
 	if(mob_hold_duration)
 		ADD_TRAIT(user, TRAIT_IMMOBILIZED, ref(src))
@@ -76,7 +83,7 @@
 	else
 		user.stamina.adjust(-stamina_cost)
 
-	user.changeNext_move(click_cooldown)
+	user.changeNext_move(use_item_click_cooldown ? weapon.combat_click_delay : click_cooldown)
 
 /datum/special_attack/proc/free_mob(datum/weakref/W)
 	var/mob/M = W.resolve()

@@ -819,7 +819,7 @@ DEFINE_INTERACTABLE(/obj/item)
 			return TRUE
 
 		if(MOB_ATTACKEDBY_MISS)
-			playsound(loc, get_misssound(), 50, TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
+			playsound(loc, get_misssound(), 30, TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
 			return TRUE
 
 		if(MOB_ATTACKEDBY_NO_DAMAGE)

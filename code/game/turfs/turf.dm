@@ -739,6 +739,10 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 //A check to see if graffiti should happen
 /turf/proc/try_graffiti(mob/vandal, obj/item/tool)
+	if(isliving(vandal))
+		var/mob/living/living_vandal = vandal
+		if(living_vandal.combat_mode)
+			return FALSE
 
 	if(!tool.sharpness)
 		return FALSE
@@ -756,7 +760,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	var/message = stripped_input(vandal, "Enter a message to engrave.", "Engraving", null ,64, TRUE)
 	if(!message)
-		return FALSE
+		return TRUE
+
 	if(is_ic_filtered_for_pdas(message))
 		REPORT_CHAT_FILTER_TO_USER(vandal, message)
 
@@ -770,6 +775,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	if(!vandal.canUseTopic(src, USE_CLOSE) || !vandal.is_holding(tool))
 		return TRUE
+
 	vandal.visible_message(span_obviousnotice("[vandal] carves some graffiti into [src]."))
 	log_graffiti(message, vandal)
 	AddComponent(/datum/component/engraved, message, TRUE)

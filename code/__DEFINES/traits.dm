@@ -623,6 +623,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_REPLACES_VOICE "replaces_voice"
 /// Pickpocketing this item takes no time.
 #define TRAIT_INSTANT_PICKPOCKET "instant_pickpocket"
+/// A transforming item that is actively extended / transformed
+#define TRAIT_TRANSFORM_ACTIVE "active_transform"
 
 //quirk traits
 #define TRAIT_ALCOHOL_TOLERANCE "alcohol_tolerance"

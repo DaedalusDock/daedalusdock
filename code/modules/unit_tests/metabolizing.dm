@@ -32,7 +32,7 @@
 
 	// Give them enough meth to be consumed in 2 metabolizations.
 	pill.reagents.add_reagent(meth, initial(meth.metabolization_rate) * 2)
-	pill.attack(user, user)
+	pill.interact_with_atom(user, user)
 
 	user.Life(SSMOBS_DT)
 
@@ -81,7 +81,7 @@
 
 	// Let's start with stomach metabolism
 	pill.reagents.add_reagent(meth.type, 5)
-	pill.attack(pill_user, pill_user)
+	pill.interact_with_atom(pill_user, pill_user)
 
 	// Set the metabolism it transfers all reagents to the body in one go.
 	var/datum/reagents/R = pill_user.get_ingested_reagents()
@@ -110,7 +110,7 @@
 
 	// One half pill
 	pill_two.reagents.add_reagent(meth.type, (5 * 0.5) + 1)
-	pill_two.attack(pill_syringe_user, pill_syringe_user)
+	pill_two.interact_with_atom(pill_syringe_user, pill_syringe_user)
 	syringe.melee_attack_chain(pill_syringe_user, pill_syringe_user)
 
 	// Set the metabolism so it transfers all reagents to the body in one go.

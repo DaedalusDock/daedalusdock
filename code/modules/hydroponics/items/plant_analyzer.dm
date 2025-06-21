@@ -15,19 +15,16 @@ TYPEINFO_DEF(/obj/item/plant_analyzer)
 	slot_flags = ITEM_SLOT_BELT
 
 /// When we attack something, first - try to scan something we hit with left click. Left-clicking uses scans for stats
-/obj/item/plant_analyzer/pre_attack(atom/target, mob/living/user)
-	. = ..()
-	if(user.combat_mode)
-		return
-
-	return do_plant_stats_scan(target, user)
+/obj/item/plant_analyzer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	. = do_plant_stats_scan(interacting_with, user) ? ITEM_INTERACT_SUCCESS : NONE
+	if(. & ITEM_INTERACT_SUCCESS)
+		user.do_item_attack_animation(interacting_with, used_item = src)
 
 /// Same as above, but with right click. Right-clicking scans for chemicals.
-/obj/item/plant_analyzer/pre_attack_secondary(atom/target, mob/living/user)
-	if(user.combat_mode)
-		return SECONDARY_ATTACK_CONTINUE_CHAIN
-
-	return do_plant_chem_scan(target, user) ? SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN : SECONDARY_ATTACK_CONTINUE_CHAIN
+/obj/item/plant_analyzer/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	. = do_plant_chem_scan(interacting_with, user) ? ITEM_INTERACT_SUCCESS : SECONDARY_ATTACK_CONTINUE_CHAIN
+	if(. & ITEM_INTERACT_SUCCESS)
+		user.do_item_attack_animation(interacting_with, used_item = src)
 
 /*
  * Scan the target on plant scan mode. This prints traits and stats to the user.
@@ -48,7 +45,7 @@ TYPEINFO_DEF(/obj/item/plant_analyzer)
 		to_chat(user, scan_plant_stats(shroom_plant.myseed.plant_datum))
 		return TRUE
 
-	if(isitem(scan_target))
+	if(isitem(scan_target) && !ATOM_HAS_FIRST_CLASS_INTERACTION(scan_target))
 		var/obj/item/scanned_object = scan_target
 		if(scanned_object.get_plant_datum())
 			to_chat(user, scan_plant_stats(scanned_object))

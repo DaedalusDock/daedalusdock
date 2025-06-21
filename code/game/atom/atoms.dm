@@ -937,7 +937,7 @@ TYPEINFO_DEF(/atom)
 		return
 	if(buckle_message_cooldown <= world.time)
 		buckle_message_cooldown = world.time + 50
-		to_chat(user, span_warning("You can't move while buckled to [src]!"))
+		to_chat(user, span_warning("You are unable to move while buckled to [src]."))
 	return
 
 /**

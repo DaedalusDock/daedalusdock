@@ -14,12 +14,14 @@ TYPEINFO_DEF(/obj/item/melee/energy)
 	stealthy_audio = TRUE
 	w_class = WEIGHT_CLASS_NORMAL
 
+	special_attack_type = /datum/special_attack/swipe
+
 	/// The color of this energy based sword, for use in editing the icon_state.
 	var/sword_color_icon
 	/// Whether our blade is active or not.
 	var/blade_active = FALSE
 	/// Force while active.
-	var/active_force = 30
+	var/active_force = 22
 	/// Throwforce while active.
 	var/active_throwforce = 20
 	/// Sharpness while active.
@@ -46,6 +48,11 @@ TYPEINFO_DEF(/obj/item/melee/energy)
 /obj/item/melee/energy/Destroy()
 	QDEL_NULL(spark_system)
 	STOP_PROCESSING(SSobj, src)
+	return ..()
+
+/obj/item/melee/energy/get_special_attack()
+	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
+		return null
 	return ..()
 
 /*
@@ -172,6 +179,7 @@ TYPEINFO_DEF(/obj/item/melee/energy)
 	lefthand_file = 'icons/mob/inhands/weapons/swords_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
 	hitsound = SFX_SWING_HIT
+
 	force = 3
 
 	throwforce = 5
@@ -180,6 +188,7 @@ TYPEINFO_DEF(/obj/item/melee/energy)
 	armor_penetration = 35
 	block_chance = 50
 	embedding = list("embed_chance" = 75, "impact_pain_mult" = 10)
+
 
 /obj/item/melee/energy/sword/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
 	if(!blade_active)

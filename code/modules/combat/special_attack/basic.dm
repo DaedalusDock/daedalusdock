@@ -42,5 +42,5 @@
 
 	effect_type = /obj/effect/temp_visual/special_attack/stab
 
-/datum/special_attack/basic/stab/modifiy_damage_packet(datum/damage_packet/packet, mob/living/victim, mob/living/iser)
-	packet.sharpness = SHARP_EDGED
+/datum/special_attack/basic/stab/modifiy_damage_packet(datum/damage_packet/packet, mob/living/victim, mob/living/user)
+	packet.sharpness = SHARP_POINTY

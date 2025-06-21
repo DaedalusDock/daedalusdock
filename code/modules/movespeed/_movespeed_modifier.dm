@@ -74,14 +74,19 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 			type_or_datum = get_cached_movespeed_modifier(type_or_datum)
 		else
 			type_or_datum = new type_or_datum
+
 	var/datum/movespeed_modifier/existing = LAZYACCESS(movespeed_modification, type_or_datum.id)
 	if(existing)
 		if(existing == type_or_datum) //same thing don't need to touch
 			return TRUE
+
 		remove_movespeed_modifier(existing, FALSE)
+
 	if(length(movespeed_modification))
 		BINARY_INSERT(type_or_datum.id, movespeed_modification, /datum/movespeed_modifier, type_or_datum, priority, COMPARE_VALUE)
+
 	LAZYSET(movespeed_modification, type_or_datum.id, type_or_datum)
+
 	if(update)
 		update_movespeed()
 	return TRUE
@@ -118,10 +123,13 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 		final = LAZYACCESS(movespeed_modification, type_id_datum)
 		if(!final)
 			CRASH("Couldn't find existing modification when provided a text ID.")
+
 	else if(ispath(type_id_datum))
 		if(!initial(type_id_datum.variable))
 			CRASH("Not a variable modifier")
+
 		final = LAZYACCESS(movespeed_modification, initial(type_id_datum.id) || "[type_id_datum]")
+
 		if(!final)
 			final = new type_id_datum
 			inject = TRUE
@@ -133,11 +141,14 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 		if(!LAZYACCESS(movespeed_modification, final.id))
 			inject = TRUE
 			modified = TRUE
+
 	if(!isnull(slowdown))
 		final.slowdown = slowdown
 		modified = TRUE
+
 	if(inject)
 		add_movespeed_modifier(final, FALSE)
+
 	if(update && modified)
 		update_movespeed(TRUE)
 	return final

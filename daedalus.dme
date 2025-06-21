@@ -2947,6 +2947,7 @@
 #include "code\modules\codex\entries\structure.dm"
 #include "code\modules\codex\entries\tools.dm"
 #include "code\modules\combat\special_attack.dm"
+#include "code\modules\combat\swipe.dm"
 #include "code\modules\computer4\computer4.dm"
 #include "code\modules\computer4\computer4_types.dm"
 #include "code\modules\computer4\data\metadata.dm"

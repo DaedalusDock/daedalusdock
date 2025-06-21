@@ -812,18 +812,21 @@ DEFINE_INTERACTABLE(/obj/item)
 	playsound(wielder, block_sound, 70, TRUE)
 
 /// Passed flags that describe what happened in the exchange.
-/obj/item/proc/play_combat_sound(combat_flags)
-	if(combat_flags & MOB_ATTACKEDBY_SUCCESS)
-		playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
-		return TRUE
+/obj/item/proc/play_combat_sound(combat_result)
+	switch(combat_result)
+		if(MOB_ATTACKEDBY_SUCCESS)
+			playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
+			return TRUE
 
-	if(combat_flags & MOB_ATTACKEDBY_MISS)
-		playsound(loc, get_misssound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
-		return TRUE
+		if(MOB_ATTACKEDBY_MISS)
+			playsound(loc, get_misssound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
+			return TRUE
 
-	if(combat_flags & (MOB_ATTACKEDBY_NO_DAMAGE | MOB_ATTACKEDBY_BLOCKED))
-		playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
-		return TRUE
+		if(MOB_ATTACKEDBY_NO_DAMAGE)
+			playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
+			return TRUE
+
+		//if(MOB_ATTACKEDBY_BLOCKED) blocking usually already plays a sound.
 
 	return FALSE
 
@@ -1986,7 +1989,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /// Returns the sound the item makes when used as a weapon, but missing.
 /obj/item/proc/get_misssound()
-	. = src.miss_sound
+	. = miss_sound
 	if(islist(.))
 		. = pick(miss_sound)
 	else if(isnull(.))

@@ -106,9 +106,6 @@
 	if(SEND_SIGNAL(src, COMSIG_ITEM_PRE_ATTACK, A, user, params) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
 
-	if(user?.combat_mode && try_special_attack(user, A, params2list(params)))
-		return TRUE
-
 	return FALSE //return TRUE to avoid calling attackby after this proc does stuff
 
 /**
@@ -129,6 +126,9 @@
 
 	if(signal_result & COMPONENT_SECONDARY_CONTINUE_ATTACK_CHAIN)
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
+
+	if(user?.combat_mode && try_special_attack(user, target, params2list(params)))
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	return SECONDARY_ATTACK_CALL_NORMAL
 

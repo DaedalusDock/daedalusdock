@@ -6,11 +6,16 @@
 
 	mob_hold_duration = 0.3 SECONDS
 
-/datum/special_attack/swipe/execute_attack(mob/living/user, obj/item/weapon, atom/clicked_atom, list/modifiers)
-	var/direction = get_dir(user, clicked_atom)
-	if(!direction)
-		direction = user.dir
+/datum/special_attack/swipe/can_use(mob/living/user, obj/item/weapon, atom/clicked, list/modifiers, direction)
+	. = ..()
+	if(!.)
+		return
 
+	var/turf/T = get_step(user, direction)
+	return T?.IsReachableBy(user)
+
+/datum/special_attack/swipe/execute_attack(mob/living/user, obj/item/weapon, atom/clicked_atom, list/modifiers, direction)
+	. = ..()
 	if(!iscardinaldir(direction))
 		direction = turn(direction, pick(45, -45))
 
@@ -31,6 +36,9 @@
 
 	var/interacted_with_anything = FALSE
 	for(var/turf/T in list(one, two, three))
+		if(!T.IsReachableBy(user))
+			continue
+
 		if(!sanity_check(user, weapon, clicked_atom))
 			break
 

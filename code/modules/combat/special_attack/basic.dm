@@ -4,9 +4,16 @@
 
 	var/effect_type = /obj/effect/temp_visual/special_attack/simple
 
-/datum/special_attack/basic/execute_attack(mob/living/user, obj/item/weapon, atom/clicked_atom, list/modifiers)
+/datum/special_attack/basic/can_use(mob/living/user, obj/item/weapon, atom/clicked, list/modifiers, direction)
 	. = ..()
-	var/direction = get_cardinal_dir(user, clicked_atom) || user.dir
+	if(!.)
+		return
+
+	var/turf/T = get_step(user, direction)
+	return T?.IsReachableBy(user) && !isclosedturf(T)
+
+/datum/special_attack/basic/execute_attack(mob/living/user, obj/item/weapon, atom/clicked_atom, list/modifiers, direction)
+	. = ..()
 	var/turf/T = get_step(user, direction)
 
 	user.do_attack_animation(T, no_effect = TRUE)

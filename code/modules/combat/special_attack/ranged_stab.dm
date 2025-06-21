@@ -2,13 +2,19 @@
 /datum/special_attack/ranged_stab
 	click_cooldown = CLICK_CD_MELEE * 1.5
 
+/datum/special_attack/ranged_stab/can_use(mob/living/user, obj/item/weapon, atom/clicked, list/modifiers, direction)
+	. = ..()
+	if(!.)
+		return
+
+	var/turf/T = get_step(user, direction)
+	return T?.IsReachableBy(user) && !isclosedturf(T)
+
 /datum/special_attack/ranged_stab/modifiy_damage_packet(datum/damage_packet/packet, mob/living/victim, mob/living/user)
 	packet.sharpness = SHARP_POINTY
 
-/datum/special_attack/ranged_stab/execute_attack(mob/living/user, obj/item/weapon, atom/clicked_atom, list/modifiers)
+/datum/special_attack/ranged_stab/execute_attack(mob/living/user, obj/item/weapon, atom/clicked_atom, list/modifiers, direction)
 	. = ..()
-	var/direction = get_cardinal_dir(user, clicked_atom) || user.dir
-
 	var/turf/close_turf = get_step(user, direction)
 	var/turf/far_turf = get_step(close_turf, direction)
 

@@ -21,17 +21,18 @@
 
 	weapon?.add_fingerprint(user)
 
-	if(!can_use(user, weapon, clicked_atom, modifiers))
+	var/direction = get_attack_direction(user, weapon, clicked_atom)
+	if(!can_use(user, weapon, clicked_atom, modifiers, direction))
 		user.changeNext_move(CLICK_CD_RAPID)
 		return FALSE
 
 	pre_attack(user, weapon, clicked_atom, modifiers)
 
-	execute_attack(user, weapon, clicked_atom, modifiers)
+	execute_attack(user, weapon, clicked_atom, modifiers, direction)
 
 	post_attack(user, weapon, clicked_atom, modifiers)
 
-/datum/special_attack/proc/can_use(mob/living/user, obj/item/weapon, atom/clicked, list/modifiers)
+/datum/special_attack/proc/can_use(mob/living/user, obj/item/weapon, atom/clicked, list/modifiers, direction)
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		return FALSE
 
@@ -42,6 +43,10 @@
 		return FALSE
 
 	return TRUE
+
+/// Returns the direction of the attack.
+/datum/special_attack/proc/get_attack_direction(mob/living/user, obj/item/weapon, atom/clicked_atom)
+	return get_cardinal_dir(user, clicked_atom) || user.dir
 
 /datum/special_attack/proc/is_valid_target(mob/living/user, atom/A)
 	if(A == user)
@@ -67,21 +72,21 @@
 	return
 
 /// Called before execute_attack.
-/datum/special_attack/proc/pre_attack(mob/living/user, obj/item/weapon, atom/clicked_atom, list/modifiers)
+/datum/special_attack/proc/pre_attack(mob/living/user, obj/item/weapon, atom/clicked_atom, list/modifiers, direction)
 	if(mob_hold_duration)
 		ADD_TRAIT(user, TRAIT_IMMOBILIZED, ref(src))
 		addtimer(CALLBACK(src, PROC_REF(free_mob), WEAKREF(user)), mob_hold_duration)
 
 /// The actual attack effects.
-/datum/special_attack/proc/execute_attack(mob/living/user, obj/item/weapon, atom/clicked_atom, list/modifiers)
+/datum/special_attack/proc/execute_attack(mob/living/user, obj/item/weapon, atom/clicked_atom, list/modifiers, direction)
 	return
 
 /// After execute_attack has run.
-/datum/special_attack/proc/post_attack(mob/living/user, obj/item/weapon, atom/clicked_atom, list/modifiers)
+/datum/special_attack/proc/post_attack(mob/living/user, obj/item/weapon, atom/clicked_atom, list/modifiers, direction)
 	if(use_item_stamina)
-		user.stamina.adjust(-weapon.stamina_cost)
+		user.stamina_swing(-weapon.stamina_cost)
 	else
-		user.stamina.adjust(-stamina_cost)
+		user.stamina_swing(-stamina_cost)
 
 	user.changeNext_move(use_item_click_cooldown ? weapon.combat_click_delay : click_cooldown)
 

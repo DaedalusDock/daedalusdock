@@ -65,16 +65,19 @@
 		return FALSE
 
 	if(modifiers?[RIGHT_CLICK])
-		return try_special_attack(user, target, modifiers)
+		. =  try_special_attack(user, target, modifiers)
 
-	return FALSE
+	else
+		var/datum/special_attack/basic_attack = GLOB.special_attacks[/datum/special_attack/basic]
+		. =  try_special_attack(user, target, modifiers, basic_attack)
+	return .
 
 /// Attempt to perform a special attack.
-/obj/item/proc/try_special_attack(mob/living/user, atom/target, modifiers)
+/obj/item/proc/try_special_attack(mob/living/user, atom/target, modifiers, datum/special_attack/forced_attack)
 	if(!user.combat_mode)
 		return FALSE
 
-	var/datum/special_attack/spec_attack = get_special_attack()
+	var/datum/special_attack/spec_attack = forced_attack || get_special_attack()
 	if(!spec_attack)
 		return FALSE
 

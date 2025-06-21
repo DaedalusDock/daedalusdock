@@ -179,18 +179,7 @@
 	if(..())
 		return TRUE
 
-	if(!user.combat_mode)
-		return FALSE
-
-	if(attacking_item.force && HAS_TRAIT(user, TRAIT_PACIFISM))
-		to_chat(user, span_warning("You don't want to harm other living beings."))
-		return FALSE
-
-	user.do_attack_animation(src, attacking_item, do_hurt = FALSE)
-	user.changeNext_move(attacking_item.combat_click_delay)
-	user.stamina_swing(attacking_item.stamina_cost)
-
-	return attacking_item.attack(src, user, params)
+	return user.attack_with_item(attacking_item, src, params)
 
 /mob/living/attackby_secondary(obj/item/weapon, mob/living/user, params)
 	var/result = weapon.attack_secondary(src, user, params)
@@ -200,6 +189,21 @@
 		user.changeNext_move(CLICK_CD_MELEE)
 
 	return result
+
+/// A helper for striking a mob with an item. Incurs click delay, stamina costs, and animates the attack.
+/mob/living/proc/attack_with_item(obj/item/attacking_item, mob/living/target, params)
+	if(!combat_mode)
+		return FALSE
+
+	if(attacking_item.force && HAS_TRAIT(src, TRAIT_PACIFISM))
+		to_chat(src, span_warning("You don't want to harm other living beings."))
+		return FALSE
+
+	do_attack_animation(target, attacking_item, do_hurt = FALSE)
+	changeNext_move(attacking_item.combat_click_delay)
+	stamina_swing(attacking_item.stamina_cost)
+
+	return attacking_item.attack(target, src, params)
 
 /**
  * Called from [/mob/living/proc/attackby]

@@ -1,4 +1,3 @@
-import { useBackend, useLocalState } from '../backend';
 import {
   Button,
   Divider,
@@ -9,7 +8,9 @@ import {
   Section,
   Stack,
   Table,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 const PacketInfo = (props) => {
@@ -92,7 +93,7 @@ const MainScreen = (props) => {
         <Section>
           <Input
             value={networkId}
-            onInput={(e, value) => setNetworkId(value)}
+            onChange={(value) => setNetworkId(value)}
             placeholder="Network ID"
           />
           <Button

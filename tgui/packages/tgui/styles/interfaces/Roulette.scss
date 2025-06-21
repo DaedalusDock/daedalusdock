@@ -9,7 +9,7 @@
   display: table-cell;
   padding: 0;
   margin: 0;
-  border: 1px solid colors.$white;
+  border: 1px solid var(--color-white);
   vertical-align: bottom;
 }
 
@@ -34,7 +34,7 @@
   margin: 0;
   text-align: center;
   vertical-align: middle;
-  color: colors.$white !important;
+  color: var(--color-white) !important;
 }
 
 .Roulette__board-button--rowspan-3 {
@@ -50,12 +50,12 @@
 .Roulette__lowertable {
   margin-top: 8px;
   border-collapse: collapse;
-  border: 1px solid colors.$white;
+  border: 1px solid var(--color-white);
   border-spacing: 0;
 }
 
 .Roulette__lowertable--cell {
-  border: 2px solid colors.$white;
+  border: 2px solid var(--color-white);
   padding: 0px;
   margin: 0px;
 }
@@ -72,15 +72,15 @@
 }
 
 .Roulette__lowertable--spinresult-black {
-  background-color: colors.$black;
+  background-color: var(--color-black);
 }
 
 .Roulette__lowertable--spinresult-red {
-  background-color: colors.$red;
+  background-color: var(--color-red);
 }
 
 .Roulette__lowertable--spinresult-green {
-  background-color: colors.$green;
+  background-color: var(--color-green);
 }
 
 .Roulette__lowertable--spinbutton {

@@ -4,9 +4,6 @@
  * @author LeahTheTech (https://github.com/TobleroneSwordfish)
  * @license MIT
  */
-import { Tooltip } from 'tgui-core/components';
-
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -15,7 +12,10 @@ import {
   Section,
   Stack,
   Tabs,
-} from '../components';
+  Tooltip,
+} from 'tgui-core/components';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 const FlockPartitions = (props) => {

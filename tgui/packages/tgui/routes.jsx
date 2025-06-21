@@ -4,8 +4,9 @@
  * @license MIT
  */
 
+import { Icon, Section, Stack } from 'tgui-core/components';
+
 import { selectBackend } from './backend';
-import { Icon, Section, Stack } from './components';
 import { selectDebug } from './debug/selectors';
 import { Window } from './layouts';
 

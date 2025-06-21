@@ -1,12 +1,13 @@
-import { useBackend } from '../backend';
 import {
   Button,
   LabeledList,
   NumberInput,
   ProgressBar,
   Section,
-} from '../components';
-import { formatSiUnit } from '../format';
+} from 'tgui-core/components';
+import { formatSiUnit } from 'tgui-core/format';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 export const AtmosMixer = (props) => {

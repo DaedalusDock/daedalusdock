@@ -1,7 +1,7 @@
-import { Tooltip } from 'tgui-core/components';
+import { Box, Button, Section, Table, Tooltip } from 'tgui-core/components';
 
 import { useBackend } from '../backend';
-import { Box, Button, Grid, Section, Table } from '../components';
+import { Grid } from '../components/Grid';
 import { Window } from '../layouts';
 
 export const ComputerFabricator = (props) => {

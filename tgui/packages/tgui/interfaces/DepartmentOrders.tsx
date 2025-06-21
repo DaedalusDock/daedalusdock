@@ -1,7 +1,3 @@
-import { BooleanLike } from 'common/react';
-import { Tooltip } from 'tgui-core/components';
-
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -11,7 +7,11 @@ import {
   Section,
   Stack,
   Tabs,
-} from '../components';
+  Tooltip,
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 // 15x crate value
@@ -126,9 +126,9 @@ const DepartmentCatalog = (props) => {
     <Stack vertical fill>
       <Stack.Item>
         <Tabs textAlign="center" fluid>
-          {supplies.map((cat) => (
+          {supplies.map((cat, i) => (
             <Tabs.Tab
-              key={cat}
+              key={i}
               selected={tabCategory === cat}
               onClick={() => setTabCategory(cat)}
             >

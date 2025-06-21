@@ -1,7 +1,8 @@
-import { toFixed } from 'common/math';
+import { Button, NumberInput, Section } from 'tgui-core/components';
+import { toFixed } from 'tgui-core/math';
 
 import { useBackend } from '../backend';
-import { Button, Grid, NumberInput, Section } from '../components';
+import { Grid } from '../components/Grid';
 import { Window } from '../layouts';
 
 export const Signaler = (props) => {

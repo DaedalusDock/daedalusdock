@@ -1,4 +1,3 @@
-import { useBackend } from '../backend';
 import {
   Button,
   Dropdown,
@@ -7,7 +6,9 @@ import {
   LabeledList,
   ProgressBar,
   Section,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 import { InterfaceLockNoticeBox } from './common/InterfaceLockNoticeBox';
 
@@ -96,10 +97,7 @@ export const Mule = (props) => {
           >
             <LabeledList>
               <LabeledList.Item label="ID">
-                <Input
-                  value={id}
-                  onChange={(e, value) => act('setid', { value })}
-                />
+                <Input value={id} onBlur={(value) => act('setid', { value })} />
               </LabeledList.Item>
               <LabeledList.Item label="Destination">
                 <Dropdown

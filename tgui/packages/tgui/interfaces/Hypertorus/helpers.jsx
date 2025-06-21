@@ -1,6 +1,4 @@
-import { Tooltip } from 'tgui-core/components';
-
-import { Icon } from '../../components';
+import { Icon, Tooltip } from 'tgui-core/components';
 
 // Exponential rendering specifically for HFR values.
 // Note that we don't want to use unicode exponents as anything over ^3

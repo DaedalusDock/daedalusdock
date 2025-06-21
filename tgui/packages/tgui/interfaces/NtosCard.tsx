@@ -1,6 +1,3 @@
-import { BooleanLike } from 'common/react';
-
-import { useBackend, useSharedState } from '../backend';
 import {
   Box,
   Button,
@@ -11,7 +8,10 @@ import {
   Section,
   Stack,
   Tabs,
-} from '../components';
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+
+import { useBackend, useSharedState } from '../backend';
 import { NtosWindow } from '../layouts';
 import { AccessGroup, AccessList } from './common/AccessList';
 export const NtosCard = (props) => {
@@ -128,7 +128,6 @@ const IDCardTabs = (props) => {
     <Tabs vertical fill>
       <Tabs.Tab
         minWidth={'100%'}
-        altSelection
         selected={'login' === selectedTab}
         color={'login' === selectedTab ? 'green' : 'default'}
         onClick={() => setSelectedTab('login')}
@@ -137,7 +136,6 @@ const IDCardTabs = (props) => {
       </Tabs.Tab>
       <Tabs.Tab
         minWidth={'100%'}
-        altSelection
         selected={'modify' === selectedTab}
         color={'modify' === selectedTab ? 'green' : 'default'}
         onClick={() => setSelectedTab('modify')}
@@ -187,9 +185,10 @@ export const IDCardLogin = (props) => {
             fluid
             ellipsis
             icon="eject"
-            content={authIDName}
             onClick={() => act('PRG_ejectauthid')}
-          />
+          >
+            {authIDName}
+          </Button>
         </Stack.Item>
         <Stack.Item width="100%" mt={1} ml={0}>
           Login: {authenticatedUser || '-----'}
@@ -218,9 +217,10 @@ const IDCardTarget = (props) => {
         width="100%"
         ellipsis
         icon="eject"
-        content={id_name}
         onClick={() => act('PRG_ejectmodid')}
-      />
+      >
+        {id_name}
+      </Button>
       {!!(has_id && authenticatedUser) && (
         <>
           <Stack mt={1}>
@@ -229,7 +229,7 @@ const IDCardTarget = (props) => {
               <Input
                 width="100%"
                 value={id_owner}
-                onInput={(e, value) =>
+                onChange={(value) =>
                   act('PRG_edit', {
                     name: value,
                   })
@@ -258,7 +258,7 @@ const IDCardTarget = (props) => {
                 fluid
                 mt={1}
                 value={id_rank}
-                onInput={(e, value) =>
+                onChange={(value) =>
                   act('PRG_assign', {
                     assignment: value,
                   })
@@ -299,6 +299,7 @@ const TemplateDropdown = (props: TemplateDropdownProps) => {
           options={templateKeys.map((path) => {
             return templates[path];
           })}
+          selected={selected_template}
           onSelected={(sel) =>
             act('PRG_template', {
               name: sel,

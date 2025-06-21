@@ -1,9 +1,16 @@
 import { binaryInsertWith } from 'common/collections';
-import { classes } from 'common/react';
-import { Tooltip } from 'tgui-core/components';
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Section,
+  Stack,
+  Tooltip,
+} from 'tgui-core/components';
+import { classes } from 'tgui-core/react';
 
 import { useBackend, useLocalState } from '../../backend';
-import { Box, Button, Divider, Flex, Section, Stack } from '../../components';
 import { Antagonist, Category } from './antagonists/base';
 import { PreferencesMenuData } from './data';
 

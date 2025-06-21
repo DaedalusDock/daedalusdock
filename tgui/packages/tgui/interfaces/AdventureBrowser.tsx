@@ -1,4 +1,3 @@
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -6,8 +5,10 @@ import {
   NoticeBox,
   Section,
   Table,
-} from '../components';
-import { formatTime } from '../format';
+} from 'tgui-core/components';
+import { formatTime } from 'tgui-core/format';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 import { AdventureDataProvider, AdventureScreen } from './ExodroneConsole';
 

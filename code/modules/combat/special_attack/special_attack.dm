@@ -63,7 +63,7 @@
 	return TRUE
 
 /// Modify an attack's properties.
-/datum/special_attack/proc/modifiy_damage_packet(datum/damage_packet/packet, mob/living/victim, mob/living/iser)
+/datum/special_attack/proc/modifiy_damage_packet(datum/damage_packet/packet, mob/living/victim, mob/living/user)
 	return
 
 /// Called before execute_attack.

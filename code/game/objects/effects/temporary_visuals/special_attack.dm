@@ -16,6 +16,8 @@
 /obj/effect/temp_visual/special_attack/stab
 	icon_state = "dagger"
 
+/obj/effect/temp_visual/special_attack/spear
+	icon_state = "spear"
 
 /obj/effect/temp_visual/special_attack/simple
 	icon_state = "simple"

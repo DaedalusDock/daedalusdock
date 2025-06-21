@@ -6,7 +6,7 @@
 
 /datum/special_attack/basic/execute_attack(mob/living/user, obj/item/weapon, atom/clicked_atom, list/modifiers)
 	. = ..()
-	var/direction = get_dir(user, clicked_atom) || user.dir
+	var/direction = get_cardinal_dir(user, clicked_atom) || user.dir
 	var/turf/T = get_step(user, direction)
 
 	user.do_attack_animation(T, no_effect = TRUE)

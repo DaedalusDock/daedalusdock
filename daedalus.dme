@@ -2948,6 +2948,7 @@
 #include "code\modules\codex\entries\tools.dm"
 #include "code\modules\combat\damage_packet.dm"
 #include "code\modules\combat\special_attack\basic.dm"
+#include "code\modules\combat\special_attack\ranged_stab.dm"
 #include "code\modules\combat\special_attack\special_attack.dm"
 #include "code\modules\combat\special_attack\swipe.dm"
 #include "code\modules\computer4\computer4.dm"

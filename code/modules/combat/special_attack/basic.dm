@@ -2,7 +2,7 @@
 /datum/special_attack/basic
 	use_item_click_cooldown = TRUE
 
-	var/effect_type
+	var/effect_type = /obj/effect/temp_visual/special_attack/simple
 
 /datum/special_attack/basic/execute_attack(mob/living/user, obj/item/weapon, atom/clicked_atom, list/modifiers)
 	. = ..()

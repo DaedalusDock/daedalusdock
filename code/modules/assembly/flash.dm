@@ -15,13 +15,18 @@ TYPEINFO_DEF(/obj/item/assembly/flash)
 	inhand_icon_state = "flashtool"
 	lefthand_file = 'icons/mob/inhands/equipment/security_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/security_righthand.dmi'
-	throwforce = 0
+
+	throwforce = 2
+
 	w_class = WEIGHT_CLASS_TINY
 	light_system = OVERLAY_LIGHT //Used as a flash here.
 	light_outer_range = FLASH_LIGHT_RANGE
 	light_color = COLOR_WHITE
 	light_power = FLASH_LIGHT_POWER
 	light_on = FALSE
+
+	has_combat_mode_interaction = TRUE
+
 	/// Whether we currently have the flashing overlay.
 	var/flashing = FALSE
 	/// The overlay we use for flashing.

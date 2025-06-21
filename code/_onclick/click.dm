@@ -178,7 +178,7 @@
 			UnarmedAttack(A, TRUE,modifiers)
 	else
 		if(W)
-			A.base_ranged_item_interaction(src, W, modifiers)
+			W.ranged_attack_chain(src, A, modifiers)
 		else
 			if(LAZYACCESS(modifiers, RIGHT_CLICK))
 				ranged_secondary_attack(A, modifiers)

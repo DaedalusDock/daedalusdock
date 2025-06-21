@@ -50,7 +50,7 @@
 	if(attacker != src)
 		// This doesn't factor in armor, or most damage modifiers (physiology). Your mileage may vary
 		if(check_block(attacking_item, damage, "[attacking_item]", MELEE_ATTACK, attacking_item.armor_penetration, attacking_item.damtype))
-			return MOB_ATTACKEDBY_NO_DAMAGE
+			return MOB_ATTACKEDBY_BLOCKED
 
 	SEND_SIGNAL(attacking_item, COMSIG_ITEM_ATTACK_ZONE, src, attacker, hit_zone)
 

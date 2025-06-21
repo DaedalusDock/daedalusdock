@@ -110,6 +110,9 @@ DEFINE_INTERACTABLE(/obj/item)
 	/// If set to FALSE, interact_with_atom will not be called when the user has combat mode on.
 	var/has_combat_mode_interaction = FALSE
 
+	/// The type of special attack this item uses, if any.
+	var/special_attack_type
+
 	///Sound played when you hit something with the item
 	var/hitsound
 	var/wielded_hitsound
@@ -808,6 +811,22 @@ DEFINE_INTERACTABLE(/obj/item)
 		block_sound = pick('sound/weapons/block/block1.ogg', 'sound/weapons/block/block2.ogg', 'sound/weapons/block/block3.ogg')
 	playsound(wielder, block_sound, 70, TRUE)
 
+/// Passed flags that describe what happened in the exchange.
+/obj/item/proc/play_combat_sound(combat_flags)
+	if(combat_flags & MOB_ATTACKEDBY_SUCCESS)
+		playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
+		return TRUE
+
+	if(combat_flags & MOB_ATTACKEDBY_MISS)
+		playsound(loc, get_misssound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
+		return TRUE
+
+	if(combat_flags & (MOB_ATTACKEDBY_NO_DAMAGE | MOB_ATTACKEDBY_BLOCKED))
+		playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
+		return TRUE
+
+	return FALSE
+
 /obj/item/proc/talk_into(mob/M, input, channel, spans, datum/language/language, list/message_mods)
 	if(isnull(language))
 		language = M?.get_selected_language()
@@ -1063,6 +1082,10 @@ DEFINE_INTERACTABLE(/obj/item)
 		return SLASH
 
 	return BLUNT
+
+/// Returns a special attack datum if applicable.
+/obj/item/proc/get_special_attack()
+	return GLOB.special_attacks[special_attack_type]
 
 ///This proc determines if and at what an object will reflect energy projectiles if it's in l_hand,r_hand or wear_suit
 /obj/item/proc/IsReflect(def_zone)

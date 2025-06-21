@@ -46,15 +46,39 @@
 				// Normal behavior
 			else
 				CRASH("attackby_secondary must return an SECONDARY_ATTACK_* define, please consult code/__DEFINES/combat.dm")
+
 	else
 		attackby_result = target.attackby(src, user, params)
 
 	if (attackby_result)
 		return TRUE
 
-	if(QDELETED(src) || QDELETED(target))
-		attack_qdeleted(target, user, TRUE, params)
+	return TRUE
+
+/// Called when clicking on something outside of reach.
+/obj/item/proc/ranged_attack_chain(mob/user, atom/target, modifiers)
+	var/item_interact_result = target.base_ranged_item_interaction(user, src, modifiers)
+	if(item_interact_result & ITEM_INTERACT_SUCCESS)
 		return TRUE
+
+	if(item_interact_result & ITEM_INTERACT_BLOCKING)
+		return FALSE
+
+	if(modifiers?[RIGHT_CLICK])
+		return try_special_attack(user, target, modifiers)
+
+	return FALSE
+
+/// Attempt to perform a special attack.
+/obj/item/proc/try_special_attack(mob/living/user, atom/target, modifiers)
+	if(!user.combat_mode)
+		return FALSE
+
+	var/datum/special_attack/spec_attack = get_special_attack()
+	if(!spec_attack)
+		return FALSE
+
+	spec_attack.try_perform_attack(user, src, target, modifiers)
 	return TRUE
 
 /// Called when the item is in the active hand, and clicked; alternately, there is an 'activate held object' verb or you can hit pagedown.
@@ -80,6 +104,9 @@
  */
 /obj/item/proc/pre_attack(atom/A, mob/living/user, params) //do stuff before attackby!
 	if(SEND_SIGNAL(src, COMSIG_ITEM_PRE_ATTACK, A, user, params) & COMPONENT_CANCEL_ATTACK_CHAIN)
+		return TRUE
+
+	if(user?.combat_mode && try_special_attack(user, A, params2list(params)))
 		return TRUE
 
 	return FALSE //return TRUE to avoid calling attackby after this proc does stuff
@@ -197,21 +224,15 @@
 	M.lastattacker = user.real_name
 	M.lastattackerckey = user.ckey
 
-	user.stamina_swing(src.stamina_cost)
+	user.stamina_swing(stamina_cost)
 
-	user.do_attack_animation(M)
 	var/attack_return = M.attacked_by(src, user)
-	switch(attack_return)
-		if(MOB_ATTACKEDBY_NO_DAMAGE)
-			playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
-		if(MOB_ATTACKEDBY_SUCCESS)
-			playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
-		if(MOB_ATTACKEDBY_MISS)
-			playsound(loc, get_misssound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
+	play_combat_sound(attack_return)
 
 	var/missed = (attack_return == MOB_ATTACKEDBY_MISS || attack_return == MOB_ATTACKEDBY_FAIL)
-	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [missed ? "YES" : "NO"])")
+	user.do_attack_animation(M, fov_effect = !missed, do_hurt = !missed)
 
+	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [missed ? "YES" : "NO"])")
 	add_fingerprint(user)
 
 	if(!missed)
@@ -223,6 +244,27 @@
 
 	/// If we missed or the attack failed, interrupt attack chain.
 	return missed
+
+/obj/item/proc/attack_multiple(mob/living/target, mob/living/user, list/modifiers)
+	target.lastattacker = user.real_name
+	target.lastattackerckey = user.ckey
+
+	var/attack_return = target.attacked_by(src, user)
+	play_combat_sound(attack_return)
+
+	var/missed = (attack_return == MOB_ATTACKEDBY_MISS || attack_return == MOB_ATTACKEDBY_FAIL)
+	if(!missed)
+		target.do_hurt_animation()
+
+	log_combat(user, target, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [missed ? "YES" : "NO"])")
+
+	if(!missed)
+		SEND_SIGNAL(src, COMSIG_ITEM_AFTERATTACK, target, user, modifiers,)
+		SEND_SIGNAL(target, COMSIG_ATOM_AFTER_ATTACKEDBY, src, user, modifiers)
+
+		afterattack(target, user, modifiers)
+
+	return attack_return
 
 /// The equivalent of [/obj/item/proc/attack] but for alternate attacks, AKA right clicking
 /obj/item/proc/attack_secondary(mob/living/victim, mob/living/user, params)
@@ -313,11 +355,6 @@
  */
 /obj/item/proc/afterattack(atom/target, mob/user, list/modifiers)
 	PROTECTED_PROC(TRUE)
-
-/// Called if the target gets deleted by our attack
-/obj/item/proc/attack_qdeleted(atom/target, mob/user, proximity_flag, click_parameters)
-	SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_QDELETED, target, user, proximity_flag, click_parameters)
-	SEND_SIGNAL(user, COMSIG_MOB_ITEM_ATTACK_QDELETED, target, user, proximity_flag, click_parameters)
 
 /obj/item/proc/get_clamped_volume()
 	if(w_class)

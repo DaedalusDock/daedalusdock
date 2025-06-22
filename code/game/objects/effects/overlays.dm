@@ -125,4 +125,4 @@
 	new_overlays += light
 	add_overlay(new_overlays)
 
-	addtimer(CALLBACK(src, PROC_REF(death_animation), progress + 1), 0.5 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(death_animation), progress + 1), 1 SECONDS)

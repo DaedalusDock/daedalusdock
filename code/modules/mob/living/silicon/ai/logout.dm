@@ -2,3 +2,4 @@
 	..()
 	set_eyeobj_visible(FALSE)
 	view_core()
+	set_face_state("static")

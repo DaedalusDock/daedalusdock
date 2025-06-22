@@ -29,7 +29,7 @@ GLOBAL_VAR_INIT(fresh_ghost_adjectives, __fresh_ghost_adjectives())
 	shift_to_open_context_menu = FALSE
 	simulated = FALSE
 
-	var/can_reenter_corpse
+	var/can_reenter_corpse = TRUE
 	var/datum/hud/living/carbon/hud = null // hud
 	var/bootime = 0
 
@@ -65,7 +65,7 @@ GLOBAL_VAR_INIT(fresh_ghost_adjectives, __fresh_ghost_adjectives())
 	var/datum/spawners_menu/spawners_menu
 	var/datum/minigames_menu/minigames_menu
 
-/mob/dead/observer/Initialize(mapload, started_as_observer = FALSE, admin_ghost = FALSE)
+/mob/dead/observer/Initialize(mapload, started_as_observer = FALSE, admin_ghost = FALSE, can_reenter_corpse = TRUE)
 	src.started_as_observer = started_as_observer
 	src.admin_ghost = admin_ghost
 
@@ -297,7 +297,7 @@ Works together with spawning an observer, noted above.
 				ethereal_heart.stop_crystalization_process(crystal_fella) //stops the crystallization process
 
 	stop_sound_channel(CHANNEL_HEARTBEAT) //Stop heartbeat sounds because You Are A Ghost Now
-	var/mob/dead/observer/ghost = new(src, FALSE, admin_ghost) // Transfer safety to observer spawning proc.
+	var/mob/dead/observer/ghost = new(src, FALSE, admin_ghost, can_reenter_corpse) // Transfer safety to observer spawning proc.
 	SStgui.on_transfer(src, ghost) // Transfer NanoUIs.
 
 	ghost.verb_say = verb_say

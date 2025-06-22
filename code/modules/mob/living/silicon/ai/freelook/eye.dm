@@ -204,7 +204,7 @@
 
 	eyeobj.mouse_opacity = state ? MOUSE_OPACITY_ICON : initial(eyeobj.mouse_opacity)
 	eyeobj.invisibility = state ? INVISIBILITY_OBSERVER : initial(eyeobj.invisibility)
-	sense_of_self.invisibility = state ? INVISIBILITY_OBSERVER : INVISIBLITY_VISIBLE
+	sense_of_self?.invisibility = state ? INVISIBILITY_OBSERVER : INVISIBLITY_VISIBLE
 
 /mob/living/silicon/ai/verb/toggle_acceleration()
 	set category = "AI Commands"

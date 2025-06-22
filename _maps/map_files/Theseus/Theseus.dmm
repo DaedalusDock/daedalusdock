@@ -32015,7 +32015,6 @@
 /area/station/maintenance/port/fore)
 "lZB" = (
 /obj/structure/table,
-/obj/item/aicard,
 /obj/item/ai_module/reset,
 /turf/open/floor/iron/dark,
 /area/station/engineering/storage/tech)
@@ -47616,7 +47615,6 @@
 /area/station/ai_monitored/security/armory)
 "rOb" = (
 /obj/structure/rack,
-/obj/item/aicard,
 /obj/item/radio/off,
 /obj/machinery/computer/security/telescreen/minisat{
 	dir = 1;

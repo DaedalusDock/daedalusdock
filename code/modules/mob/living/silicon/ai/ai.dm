@@ -20,7 +20,6 @@
 
 	move_resist = MOVE_FORCE_OVERPOWERING
 	density = TRUE
-	anchored = TRUE
 
 	status_flags = CANSTUN
 	combat_mode = TRUE //so we always get pushed instead of trying to swap

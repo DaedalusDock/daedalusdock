@@ -2,7 +2,6 @@
 	title = JOB_AI
 	description = "Assist the crew, follow your laws, coordinate your cyborgs."
 	radio_help_message = "<b>Prefix your message with :b to speak with cyborgs and other AIs.</b>"
-	auto_deadmin_role_flags = DEADMIN_POSITION_SILICON
 	faction = FACTION_STATION
 
 	total_positions = 1

@@ -105,23 +105,24 @@
 
 /// Fade away the face. Kind of hacky but I don't care.
 /obj/effect/overlay/ai_holder/proc/death_animation(progress = 1)
-	if(QDELETED(ai))
+	cut_overlays()
+	if(QDELETED(ai) || progress >= 4) // There's 4 face fade states.
 		return
 
 	if(ai.stat == CONSCIOUS)
 		update_appearance() // Reset to the normal living state.
 		return
 
-	var/list/overlays = list()
-	overlays += image(icon, "oldai-face_fade0[progress]")
-	overlays += emissive_appearance(icon, "oldai-face_fade0[progress]", alpha = 70)
+	var/list/new_overlays = list()
+	new_overlays += image(icon, "oldai-face_fade0[progress]")
+	new_overlays += emissive_appearance(icon, "oldai-face_fade0[progress]", alpha = 70)
 
-	overlays += image(icon, "oldai-faceoverlay")
-	overlays += emissive_appearance(icon, "oldai-faceoverlay", alpha = 70)
+	new_overlays += image(icon, "oldai-faceoverlay")
+	new_overlays += emissive_appearance(icon, "oldai-faceoverlay", alpha = 70)
 
 	var/image/light = image(icon, "oldai-light")
 	light.plane = ABOVE_LIGHTING_PLANE
-	overlays += light
+	new_overlays += light
+	add_overlay(new_overlays)
 
-	if(progress <= 3) // There's 4 face fade states.
-		addtimer(CALLBACK(src, PROC_REF(death_animation), progress + 1), 0.5 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(death_animation), progress + 1), 0.5 SECONDS)

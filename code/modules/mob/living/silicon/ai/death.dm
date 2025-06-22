@@ -16,11 +16,6 @@
 
 	cameraFollow = null
 
-	set_anchored(FALSE) //unbolt floorbolts
-	status_flags |= CANPUSH //we want it to be pushable when unanchored on death
-	REMOVE_TRAIT(src, TRAIT_NO_TELEPORT, AI_ANCHOR_TRAIT) //removes the anchor trait, because its not anchored anymore
-	move_resist = MOVE_FORCE_NORMAL
-
 	if(eyeobj)
 		eyeobj.setLoc(get_turf(src))
 		set_eyeobj_visible(FALSE)

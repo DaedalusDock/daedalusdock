@@ -230,11 +230,11 @@
 		src.stamina.adjust(-stamina)
 
 	if(jitter && (status_flags & CANSTUN) && !HAS_TRAIT(src, TRAIT_STUNIMMUNE))
-		adjust_timed_status_effect(jitter, /datum/status_effect/jitter)
+		adjust_timed_status_effect(jitter, /datum/status_effect/jitter, jitter)
 	if(slur)
-		adjust_timed_status_effect(slur, /datum/status_effect/speech/slurring/drunk)
+		adjust_timed_status_effect(slur, /datum/status_effect/speech/slurring/drunk, slur)
 	if(stutter)
-		adjust_timed_status_effect(stutter, /datum/status_effect/speech/stutter)
+		adjust_timed_status_effect(stutter, /datum/status_effect/speech/stutter, stutter)
 
 	return TRUE
 

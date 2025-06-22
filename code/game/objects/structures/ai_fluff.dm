@@ -1,7 +1,7 @@
 #warn name desc
 /obj/structure/ai_fluff
 	icon = 'goon/icons/obj/96x96.dmi'
-	icon_state = "oldai_t2"
+	icon_state = "oldai-t2"
 
 	layer = HIGH_OBJ_LAYER
 
@@ -14,4 +14,4 @@
 
 /obj/structure/ai_fluff/brad
 	icon = 'goon/icons/obj/96x96.dmi'
-	icon_state = "oldai_t1"
+	icon_state = "oldai-t1"

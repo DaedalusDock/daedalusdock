@@ -18,6 +18,7 @@
 	if("[old_icon]_death_transition" in icon_states(icon))
 		z_flick("[old_icon]_death_transition", src)
 
+	#warn fix
 	cameraFollow = null
 
 	set_anchored(FALSE) //unbolt floorbolts
@@ -37,13 +38,6 @@
 
 	if(explosive)
 		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(explosion), loc, 3, 6, 12, null, 15), 1 SECONDS)
-
-	if(istype(loc, /obj/item/aicard/aitater))
-		loc.icon_state = "aitater-404"
-	else if(istype(loc, /obj/item/aicard/aispook))
-		loc.icon_state = "aispook-404"
-	else if(istype(loc, /obj/item/aicard))
-		loc.icon_state = "aicard-404"
 
 /mob/living/silicon/ai/proc/ShutOffDoomsdayDevice()
 	if(nuking)

@@ -819,29 +819,6 @@
 		return
 	set_autosay()
 
-/mob/living/silicon/ai/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/aicard/card)
-	if(!..())
-		return
-	if(interaction == AI_TRANS_TO_CARD)//The only possible interaction. Upload AI mob to a card.
-		if(!can_be_carded)
-			to_chat(user, span_boldwarning("Transfer failed."))
-			return
-		disconnect_shell() //If the AI is controlling a borg, force the player back to core!
-		if(!mind)
-			to_chat(user, span_warning("No intelligence patterns detected."))
-			return
-		ShutOffDoomsdayDevice()
-		var/obj/structure/ai_core/new_core = new /obj/structure/ai_core/deactivated(loc)//Spawns a deactivated terminal at AI location.
-		new_core.circuit.battery = battery
-		ai_restore_power()//So the AI initially has power.
-		control_disabled = TRUE //Can't control things remotely if you're stuck in a card!
-		interaction_range = 0
-		radio_enabled = FALSE //No talking on the built-in radio for you either!
-		forceMove(card)
-		card.AI = src
-		to_chat(src, "You have been downloaded to a mobile storage device. Remote device connection severed.")
-		to_chat(user, "[span_boldnotice("Transfer successful")]: [name] ([rand(1000,9999)].exe) removed from host terminal and stored within local memory.")
-
 /mob/living/silicon/ai/canUseTopic(atom/movable/target, flags)
 	if(control_disabled)
 		to_chat(src, span_warning("You can't do that right now!"))

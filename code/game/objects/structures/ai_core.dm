@@ -2,10 +2,13 @@
 	density = TRUE
 	anchored = FALSE
 	name = "\improper AI core"
-	icon = 'icons/mob/ai.dmi'
-	icon_state = "0"
+	icon = 'goon/icons/obj/96x96.dmi'
+	icon_state = "oldai_01"
 	desc = "The framework for an artificial intelligence core."
 	max_integrity = 500
+	pixel_x = -32
+	pixel_y = -32
+
 	var/state = EMPTY_CORE
 	var/datum/ai_laws/laws
 	var/obj/item/circuitboard/aicore/circuit
@@ -16,6 +19,7 @@
 	. = ..()
 	laws = new
 	laws.set_laws_config()
+	update_appearance()
 
 /obj/structure/ai_core/handle_atom_del(atom/A)
 	if(A == circuit)
@@ -26,6 +30,11 @@
 	if(A == brain)
 		brain = null
 	return ..()
+
+/obj/structure/ai_core/update_overlays()
+	. = ..()
+	. += image(icon, "oldai-face_neutral")
+	. += image(icon, "oldai-faceoverlay")
 
 
 /obj/structure/ai_core/Destroy()
@@ -48,7 +57,7 @@
 	name = "networked AI core"
 	desc = "This AI core is connected by bluespace transmitters to NTNet, allowing for an AI personality to be downloaded to it on the fly mid-shift."
 	can_deconstruct = FALSE
-	icon_state = "ai-empty"
+	icon_state = "oldai_01"
 	anchored = TRUE
 	state = AI_READY_CORE
 	var/available = TRUE
@@ -268,22 +277,22 @@
 	return ..()
 
 /obj/structure/ai_core/update_icon_state()
-	switch(state)
-		if(EMPTY_CORE)
-			icon_state = "0"
-		if(CIRCUIT_CORE)
-			icon_state = "1"
-		if(SCREWED_CORE)
-			icon_state = "2"
-		if(CABLED_CORE)
-			if(brain)
-				icon_state = "3b"
-			else
-				icon_state = "3"
-		if(GLASS_CORE)
-			icon_state = "4"
-		if(AI_READY_CORE)
-			icon_state = "ai-empty"
+	// switch(state)
+	// 	if(EMPTY_CORE)
+	// 		icon_state = "0"
+	// 	if(CIRCUIT_CORE)
+	// 		icon_state = "1"
+	// 	if(SCREWED_CORE)
+	// 		icon_state = "2"
+	// 	if(CABLED_CORE)
+	// 		if(brain)
+	// 			icon_state = "3b"
+	// 		else
+	// 			icon_state = "3"
+	// 	if(GLASS_CORE)
+	// 		icon_state = "4"
+	// 	if(AI_READY_CORE)
+	// 		icon_state = "ai-empty"
 	return ..()
 
 /obj/structure/ai_core/deconstruct(disassembled = TRUE)

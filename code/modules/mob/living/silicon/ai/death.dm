@@ -9,16 +9,11 @@
 	. = ..()
 
 	SSblackbox.record_feedback("amount", "ai_deaths", 1)
-	cut_overlays() //remove portraits
-	var/old_icon = icon_state
-	if("[icon_state]_dead" in icon_states(icon))
-		icon_state = "[icon_state]_dead"
-	else
-		icon_state = "ai_dead"
-	if("[old_icon]_death_transition" in icon_states(icon))
-		z_flick("[old_icon]_death_transition", src)
 
-	#warn fix
+	update_appearance()
+	if(!gibbed && !QDELING(src))
+		vis_holder.death_animation()
+
 	cameraFollow = null
 
 	set_anchored(FALSE) //unbolt floorbolts

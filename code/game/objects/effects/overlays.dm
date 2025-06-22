@@ -73,3 +73,55 @@
 	layer = FLOAT_LAYER
 	vis_flags = VIS_INHERIT_ID
 	appearance_flags = KEEP_TOGETHER | LONG_GLIDE | PIXEL_SCALE
+
+/obj/effect/overlay/ai_holder
+	icon = 'goon/icons/obj/96x96.dmi'
+	icon_state = "oldai-01"
+
+	var/mob/living/silicon/ai/ai
+
+	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_LAYER | VIS_INHERIT_PLANE
+	pixel_x = -32
+	pixel_y = -32
+
+/obj/effect/overlay/ai_holder/Destroy(force)
+	ai = null
+	return ..()
+
+/obj/effect/overlay/ai_holder/update_overlays()
+	. = ..()
+	if(ai.stat != CONSCIOUS)
+		return
+
+	. += image(icon, "oldai-[ai.face_state]")
+	. += emissive_appearance(icon, "oldai-[ai.face_state]", alpha = 70)
+
+	. += image(icon, "oldai-faceoverlay")
+	. += emissive_appearance(icon, "oldai-faceoverlay", alpha = 70)
+
+	var/image/light = image(icon, "oldai-light")
+	light.plane = ABOVE_LIGHTING_PLANE
+	. += light
+
+/// Fade away the face. Kind of hacky but I don't care.
+/obj/effect/overlay/ai_holder/proc/death_animation(progress = 1)
+	if(QDELETED(ai))
+		return
+
+	if(ai.stat == CONSCIOUS)
+		update_appearance() // Reset to the normal living state.
+		return
+
+	var/list/overlays = list()
+	overlays += image(icon, "oldai-face_fade0[progress]")
+	overlays += emissive_appearance(icon, "oldai-face_fade0[progress]", alpha = 70)
+
+	overlays += image(icon, "oldai-faceoverlay")
+	overlays += emissive_appearance(icon, "oldai-faceoverlay", alpha = 70)
+
+	var/image/light = image(icon, "oldai-light")
+	light.plane = ABOVE_LIGHTING_PLANE
+	overlays += light
+
+	if(progress <= 3) // There's 4 face fade states.
+		addtimer(CALLBACK(src, PROC_REF(death_animation), progress + 1), 0.5 SECONDS)

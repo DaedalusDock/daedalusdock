@@ -36,8 +36,8 @@
 
 /obj/structure/ai_core/update_overlays()
 	. = ..()
-	. += image(icon, "oldai-face_neutral")
-	. += emissive_appearance(icon, "oldai-face_neutral", alpha = 70)
+	. += image(icon, "oldai-static")
+	. += emissive_appearance(icon, "oldai-facestatic_neutral", alpha = 70)
 	. += image(icon, "oldai-faceoverlay")
 	. += emissive_appearance(icon, "oldai-faceoverlay", alpha = 70)
 

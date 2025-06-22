@@ -201,8 +201,10 @@
 /mob/living/silicon/ai/proc/set_eyeobj_visible(state = TRUE)
 	if(!eyeobj)
 		return
+
 	eyeobj.mouse_opacity = state ? MOUSE_OPACITY_ICON : initial(eyeobj.mouse_opacity)
 	eyeobj.invisibility = state ? INVISIBILITY_OBSERVER : initial(eyeobj.invisibility)
+	sense_of_self.invisibility = state ? INVISIBILITY_OBSERVER : INVISIBLITY_VISIBLE
 
 /mob/living/silicon/ai/verb/toggle_acceleration()
 	set category = "AI Commands"

@@ -128,7 +128,7 @@
 /datum/dog_fashion/head/cardborg
 	name = "Borgi"
 	speak = list("Ping!","Beep!","Woof!")
-	emote_see = list("goes rogue.", "sniffs out non-humans.")
+	emote_see = list("goes rogue.", "sniffs out non-minervans.")
 	desc = "Result of robotics budget cuts."
 
 /datum/dog_fashion/head/ghost

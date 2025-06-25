@@ -5,7 +5,7 @@
 
 /datum/design/health_hud
 	name = "Health Scanner HUD"
-	desc = "A heads-up display that scans the humans in view and provides accurate data about their health status."
+	desc = "A heads-up display that scans people in view and provides accurate data about their health status."
 	id = "health_hud"
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
@@ -15,7 +15,7 @@
 
 /datum/design/security_hud
 	name = "Security HUD"
-	desc = "A heads-up display that scans the humans in view and provides accurate data about their ID status."
+	desc = "A heads-up display that scans people in view and provides accurate data about their ID status."
 	id = "security_hud"
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)

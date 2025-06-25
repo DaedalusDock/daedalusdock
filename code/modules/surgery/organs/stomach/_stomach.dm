@@ -281,14 +281,14 @@
 /obj/item/organ/stomach/cybernetic
 	name = "basic cybernetic stomach"
 	icon_state = "stomach-c"
-	desc = "A basic device designed to mimic the functions of a human stomach"
+	desc = "A basic device designed to mimic the functions of a minervan stomach"
 	organ_flags = ORGAN_SYNTHETIC
 	var/emp_vulnerability = 80 //Chance of permanent effects if emp-ed.
 
 /obj/item/organ/stomach/cybernetic/tier2
 	name = "cybernetic stomach"
 	icon_state = "stomach-c-u"
-	desc = "An electronic device designed to mimic the functions of a human stomach. Handles disgusting food a bit better."
+	desc = "An electronic device designed to mimic the functions of a minervan stomach. Handles disgusting food a bit better."
 	maxHealth = 45
 	disgust_metabolism = 2
 	emp_vulnerability = 40

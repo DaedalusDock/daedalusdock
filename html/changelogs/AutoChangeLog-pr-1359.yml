@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Right-clicking with combat mode on will allow you to use special attacks.
+      Currently only the e sword has one.
+  - balance: Reduced the damage of the esword.

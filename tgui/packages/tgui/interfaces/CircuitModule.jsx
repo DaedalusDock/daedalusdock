@@ -132,6 +132,7 @@ const PortEntry = (props) => {
         <Stack.Item>
           <Dropdown
             displayText={datatype}
+            selected={datatype}
             options={datatypeOptions}
             onSelected={onSetType}
           />

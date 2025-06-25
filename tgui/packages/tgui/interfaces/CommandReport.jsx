@@ -61,6 +61,7 @@ export const CommandReport = (props) => {
             <Section title="Set announcement sound:" textAlign="center">
               <Dropdown
                 width="100%"
+                selected={played_sound}
                 displayText={played_sound}
                 options={announcer_sounds}
                 onSelected={(value) =>

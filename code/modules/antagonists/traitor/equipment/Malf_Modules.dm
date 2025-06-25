@@ -906,6 +906,7 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module))
 	data["on"] = changing_voice
 	data["say_verb"] = say_verb
 	data["name"] = say_name
+	data["accent"] = say_span
 	return data
 
 /obj/machinery/ai_voicechanger/ui_act(action, params)

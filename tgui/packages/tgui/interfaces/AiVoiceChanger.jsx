@@ -26,6 +26,7 @@ export const AiVoiceChanger = (props) => {
           </LabeledList.Item>
           <LabeledList.Item label="Accent">
             <Dropdown
+              selected={data.accent}
               options={data.voices}
               onSelected={(value) =>
                 act('look', {

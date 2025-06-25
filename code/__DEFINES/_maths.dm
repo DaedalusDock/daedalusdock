@@ -247,3 +247,6 @@
 
 /// See above, but clamps the resulting value between omin and omax
 #define MAPCLAMP(x, imin, imax, omin, omax) clamp(MAP(x, imin, imax, omin, omax), omin, omax)
+
+/// Returns TRUE if the direction is cardinal.
+#define iscardinaldir(dir) (!(dir & (dir - 1)))

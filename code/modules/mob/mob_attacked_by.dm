@@ -1,4 +1,4 @@
-/mob/living/attacked_by(obj/item/attacking_item, mob/living/attacker)
+/mob/living/attacked_by(obj/item/attacking_item, mob/living/attacker, datum/special_attack/used_special)
 	var/hit_zone = deprecise_zone(attacker.zone_selected)
 	var/hit_zone_text = "body"
 
@@ -50,7 +50,7 @@
 	if(attacker != src)
 		// This doesn't factor in armor, or most damage modifiers (physiology). Your mileage may vary
 		if(check_block(attacking_item, damage, "[attacking_item]", MELEE_ATTACK, attacking_item.armor_penetration, attacking_item.damtype))
-			return MOB_ATTACKEDBY_NO_DAMAGE
+			return MOB_ATTACKEDBY_BLOCKED
 
 	SEND_SIGNAL(attacking_item, COMSIG_ITEM_ATTACK_ZONE, src, attacker, hit_zone)
 
@@ -61,15 +61,18 @@
 		SSblackbox.record_feedback("nested tally", "item_used_for_combat", 1, list("[attacking_item.force]", "[attacking_item.type]"))
 		SSblackbox.record_feedback("tally", "zone_targeted", 1, parse_zone(deprecise_zone(attacker.zone_selected)))
 
-	var/damage_done = apply_damage(
+	var/datum/damage_packet/damage_packet = create_damage_packet(
 		damage = damage,
-		damagetype = attacking_item.damtype,
+		damage_type = attacking_item.damtype,
 		def_zone = hit_zone,
-		blocked = armor_block,
+		armor_block = armor_block,
 		sharpness = attacking_item.sharpness,
 		attack_direction = get_dir(attacker, src),
-		attacking_item = attacking_item
+		attacking_item = attacking_item,
 	)
+
+	used_special?.modifiy_damage_packet(damage_packet, src, attacker)
+	var/damage_done = damage_packet.apply_damage(src)
 
 	on_take_combat_damage(damage_done, hit_zone, armor_block, attacking_item, attacker)
 	return MOB_ATTACKEDBY_SUCCESS

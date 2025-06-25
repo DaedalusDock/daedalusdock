@@ -112,7 +112,7 @@
 	else
 		qdel(src)
 
-/obj/item/clothing/attack(mob/living/M, mob/living/user, params)
+/obj/item/clothing/attack(mob/living/M, mob/living/user, params, datum/special_attack/used_special)
 	if(user.combat_mode || !ismoth(M))
 		return ..()
 	if(isnull(moth_snack))

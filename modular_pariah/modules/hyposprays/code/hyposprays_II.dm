@@ -174,14 +174,6 @@
 	obj_flags |= EMAGGED
 	return TRUE
 
-/obj/item/hypospray/mkii/attack(obj/item/hypo, mob/user, params)
-	mode = HYPO_INJECT
-	return
-
-/obj/item/hypospray/mkii/attack_secondary(obj/item/hypo, mob/user, params)
-	mode = HYPO_SPRAY
-	return SECONDARY_ATTACK_CONTINUE_CHAIN
-
 /obj/item/hypospray/mkii/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(istype(interacting_with, /obj/item/reagent_containers/cup/vial))
 		insert_vial(interacting_with, user, vial)
@@ -213,6 +205,7 @@
 		to_chat(user, span_notice("[src]'s vial is empty!"))
 		return ITEM_INTERACT_BLOCKING
 
+	mode = modifiers?[RIGHT_CLICK] ? HYPO_SPRAY: HYPO_INJECT
 	var/fp_verb = mode == HYPO_SPRAY ? "spray" : "inject"
 
 	if(injectee != user)

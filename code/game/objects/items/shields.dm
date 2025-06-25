@@ -150,8 +150,8 @@ TYPEINFO_DEF(/obj/item/shield/riot/buckler)
 	embedded_flash = new(src)
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
 
-/obj/item/shield/riot/flash/attack(mob/living/M, mob/user)
-	. = embedded_flash.attack(M, user)
+/obj/item/shield/riot/flash/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	. = embedded_flash.interact_with_atom(interacting_with, user)
 	update_appearance()
 
 /obj/item/shield/riot/flash/attack_self(mob/living/carbon/user)

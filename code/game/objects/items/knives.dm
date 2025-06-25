@@ -15,13 +15,20 @@ TYPEINFO_DEF(/obj/item/knife)
 	flags_1 = CONDUCT_1
 	force = 15
 	w_class = WEIGHT_CLASS_SMALL
+
 	throwforce = 10
 	hitsound = 'sound/weapons/bladeslice.ogg'
+
+	throwforce = 10
 	throw_speed = 1.5
 	throw_range = 6
-	attack_verb_continuous = list("slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
+
+	attack_verb_continuous = list("slashes",, "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
+
 	sharpness = SHARP_EDGED
+	special_attack_type = /datum/special_attack/basic/stab
+
 	var/bayonet = FALSE //Can this be attached to a gun?
 	tool_behaviour = TOOL_KNIFE
 

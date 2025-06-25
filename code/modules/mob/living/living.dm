@@ -52,6 +52,10 @@
 	QDEL_LAZYLIST(diseases)
 	return ..()
 
+/mob/living/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if (user.can_perform_surgery_on(src) && tool.attempt_surgery(src, user))
+		return ITEM_INTERACT_SUCCESS
+
 /mob/living/onZImpact(turf/T, levels, message = TRUE)
 	if(m_intent == MOVE_INTENT_WALK && levels <= 1 && !throwing && !incapacitated())
 		visible_message(

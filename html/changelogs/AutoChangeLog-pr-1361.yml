@@ -1,0 +1,9 @@
+author: Kapu1178, yyzsong
+delete-after: true
+changes:
+  - rscadd: Stools now have a high force value, high stamina cost, and high stamina
+      damage.
+  - refactor: Rewrote how stool breaking works, it is now based on integrity.
+  - rscadd: Wooden stools
+  - balance: Chair/stool stuns are now dependant on armor and cannot trigger unless
+      you aim for the Head or Chest.

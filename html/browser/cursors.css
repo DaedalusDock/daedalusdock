@@ -25,11 +25,11 @@ a:hover,
 }
 
 /* Browser Datums */
-.pngsorDefault {
+.cursorDefault {
 	cursor: url("default.png"), auto;
 }
 
-.pngsorPointer {
+.cursorPointer {
 	cursor: url("link_select.png"), pointer;
 }
 

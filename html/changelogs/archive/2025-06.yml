@@ -46,3 +46,15 @@
       chosen.
   MrMelbert, Kapu1178:
   - refactor: REWROTE ALOT OF ATTACK CHAIN THINGS REPORT BUGS PLEASE
+2025-06-25:
+  Kapu1178:
+  - rscadd: Right-clicking with combat mode on will allow you to use special attacks.
+      Currently only the e sword has one.
+  - balance: Reduced the damage of the esword.
+  Kapu1178, yyzsong:
+  - rscadd: Stools now have a high force value, high stamina cost, and high stamina
+      damage.
+  - refactor: Rewrote how stool breaking works, it is now based on integrity.
+  - rscadd: Wooden stools
+  - balance: Chair/stool stuns are now dependant on armor and cannot trigger unless
+      you aim for the Head or Chest.

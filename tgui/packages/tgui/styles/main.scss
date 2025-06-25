@@ -7,13 +7,13 @@
 @use 'base';
 @use '~tgui-core/styles';
 
-// Core styles
-@include meta.load-css('./reset.scss');
-@include meta.load-css('./css-variables.scss');
-
 // Bulk tgui-core imports
 @include meta.load-css('tgui-core/styles/all-atomic.scss');
 @include meta.load-css('tgui-core/styles/all-themes.scss');
+
+// Core styles
+@include meta.load-css('./reset.scss');
+@include meta.load-css('./css-variables.scss');
 
 // Interfaces
 @include meta.load-css('./interfaces/ListInput.scss');
@@ -43,14 +43,6 @@
 @include meta.load-css('./layouts/NtosWindow.scss');
 @include meta.load-css('./layouts/TitleBar.scss');
 @include meta.load-css('./layouts/Window.scss');
-
-// NT Theme
-.Layout__content {
-  background-size: 70%;
-  background-size: 70% 70%;
-  background-position: center;
-  background-repeat: no-repeat;
-}
 
 // A default, in case someone uses the vp() function outside of a <Window>
 :root {

@@ -10,4 +10,9 @@
   --titlebar-text: var(--color-text-translucent-light);
   --titlebar-shadow-color: var(--color-border-dark);
   --titlebar-shadow-core: var(--color-border-dark);
+
+  --color-base: hsl(0, 0%, 20%);
+  --cursor-default: url('shared_assets/default.png'), default;
+  --cursor-pointer: url('shared_assets/link_select.png'), pointer;
+  --font-family: Verdana, Geneva, sans-serif;
 }

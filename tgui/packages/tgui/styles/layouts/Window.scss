@@ -10,11 +10,6 @@
   inset: 0;
   color: var(--color-text);
   background-color: var(--color-base);
-  background-image: linear-gradient(
-    to bottom,
-    var(--color-base-start) 0%,
-    var(--color-base-end) 100%
-  );
 }
 
 // Everything after the title bar

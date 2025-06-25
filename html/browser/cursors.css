@@ -1,52 +1,55 @@
-html
-{
-	cursor: url("default.cur"), auto;
+html {
+	cursor: url("default.png"), auto;
 }
 
-a:hover
-{
-	cursor: url("link_select.cur"), auto;
+a:hover {
+	cursor: url("link_select.png"), auto;
 }
 
 a:hover,
 .dark a:hover {
-	cursor: url("link_select.cur"), pointer;
+	cursor: url("link_select.png"), pointer;
 }
 
 .button {
-	cursor: url("link_select.cur"), pointer;
+	cursor: url("link_select.png"), pointer;
 }
 
 .grid-item:hover .grid-item-text {
-	cursor: url("link_select.cur"), pointer;
+	cursor: url("link_select.png"), pointer;
 }
 
 .link,
-.link:hover{
-	cursor: url("link_select.cur"), pointer;
+.link:hover {
+	cursor: url("link_select.png"), pointer;
 }
 
 /* Browser Datums */
-.cursorDefault {
-	cursor: url("default.cur"), auto;
+.pngsorDefault {
+	cursor: url("default.png"), auto;
 }
 
-.cursorPointer{
-	cursor: url("link_select.cur"), pointer;
+.pngsorPointer {
+	cursor: url("link_select.png"), pointer;
 }
 
-.slider{
-	cursor: url("link_select.cur"), pointer;
+.slider {
+	cursor: url("link_select.png"), pointer;
 }
 
-a.white, a.white:link, a.white:visited, a.white:active {
-	cursor: url("default.cur"), auto;
+a.white,
+a.white:link,
+a.white:visited,
+a.white:active {
+	cursor: url("default.png"), auto;
 }
 
-a.genericLink, a.genericLink:visited, a.genericLink:active{
-	cursor: url("default.cur"), auto;
+a.genericLink,
+a.genericLink:visited,
+a.genericLink:active {
+	cursor: url("default.png"), auto;
 }
 
 a.rawLink {
-	cursor: url("link_select.cur"), pointer;
+	cursor: url("link_select.png"), pointer;
 }

@@ -30,6 +30,7 @@ GLOBAL_LIST_INIT(sandstone_recipes, list ( \
 
 /obj/item/stack/sheet/mineral
 	abstract_type = /obj/item/stack/sheet/mineral
+	hitsound = 'sound/weapons/attack/metal_sheet_hit.ogg'
 
 /obj/item/stack/sheet/mineral/sandstone
 	name = "sandstone bricks"

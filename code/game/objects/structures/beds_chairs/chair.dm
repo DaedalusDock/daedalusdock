@@ -3,22 +3,23 @@ TYPEINFO_DEF(/obj/structure/chair)
 
 /obj/structure/chair
 	name = "chair"
-	desc = "You sit in this. Either by will or force."
+	desc = "You sit in this."
 	icon = 'icons/obj/chairs.dmi'
 	icon_state = "chair"
 	anchored = TRUE
 	can_buckle = TRUE
 	buckle_lying = 0 //you sit in a chair, not lay
 	resistance_flags = NONE
-	max_integrity = 250
+
+	max_integrity = 100
 	integrity_failure = 0.1
+
 	layer = OBJ_LAYER
 	mouse_drop_pointer = TRUE
 
 	var/buildstacktype = /obj/item/stack/sheet/iron
 	var/buildstackamount = 1
 	var/item_chair = /obj/item/chair // if null it can't be picked up
-
 
 /obj/structure/chair/examine(mob/user)
 	. = ..()
@@ -268,17 +269,23 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool, 0)
 
 /obj/structure/chair/MouseDrop(over_object, src_location, over_location)
 	. = ..()
-	if(over_object == usr && Adjacent(usr))
-		if(!item_chair || has_buckled_mobs() || src.flags_1 & NODECONSTRUCT_1)
-			return
-		if(!usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY|USE_NEED_HANDS))
-			return
-		usr.visible_message(span_notice("[usr] grabs \the [src.name]."), span_notice("You grab \the [src.name]."))
-		var/obj/item/C = new item_chair(loc)
-		C.set_custom_materials(custom_materials)
-		TransferComponents(C)
-		usr.put_in_hands(C)
-		qdel(src)
+	if(over_object != usr || !IsReachableBy(usr))
+		return
+	if(!item_chair || has_buckled_mobs() || (flags_1 & NODECONSTRUCT_1))
+		return
+	if(!usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY|USE_NEED_HANDS))
+		return
+
+	var/obj/item/C = new item_chair(null)
+	if(!usr.pickup_item(C))
+		qdel(C)
+		return
+
+	usr.visible_message(span_notice("[usr] grabs \the [src.name]."), span_notice("You grab \the [src.name]."))
+	C.set_custom_materials(custom_materials)
+	TransferComponents(C)
+	transfer_evidence_to(C)
+	qdel(src)
 
 /obj/structure/chair/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
 	return ..()
@@ -301,6 +308,20 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	buildstackamount = 2
 	item_chair = /obj/item/chair/stool/bamboo
 
+TYPEINFO_DEF(/obj/structure/chair/stool/wood)
+	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT)
+
+/obj/structure/chair/stool/wood
+	name = "wooden stool"
+	desc = "A stool made of wood, complete with splinters and a faded finish."
+	icon_state = "stool_wood"
+
+	can_buckle = FALSE
+	buildstackamount = 1
+	buildstacktype = /obj/item/stack/sheet/mineral/wood
+
+	item_chair = /obj/item/chair/stool/wood
+
 TYPEINFO_DEF(/obj/item/chair)
 	default_materials = list(/datum/material/iron = 2000)
 
@@ -312,12 +333,23 @@ TYPEINFO_DEF(/obj/item/chair)
 	inhand_icon_state = "chair"
 	lefthand_file = 'icons/mob/inhands/misc/chairs_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/chairs_righthand.dmi'
+
 	w_class = WEIGHT_CLASS_HUGE
-	force = 8
+
+	max_integrity = 125
+	integrity_failure = 0.1
+
+	force = 12 // dude it's a fucking chair
+	combat_click_delay = CLICK_CD_MELEE * 1.25
+
+	stamina_damage = 35
+	stamina_cost = 25
+	stamina_critical_modifier = 1.5
+
 	throwforce = 10
 	throw_range = 3
-	hitsound = 'sound/items/trayhit1.ogg'
 
+	hitsound = 'sound/weapons/attack/metal_sheet_hit.ogg'
 	block_sound = SFX_BLOCK_BIG_METAL
 
 	var/break_chance = 5 //Likely hood of smashing the chair.
@@ -353,21 +385,34 @@ TYPEINFO_DEF(/obj/item/chair)
 	var/obj/structure/chair/C = new origin_type(get_turf(loc))
 	C.set_custom_materials(custom_materials)
 	TransferComponents(C)
+	transfer_evidence_to(C)
 	C.setDir(user.dir)
 	qdel(src)
 
-/obj/item/chair/proc/smash(mob/living/user)
+/obj/item/chair/deconstruct(disassembled, mob/user)
 	var/stack_type = initial(origin_type.buildstacktype)
+	var/stack_amount = initial(origin_type.buildstackamount)
 	if(!stack_type)
-		return
-	var/remaining_mats = initial(origin_type.buildstackamount)
-	remaining_mats-- //Part of the chair was rendered completely unusable. It magically dissapears. Maybe make some dirt?
-	if(remaining_mats)
-		for(var/M=1 to remaining_mats)
-			new stack_type(get_turf(loc))
+		return ..()
+
+	if(disassembled)
+		if(stack_type)
+			new stack_type(drop_location(), stack_amount)
+		else
+			for(var/datum/material/M as anything in custom_materials)
+				var/safe_sheet_amt = floor(custom_materials[M] / MINERAL_MATERIAL_AMOUNT)
+				if(safe_sheet_amt)
+					new M.sheet_type(drop_location(), safe_sheet_amt)
+		return ..()
+
+	stack_amount-- //Part of the chair was rendered completely unusable. It magically dissapears. Maybe make some dirt?
+	if(stack_amount)
+		new stack_type(drop_location(), stack_amount)
+
 	else if(custom_materials[GET_MATERIAL_REF(/datum/material/iron)])
-		new /obj/item/stack/rods(get_turf(loc), 2)
-	qdel(src)
+		new /obj/item/stack/rods(drop_location(), 2)
+
+	return ..()
 
 /obj/item/chair/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	. = ..()
@@ -382,15 +427,33 @@ TYPEINFO_DEF(/obj/item/chair)
 			return ..()
 	return ..()
 
+/obj/item/chair/atom_destruction(damage_flag)
+	if(damage_flag == BLUNT)
+		playsound(loc, 'sound/weapons/attack/chair_crash.ogg', 40)
+	return ..()
 
-/obj/item/chair/afterattack(atom/target, mob/living/carbon/user, proximity)
-	if(prob(break_chance))
-		user.visible_message(span_danger("<b>[user] smashes \the [src] to pieces against <b>[target]</b>."))
-		if(iscarbon(target))
-			var/mob/living/carbon/C = target
-			C.Paralyze(2 SECONDS)
+/obj/item/chair/afterattack(atom/target, mob/user, list/modifiers)
+	take_damage(integrity_loss_on_hit(), BRUTE, BLUNT, FALSE)
 
-		smash(user)
+	if(!is_destroyed())
+		return
+
+	user.visible_message(
+		span_danger("<b>[user]</b> smashes [src] to pieces over <b>[target]</b>."),
+		blind_message = span_hear("You hear a loud crash."),
+	)
+
+	if(!ishuman(target) || !(user.zone_selected in list(BODY_ZONE_CHEST, BODY_ZONE_HEAD))) // Limb shots won't stun, they rarely have armor..
+		return
+
+	var/mob/living/carbon/human/victim = target
+
+	// Less than 20 armor on the attacked part? STUN!
+	if(victim.run_armor_check(user.zone_selected, silent = TRUE) < 20)
+		victim.Paralyze(3 SECONDS)
+
+/obj/item/chair/proc/integrity_loss_on_hit()
+	return rand(15, 25)
 
 /obj/item/chair/greyscale
 	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX | MATERIAL_COLOR | MATERIAL_AFFECT_STATISTICS
@@ -401,7 +464,9 @@ TYPEINFO_DEF(/obj/item/chair)
 	icon_state = "stool_toppled"
 	inhand_icon_state = "stool"
 	origin_type = /obj/structure/chair/stool
-	break_chance = 0 //It's too sturdy.
+
+/obj/item/chair/stool/integrity_loss_on_hit()
+	return rand(5, 10) // Sturdy boi
 
 /obj/item/chair/stool/bar
 	name = "bar stool"
@@ -415,13 +480,35 @@ TYPEINFO_DEF(/obj/item/chair)
 	inhand_icon_state = "stool_bamboo"
 	hitsound = 'sound/weapons/genhit1.ogg'
 	origin_type = /obj/structure/chair/stool/bamboo
-	break_chance = 50	//Submissive and breakable unlike the chad iron stool
+
+	max_integrity = 50
+
+/obj/item/chair/stool/bamboo/integrity_loss_on_hit()
+	return rand(15, 25)
+
+TYPEINFO_DEF(/obj/item/chair/stool/wood)
+	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT)
+
+/obj/item/chair/stool/wood
+	name = "wooden stool"
+	icon_state = "stool_wood"
+	inhand_icon_state = "stool_wood"
+	origin_type = /obj/structure/chair/stool/wood
+
+	max_integrity = 100
+
+/obj/item/chair/stool/wood/Initialize(mapload)
+	. = ..()
+	transform = matrix().Turn(90)
+
+/obj/item/chair/stool/wood/integrity_loss_on_hit()
+	return rand(15, 25)
 
 /obj/item/chair/stool/narsie_act()
 	return //sturdy enough to ignore a god
 
 TYPEINFO_DEF(/obj/item/chair/wood)
-	default_materials = null
+	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT)
 
 /obj/item/chair/wood
 	name = "wooden chair"

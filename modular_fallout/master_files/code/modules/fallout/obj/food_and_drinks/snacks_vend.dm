@@ -88,4 +88,4 @@
 	trash_type = /obj/item/trash/syndi_cakes
 	food_reagents = list(/datum/reagent/consumable/nutriment = 4, /datum/reagent/consumable/doctor_delight = 5)
 	tastes = list("sweetness" = 3, "cake" = 1)
-	foodtypes = GRAIN | FRUIT | VEGETABLES | ANTITOXIC
+	foodtypes = GRAIN | FRUIT | VEGETABLES

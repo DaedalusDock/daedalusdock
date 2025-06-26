@@ -64,7 +64,7 @@
 		if(!flashbang_turf)
 			return
 		var/obj/item/grenade/flashbang/S = new /obj/item/grenade/flashbang(flashbang_turf)
-		S.preprime(user = null)
+		S.arm_grenade(user = null)
 	if(prob(75) || Proj.damage > 26) //prob(x) = chance for proj to actually do something, adjust depending on how OP you want sentrybots to be
 		return ..()
 	else

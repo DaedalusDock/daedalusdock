@@ -27,7 +27,10 @@
 	max_integrity = 600
 	proj_pass_rate = 90
 	pass_flags = LETPASSTHROW
-	climbable = TRUE
+
+/obj/structure/obstacle/tanktrap/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/climbable)
 
 /obj/structure/obstacle/old_locked_door
 	name = "old locked door"
@@ -103,6 +106,10 @@
 	buildstacktype = /obj/item/stack/crafting/metalparts
 	buildstackamount = 2
 
+/obj/structure/junk/machinery/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/climbable)
+
 /obj/structure/junk/locker
 	name = "decayed locker"
 	desc = "Broken, rusted junk."
@@ -143,7 +150,7 @@
 	buildstacktype = /obj/item/stack/crafting/electronicparts
 	buildstackamount = 1
 
-
+#warn bug =(
 //Slowdown var not functional Bug
 /obj/structure/junk/small
 	name = "rotting planks"

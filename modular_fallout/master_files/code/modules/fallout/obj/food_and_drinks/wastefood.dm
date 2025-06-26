@@ -454,7 +454,7 @@
 	filling_color = "#E9967A"
 
 /obj/item/food/grown/tato/attackby(obj/item/W, mob/user, params)
-	if(W.get_sharpness())
+	if(sharpness & SHARP_EDGED)
 		to_chat(user, "<span class='notice'>You cut the tato into wedges with [W].</span>")
 		var/obj/item/food/grown/tato/wedges/Wedges = new /obj/item/food/grown/tato/wedges
 		remove_item_from_storage(user)

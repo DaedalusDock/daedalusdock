@@ -115,13 +115,5 @@
 	max_ammo = 50
 	multiple_sprites = 2
 
-/obj/item/ammo_box/magazine/m473/explosive
-	name = "g11 magazine (4.73mm explosive)"
-	icon_state = "473mm"
-	caliber = "473mm"
-	ammo_type = /obj/item/ammo_casing/caseless/g11/explosive
-	max_ammo = 50
-	multiple_sprites = 2
-
 /obj/item/ammo_box/magazine/m473/empty
 	start_empty = 1

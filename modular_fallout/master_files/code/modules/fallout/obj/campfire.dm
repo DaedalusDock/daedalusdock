@@ -35,11 +35,11 @@
 		if(W.use(1))
 			user.visible_message("[user] has added fuel to [src].", "<span class='notice'>You have added fuel to [src].</span>")
 			fuel += 300
-	else if(fired && istype(P, /obj/item/reagent_containers/food/snacks))
+	else if(fired && istype(P, /obj/item/food))
 		if(!ishuman(user))
 			return
-		if(istype(P, /obj/item/reagent_containers/food/snacks))
-			var/obj/item/reagent_containers/food/snacks/F = P
+		if(istype(P, /obj/item/food))
+			var/obj/item/food/F = P
 			if(F.cooked_type)
 				to_chat(user, "You start cooking a [F.name].")
 				if(do_after(user, 20, target = src))

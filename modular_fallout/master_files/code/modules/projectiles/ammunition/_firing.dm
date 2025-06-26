@@ -1,4 +1,4 @@
-/obj/item/ammo_casing/proc/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, extra_damage, extra_penetration, extra_speed, atom/fired_from)
+/obj/item/ammo_casing/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, extra_damage, extra_penetration, extra_speed, atom/fired_from)
 	distro += variance
 	var/targloc = get_turf(target)
 	ready_proj(target, user, quiet, zone_override, extra_damage, extra_penetration, extra_speed, fired_from)

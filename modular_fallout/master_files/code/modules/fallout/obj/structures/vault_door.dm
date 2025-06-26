@@ -1,27 +1,19 @@
 //Fallout 13 Vault blast doors and controls directory
 
-/obj/structure/vault_door
+/obj/machinery/door/poddoor/vault_door
 	name = "Vault 113 blast door"
 	desc = "A conventional Vault blast door of \"Nine cog\" model.<br>A blast door design incorporates proper sealants against radiation and other hazardous elements that may be created in the event of a nuclear war, to properly protect its inhabitants."
 	icon = 'modular_fallout/master_files/icons/fallout/machines/gear.dmi'
 	icon_state = "113closed"
-	density = 1
-	opacity = 1
 	layer = ABOVE_ALL_MOB_LAYER
 	anchored = 1
-	var/is_busy = 0
-	var/destroyed = 0
-	var/id = 1
-	var/close_state = "113closed"
-	var/open_state = "113open"
-	var/closing_state = "113closing"
-	var/opening_state = "113opening"
 	var/broken_state = "113empty"
 	pixel_x = -32
 	pixel_y = -32
-	obj_integrity = -1
-	max_integrity = -1
+	max_integrity = 2000
 	integrity_failure = 0
+	resistance_flags = null
+	damage_deflection = 80
 
 /obj/structure/vault_door/old
 	name = "\proper ancient Vault blast door"
@@ -32,38 +24,49 @@
 	opening_state = "oldopening"
 	broken_state = "oldempty"
 
-/obj/structure/vault_door/obj_break(damage_flag)
+/obj/machinery/door/poddoor/vault_door/obj_break(damage_flag)
 	icon_state = broken_state
 	src.set_opacity(0)
 	src.density = 0
 	destroyed = 1
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
-/obj/structure/vault_door/proc/open()
-	is_busy = 1
+/obj/machinery/door/poddoor/vault_door/do_animate(animation)
+	switch(animation)
+		if("opening")
+			z_flick("opening", src)
+			playsound(src, 'sound/f13machines/doorgear_open.ogg', 60, TRUE)
+		if("closing")
+			z_flick("closing", src)
+			playsound(src, 'sound/f13machines/doorgear_close.ogg', 60, TRUE)
+
+/obj/machinery/door/poddoor/vault_door/open()
+	.=..()
 	flick(opening_state, src)
 	icon_state = open_state
 	spawn(11)
 		playsound(loc, 'sound/f13machines/doorgear_open.ogg', 50, 0, 10)
 		spawn(19)
-			src.set_opacity(0)
-			src.density = 0
-			is_busy = 0
-/obj/structure/vault_door/proc/close()
-	is_busy = 1
+			set_density(FALSE)
+			flags_1 &= ~PREVENT_CLICK_UNDER_1
+	..()
+
+/obj/machinery/door/poddoor/vault_door/close()
+	.=..()
 	flick(closing_state, src)
 	icon_state = close_state
 	spawn(11)
 		playsound(loc, 'sound/f13machines/doorgear_close.ogg', 50, 0, 10)
 		spawn(19)
-			src.set_opacity(1)
-			src.density = 1
-			is_busy = 0
+			set_density(TRUE)
+			flags_1 |= PREVENT_CLICK_UNDER_1
+	..()
 
-/obj/structure/vault_door/proc/toggle()
+/obj/machinery/door/poddoor/vault_door/proc/toggle()
 	if(destroyed)
 		usr << "<span class='warning'>[src] is broken.</span>"
 		return
-	if(is_busy)
+	if(operating)
 		usr << "<span class='warning'>[src] is busy.</span>"
 		return
 	if (density)
@@ -85,7 +88,7 @@
 /obj/machinery/doorButtons/vaultButton/proc/toggle_door()
 	var/opened
 	icon_state = "lever0"
-	for(var/obj/structure/vault_door/door in GLOB.vault_doors)
+	for(var/obj/machinery/door/poddoor/vault_door/ in GLOB.vault_doors)
 		if(door.id == id)
 			door.toggle()
 			opened = !door.density

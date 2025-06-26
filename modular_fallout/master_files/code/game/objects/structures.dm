@@ -28,7 +28,8 @@
 	if(smooth)
 		queue_smooth_neighbors(src)
 	return ..()
-
+#warn fix snowflake climbing stuff
+/*
 /obj/structure/on_attack_hand(mob/user, act_intent = user.a_intent, unarmed_attack_flags)
 	. = ..()
 	if(structureclimber && structureclimber != user)
@@ -40,24 +41,6 @@
 /obj/structure/ui_act(action, params)
 	. = ..()
 	add_fingerprint(usr)
-
-/obj/structure/MouseDrop_T(atom/movable/O, mob/user)
-	. = ..()
-	if(!climbable)
-		return
-	if(user == O && iscarbon(O))
-		var/mob/living/L = O
-		if(CHECK_MOBILITY(L, MOBILITY_MOVE))
-			climb_structure(user)
-			return
-	if(!istype(O, /obj/item) || user.get_active_held_item() != O)
-		return
-	if(iscyborg(user))
-		return
-	if(!user.dropItemToGround(O))
-		return
-	if (O.loc != src.loc)
-		step(O, get_dir(O, src))
 
 /obj/structure/proc/do_climb(atom/movable/A)
 	if(climbable)
@@ -89,7 +72,7 @@
 			else
 				to_chat(user, "<span class='warning'>You fail to climb onto [src].</span>")
 	structureclimber = null
-
+*/
 /obj/structure/CanPass(atom/movable/mover, border_dir)//So bullets will fly over and stuff.
 	if(istype(mover, /obj/item/projectile)) // Treats especifically projectiles
 		var/obj/item/projectile/proj = mover

@@ -110,76 +110,20 @@
 	. = ..()
 	AddComponent(/datum/component/butchering, 100, 70) //decent in a pinch, but pretty bad.
 
-/obj/item/twohanded/spear/rightclick_attack_self(mob/user)
-	if(explosive)
-		explosive.attack_self(user)
-		return
-	. = ..()
-
 /obj/item/twohanded/spear/update_overlays()
 	. = ..()
-	if(explosive)
-		. += "spearbomb_overlay"
-
-/obj/item/twohanded/spear/suicide_act(mob/living/carbon/user)
-	user.visible_message("<span class='suicide'>[user] begins to sword-swallow \the [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
-	if(explosive) //Citadel Edit removes qdel and explosive.forcemove(AM)
-		user.say("[war_cry]", forced="spear warcry")
-		explosive.prime()
-		user.gib()
-		return BRUTELOSS
-	return BRUTELOSS
-
-/obj/item/twohanded/spear/examine(mob/user)
-	. = ..()
-	if(explosive)
-		. += "<span class='notice'>Alt-click to set your war cry.</span>"
-		. += "<span class='notice'>Right-click in combat mode to activate the attached explosive.</span>"
-
-/obj/item/twohanded/spear/afterattack(atom/movable/AM, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(isopenturf(AM)) //So you can actually melee with it
-		return
-	if(explosive && wielded) //Citadel edit removes qdel and explosive.forcemove(AM)
-		user.say("[war_cry]", forced="spear warcry")
-		explosive.prime()
-
-/obj/item/twohanded/spear/grenade_prime_react(obj/item/grenade/nade) //Citadel edit, removes throw_impact because memes
-	nade.forceMove(get_turf(src))
-	qdel(src)
 
 /obj/item/twohanded/spear/AltClick(mob/user)
 	. = ..()
 	if(user.canUseTopic(src, BE_CLOSE))
 		..()
-		if(!explosive)
-			return
 		if(istype(user) && loc == user)
 			var/input = stripped_input(user,"What do you want your war cry to be? You will shout it when you hit someone in melee.", ,"", 50)
 			if(input)
 				src.war_cry = input
 		return TRUE
 
-/obj/item/twohanded/spear/CheckParts(list/parts_list)
-	var/obj/item/twohanded/spear/S = locate() in parts_list
-	if(S)
-		if(S.explosive)
-			S.explosive.forceMove(get_turf(src))
-			S.explosive = null
-		parts_list -= S
-		qdel(S)
-	..()
-	var/obj/item/grenade/G = locate() in contents
-	if(G)
-		explosive = G
-		name = "explosive lance"
-		embedding = list(embed_chance = 0, pain_mult = 1)//elances should not be embeddable
-		updateEmbedding()
-		desc = "A makeshift spear with \a [G] attached to it."
-	update_icon()
-
+#warn check that explosive lances are workable
 
 // Lance		Keywords: LEGION, Damage 25/40, Reach
 /obj/item/twohanded/spear/lance
@@ -337,7 +281,7 @@
 /////////////////////////////////
 
 // Thermic Lance		Keywords: Damage 5/60, Special Damage Type - Burn
-/obj/item/twohanded/thermic_lance
+/obj/item/melee/energy/thermic_lance
 	name = "thermic lance"
 	desc = "A versatile power-welding tool. Useful for cutting apart metal and limbs."
 	icon = 'modular_fallout/master_files/icons/fallout/objects/melee/two_handed.dmi'
@@ -354,8 +298,9 @@
 	attack_verb_simple = list("burned", "welded", "cauterized", "melted", "charred")
 	actions_types = list(/datum/action/item_action/toggle_lance)
 	hitsound = "swing_hit"
-	var/on = FALSE
-	var/force_on = 60
+	active_force = 50
+	armor_penetration = 75
+	demolition_modifier = 2
 
 /obj/item/twohanded/thermic_lance/Initialize()
 	. = ..()
@@ -411,6 +356,7 @@
 	inhand_icon_state  = "hammer-super"
 	force = 25
 	force_wielded = 60
+
 
 // Rocket-assisted Sledgehammer			Keywords: Damage 20/52, Mining  Issues left: mining only when dual wielded, sound to play always on hit
 /obj/item/twohanded/sledgehammer/rockethammer

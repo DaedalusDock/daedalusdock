@@ -18,7 +18,7 @@
 	name = "microbattery magazine"
 	desc = "A microbattery holder for the 'Big Iron'"
 
-	icon = 'modular_fallout/master_files/icons/objects/guns/ammo.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ammo.dmi'
 	icon_state = "mws_mag"
 	caliber = "mws"
 	ammo_type = /obj/item/ammo_casing/mws_batt

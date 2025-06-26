@@ -4,44 +4,6 @@
 //Functionally identical to regular drinks. The only difference is that the default bottle size is 100. - Darem
 //Bottles now knockdown and break when smashed on people's heads. - Giacom
 
-/obj/item/reagent_containers/cup/glass/bottle/gin
-	name = "Griffeater gin"
-	desc = "A bottle of high quality gin, produced in the New London Space Station."
-	icon_state = "ginbottle"
-	list_reagents = list(/datum/reagent/consumable/ethanol/gin = 100)
-
-/obj/item/reagent_containers/cup/glass/bottle/gin/empty
-	list_reagents = null
-
-/obj/item/reagent_containers/cup/glass/bottle/whiskey
-	name = "Uncle Git's special reserve"
-	desc = "A premium single-malt whiskey, gently matured inside the tunnels of a nuclear shelter. TUNNEL WHISKEY RULES."
-	icon_state = "whiskeybottle"
-	list_reagents = list(/datum/reagent/consumable/ethanol/whiskey = 100)
-
-/obj/item/reagent_containers/cup/glass/bottle/whiskey/empty
-	list_reagents = null
-
-/obj/item/reagent_containers/cup/glass/bottle/vodka
-	name = "Tunguska triple distilled"
-	desc = "Aah, vodka. Prime choice of drink AND fuel by Russians worldwide."
-	icon_state = "vodkabottle"
-	list_reagents = list(/datum/reagent/consumable/ethanol/vodka = 100)
-
-/obj/item/reagent_containers/cup/glass/bottle/vodka/empty
-	list_reagents = null
-
-/obj/item/reagent_containers/cup/glass/bottle/vodka/badminka
-	name = "Badminka vodka"
-	desc = "The label's written in Cyrillic. All you can make out is the name and a word that looks vaguely like 'Vodka'."
-	icon_state = "badminka"
-
-/obj/item/reagent_containers/cup/glass/bottle/tequila
-	name = "Caccavo guaranteed quality tequila"
-	desc = "Made from premium petroleum distillates, pure thalidomide and other fine quality ingredients!"
-	icon_state = "tequilabottle"
-	list_reagents = list(/datum/reagent/consumable/ethanol/tequila = 100)
-
 /obj/item/reagent_containers/cup/glass/bottle/tequila/empty
 	list_reagents = null
 
@@ -61,122 +23,14 @@
 /obj/item/reagent_containers/cup/glass/bottle/sunset
 	name = "Sunset Sarsparilla"
 	desc = "The most popular flavored root beer in the West!"
-	icon = 'icons/obj/f13vending.dmi'
+	icon = 'modular_fallout/master_files/icons/obj/f13vending.dmi'
 	icon_state = "sunset"
 	list_reagents = list(/datum/reagent/consumable/ethanol/whiskey = 1, /datum/reagent/consumable/sunset = 15, /datum/reagent/medicine/salglu_solution = 5)
 	drink_type = SUGAR
 	isGlass = TRUE
 
-/obj/item/reagent_containers/cup/glass/bottle/patron
-	name = "Wrapp Artiste Patron"
-	desc = "Silver laced tequila, served in space night clubs across the galaxy."
-	icon_state = "patronbottle"
-	list_reagents = list(/datum/reagent/consumable/ethanol/patron = 100)
-
-/obj/item/reagent_containers/cup/glass/bottle/patron/empty
-	list_reagents = null
-
-/obj/item/reagent_containers/cup/glass/bottle/rum
-	name = "Captain Pete's Cuban spiced rum"
-	desc = "This isn't just rum, oh no. It's practically GRIFF in a bottle."
-	icon_state = "rumbottle"
-	list_reagents = list(/datum/reagent/consumable/ethanol/rum = 100)
-
-/obj/item/reagent_containers/cup/glass/bottle/rum/empty
-	list_reagents = null
-
-/obj/item/reagent_containers/cup/glass/bottle/vermouth
-	name = "Goldeneye vermouth"
-	desc = "Sweet, sweet dryness~"
-	icon_state = "vermouthbottle"
-	list_reagents = list(/datum/reagent/consumable/ethanol/vermouth = 100)
-
-/obj/item/reagent_containers/cup/glass/bottle/vermouth/empty
-	list_reagents = null
-
-/obj/item/reagent_containers/cup/glass/bottle/kahlua
-	name = "Robert Robust's coffee liqueur"
-	desc = "A widely known, Mexican coffee-flavoured liqueur. In production since 1936, HONK."
-	icon_state = "kahluabottle"
-	list_reagents = list(/datum/reagent/consumable/ethanol/kahlua = 100)
-	drink_type = VEGETABLES
-
-/obj/item/reagent_containers/cup/glass/bottle/kahlua/empty
-	list_reagents = null
-
-/obj/item/reagent_containers/cup/glass/bottle/goldschlager
-	name = "College Girl goldschlager"
-	desc = "Because they are the only ones who will drink 100 proof cinnamon schnapps."
-	icon_state = "goldschlagerbottle"
-	list_reagents = list(/datum/reagent/consumable/ethanol/goldschlager = 100)
-
-/obj/item/reagent_containers/cup/glass/bottle/goldschlager/empty
-	list_reagents = null
-
-/obj/item/reagent_containers/cup/glass/bottle/cognac
-	name = "Chateau de Baton premium cognac"
-	desc = "A sweet and strongly alchoholic drink, made after numerous distillations and years of maturing. You might as well not scream 'SHITCURITY' this time."
-	icon_state = "cognacbottle"
-	list_reagents = list(/datum/reagent/consumable/ethanol/cognac = 100)
-
-/obj/item/reagent_containers/cup/glass/bottle/cognac/empty
-	list_reagents = null
-
-/obj/item/reagent_containers/cup/glass/bottle/wine
-	name = "Doublebeard's bearded special wine"
-	desc = "A faint aura of unease and asspainery surrounds the bottle."
-	icon_state = "winebottle"
-	list_reagents = list(/datum/reagent/consumable/ethanol/wine = 100)
-	drink_type = FRUIT | ALCOHOL
-
 /obj/item/reagent_containers/cup/glass/bottle/wine/empty
 	list_reagents = null
-
-/obj/item/reagent_containers/cup/glass/bottle/absinthe
-	name = "extra-strong absinthe"
-	desc = "An strong alcoholic drink brewed and distributed by"
-	icon_state = "absinthebottle"
-	list_reagents = list(/datum/reagent/consumable/ethanol/absinthe = 100)
-
-/obj/item/reagent_containers/cup/glass/bottle/absinthe/empty
-	list_reagents = null
-
-/obj/item/reagent_containers/cup/glass/bottle/absinthe/Initialize()
-	. = ..()
-	redact()
-
-/obj/item/reagent_containers/cup/glass/bottle/absinthe/proc/redact()
-	// There was a large fight in the coderbus about a player reference
-	// in absinthe. Ergo, this is why the name generation is now so
-	// complicated. Judge us kindly.
-	var/shortname = pickweight(
-		list("T&T" = 1, "A&A" = 1, "Generic" = 1))
-	var/fullname
-	var/removals = GLOB.redacted_strings.Copy()
-	switch(shortname)
-		if("T&T")
-			fullname = "Teal and Tealer"
-		if("A&A")
-			fullname = "Ash and Asher"
-		if("Generic")
-			fullname = "Nanotrasen Cheap Imitations"
-	var/chance = 50
-
-	if(prob(chance))
-		shortname = pick_n_take(removals)
-
-	var/list/final_fullname = list()
-	for(var/word in splittext(fullname, " "))
-		if(prob(chance))
-			word = pick_n_take(removals)
-		final_fullname += word
-
-	fullname = jointext(final_fullname, " ")
-
-	// Actually finally setting the new name and desc
-	name = "[shortname] [name]"
-	desc = "[desc] [fullname] Inc."
-
 
 /obj/item/reagent_containers/cup/glass/bottle/absinthe/premium
 	name = "Gwyn's premium absinthe"
@@ -185,13 +39,6 @@
 
 /obj/item/reagent_containers/cup/glass/bottle/absinthe/premium/redact()
 	return
-
-/obj/item/reagent_containers/cup/glass/bottle/lizardwine
-	name = "bottle of lizard wine"
-	desc = "An alcoholic beverage originally made in China by infusing lizard tails in ethanol, now? Much the same, but with geckos. Inexplicably popular among most higher ups."
-	icon_state = "lizardwine"
-	list_reagents = list(/datum/reagent/consumable/ethanol/lizardwine = 100)
-	drink_type = FRUIT | ALCOHOL
 
 /obj/item/reagent_containers/cup/glass/bottle/hcider
 	name = "Jian Hard Cider"
@@ -231,15 +78,6 @@
 		name = "Inubashiri's Home Brew"
 		desc += " Awoo."
 		icon_state = "sakebottle_i"
-
-/obj/item/reagent_containers/cup/glass/bottle/fernet
-	name = "Fernet Bronca"
-	desc = "A bottle of pure Fernet Bronca, produced in Cordoba Space Station"
-	icon_state = "fernetbottle"
-	list_reagents = list(/datum/reagent/consumable/ethanol/fernet = 100)
-
-/obj/item/reagent_containers/cup/glass/bottle/fernet/empty
-	list_reagents = null
 
 /obj/item/reagent_containers/cup/glass/bottle/applejack
 	name = "Buckin' Bronco's Applejack"
@@ -327,7 +165,7 @@
 /obj/item/reagent_containers/cup/glass/bottle/bawls
 	name = "Balls Guarana"
 	desc = "To give you that Bounce!"
-	icon = 'icons/obj/f13vending.dmi'
+	icon = 'modular_fallout/master_files/icons/obj/f13vending.dmi'
 	icon_state = "bawls"
 	list_reagents = list(/datum/reagent/consumable/coffee = 10, /datum/reagent/consumable/bawls = 15)
 	drink_type = SUGAR
@@ -374,7 +212,7 @@
 /obj/item/reagent_containers/cup/glass/bottle/vim
 	name = "Vim"
 	desc = "You've got Vim!"
-	icon = 'icons/obj/f13vending.dmi'
+	icon = 'modular_fallout/master_files/icons/obj/f13vending.dmi'
 	icon_state = "vim"
 	list_reagents = list(/datum/reagent/consumable/sugar = 5, /datum/reagent/consumable/vim = 15)
 	drink_type = SUGAR

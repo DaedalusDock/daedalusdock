@@ -349,8 +349,8 @@
 	inhand_icon_state = "legskirt"
 	//item_color = "legskirt"
 	var/sleeves_adjusted = 0
-	lefthand_file = 'modular_fallout/master_files/icons/mob/inhands/clothing_lefthand.dmi'
-	righthand_file = 'modular_fallout/master_files/icons/mob/inhands/clothing_righthand.dmi'
+	lefthand_file = 'mmodular_fallout/master_files/icons/fallout/onmob/weapons/clothing_lefthand.dmi'
+	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/clothing_righthand.dmi'
 	alt_covers_chest = TRUE
 	can_adjust = TRUE
 
@@ -384,8 +384,8 @@
 	icon_state = "legaux"
 	inhand_icon_state = "legaux"
 	//item_color = "legskirt"
-	lefthand_file = 'modular_fallout/master_files/icons/mob/inhands/clothing_lefthand.dmi'
-	righthand_file = 'modular_fallout/master_files/icons/mob/inhands/clothing_righthand.dmi'
+	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/clothing_lefthand.dmi'
+	righthand_file = 'mmodular_fallout/master_files/icons/fallout/onmob/weapons/clothing_righthand.dmi'
 
 /obj/item/clothing/under/f13/legauxiliaf
 	name = "female auxilia robes"
@@ -393,8 +393,8 @@
 	icon_state = "legauxf"
 	inhand_icon_state = "legauxf"
 	//item_color = "legskirt"
-	lefthand_file = 'modular_fallout/master_files/icons/mob/inhands/clothing_lefthand.dmi'
-	righthand_file = 'modular_fallout/master_files/icons/mob/inhands/clothing_righthand.dmi'
+	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/clothing_lefthand.dmi'
+	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/clothing_righthand.dmi'
 
 /obj/item/clothing/under/f13/legslave
 	name = "simple male slave clothing"
@@ -427,8 +427,8 @@
 	inhand_icon_state = "roma_auxilia"
 	//item_color = "roma_auxilia"
 	var/sleeves_adjusted = 0
-	lefthand_file = 'modular_fallout/master_files/icons/mob/inhands/clothing_lefthand.dmi'
-	righthand_file = 'modular_fallout/master_files/icons/mob/inhands/clothing_righthand.dmi'
+	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/clothing_lefthand.dmi'
+	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/clothing_righthand.dmi'
 	alt_covers_chest = TRUE
 	can_adjust = TRUE
 

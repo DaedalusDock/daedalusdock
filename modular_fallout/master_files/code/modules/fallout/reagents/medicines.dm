@@ -45,7 +45,7 @@
 	C.adjustToxLoss(5, FALSE, cause_of_death = "Stimpak fluid overdose")
 	C.adjustOxyLoss(8, FALSE, cause_of_death = "Stimpak fluid overdose")
 	C.drowsyness += 2
-	C.jitteriness += 3
+	C.set_jitter_if_lower(3 SECONDS)
 	..()
 	. = TRUE
 

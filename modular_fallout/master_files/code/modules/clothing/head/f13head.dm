@@ -59,8 +59,6 @@
 	flags_inv = HIDEEARS|HIDEEYES|HIDEHAIR
 	flags_cover = HEADCOVERSEYES
 	resistance_flags = LAVA_PROOF | FIRE_PROOF
-	dynamic_hair_suffix = ""
-	dynamic_fhair_suffix = ""
 
 /obj/item/clothing/head/helmet/f13/combat/dark
 	color = "#302E2E" // Dark Grey
@@ -221,8 +219,6 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	item_flags = SLOWS_WHILE_IN_HAND
 	flash_protect = 2
-	dynamic_hair_suffix = ""
-	dynamic_fhair_suffix = ""
 	speechspan = SPAN_ROBOT //makes you sound like a robot
 	heat_protection = HEAD
 	max_heat_protection_temperature = FIRE_HELM_MAX_TEMP_PROTECT
@@ -582,8 +578,6 @@
 	armor = list("tier" = 4, ENERGY = 0, BOMB = 10, BIO = 0, RAD = 10, FIRE = 0, ACID = 0)
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR
 	strip_delay = 30
-	dynamic_hair_suffix = ""
-	dynamic_fhair_suffix = ""
 
 /obj/item/clothing/head/f13
 	flags_inv = HIDEHAIR
@@ -777,7 +771,6 @@
 	icon_state = "kittyb"
 	color = "#999999"
 	armor = list("tier" = 0)
-	dynamic_hair_suffix = ""
 
 /obj/item/clothing/head/f13/riderw
 	name = "Reinforced Rider Helmet" //Not raider. Rider. //Count up your sins
@@ -898,8 +891,6 @@
 	icon_state = "atombeliever"
 	inhand_icon_state = "atombeliever"
 	armor = list("tier" = 2, ENERGY = 45, BOMB = 55, BIO = 65, RAD = 100, FIRE = 60, ACID = 20)
-	dynamic_hair_suffix = ""
-	dynamic_fhair_suffix = ""
 
 /obj/item/clothing/head/f13/flatranger
 	name = "NCR gambler ranger hat"

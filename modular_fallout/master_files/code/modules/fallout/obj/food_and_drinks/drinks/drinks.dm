@@ -50,13 +50,13 @@
 	desc = "The most popular flavored soft drink in the United States before the Great War."
 	icon = 'icons/obj/f13vending.dmi'
 	icon_state = "nukacola"
-	list_reagents = list(/datum/reagent/consumable/nuka_cola = 25, /datum/reagent/radium = 5)
+	list_reagents = list(/datum/reagent/consumable/nuka_cola = 25, /datum/reagent/uranium/radium = 5)
 	drink_type = SUGAR
 	isGlass = TRUE
 
 /obj/item/reagent_containers/cup/glass/bottle/f13nukacola/radioactive
 	desc = "The most popular flavored soft drink in the United States before the Great War.<br>It was preserved in a fairly pristine state.<br>The bottle is slightly glowing."
-	list_reagents = list(/datum/reagent/consumable/nuka_cola = 15, /datum/reagent/radium = 5)
+	list_reagents = list(/datum/reagent/consumable/nuka_cola = 15, /datum/reagent/uranium/radium = 5)
 
 /obj/item/reagent_containers/cup/glass/bottle/sunset
 	name = "Sunset Sarsparilla"
@@ -244,7 +244,6 @@
 /obj/item/reagent_containers/cup/glass/bottle/applejack
 	name = "Buckin' Bronco's Applejack"
 	desc = "Kicks like a horse, tastes like an apple!"
-	custom_price = PRICE_CHEAP
 	icon_state = "applejack_bottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/applejack = 100)
 	drink_type = FRUIT
@@ -273,7 +272,6 @@
 /obj/item/reagent_containers/cup/glass/bottle/trappist
 	name = "Mont de Requin Trappistes Bleu"
 	desc = "Brewed in Belgium. Fancy!"
-	custom_premium_price = PRICE_ABOVE_NORMAL
 	icon_state = "trappistbottle"
 	volume = 50
 	list_reagents = list(/datum/reagent/consumable/ethanol/trappist = 50)
@@ -296,9 +294,8 @@
 /obj/item/reagent_containers/cup/glass/bottle/orangejuice
 	name = "orange juice"
 	desc = "Full of vitamins and deliciousness!"
-	custom_price = PRICE_CHEAP
 	icon_state = "orangejuice"
-	item_state = "carton"
+	inhand_icon_state = "carton"
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
 	isGlass = FALSE
@@ -309,7 +306,7 @@
 	name = "small carton box"
 	desc = "A small biodegradable carton box made from plant biomatter."
 	icon_state = "eco_box"
-	item_state = "carton"
+	inhand_icon_state = "carton"
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
 	volume = 50
@@ -318,9 +315,8 @@
 /obj/item/reagent_containers/cup/glass/bottle/cream
 	name = "milk cream"
 	desc = "It's cream. Made from milk. What else did you think you'd find in there?"
-	custom_price = PRICE_CHEAP
 	icon_state = "cream"
-	item_state = "carton"
+	inhand_icon_state = "carton"
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
 	isGlass = FALSE
@@ -351,7 +347,7 @@
 	name = "Silician Instatea"
 	desc = "Pre-war powerdered canned tea powder."
 	icon_state = "instatea"
-	list_reagents = list(/datum/reagent/toxin/teapowder = 98, /datum/reagent/radium = 2)
+	list_reagents = list(/datum/reagent/toxin/teapowder = 98, /datum/reagent/uranium/radium = 2)
 
 /obj/item/reagent_containers/food/drinks/soda_cans/cream
 	name = "canned cream"
@@ -367,13 +363,13 @@
 	name = "Silician Instacocoa"
 	desc = "Pre-war powerdered canned dried chocolate mix."
 	icon_state = "instachoc"
-	list_reagents = list(/datum/reagent/consumable/coco = 98, /datum/reagent/radium = 2)
+	list_reagents = list(/datum/reagent/consumable/coco = 98, /datum/reagent/uranium/radium = 2)
 
 /obj/item/reagent_containers/cup/glass/bottle/instacoffee
 	name = "Silician Instacoffee"
 	desc = "Pre-war powerdered canned coffee."
 	icon_state = "instacoffee"
-	list_reagents = list(/datum/reagent/toxin/coffeepowder = 98, /datum/reagent/radium = 2)
+	list_reagents = list(/datum/reagent/toxin/coffeepowder = 98, /datum/reagent/uranium/radium = 2)
 
 /obj/item/reagent_containers/cup/glass/bottle/vim
 	name = "Vim"
@@ -388,7 +384,7 @@
 	name = "tomato juice"
 	desc = "Well, at least it LOOKS like tomato juice. You can't tell with all that redness."
 	icon_state = "tomatojuice"
-	item_state = "carton"
+	inhand_icon_state = "carton"
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
 	isGlass = FALSE
@@ -399,7 +395,7 @@
 	name = "lime juice"
 	desc = "Sweet-sour goodness."
 	icon_state = "limejuice"
-	item_state = "carton"
+	inhand_icon_state = "carton"
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
 	isGlass = FALSE
@@ -410,7 +406,7 @@
 	name = "pineapple juice"
 	desc = "Extremely tart, yellow juice."
 	icon_state = "pineapplejuice"
-	item_state = "carton"
+	inhand_icon_state = "carton"
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
 	isGlass = FALSE
@@ -421,7 +417,7 @@
 	name = "strawberry juice"
 	desc = "Slushy, reddish juice."
 	icon_state = "strawberryjuice"
-	item_state = "carton"
+	inhand_icon_state = "carton"
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
 	isGlass = FALSE
@@ -432,7 +428,7 @@
 	name = "menthol"
 	desc = "Tastes naturally minty, and imparts a very mild numbing sensation."
 	icon_state = "mentholbox"
-	item_state = "carton"
+	inhand_icon_state = "carton"
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
 	isGlass = FALSE
@@ -458,7 +454,7 @@
 	throw_speed = 0
 	throw_range = 0
 	w_class = WEIGHT_CLASS_TINY
-	item_state = "beer"
+	inhand_icon_state = "beer"
 	attack_verb = list("boop", "thunked", "shown")
 
 /obj/item/export/bottle/gin

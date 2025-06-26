@@ -167,7 +167,7 @@
 	new /obj/item/food/lollipop(src)
 	new /obj/item/food/f13/canned/ncr/crackers(src)
 	new /obj/item/food/sosjerky/ration(src)
-	new /obj/item/food/drinks/bottle/sunset(src)
+	new /obj/item/reagent_containers/cup/glass/bottle/sunset(src)
 	new /obj/item/storage/fancy/cigarettes/cigpack_greytort(src)
 	new /obj/item/storage/box/matches(src)
 
@@ -181,7 +181,7 @@
 	new /obj/item/food/f13/canned/ncr/candied_mutfruit(src)
 	new /obj/item/food/f13/canned/ncr/crackers(src)
 	new /obj/item/food/sosjerky/ration(src)
-	new /obj/item/food/drinks/bottle/f13nukacola(src)
+	new /obj/item/reagent_containers/cup/glass/bottle/f13nukacola(src)
 	new /obj/item/storage/fancy/cigarettes/cigpack_pyramid(src)
 	new /obj/item/storage/box/matches(src)
 
@@ -194,7 +194,7 @@
 	new /obj/item/food/chocolatebar(src)
 	new /obj/item/food/f13/canned/ncr/crackers(src)
 	new /obj/item/food/sosjerky/ration(src)
-	new /obj/item/food/drinks/bottle/bawls(src)
+	new /obj/item/reagent_containers/cup/glass/bottle/bawls(src)
 	new /obj/item/storage/fancy/cigarettes/cigpack_bigboss(src)
 	new /obj/item/storage/box/matches(src)
 
@@ -207,7 +207,7 @@
 	new /obj/item/food/f13/canned/ncr/cranberry_cobbler(src)
 	new /obj/item/food/f13/canned/ncr/crackers(src)
 	new /obj/item/food/sosjerky/ration(src)
-	new /obj/item/food/drinks/bottle/sunset(src)
+	new /obj/item/reagent_containers/cup/glass/bottle/sunset(src)
 	new /obj/item/storage/fancy/cigarettes/cigpack_greytort(src)
 	new /obj/item/storage/box/matches(src)
 
@@ -220,7 +220,7 @@
 	new /obj/item/food/lollipop(src)
 	new /obj/item/food/f13/canned/ncr/crackers(src)
 	new /obj/item/food/sosjerky/ration(src)
-	new /obj/item/food/drinks/bottle/f13nukacola(src)
+	new /obj/item/reagent_containers/cup/glass/bottle/f13nukacola(src)
 	new /obj/item/storage/fancy/cigarettes/cigpack_pyramid(src)
 	new /obj/item/storage/box/matches(src)
 
@@ -233,7 +233,7 @@
 	new /obj/item/food/f13/canned/ncr/candied_mutfruit(src)
 	new /obj/item/food/f13/canned/ncr/crackers(src)
 	new /obj/item/food/sosjerky/ration(src)
-	new /obj/item/food/drinks/bottle/f13nukacola(src)
+	new /obj/item/reagent_containers/cup/glass/bottle/f13nukacola(src)
 	new /obj/item/storage/fancy/cigarettes/cigpack_pyramid(src)
 	new /obj/item/storage/box/matches(src)
 
@@ -246,7 +246,7 @@
 	new /obj/item/food/chocolatebar(src)
 	new /obj/item/food/f13/canned/ncr/crackers(src)
 	new /obj/item/food/sosjerky/ration(src)
-	new /obj/item/food/drinks/bottle/bawls(src)
+	new /obj/item/reagent_containers/cup/glass/bottle/bawls(src)
 	new /obj/item/storage/fancy/cigarettes/cigpack_bigboss(src)
 	new /obj/item/storage/box/matches(src)
 
@@ -259,7 +259,7 @@
 	new /obj/item/food/f13/canned/ncr/cranberry_cobbler(src)
 	new /obj/item/food/f13/canned/ncr/crackers(src)
 	new /obj/item/food/sosjerky/ration(src)
-	new /obj/item/food/drinks/bottle/sunset(src)
+	new /obj/item/reagent_containers/cup/glass/bottle/sunset(src)
 	new /obj/item/storage/fancy/cigarettes/cigpack_greytort(src)
 	new /obj/item/storage/box/matches(src)
 
@@ -272,7 +272,7 @@
 	new /obj/item/food/chocolatebar(src)
 	new /obj/item/food/f13/canned/ncr/crackers(src)
 	new /obj/item/food/sosjerky/ration(src)
-	new /obj/item/food/drinks/bottle/bawls(src)
+	new /obj/item/reagent_containers/cup/glass/bottle/bawls(src)
 	new /obj/item/storage/fancy/cigarettes/cigpack_bigboss(src)
 	new /obj/item/storage/box/matches(src)
 
@@ -284,7 +284,7 @@
 	new /obj/item/food/f13/canned/ncr/candied_mutfruit(src)
 	new /obj/item/food/f13/canned/ncr/crackers(src)
 	new /obj/item/food/sosjerky/ration(src)
-	new /obj/item/food/drinks/bottle/f13nukacola(src)
+	new /obj/item/reagent_containers/cup/glass/bottle/f13nukacola(src)
 	new /obj/item/storage/fancy/cigarettes/cigpack_pyramid(src)
 	new /obj/item/storage/box/matches(src)
 
@@ -297,7 +297,7 @@
 	new /obj/item/food/lollipop(src)
 	new /obj/item/food/f13/canned/ncr/crackers(src)
 	new /obj/item/food/sosjerky/ration(src)
-	new /obj/item/food/drinks/bottle/f13nukacola(src)
+	new /obj/item/reagent_containers/cup/glass/bottle/f13nukacola(src)
 	new /obj/item/storage/fancy/cigarettes/cigpack_pyramid(src)
 	new /obj/item/storage/box/matches(src)
 

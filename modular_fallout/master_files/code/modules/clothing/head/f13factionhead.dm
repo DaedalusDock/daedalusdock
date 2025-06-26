@@ -97,8 +97,6 @@
 	desc = "(IV) A sturdy helmet to protect against both the elements and from harm, if only it was not looking in such poor condition."
 	icon_state = "blastmaster"
 	inhand_icon_state = "blastmaster"
-	dynamic_hair_suffix = ""
-	dynamic_fhair_suffix = ""
 
 /obj/item/clothing/head/helmet/f13/raider/blastmaster/Initialize()
 	. = ..()
@@ -124,8 +122,6 @@
 	flags_inv = HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR
 	strip_delay = 50
 	resistance_flags = LAVA_PROOF | FIRE_PROOF
-	dynamic_hair_suffix = ""
-	dynamic_fhair_suffix = ""
 
 /obj/item/clothing/head/helmet/f13/raider/eyebot/Initialize()
 	. = ..()
@@ -207,8 +203,6 @@
 	inhand_icon_state = "hat_enclave_peacekeeper"
 	flags_inv = HIDEEARS|HIDEHAIR
 	strip_delay = 50
-	dynamic_hair_suffix = ""
-	dynamic_fhair_suffix = ""
 	armor = list("tier" = 4)
 
 /obj/item/clothing/head/helmet/f13/helmet/enclave/officer
@@ -233,15 +227,12 @@
 	armor = list("tier" = 3, ENERGY = 10, BOMB = 16, BIO = 30, RAD = 20, FIRE = 50, ACID = 0)
 	flags_inv = HIDEEARS|HIDEHAIR
 	strip_delay = 50
-	dynamic_hair_suffix = ""
-	dynamic_fhair_suffix = ""
 
 /obj/item/clothing/head/helmet/f13/legion/marsheaddress
 	name = "priestess' headdress"
 	desc = "(III) A headdress made of feathers and decorated with two golden tassles."
 	icon_state = "legion-priestess"
 	inhand_icon_state = "legion-priestess"
-	dynamic_hair_suffix = "+generic"
 
 /obj/item/clothing/head/helmet/f13/legion/recruit
 	name = "legion recruit helmet"
@@ -638,10 +629,7 @@
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDEFACE
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 	resistance_flags = LAVA_PROOF | FIRE_PROOF
-	dynamic_hair_suffix = ""
-	dynamic_fhair_suffix = ""
 	flash_protect = 1
-	glass_colour_type = /datum/client_colour/glass_colour/red
 	lighting_alpha = LIGHTING_PLANE_ALPHA_NV_TRAIT
 	darkness_view = 24
 

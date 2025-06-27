@@ -18,7 +18,7 @@
 
 #warn ensure this works right!
 
-/obj/structure/flora/wild_plant/New(turf/turf,seed)
+/obj/structure/flora/wild_plant/Initialize(turf/turf,seed)
 	if(!seed)
 		return
 	..(turf)
@@ -27,8 +27,8 @@
 		qdel(myseed)
 		return
 	myseed.forceMove(src)
-	name = myseed.plantname
-	icon = myseed.growing_icon
+	name = myseed.plant_datum.name
+	icon = myseed.plant_datum.growing_icon
 	START_PROCESSING(SSobj, src)
 	update_icon()
 
@@ -43,7 +43,7 @@
 	if(!iscarbon(user))
 		return
 	if(harvest)
-		if(myseed.harvest(user))
+		if(myseed.plant_datum.base_harvest(user))
 			harvest = 0
 			update_icon()
 	else if(dead)
@@ -56,12 +56,12 @@
 
 /obj/structure/flora/wild_plant/examine(user)
 	if(myseed)
-		to_chat(user, "<span class='info'>It has <span class='name'>[myseed.plantname]</span> planted.</span>")
+		to_chat(user, "<span class='info'>It has <span class='name'>[myseed.plant_datum.name]</span> planted.</span>")
 		if (dead)
 			to_chat(user, "<span class='warning'>It's dead!</span>")
 		else if (harvest)
 			to_chat(user, "<span class='info'>It's ready to harvest.</span>")
-		else if (health <= (myseed.base_endurance / 2))
+		else if (health <= (myseed.plant_datum.base_endurance / 2))
 			to_chat(user, "<span class='warning'>It looks unhealthy.</span>")
 
 /obj/structure/flora/wild_plant/proc/plantdies()
@@ -92,12 +92,12 @@
 			if(health <= 0)
 				plantdies()
 
-			if(age > myseed.lifespan)
-				health -= 50 / myseed.base_endurance
+			if(age > myseed.plant_datum.base_lifespan)
+				health -= 50 / myseed.plant_datum.base_endurance
 
 			// Harvest code
-			if(age > myseed.base_production && (age - lastproduce) > myseed.production && (!harvest && !dead))
-				if(myseed && myseed.base_harvest_yield != -1) // Unharvestable shouldn't be harvested
+			if(age > myseed.plant_datum.base_production && (age - lastproduce) > myseed.plant_datum.base_production && (!harvest && !dead))
+				if(myseed && myseed.plant_datum.base_harvest_yield != -1) // Unharvestable shouldn't be harvested
 					harvest = 1
 				else
 					lastproduce = age
@@ -107,17 +107,17 @@
 
 /obj/structure/flora/wild_plant/update_icon()
 	if(dead)
-		icon_state = icon_state = myseed.icon_dead
+		icon_state = icon_state = myseed.plant_datum.icon_dead
 	else if(harvest)
-		if(!myseed.icon_harvest)
-			icon_state = "[myseed.icon_grow][myseed.growthstages]"
+		if(!myseed.plant_datum.icon_harvest)
+			icon_state = "[myseed.plant_datum.icon_grow][myseed.plant_datum.growthstages]"
 		else
-			icon_state = myseed.icon_harvest
+			icon_state = myseed.plant_datum.icon_harvest
 	else
-		var/t_growthstate = min(max(round((age / myseed.maturation) * myseed.growthstages), 1), myseed.growthstages)
-		icon_state = "[myseed.icon_grow][t_growthstate]"
-	if(myseed && myseed.get_gene(/datum/plant_gene/trait/glow))
-		var/datum/plant_gene/trait/glow/G = myseed.get_gene(/datum/plant_gene/product_trait/glow)
+		var/t_growthstate = min(max(round((age / myseed.plant_datum.base_maturation) * myseed.plant_datum.growthstages), 1), myseed.plant_datum.growthstages)
+		icon_state = "[myseed.plant_datum.icon_grow][t_growthstate]"
+	if(myseed && myseed.plant_datum.get_gene(/datum/plant_gene/trait/glow))
+		var/datum/plant_gene/trait/glow/G = myseed.plant_datum.get_gene(/datum/plant_gene/product_trait/glow)
 		set_light(G.glow_range(myseed), G.glow_power(myseed), G.glow_color)
 	else
 		set_light(0)

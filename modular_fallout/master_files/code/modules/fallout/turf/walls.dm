@@ -14,11 +14,9 @@
 	desc = "All what has left from the good old days."
 	icon = 'modular_fallout/master_files/icons/turf/walls/f13composite.dmi'
 	icon_state = "ruins"
-	icon_type_smooth = "ruins"
 	hardness = 70
 	explosion_block = 2
-	smooth = SMOOTH_TRUE
-	//	disasemblable = 0
+	smoothing_flags = SMOOTH_TRUE
 	girder_type = 0
 	baseturfs = /turf/open/indestructible/ground/outside/ruins
 	plating_material = null
@@ -31,9 +29,8 @@
 	desc = "A traditional wooden wall."
 	icon = 'modular_fallout/master_files/icons/fallout/turfs/walls/wood.dmi'
 	icon_state = "wood0"
-	icon_type_smooth = "wood"
 	hardness = 60
-	smooth = SMOOTH_OLD
+	smoothing_flags = SMOOTH_OLD
 	unbreakable = 0
 	baseturfs = /turf/open/floor/plating/wooden
 	plating_material = /datum/material/wood
@@ -44,7 +41,6 @@
 	desc = "A weathered pre-War house wall."
 	icon = 'modular_fallout/master_files/icons/fallout/turfs/walls/house.dmi'
 	icon_state = "house0"
-	icon_type_smooth = "house"
 	hardness = 50
 	var/broken = 0
 	canSmoothWith = list(/turf/closed/wall/f13/wood/house, /turf/closed/wall/f13/wood/house/broken, /turf/closed/wall, /turf/closed/wall/f13/wood/house/clean)
@@ -96,9 +92,8 @@ turf/closed/wall/f13/wood/house/update_damage_overlay()
 	desc = "Interesting, what kind of material they have used - these wallpapers still look good after all the centuries..."
 	icon = 'modular_fallout/master_files/icons/fallout/turfs/walls/interior.dmi'
 	icon_state = "interior0"
-	icon_type_smooth = "interior"
 	hardness = 10
-	smooth = SMOOTH_OLD
+	smoothing_flags = SMOOTH_OLD
 	canSmoothWith = list(/turf/closed/wall/f13/wood/interior, /turf/closed/wall)
 
 /turf/closed/wall/f13/store
@@ -106,7 +101,6 @@ turf/closed/wall/f13/wood/house/update_damage_overlay()
 	desc = "A pre-War store wall made of solid concrete."
 	icon = 'modular_fallout/master_files/icons/turf/walls/f13store.dmi'
 	icon_state = "store"
-	icon_type_smooth = "store"
 	hardness = 80
 	//	disasemblable = 0
 	baseturfs = /turf/open/indestructible/ground/outside/ruins
@@ -118,9 +112,8 @@ turf/closed/wall/f13/wood/house/update_damage_overlay()
 	desc = "The walls of a portable tent."
 	icon = 'modular_fallout/master_files/icons/fallout/turfs/walls/tent.dmi'
 	icon_state = "tent0"
-	icon_type_smooth = "tent"
 	hardness = 10
-	smooth = SMOOTH_OLD
+	smoothing_flags = SMOOTH_OLD
 	//	disasemblable = 0
 	baseturfs = /turf/open/indestructible/ground/outside/ruins
 	girder_type = 0
@@ -132,7 +125,6 @@ turf/closed/wall/f13/wood/house/update_damage_overlay()
 	desc = "A pre-War supermart wall made of reinforced concrete."
 	icon = 'modular_fallout/master_files/icons/turf/walls/f13superstore.dmi'
 	icon_state = "supermart"
-	icon_type_smooth = "supermart"
 	hardness = 90
 	explosion_block = 2
 	baseturfs = /turf/open/indestructible/ground/outside/ruins
@@ -145,7 +137,6 @@ turf/closed/wall/f13/wood/house/update_damage_overlay()
 	desc = "A sturdy metal wall with various pipes and wiring set inside a special groove."
 	icon = 'modular_fallout/master_files/icons/fallout/turfs/walls/tunnel.dmi'
 	icon_state = "tunnel0"
-	icon_type_smooth = "tunnel"
 	hardness = 100
 	//	disasemblable = 0
 	plating_material = null
@@ -172,7 +163,6 @@ turf/closed/wall/f13/wood/house/update_damage_overlay()
 	desc = "A wall built to withstand an atomic explosion."
 	icon = 'modular_fallout/master_files/icons/fallout/turfs/walls/vault_reinforced.dmi'
 	icon_state = "vaultrwall0"
-	icon_type_smooth = "vaultrwall"
 	hardness = 230
 	explosion_block = 5
 	canSmoothWith = list(/turf/closed/wall/f13/vault, /turf/closed/wall/r_wall/f13/vault, /turf/closed/wall)

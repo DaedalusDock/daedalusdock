@@ -5041,6 +5041,7 @@
 #include "modular_fallout\master_files\code\modules\fallout\reagents\teas.dm"
 #include "modular_fallout\master_files\code\modules\fallout\turf\walls.dm"
 #include "modular_fallout\master_files\code\modules\food_and_drinks\food\condiment.dm"
+#include "modular_fallout\master_files\code\modules\mob\living\carbon\inventory.dm"
 #include "modular_fallout\master_files\code\modules\mob\living\simple_animal\animal_defense.dm"
 #include "modular_fallout\master_files\code\modules\objects\objects.dm"
 #include "modular_fallout\master_files\code\modules\objects\items\tools\dr2_tools.dm"

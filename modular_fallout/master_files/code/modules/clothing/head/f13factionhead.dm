@@ -47,6 +47,23 @@
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection, list(SLOT_HEAD))*/
 
+/obj/item/clothing/head/helmet/f13
+	var/vision_flags = 0
+	var/darkness_view = 2 // Base human is 2
+	var/invis_view = SEE_INVISIBLE_LIVING // Admin only for now
+	/// Override to allow glasses to set higher than normal see_invis
+	var/invis_override = 0
+	var/lighting_alpha
+
+/obj/item/clothing/head/helmet/f13/proc/visor_toggling()
+	..()
+	if(visor_vars_to_toggle & VISOR_VISIONFLAGS)
+		vision_flags ^= initial(vision_flags)
+	if(visor_vars_to_toggle & VISOR_DARKNESSVIEW)
+		darkness_view ^= initial(darkness_view)
+	if(visor_vars_to_toggle & VISOR_INVISVIEW)
+		invis_view ^= initial(invis_view)
+
 //Raider
 /obj/item/clothing/head/helmet/f13/raider
 	name = "base raider helmet"
@@ -221,7 +238,6 @@
 	name = "legion helmet template"
 	desc = "should not exist."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/hats.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/head.dmi'
 	lefthand_file = ""
 	righthand_file = ""
 	armor = list("tier" = 3, ENERGY = 10, BOMB = 16, BIO = 30, RAD = 20, FIRE = 50, ACID = 0)
@@ -362,7 +378,6 @@
 	name = "servant headwear"
 	desc = "A simple uncoloured linen cloth wrapped around the head, the mark of a servant slave trained in household work."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/hats.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/head.dmi'
 	icon_state = "legion-servant"
 	inhand_icon_state = "legion-servant"
 	flags_inv = HIDEEARS|HIDEFACE
@@ -372,7 +387,6 @@
 	name = "auxilia headwear"
 	desc = "A soft red cap with a black band, used by female Auxilia outside camp."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/hats.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/head.dmi'
 	icon_state = "legion-aux"
 	inhand_icon_state = "legion-aux"
 	flags_inv = HIDEEARS|HIDEFACE
@@ -382,17 +396,13 @@
 	name = "Legion combat helmet"
 	desc = "(V) An old military grade pre-war helmet, repainted to the colour scheme of Caesar's Legion."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/hats.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/head.dmi'
-	icon_state = "legion-combat"
 	inhand_icon_state = "legion-combat"
 
 /obj/item/clothing/head/helmet/f13/combat/mk2/legion
 	name = "reinforced Legion combat helmet"
 	desc = "(VI) A pre-war helmet in good condition, made from advanced materialas and paintend in the colors of Caesar's Legion."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/hats.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/head.dmi'
 	icon_state = "legion-combat2"
-	inhand_icon_state = "legion-combat2"
 
 
 //NCR
@@ -630,8 +640,7 @@
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 	resistance_flags = LAVA_PROOF | FIRE_PROOF
 	flash_protect = 1
-	lighting_alpha = LIGHTING_PLANE_ALPHA_NV_TRAIT
-	darkness_view = 24
+	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
 
 /obj/item/clothing/head/helmet/f13/ncr/rangercombat/eliteriot
 	name = "elite riot gear helmet"
@@ -927,7 +936,7 @@
 	dog_fashion = null
 	armor = list("tier" = 5, ENERGY = 20, BOMB = 25, BIO = 30, RAD = 20, FIRE = 60, ACID = 0)
 	strip_delay = 50
-	actions_types = list(/datum/action/item_action/toggle)1
+	actions_types = list(/datum/action/item_action/toggle)
 
 /obj/item/clothing/head/helmet/f13/khan/fullhelm
 	name = "Great Khan full helmet"
@@ -976,7 +985,10 @@
 	strip_delay = 60
 	equip_delay_other = 60
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
-	rad_flags = RAD_PROTECT_CONTENTS | RAD_NO_CONTAMINATE
+
+/obj/item/clothing/head/helmet/f13/envirosuitInitialize(mapload)
+	. = ..()
+	AddElement(/datum/element/radiation_protected_clothing)
 
 /obj/item/clothing/head/soft/f13/enclave
 	name = "officer hat"

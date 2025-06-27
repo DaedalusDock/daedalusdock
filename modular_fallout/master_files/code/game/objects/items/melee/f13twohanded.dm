@@ -296,39 +296,24 @@
 	throw_speed = 2
 	throw_range = 4
 	attack_verb_simple = list("burned", "welded", "cauterized", "melted", "charred")
-	actions_types = list(/datum/action/item_action/toggle_lance)
 	hitsound = "swing_hit"
 	active_force = 50
 	armor_penetration = 75
 	demolition_modifier = 2
+	active_hitsound = 'sound/items/welder2.ogg'
 
-/obj/item/twohanded/thermic_lance/Initialize()
+/obj/item/melee/energy/thermic_lance/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/two_handed, require_twohands=TRUE)
+	ADD_TRAIT(src, TRAIT_NEEDS_TWO_HANDS, ABSTRACT_ITEM_TRAIT)
 	AddElement(/datum/element/update_icon_updates_onmob)
 
-/obj/item/twohanded/thermic_lance/attack_self(mob/user)
-	on = !on
-	to_chat(user, "As you turn the lever from [src], [on ? "it begins to heat." : "the flame goes off."]")
-	force = on ? force_on : initial(force)
-	throwforce = on ? force_on : initial(force)
-	update_icon()
-
-	if(on)
-		hitsound = 'sound/items/welder2.ogg'
-		damtype = "fire"
-	else
-		hitsound = "swing_hit"
-		damtype = "brute"
-
-	if(src == user.get_active_held_item()) //update inhands
-		user.update_inv_hands()
-	for(var/X in actions)
-		var/datum/action/A = X
-		A.UpdateButtonIcon()
-
-/obj/item/twohanded/thermic_lance/update_icon_state()
-	icon_state = "thermiclance_[on ? "on" : "off"]"
+/obj/item/melee/energy/thermic_lance/on_transform(obj/item/source, mob/user, active)
+	.=..()
+	blade_active = active
+	if(active)
+		if(sword_color_icon)
+			icon_state = "thermiclance_[on ? "on" : "off"]"
+	return ..()
 
 
 // Proton axe			Keywords: Damage 20/32, AP 0.7

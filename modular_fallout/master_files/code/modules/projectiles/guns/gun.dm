@@ -108,7 +108,7 @@
 		src.extra_damage -= 1
 
 /obj/item/gun/process_afterattack(atom/target, mob/living/user, flag, params)
-
+	.=..()
 	if(weapon_weight == WEAPON_HEAVY && user.get_inactive_held_item())
 		to_chat(user, "<span class='userdanger'>You need both hands free to fire \the [src]!</span>")
 		return
@@ -134,8 +134,8 @@
 
 	var/stam_cost = getstamcost(user)
 	process_fire(target, user, TRUE, params, null, bonus_spread, stam_cost)
-
-/obj/item/gun/proc/do_fire(atom/target, mob/living/user, message = TRUE, params, zone_override = "", bonus_spread = 0, stam_cost = 0)
+/*
+/obj/item/gun/proc/do_fire_gun(atom/target, mob/living/user, message = TRUE, params, zone_override = "", bonus_spread = 0, stam_cost = 0)
 	var/sprd = 0
 	var/randomized_gun_spread = 0
 	var/rand_spr = rand()
@@ -172,7 +172,7 @@
 
 	SSblackbox.record_feedback("tally", "gun_fired", 1, type)
 	return TRUE
-
+*/
 /obj/item/gun/do_fire_in_burst(mob/living/user, atom/target, message = TRUE, params=null, zone_override = "", sprd = 0, randomized_gun_spread = 0, randomized_bonus_spread = 0, rand_spr = 0, iteration = 0, stam_cost = 0)
 	.=..()
 	if(chambered && chambered.BB)

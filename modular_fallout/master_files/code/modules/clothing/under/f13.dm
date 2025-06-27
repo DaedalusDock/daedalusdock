@@ -1,13 +1,13 @@
 /obj/item/clothing/under/f13
 	armor = list(BLUNT = 0, PUNCTURE = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 0, ACID = 0) //Base type has no armor as well
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS
-	fitted = FEMALE_UNIFORM_FULL
+	female_sprite_flags = FEMALE_UNIFORM_FULL
 	can_adjust = FALSE
 	resistance_flags = NONE
 	has_sensor = NO_SENSORS //kek
 
 /obj/item/clothing/under/f13/female
-	fitted = FEMALE_UNIFORM_TOP
+	female_sprite_flags = FEMALE_UNIFORM_TOP
 
 //ENCLAVE PEACEKEEPERS
 
@@ -349,7 +349,7 @@
 	inhand_icon_state = "legskirt"
 	//item_color = "legskirt"
 	var/sleeves_adjusted = 0
-	lefthand_file = 'mmodular_fallout/master_files/icons/fallout/onmob/weapons/clothing_lefthand.dmi'
+	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/clothing_lefthand.dmi'
 	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/clothing_righthand.dmi'
 	alt_covers_chest = TRUE
 	can_adjust = TRUE
@@ -385,7 +385,7 @@
 	inhand_icon_state = "legaux"
 	//item_color = "legskirt"
 	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/clothing_lefthand.dmi'
-	righthand_file = 'mmodular_fallout/master_files/icons/fallout/onmob/weapons/clothing_righthand.dmi'
+	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/clothing_righthand.dmi'
 
 /obj/item/clothing/under/f13/legauxiliaf
 	name = "female auxilia robes"
@@ -958,7 +958,7 @@
 	inhand_icon_state = "lgloves"
 	//item_color = "tribal_f"
 	can_adjust = TRUE
-	fitted = NO_FEMALE_UNIFORM
+	female_sprite_flags = NO_FEMALE_UNIFORM
 
 /obj/item/clothing/under/f13/settler
 	name = "settler outfit"
@@ -977,14 +977,14 @@
 
 /obj/item/clothing/under/f13/female/brahmin //Female version
 	name = "female brahmin-skin outfit"
-	desc = "A basic female outfit consisting of a rolled-up long-sleeve shirt and patched trousers with Y-shaped suspenders.<br>Fitted for female wastelanders."
+	desc = "A basic female outfit consisting of a rolled-up long-sleeve shirt and patched trousers with Y-shaped suspenders.<br>female_sprite_flags for female wastelanders."
 	icon_state = "brahmin_f"
 	inhand_icon_state = "brownjsuit"
 	//item_color = "brahmin_f"
 
 /obj/item/clothing/under/f13/doctor //Male version
 	name = "male doctor fatigues"
-	desc = "A white t-shirt, a small brown satchel bag and brown trousers with pouches attached to the belt.<br>Fitted for male wastelanders."
+	desc = "A white t-shirt, a small brown satchel bag and brown trousers with pouches attached to the belt.<br>female_sprite_flags for male wastelanders."
 	icon_state = "doctor_m"
 	inhand_icon_state = "brownjsuit"
 	//item_color = "doctor_m"
@@ -992,15 +992,15 @@
 
 /obj/item/clothing/under/f13/female/doctor //Female version
 	name = "female doctor fatigues"
-	desc = "A white t-shirt with brown trousers, and a small brown satchel bag attached to it.<br>Fitted for female wastelanders."
+	desc = "A white t-shirt with brown trousers, and a small brown satchel bag attached to it.<br>female_sprite_flags for female wastelanders."
 	icon_state = "doctor_f"
 	inhand_icon_state = "brownjsuit"
 	//item_color = "doctor_f"
-	fitted = NO_FEMALE_UNIFORM
+	female_sprite_flags = NO_FEMALE_UNIFORM
 
 /obj/item/clothing/under/f13/mercadv //Male version
 	name = "male merc adventurer outfit"
-	desc = "A large leather jacket with torn-off sleeves, paired with a red sweater, a necklace with three teeth of unknown origin strung on, and a pair of brown leather pants.<br>There is also a rough leather bandolier for additional storage capacity.<br>Fitted for male wastelanders."
+	desc = "A large leather jacket with torn-off sleeves, paired with a red sweater, a necklace with three teeth of unknown origin strung on, and a pair of brown leather pants.<br>There is also a rough leather bandolier for additional storage capacity.<br>female_sprite_flags for male wastelanders."
 	icon_state = "merca_m"
 	inhand_icon_state = "bl_suit"
 	//item_color = "merca_m"
@@ -1008,15 +1008,15 @@
 
 /obj/item/clothing/under/f13/female/mercadv //Female version
 	name = "female merc adventurer outfit"
-	desc = "A large leather jacket with torn-off sleeves, paired with a midriff-revealing red and black top and a pair of brown leather pants.<br>There is also a rough leather bandolier and belt for additional storage capacity.<br>Fitted for female wastelanders."
+	desc = "A large leather jacket with torn-off sleeves, paired with a midriff-revealing red and black top and a pair of brown leather pants.<br>There is also a rough leather bandolier and belt for additional storage capacity.<br>female_sprite_flags for female wastelanders."
 	icon_state = "merca_f"
 	inhand_icon_state = "bl_suit"
 	//item_color = "merca_f"
-	fitted = NO_FEMALE_UNIFORM
+	female_sprite_flags = NO_FEMALE_UNIFORM
 
 /obj/item/clothing/under/f13/merccharm //Male version
 	name = "male merc charmer outfit"
-	desc = "A blue and gray outfit resembling a three piece suit, heavily stitched and reinforced with a small metal cup on the groin area.<br>Fitted for male wastelanders."
+	desc = "A blue and gray outfit resembling a three piece suit, heavily stitched and reinforced with a small metal cup on the groin area.<br>female_sprite_flags for male wastelanders."
 	icon_state = "mercc_m"
 	inhand_icon_state = "mercc_f"
 	//item_color = "mercc_m"
@@ -1345,42 +1345,42 @@
 
 /obj/item/clothing/under/f13/bosform_f
 	name = "female initiate service uniform"
-	desc = "A dry-cleaned and fitted formal uniform of the Brotherhood of Steel, for special occasions. This one has no markings, and looks to be for a feminine person."
+	desc = "A dry-cleaned and female_sprite_flags formal uniform of the Brotherhood of Steel, for special occasions. This one has no markings, and looks to be for a feminine person."
 	icon_state = "bosform_f"
 	inhand_icon_state = "bosform_f"
 	//item_color = "bosform_f"
 
 /obj/item/clothing/under/f13/bosform_m
 	name = "male initiate service uniform"
-	desc = "A dry-cleaned and fitted formal uniform of the Brotherhood of Steel, for special occasions. This one has no markings, and looks to be for a masculine person."
+	desc = "A dry-cleaned and female_sprite_flags formal uniform of the Brotherhood of Steel, for special occasions. This one has no markings, and looks to be for a masculine person."
 	icon_state = "bosform_m"
 	inhand_icon_state = "bosform_m"
 	//item_color = "bosform_m"
 
 /obj/item/clothing/under/f13/bosformsilver_f
 	name = "female brotherhood service uniform"
-	desc = "A dry-cleaned and fitted formal uniform of the Brotherhood of Steel, for special occasions. This one bears a silver chain, and looks to be for a feminine person."
+	desc = "A dry-cleaned and female_sprite_flags formal uniform of the Brotherhood of Steel, for special occasions. This one bears a silver chain, and looks to be for a feminine person."
 	icon_state = "bosformsilver_f"
 	inhand_icon_state = "bosformsilver_f"
 	//item_color = "bosformsilver_f"
 
 /obj/item/clothing/under/f13/bosformsilver_m
 	name = "male brotherhood service uniform"
-	desc = "A dry-cleaned and fitted formal uniform of the Brotherhood of Steel, for special occasions. This one bears a silver chain, and looks to be for a masculine person."
+	desc = "A dry-cleaned and female_sprite_flags formal uniform of the Brotherhood of Steel, for special occasions. This one bears a silver chain, and looks to be for a masculine person."
 	icon_state = "bosformsilver_m"
 	inhand_icon_state = "bosformsilver_m"
 	//item_color = "bosformsilver_m"
 
 /obj/item/clothing/under/f13/bosformgold_f
 	name = "female ranking service uniform"
-	desc = "A dry-cleaned and fitted formal uniform of the Brotherhood of Steel, for special occasions. This one bears a gold chain; denoting authority, and looks to be for a feminine person."
+	desc = "A dry-cleaned and female_sprite_flags formal uniform of the Brotherhood of Steel, for special occasions. This one bears a gold chain; denoting authority, and looks to be for a feminine person."
 	icon_state = "bosformgold_f"
 	inhand_icon_state = "bosformgold_f"
 	//item_color = "bosformgold_f"
 
 /obj/item/clothing/under/f13/bosformgold_m
 	name = "male ranking service uniform"
-	desc = "A dry-cleaned and fitted formal uniform of the Brotherhood of Steel, for special occasions. This one bears a gold chain; denoting authority, and looks to be for a masculine person."
+	desc = "A dry-cleaned and female_sprite_flags formal uniform of the Brotherhood of Steel, for special occasions. This one bears a gold chain; denoting authority, and looks to be for a masculine person."
 	icon_state = "bosformgold_m"
 	inhand_icon_state = "bosformgold_m"
 	//item_color = "bosformgold_m"

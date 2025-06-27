@@ -240,6 +240,6 @@ Civilian round				=	-10% damage. AP reduced by 50%
 	name = "flying shrapnel shard"
 	damage = 20
 	range = 20
-	armour_penetration = 0
+	armor_penetration = 0
 	damage_falloff = 1
 	sharpness = SHARP_EDGED

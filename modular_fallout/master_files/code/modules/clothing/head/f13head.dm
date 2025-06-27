@@ -115,7 +115,7 @@
 	equip_delay_other = 60
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 
-/obj/item/clothing/head/helmet/f13/combat/environmental/ComponentInitialize()
+/obj/item/clothing/head/helmet/f13/combat/environmental/Initialize()
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_NO_INSULATION, TRUE, FALSE)
 
@@ -209,7 +209,6 @@
 	min_cold_protection_temperature = SPACE_HELM_MIN_TEMP_PROTECT
 	heat_protection = HEAD
 	max_heat_protection_temperature = SPACE_HELM_MAX_TEMP_PROTECT
-	ispowerarmor = 1 //TRUE
 	strip_delay = 200
 	equip_delay_self = 20
 	slowdown = 0.1
@@ -294,7 +293,7 @@
 		L.update_equipment_speed_mods()
 	armor = armor.modifyRating(linemelee = -75, linebullet = -75, linelaser = -75)
 
-/obj/item/clothing/head/helmet/f13/power_armor/ComponentInitialize()
+/obj/item/clothing/head/helmet/f13/power_armor/Initialize()
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
@@ -545,7 +544,7 @@
 	armor = list("linemelee" = 200, "linebullet" = 200, "linelaser" = 300, ENERGY = 95, BOMB = 62, BIO = 100, RAD = 100, FIRE = 90, ACID = 0, "wound" = 80)
 	var/hit_reflect_chance = 75
 
-/obj/item/clothing/head/helmet/f13/power_armor/teslaIsReflect(def_zone)
+/obj/item/clothing/head/helmet/f13/power_armor/tesla/IsReflect(def_zone)
 	if(def_zone != BODY_ZONE_HEAD) //If not shot where ablative is covering you, you don't get the reflection bonus!
 		return FALSE
 	if (prob(hit_reflect_chance))

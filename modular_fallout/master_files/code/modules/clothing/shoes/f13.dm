@@ -112,7 +112,6 @@
 	name = "roman sandals"
 	desc = "Sandals with buckled leather straps on it."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/shoes.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/shoe.dmi'
 	icon_state = "legion_sandals"
 	inhand_icon_state = "legion_sandals"
 	strip_delay = 100
@@ -124,7 +123,6 @@
 	name = "pelt boots"
 	desc = "These boots are made from tanned hide and lined with soft long horner wool. A fashion from wealthy tribes that has spread. "
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/shoes.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/shoe.dmi'
 	icon_state = "legion_pelt"
 	inhand_icon_state = "legion_pelt"
 	cold_protection = FEET
@@ -134,7 +132,6 @@
 	name = "rough leather boots"
 	desc = "A pair of crudely made leather boots, followng the standardized pattern laid down according to the wisdom of Caesar."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/shoes.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/shoe.dmi'
 	icon_state = "legion_leather"
 	inhand_icon_state = "legion_leather"
 
@@ -142,7 +139,6 @@
 	name = "plated war boots"
 	desc = "A pair of leather boots reinforced with hardened toe caps and shin guards, usually recycled old workboot steel caps taken from rotted old boots and glued to new ones."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/shoes.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/shoe.dmi'
 	icon_state = "legion_war"
 	inhand_icon_state = "legion_war"
 	armor = list(melee = 20, bullet = 20, laser = 10, energy = 10, bomb = 20, bio = 0, rad = 0, fire = 20, acid = 0)
@@ -151,7 +147,6 @@
 	name = "heavy metal boots"
 	desc = "A pair of heavy leather boots with bronzed metal leg guards added. These belong to a Legate of Caesar's Legion."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/shoes.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/shoe.dmi'
 	icon_state = "legion_legate"
 	inhand_icon_state = "legion_legate"
 	armor = list(melee = 30, bullet = 30, laser = 20, energy = 20, bomb = 30, bio = 0, rad = 10, fire = 30, acid = 10)

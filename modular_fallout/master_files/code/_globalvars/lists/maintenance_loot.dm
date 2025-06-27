@@ -120,7 +120,6 @@ GLOBAL_LIST_INIT(trash_money, list(
 
 GLOBAL_LIST_INIT(trash_tool, list(
 	/obj/item/geiger_counter = 5,
-	/obj/item/cultivator = 5,
 	/obj/item/shovel/spade = 5,
 	/obj/item/hatchet = 5,
 	/obj/item/scalpel = 5,
@@ -147,12 +146,12 @@ GLOBAL_LIST_INIT(trash_misc, list(
 	/obj/item/pipe = 5,
 	/obj/item/trash/f13/electronic/toaster = 5,
 	/obj/item/reagent_containers/cup/bucket = 5,
-	/obj/item/kitchen/knife = 5,
+	/obj/item/knife/kitchen = 5,
 	/obj/item/kitchen/fork = 5,
 	/obj/item/storage/bag/tray = 5,
 	/obj/item/reagent_containers/cup/bowl = 5,
-	/obj/item/reagent_containers/food/drinks/drinkingglass = 5,
-	/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass = 5,
+	/obj/item/reagent_containers/cup/glass/drinkingglass = 5,
+	/obj/item/reagent_containers/cup/glass/drinkingglass/shotglass = 5,
 	/obj/item/reagent_containers/cup/beaker = 5,
 	/obj/item/reagent_containers/cup/beaker/large = 5,
 	/obj/item/taperecorder/empty = 5,
@@ -190,7 +189,6 @@ GLOBAL_LIST_INIT(loot_prewar_clothing, list(
 	/obj/item/clothing/under/dress/skirt/plaid/blue,
 	/obj/item/clothing/under/dress/skirt/plaid,
 	/obj/item/clothing/under/suit/navy,
-	/obj/item/clothing/under/suit/female,
 	/obj/item/clothing/under/f13/erpdress,
 	/obj/item/clothing/shoes/laceup
 ))
@@ -200,29 +198,28 @@ GLOBAL_LIST_INIT(loot_prewar_costume, list(
 	/obj/item/clothing/under/costume/soviet,
 	/obj/item/clothing/under/costume/geisha,
 	/obj/item/clothing/shoes/sandal,
-	/obj/item/clothing/under/blacktango,
-	/obj/item/clothing/under/redeveninggown,
+	/obj/item/clothing/under/dress/blacktango,
+	/obj/item/clothing/under/dress/redeveninggown,
 	/obj/item/clothing/head/sombrero,
 	/obj/item/clothing/neck/mantle/poncho,
-	/obj/item/clothing/under/sailor,
-	/obj/item/clothing/head/fluff/bandit,
-	/obj/item/clothing/head/fluff/gambler,
-	/obj/item/clothing/under/jabroni,
-	/obj/item/clothing/glasses/sunglasses/blindfold,
-	/obj/item/clothing/under/gladiator,
+	/obj/item/clothing/under/dress/sailor,
+	/obj/item/clothing/head/f13/bandit,
+	/obj/item/clothing/head/f13/gambler,
+	/obj/item/clothing/under/costume/jabroni,
+	/obj/item/clothing/glasses/blindfold,
+	/obj/item/clothing/under/costume/gladiator,
 	/obj/item/clothing/shoes/roman,
-	/obj/item/clothing/under/maid,
-	/obj/item/clothing/under/draculass,
-	/obj/item/clothing/under/kilt,
-	/obj/item/clothing/under/pirate,
+	/obj/item/clothing/under/costume/maid,
+	/obj/item/clothing/under/costume/draculass,
+	/obj/item/clothing/under/costume/kilt,
+	/obj/item/clothing/under/costume/pirate,
 	/obj/item/clothing/suit/pirate,
-	/obj/item/clothing/under/costume/cheongsam,
-	/obj/item/clothing/under/costume/qipao/red,
+	/obj/item/clothing/suit/cheongsam_red,
+	/obj/item/clothing/suit/cheongsam_blue,
 ))
 
 GLOBAL_LIST_INIT(loot_t1_armor, list(
-	/obj/item/clothing/suit/armor/f13/leather_jacket,
-	/obj/item/clothing/suit/armor/f13/kit,
+	/obj/item/clothing/suit/armored/light/leather_jacket,
 	/obj/item/clothing/suit/armor/f13/medium/supafly,
 	/obj/item/clothing/head/helmet/f13/raider,
 	/obj/item/clothing/suit/armor/f13/medium/sadist,
@@ -241,37 +238,36 @@ GLOBAL_LIST_INIT(loot_t1_armor, list(
 ))
 
 GLOBAL_LIST_INIT(loot_t2_armor, list(
-	/obj/item/clothing/suit/armor/f13/metalarmor,
+	/obj/item/clothing/suit/armored/heavy/metal,
 	/obj/item/clothing/head/helmet/knight/f13/metal,
-	/obj/item/clothing/suit/armor/f13/metalarmor,
+	/obj/item/clothing/suit/armored/heavy/raidermetal,
 	/obj/item/clothing/head/helmet/f13/metalmask,
 	/obj/item/clothing/suit/armor/f13/leatherarmor,
-	/obj/item/clothing/suit/armor/f13/leather_jacket/combat,
-	/obj/item/clothing/suit/armor/f13/leather_jacket/combat/coat
+	/obj/item/clothing/suit/armored/light/leather_jacketmk2,
+	/obj/item/clothing/suit/armored/light/leathercoat
 ))
 
 GLOBAL_LIST_INIT(loot_t3_armor, list(
-	/obj/item/clothing/suit/armor/f13/metalarmor/reinforced,
+	/obj/item/clothing/suit/armored/heavy/recycled_power,
 	/obj/item/clothing/head/helmet/f13/metalmask/mk2,
-	/obj/item/clothing/suit/armor/f13/leather_jacket/combat/coat,
 	/obj/item/clothing/head/helmet/f13/combat/swat,
-	/obj/item/clothing/suit/armor/f13/combat/swat,
+	/obj/item/clothing/suit/f13/medium/combat/swat,
 	/obj/item/clothing/suit/armor/f13/combat,
 	/obj/item/clothing/head/helmet/f13/combat,
 	/obj/item/clothing/suit/armor/bulletproof,
 	/obj/item/clothing/head/helmet/alt,
-	/obj/item/clothing/suit/armor/f13/combat/dark,
+	/obj/item/clothing/suit/f13/medium/combat/dark,
 	/obj/item/clothing/head/helmet/f13/combat/dark,
-	/obj/item/clothing/suit/armor/f13/combat/mk2/dark,
+	/obj/item/clothing/suit/f13/medium/combat/mk2/dark,
 	/obj/item/clothing/head/helmet/f13/combat/mk2/dark,
-	/obj/item/clothing/suit/armor/f13/sulphitearmor,
+	/obj/item/clothing/suit/armored/heavy/sulphite,
 	/obj/item/clothing/head/helmet/f13/sulphitehelm
 ))
 
 GLOBAL_LIST_INIT(loot_t4_armor, list(
 	/obj/item/clothing/head/helmet/f13/power_armor/t45b,
 	/obj/item/clothing/suit/armor/f13/power_armor/t45b,
-	/obj/item/clothing/suit/armor/f13/leather_jacket/combat/riotpolice,
+	/obj/item/clothing/suit/armored/heavy/riotpolice,
 	/obj/item/clothing/head/helmet/f13/rangerbroken,
 	/obj/item/clothing/suit/armor/f13/combat/mk2,
 	/obj/item/clothing/head/helmet/f13/combat/mk2
@@ -290,10 +286,8 @@ GLOBAL_LIST_INIT(loot_medical_tool, list(
 	/obj/item/retractor,
 	/obj/item/cautery,
 	/obj/item/scalpel,
-	/obj/item/clothing/suit/hooded/surgical,
 	/obj/item/clothing/gloves/color/latex,
 	/obj/item/clothing/mask/surgical,
-	/obj/item/surgical_drapes,
 	/obj/item/circular_saw
 ))
 
@@ -302,9 +296,6 @@ GLOBAL_LIST_INIT(loot_medical_medicine, list(
 	/obj/item/storage/pill_bottle/chem_tin/radx,
 	/obj/item/reagent_containers/blood/radaway,
 	/obj/item/reagent_containers/hypospray/medipen/stimpak,
-	/obj/item/reagent_containers/medspray/styptic,
-	/obj/item/reagent_containers/medspray/silver_sulf,
-	/obj/item/reagent_containers/medspray/sterilizine
 ))
 
 GLOBAL_LIST_INIT(loot_medical_drug, list(
@@ -321,12 +312,11 @@ GLOBAL_LIST_INIT(loot_t1_melee, list(
 	/obj/item/hatchet,
 	/obj/item/pickaxe/mini,
 	/obj/item/wrench,
-	/obj/item/kitchen/knife,
+	/obj/item/knife/kitchen,
 	/obj/item/kitchen/rollingpin,
 ))
-
+#warn add oars (funny boat item)
 GLOBAL_LIST_INIT(loot_t2_melee, list(
-	/obj/item/oar,
 	/obj/item/pickaxe,
 	/obj/item/shovel,
 	/obj/item/melee/onehanded/knife/switchblade,
@@ -340,44 +330,44 @@ GLOBAL_LIST_INIT(loot_t2_melee, list(
 	/obj/item/instrument/guitar,
 	/obj/item/melee/onehanded/club,
 	/obj/item/melee/onehanded/knife/cosmicdirty,
-	/obj/item/melee/unarmed/brass,
-	/obj/item/melee/unarmed/brass/spiked
+//	/obj/item/melee/unarmed/brass,
+//	/obj/item/melee/unarmed/brass/spiked
 ))
 
 GLOBAL_LIST_INIT(loot_t3_melee, list(
 	/obj/item/weldingtool,
 	/obj/item/twohanded/spear,
 	/obj/item/twohanded/baseball,
-	/obj/item/kitchen/knife/butcher,
+	/obj/item/knife/butcher,
 	/obj/item/melee/onehanded/machete,
 	/obj/item/melee/onehanded/machete/forgedmachete,
 	/obj/item/shield/riot/buckler,
-	/obj/item/melee/unarmed/tigerclaw,
-	/obj/item/melee/unarmed/sappers
+//	/obj/item/melee/unarmed/tigerclaw,
+//	/obj/item/melee/unarmed/sappers
 ))
 
 GLOBAL_LIST_INIT(loot_t4_melee, list(
 	/obj/item/twohanded/fireaxe,
 	/obj/item/twohanded/sledgehammer,
 	/obj/item/twohanded/fireaxe/bmprsword,
-	/obj/item/melee/unarmed/lacerator,
-	/obj/item/melee/unarmed/maceglove,
-	/obj/item/melee/unarmed/punchdagger,
+//	/obj/item/melee/unarmed/lacerator,
+//	/obj/item/melee/unarmed/maceglove,
+//	/obj/item/melee/unarmed/punchdagger,
 	/obj/item/shield/riot
 ))
 
 GLOBAL_LIST_INIT(loot_t5_melee, list(
-	/obj/item/twohanded/thermic_lance,
+	/obj/item/melee/energy/thermic_lance,
 	/obj/item/twohanded/chainsaw,
 	/obj/item/melee/transforming/energy/axe/protonaxe,
 	/obj/item/melee/powered/ripper,
-	/obj/item/melee/powerfist,
+//	/obj/item/melee/powerfist,
 	/obj/item/twohanded/sledgehammer/rockethammer,
-	/obj/item/gun/ballistic/revolver/ballisticfist,
+//	/obj/item/gun/ballistic/revolver/ballisticfist,
 	/obj/item/twohanded/sledgehammer/supersledge,
-	/obj/item/shishkebabpack,
-	/obj/item/melee/unarmed/deathclawgauntlet,
-	/obj/item/melee/powerfist/moleminer
+//	/obj/item/shishkebabpack,
+//	/obj/item/melee/unarmed/deathclawgauntlet,
+//	/obj/item/melee/powerfist/moleminer
 ))
 
 GLOBAL_LIST_INIT(loot_t1_range, list(
@@ -542,7 +532,6 @@ GLOBAL_LIST_INIT(loot_t4_ammo, list(
 
 GLOBAL_LIST_INIT(loot_t5_ammo, list(
 	/obj/item/ammo_box/a50MG,
-	/obj/item/ammo_box/a50MG/incendiary,
 	/obj/item/ammo_box/magazine/m556/rifle/extended,
 	/obj/item/ammo_box/magazine/m762/ext,
 	/obj/item/ammo_box/magazine/d12g
@@ -556,7 +545,7 @@ GLOBAL_LIST_INIT(loot_garbage, list(
 	/obj/item/razor,
 	/obj/item/candle,
 	/obj/item/rollingpaper,
-	/obj/item/trash/coal,
+	/obj/item/stack/sheet/mineral/coal,
 	/obj/item/soap/homemade,
 	/obj/item/stack/cable_coil/random,
 	/obj/item/stack/medical/bruise_pack,
@@ -564,12 +553,12 @@ GLOBAL_LIST_INIT(loot_garbage, list(
 	/obj/item/valentine,
 	/obj/item/taperecorder,
 	/obj/item/tape/random,
-	/obj/item/stack/medical/gauze,
-	/obj/item/trash/plate,
+	/obj/item/stack/gauze,
 	/obj/item/storage/box/snappops,
-	/obj/item/stack/packageWrap,
+	/obj/item/stack/package_wrap,
+	/obj/item/plate,
 	/obj/item/storage/box/matches,
-	/obj/item/reagent_containers/food/snacks/deadmouse,
+	/obj/item/food/deadmouse,
 	/obj/item/toner,
 	/obj/item/tank/internals/oxygen,
 	/obj/item/storage/box/papersack,
@@ -577,7 +566,7 @@ GLOBAL_LIST_INIT(loot_garbage, list(
 	/obj/item/storage/box/beakers,
 	/obj/item/storage/belt/fannypack/black,
 	/obj/item/camera,
-	/obj/item/bodypart/l_arm,
+	/obj/item/bodypart/arm/left,
 	/obj/item/toy/dummy,
 	/obj/item/toy/eightball,
 	/obj/item/toy/cards/deck,
@@ -600,7 +589,7 @@ GLOBAL_LIST_INIT(loot_seed, list(
 	/obj/item/seeds/carrot,
 	/obj/item/seeds/carrot/parsnip,
 	/obj/item/seeds/cherry,
-	/obj/item/seeds/chanterelle,
+	/obj/item/seeds/chanter,
 	/obj/item/seeds/chili,
 	/obj/item/seeds/cocoapod,
 	/obj/item/seeds/coffee,
@@ -643,19 +632,19 @@ GLOBAL_LIST_INIT(loot_seed, list(
 
 GLOBAL_LIST_INIT(loot_food, list(
 	/obj/item/storage/box/ingredients/american,
-	/obj/item/reagent_containers/food/snacks/f13/crisps,
-	/obj/item/reagent_containers/food/snacks/f13/crisps,
-	/obj/item/reagent_containers/food/snacks/f13/bubblegum,
-	/obj/item/reagent_containers/food/snacks/f13/cram,
-	/obj/item/reagent_containers/food/snacks/f13/yumyum,
-	/obj/item/reagent_containers/food/snacks/f13/fancylads,
-	/obj/item/reagent_containers/food/snacks/f13/sugarbombs,
-	/obj/item/reagent_containers/food/snacks/cheesiehonkers,
-	/obj/item/reagent_containers/food/snacks/f13/steak,
-	/obj/item/reagent_containers/food/snacks/f13/dandyapples,
-	/obj/item/reagent_containers/food/snacks/f13/blamco,
-	/obj/item/reagent_containers/food/snacks/f13/instamash ,
-	/obj/item/reagent_containers/food/snacks/f13/canned/porknbeans,
+	/obj/item/reagent_containers/f13/crisps,
+	/obj/item/reagent_containers/f13/crisps,
+	/obj/item/reagent_containers/f13/bubblegum,
+	/obj/item/reagent_containers/f13/cram,
+	/obj/item/reagent_containers/f13/yumyum,
+	/obj/item/reagent_containers/f13/fancylads,
+	/obj/item/reagent_containers/f13/sugarbombs,
+	/obj/item/reagent_containers/cheesiehonkers,
+	/obj/item/reagent_containers/f13/steak,
+	/obj/item/reagent_containers/f13/dandyapples,
+	/obj/item/reagent_containers/f13/blamco,
+	/obj/item/reagent_containers/f13/instamash ,
+	/obj/item/reagent_containers/f13/canned/porknbeans,
 	/obj/item/storage/box/ingredients/carnivore,
 	/obj/item/storage/box/ingredients/delights,
 	/obj/item/storage/box/ingredients/exotic,
@@ -708,7 +697,6 @@ GLOBAL_LIST_INIT(loot_alcohol, list(
 	/obj/item/reagent_containers/cup/glass/bottle/cognac,
 	/obj/item/reagent_containers/cup/glass/bottle/wine,
 	/obj/item/reagent_containers/cup/glass/bottle/absinthe,
-	/obj/item/reagent_containers/cup/glass/bottle/lizardwine,
 	/obj/item/reagent_containers/cup/glass/bottle/hcider,
 	/obj/item/reagent_containers/cup/glass/bottle/grappa,
 	/obj/item/reagent_containers/cup/glass/bottle/sake,
@@ -754,7 +742,6 @@ GLOBAL_LIST_INIT(loot_t3_money, list(
 GLOBAL_LIST_INIT(loot_skillbook, list(
 	/obj/item/book/granter/trait/chemistry,
 	/obj/item/book/granter/trait/trekking,
-	/obj/item/book/granter/trait/pa_wear,
 	/obj/item/book/granter/crafting_recipe/gunsmith_one,
 	/obj/item/book/granter/crafting_recipe/gunsmith_two,
 	/obj/item/book/granter/crafting_recipe/gunsmith_three,

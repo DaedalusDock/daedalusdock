@@ -41,7 +41,7 @@
 	anchored = TRUE
 	framestack = /obj/item/stack/sheet/mineral/wood
 	buildstack = /obj/item/stack/sheet/cloth
-	smooth = SMOOTH_FALSE
+	smoothing_flags = null
 
 /obj/structure/table/snooker/attackby(obj/item/I, mob/user, params)
 	if(!(flags_1 & NODECONSTRUCT_1))
@@ -77,5 +77,5 @@
 		to_chat(user, "<span class='warning'>[src] cannot be rotated while the spinning bolts are in place!</span>")
 		return FALSE
 
-/obj/structure/table/snooker/ComponentInitialize()
+/obj/structure/table/snooker/Initialize()
 	AddComponent(/datum/component/simple_rotation, ROTATION_ALTCLICK | ROTATION_EIGHTDIR)

@@ -12,17 +12,6 @@
 	flags_ricochet = RICOCHET_HARD
 	receive_ricochet_chance_mod = 0.6
 
-
-/obj/structure/Initialize()
-	if (!armor)
-		armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 25, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 50, ACID = 50)
-	. = ..()
-	if(smooth)
-		queue_smooth(src)
-		queue_smooth_neighbors(src)
-		icon_state = ""
-	GLOB.cameranet.updateVisibility(src)
-
 /obj/structure/Destroy()
 	GLOB.cameranet.updateVisibility(src)
 	if(smooth)

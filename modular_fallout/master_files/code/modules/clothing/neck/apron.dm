@@ -12,7 +12,7 @@
 	name = "bartenders apron"
 	desc = "A fancy purple apron for a stylish bartender. Can hold some bottles, a few kitchen trinkets and maybe a small discrete revolver...."
 	icon_state = "bartender"
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/bartender
+	storage_type = /datum/component/storage/concrete/pockets/bartender
 
 /obj/item/clothing/neck/apron/medicus
 	name = "medicus apron"

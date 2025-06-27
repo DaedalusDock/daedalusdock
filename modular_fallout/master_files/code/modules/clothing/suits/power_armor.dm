@@ -8,7 +8,6 @@
 	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	flags_inv = HIDEJUMPSUIT
 	item_flags = SLOWS_WHILE_IN_HAND
-	clothing_flags = THICKMATERIAL
 	equip_delay_self = 50
 	equip_delay_other = 60
 	strip_delay = 200
@@ -19,6 +18,7 @@
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	repair_kit = /obj/item/repair_kit/pa
 	protected_zones = list(BODY_ZONE_CHEST, BODY_ZONE_PRECISE_GROIN, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
+	clothing_flags = BLOCKS_SHOVE_KNOCKDOWN|THICKMATERIAL
 
 	var/deflection_chance = 15 //Chance for the power armor to redirect a blocked projectile
 	var/armor_block_threshold = 30 //projectiles below this will deflect
@@ -98,21 +98,6 @@
 	var/mob/living/L = loc
 	if(istype(L))
 		L.update_equipment_speed_mods()
-
-/obj/item/clothing/suit/armor/f13/power_armor/mob_can_equip(mob/user, mob/equipper, slot, disable_warning = 1)
-	var/mob/living/carbon/human/H = user
-	if(src == H.wear_suit) //Suit is already equipped
-		return ..()
-	if(slot == SLOT_WEAR_SUIT)
-		ADD_TRAIT(user, TRAIT_STUNIMMUNE,	"stun_immunity")
-		ADD_TRAIT(user, TRAIT_PUSHIMMUNE,	"push_immunity")
-		return ..()
-	return
-
-/obj/item/clothing/suit/armor/f13/power_armor/dropped(mob/user)
-	REMOVE_TRAIT(user, TRAIT_STUNIMMUNE,	"stun_immunity")
-	REMOVE_TRAIT(user, TRAIT_PUSHIMMUNE,	"push_immunity")
-	return ..()
 
 /obj/item/clothing/suit/armor/f13/power_armor/emp_act(mob/living/carbon/human/owner, severity)
 	. = ..()

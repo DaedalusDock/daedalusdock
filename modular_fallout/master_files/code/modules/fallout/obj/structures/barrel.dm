@@ -22,20 +22,11 @@
 
 /obj/structure/reagent_dispensers/barrel/dangerous/Initialize()
 	. = ..()
-	source.AddElement(/datum/element/radioactive)
+	AddElement(/datum/element/radioactive)
 
 /obj/structure/reagent_dispensers/barrel/dangerous/Destroy()
-	source.RemoveElement(/datum/element/radioactive)
+	RemoveElement(/datum/element/radioactive)
 	..()
-
-//Bing bang boom done
-/obj/structure/reagent_dispensers/barrel/dangerous/process()
-	if(QDELETED(src))
-		return PROCESS_KILL
-
-	for(var/mob/living/carbon/human/victim in view(src,1))
-		if(istype(victim) && victim.stat != DEAD)
-			victim.rad_act(5)
 
 /obj/structure/reagent_dispensers/fueltank/barrel/boom()
 	visible_message("<span class='danger'>\The [src] ruptures!</span>")

@@ -41,8 +41,7 @@
 
 /obj/machinery/door/poddoor/vault_door/open()
 	.=..()
-	flick(opening_state, src)
-	icon_state = open_state
+	z_flick("opening", src)
 	spawn(11)
 		playsound(loc, 'modular_fallout/master_files/sound/f13machines/doorgear_open.ogg', 50, 0, 10)
 		spawn(19)
@@ -52,8 +51,7 @@
 
 /obj/machinery/door/poddoor/vault_door/close()
 	.=..()
-	flick(closing_state, src)
-	icon_state = close_state
+	z_flick("closing", src)
 	spawn(11)
 		playsound(loc, 'modular_fallout/master_files/sound/f13machines/doorgear_close.ogg', 50, 0, 10)
 		spawn(19)

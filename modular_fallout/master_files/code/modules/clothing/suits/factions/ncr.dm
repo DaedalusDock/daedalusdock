@@ -5,7 +5,6 @@
 	icon_state = "vest_utility"
 	inhand_icon_state = "vest_utility"
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/suits_utility.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/suit_utility.dmi'
 	armor = list(BLUNT = 10, PUNCTURE = 15, SLASH = 25, LASER = 10, ENERGY = 10, BOMB = 15, BIO = 10, RAD = 0, FIRE = 20, ACID = 5)
 	pocket_storage_component_path = /datum/component/storage/concrete/pockets
 
@@ -48,7 +47,7 @@
 	icon_state = "ncr_labcoat"
 	inhand_icon_state = "ncr_labcoat"
 	armor = list(BLUNT = 10, PUNCTURE = 15, SLASH = 25, LASER = 10, ENERGY = 10, BOMB = 15, BIO = 10, RAD = 0, FIRE = 20, ACID = 5)
-	allowed = list(/obj/item/gun, /obj/item/analyzer, /obj/item/stack/medical, /obj/item/dnainjector, /obj/item/reagent_containers/dropper, /obj/item/reagent_containers/syringe, /obj/item/reagent_containers/hypospray, /obj/item/healthanalyzer, /obj/item/flashlight/pen, /obj/item/reagent_containers/cup/bottle, /obj/item/reagent_containers/cup/beaker, /obj/item/reagent_containers/pill, /obj/item/storage/pill_bottle, /obj/item/paper, /obj/item/melee/classic_baton/telescopic, /obj/item/soap, /obj/item/sensor_device, /obj/item/tank/internals/emergency_oxygen, /obj/item/tank/internals/plasmaman)
+	allowed = list(/obj/item/gun, /obj/item/analyzer, /obj/item/stack/medical, /obj/item/dnainjector, /obj/item/reagent_containers/dropper, /obj/item/reagent_containers/syringe, /obj/item/reagent_containers/hypospray, /obj/item/healthanalyzer, /obj/item/flashlight/pen, /obj/item/reagent_containers/cup/bottle, /obj/item/reagent_containers/cup/beaker, /obj/item/reagent_containers/pill, /obj/item/storage/pill_bottle, /obj/item/paper, /obj/item/melee/baton/telescopic, /obj/item/soap, /obj/item/sensor_device, /obj/item/tank/internals/emergency_oxygen)
 
 /obj/item/clothing/suit/armor/f13/ncrarmor/captain
 	name = "NCR reinforced officer vest"

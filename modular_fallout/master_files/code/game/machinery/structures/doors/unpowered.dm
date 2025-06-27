@@ -28,7 +28,7 @@
 	name = "secure door"
 	desc = "Door with a built-in lock. Can't be padlocked."
 	icon_state = "secure"
-	assemblytype = /obj/item/stack/sheet/mineral/wood/five
+	assemblytype = /obj/item/stack/sheet/mineral/wood
 	opacity = TRUE
 	explosion_block = TRUE
 
@@ -62,8 +62,6 @@
 //bikoor
 /obj/machinery/door/unpowered/securedoor/bikerdoor
 	name = "Hell's Nomad door"
-	req_access = list(ACCESS_BIKER)
-
 
 // ------------------------------------
 // NCR SECURE REINFORCED DOOR - tough airlock replacement

@@ -140,6 +140,7 @@ export class VariableMenu extends Component {
                   <Stack fill>
                     <Stack.Item grow>
                       <Dropdown
+                        selected={variable_type}
                         options={types}
                         displayText={variable_type}
                         className="IntegratedCircuit__BlueBorder"

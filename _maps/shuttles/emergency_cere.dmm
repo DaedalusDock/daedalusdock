@@ -193,7 +193,7 @@
 /obj/machinery/door/airlock/public/glass{
 	name = "Emergency Shuttle Cockpit"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "aS" = (
@@ -842,8 +842,8 @@
 	name = "Engine Room"
 	},
 /obj/effect/turf_decal/tile/yellow/fourcorners,
-/obj/effect/mapping_helpers/airlock/access/any/engineering/atmos,
-/obj/effect/mapping_helpers/airlock/access/any/engineering/general,
+/obj/effect/mapping_helpers/access/any/engineering/atmos/airlock,
+/obj/effect/mapping_helpers/access/any/engineering/general/airlock,
 /turf/open/floor/iron,
 /area/shuttle/escape)
 "cQ" = (
@@ -1127,7 +1127,7 @@
 /obj/machinery/door/airlock/public/glass{
 	name = "Emergency Shuttle Brig"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape/brig)
 "hS" = (
@@ -1250,7 +1250,7 @@
 /obj/machinery/door/airlock/shuttle{
 	name = "Emergency Shuttle Airlock"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/plating,
 /area/shuttle/escape/brig)
 "PD" = (
@@ -1271,7 +1271,7 @@
 /obj/machinery/door/airlock/security/glass{
 	name = "Emergency Shuttle Brig"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape/brig)
 

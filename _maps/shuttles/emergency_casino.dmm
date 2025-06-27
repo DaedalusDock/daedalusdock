@@ -685,7 +685,7 @@
 	},
 /obj/item/grown/bananapeel,
 /obj/item/bikehorn,
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape/brig)
 "sj" = (
@@ -770,7 +770,7 @@
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape/brig)
 "vL" = (
@@ -871,7 +871,7 @@
 /obj/machinery/door/airlock/command{
 	name = "Pet Daycare"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/mineral/titanium/purple,
 /area/shuttle/escape)
 "yl" = (
@@ -1022,7 +1022,7 @@
 /obj/machinery/door/airlock/command{
 	name = "Casino Office"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/carpet/green,
 /area/shuttle/escape)
 "Eh" = (
@@ -1488,7 +1488,7 @@
 /obj/machinery/door/airlock/command{
 	name = "Casino Office"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "Xl" = (

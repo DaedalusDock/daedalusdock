@@ -14,7 +14,7 @@
 		// construct the icon and slap it into the resource cache
 		var/atom/item = initial(D.build_path)
 		if (!ispath(item, /atom))
-			item = /obj/item/reagent_containers/glass/beaker/large
+			item = /obj/item/reagent_containers/cup/beaker/large
 
 		// Check for GAGS support where necessary
 		var/greyscale_config = initial(item.greyscale_config)

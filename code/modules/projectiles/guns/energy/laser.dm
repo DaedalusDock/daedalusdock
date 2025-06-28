@@ -1,10 +1,12 @@
+TYPEINFO_DEF(/obj/item/gun/energy/laser)
+	default_materials = list(/datum/material/iron=2000)
+
 /obj/item/gun/energy/laser
 	name = "laser gun"
 	desc = "A basic energy-based laser gun that fires concentrated beams of light which pass through glass and thin metal."
 	icon_state = "laser"
 	inhand_icon_state = "laser"
 	w_class = WEIGHT_CLASS_BULKY
-	custom_materials = list(/datum/material/iron=2000)
 	ammo_type = list(/obj/item/ammo_casing/energy/lasergun)
 	ammo_x_offset = 1
 	shaded_charge = 1
@@ -202,5 +204,5 @@
 
 /obj/item/gun/energy/laser/luxurypaywall
 	name = "luxurious laser gun"
-	desc = "A laser gun modified to cost 20 credits to fire. Point towards poor people."
+	desc = "A laser gun modified to cost 20 marks to fire. Point towards poor people."
 	pin = /obj/item/firing_pin/paywall/luxury

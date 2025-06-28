@@ -28,3 +28,33 @@
   Kapu1178:
   - bugfix: Players are no longer alerted that keys which are unbound by default need
       binding.
+2025-06-19:
+  Kapu1178, MrMelbert:
+  - rscadd: trashcans
+  - refactor: Fixed some exploits/issues with item weights.
+2025-06-20:
+  JohnFulpWillard, Kapu1178:
+  - refactor: Refactored drink containers, interactions are now consistent across
+      them.
+  - rscadd: You can now smash bottles over peoples heads and objects.
+  - bugfix: Turf AO no longer stacks on itself once.
+2025-06-21:
+  Kapu1178:
+  - rscadd: Management now receives Directives for the colonists to adhere to. Accepting
+      a Directive awards a lump sum of money to the management bank account. The payout
+      and delay between directives is proportional to the severity of the directive
+      chosen.
+  MrMelbert, Kapu1178:
+  - refactor: REWROTE ALOT OF ATTACK CHAIN THINGS REPORT BUGS PLEASE
+2025-06-25:
+  Kapu1178:
+  - rscadd: Right-clicking with combat mode on will allow you to use special attacks.
+      Currently only the e sword has one.
+  - balance: Reduced the damage of the esword.
+  Kapu1178, yyzsong:
+  - rscadd: Stools now have a high force value, high stamina cost, and high stamina
+      damage.
+  - refactor: Rewrote how stool breaking works, it is now based on integrity.
+  - rscadd: Wooden stools
+  - balance: Chair/stool stuns are now dependant on armor and cannot trigger unless
+      you aim for the Head or Chest.

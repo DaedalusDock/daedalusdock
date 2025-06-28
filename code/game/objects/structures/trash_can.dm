@@ -1,5 +1,8 @@
 DEFINE_INTERACTABLE(/obj/structure/trash_can)
 
+TYPEINFO_DEF(/obj/structure/trash_can)
+	default_armor = list(BLUNT = 20, PUNCTURE = 50, SLASH = 70, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 60)
+
 /obj/structure/trash_can
 	name = "trash can"
 	desc = "A steel framed bin for discarded items."
@@ -10,7 +13,6 @@ DEFINE_INTERACTABLE(/obj/structure/trash_can)
 	anchored = TRUE
 
 	max_integrity = 200
-	armor = list(BLUNT = 20, PUNCTURE = 50, SLASH = 70, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 60)
 
 	/// The currently inserted trashbag, if any
 	var/obj/item/storage/bag/trash/trash_bag

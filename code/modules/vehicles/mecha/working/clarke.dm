@@ -1,4 +1,7 @@
 ///Lavaproof, fireproof, fast mech with low armor and higher energy consumption, cannot strafe and has an internal ore box.
+TYPEINFO_DEF(/obj/vehicle/sealed/mecha/working/clarke)
+	default_armor = list(BLUNT = 20, PUNCTURE = 10, SLASH = 0, LASER = 20, ENERGY = 10, BOMB = 60, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/vehicle/sealed/mecha/working/clarke
 	desc = "Combining man and machine for a better, stronger engineer. Can even resist lava!"
 	name = "\improper Clarke"
@@ -10,7 +13,6 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	lights_power = 7
 	step_energy_drain = 15 //slightly higher energy drain since you movin those wheels FAST
-	armor = list(BLUNT = 20, PUNCTURE = 10, SLASH = 0, LASER = 20, ENERGY = 10, BOMB = 60, BIO = 0, FIRE = 100, ACID = 100) //low armor to compensate for fire protection and speed
 	equip_by_category = list(
 		MECHA_L_ARM = null,
 		MECHA_R_ARM = null,

@@ -296,12 +296,15 @@
 	inhand_icon_state = "supermatter_tongs[sliver ? "_loaded" : null]"
 	return ..()
 
-/obj/item/hemostat/supermatter/afterattack(atom/O, mob/user, proximity)
-	. = ..()
+/obj/item/hemostat/supermatter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!sliver)
 		return
-	if(proximity && ismovable(O) && O != sliver)
+
+	var/atom/O = interacting_with // Yes i am supremely lazy
+
+	if(ismovable(O) && O != sliver)
 		Consume(O, user)
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/hemostat/supermatter/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum) // no instakill supermatter javelins
 	if(sliver)

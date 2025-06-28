@@ -1,6 +1,9 @@
 /*
  * Fireaxe
  */
+TYPEINFO_DEF(/obj/item/fireaxe)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 30)
+
 /obj/item/fireaxe  // DEM AXES MAN, marker -Agouri
 	icon_state = "fireaxe0"
 	base_icon_state = "fireaxe"
@@ -20,7 +23,6 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharpness = SHARP_EDGED
 	max_integrity = 200
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 30)
 	resistance_flags = FIRE_PROOF
 
 /obj/item/fireaxe/Initialize(mapload)
@@ -36,14 +38,14 @@
 	user.visible_message(span_suicide("[user] axes [user.p_them()]self from head to toe! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return (BRUTELOSS)
 
-/obj/item/fireaxe/afterattack(atom/A, mob/user, proximity)
+/obj/item/fireaxe/afterattack(atom/target, mob/user, list/modifiers)
 	. = ..()
-	if(!proximity)
+	if(!wielded) //destroys windows and grilles in one hit
 		return
-	if(wielded) //destroys windows and grilles in one hit
-		if(istype(A, /obj/structure/window) || istype(A, /obj/structure/grille))
-			var/obj/structure/W = A
-			W.atom_destruction("fireaxe")
+
+	if(istype(target, /obj/structure/window) || istype(target, /obj/structure/grille))
+		var/obj/structure/W = target
+		W.atom_destruction("fireaxe")
 
 /*
  * Bone Axe

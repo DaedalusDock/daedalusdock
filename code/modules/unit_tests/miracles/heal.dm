@@ -4,10 +4,10 @@
 /datum/unit_test/miracle/heal/Run()
 	setup(/obj/effect/aether_rune/heal)
 
-	var/obj/item/reagent_containers/glass/bottle/woundseal_bottle = ALLOCATE_BOTTOM_LEFT()
-	var/obj/item/reagent_containers/glass/bottle/siphroot_bottle = ALLOCATE_BOTTOM_LEFT()
-	var/obj/item/reagent_containers/glass/bottle/burnboil_bottle = ALLOCATE_BOTTOM_LEFT()
-	var/obj/item/reagent_containers/glass/bottle/calomel_bottle = ALLOCATE_BOTTOM_LEFT()
+	var/obj/item/reagent_containers/cup/bottle/woundseal_bottle = ALLOCATE_BOTTOM_LEFT()
+	var/obj/item/reagent_containers/cup/bottle/siphroot_bottle = ALLOCATE_BOTTOM_LEFT()
+	var/obj/item/reagent_containers/cup/bottle/burnboil_bottle = ALLOCATE_BOTTOM_LEFT()
+	var/obj/item/reagent_containers/cup/bottle/calomel_bottle = ALLOCATE_BOTTOM_LEFT()
 
 
 	SSmobs.can_fire = FALSE

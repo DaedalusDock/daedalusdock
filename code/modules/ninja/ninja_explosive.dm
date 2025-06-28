@@ -36,14 +36,15 @@
 		return
 	detonation_area = objective.detonation_location
 
-/obj/item/grenade/c4/ninja/afterattack(atom/movable/AM, mob/ninja, flag)
-	if(!IS_SPACE_NINJA(ninja))
-		to_chat(ninja, span_notice("While it appears normal, you can't seem to detonate the charge."))
-		return
-	if (!check_loc(ninja))
-		return
-	detonator = WEAKREF(ninja)
-	return ..()
+/obj/item/grenade/c4/ninja/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!IS_SPACE_NINJA(user))
+		to_chat(user, span_notice("While it appears normal, you can't seem to detonate the charge."))
+		return ITEM_INTERACT_BLOCKING
+	if (!check_loc(user))
+		return ITEM_INTERACT_BLOCKING
+
+	detonator = WEAKREF(user)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/grenade/c4/ninja/detonate(mob/living/lanced_by)
 	if(!check_loc(detonator.resolve())) // if its moved, deactivate the c4

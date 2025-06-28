@@ -207,6 +207,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/item/storage/secure/safe, 32)
 /obj/item/storage/secure/safe/hos
 	name = "security marshal's safe"
 
+
 /**
  * This safe is meant to be damn robust. To break in, you're supposed to get creative, or use acid or an explosion.
  *
@@ -216,13 +217,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/item/storage/secure/safe, 32)
  * The safe is also weak to explosions, so spending some early TC could allow an antag to blow it upen if they can
  * get access to it.
  */
+
+TYPEINFO_DEF(/obj/item/storage/secure/safe/caps_spare)
+	default_armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 70, BIO = 100, FIRE = 80, ACID = 70)
+
 /obj/item/storage/secure/safe/caps_spare
 	name = "captain's spare ID safe"
 	desc = "In case of emergency, do not break glass. All Captains and Acting Captains are provided with codes to access this safe. \
 It is made out of the same material as the station's Black Box and is designed to resist all conventional weaponry. \
 There appears to be a small amount of surface corrosion. It doesn't look like it could withstand much of an explosion."
 	can_hack_open = FALSE
-	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 70, BIO = 100, FIRE = 80, ACID = 70)
 	max_integrity = 300
 	color = "#ffdd33"
 

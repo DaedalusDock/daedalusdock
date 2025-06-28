@@ -24,15 +24,20 @@
 	if(reagents.total_volume && rename_with_volume)
 		name += " ([reagents.total_volume]u)"
 
-/obj/item/reagent_containers/pill/attack(mob/M, mob/user, def_zone)
-	if(!canconsume(M, user))
-		return FALSE
+/obj/item/reagent_containers/pill/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ismob(interacting_with))
+		return interact_with_non_mob(interacting_with, user, modifiers)
 
+	if(!canconsume(interacting_with, user))
+		return NONE
+
+	var/mob/living/carbon/M = interacting_with
 	if(M == user)
 		M.visible_message(span_notice("[user] attempts to [apply_method] [src]."))
 		if(self_delay)
 			if(!do_after(user, M, self_delay))
 				return FALSE
+
 		to_chat(M, span_notice("You [apply_method] [src]."))
 
 	else
@@ -49,7 +54,27 @@
 			span_userdanger("[user] forces you to [apply_method] [src].")
 		)
 
-	return consume(M, user)
+	user.do_item_attack_animation(interacting_with, used_item = src)
+	return consume(M, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
+
+/obj/item/reagent_containers/pill/proc/interact_with_non_mob(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
+	if(!dissolvable || !target.is_refillable())
+		return NONE
+
+	if(target.is_drainable() && !target.reagents.total_volume)
+		to_chat(user, span_warning("There is nothing to dissolve [src] in."))
+		return ITEM_INTERACT_BLOCKING
+
+	if(target.reagents.holder_full())
+		to_chat(user, span_warning("[target] is full."))
+		return ITEM_INTERACT_BLOCKING
+
+	user.visible_message(span_warning("[user] slips something into [target]!"), span_notice("You dissolve [src] in [target]."), null, 2)
+	reagents.trans_to(target, reagents.total_volume, transfered_by = user)
+	qdel(src)
+	return ITEM_INTERACT_SUCCESS
 
 /// Consume the pill.
 /obj/item/reagent_containers/pill/proc/consume(mob/M, mob/user)
@@ -65,25 +90,6 @@
 	if(reagents.total_volume)
 		reagents.trans_to(M, reagents.total_volume, transfered_by = user, methods = apply_type)
 	return TRUE
-
-
-/obj/item/reagent_containers/pill/afterattack(obj/target, mob/user , proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(!dissolvable || !target.is_refillable())
-		return
-	if(target.is_drainable() && !target.reagents.total_volume)
-		to_chat(user, span_warning("[target] is empty! There's nothing to dissolve [src] in."))
-		return
-
-	if(target.reagents.holder_full())
-		to_chat(user, span_warning("[target] is full."))
-		return
-
-	user.visible_message(span_warning("[user] slips something into [target]!"), span_notice("You dissolve [src] in [target]."), null, 2)
-	reagents.trans_to(target, reagents.total_volume, transfered_by = user)
-	qdel(src)
 
 /*
  * On accidental consumption, consume the pill

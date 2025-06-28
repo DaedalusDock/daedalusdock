@@ -1,6 +1,9 @@
 
 #define CAMERA_PICTURE_SIZE_HARD_LIMIT 21
 
+TYPEINFO_DEF(/obj/item/camera)
+	default_materials = list(/datum/material/iron = 50, /datum/material/glass = 150)
+
 /obj/item/camera
 	name = "camera"
 	icon = 'icons/obj/items_and_weapons.dmi'
@@ -18,7 +21,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_NECK
-	custom_materials = list(/datum/material/iron = 50, /datum/material/glass = 150)
 	custom_price = PAYCHECK_EASY * 2
 	var/flash_enabled = TRUE
 	var/state_on = "camera"
@@ -124,30 +126,34 @@
 			return FALSE
 	return TRUE
 
-/obj/item/camera/afterattack(atom/target, mob/user, flag)
+/obj/item/camera/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if (disk)
-		if(ismob(target))
+		if(ismob(interacting_with))
 			if (disk.record)
 				QDEL_NULL(disk.record)
 
 			disk.record = new
-			var/mob/M = target
+			var/mob/M = interacting_with
 			disk.record.caller_name = M.name
 			disk.record.set_caller_image(M)
 		else
 			to_chat(user, span_warning("Invalid holodisk target."))
-			return
+			return ITEM_INTERACT_BLOCKING
 
-	if(!can_target(target, user, flag))
-		return
+	if(!can_target(interacting_with, user, FALSE))
+		return NONE
 
+	if(try_take_picture(interacting_with, user))
+		return ITEM_INTERACT_SUCCESS
+
+/obj/item/camera/proc/try_take_picture(atom/interacting_with, mob/living/user)
 	on = FALSE
 	addtimer(CALLBACK(src, PROC_REF(cooldown)), cooldown)
 
 	icon_state = state_off
 
-	INVOKE_ASYNC(src, PROC_REF(captureimage), target, user, picture_size_x - 1, picture_size_y - 1)
-
+	INVOKE_ASYNC(src, PROC_REF(captureimage), interacting_with, user, picture_size_x - 1, picture_size_y - 1)
+	return TRUE
 
 /obj/item/camera/proc/cooldown()
 	UNTIL(!blending)

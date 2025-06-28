@@ -1,8 +1,10 @@
+TYPEINFO_DEF(/obj/item/assembly/prox_sensor)
+	default_materials = list(/datum/material/iron=800, /datum/material/glass=200)
+
 /obj/item/assembly/prox_sensor
 	name = "proximity sensor"
 	desc = "Used for scanning and alerting when someone enters a certain proximity."
 	icon_state = "prox"
-	custom_materials = list(/datum/material/iron=800, /datum/material/glass=200)
 	attachable = TRUE
 	drop_sound = 'sound/items/handling/component_drop.ogg'
 	pickup_sound = 'sound/items/handling/component_pickup.ogg'

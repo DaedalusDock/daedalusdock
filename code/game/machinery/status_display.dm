@@ -35,11 +35,13 @@
 	var/message1 = ""
 	var/message2 = ""
 
+TYPEINFO_DEF(/obj/item/wallframe/status_display)
+	default_materials = list(/datum/material/iron=14000, /datum/material/glass=8000)
+
 /obj/item/wallframe/status_display
 	name = "status display frame"
 	desc = "Used to build status displays, just secure to the wall."
 	icon_state = "unanchoredstatusdisplay"
-	custom_materials = list(/datum/material/iron=14000, /datum/material/glass=8000)
 	result_path = /obj/machinery/status_display/evac
 	pixel_shift = 32
 

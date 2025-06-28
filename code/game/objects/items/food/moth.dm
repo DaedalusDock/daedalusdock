@@ -515,7 +515,7 @@
 
 /obj/item/food/pizza/mothic_margherita
 	name = "mothic margherita pizza"
-	desc = "A key characteristic of mothic pizza is that it's sold by weight- single slices are available for discretionary credits, while a meal ticket can buy a whole pie."
+	desc = "A key characteristic of mothic pizza is that it's sold by weight- single slices are available for discretionary marks, while a meal ticket can buy a whole pie."
 	icon = 'icons/obj/food/moth.dmi'
 	icon_state = "margherita_pizza"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 25, /datum/reagent/consumable/nutriment/protein = 8, /datum/reagent/consumable/tomatojuice = 6, /datum/reagent/consumable/nutriment/vitamin = 5)

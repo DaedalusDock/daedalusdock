@@ -313,3 +313,12 @@ rough example of the "cone" made by the 3 dirs checked
 ///A do nothing proc
 /proc/noop(...)
 	return
+
+/**
+ * Called before an item is put into this atom's storage datum
+ * via the item clicking on this atom
+ *
+ * Returning FALSE will block that item from being put into our storage
+ */
+/atom/proc/storage_insert_on_interacted_with(datum/storage, obj/item/inserted, mob/living/user)
+	return TRUE

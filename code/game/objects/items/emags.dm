@@ -62,15 +62,17 @@
 /obj/item/card/emag/attack()
 	return
 
-/obj/item/card/emag/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	var/atom/A = target
-	if(!proximity && prox_check)
-		return
-	if(!can_emag(target, user))
-		return
-	log_combat(user, A, "attempted to emag")
-	A.emag_act(user, src)
+/obj/item/card/emag/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!prox_check)
+		return interact_with_atom(interacting_with, user, modifiers)
+
+/obj/item/card/emag/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!can_emag(interacting_with, user) || ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+		return NONE
+
+	log_combat(user, interacting_with, "attempted to emag")
+	interacting_with.emag_act(user, src)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/card/emag/proc/can_emag(atom/target, mob/user)
 	for (var/subtypelist in type_blacklist)

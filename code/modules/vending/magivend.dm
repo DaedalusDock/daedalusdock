@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/machinery/vending/magivend)
+	default_armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+
 /obj/machinery/vending/magivend
 	name = "\improper MagiVend"
 	desc = "A magic vending machine."
@@ -16,8 +19,7 @@
 		/obj/item/clothing/shoes/sandal/magic = 1,
 		/obj/item/staff = 2
 	)
-	contraband = list(/obj/item/reagent_containers/glass/bottle/wizarditis = 1) //No one can get to the machine to hack it anyways; for the lulz - Microwave
-	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+	contraband = list(/obj/item/reagent_containers/cup/bottle/wizarditis = 1) //No one can get to the machine to hack it anyways; for the lulz - Microwave
 	resistance_flags = FIRE_PROOF
 	default_price = 0 //Just in case, since it's primary use is storage.
 	extra_price = PAYCHECK_COMMAND

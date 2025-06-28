@@ -52,6 +52,10 @@
 	QDEL_LAZYLIST(diseases)
 	return ..()
 
+/mob/living/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if (user.can_perform_surgery_on(src) && tool.attempt_surgery(src, user))
+		return ITEM_INTERACT_SUCCESS
+
 /mob/living/onZImpact(turf/T, levels, message = TRUE)
 	if(m_intent == MOVE_INTENT_WALK && levels <= 1 && !throwing && !incapacitated())
 		visible_message(
@@ -2265,7 +2269,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	var/offset_y = pixel_y + pick(-3, -2, -1, 1, 2, 3)
 
 	for(var/atom/movable/AM as anything in get_associated_mimics() + src)
-		animate(AM, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4))
+		animate(AM, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4), flags = ANIMATION_PARALLEL)
 		animate(pixel_x = pixel_x, pixel_y = pixel_y, time = 2)
 
 /mob/living/proc/get_blood_print()

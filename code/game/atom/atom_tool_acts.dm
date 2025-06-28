@@ -48,14 +48,15 @@
 		interaction_fingerprints(user, tool, fingerprint_flags_item_interaction, !!(self_interaction & ITEM_INTERACT_SUCCESS))
 		return self_interaction
 
-	// Finally, see what the tool has to say about this
-	var/interact_return = is_left_clicking \
-		? tool.interact_with_atom(src, user, modifiers) \
-		: tool.interact_with_atom_secondary(src, user, modifiers)
+	if(!user.combat_mode || tool.has_combat_mode_interaction)
+		// Finally, see what the tool has to say about this
+		var/interact_return = is_left_clicking \
+			? tool.interact_with_atom(src, user, modifiers) \
+			: tool.interact_with_atom_secondary(src, user, modifiers)
 
-	if(interact_return)
-		interaction_fingerprints(user, tool, tool.fingerprint_flags_interact_with_atom, !!(interact_return & ITEM_INTERACT_SUCCESS))
-		return interact_return
+		if(interact_return)
+			interaction_fingerprints(user, tool, tool.fingerprint_flags_interact_with_atom, !!(interact_return & ITEM_INTERACT_SUCCESS))
+			return interact_return
 
 	// We have to manually handle storage in item_interaction because storage is blocking in 99% of interactions, which stifles a lot
 	// Yeah it sucks not being able to signalize this, but the other option is to have a second signal here just for storage which is also not great

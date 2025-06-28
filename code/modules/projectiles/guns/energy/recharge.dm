@@ -91,6 +91,9 @@
 	if(no_charge_state && !can_fire())
 		icon_state = no_charge_state
 
+TYPEINFO_DEF(/obj/item/gun/energy/recharge/ebow)
+	default_materials = list(/datum/material/iron=2000)
+
 /obj/item/gun/energy/recharge/ebow
 	name = "mini energy crossbow"
 	desc = "A weapon favored by syndicate stealth specialists."
@@ -99,7 +102,6 @@
 	inhand_icon_state = "crossbow"
 	no_charge_state = "crossbow_empty"
 	w_class = WEIGHT_CLASS_SMALL
-	custom_materials = list(/datum/material/iron=2000)
 	suppressed = TRUE
 	ammo_type = list(/obj/item/ammo_casing/energy/bolt)
 	recharge_time = 2 SECONDS
@@ -117,6 +119,9 @@
 	no_charge_state = "crossbow_halloween_empty"
 	ammo_type = list(/obj/item/ammo_casing/energy/bolt/halloween)
 
+TYPEINFO_DEF(/obj/item/gun/energy/recharge/ebow/large)
+	default_materials = list(/datum/material/iron=4000)
+
 /obj/item/gun/energy/recharge/ebow/large
 	name = "energy crossbow"
 	desc = "A reverse engineered weapon using syndicate technology."
@@ -124,6 +129,5 @@
 	base_icon_state = "crossbowlarge"
 	no_charge_state = "crossbowlarge_empty"
 	w_class = WEIGHT_CLASS_BULKY
-	custom_materials = list(/datum/material/iron=4000)
 	suppressed = null
 	ammo_type = list(/obj/item/ammo_casing/energy/bolt/large)

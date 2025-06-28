@@ -38,9 +38,9 @@
 	/// TRUE = the special attack is charged || FALSE = not charged
 	var/special_attack_charged = FALSE
 	/// What type of special attack they use - SPECIAL_ATTACK_DAMAGE, SPECIAL_ATTACK_HEAL, SPECIAL_ATTACK_UTILITY, SPECIAL_ATTACK_OTHER
-	var/special_attack_type = 0
+	var/spec_attack_type = 0
 	/// What message their special move gets on examining
-	var/special_attack_type_message = ""
+	var/spec_attack_type_message = ""
 	/// The battlecry when using the special attack
 	var/special_attack_cry = "*flip"
 	/// Current cooldown of their special attack
@@ -54,17 +54,17 @@
 	. = ..()
 	AddElement(/datum/element/series, /obj/item/toy/mecha, "Mini-Mecha action figures")
 	combat_health = max_combat_health
-	switch(special_attack_type)
+	switch(spec_attack_type)
 		if(SPECIAL_ATTACK_DAMAGE)
-			special_attack_type_message = "an aggressive move, which deals bonus damage."
+			spec_attack_type_message = "an aggressive move, which deals bonus damage."
 		if(SPECIAL_ATTACK_HEAL)
-			special_attack_type_message = "a defensive move, which grants bonus healing."
+			spec_attack_type_message = "a defensive move, which grants bonus healing."
 		if(SPECIAL_ATTACK_UTILITY)
-			special_attack_type_message = "a utility move, which heals the user and damages the opponent."
+			spec_attack_type_message = "a utility move, which heals the user and damages the opponent."
 		if(SPECIAL_ATTACK_OTHER)
-			special_attack_type_message = "a special move, which [special_attack_type_message]"
+			spec_attack_type_message = "a special move, which [spec_attack_type_message]"
 		else
-			special_attack_type_message = "a mystery move, even I don't know."
+			spec_attack_type_message = "a mystery move, even I don't know."
 
 /**
  * this proc combines "sleep" while also checking for if the battle should continue
@@ -253,7 +253,7 @@
 
 /obj/item/toy/mecha/examine()
 	. = ..()
-	. += span_notice("This toy's special attack is [special_attack_cry], [special_attack_type_message]")
+	. += span_notice("This toy's special attack is [special_attack_cry], [spec_attack_type_message]")
 	if(in_combat)
 		. += span_notice("This toy has a maximum health of [max_combat_health]. Currently, it's [combat_health].")
 		. += span_notice("Its special move light is [special_attack_cooldown? "flashing red." : "green and is ready!"]")
@@ -476,7 +476,7 @@
 	special_attack_charged = FALSE
 	special_attack_cooldown = 3
 
-	switch(special_attack_type)
+	switch(spec_attack_type)
 		if(SPECIAL_ATTACK_DAMAGE) //+2 damage
 			victim.combat_health-=2
 			playsound(src, 'sound/weapons/marauder.ogg', 20, TRUE)
@@ -506,71 +506,71 @@
 	name = "toy Ripley MK-I"
 	icon_state = "ripleytoy"
 	max_combat_health = 4 //200 integrity
-	special_attack_type = SPECIAL_ATTACK_DAMAGE
+	spec_attack_type = SPECIAL_ATTACK_DAMAGE
 	special_attack_cry = "CLAMP SMASH"
 
 /obj/item/toy/mecha/ripleymkii
 	name = "toy Ripley MK-II"
 	icon_state = "ripleymkiitoy"
 	max_combat_health = 5 //250 integrity
-	special_attack_type = SPECIAL_ATTACK_DAMAGE
+	spec_attack_type = SPECIAL_ATTACK_DAMAGE
 	special_attack_cry = "GIGA DRILL BREAK"
 
 /obj/item/toy/mecha/hauler
 	name = "toy Hauler"
 	icon_state = "haulertoy"
 	max_combat_health = 3 //100 integrity?
-	special_attack_type = SPECIAL_ATTACK_UTILITY
+	spec_attack_type = SPECIAL_ATTACK_UTILITY
 	special_attack_cry = "HAUL AWAY"
 
 /obj/item/toy/mecha/clarke
 	name = "toy Clarke"
 	icon_state = "clarketoy"
 	max_combat_health = 4 //200 integrity
-	special_attack_type = SPECIAL_ATTACK_UTILITY
+	spec_attack_type = SPECIAL_ATTACK_UTILITY
 	special_attack_cry = "ROLL OUT"
 
 /obj/item/toy/mecha/odysseus
 	name = "toy Odysseus"
 	icon_state = "odysseustoy"
 	max_combat_health = 4 //120 integrity
-	special_attack_type = SPECIAL_ATTACK_HEAL
+	spec_attack_type = SPECIAL_ATTACK_HEAL
 	special_attack_cry = "MECHA BEAM"
 
 /obj/item/toy/mecha/gygax
 	name = "toy Gygax"
 	icon_state = "gygaxtoy"
 	max_combat_health = 5 //250 integrity
-	special_attack_type = SPECIAL_ATTACK_UTILITY
+	spec_attack_type = SPECIAL_ATTACK_UTILITY
 	special_attack_cry = "SUPER SERVOS"
 
 /obj/item/toy/mecha/durand
 	name = "toy Durand"
 	icon_state = "durandtoy"
 	max_combat_health = 6 //400 integrity
-	special_attack_type = SPECIAL_ATTACK_HEAL
+	spec_attack_type = SPECIAL_ATTACK_HEAL
 	special_attack_cry = "SHIELD OF PROTECTION"
 
 /obj/item/toy/mecha/savannahivanov
 	name = "toy Savannah-Ivanov"
 	icon_state = "savannahivanovtoy"
 	max_combat_health = 7 //450 integrity
-	special_attack_type = SPECIAL_ATTACK_UTILITY
+	spec_attack_type = SPECIAL_ATTACK_UTILITY
 	special_attack_cry = "SKYFALL!! IVANOV STRIKE"
 
 /obj/item/toy/mecha/phazon
 	name = "toy Phazon"
 	icon_state = "phazontoy"
 	max_combat_health = 6 //200 integrity
-	special_attack_type = SPECIAL_ATTACK_UTILITY
+	spec_attack_type = SPECIAL_ATTACK_UTILITY
 	special_attack_cry = "NO-CLIP"
 
 /obj/item/toy/mecha/honk
 	name = "toy H.O.N.K."
 	icon_state = "honktoy"
 	max_combat_health = 4 //140 integrity
-	special_attack_type = SPECIAL_ATTACK_OTHER
-	special_attack_type_message = "puts the opposing mech's special move on cooldown and heals this mech."
+	spec_attack_type = SPECIAL_ATTACK_OTHER
+	spec_attack_type_message = "puts the opposing mech's special move on cooldown and heals this mech."
 	special_attack_cry = "MEGA HORN"
 
 /obj/item/toy/mecha/honk/super_special_attack(obj/item/toy/mecha/victim)
@@ -582,29 +582,29 @@
 	name = "toy Dark Gygax"
 	icon_state = "darkgygaxtoy"
 	max_combat_health = 6 //300 integrity
-	special_attack_type = SPECIAL_ATTACK_UTILITY
+	spec_attack_type = SPECIAL_ATTACK_UTILITY
 	special_attack_cry = "ULTRA SERVOS"
 
 /obj/item/toy/mecha/mauler
 	name = "toy Mauler"
 	icon_state = "maulertoy"
 	max_combat_health = 7 //500 integrity
-	special_attack_type = SPECIAL_ATTACK_DAMAGE
+	spec_attack_type = SPECIAL_ATTACK_DAMAGE
 	special_attack_cry = "BULLET STORM"
 
 /obj/item/toy/mecha/darkhonk
 	name = "toy Dark H.O.N.K."
 	icon_state = "darkhonktoy"
 	max_combat_health = 5 //300 integrity
-	special_attack_type = SPECIAL_ATTACK_DAMAGE
+	spec_attack_type = SPECIAL_ATTACK_DAMAGE
 	special_attack_cry = "BOMBANANA SPREE"
 
 /obj/item/toy/mecha/deathripley
 	name = "toy Death-Ripley"
 	icon_state = "deathripleytoy"
 	max_combat_health = 5 //250 integrity
-	special_attack_type = SPECIAL_ATTACK_OTHER
-	special_attack_type_message = "instantly destroys the opposing mech if its health is less than this mech's health."
+	spec_attack_type = SPECIAL_ATTACK_OTHER
+	spec_attack_type_message = "instantly destroys the opposing mech if its health is less than this mech's health."
 	special_attack_cry = "KILLER CLAMP"
 
 /obj/item/toy/mecha/deathripley/super_special_attack(obj/item/toy/mecha/victim)
@@ -620,8 +620,8 @@
 	icon_state = "reticencetoy"
 	quiet = TRUE
 	max_combat_health = 4 //100 integrity
-	special_attack_type = SPECIAL_ATTACK_OTHER
-	special_attack_type_message = "has a lower cooldown than normal special moves, increases the opponent's cooldown, and deals damage."
+	spec_attack_type = SPECIAL_ATTACK_OTHER
+	spec_attack_type_message = "has a lower cooldown than normal special moves, increases the opponent's cooldown, and deals damage."
 	special_attack_cry = "*wave"
 
 /obj/item/toy/mecha/reticence/super_special_attack(obj/item/toy/mecha/victim)
@@ -633,21 +633,21 @@
 	name = "toy Marauder"
 	icon_state = "maraudertoy"
 	max_combat_health = 7 //500 integrity
-	special_attack_type = SPECIAL_ATTACK_DAMAGE
+	spec_attack_type = SPECIAL_ATTACK_DAMAGE
 	special_attack_cry = "BEAM BLAST"
 
 /obj/item/toy/mecha/seraph
 	name = "toy Seraph"
 	icon_state = "seraphtoy"
 	max_combat_health = 8 //550 integrity
-	special_attack_type = SPECIAL_ATTACK_DAMAGE
+	spec_attack_type = SPECIAL_ATTACK_DAMAGE
 	special_attack_cry = "ROCKET BARRAGE"
 
 /obj/item/toy/mecha/firefighter //rip
 	name = "toy Firefighter"
 	icon_state = "firefightertoy"
 	max_combat_health = 5 //250 integrity?
-	special_attack_type = SPECIAL_ATTACK_HEAL
+	spec_attack_type = SPECIAL_ATTACK_HEAL
 	special_attack_cry = "FIRE SHIELD"
 
 #undef SPECIAL_ATTACK_HEAL

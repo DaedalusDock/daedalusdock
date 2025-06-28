@@ -12,6 +12,14 @@
 #define MEDTRAK_MENU_RECORD 3
 #define MEDTRAK_MENU_COMMENTS 4
 
+// directMAN menus
+#define DIRECTMAN_MENU_HOME 1
+#define DIRECTMAN_MENU_CURRENT 2
+#define DIRECTMAN_MENU_ACTIVE_DIRECTIVE 3
+#define DIRECTMAN_MENU_NEW_DIRECTIVES 4
+// ITS THREE IN THE MOOOOORNIN' AND YOOUUU'RE EATING ALONE
+#define DIRECTMAN_MENU_NEW_DIRECTIVE 5
+
 // Wireless card incoming filter modes
 #define WIRELESS_FILTER_PROMISC 0 //! Forward all packets
 #define WIRELESS_FILTER_NETADDR 1 //! Forward only bcast/unicast matched GPRS packets

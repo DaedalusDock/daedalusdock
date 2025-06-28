@@ -40,15 +40,16 @@
 	playsound(src, SFX_SHATTER, 70, TRUE) //copied from the code for smashing a glass sheet onto the ground to turn it into a shard
 	qdel(src)
 
-/obj/item/melee/sickly_blade/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
+/obj/item/melee/sickly_blade/afterattack(atom/target, mob/user, list/modifiers)
 	. = ..()
 	if(!isliving(target))
 		return
 
-	if(proximity_flag)
-		SEND_SIGNAL(user, COMSIG_HERETIC_BLADE_ATTACK, target, src)
-	else
-		SEND_SIGNAL(user, COMSIG_HERETIC_RANGED_BLADE_ATTACK, target, src)
+	SEND_SIGNAL(user, COMSIG_HERETIC_BLADE_ATTACK, target, src)
+
+/obj/item/melee/sickly_blade/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	SEND_SIGNAL(user, COMSIG_HERETIC_RANGED_BLADE_ATTACK, interacting_with, src)
+	return ITEM_INTERACT_BLOCKING
 
 /obj/item/melee/sickly_blade/examine(mob/user)
 	. = ..()

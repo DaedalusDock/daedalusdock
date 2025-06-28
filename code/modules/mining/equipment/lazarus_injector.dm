@@ -24,21 +24,24 @@
 	///So you can't revive boss monsters or robots with it
 	var/revive_type = SENTIENCE_ORGANIC
 
-/obj/item/lazarus_injector/afterattack(atom/target, mob/user, proximity_flag)
-	. = ..()
-	if(!loaded || !(isliving(target) && proximity_flag) )
-		return
+/obj/item/lazarus_injector/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
+	if(!loaded || !isliving(target))
+		return NONE
+
 	if(!isanimal(target))
 		to_chat(user, span_info("[src] is only effective on lesser beings."))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	var/mob/living/simple_animal/target_animal = target
 	if(target_animal.sentience_type != revive_type)
 		to_chat(user, span_info("[src] does not work on this sort of creature."))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(target_animal.stat != DEAD)
 		to_chat(user, span_info("[src] is only effective on the dead."))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	target_animal.faction = list("neutral")
 	target_animal.revive(full_heal = TRUE, admin_revive = TRUE)
@@ -57,6 +60,7 @@
 	SSblackbox.record_feedback("tally", "lazarus_injector", 1, target_animal.type)
 	playsound(src,'sound/effects/refill.ogg',50,TRUE)
 	icon_state = "lazarus_empty"
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/lazarus_injector/emp_act()
 	. = ..()

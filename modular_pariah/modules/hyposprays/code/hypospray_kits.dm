@@ -23,7 +23,7 @@
 		canhold = typecacheof(
 			list(
 				/obj/item/hypospray/mkii,
-				/obj/item/reagent_containers/glass/vial
+				/obj/item/reagent_containers/cup/vial
 			)
 		)
 	)
@@ -71,9 +71,9 @@
 	if(empty)
 		return
 	new /obj/item/hypospray/mkii(src)
-	new /obj/item/reagent_containers/glass/vial/small(src)
-	new /obj/item/reagent_containers/glass/vial/small(src)
-	new /obj/item/reagent_containers/glass/vial/small(src)
+	new /obj/item/reagent_containers/cup/vial/small(src)
+	new /obj/item/reagent_containers/cup/vial/small(src)
+	new /obj/item/reagent_containers/cup/vial/small(src)
 
 /obj/item/storage/hypospraykit/cmo
 	name = "deluxe hypospray kit"
@@ -85,16 +85,16 @@
 	if(empty)
 		return
 	new /obj/item/hypospray/mkii/cmo(src)
-	new /obj/item/reagent_containers/glass/vial/large/dylovene(src)
-	new /obj/item/reagent_containers/glass/vial/large/salglu(src)
-	new /obj/item/reagent_containers/glass/vial/large/synthflesh(src)
+	new /obj/item/reagent_containers/cup/vial/large/dylovene(src)
+	new /obj/item/reagent_containers/cup/vial/large/salglu(src)
+	new /obj/item/reagent_containers/cup/vial/large/synthflesh(src)
 
 /obj/item/storage/box/vials
 	name = "box of hypovials"
 
 /obj/item/storage/box/vials/PopulateContents()
 	for(var/i in 1 to 7)
-		new /obj/item/reagent_containers/glass/vial/small( src )
+		new /obj/item/reagent_containers/cup/vial/small( src )
 
 /obj/item/storage/box/hypospray
 	name = "box of hypospray kits"
@@ -110,7 +110,7 @@
 
 /obj/item/storage/hypospraykit/PopulateContents()
 	new /obj/item/hypospray/mkii/cmo(src)
-	new /obj/item/reagent_containers/glass/vial/large/dylovene(src)
-	new /obj/item/reagent_containers/glass/vial/large/salglu(src)
-	new /obj/item/reagent_containers/glass/vial/large/tricordrazine(src)
-	new /obj/item/reagent_containers/glass/vial/large/meralyne(src)
+	new /obj/item/reagent_containers/cup/vial/large/dylovene(src)
+	new /obj/item/reagent_containers/cup/vial/large/salglu(src)
+	new /obj/item/reagent_containers/cup/vial/large/tricordrazine(src)
+	new /obj/item/reagent_containers/cup/vial/large/meralyne(src)

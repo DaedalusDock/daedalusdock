@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/reagent_containers/syringe)
+	default_materials = list(/datum/material/iron=10, /datum/material/glass=20)
+
 /obj/item/reagent_containers/syringe
 	name = "syringe"
 	desc = "A syringe that can hold up to 15 units."
@@ -10,7 +13,6 @@
 	amount_per_transfer_from_this = 5
 	possible_transfer_amounts = list(5, 10, 15)
 	volume = 15
-	custom_materials = list(/datum/material/iron=10, /datum/material/glass=20)
 	reagent_flags = TRANSPARENT
 	custom_price = PAYCHECK_EASY * 0.5
 
@@ -80,6 +82,8 @@
 
 /obj/item/reagent_containers/syringe/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	ATTACK_IF_COMBAT_MODE(user, src)
+	if(!interacting_with.reagents)
+		return NONE
 
 	if(!try_syringe(interacting_with, user))
 		return ITEM_INTERACT_BLOCKING

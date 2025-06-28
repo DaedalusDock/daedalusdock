@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/desynchronizer)
+	default_materials = list(/datum/material/iron=250, /datum/material/glass=500)
+
 /obj/item/desynchronizer
 	name = "desynchronizer"
 	desc = "An experimental device that can temporarily desynchronize the user from spacetime, effectively making them disappear while it's active."
@@ -8,7 +11,6 @@
 	item_flags = NOBLUDGEON
 	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
-	custom_materials = list(/datum/material/iron=250, /datum/material/glass=500)
 	var/max_duration = 3000
 	var/duration = 300
 	var/last_use = 0

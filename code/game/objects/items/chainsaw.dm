@@ -1,5 +1,8 @@
 
 // CHAINSAW
+TYPEINFO_DEF(/obj/item/chainsaw)
+	default_materials = list(/datum/material/iron=13000)
+
 /obj/item/chainsaw
 	name = "chainsaw"
 	desc = "A versatile power tool. Useful for limbing trees and delimbing humans."
@@ -15,7 +18,6 @@
 	throw_speed = 1
 	throw_range = 4
 
-	custom_materials = list(/datum/material/iron=13000)
 	attack_verb_continuous = list("saws", "tears", "lacerates", "cuts", "chops", "dices")
 	attack_verb_simple = list("saw", "tear", "lacerate", "cut", "chop", "dice")
 	hitsound = SFX_SWING_HIT

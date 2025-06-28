@@ -35,34 +35,36 @@
 	else
 		to_chat(user, span_warning("You can't use [src] while inside something!"))
 
-/obj/item/chameleon/afterattack(atom/target, mob/user , proximity)
-	. = ..()
-	if(!proximity)
+/obj/item/chameleon/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	. = NONE
+	if(user.combat_mode)
 		return
-	if(!check_sprite(target))
+	if(!check_sprite(interacting_with))
 		return
 	if(active_dummy)//I now present you the blackli(f)st
 		return
-	if(isturf(target))
+	if(isturf(interacting_with))
 		return
-	if(ismob(target))
+	if(ismob(interacting_with))
 		return
-	if(istype(target, /obj/structure/falsewall))
+	if(istype(interacting_with, /obj/structure/falsewall))
 		return
-	if(target.alpha != 255)
+	if(interacting_with.alpha != 255)
 		return
-	if(target.invisibility != 0)
+	if(interacting_with.invisibility != 0)
 		return
-	if(iseffect(target))
-		if(!(istype(target, /obj/effect/decal))) //be a footprint
+	if(iseffect(interacting_with))
+		if(!(istype(interacting_with, /obj/effect/decal))) //be a footprint
 			return
+
 	playsound(get_turf(src), 'sound/weapons/flash.ogg', 100, TRUE, -6)
-	to_chat(user, span_notice("Scanned [target]."))
+	to_chat(user, span_notice("Scanned [interacting_with]."))
 	var/obj/temp = new/obj()
-	temp.appearance = target.appearance
-	temp.layer = initial(target.layer) // scanning things in your inventory
-	temp.plane = initial(target.plane)
+	temp.appearance = interacting_with.appearance
+	temp.layer = initial(interacting_with.layer) // scanning things in your inventory
+	temp.plane = initial(interacting_with.plane)
 	saved_appearance = temp.appearance
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/chameleon/proc/check_sprite(atom/target)
 	if(target.icon_state in icon_states(target.icon))

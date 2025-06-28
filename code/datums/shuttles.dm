@@ -231,7 +231,7 @@
 /datum/map_template/shuttle/emergency/medisim
 	suffix = "medisim"
 	name = "Medieval Reality Simulation Dome"
-	description = "A state of the art simulation dome, loaded onto your shuttle! Watch and laugh at how petty humanity used to be before it reached the stars. Guaranteed to be at least 40% historically accurate."
+	description = "A state of the art simulation dome, loaded onto your shuttle! Watch and laugh at how petty minervanity used to be before it reached the stars. Guaranteed to be at least 40% historically accurate."
 	admin_notes = "Ghosts can spawn in and fight as knights or archers. The CTF auto restarts, so no admin intervention necessary."
 	credit_cost = 20000
 

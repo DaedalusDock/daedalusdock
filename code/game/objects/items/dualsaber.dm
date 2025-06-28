@@ -1,6 +1,9 @@
 /*
  * Double-Bladed Energy Swords - Cheridan
  */
+TYPEINFO_DEF(/obj/item/dualsaber)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
+
 /obj/item/dualsaber
 	icon = 'icons/obj/transforming_energy.dmi'
 	icon_state = "dualsaber0"
@@ -35,7 +38,6 @@
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 	max_integrity = 200
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
 	resistance_flags = FIRE_PROOF
 
 	var/w_class_on = WEIGHT_CLASS_BULKY

@@ -32323,10 +32323,11 @@
 /area/station/hallway/primary/aft)
 "mee" = (
 /obj/machinery/door/firedoor,
-/obj/effect/mapping_helpers/access/all/command/captain/airlock,
 /obj/machinery/door/airlock/command{
-	name = "Captain's Quarters"
+	name = "Captain's Quarters";
+	id_tag = "cap_office_south"
 	},
+/obj/effect/mapping_helpers/airlock/frequency/airlock_control,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain/private)
 "mef" = (
@@ -34044,6 +34045,21 @@
 /obj/structure/table/wood,
 /turf/open/floor/carpet,
 /area/station/command/corporate_showroom)
+"mJp" = (
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/effect/mapping_helpers/access/all/command/captain/ec,
+/obj/machinery/c4_embedded_controller/airlock_access/secure/directional/north{
+	target_tag = "cap_office_south"
+	},
+/turf/open/floor/iron,
+/area/station/hallway/secondary/command)
 "mJA" = (
 /obj/structure/railing{
 	dir = 10
@@ -94963,7 +94979,7 @@ hkN
 pyT
 grF
 jjM
-xjF
+mJp
 pUb
 qGj
 pcu

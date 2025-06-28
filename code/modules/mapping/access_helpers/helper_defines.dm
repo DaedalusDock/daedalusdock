@@ -2,7 +2,7 @@
 
 #define MAKE_REAL_FOR_WINDOOR(BaseType, Access_Define) ##BaseType/windoor { search_type = /obj/machinery/door/window };
 
-//#define MAKE_FOR_CONTROLLER(BaseType, Slug, Access_Define) ##BaseType/ec { search_type = /obj };
+#define MAKE_REAL_FOR_CONTROLLER(BaseType, Access_Define) ##BaseType/ec { search_type = /obj/machinery/c4_embedded_controller };
 
 // This coerces it to be a list which is technically hacky and bad but honestly GFY. Rewrite my macros.
 #define MAKE_REAL_BASE(BaseType, Access_Define) ##BaseType { granted_access = list(Access_Define) };
@@ -14,13 +14,13 @@
 	MAKE_REAL_BASE(/obj/effect/mapping_helpers/access/all/##Slug, Access_Define) \
 	MAKE_REAL_FOR_AIRLOCK(/obj/effect/mapping_helpers/access/all/##Slug, Access_Define) \
 	MAKE_REAL_FOR_WINDOOR(/obj/effect/mapping_helpers/access/all/##Slug, Access_Define) \
-//	MAKE_FOR_CONTROLLER(/obj/effect/mapping_helpers/access/all/##Slug, Access_Define)
+	MAKE_REAL_FOR_CONTROLLER(/obj/effect/mapping_helpers/access/all/##Slug, Access_Define)
 
 #define MAKE_REAL_FOR_ANY(Slug, Access_Define) \
 	MAKE_REAL_BASE(/obj/effect/mapping_helpers/access/any/##Slug, Access_Define) \
 	MAKE_REAL_FOR_AIRLOCK(/obj/effect/mapping_helpers/access/any/##Slug, Access_Define) \
 	MAKE_REAL_FOR_WINDOOR(/obj/effect/mapping_helpers/access/any/##Slug, Access_Define) \
-//	MAKE_FOR_CONTROLLER(/obj/effect/mapping_helpers/access/any/##Slug, Access_Define)
+	MAKE_REAL_FOR_CONTROLLER(/obj/effect/mapping_helpers/access/any/##Slug, Access_Define)
 
 /// Make a REAL access helper.
 #define MAKE_REAL(Slug, Access_Define) \

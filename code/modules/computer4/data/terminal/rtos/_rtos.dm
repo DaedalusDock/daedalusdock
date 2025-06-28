@@ -133,7 +133,9 @@
 		halt(RTOS_HALT_NO_ACCESS, "ACCESS_FILE_MISSING")
 		return
 	var/list/auth_list = access_file.stored_record.fields[RTOS_ACCESS_LIST]
-	if(!auth_list)
+	if(istext(access_list))
+		access_list = text2access(access_list)
+	if(!islist(auth_list))
 		halt(RTOS_HALT_NO_ACCESS, "BAD_ACCESS_LIST")
 		return
 
@@ -144,9 +146,11 @@
 		if(RTOS_ACCESS_CALC_MODE_ALL)
 			if (length(auth_list & access_list) != length(auth_list))
 				return FALSE
+			return TRUE
 		if(RTOS_ACCESS_CALC_MODE_ANY)
 			if (length(auth_list & access_list))
 				return TRUE
+			return FALSE
 		else
 			halt(RTOS_HALT_BAD_CONFIG, "BAD_ACCESS_MODE")
 			return FALSE

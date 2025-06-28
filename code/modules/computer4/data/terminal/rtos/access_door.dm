@@ -62,7 +62,7 @@
 	control_mode = fields[RTOS_CONFIG_CMODE]
 
 	// there *HAS* to be a better way than this but it's 3am
-	if(target_tag && allow_lock_open && control_mode)
+	if(target_tag && allow_lock_open && (control_mode in list(RTOS_CMODE_BOLTS, RTOS_CMODE_SECURE)))
 		return
 
 	halt(RTOS_HALT_BAD_CONFIG, "BAD_CONFIG")
@@ -79,8 +79,13 @@
 	fault_string = null
 
 	COOLDOWN_START(src, door_state_timeout, (10 SECONDS))
-	control_airlock(AC_COMMAND_UPDATE)
+	if(control_mode == RTOS_CMODE_SECURE)
+		control_airlock(AC_COMMAND_CLOSE)
+	else
+		control_airlock(AC_COMMAND_UPDATE)
+	current_state = STATE_AWAIT
 	update_screen()
+
 
 /datum/c4_file/terminal_program/operating_system/rtos/access_door/tick(delta_time)
 	if(!is_operational() || current_state == STATE_FAULT)
@@ -130,8 +135,8 @@
 	// Pinout / countdown row
 	var/write_buffer = "" //Shared write buffer.
 	switch(current_state)
-		// if(STATE_AWAIT)
-			//skip
+		if(STATE_AWAIT)
+			print_history[ROW_INFO] = ""
 		if(STATE_COUNTDOWN)
 			if(allow_lock_open)
 				write_buffer = "  PRESS # FOR HOLD  "
@@ -297,6 +302,7 @@
 		current_state = STATE_COUNTDOWN
 		COOLDOWN_START(src, door_timer, (dwell_time SECONDS))
 	// Else, we don't change state and will never fire timer_expire().
+	update_screen()
 
 
 /// Fired upon the expiration (or manual triggering therein) of the door timer.
@@ -329,6 +335,8 @@
 
 /datum/c4_file/terminal_program/operating_system/rtos/access_door/peripheral_input(obj/item/peripheral/invoker, command, datum/signal/packet)
 	. = ..()
+	if(deadlocked || current_state == STATE_FAULT)
+		return
 	if(command == PERIPHERAL_CMD_RECEIVE_PACKET)
 		handle_packet(packet)
 	if(command == PERIPHERAL_CMD_SCAN_CARD)
@@ -357,7 +365,10 @@
 
 /datum/c4_file/terminal_program/operating_system/rtos/access_door/proc/handle_cardscan(var/datum/signal/packet)
 	var/list/data = packet.data
+	if(current_state != STATE_AWAIT)
+		return //Do nothing
 	if(check_access(data["access"]))
+		playsound(get_computer(), 'sound/machines/deniedbeep.ogg', 50, FALSE)
 		accepted()
 	else
 		playsound(get_computer(), 'sound/machines/deniedbeep.ogg', 50, FALSE)

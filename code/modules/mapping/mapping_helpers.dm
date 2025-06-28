@@ -241,6 +241,22 @@
 	else
 		airlock.autoname = TRUE
 
+/obj/effect/mapping_helpers/airlock/frequency
+	name = "airlock radio frequency helper"
+	icon_state = "airlock_radio"
+
+	var/frequency_to_set
+
+/obj/effect/mapping_helpers/airlock/frequency/payload(obj/machinery/door/airlock/airlock)
+	if(airlock.frequency)
+		log_mapping("[src] at [AREACOORD(src)] tried to set frequency for the [airlock] but it's already set!")
+	else
+		airlock.set_frequency(frequency_to_set)
+
+/obj/effect/mapping_helpers/airlock/frequency/airlock_control
+	frequency_to_set = FREQ_AIRLOCK_CONTROL
+
+
 // Windoors
 /obj/effect/mapping_helpers/windoor
 	layer = WINDOW_HELPER_LAYER

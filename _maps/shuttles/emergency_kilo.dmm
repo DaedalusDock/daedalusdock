@@ -329,7 +329,7 @@
 /obj/machinery/door/airlock/security/glass{
 	name = "Holding Area"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/escape/brig)
 "aK" = (
@@ -377,7 +377,7 @@
 /obj/machinery/door/airlock/command{
 	name = "Shuttle Control"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/escape)
 "aO" = (
@@ -555,7 +555,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/escape/brig)
 "bc" = (
@@ -659,7 +659,7 @@
 /obj/machinery/door/airlock/security/glass{
 	name = "Holding Area"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/escape/brig)
 "bn" = (

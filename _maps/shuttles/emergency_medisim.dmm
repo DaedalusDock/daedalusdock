@@ -312,7 +312,7 @@
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape/brig)
 "mq" = (
@@ -586,7 +586,7 @@
 /obj/machinery/door/airlock/external/ruin{
 	name = "Engine Maintenance Access"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
 "Bd" = (
@@ -971,7 +971,7 @@
 /obj/machinery/door/airlock/command/glass{
 	name = "Cockpit"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
 "NR" = (

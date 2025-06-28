@@ -615,7 +615,7 @@
 /area/shuttle/escape/brig)
 "bA" = (
 /obj/machinery/door/airlock/public/glass,
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape/brig)
 "bB" = (
@@ -680,7 +680,7 @@
 /obj/machinery/door/airlock/public/glass{
 	name = "Cockpit"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "bQ" = (
@@ -693,7 +693,7 @@
 /obj/machinery/door/airlock/public/glass{
 	name = "Brig"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/plating,
 /area/shuttle/escape/brig)
 "xt" = (

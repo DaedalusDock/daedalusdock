@@ -168,6 +168,15 @@ DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 	user.animate_interact(src, INTERACT_GENERIC, tool)
 	return TRUE
 
+/obj/machinery/attack_hand_secondary(mob/user, list/modifiers)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
+	var/obj/item/peripheral/card_reader/reader = internal_computer.get_peripheral(PERIPHERAL_TYPE_CARD_READER)
+	if(reader.try_eject_card(usr))
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
 /obj/machinery/computer4/embedded_controller
 	default_operating_system = null
 	default_programs = null

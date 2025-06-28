@@ -2970,6 +2970,7 @@
 #include "code\modules\computer4\data\terminal\notepad\notepad_commands.dm"
 #include "code\modules\computer4\data\terminal\packet_hound\packet_hound.dm"
 #include "code\modules\computer4\data\terminal\rtos\_rtos.dm"
+#include "code\modules\computer4\data\terminal\rtos\access_door.dm"
 #include "code\modules\computer4\data\terminal\rtos\pincode_door.dm"
 #include "code\modules\computer4\data\terminal\rtos\simple_door_control.dm"
 #include "code\modules\computer4\data\terminal\thinkdos\thinkdos.dm"

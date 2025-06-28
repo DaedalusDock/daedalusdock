@@ -170,8 +170,21 @@
 	overmachine.update_icon()
 
 /** RTOS.h - Check ID
- *  Check if an inserted ID is allowed. Wrapps rtos/check_access()
+ *  Check if an inserted ID is allowed. Wraps rtos/check_access()
  *  Deadlocks if there is no card reader.
  */
 /datum/c4_file/terminal_program/operating_system/rtos/proc/check_id()
-	#warn UNIMPLIMENTED
+	var/obj/item/peripheral/card_reader/reader = get_computer()?.get_peripheral(PERIPHERAL_TYPE_CARD_READER)
+	if(!reader)
+		halt(RTOS_HALT_MISSING_CARD_READER, "NO_CARD_READER")
+		. = FALSE
+		CRASH("No card reader in an embedded controller, this should never happen??")
+
+	var/datum/signal/packet = reader.scan_card()
+	if(packet == "nocard")
+		return FALSE //No card inserted.
+
+	var/access_string = packet.data["access"]
+	var/list/access_list = text2access(access_string)
+
+	return check_access(access_list)

@@ -174,7 +174,7 @@
 
 	switch(current_state)
 
-		if(STATE_AWAIT_PIN)
+		if(STATE_AWAIT)
 			display_icon = "screen_blank_[new_display]"
 			display_indicators = RTOS_RED
 
@@ -314,7 +314,7 @@
 			else
 				control_airlock(AC_COMMAND_BOLT)
 
-	current_state = STATE_AWAIT_PIN
+	current_state = STATE_AWAIT
 	update_screen()
 
 /// (if allowed) stop the timer and hold the door open.

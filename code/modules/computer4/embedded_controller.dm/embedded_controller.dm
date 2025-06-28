@@ -168,7 +168,7 @@ DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 	user.animate_interact(src, INTERACT_GENERIC, tool)
 	return TRUE
 
-/obj/machinery/attack_hand_secondary(mob/user, list/modifiers)
+/obj/machinery/c4_embedded_controller/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return

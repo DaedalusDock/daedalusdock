@@ -315,7 +315,7 @@
 		switch(control_mode)
 			if(RTOS_CMODE_SECURE)
 				control_airlock(AC_COMMAND_OPEN)
-			if(RTOS_RTOS_CMODE_BOLTS)
+			if(RTOS_CMODE_BOLTS)
 				if(airlock_bolt_state == "locked") //If locked
 					control_airlock(AC_COMMAND_UNBOLT)
 				else

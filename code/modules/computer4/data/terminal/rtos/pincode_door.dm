@@ -256,7 +256,7 @@
 
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/std_in(text)
 	. = ..()
-	if(text2num(text))
+	if(isnull(text2num(text)))
 		return pin_input(text)
 
 	switch(current_state)

@@ -12,9 +12,9 @@
 	var/dwell_time
 	/// Is this door allowed to be held open (Press * while unlocked)
 	var/allow_lock_open = TRUE
-	/// Static pin ID to use.
+	/// SSid_access.get_static_pincode ID to use.
 	var/static_pin_id
-	/// Static pin length.
+	/// SSid_access.get_static_pincode Length to use.
 	var/static_pin_length = 5
 	/// Manually assigned pin number. Ignores static pin config. Auto-calculates length.
 	var/forced_pin

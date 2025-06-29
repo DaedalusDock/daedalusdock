@@ -127,7 +127,7 @@
  *  Softcode allowed(), takes an ID access list from the ID peripheral.
  *  Deadlocks if the Access DB is missing or invalid
  */
-/datum/c4_file/terminal_program/operating_system/rtos/proc/check_access(var/list/access_list)
+/datum/c4_file/terminal_program/operating_system/rtos/proc/check_access(list/access_list)
 	var/datum/c4_file/record/access_file = get_file(RTOS_ACCESS_FILE)
 	if(!istype(access_file))
 		halt(RTOS_HALT_NO_ACCESS, "ACCESS_FILE_MISSING")

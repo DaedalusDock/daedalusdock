@@ -7718,7 +7718,6 @@
 	dir = 10
 	},
 /obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/east{
-	static_pin_id = "Botanist";
 	static_pin_length = 5;
 	tag_request_exit = "hydro_front_butt";
 	tag_target = "hydro_front"

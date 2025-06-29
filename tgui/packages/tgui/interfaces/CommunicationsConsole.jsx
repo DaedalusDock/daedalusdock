@@ -1,7 +1,4 @@
 import { sortBy } from 'common/collections';
-import { capitalize } from 'common/string';
-
-import { useBackend, useLocalState } from '../backend';
 import {
   Blink,
   Box,
@@ -13,7 +10,10 @@ import {
   Modal,
   Section,
   TextArea,
-} from '../components';
+} from 'tgui-core/components';
+import { capitalize } from 'tgui-core/string';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 import { sanitizeText } from '../sanitize';
 
@@ -85,7 +85,7 @@ const MessageModal = (props) => {
             width="80vw"
             backgroundColor="black"
             textColor="white"
-            onInput={(_, value) => {
+            onChange={(value) => {
               setInput(value.substring(0, maxMessageLength));
             }}
             value={input}
@@ -284,7 +284,7 @@ const PageChangingStatus = (props) => {
               maxLength={maxStatusLineLength}
               value={lineOne}
               width="200px"
-              onChange={(_, value) => setLineOne(value)}
+              onBlur={(value) => setLineOne(value)}
             />
           </Flex.Item>
 
@@ -293,7 +293,7 @@ const PageChangingStatus = (props) => {
               maxLength={maxStatusLineLength}
               value={lineTwo}
               width="200px"
-              onChange={(_, value) => setLineTwo(value)}
+              onBlur={(value) => setLineTwo(value)}
             />
           </Flex.Item>
 

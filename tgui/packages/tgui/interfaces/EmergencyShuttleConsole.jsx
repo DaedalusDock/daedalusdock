@@ -1,5 +1,7 @@
+import { Box, Button, Section } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Box, Button, Grid, Section } from '../components';
+import { Grid } from '../components/Grid';
 import { Window } from '../layouts';
 
 export const EmergencyShuttleConsole = (props) => {

@@ -4,9 +4,6 @@
  * @author LeahTheTech (https://github.com/TobleroneSwordfish)
  * @license MIT
  */
-import { Tooltip } from 'tgui-core/components';
-
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -15,7 +12,10 @@ import {
   Section,
   Stack,
   Tabs,
-} from '../components';
+  Tooltip,
+} from 'tgui-core/components';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 const FlockPartitions = (props) => {
@@ -442,7 +442,7 @@ export const FlockPanel = (props) => {
           <Box>
             <Dropdown
               options={['name', 'health', 'resources', 'area']}
-              selected="resources"
+              selected={sortBy}
               onSelected={(value) => setSortBy(value)}
             />
             <FlockDrones drones={drones} sortBy={sortBy} />

@@ -4,7 +4,6 @@
  * @license MIT
  */
 
-import { useLocalState } from '../backend';
 import {
   Box,
   DraggableControl,
@@ -15,7 +14,9 @@ import {
   NumberInput,
   Section,
   Slider,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useLocalState } from '../backend';
 
 export const meta = {
   title: 'Input',
@@ -29,10 +30,10 @@ const Story = (props) => {
     <Section>
       <LabeledList>
         <LabeledList.Item label="Input (onChange)">
-          <Input value={text} onChange={(e, value) => setText(value)} />
+          <Input value={text} onBlur={(value) => setText(value)} />
         </LabeledList.Item>
         <LabeledList.Item label="Input (onInput)">
-          <Input value={text} onInput={(e, value) => setText(value)} />
+          <Input value={text} onChange={(value) => setText(value)} />
         </LabeledList.Item>
         <LabeledList.Item label="NumberInput (onChange)">
           <NumberInput
@@ -43,7 +44,7 @@ const Story = (props) => {
             value={number}
             minValue={-100}
             maxValue={100}
-            onChange={(e, value) => setNumber(value)}
+            onBlur={(value) => setNumber(value)}
           />
         </LabeledList.Item>
         <LabeledList.Item label="NumberInput (onDrag)">

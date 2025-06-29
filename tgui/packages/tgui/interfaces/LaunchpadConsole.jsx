@@ -1,15 +1,16 @@
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
   Divider,
   Flex,
-  Grid,
   Input,
   NoticeBox,
   NumberInput,
   Section,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
+import { Grid } from '../components/Grid';
 import { Window } from '../layouts';
 
 const LaunchpadButtonPad = (props) => {
@@ -135,7 +136,7 @@ export const LaunchpadControl = (props) => {
         <Input
           value={pad_name}
           width="170px"
-          onChange={(e, value) =>
+          onBlur={(value) =>
             act('rename', {
               name: value,
             })

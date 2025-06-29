@@ -1,4 +1,4 @@
-import { BooleanLike } from 'common/react';
+import { BooleanLike } from 'tgui-core/react';
 
 import { sendAct } from '../../backend';
 import { Gender } from './preferences/gender';
@@ -172,7 +172,7 @@ export type PreferencesMenuData = {
   name_to_use: string;
 
   overflow_role: string;
-  preview_options: string;
+  preview_options: string[];
   // PARIAH EDIT ADDITION
   preview_selection: string;
 

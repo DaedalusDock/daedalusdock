@@ -1,9 +1,6 @@
 import { filterMap, sortBy } from 'common/collections';
-import { classes } from 'common/react';
 import { ReactNode } from 'react';
 import { Popper, Tooltip } from 'tgui-core/components';
-
-import { sendAct, useBackend, useLocalState } from '../../backend';
 import {
   Autofocus,
   Box,
@@ -13,7 +10,10 @@ import {
   LabeledList,
   Stack,
   TrackOutsideClicks,
-} from '../../components';
+} from 'tgui-core/components';
+import { classes } from 'tgui-core/react';
+
+import { sendAct, useBackend, useLocalState } from '../../backend';
 import { CharacterPreview } from './CharacterPreview';
 import {
   createSetPreference,

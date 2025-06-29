@@ -1,8 +1,15 @@
-import { classes } from 'common/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Icon,
+  NoticeBox,
+  Section,
+} from 'tgui-core/components';
+import { classes } from 'tgui-core/react';
 
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
-import { Box, Button, Flex, Icon, NoticeBox, Section } from '../components';
 import { NtosWindow } from '../layouts';
 
 export const NtosRadar = (props) => {

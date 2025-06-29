@@ -6,7 +6,6 @@ node_modules
 /yarn.lock
 /.pnp.*
 
-.swcrc
 /docs
 /public
 /packages/tgfont/static

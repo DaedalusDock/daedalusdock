@@ -4,7 +4,6 @@
  * @license MIT
  */
 
-import { useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -12,7 +11,9 @@ import {
   LabeledList,
   ProgressBar,
   Section,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useLocalState } from '../backend';
 
 export const meta = {
   title: 'ProgressBar',
@@ -51,7 +52,7 @@ const Story = (props) => {
             />
           </LabeledList.Item>
           <LabeledList.Item label="Override color">
-            <Input value={color} onChange={(e, value) => setColor(value)} />
+            <Input value={color} onBlur={(value) => setColor(value)} />
           </LabeledList.Item>
         </LabeledList>
       </Box>

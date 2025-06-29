@@ -40,6 +40,7 @@ module.exports = (env = {}, argv) => {
         : path.resolve(__dirname, './public'),
       filename: '[name].bundle.js',
       chunkFilename: '[name].bundle.js',
+
       chunkLoadTimeout: 15000,
       publicPath: '/',
     },
@@ -81,8 +82,11 @@ module.exports = (env = {}, argv) => {
           ],
         },
         {
-          test: /\.(cur|png|jpg|svg)$/,
+          test: /\.(png|jpg|svg)$/,
           type: 'asset/resource',
+          generator: {
+            filename: '[name][ext]', // Keep original file names
+          },
         },
       ],
     },

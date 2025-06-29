@@ -1,8 +1,4 @@
 import { filter, sortBy } from 'common/collections';
-import { flow } from 'common/fp';
-import { toFixed } from 'common/math';
-
-import { useBackend } from '../../backend';
 import {
   Box,
   Button,
@@ -10,7 +6,11 @@ import {
   NumberInput,
   ProgressBar,
   Section,
-} from '../../components';
+} from 'tgui-core/components';
+import { flow } from 'tgui-core/fp';
+import { toFixed } from 'tgui-core/math';
+
+import { useBackend } from '../../backend';
 import { getGasColor, getGasLabel } from '../../constants';
 import { HelpDummy, HoverHelp } from './helpers';
 

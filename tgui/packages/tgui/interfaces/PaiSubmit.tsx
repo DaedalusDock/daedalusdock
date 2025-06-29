@@ -1,7 +1,13 @@
-import { Tooltip } from 'tgui-core/components';
+import {
+  Box,
+  Button,
+  Input,
+  Section,
+  Stack,
+  Tooltip,
+} from 'tgui-core/components';
 
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Input, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 type CandidateData = {
@@ -28,8 +34,8 @@ export const PaiSubmit = (_) => {
     description: data.description || '',
     name: data.name || '',
   });
-  const onChangeHandler = (e, value) => {
-    setInput({ ...input, [value]: e.target.value });
+  const onChangeHandler = (field: string, value: string) => {
+    setInput({ ...input, [field]: value });
   };
 
   return (
@@ -81,7 +87,7 @@ const InputDisplay = (props) => {
             <Input
               fluid
               value={name}
-              onChange={(e) => onChangeHandler(e, 'name')}
+              onChange={(value) => onChangeHandler('name', value)}
             />
           </Tooltip>
         </Stack.Item>
@@ -93,7 +99,7 @@ const InputDisplay = (props) => {
             <Input
               fluid
               value={description}
-              onChange={(e) => onChangeHandler(e, 'description')}
+              onChange={(value) => onChangeHandler('description', value)}
             />
           </Tooltip>
         </Stack.Item>
@@ -105,7 +111,7 @@ const InputDisplay = (props) => {
             <Input
               fluid
               value={comments}
-              onChange={(e) => onChangeHandler(e, 'comments')}
+              onChange={(value) => onChangeHandler('comments', value)}
             />
           </Tooltip>
         </Stack.Item>

@@ -6,8 +6,8 @@
  */
 
 import { useEffect } from 'react';
+import { Box, Section } from 'tgui-core/components';
 
-import { Box, Section } from '../../components';
 import type { TerminalData } from './types';
 
 type TerminalOutputSectionProps = Pick<

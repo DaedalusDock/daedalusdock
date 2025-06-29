@@ -1,4 +1,3 @@
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -6,13 +5,15 @@ import {
   Divider,
   Flex,
   Icon,
+  Image,
   Input,
   LabeledList,
   Section,
   Stack,
   Table,
-} from '../components';
-import { Image } from '../components/Image';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 type ColorEntry = {
@@ -76,7 +77,7 @@ const ConfigDisplay = (props) => {
           <Button icon="cogs" onClick={() => act('select_config')} />
           <Input
             value={data.greyscale_config}
-            onChange={(_, value) =>
+            onBlur={(value) =>
               act('load_config_from_string', { config_string: value })
             }
           />
@@ -100,7 +101,7 @@ const ColorDisplay = (props) => {
           />
           <Input
             value={colors.map((item) => item.value).join('')}
-            onChange={(_, value) =>
+            onBlur={(value) =>
               act('recolor_from_string', { color_string: value })
             }
           />
@@ -125,7 +126,7 @@ const ColorDisplay = (props) => {
             <Input
               value={item.value}
               width={7}
-              onChange={(_, value) =>
+              onBlur={(value) =>
                 act('recolor', { color_index: item.index, new_color: value })
               }
             />

@@ -76,7 +76,7 @@ DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 /obj/machinery/c4_embedded_controller/proc/reset_visuals()
 	display_icon = null
 	display_indicators = NONE
-	update_icon()
+	update_appearance()
 
 /obj/machinery/c4_embedded_controller/examine(mob/user)
 	. = ..()

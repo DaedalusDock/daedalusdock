@@ -171,7 +171,7 @@
 	overmachine.display_icon = display_icon
 	overmachine.display_indicators = display_indicators
 
-	overmachine.update_icon()
+	overmachine.update_appearance()
 
 /** RTOS.h - Check ID
  *  Check if an inserted ID is allowed. Wraps rtos/check_access()

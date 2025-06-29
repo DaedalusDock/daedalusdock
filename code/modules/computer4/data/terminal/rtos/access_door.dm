@@ -70,8 +70,6 @@
 	return TRUE
 
 /datum/c4_file/terminal_program/operating_system/rtos/access_door/finish_startup()
-
-
 	var/obj/item/peripheral/network_card/wireless/wcard = get_computer()?.get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD)
 	wcard.listen_mode = WIRELESS_FILTER_ID_TAGS
 	wcard.id_tags = list(tag_target, tag_request_exit)
@@ -80,13 +78,9 @@
 	fault_string = null
 
 	COOLDOWN_START(src, door_state_timeout, (10 SECONDS))
-	if(control_mode == RTOS_CMODE_SECURE)
-		control_airlock(AC_COMMAND_CLOSE)
-	else
-		control_airlock(AC_COMMAND_UPDATE)
+	control_airlock(AC_COMMAND_CLOSE)
 	current_state = STATE_AWAIT
 	update_screen()
-
 
 /datum/c4_file/terminal_program/operating_system/rtos/access_door/tick(delta_time)
 	if(!is_operational() || current_state == STATE_FAULT)

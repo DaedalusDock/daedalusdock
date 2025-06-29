@@ -88,8 +88,6 @@
 	return TRUE
 
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/finish_startup()
-
-
 	var/obj/item/peripheral/network_card/wireless/wcard = get_computer()?.get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD)
 	wcard.listen_mode = WIRELESS_FILTER_ID_TAGS
 	wcard.id_tags = list(tag_target, tag_request_exit)
@@ -98,7 +96,7 @@
 	fault_string = null
 
 	COOLDOWN_START(src, door_state_timeout, (10 SECONDS))
-	control_airlock(AC_COMMAND_UPDATE)
+	control_airlock(AC_COMMAND_BOLT)
 	update_screen()
 
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/tick(delta_time)

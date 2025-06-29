@@ -358,11 +358,11 @@
 			else
 				fault("BAD MODE??")
 
-/datum/c4_file/terminal_program/operating_system/rtos/access_door/proc/handle_cardscan(var/datum/signal/packet)
-	var/list/data = packet.data
+/datum/c4_file/terminal_program/operating_system/rtos/access_door/proc/handle_cardscan(datum/signal/packet)
 	if(current_state != STATE_AWAIT)
 		return //Do nothing
-	if(check_access(data["access"]))
+
+	if(check_access(packet.data["access"]))
 		playsound(get_computer(), 'sound/machines/deniedbeep.ogg', 50, FALSE)
 		accepted()
 	else
@@ -380,6 +380,7 @@
 					. = FALSE
 					CRASH("No card reader in an embedded controller, this should never happen??")
 				reader.scan_card()
+
 		if(STATE_COUNTDOWN)
 			if(text == "*")
 				timer_expire()
@@ -394,6 +395,7 @@
 			if(text == "#")
 				// Start time timer back up again, but don't actually do any actions.
 				accepted(TRUE)
+
 		if(STATE_FAULT)
 			if(text == "*")
 				get_computer().reboot()

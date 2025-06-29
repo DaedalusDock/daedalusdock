@@ -12,4 +12,4 @@
 	pinpad.static_pin_length = static_pin_length
 
 /obj/effect/mapping_helpers/embedded_controller/static_id/hydroponics
-	static_pin_id = JOB_BOTANIST
+	static_pin_id = /datum/job/botanist::pinpad_key

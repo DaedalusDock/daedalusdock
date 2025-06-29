@@ -359,9 +359,10 @@ SUBSYSTEM_DEF(id_access)
 
 /// Get a global pin code, generates it if it doesn't already exist.
 /// Uses the passed length only if generating.
-/datum/controller/subsystem/id_access/proc/get_static_pincode(pincode_id, code_len = 4)
+/datum/controller/subsystem/id_access/proc/get_static_pincode(pincode_id, code_len = 5)
 	if(!pincode_id)
 		CRASH("Tried to retrieve static pincode with no pin ID")
+
 	var/code = static_pincodes[pincode_id]
 	if(!code)
 		while(length(code) < code_len)

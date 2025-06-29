@@ -170,16 +170,22 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/// Default security status. Skipped if null.
 	var/default_security_status = null
 
+	/// Pinpad key for their doors, if any.
+	var/pinpad_key = null
 
 /datum/job/New()
 	. = ..()
-	//PARIAH ADDITION START
+
 	if(!job_spawn_title)
 		job_spawn_title = title
-	//PARIAH ADDITION END
+
+	if(pinpad_key)
+		SSid_access.get_static_pincode(pinpad_key, 5)
+
 	var/list/jobs_changes = get_map_changes()
 	if(!jobs_changes)
 		return
+
 	if(isnum(jobs_changes["spawn_positions"]))
 		spawn_positions = jobs_changes["spawn_positions"]
 	if(isnum(jobs_changes["total_positions"]))
@@ -230,6 +236,11 @@ GLOBAL_LIST_INIT(job_display_order, list(
 		var/mob/living/carbon/human/experiencer = spawned
 		for(var/i in roundstart_experience)
 			experiencer.mind.adjust_experience(i, roundstart_experience[i], TRUE)
+
+	if(pinpad_key)
+		var/pin = SSid_access.get_static_pincode(pinpad_key)
+		spawned.mind.set_note(NOTES_DOOR_CODES, "The pin to your doors is [pin]")
+		to_chat(player_client, span_obviousnotice("You remember the pin to your doors: <b>[pin]</b>"))
 
 /datum/job/proc/announce_job(mob/living/joining_mob)
 	if(head_announce)

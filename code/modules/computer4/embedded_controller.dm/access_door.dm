@@ -6,9 +6,9 @@
 
 	radio_frequency = FREQ_AIRLOCK_CONTROL
 	/// Target airlock ID
-	var/target_tag
+	var/tag_target
 	/// Request-Exit Button ID
-	var/request_exit_tag
+	var/tag_request_exit
 	/// Airlock open duration
 	var/dwell_time
 	/// Is this door allowed to be held open (Press * while unlocked)
@@ -32,8 +32,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/c4_embedded_controller/airlock_access
 	var/list/fields = conf_db.stored_record.fields
 
 
-	fields[RTOS_CONFIG_AIRLOCK_ID] = target_tag
-	fields[RTOS_CONFIG_REQUEST_EXIT_ID] = request_exit_tag
+	fields[RTOS_CONFIG_AIRLOCK_ID] = tag_target
+	fields[RTOS_CONFIG_REQUEST_EXIT_ID] = tag_request_exit
 	fields[RTOS_CONFIG_HOLD_OPEN_TIME] = dwell_time
 	fields[RTOS_CONFIG_ALLOW_HOLD_OPEN] = allow_lock_open
 	fields[RTOS_CONFIG_CMODE] = control_mode

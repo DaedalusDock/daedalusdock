@@ -20,9 +20,9 @@
 	name = "pinworks-v1"
 
 	/// Target airlock ID
-	var/target_tag
+	var/tag_target
 	/// Request-Exit Button ID
-	var/request_exit_tag
+	var/tag_request_exit
 	/// Airlock open duration
 	var/dwell_time
 	/// Is this door allowed to be held open (Press * while unlocked)
@@ -64,8 +64,8 @@
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/populate_memory(datum/c4_file/record/conf_record)
 	var/list/fields = conf_record.stored_record.fields
 
-	target_tag = fields[RTOS_CONFIG_AIRLOCK_ID]
-	request_exit_tag = fields[RTOS_CONFIG_REQUEST_EXIT_ID] //OPTIONAL
+	tag_target = fields[RTOS_CONFIG_AIRLOCK_ID]
+	tag_request_exit = fields[RTOS_CONFIG_REQUEST_EXIT_ID] //OPTIONAL
 	dwell_time = fields[RTOS_CONFIG_HOLD_OPEN_TIME]
 	allow_lock_open = fields[RTOS_CONFIG_ALLOW_HOLD_OPEN] //OPTIONAL
 	correct_pin = fields[RTOS_CONFIG_PINCODE] //OPTIONAL
@@ -81,7 +81,7 @@
 		return TRUE
 
 	// there *HAS* to be a better way than this but it's 3am
-	if(target_tag && allow_lock_open && control_mode)
+	if(tag_target && allow_lock_open && control_mode)
 		return
 
 	halt(RTOS_HALT_BAD_CONFIG, "BAD_CONFIG")
@@ -92,7 +92,7 @@
 
 	var/obj/item/peripheral/network_card/wireless/wcard = get_computer()?.get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD)
 	wcard.listen_mode = WIRELESS_FILTER_ID_TAGS
-	wcard.id_tags = list(target_tag, request_exit_tag)
+	wcard.id_tags = list(tag_target, tag_request_exit)
 
 	print_history = new /list(RTOS_OUTPUT_ROWS)
 	fault_string = null
@@ -377,13 +377,13 @@
 	var/list/data = packet.data
 	if(!data["tag"])
 		return //what
-	if((data["tag"] == target_tag) && data["timestamp"])
+	if((data["tag"] == tag_target) && data["timestamp"])
 		//State update from airlock
 		airlock_state = packet.data["door_status"]
 		airlock_bolt_state = packet.data["lock_status"]
 		return
 
-	if((data["tag"] == request_exit_tag) && (current_state == STATE_AWAIT_PIN))
+	if((data["tag"] == tag_request_exit) && (current_state == STATE_AWAIT_PIN))
 		// Request to exit, Act as if we just accepted a pin.
 		pin_accepted()
 		return
@@ -400,7 +400,7 @@
 			signal = new(
 				src,
 				list(
-					"tag" = target_tag,
+					"tag" = tag_target,
 					PACKET_CMD = "secure_open"
 				)
 			)
@@ -409,7 +409,7 @@
 			signal = new(
 				src,
 				list(
-					"tag" = target_tag,
+					"tag" = tag_target,
 					PACKET_CMD = "secure_close"
 				)
 			)
@@ -418,7 +418,7 @@
 			signal = new(
 				src,
 				list(
-					"tag" = target_tag,
+					"tag" = tag_target,
 					PACKET_CMD = "status"
 				)
 			)
@@ -426,7 +426,7 @@
 			signal = new(
 				src,
 				list(
-					"tag" = target_tag,
+					"tag" = tag_target,
 					PACKET_CMD = "lock"
 				)
 			)
@@ -435,7 +435,7 @@
 			signal = new(
 				src,
 				list(
-					"tag" = target_tag,
+					"tag" = tag_target,
 					PACKET_CMD = "unlock"
 				)
 			)
@@ -447,8 +447,8 @@
 	. = ..()
 
 	// Cleanliness
-	target_tag = null
-	request_exit_tag = null
+	tag_target = null
+	tag_request_exit = null
 	dwell_time = null
 	allow_lock_open = null
 	correct_pin = null

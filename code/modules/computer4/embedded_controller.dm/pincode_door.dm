@@ -5,9 +5,9 @@
 
 	radio_frequency = FREQ_AIRLOCK_CONTROL
 	/// Target airlock ID
-	var/target_tag
+	var/tag_target
 	/// Request-Exit Button ID
-	var/request_exit_tag
+	var/tag_request_exit
 	/// Airlock open duration
 	var/dwell_time
 	/// Is this door allowed to be held open (Press * while unlocked)
@@ -15,7 +15,7 @@
 	/// Static pin ID to use.
 	var/static_pin_id
 	/// Static pin length.
-	var/static_pin_length
+	var/static_pin_length = 5
 	/// Manually assigned pin number. Ignores static pin config. Auto-calculates length.
 	var/forced_pin
 	/// Control mode: 1 - Secure Open/Close (Airlock), 2 - Toggle Bolts (Soft Security)
@@ -43,8 +43,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/c4_embedded_controller/airlock_pinpad
 		final_pin = SSid_access.get_static_pincode(static_pin_id, static_pin_length)
 
 	// If there's still no pin it'll just ask you to set one.
-	fields[RTOS_CONFIG_AIRLOCK_ID] = target_tag
-	fields[RTOS_CONFIG_REQUEST_EXIT_ID] = request_exit_tag
+	fields[RTOS_CONFIG_AIRLOCK_ID] = tag_target
+	fields[RTOS_CONFIG_REQUEST_EXIT_ID] = tag_request_exit
 	fields[RTOS_CONFIG_HOLD_OPEN_TIME] = dwell_time
 	fields[RTOS_CONFIG_ALLOW_HOLD_OPEN] = allow_lock_open
 	fields[RTOS_CONFIG_PINCODE] = final_pin

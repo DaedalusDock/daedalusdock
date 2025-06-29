@@ -34,7 +34,6 @@ DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 	internal_computer.set_inserted_disk(floppy)
 	var/datum/c4_file/record/conf_db = new
 	conf_db.name = RTOS_CONFIG_FILE
-	setup_default_configuration(conf_db, floppy)
 	floppy.root.try_add_file(conf_db)
 
 	if(!mapload)
@@ -42,6 +41,11 @@ DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 
 /obj/machinery/c4_embedded_controller/LateInitialize()
 	. = ..()
+	var/obj/item/disk/data/floppy/floppy = internal_computer.inserted_disk
+	var/datum/c4_file/record/conf_db = floppy.root.get_file(RTOS_CONFIG_FILE)
+	setup_default_configuration(conf_db, floppy)
+	internal_computer.reboot()
+
 	if(!req_access_txt && !req_one_access_txt)
 		return
 

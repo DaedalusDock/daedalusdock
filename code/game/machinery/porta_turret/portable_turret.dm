@@ -12,6 +12,7 @@
 #define TURRET_FLAG_SHOOT_UNSHIELDED (1<<5) // Checks if it can shoot people that aren't mindshielded and who arent heads
 #define TURRET_FLAG_SHOOT_BORGS (1<<6) // checks if it can shoot cyborgs
 #define TURRET_FLAG_SHOOT_MANAGEMENT (1<<7) // checks if it can shoot at management
+#define TURRET_FLAG_SHOOT_ENGINEERS (1<<8) // checks if it can shoot at engineers
 
 DEFINE_BITFIELD(turret_flags, list(
 	"TURRET_FLAG_SHOOT_ALL_REACT" = TURRET_FLAG_SHOOT_ALL_REACT,
@@ -546,6 +547,12 @@ TYPEINFO_DEF(/obj/machinery/porta_turret)
 	if (!(turret_flags & TURRET_FLAG_SHOOT_MANAGEMENT))
 		var/datum/job/apparent_job = SSjob.GetJob(perp.get_assignment())
 		if(apparent_job?.departments_bitflags & DEPARTMENT_BITFLAG_MANAGEMENT)
+			return 0
+
+	// If we aren't shooting daedalus staff.
+	if (!(turret_flags & TURRET_FLAG_SHOOT_ENGINEERS))
+		var/datum/job/apparent_job = SSjob.GetJob(perp.get_assignment())
+		if(apparent_job?.departments_bitflags & DEPARTMENT_BITFLAG_ENGINEERING)
 			return 0
 
 	if(turret_flags & TURRET_FLAG_AUTH_WEAPONS) //check for weapon authorization

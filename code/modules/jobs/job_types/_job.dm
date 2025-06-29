@@ -531,7 +531,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 		fully_replace_character_name(real_name, GLOB.current_anonymous_theme.anonymous_ai_name(TRUE))
 		return
 	apply_pref_name(/datum/preference/name/ai, player_client) // This proc already checks if the player is appearance banned.
-	set_core_display_icon(null, player_client)
+	// set_core_display_icon(null, player_client)
 
 
 /mob/living/silicon/robot/apply_prefs_job(client/player_client, datum/job/job)

@@ -150,7 +150,17 @@ TYPEINFO_DEF(/obj/item/mod/control)
 		for(var/datum/action/action as anything in actions)
 			if(action.owner == ai)
 				action.Remove(ai)
-		new /obj/item/mod/ai_minicard(drop_location(), ai)
+
+		var/found_core = FALSE
+		for(var/obj/structure/ai_core/core as anything in INSTANCES_OF(/obj/structure/ai_core))
+			if(core.transfer_ai(ai))
+				found_core = TRUE
+				break
+
+		if(!found_core)
+			qdel(ai)
+		ai = null
+
 	return ..()
 
 /obj/item/mod/control/examine(mob/user)

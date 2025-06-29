@@ -18,11 +18,14 @@
 	/// Use set_frequency()
 	var/frequency = FREQ_COMMON
 
-	/// If TRUE, will sniff any packet that it receives. Otherwise, filters by net addr.
-	var/listen_all = TRUE
+	/// See WIRELESS_FILTER_* in computer4_defines.dm
+	var/listen_mode = WIRELESS_FILTER_PROMISC
 
 	/// Ref to the radio connection.
 	var/datum/radio_frequency/radio_connection
+
+	/// List of listened ID tags, for "hardware offloading" in FILTER_IDTAGS mode.
+	var/list/id_tags
 
 /obj/item/peripheral/network_card/wireless/on_attach(obj/machinery/computer4/computer)
 	. = ..()
@@ -54,6 +57,8 @@
 		return
 
 	packet.data[PACKET_SOURCE_ADDRESS] = network_id
+	// Rewrite the author so we don't get the packet we just sent back.
+	packet.author = WEAKREF(src)
 	radio_connection.post_signal(packet, filter)
 
 /obj/item/peripheral/network_card/wireless/proc/deferred_post_signal(datum/signal/packet, filter, time)
@@ -66,22 +71,33 @@
 	if(!master_pc.is_operational)
 		return
 
-	if(!listen_all)
-		// Isn't meant for us, but could be a ping
-		if(signal.data[PACKET_DESTINATION_ADDRESS] != network_id)
-			if(!signal.data[PACKET_SOURCE_ADDRESS] || (signal.data[PACKET_DESTINATION_ADDRESS] != NET_ADDRESS_PING))
-				return // Is not a ping, bye bye!
+	switch(listen_mode)
+		if(WIRELESS_FILTER_NETADDR)
+			// Isn't meant for us, but could be a ping
+			if(signal.data[PACKET_DESTINATION_ADDRESS] != network_id)
+				if(!signal.data[PACKET_SOURCE_ADDRESS] || (signal.data[PACKET_DESTINATION_ADDRESS] != NET_ADDRESS_PING))
+					return // Is not a ping, bye bye!
 
-			var/list/data = list(
-				PACKET_SOURCE_ADDRESS = network_id,
-				PACKET_DESTINATION_ADDRESS = signal.data[PACKET_SOURCE_ADDRESS],
-				PACKET_CMD = NET_COMMAND_PING_REPLY,
-				PACKET_NETCLASS = "WNET_ADAPTER",
-			)
+				var/list/data = list(
+					PACKET_SOURCE_ADDRESS = network_id,
+					PACKET_DESTINATION_ADDRESS = signal.data[PACKET_SOURCE_ADDRESS],
+					PACKET_CMD = NET_COMMAND_PING_REPLY,
+					PACKET_NETCLASS = NETCLASS_ADAPTER,
+				)
 
-			var/datum/signal/packet = new(src, data, TRANSMISSION_RADIO)
-			addtimer(CALLBACK(src, PROC_REF(post_signal), packet), 1 SECOND)
-			return
+				var/datum/signal/packet = new(src, data, TRANSMISSION_RADIO)
+				addtimer(CALLBACK(src, PROC_REF(post_signal), packet), 1 SECOND)
+				return
+		if(WIRELESS_FILTER_ID_TAGS)
+			//Drop packets not in our ID tags list.
+			if(!(signal.data["tag"] in id_tags))
+				return
+		/*
+		if(WIRELESS_FILTER_PROMISC)
+			//allow all
+		*/
+
+
 
 	var/datum/signal/clone = signal.Copy()
 	master_pc.peripheral_input(src, PERIPHERAL_CMD_RECEIVE_PACKET, clone)

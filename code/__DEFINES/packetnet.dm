@@ -22,8 +22,10 @@
 #define NETCLASS_P2P_PHONE "PNET_VCSTATION"
 #define NETCLASS_APC "PNET_AREAPOWER"
 #define NETCLASS_TERMINAL "PNET_STERM"
-#define NETCLASS_GRPS_CARD "NET_GPRS"
-#define NETCLASS_MESSAGE_SERVER "NET_MSGSRV"
+#define NETCLASS_GRPS_CARD "WNET_GPRS"
+#define NETCLASS_MESSAGE_SERVER "WNET_MSGSRV"
+#define NETCLASS_BUTTON "WNET_BUTTON"
+#define NETCLASS_ADAPTER "WNET_BUTTON"
 
 // Packet fields
 // not honestly thrilled with having these be defines but kapu wants it that way

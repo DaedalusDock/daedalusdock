@@ -7717,6 +7717,12 @@
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 10
 	},
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/east{
+	static_pin_length = 5;
+	tag_request_exit = "hydro_front_butt";
+	tag_target = "hydro_front"
+	},
+/obj/effect/mapping_helpers/embedded_controller/static_id/hydroponics,
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
 "cNc" = (
@@ -17035,6 +17041,9 @@
 /obj/machinery/firealarm/directional/west,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
+	},
+/obj/machinery/button/radio/airlock/directional/south{
+	id_tag = "cap_office_butt"
 	},
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/captain/private)
@@ -29179,6 +29188,9 @@
 	dir = 5
 	},
 /obj/structure/trash_can,
+/obj/machinery/button/radio/airlock/directional/west{
+	id_tag = "hydro_front_butt"
+	},
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
 "kVb" = (
@@ -32323,10 +32335,11 @@
 /area/station/hallway/primary/aft)
 "mee" = (
 /obj/machinery/door/firedoor,
-/obj/effect/mapping_helpers/access/all/command/captain/airlock,
 /obj/machinery/door/airlock/command{
-	name = "Captain's Quarters"
+	name = "Captain's Quarters";
+	id_tag = "cap_office_south"
 	},
+/obj/effect/mapping_helpers/airlock/frequency/airlock_control,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain/private)
 "mef" = (
@@ -34044,6 +34057,22 @@
 /obj/structure/table/wood,
 /turf/open/floor/carpet,
 /area/station/command/corporate_showroom)
+"mJp" = (
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/effect/mapping_helpers/access/all/command/captain/ec,
+/obj/machinery/c4_embedded_controller/airlock_access/secure/directional/north{
+	tag_target = "cap_office_south";
+	tag_request_exit = "cap_office_butt"
+	},
+/turf/open/floor/iron,
+/area/station/hallway/secondary/command)
 "mJA" = (
 /obj/structure/railing{
 	dir = 10
@@ -55455,12 +55484,13 @@
 	dir = 8
 	},
 /obj/machinery/door/airlock/hydroponics/glass{
-	name = "Hydroponics"
+	name = "Hydroponics";
+	id_tag = "hydro_front"
 	},
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/access/all/service/hydroponics/airlock,
+/obj/effect/mapping_helpers/airlock/frequency/airlock_control,
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
 "uEO" = (
@@ -94963,7 +94993,7 @@ hkN
 pyT
 grF
 jjM
-xjF
+mJp
 pUb
 qGj
 pcu
@@ -98319,9 +98349,9 @@ kGT
 uIq
 xDZ
 mol
-kGT
+mol
 uEI
-kGT
+mol
 jMi
 wDl
 dEK

@@ -20,6 +20,8 @@
 	var/forced_pin
 	/// Control mode: 1 - Secure Open/Close (Airlock), 2 - Toggle Bolts (Soft Security)
 	var/control_mode
+	/// Slaved pad ID.
+	var/tag_slave
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/c4_embedded_controller/airlock_pinpad, 24)
 
@@ -49,6 +51,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/c4_embedded_controller/airlock_pinpad
 	fields[RTOS_CONFIG_ALLOW_HOLD_OPEN] = allow_lock_open
 	fields[RTOS_CONFIG_PINCODE] = final_pin
 	fields[RTOS_CONFIG_CMODE] = control_mode
+	fields[RTOS_CONFIG_SLAVE_ID] = tag_slave
 
 
 /obj/item/disk/data/floppy/ec_test/airlock_pinpad

@@ -15,6 +15,8 @@
 	var/allow_lock_open = TRUE
 	/// Control mode: 1 - Secure Open/Close (Airlock), 2 - Toggle Bolts (Soft Security)
 	var/control_mode
+	/// Slaved pad ID.
+	var/tag_slave
 
 /obj/machinery/c4_embedded_controller/airlock_access/secure
 	dwell_time = 10
@@ -37,5 +39,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/c4_embedded_controller/airlock_access
 	fields[RTOS_CONFIG_HOLD_OPEN_TIME] = dwell_time
 	fields[RTOS_CONFIG_ALLOW_HOLD_OPEN] = allow_lock_open
 	fields[RTOS_CONFIG_CMODE] = control_mode
+	fields[RTOS_CONFIG_SLAVE_ID] = tag_slave
 
 

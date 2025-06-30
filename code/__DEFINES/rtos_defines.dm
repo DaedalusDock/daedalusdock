@@ -14,18 +14,17 @@
 #define RTOS_CONFIG_REQUEST_EXIT_ID "rexit_id"
 #define RTOS_CONFIG_ALLOW_HOLD_OPEN "allow_doorstop"
 #define RTOS_CONFIG_HOLD_OPEN_TIME "doorstop_time"
+#define RTOS_CONFIG_SLAVE_ID "tag_slave" //! Slaved pinpad ID. Mirrors the UI/stdin to a secona pad. Can be null.
 
 #define RTOS_CONFIG_CMODE "control_mode"
-
-#define RTOS_CMODE_SECURE "secure"
-#define RTOS_CMODE_BOLTS "bolt"
+	#define RTOS_CMODE_SECURE "secure"
+	#define RTOS_CMODE_BOLTS "bolt"
 
 
 #define RTOS_ACCESS_LIST "access"
 #define RTOS_ACCESS_MODE "acc_mode"
-
-#define RTOS_ACCESS_CALC_MODE_ALL 1
-#define RTOS_ACCESS_CALC_MODE_ANY 2
+	#define RTOS_ACCESS_CALC_MODE_ALL 1
+	#define RTOS_ACCESS_CALC_MODE_ANY 2
 
 #define RTOS_RED (1 << 0)
 #define RTOS_YELLOW (1 << 1)

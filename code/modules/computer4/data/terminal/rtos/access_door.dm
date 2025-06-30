@@ -52,6 +52,9 @@
 	/// Expected bolt state
 	var/expected_bolt_state
 
+	/// Slaved pad ID
+	var/tag_slave
+
 
 /datum/c4_file/terminal_program/operating_system/rtos/access_door/populate_memory(datum/c4_file/record/conf_record)
 	var/list/fields = conf_record.stored_record.fields
@@ -61,6 +64,7 @@
 	dwell_time = fields[RTOS_CONFIG_HOLD_OPEN_TIME]
 	allow_lock_open = fields[RTOS_CONFIG_ALLOW_HOLD_OPEN] //OPTIONAL
 	control_mode = fields[RTOS_CONFIG_CMODE]
+	tag_slave = fields[RTOS_CONFIG_SLAVE_ID]
 
 	// there *HAS* to be a better way than this but it's 3am
 	if(tag_target && allow_lock_open && (control_mode in list(RTOS_CMODE_BOLTS, RTOS_CMODE_SECURE)))
@@ -72,7 +76,7 @@
 /datum/c4_file/terminal_program/operating_system/rtos/access_door/finish_startup()
 	var/obj/item/peripheral/network_card/wireless/wcard = get_computer()?.get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD)
 	wcard.listen_mode = WIRELESS_FILTER_ID_TAGS
-	wcard.id_tags = list(tag_target, tag_request_exit)
+	wcard.id_tags = list(tag_target, tag_request_exit, tag_slave)
 
 	print_history = new /list(RTOS_OUTPUT_ROWS)
 	fault_string = null
@@ -190,6 +194,7 @@
 			display_indicators = RTOS_RED | RTOS_YELLOW | RTOS_GREEN
 
 	update_visuals()
+	send_slave_update()
 
 
 /// Soft-Halt
@@ -209,6 +214,7 @@
 
 	if(redraw)
 		redraw_screen(TRUE)
+		send_slave_update()
 
 /// Send airlock control packet. Also updates expected states.
 /datum/c4_file/terminal_program/operating_system/rtos/access_door/proc/control_airlock(airlock_command)
@@ -337,17 +343,39 @@
 	if(command == PERIPHERAL_CMD_SCAN_CARD)
 		handle_cardscan(packet)
 
+/datum/c4_file/terminal_program/operating_system/rtos/access_door/proc/send_slave_update()
+	var/datum/signal/signal = new(
+		src,
+		list(
+			"tag" = tag_slave,
+			PACKET_CMD = NETCMD_UPDATE_DATA,
+			PACKET_ARG_TEXTBUFFER = list2params(print_history),
+			PACKET_ARG_DISPLAY = display_icon,
+			PACKET_ARG_LEDS = display_indicators
+		)
+	)
+	post_signal(signal)
+
 /datum/c4_file/terminal_program/operating_system/rtos/access_door/proc/handle_packet(datum/signal/packet)
 	var/list/data = packet.data
 	if(!data["tag"])
 		return //what
+
+	if(tag_slave && (data["tag"] == tag_slave))
+		switch(data[PACKET_CMD])
+			if("key")
+				std_in(copytext(data["key"],1,2)) //Only one char, sorry.
+			if(NETCMD_UPDATE_REQUEST)
+				send_slave_update()
+		return
+
 	if((data["tag"] == tag_target) && data["timestamp"])
 		//State update from airlock
 		airlock_state = packet.data["door_status"]
 		airlock_bolt_state = packet.data["lock_status"]
 		return
 
-	if(data["tag"] == tag_request_exit)
+	if(tag_request_exit && data["tag"] == tag_request_exit)
 		switch(current_state)
 			if(STATE_AWAIT)
 				accepted()

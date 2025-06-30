@@ -7720,7 +7720,8 @@
 /obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/east{
 	static_pin_length = 5;
 	tag_request_exit = "hydro_front_butt";
-	tag_target = "hydro_front"
+	tag_target = "hydro_front";
+	tag_slave = "botany_front_slave"
 	},
 /obj/effect/mapping_helpers/embedded_controller/static_id/hydroponics,
 /turf/open/floor/iron,
@@ -13526,6 +13527,9 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/bot,
+/obj/machinery/c4_embedded_controller/slave/directional/west{
+	id_tag = "botany_front_slave"
+	},
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
 "eUX" = (

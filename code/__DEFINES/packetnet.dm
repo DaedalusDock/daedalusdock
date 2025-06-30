@@ -55,6 +55,17 @@
 // PDA Text Message
 #define NETCMD_PDAMESSAGE "pda_message"
 
+// EC Slave Update Request
+#define NETCMD_UPDATE_REQUEST "update_rq"
+// EC Slave Update Response
+#define NETCMD_UPDATE_DATA "update_data"
+	#define PACKET_ARG_TEXTBUFFER "buf"
+	#define PACKET_ARG_DISPLAY "display"
+	#define PACKET_ARG_LEDS "leds"
+
+// EC Slave Access Data
+#define NETCMD_ECSLAVE_ACCESS "ec_cardswipe"
+
 // Dataterminal connection/disconnect return values
 
 /// Successfully connected.

@@ -60,6 +60,9 @@
 	/// Expected bolt state
 	var/expected_bolt_state
 
+	/// Slaved pad ID
+	var/tag_slave
+
 
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/populate_memory(datum/c4_file/record/conf_record)
 	var/list/fields = conf_record.stored_record.fields
@@ -70,6 +73,8 @@
 	allow_lock_open = fields[RTOS_CONFIG_ALLOW_HOLD_OPEN] //OPTIONAL
 	correct_pin = fields[RTOS_CONFIG_PINCODE] //OPTIONAL
 	control_mode = fields[RTOS_CONFIG_CMODE]
+	tag_slave = fields[RTOS_CONFIG_SLAVE_ID]
+
 	pin_length = length(correct_pin)
 	if(correct_pin) //If we don't have a known pin, get ready to learn one.
 		current_state = STATE_AWAIT_PIN
@@ -90,7 +95,7 @@
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/finish_startup()
 	var/obj/item/peripheral/network_card/wireless/wcard = get_computer()?.get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD)
 	wcard.listen_mode = WIRELESS_FILTER_ID_TAGS
-	wcard.id_tags = list(tag_target, tag_request_exit)
+	wcard.id_tags = list(tag_target, tag_request_exit, tag_slave)
 
 	print_history = new /list(RTOS_OUTPUT_ROWS)
 	fault_string = null
@@ -222,6 +227,7 @@
 			display_indicators = RTOS_RED | RTOS_YELLOW | RTOS_GREEN
 
 	update_visuals()
+	send_slave_update()
 
 /// Draws the pin position indicators, Cut out for cleanliness so it can be called in std_in().
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/draw_pin_dots(redraw = TRUE)
@@ -240,6 +246,7 @@
 	print_history[ROW_PINOUT] = fixed_center(jointext(char_list, " "), 20) //One last padding space.
 	if(redraw)
 		redraw_screen(TRUE)
+		send_slave_update()
 
 /// Calculate the door open header, Cut out so it can safely be placed in tick()
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/fast_update_doortimer(redraw = TRUE)
@@ -251,6 +258,7 @@
 
 	if(redraw)
 		redraw_screen(TRUE)
+		send_slave_update()
 
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/std_in(text)
 	. = ..()
@@ -371,20 +379,46 @@
 	if(command == PERIPHERAL_CMD_RECEIVE_PACKET)
 		handle_packet(packet)
 
+/datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/send_slave_update()
+	var/datum/signal/signal = new(
+		src,
+		list(
+			"tag" = tag_slave,
+			PACKET_CMD = NETCMD_UPDATE_DATA,
+			PACKET_ARG_TEXTBUFFER = list2params(print_history),
+			PACKET_ARG_DISPLAY = display_icon,
+			PACKET_ARG_LEDS = display_indicators
+		)
+	)
+	post_signal(signal)
+
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/handle_packet(datum/signal/packet)
 	var/list/data = packet.data
 	if(!data["tag"])
 		return //what
+	if(tag_slave && (data["tag"] == tag_slave))
+		switch(data[PACKET_CMD])
+			if("key")
+				std_in(copytext(data["key"],1,2)) //Only one char, sorry.
+			if(NETCMD_UPDATE_REQUEST)
+				send_slave_update()
+		return
 	if((data["tag"] == tag_target) && data["timestamp"])
 		//State update from airlock
 		airlock_state = packet.data["door_status"]
 		airlock_bolt_state = packet.data["lock_status"]
 		return
 
-	if((data["tag"] == tag_request_exit) && (current_state == STATE_AWAIT_PIN))
-		// Request to exit, Act as if we just accepted a pin.
-		pin_accepted()
-		return
+	if(tag_request_exit && (data["tag"] == tag_request_exit) && (current_state == STATE_AWAIT_PIN))
+		switch(current_state)
+			if(STATE_AWAIT_PIN)
+				pin_accepted()
+			if(STATE_COUNTDOWN, STATE_HOLD)
+				timer_expire()
+			if(STATE_FAULT)
+				return
+			else
+				fault("BAD MODE??")
 
 
 

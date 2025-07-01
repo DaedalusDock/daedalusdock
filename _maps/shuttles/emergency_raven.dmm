@@ -314,7 +314,7 @@
 /obj/machinery/door/airlock/command/glass{
 	name = "Cockpit"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "aT" = (
@@ -516,7 +516,7 @@
 /obj/machinery/door/airlock/medical/glass{
 	name = "Escape Shuttle Infirmary"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "bp" = (
@@ -585,7 +585,7 @@
 /obj/machinery/door/airlock/command/glass{
 	name = "Cockpit"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "by" = (
@@ -1771,8 +1771,8 @@
 /obj/machinery/door/airlock/engineering{
 	name = "Emergency Shutle Engineering"
 	},
-/obj/effect/mapping_helpers/airlock/access/any/engineering/atmos,
-/obj/effect/mapping_helpers/airlock/access/any/engineering/general,
+/obj/effect/mapping_helpers/access/any/engineering/atmos/airlock,
+/obj/effect/mapping_helpers/access/any/engineering/general/airlock,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "dB" = (
@@ -2057,7 +2057,7 @@
 /obj/machinery/door/airlock/security/glass{
 	name = "Holding Area"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape/brig)
 "rC" = (

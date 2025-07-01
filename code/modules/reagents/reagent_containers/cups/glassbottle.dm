@@ -79,7 +79,7 @@
 	smash(target, user, extra_bump = FALSE)
 	return TRUE
 
-/obj/item/reagent_containers/cup/glass/bottle/attack(mob/living/M, mob/living/user, params)
+/obj/item/reagent_containers/cup/glass/bottle/attack(mob/living/M, mob/living/user, params, datum/special_attack/used_special)
 	. = ..()
 	if(. && !QDELING(src))
 		smash(M, user)

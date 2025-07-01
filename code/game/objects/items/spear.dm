@@ -18,6 +18,8 @@ TYPEINFO_DEF(/obj/item/spear)
 	throwforce = 15
 	throw_speed = 1.5
 
+	special_attack_type = /datum/special_attack/ranged_stab
+
 	embedding = list("impact_pain_mult" = 2, "remove_pain_mult" = 4, "jostle_chance" = 2.5)
 	armor_penetration = 10
 

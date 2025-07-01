@@ -37,7 +37,10 @@ TYPEINFO_DEF(/obj/item/restraints/handcuffs)
 	righthand_file = 'icons/mob/inhands/equipment/security_righthand.dmi'
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
-	throwforce = 0
+
+	throwforce = 2
+	force = 8
+
 	w_class = WEIGHT_CLASS_SMALL
 	throw_range = 5
 	breakouttime = 1 MINUTES
@@ -50,41 +53,50 @@ TYPEINFO_DEF(/obj/item/restraints/handcuffs)
 	///If set, handcuffs will be destroyed on application and leave behind whatever this is set to.
 	var/trashtype = null
 
-/obj/item/restraints/handcuffs/attack(mob/living/carbon/C, mob/living/user)
+/obj/item/restraints/handcuffs/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/mob/living/carbon/C = interacting_with
 	if(!istype(C))
-		return
+		return NONE
 
 	SEND_SIGNAL(C, COMSIG_CARBON_CUFF_ATTEMPTED, user)
+
+	user.do_item_attack_animation(interacting_with, used_item = src)
 
 	if(iscarbon(user) && (HAS_TRAIT(user, TRAIT_CLUMSY) && prob(50))) //Clumsy people have a 50% chance to handcuff themselves instead of their target.
 		to_chat(user, span_warning("Uh... how do those things work?!"))
 		apply_cuffs(user,user)
-		return
+		return ITEM_INTERACT_SUCCESS
 
-	if(!C.handcuffed)
-		if(C.canBeHandcuffed())
-			C.visible_message(span_danger("[user] is trying to put [name] on [C]!"), \
-								span_userdanger("[user] is trying to put [name] on you!"))
-			if(C.is_blind())
-				to_chat(C, span_userdanger("You feel someone grab your wrists, the cold metal of [name] starting to dig into your skin!"))
-			playsound(loc, cuffsound, 30, TRUE, -2)
-			log_combat(user, C, "attempted to handcuff")
-			if(do_after(user, C, handcuff_time, timed_action_flags = DO_IGNORE_SLOWDOWNS|DO_PUBLIC, display = src) && C.canBeHandcuffed())
-				if(!apply_cuffs(C, user, iscyborg(user)))
-					to_chat(user, span_warning("You fail to handcuff [C]!"))
-					log_combat(user, C, "failed to handcuff")
-					return
+	if(C.handcuffed)
+		return ITEM_INTERACT_BLOCKING
 
-				C.visible_message(span_notice("[user] handcuffs [C]."), \
-									span_userdanger("[user] handcuffs you."))
-				SSblackbox.record_feedback("tally", "handcuffs", 1, type)
+	if(!C.canBeHandcuffed())
+		to_chat(user, span_warning("You cannot handcuff [C]."))
+		return ITEM_INTERACT_BLOCKING
 
-				log_combat(user, C, "handcuffed")
-			else
-				to_chat(user, span_warning("You fail to handcuff [C]!"))
-				log_combat(user, C, "failed to handcuff")
-		else
-			to_chat(user, span_warning("You cannot handcuff [C]."))
+	C.visible_message(span_danger("<b>[user]</b> is trying to put <b>[name]</b> on [C]."))
+
+	if(C.is_blind())
+		to_chat(C, span_userdanger("You feel someone grab your wrists, the cold metal of [name] starting to dig into your skin."))
+
+	playsound(loc, cuffsound, 30, TRUE, -2)
+	log_combat(user, C, "attempted to handcuff")
+
+	if(do_after(user, C, handcuff_time, timed_action_flags = DO_IGNORE_SLOWDOWNS|DO_PUBLIC, display = src) && C.canBeHandcuffed())
+		if(!apply_cuffs(C, user, iscyborg(user)))
+			to_chat(user, span_warning("You fail to handcuff [C]."))
+			log_combat(user, C, "failed to handcuff")
+			return ITEM_INTERACT_BLOCKING
+
+		C.visible_message(span_notice("<b>[user] handcuffs <b>[C]</b>."))
+		SSblackbox.record_feedback("tally", "handcuffs", 1, type)
+
+		log_combat(user, C, "handcuffed")
+	else
+		to_chat(user, span_warning("You fail to handcuff [C]!"))
+		log_combat(user, C, "failed to handcuff")
+
+	return ITEM_INTERACT_SUCCESS
 
 /**
  * This handles handcuffing people

@@ -19,6 +19,9 @@
 
 	var/pre_attack_result
 	if (is_right_clicking)
+		if(try_special_attack(user, target, modifiers))
+			return TRUE
+
 		switch (pre_attack_secondary(target, user, params))
 			if (SECONDARY_ATTACK_CALL_NORMAL)
 				pre_attack_result = pre_attack(target, user, params)
@@ -46,15 +49,39 @@
 				// Normal behavior
 			else
 				CRASH("attackby_secondary must return an SECONDARY_ATTACK_* define, please consult code/__DEFINES/combat.dm")
+
 	else
 		attackby_result = target.attackby(src, user, params)
 
-	if (attackby_result)
+	return attackby_result
+
+/// Called when clicking on something outside of reach.
+/obj/item/proc/ranged_attack_chain(mob/user, atom/target, modifiers)
+	var/item_interact_result = target.base_ranged_item_interaction(user, src, modifiers)
+	if(item_interact_result & ITEM_INTERACT_SUCCESS)
 		return TRUE
 
-	if(QDELETED(src) || QDELETED(target))
-		attack_qdeleted(target, user, TRUE, params)
-		return TRUE
+	if(item_interact_result & ITEM_INTERACT_BLOCKING)
+		return FALSE
+
+	if(modifiers?[RIGHT_CLICK])
+		. =  try_special_attack(user, target, modifiers)
+
+	else
+		var/datum/special_attack/basic_attack = GLOB.special_attacks[/datum/special_attack/basic]
+		. =  try_special_attack(user, target, modifiers, basic_attack)
+	return .
+
+/// Attempt to perform a special attack.
+/obj/item/proc/try_special_attack(mob/living/user, atom/target, modifiers, datum/special_attack/forced_attack)
+	if(!user.combat_mode)
+		return FALSE
+
+	var/datum/special_attack/spec_attack = forced_attack || get_special_attack()
+	if(!spec_attack)
+		return FALSE
+
+	spec_attack.try_perform_attack(user, src, target, modifiers)
 	return TRUE
 
 /// Called when the item is in the active hand, and clicked; alternately, there is an 'activate held object' verb or you can hit pagedown.
@@ -154,11 +181,8 @@
 /mob/living/attackby(obj/item/attacking_item, mob/living/user, params)
 	if(..())
 		return TRUE
-	if (user.can_perform_surgery_on(src) && attacking_item.attempt_surgery(src, user))
-		return TRUE
 
-	user.changeNext_move(attacking_item.combat_click_delay)
-	return attacking_item.attack(src, user, params)
+	return user.attack_with_item(attacking_item, src, params)
 
 /mob/living/attackby_secondary(obj/item/weapon, mob/living/user, params)
 	var/result = weapon.attack_secondary(src, user, params)
@@ -169,6 +193,21 @@
 
 	return result
 
+/// A helper for striking a mob with an item. Incurs click delay, stamina costs, and animates the attack.
+/mob/living/proc/attack_with_item(obj/item/attacking_item, mob/living/target, params)
+	if(!combat_mode)
+		return FALSE
+
+	if(attacking_item.force && HAS_TRAIT(src, TRAIT_PACIFISM))
+		to_chat(src, span_warning("You don't want to harm other living beings."))
+		return FALSE
+
+	do_attack_animation(target, attacking_item, do_hurt = FALSE)
+	changeNext_move(attacking_item.combat_click_delay)
+	stamina_swing(attacking_item.stamina_cost)
+
+	return attacking_item.attack(target, src, params)
+
 /**
  * Called from [/mob/living/proc/attackby]
  *
@@ -176,15 +215,13 @@
  * * mob/living/M - The mob being hit by this item
  * * mob/living/user - The mob hitting with this item
  * * params - Click params of this attack
+ * * datum/special_attack/used_special - The special attack instance used, if any.
  */
-/obj/item/proc/attack(mob/living/M, mob/living/user, params)
+/obj/item/proc/attack(mob/living/M, mob/living/user, params, datum/special_attack/used_special)
 	var/signal_return = SEND_SIGNAL(src, COMSIG_ITEM_ATTACK, M, user, params)
 	if(signal_return & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
 	if(signal_return & COMPONENT_SKIP_ATTACK_STEP)
-		return
-
-	if(!user.combat_mode)
 		return
 
 	SEND_SIGNAL(user, COMSIG_MOB_ITEM_ATTACK, M, user, params)
@@ -192,28 +229,17 @@
 	if(item_flags & NOBLUDGEON)
 		return
 
-	if(force && HAS_TRAIT(user, TRAIT_PACIFISM))
-		to_chat(user, span_warning("You don't want to harm other living beings!"))
-		return
-
 	M.lastattacker = user.real_name
 	M.lastattackerckey = user.ckey
 
-	user.stamina_swing(src.stamina_cost)
-
-	user.do_attack_animation(M)
-	var/attack_return = M.attacked_by(src, user)
-	switch(attack_return)
-		if(MOB_ATTACKEDBY_NO_DAMAGE)
-			playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
-		if(MOB_ATTACKEDBY_SUCCESS)
-			playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
-		if(MOB_ATTACKEDBY_MISS)
-			playsound(loc, get_misssound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
+	var/attack_return = M.attacked_by(src, user, used_special)
+	play_combat_sound(attack_return)
 
 	var/missed = (attack_return == MOB_ATTACKEDBY_MISS || attack_return == MOB_ATTACKEDBY_FAIL)
-	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [missed ? "YES" : "NO"])")
+	if(!missed)
+		M.do_hurt_animation()
 
+	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [missed ? "YES" : "NO"])")
 	add_fingerprint(user)
 
 	if(!missed)
@@ -315,11 +341,6 @@
  */
 /obj/item/proc/afterattack(atom/target, mob/user, list/modifiers)
 	PROTECTED_PROC(TRUE)
-
-/// Called if the target gets deleted by our attack
-/obj/item/proc/attack_qdeleted(atom/target, mob/user, proximity_flag, click_parameters)
-	SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_QDELETED, target, user, proximity_flag, click_parameters)
-	SEND_SIGNAL(user, COMSIG_MOB_ITEM_ATTACK_QDELETED, target, user, proximity_flag, click_parameters)
 
 /obj/item/proc/get_clamped_volume()
 	if(w_class)

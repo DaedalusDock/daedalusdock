@@ -37,7 +37,7 @@
 /area/shuttle/escape)
 "hD" = (
 /obj/machinery/door/airlock/gold/glass,
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/wood,
 /area/shuttle/escape)
 "hF" = (

@@ -441,7 +441,7 @@
 			result.do_skill_sound(src)
 			to_chat(src, result.create_tooltip("A streak of pain shoots throughout your whole body."))
 			drop_all_held_items()
-			visible_message(span_warning("<b>[src]</b>'s body spasms, and [p_they()] drop what [p_they()] were holding."), ignored_mobs = list(src))
+			visible_message(span_warning("<b>[src]</b>'s body spasms, and [p_they()] drop[p_s()] what [p_they()] [p_were()] holding."), ignored_mobs = list(src))
 
 		if(FAILURE)
 			COOLDOWN_START(src, pain_cooldowns["drop_item"], 20 SECONDS)

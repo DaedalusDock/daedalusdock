@@ -112,7 +112,7 @@
 /obj/machinery/door/airlock/public/glass{
 	name = "Glorious Leaders"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "au" = (
@@ -181,7 +181,7 @@
 /obj/machinery/door/airlock/security/glass{
 	name = "Emergency Shuttle Brig"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/escape/brig)
 "aJ" = (
@@ -215,7 +215,7 @@
 /obj/machinery/door/airlock/security/glass{
 	name = "Emergency Shuttle Airlock"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/plating,
 /area/shuttle/escape/brig)
 "aP" = (

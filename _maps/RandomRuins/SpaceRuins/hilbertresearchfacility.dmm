@@ -924,7 +924,7 @@
 /obj/machinery/door/airlock/vault{
 	name = "Secured Door"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/away/generic3,
+/obj/effect/mapping_helpers/access/all/away/generic3/airlock,
 /turf/open/floor/mineral/plastitanium,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility/secretroom)
 "vZ" = (

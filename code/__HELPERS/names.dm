@@ -1,21 +1,9 @@
-/proc/vox_name()
-	var/sounds = rand(2, 8)
-	var/i = 0
-	var/newname = ""
-
-	while(i <= sounds)
-		i++
-		newname += pick(list("ti","hi","ki","ya","ta","ha","ka","ya","chi","cha","kah","ri","ra"))
-
-	newname = capitalize(newname)
-	return newname
-
 GLOBAL_VAR(command_name)
 /proc/command_name()
 	if (GLOB.command_name)
 		return GLOB.command_name
 
-	var/name = "Daedalus Industries"
+	var/name = "The Federation"
 
 	GLOB.command_name = name
 	return name

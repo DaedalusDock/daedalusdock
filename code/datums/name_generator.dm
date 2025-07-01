@@ -92,5 +92,10 @@
 
 /datum/name_generator/vox
 
-//datum/name_generator/vox/build_name()
-#warn todo
+/datum/name_generator/vox/build_name()
+	var/static/list/sounds = list("ti","hi","ki","ya","ta","ha","ka","ya","chi","cha","kah","ri","ra")
+	for(var/i in 1 to rand(3, 9))
+		newname += pick(sounds)
+
+	newname = capitalize(newname)
+	return newname

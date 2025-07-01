@@ -67,13 +67,6 @@
 	if (!input)
 		return input
 
-	if (CONFIG_GET(flag/humans_need_surnames) && preferences.read_preference(/datum/preference/choiced/species) == /datum/species/human)
-		var/first_space = findtext(input, " ")
-		if(!first_space) //we need a surname
-			input += " [pick(GLOB.last_names)]"
-		else if(first_space == length(input))
-			input += "[pick(GLOB.last_names)]"
-
 	return reject_bad_name(input, allow_numbers)
 
 /// The name for a backup human, when nonhumans are made into head of staff

@@ -1,6 +1,3 @@
-/obj/item/book/granter/crafting_recipe
-	/// A list of all recipe types we grant on learn
-	var/list/crafting_recipe_types = list()
 
 /obj/item/book/granter/crafting_recipe/on_reading_finished(mob/user)
 	. = ..()

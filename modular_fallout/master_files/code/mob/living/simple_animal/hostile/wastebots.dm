@@ -9,7 +9,7 @@
 /mob/living/simple_animal/hostile/handy
 	name = "mr. handy"
 	desc = "A crazed pre-war household assistant robot, armed with a cutting saw."
-	icon = 'modular_fallout/master_files/icons/mob/robots.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/mobs/robots.dmi'
 	icon_state = "handy"
 	icon_living = "handy"
 	icon_dead = "gib7"

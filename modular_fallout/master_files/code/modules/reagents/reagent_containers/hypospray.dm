@@ -1,7 +1,7 @@
 /obj/item/reagent_containers/hypospray/medipen/stimpak
 	name = "stimpak"
 	desc = "A handheld delivery system for medicine, used to rapidly heal physical damage to the body."
-	icon = 'icons/fallout/objects/medicine/drugs.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/objects/medicine/drugs.dmi'
 	icon_state = "stimpakpen"
 	volume = 10
 	amount_per_transfer_from_this = 10
@@ -40,7 +40,7 @@
 /obj/item/reagent_containers/hypospray/medipen/medx
 	name = "Med-X"
 	desc = "A short-lasting shot of Med-X applied via hypodermic needle."
-	icon = 'icons/fallout/objects/medicine/drugs.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/objects/medicine/drugs.dmi'
 	icon_state = "medx"
 	volume = 15
 	amount_per_transfer_from_this = 5
@@ -49,7 +49,7 @@
 /obj/item/reagent_containers/hypospray/medipen/psycho
 	name = "Psycho"
 	desc = "Contains Psycho, a drug that makes the user hit harder and shrug off slight stuns, but causes slight brain damage and carries a risk of addiction."
-	icon = 'icons/fallout/objects/medicine/drugs.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/objects/medicine/drugs.dmi'
 	icon_state = "psychopen"
 	volume = 10
 	amount_per_transfer_from_this = 10

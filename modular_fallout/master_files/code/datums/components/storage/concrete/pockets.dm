@@ -24,13 +24,13 @@
 
 /datum/storage/concrete/pockets/small/collar
 	can_hold = typecacheof(list(
-	/obj/item/reagent_containers/food/snacks/cookie,
-	/obj/item/reagent_containers/food/snacks/sugarcookie))
+	/obj/item/food/cookie,
+	/obj/item/food/cookie/sugar))
 
 /datum/storage/concrete/pockets/small/collar/locked
 	can_hold = typecacheof(list(
-	/obj/item/reagent_containers/food/snacks/cookie,
-	/obj/item/reagent_containers/food/snacks/sugarcookie,
+	/obj/item/food/cookie,
+	/obj/item/food/sugarcookie,
 	/obj/item/key/collar))
 
 /datum/storage/concrete/pockets/binocular
@@ -124,14 +124,14 @@
 
 GLOBAL_LIST_INIT(storage_bartender_can_hold, typecacheof(list(
 	/obj/item/kitchen,
-	/obj/item/reagent_containers/food/drinks/bottle,
+	/obj/item/reagent_containers/cup/glass/bottle,
 	/obj/item/gun/ballistic/revolver/detective,
 	/obj/item/gun/ballistic/revolver/m29/snub,
 	)))
 
 GLOBAL_LIST_INIT(storage_kitchen_can_hold, typecacheof(list(
 	/obj/item/kitchen,
-	/obj/item/reagent_containers/food/condiment,
+	/obj/item/reagent_containers/condiment,
 	)))
 
 GLOBAL_LIST_INIT(storage_crafter_can_hold, typecacheof(list(
@@ -148,15 +148,12 @@ GLOBAL_LIST_INIT(storage_medical_can_hold, typecacheof(list(
 	/obj/item/clothing/gloves/f13/crudemedical,
 	/obj/item/healthanalyzer,
 	/obj/item/reagent_containers/dropper,
-	/obj/item/reagent_containers/glass/bottle,
+	/obj/item/reagent_containers/cup/glass/bottle,
 	/obj/item/reagent_containers/pill,
 	/obj/item/reagent_containers/syringe,
-	/obj/item/reagent_containers/medspray,
 	/obj/item/storage/pill_bottle,
 	/obj/item/stack/medical,
-	/obj/item/reagent_containers/hypospray,
 	/obj/item/hypospray,
-	/obj/item/surgical_drapes,
 	/obj/item/scalpel,
 	/obj/item/bonesetter,
 	/obj/item/retractor,

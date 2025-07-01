@@ -632,19 +632,19 @@ GLOBAL_LIST_INIT(loot_seed, list(
 
 GLOBAL_LIST_INIT(loot_food, list(
 	/obj/item/storage/box/ingredients/american,
-	/obj/item/reagent_containers/f13/crisps,
-	/obj/item/reagent_containers/f13/crisps,
-	/obj/item/reagent_containers/f13/bubblegum,
-	/obj/item/reagent_containers/f13/cram,
-	/obj/item/reagent_containers/f13/yumyum,
-	/obj/item/reagent_containers/f13/fancylads,
-	/obj/item/reagent_containers/f13/sugarbombs,
-	/obj/item/reagent_containers/cheesiehonkers,
-	/obj/item/reagent_containers/f13/steak,
-	/obj/item/reagent_containers/f13/dandyapples,
-	/obj/item/reagent_containers/f13/blamco,
-	/obj/item/reagent_containers/f13/instamash ,
-	/obj/item/reagent_containers/f13/canned/porknbeans,
+	/obj/item/food/f13/crisps,
+	/obj/item/food/f13/crisps,
+	/obj/item/food/f13/bubblegum,
+	/obj/item/food/f13/cram,
+	/obj/item/food/f13/yumyum,
+	/obj/item/food/f13/fancylads,
+	/obj/item/food/f13/sugarbombs,
+	/obj/item/food/cheesiehonkers,
+	/obj/item/food/f13/steak,
+	/obj/item/food/f13/dandyapples,
+	/obj/item/food/f13/blamco,
+	/obj/item/food/f13/instamash ,
+	/obj/item/food/f13/canned/porknbeans,
 	/obj/item/storage/box/ingredients/carnivore,
 	/obj/item/storage/box/ingredients/delights,
 	/obj/item/storage/box/ingredients/exotic,
@@ -664,10 +664,10 @@ GLOBAL_LIST_INIT(loot_food, list(
 	/obj/item/reagent_containers/condiment/milk,
 	/obj/item/reagent_containers/condiment/saltshaker,
 	/obj/item/reagent_containers/condiment/peppermill,
-	/obj/item/reagent_containers/food/condiment/soysauce,
-	/obj/item/reagent_containers/food/snacks/beans,
-	/obj/item/reagent_containers/food/snacks/cracker,
-	/obj/item/reagent_containers/food/snacks/lollipop,
+	/obj/item/reagent_containers/condiment/soysauce,
+	/obj/item/food/beans,
+	/obj/item/food/cracker,
+	/obj/item/food/lollipop,
 ))
 
 GLOBAL_LIST_INIT(loot_craft_basic, list(
@@ -684,8 +684,8 @@ GLOBAL_LIST_INIT(loot_craft_basic, list(
 ))
 
 GLOBAL_LIST_INIT(loot_alcohol, list(
-	/obj/item/reagent_containers/food/drinks/beer,
-	/obj/item/reagent_containers/food/drinks/ale,
+	/obj/item/reagent_containers/cup/glass/bottle/beer,
+	/obj/item/reagent_containers/cup/glass/bottle/ale,
 	/obj/item/reagent_containers/cup/glass/bottle/gin,
 	/obj/item/reagent_containers/cup/glass/bottle/hcider,
 	/obj/item/reagent_containers/cup/glass/bottle/whiskey,
@@ -705,11 +705,11 @@ GLOBAL_LIST_INIT(loot_alcohol, list(
 
 GLOBAL_LIST_INIT(loot_material, list(
 	/obj/item/stack/rods/ten,
-	/obj/item/stack/sheet/metal/ten,
+	/obj/item/stack/sheet/iron/ten,
 	/obj/item/stack/sheet/cardboard/fifty,
 	/obj/item/stack/sheet/cardboard/twenty,
 	/obj/item/stack/sheet/glass/ten,
-	/obj/item/stack/sheet/metal/five,
+	/obj/item/stack/sheet/iron/five,
 	/obj/item/stack/sheet/plasteel/five,
 	/obj/item/stack/sheet/plastic/five,
 	/obj/item/stack/sheet/paperframes/twenty,

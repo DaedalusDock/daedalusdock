@@ -4,7 +4,7 @@
 	time = 60
 	reqs = list(/obj/item/stack/sheet/iron = 10,
 				/obj/item/stack/sheet/glass = 5)
-	tools = list(TOOL_SCREWDRIVER,TOOL_WORKBENCH)
+	tool_behaviors = list(TOOL_SCREWDRIVER,TOOL_WORKBENCH)
 	subcategory = CAT_MISCELLANEOUS
 	category = CAT_MISC
 
@@ -92,7 +92,7 @@
 	result = /obj/machinery/shower
 	reqs = list(/obj/item/stack/sheet/iron = 10,
 				/obj/item/stack/crafting/metalparts = 10)
-	tools = list(TOOL_WRENCH, TOOL_SCREWDRIVER)
+	tool_behaviors = list(TOOL_WRENCH, TOOL_SCREWDRIVER)
 	time = 80
 	subcategory = CAT_MISCELLANEOUS
 	category = CAT_MISC
@@ -191,7 +191,7 @@
 	result = /obj/item/gun
 	reqs = list(/obj/item/gun = 1)
 	parts = list(/obj/item/gun = 1)
-	tools = list(TOOL_WELDER, TOOL_SCREWDRIVER, TOOL_WIRECUTTER)
+	tool_behaviors = list(TOOL_WELDER, TOOL_SCREWDRIVER, TOOL_WIRECUTTER)
 	time = 50
 	subcategory = CAT_MISCELLANEOUS
 	category = CAT_MISC
@@ -225,7 +225,7 @@
 /datum/crafting_recipe/rip/blackcoffin
 	name = "Black Coffin"
 	result = /obj/structure/closet/crate/coffin/blackcoffin
-	tools = list(/obj/item/weldingtool,
+	tool_behaviors = list(/obj/item/weldingtool,
 				/obj/item/screwdriver)
 	reqs = list(/obj/item/stack/sheet/cloth = 1,
 				/obj/item/stack/sheet/mineral/wood = 5,
@@ -235,7 +235,7 @@
 /datum/crafting_recipe/rip/metalcoffin
 	name = "Metal Coffin"
 	result =/obj/structure/closet/crate/coffin/metalcoffin
-	tools = list(/obj/item/weldingtool,
+	tool_behaviors = list(/obj/item/weldingtool,
 				/obj/item/screwdriver)
 	reqs = list(/obj/item/stack/sheet/iron = 5)
 	time = 20
@@ -259,7 +259,7 @@
 	reqs = list(/obj/item/stack/sheet/plasteel = 3,
 				/obj/item/stack/sheet/mineral/wood = 20,
 				/obj/item/stack/cable_coil = 10)
-	tools = list(TOOL_SCREWDRIVER, TOOL_WRENCH, TOOL_WELDER)
+	tool_behaviors = list(TOOL_SCREWDRIVER, TOOL_WRENCH, TOOL_WELDER)
 
 /datum/crafting_recipe/rip/femur_breaker
 	name = "Femur Breaker"
@@ -267,7 +267,7 @@
 	time = 150
 	reqs = list(/obj/item/stack/sheet/iron = 20,
 				/obj/item/stack/cable_coil = 30)
-	tools = list(TOOL_SCREWDRIVER, TOOL_WRENCH, TOOL_WELDER)
+	tool_behaviors = list(TOOL_SCREWDRIVER, TOOL_WRENCH, TOOL_WELDER)
 
 
 /datum/crafting_recipe/shutters/old
@@ -277,7 +277,7 @@
 				/obj/item/electronics/airlock = 1
 				)
 	result = /obj/machinery/door/poddoor/shutters/old/preopen
-	tools = list(TOOL_SCREWDRIVER, TOOL_MULTITOOL, TOOL_WIRECUTTER, TOOL_WELDER)
+	tool_behaviors = list(TOOL_SCREWDRIVER, TOOL_MULTITOOL, TOOL_WIRECUTTER, TOOL_WELDER)
 	time = 15 SECONDS
 	subcategory = CAT_MISCELLANEOUS
 	category = CAT_MISC
@@ -289,7 +289,7 @@
 				/obj/item/electronics/airlock = 1
 				)
 	result = /obj/machinery/door/poddoor/preopen
-	tools = list(TOOL_SCREWDRIVER, TOOL_MULTITOOL, TOOL_WIRECUTTER, TOOL_WELDER)
+	tool_behaviors = list(TOOL_SCREWDRIVER, TOOL_MULTITOOL, TOOL_WIRECUTTER, TOOL_WELDER)
 	time = 30 SECONDS
 	subcategory = CAT_MISCELLANEOUS
 	category = CAT_MISC
@@ -302,7 +302,7 @@
 				/obj/item/electronics/airlock = 1
 				)
 	result = /obj/machinery/door/poddoor/shutters/window/preopen
-	tools = list(TOOL_SCREWDRIVER, TOOL_MULTITOOL, TOOL_WIRECUTTER, TOOL_WELDER)
+	tool_behaviors = list(TOOL_SCREWDRIVER, TOOL_MULTITOOL, TOOL_WIRECUTTER, TOOL_WELDER)
 	time = 15 SECONDS
 	subcategory = CAT_MISCELLANEOUS
 	category = CAT_MISC
@@ -394,7 +394,7 @@
 	reqs = list(/obj/item/stock_parts/capacitor = 1,
 				/obj/item/stack/cable_coil = 1,
 				/obj/item/stack/sheet/leather = 1)
-	tools = list(TOOL_SCREWDRIVER,TOOL_WORKBENCH)
+	tool_behaviors = list(TOOL_SCREWDRIVER,TOOL_WORKBENCH)
 	time = 30
 	subcategory = CAT_MISCELLANEOUS
 	category = CAT_MISC
@@ -420,7 +420,7 @@
 	name = "Water Well"
 	result = /obj/structure/sink/well
 	reqs = list(/obj/item/stack/sheet/iron = 20, /obj/item/stack/sheet/mineral/wood = 20, /obj/item/stack/sheet/mineral/sandstone = 5, /obj/item/weaponcrafting/string = 5, /obj/item/reagent_containers/cup/bucket =1)
-	tools = list(TOOL_SHOVEL)
+	tool_behaviors = list(TOOL_SHOVEL)
 	time = 100
 	subcategory = CAT_MISCELLANEOUS
 	category = CAT_MISC
@@ -434,7 +434,7 @@
 		/obj/item/stack/sheet/prewar = 5,
 		/obj/item/stack/sheet/bronze = 1
 		)
-	tools = list(TOOL_WORKBENCH)
+	tool_behaviors = list(TOOL_WORKBENCH)
 	time = 10
 	subcategory = CAT_MISCELLANEOUS
 	category = CAT_MISC
@@ -448,7 +448,7 @@
 		/obj/item/stack/sheet/prewar = 50,
 		/obj/item/stack/sheet/bronze = 10
 		)
-	tools = list(TOOL_WORKBENCH)
+	tool_behaviors = list(TOOL_WORKBENCH)
 	time = 20
 	subcategory = CAT_MISCELLANEOUS
 	category = CAT_MISC
@@ -479,7 +479,7 @@
 			/obj/item/assembly/prox_sensor = 2,
 			/obj/item/stack/cable_coil = 20
 	)
-	tools = list(TOOL_WORKBENCH)
+	tool_behaviors = list(TOOL_WORKBENCH)
 	time = 5 SECONDS
 	subcategory = CAT_MISCELLANEOUS
 	category = CAT_MISC

@@ -89,3 +89,17 @@ prewar alloys
 
 /obj/item/stack/sheet/lead/five
 	amount = 5
+
+// MISC //
+
+/obj/item/stack/sheet/plasteel/five
+	amount = 5
+
+/obj/item/stack/sheet/iron/five
+	amount = 5
+
+/obj/item/stack/sheet/iron/ten
+	amount = 10
+
+/obj/item/stack/sheet/cardboard/twenty
+	amount = 20

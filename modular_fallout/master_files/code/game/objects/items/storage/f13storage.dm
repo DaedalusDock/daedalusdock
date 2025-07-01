@@ -358,7 +358,7 @@
 
 /obj/item/storage/box/medicine/stimpaks/stimpaks5/PopulateContents()
 	for(var/i in 1 to 5)
-		new /obj/item/hypospray/medipen/stimpak(src)
+		new /obj/item/reagent_containers/hypospray/medipen/stimpak(src)
 
 /obj/item/storage/box/medicine/stimpaks/stimpaks5/imitation
 	name = "box of imitation stimpaks"
@@ -367,7 +367,7 @@
 
 /obj/item/storage/box/medicine/stimpaks/stimpaks5/PopulateContents()
 	for(var/i in 1 to 5)
-		new /obj/item/hypospray/medipen/stimpak/imitation(src)
+		new /obj/item/reagent_containers/hypospray/medipen/stimpak/imitation(src)
 
 /obj/item/storage/box/medicine/stimpaks/superstimpaks5
 	name = "box of super stimpaks"
@@ -376,7 +376,7 @@
 
 /obj/item/storage/box/medicine/stimpaks/superstimpaks5/PopulateContents()
 	for(var/i in 1 to 5)
-		new /obj/item/hypospray/medipen/stimpak/super(src)
+		new /obj/item/reagent_containers/hypospray/medipen/stimpak/super(src)
 
 
 /obj/item/storage/box/medicine/bitterdrink5

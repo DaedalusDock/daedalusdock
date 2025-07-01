@@ -58,7 +58,6 @@
 	gold_core_spawnable = HOSTILE_SPAWN
 	blood_volume = 0
 	decompose = FALSE
-	tastes = list("dirt" = 1, "sand" = 1, "metal?" = 1)
 
 /mob/living/simple_animal/hostile/giantant/Initialize()
 	. = ..()
@@ -103,7 +102,6 @@
 	faction = list("ant")
 	gold_core_spawnable = HOSTILE_SPAWN
 	decompose = FALSE
-	a_intent = INTENT_HARM
 	blood_volume = 0
 
 /mob/living/simple_animal/hostile/fireant/Initialize()
@@ -210,9 +208,6 @@
 	obj_damage = 20
 	melee_damage_lower = 15
 	melee_damage_upper = 28
-	waddle_amount = 3
-	waddle_up_time = 1
-	waddle_side_time = 1
 	move_to_delay = 3
 	// m2d 3 = standard, less is fast, more is slower.
 
@@ -236,7 +231,6 @@
 	response_disarm_simple = "gently pushes aside"
 	response_harm_simple = "hits"
 	taunt_chance = 30
-	a_intent = INTENT_HARM
 	attack_verb_simple = "stings"
 	attack_sound = 'modular_fallout/master_files/sound/creatures/radscorpion_attack.ogg'
 	speak_emote = list("hisses")
@@ -253,6 +247,10 @@
 	idlesound = list('modular_fallout/master_files/sound/creatures/radscorpion_snip.ogg', )
 	death_sound = 'modular_fallout/master_files/sound/mobs/scorpion/death.ogg'
 
+
+/mob/living/simple_animal/hostile/radscorpion/Initialize()
+	. = ..()
+	ADD_WADDLE(src, WADDLE_SOURCE_RAT)
 
 /mob/living/simple_animal/hostile/radscorpion/AttackingTarget()
 	. = ..()

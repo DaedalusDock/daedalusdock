@@ -309,7 +309,7 @@
 	name = "metal door"
 	icon_state = "metal"
 	door_type = "metal"
-	material_type = /obj/item/stack/sheet/metal
+	material_type = /obj/item/stack/sheet/iron
 	open_sound = "sound/f13machines/doorstore_open.ogg"
 	close_sound = "sound/f13machines/doorstore_close.ogg"
 	explosion_block = 1.5
@@ -423,7 +423,7 @@
 	desc = "An olive green painted airlock.<br>The door mechanism itself is a complex mix of an electic engine and hydraulic motion.<br>This particular door looks like a pre-War military tech."
 	icon_state = "bunker"
 	door_type = "bunker"
-	material_type = /obj/item/stack/sheet/metal
+	material_type = /obj/item/stack/sheet/iron
 	open_sound = "sound/f13machines/doorairlock_open.ogg"
 	close_sound = "sound/f13machines/doorairlock_close.ogg"
 	explosion_block = 5

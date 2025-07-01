@@ -34,7 +34,6 @@
 	atmos_requirements = list("min_oxy" = 5, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 1, "min_co2" = 0, "max_co2" = 5, "min_n2" = 0, "max_n2" = 0)
 	faction = list("hostile", "cazador")
 	movement_type = FLYING
-	a_intent = INTENT_HARM
 	gold_core_spawnable = HOSTILE_SPAWN
 	death_sound = 'modular_fallout/master_files/sound/mobs/cazador/cazador_death.ogg'
 	blood_volume = 0
@@ -137,7 +136,6 @@
 	obj_damage = 20
 	melee_damage_lower = 35
 	melee_damage_upper = 35
-	a_intent = INTENT_HARM
 	attack_verb_simple = "stings"
 	attack_sound = 'modular_fallout/master_files/sound/creatures/radscorpion_attack.ogg'
 	speak_emote = list("hisses")
@@ -234,7 +232,6 @@
 	speak_emote = list("skitters")
 	atmos_requirements = list("min_oxy" = 5, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 1, "min_co2" = 0, "max_co2" = 5, "min_n2" = 0, "max_n2" = 0)
 	faction = list("gecko")
-	a_intent = INTENT_HARM
 	gold_core_spawnable = HOSTILE_SPAWN
 
 	aggrosound = list('modular_fallout/master_files/sound/creatures/radroach_chitter.ogg',)
@@ -295,7 +292,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
 	turns_per_move = 5
-	guaranteed_butcher_results = list(/obj/item/stack/sheet/sinew = 1, /obj/item/food/meat/slab/fireant_meat = 2, obj/item/food/snacks/rawantbrain = 1)
+	guaranteed_butcher_results = list(/obj/item/stack/sheet/sinew = 1, /obj/item/food/meat/slab/fireant_meat = 2, obj/item/food/rawantbrain = 1)
 	butcher_results = list(/obj/item/stack/sheet/animalhide/chitin = 2)
 	butcher_difficulty = 1.5
 	response_help_simple = "pets"
@@ -332,6 +329,77 @@
 	if(. && ishuman(target))
 		var/mob/living/carbon/human/H = target
 		H.reagents.add_reagent(/datum/reagent/napalm, 0.1)
+
+// ANT QUEEN
+/mob/living/simple_animal/hostile/giantantqueen
+	name = "giant ant queen"
+	desc = "The queen of a giant ant colony. Butchering it seems like a good way to a pretty penny."
+	icon = 'modular_fallout/master_files/icons/fallout/mobs/hostile/animals/antqueen.dmi'
+	icon_state = "antqueen"
+	icon_living = "antqueen"
+	icon_dead = "antqueen_dead"
+	icon_gib = "GiantAnt_gib"
+	mob_biotypes = MOB_ORGANIC|MOB_BEAST
+	speak_chance = 0
+	turns_per_move = 5
+	guaranteed_butcher_results = list(/obj/item/stack/sheet/sinew = 3, /obj/item/food/meat/slab/ant_meat = 6, /obj/item/stack/sheet/animalhide/chitin = 6, /obj/item/food/rawantbrain = 1, /obj/item/stack/sheet/animalhide/chitin = 5)
+	butcher_results = list(/obj/item/stack/sheet/animalhide/chitin = 6, /obj/item/food/meat/slab/ant_meat = 3)
+	butcher_difficulty = 1.5
+	loot = list(/obj/item/food/f13/giantantegg = 10)
+	response_help_simple = "pets"
+	response_disarm_simple = "gently pushes aside"
+	response_harm_simple = "hits"
+	emote_taunt = list("chitters")
+	emote_taunt_sound = 'modular_fallout/master_files/sound/creatures/radroach_chitter.ogg'
+	taunt_chance = 30
+	move_to_delay = 5
+	maxHealth = 560
+	health = 560
+	stat_attack = UNCONSCIOUS
+	ranged = 1
+	harm_intent_damage = 8
+	obj_damage = 20
+	melee_damage_lower = 15
+	melee_damage_upper = 15
+	attack_verb_simple = "stings"
+	attack_sound = 'modular_fallout/master_files/sound/creatures/radroach_attack.ogg'
+	projectiletype = /obj/projectile/bile
+	projectilesound = 'modular_fallout/master_files/sound/mobs/centaur/spit.ogg'
+	extra_projectiles = 2
+	speak_emote = list("skitters")
+	retreat_distance = 5
+	minimum_distance = 7
+	atmos_requirements = list("min_oxy" = 5, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 1, "min_co2" = 0, "max_co2" = 5, "min_n2" = 0, "max_n2" = 0)
+	faction = list("ant")
+	gold_core_spawnable = HOSTILE_SPAWN
+	decompose = FALSE
+	var/max_mobs = 2
+	var/mob_types = list(/mob/living/simple_animal/hostile/giantant)
+	var/spawn_time = 30 SECONDS
+	var/spawn_text = "hatches from"
+	blood_volume = 0
+
+
+/mob/living/simple_animal/hostile/giantantqueen/Initialize()
+	. = ..()
+	AddComponent(/datum/component/spawner, mob_types, spawn_time, faction, spawn_text, max_mobs, _range = 7)
+
+/mob/living/simple_animal/hostile/giantantqueen/death()
+	RemoveComponentByType(/datum/component/spawner)
+	. = ..()
+
+/mob/living/simple_animal/hostile/giantantqueen/Destroy()
+	RemoveComponentFrom(/datum/component/spawner)
+	. = ..()
+
+/mob/living/simple_animal/hostile/giantantqueen/Aggro()
+	..()
+	summon_backup(10)
+
+/obj/projectile/bile
+	name = "spit"
+	damage = 20
+	icon_state = "toxin"
 
 /obj/item/clothing/head/f13/stalkerpelt
 	name = "nightstalker pelt"
@@ -503,7 +571,6 @@
 	atmos_requirements = list("min_oxy" = 5, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 1, "min_co2" = 0, "max_co2" = 5, "min_n2" = 0, "max_n2" = 0)
 	faction = list("hostile", "gecko")
 	gold_core_spawnable = HOSTILE_SPAWN
-	a_intent = INTENT_HARM
 	blood_volume = 0
 
 /mob/living/simple_animal/hostile/bloatfly/bullet_act(obj/projectile/Proj)
@@ -536,7 +603,6 @@
 	move_to_delay = -1
 	maxHealth = 25
 	health = 25
-	harm_intent_damage = 8
 	obj_damage = 15
 	melee_damage_lower = 10
 	melee_damage_upper = 10

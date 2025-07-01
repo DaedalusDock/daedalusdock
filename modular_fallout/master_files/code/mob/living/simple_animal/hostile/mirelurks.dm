@@ -80,13 +80,13 @@
 	health = 40
 	melee_damage_lower = 5
 	melee_damage_upper = 10
-	waddle_amount = 3
-	waddle_up_time = 1
-	waddle_side_time = 1
 	gold_core_spawnable = HOSTILE_SPAWN
 	footstep_type = FOOTSTEP_MOB_CLAW
 	pop_required_to_jump_into = 0
 
+/mob/living/simple_animal/hostile/mirelurk/baby/Initialize()
+	. = ..()
+	ADD_WADDLE(src, WADDLE_SOURCE_RAT)
 
 /mob/living/simple_animal/hostile/mirelurk/baby/Initialize()
 	. = ..()

@@ -101,7 +101,7 @@
 	glass_name = "yellow pulque"
 	glass_desc = "An awful smelling yellow, thick pulque."
 	var/last_added = 0
-	var/Caximum_reachable = BLOOD_VOLUME_NORMAL - 10
+	var/maximum_reachable = BLOOD_VOLUME_NORMAL - 10
 
 /datum/reagent/consumable/ethanol/yellowpulque/affect_ingest(mob/living/carbon/C, removed)
 	C.adjustOxyLoss(-5*removed, 0)
@@ -289,7 +289,7 @@
 	. = TRUE
 
 /datum/reagent/consumable/ethanol/nukabomb/on_mob_delete(mob/living/C, removed)
-	C.playsound_local(C, 'sound/f13effects/explosion_2.ogg', 100, 0)
+	C.playsound_local(C, 'modular_fallout/master_files/sound/f13effects/explosion_2.ogg', 100, 0)
 	C.Knockdown(10, 0)
 	..()
 
@@ -649,8 +649,6 @@
 	switch(current_cycle)
 		if(1 to 15)
 			heating = 5 * TEMPERATURE_DAMAGE_COEFFICIENT
-			if(holder.has_reagent(/datum/reagent/cryostylane))
-				holder.remove_reagent(/datum/reagent/cryostylane, 5)
 			if(isslime(C))
 				heating = rand(5,20)
 		if(15 to 25)
@@ -668,7 +666,7 @@
 	C.adjust_bodytemperature(heating)
 	C.adjustBruteLoss(-1*removed, 0)
 	if(prob(50))
-		C.visible_message("<span class='warning'>[M] [pick("dry heaves!","coughs!","splutters!")]</span>")
+		C.visible_message("<span class='warning'>[C] [pick("dry heaves!","coughs!","splutters!")]</span>")
 	..()
 
 /datum/reagent/consumable/ethanol/firecracker
@@ -877,9 +875,9 @@
 	if(prob(50))
 		to_chat(C, "<span class='notice'>[high_message]</span>")
 	if(prob(50))
-		C.playsound_local(C, 'sound/f13effects/explosion_fire.ogg', 100, 0)
+		C.playsound_local(C, 'modular_fallout/master_files/sound/f13effects/explosion_fire.ogg', 100, 0)
 	if(prob(50))
-		C.playsound_local(C, 'sound/f13effects/alarC.ogg', 100, 0)
+		C.playsound_local(C, 'modular_fallout/master_files/sound/f13effects/alarC.ogg', 100, 0)
 	C.set_jitter(10 SECONDS)
 	C.adjustBruteLoss(-3*removed, 0)
 	C.set_timed_status_effect(1.5 SECONDS * removed, /datum/status_effect/dizziness, only_if_higher = TRUE)
@@ -933,8 +931,8 @@
 	if(rage)
 		QDEL_NULL(rage)
 	if(iscarbon(C))
-		var/mob/living/carbon/C = M
-		C.cure_trauma_type(rage, TRAUMA_RESILIENCE_ABSOLUTE)
+		var/mob/living/carbon/M = C
+		M.cure_trauma_type(rage, TRAUMA_RESILIENCE_ABSOLUTE)
 	..()
 
 /datum/reagent/consumable/ethanol/vaulttech
@@ -1089,11 +1087,11 @@
 /datum/reagent/consumable/ethanol/spiritcleanser/on_mob_add(mob/living/C) //spiritual shizzle, also admemes getting booled on
 	ADD_TRAIT(C, TRAIT_SPIRITUAL, "[type]")
 	if(prob(50))
-		C.playsound_local(C, 'sound/f13ambience/bird_6.ogg', 100, 0)
+		C.playsound_local(C, 'modular_fallout/master_files/sound/f13ambience/bird_6.ogg', 100, 0)
 	if(prob(50))
 		C.playsound_local(C, 'sound/effects/his_grace_awaken.ogg', 100, 0)
 	C.radiation = max(C.radiation-5,0)
-	C.adjustToxLoss(-4*removed, 0)
+	C.adjustToxLoss(-4, 0)
 	C.set_drugginess(10 SECONDS)
 	C.hallucination += 100
 	..()

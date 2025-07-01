@@ -40,17 +40,6 @@
 	hardness = 50
 	canSmoothWith = list(/turf/closed/wall/f13/wood/house, /turf/closed/wall/f13/wood/house/broken, /turf/closed/wall, /turf/closed/wall/f13/wood/house/clean)
 
-/turf/closed/wall/f13/wood/house/broken
-	icon_state = "house0-broken"
-
-/turf/closed/wall/f13/wood/house/relative()
-	icon_state = "[icon_type_smooth][junction][broken ? "-broken" : ""]"
-
-/turf/closed/wall/f13/wood/house/update_icon()
-	if(broken)
-		set_opacity(0)
-	..()
-
 /turf/closed/wall/f13/wood/house/clean
 	icon_state = "house0-clean"
 

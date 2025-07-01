@@ -1,0 +1,15 @@
+/*
+FUN ZONE OF ADMIN LISTINGS
+Try to keep this in sync with __DEFINES/traits.dm
+quirks have it's own panel so we don't need them here.
+*/
+
+GLOBAL_LIST_INIT(traits_by_type, list(
+	/mob = list(
+		"TRAIT_SURGERY_LOW" = TRAIT_SURGERY_LOW,
+		"TRAIT_SURGERY_MID" = TRAIT_SURGERY_MID,
+		"TRAIT_SURGERY_HIGH" = TRAIT_SURGERY_HIGH,
+		"TRAIT_BUFFOUT_BUFF" = TRAIT_BUFFOUT_BUFF,
+		"TRAIT_UNARMED_WEAPON" = TRAIT_UNARMED_WEAPON,
+		"TRAIT_CANNIBAL" = TRAIT_LONGPORKLOVER
+	)))

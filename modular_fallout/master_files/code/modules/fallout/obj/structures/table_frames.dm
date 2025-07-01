@@ -38,8 +38,8 @@
 		if(do_after(user, 50, target = src) && P.use(1))
 			new /obj/structure/table/reinforced(src.loc)
 			qdel(src)
-	else if(istype(I, /obj/item/stack/sheet/metal))
-		var/obj/item/stack/sheet/metal/M = I
+	else if(istype(I, /obj/item/stack/sheet/iron))
+		var/obj/item/stack/sheet/iron/M = I
 		if(M.get_amount() < 1)
 			to_chat(user, "<span class='warning'>You need one metal sheet to do this!</span>")
 			return

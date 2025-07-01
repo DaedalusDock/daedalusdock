@@ -257,7 +257,7 @@
 		. = TRUE
 	..()
 
-/datum/reagent/medicine/healing_powder/on_mob_metabolize(mob/living/C, method=TOUCH, reac_volume, show_message = 1)
+/datum/reagent/medicine/healing_powder/expose_mob(mob/living/C, method=TOUCH, reac_volume, show_message = 1)
 	if(iscarbon(C) && C.stat != DEAD)
 		if(method in list(INGEST, VAPOR, INJECT))
 			C.adjustToxLoss(3*reac_volume*removed) //also increased from 0.5, reduced from 6

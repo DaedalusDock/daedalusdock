@@ -166,7 +166,8 @@
 			desc = "A cardboard cutout of a xenomorph maid."
 			icon_state = "cutout_lusty"
 		if("Ash Walker")
-			name = lizard_name(pick(MALE, FEMALE))
+			var/datum/name_generator/lizard/name_gen = new
+			name = name_gen.Generate()
 			desc = "A cardboard cutout of an ash walker."
 			icon_state = "cutout_free_antag"
 		if("Deathsquad Officer")

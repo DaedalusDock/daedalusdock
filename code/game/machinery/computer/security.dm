@@ -1114,10 +1114,12 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 		if(prob(10/severity))
 			switch(rand(1,6))
 				if(1)
+					var/generator_type = /datum/name_generator/human
 					if(prob(10))
-						R.fields[DATACORE_NAME] = "[pick(lizard_name(MALE),lizard_name(FEMALE))]"
-					else
-						R.fields[DATACORE_NAME] = "[pick(pick(GLOB.first_names_male), pick(GLOB.first_names_female))] [pick(GLOB.last_names)]"
+						generator_type = pick(subtypesof(/datum/name_generator) - /datum/name_generator/human)
+
+					var/datum/name_generator/name_gen = new generator_type
+					R.fields[DATACORE_NAME] = name_gen.Generate()
 				if(2)
 					R.fields[DATACORE_GENDER] = pick("Male", "Female", "Other")
 				if(3)

@@ -135,6 +135,22 @@
 	if(!t_in)
 		return //Rejects the input if it is null
 
+	// Ensure the surname begins with an uppercase letter. The below loop handles the  forename.
+	// Middle text is allowed to be lowertext for "prefixes"(?) like von and de.
+	var/list/split_by_space = splittext_char(t_in, " ")
+	if(length(split_by_space) > 1)
+		var/surname = split_by_space[length(split_by_space)]
+		var/leading_letter = copytext_char(surname, 1, 2)
+		if(text2ascii(leading_letter) in 97 to 122)
+			if(length_char(surname) > 1)
+				surname = "[uppertext(leading_letter)][copytext_char(surname, 2)]"
+			else
+				surname = uppertext(surname)
+
+		split_by_space[length(split_by_space)] = surname
+
+	t_in = jointext(split_by_space, " ")
+
 	var/number_of_alphanumeric = 0
 	var/last_char_group = NO_CHARS_DETECTED
 	var/t_out = ""
@@ -158,7 +174,7 @@
 
 			// a  .. z
 			if(97 to 122) //Lowercase Letters
-				if(last_char_group == NO_CHARS_DETECTED || last_char_group == SPACES_DETECTED || last_char_group == SYMBOLS_DETECTED) //start of a word
+				if(last_char_group == NO_CHARS_DETECTED || last_char_group == SYMBOLS_DETECTED) //start of a word
 					char = uppertext(char)
 				number_of_alphanumeric++
 				last_char_group = LETTERS_DETECTED

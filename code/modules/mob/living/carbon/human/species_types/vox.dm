@@ -3,9 +3,13 @@
 	name = "Vox"
 	id = SPECIES_VOX
 	plural_form = "Vox"
+	name_generator_type = /datum/name_generator/vox
+
 	say_mod = "skrees"
 	scream_verb = "shrieks"
+
 	default_color = "#1e5404"
+
 	species_eye_path = 'icons/mob/species/vox/eyes.dmi'
 	species_traits = list(
 		MUTCOLORS,
@@ -101,17 +105,6 @@
 			human_to_equip.internal = human_to_equip.belt
 		else
 			stack_trace("Vox going without internals. Uhoh.")
-
-/datum/species/vox/random_name(gender,unique,lastname)
-	if(unique)
-		return random_unique_vox_name()
-
-	var/randname = vox_name()
-
-	if(lastname)
-		randname += " [lastname]"
-
-	return randname
 
 /datum/species/vox/get_species_mechanics()
 	return "Oxygen is poisonous to Vox, requiring them to use respirators connected to a source of Nitrogen."

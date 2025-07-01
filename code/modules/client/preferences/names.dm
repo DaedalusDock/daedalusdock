@@ -83,9 +83,10 @@
 	savefile_key = "human_name"
 
 /datum/preference/name/backup_human/create_informed_default_value(datum/preferences/preferences)
-	var/gender = preferences.read_preference(/datum/preference/choiced/gender)
+	var/datum/name_generator/human/name_gen = new
+	name_gen.ensure_unique = TRUE
 
-	return random_unique_name(gender)
+	return name_gen.Generate()
 
 /datum/preference/name/clown
 	savefile_key = "clown_name"

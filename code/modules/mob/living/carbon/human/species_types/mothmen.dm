@@ -2,6 +2,8 @@
 	name = "\improper Gamuioda"
 	plural_form = "Gamuioda"
 	id = SPECIES_MOTH
+	name_generator_type = /datum/name_generator/moth
+
 	say_mod = "flutters"
 	scream_verb = "buzzes"
 	default_color = "00FF00"
@@ -63,17 +65,6 @@
 
 	if(istype(attacking_item, /obj/item/melee/flyswatter))
 		damage_mods += 10 // Yes, a 10x damage modifier
-
-/datum/species/moth/random_name(gender,unique,lastname)
-	if(unique)
-		return random_unique_moth_name()
-
-	var/randname = moth_name()
-
-	if(lastname)
-		randname += " [lastname]"
-
-	return randname
 
 /datum/species/moth/randomize_main_appearance_element(mob/living/carbon/human/human_mob)
 	var/wings = pick(GLOB.moth_wings_list)

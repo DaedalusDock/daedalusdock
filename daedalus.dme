@@ -689,6 +689,7 @@
 #include "code\datums\minigames_menu.dm"
 #include "code\datums\movement_detector.dm"
 #include "code\datums\mutable_appearance.dm"
+#include "code\datums\name_generator.dm"
 #include "code\datums\numbered_display.dm"
 #include "code\datums\outfit.dm"
 #include "code\datums\points.dm"

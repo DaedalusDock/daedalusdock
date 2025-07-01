@@ -108,8 +108,7 @@
 	hide.Grant(src)
 
 /mob/camera/imaginary_friend/proc/setup_friend()
-	var/gender = pick(MALE, FEMALE)
-	set_real_name(random_unique_name(gender))
+	set_real_name((new /datum/name_generator/human).Generate())
 	human_image = get_flat_human_icon(null, pick(SSjob.joinable_occupations))
 
 /**

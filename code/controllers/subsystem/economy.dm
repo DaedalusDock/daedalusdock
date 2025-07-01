@@ -291,21 +291,30 @@ SUBSYSTEM_DEF(economy)
 	if(findtext(paper_contents, "subject_one"))
 		paper_primary_subject = paper_base_subject
 		all_tracked_data += "subject_one"
+
 	if(findtext(paper_contents, "subject_two"))
 		paper_secondary_subject = pick_list(PAPERWORK_FILE, "subject")
 		if(paper_secondary_subject == paper_base_subject) // okay but what are the odds of picking the same name, threee times?
 			paper_secondary_subject = pick_list(PAPERWORK_FILE, "subject")
 		all_tracked_data += "subject_two"
+
 	if(findtext(paper_contents, "victim"))
-		var/list/possible_names = list(
-			"human" = random_unique_name(),
-			"lizard" = random_unique_lizard_name(),
-			"ethereal" = random_unique_ethereal_name(),
-			"moth" = random_unique_moth_name(),
+		var/list/species_to_generator_type = list(
+			/datum/species/human::name = /datum/species/human::name_generator_type,
+			/datum/species/moth::name = /datum/species/moth::name_generator_type,
+			/datum/species/lizard::name = /datum/species/lizard::name_generator_type,
+			/datum/species/vox::name = /datum/species/vox::name_generator_type,
+			/datum/species/teshari::name = /datum/species/teshari::name_generator_type,
+			/datum/species/ethereal::name = /datum/species/ethereal::name_generator_type,
 		)
-		paper_victim_species = pick(possible_names)
-		paper_victim = possible_names[paper_victim_species]
+		var/chosen_species = pick(species_to_generator_type)
+		var/chosen_generator_type = species_to_generator_type[chosen_species]
+		var/datum/name_generator/name_gen = new chosen_generator_type
+
+		paper_victim_species = lowertext(chosen_species)
+		paper_victim = name_gen.Generate()
 		all_tracked_data += "victim"
+
 	if(findtext(paper_contents, "station_name"))
 		paper_station = prob(80) ? "[new_station_name()] Research Station" : "[syndicate_name()] Research Station"
 		all_tracked_data += "station"

@@ -145,7 +145,7 @@ export class VariableMenu extends Component {
                         displayText={variable_type}
                         className="IntegratedCircuit__BlueBorder"
                         color="black"
-                        width="100%"
+                        fluid
                         over
                         onSelected={(selectedVal) =>
                           this.setState({

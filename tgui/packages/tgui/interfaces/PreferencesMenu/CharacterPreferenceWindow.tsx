@@ -31,7 +31,7 @@ const CharacterProfiles = (props: {
       <Flex.Item width="25%">
         <Dropdown
           selected={activeSlot.toString()}
-          width="100%"
+          fluid
           displayText={profiles[activeSlot]}
           options={profiles.map((profile, slot) => ({
             value: slot,

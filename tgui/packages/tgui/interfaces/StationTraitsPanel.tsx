@@ -63,7 +63,7 @@ const FutureStationTraitsPage = (props) => {
             onSelected={setSelectedTrait}
             options={traitNames}
             selected={selectedTrait}
-            width="100%"
+            fluid
           />
         </Stack.Item>
 

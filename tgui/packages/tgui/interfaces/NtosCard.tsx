@@ -292,7 +292,7 @@ const TemplateDropdown = (props: TemplateDropdownProps) => {
     <Stack>
       <Stack.Item grow>
         <Dropdown
-          width="100%"
+          fluid
           displayText={
             (!!display_selected && selected_template) || 'Select a template...'
           }

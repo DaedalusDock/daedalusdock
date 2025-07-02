@@ -114,7 +114,7 @@ export const SparringContract = (props) => {
                 <Stack.Item fontSize="16px">Arena:</Stack.Item>
                 <Stack.Item>
                   <Dropdown
-                    width="100%"
+                    fluid
                     selected={area}
                     options={possible_areas}
                     onSelected={setArea}
@@ -133,7 +133,7 @@ export const SparringContract = (props) => {
                 <Stack.Item fontSize="16px">Stakes:</Stack.Item>
                 <Stack.Item>
                   <Dropdown
-                    width="100%"
+                    fluid
                     selected={stakelist[stakes - 1]}
                     options={stakelist}
                     onSelected={(value) =>

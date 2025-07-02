@@ -63,7 +63,7 @@ export const Mancrowave = (props) => {
             </LabeledList>
             <Box mt={1} />
             <Dropdown
-              width="100%"
+              fluid
               options={Object.keys(cook_options)}
               selected={current_setting}
               onSelected={(value) =>

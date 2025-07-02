@@ -106,6 +106,7 @@ const ConfigureListEntry = (props) => {
     <Dropdown
       displayText={value}
       options={values}
+      selected={value}
       onSelected={(value) =>
         act('configure', {
           key: name,

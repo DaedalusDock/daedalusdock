@@ -184,7 +184,7 @@ const MemoriesSection = (props) => {
         <Stack vertical>
           <Stack.Item>
             <Dropdown
-              width="100%"
+              fluid
               selected={selectedMemory?.name}
               options={memories.map((memory) => {
                 return memory.name;

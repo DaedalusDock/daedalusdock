@@ -34,11 +34,10 @@ export const Jukebox = (props) => {
           <LabeledList>
             <LabeledList.Item label="Track Selected">
               <Dropdown
-                overflowY="scroll"
                 width="240px"
                 options={songs.map((song) => song.name)}
                 disabled={active}
-                selected={track_selected || 'Select a Track'}
+                selected={track_selected}
                 onSelected={(value) =>
                   act('select_track', {
                     track: value,

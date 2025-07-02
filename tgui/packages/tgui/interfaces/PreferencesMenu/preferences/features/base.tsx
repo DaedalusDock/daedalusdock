@@ -127,7 +127,7 @@ export const createDropdownInput = <T extends string | number = string>(
         selected={props.value.toString()}
         displayText={choices[props.value]}
         onSelected={props.handleSetValue}
-        width="100%"
+        fluid
         options={sortChoices(Object.entries(choices)).map(
           ([dataValue, label]) => {
             return {
@@ -167,7 +167,7 @@ export const StandardizedDropdown = (props: {
       disabled={disabled}
       selected={value}
       onSelected={onSetValue}
-      width="100%"
+      fluid
       displayText={displayNames[value]}
       options={choices.map((choice) => {
         return {

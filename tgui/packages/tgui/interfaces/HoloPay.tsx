@@ -214,7 +214,7 @@ const SetupDisplay = (props) => {
             onSelected={(value) => act('logo', { logo: value })}
             options={available_logos}
             selected={shop_logo}
-            width="100%"
+            fluid
           />
         </Stack.Item>
         <Stack.Item>

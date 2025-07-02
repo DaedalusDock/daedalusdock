@@ -45,10 +45,9 @@ const UIStyleInput = (
   return (
     <Dropdown
       selected={value}
-      clipSelectedText={false}
       displayText={choices[value]}
       onSelected={props.handleSetValue}
-      width="100%"
+      fluid
       options={sortChoices(Object.entries(choices)).map(
         ([dataValue, label]) => {
           return {

@@ -40,7 +40,7 @@ export const AtmosControlConsole = (props) => {
         {chambers.length > 1 && (
           <Section title="Chamber Selection">
             <Dropdown
-              width="100%"
+              fluid
               options={chambers.map((chamber) => chamber.name)}
               selected={selectedChamber?.name}
               onSelected={(value) =>

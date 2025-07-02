@@ -34,7 +34,7 @@ export const LoadoutManager = (props) => {
               }
             >
               <Dropdown
-                width="100%"
+                fluid
                 selected={selectedTabName}
                 displayText={selectedTabName}
                 options={loadout_tabs.map((curTab) => ({

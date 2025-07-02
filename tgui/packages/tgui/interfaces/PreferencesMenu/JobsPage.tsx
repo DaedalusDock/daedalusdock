@@ -264,7 +264,7 @@ const JobRow = (props: { className?: string; job: Job; name: string }) => {
               ) : (
                 <Dropdown
                   selected={alt_title_selected}
-                  width="100%"
+                  fluid
                   options={job.alt_titles}
                   displayText={alt_title_selected}
                   onSelected={(value) =>
@@ -374,7 +374,7 @@ const JoblessRoleDropdown = (props) => {
   return (
     <Box position="absolute" right={0} width="30%">
       <Dropdown
-        width="100%"
+        fluid
         selected={selected.toString()}
         onSelected={createSetPreference(act, 'joblessrole')}
         options={options}

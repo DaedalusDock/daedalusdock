@@ -79,7 +79,7 @@ export const NtosRoboControl = (props) => {
               />
               <Dropdown
                 tooltip="Drone pings"
-                width="100%"
+                fluid
                 displayText={'Drone pings'}
                 options={dronepingtypes}
                 onSelected={(value) => act('ping_drones', { ping_type: value })}

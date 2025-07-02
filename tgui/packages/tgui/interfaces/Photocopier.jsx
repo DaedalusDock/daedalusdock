@@ -187,7 +187,7 @@ const Blanks = (props) => {
   return (
     <Section title="Blanks">
       <Dropdown
-        width="100%"
+        fluid
         options={categories}
         selected={selectedCategory}
         onSelected={(value) =>

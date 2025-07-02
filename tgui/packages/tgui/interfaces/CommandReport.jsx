@@ -33,7 +33,7 @@ export const CommandReport = (props) => {
           <Stack.Item>
             <Section title="Set Central Command name:" textAlign="center">
               <Dropdown
-                width="100%"
+                fluid
                 selected={command_name}
                 options={command_name_presets}
                 onSelected={(value) =>
@@ -60,7 +60,7 @@ export const CommandReport = (props) => {
           <Stack.Item>
             <Section title="Set announcement sound:" textAlign="center">
               <Dropdown
-                width="100%"
+                fluid
                 selected={played_sound}
                 displayText={played_sound}
                 options={announcer_sounds}

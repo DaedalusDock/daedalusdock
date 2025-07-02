@@ -166,8 +166,7 @@ export const FaxMachine = (props) => {
                   </Stack.Item>
                   <Stack.Item grow>
                     <Dropdown
-                      width="100%"
-                      height="100%"
+                      fluid
                       selected={selectedDestination}
                       options={destination_options}
                       onSelected={(dest) => {

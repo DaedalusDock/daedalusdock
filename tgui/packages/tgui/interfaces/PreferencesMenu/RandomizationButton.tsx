@@ -31,7 +31,6 @@ export const RandomizationButton = (props: {
       selected={value.toString()}
       backgroundColor={color}
       {...dropdownProps}
-      clipSelectedText={false}
       displayText={<Icon name="dice-d20" mr="-0.25em" />}
       options={[
         {

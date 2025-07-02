@@ -26,7 +26,7 @@ const FpsInput = (props: FeatureValueProps<number, number, FpsServerData>) => {
               handleSetValue(serverData?.recommended_fps || 60);
             }
           }}
-          width="100%"
+          fluid
           options={[recommened, 'Custom']}
         />
       </Stack.Item>

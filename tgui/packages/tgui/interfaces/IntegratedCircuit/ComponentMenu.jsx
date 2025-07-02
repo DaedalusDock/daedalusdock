@@ -112,7 +112,7 @@ export class ComponentMenu extends Component {
         <Stack vertical>
           <Stack.Item>
             <Dropdown
-              width="100%"
+              fluid
               options={tabs}
               onSelected={(value) =>
                 this.setState({

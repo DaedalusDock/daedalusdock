@@ -599,7 +599,7 @@ export const MainPage = (props: { openSpecies: () => void }) => {
 
                   <Dropdown
                     // PARIAH EDIT ADDITION
-                    width="100%"
+                    fluid
                     position="relative"
                     selected={data.preview_selection}
                     options={data.preview_options}

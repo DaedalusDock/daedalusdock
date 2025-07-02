@@ -120,7 +120,7 @@ export const PainterDropdown = (props) => {
 
   return (
     <Dropdown
-      width="100%"
+      fluid
       selected={selectedOption}
       options={Object.keys(options).map((path) => {
         return options[path];

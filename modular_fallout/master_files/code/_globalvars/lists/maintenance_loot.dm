@@ -242,7 +242,7 @@ GLOBAL_LIST_INIT(loot_t2_armor, list(
 	/obj/item/clothing/head/helmet/knight/f13/metal,
 	/obj/item/clothing/suit/armored/heavy/raidermetal,
 	/obj/item/clothing/head/helmet/f13/metalmask,
-	/obj/item/clothing/suit/armor/f13/leatherarmor,
+	/obj/item/clothing/suit/armored/light/leather,
 	/obj/item/clothing/suit/armored/light/leather_jacketmk2,
 	/obj/item/clothing/suit/armored/light/leathercoat
 ))
@@ -359,7 +359,7 @@ GLOBAL_LIST_INIT(loot_t4_melee, list(
 GLOBAL_LIST_INIT(loot_t5_melee, list(
 	/obj/item/melee/energy/thermic_lance,
 	/obj/item/twohanded/chainsaw,
-	/obj/item/melee/transforming/energy/axe/protonaxe,
+	/obj/item/melee/energy/axe/protonaxe,
 	/obj/item/melee/powered/ripper,
 //	/obj/item/melee/powerfist,
 	/obj/item/twohanded/sledgehammer/rockethammer,
@@ -665,7 +665,6 @@ GLOBAL_LIST_INIT(loot_food, list(
 	/obj/item/reagent_containers/condiment/saltshaker,
 	/obj/item/reagent_containers/condiment/peppermill,
 	/obj/item/reagent_containers/condiment/soysauce,
-	/obj/item/food/beans,
 	/obj/item/food/cracker,
 	/obj/item/food/lollipop,
 ))

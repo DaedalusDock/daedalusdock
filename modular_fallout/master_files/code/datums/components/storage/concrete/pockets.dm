@@ -4,14 +4,6 @@
 	max_total_storage = 50
 	rustle_sound = FALSE
 
-/datum/storage/concrete/pockets/handle_item_insertion(obj/item/I, prevent_warning, mob/user)
-	. = ..()
-	if(. && silent && !prevent_warning)
-		if(quickdraw)
-			to_chat(user, "<span class='notice'>You discreetly slip [I] into [parent]. Alt-click [parent] to remove it.</span>")
-		else
-			to_chat(user, "<span class='notice'>You discreetly slip [I] into [parent].</span>")
-
 /datum/storage/concrete/pockets/huge
 	max_specific_storage = WEIGHT_CLASS_NORMAL
 
@@ -20,60 +12,34 @@
 	attack_hand_interact = FALSE
 
 /datum/storage/concrete/pockets/small/collar
-	max_specific_storage = 1
-
-/datum/storage/concrete/pockets/small/collar
 	can_hold = typecacheof(list(
 	/obj/item/food/cookie,
 	/obj/item/food/cookie/sugar))
-
-/datum/storage/concrete/pockets/small/collar/locked
-	can_hold = typecacheof(list(
-	/obj/item/food/cookie,
-	/obj/item/food/sugarcookie,
-	/obj/item/key/collar))
-
-/datum/storage/concrete/pockets/binocular
 	max_specific_storage = 1
 
 /datum/storage/concrete/pockets/binocular
-	can_hold = GLOB.storage_binocular_can_hold
-
-
-/datum/storage/concrete/pockets/treasurer
-	max_specific_storage = 4
+	can_hold = /obj/item/binoculars
+	max_specific_storage = 1
 
 /datum/storage/concrete/pockets/treasurer
 	can_hold = GLOB.storage_treasurer_can_hold
-
-
-/datum/storage/concrete/pockets/bartender
-	max_specific_storage = 2
+	max_specific_storage = 4
 
 /datum/storage/concrete/pockets/bartender
 	can_hold = GLOB.storage_bartender_can_hold
-
-
-/datum/storage/concrete/pockets/kitchen
 	max_specific_storage = 2
 
-/datum/storage/concrete/pockets/kitcheN
+/datum/storage/concrete/pockets/kitchen
 	can_hold = GLOB.storage_kitchen_can_hold
-
-
-/datum/storage/concrete/pockets/crafter
 	max_specific_storage = 2
 
 /datum/storage/concrete/pockets/crafter
 	can_hold = GLOB.storage_crafter_can_hold
-
-
-/datum/storage/concrete/pockets/medical
 	max_specific_storage = 2
 
 /datum/storage/concrete/pockets/medical
 	can_hold = GLOB.storage_medical_can_hold
-
+	max_specific_storage = 2
 
 /datum/storage/concrete/pockets/tiny
 	max_specific_storage = 1
@@ -95,16 +61,11 @@
 /datum/storage/concrete/pockets/small/rushelmet
 	max_specific_storage = 1
 	quickdraw = TRUE
-
-/datum/storage/concrete/pockets/small/rushelmet
 	can_hold = GLOB.storage_hat_can_hold
-
 
 /datum/storage/concrete/pockets/bos/paladin/
 	max_specific_storage = 4
 	max_specific_storage = WEIGHT_CLASS_NORMAL
-
-/datum/storage/concrete/pockets/bos/paladin/
 	can_hold = GLOB.storage_holster_can_hold
 
 /datum/storage/concrete/pockets/small/holdout
@@ -112,15 +73,16 @@
 	attack_hand_interact = TRUE
 	max_specific_storage = WEIGHT_CLASS_NORMAL
 	quickdraw = TRUE
-
-/datum/storage/concrete/pockets/small/holdout
 	can_hold = GLOB.storage_holdout_can_hold
 
 /datum/storage/concrete/pockets/bulletbelt
+	can_hold = GLOB.storage_bulletbelt_can_hold
 	max_specific_storage = 4
 
-/datum/storage/concrete/pockets/bulletbelt
-	can_hold = GLOB.storage_bulletbelt_can_hold
+/datum/storage/concrete/pockets/shoes
+	attack_hand_interact = FALSE
+	quickdraw = TRUE
+	silent = TRUE
 
 GLOBAL_LIST_INIT(storage_bartender_can_hold, typecacheof(list(
 	/obj/item/kitchen,

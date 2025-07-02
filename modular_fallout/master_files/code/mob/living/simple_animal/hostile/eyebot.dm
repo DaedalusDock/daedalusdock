@@ -122,7 +122,6 @@
 	anchored = FALSE
 	del_on_death = FALSE
 	dextrous = TRUE
-	move_to_delay = -1
 
 //Junkers
 /mob/living/simple_animal/hostile/eyebot/reinforced

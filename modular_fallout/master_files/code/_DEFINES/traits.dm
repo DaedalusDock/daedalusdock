@@ -1,5 +1,6 @@
 #define TRAIT_BIG_LEAGUES		"big_leagues"
 #define TRAIT_BUFFOUT_BUFF		"buffout_buff"
+#define TRAIT_IRONFIST			"ironfist"
 
 #define	TRAIT_CHEMWHIZ			"chemwhiz"
 #define TRAIT_TECHNOPHOBE		"luddite" //Cannot use autolathes/biogens
@@ -14,9 +15,8 @@
 #define TRAIT_CYBERNETICIST_EXPERT	"Cyberneticist Expert" //Can augument people into robots directly
 #define TRAIT_MACHINE_SPIRITS	"machine_spirits" //for tribe unique functions.
 #define TRAIT_HARD_YARDS        "hard_yards"
-#define	TRAIT_LIFEGIVER			"lifegiver"
 #define TRAIT_MARS_TEACH		"mars_teachings" //for legion unique functions
-
+#define TRAIT_TRAPPER			"trapper"
 #define TRAIT_SURGERY_LOW		"lowsurgery"
 #define TRAIT_SURGERY_MID		"midsurgery"
 #define TRAIT_SURGERY_HIGH		"highsurgery"

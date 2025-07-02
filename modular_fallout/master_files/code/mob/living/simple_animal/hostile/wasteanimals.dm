@@ -95,8 +95,7 @@
 
 /mob/living/simple_animal/hostile/cazador/young/Initialize()
 	. = ..()
-	resize = 0.8
-	update_transform()
+	update_transform(0.75)
 
 /datum/reagent/toxin/cazador_venom
 	name = "Cazador venom"
@@ -292,7 +291,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	speak_chance = 0
 	turns_per_move = 5
-	guaranteed_butcher_results = list(/obj/item/stack/sheet/sinew = 1, /obj/item/food/meat/slab/fireant_meat = 2, obj/item/food/rawantbrain = 1)
+	guaranteed_butcher_results = list(/obj/item/stack/sheet/sinew = 1, /obj/item/food/meat/slab/fireant_meat = 2, /obj/item/food/rawantbrain = 1)
 	butcher_results = list(/obj/item/stack/sheet/animalhide/chitin = 2)
 	butcher_difficulty = 1.5
 	response_help_simple = "pets"
@@ -334,7 +333,7 @@
 /mob/living/simple_animal/hostile/giantantqueen
 	name = "giant ant queen"
 	desc = "The queen of a giant ant colony. Butchering it seems like a good way to a pretty penny."
-	icon = 'modular_fallout/master_files/icons/fallout/mobs/hostile/animals/antqueen.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/mobs/hostile/wastemobslong.dmi'
 	icon_state = "antqueen"
 	icon_living = "antqueen"
 	icon_dead = "antqueen_dead"
@@ -385,7 +384,7 @@
 	AddComponent(/datum/component/spawner, mob_types, spawn_time, faction, spawn_text, max_mobs, _range = 7)
 
 /mob/living/simple_animal/hostile/giantantqueen/death()
-	RemoveComponentByType(/datum/component/spawner)
+	RemoveComponentFrom(/datum/component/spawner)
 	. = ..()
 
 /mob/living/simple_animal/hostile/giantantqueen/Destroy()
@@ -485,7 +484,7 @@
 /mob/living/simple_animal/hostile/stalker
 	name = "nightstalker"
 	desc = "A crazed genetic hybrid of rattlesnake and coyote DNA."
-	icon = 'modular_fallout/master_files/icons/mob/wastemobslong.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/mobs/hostile/wastemobslong.dmi'
 	icon_state = "nightstalker"
 	icon_living = "nightstalker"
 	icon_dead = "nightstalker-dead"

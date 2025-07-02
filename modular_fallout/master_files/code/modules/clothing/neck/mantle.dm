@@ -52,13 +52,13 @@
 	name = "Paladin cape"
 	desc = "This stylish deep crimson cape is made to be worn below a power armor pauldron, a shoulder holster is added for utility."
 	icon_state = "paladin"
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/bos/paladin
+	pocket_storage_component_path = /datum/storage/concrete/pockets/bos/paladin
 
 /obj/item/clothing/neck/mantle/ranger
 	name = "NCR ranger cape"
 	desc = "Ranger cape made from what looks like old poncho fitted with star, stripes and a bear. Most likely has a holster hidden underneath."
 	icon_state = "rangercape"
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/bos/paladin
+	pocket_storage_component_path = /datum/storage/concrete/pockets/bos/paladin
 
 /obj/item/clothing/neck/mantle/chief
 	name = "chieftains mantle"
@@ -87,7 +87,7 @@
 	name = "treasurers mantle"
 	desc = "The grey and black mantle with gold thread trimming shows the wearer is entrusted with matters of money and records. Hidden inner pockets can store money, keys and documents safely, and a discrete sheath for a knife for self defence is also attached."
 	icon_state = "treasurer"
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/treasurer
+	pocket_storage_component_path = /datum/storage/concrete/pockets/treasurer
 
 /obj/item/clothing/neck/mantle/peltfur
 	name = "fur pelt"

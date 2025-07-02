@@ -2,6 +2,8 @@
 
 /obj/item/gun/ballistic/automatic/hobo/zipgun
 
+/obj/item/gun/ballistic/automatic/hobo/zipgun
+
 /obj/item/gun/ballistic/revolver/hobo/pepperbox
 
 /obj/item/gun/ballistic/revolver/single_shotgun

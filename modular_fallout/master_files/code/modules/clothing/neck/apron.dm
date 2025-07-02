@@ -12,7 +12,7 @@
 	name = "bartenders apron"
 	desc = "A fancy purple apron for a stylish bartender. Can hold some bottles, a few kitchen trinkets and maybe a small discrete revolver...."
 	icon_state = "bartender"
-	storage_type = /datum/component/storage/concrete/pockets/bartender
+	storage_type = /datum/storage/concrete/pockets/bartender
 
 /obj/item/clothing/neck/apron/medicus
 	name = "medicus apron"
@@ -25,13 +25,13 @@
 	name = "chefs apron"
 	desc = "A white apron for kitchenwork, or for some improvised surgery. Got loops to attach kitchen knives and rollings pin to it."
 	icon_state = "chef"
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/kitchen
+	pocket_storage_component_path = /datum/storage/concrete/pockets/kitchen
 
 /obj/item/clothing/neck/apron/labor
 	name = "labor apron"
 	desc = "A dark apron for manual labor."
 	icon_state = "labor"
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/crafter
+	pocket_storage_component_path = /datum/storage/concrete/pockets/crafter
 
 /obj/item/clothing/neck/apron/labor/forge
 	name = "forgemasters apron"
@@ -46,4 +46,4 @@
 	name = "50s housewife apron"
 	desc = "A cutesy pink checkerboard apron. The pattern is inspired by ancient commercial billboards. Some kitchen equipment can be stored in its pocket."
 	icon_state = "housewife"
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/kitchen
+	pocket_storage_component_path = /datum/storage/concrete/pockets/kitchen

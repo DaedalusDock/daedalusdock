@@ -202,7 +202,6 @@
 	if(C.health > 20)
 		C.adjustToxLoss(0.5*removed, 0)
 		. = TRUE
-	C.radiation += 0.1
 	return ..()
 
 /datum/reagent/consumable/ethanol/salgam
@@ -553,16 +552,16 @@
 
 /datum/reagent/consumable/ethanol/bbock/affect_ingest(mob/living/carbon/C, removed)
 	if(prob(80))
-		C.playsound_local(C, 'sound/f13effects/explosion_2.ogg', 100, 0)
+		C.playsound_local(C, 'modular_fallout/master_files/sound/f13effects/explosion_2.ogg', 100, 0)
 	var/high_message = pick("<br><font color='#FF0000'><b><BIG>FUCKING KILL!<BIG></b></font>", "<br><font color='#FF0000'><b><BIG>RAAAAR!<BIG></b></font>", "<br><font color='#FF0000'><b><BIG>BRING IT!<BIG></b></font>")
 	if(prob(50))
 		to_chat(C, "<span class='notice'>[high_message]</span>")
 	C.hallucination += 40
 	C.set_jitter(2 SECONDS)
 	if(iscarbon(C))
-		var/mob/living/carbon/M = C
+		var/mob/living/carbon/H = C
 		rage = new()
-		C.gain_trauma(rage, TRAUMA_RESILIENCE_ABSOLUTE)
+		H.gain_trauma(rage, TRAUMA_RESILIENCE_ABSOLUTE)
 	..()
 	. = TRUE
 
@@ -570,8 +569,8 @@
 	if(rage)
 		QDEL_NULL(rage)
 	if(iscarbon(C))
-		var/mob/living/carbon/M = C
-		C.cure_trauma_type(rage, TRAUMA_RESILIENCE_ABSOLUTE)
+		var/mob/living/carbon/H = C
+		H.cure_trauma_type(rage, TRAUMA_RESILIENCE_ABSOLUTE)
 	..()
 
 /datum/reagent/consumable/ethanol/bbrew
@@ -591,9 +590,9 @@
 		to_chat(C, "<span class='notice'>[high_message]</span>")
 	C.AdjustKnockdown(-40, 0)
 	if(iscarbon(C))
-		var/mob/living/carbon/M = C
+		var/mob/living/carbon/H = C
 		rage = new()
-		C.gain_trauma(rage, TRAUMA_RESILIENCE_ABSOLUTE)
+		H.gain_trauma(rage, TRAUMA_RESILIENCE_ABSOLUTE)
 	..()
 	. = TRUE
 
@@ -601,8 +600,8 @@
 	if(rage)
 		QDEL_NULL(rage)
 	if(iscarbon(C))
-		var/mob/living/carbon/M = C
-		C.cure_trauma_type(rage, TRAUMA_RESILIENCE_ABSOLUTE)
+		var/mob/living/carbon/H = C
+		H.cure_trauma_type(rage, TRAUMA_RESILIENCE_ABSOLUTE)
 	..()
 
 /datum/reagent/consumable/ethanol/bbrew2
@@ -877,7 +876,7 @@
 	if(prob(50))
 		C.playsound_local(C, 'modular_fallout/master_files/sound/f13effects/explosion_fire.ogg', 100, 0)
 	if(prob(50))
-		C.playsound_local(C, 'modular_fallout/master_files/sound/f13effects/alarC.ogg', 100, 0)
+		C.playsound_local(C, 'modular_fallout/master_files/sound/f13effects/alarm.ogg', 100, 0)
 	C.set_jitter(10 SECONDS)
 	C.adjustBruteLoss(-3*removed, 0)
 	C.set_timed_status_effect(1.5 SECONDS * removed, /datum/status_effect/dizziness, only_if_higher = TRUE)
@@ -931,8 +930,8 @@
 	if(rage)
 		QDEL_NULL(rage)
 	if(iscarbon(C))
-		var/mob/living/carbon/M = C
-		M.cure_trauma_type(rage, TRAUMA_RESILIENCE_ABSOLUTE)
+		var/mob/living/carbon/H = C
+		H.cure_trauma_type(rage, TRAUMA_RESILIENCE_ABSOLUTE)
 	..()
 
 /datum/reagent/consumable/ethanol/vaulttech
@@ -1090,7 +1089,6 @@
 		C.playsound_local(C, 'modular_fallout/master_files/sound/f13ambience/bird_6.ogg', 100, 0)
 	if(prob(50))
 		C.playsound_local(C, 'sound/effects/his_grace_awaken.ogg', 100, 0)
-	C.radiation = max(C.radiation-5,0)
 	C.adjustToxLoss(-4, 0)
 	C.set_drugginess(10 SECONDS)
 	C.hallucination += 100

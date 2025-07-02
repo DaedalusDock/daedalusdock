@@ -1,18 +1,14 @@
 //tablecrafting defines
-#define CAT_WEAPONRY	"Weaponry"
 #define CAT_WEAPON	"Ranged Weapons"
 #define CAT_MELEE	"Melee Weapons"
-#define CAT_AMMO	"Explosives & Cells"
 #define CAT_MISCWEP	"Weapons Misc"
 #define CAT_PARTS	"Weapon Parts"
 
 #define CAT_CRAFTING	"Crafting"
 
-#define CAT_ROBOT	"Electronics & Robots"
 
 #define CAT_FORGING	"Forging & Smithing"
 
-#define CAT_MISC	"Misc"
 
 #define CAT_SCAVENGING	"Scavenging & Tinkering"
 
@@ -34,4 +30,3 @@
 #define CAT_WASTELAND	"Wasteland Clothing"
 #define CAT_MISCCLOTHING "Misc Clothing"
 
-#define CAT_DRINK "Drinks"

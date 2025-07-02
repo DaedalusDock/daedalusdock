@@ -47,7 +47,7 @@
 	desc = "A leather top with a bandolier over it and a straps that cover the arms."
 	icon_state = "badlands"
 	inhand_icon_state = "badlands"
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/bulletbelt
+	pocket_storage_component_path = /datum/storage/concrete/pockets/bulletbelt
 	armor = list(BLUNT = 30, PUNCTURE = 35, SLASH = 45, LASER = 10, ENERGY = 10, BOMB = 16, BIO = 10, RAD = 0, FIRE = 50, ACID = 0)
 
 

@@ -24,7 +24,7 @@
 	icon_state = "warden_alt"
 	inhand_icon_state = "armor"
 	armor = list("tier" = 5, "linebullet" = 75, ENERGY = 30, BOMB = 25, BIO = 40, RAD = 40, FIRE = 80, ACID = 0)
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/small/holdout
+	pocket_storage_component_path = /datum/storage/concrete/pockets/small/holdout
 
 /obj/item/clothing/suit/armor/f13/town/deputy
 	name = "deputy trenchcoat"

@@ -1,4 +1,5 @@
 /datum/quirk
 	var/locked = FALSE
+	var/value = 0
 
-#warn idk
+#warn idk, missing features, locked traits and value

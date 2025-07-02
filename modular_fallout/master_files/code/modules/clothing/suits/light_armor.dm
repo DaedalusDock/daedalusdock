@@ -156,7 +156,7 @@
 	desc = "A leather top with a bandolier over it and a straps that cover the arms. Suited for warm climates, comes with storage space."
 	icon_state = "badlands"
 	inhand_icon_state = "badlands"
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets
+	pocket_storage_component_path = /datum/storage/concrete/pockets
 	heat_protection = CHEST | GROIN | LEGS| ARMS | HEAD
 	armor = list(BLUNT = 25, PUNCTURE = 25, SLASH = 35, LASER = 10, ENERGY = 5, BOMB = 0, BIO = 0, RAD = 0, FIRE = 5, ACID = 0)
 
@@ -340,7 +340,7 @@
 	desc = "Light armor with layered strips of laminated linen and leather and worn with a large pouch for storing your binoculars."
 	icon_state = "legion_explorer"
 	armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 40, LASER = 15, ENERGY = 15, BOMB = 20, BIO = 20, RAD = 20, FIRE = 25, ACID = 0)
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/binocular
+	pocket_storage_component_path = /datum/storage/concrete/pockets/binocular
 
 
 /////////

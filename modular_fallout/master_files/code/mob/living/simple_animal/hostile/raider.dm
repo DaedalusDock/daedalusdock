@@ -53,7 +53,7 @@
 /mob/living/simple_animal/hostile/raider/thief/AttackingTarget()
 	if(ishuman(target))
 		var/mob/living/carbon/human/H = target
-		if(H.stat == SOFT_CRIT)
+		if(H.stat == UNCONSCIOUS)
 			var/back_target = H.back
 			if(back_target)
 				H.dropItemToGround(back_target, TRUE)
@@ -85,7 +85,7 @@
 	retreat_distance = 4
 	minimum_distance = 6
 	projectiletype = /obj/projectile/bullet/c9mm/op
-	projectilesound = 'modular_fallout/master_files/modular_fallout/master_files/sound/f13weapons/ninemil.ogg'
+	projectilesound = 'modular_fallout/master_files/sound/f13weapons/ninemil.ogg'
 	loot = list(/obj/effect/mob_spawn/human/corpse/npc_raider)
 
 /datum/outfit/npc_raider
@@ -138,7 +138,7 @@
 	health = 170
 	extra_projectiles = 3
 	projectiletype = /obj/projectile/bullet/c45/op
-	loot = list(/obj/item/gun/ballistic/automatic/smg/greasegun, /obj/item/clothing/suit/f13/medium/combat/mk2/dark, /obj/item/clothing/suit/armor/f13/combat/mk2/raider, /obj/item/clothing/under/f13/ravenharness)
+	loot = list(/obj/item/gun/ballistic/automatic/smg/greasegun, /obj/item/clothing/suit/f13/medium/combat/mk2/dark, /obj/item/clothing/suit/f13/medium/combat/mk2, /obj/item/clothing/under/f13/ravenharness)
 
 /mob/living/simple_animal/hostile/raider/ranged/boss/Aggro()
 	..()

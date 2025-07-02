@@ -451,7 +451,7 @@
 	icon_state = "warden_alt"
 	inhand_icon_state = "armor"
 	armor = list(BLUNT = 40, PUNCTURE = 60, SLASH = 70, LASER = 30,  ENERGY = 35, BOMB = 30, BIO = 40, RAD = 40, FIRE = 50, ACID = 10)
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/small/holdout
+	pocket_storage_component_path = /datum/storage/concrete/pockets/small/holdout
 
 /obj/item/clothing/suit/armored/medium/steelbib/town
 	name = "steel breastplate"

@@ -6,7 +6,7 @@
 	inhand_icon_state = "vest_utility"
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/suits_utility.dmi'
 	armor = list(BLUNT = 10, PUNCTURE = 15, SLASH = 25, LASER = 10, ENERGY = 10, BOMB = 15, BIO = 10, RAD = 0, FIRE = 20, ACID = 5)
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets
+	pocket_storage_component_path = /datum/storage/concrete/pockets
 
 /obj/item/clothing/suit/armor/f13/ncrarmor
 	name = "NCR patrol vest"

@@ -128,7 +128,6 @@
 	name = "leather gloves"
 	desc = "Fingerless leather gloves to improve grip worn by legionaires."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/gloves.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/hand.dmi'
 	icon_state = "legion_fingerless"
 	inhand_icon_state = "legion_fingerless"
 	//item_color = null	//So they don't wash.

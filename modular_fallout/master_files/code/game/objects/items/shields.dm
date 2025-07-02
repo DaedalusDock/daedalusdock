@@ -60,7 +60,6 @@ TYPEINFO_DEF(/obj/item/shield/riot/buckler)
 	block_chance = 50
 	custom_materials = list(/datum/material/wood = 16000, /datum/material/iron= 16000)
 	repair_material = /obj/item/stack/sheet/mineral/wood
-	shield_flags = SHIELD_FLAGS_DEFAULT
 
 
 TYPEINFO_DEF(/obj/item/shield/riot/legion)

@@ -4,7 +4,7 @@
 	var/stepsound = TRUE
 */
 /obj/item/clothing/shoes/f13
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/shoes
+	pocket_storage_component_path = /datum/storage/concrete/pockets/shoes
 
 /obj/item/clothing/shoes/f13/enclave/serviceboots
 	name = "enclave service boots"
@@ -81,7 +81,7 @@
 	can_be_tied = FALSE
 	cold_protection = FEET
 	min_cold_protection_temperature = SHOES_MIN_TEMP_PROTECT
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/shoes
+	pocket_storage_component_path = /datum/storage/concrete/pockets/shoes
 
 /obj/item/clothing/shoes/f13/military/leather
 	name = "leather combat boots"

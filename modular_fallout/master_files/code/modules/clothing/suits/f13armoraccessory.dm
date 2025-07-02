@@ -8,10 +8,10 @@
 	w_class = WEIGHT_CLASS_SMALL
 	var/above_suit = FALSE
 	var/minimize_when_attached = TRUE // TRUE if shown as a small icon in corner, FALSE if overlayed
-	var/datum/component/storage/detached_pockets
+	var/datum/storage/detached_pockets
 
 /obj/item/clothing/armoraccessory/proc/attach(obj/item/clothing/suit/U, user)
-	var/datum/component/storage/storage = GetComponent(/datum/component/storage)
+	var/datum/storage/storage = GetComponent(/datum/storage)
 	if(storage)
 		if(SEND_SIGNAL(U, COMSIG_CONTAINS_STORAGE))
 			return FALSE

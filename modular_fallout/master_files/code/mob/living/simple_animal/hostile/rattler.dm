@@ -13,14 +13,12 @@ using ant armor b/c it just kinda works here and i don't want it to be super bee
 	icon_living = "texasrattler"
 	icon_dead = "texasrattler_dead"
 	icon_gib = "texasrattler_gib" //TODO: this is terrible
-	mob_armor = ARMOR_VALUE_ANTS
 	maxHealth = 150
 	health = 150
 	stat_attack = UNCONSCIOUS
 	reach = 2
 	move_to_delay = -1
 	move_to_delay = 2.1
-	tastes = list("weird oil" = 5, "dirt" = 1)
 
 	speak_emote = list("hisses", "shakes its rattle")
 	emote_hear = list("flicks its tongue.")
@@ -46,4 +44,4 @@ using ant armor b/c it just kinda works here and i don't want it to be super bee
 	if(. && ishuman(target))
 		var/mob/living/carbon/human/H = target
 		H.reagents.add_reagent(/datum/reagent/toxin/cazador_venom, 6)
-		H.adjustStaminaLoss(7)
+		H.stamina -= 7

@@ -179,7 +179,7 @@
 /* /mob/living/simple_animal/cow/ComponentInitialize()
 	if(!bags)
 		return
-	AddComponent(/datum/component/storage/concrete/brahminbag)
+	AddComponent(/datum/storage/concrete/brahminbag)
 	return */
 
 /mob/living/simple_animal/cow/proc/feed_em(obj/item/I, mob/user)
@@ -619,7 +619,7 @@
 	category = CAT_MISC
 */
 /*
-/datum/component/storage/concrete/brahminbag
+/datum/storage/concrete/brahminbag
 	max_w_class = WEIGHT_CLASS_HUGE //Allows the storage of shotguns and other two handed items.
 	max_combined_w_class = 35
 	max_items = 20

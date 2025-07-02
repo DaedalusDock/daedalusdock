@@ -9,7 +9,7 @@
 
 /datum/storage/backpack/backsheath
 	max_slots = 2
-	atom_storage.rustle_sound = FALSE
+	rustle_sound = FALSE
 	max_specific_storage = WEIGHT_CLASS_BULKY
 	can_hold = typecacheof(list(
 		/obj/item/storage/backpack/backsheathstorage,

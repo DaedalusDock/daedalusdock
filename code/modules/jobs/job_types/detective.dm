@@ -2,8 +2,12 @@
 	title = JOB_DETECTIVE
 	description = "Investigate crimes. Solve crimes. Cover up crimes."
 	faction = FACTION_STATION
+
+	pinpad_key = "columbo"
+
 	total_positions = 1
 	spawn_positions = 1
+
 	supervisors = "nobody"
 	minimal_player_age = 7
 	exp_requirements = 300

@@ -1,5 +1,5 @@
 /obj/effect/mapping_helpers/embedded_controller
-	layer = DOOR_HELPER_LAYER
+	layer = DOOR_HELPER_LAYER - 0.01
 
 /obj/effect/mapping_helpers/embedded_controller/Initialize(mapload)
 	. = ..()

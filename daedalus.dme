@@ -3538,6 +3538,7 @@
 #include "code\modules\mapping\access_helpers\_access_helpers.dm"
 #include "code\modules\mapping\access_helpers\helper_defines.dm"
 #include "code\modules\mapping\embedded_controller\_embedded_controller.dm"
+#include "code\modules\mapping\embedded_controller\door_control_linker.dm"
 #include "code\modules\mapping\embedded_controller\static_id_setter.dm"
 #include "code\modules\mapping\modular_map_loader\modular_map_loader.dm"
 #include "code\modules\mapping\space_management\multiz_helpers.dm"

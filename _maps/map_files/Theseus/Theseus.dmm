@@ -175,6 +175,7 @@
 	department = "Janitorial";
 	departmentType = 1
 	},
+/obj/machinery/light_switch/directional/west,
 /turf/open/floor/iron,
 /area/station/service/janitor)
 "ack" = (
@@ -13268,6 +13269,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/vehicle/ridden/janicart,
 /obj/item/key/janitor,
+/obj/machinery/light/small/directional/south,
 /turf/open/floor/iron,
 /area/station/service/janitor)
 "ePG" = (
@@ -19989,7 +19991,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/access/any/service/janitor/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/iron,
 /area/station/service/janitor)
 "hxD" = (
@@ -27342,7 +27344,7 @@
 	name = "Custodial Closet";
 	stripe_paint = "#A1149A"
 	},
-/obj/effect/mapping_helpers/access/any/service/janitor/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/iron,
 /area/station/maintenance/starboard/lesser)
 "kmQ" = (
@@ -27580,6 +27582,8 @@
 	sortType = 22
 	},
 /obj/structure/overfloor_catwalk/iron_dark,
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/north,
+/obj/effect/mapping_helpers/embedded_controller/static_id/janitor,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/lesser)
 "kpO" = (
@@ -30981,11 +30985,11 @@
 "lAm" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/janitorialcart,
-/obj/machinery/light/small/directional/south,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
 	},
 /obj/effect/turf_decal/stripes/corner,
+/obj/machinery/c4_embedded_controller/slave/directional/south,
 /turf/open/floor/iron,
 /area/station/service/janitor)
 "lAt" = (
@@ -37380,7 +37384,7 @@
 "nRZ" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/chair/stool/directional/north,
-/obj/machinery/light_switch/directional/west,
+/obj/machinery/c4_embedded_controller/slave/directional/west,
 /turf/open/floor/iron,
 /area/station/service/janitor)
 "nSV" = (
@@ -50051,6 +50055,12 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
+"sDw" = (
+/obj/effect/turf_decal/tile/neutral,
+/obj/effect/mapping_helpers/embedded_controller/static_id/janitor,
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/east,
+/turf/open/floor/iron,
+/area/station/hallway/primary/aft)
 "sDx" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 10
@@ -96363,7 +96373,7 @@ amX
 amX
 xeD
 amX
-amX
+sDw
 fCQ
 gXJ
 tUZ

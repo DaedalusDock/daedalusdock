@@ -122,7 +122,7 @@ const ItemList = (props: ItemListProps) => {
               <Button
                 content={item.cost}
                 disabled={item.disabled}
-                onClick={handleBuy}
+                onClick={() => handleBuy(item)}
               />
             }
           >

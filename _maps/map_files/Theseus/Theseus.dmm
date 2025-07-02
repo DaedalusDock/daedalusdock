@@ -1820,12 +1820,12 @@
 /obj/machinery/chem_master/condimaster{
 	name = "CondiMaster Neo"
 	},
-/obj/machinery/newscaster/directional/south,
 /obj/effect/turf_decal/trimline/brown/warning{
 	dir = 1
 	},
 /obj/effect/turf_decal/bot,
 /obj/effect/turf_decal/tile/bar/opposingcorners,
+/obj/item/radio/intercom/directional/south,
 /turf/open/floor/iron/white,
 /area/station/service/kitchen)
 "aFw" = (
@@ -3960,6 +3960,8 @@
 /obj/machinery/camera/directional/north{
 	c_tag = "Service - Port"
 	},
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/north,
+/obj/effect/mapping_helpers/embedded_controller/static_id/bartender,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/service)
 "btO" = (
@@ -5053,16 +5055,16 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/bot,
-/obj/machinery/light_switch/directional/south{
-	pixel_x = -6
-	},
 /obj/machinery/button/door/directional/south{
 	name = "Service Shutter Control";
-	pixel_x = 6;
+	pixel_x = -7;
 	id = "kitchen_service";
 	req_access_txt = "28"
 	},
 /obj/effect/turf_decal/tile/bar/opposingcorners,
+/obj/machinery/c4_embedded_controller/slave/directional/south{
+	pixel_x = 6
+	},
 /turf/open/floor/iron/white,
 /area/station/service/kitchen)
 "bNa" = (
@@ -5094,6 +5096,14 @@
 /obj/effect/spawner/random/bureaucracy/pen,
 /turf/open/floor/wood,
 /area/station/commons/vacant_room/office)
+"bNQ" = (
+/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/green{
+	dir = 8
+	},
+/obj/item/radio/intercom/directional/south,
+/turf/open/floor/iron,
+/area/station/service/hydroponics)
 "bNS" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -11691,7 +11701,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/all/service/bar/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/wood,
 /area/station/hallway/secondary/service)
 "enH" = (
@@ -15515,10 +15525,10 @@
 "fLz" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/mapping_helpers/access/all/service/hydroponics/airlock,
 /obj/machinery/door/airlock{
 	name = "Hydroponics Backroom"
 	},
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/greater)
 "fLA" = (
@@ -17511,7 +17521,7 @@
 /obj/machinery/door/airlock/maintenance{
 	name = "Hydroponics Maintenance"
 	},
-/obj/effect/mapping_helpers/access/all/service/hydroponics/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/lesser)
 "gzE" = (
@@ -19281,7 +19291,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/access/all/service/hydroponics/airlock,
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
 "hfN" = (
@@ -19466,6 +19475,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
+/obj/structure/sign/poster/official/random/directional/west,
 /turf/open/floor/iron,
 /area/station/maintenance/starboard/greater)
 "hlX" = (
@@ -19483,6 +19493,8 @@
 /obj/effect/spawner/random/structure/closet_empty/crate,
 /obj/effect/spawner/random/food_or_drink/donkpockets,
 /obj/effect/spawner/random/food_or_drink/cups,
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/north,
+/obj/effect/mapping_helpers/embedded_controller/static_id/cook,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/service)
 "hlY" = (
@@ -20852,16 +20864,16 @@
 /area/station/engineering/engine_smes)
 "hPv" = (
 /obj/machinery/door/firedoor,
-/obj/machinery/door/airlock{
-	name = "Kitchen"
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/all/service/kitchen/airlock,
+/obj/machinery/door/airlock{
+	name = "Kitchen"
+	},
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/iron/cafeteria,
 /area/station/hallway/secondary/service)
 "hPD" = (
@@ -22396,6 +22408,13 @@
 /mob/living/simple_animal/hostile/retaliate/hog/security,
 /turf/open/floor/mud,
 /area/station/security/pig)
+"itr" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/overfloor_catwalk/iron_dark,
+/obj/effect/mapping_helpers/embedded_controller/static_id/botanist,
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/north,
+/turf/open/floor/plating,
+/area/station/maintenance/starboard/lesser)
 "itw" = (
 /obj/structure/table,
 /obj/item/radio/intercom/directional/east,
@@ -23470,6 +23489,8 @@
 	},
 /obj/effect/spawner/random/structure/crate,
 /obj/machinery/light/dim/directional/north,
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/west,
+/obj/effect/mapping_helpers/embedded_controller/static_id/botanist,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/greater)
 "iOl" = (
@@ -23849,7 +23870,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/access/all/service/bar/airlock,
 /obj/machinery/door/airlock{
 	name = "Bar"
 	},
@@ -28264,10 +28284,10 @@
 /obj/item/vending_refill/cigarette,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/sign/poster/random/directional/south,
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
+/obj/machinery/light_switch/directional/south,
 /turf/open/floor/wood,
 /area/station/service/bar)
 "kDS" = (
@@ -29764,7 +29784,7 @@
 	dir = 6
 	},
 /obj/machinery/light/small/directional/north,
-/obj/structure/sign/poster/official/random/directional/east,
+/obj/machinery/c4_embedded_controller/slave/directional/east,
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
 "lgo" = (
@@ -34960,7 +34980,6 @@
 	pixel_x = 6;
 	pixel_y = 6
 	},
-/obj/item/radio/intercom/directional/south,
 /obj/effect/turf_decal/trimline/brown/warning{
 	dir = 9
 	},
@@ -37975,13 +37994,6 @@
 /obj/machinery/chem_heater,
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
-"ofy" = (
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/green{
-	dir = 8
-	},
-/turf/open/floor/iron,
-/area/station/service/hydroponics)
 "ofB" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/security{
@@ -46140,12 +46152,11 @@
 /area/station/hallway/secondary/entry)
 "rld" = (
 /obj/machinery/door/firedoor,
-/obj/machinery/door/airlock{
-	name = "Kitchen";
-	req_one_access_txt = "25;28"
-	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/landmark/navigate_destination/kitchen,
+/obj/machinery/door/airlock{
+	name = "Kitchen"
+	},
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
 "rlf" = (
@@ -55309,6 +55320,7 @@
 	},
 /obj/structure/closet/secure_closet/freezer/kitchen,
 /obj/effect/turf_decal/tile/bar/opposingcorners,
+/obj/machinery/newscaster/directional/north,
 /turf/open/floor/iron/white,
 /area/station/service/kitchen)
 "uAP" = (
@@ -59802,11 +59814,11 @@
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/aisat/exterior)
 "wjL" = (
-/obj/item/radio/intercom/directional/south,
 /obj/effect/turf_decal/tile/blue,
 /obj/effect/turf_decal/tile/green{
 	dir = 8
 	},
+/obj/machinery/c4_embedded_controller/slave/directional/south,
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
 "wka" = (
@@ -60720,10 +60732,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/holopad,
-/obj/machinery/light_switch/directional/south,
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
+/obj/machinery/c4_embedded_controller/slave/directional/south,
 /turf/open/floor/wood,
 /area/station/service/bar)
 "wAx" = (
@@ -64025,9 +64037,6 @@
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
 "xMB" = (
-/obj/structure/sign/poster/official/cleanliness{
-	pixel_x = 32
-	},
 /obj/machinery/door/window/right/directional/east{
 	name = "Hydroponics Delivery";
 	dir = 1;
@@ -99131,7 +99140,7 @@ xyN
 lJn
 wjL
 jMi
-wDl
+itr
 dEK
 ptK
 lAu
@@ -99900,7 +99909,7 @@ yjP
 iKa
 iKa
 kTA
-eDJ
+bNQ
 jMi
 xMk
 kSD
@@ -100157,7 +100166,7 @@ kpe
 xyN
 xyN
 thh
-ofy
+eDJ
 jMi
 von
 kSD

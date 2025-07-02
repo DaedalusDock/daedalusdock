@@ -1,7 +1,7 @@
 /datum/asset/simple/namespaced/cursors
 	assets = list(
-		"default.png" = 'tgui/packages/common/assets/default.png',
-		"link_select.png" = 'tgui/packages/common/assets/link_select.png',
+		"default.cur" = 'tgui/packages/common/assets/default.cur',
+		"link_select.cur" = 'tgui/packages/common/assets/link_select.cur',
 
 	)
 

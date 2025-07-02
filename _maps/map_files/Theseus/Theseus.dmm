@@ -6909,7 +6909,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/all/service/kitchen/airlock,
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen/coldroom)
 "cyY" = (

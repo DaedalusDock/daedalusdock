@@ -7,6 +7,10 @@ $color-caution: colors.bg(colors.$yellow) !default;
 
 $background-beige: #e8e4c9;
 
+.EmbeddedController_Window {
+  border: 2.2rem outset darken($background-beige, 10%);
+}
+
 .EmbeddedController__displayBox {
   background-color: #002003;
   border: 0.167em inset $background-beige;
@@ -21,6 +25,7 @@ $background-beige: #e8e4c9;
   border-width: 0.65rem !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
+  width: 20ch;
 }
 
 .EmbeddedController__Button--keypad {

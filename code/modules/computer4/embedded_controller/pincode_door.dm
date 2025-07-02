@@ -1,6 +1,4 @@
 /obj/machinery/c4_embedded_controller/airlock_pinpad
-	name = "pinpad"
-
 	default_operating_system = /datum/c4_file/terminal_program/operating_system/rtos/pincode_door
 
 	radio_frequency = FREQ_AIRLOCK_CONTROL

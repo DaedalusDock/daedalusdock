@@ -1,6 +1,5 @@
 /obj/machinery/c4_embedded_controller/airlock_access
 	abstract_type = /obj/machinery/c4_embedded_controller/airlock_access
-	name = "card reader"
 
 	default_operating_system = /datum/c4_file/terminal_program/operating_system/rtos/access_door
 

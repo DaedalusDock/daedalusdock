@@ -1,6 +1,8 @@
 DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 /obj/machinery/c4_embedded_controller
-	name = "control panel"
+	name = "pinpad"
+	desc = "A small device with a numerical key pad on the front."
+
 	icon = 'icons/obj/airlock_machines.dmi'
 	icon_state = "embedded_base"
 

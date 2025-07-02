@@ -1,4 +1,6 @@
 /obj/machinery/c4_embedded_controller/slave
+	name = /obj/machinery/c4_embedded_controller/airlock_pinpad::name
+	desc = /obj/machinery/c4_embedded_controller/airlock_pinpad::desc
 
 	radio_frequency = FREQ_AIRLOCK_CONTROL
 	default_operating_system = /datum/c4_file/terminal_program/operating_system/rtos/slave

@@ -32787,6 +32787,7 @@
 	pixel_y = -2
 	},
 /obj/item/clothing/glasses/sunglasses,
+/obj/machinery/power/apc/auto_name/directional/north,
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "mkY" = (
@@ -38716,6 +38717,7 @@
 	dir = 4
 	},
 /obj/machinery/disposal/bin,
+/obj/machinery/c4_embedded_controller/slave/directional/south,
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "osK" = (
@@ -47806,6 +47808,8 @@
 /area/station/hallway/primary/port)
 "rOM" = (
 /obj/structure/overfloor_catwalk/iron_dark,
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/south,
+/obj/effect/mapping_helpers/embedded_controller/static_id/lawyer,
 /turf/open/floor/plating,
 /area/station/maintenance/fore)
 "rOY" = (
@@ -51489,7 +51493,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/all/service/lawyer/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/plating,
 /area/station/maintenance/fore)
 "tdz" = (
@@ -60466,7 +60470,6 @@
 /turf/open/floor/plating,
 /area/station/maintenance/port)
 "wvM" = (
-/obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/disposalpipe/segment{
 	dir = 6
 	},
@@ -60476,6 +60479,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "2"
 	},
+/obj/machinery/c4_embedded_controller/slave/directional/north,
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "wvR" = (
@@ -62071,10 +62075,10 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/all/service/lawyer/airlock,
 /obj/machinery/door/airlock{
 	name = "Law Office"
 	},
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "wYQ" = (
@@ -63186,6 +63190,12 @@
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
 /turf/open/floor/iron/white,
 /area/station/hallway/secondary/entry)
+"xtH" = (
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/north,
+/obj/effect/mapping_helpers/embedded_controller/static_id/lawyer,
+/turf/open/floor/iron,
+/area/station/commons/locker)
 "xtP" = (
 /obj/structure/rack/shelf,
 /obj/item/taperecorder/empty,
@@ -96304,8 +96314,8 @@ tJj
 aGw
 foq
 osJ
-xsV
-kLm
+psj
+xtH
 ibd
 rkg
 tRf

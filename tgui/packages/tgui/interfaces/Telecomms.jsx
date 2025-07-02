@@ -1,4 +1,3 @@
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -9,7 +8,9 @@ import {
   NumberInput,
   Section,
   Table,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { RADIO_CHANNELS } from '../constants';
 import { Window } from '../layouts';
 
@@ -57,7 +58,7 @@ export const Telecomms = (props) => {
                 <Input
                   width={13}
                   value={id}
-                  onChange={(e, value) => act('id', { value })}
+                  onBlur={(value) => act('id', { value })}
                 />
               }
             />
@@ -68,7 +69,7 @@ export const Telecomms = (props) => {
                   width={10}
                   value={network}
                   defaultValue={'tcommsat'}
-                  onChange={(e, value) => act('network', { value })}
+                  onBlur={(value) => act('network', { value })}
                 />
               }
             />
@@ -122,7 +123,7 @@ export const Telecomms = (props) => {
                       minValue={minfreq / 10}
                       maxValue={maxfreq / 10}
                       value={changefrequency / 10}
-                      onChange={(e, value) => act('change_freq', { value })}
+                      onBlur={(value) => act('change_freq', { value })}
                     />
                     <Button
                       icon={'times'}
@@ -240,7 +241,7 @@ export const Telecomms = (props) => {
                         minValue={minfreq / 10}
                         maxValue={maxfreq / 10}
                         value={frequency / 10}
-                        onChange={(e, value) => act('tempfreq', { value })}
+                        onBlur={(value) => act('tempfreq', { value })}
                       />
                     </Table.Cell>
                     <Button

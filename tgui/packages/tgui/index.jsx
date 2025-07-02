@@ -5,32 +5,21 @@
  */
 
 // Themes
+
 import './styles/main.scss';
-import './styles/themes/rounded_base.scss';
-import './styles/themes/abductor.scss';
 import './styles/themes/book.scss';
-import './styles/themes/cardtable.scss';
-import './styles/themes/crt/crt-blue.scss';
-import './styles/themes/crt/crt-green.scss';
-import './styles/themes/crt/crt-yellow.scss';
-import './styles/themes/spookyconsole.scss';
+//import './styles/themes/crt/crt-blue.scss';
+//import './styles/themes/crt/crt-green.scss';
+//import './styles/themes/crt/crt-yellow.scss';
 import './styles/themes/flock.scss';
-import './styles/themes/hackerman.scss';
-import './styles/themes/malfunction.scss';
-import './styles/themes/neutral.scss';
-import './styles/themes/ntos.scss';
-import './styles/themes/paper.scss';
-import './styles/themes/retro.scss';
-import './styles/themes/syndicate.scss';
-import './styles/themes/wizard.scss';
-import './styles/themes/admin.scss';
+import './styles/themes/rounded_base.scss';
 
 import { perf } from 'common/perf';
+import { setupGlobalEvents } from 'tgui-core/events';
+import { setupHotKeys } from 'tgui-core/hotkeys';
 import { setupHotReloading } from 'tgui-dev-server/link/client.cjs';
 
 import { setGlobalStore } from './backend';
-import { setupGlobalEvents } from './events';
-import { setupHotKeys } from './hotkeys';
 import { captureExternalLinks } from './links';
 import { createRenderer } from './renderer';
 import { configureStore } from './store';
@@ -68,12 +57,9 @@ const setupApp = () => {
   // Enable hot module reloading
   if (module.hot) {
     setupHotReloading();
-    module.hot.accept(
-      ['./components', './debug', './layouts', './routes'],
-      () => {
-        renderApp();
-      },
-    );
+    module.hot.accept(['./debug', './layouts', './routes'], () => {
+      renderApp();
+    });
   }
 };
 

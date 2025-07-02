@@ -1,7 +1,4 @@
 import { sortBy } from 'common/collections';
-import { flow } from 'common/fp';
-
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -10,7 +7,10 @@ import {
   LabeledControls,
   LabeledList,
   Section,
-} from '../components';
+} from 'tgui-core/components';
+import { flow } from 'tgui-core/fp';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 export const Jukebox = (props) => {
@@ -34,11 +34,10 @@ export const Jukebox = (props) => {
           <LabeledList>
             <LabeledList.Item label="Track Selected">
               <Dropdown
-                overflowY="scroll"
                 width="240px"
                 options={songs.map((song) => song.name)}
                 disabled={active}
-                selected={track_selected || 'Select a Track'}
+                selected={track_selected}
                 onSelected={(value) =>
                   act('select_track', {
                     track: value,

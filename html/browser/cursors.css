@@ -1,10 +1,8 @@
-html
-{
+html {
 	cursor: url("default.cur"), auto;
 }
 
-a:hover
-{
+a:hover {
 	cursor: url("link_select.cur"), auto;
 }
 
@@ -22,7 +20,7 @@ a:hover,
 }
 
 .link,
-.link:hover{
+.link:hover {
 	cursor: url("link_select.cur"), pointer;
 }
 
@@ -31,19 +29,24 @@ a:hover,
 	cursor: url("default.cur"), auto;
 }
 
-.cursorPointer{
+.cursorPointer {
 	cursor: url("link_select.cur"), pointer;
 }
 
-.slider{
+.slider {
 	cursor: url("link_select.cur"), pointer;
 }
 
-a.white, a.white:link, a.white:visited, a.white:active {
+a.white,
+a.white:link,
+a.white:visited,
+a.white:active {
 	cursor: url("default.cur"), auto;
 }
 
-a.genericLink, a.genericLink:visited, a.genericLink:active{
+a.genericLink,
+a.genericLink:visited,
+a.genericLink:active {
 	cursor: url("default.cur"), auto;
 }
 

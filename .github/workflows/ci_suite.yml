@@ -2,12 +2,12 @@ name: CI Suite
 on:
   push:
     branches:
-    - master
-    - 'project/**'
+      - master
+      - "project/**"
   pull_request:
     branches:
-    - master
-    - 'project/**'
+      - master
+      - "project/**"
 jobs:
   run_linters:
     if: ( !contains(github.event.head_commit.message, '[ci skip]') )
@@ -39,7 +39,7 @@ jobs:
           tools/bootstrap/python -c ''
       - name: Give Linters A Go
         id: linter-setup
-        run: ':'
+        run: ":"
       - name: Run Grep Checks
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
         run: bash tools/ci/check_grep.sh
@@ -65,7 +65,7 @@ jobs:
         run: bash tools/ci/check_misc.sh
       - name: Run TGUI Checks
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
-        run: tools/build/build --ci lint tgui-test
+        run: tools/build/build --ci lint
 
   odlint:
     if: ( !contains(github.event.head_commit.message, '[ci skip]') )

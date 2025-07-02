@@ -1,4 +1,3 @@
-import { useBackend, useSharedState } from '../backend';
 import {
   AnimatedNumber,
   Box,
@@ -8,7 +7,9 @@ import {
   NumberInput,
   Section,
   Table,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend, useSharedState } from '../backend';
 import { Window } from '../layouts';
 
 export const ChemMaster = (props) => {
@@ -278,7 +279,7 @@ const PackagingControls = (props) => {
           amount={pillAmount}
           amountUnit="pills"
           sideNote="max 50u"
-          onChangeAmount={(value) => setPillAmount(value)}
+          onChangeAmount={setPillAmount}
           onCreate={() =>
             act('create', {
               type: 'pill',
@@ -311,7 +312,7 @@ const PackagingControls = (props) => {
           amount={patchAmount}
           amountUnit="patches"
           sideNote="max 40u"
-          onChangeAmount={(value) => setPatchAmount(value)}
+          onChangeAmount={setPatchAmount}
           onCreate={() =>
             act('create', {
               type: 'patch',
@@ -327,7 +328,7 @@ const PackagingControls = (props) => {
           amount={bottleAmount}
           amountUnit="bottles"
           sideNote="max 30u"
-          onChangeAmount={(value) => setBottleAmount(value)}
+          onChangeAmount={setBottleAmount}
           onCreate={() =>
             act('create', {
               type: 'bottle',
@@ -358,7 +359,7 @@ const PackagingControls = (props) => {
           amount={vialAmount}
           amountUnit="vials"
           sideNote="max 60u"
-          onChangeAmount={(value) => setVialAmount(value)}
+          onChangeAmount={setVialAmount}
           onCreate={() =>
             act('create', {
               type: 'vial',
@@ -391,7 +392,7 @@ const PackagingControls = (props) => {
           amount={bottleAmount}
           amountUnit="bottles"
           sideNote="max 50u"
-          onChangeAmount={(value) => setBottleAmount(value)}
+          onChangeAmount={setBottleAmount}
           onCreate={() =>
             act('create', {
               type: 'condimentBottle',
@@ -407,7 +408,7 @@ const PackagingControls = (props) => {
           amount={packAmount}
           amountUnit="packs"
           sideNote="max 10u"
-          onChangeAmount={(value) => setPackAmount(value)}
+          onChangeAmount={setPackAmount}
           onCreate={() =>
             act('create', {
               type: 'condimentPack',

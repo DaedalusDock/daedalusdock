@@ -1,8 +1,4 @@
 import { map, sortBy } from 'common/collections';
-import { flow } from 'common/fp';
-import { classes } from 'common/react';
-
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -16,7 +12,11 @@ import {
   Section,
   Stack,
   Table,
-} from '../components';
+} from 'tgui-core/components';
+import { flow } from 'tgui-core/fp';
+import { classes } from 'tgui-core/react';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 import { sanitizeText } from '../sanitize';
 
@@ -280,18 +280,10 @@ const CheckoutModal = (props) => {
       </Box>
       <LabeledList>
         <LabeledList.Item label="Book Name">
-          <Input
-            width="250px"
-            value={bookName}
-            onChange={(e, value) => setBookName(value)}
-          />
+          <Input width="250px" value={bookName} onBlur={setBookName} />
         </LabeledList.Item>
         <LabeledList.Item label="Loan To">
-          <Input
-            width="160px"
-            value={checkoutee}
-            onChange={(e, value) => setCheckoutee(value)}
-          />
+          <Input width="160px" value={checkoutee} onBlur={setCheckoutee} />
         </LabeledList.Item>
         <LabeledList.Item label="Loan Period">
           <NumberInput
@@ -299,7 +291,7 @@ const CheckoutModal = (props) => {
             unit=" Minutes"
             minValue={1}
             stepPixelSize={10}
-            onChange={(value) => setCheckoutPeriod(value)}
+            onChange={setCheckoutPeriod}
           />
         </LabeledList.Item>
       </LabeledList>
@@ -412,7 +404,7 @@ export const SearchAndDisplay = (props) => {
                 value={title}
                 placeholder={title || 'Title'}
                 mt={0.5}
-                onChange={(e, value) =>
+                onBlur={(value) =>
                   act('set_search_title', {
                     title: value,
                   })
@@ -424,7 +416,7 @@ export const SearchAndDisplay = (props) => {
                 value={author}
                 placeholder={author || 'Author'}
                 mt={0.5}
-                onChange={(e, value) =>
+                onBlur={(value) =>
                   act('set_search_author', {
                     author: value,
                   })
@@ -533,7 +525,7 @@ export const Upload = (props) => {
                     placeholder={cache_title || 'Title'}
                     mt={0.5}
                     width={22}
-                    onChange={(e, value) =>
+                    onBlur={(value) =>
                       act('set_cache_title', {
                         title: value,
                       })
@@ -551,7 +543,7 @@ export const Upload = (props) => {
                     value={cache_author}
                     placeholder={cache_author || 'Author'}
                     mt={0.5}
-                    onChange={(e, value) =>
+                    onBlur={(value) =>
                       act('set_cache_author', {
                         author: value,
                       })
@@ -624,7 +616,7 @@ const UploadModal = (props) => {
           <Dropdown
             options={upload_categories}
             selected={display_category}
-            onSelected={(value) => setUploadCategory(value)}
+            onSelected={setUploadCategory}
           />
         </LabeledList.Item>
       </LabeledList>
@@ -880,7 +872,7 @@ export const PageSelect = (props) => {
       <Stack.Item>
         <Input
           placeholder={current_page + '/' + page_count}
-          onChange={(e, value) => {
+          onBlur={(value) => {
             // I am so sorry
             if (value !== '') {
               call_on_change(value);

@@ -1,7 +1,5 @@
-import { BooleanLike, classes } from 'common/react';
 import { Component } from 'react';
-import { Tooltip } from 'tgui-core/components';
-
+import React from 'react';
 import {
   Box,
   Button,
@@ -11,7 +9,10 @@ import {
   NoticeBox,
   Section,
   Stack,
-} from '../../components';
+  Tooltip,
+} from 'tgui-core/components';
+import { BooleanLike, classes } from 'tgui-core/react';
+
 import {
   calculateProgression,
   getReputation,
@@ -347,8 +348,8 @@ type ObjectiveElementProps = {
   description: string;
   finalObjective: BooleanLike;
   grow: boolean;
-  handleAbort: (event: MouseEvent) => void;
-  handleCompletion: (event: MouseEvent) => void;
+  handleAbort: (event: React.MouseEvent) => void;
+  handleCompletion: (event: React.MouseEvent) => void;
   name: string;
   objectiveState: ObjectiveState;
   originalProgression: number;
@@ -357,7 +358,7 @@ type ObjectiveElementProps = {
   telecrystalPenalty: number;
 
   telecrystalReward: number;
-  uiButtons?: JSX.Element;
+  uiButtons?: React.JSX.Element;
 };
 
 const ObjectiveElement = (props: ObjectiveElementProps) => {
@@ -439,7 +440,7 @@ const ObjectiveElement = (props: ObjectiveElementProps) => {
             </Box>
           )}
           {finalObjective && objectiveState === ObjectiveState.Inactive && (
-            <NoticeBox warning mt={1}>
+            <NoticeBox mt={1}>
               Taking this objective will lock you out of getting anymore
               objectives! Furthermore, you will be unable to abort this
               objective.

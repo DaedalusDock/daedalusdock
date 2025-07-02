@@ -7,72 +7,36 @@
 @use 'sass:meta';
 @use '../functions.scss' as *;
 
-$color-pencil: #454442;
-$text-color: OLD_lighten($color-pencil, 15%);
-
-$color-paper: rgba(248, 240, 227, 255);
-
-$font-family: (Times, Verdana);
-
-@use '../colors.scss' with (
-  $primary: #000000,
-  $fg-map-keys: (),
-  $bg-map-keys: ()
-);
-
-@use '../base.scss' with (
-  $color-fg: $text-color,
-  $color-bg: #5c4300,
-  $color-bg-grad-spread: 0%,
-  $border-radius: 0,
-  $font-family: $font-family,
-  $font-size: 16px
-);
-
 .theme-book {
-  // Atomic classes
-  @include meta.load-css('../atomic/color.scss');
-
+  --book-paper: hsl(37, 60%, 93%);
+  --book-pencil: hsl(40, 2%, 26%);
+  // Base
+  --font-size: 16px;
+  --font-family: Times, Verdana;
+  --color-base: hsl(44, 100%, 18%);
+  --color-secondary: hsl(51, 23%, 28%);
+  --color-section: var(--book-paper);
+  --color-primary: hsl(0, 0%, 0%);
+  --color-text: hsl(from var(--book-pencil) h s calc(l + var(--adjust-color)));
+  --border-radius-unit: 0px;
+  --base-gradient-spread: 0;
   // Components
-  @include meta.load-css(
-    '../components/Button.scss',
-    $with: (
-      'color-default': #e8e4c9,
-      'color-disabled': #363636,
-      'color-selected': #9d0808,
-      'color-caution': #be6209,
-      'color-danger': #9a9d00
-    )
-  );
-  @include meta.load-css(
-    '../components/ProgressBar.scss',
-    $with: ('background-color': rgba(0, 0, 0, 0.5))
-  );
-  @include meta.load-css(
-    '../components/Section.scss',
-    $with: (
-      'background-color': $color-paper,
-      'separator-color': $color-pencil,
-      'title-text-color': $text-color,
-      'title-font-size': base.em(16px),
-      'title-font-size-level2': base.em(16px),
-      'title-font-size-level3': base.em(16px)
-    )
-  );
+  --button-color: hsl(60, 7%, 8%);
+  --button-background-default: hsl(52, 40%, 85%);
+  --button-background-selected: hsl(0, 90%, 32%);
+  --button-background-caution: hsl(30, 91%, 39%);
+  --button-background-danger: hsl(61, 100%, 31%);
+  --section-separator-color: var(--book-pencil);
+  --progress-bar-background: hsla(0, 0%, 0%, 0.5);
 
   // Layouts
-  @include meta.load-css('../layouts/Layout.scss');
-  @include meta.load-css('../layouts/Window.scss');
-  @include meta.load-css(
-    '../layouts/TitleBar.scss',
-    $with: ('background-color': #585337)
-  );
-
   .Button {
-    color: #161613;
-    border: 2px outset #e8e4c9;
-    outline: 1px solid #161613;
-    font-size: base.em(16px);
+    border: 2px outset hsl(52, 40%, 85%);
+    outline: 1px solid hsl(60, 7%, 8%);
+
+    &--disabled {
+      background-color: hsl(0, 0%, 21%) !important;
+    }
   }
 
   .Layout__content {
@@ -81,17 +45,5 @@ $font-family: (Times, Verdana);
 
   .TextArea {
     background-color: transparent;
-  }
-
-  .Section {
-    background-color: '#d6d2b4';
-  }
-
-  span {
-    font-family: $font-family;
-  }
-
-  div {
-    font-family: $font-family;
   }
 }

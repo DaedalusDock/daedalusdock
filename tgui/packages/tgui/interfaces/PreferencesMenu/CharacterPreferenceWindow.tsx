@@ -1,7 +1,7 @@
-import { exhaustiveCheck } from 'common/exhaustive';
+import { Dropdown, Flex, Stack } from 'tgui-core/components';
+import { exhaustiveCheck } from 'tgui-core/exhaustive';
 
 import { useBackend, useLocalState } from '../../backend';
-import { Dropdown, Flex, Stack } from '../../components';
 import { Window } from '../../layouts';
 import { AntagsPage } from './AntagsPage';
 import { PreferencesMenuData } from './data';
@@ -30,7 +30,8 @@ const CharacterProfiles = (props: {
     <Flex justify="center">
       <Flex.Item width="25%">
         <Dropdown
-          width="100%"
+          selected={activeSlot.toString()}
+          fluid
           displayText={profiles[activeSlot]}
           options={profiles.map((profile, slot) => ({
             value: slot,

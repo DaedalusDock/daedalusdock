@@ -1,7 +1,3 @@
-import { Tooltip } from 'tgui-core/components';
-
-import { BooleanLike } from '../../common/react';
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -13,7 +9,11 @@ import {
   Section,
   Stack,
   Tabs,
-} from '../components';
+  Tooltip,
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 type PandemicContext = {
@@ -366,7 +366,7 @@ const VirusTextInfo = (props: VirusInfoProps) => {
           <Input
             placeholder="Input a name"
             value={virus.name === 'Unknown' ? '' : virus.name}
-            onChange={(_, value) =>
+            onBlur={(value) =>
               act('rename_disease', {
                 index: virus.index,
                 name: value,

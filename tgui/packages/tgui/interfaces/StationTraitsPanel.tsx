@@ -1,9 +1,16 @@
 import { filterMap } from 'common/collections';
-import { exhaustiveCheck } from 'common/exhaustive';
-import { BooleanLike } from 'common/react';
+import {
+  Box,
+  Button,
+  Divider,
+  Dropdown,
+  Stack,
+  Tabs,
+} from 'tgui-core/components';
+import { exhaustiveCheck } from 'tgui-core/exhaustive';
+import { BooleanLike } from 'tgui-core/react';
 
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Divider, Dropdown, Stack, Tabs } from '../components';
 import { Window } from '../layouts';
 
 type CurrentStationTrait = {
@@ -56,7 +63,7 @@ const FutureStationTraitsPage = (props) => {
             onSelected={setSelectedTrait}
             options={traitNames}
             selected={selectedTrait}
-            width="100%"
+            fluid
           />
         </Stack.Item>
 

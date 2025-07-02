@@ -1,5 +1,6 @@
+import { Stack } from 'tgui-core/components';
+
 import { useBackend, useLocalState } from '../backend';
-import { Stack } from '../components';
 import { Window } from '../layouts';
 import { ChemFilterPane } from './ChemFilter';
 
@@ -16,7 +17,7 @@ export const BloodFilter = (props) => {
               title="Whitelist"
               list={whitelist}
               reagentName={chemName}
-              onReagentInput={(value) => setChemName(value)}
+              onReagentInput={setChemName}
             />
           </Stack.Item>
         </Stack>

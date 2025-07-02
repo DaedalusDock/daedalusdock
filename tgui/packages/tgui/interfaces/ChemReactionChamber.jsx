@@ -1,6 +1,3 @@
-import { round, toFixed } from 'common/math';
-
-import { useBackend, useLocalState } from '../backend';
 import {
   AnimatedNumber,
   Box,
@@ -11,7 +8,10 @@ import {
   RoundGauge,
   Section,
   Stack,
-} from '../components';
+} from 'tgui-core/components';
+import { round, toFixed } from 'tgui-core/math';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 export const ChemReactionChamber = (props) => {
@@ -189,7 +189,7 @@ export const ChemReactionChamber = (props) => {
                         fluid
                         value=""
                         placeholder="Reagent Name"
-                        onInput={(e, value) => setReagentName(value)}
+                        onChange={setReagentName}
                       />
                     </Stack.Item>
                     <Stack.Item>
@@ -200,7 +200,7 @@ export const ChemReactionChamber = (props) => {
                         step={1}
                         stepPixelSize={3}
                         width="39px"
-                        onDrag={(value) => setReagentQuantity(value)}
+                        onDrag={setReagentQuantity}
                       />
                       <Box inline mr={1} />
                     </Stack.Item>

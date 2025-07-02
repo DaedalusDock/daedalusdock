@@ -1,4 +1,3 @@
-import { useBackend, useSharedState } from '../backend';
 import {
   Box,
   Button,
@@ -8,7 +7,9 @@ import {
   Section,
   Stack,
   Tabs,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend, useSharedState } from '../backend';
 import { NtosWindow } from '../layouts';
 
 const getMuleByRef = (mules, ref) => {
@@ -78,7 +79,7 @@ export const NtosRoboControl = (props) => {
               />
               <Dropdown
                 tooltip="Drone pings"
-                width="100%"
+                fluid
                 displayText={'Drone pings'}
                 options={dronepingtypes}
                 onSelected={(value) => act('ping_drones', { ping_type: value })}

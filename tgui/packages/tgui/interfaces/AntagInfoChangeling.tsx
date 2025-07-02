@@ -1,5 +1,13 @@
+import {
+  Box,
+  Button,
+  Dimmer,
+  Dropdown,
+  Section,
+  Stack,
+} from 'tgui-core/components';
+
 import { useBackend, useSharedState } from '../backend';
-import { Box, Button, Dimmer, Dropdown, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 const hivestyle = {
@@ -176,7 +184,7 @@ const MemoriesSection = (props) => {
         <Stack vertical>
           <Stack.Item>
             <Dropdown
-              width="100%"
+              fluid
               selected={selectedMemory?.name}
               options={memories.map((memory) => {
                 return memory.name;

@@ -1,6 +1,4 @@
-import { shallowDiffers } from 'common/react';
 import { Component } from 'react';
-
 import {
   Box,
   Button,
@@ -9,7 +7,8 @@ import {
   Input,
   Section,
   Stack,
-} from '../../components';
+} from 'tgui-core/components';
+import { shallowDiffers } from 'tgui-core/react';
 
 export class VariableMenu extends Component {
   constructor(props) {
@@ -141,11 +140,12 @@ export class VariableMenu extends Component {
                   <Stack fill>
                     <Stack.Item grow>
                       <Dropdown
+                        selected={variable_type}
                         options={types}
                         displayText={variable_type}
                         className="IntegratedCircuit__BlueBorder"
                         color="black"
-                        width="100%"
+                        fluid
                         over
                         onSelected={(selectedVal) =>
                           this.setState({

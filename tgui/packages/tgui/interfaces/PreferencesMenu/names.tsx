@@ -1,6 +1,4 @@
 import { binaryInsertWith, sortBy } from 'common/collections';
-
-import { useLocalState } from '../../backend';
 import {
   Box,
   Button,
@@ -12,7 +10,9 @@ import {
   Section,
   Stack,
   TrackOutsideClicks,
-} from '../../components';
+} from 'tgui-core/components';
+
+import { useLocalState } from '../../backend';
 import { Name } from './data';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 
@@ -78,7 +78,7 @@ export const MultiNameInput = (props: {
                           let content;
 
                           if (currentlyEditingName === key) {
-                            const updateName = (event, value) => {
+                            const updateName = (value) => {
                               props.handleUpdateName(key, value);
 
                               setCurrentlyEditingName(null);
@@ -88,7 +88,7 @@ export const MultiNameInput = (props: {
                               <Input
                                 autoSelect
                                 onEnter={updateName}
-                                onChange={updateName}
+                                onBlur={updateName}
                                 onEscape={() => {
                                   setCurrentlyEditingName(null);
                                 }}
@@ -163,7 +163,7 @@ export const NameInput = (props: {
   >('lastNameBeforeEdit', null);
   const editing = lastNameBeforeEdit === props.name;
 
-  const updateName = (e, value) => {
+  const updateName = (value) => {
     setLastNameBeforeEdit(null);
     props.handleUpdateName(value);
   };
@@ -194,7 +194,7 @@ export const NameInput = (props: {
             <Input
               autoSelect
               onEnter={updateName}
-              onChange={updateName}
+              onBlur={updateName}
               onEscape={() => {
                 setLastNameBeforeEdit(null);
               }}

@@ -1,5 +1,12 @@
+import {
+  Button,
+  NumberInput,
+  Section,
+  Stack,
+  Table,
+} from 'tgui-core/components';
+
 import { useBackend, useLocalState } from '../backend';
-import { Button, NumberInput, Section, Stack, Table } from '../components';
 import { Window } from '../layouts';
 import { ReagentLookup } from './common/ReagentLookup';
 import { RecipeLookup } from './common/RecipeLookup';
@@ -180,7 +187,7 @@ const RecipeLibrary = (props) => {
             value={page}
             minValue={1}
             maxValue={pageIndexMax}
-            onDrag={(value) => setPage(value)}
+            onDrag={setPage}
           />
           <Button
             icon="plus"

@@ -24558,7 +24558,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/all/medical/general/airlock,
 /turf/open/floor/wood,
 /area/station/medical/psychology)
 "jjM" = (
@@ -61361,7 +61360,6 @@
 	name = "Medical Storage";
 	stripe_paint = "#52B4E9"
 	},
-/obj/effect/mapping_helpers/access/all/medical/pharmacy/airlock,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/lobby)
 "wLr" = (

@@ -14165,13 +14165,13 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
 	},
-/obj/machinery/power/apc/auto_name/directional/south,
 /obj/structure/cable/yellow{
 	icon_state = "1"
 	},
 /obj/structure/cable/yellow{
 	icon_state = "5"
 	},
+/obj/machinery/c4_embedded_controller/slave/directional/south,
 /turf/open/floor/iron/grimy,
 /area/station/service/chapel/office)
 "fgs" = (
@@ -21352,6 +21352,19 @@
 /obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /turf/open/floor/plating,
 /area/station/commons/fitness/recreation)
+"hYX" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/obj/structure/overfloor_catwalk/iron_dark,
+/obj/effect/mapping_helpers/embedded_controller/static_id/chaplain,
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/south,
+/turf/open/floor/plating,
+/area/station/maintenance/aft/greater)
 "hYY" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/disposalpipe/segment,
@@ -24808,6 +24821,7 @@
 /obj/effect/decal/cleanable/cobweb,
 /obj/structure/table/wood,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/newscaster/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel)
 "joc" = (
@@ -27900,6 +27914,7 @@
 /obj/structure/disposalpipe/trunk{
 	dir = 1
 	},
+/obj/machinery/power/apc/auto_name/directional/south,
 /turf/open/floor/iron/grimy,
 /area/station/service/chapel/office)
 "kvC" = (
@@ -30583,6 +30598,19 @@
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/greater)
+"lsV" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/obj/structure/overfloor_catwalk/iron_dark,
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/south,
+/obj/effect/mapping_helpers/embedded_controller/static_id/chaplain,
+/turf/open/floor/plating,
+/area/station/maintenance/aft/greater)
 "ltm" = (
 /turf/open/floor/carpet,
 /area/station/hallway/secondary/exit)
@@ -31972,6 +32000,8 @@
 /obj/structure/railing{
 	dir = 9
 	},
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/south,
+/obj/effect/mapping_helpers/embedded_controller/static_id/chaplain,
 /turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "lVn" = (
@@ -32704,7 +32734,7 @@
 /obj/machinery/door/airlock/maintenance{
 	name = "Crematorium Maintenance"
 	},
-/obj/effect/mapping_helpers/access/any/service/chapel_office/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/plating,
 /area/station/service/chapel/office)
 "mjt" = (
@@ -34387,7 +34417,7 @@
 	pixel_y = 2
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
-/obj/machinery/newscaster/directional/north,
+/obj/machinery/c4_embedded_controller/slave/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel)
 "mNo" = (
@@ -40948,9 +40978,9 @@
 /turf/open/floor/iron,
 /area/station/medical/surgery/port)
 "pkk" = (
-/obj/item/radio/intercom/directional/north,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/item/radio/intercom/directional/south,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/funeral)
 "pko" = (
@@ -45514,6 +45544,7 @@
 /area/station/maintenance/starboard/lesser)
 "qXx" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/airalarm/directional/east,
 /turf/open/floor/iron/grimy,
 /area/station/service/chapel/office)
 "qXK" = (
@@ -47301,7 +47332,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/all/service/chapel_office/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/plating,
 /area/station/service/chapel/office)
 "rFF" = (
@@ -52055,7 +52086,7 @@
 /area/station/engineering/atmos/storage/gas)
 "tow" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
-/obj/machinery/airalarm/directional/north,
+/obj/machinery/c4_embedded_controller/slave/directional/north,
 /turf/open/floor/iron/grimy,
 /area/station/service/chapel/office)
 "toM" = (
@@ -53051,6 +53082,8 @@
 /obj/structure/cable/yellow{
 	icon_state = "5"
 	},
+/obj/effect/mapping_helpers/embedded_controller/static_id/chaplain,
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/funeral)
 "tKc" = (
@@ -53758,7 +53791,6 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/mapping_helpers/access/any/service/chapel_office/airlock,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/office)
 "tWV" = (
@@ -54448,7 +54480,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/all/service/chapel_office/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/plating,
 /area/station/service/chapel)
 "ujF" = (
@@ -57987,6 +58019,7 @@
 /obj/structure/bodycontainer/morgue{
 	dir = 2
 	},
+/obj/machinery/c4_embedded_controller/slave/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/office)
 "vzC" = (
@@ -61545,7 +61578,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/all/service/chapel_office/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/funeral)
 "wPF" = (
@@ -85609,7 +85642,7 @@ moM
 gkj
 gkj
 bQw
-lZL
+lsV
 jpJ
 vzo
 fpF
@@ -88694,7 +88727,7 @@ xPs
 xPs
 xPs
 xPs
-lZL
+hYX
 dmB
 mNm
 twa

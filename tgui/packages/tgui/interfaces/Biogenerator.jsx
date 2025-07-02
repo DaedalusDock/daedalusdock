@@ -71,12 +71,7 @@ export const BiogeneratorContent = (props) => {
       buttons={
         <>
           Search
-          <Input
-            autoFocus
-            value={searchText}
-            onChange={(value) => setSearchText(value)}
-            mx={1}
-          />
+          <Input autoFocus value={searchText} onChange={setSearchText} mx={1} />
           <Button icon="eject" content="Eject" onClick={() => act('eject')} />
           <Button
             icon="cog"

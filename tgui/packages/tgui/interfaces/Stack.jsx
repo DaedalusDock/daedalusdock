@@ -47,7 +47,7 @@ export const Stack = (props) => {
               <Input
                 autoFocus
                 value={searchText}
-                onChange={(value) => setSearchText(value)}
+                onChange={setSearchText}
                 mx={1}
               />
             </>

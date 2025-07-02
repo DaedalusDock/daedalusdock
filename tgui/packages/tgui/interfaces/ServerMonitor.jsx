@@ -93,7 +93,7 @@ const MainScreen = (props) => {
         <Section>
           <Input
             value={networkId}
-            onChange={(value) => setNetworkId(value)}
+            onChange={setNetworkId}
             placeholder="Network ID"
           />
           <Button

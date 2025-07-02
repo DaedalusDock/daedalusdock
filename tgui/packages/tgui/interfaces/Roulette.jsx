@@ -263,7 +263,7 @@ export const RouletteBetTable = (props) => {
                   step={10}
                   stepPixelSize={4}
                   width="40px"
-                  onBlur={(value) => setCustomBet(value)}
+                  onBlur={setCustomBet}
                 />
               </Grid.Column>
             </Grid>

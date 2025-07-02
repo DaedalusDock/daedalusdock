@@ -139,7 +139,7 @@ const MaterialRow = (props) => {
           minValue={1}
           maxValue={50}
           value={amount}
-          onBlur={(value) => setAmount(value)}
+          onBlur={setAmount}
         />
         <Button
           disabled={amountAvailable < 1}

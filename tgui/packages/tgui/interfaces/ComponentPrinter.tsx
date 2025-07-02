@@ -136,7 +136,7 @@ export const ComponentPrinter = (props) => {
                         autoFocus
                         fluid
                         value={searchText}
-                        onChange={(value) => setSearchText(value)}
+                        onChange={setSearchText}
                       />
                     </Stack.Item>
 

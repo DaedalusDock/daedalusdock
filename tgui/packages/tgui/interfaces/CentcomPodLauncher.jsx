@@ -909,13 +909,13 @@ class PresetsPage extends Component {
               value={hue}
               minValue={0}
               maxValue={360}
-              onChange={(value) => setHue(value)}
+              onChange={setHue}
             />
             <Input
               inline
               autofocus
               placeholder="Preset Name"
-              onBlur={(value) => setText(value)}
+              onBlur={setText}
             />
             <Divider horizontal />
           </>

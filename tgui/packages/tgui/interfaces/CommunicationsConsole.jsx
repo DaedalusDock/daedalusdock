@@ -284,7 +284,7 @@ const PageChangingStatus = (props) => {
               maxLength={maxStatusLineLength}
               value={lineOne}
               width="200px"
-              onBlur={(value) => setLineOne(value)}
+              onBlur={setLineOne}
             />
           </Flex.Item>
 
@@ -293,7 +293,7 @@ const PageChangingStatus = (props) => {
               maxLength={maxStatusLineLength}
               value={lineTwo}
               width="200px"
-              onBlur={(value) => setLineTwo(value)}
+              onBlur={setLineTwo}
             />
           </Flex.Item>
 

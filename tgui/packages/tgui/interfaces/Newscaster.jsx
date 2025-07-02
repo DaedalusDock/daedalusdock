@@ -192,9 +192,9 @@ const NewscasterCommentCreation = (props) => {
             backgroundColor="black"
             textColor="white"
             maxLength={512}
-            onChange={(e, comment) =>
+            onBlur={(value) =>
               act('setCommentBody', {
-                commenttext: comment,
+                commenttext: value,
               })
             }
           >

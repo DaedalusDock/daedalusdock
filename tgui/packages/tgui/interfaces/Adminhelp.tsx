@@ -51,7 +51,7 @@ export const Adminhelp = (props) => {
               height="100%"
               value={ahelpMessage}
               placeholder="Admin help"
-              onBlur={(value) => setAhelpMessage(value)}
+              onBlur={setAhelpMessage}
             />
           </Stack.Item>
           {urgentAhelpEnabled && adminCount <= 0 && (

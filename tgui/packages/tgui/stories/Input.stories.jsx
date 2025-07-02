@@ -30,10 +30,10 @@ const Story = (props) => {
     <Section>
       <LabeledList>
         <LabeledList.Item label="Input (onChange)">
-          <Input value={text} onBlur={(value) => setText(value)} />
+          <Input value={text} onBlur={setText} />
         </LabeledList.Item>
         <LabeledList.Item label="Input (onInput)">
-          <Input value={text} onChange={(value) => setText(value)} />
+          <Input value={text} onChange={setText} />
         </LabeledList.Item>
         <LabeledList.Item label="NumberInput (onChange)">
           <NumberInput
@@ -44,7 +44,7 @@ const Story = (props) => {
             value={number}
             minValue={-100}
             maxValue={100}
-            onBlur={(value) => setNumber(value)}
+            onBlur={setNumber}
           />
         </LabeledList.Item>
         <LabeledList.Item label="NumberInput (onDrag)">
@@ -56,7 +56,7 @@ const Story = (props) => {
             value={number}
             minValue={-100}
             maxValue={100}
-            onDrag={(value) => setNumber(value)}
+            onDrag={setNumber}
           />
         </LabeledList.Item>
         <LabeledList.Item label="Slider (onDrag)">

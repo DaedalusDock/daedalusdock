@@ -117,7 +117,7 @@ export const SparringContract = (props) => {
                     width="100%"
                     selected={area}
                     options={possible_areas}
-                    onSelected={(value) => setArea(value)}
+                    onSelected={setArea}
                   />
                 </Stack.Item>
                 <Stack.Item>

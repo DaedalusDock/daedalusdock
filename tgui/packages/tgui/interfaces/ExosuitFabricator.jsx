@@ -291,7 +291,7 @@ const PartLists = (props) => {
               <Input
                 fluid
                 placeholder="Search for..."
-                onChange={(v) => setSearchText(v)}
+                onChange={setSearchText}
               />
             </Stack.Item>
           </Stack>

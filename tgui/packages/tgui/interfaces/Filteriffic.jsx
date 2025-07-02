@@ -70,7 +70,7 @@ const FilterFloatEntry = (props) => {
         step={0.001}
         format={(value) => toFixed(value, 4)}
         width="70px"
-        onChange={(value) => setStep(value)}
+        onChange={setStep}
       />
     </>
   );
@@ -302,7 +302,7 @@ export const Filteriffic = (props) => {
                 <Input
                   value={massApplyPath}
                   width="100px"
-                  onChange={(value) => setMassApplyPath(value)}
+                  onChange={setMassApplyPath}
                 />
                 <Button.Confirm
                   content="Apply"

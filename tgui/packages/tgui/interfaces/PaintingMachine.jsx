@@ -125,7 +125,7 @@ export const PainterDropdown = (props) => {
       options={Object.keys(options).map((path) => {
         return options[path];
       })}
-      onSelected={(sel) => setSelectedOption(sel)}
+      onSelected={setSelectedOption}
     />
   );
 };

@@ -110,8 +110,8 @@ const InputArea = (props: {
       maxLength={max_length}
       onEscape={() => act('cancel')}
       onEnter={(value) => act('submit', { entry: value })}
-      onBlur={(value) => onType(value)}
-      onChange={(value) => onType(value)}
+      onBlur={onType}
+      onChange={onType}
       placeholder="Type something..."
       value={input}
     />

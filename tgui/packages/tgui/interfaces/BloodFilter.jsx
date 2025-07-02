@@ -17,7 +17,7 @@ export const BloodFilter = (props) => {
               title="Whitelist"
               list={whitelist}
               reagentName={chemName}
-              onReagentInput={(value) => setChemName(value)}
+              onReagentInput={setChemName}
             />
           </Stack.Item>
         </Stack>

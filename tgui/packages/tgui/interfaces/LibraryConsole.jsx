@@ -280,18 +280,10 @@ const CheckoutModal = (props) => {
       </Box>
       <LabeledList>
         <LabeledList.Item label="Book Name">
-          <Input
-            width="250px"
-            value={bookName}
-            onBlur={(value) => setBookName(value)}
-          />
+          <Input width="250px" value={bookName} onBlur={setBookName} />
         </LabeledList.Item>
         <LabeledList.Item label="Loan To">
-          <Input
-            width="160px"
-            value={checkoutee}
-            onBlur={(value) => setCheckoutee(value)}
-          />
+          <Input width="160px" value={checkoutee} onBlur={setCheckoutee} />
         </LabeledList.Item>
         <LabeledList.Item label="Loan Period">
           <NumberInput
@@ -299,7 +291,7 @@ const CheckoutModal = (props) => {
             unit=" Minutes"
             minValue={1}
             stepPixelSize={10}
-            onChange={(value) => setCheckoutPeriod(value)}
+            onChange={setCheckoutPeriod}
           />
         </LabeledList.Item>
       </LabeledList>
@@ -624,7 +616,7 @@ const UploadModal = (props) => {
           <Dropdown
             options={upload_categories}
             selected={display_category}
-            onSelected={(value) => setUploadCategory(value)}
+            onSelected={setUploadCategory}
           />
         </LabeledList.Item>
       </LabeledList>

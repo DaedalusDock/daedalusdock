@@ -17,7 +17,7 @@ export const ChemFilterPane = (props) => {
           <Input
             placeholder="Reagent"
             width="140px"
-            onChange={(value) => onReagentInput(value)}
+            onChange={onReagentInput}
           />
           <Button
             ml={1}
@@ -65,7 +65,7 @@ export const ChemFilter = (props) => {
               title="Left"
               list={left}
               reagentName={leftName}
-              onReagentInput={(value) => setLeftName(value)}
+              onReagentInput={setLeftName}
             />
           </Stack.Item>
           <Stack.Item grow>
@@ -73,7 +73,7 @@ export const ChemFilter = (props) => {
               title="Right"
               list={right}
               reagentName={rightName}
-              onReagentInput={(value) => setRightName(value)}
+              onReagentInput={setRightName}
             />
           </Stack.Item>
         </Stack>

@@ -443,7 +443,7 @@ export const FlockPanel = (props) => {
             <Dropdown
               options={['name', 'health', 'resources', 'area']}
               selected={sortBy}
-              onSelected={(value) => setSortBy(value)}
+              onSelected={setSortBy}
             />
             <FlockDrones drones={drones} sortBy={sortBy} />
           </Box>

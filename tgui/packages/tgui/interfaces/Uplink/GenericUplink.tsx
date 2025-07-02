@@ -48,12 +48,7 @@ export const GenericUplink = (props: GenericUplinkProps) => {
       buttons={
         <>
           Search
-          <Input
-            autoFocus
-            value={searchText}
-            onChange={(value) => setSearchText(value)}
-            mx={1}
-          />
+          <Input autoFocus value={searchText} onChange={setSearchText} mx={1} />
           <Button
             icon={compactMode ? 'list' : 'info'}
             content={compactMode ? 'Compact' : 'Detailed'}
@@ -127,7 +122,7 @@ const ItemList = (props: ItemListProps) => {
               <Button
                 content={item.cost}
                 disabled={item.disabled}
-                onClick={(e) => handleBuy(item)}
+                onClick={handleBuy}
               />
             }
           >

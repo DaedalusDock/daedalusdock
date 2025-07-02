@@ -5104,12 +5104,6 @@
 /obj/item/radio/intercom/directional/south,
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
-"bNS" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/sign/poster/contraband/random/directional/west,
-/turf/open/floor/wood,
-/area/station/service/theater)
 "bNX" = (
 /obj/machinery/telecomms/server/presets/common,
 /turf/open/floor/circuit/telecomms/mainframe,
@@ -32173,7 +32167,7 @@
 	name = "Theater Backstage"
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/access/all/service/theatre/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/wood,
 /area/station/maintenance/starboard/greater)
 "lZo" = (
@@ -35482,6 +35476,8 @@
 /obj/machinery/camera/directional/north{
 	c_tag = "Service Maintinance"
 	},
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/north,
+/obj/effect/mapping_helpers/embedded_controller/static_id/clown,
 /turf/open/floor/iron,
 /area/station/maintenance/starboard/greater)
 "ngy" = (
@@ -42335,7 +42331,8 @@
 "pOZ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light_switch/directional/south,
+/obj/effect/mapping_helpers/embedded_controller/static_id/clown,
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/south,
 /turf/open/floor/wood,
 /area/station/service/theater)
 "pPK" = (
@@ -44228,7 +44225,7 @@
 /area/station/command/bridge)
 "qwF" = (
 /obj/structure/closet/crate/wooden/toy,
-/obj/machinery/light_switch/directional/south,
+/obj/machinery/c4_embedded_controller/slave/directional/south,
 /turf/open/floor/wood,
 /area/station/service/theater)
 "qwG" = (
@@ -47225,6 +47222,13 @@
 /obj/effect/turf_decal/siding/wood,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/cmo)
+"rCN" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/light_switch/directional/west,
+/obj/machinery/c4_embedded_controller/slave/directional/west,
+/turf/open/floor/wood,
+/area/station/service/theater)
 "rCV" = (
 /obj/structure/cable/yellow{
 	icon_state = "3"
@@ -48781,10 +48785,10 @@
 /obj/effect/mapping_helpers/airlock/unres,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/mapping_helpers/access/all/service/theatre/airlock,
 /obj/machinery/door/airlock{
 	name = "Theater Backstage"
 	},
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/wood,
 /area/station/service/theater)
 "sfI" = (
@@ -103065,8 +103069,8 @@ nyB
 fqz
 prz
 sfy
+rCN
 jHw
-bNS
 eKt
 kFj
 sGj

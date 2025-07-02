@@ -343,7 +343,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/all/security/detective/airlock,
 /turf/open/floor/plating,
 /area/station/security/detectives_office/private_investigators_office)
 "afY" = (
@@ -8560,6 +8559,8 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/east,
+/obj/effect/mapping_helpers/embedded_controller/static_id/detective,
 /turf/open/floor/iron,
 /area/station/construction/storage_wing)
 "dep" = (
@@ -16646,10 +16647,10 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/access/all/security/detective/airlock,
 /obj/machinery/door/airlock/security{
 	name = "Forensics Room"
 	},
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/plating,
 /area/station/security/detectives_office/private_investigators_office)
 "ghG" = (
@@ -25839,6 +25840,7 @@
 /obj/effect/turf_decal/trimline/neutral/filled/line{
 	dir = 1
 	},
+/obj/machinery/c4_embedded_controller/slave/directional/east,
 /turf/open/floor/iron,
 /area/station/security/detectives_office/private_investigators_office)
 "jJg" = (
@@ -27090,7 +27092,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/all/security/detective/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/iron,
 /area/station/security/detectives_office/private_investigators_office)
 "kgQ" = (
@@ -38855,7 +38857,7 @@
 /obj/machinery/door/airlock/security{
 	name = "Forensics Room"
 	},
-/obj/effect/mapping_helpers/access/all/security/detective/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/iron/dark,
 /area/station/security/detectives_office/private_investigators_office)
 "ouT" = (
@@ -45402,6 +45404,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/trimline/neutral/filled/line,
 /obj/structure/closet/secure_closet/evidence,
+/obj/machinery/c4_embedded_controller/slave/directional/west,
 /turf/open/floor/iron,
 /area/station/security/detectives_office/private_investigators_office)
 "qWe" = (
@@ -50868,6 +50871,22 @@
 	},
 /turf/open/floor/iron,
 /area/station/command/teleporter)
+"sRZ" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/bar{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/north,
+/obj/effect/mapping_helpers/embedded_controller/static_id/detective,
+/turf/open/floor/iron,
+/area/station/construction/storage_wing)
 "sSk" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -52581,6 +52600,20 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
+"tCX" = (
+/obj/effect/turf_decal/tile/red{
+	dir = 8
+	},
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/effect/mapping_helpers/embedded_controller/static_id/detective,
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/south,
+/turf/open/floor/iron,
+/area/station/hallway/primary/fore)
 "tDq" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -58271,6 +58304,7 @@
 	pixel_x = 2;
 	pixel_y = -2
 	},
+/obj/machinery/c4_embedded_controller/slave/directional/south,
 /turf/open/floor/iron/grimy,
 /area/station/security/detectives_office/private_investigators_office)
 "vGA" = (
@@ -87794,8 +87828,8 @@ rQr
 xql
 cmx
 vFV
-dyA
-wvR
+tPR
+sRZ
 vxr
 fIC
 kpp
@@ -89324,7 +89358,7 @@ lAu
 deD
 aDC
 lYI
-qAq
+tCX
 tep
 aaa
 aaa

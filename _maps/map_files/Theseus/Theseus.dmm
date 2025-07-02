@@ -452,6 +452,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
+/obj/machinery/firealarm/directional/north,
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
 "ahw" = (
@@ -1614,7 +1615,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/door/firedoor,
-/obj/effect/mapping_helpers/access/all/engineering/engine_equipment/airlock,
 /obj/machinery/door/airlock/engineering/glass{
 	name = "Supermatter Engine Control Room"
 	},
@@ -2463,7 +2463,6 @@
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
 "aRO" = (
-/obj/machinery/firealarm/directional/north,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
@@ -2475,6 +2474,9 @@
 	},
 /obj/structure/cable/red{
 	icon_state = "12"
+	},
+/obj/machinery/c4_embedded_controller/slave/directional/north{
+	id_tag = "atmos_entry_slave"
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
@@ -3220,7 +3222,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/access/all/engineering/atmos/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/greater)
 "bhN" = (
@@ -6265,7 +6267,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/access/all/engineering/maintenance/airlock,
 /turf/open/floor/plating,
 /area/station/maintenance/department/engine)
 "cmE" = (
@@ -8625,7 +8626,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/access/all/engineering/engine_equipment/airlock,
 /turf/open/floor/iron,
 /area/station/engineering/engine_smes)
 "dfX" = (
@@ -11497,7 +11497,6 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/window/reinforced/spawner/east,
 /obj/effect/turf_decal/trimline/brown/warning{
 	dir = 6
 	},
@@ -11513,6 +11512,8 @@
 	dir = 6
 	},
 /obj/effect/turf_decal/siding/yellow,
+/obj/machinery/c4_embedded_controller/airlock_access/secure/directional/east,
+/obj/effect/mapping_helpers/access/all/engineering/general/ec,
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
 "ekF" = (
@@ -12275,7 +12276,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/all/engineering/ce/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/ce)
 "exS" = (
@@ -13130,6 +13131,11 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/landmark/xeno_spawn,
+/turf/open/floor/plating,
+/area/station/maintenance/starboard/fore)
+"eNz" = (
+/obj/effect/mapping_helpers/access/all/engineering/general/ec,
+/obj/machinery/c4_embedded_controller/airlock_access/secure/directional/north,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
 "eND" = (
@@ -14242,7 +14248,6 @@
 /area/station/service/theater)
 "fiG" = (
 /obj/machinery/door/firedoor,
-/obj/effect/mapping_helpers/access/all/engineering/atmos/airlock,
 /obj/machinery/door/airlock/atmos{
 	name = "Hypertorus Fusion Reactor"
 	},
@@ -17815,11 +17820,6 @@
 /area/station/service/library)
 "gDo" = (
 /obj/machinery/light/directional/south,
-/obj/machinery/requests_console/directional/south{
-	name = "Engineering Requests Console";
-	department = "Engineering";
-	departmentType = 3
-	},
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "gDt" = (
@@ -20855,7 +20855,6 @@
 	icon_state = "3"
 	},
 /obj/structure/overfloor_catwalk/iron_dark,
-/obj/effect/mapping_helpers/access/all/engineering/engine_equipment/airlock,
 /turf/open/floor/plating,
 /area/station/engineering/engine_smes)
 "hPv" = (
@@ -21392,6 +21391,8 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
+/obj/machinery/c4_embedded_controller/airlock_access/secure/directional/east,
+/obj/effect/mapping_helpers/access/all/engineering/ce/ec,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "iaB" = (
@@ -21530,7 +21531,6 @@
 /obj/machinery/door/airlock/atmos/glass{
 	name = "Hypertorus Fusion Reactor"
 	},
-/obj/effect/mapping_helpers/access/all/engineering/atmos/airlock,
 /turf/open/floor/iron/dark,
 /area/station/engineering/atmospherics_engine)
 "idP" = (
@@ -23254,7 +23254,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "9"
 	},
-/obj/effect/mapping_helpers/access/all/engineering/engine_equipment/airlock,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "iIQ" = (
@@ -26543,6 +26542,8 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
+/obj/machinery/c4_embedded_controller/airlock_access/secure/directional/north,
+/obj/effect/mapping_helpers/access/all/engineering/atmos/ec,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/greater)
 "jWf" = (
@@ -31832,6 +31833,10 @@
 /obj/structure/window/reinforced/spawner/east,
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
+"lQW" = (
+/obj/machinery/door/airlock/maintenance,
+/turf/open/floor/plating,
+/area/station/maintenance/department/engine)
 "lQX" = (
 /obj/structure/table/wood,
 /obj/machinery/fax_machine{
@@ -31940,13 +31945,6 @@
 /obj/effect/mapping_helpers/access/all/medical/general/airlock,
 /turf/open/floor/iron/white,
 /area/station/medical/exam_room)
-"lTX" = (
-/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
-/obj/structure/cable/yellow{
-	icon_state = "2"
-	},
-/turf/open/floor/plating,
-/area/station/engineering/break_room)
 "lUn" = (
 /obj/structure/window/reinforced/spawner/west,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -33859,7 +33857,6 @@
 "mDP" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/mapping_helpers/access/all/engineering/atmos/airlock,
 /obj/machinery/door/airlock/atmos/glass{
 	name = "Hypertorus Fusion Reactor"
 	},
@@ -34229,7 +34226,6 @@
 	},
 /obj/machinery/door/firedoor,
 /obj/structure/overfloor_catwalk/iron_dark,
-/obj/effect/mapping_helpers/access/all/engineering/engine_equipment/airlock,
 /obj/machinery/door/airlock/hatch{
 	name = "Engine Airlock Internal"
 	},
@@ -36153,17 +36149,18 @@
 /obj/structure/disposalpipe/segment{
 	dir = 9
 	},
-/obj/machinery/newscaster/directional/east,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
+/obj/machinery/power/apc/auto_name/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/ce)
 "nuq" = (
 /obj/machinery/door/airlock/atmos{
-	name = "Atmospherics"
+	name = "Atmospherics";
+	id_tag = "atmos_entry"
 	},
 /obj/machinery/door/firedoor,
 /obj/effect/turf_decal/tile/yellow{
@@ -36173,7 +36170,6 @@
 	dir = 8
 	},
 /obj/structure/disposalpipe/segment,
-/obj/effect/mapping_helpers/access/all/engineering/atmos/airlock,
 /turf/open/floor/iron/checker,
 /area/station/engineering/atmos/storage/gas)
 "nuw" = (
@@ -37081,6 +37077,7 @@
 /obj/effect/turf_decal/tile/yellow/half/contrasted{
 	dir = 4
 	},
+/obj/machinery/light/directional/east,
 /turf/open/floor/iron,
 /area/station/engineering/break_room)
 "nKz" = (
@@ -38460,7 +38457,6 @@
 /obj/structure/cable/red{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/all/engineering/atmos/airlock,
 /turf/open/floor/iron/dark/corner{
 	dir = 1
 	},
@@ -39754,6 +39750,7 @@
 /obj/effect/turf_decal/tile/yellow/anticorner/contrasted{
 	dir = 1
 	},
+/obj/machinery/c4_embedded_controller/slave/directional/west,
 /turf/open/floor/iron,
 /area/station/engineering/break_room)
 "oMN" = (
@@ -42850,12 +42847,12 @@
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
 "pXW" = (
-/obj/machinery/light_switch/directional/south,
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/effect/mapping_helpers/broken_floor,
 /obj/structure/cable/yellow{
 	icon_state = "4"
 	},
+/obj/machinery/c4_embedded_controller/slave/directional/south,
 /turf/open/floor/plating,
 /area/station/maintenance/solars/starboard/fore)
 "pXX" = (
@@ -43768,12 +43765,7 @@
 "qpE" = (
 /obj/machinery/modular_computer/console/preset/id,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
-/obj/machinery/requests_console/directional/north{
-	name = "Chief Engineer's Requests Console";
-	department = "Chief Engineer's Desk";
-	departmentType = 4;
-	announcementConsole = 1
-	},
+/obj/machinery/newscaster/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/ce)
 "qpF" = (
@@ -45654,12 +45646,15 @@
 /obj/machinery/camera/directional/south{
 	c_tag = "Engineering - Desk"
 	},
-/obj/machinery/light/directional/south,
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
 	},
-/obj/machinery/status_display/evac/directional/south,
 /obj/effect/turf_decal/tile/yellow/half/contrasted,
+/obj/machinery/c4_embedded_controller/airlock_access/secure/directional/south{
+	tag_slave = "atmos_entry_slave";
+	tag_target = "atmos_entry"
+	},
+/obj/effect/mapping_helpers/access/all/engineering/atmos/ec,
 /turf/open/floor/iron,
 /area/station/engineering/break_room)
 "qZy" = (
@@ -46302,7 +46297,6 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
 	},
-/obj/machinery/light_switch/directional/west,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/machinery/camera/directional/west{
 	c_tag = "Atmospherics - Port-Aft"
@@ -46316,6 +46310,7 @@
 /obj/structure/cable/red{
 	icon_state = "4"
 	},
+/obj/machinery/c4_embedded_controller/slave/directional/west,
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
 "rmA" = (
@@ -46472,7 +46467,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/access/all/engineering/engine_equipment/airlock,
 /turf/open/floor/iron,
 /area/station/engineering/monitoring)
 "roF" = (
@@ -47938,7 +47932,6 @@
 	},
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/mapping_helpers/access/all/engineering/atmos/airlock,
 /turf/open/floor/iron/dark,
 /area/station/engineering/atmospherics_engine)
 "rRh" = (
@@ -50502,7 +50495,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/any/engineering/general/airlock,
 /turf/open/floor/iron,
 /area/station/engineering/storage_shared)
 "sKG" = (
@@ -51148,7 +51140,6 @@
 	},
 /obj/machinery/door/firedoor,
 /obj/structure/overfloor_catwalk/iron_dark,
-/obj/effect/mapping_helpers/access/all/engineering/engine_equipment/airlock,
 /turf/open/floor/plating,
 /area/station/engineering/monitoring)
 "sWF" = (
@@ -53250,8 +53241,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "10"
 	},
-/obj/effect/mapping_helpers/access/any/engineering/general/airlock,
-/obj/effect/mapping_helpers/access/any/engineering/secure/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/iron,
 /area/station/engineering/break_room)
 "tNP" = (
@@ -56547,7 +56537,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/effect/mapping_helpers/access/all/engineering/engine_equipment/airlock,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "uYK" = (
@@ -56922,13 +56911,13 @@
 	dir = 1
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/power/apc/auto_name/directional/east,
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2"
 	},
+/obj/machinery/c4_embedded_controller/slave/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/ce)
 "veA" = (
@@ -58915,7 +58904,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/any/engineering/general/airlock,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/plating,
 /area/station/maintenance/solars/starboard/fore)
 "vRp" = (
@@ -60504,6 +60493,7 @@
 "wvz" = (
 /obj/structure/chair/stool/directional/north,
 /obj/machinery/camera/autoname/directional/west,
+/obj/machinery/light_switch/directional/west,
 /turf/open/floor/plating,
 /area/station/maintenance/solars/starboard/fore)
 "wvB" = (
@@ -60858,7 +60848,6 @@
 /obj/structure/cable/red{
 	icon_state = "3"
 	},
-/obj/effect/mapping_helpers/access/all/engineering/atmos/airlock,
 /turf/open/floor/iron/checker,
 /area/station/engineering/atmos/storage/gas)
 "wBa" = (
@@ -105881,7 +105870,7 @@ xXE
 xXE
 xXE
 xXE
-lTX
+iuJ
 tND
 aOH
 iuJ
@@ -108449,7 +108438,7 @@ wif
 apc
 jEp
 fWF
-rqM
+lQW
 nkQ
 xwN
 ifi
@@ -109450,7 +109439,7 @@ lnd
 wvz
 pXW
 tdK
-dnS
+eNz
 eoL
 bXZ
 gAj

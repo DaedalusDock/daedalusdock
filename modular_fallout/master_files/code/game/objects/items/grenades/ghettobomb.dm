@@ -19,7 +19,7 @@
 /obj/item/grenade/homemade/Initialize()
 	. = ..()
 	times = list("5" = 5, "-1" = 5, "[rand(25,60)]" = 60, "[rand(65,180)]" = 30)// "Premature, Dud, Short Fuse, Long Fuse"=[weighting value]
-	det_time = text2num(pickweight(times))
+	det_time = text2num(pick_weight(times))
 	if(det_time < 0) //checking for 'duds'
 		range = 1
 		det_time = rand(30,80)

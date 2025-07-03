@@ -16,11 +16,9 @@
 	resistance_flags = null
 	damage_deflection = 80
 
-/obj/structure/vault_door/old
+/obj/machinery/door/poddoor/vault_door/old
 	name = "\proper ancient Vault blast door"
 	icon_state = "oldclosed"
-	closing_state = "oldclosing"
-	opening_state = "oldopening"
 	broken_state = "oldempty"
 
 /obj/machinery/door/poddoor/vault_door/obj_break(damage_flag)

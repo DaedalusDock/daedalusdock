@@ -35,8 +35,8 @@
 			to_chat(user, "<span class='notice'>You already have looted [src].</span>")
 			return
 		for(var/i=0, i<rand(1,4), i++)
-			var/itemtype= pickweight(lootable_trash)
-			//var/itemtypebonus= pickweight(lootable_trash)
+			var/itemtype= pick_weight(lootable_trash)
+			//var/itemtypebonus= pick_weight(lootable_trash)
 			if(itemtype)
 				to_chat(user, "<span class='notice'>You scavenge through [src].</span>")
 				var/obj/item/item = new itemtype(ST)

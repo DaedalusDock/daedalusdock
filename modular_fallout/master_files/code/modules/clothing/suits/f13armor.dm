@@ -191,7 +191,7 @@
 	desc = "Before the war motorcycle-football was one of the largest specator sports in America. This armor copies the style of armor used by the players,	using leather boiled in corn oil to make hard sheets to emulate the light weight and toughness of the original polymer armor."
 	icon_state = "leather_armor"
 	inhand_icon_state = "leather_armor"
-	armor = list(BLUNT = 25, PUNCTURE = 20, SLASH = 35, LASER = 12, ENERGY = 5, BOMB = 5, BIO = 0, RAD = 0, FIRE = 5, ACID = 0)
+	armor = list(BLUNT = 25, PUNCTURE = 20, SLASH = 40, LASER = 12, ENERGY = 5, BOMB = 5, BIO = 0, RAD = 0, FIRE = 5, ACID = 0)
 
 // Recipe the above + 2 gecko hides
 /obj/item/clothing/suit/armored/light/leathermk2
@@ -199,7 +199,7 @@
 	desc = "Armor in the motorcycle-football style, either with intact original polymer plating, or reinforced with gecko hide."
 	icon_state = "leather_armor_mk2"
 	inhand_icon_state = "leather_armor_mk2"
-	armor = list(BLUNT = 30, PUNCTURE = 25, SLASH = 40, LASER = 12, ENERGY = 5, BOMB = 5, BIO = 0, RAD = 0, FIRE = 5, ACID = 0)
+	armor = list(BLUNT = 30, PUNCTURE = 25, SLASH = 50, LASER = 12, ENERGY = 5, BOMB = 5, BIO = 0, RAD = 0, FIRE = 5, ACID = 0)
 
 /obj/item/clothing/suit/armored/light/leathersuit
 	name = "leather suit"
@@ -517,14 +517,14 @@
 	icon_state = "raider_metal"
 	inhand_icon_state = "raider_metal"
 	slowdown = 0.5
-	armor = list(BLUNT = 60, PUNCTURE = 60, SLASH = 70, LASER = 20, ENERGY = 20, BOMB = 30, BIO = 10, RAD = 25, FIRE = 20, ACID = 20)
+	armor = list(BLUNT = 45, PUNCTURE = 45, SLASH = 55, LASER = 20, ENERGY = 20, BOMB = 30, BIO = 10, RAD = 25, FIRE = 20, ACID = 20)
 
 /obj/item/clothing/suit/armored/heavy/recycled_power
 	name = "recycled power armor"
 	desc = "Taking pieces off from a wrecked power armor will at least give you thick plating, but don't expect too much of this shot up, piecemeal armor.."
 	icon_state = "recycled_power"
 	slowdown = 0.35
-	armor = list(BLUNT = 45, PUNCTURE = 45, SLASH = 55, LASER = 20, ENERGY = 20, BOMB = 35, BIO = 5, RAD = 15, FIRE = 15, ACID = 5)
+	armor = list(BLUNT = 60, PUNCTURE = 60, SLASH = 70, LASER = 20, ENERGY = 20, BOMB = 35, BIO = 5, RAD = 15, FIRE = 15, ACID = 5)
 
 /obj/item/clothing/suit/armored/heavy/wardenplate
 	name = "warden plates"

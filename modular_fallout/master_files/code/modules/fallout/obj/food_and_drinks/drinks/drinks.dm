@@ -10,7 +10,7 @@
 /obj/item/reagent_containers/cup/glass/bottle/f13nukacola
 	name = "Nuka-Cola"
 	desc = "The most popular flavored soft drink in the United States before the Great War."
-	icon = 'icons/obj/f13vending.dmi'
+	icon = 'modular_fallout/master_files/icons/obj/f13vending.dmi'
 	icon_state = "nukacola"
 	list_reagents = list(/datum/reagent/consumable/nuka_cola = 25, /datum/reagent/uranium/radium = 5)
 	drink_type = SUGAR

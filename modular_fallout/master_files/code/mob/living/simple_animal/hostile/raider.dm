@@ -315,7 +315,7 @@
 	spawn_delay = world.time + spawn_time
 	if(spawned_mobs.len >= max_mobs)
 		return FALSE
-	var/chosen_mob_type = pickweight(mob_types)
+	var/chosen_mob_type = pick_weight(mob_types)
 	var/mob/living/simple_animal/L = new chosen_mob_type(get_turf(src))
 	L.flags_1 |= (flags_1 & ADMIN_SPAWNED_1)
 	spawned_mobs += L

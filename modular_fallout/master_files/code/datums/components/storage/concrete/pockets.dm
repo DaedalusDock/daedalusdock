@@ -59,21 +59,21 @@
 	can_hold = GLOB.storage_shoes_can_hold
 
 /datum/storage/concrete/pockets/small/rushelmet
+	can_hold = GLOB.storage_hat_can_hold
 	max_specific_storage = 1
 	quickdraw = TRUE
-	can_hold = GLOB.storage_hat_can_hold
 
 /datum/storage/concrete/pockets/bos/paladin/
+	can_hold = GLOB.storage_holster_can_hold
 	max_specific_storage = 4
 	max_specific_storage = WEIGHT_CLASS_NORMAL
-	can_hold = GLOB.storage_holster_can_hold
 
 /datum/storage/concrete/pockets/small/holdout
+	can_hold = GLOB.storage_holdout_can_hold
 	max_specific_storage = 1
 	attack_hand_interact = TRUE
 	max_specific_storage = WEIGHT_CLASS_NORMAL
 	quickdraw = TRUE
-	can_hold = GLOB.storage_holdout_can_hold
 
 /datum/storage/concrete/pockets/bulletbelt
 	can_hold = GLOB.storage_bulletbelt_can_hold

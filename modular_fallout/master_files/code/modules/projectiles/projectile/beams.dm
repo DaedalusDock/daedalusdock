@@ -290,7 +290,6 @@
 	name = "gamma beam"
 	icon_state = "xray"
 	damage = 5
-	irradiate = 200
 	range = 15
 	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE | PASSCLOSEDTURF
 

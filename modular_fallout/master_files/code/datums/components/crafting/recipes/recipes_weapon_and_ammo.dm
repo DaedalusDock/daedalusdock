@@ -194,7 +194,7 @@
 	name = "Flamethrower Fuel"
 	result = /obj/item/ammo_box/jerrycan
 	reqs = list(/datum/reagent/napalm = 50,
-				/obj/item/reagent_containers/glass/beaker/large)
+				/obj/item/reagent_containers/cup/beaker/large)
 	tool_behaviors = list(TOOL_WORKBENCH)
 	time = 30
 	category = CAT_WEAPONRY
@@ -307,7 +307,7 @@
 	result = /obj/item/gun/ballistic/rifle/hobo/lasmusket
 	reqs = list(/obj/item/trash/f13/electronic/toaster = 1,
 				/obj/item/gun/ballistic/revolver/hobo/piperifle = 1,
-				/obj/item/reagent_containers/food/drinks/bottle = 1,
+				/obj/item/reagent_containers/cup/glass/bottle/ = 1,
 				/obj/item/stack/cable_coil = 3)
 	tool_behaviors = list(TOOL_WORKBENCH, TOOL_MULTITOOL)
 	time = 120

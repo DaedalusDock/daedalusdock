@@ -3,7 +3,6 @@
 /obj/item/book/granter/martial/cqc
 	martial = /datum/martial_art/cqc
 	name = "old manual"
-	martialname = "close quarters combat"
 	desc = "A small, black manual. There are drawn instructions of tactical hand-to-hand combat."
 	greet = "<span class='boldannounce'>You've mastered the basics of CQC.</span>"
 	icon_state = "cqcmanual"
@@ -11,7 +10,7 @@
 
 /obj/item/book/granter/martial/cqc/onlearned(mob/living/carbon/user)
 	..()
-	if(oneuse == TRUE)
+	if(!uses)
 		to_chat(user, "<span class='warning'>[src] beeps ominously...</span>")
 
 /obj/item/book/granter/martial/cqc/recoil(mob/living/carbon/user)
@@ -37,17 +36,10 @@
 		to_chat(user,"<span class='notice'>You learned how to make [initial(R.name)].</span>")
 	onlearned(user)
 
-/obj/item/book/granter/crafting_recipe/onlearned(mob/living/user)
-	..()
-	if(oneuse)
-		user.visible_message("<span class='caution'>[src] is useless to you now. You throw it away.</span>")
-		qdel(src)
-
 /obj/item/book/granter/crafting_recipe/gunsmith_one
 	name = "Guns and Bullets, Part 1"
 	desc = "A rare issue of Guns and Bullets detailing the basic manufacture of firearms, allowing the reader to craft firearms. It's barely holding up, and looks like only one person can study the knowledge from it."
 	icon_state = "gab1"
-	oneuse = TRUE
 	remarks = list("Always keep your gun well lubricated...", "Keep your barrel free of grime...", "Perfect fitment is the key to a good firearm...", "Maintain a proper trigger pull length...", "Keep your sights zeroed to proper range...")
 	crafting_recipe_types = list(/datum/crafting_recipe/ninemil, /datum/crafting_recipe/huntingrifle)
 
@@ -55,7 +47,6 @@
 	name = "Guns and Bullets, Part 2"
 	desc = "A rare issue of Guns and Bullets following up Part 1, going further indepth into weapon mechanics, allowing the reader to craft certain firearms. It's barely holding up, and looks like only one person can study the knowledge from it."
 	icon_state = "gab2"
-	oneuse = TRUE
 	remarks = list("Always keep your gun well lubricated...", "Keep your barrel free of grime...", "Perfect fitment is the key to a good firearm...", "Maintain a proper trigger pull length...", "Keep your sights zeroed to proper range...")
 	crafting_recipe_types = list(/datum/crafting_recipe/n99, /datum/crafting_recipe/huntingrifle, /datum/crafting_recipe/m1911, /datum/crafting_recipe/varmintrifle, /datum/crafting_recipe/colt6520)
 
@@ -63,7 +54,6 @@
 	name = "Guns and Bullets, Part 3"
 	desc = "A rare issue of Guns and Bullets following up Part 2, explaining difficult ballistics theory and weapon mechanics, allowing the reader to craft weapon attachments. It's barely holding up, and looks like only one person can study the knowledge from it."
 	icon_state = "gab3"
-	oneuse = TRUE
 	remarks = list("Always keep your gun well lubricated...", "Keep your barrel free of grime...", "Perfect fitment is the key to a good firearm...", "Maintain a proper trigger pull length...", "Keep your sights zeroed to proper range...")
 	crafting_recipe_types = list(/datum/crafting_recipe/scope, /datum/crafting_recipe/suppressor, /datum/crafting_recipe/burst_improvement, /datum/crafting_recipe/recoil_decrease)
 
@@ -71,7 +61,6 @@
 	name = "Guns and Bullets, Part 4"
 	desc = "An extremely rare issue of Guns and Bullets, showing some design flaws of weapons and how to rectify them. It's barely holding up, and looks like only one person can study the knowledge from it."
 	icon_state = "gab4"
-	oneuse = TRUE
 	remarks = list("Always keep your gun well lubricated...", "Keep your barrel free of grime...", "Perfect fitment is the key to a good firearm...", "Maintain a proper trigger pull length...", "Keep your sights zeroed to proper range...")
 	//crafting_recipe_types = list(/datum/crafting_recipe/flux, /datum/crafting_recipe/lenses, /datum/crafting_recipe/conductors, /datum/crafting_recipe/receiver, /datum/crafting_recipe/assembly, /datum/crafting_recipe/alloys)
 
@@ -82,7 +71,6 @@
 	icon_state = "blueprint_empty"
 	desc = "A detailed schematic for crafting an item."
 	w_class = WEIGHT_CLASS_TINY
-	oneuse = TRUE
 	remarks = list()
 
 /obj/item/book/granter/crafting_recipe/blueprint/r82
@@ -271,12 +259,49 @@
 	name = "den vr configuration"
 	icon_state = "book"
 	remarks = list("Never make dreams...", "Don't pick from an empty list...", "Runtimes are not good for cardio...", "Report an issue to a nearby technician, and expect to be told to post it to their terminal...", "Probably don't adjust the default safety settings.", "Clean up any messes left in the pod before the next use.")
-	crafting_recipe_types = list(/datum/crafting_recipe/set_vrboard/den)
+//	crafting_recipe_types = list(/datum/crafting_recipe/set_vrboard/den)
+
+/obj/item/book/granter/trait
+	var/granted_trait
+	var/traitname = "being cool"
+	var/list/crafting_recipe_types = list()
+
+/obj/item/book/granter/trait/already_known(mob/user)
+	if(!granted_trait)
+		return TRUE
+	if(HAS_TRAIT(user, granted_trait))
+		to_chat(user, "<span class ='notice'>You already have all the insight you need about [traitname].")
+		return TRUE
+	return FALSE
+
+/obj/item/book/granter/trait/on_reading_start(mob/user)
+	to_chat(user, "<span class='notice'>You start reading about [traitname]...</span>")
+
+/obj/item/book/granter/trait/on_reading_finished(mob/user)
+	. = ..()
+	to_chat(user, "<span class='notice'>You feel like you've got a good handle on [traitname]!</span>")
+	ADD_TRAIT(user, granted_trait, BOOK_TRAIT)
+	if(!user.mind)
+		return
+	for(var/crafting_recipe_type in crafting_recipe_types)
+		var/datum/crafting_recipe/R = crafting_recipe_type
+		user.mind.teach_crafting_recipe(crafting_recipe_type)
+		to_chat(user,"<span class='notice'>You learned how to make [initial(R.name)].</span>")
+	onlearned(user)
+
+/obj/item/book/granter/trait/rifleman
+	name = "The Neo-Russian Rifleman\'s Primer"
+	desc = "A book with stains of vodka and...blood? The back is hard to read, but says something about bolt-actions. Or pump-actions. Both, maybe."
+	oneuse = FALSE
+	granted_trait = TRAIT_FAST_PUMP
+	traitname = "riflery"
+	icon_state = "book1"
+	remarks = list("One smooth motion...", "Palm the bolt...", "Push up, rotate back, push forward, down...", "Don't slap yourself with the bolt...", "Wait, what's this about pumping?", "Who just scribbled \"Z\" and \"LMB\" on this page?")
+
 
 /obj/item/book/granter/trait/chemistry
 	name = "Big Book of Science"
 	desc = "This heavy textbook can teach basic chemistry, but saw more use as a blunt weapon shortly after the Collapse."
-	oneuse = TRUE
 	granted_trait = TRAIT_CHEMWHIZ
 	traitname = "chemistry"
 	remarks = list("Always ensure a safe working environment, promptly clean any chemical mess.", "Improperly stored chemicals can quickly lead to safety hazards.", "Do not abuse chemicals for recreational use in the laboratory!", "Labcoats and goggles not only protect you from burns, but give an aura of authority.", "Keep your laboratory clean and organized, utilize cabinets and shelves.", "Potassium and water should not be mixed, or they will react violently.")
@@ -285,7 +310,6 @@
 /obj/item/book/granter/trait/bigleagues
 	name = "Grognak the Barbarian"
 	desc = "A pulp fiction paperback detailing the adventures of a violent barbarian. Surprisingly, this was sold to children."
-	oneuse = TRUE
 	granted_trait = TRAIT_BIG_LEAGUES
 	traitname = "big_leagues"
 	remarks = list("Grognak hit the Death Knight only once, but that was enough.", "Grognak is surprisingly agile, never committing too heavily on an attack, dancing between his enemies.", "Grognak isn't good at talking, but he knows it has its place. He has friends to talk for him.", "Other barbarians might change their weapons, but Grognak could never leave his beloved axe.")
@@ -293,7 +317,6 @@
 /obj/item/book/granter/trait/lowsurgery
 	name = "First Aid Pamphlet"
 	desc = "A flimsy collection of vital tips and tricks for the average American with a sudden injury."
-	oneuse = TRUE
 	granted_trait = TRAIT_SURGERY_LOW
 	traitname = "minor surgery"
 	remarks = list("Keep your hands and any injuries clean!", "While bandages help to seal a wound, they do not heal a wound.", "Remain calm, focus on the task at hand, stop the bleeding.", "An open wound can lead to easy infection of said wound.", "Keep track of your home's first aid kit, restock used components regularly.", "If a body part has been lost, ice and transport it with the injured to a hospital.",)
@@ -307,7 +330,6 @@
 /obj/item/book/granter/trait/midsurgery
 	name = "D.C. Journal of Internal Medicine"
 	desc = "A nearly intact guide on surgery for pre-collapse medical students and physicians."
-	oneuse = TRUE
 	granted_trait = TRAIT_SURGERY_MID
 	traitname = "intermediate surgery"
 	remarks = list("Sterilization is essential before and after surgery.", "Keep track of all your tools, double check body cavities.", "Ensure complete focus while operating on the patient.", "Cauterize incisions once the operation concludes.", "Spare organs and blood must be kept at a low temperature.", "Most prosthesis come with significant trade-offs, and maintenance costs.",)
@@ -321,7 +343,6 @@
 /obj/item/book/granter/trait/techno
 	name = "Dean's Electronics"
 	desc = "A study book on the field of electronics. A note on the cover says that it is for the budding young electrician in everyone!"
-	oneuse = TRUE
 	granted_trait = TRAIT_TECHNOPHREAK
 	traitname = "craftsmanship"
 	remarks = list("Troubleshooting is a systematic approach to problem solving, do not skip any steps in the process.", "Ensure you have all the required parts before you begin.", "Always wear personal protective equipment, electric shock can be fatal.", "Combustibles and sparks do not mix, store welding fuel in a safe location.", "Don't lose track of your tools, or you have a new problem to deal with.")
@@ -329,7 +350,6 @@
 /obj/item/book/granter/trait/trekking
 	name = "Wasteland Survival Guide"
 	desc = "This indispensable guidebook contains everything that a survivor in the wasteland would need to know."
-	oneuse = TRUE
 	granted_trait = TRAIT_HARD_YARDS
 	traitname = "trekking"
 	remarks = list("Tribes and gangs often hide the best loot in the back room.", "Radiation is best avoided entirely, but it helps to carry spare rad-x.", "Whether ancient or recent, landmines are still a threat, and readers should look out for them.", "Injuries and open bleeding make it harder to travel, always carry spare medical supplies.", "Most animals are simple-minded, and can be led into easy lines of fire.")
@@ -337,7 +357,6 @@
 /obj/item/book/granter/trait/gunslinger
 	name = "Tycho: Life of a Lawman"
 	desc = "The memoirs of a self-acclaimed companion to a mythical folk hero, between the blustering and tales of Texas Rangers there are snippets of useful information."
-	oneuse = TRUE
 	granted_trait = TRAIT_NICE_SHOT
 	traitname = "gunslinging"
 	remarks = list("Engravings offer no tactical advantage whatsoever!", "I love to reload during battle.", "There's nothing like the feeling of slamming a long silver bullet into a well greased chamber.", "It doesn't feel right to shoot an unarmed man, but you get over it.", "He was pretty good, but I was better. At least, so I thought.", "The moment any truth is passed on, it starts turning into fiction. The problem is, fiction inspires people more than facts.")
@@ -347,7 +366,6 @@
 /obj/item/book/granter/trait/iron_fist
 	name = "Brawler's Guide to Fisticuffs"
 	desc = "An advanced manual on fistfighting. It has pictures, too!"
-	oneuse = TRUE
 	granted_trait = TRAIT_IRONFIST
 	traitname = "punching"
 	remarks = list("Keep your fists up...", "Don't clench your thumb in your fist, or you might break it...", "Turn into your punch, and put your body weight behind it...", "Footwork is everything, make sure to step into your punches...", "Aim for their jaw for an easy K-O...")

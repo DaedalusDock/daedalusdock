@@ -360,7 +360,7 @@ GLOBAL_LIST_INIT(loot_t5_melee, list(
 	/obj/item/melee/energy/thermic_lance,
 	/obj/item/twohanded/chainsaw,
 	/obj/item/melee/energy/axe/protonaxe,
-	/obj/item/melee/powered/ripper,
+//	/obj/item/melee/powered/ripper,
 //	/obj/item/melee/powerfist,
 	/obj/item/twohanded/sledgehammer/rockethammer,
 //	/obj/item/gun/ballistic/revolver/ballisticfist,

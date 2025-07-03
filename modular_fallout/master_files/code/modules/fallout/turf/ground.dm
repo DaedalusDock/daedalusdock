@@ -125,7 +125,7 @@
 	footstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND
 	clawfootstep = FOOTSTEP_SAND
-	var/dug = FALSE				//FALSE = has not yet been dug, TRUE = has already been dug
+	can_dig = TRUE
 	var/pit_sand = 1
 	var/storedindex = 0			//amount of stored items
 	var/mob/living/gravebody	//is there a body in the pit?
@@ -338,7 +338,7 @@
 	. = ..()
 
 /turf/open/indestructible/ground/outside/snow
-	initial_gas_mix = "o2=22;n2=82;TEMP=285"
+	initial_gas = "o2=22;n2=82;TEMP=285"
 	name = "snow"
 	icon = 'icons/turf/snow.dmi'
 	desc = "Looks cold."

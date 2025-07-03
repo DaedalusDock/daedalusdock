@@ -3,7 +3,7 @@
 	result = /obj/item/stack/gauze/adv/one
 	time = 50
 	reqs = list(/obj/item/stack/gauze = 1,
-				/datum/reagent/abraxo_cleaner = 10)
+				/datum/reagent/space_cleaner = 10)
 	category = CAT_MEDICAL
 	blacklist = list(/obj/item/stack/gauze/improvised)
 
@@ -82,6 +82,7 @@
 	time = 45
 	category = CAT_MEDICAL
 */
+/*
 /datum/crafting_recipe/smell_salts
 	name = "Smelling salts"
 	result = /obj/item/smelling_salts/crafted
@@ -91,7 +92,7 @@
 				/obj/item/food/grown/bee_balm = 2) //Beebalm was a smelling salt utilized in the victorian era for vaporous herbal remedies to things like sore throats.
 	time = 50
 	category = CAT_MEDICAL
-
+*/
 /datum/crafting_recipe/improvisedstimpak
 	name = "Imitation Stimpak"
 	result = /obj/item/reagent_containers/hypospray/medipen/stimpak/imitation

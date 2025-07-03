@@ -16,8 +16,8 @@
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	cold_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
-	repair_kit = /obj/item/repair_kit/pa
-	protected_zones = list(BODY_ZONE_CHEST, BODY_ZONE_PRECISE_GROIN, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
+	var/repair_kit = /obj/item/repair_kit/pa
+	body_parts_covered = list(BODY_ZONE_CHEST, BODY_ZONE_PRECISE_GROIN, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	clothing_flags = BLOCKS_SHOVE_KNOCKDOWN|THICKMATERIAL
 
 	var/deflection_chance = 15 //Chance for the power armor to redirect a blocked projectile
@@ -31,7 +31,14 @@
 	var/powered = TRUE
 	var/armor_block_chance = 100 //Chance for the power armor to block a projectile
 
+/obj/item/repair_kit/pa
+	name = "power armor pa repair kit"
+	desc = "a repair kit for you're mome"
+	icon = 'modular_fallout/master_files/icons/obj/power.dmi'
 
+#warn fix power armor or remove/rework it!
+
+/*
 /obj/item/fusion_fuel
 	name = "fusion fuel cell"
 	desc = "Some fusion fuel used to recharge the fusion cores of Power Armor."
@@ -133,6 +140,7 @@
 				to_chat(loc, "<span class='warning'>Your power armor absorbs the projectile's impact!</span>")
 			return
 	return
+*/
 
 /obj/item/clothing/suit/armor/f13/power_armor/t45b/restored
 	name = "restored T-45b power armor"

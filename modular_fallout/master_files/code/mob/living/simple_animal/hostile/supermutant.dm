@@ -398,7 +398,7 @@
 	var/turf/E = get_edge_target_turf(src, dir)
 	var/range = 10
 	var/turf/previousturf = get_turf(src)
-	for(var/turf/J in getline(src,E))
+	for(var/turf/J in get_line(src,E))
 		if(!range || (J != previousturf && (!previousturf.atmos_adjacent_turfs || !previousturf.atmos_adjacent_turfs[J])))
 			break
 		range--

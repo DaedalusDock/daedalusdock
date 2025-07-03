@@ -1,7 +1,7 @@
 /mob/living/simple_animal/hostile/centaur
 	name = "Centaur"
 	desc = "The result of infection by FEV gone horribly wrong."
-	icon = 'modular_fallout/master_files/icons/fallout/mobs/hostile/mutants/monsters.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/mobs/hostile/monsters.dmi'
 	icon_state = "centaur"
 	icon_living = "centaur"
 	icon_dead = "centaur_d"

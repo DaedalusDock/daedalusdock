@@ -9,7 +9,7 @@
 	icon_state = "legrecruit"
 	inhand_icon_state = "legarmor"
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS
-	allowed = list(/obj/item/gun, /obj/item/melee/onehanded, /obj/item/throwing_star/spear, /obj/item/restraints/legcuffs/bola, /obj/item/twohanded, /obj/item/melee/powered, /obj/item/melee/smith, /obj/item/melee/smith/twohand)
+	allowed = list(/obj/item/gun, /obj/item/melee/onehanded, /obj/item/throwing_star/spear, /obj/item/restraints/legcuffs/bola, /obj/item/twohanded, /obj/item/melee/smith, /obj/item/melee/smith/twohand)
 	armor = list("tier" = 2, ENERGY = 10, BOMB = 16, BIO = 30, RAD = 20, FIRE = 50, ACID = 0)
 
 /obj/item/clothing/suit/armor/f13/legion/Initialize()

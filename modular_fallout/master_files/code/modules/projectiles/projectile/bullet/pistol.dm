@@ -24,7 +24,7 @@ Civilian round				=	-10% damage. AP reduced by 50%
 	name = ".22lr bullet"
 	damage = 12
 	armor_penetration = 0
-	damage_falloff = 0.15
+	damage_falloff = 0.5
 	penetration_falloff = 0
 
 /obj/projectile/bullet/c22/rubber
@@ -37,7 +37,7 @@ Civilian round				=	-10% damage. AP reduced by 50%
 
 /////////////////
 // .38 SPECIAL //
-/////////////////		-Light round, slight damage focus
+/////////////////		-Light round
 
 /obj/projectile/bullet/c38
 	name = ".38 bullet"
@@ -61,16 +61,16 @@ Civilian round				=	-10% damage. AP reduced by 50%
 	name = "9mm FMJ bullet"
 	damage = 25
 	armor_penetration = 5
-	damage_falloff = 0.15
-	penetration_falloff = 0.25
+	damage_falloff = 0.25
+	penetration_falloff = 0.5
 
 /obj/projectile/bullet/c9mm/op
 	name = "9mm +P bullet"
 	damage = 28
 	armor_penetration = 10
 	var/extra_speed = 500
-	damage_falloff = 0.2
-	penetration_falloff = 0.25
+	damage_falloff = 0.25
+	penetration_falloff = 0.5
 
 /obj/projectile/bullet/c9mm/rubber
 	name = "9mm rubber bullet"
@@ -100,8 +100,8 @@ Civilian round				=	-10% damage. AP reduced by 50%
 /obj/projectile/bullet/c10mm
 	name = "10mm FMJ bullet"
 	damage = 33
-	armor_penetration = 0
 	damage_falloff = 0.25
+	penetration_falloff = 0.5
 
 /obj/projectile/bullet/c10mm/rubber
 	name = "10mm rubber bullet"
@@ -129,12 +129,14 @@ Civilian round				=	-10% damage. AP reduced by 50%
 	damage = 30
 	armor_penetration = 0
 	damage_falloff = 0.25
+	penetration_falloff = 0.5
 
 /obj/projectile/bullet/c45/op
 	name = ".45 +P bullet"
 	damage = 32
 	var/extra_speed = 500
 	damage_falloff = 0.25
+	penetration_falloff = 0.5
 
 /obj/projectile/bullet/c45/rubber
 	name = ".45 rubber bullet"
@@ -151,9 +153,9 @@ Civilian round				=	-10% damage. AP reduced by 50%
 /obj/projectile/bullet/a357
 	name = ".357 FMJ bullet"
 	damage = 35
-	armor_penetration = 5
+	armor_penetration = 10
 	damage_falloff = 0.25
-	penetration_falloff = 0.25
+	penetration_falloff = 0.5
 
 /obj/projectile/bullet/a357/hp
 	name = ".357 JHP bullet"
@@ -170,11 +172,11 @@ Civilian round				=	-10% damage. AP reduced by 50%
 	name = ".44 FMJ bullet"
 	damage = 45
 	armor_penetration = 10
-	damage_falloff = 0.25
-	penetration_falloff = 0.35
+	damage_falloff = 0.5
+	penetration_falloff = 0.5
 
-/obj/projectile/bullet/m44
-	name = ".44 FMJ bullet"
+/obj/projectile/bullet/m44/hp
+	name = ".44 JHP bullet"
 	damage = 65
 	weak_against_armor = 2
 	armor_penetration = 0
@@ -188,8 +190,8 @@ Civilian round				=	-10% damage. AP reduced by 50%
 	name = ".45-70 FMJ bullet"
 	damage = 50
 	armor_penetration = 15
-	damage_falloff = 0.1
-	penetration_falloff = 0.2
+	damage_falloff = 0.25
+	penetration_falloff = 0.5
 
 /obj/projectile/bullet/c4570/hp
 	name = ".45-70 JHP bullet"
@@ -206,8 +208,8 @@ Civilian round				=	-10% damage. AP reduced by 50%
 	name = "14mm FMJ bullet"
 	damage = 60
 	armor_penetration = 10
-	damage_falloff = 1.5
-	penetration_falloff = 0.5
+	damage_falloff = 0.5
+	penetration_falloff = 1
 
 //////////////////////
 //SPECIAL AMMO TYPES//
@@ -218,8 +220,8 @@ Civilian round				=	-10% damage. AP reduced by 50%
 	name = ".45 LC bullet"
 	damage = 45
 	armor_penetration = 10
-	damage_falloff = 10
-	penetration_falloff = 0.25
+	damage_falloff = 0.5
+	penetration_falloff = 1
 
 /////////////
 // NEEDLER //

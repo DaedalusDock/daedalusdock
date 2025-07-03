@@ -65,12 +65,7 @@
 
 /obj/item/clothing/head/helmet/f13/combat/Initialize()
 	. = ..()
-	AddComponent(/datum/component/spraycan_paintable)
-	START_PROCESSING(SSobj, src)
-
-/obj/item/clothing/head/helmet/f13/combat/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	return ..()
+	ADD_TRAIT(src, TRAIT_SPRAY_PAINTABLE, INNATE_TRAIT)
 
 /obj/item/clothing/head/helmet/f13/combat/mk2
 	name = "reinforced combat helmet"
@@ -115,9 +110,9 @@
 	equip_delay_other = 60
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 
-/obj/item/clothing/head/helmet/f13/combat/environmental/Initialize()
+/obj/item/clothing/head/helmet/f13/combat/environmental/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/rad_insulation, RAD_NO_INSULATION, TRUE, FALSE)
+	AddElement(/datum/element/radiation_protected_clothing)
 
 //Sulphite Helm
 

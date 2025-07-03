@@ -8,6 +8,7 @@
 	var/broken = 0 //similar to machinery's stat BROKEN
 	var/barricade = TRUE //set to true to allow projectiles to always pass over it, default false (checks vs density)
 	var/proj_pass_rate = 65 //if barricade=1, sets how many projectiles will pass the cover. Lower means stronger cover
+	var/barrier_strength = BARRIER_NORMAL // Amount of AP removed from a projectile hitting this and passing through.
 	layer = BELOW_OBJ_LAYER
 	flags_ricochet = RICOCHET_HARD
 	receive_ricochet_chance_mod = 0.6
@@ -76,3 +77,45 @@
 		return 0
 	else // All other than projectiles should use the regular CanPass inheritance
 		return ..()
+
+#warn fix this ai slop
+
+/*
+/obj/structure/CanPass(atom/movable/mover, border_dir)
+	// So bullets will fly over and stuff.
+	if(istype(mover, /obj/item/projectile)) // Treats specifically projectiles
+		var/obj/item/projectile/proj = mover
+
+		// Check if firer is adjacent (original behavior)
+		if(proj.firer && Adjacent(proj.firer))
+			return 1
+
+		// Check barrier penetration system
+		if(barrier_strength > 0) // Only apply barrier logic if structure has barrier_strength
+			// If projectile's armor penetration is less than barrier strength, it cannot pass
+			if(proj.armor_penetration < barrier_strength)
+				return 0
+
+			// Projectile has enough penetration to pass through
+			// Calculate armor penetration reduction
+			var/penetration_loss = proj.armor_penetration - (barrier_strength / proj.barrier_penetration_retention)
+			proj.armor_penetration = max(0, proj.armor_penetration - penetration_loss)
+
+			return 1
+
+		// Fall back to original probability system for structures without barrier_strength
+		else if(prob(proj_pass_rate))
+			return 1
+		else if(barricade == FALSE)
+			return !density
+		else if(density == FALSE)
+			return 1
+
+		return 0
+	else // All other than projectiles should use the regular CanPass inheritance
+		return ..()
+
+// You'll need to add this variable to your structure definition
+/obj/structure
+	var/barrier_strength = 0 // Default to 0 for structures without barriers
+*/

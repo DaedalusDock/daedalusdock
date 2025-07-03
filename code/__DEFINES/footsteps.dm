@@ -39,6 +39,11 @@
 ///the name of the index key for priority
 #define STEP_SOUND_PRIORITY "step_sound_priority"
 
+#define FOOTSTEP_LOOSE_SAND "sand"
+#define FOOTSTEP_SNOW "snow"
+#define FOOTSTEP_GRAVEL "gravel"
+#define FOOTSTEP_ROAD	"road"
+
 /*
 
 id = list(
@@ -98,7 +103,33 @@ GLOBAL_LIST_INIT(footstep, list(
 		'sound/effects/footstep/catwalk2.ogg',
 		'sound/effects/footstep/catwalk3.ogg',
 		'sound/effects/footstep/catwalk4.ogg'), 100, 1),
+	FOOTSTEP_SNOW = list(list(
+		'modular_fallout/master_files/sound/f13effects/footstep/snow1.ogg',
+		'modular_fallout/master_files/sound/f13effects/footstep/snow2.ogg',
+		'modular_fallout/master_files/sound/f13effects/footstep/snow3.ogg',
+		'modular_fallout/master_files/sound/f13effects/footstep/snow4.ogg',
+		'modular_fallout/master_files/sound/f13effects/footstep/snow5.ogg'), 100, 1),
+	FOOTSTEP_GRAVEL = list(list(
+		'modular_fallout/master_files/sound/f13effects/footstep/gravel1.ogg',
+		'modular_fallout/master_files/sound/f13effects/footstep/gravel2.ogg',
+		'modular_fallout/master_files/sound/f13effects/footstep/gravel3.ogg',
+		'modular_fallout/master_files/sound/f13effects/footstep/gravel4.ogg'), 100, 1),
+	FOOTSTEP_LOOSE_SAND = list(list(
+		'modular_fallout/master_files/sound/f13effects/footstep/sand1.ogg',
+		'modular_fallout/master_files/sound/f13effects/footstep/sand2.ogg',
+		'modular_fallout/master_files/sound/f13effects/footstep/sand3.ogg',
+		'modular_fallout/master_files/sound/f13effects/footstep/sand4.ogg'), 100, 1),
+	FOOTSTEP_ROAD = list(list(
+		'modular_fallout/master_files/sound/f13effects/footstep/Road/road_walk1.ogg',
+		'modular_fallout/master_files/sound/f13effects/footstep/Road/road_walk2.ogg',
+		'modular_fallout/master_files/sound/f13effects/footstep/Road/road_walk3.ogg',
+		'modular_fallout/master_files/sound/f13effects/footstep/Road/road_walk4.ogg',
+		'modular_fallout/master_files/sound/f13effects/footstep/Road/road_walk5.ogg',
+		'modular_fallout/master_files/sound/f13effects/footstep/Road/road_walk6.ogg'), 50, 1),
 ))
+
+#warn un modular edit!!
+
 //bare footsteps lists
 GLOBAL_LIST_INIT(barefootstep, list(
 	FOOTSTEP_WOOD_BAREFOOT = list(list(

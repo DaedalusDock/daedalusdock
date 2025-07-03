@@ -12,7 +12,7 @@
 /turf/closed/wall/f13/ruins
 	name = "ruins"
 	desc = "All what has left from the good old days."
-	icon = 'modular_fallout/master_files/icons/turf/walls/f13composite.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/turfs/walls/f13composite.dmi'
 	icon_state = "ruins"
 	hardness = 70
 	explosion_block = 2
@@ -38,14 +38,14 @@
 	icon = 'modular_fallout/master_files/icons/fallout/turfs/walls/house.dmi'
 	icon_state = "house0"
 	hardness = 50
-	canSmoothWith = list(/turf/closed/wall/f13/wood/house, /turf/closed/wall/f13/wood/house/broken, /turf/closed/wall, /turf/closed/wall/f13/wood/house/clean)
-
+	canSmoothWith = list(/turf/closed/wall/f13/wood/house, /turf/closed/wall)
+/*
 /turf/closed/wall/f13/wood/house/clean
 	icon_state = "house0-clean"
 
 /turf/closed/wall/f13/wood/house/clean/relative()
 	icon_state = "[icon_type_smooth][junction]-clean"
-
+*/
 /turf/closed/wall/f13/wood/interior
 	name = "interior wall"
 	desc = "Interesting, what kind of material they have used - these wallpapers still look good after all the centuries..."
@@ -58,13 +58,15 @@
 /turf/closed/wall/f13/store
 	name = "store wall"
 	desc = "A pre-War store wall made of solid concrete."
-	icon = 'modular_fallout/master_files/icons/turf/walls/f13store.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/turfs/walls/f13store.dmi'
 	icon_state = "store"
 	hardness = 80
 	//	disasemblable = 0
 	baseturfs = /turf/open/indestructible/ground/outside/ruins
 	plating_material = null
-	canSmoothWith = list(/turf/closed/wall/f13/store, /turf/closed/wall/f13/store/constructed, /turf/closed/wall,)
+	canSmoothWith = list(/turf/closed/wall/f13/store, /turf/closed/wall,)
+
+#warn add clean wooden walls and constructed concrete walls to smoothing
 
 /turf/closed/wall/f13/tentwall
 	name = "tent wall"
@@ -81,14 +83,14 @@
 /turf/closed/wall/f13/supermart
 	name = "supermart wall"
 	desc = "A pre-War supermart wall made of reinforced concrete."
-	icon = 'modular_fallout/master_files/icons/turf/walls/f13superstore.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/turfs/walls/f13superstore.dmi'
 	icon_state = "supermart"
 	hardness = 90
 	explosion_block = 2
 	baseturfs = /turf/open/indestructible/ground/outside/ruins
 	//	disasemblable = 0
 	plating_material = null
-	canSmoothWith = list(/turf/closed/wall/f13/supermart, /turf/closed/wall/mineral/concrete, /turf/closed/wall,)
+	canSmoothWith = list(/turf/closed/wall/f13/supermart, /turf/closed/wall,)
 
 /turf/closed/wall/f13/tunnel
 	name = "utility tunnel wall"
@@ -105,7 +107,6 @@
 	desc = "A sturdy and cold metal wall."
 	icon = 'modular_fallout/master_files/icons/fallout/turfs/walls/vault.dmi'
 	icon_state = "vault0"
-	icon_type_smooth = "vault"
 	hardness = 130
 	explosion_block = 5
 	canSmoothWith = list(/turf/closed/wall/f13/vault, /turf/closed/wall/r_wall/f13/vault, /turf/closed/wall)

@@ -31,7 +31,6 @@
 	name = "heavy tribal armor"
 	desc = "(V) Heavy armor make of sturdy leather and pieces of bone. Worn by seasoned veterans within the Wayfinder tribe."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/armored_heavy.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/armor_heavy.dmi'
 	icon_state = "tribal_heavy"
 	inhand_icon_state = "tribal_heavy"
 	armor = list("tier" = 5, ENERGY = 45, BOMB = 55, BIO = 60, RAD = 15, FIRE = 60, ACID = 30)

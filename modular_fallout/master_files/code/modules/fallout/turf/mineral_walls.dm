@@ -125,7 +125,7 @@
 			icon_state = "wood2"
 		else
 			icon_state = "wood"
-
+/*
 /turf/closed/wall/mineral/iron
 	name = "rough metal wall"
 	desc = "A wall with rough metal plating."
@@ -149,6 +149,7 @@
 	plating_material = /obj/item/stack/sheet/mineral/abductor
 	slicing_duration = 200   //alien wall takes twice as much time to slice
 	explosion_block = 3
+*/
 /*
 /turf/closed/wall/mineral/titanium //has to use this path due to how building walls works
 	name = "wall"

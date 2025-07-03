@@ -102,7 +102,6 @@
 	name = "hazmat suit"
 	desc = "(II) Yellow Level A , hazmat protective suit.<br>You can see some numbers on the tag: 35 56."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/suits_utility.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/suit_utility.dmi'
 	icon_state = "hazmat"
 	inhand_icon_state = "hazmat"
 

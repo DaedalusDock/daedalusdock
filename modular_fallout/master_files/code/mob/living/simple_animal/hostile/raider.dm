@@ -46,9 +46,7 @@
 // Thief mob
 /mob/living/simple_animal/hostile/raider/thief
 	desc = "Another murderer churned out by the wastes. This one looks like they have sticky fingers..."
-
-/mob/living/simple_animal/hostile/raider/thief/movement_delay()
-	return -2
+	move_delay_modifier = -2
 
 /mob/living/simple_animal/hostile/raider/thief/AttackingTarget()
 	if(ishuman(target))

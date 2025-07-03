@@ -165,11 +165,10 @@
 	name = "patched heavy leather cloak"
 	desc = "A robust cloak made from layered gecko skin patched with various bits of leather from dogs and other animals, able to absorb more force than one would expect from leather."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/armored_light.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/armor_light.dmi'
 	icon_state = "cloak_outcast"
 	inhand_icon_state = "cloak_outcast"
 	armor = list(BLUNT = 35, PUNCTURE = 20, SLASH = 45, LASER = 10, ENERGY = 10, BOMB = 25, BIO = 20, RAD = 30, FIRE = 30, ACID = 20)
-	hoodtype = /obj/item/clothing/head/hooded/cloakhood/tribaloutcast
+	hoodtype = /obj/item/clothing/head/hooded/cloakhood/outcast
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 
 /obj/item/clothing/head/hooded/cloakhood/outcast
@@ -354,7 +353,7 @@
 /obj/item/clothing/suit/f13/medium/combat
 	name = "combat armor"
 	desc = "A set of lightweight, minimalist pre-war military grade armor, this one is still in good condition."
-	icon = 'modular_fallout/master_files/icons/obj/clothing/suits.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/clothing/armored_medium.dmi'
 	icon_state = "combat_armor_mk2"
 	inhand_icon_state = "combat_armor_mk2"
 	body_parts_covered = CHEST|GROIN

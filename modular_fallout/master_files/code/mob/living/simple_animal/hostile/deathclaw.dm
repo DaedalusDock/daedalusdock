@@ -6,7 +6,7 @@
 /mob/living/simple_animal/hostile/deathclaw
 	name = "deathclaw"
 	desc = "A massive, reptilian creature with powerful muscles, razor-sharp claws, and aggression to match."
-	icon = 'modular_fallout/master_files/icons/fallout/mobs/hostile/mutants/deathclaw.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/mobs/hostile/deathclaw.dmi'
 	icon_state = "deathclaw"
 	icon_living = "deathclaw"
 	icon_dead = "deathclaw_dead"
@@ -83,13 +83,13 @@
 	melee_damage_lower = 80
 	melee_damage_upper = 85
 	armor_penetration = 0.85
-
+/*
 /mob/living/simple_animal/hostile/deathclaw/legendary/death(gibbed)
 	var/turf/T = get_turf(src)
 	if(prob(60))
 		new /obj/item/melee/unarmed/deathclawgauntlet(T)
 	. = ..()
-
+*/
 /mob/living/simple_animal/hostile/deathclaw/bullet_act(obj/projectile/Proj)
 	if(!Proj)
 		return

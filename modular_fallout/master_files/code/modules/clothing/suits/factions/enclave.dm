@@ -21,9 +21,9 @@
 	equip_delay_other = 60
 	flags_inv = HIDEJUMPSUIT
 
-/obj/item/clothing/suit/armor/f13/environmentalsuit/Initialize()
+/obj/item/clothing/suit/armor/f13/environmentalsuit/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/rad_insulation, RAD_NO_INSULATION, TRUE, FALSE)
+	AddElement(/datum/element/radiation_protected_clothing)
 
 /obj/item/clothing/suit/armor/f13/combat/remnant
 	name = "remnant combat armor"

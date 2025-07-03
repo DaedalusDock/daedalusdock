@@ -2,7 +2,6 @@
 	name = "joy mask"
 	desc = "Express your happiness or hide your sorrows with this laughing face with crying tears of joy cutout."
 	icon_state = "joy"
-	mutantrace_variation = STYLE_MUZZLE
 
 //NCR Facewrap
 
@@ -14,8 +13,7 @@
 	flags_inv = HIDEFACE
 	flags_cover = MASKCOVERSMOUTH
 	visor_flags_cover = MASKCOVERSMOUTH
-	gas_transfer_coefficient = 0.9
-	permeability_coefficient = 0.01
+\	permeability_coefficient = 0.01
 	armor = list(BLUNT = 0, PUNCTURE = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 0, ACID = 0)
 	actions_types = list(/datum/action/item_action/adjust)
 
@@ -30,7 +28,6 @@
 	name = "legion mask template"
 	desc = "Should not exist."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/masks.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/mask.dmi'
 	flags_inv = HIDEFACE
 	visor_flags_inv = HIDEFACE
 	adjusted_flags = null
@@ -60,7 +57,6 @@
 	name = "decanus bandana"
 	desc = "A fine decan bandana in dark red."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/masks.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/mask.dmi'
 	icon_state = "legdecan"
 
 /obj/item/clothing/mask/bandana/legion/legcenturion

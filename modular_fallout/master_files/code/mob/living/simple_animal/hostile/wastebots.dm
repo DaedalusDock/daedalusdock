@@ -318,7 +318,7 @@
 	desc = "A modified mr. gutsy, equipped with a more precise flamer, ditching it's plasma weaponry."
 	color = "#B85C00"
 	projectilesound = 'sound/magic/fireball.ogg'
-	projectiletype = modular_fallout/code/modules/projectiles/projectile/bullet/shotgun/incendiary
+	projectiletype = modular_fallout/code/modules/projectiles/projectile/bullet/incendiary
 	extra_projectiles = 1
 
 /mob/living/simple_animal/hostile/handy/assaultron/laser

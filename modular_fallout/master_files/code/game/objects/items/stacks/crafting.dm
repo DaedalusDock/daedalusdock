@@ -85,27 +85,3 @@ GLOBAL_LIST_INIT(powder_recipes, list ( \
 /obj/item/stack/crafting/powder/get_main_recipes()
 	. = ..()
 	. += GLOB.powder_recipes
-
-/// leather
-
-/obj/item/stack/sheet/leather/five
-	amount = 5
-
-/obj/item/stack/sheet/leather/twenty
-	amount = 20
-
-/// end leather
-
-/// glass
-
-/obj/item/stack/sheet/glass/ten
-	amount = 10
-
-/// end glass
-
-/// blackpowder
-
-/obj/item/stack/ore/blackpowder/two
-	amount = 2
-
-/// end blackpowder

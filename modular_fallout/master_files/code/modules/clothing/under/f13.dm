@@ -7,7 +7,7 @@
 	has_sensor = NO_SENSORS //kek
 
 /obj/item/clothing/under/f13/female
-	female_sprite_flags = FEMALE_UNIFORM_TOP
+	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
 
 //ENCLAVE PEACEKEEPERS
 
@@ -699,7 +699,6 @@
 	desc = "Fine handcrafted tribal clothing, now torn and faded. A simple lointcloth that comes with a piece of cloth to cover the chest with as well."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/uniforms.dmi'
 	icon_state = "clothing_tribalout"
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/uniform.dmi'
 	inhand_icon_state = "clothing_tribalout"
 	can_adjust = TRUE
 

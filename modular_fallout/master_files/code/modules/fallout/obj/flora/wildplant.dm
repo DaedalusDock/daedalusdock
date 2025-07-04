@@ -43,7 +43,7 @@
 	if(!iscarbon(user))
 		return
 	if(harvest)
-		if(myseed.plant_datum.base_harvest(user))
+		if(myseed.plant_datum.base_harvest_yield(user))
 			harvest = 0
 			update_icon()
 	else if(dead)

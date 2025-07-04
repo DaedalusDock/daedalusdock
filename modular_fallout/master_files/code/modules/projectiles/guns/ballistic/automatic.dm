@@ -24,14 +24,11 @@
 	var/auto_eject = 0
 	var/auto_eject_sound = null
 	var/alarmed = 0
-	var/select = 1
 	can_suppress = FALSE
 	equipsound = 'modular_fallout/master_files/sound/weapons/equipsounds/riflequip.ogg'
 
 /obj/item/gun/ballistic/automatic/attackby(obj/item/I, mob/user, params)
-	if(user.a_intent == INTENT_HARM)
-		return ..()
-	else if(istype(I, /obj/item/attachments/auto_sear))
+	if(istype(I, /obj/item/attachments/auto_sear))
 		var/obj/item/attachments/auto_sear/A = I
 		if(!auto_sear && can_automatic && semi_auto)
 			if(!user.transferItemToLoc(I, src))
@@ -1229,7 +1226,6 @@
 		..()
 		return	//let them pick it up
 	if(!cover_open || (cover_open && !magazine))
-		..()
 	else if(cover_open && magazine)
 		//drop the mag
 		magazine.update_icon()
@@ -1277,7 +1273,7 @@
 	desc = "The M72 rifle is of German design. It uses an electromagnetic field to propel rounds at tremendous speed... and pierce almost any obstacle. Its range, accuracy and stopping power is almost unparalleled."
 	icon_state = "m72"
 	base_icon_state = "sniper"
-	slot_flags = SLOT_BACK
+	slot_flags = ITEM_SLOT_BACK
 	mag_type = /obj/item/ammo_box/magazine/m2mm
 	burst_size = 1
 	fire_delay = 12

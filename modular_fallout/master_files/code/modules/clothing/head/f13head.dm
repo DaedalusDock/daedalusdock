@@ -167,12 +167,7 @@
 
 /obj/item/clothing/head/helmet/f13/metalmask/Initialize()
 	. = ..()
-	AddComponent(/datum/component/spraycan_paintable)
-	START_PROCESSING(SSobj, src)
-
-/obj/item/clothing/head/helmet/f13/metalmask/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	return ..()
+	ADD_TRAIT(src, TRAIT_SPRAY_PAINTABLE, INNATE_TRAIT)
 
 /obj/item/clothing/head/helmet/f13/metalmask/mk2
 	name = "reinforced metal mask"
@@ -213,20 +208,21 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	item_flags = SLOWS_WHILE_IN_HAND
 	flash_protect = 2
-	speechspan = SPAN_ROBOT //makes you sound like a robot
+//	speechspan = SPAN_ROBOT //makes you sound like a robot
 	heat_protection = HEAD
 	max_heat_protection_temperature = FIRE_HELM_MAX_TEMP_PROTECT
 	cold_protection = HEAD
 	min_cold_protection_temperature = FIRE_HELM_MIN_TEMP_PROTECT
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
-	light_outer_range = 5
+	light_system = OVERLAY_LIGHT_DIRECTIONAL
+	light_outer_range = 6
+	light_power = 0.4
 	light_on = FALSE
 //	darkness_view = 128
 //	lighting_alpha = LIGHTING_PLANE_ALPHA_NV_TRAIT
 	var/emped = 0
 	var/requires_training = TRUE
 	var/armor_block_chance = 0
-	protected_zones = list(BODY_ZONE_HEAD)
+	body_parts_covered = list(BODY_ZONE_HEAD)
 	var/deflection_chance = 0
 	var/armor_block_threshold = 0.2 //projectiles below this will deflect
 	var/melee_block_threshold = 30
@@ -234,7 +230,7 @@
 	var/powerLevel = 7000
 	var/powerMode = 3
 	var/powered = TRUE
-
+/*
 /obj/item/clothing/head/helmet/f13/power_armor/attackby(obj/item/I, mob/user, params)
 	. = ..()
 	if(istype(I,/obj/item/fusion_fuel)&& powered)
@@ -328,7 +324,7 @@
 		if(istype(L))
 			L.update_equipment_speed_mods()
 	return TRUE
-
+*/
 /obj/item/clothing/head/helmet/f13/power_armor/t45b
 	name = "salvaged T-45b helmet"
 	desc = "(VIII) It's a salvaged T-45b power armor helmet."
@@ -721,7 +717,6 @@
 	name = "warrior helmet"
 	desc = "(III) It might have been a cooking pot once, now its a helmet, with a piece of cloth covering the neck from the sun."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/helmets.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/helmet.dmi'
 	icon_state = "wastewar"
 	inhand_icon_state = "wastewar"
 	armor = list("tier" = 3, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 20, ACID = 0)

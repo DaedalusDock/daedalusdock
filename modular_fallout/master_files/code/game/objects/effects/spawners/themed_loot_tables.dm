@@ -395,7 +395,7 @@
 		/obj/item/assembly/igniter,
 		/obj/item/ammo_box/jerrycan,
 		/obj/item/reagent_containers/cup/rag,
-		/obj/item/reagent_containers/cup/glass/bottle/bottle,
+		/obj/item/reagent_containers/cup/glass/bottle,
 		/obj/item/reagent_containers/cup/glass/bottle/welding_fuel,
 		)
 

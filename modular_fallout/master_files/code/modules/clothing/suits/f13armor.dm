@@ -176,7 +176,6 @@
 	desc = "Thick layered leather, patched together."
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/hats.dmi'
 	icon_state = "hood_tribaloutcast"
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/head.dmi'
 	inhand_icon_state = "hood_tribaloutcast"
 	armor = list(BLUNT = 35, PUNCTURE = 20, SLASH = 45, LASER = 10, ENERGY = 10, BOMB = 25, BIO = 20, RAD = 30, FIRE = 30, ACID = 20)
 	flags_inv = HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR
@@ -343,7 +342,7 @@
 	desc = "a steel breastplate inspired by a pre-war design. It provides some protection against impacts, cuts, and medium-velocity bullets. It's pressed steel construction feels heavy."
 	icon_state = "steel_bib"
 	inhand_icon_state = "steel_bib"
-	armor = list(BLUNT = 25, PUNCTURE = 25, SLASH = 35, LASER = 30, ENERGY = 10, BOMB = 5, BIO = 0, RAD = 0, FIRE = 20, ACID = -10)
+	armor = list(BLUNT = 25, PUNCTURE = 35, SLASH = 50, LASER = 30, ENERGY = 10, BOMB = 5, BIO = 0, RAD = 0, FIRE = 20, ACID = -10)
 	slowdown = 0.11
 
 ////////////
@@ -362,12 +361,7 @@
 
 /obj/item/clothing/suit/f13/medium/combat/Initialize()
 	. = ..()
-	AddComponent(/datum/component/spraycan_paintable)
-	START_PROCESSING(SSobj, src)
-
-/obj/item/clothing/suit/armor/f13/combat/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	return ..()
+	ADD_TRAIT(src, TRAIT_SPRAY_PAINTABLE, INNATE_TRAIT)
 
 /obj/item/clothing/suit/f13/medium/combat/dark
 	name = "combat armor"
@@ -377,7 +371,7 @@
 /obj/item/clothing/suit/f13/medium/combat/mk2
 	name = "reinforced combat armor"
 	desc = "A set of pre-war military grade armor, this one is still in good condition, and contains additional plating to cover the arms and legs."
-	icon = 'modular_fallout/master_files/icons/obj/clothing/suits.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/clothing/armored_medium.dmi'
 	icon_state = "combat_armor_mk2"
 	inhand_icon_state = "combat_armor_mk2"
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS
@@ -415,7 +409,7 @@
 	icon_state = "supafly"
 	inhand_icon_state = "supafly"
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS
-	armor = list(BLUNT = 25, PUNCTURE = 40, SLASH = 50, LASER = 20, ENERGY = 10, BOMB = 20, BIO = 0, RAD = 0, FIRE = 25, ACID = 25)
+	armor = list(BLUNT = 25, PUNCTURE = 35, SLASH = 50, LASER = 20, ENERGY = 10, BOMB = 20, BIO = 0, RAD = 0, FIRE = 25, ACID = 25)
 
 /obj/item/clothing/suit/armor/f13/medium/rebel
 	name = "rebel raider armor"
@@ -516,7 +510,7 @@
 	icon_state = "raider_metal"
 	inhand_icon_state = "raider_metal"
 	slowdown = 0.5
-	armor = list(BLUNT = 45, PUNCTURE = 45, SLASH = 55, LASER = 20, ENERGY = 20, BOMB = 30, BIO = 10, RAD = 25, FIRE = 20, ACID = 20)
+	armor = list(BLUNT = 50, PUNCTURE = 45, SLASH = 60, LASER = 20, ENERGY = 20, BOMB = 30, BIO = 10, RAD = 25, FIRE = 20, ACID = 20)
 
 /obj/item/clothing/suit/armored/heavy/recycled_power
 	name = "recycled power armor"
@@ -540,7 +534,7 @@
 	desc = "Heavy armor with ballistic inserts, sewn into a padded riot police coat."
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS
 	slowdown = 0.25
-	armor = list(BLUNT = 70, PUNCTURE = 45, SLASH = 80, LASER = 20, ENERGY = 20, BOMB = 45, BIO = 35, RAD = 10, FIRE = 50, ACID = 10)
+	armor = list(BLUNT = 70, PUNCTURE = 50, SLASH = 80, LASER = 20, ENERGY = 20, BOMB = 45, BIO = 35, RAD = 10, FIRE = 50, ACID = 10)
 
 /obj/item/clothing/suit/armored/heavy/salvaged_raider
 	name = "raider salvaged power armor"
@@ -558,7 +552,7 @@
 	inhand_icon_state = "t45b_salvaged"
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS
 	slowdown = 1
-	armor = list(BLUNT = 65, PUNCTURE = 70, SLASH = 80, LASER = 55, ENERGY = 45, BOMB = 45, BIO = 60, RAD = 30, FIRE = 60, ACID = 20, "wound" = 30)
+	armor = list(BLUNT = 75, PUNCTURE = 70, SLASH = 90, LASER = 55, ENERGY = 45, BOMB = 45, BIO = 60, RAD = 30, FIRE = 60, ACID = 20, "wound" = 30)
 
 /obj/item/clothing/suit/armored/medium/steelbib
 	name = "steel breastplate"

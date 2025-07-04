@@ -19,18 +19,7 @@
 	..()
 	if(istype(A, /obj/item/ammo_box) || istype(A, /obj/item/ammo_casing))
 		chamber_round()
-
-/obj/item/gun/ballistic/revolver/grenadelauncher/cyborg
-	desc = "A 6-shot grenade launcher."
-	name = "multi grenade launcher"
-	icon = 'modular_fallout/master_files/icons/mecha/mecha_equipment.dmi'
-	icon_state = "mecha_grenadelnchr"
-	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/grenademulti
-	pin = /obj/item/firing_pin
-
-/obj/item/gun/ballistic/revolver/grenadelauncher/cyborg/attack_self()
-	return
-
+/*
 /obj/item/gun/ballistic/automatic/gyropistol
 	name = "gyrojet pistol"
 	desc = "A prototype pistol designed to fire self propelled rockets."
@@ -44,30 +33,6 @@
 
 /obj/item/gun/ballistic/automatic/gyropistol/update_icon_state()
 	icon_state = "[initial(icon_state)][magazine ? "loaded" : ""]"
-
-/obj/item/gun/ballistic/automatic/speargun
-	name = "kinetic speargun"
-	desc = "A weapon favored by carp hunters. Fires specialized spears using kinetic energy."
-	icon_state = "speargun"
-	inhand_icon_state  = "speargun"
-	w_class = WEIGHT_CLASS_BULKY
-	force = 10
-	can_suppress = FALSE
-	automatic_burst_overlay = FALSE
-	mag_type = /obj/item/ammo_box/magazine/internal/speargun
-	fire_sound = 'modular_fallout/master_files/sound/weapons/grenadelaunch.ogg'
-	burst_size = 1
-	fire_delay = 0
-	select = 0
-	actions_types = list()
-	casing_ejector = FALSE
-
-/obj/item/gun/ballistic/automatic/speargun/ComponentInitialize()
-	. = ..()
-	AddElement(/datum/element/update_icon_blocker)
-
-/obj/item/gun/ballistic/automatic/speargun/attack_self()
-	return
 
 /obj/item/gun/ballistic/automatic/speargun/attackby(obj/item/A, mob/user, params)
 	var/num_loaded = magazine.attackby(A, user, params, 1)
@@ -164,7 +129,7 @@
 			"<span class='userdanger'>You look around after realizing you're still here, then proceed to choke yourself to death with [src]!</span>")
 		sleep(20)
 		return OXYLOSS
-
+*/
 //Regular Bow
 /obj/item/gun/ballistic/automatic/tribalbow
 	name = "short bow"

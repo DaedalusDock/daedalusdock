@@ -5,9 +5,8 @@
 	var/climb_time = 20
 	var/climb_stun = 20
 	var/mob/living/structureclimber
-	var/broken = 0 //similar to machinery's stat BROKEN
 	var/barricade = TRUE //set to true to allow projectiles to always pass over it, default false (checks vs density)
-	var/proj_pass_rate = 65 //if barricade=1, sets how many projectiles will pass the cover. Lower means stronger cover
+	proj_pass_rate = 65 //if barricade=1, sets how many projectiles will pass the cover. Lower means stronger cover
 	var/barrier_strength = BARRIER_NORMAL // Amount of AP removed from a projectile hitting this and passing through.
 	layer = BELOW_OBJ_LAYER
 	flags_ricochet = RICOCHET_HARD

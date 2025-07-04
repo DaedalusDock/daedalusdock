@@ -986,7 +986,7 @@
 	equip_delay_other = 60
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 
-/obj/item/clothing/head/helmet/f13/envirosuitInitialize(mapload)
+/obj/item/clothing/head/helmet/f13/envirosuit/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/radiation_protected_clothing)
 

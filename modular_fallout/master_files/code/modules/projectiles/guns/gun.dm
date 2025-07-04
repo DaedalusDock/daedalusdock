@@ -7,11 +7,13 @@
 	var/flight_y_offset = 0
 	var/flight_x_offset = 0
 
-	var/knife_x_offset = 0
-	var/knife_y_offset = 0
-
 	var/scope_x_offset = 5
 	var/scope_y_offset = 14
+
+	var/suppressor_y_offset
+	var/suppressor_x_offset
+
+	var/ranged_attack_speed = CLICK_CD_RANGE
 
 	var/scope_state = "scope_medium"
 	var/mutable_appearance/scope_overlay
@@ -108,7 +110,6 @@
 		src.extra_damage -= 1
 
 /obj/item/gun/process_afterattack(atom/target, mob/living/user, flag, params)
-	.=..()
 	if(weapon_weight == WEAPON_HEAVY && user.get_inactive_held_item())
 		to_chat(user, "<span class='userdanger'>You need both hands free to fire \the [src]!</span>")
 		return
@@ -120,7 +121,7 @@
 	var/loop_counter = 0
 
 	if(user)
-		bonus_spread = getinaccuracy(user, bonus_spread, stamloss) //CIT CHANGE - adds bonus spread while not aiming
+		bonus_spread = getinaccuracy(user, bonus_spread, stamina) //CIT CHANGE - adds bonus spread while not aiming
 	if(ishuman(user) && user.a_intent == INTENT_HARM && weapon_weight <= WEAPON_LIGHT)
 		var/mob/living/carbon/human/H = user
 		for(var/obj/item/gun/G in H.held_items)
@@ -133,7 +134,7 @@
 				addtimer(CALLBACK(G, /obj/item/gun.proc/process_fire, target, user, TRUE, params, null, bonus_spread, stam_cost), loop_counter)
 
 	var/stam_cost = getstamcost(user)
-	process_fire(target, user, TRUE, params, null, bonus_spread, stam_cost)
+	do_fire_gun(target, user, TRUE, params, null, bonus_spread, stam_cost)
 /*
 /obj/item/gun/proc/do_fire_gun(atom/target, mob/living/user, message = TRUE, params, zone_override = "", bonus_spread = 0, stam_cost = 0)
 	var/sprd = 0

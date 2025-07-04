@@ -5,6 +5,7 @@
  * @license ISC
  */
 
+import { BooleanLike } from 'common/react';
 import { useEffect } from 'react';
 
 import { Box, Section } from '../../components';
@@ -13,10 +14,10 @@ import type { TerminalData } from './types';
 type TerminalOutputSectionProps = Pick<
   TerminalData,
   'bgColor' | 'displayHTML' | 'fontColor'
->;
+> & { noscroll?: BooleanLike };
 
 export const TerminalOutputSection = (props: TerminalOutputSectionProps) => {
-  const { displayHTML, fontColor, bgColor } = props;
+  const { displayHTML, fontColor, bgColor, noscroll } = props;
 
   useEffect(() => {
     // TODO: replace this with a useRef implementation once Section component supports it
@@ -32,7 +33,7 @@ export const TerminalOutputSection = (props: TerminalOutputSectionProps) => {
   return (
     <Section
       backgroundColor={bgColor}
-      scrollable
+      scrollable={!noscroll}
       fill
       container_id="terminalOutput"
     >
@@ -41,6 +42,7 @@ export const TerminalOutputSection = (props: TerminalOutputSectionProps) => {
         height="100%"
         color={fontColor}
         fontSize="1.2em"
+        preserveWhitespace
         dangerouslySetInnerHTML={{ __html: displayHTML }}
       />
     </Section>

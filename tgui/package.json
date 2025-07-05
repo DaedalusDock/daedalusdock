@@ -36,7 +36,6 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.34.2",
     "eslint-plugin-simple-import-sort": "^12.1.0",
-    "eslint-plugin-sonarjs": "^1.0.3",
     "eslint-plugin-typescript-sort-keys": "^3.2.0",
     "eslint-plugin-unused-imports": "^3.2.0",
     "file-loader": "^6.2.0",

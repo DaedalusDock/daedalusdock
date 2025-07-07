@@ -6,7 +6,7 @@
 	var/climb_stun = 20
 	var/mob/living/structureclimber
 	var/barricade = TRUE //set to true to allow projectiles to always pass over it, default false (checks vs density)
-	proj_pass_rate = 65 //if barricade=1, sets how many projectiles will pass the cover. Lower means stronger cover
+	var/proj_pass_rate2 = 65 //if barricade=1, sets how many projectiles will pass the cover. Lower means stronger cover
 	var/barrier_strength = BARRIER_NORMAL // Amount of AP removed from a projectile hitting this and passing through.
 	layer = BELOW_OBJ_LAYER
 	flags_ricochet = RICOCHET_HARD
@@ -67,7 +67,7 @@
 		var/obj/item/projectile/proj = mover
 		if(proj.firer && Adjacent(proj.firer))
 			return 1
-		else if(prob(proj_pass_rate))
+		else if(prob(proj_pass_rate2))
 			return 1
 		else if(barricade == FALSE)
 			return !density

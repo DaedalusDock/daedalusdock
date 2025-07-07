@@ -185,8 +185,8 @@
 	name = "bone dagger"
 	inhand_icon_state  = "knife_bone"
 	icon_state = "knife_bone"
-	lefthand_file = 'icons/onmob/weapons/weapons/swords_lefthand.dmi'
-	righthand_file = 'icons/onmob/weapons/weapons/swords_righthand.dmi'
+	lefthand_file = 'icons/onmob/inhands/weapons/swords_lefthand.dmi'
+	righthand_file = 'icons/onmob/inhands/weapons/swords_righthand.dmi'
 	desc = "A sharpened bone. The bare minimum in survival."
 	embedding = list("pain_mult" = 4, "embed_chance" = 35, "fall_chance" = 10)
 	force = 24

@@ -1,3 +1,6 @@
+/obj
+	var/demolition_modifier = 1
+
 /obj/hitby(atom/movable/hit_by, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	.=..()
 	var/damage_taken = hit_by.throwforce
@@ -17,7 +20,10 @@
 			hitting_projectile.armor_flag,
 			FALSE,
 			REVERSE_DIR(hitting_projectile.dir),
-			hitting_projectile.armour_penetration,
+			hitting_projectile.armor_penetration,
 		)
 
 	return ..()
+
+/obj/proc/get_demolition_modifier(obj/target)
+	return demolition_mod

@@ -54,19 +54,3 @@
 	volume = 10
 	amount_per_transfer_from_this = 10
 	list_reagents = list(/datum/reagent/drug/psycho = 10)
-
-/obj/item/hypospray/mkii/Initialize()
-	. = ..()
-	if(!spawnwithvial)
-		update_icon()
-		return
-	if(start_vial)
-		vial = new start_vial
-	update_icon()
-
-/obj/item/hypospray/mkii/ComponentInitialize()
-	. = ..()
-	AddElement(/datum/element/update_icon_updates_onmob)
-
-/obj/item/hypospray/mkii/update_icon_state()
-	icon_state = "[initial(icon_state)][vial ? "" : "-e"]"

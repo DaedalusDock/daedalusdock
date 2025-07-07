@@ -13,12 +13,20 @@
 	flags_inv = HIDEFACE
 	flags_cover = MASKCOVERSMOUTH
 	visor_flags_cover = MASKCOVERSMOUTH
-\	permeability_coefficient = 0.01
-	armor = list(BLUNT = 0, PUNCTURE = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 0, ACID = 0)
+	permeability_coefficient = 0.01
 	actions_types = list(/datum/action/item_action/adjust)
 
 /obj/item/clothing/mask/ncr_facewrap/attack_self(mob/user)
 	adjustmask(user)
+
+/obj/item/clothing/mask/ncr_facewrap/AltClick(mob/user)
+	..()
+	if(user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
+		adjustmask(user)
+
+/obj/item/clothing/mask/ncr_facewrap/examine(mob/user)
+	. = ..()
+	. += span_notice("Alt-click [src] to adjust it.")
 
 ///////////////////
 //LEGION BANDANAS//

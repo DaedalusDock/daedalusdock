@@ -226,7 +226,7 @@
 
 /datum/crafting_recipe/extract_gaia
 	name = "Extract gaia"
-	result = /obj/item/reagent_containers/cup/glass/bottle/gaia
+	result = /obj/item/reagent_containers/cup/bottle/gaia
 	reqs = list(/obj/item/food/grown/ambrosia/gaia  = 6,
 	/datum/reagent/water = 50)
 	time = 20

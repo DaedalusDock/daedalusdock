@@ -111,15 +111,6 @@
 				/obj/item/clothing/shoes/laceup
 				)
 
-/obj/effect/spawner/bundle/f13/femsuit
-	name = "female executive suit and shoes"
-	items = list(
-				/obj/item/clothing/under/suit/female,
-				/obj/item/clothing/shoes/laceup
-				)
-
-
-
 /obj/effect/spawner/lootdrop/f13/armor/costumes
 	name = "pre-war costumes spawner"
 	loot = list(
@@ -596,12 +587,12 @@
 				/obj/item/melee/energy/thermic_lance,
 				/obj/item/twohanded/chainsaw,
 				/obj/item/twohanded/sledgehammer/rockethammer,
-				/obj/item/melee/powered/ripper,
+//				/obj/item/melee/powered/ripper,
 				/obj/item/melee/powerfist,
 				/obj/item/melee/energy/axe/protonaxe,
 //				/obj/item/gun/ballistic/revolver/ballisticfist,
 				/obj/item/twohanded/sledgehammer/supersledge,
-				/obj/item/shishkebabpack,
+//				/obj/item/shishkebabpack,
 //				/obj/item/melee/unarmed/deathclawgauntlet,
 //				/obj/item/melee/powerfist/moleminer
 				)
@@ -1485,7 +1476,7 @@
 				/obj/item/toy/xmas_cracker,
 				/obj/item/reagent_containers/cup/bowl,
 				/obj/item/reagent_containers/spray/cleaner,
-				/obj/item/reagent_containers/bucket,
+				/obj/item/reagent_containers/cup/bucket,
 				/obj/item/poster/random_contraband
 				)
 
@@ -1587,7 +1578,6 @@
 				/obj/item/reagent_containers/condiment/saltshaker,
 				/obj/item/reagent_containers/condiment/peppermill,
 				/obj/item/reagent_containers/condiment/soysauce,
-				/obj/item/food/beans,
 				/obj/item/food/cracker,
 				/obj/item/food/lollipop,
 				"" // a chance to spawn nothing
@@ -1611,7 +1601,7 @@
 				/obj/item/stack/crafting/goodparts/five,
 				/obj/item/stack/crafting/electronicparts/three,
 				/obj/item/stack/crafting/electronicparts/five,
-				/obj/item/reagent_containers/glass/bottle/blackpowder,
+				/obj/item/reagent_containers/cup/bottle/blackpowder,
 				/obj/item/crafting/timer,
 				/obj/item/crafting/wonderglue,
 				/obj/item/crafting/duct_tape)

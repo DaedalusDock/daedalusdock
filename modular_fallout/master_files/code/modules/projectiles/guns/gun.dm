@@ -30,7 +30,6 @@
 
 	var/mutable_appearance/suppressor_overlay
 	var/suppressor_state = null
-	var/suppressed = null					//whether or not a message is displayed when fired
 
 	var/mutable_appearance/knife_overlay
 	var/bayonet_state = "bayonetstraight"
@@ -108,13 +107,14 @@
 		src.fire_delay += 0.1
 		src.spread += 2
 		src.extra_damage -= 1
-
-/obj/item/gun/process_afterattack(atom/target, mob/living/user, flag, params)
+/*
+/obj/item/gun/try_fire_gun(atom/target, mob/living/user, proximity, params)
+	.=..()
 	if(weapon_weight == WEAPON_HEAVY && user.get_inactive_held_item())
 		to_chat(user, "<span class='userdanger'>You need both hands free to fire \the [src]!</span>")
 		return
 
-	user.DelayNextAction(ranged_attack_speed)
+//	user.DelayNextAction(ranged_attack_speed)
 
 	//DUAL (or more!) WIELDING
 	var/bonus_spread = 0
@@ -135,6 +135,8 @@
 
 	var/stam_cost = getstamcost(user)
 	do_fire_gun(target, user, TRUE, params, null, bonus_spread, stam_cost)
+*/
+#warn Add all the Fallout code gun adjustments (recoil, gun size/weight, ergonomics)
 /*
 /obj/item/gun/proc/do_fire_gun(atom/target, mob/living/user, message = TRUE, params, zone_override = "", bonus_spread = 0, stam_cost = 0)
 	var/sprd = 0
@@ -174,6 +176,7 @@
 	SSblackbox.record_feedback("tally", "gun_fired", 1, type)
 	return TRUE
 */
+/*
 /obj/item/gun/do_fire_in_burst(mob/living/user, atom/target, message = TRUE, params=null, zone_override = "", sprd = 0, randomized_gun_spread = 0, randomized_bonus_spread = 0, rand_spr = 0, iteration = 0, stam_cost = 0)
 	.=..()
 	if(chambered && chambered.BB)
@@ -204,6 +207,7 @@
 	process_chamber(user)
 	update_icon()
 	return TRUE
+*/
 
 /obj/item/gun/proc/getinaccuracy(mob/living/user, bonus_spread, stamloss)
 	if(inaccuracy_modifier == 0)
@@ -233,9 +237,6 @@
 		. = recoil*5
 
 /obj/item/gun/attackby(obj/item/I, mob/user, params)
-	if(user.a_intent == INTENT_HARM)
-		return ..()
-
 	if(istype(I, /obj/item/flashlight/seclite))
 		if(!can_flashlight)
 			return ..()
@@ -308,13 +309,9 @@
 			return
 	return ..()
 
-
 /obj/item/gun/screwdriver_act(mob/living/user, obj/item/I)
 	. = ..()
 	if(.)
-		return
-
-	if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
 		return
 
 	if(can_flashlight && gun_light)

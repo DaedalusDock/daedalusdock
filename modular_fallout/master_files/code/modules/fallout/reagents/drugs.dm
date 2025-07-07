@@ -15,7 +15,7 @@
 	if(isliving(M))
 		to_chat(M, "<span class='notice'>You come down from your high. The wild ride is unfortunately over...</span>")
 		M.confused += 2
-	
+
 /datum/reagent/drug/jet/on_mob_life(mob/living/carbon/M)
 	M.adjustStaminaLoss(-20, 0)
 	M.set_drugginess(20)

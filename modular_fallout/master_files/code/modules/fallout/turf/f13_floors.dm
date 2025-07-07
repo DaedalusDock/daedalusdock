@@ -33,9 +33,9 @@
 	sunlight_state = SUNLIGHT_SOURCE
 
 /* Outside turfs get global lighting */
-/turf/open/floor/plating/f13/outside/Initialize()
-	. = ..()
-	flags_2 |= GLOBAL_LIGHT_TURF_2
+///turf/open/floor/plating/f13/outside/Initialize()
+//	. = ..()
+//	flags_2 |= GLOBAL_LIGHT_TURF_2
 
 #define GRASS_SPONTANEOUS 		2
 #define GRASS_WEIGHT 			4
@@ -275,7 +275,7 @@
 /turf/open/floor/plating/f13/inside/mountain
 	name = "mountain"
 	desc = "Damp cave flooring."
-	icon = 'icons/turf/f13floors2.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/turfs/f13floors2.dmi'
 	icon_state = "mountain0"
 	var/obj/structure/flora/turfPlant = null
 
@@ -296,7 +296,7 @@
 
 /turf/open/floor/plasteel/f13/vault_floor
 	name = "vault floor"
-	icon = 'icons/turf/f13floors2.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/turfs/f13floors2.dmi'
 	icon_state = "vault_floor"
 
 /turf/open/floor/plasteel/f13/vault_floor/plating

@@ -30,24 +30,23 @@
 
 /obj/item/storage/trash_stack/attack_hand(mob/user)
 	var/turf/ST = get_turf(src)
-	if(user?.a_intent != INTENT_HARM)
-		if(user in loot_players)
-			to_chat(user, "<span class='notice'>You already have looted [src].</span>")
-			return
-		for(var/i=0, i<rand(1,4), i++)
-			var/itemtype= pick_weight(lootable_trash)
-			//var/itemtypebonus= pick_weight(lootable_trash)
-			if(itemtype)
-				to_chat(user, "<span class='notice'>You scavenge through [src].</span>")
-				var/obj/item/item = new itemtype(ST)
-				//if (prob(10+(user.special_l*3.5)))//SPECIAL Integration
-				//	to_chat(user, "<span class='notice'>You get lucky and find even more loot!</span>")
-				//	var/obj/item/bonusitem = new itemtypebonus(ST)
-				//	if(istype(bonusitem))
-				//		bonusitem.from_trash = TRUE
-				if(istype(item))
-					item.from_trash = TRUE
-		loot_players += user
+	if(user in loot_players)
+		to_chat(user, "<span class='notice'>You already have looted [src].</span>")
+		return
+	for(var/i=0, i<rand(1,4), i++)
+		var/itemtype= pick_weight(lootable_trash)
+		//var/itemtypebonus= pick_weight(lootable_trash)
+		if(itemtype)
+			to_chat(user, "<span class='notice'>You scavenge through [src].</span>")
+			var/obj/item/item = new itemtype(ST)
+			//if (prob(10+(user.special_l*3.5)))//SPECIAL Integration
+			//	to_chat(user, "<span class='notice'>You get lucky and find even more loot!</span>")
+			//	var/obj/item/bonusitem = new itemtypebonus(ST)
+			//	if(istype(bonusitem))
+			//		bonusitem.from_trash = TRUE
+			if(istype(item))
+				item.from_trash = TRUE
+	loot_players += user
 	else
 		return ..()
 

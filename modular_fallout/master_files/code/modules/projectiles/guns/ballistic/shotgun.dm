@@ -201,9 +201,10 @@
 	recoil = 0.1
 	spread = 2
 
-/obj/item/gun/ballistic/shotgun/automatic/shoot_live_shot(mob/living/user, pointblank = FALSE, mob/pbtarget, message = 1, stam_cost = 0)
+/obj/item/gun/ballistic/shotgun/automatic/combat/after_firing(mob/living/user)
 	..()
-	src.pump(user)
+	rack()
+
 
 /obj/item/gun/ballistic/shotgun/automatic/combat/update_icon_state()
 	if(!magazine || !magazine.ammo_count(0))

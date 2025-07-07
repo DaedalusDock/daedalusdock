@@ -2,7 +2,6 @@
 /obj/item/clothing/neck/apron
 	name = "apron template"
 	icon = 'modular_fallout/master_files/icons/fallout/clothing/aprons.dmi'
-	mob_overlay_icon = 'modular_fallout/master_files/icons/fallout/onmob/clothes/apron.dmi'
 	w_class = WEIGHT_CLASS_SMALL
 	body_parts_covered = CHEST|GROIN|LEGS
 	permeability_coefficient = 0.9

@@ -928,7 +928,7 @@
 /obj/item/clothing/head/f13/ranger_hat/banded
 	name = "banded cowboy hat"
 	desc = "(II) A grey cowboy hat with a hat band decorated with brassen rings."
-	icon = 'modular_fallout/master_files/icons/mob/clothing/head.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/clothing/hats.dmi'
 	icon_state = "ranger_hat_grey_banded"
 	inhand_icon_state = "ranger_hat_grey_banded"
 

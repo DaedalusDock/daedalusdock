@@ -399,7 +399,7 @@
 	var/range = 10
 	var/turf/previousturf = get_turf(src)
 	for(var/turf/J in get_line(src,E))
-		if(!range || (J != previousturf && (!previousturf.atmos_adjacent_turfs || !previousturf.atmos_adjacent_turfs[J])))
+		if(!range)
 			break
 		range--
 		new /obj/effect/hotspot(J)

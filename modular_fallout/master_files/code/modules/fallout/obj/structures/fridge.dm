@@ -12,7 +12,7 @@
 	for(var/i = 0, i < 3, i++)
 		new /obj/item/food/f13/cram(src)
 	for(var/i = 0, i < 2, i++)
-		new /obj/item/bottle/f13nukacola(src)
+		new /obj/item/reagent_containers/cup/glass/bottle/f13nukacola(src)
 	for(var/i = 0, i < 1, i++)
 		new /obj/item/food/meat/steak/molerat(src)
 

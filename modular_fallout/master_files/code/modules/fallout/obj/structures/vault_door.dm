@@ -83,10 +83,10 @@
 /obj/machinery/doorButtons/vaultButton/proc/toggle_door()
 	var/opened
 	icon_state = "lever0"
-	for(var/obj/machinery/door/poddoor/vault_door/ in GLOB.vault_doors)
-		if(door.id == id)
-			door.toggle()
-			opened = !door.density
+	for(var/obj/machinery/door/poddoor/vault_door in GLOB.vault_doors)
+		if(vault_door.id == id)
+			vault_door.toggle()
+			opened = !vault_door.density
 	spawn(50)
 		if(opened)
 			icon_state = "lever2"

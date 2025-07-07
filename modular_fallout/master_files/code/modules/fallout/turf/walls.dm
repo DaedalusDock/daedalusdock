@@ -146,8 +146,7 @@
 	icon_state = "matrix"
 	var/in_use = FALSE
 
-/turf/closed/indestructible/f13/matrix/MouseDrop_T(atom/dropping, mob/user)
-	. = ..()
+/turf/closed/indestructible/f13/matrix/MouseDroppedOn(atom/dropping, mob/user, params)
 	if(!isliving(user) || user.incapacitated())
 		return //No ghosts or incapacitated folk allowed to do this.
 	if(!ishuman(dropping))

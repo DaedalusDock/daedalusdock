@@ -6,10 +6,11 @@
 	var/message = "A generic message of love or whatever."
 	resistance_flags = FLAMMABLE
 	w_class = WEIGHT_CLASS_TINY
-
+/*
 /obj/item/valentine/Initialize(mapload)
 	message = pick(GLOB.flirts)
 	return ..()
+*/
 #warn note - this is just for old times sake. maybe fix/remove it later.
 /*
 /obj/item/valentine/attackby(obj/item/W, mob/user, params)

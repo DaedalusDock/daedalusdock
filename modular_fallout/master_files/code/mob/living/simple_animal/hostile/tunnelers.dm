@@ -1,7 +1,7 @@
 /mob/living/simple_animal/hostile/trog
 	name = "trog"
 	desc = "A human who has mutated and regressed back to a primal, cannibalistic state."
-	icon = 'modular_fallout/master_files/icons/mob/tunnelers.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/mobs/hostile/monsters/tunnelers.dmi'
 	icon_state = "troglodyte"
 	icon_living = "troglodyte"
 	icon_dead = "trog_dead"

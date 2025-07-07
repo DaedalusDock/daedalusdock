@@ -3,6 +3,7 @@
 /turf
 	var/baseturf_icon
 	var/baseturf_dir = 0
+	var/depth = 0
 
 /turf/open/indestructible/ground
 	icon = 'modular_fallout/master_files/icons/fallout/turfs/ground.dmi'
@@ -54,9 +55,9 @@
 	sunlight_state = SUNLIGHT_SOURCE
 	slowdown = 0.2
 
-/turf/open/indestructible/ground/outside/Initialize()
-	. = ..()
-	flags_2 |= GLOBAL_LIGHT_TURF_2
+///turf/open/indestructible/ground/outside/Initialize()
+//	. = ..()
+//	flags_2 |= GLOBAL_LIGHT_TURF_2
 
 #define GRASS_SPONTANEOUS_GROUND 		2
 #define GRASS_WEIGHT_GROUND			4

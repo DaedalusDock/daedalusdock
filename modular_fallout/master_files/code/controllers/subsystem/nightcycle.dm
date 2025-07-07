@@ -71,7 +71,7 @@ SUBSYSTEM_DEF(nightcycle)
 		last_custom_cycle = world.time
 		new_time = (current_time + 1) % DAY_END
 	else
-		switch (STATION_TIME(FALSE, world.time))
+		switch (station_time(FALSE, world.time))
 			if (CYCLE_SUNRISE to CYCLE_MORNING)
 				new_time = SUNRISE
 			if (CYCLE_MORNING to CYCLE_DAYTIME)

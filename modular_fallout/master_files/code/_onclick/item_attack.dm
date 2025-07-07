@@ -17,12 +17,14 @@
 			return ranged_melee_attack(target, user, params)
 	return afterattack(target, user, FALSE, params)
 
+#warn look at original item_attack.dm and ???
+
 /mob/living/attacked_by(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
 	.=..()
-	var/final_force = CALCULATE_FORCE(attacking_item, attack_modifiers)
+	var/damage = attacking_item.force
 	if(mob_biotypes & MOB_ROBOTIC)
-		final_force *= attacking_item.get_demolition_modifier(src)
-	return ..()
+		damage *= attacking_item.get_demolition_modifier(src)
+	return damage
 
 // druggies
 

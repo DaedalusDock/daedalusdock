@@ -118,7 +118,7 @@
 		/obj/effect/spawner/lootdrop/weapons/collectors = 10,
 		/obj/effect/spawner/lootdrop/weapons/unique = 5,
 		/obj/effect/spawner/lootdrop/f13/traitbooks = 4,
-		/obj/item/reagent_containers/cup/glass/bottle/FEV_solution = 1,
+		/obj/item/reagent_containers/cup/bottle/FEV_solution = 1,
 		)
 
 /////////////////////////
@@ -232,7 +232,7 @@
 		/obj/item/gun/ballistic/shotgun/automatic/combat/auto5 = 2,
 		/obj/effect/spawner/bundle/f13/riotshotgun = 2,
 		/obj/item/shield/riot = 8,
-		/obj/item/melee/baton/classic = 5,
+		/obj/item/melee/baton = 5,
 //		/obj/item/melee/unarmed/sappers = 3,
 		/obj/item/twohanded/fireaxe = 3,
 		/obj/item/twohanded/sledgehammer/rockethammer = 1,
@@ -255,7 +255,7 @@
 		/obj/effect/spawner/bundle/f13/infiltrator = 1,
 		/obj/item/melee/onehanded/knife/bayonet = 10,
 		/obj/item/melee/onehanded/knife/trench = 4,
-		/obj/item/melee/powered/ripper = 3,
+//		/obj/item/melee/powered/ripper = 3,
 		)
 
 /obj/effect/spawner/lootdrop/weapons/oldarmyelite
@@ -388,7 +388,7 @@
 	lootcount = 2
 	loot = list(
 		/obj/item/reagent_containers/food/drinks/flask,
-		/obj/item/reagent_containers/cup/glass/bottle/blackpowder,
+		/obj/item/reagent_containers/cup/bottle/blackpowder,
 		/obj/item/stack/cable_coil,
 		/obj/item/crafting/timer,
 		/obj/item/crafting/coffee_pot,
@@ -396,7 +396,7 @@
 		/obj/item/ammo_box/jerrycan,
 		/obj/item/reagent_containers/cup/rag,
 		/obj/item/reagent_containers/cup/glass/bottle,
-		/obj/item/reagent_containers/cup/glass/bottle/welding_fuel,
+		/obj/item/reagent_containers/cup/bottle/welding_fuel,
 		)
 
 
@@ -438,7 +438,7 @@
 /obj/effect/spawner/lootdrop/kitchen
 	name = "kitchenspawner"
 	loot = list(
-		/obj/item/reagent_containers/glass/beaker/large,
+		/obj/item/reagent_containers/cup/beaker/large,
 		/obj/item/reagent_containers/condiment/saltshaker,
 		/obj/item/knife/kitchen,
 		/obj/item/kitchen/rollingpin,

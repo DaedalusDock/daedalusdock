@@ -46,7 +46,7 @@
 /obj/item/clothing/head/helmet/ComponentInitialize()
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection, list(SLOT_HEAD))*/
-
+/*
 /obj/item/clothing/head/helmet/f13
 	var/vision_flags = 0
 	var/darkness_view = 2 // Base human is 2
@@ -55,7 +55,7 @@
 	var/invis_override = 0
 	var/lighting_alpha
 
-/obj/item/clothing/head/helmet/f13/proc/visor_toggling()
+/obj/item/clothing/head/helmet/f13/visor_toggling()
 	..()
 	if(visor_vars_to_toggle & VISOR_VISIONFLAGS)
 		vision_flags ^= initial(vision_flags)
@@ -63,7 +63,7 @@
 		darkness_view ^= initial(darkness_view)
 	if(visor_vars_to_toggle & VISOR_INVISVIEW)
 		invis_view ^= initial(invis_view)
-
+*/
 //Raider
 /obj/item/clothing/head/helmet/f13/raider
 	name = "base raider helmet"
@@ -436,25 +436,25 @@
 	dog_fashion = null
 
 /obj/item/clothing/head/f13/ncr/steelpot_goggles/attack_self(mob/user)
-	if(can_toggle && !user.incapacitated())
-		if(world.time > cooldown + toggle_cooldown)
-			cooldown = world.time
-			up = !up
-			flags_1 ^= visor_flags
-			flags_inv ^= visor_flags_inv
-			flags_cover ^= visor_flags_cover
-			icon_state = "[initial(icon_state)][up ? "up" : ""]"
-			to_chat(user, "[up ? alt_toggle_message : toggle_message] \the [src]")
+	goggles_toggle(user)
 
-			user.update_inv_head()
-			if(iscarbon(user))
-				var/mob/living/carbon/C = user
-				C.head_update(src, forced = 1)
+/obj/item/clothing/proc/goggles_toggle(mob/user) //proc to toggle welding visors on helmets, masks, goggles, etc.
+	if(!can_use(user))
+		return FALSE
 
-			if(active_sound)
-				while(up)
-					playsound(src.loc, "[active_sound]", 100, 0, 4)
-					sleep(15)
+	visor_toggling()
+
+	to_chat(user, span_notice("You adjust \the [src] [up ? "up" : "down"]."))
+	playsound(src.loc, "[active_sound]", 100, 0, 4)
+
+	if(iscarbon(user))
+		var/mob/living/carbon/C = user
+		flags_1 ^= visor_flags
+		flags_inv ^= visor_flags_inv
+		flags_cover ^= visor_flags_cover
+		icon_state = "[initial(icon_state)][up ? "up" : ""]"
+	update_action_buttons()
+	return TRUE
 
 /obj/item/clothing/head/f13/ncr/steelpot_med
 	name = "NCR medic helmet"

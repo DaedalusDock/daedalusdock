@@ -35,7 +35,7 @@
 /obj/structure/flora/tree/wasteland/Initialize()
 	. = ..()
 	icon_state = "deadtree_[rand(1,6)]"
-	AddComponent(/datum/component/largetransparency, y_offset = 1)
+	AddComponent(/datum/component/seethrough, get_seethrough_map())
 
 
 /obj/structure/flora/wasteplant
@@ -186,7 +186,7 @@ obj/structure/flora/wasteplant/wild_punga
 /obj/structure/flora/tree/joshua/Initialize()
 	. = ..()
 	icon_state = "joshua_[rand(1,4)]"
-	AddComponent(/datum/component/largetransparency, y_offset = 1)
+	AddComponent(/datum/component/seethrough, get_seethrough_map())
 
 /obj/structure/flora/tree/cactus
 	name = "cactus"

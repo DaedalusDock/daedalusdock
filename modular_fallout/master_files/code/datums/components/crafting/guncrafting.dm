@@ -298,7 +298,7 @@
 /obj/machinery/ammobench
 	name = "pre-war reloading press"
 	desc = "A high quality reloading press from before the war. Capable of cheap, mass production of ammunition."
-	icon = 'modular_fallout/master_files/icons/obj/machines/pre-war_press.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/machines/pre-war_press.dmi'
 	icon_state = "pre-war_press"
 	resistance_flags = INDESTRUCTIBLE
 	density = TRUE

@@ -21,7 +21,7 @@
 /obj/effect/decal/waste/Destroy()
 	source.RemoveElement(/datum/element/radioactive)
 	..()
-
+/*
 //Bing bang boom done
 /obj/effect/decal/waste/process()
 	if(QDELETED(src))
@@ -30,7 +30,8 @@
 	for(var/mob/living/carbon/human/victim in view(src,range))
 		if(istype(victim) && victim.stat != DEAD)
 			victim.rad_act(intensity)
-
+*/
+#warn fix radiation
 /obj/effect/decal/marking
 	name = "road marking"
 	desc = "Road surface markings were used on paved roadways to provide guidance and information to drivers and pedestrians.<br>Nowadays, those wandering the wasteland commonly use them as directional landmarks."

@@ -11,12 +11,13 @@
 	layer = BELOW_OBJ_LAYER
 	flags_ricochet = RICOCHET_HARD
 	receive_ricochet_chance_mod = 0.6
-
+/*
 /obj/structure/Destroy()
 	GLOB.cameranet.updateVisibility(src)
 	if(smooth)
 		queue_smooth_neighbors(src)
 	return ..()
+*/
 #warn fix snowflake climbing stuff
 /*
 /obj/structure/on_attack_hand(mob/user, act_intent = user.a_intent, unarmed_attack_flags)
@@ -63,8 +64,8 @@
 	structureclimber = null
 */
 /obj/structure/CanPass(atom/movable/mover, border_dir)//So bullets will fly over and stuff.
-	if(istype(mover, /obj/item/projectile)) // Treats especifically projectiles
-		var/obj/item/projectile/proj = mover
+	if(istype(mover, /obj/projectile)) // Treats especifically projectiles
+		var/obj/projectile/proj = mover
 		if(proj.firer && Adjacent(proj.firer))
 			return 1
 		else if(prob(proj_pass_rate2))

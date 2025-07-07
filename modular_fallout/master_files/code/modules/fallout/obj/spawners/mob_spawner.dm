@@ -1,6 +1,6 @@
 /obj/effect/mob_spawner
 	name = "mob spawner"
-	icon = 'modular_fallout/master_files/icons/mob/screen_gen.dmi'
+	icon = 'icons/hud/screen_gen.dmi'
 	icon_state = "x2"
 	color = "#00FF00"
 	invisibility = 100

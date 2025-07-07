@@ -10,9 +10,6 @@
 	var/scope_x_offset = 5
 	var/scope_y_offset = 14
 
-	var/suppressor_y_offset
-	var/suppressor_x_offset
-
 	var/ranged_attack_speed = CLICK_CD_RANGE
 
 	var/scope_state = "scope_medium"
@@ -442,8 +439,8 @@
 /datum/action/item_action/toggle_scope_zoom
 	name = "Toggle Scope"
 	check_flags = AB_CHECK_CONSCIOUS|AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE
-	icon = 'modular_fallout/master_files/icons/mob/actions/actions_items.dmi'
-	button_icon_state = "sniper_zoom"
+//	icon = 'modular_fallout/master_files/icons/mob/actions/actions_items.dmi'
+//	button_icon_state = "sniper_zoom"
 
 /datum/action/item_action/toggle_scope_zoom/Trigger()
 	var/obj/item/gun/gun = target

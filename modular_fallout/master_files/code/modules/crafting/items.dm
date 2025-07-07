@@ -34,8 +34,8 @@
 /obj/effect/temp_visual/detector_overlay
 	plane = FULLSCREEN_PLANE
 	layer = FLASH_LAYER
-	icon = 'modular_fallout/master_files/icons/effects/ore_visuals.dmi'
-	icon_state = "scan"
+	icon = 'icons/effects/ore_visuals.dmi'
+	icon_state = "rock_Iron"
 	appearance_flags = 0 //to avoid having TILE_BOUND in the flags, so that the 480x480 icon states let you see it no matter where you are
 	duration = 35
 	pixel_x = -224

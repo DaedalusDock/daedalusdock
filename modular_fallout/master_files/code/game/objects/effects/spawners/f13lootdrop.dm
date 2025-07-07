@@ -37,7 +37,6 @@
 				/obj/effect/spawner/bundle/f13/bartender_purple,
 				/obj/effect/spawner/bundle/f13/plaidskirt/bluered,
 				/obj/effect/spawner/bundle/f13/navysuit,
-				/obj/effect/spawner/bundle/f13/femsuit,
 	)
 
 /obj/effect/spawner/bundle/f13/worker

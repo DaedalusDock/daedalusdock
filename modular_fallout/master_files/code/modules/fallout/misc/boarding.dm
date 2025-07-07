@@ -3,7 +3,6 @@
 /obj/structure/barricade/wooden/planks
 	icon = 'modular_fallout/master_files/icons/fallout/objects/decals.dmi'
 	icon_state = "board"
-	obj_integrity = 150
 	max_integrity = 150
 	layer = 5
 	proj_pass_rate = 20
@@ -38,7 +37,7 @@
 
 /obj/structure/barricade/wooden/planks/take_damage()
 	..()
-	if(obj_integrity <= (planks - 1) * 50)
+	if(atom_integrity <= (planks - 1) * 50)
 		planks --
 		if(prob(50))
 			new /obj/item/stack/sheet/mineral/wood(src.loc)
@@ -46,9 +45,9 @@
 	return
 
 /obj/structure/barricade/wooden/planks/proc/checkplanks()
-	obj_integrity = planks * 50 //Each board adds 50 health
+	atom_integrity = planks * 50 //Each board adds 50 health
 	icon_state = "board-[planks]"
-	if(obj_integrity <= 0)
+	if(atom_integrity <= 0)
 		qdel(src)
 
 /obj/structure/barricade/wooden/planks/pregame/Initialize() //Place these in the map maker to have a bit of randomization with boarded up windows/doors

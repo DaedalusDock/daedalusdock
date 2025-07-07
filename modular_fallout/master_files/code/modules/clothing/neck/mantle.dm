@@ -87,6 +87,8 @@
 	icon_state = "treasurer"
 	pocket_storage_component_path = /datum/storage/concrete/pockets/treasurer
 
+
+
 /obj/item/clothing/neck/mantle/peltfur
 	name = "fur pelt"
 	desc = "A pelt made from longhorner fur."

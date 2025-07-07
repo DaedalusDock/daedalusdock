@@ -10,9 +10,6 @@
 	w_class = WEIGHT_CLASS_BULKY
 	storage_type = /datum/storage/money_bag
 
-/obj/item/storage/bag/money/Initialize()
-	. = ..()
-
 /datum/storage/money_bag
 	max_specific_storage = WEIGHT_CLASS_NORMAL
 	max_slots = 40
@@ -42,10 +39,8 @@
 	slot_flags = ITEM_SLOT_ID
 	storage_type = /datum/storage/money_bag/small
 
-/obj/item/storage/bag/money/small/Initialize()
+/obj/item/storage/bag/money/small
 	. = ..()
-
-/datum/storage/money_bag/small
 	max_specific_storage = WEIGHT_CLASS_NORMAL
 	max_slots = 20
 	can_hold = typecacheof(list(/obj/item/coin, /obj/item/stack/spacecash, /obj/item/stack/f13Cash))

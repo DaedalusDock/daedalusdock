@@ -79,7 +79,7 @@
 	anchored = 1
 	density = 1
 	var/id = 1
-
+/*
 /obj/machinery/doorButtons/vaultButton/proc/toggle_door()
 	var/opened
 	icon_state = "lever0"
@@ -92,7 +92,7 @@
 			icon_state = "lever2"
 		else
 			icon_state = "lever"
-
+*/
 /obj/machinery/doorButtons/vaultButton/attackby(obj/item/weapon/W, mob/user, params)
 	attack_hand(user)
 

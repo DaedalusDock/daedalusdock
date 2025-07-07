@@ -26,4 +26,4 @@
 	return ..()
 
 /obj/proc/get_demolition_modifier(obj/target)
-	return demolition_mod
+	return demolition_modifier

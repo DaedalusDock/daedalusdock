@@ -17,29 +17,6 @@ const ControllerKeypad = (props) => {
     ['2', '5', '8', '0'],
     ['3', '6', '9', '#'],
   ];
-  const keyToCode = {
-    Numpad0: '0',
-    Numpad1: '1',
-    Numpad2: '2',
-    Numpad3: '3',
-    Numpad4: '4',
-    Numpad5: '5',
-    Numpad6: '6',
-    Numpad7: '7',
-    Numpad8: '8',
-    Numpad9: '9',
-    NumpadDecimal: '*',
-    NumpadEnter: '#',
-  };
-
-  for (const [code, str] of Object.entries(keyToCode)) {
-    window.addEventListener('keydown', (event) => {
-      if (event.code === code) {
-        act('text', { value: str });
-      }
-    });
-  }
-
   return (
     <Box>
       <Grid width="1px">
@@ -74,9 +51,13 @@ const ControllerKeypad = (props) => {
 export const EmbeddedController = (props) => {
   const { act, data } = useBackend<TerminalData>();
   const { displayHTML, bgColor, fontColor } = data;
+
   return (
     <Window width={412} height={638} theme="retro">
-      <Window.Content className="EmbeddedController_Window">
+      <Window.Content
+        className="EmbeddedController_Window"
+        onKeyDown={handleKeyDown}
+      >
         <Box m="6px">
           <Box
             mb="6px"
@@ -124,3 +105,29 @@ export const EmbeddedController = (props) => {
     </Window>
   );
 };
+
+function handleKeyDown(event: React.KeyboardEvent<any>) {
+  const { act } = useBackend<TerminalData>();
+
+  // This is using the "code" variable of events. Fuck you webshit.
+  // Fuck you webshit for having 3 different identifiers.
+  const keyToCode = {
+    Numpad0: '0',
+    Numpad1: '1',
+    Numpad2: '2',
+    Numpad3: '3',
+    Numpad4: '4',
+    Numpad5: '5',
+    Numpad6: '6',
+    Numpad7: '7',
+    Numpad8: '8',
+    Numpad9: '9',
+    NumpadDecimal: '*',
+    NumpadEnter: '#',
+  };
+
+  const associatedString = keyToCode[event.code];
+  if (typeof associatedString !== 'undefined') {
+    act('text', { value: associatedString });
+  }
+}

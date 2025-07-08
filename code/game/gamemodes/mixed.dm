@@ -8,6 +8,7 @@
 
 /datum/game_mode/mixed
 	name = "Mixed"
+	config_key = "og_mixed"
 	weight = GAMEMODE_WEIGHT_COMMON
 
 	var/list/antag_weight_map = list(

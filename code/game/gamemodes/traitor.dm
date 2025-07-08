@@ -1,5 +1,6 @@
 /datum/game_mode/one_antag/traitor
 	name = "Traitor"
+	config_key = "traitor"
 
 	weight = GAMEMODE_WEIGHT_COMMON
 

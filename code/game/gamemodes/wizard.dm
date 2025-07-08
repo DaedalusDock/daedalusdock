@@ -3,6 +3,7 @@
 
 /datum/game_mode/one_antag/wizard
 	name = "Wizard"
+	config_key = "wizard"
 
 	weight = GAMEMODE_WEIGHT_LEGENDARY
 

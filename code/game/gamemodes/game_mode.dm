@@ -15,12 +15,13 @@
 /datum/game_mode
 	abstract_type = /datum/game_mode
 	datum_flags = DF_ISPROCESSING
-
 	var/name = "oh god oh fuck what did you do"
 	/// This is a WEIGHT not a PROBABILITY
 	var/weight = GAMEMODE_WEIGHT_NEVER
 	///Is the gamemode votable? !Not implimented!
 	var/votable = FALSE
+	/// What data in the gamemode json this gamemode loads from.
+	var/config_key = null
 
 	///Dynamically set to what the problem(s) was/were.
 	var/list/setup_error = list()
@@ -45,6 +46,18 @@
 	var/list/datum/mind/death_timers = list()
 	///A list of names of antagonists who are permanantly. This list will be cut down to spend on midrounds.
 	var/list/permadead_antag_pool = list()
+
+/datum/game_mode/New()
+	. = ..()
+	if(config_key)
+		load_config(config.gamemode_data?[config_key])
+
+/// Load in information from the gamemode_config.json
+/datum/game_mode/proc/load_config(list/config_data)
+	if(!length(config_data))
+		return FALSE
+
+	return TRUE
 
 ///Pass in a list of players about to participate in roundstart, returns an error as a string if the round cannot start.
 /datum/game_mode/proc/check_for_errors()

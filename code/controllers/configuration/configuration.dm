@@ -18,6 +18,9 @@
 	var/list/mode_reports
 	var/list/mode_false_report_weight
 
+	/// Contains gamemode data, if the file isn't found it uses code defaults.
+	var/tmp/list/gamemode_data = list()
+
 	var/motd
 	var/policy
 
@@ -98,6 +101,7 @@
 	LoadTopicRateWhitelist()
 	LoadPolicy()
 	LoadChatFilter()
+	LoadGamemodeData()
 
 	loaded = TRUE
 
@@ -439,6 +443,17 @@ Example config:
 		ic_outside_pda_filter_reasons[line] = "No reason available"
 
 	update_chat_filter_regexes()
+
+/// Load the antagonist json.
+/datum/controller/configuration/proc/LoadGamemodeData()
+	if(!fexists("[directory]/gamemode_config.toml"))
+		return
+
+	try
+		gamemode_data = rustg_read_toml_file("[directory]/gamemode_config.toml")
+
+	catch
+		CRASH("Gamemode toml is malformed.")
 
 /// Will update the internal regexes of the chat filter based on the filter reasons
 /datum/controller/configuration/proc/update_chat_filter_regexes()

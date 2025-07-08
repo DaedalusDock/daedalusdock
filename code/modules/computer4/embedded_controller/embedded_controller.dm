@@ -68,6 +68,13 @@ DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 	QDEL_NULL(internal_computer)
 	return ..()
 
+/obj/machinery/embedded_controller/ShiftClick(mob/user)
+	. = ..()
+	if(!.)
+		return
+
+	ui_interact(src)
+
 /obj/machinery/c4_embedded_controller/update_overlays(updates)
 	. = ..()
 	if(display_icon)

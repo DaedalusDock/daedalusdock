@@ -17,6 +17,29 @@ const ControllerKeypad = (props) => {
     ['2', '5', '8', '0'],
     ['3', '6', '9', '#'],
   ];
+  const keyToCode = {
+    Numpad0: '0',
+    Numpad1: '1',
+    Numpad2: '2',
+    Numpad3: '3',
+    Numpad4: '4',
+    Numpad5: '5',
+    Numpad6: '6',
+    Numpad7: '7',
+    Numpad8: '8',
+    Numpad9: '9',
+    NumpadDecimal: '*',
+    NumpadEnter: '#',
+  };
+
+  for (const [code, str] of Object.entries(keyToCode)) {
+    window.addEventListener('keydown', (event) => {
+      if (event.code === code) {
+        act('text', { value: str });
+      }
+    });
+  }
+
   return (
     <Box>
       <Grid width="1px">

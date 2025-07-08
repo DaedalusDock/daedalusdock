@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/stack/tile/iron)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
+
 /obj/item/stack/tile/iron
 	name = "floor tile"
 	singular_name = "floor tile"
@@ -9,7 +12,6 @@
 	throwforce = 10
 	flags_1 = CONDUCT_1
 	turf_type = /turf/open/floor/iron
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
 	resistance_flags = FIRE_PROOF
 	matter_amount = 1
 	cost = 125

@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/machinery/vending/toyliberationstation)
+	default_armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+
 /obj/machinery/vending/toyliberationstation
 	name = "\improper Syndicate Donksoft Toy Vendor"
 	desc = "An ages 8 and up approved vendor that dispenses toys. If you were to find the right wires, you can unlock the adult mode setting!"
@@ -26,7 +29,6 @@
 		/obj/item/dualsaber/toy = 5,
 		/obj/item/toy/cards/deck/syndicate = 10 //Gambling and it hurts, making it a +18 item
 	)
-	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 	refill_canister = /obj/item/vending_refill/donksoft
 	default_price = PAYCHECK_HARD

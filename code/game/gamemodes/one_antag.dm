@@ -15,6 +15,14 @@
 	QDEL_NULL(antag_selector)
 	return ..()
 
+/datum/game_mode/one_antag/load_config(list/config_data)
+	. = ..()
+	if(!.)
+		return
+
+	if(!isnull(config_data[nameof(antagonist_pop_ratio)]))
+		antagonist_pop_ratio = config_data[nameof(antagonist_pop_ratio)]
+
 /datum/game_mode/one_antag/check_for_errors()
 	. = ..()
 	if(.)

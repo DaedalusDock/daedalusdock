@@ -186,16 +186,18 @@
 	to_chat(user, span_notice("You toggle [src] to \"[mode]\" mode."))
 	update_appearance()
 
-/obj/item/borg/charger/afterattack(obj/item/target, mob/living/silicon/robot/user, proximity_flag)
-	. = ..()
-	if(!proximity_flag || !iscyborg(user))
-		return
+/obj/item/borg/charger/interact_with_atom(atom/interacting_with, mob/living/silicon/robot/user, list/modifiers)
+	if(!iscyborg(user))
+		return NONE
+
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(mode == "draw")
 		if(is_type_in_list(target, charge_machines))
 			var/obj/machinery/target_machine = target
 			if((target_machine.machine_stat & (NOPOWER|BROKEN)) || !target_machine.anchored)
 				to_chat(user, span_warning("[target_machine] is unpowered!"))
-				return
+				return ITEM_INTERACT_BLOCKING
 
 			to_chat(user, span_notice("You connect to [target_machine]'s power line..."))
 			while(do_after(user, target_machine, 1.5 SECONDS, progress = 0))
@@ -224,7 +226,7 @@
 				var/obj/item/gun/energy/energy_gun = target
 				if(!energy_gun.can_charge)
 					to_chat(user, span_warning("[target] has no power port!"))
-					return
+					return ITEM_INTERACT_BLOCKING
 
 			if(!cell.charge)
 				to_chat(user, span_warning("[target] has no power!"))
@@ -234,13 +236,13 @@
 
 			while(do_after(user, target, 1.5 SECONDS, progress = 0))
 				if(!user || !user.cell || mode != "draw")
-					return
+					return ITEM_INTERACT_BLOCKING
 
 				if(!cell || !target)
-					return
+					return ITEM_INTERACT_BLOCKING
 
 				if(cell != target && cell.loc != target)
-					return
+					return  ITEM_INTERACT_BLOCKING
 
 				var/draw = min(cell.charge, cell.chargerate*0.5, user.cell.maxcharge - user.cell.charge)
 				if(!cell.use(draw))
@@ -257,13 +259,13 @@
 			cell = locate(/obj/item/stock_parts/cell) in target
 		if(!cell)
 			to_chat(user, span_warning("[target] has no power cell!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		if(istype(target, /obj/item/gun/energy))
 			var/obj/item/gun/energy/energy_gun = target
 			if(!energy_gun.can_charge)
 				to_chat(user, span_warning("[target] has no power port!"))
-				return
+				return ITEM_INTERACT_BLOCKING
 
 		if(cell.charge >= cell.maxcharge)
 			to_chat(user, span_warning("[target] is already charged!"))
@@ -288,6 +290,8 @@
 			target.update_appearance()
 
 		to_chat(user, span_notice("You stop charging [target]."))
+
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/harmalarm
 	name = "\improper Sonic Harm Prevention Tool"

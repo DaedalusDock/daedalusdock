@@ -3,11 +3,13 @@
 #define MIN_FREEZE_TEMP 50
 #define MAX_FREEZE_TEMP 1000000
 
+TYPEINFO_DEF(/obj/item/assembly/igniter)
+	default_materials = list(/datum/material/iron=500, /datum/material/glass=50)
+
 /obj/item/assembly/igniter
 	name = "igniter"
 	desc = "A small electronic device able to ignite combustible substances."
 	icon_state = "igniter"
-	custom_materials = list(/datum/material/iron=500, /datum/material/glass=50)
 	var/datum/effect_system/spark_spread/sparks
 	heat = 1000
 	drop_sound = 'sound/items/handling/component_drop.ogg'
@@ -49,11 +51,13 @@
 	add_fingerprint(user)
 
 //For the Condenser, which functions like the igniter but makes things colder.
+TYPEINFO_DEF(/obj/item/assembly/igniter/condenser)
+	default_materials = list(/datum/material/iron=250, /datum/material/glass=300)
+
 /obj/item/assembly/igniter/condenser
 	name = "condenser"
 	desc = "A small electronic device able to chill their surroundings."
 	icon_state = "freezer"
-	custom_materials = list(/datum/material/iron=250, /datum/material/glass=300)
 	heat = 200
 
 /obj/item/assembly/igniter/condenser/activate()

@@ -87,12 +87,14 @@
 	var/durability = (current_filters_durability / max_filters_durability) * 100
 	return durability
 
+TYPEINFO_DEF(/obj/item/clothing/mask/gas/atmos)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 20, ACID = 10)
+
 /obj/item/clothing/mask/gas/atmos
 	name = "atmospheric gas mask"
 	desc = "Improved gas mask utilized by atmospheric technicians. It's flameproof!"
 	icon_state = "gas_atmos"
 	inhand_icon_state = "gas_atmos"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 20, ACID = 10)
 	permeability_coefficient = 0.001
 	resistance_flags = FIRE_PROOF
 	max_filters = 3
@@ -116,14 +118,16 @@
 
 // **** Welding gas mask ****
 
+TYPEINFO_DEF(/obj/item/clothing/mask/gas/welding)
+	default_armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 55)
+	default_materials = list(/datum/material/iron=4000, /datum/material/glass=2000)
+
 /obj/item/clothing/mask/gas/welding
 	name = "welding mask"
 	desc = "A gas mask with built-in welding goggles and a face shield. Looks like a skull - clearly designed by a nerd."
 	icon_state = "weldingmask"
 	flash_protect = FLASH_PROTECTION_WELDER
-	custom_materials = list(/datum/material/iron=4000, /datum/material/glass=2000)
 	tint = 2
-	armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 55)
 	actions_types = list(/datum/action/item_action/toggle)
 	flags_inv = HIDEEARS|HIDEEYES|HIDEFACE|HIDESNOUT
 	flags_cover = MASKCOVERSEYES
@@ -143,12 +147,14 @@
 // ********************************************************************
 
 //Plague Dr suit can be found in clothing/suits/bio.dm
+TYPEINFO_DEF(/obj/item/clothing/mask/gas/plaguedoctor)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 2, ENERGY = 2, BOMB = 0, BIO = 75, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/mask/gas/plaguedoctor
 	name = "plague doctor mask"
 	desc = "A modernised version of the classic design, this mask will not only filter out toxins but it can also be connected to an air supply."
 	icon_state = "plaguedoctor"
 	inhand_icon_state = "gas_mask"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 2, ENERGY = 2, BOMB = 0, BIO = 75, FIRE = 0, ACID = 0)
 	flags_cover = MASKCOVERSEYES
 
 /obj/item/clothing/mask/gas/syndicate
@@ -297,12 +303,14 @@
 	icon_state = "carp_mask"
 	flags_cover = MASKCOVERSEYES
 
+TYPEINFO_DEF(/obj/item/clothing/mask/gas/tiki_mask)
+	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 1.25)
+
 /obj/item/clothing/mask/gas/tiki_mask
 	name = "tiki mask"
 	desc = "A creepy wooden mask. Surprisingly expressive for a poorly carved bit of wood."
 	icon_state = "tiki_eyebrow"
 	inhand_icon_state = "tiki_eyebrow"
-	custom_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 1.25)
 	resistance_flags = FLAMMABLE
 	flags_cover = MASKCOVERSEYES
 	max_integrity = 100

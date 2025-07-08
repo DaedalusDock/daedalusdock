@@ -36,6 +36,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 
 		return point
 
+/// The very bloated landmark type that defines how roles spawn. Sometimes. Jobs use special spawn logic, read .github\guides\JOB_SPAWNING.md for more information.
 /obj/effect/landmark/start
 	name = "start"
 	icon = 'icons/mob/autogen_landmarks.dmi'

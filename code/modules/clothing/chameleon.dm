@@ -364,6 +364,9 @@
 		agent_pda.saved_job = job_datum.title
 
 
+TYPEINFO_DEF(/obj/item/clothing/under/chameleon)
+	default_armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/under/chameleon
 //starts off as black
 	name = "black jumpsuit"
@@ -378,7 +381,6 @@
 	random_sensor = FALSE
 	resistance_flags = NONE
 	can_adjust = FALSE
-	armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
@@ -405,6 +407,9 @@
 	. = ..()
 	chameleon_action.emp_randomise(INFINITY)
 
+TYPEINFO_DEF(/obj/item/clothing/suit/chameleon)
+	default_armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/suit/chameleon
 	name = "armor"
 	desc = "A slim armored vest that protects against most types of damage."
@@ -412,7 +417,6 @@
 	inhand_icon_state = "armor"
 	blood_overlay_type = "armor"
 	resistance_flags = NONE
-	armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	var/datum/action/item_action/chameleon/change/chameleon_action
@@ -440,13 +444,15 @@
 	. = ..()
 	chameleon_action.emp_randomise(INFINITY)
 
+TYPEINFO_DEF(/obj/item/clothing/glasses/chameleon)
+	default_armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/glasses/chameleon
 	name = "Optical Meson Scanner"
 	desc = "Used by engineering and mining staff to see basic structural and terrain layouts through walls, regardless of lighting condition."
 	icon_state = "meson"
 	inhand_icon_state = "meson"
 	resistance_flags = NONE
-	armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	var/datum/action/item_action/chameleon/change/chameleon_action
@@ -474,6 +480,9 @@
 	. = ..()
 	chameleon_action.emp_randomise(INFINITY)
 
+TYPEINFO_DEF(/obj/item/clothing/gloves/chameleon)
+	default_armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/gloves/chameleon
 	desc = "These gloves provide protection against electric shock."
 	name = "insulated gloves"
@@ -481,7 +490,6 @@
 	inhand_icon_state = "ygloves"
 
 	resistance_flags = NONE
-	armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	var/datum/action/item_action/chameleon/change/chameleon_action
@@ -509,13 +517,15 @@
 	. = ..()
 	chameleon_action.emp_randomise(INFINITY)
 
+TYPEINFO_DEF(/obj/item/clothing/head/chameleon)
+	default_armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/head/chameleon
 	name = "grey cap"
 	desc = "It's a baseball hat in a tasteful grey colour."
 	icon_state = "greysoft"
 
 	resistance_flags = NONE
-	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
@@ -542,10 +552,12 @@
 	. = ..()
 	chameleon_action.emp_randomise(INFINITY)
 
+TYPEINFO_DEF(/obj/item/clothing/head/chameleon/drone)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/head/chameleon/drone
 	// The camohat, I mean, holographic hat projection, is part of the
 	// drone itself.
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	// which means it offers no protection, it's just air and light
 
 /obj/item/clothing/head/chameleon/drone/Initialize(mapload)
@@ -557,13 +569,15 @@
 	var/datum/action/item_action/chameleon/drone/randomise/randomise_action = new(src)
 	randomise_action.build_all_button_icons()
 
+TYPEINFO_DEF(/obj/item/clothing/mask/chameleon)
+	default_armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/mask/chameleon
 	name = "gas mask"
 	desc = "A face-covering mask that can be connected to an air supply. While good for concealing your identity, it isn't good for blocking gas flow." //More accurate
 	icon_state = "gas_alt"
 	inhand_icon_state = "gas_alt"
 	resistance_flags = NONE
-	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	clothing_flags = BLOCK_GAS_SMOKE_EFFECT | MASKINTERNALS
 	flags_inv = HIDEEARS|HIDEEYES|HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
 	permeability_coefficient = 0.01
@@ -606,9 +620,11 @@
 		ADD_TRAIT(src, TRAIT_REPLACES_VOICE, REF(src))
 		to_chat(user, span_notice("You switch [src]'s voice changer on."))
 
+TYPEINFO_DEF(/obj/item/clothing/mask/chameleon/drone)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/mask/chameleon/drone
 	//Same as the drone chameleon hat, undroppable and no protection
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
 /obj/item/clothing/mask/chameleon/drone/Initialize(mapload)
 	. = ..()
@@ -623,6 +639,9 @@
 /obj/item/clothing/mask/chameleon/drone/attack_self(mob/user)
 	to_chat(user, span_notice("[src] does not have a voice changer."))
 
+TYPEINFO_DEF(/obj/item/clothing/shoes/chameleon)
+	default_armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 90, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/shoes/chameleon
 	name = "black shoes"
 	icon_state = "sneakers"
@@ -632,7 +651,6 @@
 	desc = "A pair of black shoes."
 	permeability_coefficient = 0.05
 	resistance_flags = NONE
-	armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 90, FIRE = 50, ACID = 50)
 
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
@@ -791,12 +809,14 @@
 	QDEL_NULL(chameleon_action)
 	return ..()
 
+TYPEINFO_DEF(/obj/item/clothing/neck/chameleon)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/neck/chameleon
 	name = "black tie"
 	desc = "A neosilk clip-on tie."
 	icon_state = "blacktie"
 	resistance_flags = NONE
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/clothing/neck/chameleon

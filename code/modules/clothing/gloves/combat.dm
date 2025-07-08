@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/clothing/gloves/combat)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 50)
+
 /obj/item/clothing/gloves/combat
 	name = "combat gloves"
 	desc = "These tactical gloves are fireproof and electrically insulated."
@@ -11,4 +14,3 @@
 	heat_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	resistance_flags = NONE
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 50)

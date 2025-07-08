@@ -11,6 +11,9 @@
 /obj/item/clothing/mask/balaclava/attack_self(mob/user)
 	adjustmask(user)
 
+TYPEINFO_DEF(/obj/item/clothing/mask/infiltrator)
+	default_armor = list(BLUNT = 10, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 5, BOMB = 0, BIO = 0, FIRE = 100, ACID = 40)
+
 /obj/item/clothing/mask/infiltrator
 	name = "infiltrator balaclava"
 	desc = "It makes you feel safe in your anonymity, but for a stealth outfit you sure do look obvious that you're up to no good. It seems to have a built in heads-up display."
@@ -20,7 +23,6 @@
 	flags_inv = HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 	visor_flags_inv = HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
 	w_class = WEIGHT_CLASS_SMALL
-	armor = list(BLUNT = 10, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 5, BOMB = 0, BIO = 0, FIRE = 100, ACID = 40)
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 
 /obj/item/clothing/mask/infiltrator/equipped(mob/living/carbon/human/user, slot)

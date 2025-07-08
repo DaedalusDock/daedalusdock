@@ -54,6 +54,9 @@ SUBSYSTEM_DEF(packets)
 	/// @everyone broadcast key
 	var/gprs_broadcast_packet
 
+	/// A virtual radio to send radio messages without a physical radio. Yeah it's cringe, sue me.
+	var/obj/item/radio/virtual_radio
+
 /// Generates a unique (at time of read) ID for an atom, It just plays silly with the ref.
 /// Pass the target atom in as arg[1]
 /datum/controller/subsystem/packets/proc/generate_net_id(invoker)
@@ -84,6 +87,8 @@ SUBSYSTEM_DEF(packets)
 	framevirus_magic_packet = random_string(rand(16,32), GLOB.hex_characters)
 	gprs_broadcast_packet = random_string(rand(16,32), GLOB.hex_characters)
 	pda_exploitable_register = pick_list(PACKET_STRING_FILE, "packet_field_names")
+
+	virtual_radio = new /obj/item/radio/headset/silicon/ai
 	. = ..()
 
 /datum/controller/subsystem/packets/Recover()
@@ -504,3 +509,7 @@ SUBSYSTEM_DEF(packets)
 				ASSOC_UNSETEMPTY(recursive_contents, RECURSIVE_CONTENTS_RADIO_NONATMOS)
 				UNSETEMPTY(location.important_recursive_contents)
 
+/datum/controller/subsystem/packets/proc/virtual_radio_speak(speaker_name, message, list/channels = list(RADIO_CHANNEL_COMMON), list/levels = list(2))
+	virtual_radio.name = speaker_name
+	virtual_radio.broadcast_z_override = levels
+	virtual_radio.talk_into(virtual_radio, message, channels)

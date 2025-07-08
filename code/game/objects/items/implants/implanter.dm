@@ -1,6 +1,9 @@
 /**
  * Players can use this item to put obj/item/implant's in living mobs. Can be renamed with a pen.
  */
+TYPEINFO_DEF(/obj/item/implanter)
+	default_materials = list(/datum/material/iron=600, /datum/material/glass=200)
+
 /obj/item/implanter
 	name = "implanter"
 	desc = "A sterile automatic implant injector."
@@ -11,7 +14,6 @@
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
-	custom_materials = list(/datum/material/iron=600, /datum/material/glass=200)
 	///The implant in our implanter
 	var/obj/item/implant/imp = null
 	///Type of implant this will spawn as imp upon being spawned

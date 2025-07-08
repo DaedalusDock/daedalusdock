@@ -45,7 +45,7 @@
 	var/orderer_rank
 	var/orderer_ckey
 	var/reason
-	var/discounted_pct
+
 	///area this order wants to reach, if not null then it will come with the deliver_first component set to this area
 	var/department_destination
 	var/datum/supply_pack/pack

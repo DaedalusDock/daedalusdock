@@ -29,12 +29,17 @@
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/multitool)
 
 	//EVA suit
+TYPEINFO_DEF(/obj/item/clothing/suit/space/eva)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 50, ACID = 65)
+
 /obj/item/clothing/suit/space/eva
 	name = "EVA suit"
 	icon_state = "space"
 	inhand_icon_state = "s_suit"
 	desc = "A lightweight space suit with the basic ability to protect the wearer from the vacuum of space during emergencies."
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 50, ACID = 65)
+
+TYPEINFO_DEF(/obj/item/clothing/head/helmet/space/eva)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 50, ACID = 65)
 
 /obj/item/clothing/head/helmet/space/eva
 	name = "EVA helmet"
@@ -42,7 +47,6 @@
 	inhand_icon_state = "space"
 	desc = "A lightweight space helmet with the basic ability to protect the wearer from the vacuum of space during emergencies."
 	flash_protect = FLASH_PROTECTION_NONE
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 50, ACID = 65)
 
 /obj/item/clothing/head/helmet/space/eva/examine(mob/user)
 	. = ..()
@@ -63,13 +67,18 @@
 	qdel(src)
 
 	//Emergency suit
+TYPEINFO_DEF(/obj/item/clothing/head/helmet/space/fragile)
+	default_armor = list(BLUNT = 5, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/head/helmet/space/fragile
 	name = "emergency space helmet"
 	desc = "A bulky, air-tight helmet meant to protect the user during emergency situations. It doesn't look very durable."
 	icon_state = "syndicate-helm-orange"
 	inhand_icon_state = "syndicate-helm-orange"
-	armor = list(BLUNT = 5, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	strip_delay = 65
+
+TYPEINFO_DEF(/obj/item/clothing/suit/space/fragile)
+	default_armor = list(BLUNT = 5, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
 /obj/item/clothing/suit/space/fragile
 	name = "emergency space suit"
@@ -78,7 +87,6 @@
 	icon_state = "syndicate-orange"
 	inhand_icon_state = "syndicate-orange"
 	slowdown = 2
-	armor = list(BLUNT = 5, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	strip_delay = 65
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 

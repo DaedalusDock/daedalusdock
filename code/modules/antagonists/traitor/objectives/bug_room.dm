@@ -149,26 +149,32 @@
 	SEND_SIGNAL(src, COMSIG_TRAITOR_BUG_PLANTED_GROUND, location)
 	qdel(src)
 
-/obj/item/traitor_bug/afterattack(atom/movable/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
+/obj/item/traitor_bug/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!target_object_type)
-		return
-	if(!user.Adjacent(target))
-		return
+		return NONE
+
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	var/result = SEND_SIGNAL(src, COMSIG_TRAITOR_BUG_PRE_PLANTED_OBJECT, target)
 	if(!(result & COMPONENT_FORCE_PLACEMENT))
 		if(result & COMPONENT_FORCE_FAIL_PLACEMENT || !istype(target, target_object_type))
-			balloon_alert(user, "you can't attach this onto here!")
-			return
+			to_chat(user, span_warning("You are unable to plant that there."))
+			return ITEM_INTERACT_BLOCKING
+
 	if(!do_after(user, deploy_time, src))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(planted_on)
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	forceMove(target)
 	target.add_viscontents(src)
+
 	planted_on = target
+
 	RegisterSignal(planted_on, COMSIG_PARENT_QDELETING, PROC_REF(handle_planted_on_deletion))
 	SEND_SIGNAL(src, COMSIG_TRAITOR_BUG_PLANTED_OBJECT, target)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/traitor_bug/proc/handle_planted_on_deletion()
 	planted_on = null
@@ -185,9 +191,6 @@
 		anchored = FALSE
 		UnregisterSignal(planted_on, COMSIG_PARENT_QDELETING)
 		planted_on = null
-
-/obj/item/traitor_bug/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
-	return !istype(storage_holder, target_object_type)
 
 /obj/structure/traitor_bug
 	name = "suspicious device"

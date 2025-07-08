@@ -46,14 +46,16 @@
 		drawn = !drawn
 	update_appearance()
 
-/obj/item/gun/ballistic/bow/afterattack(atom/target, mob/living/user, flag, params, passthrough = FALSE)
+/obj/item/gun/ballistic/bow/try_fire_gun(atom/target, mob/living/user, proximity, params)
 	if(!chambered)
-		return
+		return FALSE
+
 	if(!drawn)
 		to_chat(user, span_warning("Without drawing the bow, the arrow uselessly falls to the ground."))
 		drop_arrow()
 		update_appearance()
-		return
+		return FALSE
+
 	drawn = FALSE
 	. = ..() //fires, removing the arrow
 	update_appearance()

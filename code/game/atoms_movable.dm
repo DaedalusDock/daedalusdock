@@ -1051,12 +1051,14 @@
 		dist_y = olddist_x
 		dx = dy
 		dy = olddx
+
 	thrown_thing.dist_x = dist_x
 	thrown_thing.dist_y = dist_y
 	thrown_thing.dx = dx
 	thrown_thing.dy = dy
 	thrown_thing.diagonal_error = dist_x/2 - dist_y
 	thrown_thing.start_time = world.time
+	thrown_thing.origin_turf = get_turf(src)
 
 	if(LAZYLEN(grabbed_by))
 		free_from_all_grabs()

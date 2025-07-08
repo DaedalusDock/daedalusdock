@@ -30,18 +30,16 @@
 
 	open_animation()
 
-/obj/item/codex_cicatrix/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-	if(!proximity_flag)
-		return
-
+/obj/item/codex_cicatrix/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	var/datum/antagonist/heretic/heretic_datum = IS_HERETIC(user)
 	if(!heretic_datum)
-		return
+		return NONE
+
+	var/atom/target = interacting_with // Yes i am supremely lazy
 
 	if(isopenturf(target))
 		heretic_datum.try_draw_rune(user, target, drawing_time = 12 SECONDS)
-		return TRUE
+		return ITEM_INTERACT_SUCCESS
 
 /*
  * Plays a little animation that shows the book opening and closing.

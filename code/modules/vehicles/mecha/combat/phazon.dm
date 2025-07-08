@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/vehicle/sealed/mecha/combat/phazon)
+	default_armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 30, BOMB = 30, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/vehicle/sealed/mecha/combat/phazon
 	desc = "This is a Phazon exosuit. The pinnacle of scientific research and pride of Nanotrasen, it uses cutting edge bluespace technology and expensive materials."
 	name = "\improper Phazon"
@@ -7,7 +10,6 @@
 	dir_in = 2 //Facing South.
 	step_energy_drain = 3
 	max_integrity = 200
-	armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 30, BOMB = 30, BIO = 0, FIRE = 100, ACID = 100)
 	max_temperature = 25000
 	wreckage = /obj/structure/mecha_wreckage/phazon
 	force = 15

@@ -3,13 +3,15 @@
 #define ENGINE_WELDED 2
 #define ENGINE_WELDTIME 200
 
+TYPEINFO_DEF(/obj/structure/shuttle)
+	default_armor = list(BLUNT = 100, PUNCTURE = 40, SLASH = 100, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
+
 /obj/structure/shuttle
 	name = "shuttle"
 	icon = 'icons/turf/shuttle.dmi'
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	smoothing_groups = SMOOTH_GROUP_SHUTTLE_PARTS
 	max_integrity = 500
-	armor = list(BLUNT = 100, PUNCTURE = 40, SLASH = 100, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70) //default + ignores melee
 	can_atmos_pass = CANPASS_DENSITY
 
 /obj/structure/shuttle/engine

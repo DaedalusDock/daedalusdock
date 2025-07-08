@@ -10,6 +10,9 @@
 /*
  * Locator
  */
+TYPEINFO_DEF(/obj/item/locator)
+	default_materials = list(/datum/material/iron=400)
+
 /obj/item/locator
 	name = "radio tracker"
 	desc = "Used to track portable teleportation beacons and targets with embedded tracking implants."
@@ -22,7 +25,6 @@
 	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
 	throw_range = 7
-	custom_materials = list(/datum/material/iron=400)
 	var/tracking_range = 20
 
 /obj/item/locator/ui_interact(mob/user, datum/tgui/ui)
@@ -96,6 +98,10 @@
 /*
  * Hand-tele
  */
+TYPEINFO_DEF(/obj/item/hand_tele)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 100, ACID = 100)
+	default_materials = list(/datum/material/iron=10000)
+
 /obj/item/hand_tele
 	name = "hand tele"
 	desc = "A portable item using blue-space technology. One of the buttons opens a portal, the other re-opens your last destination."
@@ -108,8 +114,6 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
 	throw_range = 5
-	custom_materials = list(/datum/material/iron=10000)
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 100, ACID = 100)
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	var/list/active_portal_pairs
 	var/max_portal_pairs = 3
@@ -139,9 +143,9 @@
 		return TRUE
 	return FALSE
 
-/obj/item/hand_tele/afterattack(atom/target, mob/user)
-	try_dispel_portal(target, user)
-	. = ..()
+/obj/item/hand_tele/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(try_dispel_portal(interacting_with, user))
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/hand_tele/pre_attack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
 	var/portal_location = last_portal_location

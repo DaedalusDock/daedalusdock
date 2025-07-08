@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/machinery/vending/liberationstation)
+	default_armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+
 /obj/machinery/vending/liberationstation
 	name = "\improper Liberation Station"
 	desc = "An overwhelming amount of <b>ancient patriotism</b> washes over you just by looking at the machine."
@@ -10,7 +13,7 @@
 		/obj/item/food/burger/plain = 5, //O say can you see, by the dawn's early light
 		/obj/item/food/burger/baseball = 3, //What so proudly we hailed at the twilight's last gleaming
 		/obj/item/food/fries = 5, //Whose broad stripes and bright stars through the perilous fight
-		/obj/item/reagent_containers/food/drinks/bottle/beer/light = 10, //O'er the ramparts we watched, were so gallantly streaming?
+		/obj/item/reagent_containers/cup/glass/bottle/beer/light = 10, //O'er the ramparts we watched, were so gallantly streaming?
 		/obj/item/gun/ballistic/automatic/pistol/deagle/gold = 2,
 		/obj/item/gun/ballistic/automatic/pistol/deagle/camo = 2,
 		/obj/item/gun/ballistic/automatic/pistol/m1911 = 2,
@@ -33,7 +36,6 @@
 		/obj/item/bedsheet/patriot = 5,
 		/obj/item/food/burger/superbite = 3
 	) //U S A
-	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 	default_price = PAYCHECK_HARD * 2.5
 	extra_price = PAYCHECK_COMMAND * 2.5

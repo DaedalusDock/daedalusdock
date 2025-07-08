@@ -1,6 +1,9 @@
 /// Ratio of gas removed from the tank for every turf.
 #define FLAMETHROWER_RELEASE_RATIO 0.05
 
+TYPEINFO_DEF(/obj/item/flamethrower)
+	default_materials = list(/datum/material/iron=500)
+
 /obj/item/flamethrower
 	name = "flamethrower"
 	desc = "You are a firestarter!"
@@ -15,7 +18,6 @@
 	throw_speed = 1
 	throw_range = 5
 	w_class = WEIGHT_CLASS_NORMAL
-	custom_materials = list(/datum/material/iron=500)
 	resistance_flags = FIRE_PROOF
 	trigger_guard = TRIGGER_GUARD_NORMAL
 	light_system = OVERLAY_LIGHT
@@ -91,35 +93,32 @@
 	if(lit)
 		. += "+lit"
 
-/obj/item/flamethrower/afterattack(atom/target, mob/user, flag)
-	. = ..()
-	if(flag)
-		return // too close
+/obj/item/flamethrower/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(ishuman(user))
 		if(!can_trigger_gun(user))
-			return
+			return NONE
 
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You can't bring yourself to fire \the [src]! You don't want to risk harming anyone..."))
-		return
+		return NONE
 
 	if(user && user.get_active_held_item() == src) // Make sure our user is still holding us
 		if(!lit || !ptank)
-			return FALSE
+			return NONE
 
 		if(!COOLDOWN_FINISHED(src, use_cooldown))
 			to_chat(user, span_danger("[src] is cooling down."))
-			return FALSE
+			return ITEM_INTERACT_BLOCKING
 
-		var/turf/target_turf = get_turf(target)
+		var/turf/target_turf = get_turf(interacting_with)
 		var/turf/our_turf = get_turf(src)
 		if(!our_turf || !target_turf)
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		if(!check_flamethrower_fuel(ptank.return_air()?.copy().removeRatio(FLAMETHROWER_RELEASE_RATIO)))
 			audible_message(span_danger("[src] sputters."))
 			playsound(src, 'sound/weapons/gun/flamethrower/flamethrower_empty.ogg', 50, TRUE, -3)
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		playsound(
 			src,
@@ -131,8 +130,9 @@
 
 		COOLDOWN_START(src, use_cooldown, 1 SECOND)
 
-		log_combat(user, target, "flamethrowered", src)
+		log_combat(user, interacting_with, "flamethrowered", src)
 		spew_fire(our_turf, target_turf)
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/flamethrower/wrench_act(mob/living/user, obj/item/tool)
 	. = TRUE

@@ -16,3 +16,20 @@
 	skill_path = /datum/rpg_skill/forensics
 	modify_amt = 2
 	source = "Experience."
+
+// Weed
+/datum/status_effect/skill_mod/cannabis_eyes
+	duration = -1
+	status_type = STATUS_EFFECT_UNIQUE
+
+	skill_path = /datum/rpg_skill/fourteen_eyes
+	modify_amt = 1
+	source = "Psychadelics"
+
+/datum/status_effect/skill_mod/cannabis_magic
+	duration = -1
+	status_type = STATUS_EFFECT_UNIQUE
+
+	skill_path = /datum/rpg_skill/extrasensory
+	modify_amt = 1
+	source = "Psychadelics"

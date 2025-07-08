@@ -1,5 +1,8 @@
 #define FREQ_LISTENING (1<<0)
 
+TYPEINFO_DEF(/obj/item/radio)
+	default_materials = list(/datum/material/iron=75, /datum/material/glass=25)
+
 /obj/item/radio
 	icon = 'icons/obj/radio.dmi'
 	name = "station bounced radio"
@@ -13,7 +16,6 @@
 	slot_flags = ITEM_SLOT_BELT
 	throw_range = 7
 	w_class = WEIGHT_CLASS_SMALL
-	custom_materials = list(/datum/material/iron=75, /datum/material/glass=25)
 
 	///if FALSE, broadcasting and listening dont matter and this radio shouldnt do anything
 	VAR_PRIVATE/on = TRUE

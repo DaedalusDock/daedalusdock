@@ -107,6 +107,11 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	/// If set to TRUE, skip item interaction and just attack the target. See ATTACK_IF_COMBAT_MODE()
 	var/combat_mode_force_attack = FALSE
+	/// If set to FALSE, interact_with_atom will not be called when the user has combat mode on.
+	var/has_combat_mode_interaction = FALSE
+
+	/// The type of special attack this item uses, if any.
+	var/special_attack_type
 
 	///Sound played when you hit something with the item
 	var/hitsound
@@ -806,6 +811,25 @@ DEFINE_INTERACTABLE(/obj/item)
 		block_sound = pick('sound/weapons/block/block1.ogg', 'sound/weapons/block/block2.ogg', 'sound/weapons/block/block3.ogg')
 	playsound(wielder, block_sound, 70, TRUE)
 
+/// Passed flags that describe what happened in the exchange.
+/obj/item/proc/play_combat_sound(combat_result)
+	switch(combat_result)
+		if(MOB_ATTACKEDBY_SUCCESS)
+			playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
+			return TRUE
+
+		if(MOB_ATTACKEDBY_MISS)
+			playsound(loc, get_misssound(), 30, TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
+			return TRUE
+
+		if(MOB_ATTACKEDBY_NO_DAMAGE)
+			playsound(loc, 'sound/weapons/tap.ogg', 50, TRUE, -1)
+			return TRUE
+
+		//if(MOB_ATTACKEDBY_BLOCKED) blocking usually already plays a sound.
+
+	return FALSE
+
 /obj/item/proc/talk_into(mob/M, input, channel, spans, datum/language/language, list/message_mods)
 	if(isnull(language))
 		language = M?.get_selected_language()
@@ -1061,6 +1085,10 @@ DEFINE_INTERACTABLE(/obj/item)
 		return SLASH
 
 	return BLUNT
+
+/// Returns a special attack datum if applicable.
+/obj/item/proc/get_special_attack()
+	return GLOB.special_attacks[special_attack_type]
 
 ///This proc determines if and at what an object will reflect energy projectiles if it's in l_hand,r_hand or wear_suit
 /obj/item/proc/IsReflect(def_zone)
@@ -1745,10 +1773,6 @@ DEFINE_INTERACTABLE(/obj/item)
 /obj/item/proc/on_outfit_equip(mob/living/carbon/human/outfit_wearer, visuals_only, item_slot)
 	return
 
-/// Whether or not this item can be put into a storage item through attackby
-/obj/item/proc/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
-	return TRUE
-
 /obj/item/proc/do_pickup_animation(atom/target, turf/source)
 	if(!source && !isturf(loc))
 		return
@@ -1965,7 +1989,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /// Returns the sound the item makes when used as a weapon, but missing.
 /obj/item/proc/get_misssound()
-	. = src.miss_sound
+	. = miss_sound
 	if(islist(.))
 		. = pick(miss_sound)
 	else if(isnull(.))
@@ -1982,3 +2006,25 @@ DEFINE_INTERACTABLE(/obj/item)
 /// Returns TRUE if the passed mob can interact with this item's storage via pickpocketing.
 /obj/item/proc/can_pickpocket(mob/living/user)
 	return FALSE
+
+/**
+ * Used to update the weight class of the item in a way that other atoms can react to the change.
+ *
+ * Arguments:
+ * * new_w_class - The new weight class of the item.
+ *
+ * Returns:
+ * * TRUE if weight class was successfully updated
+ * * FALSE otherwise
+ */
+/obj/item/proc/set_weight_class(new_w_class)
+	if(w_class == new_w_class)
+		return FALSE
+
+	var/old_w_class = w_class
+	w_class = new_w_class
+
+	SEND_SIGNAL(src, COMSIG_ITEM_WEIGHT_CLASS_CHANGED, old_w_class, new_w_class)
+	if(!isnull(loc))
+		SEND_SIGNAL(loc, COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED, src, old_w_class, new_w_class)
+	return TRUE

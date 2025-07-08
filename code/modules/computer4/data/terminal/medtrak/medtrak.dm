@@ -51,7 +51,7 @@
 	medical_records = SSdatacore.library[DATACORE_RECORDS_MEDICAL]
 	var/datum/c4_file/folder/log_dir = system.get_log_folder()
 	if(!log_dir)
-		system.println("<b>Error: Unable to locate logging directory.")
+		system.println("<b>Error:</b> Unable to locate logging directory.")
 
 	var/datum/c4_file/text/record_log = log_dir.get_file("medtrak_logs")
 	if(!istype(record_log))

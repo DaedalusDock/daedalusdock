@@ -23,6 +23,9 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 #define REQ_EMERGENCY_ENGINEERING 2
 #define REQ_EMERGENCY_MEDICAL 3
 
+TYPEINFO_DEF(/obj/machinery/requests_console)
+	default_armor = list(BLUNT = 70, PUNCTURE = 30, SLASH = 90, LASER = 30, ENERGY = 30, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90)
+
 /obj/machinery/requests_console
 	name = "requests console"
 	desc = "A console intended to send requests to different departments on the station."
@@ -70,7 +73,6 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 	var/emergency //If an emergency has been called by this device. Acts as both a cooldown and lets the responder know where it the emergency was triggered from
 	var/receive_ore_updates = FALSE //If ore redemption machines will send an update when it receives new ores.
 	max_integrity = 300
-	armor = list(BLUNT = 70, PUNCTURE = 30, SLASH = 90, LASER = 30, ENERGY = 30, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90)
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 

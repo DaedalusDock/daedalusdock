@@ -6,6 +6,9 @@ AI MODULES
 
 // AI module
 
+TYPEINFO_DEF(/obj/item/ai_module)
+	default_materials = list(/datum/material/gold = 50)
+
 /obj/item/ai_module
 	name = "\improper AI module"
 	icon = 'icons/obj/module.dmi'
@@ -22,7 +25,6 @@ AI MODULES
 	throw_range = 7
 	var/list/laws = list()
 	var/bypass_law_amt_check = 0
-	custom_materials = list(/datum/material/gold = 50)
 
 /obj/item/ai_module/examine(mob/user as mob)
 	. = ..()

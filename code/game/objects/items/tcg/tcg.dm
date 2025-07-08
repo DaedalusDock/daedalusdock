@@ -373,12 +373,14 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 		new /obj/item/coin/thunderdome(get_turf(user))
 	qdel(src)
 
+TYPEINFO_DEF(/obj/item/coin/thunderdome)
+	default_materials = list(/datum/material/plastic = 400)
+
 /obj/item/coin/thunderdome
 	name = "\improper TGC Flipper"
 	desc = "A TGC flipper, for deciding who gets to go first. Also conveniently acts as a counter, for various purposes."
 	icon = 'icons/obj/tcgmisc.dmi'
 	icon_state = "coin_nanotrasen"
-	custom_materials = list(/datum/material/plastic = 400)
 	material_flags = NONE
 	sideslist = list("nanotrasen", "syndicate")
 

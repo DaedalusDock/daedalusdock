@@ -1,4 +1,7 @@
 /*****************Pickaxes & Drills & Shovels****************/
+TYPEINFO_DEF(/obj/item/pickaxe)
+	default_materials = list(/datum/material/iron=2000)
+
 /obj/item/pickaxe
 	name = "pickaxe"
 	icon = 'icons/obj/mining.dmi'
@@ -10,7 +13,6 @@
 	lefthand_file = 'icons/mob/inhands/equipment/mining_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/mining_righthand.dmi'
 	w_class = WEIGHT_CLASS_BULKY
-	custom_materials = list(/datum/material/iron=2000) //one sheet, but where can you make them?
 	tool_behaviour = TOOL_MINING
 	toolspeed = 1
 	usesound = list('sound/effects/picaxe1.ogg', 'sound/effects/picaxe2.ogg', 'sound/effects/picaxe3.ogg')
@@ -36,6 +38,9 @@
 
 	mining_damage = 5
 
+TYPEINFO_DEF(/obj/item/pickaxe/mini)
+	default_materials = list(/datum/material/iron=1000)
+
 /obj/item/pickaxe/mini
 	name = "compact pickaxe"
 	desc = "A smaller, compact version of the standard pickaxe."
@@ -46,7 +51,6 @@
 	throwforce = 7
 	slot_flags = ITEM_SLOT_BELT
 	w_class = WEIGHT_CLASS_NORMAL
-	custom_materials = list(/datum/material/iron=1000)
 
 /obj/item/pickaxe/silver
 	name = "silver-plated pickaxe"
@@ -107,6 +111,9 @@
 
 	mining_damage = 100
 
+TYPEINFO_DEF(/obj/item/pickaxe/improvised)
+	default_materials = list(/datum/material/iron=12050)
+
 /obj/item/pickaxe/improvised
 	name = "improvised pickaxe"
 	desc = "A crude pickaxe made with a knife and crowbar welded together."
@@ -117,9 +124,11 @@
 	toolspeed = 3 //3 times slower than a normal pickaxe
 	slot_flags = ITEM_SLOT_BELT
 	w_class = WEIGHT_CLASS_NORMAL
-	custom_materials = list(/datum/material/iron=12050) //metal needed for a crowbar and for a knife, why the FUCK does a knife cost 6 metal sheets while a crowbar costs 0.025 sheets? shit makes no sense fuck this
 
 	mining_damage = 15
+
+TYPEINFO_DEF(/obj/item/shovel)
+	default_materials = list(/datum/material/iron=50)
 
 /obj/item/shovel
 	name = "shovel"
@@ -136,7 +145,6 @@
 	toolspeed = 1
 	usesound = 'sound/effects/shovel_dig.ogg'
 	w_class = WEIGHT_CLASS_NORMAL
-	custom_materials = list(/datum/material/iron=50)
 	attack_verb_continuous = list("bashes", "bludgeons", "thrashes", "whacks")
 	attack_verb_simple = list("bash", "bludgeon", "thrash", "whack")
 	sharpness = SHARP_EDGED

@@ -44,7 +44,7 @@
 /datum/controller/subsystem/credits/proc/draft_episode_names()
 	var/uppr_name = uppertext(station_name()) //so we don't run these two 500 times
 
-	episode_names += new /datum/episode_name("THE [pick("DOWNFALL OF", "RISE OF", "TROUBLE WITH", "FINAL STAND OF", "DARK SIDE OF")] [pick(200;"[uppr_name]", 150;"SPACEMEN", 150;"HUMANITY", "DIGNITY", "SANITY", "SCIENCE", "CURIOSITY", "EMPLOYMENT", "PARANOIA", "THE CHIMPANZEES", 50;"THE VENDOMAT PRICES")]")
+	episode_names += new /datum/episode_name("THE [pick("DOWNFALL OF", "RISE OF", "TROUBLE WITH", "FINAL STAND OF", "DARK SIDE OF")] [pick(200;"[uppr_name]", 150;"SPACEMEN", 150;"MINERVANITY", "DIGNITY", "SANITY", "SCIENCE", "CURIOSITY", "EMPLOYMENT", "PARANOIA", "THE CHIMPANZEES", 50;"THE VENDOMAT PRICES")]")
 	episode_names += new /datum/episode_name("THE CREW [pick("GOES ON WELFARE", "GIVES BACK", "SELLS OUT", "GETS WHACKED", "SOLVES THE PLASMA CRISIS", "HITS THE ROAD", "RISES", "RETIRES", "GOES TO HELL", "DOES A CLIP SHOW", "GETS AUDITED", "DOES A TV COMMERCIAL", "AFTER HOURS", "GETS A LIFE", "STRIKES BACK", "GOES TOO FAR", "IS 'IN' WITH IT", "WINS... BUT AT WHAT COST?", "INSIDE OUT")]")
 	episode_names += new /datum/episode_name("THE CREW'S [pick("DAY OUT", "BIG GAY ADVENTURE", "LAST DAY", "[pick("WILD", "WACKY", "LAME", "UNEXPECTED")] VACATION", "CHANGE OF HEART", "NEW GROOVE", "SCHOOL MUSICAL", "HISTORY LESSON", "FLYING CIRCUS", "SMALL PROBLEM", "BIG SCORE", "BLOOPER REEL", "GOT IT", "LITTLE SECRET", "SPECIAL OFFER", "SPECIALTY", "WEAKNESS", "CURIOSITY", "ALIBI", "LEGACY", "BIRTHDAY PARTY", "REVELATION", "ENDGAME", "RESCUE", "PAYBACK")]")
 	episode_names += new /datum/episode_name("THE CREW GETS [pick("PHYSICAL", "SERIOUS ABOUT [pick("DRUG ABUSE", "CRIME", "PRODUCTIVITY", "ANCIENT AMERICAN CARTOONS", "SPACEBALL")]", "PICKLED", "AN ANAL PROBE", "PIZZA", "NEW WHEELS", "A VALUABLE HISTORY LESSON", "A BREAK", "HIGH", "TO LIVE", "TO RELIVE THEIR CHILDHOOD", "EMBROILED IN CIVIL WAR", "DOWN WITH IT", "FIRED", "BUSY", "THEIR SECOND CHANCE", "TRAPPED", "THEIR REVENGE")]")
@@ -195,11 +195,11 @@
 			episode_names += new /datum/episode_name/rare("[pick("GREY GOO", "RISE OF THE GREYTIDE")]", "Most of the survivors were Assistants, or at least dressed like one.", min(1500, assistantcount*200))
 
 		if(voxcount / human_escapees > 0.6 && human_escapees > 2)
-			episode_names += new /datum/episode_name/rare("BIRDS OF A FEATHER...", "Most of the survivors were Vox.", min(1500, voxcount*250))
+			episode_names += new /datum/episode_name/rare("BIRDS OF A FEATHER...", "Most of the survivors were Voks.", min(1500, voxcount*250))
 		if(voxcount / human_escapees > 0.6 && SSshuttle.emergency.launch_status == EARLY_LAUNCHED)
-			episode_names += new /datum/episode_name/rare("EARLY BIRD GETS THE WORM", "Most or all of the survivors were Vox, and the shuttle timer was shortened.", 1500)
+			episode_names += new /datum/episode_name/rare("EARLY BIRD GETS THE WORM", "Most or all of the survivors were Voks, and the shuttle timer was shortened.", 1500)
 		//if(voxcount / human_escapees.len > 0.6 && score.shuttlebombed > 3)
-		//	episode_names += new /datum/episode_name/rare("SITTING DUCKS", "Most or all of the survivors were Vox, and the shuttle was bombed.", min(1500,score.shuttlebombed*3))
+		//	episode_names += new /datum/episode_name/rare("SITTING DUCKS", "Most or all of the survivors were Voks, and the shuttle was bombed.", min(1500,score.shuttlebombed*3))
 		if(baldycount / human_escapees> 0.6 && human_escapees > 3)
 			episode_names += new /datum/episode_name/rare("TO BALDLY GO", "Most of the survivors were bald, and it shows.", min(1500, baldycount*250))
 		if(horsecount / human_escapees > 0.6 && human_escapees> 3)

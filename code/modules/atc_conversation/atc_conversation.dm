@@ -6,21 +6,16 @@ GLOBAL_LIST_INIT(whole_ship_names, world.file2list("[global.config.directory]/at
 	var/vessel_name
 	var/vessel_prefix
 
+	/// Z levels to transmit the radio message to
+	var/list/levels
+
 	/// Cache of name : prefix. So that you don't get names having different prefixes throughout the round.
 	var/static/list/prefix_cache = list()
 
-	///Lol
-	var/obj/item/radio/radio
-
 /datum/atc_conversation/New()
 	atc_name = "[capitalize(station_name())]"
-	radio = new /obj/item/radio/headset/silicon/ai
-	radio.broadcast_z_override = list(SSmapping.levels_by_trait(ZTRAIT_STATION)[1])
+	levels = list(SSmapping.levels_by_trait(ZTRAIT_STATION)[1])
 	generate_vessel_name()
-
-/datum/atc_conversation/Destroy()
-	QDEL_NULL(radio)
-	return ..()
 
 /datum/atc_conversation/proc/generate_vessel_name()
 	vessel_name = pick(GLOB.whole_ship_names)
@@ -38,8 +33,7 @@ GLOBAL_LIST_INIT(whole_ship_names, world.file2list("[global.config.directory]/at
 	transmit_speech("[atc_name] ATC", message)
 
 /datum/atc_conversation/proc/transmit_speech(speaker_name, message)
-	radio.name = speaker_name
-	radio.talk_into(radio, message, RADIO_CHANNEL_SUPPLY)
+	SSpackets.virtual_radio_speak(speaker_name, message, RADIO_CHANNEL_SUPPLY, levels)
 
 /// The chatter loop. Blocking proc.
 /datum/atc_conversation/proc/chatter()

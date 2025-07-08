@@ -10,7 +10,6 @@ env:
   browser: true
   node: true
 plugins:
-  - sonarjs
   - react
   - unused-imports
   - eslint-plugin-simple-import-sort

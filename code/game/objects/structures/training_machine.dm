@@ -362,10 +362,7 @@
 	///Number of hits made since the Lap button (alt-click) was last pushed
 	var/lap_hits = 0
 
-/obj/item/training_toolbox/afterattack(atom/target, mob/living/user, proximity)
-	. = ..()
-	if (!proximity || target == user || !user.combat_mode)
-		return
+/obj/item/training_toolbox/afterattack(atom/target, mob/user, list/modifiers)
 	if (check_hit(target))
 		user.changeNext_move(CLICK_CD_MELEE)
 

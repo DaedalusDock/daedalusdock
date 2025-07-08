@@ -77,7 +77,7 @@
 /obj/machinery/door/airlock/security/glass{
 	name = "Escape Shuttle Cell"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape/brig)
 "p" = (
@@ -167,7 +167,7 @@
 /obj/machinery/door/airlock/command/glass{
 	name = "Escape Shuttle Cockpit"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "J" = (

@@ -1,4 +1,7 @@
 /// A cable that can connect integrated circuits to anything with a USB port, such as computers and machines.
+TYPEINFO_DEF(/obj/item/usb_cable)
+	default_materials = list(/datum/material/iron = 75)
+
 /obj/item/usb_cable
 	name = "usb cable"
 	desc = "A cable that can connect integrated circuits to anything with a USB port, such as computers and machines."
@@ -7,7 +10,6 @@
 	inhand_icon_state = "coil"
 	base_icon_state = "coil"
 	w_class = WEIGHT_CLASS_TINY
-	custom_materials = list(/datum/material/iron = 75)
 
 	/// The currently connected circuit
 	var/obj/item/integrated_circuit/attached_circuit

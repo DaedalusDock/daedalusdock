@@ -69,7 +69,7 @@
 	if(!can_unarmed_attack())
 		return
 	if(internal_ext)
-		internal_ext.afterattack(A, src)
+		internal_ext.ranged_interact_with_atom(A, src)
 	else
 		return ..()
 
@@ -77,7 +77,7 @@
 	if(!(bot_mode_flags & BOT_MODE_ON))
 		return
 	if(internal_ext)
-		internal_ext.afterattack(A, src)
+		internal_ext.ranged_interact_with_atom(A, src)
 	else
 		return ..()
 
@@ -275,7 +275,8 @@
 		z_flick("firebots_use", user)
 	else
 		z_flick("firebot1_use", user)
-	internal_ext.afterattack(target, user, null)
+
+	internal_ext.ranged_interact_with_atom(target, user)
 
 /mob/living/simple_animal/bot/firebot/update_icon_state()
 	. = ..()

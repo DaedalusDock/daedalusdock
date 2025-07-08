@@ -611,7 +611,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/iron/white,
 /area/shuttle/escape/brig)
 "sY" = (
@@ -626,7 +626,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/iron,
 /area/shuttle/escape)
 "wF" = (
@@ -684,7 +684,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/iron,
 /area/shuttle/escape/brig)
 "Kj" = (
@@ -703,7 +703,7 @@
 /obj/machinery/door/airlock/security/glass{
 	name = "Holding Area"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/general,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape/brig)
 "UY" = (

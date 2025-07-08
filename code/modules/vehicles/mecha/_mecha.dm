@@ -17,13 +17,15 @@
  * Or are used to call action() on equipped gear
  * Cooldown for gear is on the mech because exploits
  */
+TYPEINFO_DEF(/obj/vehicle/sealed/mecha)
+	default_armor = list(BLUNT = 20, PUNCTURE = 10, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/vehicle/sealed/mecha
 	name = "mecha"
 	desc = "Exosuit"
 	icon = 'icons/mecha/mecha.dmi'
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	max_integrity = 300
-	armor = list(BLUNT = 20, PUNCTURE = 10, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 100, ACID = 100)
 	force = 5
 	movedelay = 1 SECONDS
 	move_force = MOVE_FORCE_VERY_STRONG

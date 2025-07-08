@@ -304,7 +304,7 @@
 
 	var/ant_flags = (CALTROP_NOCRAWL | CALTROP_NOSTUN) /// Small amounts of ants won't be able to bite through shoes.
 	if(ant_bite_damage > 1)
-		ant_flags = (CALTROP_NOCRAWL | CALTROP_NOSTUN | CALTROP_BYPASS_SHOES)
+		ant_flags |= CALTROP_BYPASS_SHOES
 
 	switch(ant_bite_damage)
 		if(0 to 1)

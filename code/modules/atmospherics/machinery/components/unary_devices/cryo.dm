@@ -63,13 +63,15 @@
 		animate(src)
 
 /// Cryo cell
+TYPEINFO_DEF(/obj/machinery/atmospherics/components/unary/cryo_cell)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 30, ACID = 30)
+
 /obj/machinery/atmospherics/components/unary/cryo_cell
 	name = "cryo cell"
 	icon = 'icons/obj/cryogenics.dmi'
 	icon_state = "pod-off"
 	density = TRUE
 	max_integrity = 350
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 30, ACID = 30)
 	layer = MOB_LAYER
 	state_open = FALSE
 	circuit = /obj/item/circuitboard/machine/cryo_tube
@@ -91,7 +93,7 @@
 	var/heat_capacity = 20000
 	var/conduction_coefficient = 0.3
 
-	var/obj/item/reagent_containers/glass/beaker = null
+	var/obj/item/reagent_containers/cup/beaker = null
 	var/consume_gas = FALSE
 
 	var/obj/item/radio/radio
@@ -356,7 +358,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/reagent_containers/glass))
+	if(istype(I, /obj/item/reagent_containers/cup))
 		. = 1 //no afterattack
 		if(beaker)
 			to_chat(user, span_warning("A beaker is already loaded into [src]!"))

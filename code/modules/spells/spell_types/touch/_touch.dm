@@ -69,8 +69,8 @@
 		return FALSE
 
 	attached_hand = new_hand
-	RegisterSignal(attached_hand, COMSIG_ITEM_AFTERATTACK, PROC_REF(on_hand_hit))
-	RegisterSignal(attached_hand, COMSIG_ITEM_AFTERATTACK_SECONDARY, PROC_REF(on_secondary_hand_hit))
+	RegisterSignal(attached_hand, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(on_hand_hit))
+	RegisterSignal(attached_hand, COMSIG_ITEM_INTERACTING_WITH_ATOM_SECONDARY, PROC_REF(on_hand_hit_secondary))
 	RegisterSignal(attached_hand, COMSIG_PARENT_QDELETING, PROC_REF(on_hand_deleted))
 	RegisterSignal(attached_hand, COMSIG_ITEM_UNEQUIPPED, PROC_REF(on_hand_dropped))
 	to_chat(cast_on, draw_message)
@@ -84,7 +84,7 @@
  */
 /datum/action/cooldown/spell/touch/proc/remove_hand(mob/living/hand_owner, reset_cooldown_after = FALSE)
 	if(!QDELETED(attached_hand))
-		UnregisterSignal(attached_hand, list(COMSIG_ITEM_AFTERATTACK, COMSIG_ITEM_AFTERATTACK_SECONDARY, COMSIG_PARENT_QDELETING, COMSIG_ITEM_UNEQUIPPED))
+		UnregisterSignal(attached_hand, list(COMSIG_ITEM_INTERACTING_WITH_ATOM, COMSIG_ITEM_INTERACTING_WITH_ATOM_SECONDARY, COMSIG_PARENT_QDELETING, COMSIG_ITEM_UNEQUIPPED))
 		hand_owner?.temporarilyRemoveItemFromInventory(attached_hand)
 		QDEL_NULL(attached_hand)
 
@@ -107,39 +107,45 @@
 	create_hand(cast_on)
 	return ..()
 
+/// Checks if the passed victim can be cast on by the caster.
+/datum/action/cooldown/spell/touch/proc/can_hit_with_hand(atom/victim, mob/living/caster)
+	if(!is_valid_target(victim))
+		return FALSE
+	if(!can_cast_spell(feedback = TRUE))
+		return FALSE
+	if(!(caster.mobility_flags & MOBILITY_USE))
+		return FALSE
+
+	return TRUE
+
 /**
  * Signal proc for [COMSIG_ITEM_AFTERATTACK] from our attached hand.
  *
  * When our hand hits an atom, we can cast do_hand_hit() on them.
  */
-/datum/action/cooldown/spell/touch/proc/on_hand_hit(datum/source, atom/victim, mob/caster, proximity_flag, click_parameters)
+/datum/action/cooldown/spell/touch/proc/on_hand_hit(datum/source, mob/living/caster, atom/target, list/modifiers)
 	SIGNAL_HANDLER
 
-	if(!proximity_flag)
-		return
-	if(victim == caster)
+	if(target == caster)
 		return
 	if(!can_cast_spell(feedback = FALSE))
 		return
 
-	INVOKE_ASYNC(src, PROC_REF(do_hand_hit), source, victim, caster)
+	return do_hand_hit(source, target, caster)
 
 /**
- * Signal proc for [COMSIG_ITEM_AFTERATTACK_SECONDARY] from our attached hand.
+ * Signal proc for [COMSIG_ITEM_INTERACTING_WITH_ATOM_SECONDARY] from our attached hand.
  *
  * Same as on_hand_hit, but for if right-click was used on hit.
  */
-/datum/action/cooldown/spell/touch/proc/on_secondary_hand_hit(datum/source, atom/victim, mob/caster, proximity_flag, click_parameters)
+/datum/action/cooldown/spell/touch/proc/on_hand_hit_secondary(datum/source, mob/living/caster, atom/target, list/modifiers)
 	SIGNAL_HANDLER
+	SHOULD_NOT_OVERRIDE(TRUE)
 
-	if(!proximity_flag)
-		return
-	if(victim == caster)
-		return
-	if(!can_cast_spell(feedback = FALSE))
-		return
+	if(!can_hit_with_hand(target, caster))
+		return NONE
 
-	INVOKE_ASYNC(src, PROC_REF(do_secondary_hand_hit), source, victim, caster)
+	return do_secondary_hand_hit(source, target, caster)
 
 /**
  * Calls cast_on_hand_hit() from the caster onto the victim.
@@ -152,11 +158,14 @@
 	log_combat(caster, victim, "cast the touch spell [name] on", hand)
 	spell_feedback()
 	remove_hand(caster)
+	return ITEM_INTERACT_SUCCESS
 
 /**
  * Calls do_secondary_hand_hit() from the caster onto the victim.
  */
 /datum/action/cooldown/spell/touch/proc/do_secondary_hand_hit(obj/item/melee/touch_attack/hand, atom/victim, mob/living/carbon/caster)
+	SHOULD_NOT_OVERRIDE(TRUE) // Don't put effects here, put them in cast_on_secondary_hand_hit
+
 	var/secondary_result = cast_on_secondary_hand_hit(hand, victim, caster)
 	switch(secondary_result)
 		// Continue will remove the hand here and stop
@@ -164,6 +173,7 @@
 			log_combat(caster, victim, "cast the touch spell [name] on", hand, "(secondary / alt cast)")
 			spell_feedback()
 			remove_hand(caster)
+			return ITEM_INTERACT_SUCCESS
 
 		// Call normal will call the normal cast proc
 		if(SECONDARY_ATTACK_CALL_NORMAL)
@@ -171,7 +181,7 @@
 
 		// Cancel chain will do nothing,
 		if(SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
-			return
+			return NONE
 
 /**
  * The actual process of casting the spell on the victim from the caster.

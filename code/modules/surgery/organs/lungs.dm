@@ -469,7 +469,7 @@
 */
 
 /obj/item/organ/lungs/vox
-	name = "Vox lungs"
+	name = "voks lungs"
 	desc = "They're filled with dust....wow."
 	icon_state = "lungs-vox"
 

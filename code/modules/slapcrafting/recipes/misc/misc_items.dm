@@ -31,7 +31,7 @@
 		/datum/slapcraft_step/item/paper,
 		/datum/slapcraft_step/attack/sharp,
 	)
-	result_type = /obj/item/reagent_containers/food/drinks/sillycup
+	result_type = /obj/item/reagent_containers/cup/glass/sillycup
 
 /datum/slapcraft_recipe/paperframe
 	name = "paper frame"

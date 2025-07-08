@@ -263,7 +263,12 @@
 	base_icon_state = "stimpen"
 	volume = 30
 	amount_per_transfer_from_this = 30
-	list_reagents = list(/datum/reagent/medicine/synaptizine = 4, /datum/reagent/medicine/dermaline = 8, /datum/reagent/medicine/meralyne = 8, /datum/reagent/medicine/leporazine = 6)
+	list_reagents = list(
+		/datum/reagent/medicine/synaptizine = 4,
+		/datum/reagent/medicine/dermaline = 10,
+		/datum/reagent/medicine/meralyne = 10,
+		/datum/reagent/medicine/leporazine = 6
+	)
 
 /obj/item/reagent_containers/hypospray/medipen/survival/inject(mob/living/affected_mob, mob/user)
 	if(DOING_INTERACTION(user, DOAFTER_SOURCE_SURVIVALPEN))
@@ -280,7 +285,7 @@
 
 /obj/item/reagent_containers/hypospray/medipen/survival/luxury
 	name = "luxury autoinjector"
-	desc = "Cutting edge technology allowed humanity to compact 50u of volume into a single medipen. Contains rare and powerful chemicals used to aid in exploration of very hard enviroments."
+	desc = "Cutting edge technology allowed minervanity to compact 50u of volume into a single medipen. Contains rare and powerful chemicals used to aid in exploration of very hard enviroments."
 	icon_state = "luxpen"
 	inhand_icon_state = "atropen"
 	base_icon_state = "luxpen"

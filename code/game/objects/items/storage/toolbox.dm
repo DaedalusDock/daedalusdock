@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/storage/toolbox)
+	default_materials = list(/datum/material/iron = 500)
+
 /obj/item/storage/toolbox
 	name = "toolbox"
 	desc = "Danger. Very robust."
@@ -20,7 +23,6 @@
 	block_chance = 10
 
 	w_class = WEIGHT_CLASS_BULKY
-	custom_materials = list(/datum/material/iron = 500)
 	attack_verb_continuous = list("robusts")
 	attack_verb_simple = list("robust")
 	hitsound = 'sound/weapons/smash.ogg'
@@ -344,9 +346,11 @@
 		return
 
 
+TYPEINFO_DEF(/obj/item/storage/toolbox/haunted)
+	default_materials = list(/datum/material/hauntium = 500)
+
 /obj/item/storage/toolbox/haunted
 	name = "old toolbox"
-	custom_materials = list(/datum/material/hauntium = 500)
 
 
 

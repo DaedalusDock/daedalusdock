@@ -1,6 +1,9 @@
 ///Magic number to boost the power of heating/cooling without touching power consumption
 #define THERMOMACHINE_PERF_MULT 2.5
 
+TYPEINFO_DEF(/obj/machinery/atmospherics/components/unary/thermomachine)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 80, ACID = 30)
+
 /obj/machinery/atmospherics/components/unary/thermomachine
 	icon = 'icons/obj/atmospherics/components/thermomachine.dmi'
 	icon_state = "thermo_base"
@@ -10,7 +13,6 @@
 
 	density = TRUE
 	max_integrity = 300
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 80, ACID = 30)
 	layer = OBJ_LAYER
 	circuit = /obj/item/circuitboard/machine/thermomachine
 

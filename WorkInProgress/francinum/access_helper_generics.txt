@@ -1,0 +1,39 @@
+Hey, I didn't wanna shove this in the PR body so I thought I'd stuff it in my folder:
+
+Here's the pile of regexes I used to build the access helper PR:
+
+I took airlock_all_access.dm as containing at least a sample of all accesses.
+This seemed to work as there was no missing types.
+
+Running the following regex:
+---
+Match:
+^\/obj\/effect\/mapping_helpers\/([^\/]*)\/access\/all\/(.*$)\n\tgranted_all_access = list\(([^\)]*)\)
+Replace:
+MAKE_REAL($2, $3)
+---
+converted them all to the condensed slug-and-access format.
+
+However, this didn't catch the abstract types, which were used to denote categories and set icon states.
+Those were caught with the following regex:
+---
+Match:
+^\/obj\/effect\/mapping_helpers\/([^\/]*)\/access\/all\/(.*$)\n\ticon_state = (.*$)
+Replace:
+MAKE_ABSTRACT($2, $3)
+---
+
+Finally, once that was done, a copy was made and all abstract make statements stripped by hand.
+The following expression was then run to generate the update_paths control file:
+---
+Match:
+^MAKE_REAL\((.*),.*$
+Replace:
+/obj/effect/mapping_helpers/airlock/access/all/$1 : /obj/effect/mapping_helpers/access/all/$1/airlock
+/obj/effect/mapping_helpers/airlock/access/any/$1 : /obj/effect/mapping_helpers/access/any/$1/airlock
+/obj/effect/mapping_helpers/windoor/access/all/$1 : /obj/effect/mapping_helpers/access/all/$1/windoor
+/obj/effect/mapping_helpers/windoor/access/any/$1 : /obj/effect/mapping_helpers/access/any/$1/windoor
+---
+
+If you're porting this, I'm so sorry in advanced.
+- Francinum, At midnight.

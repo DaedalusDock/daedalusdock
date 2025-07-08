@@ -150,7 +150,7 @@
 /// Sets the recipe of this assembly aswell making the name and description matching.
 /obj/item/slapcraft_assembly/proc/set_recipe(datum/slapcraft_recipe/set_recipe)
 	recipe = set_recipe
-	w_class = recipe.assembly_weight_class
+	set_weight_class(recipe.assembly_weight_class)
 	name = "[set_recipe.name] [set_recipe.assembly_name_suffix]"
 	desc = "This seems to be an assembly to craft \the [set_recipe.name]"
 

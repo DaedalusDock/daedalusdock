@@ -1,6 +1,9 @@
 /// How much damage you take from an emp when wearing a hardsuit
 #define HARDSUIT_EMP_BURN 2 // a very orange number
 
+TYPEINFO_DEF(/obj/item/clothing/suit/space/hardsuit)
+	default_armor = list(BLUNT = 10, PUNCTURE = 5, SLASH = 0, LASER = 10, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 50, ACID = 75)
+
 /obj/item/clothing/suit/space/hardsuit
 	name = "voidsuit"
 	desc = "A special suit that protects against hazardous, low pressure environments. Has radiation shielding."
@@ -9,7 +12,6 @@
 	icon_state = "hardsuit-engineering"
 	inhand_icon_state = "eng_hardsuit"
 	max_integrity = 300
-	armor = list(BLUNT = 10, PUNCTURE = 5, SLASH = 0, LASER = 10, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 50, ACID = 75)
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/t_scanner, /obj/item/construction/rcd, /obj/item/pipe_dispenser)
 	siemens_coefficient = 0
 	actions_types = list(/datum/action/item_action/toggle_spacesuit, /datum/action/item_action/toggle_helmet)

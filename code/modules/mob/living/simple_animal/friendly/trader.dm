@@ -142,7 +142,7 @@
  */
 /mob/living/simple_animal/hostile/retaliate/trader/proc/try_buy(mob/user, obj/item/item_to_buy)
 	var/cost = products[item_to_buy]
-	to_chat(user, span_notice("It will cost you [cost] credits to buy \the [initial(item_to_buy.name)]. Are you sure you want to buy it?"))
+	to_chat(user, span_notice("It will cost you [cost] marks to buy \the [initial(item_to_buy.name)]. Are you sure you want to buy it?"))
 	var/list/npc_options = list(
 		"Yes" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_yes"),
 		"No" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_no")
@@ -184,7 +184,7 @@
 	if(!cost)
 		return FALSE
 	say(interestedphrase)
-	to_chat(user, span_notice("You will receive [cost] credits for each one of [sellitem]."))
+	to_chat(user, span_notice("You will receive [cost] marks for each one of [sellitem]."))
 	var/list/npc_options = list(
 		"Yes" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_yes"),
 		"No" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_no")
@@ -229,7 +229,7 @@
 		/obj/item/instrument/trombone/spectral = 10000,
 	)
 	wanted_items = list(
-		/obj/item/reagent_containers/food/condiment/milk = 1000,
+		/obj/item/reagent_containers/condiment/milk = 1000,
 		/obj/item/stack/sheet/bone = 420
 	)
 	buyphrase = "Bone appetit!"

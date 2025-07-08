@@ -584,13 +584,12 @@
 	desc = "A hard yet gelatinous capsule excreted by a slime, containing mysterious substances."
 	w_class = WEIGHT_CLASS_TINY
 
-/obj/item/slimepotion/afterattack(obj/item/reagent_containers/target, mob/user , proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/slimepotion/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if (istype(target))
-		to_chat(user, span_warning("You cannot transfer [src] to [target]! It appears the potion must be given directly to a slime to absorb.") )
-		return
+		to_chat(user, span_warning("You cannot transfer [src] to [target]. It appears the potion must be given directly to a slime to absorb.") )
+		return ITEM_INTERACT_BLOCKING
 
 /obj/item/slimepotion/slime/docility
 	name = "docility potion"
@@ -696,40 +695,43 @@
 	var/prompted = 0
 	var/animal_type = SENTIENCE_ORGANIC
 
-/obj/item/slimepotion/transference/afterattack(mob/living/switchy_mob, mob/living/user, proximity)
-	if(!proximity)
-		return
-	if(prompted || !ismob(switchy_mob))
-		return
+/obj/item/slimepotion/transference/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/mob/switchy_mob = interacting_with
+	if(!ismob(switchy_mob))
+		return NONE
+
 	if(!(isanimal(switchy_mob) || isbasicmob(switchy_mob))|| switchy_mob.ckey) //much like sentience, these will not work on something that is already player controlled
 		to_chat(user, span_warning("[switchy_mob] already has a higher consciousness!"))
-		return ..()
+		return ITEM_INTERACT_BLOCKING
+
 	if(switchy_mob.stat)
 		to_chat(user, span_warning("[switchy_mob] is dead!"))
-		return ..()
+		return ITEM_INTERACT_BLOCKING
+
 	if(isanimal(switchy_mob))
 		var/mob/living/simple_animal/switchy_animal= switchy_mob
 		if(switchy_animal.sentience_type != animal_type)
 			to_chat(user, span_warning("You cannot transfer your consciousness to [switchy_animal].") )
-			return ..()
+			return ITEM_INTERACT_BLOCKING
+
 	else	//ugly code duplication, but necccesary as sentience_type is implemented twice.
 		var/mob/living/basic/basic_mob = switchy_mob
 		if(basic_mob.sentience_type != animal_type)
 			to_chat(user, span_warning("You cannot transfer your consciousness to [basic_mob].") )
-			return ..()
+			return ITEM_INTERACT_BLOCKING
 
 	var/job_banned = is_banned_from(user.ckey, ROLE_MIND_TRANSFER)
 	if(QDELETED(src) || QDELETED(switchy_mob) || QDELETED(user))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	if(job_banned)
 		to_chat(user, span_warning("Your mind goes blank as you attempt to use the potion."))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	prompted = 1
 	if(tgui_alert(usr,"This will permanently transfer your consciousness to [switchy_mob]. Are you sure you want to do this?",,list("Yes","No"))=="No")
 		prompted = 0
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	to_chat(user, span_notice("You drink the potion then place your hands on [switchy_mob]..."))
 
@@ -743,6 +745,7 @@
 	if(isanimal(switchy_mob))
 		var/mob/living/simple_animal/switchy_animal= switchy_mob
 		switchy_animal.sentience_act()
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/slimepotion/slime/steroid
 	name = "slime steroid"
@@ -826,35 +829,27 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potyellow"
 
-/obj/item/slimepotion/speed/afterattack(obj/C, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(!istype(C))
-		to_chat(user, span_warning("The potion can only be used on objects!"))
-		return
-	if(SEND_SIGNAL(C, COMSIG_SPEED_POTION_APPLIED, src, user) & SPEED_POTION_STOP)
-		return
-	if(isitem(C))
-		var/obj/item/I = C
+/obj/item/slimepotion/speed/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+
+	if(!isobj(interacting_with))
+		to_chat(user, span_warning("The potion can only be used on objects"))
+		return NONE
+
+	if(SEND_SIGNAL(interacting_with, COMSIG_SPEED_POTION_APPLIED, src, user) & SPEED_POTION_STOP)
+		return ITEM_INTERACT_SUCCESS
+
+	if(isitem(interacting_with))
+		var/obj/item/I = interacting_with
 		if(I.slowdown <= 0 || I.obj_flags & IMMUTABLE_SLOW)
-			to_chat(user, span_warning("The [C] can't be made any faster!"))
-			return ..()
+			to_chat(user, span_warning("The [interacting_with] can't be made any faster!"))
+			return ITEM_INTERACT_BLOCKING
 		I.slowdown = 0
 
-	to_chat(user, span_notice("You slather the red gunk over the [C], making it faster."))
-	C.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
-	C.add_atom_colour("#FF0000", FIXED_COLOUR_PRIORITY)
+	to_chat(user, span_notice("You slather the red gunk over the [interacting_with], making it faster."))
+	interacting_with.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
+	interacting_with.add_atom_colour("#FF0000", FIXED_COLOUR_PRIORITY)
 	qdel(src)
-
-/obj/item/slimepotion/speed/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
-	if(!isitem(storage_holder))
-		return TRUE
-	if(istype(storage_holder, /obj/item/mod/control))
-		var/obj/item/mod/control/mod = storage_holder
-		return mod.slowdown_inactive <= 0
-	var/obj/item/storage_item = storage_holder
-	return storage_item.slowdown <= 0
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/slimepotion/fireproof
 	name = "slime chill potion"
@@ -864,21 +859,22 @@
 	resistance_flags = FIRE_PROOF
 	var/uses = 3
 
-/obj/item/slimepotion/fireproof/afterattack(obj/item/clothing/C, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/slimepotion/fireproof/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!uses)
 		qdel(src)
-		return
+		return ITEM_INTERACT_BLOCKING
+
+	var/obj/item/clothing/C = interacting_with
 	if(!istype(C))
 		to_chat(user, span_warning("The potion can only be used on clothing!"))
-		return
+		return NONE
+
 	if(C.max_heat_protection_temperature >= FIRE_IMMUNITY_MAX_TEMP_PROTECT)
 		to_chat(user, span_warning("The [C] is already fireproof!"))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	to_chat(user, span_notice("You slather the blue gunk over the [C], fireproofing it."))
-	C.name = "fireproofed [C.name]"
+	C.name = "fireproofed [interacting_with.name]"
 	C.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
 	C.add_atom_colour("#000080", FIXED_COLOUR_PRIORITY)
 	C.max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
@@ -887,6 +883,8 @@
 	uses --
 	if(!uses)
 		qdel(src)
+
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/slimepotion/genderchange
 	name = "gender change potion"

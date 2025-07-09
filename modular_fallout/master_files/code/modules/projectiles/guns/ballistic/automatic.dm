@@ -486,7 +486,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/gun/ballistic/automatic/m1carbine/compact/AltClick(mob/user)
-	if(!istype(user) || !user.canUseTopic(src, BE_CLOSE, ismonkey(user)))
+	if(user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return
 	toggle_stock(user)
 
@@ -1008,7 +1008,7 @@
 	desc = "The ultimate refinement of the sniper's art, the Bozar is a scoped, accurate, light machine gun that will make nice big holes in your enemy. Uses 5.56."
 	icon_state = "bozar"
 	base_icon_state = "sniper"
-	slot_flags = SLOT_BACK
+	slot_flags = ITEM_SLOT_BACK
 	mag_type = /obj/item/ammo_box/magazine/m556/rifle
 	burst_size = 3
 	burst_shot_delay = 1.5
@@ -1221,10 +1221,9 @@
 		. = ..()
 		update_icon()
 
-/obj/item/gun/ballistic/automatic/m1919/on_attack_hand(mob/user, act_intent = user.a_intent, unarmed_attack_flags)
-	if(loc != user)
-		..()
-		return	//let them pick it up
+/obj/item/gun/ballistic/automatic/m1919/on_attack_hand(mob/user, unarmed_attack_flags)
+	if(user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
+		return //let them pick it up
 	if(!cover_open || (cover_open && !magazine))
 	else if(cover_open && magazine)
 		//drop the mag

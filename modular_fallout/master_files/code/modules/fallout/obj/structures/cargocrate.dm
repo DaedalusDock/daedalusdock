@@ -12,4 +12,4 @@
 /obj/structure/cargocrate/Initialize()
 	. = ..()
 	icon_state = pick("cargocrate1","cargocrate2","cargocrate3","cargocrate4","cargocrate5")
-	AddComponent(/datum/component/largetransparency, x_size = 1, y_size = 1)
+	AddComponent(/datum/component/seethrough, get_seethrough_map())

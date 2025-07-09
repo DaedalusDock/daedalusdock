@@ -2,6 +2,13 @@
 	name = "chem tin"
 	desc = "A branded tin made to hold ingestable chems."
 
+/datum/storage/pill_botle/chem_tin/New()
+	set_holdable(list(
+	/obj/item/reagent_containers/pill,
+	/obj/item/reagent_containers/syringe,
+	/obj/item/dice
+	))
+
 /datum/storage/pill_bottle/chem_tin
 	open_sound = 'sound/storage/pillbottle.ogg'
 	close_sound = null

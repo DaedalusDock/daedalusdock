@@ -445,7 +445,7 @@
 	visor_toggling()
 
 	to_chat(user, span_notice("You adjust \the [src] [up ? "up" : "down"]."))
-	playsound(src.loc, "[active_sound]", 100, 0, 4)
+//	playsound(src.loc, "[active_sound]", 100, 0, 4)
 
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user

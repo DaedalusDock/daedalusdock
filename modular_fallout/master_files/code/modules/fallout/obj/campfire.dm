@@ -40,7 +40,7 @@
 			return
 		if(istype(P, /obj/item/food))
 			var/obj/item/food/F = P
-			if(F.cooked_type)
+			if(F.microwaved_type)
 				to_chat(user, "You start cooking a [F.name].")
 				if(do_after(user, 20, target = src))
 					F.microwave_act()
@@ -98,7 +98,7 @@
 		else if(isliving(A))
 			var/mob/living/L = A
 			L.adjust_fire_stacks(5)
-			L.IgniteMob()
+			L.ignite_mob()
 
 /obj/structure/campfire/update_icon()
 	if(fired)

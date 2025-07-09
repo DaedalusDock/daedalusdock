@@ -205,7 +205,7 @@
 	update_icon()
 	return TRUE
 */
-
+/*
 /obj/item/gun/proc/getinaccuracy(mob/living/user, bonus_spread, stamloss)
 	if(inaccuracy_modifier == 0)
 		return bonus_spread
@@ -232,7 +232,7 @@
 	. = recoil
 	if(user && !user.has_gravity())
 		. = recoil*5
-
+*/
 /obj/item/gun/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/flashlight/seclite))
 		if(!can_flashlight)
@@ -469,7 +469,7 @@
 		zoomed = !zoomed
 
 	if(zoomed)//if we need to be zoomed in
-		user.add_movespeed_modifier(/datum/movespeed_modifier/scoped_in)
+//		user.add_movespeed_modifier(/datum/movespeed_modifier/scoped_in)
 		var/_x = 0
 		var/_y = 0
 		switch(user.dir)
@@ -489,7 +489,7 @@
 		UnregisterSignal(user, COMSIG_MOVABLE_MOVED) //pls don't conflict with anything else using this signal
 		user.visible_message("<span class='notice'>[user] looks down the scope of [src].</span>", "<span class='notice'>You look down the scope of [src].</span>")
 	else
-		user.remove_movespeed_modifier(/datum/movespeed_modifier/scoped_in)
+//		user.remove_movespeed_modifier(/datum/movespeed_modifier/scoped_in)
 		user.client.change_view(CONFIG_GET(string/default_view))
 		user.client.pixel_x = 0
 		user.client.pixel_y = 0

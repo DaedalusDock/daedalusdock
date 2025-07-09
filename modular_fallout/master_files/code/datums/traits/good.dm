@@ -47,9 +47,11 @@
 	lose_text = "<span class='danger'>Your fists feel calm again.</span>"
 
 /datum/quirk/iron_fist/on_spawn()
-	var/mob/living/carbon/human/mob_tar = quirk_holder
-	mob_tar.dna.species.punchdamagelow = 4
-	mob_tar.dna.species.punchdamagehigh = 11
+	var/list/arm_weakrefs = list()
+	for(var/obj/item/bodypart/arm/arm in host.bodyparts)
+		arm_weakrefs += WEAKREF(arm)
+		arm.unarmed_damage_low = 4
+		arm.unarmed_damage_high = 11
 
 /datum/quirk/light_step
 	name = "Light Step"

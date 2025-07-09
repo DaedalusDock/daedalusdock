@@ -4,8 +4,8 @@
 	icon = 'modular_fallout/master_files/icons/fallout/objects/96x160_street_decore.dmi'
 	icon_state = "nvlamp-singles"
 
-	light_system = MOVABLE_LIGHT
-	light_range = 4
+	light_system = LIGHT_ATTACHED
+	light_outer_range = 4
 	light_color = "#a8a582"
 	light_on = FALSE
 

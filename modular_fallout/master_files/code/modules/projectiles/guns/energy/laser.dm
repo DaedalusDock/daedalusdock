@@ -14,7 +14,6 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/lasergun)
 	ammo_x_offset = 1
 	shaded_charge = 1
-	var/select = 1
 
 /obj/item/gun/energy/laser/attackby(obj/item/A, mob/user, params)
 	. = ..()
@@ -41,24 +40,6 @@
 				return 1
 			else
 				to_chat(user, "<span class='warning'>You cannot seem to get \the [src] out of your hands!</span>")
-
-/obj/item/gun/energy/laser/proc/burst_select()
-	var/mob/living/carbon/human/user = usr
-	select = !select
-	if(!select)
-		disable_burst()
-		to_chat(user, "<span class='notice'>You switch to semi-automatic.</span>")
-	else
-		enable_burst()
-		to_chat(user, "<span class='notice'>You switch to [burst_size]-rnd burst.</span>")
-
-/obj/item/gun/energy/laser/proc/enable_burst()
-	burst_size = initial(burst_size)
-
-/obj/item/gun/energy/laser/proc/disable_burst()
-	burst_size = 1
-
-
 
 /////////////////
 //LASER PISTOLS//

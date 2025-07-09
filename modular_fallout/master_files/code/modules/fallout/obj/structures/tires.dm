@@ -27,6 +27,6 @@
 	name = "pile of tires"
 	desc = "Five tires stacked on top of each other in an orderly fashion.<br>Is the car shop nearby or something?"
 	icon_state = "five_t"
-	obj_integrity = 250
+	max_integrity = 250
 	density = 1
 	anchored = 1

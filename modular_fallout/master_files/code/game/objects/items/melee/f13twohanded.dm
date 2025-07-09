@@ -1,13 +1,12 @@
 // In this document: Axes, Spears, Heavy clubs, Sledgehammers, Advanced twohanded weapons
 
 /obj/item/twohanded // Two handed template. Slower melee speed than onehanders.
-	icon = 'modular_fallout/master_files/icons/fallout/objects/melee/twohanded.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/objects/melee/two_handed.dmi'
 	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/melee2h_lefthand.dmi'
 	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/melee2h_righthand.dmi'
 	attack_speed = CLICK_CD_MELEE * 1.1
 	w_class = WEIGHT_CLASS_BULKY
-	var/inhand_icon_state  = null
-	var/wielded = FALSE
+	inhand_icon_state  = null
 
 /obj/item/twohanded/proc/on_wield(obj/item/source, mob/user)
 	wielded = TRUE
@@ -115,7 +114,7 @@
 
 /obj/item/twohanded/spear/AltClick(mob/user)
 	. = ..()
-	if(user.canUseTopic(src, BE_CLOSE))
+	if(user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		..()
 		if(istype(user) && loc == user)
 			var/input = stripped_input(user,"What do you want your war cry to be? You will shout it when you hit someone in melee.", ,"", 50)
@@ -251,13 +250,13 @@
 	desc = "A heavy sledgehammer that lost most of its use besides caving in heads."
 	icon_state = "hammer-sledge"
 	inhand_icon_state  = "hammer-sledge"
-	attack_speed = CLICK_CD_MELEE * 1.2
 	force = 25
 	force_wielded = 45
 	throwforce = 30
 	slot_flags = ITEM_SLOT_BACK
 	sharpness = NONE
 	attack_verb_simple = list("bashed", "pounded", "bludgeoned", "pummeled", "thrashed")
+	stamina_cost = 25
 
 /*
 /obj/item/twohanded/sledgehammer/afterattack(atom/A, mob/living/user, proximity) //Bonus damage to structures, demolition time
@@ -301,6 +300,7 @@
 	armor_penetration = 75
 	demolition_modifier = 2
 	active_hitsound = 'sound/items/welder2.ogg'
+	stamina_cost = 20
 
 /obj/item/melee/energy/thermic_lance/Initialize(mapload)
 	. = ..()
@@ -332,6 +332,8 @@
 	armor_penetration = 70
 	throwforce = 15
 	active_throwforce = 30
+	stamina_cost = 15
+
 
 // Super Sledge			Keywords: Damage 25/60
 /obj/item/twohanded/sledgehammer/supersledge
@@ -341,7 +343,7 @@
 	inhand_icon_state  = "hammer-super"
 	force = 25
 	force_wielded = 60
-
+	stamina_cost = 25
 
 // Rocket-assisted Sledgehammer			Keywords: Damage 20/52, Mining  Issues left: mining only when dual wielded, sound to play always on hit
 /obj/item/twohanded/sledgehammer/rockethammer
@@ -360,6 +362,7 @@
 	var/digrange = 1
 	var/attacksound = "sound/f13effects/explosion_distant_2.ogg"
 	var/sound = "sound/f13effects/explosion_distant_2.ogg"
+	stamina_cost = 20
 
 // The Court Martial	Keywords: UNIQUE, Damage 20/52, Inferior mining
 /obj/item/twohanded/sledgehammer/rockethammer/courtmartial
@@ -370,6 +373,7 @@
 	icon_state = "hammer-courtmartial"
 	inhand_icon_state  = "hammer-courtmartial"
 	toolspeed = 0.8
+	stamina_cost = 20
 
 // Atom's Judgement			Keywords: UNIQUE, Damage 25/60, Damage bonus Rad
 /obj/item/twohanded/sledgehammer/atomsjudgement
@@ -379,13 +383,14 @@
 	inhand_icon_state  = "hammer-atom"
 	force = 25
 	force_wielded = 60
-
+/*
 /obj/item/twohanded/sledgehammer/atomsjudgement/attack(mob/living/M, mob/living/user)
 	. = ..()
 	if(!istype(M))
 		return
 	M.apply_effect(300, EFFECT_IRRADIATE, 0)
-
+*/
+#warn fix radiation..
 
 // War Mace			Keywords: TRIBAL, Damage 25/45, AP 0.2
 /obj/item/twohanded/sledgehammer/warmace
@@ -398,6 +403,7 @@
 	throwforce = 20
 	armor_penetration = 0.2
 	attack_verb_simple = list("bashed", "pounded", "bludgeoned", "pummeled", "thrashed")
+	stamina_cost = 18
 
 // Shaman staff				Keywords: TRIBAL, Damage 15/30
 /obj/item/twohanded/sledgehammer/shamanstaff
@@ -408,6 +414,7 @@
 	force = 15
 	force_wielded = 30
 	attack_verb_simple = list("bashed", "pounded", "bludgeoned", "pummeled", "thrashed")
+	stamina_cost = 18
 
 // Staff of Mars			Keywords: Damage 10/10, Damage bonus Burn + Stamina
 /obj/item/twohanded/sledgehammer/marsstaff
@@ -419,6 +426,7 @@
 	force_wielded = 10
 	hitsound = "swing_hit"
 	attack_verb_simple = list("bashed", "pounded", "bludgeoned", "pummeled", "enlightened")
+	stamina_cost = 10
 
 /obj/item/twohanded/sledgehammer/marsstaff/attack(mob/living/M, mob/living/user)
 	. = ..()
@@ -426,19 +434,6 @@
 		return
 	M.apply_damage(2, BURN, 0)
 	M.apply_damage(25, STAMINA, null, 0)
-
-/obj/item/twohanded/sledgehammer/marsstaff/pickup(mob/living/user, slot)
-	..()
-	if(ishuman(user))
-		var/mob/living/carbon/human/U = user
-		if(U.job in list("Priestess of Mars"))
-		else
-			to_chat(user, "<span class='userdanger'>You invoke the wrath of Mars!</span>")
-			user.emote("scream")
-			user.apply_damage(30, BURN, pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM))
-			user.dropItemToGround(src, TRUE)
-			user.Knockdown(50)
-		return
 
 // Chainsaw				Keywords: Damage 13/55, Wound bonus, Tool saw-off
 /obj/item/twohanded/chainsaw
@@ -472,6 +467,7 @@
 	var/description_on = "<span class ='warning'>You pull the cord, starting up the chainsaw with a roar and letting the blades spin up.</span>"
 	var/description_off = "<span class ='notice'>You press the off button, stopping the noise and the carnage.</span>"
 	var/on_sound = 'modular_fallout/master_files/sound/weapons/chainsawhit.ogg'
+	stamina_cost = 24
 
 /obj/item/twohanded/chainsaw/Initialize()
 	. = ..()

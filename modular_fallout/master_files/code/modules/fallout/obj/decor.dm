@@ -2,7 +2,7 @@
 
 /obj/structure/decoration
 	anchored = 1
-	level = ABOVE_NORMAL_TURF_LAYER
+	layer = ABOVE_NORMAL_TURF_LAYER
 
 /obj/structure/decoration/rag //Generic decoration. See decals.dmi - there are more things to choose the proper icon_state in map editor.
 	name = "rag"

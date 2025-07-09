@@ -7,15 +7,17 @@
 	slot_flags = ITEM_SLOT_BACK
 	storage_type = /datum/storage/backpack/backsheath
 
+/datum/storage/backpack/backsheath/New()
+	set_holdable(list(
+		/obj/item/storage/backpack/backsheathstorage,
+		/obj/item/melee/onehanded/machete,
+		/obj/item/twohanded/fireaxe/bmprsword
+	))
+
 /datum/storage/backpack/backsheath
 	max_slots = 2
 	rustle_sound = FALSE
 	max_specific_storage = WEIGHT_CLASS_BULKY
-	can_hold = typecacheof(list(
-		/obj/item/storage/backpack/backsheathstorage,
-		/obj/item/melee/onehanded/machete,
-		/obj/item/twohanded/fireaxe/bmprsword
-		))
 
 /obj/item/storage/backpack/backsheath/update_icon()
 	icon_state = "sheathback"
@@ -58,9 +60,9 @@
 	rustle_sound = null
 	max_specific_storage = WEIGHT_CLASS_BULKY
 	can_hold = typecacheof(list(
-		/obj/item/storage/belt/waistsheathstorage,
-		/obj/item/melee/onehanded/machete,
-		))
+	/obj/item/storage/belt/waistsheathstorage,
+	/obj/item/melee/onehanded/machete,
+	))
 
 /obj/item/storage/belt/waistsheath/examine(mob/user)
 	..()

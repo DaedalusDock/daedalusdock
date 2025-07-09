@@ -7,7 +7,7 @@
 	density = 1
 	anchored = 1
 	layer = 5
-	icon = 'modular_fallout/master_files/icons/fallout/objects/Ritas.dmi'
+	icon = 'modular_fallout/master_files/icons/obj/Ritas.dmi'
 	bound_width = 64
 	resistance_flags = INDESTRUCTIBLE
 

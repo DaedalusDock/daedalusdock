@@ -25,7 +25,6 @@
 	anchored = 1
 	density = 1
 	max_integrity = 600
-	proj_pass_rate = 90
 	pass_flags = LETPASSTHROW
 
 /obj/structure/obstacle/tanktrap/Initialize(mapload)
@@ -43,8 +42,10 @@
 	desc = "Heavy doors jammed halfway open. Squeeze past or apply plenty of violence."
 	icon_state = "jammed"
 	max_integrity = 600
-	climbable = TRUE
 
+/obj/structure/obstacle/jammed_door/Initialize(mapload)
+	. = ..()
+		AddElement(/datum/element/climbable, climb_time = 10, climb_stun = 1)
 
 /////////////////
 // BARBED WIRE //

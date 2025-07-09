@@ -140,12 +140,14 @@
 	icon = 'modular_fallout/master_files/icons/fallout/turfs/walls/subway.dmi'
 	icon_state = "subwaytop"
 
-/turf/closed/indestructible/f13/matrix //The Chosen One from Arroyo!
+/obj/machinery/cryopod/f13/matrix //The Chosen One from Arroyo!
 	name = "matrix"
 	desc = "<font color='#6eaa2c'>You suddenly realize the truth - there is no spoon.<br>Digital simulation ends here.</font>"
+	icon = 'modular_fallout/master_files/icons/fallout/turfs/walls.dmi'
 	icon_state = "matrix"
-	var/in_use = FALSE
-
+	time_till_despawn = 1 SECONDS
+#warn this should be.... better
+/*
 /turf/closed/indestructible/f13/matrix/MouseDroppedOn(atom/dropping, mob/user, params)
 	if(!isliving(user) || user.incapacitated())
 		return //No ghosts or incapacitated folk allowed to do this.
@@ -192,7 +194,7 @@
 	else
 		departing_mob.visible_message("<span class='notice'>[departing_mob == user ? "Out of their own volition, " : "Ushered by [user], "][departing_mob] crosses the border and departs the Sonora.</span>")
 	departing_mob.despawn()
-
+*/
 
 /turf/closed/indestructible/f13/obsidian //Just like that one game studio that worked on the original game, or that block in Minecraft!
 	name = "obsidian"

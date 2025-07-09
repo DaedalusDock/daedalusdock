@@ -59,3 +59,6 @@
 	adjust_fire_stacks(-amount * 5)
 	for(var/atom/movable/AM in contents)
 		AM.water_act(amount)
+
+/mob/living/proc/update_water()
+	return

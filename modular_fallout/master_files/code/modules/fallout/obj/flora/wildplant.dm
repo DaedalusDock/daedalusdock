@@ -118,6 +118,8 @@
 		icon_state = "[myseed.plant_datum.icon_grow][t_growthstate]"
 	if(myseed && myseed.plant_datum.get_gene(/datum/plant_gene/trait/glow))
 		var/datum/plant_gene/trait/glow/G = myseed.plant_datum.get_gene(/datum/plant_gene/product_trait/glow)
-		set_light(G.glow_range(myseed), G.glow_power(myseed), G.glow_color)
+		set_light(G.glow_color)
 	else
 		set_light(0)
+
+#warn mayb add glow range and glow light to glow trait later

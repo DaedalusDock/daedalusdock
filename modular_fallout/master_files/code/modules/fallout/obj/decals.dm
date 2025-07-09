@@ -19,7 +19,7 @@
 	AddComponent(/datum/component/radioactive, 200, src, 0, TRUE, TRUE) //half-life of 0 because we keep on going.
 
 /obj/effect/decal/waste/Destroy()
-	source.RemoveElement(/datum/element/radioactive)
+	RemoveElement(/datum/element/radioactive)
 	..()
 /*
 //Bing bang boom done

@@ -23,9 +23,9 @@
 
 /obj/projectile/incendiary/flamethrower
 	name = "FIREEEEEEEEEE!!!!!"
-	icon = 'modular_fallout/master_files/icons/effects/fire.dmi'
+	icon = 'icons/effects/fire.dmi'
 	icon_state = "3"
-	light_outer_range = light_outer_range_FIRE
+	light_outer_range = 2
 	light_color = LIGHT_COLOR_FIRE
 	damage_type = BURN
 	damage = 12 //slight damage on impact
@@ -65,3 +65,8 @@
 /obj/projectile/bullet/pellet/shotgun_improvised/on_range()
 	do_sparks(1, TRUE, src)
 	..()
+
+/obj/item/projectile/bullet/pellet/magnum_buckshot
+	name = "magnum buckshot pellet"
+	damage = 15
+	armour_penetration = 15

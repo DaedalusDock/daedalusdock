@@ -120,7 +120,7 @@
 
 /obj/item/gun/ballistic/shotgun/police/AltClick(mob/living/user)
 	. = ..()
-	if(!istype(user) || !user.canUseTopic(src, BE_CLOSE, ismonkey(user)))
+	if(user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return
 	toggle_stock(user)
 	return TRUE
@@ -278,7 +278,7 @@
 		to_chat(user, "You switch to tube A.")
 
 /obj/item/gun/ballistic/shotgun/automatic/combat/neostead/AltClick(mob/living/user)
-	if(!user.canUseTopic(src, BE_CLOSE, ismonkey(user)))
+	if(user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return
 	toggle_tube(user)
 
@@ -312,7 +312,7 @@
 	automatic_burst_overlay = FALSE
 	semi_auto = TRUE
 	fire_sound = 'modular_fallout/master_files/sound/weapons/riot_shotgun.ogg'
-
+/*
 // BETA // Obsolete
 /obj/item/gun/ballistic/shotgun/shotttesting
 	name = "shotgun"
@@ -320,3 +320,4 @@
 	inhand_icon_state  = "shotgunpolice"
 	mag_type = /obj/item/ammo_box/magazine/internal/shot/lethal/test
 	extra_damage = 7
+*/

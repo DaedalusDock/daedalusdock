@@ -1,6 +1,6 @@
 /obj/item/stack/spacecash  //Don't use base space cash stacks. Any other space cash stack can merge with them, and could cause potential money duping exploits.
 	name = "wad of Federation marks"
-	singular_name = "fedaration mark"
+	singular_name = "Federation mark"
 
 	stack_name = "wad"
 	multiple_gender = NEUTER

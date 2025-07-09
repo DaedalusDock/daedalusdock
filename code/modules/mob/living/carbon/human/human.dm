@@ -382,7 +382,7 @@
 				var/counter = 1
 				while(security_record.fields["com_[counter]"])
 					counter++
-				security_record.fields["com_[counter]"] = "Made by [allowed_access] on [stationtime2text()] [time2text(world.realtime, "MMM DD")], [CURRENT_STATION_YEAR]<BR>[t1]"
+				security_record.fields["com_[counter]"] = "Made by [allowed_access] on [stationtime2text()] [time2text(world.realtime, "MMM DD")], '77<BR>[t1]"
 				to_chat(usr, span_notice("Successfully added comment."))
 				return
 

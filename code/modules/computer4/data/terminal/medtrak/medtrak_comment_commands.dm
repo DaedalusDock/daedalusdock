@@ -26,5 +26,5 @@
 		return
 
 	medtrak.current_record.fields[DATACORE_COMMENTS] ||= list()
-	medtrak.current_record.fields[DATACORE_COMMENTS] += "[system.current_user.registered_name] on [stationtime2text()] [time2text(world.realtime, "MMM DD")], [CURRENT_STATION_YEAR]: [html_encode(stdin.raw)]"
+	medtrak.current_record.fields[DATACORE_COMMENTS] += "[system.current_user.registered_name] on [stationtime2text()] [time2text(world.realtime, "MMM DD")], '77: [html_encode(stdin.raw)]"
 	medtrak.view_comments()

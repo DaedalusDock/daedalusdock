@@ -23,7 +23,7 @@
 	else
 		UnregisterSignal(M, COMSIG_MOB_SAY)
 
-/obj/item/clothing/mask/dropped(mob/M)
+/obj/item/clothing/mask/unequipped(mob/M)
 	. = ..()
 	UnregisterSignal(M, COMSIG_MOB_SAY)
 

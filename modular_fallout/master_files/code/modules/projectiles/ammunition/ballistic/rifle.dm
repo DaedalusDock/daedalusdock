@@ -2,7 +2,7 @@
 /obj/item/ammo_casing/a762
 	name = "7.62 FMJ bullet casing"
 	desc = "A 7.62 FMJ bullet casing."
-	icon = 'modular_fallout/master_files/icons/objects/guns/ammo.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ammo.dmi'
 	icon_state = "762-casing"
 	caliber = "a762"
 	projectile_type = /obj/projectile/bullet/a762

@@ -21,7 +21,7 @@
 	icon_state = "oldclosed"
 	broken_state = "oldempty"
 
-/obj/machinery/door/poddoor/vault_door/obj_break(damage_flag)
+/obj/machinery/door/poddoor/proc/vault_door/obj_break(damage_flag)
 	icon_state = broken_state
 	src.set_opacity(0)
 	src.density = FALSE

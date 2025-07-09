@@ -172,3 +172,9 @@ Civilian round				=	-10% damage for .223. AP reduced by 50%
 	penetration_falloff = 0.1
 	damage_falloff = 0.1
 
+/// Musket
+
+/obj/projectile/bullet/F13/musketball
+	damage = 60
+	armor_penetration = 0
+	weak_against_armor = 1.5

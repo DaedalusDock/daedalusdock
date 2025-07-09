@@ -51,7 +51,7 @@
 	else
 		..()
 
-/obj/item/minigunpack/dropped(mob/user)
+/obj/item/minigunpack/unequipped(mob/user)
 	. = ..()
 	if(armed)
 		user.dropItemToGround(gun, TRUE)
@@ -125,7 +125,7 @@
 /obj/item/gun/ballistic/minigun/attack_self(mob/living/user)
 	return
 
-/obj/item/gun/ballistic/minigun/dropped(mob/user)
+/obj/item/gun/ballistic/minigun/unequipped(mob/user)
 	. = ..()
 	if(ammo_pack)
 		ammo_pack.attach_gun(user)
@@ -145,6 +145,6 @@
 		to_chat(user, "You need the backpack power source to fire the gun!")
 	. = ..()
 
-/obj/item/gun/ballistic/minigun/dropped(mob/living/user)
+/obj/item/gun/ballistic/minigun/unequipped(mob/living/user)
 	. = ..()
 	ammo_pack.attach_gun(user)

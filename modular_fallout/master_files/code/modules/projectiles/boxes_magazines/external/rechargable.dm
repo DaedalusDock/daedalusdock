@@ -54,7 +54,7 @@
 	desc = "A miniature battery for an energy weapon."
 	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ammo.dmi'
 	icon_state = "mws_batt"
-	slot_flags = SLOT_BELT
+	slot_flags = ITEM_SLOT_BELT
 	throwforce = 1
 
 	caliber = "mws"

@@ -27,7 +27,7 @@
 				cell = AM
 				if(oldcell)
 					to_chat(user, "<span class='notice'>You perform a tactical reload on \the [src], replacing the cell.</span>")
-					oldcell.dropped()
+					oldcell.unequipped()
 					oldcell.forceMove(get_turf(src.loc))
 					oldcell.update_icon()
 				//else

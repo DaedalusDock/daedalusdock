@@ -2,7 +2,7 @@
 	var/border_neighbors = null
 	var/sunlight_state = NO_SUNLIGHT
 
-	var/obj/item/stack/digResult = /obj/item/stack/ore/glass/basalt
+	obj/item/stack/digResult = /obj/item/stack/ore/glass/basalt
 	/// Icon state to use when broken
 	var/can_dig = FALSE
 /*

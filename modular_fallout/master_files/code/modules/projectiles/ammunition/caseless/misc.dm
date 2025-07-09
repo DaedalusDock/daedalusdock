@@ -1,12 +1,3 @@
-/obj/item/ammo_casing/caseless/magspear
-	name = "magnetic spear"
-	desc = "A reusable spear that is typically loaded into kinetic spearguns."
-	projectile_type = /obj/projectile/bullet/reusable/magspear
-	caliber = "speargun"
-	icon_state = "magspear"
-	throwforce = 15 //still deadly when thrown
-	throw_speed = 3
-
 /obj/item/ammo_casing/caseless/laser
 	name = "laser casing"
 	desc = "You shouldn't be seeing this."
@@ -25,7 +16,7 @@
 	name = "napalm"
 	desc = "a bunch of napalm fuel for a flamethrower. A bit useless now that it's been spilt on the ground."
 	caliber = "fuel"
-	icon = 'modular_fallout/master_files/icons/mob/robots.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/mobs/robots.dmi'
 	icon_state = "floor1"
 	projectile_type = /obj/projectile/incendiary/flamethrower
 	pellets = 3

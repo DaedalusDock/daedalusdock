@@ -5114,7 +5114,6 @@
 #include "modular_fallout\master_files\code\modules\projectiles\boxes_magazines\internal\revolver.dm"
 #include "modular_fallout\master_files\code\modules\projectiles\boxes_magazines\internal\rifle.dm"
 #include "modular_fallout\master_files\code\modules\projectiles\boxes_magazines\internal\shotgun.dm"
-#include "modular_fallout\master_files\code\modules\projectiles\boxes_magazines\internal\toy.dm"
 #include "modular_fallout\master_files\code\modules\projectiles\guns\ballistic.dm"
 #include "modular_fallout\master_files\code\modules\projectiles\guns\gun.dm"
 #include "modular_fallout\master_files\code\modules\projectiles\guns\hoboguns_temp.dm"

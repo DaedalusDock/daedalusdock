@@ -15,7 +15,6 @@
 	rustle_sound = null
 	allow_quick_gather = TRUE
 	allow_quick_empty = TRUE
-	can_hold = typecacheof(list(/obj/item/reagent_containers/pill, /obj/item/reagent_containers/syringe, /obj/item/dice))
 
 /obj/item/storage/pill_bottle/chem_tin/mentats
 	name = "Mentats"

@@ -340,6 +340,8 @@
 		ADD_TRAIT(C, TRAIT_IGNOREDAMAGESLOWDOWN, "[type]")
 
 /datum/reagent/medicine/medx/on_mob_delete(mob/living/carbon/human/C)
+	var/obj/item/organ/eyes/eyes = C.getorganslot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/heart/heart = C.getorganslot(ORGAN_SLOT_HEART)
 	if(isliving(C))
 		to_chat(C, "<span class='notice'>You feel as vulnerable to pain as a normal person.</span>")
 		C.maxHealth -= 100
@@ -347,10 +349,14 @@
 		REMOVE_TRAIT(C, TRAIT_IGNOREDAMAGESLOWDOWN, "[type]")
 	switch(current_cycle)
 		if(1 to 25)
+			eyes.applyOrganDamage(15)
+			heart.applyOrganDamage(5)
 			C.adjust_timed_status_effect(10 SECONDS, /datum/status_effect/confusion, max_duration = 10 SECONDS)
 			C.blur_eyes(20)
 			to_chat(C, "<span class='notice'>Your head is pounding. Med-X is hard on the body. </span>")
 		if(26 to 50)
+			eyes.applyOrganDamage(15)
+			heart.applyOrganDamage(25)
 			C.adjust_timed_status_effect(20 SECONDS, /datum/status_effect/confusion, max_duration = 20 SECONDS)
 			C.blur_eyes(30)
 			C.losebreath += 8
@@ -359,6 +365,8 @@
 			C.stamina.adjust(30)
 			to_chat(C, "<span class='danger'>Your stomach churns, your eyes cloud and you're pretty sure you just popped a lung. You shouldn't take so much med-X at once. </span>")
 		if(51 to INFINITY)
+			eyes.applyOrganDamage(30)
+			heart.applyOrganDamage(50)
 			C.adjust_timed_status_effect(40 SECONDS, /datum/status_effect/confusion, max_duration = 40 SECONDS)
 			C.blur_eyes(30)
 			C.losebreath += 10
@@ -371,7 +379,8 @@
 			C.visible_message("<span class='userdanger'>[C] clutches their stomach and vomits violently onto the ground, bloody froth covering their lips!</span>")
 			to_chat(C, "<span class='userdanger'>You throw up everything you've eaten in the past week and some blood to boot. You're pretty sure your heart just stopped for a second, too. </span>")
 		if(101 to INFINITY)
-			C.adjust_eye_damage(30)
+			eyes.applyOrganDamage(50)
+			heart.applyOrganDamage(85)
 			C.Unconscious(400)
 			C.set_jitter_if_lower(100 SECONDS)
 			C.set_heartattack(TRUE)

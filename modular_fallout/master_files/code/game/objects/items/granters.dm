@@ -1,26 +1,3 @@
-// MARTIAL ARTS
-
-/obj/item/book/granter/martial/cqc
-	martial = /datum/martial_art/cqc
-	name = "old manual"
-	desc = "A small, black manual. There are drawn instructions of tactical hand-to-hand combat."
-	greet = "<span class='boldannounce'>You've mastered the basics of CQC.</span>"
-	icon_state = "cqcmanual"
-	remarks = list("Kick... Slam...", "Lock... Kick...", "Strike their abdomen, neck and back for critical damage...", "Slam... Lock...", "I could probably combine this with some other martial arts!", "Words that kill...", "The last and final moment is yours...")
-
-/obj/item/book/granter/martial/cqc/onlearned(mob/living/carbon/user)
-	..()
-	if(!uses)
-		to_chat(user, "<span class='warning'>[src] beeps ominously...</span>")
-
-/obj/item/book/granter/martial/cqc/recoil(mob/living/carbon/user)
-	to_chat(user, "<span class='warning'>[src] explodes!</span>")
-	playsound(src,'sound/effects/explosion1.ogg',40,1)
-	user.flash_act(1, 1)
-	user.adjustBruteLoss(6)
-	user.adjustFireLoss(6)
-	qdel(src)
-
 //Crafting Recipe books
 
 /obj/item/book/granter/crafting_recipe
@@ -34,7 +11,7 @@
 		var/datum/crafting_recipe/R = crafting_recipe_type
 		user.mind.teach_crafting_recipe(crafting_recipe_type)
 		to_chat(user,"<span class='notice'>You learned how to make [initial(R.name)].</span>")
-	onlearned(user)
+	on_reading_finished(user)
 
 /obj/item/book/granter/crafting_recipe/gunsmith_one
 	name = "Guns and Bullets, Part 1"
@@ -266,7 +243,7 @@
 	var/traitname = "being cool"
 	var/list/crafting_recipe_types = list()
 
-/obj/item/book/granter/trait/already_known(mob/user)
+/obj/item/book/granter/trait/can_learn(mob/user)
 	if(!granted_trait)
 		return TRUE
 	if(HAS_TRAIT(user, granted_trait))
@@ -287,12 +264,12 @@
 		var/datum/crafting_recipe/R = crafting_recipe_type
 		user.mind.teach_crafting_recipe(crafting_recipe_type)
 		to_chat(user,"<span class='notice'>You learned how to make [initial(R.name)].</span>")
-	onlearned(user)
+	on_reading_finished(user)
 
 /obj/item/book/granter/trait/rifleman
 	name = "The Neo-Russian Rifleman\'s Primer"
 	desc = "A book with stains of vodka and...blood? The back is hard to read, but says something about bolt-actions. Or pump-actions. Both, maybe."
-	oneuse = FALSE
+	uses = 100
 	granted_trait = TRAIT_FAST_PUMP
 	traitname = "riflery"
 	icon_state = "book1"
@@ -321,11 +298,10 @@
 	traitname = "minor surgery"
 	remarks = list("Keep your hands and any injuries clean!", "While bandages help to seal a wound, they do not heal a wound.", "Remain calm, focus on the task at hand, stop the bleeding.", "An open wound can lead to easy infection of said wound.", "Keep track of your home's first aid kit, restock used components regularly.", "If a body part has been lost, ice and transport it with the injured to a hospital.",)
 
-/obj/item/book/granter/trait/lowsurgery/already_known(mob/user)
+/obj/item/book/granter/trait/lowsurgery/can_learn(mob/user)
 	if(HAS_TRAIT(user, TRAIT_SURGERY_MID) || HAS_TRAIT(user, TRAIT_SURGERY_HIGH))
 		to_chat(user, "<span class ='notice'>This book is too basic for you!")
 		return TRUE
-	return ..()
 
 /obj/item/book/granter/trait/midsurgery
 	name = "D.C. Journal of Internal Medicine"
@@ -334,7 +310,7 @@
 	traitname = "intermediate surgery"
 	remarks = list("Sterilization is essential before and after surgery.", "Keep track of all your tools, double check body cavities.", "Ensure complete focus while operating on the patient.", "Cauterize incisions once the operation concludes.", "Spare organs and blood must be kept at a low temperature.", "Most prosthesis come with significant trade-offs, and maintenance costs.",)
 
-/obj/item/book/granter/trait/midsurgery/already_known(mob/user)
+/obj/item/book/granter/trait/midsurgery/can_learn(mob/user)
 	if(HAS_TRAIT(user, TRAIT_SURGERY_HIGH))
 		to_chat(user, "<span class ='notice'>This book is too basic for you!")
 		return TRUE
@@ -376,7 +352,6 @@
 	desc = "An instruction manual on basic medicine!"
 	granted_trait = null
 	pages_to_mastery = 0
-	time_per_page = 0
 
 /obj/item/book/granter/trait/medical/attack_self(mob/user)
 	var/list/choices = list("Big Book of Science","First Aid Pamphlet")
@@ -406,7 +381,6 @@
 	desc = "Pulled from the ashes of the old world, it feels warm to the touch. It looks to be in poor condition."
 	granted_trait = null
 	pages_to_mastery = 0
-	time_per_page = 0
 
 /obj/item/book/granter/trait/selection/attack_self(mob/user)
 	var/list/choices = list("Big Book of Science","Dean's Electronics","Grognak the Barbarian","First Aid Pamphlet","Wasteland Survival Guide")

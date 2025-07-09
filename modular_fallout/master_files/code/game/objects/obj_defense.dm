@@ -1,6 +1,6 @@
 /obj
 	var/demolition_modifier = 1
-
+/*
 /obj/hitby(atom/movable/hit_by, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	.=..()
 	var/damage_taken = hit_by.throwforce
@@ -27,3 +27,4 @@
 
 /obj/proc/get_demolition_modifier(obj/target)
 	return demolition_modifier
+*/

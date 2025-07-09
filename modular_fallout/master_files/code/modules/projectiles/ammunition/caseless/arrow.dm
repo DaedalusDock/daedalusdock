@@ -2,7 +2,7 @@
 /obj/item/ammo_casing/caseless/arrow
 	name = "metal arrow"
 	desc = "A simple arrow with a metal head."
-	icon = 'modular_fallout/master_files/icons/objects/guns/ammo.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ammo.dmi'
 	projectile_type = /obj/projectile/bullet/reusable/arrow
 	caliber = "arrow"
 	icon_state = "arrow"

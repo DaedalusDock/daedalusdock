@@ -49,7 +49,7 @@
 	else
 		..()
 
-/obj/item/m2flamethrowertank/dropped(mob/user)
+/obj/item/m2flamethrowertank/unequipped(mob/user)
 	. = ..()
 	if(armed)
 		user.dropItemToGround(gun, TRUE)
@@ -123,7 +123,7 @@
 /obj/item/gun/ballistic/m2flamethrower/attack_self(mob/living/user)
 	return
 
-/obj/item/gun/ballistic/m2flamethrower/dropped(mob/user)
+/obj/item/gun/ballistic/m2flamethrower/unequipped(mob/user)
 	. = ..()
 	if(ammo_pack)
 		ammo_pack.attach_gun(user)
@@ -143,6 +143,6 @@
 		to_chat(user, "You need the backpack fuel tank to fire the gun!")
 	. = ..()
 
-/obj/item/gun/ballistic/m2flamethrower/dropped(mob/living/user)
+/obj/item/gun/ballistic/m2flamethrower/unequipped(mob/living/user)
 	. = ..()
 	ammo_pack.attach_gun(user)

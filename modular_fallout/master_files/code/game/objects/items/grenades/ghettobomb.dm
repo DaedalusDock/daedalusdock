@@ -51,7 +51,7 @@
 			arm_grenade(user, null, FALSE)
 			soundloop.start()
 
-/obj/item/grenade/homemade/coffeepotbomb/prime(mob/living/lanced_by)
+/obj/item/grenade/homemade/coffeepotbomb/detonate(mob/living/lanced_by)
 	update_mob()
 	explosion(src.loc, 0, 1, 2, 3, 0, flame_range = 2)
 	qdel(src)
@@ -64,7 +64,7 @@
 	icon_state = "firebomb"
 	inhand_icon_state = "ied"
 
-/obj/item/grenade/homemade/firebomb/prime(mob/living/lanced_by) //Blowing that can up obsolete
+/obj/item/grenade/homemade/firebomb/detonate(mob/living/lanced_by) //Blowing that can up obsolete
 	update_mob()
 	explosion(src.loc,-1,-1,2, flame_range = 4)	// small explosion, plus a very large fireball.
 	qdel(src)

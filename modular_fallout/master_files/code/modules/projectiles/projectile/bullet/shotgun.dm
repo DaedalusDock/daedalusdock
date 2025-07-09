@@ -66,7 +66,7 @@
 	do_sparks(1, TRUE, src)
 	..()
 
-/obj/item/projectile/bullet/pellet/magnum_buckshot
+/obj/projectile/bullet/pellet/magnum_buckshot
 	name = "magnum buckshot pellet"
 	damage = 15
-	armour_penetration = 15
+	armor_penetration = 15

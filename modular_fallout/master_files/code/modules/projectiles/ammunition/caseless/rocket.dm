@@ -3,7 +3,7 @@
 	desc = "An 84mm High Explosive rocket. Fire at people and pray."
 	caliber = "84mm"
 	icon_state = "srm-8"
-	projectile_type = /obj/projectile/bullet/a84mm_he
+	projectile_type = /obj/projectile/bullet/a84mm/he
 
 /obj/item/ammo_casing/caseless/rocket/hedp
 	name = "\improper PM-9HEDP"

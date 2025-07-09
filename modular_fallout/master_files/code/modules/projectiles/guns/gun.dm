@@ -418,7 +418,7 @@
 		if(zoomable == TRUE)
 			azoom.Remove(user)
 
-/obj/item/gun/dropped(mob/user)
+/obj/item/gun/unequipped(mob/user)
 	. = ..()
 	if(zoomed)
 		zoom(user,FALSE)

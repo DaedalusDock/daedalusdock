@@ -9,9 +9,9 @@
 
 /datum/storage/backpack/backsheath/New()
 	set_holdable(list(
-		/obj/item/storage/backpack/backsheathstorage,
-		/obj/item/melee/onehanded/machete,
-		/obj/item/twohanded/fireaxe/bmprsword
+	/obj/item/storage/backpack/backsheathstorage,
+	/obj/item/melee/onehanded/machete,
+	/obj/item/twohanded/fireaxe/bmprsword,
 	))
 
 /datum/storage/backpack/backsheath
@@ -55,14 +55,16 @@
 	w_class = WEIGHT_CLASS_BULKY
 	storage_type = /datum/storage/belt/waistsheath
 
+/datum/storage/belt/waistsheath/New()
+	set_holdable(list(
+	/obj/item/storage/belt/waistsheathstorage,
+	/obj/item/melee/onehanded/machete,
+	))
+
 /datum/storage/belt/waistsheath
 	max_slots = 2
 	rustle_sound = null
 	max_specific_storage = WEIGHT_CLASS_BULKY
-	can_hold = typecacheof(list(
-	/obj/item/storage/belt/waistsheathstorage,
-	/obj/item/melee/onehanded/machete,
-	))
 
 /obj/item/storage/belt/waistsheath/examine(mob/user)
 	..()
@@ -136,11 +138,15 @@
 	resistance_flags = FLAMMABLE
 	storage_type = /datum/storage/bag/casings
 
+/datum/storage/bag/casings/New()
+	set_holdable(list(
+	/obj/item/ammo_casing,
+	))
+
 /datum/storage/bag/casings
 	max_specific_storage = WEIGHT_CLASS_NORMAL
 	max_total_storage = 600
 	max_slots = 600
-	can_hold = typecacheof(list(/obj/item/ammo_casing))
 
 /*
  * Ration boxes

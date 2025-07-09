@@ -47,7 +47,7 @@
 	U.armor = U.armor.detachArmor(armor)
 
 	if(isliving(user))
-		on_suit_dropped(U, user)
+		on_suit_unequipped(U, user)
 
 	if(minimize_when_attached)
 		transform *= 2
@@ -62,7 +62,7 @@
 /obj/item/clothing/armoraccessory/proc/on_suit_equip(obj/item/clothing/suit/U, user)
 	return
 
-/obj/item/clothing/armoraccessory/proc/on_suit_dropped(obj/item/clothing/suit/U, user)
+/obj/item/clothing/armoraccessory/proc/on_suit_unequipped(obj/item/clothing/suit/U, user)
 	return
 
 /obj/item/clothing/armoraccessory/AltClick(mob/user)

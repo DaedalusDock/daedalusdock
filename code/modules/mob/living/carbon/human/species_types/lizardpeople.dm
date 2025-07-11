@@ -3,6 +3,7 @@
 	name = "\improper Jinan"
 	plural_form = "Jinans"
 	id = SPECIES_LIZARD
+	name_generator_type = /datum/name_generator/lizard
 	say_mod = "hisses"
 	default_color = COLOR_VIBRANT_LIME
 	species_traits = list(MUTCOLORS, EYECOLOR, LIPS, BODY_RESIZABLE, SCLERA)
@@ -104,17 +105,6 @@
 /// Lizards are cold blooded and do not stabilize body temperature naturally
 /datum/species/lizard/body_temperature_core(mob/living/carbon/human/humi, delta_time, times_fired)
 	return
-
-/datum/species/lizard/random_name(gender,unique,lastname)
-	if(unique)
-		return random_unique_lizard_name(gender)
-
-	var/randname = lizard_name(gender)
-
-	if(lastname)
-		randname += " [lastname]"
-
-	return randname
 
 /datum/species/lizard/randomize_main_appearance_element(mob/living/carbon/human/human_mob)
 	var/tail = pick(GLOB.tails_list_lizard)

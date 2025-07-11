@@ -32,10 +32,14 @@
 	victim = locate() in parts_list
 	if(!victim) //likely a mapspawned one
 		victim = new(src)
-		victim.real_name = random_unique_name(prob(50))
+		var/datum/name_generator/human/name_gen = new
+		name_gen.ensure_unique = TRUE
+		victim.real_name = name_gen.Generate()
+
 	spear = locate(speartype) in parts_list
 	if(!spear)
 		spear = new speartype(src)
+
 	update_appearance()
 	return ..()
 

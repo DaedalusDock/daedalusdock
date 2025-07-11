@@ -1,7 +1,13 @@
-import { BooleanLike } from 'common/react';
+import {
+  BlockQuote,
+  Button,
+  Dropdown,
+  Section,
+  Stack,
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
 
 import { useBackend, useLocalState } from '../backend';
-import { BlockQuote, Button, Dropdown, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 // defined this so the code is more readable
@@ -108,10 +114,10 @@ export const SparringContract = (props) => {
                 <Stack.Item fontSize="16px">Arena:</Stack.Item>
                 <Stack.Item>
                   <Dropdown
-                    width="100%"
+                    fluid
                     selected={area}
                     options={possible_areas}
-                    onSelected={(value) => setArea(value)}
+                    onSelected={setArea}
                   />
                 </Stack.Item>
                 <Stack.Item>
@@ -127,7 +133,7 @@ export const SparringContract = (props) => {
                 <Stack.Item fontSize="16px">Stakes:</Stack.Item>
                 <Stack.Item>
                   <Dropdown
-                    width="100%"
+                    fluid
                     selected={stakelist[stakes - 1]}
                     options={stakelist}
                     onSelected={(value) =>

@@ -1,8 +1,6 @@
 import { sortBy, sortStrings } from 'common/collections';
-import { BooleanLike, classes } from 'common/react';
 import { ComponentType, createElement, ReactNode } from 'react';
-
-import { sendAct, useBackend, useLocalState } from '../../../../backend';
+import { sendAct, useBackend, useLocalState } from 'tgui/backend';
 import {
   Box,
   Button,
@@ -11,7 +9,9 @@ import {
   NumberInput,
   Stack,
   TextArea,
-} from '../../../../components';
+} from 'tgui-core/components';
+import { BooleanLike, classes } from 'tgui-core/react';
+
 import { createSetPreference, PreferencesMenuData } from '../../data';
 import { ServerPreferencesFetcher } from '../../ServerPreferencesFetcher';
 
@@ -124,10 +124,10 @@ export const createDropdownInput = <T extends string | number = string>(
   return (props: FeatureValueProps<T>) => {
     return (
       <Dropdown
-        selected={props.value}
+        selected={props.value.toString()}
         displayText={choices[props.value]}
         onSelected={props.handleSetValue}
-        width="100%"
+        fluid
         options={sortChoices(Object.entries(choices)).map(
           ([dataValue, label]) => {
             return {
@@ -167,7 +167,7 @@ export const StandardizedDropdown = (props: {
       disabled={disabled}
       selected={value}
       onSelected={onSetValue}
-      width="100%"
+      fluid
       displayText={displayNames[value]}
       options={choices.map((choice) => {
         return {
@@ -350,7 +350,7 @@ export const FeatureTextInput = (props: FeatureValueProps<string>) => {
     <TextArea
       height="100px"
       value={props.value}
-      onChange={(_, value) => props.handleSetValue(value)}
+      onChange={(value) => props.handleSetValue(value)}
     />
   );
 };
@@ -360,7 +360,7 @@ export const FeatureShortTextInput = (props: FeatureValueProps<string>) => {
     <Input
       width="100%"
       value={props.value}
-      onChange={(_, value) => props.handleSetValue(value)}
+      onChange={(value) => props.handleSetValue(value)}
     />
   );
 };

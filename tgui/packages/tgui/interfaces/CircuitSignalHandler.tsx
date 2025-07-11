@@ -1,7 +1,14 @@
-import { Component, KeyboardEvent } from 'react';
+import { Component } from 'react';
+import {
+  Box,
+  Button,
+  Dropdown,
+  Input,
+  Section,
+  Stack,
+} from 'tgui-core/components';
 
 import { useBackend } from '../backend';
-import { Box, Button, Dropdown, Input, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 type Response = {
@@ -67,15 +74,16 @@ export class CircuitSignalHandler extends Component<
                     placeholder="Signal ID"
                     value={signal_id}
                     fluid
-                    onChange={(e, value) => this.setState({ signal_id: value })}
+                    onBlur={(value) => this.setState({ signal_id: value })}
                   />
                 </Stack.Item>
                 <Stack.Item>
                   <Button.Checkbox
-                    checked={global}
-                    content="Global"
+                    checked={!!global}
                     onClick={(e) => this.setState({ global: !global })}
-                  />
+                  >
+                    Global
+                  </Button.Checkbox>
                 </Stack.Item>
               </Stack>
             </Stack.Item>
@@ -93,7 +101,8 @@ export class CircuitSignalHandler extends Component<
                             responseList.splice(index, 1);
                             this.setState({ parameterList });
                           }}
-                          onChange={(e, value) => {
+                          onSetOption={() => {}}
+                          onBlur={(value) => {
                             const param = responseList[index];
                             param.name = value;
                             this.setState({ parameterList });
@@ -142,7 +151,7 @@ export class CircuitSignalHandler extends Component<
                             param.datatype = type;
                             this.setState({ parameterList });
                           }}
-                          onChange={(e, value) => {
+                          onBlur={(value) => {
                             const param = parameterList[index];
                             param.name = value;
                             this.setState({ parameterList });
@@ -194,9 +203,10 @@ export class CircuitSignalHandler extends Component<
 type EntryProps = {
   current_option: string;
   name: string;
-  onChange: (e: KeyboardEvent<HTMLInputElement>, value: string) => any;
-  onRemove: (e: MouseEvent) => any;
-  onSetOption?: (type: string) => any;
+  onBlur: (value: string) => void;
+  onChange?: (value: string) => void;
+  onRemove: (e: React.MouseEvent) => any;
+  onSetOption: (type: string) => void;
   options?: string[];
 };
 
@@ -218,13 +228,14 @@ const Entry = (props: EntryProps) => {
           <Input placeholder="Name" value={name} onChange={onChange} fluid />
         </Stack.Item>
         <Stack.Item>
-          {(options.length && (
+          {options.length ? (
             <Dropdown
               displayText={current_option}
               options={options}
               onSelected={onSetOption}
+              selected={current_option}
             />
-          )) || (
+          ) : (
             <Box textAlign="center" py="2px" px={2}>
               {current_option}
             </Box>

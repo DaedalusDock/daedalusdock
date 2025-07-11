@@ -1,8 +1,4 @@
 import { filter, sortBy } from 'common/collections';
-import { flow } from 'common/fp';
-import { scale, toFixed } from 'common/math';
-
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -13,7 +9,11 @@ import {
   Section,
   Stack,
   Tabs,
-} from '../components';
+} from 'tgui-core/components';
+import { flow } from 'tgui-core/fp';
+import { scale, toFixed } from 'tgui-core/math';
+
+import { useBackend, useLocalState } from '../backend';
 import { NtosWindow } from '../layouts';
 
 export const NtosNetDownloader = (props) => {

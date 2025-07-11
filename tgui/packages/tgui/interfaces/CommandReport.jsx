@@ -1,4 +1,3 @@
-import { useBackend } from '../backend';
 import {
   Button,
   Dropdown,
@@ -6,7 +5,9 @@ import {
   Section,
   Stack,
   TextArea,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 export const CommandReport = (props) => {
@@ -32,7 +33,7 @@ export const CommandReport = (props) => {
           <Stack.Item>
             <Section title="Set Central Command name:" textAlign="center">
               <Dropdown
-                width="100%"
+                fluid
                 selected={command_name}
                 options={command_name_presets}
                 onSelected={(value) =>
@@ -47,7 +48,7 @@ export const CommandReport = (props) => {
                   mt={1}
                   value={command_name}
                   placeholder={command_name}
-                  onChange={(e, value) =>
+                  onBlur={(value) =>
                     act('update_command_name', {
                       updated_name: value,
                     })
@@ -59,7 +60,8 @@ export const CommandReport = (props) => {
           <Stack.Item>
             <Section title="Set announcement sound:" textAlign="center">
               <Dropdown
-                width="100%"
+                fluid
+                selected={played_sound}
                 displayText={played_sound}
                 options={announcer_sounds}
                 onSelected={(value) =>
@@ -76,7 +78,7 @@ export const CommandReport = (props) => {
                 height="200px"
                 mb={1}
                 value={command_report_content}
-                onChange={(e, value) =>
+                onBlur={(value) =>
                   act('update_report_contents', {
                     updated_contents: value,
                   })

@@ -1,5 +1,6 @@
+import { Button, Dropdown, Section, Stack } from 'tgui-core/components';
+
 import { useBackend, useSharedState } from '../backend';
-import { Button, Dropdown, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 export const PaintingMachine = (props) => {
@@ -119,12 +120,12 @@ export const PainterDropdown = (props) => {
 
   return (
     <Dropdown
-      width="100%"
+      fluid
       selected={selectedOption}
       options={Object.keys(options).map((path) => {
         return options[path];
       })}
-      onSelected={(sel) => setSelectedOption(sel)}
+      onSelected={setSelectedOption}
     />
   );
 };

@@ -1,5 +1,12 @@
+import {
+  Button,
+  Dropdown,
+  Input,
+  LabeledList,
+  Section,
+} from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Button, Dropdown, Input, LabeledList, Section } from '../components';
 import { Window } from '../layouts';
 
 export const AiVoiceChanger = (props) => {
@@ -19,6 +26,7 @@ export const AiVoiceChanger = (props) => {
           </LabeledList.Item>
           <LabeledList.Item label="Accent">
             <Dropdown
+              selected={data.accent}
               options={data.voices}
               onSelected={(value) =>
                 act('look', {
@@ -30,7 +38,7 @@ export const AiVoiceChanger = (props) => {
           <LabeledList.Item label="Verb">
             <Input
               default={data.say_verb}
-              onChange={(e, value) =>
+              onBlur={(value) =>
                 act('verb', {
                   verb: value,
                 })
@@ -48,7 +56,7 @@ export const AiVoiceChanger = (props) => {
           <LabeledList.Item label="Fake name">
             <Input
               default={data.name}
-              onChange={(e, value) =>
+              onBlur={(value) =>
                 act('name', {
                   name: value,
                 })

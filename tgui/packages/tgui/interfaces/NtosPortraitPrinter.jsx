@@ -1,6 +1,7 @@
+import { Button, Input, NoticeBox, Section, Stack } from 'tgui-core/components';
+
 import { resolveAsset } from '../assets';
 import { useBackend, useLocalState } from '../backend';
-import { Button, Input, NoticeBox, Section, Stack } from '../components';
 import { NtosWindow } from '../layouts';
 
 export const NtosPortraitPrinter = (props) => {
@@ -24,7 +25,7 @@ export const NtosPortraitPrinter = (props) => {
                 fluid
                 placeholder="Search Paintings..."
                 value={search_string}
-                onChange={(e, value) => {
+                onBlur={(value) => {
                   act('search', {
                     to_search: value,
                   });

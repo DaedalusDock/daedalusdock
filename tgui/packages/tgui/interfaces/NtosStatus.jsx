@@ -1,5 +1,6 @@
+import { Button, Input, Section } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Button, Input, Section } from '../components';
 import { NtosWindow } from '../layouts';
 
 export const NtosStatus = (props) => {
@@ -13,7 +14,7 @@ export const NtosStatus = (props) => {
           <Input
             fluid
             value={upper}
-            onChange={(e, value) =>
+            onBlur={(value) =>
               act('stat_update', {
                 position: 'upper',
                 text: value,
@@ -24,7 +25,7 @@ export const NtosStatus = (props) => {
           <Input
             fluid
             value={lower}
-            onChange={(e, value) =>
+            onBlur={(value) =>
               act('stat_update', {
                 position: 'lower',
                 text: value,

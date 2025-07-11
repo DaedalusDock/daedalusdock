@@ -1,23 +1,23 @@
-import { capitalize } from 'common/string';
 import { Fragment } from 'react';
-
-import { resolveAsset } from '../assets';
-import nt_logo from '../assets/bg-nanotrasen.svg';
-import { useBackend, useLocalState } from '../backend';
+import nt_logo from 'tgui-core/assets/bg-nanotrasen.svg';
 import {
   BlockQuote,
   Box,
   Button,
   Dimmer,
   Icon,
+  Image,
   LabeledList,
   Modal,
   ProgressBar,
   Section,
   Stack,
-} from '../components';
-import { Image } from '../components/Image';
-import { formatTime } from '../format';
+} from 'tgui-core/components';
+import { formatTime } from 'tgui-core/format';
+import { capitalize } from 'tgui-core/string';
+
+import { resolveAsset } from '../assets';
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 type ExplorationEventData = {

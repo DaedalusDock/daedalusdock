@@ -1,8 +1,8 @@
 import { Component } from 'react';
+import { Box, Button, InfinitePlane, Input, Stack } from 'tgui-core/components';
 
 import { resolveAsset } from '../../assets';
 import { useBackend } from '../../backend';
-import { Box, Button, InfinitePlane, Input, Stack } from '../../components';
 import { Window } from '../../layouts';
 import { CircuitInfo } from './CircuitInfo';
 import { ComponentMenu } from './ComponentMenu';
@@ -398,7 +398,7 @@ export class IntegratedCircuit extends Component {
                   fluid
                   placeholder="Name"
                   value={display_name}
-                  onChange={(e, value) =>
+                  onBlur={(value) =>
                     act('set_display_name', { display_name: value })
                   }
                 />

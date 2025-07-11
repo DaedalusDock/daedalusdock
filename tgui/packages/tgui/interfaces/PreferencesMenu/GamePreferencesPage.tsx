@@ -1,9 +1,8 @@
 import { binaryInsertWith, sortBy } from 'common/collections';
 import { ReactNode } from 'react';
-import { Tooltip } from 'tgui-core/components';
+import { Box, Flex, Tooltip } from 'tgui-core/components';
 
 import { useBackend } from '../../backend';
-import { Box, Flex } from '../../components';
 import { PreferencesMenuData } from './data';
 import features from './preferences/features';
 import { FeatureValueInput } from './preferences/features/base';

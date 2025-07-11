@@ -1,4 +1,3 @@
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -7,7 +6,9 @@ import {
   Input,
   Section,
   Stack,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { NtosWindow } from '../layouts';
 
 // byond defines for the program state
@@ -106,7 +107,7 @@ export const NtosNetChat = (props) => {
                   <Button.Input
                     fluid
                     content="New Channel..."
-                    onCommit={(e, value) =>
+                    onCommit={(value) =>
                       act('PRG_newchannel', {
                         new_channel_name: value,
                       })
@@ -134,7 +135,7 @@ export const NtosNetChat = (props) => {
                     mt={1}
                     content={username + '...'}
                     currentValue={username}
-                    onCommit={(e, value) =>
+                    onCommit={(value) =>
                       act('PRG_changename', {
                         new_name: value,
                       })
@@ -274,7 +275,7 @@ export const NtosNetChat = (props) => {
                             fluid
                             content="Save log..."
                             defaultValue="new_log"
-                            onCommit={(e, value) =>
+                            onCommit={(value) =>
                               act('PRG_savelog', {
                                 log_name: value,
                               })
@@ -299,7 +300,7 @@ export const NtosNetChat = (props) => {
                             fluid
                             disabled={strong}
                             content="Rename Channel..."
-                            onCommit={(e, value) =>
+                            onCommit={(value) =>
                               act('PRG_renamechannel', {
                                 new_name: value,
                               })
@@ -308,7 +309,7 @@ export const NtosNetChat = (props) => {
                           <Button.Input
                             fluid
                             content="Set Password..."
-                            onCommit={(e, value) =>
+                            onCommit={(value) =>
                               act('PRG_setpassword', {
                                 new_password: value,
                               })

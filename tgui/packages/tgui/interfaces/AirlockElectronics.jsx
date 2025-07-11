@@ -1,5 +1,6 @@
+import { Button, Input, LabeledList, Section } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Button, Input, LabeledList, Section } from '../components';
 import { Window } from '../layouts';
 import { AccessConfig } from './common/AccessConfig';
 
@@ -67,7 +68,7 @@ export const AirlockElectronics = (props) => {
                 fluid
                 maxLength={30}
                 value={passedName}
-                onChange={(e, value) =>
+                onBlur={(value) =>
                   act('passedName', {
                     passedName: value,
                   })
@@ -79,7 +80,7 @@ export const AirlockElectronics = (props) => {
                 fluid
                 maxLength={30}
                 value={passedCycleId}
-                onChange={(e, value) =>
+                onBlur={(value) =>
                   act('passedCycleId', {
                     passedCycleId: value,
                   })

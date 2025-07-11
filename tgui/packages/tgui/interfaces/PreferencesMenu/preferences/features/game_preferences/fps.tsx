@@ -1,4 +1,5 @@
-import { Dropdown, NumberInput, Stack } from '../../../../../components';
+import { Dropdown, NumberInput, Stack } from 'tgui-core/components';
+
 import { Feature, FeatureNumericData, FeatureValueProps } from '../base';
 
 type FpsServerData = FeatureNumericData & {
@@ -25,7 +26,7 @@ const FpsInput = (props: FeatureValueProps<number, number, FpsServerData>) => {
               handleSetValue(serverData?.recommended_fps || 60);
             }
           }}
-          width="100%"
+          fluid
           options={[recommened, 'Custom']}
         />
       </Stack.Item>

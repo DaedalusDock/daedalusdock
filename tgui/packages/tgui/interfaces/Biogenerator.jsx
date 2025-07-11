@@ -1,7 +1,3 @@
-import { classes } from 'common/react';
-import { createSearch } from 'common/string';
-
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -14,8 +10,12 @@ import {
   Section,
   Table,
   Tabs,
-} from '../components';
-import { formatMoney } from '../format';
+} from 'tgui-core/components';
+import { formatMoney } from 'tgui-core/format';
+import { classes } from 'tgui-core/react';
+import { createSearch } from 'tgui-core/string';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 const MAX_SEARCH_RESULTS = 25;
@@ -71,12 +71,7 @@ export const BiogeneratorContent = (props) => {
       buttons={
         <>
           Search
-          <Input
-            autoFocus
-            value={searchText}
-            onInput={(e, value) => setSearchText(value)}
-            mx={1}
-          />
+          <Input autoFocus value={searchText} onChange={setSearchText} mx={1} />
           <Button icon="eject" content="Eject" onClick={() => act('eject')} />
           <Button
             icon="cog"

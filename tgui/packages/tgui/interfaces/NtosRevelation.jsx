@@ -1,5 +1,6 @@
+import { Button, LabeledList, Section } from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Button, LabeledList, Section } from '../components';
 import { NtosWindow } from '../layouts';
 
 export const NtosRevelation = (props) => {
@@ -11,7 +12,7 @@ export const NtosRevelation = (props) => {
           <Button.Input
             fluid
             content="Obfuscate Name..."
-            onCommit={(e, value) =>
+            onCommit={(value) =>
               act('PRG_obfuscate', {
                 new_name: value,
               })

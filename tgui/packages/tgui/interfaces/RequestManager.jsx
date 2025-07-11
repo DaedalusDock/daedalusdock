@@ -4,11 +4,10 @@
  * @license MIT
  */
 
-import { decodeHtmlEntities } from 'common/string';
-import { Popper } from 'tgui-core/components';
+import { Button, Input, Popper, Section, Table } from 'tgui-core/components';
+import { decodeHtmlEntities } from 'tgui-core/string';
 
 import { useBackend, useLocalState } from '../backend';
-import { Button, Input, Section, Table } from '../components';
 import { Window } from '../layouts';
 
 export const RequestManager = (props) => {
@@ -46,7 +45,7 @@ export const RequestManager = (props) => {
             <>
               <Input
                 value={searchText}
-                onInput={(_, value) => setSearchText(value)}
+                onChange={setSearchText}
                 placeholder={'Search...'}
                 mr={1}
               />
@@ -136,10 +135,8 @@ const FilterPanel = (_) => {
 
   return (
     <Popper
-      options={{
-        placement: 'bottom-start',
-      }}
-      popperContent={
+      placement="bottom-start"
+      content={
         <div
           className="RequestManager__filterPanel"
           style={{

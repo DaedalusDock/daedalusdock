@@ -1,7 +1,4 @@
 import { filter, sortBy } from 'common/collections';
-import { flow } from 'common/fp';
-
-import { useBackend, useSharedState } from '../backend';
 import {
   AnimatedNumber,
   Box,
@@ -15,8 +12,11 @@ import {
   Stack,
   Table,
   Tabs,
-} from '../components';
-import { formatMoney } from '../format';
+} from 'tgui-core/components';
+import { formatMoney } from 'tgui-core/format';
+import { flow } from 'tgui-core/fp';
+
+import { useBackend, useSharedState } from '../backend';
 import { Window } from '../layouts';
 
 export const Cargo = (props) => {
@@ -220,7 +220,7 @@ export const CargoCatalog = (props) => {
                     fluid
                     placeholder="Search..."
                     value={searchText}
-                    onInput={(e, value) => {
+                    onChange={(value) => {
                       if (value === searchText) {
                         return;
                       }
@@ -234,7 +234,7 @@ export const CargoCatalog = (props) => {
                       }
                       setSearchText(value);
                     }}
-                    onChange={(e, value) => {
+                    onBlur={(value) => {
                       // Allow edge cases like the X button to work
                       const onInput = e.target?.props?.onInput;
                       if (onInput) {

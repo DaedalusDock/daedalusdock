@@ -770,7 +770,7 @@
 	var/bucket_list_output = generate_timer_source_output(SStimer.bucket_list)
 	var/second_queue = generate_timer_source_output(SStimer.second_queue)
 
-	usr << browse({"
+	usr << browse({"<!DOCTYPE html>
 		<h3>bucket_list</h3>
 		[bucket_list_output]
 

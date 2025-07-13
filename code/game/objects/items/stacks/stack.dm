@@ -88,12 +88,15 @@
 	if(absorption_capacity)
 		src.absorption_capacity = absorption_capacity
 
+	// Not typeinfo() for speed reasons. Hot ass code!
+	var/datum/typeinfo/atom/typeinfo = __typeinfo_cache[type] ||= new __typeinfo_path
+
 	if(LAZYLEN(mat_override))
 		set_mats_per_unit(mat_override, mat_amt)
 	else if(LAZYLEN(mats_per_unit))
 		set_mats_per_unit(mats_per_unit, 1)
-	else if(LAZYLEN(custom_materials))
-		set_mats_per_unit(custom_materials, amount ? 1/amount : 1)
+	else if(LAZYLEN(typeinfo.default_materials))
+		set_mats_per_unit(typeinfo.default_materials, amount ? 1/amount : 1)
 
 	. = ..()
 	// HELLO THIS IS KAPU. THIS IS BROKEN.

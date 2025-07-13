@@ -14,6 +14,7 @@ $knob-color: #333333 !default;
 $popup-background-color: #000000 !default;
 $popup-text-color: #ffffff !default;
 
+$pi: 3.1416;
 $inner-padding: 0.1em;
 
 .Knob {
@@ -83,14 +84,13 @@ $inner-padding: 0.1em;
 
 .Knob__ring {
   position: absolute;
+  overflow: visible;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   padding: $inner-padding;
 }
-
-$pi: 3.1416;
 
 .Knob__ringTrackPivot {
   transform: rotateZ(135deg);

@@ -29,7 +29,7 @@
 
 	TEST_ASSERT_EQUAL(human.has_reagent(/datum/reagent/consumable/ketchup), FALSE, "Human has reagents after clearing")
 
-	fooditem.attack(human, human)
+	fooditem.interact_with_atom(human, human)
 
 	TEST_ASSERT_EQUAL(human.has_reagent(/datum/reagent/consumable/ketchup), FALSE, "Human has ketchup without a stomach")
 

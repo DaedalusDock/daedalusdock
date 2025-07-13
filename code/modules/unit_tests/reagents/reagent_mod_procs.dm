@@ -5,7 +5,7 @@
 	TEST_ASSERT_EQUAL(human.has_reagent(/datum/reagent/consumable/ketchup), FALSE, "Human somehow has ketchup before eating")
 	TEST_ASSERT_EQUAL(human.has_reagent(/datum/reagent/medicine/epinephrine), FALSE, "Human somehow has epinephrine before injecting")
 
-	fooditem.attack(human, human)
+	fooditem.interact_with_atom(human, human)
 	human.reagents.add_reagent(/datum/reagent/medicine/epinephrine, 5)
 
 	TEST_ASSERT(human.has_reagent(/datum/reagent/consumable/ketchup), "Human doesn't have ketchup after eating")

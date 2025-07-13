@@ -262,8 +262,8 @@ TYPEINFO_DEF(/obj/item/restraints/handcuffs/cable/zipties)
 	icon_state = "cuff_used"
 	inhand_icon_state = "cuff"
 
-/obj/item/restraints/handcuffs/cable/zipties/used/attack()
-	return
+/obj/item/restraints/handcuffs/cable/zipties/used/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	return NONE
 
 /**
  * # Fake Zipties

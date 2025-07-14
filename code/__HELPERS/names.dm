@@ -1,42 +1,9 @@
-/proc/lizard_name(gender)
-	if(gender == MALE)
-		return "[pick(GLOB.lizard_names_male)]-[pick(GLOB.lizard_names_male)]"
-	else
-		return "[pick(GLOB.lizard_names_female)]-[pick(GLOB.lizard_names_female)]"
-
-/proc/ethereal_name()
-	var/tempname = "[pick(GLOB.ethereal_names)] [random_capital_letter()]"
-	if(prob(65))
-		tempname += random_capital_letter()
-	return tempname
-
-/proc/moth_name()
-	return "[pick(GLOB.moth_first)] [pick(GLOB.moth_last)]"
-
-/proc/vox_name()
-	var/sounds = rand(2, 8)
-	var/i = 0
-	var/newname = ""
-
-	while(i <= sounds)
-		i++
-		newname += pick(list("ti","hi","ki","ya","ta","ha","ka","ya","chi","cha","kah","ri","ra"))
-
-	newname = capitalize(newname)
-	return newname
-
-/proc/teshari_name()
-	var/name = pick(list("Fa", "Fe", "Fi", "Ma", "Me", "Mi", "Na", "Ne", "Ni", "Sa", "Se", "Si", "Ta", "Te", "Ti"))
-	name += pick(list("fa", "fe", "fi", "la", "le", "li", "ma", "me", "mi", "na", "ne", "ni", "ra", "re", "ri", "sa", "se", "si", "sha", "she", "shi", "ta", "te", "ti"))
-	name += pick(list("ca", "ce", "ci", "fa", "fe", "fi", "la", "le", "li", "ma", "me", "mi", "na", "ne", "ni", "ra", "re", "ri", "sa", "se", "si", "sha", "she", "shi", "ta", "te", "ti"))
-	return name
-
 GLOBAL_VAR(command_name)
 /proc/command_name()
 	if (GLOB.command_name)
 		return GLOB.command_name
 
-	var/name = "Daedalus Industries"
+	var/name = "The Federation"
 
 	GLOB.command_name = name
 	return name
@@ -216,13 +183,13 @@ GLOBAL_DATUM(revolution_code_phrase_regex, /regex)
 						if(names.len&&prob(70))
 							. += pick(names)
 						else
+							var/generator_type = /datum/name_generator/human
 							if(prob(10))
-								. += pick(lizard_name(MALE),lizard_name(FEMALE))
-							else
-								var/new_name = pick(pick(GLOB.first_names_male,GLOB.first_names_female))
-								new_name += " "
-								new_name += pick(GLOB.last_names)
-								. += new_name
+								generator_type = pick(subtypesof(/datum/name_generator) - /datum/name_generator/human)
+
+							var/datum/name_generator/name_gen = new generator_type
+							. += name_gen.Generate()
+
 					if(2)
 						var/datum/job/job = pick(SSjob.joinable_occupations)
 						if(job)

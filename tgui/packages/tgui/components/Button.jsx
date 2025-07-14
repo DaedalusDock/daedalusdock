@@ -34,6 +34,7 @@ export const Button = (props) => {
     circular,
     content,
     children,
+    noclip,
     onclick,
     onClick,
     verticalAlignContent,
@@ -66,6 +67,7 @@ export const Button = (props) => {
         color && typeof color === 'string'
           ? 'Button--color--' + color
           : 'Button--color--default',
+        noclip && 'Button--noClip',
         className,
         computeBoxClassName(rest),
       ])}

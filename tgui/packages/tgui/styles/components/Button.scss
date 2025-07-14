@@ -135,6 +135,10 @@ $ui-notch-path: polygon(
   clip-path: none;
 }
 
+.Button--noClip {
+  clip-path: none;
+}
+
 @each $color-name, $color-value in $bg-map {
   .Button--color--#{$color-name} {
     @include button-color($color-value);

@@ -4,3 +4,14 @@
 2025-07-11:
   yyzsong:
   - spellcheck: fedaration -> Federation
+2025-07-14:
+  Kapu1178:
+  - rscadd: Added significantly more forenames and surnames to the human name generator.
+  - bugfix: Security batons.
+  - bugfix: Eating.
+  - bugfix: Being unable to place beakers and similar items on tables.
+  - bugfix: Inserting items into fabricators/lathes.
+  - bugfix: ThinkDOS commands parsing incorrectly.
+  - bugfix: Interacting with Daedalus employees that was supposed to be secret spamming
+      the chat every 2 seconds.
+  - bugfix: Management now has access to... Management.

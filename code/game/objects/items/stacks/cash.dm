@@ -1,6 +1,6 @@
 /obj/item/stack/spacecash  //Don't use base space cash stacks. Any other space cash stack can merge with them, and could cause potential money duping exploits.
 	name = "wad of Federation marks"
-	singular_name = "space cash bill"
+	singular_name = "Federation mark"
 
 	stack_name = "wad"
 	multiple_gender = NEUTER
@@ -30,6 +30,13 @@
 		desc = "It is worth [value]."
 	else
 		desc = "There are [amount] bills each worth [value]."
+
+/obj/item/stack/spacecash/examine(mob/user)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("fedmark_examine", 7)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		. += result.create_tooltip("The post-war currency instated by the Federation after its formation in '29.", body_only = TRUE)
 
 /obj/item/stack/spacecash/get_item_credit_value()
 	return (amount*value)

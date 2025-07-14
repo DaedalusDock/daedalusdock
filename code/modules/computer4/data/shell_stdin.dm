@@ -11,12 +11,10 @@
 	raw = text
 	command = lowertext(arguments[1])
 	options = list()
+	arguments.Cut(1, 2) // Pop out the command itself
 
 	if(length(arguments) == 1)
 		return
-
-
-	arguments.Cut(1, 2)
 
 	// Parse out options
 	for(var/str in arguments)

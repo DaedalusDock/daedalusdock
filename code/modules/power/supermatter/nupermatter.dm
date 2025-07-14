@@ -172,8 +172,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	if(status >= min_status)
 		if(!current_state)
 			message_admins(message + " [ADMIN_LOOKUPFLW(src)]")
-
-		shivers()
+			if(min_status == SUPERMATTER_DANGER)
+				shivers()
 		return TRUE
 	else
 		return FALSE
@@ -183,6 +183,11 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	for(var/mob/living/carbon/human/H in GLOB.player_list)
 		if(!H.client || (H.stat != CONSCIOUS) || !(H.mind?.assigned_role?.title in alerted_jobs))
 			continue
+
+		if(!H.stats.cooldown_finished("supermatter_fuckywucky"))
+			continue
+
+		H.stats.set_cooldown("supermatter_fuckywucky", INFINITY)
 
 		var/datum/roll_result/result = H.stat_roll(16, /datum/rpg_skill/extrasensory)
 		if(result.outcome >= SUCCESS)

@@ -122,12 +122,6 @@ TYPEINFO_DEF(/obj/item/extinguisher/crafted)
 	to_chat(user, "<span class='infoplain'>The safety is [safety ? "on" : "off"].</span>")
 	return
 
-/obj/item/extinguisher/attack(mob/M, mob/living/user)
-	if(!user.combat_mode && !safety) //If we're on help intent and going to spray people, don't bash them.
-		return FALSE
-	else
-		return ..()
-
 /obj/item/extinguisher/attack_obj(obj/O, mob/living/user, params)
 	if(AttemptRefill(O, user))
 		refilling = TRUE

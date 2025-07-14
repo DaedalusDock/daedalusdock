@@ -126,12 +126,13 @@ export const Button = (props) => {
 };
 
 export const ButtonCheckbox = (props) => {
-  const { checked, ...rest } = props;
+  const { checked, className, ...rest } = props;
   return (
     <Button
       color="transparent"
       icon={checked ? 'check-square-o' : 'square-o'}
       selected={checked}
+      className={classes([className, 'Button--checkbox'])}
       {...rest}
     />
   );
@@ -165,6 +166,7 @@ export class ButtonConfirm extends Component {
 
   render() {
     const {
+      className,
       confirmContent = 'Confirm?',
       confirmColor = 'bad',
       confirmIcon,
@@ -182,6 +184,7 @@ export class ButtonConfirm extends Component {
         onClick={() =>
           this.state.clickedOnce ? onClick() : this.setClickedOnce(true)
         }
+        className={classes([className, 'Button--confirm'])}
         {...rest}
       />
     );
@@ -234,6 +237,7 @@ export class ButtonInput extends Component {
   render() {
     const {
       fluid,
+      className,
       content,
       icon,
       iconRotation,
@@ -250,6 +254,7 @@ export class ButtonInput extends Component {
       <Box
         className={classes([
           'Button',
+          'Button--input',
           fluid && 'Button--fluid',
           'Button--color--' + color,
         ])}

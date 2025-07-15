@@ -15,6 +15,9 @@ $color-primary-hightlight: #e0e268;
 /// Color for the interior background of progress bars, inputs, etc.
 $color-component-background: rgba(0, 0, 0, 0.5);
 
+// Secondary color, things like labels.
+$color-secondary: #a48ccf;
+
 @use '../base.scss' with (
   $color-bg: $color-bg,
   $color-fg: $color-fg
@@ -27,7 +30,7 @@ $color-component-background: rgba(0, 0, 0, 0.5);
   $good: #06bb6c,
   $bad: #f2545b,
   //$label: #fc877e
-  $label: #a48ccf
+  $label: $color-secondary
 );
 
 .theme-daedalus {
@@ -111,8 +114,12 @@ $color-component-background: rgba(0, 0, 0, 0.5);
     '../components/Tabs.scss',
     $with: (
       'border-radius': none,
+      'tab-color': darken($color-primary, 10%),
+      'tab-color-hovered': darken($color-primary, 20%),
       'tab-color-selected': $color-primary-hightlight,
-      'text-color-selected': #000000
+      'text-color': #000000,
+      'text-color-selected': #000000,
+      'border-width': 0
     )
   );
 }

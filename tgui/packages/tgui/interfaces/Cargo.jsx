@@ -205,7 +205,7 @@ export const CargoCatalog = (props) => {
       }
     >
       <Flex>
-        <Flex.Item minWidth="30%" ml={-1} mr={1}>
+        <Flex.Item minWidth="30%" mr={1}>
           <Tabs vertical>
             <Tabs.Tab
               key="search_results"
@@ -271,7 +271,9 @@ export const CargoCatalog = (props) => {
               }
               return (
                 <Table.Row key={pack.name} className="candystripe">
-                  <Table.Cell>{pack.name}</Table.Cell>
+                  <Table.Cell style={{ paddingLeft: '1em' }}>
+                    {pack.name}
+                  </Table.Cell>
                   <Table.Cell collapsing color="label" textAlign="right">
                     {tags.join(', ')}
                   </Table.Cell>

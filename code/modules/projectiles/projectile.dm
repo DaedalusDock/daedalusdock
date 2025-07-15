@@ -420,6 +420,14 @@
 		return FALSE
 	if(impacted[A]) // NEVER doublehit
 		return FALSE
+	if(iswall(A))
+		var/wx
+		var/wy
+		var/angle
+		// ensure the lines ALWAYS collide
+		var/datum/line/bulletLine = new /datum/line(trajectory.starting_x, trajectory.starting_y, trajectory.x + trajectory.mpx * 10, trajectory.y + trajectory.mpy * 10)
+		A.atomHitbox.getPointOfCollision(bulletLine, &wx, &wy, &angle)
+		message_admins("[angle] , trajectory px : [trajectory.starting_x] [trajectory.starting_y] [trajectory.x] [trajectory.y]")
 	var/datum/point/point_cache = trajectory.copy_to()
 	var/turf/T = get_turf(A)
 	if(ricochets < ricochets_max && check_ricochet_flag(A) && check_ricochet(A))

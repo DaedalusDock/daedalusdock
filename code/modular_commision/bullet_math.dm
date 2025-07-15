@@ -16,10 +16,19 @@
 
 /datum/hitbox
 	var/list/datum/line/hitboxLines = list()
+	var/datum/weakref/parentRef
+
+/datum/hitbox/New(atom/parent)
+	parentRef = parent.create_weakref()
+
 // wx , wy and angle are pointer outputs.
 /datum/hitbox/proc/getPointOfCollision(datum/line/incoming, wx, wy, angle)
+	var/atom/parent = parentRef.resolve()
+	if(parent == null)
+		return 0
 	//  Iterate over every edge of this hit‑box
 	for (var/datum/line/line in hitboxLines)
+		message_admins("Hitbox line start and end points: [line.startX] [line.startY] [line.endX] [line.endY]")
 
 		/*---------------------------------------
 		* 1.  Intersection test                *
@@ -82,13 +91,21 @@
 /atom
 	var/datum/hitbox/atomHitbox = null
 
-/turf/closed/wall
-	atomHitbox = new /datum/hitbox/standardWall()
+/turf/closed/wall/New()
+	. = ..()
+	atomHitbox = new /datum/hitbox/standardWall(src)
 
-/datum/hitbox/standardWall/New()
-	hitboxLines += new /datum/line(-16,-16, -16, 16)
-	hitboxLines += new /datum/line(-16,16, 16, 16)
-	hitboxLines += new /datum/line(16,16, 16, -16)
-	hitboxLines += new /datum/line(16,-16, -16, -16)
+	for (var/datum/line/line in atomHitbox.hitboxLines)
+		line.startX += (x-1) * 32;
+		line.startY += (y-1) * 32;
+		line.endX += (x-1) * 32;
+		line.endY += (y-1) * 32;
+
+/datum/hitbox/standardWall/New(atom/owner)
+	. = ..(owner)
+	hitboxLines += new /datum/line(0, 0, 0, 32)
+	hitboxLines += new /datum/line(0,32, 32, 32)
+	hitboxLines += new /datum/line(32,32, 32, 0)
+	hitboxLines += new /datum/line(32,0, 0, 0)
 
 

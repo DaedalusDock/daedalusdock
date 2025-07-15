@@ -12,7 +12,8 @@ $dark-fg: darken($color-fg, 30);
 $color-primary: #a1c181;
 /// Complement to the above, active buttons.
 $color-primary-hightlight: #e0e268;
-//$color-primary-hightlight: #c77731;
+/// Color for the interior background of progress bars, inputs, etc.
+$color-component-background: rgba(0, 0, 0, 0.5);
 
 @use '../base.scss' with (
   $color-bg: $color-bg,
@@ -69,6 +70,8 @@ $color-primary-hightlight: #e0e268;
     '../components/ProgressBar.scss',
     $with: (
       'color-default-fill': $color-primary,
+      // Stands out against the bright good and dark background
+      'text-color': #ff00d4,
       'background-color': rgba(0, 0, 0, 0.5)
     )
   );
@@ -80,11 +83,24 @@ $color-primary-hightlight: #e0e268;
 
   @include meta.load-css(
     '../components/Input.scss',
-    $with: ('border-color': $color-primary, 'text-color': $color-fg)
+    $with: (
+      'background-color': $color-component-background,
+      'border-color': $color-primary,
+      'text-color': $color-fg
+    )
   );
 
   @include meta.load-css(
     '../components/NumberInput.scss',
-    $with: ('border-color': $color-primary, 'text-color': $color-fg)
+    $with: (
+      'background-color': $color-component-background,
+      'border-color': $color-primary,
+      'text-color': $color-fg
+    )
+  );
+
+  @include meta.load-css(
+    '../components/Tabs.scss',
+    $with: ('border-radius': none)
   );
 }

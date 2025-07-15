@@ -16,10 +16,10 @@
 
 /datum/hitbox
 	var/list/datum/line/hitboxLines = list()
-
-/datum/hitbox/getPointOfCollision(datum/line/incoming, *wx, *wy, *angle)
+// wx , wy and angle are pointer outputs.
+/datum/hitbox/proc/getPointOfCollision(datum/line/incoming, wx, wy, angle)
 	//  Iterate over every edge of this hit‑box
-	for (var/line in hitboxLines)
+	for (var/datum/line/line in hitboxLines)
 
 		/*---------------------------------------
 		* 1.  Intersection test                *
@@ -29,9 +29,7 @@
 			             - (incoming.endX - incoming.startX) * (line.endY - line.startY))
 
 		if (!denominator) // lines are parallel or degenerate
-			message_admins("Invalid line for [src], at hitbox coords "
-			                "BulletLine ([line.startX] | [line.startY]) ([line.endX] | [line.endY])  "
-			                "HitboxLine ([incoming.startX] | [incoming.startY]) ([incoming.endX] | [incoming.endY])")
+			message_admins("Invalid line for [src], at hitbox coords BulletLine ([line.startX] | [line.startY]) ([line.endX] | [line.endY])  HitboxLine ([incoming.startX] | [incoming.startY]) ([incoming.endX] | [incoming.endY])")
 			continue		// keep checking other edges instead of immediate FALSE
 
 		var/firstRatio  = ((incoming.endX - incoming.startX) * (line.startY - incoming.startY) \

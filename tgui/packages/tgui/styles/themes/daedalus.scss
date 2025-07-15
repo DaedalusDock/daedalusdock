@@ -2,9 +2,17 @@
 @use 'sass:meta';
 @use '../functions.scss' as *;
 
-$color-fg: #ffffff !default;
-$color-bg: #4e6d6a !default;
+// Used for text
+$color-fg: #f1f1f1 !default;
+// The background of the UI
+$color-bg: #334745 !default;
 $dark-fg: darken($color-fg, 30);
+
+// Buttons, progress bar default filler, etc.
+$color-primary: #a1c181;
+/// Complement to the above, active buttons.
+$color-primary-hightlight: #e0e268;
+//$color-primary-hightlight: #c77731;
 
 @use '../base.scss' with (
   $color-bg: $color-bg,
@@ -12,14 +20,12 @@ $dark-fg: darken($color-fg, 30);
 );
 
 @use '../colors.scss' with (
-  $primary: base.$color-fg,
-  $label: base.$color-fg,
-  $good: base.$color-fg,
-  $bad: base.$color-fg,
-  $average: base.$color-fg
+  $primary: $color-primary,
+  $good: #03fc90,
+  $bad: #f2545b
 );
 
-%theme-daedalus {
+.theme-daedalus {
   // Atomic classes
   @include meta.load-css('../atomic/color.scss');
 
@@ -32,20 +38,12 @@ $dark-fg: darken($color-fg, 30);
     )
   );
 
-  @include meta.load-css(
-    '../components/ProgressBar.scss',
-    $with: (
-      'color-default-fill': base.$color-fg,
-      'background-color': $dark-fg,
-      'bg-map': colors.$bg-map
-    )
-  );
-
+  // Components
   @include meta.load-css('../layouts/Window.scss');
 
   @include meta.load-css(
     '../layouts/TitleBar.scss',
-    $with: ('background-color': base.$color-bg)
+    $with: ('background-color': base.$color-bg, 'text-color': base.$color-fg)
   );
   @include meta.load-css(
     '../layouts/Layout.scss',
@@ -55,5 +53,38 @@ $dark-fg: darken($color-fg, 30);
   @include meta.load-css(
     '../components/Section.scss',
     $with: ('title-text-color': base.$color-fg)
+  );
+
+  @include meta.load-css(
+    '../components/Button.scss',
+    $with: (
+      'color-default': $color-primary,
+      'color-selected': $color-primary-hightlight,
+      'color-transparent-text': rgba(227, 240, 255, 0.75),
+      'text-color-bright': $color-fg
+    )
+  );
+
+  @include meta.load-css(
+    '../components/ProgressBar.scss',
+    $with: (
+      'color-default-fill': $color-primary,
+      'background-color': rgba(0, 0, 0, 0.5)
+    )
+  );
+
+  @include meta.load-css(
+    '../components/Knob.scss',
+    $with: ('ring-color': $color-primary)
+  );
+
+  @include meta.load-css(
+    '../components/Input.scss',
+    $with: ('border-color': $color-primary, 'text-color': $color-fg)
+  );
+
+  @include meta.load-css(
+    '../components/NumberInput.scss',
+    $with: ('border-color': $color-primary, 'text-color': $color-fg)
   );
 }

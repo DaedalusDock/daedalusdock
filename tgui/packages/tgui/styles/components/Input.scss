@@ -4,11 +4,12 @@
  */
 
 @use '../base.scss';
+@use '../colors.scss';
 @use '../functions.scss' as *;
 
 $text-color: base.$color-fg !default;
 $background-color: #0a0a0a !default;
-$border-color: #88bfff !default;
+$border-color: colors.$primary !default;
 $border-radius: base.$border-radius !default;
 
 .Input {

@@ -21,15 +21,20 @@ $color-component-background: rgba(0, 0, 0, 0.5);
 );
 
 @use '../colors.scss' with (
+  $bg-lightness: 0%,
+  $fg-lightness: 0%,
   $primary: $color-primary,
-  $good: #03fc90,
-  $bad: #f2545b
+  $good: #06bb6c,
+  $bad: #f2545b,
+  //$label: #fc877e
+  $label: #a48ccf
 );
 
 .theme-daedalus {
   // Atomic classes
   @include meta.load-css('../atomic/color.scss');
 
+  // Components
   @include meta.load-css(
     '../components/Slider.scss',
     $with: (
@@ -39,12 +44,15 @@ $color-component-background: rgba(0, 0, 0, 0.5);
     )
   );
 
-  // Components
   @include meta.load-css('../layouts/Window.scss');
 
   @include meta.load-css(
     '../layouts/TitleBar.scss',
-    $with: ('background-color': base.$color-bg, 'text-color': base.$color-fg)
+    $with: (
+      'background-color': base.$color-bg,
+      'text-color': base.$color-fg,
+      'eye-interactive': #03fc90
+    )
   );
   @include meta.load-css(
     '../layouts/Layout.scss',
@@ -71,7 +79,7 @@ $color-component-background: rgba(0, 0, 0, 0.5);
     $with: (
       'color-default-fill': $color-primary,
       // Stands out against the bright good and dark background
-      'text-color': #ff00d4,
+      'text-color': $color-fg,
       'background-color': rgba(0, 0, 0, 0.5)
     )
   );
@@ -101,6 +109,10 @@ $color-component-background: rgba(0, 0, 0, 0.5);
 
   @include meta.load-css(
     '../components/Tabs.scss',
-    $with: ('border-radius': none)
+    $with: (
+      'border-radius': none,
+      'tab-color-selected': $color-primary-hightlight,
+      'text-color-selected': #000000
+    )
   );
 }

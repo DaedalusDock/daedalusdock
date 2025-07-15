@@ -150,12 +150,12 @@ Window.Content = WindowContent;
 const statusToColor = (status) => {
   switch (status) {
     case UI_INTERACTIVE:
-      return 'good';
+      return 'TitleBar__statusIcon--interactive';
     case UI_UPDATE:
-      return 'average';
+      return 'TitleBar__statusIcon--update';
     case UI_DISABLED:
     default:
-      return 'bad';
+      return 'TitleBar__statusIcon--disabled';
   }
 };
 
@@ -177,8 +177,7 @@ const TitleBar = (props) => {
         <Icon className="TitleBar__statusIcon" name="tools" opacity={0.5} />
       )) || (
         <Icon
-          className="TitleBar__statusIcon"
-          color={statusToColor(status)}
+          className={classes(['TitleBar__statusIcon', statusToColor(status)])}
           name="eye"
         />
       )}

@@ -16,7 +16,7 @@ $color-default: color.scale(
 $text-color: rgba(255, 255, 255, 0.5) !default;
 $text-color-selected: color.scale($color-default, $lightness: 25%) !default;
 $tab-color: transparent !default;
-$tab-color-hovered: rgba(255, 255, 255, 0.075) !default;
+$tab-color-hovered: rgba(214, 2, 2, 0.075) !default;
 $tab-color-selected: rgba(255, 255, 255, 0.125) !default;
 $fg-map: colors.$fg-map !default;
 
@@ -24,12 +24,20 @@ $border-selected-color: $color-default !default;
 $border-width: math.div(1em, 6) !default;
 $border-radius: base.$border-radius !default;
 $border-notch-amount: 10px !default;
-$border-notch-path: polygon(
+$border-notch-path-horizontal: polygon(
   0 0,
   calc(100% - #{$border-notch-amount} + 2px) 0,
   100% calc(#{$border-notch-amount} - 2px),
   100% 100%,
   0 100%
+) !default;
+
+$border-notch-path-vertical: polygon(
+  #{$border-notch-amount - 2px} 0,
+  100% 0,
+  100% 100%,
+  0 100%,
+  0 calc(#{$border-notch-amount} - 2px)
 ) !default;
 
 .Tabs {
@@ -121,7 +129,7 @@ $border-notch-path: polygon(
     border-bottom: $border-width solid transparent;
     border-top-left-radius: $border-radius;
     border-top-right-radius: $border-radius;
-    clip-path: $border-notch-path;
+    clip-path: $border-notch-path-horizontal;
   }
 
   .Tab--selected {
@@ -136,6 +144,7 @@ $border-notch-path: polygon(
     border-right: $border-width solid transparent;
     border-top-left-radius: $border-radius;
     border-bottom-left-radius: $border-radius;
+    clip-path: $border-notch-path-vertical;
   }
 
   .Tab--selected {

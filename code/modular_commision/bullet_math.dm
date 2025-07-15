@@ -21,13 +21,38 @@
 /datum/hitbox/New(atom/parent)
 	parentRef = parent.create_weakref()
 
+#define DIST(l) sqrt(((l.startX+ l.endX)/2 - incoming.startX)**2 + \
+                      ((l.startY+ l.endY)/2 - incoming.startY)**2)
+
 // wx , wy and angle are pointer outputs.
 /datum/hitbox/proc/getPointOfCollision(datum/line/incoming, wx, wy, angle)
 	var/atom/parent = parentRef.resolve()
 	if(parent == null)
 		return 0
 	//  Iterate over every edge of this hit‑box
-	for (var/datum/line/line in hitboxLines)
+	var/list/hitboxCopy = hitboxLines.Copy()
+	var/i = 1
+	while(i < length(hitboxCopy))
+		// compare hitboxCopy[i] with hitboxCopy[i+1]
+		if(i == length(hitboxCopy)) break
+
+		var/datum/line/first = hitboxCopy[i]
+		var/datum/line/second = hitboxCopy[i+1]
+
+		var/df = sqrt(((first.startX+ first.endX)/2 - incoming.startX)**2 + \
+                      ((first.startY+ first.endY)/2 - incoming.startY)**2)
+		var/ds = sqrt(((second.startX+ second.endX)/2 - incoming.startX)**2 + \
+                      ((second.startY+ second.endY)/2 - incoming.startY)**2)
+
+		if(df <= ds)       // “≤” so equal items are considered sorted
+			i++            // move forward
+		else
+			// swap
+			hitboxCopy[i]   = second
+			hitboxCopy[i+1] = first
+			if(i > 1) i--   // step back unless we're at the start
+
+	for (var/datum/line/line in hitboxCopy)
 		message_admins("Hitbox line start and end points: [line.startX] [line.startY] [line.endX] [line.endY]")
 
 		/*---------------------------------------

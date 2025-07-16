@@ -16,16 +16,12 @@
 
 /obj/machinery/microscope/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	if(sample)
+		if(isnull(held_item))
+			context[SCREENTIP_CONTEXT_LMB] = "Analyze sample"
+			context[SCREENTIP_CONTEXT_RMB] = "Remove sample"
 		return NONE
 
-	if(isnull(held_item))
-		if(!sample)
-			return NONE
-
-		context[SCREENTIP_CONTEXT_LMB] = "Analyze sample"
-		context[SCREENTIP_CONTEXT_RMB] = "Remove sample"
-
-	else if(istype(held_item, /obj/item/storage/evidencebag))
+	if(istype(held_item, /obj/item/storage/evidencebag))
 		var/obj/item/storage/evidencebag/B = held_item
 		if(!length(B.contents))
 			return NONE

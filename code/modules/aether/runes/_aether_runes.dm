@@ -60,6 +60,8 @@
 	outer_ring.vis_flags = VIS_INHERIT_ID | VIS_INHERIT_LAYER | VIS_INHERIT_PLANE | VIS_INHERIT_ICON
 	add_viscontents(outer_ring)
 
+	register_context()
+
 /obj/effect/aether_rune/Destroy(force)
 	touching_rune = null
 	timed_action = null
@@ -67,6 +69,19 @@
 	QDEL_NULL(outer_ring)
 	QDEL_NULL(particle_holder)
 	return ..()
+
+/obj/effect/aether_rune/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	if(!isliving(user))
+		return
+
+	if(isnull(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Place hand"
+	else if(istype(held_item, /obj/item/aether_tome))
+		context[SCREENTIP_CONTEXT_LMB] = "Begin ritual"
+	else
+		return NONE
+
+	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/effect/aether_rune/CheckReachableAdjacency(atom/movable/reacher, obj/item/tool)
 	. = ..()
@@ -99,19 +114,17 @@
 	visible_message(span_notice("[user] places their hand on [src]."))
 	return TRUE
 
-/obj/effect/aether_rune/attackby(obj/item/weapon, mob/user, params)
-	. = ..()
-	if(.)
-		return
+/obj/effect/aether_rune/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!istype(tool, /obj/item/aether_tome))
+		return NONE
 
-	if(istype(weapon, /obj/item/aether_tome))
-		if(invoking != RUNE_INVOKING_IDLE)
-			return TRUE
+	if(invoking != RUNE_INVOKING_IDLE)
+		return ITEM_INTERACT_BLOCKING
 
-		if(user in touching_rune)
-			remove_helper(user)
-		try_invoke(user, weapon)
-		return TRUE
+	if(user in touching_rune)
+		remove_helper(user)
+	try_invoke(user, tool)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/effect/aether_rune/proc/setup_blackboard()
 	CRASH("Unimplemented setup_blackboard on [type].")

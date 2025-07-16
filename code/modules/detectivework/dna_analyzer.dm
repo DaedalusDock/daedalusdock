@@ -1,5 +1,5 @@
 /obj/machinery/dna_analyzer
-	name = "dna analyzer"
+	name = "\improper DNA analyzer"
 	desc = "A machine designed to analyze substances and their potential DNA presence."
 	icon = 'icons/obj/machines/forensics/dna_scanner.dmi'
 	icon_state = "dna"

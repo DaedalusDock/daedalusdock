@@ -69,6 +69,19 @@ TYPEINFO_DEF(/obj/structure/window)
 	if (flags_1 & ON_BORDER_1)
 		AddElement(/datum/element/connect_loc, loc_connections)
 
+	register_context()
+
+/obj/structure/window/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	if(!isliving(user))
+		return
+
+	if(held_item || astype(user, /mob/living).combat_mode)
+		return
+
+	context[SCREENTIP_CONTEXT_LMB] = "Knock"
+	return CONTEXTUAL_SCREENTIP_SET
+
+
 /obj/structure/window/examine(mob/user)
 	. = ..()
 	if(reinf)

@@ -75,7 +75,7 @@
 
 /obj/item/storage/wallet/AltClick(mob/user)
 	. = ..()
-	if(!.)
+	if(.)
 		return
 
 	if(is_open)

@@ -79,12 +79,6 @@
 /obj/machinery/jukebox/ui_data(mob/user)
 	var/list/data = list()
 	data["active"] = active
-	data["songs"] = list()
-	for(var/datum/media/S in songs)
-		var/list/track_data = list(
-			name = S.name
-		)
-		data["songs"] += list(track_data)
 	data["track_selected"] = null
 	data["track_length"] = null
 	data["track_beat"] = null
@@ -93,6 +87,17 @@
 		data["track_length"] = DisplayTimeText(selection.duration)
 		data["track_author"] = selection.author
 	data["volume"] = volume
+	return data
+
+/obj/machinery/jukebox/ui_static_data(mob/user)
+	var/list/data = list()
+	data["songs"] = list()
+	for(var/datum/media/S in songs)
+		var/list/track_data = list(
+			name = S.name
+		)
+		data["songs"] += list(track_data)
+
 	return data
 
 /obj/machinery/jukebox/ui_act(action, list/params)
@@ -220,7 +225,7 @@
 		return
 
 	updating_volume = TRUE
-	sleep(3 SECONDS) //Give a 3 second buffer for volume changes
+	sleep(1 SECONDS) //Give a 3 second buffer for volume changes
 	if(QDELETED(src))
 		return
 

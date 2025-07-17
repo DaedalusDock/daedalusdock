@@ -1,5 +1,4 @@
-import { sortBy } from 'common/collections';
-import { flow } from 'common/fp';
+import { BooleanLike } from 'common/react';
 
 import { useBackend } from '../backend';
 import {
@@ -13,10 +12,23 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
+type JukeboxData = {
+  active: BooleanLike;
+  songs: Song[];
+  track_author?: string;
+  track_length?: number;
+  track_selected?: string;
+  volume: number;
+};
+
+type Song = {
+  name: string;
+};
+
 export const Jukebox = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<JukeboxData>();
   const { active, track_selected, track_length, track_author, volume } = data;
-  const songs = flow([sortBy((song) => song.name)])(data.songs || []);
+  const songs = data.songs.toSorted((a, b) => a.name.localeCompare(b.name));
   return (
     <Window width={370} height={313}>
       <Window.Content>

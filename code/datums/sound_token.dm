@@ -38,7 +38,7 @@
 
 	sound = _sound
 	sound.status |= SOUND_UPDATE
-	sound_channel = SSsounds.reserve_sound_channel(src)
+	sound_channel = SSsounds.reserve_sound_channel_for_datum(src)
 	sound.channel = sound_channel
 	null_sound = sound(channel = sound_channel)
 

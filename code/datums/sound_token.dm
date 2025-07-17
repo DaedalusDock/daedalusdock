@@ -73,9 +73,6 @@
 
 /// Remove a listener from the sound.
 /datum/sound_token/proc/RemoveListener(mob/M)
-	if(!listeners[M])
-		return FALSE
-
 	UnregisterSignal(M, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_MOVED, COMSIG_MOB_LOGIN, SIGNAL_ADDTRAIT(TRAIT_DEAF),SIGNAL_REMOVETRAIT(TRAIT_DEAF)))
 	listeners -= M
 	SEND_SOUND(M, null_sound)

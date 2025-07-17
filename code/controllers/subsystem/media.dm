@@ -31,6 +31,9 @@ SUBSYSTEM_DEF(media)
 		"mp3" = TRUE, //MPeg Layer 3 Container (And usually, Codec.)
 	)
 
+	/// File types we can sniff the duration from using rustg.
+	var/list/safe_extensions = list("ogg", "mp3")
+
 #define MEDIA_LOAD_FAILED -1
 
 /datum/controller/subsystem/media/Initialize(start_timeofday)
@@ -80,6 +83,8 @@ SUBSYSTEM_DEF(media)
 			log_load_fail(json_record,tag_error)
 			continue //Skip the track.
 
+		var/file_extension = get_file_extension(json_data["file"])
+
 		//JSON is fully validated. Wrap it in the datum and add it to the lists.
 		var/datum/media/media_datum = new(
 			json_data["name"],
@@ -89,7 +94,8 @@ SUBSYSTEM_DEF(media)
 			json_data["map"],
 			json_data["rare"],
 			json_data["duration"],
-			json_record
+			json_record,
+			file_extension,
 		)
 
 		all_tracks += media_datum
@@ -99,7 +105,8 @@ SUBSYSTEM_DEF(media)
 /datum/controller/subsystem/media/proc/cache_tracks()
 	var/list/path_to_track = list()
 	for(var/datum/media/track as anything in all_tracks)
-		path_to_track[track.path] = track
+		if(track.file_extension in safe_extensions)
+			path_to_track[track.path] = track
 
 	var/list/cached_filepaths = SSsound_cache.cache_sounds(path_to_track)
 	for(var/filepath in path_to_track)
@@ -138,6 +145,7 @@ SUBSYSTEM_DEF(media)
 	if(!json_data || !jd_full_filepath || !jd_tag_cache)
 		stack_trace("BAD CALLING ARGUMENTS TO VALIDATE_MEDIA")
 		return list("ERR_FATAL", "Record validation was called with bad arguments: [json_data || "#FALSY_DATA"], [jd_full_filepath || "#FALSY_DATA"], [english_list(jd_tag_cache, nothing_text = "#FALSY_DATA")]")
+
 	for(var/jd_tag in jd_tag_cache)
 		switch(jd_tag)
 
@@ -153,13 +161,11 @@ SUBSYSTEM_DEF(media)
 				if(!rustg_file_exists(jd_full_filepath))
 					return list(MEDIA_TAG_ALLMEDIA, "File [jd_full_filepath] does not exist.")
 
+				var/file_ext = get_file_extension(json_data["file"])
 				//Verify that the file extension is allowed, because BYOND is sure happy to not say a fucking word.
-				var/list/directory_split = splittext(json_data["file"], "/")
-				var/list/extension_split = splittext(directory_split[length(directory_split)], ".")
-				if(extension_split.len >= 2)
-					var/ext = lowertext(extension_split[length(extension_split)]) //pick the real extension, no 'honk.ogg.exe' nonsense here
-					if(!byond_sound_formats[ext])
-						return list(MEDIA_TAG_ALLMEDIA, "[ext] is an illegal file extension (and probably a bad format too.)")
+				if(file_ext)
+					if(!byond_sound_formats[file_ext])
+						return list(MEDIA_TAG_ALLMEDIA, "[file_ext] is an illegal file extension (and probably a bad format too.)")
 				else
 					return list(MEDIA_TAG_ALLMEDIA, "Media is missing a file extension.")
 
@@ -173,14 +179,23 @@ SUBSYSTEM_DEF(media)
 				if(MEDIA_TAG_ROUNDEND_RARE in jd_tag_cache)
 					return list(MEDIA_TAG_ROUNDEND_COMMON, "Track tagged as BOTH COMMON and RARE endround music.")
 
-			// Jukebox tracks MUST have a duration.
+			// Jukebox tracks MUST have a duration if they aren't MP3 or OGG.
 			if(MEDIA_TAG_JUKEBOX)
-				if(!json_data["duration"])
+				if(!json_data["duration"] && !(get_file_extension(json_data["file"]) in safe_extensions))
 					return list(MEDIA_TAG_JUKEBOX, "Jukebox tracks MUST have a valid duration.")
 
 /datum/controller/subsystem/media/proc/get_track_pool(media_tag)
 	var/list/pool = tracks_by_tag[media_tag]
 	return LAZYCOPY(pool)
+
+/// Returns the file extension of a given filepath.
+/datum/controller/subsystem/media/proc/get_file_extension(filepath)
+	var/list/directory_split = splittext(filepath, "/")
+	var/list/extension_split = splittext(directory_split[length(directory_split)], ".")
+	var/ext = lowertext(extension_split[length(extension_split)])
+	if(length(ext) < 3)
+		return null
+	return ext
 
 /datum/media
 	/// Name of the track. Should be "friendly".
@@ -200,8 +215,10 @@ SUBSYSTEM_DEF(media)
 	var/duration = 0
 	/// Back-reference name of the originating JSON file, so that you can track it down
 	var/definition_file
+	/// The file extension
+	var/file_extension
 
-/datum/media/New(name, author, path, tags, map, rare, length, src_file)
+/datum/media/New(name, author, path, tags, map, rare, length, src_file, file_ext)
 	src.name = name
 	src.author = author
 	src.path = path
@@ -210,5 +227,6 @@ SUBSYSTEM_DEF(media)
 	media_tags = tags
 	duration = length
 	definition_file = src_file
+	file_extension = file_ext
 
 #undef MEDIA_LOAD_FAILED

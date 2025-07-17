@@ -74,9 +74,6 @@
 	if(!isliving(user))
 		return
 
-	if(!IsReachableBy(user))
-		return NONE
-
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_LMB] = "Place hand"
 	else if(istype(held_item, /obj/item/aether_tome))

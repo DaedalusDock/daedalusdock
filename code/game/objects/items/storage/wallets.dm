@@ -30,7 +30,7 @@
 
 /obj/item/storage/wallet/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
-	if(!IsReachableBy(user))
+	if(equipped_to != user)
 		return NONE
 
 	context[SCREENTIP_CONTEXT_RMB] = is_open ? "Close" : "Open"

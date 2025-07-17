@@ -631,9 +631,6 @@
 	if(!isliving(user))
 		return .
 
-	if(!Adjacent(user))
-		return .
-
 	switch (held_item?.tool_behaviour)
 		if (TOOL_SCREWDRIVER)
 			context[SCREENTIP_CONTEXT_LMB] = panel_open ? "Close panel" : "Open panel"

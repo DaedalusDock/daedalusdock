@@ -78,9 +78,6 @@ TYPEINFO_DEF(/obj/structure/window)
 	if(held_item || astype(user, /mob/living).combat_mode)
 		return
 
-	if(!Adjacent(user))
-		return NONE
-
 	context[SCREENTIP_CONTEXT_LMB] = "Knock"
 	return CONTEXTUAL_SCREENTIP_SET
 

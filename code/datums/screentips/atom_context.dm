@@ -21,5 +21,4 @@
 	mob/user,
 )
 	SIGNAL_HANDLER
-
 	return NONE

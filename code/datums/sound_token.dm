@@ -1,3 +1,6 @@
+// Sound tokens, a datumized handler for spatial sound.
+// Creating a sound token registers all connected clients to the sound, so that they are in sync
+// Even if someone enters the range of the sound after it has started.
 /datum/sound_token
 	/// The atom playing the sound.
 	var/atom/source
@@ -19,11 +22,10 @@
 	/// The channel being used.
 	var/sound_channel
 
-	var/datum/proximity_monitor/advanced/sound_tracking/proximity_monitor
-
 /datum/sound_token/New(atom/_source, sound/_sound, _range, _volume = 50)
 	source = _source
 	RegisterSignal(source, COMSIG_PARENT_QDELETING, PROC_REF(source_deleted))
+	RegisterSignal(source, COMSIG_MOVABLE_MOVED, PROC_REF(source_moved))
 
 	if(isnum(_range))
 		range = _range
@@ -38,11 +40,13 @@
 
 	listeners = list()
 
-	proximity_monitor = new(_source, range, TRUE, src)
+	for(var/mob/M in GLOB.player_list)
+		AddOrUpdateListener(M)
+
+	RegisterSignal(SSdcs, COMSIG_GLOB_PLAYER_LOGIN, PROC_REF(player_login))
+	RegisterSignal(SSdcs, COMSIG_GLOB_PLAYER_LOGOUT, PROC_REF(player_logout))
 
 /datum/sound_token/Destroy(force, ...)
-	QDEL_NULL(proximity_monitor)
-
 	for(var/listener in listeners)
 		RemoveListener(listener)
 
@@ -63,10 +67,12 @@
 	if(!isnull(listeners[M]))
 		return FALSE
 
-	listeners[M] = 0
+	if(!M.client || isnewplayer(M))
+		return
+
+	listeners[M] = NONE
 	RegisterSignal(M, COMSIG_PARENT_QDELETING, PROC_REF(listener_deleted))
 	RegisterSignal(M, COMSIG_MOVABLE_MOVED, PROC_REF(listener_moved))
-	RegisterSignal(M, COMSIG_MOB_LOGIN, PROC_REF(listener_login))
 	RegisterSignal(M, list(SIGNAL_ADDTRAIT(TRAIT_DEAF),SIGNAL_REMOVETRAIT(TRAIT_DEAF)), PROC_REF(listener_deafness_update))
 	UpdateListener(M, FALSE)
 	return TRUE
@@ -143,14 +149,24 @@
 	SIGNAL_HANDLER
 	UpdateListener(source)
 
-/// Respond to a listener having a client login.
-/datum/sound_token/proc/listener_login(mob/source)
-	SIGNAL_HANDLER
-	UpdateListener(source)
-
 /datum/sound_token/proc/listener_deleted(datum/source)
 	SIGNAL_HANDLER
 	RemoveListener(source)
+
+/// Respond to any mob in the world being logged into.
+/datum/sound_token/proc/player_login(mob/player)
+	SIGNAL_HANDLER
+	AddOrUpdateListener(player)
+
+/// Respond to any cliented mob becoming uncliented
+/datum/sound_token/proc/player_logout(mob/player)
+	SIGNAL_HANDLER
+	RemoveListener(player)
+
+/// If the sound source moves, update all listeners.
+/datum/sound_token/proc/source_moved()
+	SIGNAL_HANDLER
+	update_all_listeners()
 
 /datum/sound_token/proc/source_deleted()
 	SIGNAL_HANDLER

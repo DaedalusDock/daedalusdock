@@ -48,13 +48,19 @@
 ///Adds the cliented mob reference to the list of all player-mobs, besides to either the of dead or alive player-mob lists, as appropriate. Called on Login().
 /mob/proc/add_to_player_list()
 	SHOULD_CALL_PARENT(TRUE)
+
+	SEND_GLOBAL_SIGNAL(SSdcs, COMSIG_GLOB_PLAYER_LOGIN, src)
+
 	GLOB.player_list |= src
 	if(client.holder)
 		GLOB.keyloop_list |= src
+
 	else if(stat != DEAD || !SSlag_switch?.measures[DISABLE_DEAD_KEYLOOP])
 		GLOB.keyloop_list |= src
+
 	if(!SSticker?.mode)
 		return
+
 	if(stat == DEAD)
 		add_to_current_dead_players()
 	else
@@ -63,15 +69,18 @@
 ///Removes the mob reference from the list of all player-mobs, besides from either the of dead or alive player-mob lists, as appropriate. Called on Logout().
 /mob/proc/remove_from_player_list()
 	SHOULD_CALL_PARENT(TRUE)
+
+	SEND_GLOBAL_SIGNAL(SSdcs, COMSIG_GLOB_PLAYER_LOGOUT, src)
+
 	GLOB.player_list -= src
 	GLOB.keyloop_list -= src
+
 	if(!SSticker?.mode)
 		return
 	if(stat == DEAD)
 		remove_from_current_dead_players()
 	else
 		remove_from_current_living_players()
-
 
 ///Adds the cliented mob reference to either the list of dead player-mobs or to the list of observers, depending on how they joined the game.
 /mob/proc/add_to_current_dead_players()

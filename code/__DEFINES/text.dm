@@ -4,6 +4,9 @@
 /// Prepares a text to be used for maptext. Use this so it doesn't look hideous.
 #define MAPTEXT(text) {"<span class='maptext'>[##text]</span>"}
 
+/// Creates a maptext icon given an image reference, with the size set to auto.
+#define MAPTEXT_ICON_AUTO_SIZE(img) "<IMG CLASS=icon SRC=\ref[img.icon] style='width:auto;height:auto'>"
+
 /// Macro from Lummox used to get height from a MeasureText proc
 #define WXH_TO_HEIGHT(x) text2num(copytext(x, findtextEx(x, "x") + 1))
 

@@ -2122,19 +2122,19 @@ TYPEINFO_DEF(/atom)
 
 	// Setup a text cache
 	var/static/list/screentip_text
-	var/static/list/screentip_images
+	var/static/list/image/screentip_images
 	if(isnull(screentip_images))
 		screentip_text = list()
 		screentip_images = list()
 		screentip_images["LMB"] = image('icons/ui_icons/screentips/cursor_hints.dmi', "LMB")
 		screentip_images["RMB"] = image('icons/ui_icons/screentips/cursor_hints.dmi', "RMB")
 
-		screentip_text[SCREENTIP_CONTEXT_LMB] = "\icon[screentip_images["LMB"]]"
-		screentip_text[SCREENTIP_CONTEXT_ALT_LMB] = "ALT-\icon[screentip_images["LMB"]]"
-		screentip_text[SCREENTIP_CONTEXT_CTRL_LMB] = "CTRL-\icon[screentip_images["LMB"]]"
-		screentip_text[SCREENTIP_CONTEXT_CTRL_SHIFT_LMB] = "CTRL SHIFT-\icon[screentip_images["LMB"]]"
-		screentip_text[SCREENTIP_CONTEXT_SHIFT_LMB] = "SHIFT-\icon[screentip_images["LMB"]]"
-		screentip_text[SCREENTIP_CONTEXT_RMB] = "\icon[screentip_images["RMB"]]"
+		screentip_text[SCREENTIP_CONTEXT_LMB] = MAPTEXT_ICON_AUTO_SIZE(screentip_images["LMB"])
+		screentip_text[SCREENTIP_CONTEXT_ALT_LMB] = "ALT-[MAPTEXT_ICON_AUTO_SIZE(screentip_images["LMB"])]"
+		screentip_text[SCREENTIP_CONTEXT_CTRL_LMB] = "CTRL-[MAPTEXT_ICON_AUTO_SIZE(screentip_images["LMB"])]"
+		screentip_text[SCREENTIP_CONTEXT_CTRL_SHIFT_LMB] = "CTRL SHIFT-[MAPTEXT_ICON_AUTO_SIZE(screentip_images["LMB"])]"
+		screentip_text[SCREENTIP_CONTEXT_SHIFT_LMB] = "SHIFT-[MAPTEXT_ICON_AUTO_SIZE(screentip_images["LMB"])]"
+		screentip_text[SCREENTIP_CONTEXT_RMB] = MAPTEXT_ICON_AUTO_SIZE(screentip_images["RMB"])
 
 	var/mob/user = client?.mob
 	if (isnull(user))

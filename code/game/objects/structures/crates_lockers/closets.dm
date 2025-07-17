@@ -96,6 +96,9 @@ TYPEINFO_DEF(/obj/structure/closet)
 	if(!isliving(user) || astype(user, /mob/living).combat_mode || broken)
 		return NONE
 
+	if(!Adjacent(user))
+		return NONE
+
 	if(held_item)
 		if(opened)
 			if(istype(held_item, cutting_tool))

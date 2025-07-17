@@ -15,6 +15,9 @@
 	return ..()
 
 /obj/machinery/microscope/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	if(!Adjacent(user))
+		return NONE
+
 	if(sample)
 		if(isnull(held_item))
 			context[SCREENTIP_CONTEXT_LMB] = "Analyze sample"

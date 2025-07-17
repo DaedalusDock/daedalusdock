@@ -45,6 +45,9 @@
 
 /obj/machinery/autoclave/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
+	if(!Adjacent(user))
+		return NONE
+
 	if(held_item)
 		context[SCREENTIP_CONTEXT_LMB] = "Insert"
 	else

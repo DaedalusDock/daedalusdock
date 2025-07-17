@@ -11,6 +11,10 @@
 	var/range
 	/// Sound volume
 	var/volume
+	/// Sound falloff
+	var/falloff_exponent
+	/// Sound falloff distance
+	var/falloff_distance
 
 	/// The master copy of the playing sound.
 	var/sound/sound
@@ -22,15 +26,15 @@
 	/// The channel being used.
 	var/sound_channel
 
-/datum/sound_token/New(atom/_source, sound/_sound, _range, _volume = 50)
+/datum/sound_token/New(atom/_source, sound/_sound, _range = 10, _volume = 50, _falloff_exponent = SOUND_FALLOFF_EXPONENT, _falloff_distance = SOUND_DEFAULT_FALLOFF_DISTANCE)
 	source = _source
 	RegisterSignal(source, COMSIG_PARENT_QDELETING, PROC_REF(source_deleted))
 	RegisterSignal(source, COMSIG_MOVABLE_MOVED, PROC_REF(source_moved))
 
-	if(isnum(_range))
-		range = _range
-
+	range = _range
 	volume = _volume
+	falloff_exponent = _falloff_exponent
+	falloff_distance = _falloff_distance
 
 	sound = _sound
 	sound.status |= SOUND_UPDATE
@@ -118,7 +122,7 @@
 		SEND_SOUND(M, sound)
 		return
 
-	if(!M.playsound_local(get_turf(source), vol = volume, channel = sound_channel, sound_to_use = sound))
+	if(!M.playsound_local(get_turf(source), vol = volume, falloff_exponent = falloff_exponent, channel = sound_channel, sound_to_use = sound, max_distance = range, falloff_distance = falloff_distance, use_reverb = TRUE))
 		sound.status = SOUND_UPDATE|SOUND_MUTE
 		SEND_SOUND(M, sound)
 

@@ -178,7 +178,7 @@
 
 
 /obj/machinery/jukebox/proc/play_music()
-	sound_token = new(src, sound(selection.path), 10, volume)
+	sound_token = new(src, sound(selection.path), 10, volume, 1, 4)
 
 /obj/machinery/jukebox/proc/update_volume()
 	set waitfor = FALSE

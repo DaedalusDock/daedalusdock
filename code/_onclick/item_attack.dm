@@ -195,8 +195,8 @@
 
 /// A helper for striking a mob with an item. Incurs click delay, stamina costs, and animates the attack.
 /mob/living/proc/attack_with_item(obj/item/attacking_item, mob/living/target, params)
-	if(!combat_mode)
-		return FALSE
+	// if(!combat_mode) This breaks too much, need more attackby refactors.
+	// 	return FALSE
 
 	if(attacking_item.force && HAS_TRAIT(src, TRAIT_PACIFISM))
 		to_chat(src, span_warning("You don't want to harm other living beings."))

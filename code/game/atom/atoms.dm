@@ -2219,7 +2219,7 @@ TYPEINFO_DEF(/atom)
 		active_hud.screentip_text.maptext = ""
 	else
 		//We inline a MAPTEXT() here, because there's no good way to statically add to a string like this
-		active_hud.screentip_text.maptext = "<span class='maptext' style='text-align: center; font-size: 32px; color: [active_hud.screentip_color]'>[name][extra_context]</span>"
+		active_hud.screentip_text.maptext = "<b><span class='maptext' style='text-align: center; font-size: 32px; color: [active_hud.screentip_color]'>[uppertext(name)][extra_context]</span></b>"
 
 /// Gets a merger datum representing the connected blob of objects in the allowed_types argument
 /atom/proc/GetMergeGroup(id, list/allowed_types)

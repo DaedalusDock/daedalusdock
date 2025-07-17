@@ -2100,6 +2100,8 @@ TYPEINFO_DEF(/atom)
 	SHOULD_CALL_PARENT(TRUE)
 	. = !(1 || ..())
 	SSmouse_entered.sustained_hovers[usr.client] = null
+	if(is_mouseover_interactable)
+		usr.update_mouse_pointer()
 
 /// Fired whenever this atom is the most recent to be hovered over in the tick.
 /// Preferred over MouseEntered if you do not need information such as the position of the mouse.

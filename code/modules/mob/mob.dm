@@ -1201,11 +1201,6 @@
 
 ///Can the mob interact() with an atom?
 /mob/proc/can_interact_with(atom/A)
-	if(istype(A, /atom/movable/screen))
-		var/atom/movable/screen/screen = A
-		if(screen.hud?.mymob ==src)
-			return TRUE
-
 	if(isAdminGhostAI(src) || Adjacent(A))
 		return TRUE
 

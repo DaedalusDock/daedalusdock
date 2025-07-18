@@ -29,31 +29,10 @@
 	var/atom/parent = parentRef.resolve()
 	if(parent == null)
 		return 0
-	//  Iterate over every edge of this hit‑box
-	var/list/hitboxCopy = hitboxLines.Copy()
-	var/i = 1
-	while(i < length(hitboxCopy))
-		// compare hitboxCopy[i] with hitboxCopy[i+1]
-		if(i == length(hitboxCopy)) break
+	var/list/collisions = list()
 
-		var/datum/line/first = hitboxCopy[i]
-		var/datum/line/second = hitboxCopy[i+1]
+	for (var/datum/line/line in hitboxLines)
 
-		var/df = sqrt(((first.startX+ first.endX)/2 - incoming.startX)**2 + \
-                      ((first.startY+ first.endY)/2 - incoming.startY)**2)
-		var/ds = sqrt(((second.startX+ second.endX)/2 - incoming.startX)**2 + \
-                      ((second.startY+ second.endY)/2 - incoming.startY)**2)
-
-		if(df <= ds)       // “≤” so equal items are considered sorted
-			i++            // move forward
-		else
-			// swap
-			hitboxCopy[i]   = second
-			hitboxCopy[i+1] = first
-			if(i > 1) i--   // step back unless we're at the start
-
-	for (var/datum/line/line in hitboxCopy)
-		message_admins("Hitbox line start and end points: [line.startX] [line.startY] [line.endX] [line.endY]")
 
 		/*---------------------------------------
 		* 1.  Intersection test                *
@@ -75,6 +54,8 @@
 			// --- Collision point ---
 			*wx = line.startX + firstRatio * (line.endX - line.startX)
 			*wy = line.startY + firstRatio * (line.endY - line.startY)
+			var/lx = *wx
+			var/ly = *wy
 
 			/*---------------------------------------
 			* 2.  Acute angle between segments      *
@@ -106,11 +87,24 @@
 				*angle = theta
 			else
 				*angle = 0	// one of the segments has zero length; pick a default
+			var/langle = *angle
+			collisions += 0
+			collisions[length(collisions)] = list(lx,ly,langle,sqrt((incoming.startX - lx)**2 + (incoming.startY - ly)**2) )
 
-			return TRUE
+	message_admins("Recorded [length(collisions)] collisions!")
+	for(var/i = 1 to length(collisions)-1)
+		if(collisions[i][4] > collisions[i][4])
+			var/temp = collisions[i+1]
+			collisions[i+1] = collisions[i]
+			collisions[i] = temp
+			if(i > 1) i--
 
 	//  No edge intersected the incoming line
-	return FALSE
+	if(length(collisions))
+		*wx = collisions[1][1]
+		*wy = collisions[1][2]
+		*angle = collisions[1][3]
+	return length(collisions) == 0
 
 
 /atom

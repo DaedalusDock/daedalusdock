@@ -2251,12 +2251,25 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			return MOUSE_ICON_HOVERING_INTERACTABLE
 		return
 
-	if(A.is_mouseover_interactable && (mobility_flags & MOBILITY_USE) && can_interact_with(A))
-		if(isitem(A))
-			if(!isturf(loc) || (mobility_flags & MOBILITY_PICKUP))
+
+	if(A.is_mouseover_interactable && (mobility_flags & MOBILITY_USE))
+		var/can_interact = FALSE
+		if(istype(A, /atom/movable/screen))
+			if(astype(A, /atom/movable/screen).hud?.mymob == src)
+				can_interact = TRUE
+
+			if(istype(A, /atom/movable/screen/alert))
+				can_interact = astype(A, /atom/movable/screen/alert).owner == src
+
+		else if(can_interact_with(A))
+			can_interact = TRUE
+
+		if(can_interact)
+			if(isitem(A))
+				if(!isturf(loc) || (mobility_flags & MOBILITY_PICKUP))
+					return MOUSE_ICON_HOVERING_INTERACTABLE
+			else
 				return MOUSE_ICON_HOVERING_INTERACTABLE
-		else
-			return MOUSE_ICON_HOVERING_INTERACTABLE
 
 
 /mob/living/do_hurt_animation()

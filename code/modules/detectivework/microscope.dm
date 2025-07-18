@@ -6,9 +6,31 @@
 
 	var/obj/item/sample
 
+/obj/machinery/microscope/Initialize(mapload)
+	. = ..()
+	register_context()
+
 /obj/machinery/microscope/Destroy()
 	QDEL_NULL(sample)
 	return ..()
+
+/obj/machinery/microscope/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	if(sample)
+		if(isnull(held_item))
+			context[SCREENTIP_CONTEXT_LMB] = "Analyze sample"
+			context[SCREENTIP_CONTEXT_RMB] = "Remove sample"
+		return NONE
+
+	if(istype(held_item, /obj/item/storage/evidencebag))
+		var/obj/item/storage/evidencebag/B = held_item
+		if(!length(B.contents))
+			return NONE
+
+		context[SCREENTIP_CONTEXT_LMB] = "Insert evidence"
+	else
+		context[SCREENTIP_CONTEXT_LMB] = "Insert object"
+
+	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/microscope/update_overlays()
 	. = ..()
@@ -19,28 +41,33 @@
 		. += emissive_appearance(icon, "[icon_state]_lights_working", alpha = 90)
 		. +="[icon_state]_lights_working"
 
-/obj/machinery/microscope/attackby(obj/item/weapon, mob/user, params)
-	if(sample)
-		to_chat(user, span_warning("There is already a slide in [src]."))
+/obj/machinery/microscope/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	. = ..()
+	if(. == ITEM_INTERACT_ANY_BLOCKER)
 		return
 
-	if(istype(weapon, /obj/item/storage/evidencebag))
-		var/obj/item/storage/evidencebag/B = weapon
+	if(sample)
+		to_chat(user, span_warning("There is already a slide in [src]."))
+		return ITEM_INTERACT_BLOCKING
+
+	if(istype(tool, /obj/item/storage/evidencebag))
+		var/obj/item/storage/evidencebag/B = tool
 		if(!length(B.contents))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		var/obj/item/stored = B.contents[1]
 		if(B.atom_storage.attempt_remove(stored, src))
 			to_chat(user, span_notice("You insert [stored] from [B] into [src]."))
 			sample = stored
-		return
+		return ITEM_INTERACT_SUCCESS
 
-	if(!user.transferItemToLoc(weapon, src))
-		return
+	if(!user.transferItemToLoc(tool, src))
+		return ITEM_INTERACT_BLOCKING
 
-	to_chat(user, span_notice("You insert [weapon] into [src]."))
-	sample = weapon
+	to_chat(user, span_notice("You insert [tool] into [src]."))
+	sample = tool
 	update_appearance(UPDATE_ICON)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/microscope/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()

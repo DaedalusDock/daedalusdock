@@ -6,9 +6,22 @@
 
 	var/obj/effect/aether_rune/rune_path = /obj/effect/aether_rune/exchange
 
+/obj/item/chalk/Initialize(mapload)
+	. = ..()
+	register_item_context()
+
+/obj/item/chalk/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	if(isturf(target))
+		context[SCREENTIP_CONTEXT_LMB] = "Draw sigil"
+		return CONTEXTUAL_SCREENTIP_SET
+
 /obj/item/chalk/attack_self(mob/user, modifiers)
 	. = ..()
 	if(.)
+		return
+
+	if(!HAS_TRAIT(user, TRAIT_AETHERITE))
+		to_chat(src, span_warning("You are not sure what to do with this."))
 		return
 
 	var/list/options = list()
@@ -26,6 +39,10 @@
 /obj/item/chalk/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!isopenturf(interacting_with))
 		return NONE
+
+	if(!HAS_TRAIT(user, TRAIT_AETHERITE))
+		to_chat(src, span_warning("You are not sure what to do with this."))
+		return ITEM_INTERACT_BLOCKING
 
 	var/turf/T = interacting_with
 	for(var/turf/nearby_turf as anything in (RANGE_TURFS(1, interacting_with) - interacting_with))

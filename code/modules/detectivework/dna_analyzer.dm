@@ -1,5 +1,5 @@
 /obj/machinery/dna_analyzer
-	name = "dna analyzer"
+	name = "\improper DNA analyzer"
 	desc = "A machine designed to analyze substances and their potential DNA presence."
 	icon = 'icons/obj/machines/forensics/dna_scanner.dmi'
 	icon_state = "dna"
@@ -7,9 +7,20 @@
 	var/obj/item/swab/sample
 	var/working = FALSE
 
+/obj/machinery/dna_analyzer/Initialize(mapload)
+	. = ..()
+	register_context()
+
 /obj/machinery/dna_analyzer/Destroy()
 	QDEL_NULL(sample)
 	return ..()
+
+/obj/machinery/dna_analyzer/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	if(istype(held_item, /obj/item/swab))
+		var/obj/item/swab/swab = held_item
+		if(swab.used)
+			context[SCREENTIP_CONTEXT_LMB] = "Insert swab"
+			return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/dna_analyzer/update_overlays()
 	. = ..()
@@ -26,31 +37,31 @@
 		. += emissive_appearance(icon, "dna_screen")
 		. += "dna_screen"
 
-/obj/machinery/dna_analyzer/attackby(obj/item/weapon, mob/user, params)
+/obj/machinery/dna_analyzer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	. = ..()
-	if(.)
+	if(. == ITEM_INTERACT_ANY_BLOCKER)
 		return
 
-	if(!istype(weapon, /obj/item/swab))
+	if(!istype(tool, /obj/item/swab))
 		to_chat(user, span_warning("[src] only accepts swabs."))
-		return TRUE
+		return ITEM_INTERACT_BLOCKING
 
 	if(sample)
 		to_chat(user, span_warning("There is already a sample inside."))
-		return TRUE
+		return ITEM_INTERACT_BLOCKING
 
-	var/obj/item/swab/incoming = weapon
+	var/obj/item/swab/incoming = tool
 	if(!incoming.used)
 		to_chat(user, span_warning("You can only insert used samples."))
-		return TRUE
+		return ITEM_INTERACT_BLOCKING
 
-	if(!user.transferItemToLoc(weapon, src))
-		return TRUE
+	if(!user.transferItemToLoc(tool, src))
+		return ITEM_INTERACT_BLOCKING
 
-	sample = weapon
+	sample = tool
 	to_chat(user, span_notice("You insert [sample] into [src]."))
 	updateUsrDialog()
-	return TRUE
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/dna_analyzer/proc/analyze_sample()
 	PRIVATE_PROC(TRUE)

@@ -30,6 +30,9 @@
 
 /obj/item/storage/wallet/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
+	if(equipped_to != user)
+		return NONE
+
 	context[SCREENTIP_CONTEXT_RMB] = is_open ? "Close" : "Open"
 	context[SCREENTIP_CONTEXT_ALT_LMB] = is_open ? "Close" : "Open"
 	return CONTEXTUAL_SCREENTIP_SET
@@ -75,7 +78,7 @@
 
 /obj/item/storage/wallet/AltClick(mob/user)
 	. = ..()
-	if(!.)
+	if(.)
 		return
 
 	if(is_open)

@@ -12,10 +12,18 @@
 
 /obj/item/sample/Initialize(mapload, atom/sampled_object)
 	. = ..()
+	register_item_context()
+
 	if(sampled_object)
 		copy_evidence(sampled_object)
 		name = "[initial(name)] ([sampled_object])"
 		label = "[sampled_object], [get_area(sampled_object)]"
+
+/obj/item/sample/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	if(target.type == type)
+		context[SCREENTIP_CONTEXT_LMB] = "Merge"
+		return CONTEXTUAL_SCREENTIP_SET
+	return NONE
 
 /obj/item/sample/examine(mob/user)
 	. = ..()
@@ -63,6 +71,15 @@
 /obj/item/sample/print/Initialize(mapload, atom/sampled_object)
 	. = ..()
 	update_appearance(UPDATE_ICON_STATE)
+
+/obj/item/sample/print/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	. = ..()
+	if(!ishuman(target) || length(evidence))
+		return
+
+	context[SCREENTIP_CONTEXT_LMB] = "Fingerprint"
+
+	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/sample/print/update_icon_state()
 	if(length(evidence))
@@ -162,6 +179,19 @@
 
 	var/evidence_type = "fiber"
 	var/evidence_path = /obj/item/sample/fibers
+
+/obj/item/sample_kit/Initialize(mapload)
+	. = ..()
+	register_item_context()
+
+/obj/item/sample_kit/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	. = ..()
+	if(!ATOM_HAS_FIRST_CLASS_INTERACTION(target))
+		context[SCREENTIP_CONTEXT_LMB] = "Take sample"
+
+	context[SCREENTIP_CONTEXT_RMB] = "Take sample"
+
+	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/sample_kit/proc/can_take_sample(mob/user, atom/supplied)
 	return length(supplied.return_fibers())

@@ -32,6 +32,8 @@
 	byondui_screen.generate_view("byondui_diagnosisbook_[ref(src)]")
 	wipe_byondui()
 
+	register_item_context()
+
 	if(isnull(static_data))
 		static_data = list()
 		var/list/conditions = list()
@@ -74,6 +76,11 @@
 /obj/item/diagnosis_book/Destroy(force)
 	QDEL_NULL(byondui_screen)
 	return ..()
+
+/obj/item/diagnosis_book/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	if(pages_remaining && ishuman(target))
+		context[SCREENTIP_CONTEXT_LMB] = "Diagnose"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/diagnosis_book/ui_interact(mob/user, datum/tgui/ui)
 	if(pages_remaining <= 0)
@@ -181,21 +188,15 @@
 			wipe_byondui()
 			return TRUE
 
-/obj/item/diagnosis_book/pre_attack(atom/A, mob/living/user, params)
-	. = ..()
-	if(.)
-		return
-
-	if(user.combat_mode)
-		return
-
-	if(!ishuman(A))
-		return
+/obj/item/diagnosis_book/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ishuman(interacting_with))
+		return NONE
 
 	if(pages_remaining <= 0)
-		return
+		to_chat(user, span_warning("There are no pages left in [src]."))
+		return ITEM_INTERACT_BLOCKING
 
-	var/mob/living/carbon/human/target = A
+	var/mob/living/carbon/human/target = interacting_with
 	selected_mob_data = list()
 	selected_mob_data["name"] = target.name
 	selected_mob_data["time"] = stationtime2text("hh:mm")
@@ -204,7 +205,7 @@
 	if(id_card)
 		selected_mob_data["occupation"] = id_card.assignment
 
-	var/mutable_appearance/character_appearance = new(A.appearance)
+	var/mutable_appearance/character_appearance = new(interacting_with.appearance)
 	remove_non_canon_overlays(character_appearance)
 
 	var/matrix/new_transform = matrix()
@@ -217,7 +218,7 @@
 	byondui_screen.rendered_atom.appearance = character_appearance.appearance
 
 	ui_interact(user)
-	return TRUE
+	return ITEM_INTERACT_SUCCESS
 
 /// Set the byondui appearance to a "No Image" icon.
 /obj/item/diagnosis_book/proc/wipe_byondui()

@@ -38,14 +38,15 @@
 	icon_state = "card[number]"
 	return ..()
 
-/obj/item/scene_card/attack_turf(atom/attacked_turf, mob/living/user, params)
-	. = ..()
-	if(!isopenturf(attacked_turf))
-		return
+/obj/item/scene_card/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isopenturf(interacting_with))
+		return NONE
 
-	if(user.Adjacent(attacked_turf) && user.transferItemToLoc(src, attacked_turf))
-		user.visible_message(span_notice("[user] places a [src.name] on [attacked_turf]."))
-		return TRUE
+	if(user.transferItemToLoc(src, interacting_with))
+		user.visible_message(span_notice("[user] places a [src.name] on [interacting_with]."))
+		return ITEM_INTERACT_SUCCESS
+
+	return ITEM_INTERACT_BLOCKING
 
 /obj/item/scene_card/n1
 	number = 1

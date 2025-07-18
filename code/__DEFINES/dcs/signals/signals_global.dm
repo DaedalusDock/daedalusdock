@@ -81,3 +81,8 @@
 #define COMSIG_GLOB_WANTED_CRIMINAL "!wanted_crew"
 ///Global signal sent when SSholomaps initializes
 #define COMSIG_GLOB_HOLOMAPS_READY "!holomaps_ready"
+
+///Global signal sent when the player list grows. (mob/player)
+#define COMSIG_GLOB_PLAYER_LOGIN "!player_login"
+///Global signal sent when the player list shrinks. (mob/player)
+#define COMSIG_GLOB_PLAYER_LOGOUT "!player_logout"

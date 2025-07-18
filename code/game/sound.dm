@@ -137,7 +137,7 @@
 			//End Atmosphere affecting sound
 
 		if(sound_to_use.volume <= 0)
-			return //No sound
+			return FALSE
 
 		var/dx = turf_source.x - turf_loc.x // Hearing from the right/left
 		sound_to_use.x = dx * distance_multiplier
@@ -165,6 +165,7 @@
 	if(LAZYLEN(observers))
 		for(var/mob/dead/observer/O as anything in observers)
 			SEND_SOUND(src, sound_to_use)
+	return TRUE
 
 /proc/sound_to_playing_players(soundin, volume = 100, vary = FALSE, frequency = 0, channel = 0, pressure_affected = FALSE, sound/S)
 	if(!S)

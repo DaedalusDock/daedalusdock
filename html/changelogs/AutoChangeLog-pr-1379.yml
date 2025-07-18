@@ -1,4 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - refactor: Rewrote the Jukebox to support multiple jukeboxes on the map.

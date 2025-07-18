@@ -15,3 +15,7 @@
   - bugfix: Interacting with Daedalus employees that was supposed to be secret spamming
       the chat every 2 seconds.
   - bugfix: Management now has access to... Management.
+2025-07-18:
+  Kapu1178:
+  - refactor: Rewrote the Jukebox to support multiple jukeboxes on the map.
+  - bugfix: Fixed TGUI assets such as cursors not working.

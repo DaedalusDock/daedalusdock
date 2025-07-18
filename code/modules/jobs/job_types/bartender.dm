@@ -3,6 +3,8 @@
 	description = "Serve booze, mix drinks, keep the crew drunk."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
+	pinpad_key = "ILOVESERVINGALCOHOLTODRUNKPEOPLE"
+
 	total_positions = 1
 	spawn_positions = 1
 	exp_granted_type = EXP_TYPE_CREW

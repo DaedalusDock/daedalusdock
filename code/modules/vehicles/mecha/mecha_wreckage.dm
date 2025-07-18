@@ -89,26 +89,6 @@
 		return
 	to_chat(user, span_notice("You don't see anything that can be cut with [I]!"))
 
-/obj/structure/mecha_wreckage/transfer_ai(interaction, mob/user, mob/living/silicon/ai/ai_mob, obj/item/aicard/card)
-	if(!..())
-		return
-
-	//Proc called on the wreck by the AI card.
-	if(interaction != AI_TRANS_TO_CARD) //AIs can only be transferred in one direction, from the wreck to the card.
-		return
-	if(!AI) //No AI in the wreck
-		to_chat(user, span_warning("No AI backups found."))
-		return
-	cut_overlays() //Remove the recovery beacon overlay
-	AI.forceMove(card) //Move the dead AI to the card.
-	card.AI = AI
-	if(AI.client) //AI player is still in the dead AI and is connected
-		to_chat(AI, span_notice("The remains of your file system have been recovered on a mobile storage device."))
-	else //Give the AI a heads-up that it is probably going to get fixed.
-		AI.notify_ghost_revival("You have been recovered from the wreckage!", source = card)
-	to_chat(user, "[span_boldnotice("Backup files recovered")]: [AI.name] ([rand(1000,9999)].exe) salvaged from [name] and stored within local memory.")
-	AI = null
-
 /obj/structure/mecha_wreckage/gygax
 	name = "\improper Gygax wreckage"
 	icon_state = "gygax-broken"

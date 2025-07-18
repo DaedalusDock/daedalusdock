@@ -11,25 +11,31 @@
 				subject.attack_ai(M)
 	return is_in_use
 
-
+#warn desc
 /mob/living/silicon/ai
 	name = "AI"
 	real_name = "AI"
 	icon = 'icons/mob/ai.dmi'
-	icon_state = "ai"
+	icon_state = ""
+
 	move_resist = MOVE_FORCE_OVERPOWERING
 	density = TRUE
-	status_flags = CANSTUN|CANPUSH
+
+	status_flags = CANSTUN
 	combat_mode = TRUE //so we always get pushed instead of trying to swap
 	sight = SEE_TURFS | SEE_MOBS | SEE_OBJS
+
 	see_in_dark = NIGHTVISION_FOV_RANGE
 	hud_type = /datum/hud/ai
+
 	med_hud = DATA_HUD_MEDICAL_BASIC
 	sec_hud = DATA_HUD_SECURITY_BASIC
 	d_hud = DATA_HUD_DIAGNOSTIC_ADVANCED
-	mob_size = MOB_SIZE_LARGE
+	mob_size = MOB_SIZE_HUGE
+
 	radio = /obj/item/radio/headset/silicon/ai
 	can_buckle_to = FALSE
+
 	var/battery = 200 //emergency power if the AI's APC is off
 	var/list/network = list("ss13")
 	var/obj/machinery/camera/current
@@ -115,6 +121,11 @@
 	COOLDOWN_DECLARE(command_report_cd)
 	/// An image to add to client.images so the AI player can see their own eye sprite.
 	var/image/sense_of_self
+	/// The vis contents holder for our overlays, for offsetting without breaking things like runechat.
+	var/obj/effect/overlay/ai_holder/vis_holder
+
+	/// The icon state for the face.
+	var/face_state = "static"
 
 /mob/living/silicon/ai/Initialize(mapload, datum/ai_laws/L, mob/target_ai)
 	. = ..()
@@ -156,7 +167,11 @@
 	if(client)
 		INVOKE_ASYNC(src, PROC_REF(apply_pref_name), /datum/preference/name/ai, client)
 
-	INVOKE_ASYNC(src, PROC_REF(set_core_display_icon))
+	vis_holder = new
+	vis_holder.ai = src
+	add_viscontents(vis_holder)
+
+	//INVOKE_ASYNC(src, PROC_REF(set_core_display_icon))
 
 
 	holo_icon = getHologramIcon(icon('icons/mob/ai.dmi',"default"))
@@ -197,6 +212,8 @@
 	RegisterSignal(alert_control.listener, COMSIG_ALARM_TRIGGERED, PROC_REF(alarm_triggered))
 	RegisterSignal(alert_control.listener, COMSIG_ALARM_CLEARED, PROC_REF(alarm_cleared))
 
+	update_appearance()
+
 /mob/living/silicon/ai/key_down(_key, client/user)
 	if(findtext(_key, "numpad")) //if it's a numpad number, we can convert it to just the number
 		_key = _key[7] //strings, lists, same thing really
@@ -230,6 +247,7 @@
 	QDEL_NULL(robot_control)
 	QDEL_NULL(aiMulti)
 	QDEL_NULL(alert_control)
+	QDEL_NULL(vis_holder)
 	malfhack = null
 	current = null
 	bot_ref = null
@@ -278,6 +296,10 @@
 /mob/living/silicon/ai/broadcast_examine(atom/examined)
 	return
 
+/mob/living/silicon/ai/update_appearance(updates)
+	. = ..()
+	vis_holder.update_appearance(updates)
+
 /// Returns the nearest lit camera to a mob, as long as the camera can see that mob.
 /mob/living/silicon/ai/proc/get_nearest_lit_camera_to_mob(mob/M)
 	var/smallest_dist = INFINITY
@@ -296,41 +318,37 @@
 /mob/living/silicon/ai/ignite_mob()
 	return FALSE
 
-/mob/living/silicon/ai/proc/set_core_display_icon(input, client/C)
-	if(client && !C)
-		C = client
-	if(!input && !C?.prefs?.read_preference(/datum/preference/choiced/ai_core_display))
-		icon_state = initial(icon_state)
-	else
-		var/preferred_icon = input ? input : C.prefs.read_preference(/datum/preference/choiced/ai_core_display)
-		icon_state = resolve_ai_icon(preferred_icon)
+/// Sets the face_state and updates it.
+/mob/living/silicon/ai/proc/set_face_state(new_state)
+	face_state = new_state
+	update_appearance(UPDATE_OVERLAYS)
 
-/mob/living/silicon/ai/verb/pick_icon()
-	set category = "AI Commands"
-	set name = "Set AI Core Display"
-	if(incapacitated())
-		return
-	icon = initial(icon)
-	icon_state = "ai"
-	cut_overlays()
-	var/list/iconstates = GLOB.ai_core_display_screens
-	for(var/option in iconstates)
-		if(option == "Random")
-			iconstates[option] = image(icon = src.icon, icon_state = "ai-random")
-			continue
-		if(option == "Portrait")
-			iconstates[option] = image(icon = src.icon, icon_state = "ai-portrait")
-			continue
-		iconstates[option] = image(icon = src.icon, icon_state = resolve_ai_icon(option))
+// /mob/living/silicon/ai/verb/pick_icon()
+// 	set category = "AI Commands"
+// 	set name = "Set AI Core Display"
+// 	if(incapacitated())
+// 		return
+// 	icon = initial(icon)
+// 	icon_state = "ai"
+// 	cut_overlays()
+// 	var/list/iconstates = GLOB.ai_core_display_screens
+// 	for(var/option in iconstates)
+// 		if(option == "Random")
+// 			iconstates[option] = image(icon = src.icon, icon_state = "ai-random")
+// 			continue
+// 		if(option == "Portrait")
+// 			iconstates[option] = image(icon = src.icon, icon_state = "ai-portrait")
+// 			continue
+// 		iconstates[option] = image(icon = src.icon, icon_state = resolve_ai_icon(option))
 
-	view_core()
-	var/ai_core_icon = show_radial_menu(src, src , iconstates, radius = 42)
+// 	view_core()
+// 	var/ai_core_icon = show_radial_menu(src, src , iconstates, radius = 42)
 
-	if(!ai_core_icon || incapacitated())
-		return
+// 	if(!ai_core_icon || incapacitated())
+// 		return
 
-	display_icon_override = ai_core_icon
-	set_core_display_icon(ai_core_icon)
+// 	display_icon_override = ai_core_icon
+// 	set_core_display_icon(ai_core_icon)
 
 /mob/living/silicon/ai/get_status_tab_items()
 	. = ..()
@@ -819,29 +837,6 @@
 		return
 	set_autosay()
 
-/mob/living/silicon/ai/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/aicard/card)
-	if(!..())
-		return
-	if(interaction == AI_TRANS_TO_CARD)//The only possible interaction. Upload AI mob to a card.
-		if(!can_be_carded)
-			to_chat(user, span_boldwarning("Transfer failed."))
-			return
-		disconnect_shell() //If the AI is controlling a borg, force the player back to core!
-		if(!mind)
-			to_chat(user, span_warning("No intelligence patterns detected."))
-			return
-		ShutOffDoomsdayDevice()
-		var/obj/structure/ai_core/new_core = new /obj/structure/ai_core/deactivated(loc)//Spawns a deactivated terminal at AI location.
-		new_core.circuit.battery = battery
-		ai_restore_power()//So the AI initially has power.
-		control_disabled = TRUE //Can't control things remotely if you're stuck in a card!
-		interaction_range = 0
-		radio_enabled = FALSE //No talking on the built-in radio for you either!
-		forceMove(card)
-		card.AI = src
-		to_chat(src, "You have been downloaded to a mobile storage device. Remote device connection severed.")
-		to_chat(user, "[span_boldnotice("Transfer successful")]: [name] ([rand(1000,9999)].exe) removed from host terminal and stored within local memory.")
-
 /mob/living/silicon/ai/canUseTopic(atom/movable/target, flags)
 	if(control_disabled)
 		to_chat(src, span_warning("You can't do that right now!"))
@@ -962,7 +957,7 @@
 /mob/living/silicon/ai/revive(full_heal = FALSE, admin_revive = FALSE)
 	. = ..()
 	if(.) //successfully ressuscitated from death
-		set_core_display_icon(display_icon_override)
+		//set_core_display_icon(display_icon_override)
 		set_eyeobj_visible(TRUE)
 
 /mob/living/silicon/ai/proc/malfhacked(obj/machinery/power/apc/apc)

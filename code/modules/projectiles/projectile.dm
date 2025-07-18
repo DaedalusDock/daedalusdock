@@ -427,7 +427,14 @@
 		// ensure the lines ALWAYS collide
 		var/datum/line/bulletLine = new /datum/line(trajectory.starting_x, trajectory.starting_y, trajectory.x + trajectory.mpx * 10, trajectory.y + trajectory.mpy * 10)
 		A.atomHitbox.getPointOfCollision(bulletLine, &wx, &wy, &angle)
-		message_admins("[angle] , trajectory px : [trajectory.starting_x] [trajectory.starting_y] [trajectory.x] [trajectory.y]")
+		var/newAngle = Angle + 180 + angle
+		while(newAngle > 360)
+			newAngle -= 360
+		set_angle(newAngle)
+		message_admins("[angle] , trajectory px : [trajectory.starting_x] [trajectory.starting_y] [trajectory.x] [trajectory.y]. Bullet Angle [Angle]")
+		decayedRange = max(0, decayedRange - 1)
+		impacted[A] = TRUE
+		return TRUE
 	var/datum/point/point_cache = trajectory.copy_to()
 	var/turf/T = get_turf(A)
 	if(ricochets < ricochets_max && check_ricochet_flag(A) && check_ricochet(A))

@@ -427,13 +427,11 @@
 		// ensure the lines ALWAYS collide
 		var/datum/line/bulletLine = new /datum/line(trajectory.starting_x, trajectory.starting_y, trajectory.x + trajectory.mpx * 10, trajectory.y + trajectory.mpy * 10)
 		A.atomHitbox.getPointOfCollision(bulletLine, &wx, &wy, &angle)
+		var/cAngle = Angle - angle
+		var/cAngleA = Angle + angle
 		var/newAngle = Angle + sign(Angle)*180 - sign(Angle)*2*angle
-		if(newAngle < -180)
-			newAngle += 360
-		//while(newAngle > 360)
-		//	newAngle -= 360
 		set_angle(newAngle)
-		message_admins("[angle] , trajectory px : [trajectory.starting_x] [trajectory.starting_y] [trajectory.x] [trajectory.y]. Bullet Angle [Angle]")
+		message_admins(" Bullet : [Angle] New : [newAngle] Recorded Wall Angle :  [angle] WA1 [cAngle] WA2 [cAngleA]")
 		decayedRange = max(0, decayedRange - 1)
 		impacted[A] = TRUE
 		return TRUE

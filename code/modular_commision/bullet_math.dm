@@ -93,7 +93,7 @@
 
 	message_admins("Recorded [length(collisions)] collisions!")
 	for(var/i = 1 to length(collisions)-1)
-		if(collisions[i][4] > collisions[i][4])
+		if(collisions[i][4] > collisions[i+1][4])
 			var/temp = collisions[i+1]
 			collisions[i+1] = collisions[i]
 			collisions[i] = temp

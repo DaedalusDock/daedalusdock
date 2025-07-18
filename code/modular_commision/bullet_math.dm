@@ -24,6 +24,19 @@
 #define DIST(l) sqrt(((l.startX+ l.endX)/2 - incoming.startX)**2 + \
                       ((l.startY+ l.endY)/2 - incoming.startY)**2)
 
+/proc/arctan2(y, x)
+	if (x == 0)
+		if (y > 0)
+			return 90
+		else if (y < 0)
+			return -90
+		else
+			return 0 // undefined, but return 0 for safety
+	var/angle = arctan(y / x)
+	if (x < 0)
+		angle += (y >= 0) ? 180 : -180
+	return angle
+
 // wx , wy and angle are pointer outputs.
 /datum/hitbox/proc/getPointOfCollision(datum/line/incoming, wx, wy, angle)
 	var/atom/parent = parentRef.resolve()
@@ -51,47 +64,27 @@
 			             - (line.endY   - line.startY)       * (line.startX - incoming.startX)) / denominator
 
 		if (firstRatio >= 0 && firstRatio <= 1 && secondRatio >= 0 && secondRatio <= 1)
-			// --- Collision point ---
-			*wx = line.startX + firstRatio * (line.endX - line.startX)
-			*wy = line.startY + firstRatio * (line.endY - line.startY)
-			var/lx = *wx
-			var/ly = *wy
+			var/lx = line.startX + firstRatio * (line.endX - line.startX)
+			var/ly = line.startY + firstRatio * (line.endY - line.startY)
+			var/idx = incoming.endX - incoming.startX
+			var/idy = incoming.endY - incoming.startY
+			var/ldx = line.endX - line.startX
+			var/ldy = line.endY - line.startY
+			var/bullet_angle = arctan2(idy, idx)
 
-			/*---------------------------------------
-			* 2.  Acute angle between segments      *
-			*--------------------------------------*/
+			var/norm_x = -ldy
+			var/norm_y = ldx
 
-			// Direction vectors (B - A)
-			var/ux = incoming.endX - incoming.startX
-			var/uy = incoming.endY - incoming.startY
+			var/wall_normal_angle = arctan2(norm_y, norm_x)
+			var/relative_angle = wall_normal_angle - bullet_angle
+			if (relative_angle > 180)
+				relative_angle -= 360
+			else if (relative_angle < -180)
+				relative_angle += 360
 
-			var/vx = line.endX     - line.startX
-			var/vy = line.endY     - line.startY
-
-			// Dot‑product & magnitudes
-			var/dot   = ux * vx + uy * vy
-			var/len_u = sqrt(ux * ux + uy * uy)
-			var/len_v = sqrt(vx * vx + vy * vy)
-
-			if(len_u && len_v)
-				var/cosTheta = dot / (len_u * len_v)
-
-				// Numerical‑safety clamp
-				if (cosTheta >  1) cosTheta =  1
-				if (cosTheta < -1) cosTheta = -1
-
-				var/theta = arccos(cosTheta)	// BYOND trig fns use *degrees*
-				if (theta > 90)					// convert to acute angle
-					theta = 180 - theta
-
-				*angle = theta
-			else
-				*angle = 0	// one of the segments has zero length; pick a default
-			var/langle = *angle
 			collisions += 0
-			collisions[length(collisions)] = list(lx,ly,langle,sqrt((incoming.startX - lx)**2 + (incoming.startY - ly)**2) )
+			collisions[length(collisions)] = list(lx,ly,relative_angle,(incoming.startX - lx)**2 + (incoming.startY - ly)**2)
 
-	message_admins("Recorded [length(collisions)] collisions!")
 	for(var/i = 1 to length(collisions)-1)
 		if(collisions[i][4] > collisions[i+1][4])
 			var/temp = collisions[i+1]
@@ -127,4 +120,16 @@
 	hitboxLines += new /datum/line(32,32, 32, 0)
 	hitboxLines += new /datum/line(32,0, 0, 0)
 
+// stores a angle in simple 0 - 360 for maths
+/datum/worldAngle
+	var/angle = 0
 
+/datum/worldAngle/proc/reduce()
+	angle -= round(angle / 360) * 360
+
+/datum/worldAngle/proc/fromAny(originalAngle)
+	if(originalAngle < 0)
+		angle = 360 + originalAngle
+	else
+		angle = originalAngle
+	reduce()

@@ -12,13 +12,33 @@ $color-default: color.scale(
   colors.fg(colors.$primary),
   $lightness: 75%
 ) !default;
+
 $text-color: rgba(255, 255, 255, 0.5) !default;
 $text-color-selected: color.scale($color-default, $lightness: 25%) !default;
 $tab-color: transparent !default;
-$tab-color-hovered: rgba(255, 255, 255, 0.075) !default;
+$tab-color-hovered: rgba(214, 2, 2, 0.075) !default;
 $tab-color-selected: rgba(255, 255, 255, 0.125) !default;
-$border-radius: base.$border-radius !default;
 $fg-map: colors.$fg-map !default;
+
+$border-selected-color: $color-default !default;
+$border-width: math.div(1em, 6) !default;
+$border-radius: base.$border-radius !default;
+$border-notch-amount: 10px !default;
+$border-notch-path-horizontal: polygon(
+  0 0,
+  calc(100% - #{$border-notch-amount} + 2px) 0,
+  100% calc(#{$border-notch-amount} - 2px),
+  100% 100%,
+  0 100%
+) !default;
+
+$border-notch-path-vertical: polygon(
+  #{$border-notch-amount - 2px} 0,
+  100% 0,
+  100% 100%,
+  0 100%,
+  0 calc(#{$border-notch-amount} - 2px)
+) !default;
 
 .Tabs {
   display: flex;
@@ -74,6 +94,7 @@ $fg-map: colors.$fg-map !default;
   color: $text-color;
   min-height: 2.25em;
   min-width: 4em;
+  cursor: base.$cursor-pointer;
 }
 
 .Tab:not(.Tab--selected):hover {
@@ -104,32 +125,34 @@ $fg-map: colors.$fg-map !default;
 
 .Tabs--horizontal {
   .Tab {
-    border-top: math.div(1em, 6) solid transparent;
-    border-bottom: math.div(1em, 6) solid transparent;
-    border-top-left-radius: 0.25em;
-    border-top-right-radius: 0.25em;
+    border-top: $border-width solid transparent;
+    border-bottom: $border-width solid transparent;
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+    clip-path: $border-notch-path-horizontal;
   }
 
   .Tab--selected {
-    border-bottom: math.div(1em, 6) solid $color-default;
+    border-bottom: $border-width solid $border-selected-color;
   }
 }
 
 .Tabs--vertical {
   .Tab {
     min-height: 2em;
-    border-left: math.div(1em, 6) solid transparent;
-    border-right: math.div(1em, 6) solid transparent;
-    border-top-left-radius: 0.25em;
-    border-bottom-left-radius: 0.25em;
+    border-left: $border-width solid transparent;
+    border-right: $border-width solid transparent;
+    border-top-left-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+    clip-path: $border-notch-path-vertical;
   }
 
   .Tab--selected {
-    border-right: math.div(1em, 6) solid $color-default;
+    border-right: $border-width solid $border-selected-color;
   }
 }
 
-@each $color-name, $color-value in $fg-map {
+@mixin tab-color($color-name, $color-value) {
   .Tab--selected.Tab--color--#{$color-name} {
     color: color.scale($color-value, $lightness: 25%);
   }
@@ -141,4 +164,8 @@ $fg-map: colors.$fg-map !default;
   .Tabs--vertical .Tab--selected.Tab--color--#{$color-name} {
     border-right-color: $color-value;
   }
+}
+
+@each $color-name, $color-value in $fg-map {
+  @include tab-color($color-name, $color-value);
 }

@@ -16,10 +16,23 @@ $color-transparent-text: rgba(255, 255, 255, 0.5) !default;
 $border-radius: base.$border-radius !default;
 $bg-map: colors.$bg-map !default;
 
+// Text color used against a dark background
+$text-color-bright: rgba(255, 255, 255, 1) !default;
+$text-color-dark: rgba(0, 0, 0, 1) !default;
+
+$ui-notch-amount: 10px;
+$ui-notch-path: polygon(
+  0 0,
+  100% 0,
+  100% calc(100% - $ui-notch-amount + 2px),
+  calc(100% - $ui-notch-amount + 2px) 100%,
+  0 100%
+);
+
 @mixin button-color($color) {
   // Adapt text color to background luminance to ensure high contast
   $luminance: luminance($color);
-  $text-color: if($luminance > 0.4, rgba(0, 0, 0, 1), rgba(255, 255, 255, 1));
+  $text-color: if($luminance > 0.4, $text-color-dark, $text-color-bright);
 
   transition:
     color 50ms,
@@ -57,6 +70,8 @@ $bg-map: colors.$bg-map !default;
   border-radius: $border-radius;
   margin-bottom: base.em(2px);
   cursor: base.$cursor-pointer;
+
+  clip-path: $ui-notch-path;
 
   // Disable selection in buttons
   user-select: none;
@@ -108,11 +123,24 @@ $bg-map: colors.$bg-map !default;
 
 .Button--circular {
   border-radius: 50%;
+  clip-path: none;
 }
 
 .Button--compact {
   padding: 0 0.25em;
   line-height: 1.333em;
+}
+
+.Button--checkbox {
+  clip-path: none;
+}
+
+.Button--input {
+  clip-path: none;
+}
+
+.Button--noClip {
+  clip-path: none;
 }
 
 @each $color-name, $color-value in $bg-map {

@@ -1,0 +1,124 @@
+@use 'sass:math';
+@use 'sass:meta';
+@use '../functions.scss' as *;
+
+// Used for text
+$color-fg: #f1f1f1 !default;
+// The background of the UI
+$color-bg: #334745 !default;
+$dark-fg: darken($color-fg, 30);
+
+// Buttons, progress bar default filler, etc.
+$color-primary: #a1c181;
+/// Complement to the above, active buttons.
+$color-primary-hightlight: #e0e268;
+/// Color for the interior background of progress bars, inputs, etc.
+$color-component-background: rgba(0, 0, 0, 0.5);
+
+// Secondary color, things like labels.
+$color-secondary: #a48ccf;
+
+@use '../base.scss' with (
+  $color-bg: $color-bg,
+  $color-fg: $color-fg
+);
+
+@use '../colors.scss' with (
+  $bg-lightness: 0%,
+  $fg-lightness: 0%,
+  $primary: $color-primary,
+  $good: #06bb6c,
+  $bad: #f2545b,
+  $label: $color-secondary
+);
+
+.theme-daedalus {
+  // Atomic classes
+  @include meta.load-css('../atomic/color.scss');
+
+  // Components
+  @include meta.load-css(
+    '../components/Slider.scss',
+    $with: (
+      'cursor-color': darken(base.$color-fg, 0.2),
+      'popup-background-color': base.$color-bg,
+      'popup-text-color': base.$color-fg
+    )
+  );
+
+  @include meta.load-css('../layouts/Window.scss');
+
+  @include meta.load-css(
+    '../layouts/TitleBar.scss',
+    $with: (
+      'background-color': base.$color-bg,
+      'text-color': base.$color-fg,
+      'eye-interactive': #03fc90
+    )
+  );
+  @include meta.load-css(
+    '../layouts/Layout.scss',
+    $with: ('scrollbar-color-multiplier': 0.5)
+  );
+
+  @include meta.load-css(
+    '../components/Section.scss',
+    $with: ('title-text-color': base.$color-fg)
+  );
+
+  @include meta.load-css(
+    '../components/Button.scss',
+    $with: (
+      'color-default': $color-primary,
+      'color-selected': $color-primary-hightlight,
+      'color-transparent-text': rgba(227, 240, 255, 0.75),
+      'text-color-bright': $color-fg
+    )
+  );
+
+  @include meta.load-css(
+    '../components/ProgressBar.scss',
+    $with: (
+      'color-default-fill': $color-primary,
+      // Stands out against the bright good and dark background
+      'text-color': $color-fg,
+      'background-color': rgba(0, 0, 0, 0.5)
+    )
+  );
+
+  @include meta.load-css(
+    '../components/Knob.scss',
+    $with: ('ring-color': $color-primary)
+  );
+
+  @include meta.load-css(
+    '../components/Input.scss',
+    $with: (
+      'background-color': $color-component-background,
+      'border-color': $color-primary,
+      'text-color': $color-fg
+    )
+  );
+
+  @include meta.load-css(
+    '../components/NumberInput.scss',
+    $with: (
+      'background-color': $color-component-background,
+      'border-color': $color-primary,
+      'text-color': $color-fg
+    )
+  );
+
+  @include meta.load-css(
+    '../components/Tabs.scss',
+    $with: (
+      'border-radius': none,
+      'tab-color': darken($color-primary, 10%),
+      'tab-color-hovered': darken($color-primary, 20%),
+      'tab-color-selected': $color-primary-hightlight,
+      'text-color': #000000,
+      'text-color-selected': #000000,
+      'border-width': 0
+    )
+  );
+}

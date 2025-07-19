@@ -70,17 +70,10 @@
 			var/idy = incoming.endY - incoming.startY
 			var/ldx = line.endX - line.startX
 			var/ldy = line.endY - line.startY
-			var/bullet_angle = arctan2(idy, idx)
-
-			var/norm_x = -ldy
-			var/norm_y = ldx
-
-			var/wall_normal_angle = arctan2(norm_y, norm_x)
+			var/bullet_angle = arctan(idx, idy)
+			var/wall_normal_angle = arctan(ldx, ldy)
 			var/relative_angle = wall_normal_angle - bullet_angle
-			if (relative_angle > 180)
-				relative_angle -= 360
-			else if (relative_angle < -180)
-				relative_angle += 360
+			message_admins("WALL RET [relative_angle] BULLET ANGLE [bullet_angle] WALL NORMAL [wall_normal_angle]")
 
 			collisions += 0
 			collisions[length(collisions)] = list(lx,ly,relative_angle,(incoming.startX - lx)**2 + (incoming.startY - ly)**2)
@@ -121,15 +114,16 @@
 	hitboxLines += new /datum/line(32,0, 0, 0)
 
 // stores a angle in simple 0 - 360 for maths
+// always counter clockwise!!
 /datum/worldAngle
 	var/angle = 0
 
 /datum/worldAngle/proc/reduce()
-	angle -= round(angle / 360) * 360
+	angle = angle % 360
 
 /datum/worldAngle/proc/fromAny(originalAngle)
+	var/tempAngle = originalAngle%360
 	if(originalAngle < 0)
-		angle = 360 + originalAngle
+		angle = -originalAngle
 	else
-		angle = originalAngle
-	reduce()
+		angle = (360 - originalAngle)

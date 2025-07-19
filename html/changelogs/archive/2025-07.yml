@@ -19,3 +19,6 @@
   Kapu1178:
   - refactor: Rewrote the Jukebox to support multiple jukeboxes on the map.
   - bugfix: Fixed TGUI assets such as cursors not working.
+2025-07-19:
+  Kapu1178:
+  - bugfix: Overlapping bitflags in AI code

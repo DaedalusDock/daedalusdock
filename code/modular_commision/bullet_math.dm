@@ -66,17 +66,22 @@
 		if (firstRatio >= 0 && firstRatio <= 1 && secondRatio >= 0 && secondRatio <= 1)
 			var/lx = line.startX + firstRatio * (line.endX - line.startX)
 			var/ly = line.startY + firstRatio * (line.endY - line.startY)
-			var/idx = incoming.endX - incoming.startX
-			var/idy = incoming.endY - incoming.startY
-			var/ldx = line.endX - line.startX
-			var/ldy = line.endY - line.startY
-			var/bullet_angle = arctan(idx, idy)
-			var/wall_normal_angle = arctan(ldx, ldy)
-			var/relative_angle = wall_normal_angle - bullet_angle
-			message_admins("WALL RET [relative_angle] BULLET ANGLE [bullet_angle] WALL NORMAL [wall_normal_angle]")
-
+			var/deltaLineX = (incoming.endX - incoming.startX)
+			var/deltaLineY = (incoming.endY - incoming.startY)
+			var/deltaWallX = (line.endX - line.startX)
+			var/deltaWallY = (line.endY - line.startY)
+			var/dot = deltaLineX * deltaWallX + deltaLineY* deltaWallY
+			var/relativeangle = -arctan(dot, deltaLineX * deltaWallY - deltaLineY * deltaWallX) * sign(dot)
+			if(relativeangle > 90)
+				relativeangle = 180 - relativeangle
+			/*
+			if(relativeangle > 90)
+				relativeangle = 180 - relativeangle
+			else if(relativeangle < 90)
+				relativeangle = relativeangle - 180
+				*/
 			collisions += 0
-			collisions[length(collisions)] = list(lx,ly,relative_angle,(incoming.startX - lx)**2 + (incoming.startY - ly)**2)
+			collisions[length(collisions)] = list(lx,ly,relativeangle,(incoming.startX - lx)**2 + (incoming.startY - ly)**2)
 
 	for(var/i = 1 to length(collisions)-1)
 		if(collisions[i][4] > collisions[i+1][4])
@@ -90,6 +95,7 @@
 		*wx = collisions[1][1]
 		*wy = collisions[1][2]
 		*angle = collisions[1][3]
+		message_admins("Got relative angle of [collisions[1][3]]")
 	return length(collisions) == 0
 
 

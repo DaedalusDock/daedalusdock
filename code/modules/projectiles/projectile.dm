@@ -91,7 +91,7 @@
 	/// If you want to make a fast-moving projectile, you should keep this equal to 1 and
 	/// reduce the value of `speed`. If you want to make a slow-moving projectile, make
 	/// `speed` a modest value like 1 and set this to a low value like 0.2.
-	var/pixel_speed_multiplier = 0.1
+	var/pixel_speed_multiplier = 1
 
 	var/Angle = 0
 	var/original_angle = 0 //Angle at firing
@@ -427,7 +427,7 @@
 		// ensure the lines ALWAYS collide
 		var/datum/line/bulletLine = new /datum/line(trajectory.starting_x, trajectory.starting_y, trajectory.x + trajectory.mpx * 10, trajectory.y + trajectory.mpy * 10)
 		A.atomHitbox.getPointOfCollision(bulletLine, &wx, &wy, &angle)
-		set_angle(angle + 2*(Angle) - 90)
+		set_angle(Angle+2*angle)
 		decayedRange = max(0, decayedRange - 1)
 		impacted[A] = TRUE
 		return TRUE

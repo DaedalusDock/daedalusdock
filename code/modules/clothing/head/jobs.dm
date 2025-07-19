@@ -96,41 +96,6 @@ TYPEINFO_DEF(/obj/item/clothing/head/hopcap)
 	desc = "An opulent hat that functions as a radio to God. Or as a lightning rod, depending on who you ask."
 	icon_state = "bishopmitre"
 
-//Detective
-TYPEINFO_DEF(/obj/item/clothing/head/fedora/det_hat)
-	default_armor = list(BLUNT = 25, PUNCTURE = 5, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 0, BIO = 0, FIRE = 30, ACID = 50)
-
-/obj/item/clothing/head/fedora/det_hat
-	name = "private investigator's fedora"
-	desc = "There's only one man who can sniff out the dirty stench of crime, and he's likely wearing this hat."
-	icon_state = "detective"
-	var/candy_cooldown = 0
-	dog_fashion = /datum/dog_fashion/head/detective
-
-/obj/item/clothing/head/fedora/det_hat/Initialize(mapload)
-	. = ..()
-
-	create_storage(type = /datum/storage/pockets/small/fedora/detective)
-
-	new /obj/item/reagent_containers/cup/glass/flask/det(src)
-
-/obj/item/clothing/head/fedora/det_hat/examine(mob/user)
-	. = ..()
-	. += span_notice("Alt-click to take a candy corn.")
-
-/obj/item/clothing/head/fedora/det_hat/AltClick(mob/user)
-	. = ..()
-	if(loc != user || !user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY|USE_IGNORE_TK))
-		return
-	if(candy_cooldown < world.time)
-		var/obj/item/food/candy_corn/CC = new /obj/item/food/candy_corn(src)
-		user.put_in_hands(CC)
-		to_chat(user, span_notice("You slip a candy corn from your hat."))
-		candy_cooldown = world.time+1200
-	else
-		to_chat(user, span_warning("You just took a candy corn! You should wait a couple minutes, lest you burn through your stash."))
-
-
 //Mime
 
 /obj/item/clothing/head/beret

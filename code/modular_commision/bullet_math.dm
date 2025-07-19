@@ -95,7 +95,6 @@
 		*wx = collisions[1][1]
 		*wy = collisions[1][2]
 		*angle = collisions[1][3]
-		message_admins("Got relative angle of [collisions[1][3]]")
 	return length(collisions) == 0
 
 

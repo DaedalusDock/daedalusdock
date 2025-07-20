@@ -81,8 +81,19 @@ module.exports = (env = {}, argv) => {
           ],
         },
         {
-          test: /\.(cur|png|jpg|svg)$/,
-          type: 'asset/resource',
+          test: /\.cur$/,
+          use: [
+            {
+              loader: require.resolve('url-loader'),
+              options: {
+                esModule: false,
+              },
+            },
+          ],
+        },
+        {
+          test: /\.(png|jpg|svg)$/,
+          type: 'asset/inline',
         },
       ],
     },

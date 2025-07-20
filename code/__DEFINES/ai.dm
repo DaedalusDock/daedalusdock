@@ -38,7 +38,8 @@
 ///Does this behavior NOT block planning?
 #define AI_BEHAVIOR_CAN_PLAN_DURING_EXECUTION (1<<4)
 ///Does this require the current_movement_target to be adjacent and in reach?
-#define AI_BEHAVIOR_REQUIRE_REACH (1<<1)
+#define AI_BEHAVIOR_REQUIRE_REACH (1<<5)
+
 
 ///AI flags
 #define STOP_MOVING_WHEN_PULLED (1<<0)

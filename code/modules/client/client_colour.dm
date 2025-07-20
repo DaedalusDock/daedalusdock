@@ -208,6 +208,9 @@
 /datum/client_colour/monochrome/blind
 	priority = PRIORITY_NORMAL
 
+/datum/client_colour/monochrome/noir
+	priority = PRIORITY_ABSOLUTE
+
 /datum/client_colour/bloodlust
 	priority = PRIORITY_ABSOLUTE // Only anger.
 	colour = list(0,0,0,0,0,0,0,0,0,1,0,0) //pure red.
@@ -242,6 +245,23 @@
 	)
 	override = TRUE
 	priority = PRIORITY_ABSOLUTE
+
+/datum/client_colour/flockmind/no_override
+	override = FALSE
+
+// Used by /datum/status_effect/flock_signal, see there for usage.
+/datum/client_colour/flockcrazy
+	priority = PRIORITY_ABSOLUTE
+
+	var/animated_colour = list(
+		-0.3, -0.3, -0.3, 0.00,
+		-0.3, -0.3, -0.3, 0.00,
+		-0.3, -0.3, -0.3, 0.00,
+		0.00, 0.00, 0.00, 1.00,
+		0.20, 0.80, 0.70, 0.00
+	)
+
+	fade_out = 10 SECONDS
 
 #undef PRIORITY_ABSOLUTE
 #undef PRIORITY_HIGH

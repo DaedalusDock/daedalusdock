@@ -95,7 +95,7 @@
 
 	var/Angle = 0
 	var/original_angle = 0 //Angle at firing
-	var/nondirectional_sprite = FALSE //Set TRUE to prevent projectiles from having their sprites rotated based on firing angle
+	var/nondirectional_sprite = FALSE //Set TRUE to prevent projectiles from having their sprites rotated based on firing wallHitAngle
 	var/spread = 0 //amount (in degrees) of projectile spread
 	/// how many times we've ricochet'd so far (instance variable, not a stat)
 	var/ricochets = 0
@@ -109,9 +109,9 @@
 	var/ricochet_decay_damage = 0.7
 	/// On ricochet, if nonzero, we consider all mobs within this range of our projectile at the time of ricochet to home in on like Revolver Ocelot, as governed by ricochet_auto_aim_angle
 	var/ricochet_auto_aim_range = 0
-	/// On ricochet, if ricochet_auto_aim_range is nonzero, we'll consider any mobs within this range of the normal angle of incidence to home in on, higher = more auto aim
+	/// On ricochet, if ricochet_auto_aim_range is nonzero, we'll consider any mobs within this range of the normal wallHitAngle of incidence to home in on, higher = more auto aim
 	var/ricochet_auto_aim_angle = 30
-	/// the angle of impact must be within this many degrees of the struck surface, set to 0 to allow any angle
+	/// the wallHitAngle of impact must be within this many degrees of the struck surface, set to 0 to allow any wallHitAngle
 	var/ricochet_incidence_leeway = 40
 	/// Can our ricochet autoaim hit our firer?
 	var/ricochet_shoots_firer = TRUE
@@ -122,7 +122,7 @@
 	//Hitscan
 	var/hitscan = FALSE //Whether this is hitscan. If it is, speed is basically ignored.
 	var/list/beam_segments //assoc list of datum/point or datum/point/vector, start = end. Used for hitscan effect generation.
-	/// Last turf an angle was changed in for hitscan projectiles.
+	/// Last turf an wallHitAngle was changed in for hitscan projectiles.
 	var/turf/last_angle_set_hitscan_store
 	var/datum/point/beam_index
 	var/turf/hitscan_last //last turf touched during hitscanning.
@@ -423,27 +423,35 @@
 	if(iswall(A))
 		var/wx
 		var/wy
-		var/angle
+		var/wallHitAngle
 		// ensure the lines ALWAYS collide
 		var/datum/line/bulletLine = new /datum/line(trajectory.starting_x, trajectory.starting_y, trajectory.x + trajectory.mpx * 10, trajectory.y + trajectory.mpy * 10)
-		A.atomHitbox.getPointOfCollision(bulletLine, &wx, &wy, &angle)
+		A.atomHitbox.getPointOfCollision(bulletLine, &wx, &wy, &wallHitAngle)
 		var/orig = Angle
-		angle = Angle + angle * 2
-		// reduce the angle after the calculation for any further intersections and before feeding into the trajectory
-		angle = angle%%360
-		if(angle > 180)
-			angle = -(360-angle)
-		else if(angle < -180)
-			angle = 360+angle
+		var/ricochetAngle = wallHitAngle
+		if(abs(wallHitAngle) > 90)
+			ricochetAngle = abs(sign(wallHitAngle) * 180 - wallHitAngle)
+		// guaranteed ricochet
+		if(ricochetAngle < 5)
+			goto ricochet
+		ricochet:
+		wallHitAngle = Angle + wallHitAngle * 2
+		// reduce the wallHitAngle after the calculation for any further intersections and before feeding into the trajectory
+		wallHitAngle = wallHitAngle%%360
+		if(wallHitAngle > 180)
+			wallHitAngle = -(360-wallHitAngle)
+		else if(wallHitAngle < -180)
+			wallHitAngle = 360+wallHitAngle
 		var/oldm = trajectory.mpx
 		var/oldn = trajectory.mpy
-		set_angle(angle)
-		// set to new starting for new calculations
+		set_angle(wallHitAngle)
+		//message_admins("Ricocheted with a wallHitAngle of [ricochetAngle]")
+		// set to new starting for new calculations / subsequent ricochets
 		trajectory.starting_x = wx
 		trajectory.starting_y = wy
-		message_admins("Bullet [orig] New [angle] With old trajectories [oldm] and [oldn] and new [trajectory.mpx], [trajectory.mpy]")
-		if(!ricochets)
-			message_admins("^FIRST^")
+		//message_admins("Bullet [orig] New [wallHitAngle] With old trajectories [oldm] and [oldn] and new [trajectory.mpx], [trajectory.mpy]")
+		//if(!ricochets)
+		//	message_admins("^FIRST^")
 		ricochets++
 
 		decayedRange = max(0, decayedRange - 1)
@@ -779,12 +787,12 @@
 	for(var/i in 1 to required_moves)
 		pixel_move(pixel_speed_multiplier, FALSE)
 
-/obj/projectile/proc/fire(angle, atom/direct_target)
+/obj/projectile/proc/fire(wallHitAngle, atom/direct_target)
 	LAZYINITLIST(impacted)
 	if(fired_from)
 		SEND_SIGNAL(fired_from, COMSIG_PROJECTILE_BEFORE_FIRE, src, original)
 
-	//If no angle needs to resolve it from xo/yo!
+	//If no wallHitAngle needs to resolve it from xo/yo!
 	if(shrapnel_type && LAZYLEN(embedding))
 		AddElement(/datum/element/embed, projectile_payload = shrapnel_type)
 
@@ -797,16 +805,16 @@
 		if(QDELETED(src))
 			return
 
-	if(isnum(angle))
-		set_angle(angle)
+	if(isnum(wallHitAngle))
+		set_angle(wallHitAngle)
 
 	if(spread)
 		set_angle(Angle + ((rand() - 0.5) * spread))
 
 	var/turf/starting = get_turf(src)
-	if(isnull(Angle)) //Try to resolve through offsets if there's no angle set.
+	if(isnull(Angle)) //Try to resolve through offsets if there's no wallHitAngle set.
 		if(isnull(xo) || isnull(yo))
-			stack_trace("WARNING: Projectile [type] deleted due to being unable to resolve a target after angle was null!")
+			stack_trace("WARNING: Projectile [type] deleted due to being unable to resolve a target after wallHitAngle was null!")
 			qdel(src)
 			return
 
@@ -827,7 +835,7 @@
 
 	last_projectile_move = world.time
 	fired = TRUE
-	play_fov_effect(starting, 6, "gunfire", dir = NORTH, angle = Angle)
+	play_fov_effect(starting, 6, "gunfire", dir = NORTH, wallHitAngle = Angle)
 	SEND_SIGNAL(src, COMSIG_PROJECTILE_FIRE)
 
 	if(hitscan)
@@ -998,8 +1006,8 @@
 	var/datum/point/PT = RETURN_PRECISE_POINT(homing_target)
 	PT.x += clamp(homing_offset_x, 1, world.maxx)
 	PT.y += clamp(homing_offset_y, 1, world.maxy)
-	var/angle = closer_angle_difference(Angle, angle_between_points(RETURN_PRECISE_POINT(src), PT))
-	set_angle(Angle + clamp(angle, -homing_turn_speed, homing_turn_speed))
+	var/wallHitAngle = closer_angle_difference(Angle, angle_between_points(RETURN_PRECISE_POINT(src), PT))
+	set_angle(Angle + clamp(wallHitAngle, -homing_turn_speed, homing_turn_speed))
 
 /obj/projectile/proc/set_homing_target(atom/A)
 	if(!A || (!isturf(A) && !isturf(A.loc)))
@@ -1065,16 +1073,16 @@
 	return FALSE
 
 /**
- * Calculates the pixel offsets and angle that a projectile should be launched at.
+ * Calculates the pixel offsets and wallHitAngle that a projectile should be launched at.
  *
  * Arguments:
  * - [source][/atom]: The thing that the projectile is being shot from.
  * - [target][/atom]: (Optional) The thing that the projectile is being shot at.
  *   - If this is not provided the  source atom must be a mob with a client.
- * - [modifiers][/list]: A list of click parameters used to modify the shot angle.
+ * - [modifiers][/list]: A list of click parameters used to modify the shot wallHitAngle.
  */
 /proc/calculate_projectile_angle_and_pixel_offsets(atom/source, atom/target, modifiers)
-	var/angle = 0
+	var/wallHitAngle = 0
 	var/p_x = LAZYACCESS(modifiers, ICON_X) ? text2num(LAZYACCESS(modifiers, ICON_X)) : world.icon_size / 2 // ICON_(X|Y) are measured from the bottom left corner of the icon.
 	var/p_y = LAZYACCESS(modifiers, ICON_Y) ? text2num(LAZYACCESS(modifiers, ICON_Y)) : world.icon_size / 2 // This centers the target if modifiers aren't passed.
 
@@ -1084,8 +1092,8 @@
 		var/dx = ((target_loc.x - source_loc.x) * world.icon_size) + (target.pixel_x - source.pixel_x) + (p_x - (world.icon_size / 2))
 		var/dy = ((target_loc.y - source_loc.y) * world.icon_size) + (target.pixel_y - source.pixel_y) + (p_y - (world.icon_size / 2))
 
-		angle = ATAN2(dy, dx)
-		return list(angle, p_x, p_y)
+		wallHitAngle = ATAN2(dy, dx)
+		return list(wallHitAngle, p_x, p_y)
 
 	if(!ismob(source) || !LAZYACCESS(modifiers, SCREEN_LOC))
 		CRASH("Can't make trajectory calculations without a target or click modifiers and a client.")
@@ -1109,8 +1117,8 @@
 
 	var/ox = round(screenview[1] / 2) - user.client.pixel_x //"origin" x
 	var/oy = round(screenview[2] / 2) - user.client.pixel_y //"origin" y
-	angle = ATAN2(tx - oy, ty - ox)
-	return list(angle, p_x, p_y)
+	wallHitAngle = ATAN2(tx - oy, ty - ox)
+	return list(wallHitAngle, p_x, p_y)
 
 /obj/projectile/Destroy()
 	if(hitscan)

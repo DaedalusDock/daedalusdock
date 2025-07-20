@@ -132,3 +132,75 @@
 		angle = -originalAngle
 	else
 		angle = (360 - originalAngle)
+
+/// BulletTipType defines
+// Rifle grade sharp
+#define BULLET_SHARP 1>>0
+// Riot control
+#define BULLET_ROUNDED 1>>1
+// Very sharp. Tank Ammunition grade
+#define BULLET_ULTRASHARP 1>>2
+// Fragmented bullet tip, unpredictable performance.
+#define BULLET_FRAGMENTED 1>>3
+// A flat bullet head
+#define BULLET_FLAT 1>>4
+
+GLOBAL_LIST_INIT(bulletRicochetMult, list(
+	"[BULLET_SHARP]" = 0.8,
+	"[BULLET_ROUNDED]" = 1.4,
+	"[BULLET_ULTRASHARP]" = 0.5,
+	"[BULLET_FRAGMENTED]" = 1.7,
+	"[BULLET_FLAT]" = 1.2
+))
+
+GLOBAL_LIST_INIT(bulletStandardRicochetAngles, list(
+	"[BULLET_SHARP]" = 18,
+	"[BULLET_ROUNDED]" = 35,
+	"[BULLET_ULTRASHARP]" = 9,
+	"[BULLET_FRAGMENTED]" = 20,
+	"[BULLET_FLAT]" = 10 // much more likely to fragment instead.
+))
+// This is taken from the bullet Speed var. The differenc su sed to apply maluses/modifications to ricochet angle
+#define BULLET_SPEED_BASELINE 1
+// Minimum bullet speed , anything above this gets deleted
+#define BULLET_SPEED_MINIMUM 0.3
+// A increase/decrease in ricochet/fragment angles wheter the bullet is going slower/faster than the baseline. This is applied for every 0.1 unit of speed
+GLOBAL_LIST_INIT(bulletSpeedAngleMalus, list(
+	"[BULLET_SHARP]" = 2,
+	"[BULLET_ROUNDED]" = 1,
+	"[BULLET_ULTRASHARP]" = 3,
+	"[BULLET_FRAGMENTED]" = 5,
+	"[BULLET_FLAT]" = 5
+))
+
+// left-value is minimum , right angle is maximum
+GLOBAL_LIST_INIT(bulletStandardFragmentAngles, list(
+	"[BULLET_SHARP]" = list(60, 90),
+	"[BULLET_ROUNDED]" = list(50, 90),
+	"[BULLET_ULTRASHARP]" = list(80, 90),
+	// no fragmentation of the fragmentation pls
+	"[BULLET_FRAGMENTED]" = list(180, 180),
+	"[BULLET_FLAT]" = list(50, 90)
+))
+// increases or decreases how much bullet integrity is lost
+#define BULLET_INTEGRITYLOSSMULT 1
+#define BULLET_INTEGRITYLOSS_RICOCHET 20 * BULLET_INTEGRITYLOSSMULT
+#define BULLET_INTEGRITYLOSS_FRAMGNET 50 * BULLET_INTEGRITYLOSSMULT
+/// Bullet Malus defines for fragmenting or expanding
+
+
+#define BULLET_FRAGMENT_MAXANGLEVARIATION  10
+#define BULLET_FRAGMENT_SPEEDMALUS 0.1
+#define BULLET_FRAGMENT_SPAWNCOUNT 8
+
+#define BULLET_EXPAND_SPEEDMALUS 0.05
+
+
+
+
+/obj/projectile
+	var/integrity = 100
+	var/speedLossPerTile = 0.01
+	var/bulletTipType = BULLET_SHARP
+
+

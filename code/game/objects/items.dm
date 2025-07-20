@@ -1071,8 +1071,8 @@ DEFINE_INTERACTABLE(/obj/item)
  *The default action is attack_self().
  *Checks before we get to here are: mob is alive, mob is not restrained, stunned, asleep, resting, laying, item is on the mob.
  */
-/obj/item/proc/ui_action_click(mob/user, actiontype)
-	if(SEND_SIGNAL(src, COMSIG_ITEM_UI_ACTION_CLICK, user, actiontype) & COMPONENT_ACTION_HANDLED)
+/obj/item/proc/ui_action_click(mob/user, datum/action/item_action/used_action)
+	if(SEND_SIGNAL(src, COMSIG_ITEM_UI_ACTION_CLICK, user, used_action) & COMPONENT_ACTION_HANDLED)
 		return
 
 	attack_self(user)

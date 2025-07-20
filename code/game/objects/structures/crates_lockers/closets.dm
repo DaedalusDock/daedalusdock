@@ -84,12 +84,46 @@ TYPEINFO_DEF(/obj/structure/closet)
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
+	register_context()
 	if(mapload && !opened)
 		return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/closet/LateInitialize()
 	. = ..()
 	take_contents()
+
+/obj/structure/closet/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	if(!isliving(user) || astype(user, /mob/living).combat_mode || broken)
+		return NONE
+
+	if(held_item)
+		if(opened)
+			if(istype(held_item, cutting_tool))
+				context[SCREENTIP_CONTEXT_LMB] = "Deconstruct"
+				return CONTEXTUAL_SCREENTIP_SET
+
+			context[SCREENTIP_CONTEXT_LMB] = "Insert object"
+			return CONTEXTUAL_SCREENTIP_SET
+
+		else
+			if(secure && held_item.GetID())
+				context[SCREENTIP_CONTEXT_LMB] = locked ? "Unlock" : "Lock"
+				return CONTEXTUAL_SCREENTIP_SET
+
+			else if(can_weld_shut && held_item.tool_behaviour == TOOL_WELDER)
+				context[SCREENTIP_CONTEXT_LMB] = welded ? "Unweld" : "Weld"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		return NONE
+
+	if(welded || locked)
+		return NONE
+
+	context[SCREENTIP_CONTEXT_LMB] = opened ? "Close" : "Open"
+	if(secure)
+		context[SCREENTIP_CONTEXT_RMB] = locked ? "Unlock" : "Lock"
+
+	return CONTEXTUAL_SCREENTIP_SET
 
 //USE THIS TO FILL IT, NOT INITIALIZE OR NEW
 /obj/structure/closet/proc/PopulateContents()
@@ -374,48 +408,52 @@ TYPEINFO_DEF(/obj/structure/closet)
 	if(!broken && !(flags_1 & NODECONSTRUCT_1))
 		bust_open()
 
+/obj/structure/closet/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(user in src)
+		return ITEM_INTERACT_BLOCKING
+	return tool_interact(tool, user)
+
 /obj/structure/closet/attackby(obj/item/W, mob/user, params)
 	if(user in src)
 		return
-	if(src.tool_interact(W,user))
-		return 1 // No afterattack
-	else
-		return ..()
+	return ..()
 
 /obj/structure/closet/proc/tool_interact(obj/item/W, mob/living/user)//returns TRUE if attackBy call shouldn't be continued (because tool was used/closet was of wrong type), FALSE if otherwise
-	. = TRUE
+	. = ITEM_INTERACT_SUCCESS
 	if(opened)
 		if(istype(W, cutting_tool))
 			if(W.tool_behaviour == TOOL_WELDER)
 				if(!W.tool_start_check(user, amount=0))
-					return
+					return ITEM_INTERACT_BLOCKING
 
 				to_chat(user, span_notice("You begin cutting \the [src] apart..."))
 				if(W.use_tool(src, user, 40, volume=50))
 					if(!opened)
-						return
+						return ITEM_INTERACT_BLOCKING
 					user.visible_message(span_notice("[user] slices apart \the [src]."),
 									span_notice("You cut \the [src] apart with \the [W]."),
 									span_hear("You hear welding."))
 					deconstruct(TRUE)
-				return
+				return ITEM_INTERACT_SUCCESS
+
 			else // for example cardboard box is cut with wirecutters
 				user.visible_message(span_notice("[user] cut apart \the [src]."), \
 									span_notice("You cut \the [src] apart with \the [W]."))
 				deconstruct(TRUE)
-				return
-		if (user.combat_mode)
-			return FALSE
+				return ITEM_INTERACT_SUCCESS
+
 		if(user.transferItemToLoc(W, drop_location())) // so we put in unlit welder too
-			return
+			return ITEM_INTERACT_SUCCESS
+
 	else if(W.tool_behaviour == TOOL_WELDER && can_weld_shut)
 		if(!W.tool_start_check(user, amount=0))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		to_chat(user, span_notice("You begin [welded ? "unwelding":"welding"] \the [src]..."))
 		if(W.use_tool(src, user, 40, volume=50))
 			if(opened)
-				return
+				return ITEM_INTERACT_BLOCKING
+
 			welded = !welded
 			after_weld(welded)
 			user.visible_message(span_notice("[user] [welded ? "welds shut" : "unwelded"] \the [src]."),
@@ -423,16 +461,21 @@ TYPEINFO_DEF(/obj/structure/closet)
 							span_hear("You hear welding."))
 			log_game("[key_name(user)] [welded ? "welded":"unwelded"] closet [src] with [W] at [AREACOORD(src)]")
 			update_appearance()
+
 	else if (can_install_electronics && istype(W, /obj/item/electronics/airlock)\
 			&& !secure && !electronics && !locked && (welded || !can_weld_shut) && !broken)
 		user.visible_message(span_notice("[user] installs the electronics into the [src]."),\
 			span_notice("You start to install electronics into the [src]..."))
+
 		if (!do_after(user, src, 4 SECONDS))
-			return FALSE
+			return ITEM_INTERACT_BLOCKING
+
 		if (electronics || secure)
-			return FALSE
+			return ITEM_INTERACT_BLOCKING
+
 		if (!user.transferItemToLoc(W, src))
-			return FALSE
+			return ITEM_INTERACT_BLOCKING
+
 		W.moveToNullspace()
 		to_chat(user, span_notice("You install the electronics."))
 		electronics = W
@@ -440,18 +483,23 @@ TYPEINFO_DEF(/obj/structure/closet)
 			req_one_access = electronics.accesses
 		else
 			req_access = electronics.accesses
+
 		secure = TRUE
 		update_appearance()
+
 	else if (can_install_electronics && W.tool_behaviour == TOOL_SCREWDRIVER\
 			&& (secure || electronics) && !locked && (welded || !can_weld_shut))
 		user.visible_message(span_notice("[user] begins to remove the electronics from the [src]."),\
 			span_notice("You begin to remove the electronics from the [src]..."))
+
 		var/had_electronics = !!electronics
 		var/was_secure = secure
 		if (!do_after(user, src, 4 SECONDS))
-			return FALSE
+			return ITEM_INTERACT_BLOCKING
+
 		if ((had_electronics && !electronics) || (was_secure && !secure))
-			return FALSE
+			return ITEM_INTERACT_BLOCKING
+
 		var/obj/item/electronics/airlock/electronics_ref
 		if (!electronics)
 			electronics_ref = new /obj/item/electronics/airlock(loc)
@@ -467,14 +515,14 @@ TYPEINFO_DEF(/obj/structure/closet)
 			electronics_ref.forceMove(drop_location())
 		secure = FALSE
 		update_appearance()
-	else if(!user.combat_mode)
+
+	else
 		var/item_is_id = W.GetID()
 		if(!item_is_id)
-			return FALSE
+			return NONE
+
 		if(item_is_id || !toggle(user))
 			togglelock(user)
-	else
-		return FALSE
 
 /obj/structure/closet/wrench_act_secondary(mob/living/user, obj/item/tool)
 	if(!anchorable)

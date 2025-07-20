@@ -112,9 +112,6 @@ TYPEINFO_DEF(/obj/machinery/door/firedoor)
 			return CONTEXTUAL_SCREENTIP_SET
 		return .
 
-	if(!Adjacent(src, living_user))
-		return .
-
 	switch (held_item.tool_behaviour)
 		if (TOOL_CROWBAR)
 			if (!density)

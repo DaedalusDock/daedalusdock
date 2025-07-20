@@ -16,10 +16,22 @@
 /obj/item/swab/Initialize(mapload)
 	. = ..()
 	swabbed_forensics = new()
+	register_item_context()
 
 /obj/item/swab/Destroy(force)
 	QDEL_NULL(swabbed_forensics)
 	return ..()
+
+/obj/item/swab/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	if(used)
+		return
+
+	if(!ATOM_HAS_FIRST_CLASS_INTERACTION(target))
+		context[SCREENTIP_CONTEXT_LMB] = "Swab"
+
+	context[SCREENTIP_CONTEXT_RMB] = "Swab"
+
+	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/swab/update_name(updates)
 	name = "[initial(name)] ([sample_name])"

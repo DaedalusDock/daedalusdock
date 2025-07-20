@@ -167,7 +167,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	if(isaicamera(user) || issilicon(user))
 		return .
 
-	if (isnull(held_item) && Adjacent(user))
+	if (isnull(held_item))
 		context[SCREENTIP_CONTEXT_LMB] = "Open"
 		context[SCREENTIP_CONTEXT_RMB] = "Knock"
 		return CONTEXTUAL_SCREENTIP_SET

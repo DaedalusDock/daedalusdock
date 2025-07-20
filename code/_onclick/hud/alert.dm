@@ -131,6 +131,7 @@
 			reorganize_alerts(M)
 	return 1
 
+DEFINE_INTERACTABLE(/atom/movable/screen/alert)
 /atom/movable/screen/alert
 	icon = 'icons/hud/screen_alert.dmi'
 	icon_state = "default"

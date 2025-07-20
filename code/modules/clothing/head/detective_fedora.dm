@@ -3,7 +3,7 @@ TYPEINFO_DEF(/obj/item/clothing/head/fedora/det_hat)
 
 /obj/item/clothing/head/fedora/det_hat
 	name = "private investigator's fedora"
-	desc = "There's only one man who can sniff out the dirty stench of crime, and he's likely wearing this hat."
+	desc = "A fedora with a thin layer of dust caked on. It smells of candycorn."
 	icon_state = "detective"
 	dog_fashion = /datum/dog_fashion/head/detective
 
@@ -23,6 +23,35 @@ TYPEINFO_DEF(/obj/item/clothing/head/fedora/det_hat)
 /obj/item/clothing/head/fedora/det_hat/examine(mob/user)
 	. = ..()
 	. += span_info("There is a handful of candycorn inside.")
+
+	var/datum/roll_result/result = user.get_examine_result("dethat_examine", trait_succeed = TRAIT_DICK)
+	result.do_skill_sound(user)
+	if(result?.outcome >= SUCCESS)
+		. += result.create_tooltip("A limited edition <i>Perseus Mávros</i> fedora from before the turn of the century, marked by the now fraying \"P.B\" embroidered onto the brim.", body_only = TRUE)
+	else
+		. += result.create_tooltip("It looks expensive, like one of those fancy high-end brands produced it.", body_only = TRUE)
+
+/obj/item/clothing/head/fedora/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("dethat_expensive", trait_succeed = TRAIT_DICK, only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("This is far out of your price range. Whoever bought this is either very wealthy, or very stupid."),
+		)
+
+		if(HAS_TRAIT(user.mind, TRAIT_DICK))
+			var/datum/roll_result/det_result = user.get_examine_result("dethat_expensive_detective_shame", 16, /datum/rpg_skill/willpower, only_once = TRUE)
+			if(det_result?.outcome <= FAILURE)
+				to_chat(
+					user,
+					det_result.create_tooltip("It was not a wise investment, now was it, mister big shot detective?"),
+				)
+				user.mob_mood.add_mood_event("det_poorf", /datum/mood_event/poor_idiot)
+
+/obj/item/clothing/head/fedora/det_hat/get_item_credit_value()
+	return 200 // It's Perseus Black! Of course it's valuable!
 
 /obj/item/clothing/head/fedora/det_hat/AltClick(mob/user)
 	. = ..()

@@ -532,7 +532,6 @@
 					/obj/item/clothing/under/rank/security/detective/skirt = 2,
 					/obj/item/clothing/shoes/sneakers/brown = 2,
 					/obj/item/clothing/suit/det_suit = 2,
-					/obj/item/clothing/head/fedora/det_hat = 2,
 					/obj/item/clothing/under/rank/security/detective/noir = 2,
 					/obj/item/clothing/under/rank/security/detective/noir/skirt = 2,
 					/obj/item/clothing/accessory/waistcoat = 2,

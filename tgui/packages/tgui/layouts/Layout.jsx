@@ -9,7 +9,7 @@ import { classes } from 'common/react';
 import { computeBoxClassName, computeBoxProps } from '../components/Box';
 
 export const Layout = (props) => {
-  const { className, theme = 'nanotrasen', children, ...rest } = props;
+  const { className, theme = 'daedalus', children, ...rest } = props;
   document.documentElement.className = `theme-${theme}`;
   return (
     <div className={'theme-' + theme}>

@@ -268,7 +268,7 @@ multiple modular subtrees with behaviors
 	DEBUG_AI_LOG(src, isnull(target) ? "Cancelled movement plan" : "Moving towards [COORD(target)]")
 
 	if(current_movement_target)
-		UnregisterSignal(current_movement_target, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING))
+		UnregisterSignal(current_movement_target, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_PREQDELETED))
 
 	if(!isnull(target) && !isatom(target))
 		stack_trace("[pawn]'s current movement target is not an atom, rather a [target.type]! Did you accidentally set it to a weakref?")
@@ -279,7 +279,7 @@ multiple modular subtrees with behaviors
 
 	if(!isnull(current_movement_target))
 		RegisterSignal(current_movement_target, COMSIG_MOVABLE_MOVED, PROC_REF(on_movement_target_move))
-		RegisterSignal(current_movement_target, COMSIG_PARENT_QDELETING, PROC_REF(on_movement_target_delete))
+		RegisterSignal(current_movement_target, COMSIG_PARENT_PREQDELETED, PROC_REF(on_movement_target_delete))
 
 ///Call this to add a behavior to the stack.
 /datum/ai_controller/proc/queue_behavior(behavior_type, ...)

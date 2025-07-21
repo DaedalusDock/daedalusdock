@@ -22,3 +22,10 @@
 2025-07-19:
   Kapu1178:
   - bugfix: Overlapping bitflags in AI code
+2025-07-21:
+  Kapu1178:
+  - rscadd: Restyled TGUI
+  - rscadd: Many new screentips.
+  - rscadd: Screentip icons.
+  - bugfix: Fixed many item interactions requiring combat mode.
+  - rscadd: Detective can now enter "Investigation Mode" while wearing his hat.

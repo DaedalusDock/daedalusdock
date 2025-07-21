@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Many new screentips.
-  - rscadd: Screentip icons.
-  - bugfix: Fixed many item interactions requiring combat mode.

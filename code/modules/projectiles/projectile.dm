@@ -425,6 +425,14 @@
 		var/wy
 		var/wallHitAngle
 		// ensure the lines ALWAYS collide
+		var/mult = getRelativeArmorRatingMultiplier(A) * integrity / initial(integrity) * speed / initial(speed)
+		// bullet has a significant relative rating. let it go through
+		message_admins("multiplier is [mult]")
+		if(mult > 0.4)
+			integrity -= integrity * 0.2
+			speed -= speed * 0.4
+			impacted[A] = TRUE
+			return TRUE
 		var/datum/line/bulletLine = new /datum/line(trajectory.starting_x, trajectory.starting_y, trajectory.x + trajectory.mpx * 10, trajectory.y + trajectory.mpy * 10)
 		A.atomHitbox.getPointOfCollision(bulletLine, &wx, &wy, &wallHitAngle)
 		var/orig = Angle
@@ -835,7 +843,7 @@
 
 	last_projectile_move = world.time
 	fired = TRUE
-	play_fov_effect(starting, 6, "gunfire", dir = NORTH, wallHitAngle = Angle)
+	play_fov_effect(starting, 6, "gunfire", dir = NORTH, angle = Angle)
 	SEND_SIGNAL(src, COMSIG_PROJECTILE_FIRE)
 
 	if(hitscan)

@@ -42,10 +42,15 @@
 	var/atom/parent = parentRef.resolve()
 	if(parent == null)
 		return 0
+	var/xTranslation = (parent.x - 1) * 32
+	var/yTranslation = (parent.y - 1) * 32
 	var/list/collisions = list()
 
 	for (var/datum/line/line in hitboxLines)
-
+		line.startX += xTranslation
+		line.endX += xTranslation
+		line.startY += yTranslation
+		line.endY += yTranslation
 
 		/*---------------------------------------
 		* 1.  Intersection test                *
@@ -55,8 +60,7 @@
 			             - (incoming.endX - incoming.startX) * (line.endY - line.startY))
 
 		if (!denominator) // lines are parallel or degenerate
-			message_admins("Invalid line for [src], at hitbox coords BulletLine ([line.startX] | [line.startY]) ([line.endX] | [line.endY])  HitboxLine ([incoming.startX] | [incoming.startY]) ([incoming.endX] | [incoming.endY])")
-			continue		// keep checking other edges instead of immediate FALSE
+			goto resetLine
 
 		var/firstRatio  = ((incoming.endX - incoming.startX) * (line.startY - incoming.startY) \
 			             - (incoming.endY - incoming.startY) * (line.startX - incoming.startX)) / denominator
@@ -74,14 +78,14 @@
 			var/relativeangle = -arctan(dot, deltaLineX * deltaWallY - deltaLineY * deltaWallX) * sign(dot)
 			if(relativeangle > 90)
 				relativeangle = 180 - relativeangle
-			/*
-			if(relativeangle > 90)
-				relativeangle = 180 - relativeangle
-			else if(relativeangle < 90)
-				relativeangle = relativeangle - 180
-				*/
 			collisions += 0
 			collisions[length(collisions)] = list(lx,ly,relativeangle,(incoming.startX - lx)**2 + (incoming.startY - ly)**2)
+
+		resetLine:
+		line.startX -= xTranslation
+		line.endX -= xTranslation
+		line.startY -= yTranslation
+		line.endY -= yTranslation
 
 	for(var/i = 1 to length(collisions)-1)
 		if(collisions[i][4] > collisions[i+1][4])
@@ -104,12 +108,6 @@
 /turf/closed/wall/New()
 	. = ..()
 	atomHitbox = new /datum/hitbox/standardWall(src)
-
-	for (var/datum/line/line in atomHitbox.hitboxLines)
-		line.startX += (x-1) * 32;
-		line.startY += (y-1) * 32;
-		line.endX += (x-1) * 32;
-		line.endY += (y-1) * 32;
 
 /datum/hitbox/standardWall/New(atom/owner)
 	. = ..(owner)
@@ -195,12 +193,24 @@ GLOBAL_LIST_INIT(bulletStandardFragmentAngles, list(
 
 #define BULLET_EXPAND_SPEEDMALUS 0.05
 
-
+TYPEINFO_DEF(/obj/projectile)
+	default_armor = list(BLUNT = 0, PUNCTURE = 50, SLASH = 0, LASER = 0, ENERGY = 0 , BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
 
 /obj/projectile
 	var/integrity = 100
 	var/speedLossPerTile = 0.01
 	var/bulletTipType = BULLET_SHARP
+	var/definedArmor = PUNCTURE
+
+// returns a exponential multiplier for calculations.
+/obj/projectile/proc/getRelativeArmorRatingMultiplier(atom/target)
+	var/datum/armor/targetArmor = target.returnArmor()
+	var/datum/armor/bulletArmor = returnArmor()
+	if(targetArmor == null || bulletArmor == null || definedArmor == "")
+		return 0
+	var/ratingDiff = bulletArmor.vars[definedArmor] - targetArmor.vars[definedArmor]
+	message_admins("relative armor returning [ratingDiff / bulletArmor.vars[definedArmor]]")
+	return (ratingDiff+0.001) / bulletArmor.vars[definedArmor]
 
 

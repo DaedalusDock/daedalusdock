@@ -263,9 +263,23 @@ multiple modular subtrees with behaviors
 /datum/ai_controller/proc/PauseAi(time)
 	paused_until = world.time + time
 
-/datum/ai_controller/proc/set_move_target(atom/thing)
-	DEBUG_AI_LOG(src, isnull(thing) ? "Cancelled movement plan" : "Moving towards [COORD(thing)]")
-	current_movement_target = thing
+/// Sets the AI to move towards the passed atom.
+/datum/ai_controller/proc/set_move_target(atom/target)
+	DEBUG_AI_LOG(src, isnull(target) ? "Cancelled movement plan" : "Moving towards [COORD(target)]")
+
+	if(current_movement_target)
+		UnregisterSignal(current_movement_target, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_PREQDELETED))
+
+	if(!isnull(target) && !isatom(target))
+		stack_trace("[pawn]'s current movement target is not an atom, rather a [target.type]! Did you accidentally set it to a weakref?")
+		CancelActions()
+		return
+
+	current_movement_target = target
+
+	if(!isnull(current_movement_target))
+		RegisterSignal(current_movement_target, COMSIG_MOVABLE_MOVED, PROC_REF(on_movement_target_move))
+		RegisterSignal(current_movement_target, COMSIG_PARENT_PREQDELETED, PROC_REF(on_movement_target_delete))
 
 ///Call this to add a behavior to the stack.
 /datum/ai_controller/proc/queue_behavior(behavior_type, ...)
@@ -406,6 +420,18 @@ multiple modular subtrees with behaviors
 		else
 			ADD_TRAIT(pawn, TRAIT_AI_PAUSED, STAT_TRAIT)
 			ADD_TRAIT(pawn, TRAIT_AI_DISABLE_PLANNING, STAT_TRAIT)
+
+/datum/ai_controller/proc/on_movement_target_move(atom/source)
+	SIGNAL_HANDLER
+	check_target_max_distance()
+
+/datum/ai_controller/proc/on_movement_target_delete(atom/source)
+	SIGNAL_HANDLER
+	set_move_target(null)
+
+/datum/ai_controller/proc/check_target_max_distance()
+	if(get_dist(current_movement_target, pawn) > max_target_distance)
+		CancelActions()
 
 /// Use this proc to define how your controller defines what access the pawn has for the sake of pathfinding, likely pointing to whatever ID slot is relevant
 /datum/ai_controller/proc/get_access()

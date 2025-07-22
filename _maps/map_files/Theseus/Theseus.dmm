@@ -8581,6 +8581,9 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
+/obj/structure/cable/yellow{
+	icon_state = "66"
+	},
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "dfq" = (
@@ -14165,6 +14168,9 @@
 	icon_state = "5"
 	},
 /obj/machinery/c4_embedded_controller/slave/directional/south,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
 /turf/open/floor/iron/grimy,
 /area/station/service/chapel/office)
 "fgs" = (
@@ -27908,6 +27914,9 @@
 	dir = 1
 	},
 /obj/machinery/power/apc/auto_name/directional/south,
+/obj/structure/cable/yellow{
+	icon_state = "4"
+	},
 /turf/open/floor/iron/grimy,
 /area/station/service/chapel/office)
 "kvC" = (
@@ -32816,6 +32825,9 @@
 	},
 /obj/item/clothing/glasses/sunglasses,
 /obj/machinery/power/apc/auto_name/directional/north,
+/obj/structure/cable/yellow{
+	icon_state = "32"
+	},
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "mkY" = (
@@ -36962,7 +36974,8 @@
 "nIw" = (
 /obj/machinery/light/small/directional/east,
 /obj/machinery/computer/security/telescreen/entertainment/directional/east,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/iron/grimy,
 /area/station/service/chapel/office)
 "nIG" = (
@@ -52088,7 +52101,6 @@
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
 "tow" = (
-/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /obj/machinery/c4_embedded_controller/slave/directional/north,
 /turf/open/floor/iron/grimy,
 /area/station/service/chapel/office)
@@ -60521,9 +60533,6 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "6"
-	},
-/obj/structure/cable/yellow{
-	icon_state = "2"
 	},
 /obj/machinery/c4_embedded_controller/slave/directional/north,
 /turf/open/floor/wood,

@@ -711,6 +711,8 @@
 	. = ..()
 	if(!fired)
 		return
+	speed = max(speed + speedLossPerTile,0)
+	message_admins("proj speed is now [speed]")
 
 	if(temporary_unstoppable_movement)
 		temporary_unstoppable_movement = FALSE

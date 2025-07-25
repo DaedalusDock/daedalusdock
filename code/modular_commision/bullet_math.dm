@@ -21,22 +21,6 @@
 /datum/hitbox/New(atom/parent)
 	parentRef = parent.create_weakref()
 
-#define DIST(l) sqrt(((l.startX+ l.endX)/2 - incoming.startX)**2 + \
-                      ((l.startY+ l.endY)/2 - incoming.startY)**2)
-
-/proc/arctan2(y, x)
-	if (x == 0)
-		if (y > 0)
-			return 90
-		else if (y < 0)
-			return -90
-		else
-			return 0 // undefined, but return 0 for safety
-	var/angle = arctan(y / x)
-	if (x < 0)
-		angle += (y >= 0) ? 180 : -180
-	return angle
-
 // wx , wy and angle are pointer outputs.
 /datum/hitbox/proc/getPointOfCollision(datum/line/incoming, wx, wy, angle)
 	var/atom/parent = parentRef.resolve()
@@ -199,7 +183,7 @@ TYPEINFO_DEF(/obj/projectile)
 
 /obj/projectile
 	var/integrity = 100
-	var/speedLossPerTile = 0.01
+	var/speedLossPerTile = 0.1
 	var/bulletTipType = BULLET_SHARP
 	var/definedArmor = PUNCTURE
 

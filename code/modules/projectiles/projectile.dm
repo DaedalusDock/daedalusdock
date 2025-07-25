@@ -450,6 +450,7 @@
 			wallHitAngle = -(360-wallHitAngle)
 		else if(wallHitAngle < -180)
 			wallHitAngle = 360+wallHitAngle
+		fragmentTowards(A, 1,wallHitAngle, 10)
 		var/oldm = trajectory.mpx
 		var/oldn = trajectory.mpy
 		set_angle(wallHitAngle)
@@ -712,7 +713,6 @@
 	if(!fired)
 		return
 	speed = max(speed + speedLossPerTile,0)
-	message_admins("proj speed is now [speed]")
 
 	if(temporary_unstoppable_movement)
 		temporary_unstoppable_movement = FALSE

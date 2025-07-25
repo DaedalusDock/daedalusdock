@@ -197,4 +197,13 @@ TYPEINFO_DEF(/obj/projectile)
 	message_admins("relative armor returning [ratingDiff / bulletArmor.vars[definedArmor]]")
 	return (ratingDiff+0.001) / bulletArmor.vars[definedArmor]
 
+/obj/projectile/proc/fragmentTowards(turf/wall,fragmentCount, fragmentAngle, maxDeviation)
+	for(var/i = 0 to fragmentCount)
+		var/obj/projectile/projectile = new /obj/projectile/bullet(get_turf(wall))
+		projectile.firer = src
+		projectile.fired_from = wall
+		projectile.impacted = list(wall)
+		projectile.preparePixelProjectile(get_turf_in_angle(fragmentAngle, wall, 2), src)
+		projectile.fire(fragmentAngle + rand(0, maxDeviation) * sign(rand(-1,1)))
+
 

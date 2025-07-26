@@ -47,6 +47,7 @@
 	else
 		user.visible_message("[span_notice("[user] sets [bone]")] [span_warning("in the WRONG place with [tool].")]", vision_distance = COMBAT_MESSAGE_RANGE)
 		affected.break_bones()
+		REMOVE_TRAIT(affected, TRAIT_BONE_SET, TRAIT_GENERIC)
 	..()
 
 /datum/surgery_step/bone/set_bone/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)

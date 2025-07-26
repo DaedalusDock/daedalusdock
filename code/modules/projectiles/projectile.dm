@@ -427,7 +427,7 @@
 		// ensure the lines ALWAYS collide
 		var/mult = getRelativeArmorRatingMultiplier(A) * integrity / initial(integrity) * speed / initial(speed)
 		// bullet has a significant relative rating. let it go through
-		message_admins("multiplier is [mult]")
+		//message_admins("multiplier is [mult]")
 		if(mult > 0.4)
 			integrity -= integrity * 0.2
 			speed -= speed * 0.4
@@ -439,10 +439,7 @@
 		var/ricochetAngle = wallHitAngle
 		if(abs(wallHitAngle) > 90)
 			ricochetAngle = abs(sign(wallHitAngle) * 180 - wallHitAngle)
-		// guaranteed ricochet
-		if(ricochetAngle < 5)
-			goto ricochet
-		ricochet:
+		message_admins("Ricochet angle is [ricochetAngle]")
 		wallHitAngle = Angle + wallHitAngle * 2
 		// reduce the wallHitAngle after the calculation for any further intersections and before feeding into the trajectory
 		wallHitAngle = wallHitAngle%%360
@@ -450,22 +447,22 @@
 			wallHitAngle = -(360-wallHitAngle)
 		else if(wallHitAngle < -180)
 			wallHitAngle = 360+wallHitAngle
-		fragmentTowards(A, 1,wallHitAngle, 10)
-		var/oldm = trajectory.mpx
-		var/oldn = trajectory.mpy
-		set_angle(wallHitAngle)
-		//message_admins("Ricocheted with a wallHitAngle of [ricochetAngle]")
-		// set to new starting for new calculations / subsequent ricochets
-		trajectory.starting_x = wx
-		trajectory.starting_y = wy
-		//message_admins("Bullet [orig] New [wallHitAngle] With old trajectories [oldm] and [oldn] and new [trajectory.mpx], [trajectory.mpy]")
-		//if(!ricochets)
-		//	message_admins("^FIRST^")
-		ricochets++
-
-		decayedRange = max(0, decayedRange - 1)
-		impacted[A] = TRUE
-		return TRUE
+		if(mult > 0 && abs(ricochetAngle) < GLOB.bulletStandardRicochetAngles["[bulletTipType]"])
+			set_angle(wallHitAngle)
+			// set to new starting for new calculations / subsequent ricochets
+			trajectory.starting_x = wx
+			trajectory.starting_y = wy
+			ricochets++
+			decayedRange = max(0, decayedRange - 1)
+			impacted[A] = TRUE
+			return TRUE
+		if(integrity < initial(integrity) * 0.3)
+			return process_hit(A, select_target(A, A, A), A)
+		if(mult < 0 && abs(ricochetAngle) < GLOB.bulletStandardFragmentAngles["[bulletTipType]"])
+			impacted[A] = TRUE
+			fragmentTowards(A, 4, abs(ricochetAngle) > 60 ? (ricochetAngle +orig + (abs(ricochetAngle)) + 90) : ricochetAngle + orig - sign(wallHitAngle) * 3, 15, abs(ricochetAngle) > 60)
+			qdel(src)
+			return TRUE
 	var/datum/point/point_cache = trajectory.copy_to()
 	var/turf/T = get_turf(A)
 	if(ricochets < ricochets_max && check_ricochet_flag(A) && check_ricochet(A))

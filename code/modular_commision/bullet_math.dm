@@ -194,16 +194,20 @@ TYPEINFO_DEF(/obj/projectile)
 	if(targetArmor == null || bulletArmor == null || definedArmor == "")
 		return 0
 	var/ratingDiff = bulletArmor.vars[definedArmor] - targetArmor.vars[definedArmor]
-	message_admins("relative armor returning [ratingDiff / bulletArmor.vars[definedArmor]]")
+	//message_admins("relative armor returning [ratingDiff / bulletArmor.vars[definedArmor]]")
 	return (ratingDiff+0.001) / bulletArmor.vars[definedArmor]
 
-/obj/projectile/proc/fragmentTowards(turf/wall,fragmentCount, fragmentAngle, maxDeviation)
+/obj/projectile/proc/fragmentTowards(turf/wall,fragmentCount, fragmentAngle, maxDeviation, fullLoopPossible)
 	for(var/i = 0 to fragmentCount)
 		var/obj/projectile/projectile = new /obj/projectile/bullet(get_turf(wall))
 		projectile.firer = src
 		projectile.fired_from = wall
 		projectile.impacted = list(wall)
 		projectile.preparePixelProjectile(get_turf_in_angle(fragmentAngle, wall, 2), src)
-		projectile.fire(fragmentAngle + rand(0, maxDeviation) * sign(rand(-1,1)))
+		projectile.speed = speed * 0.3
+		projectile.integrity = integrity * 0.2
+		projectile.damage = damage * 0.2
+		projectile.damage_type = damage_type
+		projectile.fire(fragmentAngle + rand(0, maxDeviation) * sign(rand(-1,1)) + (fullLoopPossible ? rand(-1,1) > 0 : 0) * 180)
 
 

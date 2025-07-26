@@ -881,25 +881,38 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 	user.visible_message(span_notice("After a few attempts, [user] manages to light [src]."))
 
 /obj/item/lighter/attack(mob/living/carbon/M, mob/living/carbon/user)
+	. = ..()
+	if(.)
+		return
+
 	if(lit && M.ignite_mob())
 		message_admins("[ADMIN_LOOKUPFLW(user)] set [key_name_admin(M)] on fire with [src] at [AREACOORD(user)]")
 		log_game("[key_name(user)] set [key_name(M)] on fire with [src] at [AREACOORD(user)]")
-	var/obj/item/clothing/mask/cigarette/cig = help_light_cig(M)
-	if(!lit || !cig || user.combat_mode)
-		..()
-		return
 
-	if(cig.lit)
-		to_chat(user, span_warning("The [cig.name] is already lit!"))
-	if(M == user)
-		cig.attackby(src, user)
-		return
+/obj/item/lighter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!lit)
+		return NONE
+
+	if(!isliving(interacting_with))
+		return NONE
+
+	var/obj/item/clothing/mask/cigarette/to_light = help_light_cig(interacting_with)
+	if(!to_light)
+		return NONE
+
+	if(to_light.lit)
+		to_chat(user, span_warning("The [to_light.name] is already lit!"))
+		return ITEM_INTERACT_BLOCKING
+
+	if(interacting_with == user)
+		to_light.item_interaction(src, user)
+		return ITEM_INTERACT_SUCCESS
 
 	if(fancy)
-		cig.light(span_rose("[user] whips the [name] out and holds it for [M]. [user.p_their(TRUE)] arm is as steady as the unflickering flame [user.p_they()] light[user.p_s()] \the [cig] with."))
+		to_light.light(span_rose("[user] whips the [name] out and holds it for [interacting_with]. [user.p_their(TRUE)] arm is as steady as the unflickering flame [user.p_they()] light[user.p_s()] \the [to_light] with."))
 	else
-		cig.light(span_notice("[user] holds the [name] out for [M], and lights [M.p_their()] [cig.name]."))
-
+		to_light.light(span_notice("[user] holds the [name] out for [interacting_with], and lights [interacting_with.p_their()] [to_light.name]."))
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/lighter/process()
 	open_flame(heat)

@@ -360,9 +360,14 @@ TYPEINFO_DEF(/obj/item/assembly/flash)
 	if(use_charge(user))
 		. = ..()
 
-/obj/item/assembly/flash/camera/attack(mob/living/M, mob/user)
-	if(use_charge(user))
-		. = ..()
+/obj/item/assembly/flash/camera/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
+	if(!use_charge(user))
+		return NONE
+
+	return ..()
 
 /obj/item/assembly/flash/camera/proc/use_charge(mob/user)
 	if(current_charges)

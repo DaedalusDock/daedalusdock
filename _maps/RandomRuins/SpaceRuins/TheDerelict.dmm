@@ -3126,12 +3126,6 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/airless,
 /area/ruin/space/derelict/bridge/ai_upload)
-"LG" = (
-/obj/item/aicard,
-/obj/structure/cable/smart_cable/color/yellow,
-/obj/effect/mapping_helpers/broken_floor,
-/turf/open/floor/iron/airless,
-/area/ruin/space/derelict/bridge/ai_upload)
 "LX" = (
 /obj/machinery/power/smes/engineering{
 	charge = 0
@@ -9425,7 +9419,7 @@ bj
 ax
 bK
 GD
-LG
+GD
 am
 YQ
 ax

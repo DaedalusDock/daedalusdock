@@ -47,21 +47,23 @@ TYPEINFO_DEF(/obj/item/kitchen/fork)
 	playsound(src, 'sound/items/eatfood.ogg', 50, TRUE)
 	return BRUTELOSS
 
-/obj/item/kitchen/fork/attack(mob/living/carbon/M, mob/living/carbon/user)
-	if(!istype(M))
-		return ..()
+/obj/item/kitchen/fork/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ishuman(interacting_with))
+		return NONE
 
-	if(forkload)
-		if(M == user)
-			M.visible_message(span_notice("[user] eats a delicious forkful of omelette!"))
-			M.reagents.add_reagent(forkload.type, 1)
-		else
-			M.visible_message(span_notice("[user] feeds [M] a delicious forkful of omelette!"))
-			M.reagents.add_reagent(forkload.type, 1)
-		icon_state = "fork"
-		forkload = null
+
+	if(!forkload)
+		return NONE
+
+	if(interacting_with == user)
+		interacting_with.visible_message(span_notice("[user] eats a delicious forkful of omelette!"))
+		interacting_with.reagents.add_reagent(forkload.type, 1)
 	else
-		return ..()
+		interacting_with.visible_message(span_notice("[user] feeds [interacting_with] a delicious forkful of omelette!"))
+		interacting_with.reagents.add_reagent(forkload.type, 1)
+	icon_state = "fork"
+	forkload = null
+	return ITEM_INTERACT_SUCCESS
 
 TYPEINFO_DEF(/obj/item/kitchen/fork/plastic)
 	default_materials = list(/datum/material/plastic=80)

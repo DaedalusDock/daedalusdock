@@ -50,55 +50,74 @@
 	else
 		icon_state = "lipstick"
 
-/obj/item/lipstick/attack(mob/M, mob/user)
-	if(!open || !ismob(M))
-		return
+/obj/item/lipstick/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!open || !ismob(interacting_with) || user.zone_selected != BODY_ZONE_PRECISE_MOUTH)
+		return NONE
 
-	if(!ishuman(M) || !M:has_mouth())
+	var/mob/living/carbon/human/target = interacting_with
+	if(!ishuman(target) || !target.has_mouth())
 		to_chat(user, span_warning("Where are the lips on that?"))
-		return
+		return ITEM_INTERACT_BLOCKING
 
-	var/mob/living/carbon/human/target = M
 	if(target.is_mouth_covered())
-		to_chat(user, span_warning("Remove [ target == user ? "your" : "[target.p_their()]" ] mask!"))
-		return
+		to_chat(user, span_warning("Remove [ target == user ? "your" : "[target.p_their()]" ] mask first."))
+		return ITEM_INTERACT_BLOCKING
+
 	if(target.lip_style) //if they already have lipstick on
-		to_chat(user, span_warning("You need to wipe off the old lipstick first!"))
-		return
+		to_chat(user, span_warning("You need to wipe off the old lipstick first."))
+		return ITEM_INTERACT_BLOCKING
 
 	if(target == user)
-		user.visible_message(span_notice("[user] does [user.p_their()] lips with \the [src]."), \
-			span_notice("You take a moment to apply \the [src]. Perfect!"))
+		user.visible_message(
+			span_notice("[user] does [user.p_their()] lips with \the [src]."),
+			span_notice("You take a moment to apply \the [src]. Perfect!")
+		)
 		target.update_lips("lipstick", colour, lipstick_trait)
-		return
+		return ITEM_INTERACT_SUCCESS
 
-	user.visible_message(span_warning("[user] begins to do [target]'s lips with \the [src]."), \
-		span_notice("You begin to apply \the [src] on [target]'s lips..."))
+	user.visible_message(
+		span_warning("[user] begins to do [target]'s lips with \the [src]."),
+		span_notice("You begin to apply \the [src] on [target]'s lips...")
+
+)
 	if(!do_after(user, target, 2 SECONDS, DO_PUBLIC))
-		return
-	user.visible_message(span_notice("[user] does [target]'s lips with \the [src]."), \
-		span_notice("You apply \the [src] on [target]'s lips."))
-	target.update_lips("lipstick", colour, lipstick_trait)
+		return ITEM_INTERACT_BLOCKING
 
+	user.visible_message(
+		span_notice("[user] does [target]'s lips with \the [src]."),
+		span_notice("You apply \the [src] on [target]'s lips.")
+	)
+	target.update_lips("lipstick", colour, lipstick_trait)
+	return ITEM_INTERACT_SUCCESS
 
 //you can wipe off lipstick with paper!
-/obj/item/paper/attack(mob/M, mob/user)
-	if(user.zone_selected != BODY_ZONE_PRECISE_MOUTH || !ishuman(M))
-		return ..()
+/obj/item/paper/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(user.zone_selected != BODY_ZONE_PRECISE_MOUTH || !ishuman(interacting_with))
+		return NONE
 
-	var/mob/living/carbon/human/target = M
+	var/mob/living/carbon/human/target = interacting_with
+	if(target.lip_color == null)
+		return NONE
+
 	if(target == user)
 		to_chat(user, span_notice("You wipe off the lipstick with [src]."))
 		target.update_lips(null)
-		return
+		return ITEM_INTERACT_SUCCESS
 
-	user.visible_message(span_warning("[user] begins to wipe [target]'s lipstick off with \the [src]."), \
-		span_notice("You begin to wipe off [target]'s lipstick..."))
+	user.visible_message(
+		span_warning("[user] begins to wipe [target]'s lipstick off with \the [src]."),
+		span_notice("You begin to wipe off [target]'s lipstick...")
+	)
+
 	if(!do_after(user, target, 1 SECONDS, DO_PUBLIC))
-		return
-	user.visible_message(span_notice("[user] wipes [target]'s lipstick off with \the [src]."), \
-		span_notice("You wipe off [target]'s lipstick."))
+		return ITEM_INTERACT_BLOCKING
+
+	user.visible_message(
+		span_notice("[user] wipes [target]'s lipstick off with \the [src]."),
+		span_notice("You wipe off [target]'s lipstick.")
+	)
 	target.update_lips(null)
+	return ITEM_INTERACT_SUCCESS
 
 
 /obj/item/razor

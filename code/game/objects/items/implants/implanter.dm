@@ -23,28 +23,29 @@ TYPEINFO_DEF(/obj/item/implanter)
 	icon_state = "implanter[imp ? 1 : 0]"
 	return ..()
 
-/obj/item/implanter/attack(mob/living/target, mob/user)
-	if(!(istype(target) && user && imp))
-		return
+/obj/item/implanter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/mob/living/target = interacting_with
+	if(!istype(target))
+		return NONE
 
 	if(target != user)
 		target.visible_message(span_warning("[user] is attempting to implant [target]."))
 
 	var/turf/target_on = get_turf(target)
 	if(!(target_on && (target == user || do_after(user, target, 5 SECONDS))))
-		return
-	if(!(src && imp))
-		return
+		return ITEM_INTERACT_BLOCKING
 
-	if(imp.implant(target, user, deprecise_zone(user.zone_selected)))
-		if (target == user)
-			to_chat(user, span_notice("You implant yourself."))
-		else
-			target.visible_message(span_notice("[user] implants [target]."), span_notice("[user] implants you."))
-		imp = null
-		update_appearance()
-	else
+	if(!imp.implant(target, user, deprecise_zone(user.zone_selected)))
 		to_chat(user, span_warning("[src] fails to implant [target]."))
+		return ITEM_INTERACT_BLOCKING
+
+	if (target == user)
+		to_chat(user, span_notice("You implant yourself."))
+	else
+		target.visible_message(span_notice("[user] implants [target]."), span_notice("[user] implants you."))
+	imp = null
+	update_appearance()
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/implanter/attackby(obj/item/I, mob/living/user, params)
 	if(!istype(I, /obj/item/pen))

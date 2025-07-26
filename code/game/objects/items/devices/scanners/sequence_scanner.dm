@@ -21,15 +21,22 @@ TYPEINFO_DEF(/obj/item/sequence_scanner)
 	var/ready = TRUE
 	var/cooldown = 200
 
-/obj/item/sequence_scanner/attack(mob/living/M, mob/living/carbon/human/user)
-	add_fingerprint(user)
-	if (!HAS_TRAIT(M, TRAIT_GENELESS) && !HAS_TRAIT(M, TRAIT_BADDNA)) //no scanning if its a husk or DNA-less Species
-		user.visible_message(span_notice("[user] analyzes [M]'s genetic sequence."), \
-							span_notice("You analyze [M]'s genetic sequence."))
-		gene_scan(M, user)
+/obj/item/sequence_scanner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
 
-	else
-		user.visible_message(span_notice("[user] fails to analyze [M]'s genetic sequence."), span_warning("[M] has no readable genetic sequence!"))
+	if (!HAS_TRAIT(interacting_with, TRAIT_GENELESS) && !HAS_TRAIT(interacting_with, TRAIT_BADDNA)) //no scanning if its a husk or DNA-less Species
+		user.visible_message(
+			span_notice("[user] analyzes [interacting_with]'s genetic sequence."),
+			span_notice("You analyze [interacting_with]'s genetic sequence."))
+		gene_scan(interacting_with, user)
+		return ITEM_INTERACT_SUCCESS
+
+	user.visible_message(
+		span_notice("[user] fails to analyze [interacting_with]'s genetic sequence."),
+		span_warning("[interacting_with] has no readable genetic sequence!")
+	)
+	return ITEM_INTERACT_BLOCKING
 
 /obj/item/sequence_scanner/attack_self(mob/user)
 	display_sequence(user)

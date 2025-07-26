@@ -724,14 +724,15 @@ TYPEINFO_DEF(/obj/item/melee/baseball_bat)
 	name = "\improper ACME Extendo-Hand"
 	desc = "A novelty extendo-hand produced by the ACME corporation. Originally designed to knock out roadrunners."
 
-/obj/item/extendohand/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	var/dist = get_dist(M, user)
+/obj/item/extendohand/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
 	if(dist < min_reach)
-		to_chat(user, span_warning("[M] is too close to use [src] on."))
+		to_chat(user, span_warning("[interacting_with] is too close to use [src] on."))
 		return ITEM_INTERACT_BLOCKING
 
-	var/list/modifiers = params2list(params)
-	M.attack_hand(user, modifiers)
+	interacting_with.attack_hand(user, modifiers)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gohei

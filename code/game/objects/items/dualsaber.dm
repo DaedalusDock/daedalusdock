@@ -117,16 +117,20 @@ TYPEINFO_DEF(/obj/item/dualsaber)
 	. = ..()
 
 /obj/item/dualsaber/attack(mob/target, mob/living/carbon/human/user)
-	if(user.has_dna())
-		if(user.dna.check_mutation(/datum/mutation/human/hulk))
-			to_chat(user, span_warning("You grip the blade too hard and accidentally drop it!"))
-			if(wielded)
-				user.dropItemToGround(src, force=TRUE)
-				return
-	..()
+	if(user.has_dna() && user.dna.check_mutation(/datum/mutation/human/hulk))
+		to_chat(user, span_warning("You grip the blade too hard and accidentally drop it!"))
+		if(wielded)
+			user.dropItemToGround(src, force=TRUE)
+			return TRUE
+
+	. = ..()
+	if(.)
+		return
+
 	if(wielded && HAS_TRAIT(user, TRAIT_CLUMSY) && prob(40))
 		impale(user)
-		return
+		return TRUE
+
 	if(wielded && prob(50))
 		INVOKE_ASYNC(src, PROC_REF(jedi_spin), user)
 

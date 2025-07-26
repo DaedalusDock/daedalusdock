@@ -159,6 +159,9 @@ TYPEINFO_DEF(/obj/item/claymore)
 
 /obj/item/claymore/highlander/attack(mob/living/target, mob/living/user)
 	. = ..()
+	if(.)
+		return
+
 	if(!QDELETED(target) && target.stat == DEAD && target.mind && target.mind.special_role == "highlander")
 		user.fully_heal(admin_revive = FALSE) //STEAL THE LIFE OF OUR FALLEN FOES
 		add_notch(user)
@@ -624,8 +627,12 @@ TYPEINFO_DEF(/obj/item/melee/baseball_bat)
 
 /obj/item/melee/baseball_bat/attack(mob/living/target, mob/living/user)
 	. = ..()
+	if(.)
+		return
+
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		return
+
 	// we obtain the relative direction from the bat itself to the target
 	var/relative_direction = get_cardinal_dir(src, target)
 	var/atom/throw_target = get_edge_target_turf(target, relative_direction)

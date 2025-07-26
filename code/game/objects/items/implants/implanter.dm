@@ -47,22 +47,25 @@ TYPEINFO_DEF(/obj/item/implanter)
 	update_appearance()
 	return ITEM_INTERACT_SUCCESS
 
-/obj/item/implanter/attackby(obj/item/I, mob/living/user, params)
-	if(!istype(I, /obj/item/pen))
-		return ..()
+/obj/item/implanter/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!istype(tool, /obj/item/pen))
+		return NONE
+
 	if(!user.is_literate())
-		to_chat(user, span_notice("You prod at [src] with [I]!"))
-		return
+		to_chat(user, span_notice("You prod at [src] with [tool]."))
+		return ITEM_INTERACT_BLOCKING
 
 	var/new_name = tgui_input_text(user, "What would you like the label to be?", name, max_length = MAX_NAME_LEN)
-	if(user.get_active_held_item() != I)
-		return
+	if(user.get_active_held_item() != tool)
+		return ITEM_INTERACT_BLOCKING
 	if(!user.canUseTopic(src, USE_CLOSE))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(new_name)
 		name = "implanter ([new_name])"
 	else
 		name = "implanter"
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/implanter/Initialize(mapload)
 	. = ..()

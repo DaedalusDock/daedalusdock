@@ -645,7 +645,7 @@ TYPEINFO_DEF(/obj/item/defibrillator)
 	inhand_icon_state = "defibpaddles0"
 	req_defib = FALSE
 
-/obj/item/shockpaddles/cyborg/attack(mob/M, mob/user)
+/obj/item/shockpaddles/cyborg/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/R = user
 		if(R.emagged)

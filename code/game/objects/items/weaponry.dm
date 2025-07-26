@@ -728,7 +728,7 @@ TYPEINFO_DEF(/obj/item/melee/baseball_bat)
 	if(!isliving(interacting_with))
 		return NONE
 
-	if(dist < min_reach)
+	if(get_dist(user, interacting_with) < min_reach)
 		to_chat(user, span_warning("[interacting_with] is too close to use [src] on."))
 		return ITEM_INTERACT_BLOCKING
 

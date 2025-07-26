@@ -111,9 +111,13 @@ TYPEINFO_DEF(/obj/item/singularityhammer)
 	return
 
 /obj/item/mjollnir/attack(mob/living/M, mob/user)
-	..()
+	. = ..()
+	if(.)
+		return
+
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		return
+
 	if(wielded)
 		shock(M)
 

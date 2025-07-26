@@ -135,18 +135,14 @@
 		return TRUE
 	recharging = FALSE
 
-
-/obj/item/inducer/attack(mob/M, mob/living/user)
-	if(user.combat_mode)
-		return ..()
-
+/obj/item/inducer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(cantbeused(user))
-		return
+		return ITEM_INTERACT_BLOCKING
 
-	if(recharge(M, user))
-		return
-	return ..()
+	if(recharge(interacting_with, user))
+		return ITEM_INTERACT_SUCCESS
 
+	return NONE
 
 /obj/item/inducer/attack_self(mob/user)
 	if(opened && cell)

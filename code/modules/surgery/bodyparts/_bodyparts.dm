@@ -132,8 +132,6 @@
 	var/joint_name = "joint"
 	/// The name for the amputation point of the limb
 	var/amputation_point
-	/// Surgical stage. Magic BS. Do not touch
-	var/stage = 0
 
 	///Gradually increases while burning when at full damage, destroys the limb when at 100
 	var/cremation_progress = 0

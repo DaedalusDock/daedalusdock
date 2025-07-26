@@ -288,7 +288,7 @@
 	if(!user.temporarilyRemoveItemFromInventory(src))
 		return ITEM_INTERACT_BLOCKING
 
-	if(!attach_limb(victim))
+	if(!attach_limb(human_victim))
 		to_chat(user, span_warning("[human_victim]'s body rejects [src]."))
 		return ITEM_INTERACT_BLOCKING
 

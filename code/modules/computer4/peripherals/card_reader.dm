@@ -51,6 +51,9 @@
 
 	inserted_card = new_card
 	master_pc?.update_static_data_for_all()
+	//Fire off an automatic card scan.
+	scan_card()
+
 	return TRUE
 
 /obj/item/peripheral/card_reader/proc/try_eject_card(mob/user)

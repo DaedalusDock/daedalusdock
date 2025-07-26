@@ -899,7 +899,7 @@ SUBSYSTEM_DEF(job)
 
 /obj/item/paper/fluff/spare_id_safe_code/Initialize(mapload)
 	. = ..()
-	var/safe_code = SSid_access.spare_id_safe_code
+	var/safe_code = SSid_access.get_static_pincode(PINCODE_SPARE_ID_SAFE, 5)
 
 	info = "Captain's Spare ID safe code combination: [safe_code ? safe_code : "\[REDACTED\]"]<br><br>The spare ID can be found in its dedicated safe on the bridge.<br><br>If your job would not ordinarily have Head of Staff access, your ID card has been specially modified to possess it."
 	update_appearance()
@@ -910,16 +910,12 @@ SUBSYSTEM_DEF(job)
 
 /obj/item/paper/fluff/emergency_spare_id_safe_code/Initialize(mapload)
 	. = ..()
-	var/safe_code = SSid_access.spare_id_safe_code
+	var/safe_code = SSid_access.get_static_pincode(PINCODE_SPARE_ID_SAFE, 5)
 
 	info = "Captain's Spare ID safe code combination: [safe_code ? safe_code : "\[REDACTED\]"]<br><br>The spare ID can be found in its dedicated safe on the bridge."
 	update_appearance()
 
 /datum/controller/subsystem/job/proc/promote_to_captain(mob/living/carbon/human/new_captain, acting_captain = FALSE)
-	var/id_safe_code = SSid_access.spare_id_safe_code
-
-	if(!id_safe_code)
-		CRASH("Cannot promote [new_captain.real_name] to Captain, there is no id_safe_code.")
 
 	var/paper = new /obj/item/paper/fluff/spare_id_safe_code()
 	var/list/slots = list(

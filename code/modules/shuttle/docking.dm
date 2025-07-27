@@ -115,7 +115,7 @@
 /// Called during Dock(), after the shuttle has moved, the ripples are gone, and the runway is cleaned up.
 /obj/docking_port/mobile/proc/post_dock(obj/docking_port/stationary/new_dock, dock_status)
 	SHOULD_CALL_PARENT(TRUE)
-	if(!(dock_status & DOCKING_SUCCESS))
+	if(!(dock_status == DOCKING_SUCCESS))
 		return
 
 	check_poddoors()

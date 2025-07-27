@@ -112,7 +112,7 @@
 		if(istype(file, /datum/c4_file/folder) && !include_folders)
 			continue
 
-		if(ckey(file.name) == file_name)
+		if(ckey(file.name) == ckey(file_name))
 			return file
 
 /// Update the drive value of all children to match our current drive.

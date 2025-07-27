@@ -36,13 +36,9 @@
 	new /obj/item/radio/headset( src )
 
 /obj/structure/closet/secure_closet/personal/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	. = ..()
-	if(. & ITEM_INTERACT_ANY_BLOCKER)
-		return
-
 	var/obj/item/card/id/I = tool.GetID()
 	if(!istype(I))
-		return NONE
+		return ..()
 
 	if(broken)
 		to_chat(user, span_danger("It appears to be broken."))

@@ -29,6 +29,9 @@
 	#define COMPONENT_BLOCK_BUCKLE (1<<0)
 ///from base of atom/movable/buckle_mob(): (mob, force)
 #define COMSIG_MOVABLE_BUCKLE "buckle"
+///from base of atom/movable/unbuckle_mob(): (mob)
+#define COMSIG_MOVABLE_PRE_UNBUCKLE_MOB "preunbucklemob"
+	#define COMPONENT_BLOCK_UNBUCKLE (1<<0)
 ///from base of atom/movable/unbuckle_mob(): (mob, force)
 #define COMSIG_MOVABLE_UNBUCKLE "unbuckle"
 ///from /obj/vehicle/proc/driver_move, caught by the riding component to check and execute the driver trying to drive the vehicle

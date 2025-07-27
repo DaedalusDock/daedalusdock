@@ -233,6 +233,9 @@
 	if(QDELETED(wielder) || is_obscured())
 		return
 
+	if(astype(pool, /obj/effect/decal/cleanable/blood)?.is_dry)
+		return
+
 	if(istype(pool, /obj/effect/decal/cleanable/blood/footprints) && pool.blood_color == last_blood_color)
 		// The pool we stepped in was actually footprints with the same type
 		var/obj/effect/decal/cleanable/blood/footprints/pool_FP = pool

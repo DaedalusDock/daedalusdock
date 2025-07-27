@@ -140,6 +140,7 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 	grind_results = list()
 	heat = 1000
 	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+	equip_delay_self = 0
 	/// Whether this cigarette has been lit.
 	var/lit = FALSE
 	/// Whether this cigarette should start lit.

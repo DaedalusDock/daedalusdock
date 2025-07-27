@@ -7,7 +7,7 @@
 
 /// Attempt to execute the command. Return TRUE if *any* action is taken.
 /datum/shell_command/proc/try_exec(command_name, datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
-	if(!(command_name in aliases))
+	if(!(lowertext(command_name) in aliases))
 		return FALSE
 
 	exec(system, program, arguments, options)
@@ -426,7 +426,7 @@
 /// Renames the drive title
 /datum/shell_command/thinkdos/title
 	aliases = list("title")
-	help_text = "Changes the name of the current drivee.<br>Usage: 'title \[new name\]'"
+	help_text = "Changes the name of the current .<br>Usage: 'title \[new name\]'"
 
 /datum/shell_command/thinkdos/title/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))

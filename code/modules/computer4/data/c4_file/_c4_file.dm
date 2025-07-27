@@ -106,8 +106,13 @@
 	if(!origin)
 		origin = containing_folder
 
-	if(!text)
+	// Base cases so we don't need to do any text processing
+	if(!text || text == "." || text == "./") // Current
 		return origin
+	else if(text == "/") // Root
+		return origin.drive.root
+	else if(text == ".." || text == "../") // Parent
+		return origin.containing_folder
 
 	var/datum/c4_file/folder/destination = origin
 

@@ -63,20 +63,25 @@
 /// Print the contents of the current directory.
 /datum/shell_command/thinkdos/dir
 	aliases = list("dir", "catalog", "ls")
-	help_text = "Prints the contents of the current directory."
+	help_text = "Prints the contents of a directory.<br>Usage: 'dir \[directory\]'<br><br>If omitted, \[directory\] will be the current directory."
 
 /datum/shell_command/thinkdos/dir/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
-	system.println("<b>Current folder: [system.current_directory.path_to_string()]</b>", FALSE)
+	var/inputted_path = jointext(arguments, " ")
+	var/datum/c4_file/folder/targeted_dir = system.parse_directory(inputted_path, system.current_directory)
+	if(!targeted_dir)
+		return system.print_error("<b>Error:</b> Invalid directory or path.")
+
+	system.println("<b>Contents of [targeted_dir.path_to_string()]:</b>", FALSE)
 
 	var/list/directory_text = list()
 	var/list/cache_spaces = new /list(16)
 
 	var/longest_name_length = 0
-	for(var/datum/c4_file/file in system.current_directory.contents)
+	for(var/datum/c4_file/file in targeted_dir.contents)
 		if(length(file.name) > longest_name_length)
 			longest_name_length = length(file.name)
 
-	for(var/datum/c4_file/file in system.current_directory.contents)
+	for(var/datum/c4_file/file in targeted_dir.contents)
 		var/str = ""
 		if(file == system)
 			str = "[file.name] - SYSTEM"
@@ -119,11 +124,6 @@
 		return
 
 	var/target_dir = jointext(arguments, " ")
-
-	if(target_dir == "/")
-		system.change_dir(system.drive.root)
-		system.println("<b>Current Directory is now [system.current_directory.path_to_string()]</b>")
-		return
 
 	var/datum/c4_file/folder/new_dir = system.parse_directory(target_dir, system.current_directory)
 	if(!new_dir)

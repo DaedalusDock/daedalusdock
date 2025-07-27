@@ -14,8 +14,7 @@
 			initial_reagents = reagent_contents,\
 			foodtypes = NONE,\
 			volume = 7,\
-			tastes = list("the front of class" = 5, "a hint of mysticism" = 1, "chalk" = 7)
-			)
+			tastes = list("the front of class" = 5, "a hint of mysticism" = 1, "chalk" = 7))
 
 /obj/item/chalk/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
 	if(isturf(target))

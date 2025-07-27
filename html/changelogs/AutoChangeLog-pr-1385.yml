@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscdel: Removed the ability to succumb.
-  - rscadd: Using the ghost verb while unconscious now prompts you if you really want
-      to ghost.

@@ -1,4 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Fixed the "Set Bone" surgery step not being required for "Repair Bone"

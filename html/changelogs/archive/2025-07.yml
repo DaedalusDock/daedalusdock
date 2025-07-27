@@ -29,3 +29,9 @@
   - rscadd: Screentip icons.
   - bugfix: Fixed many item interactions requiring combat mode.
   - rscadd: Detective can now enter "Investigation Mode" while wearing his hat.
+2025-07-27:
+  Kapu1178:
+  - bugfix: Fixed the "Set Bone" surgery step not being required for "Repair Bone"
+  - rscdel: Removed the ability to succumb.
+  - rscadd: Using the ghost verb while unconscious now prompts you if you really want
+      to ghost.

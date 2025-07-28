@@ -129,7 +129,7 @@
 
 	exposed_turf.AddComponent(/datum/component/smell, INTENSITY_STRONG, SCENT_ODOR, "bleach", 3, 5 MINUTES)
 
-/datum/reagent/space_cleaner/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
+/datum/reagent/space_cleaner/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(methods & (TOUCH|VAPOR))
 		exposed_mob.wash(clean_types)

@@ -195,7 +195,7 @@
 	shot_glass_icon_state = "shotglassred"
 	penetrates_skin = NONE
 
-/datum/reagent/blood/expose_mob(mob/living/exposed_mob, exposed_temperature, reac_volume, methods, show_message, touch_protection)
+/datum/reagent/blood/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(data?["viruses"])
 		for(var/thing in data["viruses"])
@@ -373,7 +373,7 @@
 	C.adjustToxLoss(2 * removed, FALSE, cause_of_death = "Ingesting hair dye")
 	return ..() || TRUE
 
-/datum/reagent/hair_dye/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=FALSE)
+/datum/reagent/hair_dye/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR)) || !ishuman(exposed_mob))
 		return
@@ -797,7 +797,7 @@
 	taste_description = "slime"
 	penetrates_skin = NONE
 
-/datum/reagent/vaccine/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
+/datum/reagent/vaccine/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(!islist(data) || !(methods & (INGEST|INJECT)))
 		return

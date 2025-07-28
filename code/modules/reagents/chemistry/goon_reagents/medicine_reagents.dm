@@ -74,7 +74,7 @@
 
 	var/heal_per_unit = 1.2
 
-/datum/reagent/medicine/silver_sulfadiazine/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
+/datum/reagent/medicine/silver_sulfadiazine/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 
 	if(!(methods & TOUCH))
@@ -101,7 +101,7 @@
 
 	var/heal_per_unit = 1.2
 
-/datum/reagent/medicine/styptic_powder/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
+/datum/reagent/medicine/styptic_powder/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 
 	if(!(methods & TOUCH))

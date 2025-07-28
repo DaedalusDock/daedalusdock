@@ -7,7 +7,7 @@
 	self_consuming = TRUE
 
 
-/datum/reagent/phlogiston/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
+/datum/reagent/phlogiston/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	exposed_mob.adjust_fire_stacks(1)
 	exposed_mob.ignite_mob()

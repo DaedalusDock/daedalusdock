@@ -3,12 +3,18 @@
 	desc = "A stick of chalk."
 	icon = 'icons/obj/items/chalk.dmi'
 	icon_state = "chalk"
+	var/list/reagent_contents = list(/datum/reagent/calcium = 5, /datum/reagent/carbon = 3) //its calcium carbonite or something, I never took chemistry
 
 	var/obj/effect/aether_rune/rune_path = /obj/effect/aether_rune/exchange
 
 /obj/item/chalk/Initialize(mapload)
 	. = ..()
 	register_item_context()
+	AddComponent(/datum/component/edible,\
+			initial_reagents = reagent_contents,\
+			foodtypes = NONE,\
+			volume = 7,\
+			tastes = list("the front of class" = 5, "a hint of mysticism" = 1, "chalk" = 7))
 
 /obj/item/chalk/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
 	if(isturf(target))

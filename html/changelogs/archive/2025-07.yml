@@ -29,3 +29,22 @@
   - rscadd: Screentip icons.
   - bugfix: Fixed many item interactions requiring combat mode.
   - rscadd: Detective can now enter "Investigation Mode" while wearing his hat.
+2025-07-27:
+  Kapu1178:
+  - bugfix: Fixed the "Set Bone" surgery step not being required for "Repair Bone"
+  - rscdel: Removed the ability to succumb.
+  - rscadd: Using the ghost verb while unconscious now prompts you if you really want
+      to ghost.
+2025-07-28:
+  Kapu1178:
+  - rscadd: ThinkDOS command names are now case insensitive.
+  - bugfix: Corrected an instance of ThinkDOS files being case insensitive.
+  - bugfix: Dry blood puddles no longer contribute to bloody soles.
+  - bugfix: Cigarettes no longer have an equip delay.
+  - bugfix: Soda cans have sprites again.
+  - bugfix: Payroll announcement now correctly identifies the currency as "marks".
+  - bugfix: Personal lockers can be claimed again.
+  - bugfix: Centcomm's doors open when the emergency shuttle docks with it.
+  ToasterBan:
+  - rscadd: Chalk is now edible
+  - bugfix: Crayons are now edible again

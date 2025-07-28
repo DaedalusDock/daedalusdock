@@ -424,6 +424,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_BLUSHING "blushing"
 /// This bodypart is being held in a grab, and reduces bleeding
 #define TRAIT_BODYPART_GRABBED "bodypart_grabbed"
+/// This limb's bone is set. Used by surgery.
+#define TRAIT_BONE_SET "bone_set"
 /// This carbon doesn't bleed
 #define TRAIT_NOBLEED "nobleed"
 /// This atom can ignore the "is on a turf" check for simple AI datum attacks, allowing them to attack from bags or lockers as long as any other conditions are met

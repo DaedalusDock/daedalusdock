@@ -143,7 +143,7 @@ SUBSYSTEM_DEF(economy)
 
 				announcer.pda_message(
 					target_id,
-					"Your payroll for this quarter has been processed. A sum of [round(bank_account.account_job.paycheck * bank_account.payday_modifier)] has been deposited into your account.",
+					"Your payroll for this quarter has been processed. A sum of [round(bank_account.account_job.paycheck * bank_account.payday_modifier)] marks has been deposited into your account.",
 				)
 
 		else

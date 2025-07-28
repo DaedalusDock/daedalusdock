@@ -428,18 +428,19 @@
 		var/mult = getRelativeArmorRatingMultiplier(A) * integrity / initial(integrity) * speed / initial(speed)
 		// bullet has a significant relative rating. let it go through
 		//message_admins("multiplier is [mult]")
-		if(mult > 0.4)
-			integrity -= integrity * 0.2
-			speed -= speed * 0.4
-			impacted[A] = TRUE
-			return TRUE
 		var/datum/line/bulletLine = new /datum/line(trajectory.starting_x, trajectory.starting_y, trajectory.x + trajectory.mpx * 10, trajectory.y + trajectory.mpy * 10)
 		A.atomHitbox.getPointOfCollision(bulletLine, &wx, &wy, &wallHitAngle)
 		var/orig = Angle
 		var/ricochetAngle = wallHitAngle
 		if(abs(wallHitAngle) > 90)
 			ricochetAngle = abs(sign(wallHitAngle) * 180 - wallHitAngle)
-		message_admins("Ricochet angle is [ricochetAngle]")
+		// scales with angle of attack
+		if(mult > 0.4 * ((90 - abs(ricochetAngle))/90 + 1))
+			integrity -= integrity * 0.2
+			speed -= speed * 0.4
+			impacted[A] = TRUE
+			return TRUE
+		message_admins("Ricochet angle is [ricochetAngle], mult is [mult]")
 		wallHitAngle = Angle + wallHitAngle * 2
 		// reduce the wallHitAngle after the calculation for any further intersections and before feeding into the trajectory
 		wallHitAngle = wallHitAngle%%360

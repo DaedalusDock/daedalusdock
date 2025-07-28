@@ -492,6 +492,7 @@
 	//"entered-[blood_print]-[blood_color]-[dir_of_image]"
 	//or: "exited-[blood_print]-[blood_color]--[dir_of_image]"
 
+	var/emissive = HAS_TRAIT(src, TRAIT_MOVABLE_FLUORESCENCE_REVEALED)
 	var/static/list/bloody_footprints_cache = list()
 	for(var/Ddir in GLOB.cardinals)
 		if(entered_dirs & Ddir)
@@ -500,12 +501,25 @@
 				bloody_footprints_cache["entered-[blood_print]-[blood_color]-[Ddir]"] = bloodstep_overlay = image(icon, "[blood_print]1", dir = Ddir)
 			. += bloodstep_overlay
 
+			if(emissive)
+				var/mutable_appearance/emissive_overlay = emissive_appearance(icon, bloodstep_overlay.icon_state)
+				emissive_overlay.dir = Ddir
+				. += emissive_overlay
+
 		if(exited_dirs & Ddir)
 			var/image/bloodstep_overlay = bloody_footprints_cache["exited-[blood_print]-[blood_color]-[Ddir]"]
 			if(!bloodstep_overlay)
 				bloody_footprints_cache["exited-[blood_print]-[blood_color]-[Ddir]"] = bloodstep_overlay = image(icon, "[blood_print]2", dir = Ddir)
 			. += bloodstep_overlay
 
+			if(emissive)
+				var/mutable_appearance/emissive_overlay = emissive_appearance(icon, bloodstep_overlay.icon_state)
+				emissive_overlay.dir = Ddir
+				. += emissive_overlay
+
+/obj/effect/decal/cleanable/blood/footprints/uv_illuminate(source, animate_time, new_alpha)
+	. = ..()
+	update_appearance(UPDATE_OVERLAYS)
 
 /obj/effect/decal/cleanable/blood/footprints/examine(mob/user)
 	. = ..()

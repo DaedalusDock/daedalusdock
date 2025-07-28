@@ -3009,6 +3009,7 @@
 #include "code\modules\detectivework\dna_analyzer.dm"
 #include "code\modules\detectivework\evidence.dm"
 #include "code\modules\detectivework\fibers.dm"
+#include "code\modules\detectivework\luminol_spray.dm"
 #include "code\modules\detectivework\microscope.dm"
 #include "code\modules\detectivework\samples.dm"
 #include "code\modules\detectivework\scene_cards.dm"

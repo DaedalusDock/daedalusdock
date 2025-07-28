@@ -1164,3 +1164,17 @@
 		return
 	if(reac_volume >= 1)
 		exposed_turf.MakeSlippery(TURF_WET_WATER, 15 SECONDS, min(reac_volume * 1 SECONDS, 40 SECONDS))
+
+/datum/reagent/luminol
+	name = "Luminol"
+	description = "A compound that illuminates blood when oxidized."
+	taste_description = "metal"
+	reagent_state = LIQUID
+	color = "#f2f3f4"
+	value = 1.4
+	taste_description = "pungent acid"
+
+/datum/reagent/luminol/expose_obj(obj/exposed_obj, reac_volume, exposed_temperature)
+	. = ..()
+	exposed_obj.uv_illuminate("luminol", 2 SECONDS, 255)
+

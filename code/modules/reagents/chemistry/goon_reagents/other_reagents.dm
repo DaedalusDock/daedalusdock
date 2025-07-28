@@ -341,3 +341,23 @@
 		paperaffected.clearpaper()
 		to_chat(usr, span_notice("The solution dissolves the ink on the paper."))
 		return
+
+/datum/reagent/hydrazine
+
+	name = "Hydrazine"
+	description = "A toxic, colorless, flammable liquid with a strong ammonia-like odor, in hydrate form."
+	taste_description = "sweet tasting metal"
+	reagent_state = LIQUID
+	color = "#808080"
+	metabolization_rate = 0.1
+	touch_met = 5
+	value = DISPENSER_REAGENT_VALUE
+
+/datum/reagent/hydrazine/affect_blood(mob/living/carbon/C, removed)
+	C.adjustToxLoss(removed * 4, FALSE, cause_of_death = "Ingesting hydrazine")
+	return TRUE
+
+/datum/reagent/hydrazine/affect_touch(mob/living/carbon/C, removed)
+	C.adjustToxLoss(removed * 0.2, FALSE)
+	C.adjust_fire_stacks(removed / 12)
+	return TRUE

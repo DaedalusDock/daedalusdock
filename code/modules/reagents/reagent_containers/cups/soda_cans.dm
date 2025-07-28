@@ -6,6 +6,7 @@
 
 /obj/item/reagent_containers/cup/soda_cans
 	name = "soda can"
+	icon = 'icons/obj/drinks.dmi'
 	lefthand_file = 'icons/mob/inhands/misc/food_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/food_righthand.dmi'
 	reagent_flags = NONE

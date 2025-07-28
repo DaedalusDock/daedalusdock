@@ -20,6 +20,10 @@ TYPEINFO_DEF(/obj/item/clothing/head/fedora/det_hat)
 
 	new /obj/item/reagent_containers/cup/glass/flask/det(src)
 
+/obj/item/clothing/head/fedora/det_hat/Destroy()
+	QDEL_NULL(noir_action)
+	return ..()
+
 /obj/item/clothing/head/fedora/det_hat/examine(mob/user)
 	. = ..()
 	. += span_info("There is a handful of candycorn inside.")

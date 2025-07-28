@@ -63,20 +63,26 @@
 /// Print the contents of the current directory.
 /datum/shell_command/thinkdos/dir
 	aliases = list("dir", "catalog", "ls")
-	help_text = "Prints the contents of the current directory."
+	help_text = "Prints the contents of a directory.<br>Usage: 'dir \[directory?\]'"
 
 /datum/shell_command/thinkdos/dir/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
-	system.println("<b>Current folder: [system.current_directory.path_to_string()]</b>", FALSE)
+	var/inputted_path = jointext(arguments, " ")
+	var/datum/c4_file/folder/targeted_dir = system.parse_directory(inputted_path, system.current_directory)
+	if(!targeted_dir)
+		system.print_error("<b>Error:</b> Invalid directory or path.")
+		return
+
+	system.println("<b>Contents of [targeted_dir.path_to_string()]:</b>", FALSE)
 
 	var/list/directory_text = list()
 	var/list/cache_spaces = new /list(16)
 
 	var/longest_name_length = 0
-	for(var/datum/c4_file/file in system.current_directory.contents)
+	for(var/datum/c4_file/file in targeted_dir.contents)
 		if(length(file.name) > longest_name_length)
 			longest_name_length = length(file.name)
 
-	for(var/datum/c4_file/file in system.current_directory.contents)
+	for(var/datum/c4_file/file in targeted_dir.contents)
 		var/str = ""
 		if(file == system)
 			str = "[file.name] - SYSTEM"
@@ -119,11 +125,6 @@
 		return
 
 	var/target_dir = jointext(arguments, " ")
-
-	if(target_dir == "/")
-		system.change_dir(system.drive.root)
-		system.println("<b>Current Directory is now [system.current_directory.path_to_string()]</b>")
-		return
 
 	var/datum/c4_file/folder/new_dir = system.parse_directory(target_dir, system.current_directory)
 	if(!new_dir)
@@ -461,14 +462,19 @@
 
 /datum/shell_command/thinkdos/tree
 	aliases = list("tree")
-	help_text = "Displays the file system structure relative to the current directory.<br>Usage: 'tree \[options?\]'<br><br>-f, --file &nbsp&nbsp&nbsp&nbsp&nbsp&nbspDisplay files."
+	help_text = "Displays the file system structure relative to a directory.<br>Usage: 'tree \[options?\] \[directory?\]'<br><br>-f, --file &nbsp&nbsp&nbsp&nbsp&nbsp&nbspDisplay files."
 
 /datum/shell_command/thinkdos/tree/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	var/datum/c4_file/folder/targeted_dir = system.parse_directory(jointext(arguments, " "), system.current_directory)
+	if(!targeted_dir)
+		system.print_error("<b>Error:</b> Invalid directory or path.")
+		return
+
 	var/show_files = !!length(options & list("f", "files"))
 
-	var/list/output = list(system.current_directory == system.drive.root ? system.drive.title : system.current_directory.name)
+	var/list/output = list((targeted_dir == system.drive.root) ? system.drive.title : targeted_dir.name)
 
-	search_dir(system.current_directory, output, show_files, 1)
+	search_dir(targeted_dir, output, show_files, 1)
 
 	system.println(jointext(output, "<br>"))
 

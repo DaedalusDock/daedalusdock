@@ -96,3 +96,8 @@
 /// from base of atom/movable/Process_Spacemove(): (movement_dir, continuous_move)
 #define COMSIG_MOVABLE_SPACEMOVE "spacemove"
 	#define COMSIG_MOVABLE_STOP_SPACEMOVE (1<<0)
+
+/// from base of atom/uv_illuminate(): (uv_source, animate_time, new_alpha)
+#define COMSIG_MOVABLE_UV_EXPOSE "atom_uv_expose"
+#define COMSIG_MOVABLE_UV_HIDE "atom_uv_hide"
+

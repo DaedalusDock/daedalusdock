@@ -105,7 +105,7 @@
 	reagent_weight = 0.6 //so it sprays further
 	penetrates_skin = NONE
 	touch_met = 2
-	var/clean_types = CLEAN_WASH
+	var/clean_types = CLEAN_WASH //| CLEAN_TYPE_HIDDEN_BLOOD
 	chemical_flags = REAGENT_CLEANS
 
 /datum/reagent/space_cleaner/expose_obj(obj/exposed_obj, reac_volume)

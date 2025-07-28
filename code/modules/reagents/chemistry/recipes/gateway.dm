@@ -16,5 +16,5 @@
 	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/chlorine = 1, /datum/reagent/fuel/oil = 1)
 
 /datum/chemical_reaction/hydrazine
-	results = list(/datum/reagent/hydrazine = 1)
-	required_reagents = list(/datum/reagent/nitrogen = 1, /datum/reagent/hydrogen = 2)
+	results = list(/datum/reagent/hydrazine = 3)
+	required_reagents = list(/datum/reagent/ammonia = 1, /datum/reagent/hydrogen = 1, /datum/reagent/oxygen = 1)

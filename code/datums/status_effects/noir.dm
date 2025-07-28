@@ -5,15 +5,51 @@
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = null
 
+	var/list/sensed_blood = list()
+
 /datum/status_effect/noir/on_apply()
 	. = ..()
 	owner.add_client_colour(/datum/client_colour/monochrome/noir)
 	owner.mob_mood.add_mood_event("noir", /datum/mood_event/detective_noir)
+	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(update_bloodsense))
+	update_bloodsense()
 
 /datum/status_effect/noir/on_remove()
 	. = ..()
 	owner.remove_client_colour(/datum/client_colour/monochrome/noir)
 	owner.mob_mood.clear_mood_event("noir")
+	UnregisterSignal(owner, COMSIG_MOVABLE_MOVED)
+	if(owner.client)
+		for(var/obj/effect/decal/cleanable/blood/blood_decal as anything in sensed_blood)
+			owner.client.images -= sensed_blood[blood_decal]
+	sensed_blood.Cut()
+
+/datum/status_effect/noir/proc/update_bloodsense()
+	if(!owner.client)
+		sensed_blood.Cut()
+		return
+
+	for(var/obj/effect/decal/cleanable/blood/blood_decal as anything in sensed_blood)
+		owner.client.images -= sensed_blood[blood_decal]
+
+	sensed_blood.Cut()
+
+	FOR_DVIEW(var/obj/effect/decal/cleanable/blood/blood_decal, 7, get_turf(owner), INVISIBILITY_MAXIMUM) // grrr this is expensive but its the det so he can have it.
+		if(!HAS_TRAIT(blood_decal, TRAIT_MOVABLE_FLUORESCENT))
+			continue
+
+		if(sensed_blood[blood_decal])
+			continue
+
+		var/image/I = image(blood_decal)
+		I.appearance = blood_decal.appearance
+		I.invisibility = INVISIBILITY_VISIBLE
+		I.alpha = 255
+		I.color = COLOR_LUMINOL
+		I.loc = blood_decal.loc
+		sensed_blood[blood_decal] = I
+		owner.client.images += I
+	FOR_DVIEW_END
 
 /// Noir-in-area, removed if the user leaves the given area.
 /datum/status_effect/noir_in_area

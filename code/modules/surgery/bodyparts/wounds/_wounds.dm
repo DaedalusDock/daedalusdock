@@ -182,19 +182,20 @@
 /datum/wound/proc/salve()
 	if(salved)
 		return FALSE
-	salved = 1
+	salved = TRUE
 	return TRUE
 
 /datum/wound/proc/disinfect()
 	if(disinfected)
 		return FALSE
-	disinfected = 1
+	disinfected = TRUE
+	germ_level = 0
 	return TRUE
 
 /datum/wound/proc/clamp_wound()
 	if(clamped)
 		return FALSE
-	clamped = 1
+	clamped = TRUE
 	if(parent)
 		parent.refresh_bleed_rate()
 	return TRUE

@@ -105,7 +105,7 @@
 	reagent_weight = 0.6 //so it sprays further
 	penetrates_skin = NONE
 	touch_met = 2
-	var/clean_types = CLEAN_WASH //| CLEAN_TYPE_HIDDEN_BLOOD
+	var/clean_types = CLEAN_WASH
 	chemical_flags = REAGENT_CLEANS
 
 /datum/reagent/space_cleaner/expose_obj(obj/exposed_obj, reac_volume)
@@ -156,6 +156,26 @@
 	if((methods & (TOUCH|VAPOR)) && !issilicon(exposed_mob))
 		exposed_mob.adjustBruteLoss(1.5)
 		exposed_mob.adjustFireLoss(1.5)
+
+/datum/reagent/space_cleaner/sterilizine
+	name = "Sterilizine"
+	description = "Sterilizes wounds in preparation for surgery and thoroughly removes blood."
+	taste_description = "bitterness"
+	reagent_state = LIQUID
+	color = "#c8a5dc"
+	touch_met = 5
+	value = 2.2
+
+	clean_types = CLEAN_WASH | CLEAN_TYPE_HIDDEN_BLOOD
+
+/datum/reagent/space_cleaner/sterilizine/expose_obj(obj/exposed_obj, reac_volume)
+	. = ..()
+	exposed_obj?.germ_level -= min(volume*20, exposed_obj.germ_level)
+
+/datum/reagent/space_cleaner/sterilizine/affect_touch(mob/living/carbon/C, removed)
+	. = ..()
+	if(C.germ_level < INFECTION_LEVEL_TWO) // rest and antibiotics is required to cure serious infections
+		C.germ_level -= min(removed*20, C.germ_level)
 
 ///Used for clownery
 /datum/reagent/lube

@@ -4621,6 +4621,7 @@
 #include "code\modules\surgery\new_surgery\ribcage.dm"
 #include "code\modules\surgery\new_surgery\robotics.dm"
 #include "code\modules\surgery\new_surgery\sanctify.dm"
+#include "code\modules\surgery\new_surgery\sterilize_wound.dm"
 #include "code\modules\surgery\new_surgery\tend_wounds.dm"
 #include "code\modules\surgery\organs\_organ.dm"
 #include "code\modules\surgery\organs\appendix.dm"

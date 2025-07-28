@@ -60,6 +60,8 @@
 	alert_type = null
 
 	var/area/noir_area
+	var/pinned_to_chair = FALSE
+	var/getup_check_modifier = 0// Starts out impossible
 
 /datum/status_effect/noir_in_area/on_creation(mob/living/new_owner, area/tracked_area)
 	. = ..()
@@ -79,6 +81,7 @@
 		if(FAILURE, CRIT_FAILURE)
 			owner.apply_status_effect(/datum/status_effect/skill_mod/intimidated)
 			if(istype(owner.buckled, /obj/structure/chair))
+				pinned_to_chair = TRUE
 				RegisterSignal(owner.buckled, COMSIG_MOVABLE_PRE_UNBUCKLE_MOB, PROC_REF(on_unbuckle_attempt))
 				RegisterSignal(owner.buckled, COMSIG_MOVABLE_UNBUCKLE, PROC_REF(on_unbuckle))
 				RegisterSignal(owner, list(COMSIG_PARENT_ATTACKBY, COMSIG_ATOM_GET_GRABBED, COMSIG_HUMAN_DISARM_HIT, COMSIG_ATOM_ATTACK_HAND), PROC_REF(on_owner_attack))
@@ -93,7 +96,8 @@
 	owner.remove_status_effect(/datum/status_effect/skill_mod/intimidated)
 	owner.remove_client_colour(/datum/client_colour/monochrome/noir)
 	owner.mob_mood.clear_mood_event("forcednoir")
-	clear_intimidation_signals(owner.buckled)
+	if(pinned_to_chair)
+		clear_intimidation_signals(owner.buckled)
 
 /datum/status_effect/noir_in_area/proc/clear_intimidation_signals(atom/movable/buckled_to)
 	if(buckled_to)
@@ -111,7 +115,21 @@
 	if(buckled != owner)
 		return
 
-	to_chat(buckled, span_statsbad("You are pinned to [source] by the gravitational force of the Detective."))
+	if(!owner.stats.cooldown_finished("det_intimiate_chair_lock"))
+		return COMPONENT_BLOCK_UNBUCKLE
+
+	owner.stats.set_cooldown("det_intimiate_chair_lock", 3 SECONDS)
+
+	var/datum/roll_result/result = owner.stat_roll(18, /datum/rpg_skill/willpower, getup_check_modifier)
+	switch(result.outcome)
+		if(FAILURE, CRIT_FAILURE)
+			result.do_skill_sound(owner)
+			to_chat(owner, result.create_tooltip("You are pinned to [source] by the gravitational force of the detective."))
+			getup_check_modifier += 2
+			return COMPONENT_BLOCK_UNBUCKLE
+		else
+			result.do_skill_sound(owner)
+			to_chat(owner, result.create_tooltip("You triumphantly free yourself from the investigator's gaze."))
 
 /datum/status_effect/noir_in_area/proc/on_unbuckle(datum/source, mob/buckled, force)
 	SIGNAL_HANDLER

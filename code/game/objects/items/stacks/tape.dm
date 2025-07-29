@@ -49,27 +49,32 @@
 		return NONE
 	return CONTEXTUAL_SCREENTIP_SET
 
-/obj/item/stack/sticky_tape/attack(mob/living/carbon/victim, mob/living/user)
-	if((!istype(victim)))
-		return
+/obj/item/stack/sticky_tape/proc/interact_with_human(mob/living/carbon/victim, mob/living/user, list/modifiers)
 	if(is_zero_amount(delete_if_zero = TRUE))
-		return
+		return NONE
+
 	if((HAS_TRAIT(user, TRAIT_CLUMSY) && prob(25)))
 		to_chat(user, "<span class='warning'>Uh... where did the tape edge go?!</span>")
 		var/obj/item/restraints/handcuffs/tape/handcuffed = new(user)
 		handcuffed.apply_cuffs(user,user)
-		return
+		return ITEM_INTERACT_SUCCESS
+
 	if(user.zone_selected == BODY_ZONE_PRECISE_MOUTH)
 		if(victim.wear_mask)
 			to_chat(user, span_notice("[victim] is already wearing somthing on their face."))
-			return
+			return ITEM_INTERACT_BLOCKING
+
 		MuzzleAttack(victim, user)
-	else if (!victim.handcuffed)
-		if(victim.canBeHandcuffed())
-			CuffAttack(victim, user)
-			return
+
+	else if (!victim.handcuffed && victim.canBeHandcuffed())
+		CuffAttack(victim, user)
+
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/sticky_tape/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(ishuman(interacting_with))
+		return interact_with_human(interacting_with, user, modifiers)
+
 	if(!isitem(interacting_with))
 		return
 

@@ -113,8 +113,6 @@
 		qdel(src)
 
 /obj/item/clothing/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	SHOULD_CALL_PARENT(TRUE)
-	. = ..()
 	if(!ishuman(interacting_with) || !ismoth(interacting_with))
 		return NONE
 

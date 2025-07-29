@@ -5,6 +5,7 @@
 	var/obj/item/stack/dig_result = /obj/item/stack/ore/glass/basalt
 	/// Icon state to use when broken
 	var/can_dig = FALSE
+	var/is_dug = FALSE
 /*
 /// Drops itemstack when dug and changes icon
 /turf/proc/getDug()
@@ -27,8 +28,8 @@
 				smooth_sunlight_border()
 	..()
 
-/turf/open/misc/asteroid/proc/get_Dug()
-	dug = TRUE
+/turf/proc/get_Dug()
+	is_dug = TRUE
 	new dig_result(src, 5)
 	icon_state = "[base_icon_state]_dug"
 

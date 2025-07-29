@@ -93,7 +93,7 @@
 	C.AdjustStun(-25, 0)
 	C.AdjustKnockdown(-25, 0)
 	C.AdjustUnconscious(-25, 0)
-	C.Stamina(-5, 0)
+	C.stamina.adjust(-5)
 	C.set_timed_status_effect(2 SECONDS, /datum/status_effect/jitter)
 	..()
 	. = TRUE

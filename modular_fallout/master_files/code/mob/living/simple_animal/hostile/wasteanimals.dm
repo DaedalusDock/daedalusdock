@@ -377,7 +377,21 @@
 	var/spawn_time = 30 SECONDS
 	var/spawn_text = "hatches from"
 	blood_volume = 0
+	var/spawn_delay = 0
+	var/list/spawned_mobs = list()
 
+/mob/living/simple_animal/hostile/giantantqueen/proc/spawn_mob()
+	if(world.time < spawn_delay)
+		return 0
+	spawn_delay = world.time + spawn_time
+	if(spawned_mobs.len >= max_mobs)
+		return FALSE
+	var/chosen_mob_type = pick_weight(mob_types)
+	var/mob/living/simple_animal/L = new chosen_mob_type(get_turf(src))
+	L.flags_1 |= (flags_1 & ADMIN_SPAWNED_1)	//If we were admin spawned, lets have our children count as that as well.
+	spawned_mobs += L
+	L.nest = src
+	visible_message("<span class='danger'>[L] [spawn_text] [src].</span>")
 
 /mob/living/simple_animal/hostile/giantantqueen/Initialize()
 	. = ..()

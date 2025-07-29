@@ -95,11 +95,3 @@
 */
 /obj/machinery/doorButtons/vaultButton/attackby(obj/item/weapon/W, mob/user, params)
 	attack_hand(user)
-
-/obj/machinery/doorButtons/vaultButton/attack_hand(mob/user)
-	..()
-	if(iscarbon(user))
-		var/mob/living/carbon/C = user
-		if(C.handcuffed)
-			return
-	toggle_door()

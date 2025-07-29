@@ -267,6 +267,9 @@
 		var/mob/living/carbon/human/H = target
 		try_to_ghoul_zombie_infect(H)
 
+/proc/try_to_ghoul_zombie_infect(mob/living/carbon/human/target)
+	CHECK_DNA_AND_SPECIES(target)
+
 /mob/living/simple_animal/hostile/ghoul/zombie/reaver
 	name = "ravenous feral ghoul reaver"
 	desc = "A ferocious feral ghoul, hungry for human meat. This one is strapped with metal armor, and appears far stronger."

@@ -47,10 +47,16 @@
 			if(istype(item))
 				item.from_trash = TRUE
 	loot_players += user
-	else
-		return ..()
 
+/obj/item
+	var/from_trash = FALSE
 
+/datum/controller/subsystem/itemspawners/proc/restock_trash_piles()
+	for(var/obj/item/storage/trash_stack/TS in GLOB.trash_piles)
+		TS.loot_players.Cut() //This culls a list safely
+		for(var/obj/item/A in TS.loc.contents)
+			if(A.from_trash)
+				qdel(A)
 
 /obj/item/storage/money_stack
 	name = "payroll safe"

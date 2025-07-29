@@ -62,10 +62,11 @@
 	maxcharge = 2400
 
 // Cell Charger can_charge modification (I can't be bothered making a cell_charger modular file for this.)
-
+/*
 /obj/machinery/cell_charger/attackby(obj/item/W, mob/user, params)
 	.=..()
 	if(istype(W, /obj/item/stock_parts/cell) && !panel_open)
 		if(!W.can_charge)
 			to_chat(user, "<span class='warning'>The cell isn't compatible with this charger!</span>")
 			return
+*/

@@ -20,7 +20,6 @@
 	burst_size = 2
 	burst_shot_delay = 3
 	var/automatic_burst_overlay = TRUE
-	var/semi_auto = FALSE
 	var/auto_eject = 0
 	var/auto_eject_sound = null
 	var/alarmed = 0

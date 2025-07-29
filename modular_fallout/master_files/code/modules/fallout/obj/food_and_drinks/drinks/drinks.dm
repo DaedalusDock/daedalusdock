@@ -25,7 +25,7 @@
 	desc = "The most popular flavored root beer in the West!"
 	icon = 'modular_fallout/master_files/icons/obj/f13vending.dmi'
 	icon_state = "sunset"
-	list_reagents = list(/datum/reagent/consumable/ethanol/whiskey = 1, /datum/reagent/consumable/sunset = 15, /datum/reagent/medicine/saline_glucose = 5)
+	list_reagents = list(/datum/reagent/consumable/ethanol/whiskey = 1, /*/datum/reagent/consumable/sunset = 15,*/ /datum/reagent/medicine/saline_glucose = 5)
 	drink_type = SUGAR
 	isGlass = TRUE
 
@@ -122,7 +122,7 @@
 	desc = "a bottle of noxious homebrewed alcohol, it has the name Rotgut etched on its side"
 	icon = 'modular_fallout/master_files/icons/fallout/objects/food&drinks/drinks.dmi'
 	icon_state = "rotgut"
-	list_reagents = list(/datum/reagent/consumable/ethanol/rotgut = 100)
+//	list_reagents = list(/datum/reagent/consumable/ethanol/rotgut = 100)
 
 /obj/item/reagent_containers/cup/glass/bottle/tequila/empty
 	list_reagents = null
@@ -167,7 +167,7 @@
 	desc = "To give you that Bounce!"
 	icon = 'modular_fallout/master_files/icons/obj/f13vending.dmi'
 	icon_state = "bawls"
-	list_reagents = list(/datum/reagent/consumable/coffee = 10, /datum/reagent/consumable/bawls = 15)
+	list_reagents = list(/datum/reagent/consumable/coffee = 10/*/datum/reagent/consumable/bawls = 15*/)
 	drink_type = SUGAR
 	isGlass = TRUE
 
@@ -214,7 +214,7 @@
 	desc = "You've got Vim!"
 	icon = 'modular_fallout/master_files/icons/obj/f13vending.dmi'
 	icon_state = "vim"
-	list_reagents = list(/datum/reagent/consumable/sugar = 5, /datum/reagent/consumable/vim = 15)
+	list_reagents = list(/datum/reagent/consumable/sugar = 5/*, /datum/reagent/consumable/vim = 15*/)
 	drink_type = SUGAR
 	isGlass = TRUE
 
@@ -259,7 +259,7 @@
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
 	isGlass = FALSE
-	list_reagents = list(/datum/reagent/consumable/strawberryjuice = 100)
+//	list_reagents = list(/datum/reagent/consumable/strawberryjuice = 100)
 	drink_type = FRUIT
 
 /obj/item/reagent_containers/cup/glass/bottle/menthol

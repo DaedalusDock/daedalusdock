@@ -45,14 +45,15 @@
 	mob_trait = TRAIT_IRONFIST
 	gain_text = "<span class='notice'>Your fists feel furious!</span>"
 	lose_text = "<span class='danger'>Your fists feel calm again.</span>"
-
+#warn fix this
+/*
 /datum/quirk/iron_fist/on_spawn()
 	var/list/arm_weakrefs = list()
 	for(var/obj/item/bodypart/arm/arm in host.bodyparts)
 		arm_weakrefs += WEAKREF(arm)
 		arm.unarmed_damage_low = 4
 		arm.unarmed_damage_high = 11
-
+*/
 /datum/quirk/light_step
 	name = "Light Step"
 	desc = "You walk with a gentle step, making stepping on sharp objects quieter and less painful."

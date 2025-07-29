@@ -425,8 +425,8 @@
 	if(rage)
 		QDEL_NULL(rage)
 	if(iscarbon(C))
-		var/mob/living/carbon/M = C
-		C.cure_trauma_type(rage, TRAUMA_RESILIENCE_ABSOLUTE)
+		var/obj/item/organ/brain/B = C.getorganslot(ORGAN_SLOT_BRAIN)
+		B.cure_trauma_type(rage, TRAUMA_RESILIENCE_ABSOLUTE)
 	..()
 /*
 /datum/reagent/consumable/ethanol/nukaxtreme //this is hell

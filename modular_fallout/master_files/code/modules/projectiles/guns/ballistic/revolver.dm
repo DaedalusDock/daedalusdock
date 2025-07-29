@@ -330,13 +330,13 @@
 	force = 25
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev4570
 	fire_sound = 'modular_fallout/master_files/sound/weapons/sequoia.ogg'
-
+/*
 /obj/item/gun/ballistic/revolver/sequoia/death
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev4570/death
 	fire_sound = 'modular_fallout/master_files/sound/weapons/sequoia.ogg'
 	fire_delay = 0
 	spread = 0
-
+*/
 
 //Hunting revolver				Keywords: .45-70, Double action, 5 rounds cylinder, Heavy
 /obj/item/gun/ballistic/revolver/hunting

@@ -145,7 +145,7 @@ obj/structure/flora/wasteplant/wild_punga
 	name = "wild tato"
 	icon_state = "wild_tato"
 	desc = "The outside looks like a tomato, but the inside is brown. Tastes as absolutely disgusting as it looks, but will keep you from starving."
-	produce = /obj/item/reagent_containers/food/snacks/grown/tato
+	produce = /obj/item/food/grown/tato
 
 /obj/structure/flora/wasteplant/wild_feracactus
 	name = "wild barrel cactus"

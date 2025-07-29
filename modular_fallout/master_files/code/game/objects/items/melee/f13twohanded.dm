@@ -311,7 +311,7 @@
 	blade_active = active
 	if(active)
 		if(sword_color_icon)
-			icon_state = "thermiclance_[on ? "on" : "off"]"
+			icon_state = "thermiclance_[active ? "on" : "off"]"
 	return ..()
 
 
@@ -323,7 +323,7 @@
 	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/melee2h_lefthand.dmi'
 	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/melee2h_righthand.dmi'
 	icon_state = "protonaxe"
-	icon_state_on = "protonaxe_on"
+	sword_color_icon = "protonaxe_on"
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = null
 	force = 20

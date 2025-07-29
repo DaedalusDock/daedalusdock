@@ -43,9 +43,9 @@
 	if(!iscarbon(user))
 		return
 	if(harvest)
-		if(myseed.plant_datum.base_harvest_yield(user))
-			harvest = 0
-			update_icon()
+//		if(myseed.plant_datum.base_harvest_yield(user))
+//			harvest = 0
+//			update_icon()
 	else if(dead)
 		dead = 0
 		to_chat(user, "<span class='notice'>You remove the dead plant.</span>")
@@ -92,8 +92,8 @@
 			if(health <= 0)
 				plantdies()
 
-			if(age > myseed.plant_datum.base_lifespan)
-				health -= 50 / myseed.plant_datum.base_endurance
+//			if(age > myseed.plant_datum.base_lifespan)
+//				health -= 50 / myseed.plant_datum.base_endurance
 
 			// Harvest code
 			if(age > myseed.plant_datum.base_production && (age - lastproduce) > myseed.plant_datum.base_production && (!harvest && !dead))
@@ -118,6 +118,7 @@
 		icon_state = "[myseed.plant_datum.icon_grow][t_growthstate]"
 //	if(myseed && myseed.plant_datum.get_gene(/datum/plant_gene/trait/glow))
 	var/datum/plant_gene/product_trait/glow/our_glow_gene = myseed.plant_datum.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/glow)
+	var/potency = myseed.plant_datum.get_effective_stat(PLANT_STAT_POTENCY)
 	if(istype(our_glow_gene))
 		set_light(l_outer_range = our_glow_gene.glow_range(potency), l_power = our_glow_gene.glow_power(potency), l_color = our_glow_gene.glow_color)
 	else

@@ -461,7 +461,8 @@
 	description = "Treats addictions while also purging other chemicals from the body. Side effects include nausea."
 	reagent_state = SOLID
 	color = "#C8A5DC"
-
+#warn find out a way to fix this
+/*
 /datum/reagent/medicine/fixer/affect_blood(mob/living/carbon/C, removed)
 //	for(var/datum/reagent/R in C.reagents.reagent_list)
 //		if(R != src)
@@ -475,7 +476,7 @@
 		H.vomit(10)
 	..()
 	. = TRUE
-
+*/
 /datum/reagent/medicine/gaia
 	name = "Gaia Extract"
 

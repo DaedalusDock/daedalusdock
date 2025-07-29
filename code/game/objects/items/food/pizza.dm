@@ -326,6 +326,9 @@
 
 /obj/item/food/pizza/arnold/attack(mob/living/target, mob/living/user)
 	. = ..()
+	if(.)
+		return
+
 	try_break_off(target, user)
 
 /obj/item/food/pizza/arnold/attackby(obj/item/item, mob/user)
@@ -340,7 +343,10 @@
 	foodtypes = GRAIN | VEGETABLES | DAIRY | MEAT
 
 /obj/item/food/pizzaslice/arnold/attack(mob/living/target, mob/living/user)
-	. =..()
+	. = ..()
+	if(.)
+		return
+
 	try_break_off(target, user)
 
 /obj/item/food/pizzaslice/arnold/attackby(obj/item/item, mob/user)

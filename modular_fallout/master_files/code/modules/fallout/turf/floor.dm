@@ -7,7 +7,7 @@
 	base_icon_state = "floor"
 	icon = 'modular_fallout/master_files/icons/fallout/turfs/floors.dmi'
 
-/turf/open/floor/f13/ReplaceWithLattice()
+/turf/open/floor/f13/TryScrapeToLattice()
 	ChangeTurf(baseturfs)
 
 /turf/open/floor/f13/wood

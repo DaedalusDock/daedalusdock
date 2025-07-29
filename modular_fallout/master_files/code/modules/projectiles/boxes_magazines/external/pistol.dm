@@ -177,6 +177,6 @@
 	name = "Bulletcrate"
 	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ammo.dmi'
 	icon_state = "m9mmds"
-	ammo_type = /obj/item/ammo_casing/testcasing
+//	ammo_type = /obj/item/ammo_casing/testcasing
 	caliber = "9mm"
 	max_ammo = 100

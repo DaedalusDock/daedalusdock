@@ -12,7 +12,7 @@
 	light_outer_range  = 3
 	var/range = 2
 	var/intensity = 20
-
+/*
 /obj/effect/decal/waste/New()
 	..()
 	icon_state = "goo[rand(1,13)]"
@@ -21,6 +21,7 @@
 /obj/effect/decal/waste/Destroy()
 	RemoveElement(/datum/element/radioactive)
 	..()
+*/
 /*
 //Bing bang boom done
 /obj/effect/decal/waste/process()

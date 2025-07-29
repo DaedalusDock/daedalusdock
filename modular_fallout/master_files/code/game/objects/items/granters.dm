@@ -266,16 +266,6 @@
 		to_chat(user,"<span class='notice'>You learned how to make [initial(R.name)].</span>")
 	on_reading_finished(user)
 
-/obj/item/book/granter/trait/rifleman
-	name = "The Neo-Russian Rifleman\'s Primer"
-	desc = "A book with stains of vodka and...blood? The back is hard to read, but says something about bolt-actions. Or pump-actions. Both, maybe."
-	uses = 100
-	granted_trait = TRAIT_FAST_PUMP
-	traitname = "riflery"
-	icon_state = "book1"
-	remarks = list("One smooth motion...", "Palm the bolt...", "Push up, rotate back, push forward, down...", "Don't slap yourself with the bolt...", "Wait, what's this about pumping?", "Who just scribbled \"Z\" and \"LMB\" on this page?")
-
-
 /obj/item/book/granter/trait/chemistry
 	name = "Big Book of Science"
 	desc = "This heavy textbook can teach basic chemistry, but saw more use as a blunt weapon shortly after the Collapse."

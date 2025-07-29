@@ -1,4 +1,4 @@
-/obj/item/ghoul_zombie_hand/afterattack(atom/target, mob/user, proximity_flag)
+/obj/item/zombie_hand/ghoul/afterattack(atom/target, mob/user, proximity_flag)
 	. = ..()
 	if(!proximity_flag)
 		return

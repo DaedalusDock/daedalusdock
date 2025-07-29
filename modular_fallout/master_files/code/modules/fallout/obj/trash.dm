@@ -1,7 +1,7 @@
 //Fallout 13 trash items directory
 
 /obj/item/trash/f13
-	icon = 'modular_fallout/master_files/icons/fallout/objects/trash.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/trash.dmi'
 	icon_state = "null"
 
 /obj/item/trash/f13/bubblegum

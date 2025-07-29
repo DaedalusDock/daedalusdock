@@ -293,7 +293,7 @@
 	throw_range = 0
 	w_class = WEIGHT_CLASS_TINY
 	inhand_icon_state = "beer"
-	attack_verb = list("boop", "thunked", "shown")
+	attack_verbs_simple = list("boop", "thunked", "shown")
 
 /obj/item/export/bottle/gin
 	icon_state = "ginbottle"

@@ -162,7 +162,6 @@
 					)
 	light_color = LIGHT_COLOR_GREEN
 	light_power = 2
-	outer_light_range = 3
 
 /obj/item/trash/f13/electronic/toaster/oven
 	name = "toaster oven"

@@ -14,7 +14,14 @@
 	max_specific_storage = WEIGHT_CLASS_NORMAL
 	max_slots = 40
 	max_total_storage = 40
-	can_hold = typecacheof(list(/obj/item/coin, /obj/item/stack/spacecash))
+
+/datum/storage/money_bag/New()
+	. = ..()
+	set_holdable(list(
+	/obj/item/coin,
+	/obj/item/stack/spacecash,
+	/obj/item/stack/f13Cash
+		))
 
 /obj/item/storage/bag/money/vault/PopulateContents()
 	new /obj/item/coin/silver(src)
@@ -42,7 +49,14 @@
 /datum/storage/money_bag/small
 	max_specific_storage = WEIGHT_CLASS_NORMAL
 	max_slots = 20
-	can_hold = typecacheof(list(/obj/item/coin, /obj/item/stack/spacecash, /obj/item/stack/f13Cash))
+
+/datum/storage/money_bag/small/New()
+	. = ..()
+	set_holdable(list(
+	/obj/item/coin,
+	/obj/item/stack/spacecash,
+	/obj/item/stack/f13Cash
+		))
 
 // Legion reserves. Spawns with the Centurion.
 /obj/item/storage/bag/money/small/legion/PopulateContents()

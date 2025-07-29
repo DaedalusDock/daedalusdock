@@ -4,7 +4,6 @@
 	icon = 'modular_fallout/master_files/icons/fallout/objects/melee/two_handed.dmi'
 	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/melee2h_lefthand.dmi'
 	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/melee2h_righthand.dmi'
-	attack_speed = CLICK_CD_MELEE * 1.1
 	w_class = WEIGHT_CLASS_BULKY
 	inhand_icon_state  = null
 

@@ -2,7 +2,6 @@
 	.=..()
 
 	var/current_addiction_cycle = LAZYACCESS(affected_carbon.mind.active_addictions, type) //If this is null, we're not addicted
-	var/on_drug_of_this_addiction = FALSE
 	var/withdrawal_stage
 
 	switch(current_addiction_cycle)

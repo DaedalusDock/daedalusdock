@@ -2,15 +2,24 @@
 	name = "Ghoul"
 	id = "ghoul"
 	say_mod = "rasps"
-	limbs_id = "ghoul"
 	species_traits = list(HAIR,FACEHAIR)
 	inherent_traits = list(TRAIT_RADIMMUNE, TRAIT_NOBREATH)
-	inherent_biotypes = list(MOB_INORGANIC, MOB_HUMANOID)
-	punchstunthreshold = 9
+	inherent_biotypes = list(MOB_HUMANOID)
 	use_skintones = 0
 	sexes = 1
 	disliked_food = GROSS
 	liked_food = JUNKFOOD | FRIED | RAW
+
+
+	bodypart_overrides = list(
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/lizard,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/lizard,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/lizard,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/lizard,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/lizard,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/lizard,
+	)
+
 
 //Ghouls have weak limbs.
 /datum/species/ghoul/on_species_gain(mob/living/carbon/C, datum/species/old_species)
@@ -23,7 +32,7 @@
 	C.faction -= "ghoul"
 	for(var/obj/item/bodypart/b in C.bodyparts)
 		b.max_damage = initial(b.max_damage)
-
+/*
 /datum/species/ghoul/qualifies_for_rank(rank, list/features)
 	if(rank in GLOB.legion_positions) /* legion HATES these ghoul */
 		return 0
@@ -32,7 +41,7 @@
 	if(rank in GLOB.vault_positions) //purest humans left in america. supposedly.
 		return 0
 	return ..()
-
+*/
 /*/datum/species/ghoul/glowing
 	name = "Glowing Ghoul"
 	id = "glowing ghoul"

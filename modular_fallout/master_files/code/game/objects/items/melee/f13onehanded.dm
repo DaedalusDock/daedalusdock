@@ -1,7 +1,6 @@
 // In this document: Onehanded templates, Swords, Knives, Clubs, Glove weapons, Tool weapons
 
 /obj/item/melee //Melee weapon template
-	attack_speed = CLICK_CD_MELEE
 	max_integrity = 200
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 25, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 90, ACID = 50)
 
@@ -747,7 +746,7 @@ obj/item/melee/onehanded/knife/switchblade
 	toolspeed = 0.7
 	sharpness = SHARP_EDGED
 	attack_verb_simple = list("cleaved", "chopped", "sliced", "slashed")
-
+/*
 // Hatchet
 /obj/item/hatchet
 	name = "hatchet"
@@ -776,7 +775,7 @@ obj/item/melee/onehanded/knife/switchblade
 	user.visible_message("<span class='suicide'>[user] is chopping at [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	playsound(src, 'modular_fallout/master_files/sound/weapons/bladeslice.ogg', 50, 1, -1)
 	return (BRUTELOSS)
-
+*/
 // Wrench				Force 12
 // Crowbar				Force 15
 // Kitchen knife		Force 15

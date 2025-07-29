@@ -17,7 +17,7 @@
 	name = "medicus apron"
 	desc = "The waxed cotton apron of a Medicus, marked with a red bull insignia. Has pockets for some small medical equipment."
 	icon_state = "medicus"
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/medical
+	pocket_storage_component_path = /datum/storage/concrete/pockets/medical
 
 /obj/item/clothing/neck/apron/chef
 	name = "chefs apron"
@@ -37,7 +37,7 @@
 	icon_state = "forge"
 	heat_protection = CHEST|GROIN|LEGS
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/crafter
+	pocket_storage_component_path = /datum/storage/concrete/pockets/crafter
 	armor = list(BLUNT = 0, PUNCTURE = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 50, ACID = 0)
 
 /obj/item/clothing/neck/apron/housewife

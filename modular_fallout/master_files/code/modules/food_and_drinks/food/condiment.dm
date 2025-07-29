@@ -57,12 +57,6 @@
 	originalname = "ketchup"
 	list_reagents = list(/datum/reagent/consumable/ketchup = 10)
 
-//Mustard
-/obj/item/reagent_containers/condiment/pack/mustard
-	name = "mustard pack"
-	originalname = "mustard"
-	list_reagents = list(/datum/reagent/consumable/mustard = 10)
-
 //Hot sauce
 /obj/item/reagent_containers/condiment/pack/hotsauce
 	name = "hotsauce pack"
@@ -90,7 +84,6 @@
 	desc = "A classic American Sauce."
 	icon_state = "ketchup"
 	list_reagents = list(/datum/reagent/consumable/ketchup = 50)
-	possible_states = list()
 
 /obj/item/reagent_containers/condiment/yeast
 	name = "yeast"

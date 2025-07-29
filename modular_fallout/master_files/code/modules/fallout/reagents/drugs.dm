@@ -93,7 +93,7 @@
 	C.AdjustStun(-25, 0)
 	C.AdjustKnockdown(-25, 0)
 	C.AdjustUnconscious(-25, 0)
-	C.adjustStaminaLoss(-5, 0)
+	C.Stamina(-5, 0)
 	C.set_timed_status_effect(2 SECONDS, /datum/status_effect/jitter)
 	..()
 	. = TRUE
@@ -166,7 +166,7 @@
 		rage = new()
 		M.gain_trauma(rage, TRAUMA_RESILIENCE_ABSOLUTE)
 	var/datum/pathogen/D = new /datum/pathogen/heart_failure
-	C.ForceContractDisease(D)
+	C.try_contract_pathogen(D)
 	if(prob(33))
 		C.visible_message("<span class='danger'>[C]'s muscles spasm, making them drop what they were holding!</span>")
 		C.drop_all_held_items()
@@ -187,9 +187,8 @@
 		return
 	if(!M.has_dna())
 		return  //No robots, AIs, aliens, Ians or other mobs should be affected by this.
-	if((method==VAPOR && prob(min(25, reac_volume))) || method==INGEST || method==INJECT)
 	var/datum/pathogen/D = new /datum/pathogen/fev
-	C.ForceContractDisease(D)
+	C.try_contract_pathogen(D)
 //		M.easy_randmut(NEGATIVE + MINOR_NEGATIVE, sequence = FALSE)
 //		M.updateappearance()
 //		M.domutcheck()

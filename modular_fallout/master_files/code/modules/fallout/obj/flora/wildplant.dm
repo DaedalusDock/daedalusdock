@@ -116,9 +116,10 @@
 	else
 		var/t_growthstate = min(max(round((age / myseed.plant_datum.base_maturation) * myseed.plant_datum.growthstages), 1), myseed.plant_datum.growthstages)
 		icon_state = "[myseed.plant_datum.icon_grow][t_growthstate]"
-	if(myseed && myseed.plant_datum.get_gene(/datum/plant_gene/trait/glow))
-		var/datum/plant_gene/trait/glow/G = myseed.plant_datum.get_gene(/datum/plant_gene/product_trait/glow)
-		set_light(G.glow_color)
+//	if(myseed && myseed.plant_datum.get_gene(/datum/plant_gene/trait/glow))
+	var/datum/plant_gene/product_trait/glow/our_glow_gene = myseed.plant_datum.gene_holder.has_active_gene_of_type(/datum/plant_gene/product_trait/glow)
+	if(istype(our_glow_gene))
+		set_light(l_outer_range = our_glow_gene.glow_range(potency), l_power = our_glow_gene.glow_power(potency), l_color = our_glow_gene.glow_color)
 	else
 		set_light(0)
 

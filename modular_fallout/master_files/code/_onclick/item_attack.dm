@@ -7,13 +7,6 @@
 
 #warn look at original item_attack.dm and ???
 
-/mob/living/attacked_by(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
-	.=..()
-	var/damage = attacking_item.force
-	if(mob_biotypes & MOB_ROBOTIC)
-		damage *= attacking_item.get_demolition_modifier(src)
-	return damage
-
 // druggies
 
 /obj/item/attack(mob/living/M, mob/living/user, attackchain_flags = NONE, damage_multiplier = 1)

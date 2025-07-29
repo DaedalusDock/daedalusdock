@@ -22,7 +22,7 @@
 	name = "Vault 113 flask"
 	desc = "See this large yellow number? It means it's a Vault 113 canteen. Never forget."
 	icon_state = "flask113"
-	list_reagents = list(/datum/reagent/water = 30, /datum/reagent/uranium/radium = 10, /datum/reagent/medicine/mine_salve = 20)
+	list_reagents = list(/datum/reagent/water = 30, /datum/reagent/uranium/radium = 10)
 
 /obj/item/reagent_containers/food/drinks/flask/ss13
 	name = "metal flask"

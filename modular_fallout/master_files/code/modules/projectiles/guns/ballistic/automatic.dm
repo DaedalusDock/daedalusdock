@@ -1221,19 +1221,15 @@
 		. = ..()
 		update_icon()
 
-/obj/item/gun/ballistic/automatic/m1919/on_attack_hand(mob/user, unarmed_attack_flags)
-	if(user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
-		return //let them pick it up
-	if(!cover_open || (cover_open && !magazine))
-	else if(cover_open && magazine)
-		//drop the mag
-		magazine.update_icon()
-		magazine.forceMove(drop_location())
-		user.put_in_hands(magazine)
-		magazine = null
-		update_icon()
-		to_chat(user, "<span class='notice'>You remove the magazine from [src].</span>")
-		playsound(user, 'modular_fallout/master_files/sound/weapons/magout.ogg', 60, 1)
+//ATTACK HAND IGNORING PARENT RETURN VALUE
+/obj/item/gun/ballistic/automatic/m1919/attack_hand(mob/user, list/modifiers)
+	if (loc != user)
+		..()
+		return
+	if (!cover_open)
+		to_chat(user, span_warning("[src]'s cover is closed! Open it before trying to remove the magazine!"))
+		return
+	..()
 
 /obj/item/gun/ballistic/automatic/m1919/attackby(obj/item/A, mob/user, params)
 	if(!cover_open && istype(A, mag_type))

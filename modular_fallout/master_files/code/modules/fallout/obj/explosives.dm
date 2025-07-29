@@ -13,7 +13,6 @@
 	throw_range = 0
 //	flags = CONDUCT
 	resistance_flags = FLAMMABLE
-	obj_integrity = 80
 	max_integrity = 80
 	var/state = FALSE
 	layer = 10

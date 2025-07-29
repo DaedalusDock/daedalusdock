@@ -28,7 +28,7 @@
 	desc = "This is a lead ball for a musket."
 	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ammo.dmi'
 	caliber = "musketball"
-	projectile_type = /obj/projectile/bullet/musketball
+	projectile_type = /obj/projectile/bullet/F13/musketball
 
 /obj/item/ammo_casing/caseless/lasermusket
 	name = "Battery"

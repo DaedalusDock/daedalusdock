@@ -15,7 +15,6 @@
 #define ALERT_NOT_ENOUGH_NITRO "not_enough_nitro"
 
 /** Mob related */
-#define ALERT_SUCCUMB "succumb"
 #define ALERT_BLIND "blind"
 #define ALERT_BUCKLED "buckled"
 #define ALERT_HANDCUFFED "handcuffed"

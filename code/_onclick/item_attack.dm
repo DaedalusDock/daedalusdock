@@ -202,9 +202,9 @@
 		to_chat(src, span_warning("You don't want to harm other living beings."))
 		return FALSE
 
-	do_attack_animation(target, attacking_item, do_hurt = FALSE)
-	changeNext_move(attacking_item.combat_click_delay)
-	stamina_swing(attacking_item.stamina_cost)
+	// do_attack_animation(target, attacking_item, do_hurt = FALSE)
+	// changeNext_move(attacking_item.combat_click_delay)
+	// stamina_swing(attacking_item.stamina_cost)
 
 	return attacking_item.attack(target, src, params)
 
@@ -228,6 +228,14 @@
 
 	if(item_flags & NOBLUDGEON)
 		return
+
+	if(!user.combat_mode)
+		return
+
+	if(!used_special)
+		user.do_attack_animation(M, src, do_hurt = FALSE)
+		user.changeNext_move(combat_click_delay)
+		user.stamina_swing(stamina_cost)
 
 	M.lastattacker = user.real_name
 	M.lastattackerckey = user.ckey

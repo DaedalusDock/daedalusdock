@@ -127,7 +127,7 @@
 	SIGNAL_HANDLER
 
 	if(!can_hit_with_hand(target, caster))
-		return ITEM_INTERACT_BLOCKING
+		return NONE
 
 	return do_hand_hit(source, target, caster)
 
@@ -141,7 +141,7 @@
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(!can_hit_with_hand(target, caster))
-		return ITEM_INTERACT_BLOCKING
+		return NONE
 
 	return do_secondary_hand_hit(source, target, caster)
 
@@ -151,8 +151,11 @@
 /datum/action/cooldown/spell/touch/proc/do_hand_hit(obj/item/melee/touch_attack/hand, atom/victim, mob/living/carbon/caster)
 	SEND_SIGNAL(src, COMSIG_SPELL_TOUCH_HAND_HIT, victim, caster, hand)
 	if(!cast_on_hand_hit(hand, victim, caster))
-		return
+		return NONE
 
+	caster.do_attack_animation(victim, no_effect = TRUE, do_hurt = FALSE)
+	caster.changeNext_move(CLICK_CD_MELEE)
+	victim.add_fingerprint(caster)
 	log_combat(caster, victim, "cast the touch spell [name] on", hand)
 	spell_feedback()
 	remove_hand(caster)
@@ -168,6 +171,9 @@
 	switch(secondary_result)
 		// Continue will remove the hand here and stop
 		if(SECONDARY_ATTACK_CONTINUE_CHAIN)
+			caster.do_attack_animation(victim, no_effect = TRUE, do_hurt = FALSE)
+			caster.changeNext_move(CLICK_CD_MELEE)
+			victim.add_fingerprint(caster)
 			log_combat(caster, victim, "cast the touch spell [name] on", hand, "(secondary / alt cast)")
 			spell_feedback()
 			remove_hand(caster)
@@ -175,7 +181,7 @@
 
 		// Call normal will call the normal cast proc
 		if(SECONDARY_ATTACK_CALL_NORMAL)
-			do_hand_hit(hand, victim, caster)
+			return do_hand_hit(hand, victim, caster)
 
 		// Cancel chain will do nothing,
 		if(SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)

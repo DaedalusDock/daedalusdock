@@ -8,6 +8,10 @@
  * * [/obj/item/proc/afterattack]. The return value does not matter.
  */
 /obj/item/proc/melee_attack_chain(mob/user, atom/target, params)
+	var/obj/item/used_item = get_attacking_item(user, target)
+	if(used_item != src)
+		return used_item.melee_attack_chain(user, target, params)
+
 	var/list/modifiers = params2list(params)
 	var/is_right_clicking = LAZYACCESS(modifiers, RIGHT_CLICK)
 
@@ -57,6 +61,10 @@
 
 /// Called when clicking on something outside of reach.
 /obj/item/proc/ranged_attack_chain(mob/user, atom/target, modifiers)
+	var/obj/item/used_item = get_attacking_item(user, target)
+	if(used_item != src)
+		return used_item.ranged_attack_chain(user, target, modifiers)
+
 	var/item_interact_result = target.base_ranged_item_interaction(user, src, modifiers)
 	if(item_interact_result & ITEM_INTERACT_SUCCESS)
 		return TRUE

@@ -2028,3 +2028,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(!isnull(loc))
 		SEND_SIGNAL(loc, COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED, src, old_w_class, new_w_class)
 	return TRUE
+
+/// Called by the attack chain, returns the item to use for attacking. CAN NOT RETURN NULL.
+/obj/item/proc/get_attacking_item(mob/living/user, atom/target) as /obj/item
+	return src

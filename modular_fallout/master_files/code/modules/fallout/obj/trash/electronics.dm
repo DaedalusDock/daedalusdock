@@ -27,7 +27,7 @@
 		/obj/item/food/bagel,
 		/obj/item/food/twobread,
 		/obj/item/food/cracker, //Why toast a cracker? Who the fuck knows
-		/obj/item/food/customizable/sandwich)) //Ehhhhhhhhhhhhhhhhh. I guess for toaster ovens, and "toast" items
+		/obj/item/food/sandwich)) //Ehhhhhhhhhhhhhhhhh. I guess for toaster ovens, and "toast" items
 
 	if(!rand(0,9) && isturf(loc) && src.type == /obj/item/trash/f13/electronic/toaster) //Randomized variants. strict type check, not istype, as that checks subtypes
 		new /obj/item/trash/f13/electronic/toaster/oven(get_turf(src))
@@ -142,7 +142,7 @@
 	desc = "A rounded, dense, donut-like loop of bread. Perfect for toasting, as they're rather chewy untoasted."
 	icon_state = "donut1"// need bagel sprite pfffffffffffffff
 	bite_consumption = 3
-	list_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/nutriment/vitamin = 2)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/nutriment/vitamin = 2)
 	tastes = list("bagelness" = 1)
 	foodtypes = GRAIN
 	throwforce = 10 //Bonk
@@ -162,7 +162,7 @@
 					)
 	light_color = LIGHT_COLOR_GREEN
 	light_power = 2
-	light_range = 3
+	outer_light_range = 3
 
 /obj/item/trash/f13/electronic/toaster/oven
 	name = "toaster oven"

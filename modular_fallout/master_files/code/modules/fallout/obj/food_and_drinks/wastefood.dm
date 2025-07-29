@@ -40,7 +40,7 @@
 	name = "roasted gourd seeds"
 	desc = "Well prepared crispy buffalo gourd seeds, full of chewy protein."
 	//icon_state = "roasted_seeds"
-	list_reagents = list(/datum/reagent/consumable/cooking_oil = 1, /datum/reagent/consumable/nutriment = 2, /datum/reagent/consumable/nutriment/vitamin = 1.5)
+	food_reagents = list(/datum/reagent/consumable/cooking_oil = 1, /datum/reagent/consumable/nutriment = 2, /datum/reagent/consumable/nutriment/vitamin = 1.5)
 	//bitesize = 2
 	//w_class = WEIGHT_CLASS_TINY
 	//tastes = list("crunchy" = 1)
@@ -592,13 +592,13 @@
 /obj/item/food/snacks/sosjerky/healthy
 	name = "homemade beef jerky"
 	desc = "Homemade beef jerky made from the finest brahmin."
-	list_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/vitamin = 1)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/vitamin = 1)
 	junkiness = 0
 
 /obj/item/food/snacks/sosjerky/ration
 	name = "brahmin jerky"
 	desc = "Brahmin jerky strips in a sealed package."
-	list_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/vitamin = 1)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/vitamin = 1)
 	junkiness = 0
 	foodtypes = MEAT
 

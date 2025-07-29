@@ -15,8 +15,7 @@
 	icon_state = "stewedsoymeat"
 	bite_consumption = 3
 	//filling_color = "#CD853F"
-	bonus_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 4)
-	food_reagents = list(/datum/reagent/consumable/nutriment = 5)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/nutriment/vitamin = 2)
 	microwaved_type = /obj/item/food/cookedbrahmintongue
 	tastes = list("top quality beef" = 4, "tender meat" = 1, "tasty gravy" = 1)
 //	foodtypes = MEAT
@@ -39,8 +38,7 @@
 	icon_state = "Charred Brahmin Liver"
 	bite_consumption = 3
 	//filling_color = "#CD853F"
-	bonus_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 4)
-	food_reagents = list(/datum/reagent/consumable/nutriment = 5)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/nutriment/vitamin = 4)
 	tastes = list("slow cooked liver" = 4, "delicious crunch" = 1)
 //	foodtypes = MEAT
 

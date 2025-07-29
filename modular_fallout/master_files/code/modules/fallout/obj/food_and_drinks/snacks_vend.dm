@@ -40,7 +40,6 @@
 	desc = "Commander Riker's What-The-Crisps."
 	icon_state = "chips"
 	trash_type = /obj/item/trash/chips
-	bitesize = 1
 	food_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/sugar = 3, /datum/reagent/consumable/salt = 1)
 	junkiness = 20
 	tastes = list("salt" = 1, "crisps" = 1)

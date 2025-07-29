@@ -165,10 +165,32 @@
 		var/mob/living/carbon/M = C
 		rage = new()
 		M.gain_trauma(rage, TRAUMA_RESILIENCE_ABSOLUTE)
-	var/datum/disease/D = new /datum/disease/heart_failure
+	var/datum/pathogen/D = new /datum/pathogen/heart_failure
 	C.ForceContractDisease(D)
 	if(prob(33))
 		C.visible_message("<span class='danger'>[C]'s muscles spasm, making them drop what they were holding!</span>")
 		C.drop_all_held_items()
 	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2, updating_health = FALSE)
+	..()
+
+/datum/reagent/toxin/FEV_solution
+	name = "Unstable FEV solution"
+	description = "An incredibly lethal strain of the Forced Evolutionary Virus. Consume at your own risk."
+	color = "#00FF00"
+	toxpwr = 0
+	overdose_threshold = 18 // So, someone drinking 20 units will FOR SURE get overdosed
+	taste_description = "horrific agony"
+	taste_mult = 0.9
+
+/datum/reagent/toxin/FEV_solution/expose_mob(mob/living/carbon/M, method=TOUCH, reac_volume)
+	if(!..())
+		return
+	if(!M.has_dna())
+		return  //No robots, AIs, aliens, Ians or other mobs should be affected by this.
+	if((method==VAPOR && prob(min(25, reac_volume))) || method==INGEST || method==INJECT)
+	var/datum/pathogen/D = new /datum/pathogen/fev
+	C.ForceContractDisease(D)
+//		M.easy_randmut(NEGATIVE + MINOR_NEGATIVE, sequence = FALSE)
+//		M.updateappearance()
+//		M.domutcheck()
 	..()

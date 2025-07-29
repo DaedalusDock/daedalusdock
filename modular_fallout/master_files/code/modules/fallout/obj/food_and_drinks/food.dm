@@ -818,7 +818,6 @@
 	foodtypes = GRAIN
 	//slice_path = /obj/item/food/cracker/c_ration
 	trash_type = /obj/item/trash/f13/c_ration_2
-	slices_num = 4
 
 /obj/item/food/f13/canned/ncr/candied_mutfruit
 	name = "c-ration dessert - 'Candied Mutfruit'"

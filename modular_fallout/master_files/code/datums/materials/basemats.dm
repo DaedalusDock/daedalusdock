@@ -21,7 +21,7 @@
 /obj/item/stack/ore/lead
 	name = "lead ore"
 	icon_state = "lead ore"
-	item_state = "lead ore"
+	inhand_icon_state = "lead ore"
 	singular_name = "lead ore chunk"
 	points = 3
 	custom_materials = list(/datum/material/lead=MINERAL_MATERIAL_AMOUNT)
@@ -31,10 +31,10 @@
 /obj/item/stack/ore/blackpowder
 	name = "gunpowder"
 	icon_state = "Blackpowder ore"
-	item_state = "Blackpowder ore"
+	inhand_icon_state = "Blackpowder ore"
 	singular_name = "blackpowder"
 	points = 1
 	merge_type = /obj/item/stack/ore/blackpowder
 	custom_materials = list(/datum/material/blackpowder=MINERAL_MATERIAL_AMOUNT)
-	grind_results = list(/datum/reagent/blackpowder = 50)
+	grind_results = list(/datum/reagent/gunpowder/blackpowder = 50)
 	w_class = WEIGHT_CLASS_TINY

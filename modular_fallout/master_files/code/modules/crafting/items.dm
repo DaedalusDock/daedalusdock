@@ -1,7 +1,7 @@
 /obj/item/scrap/research
 	name = "strange object"
 	desc = "What mysteries could this hold?"
-	icon = 'modular_fallout/master_files/icons/obj/assemblies.dmi'
+	icon = 'icons/obj/assemblies.dmi'
 
 /obj/item/scrap/research/Initialize()
 	. = ..()

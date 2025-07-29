@@ -123,3 +123,6 @@
 		set_light(0)
 
 #warn mayb add glow range and glow light to glow trait later
+
+https://discord.gg/RYnQZvxrmH
+https://discord.gg/RYnQZvxrmH

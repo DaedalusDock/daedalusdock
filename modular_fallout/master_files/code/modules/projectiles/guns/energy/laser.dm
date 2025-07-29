@@ -355,11 +355,9 @@
 	equipsound = 'modular_fallout/master_files/sound/f13weapons/equipsounds/plasequip.ogg'
 
 /obj/item/gun/energy/laser/plasma/carbine/enable_burst()
-	. = ..()
 	spread = 15
 
 /obj/item/gun/energy/laser/plasma/carbine/disable_burst()
-	. = ..()
 	spread = 0
 
 

@@ -334,7 +334,6 @@
 	active_throwforce = 30
 	stamina_cost = 15
 
-
 // Super Sledge			Keywords: Damage 25/60
 /obj/item/twohanded/sledgehammer/supersledge
 	name = "super sledge"
@@ -472,7 +471,6 @@
 /obj/item/twohanded/chainsaw/Initialize()
 	. = ..()
 	AddComponent(/datum/component/butchering, 30, 100, 0, 'modular_fallout/master_files/sound/weapons/chainsawhit.ogg', TRUE)
-	AddComponent(/datum/component/two_handed, require_twohands=TRUE)
 	update_icon()
 
 /obj/item/twohanded/chainsaw/attack_self(mob/user)

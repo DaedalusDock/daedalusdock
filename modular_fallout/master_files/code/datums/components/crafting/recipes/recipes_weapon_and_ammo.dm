@@ -66,7 +66,7 @@
 	name = "Compressed Gunpowder"
 	result = /obj/item/stack/ore/blackpowder
 	time = 5
-	reqs = list(/datum/reagent/blackpowder = 50)
+	reqs = list(/datum/reagent/gunpowder/blackpowder = 50)
 	category = CAT_WEAPONRY
 	subcategory = CAT_AMMO
 
@@ -107,7 +107,7 @@
 /datum/crafting_recipe/explosive/coffeepotbomb
 	name = "Coffeepot Bomb"
 	result = /obj/item/grenade/homemade/coffeepotbomb
-	reqs = list(/datum/reagent/blackpowder = 50,
+	reqs = list(/datum/reagent/gunpowder/blackpowder = 50,
 				/obj/item/crafting/coffee_pot = 1,
 				/obj/item/stack/cable_coil = 1,
 				/obj/item/crafting/timer = 1,)
@@ -334,7 +334,7 @@
 	result = /obj/item/gun/ballistic/revolver/colt6520
 	reqs = list(/obj/item/stack/sheet/mineral/wood = 1,
 				/obj/item/stack/crafting/metalparts = 5,
-				/datum/reagent/blackpowder = 10,
+				/datum/reagent/gunpowder/blackpowder = 10,
 				/obj/item/stack/sheet/iron = 1)
 	tool_behaviors = list(TOOL_WORKBENCH)
 	time = 120
@@ -871,7 +871,7 @@
 				/obj/item/advanced_crafting_components/assembly = 1,
 				/obj/item/advanced_crafting_components/alloys = 1,
 				/obj/item/advanced_crafting_components/receiver = 1,
-				/datum/reagent/blackpowder = 30,
+				/datum/reagent/gunpowder/blackpowder = 30,
 				/obj/item/stack/crafting/goodparts = 5
 				)
 	tool_behaviors = list(TOOL_AWORKBENCH)

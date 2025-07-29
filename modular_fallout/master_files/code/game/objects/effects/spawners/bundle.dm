@@ -151,9 +151,9 @@
 */
 /obj/effect/spawner/bundle/crate/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
-	if(flags_1 & INITIALIZED)
+	if(flags_1 & initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED
+	flags_1 |= initialized
 	if(items && items.len)
 		var/turf/T = get_turf(src)
 		var/obj/structure/closet/LC = locate(/obj/structure/closet) in T

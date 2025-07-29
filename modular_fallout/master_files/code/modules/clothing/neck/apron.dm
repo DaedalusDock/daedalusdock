@@ -11,14 +11,13 @@
 	name = "bartenders apron"
 	desc = "A fancy purple apron for a stylish bartender. Can hold some bottles, a few kitchen trinkets and maybe a small discrete revolver...."
 	icon_state = "bartender"
-	storage_type = /datum/storage/concrete/pockets/bartender
+	pocket_storage_component_path = /datum/storage/concrete/pockets/bartender
 
 /obj/item/clothing/neck/apron/medicus
 	name = "medicus apron"
 	desc = "The waxed cotton apron of a Medicus, marked with a red bull insignia. Has pockets for some small medical equipment."
 	icon_state = "medicus"
 	pocket_storage_component_path = /datum/component/storage/concrete/pockets/medical
-	armor = list(BLUNT = 0, PUNCTURE = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 20, RAD = 0, FIRE = 0, ACID = 0)
 
 /obj/item/clothing/neck/apron/chef
 	name = "chefs apron"
@@ -39,7 +38,7 @@
 	heat_protection = CHEST|GROIN|LEGS
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	pocket_storage_component_path = /datum/component/storage/concrete/pockets/crafter
-	armor = list(BLUNT = 0, PUNCTURE = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 20, ACID = 0)
+	armor = list(BLUNT = 0, PUNCTURE = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 50, ACID = 0)
 
 /obj/item/clothing/neck/apron/housewife
 	name = "50s housewife apron"

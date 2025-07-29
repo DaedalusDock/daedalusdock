@@ -23,7 +23,7 @@
 	can_automatic = FALSE
 	semi_auto = TRUE
 	can_suppress = TRUE
-	modular_fallout/master_files/sound/weapons/sound = 'modular_fallout/master_files/sound/weapons/modular_fallout/master_files/sound/weapons/sounds/pistolmodular_fallout/master_files/sound/weapons/.ogg'
+	fire_sound = 'sound/weapons/pistol.ogg'
 
 	weapon_weight = WEAPON_LIGHT //Makes dual wield possible
 	force = 12 //Pistol whip

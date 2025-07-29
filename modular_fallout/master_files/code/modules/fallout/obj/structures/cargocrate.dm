@@ -9,7 +9,7 @@
 	resistance_flags = INDESTRUCTIBLE
 	bound_width = 64
 
-/obj/structure/cargocrate/Initialize()
-	. = ..()
-	icon_state = pick("cargocrate1","cargocrate2","cargocrate3","cargocrate4","cargocrate5")
-	AddComponent(/datum/component/seethrough, get_seethrough_map())
+///obj/structure/cargocrate/Initialize()
+//	. = ..()
+//	icon_state = pick("cargocrate1","cargocrate2","cargocrate3","cargocrate4","cargocrate5")
+//	AddComponent(/datum/component/seethrough, get_seethrough_map())

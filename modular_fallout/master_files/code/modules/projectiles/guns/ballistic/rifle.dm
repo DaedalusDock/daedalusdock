@@ -32,12 +32,9 @@
 	var/pump_sound = 'modular_fallout/master_files/sound/weapons/shotgunpump.ogg'
 	fire_sound = 'modular_fallout/master_files/sound/weapons/shotgun.ogg'
 
-/obj/item/gun/ballistic/rifle/process_chamber(mob/living/user, empty_chamber = 0)
-	return ..() //changed argument value
-
 /obj/item/gun/ballistic/rifle/can_fire()
 	return !!chambered?.loaded_projectile
-
+/*
 /obj/item/gun/ballistic/rifle/attack_self(mob/living/user)
 	if(recentpump > world.time)
 		return
@@ -84,7 +81,7 @@
 	. = ..()
 	if (chambered)
 		. += "A [chambered.loaded_projectile ? "live" : "spent"] one is in the chamber."
-
+*/
 
 
 ///////////////////

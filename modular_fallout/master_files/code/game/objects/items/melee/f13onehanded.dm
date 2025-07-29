@@ -752,12 +752,11 @@ obj/item/melee/onehanded/knife/switchblade
 /obj/item/hatchet
 	name = "hatchet"
 	desc = "Simple small metal axehead on a handle made from wood or some other hard material."
-	icon = 'modular_fallout/master_files/icons/obj/items_and_weapons.dmi'
+	icon = 'icons/obj/items_and_weapons.dmi'
 	icon_state = "hatchet"
 	inhand_icon_state  = "hatchet"
-	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/equipment/hydroponics_lefthand.dmi'
-	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/equipment/hydroponics_righthand.dmi'
-	attack_speed = CLICK_CD_MELEE
+	lefthand_file = 'icons/fallout/onmob/weapons/equipment/hydroponics_lefthand.dmi'
+	righthand_file = 'icons/fallout/onmob/weapons/equipment/hydroponics_righthand.dmi'
 	flags_1 = CONDUCT_1
 	force = 24
 	w_class = WEIGHT_CLASS_SMALL

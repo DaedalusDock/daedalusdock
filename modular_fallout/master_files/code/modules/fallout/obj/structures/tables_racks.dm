@@ -78,4 +78,4 @@
 		return FALSE
 
 /obj/structure/table/snooker/Initialize()
-	AddComponent(/datum/component/simple_rotation, ROTATION_ALTCLICK | ROTATION_EIGHTDIR)
+	AddComponent(/datum/component/simple_rotation, ROTATION_REQUIRE_WRENCH|ROTATION_IGNORE_ANCHORED)

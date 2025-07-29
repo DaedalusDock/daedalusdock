@@ -39,8 +39,7 @@
 	slot_flags = ITEM_SLOT_ID
 	storage_type = /datum/storage/money_bag/small
 
-/obj/item/storage/bag/money/small
-	. = ..()
+/datum/storage/money_bag/small
 	max_specific_storage = WEIGHT_CLASS_NORMAL
 	max_slots = 20
 	can_hold = typecacheof(list(/obj/item/coin, /obj/item/stack/spacecash, /obj/item/stack/f13Cash))

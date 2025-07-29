@@ -72,7 +72,7 @@
 		to_chat(user, "<span class='notice'>Alt-click it to quickly draw the blade.</span>")
 
 /obj/item/storage/belt/waistsheath/AltClick(mob/user)
-	if(!iscarbon(user) || !user.canUseTopic(src, BE_CLOSE, ismonkey(user)))
+	if(user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return
 	if(length(contents))
 		var/obj/item/I = contents[2]

@@ -5,7 +5,7 @@
 	desc = "It's a salted cracker."
 	icon_state = "cracker"
 	bite_consumption = 1
-	initial_reagents = list(/datum/reagent/consumable/nutriment = 1)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 1)
 	tastes = list("cracker" = 1)
 	foodtypes = GRAIN
 

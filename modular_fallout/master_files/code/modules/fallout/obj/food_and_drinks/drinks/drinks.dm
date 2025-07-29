@@ -25,7 +25,7 @@
 	desc = "The most popular flavored root beer in the West!"
 	icon = 'modular_fallout/master_files/icons/obj/f13vending.dmi'
 	icon_state = "sunset"
-	list_reagents = list(/datum/reagent/consumable/ethanol/whiskey = 1, /datum/reagent/consumable/sunset = 15, /datum/reagent/medicine/salglu_solution = 5)
+	list_reagents = list(/datum/reagent/consumable/ethanol/whiskey = 1, /datum/reagent/consumable/sunset = 15, /datum/reagent/medicine/saline_glucose = 5)
 	drink_type = SUGAR
 	isGlass = TRUE
 
@@ -187,7 +187,7 @@
 	icon_state = "instatea"
 	list_reagents = list(/datum/reagent/toxin/teapowder = 98, /datum/reagent/uranium/radium = 2)
 
-/obj/item/reagent_containers/food/drinks/soda_cans/cream
+/obj/item/reagent_containers/cup/glass/bottle/cream
 	name = "canned cream"
 	desc = "It's a can of cream. Made from milk. What else did you think you'd find in there?"
 	icon_state = "cream"

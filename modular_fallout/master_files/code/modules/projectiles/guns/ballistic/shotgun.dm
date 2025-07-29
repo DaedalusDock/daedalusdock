@@ -291,7 +291,7 @@
 	inhand_icon_state  = "shotguncity"
 	mag_type = /obj/item/ammo_box/magazine/internal/shot/com/citykiller
 	fire_delay = 5
-	var/semi_auto = TRUE
+	semi_auto = TRUE
 	fire_sound = 'modular_fallout/master_files/sound/weapons/riot_shotgun.ogg'
 
 

@@ -4,6 +4,9 @@
 		bookshelves, report on station news."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
+
+	pinpad_key = "power"
+
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"

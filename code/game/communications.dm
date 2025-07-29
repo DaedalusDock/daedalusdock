@@ -195,7 +195,8 @@ GLOBAL_LIST_INIT(freq2icon, list(
 	. = TRUE
 
 /datum/signal
-	///The author/sender of this packet.
+	/// The author/sender of this packet.
+	/// This atom will be skipped during packet send.
 	var/datum/weakref/author
 	///The medium of which this packet is travelling
 	var/transmission_method

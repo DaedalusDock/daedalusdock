@@ -458,7 +458,7 @@
 		system.print_error("<b>Error: Cannot find executable.")
 		return
 
-	program.get_computer().execute_program(program_to_run)
+	system.execute_program(program_to_run)
 
 /datum/shell_command/thinkdos/tree
 	aliases = list("tree")
@@ -530,9 +530,8 @@
 /datum/shell_command/thinkdos_backprog/view/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/list/out = list("<b>Current programs in memory:</b>")
 
-	var/obj/machinery/computer4/computer = system.get_computer()
 	var/count = 0
-	for(var/datum/c4_file/terminal_program/running_program as anything in computer.processing_programs)
+	for(var/datum/c4_file/terminal_program/running_program as anything in system.processing_programs)
 		count++
 		out += "<b>ID: [count]</b> [running_program == system ? "SYSTEM" : running_program.name]"
 
@@ -547,17 +546,16 @@
 		system.println("<b>Syntax:</b> backprog kill \[program id\]")
 		return
 
-	var/obj/machinery/computer4/computer = system.get_computer()
-	if(!(id in 1 to length(computer.processing_programs)))
+	if(!(id in 1 to length(system.processing_programs)))
 		system.print_error("<b>Error:</b> Array index out of bounds.")
 		return
 
-	var/datum/c4_file/terminal_program/to_kill = computer.processing_programs[id]
+	var/datum/c4_file/terminal_program/to_kill = system.processing_programs[id]
 	if(to_kill == system)
 		system.print_error("<b>Error:</b> Unable to terminate process.")
 		return
 
-	computer.unload_program(to_kill)
+	system.unload_program(to_kill)
 	system.println("Terminated [to_kill.name].")
 
 /datum/shell_command/thinkdos_backprog/switch_prog
@@ -569,17 +567,16 @@
 		system.println("<b>Syntax:</b> backprog switch \[program id\]")
 		return
 
-	var/obj/machinery/computer4/computer = system.get_computer()
-	if(!(id in 1 to length(computer.processing_programs)))
+	if(!(id in 1 to length(system.processing_programs)))
 		system.print_error("<b>Error:</b> Array index out of bounds.")
 		return
 
-	var/datum/c4_file/terminal_program/to_run = computer.processing_programs[id]
+	var/datum/c4_file/terminal_program/to_run = system.processing_programs[id]
 	if(to_run == system)
 		system.print_error("<b>Error:</b> Process already focused.")
 		return
 
-	computer.execute_program(to_run)
+	system.execute_program(to_run)
 
 /datum/shell_command/thinkdos/login
 	aliases = list("login", "logon")

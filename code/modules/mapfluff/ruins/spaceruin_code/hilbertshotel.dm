@@ -33,12 +33,18 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	ejectRooms()
 	return ..()
 
-/obj/item/hilbertshotel/attack(mob/living/M, mob/living/user)
+/obj/item/hilbertshotel/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
+	var/mob/living/M = interacting_with
 	if(M.mind)
 		to_chat(user, span_notice("You invite [M] to the hotel."))
 		promptAndCheckIn(user, M)
+		return ITEM_INTERACT_SUCCESS
 	else
-		to_chat(user, span_warning("[M] is not intelligent enough to understand how to use this device!"))
+		to_chat(user, span_warning("[M] is not intelligent enough to understand how to use this device."))
+		return ITEM_INTERACT_BLOCKING
 
 /obj/item/hilbertshotel/attack_self(mob/user)
 	. = ..()

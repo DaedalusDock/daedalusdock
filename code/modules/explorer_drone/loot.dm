@@ -154,11 +154,6 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 	. = ..()
 	cell = new /obj/item/stock_parts/cell(src)
 
-/obj/item/firelance/attack(mob/living/M, mob/living/user, params, datum/special_attack/used_special)
-	if(!user.combat_mode)
-		return
-	. = ..()
-
 /obj/item/firelance/get_cell()
 	return cell
 

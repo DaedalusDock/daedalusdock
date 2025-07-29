@@ -250,13 +250,15 @@
 	worn_icon_state = "horn_gold"
 	COOLDOWN_DECLARE(golden_horn_cooldown)
 
-/obj/item/bikehorn/golden/attack()
-	flip_mobs()
-	return ..()
+/obj/item/bikehorn/golden/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(isliving(interacting_with))
+		flip_mobs()
+		user.do_attack_animation(interacting_with, used_item = src, do_hurt = FALSE)
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/bikehorn/golden/attack_self(mob/user)
 	flip_mobs()
-	..()
+	. = ..()
 
 /obj/item/bikehorn/golden/proc/flip_mobs(mob/living/carbon/M, mob/user)
 	if(!COOLDOWN_FINISHED(src, golden_horn_cooldown))

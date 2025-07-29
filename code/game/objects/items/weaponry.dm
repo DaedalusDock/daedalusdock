@@ -29,14 +29,17 @@ oranges says: This is a meme relating to the english translation of the ss13 rus
 mrdoombringer sez: and remember kids, if you try and PR a fix for this item's grammar, you are admitting that you are, indeed, a newfriend.
 for further reading, please see: https://github.com/tgstation/tgstation/pull/30173 and https://translate.google.com/translate?sl=auto&tl=en&js=y&prev=_t&hl=en&ie=UTF-8&u=%2F%2Flurkmore.to%2FSS13&edit-text=&act=url
 */
-/obj/item/banhammer/attack(mob/M, mob/living/user)
+/obj/item/banhammer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return
+
+	var/mob/living/M = interacting_with
 	if(user.zone_selected == BODY_ZONE_HEAD)
 		M.visible_message(span_danger("[user] are stroking the head of [M] with a bangammer."), span_userdanger("[user] are stroking your head with a bangammer."), span_hear("You hear a bangammer stroking a head.")) // see above comment
 	else
 		M.visible_message(span_danger("[M] has been banned FOR NO REISIN by [user]!"), span_userdanger("You have been banned FOR NO REISIN by [user]!"), span_hear("You hear a banhammer banning someone."))
 	playsound(loc, 'sound/effects/adminhelp.ogg', 15) //keep it at 15% volume so people don't jump out of their skin too much
-	if(user.combat_mode)
-		return ..(M, user)
+	user.do_attack_animation(M, used_item = src)
 
 /obj/item/sord
 	name = "\improper SORD"
@@ -156,6 +159,9 @@ TYPEINFO_DEF(/obj/item/claymore)
 
 /obj/item/claymore/highlander/attack(mob/living/target, mob/living/user)
 	. = ..()
+	if(.)
+		return
+
 	if(!QDELETED(target) && target.stat == DEAD && target.mind && target.mind.special_role == "highlander")
 		user.fully_heal(admin_revive = FALSE) //STEAL THE LIFE OF OUR FALLEN FOES
 		add_notch(user)
@@ -621,8 +627,12 @@ TYPEINFO_DEF(/obj/item/melee/baseball_bat)
 
 /obj/item/melee/baseball_bat/attack(mob/living/target, mob/living/user)
 	. = ..()
+	if(.)
+		return
+
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		return
+
 	// we obtain the relative direction from the bat itself to the target
 	var/relative_direction = get_cardinal_dir(src, target)
 	var/atom/throw_target = get_edge_target_turf(target, relative_direction)
@@ -714,13 +724,16 @@ TYPEINFO_DEF(/obj/item/melee/baseball_bat)
 	name = "\improper ACME Extendo-Hand"
 	desc = "A novelty extendo-hand produced by the ACME corporation. Originally designed to knock out roadrunners."
 
-/obj/item/extendohand/attack(atom/M, mob/living/carbon/human/user, params)
-	var/dist = get_dist(M, user)
-	if(dist < min_reach)
-		to_chat(user, span_warning("[M] is too close to use [src] on."))
-		return
-	var/list/modifiers = params2list(params)
-	M.attack_hand(user, modifiers)
+/obj/item/extendohand/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
+	if(get_dist(user, interacting_with) < min_reach)
+		to_chat(user, span_warning("[interacting_with] is too close to use [src] on."))
+		return ITEM_INTERACT_BLOCKING
+
+	interacting_with.attack_hand(user, modifiers)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gohei
 	name = "gohei"

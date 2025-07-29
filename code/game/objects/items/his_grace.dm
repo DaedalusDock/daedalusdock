@@ -59,10 +59,12 @@
 		INVOKE_ASYNC(src, PROC_REF(awaken), user)
 
 /obj/item/his_grace/attack(mob/living/M, mob/user)
+	. = ..()
+	if(!.)
+		return
+
 	if(awakened && M.stat)
 		consume(M)
-	else
-		..()
 
 /obj/item/his_grace/CtrlClick(mob/user, list/params) //you can't pull his grace
 	return

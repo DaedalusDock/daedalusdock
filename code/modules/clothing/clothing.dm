@@ -112,14 +112,15 @@
 	else
 		qdel(src)
 
-/obj/item/clothing/attack(mob/living/M, mob/living/user, params, datum/special_attack/used_special)
-	if(user.combat_mode || !ismoth(M))
-		return ..()
+/obj/item/clothing/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ishuman(interacting_with) || !ismoth(interacting_with))
+		return NONE
+
 	if(isnull(moth_snack))
 		moth_snack = new
 		moth_snack.name = name
 		moth_snack.clothing = WEAKREF(src)
-	moth_snack.attack(M, user, params)
+	return interacting_with.base_item_interaction(src, user, list2params(modifiers))
 
 /obj/item/clothing/attackby(obj/item/W, mob/user, params)
 	if(!istype(W, repairable_by))

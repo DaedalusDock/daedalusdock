@@ -26,8 +26,8 @@
 	if(.)
 		return
 
-	if(!HAS_TRAIT(user, TRAIT_AETHERITE))
-		to_chat(src, span_warning("You are not sure what to do with this."))
+	if(!HAS_TRAIT(user.mind, TRAIT_AETHERITE))
+		to_chat(user, span_warning("You are not sure what to do with this."))
 		return
 
 	var/list/options = list()
@@ -46,8 +46,8 @@
 	if(!isopenturf(interacting_with))
 		return NONE
 
-	if(!HAS_TRAIT(user, TRAIT_AETHERITE))
-		to_chat(src, span_warning("You are not sure what to do with this."))
+	if(!HAS_TRAIT(user.mind, TRAIT_AETHERITE))
+		to_chat(user, span_warning("You are not sure what to do with this."))
 		return ITEM_INTERACT_BLOCKING
 
 	var/turf/T = interacting_with

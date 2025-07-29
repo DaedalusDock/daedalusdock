@@ -241,12 +241,6 @@
 	user.changeNext_move(CLICK_CD_MELEE)
 	O.attacked_by(src, user)
 
-/obj/item/gun_control/attack(mob/living/M, mob/living/user)
-	M.lastattacker = user.real_name
-	M.lastattackerckey = user.ckey
-	M.attacked_by(src, user)
-	add_fingerprint(user)
-
 /obj/item/gun_control/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	var/obj/machinery/deployable_turret/E = user.buckled
 	E.calculated_projectile_vars = calculate_projectile_angle_and_pixel_offsets(user, interacting_with, modifiers)

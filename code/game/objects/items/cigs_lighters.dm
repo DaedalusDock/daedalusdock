@@ -86,24 +86,31 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	return ..()
 
 /obj/item/match/attack(mob/living/carbon/M, mob/living/carbon/user)
-	if(!isliving(M))
+	. = ..()
+	if(.)
 		return
 
 	if(lit && M.ignite_mob())
 		message_admins("[ADMIN_LOOKUPFLW(user)] set [key_name_admin(M)] on fire with [src] at [AREACOORD(user)]")
 		log_game("[key_name(user)] set [key_name(M)] on fire with [src] at [AREACOORD(user)]")
 
-	var/obj/item/clothing/mask/cigarette/cig = help_light_cig(M)
-	if(!lit || !cig || user.combat_mode)
-		..()
-		return
+/obj/item/match/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!lit)
+		return NONE
 
-	if(cig.lit)
-		to_chat(user, span_warning("[cig] is already lit!"))
-	if(M == user)
-		cig.attackby(src, user)
+	var/obj/item/clothing/mask/cigarette/to_light = help_light_cig(interacting_with)
+	if(!to_light)
+		return NONE
+
+	if(to_light.lit)
+		to_chat(user, span_warning("[interacting_with.p_their(TRUE)] [to_light.name] is already lit."))
+		return ITEM_INTERACT_BLOCKING
+
+	if(interacting_with == user)
+		to_light.item_interaction(src, user)
 	else
-		cig.light(span_notice("[user] holds [src] out for [M], and lights [cig]."))
+		to_light.light(span_notice("[user] holds [src] out for [interacting_with], and lights [interacting_with.p_their()] [to_light.name]."))
+	return ITEM_INTERACT_SUCCESS
 
 /// Finds a cigarette on another mob to help light.
 /obj/item/proc/help_light_cig(mob/living/M)
@@ -201,25 +208,31 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 	user.visible_message(span_suicide("[user] is huffing [src] as quickly as [user.p_they()] can! It looks like [user.p_theyre()] trying to give [user.p_them()]self cancer."))
 	return (TOXLOSS|OXYLOSS)
 
-/obj/item/clothing/mask/cigarette/attackby(obj/item/W, mob/user, params)
+/obj/item/clothing/mask/cigarette/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(lit)
-		return ..()
+		return NONE
 
-	var/lighting_text = W.ignition_effect(src, user)
+	var/lighting_text = tool.ignition_effect(src, user)
 	if(!lighting_text)
-		return ..()
+		return NONE
 
 	var/datum/gas_mixture/air = unsafe_return_air()
 	if(!air || !air.hasGas(GAS_OXYGEN, 1)) //or oxygen on a tile to burn
 		to_chat(user, span_notice("\The [src] won't light."))
-		return ..()
+		return ITEM_INTERACT_BLOCKING
 
-	if(smoketime > 0)
+	if(smoketime <= 0)
+		to_chat(user, span_warning("There is nothing left to smoke."))
 		light(lighting_text)
-	else
-		to_chat(user, span_warning("There is nothing to smoke!"))
+		return ITEM_INTERACT_BLOCKING
+
+	light(lighting_text)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/clothing/mask/cigarette/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(isliving(interacting_with))
+		return interact_with_mob(interacting_with, user, modifiers)
+
 	if(lit) //can't dip if cigarette is lit (it will heat the reagents in the glass instead)
 		return NONE
 
@@ -239,6 +252,38 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 		to_chat(user, span_warning("[src] is full!"))
 
 	return ITEM_INTERACT_BLOCKING
+
+/obj/item/clothing/mask/cigarette/proc/interact_with_mob(mob/living/interacting_with, mob/living/user, list/modifiers)
+	if(interacting_with.on_fire && !lit)
+		light(span_notice("[user] lights [src] with [interacting_with]'s body."))
+		return ITEM_INTERACT_SUCCESS
+
+	if(lit && user == interacting_with)
+		if(!user.has_mouth())
+			return ITEM_INTERACT_BLOCKING
+
+		if(user.is_mouth_covered())
+			to_chat(user, span_warning("Your mouth is covered."))
+			return ITEM_INTERACT_BLOCKING
+
+		user.visible_message(span_notice("[user] takes a drag of their [name]."))
+		playsound(user, 'sound/effects/inhale.ogg', 50, 0, -1)
+		use_reagents(user, TRUE)
+		return TRUE
+
+	var/obj/item/clothing/mask/cigarette/to_light = help_light_cig(interacting_with)
+	if(to_light)
+		if(to_light.lit)
+			to_chat(user, span_warning("[to_light] is already lit."))
+			return ITEM_INTERACT_BLOCKING
+
+		if(interacting_with == user)
+			to_light.item_interaction(src, user)
+		else
+			to_light.light(span_notice("[user] holds [src] out for [interacting_with], and lights [interacting_with.p_their()] [to_light.name]."))
+		return ITEM_INTERACT_SUCCESS
+
+	return NONE
 
 /obj/item/clothing/mask/cigarette/update_icon_state()
 	. = ..()
@@ -381,37 +426,6 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 	var/obj/item/cigbutt/butt = new type_butt(location)
 	transfer_evidence_to(butt)
 	qdel(src)
-
-/obj/item/clothing/mask/cigarette/attack(mob/living/carbon/M, mob/living/carbon/user)
-	if(!istype(M))
-		return ..()
-
-	if(M.on_fire && !lit)
-		light(span_notice("[user] lights [src] with [M]'s burning body. What a cold-blooded badass."))
-		return
-
-	if(user.combat_mode)
-		return ..()
-
-	if(lit && user == M)
-		if(!user.has_mouth())
-			return TRUE
-		if(user.is_mouth_covered())
-			to_chat(user, span_warning("Your mouth is covered."))
-			return TRUE
-		user.visible_message(span_notice("[user] takes a drag of their [name]."))
-		playsound(user, 'sound/effects/inhale.ogg', 50, 0, -1)
-		use_reagents(user, TRUE)
-		return TRUE
-
-	var/obj/item/clothing/mask/cigarette/cig = help_light_cig(M)
-	if(!lit || !cig)
-		return ..()
-
-	if(cig.lit)
-		to_chat(user, span_warning("The [cig.name] is already lit!"))
-
-	cig.light(span_notice("[user] holds the [name] out for [M], and lights [M.p_their()] [cig.name]."))
 
 /obj/item/clothing/mask/cigarette/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	light()
@@ -665,17 +679,22 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 	user?.update_worn_mask()
 	STOP_PROCESSING(SSobj, src)
 
-/obj/item/clothing/mask/cigarette/pipe/attackby(obj/item/thing, mob/user, params)
-	if(!istype(thing, /obj/item/food/grown))
-		return ..()
+/obj/item/clothing/mask/cigarette/pipe/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	. = ..()
+	if(. == ITEM_INTERACT_ANY_BLOCKER)
+		return
 
-	var/obj/item/food/grown/to_smoke = thing
+	if(!istype(tool, /obj/item/food/grown))
+		return NONE
+
+	var/obj/item/food/grown/to_smoke = tool
 	if(packeditem)
-		to_chat(user, span_warning("It is already packed!"))
-		return
+		to_chat(user, span_warning("It is already packed."))
+		return ITEM_INTERACT_BLOCKING
+
 	if(!HAS_TRAIT(to_smoke, TRAIT_DRIED))
-		to_chat(user, span_warning("It has to be dried first!"))
-		return
+		to_chat(user, span_warning("It has to be dried first."))
+		return ITEM_INTERACT_BLOCKING
 
 	to_chat(user, span_notice("You stuff [to_smoke] into [src]."))
 	smoketime = 13 MINUTES
@@ -684,7 +703,7 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 	if(to_smoke.reagents)
 		to_smoke.reagents.trans_to(src, to_smoke.reagents.total_volume, transfered_by = user)
 	qdel(to_smoke)
-
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/clothing/mask/cigarette/pipe/attack_self(mob/user)
 	var/atom/location = drop_location()
@@ -863,25 +882,38 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 	user.visible_message(span_notice("After a few attempts, [user] manages to light [src]."))
 
 /obj/item/lighter/attack(mob/living/carbon/M, mob/living/carbon/user)
+	. = ..()
+	if(.)
+		return
+
 	if(lit && M.ignite_mob())
 		message_admins("[ADMIN_LOOKUPFLW(user)] set [key_name_admin(M)] on fire with [src] at [AREACOORD(user)]")
 		log_game("[key_name(user)] set [key_name(M)] on fire with [src] at [AREACOORD(user)]")
-	var/obj/item/clothing/mask/cigarette/cig = help_light_cig(M)
-	if(!lit || !cig || user.combat_mode)
-		..()
-		return
 
-	if(cig.lit)
-		to_chat(user, span_warning("The [cig.name] is already lit!"))
-	if(M == user)
-		cig.attackby(src, user)
-		return
+/obj/item/lighter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!lit)
+		return NONE
+
+	if(!isliving(interacting_with))
+		return NONE
+
+	var/obj/item/clothing/mask/cigarette/to_light = help_light_cig(interacting_with)
+	if(!to_light)
+		return NONE
+
+	if(to_light.lit)
+		to_chat(user, span_warning("The [to_light.name] is already lit!"))
+		return ITEM_INTERACT_BLOCKING
+
+	if(interacting_with == user)
+		to_light.item_interaction(src, user)
+		return ITEM_INTERACT_SUCCESS
 
 	if(fancy)
-		cig.light(span_rose("[user] whips the [name] out and holds it for [M]. [user.p_their(TRUE)] arm is as steady as the unflickering flame [user.p_they()] light[user.p_s()] \the [cig] with."))
+		to_light.light(span_rose("[user] whips the [name] out and holds it for [interacting_with]. [user.p_their(TRUE)] arm is as steady as the unflickering flame [user.p_they()] light[user.p_s()] \the [to_light] with."))
 	else
-		cig.light(span_notice("[user] holds the [name] out for [M], and lights [M.p_their()] [cig.name]."))
-
+		to_light.light(span_notice("[user] holds the [name] out for [interacting_with], and lights [interacting_with.p_their()] [to_light.name]."))
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/lighter/process()
 	open_flame(heat)

@@ -662,21 +662,29 @@
 // General procedures
 ///////////////////////////////////
 //you can use wires to heal robotics
-/obj/item/stack/cable_coil/attack(mob/living/carbon/human/H, mob/user)
-	if(!istype(H))
+/obj/item/stack/cable_coil/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ishuman(interacting_with))
 		return ..()
 
+	var/mob/living/carbon/human/H = interacting_with
 	var/obj/item/bodypart/affecting = H.get_bodypart(deprecise_zone(user.zone_selected))
-	if(affecting && !IS_ORGANIC_LIMB(affecting))
-		if(user == H)
-			user.visible_message(span_notice("[user] starts to fix some of the wires in [H]'s [affecting.name]."), span_notice("You start fixing some of the wires in [H == user ? "your" : "[H]'s"] [affecting.name]."))
-			if(!do_after(user, H, 50))
-				return
-		if(item_heal_robotic(H, user, 0, 15))
-			use(1)
-		return
-	else
+	if(!affecting || IS_ORGANIC_LIMB(affecting))
 		return ..()
+
+
+	user.visible_message(
+		span_notice("<b>[user]</b> starts to fix some of the wires in [user == H ? user.p_their() : "<b>[H]</b>'s" ] [affecting.plaintext_zone].")
+	)
+
+	if(!do_after(user, H, 5 SECONDS, display = src))
+		return ITEM_INTERACT_BLOCKING
+
+	if(!item_heal_robotic(H, user, 0, 15))
+		return ITEM_INTERACT_BLOCKING
+
+	use(1)
+	return ITEM_INTERACT_SUCCESS
+
 
 
 ///////////////////////////////////////////////

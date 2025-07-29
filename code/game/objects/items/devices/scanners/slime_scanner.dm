@@ -14,14 +14,19 @@ TYPEINFO_DEF(/obj/item/slime_scanner)
 	throwforce = 0
 	throw_range = 7
 
-/obj/item/slime_scanner/attack(mob/living/M, mob/living/user)
-	if(user.stat || user.is_blind())
-		return
-	if (!isslime(M))
-		to_chat(user, span_warning("This device can only scan slimes!"))
-		return
-	var/mob/living/simple_animal/slime/T = M
-	slime_scan(T, user)
+/obj/item/slime_scanner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
+	if(user.is_blind())
+		return NONE
+
+	if (!isslime(interacting_with))
+		to_chat(user, span_warning("This device can only scan slimes."))
+		return ITEM_INTERACT_BLOCKING
+
+	slime_scan(interacting_with, user)
+	return ITEM_INTERACT_SUCCESS
 
 /proc/slime_scan(mob/living/simple_animal/slime/T, mob/living/user)
 	var/to_render = "========================\

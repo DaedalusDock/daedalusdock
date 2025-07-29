@@ -74,26 +74,33 @@ effective or pretty fucking useless.
 	var/intensity = 10 // how much damage the radiation does
 	var/wavelength = 10 // time it takes for the radiation to kick in, in seconds
 
-/obj/item/healthanalyzer/rad_laser/attack(mob/living/M, mob/living/user)
+/obj/item/healthanalyzer/rad_laser/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!stealth || !irradiate)
-		..()
+		. = ..()
+
+	if(!isliving(interacting_with))
+		return . || NONE
+
 	if(!irradiate)
-		return
-	var/mob/living/carbon/human/human_target = M
-	if(istype(human_target) && !used && SSradiation.wearing_rad_protected_clothing(human_target)) //intentionally not checking for TRAIT_RADIMMUNE here so that tatortot can still fuck up and waste their cooldown.
-		to_chat(user, span_warning("[M]'s clothing is fully protecting [M.p_them()] from irradiation!"))
-		return
+		return . || ITEM_INTERACT_BLOCKING
+
+	if(ishuman(interacting_with) && !used && SSradiation.wearing_rad_protected_clothing(interacting_with)) //intentionally not checking for TRAIT_RADIMMUNE here so that tatortot can still fuck up and waste their cooldown.
+		to_chat(user, span_warning("[interacting_with]'s clothing is fully protecting [interacting_with.p_them()] from irradiation!"))
+		return . || ITEM_INTERACT_BLOCKING
+
 	if(!used)
-		log_combat(user, M, "irradiated", src)
+		log_combat(user, interacting_with, "irradiated", src)
 		var/cooldown = get_cooldown()
 		used = TRUE
 		icon_state = "health1"
 		addtimer(VARSET_CALLBACK(src, used, FALSE), cooldown)
 		addtimer(VARSET_CALLBACK(src, icon_state, "health"), cooldown)
-		to_chat(user, span_warning("Successfully irradiated [M]."))
-		addtimer(CALLBACK(src, PROC_REF(radiation_aftereffect), M, intensity), (wavelength+(intensity*4))*5)
-		return
+		to_chat(user, span_warning("Successfully irradiated [interacting_with]."))
+		addtimer(CALLBACK(src, PROC_REF(radiation_aftereffect), interacting_with, intensity), (wavelength+(intensity*4))*5)
+		return . || ITEM_INTERACT_SUCCESS
+
 	to_chat(user, span_warning("The radioactive microlaser is still recharging."))
+	return . || ITEM_INTERACT_BLOCKING
 
 /obj/item/healthanalyzer/rad_laser/proc/radiation_aftereffect(mob/living/M, passed_intensity)
 	if(QDELETED(M) || !ishuman(M) || HAS_TRAIT(M, TRAIT_RADIMMUNE))

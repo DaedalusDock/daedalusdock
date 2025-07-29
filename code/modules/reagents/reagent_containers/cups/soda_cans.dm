@@ -49,18 +49,25 @@
 	sleep(20) //dramatic pause
 	return TOXLOSS
 
-/obj/item/reagent_containers/cup/soda_cans/attack(mob/M, mob/living/user)
-	if(istype(M, /mob/living/carbon) && !reagents.total_volume && user.combat_mode && user.zone_selected == BODY_ZONE_HEAD)
-		if(M == user)
-			user.visible_message(span_warning("[user] crushes the can of [src] on [user.p_their()] forehead!"), span_notice("You crush the can of [src] on your forehead."))
+/obj/item/reagent_containers/cup/soda_cans/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(ishuman(interacting_with) && !reagents.total_volume && user.combat_mode && user.zone_selected == BODY_ZONE_HEAD)
+		if(interacting_with == user)
+			user.visible_message(
+				span_warning("[user] crushes the can of [src] on [user.p_their()] forehead."),
+				blind_message = span_hear("You hear a small metal can being crushed.")
+			)
 		else
-			user.visible_message(span_warning("[user] crushes the can of [src] on [M]'s forehead!"), span_notice("You crush the can of [src] on [M]'s forehead."))
-		playsound(M,'sound/weapons/pierce.ogg', rand(10,50), TRUE)
-		var/obj/item/trash/can/crushed_can = new /obj/item/trash/can(M.loc)
+			user.visible_message(
+				span_warning("<b>[user]</b> crushes the can of [src] on <b>[interacting_with]</b>'s forehead."),
+				blind_message = span_hear("You hear a small metal can being crushed."),
+			)
+		playsound(interacting_with, 'sound/weapons/pierce.ogg', rand(10,50), TRUE)
+		var/obj/item/trash/can/crushed_can = new /obj/item/trash/can(interacting_with.drop_location())
 		crushed_can.icon_state = icon_state
 		qdel(src)
-		return TRUE
-	. = ..()
+		return ITEM_INTERACT_SUCCESS
+
+	return ..()
 
 /obj/item/reagent_containers/cup/soda_cans/bullet_act(obj/projectile/P)
 	. = ..()

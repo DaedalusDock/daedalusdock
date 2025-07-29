@@ -663,12 +663,6 @@
 		icon_state = "[icon_state]_open"
 	return ..()
 
-/obj/item/food/canned/attack(mob/living/target, mob/user, def_zone)
-	if (!is_drainable())
-		to_chat(user, span_warning("[src]'s lid hasn't been opened!"))
-		return FALSE
-	return ..()
-
 /obj/item/food/canned/beans
 	name = "tin of beans"
 	desc = "Musical fruit in a slightly less musical container."

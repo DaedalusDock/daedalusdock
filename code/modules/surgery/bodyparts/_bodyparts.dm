@@ -275,22 +275,20 @@
 		return
 	return ..()
 
-/obj/item/bodypart/attack(mob/living/carbon/victim, mob/user)
-	SHOULD_CALL_PARENT(TRUE)
+/obj/item/bodypart/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ishuman(interacting_with) || !HAS_TRAIT(interacting_with, TRAIT_LIMBATTACHMENT))
+		return NONE
 
-	if(!ishuman(victim) || !HAS_TRAIT(victim, TRAIT_LIMBATTACHMENT))
-		return ..()
-
-	var/mob/living/carbon/human/human_victim = victim
+	var/mob/living/carbon/human/human_victim = interacting_with
 	if(human_victim.get_bodypart(body_zone))
-		return ..()
+		return ITEM_INTERACT_BLOCKING
 
 	if(!user.temporarilyRemoveItemFromInventory(src))
-		return ..()
+		return ITEM_INTERACT_BLOCKING
 
-	if(!attach_limb(victim))
-		to_chat(user, span_warning("[human_victim]'s body rejects [src]!"))
-		return
+	if(!attach_limb(human_victim))
+		to_chat(user, span_warning("[human_victim]'s body rejects [src]."))
+		return ITEM_INTERACT_BLOCKING
 
 	if(human_victim == user)
 		human_victim.visible_message(span_warning("[human_victim] jams [src] into [human_victim.p_their()] empty socket!"),\
@@ -299,22 +297,30 @@
 		human_victim.visible_message(span_warning("[user] jams [src] into [human_victim]'s empty socket!"),\
 		span_notice("[user] forces [src] into your empty socket, and it locks into place!"))
 
+	return ITEM_INTERACT_SUCCESS
 
-/obj/item/bodypart/attackby(obj/item/weapon, mob/user, params)
-	SHOULD_CALL_PARENT(TRUE)
+/obj/item/bodypart/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(user.combat_mode)
+		return NONE
 
-	if(weapon.sharpness)
-		weapon.leave_evidence(user, src)
-		if(!contents.len)
-			to_chat(user, span_warning("There is nothing left inside [src]!"))
-			return
-		playsound(loc, 'sound/weapons/slice.ogg', 50, TRUE, -1)
-		user.visible_message(span_warning("[user] begins to cut open [src]."),\
-			span_notice("You begin to cut open [src]..."))
-		if(do_after(user, src, 54))
-			drop_contents(user, TRUE)
-	else
-		return ..()
+	if(!tool.sharpness)
+		return NONE
+
+	if(!contents.len)
+		to_chat(user, span_warning("There is nothing left inside [src]."))
+		return ITEM_INTERACT_BLOCKING
+
+	playsound(loc, 'sound/weapons/slice.ogg', 50, TRUE, -1)
+	user.visible_message(
+		span_warning("[user] begins to cut open [src]."),
+		span_notice("You begin to cut open [src]...")
+	)
+
+	if(!do_after(user, src, 54))
+		return ITEM_INTERACT_BLOCKING
+
+	drop_contents(user, TRUE)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/bodypart/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	SHOULD_CALL_PARENT(TRUE)

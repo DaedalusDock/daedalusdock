@@ -13,6 +13,9 @@ Slimecrossing Weapons
 
 /obj/item/melee/arm_blade/slime/attack(mob/living/L, mob/user)
 	. = ..()
+	if(.)
+		return
+
 	if(prob(20))
 		user.emote("scream")
 

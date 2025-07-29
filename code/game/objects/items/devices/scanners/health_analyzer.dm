@@ -24,6 +24,9 @@ TYPEINFO_DEF(/obj/item/healthanalyzer)
 	throwforce = 3
 	w_class = WEIGHT_CLASS_TINY
 	throw_range = 7
+
+	fingerprint_flags_interact_with_atom = FINGERPRINT_ITEM_FAILURE|FINGERPRINT_ITEM_SUCCESS // Doesn't leave fingerprints on the target.
+
 	var/mode = SCANNER_VERBOSE
 	var/scanmode = SCANMODE_HEALTH
 	var/advanced = FALSE
@@ -47,7 +50,11 @@ TYPEINFO_DEF(/obj/item/healthanalyzer)
 		if(SCANMODE_SURGERY)
 			to_chat(user, span_notice("You switch the health analyzer to output surgerical information."))
 
-/obj/item/healthanalyzer/attack(mob/living/M, mob/living/carbon/human/user)
+/obj/item/healthanalyzer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
+	var/mob/living/M = interacting_with
 	flick("[icon_state]-scan", src) //makes it so that it plays the scan animation upon scanning, including clumsy scanning
 
 	// Clumsiness/brain damage check
@@ -57,12 +64,13 @@ TYPEINFO_DEF(/obj/item/healthanalyzer)
 		to_chat(user, "[span_info("Analyzing results for The floor:\n\tOverall status: <b>Healthy</b>")]\
 				\n[span_info("Key: <font color='#00cccc'>Suffocation</font>/<font color='#00cc66'>Toxin</font>/<font color='#ffcc33'>Burn</font>/<font color='#ff3333'>Brute</font>")]\
 				\n[span_info("\tDamage specifics: <font color='#66cccc'>0</font>-<font color='#00cc66'>0</font>-<font color='#ff9933'>0</font>-<font color='#ff3333'>0</font>")]\
-				\n[span_info("Body temperature: ???")]")
-		return
+				\n[span_info("Body temperature: ???")]"
+		)
+		return ITEM_INTERACT_BLOCKING
 
 	if(ispodperson(M)&& !advanced)
 		to_chat(user, "<span class='info'>[M]'s biological structure is too complex for the health analyzer.")
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	playsound(user, 'sound/items/healthanalyzer.ogg', 50, 1)
 
@@ -76,8 +84,8 @@ TYPEINFO_DEF(/obj/item/healthanalyzer)
 		if (SCANMODE_SURGERY)
 			surgericalscan(user, M)
 
-	add_fingerprint(user)
 	playsound(user, 'sound/machines/ping.ogg', 50, FALSE)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/healthanalyzer/add_item_context(
 	obj/item/source,

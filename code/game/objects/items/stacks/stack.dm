@@ -640,26 +640,31 @@
 		merge(hitting)
 	. = ..()
 
-/obj/item/stack/attack(mob/living/M, mob/living/user, params, datum/special_attack/used_special)
+/obj/item/stack/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
 	if(splint_slowdown)
-		return try_splint(M, user)
+		return try_splint(interacting_with, user)
 
-	if(!user.combat_mode && absorption_capacity && ishuman(M))
-		var/obj/item/bodypart/BP = M.get_bodypart(user.zone_selected, TRUE)
-		if(BP.bandage)
-			to_chat(user, span_warning("[M]'s [BP.plaintext_zone] is already bandaged."))
-			return FALSE
+	if(!absorption_capacity || !ishuman(interacting_with))
+		return NONE
 
-		if(do_after(user, M, 5 SECONDS, DO_PUBLIC, display = src))
-			if(user == M)
-				user.visible_message(span_notice("[user] applies [src] to [user.p_their()] [BP.plaintext_zone]."))
-			else
-				user.visible_message(span_notice("[user] applies [src] to [M]'s [BP.plaintext_zone]."))
-			BP.apply_bandage(src)
-		return
+	var/mob/living/carbon/human/target = interacting_with
+	var/obj/item/bodypart/BP = target.get_bodypart(user.zone_selected, TRUE)
+	if(BP.bandage)
+		to_chat(user, span_warning("[target]'s [BP.plaintext_zone] is already bandaged."))
+		return ITEM_INTERACT_BLOCKING
 
-	return ..()
+	if(!do_after(user, target, 5 SECONDS, DO_PUBLIC, display = src))
+		return ITEM_INTERACT_BLOCKING
 
+	if(user == target)
+		user.visible_message(span_notice("[user] applies [src] to [user.p_their()] [BP.plaintext_zone]."))
+	else
+		user.visible_message(span_notice("[user] applies [src] to [target]'s [BP.plaintext_zone]."))
+	BP.apply_bandage(src)
+	return ITEM_INTERACT_SUCCESS
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/stack/attack_hand(mob/user, list/modifiers)

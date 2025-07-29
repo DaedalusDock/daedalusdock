@@ -4,6 +4,7 @@
 	Also known for fixing eye damage and blindness, for some reason."
 	icon = 'modular_fallout/master_files/icons/fallout/objects/medicine/drugs.dmi'
 	icon_state = "pill_mentat"
+	base_icon_state = "bandaid_healingpowder"
 	list_reagents = list(/datum/reagent/medicine/mentat = 10)
 
 /obj/item/reagent_containers/pill/fixer
@@ -12,6 +13,7 @@
 	Side effects include heavy nausea."
 	icon = 'modular_fallout/master_files/icons/fallout/objects/medicine/drugs.dmi'
 	icon_state = "pill_fixer"
+	base_icon_state = "pill_fixer"
 	list_reagents = list(/datum/reagent/medicine/fixer = 10)
 
 /obj/item/reagent_containers/pill/radx
@@ -19,6 +21,7 @@
 	desc = "A pill that stabilizes radiation levels and treats small amounts of toxin damage."
 	icon = 'modular_fallout/master_files/icons/fallout/objects/medicine/drugs.dmi'
 	icon_state = "pill_radx"
+	base_icon_state = "pill_radx"
 	list_reagents = list(/datum/reagent/medicine/radx = 20)
 
 /obj/item/reagent_containers/pill/buffout
@@ -27,4 +30,5 @@
 	Side effects may include sore muscles and increased irritability."
 	icon = 'modular_fallout/master_files/icons/fallout/objects/medicine/drugs.dmi'
 	icon_state = "pill_buff"
+	base_icon_state = "pill_buff"
 	list_reagents = list(/datum/reagent/drug/buffout = 10)

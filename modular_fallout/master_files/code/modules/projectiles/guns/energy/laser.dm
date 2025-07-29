@@ -6,6 +6,8 @@
 	name = "energy weapon template"
 	desc = "Should not exists. Bugreport."
 	icon_state = "laser"
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/laser.dmi'
+	base_icon_state = "laser"
 	inhand_icon_state = "laser"
 	slowdown = 0.3
 	w_class = WEIGHT_CLASS_BULKY
@@ -54,6 +56,7 @@
 	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/guns_lefthand.dmi'
 	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/guns_righthand.dmi'
 	icon_state = "wattz1000"
+	base_icon_state = "wattz1000"
 	inhand_icon_state = "laser-pistol"
 	fire_delay = 0
 	slowdown = 0.2
@@ -69,6 +72,7 @@
 	name = "Wattz 1000 magneto-laser pistol"
 	desc = "This Wattz 1000 laser pistol has been upgraded with a magnetic field targeting system that tightens the laser emission, giving this pistol extra penetrating power."
 	icon_state = "magnetowattz"
+	base_icon_state = "magnetowattz"
 	fire_delay = 0
 	inhand_icon_state = "laser-pistol"
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/pistol/wattz/magneto/hitscan)
@@ -80,6 +84,7 @@
 	desc = "A basic energy-based laser gun that fires concentrated beams of light."
 	slowdown = 0.2
 	icon_state = "AEP7"
+	base_icon_state = "AEP7"
 	inhand_icon_state = "laser-pistol"
 	w_class = WEIGHT_CLASS_NORMAL
 	weapon_weight = WEAPON_MEDIUM
@@ -100,6 +105,7 @@
 	slowdown = 0.2
 	desc = "This modified AEP7 laser pistol takes its power from the sun, recharging slowly using stored solar energy. However, it cannot be recharged manually as a result."
 	icon_state = "solarscorcher"
+	base_icon_state = "solarscorcher"
 	inhand_icon_state = "solarscorcher"
 	weapon_weight = WEAPON_MEDIUM
 	w_class = WEIGHT_CLASS_NORMAL
@@ -117,6 +123,7 @@
 	desc = "An ultracite enhanced energy-based laser gun that fires concentrated beams of light."
 	slowdown = 0.2
 	icon_state = "ultra_pistol"
+	base_icon_state = "ultra_pistol"
 	inhand_icon_state = "laser-pistol"
 	w_class = WEIGHT_CLASS_NORMAL
 	weapon_weight = WEAPON_MEDIUM
@@ -143,6 +150,7 @@
 	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/guns_lefthand.dmi'
 	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/guns_righthand.dmi'
 	icon_state = "wattz2k"
+	base_icon_state = "wattz2k"
 	inhand_icon_state = "sniper_rifle"
 	fire_delay = 1
 	ammo_type = list(/obj/item/ammo_casing/energy/wattz2k/hitscan)
@@ -160,6 +168,7 @@
 	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/guns_lefthand.dmi'
 	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/guns_righthand.dmi'
 	icon_state = "wattz2k"
+	base_icon_state = "wattz2k"
 	inhand_icon_state = "sniper_rifle"
 	fire_delay = 1
 	ammo_type = list(/obj/item/ammo_casing/energy/wattz2k/extended/hitscan)
@@ -176,6 +185,7 @@
 	name = "\improper AER9 laser rifle"
 	desc = "A sturdy pre-war laser rifle. Emits beams of concentrated light to kill targets. Fast firing, but not very powerful."
 	icon_state = "laser"
+	base_icon_state = "laser"
 	inhand_icon_state = "laser-rifle9"
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/lasgun/hitscan)
 	cell_type = /obj/item/stock_parts/cell/ammo/mfc
@@ -190,6 +200,7 @@
 	name = "\improper Ultracite laser rifle"
 	desc = "A sturdy and advanced military grade pre-war service laser rifle, now enhanced with ultracite"
 	icon_state = "ultra_rifle"
+	base_icon_state = "ultra_rifle"
 	inhand_icon_state = "laser-rifle9"
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/lasgun)
 	cell_type = /obj/item/stock_parts/cell/ammo/ultracite
@@ -205,6 +216,7 @@
 	name = "tribeam laser rifle"
 	desc = "A modified AER9 equipped with a refraction kit that divides the laser shot into three separate beams. While powerful, it has a reputation for friendly fire."
 	icon_state = "tribeam"
+	base_icon_state = "tribeam"
 	inhand_icon_state = "laser-rifle9"
 	fire_delay = 3
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/scatter/tribeam/hitscan)
@@ -217,6 +229,7 @@
 	name = "\improper AER12 laser rifle"
 	desc = "A cutting-edge, pre-war laser rifle. Its focusing crystal array is housed in gold alloy, making it difficult to maintain."
 	icon_state = "aer12"
+	base_icon_state = "aer12"
 	inhand_icon_state = "laser-rifle9"
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/aer12/hitscan)
 	cell_type = /obj/item/stock_parts/cell/ammo/mfc
@@ -232,6 +245,7 @@
 	name = "\improper AER14 laser rifle"
 	desc = "A bleeding-edge, pre-war laser rifle. Extremely powerful, but eats MFCs like nothing else."
 	icon_state = "aer14"
+	base_icon_state = "aer14"
 	inhand_icon_state = "laser-rifle9"
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/aer14/hitscan)
 	cell_type = /obj/item/stock_parts/cell/ammo/mfc
@@ -247,6 +261,7 @@
 	name = "\improper LAER"
 	desc = "The Laser Assister Energy Rifle is a powerful pre-war weapon developed just before the turn of the Great War. Due to its incredible rarity and unprecedented firepower, the weapon is coveted and nearly solely possesed by the Brotherhood of Steel; typically held by an Elder as a status symbol."
 	icon_state = "laer"
+	base_icon_state = "laer"
 	inhand_icon_state = "laer"
 	fire_delay = 3
 	burst_size = 1
@@ -260,6 +275,7 @@
 	name = "laser RCW"
 	desc = "A rapid-fire laser rifle modeled after the familiar \"Thompson\" SMG. It features high-accuracy burst fire that will whittle down targets in a matter of seconds."
 	icon_state = "lasercw"
+	base_icon_state = "lasercw"
 	inhand_icon_state = "rcw"
 	fire_delay = 3
 	burst_size = 2
@@ -285,6 +301,7 @@
 	slowdown = 0.2
 	inhand_icon_state = "plasma-pistol"
 	icon_state = "plasma-pistol"
+	base_icon_state = "plasma-pistol"
 	desc = "A pistol-sized miniaturized plasma caster built by REPCONN. It fires heavy low penetration plasma clots."
 	w_class = WEIGHT_CLASS_NORMAL
 	weapon_weight = WEAPON_LIGHT
@@ -300,6 +317,7 @@
 	desc = "Glock 86 Plasma Pistol. Designed by the Gaston Glock artificial intelligence. Shoots a small bolt of superheated plasma. Powered by a small energy cell."
 	inhand_icon_state = "plasma-pistol"
 	icon_state = "glock86"
+	base_icon_state = "glock86"
 	slowdown = 0.2
 	w_class = WEIGHT_CLASS_NORMAL
 	weapon_weight = WEAPON_HEAVY
@@ -313,6 +331,7 @@
 	name ="glock 86a"
 	inhand_icon_state = "plasma-pistol"
 	icon_state = "glock86a"
+	base_icon_state = "glock86a"
 	desc = "This Glock 86 plasma pistol has had its magnetic housing chamber realigned to reduce the drain on its energy cell. Its efficiency has doubled, allowing it to fire more shots before the battery is expended."
 	ammo_type = list(/obj/item/ammo_casing/energy/plasma/pistol/glock/extended)
 	cell_type = /obj/item/stock_parts/cell/ammo/ec
@@ -323,6 +342,7 @@
 	name ="plasma rifle"
 	inhand_icon_state = "plasma"
 	icon_state = "plasma"
+	base_icon_state = "plasma"
 	fire_delay = 4.5
 	desc = "A miniaturized plasma caster that fires bolts of magnetically accelerated toroidal plasma towards an unlucky target."
 	ammo_type = list(/obj/item/ammo_casing/energy/plasma)
@@ -335,6 +355,7 @@
 	name ="plasma carbine"
 	inhand_icon_state = "plasma"
 	icon_state = "plasmacarbine"
+	base_icon_state = "plasmacarbine"
 	desc = "A burst-fire energy weapon that fires a steady stream of toroidal plasma towards an unlucky target."
 	ammo_type = list(/obj/item/ammo_casing/energy/plasmacarbine)
 	cell_type = /obj/item/stock_parts/cell/ammo/mfc
@@ -352,6 +373,7 @@
 	name = "multiplas rifle"
 	inhand_icon_state = "multiplas"
 	icon_state = "multiplas"
+	base_icon_state = "multiplas"
 	fire_delay = 3
 	desc = "A modified A3-20 plasma caster built by REPCONN equipped with a multicasting kit that creates multiple weaker clots."
 	equipsound = 'modular_fallout/master_files/sound/f13weapons/equipsounds/plasequip.ogg'
@@ -365,6 +387,7 @@
 	slowdown = 0.2
 	inhand_icon_state = "alienblaster"
 	icon_state = "alienblaster"
+	base_icon_state = "alienblaster"
 	desc = "This weapon is unlike any other you've ever seen before, and appears to be made out of metals not usually found on Earth. It certainly packs a punch, though."
 	w_class = WEIGHT_CLASS_NORMAL
 	weapon_weight = WEAPON_LIGHT
@@ -379,6 +402,7 @@
 	name = "Gamma gun"
 	desc = "A very crude weapon overall and appears to have been built from scavenged junk found throughout the wasteland."
 	icon_state = "gammagun"
+	base_icon_state = "gammagun"
 	inhand_icon_state = "gammagun"
 	w_class = WEIGHT_CLASS_NORMAL
 	weapon_weight = WEAPON_LIGHT

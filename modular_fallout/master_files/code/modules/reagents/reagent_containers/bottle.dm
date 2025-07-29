@@ -18,6 +18,7 @@
 /obj/item/reagent_containers/cup/bottle/primitive
 	icon = 'modular_fallout/master_files/icons/fallout/objects/medicine/drugs.dmi'
 	icon_state = "bottle_primitive"
+	base_icon_state = "bottle_primitive"
 	possible_transfer_amounts = list(5,10,15,20,30,60)
 	volume = 60
 /*

@@ -125,7 +125,7 @@
 /obj/item/gun/ballistic/automatic/smg/
 	name = "SMG TEMPLATE"
 	desc = "should not exist"
-	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/smg.dmi'
 	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/guns_lefthand.dmi'
 	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/guns_righthand.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
@@ -439,6 +439,7 @@
 /obj/item/gun/ballistic/automatic/m1carbine
 	name = "m1 carbine"
 	desc = "The M1 Carbine was mass produced during some old war, and at some point NCR found stockpiles and rechambered them to 10mm to make up for the fact their service rifle production can't keep up with demand."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/battle_rifle.dmi'
 	icon_state = "m1carbine"
 	base_icon_state = "rifle"
 	mag_type = /obj/item/ammo_box/magazine/m10mm_adv
@@ -470,7 +471,7 @@
 	name = "m1/n carbine"
 	desc = "An M1 Carbine with markings identifying it as issued to the NCR Mojave Expedtionary Force. Looks beat up but functional."
 	can_automatic = FALSE
-	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/battle_rifle.dmi'
 	icon_state = "ncr-m1carbine"
 	base_icon_state = "rifle"
 	extra_damage = 3

@@ -3,6 +3,7 @@
 	desc = "A handheld delivery system for medicine, used to rapidly heal physical damage to the body."
 	icon = 'modular_fallout/master_files/icons/fallout/objects/medicine/drugs.dmi'
 	icon_state = "stimpakpen"
+	base_icon_state = "stimpakpen"
 	volume = 10
 	amount_per_transfer_from_this = 10
 	list_reagents = list(/datum/reagent/medicine/stimpak = 10)
@@ -28,6 +29,7 @@
 	name = "super stimpak"
 	desc = "The super version comes in a hypodermic, but with an additional vial containing more powerful drugs than the basic model and a leather belt to strap the needle to the injured limb."
 	icon_state = "superstimpakpen"
+	base_icon_state = "superstimpakpen"
 	amount_per_transfer_from_this = 10
 	list_reagents = list(/datum/reagent/medicine/stimpak/super_stimpak = 10)
 
@@ -42,6 +44,7 @@
 	desc = "A short-lasting shot of Med-X applied via hypodermic needle."
 	icon = 'modular_fallout/master_files/icons/fallout/objects/medicine/drugs.dmi'
 	icon_state = "medx"
+	base_icon_state = "medx"
 	volume = 15
 	amount_per_transfer_from_this = 5
 	list_reagents = list(/datum/reagent/medicine/medx = 15)
@@ -51,6 +54,7 @@
 	desc = "Contains Psycho, a drug that makes the user hit harder and shrug off slight stuns, but causes slight brain damage and carries a risk of addiction."
 	icon = 'modular_fallout/master_files/icons/fallout/objects/medicine/drugs.dmi'
 	icon_state = "psychopen"
+	base_icon_state = "psychopen"
 	volume = 10
 	amount_per_transfer_from_this = 10
 	list_reagents = list(/datum/reagent/drug/psycho = 10)

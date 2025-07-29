@@ -217,6 +217,10 @@
 	to_chat(user, span_notice("[src] has been set to [selling ? "'Sell'" : "'Get Price'"] mode."))
 
 /obj/item/clothing/neck/necklace/dope/merchant/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	. = ..()
+	if(. & ITEM_INTERACT_ANY_BLOCKER)
+		return
+
 	if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
 		return NONE
 

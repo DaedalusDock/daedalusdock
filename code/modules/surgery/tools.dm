@@ -340,18 +340,18 @@ TYPEINFO_DEF(/obj/item/shears)
 	sharpness = SHARP_EDGED
 	custom_premium_price = PAYCHECK_MEDIUM * 14
 
-/obj/item/shears/attack(mob/living/amputee, mob/living/user)
-	if(!iscarbon(amputee) || user.combat_mode)
-		return ..()
+/obj/item/shears/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!iscarbon(interacting_with))
+		return NONE
 
 	if(user.zone_selected == BODY_ZONE_CHEST)
-		return ..()
+		return ITEM_INTERACT_BLOCKING
 
-	var/mob/living/carbon/patient = amputee
+	var/mob/living/carbon/patient = interacting_with
 
 	if(HAS_TRAIT(patient, TRAIT_NODISMEMBER))
 		to_chat(user, span_warning("The patient's limbs look too sturdy to amputate."))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	var/candidate_name
 	var/obj/item/organ/tail_snip_candidate
@@ -361,14 +361,14 @@ TYPEINFO_DEF(/obj/item/shears)
 		tail_snip_candidate = patient.getorganslot(ORGAN_SLOT_EXTERNAL_TAIL)
 		if(!tail_snip_candidate)
 			to_chat(user, span_warning("[patient] does not have a tail."))
-			return
+			return ITEM_INTERACT_BLOCKING
 		candidate_name = tail_snip_candidate.name
 
 	else
 		limb_snip_candidate = patient.get_bodypart(deprecise_zone(user.zone_selected))
 		if(!limb_snip_candidate)
 			to_chat(user, span_warning("[patient] is already missing that limb, what more do you want?"))
-			return
+			return ITEM_INTERACT_BLOCKING
 		candidate_name = limb_snip_candidate.name
 
 	var/amputation_speed_mod = 1
@@ -380,14 +380,17 @@ TYPEINFO_DEF(/obj/item/shears)
 	if(patient.stat != DEAD && patient.has_status_effect(/datum/status_effect/jitter)) //jittering will make it harder to secure the shears, even if you can't otherwise move
 		amputation_speed_mod *= 1.5 //15*0.5*1.5=11.25, so staminacritting someone who's jittering (from, say, a stun baton) won't give you enough time to snip their head off, but staminacritting someone who isn't jittering will
 
-	if(do_after(user, patient, toolspeed * 15 SECONDS * amputation_speed_mod))
-		playsound(get_turf(patient), 'sound/weapons/bladeslice.ogg', 250, TRUE)
-		if(user.zone_selected == BODY_ZONE_PRECISE_GROIN) //OwO
-			tail_snip_candidate.Remove(patient)
-			tail_snip_candidate.forceMove(get_turf(patient))
-		else
-			limb_snip_candidate.dismember()
-		user.visible_message(span_danger("[src] violently slams shut, amputating [patient]'s [candidate_name]."), span_notice("You amputate [patient]'s [candidate_name] with [src]."))
+	if(!do_after(user, patient, toolspeed * 15 SECONDS * amputation_speed_mod))
+		return ITEM_INTERACT_BLOCKING
+
+	playsound(get_turf(patient), 'sound/weapons/bladeslice.ogg', 250, TRUE)
+	if(user.zone_selected == BODY_ZONE_PRECISE_GROIN) //OwO
+		tail_snip_candidate.Remove(patient)
+		tail_snip_candidate.forceMove(get_turf(patient))
+	else
+		limb_snip_candidate.dismember()
+	user.visible_message(span_danger("[src] violently slams shut, amputating [patient]'s [candidate_name]."), span_notice("You amputate [patient]'s [candidate_name] with [src]."))
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/shears/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] is pinching [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))

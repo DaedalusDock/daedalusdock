@@ -21,6 +21,8 @@ DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 
 	var/display_indicators = NONE
 
+	var/autolink_capable = FALSE
+
 /obj/machinery/c4_embedded_controller/Initialize(mapload)
 	. = ..()
 	internal_computer = new(src)

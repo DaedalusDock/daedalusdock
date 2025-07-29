@@ -11868,6 +11868,10 @@
 /obj/item/radio/intercom/directional/east,
 /turf/open/floor/carpet,
 /area/station/service/library)
+"eqm" = (
+/obj/machinery/c4_embedded_controller/slave/directional/south,
+/turf/open/floor/carpet,
+/area/station/command/heads_quarters/captain/private)
 "eqp" = (
 /obj/effect/spawner/structure/window/reinforced/prepainted/marsexec,
 /obj/structure/cable/yellow{
@@ -17057,9 +17061,6 @@
 /obj/machinery/firealarm/directional/west,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
-	},
-/obj/machinery/button/radio/airlock/directional/south{
-	id_tag = "cap_office_butt"
 	},
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/captain/private)
@@ -32402,7 +32403,7 @@
 	name = "Captain's Quarters";
 	id_tag = "cap_office_south"
 	},
-/obj/effect/mapping_helpers/airlock/frequency/airlock_control,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain/private)
 "mef" = (
@@ -34134,10 +34135,7 @@
 	dir = 4
 	},
 /obj/effect/mapping_helpers/access/all/command/captain/ec,
-/obj/machinery/c4_embedded_controller/airlock_access/secure/directional/north{
-	tag_target = "cap_office_south";
-	tag_request_exit = "cap_office_butt"
-	},
+/obj/machinery/c4_embedded_controller/airlock_access/secure/directional/north,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/command)
 "mJA" = (
@@ -95619,7 +95617,7 @@ aMY
 epd
 owA
 dpw
-gWx
+eqm
 jjM
 dSi
 mmp

@@ -4,6 +4,7 @@
 
 	radio_frequency = FREQ_AIRLOCK_CONTROL
 	default_operating_system = /datum/c4_file/terminal_program/operating_system/rtos/slave
+	autolink_capable = TRUE
 
 	// Uses standard id_tag var
 

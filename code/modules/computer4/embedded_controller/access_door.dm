@@ -4,6 +4,8 @@
 	default_operating_system = /datum/c4_file/terminal_program/operating_system/rtos/access_door
 
 	radio_frequency = FREQ_AIRLOCK_CONTROL
+	autolink_capable = TRUE
+
 	/// Target airlock ID
 	var/tag_target
 	/// Request-Exit Button ID

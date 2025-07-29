@@ -341,7 +341,7 @@
 	if(command == PERIPHERAL_CMD_RECEIVE_PACKET)
 		handle_packet(packet)
 	if(command == PERIPHERAL_CMD_SCAN_CARD)
-		handle_cardscan(packet)
+		handle_cardscan(packet.data)
 
 /datum/c4_file/terminal_program/operating_system/rtos/access_door/proc/send_slave_update()
 	var/datum/signal/signal = new(
@@ -365,6 +365,8 @@
 		switch(data[PACKET_CMD])
 			if("key")
 				std_in(copytext(data["key"],1,2)) //Only one char, sorry.
+			if(NETCMD_ECSLAVE_ACCESS)
+				handle_cardscan(params2list(packet.data["packet"]))
 			if(NETCMD_UPDATE_REQUEST)
 				send_slave_update()
 		return
@@ -386,11 +388,11 @@
 			else
 				fault("BAD MODE??")
 
-/datum/c4_file/terminal_program/operating_system/rtos/access_door/proc/handle_cardscan(datum/signal/packet)
+/datum/c4_file/terminal_program/operating_system/rtos/access_door/proc/handle_cardscan(list/packet_data)
 	if(current_state != STATE_AWAIT)
 		return //Do nothing
 
-	if(check_access(packet.data["access"]))
+	if(check_access(packet_data["access"]))
 		playsound(get_computer(), 'sound/machines/deniedbeep.ogg', 50, FALSE)
 		accepted()
 	else

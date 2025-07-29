@@ -19,7 +19,7 @@
 /obj/effect/mapping_helpers/door_control_linker/proc/link_machines()
 	var/obj/machinery/door/airlock/airlock = locate() in loc
 	if(!airlock)
-		log_mapping("Door linker with no door at [x], [y], [z]")
+		log_mapping("DCL: ([src]) at [AREACOORD(src)]| Door linker not placed on a door.")
 		return
 
 	// Make sure the door is actually radio-enabled.
@@ -33,18 +33,18 @@
 	for(var/obj/machinery/c4_embedded_controller/controller in nearby)
 		if(istype(controller, /obj/machinery/c4_embedded_controller/slave))
 			if(slave_controller)
-				log_mapping("Multiple slave controllers affected by door linker.")
+				log_mapping("DCL: ([src]) at [AREACOORD(src)]| Multiple slave controllers affected by door linker.")
 				continue
 
 			slave_controller = controller
 			continue
 
-		if(!istype(controller, /obj/machinery/c4_embedded_controller/airlock_pinpad) && !istype(controller, /obj/machinery/c4_embedded_controller/airlock_access))
-			log_mapping("Incompatible controller affected by door linker.")
+		if(!controller.autolink_capable)
+			log_mapping("DCL: ([src]) at [AREACOORD(src)]| Incompatible controller type [controller.type] affected by door linker.")
 			continue
 
 		if(master_controller)
-			log_mapping("Multiple master controllers affected by door linker.")
+			log_mapping("DCL: ([src]) at [AREACOORD(src)]| Multiple master controllers affected by door linker.")
 			continue
 
 		master_controller = controller
@@ -54,18 +54,20 @@
 	airlock.id_tag = linker_id
 	slave_controller?.id_tag = slave_id
 
-	if(istype(master_controller, /obj/machinery/c4_embedded_controller/airlock_pinpad))
-		var/obj/machinery/c4_embedded_controller/airlock_pinpad/pinpad = master_controller
-		pinpad.tag_target = linker_id
-		pinpad.tag_slave = slave_id
+	if(master_controller)
+		if(istype(master_controller, /obj/machinery/c4_embedded_controller/airlock_pinpad))
+			var/obj/machinery/c4_embedded_controller/airlock_pinpad/pinpad = master_controller
+			pinpad.tag_target = linker_id
+			pinpad.tag_slave = slave_id
 
-	else if (istype(master_controller, /obj/machinery/c4_embedded_controller/airlock_access))
-		var/obj/machinery/c4_embedded_controller/airlock_access/pinpad = master_controller
-		pinpad.tag_target = linker_id
-		pinpad.tag_slave = slave_id
-
+		else if (istype(master_controller, /obj/machinery/c4_embedded_controller/airlock_access))
+			var/obj/machinery/c4_embedded_controller/airlock_access/pinpad = master_controller
+			pinpad.tag_target = linker_id
+			pinpad.tag_slave = slave_id
+		else
+			CRASH("Embedded Controller of type [master_controller.type] is marked as DCL capable but is not handled!")
 	else
-		log_mapping("Door linker with no master controller at [x], [y], [z]")
+		log_mapping("DCL: ([src]) at [AREACOORD(src)]| Door linker with no master controller[slave_controller ? "." : " or slave controller."]")
 
 /// Generates a random ID instead of a manual one. Saves on mapping time if you don't care about the IDs.
 /obj/effect/mapping_helpers/door_control_linker/random_id

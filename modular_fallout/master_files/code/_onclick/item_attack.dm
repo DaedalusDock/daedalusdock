@@ -5,8 +5,6 @@
 	else
 		return ..()
 
-#warn look at original item_attack.dm and ???
-
 // druggies
 
 /obj/item/attack(mob/living/M, mob/living/user, attackchain_flags = NONE, damage_multiplier = 1)

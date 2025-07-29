@@ -96,12 +96,11 @@
 	force = 20
 	throwforce = 35
 	armor_penetration = 10
-	max_reach = 2
 	item_flags = SLOWS_WHILE_IN_HAND
 	slowdown = 0.3
 	embedding = list("pain_mult" = 2, "embed_chance" = 60, "fall_chance" = 20)
 	w_class = WEIGHT_CLASS_NORMAL
-
+	special_attack_type = /datum/special_attack/ranged_stab
 
 
 ////////////
@@ -184,8 +183,8 @@
 	name = "bone dagger"
 	inhand_icon_state  = "knife_bone"
 	icon_state = "knife_bone"
-	lefthand_file = 'icons/onmob/inhands/weapons/swords_lefthand.dmi'
-	righthand_file = 'icons/onmob/inhands/weapons/swords_righthand.dmi'
+	lefthand_file = 'icons/mob/inhands/weapons/swords_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
 	desc = "A sharpened bone. The bare minimum in survival."
 	embedding = list("pain_mult" = 4, "embed_chance" = 35, "fall_chance" = 10)
 	force = 24

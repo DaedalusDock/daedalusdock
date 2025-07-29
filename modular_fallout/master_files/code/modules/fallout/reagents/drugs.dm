@@ -14,7 +14,7 @@
 	..()
 	if(isliving(C))
 		to_chat(C, "<span class='notice'>You come down from your high. The wild ride is unfortunately over...</span>")
-		adjust_confusion(2 SECONDS)
+		C.adjust_timed_status_effect(2 SECONDS, /datum/status_effect/confusion, max_duration = 2 SECONDS)
 
 /datum/reagent/drug/jet/affect_blood(mob/living/carbon/C)
 	C.stamina.adjust(-20)
@@ -182,13 +182,13 @@
 	taste_description = "horrific agony"
 	taste_mult = 0.9
 
-/datum/reagent/toxin/FEV_solution/expose_mob(mob/living/carbon/M, method=TOUCH, reac_volume)
+/datum/reagent/toxin/FEV_solution/expose_mob(mob/living/M, method=TOUCH, reac_volume)
 	if(!..())
 		return
 	if(!M.has_dna())
 		return  //No robots, AIs, aliens, Ians or other mobs should be affected by this.
 	var/datum/pathogen/D = new /datum/pathogen/fev
-	C.try_contract_pathogen(D)
+	M.try_contract_pathogen(D)
 //		M.easy_randmut(NEGATIVE + MINOR_NEGATIVE, sequence = FALSE)
 //		M.updateappearance()
 //		M.domutcheck()

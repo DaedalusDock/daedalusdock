@@ -3,7 +3,6 @@
 	ammo_type = /obj/item/ammo_casing/shotgun/beanbag
 	caliber = "shotgun"
 	max_ammo = 4
-	multiload = 0
 
 /obj/item/ammo_box/magazine/internal/shot/ammo_count(countempties = 1)
 	if (!countempties)
@@ -69,21 +68,18 @@
 	ammo_type = /obj/item/ammo_casing/m44
 	caliber = "44"
 	max_ammo = 12
-	multiload = 1
 
 /obj/item/ammo_box/magazine/internal/shot/tube357
 	name = ".357 magnum internal tube magazine" //cowboy repeater
 	ammo_type = /obj/item/ammo_casing/a357
 	caliber = "357"
 	max_ammo = 12
-	multiload = 1
 
 /obj/item/ammo_box/magazine/internal/shot/tube4570
 	name = "4570 internal tube magazine" //brush gun
 	ammo_type = /obj/item/ammo_casing/c4570
 	caliber = "4570"
 	max_ammo = 10
-	multiload = 1
 
 /obj/item/ammo_box/magazine/internal/shot/lasmusket
 	name = "lasmusket magazine"
@@ -91,7 +87,6 @@
 	ammo_type = /obj/item/ammo_casing/caseless/lasermusket
 	caliber = "lasmusket"
 	max_ammo = 6
-	multiload = 1
 
 /obj/item/ammo_box/magazine/internal/plasmacaster
 	name = "plasmacaster magazine"
@@ -99,4 +94,3 @@
 	ammo_type = /obj/item/ammo_casing/caseless/plasmacaster
 	caliber = "plasmacaster"
 	max_ammo = 2
-	multiload = 1

@@ -95,7 +95,7 @@
 	throwforce = 30
 	throw_speed = 4
 	embedding = list("embed_chance" = 0)
-	max_reach = 2
+	special_attack_type = /datum/special_attack/ranged_stab
 	hitsound = 'modular_fallout/master_files/sound/weapons/bladeslice.ogg'
 	attack_verb_simple = list("attacked", "impaled", "jabbed", "torn", "gored")
 	sharpness = SHARP_POINTY
@@ -153,7 +153,7 @@
 	throwforce = 25
 	throw_speed = 4
 	armor_penetration = 20
-	max_reach = 2
+	special_attack_type = /datum/special_attack/ranged_stab
 	embedding = list("embedded_impact_pain_multiplier" = 3)
 	custom_materials = null
 	attack_verb_simple = list("attacked", "poked", "jabbed", "torn", "gored")

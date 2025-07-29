@@ -39,5 +39,3 @@
 	name = "Grey Tortoise Cigarette"
 	desc = "A Grey Tortoise brand cigarette."
 	list_reagents = list(/datum/reagent/drug/nicotine = 15, /datum/reagent/medicine/omnizine = 5)
-
-#warn ok

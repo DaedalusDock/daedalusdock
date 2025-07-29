@@ -41,11 +41,6 @@ prewar alloys
 	hitsound = 'modular_fallout/master_files/sound/weapons/grenadelaunch.ogg'
 	merge_type = /obj/item/stack/sheet/hay
 
-/obj/item/stack/sheet/hay/suicide_act(mob/living/carbon/user)
-	user.visible_message("<span class='suicide'>[user] begins shoving hay up [user.p_their()] arse! It looks like [user.p_theyre()] trying to commit suicide!</span>")
-	addtimer(CALLBACK(user, /mob/proc/gib), 30)
-	return BRUTELOSS
-
 /obj/item/stack/sheet/hay/fifty
 	amount = 50
 

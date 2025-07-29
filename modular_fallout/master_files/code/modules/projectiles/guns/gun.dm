@@ -7,6 +7,9 @@
 	var/flight_y_offset = 0
 	var/flight_x_offset = 0
 
+	var/suppressor_x1_offset
+	var/suppressor_y1_offset
+
 	var/scope_x_offset = 5
 	var/scope_y_offset = 14
 
@@ -93,8 +96,8 @@
 	if(suppressed)
 		var/icon/suppressor_icons = 'modular_fallout/master_files/icons/fallout/objects/guns/attachments.dmi'
 		suppressor_overlay = mutable_appearance(suppressor_icons, suppressor_state)
-		suppressor_overlay.pixel_x = suppressor_x_offset
-		suppressor_overlay.pixel_y = suppressor_y_offset
+		suppressor_overlay.pixel_x = suppressor_x1_offset
+		suppressor_overlay.pixel_y = suppressor_y1_offset
 		. += suppressor_overlay
 	else
 		suppressor_overlay = null

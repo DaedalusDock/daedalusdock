@@ -38,7 +38,7 @@
 		return TRUE
 
 	if(W.tool_behaviour == TOOL_SHOVEL || W.tool_behaviour == TOOL_MINING)
-		if(!can_dig(user))
+		if(!can_dig)
 			return TRUE
 
 		if(!isturf(user.loc))
@@ -47,7 +47,7 @@
 		to_chat(user, span_notice("You start digging..."))
 
 		if(W.use_tool(src, user, 40, volume=50))
-			if(!can_dig(user))
+			if(!can_dig)
 				return TRUE
 			to_chat(user, span_notice("You dig a hole."))
 			get_Dug()

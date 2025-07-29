@@ -267,13 +267,6 @@
 	cell_type = /obj/item/stock_parts/cell/ammo/ecp
 	equipsound = 'modular_fallout/master_files/sound/f13weapons/equipsounds/RCWequip.ogg'
 
-/obj/item/gun/energy/laser/rcw/burst_select()
-	var/mob/living/carbon/human/user = usr
-	playsound(user, 'modular_fallout/master_files/sound/weapons/empty.ogg', 100, 1)
-	update_icon()
-//	for(var/X in actions)
-//		var/datum/action/A = X
-
 /obj/item/gun/energy/laser/rcw/afterattack()
 	. = ..()
 //	empty_alarm()

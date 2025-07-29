@@ -20,7 +20,7 @@
 /obj/item/weaponcrafting/improvised_parts
 	name = "Debug Improvised Gun Part"
 	desc = "A badly coded gun part. You should report coders if you see this."
-	icon = 'modular_fallout/master_files/icons/obj/guns/gun_parts.dmi'
+	icon = 'modular_fallout/master_files/icons/objects/guns/modular_guns/gun_parts.dmi'
 	icon_state = "palette"
 
 // RECEIVERS

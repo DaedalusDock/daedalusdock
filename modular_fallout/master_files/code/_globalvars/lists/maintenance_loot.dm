@@ -315,7 +315,7 @@ GLOBAL_LIST_INIT(loot_t1_melee, list(
 	/obj/item/knife/kitchen,
 	/obj/item/kitchen/rollingpin,
 ))
-#warn add oars (funny boat item)
+
 GLOBAL_LIST_INIT(loot_t2_melee, list(
 	/obj/item/pickaxe,
 	/obj/item/shovel,

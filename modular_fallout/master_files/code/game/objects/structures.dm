@@ -78,8 +78,6 @@
 	else // All other than projectiles should use the regular CanPass inheritance
 		return ..()
 
-#warn fix this ai slop
-
 /*
 /obj/structure/CanPass(atom/movable/mover, border_dir)
 	// So bullets will fly over and stuff.

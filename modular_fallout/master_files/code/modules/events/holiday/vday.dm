@@ -11,7 +11,6 @@
 	message = pick(GLOB.flirts)
 	return ..()
 */
-#warn note - this is just for old times sake. maybe fix/remove it later.
 /*
 /obj/item/valentine/attackby(obj/item/W, mob/user, params)
 	..()

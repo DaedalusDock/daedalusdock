@@ -152,17 +152,17 @@ TYPEINFO_DEF(/obj/item/pen/fountain/captain)
 	to_chat(user, span_notice("You rotate the top of the pen to [deg] degrees."))
 	SEND_SIGNAL(src, COMSIG_PEN_ROTATED, deg, user)
 
-/obj/item/pen/attack(mob/living/M, mob/user, params)
-	if(force) // If the pen has a force value, call the normal attack procs. Used for e-daggers and captain's pen mostly.
-		return ..()
-	if(!M.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
-		return FALSE
-	to_chat(user, span_warning("You stab [M] with the pen."))
-	M.apply_pain(1, BODY_ZONE_CHEST, "You feel a tiny prick!")
-	log_combat(user, M, "stabbed", src)
-	return TRUE
-
 /obj/item/pen/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(isliving(interacting_with))
+		var/mob/living/target = interacting_with
+		if(!target.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
+			return ITEM_INTERACT_BLOCKING
+
+		to_chat(user, span_warning("You stab [target] with the pen."))
+		target.apply_pain(1, BODY_ZONE_CHEST, "You feel a tiny prick!")
+		log_combat(user, target, "stabbed", src)
+		return ITEM_INTERACT_SUCCESS
+
 	if(!isobj(interacting_with) || ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
 		return NONE
 

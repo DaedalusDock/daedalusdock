@@ -404,9 +404,9 @@
 	novariants = TRUE
 	merge_type = /obj/item/stack/medical/bone_gel
 
-/obj/item/stack/medical/bone_gel/attack(mob/living/M, mob/user)
+/obj/item/stack/medical/bone_gel/try_heal(mob/living/patient, mob/user, silent)
 	to_chat(user, span_warning("Bone gel can only be used on fractured limbs!"))
-	return
+	return ITEM_INTERACT_BLOCKING
 
 /obj/item/stack/medical/bone_gel/suicide_act(mob/user)
 	if(!iscarbon(user))

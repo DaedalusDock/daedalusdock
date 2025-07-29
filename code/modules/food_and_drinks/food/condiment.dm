@@ -334,29 +334,25 @@
 	SHOULD_CALL_PARENT(FALSE)
 	return
 
-/obj/item/reagent_containers/condiment/pack/attack(mob/M, mob/user, def_zone) //Can't feed these to people directly.
-	return
+/obj/item/reagent_containers/condiment/pack/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	// Explicitly doesn't call parent. We only want to be able to apply this to food.
+	if(!IS_EDIBLE(interacting_with))
+		return NONE
 
-/obj/item/reagent_containers/condiment/pack/afterattack(obj/target, mob/user , proximity)
-	if(!proximity)
-		return
+	if(!reagents.total_volume)
+		to_chat(user, span_warning("You tear open [src], but there's nothing in it."))
+		qdel(src)
+		return ITEM_INTERACT_SUCCESS
 
-	//You can tear the bag open above food to put the condiments on it, obviously.
-	if(IS_EDIBLE(target))
-		if(!reagents.total_volume)
-			to_chat(user, span_warning("You tear open [src], but there's nothing in it."))
-			qdel(src)
-			return
-		if(target.reagents.total_volume >= target.reagents.maximum_volume)
-			to_chat(user, span_warning("You tear open [src], but [target] is stacked so high that it just drips off!") )
-			qdel(src)
-			return
-		else
-			to_chat(user, span_notice("You tear open [src] above [target] and the condiments drip onto it."))
-			src.reagents.trans_to(target, amount_per_transfer_from_this, transfered_by = user)
-			qdel(src)
-			return
-	. = ..()
+	if(interacting_with.reagents.total_volume >= interacting_with.reagents.maximum_volume)
+		to_chat(user, span_warning("You tear open [src], but [interacting_with] is stacked so high that it just drips off.") )
+		qdel(src)
+		return ITEM_INTERACT_BLOCKING
+
+	to_chat(user, span_notice("You tear open [src] above [interacting_with] and the condiments drip onto it."))
+	src.reagents.trans_to(interacting_with, amount_per_transfer_from_this, transfered_by = user)
+	qdel(src)
+	return ITEM_INTERACT_SUCCESS
 
 /// Handles reagents getting added to the condiment pack.
 /obj/item/reagent_containers/condiment/pack/proc/on_reagent_add(datum/reagents/reagents)

@@ -119,17 +119,15 @@
 	return TRUE
 
 /**
- * Signal proc for [COMSIG_ITEM_AFTERATTACK] from our attached hand.
+ * Signal proc for [COMSIG_ITEM_INTERACTING_WITH_ATOM] from our attached hand.
  *
  * When our hand hits an atom, we can cast do_hand_hit() on them.
  */
 /datum/action/cooldown/spell/touch/proc/on_hand_hit(datum/source, mob/living/caster, atom/target, list/modifiers)
 	SIGNAL_HANDLER
 
-	if(target == caster)
-		return
-	if(!can_cast_spell(feedback = FALSE))
-		return
+	if(!can_hit_with_hand(target, caster))
+		return ITEM_INTERACT_BLOCKING
 
 	return do_hand_hit(source, target, caster)
 
@@ -143,7 +141,7 @@
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(!can_hit_with_hand(target, caster))
-		return NONE
+		return ITEM_INTERACT_BLOCKING
 
 	return do_secondary_hand_hit(source, target, caster)
 
@@ -252,12 +250,7 @@
 		spell_which_made_us = WEAKREF(spell)
 
 /obj/item/melee/touch_attack/attack(mob/target, mob/living/carbon/user)
-	if(!iscarbon(user)) //Look ma, no hands
-		return TRUE
-	if(!(user.mobility_flags & MOBILITY_USE))
-		to_chat(user, span_warning("You can't reach out!"))
-		return TRUE
-	return ..()
+	return
 
 /**
  * When the hand component of a touch spell is qdel'd, (the hand is dropped or otherwise lost),

@@ -22,6 +22,11 @@
 		qdel(linked_console)
 	return ..()
 
+/obj/machinery/bodyscanner/examine(mob/user)
+	. = ..()
+	if(occupant && get_dist(user, src) <= 1)
+		. += occupant.examine(user)
+
 /obj/machinery/bodyscanner/update_icon_state()
 	. = ..()
 	if(occupant)
@@ -201,6 +206,12 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 	scan = null
 	updateUsrDialog()
 
+/obj/machinery/bodyscanner_console/proc/print_scan(list/scan_data)
+	var/obj/item/paper/thermal/printout = new()
+	printout.name = "body scan report - [scan_data["name"]]"
+	printout.setText("<tt>[jointext(get_content(scan_data), null)]</tt>")
+	printout.forceMove(drop_location())
+
 /obj/machinery/bodyscanner_console/Topic(href, href_list)
 	. = ..()
 	if(.)
@@ -216,6 +227,15 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 
 	if(href_list["erase"])
 		clear_scan()
+		return TRUE
+
+	if(href_list["print"])
+		if(!length(scan))
+			to_chat(usr, span_warning("[icon2html(src, usr)] Error: No scan stored."))
+			return FALSE
+
+		playsound(src, 'goon/sounds/printer.ogg', 50)
+		addtimer(CALLBACK(src, PROC_REF(print_scan), scan.Copy()), 3 SECONDS, TIMER_DELETE_ME)
 		return TRUE
 
 	if(href_list["send2display"])
@@ -255,6 +275,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 		<fieldset class='computerPaneSimple' style='margin: 10px auto;text-align:center'>
 				[button_element(src, "Scan", "scan=1")]
 				[button_element(src, "Eject Occupant", "eject=1")]
+				[button_element(src, "Print Scan", "print=1")]
 				[button_element(src, "Erase Scan", "erase=1")]
 				[button_element(src, "Push to Display", "send2display=1")]
 		</fieldset>

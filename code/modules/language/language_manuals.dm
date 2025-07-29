@@ -21,14 +21,18 @@
 
 	use_charge(user)
 
-/obj/item/language_manual/attack(mob/living/M, mob/living/user)
-	if(!istype(M) || !istype(user))
-		return
-	if(M == user)
-		attack_self(user)
-		return
+/obj/item/language_manual/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
 
-	playsound(loc, SFX_PUNCH, 25, TRUE, -1)
+	if(interacting_with == user)
+		attack_self(user)
+		return ITEM_INTERACT_SUCCESS
+
+/obj/item/language_manual/attack(mob/living/M, mob/living/user, params, datum/special_attack/used_special)
+	. = ..()
+	if(.)
+		return
 
 	if(M.stat == DEAD)
 		M.visible_message(span_danger("[user] smacks [M]'s lifeless corpse with [src]."), span_userdanger("[user] smacks your lifeless corpse with [src]."), span_hear("You hear smacking."))

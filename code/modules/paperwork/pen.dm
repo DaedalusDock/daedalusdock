@@ -226,15 +226,18 @@ TYPEINFO_DEF(/obj/item/pen/fountain/captain)
  * Sleepypens
  */
 
-/obj/item/pen/sleepy/attack(mob/living/M, mob/user, params)
+/obj/item/pen/sleepy/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	. = ..()
-	if(!.)
+	if(!isliving(interacting_with))
+		return
+	if(!(. & ITEM_INTERACT_SUCCESS))
 		return
 	if(!reagents.total_volume)
 		return
-	if(!M.reagents)
+	if(!interacting_with.reagents)
 		return
-	reagents.trans_to(M, reagents.total_volume, transfered_by = user, methods = INJECT)
+
+	reagents.trans_to(interacting_with, reagents.total_volume, transfered_by = user, methods = INJECT)
 
 
 /obj/item/pen/sleepy/Initialize(mapload)

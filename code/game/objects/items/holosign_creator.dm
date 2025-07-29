@@ -73,9 +73,6 @@
 	to_chat(user, span_notice("You create \a [target_holosign] with [src]."))
 	return ITEM_INTERACT_SUCCESS
 
-/obj/item/holosign_creator/attack(mob/living/carbon/human/M, mob/user)
-	return
-
 /obj/item/holosign_creator/attack_self(mob/user)
 	if(LAZYLEN(signs))
 		for(var/H in signs)

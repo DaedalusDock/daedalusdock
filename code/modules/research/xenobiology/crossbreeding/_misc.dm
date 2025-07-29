@@ -180,32 +180,42 @@ TYPEINFO_DEF(/obj/structure/ice_stasis)
 	icon = 'icons/obj/slimecrossing.dmi'
 	icon_state = "capturedevice"
 
-/obj/item/capturedevice/attack(mob/living/M, mob/user)
+/obj/item/capturedevice/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
 	if(length(contents))
 		to_chat(user, span_warning("The device already has something inside."))
-		return
+		return ITEM_INTERACT_BLOCKING
+
+	var/mob/living/simple_animal/M = interacting_with
 	if(!isanimal(M))
 		to_chat(user, span_warning("The capture device only works on simple creatures."))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(M.mind)
 		to_chat(user, span_notice("You offer the device to [M]."))
 		if(tgui_alert(M, "Would you like to enter [user]'s capture device?", "Gold Capture Device", list("Yes", "No")) == "Yes")
-			if(user.canUseTopic(src, USE_CLOSE) && user.canUseTopic(M, USE_CLOSE))
+			if(user.canUseTopic(src, USE_CLOSE) && user.Adjacent(interacting_with))
 				to_chat(user, span_notice("You store [M] in the capture device."))
 				to_chat(M, span_notice("The world warps around you, and you're suddenly in an endless void, with a window to the outside floating in front of you."))
 				store(M, user)
+				return ITEM_INTERACT_SUCCESS
 			else
 				to_chat(user, span_warning("You were too far away from [M]."))
 				to_chat(M, span_warning("You were too far away from [user]."))
+				return ITEM_INTERACT_BLOCKING
 		else
 			to_chat(user, span_warning("[M] refused to enter the device."))
-			return
+			return ITEM_INTERACT_BLOCKING
 	else
 		if(istype(M, /mob/living/simple_animal/hostile) && !("neutral" in M.faction))
 			to_chat(user, span_warning("This creature is too aggressive to capture."))
-			return
+			return ITEM_INTERACT_BLOCKING
+
 	to_chat(user, span_notice("You store [M] in the capture device."))
 	store(M)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/capturedevice/attack_self(mob/user)
 	if(contents.len)

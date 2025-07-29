@@ -128,7 +128,10 @@ TYPEINFO_DEF(/obj/item/light)
 	return NONE
 
 /obj/item/light/attack(mob/living/M, mob/living/user, def_zone)
-	..()
+	. = ..()
+	if(.)
+		return
+
 	shatter()
 
 /obj/item/light/attack_obj(obj/O, mob/living/user, params)

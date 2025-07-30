@@ -46,7 +46,6 @@
 	var/orderer_ckey
 	var/reason
 
-	///area this order wants to reach, if not null then it will come with the deliver_first component set to this area
 	var/department_destination
 	var/datum/supply_pack/pack
 	var/datum/bank_account/paying_account
@@ -138,8 +137,6 @@
 	else
 		account_holder = "Cargo"
 	var/obj/structure/closet/crate/crate = pack.generate(A, paying_account)
-	if(department_destination)
-		crate.AddElement(/datum/element/deliver_first, department_destination, pack.cost)
 	generateManifest(crate, account_holder, pack, pack.cost)
 	return crate
 

@@ -4,16 +4,16 @@
 /// Maximum shock stage value
 #define SHOCK_MAXIMUM 160
 
-#define SHOCK_TIER_1 10
-#define SHOCK_TIER_2 30
-#define SHOCK_TIER_3 40
-#define SHOCK_TIER_4 60
-#define SHOCK_TIER_5 80
-#define SHOCK_TIER_6 120
-#define SHOCK_TIER_7 150
+#define SHOCK_TIER_1 20
+#define SHOCK_TIER_2 60
+#define SHOCK_TIER_3 80
+#define SHOCK_TIER_4 120
+#define SHOCK_TIER_5 160
+#define SHOCK_TIER_6 240
+#define SHOCK_TIER_7 300
 
 /// The amount of shock required for someone to be elligible for shock-induced fibrillation
-#define SHOCK_AMT_FOR_FIBRILLATION 120
+#define SHOCK_AMT_FOR_FIBRILLATION 150
 
 /// The amount of pain where the mob is rendered unconscious
 #define PAIN_AMT_PASSOUT (200)

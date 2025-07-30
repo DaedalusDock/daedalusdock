@@ -54,6 +54,7 @@
 /obj/item/gun/ballistic/automatic/pistol/pistol22
 	name = ".22 pistol"
 	desc = "The silenced .22 pistol is a sporting handgun with an integrated silencer."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "silenced22"
 	mag_type = /obj/item/ammo_box/magazine/m22
 	can_attachments = TRUE
@@ -67,6 +68,7 @@
 /obj/item/gun/ballistic/automatic/pistol/n99
 	name = "10mm pistol"
 	desc = "A pre-war large-framed, gas-operated advanced 10mm pistol."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "n99"
 	mag_type = /obj/item/ammo_box/magazine/m10mm_adv/simple
 	can_attachments = TRUE
@@ -80,6 +82,7 @@
 /obj/item/gun/ballistic/automatic/pistol/n99/executive
 	name = "the Executive"
 	desc = "A modified N99 pistol with an accurate two-round-burst and a blue Vault-Tec finish, a status symbol for some Overseers."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "executive"
 	semi_auto = FALSE
 	can_automatic = FALSE
@@ -90,6 +93,7 @@
 /obj/item/gun/ballistic/automatic/pistol/n99/crusader
 	name = "\improper Crusader pistol"
 	desc = "A large-framed N99 pistol emblazoned with the colors and insignia of the Brotherhood of Steel. It feels heavy in your hand."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "crusader"
 	inhand_icon_state  = "crusader"
 	can_attachments = FALSE
@@ -103,6 +107,7 @@
 /obj/item/gun/ballistic/automatic/pistol/type17
 	name = "Type 17"
 	desc = "Chinese military sidearm at the time of the Great War. The ones around are old and worn, but somewhat popular due to the long barrel and rechambered in 10mm after the original ammo ran dry decades ago."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "chinapistol"
 	mag_type = /obj/item/ammo_box/magazine/m10mm_adv/simple
 	can_suppress = FALSE
@@ -115,6 +120,7 @@
 /obj/item/gun/ballistic/automatic/pistol/ninemil
 	name = "Browning Hi-power"
 	desc = "A mass produced pre-war Browning Hi-power 9mm pistol."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "ninemil"
 	mag_type = /obj/item/ammo_box/magazine/m9mm
 	can_attachments = TRUE
@@ -129,6 +135,7 @@
 /obj/item/gun/ballistic/automatic/pistol/ninemil/maria
 	name = "Maria"
 	desc = "An ornately-decorated pre-war Browning Hi-power 9mm pistol with pearl grips and a polished nickel finish. The firing mechanism has been upgraded, so for anyone on the receiving end, it must seem like an eighteen-karat run of bad luck."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "maria"
 
 	fire_delay = 1
@@ -140,6 +147,7 @@
 /obj/item/gun/ballistic/automatic/pistol/sig
 	name = "Sig P220"
 	desc = "The P220 Sig Sauer. A Swiss designed pistol that is compact and has a good rate of fire."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "sig"
 	w_class = WEIGHT_CLASS_SMALL
 	mag_type = /obj/item/ammo_box/magazine/m9mm
@@ -156,6 +164,7 @@
 /obj/item/gun/ballistic/automatic/pistol/sig/commissioner
 	name = "The Defender"
 	desc = "A modified Sig P225 salvaged from the boneyard. Boasts a faster rate of fire and laser-like accuracy. It has 'To Protect and Serve' etched on the side."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	w_class = WEIGHT_CLASS_SMALL
 
 	fire_delay = 1
@@ -166,6 +175,7 @@
 /obj/item/gun/ballistic/automatic/pistol/beretta
 	name = "Beretta M9FS"
 	desc = "One of the more common 9mm pistols, the Beretta is popular due to its reliability, 15 round magazine and good looks."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "beretta"
 	mag_type = /obj/item/ammo_box/magazine/m9mmds
 	can_attachments = TRUE
@@ -181,6 +191,7 @@
 /obj/item/gun/ballistic/automatic/pistol/beretta/automatic
 	name = "Beretta M93R"
 	desc = "A rare select fire variant of the M93R."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "m93r"
 	actions_types = list(/datum/action/item_action/toggle_firemode)
 	automatic_burst_overlay = TRUE
@@ -219,6 +230,7 @@
 /obj/item/gun/ballistic/automatic/pistol/m1911
 	name = "M1911"
 	desc = "A classic .45 handgun with a small magazine capacity."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "m1911"
 	inhand_icon_state  = "pistolchrome"
 	w_class = WEIGHT_CLASS_NORMAL
@@ -233,13 +245,16 @@
 /obj/item/gun/ballistic/automatic/pistol/m1911/custom
 	name = "M1911 Custom"
 	desc = "A well-maintained stainless-steel frame 1911, with genuine wooden grips."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "m1911_custom"
+
 	fire_delay = 2
 
 //M1911	compact							Keywords: .45 ACP, Semi-auto, Short barrel, 8 round magazine. Special modifiers: damage -2
 /obj/item/gun/ballistic/automatic/pistol/m1911/compact
 	name = "M1911 compact"
 	desc = "The compact version of the classic .45 handgun."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "c1911"
 	w_class = WEIGHT_CLASS_SMALL
 	suppressor_x_offset = 29
@@ -257,6 +272,7 @@
 /obj/item/gun/ballistic/automatic/pistol/mk23
 	name = "Mk. 23"
 	desc = "A very tactical pistol chambered in .45 ACP with a built in laser sight and attachment point for a seclite."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "mk23"
 	mag_type = /obj/item/ammo_box/magazine/m45exp
 	can_flashlight = TRUE

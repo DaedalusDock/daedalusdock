@@ -131,6 +131,7 @@
 /obj/item/gun/ballistic/revolver/detective
 	name = ".38 Detective Special"
 	desc = "A small revolver thats easily concealable."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	icon_state = "detective"
 	w_class = WEIGHT_CLASS_SMALL
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev38
@@ -148,6 +149,7 @@
 /obj/item/gun/ballistic/revolver/colt6520
 	name = "Colt 6520"
 	desc = "The Colt 6520 10mm double action revolver is a highly durable weapon developed by Colt Firearms prior to the Great War. It proved to be resistant to the desert-like conditions of the post-nuclear wasteland and is a fine example of workmanship and quality construction."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	icon_state = "colt6520"
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev6520
 	fire_sound = 'modular_fallout/master_files/sound/weapons/10mm_fire_02.ogg'
@@ -162,6 +164,7 @@
 /obj/item/gun/ballistic/revolver/revolver45
 	name = "S&W .45 ACP revolver"
 	desc = "Smith and Wesson revolver firing .45 ACP from a seven round cylinder."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	inhand_icon_state  = "45revolver"
 	icon_state = "45revolver"
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev45
@@ -179,6 +182,7 @@
 /obj/item/gun/ballistic/revolver/colt357
 	name = "\improper .357 magnum revolver"
 	desc = "A no-nonsense revolver, more than likely made in some crude workshop in one of the more prosperous frontier towns."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	icon_state = "357colt"
 	inhand_icon_state  = "357colt"
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev357
@@ -192,6 +196,7 @@
 /obj/item/gun/ballistic/revolver/colt357/lucky
 	name = "Lucky"
 	desc = "Just holding this gun makes you feel like an ace. This revolver was handmade from pieces of other guns in some workshop after the war. A one-of-a-kind gun, it was someone's lucky gun for many a year, it's in good condition and hasn't changed hands often."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	icon_state = "lucky37"
 	inhand_icon_state  = "lucky"
 	w_class = WEIGHT_CLASS_SMALL
@@ -202,6 +207,7 @@
 /obj/item/gun/ballistic/revolver/police
 	name = "police revolver"
 	desc = "Pre-war double action police revolver chambered in .357 magnum."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	icon_state = "police"
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev357
 	w_class = WEIGHT_CLASS_SMALL
@@ -221,6 +227,7 @@
 /obj/item/gun/ballistic/revolver/m29
 	name = ".44 magnum revolver"
 	desc = "Powerful handgun for those who want to travel the wasteland safely in style. Has a bit of a kick."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	inhand_icon_state  = "model29"
 	icon_state = "m29"
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev44
@@ -233,6 +240,7 @@
 
 /obj/item/gun/ballistic/revolver/m29/alt
 	desc = "Powerful handgun with a bit of a kick. This one has nickled finish and pearly grip, and has been kept in good condition by its owner."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	inhand_icon_state  = "44magnum"
 	icon_state = "mysterious_m29"
 	can_scope = FALSE
@@ -242,6 +250,7 @@
 /obj/item/gun/ballistic/revolver/m29/peacekeeper
 	name = "Peacekeeper"
 	desc = "When you don't just need excessive force, but crave it. This .44 has a special hammer mechanism, allowing for measured powerful shots, or fanning for a flurry of inaccurate shots."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	inhand_icon_state  = "m29peace"
 	icon_state = "m29peace"
 	extra_damage = 5
@@ -277,6 +286,7 @@
 /obj/item/gun/ballistic/revolver/m29/snub
 	name = "snubnose .44 magnum revolver"
 	desc = "A snubnose variant of the commonplace .44 magnum. An excellent holdout weapon for self defense."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	icon_state = "m29_snub"
 	w_class = WEIGHT_CLASS_SMALL
 	extra_damage = -2
@@ -289,6 +299,7 @@
 /obj/item/gun/ballistic/revolver/revolver44
 	name = "\improper .44 magnum single-action revolver"
 	desc = "I hadn't noticed, but there on his hip, was a short-barreled bad .44..."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	inhand_icon_state  = "44colt"
 	icon_state = "44colt"
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev44
@@ -302,6 +313,7 @@
 /obj/item/gun/ballistic/revolver/revolver44/desert_ranger
 	name = "desert ranger revolver"
 	desc = "I hadn't noticed, but there on his hip, was a short-barreled bad .44... This one has been improved by its owner."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	fire_delay = 1
 	recoil = 0.3
 
@@ -314,6 +326,7 @@
 /obj/item/gun/ballistic/revolver/sequoia
 	name = "ranger sequoia"
 	desc = "This large, double-action revolver is a trademark weapon of the New California Republic Rangers. It features a dark finish with intricate engravings etched all around the weapon. Engraved along the barrel are the words 'For Honorable Service,' and 'Against All Tyrants.' The hand grip bears the symbol of the NCR Rangers, a bear, and a brass plate attached to the bottom that reads '20 Years.' "
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	icon_state = "sequoia"
 	inhand_icon_state  = "sequoia"
 	weapon_weight = WEAPON_MEDIUM
@@ -325,6 +338,7 @@
 /obj/item/gun/ballistic/revolver/sequoia/bayonet
 	name = "bladed ranger sequoia"
 	desc = "This heavy revolver is a trademark weapon of the New California Republic Rangers. This one has a blade attached to the handle for a painful pistolwhip."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	icon_state = "sequoia_b"
 	inhand_icon_state  = "sequoia"
 	force = 25
@@ -342,6 +356,7 @@
 /obj/item/gun/ballistic/revolver/hunting
 	name = "hunting revolver"
 	desc = "A scoped double action revolver chambered in 45-70."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	icon_state = "hunting_revolver"
 	weapon_weight = WEAPON_MEDIUM
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev4570
@@ -363,6 +378,7 @@
 /obj/item/gun/ballistic/revolver/revolver45/gunslinger
 	name = "\improper Colt Single Action Army"
 	desc = "A Colt Single Action Army, chambered in the archaic .45 long colt cartridge."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/revolver.dmi'
 	inhand_icon_state  = "coltwalker"
 	icon_state = "peacemaker"
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev45/gunslinger
@@ -376,6 +392,7 @@
 /obj/item/gun/ballistic/revolver/thatgun
 	name = ".223 pistol"
 	desc = "A strange pistol firing rifle ammunition, possibly damaging the users wrist and with poor accuracy."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "thatgun"
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/thatgun
 	extra_damage = -10
@@ -394,6 +411,7 @@
 /obj/item/gun/ballistic/revolver/needler
 	name = "Needler pistol"
 	desc = "You suspect this Bringham needler pistol was once used in scientific field studies. It uses small hard-plastic hypodermic darts as ammo. "
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/pistol.dmi'
 	icon_state = "needler"
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/revneedler
 	fire_sound = 'modular_fallout/master_files/sound/weapons/gunshot_silenced.ogg'

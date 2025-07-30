@@ -521,6 +521,7 @@
 /obj/item/gun/ballistic/automatic/varmint
 	name = "varmint rifle"
 	desc = "A simple bolt action rifle in 5.56mm calibre. Easy to use and maintain."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
 	icon_state = "varmint"
 	base_icon_state = "varmintrifle"
 	force = 15
@@ -547,6 +548,7 @@
 /obj/item/gun/ballistic/automatic/delisle
 	name = "De Lisle carbine"
 	desc = "A integrally suppressed carbine, known for being one of the quietest firearms ever made. Chambered in 9mm."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/carbine.dmi'
 	icon_state = "delisle"
 	base_icon_state = "varmintrifle"
 	mag_type = /obj/item/ammo_box/magazine/m9mmds
@@ -564,6 +566,7 @@
 /obj/item/gun/ballistic/automatic/delisle/commando
 	name = "commando carbine"
 	desc = "A integrally suppressed carbine, known for being one of the quietest firearms ever made. This modified version is often used by the Brotherhood of Steel. Its stock has been replaced by post-war polymer furniture, with space to mount a scope. Chambered in .45 ACP."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/carbine.dmi'
 	icon_state = "commando"
 	base_icon_state = "commando"
 	mag_type = /obj/item/ammo_box/magazine/m45exp
@@ -578,6 +581,7 @@
 /obj/item/gun/ballistic/automatic/varmint/ratslayer
 	name = "Ratslayer"
 	desc = "A modified varmint rifle with better stopping power, a scope, and suppressor. Oh, don't forget the sick paint job."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
 	icon_state = "ratslayer"
 	base_icon_state = "ratslayer"
 	extra_damage = 7
@@ -596,6 +600,7 @@
 /obj/item/gun/ballistic/automatic/service
 	name = "service rifle"
 	desc = "A 5.56x45 semi-automatic service rifle with a trimmed barrel, manufactured by the NCR and issued to all combat personnel."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
 	icon_state = "service_rifle"
 	base_icon_state = "servicerifle"
 	extra_damage = -3
@@ -617,6 +622,7 @@
 /obj/item/gun/ballistic/automatic/service/alr
 	name = "ALR15"
 	desc = "A 5.56x45mm rifle custom built off of a reproduction model AR15-style weapon. Sports a fancy holographic sight picture, forward grip, and a comfortable synthetic thumbhole stock. Bang bang."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
 	icon_state = "alr15"
 	base_icon_state = "alr15"
 	mag_type = /obj/item/ammo_box/magazine/m556/rifle
@@ -637,6 +643,7 @@
 /obj/item/gun/ballistic/automatic/service/carbine
 	name = "scout carbine"
 	desc = "A cut down version of the standard-issue service rifle tapped with mounting holes for a scope. Shorter barrel, lower muzzle velocity."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/carbine.dmi'
 	icon_state = "scout_carbine"
 	extra_damage = -5
 	extra_penetration = -7
@@ -672,6 +679,7 @@
 /obj/item/gun/ballistic/automatic/marksman
 	name = "marksman carbine"
 	desc = "A marksman carbine built off the AR platform chambered in 5.56x45. Seen heavy usage in pre-war conflicts. This particular model is a civilian version and is semi-auto only."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
 	icon_state = "marksman_rifle"
 	base_icon_state = "marksman"
 	mag_type = /obj/item/ammo_box/magazine/m556/rifle
@@ -703,6 +711,7 @@
 /obj/item/gun/ballistic/automatic/rangemaster
 	name = "Colt Rangemaster"
 	desc = "A Colt Rangemaster semi-automatic rifle, chambered for 7.62x51. Single-shot only."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/battle_rifle.dmi'
 	icon_state = "rangemaster"
 	base_icon_state = "308"
 	force = 20
@@ -728,7 +737,7 @@
 /obj/item/gun/ballistic/automatic/slr
 	name = "Enfield SLR"
 	desc = "A self-loading rifle in 7.62mm NATO. Semi-auto only."
-	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/battle_rifle.dmi'
 	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/guns_lefthand.dmi'
 	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/guns_righthand.dmi'
 	icon_state = "slr"
@@ -756,6 +765,7 @@
 /obj/item/gun/ballistic/automatic/m1garand
 	name = "M1 Garand"
 	desc = "The WWII American Classic. Still has that satisfiying ping."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/battle_rifle.dmi'
 	icon_state = "m1garand"
 	base_icon_state = "rifle"
 	force = 20
@@ -811,9 +821,9 @@
 /obj/item/gun/ballistic/automatic/m1garand/sks
 	name = "SKS"
 	desc = "Old hunting rifle taken from disovered stockpiles and refurbished in Phoenix workshops. The standard heavy rifle of the Legion, still rare. .308, semi-auto only, internal magazine."
-	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
 	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/guns_lefthand.dmi'
 	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/guns_righthand.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/battle_rifle.dmi'
 	icon_state = "sks"
 	base_icon_state = "sks"
 	mag_type = /obj/item/ammo_box/magazine/sks
@@ -832,6 +842,7 @@
 /obj/item/gun/ballistic/automatic/marksman/sniper
 	name = "sniper rifle"
 	desc = "A DKS 501, chambered in .308 Winchester.  With a light polymer body, it's suited for long treks through the desert."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
 	icon_state = "sniper_rifle"
 	base_icon_state = "sniper_rifle"
 	mag_type = /obj/item/ammo_box/magazine/w308
@@ -865,6 +876,7 @@
 /obj/item/gun/ballistic/automatic/service/r82
 	name = "R82 heavy service rifle"
 	desc = "The assault rifle variant of the R84, based off the pre-war FN FNC. Issued to high-ranking troopers and specialized units. Chambered in 5.56."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/machinegun.dmi'
 	icon_state = "R82"
 	base_icon_state = "R84"
 	fire_delay = 2
@@ -882,6 +894,7 @@
 /obj/item/gun/ballistic/automatic/assault_rifle
 	name = "r91 assault rifle"
 	desc = "The R91 was the standard US Army assault rifle, and so saw wide-spread use after the war. Most are worn out by now."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
 	icon_state = "assault_rifle"
 	base_icon_state = "fnfal"
 	mag_type = /obj/item/ammo_box/magazine/m556/rifle
@@ -905,6 +918,7 @@
 /obj/item/gun/ballistic/automatic/assault_rifle/infiltrator
 	name = "infiltrator"
 	desc = "A customized R91 assault rifle, with an integrated suppressor, small scope, shortened barrel, cut down stock and polymer furniture."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
 	icon_state = "infiltrator"
 	base_icon_state = "fnfal"
 	mag_type = /obj/item/ammo_box/magazine/m556/rifle
@@ -930,6 +944,7 @@
 /obj/item/gun/ballistic/automatic/r93
 	name = "R93 PDW"
 	desc = "A lightweight assault rifle manufactured by the Brotherhood of Steel with a folding stock, based on weapons from the R-series platforms. It is generally issued to Brotherhood Knights for scouting missions."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
 	icon_state = "r93"
 	base_icon_state = "r93"
 	mag_type = /obj/item/ammo_box/magazine/m556/rifle
@@ -977,6 +992,7 @@
 /obj/item/gun/ballistic/automatic/type93
 	name = "type 93 assault rifle"
 	desc = "The Type 93 Chinese assault rifle was designed and manufactured by a Chinese industrial conglomerate for the People's Liberation Army during the Resource Wars, for the purpose of equipping the Chinese infiltrators and American fifth-columnists. Chambered in 5.56x45."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/battle_rifle.dmi'
 	icon_state = "type93"
 	base_icon_state = "handmade_rifle"
 	mag_type = /obj/item/ammo_box/magazine/m556/rifle
@@ -993,7 +1009,7 @@
 /obj/item/gun/ballistic/automatic/type93/worn
 	name = "\improper Worn Type 56"
 	desc = "The original Type 56 was a copy of the Soviet AKM, and this is a copy of that copy produced in a garage. The bore is shot to hell, the threading is destroyed, but atleast it works."
-	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/battle_rifle.dmi'
 	icon_state = "type93"
 	base_icon_state = "handmade_rifle"
 	fire_delay = 5
@@ -1006,6 +1022,7 @@
 /obj/item/gun/ballistic/automatic/bozar
 	name = "Bozar"
 	desc = "The ultimate refinement of the sniper's art, the Bozar is a scoped, accurate, light machine gun that will make nice big holes in your enemy. Uses 5.56."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
 	icon_state = "bozar"
 	base_icon_state = "sniper"
 	slot_flags = ITEM_SLOT_BACK
@@ -1028,6 +1045,7 @@
 /obj/item/gun/ballistic/automatic/assault_carbine
 	name = "assault carbine"
 	desc = "The U.S. army carbine version of the R91, made by Colt and issued to special forces."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/carbine.dmi'
 	icon_state = "assault_carbine"
 	base_icon_state = "assault_carbine"
 	extra_damage = -3
@@ -1059,6 +1077,7 @@
 /obj/item/gun/ballistic/automatic/fnfal
 	name = "FN FAL"
 	desc = "This rifle has been more widely used by armed forces than any other rifle in history. It's a reliable assault weapon for any terrain or tactical situation."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/battle_rifle.dmi'
 	icon_state = "fnfal"
 	base_icon_state = "fnfal"
 	force = 20
@@ -1075,6 +1094,7 @@
 /obj/item/gun/ballistic/automatic/g11
 	name = "g11"
 	desc = "This experimental german gun fires a caseless cartridge consisting of a block of propellant with a bullet buried inside. The weight and space savings allows for a very high magazine capacity. Chambered in 4.73mm."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/smg.dmi'
 	icon_state = "g11"
 	base_icon_state = "g11"
 	mag_type = /obj/item/ammo_box/magazine/m473
@@ -1101,6 +1121,7 @@
 /obj/item/gun/ballistic/automatic/r84
 	name = "R84 LMG"
 	desc = "A light machinegun using 60 round belts fed from an ammobox, its one of the few heavy weapons designs NCR has produced."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/machinegun.dmi'
 	icon_state = "R84"
 	base_icon_state = "R84"
 	slowdown = 1
@@ -1136,7 +1157,7 @@
 /obj/item/gun/ballistic/automatic/lsw
 	name = "LSW (Light Support Weapon)"
 	desc = "This squad-level support weapon has a bullpup design. The bullpup design makes it difficult to use while lying down. Because of this it was remanded to National Guard units. It, however, earned a reputation as a reliable weapon that packs a lot of punch for its size."
-	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/machinegun.dmi'
 	lefthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/guns_lefthand.dmi'
 	righthand_file = 'modular_fallout/master_files/icons/fallout/onmob/weapons/guns_righthand.dmi'
 	icon_state = "lsw"
@@ -1181,6 +1202,7 @@
 /obj/item/gun/ballistic/automatic/m1919
 	name = "Browning M1919"
 	desc = "This ancient machine gun has been dug up and put into working order by the Legion Forgemasters. It's loud, heavy and terrifying."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/machinegun.dmi'
 	icon_state = "M38"
 	base_icon_state = "M38"
 	slot_flags = 0
@@ -1266,6 +1288,7 @@
 /obj/item/gun/ballistic/automatic/m72
 	name = "\improper M72 gauss rifle"
 	desc = "The M72 rifle is of German design. It uses an electromagnetic field to propel rounds at tremendous speed... and pierce almost any obstacle. Its range, accuracy and stopping power is almost unparalleled."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/heavy_rifle.dmi'
 	icon_state = "m72"
 	base_icon_state = "sniper"
 	slot_flags = ITEM_SLOT_BACK
@@ -1282,6 +1305,7 @@
 /obj/item/gun/ballistic/automatic/xl70e3
 	name = "xl70e3"
 	desc = "This was an experimental weapon at the time of the war. Manufactured, primarily, from high-strength polymers, the weapon is almost indestructible. It's light, fast firing, accurate, and can be broken down without the use of any tools. Chamebered in 5.56mm."
+	icon = 'modular_fallout/master_files/icons/fallout/objects/guns/ballistic/assault_rifle.dmi'
 	icon_state = "xl70e3"
 	base_icon_state = "xl70e3"
 	mag_type = /obj/item/ammo_box/magazine/m556/rifle

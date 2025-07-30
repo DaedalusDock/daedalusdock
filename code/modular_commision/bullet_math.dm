@@ -127,14 +127,6 @@
 // A flat bullet head
 #define BULLET_FLAT 1>>4
 
-GLOBAL_LIST_INIT(bulletRicochetMult, list(
-	"[BULLET_SHARP]" = 0.8,
-	"[BULLET_ROUNDED]" = 1.4,
-	"[BULLET_ULTRASHARP]" = 0.5,
-	"[BULLET_FRAGMENTED]" = 1.7,
-	"[BULLET_FLAT]" = 1.2
-))
-
 GLOBAL_LIST_INIT(bulletStandardRicochetAngles, list(
 	"[BULLET_SHARP]" = 18,
 	"[BULLET_ROUNDED]" = 35,
@@ -177,6 +169,15 @@ GLOBAL_LIST_INIT(bulletStandardFragmentAngles, list(
 
 #define BULLET_EXPAND_SPEEDMALUS 0.05
 
+#define BULLET_SPEED_BOOSTED -0.1
+#define BLLET_SPEED_FAST -0.3
+#define BULLET_SPEED_INSANE -0.5
+#define BULLET_SPEED_SLOWED 0.1
+#define BULLET_SPEED_SNAIL 0.4
+
+/obj/item/gun
+	var/speedValueMod = BULLET_SPEED_INSANE
+
 TYPEINFO_DEF(/obj/projectile)
 	default_armor = list(BLUNT = 0, PUNCTURE = 50, SLASH = 0, LASER = 0, ENERGY = 0 , BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
@@ -204,7 +205,7 @@ TYPEINFO_DEF(/obj/projectile)
 		projectile.fired_from = wall
 		projectile.impacted = list(wall)
 		projectile.preparePixelProjectile(get_turf_in_angle(fragmentAngle, wall, 2), src)
-		projectile.speed = speed * 0.3
+		projectile.speed += speed * 0.3
 		projectile.integrity = integrity * 0.2
 		projectile.damage = damage * 0.2
 		projectile.damage_type = damage_type

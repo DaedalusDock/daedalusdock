@@ -459,7 +459,7 @@
 			return TRUE
 		if(integrity < initial(integrity) * 0.3)
 			return process_hit(A, select_target(A, A, A), A)
-		if(mult < 0 && abs(ricochetAngle) < GLOB.bulletStandardFragmentAngles["[bulletTipType]"])
+		if(mult < 0 && abs(ricochetAngle) < GLOB.bulletStandardFragmentAngles["[bulletTipType]"][2] && abs(ricochetAngle) > GLOB.bulletStandardFragmentAngles["[bulletTipType]"][1])
 			impacted[A] = TRUE
 			fragmentTowards(A, 4, abs(ricochetAngle) > 60 ? (ricochetAngle +orig + (abs(ricochetAngle)) + 90) : ricochetAngle + orig - sign(wallHitAngle) * 3, 15, abs(ricochetAngle) > 60)
 			qdel(src)

@@ -3142,6 +3142,9 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
+/obj/structure/disposalpipe/trunk{
+	dir = 8
+	},
 /turf/open/floor/iron/iron_large,
 /area/station/service/janitor)
 "bfW" = (
@@ -5644,12 +5647,14 @@
 /turf/open/floor/plating,
 /area/station/commons/locker)
 "bWF" = (
-/obj/structure/disposalpipe/segment,
 /obj/effect/turf_decal/tile/neutral,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable/yellow{
 	icon_state = "12"
+	},
+/obj/structure/disposalpipe/sorting/mail/flip{
+	sortType = 22
 	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/aft)
@@ -18307,6 +18312,9 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
 /turf/open/floor/iron/iron_large,
 /area/station/service/janitor)
 "gDn" = (
@@ -19221,15 +19229,6 @@
 /obj/structure/overfloor_catwalk/iron_dark,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/lesser)
-"gTp" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/cable/yellow{
-	icon_state = "12"
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atm,
-/turf/open/floor/carpet,
-/area/station/service/library)
 "gTu" = (
 /obj/machinery/power/emitter,
 /obj/machinery/light/small/directional/south,
@@ -20271,6 +20270,9 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable/yellow{
 	icon_state = "10"
+	},
+/obj/structure/disposalpipe/segment{
+	dir = 10
 	},
 /turf/open/floor/iron,
 /area/station/service/janitor)
@@ -23874,6 +23876,9 @@
 /obj/structure/cable/yellow{
 	icon_state = "40"
 	},
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
 /turf/open/floor/plating,
 /area/station/service/janitor)
 "iHw" = (
@@ -24784,6 +24789,15 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/dark,
 /area/station/security/brig/upper)
+"jad" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atm,
+/turf/open/floor/carpet,
+/area/station/service/library)
 "jal" = (
 /obj/structure/cable/yellow{
 	icon_state = "9"
@@ -51450,6 +51464,9 @@
 	icon_state = "5"
 	},
 /obj/machinery/c4_embedded_controller/slave/directional/west,
+/obj/structure/disposalpipe/segment{
+	dir = 5
+	},
 /turf/open/floor/plating,
 /area/station/service/janitor)
 "sxG" = (
@@ -60333,6 +60350,18 @@
 /obj/machinery/c4_embedded_controller/slave/directional/south,
 /turf/open/floor/iron/grimy,
 /area/station/security/detectives_office/private_investigators_office)
+"vGp" = (
+/obj/structure/overfloor_catwalk/iron_dark,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/turf/open/floor/plating,
+/area/station/service/janitor)
 "vGA" = (
 /obj/effect/turf_decal/tile/blue,
 /obj/effect/turf_decal/tile/green{
@@ -60758,9 +60787,7 @@
 /obj/structure/railing{
 	dir = 8
 	},
-/obj/structure/disposalpipe/segment{
-	dir = 9
-	},
+/obj/structure/disposalpipe/segment,
 /turf/open/floor/plating,
 /area/station/commons/locker)
 "vOz" = (
@@ -99392,7 +99419,7 @@ gPz
 aLs
 ljo
 koj
-cXH
+vGp
 tFG
 tkv
 aLs
@@ -104773,7 +104800,7 @@ lIJ
 bTz
 bKs
 sbV
-gTp
+jad
 roO
 jgH
 gub

@@ -105,3 +105,9 @@
 	crate_type = /obj/structure/closet/crate/secure/plasma
 	dangerous = TRUE
 
+/datum/supply_pack/mpc/survival_knife
+	name = "Survival Knife"
+	desc = "Contains one sharpened survival knife. Guaranteed to fit snugly inside any standard boot."
+	cost = PAYCHECK_HARD * 1.75
+	contains = list(/obj/item/knife/combat/survival)
+

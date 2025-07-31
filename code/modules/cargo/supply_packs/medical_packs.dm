@@ -70,3 +70,42 @@
 		/obj/item/bodybag/stasis,
 		/obj/item/bodybag/stasis,
 	)
+
+/datum/supply_pack/medical/firstaidbrute
+	name = "Medical Kit (Blunt Trauma)"
+	desc = "A single brute medkit."
+	cost = PAYCHECK_MEDIUM * 4
+	contains = list(/obj/item/storage/medkit/brute)
+
+/datum/supply_pack/medical/firstaidburns
+	name = "Medical Kit (Burn)"
+	desc = "A single burn medkit."
+	cost = PAYCHECK_MEDIUM * 4
+	contains = list(/obj/item/storage/medkit/fire)
+
+/datum/supply_pack/medical/firstaid
+	name = "Medical Kit (First Aid)"
+	desc = "A single medkit, fit for healing most types of bodily harm."
+	cost = PAYCHECK_MEDIUM * 3
+	contains = list(/obj/item/storage/medkit/regular)
+
+/datum/supply_pack/medical/firstaidoxygen
+	name = "Medical Kit (Oxygen Deprivation)"
+	desc = "A single oxygen deprivation medkit."
+	cost = PAYCHECK_MEDIUM * 4
+	contains = list(/obj/item/storage/medkit/o2)
+
+/datum/supply_pack/medical/firstaidtoxins
+	name = "Medical Kit (Toxin)"
+	desc = "A single first aid kit focused on healing damage dealt by heavy toxins."
+	cost = PAYCHECK_MEDIUM * 4
+	contains = list(/obj/item/storage/medkit/toxin)
+
+/datum/supply_pack/medical/medipen_twopak
+	name = "Autoinjector Two-Pak"
+	desc = "Contains one standard epinephrine autoinjector and one standard emergency medkit autoinjector. For when you want to prepare for the worst."
+	cost = PAYCHECK_MEDIUM * 2
+	contains = list(
+		/obj/item/reagent_containers/hypospray/medipen,
+		/obj/item/reagent_containers/hypospray/medipen/ekit
+	)

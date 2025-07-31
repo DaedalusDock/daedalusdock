@@ -195,38 +195,13 @@ TYPEINFO_DEF(/obj/item/storage/fancy)
 
 	///for cigarette overlay
 	var/candy = FALSE
-	/// Does this cigarette packet come with a coupon attached?
-	var/spawn_coupon = TRUE
-	/// For VV'ing, set this to true if you want to force the coupon to give an omen
-	var/rigged_omen = FALSE
 	///Do we not have our own handling for cig overlays?
 	var/display_cigs = TRUE
-
-/obj/item/storage/fancy/cigarettes/attack_self(mob/user)
-	if(contents.len != 0 || !spawn_coupon)
-		return ..()
-
-	to_chat(user, span_notice("You rip the back off \the [src] and get a coupon!"))
-	var/obj/item/coupon/attached_coupon = new
-	user.put_in_hands(attached_coupon)
-	attached_coupon.generate(rigged_omen)
-	attached_coupon = null
-	spawn_coupon = FALSE
-	name = "discarded cigarette packet"
-	desc = "An old cigarette packet with the back torn off, worth less than nothing now."
-	atom_storage.max_slots = 0
-	return
 
 /obj/item/storage/fancy/cigarettes/Initialize()
 	. = ..()
 	atom_storage.quickdraw = TRUE
 	atom_storage.set_holdable(list(/obj/item/clothing/mask/cigarette, /obj/item/lighter))
-
-/obj/item/storage/fancy/cigarettes/examine(mob/user)
-	. = ..()
-
-	if(spawn_coupon)
-		. += span_notice("There's a coupon on the back of the pack! You can tear it off once it's empty.")
 
 /obj/item/storage/fancy/cigarettes/update_icon_state()
 	. = ..()
@@ -383,7 +358,6 @@ TYPEINFO_DEF(/obj/item/storage/fancy)
 	contents_tag = "premium cigar"
 	spawn_type = /obj/item/clothing/mask/cigarette/cigar
 	spawn_count = 5
-	spawn_coupon = FALSE
 	display_cigs = FALSE
 
 /obj/item/storage/fancy/cigarettes/cigars/Initialize()

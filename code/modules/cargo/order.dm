@@ -49,9 +49,8 @@
 	var/department_destination
 	var/datum/supply_pack/pack
 	var/datum/bank_account/paying_account
-	var/obj/item/coupon/applied_coupon
 
-/datum/supply_order/New(datum/supply_pack/pack, orderer, orderer_rank, orderer_ckey, reason, paying_account, department_destination, coupon)
+/datum/supply_order/New(datum/supply_pack/pack, orderer, orderer_rank, orderer_ckey, reason, paying_account, department_destination)
 	id = SSshuttle.order_number++
 	src.pack = pack
 	src.orderer = orderer
@@ -60,7 +59,6 @@
 	src.reason = reason
 	src.paying_account = paying_account
 	src.department_destination = department_destination
-	src.applied_coupon = coupon
 
 /datum/supply_order/proc/generateRequisition(turf/T)
 	var/obj/item/paper/P = new(T)

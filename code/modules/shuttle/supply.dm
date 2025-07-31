@@ -125,9 +125,8 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 	for(var/datum/supply_order/spawning_order in SSshuttle.shopping_list)
 		if(!empty_turfs.len)
 			break
+
 		var/price = spawning_order.pack.get_cost()
-		if(spawning_order.applied_coupon)
-			price *= (1 - spawning_order.applied_coupon.discount_pct_off)
 
 		var/datum/bank_account/paying_for_this
 
@@ -153,7 +152,6 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 		value += spawning_order.pack.get_cost()
 		SSshuttle.shopping_list -= spawning_order
 		SSshuttle.order_history += spawning_order
-		QDEL_NULL(spawning_order.applied_coupon)
 
 		spawning_order.generate(pick_n_take(empty_turfs))
 

@@ -3,7 +3,7 @@
 	crate_type = /obj/structure/closet/crate/secure/gear
 
 /datum/supply_pack/ammunition/beanbag
-	name = "Beanbag Crate"
+	name = "12 ga Beanbag Shot"
 	desc = "Contains three boxes of beanbag shotgun rounds."
 	cost = CARGO_CRATE_VALUE * 8
 	contains = list(
@@ -14,7 +14,7 @@
 	crate_name = "beanbag crate"
 
 /datum/supply_pack/ammunition/rubbershot
-	name = "Less-than-lethal Crate"
+	name = "12 ga Rubbershot"
 	desc = "Contains three boxes of rubber less-than-lethal shotgun rounds."
 	cost = CARGO_CRATE_VALUE * 8
 	contains = list(
@@ -25,7 +25,7 @@
 	crate_name = "less-than-lethal crate"
 
 /datum/supply_pack/ammunition/c38_specialer
-	name = ".38 Special-er Crate"
+	name = ".38 Special-er Speedloaders"
 	desc = "Contains several speedloaders for experimental rounds of the .38 Special caliber."
 	contains = list(
 		/obj/item/ammo_box/c38/hotshot,

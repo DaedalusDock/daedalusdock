@@ -58,7 +58,7 @@
 
 /datum/supply_pack/proc/fill(obj/structure/closet/crate/C)
 	if(randomized)
-		for(var/i in 1 to pick_amount)
+		for(var/i in 1 to random_pick_amount)
 			var/path = pick(contains)
 			var/atom/A = new path(C)
 			if(admin_spawned)
@@ -779,7 +779,7 @@
 	contains = list(
 		/obj/item/stack/medical/bruise_pack,
 		/obj/item/stack/medical/suture,
-		/obj/item/stack/bone_gel,
+		/obj/item/stack/medical/bone_gel,
 		/obj/item/stack/medical/ointment,
 	)
 

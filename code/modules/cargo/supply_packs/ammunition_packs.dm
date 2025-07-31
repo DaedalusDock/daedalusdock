@@ -24,6 +24,19 @@
 	)
 	crate_name = "less-than-lethal crate"
 
+/datum/supply_pack/ammunition/c38_special
+	name = ".38 Special Speedloaders"
+	desc = "Contains three speedloaders of .38 Special."
+	contains = list(
+		/obj/item/ammo_box/c38,
+		/obj/item/ammo_box/c38,
+		/obj/item/ammo_box/c38,
+		/obj/item/ammo_box/c38,
+		/obj/item/ammo_box/c38,
+		/obj/item/ammo_box/c38,
+	)
+	crate_name = ".38 special crate"
+
 /datum/supply_pack/ammunition/c38_specialer
 	name = ".38 Special-er Speedloaders"
 	desc = "Contains several speedloaders for experimental rounds of the .38 Special caliber."
@@ -36,3 +49,37 @@
 		/obj/item/ammo_box/c38/iceblox,
 	)
 	crate_name = ".38 special-er crate"
+
+/datum/supply_pack/ammunition/c38_special/dumdum
+	name = ".38 Special DumDum Speedloaders"
+	desc = "Contains three speedloaders of .38 DumDum ammunition, good for embedding in soft targets."
+	cost = PAYCHECK_MEDIUM * 2
+	access_view = ACCESS_SECURITY
+	contains = list(
+		/obj/item/ammo_box/c38/dumdum,
+		/obj/item/ammo_box/c38/dumdum,
+		/obj/item/ammo_box/c38/dumdum,
+	)
+
+/datum/supply_pack/ammunition/c38_special/match
+	name = ".38 Special Match Speedloader"
+	desc = "Contains three speedloaders of match grade .38 ammunition, perfect for showing off trickshots."
+	cost = PAYCHECK_MEDIUM * 2
+	access_view = ACCESS_SECURITY
+	contains = list(
+		/obj/item/ammo_box/c38/match,
+		/obj/item/ammo_box/c38/match,
+		/obj/item/ammo_box/c38/match,
+	)
+
+/datum/supply_pack/ammunition/c38_special/rubber
+	name = ".38 Special Rubbershot Speedloader"
+	desc = "Contains three speedloaders  of bouncy rubber .38 ammunition, for when you want to bounce your shots off anything and everything."
+	cost = PAYCHECK_MEDIUM * 1.5
+	access_view = ACCESS_SECURITY
+	contains = list(
+		/obj/item/ammo_box/c38/match/bouncy,
+		/obj/item/ammo_box/c38/match/bouncy,
+		/obj/item/ammo_box/c38/match/bouncy,
+	)
+

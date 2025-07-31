@@ -25,7 +25,6 @@
 			"cost" = P.get_cost(),
 			"id" = pack,
 			"desc" = P.desc || P.name,
-			"goody" = P.goody,
 			"access" = P.access
 		))
 

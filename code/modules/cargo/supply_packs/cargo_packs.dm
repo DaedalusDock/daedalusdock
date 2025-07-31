@@ -32,7 +32,7 @@
 /datum/supply_pack/service/emptycrate
 	name = "Empty Crate"
 	desc = "It's an empty crate, for all your storage needs."
-	cost = CARGO_CRATE_VALUE * 1.4 //Net Zero Profit.
+	cost = CARGO_CRATE_VALUE + CARGO_MANIFEST_VALUE
 	contains = list()
 	crate_name = "crate"
 

@@ -5,8 +5,8 @@
 	// See cargo.dm
 	var/supply_flags = NONE
 
-	/// Cost of the crate. DO NOT GO ANY LOWER THAN X1.4 the "CARGO_CRATE_VALUE" value if using regular crates, or infinite profit will be possible!
-	var/cost = CARGO_CRATE_VALUE * 1.4
+	/// Cost of the crate. DO NOT GO ANY LOWER THAN "CARGO_CRATE_VALUE + CARGO_MANIFEST_VALUE" if using regular crates, or infinite profit will be possible due to the manifest approval.
+	var/cost = CARGO_CRATE_VALUE + CARGO_MANIFEST_VALUE
 	var/access = FALSE
 	var/access_view = FALSE
 	var/access_any = FALSE

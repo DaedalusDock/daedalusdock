@@ -630,7 +630,7 @@
 		new /obj/item/firing_pin/tag/blue(src)
 
 /obj/item/storage/box/handcuffs
-	name = "box of spare handcuffs"
+	name = "box of handcuffs"
 	desc = "A box full of handcuffs."
 	icon_state = "secbox"
 	illustration = "handcuff"

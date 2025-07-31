@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Guns now have screentips for controls.
+  - tweak: Adjusted gun controls to overlap less.

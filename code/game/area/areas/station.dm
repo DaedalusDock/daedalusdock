@@ -1089,7 +1089,6 @@
 /area/station/medical/disposal
 	name = "\improper Biohazardous Waste Disposal"
 	icon_state = "medical_disposal"
-	ambientsounds = list('sound/ambience/aurora_caelus_short.ogg')
 
 //Security
 

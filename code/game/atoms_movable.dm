@@ -1347,3 +1347,37 @@
 	REMOVE_TRAIT(src, TRAIT_PASSMOB, source)
 	if(!HAS_TRAIT(src, TRAIT_PASSMOB))
 		pass_flags &= ~PASSMOB
+
+/atom/movable/proc/become_fluorescent()
+	ADD_TRAIT(src, TRAIT_MOVABLE_FLUORESCENT, TRAIT_GENERIC)
+	invisibility = INVISIBILITY_MAXIMUM
+	alpha = 0
+
+/atom/movable/proc/lose_fluorescence()
+	REMOVE_TRAIT(src, TRAIT_MOVABLE_FLUORESCENT, TRAIT_GENERIC)
+	animate(src, alpha = initial(alpha), time = 1 SECOND)
+	invisibility = initial(invisibility)
+
+/atom/movable/proc/uv_illuminate(source, animate_time = 1 SECOND, new_alpha = 255)
+	SHOULD_CALL_PARENT(TRUE)
+
+	if(!HAS_TRAIT(src, TRAIT_MOVABLE_FLUORESCENT))
+		return
+
+	SEND_SIGNAL(src, COMSIG_MOVABLE_UV_EXPOSE, source, animate_time, new_alpha)
+
+	ADD_TRAIT(src, TRAIT_MOVABLE_FLUORESCENCE_REVEALED, source)
+	return TRUE
+
+/atom/movable/proc/uv_hide(source, animate_time = 0)
+	SHOULD_CALL_PARENT(TRUE)
+
+	if(!HAS_TRAIT(src, TRAIT_MOVABLE_FLUORESCENT))
+		return
+
+	SEND_SIGNAL(src, COMSIG_MOVABLE_UV_HIDE, source, animate_time)
+
+	REMOVE_TRAIT(src, TRAIT_MOVABLE_FLUORESCENCE_REVEALED, source)
+
+	if(!HAS_TRAIT(src, TRAIT_MOVABLE_FLUORESCENCE_REVEALED))
+		return TRUE

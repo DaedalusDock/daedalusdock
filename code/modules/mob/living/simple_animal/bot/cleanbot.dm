@@ -330,7 +330,7 @@
 		update_icon_state()
 		var/turf/T = get_turf(attack_target)
 		if(do_after(src, T, 1 SECOND))
-			T.wash(CLEAN_SCRUB)
+			T.wash(CLEAN_SCRUB|CLEAN_TYPE_HIDDEN_BLOOD) // I thought it'd be funny if cleanbots could clean hidden blood.
 			visible_message(span_notice("[src] cleans [T]."))
 		target = null
 		set_mode(BOT_IDLE)

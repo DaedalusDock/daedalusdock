@@ -541,7 +541,7 @@
 	var/touch_protection = (methods & VAPOR) ? get_permeability_protection() : 0
 	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_MOB, src, reagents, methods, volume_modifier, show_message, touch_protection)
 	for(var/datum/reagent/R as anything in reagents)
-		. |= R.expose_mob(src, reagents[R], exposed_temperature, source, methods, show_message, touch_protection, source)
+		. |= R.expose_mob(src, reagents[R], exposed_temperature, source, methods, show_message, touch_protection)
 
 /// See if an attack is blocked by an item or effect. Returns TRUE if it is.
 /mob/living/proc/check_block(atom/hit_by, damage, attack_text = "the attack", attack_type = MELEE_ATTACK, armor_penetration = 0, damage_type = BRUTE)

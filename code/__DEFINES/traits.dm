@@ -480,6 +480,11 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Smoke temporarily cannot affect this mob.
 #define TRAIT_AFFECTED_BY_SMOKE_RECENTLY "affected_by_smoke_recently"
 
+/// A trait applied to objects with the capacity to be revealed by UV.
+#define TRAIT_MOVABLE_FLUORESCENT "flourescence"
+/// A trait applied to objects that are revealed by something
+#define TRAIT_MOVABLE_FLUORESCENCE_REVEALED "fluorescence_revealed"
+
 // METABOLISMS
 // Various jobs on the station have historically had better reactions
 // to various drinks and foodstuffs. Security liking donuts is a classic

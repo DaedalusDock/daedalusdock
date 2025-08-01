@@ -35,6 +35,7 @@
 	. = ..()
 	exposed_obj.extinguish()
 	exposed_obj.wash(CLEAN_TYPE_ACID)
+
 	// Monkey cube
 	if(istype(exposed_obj, /obj/item/food/monkeycube))
 		var/obj/item/food/monkeycube/cube = exposed_obj
@@ -194,7 +195,7 @@
 	shot_glass_icon_state = "shotglassred"
 	penetrates_skin = NONE
 
-/datum/reagent/blood/expose_mob(mob/living/exposed_mob, exposed_temperature, reac_volume, methods, show_message, touch_protection)
+/datum/reagent/blood/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(data?["viruses"])
 		for(var/thing in data["viruses"])
@@ -372,7 +373,7 @@
 	C.adjustToxLoss(2 * removed, FALSE, cause_of_death = "Ingesting hair dye")
 	return ..() || TRUE
 
-/datum/reagent/hair_dye/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=FALSE)
+/datum/reagent/hair_dye/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR)) || !ishuman(exposed_mob))
 		return
@@ -796,7 +797,7 @@
 	taste_description = "slime"
 	penetrates_skin = NONE
 
-/datum/reagent/vaccine/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
+/datum/reagent/vaccine/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(!islist(data) || !(methods & (INGEST|INJECT)))
 		return
@@ -1163,3 +1164,17 @@
 		return
 	if(reac_volume >= 1)
 		exposed_turf.MakeSlippery(TURF_WET_WATER, 15 SECONDS, min(reac_volume * 1 SECONDS, 40 SECONDS))
+
+/datum/reagent/luminol
+	name = "Luminol"
+	description = "A compound that illuminates blood when oxidized."
+	taste_description = "metal"
+	reagent_state = LIQUID
+	color = "#f2f3f4"
+	value = 1.4
+	taste_description = "pungent acid"
+
+/datum/reagent/luminol/expose_obj(obj/exposed_obj, reac_volume, exposed_temperature)
+	. = ..()
+	exposed_obj.uv_illuminate("luminol", 2 SECONDS, 255)
+

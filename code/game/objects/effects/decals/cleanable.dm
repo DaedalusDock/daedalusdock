@@ -109,16 +109,18 @@
 	SIGNAL_HANDLER
 	if(AM == src)
 		return
+	if(HAS_TRAIT(src, TRAIT_MOVABLE_FLUORESCENT))
+		return
+
 	if(iscarbon(AM) && blood_color && bloodiness >= 40)
 		SEND_SIGNAL(AM, COMSIG_STEP_ON_BLOOD, src)
 		update_appearance()
 
 /obj/effect/decal/cleanable/wash(clean_types)
 	. = ..()
-	if (. || (clean_types & clean_type))
+	if (clean_types & clean_type)
 		qdel(src)
 		return TRUE
-	return .
 
 /**
  * Checks if this decal is a valid decal that can be blood crawled in.

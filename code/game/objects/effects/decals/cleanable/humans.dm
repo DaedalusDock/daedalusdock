@@ -16,7 +16,7 @@
 	random_icon_states = list("floor1", "floor2", "floor3", "floor4", "floor5", "floor6", "floor7")
 	beauty = -100
 
-	clean_type = CLEAN_TYPE_BLOOD
+	clean_type = CLEAN_TYPE_HIDDEN_BLOOD
 	mergeable_decal = FALSE //We handle this on our own.
 
 	bloodiness = BLOOD_AMOUNT_PER_DECAL
@@ -32,6 +32,11 @@
 	var/smell_name = "blood"
 
 	var/blood_print = null
+
+	/// If washed by anything that doesn't delete it, does it become fluorescent?
+	var/fluorescent_on_wash = TRUE
+	/// Emissive vis contents object for fluorescence.
+	var/obj/effect/overlay/vis/emissive_vis_overlay
 
 	var/should_dry = TRUE
 	/// How long should it take for blood to dry?
@@ -68,6 +73,7 @@
 
 /obj/effect/decal/cleanable/blood/Destroy()
 	STOP_PROCESSING(SSobj, src)
+	QDEL_NULL(emissive_vis_overlay)
 	return ..()
 
 /obj/effect/decal/cleanable/blood/process()
@@ -101,23 +107,29 @@
 
 ///This is what actually "dries" the blood. Returns true if it's all out of blood to dry, and false otherwise
 /obj/effect/decal/cleanable/blood/proc/dry()
+	if(is_dry) // Possible if called manually
+		return PROCESS_KILL
+
 	if(reagents.get_reagent_amount(/datum/reagent/blood) > 20)
 		reagents.remove_reagent(/datum/reagent/blood, BLOOD_AMOUNT_PER_DECAL)
 		get_timer()
 		return FALSE
-	else
-		name = dryname
-		desc = drydesc
-		reagents.remove_reagent(/datum/reagent/blood, INFINITY, , include_subtypes = TRUE)
-		var/list/temp_color = rgb2hsv(color || COLOR_WHITE)
-		color = hsv2rgb(temp_color[1], temp_color[2], max(temp_color[3] - 100, 0))
-		qdel(GetComponent(/datum/component/smell))
-		if(spook_factor)
-			AddComponent(/datum/component/spook_factor, spook_factor)
-		is_dry = TRUE
-		return PROCESS_KILL
+
+	name = dryname
+	desc = drydesc
+	reagents.remove_reagent(/datum/reagent/blood, INFINITY, , include_subtypes = TRUE)
+	var/list/temp_color = rgb2hsv(color || COLOR_WHITE)
+	color = hsv2rgb(temp_color[1], temp_color[2], max(temp_color[3] - 100, 0))
+	qdel(GetComponent(/datum/component/smell))
+	if(spook_factor)
+		AddComponent(/datum/component/spook_factor, spook_factor)
+	is_dry = TRUE
+	return PROCESS_KILL
 
 /obj/effect/decal/cleanable/blood/can_merge_into(obj/effect/decal/cleanable/blood/other, force)
+	if(HAS_TRAIT(other, TRAIT_MOVABLE_FLUORESCENT) != HAS_TRAIT(src, TRAIT_MOVABLE_FLUORESCENT))
+		return FALSE
+
 	if(isnull(other.blood_merge_into_us) || isnull(blood_merge_into_other))
 		return FALSE
 
@@ -131,6 +143,47 @@
 	merger.add_blood_DNA(return_blood_DNA())
 	if (bloodiness)
 		merger.bloodiness = min((merger.bloodiness + bloodiness), BLOOD_AMOUNT_PER_DECAL)
+
+/obj/effect/decal/cleanable/blood/wash(clean_types)
+	. = ..()
+	if(QDELETED(src))
+		return
+
+	if((clean_types & CLEAN_TYPE_BLOOD) && !HAS_TRAIT(src, TRAIT_MOVABLE_FLUORESCENT)) // This type just hides blood.
+		become_fluorescent()
+		return TRUE
+
+/obj/effect/decal/cleanable/blood/become_fluorescent()
+	. = ..()
+	// This is written with the assumption blood cannot lose fluorescence
+	if(!emissive_vis_overlay)
+		emissive_vis_overlay = new()
+		emissive_vis_overlay.appearance = emissive_appearance(icon, icon_state)
+		emissive_vis_overlay.vis_flags = VIS_INHERIT_ID  | VIS_INHERIT_LAYER
+		add_viscontents(emissive_vis_overlay)
+
+	bloodiness = 1
+	dry()
+	color = COLOR_LUMINOL
+
+/obj/effect/decal/cleanable/blood/uv_illuminate(source, animate_time, new_alpha)
+	. = ..()
+	if(!.)
+		return
+
+	invisibility = INVISIBILITY_VISIBLE
+
+	if(new_alpha > alpha)
+		animate(src, alpha = new_alpha, time = animate_time, flags = ANIMATION_PARALLEL)
+		animate(emissive_vis_overlay, alpha = new_alpha, time = animate_time, flags = ANIMATION_PARALLEL)
+
+/obj/effect/decal/cleanable/blood/uv_hide(source, animate_time)
+	. = ..()
+	if(!.)
+		return
+
+	animate(src, alpha = 0, invisibility = INVISIBILITY_MAXIMUM, time = animate_time, flags = ANIMATION_PARALLEL)
+	animate(emissive_vis_overlay, alpha = 0, time = animate_time, flags = ANIMATION_PARALLEL)
 
 /obj/effect/decal/cleanable/blood/old
 	reagent_amount = 0
@@ -200,6 +253,8 @@
 	drydesc = "They look bloody and gruesome while some terrible smell fills the air."
 	decal_reagent = /datum/reagent/liquidgibs
 	reagent_amount = 5
+	clean_type = CLEAN_TYPE_BLOOD
+	fluorescent_on_wash = FALSE
 
 	smell_intensity = INTENSITY_OVERPOWERING
 	smell_name = "viscera"
@@ -424,6 +479,9 @@
 
 /obj/effect/decal/cleanable/blood/footprints/update_icon()
 	. = ..()
+	if(HAS_TRAIT(src, TRAIT_MOVABLE_FLUORESCENT))
+		return
+
 	color = blood_color
 	alpha = min(BLOODY_FOOTPRINT_BASE_ALPHA + (255 - BLOODY_FOOTPRINT_BASE_ALPHA) * reagents.get_reagent_amount(/datum/reagent/blood) / (BLOOD_ITEM_MAX / 2), 255)
 
@@ -434,6 +492,7 @@
 	//"entered-[blood_print]-[blood_color]-[dir_of_image]"
 	//or: "exited-[blood_print]-[blood_color]--[dir_of_image]"
 
+	var/emissive = HAS_TRAIT(src, TRAIT_MOVABLE_FLUORESCENCE_REVEALED)
 	var/static/list/bloody_footprints_cache = list()
 	for(var/Ddir in GLOB.cardinals)
 		if(entered_dirs & Ddir)
@@ -442,12 +501,25 @@
 				bloody_footprints_cache["entered-[blood_print]-[blood_color]-[Ddir]"] = bloodstep_overlay = image(icon, "[blood_print]1", dir = Ddir)
 			. += bloodstep_overlay
 
+			if(emissive)
+				var/mutable_appearance/emissive_overlay = emissive_appearance(icon, bloodstep_overlay.icon_state)
+				emissive_overlay.dir = Ddir
+				. += emissive_overlay
+
 		if(exited_dirs & Ddir)
 			var/image/bloodstep_overlay = bloody_footprints_cache["exited-[blood_print]-[blood_color]-[Ddir]"]
 			if(!bloodstep_overlay)
 				bloody_footprints_cache["exited-[blood_print]-[blood_color]-[Ddir]"] = bloodstep_overlay = image(icon, "[blood_print]2", dir = Ddir)
 			. += bloodstep_overlay
 
+			if(emissive)
+				var/mutable_appearance/emissive_overlay = emissive_appearance(icon, bloodstep_overlay.icon_state)
+				emissive_overlay.dir = Ddir
+				. += emissive_overlay
+
+/obj/effect/decal/cleanable/blood/footprints/uv_illuminate(source, animate_time, new_alpha)
+	. = ..()
+	update_appearance(UPDATE_OVERLAYS)
 
 /obj/effect/decal/cleanable/blood/footprints/examine(mob/user)
 	. = ..()
@@ -597,8 +669,3 @@
 /obj/effect/decal/cleanable/blood/squirt/Initialize(mapload, direction, list/blood_dna)
 	. = ..()
 	setDir(direction)
-
-/obj/effect/decal/cleanable/blood/dry()
-	. = ..()
-	if(.)
-		color = "#350303"

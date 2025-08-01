@@ -153,6 +153,9 @@
 	if(!force && !buckled_mob.can_buckle_to)
 		return
 
+	if(!force && (SEND_SIGNAL(src, COMSIG_MOVABLE_PRE_UNBUCKLE_MOB, buckled_mob) & COMPONENT_BLOCK_UNBUCKLE))
+		return
+
 	. = buckled_mob
 
 	buckled_mob.set_buckled(null)
@@ -224,7 +227,7 @@
 	// No bucking you to yourself.
 	if(target == src)
 		return FALSE
-		
+
 	var/turf/ground = get_turf(src)
 	// If we're not already on the same turf as our target...
 	if(get_turf(target) != ground)

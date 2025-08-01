@@ -8,7 +8,7 @@
 /datum/supply_pack/service/cargo_supples
 	name = "Hermes Technician Equipment Crate"
 	desc = "Contains equipment for an aspiring Hermes Galactic Freight Co. technician."
-	cost = CARGO_CRATE_VALUE * 1.75
+	cost = PAYCHECK_ASSISTANT * 4.5 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/stamp,
 		/obj/item/stamp/denied,
@@ -22,7 +22,7 @@
 /datum/supply_pack/service/minerkit
 	name = "Mining Equipment Crate"
 	desc = "All the miners died too fast? Assistant wants to get a taste of life off-station? Either way, this kit is the best way to turn a regular crewman into an ore-producing, monster-slaying machine. Contains meson goggles, a pickaxe, advanced mining scanner, cargo headset, ore bag, gasmask, an explorer suit and a miner ID upgrade. Requires QM access to open."
-	cost = CARGO_CRATE_VALUE * 4
+	cost = PAYCHECK_ASSISTANT * 4.5 + CARGO_CRATE_VALUE
 	access = ACCESS_QM
 	access_view = ACCESS_CARGO
 	contains = list(/obj/item/storage/backpack/duffelbag/mining_conscript)
@@ -39,14 +39,14 @@
 /datum/supply_pack/service/trolley
 	name = "Trolley Crate"
 	desc = "A crate containing a single trolley for transporting upto three crates at once."
-	cost = CARGO_CRATE_VALUE * 2
+	cost = PAYCHECK_ASSISTANT * 10 + CARGO_CRATE_VALUE
 	contains = list(/obj/vehicle/ridden/trolley)
 	crate_name = "trolley crate"
 
 /datum/supply_pack/service/empty
 	name = "Empty Supplypod"
 	desc = "Presenting the New Nanotrasen-Brand Bluespace Supplypod! Transport cargo with grace and ease! Call today and we'll shoot over a demo unit for just 300 credits!"
-	cost = CARGO_CRATE_VALUE * 0.6 //Empty pod, so no crate refund
+	cost = CARGO_CRATE_VALUE
 	contains = list()
 	supply_flags = SUPPLY_PACK_DROPPOD_ONLY
 	crate_type = null

@@ -8,7 +8,7 @@
 /datum/supply_pack/reagent/chemical_carts
 	name = "Full Chemistry Cartridge Pack"
 	desc = "Contains a full set of chem dispenser cartridges with every chemical you'll need for making pharmaceuticals."
-	cost = CARGO_CRATE_VALUE * 35 //price may need balancing
+	cost = PAYCHECK_ASSISTANT * 50 + CARGO_CRATE_VALUE //price may need balancing
 	crate_name = "chemical cartridges crate"
 
 /datum/supply_pack/reagent/chemical_carts/New()
@@ -45,7 +45,7 @@
 /datum/supply_pack/reagent/chemical_carts/soft_drinks_chem_cartridge //IGNORE THE TYPEPATH PLEASE
 	name = "Soft Drinks Cartridge Luxury Pack (Full Dispenser)"
 	desc = "Contains a full set of chem cartridges of the same size inside a soft drinks dispenser at shift start."
-	cost = CARGO_CRATE_VALUE * 25
+	cost = PAYCHECK_ASSISTANT * 8.7 + CARGO_CRATE_VALUE
 
 /datum/supply_pack/reagent/chemical_carts/soft_drinks_chem_cartridge/set_cart_list()
 	contains = GLOB.cartridge_list_drinks.Copy()
@@ -53,7 +53,7 @@
 /datum/supply_pack/reagent/chemical_carts/booze_chem_cartridge
 	name = "Booze Cartridge Luxury Pack (Full Dispenser)"
 	desc = "Contains a full set of chem cartridges of the same size inside a booze dispenser at shift start."
-	cost = CARGO_CRATE_VALUE * 30
+	cost = PAYCHECK_ASSISTANT * 12.5 + CARGO_CRATE_VALUE
 
 /datum/supply_pack/reagent/chemical_carts/booze_chem_cartridge/set_cart_list()
 	contains = GLOB.cartridge_list_booze.Copy()

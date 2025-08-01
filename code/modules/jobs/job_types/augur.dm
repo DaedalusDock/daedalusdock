@@ -29,7 +29,7 @@
 		/datum/job_department/company_leader,
 	)
 
-	paycheck = PAYCHECK_COMMAND
+	paycheck = PAYCHECK_ASSISTANT * 10
 	paycheck_department = ACCOUNT_MED
 
 	mind_traits = list(TRAIT_AETHERITE)

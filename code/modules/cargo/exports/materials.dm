@@ -101,3 +101,8 @@
 	message = "cm3 of metallic hydrogen"
 	material_path = /datum/material/metalhydrogen
 	export_types = /obj/item/stack/sheet/mineral/metal_hydrogen
+
+/datum/export/material/wood
+	unit_name = "wood planks"
+	material_path = /datum/material/wood
+	export_types = (/obj/item/stack/sheet/mineral/wood)

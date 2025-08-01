@@ -17,7 +17,7 @@
 		),
 	)
 
-	paycheck = PAYCHECK_MEDIUM
+	paycheck = PAYCHECK_ASSISTANT * 3.5 // It's a cult. You think they pay well?
 	paycheck_department = ACCOUNT_MED
 
 	mind_traits = list(TRAIT_AETHERITE)

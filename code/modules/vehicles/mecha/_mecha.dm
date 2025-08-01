@@ -900,39 +900,6 @@ TYPEINFO_DEF(/obj/vehicle/sealed/mecha)
 
 	//Transfer from core or card to mech. Proc is called by mech.
 	switch(interaction)
-		if(AI_TRANS_TO_CARD) //Upload AI from mech to AI card.
-			if(!construction_state) //Mech must be in maint mode to allow carding.
-				to_chat(user, span_warning("[name] must have maintenance protocols active in order to allow a transfer."))
-				return
-			var/list/ai_pilots = list()
-			for(var/mob/living/silicon/ai/aipilot in occupants)
-				ai_pilots += aipilot
-			if(!length(ai_pilots)) //Mech does not have an AI for a pilot
-				to_chat(user, span_warning("No AI detected in the [name] onboard computer."))
-				return
-			if(length(ai_pilots) > 1) //Input box for multiple AIs, but if there's only one we'll default to them.
-				AI = tgui_input_list(user, "Which AI do you wish to card?", "AI Selection", sort_list(ai_pilots))
-			else
-				AI = ai_pilots[1]
-			if(isnull(AI))
-				return
-			if(!(AI in occupants) || !user.Adjacent(src))
-				return //User sat on the selection window and things changed.
-
-			AI.ai_restore_power()//So the AI initially has power.
-			AI.control_disabled = TRUE
-			AI.radio_enabled = FALSE
-			AI.disconnect_shell()
-			remove_occupant(AI)
-			mecha_flags  &= ~SILICON_PILOT
-			AI.forceMove(card)
-			card.AI = AI
-			AI.controlled_equipment = null
-			AI.remote_control = null
-			to_chat(AI, span_notice("You have been downloaded to a mobile storage device. Wireless connection offline."))
-			to_chat(user, "[span_boldnotice("Transfer successful")]: [AI.name] ([rand(1000,9999)].exe) removed from [name] and stored within local memory.")
-			return
-
 		if(AI_MECH_HACK) //Called by AIs on the mech
 			AI.linked_core = new /obj/structure/ai_core/deactivated(AI.loc)
 			if(AI.can_dominate_mechs && LAZYLEN(occupants)) //Oh, I am sorry, were you using that?
@@ -941,24 +908,6 @@ TYPEINFO_DEF(/obj/vehicle/sealed/mecha)
 				for(var/ejectee in occupants)
 					mob_exit(ejectee, TRUE, TRUE) //IT IS MINE, NOW. SUCK IT, RD!
 				AI.can_shunt = FALSE //ONE AI ENTERS. NO AI LEAVES.
-
-		if(AI_TRANS_FROM_CARD) //Using an AI card to upload to a mech.
-			AI = card.AI
-			if(!AI)
-				to_chat(user, span_warning("There is no AI currently installed on this device."))
-				return
-			if(AI.deployed_shell) //Recall AI if shelled so it can be checked for a client
-				AI.disconnect_shell()
-			if(AI.stat || !AI.client)
-				to_chat(user, span_warning("[AI.name] is currently unresponsive, and cannot be uploaded."))
-				return
-			if((LAZYLEN(occupants) >= max_occupants) || dna_lock) //Normal AIs cannot steal mechs!
-				to_chat(user, span_warning("Access denied. [name] is [LAZYLEN(occupants) >= max_occupants ? "currently fully occupied" : "secured with a DNA lock"]."))
-				return
-			AI.control_disabled = FALSE
-			AI.radio_enabled = TRUE
-			to_chat(user, "[span_boldnotice("Transfer successful")]: [AI.name] ([rand(1000,9999)].exe) installed and executed successfully. Local copy has been removed.")
-			card.AI = null
 	ai_enter_mech(AI)
 
 ///Hack and From Card interactions share some code, so leave that here for both to use.

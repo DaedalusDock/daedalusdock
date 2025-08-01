@@ -92,7 +92,7 @@ TYPEINFO_DEF(/obj/item/storage/fancy)
 	spawn_count = 6
 	is_open = TRUE
 	appearance_flags = KEEP_TOGETHER|LONG_GLIDE
-	custom_premium_price = PAYCHECK_COMMAND * 1.75
+	custom_premium_price = PAYCHECK_ASSISTANT * 6.5
 	contents_tag = "donut"
 
 /obj/item/storage/fancy/donut_box/Initialize()

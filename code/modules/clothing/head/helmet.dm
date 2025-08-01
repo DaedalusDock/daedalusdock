@@ -103,7 +103,7 @@ TYPEINFO_DEF(/obj/item/clothing/head/helmet/marine)
 	desc = "A reliable, blue tinted helmet reminding you that you <i>still</i> owe that engineer a beer."
 	icon_state = "blueshift"
 	inhand_icon_state = "blueshift"
-	custom_premium_price = PAYCHECK_HARD
+	custom_premium_price = PAYCHECK_ASSISTANT * 9.2
 
 TYPEINFO_DEF(/obj/item/clothing/head/helmet/riot)
 	default_armor = list(BLUNT = 60, PUNCTURE = 10, SLASH = 60, LASER = 10, ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)

@@ -3,13 +3,15 @@ SUBSYSTEM_DEF(economy)
 	wait = 5 MINUTES
 	init_order = INIT_ORDER_ECONOMY
 	runlevels = RUNLEVEL_GAME
+
 	///How many paychecks should players start out the round with?
-	var/roundstart_paychecks = 5
+	var/roundstart_paychecks = 1
 
 	var/payday_interval = 8 // How many fires between paydays
 
 	/// How many marks to give to each department at round start.
 	var/roundstart_budget_amt = 4000
+	#warn change this ^
 
 	var/list/department_id2name = list(
 		ACCOUNT_ENG = ACCOUNT_ENG_NAME,

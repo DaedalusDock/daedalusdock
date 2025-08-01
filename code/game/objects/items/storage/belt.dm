@@ -373,7 +373,7 @@
 	inhand_icon_state = "securitywebbing"
 	worn_icon_state = "securitywebbing"
 	content_overlays = FALSE
-	custom_premium_price = PAYCHECK_HARD * 3
+	custom_premium_price = PAYCHECK_ASSISTANT * 6.2
 
 /obj/item/storage/belt/security/webbing/Initialize()
 	. = ..()

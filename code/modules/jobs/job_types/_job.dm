@@ -104,7 +104,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/// Experience type granted by playing in this job.
 	var/exp_granted_type = ""
 
-	var/paycheck = PAYCHECK_MINIMAL
+	var/paycheck = PAYCHECK_ASSISTANT * 3
 	var/paycheck_department = null
 
 	/// Traits added to the mind of the mob assigned this job.

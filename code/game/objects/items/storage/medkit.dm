@@ -244,7 +244,7 @@
 	desc = "An advanced kit to help deal with advanced wounds."
 	icon_state = "medkit_advanced"
 	inhand_icon_state = "medkit-rad"
-	custom_premium_price = PAYCHECK_HARD * 6
+	custom_premium_price = PAYCHECK_ASSISTANT * 9
 	damagetype_healed = "all"
 
 /obj/item/storage/medkit/advanced/PopulateContents()

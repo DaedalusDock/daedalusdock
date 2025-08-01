@@ -399,7 +399,7 @@
 	pixels_per_unit = 20
 	w_class = WEIGHT_CLASS_BULKY
 
-	custom_premium_price = PAYCHECK_HARD * 1.25
+	custom_premium_price = PAYCHECK_ASSISTANT * 1.2
 
 /obj/item/canvas/thirtysix_twentyfour/Initialize()
 	. = ..()
@@ -422,7 +422,7 @@
 	pixels_per_unit = 18
 	w_class = WEIGHT_CLASS_BULKY
 
-	custom_premium_price = PAYCHECK_HARD * 1.75
+	custom_premium_price = PAYCHECK_ASSISTANT * 2.7
 
 /obj/item/canvas/fortyfive_twentyseven/Initialize()
 	. = ..()

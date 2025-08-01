@@ -32,7 +32,7 @@
 	)
 	refill_canister = /obj/item/vending_refill/security
 	default_price = PAYCHECK_ASSISTANT * 5
-	extra_price = PAYCHECK_HARD * 1.5
+	extra_price = PAYCHECK_ASSISTANT * 50
 	payment_department = ACCOUNT_SEC
 
 	discount_access = ACCESS_SECURITY

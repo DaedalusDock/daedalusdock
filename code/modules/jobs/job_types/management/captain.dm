@@ -25,7 +25,7 @@
 		),
 	)
 
-	paycheck = PAYCHECK_COMMAND
+	paycheck = PAYCHECK_ASSISTANT * 10
 	paycheck_department = ACCOUNT_STATION_MASTER
 
 	liver_traits = list(TRAIT_ROYAL_METABOLISM)

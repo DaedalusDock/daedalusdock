@@ -151,7 +151,7 @@
 	)
 
 	custom_price = PAYCHECK_ASSISTANT * 2.2
-	custom_premium_price = PAYCHECK_HARD
+	custom_premium_price = PAYCHECK_ASSISTANT * 4
 
 /obj/item/reagent_containers/hypospray/medipen/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins to choke on \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))

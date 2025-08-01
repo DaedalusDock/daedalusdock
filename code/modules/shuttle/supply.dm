@@ -122,6 +122,7 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 
 	var/value = 0
 	var/purchases = 0
+	var/list/purchased_packs = list()
 	for(var/datum/supply_order/spawning_order in SSshuttle.shopping_list)
 		if(!empty_turfs.len)
 			break
@@ -149,9 +150,12 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 			SSeconomy.track_purchase(paying_for_this, price, spawning_order.pack.name)
 			var/datum/bank_account/department/cargo = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 			cargo.adjust_money(price - spawning_order.pack.get_cost()) //Cargo gets the handling fee
+
 		value += spawning_order.pack.get_cost()
+
 		SSshuttle.shopping_list -= spawning_order
 		SSshuttle.order_history += spawning_order
+		purchased_packs += "[spawning_order.pack.type]"
 
 		spawning_order.generate(pick_n_take(empty_turfs))
 
@@ -166,7 +170,7 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 
 	SSeconomy.import_total += value
 	var/datum/bank_account/cargo_budget = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
-	investigate_log("[purchases] orders in this shipment, worth [value] marks. [cargo_budget.account_balance] marks left.", INVESTIGATE_CARGO)
+	investigate_log("[purchases] orders in this shipment, worth [value] marks. [cargo_budget.account_balance] marks left. The items purchased were: [english_list(purchased_packs)]", INVESTIGATE_CARGO)
 
 /obj/docking_port/mobile/supply/proc/sell()
 	var/datum/bank_account/cargo_account = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]

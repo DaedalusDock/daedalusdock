@@ -1,13 +1,11 @@
 /datum/supply_pack/mpc
 	group = "MPC Armory"
-	access = ACCESS_SECURITY
 	crate_type = /obj/structure/closet/crate/secure/gear
 
 /datum/supply_pack/mpc/armor
 	name = "Armor Set (Plated)"
 	desc = "Contains a set of well-rounded, decently-protective armor."
 	cost = PAYCHECK_ASSISTANT * 15.2 + CARGO_CRATE_VALUE
-	access_view = ACCESS_SECURITY
 	contains = list(
 		/obj/item/clothing/suit/armor/vest,
 		/obj/item/clothing/head/helmet,
@@ -39,7 +37,6 @@
 	name = "MPC Uniform Crate"
 	desc = "Contains four Mars People's Coalition uniforms."
 	cost = PAYCHECK_ASSISTANT * 10 + CARGO_CRATE_VALUE
-	access_view = ACCESS_SECURITY
 	contains = list(
 		/obj/item/clothing/suit/security/officer,
 		/obj/item/clothing/suit/security/officer,
@@ -50,9 +47,8 @@
 
 /datum/supply_pack/mpc/stingpack
 	name = "Box of Stingbangs"
-	desc = "Contains five \"stingbang\" grenades, perfect for stopping riots and playing morally unthinkable pranks. Requires Security access to open."
+	desc = "Contains five \"stingbang\" grenades, perfect for stopping riots and playing morally unthinkable pranks."
 	cost = PAYCHECK_ASSISTANT * 17.1 + CARGO_CRATE_VALUE
-	access_view = ACCESS_ARMORY
 	contains = list(/obj/item/storage/box/stingbangs)
 	crate_name = "stingbang grenade pack crate"
 
@@ -60,7 +56,6 @@
 	name = "Box of Handcuffs"
 	desc = "Contains 7 pairs of handcuffs."
 	cost = /obj/item/restraints/handcuffs::custom_price * 6 + CARGO_CRATE_VALUE //You get one free
-	access_view = ACCESS_ARMORY
 	contains = list(
 		/obj/item/storage/box/handcuffs,
 	)
@@ -89,9 +84,8 @@
 
 /datum/supply_pack/mpc/fire
 	name = "Incendiary Weapons Crate"
-	desc = "We don't need no water, let the motherfucker burn, burn, motherfucker burn. Contains three incendiary grenades, three plasma canisters, and a flamethrower. Requires Armory access to open."
+	desc = "We don't need no water, let the motherfucker burn, burn, motherfucker burn. Contains three incendiary grenades, three plasma canisters, and a flamethrower."
 	cost = PAYCHECK_ASSISTANT * 35.5 + CARGO_CRATE_VALUE
-	access = ACCESS_SECURITY
 	contains = list(
 		/obj/item/flamethrower/full,
 		/obj/item/tank/internals/plasma,

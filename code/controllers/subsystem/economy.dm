@@ -10,8 +10,13 @@ SUBSYSTEM_DEF(economy)
 	var/payday_interval = 8 // How many fires between paydays
 
 	/// How many marks to give to each department at round start.
-	var/roundstart_budget_amt = 4000
-	#warn change this ^
+	var/roundstart_budget_map = list(
+		ACCOUNT_ENG = 750,
+		ACCOUNT_MED = 750,
+		ACCOUNT_CAR = 2000,
+		ACCOUNT_SEC = 500,
+		ACCOUNT_GOV = 500,
+	)
 
 	var/list/department_id2name = list(
 		ACCOUNT_ENG = ACCOUNT_ENG_NAME,
@@ -73,9 +78,7 @@ SUBSYSTEM_DEF(economy)
 
 /datum/controller/subsystem/economy/Initialize(timeofday)
 	for(var/dep_id in department_id2name)
-		department_accounts_by_id[dep_id] = new /datum/bank_account/department(dep_id, department_id2name[dep_id], roundstart_budget_amt)
-
-	department_accounts_by_id[ACCOUNT_GOV].account_balance = 1000
+		department_accounts_by_id[dep_id] = new /datum/bank_account/department(dep_id, department_id2name[dep_id], roundstart_budget_map[dep_id] || 0)
 
 	station_master = department_accounts_by_id[ACCOUNT_STATION_MASTER]
 	return ..()

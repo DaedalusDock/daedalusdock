@@ -30,10 +30,11 @@
 		/obj/item/storage/organbox = 1
 	)
 	refill_canister = /obj/item/vending_refill/medical
-	default_price = PAYCHECK_EASY
+	default_price = PAYCHECK_ASSISTANT
 	extra_price = PAYCHECK_COMMAND
 	payment_department = ACCOUNT_MED
 	light_mask = "med-light-mask"
+	discount_access = ACCESS_MEDICAL
 
 /obj/item/vending_refill/medical
 	machine_name = "NanoMed Plus"

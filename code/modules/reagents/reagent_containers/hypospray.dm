@@ -150,7 +150,7 @@
 		/datum/reagent/medicine/adenosine = 5,
 	)
 
-	custom_price = PAYCHECK_MEDIUM
+	custom_price = PAYCHECK_ASSISTANT * 2.2
 	custom_premium_price = PAYCHECK_HARD
 
 /obj/item/reagent_containers/hypospray/medipen/suicide_act(mob/living/carbon/user)

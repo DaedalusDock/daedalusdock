@@ -26,7 +26,7 @@
 		/obj/item/construction/rcd/loaded = 2,
 	)
 	refill_canister = /obj/item/vending_refill/engivend
-	default_price = PAYCHECK_EASY
+	default_price = PAYCHECK_ASSISTANT
 	extra_price = PAYCHECK_COMMAND * 2
 	payment_department = ACCOUNT_ENG
 	light_mask = "engivend-light-mask"

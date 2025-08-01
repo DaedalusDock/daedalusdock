@@ -528,7 +528,7 @@
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	throw_range = 7
-	custom_premium_price = PAYCHECK_MEDIUM * 4
+	custom_premium_price = PAYCHECK_ASSISTANT * 7
 	/// var to prevent it freezing the same things over and over
 	var/cooling = FALSE
 

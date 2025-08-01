@@ -75,7 +75,7 @@
 	base_pixel_x = 11
 	base_pixel_y = 10
 
-	custom_premium_price = PAYCHECK_MEDIUM
+	custom_premium_price = PAYCHECK_ASSISTANT * 1.5
 
 /obj/item/canvas/Initialize(mapload)
 	. = ..()

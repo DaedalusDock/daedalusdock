@@ -7,8 +7,6 @@
 /// The baseline cost for basically everything in the game
 #define PAYCHECK_ASSISTANT 10
 
-#define PAYCHECK_COMMAND (PAYCHECK_ASSISTANT * 20)
-
 #define PAYCHECK_ZERO 0
 
 //A multiplier for when you buy from your department.

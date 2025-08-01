@@ -1,6 +1,6 @@
 // Approved manifest.
 /datum/export/manifest_correct
-	cost = CARGO_CRATE_VALUE + CARGO_MANIFEST_VALUE
+	cost = CARGO_MANIFEST_VALUE
 	k_elasticity = 0
 	unit_name = "approved manifest"
 	export_types = list(/obj/item/paper/fluff/jobs/cargo/manifest)

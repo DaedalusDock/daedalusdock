@@ -4,9 +4,6 @@ SUBSYSTEM_DEF(economy)
 	init_order = INIT_ORDER_ECONOMY
 	runlevels = RUNLEVEL_GAME
 
-	///How many paychecks should players start out the round with?
-	var/roundstart_paychecks = 1
-
 	var/payday_interval = 8 // How many fires between paydays
 
 	/// How many marks to give to each department at round start.

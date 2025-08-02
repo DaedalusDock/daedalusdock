@@ -104,7 +104,11 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/// Experience type granted by playing in this job.
 	var/exp_granted_type = ""
 
+	///How many paychecks should players start out the round with?
+	var/starting_paycheck_amount = 1
+	/// How much someone is paid every pay period (~45 minutes)
 	var/paycheck = PAYCHECK_ASSISTANT * 5
+	/// The department the paycheck comes from. They don't get one at all if null.
 	var/paycheck_department = null
 
 	/// Traits added to the mind of the mob assigned this job.
@@ -262,10 +266,10 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	dress_up_as_job(equipping, FALSE, used_pref, TRUE)
 	var/obj/item/storage/wallet/W = wear_id
 	if(istype(W))
-		var/monero = round(equipping.paycheck, 10)
+		var/monero = round(equipping.paycheck * starting_paycheck_amount, 10)
 		SSeconomy.spawn_ones_for_amount(monero, W)
 	else
-		bank_account.payday()
+		bank_account.payday(starting_paycheck_amount)
 
 /mob/living/proc/dress_up_as_job(datum/job/equipping, visual_only = FALSE)
 	return

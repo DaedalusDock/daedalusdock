@@ -4,7 +4,7 @@
 /datum/supply_pack/apparel/random_hats
 	name = "Collectable Hats Bundle"
 	desc = "Flaunt your status with three unique, highly-collectable hats."
-	cost = CARGO_CRATE_VALUE * 40
+	cost = PAYCHECK_ASSISTANT * 2.5 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/clothing/head/collectable/chef,
 		/obj/item/clothing/head/collectable/paper,
@@ -38,7 +38,7 @@
 /datum/supply_pack/apparel/formalwear
 	name = "Formalwear Bundle"
 	desc = "You're gonna like the way you look, I guaranteed it. Contains an asston of fancy clothing."
-	cost = CARGO_CRATE_VALUE * 4 //Lots of very expensive items. You gotta pay up to look good!
+	cost = PAYCHECK_ASSISTANT * 11.1 + CARGO_CRATE_VALUE //Lots of very expensive items. You gotta pay up to look good!
 	contains = list(
 		/obj/item/clothing/under/dress/blacktango,
 		/obj/item/clothing/under/misc/assistantformal,
@@ -58,8 +58,6 @@
 		/obj/item/clothing/head/beret,
 		/obj/item/clothing/head/that,
 		/obj/item/clothing/shoes/laceup,
-		/obj/item/clothing/shoes/laceup,
-		/obj/item/clothing/shoes/laceup,
 		/obj/item/clothing/under/suit/charcoal,
 		/obj/item/clothing/under/suit/navy,
 		/obj/item/clothing/under/suit/burgundy,
@@ -73,7 +71,7 @@
 /datum/supply_pack/apparel/costume_original
 	name = "Original Costume Bundle"
 	desc = "Reenact Shakespearean plays with this assortment of outfits. Contains eight different costumes!"
-	cost = CARGO_CRATE_VALUE * 2
+	cost = PAYCHECK_ASSISTANT * 5.1 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/clothing/head/snowman,
 		/obj/item/clothing/suit/snowman,
@@ -95,7 +93,7 @@
 /datum/supply_pack/costumes_toys/mafia
 	name = "Cosa Nostra Starter Pack"
 	desc = "This crate contains everything you need to set up your own ethnicity-based racketeering operation."
-	cost = CARGO_CRATE_VALUE * 4
+	cost = PAYCHECK_ASSISTANT * 3 + CARGO_CRATE_VALUE
 	contains = list()
 	supply_flags = SUPPLY_PACK_CONTRABAND
 
@@ -111,7 +109,7 @@
 /datum/supply_pack/apparel/wedding
 	name = "Wedding Bundle"
 	desc = "Everything you need to host a wedding! Now you just need an officiant."
-	cost = CARGO_CRATE_VALUE * 3
+	cost = PAYCHECK_ASSISTANT * 3.2 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/clothing/under/dress/wedding_dress,
 		/obj/item/clothing/under/suit/tuxedo,
@@ -127,7 +125,7 @@
 /datum/supply_pack/apparel/funeral
 	name = "Funeral Bundle"
 	desc = "At the end of the day, someone's gonna want someone dead. Give them a proper send-off with these funeral supplies! Contains a coffin with burial garmets and flowers."
-	cost = CARGO_CRATE_VALUE * 1.6
+	cost = PAYCHECK_ASSISTANT * 2 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/clothing/under/misc/burial,
 		/obj/item/food/grown/harebell,

@@ -4,13 +4,12 @@
 
 /datum/supply_pack/medical
 	group = "Medical"
-	access_view = ACCESS_MEDICAL
 	crate_type = /obj/structure/closet/crate/medical
 
 /datum/supply_pack/medical/bloodpacks
 	name = "Blood Pack Variety Crate"
 	desc = "Contains ten different blood packs for reintroducing blood to patients."
-	cost = CARGO_CRATE_VALUE * 7
+	cost = PAYCHECK_ASSISTANT * 12.1 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/reagent_containers/blood,
 		/obj/item/reagent_containers/blood,
@@ -27,23 +26,23 @@
 	crate_type = /obj/structure/closet/crate/freezer
 
 /datum/supply_pack/medical/defibs
-	name = "Defibrillator Crate"
+	name = "Defibrillator"
 	desc = "Contains a defibrillator for restarting hearts."
-	cost = CARGO_CRATE_VALUE * 5
+	cost = PAYCHECK_ASSISTANT * 16.2 + CARGO_CRATE_VALUE
 	contains = list(/obj/item/defibrillator/loaded)
 	crate_name = "defibrillator crate"
 
 /datum/supply_pack/medical/iv_drip
-	name = "IV Drip Crate"
+	name = "IV Drip"
 	desc = "Contains a single IV drip for administering blood to patients."
-	cost = CARGO_CRATE_VALUE * 2
+	cost = PAYCHECK_ASSISTANT * 3 + CARGO_CRATE_VALUE
 	contains = list(/obj/machinery/iv_drip)
 	crate_name = "iv drip crate"
 
 /datum/supply_pack/medical/surgery
-	name = "Surgical Tool Crate"
+	name = "Surgical Tool Bundle"
 	desc = "Contains an array of surgical tools."
-	cost = CARGO_CRATE_VALUE * 6
+	cost = PAYCHECK_ASSISTANT * 13.8 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/storage/backpack/duffelbag/med/surgery
 	)
@@ -52,7 +51,7 @@
 /datum/supply_pack/medical/supplies
 	name = "Medical Supplies"
 	desc = "Contains a handful of bruise packs, sutures, burn ointment, and bone gel."
-	cost = CARGO_CRATE_VALUE * 3
+	cost = PAYCHECK_ASSISTANT * 2.5 + CARGO_CRATE_VALUE
 	crate_name = "advanced trauma crate"
 	contains = list(
 		/obj/item/stack/medical/bruise_pack,
@@ -62,9 +61,9 @@
 	)
 
 /datum/supply_pack/medical/stasis_bags
-	name = "Stasis Bags Crate"
+	name = "Stasis Bag Bundle"
 	desc = "A shipment of stasis bags for medical triage."
-	cost = CARGO_CRATE_VALUE * 8
+	cost = PAYCHECK_ASSISTANT * 45.8 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/bodybag/stasis,
 		/obj/item/bodybag/stasis,

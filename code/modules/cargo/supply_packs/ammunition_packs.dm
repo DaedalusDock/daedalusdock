@@ -53,7 +53,6 @@
 	name = ".38 Special DumDum Speedloaders"
 	desc = "Contains three speedloaders of .38 DumDum ammunition, good for embedding in soft targets."
 	cost = PAYCHECK_ASSISTANT * 9.2 + CARGO_CRATE_VALUE
-	access_view = ACCESS_SECURITY
 	contains = list(
 		/obj/item/ammo_box/c38/dumdum,
 		/obj/item/ammo_box/c38/dumdum,
@@ -64,7 +63,6 @@
 	name = ".38 Special Match Speedloader"
 	desc = "Contains three speedloaders of match grade .38 ammunition, perfect for showing off trickshots."
 	cost = PAYCHECK_ASSISTANT * 2.3 + CARGO_CRATE_VALUE
-	access_view = ACCESS_SECURITY
 	contains = list(
 		/obj/item/ammo_box/c38/match,
 		/obj/item/ammo_box/c38/match,
@@ -75,7 +73,6 @@
 	name = ".38 Special Rubbershot Speedloader"
 	desc = "Contains three speedloaders  of bouncy rubber .38 ammunition, for when you want to bounce your shots off anything and everything."
 	cost = PAYCHECK_ASSISTANT * 3.5 + CARGO_CRATE_VALUE
-	access_view = ACCESS_SECURITY
 	contains = list(
 		/obj/item/ammo_box/c38/match/bouncy,
 		/obj/item/ammo_box/c38/match/bouncy,

@@ -1,15 +1,14 @@
 /datum/export/material
-	cost = 5 // Cost per MINERAL_MATERIAL_AMOUNT, which is 2000cm3 as of April 2016.
 	message = "cm3 of developer's tears. Please, report this on github"
+	cost_coeff = 0.6
 	amount_report_multiplier = MINERAL_MATERIAL_AMOUNT
 	var/datum/material/material_path = null
 	export_types = list(
 		/obj/item/stack/sheet/mineral, /obj/item/stack/tile/mineral,
 		/obj/item/stack/ore, /obj/item/coin)
 
-/datum/export/material/New()
-	. = ..()
-	cost = initial(material_path.value_per_unit) * MINERAL_MATERIAL_AMOUNT
+/datum/export/material/get_initial_cost()
+	return ceil(initial(material_path.value_per_unit) * MINERAL_MATERIAL_AMOUNT * cost_coeff)
 
 // Yes, it's a base type containing export_types.
 // But it has no material_path, so any applies_to check will return false, and these types reduce amount of copypasta a lot

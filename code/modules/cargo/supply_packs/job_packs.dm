@@ -3,16 +3,15 @@
 
 /datum/supply_pack/job_equipment/janitank
 	name = "Hydropack"
-	desc = "Call forth divine judgement upon dirt and grime with this high capacity janitor backpack. Contains 500 units of station-cleansing cleaner. Requires janitor access to open."
-	cost = CARGO_CRATE_VALUE * 2
+	desc = "Call forth divine judgement upon dirt and grime with this high capacity janitor backpack. Contains 500 units of station-cleansing cleaner."
+	cost = PAYCHECK_ASSISTANT * 7.8 + CARGO_CRATE_VALUE
 	contains = list(/obj/item/watertank/janitor)
 	crate_name = "hydropack crate"
 
 /datum/supply_pack/job_equipment/forensics
 	name = "Forensics Bundle"
-	desc = "Stay hot on the criminal's heels with Mars' Detective Essentials(tm). Contains a crime scene kit, six evidence bags, camera, tape recorder, white crayon, and of course, a fedora. Requires Security access to open."
-	cost = CARGO_CRATE_VALUE * 2.5
-	access_view = ACCESS_FORENSICS
+	desc = "Stay hot on the criminal's heels with Mars' Detective Essentials(tm). Contains a crime scene kit, six evidence bags, camera, tape recorder, white crayon, and of course, a fedora."
+	cost = PAYCHECK_ASSISTANT * 7.6 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/storage/scene_cards,
 		/obj/item/storage/box/evidence,
@@ -24,9 +23,9 @@
 	crate_name = "forensics crate"
 
 /datum/supply_pack/job_equipment/beekeeping_suits
-	name = "Beekeeper Suit Crate"
+	name = "Beekeeper Suit"
 	desc = "Bee business booming? Better be benevolent and boost botany by bestowing a Beekeeper-suit! Contains a beekeeper suit."
-	cost = CARGO_CRATE_VALUE * 2
+	cost = PAYCHECK_ASSISTANT * 3.5 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/clothing/head/beekeeper_head,
 		/obj/item/clothing/suit/beekeeper_suit,
@@ -35,9 +34,9 @@
 	crate_type = /obj/structure/closet/crate/hydroponics
 
 /datum/supply_pack/job_equipment/beekeeping_fullkit
-	name = "Beekeeping Starter Crate"
+	name = "Beekeeping Starter Bundle"
 	desc = "BEES BEES BEES. Contains three honey frames, a beekeeper suit and helmet, flyswatter, bee house, and, of course, a pure-bred Priapus-Standardized Queen Bee!"
-	cost = CARGO_CRATE_VALUE * 3
+	cost = PAYCHECK_ASSISTANT * 8.3 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/structure/beebox/unwrenched,
 		/obj/item/honey_frame,
@@ -54,7 +53,7 @@
 /datum/supply_pack/job_equipment/hydroponics
 	name = "Hydroponics Crate"
 	desc = "Supplies for growing a great garden! Contains two bottles of ammonia, two Plant-B-Gone spray bottles, a hatchet, cultivator, plant analyzer, as well as a pair of leather gloves and a botanist's apron."
-	cost = CARGO_CRATE_VALUE * 3
+	cost = PAYCHECK_ASSISTANT * 5.3 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/reagent_containers/spray/plantbgone,
 		/obj/item/reagent_containers/spray/plantbgone,

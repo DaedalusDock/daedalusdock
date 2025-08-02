@@ -34,7 +34,7 @@
 
 /datum/export/large/gas_canister/get_cost(obj/O)
 	var/obj/machinery/portable_atmospherics/canister/C = O
-	var/worth = cost
+	var/worth = init_cost
 	var/datum/gas_mixture/canister_mix = C.return_air()
 	var/list/gases_to_check = xgm_gas_data.gases
 

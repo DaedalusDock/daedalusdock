@@ -2,9 +2,9 @@
 	group = "Miscellaneous Supplies"
 
 /datum/supply_pack/misc/artsupply
-	name = "Art Supplies"
+	name = "Art Supply Bundle"
 	desc = "Make some happy little accidents with a rapid pipe cleaner layer, three spraycans, and lots of crayons!"
-	cost = CARGO_CRATE_VALUE * 1.8
+	cost = PAYCHECK_ASSISTANT * 2 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/storage/toolbox/artistic,
 		/obj/item/toy/crayon/spraycan,
@@ -31,7 +31,7 @@
 /datum/supply_pack/misc/bigband
 	name = "Big Band Instrument Collection"
 	desc = "Get your sad station movin' and groovin' with this fine collection! Contains nine different instruments!"
-	cost = CARGO_CRATE_VALUE * 10
+	cost = PAYCHECK_ASSISTANT * 13.2 + CARGO_CRATE_VALUE
 	crate_name = "Big band musical instruments collection"
 	contains = list(/obj/item/instrument/violin,
 					/obj/item/instrument/guitar,
@@ -45,10 +45,9 @@
 	crate_type = /obj/structure/closet/crate/wooden
 
 /datum/supply_pack/misc/book_crate
-	name = "Book Crate"
+	name = "Book Bundle"
 	desc = "Surplus from the Core Worlds Archives, these seven books are sure to be good reads."
-	cost = CARGO_CRATE_VALUE * 3
-	access_view = ACCESS_LIBRARY
+	cost = PAYCHECK_ASSISTANT * 1.8 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/book/codex_gigas,
 		/obj/item/book/manual/random,
@@ -61,36 +60,35 @@
 	crate_type = /obj/structure/closet/crate/wooden
 
 /datum/supply_pack/misc/paper
-	name = "Bureaucracy Crate"
+	name = "Bureaucracy Bundle"
 	desc = "High stacks of papers on your desk Are a big problem - make it Pea-sized with these bureaucratic supplies! Contains six pens, some camera film, hand labeler supplies, a paper bin, a carbon paper bin, three folders, a laser pointer, two clipboards and two stamps."//that was too forced
-	cost = CARGO_CRATE_VALUE * 3.2
-	contains = list(/obj/structure/filingcabinet/chestdrawer/wheeled,
-					/obj/item/camera_film,
-					/obj/item/hand_labeler,
-					/obj/item/hand_labeler_refill,
-					/obj/item/hand_labeler_refill,
-					/obj/item/paper_bin,
-					/obj/item/paper_bin/carbon,
-					/obj/item/pen/fourcolor,
-					/obj/item/pen/fourcolor,
-					/obj/item/pen,
-					/obj/item/pen/fountain,
-					/obj/item/pen/blue,
-					/obj/item/pen/red,
-					/obj/item/folder/blue,
-					/obj/item/folder/red,
-					/obj/item/folder/yellow,
-					/obj/item/clipboard,
-					/obj/item/clipboard,
-					/obj/item/stamp,
-					/obj/item/stamp/denied,
-					/obj/item/laser_pointer/purple)
+	cost = PAYCHECK_ASSISTANT * 2 + CARGO_CRATE_VALUE
+	contains = list(
+		/obj/structure/filingcabinet/chestdrawer/wheeled,
+		/obj/item/camera_film,
+		/obj/item/hand_labeler,
+		/obj/item/hand_labeler_refill,
+		/obj/item/paper_bin,
+		/obj/item/pen/fourcolor,
+		/obj/item/pen/fourcolor,
+		/obj/item/pen,
+		/obj/item/pen/fountain,
+		/obj/item/pen/blue,
+		/obj/item/pen/red,
+		/obj/item/folder/blue,
+		/obj/item/folder/red,
+		/obj/item/folder/yellow,
+		/obj/item/clipboard,
+		/obj/item/stamp,
+		/obj/item/stamp/denied,
+		/obj/item/laser_pointer/purple
+	)
 	crate_name = "bureaucracy crate"
 
 /datum/supply_pack/misc/fountainpens
-	name = "Calligraphy Crate"
+	name = "Calligraphy Bundle"
 	desc = "Sign death warrants in style with these seven executive fountain pens."
-	cost = CARGO_CRATE_VALUE * 1.45
+	cost = PAYCHECK_ASSISTANT * 1 + CARGO_CRATE_VALUE
 	contains = list(/obj/item/storage/box/fountainpens)
 	crate_type = /obj/structure/closet/crate/wooden
 	crate_name = "calligraphy crate"
@@ -98,60 +96,35 @@
 /datum/supply_pack/misc/wrapping_paper
 	name = "Festive Wrapping Paper Crate"
 	desc = "Want to mail your loved ones gift-wrapped chocolates, stuffed animals, the Clown's severed head? You can do all that, with this crate full of wrapping paper."
-	cost = CARGO_CRATE_VALUE * 1.8
+	cost = PAYCHECK_ASSISTANT * 1.6 + CARGO_CRATE_VALUE
 	contains = list(/obj/item/stack/wrapping_paper)
 	crate_type = /obj/structure/closet/crate/wooden
 	crate_name = "festive wrapping paper crate"
 
 /datum/supply_pack/misc/religious_supplies
-	name = "Religious Supplies Crate"
+	name = "Religious Supplies Bundle"
 	desc = "Keep your local chaplain happy and well-supplied, lest they call down judgement upon your cargo bay. Contains two bottles of holywater, bibles, chaplain robes, and burial garmets."
-	cost = CARGO_CRATE_VALUE * 6 // it costs so much because the Space Church needs funding to build a cathedral
-	access_view = ACCESS_CHAPEL_OFFICE
-	contains = list(/obj/item/reagent_containers/cup/glass/bottle/holywater,
-					/obj/item/reagent_containers/cup/glass/bottle/holywater,
-					/obj/item/storage/book/bible/booze,
-					/obj/item/storage/book/bible/booze,
-					/obj/item/clothing/suit/hooded/chaplain_hoodie,
-					/obj/item/clothing/suit/hooded/chaplain_hoodie,
-					/obj/item/clothing/under/misc/burial,
-					/obj/item/clothing/under/misc/burial,
-				)
+	cost = PAYCHECK_ASSISTANT * 5.8 + CARGO_CRATE_VALUE // it costs so much because the Space Church needs funding to build a cathedral
+	contains = list(
+		/obj/item/reagent_containers/cup/glass/bottle/holywater,
+		/obj/item/storage/book/bible/booze,
+		/obj/item/clothing/suit/hooded/chaplain_hoodie,
+		/obj/item/clothing/under/misc/burial,
+	)
 	crate_name = "religious supplies crate"
 
 /datum/supply_pack/misc/toner
 	name = "Toner Crate"
 	desc = "Spent too much ink printing butt pictures? Fret not, with these six toner refills, you'll be printing butts 'till the cows come home!'"
-	cost = CARGO_CRATE_VALUE * 2
+	cost = PAYCHECK_ASSISTANT * 2 + CARGO_CRATE_VALUE
 	contains = list(/obj/item/toner,
 					/obj/item/toner,
 					/obj/item/toner,
 					/obj/item/toner,
 					/obj/item/toner,
-					/obj/item/toner)
+					/obj/item/toner
+		)
 	crate_name = "toner crate"
-
-/datum/supply_pack/misc/training_toolbox
-	name = "Training Toolbox Crate"
-	desc = "Hone your combat abiltities with two AURUMILL-Brand Training Toolboxes! Guarenteed to count hits made against living beings!"
-	cost = CARGO_CRATE_VALUE * 2
-	contains = list(/obj/item/training_toolbox,
-					/obj/item/training_toolbox
-					)
-	crate_name = "training toolbox crate"
-
-/datum/supply_pack/misc/blackmarket_telepad
-	name = "Black Market LTSRBT"
-	desc = "Need a faster and better way of transporting your illegal goods from and to the station? Fear not, the Long-To-Short-Range-Bluespace-Transceiver (LTSRBT for short) is here to help. Contains a LTSRBT circuit, two bluespace crystals, and one ansible."
-	cost = CARGO_CRATE_VALUE * 20
-	supply_flags = SUPPLY_PACK_CONTRABAND
-	contains = list(
-		/obj/item/circuitboard/machine/ltsrbt,
-		/obj/item/stack/ore/bluespace_crystal/artificial,
-		/obj/item/stack/ore/bluespace_crystal/artificial,
-		/obj/item/stock_parts/subspace/ansible
-	)
-	crate_name = "crate"
 
 ///Special supply crate that generates random syndicate gear up to a determined TC value
 /datum/supply_pack/misc/syndicate
@@ -185,7 +158,7 @@
 	name = "Contraband Crate"
 	desc = "Psst.. bud... want some contraband? I can get you a poster, some nice cigs, dank, even some sponsored items...you know, the good stuff. Just keep it away from the cops, kay?"
 	supply_flags = SUPPLY_PACK_CONTRABAND
-	cost = CARGO_CRATE_VALUE * 6
+	cost = PAYCHECK_ASSISTANT * 15 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/poster/random_contraband,
 		/obj/item/poster/random_contraband,
@@ -212,26 +185,10 @@
 	randomized = TRUE
 	random_pick_amount = 7
 
-/datum/supply_pack/misc/foamforce
-	name = "Foam Force Crate"
-	desc = "Break out the big guns with eight Foam Force shotguns!"
-	cost = CARGO_CRATE_VALUE * 2
-	contains = list(
-		/obj/item/gun/ballistic/shotgun/toy,
-		/obj/item/gun/ballistic/shotgun/toy,
-		/obj/item/gun/ballistic/shotgun/toy,
-		/obj/item/gun/ballistic/shotgun/toy,
-		/obj/item/gun/ballistic/shotgun/toy,
-		/obj/item/gun/ballistic/shotgun/toy,
-		/obj/item/gun/ballistic/shotgun/toy,
-		/obj/item/gun/ballistic/shotgun/toy
-	)
-	crate_name = "foam force crate"
-
 /datum/supply_pack/misc/lasertag
 	name = "Laser Tag Crate"
 	desc = "Foam Force is for boys. Laser Tag is for men. Contains three sets of red suits, blue suits, matching helmets, and matching laser tag guns."
-	cost = CARGO_CRATE_VALUE * 2
+	cost = PAYCHECK_ASSISTANT * 6.9 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/gun/energy/laser/redtag,
 		/obj/item/gun/energy/laser/redtag,
@@ -257,7 +214,7 @@
 /datum/supply_pack/misc/party
 	name = "Party Equipment"
 	desc = "Celebrate both life and death on the station with Priapus' Party Essentials(tm)! Contains seven colored glowsticks, six beers, six sodas, two ales, and a bottle of patron, goldschlager, and shaker!"
-	cost = CARGO_CRATE_VALUE * 5
+	cost = PAYCHECK_ASSISTANT * 4.8 + CARGO_CRATE_VALUE
 	contains = list(/obj/item/storage/box/drinkingglasses,
 					/obj/item/reagent_containers/cup/glass/shaker,
 					/obj/item/reagent_containers/cup/glass/bottle/patron,

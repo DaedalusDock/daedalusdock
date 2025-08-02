@@ -62,10 +62,6 @@
 		var/datum/supply_pack/materials/pack = new
 		pack.name = "Canister ([name])"
 		pack.desc = "Contains a canister of [name]."
-		if(xgm_gas_data.flags[gasType] & XGM_GAS_FUEL)
-			pack.desc = "[pack.desc] Requires Atmospherics access to open."
-			pack.access = ACCESS_ATMOSPHERICS
-			pack.access_view = ACCESS_ATMOSPHERICS
 		pack.crate_name = "[name] canister crate"
 		pack.id = "[type]([name])"
 

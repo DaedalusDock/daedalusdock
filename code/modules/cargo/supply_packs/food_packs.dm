@@ -9,7 +9,7 @@
 /datum/supply_pack/food/chef
 	name = "Exotic Meat Crate"
 	desc = "The best cuts in the whole galaxy."
-	cost = CARGO_CRATE_VALUE * 4
+	cost = PAYCHECK_ASSISTANT * 5.8 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/food/meat/slab/human/mutant/slime,
 		/obj/item/food/meat/slab/killertomato,
@@ -30,7 +30,7 @@
 /datum/supply_pack/food/exoticseeds
 	name = "Exotic Seeds Crate"
 	desc = "Any entrepreneuring botanist's dream. Contains fourteen different seeds, including two mystery seeds!"
-	cost = CARGO_CRATE_VALUE * 3
+	cost = PAYCHECK_ASSISTANT * 3.8 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/seeds/nettle,
 		/obj/item/seeds/plump,
@@ -48,9 +48,9 @@
 	crate_type = /obj/structure/closet/crate/hydroponics
 
 /datum/supply_pack/food/food
-	name = "Food Crate"
+	name = "Ingredient Crate"
 	desc = "Get things cooking with this crate full of useful ingredients! Contains a dozen eggs, three bananas, and some flour, rice, milk, soymilk, salt, pepper, enzyme, sugar, and monkeymeat."
-	cost = CARGO_CRATE_VALUE * 2
+	cost = PAYCHECK_ASSISTANT * 4.5 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/reagent_containers/condiment/flour,
 		/obj/item/reagent_containers/condiment/rice,
@@ -66,12 +66,12 @@
 		/obj/item/food/grown/banana,
 		/obj/item/food/grown/banana
 	)
-	crate_name = "food crate"
+	crate_name = "ingredient crate"
 
 /datum/supply_pack/food/chef/fruits
 	name = "Fruit Crate"
 	desc = "Rich of vitamins, may contain oranges."
-	cost = CARGO_CRATE_VALUE * 3
+	cost = PAYCHECK_ASSISTANT * 2.7 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/food/grown/citrus/lime,
 		/obj/item/food/grown/citrus/orange,
@@ -88,19 +88,17 @@
 /datum/supply_pack/food/cream_piee
 	name = "High-yield Clown-grade Cream Pie Crate"
 	desc = "Designed by Aussec's Advanced Warfare Research Division, these high-yield, Clown-grade cream pies are powered by a synergy of performance and efficiency. Guaranteed to provide maximum results."
-	cost = CARGO_CRATE_VALUE * 12
+	cost = PAYCHECK_ASSISTANT * 4.9 + CARGO_CRATE_VALUE
 	contains = list(/obj/item/storage/backpack/duffelbag/clown/cream_pie)
 	crate_name = "party equipment crate"
 	supply_flags = SUPPLY_PACK_CONTRABAND
-	access = ACCESS_THEATRE
-	access_view = ACCESS_THEATRE
 	crate_type = /obj/structure/closet/crate/secure
 
 /datum/supply_pack/food/pizza
 	name = "Pizza Crate"
 	desc = "Why visit the kitchen when you can have five random pizzas in a fraction of the time? \
 			Best prices this side of the galaxy! All deliveries are guaranteed to be 99% anomaly-free."
-	cost = CARGO_CRATE_VALUE * 10 // Best prices this side of the galaxy.
+	cost = PAYCHECK_ASSISTANT * 6.3 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/pizzabox/margherita,
 		/obj/item/pizzabox/mushroom,
@@ -185,7 +183,7 @@
 /datum/supply_pack/food/seeds
 	name = "Seed Crate"
 	desc = "Big things have small beginnings. Contains fifteen different seeds."
-	cost = CARGO_CRATE_VALUE * 2
+	cost = PAYCHECK_ASSISTANT * 1.7 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/seeds/chili,
 		/obj/item/seeds/cotton,
@@ -209,7 +207,7 @@
 /datum/supply_pack/food/chef/vegetables
 	name = "Vegetables Crate"
 	desc = "Grown in vats."
-	cost = CARGO_CRATE_VALUE * 1.8
+	cost = PAYCHECK_ASSISTANT * 1.8 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/food/grown/chili,
 		/obj/item/food/grown/corn,
@@ -228,7 +226,7 @@
 /datum/supply_pack/food/ready_donk
 	name = "Ready-Donk Variety Crate"
 	desc = "Featuring a line up of Donk Co.'s most popular pastry!"
-	cost = CARGO_CRATE_VALUE * 3
+	cost = PAYCHECK_ASSISTANT * 1.2 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/food/ready_donk,
 		/obj/item/food/ready_donk/mac_n_cheese,
@@ -242,7 +240,7 @@
 /datum/supply_pack/food/donkpockets
 	name = "Donk Pocket Variety Crate"
 	desc = "Featuring a line up of Donk Co.'s most popular pastry!"
-	cost = CARGO_CRATE_VALUE * 4
+	cost = PAYCHECK_ASSISTANT * 3.6 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/storage/box/donkpockets/donkpocketspicy,
 		/obj/item/storage/box/donkpockets/donkpocketteriyaki,
@@ -266,8 +264,7 @@
 /datum/supply_pack/critter/parrot
 	name = "Livestock (Parrots)"
 	desc = "Contains five expert telecommunication birds."
-	cost = CARGO_CRATE_VALUE * 8
-	access_view = ACCESS_CE
+	cost = PAYCHECK_ASSISTANT * 8 + CARGO_CRATE_VALUE
 	contains = list(/mob/living/simple_animal/parrot)
 	crate_name = "parrot crate"
 
@@ -279,8 +276,7 @@
 /datum/supply_pack/critter/cat
 	name = "Livestock (Cat)"
 	desc = "The cat goes meow! Comes with a collar and a nice cat toy! Cheeseburger not included."//i can't believe im making this reference
-	cost = CARGO_CRATE_VALUE * 10 //Cats are worth as much as corgis.
-	access_view = ACCESS_MEDICAL
+	cost = PAYCHECK_ASSISTANT * 10 + CARGO_CRATE_VALUE
 	contains = list(/mob/living/simple_animal/pet/cat,
 					/obj/item/clothing/neck/petcollar,
 					/obj/item/toy/cattoy)
@@ -296,16 +292,14 @@
 /datum/supply_pack/critter/chick
 	name = "Livestock (Chicken)"
 	desc = "The chicken goes bwaak!"
-	cost = CARGO_CRATE_VALUE * 4
-	access_view = ACCESS_KITCHEN
+	cost = PAYCHECK_ASSISTANT * 4 + CARGO_CRATE_VALUE
 	contains = list( /mob/living/simple_animal/chick)
 	crate_name = "chicken crate"
 
 /datum/supply_pack/critter/corgi
 	name = "Livestock (Corgi)"
 	desc = "Considered the optimal dog breed by thousands of research scientists, this Corgi is but one dog from the millions of Ian's noble bloodline. Comes with a cute collar!"
-	cost = CARGO_CRATE_VALUE * 10
-	access_view = ACCESS_DELEGATE
+	cost = PAYCHECK_ASSISTANT * 10 + CARGO_CRATE_VALUE
 	contains = list(/mob/living/simple_animal/pet/dog/corgi,
 					/obj/item/clothing/neck/petcollar)
 	crate_name = "corgi crate"
@@ -321,14 +315,14 @@
 /datum/supply_pack/critter/cow
 	name = "Livestock (Cow)"
 	desc = "The cow goes moo!"
-	cost = CARGO_CRATE_VALUE * 6
+	cost = PAYCHECK_ASSISTANT * 6.5 + CARGO_CRATE_VALUE
 	contains = list(/mob/living/basic/cow)
 	crate_name = "cow crate"
 
 /datum/supply_pack/critter/corgis/exotic
 	name = "Livestock (Exotic Corgi)"
 	desc = "Corgis fit for a king, these corgis come in a unique color to signify their superiority. Comes with a cute collar!"
-	cost = CARGO_CRATE_VALUE * 11
+	cost = PAYCHECK_ASSISTANT * 15 + CARGO_CRATE_VALUE
 	contains = list(/mob/living/simple_animal/pet/dog/corgi/exoticcorgi,
 					/obj/item/clothing/neck/petcollar)
 	crate_name = "exotic corgi crate"
@@ -336,15 +330,14 @@
 /datum/supply_pack/critter/goat
 	name = "Livestock (Goat)"
 	desc = "The goat goes baa! Warranty void if used as a replacement for Pete."
-	cost = CARGO_CRATE_VALUE * 5
-	access_view = ACCESS_KITCHEN
+	cost = PAYCHECK_ASSISTANT * 7 + CARGO_CRATE_VALUE
 	contains = list(/mob/living/simple_animal/hostile/retaliate/goat)
 	crate_name = "goat crate"
 
 /datum/supply_pack/critter/monkey
 	name = "Monkey Cube Crate"
 	desc = "Stop monkeying around! Contains seven monkey cubes. Just add water!"
-	cost = CARGO_CRATE_VALUE * 4
+	cost = PAYCHECK_ASSISTANT * 8 + CARGO_CRATE_VALUE
 	contains = list (/obj/item/storage/box/monkeycubes)
 	crate_type = /obj/structure/closet/crate
 	crate_name = "monkey cube crate"
@@ -352,7 +345,7 @@
 /datum/supply_pack/critter/pug
 	name = "Livestock (Pug)"
 	desc = "Like a normal dog, but... squished. Comes with a nice collar!"
-	cost = CARGO_CRATE_VALUE * 10
+	cost = PAYCHECK_ASSISTANT * 10 + CARGO_CRATE_VALUE
 	contains = list(/mob/living/simple_animal/pet/dog/pug,
 					/obj/item/clothing/neck/petcollar)
 	crate_name = "pug crate"
@@ -360,7 +353,7 @@
 /datum/supply_pack/critter/bullterrier
 	name = "Livestock (Bull Terrier)"
 	desc = "Like a normal dog, but with a head the shape of an egg. Comes with a nice collar!"
-	cost = CARGO_CRATE_VALUE * 10
+	cost = PAYCHECK_ASSISTANT * 10 + CARGO_CRATE_VALUE
 	contains = list(/mob/living/simple_animal/pet/dog/bullterrier,
 					/obj/item/clothing/neck/petcollar)
 	crate_name = "bull terrier crate"
@@ -368,8 +361,7 @@
 /datum/supply_pack/critter/snake
 	name = "Livestock (Snakes)"
 	desc = "Tired of these MOTHER FUCKING snakes on this MOTHER FUCKING space station? Then this isn't the crate for you. Contains three poisonous snakes."
-	cost = CARGO_CRATE_VALUE * 6
-	access_view = ACCESS_SECURITY
+	cost = PAYCHECK_ASSISTANT * 4.2 + CARGO_CRATE_VALUE
 	contains = list(
 		/mob/living/simple_animal/hostile/retaliate/snake,
 		/mob/living/simple_animal/hostile/retaliate/snake,

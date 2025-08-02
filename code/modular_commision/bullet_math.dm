@@ -179,7 +179,7 @@ GLOBAL_LIST_INIT(bulletStandardFragmentAngles, list(
 #define BULLET_SPEED_SNAIL 0.4
 
 // threshold at which bullet is too SLOW and should be deleted
-#define BULLET_THRESHOLD_TOOSLOW
+#define BULLET_THRESHOLD_TOOSLOW 2
 
 /obj/item/gun
 	var/speedValueMod = BULLET_SPEED_INSANE

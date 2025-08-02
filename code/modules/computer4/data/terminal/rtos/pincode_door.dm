@@ -35,6 +35,8 @@
 	var/pin_length
 	/// Control Mode
 	var/control_mode
+	/// If TRUE, the door will be bolted on startup
+	var/bolt_on_startup = FALSE
 
 	/// Current state machine state
 	var/tmp/current_state
@@ -74,6 +76,7 @@
 	correct_pin = fields[RTOS_CONFIG_PINCODE] //OPTIONAL
 	control_mode = fields[RTOS_CONFIG_CMODE]
 	tag_slave = fields[RTOS_CONFIG_SLAVE_ID]
+	bolt_on_startup = fields[RTOS_CONFIG_BOLT_ON_STARTUP]
 
 	pin_length = length(correct_pin)
 	if(correct_pin) //If we don't have a known pin, get ready to learn one.
@@ -101,7 +104,7 @@
 	fault_string = null
 
 	COOLDOWN_START(src, door_state_timeout, (10 SECONDS))
-	control_airlock(AC_COMMAND_BOLT)
+	control_airlock(bolt_on_startup ? AC_COMMAND_BOLT : AC_COMMAND_UPDATE)
 	update_screen()
 
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/tick(delta_time)

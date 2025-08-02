@@ -15,6 +15,7 @@
 #define RTOS_CONFIG_ALLOW_HOLD_OPEN "allow_doorstop"
 #define RTOS_CONFIG_HOLD_OPEN_TIME "doorstop_time"
 #define RTOS_CONFIG_SLAVE_ID "tag_slave" //! Slaved pinpad ID. Mirrors the UI/stdin to a secona pad. Can be null.
+#define RTOS_CONFIG_BOLT_ON_STARTUP "bolt_on_startup"
 
 #define RTOS_CONFIG_CMODE "control_mode"
 	#define RTOS_CMODE_SECURE "secure"

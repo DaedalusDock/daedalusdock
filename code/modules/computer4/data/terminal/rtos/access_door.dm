@@ -27,6 +27,8 @@
 	var/allow_lock_open
 	/// Control Mode
 	var/control_mode
+	/// If TRUE, the door will be bolted on startup
+	var/bolt_on_startup = FALSE
 
 	/// Current state machine state
 	var/tmp/current_state
@@ -65,6 +67,7 @@
 	allow_lock_open = fields[RTOS_CONFIG_ALLOW_HOLD_OPEN] //OPTIONAL
 	control_mode = fields[RTOS_CONFIG_CMODE]
 	tag_slave = fields[RTOS_CONFIG_SLAVE_ID]
+	bolt_on_startup = fields[RTOS_CONFIG_BOLT_ON_STARTUP]
 
 	// there *HAS* to be a better way than this but it's 3am
 	if(tag_target && allow_lock_open && (control_mode in list(RTOS_CMODE_BOLTS, RTOS_CMODE_SECURE)))
@@ -82,7 +85,7 @@
 	fault_string = null
 
 	COOLDOWN_START(src, door_state_timeout, (10 SECONDS))
-	control_airlock(AC_COMMAND_CLOSE)
+	control_airlock(bolt_on_startup ? AC_COMMAND_CLOSE : AC_COMMAND_UPDATE)
 	current_state = STATE_AWAIT
 	update_screen()
 

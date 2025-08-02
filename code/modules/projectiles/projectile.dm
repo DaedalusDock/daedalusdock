@@ -421,11 +421,14 @@
 	if(impacted[A]) // NEVER doublehit
 		return FALSE
 	if(iswall(A))
+		var/turf/closed/wall/hitted = A
+		var/datum/armor/wallArmor = A.returnArmor()
+		var/datum/armor/bulletArmor = returnArmor()
 		var/wx
 		var/wy
 		var/wallHitAngle
 		// ensure the lines ALWAYS collide
-		var/mult = getRelativeArmorRatingMultiplier(A) * integrity / initial(integrity) * speed / initial(speed)
+		var/mult = getRelativeArmorRatingMultiplier(A, wallArmor, bulletArmor) * speed / initial(speed)
 		// bullet has a significant relative rating. let it go through
 		//message_admins("multiplier is [mult]")
 		var/datum/line/bulletLine = new /datum/line(trajectory.starting_x, trajectory.starting_y, trajectory.x + trajectory.mpx * 10, trajectory.y + trajectory.mpy * 10)
@@ -436,8 +439,9 @@
 			ricochetAngle = abs(sign(wallHitAngle) * 180 - wallHitAngle)
 		// scales with angle of attack
 		if(mult > 0.4 * ((90 - abs(ricochetAngle))/90 + 1))
-			integrity -= integrity * 0.2
-			speed -= speed * 0.4
+			adjustIntegrity(-0.2*integrity)
+			hitted.wallIntegrity = max(hitted.wallIntegrity - damage * clamp((bulletArmor.vars[damage_type] - wallArmor.vars[damage_type])/150, 0 , 0.8),0)
+			adjustSpeed(-0.4*speed)
 			impacted[A] = TRUE
 			return TRUE
 		message_admins("Ricochet angle is [ricochetAngle], mult is [mult]")
@@ -453,11 +457,15 @@
 			// set to new starting for new calculations / subsequent ricochets
 			trajectory.starting_x = wx
 			trajectory.starting_y = wy
+			hitted.wallIntegrity = max(hitted.wallIntegrity - damage * clamp((bulletArmor.vars[damage_type] - wallArmor.vars[damage_type])/200, 0 , 0.5),0)
 			ricochets++
 			decayedRange = max(0, decayedRange - 1)
+			adjustSpeed(-0.1*speed)
+			adjustIntegrity(-0.2*integrity)
 			impacted[A] = TRUE
 			return TRUE
 		if(integrity < initial(integrity) * 0.3)
+			hitted.wallIntegrity = max(hitted.wallIntegrity - damage * clamp((bulletArmor.vars[damage_type] - wallArmor.vars[damage_type])/100, 0 , 1),0)
 			return process_hit(A, select_target(A, A, A), A)
 		if(mult < 0 && abs(ricochetAngle) < GLOB.bulletStandardFragmentAngles["[bulletTipType]"][2] && abs(ricochetAngle) > GLOB.bulletStandardFragmentAngles["[bulletTipType]"][1])
 			impacted[A] = TRUE

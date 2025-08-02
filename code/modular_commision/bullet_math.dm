@@ -89,6 +89,9 @@
 /atom
 	var/datum/hitbox/atomHitbox = null
 
+/turf
+	var/wallIntegrity = 100
+
 /turf/closed/wall/New()
 	. = ..()
 	atomHitbox = new /datum/hitbox/standardWall(src)
@@ -175,6 +178,9 @@ GLOBAL_LIST_INIT(bulletStandardFragmentAngles, list(
 #define BULLET_SPEED_SLOWED 0.1
 #define BULLET_SPEED_SNAIL 0.4
 
+// threshold at which bullet is too SLOW and should be deleted
+#define BULLET_THRESHOLD_TOOSLOW
+
 /obj/item/gun
 	var/speedValueMod = BULLET_SPEED_INSANE
 
@@ -186,17 +192,14 @@ TYPEINFO_DEF(/obj/projectile)
 	var/integrity = 100
 	var/speedLossPerTile = 0.1
 	var/bulletTipType = BULLET_SHARP
-	var/definedArmor = PUNCTURE
 
 // returns a exponential multiplier for calculations.
-/obj/projectile/proc/getRelativeArmorRatingMultiplier(atom/target)
-	var/datum/armor/targetArmor = target.returnArmor()
-	var/datum/armor/bulletArmor = returnArmor()
-	if(targetArmor == null || bulletArmor == null || definedArmor == "")
+/obj/projectile/proc/getRelativeArmorRatingMultiplier(obj/projectile/target, datum/armor/targetArmor, datum/armor/bulletArmor)
+	if(targetArmor == null || bulletArmor == null || damage_type == "")
 		return 0
-	var/ratingDiff = bulletArmor.vars[definedArmor] - targetArmor.vars[definedArmor]
-	//message_admins("relative armor returning [ratingDiff / bulletArmor.vars[definedArmor]]")
-	return (ratingDiff+0.001) / bulletArmor.vars[definedArmor]
+	var/ratingDiff = bulletArmor.vars[damage_type] * wallIntegrity / initial(wallIntegrity) - targetArmor.vars[damage_type] * target.integrity / initial(target.integrity)
+	//message_admins("relative armor returning [ratingDiff / bulletArmor.vars[damage_type]]")
+	return (ratingDiff+0.001) / bulletArmor.vars[damage_type]
 
 /obj/projectile/proc/fragmentTowards(turf/wall,fragmentCount, fragmentAngle, maxDeviation, fullLoopPossible)
 	for(var/i = 0 to fragmentCount)
@@ -205,10 +208,18 @@ TYPEINFO_DEF(/obj/projectile)
 		projectile.fired_from = wall
 		projectile.impacted = list(wall)
 		projectile.preparePixelProjectile(get_turf_in_angle(fragmentAngle, wall, 2), src)
-		projectile.speed += speed * 0.3
-		projectile.integrity = integrity * 0.2
+		projectile.adjustSpeed(-speed * 0.3)
+		projectile.adjustIntegrity(-integrity * 0.2)
 		projectile.damage = damage * 0.2
 		projectile.damage_type = damage_type
 		projectile.fire(fragmentAngle + rand(0, maxDeviation) * sign(rand(-1,1)) + (fullLoopPossible ? rand(-1,1) > 0 : 0) * 180)
 
+/obj/projectile/proc/adjustIntegrity(value)
+	integrity = max(integrity + value, 0)
+	if(integrity == 0)
+		qdel(src)
 
+/obj/projectile/proc/adjustSpeed(value)
+	speed = max(speed - value, 0.1)
+	if(speed > BULLET_THRESHOLD_TOOSLOW)
+		qdel(src)

@@ -8,6 +8,8 @@
 	spawn_positions = 1
 	supervisors = "the medical director"
 	selection_color = "#013d3b"
+
+	pinpad_key = "FEELSGOODMAN"
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(

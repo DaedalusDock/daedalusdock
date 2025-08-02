@@ -266,10 +266,10 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	dress_up_as_job(equipping, FALSE, used_pref, TRUE)
 	var/obj/item/storage/wallet/W = wear_id
 	if(istype(W))
-		var/monero = round(equipping.paycheck * starting_paycheck_amount, 10)
+		var/monero = round(equipping.paycheck * equipping.starting_paycheck_amount, 10)
 		SSeconomy.spawn_ones_for_amount(monero, W)
 	else
-		bank_account.payday(starting_paycheck_amount)
+		bank_account.payday(equipping.starting_paycheck_amount)
 
 /mob/living/proc/dress_up_as_job(datum/job/equipping, visual_only = FALSE)
 	return

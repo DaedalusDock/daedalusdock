@@ -23,8 +23,8 @@ DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 
 	var/autolink_capable = FALSE
 
-	/// If TRUE, the door will be bolted on startup.
-	var/unlock_on_roundstart = TRUE
+	/// If TRUE, the door will be unlocked on startup.
+	var/unlock_on_roundstart = FALSE
 
 /obj/machinery/c4_embedded_controller/Initialize(mapload)
 	. = ..()

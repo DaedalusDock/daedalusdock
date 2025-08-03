@@ -185,6 +185,8 @@ TYPEINFO_DEF(/obj/projectile)
 	var/speedLossPerTile = 0.1
 	var/bulletTipType = BULLET_SHARP
 	var/bulletArmorType = PUNCTURE
+	var/canRicochet = TRUE
+	var/canFragment = TRUE
 
 // returns a exponential multiplier for calculations. ONLY FOR WALLS
 /obj/projectile/proc/getRelativeArmorRatingMultiplier(turf/closed/wall/target, datum/armor/targetArmor, datum/armor/bulletArmor)
@@ -197,6 +199,8 @@ TYPEINFO_DEF(/obj/projectile)
 /obj/projectile/proc/fragmentTowards(turf/wall,fragmentCount, fragmentAngle, maxDeviation, fullLoopPossible)
 	for(var/i = 0 to fragmentCount)
 		var/obj/projectile/projectile = new /obj/projectile/bullet(get_turf(wall))
+		projectile.integrity = integrity
+		projectile.speed = speed
 		projectile.firer = src
 		projectile.fired_from = wall
 		projectile.impacted = list(wall)

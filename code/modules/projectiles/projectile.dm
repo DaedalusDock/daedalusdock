@@ -451,7 +451,7 @@
 			wallHitAngle = -(360-wallHitAngle)
 		else if(wallHitAngle < -180)
 			wallHitAngle = 360+wallHitAngle
-		if(mult > 0 && abs(ricochetAngle) < GLOB.bulletStandardRicochetAngles["[bulletTipType]"])
+		if(mult > 0 && abs(ricochetAngle) < GLOB.bulletStandardRicochetAngles["[bulletTipType]"] && canRicochet)
 			set_angle(wallHitAngle)
 			// set to new starting for new calculations / subsequent ricochets
 			trajectory.starting_x = wx
@@ -460,14 +460,15 @@
 			ricochets++
 			decayedRange = max(0, decayedRange - 1)
 			adjustSpeed(-0.1*speed)
-			adjustIntegrity(-BULLET_INTEGRITYLOSS_RICOCHE)
+			adjustIntegrity(-BULLET_INTEGRITYLOSS_RICOCHET)
 			impacted[A] = TRUE
 			return TRUE
 		if(integrity < initial(integrity) * 0.3)
 			hitted.wallIntegrity = max(hitted.wallIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - wallArmor.vars[bulletArmorType])/100, 0 , 1),0)
 			return process_hit(A, select_target(A, A, A), A)
-		if(mult < 0 && abs(ricochetAngle) < GLOB.bulletStandardFragmentAngles["[bulletTipType]"][2] && abs(ricochetAngle) > GLOB.bulletStandardFragmentAngles["[bulletTipType]"][1])
+		if(mult < 0 && abs(ricochetAngle) < GLOB.bulletStandardFragmentAngles["[bulletTipType]"][2] && abs(ricochetAngle) > GLOB.bulletStandardFragmentAngles["[bulletTipType]"][1] && canFragment)
 			impacted[A] = TRUE
+			hitted.wallIntegrity = max(hitted.wallIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - wallArmor.vars[bulletArmorType])/200, 0 , 1),0)
 			fragmentTowards(A, 4, abs(ricochetAngle) > 60 ? (ricochetAngle +orig + (abs(ricochetAngle)) + 90) : ricochetAngle + orig - sign(wallHitAngle) * 3, 15, abs(ricochetAngle) > 60)
 			qdel(src)
 			return TRUE

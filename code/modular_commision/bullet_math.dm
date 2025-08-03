@@ -5,6 +5,10 @@
 #define INDICE_STARTY 2
 #define INDICE_ENDX 3
 #define INDICE_ENDY 4
+#define DIR_N "1"
+#define DIR_E "2"
+#define DIR_S "4"
+#define DIR_W "8"
 
 /datum/hitbox
 	var/list/hitboxLines = list()
@@ -12,6 +16,9 @@
 
 /datum/hitbox/New(atom/parent)
 	parentRef = parent.create_weakref()
+
+/datum/hitbox/proc/getRelevantLines(atom/parent, list/incoming)
+	return hitboxLines
 
 // wx , wy and angle are pointer outputs.
 /datum/hitbox/proc/getPointOfCollision(list/incoming, wx, wy, angle)
@@ -21,7 +28,7 @@
 	var/xTranslation = (parent.x - 1) * 32
 	var/yTranslation = (parent.y - 1) * 32
 	var/list/collisions = list()
-	for (var/list/line in hitboxLines)
+	for (var/list/line in getRelevantLines(parent, incoming))
 		line[INDICE_STARTX] += xTranslation
 		line[INDICE_ENDX] += xTranslation
 		line[INDICE_STARTY] += yTranslation
@@ -76,6 +83,37 @@
 		*wy = collisions[1][2]
 		*angle = collisions[1][3]
 	return length(collisions) == 0
+
+/datum/hitbox/directional
+	hitboxLines = list(
+		DIR_N = list(
+			BM_LINE(0,0,0,32),
+			BM_LINE(0,32,32,32),
+			BM_LINE(32,32,32,0),
+			BM_LINE(32,0,0,0),
+		),
+		DIR_E = list(
+			BM_LINE(0,0,0,32),
+			BM_LINE(0,32,32,32),
+			BM_LINE(32,32,32,0),
+			BM_LINE(32,0,0,0),
+		),
+		DIR_S = list(
+			BM_LINE(0,0,0,32),
+			BM_LINE(0,32,32,32),
+			BM_LINE(32,32,32,0),
+			BM_LINE(32,0,0,0),
+		),
+		DIR_W = list(
+			BM_LINE(0,0,0,32),
+			BM_LINE(0,32,32,32),
+			BM_LINE(32,32,32,0),
+			BM_LINE(32,0,0,0),
+		),
+	)
+
+/datum/hitbox/directiona/getRelevantLines(atom/parent, list/incoming)
+	return hitboxLines["[parent.dir]"]
 
 
 /atom

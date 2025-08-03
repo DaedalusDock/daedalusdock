@@ -50942,7 +50942,7 @@
 	dir = 4
 	},
 /obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/north{
-	bolt_on_startup = 1
+	unlock_on_roundstart = 0
 	},
 /obj/effect/mapping_helpers/embedded_controller/static_id/detective,
 /turf/open/floor/iron,

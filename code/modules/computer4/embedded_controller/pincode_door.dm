@@ -4,6 +4,8 @@
 	radio_frequency = FREQ_AIRLOCK_CONTROL
 	autolink_capable = TRUE
 
+	unlock_on_roundstart = TRUE
+
 	/// Target airlock ID
 	var/tag_target
 	/// Request-Exit Button ID
@@ -22,8 +24,6 @@
 	var/control_mode
 	/// Slaved pad ID.
 	var/tag_slave
-	/// If TRUE, the door will be bolted on startup.
-	var/bolt_on_startup = FALSE
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/c4_embedded_controller/airlock_pinpad, 24)
 
@@ -54,7 +54,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/c4_embedded_controller/airlock_pinpad
 	fields[RTOS_CONFIG_PINCODE] = final_pin
 	fields[RTOS_CONFIG_CMODE] = control_mode
 	fields[RTOS_CONFIG_SLAVE_ID] = tag_slave
-	fields[RTOS_CONFIG_BOLT_ON_STARTUP] = bolt_on_startup
 
 /obj/item/disk/data/floppy/ec_test/airlock_pinpad
 	name = "secure mode test"

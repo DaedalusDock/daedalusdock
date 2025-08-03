@@ -439,7 +439,7 @@
 		// scales with angle of attack
 		if(mult > 0.4 * ((90 - abs(ricochetAngle))/90 + 1))
 			adjustIntegrity(-0.2*integrity)
-			hitted.wallIntegrity = max(hitted.wallIntegrity - damage * clamp((bulletArmor.vars[damage_type] - wallArmor.vars[damage_type])/150, 0 , 0.8),0)
+			hitted.wallIntegrity = max(hitted.wallIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - wallArmor.vars[bulletArmorType])/150, 0 , 0.8),0)
 			adjustSpeed(-0.4*speed)
 			impacted[A] = TRUE
 			return TRUE
@@ -456,15 +456,15 @@
 			// set to new starting for new calculations / subsequent ricochets
 			trajectory.starting_x = wx
 			trajectory.starting_y = wy
-			hitted.wallIntegrity = max(hitted.wallIntegrity - damage * clamp((bulletArmor.vars[damage_type] - wallArmor.vars[damage_type])/200, 0 , 0.5),0)
+			hitted.wallIntegrity = max(hitted.wallIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - wallArmor.vars[bulletArmorType])/200, 0 , 0.5),0)
 			ricochets++
 			decayedRange = max(0, decayedRange - 1)
 			adjustSpeed(-0.1*speed)
-			adjustIntegrity(-0.2*integrity)
+			adjustIntegrity(-BULLET_INTEGRITYLOSS_RICOCHE)
 			impacted[A] = TRUE
 			return TRUE
 		if(integrity < initial(integrity) * 0.3)
-			hitted.wallIntegrity = max(hitted.wallIntegrity - damage * clamp((bulletArmor.vars[damage_type] - wallArmor.vars[damage_type])/100, 0 , 1),0)
+			hitted.wallIntegrity = max(hitted.wallIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - wallArmor.vars[bulletArmorType])/100, 0 , 1),0)
 			return process_hit(A, select_target(A, A, A), A)
 		if(mult < 0 && abs(ricochetAngle) < GLOB.bulletStandardFragmentAngles["[bulletTipType]"][2] && abs(ricochetAngle) > GLOB.bulletStandardFragmentAngles["[bulletTipType]"][1])
 			impacted[A] = TRUE

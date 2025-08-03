@@ -154,7 +154,7 @@ GLOBAL_LIST_INIT(bulletStandardFragmentAngles, list(
 // increases or decreases how much bullet integrity is lost
 #define BULLET_INTEGRITYLOSSMULT 1
 #define BULLET_INTEGRITYLOSS_RICOCHET 20 * BULLET_INTEGRITYLOSSMULT
-#define BULLET_INTEGRITYLOSS_FRAMGNET 50 * BULLET_INTEGRITYLOSSMULT
+#define BULLET_INTEGRITYLOSS_FRAGMENT 50 * BULLET_INTEGRITYLOSSMULT
 /// Bullet Malus defines for fragmenting or expanding
 
 
@@ -202,7 +202,7 @@ TYPEINFO_DEF(/obj/projectile)
 		projectile.impacted = list(wall)
 		projectile.preparePixelProjectile(get_turf_in_angle(fragmentAngle, wall, 2), src)
 		projectile.adjustSpeed(-speed * 0.3)
-		projectile.adjustIntegrity(-integrity * 0.2)
+		projectile.adjustIntegrity(-BULLET_INTEGRITYLOSS_FRAGMENT	)
 		projectile.damage = damage * 0.2
 		projectile.damage_type = damage_type
 		projectile.fire(fragmentAngle + rand(0, maxDeviation) * sign(rand(-1,1)) + (fullLoopPossible ? rand(-1,1) > 0 : 0) * 180)

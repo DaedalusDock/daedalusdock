@@ -1,75 +1,67 @@
 // This file contains all the math + data structures used for realistic ricochets and any procs / overrides needed
 
-/datum/line
-	var/startX
-	var/startY
-	var/endX
-	var/endY
-
-/datum/line/New(sX,sY,eX,eY)
-	. = ..()
-	startX = sX
-	startY = sY
-	endX = eX
-	endY = eY
-
+#define BM_LINE(sx,sy,ex,ey) list(sx,sy,ex,ey)
+#define INDICE_STARTX 1
+#define INDICE_STARTY 2
+#define INDICE_ENDX 3
+#define INDICE_ENDY 4
 
 /datum/hitbox
-	var/list/datum/line/hitboxLines = list()
+	var/list/hitboxLines = list()
 	var/datum/weakref/parentRef
 
 /datum/hitbox/New(atom/parent)
 	parentRef = parent.create_weakref()
 
 // wx , wy and angle are pointer outputs.
-/datum/hitbox/proc/getPointOfCollision(datum/line/incoming, wx, wy, angle)
+/datum/hitbox/proc/getPointOfCollision(list/incoming, wx, wy, angle)
 	var/atom/parent = parentRef.resolve()
 	if(parent == null)
 		return 0
 	var/xTranslation = (parent.x - 1) * 32
 	var/yTranslation = (parent.y - 1) * 32
 	var/list/collisions = list()
-
-	for (var/datum/line/line in hitboxLines)
-		line.startX += xTranslation
-		line.endX += xTranslation
-		line.startY += yTranslation
-		line.endY += yTranslation
+	for (var/list/line in hitboxLines)
+		line[INDICE_STARTX] += xTranslation
+		line[INDICE_ENDX] += xTranslation
+		line[INDICE_STARTY] += yTranslation
+		line[INDICE_ENDY] += yTranslation
 
 		/*---------------------------------------
 		* 1.  Intersection test                *
 		*--------------------------------------*/
 
-		var/denominator = ((incoming.endY - incoming.startY) * (line.endX - line.startX) \
-			             - (incoming.endX - incoming.startX) * (line.endY - line.startY))
+		var/denominator = ((incoming[INDICE_ENDY] - incoming[INDICE_STARTY]) * (line[INDICE_ENDX] - line[INDICE_STARTX]) \
+			             - (incoming[INDICE_ENDX] - incoming[INDICE_STARTX]) * (line[INDICE_ENDY] - line[INDICE_STARTY]))
 
 		if (!denominator) // lines are parallel or degenerate
 			goto resetLine
 
-		var/firstRatio  = ((incoming.endX - incoming.startX) * (line.startY - incoming.startY) \
-			             - (incoming.endY - incoming.startY) * (line.startX - incoming.startX)) / denominator
-		var/secondRatio = ((line.endX   - line.startX)       * (line.startY - incoming.startY) \
-			             - (line.endY   - line.startY)       * (line.startX - incoming.startX)) / denominator
+		var/firstRatio  = ((incoming[INDICE_ENDX] - incoming[INDICE_STARTX]) * (line[INDICE_STARTY] - incoming[INDICE_STARTY]) \
+			             - (incoming[INDICE_ENDY] - incoming[INDICE_STARTY]) * (line[INDICE_STARTX] - incoming[INDICE_STARTX])) / denominator
+		var/secondRatio = ((line[INDICE_ENDX]   - line[INDICE_STARTX])       * (line[INDICE_STARTY] - incoming[INDICE_STARTY]) \
+			             - (line[INDICE_ENDY]   - line[INDICE_STARTY])       * (line[INDICE_STARTX] - incoming[INDICE_STARTX])) / denominator
 
+		// ensure bullet is actually in our segment.
 		if (firstRatio >= 0 && firstRatio <= 1 && secondRatio >= 0 && secondRatio <= 1)
-			var/lx = line.startX + firstRatio * (line.endX - line.startX)
-			var/ly = line.startY + firstRatio * (line.endY - line.startY)
-			var/deltaLineX = (incoming.endX - incoming.startX)
-			var/deltaLineY = (incoming.endY - incoming.startY)
-			var/deltaWallX = (line.endX - line.startX)
-			var/deltaWallY = (line.endY - line.startY)
+			var/lx = line[INDICE_STARTX] + firstRatio * (line[INDICE_ENDX] - line[INDICE_STARTX])
+			var/ly = line[INDICE_STARTY] + firstRatio * (line[INDICE_ENDY] - line[INDICE_STARTY])
+			var/deltaLineX = (incoming[INDICE_ENDX] - incoming[INDICE_STARTX])
+			var/deltaLineY = (incoming[INDICE_ENDY] - incoming[INDICE_STARTY])
+			var/deltaWallX = (line[INDICE_ENDX] - line[INDICE_STARTX])
+			var/deltaWallY = (line[INDICE_ENDY] - line[INDICE_STARTY])
 			var/dot = deltaLineX * deltaWallX + deltaLineY* deltaWallY
 			var/relativeangle = -arctan(dot, deltaLineX * deltaWallY - deltaLineY * deltaWallX) * sign(dot)
 			if(relativeangle > 90)
 				relativeangle = 180 - relativeangle
 			collisions += 0
-			collisions[length(collisions)] = list(lx,ly,relativeangle,(incoming.startX - lx)**2 + (incoming.startY - ly)**2)
+			collisions[length(collisions)] = list(lx,ly,relativeangle,(incoming[INDICE_STARTX] - lx)**2 + (incoming[INDICE_STARTY] - ly)**2)
 
 		resetLine:
-		line.startX -= xTranslation
-		line.endX -= xTranslation
-		line.startY -= yTranslation
-		line.endY -= yTranslation
+		line[INDICE_STARTX] -= xTranslation
+		line[INDICE_ENDX] -= xTranslation
+		line[INDICE_STARTY] -= yTranslation
+		line[INDICE_ENDY] -= yTranslation
 
 	for(var/i = 1 to length(collisions)-1)
 		if(collisions[i][4] > collisions[i+1][4])
@@ -96,13 +88,13 @@
 	. = ..()
 	atomHitbox = new /datum/hitbox/standardWall(src)
 
-/datum/hitbox/standardWall/New(atom/owner)
-	. = ..(owner)
-	hitboxLines += new /datum/line(0, 0, 0, 32)
-	hitboxLines += new /datum/line(0,32, 32, 32)
-	hitboxLines += new /datum/line(32,32, 32, 0)
-	hitboxLines += new /datum/line(32,0, 0, 0)
-
+/datum/hitbox/standardWall
+	hitboxLines = list(
+		BM_LINE(0,0,0,32),
+		BM_LINE(0,32,32,32),
+		BM_LINE(32,32,32,0),
+		BM_LINE(32,0,0,0),
+	)
 // stores a angle in simple 0 - 360 for maths
 // always counter clockwise!!
 /datum/worldAngle
@@ -192,14 +184,15 @@ TYPEINFO_DEF(/obj/projectile)
 	var/integrity = 100
 	var/speedLossPerTile = 0.1
 	var/bulletTipType = BULLET_SHARP
+	var/bulletArmorType = PUNCTURE
 
-// returns a exponential multiplier for calculations.
-/obj/projectile/proc/getRelativeArmorRatingMultiplier(obj/projectile/target, datum/armor/targetArmor, datum/armor/bulletArmor)
-	if(targetArmor == null || bulletArmor == null || damage_type == "")
+// returns a exponential multiplier for calculations. ONLY FOR WALLS
+/obj/projectile/proc/getRelativeArmorRatingMultiplier(turf/closed/wall/target, datum/armor/targetArmor, datum/armor/bulletArmor)
+	if(targetArmor == null || bulletArmor == null || bulletArmorType == "")
 		return 0
-	var/ratingDiff = bulletArmor.vars[damage_type] * wallIntegrity / initial(wallIntegrity) - targetArmor.vars[damage_type] * target.integrity / initial(target.integrity)
-	//message_admins("relative armor returning [ratingDiff / bulletArmor.vars[damage_type]]")
-	return (ratingDiff+0.001) / bulletArmor.vars[damage_type]
+	var/ratingDiff = bulletArmor.vars[bulletArmorType] * integrity / initial(integrity) - targetArmor.vars[bulletArmorType] * target.wallIntegrity / initial(target.wallIntegrity)
+//message_admins("relative armor returning [ratingDiff / bulletArmor.vars[damage_type]]")
+	return (ratingDiff+0.001) / bulletArmor.vars[bulletArmorType]
 
 /obj/projectile/proc/fragmentTowards(turf/wall,fragmentCount, fragmentAngle, maxDeviation, fullLoopPossible)
 	for(var/i = 0 to fragmentCount)

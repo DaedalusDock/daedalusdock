@@ -431,8 +431,7 @@
 		var/mult = getRelativeArmorRatingMultiplier(A, wallArmor, bulletArmor) * speed / initial(speed)
 		// bullet has a significant relative rating. let it go through
 		//message_admins("multiplier is [mult]")
-		var/datum/line/bulletLine = new /datum/line(trajectory.starting_x, trajectory.starting_y, trajectory.x + trajectory.mpx * 10, trajectory.y + trajectory.mpy * 10)
-		A.atomHitbox.getPointOfCollision(bulletLine, &wx, &wy, &wallHitAngle)
+		A.atomHitbox.getPointOfCollision(BM_LINE(trajectory.starting_x, trajectory.starting_y, trajectory.x + trajectory.mpx * 10, trajectory.y + trajectory.mpy * 10), &wx, &wy, &wallHitAngle)
 		var/orig = Angle
 		var/ricochetAngle = wallHitAngle
 		if(abs(wallHitAngle) > 90)

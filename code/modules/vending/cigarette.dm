@@ -6,9 +6,9 @@
 	icon_state = "cigs"
 	panel_type = "panel5"
 	products = list(
+		/obj/item/storage/fancy/cigarettes/cigpack_astro = 7,
 		/obj/item/storage/fancy/cigarettes = 5,
 		/obj/item/storage/fancy/cigarettes/cigpack_candy = 4,
-		/obj/item/storage/fancy/cigarettes/cigpack_uplift = 3,
 		/obj/item/storage/fancy/cigarettes/cigpack_robust = 3,
 		/obj/item/storage/fancy/cigarettes/cigpack_carp = 3,
 		/obj/item/storage/fancy/cigarettes/cigpack_midori = 3,
@@ -38,7 +38,7 @@
 /obj/machinery/vending/cigarette/syndicate
 	products = list(
 		/obj/item/storage/fancy/cigarettes/cigpack_syndicate = 7,
-		/obj/item/storage/fancy/cigarettes/cigpack_uplift = 3,
+		/obj/item/storage/fancy/cigarettes/cigpack_astro = 3,
 		/obj/item/storage/fancy/cigarettes/cigpack_candy = 2,
 		/obj/item/storage/fancy/cigarettes/cigpack_robust = 2,
 		/obj/item/storage/fancy/cigarettes/cigpack_carp = 3,

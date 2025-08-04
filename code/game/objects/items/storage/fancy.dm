@@ -176,8 +176,8 @@ TYPEINFO_DEF(/obj/item/storage/fancy)
 //CIG PACK//
 ////////////
 /obj/item/storage/fancy/cigarettes
-	name = "\improper Space Cigarettes packet"
-	desc = "The most popular brand of cigarettes, sponsors of the Space Olympics. On the back it advertises to be the only brand that can be smoked in the vaccum of space."
+	name = "cigarette box \"Spess\""
+	desc = "The working man's cigarettes."
 	icon = 'icons/obj/cigarettes.dmi'
 	icon_state = "cig"
 	inhand_icon_state = "cigpacket"
@@ -234,57 +234,58 @@ TYPEINFO_DEF(/obj/item/storage/fancy)
 		cig_position++
 
 /obj/item/storage/fancy/cigarettes/dromedaryco
-	name = "\improper DromedaryCo packet"
-	desc = "A packet of six imported DromedaryCo cancer sticks. A label on the packaging reads, \"Wouldn't a slow death make a change?\""
+	name = "cigarette box \"Unda\""
+	desc = "A refreshing brand of cigarettes."
 	icon_state = "dromedary"
 	base_icon_state = "dromedary"
 	spawn_type = /obj/item/clothing/mask/cigarette/dromedary
 
-/obj/item/storage/fancy/cigarettes/cigpack_uplift
-	name = "\improper Uplift Smooth packet"
-	desc = "Your favorite brand, now menthol flavored."
-	icon_state = "uplift"
-	base_icon_state = "uplift"
-	spawn_type = /obj/item/clothing/mask/cigarette/uplift
+/obj/item/storage/fancy/cigarettes/cigpack_astro
+	name = "cigarette box \"Astro\""
+	desc = "The unemployed man's cigarettes."
+	icon_state = "astro"
+	base_icon_state = "astro"
+	spawn_type = /obj/item/clothing/mask/cigarette/astro
+	custom_price = PAYCHECK_ASSISTANT * 0.5 // These suck
 
 /obj/item/storage/fancy/cigarettes/cigpack_robust
-	name = "\improper Robust packet"
+	name = "cigarette box \"Robust\""
 	desc = "Smoked by the robust."
 	icon_state = "robust"
 	base_icon_state = "robust"
 	spawn_type = /obj/item/clothing/mask/cigarette/robust
 
 /obj/item/storage/fancy/cigarettes/cigpack_robustgold
-	name = "\improper Robust Gold packet"
+	name = "cigarette box \"Robust Gold\""
 	desc = "Smoked by the truly robust."
 	icon_state = "robustg"
 	base_icon_state = "robustg"
 	spawn_type = /obj/item/clothing/mask/cigarette/robustgold
 
 /obj/item/storage/fancy/cigarettes/cigpack_carp
-	name = "\improper Carp Classic packet"
-	desc = "Since 2313."
+	name = "cigarette box \"Carp\""
+	desc = "Since '09."
 	icon_state = "carp"
 	base_icon_state = "carp"
 	spawn_type = /obj/item/clothing/mask/cigarette/carp
 
 /obj/item/storage/fancy/cigarettes/cigpack_syndicate
-	name = "cigarette packet"
-	desc = "An obscure brand of cigarettes."
+	name = "cigarette box"
+	desc = "The branding has faded away."
 	icon_state = "syndie"
 	base_icon_state = "syndie"
 	spawn_type = /obj/item/clothing/mask/cigarette/syndicate
 
 /obj/item/storage/fancy/cigarettes/cigpack_midori
-	name = "\improper Midori Tabako packet"
+	name = "cigarette box \"Midori\""
 	desc = "You can't understand the runes, but the packet smells funny."
 	icon_state = "midori"
 	base_icon_state = "midori"
 	spawn_type = /obj/item/clothing/mask/cigarette/rollie/nicotine
 
 /obj/item/storage/fancy/cigarettes/cigpack_candy
-	name = "\improper Timmy's First Candy Smokes packet"
-	desc = "Unsure about smoking? Want to bring your children safely into the family tradition? Look no more with this special packet! Includes 100%* Nicotine-Free candy cigarettes."
+	name = "\improper Timmy's First Candy Smokes"
+	desc = "Unsure about smoking? Want to bring your children safely into the family tradition? Look no more with this special packet! Includes 100%* Nicotine-Free candy ."
 	icon_state = "candy"
 	base_icon_state = "candy"
 	contents_tag = "candy cigarette"
@@ -298,14 +299,14 @@ TYPEINFO_DEF(/obj/item/storage/fancy)
 		spawn_type = /obj/item/clothing/mask/cigarette/candy/nicotine //uh oh!
 
 /obj/item/storage/fancy/cigarettes/cigpack_shadyjims
-	name = "\improper Shady Jim's Super Slims packet"
+	name = "\improper Shady Jim's Super Slims"
 	desc = "Is your weight slowing you down? Having trouble running away from gravitational singularities? Can't stop stuffing your mouth? Smoke Shady Jim's Super Slims and watch all that fat burn away. Guaranteed results!"
 	icon_state = "shadyjim"
 	base_icon_state = "shadyjim"
 	spawn_type = /obj/item/clothing/mask/cigarette/shadyjims
 
 /obj/item/storage/fancy/cigarettes/cigpack_xeno
-	name = "\improper Xeno Filtered packet"
+	name = "cigarette box \"Xeno\""
 	desc = "Loaded with 100% pure slime. And also nicotine."
 	icon_state = "slime"
 	base_icon_state = "slime"
@@ -349,7 +350,7 @@ TYPEINFO_DEF(/obj/item/storage/fancy)
 /////////////
 
 /obj/item/storage/fancy/cigarettes/cigars
-	name = "\improper premium cigar case"
+	name = "premium cigar case"
 	desc = "A case of premium cigars. Very expensive."
 	icon = 'icons/obj/cigarettes.dmi'
 	icon_state = "cigarcase"
@@ -379,14 +380,14 @@ TYPEINFO_DEF(/obj/item/storage/fancy)
 		cigar_position++
 
 /obj/item/storage/fancy/cigarettes/cigars/cohiba
-	name = "\improper Cohiba Robusto cigar case"
+	name = "cigar case \"Cohiba Robusto\""
 	desc = "A case of imported Cohiba cigars, renowned for their strong flavor."
 	icon_state = "cohibacase"
 	base_icon_state = "cohibacase"
 	spawn_type = /obj/item/clothing/mask/cigarette/cigar/cohiba
 
 /obj/item/storage/fancy/cigarettes/cigars/havana
-	name = "\improper premium Havanian cigar case"
+	name = "cigar case \"Havanian\""
 	desc = "A case of classy Havanian cigars."
 	icon_state = "cohibacase"
 	base_icon_state = "cohibacase"

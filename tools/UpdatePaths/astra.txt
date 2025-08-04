@@ -1,0 +1,2 @@
+/obj/item/storage/fancy/cigarettes/cigpack_uplift : /obj/item/storage/fancy/cigarettes/cigpack_astro
+/obj/item/clothing/mask/cigarette/uplift : /obj/item/clothing/mask/cigarette/astro

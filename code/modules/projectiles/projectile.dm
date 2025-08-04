@@ -422,13 +422,13 @@
 		return FALSE
 	if(iswall(A))
 		var/turf/closed/wall/hitted = A
-		var/datum/armor/wallArmor = A.returnArmor()
+		var/datum/armor/targetArmor = A.returnArmor()
 		var/datum/armor/bulletArmor = returnArmor()
 		var/wx
 		var/wy
 		var/wallHitAngle
 		// ensure the lines ALWAYS collide
-		var/mult = getRelativeArmorRatingMultiplier(A, wallArmor, bulletArmor) * speed / initial(speed)
+		var/mult = getRelativeArmorRatingMultiplier(A, targetArmor, bulletArmor) * speed / initial(speed)
 		// bullet has a significant relative rating. let it go through
 		//message_admins("multiplier is [mult]")
 		A.atomHitbox.getPointOfCollision(BM_LINE(trajectory.starting_x, trajectory.starting_y, trajectory.x + trajectory.mpx * 10, trajectory.y + trajectory.mpy * 10), &wx, &wy, &wallHitAngle)
@@ -439,7 +439,7 @@
 		// scales with angle of attack
 		if(mult > 0.4 * ((90 - abs(ricochetAngle))/90 + 1))
 			adjustIntegrity(-0.2*integrity)
-			hitted.wallIntegrity = max(hitted.wallIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - wallArmor.vars[bulletArmorType])/150, 0 , 0.8),0)
+			hitted.bIntegrity = max(hitted.bIntegrity- damage * clamp((bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])/150, 0 , 0.8),0)
 			adjustSpeed(-0.4*speed)
 			impacted[A] = TRUE
 			return TRUE
@@ -456,7 +456,7 @@
 			// set to new starting for new calculations / subsequent ricochets
 			trajectory.starting_x = wx
 			trajectory.starting_y = wy
-			hitted.wallIntegrity = max(hitted.wallIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - wallArmor.vars[bulletArmorType])/200, 0 , 0.5),0)
+			hitted.bIntegrity = max(hitted.bIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])/200, 0 , 0.5),0)
 			ricochets++
 			decayedRange = max(0, decayedRange - 1)
 			adjustSpeed(-0.1*speed)
@@ -464,12 +464,12 @@
 			impacted[A] = TRUE
 			return TRUE
 		if(integrity < initial(integrity) * 0.3)
-			hitted.wallIntegrity = max(hitted.wallIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - wallArmor.vars[bulletArmorType])/100, 0 , 1),0)
+			hitted.bIntegrity = max(hitted.bIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])/100, 0 , 1),0)
 			return process_hit(A, select_target(A, A, A), A)
 		if(mult < 0 && abs(ricochetAngle) < GLOB.bulletStandardFragmentAngles["[bulletTipType]"][2] && abs(ricochetAngle) > GLOB.bulletStandardFragmentAngles["[bulletTipType]"][1] && canFragment)
 			impacted[A] = TRUE
-			hitted.wallIntegrity = max(hitted.wallIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - wallArmor.vars[bulletArmorType])/200, 0 , 1),0)
-			fragmentTowards(A, 4, abs(ricochetAngle) > 60 ? (ricochetAngle +orig + (abs(ricochetAngle)) + 90) : ricochetAngle + orig - sign(wallHitAngle) * 3, 15, abs(ricochetAngle) > 60)
+			hitted.bIntegrity = max(hitted.bIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])/200, 0 , 1),0)
+			fragmentTowards(A, BULLET_FRAGMENT_SPAWNCOUNT, abs(ricochetAngle) > 60 ? (ricochetAngle +orig + (abs(ricochetAngle)) + 90) : ricochetAngle + orig - sign(wallHitAngle) * 3, 15, abs(ricochetAngle) > 60)
 			qdel(src)
 			return TRUE
 	var/datum/point/point_cache = trajectory.copy_to()

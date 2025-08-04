@@ -115,9 +115,9 @@
 /datum/hitbox/directiona/getRelevantLines(atom/parent, list/incoming)
 	return hitboxLines["[parent.dir]"]
 
-
 /atom
 	var/datum/hitbox/atomHitbox = null
+	var/bIntegrity  100
 
 /turf
 	var/wallIntegrity = 100
@@ -219,7 +219,6 @@ TYPEINFO_DEF(/obj/projectile)
 
 
 /obj/projectile
-	var/integrity = 100
 	var/speedLossPerTile = 0.1
 	var/bulletTipType = BULLET_SHARP
 	var/bulletArmorType = PUNCTURE
@@ -230,7 +229,7 @@ TYPEINFO_DEF(/obj/projectile)
 /obj/projectile/proc/getRelativeArmorRatingMultiplier(turf/closed/wall/target, datum/armor/targetArmor, datum/armor/bulletArmor)
 	if(targetArmor == null || bulletArmor == null || bulletArmorType == "")
 		return 0
-	var/ratingDiff = bulletArmor.vars[bulletArmorType] * integrity / initial(integrity) - targetArmor.vars[bulletArmorType] * target.wallIntegrity / initial(target.wallIntegrity)
+	var/ratingDiff = (bulletArmor.vars[bulletArmorType] * bIntegrity / initial(bIntegrity)) * initial(speed) / speed - targetArmor.vars[bulletArmorType] * target.bIntegrity / initial(target.bIntegrity)
 //message_admins("relative armor returning [ratingDiff / bulletArmor.vars[damage_type]]")
 	return (ratingDiff+0.001) / bulletArmor.vars[bulletArmorType]
 
@@ -250,8 +249,8 @@ TYPEINFO_DEF(/obj/projectile)
 		projectile.fire(fragmentAngle + rand(0, maxDeviation) * sign(rand(-1,1)) + (fullLoopPossible ? rand(-1,1) > 0 : 0) * 180)
 
 /obj/projectile/proc/adjustIntegrity(value)
-	integrity = max(integrity + value, 0)
-	if(integrity == 0)
+	bIntegrity = max(bIntegrity + value, 0)
+	if(bIntegrity == 0)
 		qdel(src)
 
 /obj/projectile/proc/adjustSpeed(value)

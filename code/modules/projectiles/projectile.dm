@@ -438,7 +438,7 @@
 			ricochetAngle = abs(sign(wallHitAngle) * 180 - wallHitAngle)
 		// scales with angle of attack
 		if(mult > 0.4 * ((90 - abs(ricochetAngle))/90 + 1))
-			adjustIntegrity(-0.2*integrity)
+			adjustIntegrity(-0.2*bIntegrity)
 			hitted.bIntegrity = max(hitted.bIntegrity- damage * clamp((bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])/150, 0 , 0.8),0)
 			adjustSpeed(-0.4*speed)
 			impacted[A] = TRUE
@@ -462,7 +462,7 @@
 			adjustIntegrity(-BULLET_INTEGRITYLOSS_RICOCHET)
 			impacted[A] = TRUE
 			return TRUE
-		if(integrity < initial(integrity) * 0.3)
+		if(bIntegrity < initial(bIntegrity) * 0.3)
 			hitted.bIntegrity = max(hitted.bIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])/100, 0 , 1),0)
 			return process_hit(A, select_target(A, A, A), A)
 		if(mult < 0 && abs(ricochetAngle) < GLOB.bulletStandardFragmentAngles["[bulletTipType]"][2] && abs(ricochetAngle) > GLOB.bulletStandardFragmentAngles["[bulletTipType]"][1] && canFragment)

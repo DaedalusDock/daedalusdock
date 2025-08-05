@@ -117,7 +117,7 @@
 
 /atom
 	var/datum/hitbox/atomHitbox = null
-	var/bIntegrity  100
+	var/bIntegrity = 100
 
 /turf
 	var/wallIntegrity = 100
@@ -233,16 +233,16 @@ TYPEINFO_DEF(/obj/projectile)
 //message_admins("relative armor returning [ratingDiff / bulletArmor.vars[damage_type]]")
 	return (ratingDiff+0.001) / bulletArmor.vars[bulletArmorType]
 
-/obj/projectile/proc/fragmentTowards(turf/wall,fragmentCount, fragmentAngle, maxDeviation, fullLoopPossible)
+/obj/projectile/proc/fragmentTowards(atom/lastHit,fragmentCount, fragmentAngle, maxDeviation, fullLoopPossible)
 	for(var/i = 0 to fragmentCount)
-		var/obj/projectile/projectile = new /obj/projectile/bullet(get_turf(wall))
-		projectile.integrity = integrity
+		var/obj/projectile/projectile = new /obj/projectile/bullet(get_turf(lastHit))
+		projectile.bIntegrity = bIntegrity
 		projectile.speed = speed
 		projectile.firer = src
-		projectile.fired_from = wall
-		projectile.impacted = list(wall)
-		projectile.preparePixelProjectile(get_turf_in_angle(fragmentAngle, wall, 2), src)
-		projectile.adjustSpeed(-speed * 0.3)
+		projectile.fired_from = lastHit
+		projectile.impacted = list(lastHit)
+		projectile.preparePixelProjectile(get_turf_in_angle(fragmentAngle, lastHit, 2), src)
+		projectile.adjustSpeed(-BULLET_FRAGMENT_SPEEDMALUS)
 		projectile.adjustIntegrity(-BULLET_INTEGRITYLOSS_FRAGMENT	)
 		projectile.damage = damage * 0.2
 		projectile.damage_type = damage_type

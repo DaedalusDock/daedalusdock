@@ -420,7 +420,7 @@
 		return FALSE
 	if(impacted[A]) // NEVER doublehit
 		return FALSE
-	if(iswall(A))
+	if(A.atomHitbox)
 		var/turf/closed/wall/hitted = A
 		var/datum/armor/targetArmor = A.returnArmor()
 		var/datum/armor/bulletArmor = returnArmor()
@@ -443,7 +443,6 @@
 			adjustSpeed(-0.4*speed)
 			impacted[A] = TRUE
 			return TRUE
-		message_admins("Ricochet angle is [ricochetAngle], mult is [mult]")
 		wallHitAngle = Angle + wallHitAngle * 2
 		// reduce the wallHitAngle after the calculation for any further intersections and before feeding into the trajectory
 		wallHitAngle = wallHitAngle%%360
@@ -469,7 +468,7 @@
 		if(mult < 0 && abs(ricochetAngle) < GLOB.bulletStandardFragmentAngles["[bulletTipType]"][2] && abs(ricochetAngle) > GLOB.bulletStandardFragmentAngles["[bulletTipType]"][1] && canFragment)
 			impacted[A] = TRUE
 			hitted.bIntegrity = max(hitted.bIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])/200, 0 , 1),0)
-			fragmentTowards(A, BULLET_FRAGMENT_SPAWNCOUNT, abs(ricochetAngle) > 60 ? (ricochetAngle +orig + (abs(ricochetAngle)) + 90) : ricochetAngle + orig - sign(wallHitAngle) * 3, 15, abs(ricochetAngle) > 60)
+			fragmentTowards(A, BULLET_FRAGMENT_SPAWNCOUNT, abs(ricochetAngle) > 60 ? (ricochetAngle +orig + (abs(ricochetAngle)) + 90) : ricochetAngle + orig - sign(wallHitAngle) * 3, BULLET_FRAGMENT_MAXANGLEVARIATION, abs(ricochetAngle) > 60)
 			qdel(src)
 			return TRUE
 	var/datum/point/point_cache = trajectory.copy_to()

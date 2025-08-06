@@ -80,7 +80,7 @@ DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 	var/datum/c4_file/terminal_program/operating_system/rtos/controller = locate() in internal_computer.inserted_disk?.root?.contents
 	if(!istype(controller))
 
-		CRASH("Unable to get configuration file, could not unlock on startup.")
+		CRASH("Unable to get program file, could not unlock on startup.")
 
 	controller.unlock_on_roundstart()
 

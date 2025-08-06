@@ -68,7 +68,10 @@
 /// Getter for the log file. This isn't kept as a ref because I don't want to manage the ref. :)
 /datum/c4_file/terminal_program/medtrak/proc/get_log_file()
 	RETURN_TYPE(/datum/c4_file/text)
-	var/datum/c4_file/folder/log_dir = get_os().get_log_folder()
+
+	// Sue me. Come up with a better way to do this that doesn't demand dead procs on the OS basetype.
+	// (Suggestion: Move medtrak and such to a thinkdos-specific subtype of terminal_program) (t_prog/dos/medtrak)
+	var/datum/c4_file/folder/log_dir = get_os():get_log_folder()
 	if(!log_dir)
 		return null
 

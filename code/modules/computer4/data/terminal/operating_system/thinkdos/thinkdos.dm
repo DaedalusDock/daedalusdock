@@ -131,7 +131,7 @@
 	return TRUE
 
 /// Returns the logging folder, attempting to create it if it doesn't already exist.
-/datum/c4_file/terminal_program/operating_system/thinkdos/get_log_folder()
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/get_log_folder()
 	var/datum/c4_file/folder/log_dir = parse_directory("logs", drive.root)
 	if(!log_dir)
 		log_dir = new /datum/c4_file/folder

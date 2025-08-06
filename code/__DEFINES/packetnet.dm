@@ -40,6 +40,9 @@
 /// Network Class of a device, used as part of ping replies.
 #define PACKET_NETCLASS "netclass"
 
+#define PACKET_ARG_PROTOCOL "proto"
+	#define PACKET_ARG_PROTOCOL_PDP "pdp"
+
 // Pagers
 /// Packet arg for pager types
 #define PACKET_ARG_PAGER_CLASS "pager_class"
@@ -103,3 +106,23 @@
 #define MAGIC_DATA_INVIOLABLE ALL
 
 #define PACKET_STRING_FILE "packetnet.json"
+
+// -----
+// PDP Protocol Fields
+// These are partially duplicates of above but Deal With It.
+
+#define PDP_SOURCE_ADDRESS PACKET_SOURCE_ADDRESS
+#define PDP_DESTINATION_ADDRESS PACKET_DESTINATION_ADDRESS
+
+#define PDP_SOURCE_PORT "s_port"
+#define PDP_DESTINATION_PORT "d_port"
+
+/// PDP Payload Data. Is a list.
+#define PDP_PAYLOAD_DATA "payload"
+
+
+// -----
+// PDP Port Allocations
+
+#define PDP_MAX_PORT 65535 //! Maximum PDP Port number
+#define PDP_EPHEMERAL_START 64000 //! Start of PDP Ephemeral Range, used for outgoing client connections.

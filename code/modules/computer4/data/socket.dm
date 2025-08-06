@@ -80,4 +80,4 @@
 
 	var/datum/signal/packet = new(null, packet_data)
 
-	outgoing_datum.receive_signal()
+	outgoing_datum.post_signal(packet)

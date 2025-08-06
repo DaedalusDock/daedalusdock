@@ -23,6 +23,9 @@ DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 
 	var/autolink_capable = FALSE
 
+	/// If TRUE, the door will be unlocked on startup.
+	var/unlock_on_roundstart = FALSE
+
 /obj/machinery/c4_embedded_controller/Initialize(mapload)
 	. = ..()
 	internal_computer = new(src)
@@ -42,6 +45,9 @@ DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 
 	if(!mapload)
 		internal_computer.post_system()
+
+	if(unlock_on_roundstart && SSticker.current_state == GAME_STATE_STARTUP)
+		SSticker.OnRoundstart(CALLBACK(src, PROC_REF(unlock_on_roundstart)))
 
 /obj/machinery/c4_embedded_controller/LateInitialize()
 	. = ..()
@@ -69,6 +75,14 @@ DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 /obj/machinery/c4_embedded_controller/Destroy()
 	QDEL_NULL(internal_computer)
 	return ..()
+
+/obj/machinery/c4_embedded_controller/proc/unlock_on_roundstart()
+	var/datum/c4_file/terminal_program/operating_system/rtos/controller = locate() in internal_computer.inserted_disk?.root?.contents
+	if(!istype(controller))
+
+		CRASH("Unable to get program file, could not unlock on startup.")
+
+	controller.unlock_on_roundstart()
 
 /obj/machinery/embedded_controller/ShiftClick(mob/user)
 	. = ..()

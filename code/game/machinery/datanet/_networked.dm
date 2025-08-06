@@ -16,7 +16,7 @@
 /// If you're sending a forged source address (You should have a good reason for this...) set `preserve_s_addr = TRUE
 ///
 /// NONE OF THE ABOVE IS TRUE IF YOU ARE `machinery/power`, AS THEY DEAL DIRECTLY WITH SSPACKETS INSTEAD OF ABSTRACTED TERMINALS
-/obj/machinery/proc/post_signal(datum/signal/sending_signal, preserve_s_addr = FALSE)
+/obj/machinery/post_signal(datum/signal/sending_signal, preserve_s_addr = FALSE)
 	if(isnull(netjack) || isnull(sending_signal)) //nullcheck for sanic speed
 		return //You need a pipe and something to send down it, though.
 	if(!preserve_s_addr)

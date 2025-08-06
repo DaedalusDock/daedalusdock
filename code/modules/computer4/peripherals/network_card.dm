@@ -52,7 +52,7 @@
 	radio_connection = SSpackets.add_object(src, new_frequency)
 
 /// Post a signal. Has safety checks, so calling this with a timer is OK.
-/obj/item/peripheral/network_card/wireless/proc/post_signal(datum/signal/packet, filter)
+/obj/item/peripheral/network_card/wireless/post_signal(datum/signal/packet, filter)
 	if(!master_pc?.is_operational || !radio_connection)
 		return
 
@@ -97,10 +97,11 @@
 			//allow all
 		*/
 
-
-
 	var/datum/signal/clone = signal.Copy()
-	master_pc.peripheral_input(src, PERIPHERAL_CMD_RECEIVE_PACKET, clone)
+	if(signal.data[PACKET_ARG_PROTOCOL] == PACKET_ARG_PROTOCOL_PDP)
+		master_pc.peripheral_input(src, PERIPHERAL_CMD_RECEIVE_PDP_PACKET, clone)
+	else
+		master_pc.peripheral_input(src, PERIPHERAL_CMD_RECEIVE_PACKET, clone)
 
 /obj/item/peripheral/network_card/wireless/proc/ping()
 	if(!COOLDOWN_FINISHED(src, ping_cooldown))

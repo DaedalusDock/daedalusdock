@@ -71,7 +71,7 @@
 
 	// Sue me. Come up with a better way to do this that doesn't demand dead procs on the OS basetype.
 	// (Suggestion: Move medtrak and such to a thinkdos-specific subtype of terminal_program) (t_prog/dos/medtrak)
-	var/datum/c4_file/folder/log_dir = get_os():get_log_folder()
+	var/datum/c4_file/folder/log_dir = astype(get_os(), /datum/c4_file/terminal_program/operating_system/thinkdos):get_log_folder()
 	if(!log_dir)
 		return null
 

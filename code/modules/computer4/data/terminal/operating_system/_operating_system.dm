@@ -72,9 +72,20 @@
 
 	pdp_port_map = null //Programs should clean these up, but just in case.
 
-/datum/c4_file/terminal_program/operating_system/proc/execute(datum/c4_file/terminal_program/operating_system/system)
+/datum/c4_file/terminal_program/operating_system/execute(datum/c4_file/terminal_program/operating_system/system)
 	if(system != src)
 		//If we aren't executing ourselves, something is nasty and wrong.
 		CRASH("System [system.type] tried to execute OS that isn't itself??")
 
 	prepare_networking()
+
+/datum/c4_file/terminal_program/operating_system/peripheral_input(obj/item/peripheral/invoker, command, datum/signal/packet)
+
+	if(command == PERIPHERAL_CMD_RECEIVE_PDP_PACKET)
+		pdp_incoming(packet)
+		return
+
+	for(var/datum/c4_file/terminal_program/program as anything in processing_programs)
+		if(program == src)
+			continue
+		program.peripheral_input(invoker, command, packet)

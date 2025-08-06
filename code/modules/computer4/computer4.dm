@@ -252,8 +252,7 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 	if(!is_operational)
 		return
 
-	for(var/datum/c4_file/terminal_program/program as anything in operating_system?.processing_programs)
-		program.peripheral_input(invoker, command, packet)
+	operating_system.peripheral_input(invoker, command, packet)
 
 /obj/machinery/computer4/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src)

@@ -13,7 +13,7 @@
 #endif
 
 /datum/pdp_socket
-	/// Next Hop datum we send our packets to, Usually an operating system, but may be a physical network device.
+	/// Next Hop datum we send our packets to. Usually a network card.
 	var/datum/outgoing_datum
 	/// 'Owner' that registered for this socket. Used to assure ownership.
 	var/datum/owner
@@ -79,3 +79,5 @@
 	)
 
 	var/datum/signal/packet = new(null, packet_data)
+
+	outgoing_datum.receive_signal()

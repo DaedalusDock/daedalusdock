@@ -98,7 +98,7 @@
 		append_signal(signal)
 
 
-/obj/item/computer_hardware/network_card/packetnet/proc/post_signal(datum/signal/signal)
+/obj/item/computer_hardware/network_card/packetnet/post_signal(datum/signal/signal)
 	if(!radio_connection || !signal)
 		return FALSE // Something went wrong.
 	signal.data[PACKET_SOURCE_ADDRESS] = hardware_id //Readdress outgoing packets.

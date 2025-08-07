@@ -1,6 +1,4 @@
 /datum/c4_file/terminal_program/operating_system/proc/prepare_networking()
-	//Create the array of all ports. Do I really need this many? No. I'll probably reduce this later to like, 1024.
-	pdp_port_map = list()
 
 /// Request a socket from the OS.
 /// A `port_number` of 0 will result in being allocated an ephemeral port.

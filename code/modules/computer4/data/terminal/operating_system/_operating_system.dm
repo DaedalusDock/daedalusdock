@@ -20,7 +20,7 @@
 	var/deadlocked = FALSE
 
 	/// Associative list of "port_num" : socket_instance
-	var/list/datum/pdp_socket/pdp_port_map
+	var/list/datum/pdp_socket/pdp_port_map = list()
 
 /datum/c4_file/terminal_program/operating_system/Destroy()
 	if(length(processing_programs))
@@ -73,7 +73,7 @@
 
 	//Programs should clean these up, but just in case.
 	QDEL_LIST_ASSOC_VAL(pdp_port_map)
-	pdp_port_map = null
+	pdp_port_map.Cut()
 
 /datum/c4_file/terminal_program/operating_system/execute(datum/c4_file/terminal_program/operating_system/system)
 	if(system != src)

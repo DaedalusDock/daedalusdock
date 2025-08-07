@@ -35,5 +35,3 @@
 	worn_icon_state = "reinforced_plunger"
 	reinforced = TRUE
 	plunge_mod = 0.5
-
-	custom_premium_price = PAYCHECK_MEDIUM * 8

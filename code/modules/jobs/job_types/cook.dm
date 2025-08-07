@@ -6,6 +6,8 @@
 
 	pinpad_key = "starvation"
 
+	starting_paycheck_amount = 4 // They get a healthy cash injection to start so they can buy produce.
+
 	total_positions = 2
 	spawn_positions = 1
 	exp_granted_type = EXP_TYPE_CREW

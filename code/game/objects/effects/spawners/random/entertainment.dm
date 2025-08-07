@@ -128,7 +128,7 @@
 	loot = list(
 		/obj/item/storage/fancy/cigarettes = 3,
 		/obj/item/storage/fancy/cigarettes/dromedaryco = 3,
-		/obj/item/storage/fancy/cigarettes/cigpack_uplift = 3,
+		/obj/item/storage/fancy/cigarettes/cigpack_astro = 5,
 		/obj/item/storage/fancy/cigarettes/cigpack_robust = 3,
 		/obj/item/storage/fancy/cigarettes/cigpack_carp = 3,
 		/obj/item/storage/fancy/cigarettes/cigpack_robustgold = 1,
@@ -140,11 +140,11 @@
 	name = "cigarette spawner"
 	icon_state = "cigarettes"
 	loot = list(
+		/obj/item/clothing/mask/cigarette/astro = 5,
 		/obj/item/clothing/mask/cigarette/space_cigarette = 3,
 		/obj/item/clothing/mask/cigarette/rollie/cannabis = 3,
 		/obj/item/clothing/mask/cigarette/rollie/nicotine = 3,
 		/obj/item/clothing/mask/cigarette/dromedary = 2,
-		/obj/item/clothing/mask/cigarette/uplift = 2,
 		/obj/item/clothing/mask/cigarette/robust = 2,
 		/obj/item/clothing/mask/cigarette/carp = 1,
 		/obj/item/clothing/mask/cigarette/robustgold = 1,

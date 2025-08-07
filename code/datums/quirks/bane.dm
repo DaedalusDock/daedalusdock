@@ -217,7 +217,7 @@
 /datum/quirk/item_quirk/junkie/smoker/New()
 	drug_container_type = pick(/obj/item/storage/fancy/cigarettes,
 		/obj/item/storage/fancy/cigarettes/cigpack_midori,
-		/obj/item/storage/fancy/cigarettes/cigpack_uplift,
+		/obj/item/storage/fancy/cigarettes/cigpack_astro,
 		/obj/item/storage/fancy/cigarettes/cigpack_robust,
 		/obj/item/storage/fancy/cigarettes/cigpack_robustgold,
 		/obj/item/storage/fancy/cigarettes/cigpack_carp)

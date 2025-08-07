@@ -37,7 +37,7 @@ TYPEINFO_DEF(/obj/machinery/vending/liberationstation)
 		/obj/item/food/burger/superbite = 3
 	) //U S A
 	resistance_flags = FIRE_PROOF
-	default_price = PAYCHECK_HARD * 2.5
-	extra_price = PAYCHECK_COMMAND * 2.5
+	default_price = PAYCHECK_ASSISTANT * 7
+	extra_price = PAYCHECK_ASSISTANT * 10
 	payment_department = ACCOUNT_SEC
 	light_mask = "liberation-light-mask"

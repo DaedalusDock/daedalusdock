@@ -556,7 +556,7 @@ TYPEINFO_DEF(/obj/item/cane)
 	icon_state = "skateboard2"
 	inhand_icon_state = "skateboard2"
 	board_item_type = /obj/vehicle/ridden/scooter/skateboard/pro
-	custom_premium_price = PAYCHECK_HARD * 5
+	custom_premium_price = PAYCHECK_ASSISTANT * 4.5
 
 /obj/item/melee/skateboard/hoverboard
 	name = "hoverboard"
@@ -564,7 +564,7 @@ TYPEINFO_DEF(/obj/item/cane)
 	icon_state = "hoverboard_red"
 	inhand_icon_state = "hoverboard_red"
 	board_item_type = /obj/vehicle/ridden/scooter/skateboard/hoverboard
-	custom_premium_price = PAYCHECK_COMMAND * 5.4 //If I can't make it a meme I'll make it RAD
+	custom_premium_price = PAYCHECK_ASSISTANT * 69
 
 /obj/item/melee/skateboard/hoverboard/admin
 	name = "Board Of Directors"

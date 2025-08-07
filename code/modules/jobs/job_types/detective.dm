@@ -30,7 +30,7 @@
 		/datum/job_department/service,
 	)
 
-	paycheck = PAYCHECK_MEDIUM
+	paycheck = PAYCHECK_ASSISTANT * 2.5 // You start barely wealthier than the riff-raff.
 
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)
 	mind_traits = list(TRAIT_DICK)

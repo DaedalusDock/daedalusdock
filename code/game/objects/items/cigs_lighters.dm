@@ -436,28 +436,28 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 
 // Cigarette brands.
 /obj/item/clothing/mask/cigarette/space_cigarette
-	desc = "A Space brand cigarette that can be smoked anywhere."
+	desc = "A \"Spess\" cigarette."
 	list_reagents = list(/datum/reagent/drug/nicotine = 9, /datum/reagent/oxygen = 9)
 	smoketime = 4 MINUTES // space cigs have a shorter burn time than normal cigs
 	smoke_all = TRUE // so that it doesn't runout of oxygen while being smoked in space
 
 /obj/item/clothing/mask/cigarette/dromedary
-	desc = "A DromedaryCo brand cigarette. Contrary to popular belief, does not contain Calomel, but is reported to have a watery taste."
+	desc = "A \"DromedaryCo\" cigarette."
 	list_reagents = list(/datum/reagent/drug/nicotine = 13, /datum/reagent/water = 5) //camel has water
 
-/obj/item/clothing/mask/cigarette/uplift
-	desc = "An Uplift Smooth brand cigarette. Smells refreshing."
+/obj/item/clothing/mask/cigarette/astro
+	desc = "An \"Astro\" cigarette."
 	list_reagents = list(/datum/reagent/drug/nicotine = 13, /datum/reagent/consumable/menthol = 5)
 
 /obj/item/clothing/mask/cigarette/robust
-	desc = "A Robust brand cigarette."
+	desc = "A \"Robust\" cigarette."
 
 /obj/item/clothing/mask/cigarette/robustgold
-	desc = "A Robust Gold brand cigarette."
+	desc = "A \"Robust Gold\" cigarette."
 	list_reagents = list(/datum/reagent/drug/nicotine = 15, /datum/reagent/gold = 3) // Just enough to taste a hint of expensive metal.
 
 /obj/item/clothing/mask/cigarette/carp
-	desc = "A Carp Classic brand cigarette. A small label on its side indicates that it does NOT contain carpotoxin."
+	desc = "A \"Carp Classic\" brand cigarette."
 
 /obj/item/clothing/mask/cigarette/carp/Initialize(mapload)
 	. = ..()

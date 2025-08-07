@@ -4,7 +4,7 @@ TYPEINFO_DEF(/obj/item/flashlight)
 /obj/item/flashlight
 	name = "flashlight"
 	desc = "A hand-held emergency light."
-	custom_price = PAYCHECK_EASY
+	custom_price = PAYCHECK_ASSISTANT * 0.5
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "flashlight"
 	inhand_icon_state = "flashlight"

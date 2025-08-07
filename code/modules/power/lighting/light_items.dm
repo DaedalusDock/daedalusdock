@@ -40,7 +40,7 @@ TYPEINFO_DEF(/obj/item/light)
 	inhand_icon_state = "c_tube"
 	bulb_outer_range = 6
 	bulb_inner_range = 2
-	custom_price = PAYCHECK_EASY * 0.5
+	custom_price = PAYCHECK_ASSISTANT * 0.4
 
 /obj/item/light/tube/broken
 	status = LIGHT_BROKEN
@@ -55,7 +55,7 @@ TYPEINFO_DEF(/obj/item/light)
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	bulb_outer_range = 5
 	bulb_inner_range = 1
-	custom_price = PAYCHECK_EASY * 0.4
+	custom_price = PAYCHECK_ASSISTANT * 0.2
 
 /obj/item/light/bulb/broken
 	status = LIGHT_BROKEN

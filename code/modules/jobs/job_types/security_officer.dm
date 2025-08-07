@@ -24,7 +24,7 @@
 		),
 	)
 
-	paycheck = PAYCHECK_HARD
+	paycheck = PAYCHECK_ASSISTANT * 7
 	paycheck_department = ACCOUNT_SEC
 
 	mind_traits = list(TRAIT_DONUT_LOVER)

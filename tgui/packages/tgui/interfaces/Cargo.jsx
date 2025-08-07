@@ -277,11 +277,16 @@ export const CargoCatalog = (props) => {
                   <Table.Cell collapsing color="label" textAlign="right">
                     {tags.join(', ')}
                   </Table.Cell>
+                  {!pack.desc ? null : (
+                    <Table.Cell collapsing textAlign="right">
+                      <Button tooltip={pack.desc} tooltipPosition="left">
+                        ?
+                      </Button>
+                    </Table.Cell>
+                  )}
                   <Table.Cell collapsing textAlign="right">
                     <Button
                       fluid
-                      tooltip={pack.desc}
-                      tooltipPosition="left"
                       onClick={() =>
                         act('add', {
                           id: pack.id,

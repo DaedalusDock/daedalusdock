@@ -224,7 +224,7 @@
 	volume = 30
 	list_reagents = list(/datum/reagent/consumable/ethanol/ale = 30)
 	drink_type = GRAIN | ALCOHOL
-	custom_price = PAYCHECK_EASY
+	custom_price = PAYCHECK_ASSISTANT * 2
 
 	alcoholism_key = "alcoholism_ale"
 	alcoholism_message = "Amber and frothy. You know you want it."
@@ -309,7 +309,7 @@
 	desc = "A 40 full of malt liquor. Kicks stronger than, well, a rabid bear."
 	icon_state = "maltliquorbottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/beer/maltliquor = 100)
-	custom_price = PAYCHECK_EASY
+	custom_price = PAYCHECK_ASSISTANT * 2
 
 /obj/item/reagent_containers/cup/glass/bottle/holywater
 	name = "flask of holy water"

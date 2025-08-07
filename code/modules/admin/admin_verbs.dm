@@ -171,7 +171,6 @@ GLOBAL_PROTECT(admin_verbs_debug)
 	/client/proc/outfit_manager,
 	/client/proc/open_colorblind_test,
 	/client/proc/generate_wikichem_list,
-	/client/proc/modify_goals,
 	/client/proc/debug_huds,
 	/client/proc/map_template_load,
 	/client/proc/map_template_upload,

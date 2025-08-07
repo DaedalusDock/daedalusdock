@@ -17,7 +17,7 @@
 	icon_state = "seed-x"
 
 	plant_type = /datum/plant/random
-	custom_premium_price = PAYCHECK_EASY * 2
+	custom_premium_price = PAYCHECK_ASSISTANT * 1.5
 
 /obj/item/seeds/random/Initialize(mapload)
 	. = ..()

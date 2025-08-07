@@ -21,7 +21,8 @@ TYPEINFO_DEF(/obj/item/camera)
 	w_class = WEIGHT_CLASS_SMALL
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_NECK
-	custom_price = PAYCHECK_EASY * 2
+	custom_price = PAYCHECK_ASSISTANT * 2.5
+
 	var/flash_enabled = TRUE
 	var/state_on = "camera"
 	var/state_off = "camera_off"

@@ -120,7 +120,6 @@
 			"cost" = P.get_cost(),
 			"id" = pack,
 			"desc" = P.desc || P.name, // If there is a description, use it. Otherwise use the pack's name.
-			"goody" = P.goody,
 			"access" = P.access
 		))
 
@@ -241,11 +240,6 @@
 				reason = tgui_input_text(usr, "Reason", name)
 				if(isnull(reason) || ..())
 					return
-
-			if(pack.goody && !self_paid)
-				playsound(src, 'sound/machines/buzz-sigh.ogg', 50, FALSE)
-				computer.say("ERROR: Small crates may only be purchased by private accounts.")
-				return
 
 			if(!self_paid && ishuman(usr) && !account)
 				var/obj/item/card/id/id_card = card_slot?.GetID()

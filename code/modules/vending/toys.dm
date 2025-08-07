@@ -26,7 +26,7 @@
 	)
 	refill_canister = /obj/item/vending_refill/donksoft
 	default_price = PAYCHECK_ASSISTANT * 2
-	extra_price = PAYCHECK_HARD
+	extra_price = PAYCHECK_ASSISTANT * 5
 	payment_department = ACCOUNT_STATION_MASTER
 
 /obj/item/vending_refill/donksoft

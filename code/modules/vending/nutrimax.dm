@@ -24,7 +24,7 @@
 
 	refill_canister = /obj/item/vending_refill/hydronutrients
 	default_price = PAYCHECK_ASSISTANT * 0.8
-	extra_price = PAYCHECK_HARD * 0.8
+	extra_price = PAYCHECK_ASSISTANT * 3
 	payment_department = ACCOUNT_STATION_MASTER
 
 	discount_access = ACCESS_HYDROPONICS

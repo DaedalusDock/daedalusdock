@@ -321,7 +321,7 @@ GLOBAL_LIST_INIT(safe_peanut_types, populate_safe_peanut_types())
 	food_reagents = list(/datum/reagent/consumable/nutriment = 2, /datum/reagent/consumable/nutriment/vitamin = 1) //a healthy but expensive snack
 	tastes = list("pistachios" = 4, "subtle sweetness" = 1)
 	foodtypes = JUNKFOOD | NUTS
-	custom_price = PAYCHECK_MEDIUM//pistachios are even more expensive.
+	custom_price = PAYCHECK_ASSISTANT //pistachios are even more expensive.
 	junkiness = 10 //on par with peanuts
 	w_class = WEIGHT_CLASS_SMALL
 	grind_results = list(/datum/reagent/consumable/peanut_butter = 5, /datum/reagent/consumable/cooking_oil = 2)

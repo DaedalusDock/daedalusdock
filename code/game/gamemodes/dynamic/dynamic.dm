@@ -305,10 +305,9 @@ GLOBAL_VAR_INIT(dynamic_forced_threat_level, -1)
 		if(ruleset.weight <= 0 || ruleset.cost <= 0)
 			continue
 		min_threat = min(ruleset.cost, min_threat)
+
 	var/greenshift = GLOB.dynamic_forced_extended || (threat_level < min_threat && shown_threat < min_threat) //if both shown and real threat are below any ruleset, its extended time
 
-	generate_station_goals(greenshift)
-	. += generate_station_goal_report()
 	. += generate_station_trait_report()
 
 	print_command_report(., "Central Command Status Summary", announce=FALSE)

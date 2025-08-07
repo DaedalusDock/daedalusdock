@@ -222,3 +222,7 @@
 		/datum/reagent/sulfur = 1
 	)
 	mix_message = "A strong and cloying odor begins to bubble from the mixture."
+
+/datum/chemical_reaction/sterilizine
+	results = list(/datum/reagent/space_cleaner/sterilizine = 3)
+	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/medicine/dylovene = 1, /datum/reagent/toxin/acid/hydrochloric = 1)

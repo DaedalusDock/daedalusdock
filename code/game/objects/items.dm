@@ -1732,7 +1732,16 @@ DEFINE_INTERACTABLE(/obj/item)
 
 // Update icons if this is being carried by a mob
 /obj/item/wash(clean_types)
+	var/was_bloody = !!blood_DNA_length()
 	. = ..()
+
+	var/datum/component/hidden_blood/hidden_blood = GetComponent(/datum/component/hidden_blood)
+	if(clean_types & CLEAN_TYPE_HIDDEN_BLOOD)
+		if(hidden_blood)
+			qdel(hidden_blood)
+
+	else if(!hidden_blood && was_bloody && !blood_DNA_length()) // Blood was removed
+		AddComponent(/datum/component/hidden_blood)
 
 	if(equipped_to)
 		if(equipped_to.is_holding(src))

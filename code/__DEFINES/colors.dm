@@ -61,6 +61,7 @@
 #define COLOR_BLUE_LIGHT "#33CCFF"
 #define COLOR_NAVY "#000080"
 #define COLOR_BLUE_GRAY "#75A2BB"
+#define COLOR_LUMINOL          "#66ffff"
 
 #define COLOR_PINK "#FFC0CB"
 #define COLOR_LIGHT_PINK "#ff3cc8"

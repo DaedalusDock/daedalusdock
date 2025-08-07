@@ -246,6 +246,10 @@
 	if(!length(blood_DNA))
 		return
 
+	var/datum/component/hidden_blood/hidden_blood = GetComponent(/datum/component/hidden_blood)
+	if(hidden_blood)
+		qdel(hidden_blood)
+
 	parent.AddElement(/datum/element/decal/blood, _color = get_blood_dna_color(blood_DNA))
 
 /// Called by [atom/proc/wash].

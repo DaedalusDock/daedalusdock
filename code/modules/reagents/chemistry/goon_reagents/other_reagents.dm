@@ -129,7 +129,7 @@
 
 	exposed_turf.AddComponent(/datum/component/smell, INTENSITY_STRONG, SCENT_ODOR, "bleach", 3, 5 MINUTES)
 
-/datum/reagent/space_cleaner/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
+/datum/reagent/space_cleaner/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(methods & (TOUCH|VAPOR))
 		exposed_mob.wash(clean_types)
@@ -156,6 +156,26 @@
 	if((methods & (TOUCH|VAPOR)) && !issilicon(exposed_mob))
 		exposed_mob.adjustBruteLoss(1.5)
 		exposed_mob.adjustFireLoss(1.5)
+
+/datum/reagent/space_cleaner/sterilizine
+	name = "Sterilizine"
+	description = "Sterilizes wounds in preparation for surgery and thoroughly removes blood."
+	taste_description = "bitterness"
+	reagent_state = LIQUID
+	color = "#c8a5dc"
+	touch_met = 5
+	value = 2.2
+
+	clean_types = CLEAN_WASH | CLEAN_TYPE_HIDDEN_BLOOD
+
+/datum/reagent/space_cleaner/sterilizine/expose_obj(obj/exposed_obj, reac_volume)
+	. = ..()
+	exposed_obj?.germ_level -= min(volume*20, exposed_obj.germ_level)
+
+/datum/reagent/space_cleaner/sterilizine/affect_touch(mob/living/carbon/C, removed)
+	. = ..()
+	if(C.germ_level < INFECTION_LEVEL_TWO) // rest and antibiotics is required to cure serious infections
+		C.germ_level -= min(removed*20, C.germ_level)
 
 ///Used for clownery
 /datum/reagent/lube
@@ -341,3 +361,23 @@
 		paperaffected.clearpaper()
 		to_chat(usr, span_notice("The solution dissolves the ink on the paper."))
 		return
+
+/datum/reagent/hydrazine
+
+	name = "Hydrazine"
+	description = "A toxic, colorless, flammable liquid with a strong ammonia-like odor, in hydrate form."
+	taste_description = "sweet tasting metal"
+	reagent_state = LIQUID
+	color = "#808080"
+	metabolization_rate = 0.1
+	touch_met = 5
+	value = DISPENSER_REAGENT_VALUE
+
+/datum/reagent/hydrazine/affect_blood(mob/living/carbon/C, removed)
+	C.adjustToxLoss(removed * 4, FALSE, cause_of_death = "Ingesting hydrazine")
+	return TRUE
+
+/datum/reagent/hydrazine/affect_touch(mob/living/carbon/C, removed)
+	C.adjustToxLoss(removed * 0.2, FALSE)
+	C.adjust_fire_stacks(removed / 12)
+	return TRUE

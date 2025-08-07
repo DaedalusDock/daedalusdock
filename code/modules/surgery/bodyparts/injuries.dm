@@ -230,6 +230,17 @@
 		if(!W.clamped)
 			return FALSE
 
+/obj/item/bodypart/proc/is_disinfected()
+	. = TRUE
+	for(var/datum/wound/W as anything in wounds)
+		if(!W.disinfected)
+			return FALSE
+
+/obj/item/bodypart/proc/disinfect()
+	for(var/datum/wound/W as anything in wounds)
+		if(W.disinfect())
+			. = TRUE
+
 /obj/item/bodypart/proc/how_open()
 	. = SURGERY_CLOSED
 	var/datum/wound/incision = get_incision()

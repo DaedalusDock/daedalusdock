@@ -13,6 +13,10 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
 	throw_range = 7
+	amount_per_transfer_from_this = 5
+	volume = 250
+	possible_transfer_amounts = list(5,10)
+
 	var/stream_mode = FALSE //whether we use the more focused mode
 	var/current_range = 3 //the range of tiles the sprayer will reach.
 	var/spray_range = 3 //the range of tiles the sprayer will reach when in spray mode.
@@ -20,9 +24,8 @@
 	var/can_fill_from_container = TRUE
 	/// Are we able to toggle between stream and spray modes, which change the distance and amount sprayed?
 	var/can_toggle_range = TRUE
-	amount_per_transfer_from_this = 5
-	volume = 250
-	possible_transfer_amounts = list(5,10)
+
+	var/spray_sound = 'sound/effects/spritz.ogg'
 
 /obj/item/reagent_containers/spray/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	return try_spray(interacting_with, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
@@ -62,7 +65,7 @@
 
 	spray(target, user)
 
-	playsound(src.loc, 'sound/effects/spray2.ogg', 50, TRUE, -6)
+	playsound(src.loc, spray_sound, 50, TRUE, -6)
 	user.changeNext_move(CLICK_CD_RANGE*2)
 	user.newtonian_move(get_dir(target, user))
 	return TRUE
@@ -213,6 +216,7 @@
 	stream_range = 4
 	amount_per_transfer_from_this = 5
 	list_reagents = list(/datum/reagent/consumable/condensedcapsaicin = 50)
+	spray_sound = 'sound/effects/spray2.ogg'
 
 /obj/item/reagent_containers/spray/pepper/empty //for fabricator printing
 	list_reagents = null

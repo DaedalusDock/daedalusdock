@@ -58,7 +58,7 @@
 	var/turf/our_turf = get_turf(src)
 
 	for(var/atom/movable/turf_atom in our_turf)
-		if(turf_atom == src || turf_atom.invisibility) //we ignore the puff itself and stuff below the floor
+		if(turf_atom == src || (turf_atom.invisibility && !HAS_TRAIT(turf_atom, TRAIT_MOVABLE_FLUORESCENT))) //we ignore the puff itself and stuff below the floor
 			continue
 
 		if(lifetime < 0)

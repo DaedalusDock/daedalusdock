@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Independent airlocks are unbolted by default. Except the Private Investigator,
-      he is too paranoid for that.

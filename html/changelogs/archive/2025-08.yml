@@ -2,3 +2,7 @@
   Kapu1178:
   - rscadd: Guns now have screentips for controls.
   - tweak: Adjusted gun controls to overlap less.
+2025-08-07:
+  Kapu1178:
+  - rscadd: Independent airlocks are unbolted by default. Except the Private Investigator,
+      he is too paranoid for that.

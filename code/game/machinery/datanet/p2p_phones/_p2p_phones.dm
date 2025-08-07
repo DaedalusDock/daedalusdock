@@ -231,27 +231,27 @@
 	if(. == RECEIVE_SIGNAL_FINISHED)//Handled by default.
 		return
 	//Ping response handled in parent.
-	switch(signal.data[PACKET_CMD])
+	switch(signal.data[PKT_ARG_CMD])
 		if(NET_COMMAND_PING_REPLY)//Add new phone to database
-			if(signal.data[PACKET_NETCLASS] == NETCLASS_P2P_PHONE) //Another phone!
-				discovered_phones[signal.data[PACKET_SOURCE_ADDRESS]]=signal.data["user_id"]
+			if(signal.data[PKT_HEAD_NETCLASS] == NETCLASS_P2P_PHONE) //Another phone!
+				discovered_phones[signal.data[PKT_HEAD_SOURCE_ADDRESS]]=signal.data["user_id"]
 				return RECEIVE_SIGNAL_FINISHED
 		if("tel_ring")//Incoming ring
 			if(active_caller || handset_state == HANDSET_OFFHOOK)//We're either calling, or about to call, Just tell them to fuck off.
-				post_signal(create_signal(signal.data[PACKET_SOURCE_ADDRESS],list(PACKET_CMD="tel_busy"))) //Busy signal, Reject call.
+				post_signal(create_signal(signal.data[PKT_HEAD_SOURCE_ADDRESS],list(PKT_ARG_CMD="tel_busy"))) //Busy signal, Reject call.
 				return RECEIVE_SIGNAL_FINISHED
-			receive_call(list(signal.data[PACKET_SOURCE_ADDRESS],signal.data["caller_id"]))
+			receive_call(list(signal.data[PKT_HEAD_SOURCE_ADDRESS],signal.data["caller_id"]))
 			return RECEIVE_SIGNAL_FINISHED
 		if("tel_ready")//Remote side pickup
-			if(active_caller && signal.data[PACKET_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
+			if(active_caller && signal.data[PKT_HEAD_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				call_connected()
 				return RECEIVE_SIGNAL_FINISHED
 		if("tel_busy")//Answering station busy
-			if(active_caller && signal.data[PACKET_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
+			if(active_caller && signal.data[PKT_HEAD_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				fuck_off_im_busy()
 				return RECEIVE_SIGNAL_FINISHED
 		if("tel_hup")//Remote side hangup
-			if(active_caller && signal.data[PACKET_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
+			if(active_caller && signal.data[PKT_HEAD_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				switch(state)
 					if(STATE_ANSWER)
 						drop_call()// Call never connected, just reset.
@@ -588,8 +588,8 @@
 	//Bundle up what we care about.
 	var/datum/signal/v_signal = new(src, null, TRANSMISSION_WIRE)
 	v_signal.has_magic_data = MAGIC_DATA_INVIOLABLE //We're sending a virtual speaker. This packet MUST be discarded.
-	v_signal.data[PACKET_SOURCE_ADDRESS] = null  //(Set by post_signal), Just setting it to null means it's always first in the list.
-	v_signal.data[PACKET_DESTINATION_ADDRESS] = callstation.active_caller[CALLER_NETID]
+	v_signal.data[PKT_HEAD_SOURCE_ADDRESS] = null  //(Set by post_signal), Just setting it to null means it's always first in the list.
+	v_signal.data[PKT_HEAD_DEST_ADDRESS] = callstation.active_caller[CALLER_NETID]
 	v_signal.data["command"] = "tel_voicedata"
 	v_signal.data["virtualspeaker"] = v_speaker //This is a REAL REFERENCE. Packet MUST be discarded.
 	v_signal.data["message"] = message

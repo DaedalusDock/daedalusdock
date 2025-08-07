@@ -56,7 +56,7 @@
 	if(!master_pc?.is_operational || !radio_connection)
 		return
 
-	packet.data[PACKET_SOURCE_ADDRESS] = network_id
+	packet.data[PKT_HEAD_SOURCE_ADDRESS] = network_id
 	// Rewrite the author so we don't get the packet we just sent back.
 	packet.author = WEAKREF(src)
 	radio_connection.post_signal(packet, filter)
@@ -74,15 +74,15 @@
 	switch(listen_mode)
 		if(WIRELESS_FILTER_NETADDR)
 			// Isn't meant for us, but could be a ping
-			if(signal.data[PACKET_DESTINATION_ADDRESS] != network_id)
-				if(!signal.data[PACKET_SOURCE_ADDRESS] || (signal.data[PACKET_DESTINATION_ADDRESS] != NET_ADDRESS_PING))
+			if(signal.data[PKT_HEAD_DEST_ADDRESS] != network_id)
+				if(!signal.data[PKT_HEAD_SOURCE_ADDRESS] || (signal.data[PKT_HEAD_DEST_ADDRESS] != NET_ADDRESS_PING))
 					return // Is not a ping, bye bye!
 
 				var/list/data = list(
-					PACKET_SOURCE_ADDRESS = network_id,
-					PACKET_DESTINATION_ADDRESS = signal.data[PACKET_SOURCE_ADDRESS],
-					PACKET_CMD = NET_COMMAND_PING_REPLY,
-					PACKET_NETCLASS = NETCLASS_ADAPTER,
+					PKT_HEAD_SOURCE_ADDRESS = network_id,
+					PKT_HEAD_DEST_ADDRESS = signal.data[PKT_HEAD_SOURCE_ADDRESS],
+					PKT_ARG_CMD = NET_COMMAND_PING_REPLY,
+					PKT_HEAD_NETCLASS = NETCLASS_ADAPTER,
 				)
 
 				var/datum/signal/packet = new(src, data, TRANSMISSION_RADIO)
@@ -98,7 +98,7 @@
 		*/
 
 	var/datum/signal/clone = signal.Copy()
-	if(signal.data[PACKET_ARG_PROTOCOL] == PACKET_ARG_PROTOCOL_PDP)
+	if(signal.data[PKT_HEAD_PROTOCOL] == PKT_PROTOCOL_PDP)
 		master_pc.peripheral_input(src, PERIPHERAL_CMD_RECEIVE_PDP_PACKET, clone)
 	else
 		master_pc.peripheral_input(src, PERIPHERAL_CMD_RECEIVE_PACKET, clone)
@@ -109,8 +109,8 @@
 
 	COOLDOWN_START(src, ping_cooldown, 2 SECONDS)
 	var/list/data = list(
-		PACKET_SOURCE_ADDRESS = network_id,
-		PACKET_DESTINATION_ADDRESS = NET_ADDRESS_PING,
+		PKT_HEAD_SOURCE_ADDRESS = network_id,
+		PKT_HEAD_DEST_ADDRESS = NET_ADDRESS_PING,
 	)
 
 	var/datum/signal/packet = new(src, data)

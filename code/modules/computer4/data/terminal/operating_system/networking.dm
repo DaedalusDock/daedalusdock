@@ -43,6 +43,6 @@
 
 /datum/c4_file/terminal_program/operating_system/proc/pdp_incoming(datum/signal/packet)
 	var/list/fields = packet.data
-	var/datum/pdp_socket/socket = pdp_port_map["[fields[PDP_DESTINATION_PORT]]"]
+	var/datum/pdp_socket/socket = pdp_port_map["[fields[PKT_HEAD_DEST_PORT]]"]
 	socket?.enqueue(packet)
 

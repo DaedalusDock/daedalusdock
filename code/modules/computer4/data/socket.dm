@@ -40,6 +40,11 @@
 	head_pointer = 0
 	tail_pointer = 0
 
+/datum/pdp_socket/Destroy(force, ...)
+	outgoing_datum = null
+	owner = null
+	return ..()
+
 /// Place received packet into ringqueue. Returns TRUE if inserted, FALSE if dropped due to full queue.
 // No lohi I am not implimenting DSCP. Right now, at least. Maybe later.
 /datum/pdp_socket/proc/enqueue(datum/signal/packet)
@@ -66,17 +71,7 @@
 	// Packets come out of this preeetty skeletonized, Higher layers above this are expected to fill out some remaining details
 	// Such as source address.
 
-	var/list/packet_data = list(
-		PACKET_ARG_PROTOCOL = PACKET_ARG_PROTOCOL_PDP,
-
-		PDP_DESTINATION_ADDRESS = d_address,
-		PDP_DESTINATION_PORT = d_port,
-
-		//Source address set at NIC
-		PDP_SOURCE_PORT = bound_port,
-
-		PDP_PAYLOAD_DATA = payload
-	)
+	var/list/packet_data = packetv2(null, d_address, bound_port, d_port, protocol = PKT_PROTOCOL_PDP, payload = payload)
 
 	var/datum/signal/packet = new(null, packet_data)
 

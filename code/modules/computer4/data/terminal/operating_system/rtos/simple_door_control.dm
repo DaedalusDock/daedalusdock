@@ -88,7 +88,7 @@
 		src,
 		list(
 			"tag" = id_tag,
-			PACKET_CMD = "update" //Doesn't matter.
+			PKT_ARG_CMD = "update" //Doesn't matter.
 		)
 	)
 	post_signal(signal, RADIO_AIRLOCK)
@@ -102,7 +102,7 @@
 				src,
 				list(
 					"tag" = id_tag,
-					PACKET_CMD = (doorbolt_state == "locked") ? "unlock" : "lock"
+					PKT_ARG_CMD = (doorbolt_state == "locked") ? "unlock" : "lock"
 				)
 			)
 		if("#") //Toggle Open
@@ -110,7 +110,7 @@
 				src,
 				list(
 					"tag" = id_tag,
-					PACKET_CMD = (dooropen_state == "closed") ? "open" : "close"
+					PKT_ARG_CMD = (dooropen_state == "closed") ? "open" : "close"
 				)
 			)
 		else //Just probe the airlock to update state.

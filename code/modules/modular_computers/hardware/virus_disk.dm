@@ -30,7 +30,7 @@
 	var/list/user_input_tuple = user_input(target_addr, user)
 	var/datum/signal/outgoing = new(src, list(
 		SSpackets.pda_exploitable_register = magic_packet,
-		PACKET_DESTINATION_ADDRESS = target_addr
+		PKT_HEAD_DEST_ADDRESS = target_addr
 		))
 	var/signal_data = outgoing.data
 	switch(user_input_tuple[1])
@@ -121,7 +121,7 @@
 	var/list/pda_data_staple = list(
 		// We already have the target address
 		// GPRS Card handles the source address
-		PACKET_CMD = NETCMD_PDAMESSAGE,
+		PKT_ARG_CMD = NETCMD_PDAMESSAGE,
 		"name" = sender_name,
 		"job" = sender_job,
 		"message" = text_message

@@ -19,6 +19,7 @@
 	/// Halt And Catch Fire (Prevents STDIN, closest we can get to a HALT state.)
 	var/deadlocked = FALSE
 
+	/// Associative list of "port_num" : socket_instance
 	var/list/datum/pdp_socket/pdp_port_map
 
 /datum/c4_file/terminal_program/operating_system/Destroy()
@@ -70,7 +71,9 @@
 	get_computer()?.text_buffer = ""
 	get_computer()?.operating_system = null
 
-	pdp_port_map = null //Programs should clean these up, but just in case.
+	//Programs should clean these up, but just in case.
+	QDEL_LIST_ASSOC_VAL(pdp_port_map)
+	pdp_port_map = null
 
 /datum/c4_file/terminal_program/operating_system/execute(datum/c4_file/terminal_program/operating_system/system)
 	if(system != src)

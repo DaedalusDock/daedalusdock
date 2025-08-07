@@ -31,17 +31,27 @@
 // not honestly thrilled with having these be defines but kapu wants it that way
 // I believe every coder is empowered with a right to footgun by our lord Dennis Ritchie
 
+//* HEADER FIELDS *//
+/// The version of the packet.
+#define PKT_HEAD_VERSION "version"
 /// Source (sender) address of a packet
-#define PACKET_SOURCE_ADDRESS "s_addr"
+#define PKT_HEAD_SOURCE_ADDRESS "s_addr"
 /// Destination (receiver) address of a packet
-#define PACKET_DESTINATION_ADDRESS "d_addr"
-/// Command (type) of a packet
-#define PACKET_CMD "command"
+#define PKT_HEAD_DEST_ADDRESS "d_addr"
 /// Network Class of a device, used as part of ping replies.
-#define PACKET_NETCLASS "netclass"
+#define PKT_HEAD_NETCLASS "netclass"
 
-#define PACKET_ARG_PROTOCOL "proto"
-	#define PACKET_ARG_PROTOCOL_PDP "pdp"
+#define PKT_HEAD_SOURCE_PORT "sourceport"
+#define PKT_HEAD_DEST_PORT "destport"
+
+#define PKT_HEAD_PROTOCOL "proto"
+	#define PKT_PROTOCOL_PDP "pdp"
+
+#define PKT_PAYLOAD "payload"
+
+//* PAYLOAD FIELDS*//
+/// Command (type) of a packet
+#define PKT_ARG_CMD "command"
 
 // Pagers
 /// Packet arg for pager types
@@ -106,19 +116,6 @@
 #define MAGIC_DATA_INVIOLABLE ALL
 
 #define PACKET_STRING_FILE "packetnet.json"
-
-// -----
-// PDP Protocol Fields
-// These are partially duplicates of above but Deal With It.
-
-#define PDP_SOURCE_ADDRESS PACKET_SOURCE_ADDRESS
-#define PDP_DESTINATION_ADDRESS PACKET_DESTINATION_ADDRESS
-
-#define PDP_SOURCE_PORT "s_port"
-#define PDP_DESTINATION_PORT "d_port"
-
-/// PDP Payload Data. Is a list.
-#define PDP_PAYLOAD_DATA "payload"
 
 
 // -----

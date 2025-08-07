@@ -93,7 +93,7 @@
 	var/list/signal_data = signal.data
 	if(!signal_data)
 		return
-	var/signal_command = signal_data[PACKET_CMD]
+	var/signal_command = signal_data[PKT_ARG_CMD]
 	//Network ID verification is "hardware accelerated" (AKA: Done for us by the card)
 
 	var/rigged = FALSE//are we going to explode?
@@ -104,7 +104,7 @@
 	// ESPECIALLY THIS FUCKER RIGHT HERE vvvv
 	if(signal_data[SSpackets.pda_exploitable_register] == SSpackets.detomatix_magic_packet)
 		//This one falls through to standard PDA behaviour, so we need to be checked first.
-		if(signal_data[PACKET_DESTINATION_ADDRESS] == netcard_cache.hardware_id)//No broadcast bombings, fuck off.
+		if(signal_data[PKT_HEAD_DEST_ADDRESS] == netcard_cache.hardware_id)//No broadcast bombings, fuck off.
 			//Calculate our "difficulty"
 			var/difficulty
 			var/obj/item/computer_hardware/hard_drive/role/our_jobdisk = computer.all_components[MC_HDD_JOB]
@@ -114,7 +114,7 @@
 					difficulty++ //if cartridge has manifest access it has extra snowflake difficulty
 			if(!((SEND_SIGNAL(computer, COMSIG_TABLET_CHECK_DETONATE) & COMPONENT_TABLET_NO_DETONATE) || prob(difficulty * 15)))
 				rigged = TRUE //Cool, we're allowed to blow up. Really glad this whole check wasn't for nothing.
-				var/trait_timer_key = signal_data[PACKET_SOURCE_ADDRESS]
+				var/trait_timer_key = signal_data[PKT_HEAD_SOURCE_ADDRESS]
 				ADD_TRAIT(computer, TRAIT_PDA_CAN_EXPLODE, trait_timer_key)
 				ADD_TRAIT(computer, TRAIT_PDA_MESSAGE_MENU_RIGGED, trait_timer_key)
 				addtimer(TRAIT_CALLBACK_REMOVE(computer, TRAIT_PDA_MESSAGE_MENU_RIGGED, trait_timer_key), 10 SECONDS)
@@ -127,7 +127,7 @@
 			html_decode("\"[signal_data["message"]]\"") || "#ERROR_MISSING_FIELD",
 			FALSE,
 			signal_data["automated"] || FALSE,
-			signal_data[PACKET_SOURCE_ADDRESS] || null
+			signal_data[PKT_HEAD_SOURCE_ADDRESS] || null
 			)
 
 		if(ringer_status)
@@ -189,7 +189,7 @@
 		L = get(holder.holder, /mob/living/silicon)
 
 	if(L && L.stat == CONSCIOUS)
-		var/reply = "(<a href='byond://?src=[REF(src)];choice=[rigged ? "Mess_us_up" : "Message"];skiprefresh=1;target=[signal_data[PACKET_SOURCE_ADDRESS]]'>Reply</a>)"
+		var/reply = "(<a href='byond://?src=[REF(src)];choice=[rigged ? "Mess_us_up" : "Message"];skiprefresh=1;target=[signal_data[PKT_HEAD_SOURCE_ADDRESS]]'>Reply</a>)"
 		var/hrefstart
 		var/hrefend
 		var/job_string = signal_data["job"] ? " ([signal_data["job"]])" : ""
@@ -197,7 +197,7 @@
 			hrefstart = "<a href='?src=[REF(L)];track=[html_encode(signal_data["name"])]'>"
 			hrefend = "</a>"
 
-		if(signal_data[PACKET_SOURCE_ADDRESS] == null)
+		if(signal_data[PKT_HEAD_SOURCE_ADDRESS] == null)
 			reply = "\[#ERRNOADDR\]"
 
 		if(signal_data["automated"])
@@ -269,11 +269,11 @@
 	var/datum/signal/pda_message = new(
 		src,
 		list(
-			PACKET_CMD = NETCMD_PDAMESSAGE,
+			PKT_ARG_CMD = NETCMD_PDAMESSAGE,
 			"name" = fake_name || computer.saved_identification,
 			"job" = fake_job || computer.saved_job,
 			"message" = html_decode(message),
-			PACKET_DESTINATION_ADDRESS = target_address
+			PKT_HEAD_DEST_ADDRESS = target_address
 		),
 		logging_data = user
 	)
@@ -354,7 +354,7 @@
 			if(!istype(pnetcard)) //This catches nulls too, so...
 				to_chat(usr, span_warning("Radio missing or bad driver!"))
 			var/datum/signal/ping_sig = new(src, list(
-				PACKET_DESTINATION_ADDRESS = NET_ADDRESS_PING,
+				PKT_HEAD_DEST_ADDRESS = NET_ADDRESS_PING,
 				"pda_scan" = "true"
 			))
 			pnetcard.post_signal(ping_sig)

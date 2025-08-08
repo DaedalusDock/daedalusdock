@@ -13,8 +13,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/button/radio, 24)
 
 	var/datum/radio_frequency/radio_connection = SSpackets.return_frequency(frequency)
 	var/datum/signal/signal = new(src, list(
-		PKT_HEAD_SOURCE_ADDRESS = net_id,
-		PKT_HEAD_NETCLASS = NETCLASS_BUTTON,
+		LEGACY_PACKET_SOURCE_ADDRESS = net_id,
+		LEGACY_PACKET_NETCLASS = NETCLASS_BUTTON,
 		"tag" = id_tag,
 	))
 	radio_connection.post_signal(signal)

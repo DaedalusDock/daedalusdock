@@ -226,7 +226,7 @@
 				src,
 				list(
 					"tag" = tag_target,
-					PKT_ARG_CMD = "secure_open"
+					LEGACY_PACKET_COMMAND = "secure_open"
 				)
 			)
 			expected_airlock_state = "open"
@@ -235,7 +235,7 @@
 				src,
 				list(
 					"tag" = tag_target,
-					PKT_ARG_CMD = "secure_close"
+					LEGACY_PACKET_COMMAND = "secure_close"
 				)
 			)
 			expected_airlock_state = "closed"
@@ -244,7 +244,7 @@
 				src,
 				list(
 					"tag" = tag_target,
-					PKT_ARG_CMD = "status"
+					LEGACY_PACKET_COMMAND = "status"
 				)
 			)
 		if(AC_COMMAND_BOLT)
@@ -252,7 +252,7 @@
 				src,
 				list(
 					"tag" = tag_target,
-					PKT_ARG_CMD = "lock"
+					LEGACY_PACKET_COMMAND = "lock"
 				)
 			)
 			expected_bolt_state = "locked"
@@ -261,7 +261,7 @@
 				src,
 				list(
 					"tag" = tag_target,
-					PKT_ARG_CMD = "unlock"
+					LEGACY_PACKET_COMMAND = "unlock"
 				)
 			)
 			expected_bolt_state = "unlocked"
@@ -348,7 +348,7 @@
 		src,
 		list(
 			"tag" = tag_slave,
-			PKT_ARG_CMD = NETCMD_UPDATE_DATA,
+			LEGACY_PACKET_COMMAND = NETCMD_UPDATE_DATA,
 			PACKET_ARG_TEXTBUFFER = list2params(print_history),
 			PACKET_ARG_DISPLAY = display_icon,
 			PACKET_ARG_LEDS = display_indicators
@@ -362,7 +362,7 @@
 		return //what
 
 	if(tag_slave && (data["tag"] == tag_slave))
-		switch(data[PKT_ARG_CMD])
+		switch(data[LEGACY_PACKET_COMMAND])
 			if("key")
 				std_in(copytext(data["key"],1,2)) //Only one char, sorry.
 			if(NETCMD_ECSLAVE_ACCESS)

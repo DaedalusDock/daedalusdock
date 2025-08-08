@@ -158,9 +158,9 @@ TYPEINFO_DEF(/obj/machinery/blackbox_recorder)
 	if(calibrating) // If we're calibrating, just return, the fancy part of us isn't ready yet.
 		return
 	var/list/sig_data = signal.data //cachemere sweater
-	switch(signal.data[PKT_ARG_CMD])
+	switch(signal.data[LEGACY_PACKET_COMMAND])
 		if(NETCMD_PDAMESSAGE)
-			var/datum/data_pda_message/log_unit = new(sig_data[PKT_HEAD_DEST_ADDRESS], sig_data[PKT_HEAD_SOURCE_ADDRESS], sig_data["message"])
+			var/datum/data_pda_message/log_unit = new(sig_data[LEGACY_PACKET_DESTINATION_ADDRESS], sig_data[LEGACY_PACKET_SOURCE_ADDRESS], sig_data["message"])
 			pda_msgs += log_unit
 			return RECEIVE_SIGNAL_FINISHED
 		else
@@ -171,7 +171,7 @@ TYPEINFO_DEF(/obj/machinery/blackbox_recorder)
 	if(isnull(sending_signal)) //nullcheck for sanic speed
 		return //You need a pipe and something to send down it, though.
 	if(!preserve_s_addr)
-		sending_signal.data[PKT_HEAD_SOURCE_ADDRESS] = src.net_id
+		sending_signal.data[LEGACY_PACKET_SOURCE_ADDRESS] = src.net_id
 	sending_signal.transmission_method = TRANSMISSION_RADIO
 	sending_signal.author = WEAKREF(src) // Override the sending signal author.
 

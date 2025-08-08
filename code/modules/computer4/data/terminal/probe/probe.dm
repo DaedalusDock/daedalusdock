@@ -48,11 +48,11 @@
 	if(!packet)
 		return
 
-	if(!packet.data[PKT_HEAD_NETCLASS] || !packet.data[PKT_HEAD_SOURCE_ADDRESS] || (packet.data[PKT_ARG_CMD] != NET_COMMAND_PING_REPLY))
+	if(!packet.data[LEGACY_PACKET_NETCLASS] || !packet.data[LEGACY_PACKET_SOURCE_ADDRESS] || (packet.data[LEGACY_PACKET_COMMAND] != NET_COMMAND_PING_REPLY))
 		return
 
-	var/reply_netclass = packet.data[PKT_HEAD_NETCLASS]
-	var/reply_id = packet.data[PKT_HEAD_SOURCE_ADDRESS]
+	var/reply_netclass = packet.data[LEGACY_PACKET_NETCLASS]
+	var/reply_id = packet.data[LEGACY_PACKET_SOURCE_ADDRESS]
 
 	ping_replies[reply_id] = reply_netclass
 	get_os().println("\[[reply_netclass]\]-TYPE: [reply_id]")

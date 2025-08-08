@@ -62,14 +62,14 @@
 	if(signal.transmission_method != TRANSMISSION_RADIO)
 		CRASH("[src] received non-radio packet, transmission method ID [signal.transmission_method], Expected [TRANSMISSION_RADIO]")
 	var/list/signal_data = signal.data //medium velocity silver hedgehog
-	var/signal_d_addr = signal_data[PKT_HEAD_DEST_ADDRESS]
+	var/signal_d_addr = signal_data[LEGACY_PACKET_DESTINATION_ADDRESS]
 	if(signal_d_addr == NET_ADDRESS_PING) //Ping.
 		var/datum/signal/outgoing = new(
 			src,
 			list(
-				PKT_HEAD_DEST_ADDRESS = signal_data[PKT_HEAD_SOURCE_ADDRESS],
-				PKT_ARG_CMD = NET_COMMAND_PING_REPLY,
-				PKT_HEAD_NETCLASS = NETCLASS_GRPS_CARD,
+				LEGACY_PACKET_DESTINATION_ADDRESS = signal_data[LEGACY_PACKET_SOURCE_ADDRESS],
+				LEGACY_PACKET_COMMAND = NET_COMMAND_PING_REPLY,
+				LEGACY_PACKET_NETCLASS = NETCLASS_GRPS_CARD,
 				"netaddr" = hardware_id
 			)
 		)
@@ -83,11 +83,11 @@
 	//Either it's broadcast or directed to us.
 	if(isnull(signal_d_addr) || signal_d_addr == hardware_id)
 		// If it's a ping reply, check for a PDA.
-		if(signal.data[PKT_ARG_CMD] == NET_COMMAND_PING_REPLY)
+		if(signal.data[LEGACY_PACKET_COMMAND] == NET_COMMAND_PING_REPLY)
 			//If it's from a GPRS card, respond, otherwise, who cares.
-			if(signal.data[PKT_HEAD_NETCLASS] == NETCLASS_GRPS_CARD)
+			if(signal.data[LEGACY_PACKET_NETCLASS] == NETCLASS_GRPS_CARD)
 				var/list/new_pda_info = list(
-					"target_addr" = signal.data[PKT_HEAD_SOURCE_ADDRESS],
+					"target_addr" = signal.data[LEGACY_PACKET_SOURCE_ADDRESS],
 					"name" = signal.data["reg_name"] || "#UNK",
 					"job" = signal.data["reg_job"] || "#UNK"
 				)
@@ -101,7 +101,7 @@
 /obj/item/computer_hardware/network_card/packetnet/post_signal(datum/signal/signal)
 	if(!radio_connection || !signal)
 		return FALSE // Something went wrong.
-	signal.data[PKT_HEAD_SOURCE_ADDRESS] = hardware_id //Readdress outgoing packets.
+	signal.data[LEGACY_PACKET_SOURCE_ADDRESS] = hardware_id //Readdress outgoing packets.
 	signal.author = WEAKREF(src)
 	radio_connection.post_signal(signal, RADIO_PDAMESSAGE)
 	return TRUE //We at least tried.

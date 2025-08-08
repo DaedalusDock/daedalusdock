@@ -25,7 +25,7 @@
 		src,
 		list(
 			"tag" = id_tag,
-			PKT_ARG_CMD = NETCMD_UPDATE_REQUEST,
+			LEGACY_PACKET_COMMAND = NETCMD_UPDATE_REQUEST,
 		)
 	)
 	post_signal(signal)
@@ -40,7 +40,7 @@
 /datum/c4_file/terminal_program/operating_system/rtos/slave/proc/handle_packet(datum/signal/packet)
 	var/list/fields = packet.data
 
-	if(fields[PKT_ARG_CMD] != NETCMD_UPDATE_DATA)
+	if(fields[LEGACY_PACKET_COMMAND] != NETCMD_UPDATE_DATA)
 		return
 
 	var/redraw_screen = FALSE
@@ -76,7 +76,7 @@
 		src,
 		list(
 			"tag" = id_tag,
-			PKT_ARG_CMD = NETCMD_ECSLAVE_ACCESS,
+			LEGACY_PACKET_COMMAND = NETCMD_ECSLAVE_ACCESS,
 			"packet" = list2params(packet.data)
 		)
 	)
@@ -87,7 +87,7 @@
 		src,
 		list(
 			"tag" = id_tag,
-			PKT_ARG_CMD = "key",
+			LEGACY_PACKET_COMMAND = "key",
 			"key" = text
 		)
 	)

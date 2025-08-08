@@ -56,7 +56,7 @@
 	if(!master_pc?.is_operational || !radio_connection)
 		return
 
-	packet.data[PKT_HEAD_SOURCE_ADDRESS] = network_id
+	packet.data[LEGACY_PACKET_SOURCE_ADDRESS] = network_id
 	// Rewrite the author so we don't get the packet we just sent back.
 	packet.author = WEAKREF(src)
 	radio_connection.post_signal(packet, filter)
@@ -74,15 +74,15 @@
 	switch(listen_mode)
 		if(WIRELESS_FILTER_NETADDR)
 			// Isn't meant for us, but could be a ping
-			if(signal.data[PKT_HEAD_DEST_ADDRESS] != network_id)
-				if(!signal.data[PKT_HEAD_SOURCE_ADDRESS] || (signal.data[PKT_HEAD_DEST_ADDRESS] != NET_ADDRESS_PING))
+			if(signal.data[LEGACY_PACKET_DESTINATION_ADDRESS] != network_id)
+				if(!signal.data[LEGACY_PACKET_SOURCE_ADDRESS] || (signal.data[LEGACY_PACKET_DESTINATION_ADDRESS] != NET_ADDRESS_PING))
 					return // Is not a ping, bye bye!
 
 				var/list/data = list(
-					PKT_HEAD_SOURCE_ADDRESS = network_id,
-					PKT_HEAD_DEST_ADDRESS = signal.data[PKT_HEAD_SOURCE_ADDRESS],
-					PKT_ARG_CMD = NET_COMMAND_PING_REPLY,
-					PKT_HEAD_NETCLASS = NETCLASS_ADAPTER,
+					LEGACY_PACKET_SOURCE_ADDRESS = network_id,
+					LEGACY_PACKET_DESTINATION_ADDRESS = signal.data[LEGACY_PACKET_SOURCE_ADDRESS],
+					LEGACY_PACKET_COMMAND = NET_COMMAND_PING_REPLY,
+					LEGACY_PACKET_NETCLASS = NETCLASS_ADAPTER,
 				)
 
 				var/datum/signal/packet = new(src, data, TRANSMISSION_RADIO)
@@ -109,8 +109,8 @@
 
 	COOLDOWN_START(src, ping_cooldown, 2 SECONDS)
 	var/list/data = list(
-		PKT_HEAD_SOURCE_ADDRESS = network_id,
-		PKT_HEAD_DEST_ADDRESS = NET_ADDRESS_PING,
+		LEGACY_PACKET_SOURCE_ADDRESS = network_id,
+		LEGACY_PACKET_DESTINATION_ADDRESS = NET_ADDRESS_PING,
 	)
 
 	var/datum/signal/packet = new(src, data)

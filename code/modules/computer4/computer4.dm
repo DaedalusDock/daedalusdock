@@ -252,7 +252,8 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 	if(!is_operational)
 		return
 
-	operating_system.peripheral_input(invoker, command, packet)
+	// Operating system can be null here if the computer is mid-reboot.
+	operating_system?.peripheral_input(invoker, command, packet)
 
 /obj/machinery/computer4/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src)

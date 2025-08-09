@@ -4765,7 +4765,7 @@
 	pixel_y = -24;
 	idSelf = "virology_airlock_control";
 	idDoor = "virology_airlock_exterior";
-	req_access_txt = "39"
+	req_access_txt = "5"
 	},
 /obj/structure/cable/yellow{
 	icon_state = "12"
@@ -14399,7 +14399,7 @@
 	pixel_y = -24;
 	idSelf = "virology_airlock_control";
 	idDoor = "virology_airlock_interior";
-	req_access_txt = "39"
+	req_access_txt = "5"
 	},
 /obj/structure/cable/yellow{
 	icon_state = "12"
@@ -14852,6 +14852,17 @@
 	},
 /turf/open/floor/iron,
 /area/station/security/prison/rec)
+"fjt" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/structure/railing{
+	dir = 10
+	},
+/obj/machinery/light/small/maintenance/directional/north,
+/turf/open/floor/iron,
+/area/station/maintenance/aft/greater)
 "fjQ" = (
 /obj/machinery/atmospherics/pipe/smart/simple/cyan/visible{
 	dir = 5
@@ -27734,6 +27745,13 @@
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
+"jVI" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/railing{
+	dir = 6
+	},
+/turf/open/floor/iron,
+/area/station/maintenance/aft/greater)
 "jVO" = (
 /obj/structure/filingcabinet/chestdrawer,
 /obj/machinery/airalarm/directional/south,
@@ -30705,6 +30723,19 @@
 /obj/machinery/light/directional/south,
 /turf/open/floor/iron,
 /area/station/service/bar)
+"kXe" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/obj/structure/overfloor_catwalk/iron_dark,
+/obj/structure/cable/yellow{
+	icon_state = "9"
+	},
+/turf/open/floor/plating,
+/area/station/maintenance/aft/greater)
 "kXf" = (
 /obj/structure/cable/yellow{
 	icon_state = "6"
@@ -33480,6 +33511,11 @@
 /obj/effect/turf_decal/tile/neutral,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/port)
+"lUN" = (
+/obj/structure/bodycontainer/morgue,
+/obj/machinery/camera/autoname/directional/west,
+/turf/open/floor/iron/dark,
+/area/station/medical/morgue)
 "lUR" = (
 /obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/structure/cable/yellow{
@@ -39647,17 +39683,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/starboard)
-"obp" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/obj/structure/railing{
-	dir = 10
-	},
-/obj/machinery/light/small/maintenance/directional/north,
-/turf/open/floor/iron,
-/area/station/maintenance/aft/greater)
 "obG" = (
 /obj/effect/turf_decal/plaque{
 	icon_state = "L5"
@@ -40144,19 +40169,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/security/lockers)
-"ojQ" = (
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/obj/structure/cable/yellow{
-	icon_state = "12"
-	},
-/obj/structure/overfloor_catwalk/iron_dark,
-/obj/structure/cable/yellow{
-	icon_state = "9"
-	},
-/turf/open/floor/plating,
-/area/station/maintenance/aft/greater)
 "okc" = (
 /obj/effect/spawner/structure/window/reinforced/prepainted/marsexec,
 /obj/machinery/door/firedoor,
@@ -43919,7 +43931,7 @@
 	idSelf = "virology_airlock_control";
 	idInterior = "virology_airlock_interior";
 	idExterior = "virology_airlock_exterior";
-	req_access_txt = "39"
+	req_access_txt = "5"
 	},
 /obj/structure/cable/yellow{
 	icon_state = "12"
@@ -45427,13 +45439,6 @@
 /obj/machinery/power/emitter,
 /turf/open/floor/plating,
 /area/station/engineering/main)
-"qgD" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/railing{
-	dir = 6
-	},
-/turf/open/floor/iron,
-/area/station/maintenance/aft/greater)
 "qgH" = (
 /obj/structure/chair/comfy/beige,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -49080,6 +49085,10 @@
 /obj/structure/overfloor_catwalk/iron_dark,
 /turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
+"rtp" = (
+/obj/machinery/camera/autoname/directional/south,
+/turf/open/floor/iron,
+/area/station/security/office)
 "rtq" = (
 /obj/item/wrench,
 /turf/open/floor/iron,
@@ -51374,11 +51383,6 @@
 /obj/machinery/light/directional/south,
 /turf/open/floor/iron,
 /area/station/command/gateway)
-"sgI" = (
-/obj/structure/bodycontainer/morgue,
-/obj/machinery/camera/autoname/directional/west,
-/turf/open/floor/iron/dark,
-/area/station/medical/morgue)
 "sgJ" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/hatch{
@@ -65433,10 +65437,6 @@
 /obj/machinery/door/airlock/public/glass/incinerator/atmos_exterior,
 /turf/open/floor/engine,
 /area/station/maintenance/disposal/incinerator)
-"xbU" = (
-/obj/machinery/camera/autoname/directional/south,
-/turf/open/floor/iron,
-/area/station/security/office)
 "xch" = (
 /obj/machinery/power/smes/engineering,
 /obj/structure/cable/yellow{
@@ -85763,7 +85763,7 @@ oaY
 xkO
 wEv
 wEv
-sgI
+lUN
 aip
 uRS
 oLt
@@ -87333,7 +87333,7 @@ uxl
 gGk
 hIO
 jjG
-obp
+fjt
 bUO
 rFF
 xSs
@@ -87591,7 +87591,7 @@ euO
 elh
 nmX
 rzN
-ojQ
+kXe
 rFF
 rFF
 rFF
@@ -87847,7 +87847,7 @@ dAX
 rUW
 xPO
 jjG
-qgD
+jVI
 bUO
 txp
 xVk
@@ -98806,7 +98806,7 @@ xTA
 rYX
 beg
 ksK
-xbU
+rtp
 flN
 cLL
 vzd

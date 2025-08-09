@@ -7924,6 +7924,7 @@
 /obj/effect/turf_decal/stripes/white/line{
 	dir = 4
 	},
+/obj/machinery/camera/autoname/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/security/deck)
 "cMB" = (
@@ -15572,7 +15573,9 @@
 /area/station/maintenance/aft/greater)
 "fyL" = (
 /obj/effect/turf_decal/tile/green/half/contrasted,
-/obj/machinery/atmospherics/components/tank/air,
+/obj/machinery/atmospherics/components/tank/air{
+	dir = 1
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "fyP" = (
@@ -36143,10 +36146,10 @@
 	dir = 4
 	},
 /obj/structure/window/reinforced/spawner/east,
-/obj/structure/window/reinforced/spawner/north,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
+/obj/item/radio/intercom/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/security/deck)
 "mPk" = (
@@ -37419,6 +37422,9 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/door/airlock/maintenance,
 /obj/effect/mapping_helpers/access/all/medical/general/airlock,
+/obj/structure/cable/yellow{
+	icon_state = "3"
+	},
 /turf/open/floor/iron/white/white_large,
 /area/station/medical/disposal)
 "nnb" = (
@@ -37919,6 +37925,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/camera/autoname/directional/east,
 /turf/open/floor/iron,
 /area/station/hallway/primary/fore)
 "nwg" = (
@@ -39640,6 +39647,17 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/starboard)
+"obp" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/structure/railing{
+	dir = 10
+	},
+/obj/machinery/light/small/maintenance/directional/north,
+/turf/open/floor/iron,
+/area/station/maintenance/aft/greater)
 "obG" = (
 /obj/effect/turf_decal/plaque{
 	icon_state = "L5"
@@ -40126,6 +40144,19 @@
 	},
 /turf/open/floor/iron,
 /area/station/security/lockers)
+"ojQ" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/obj/structure/overfloor_catwalk/iron_dark,
+/obj/structure/cable/yellow{
+	icon_state = "9"
+	},
+/turf/open/floor/plating,
+/area/station/maintenance/aft/greater)
 "okc" = (
 /obj/effect/spawner/structure/window/reinforced/prepainted/marsexec,
 /obj/machinery/door/firedoor,
@@ -45396,6 +45427,13 @@
 /obj/machinery/power/emitter,
 /turf/open/floor/plating,
 /area/station/engineering/main)
+"qgD" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/railing{
+	dir = 6
+	},
+/turf/open/floor/iron,
+/area/station/maintenance/aft/greater)
 "qgH" = (
 /obj/structure/chair/comfy/beige,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -48030,8 +48068,10 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
-/obj/structure/window/reinforced/spawner/east,
 /obj/structure/window/reinforced/spawner/north,
+/obj/machinery/camera/autoname/directional/east{
+	dir = 6
+	},
 /turf/open/floor/iron/dark,
 /area/station/security/deck)
 "rbr" = (
@@ -49396,6 +49436,10 @@
 /obj/structure/disposalpipe/segment{
 	dir = 9
 	},
+/obj/structure/cable/yellow{
+	icon_state = "3"
+	},
+/obj/structure/overfloor_catwalk/iron_dark,
 /turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "rzY" = (
@@ -51330,6 +51374,11 @@
 /obj/machinery/light/directional/south,
 /turf/open/floor/iron,
 /area/station/command/gateway)
+"sgI" = (
+/obj/structure/bodycontainer/morgue,
+/obj/machinery/camera/autoname/directional/west,
+/turf/open/floor/iron/dark,
+/area/station/medical/morgue)
 "sgJ" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/hatch{
@@ -54718,6 +54767,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
 	},
+/obj/machinery/camera/autoname/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/security/deck)
 "tpj" = (
@@ -65383,6 +65433,10 @@
 /obj/machinery/door/airlock/public/glass/incinerator/atmos_exterior,
 /turf/open/floor/engine,
 /area/station/maintenance/disposal/incinerator)
+"xbU" = (
+/obj/machinery/camera/autoname/directional/south,
+/turf/open/floor/iron,
+/area/station/security/office)
 "xch" = (
 /obj/machinery/power/smes/engineering,
 /obj/structure/cable/yellow{
@@ -67424,6 +67478,8 @@
 	dir = 4
 	},
 /obj/machinery/airalarm/directional/south,
+/obj/item/mop,
+/obj/structure/mopbucket,
 /turf/open/floor/iron/white,
 /area/station/medical/disposal)
 "xPR" = (
@@ -85707,7 +85763,7 @@ oaY
 xkO
 wEv
 wEv
-wEv
+sgI
 aip
 uRS
 oLt
@@ -87277,7 +87333,7 @@ uxl
 gGk
 hIO
 jjG
-sdQ
+obp
 bUO
 rFF
 xSs
@@ -87535,7 +87591,7 @@ euO
 elh
 nmX
 rzN
-bUO
+ojQ
 rFF
 rFF
 rFF
@@ -87791,7 +87847,7 @@ dAX
 rUW
 xPO
 jjG
-kWr
+qgD
 bUO
 txp
 xVk
@@ -98750,7 +98806,7 @@ xTA
 rYX
 beg
 ksK
-dvS
+xbU
 flN
 cLL
 vzd
@@ -100010,7 +100066,7 @@ aaa
 aaa
 aaa
 ifF
-ifF
+rUb
 mPd
 jjS
 jjS

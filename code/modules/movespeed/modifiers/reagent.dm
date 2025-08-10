@@ -2,55 +2,55 @@
 	blacklisted_movetypes = (FLYING|FLOATING)
 
 /datum/movespeed_modifier/reagent/stimulants
-	slowdown = -0.55
+	modifier = 0.4
 
 /datum/movespeed_modifier/reagent/ephedrine
-	slowdown = -0.5
+	modifier = 0.35
 
 /datum/movespeed_modifier/reagent/pepperspray
-	slowdown = 0.25
+	modifier = 0.14
 
 /datum/movespeed_modifier/reagent/monkey_energy
-	slowdown = -0.35
+	modifier = 0.23
 
 /datum/movespeed_modifier/reagent/changelinghaste
-	slowdown = -0.8
+	modifier = 0.625
 
 /datum/movespeed_modifier/reagent/methamphetamine
-	slowdown = -0.25
+	modifier = 0.16
 
 /datum/movespeed_modifier/reagent/nitrium
-	slowdown = -0.65
+	modifier = 0.48
 
 /datum/movespeed_modifier/reagent/cannabis
-	slowdown = 0.4
+	modifier = -0.22
 
 /datum/movespeed_modifier/reagent/freon
-	slowdown = 1.6
+	modifier = -0.7
 
 /datum/movespeed_modifier/reagent/halon
-	slowdown = 1.8
+	modifier = -0.77
 
 /datum/movespeed_modifier/reagent/lenturi
-	slowdown = 1.5
+	modifier = -0.68
 
 /datum/movespeed_modifier/reagent/nuka_cola
-	slowdown = -0.35
+	modifier = 0.23
 
 /datum/movespeed_modifier/reagent/nooartrium
-	slowdown = 2
+	modifier = -0.83
 
 /datum/movespeed_modifier/inaprovaline
-	slowdown = 1.5
+	modifier = -0.68
 
 /datum/movespeed_modifier/tramadol
-	slowdown = 1.5
+	modifier = -0.68
 
 /datum/movespeed_modifier/morphine
-	slowdown = 1.5
+	modifier = -0.68
 
 /datum/movespeed_modifier/hyperzine
-	slowdown = -0.4
+	modifier = 0.27
 
 /datum/movespeed_modifier/impedrezene
-	slowdown = 2
+	modifier = -0.83

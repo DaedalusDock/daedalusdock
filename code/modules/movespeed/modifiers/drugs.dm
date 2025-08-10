@@ -1,4 +1,4 @@
 /datum/movespeed_modifier/stimulants
 	movetypes = GROUND
-	slowdown = 1
+	modifier = -0.5
 	id = MOVESPEED_ID_STIMULANTS

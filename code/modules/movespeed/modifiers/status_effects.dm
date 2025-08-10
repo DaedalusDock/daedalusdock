@@ -1,15 +1,15 @@
 /datum/movespeed_modifier/status_effect/bloodchill
-	slowdown = 3
+	modifier = -1
 
 /datum/movespeed_modifier/status_effect/bonechill
-	slowdown = 3
+	modifier = -1
 
 /datum/movespeed_modifier/status_effect/lightpink
-	slowdown = -0.5
+	modifier = 0.35
 	blacklisted_movetypes = (FLYING|FLOATING)
 
 /datum/movespeed_modifier/status_effect/tarfoot
-	slowdown = 0.5
+	modifier = -0.27
 	blacklisted_movetypes = (FLYING|FLOATING)
 
 /datum/movespeed_modifier/status_effect/sepia
@@ -17,17 +17,17 @@
 	blacklisted_movetypes = (FLYING|FLOATING)
 
 /datum/movespeed_modifier/status_effect/power_chord
-	slowdown = -0.2
+	modifier = 0.13
 
 /datum/movespeed_modifier/status_effect/hazard_area
-	slowdown = 4
+	modifier = -1.25
 
 /datum/movespeed_modifier/status_effect/disorient
-	slowdown = 1
+	modifier = -0.5
 
 // technically not a status effect but like, close enough
 /datum/movespeed_modifier/status_effect/drowsy
-	slowdown = 4
+	modifier = -1.25
 
 /datum/movespeed_modifier/status_effect/holdup
-	slowdown = 5
+	modifier = -1.4

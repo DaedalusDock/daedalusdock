@@ -3,19 +3,19 @@
 	movetypes = FLOATING
 
 /datum/movespeed_modifier/jetpack/cybernetic
-	slowdown = -0.5
+	modifier = 0.35
 
 /datum/movespeed_modifier/jetpack/fullspeed
-	slowdown = -0.5
+	modifier = 0.35
 
 /datum/movespeed_modifier/die_of_fate
-	slowdown = 1
+	modifier = -0.5
 
 /datum/movespeed_modifier/berserk
-	slowdown = -0.2
+	modifier = 0.13
 
 /datum/movespeed_modifier/sphere
-	slowdown = -0.5
+	modifier = 0.35
 
 /datum/movespeed_modifier/equipping
-	slowdown = 1.5
+	modifier = -0.68

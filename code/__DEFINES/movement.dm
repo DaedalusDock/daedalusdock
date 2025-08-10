@@ -7,6 +7,14 @@
 /// Compensating for time dialation
 GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 
+// Movement speed defaults, in tiles-per-second.
+#define SPRINT_SPEED 5
+#define RUN_SPEED 2.5
+#define WALK_SPEED 2
+
+/// Converts a movement speed (tiles/second) to the delay-between-moves (ds)
+#define MOVESPEED_TO_DELAY(movespeed) ((10 / movespeed))
+
 ///Broken down, here's what this does:
 /// divides the world icon_size (32) by delay divided by ticklag to get the number of pixels something should be moving each tick.
 /// The division result is given a min value of 1 to prevent obscenely slow glide sizes from being set

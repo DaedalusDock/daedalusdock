@@ -21,7 +21,7 @@
 /// Carbons will recover from Exhaustion above this point
 #define STAMINA_EXHAUSTION_RECOVERY_THRESHOLD_MODIFIER (0.7) //70% or more
 ///The slowdown when a mob is exhausted
-#define STAMINA_EXHAUSTION_MOVESPEED_SLOWDOWN 3
+#define STAMINA_EXHAUSTION_MOVESPEED -1
 ///Carbons will be exposed to stamina stuns upon dropping below this percentage
 #define STAMINA_STUN_THRESHOLD_MODIFIER (0.2) //20% or less
 

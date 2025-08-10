@@ -164,6 +164,7 @@
 
 /datum/config_entry/flag/emojis
 
+#warn delete
 /datum/config_entry/keyed_list/multiplicative_movespeed
 	key_mode = KEY_MODE_TYPE
 	value_mode = VALUE_MODE_NUM
@@ -197,52 +198,6 @@
 	. = ..()
 	if(. && (var_name == NAMEOF(src, config_entry_value)))
 		update_mob_config_movespeeds()
-
-/datum/config_entry/number/movedelay/run_delay
-	integer = FALSE
-
-/datum/config_entry/number/movedelay/run_delay/ValidateAndSet()
-	. = ..()
-	var/datum/movespeed_modifier/config_walk_run/M = get_cached_movespeed_modifier(/datum/movespeed_modifier/config_walk_run/run)
-	M.sync()
-
-/datum/config_entry/number/movedelay/walk_delay
-	integer = FALSE
-
-/datum/config_entry/number/movedelay/walk_delay/ValidateAndSet()
-	. = ..()
-	var/datum/movespeed_modifier/config_walk_run/M = get_cached_movespeed_modifier(/datum/movespeed_modifier/config_walk_run/walk)
-	M.sync()
-
-/datum/config_entry/number/movedelay/sprint_delay
-	integer = FALSE
-
-/datum/config_entry/number/movedelay/sprint_delay/ValidateAndSet()
-	. = ..()
-	var/datum/movespeed_modifier/config_walk_run/M = get_cached_movespeed_modifier(/datum/movespeed_modifier/config_walk_run/sprint)
-	M.sync()
-
-/////////////////////////////////////////////////Outdated move delay
-/datum/config_entry/number/outdated_movedelay
-	deprecated_by = /datum/config_entry/keyed_list/multiplicative_movespeed
-	abstract_type = /datum/config_entry/number/outdated_movedelay
-	integer = FALSE
-	var/movedelay_type
-
-/datum/config_entry/number/outdated_movedelay/DeprecationUpdate(value)
-	return "[movedelay_type] [value]"
-
-/datum/config_entry/number/outdated_movedelay/human_delay
-	movedelay_type = /mob/living/carbon/human
-/datum/config_entry/number/outdated_movedelay/robot_delay
-	movedelay_type = /mob/living/silicon/robot
-/datum/config_entry/number/outdated_movedelay/alien_delay
-	movedelay_type = /mob/living/carbon/alien
-/datum/config_entry/number/outdated_movedelay/slime_delay
-	movedelay_type = /mob/living/simple_animal/slime
-/datum/config_entry/number/outdated_movedelay/animal_delay
-	movedelay_type = /mob/living/simple_animal
-/////////////////////////////////////////////////
 
 /datum/config_entry/flag/roundstart_away //Will random away mission be loaded.
 

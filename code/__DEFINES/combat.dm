@@ -90,9 +90,9 @@
 #define BASE_GRAB_RESIST_CHANCE 60 //base chance for whether or not you can escape from a grab
 
 //slowdown when in softcrit. Note that crawling slowdown will also apply at the same time!
-#define SOFTCRIT_ADD_SLOWDOWN 3
+#define SOFTCRIT_MOVESPEED -1
 //slowdown when crawling
-#define CRAWLING_ADD_SLOWDOWN 8
+#define CRAWLING_MOVESPEED -1.5
 
 //Attack types for checking block reactions
 /// Attack was made with a melee weapon
@@ -133,9 +133,10 @@
 #define SHOVE_KNOCKDOWN_TABLE 20
 #define SHOVE_KNOCKDOWN_COLLATERAL 1
 #define SHOVE_CHAIN_PARALYZE 30
+
 //Shove slowdown
 #define SHOVE_SLOWDOWN_LENGTH 30
-#define SHOVE_SLOWDOWN_STRENGTH 0.85 //multiplier
+#define SHOVE_SLOWDOWN_MOVESPEED -0.4 //multiplier
 //Shove disarming item list
 GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 	/obj/item/gun)))

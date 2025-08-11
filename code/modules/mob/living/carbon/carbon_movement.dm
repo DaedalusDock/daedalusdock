@@ -64,18 +64,19 @@
 
 /mob/living/carbon/on_movement_type_flag_disabled(datum/source, flag, old_movement_type)
 	. = ..()
-	if(old_movement_type & (FLYING | FLOATING) && !(movement_type & (FLYING | FLOATING)))
+	if((old_movement_type & (FLYING | FLOATING)) && !(movement_type & (FLYING | FLOATING)))
 		var/limbless_slowdown = 0
 		if(usable_legs < default_num_legs)
-			limbless_slowdown += (default_num_legs - usable_legs) * 3
+			limbless_slowdown += (default_num_legs - usable_legs) * -1 // 1 tile-per-second lost per missing leg.
 			if(!usable_legs)
 				ADD_TRAIT(src, TRAIT_FLOORED, LACKING_LOCOMOTION_APPENDAGES_TRAIT)
 				if(usable_hands < default_num_hands)
-					limbless_slowdown += (default_num_hands - usable_hands) * 3
+					limbless_slowdown += (default_num_hands - usable_hands) * -1 // 1 tile-per-second lost per missing hand.
 					if(!usable_hands)
 						ADD_TRAIT(src, TRAIT_IMMOBILIZED, LACKING_LOCOMOTION_APPENDAGES_TRAIT)
+
 		if(limbless_slowdown)
-			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/limbless, slowdown = limbless_slowdown)
+			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/limbless, modifier = limbless_slowdown)
 		else
 			remove_movespeed_modifier(/datum/movespeed_modifier/limbless)
 
@@ -83,14 +84,14 @@
 /mob/living/carbon/proc/update_move_intent_slowdown()
 	var/modifier
 	if(m_intent == MOVE_INTENT_WALK)
-		modifier = /datum/movespeed_modifier/config_walk_run/walk
+		modifier = /datum/movespeed_modifier/move_intent/walk
 	else if(m_intent == MOVE_INTENT_RUN)
-		modifier =  /datum/movespeed_modifier/config_walk_run/run
+		modifier =  /datum/movespeed_modifier/move_intent/run
 	else
-		modifier = /datum/movespeed_modifier/config_walk_run/sprint
+		modifier = /datum/movespeed_modifier/move_intent/sprint
 	add_movespeed_modifier(modifier)
 
-/mob/living/carbon/update_config_movespeed()
+/mob/living/carbon/apply_initial_movespeed()
 	update_move_intent_slowdown()
 	return ..()
 

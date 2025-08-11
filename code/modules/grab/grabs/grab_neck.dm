@@ -2,7 +2,7 @@
 	upgrab = /datum/grab/normal/kill
 	downgrab = /datum/grab/normal/aggressive
 
-	grab_slowdown = 4
+	grab_movespeed_modifier = -1.25
 
 	drop_headbutt = FALSE
 	shift = -10

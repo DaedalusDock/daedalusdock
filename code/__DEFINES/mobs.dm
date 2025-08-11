@@ -541,7 +541,7 @@
 #define GRAB_PIXEL_SHIFT_AGGRESSIVE 12
 #define GRAB_PIXEL_SHIFT_NECK 16
 
-#define PULL_PRONE_SLOWDOWN 1.5
+#define PULL_PRONE_MOVESPEED -0.7
 #define HUMAN_CARRY_MOVESPEED -0.2
 
 //Flags that control what things can spawn species (whitelist) (changesource_flagx)

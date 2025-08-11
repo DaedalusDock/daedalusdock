@@ -3,8 +3,8 @@
 	initial_gas = OPENTURF_DEFAULT_ATMOS
 	z_flags = Z_ATMOS_IN_UP|Z_ATMOS_OUT_UP
 
-	///negative for faster, positive for slower
-	var/slowdown = 0
+	/// A movement speed modifier for every mob that stands on the turf, in tiles/second
+	var/movespeed_modifier = 0
 	var/footstep = null
 	var/barefootstep = null
 	var/clawfootstep = null

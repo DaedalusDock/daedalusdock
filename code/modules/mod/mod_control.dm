@@ -117,7 +117,7 @@ TYPEINFO_DEF(/obj/item/mod/control)
 
 	RegisterSignal(src, COMSIG_ATOM_EXITED, PROC_REF(on_exit))
 	RegisterSignal(src, COMSIG_SPEED_POTION_APPLIED, PROC_REF(on_potion))
-	movedelay = CONFIG_GET(number/movedelay/run_delay)
+	movedelay = MOVESPEED_TO_DELAY(RUN_SPEED)
 	START_PROCESSING(SSobj, src)
 
 /obj/item/mod/control/Destroy()

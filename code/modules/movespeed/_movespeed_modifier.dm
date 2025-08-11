@@ -165,8 +165,8 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 		key = datum_type_id.id
 	return LAZYACCESS(movespeed_modification, key)
 
-/// Set or update the global movespeed config on a mob
-/mob/proc/update_config_movespeed()
+/// Applies any default movement speed modifiers to the mob.
+/mob/proc/apply_initial_movespeed()
 	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/mob_config_speedmod, modifier = get_config_move_delay())
 
 /// Get the global config movespeed of a mob by type
@@ -199,7 +199,7 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 			else
 				continue
 
-		. += modifier
+		. += amt
 
 	. = round(., 0.01)
 	movement_delay = . == 0 ? 0 : round(10 / ., 0.01)
@@ -210,11 +210,3 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 /mob/proc/get_movespeed_modifiers()
 	. = LAZYCOPY(movespeed_modification)
 	(.):Remove(movespeed_mod_immunities)
-
-/// Calculate the total slowdown of all movespeed modifiers
-/mob/proc/total_slowdown()
-	. = 0
-	for(var/id in get_movespeed_modifiers())
-		var/datum/movespeed_modifier/M = movespeed_modification[id]
-		. += M.slowdown
-

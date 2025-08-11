@@ -195,7 +195,7 @@
 /turf/open/lava/plasma/mafia
 	initial_gas = OPENTURF_DEFAULT_ATMOS
 	baseturfs = /turf/open/lava/plasma/mafia
-	slowdown = 0
+	movespeed_modifier = 0
 
 //matches /turf/open/misc/asteroid/snow
 /turf/open/lava/plasma/snow_air

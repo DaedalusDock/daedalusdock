@@ -22,7 +22,8 @@
 
 	var/renamedByPlayer = FALSE //set when a player uses a pen on a renamable object
 
-	var/drag_slowdown // Amont of multiplicative slowdown applied if pulled. >1 makes you slower, <1 makes you faster.
+	/// If the object is pulled, apply a movespeed modifier (tiles/second) to the puller
+	var/drag_movespeed_modifier
 
 	vis_flags = VIS_INHERIT_PLANE //when this be added to vis_contents of something it inherit something.plane, important for visualisation of obj in openspace.
 

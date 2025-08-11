@@ -16,7 +16,7 @@
 	anchorable = FALSE
 	cutting_tool = null // Bodybags are not deconstructed by cutting
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
-	drag_slowdown = 0
+	drag_movespeed_modifier = 0
 	has_closed_overlay = FALSE
 	var/foldedbag_path = /obj/item/bodybag
 	var/obj/item/bodybag/foldedbag_instance = null
@@ -79,13 +79,13 @@
 /obj/structure/closet/body_bag/take_contents(mapload)
 	. = ..()
 	if(locate(/mob) in contents)
-		drag_slowdown = PULL_PRONE_SLOWDOWN
+		drag_movespeed_modifier = PULL_PRONE_MOVESPEED
 	else
-		drag_slowdown = initial(drag_slowdown)
+		drag_movespeed_modifier = initial(drag_movespeed_modifier)
 
 /obj/structure/closet/body_bag/dump_contents()
 	. = ..()
-	drag_slowdown = initial(drag_slowdown)
+	drag_movespeed_modifier = initial(drag_movespeed_modifier)
 
 /**
 	* Checks to see if we can fold. Return TRUE to actually perform the fold and delete.

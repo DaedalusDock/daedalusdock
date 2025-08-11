@@ -7,7 +7,7 @@
 	temperature = 180
 
 	baseturfs = /turf/open/misc/ice
-	slowdown = 1
+	movespeed_modifier = -0.5
 	bullet_sizzle = TRUE
 	footstep = FOOTSTEP_FLOOR
 	barefootstep = FOOTSTEP_HARD_BAREFOOT

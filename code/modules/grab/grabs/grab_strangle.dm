@@ -1,6 +1,6 @@
 /datum/grab/normal/kill
 	downgrab = /datum/grab/normal/neck
-	grab_slowdown = 1.4
+	grab_movespeed_modifier = -0.6
 
 	shift = 0
 	stop_move = TRUE

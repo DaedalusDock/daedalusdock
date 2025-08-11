@@ -6,7 +6,7 @@
 	icon_state = "snow"
 
 	temperature = 180
-	slowdown = 2
+	movespeed_modifier = -0.8
 	bullet_sizzle = TRUE
 	footstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND
@@ -22,6 +22,6 @@
 	icon_state = "snow_dug"
 
 /turf/open/misc/snow/actually_safe
-	slowdown = 0
+	movespeed_modifier = 0
 
 	initial_gas = OPENTURF_DEFAULT_ATMOS

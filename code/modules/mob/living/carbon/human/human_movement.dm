@@ -3,7 +3,7 @@
 	if(HAS_TRAIT(src, TRAIT_IGNORESLOWDOWN))
 		for(var/id in considering)
 			var/datum/movespeed_modifier/M = considering[id]
-			if(!(M.flags & IGNORE_NOSLOW) && M.slowdown > 0)
+			if(!(M.flags & IGNORE_NOSLOW) && M.modifier < 0)
 				considering -= id
 
 	return considering

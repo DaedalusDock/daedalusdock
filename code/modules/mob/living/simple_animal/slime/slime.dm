@@ -149,24 +149,24 @@
 
 /mob/living/simple_animal/slime/updatehealth(cause_of_death)
 	. = ..()
-	var/mod = 0
+	var/mod = 1
 	if(!HAS_TRAIT(src, TRAIT_IGNOREDAMAGESLOWDOWN))
 		var/health_deficiency = (maxHealth - health)
 		if(health_deficiency >= 45)
-			mod += (health_deficiency / 25)
-		if(health <= 0)
-			mod += 2
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_healthmod, slowdown = mod)
+			mod = 0.5 * (1 - (health_deficiency / maxHealth)) // 50% speed if health == 0
+
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_healthmod, modifier = mod)
 
 /mob/living/simple_animal/slime/adjust_bodytemperature()
 	. = ..()
-	var/mod = 0
+	var/mod = 1
 	if(bodytemperature >= 330.23) // 135 F or 57.08 C
-		mod = -1 // slimes become supercharged at high temperatures
+		mod = 1.4 // slimes become supercharged at high temperatures
 	else if(bodytemperature < 283.222)
-		mod = ((283.222 - bodytemperature) / 10) * 1.75
+		mod = 0.5 * ((283.222 - bodytemperature) / 283.222) // 50% speed if bodytemp == 0
+
 	if(mod)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_tempmod, slowdown = mod)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_tempmod, modifier = mod)
 
 /mob/living/simple_animal/slime/ObjBump(obj/O)
 	if(!client && powerlevel > 0)

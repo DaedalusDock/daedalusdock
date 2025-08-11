@@ -135,7 +135,9 @@
 /mob/living/basic/proc/update_basic_mob_varspeed()
 	if(speed == 0)
 		remove_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed)
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed, slowdown = speed)
+
+	#warn check if this is the only speed mod they have
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed, modifier = speed)
 	SEND_SIGNAL(src, POST_BASIC_MOB_UPDATE_VARSPEED)
 
 /mob/living/basic/relaymove(mob/living/user, direction)

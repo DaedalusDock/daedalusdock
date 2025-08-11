@@ -143,7 +143,7 @@
 			var/obj/item/delivery/big/P = new(get_turf(O.loc))
 			P.base_icon_state = O.delivery_icon
 			P.update_icon()
-			P.drag_slowdown = O.drag_slowdown
+			P.drag_movespeed_modifier = O.drag_movespeed_modifier
 			O.forceMove(P)
 			P.add_fingerprint(user)
 			O.add_fingerprint(user)

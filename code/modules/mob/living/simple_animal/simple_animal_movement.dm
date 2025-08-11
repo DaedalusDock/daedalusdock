@@ -4,10 +4,10 @@
  * move_delay_modifier adds to the delay between steps.
  * Please use actual movespeed modifiers and not that var.
 */
-/mob/living/simple_animal/update_config_movespeed()
+/mob/living/simple_animal/apply_initial_movespeed()
 	. = ..()
 	// By default, simple animals should move as fast as players on run intent.
-	add_movespeed_modifier(/datum/movespeed_modifier/config_walk_run/run)
+	add_movespeed_modifier(/datum/movespeed_modifier/move_intent/run)
 
 /// Update the simple variable movement delay value
 /mob/living/simple_animal/proc/set_simple_move_delay(var_value)

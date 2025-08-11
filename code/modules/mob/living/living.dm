@@ -968,9 +968,9 @@
 
 /mob/living/proc/update_gravity(gravity)
 	// Handle movespeed stuff
-	var/speed_change = max(0, gravity - STANDARD_GRAVITY)
+	var/speed_change = -1 * max(0, gravity - STANDARD_GRAVITY)
 	if(speed_change)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/gravity, slowdown=speed_change)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/gravity, modifier = speed_change)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/gravity)
 
@@ -1914,10 +1914,11 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				ADD_TRAIT(src, TRAIT_IMMOBILIZED, LACKING_LOCOMOTION_APPENDAGES_TRAIT)
 
 	if(usable_legs < default_num_legs)
-		var/limbless_slowdown = (default_num_legs - usable_legs) * 3
+		var/limbless_movespeed = (default_num_legs - usable_legs) * -1
 		if(!usable_legs && usable_hands < default_num_hands)
-			limbless_slowdown += (default_num_hands - usable_hands) * 3
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/limbless, slowdown = limbless_slowdown)
+			limbless_movespeed += (default_num_hands - usable_hands) * -1
+
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/limbless, modifier = limbless_movespeed)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/limbless)
 

@@ -29,6 +29,13 @@ COMMENDATION_PERCENT_POLL 0.05
 ## These values get directly added to values and totals ingame.
 ## To speed things up make the number negative, to slow things down, make the number positive.
 
+## The variables below affect the movement of specific mob types. THIS AFFECTS ALL SUBTYPES OF THE TYPE YOU CHOOSE!
+## Entries completely override all subtypes. Later entries have precedence over earlier entries.
+## This means if you put /mob 0 on the last entry, it will null out all changes, while if you put /mob as the first entry and
+## /mob/living/carbon/human on the last entry, the last entry will override the first.
+MOVESPEED_MODIFIER /mob/living/simple_animal 0
+
+
 ## NAMES ###
 ## If uncommented this adds a random surname to a player's name if they only specify one name.
 HUMANS_NEED_SURNAMES

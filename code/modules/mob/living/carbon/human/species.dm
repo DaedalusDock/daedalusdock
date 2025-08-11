@@ -127,7 +127,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	)
 
 	//* MODIFIERS *//
-	///Multiplier for the race's speed. Positive numbers make it move slower, negative numbers make it move faster.
+	/// Movement speed modifier (tiles/second).
 	var/speedmod = 0
 	///Percentage modifier for overall defense of the race, or less defense, if it's negative.
 	var/armor = 0
@@ -525,7 +525,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		fly = new
 		fly.Grant(C)
 
-	C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/species, slowdown=speedmod)
+	C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/species, modifier = speedmod)
 
 	SEND_SIGNAL(C, COMSIG_SPECIES_GAIN, src, old_species)
 
@@ -1299,7 +1299,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	else if(bodytemp < cold_level_1 && !HAS_TRAIT(humi, TRAIT_RESISTCOLD))
 		// clear any hot moods and apply cold mood
 		// Apply cold slow down
-		humi.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/cold, slowdown = ((cold_level_1 - humi.bodytemperature) / COLD_SLOWDOWN_FACTOR))
+
+		#warn test cold
+		humi.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/cold, modifier = COLD_MOVESPEED * max(1, ((cold_level_1 - humi.bodytemperature) / cold_level_1)))
 		// Display alerts based how cold it is
 		// Can't be a switch due to http://www.byond.com/forum/post/2750423
 		if(bodytemp in cold_level_1 to cold_level_2)

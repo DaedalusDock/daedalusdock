@@ -47,12 +47,13 @@
 	modifier = -1.5
 
 /datum/movespeed_modifier/grab_slowdown/kill
-	slowdown = -2
+	modifier = -2
 
 /datum/movespeed_modifier/slime_reagentmod
 	variable = TRUE
 
 /datum/movespeed_modifier/slime_healthmod
+	#warn TODO: make multiplier
 	variable = TRUE
 
 /datum/movespeed_modifier/move_intent
@@ -60,13 +61,13 @@
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/move_intent/walk
-	slowdown = WALK_SPEED
+	modifier = WALK_SPEED
 
 /datum/movespeed_modifier/move_intent/run
-	slowdown = RUN_SPEED
+	modifier = RUN_SPEED
 
 /datum/movespeed_modifier/move_intent/sprint
-	slowdown = SPRINT_SPEED
+	modifier = SPRINT_SPEED
 
 /datum/movespeed_modifier/turf_slowdown
 	movetypes = GROUND
@@ -91,6 +92,11 @@
 	movetypes = GROUND
 	flags = IGNORE_NOSLOW
 
+// See /mob/living/simple_animal/apply_initial_movespeed()
+/datum/movespeed_modifier/simplemob_initial
+	modifier = -0.5
+	flags = IGNORE_NOSLOW
+
 /datum/movespeed_modifier/simplemob_varspeed
 	variable = TRUE
 	flags = IGNORE_NOSLOW
@@ -99,20 +105,22 @@
 	modifier = -1.4
 
 /datum/movespeed_modifier/gravity
+	#warn TODO: make multiplicative
 	blacklisted_movetypes = FLOATING
 	variable = TRUE
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/carbon_softcrit
-	slowdown = SOFTCRIT_MOVESPEED
+	modifier = SOFTCRIT_MOVESPEED
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/slime_tempmod
+	#warn TODO make a multiplier
 	variable = TRUE
 
 /datum/movespeed_modifier/living_exhaustion
 	#warn TODO make a multiplier?
-	slowdown = STAMINA_EXHAUSTION_MOVESPEED
+	modifier = STAMINA_EXHAUSTION_MOVESPEED
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/carbon_crawling
@@ -121,6 +129,7 @@
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/mob_config_speedmod
+	#warn TODO make a multiplier
 	variable = TRUE
 	flags = IGNORE_NOSLOW
 

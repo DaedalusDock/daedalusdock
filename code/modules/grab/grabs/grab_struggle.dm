@@ -6,7 +6,7 @@
 	reverse_facing = FALSE
 	same_tile = FALSE
 	breakability = 3
-	grab_slowdown = 0.7
+	grab_movespeed_modifier = -0.4
 	upgrade_cooldown = 2 SECONDS
 	can_downgrade_on_resist = 0
 	icon_state = "reinforce"

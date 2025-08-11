@@ -170,7 +170,7 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	base_icon_state = "snow"
 	broken_state = "snow_dug"
 	temperature = 180
-	slowdown = 2
+	movespeed_modifier = -0.8
 	flags_1 = NONE
 
 	simulated = FALSE
@@ -184,7 +184,7 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 /turf/open/misc/asteroid/snow/burn_tile()
 	if(!burnt)
 		visible_message(span_danger("[src] melts away!."))
-		slowdown = 0
+		movespeed_modifier = 0
 		burnt = TRUE
 		icon_state = "snow_dug"
 		return TRUE
@@ -208,7 +208,7 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 /turf/open/misc/asteroid/snow/ice/icemoon
 	baseturfs = /turf/open/misc/asteroid/snow/ice/icemoon
 
-	slowdown = 0
+	movespeed_modifier = 0
 
 /turf/open/misc/asteroid/snow/ice/burn_tile()
 	return FALSE

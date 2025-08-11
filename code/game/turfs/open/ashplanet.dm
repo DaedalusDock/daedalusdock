@@ -36,7 +36,7 @@
 	smoothing_groups = SMOOTH_GROUP_TURF_OPEN + SMOOTH_GROUP_FLOOR_ASH
 	canSmoothWith = SMOOTH_GROUP_FLOOR_ASH + SMOOTH_GROUP_CLOSED_TURFS
 	layer = HIGH_TURF_LAYER
-	slowdown = 1
+	movespeed_modifier = -0.5
 
 /turf/open/misc/ashplanet/rocky
 	gender = PLURAL
@@ -58,7 +58,7 @@
 	smoothing_flags = NONE
 	icon_state = "wateryrock"
 	base_icon_state = "wateryrock"
-	slowdown = 2
+	movespeed_modifier = -0.8
 	footstep = FOOTSTEP_FLOOR
 	barefootstep = FOOTSTEP_HARD_BAREFOOT
 	clawfootstep = FOOTSTEP_HARD_CLAW

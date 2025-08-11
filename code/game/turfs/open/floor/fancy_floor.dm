@@ -154,7 +154,7 @@
 	bullet_bounce_sound = null
 	tiled_dirt = FALSE
 
-	slowdown = 1.5
+	movespeed_modifier = 0.7
 	bullet_sizzle = TRUE
 	footstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND

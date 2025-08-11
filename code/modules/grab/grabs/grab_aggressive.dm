@@ -2,7 +2,7 @@
 	upgrab =   /datum/grab/normal/neck
 	downgrab = /datum/grab/normal/passive
 
-	grab_slowdown = 0.7
+	grab_movespeed_modifier = -0.4
 	shift = 12
 	stop_move = TRUE
 	reverse_facing = FALSE

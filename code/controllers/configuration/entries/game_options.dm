@@ -164,40 +164,25 @@
 
 /datum/config_entry/flag/emojis
 
-#warn delete
-/datum/config_entry/keyed_list/multiplicative_movespeed
+/datum/config_entry/keyed_list/default_movespeeds
 	key_mode = KEY_MODE_TYPE
 	value_mode = VALUE_MODE_NUM
 	default = list( //DEFAULTS
-	/mob/living/simple_animal = 1,
-	/mob/living/silicon/pai = 1,
-	/mob/living/carbon/alien/humanoid/hunter = -1,
-	/mob/living/carbon/alien/humanoid/royal/praetorian = 1,
-	/mob/living/carbon/alien/humanoid/royal/queen = 3
+		/mob/living/silicon/pai = -0.5,
+		/mob/living/carbon/alien/humanoid/hunter = 0.8,
+		/mob/living/carbon/alien/humanoid/royal/praetorian = -0.5,
+		/mob/living/carbon/alien/humanoid/royal/queen = -1,
 	)
 
-/datum/config_entry/keyed_list/multiplicative_movespeed/ValidateAndSet()
+/datum/config_entry/keyed_list/default_movespeeds/ValidateAndSet()
 	. = ..()
 	if(.)
 		update_config_movespeed_type_lookup(TRUE)
 
-/datum/config_entry/keyed_list/multiplicative_movespeed/vv_edit_var(var_name, var_value)
+/datum/config_entry/keyed_list/default_movespeeds/vv_edit_var(var_name, var_value)
 	. = ..()
 	if(. && (var_name == NAMEOF(src, config_entry_value)))
 		update_config_movespeed_type_lookup(TRUE)
-
-/datum/config_entry/number/movedelay //Used for modifying movement speed for mobs.
-	abstract_type = /datum/config_entry/number/movedelay
-
-/datum/config_entry/number/movedelay/ValidateAndSet()
-	. = ..()
-	if(.)
-		update_mob_config_movespeeds()
-
-/datum/config_entry/number/movedelay/vv_edit_var(var_name, var_value)
-	. = ..()
-	if(. && (var_name == NAMEOF(src, config_entry_value)))
-		update_mob_config_movespeeds()
 
 /datum/config_entry/flag/roundstart_away //Will random away mission be loaded.
 

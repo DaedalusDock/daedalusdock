@@ -96,7 +96,7 @@
 	examine_limb_id = SPECIES_ZOMBIE
 	mutanthands = /obj/item/zombie_hand
 	armor = 20 // 120 damage to KO a zombie, which kills it
-	speedmod = 1.6
+	speedmod = -0.7
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | ERT_SPAWN
 	/// The rate the zombies regenerate at
 	var/heal_rate = 0.5

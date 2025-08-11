@@ -443,7 +443,6 @@
 /area/shuttle/sbc_starfury)
 "bq" = (
 /obj/structure/table/reinforced,
-/obj/item/aicard,
 /obj/structure/window/reinforced/survival_pod{
 	dir = 4
 	},

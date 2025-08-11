@@ -176,12 +176,6 @@
 	id = "message_monitor"
 	build_path = /obj/item/circuitboard/computer/message_monitor
 
-/datum/design/board/aifixer
-	name = "Circuit Board (AI Integrity Restorer)"
-	desc = "Allows for the construction of circuit boards used to build an AI Integrity Restorer."
-	id = "aifixer"
-	build_path = /obj/item/circuitboard/computer/aifixer
-
 /datum/design/board/libraryconsole
 	name = "Circuit Board (Library Console)"
 	desc = "Allows for the construction of circuit boards used to build a new library console."

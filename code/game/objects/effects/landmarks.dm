@@ -240,12 +240,6 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 		new /obj/structure/ai_core/latejoin_inactive(loc)
 	return ..()
 
-/obj/effect/landmark/start/ai/secondary
-	icon = 'icons/effects/landmarks_static.dmi'
-	icon_state = "ai_spawn"
-	primary_ai = FALSE
-	latejoin_active = FALSE
-
 //Antagonist spawns
 
 /obj/effect/landmark/start/wizard

@@ -617,34 +617,6 @@
 	tool_behaviors = list(TOOL_SCREWDRIVER, TOOL_WRENCH, TOOL_WELDER)
 	category = CAT_MISC
 
-/datum/crafting_recipe/aitater
-	name = "intelliTater"
-	result = /obj/item/aicard/aitater
-	time = 30
-	tool_behaviors = list(TOOL_WIRECUTTER)
-	reqs = list(/obj/item/aicard = 1,
-					/obj/item/food/grown/potato = 1,
-					/obj/item/stack/cable_coil = 5)
-	category = CAT_MISC
-
-/datum/crafting_recipe/aitater/check_requirements(mob/user, list/collected_requirements)
-	var/obj/item/aicard/aicard = collected_requirements[/obj/item/aicard][1]
-	if(!aicard.AI)
-		return TRUE
-
-	to_chat(user, span_boldwarning("You can't craft an intelliTater with an AI in the card!"))
-	return FALSE
-
-/datum/crafting_recipe/aispook
-	name = "intelliLantern"
-	result = /obj/item/aicard/aispook
-	time = 30
-	tool_behaviors = list(TOOL_WIRECUTTER)
-	reqs = list(/obj/item/aicard = 1,
-					/obj/item/food/grown/pumpkin = 1,
-					/obj/item/stack/cable_coil = 5)
-	category = CAT_MISC
-
 /datum/crafting_recipe/ghettojetpack
 	name = "Improvised Jetpack"
 	result = /obj/item/tank/jetpack/improvised

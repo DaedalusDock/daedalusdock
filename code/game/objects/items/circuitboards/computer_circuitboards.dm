@@ -355,11 +355,6 @@
 
 //Science
 
-/obj/item/circuitboard/computer/aifixer
-	name = "AI Integrity Restorer (Computer Board)"
-	greyscale_colors = CIRCUIT_COLOR_SCIENCE
-	build_path = /obj/machinery/computer/aifixer
-
 /obj/item/circuitboard/computer/launchpad_console
 	name = "Launchpad Control Console (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE

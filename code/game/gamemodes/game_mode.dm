@@ -168,20 +168,6 @@
 		return TRUE
 
 /*
- * Generate a list of station goals available to purchase to report to the crew.
- *
- * Returns a formatted string all station goals that are available to the station.
- */
-/datum/game_mode/proc/generate_station_goal_report()
-	if(!GLOB.station_goals.len)
-		return
-	. = "<hr><b>Special Orders for [station_name()]:</b><BR>"
-	for(var/datum/station_goal/station_goal as anything in GLOB.station_goals)
-		station_goal.on_report()
-		. += station_goal.get_report()
-	return
-
-/*
  * Generate a list of active station traits to report to the crew.
  *
  * Returns a formatted string of all station traits (that are shown) affecting the station.
@@ -283,15 +269,6 @@
 
 	for (var/C in GLOB.admins)
 		to_chat(C, msg.Join())
-
-/datum/game_mode/proc/generate_station_goals(greenshift)
-	var/goal_budget = greenshift ? INFINITY : CONFIG_GET(number/station_goal_budget)
-	var/list/possible = subtypesof(/datum/station_goal)
-	var/goal_weights = 0
-	while(possible.len && goal_weights < goal_budget)
-		var/datum/station_goal/picked = pick_n_take(possible)
-		goal_weights += initial(picked.weight)
-		GLOB.station_goals += new picked
 
 //Set result and news report here
 /datum/game_mode/proc/set_round_result()

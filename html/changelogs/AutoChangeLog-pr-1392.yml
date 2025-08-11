@@ -1,0 +1,14 @@
+author: Doctor-Derp
+delete-after: true
+changes:
+  - rscadd: Added a Biohazardous Waste Disposal to Medical.
+  - rscadd: Moved Library to Aft Hallway + gave it a new redesign!
+  - rscadd: Moved Psychology Office to Port Hallway + gave it a new redesign!
+  - rscadd: Added pepperspray tanks to security. Check Security Office and the Armory.
+  - rscadd: Redesigned + Moved the Custodial Closet and Mechanical Storage compartment.
+  - rscdel: Removed Mechanics Storage from Aft Hallway.
+  - bugfix: Fixed out-of-place iron wall near the bar.
+  - bugfix: Fixed mis-mapped disposal pipes in dormitories.
+  - bugfix: Fixed obsolete access codes on virology access panels.
+  - bugfix: Fixed camera blindspots in Security.
+  - code_imp: Added Psychologist Job Pincode code.

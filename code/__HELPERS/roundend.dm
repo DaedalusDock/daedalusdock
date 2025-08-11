@@ -325,8 +325,6 @@
 	CHECK_TICK
 	//Medals
 	parts += medal_report()
-	//Station Goals
-	parts += goal_report()
 	//Economy & Money
 	parts += market_report()
 
@@ -498,13 +496,6 @@
 		return "<div class='panel stationborder'>[parts.Join("<br>")]</div>"
 	else
 		return ""
-
-/datum/controller/subsystem/ticker/proc/goal_report()
-	var/list/parts = list()
-	if(GLOB.station_goals.len)
-		for(var/datum/station_goal/goal as anything in GLOB.station_goals)
-			parts += goal.get_result()
-		return "<div class='panel stationborder'><ul>[parts.Join()]</ul></div>"
 
 ///Generate a report for how much money is on station, as well as the richest crewmember on the station.
 /datum/controller/subsystem/ticker/proc/market_report()

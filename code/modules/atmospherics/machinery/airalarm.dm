@@ -203,9 +203,9 @@ TYPEINFO_DEF(/obj/machinery/airalarm)
 
 	if(my_area)
 		LAZYREMOVE(my_area.airalarms, src)
-	if(!new_area)
-		return
+
 	my_area = new_area
+
 	if(my_area)
 		LAZYADD(my_area.airalarms, src)
 

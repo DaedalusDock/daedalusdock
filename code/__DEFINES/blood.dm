@@ -20,3 +20,6 @@
 #define BLOOD_PRINT_HUMAN "blood"
 #define BLOOD_PRINT_PAWS "bloodpaw"
 #define BLOOD_PRINT_CLAWS "bloodclaw"
+
+/// Returns the key for GLOB.bloody_item_images
+#define BLOODY_OVERLAY_KEY(item) "[ref(item.icon)]-[item.icon_state]"

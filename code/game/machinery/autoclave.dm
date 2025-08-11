@@ -97,7 +97,7 @@
 	if(!user.temporarilyRemoveItemFromInventory(tool))
 		return ITEM_INTERACT_BLOCKING
 
-	close_machine(I)
+	close_machine(tool)
 	user.visible_message(span_notice("[user] places [tool] into [src]."))
 	return ITEM_INTERACT_SUCCESS
 

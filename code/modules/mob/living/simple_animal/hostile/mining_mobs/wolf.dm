@@ -10,7 +10,7 @@
 	friendly_verb_continuous = "howls at"
 	friendly_verb_simple = "howl at"
 	speak_emote = list("howls")
-	move_delay_modifier = 5
+	movement_speed_modifier = -1.4
 	move_to_delay = 5
 	maxHealth = 130
 	health = 130

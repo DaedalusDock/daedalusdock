@@ -21,11 +21,11 @@
 	if(!standing)
 		if(stat != DEAD)
 			icon_state = "crawling"
-			set_simple_move_delay(1)
+			set_simple_movespeed_modifier(-0.5)
 		return ..()
 	if(stat != DEAD)
 		icon_state = "standing"
-		set_simple_move_delay(3) // Gorillas are slow when standing up.
+		set_simple_movespeed_modifier(-1) // Gorillas are slow when standing up.
 
 	var/list/hands_overlays = list()
 

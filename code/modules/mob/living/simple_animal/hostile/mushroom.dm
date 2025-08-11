@@ -29,7 +29,7 @@
 	environment_smash = ENVIRONMENT_SMASH_NONE
 	stat_attack = DEAD
 	mouse_opacity = MOUSE_OPACITY_ICON
-	move_delay_modifier = 1
+	movement_speed_modifier = -0.5
 	robust_searching = 1
 	unique_name = 1
 	speak_emote = list("squeaks")

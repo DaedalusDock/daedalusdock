@@ -12,7 +12,7 @@
 	ranged = 1
 	vision_range = 5
 	aggro_vision_range = 9
-	move_delay_modifier = 3
+	movement_speed_modifier = -1
 	maxHealth = 75
 	health = 75
 	harm_intent_damage = 5
@@ -71,7 +71,7 @@
 	friendly_verb_continuous = "buzzes near"
 	friendly_verb_simple = "buzz near"
 	vision_range = 10
-	move_delay_modifier = 3
+	movement_speed_modifier = -1
 	maxHealth = 1
 	health = 1
 	harm_intent_damage = 5

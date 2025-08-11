@@ -13,7 +13,7 @@
 	response_harm_simple = "splat"
 	maxHealth = 5
 	health = 5
-	move_delay_modifier = 1 SECOND
+	movement_speed_modifier = -1.5
 	density = FALSE
 	pass_flags = PASSTABLE | PASSGRILLE | PASSMOB
 	mob_size = MOB_SIZE_TINY

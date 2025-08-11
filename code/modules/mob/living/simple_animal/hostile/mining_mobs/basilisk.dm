@@ -17,7 +17,7 @@
 	ranged_cooldown_time = 30
 	throw_message = "does nothing against the hard shell of"
 	vision_range = 2
-	move_delay_modifier = 3
+	movement_speed_modifier = -1
 	maxHealth = 200
 	health = 200
 	harm_intent_damage = 5
@@ -86,7 +86,7 @@
 			visible_message(span_warning("[src] begins to fire up!"))
 			fully_heal()
 			icon_state = "Basilisk_alert"
-			set_simple_move_delay(0)
+			set_simple_movespeed_modifier(0)
 			warmed_up = TRUE
 			projectiletype = /obj/projectile/temp/basilisk/heated
 			addtimer(CALLBACK(src, PROC_REF(cool_down)), 3000)
@@ -95,7 +95,7 @@
 	visible_message(span_warning("[src] appears to be cooling down..."))
 	if(stat != DEAD)
 		icon_state = "Basilisk"
-	set_simple_move_delay(3)
+	set_simple_movespeed_modifier(-1)
 	warmed_up = FALSE
 	projectiletype = /obj/projectile/temp/basilisk
 

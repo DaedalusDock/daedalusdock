@@ -26,7 +26,7 @@
 	minbodytemp = 0
 	maxbodytemp = 0
 	wander = 0
-	move_delay_modifier = 0
+	movement_speed_modifier = 0
 	healable = 0
 	density = FALSE
 	pass_flags = PASSTABLE | PASSMOB

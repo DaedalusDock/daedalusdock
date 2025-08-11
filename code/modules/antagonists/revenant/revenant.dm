@@ -48,7 +48,7 @@
 	move_resist = MOVE_FORCE_OVERPOWERING
 	mob_size = MOB_SIZE_TINY
 	pass_flags = PASSTABLE | PASSGRILLE | PASSMOB
-	move_delay_modifier = 1
+	movement_speed_modifier = -0.5
 	unique_name = TRUE
 	hud_type = /datum/hud/revenant
 

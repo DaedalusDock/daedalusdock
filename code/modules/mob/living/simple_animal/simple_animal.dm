@@ -103,7 +103,7 @@
 	var/environment_smash = ENVIRONMENT_SMASH_NONE
 
 	/// See simple_animal_movement.dm
-	var/move_delay_modifier = 1
+	var/movement_speed_modifier = -0.5
 
 	///Hot simple_animal baby making vars.
 	var/list/childtype = null
@@ -243,7 +243,7 @@
  */
 /mob/living/simple_animal/on_stamina_update()
 	. = ..()
-	set_simple_move_delay(initial(move_delay_modifier) + (stamina.loss * 0.06))
+	set_simple_movespeed_modifier(initial(movement_speed_modifier) - (2 * (stamina.loss_as_percent / 100)))
 
 /mob/living/simple_animal/proc/handle_automated_action()
 	set waitfor = FALSE

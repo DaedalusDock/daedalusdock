@@ -14,7 +14,7 @@
 	attack_verb_simple = "gore"
 	maxHealth = 100
 	health = 100
-	move_delay_modifier = 0
+	movement_speed_modifier = 0
 	faction = list("illusion")
 	var/life_span = INFINITY //how long until they despawn
 	var/mob/living/parent_mob
@@ -69,7 +69,7 @@
 	minimum_distance = 10
 	melee_damage_lower = 0
 	melee_damage_upper = 0
-	move_delay_modifier = -1
+	movement_speed_modifier = 0.8
 	obj_damage = 0
 	environment_smash = ENVIRONMENT_SMASH_NONE
 

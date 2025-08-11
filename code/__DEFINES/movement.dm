@@ -12,6 +12,9 @@ GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 #define RUN_SPEED 2.5
 #define WALK_SPEED 2
 
+/// The absolute minimum speed, in tiles-per-second, a mob can move, unless it has uncapped movement.
+#define MOVESPEED_MINIMUM 0.2
+
 /// Converts a movement speed (tiles/second) to the delay-between-moves (ds)
 #define MOVESPEED_TO_DELAY(movespeed) ((10 / movespeed))
 

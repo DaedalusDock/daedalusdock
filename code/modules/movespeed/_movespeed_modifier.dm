@@ -180,12 +180,12 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 
 /// Go through the list of movespeed modifiers and calculate a final movespeed. ANY ADD/REMOVE DONE IN UPDATE_MOVESPEED MUST HAVE THE UPDATE ARGUMENT SET AS FALSE!
 /mob/proc/update_movespeed()
-	. = 0
+	var/tiles_per_second = 0
 	var/list/conflict_tracker = list()
 	var/list/multiplicative = list()
 
-	var/tiles_per_second
-	for(var/key in get_movespeed_modifiers())
+	var/list/modifier_list = get_movespeed_modifiers()
+	for(var/key in modifier_list)
 		var/datum/movespeed_modifier/M = movespeed_modification[key]
 		if(!(M.movetypes & movement_type)) // We don't affect any of these move types, skip
 			continue
@@ -214,9 +214,12 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 		tiles_per_second = round(tiles_per_second * multiplier, 0.01)
 
 	if(tiles_per_second <= 0)
-		movement_delay = 0
+		if(length(modifier_list) == 0)
+			movement_delay = 0 // We assume a mob with no modifiers is just moving the max speed.
+		else
+			movement_delay = MOVESPEED_TO_DELAY(MOVESPEED_MINIMUM)
 	else
-		var/delay = round(10 / tiles_per_second, 0.01) // Convert to ds-between-steps
+		var/delay = round(MOVESPEED_TO_DELAY(tiles_per_second), 0.01)
 		movement_delay = delay <= 0 ? 0 : delay
 		. = movement_delay
 

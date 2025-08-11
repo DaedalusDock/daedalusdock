@@ -7,60 +7,6 @@
 		return S.amount
 	return 0
 
-// Hides
-
-/datum/export/stack/skin/monkey
-	cost = CARGO_CRATE_VALUE * 0.25
-	unit_name = "monkey hide"
-	export_types = list(/obj/item/stack/sheet/animalhide/monkey)
-
-/datum/export/stack/skin/human
-	cost = CARGO_CRATE_VALUE * 0.5
-	unit_name = "piece"
-	message = "of human skin"
-	export_types = list(/obj/item/stack/sheet/animalhide/human)
-
-/datum/export/stack/skin/goliath_hide
-	cost = CARGO_CRATE_VALUE
-	unit_name = "goliath hide"
-	export_types = list(/obj/item/stack/sheet/animalhide/goliath_hide)
-
-/datum/export/stack/skin/cat
-	cost = CARGO_CRATE_VALUE * 0.75
-	unit_name = "cat hide"
-	export_types = list(/obj/item/stack/sheet/animalhide/cat)
-
-/datum/export/stack/skin/corgi
-	cost = CARGO_CRATE_VALUE
-	unit_name = "corgi hide"
-	export_types = list(/obj/item/stack/sheet/animalhide/corgi)
-
-/datum/export/stack/skin/lizard
-	cost = CARGO_CRATE_VALUE * 0.75
-	unit_name = "jinan hide"
-	export_types = list(/obj/item/stack/sheet/animalhide/lizard)
-
-/datum/export/stack/skin/gondola
-	cost = CARGO_CRATE_VALUE * 10
-	unit_name = "gondola hide"
-	export_types = list(/obj/item/stack/sheet/animalhide/gondola)
-
-/datum/export/stack/skin/xeno
-	cost = CARGO_CRATE_VALUE * 2.5
-	unit_name = "alien hide"
-	export_types = list(/obj/item/stack/sheet/animalhide/xeno)
-
-/datum/export/stack/skin/carp
-	cost = CARGO_CRATE_VALUE * 0.5
-	unit_name = "carp skin"
-	export_types = list(/obj/item/stack/sheet/animalhide/carp)
-
-/datum/export/stack/licenseplate
-	cost = CARGO_CRATE_VALUE * 0.125
-	unit_name = "license plate"
-	export_types = list(/obj/item/stack/license_plates/filled)
-
-
 // Common materials.
 // For base materials, see materials.dm
 
@@ -82,7 +28,7 @@
 
 /datum/export/stack/wood
 	cost = CARGO_CRATE_VALUE * 0.05
-	unit_name = "wood plank"
+	unit_name = "wood planks"
 	export_types = list(/obj/item/stack/sheet/mineral/wood)
 
 /datum/export/stack/cloth

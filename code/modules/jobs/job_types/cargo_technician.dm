@@ -20,7 +20,7 @@
 		),
 	)
 
-	paycheck = PAYCHECK_EASY
+	paycheck = PAYCHECK_ASSISTANT * 5
 	paycheck_department = ACCOUNT_CAR
 	departments_list = list(
 		/datum/job_department/cargo,

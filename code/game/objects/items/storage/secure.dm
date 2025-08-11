@@ -171,8 +171,8 @@
 
 /obj/item/storage/secure/briefcase/syndie/PopulateContents()
 	..()
-	for(var/i in 1 to 5)
-		new /obj/item/stack/spacecash/c1000(src)
+	for(var/i in 1 to 10)
+		new /obj/item/stack/spacecash/c100(src)
 
 ///Secure Safe
 /obj/item/storage/secure/safe

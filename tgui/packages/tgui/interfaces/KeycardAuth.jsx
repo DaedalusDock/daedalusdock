@@ -29,22 +29,6 @@ export const KeycardAuth = (props) => {
                 )}
                 {data.auth_required === 0 && (
                   <>
-                    {/* <Button
-                      icon="exclamation-triangle"
-                      fluid
-                      onClick={() => act('red_alert')}
-                      content="Red Alert" />
-                    <Button
-                      icon="wrench"
-                      fluid
-                      onClick={() => act('emergency_maint')}
-                      content="Emergency Maintenance Access" />
-                    <Button
-                      icon="meteor"
-                      fluid
-                      onClick={() => act('bsa_unlock')}
-                      content="Bluespace Artillery Unlock" /> */}
-                    {/* frag2*/}
                     {data.optmap.map((optbundle) => {
                       return (
                         <Button

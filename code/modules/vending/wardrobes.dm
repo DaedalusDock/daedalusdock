@@ -3,7 +3,7 @@
 
 /obj/machinery/vending/wardrobe
 	default_price = PAYCHECK_ASSISTANT * 0.8
-	extra_price = PAYCHECK_HARD
+	extra_price = PAYCHECK_ASSISTANT * 3
 	payment_department = NO_FREEBIES
 	input_display_header = "Returned Clothing"
 	panel_type = "panel19"
@@ -181,7 +181,7 @@
 					  /obj/item/clothing/under/costume/mech_suit = 2,
 					  /obj/item/organ/tongue/robot = 2)
 	refill_canister = /obj/item/vending_refill/wardrobe/robo_wardrobe
-	extra_price = PAYCHECK_HARD * 1.2
+	extra_price = PAYCHECK_ASSISTANT * 3
 	payment_department = ACCOUNT_STATION_MASTER
 
 	discount_access = ACCESS_ROBOTICS
@@ -299,7 +299,7 @@
 	premium = list(/obj/item/storage/box/dishdrive = 1)
 	refill_canister = /obj/item/vending_refill/wardrobe/bar_wardrobe
 	payment_department = ACCOUNT_STATION_MASTER
-	extra_price = PAYCHECK_HARD
+	extra_price = PAYCHECK_ASSISTANT * 3
 
 	discount_access = ACCESS_BAR
 
@@ -365,7 +365,7 @@
 
 	refill_canister = /obj/item/vending_refill/wardrobe/jani_wardrobe
 	default_price = PAYCHECK_ASSISTANT * 0.8
-	extra_price = PAYCHECK_HARD * 0.8
+	extra_price = PAYCHECK_ASSISTANT * 3
 	payment_department = ACCOUNT_STATION_MASTER
 	light_color = COLOR_STRONG_MAGENTA
 

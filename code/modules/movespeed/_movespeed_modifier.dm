@@ -184,6 +184,7 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 	var/list/conflict_tracker = list()
 	var/list/multiplicative = list()
 
+	var/tiles_per_second
 	for(var/key in get_movespeed_modifiers())
 		var/datum/movespeed_modifier/M = movespeed_modification[key]
 		if(!(M.movetypes & movement_type)) // We don't affect any of these move types, skip
@@ -207,14 +208,17 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 		if(M.multiply)
 			multiplicative += amt
 		else
-			. += amt
+			tiles_per_second += amt
 
 	for(var/multiplier in multiplicative)
-		. = round(. * multiplier, 0.01)
+		tiles_per_second = round(tiles_per_second * multiplier, 0.01)
 
-	. = round(., 0.01)
-	movement_delay = . == 0 ? 0 : round(10 / ., 0.01)
-	. = movement_delay
+	if(tiles_per_second <= 0)
+		movement_delay = 0
+	else
+		var/delay = round(10 / tiles_per_second, 0.01) // Convert to ds-between-steps
+		movement_delay = delay <= 0 ? 0 : delay
+		. = movement_delay
 
 	SEND_SIGNAL(src, COMSIG_MOB_MOVESPEED_UPDATED)
 

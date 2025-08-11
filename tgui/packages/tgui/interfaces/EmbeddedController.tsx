@@ -26,6 +26,7 @@ const ControllerKeypad = (props) => {
               <Button
                 fluid
                 bold
+                noclip
                 key={key}
                 mb="6px"
                 content={key}

@@ -48,3 +48,15 @@
   ToasterBan:
   - rscadd: Chalk is now edible
   - bugfix: Crayons are now edible again
+2025-07-30:
+  Francinum:
+  - rscadd: Embedded Controller Pin and ID Access programs
+  - code_imp: Static Pincode System
+  Kapu1178:
+  - rscadd: The Bodyscanner now has a print function.
+  - rscadd: Created a framework for 'Embedded' Computer4 Machines.
+  - rscadd: Embedded Controllers take input from a keybad and are mostly used to control
+      simple equipment.
+  - refactor: This system will eventually obsolete legacy Embedded Controllers, such
+      as those used in the Toxins burn chamber, and Virology.
+  - refactor: Rewrote ~100 items, report any new issues.

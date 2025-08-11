@@ -8,7 +8,7 @@
 #define ROW_STATUS 3
 
 #define AC_COMMAND_OPEN 1
-#define AC_COMMAND_CLOSE 2
+#define AC_COMMAND_CLOSE_AND_BOLT 2
 #define AC_COMMAND_UPDATE 3
 #define AC_COMMAND_BOLT 4
 #define AC_COMMAND_UNBOLT 5
@@ -82,7 +82,7 @@
 	fault_string = null
 
 	COOLDOWN_START(src, door_state_timeout, (10 SECONDS))
-	control_airlock(AC_COMMAND_CLOSE)
+	control_airlock(AC_COMMAND_CLOSE_AND_BOLT)
 	current_state = STATE_AWAIT
 	update_screen()
 
@@ -230,7 +230,7 @@
 				)
 			)
 			expected_airlock_state = "open"
-		if(AC_COMMAND_CLOSE)
+		if(AC_COMMAND_CLOSE_AND_BOLT)
 			signal = new(
 				src,
 				list(
@@ -314,7 +314,7 @@
 
 	switch(control_mode)
 		if(RTOS_CMODE_SECURE)
-			control_airlock(AC_COMMAND_CLOSE)
+			control_airlock(AC_COMMAND_CLOSE_AND_BOLT)
 		if(RTOS_CMODE_BOLTS) //This, doesn't make a whole lot of sense but we support it anyways!
 			if(airlock_bolt_state == "locked") //If locked
 				control_airlock(AC_COMMAND_UNBOLT)
@@ -430,6 +430,14 @@
 			if(text == "*")
 				get_computer().reboot()
 
+/datum/c4_file/terminal_program/operating_system/rtos/access_door/unlock_on_roundstart()
+	//Pretend we have the door state required for bolts mode
+	airlock_bolt_state = "locked"
+	accepted() //'Unlock'/'Unbolt'
+	airlock_bolt_state = null
+	if(dwell_time)
+		doorstop()
+
 #undef STATE_AWAIT
 #undef STATE_COUNTDOWN
 #undef STATE_HOLD
@@ -440,7 +448,7 @@
 #undef ROW_STATUS
 
 #undef AC_COMMAND_OPEN
-#undef AC_COMMAND_CLOSE
+#undef AC_COMMAND_CLOSE_AND_BOLT
 #undef AC_COMMAND_UPDATE
 #undef AC_COMMAND_BOLT
 #undef AC_COMMAND_UNBOLT

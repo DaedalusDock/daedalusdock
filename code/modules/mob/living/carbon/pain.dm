@@ -313,8 +313,8 @@
 	var/pain_passout = min(PAIN_AMT_PASSOUT * brain_health_factor * blood_circulation_factor, PAIN_AMT_PASSOUT)
 
 	if(pain >= (pain_passout * 0.075))
-		var/slowdown = min(pain * (PAIN_MAX_SLOWDOWN / pain_passout), PAIN_MAX_SLOWDOWN)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pain, TRUE, slowdown)
+		var/modifier = PAIN_MAX_SLOWDOWN * (pain / pain_passout)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pain, TRUE, modifier)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/pain)
 

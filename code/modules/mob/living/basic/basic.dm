@@ -10,8 +10,8 @@
 
 	var/basic_mob_flags = NONE
 
-	///Defines how fast the basic mob can move. This is a multiplier
-	var/speed = 1
+	/// The movespeed modifier of the mob in tiles/second
+	var/movement_speed_modifier = -0.5
 
 	///how much damage this basic mob does to objects, if any.
 	var/obj_damage = 0
@@ -124,20 +124,19 @@
 
 /mob/living/basic/vv_edit_var(vname, vval)
 	. = ..()
-	if(vname == NAMEOF(src, speed))
+	if(vname == NAMEOF(src, movement_speed_modifier))
 		datum_flags |= DF_VAR_EDITED
 		set_varspeed(vval)
 
 /mob/living/basic/proc/set_varspeed(var_value)
-	speed = var_value
+	movement_speed_modifier = var_value
 	update_basic_mob_varspeed()
 
 /mob/living/basic/proc/update_basic_mob_varspeed()
-	if(speed == 0)
+	if(movement_speed_modifier == 0)
 		remove_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed)
 
-	#warn check if this is the only speed mod they have
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed, modifier = speed)
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed, modifier = movement_speed_modifier)
 	SEND_SIGNAL(src, POST_BASIC_MOB_UPDATE_VARSPEED)
 
 /mob/living/basic/relaymove(mob/living/user, direction)

@@ -10,7 +10,7 @@
 	gender = FEMALE
 	mob_biotypes = MOB_ORGANIC | MOB_BEAST
 	speak_emote = list("moos","moos hauntingly")
-	speed = 1.1
+	movement_speed_modifier = -0.52
 	see_in_dark = 6
 	butcher_results = list(/obj/item/food/meat/slab = 6)
 	response_help_continuous = "pets"
@@ -122,7 +122,7 @@
 	icon_dead = "moonicorn_dead"
 	icon_gib = null //otherwise does the regular cow gib animation
 	faction = list("hostile")
-	speed = 1
+	movement_speed_modifier = -0.5
 	melee_damage_lower = 25
 	melee_damage_upper = 25
 	obj_damage = 35

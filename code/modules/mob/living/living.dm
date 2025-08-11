@@ -968,7 +968,7 @@
 
 /mob/living/proc/update_gravity(gravity)
 	// Handle movespeed stuff
-	var/speed_change = -1 * max(0, gravity - STANDARD_GRAVITY)
+	var/speed_change = -0.5 * max(0, gravity - STANDARD_GRAVITY)
 	if(speed_change)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/gravity, modifier = speed_change)
 	else

@@ -92,7 +92,7 @@
 //slowdown when in softcrit. Note that crawling slowdown will also apply at the same time!
 #define SOFTCRIT_MOVESPEED -1
 //slowdown when crawling
-#define CRAWLING_MOVESPEED -1.5
+#define CRAWLING_MOVESPEED_MULTIPLIER 0.4
 
 //Attack types for checking block reactions
 /// Attack was made with a melee weapon

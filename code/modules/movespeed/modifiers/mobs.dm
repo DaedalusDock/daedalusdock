@@ -28,9 +28,10 @@
 	blacklisted_movetypes = FLOATING
 
 /datum/movespeed_modifier/asystole
-	#warn TODO: make this multiplicative
-	modifier = -2
+	multiply = TRUE
+	modifier = 0.8
 	blacklisted_movetypes = FLOATING
+	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/equipment_speedmod
 	variable = TRUE
@@ -53,7 +54,7 @@
 	variable = TRUE
 
 /datum/movespeed_modifier/slime_healthmod
-	#warn TODO: make multiplier
+	multiply = TRUE
 	variable = TRUE
 
 /datum/movespeed_modifier/move_intent
@@ -105,7 +106,6 @@
 	modifier = -1.4
 
 /datum/movespeed_modifier/gravity
-	#warn TODO: make multiplicative
 	blacklisted_movetypes = FLOATING
 	variable = TRUE
 	flags = IGNORE_NOSLOW
@@ -115,21 +115,21 @@
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/slime_tempmod
-	#warn TODO make a multiplier
+	multiply = TRUE
 	variable = TRUE
 
 /datum/movespeed_modifier/living_exhaustion
-	#warn TODO make a multiplier?
-	modifier = STAMINA_EXHAUSTION_MOVESPEED
+	multiply = TRUE
+	modifier = STAMINA_EXHAUSTION_MOVESPEED_MULTIPLIER
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/carbon_crawling
-	#warn TODO make a multiplier?
-	modifier = CRAWLING_MOVESPEED
+	multiply = TRUE
+	modifier = CRAWLING_MOVESPEED_MULTIPLIER
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/mob_config_speedmod
-	#warn TODO make a multiplier
+	multiply = TRUE
 	variable = TRUE
 	flags = IGNORE_NOSLOW
 

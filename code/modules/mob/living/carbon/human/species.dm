@@ -1300,7 +1300,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		// clear any hot moods and apply cold mood
 		// Apply cold slow down
 
-		#warn test cold
 		humi.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/cold, modifier = COLD_MOVESPEED * max(1, ((cold_level_1 - humi.bodytemperature) / cold_level_1)))
 		// Display alerts based how cold it is
 		// Can't be a switch due to http://www.byond.com/forum/post/2750423

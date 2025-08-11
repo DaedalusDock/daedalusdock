@@ -36,7 +36,9 @@ Key procs
 	var/priority = 0
 	var/flags = NONE
 
-	/// How many steps-per-second to add or subtract from the final amount.
+	/// If TRUE, the modifier is multiplicative instead of additive. Multipliers are always applied last.
+	var/multiply = FALSE
+	/// How many steps-per-second to add or subtract from the final amount. If multiply == TRUE, this is multiplied instead of added or subtracted.
 	var/modifier = 0
 
 	/// Movetypes this applies to
@@ -172,7 +174,7 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 /// Get the global config movespeed of a mob by type
 /mob/proc/get_config_move_delay()
 	if(!islist(GLOB.mob_config_movespeed_type_lookup) || !GLOB.mob_config_movespeed_type_lookup[type])
-		return 0
+		return 1
 	else
 		return GLOB.mob_config_movespeed_type_lookup[type]
 
@@ -180,6 +182,8 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 /mob/proc/update_movespeed()
 	. = 0
 	var/list/conflict_tracker = list()
+	var/list/multiplicative = list()
+
 	for(var/key in get_movespeed_modifiers())
 		var/datum/movespeed_modifier/M = movespeed_modification[key]
 		if(!(M.movetypes & movement_type)) // We don't affect any of these move types, skip
@@ -187,6 +191,7 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 
 		if(M.blacklisted_movetypes & movement_type) // There's a movetype here that disables this modifier, skip
 			continue
+
 
 		var/conflict = M.conflicts_with
 		var/amt = M.modifier
@@ -199,10 +204,17 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 			else
 				continue
 
-		. += amt
+		if(M.multiply)
+			multiplicative += amt
+		else
+			. += amt
+
+	for(var/multiplier in multiplicative)
+		. = round(. * multiplier, 0.01)
 
 	. = round(., 0.01)
 	movement_delay = . == 0 ? 0 : round(10 / ., 0.01)
+	. = movement_delay
 
 	SEND_SIGNAL(src, COMSIG_MOB_MOVESPEED_UPDATED)
 

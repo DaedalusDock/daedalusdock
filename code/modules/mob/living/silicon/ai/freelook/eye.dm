@@ -41,7 +41,7 @@
 	var/list/old_images = hud_list[AI_DETECT_HUD]
 	if(!ai_detector_visible)
 		hud.remove_atom_from_hud(src)
-		QDEL_LIST(old_images)
+		old_images.Cut()
 		return
 
 	if(!length(hud.hud_users))

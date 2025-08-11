@@ -23,6 +23,8 @@
 #define CLEAN_TYPE_LIGHT_DECAL (1 << 9)
 /// Cleans decals such as cobwebs off the floor
 #define CLEAN_TYPE_HARD_DECAL (1 << 10)
+/// Cleans hidden blood off of the cleanable atom.
+#define CLEAN_TYPE_HIDDEN_BLOOD (1 << 11)
 
 // Different cleaning methods.
 // Use these when calling the wash proc for your cleaning apparatus

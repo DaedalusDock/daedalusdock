@@ -19,6 +19,11 @@
 	var/recent_spin = 0
 	var/last_fire = 0
 
+/obj/item/gun/ballistic/revolver/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	. = ..()
+	context[SCREENTIP_CONTEXT_RMB] = "Spin barrel"
+	return CONTEXTUAL_SCREENTIP_SET
+
 /obj/item/gun/ballistic/revolver/do_fire_gun(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
 	. = ..()
 	last_fire = world.time
@@ -37,9 +42,21 @@
 	if(auto_chamber)
 		chamber_round(spin_cylinder = TRUE)
 
-/obj/item/gun/ballistic/revolver/AltClick(mob/user)
-	..()
+/obj/item/gun/ballistic/revolver/attack_self_secondary(mob/user, modifiers)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
 	spin()
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+/obj/item/gun/ballistic/revolver/attack_hand_secondary(mob/user, list/modifiers)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
+	spin()
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/gun/ballistic/revolver/play_fire_sound()
 	var/frequency_to_use = sin((90/magazine?.max_ammo) * get_ammo(TRUE, FALSE)) // fucking REVOLVERS
@@ -61,16 +78,18 @@
 
 	var/mob/M = usr
 
-	if(M.stat || !in_range(M,src))
+	if(M.stat || !M.is_holding(src))
 		return
 
 	if (recent_spin > world.time)
 		return
+
 	recent_spin = world.time + spin_delay
 
 	if(do_spin())
 		playsound(usr, SFX_REVOLVER_SPIN, 30, FALSE)
-		usr.visible_message(span_notice("[usr] spins [src]'s chamber."), span_notice("You spin [src]'s chamber."))
+		usr.visible_message(span_notice("[usr] spins [src]'s chamber."))
+		return TRUE
 	else
 		verbs -= /obj/item/gun/ballistic/revolver/verb/spin
 
@@ -92,7 +111,8 @@
 /obj/item/gun/ballistic/revolver/examine(mob/user)
 	. = ..()
 	var/live_ammo = get_ammo(FALSE, FALSE)
-	. += "[live_ammo ? live_ammo : "None"] of those are live rounds."
+	if(get_ammo(FALSE, TRUE))
+		. += span_notice("[live_ammo ? live_ammo : "None"] of them are live rounds.")
 	if (current_skin)
 		. += "It can be spun with <b>alt+click</b>"
 

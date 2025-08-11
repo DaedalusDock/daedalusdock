@@ -17,7 +17,7 @@
 /obj/item/clothing/gloves/color/yellow/heavy
 	name = "ceramic-lined insulated gloves"
 	desc = "A cheaper make of the standard insulated gloves, using internal ceramic lining to make up for the sub-par rubber material. The extra weight makes them more bulky to use."
-	slowdown = 1
+	worn_movespeed_modifier = -0.5
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/toy/sprayoncan

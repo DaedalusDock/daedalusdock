@@ -15,7 +15,7 @@
 	lefthand_file = 'icons/mob/inhands/equipment/banners_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/banners_righthand.dmi'
 	desc = "A banner with Nanotrasen's logo on it."
-	slowdown = 2
+	worn_movespeed_modifier = -0.8
 	throw_speed = 0
 	throw_range = 1
 	force = 200

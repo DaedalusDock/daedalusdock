@@ -22,7 +22,7 @@
 	var/start_open = TRUE // unless this var is set to 1
 	var/icon_state_closed = "laptop-closed"
 	var/w_class_open = WEIGHT_CLASS_BULKY
-	var/slowdown_open = TRUE
+	var/slowdown_open = -0.5
 
 /obj/item/modular_computer/laptop/examine(mob/user)
 	. = ..()
@@ -105,11 +105,11 @@
 /obj/item/modular_computer/laptop/proc/toggle_open(mob/living/user=null)
 	if(screen_on)
 		to_chat(user, span_notice("You close \the [src]."))
-		slowdown = initial(slowdown)
+		worn_movespeed_modifier = initial(worn_movespeed_modifier)
 		set_weight_class(initial(w_class))
 	else
 		to_chat(user, span_notice("You open \the [src]."))
-		slowdown = slowdown_open
+		worn_movespeed_modifier = slowdown_open
 		set_weight_class(w_class_open)
 
 	screen_on = !screen_on

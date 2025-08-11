@@ -53,7 +53,7 @@
 	if(!istype(target_item))
 		return
 
-	target_item.slowdown += MATERIAL_SLOWDOWN_PLASTEEL * amount / MINERAL_MATERIAL_AMOUNT
+	target_item.worn_movespeed_modifier += MATERIAL_MOVESPEED_PLASTEEL * amount / MINERAL_MATERIAL_AMOUNT
 
 /datum/material/alloy/plasteel/on_removed_obj(obj/item/target_item, amount, material_flags)
 	. = ..()
@@ -61,7 +61,7 @@
 	if(!istype(target_item))
 		return
 
-	target_item.slowdown -= MATERIAL_SLOWDOWN_PLASTEEL * amount / MINERAL_MATERIAL_AMOUNT
+	target_item.worn_movespeed_modifier -= MATERIAL_MOVESPEED_PLASTEEL * amount / MINERAL_MATERIAL_AMOUNT
 
 /** Plastitanium
  *
@@ -170,7 +170,7 @@
 	if(!istype(target_item))
 		return
 
-	target_item.slowdown += MATERIAL_SLOWDOWN_ALIEN_ALLOY * amount / MINERAL_MATERIAL_AMOUNT
+	target_item.worn_movespeed_modifier += MATERIAL_MOVESPEED_ALIEN_ALLOY * amount / MINERAL_MATERIAL_AMOUNT
 
 /datum/material/alloy/alien/on_removed_obj(obj/item/target_item, amount, material_flags)
 	. = ..()
@@ -179,4 +179,4 @@
 	if(!istype(target_item))
 		return
 
-	target_item.slowdown -= MATERIAL_SLOWDOWN_ALIEN_ALLOY * amount / MINERAL_MATERIAL_AMOUNT
+	target_item.worn_movespeed_modifier -= MATERIAL_MOVESPEED_ALIEN_ALLOY * amount / MINERAL_MATERIAL_AMOUNT

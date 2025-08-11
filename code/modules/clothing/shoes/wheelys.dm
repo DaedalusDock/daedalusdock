@@ -63,7 +63,7 @@
 	greyscale_colors = null
 	greyscale_config = null
 	worn_icon_state = "rollerskates"
-	slowdown = parent_type::slowdown + 1 // Slower than normal
+	worn_movespeed_modifier = parent_type::worn_movespeed_modifier - 0.5 // Slower than normal
 	wheels = /obj/vehicle/ridden/scooter/skateboard/wheelys/rollerskates
 	custom_premium_price = PAYCHECK_EASY * 5
 	custom_price = PAYCHECK_EASY * 5
@@ -75,7 +75,7 @@
 	greyscale_colors = null
 	greyscale_config = null
 	worn_icon_state = "skishoes"
-	slowdown = parent_type::slowdown + 1 // Slower than normal
+	worn_movespeed_modifier = parent_type::worn_movespeed_modifier - 0.5 // Slower than normal
 	wheels = /obj/vehicle/ridden/scooter/skateboard/wheelys/skishoes
 	custom_premium_price = PAYCHECK_EASY * 1.6
 	custom_price = PAYCHECK_EASY * 1.6

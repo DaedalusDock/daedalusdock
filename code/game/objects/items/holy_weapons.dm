@@ -19,7 +19,7 @@ TYPEINFO_DEF(/obj/item/clothing/head/helmet/chaplain/clock)
 	icon_state = "clockwork_cuirass"
 	inhand_icon_state = "clockwork_cuirass_inhand"
 	allowed = list(/obj/item/storage/book/bible, /obj/item/nullrod, /obj/item/reagent_containers/cup/glass/bottle/holywater, /obj/item/storage/fancy/candle_box, /obj/item/candle, /obj/item/tank/internals/emergency_oxygen)
-	slowdown = 0
+	worn_movespeed_modifier = 0
 	clothing_flags = NONE
 
 TYPEINFO_DEF(/obj/item/clothing/head/helmet/chaplain)
@@ -41,7 +41,7 @@ TYPEINFO_DEF(/obj/item/clothing/head/helmet/chaplain)
 	icon_state = "knight_templar"
 	inhand_icon_state = "knight_templar"
 	allowed = list(/obj/item/storage/book/bible, /obj/item/nullrod, /obj/item/reagent_containers/cup/glass/bottle/holywater, /obj/item/storage/fancy/candle_box, /obj/item/candle, /obj/item/tank/internals/emergency_oxygen)
-	slowdown = 0
+	worn_movespeed_modifier = 0
 	clothing_flags = NONE
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_VOX_VARIATION
 
@@ -648,7 +648,7 @@ TYPEINFO_DEF(/obj/item/clothing/head/helmet/chaplain)
 	. = ..()
 
 /obj/item/nullrod/tribal_knife/process()
-	slowdown = rand(-10, 10)/10
+	worn_movespeed_modifier = rand(-0.4, 0.4)
 	if(iscarbon(loc))
 		var/mob/living/carbon/wielder = loc
 		if(wielder.is_holding(src))

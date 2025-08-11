@@ -106,7 +106,7 @@ TYPEINFO_DEF(/obj/item/gun/energy/minigun)
 	icon = 'icons/obj/guns/minigun.dmi'
 	icon_state = "minigun_spin"
 	inhand_icon_state = "minigun"
-	slowdown = 1
+	worn_movespeed_modifier = -0.5
 	slot_flags = null
 	w_class = WEIGHT_CLASS_HUGE
 

@@ -22,4 +22,4 @@ TYPEINFO_DEF(/obj/item/clothing/suit/space/hardsuit/medical)
 	inhand_icon_state = "medical_hardsuit"
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/storage/medkit, /obj/item/healthanalyzer, /obj/item/stack/medical)
 	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/medical
-	slowdown = 0.5
+	worn_movespeed_modifier = -0.28

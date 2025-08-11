@@ -22,7 +22,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/fire)
 	permeability_coefficient = 0.5
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/extinguisher, /obj/item/crowbar)
-	slowdown = 1
+	worn_movespeed_modifier = -0.5
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL
 	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
@@ -45,7 +45,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/fire)
 	desc = "An old, bulky thermal protection suit."
 	icon_state = "thermal"
 	inhand_icon_state = "ro_suit"
-	slowdown = 1.5
+	worn_movespeed_modifier = -0.7
 
 /obj/item/clothing/suit/fire/atmos
 	name = "firesuit"
@@ -89,7 +89,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/bomb_suit)
 	permeability_coefficient = 0.01
 	clothing_flags = THICKMATERIAL
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	slowdown = 2
+	worn_movespeed_modifier = -0.8
 	flags_inv = HIDEJUMPSUIT
 	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = ARMOR_MAX_TEMP_PROTECT
@@ -155,7 +155,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/radiation)
 	clothing_flags = THICKMATERIAL
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/geiger_counter)
-	slowdown = 1.5
+	worn_movespeed_modifier = -0.7
 	strip_delay = 60
 	equip_delay_other = 60
 	flags_inv = HIDEJUMPSUIT

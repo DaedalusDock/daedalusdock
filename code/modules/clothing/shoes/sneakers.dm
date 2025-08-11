@@ -72,7 +72,7 @@
 /obj/item/clothing/shoes/sneakers/orange/attack_self(mob/user)
 	if (chained)
 		chained = FALSE
-		slowdown = initial(slowdown)
+		worn_movespeed_modifier = initial(worn_movespeed_modifier)
 		new /obj/item/restraints/handcuffs( user.loc )
 		icon_state = initial(icon_state)
 	return
@@ -83,7 +83,7 @@
 	if (H.type == /obj/item/restraints/handcuffs && !chained)
 		qdel(H)
 		chained = TRUE
-		slowdown = 15
+		worn_movespeed_modifier = -2
 		icon_state = "sneakers_chained"
 	return
 

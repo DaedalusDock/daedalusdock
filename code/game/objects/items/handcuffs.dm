@@ -307,7 +307,7 @@ TYPEINFO_DEF(/obj/item/restraints/handcuffs/cable/zipties)
 	flags_1 = CONDUCT_1
 	throwforce = 0
 	w_class = WEIGHT_CLASS_NORMAL
-	slowdown = 7
+	worn_movespeed_modifier = -1.6
 	breakouttime = 30 SECONDS
 
 /**
@@ -523,7 +523,7 @@ TYPEINFO_DEF(/obj/item/restraints/handcuffs/cable/zipties)
 	icon_state = "gonbola"
 	inhand_icon_state = "bola_r"
 	breakouttime = 30 SECONDS
-	slowdown = 0
+	worn_movespeed_modifier = 0
 	var/datum/status_effect/gonbola_pacify/effectReference
 
 /obj/item/restraints/legcuffs/bola/gonbola/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)

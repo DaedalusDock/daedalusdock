@@ -83,7 +83,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/armor/vest/marine)
 	desc = "Older generation Type 1 armored vest. Due to degradation over time the vest is far less maneuverable to move in."
 	icon_state = "armor"
 	inhand_icon_state = "armor"
-	slowdown = 1
+	worn_movespeed_modifier = -0.5
 
 /obj/item/clothing/suit/armor/vest/blueshirt
 	name = "large armor vest"
@@ -295,7 +295,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/armor/swat)
 	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT_OFF
 	heat_protection = CHEST | GROIN | LEGS | FEET | ARMS | HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
-	slowdown = 0.7
+	worn_movespeed_modifier = -0.37
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 
 //All of the armor below is mostly unused
@@ -311,7 +311,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/armor/heavy)
 	w_class = WEIGHT_CLASS_BULKY
 	clothing_flags = THICKMATERIAL
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	slowdown = 3
+	worn_movespeed_modifier = -1
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 
 TYPEINFO_DEF(/obj/item/clothing/suit/armor/tdome)

@@ -12,7 +12,7 @@ TYPEINFO_DEF(/obj/item/watertank)
 	righthand_file = 'icons/mob/inhands/equipment/backpack_righthand.dmi'
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
-	slowdown = 1
+	worn_movespeed_modifier = -0.5
 	actions_types = list(/datum/action/item_action/toggle_mister)
 	max_integrity = 200
 	resistance_flags = FIRE_PROOF
@@ -211,7 +211,7 @@ TYPEINFO_DEF(/obj/item/watertank)
 	icon_state = "waterbackpackatmos"
 	worn_icon_state = "waterbackpackatmos"
 	volume = 200
-	slowdown = 0
+	worn_movespeed_modifier = 0
 
 /obj/item/watertank/atmos/Initialize(mapload)
 	. = ..()
@@ -392,7 +392,7 @@ TYPEINFO_DEF(/obj/item/watertank)
 	righthand_file = 'icons/mob/inhands/equipment/backpack_righthand.dmi'
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
-	slowdown = 1
+	worn_movespeed_modifier = -0.5
 	actions_types = list(/datum/action/item_action/activate_injector)
 
 	var/on = FALSE

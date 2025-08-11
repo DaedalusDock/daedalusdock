@@ -13,8 +13,8 @@
 
 	/// Whether the magpulse system is active
 	var/magpulse = FALSE
-	/// Slowdown applied wwhen magpulse is active. This is added onto existing slowdown
-	var/slowdown_active = 2
+	/// Additional movespeed modifier applied when magpulse is active. This is added onto existing slowdown
+	var/movespeed_modifier_active = -0.8
 	/// A list of traits we apply when we get activated
 	var/list/active_traits = list(TRAIT_NO_SLIP_WATER, TRAIT_NO_SLIP_ICE, TRAIT_NO_SLIP_SLIDE, TRAIT_NEGATES_GRAVITY)
 
@@ -27,7 +27,7 @@
 /obj/item/clothing/shoes/magboots/proc/on_speed_potioned(datum/source)
 	SIGNAL_HANDLER
 
-	slowdown_active = 0
+	movespeed_modifier_active = 0
 	// Don't need to touch the actual slowdown here, since the speed potion does it for us
 
 /obj/item/clothing/shoes/magboots/verb/toggle()
@@ -42,10 +42,10 @@
 	magpulse = !magpulse
 	if(magpulse)
 		attach_clothing_traits(active_traits)
-		slowdown += slowdown_active
+		worn_movespeed_modifier += movespeed_modifier_active
 	else
 		detach_clothing_traits(active_traits)
-		slowdown = max(initial(slowdown), slowdown - slowdown_active) // Just in case, for speed pot shenanigans
+		worn_movespeed_modifier = max(initial(worn_movespeed_modifier), worn_movespeed_modifier - movespeed_modifier_active) // Just in case, for speed pot shenanigans
 
 	update_appearance()
 	to_chat(user, span_notice("You turn [src] [magpulse ? "on" : "off"]."))
@@ -65,7 +65,7 @@
 	name = "advanced magboots"
 	icon_state = "advmag0"
 	base_icon_state = "advmag"
-	slowdown_active = parent_type::slowdown // ZERO active slowdown
+	movespeed_modifier_active = parent_type::worn_movespeed_modifier // ZERO active slowdown
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
 /obj/item/clothing/shoes/magboots/syndie

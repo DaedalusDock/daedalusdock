@@ -40,7 +40,7 @@
 
 /obj/item/mod/module/armor_booster/on_activation()
 	playsound(src, 'sound/mecha/mechmove03.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
-	mod.slowdown += added_slowdown
+	mod.worn_movespeed_modifier += added_slowdown
 	mod.wearer.update_equipment_speed_mods()
 
 	for(var/obj/item/part as anything in mod.get_parts(include_control = TRUE))
@@ -57,7 +57,7 @@
 	if(!deleting)
 		playsound(src, 'sound/mecha/mechmove03.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
-	mod.slowdown -= added_slowdown
+	mod.worn_movespeed_modifier -= added_slowdown
 	mod.wearer.update_equipment_speed_mods()
 	var/list/removed_armor = armor_values.Copy()
 	for(var/armor_type in removed_armor)

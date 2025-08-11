@@ -25,7 +25,7 @@
 	icon_state = "void"
 	inhand_icon_state = "void"
 	desc = "A cumbersome spacesuit older than you are."
-	slowdown = 1.2
+	worn_movespeed_modifier = -0.6
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/multitool)
 
 	//EVA suit
@@ -86,7 +86,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/space/fragile)
 	var/torn = FALSE
 	icon_state = "syndicate-orange"
 	inhand_icon_state = "syndicate-orange"
-	slowdown = 2
+	worn_movespeed_modifier = -0.8
 	strip_delay = 65
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 

@@ -169,8 +169,8 @@ DEFINE_INTERACTABLE(/obj/item)
 	var/permeability_coefficient = 1
 	/// for electrical admittance/conductance (electrocution checks and shit)
 	var/siemens_coefficient = 1
-	/// How much clothing is slowing you down. Negative values speeds you up
-	var/slowdown = 0
+	/// A movespeed modifier applied to the wearer (tiles/second). Does not apply in pockets, and only applies if held if it has the item flag SLOWS_WHILE_IN_HAND
+	var/worn_movespeed_modifier = 0
 	///percentage of armour effectiveness to remove
 	var/armor_penetration = 0
 	/// A multiplier applied to the target's armor. "2" means that their armor is twice as effective against this item.
@@ -861,7 +861,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		playsound(src, drop_sound, DROP_SOUND_VOLUME, ignore_walls = FALSE)
 
 	if(!QDELETED(user))
-		if(slowdown)
+		if(worn_movespeed_modifier)
 			user.update_equipment_speed_mods()
 		user.update_mouse_pointer()
 
@@ -925,7 +925,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		else if(slot == ITEM_SLOT_HANDS)
 			playsound(src, pickup_sound, PICKUP_SOUND_VOLUME, ignore_walls = FALSE)
 
-	if(slowdown)
+	if(worn_movespeed_modifier)
 		user.update_equipment_speed_mods()
 	visual_equipped(user, slot, initial)
 

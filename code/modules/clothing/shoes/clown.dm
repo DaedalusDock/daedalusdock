@@ -3,7 +3,7 @@
 	name = "clown shoes"
 	icon_state = "clown"
 	inhand_icon_state = "clown_shoes"
-	slowdown = parent_type::slowdown + 1 // Slower than normal
+	worn_movespeed_modifier = parent_type::worn_movespeed_modifier - 0.5 // Slower than normal
 	var/enabled_waddle = TRUE
 	lace_time = 20 SECONDS // how the hell do these laces even work??
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION

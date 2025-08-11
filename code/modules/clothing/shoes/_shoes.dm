@@ -12,7 +12,7 @@
 	supports_variations_flags = CLOTHING_VOX_VARIATION | CLOTHING_DIGITIGRADE_VARIATION
 
 	permeability_coefficient = 0.5
-	slowdown = 0
+	worn_movespeed_modifier = 0
 
 	equip_self_flags = NONE
 	equip_delay_self = EQUIP_DELAY_SHOES

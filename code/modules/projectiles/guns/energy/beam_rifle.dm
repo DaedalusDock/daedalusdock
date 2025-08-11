@@ -37,7 +37,7 @@ TYPEINFO_DEF(/obj/item/gun/energy/beam_rifle)
 	var/aiming_time_fire_threshold = 5
 	var/aiming_time_left = 12
 	var/aiming_time_increase_user_movement = 3
-	var/scoped_slow = 1
+	var/scoped_slow = -0.5
 	var/aiming_time_increase_angle_multiplier = 0.3
 	var/last_process = 0
 
@@ -154,9 +154,9 @@ TYPEINFO_DEF(/obj/item/gun/energy/beam_rifle)
 
 /obj/item/gun/energy/beam_rifle/proc/update_slowdown()
 	if(aiming)
-		slowdown = scoped_slow
+		worn_movespeed_modifier = scoped_slow
 	else
-		slowdown = initial(slowdown)
+		worn_movespeed_modifier = initial(worn_movespeed_modifier)
 
 /obj/item/gun/energy/beam_rifle/Initialize(mapload)
 	. = ..()

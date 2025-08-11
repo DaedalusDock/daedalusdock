@@ -59,10 +59,10 @@ TYPEINFO_DEF(/obj/item/mod/control)
 	var/complexity = 0
 	/// Power usage of the MOD.
 	var/charge_drain = DEFAULT_CHARGE_DRAIN
-	/// Slowdown of the MOD when not active.
-	var/slowdown_inactive = 0
-	/// Slowdown of the MOD when active.
-	var/slowdown_active = 0
+	/// Movespeed modifier while inactive.
+	var/movespeed_active = 0
+	/// Movespeed modifier when active.
+	var/movespeed_inactive = 0
 	/// How long this MOD takes each part to seal.
 	var/activation_step_time = MOD_ACTIVATION_STEP_TIME
 	/// Extended description of the theme.
@@ -634,7 +634,7 @@ TYPEINFO_DEF(/obj/item/mod/control)
 
 /obj/item/mod/control/proc/update_speed()
 	for(var/obj/item/part as anything in get_parts(include_control = TRUE))
-		part.slowdown = (active ? slowdown_active : slowdown_inactive) / length(mod_parts)
+		part.worn_movespeed_modifier = (active ? movespeed_active : movespeed_inactive) / length(mod_parts)
 	wearer?.update_equipment_speed_mods()
 
 /obj/item/mod/control/proc/power_off()
@@ -702,16 +702,18 @@ TYPEINFO_DEF(/obj/item/mod/control)
 /obj/item/mod/control/proc/on_potion(atom/movable/source, obj/item/slimepotion/speed/speed_potion, mob/living/user)
 	SIGNAL_HANDLER
 
-	if(slowdown_inactive <= 0)
+	if(movespeed_inactive >= 0)
 		to_chat(user, span_warning("[src] has already been coated with red, that's as fast as it'll go!"))
 		return SPEED_POTION_STOP
+
 	if(active)
 		to_chat(user, span_warning("It's too dangerous to smear [speed_potion] on [src] while it's active!"))
 		return SPEED_POTION_STOP
+
 	to_chat(user, span_notice("You slather the red gunk over [src], making it faster."))
 	set_mod_color("#FF0000")
-	slowdown_inactive = 0
-	slowdown_active = 0
+	movespeed_inactive = 0
+	movespeed_active = 0
 	update_speed()
 	qdel(speed_potion)
 	return SPEED_POTION_STOP

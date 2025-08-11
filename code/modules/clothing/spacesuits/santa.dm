@@ -11,5 +11,5 @@
 	desc = "Festive!"
 	icon_state = "santa"
 	inhand_icon_state = "santa"
-	slowdown = 0
+	worn_movespeed_modifier = 0
 	allowed = list(/obj/item) //for stuffing exta special presents

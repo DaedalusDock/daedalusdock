@@ -150,7 +150,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/space/syndicate)
 /obj/item/clothing/suit/space/syndicate/contract
 	name = "contractor space suit"
 	desc = "A specialised black and gold space suit that's quicker, and more compact than its standard Syndicate counterpart. Can be ultra-compressed into even the tightest of spaces."
-	slowdown = 1
+	worn_movespeed_modifier = -0.5
 	w_class = WEIGHT_CLASS_SMALL
 	icon_state = "syndicate-contract"
 	inhand_icon_state = "syndicate-contract"

@@ -281,7 +281,7 @@ Striking a noncultist, however, will tear their flesh."}
 	sword.spinning = TRUE
 	sword.block_chance = 100
 	sword.block_angle = 180
-	sword.slowdown += 1.5
+	sword.worn_movespeed_modifier += -0.7
 	addtimer(CALLBACK(src, PROC_REF(stop_spinning)), 50)
 	holder?.update_mob_action_buttons()
 
@@ -289,7 +289,7 @@ Striking a noncultist, however, will tear their flesh."}
 	sword.spinning = FALSE
 	sword.block_chance = 50
 	sword.block_angle = 45
-	sword.slowdown -= 1.5
+	sword.worn_movespeed_modifier -= -0.7
 	sleep(sword.spin_cooldown)
 	holder?.update_mob_action_buttons()
 
@@ -493,7 +493,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/hooded/cultrobes/berserker)
 	name = "flagellant's robes"
 	desc = "Blood-soaked robes infused with dark magic; allows the user to move at inhuman speeds, but at the cost of increased damage."
 	allowed = list(/obj/item/tome, /obj/item/melee/cultblade)
-	slowdown = -0.6
+	worn_movespeed_modifier = 0.5
 	hoodtype = /obj/item/clothing/head/hooded/cult_hoodie/berserkerhood
 
 TYPEINFO_DEF(/obj/item/clothing/head/hooded/cult_hoodie/berserkerhood)

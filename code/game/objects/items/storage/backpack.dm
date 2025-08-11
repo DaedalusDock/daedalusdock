@@ -404,7 +404,7 @@ TYPEINFO_DEF(/obj/item/storage/backpack/holding)
 	desc = "A large duffel bag for holding extra things."
 	icon_state = "duffel"
 	inhand_icon_state = "duffel"
-	slowdown = 1
+	worn_movespeed_modifier = -0.5
 
 /obj/item/storage/backpack/duffelbag/Initialize()
 	. = ..()
@@ -415,7 +415,7 @@ TYPEINFO_DEF(/obj/item/storage/backpack/holding)
 	desc = "A cursed clown duffel bag that hungers for food of any kind.\n A warning label suggests that it eats food inside. If that food happens to be a horribly ruined, burned mess the chef scrapped out of the microwave, then it might have negative effects on the bag..."
 	icon_state = "duffel-curse"
 	inhand_icon_state = "duffel-curse"
-	slowdown = 2
+	worn_movespeed_modifier = -0.8
 	item_flags = DROPDEL
 	max_integrity = 100
 	///counts time passed since it ate food
@@ -569,7 +569,7 @@ TYPEINFO_DEF(/obj/item/storage/backpack/holding)
 	desc = "A large duffel bag for holding extra tactical supplies."
 	icon_state = "duffel-syndie"
 	inhand_icon_state = "duffel-syndieammo"
-	slowdown = 0
+	worn_movespeed_modifier = 0
 	resistance_flags = FIRE_PROOF
 	supports_variations_flags = NONE
 
@@ -727,7 +727,7 @@ TYPEINFO_DEF(/obj/item/storage/backpack/holding)
 // For ClownOps.
 /obj/item/storage/backpack/duffelbag/clown/syndie/Initialize()
 	. = ..()
-	slowdown = 0
+	worn_movespeed_modifier = 0
 	atom_storage.silent = TRUE
 
 /obj/item/storage/backpack/duffelbag/clown/syndie/PopulateContents()
@@ -748,6 +748,6 @@ TYPEINFO_DEF(/obj/item/storage/backpack/holding)
 /obj/item/storage/backpack/duffelbag/cops
 	name = "police bag"
 	desc = "A large duffel bag for holding extra police gear."
-	slowdown = 0
+	worn_movespeed_modifier = 0
 	supports_variations_flags = NONE
 

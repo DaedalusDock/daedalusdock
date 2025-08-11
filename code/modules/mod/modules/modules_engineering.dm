@@ -58,28 +58,29 @@
 	incompatible_modules = list(/obj/item/mod/module/magboot, /obj/item/mod/module/atrocinator)
 	cooldown_time = 0.5 SECONDS
 	required_slots = list(ITEM_SLOT_FEET)
-	/// Slowdown added onto the suit.
-	var/slowdown_active = 0.5
+
+	/// Movespeed modifier delta when active
+	var/movespeed_modifier_active = -0.25
 	/// A list of traits to add to the wearer when we're active (see: Magboots)
 	var/list/active_traits = list(TRAIT_NO_SLIP_WATER, TRAIT_NO_SLIP_ICE, TRAIT_NO_SLIP_SLIDE, TRAIT_NEGATES_GRAVITY)
 
 /obj/item/mod/module/magboot/on_activation()
 	for(var/new_trait in active_traits)
 		ADD_TRAIT(mod.wearer, new_trait, MOD_TRAIT)
-	mod.slowdown += slowdown_active
+	mod.worn_movespeed_modifier += movespeed_modifier_active
 	mod.wearer.update_equipment_speed_mods()
 
 /obj/item/mod/module/magboot/on_deactivation(display_message = TRUE, deleting = FALSE)
 	for(var/old_trait in active_traits)
 		REMOVE_TRAIT(mod.wearer, old_trait, MOD_TRAIT)
-	mod.slowdown -= slowdown_active
+	mod.worn_movespeed_modifier -= movespeed_modifier_active
 	mod.wearer.update_equipment_speed_mods()
 
 /obj/item/mod/module/magboot/advanced
 	name = "MOD advanced magnetic stability module"
 	removable = FALSE
 	complexity = 0
-	slowdown_active = 0
+	movespeed_modifier_active = 0
 
 ///Emergency Tether - Shoots a grappling hook projectile in 0g that throws the user towards it.
 /obj/item/mod/module/tether

@@ -296,7 +296,7 @@ TYPEINFO_DEF(/obj/item/clothing/head/hooded/carp_hood/spaceproof)
 /obj/item/clothing/suit/hooded/carp_costume/spaceproof/old
 	name = "battered carp space suit"
 	desc = "It's covered in bite marks and scratches, yet seems to be still perfectly functional."
-	slowdown = 1
+	worn_movespeed_modifier = -0.5
 
 /obj/item/clothing/suit/hooded/ian_costume //It's Ian, rub his bell- oh god what happened to his inside parts?
 	name = "corgi costume"

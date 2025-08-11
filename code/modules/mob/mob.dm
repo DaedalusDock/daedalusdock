@@ -1562,14 +1562,14 @@
 	if(!speedies)
 		remove_movespeed_modifier(/datum/movespeed_modifier/equipment_speedmod)
 	else
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/equipment_speedmod, slowdown = speedies)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/equipment_speedmod, modifier = speedies)
 
 /// Gets the combined speed modification of all worn items
 /// Except base mob type doesnt really wear items
 /mob/proc/equipped_speed_mods()
 	for(var/obj/item/I in held_items)
 		if(I.item_flags & SLOWS_WHILE_IN_HAND)
-			. += I.slowdown
+			. += I.worn_movespeed_modifier
 
 /mob/proc/set_stat(new_stat)
 	if(new_stat == stat)

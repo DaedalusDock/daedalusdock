@@ -32,7 +32,7 @@
 	inhand_icon_state = fried.inhand_icon_state
 	desc = fried.desc
 	set_weight_class(fried.w_class)
-	slowdown = fried.slowdown
+	worn_movespeed_modifier = fried.worn_movespeed_modifier
 	equip_self_flags = fried.equip_self_flags
 	equip_delay_self = fried.equip_delay_self
 	equip_delay_other = fried.equip_delay_other

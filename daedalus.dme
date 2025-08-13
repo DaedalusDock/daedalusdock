@@ -4106,6 +4106,7 @@
 #include "code\modules\ninja\suit\ninja_equipment_actions\ninja_sword_recall.dm"
 #include "code\modules\NTNet\network.dm"
 #include "code\modules\NTNet\relays.dm"
+#include "code\modules\pager\_pager.dm"
 #include "code\modules\paperwork\carbonpaper.dm"
 #include "code\modules\paperwork\clipboard.dm"
 #include "code\modules\paperwork\contract.dm"

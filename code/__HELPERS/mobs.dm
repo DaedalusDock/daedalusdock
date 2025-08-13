@@ -136,32 +136,32 @@
 	return pick(GLOB.skin_tones)
 
 GLOBAL_LIST_INIT(skin_tones, sort_list(list(
-	"albino",
-	"caucasian1",
-	"caucasian2",
-	"caucasian3",
-	"latino",
-	"mediterranean",
-	"asian1",
-	"asian2",
-	"arab",
-	"indian",
-	"african1",
-	"african2"
+	"albino" = "#fff4e6",
+	"caucasian1" = "#ffe0d1",
+	"caucasian2" = "#fcccb3",
+	"caucasian3" = "#e8b59b",
+	"latino" = "#d9ae96",
+	"mediterranean" = "#c79b8b",
+	"asian1" = "#ffdeb3",
+	"asian2" = "#e3ba84",
+	"arab" = "#c4915e",
+	"indian" = "#b87840",
+	"african1" = "#754523",
+	"african2" = "#471c18"
 	)))
 
 GLOBAL_LIST_INIT(skin_tone_names, list(
-	"african1" = "Medium brown",
-	"african2" = "Dark brown",
+	"african1" = "Gondari",
+	"african2" = "Gondari 2",
 	"albino" = "Albino",
-	"arab" = "Light brown",
-	"asian1" = "Ivory",
-	"asian2" = "Beige",
-	"caucasian1" = "Porcelain",
-	"caucasian2" = "Light peach",
-	"caucasian3" = "Peach",
-	"indian" = "Brown",
-	"latino" = "Light beige",
+	"arab" = "Emerati",
+	"asian1" = "Shaantian (North)",
+	"asian2" = "Ikkonese",
+	"caucasian1" = "Fjällröker",
+	"caucasian2" = "Orleanian",
+	"caucasian3" = "Saxon",
+	"indian" = "Shaantian (South)",
+	"latino" = "Estranian",
 	"mediterranean" = "Olive",
 ))
 

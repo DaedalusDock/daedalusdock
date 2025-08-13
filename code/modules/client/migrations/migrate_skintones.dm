@@ -13,7 +13,7 @@
 			"caucasian3" = "Saxon",
 			"indian" = "Shaantian (South)",
 			"latino" = "Estranian",
-			"mediterranean" = "Olive",
+			"mediterranean" = "Ravennar",
 		)
 
 	var/new_skintone = skintone_map[save_data["skin_tone"]]

@@ -3,7 +3,8 @@ GLOBAL_REAL(immortals, /list) = list(
 	"OrdoDictionary",
 	"DrSingh",
 	"Desolane900",
-	"Honkertron"
+	"Honkertron",
+	"PWNRA aka Gramps"
 )
 
 /*

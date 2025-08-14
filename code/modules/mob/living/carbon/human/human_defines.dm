@@ -47,7 +47,7 @@
 	var/eye_color_heterochromatic = FALSE
 	var/sclera_color = ""
 
-	var/skin_tone = "caucasian1" //Skin tone
+	var/skin_tone = "Fjällröker" //Skin tone
 
 	var/lip_style = null //no lipstick by default- arguably misleading, as it could be used for general makeup
 	var/lip_color = "white"

@@ -61,7 +61,8 @@
 	on_hood_created?.Invoke(hood)
 
 /// Attempt to equip the hood.
-/datum/component/hooded/proc/try_equip_hood(obj/item/clothing/clothing_parent, mob/living/wearer)
+/datum/component/hooded/proc/try_equip_hood(mob/living/wearer)
+	var/obj/item/clothing/clothing_parent = parent
 	if(wearer.get_item_by_slot(clothing_parent.slot_flags) != clothing_parent)
 		to_chat(wearer, span_warning("You must be wearing [clothing_parent] to put up the hood."))
 		return FALSE
@@ -79,7 +80,7 @@
 	if(pre_equip_hood && !pre_equip_hood.Invoke(wearer, hood))
 		return FALSE
 
-	if(!wearer.equip_to_slot_if_possible(hood, ITEM_SLOT_HEAD, qdel_on_fail = delete_unequipped_hood))
+	if(!wearer.equip_to_slot_if_possible(hood, ITEM_SLOT_HEAD, qdel_on_fail = delete_unequipped_hood, bypass_equip_delay_self = TRUE))
 		return FALSE
 
 	if(parent_icon_suffix)
@@ -121,7 +122,7 @@
 	if(hood_active)
 		must_unequip_hood(parent, user)
 	else
-		try_equip_hood(parent, user)
+		try_equip_hood(user)
 	return COMPONENT_ACTION_HANDLED
 
 /// Handles hood qdeletion.

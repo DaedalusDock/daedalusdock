@@ -22,7 +22,7 @@
 	test_screenshot("[/datum/species/lizard]", get_flat_icon_for_all_directions(lizard))
 
 	// The rest of the species
-	for (var/datum/species/species_type as anything in subtypesof(/datum/species) - /datum/species/moth - /datum/species/lizard)
+	for (var/datum/species/species_type as anything in subtypesof(/datum/species) - /datum/species/lizard)
 		test_screenshot("[species_type]", get_flat_icon_for_all_directions(make_dummy(species_type, /datum/outfit/job/assistant/consistent)))
 
 	log_test("::endgroup::")

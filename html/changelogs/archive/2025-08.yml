@@ -36,3 +36,7 @@
       Does not reveal blood on items like Luminol or the UV Light.
   - rscadd: Added a new interaction for Investigate Mode involving a chair.
   - balance: Rebalances the entire economy.
+2025-08-14:
+  Kapu1178:
+  - rscadd: PWNRA aka Gramps added to the memorial list.
+  - bugfix: A small error in attack code handling.

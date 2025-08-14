@@ -14,7 +14,7 @@ TYPEINFO_DEF(/obj/item/reagent_containers/syringe)
 	possible_transfer_amounts = list(5, 10, 15)
 	volume = 15
 	reagent_flags = TRANSPARENT
-	custom_price = PAYCHECK_EASY * 0.5
+	custom_price = PAYCHECK_ASSISTANT * 0.5
 
 	hitsound = 'sound/weapons/attack/flesh_stab.ogg'
 	throwforce = 1

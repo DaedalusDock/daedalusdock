@@ -20,7 +20,7 @@
 		),
 	)
 
-	paycheck = PAYCHECK_MEDIUM
+	paycheck = /datum/job/cargo_technician::paycheck
 	paycheck_department = ACCOUNT_CAR
 
 	departments_list = list(

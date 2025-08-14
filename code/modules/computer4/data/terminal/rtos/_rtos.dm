@@ -192,3 +192,7 @@
 	var/list/access_list = text2access(access_string)
 
 	return check_access(access_list)
+
+/// Called by the embedded controller itself on roundstart to unlock the controlled mechanism.
+/datum/c4_file/terminal_program/operating_system/rtos/proc/unlock_on_roundstart()
+	return

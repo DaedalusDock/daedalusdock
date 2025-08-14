@@ -338,7 +338,7 @@ TYPEINFO_DEF(/obj/item/shears)
 	attack_verb_continuous = list("shears", "snips")
 	attack_verb_simple = list("shear", "snip")
 	sharpness = SHARP_EDGED
-	custom_premium_price = PAYCHECK_MEDIUM * 14
+	custom_premium_price = PAYCHECK_ASSISTANT * 21.8
 
 /obj/item/shears/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!iscarbon(interacting_with))

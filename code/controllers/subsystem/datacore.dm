@@ -265,7 +265,7 @@ SUBSYSTEM_DEF(datacore)
 	// Add to company-specific manifests
 	var/datum/job_department/department = SSjob.departments_by_type[job.departments_list?[1]]
 	if(department?.manifest_key)
-		library[department.manifest_key].inject_record(G)
+		library[department.manifest_key].inject_record(G.Copy())
 
 	//Medical Record
 	var/datum/data/record/medical/M = new()

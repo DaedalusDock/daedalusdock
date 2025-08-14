@@ -383,7 +383,7 @@ TYPEINFO_DEF(/obj/item/storage/backpack/holding)
 	atom_storage.set_holdable(cant_hold_list = list(/obj/item/storage/backpack/satchel/flat)) //muh recursive backpacks)
 
 /obj/item/storage/backpack/satchel/flat/PopulateContents()
-	var/datum/supply_pack/costumes_toys/randomised/contraband/C = new
+	var/datum/supply_pack/misc/contraband/C = new
 	for(var/i in 1 to 2)
 		var/ctype = pick(C.contains)
 		new ctype(src)

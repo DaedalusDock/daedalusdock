@@ -31,8 +31,8 @@
 		/obj/item/stock_parts/manipulator = 5
 		)
 	refill_canister = /obj/item/vending_refill/engineering
-	default_price = PAYCHECK_EASY
-	extra_price = PAYCHECK_COMMAND * 1.5
+	default_price = PAYCHECK_ASSISTANT
+	extra_price = PAYCHECK_ASSISTANT * 10
 	payment_department = ACCOUNT_ENG
 	light_mask = "engi-light-mask"
 

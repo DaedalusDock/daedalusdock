@@ -122,7 +122,7 @@
 	if(exposed_temperature >= PHORON_FLASHPOINT)
 		exposed_turf.assume_gas(GAS_PLASMA, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, exposed_temperature)
 
-/datum/reagent/toxin/plasma/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
+/datum/reagent/toxin/plasma/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(methods & (TOUCH|VAPOR))
 		exposed_mob.adjust_fire_stacks(reac_volume / 5)

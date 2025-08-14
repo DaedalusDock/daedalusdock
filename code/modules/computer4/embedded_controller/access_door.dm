@@ -41,5 +41,3 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/c4_embedded_controller/airlock_access
 	fields[RTOS_CONFIG_ALLOW_HOLD_OPEN] = allow_lock_open
 	fields[RTOS_CONFIG_CMODE] = control_mode
 	fields[RTOS_CONFIG_SLAVE_ID] = tag_slave
-
-

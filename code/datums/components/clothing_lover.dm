@@ -34,8 +34,9 @@
 
 /datum/component/clothing_lover/Destroy(force, silent)
 	var/mob/living/carbon/human/H = parent
-	H.mob_mood.clear_mood_event(moodlet_category)
-	UnregisterSignal(H, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_ITEM_POST_UNEQUIP))
+	if(H)
+		H.mob_mood.clear_mood_event(moodlet_category)
+		UnregisterSignal(H, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_ITEM_POST_UNEQUIP))
 	return ..()
 
 /datum/component/clothing_lover/proc/recheck_slots()

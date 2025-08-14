@@ -9,6 +9,8 @@
 	spawn_positions = 1
 	exp_granted_type = EXP_TYPE_CREW
 
+	starting_paycheck_amount = 2 // They own a bar they have a lil cash.
+
 	employers = list(
 		/datum/employer/none
 	)

@@ -173,7 +173,7 @@ TYPEINFO_DEF(/obj/item/watertank)
 	icon = 'icons/obj/hydroponics/equipment.dmi'
 	icon_state = "pepperbackpacksec"
 	inhand_icon_state = "pepperbackpacksec"
-	custom_price = PAYCHECK_MEDIUM * 2
+	custom_price = PAYCHECK_ASSISTANT * 30
 	volume = 1000
 
 /obj/item/watertank/pepperspray/Initialize(mapload)

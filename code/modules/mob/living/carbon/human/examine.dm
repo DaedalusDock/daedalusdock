@@ -32,7 +32,7 @@
 		if(SScodex.get_codex_entry(get_codex_value(user)))
 			species_text += span_notice(" \[<a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>?</a>\]")
 
-	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"][species_text]!</EM><hr>")
+	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"][species_text].</EM><hr>")
 
 	if(!skipface)
 		var/age_text
@@ -49,7 +49,14 @@
 				age_text = "very old"
 			if(101 to INFINITY)
 				age_text = "withering away"
+
 		. += span_notice("[t_He] appear[t_s] to be [age_text].")
+
+		if(dna.species?.use_skintones)
+			var/obj/item/bodypart/head = get_bodypart(BODY_ZONE_HEAD)
+			if(head.skin_tone)
+				var/_skintone = "\improper[head.skin_tone]"
+				. += span_notice("[t_He] appear[t_s] to be \a [_skintone].")
 
 	//uniform
 	if(w_uniform && !(obscured & ITEM_SLOT_ICLOTHING) && !(w_uniform.item_flags & EXAMINE_SKIP))

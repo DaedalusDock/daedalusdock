@@ -25,7 +25,7 @@
 		),
 	)
 
-	paycheck = PAYCHECK_HARD
+	paycheck = /datum/job/security_officer::paycheck
 	paycheck_department = ACCOUNT_SEC
 
 	mind_traits = list(TRAIT_DONUT_LOVER)

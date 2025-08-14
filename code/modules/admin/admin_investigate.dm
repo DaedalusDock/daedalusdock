@@ -60,8 +60,10 @@
 		browse_messages()
 		return
 
-	var/F = file("[GLOB.log_directory]/[selected].html")
-	if(!fexists(F))
+	var/filepath = "[GLOB.log_directory]/[selected].html"
+	if(!fexists(filepath))
 		to_chat(src, span_danger("No [selected] logfile was found."), confidential = TRUE)
 		return
-	src << browse(F,"window=investigate[selected];size=800x300")
+
+	var/content = "<!DOCTYPE html><html>[file2text(filepath)]</html>"
+	src << browse(content,"window=investigate[selected];size=800x300")

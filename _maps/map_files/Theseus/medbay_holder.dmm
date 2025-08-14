@@ -8753,7 +8753,7 @@
 /obj/structure/table/reinforced,
 /obj/item/book/manual/codex/surgery,
 /obj/structure/light_construct/directional/west,
-/obj/item/storage/fancy/cigarettes/cigpack_uplift,
+/obj/item/storage/fancy/cigarettes/cigpack_astro,
 /turf/open/floor/iron/white,
 /area/station/medical/abandoned)
 "BB" = (

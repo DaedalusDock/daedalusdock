@@ -45,7 +45,7 @@
 	inhand_icon_state = "utility"
 	worn_icon_state = "utility"
 	content_overlays = TRUE
-	custom_premium_price = PAYCHECK_MEDIUM * 2
+	custom_premium_price = PAYCHECK_ASSISTANT * 5
 	drop_sound = 'sound/items/handling/toolbelt_drop.ogg'
 	pickup_sound = 'sound/items/handling/toolbelt_pickup.ogg'
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION
@@ -373,7 +373,7 @@
 	inhand_icon_state = "securitywebbing"
 	worn_icon_state = "securitywebbing"
 	content_overlays = FALSE
-	custom_premium_price = PAYCHECK_HARD * 3
+	custom_premium_price = PAYCHECK_ASSISTANT * 6.2
 
 /obj/item/storage/belt/security/webbing/Initialize()
 	. = ..()

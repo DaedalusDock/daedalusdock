@@ -17,8 +17,8 @@
 		/obj/item/computer_hardware/hard_drive/role/quartermaster = 10
 	)
 	refill_canister = /obj/item/vending_refill/cart
-	default_price = PAYCHECK_COMMAND
-	extra_price = PAYCHECK_COMMAND * 2.5
+	default_price = PAYCHECK_ASSISTANT * 10
+	extra_price = PAYCHECK_ASSISTANT * 10
 	payment_department = ACCOUNT_STATION_MASTER
 	light_mask="cart-light-mask"
 

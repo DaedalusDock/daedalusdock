@@ -38,3 +38,6 @@
 
 /obj/effect/mapping_helpers/embedded_controller/static_id/lawyer
 	static_pin_id = /datum/job/lawyer::pinpad_key
+
+/obj/effect/mapping_helpers/embedded_controller/static_id/psychologist
+	static_pin_id = /datum/job/psychologist::pinpad_key

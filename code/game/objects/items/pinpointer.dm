@@ -92,7 +92,8 @@ TYPEINFO_DEF(/obj/item/pinpointer)
 	icon_state = "pinpointer_crew"
 	worn_icon_state = "pinpointer_crew"
 	custom_price = PAYCHECK_ASSISTANT * 10
-	custom_premium_price = PAYCHECK_MEDIUM * 6
+	custom_premium_price = PAYCHECK_ASSISTANT * 10
+
 	var/has_owner = FALSE
 	var/pinpointer_owner = null
 	var/ignore_suit_sensor_level = FALSE /// Do we find people even if their suit sensors are turned off

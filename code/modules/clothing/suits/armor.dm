@@ -90,7 +90,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/armor/vest/marine)
 	desc = "A large, yet comfortable piece of armor, protecting you from some threats."
 	icon_state = "blueshift"
 	inhand_icon_state = "blueshift"
-	custom_premium_price = PAYCHECK_HARD
+	custom_premium_price = PAYCHECK_ASSISTANT * 12.3
 	supports_variations_flags = NONE
 
 /obj/item/clothing/suit/armor/vest/cuirass

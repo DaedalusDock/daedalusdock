@@ -52,7 +52,7 @@
 
 		. += span_notice("[t_He] appear[t_s] to be [age_text].")
 
-		if(dna.species?.use_skintones)
+		if(dna.species?.use_skintones && HAS_MIND_TRAIT(user, TRAIT_ADVANCED_RACE_THEORY))
 			var/obj/item/bodypart/head = get_bodypart(BODY_ZONE_HEAD)
 			if(head.skin_tone)
 				var/_skintone = "\improper[head.skin_tone]"

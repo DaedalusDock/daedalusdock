@@ -26,7 +26,7 @@
 	if(.)
 		return
 
-	if(!HAS_TRAIT(user.mind, TRAIT_AETHERITE))
+	if(!HAS_MIND_TRAIT(user, TRAIT_AETHERITE))
 		to_chat(user, span_warning("You are not sure what to do with this."))
 		return
 
@@ -46,7 +46,7 @@
 	if(!isopenturf(interacting_with))
 		return NONE
 
-	if(!HAS_TRAIT(user.mind, TRAIT_AETHERITE))
+	if(!HAS_MIND_TRAIT(user, TRAIT_AETHERITE))
 		to_chat(user, span_warning("You are not sure what to do with this."))
 		return ITEM_INTERACT_BLOCKING
 

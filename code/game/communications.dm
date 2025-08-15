@@ -149,7 +149,7 @@ GLOBAL_LIST_INIT(freq2icon, list(
 //If range is null, or 0, signal is TRULY global (skips z_level checks) (Be careful with this.)
 //If range > 0, only post to devices on the same z_level and within range
 //Use range = -1, to restrain to the same z_level without limiting range
-/datum/radio_frequency/proc/post_signal(datum/signal/signal, filter = null as text|null, range = null as num|null)
+/datum/radio_frequency/post_signal(datum/signal/signal, filter = null as text|null, range = null as num|null)
 	if(!istype(signal))
 		CRASH("LEGACY POST SIGNAL SHIT")
 
@@ -193,6 +193,11 @@ GLOBAL_LIST_INIT(freq2icon, list(
 /datum/proc/receive_signal(datum/signal/signal)
 	//SHOULD_CALL_PARENT(TRUE)
 	. = TRUE
+
+
+/datum/proc/post_signal(datum/signal/signal)
+	CRASH("Invoked base datum post_signal handler. Did something call parent?")
+
 
 /datum/signal
 	/// The author/sender of this packet.

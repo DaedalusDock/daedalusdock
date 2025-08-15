@@ -1,5 +1,5 @@
 /datum/movespeed_modifier/obesity
-	slowdown = 1.5
+	modifier = -0.68
 
 /datum/movespeed_modifier/monkey_reagent_speedmod
 	variable = TRUE
@@ -14,22 +14,24 @@
 	variable = TRUE
 
 /datum/movespeed_modifier/slaughter
-	slowdown = -1
+	modifier = 0.83
 
 /datum/movespeed_modifier/resonance
-	slowdown = 0.75
+	modifier = -0.4
 
 /datum/movespeed_modifier/pain
 	blacklisted_movetypes = FLOATING
 	variable = TRUE
 
 /datum/movespeed_modifier/shock
-	slowdown = 3
+	modifier = -1
 	blacklisted_movetypes = FLOATING
 
 /datum/movespeed_modifier/asystole
-	slowdown = 10
+	multiply = TRUE
+	modifier = 0.8
 	blacklisted_movetypes = FLOATING
+	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/equipment_speedmod
 	variable = TRUE
@@ -40,38 +42,33 @@
 	blacklisted_movetypes = FLOATING
 
 /datum/movespeed_modifier/grab_slowdown/aggressive
-	slowdown = 3
+	modifier = -1
 
 /datum/movespeed_modifier/grab_slowdown/neck
-	slowdown = 6
+	modifier = -1.5
 
 /datum/movespeed_modifier/grab_slowdown/kill
-	slowdown = 9
+	modifier = -2
 
 /datum/movespeed_modifier/slime_reagentmod
 	variable = TRUE
 
 /datum/movespeed_modifier/slime_healthmod
+	multiply = TRUE
 	variable = TRUE
 
-/datum/movespeed_modifier/config_walk_run
-	slowdown = 1
+/datum/movespeed_modifier/move_intent
 	id = MOVESPEED_ID_MOB_WALK_RUN
 	flags = IGNORE_NOSLOW
 
-/datum/movespeed_modifier/config_walk_run/proc/sync()
+/datum/movespeed_modifier/move_intent/walk
+	modifier = WALK_SPEED
 
-/datum/movespeed_modifier/config_walk_run/walk/sync()
-	var/mod = CONFIG_GET(number/movedelay/walk_delay)
-	slowdown = isnum(mod)? mod : initial(slowdown)
+/datum/movespeed_modifier/move_intent/run
+	modifier = RUN_SPEED
 
-/datum/movespeed_modifier/config_walk_run/run/sync()
-	var/mod = CONFIG_GET(number/movedelay/run_delay)
-	slowdown = isnum(mod)? mod : initial(slowdown)
-
-/datum/movespeed_modifier/config_walk_run/sprint/sync()
-	var/mod = CONFIG_GET(number/movedelay/sprint_delay)
-	slowdown = isnum(mod) ? mod : initial(slowdown)
+/datum/movespeed_modifier/move_intent/sprint
+	modifier = SPRINT_SPEED
 
 /datum/movespeed_modifier/turf_slowdown
 	movetypes = GROUND
@@ -86,14 +83,19 @@
 	variable = TRUE
 
 /datum/movespeed_modifier/shove
-	slowdown = SHOVE_SLOWDOWN_STRENGTH
+	modifier = SHOVE_SLOWDOWN_MOVESPEED
 
 /datum/movespeed_modifier/human_carry
-	slowdown = HUMAN_CARRY_SLOWDOWN
+	modifier = HUMAN_CARRY_MOVESPEED
 
 /datum/movespeed_modifier/limbless
 	variable = TRUE
 	movetypes = GROUND
+	flags = IGNORE_NOSLOW
+
+// See /mob/living/simple_animal/apply_initial_movespeed()
+/datum/movespeed_modifier/simplemob_initial
+	modifier = -0.5
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/simplemob_varspeed
@@ -101,7 +103,7 @@
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/tarantula_web
-	slowdown = 5
+	modifier = -1.4
 
 /datum/movespeed_modifier/gravity
 	blacklisted_movetypes = FLOATING
@@ -109,43 +111,47 @@
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/carbon_softcrit
-	slowdown = SOFTCRIT_ADD_SLOWDOWN
+	modifier = SOFTCRIT_MOVESPEED
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/slime_tempmod
+	multiply = TRUE
 	variable = TRUE
 
 /datum/movespeed_modifier/living_exhaustion
-	slowdown = STAMINA_EXHAUSTION_MOVESPEED_SLOWDOWN
+	multiply = TRUE
+	modifier = STAMINA_EXHAUSTION_MOVESPEED_MULTIPLIER
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/carbon_crawling
-	slowdown = CRAWLING_ADD_SLOWDOWN
+	multiply = TRUE
+	modifier = CRAWLING_MOVESPEED_MULTIPLIER
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/mob_config_speedmod
+	multiply = TRUE
 	variable = TRUE
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/metabolicboost
-	slowdown = -1.5
+	modifier = 1.5
 
 /datum/movespeed_modifier/dragon_rage
-	slowdown = -0.5
+	modifier = 0.35
 
 /datum/movespeed_modifier/dragon_depression
-	slowdown = 5
+	modifier = -1.4
 
 /datum/movespeed_modifier/morph_disguised
-	slowdown = 1
+	modifier = -0.5
 
 /datum/movespeed_modifier/auto_wash
-	slowdown = 3
+	modifier = -1
 
 /datum/movespeed_modifier/atmos_pressure
-	slowdown = 3
+	modifier = -1
 	id = MOVESPEED_ID_MOB_ATMOS_AFFLICTION
 	variable = TRUE
 
 /datum/movespeed_modifier/flockphase
-	slowdown = -0.4
+	modifier = 0.27

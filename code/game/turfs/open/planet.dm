@@ -19,7 +19,7 @@
 	base_icon_state = "greenerdirt"
 
 /turf/open/misc/dirt/jungle
-	slowdown = 0.5
+	movespeed_modifier = -0.27
 	initial_gas = OPENTURF_DEFAULT_ATMOS
 
 /turf/open/misc/dirt/jungle/dark
@@ -32,7 +32,7 @@
 	icon = 'icons/turf/floors.dmi'
 	icon_state = "wasteland"
 	base_icon_state = "wasteland"
-	slowdown = 1
+	movespeed_modifier = -0.5
 	var/floor_variance = 15
 
 /turf/open/misc/dirt/jungle/wasteland/Initialize(mapload)

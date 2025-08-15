@@ -10,7 +10,7 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/dirt/jungle/dark{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "cS" = (
@@ -27,7 +27,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "dZ" = (
@@ -44,7 +44,7 @@
 /obj/effect/decal/remains/human,
 /turf/open/misc/dirt/jungle/dark{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "hZ" = (
@@ -65,7 +65,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "mb" = (
@@ -95,7 +95,7 @@
 /obj/structure/bonfire/prelit,
 /turf/open/misc/dirt/jungle/wasteland{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "nL" = (
@@ -108,7 +108,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "nP" = (
@@ -117,7 +117,7 @@
 	},
 /turf/open/misc/dirt/jungle/dark{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "oh" = (
@@ -143,7 +143,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "qn" = (
@@ -155,7 +155,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "qM" = (
@@ -167,7 +167,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "rP" = (
@@ -180,7 +180,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "tF" = (
@@ -190,7 +190,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "ui" = (
@@ -212,7 +212,7 @@
 	},
 /turf/open/misc/dirt/jungle/dark{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "vv" = (
@@ -222,7 +222,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "wt" = (
@@ -231,19 +231,19 @@
 	},
 /turf/open/misc/dirt/jungle/dark{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "wE" = (
 /turf/open/misc/dirt/jungle/wasteland{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "wS" = (
 /turf/open/misc/dirt/jungle/dark{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "wY" = (
@@ -264,7 +264,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "zU" = (
@@ -296,7 +296,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "By" = (
@@ -328,7 +328,7 @@
 /obj/effect/landmark/heretic/ash,
 /turf/open/misc/dirt/jungle/wasteland{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "DL" = (
@@ -337,7 +337,7 @@
 	},
 /turf/open/misc/dirt/jungle/dark{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "ER" = (
@@ -353,7 +353,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "GX" = (
@@ -380,7 +380,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "Ii" = (
@@ -390,7 +390,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "Je" = (
@@ -404,7 +404,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "JJ" = (
@@ -421,14 +421,14 @@
 	},
 /turf/open/misc/dirt/jungle/dark{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "Kz" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/dirt/jungle/dark{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "KO" = (
@@ -442,7 +442,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "La" = (
@@ -460,7 +460,7 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/dirt/jungle/wasteland{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "Mw" = (
@@ -478,7 +478,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "NQ" = (
@@ -488,14 +488,14 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "OD" = (
 /obj/effect/landmark/heretic,
 /turf/open/misc/dirt/jungle/wasteland{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "OG" = (
@@ -505,7 +505,7 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "Pl" = (
@@ -515,14 +515,14 @@
 /turf/open/misc/ashplanet/wateryrock{
 	initial_gas = list("oxygen" = 22, "nitrogen" = 82);
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "Qi" = (
 /obj/structure/stone_tile,
 /turf/open/misc/dirt/jungle/dark{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "QL" = (
@@ -533,7 +533,7 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/dirt/jungle/dark{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "Rb" = (
@@ -560,7 +560,7 @@
 /obj/structure/stone_tile/block,
 /turf/open/misc/dirt/jungle/dark{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "Tf" = (
@@ -571,7 +571,7 @@
 /obj/effect/decal/cleanable/ash,
 /turf/open/misc/dirt/jungle/dark{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "TS" = (
@@ -601,7 +601,7 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/dirt/jungle/dark{
 	simulated = 1;
-	slowdown = 0
+	movespeed_modifier = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
 "Wb" = (

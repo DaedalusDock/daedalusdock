@@ -7,7 +7,7 @@
 	icon_dead = "alienh_dead"
 	icon_gib = "syndicate_gib"
 	gender = FEMALE
-	move_delay_modifier = 0
+	movement_speed_modifier = 0
 	butcher_results = list(/obj/item/food/meat/slab/xeno = 4,
 							/obj/item/stack/sheet/animalhide/xeno = 1)
 	maxHealth = 125

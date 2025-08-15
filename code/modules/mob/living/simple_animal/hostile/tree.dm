@@ -16,7 +16,7 @@
 	response_disarm_continuous = "pushes"
 	response_disarm_simple = "push"
 	faction = list("hostile")
-	move_delay_modifier = 1
+	movement_speed_modifier = -0.5
 	maxHealth = 250
 	health = 250
 	mob_size = MOB_SIZE_LARGE

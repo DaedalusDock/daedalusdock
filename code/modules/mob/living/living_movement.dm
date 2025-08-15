@@ -73,9 +73,10 @@
 
 /mob/living/proc/update_turf_movespeed(turf/open/T)
 	if(isopenturf(T))
-		if(T.slowdown != current_turf_slowdown)
-			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/turf_slowdown, slowdown = T.slowdown)
-			current_turf_slowdown = T.slowdown
+		if(T.movespeed_modifier != current_turf_slowdown)
+			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/turf_slowdown, modifier = T.movespeed_modifier)
+			current_turf_slowdown = T.movespeed_modifier
+
 	else if(current_turf_slowdown)
 		remove_movespeed_modifier(/datum/movespeed_modifier/turf_slowdown)
 		current_turf_slowdown = 0
@@ -86,19 +87,23 @@
 		remove_movespeed_modifier(/datum/movespeed_modifier/grabbing)
 		return
 
-	var/slowdown_total = 0
+	var/modifier_total = 0
 	for(var/obj/item/hand_item/grab/G as anything in grabs)
 		var/atom/movable/pulling = G.affecting
 		if(isliving(pulling))
 			var/mob/living/L = pulling
-			if(G.current_grab.grab_slowdown || L.body_position == LYING_DOWN)
-				slowdown_total += max(G.current_grab.grab_slowdown, PULL_PRONE_SLOWDOWN)
+			var/is_lying = L.body_position == LYING_DOWN
+			if(G.current_grab.grab_movespeed_modifier)
+				if(is_lying)
+					modifier_total += max(G.current_grab.grab_movespeed_modifier, PULL_PRONE_MOVESPEED)
+				else
+					modifier_total += G.current_grab.grab_movespeed_modifier
 
 		if(isobj(pulling))
 			var/obj/structure/S = pulling
-			slowdown_total += S.drag_slowdown
+			modifier_total += S.drag_movespeed_modifier
 
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/grabbing, slowdown = slowdown_total)
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/grabbing, modifier = modifier_total)
 
 /mob/living/can_z_move(direction, turf/start, z_move_flags, mob/living/rider)
 	// Check physical climbing ability

@@ -9,7 +9,7 @@
 	sentience_type = SENTIENCE_HUMANOID
 	speak_chance = 0
 	turns_per_move = 3
-	move_delay_modifier = 0
+	movement_speed_modifier = 0
 	maxHealth = 100
 	health = 100
 	harm_intent_damage = 5

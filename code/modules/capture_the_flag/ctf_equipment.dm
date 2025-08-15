@@ -220,7 +220,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/armor/vest/ctf)
 	icon_state = "light"
 	greyscale_config = /datum/greyscale_config/ctf_light
 	greyscale_config_worn = /datum/greyscale_config/ctf_light_worn
-	slowdown = -0.25
+	worn_movespeed_modifier = 0.2
 
 /obj/item/clothing/suit/armor/vest/ctf/light/setup_shielding()
 	AddComponent(/datum/component/shielded, max_charges = 30, recharge_start_delay = 20 SECONDS, charge_increment_delay = 1 SECONDS, charge_recovery = 30, lose_multiple_charges = TRUE, shield_icon = team_shield_icon)

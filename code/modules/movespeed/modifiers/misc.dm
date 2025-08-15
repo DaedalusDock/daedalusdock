@@ -2,14 +2,14 @@
 	variable = TRUE
 
 /datum/movespeed_modifier/yellow_orb
-	slowdown = -0.65
+	modifier = 0.48
 	blacklisted_movetypes = (FLYING|FLOATING)
 
 /datum/movespeed_modifier/vampire_bloodlust
-	slowdown = -1
+	modifier = 0.83
 
 /datum/movespeed_modifier/vampire_starving
-	slowdown = 1
+	modifier = -0.5
 
 /datum/movespeed_modifier/vampire_wasting
-	slowdown = 1
+	modifier = -0.5

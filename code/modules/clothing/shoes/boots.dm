@@ -58,7 +58,7 @@ TYPEINFO_DEF(/obj/item/clothing/shoes/jackboots)
 	create_storage(type = /datum/storage/pockets/shoes)
 
 /obj/item/clothing/shoes/jackboots/fast
-	slowdown = -1
+	worn_movespeed_modifier = 0.8
 
 /obj/item/clothing/shoes/winterboots
 	name = "winter boots"

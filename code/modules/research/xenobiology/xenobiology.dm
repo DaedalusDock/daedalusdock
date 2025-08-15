@@ -840,10 +840,10 @@
 
 	if(isitem(interacting_with))
 		var/obj/item/I = interacting_with
-		if(I.slowdown <= 0 || I.obj_flags & IMMUTABLE_SLOW)
+		if(I.worn_movespeed_modifier >= 0 || I.obj_flags & IMMUTABLE_SLOW)
 			to_chat(user, span_warning("The [interacting_with] can't be made any faster!"))
 			return ITEM_INTERACT_BLOCKING
-		I.slowdown = 0
+		I.worn_movespeed_modifier = 0
 
 	to_chat(user, span_notice("You slather the red gunk over the [interacting_with], making it faster."))
 	interacting_with.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)

@@ -8,7 +8,7 @@
 	body_part = HEAD
 	plaintext_zone = "head"
 	w_class = WEIGHT_CLASS_BULKY //Quite a hefty load
-	slowdown = 1 //Balancing measure
+	worn_movespeed_modifier = -0.5 //Balancing measure
 	throw_range = 2 //No head bowling
 	px_x = 0
 	px_y = -8

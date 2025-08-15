@@ -6,7 +6,7 @@
 	baseturfs = /turf/open/chasm/lavaland
 	initial_gas = OPENTURF_LOW_PRESSURE
 
-	slowdown = 1
+	movespeed_modifier = -0.5
 	bullet_sizzle = TRUE
 	bullet_bounce_sound = null //needs a splashing sound one day.
 	turf_flags = NO_RUST

@@ -39,7 +39,7 @@
 	equipped_on.eye_color_left = "#000000"
 	equipped_on.eye_color_right = "#000000"
 	equipped_on.gender = MALE
-	equipped_on.skin_tone = "caucasian3"
+	equipped_on.skin_tone = "Saxon"
 	equipped_on.hairstyle = "Business Hair 3"
 	equipped_on.facial_hairstyle = "Shaved"
 	equipped_on.hair_color = "#000000"

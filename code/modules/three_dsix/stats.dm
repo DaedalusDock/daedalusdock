@@ -142,13 +142,13 @@
 		return returned_result
 
 	// Trait that automatically triggers a critical success.
-	if(HAS_TRAIT(src, TRAIT_BIGBRAIN) || (trait_succeed && (HAS_TRAIT(src, trait_succeed) || HAS_TRAIT(mind, trait_succeed))))
+	if(HAS_MIND_TRAIT(src, TRAIT_BIGBRAIN) || (trait_succeed && (HAS_MIND_TRAIT(src, trait_succeed) || HAS_MIND_TRAIT(src, trait_succeed))))
 		returned_result = new /datum/roll_result/critical_success
 		returned_result.requirement = requirement
 		returned_result.skill_type_used = skill_path
 		returned_result.calculate_probability()
 
-	if(trait_fail && (HAS_TRAIT(src, trait_fail) || HAS_TRAIT(mind, trait_fail)))
+	if(trait_fail && (HAS_MIND_TRAIT(src, trait_fail) || HAS_MIND_TRAIT(src, trait_fail)))
 		returned_result = new /datum/roll_result/critical_failure
 		returned_result.requirement = requirement
 		returned_result.skill_type_used = skill_path

@@ -13,7 +13,7 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 
 	draw_color = get_override_color()
 	if(should_draw_greyscale)
-		draw_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
+		draw_color ||= (species_color) || (skin_tone && GLOB.skin_tones[skin_tone])
 
 	if(!is_creating || !owner)
 		return
@@ -42,7 +42,7 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 
 	draw_color = get_override_color()
 	if(should_draw_greyscale) //Should the limb be colored?
-		draw_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
+		draw_color ||= (species_color) || (skin_tone && GLOB.skin_tones[skin_tone])
 
 	recolor_cosmetic_organs()
 	return TRUE

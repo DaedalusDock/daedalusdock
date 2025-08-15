@@ -136,34 +136,19 @@
 	return pick(GLOB.skin_tones)
 
 GLOBAL_LIST_INIT(skin_tones, sort_list(list(
-	"albino",
-	"caucasian1",
-	"caucasian2",
-	"caucasian3",
-	"latino",
-	"mediterranean",
-	"asian1",
-	"asian2",
-	"arab",
-	"indian",
-	"african1",
-	"african2"
+	"Albino" = "#fff4e6",
+	"Fjällröker" = "#ffe0d1",
+	"Orleanian" = "#fcccb3",
+	"Saxon" = "#e8b59b",
+	"Estranian" = "#d9ae96",
+	"Ravennar" = "#c79b8b",
+	"Shaantian (North)" = "#ffdeb3",
+	"Ikkonese" = "#e3ba84",
+	"Emerati" = "#c4915e",
+	"Shaantian (South)" = "#b87840",
+	"Gondari (East)" = "#754523",
+	"Gondari (West)" = "#471c18"
 	)))
-
-GLOBAL_LIST_INIT(skin_tone_names, list(
-	"african1" = "Medium brown",
-	"african2" = "Dark brown",
-	"albino" = "Albino",
-	"arab" = "Light brown",
-	"asian1" = "Ivory",
-	"asian2" = "Beige",
-	"caucasian1" = "Porcelain",
-	"caucasian2" = "Light peach",
-	"caucasian3" = "Peach",
-	"indian" = "Brown",
-	"latino" = "Light beige",
-	"mediterranean" = "Olive",
-))
 
 /// An assoc list of species IDs to type paths
 GLOBAL_LIST_EMPTY(species_list)

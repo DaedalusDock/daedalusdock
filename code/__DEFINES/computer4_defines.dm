@@ -26,3 +26,9 @@
 #define WIRELESS_FILTER_ID_TAGS 2 //! id_tag based filtering, for non-GPRS Control.
 
 #define WIRELESS_FILTER_MODEMAX 2 //! Max of WIRELESS_FILTER_* Defines.
+
+// ThinkDOS //
+// Constants
+#define THINKDOS_MAX_COMMANDS 3 //! The maximum amount of commands
+// Symbols
+#define THINKDOS_SYMBOL_SEPARATOR ";" //! Lets you split stdin into distinct commands

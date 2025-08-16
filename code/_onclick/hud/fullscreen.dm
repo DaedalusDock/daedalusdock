@@ -140,6 +140,9 @@
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "flash"
 
+/atom/movable/screen/fullscreen/flash/over_blind
+	layer = FOV_EFFECTS_LAYER
+
 /atom/movable/screen/fullscreen/flash/black
 	icon = 'icons/hud/screen_gen.dmi'
 	screen_loc = "WEST,SOUTH to EAST,NORTH"

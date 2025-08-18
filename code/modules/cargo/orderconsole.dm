@@ -21,7 +21,7 @@
 	var/obj/item/radio/headset/radio
 	/// var that tracks message cooldown
 	var/message_cooldown
-	var/list/loaded_coupons
+
 	/// var that makes express console use rockets
 	var/is_express = FALSE
 	///The name of the shuttle template being used as the cargo shuttle. 'supply' is default and contains critical code. Don't change this unless you know what you're doing.
@@ -196,7 +196,6 @@
 			"cost" = P.get_cost(),
 			"id" = pack,
 			"desc" = P.desc || P.name, // If there is a description, use it. Otherwise use the pack's name.
-			"goody" = P.goody,
 			"access" = P.access
 		))
 
@@ -297,22 +296,8 @@
 				if(isnull(reason) || ..())
 					return
 
-			if(pack.goody && !self_paid)
-				playsound(src, 'sound/machines/buzz-sigh.ogg', 50, FALSE)
-				say("ERROR: Small crates may only be purchased by private accounts.")
-				return
-
-			var/obj/item/coupon/applied_coupon
-			for(var/i in loaded_coupons)
-				var/obj/item/coupon/coupon_check = i
-				if(pack.type == coupon_check.discounted_pack)
-					say("Coupon found! [round(coupon_check.discount_pct_off * 100)]% off applied!")
-					coupon_check.moveToNullspace()
-					applied_coupon = coupon_check
-					break
-
 			var/turf/T = get_turf(src)
-			var/datum/supply_order/SO = new(pack, name, rank, ckey, reason, account, null, applied_coupon)
+			var/datum/supply_order/SO = new(pack, name, rank, ckey, reason, account, null)
 			SO.generateRequisition(T)
 			if(requestonly && !self_paid)
 				SSshuttle.request_list += SO
@@ -332,9 +317,6 @@
 				if(SO.department_destination)
 					say("Only the department that ordered this item may cancel it.")
 					return
-				if(SO.applied_coupon)
-					say("Coupon refunded.")
-					SO.applied_coupon.forceMove(get_turf(src))
 				SSshuttle.shopping_list -= SO
 				. = TRUE
 				break

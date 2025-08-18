@@ -65,6 +65,8 @@ Then the player gets the profit from selling his own wasted time.
 	var/message = ""
 	/// Cost of item, in marks. Must not allow for infinite price dupes, see above.
 	var/cost = 1
+	/// A coefficient applied to the export's cost. Useful for cases where the price is set based on something like material value.
+	var/cost_coeff = 1
 	/// whether this export can have a negative impact on the cargo budget or not
 	var/allow_negative_cost = FALSE
 	/// coefficient used in marginal price calculation that roughly corresponds to the inverse of price elasticity, or "quantity elasticity"
@@ -83,7 +85,7 @@ Then the player gets the profit from selling his own wasted time.
 
 /datum/export/New()
 	..()
-	init_cost = cost
+	init_cost = get_initial_cost()
 	export_types = typecacheof(export_types, only_root_path = !include_subtypes, ignore_root_path = FALSE)
 	exclude_types = typecacheof(exclude_types)
 
@@ -96,6 +98,10 @@ Then the player gets the profit from selling his own wasted time.
 	if(cost >= init_cost)
 		cost = init_cost
 		return PROCESS_KILL
+
+/datum/export/proc/get_initial_cost()
+	PROTECTED_PROC(TRUE)
+	return ceil(cost * cost_coeff)
 
 // Checks the cost. 0 cost items are skipped in export.
 /datum/export/proc/get_cost(obj/O, apply_elastic = TRUE)

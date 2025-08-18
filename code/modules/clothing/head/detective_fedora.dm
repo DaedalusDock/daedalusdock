@@ -45,7 +45,7 @@ TYPEINFO_DEF(/obj/item/clothing/head/fedora/det_hat)
 			result.create_tooltip("This is far out of your price range. Whoever bought this is either very wealthy, or very stupid."),
 		)
 
-		if(HAS_TRAIT(user.mind, TRAIT_DICK))
+		if(HAS_MIND_TRAIT(user, TRAIT_DICK))
 			var/datum/roll_result/det_result = user.get_examine_result("dethat_expensive_detective_shame", 16, /datum/rpg_skill/willpower, only_once = TRUE)
 			if(det_result?.outcome <= FAILURE)
 				to_chat(

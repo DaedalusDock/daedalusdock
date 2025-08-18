@@ -22,7 +22,7 @@
 	var/apply_method = "spray" //the thick gel is sprayed and then dries into patch like film.
 	var/self_delay = 30
 	var/squirt_mode = 0
-	custom_price = PAYCHECK_MEDIUM * 2
+	custom_price = PAYCHECK_ASSISTANT * 4
 	unique_reskin = list(
 		"Blue" = "medigel_blue",
 		"Cyan" = "medigel_cyan",
@@ -83,4 +83,4 @@
 	icon_state = "synthgel"
 	current_skin = "synthgel"
 	list_reagents = list(/datum/reagent/medicine/synthflesh = 60)
-	custom_price = PAYCHECK_MEDIUM * 5
+	custom_price = PAYCHECK_ASSISTANT * 15.6

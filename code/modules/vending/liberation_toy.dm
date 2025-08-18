@@ -31,7 +31,7 @@ TYPEINFO_DEF(/obj/machinery/vending/toyliberationstation)
 	)
 	resistance_flags = FIRE_PROOF
 	refill_canister = /obj/item/vending_refill/donksoft
-	default_price = PAYCHECK_HARD
-	extra_price = PAYCHECK_COMMAND
+	default_price = PAYCHECK_ASSISTANT * 3
+	extra_price = PAYCHECK_ASSISTANT * 10
 	payment_department = ACCOUNT_STATION_MASTER
 	light_mask = "donksoft-light-mask"

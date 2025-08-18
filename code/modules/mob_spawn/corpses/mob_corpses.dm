@@ -58,7 +58,7 @@
 
 /obj/effect/mob_spawn/corpse/human/pirate
 	name = "Pirate"
-	skin_tone = "caucasian1" //all pirates are white because it's easier that way
+	skin_tone = "Fjällröker" //all pirates are white because it's easier that way
 	outfit = /datum/outfit/piratecorpse
 	hairstyle = "Bald"
 	facial_hairstyle = "Shaved"
@@ -138,7 +138,7 @@
 	hairstyle = "Bald"
 	facial_hairstyle = "Beard (Very Long)"
 	facial_haircolor = COLOR_WHITE
-	skin_tone = "caucasian1"
+	skin_tone = "Fjällröker"
 
 /datum/outfit/wizardcorpse
 	name = "Space Wizard Corpse"
@@ -190,7 +190,7 @@
 	name = "The Cat Surgeon"
 	hairstyle = "Cut Hair"
 	facial_hairstyle = "Watson Mustache"
-	skin_tone = "caucasian1"
+	skin_tone = "Fjällröker"
 	outfit = /datum/outfit/cat_butcher
 
 /datum/outfit/cat_butcher

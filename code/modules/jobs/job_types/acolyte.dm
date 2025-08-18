@@ -17,7 +17,7 @@
 		),
 	)
 
-	paycheck = PAYCHECK_MEDIUM
+	paycheck = PAYCHECK_ASSISTANT * 3.5 // It's a cult. You think they pay well?
 	paycheck_department = ACCOUNT_MED
 
 	mind_traits = list(TRAIT_AETHERITE)
@@ -76,7 +76,7 @@
 
 /datum/outfit/job/doctor/post_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()
-	astype(H.w_uniform.GetComponent(/datum/component/hooded), /datum/component/hooded)?.try_equip_hood(H.w_uniform, H)
+	astype(H.w_uniform.GetComponent(/datum/component/hooded), /datum/component/hooded)?.try_equip_hood(H)
 
 /datum/outfit/job/doctor/mod
 	name = JOB_ACOLYTE + " (MODsuit)"

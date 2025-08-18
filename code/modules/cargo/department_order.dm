@@ -171,9 +171,6 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 	if(pack.supply_flags & SUPPLY_PACK_DROPPOD_ONLY)
 		return FALSE
 
-	if(pack.goody)
-		return FALSE
-
 ///signal when the supply shuttle begins to spawn orders. we forget the current order preventing it from being overridden (since it's already past the point of no return on undoing the order)
 /obj/machinery/computer/department_orders/proc/finalize_department_order(datum/subsystem)
 	SIGNAL_HANDLER

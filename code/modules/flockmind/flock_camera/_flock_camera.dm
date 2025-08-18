@@ -106,7 +106,7 @@
 	ghostize(FALSE)
 	flock?.free_unit(src)
 
-	invisibility = INVISIBLITY_VISIBLE
+	invisibility = INVISIBILITY_VISIBLE
 	notransform = TRUE
 	icon_state = "blank"
 	flick("[base_icon_state]-death", src)

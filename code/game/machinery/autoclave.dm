@@ -93,21 +93,13 @@
 
 	return SECONDARY_ATTACK_CONTINUE_CHAIN
 
-/obj/machinery/autoclave/attackby(obj/item/I, mob/user, params)
-	. = ..()
-	if(.)
-		return
+/obj/machinery/autoclave/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!user.temporarilyRemoveItemFromInventory(tool))
+		return ITEM_INTERACT_BLOCKING
 
-	if(!state_open)
-		return
-
-	if(!user.temporarilyRemoveItemFromInventory(I))
-		return TRUE
-
-	add_fingerprint(user)
-	close_machine(I)
-	user.visible_message(span_notice("[user] places [I] into [src]."))
-	return TRUE
+	close_machine(tool)
+	user.visible_message(span_notice("[user] places [tool] into [src]."))
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/autoclave/attack_hand(mob/living/user, list/modifiers)
 	. = ..()

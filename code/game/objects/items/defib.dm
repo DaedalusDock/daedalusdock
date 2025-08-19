@@ -662,14 +662,14 @@ TYPEINFO_DEF(/obj/item/defibrillator)
 	combat = TRUE
 	icon = 'icons/obj/defib.dmi'
 	icon_state = "syndiepaddles0"
-	inhand_icon_state = "syndiepaddles0"
+	inhand_icon_state = "defibpaddles0"
 	base_icon_state = "syndiepaddles"
 
 /obj/item/shockpaddles/syndicate/nanotrasen
 	name = "advanced defibrillator paddles"
 	desc = "A pair of paddles used to revive deceased ERT members. They possess both the ability to penetrate armor and to deliver powerful or disabling shocks offensively."
 	icon_state = "ntpaddles0"
-	inhand_icon_state = "ntpaddles0"
+	inhand_icon_state = "defibpaddles0"
 	base_icon_state = "ntpaddles"
 
 /obj/item/shockpaddles/syndicate/cyborg

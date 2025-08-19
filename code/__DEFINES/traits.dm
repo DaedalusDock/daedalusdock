@@ -114,6 +114,9 @@
 #define HAS_TRAIT_FROM_ONLY(target, trait, source) (target.status_traits?[trait] && (source in target.status_traits[trait]) && (length(target.status_traits[trait]) == 1))
 #define HAS_TRAIT_NOT_FROM(target, trait, source) (target.status_traits?[trait] && (length(target.status_traits[trait] - source) > 0))
 
+/// Helper for when a trait can be a mind or body trait.
+#define HAS_MIND_TRAIT(target, trait) (HAS_TRAIT(target, trait) || (target.mind && HAS_TRAIT(target.mind, trait)))
+
 /// For use in start/stop metabolize. Since we don't want touch metabolism ending to interrupt bloodstream chems of the same type, etc.
 #define CHEM_TRAIT_SOURCE(class) "[type]_[class]"
 

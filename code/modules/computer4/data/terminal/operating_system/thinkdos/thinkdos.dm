@@ -12,6 +12,9 @@
 	/// Shell commmands for std_in, built on new.
 	var/static/list/commands
 
+	/// Lazy queue of shell commands. When the system is active, it will try to run these.
+	var/list/datum/shell_stdin/queued_commands
+
 	/// Boolean, determines if errors are written to the log file.
 	var/log_errors = TRUE
 
@@ -52,6 +55,23 @@
 	else
 		println("Type 'help' to get started.")
 
+/datum/c4_file/terminal_program/operating_system/thinkdos/clean_up()
+	LAZYNULL(queued_commands)
+	return ..()
+
+/datum/c4_file/terminal_program/operating_system/thinkdos/parse_std_in(text)
+	RETURN_TYPE(/list/datum/shell_stdin)
+
+	var/list/split_raw = splittext(text, THINKDOS_SYMBOL_SEPARATOR)
+	if(length(split_raw) > THINKDOS_MAX_COMMANDS)
+		var/excess = length(split_raw) - THINKDOS_MAX_COMMANDS
+		split_raw.Cut(THINKDOS_MAX_COMMANDS + 1)
+		println("Discarding [excess] excess command\s")
+
+	. = list()
+	for(var/raw_command in split_raw)
+		. += new /datum/shell_stdin(trimtext(raw_command)) //built-in is faster, don't care about right whitespace
+
 /datum/c4_file/terminal_program/operating_system/thinkdos/std_in(text)
 	. = ..()
 	if(.)
@@ -61,19 +81,43 @@
 	println(encoded_in)
 	write_log(encoded_in)
 
-	var/datum/shell_stdin/parsed_stdin = parse_std_in(text)
+	var/list/datum/shell_stdin/parsed_stdins = parse_std_in(text)
+	if(!length(parsed_stdins)) //okay
+		return TRUE
+
 	if(!current_user && needs_login)
+		var/datum/shell_stdin/login_stdin = parsed_stdins[1]
 		var/datum/shell_command/thinkdos/login/login_command = locate() in commands
-		if(!login_command.try_exec(parsed_stdin.command, src, src, parsed_stdin.arguments, parsed_stdin.options))
+		if(!login_command.try_exec(login_stdin.command, src, src, login_stdin.arguments, login_stdin.options))
 			println("Login required. Please login using 'login'.")
 		return
 
-	for(var/datum/shell_command/potential_command as anything in commands)
-		if(potential_command.try_exec(parsed_stdin.command, src, src, parsed_stdin.arguments, parsed_stdin.options))
-			return TRUE
-
-	println("'[html_encode(parsed_stdin.raw)]' is not recognized as an internal or external command.")
+	queued_commands = parsed_stdins
+	handle_command_queue()
 	return TRUE
+
+/datum/c4_file/terminal_program/operating_system/thinkdos/unload_program(datum/c4_file/terminal_program/program)
+	. = ..()
+	if(.)
+		handle_command_queue()
+
+
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/handle_command_queue()
+	while(LAZYLEN(queued_commands)) //hmm...
+		if(active_program != src) //We are now blocking
+			break
+
+		var/datum/shell_stdin/parsed_stdin = popleft(queued_commands)
+		var/recognized = FALSE
+		for(var/datum/shell_command/potential_command as anything in commands)
+			if(potential_command.try_exec(parsed_stdin.command, src, src, parsed_stdin.arguments, parsed_stdin.options))
+				recognized = TRUE
+				break
+
+		if(!recognized)
+			println("'[html_encode(parsed_stdin.raw)]' is not recognized as an internal or external command.")
+
+	UNSETEMPTY(queued_commands)
 
 /// Write to the command log.
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/write_log(text)

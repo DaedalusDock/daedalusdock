@@ -32,3 +32,9 @@
 
 #define PDP_BIND_FAILED_CATASTROPHIC 1 //! What the fuck did you do???
 #define PDP_BIND_FAILED_CONFLICT 2 //! Port already bound?
+
+// ThinkDOS //
+// Constants
+#define THINKDOS_MAX_COMMANDS 3 //! The maximum amount of commands
+// Symbols
+#define THINKDOS_SYMBOL_SEPARATOR ";" //! Lets you split stdin into distinct commands

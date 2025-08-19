@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Autoclave item insertion.
-  - bugfix: Maybe fixed the crew manifest exploding.

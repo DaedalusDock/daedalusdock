@@ -16,4 +16,5 @@
 		/obj/item/screwdriver,
 		/obj/item/food/lollipop,
 		/obj/item/clothing/mask/cigarette,
+		/obj/item/flashlight/glowstick,
 	))

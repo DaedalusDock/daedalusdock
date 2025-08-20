@@ -1,0 +1,38 @@
+@use '../base.scss';
+@use '../colors.scss';
+@use '../functions.scss' as *;
+
+$color-danger: colors.bg(colors.$red) !default;
+$color-caution: colors.bg(colors.$yellow) !default;
+
+$background-beige: #e8e4c9;
+
+.EmbeddedController_Window {
+  border: 2.2rem outset darken($background-beige, 10%);
+}
+
+.EmbeddedController__displayBox {
+  background-color: #002003;
+  border: 0.167em inset $background-beige;
+  border-right: '#949180 solid';
+  color: #03e017;
+  font-size: 2em;
+  font-family: monospace;
+}
+
+.EmbeddedController__Button {
+  outline-width: 0.25rem !important;
+  border-width: 0.65rem !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  width: 20ch;
+}
+
+.EmbeddedController__Button--keypad {
+  background-color: $background-beige;
+  border-color: $background-beige;
+  &:hover {
+    background-color: lighten($background-beige, 15%) !important;
+    border-color: lighten($background-beige, 15%) !important;
+  }
+}

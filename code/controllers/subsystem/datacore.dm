@@ -118,7 +118,7 @@ SUBSYSTEM_DEF(datacore)
 	var/datum/data/record/foundrecord = library[DATACORE_RECORDS_STATION].get_record_by_name(name)
 	if(foundrecord)
 		foundrecord.fields[DATACORE_RANK] = assignment
-		foundrecord.fields[DATACORE_TRIM] = trim
+		foundrecord.fields[DATACORE_TEMPLATE_RANK] = trim
 
 /datum/controller/subsystem/datacore/proc/get_manifest(record_type = DATACORE_RECORDS_STATION)
 	// First we build up the order in which we want the departments to appear in.
@@ -135,8 +135,8 @@ SUBSYSTEM_DEF(datacore)
 	for(var/datum/data/record/record as anything in SSdatacore.get_records(record_type))
 		var/name = record.fields[DATACORE_NAME]
 		var/rank = record.fields[DATACORE_RANK] // user-visible job
-		var/trim = record.fields[DATACORE_TRIM] // internal jobs by trim type
-		var/datum/job/job = SSjob.GetJob(trim)
+		var/template_name = record.fields[DATACORE_TEMPLATE_RANK] // internal jobs by trim name
+		var/datum/job/job = SSjob.GetJob(template_name)
 
 		// Filter out jobs that aren't on the manifest, move them to "unassigned"
 		if(!job || !(job.job_flags & JOB_CREW_MANIFEST) || !LAZYLEN(job.departments_list))
@@ -144,7 +144,9 @@ SUBSYSTEM_DEF(datacore)
 			misc_list[++misc_list.len] = list(
 				"name" = name,
 				"rank" = rank,
-				"trim" = trim,
+				"template_rank" = template_name,
+				"is_faction_leader" = FALSE,
+				"is_captain" = FALSE,
 				)
 			continue
 
@@ -161,7 +163,9 @@ SUBSYSTEM_DEF(datacore)
 			var/list/entry = list(
 				"name" = name,
 				"rank" = rank,
-				"trim" = trim,
+				"template_rank" = template_name,
+				"is_faction_leader" = (job.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER),
+				"is_captain" = istype(job, /datum/job/captain),
 				)
 
 			var/list/department_list = manifest_out[department.department_name]
@@ -206,6 +210,10 @@ SUBSYSTEM_DEF(datacore)
 	dat = replacetext(dat, "\t", "")
 	return dat
 
+/datum/controller/subsystem/datacore/proc/next_record_id()
+	var/static/record_id_num = 1001
+	return num2hex(record_id_num++,6)
+
 /datum/controller/subsystem/datacore/proc/manifest_inject(mob/living/carbon/human/H, client/C)
 	SHOULD_NOT_SLEEP(TRUE)
 	var/static/list/show_directions = list(SOUTH, WEST)
@@ -220,8 +228,7 @@ SUBSYSTEM_DEF(datacore)
 	var/chosen_assignment = C?.prefs.alt_job_titles[assignment] || assignment
 	//PARIAH EDIT END
 
-	var/static/record_id_num = 1001
-	var/id = num2hex(record_id_num++,6)
+	var/id = next_record_id()
 	if(!C)
 		C = H.client
 
@@ -234,13 +241,11 @@ SUBSYSTEM_DEF(datacore)
 
 	G.fields[DATACORE_NAME] = H.real_name
 	G.fields[DATACORE_RANK] = chosen_assignment //PARIAH EDIT
-	G.fields[DATACORE_TRIM] = assignment
+	G.fields[DATACORE_TEMPLATE_RANK] = assignment
 	G.fields[DATACORE_INITIAL_RANK] = assignment
 	G.fields[DATACORE_AGE] = H.age
 	G.fields[DATACORE_SPECIES] = H.dna.species.name
 	G.fields[DATACORE_FINGERPRINT] = H.get_fingerprints(TRUE)
-	G.fields[DATACORE_PHYSICAL_HEALTH] = "Active"
-	G.fields[DATACORE_MENTAL_HEALTH] = "Stable"
 	G.fields[DATACORE_GENDER] = H.gender
 	if(H.gender == "male")
 		G.fields[DATACORE_GENDER] = "Male"
@@ -260,20 +265,23 @@ SUBSYSTEM_DEF(datacore)
 	// Add to company-specific manifests
 	var/datum/job_department/department = SSjob.departments_by_type[job.departments_list?[1]]
 	if(department?.manifest_key)
-		library[department.manifest_key].inject_record(G)
+		library[department.manifest_key].inject_record(G.Copy())
 
 	//Medical Record
 	var/datum/data/record/medical/M = new()
 	M.fields[DATACORE_ID] = id
 	M.fields[DATACORE_NAME] = H.real_name
+	M.fields[DATACORE_GENDER] = H.gender
+	M.fields[DATACORE_AGE] = H.age
+	M.fields[DATACORE_SPECIES] = H.dna.species.name
 	M.fields[DATACORE_BLOOD_TYPE] = H.dna.blood_type.name
 	M.fields[DATACORE_BLOOD_DNA] = H.dna.unique_enzymes
-	M.fields[DATACORE_DISABILITIES] = H.get_quirk_string(FALSE, CAT_QUIRK_DISABILITIES)
-	M.fields[DATACORE_DISABILITIES_DETAILS] = H.get_quirk_string(TRUE, CAT_QUIRK_DISABILITIES)
+	M.fields[DATACORE_DISABILITIES] = H.get_quirk_string(TRUE, CAT_QUIRK_DISABILITIES)
+	M.fields[DATACORE_ALLERGIES] = "None"
+	M.fields[DATACORE_PHYSICAL_HEALTH] = PHYSHEALTH_OK
+	M.fields[DATACORE_MENTAL_HEALTH] = MENHEALTH_OK
 	M.fields[DATACORE_DISEASES] = "None"
-	M.fields[DATACORE_DISEASES_DETAILS] = "No diseases have been diagnosed at the moment."
-	M.fields[DATACORE_NOTES] = H.get_quirk_string(FALSE, CAT_QUIRK_NOTES)
-	M.fields[DATACORE_NOTES_DETAILS] = H.get_quirk_string(TRUE, CAT_QUIRK_NOTES)
+	M.fields[DATACORE_NOTES] = H.get_quirk_string(TRUE, CAT_QUIRK_NOTES)
 	library[DATACORE_RECORDS_MEDICAL].inject_record(M)
 
 	//Security Record
@@ -292,7 +300,7 @@ SUBSYSTEM_DEF(datacore)
 	L.fields[DATACORE_NAME] = H.real_name
 	// L.fields[DATACORE_RANK] = assignment //ORIGINAL
 	L.fields[DATACORE_RANK] = chosen_assignment  //PARIAH EDIT
-	L.fields[DATACORE_TRIM] = assignment
+	L.fields[DATACORE_TEMPLATE_RANK] = assignment
 	G.fields[DATACORE_INITIAL_RANK] = assignment
 	L.fields[DATACORE_AGE] = H.age
 	L.fields[DATACORE_GENDER] = H.gender
@@ -302,7 +310,7 @@ SUBSYSTEM_DEF(datacore)
 		G.fields[DATACORE_GENDER] = "Female"
 	else
 		G.fields[DATACORE_GENDER] = "Other"
-	L.fields[DATACORE_BLOOD_TYPE] = H.dna.blood_type
+	L.fields[DATACORE_BLOOD_TYPE] = H.dna.blood_type.name
 	L.fields[DATACORE_BLOOD_DNA] = H.dna.unique_enzymes
 	L.fields[DATACORE_DNA_IDENTITY] = H.dna.unique_identity
 	L.fields[DATACORE_SPECIES] = H.dna.species.type
@@ -329,13 +337,20 @@ SUBSYSTEM_DEF(datacore)
 	/// The array of records
 	var/list/general_records_out = list()
 	for(var/datum/data/record/gen_record as anything in get_records(DATACORE_RECORDS_STATION))
+		var/datum/data/record/medical_record = get_record_by_name(gen_record.fields[DATACORE_NAME])
+
 		/// The object containing the crew info
 		var/list/crew_record = list()
+
 		crew_record["ref"] = REF(gen_record)
 		crew_record["name"] = gen_record.fields[DATACORE_NAME]
-		crew_record["physical_health"] = gen_record.fields[DATACORE_PHYSICAL_HEALTH]
-		crew_record["mental_health"] = gen_record.fields[DATACORE_MENTAL_HEALTH]
+
+		if(medical_record)
+			crew_record["physical_health"] = medical_record.fields[DATACORE_PHYSICAL_HEALTH]
+			crew_record["mental_health"] = medical_record.fields[DATACORE_MENTAL_HEALTH]
+
 		general_records_out += list(crew_record)
+
 	return general_records_out
 
 /**
@@ -372,5 +387,30 @@ SUBSYSTEM_DEF(datacore)
 	c.paid = 0
 	c.dataId = ++securityCrimeCounter
 	return c
+
+/// Checks if using the given access, something can access the given datacore key.
+/datum/controller/subsystem/datacore/proc/can_modify_records(record_key, list/access)
+	switch(record_key)
+		if(DATACORE_RECORDS_STATION)
+			if((ACCESS_CAPTAIN in access) || (ACCESS_DELEGATE in access)) // HACK, need to split ACCESS_FACTION_LEADER away from a new ACCESS_MANAGEMENT
+				return TRUE
+
+		if(DATACORE_RECORDS_AETHER, DATACORE_RECORDS_MEDICAL)
+			if(ACCESS_MEDICAL in access)
+				return TRUE
+
+		if(DATACORE_RECORDS_DAEDALUS)
+			if(ACCESS_ENGINEERING in access)
+				return TRUE
+
+		if(DATACORE_RECORDS_HERMES)
+			if(ACCESS_CARGO in access)
+				return TRUE
+
+		if(DATACORE_RECORDS_SECURITY, DATACORE_RECORDS_MARS)
+			if(ACCESS_SECURITY in access)
+				return TRUE
+
+	return FALSE
 
 #undef DUMMY_HUMAN_SLOT_MANIFEST

@@ -88,12 +88,15 @@
 	if(absorption_capacity)
 		src.absorption_capacity = absorption_capacity
 
+	// Not typeinfo() for speed reasons. Hot ass code!
+	var/datum/typeinfo/atom/typeinfo = __typeinfo_cache[type] ||= new __typeinfo_path
+
 	if(LAZYLEN(mat_override))
 		set_mats_per_unit(mat_override, mat_amt)
 	else if(LAZYLEN(mats_per_unit))
 		set_mats_per_unit(mats_per_unit, 1)
-	else if(LAZYLEN(custom_materials))
-		set_mats_per_unit(custom_materials, amount ? 1/amount : 1)
+	else if(LAZYLEN(typeinfo.default_materials))
+		set_mats_per_unit(typeinfo.default_materials, amount ? 1/amount : 1)
 
 	. = ..()
 	// HELLO THIS IS KAPU. THIS IS BROKEN.
@@ -238,12 +241,15 @@
 	return list()//empty list
 
 /obj/item/stack/proc/update_weight()
+	var/new_w_class
 	if(amount <= (max_amount * (1/3)))
-		w_class = clamp(full_w_class-2, WEIGHT_CLASS_TINY, full_w_class)
+		new_w_class = clamp(full_w_class-2, WEIGHT_CLASS_TINY, full_w_class)
 	else if (amount <= (max_amount * (2/3)))
-		w_class = clamp(full_w_class-1, WEIGHT_CLASS_TINY, full_w_class)
+		new_w_class = clamp(full_w_class-1, WEIGHT_CLASS_TINY, full_w_class)
 	else
-		w_class = full_w_class
+		new_w_class = full_w_class
+
+	set_weight_class(new_w_class)
 
 /obj/item/stack/update_icon_state()
 	if(novariants)
@@ -634,26 +640,31 @@
 		merge(hitting)
 	. = ..()
 
-/obj/item/stack/attack(mob/living/M, mob/living/user, params)
+/obj/item/stack/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
 	if(splint_slowdown)
-		return try_splint(M, user)
+		return try_splint(interacting_with, user)
 
-	if(!user.combat_mode && absorption_capacity && ishuman(M))
-		var/obj/item/bodypart/BP = M.get_bodypart(user.zone_selected, TRUE)
-		if(BP.bandage)
-			to_chat(user, span_warning("[M]'s [BP.plaintext_zone] is already bandaged."))
-			return FALSE
+	if(!absorption_capacity || !ishuman(interacting_with))
+		return NONE
 
-		if(do_after(user, M, 5 SECONDS, DO_PUBLIC, display = src))
-			if(user == M)
-				user.visible_message(span_notice("[user] applies [src] to [user.p_their()] [BP.plaintext_zone]."))
-			else
-				user.visible_message(span_notice("[user] applies [src] to [M]'s [BP.plaintext_zone]."))
-			BP.apply_bandage(src)
-		return
+	var/mob/living/carbon/human/target = interacting_with
+	var/obj/item/bodypart/BP = target.get_bodypart(user.zone_selected, TRUE)
+	if(BP.bandage)
+		to_chat(user, span_warning("[target]'s [BP.plaintext_zone] is already bandaged."))
+		return ITEM_INTERACT_BLOCKING
 
-	return ..()
+	if(!do_after(user, target, 5 SECONDS, DO_PUBLIC, display = src))
+		return ITEM_INTERACT_BLOCKING
 
+	if(user == target)
+		user.visible_message(span_notice("[user] applies [src] to [user.p_their()] [BP.plaintext_zone]."))
+	else
+		user.visible_message(span_notice("[user] applies [src] to [target]'s [BP.plaintext_zone]."))
+	BP.apply_bandage(src)
+	return ITEM_INTERACT_SUCCESS
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/stack/attack_hand(mob/user, list/modifiers)

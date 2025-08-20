@@ -49,7 +49,10 @@
 #define BROKEN_SKULL_EFFECT "broken_head"
 /// Missing or dead liver.
 #define DEAD_LIVER_EFFECT "dead_liver"
+/// Hunger.
+#define HUNGER_EFFECT "hunger"
 
+/// Vampire thirst
 #define VAMPIRE_EFFECT "vampire_effect"
 
 // Status effect application helpers.

@@ -13,10 +13,13 @@ import { BoxProps, computeBoxClassName, computeBoxProps } from './Box';
 interface SectionProps extends BoxProps {
   buttons?: ReactNode;
   className?: string;
+  /** id to assosiate with the parent div element used by this section, for uses with procs like getElementByID */
+  container_id?: string;
   fill?: boolean;
   fitted?: boolean;
   /** @deprecated This property no longer works, please remove it. */
   level?: boolean;
+  noTitleBorder?: boolean;
   /** @deprecated Please use `scrollable` property */
   overflowY?: any;
   scrollable?: boolean;
@@ -48,17 +51,20 @@ export class Section extends Component<SectionProps> {
   render() {
     const {
       className,
+      container_id,
       title,
       buttons,
       fill,
       fitted,
       scrollable,
       children,
+      noTitleBorder,
       ...rest
     } = this.props;
     const hasTitle = canRender(title) || canRender(buttons);
     return (
       <div
+        id={container_id}
         className={classes([
           'Section',
           fill && 'Section--fill',
@@ -70,7 +76,12 @@ export class Section extends Component<SectionProps> {
         {...computeBoxProps(rest)}
       >
         {hasTitle && (
-          <div className="Section__title">
+          <div
+            className={classes([
+              'Section__title',
+              noTitleBorder && 'Section--titleBorderless',
+            ])}
+          >
             <span className="Section__titleText">{title}</span>
             <div className="Section__buttons">{buttons}</div>
           </div>

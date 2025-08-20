@@ -47,7 +47,7 @@
 
 /datum/ai_controller/basic_controller/cockroach
 	blackboard = list(
-		BB_TARGETTING_DATUM = new /datum/targetting_datum/basic()
+		BB_TARGETING_STRATEGY = /datum/targeting_strategy/basic,
 	)
 
 	ai_traits = STOP_MOVING_WHEN_PULLED
@@ -117,7 +117,7 @@
 
 /mob/living/basic/cockroach/hauberoach/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/caltrop, min_damage = 10, max_damage = 15, flags = (CALTROP_BYPASS_SHOES | CALTROP_SILENT))
+	AddComponent(/datum/component/caltrop, min_damage = 10, max_damage = 15, flags = (CALTROP_BYPASS_SHOES | CALTROP_SILENT | CALTROP_IGNORE_WALKERS))
 	AddComponent(/datum/component/squashable, squash_chance = 100, squash_damage = 1, squash_callback = TYPE_PROC_REF(/mob/living/basic/cockroach/hauberoach, on_squish))
 
 ///Proc used to override the squashing behavior of the normal cockroach.

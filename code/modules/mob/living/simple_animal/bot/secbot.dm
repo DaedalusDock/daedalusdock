@@ -94,7 +94,7 @@
 /mob/living/simple_animal/bot/secbot/beepsky/explode()
 	var/atom/Tsec = drop_location()
 	new /obj/item/stock_parts/cell/potato(Tsec)
-	var/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass/drinking_oil = new(Tsec)
+	var/obj/item/reagent_containers/cup/glass/drinkingglass/shotglass/drinking_oil = new(Tsec)
 	drinking_oil.reagents.add_reagent(/datum/reagent/consumable/ethanol/whiskey, 15)
 	return ..()
 
@@ -104,8 +104,8 @@
 	update_appearance(UPDATE_ICON)
 
 	// Doing this hurts my soul, but simplebot access reworks are for another day.
-	var/datum/id_trim/job/det_trim = SSid_access.trim_singletons_by_path[/datum/id_trim/job/detective]
-	access_card.add_access(det_trim.access + det_trim.wildcard_access)
+	var/datum/access_template/job/det_trim = SSid_access.template_singletons_by_path[/datum/access_template/job/detective]
+	access_card.add_access(det_trim.access)
 	prev_access = access_card.access.Copy()
 
 	var/static/list/loc_connections = list(

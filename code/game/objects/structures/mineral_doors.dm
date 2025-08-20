@@ -1,6 +1,9 @@
 //NOT using the existing /obj/machinery/door type, since that has some complications on its own, mainly based on its
 //machineryness
 
+TYPEINFO_DEF(/obj/structure/mineral_door)
+	default_armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 50, ACID = 50)
+
 /obj/structure/mineral_door
 	name = "iron door"
 	density = TRUE
@@ -12,7 +15,6 @@
 	icon = 'icons/obj/doors/mineral_doors.dmi'
 	icon_state = "metal"
 	max_integrity = 200
-	armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 50, ACID = 50)
 	can_atmos_pass = CANPASS_DENSITY
 	rad_insulation = RAD_MEDIUM_INSULATION
 	material_flags = MATERIAL_EFFECTS
@@ -142,7 +144,7 @@
 /obj/structure/mineral_door/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool, time = 4 SECONDS)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 
 /////////////////////// TOOL OVERRIDES ///////////////////////

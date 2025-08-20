@@ -6,18 +6,19 @@
 	desc = "Inject certain types of monster organs with this stabilizer to preserve their healing powers indefinitely."
 	w_class = WEIGHT_CLASS_TINY
 
-/obj/item/hivelordstabilizer/afterattack(obj/item/organ/M, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	var/obj/item/organ/regenerative_core/C = M
+/obj/item/hivelordstabilizer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ismob(interacting_with))
+		return NONE
+
+	var/obj/item/organ/regenerative_core/C = interacting_with
 	if(!istype(C, /obj/item/organ/regenerative_core))
 		to_chat(user, span_warning("The stabilizer only works on certain types of monster organs, generally regenerative in nature."))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	C.preserved()
-	to_chat(user, span_notice("You inject the [M] with the stabilizer. It will no longer go inert."))
+	to_chat(user, span_notice("You inject the [interacting_with] with the stabilizer. It will no longer go inert."))
 	qdel(src)
+	return ITEM_INTERACT_SUCCESS
 
 /************************Hivelord core*******************/
 /obj/item/organ/regenerative_core
@@ -90,10 +91,12 @@
 			H.apply_status_effect(/datum/status_effect/regenerative_core)
 			qdel(src)
 
-/obj/item/organ/regenerative_core/afterattack(atom/target, mob/user, proximity_flag)
-	. = ..()
-	if(proximity_flag)
-		applyto(target, user)
+/obj/item/organ/regenerative_core/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ismob(interacting_with))
+		return NONE
+
+	applyto(interacting_with, user)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/organ/regenerative_core/attack_self(mob/user)
 	if(user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))

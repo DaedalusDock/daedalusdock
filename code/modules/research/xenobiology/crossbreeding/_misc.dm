@@ -54,20 +54,24 @@ Slimecrossing Items
 		ret[part.body_zone] = saved_part
 	return ret
 
-/obj/item/camera/rewind/afterattack(atom/target, mob/user, flag)
+/obj/item/camera/rewind/try_take_picture(atom/interacting_with, mob/living/user)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(!on || !pictures_left || !isturf(target.loc))
-		return
+		return FALSE
+
 	if(!used)//selfie time
 		if(user == target)
-			to_chat(user, span_notice("You take a selfie!"))
+			to_chat(user, span_notice("You take a selfie."))
 		else
-			to_chat(user, span_notice("You take a photo with [target]!"))
-			to_chat(target, span_notice("[user] takes a photo with you!"))
+			to_chat(user, span_notice("You take a photo with [target]."))
+			to_chat(target, span_notice("[user] takes a photo with you."))
 		to_chat(target, span_boldnotice("You'll remember this moment forever!"))
 
 		used = TRUE
 		target.AddComponent(/datum/component/dejavu, 2)
-	.=..()
+
+	return ..()
 
 
 
@@ -79,23 +83,26 @@ Slimecrossing Items
 	pictures_max = 1
 	var/used = FALSE
 
-/obj/item/camera/timefreeze/afterattack(atom/target, mob/user, flag)
-	if(!on || !pictures_left || !isturf(target.loc))
-		return
+/obj/item/camera/timefreeze/try_take_picture(atom/interacting_with, mob/living/user)
+	if(!on || !pictures_left || !isturf(interacting_with.loc))
+		return FALSE
+
 	if(!used) //refilling the film does not refill the timestop
-		new /obj/effect/timestop(get_turf(target), 2, 50, list(user))
+		new /obj/effect/timestop(get_turf(interacting_with), 2, 50, list(user))
 		used = TRUE
 		desc = "This camera has seen better days."
 	. = ..()
 
 //Hypercharged slime cell - Charged Yellow
+TYPEINFO_DEF(/obj/item/stock_parts/cell/high/slime_hypercharged)
+	default_materials = null
+
 /obj/item/stock_parts/cell/high/slime_hypercharged
 	name = "hypercharged slime core"
 	desc = "A charged yellow slime extract, infused with plasma. It almost hurts to touch."
 	icon = 'icons/mob/slimes.dmi'
 	icon_state = "yellow slime extract"
 	rating = 7
-	custom_materials = null
 	maxcharge = 50000
 	chargerate = 2500
 	charge_light_type = null
@@ -144,6 +151,9 @@ Slimecrossing Items
 	icon_state = "rainbowbarrier"
 
 //Ice stasis block - Chilling Dark Blue
+TYPEINFO_DEF(/obj/structure/ice_stasis)
+	default_armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = -50, ENERGY = -50, BOMB = 0, BIO = 100, FIRE = -80, ACID = 30)
+
 /obj/structure/ice_stasis
 	name = "ice block"
 	desc = "A massive block of ice. You can see something vaguely humanoid inside."
@@ -151,7 +161,6 @@ Slimecrossing Items
 	icon_state = "frozen"
 	density = TRUE
 	max_integrity = 100
-	armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = -50, ENERGY = -50, BOMB = 0, BIO = 100, FIRE = -80, ACID = 30)
 
 /obj/structure/ice_stasis/Initialize(mapload)
 	. = ..()
@@ -171,32 +180,42 @@ Slimecrossing Items
 	icon = 'icons/obj/slimecrossing.dmi'
 	icon_state = "capturedevice"
 
-/obj/item/capturedevice/attack(mob/living/M, mob/user)
+/obj/item/capturedevice/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
 	if(length(contents))
 		to_chat(user, span_warning("The device already has something inside."))
-		return
+		return ITEM_INTERACT_BLOCKING
+
+	var/mob/living/simple_animal/M = interacting_with
 	if(!isanimal(M))
 		to_chat(user, span_warning("The capture device only works on simple creatures."))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(M.mind)
 		to_chat(user, span_notice("You offer the device to [M]."))
 		if(tgui_alert(M, "Would you like to enter [user]'s capture device?", "Gold Capture Device", list("Yes", "No")) == "Yes")
-			if(user.canUseTopic(src, USE_CLOSE) && user.canUseTopic(M, USE_CLOSE))
+			if(user.canUseTopic(src, USE_CLOSE) && user.Adjacent(interacting_with))
 				to_chat(user, span_notice("You store [M] in the capture device."))
 				to_chat(M, span_notice("The world warps around you, and you're suddenly in an endless void, with a window to the outside floating in front of you."))
 				store(M, user)
+				return ITEM_INTERACT_SUCCESS
 			else
 				to_chat(user, span_warning("You were too far away from [M]."))
 				to_chat(M, span_warning("You were too far away from [user]."))
+				return ITEM_INTERACT_BLOCKING
 		else
 			to_chat(user, span_warning("[M] refused to enter the device."))
-			return
+			return ITEM_INTERACT_BLOCKING
 	else
 		if(istype(M, /mob/living/simple_animal/hostile) && !("neutral" in M.faction))
 			to_chat(user, span_warning("This creature is too aggressive to capture."))
-			return
+			return ITEM_INTERACT_BLOCKING
+
 	to_chat(user, span_notice("You store [M] in the capture device."))
 	store(M)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/capturedevice/attack_self(mob/user)
 	if(contents.len)

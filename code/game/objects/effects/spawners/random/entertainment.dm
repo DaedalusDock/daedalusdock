@@ -42,7 +42,7 @@
 		/obj/effect/spawner/random/entertainment/money = 3,
 		/obj/item/dice/d6 = 3,
 		/obj/item/storage/box/syndie_kit/throwing_weapons = 1,
-		/obj/item/reagent_containers/food/drinks/bottle/vodka/badminka = 1,
+		/obj/item/reagent_containers/cup/glass/bottle/vodka/badminka = 1,
 	)
 
 /obj/effect/spawner/random/entertainment/coin
@@ -104,7 +104,7 @@
 	name = "recreational drugs spawner"
 	icon_state = "pill"
 	loot = list(
-		/obj/item/reagent_containers/food/drinks/bottle/hooch = 50,
+		/obj/item/reagent_containers/cup/glass/bottle/hooch = 50,
 		/obj/item/clothing/mask/cigarette/rollie/cannabis = 15,
 		/obj/item/reagent_containers/syringe = 15,
 		/obj/item/cigbutt/roach = 15,
@@ -128,7 +128,7 @@
 	loot = list(
 		/obj/item/storage/fancy/cigarettes = 3,
 		/obj/item/storage/fancy/cigarettes/dromedaryco = 3,
-		/obj/item/storage/fancy/cigarettes/cigpack_uplift = 3,
+		/obj/item/storage/fancy/cigarettes/cigpack_astro = 5,
 		/obj/item/storage/fancy/cigarettes/cigpack_robust = 3,
 		/obj/item/storage/fancy/cigarettes/cigpack_carp = 3,
 		/obj/item/storage/fancy/cigarettes/cigpack_robustgold = 1,
@@ -140,11 +140,11 @@
 	name = "cigarette spawner"
 	icon_state = "cigarettes"
 	loot = list(
+		/obj/item/clothing/mask/cigarette/astro = 5,
 		/obj/item/clothing/mask/cigarette/space_cigarette = 3,
 		/obj/item/clothing/mask/cigarette/rollie/cannabis = 3,
 		/obj/item/clothing/mask/cigarette/rollie/nicotine = 3,
 		/obj/item/clothing/mask/cigarette/dromedary = 2,
-		/obj/item/clothing/mask/cigarette/uplift = 2,
 		/obj/item/clothing/mask/cigarette/robust = 2,
 		/obj/item/clothing/mask/cigarette/carp = 1,
 		/obj/item/clothing/mask/cigarette/robustgold = 1,

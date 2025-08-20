@@ -87,6 +87,9 @@
  * Run to equally share the blood between us and a decal
  */
 /datum/component/bloodysoles/proc/share_blood(obj/effect/decal/cleanable/pool)
+	if(HAS_TRAIT(pool, TRAIT_MOVABLE_FLUORESCENT))
+		return
+
 	// Share the blood between our boots and the blood pool
 	var/total_bloodiness = pool.bloodiness + bloody_shoes[pool.blood_color]
 
@@ -120,6 +123,8 @@
  */
 /datum/component/bloodysoles/proc/find_pool_by_blood_state(turf/turfLoc, typeFilter = null, blood_print)
 	for(var/obj/effect/decal/cleanable/blood/pool in turfLoc)
+		if(HAS_TRAIT(pool, TRAIT_MOVABLE_FLUORESCENT))
+			continue
 		if(pool.blood_color == last_blood_color && pool.blood_print == blood_print && (!typeFilter || istype(pool, typeFilter)))
 			return pool
 
@@ -231,6 +236,9 @@
 	SIGNAL_HANDLER
 
 	if(QDELETED(wielder) || is_obscured())
+		return
+
+	if(astype(pool, /obj/effect/decal/cleanable/blood)?.is_dry)
 		return
 
 	if(istype(pool, /obj/effect/decal/cleanable/blood/footprints) && pool.blood_color == last_blood_color)

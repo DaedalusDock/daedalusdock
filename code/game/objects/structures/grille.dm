@@ -1,6 +1,9 @@
 /// Max number of unanchored items that will be moved from a tile when attempting to add a window to a grille.
 #define CLEAR_TILE_MOVE_LIMIT 20
 
+TYPEINFO_DEF(/obj/structure/grille)
+	default_armor = list(BLUNT = 50, PUNCTURE = 70, SLASH = 90, LASER = 70, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 0, ACID = 0)
+
 /obj/structure/grille
 	desc = "A flimsy framework of iron rods."
 	name = "grille"
@@ -14,7 +17,6 @@
 	can_atmos_pass = CANPASS_ALWAYS
 	flags_1 = CONDUCT_1
 	//pressure_resistance = 5*ONE_ATMOSPHERE
-	armor = list(BLUNT = 50, PUNCTURE = 70, SLASH = 90, LASER = 70, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 0, ACID = 0)
 	max_integrity = 50
 	integrity_failure = 0.4
 	smoothing_flags = SMOOTH_BITMASK
@@ -159,7 +161,7 @@
 		return
 	tool.play_tool_sound(src, 100)
 	deconstruct()
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/grille/screwdriver_act(mob/living/user, obj/item/tool)
 	if(!isturf(loc) || !anchored)
@@ -171,7 +173,7 @@
 	set_anchored(!anchored)
 	user.visible_message(span_notice("[user] [anchored ? "fastens" : "unfastens"] [src]."), \
 		span_notice("You [anchored ? "fasten [src] to" : "unfasten [src] from"] the floor."))
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/grille/attackby(obj/item/W, mob/user, params)
 	user.changeNext_move(CLICK_CD_MELEE)

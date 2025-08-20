@@ -163,17 +163,10 @@
 /datum/map_template/shuttle/emergency/construction
 	suffix = "construction"
 	name = "Build your own shuttle kit"
-	description = "For the enterprising shuttle engineer! The chassis will dock upon purchase, but launch will have to be authorized as usual via shuttle call. Comes stocked with construction materials. Unlocks the ability to buy shuttle engine crates from cargo, which allow you to speed up shuttle transit time."
+	description = "For the enterprising shuttle engineer! The chassis will dock upon purchase, but launch will have to be authorized as usual via shuttle call. Comes stocked with construction materials."
 	admin_notes = "No brig, no medical facilities."
 	credit_cost = CARGO_CRATE_VALUE * 5
 	who_can_purchase = list(ACCESS_CAPTAIN, ACCESS_CE)
-
-/datum/map_template/shuttle/emergency/construction/post_load()
-	. = ..()
-	//enable buying engines from cargo
-	var/datum/supply_pack/P = SSshuttle.supply_packs[/datum/supply_pack/engineering/shuttle_engine]
-	P.special_enabled = TRUE
-
 
 /datum/map_template/shuttle/emergency/asteroid
 	suffix = "asteroid"
@@ -231,7 +224,7 @@
 /datum/map_template/shuttle/emergency/medisim
 	suffix = "medisim"
 	name = "Medieval Reality Simulation Dome"
-	description = "A state of the art simulation dome, loaded onto your shuttle! Watch and laugh at how petty humanity used to be before it reached the stars. Guaranteed to be at least 40% historically accurate."
+	description = "A state of the art simulation dome, loaded onto your shuttle! Watch and laugh at how petty minervanity used to be before it reached the stars. Guaranteed to be at least 40% historically accurate."
 	admin_notes = "Ghosts can spawn in and fight as knights or archers. The CTF auto restarts, so no admin intervention necessary."
 	credit_cost = 20000
 

@@ -2,6 +2,9 @@
 #define CAMERA_UPGRADE_EMP_PROOF (1<<1)
 #define CAMERA_UPGRADE_MOTION (1<<2)
 
+TYPEINFO_DEF(/obj/machinery/camera)
+	default_armor = list(BLUNT = 50, PUNCTURE = 20, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 0, BIO = 0, FIRE = 90, ACID = 50)
+
 /obj/machinery/camera
 	name = "security camera"
 	desc = "It's used to monitor rooms."
@@ -12,7 +15,6 @@
 	layer = WALL_OBJ_LAYER
 	resistance_flags = FIRE_PROOF
 	damage_deflection = 12
-	armor = list(BLUNT = 50, PUNCTURE = 20, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 0, BIO = 0, FIRE = 90, ACID = 50)
 	max_integrity = 100
 	integrity_failure = 0.5
 
@@ -520,12 +522,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 		see = get_hear(view_range, pos)
 	return see
 
-/obj/machinery/camera/proc/Togglelight(on)
-	for(var/mob/living/silicon/ai/A in GLOB.ai_list)
+/obj/machinery/camera/proc/set_ai_light(on, mob/living/silicon/ai/user)
+	for(var/mob/living/silicon/ai/A in GLOB.ai_list - user)
 		if(src in A.lit_cameras)
 			return
 
 	set_light(l_on = !!on)
+	visible_message(span_subtle("[src]'s light flicks [on ? "on" : "off"]."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 /obj/machinery/camera/get_remote_view_fullscreens(mob/user)
 	if(view_range == short_range) //unfocused

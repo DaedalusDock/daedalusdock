@@ -102,7 +102,6 @@
 
 	/**
 	 * Current ambient occlusion overlays.
-	 * Tracked here so that they can be reapplied during update_overlays()
 	 */
 	var/tmp/image/ao_overlay
 
@@ -157,11 +156,6 @@
 		PROCESS_AO(shadower, ao_overlay_mimic, ao_junction_mimic, Z_AO_ALPHA, TRUE)
 	if (AO_TURF_CHECK(src) && !(z_flags & Z_MIMIC_NO_AO))
 		PROCESS_AO(src, ao_overlay, ao_junction, WALL_AO_ALPHA, FALSE)
-
-/turf/update_overlays()
-	. = ..()
-	if(permit_ao && ao_overlay)
-		. += ao_overlay
 
 /atom/movable/openspace/multiplier/update_overlays()
 	. = ..()

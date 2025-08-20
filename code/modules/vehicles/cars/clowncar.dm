@@ -1,9 +1,11 @@
+TYPEINFO_DEF(/obj/vehicle/sealed/car/clowncar)
+	default_armor = list(BLUNT = 70, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 80)
+
 /obj/vehicle/sealed/car/clowncar
 	name = "clown car"
 	desc = "How someone could even fit in there is byond me."
 	icon_state = "clowncar"
 	max_integrity = 150
-	armor = list(BLUNT = 70, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 80)
 	enter_delay = 20
 	max_occupants = 50
 	movedelay = 0.6

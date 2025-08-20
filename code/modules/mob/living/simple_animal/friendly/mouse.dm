@@ -220,17 +220,18 @@
 	else
 		return ..()
 
-/obj/item/food/deadmouse/afterattack(obj/target, mob/living/user, proximity_flag)
-	if(proximity_flag && reagents && target.is_open_container())
-		// is_open_container will not return truthy if target.reagents doesn't exist
+/obj/item/food/deadmouse/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
+	if(reagents && interacting_with.is_open_container())
 		var/datum/reagents/target_reagents = target.reagents
 		var/trans_amount = reagents.maximum_volume - reagents.total_volume * (4 / 3)
 		if(target_reagents.has_reagent(/datum/reagent/fuel) && target_reagents.trans_to(src, trans_amount))
 			to_chat(user, span_notice("You dip [src] into [target]."))
+			return ITEM_INTERACT_SUCCESS
 		else
 			to_chat(user, span_warning("That's a terrible idea."))
-	else
-		return ..()
+			return ITEM_INTERACT_BLOCKING
 
 /obj/item/food/deadmouse/moldy
 	name = "moldy dead mouse"

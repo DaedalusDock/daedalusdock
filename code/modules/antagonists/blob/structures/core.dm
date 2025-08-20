@@ -1,10 +1,12 @@
+TYPEINFO_DEF(/obj/structure/blob/special/core)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 75, ACID = 90)
+
 /obj/structure/blob/special/core
 	name = "blob core"
 	icon = 'icons/mob/blob.dmi'
 	icon_state = "blank_blob"
 	desc = "A huge, pulsating yellow mass."
 	max_integrity = BLOB_CORE_MAX_HP
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 75, ACID = 90)
 	explosion_block = 6
 	point_return = -1
 	health_regen = 0 //we regen in Life() instead of when pulsed

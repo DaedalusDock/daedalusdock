@@ -7,6 +7,15 @@
 		"Hak erevimbok yomrashlo" = 2 SECONDS,
 	)
 
+/obj/effect/aether_rune/exchange/setup_blackboard()
+	blackboard = list(
+		RUNE_BB_TOME = null,
+		RUNE_BB_INVOKER = null,
+		RUNE_BB_TARGET_MOB = null,
+		RUNE_BB_BLOOD_CONTAINER = null,
+		RUNE_BB_EXCHANGE_PARTS = list(),
+	)
+
 /obj/effect/aether_rune/exchange/wipe_state()
 	for(var/item in blackboard[RUNE_BB_EXCHANGE_PARTS])
 		unregister_item(item)
@@ -15,18 +24,14 @@
 /obj/effect/aether_rune/exchange/pre_invoke(mob/living/user, obj/item/aether_tome/tome)
 	. = ..()
 
-	var/list/things = list()
-
 	for(var/obj/item/I in orange(1, src))
 		if(!isturf(I.loc))
 			continue
 
 		if(isbodypart(I) || isorgan(I))
 			register_item(I)
-			things += I
+			blackboard[RUNE_BB_EXCHANGE_PARTS] += I
 			continue
-
-	blackboard[RUNE_BB_EXCHANGE_PARTS] = things
 
 /obj/effect/aether_rune/exchange/can_invoke()
 	. = ..()

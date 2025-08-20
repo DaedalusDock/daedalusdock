@@ -179,16 +179,17 @@
 
 /obj/item/bodypart/head/apply_bone_break(mob/living/carbon/C)
 	. = ..()
-	//add_bodypart_trait(TRAIT_BLURRY_VISION)
 	C.apply_status_effect(/datum/status_effect/grouped/concussion, BROKEN_SKULL_EFFECT)
 
 /obj/item/bodypart/head/apply_bone_heal(mob/living/carbon/C)
 	. = ..()
-	//remove_bodypart_trait(TRAIT_BLURRY_VISION)
 	C.remove_status_effect(/datum/status_effect/grouped/concussion, BROKEN_SKULL_EFFECT)
 
 /obj/item/bodypart/head/update_limb(dropping_limb, is_creating)
 	. = ..()
+
+	if(!owner)
+		return
 
 	real_name = owner.real_name
 	if(HAS_TRAIT(owner, TRAIT_HUSK))

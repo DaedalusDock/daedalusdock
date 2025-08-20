@@ -209,10 +209,7 @@
  */
 /datum/mafia_controller/proc/check_trial(verbose = TRUE)
 	var/datum/mafia_role/loser = get_vote_winner("Day")//, majority_of_town = TRUE)
-	var/loser_votes = get_vote_count(loser,"Day")
 	if(loser)
-		if(loser_votes > 12)
-			award_role(/datum/award/achievement/mafia/universally_hated, loser)
 		send_message("<b>[loser.body.real_name] wins the day vote, Listen to their defense and vote \"INNOCENT\" or \"GUILTY\"!</b>")
 		//refresh the lists
 		judgement_abstain_votes = list()
@@ -327,22 +324,18 @@
 	var/solo_end = FALSE
 	for(var/datum/mafia_role/winner in total_victors)
 		send_message("<span class='big comradio'>!! [uppertext(winner.name)] VICTORY !!</span>")
-		award_role(winner.winner_award, winner)
 		solo_end = TRUE
+
 	if(solo_end)
 		start_the_end()
 		return TRUE
 	if(blocked_victory)
 		return FALSE
 	if(alive_mafia == 0)
-		for(var/datum/mafia_role/townie in total_town)
-			award_role(townie.winner_award, townie)
 		start_the_end("<span class='big green'>!! TOWN VICTORY !!</span>")
 		return TRUE
 	else if(alive_mafia >= anti_mafia_power && !town_can_kill)
 		start_the_end("<span class='big red'>!! MAFIA VICTORY !!</span>")
-		for(var/datum/mafia_role/changeling in total_mafia)
-			award_role(changeling.winner_award, changeling)
 		return TRUE
 
 /**

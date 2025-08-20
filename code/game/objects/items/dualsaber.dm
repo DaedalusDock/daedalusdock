@@ -1,6 +1,9 @@
 /*
  * Double-Bladed Energy Swords - Cheridan
  */
+TYPEINFO_DEF(/obj/item/dualsaber)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
+
 /obj/item/dualsaber
 	icon = 'icons/obj/transforming_energy.dmi'
 	icon_state = "dualsaber0"
@@ -35,7 +38,6 @@
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 	max_integrity = 200
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
 	resistance_flags = FIRE_PROOF
 
 	var/w_class_on = WEIGHT_CLASS_BULKY
@@ -50,7 +52,7 @@
 	if(!.)
 		return
 
-	w_class = w_class_on
+	set_weight_class(w_class_on)
 	hitsound = 'sound/weapons/blade1.ogg'
 	START_PROCESSING(SSobj, src)
 	set_light_on(TRUE)
@@ -63,7 +65,7 @@
 	if(!.)
 		return
 
-	w_class = initial(w_class)
+	set_weight_class(initial(w_class))
 	hitsound = SFX_SWING_HIT
 	STOP_PROCESSING(SSobj, src)
 	set_light_on(FALSE)
@@ -115,16 +117,20 @@
 	. = ..()
 
 /obj/item/dualsaber/attack(mob/target, mob/living/carbon/human/user)
-	if(user.has_dna())
-		if(user.dna.check_mutation(/datum/mutation/human/hulk))
-			to_chat(user, span_warning("You grip the blade too hard and accidentally drop it!"))
-			if(wielded)
-				user.dropItemToGround(src, force=TRUE)
-				return
-	..()
+	if(user.has_dna() && user.dna.check_mutation(/datum/mutation/human/hulk))
+		to_chat(user, span_warning("You grip the blade too hard and accidentally drop it!"))
+		if(wielded)
+			user.dropItemToGround(src, force=TRUE)
+			return TRUE
+
+	. = ..()
+	if(.)
+		return
+
 	if(wielded && HAS_TRAIT(user, TRAIT_CLUMSY) && prob(40))
 		impale(user)
-		return
+		return TRUE
+
 	if(wielded && prob(50))
 		INVOKE_ASYNC(src, PROC_REF(jedi_spin), user)
 

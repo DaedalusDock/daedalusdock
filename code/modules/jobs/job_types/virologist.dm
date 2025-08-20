@@ -22,7 +22,7 @@
 		),
 	)
 
-	paycheck = PAYCHECK_MEDIUM
+	paycheck = /datum/job/acolyte::paycheck
 	paycheck_department = ACCOUNT_MED
 
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
@@ -34,9 +34,9 @@
 	family_heirlooms = list(/obj/item/reagent_containers/syringe)
 
 	mail_goodies = list(
-		/obj/item/reagent_containers/glass/bottle/random_virus = 15,
-		/obj/item/reagent_containers/glass/bottle/space_cleaner = 10,
-		/obj/item/reagent_containers/glass/bottle/synaptizine = 10,
+		/obj/item/reagent_containers/cup/bottle/random_virus = 15,
+		/obj/item/reagent_containers/cup/bottle/space_cleaner = 10,
+		/obj/item/reagent_containers/cup/bottle/synaptizine = 10,
 		/obj/item/stack/sheet/mineral/plasma = 10,
 		/obj/item/stack/sheet/mineral/uranium = 5,
 	)
@@ -48,7 +48,7 @@
 	name = "Virologist"
 	jobtype = /datum/job/virologist
 
-	id_trim = /datum/id_trim/job/virologist
+	id_template = /datum/access_template/job/virologist
 	uniform = /obj/item/clothing/under/rank/medical/virologist
 	suit = /obj/item/clothing/suit/toggle/labcoat/virologist
 	suit_store = /obj/item/flashlight/pen
@@ -57,8 +57,6 @@
 	mask = /obj/item/clothing/mask/surgical
 	shoes = /obj/item/clothing/shoes/sneakers/white
 
-	backpack = /obj/item/storage/backpack/virology
-	satchel = /obj/item/storage/backpack/satchel/vir
-	duffelbag = /obj/item/storage/backpack/duffelbag/virology
+	back = /obj/item/storage/backpack/virology
 
 	box = /obj/item/storage/box/survival/medical

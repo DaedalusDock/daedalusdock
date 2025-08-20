@@ -176,6 +176,7 @@
 #include "species_whitelists.dm"
 #include "stack_singular_name.dm"
 #include "stomach.dm"
+#include "storage.dm"
 #include "strippable.dm"
 #include "subsystem_init.dm"
 #include "subsystem_sanity.dm"

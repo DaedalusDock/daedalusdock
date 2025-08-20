@@ -87,7 +87,6 @@
 		)
 		COOLDOWN_START(src, blood_spray_cd, 8 SECONDS)
 
-
 /// Has each bodypart update its bleed/wound overlay icon states
 /mob/living/carbon/proc/update_bodypart_bleed_overlays()
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)

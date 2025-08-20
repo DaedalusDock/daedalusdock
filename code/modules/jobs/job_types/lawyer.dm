@@ -2,8 +2,12 @@
 	title = JOB_LAWYER
 	description = "Advocate for prisoners, create law-binding contracts, \
 		ensure Security is following protocol and Space Law."
+
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
+
+	pinpad_key = "memejob"
+
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "the head of personnel"
@@ -43,7 +47,7 @@
 	name = "Lawyer"
 	jobtype = /datum/job/lawyer
 
-	id_trim = /datum/id_trim/job/lawyer
+	id_template = /datum/access_template/job/lawyer
 	uniform = /obj/item/clothing/under/rank/civilian/lawyer/black
 	belt = /obj/item/modular_computer/tablet/pda/lawyer
 	shoes = /obj/item/clothing/shoes/laceup

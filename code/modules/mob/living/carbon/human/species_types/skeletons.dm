@@ -33,7 +33,7 @@
 	wings_icons = list("Skeleton")
 	//They can technically be in an ERT
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | ERT_SPAWN
-	species_cookie = /obj/item/reagent_containers/food/condiment/milk
+	species_cookie = /obj/item/reagent_containers/condiment/milk
 
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/skeleton,

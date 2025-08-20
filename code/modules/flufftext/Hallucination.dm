@@ -233,14 +233,12 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 
 /datum/hallucination/fake_flood/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	qdel(flood_turfs)
 	flood_turfs = list()
 	if(target.client)
 		target.client.images.Remove(flood_images)
-	qdel(flood_images)
-	flood_images = list()
-	qdel(flood_image_holders)
-	flood_image_holders = list()
+	flood_images = null
+	flood_turfs = null
+	QDEL_LIST(flood_image_holders)
 	return ..()
 
 /obj/effect/hallucination/simple/xeno
@@ -1614,7 +1612,7 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 
 /datum/hallucination/husks/Destroy()
 	target?.client?.images -= halbody
-	QDEL_NULL(halbody)
+	halbody = null
 	return ..()
 
 //hallucination projectile code in code/modules/projectiles/projectile/special.dm

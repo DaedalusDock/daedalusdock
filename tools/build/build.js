@@ -230,11 +230,6 @@ export const TguiAnalyzeTarget = new Juke.Target({
   executes: () => yarn("tgui:analyze"),
 });
 
-export const TguiBenchTarget = new Juke.Target({
-  dependsOn: [YarnTarget],
-  executes: () => yarn("tgui:bench"),
-});
-
 export const TestTarget = new Juke.Target({
   dependsOn: [DmTestTarget, TguiTestTarget],
 });

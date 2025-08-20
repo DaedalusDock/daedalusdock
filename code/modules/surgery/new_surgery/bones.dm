@@ -43,10 +43,11 @@
 			user.visible_message(span_notice("[user] pieces [bone] back together with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 		else
 			user.visible_message(span_notice("[user] sets [bone] in place with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
-		affected.stage = 1
+		ADD_TRAIT(affected, TRAIT_BONE_SET, TRAIT_GENERIC)
 	else
 		user.visible_message("[span_notice("[user] sets [bone]")] [span_warning("in the WRONG place with [tool].")]", vision_distance = COMBAT_MESSAGE_RANGE)
 		affected.break_bones()
+		REMOVE_TRAIT(affected, TRAIT_BONE_SET, TRAIT_GENERIC)
 	..()
 
 /datum/surgery_step/bone/set_bone/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -75,11 +76,12 @@
 	can_infect = 1
 	min_duration = 2 SECONDS
 	max_duration = 3 SECONDS
-	pain_given =20
+	pain_given = 20
+
 
 /datum/surgery_step/bone/finish/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
-	if(affected && (affected.bodypart_flags & BP_BROKEN_BONES))
+	if(affected && (affected.bodypart_flags & BP_BROKEN_BONES) && HAS_TRAIT(affected, TRAIT_BONE_SET))
 		return affected
 
 /datum/surgery_step/bone/finish/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -93,6 +95,7 @@
 	var/bone = affected.encased ? "\the [target]'s damaged [affected.encased]" : "damaged bones in [target]'s [affected.name]"
 	user.visible_message(span_notice("[user] has mended [bone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.heal_bones()
+	REMOVE_TRAIT(affected, TRAIT_BONE_SET, TRAIT_GENERIC)
 	..()
 
 /datum/surgery_step/bone/finish/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)

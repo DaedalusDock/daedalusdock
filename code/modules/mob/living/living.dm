@@ -52,6 +52,12 @@
 	QDEL_LAZYLIST(diseases)
 	return ..()
 
+/mob/living/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if (user.can_perform_surgery_on(src) && tool.attempt_surgery(src, user))
+		return ITEM_INTERACT_SUCCESS
+
+	return ..()
+
 /mob/living/onZImpact(turf/T, levels, message = TRUE)
 	if(m_intent == MOVE_INTENT_WALK && levels <= 1 && !throwing && !incapacitated())
 		visible_message(
@@ -353,18 +359,6 @@
 		return FALSE
 	log_message("points at [pointing_at]", LOG_EMOTE)
 	visible_message("<span class='infoplain'>[span_name("[src]")] points at [pointing_at].</span>", span_notice("You point at [pointing_at]."))
-
-/mob/living/verb/succumb(whispered as null)
-	set hidden = TRUE
-	if (stat == CONSCIOUS)
-		to_chat(src, text="You are unable to succumb to death! This life continues.", type=MESSAGE_TYPE_INFO)
-		return
-	log_message("Has [whispered ? "whispered his final words" : "succumbed to death"] with [round(health, 0.1)] points of health!", LOG_ATTACK)
-	adjustOxyLoss(health - HEALTH_THRESHOLD_DEAD)
-	updatehealth()
-	if(!whispered)
-		to_chat(src, span_notice("You have given up life and succumbed to death."))
-	death()
 
 /**
  * Checks if a mob is incapacitated
@@ -691,7 +685,7 @@
 		. = TRUE
 
 		if(excess_healing)
-			INVOKE_ASYNC(src, PROC_REF(emote), "gasp")
+			INVOKE_ASYNC(src, PROC_REF(emote), /datum/emote/living/carbon/gasp_air)
 			log_combat(src, src, "revived")
 
 	else if(admin_revive)
@@ -2247,12 +2241,25 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			return MOUSE_ICON_HOVERING_INTERACTABLE
 		return
 
-	if(A.is_mouseover_interactable && (mobility_flags & MOBILITY_USE) && can_interact_with(A))
-		if(isitem(A))
-			if(!isturf(loc) || (mobility_flags & MOBILITY_PICKUP))
+
+	if(A.is_mouseover_interactable && (mobility_flags & MOBILITY_USE))
+		var/can_interact = FALSE
+		if(istype(A, /atom/movable/screen))
+			if(astype(A, /atom/movable/screen).hud?.mymob == src)
+				can_interact = TRUE
+
+			if(istype(A, /atom/movable/screen/alert))
+				can_interact = astype(A, /atom/movable/screen/alert).owner == src
+
+		else if(can_interact_with(A))
+			can_interact = TRUE
+
+		if(can_interact)
+			if(isitem(A))
+				if(!isturf(loc) || (mobility_flags & MOBILITY_PICKUP))
+					return MOUSE_ICON_HOVERING_INTERACTABLE
+			else
 				return MOUSE_ICON_HOVERING_INTERACTABLE
-		else
-			return MOUSE_ICON_HOVERING_INTERACTABLE
 
 
 /mob/living/do_hurt_animation()
@@ -2265,7 +2272,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	var/offset_y = pixel_y + pick(-3, -2, -1, 1, 2, 3)
 
 	for(var/atom/movable/AM as anything in get_associated_mimics() + src)
-		animate(AM, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4))
+		animate(AM, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4), flags = ANIMATION_PARALLEL)
 		animate(pixel_x = pixel_x, pixel_y = pixel_y, time = 2)
 
 /mob/living/proc/get_blood_print()

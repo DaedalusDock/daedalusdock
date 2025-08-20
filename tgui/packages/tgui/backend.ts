@@ -160,7 +160,7 @@ export const backendMiddleware = (store) => {
       Byond.winset(Byond.windowId, {
         'is-visible': false,
       });
-      setImmediate(() => focusMap());
+      setTimeout(() => focusMap(), 0);
     }
 
     if (type === 'backend/update') {
@@ -190,7 +190,7 @@ export const backendMiddleware = (store) => {
       setupDrag();
       // We schedule this for the next tick here because resizing and unhiding
       // during the same tick will flash with a white background.
-      setImmediate(() => {
+      setTimeout(() => {
         perf.mark('resume/start');
         // Doublecheck if we are not re-suspended.
         const { suspended } = selectBackend(store.getState());
@@ -200,6 +200,7 @@ export const backendMiddleware = (store) => {
         Byond.winset(Byond.windowId, {
           'is-visible': true,
         });
+        Byond.sendMessage('visible');
         perf.mark('resume/finish');
         if (process.env.NODE_ENV !== 'production') {
           logger.log(
@@ -207,7 +208,7 @@ export const backendMiddleware = (store) => {
             perf.measure('render/finish', 'resume/finish'),
           );
         }
-      });
+      }, 0);
     }
 
     return next(action);
@@ -248,6 +249,7 @@ type BackendState<TData> = {
       fancy: boolean;
       key: string;
       locked: boolean;
+      scale: boolean;
       size: [number, number];
     };
   };

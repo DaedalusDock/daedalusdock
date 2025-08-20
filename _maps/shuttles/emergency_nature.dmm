@@ -392,7 +392,7 @@
 /obj/item/food/soup/monkeysdelight{
 	pixel_y = 4
 	},
-/obj/item/reagent_containers/food/drinks/soda_cans/monkey_energy{
+/obj/item/reagent_containers/cup/soda_cans/monkey_energy{
 	pixel_x = 6;
 	pixel_y = 5
 	},
@@ -694,7 +694,7 @@
 /obj/machinery/door/airlock/security{
 	name = "Brig"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/security/brig,
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape/brig)
 "Ai" = (
@@ -721,7 +721,7 @@
 /obj/machinery/door/airlock/command/glass{
 	name = "Cockpit"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "Bo" = (
@@ -900,7 +900,7 @@
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
 "Iw" = (
-/obj/item/reagent_containers/glass/bucket,
+/obj/item/reagent_containers/cup/bucket,
 /mob/living/simple_animal/hostile/retaliate/frog,
 /turf/open/floor/grass,
 /area/shuttle/escape)

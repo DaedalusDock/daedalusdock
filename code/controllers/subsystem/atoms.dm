@@ -120,7 +120,7 @@ SUBSYSTEM_DEF(atoms)
 				++count
 				if(TICK_CHECK)
 					clear_tracked_initalize(mapload_source)
-					SStitle.set_game_status_text(sub_text = "Initializing world (%[Percent(count, all_atoms, 1)])")
+					SSlobby.set_game_status_text(sub_text = "Initializing world (%[Percent(count, all_atoms, 1)])")
 					stoplag()
 					if(mapload_source)
 						set_tracked_initalized(INITIALIZATION_INNEW_MAPLOAD, mapload_source)

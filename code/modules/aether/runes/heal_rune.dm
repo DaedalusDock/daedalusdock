@@ -1,15 +1,28 @@
 /obj/effect/aether_rune/heal
 	rune_type = "heal"
 
-/obj/effect/aether_rune/wipe_state()
+	invocation_phrases = list(
+		"Bes' arlo" = 1.5 SECONDS,
+		"Ta'ot evtza lobes hak kalbokshlo" = 4 SECONDS,
+		"Sha layef hokhinshshlokas" = 3 SECONDS,
+	)
+
+/obj/effect/aether_rune/heal/setup_blackboard()
+	blackboard = list(
+		RUNE_BB_TOME = null,,
+		RUNE_BB_INVOKER = null,
+		RUNE_BB_TARGET_MOB = null,
+		RUNE_BB_BLOOD_CONTAINER = null,
+		RUNE_BB_HEAL_REAGENT_CONTAINERS = list(),
+	)
+
+/obj/effect/aether_rune/heal/wipe_state()
 	for(var/item in blackboard[RUNE_BB_HEAL_REAGENT_CONTAINERS])
 		unregister_item(item)
 	return ..()
 
 /obj/effect/aether_rune/heal/pre_invoke(mob/living/user, obj/item/aether_tome/tome)
 	. = ..()
-	blackboard[RUNE_BB_HEAL_REAGENT_CONTAINERS] = list()
-
 	for(var/obj/item/reagent_containers/reagent_container in orange(1, src))
 		if(!reagent_container.is_open_container())
 			continue

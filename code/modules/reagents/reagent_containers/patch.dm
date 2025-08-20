@@ -12,16 +12,20 @@
 	other_delay = 1 SECOND
 	dissolvable = FALSE
 
-/obj/item/reagent_containers/pill/patch/attack(mob/living/L, mob/user)
-	if(ishuman(L))
-		var/obj/item/bodypart/affecting = L.get_bodypart(deprecise_zone(user.zone_selected))
-		if(!affecting)
-			to_chat(user, span_warning("The limb is missing!"))
-			return
-		if(!IS_ORGANIC_LIMB(affecting))
-			to_chat(user, span_notice("Medicine won't work on a robotic limb!"))
-			return
-	..()
+/obj/item/reagent_containers/pill/patch/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ishuman(interacting_with))
+		return NONE
+
+	var/mob/living/carbon/human/L = interacting_with
+	var/obj/item/bodypart/affecting = L.get_bodypart(deprecise_zone(user.zone_selected))
+	if(!affecting)
+		to_chat(user, span_warning("The limb is missing."))
+		return ITEM_INTERACT_BLOCKING
+	if(!IS_ORGANIC_LIMB(affecting))
+		to_chat(user, span_notice("Medicine will not work on a robotic limb."))
+		return ITEM_INTERACT_BLOCKING
+
+	return ..()
 
 /obj/item/reagent_containers/pill/patch/canconsume(mob/eater, mob/user)
 	if(!iscarbon(eater))

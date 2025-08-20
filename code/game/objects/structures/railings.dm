@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/structure/railing)
+	default_armor = list(BLUNT = 50, PUNCTURE = 70, SLASH = 90, LASER = 70, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 0, ACID = 0)
+
 /obj/structure/railing
 	name = "railing"
 	desc = "Basic railing meant to protect idiots like you from falling."
@@ -8,7 +11,6 @@
 	anchored = TRUE
 	pass_flags_self = LETPASSTHROW|PASSSTRUCTURE
 	/// armor more or less consistent with grille. max_integrity about one time and a half that of a grille.
-	armor = list(BLUNT = 50, PUNCTURE = 70, SLASH = 90, LASER = 70, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 0, ACID = 0)
 	max_integrity = 75
 
 	var/climbable = TRUE

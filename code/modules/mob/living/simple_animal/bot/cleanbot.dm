@@ -93,8 +93,8 @@
 	update_appearance(UPDATE_ICON)
 
 	// Doing this hurts my soul, but simplebot access reworks are for another day.
-	var/datum/id_trim/job/jani_trim = SSid_access.trim_singletons_by_path[/datum/id_trim/job/janitor]
-	access_card.add_access(jani_trim.access + jani_trim.wildcard_access)
+	var/datum/access_template/job/jani_trim = SSid_access.template_singletons_by_path[/datum/access_template/job/janitor]
+	access_card.add_access(jani_trim.access)
 	prev_access = access_card.access.Copy()
 
 	GLOB.janitor_devices += src
@@ -330,7 +330,7 @@
 		update_icon_state()
 		var/turf/T = get_turf(attack_target)
 		if(do_after(src, T, 1 SECOND))
-			T.wash(CLEAN_SCRUB)
+			T.wash(CLEAN_SCRUB|CLEAN_TYPE_HIDDEN_BLOOD) // I thought it'd be funny if cleanbots could clean hidden blood.
 			visible_message(span_notice("[src] cleans [T]."))
 		target = null
 		set_mode(BOT_IDLE)
@@ -386,7 +386,7 @@
 
 /mob/living/simple_animal/bot/cleanbot/explode()
 	var/atom/drop_loc = drop_location()
-	new /obj/item/reagent_containers/glass/bucket(drop_loc)
+	new /obj/item/reagent_containers/cup/bucket(drop_loc)
 	new /obj/item/assembly/prox_sensor(drop_loc)
 	return ..()
 

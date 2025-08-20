@@ -1,3 +1,4 @@
+
 /**
  * The absolute base class for everything
  *
@@ -16,6 +17,9 @@
 	  * a hard del by the GC subsystme, or to be autocollected (if it has no references)
 	  */
 	var/gc_destroyed
+
+	/// The typepath of the typeinfo struct
+	var/__typeinfo_path
 
 	/// Active timers with this datum as the target
 	var/list/active_timers
@@ -49,7 +53,7 @@
 	* cooldowns [ COOLDOWN_INDEX ] = add_timer()
 	* add_timer() returns the truthy value of -1 when not stoppable, and else a truthy numeric index
 	*/
-	var/list/cooldowns
+	var/list/timer_cooldowns
 
 	// Abstract types are expanded upon more in __DEFINES\abstract.dm
 	/// If this var's value is equivalent to the current type, it is considered abstract.

@@ -39,7 +39,7 @@
 	equipped_on.eye_color_left = "#000000"
 	equipped_on.eye_color_right = "#000000"
 	equipped_on.gender = MALE
-	equipped_on.skin_tone = "caucasian3"
+	equipped_on.skin_tone = "Saxon"
 	equipped_on.hairstyle = "Business Hair 3"
 	equipped_on.facial_hairstyle = "Shaved"
 	equipped_on.hair_color = "#000000"
@@ -228,7 +228,7 @@
 /obj/item/card/id/advanced/bountyhunter
 	assignment = "Bounty Hunter"
 	icon_state = "card_flames" //oh SHIT
-	trim = /datum/id_trim/bounty_hunter
+	template = /datum/access_template/bounty_hunter
 
 /datum/outfit/bountyarmor/ert
 	id = /obj/item/card/id/advanced/bountyhunter/ert
@@ -240,4 +240,4 @@
 	id = /obj/item/card/id/advanced/bountyhunter/ert
 
 /obj/item/card/id/advanced/bountyhunter/ert
-	trim = /datum/id_trim/centcom/bounty_hunter
+	template = /datum/access_template/centcom/bounty_hunter

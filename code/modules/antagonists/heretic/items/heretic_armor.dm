@@ -15,6 +15,9 @@
 
 	. += span_notice("Allows you to cast heretic spells while the hood is up.")
 
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/cultrobes/eldritch)
+	default_armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 50, BOMB = 35, BIO = 20, FIRE = 20, ACID = 20)
+
 /obj/item/clothing/suit/hooded/cultrobes/eldritch
 	name = "ominous armor"
 	desc = "A ragged, dusty set of robes. Strange eyes line the inside."
@@ -25,7 +28,6 @@
 	allowed = list(/obj/item/melee/sickly_blade)
 	hoodtype = /obj/item/clothing/head/hooded/cult_hoodie/eldritch
 	// Slightly better than normal cult robes
-	armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 50, BOMB = 35, BIO = 20, FIRE = 20, ACID = 20)
 
 /obj/item/clothing/suit/hooded/cultrobes/eldritch/examine(mob/user)
 	. = ..()
@@ -35,6 +37,9 @@
 	. += span_notice("Allows you to cast heretic spells while the hood is up.")
 
 // Void cloak. Turns invisible with the hood up, lets you hide stuff.
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/cult_hoodie/void)
+	default_armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 30, BOMB = 15, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/head/hooded/cult_hoodie/void
 	name = "void hood"
 	icon_state = "void_cloak"
@@ -42,11 +47,13 @@
 	flags_cover = NONE
 	desc = "Black like tar, doesn't reflect any light. Runic symbols line the outside, with each flash you loose comprehension of what you are seeing."
 	item_flags = EXAMINE_SKIP
-	armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 30, BOMB = 15, BIO = 0, FIRE = 0, ACID = 0)
 
 /obj/item/clothing/head/hooded/cult_hoodie/void/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_STRIP, REF(src))
+
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/cultrobes/void)
+	default_armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 30, BOMB = 15, BIO = 0, FIRE = 0, ACID = 0)
 
 /obj/item/clothing/suit/hooded/cultrobes/void
 	name = "void cloak"
@@ -57,7 +64,6 @@
 	hoodtype = /obj/item/clothing/head/hooded/cult_hoodie/void
 	flags_inv = NONE
 	// slightly worse than normal cult robes
-	armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 30, BOMB = 15, BIO = 0, FIRE = 0, ACID = 0)
 	alternative_mode = TRUE
 
 /obj/item/clothing/suit/hooded/cultrobes/void/Initialize(mapload)
@@ -65,25 +71,21 @@
 
 	create_storage(type = /datum/storage/pockets/void_cloak)
 
-/obj/item/clothing/suit/hooded/cultrobes/void/RemoveHood()
+/obj/item/clothing/suit/hooded/cultrobes/void/on_hood_unequip(mob/living/wearer, obj/item/clothing/hood)
 	if (!HAS_TRAIT(src, TRAIT_NO_STRIP))
-		return ..()
-	var/mob/living/carbon/carbon_user = loc
-	to_chat(carbon_user, span_notice("The kaleidoscope of colours collapses around you, as the cloak shifts to visibility!"))
-	item_flags &= ~EXAMINE_SKIP
-	REMOVE_TRAIT(src, TRAIT_NO_STRIP, src)
-	return ..()
-
-/obj/item/clothing/suit/hooded/cultrobes/void/MakeHood()
-	if(!iscarbon(loc))
-		CRASH("[src] attempted to make a hood on a non-carbon thing: [loc]")
-
-	var/mob/living/carbon/carbon_user = loc
-	if(IS_HERETIC_OR_MONSTER(carbon_user))
-		. = ..()
-		to_chat(carbon_user,span_notice("The light shifts around you making the cloak invisible!"))
-		item_flags |= EXAMINE_SKIP
-		ADD_TRAIT(src, TRAIT_NO_STRIP, src)
 		return
 
-	to_chat(carbon_user,span_danger("You can't force the hood onto your head!"))
+	to_chat(wearer, span_notice("The kaleidoscope of colours collapses around you, as the cloak shifts to visibility!"))
+	item_flags &= ~EXAMINE_SKIP
+	REMOVE_TRAIT(src, TRAIT_NO_STRIP, src)
+
+/obj/item/clothing/suit/hooded/cultrobes/void/pre_hood_equip(mob/living/wearer, obj/item/clothing/hood)
+	if(!IS_HERETIC_OR_MONSTER(wearer))
+		to_chat(wearer, span_warning("You can't force the hood onto your head."))
+		return FALSE
+	return TRUE
+
+/obj/item/clothing/suit/hooded/cultrobes/void/on_hood_equip(mob/living/wearer, obj/item/clothing/hood)
+	to_chat(wearer, span_notice("The light shifts around you, rendering the cloak hidden from sight."))
+	item_flags |= EXAMINE_SKIP
+	ADD_TRAIT(src, TRAIT_NO_STRIP, src)

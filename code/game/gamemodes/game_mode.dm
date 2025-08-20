@@ -15,12 +15,13 @@
 /datum/game_mode
 	abstract_type = /datum/game_mode
 	datum_flags = DF_ISPROCESSING
-
 	var/name = "oh god oh fuck what did you do"
 	/// This is a WEIGHT not a PROBABILITY
 	var/weight = GAMEMODE_WEIGHT_NEVER
 	///Is the gamemode votable? !Not implimented!
 	var/votable = FALSE
+	/// What data in the gamemode json this gamemode loads from.
+	var/config_key = null
 
 	///Dynamically set to what the problem(s) was/were.
 	var/list/setup_error = list()
@@ -45,6 +46,18 @@
 	var/list/datum/mind/death_timers = list()
 	///A list of names of antagonists who are permanantly. This list will be cut down to spend on midrounds.
 	var/list/permadead_antag_pool = list()
+
+/datum/game_mode/New()
+	. = ..()
+	if(config_key)
+		load_config(config.gamemode_data?[config_key])
+
+/// Load in information from the gamemode_config.json
+/datum/game_mode/proc/load_config(list/config_data)
+	if(!length(config_data))
+		return FALSE
+
+	return TRUE
 
 ///Pass in a list of players about to participate in roundstart, returns an error as a string if the round cannot start.
 /datum/game_mode/proc/check_for_errors()
@@ -155,20 +168,6 @@
 		return TRUE
 
 /*
- * Generate a list of station goals available to purchase to report to the crew.
- *
- * Returns a formatted string all station goals that are available to the station.
- */
-/datum/game_mode/proc/generate_station_goal_report()
-	if(!GLOB.station_goals.len)
-		return
-	. = "<hr><b>Special Orders for [station_name()]:</b><BR>"
-	for(var/datum/station_goal/station_goal as anything in GLOB.station_goals)
-		station_goal.on_report()
-		. += station_goal.get_report()
-	return
-
-/*
  * Generate a list of active station traits to report to the crew.
  *
  * Returns a formatted string of all station traits (that are shown) affecting the station.
@@ -270,15 +269,6 @@
 
 	for (var/C in GLOB.admins)
 		to_chat(C, msg.Join())
-
-/datum/game_mode/proc/generate_station_goals(greenshift)
-	var/goal_budget = greenshift ? INFINITY : CONFIG_GET(number/station_goal_budget)
-	var/list/possible = subtypesof(/datum/station_goal)
-	var/goal_weights = 0
-	while(possible.len && goal_weights < goal_budget)
-		var/datum/station_goal/picked = pick_n_take(possible)
-		goal_weights += initial(picked.weight)
-		GLOB.station_goals += new picked
 
 //Set result and news report here
 /datum/game_mode/proc/set_round_result()

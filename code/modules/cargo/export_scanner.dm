@@ -9,10 +9,11 @@
 	item_flags = NOBLUDGEON
 	w_class = WEIGHT_CLASS_SMALL
 
-/obj/item/export_scanner/afterattack(obj/O, mob/user, proximity)
-	. = ..()
-	if(!istype(O) || !proximity)
+/obj/item/export_scanner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
 		return
+
+	var/atom/O = interacting_with // Yes i am supremely lazy
 
 	// Before you fix it:
 	// yes, checking manifests is a part of intended functionality.
@@ -21,6 +22,8 @@
 	for(var/x in ex.total_amount)
 		price += ex.total_value[x]
 	if(price)
-		to_chat(user, span_notice("Scanned [O], value: <b>[price]</b> credits[O.contents.len ? " (contents included)" : ""]."))
+		to_chat(user, span_notice("Scanned [O], value: <b>[price]</b> marks[O.contents.len ? " (contents included)" : ""]."))
 	else
 		to_chat(user, span_warning("Scanned [O], no export value."))
+
+	return ITEM_INTERACT_SUCCESS

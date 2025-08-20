@@ -103,7 +103,9 @@ GLOBAL_VAR_INIT(fresh_ghost_adjectives, __fresh_ghost_adjectives())
 			if(body.real_name)
 				mind_or_body_name = body.real_name
 			else
-				mind_or_body_name = random_unique_name(gender)
+				var/datum/name_generator/human/name_gen = new()
+				name_gen.ensure_unique = TRUE
+				mind_or_body_name = name_gen.Generate()
 
 		// If they actually died in round, copy their body.
 		if(!(started_as_observer || admin_ghost))
@@ -111,7 +113,9 @@ GLOBAL_VAR_INIT(fresh_ghost_adjectives, __fresh_ghost_adjectives())
 			ghost_adjective = pick(GLOB.fresh_ghost_adjectives)
 
 	if(!mind_or_body_name) //To prevent nameless ghosts
-		mind_or_body_name = random_unique_name(gender)
+		var/datum/name_generator/human/name_gen = new()
+		name_gen.ensure_unique = TRUE
+		mind_or_body_name = name_gen.Generate()
 
 	set_real_name(mind_or_body_name)
 
@@ -326,14 +330,14 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Ghost"
 	set desc = "Relinquish your life and enter the land of the dead."
 
-	if(stat != DEAD)
-		succumb()
 	if(stat == DEAD)
 		ghostize(TRUE)
 		return TRUE
+
 	var/response = tgui_alert(usr, "Are you sure you want to ghost? If you ghost whilst still alive you cannot re-enter your body!", "Confirm Ghost Observe", list("Ghost", "Stay in Body"))
 	if(response != "Ghost")
 		return FALSE//didn't want to ghost after-all
+
 	ghostize(FALSE) // FALSE parameter is so we can never re-enter our body. U ded.
 	return TRUE
 

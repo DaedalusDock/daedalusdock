@@ -1,0 +1,6 @@
+# The gamemode config. This is read from in gamemode New via load_config(). The variable names are 1:1 with the DM versions.
+
+#The following is an example for changing the population ratio of Traitor
+
+#[traitor]
+#	antagonist_pop_ratio = 0.15

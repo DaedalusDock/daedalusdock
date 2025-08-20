@@ -29,7 +29,7 @@ SUBSYSTEM_DEF(ticker)
 	var/list/mob/dead/new_player/ready_players
 
 	///Media track for the music played in the lobby
-	var/datum/media/login_music
+	var/list/datum/media/login_music = list()
 	///Media track for the round end music.
 	var/datum/media/credits_music
 
@@ -131,15 +131,18 @@ SUBSYSTEM_DEF(ticker)
 		if(GAME_STATE_STARTUP)
 			if(Master.initializations_finished_with_no_players_logged_in)
 				start_at = world.time + (CONFIG_GET(number/lobby_countdown) * 10)
+
 			for(var/client/C in GLOB.clients)
 				window_flash(C, ignorepref = TRUE) //let them know lobby has opened up.
-			to_chat(world, span_notice("<b>Welcome to [station_name()]!</b>"))
+				to_chat(C, systemtext("WELCOME, [uppertext(C.ckey)]"))
+
 			var/newround_staple = CONFIG_GET(string/chat_newgame_staple)
 			send2chat("New round starting on [SSmapping.config.map_name][newround_staple ? ", [newround_staple]" : null]!", CONFIG_GET(string/chat_announce_new_game))
 			current_state = GAME_STATE_PREGAME
 			SEND_SIGNAL(src, COMSIG_TICKER_ENTER_PREGAME)
 
 			fire()
+
 		if(GAME_STATE_PREGAME)
 				//lobby stats for statpanels
 			if(isnull(timeLeft))
@@ -228,7 +231,7 @@ SUBSYSTEM_DEF(ticker)
 
 
 /datum/controller/subsystem/ticker/proc/setup()
-	to_chat(world, span_boldannounce("Starting game..."))
+	to_chat(world, systemtext("Starting game..."))
 	var/init_start = world.timeofday
 
 	ready_players = list() // This needs to be reset every setup, incase the gamemode fails to start.
@@ -241,7 +244,7 @@ SUBSYSTEM_DEF(ticker)
 	if(!initialize_gamemode())
 		return FALSE
 
-	to_chat(world, span_boldannounce("The gamemode is: [get_mode_name()]."))
+	to_chat(world, systemtext("The gamemode is: [get_mode_name()]."))
 	if(mode_display_name)
 		message_admins("The real gamemode is: [get_mode_name(TRUE)].")
 	to_chat(world, "<br><hr><br>")
@@ -250,8 +253,8 @@ SUBSYSTEM_DEF(ticker)
 
 	// There may be various config settings that have been set or modified by this point.
 	// This is the point of no return before spawning in new players, let's run over the
-	// job trim singletons and update them based on any config settings.
-	SSid_access.refresh_job_trim_singletons()
+	// job template singletons and update them based on any config settings.
+	SSid_access.refresh_job_template_singletons()
 
 	CHECK_TICK
 
@@ -301,7 +304,7 @@ SUBSYSTEM_DEF(ticker)
 	mode.setup_antags()
 	PostSetup()
 	SSticker.ready_players = null
-	SStitle.game_status?.alpha = 0
+	SSlobby.game_status?.alpha = 0
 	return TRUE
 
 /datum/controller/subsystem/ticker/proc/PostSetup()
@@ -322,13 +325,11 @@ SUBSYSTEM_DEF(ticker)
 			stack_trace("[S] [S.type] found in start landmarks list, which isn't a start landmark!")
 
 	// handle persistence stuff that requires ckeys, in this case hardcore mode and temporal scarring
-	for(var/i in GLOB.player_list)
-		if(!ishuman(i))
-			continue
-		var/mob/living/carbon/human/iter_human = i
-
+	for(var/mob/living/carbon/human/iter_human in GLOB.player_list)
+		iter_human.client?.give_award(/datum/award/achievement/enter_the_pool, iter_human)
 		if(!iter_human.hardcore_survival_score)
 			continue
+
 		if(iter_human.mind?.special_role)
 			to_chat(iter_human, span_notice("You will gain [round(iter_human.hardcore_survival_score) * 2] hardcore random points if you greentext this round!"))
 		else
@@ -468,18 +469,23 @@ SUBSYSTEM_DEF(ticker)
 	return .
 
 /datum/controller/subsystem/ticker/proc/transfer_characters()
-	var/list/livings = list()
-	for(var/i in GLOB.new_player_list)
-		var/mob/dead/new_player/player = i
-		var/mob/living = player.transfer_character()
-		if(living)
-			qdel(player)
-			living.notransform = TRUE
-			living.client?.init_verbs()
-			livings += living
+	var/list/pawns = list()
+	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
+		if(!player.new_character)
+			continue
 
-	if(livings.len)
-		addtimer(CALLBACK(src, PROC_REF(release_characters), livings), 3 SECONDS, TIMER_CLIENT_TIME)
+		var/mob/pawn = player.new_character
+		pawn.mind.assigned_role?.before_roundstart_possess(pawn)
+
+		player.transfer_character()
+
+		pawn.mind.assigned_role?.after_roundstart_possess(pawn)
+		pawn.notransform = TRUE
+		pawn.client?.init_verbs()
+		pawns += pawn
+
+	if(pawns.len)
+		addtimer(CALLBACK(src, PROC_REF(release_characters), pawns), 3 SECONDS, TIMER_CLIENT_TIME)
 
 /datum/controller/subsystem/ticker/proc/release_characters(list/livings)
 	for(var/I in livings)
@@ -650,10 +656,10 @@ SUBSYSTEM_DEF(ticker)
 
 	var/skip_delay = check_rights()
 	if(delay_end && !skip_delay)
-		to_chat(world, span_boldannounce("An admin has delayed the round end."))
+		to_chat(world, systemtext("An admin has delayed the round end."))
 		return
 
-	to_chat(world, span_boldannounce("Rebooting World in [DisplayTimeText(delay)]. [reason]"))
+	to_chat(world, systemtext("Rebooting World in [DisplayTimeText(delay)]. [reason]"))
 
 	var/roll_credits_in = CONFIG_GET(number/eor_credits_delay) * 10
 	if(roll_credits)
@@ -667,7 +673,7 @@ SUBSYSTEM_DEF(ticker)
 	sleep(delay - (world.time - start_wait))
 
 	if(delay_end && !skip_delay)
-		to_chat(world, span_boldannounce("Reboot was cancelled by an admin."))
+		to_chat(world, systemtext("Reboot was cancelled by an admin."))
 		return
 	if(end_string)
 		end_state = end_string
@@ -679,7 +685,7 @@ SUBSYSTEM_DEF(ticker)
 	else if(gamelogloc)
 		to_chat(world, span_info("Round logs can be located <a href=\"[gamelogloc]\">at this website!</a>"))
 
-	log_game(span_boldannounce("Rebooting World. [reason]"))
+	log_game(systemtext("Rebooting World. [reason]"))
 
 	world.Reboot()
 
@@ -708,14 +714,16 @@ SUBSYSTEM_DEF(ticker)
 	if(!istype(track))
 		CRASH("Non-datum/media given to set_login_music()!")
 
-	if(credits_music == login_music)
-		credits_music = track
-	login_music = track
+	login_music -= track
+	login_music.Insert(1, track)
 
 	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
 		if(!player.client)
 			continue
-		player.client.playtitlemusic()
+
+		player.persistent_client.playlist.push_to_front(track)
+		player.persistent_client.playlist.cycle_track()
+		player.persistent_client.playlist.play_track()
 
 /datum/controller/subsystem/ticker/proc/pick_login_music()
 	var/list/title_music_data = SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_COMMON)
@@ -727,6 +735,7 @@ SUBSYSTEM_DEF(ticker)
 
 	if(rustg_file_exists("data/last_round_lobby_music.txt")) //The define isn't truthy
 		old_login_music_t = rustg_file_read("data/last_round_lobby_music.txt")
+
 	var/list/music_tracks = title_music_data + rare_music_data
 	//Filter map-specific tracks
 	for(var/datum/media/music_filtered as anything in music_tracks)
@@ -735,6 +744,7 @@ SUBSYSTEM_DEF(ticker)
 		if(music_filtered.map && music_filtered.map != SSmapping.config.map_name)
 			rare_music_data -= music_filtered
 			title_music_data -= music_filtered
+
 	//Remove the previous song
 	if(old_login_music)
 		//Remove the old login music from the current pool if it wouldn't empty the pool.
@@ -743,22 +753,23 @@ SUBSYSTEM_DEF(ticker)
 		else if(length(title_music_data) > 1)
 			title_music_data -= old_login_music
 
+	if(length(title_music_data))
+		login_music += shuffle(title_music_data)
+
 	//Try to set a song json
 	var/use_rare_music = prob(10)
 	if(use_rare_music && length(rare_music_data))
-		login_music = pick(rare_music_data)
-	if(!login_music && length(title_music_data))
-		login_music = pick(title_music_data)
+		login_music.Insert(1, pick(rare_music_data))
 
 	//If there's no valid jsons, fallback to the classic ROUND_START_MUSIC_LIST.
-	if(!login_music)
-		var/music = pick(world.file2list(ROUND_START_MUSIC_LIST, "\n"))
-		var/list/split_path = splittext(music, "/")
+	if(!length(login_music))
 		//Construct a minimal music track to satisfy the system.
-		login_music = new(name = split_path[length(split_path)], path = music)
+		for(var/music in shuffle(world.file2list(ROUND_START_MUSIC_LIST)))
+			var/list/split_path = splittext(music, "/")
+			login_music += new /datum/media(name = split_path[length(split_path)], path = music)
 
 	//Write the last round file to our current choice
-	rustg_file_write(login_music.path, "data/last_round_lobby_music.txt")
+	rustg_file_write(login_music[1].path, "data/last_round_lobby_music.txt")
 
 /datum/controller/subsystem/ticker/proc/pick_credits_music()
 	var/list/music_data = SSmedia.get_track_pool(MEDIA_TAG_ROUNDEND_COMMON)

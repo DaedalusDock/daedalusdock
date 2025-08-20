@@ -39,7 +39,7 @@
 	id = "splitbeaker"
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 3000)
-	build_path = /obj/item/reagent_containers/glass/beaker/noreact
+	build_path = /obj/item/reagent_containers/cup/beaker/noreact
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
@@ -48,7 +48,7 @@
 	id = "xlarge_beaker"
 	build_type = FABRICATOR
 	materials = list(/datum/material/glass = 2500, /datum/material/plastic = 3000)
-	build_path = /obj/item/reagent_containers/glass/beaker/plastic
+	build_path = /obj/item/reagent_containers/cup/beaker/plastic
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
@@ -57,17 +57,7 @@
 	id = "meta_beaker"
 	build_type = FABRICATOR
 	materials = list(/datum/material/glass = 2500, /datum/material/plastic = 3000, /datum/material/gold = 1000, /datum/material/titanium = 1000)
-	build_path = /obj/item/reagent_containers/glass/beaker/meta
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
-
-/datum/design/dna_disk
-	name = "Genetic Data Disk"
-	desc = "Produce additional disks for storing genetic data."
-	id = "dna_disk"
-	build_type = FABRICATOR
-	materials = list(/datum/material/iron = 300, /datum/material/glass = 100, /datum/material/silver = 50)
-	build_path = /obj/item/disk/data
+	build_path = /obj/item/reagent_containers/cup/beaker/meta
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 

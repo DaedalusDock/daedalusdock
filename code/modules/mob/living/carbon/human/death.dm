@@ -65,6 +65,25 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 		if(nearest_light)
 			addtimer(CALLBACK(nearest_light, TYPE_PROC_REF(/obj/machinery/light, start_flickering)), rand(20 SECONDS, 60 SECONDS))
 
+	if(!gibbed)
+		hes_dead_jim()
+
+/// Gives the He's dead, Jim award to anyone in view.
+/mob/living/carbon/human/proc/hes_dead_jim()
+	if(!ckey)
+		return
+
+	if(!(locate(/obj/structure/table/optable) in loc))
+		return
+
+	for(var/mob/living/carbon/human/viewer in viewers(src))
+		if(!viewer.client)
+			continue
+
+		var/job = viewer.mind?.assigned_role?.title
+		if(job == JOB_ACOLYTE || job == JOB_AUGUR)
+			viewer.client.give_award(/datum/award/achievement/jobs/hes_dead_jim, viewer)
+
 /mob/living/carbon/human/proc/makeSkeleton()
 	ADD_TRAIT(src, TRAIT_DISFIGURED, TRAIT_GENERIC)
 	set_species(/datum/species/skeleton)

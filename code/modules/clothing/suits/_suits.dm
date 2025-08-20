@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/clothing/suit)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/suit
 	name = "suit"
 	icon = 'icons/obj/clothing/suits.dmi'
@@ -6,7 +9,6 @@
 
 	allowed = list(/obj/item/tank/internals/emergency_oxygen)
 
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'

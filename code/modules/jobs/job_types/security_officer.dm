@@ -24,7 +24,7 @@
 		),
 	)
 
-	paycheck = PAYCHECK_HARD
+	paycheck = PAYCHECK_ASSISTANT * 7
 	paycheck_department = ACCOUNT_SEC
 
 	mind_traits = list(TRAIT_DONUT_LOVER)
@@ -50,7 +50,7 @@
 	name = "Security Officer"
 	jobtype = /datum/job/security_officer
 
-	id_trim = /datum/id_trim/job/security_officer
+	id_template = /datum/access_template/job/security_officer
 	uniform = /obj/item/clothing/under/rank/security/officer
 	suit = /obj/item/clothing/suit/armor/vest/sec
 	suit_store = /obj/item/gun/energy/disabler
@@ -65,9 +65,7 @@
 	l_pocket = /obj/item/restraints/handcuffs
 	r_pocket = /obj/item/assembly/flash/handheld
 
-	backpack = /obj/item/storage/backpack/security
-	satchel = /obj/item/storage/backpack/satchel/sec
-	duffelbag = /obj/item/storage/backpack/duffelbag/sec
+	back = /obj/item/storage/backpack/security
 
 	box = /obj/item/storage/box/survival/security
 	chameleon_extras = list(

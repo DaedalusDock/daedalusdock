@@ -1,8 +1,52 @@
-body
+html
 {
-	cursor: url("default.cur"), auto !important;
+	cursor: url("default.cur"), auto;
 }
-a
+
+a:hover
 {
-	cursor: url("link_select.cur"), auto !important;
+	cursor: url("link_select.cur"), auto;
+}
+
+a:hover,
+.dark a:hover {
+	cursor: url("link_select.cur"), pointer;
+}
+
+.button {
+	cursor: url("link_select.cur"), pointer;
+}
+
+.grid-item:hover .grid-item-text {
+	cursor: url("link_select.cur"), pointer;
+}
+
+.link,
+.link:hover{
+	cursor: url("link_select.cur"), pointer;
+}
+
+/* Browser Datums */
+.cursorDefault {
+	cursor: url("default.cur"), auto;
+}
+
+.cursorPointer{
+	cursor: url("link_select.cur"), pointer;
+}
+
+.slider{
+	cursor: url("link_select.cur"), pointer;
+}
+
+a.white, a.white:link, a.white:visited, a.white:active {
+	cursor: url("default.cur"), auto;
+}
+
+a.genericLink, a.genericLink:visited, a.genericLink:active{
+	cursor: url("default.cur"), auto;
+}
+
+a.rawLink {
+	cursor: url("link_select.cur"), pointer;
 }

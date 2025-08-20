@@ -1,6 +1,7 @@
 import { filterMap, sortBy } from 'common/collections';
 import { classes } from 'common/react';
 import { ReactNode } from 'react';
+import { Popper, Tooltip } from 'tgui-core/components';
 
 import { sendAct, useBackend, useLocalState } from '../../backend';
 import {
@@ -10,9 +11,7 @@ import {
   Dropdown,
   Flex,
   LabeledList,
-  Popper,
   Stack,
-  Tooltip,
   TrackOutsideClicks,
 } from '../../components';
 import { CharacterPreview } from './CharacterPreview';
@@ -224,10 +223,9 @@ const GenderButton = (props: {
 
   return (
     <Popper
-      options={{
-        placement: 'right-end',
-      }}
-      popperContent={
+      isOpen={genderMenuOpen}
+      placement="right-end"
+      content={
         genderMenuOpen && (
           <Stack backgroundColor="white" ml={0.5} p={0.3}>
             {[Gender.Male, Gender.Female, Gender.Other].map((gender) => {
@@ -294,10 +292,9 @@ const MainFeature = (props: {
 
   return (
     <Popper
-      options={{
-        placement: 'bottom-start',
-      }}
-      popperContent={
+      isOpen={isOpen}
+      placement="bottom-start"
+      content={
         isOpen && (
           <TrackOutsideClicks onOutsideClick={props.handleClose}>
             <ChoicedSelection

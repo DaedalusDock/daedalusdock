@@ -9,6 +9,7 @@ import { storage } from 'common/storage';
 import { setClientTheme } from '../themes';
 import { loadSettings, updateSettings } from './actions';
 import { DEFAULT_THEME, FONTS_DISABLED } from './constants';
+import { setDisplayScaling } from './scaling';
 import { selectSettings } from './selectors';
 
 const setGlobalFontSize = (fontSize) => {
@@ -29,6 +30,9 @@ export const settingsMiddleware = (store) => {
     const { type, payload } = action;
     if (!initialized) {
       initialized = true;
+
+      setDisplayScaling();
+
       storage.get('panel-settings').then((settings) => {
         store.dispatch(loadSettings(settings));
       });

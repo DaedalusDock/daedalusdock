@@ -171,6 +171,7 @@ GLOBAL_DATUM_INIT(known_alts, /datum/known_alts, new)
 		known_alts_html += "<a href='?src=[REF(src)];[HrefToken()];action=delete;id=[known_alt[4]]'>\[-\] Delete</a> <b>[known_alt[1]]</b> is an alt of <b>[known_alt[2]]</b> (added by <b>[known_alt[3]]</b>)."
 
 	var/html = {"
+	<html>
 		<head>
 			<title>Known Alts</title>
 		</head>
@@ -183,6 +184,7 @@ GLOBAL_DATUM_INIT(known_alts, /datum/known_alts, new)
 
 			[known_alts_html.Join("<br />")]
 		</body>
+	</html>
 	"}
 
 	client << browse(html, "window=known_alts;size=700x400")

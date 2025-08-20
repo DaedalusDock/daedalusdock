@@ -31,12 +31,14 @@
 
 //PLASMA
 
+TYPEINFO_DEF(/turf/open/floor/mineral/plasma)
+	default_materials = list(/datum/material/plasma = 500)
+
 /turf/open/floor/mineral/plasma
 	name = "plasma floor"
 	icon_state = "plasma"
 	floor_tile = /obj/item/stack/tile/mineral/plasma
 	icons = list("plasma","plasma_dam")
-	custom_materials = list(/datum/material/plasma = 500)
 
 //Plasma floor that can't be removed, for disco inferno
 
@@ -46,29 +48,35 @@
 
 //GOLD
 
+TYPEINFO_DEF(/turf/open/floor/mineral/gold)
+	default_materials = list(/datum/material/gold = 500)
+
 /turf/open/floor/mineral/gold
 	name = "gold floor"
 	icon_state = "gold"
 	floor_tile = /obj/item/stack/tile/mineral/gold
 	icons = list("gold","gold_dam")
-	custom_materials = list(/datum/material/gold = 500)
 
 //SILVER
+
+TYPEINFO_DEF(/turf/open/floor/mineral/silver)
+	default_materials = list(/datum/material/silver = 500)
 
 /turf/open/floor/mineral/silver
 	name = "silver floor"
 	icon_state = "silver"
 	floor_tile = /obj/item/stack/tile/mineral/silver
 	icons = list("silver","silver_dam")
-	custom_materials = list(/datum/material/silver = 500)
 
 //TITANIUM (shuttle)
+
+TYPEINFO_DEF(/turf/open/floor/mineral/titanium)
+	default_materials = list(/datum/material/titanium = 500)
 
 /turf/open/floor/mineral/titanium
 	name = "shuttle floor"
 	icon_state = "titanium"
 	floor_tile = /obj/item/stack/tile/mineral/titanium
-	custom_materials = list(/datum/material/titanium = 500)
 
 /turf/open/floor/mineral/titanium/rust_heretic_act()
 	return // titanium does not rust
@@ -142,11 +150,13 @@
 	initial_gas = AIRLESS_ATMOS
 
 //PLASTITANIUM (syndieshuttle)
+TYPEINFO_DEF(/turf/open/floor/mineral/plastitanium)
+	default_materials = list(/datum/material/alloy/plastitanium = 500)
+
 /turf/open/floor/mineral/plastitanium
 	name = "shuttle floor"
 	icon_state = "plastitanium"
 	floor_tile = /obj/item/stack/tile/mineral/plastitanium
-	custom_materials = list(/datum/material/alloy/plastitanium = 500)
 
 /turf/open/floor/mineral/plastitanium/rust_heretic_act()
 	return // plastitanium does not rust
@@ -170,12 +180,14 @@
 
 //BANANIUM
 
+TYPEINFO_DEF(/turf/open/floor/mineral/bananium)
+	default_materials = list(/datum/material/bananium = 500)
+
 /turf/open/floor/mineral/bananium
 	name = "bananium floor"
 	icon_state = "bananium"
 	floor_tile = /obj/item/stack/tile/mineral/bananium
 	icons = list("bananium","bananium_dam")
-	custom_materials = list(/datum/material/bananium = 500)
 	material_flags = NONE //The slippery comp makes it unpractical for good clown decor. The custom mat one should still slip.
 	var/sound_cooldown = 0
 
@@ -216,21 +228,25 @@
 
 //DIAMOND
 
+TYPEINFO_DEF(/turf/open/floor/mineral/diamond)
+	default_materials = list(/datum/material/diamond = 500)
+
 /turf/open/floor/mineral/diamond
 	name = "diamond floor"
 	icon_state = "diamond"
 	floor_tile = /obj/item/stack/tile/mineral/diamond
 	icons = list("diamond","diamond_dam")
-	custom_materials = list(/datum/material/diamond = 500)
 
 //URANIUM
+
+TYPEINFO_DEF(/turf/open/floor/mineral/uranium)
+	default_materials = list(/datum/material/uranium = 500)
 
 /turf/open/floor/mineral/uranium
 	name = "uranium floor"
 	icon_state = "uranium"
 	floor_tile = /obj/item/stack/tile/mineral/uranium
 	icons = list("uranium","uranium_dam")
-	custom_materials = list(/datum/material/uranium = 500)
 	var/last_event = 0
 	var/active = null
 
@@ -274,13 +290,15 @@
 			return
 
 // ALIEN ALLOY
+TYPEINFO_DEF(/turf/open/floor/mineral/abductor)
+	default_materials = list(/datum/material/alloy/alien = 500)
+
 /turf/open/floor/mineral/abductor
 	name = "alien floor"
 	icon_state = "alienpod1"
 	floor_tile = /obj/item/stack/tile/mineral/abductor
 	icons = list("alienpod1", "alienpod2", "alienpod3", "alienpod4", "alienpod5", "alienpod6", "alienpod7", "alienpod8", "alienpod9")
 	baseturfs = /turf/open/floor/plating/abductor2
-	custom_materials = list(/datum/material/alloy/alien = 500)
 
 /turf/open/floor/mineral/abductor/Initialize(mapload)
 	. = ..()

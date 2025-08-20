@@ -629,3 +629,8 @@
 	var/location = get_turf(holder.my_atom)
 	for(var/i in 1 to created_volume)
 		new /obj/item/stack/sheet/plastic(location)
+
+/datum/chemical_reaction/luminol
+	results = list(/datum/reagent/luminol = 6)
+	required_reagents = list(/datum/reagent/hydrazine = 2, /datum/reagent/carbon = 2, /datum/reagent/ammonia = 2)
+	mix_message = "The solution begins to gleam with a fey inner light."

@@ -34,7 +34,7 @@ const Story = (props) => {
           <Button
             icon="chevron-right"
             onClick={() =>
-              setImmediate(() => {
+              setTimeout(() => {
                 try {
                   const result = new Function('return (' + code + ')')();
                   if (result && result.then) {
@@ -46,7 +46,7 @@ const Story = (props) => {
                 } catch (err) {
                   logger.log(err);
                 }
-              })
+              }, 0)
             }
           >
             Evaluate

@@ -53,25 +53,31 @@
 
 	return CONTEXTUAL_SCREENTIP_SET
 
-/obj/item/modular_computer/tablet/attackby(obj/item/W, mob/user)
+/obj/item/modular_computer/tablet/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	. = ..()
+	if(. & ITEM_INTERACT_ANY_BLOCKER)
+		return
 
-	if(is_type_in_list(W, contained_item))
+	if(is_type_in_list(tool, contained_item))
 		if(inserted_item)
 			to_chat(user, span_warning("There is already \a [inserted_item] in \the [src]!"))
-		else
-			if(!user.transferItemToLoc(W, src))
-				return
-			to_chat(user, span_notice("You insert \the [W] into \the [src]."))
-			inserted_item = W
-			RegisterSignal(W, COMSIG_PARENT_QDELETING, PROC_REF(inserted_item_gone))
-			playsound(src, 'sound/machines/pda_button1.ogg', 50, TRUE)
+			return ITEM_INTERACT_BLOCKING
 
-	if(istype(W, /obj/item/paper))
-		var/obj/item/paper/paper = W
+		if(!user.transferItemToLoc(tool, src))
+			return ITEM_INTERACT_BLOCKING
 
-		to_chat(user, span_notice("You scan \the [W] into \the [src]."))
+		to_chat(user, span_notice("You insert \the [tool] into \the [src]."))
+		inserted_item = tool
+		RegisterSignal(tool, COMSIG_PARENT_QDELETING, PROC_REF(inserted_item_gone))
+		playsound(src, 'sound/machines/pda_button1.ogg', 50, TRUE)
+		return ITEM_INTERACT_SUCCESS
+
+	if(istype(tool, /obj/item/paper))
+		var/obj/item/paper/paper = tool
+
+		to_chat(user, span_notice("You scan \the [paper] into \the [src]."))
 		note = paper.info
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/modular_computer/tablet/AltClick(mob/user)
 	. = ..()
@@ -124,8 +130,6 @@
 		equipped_to.show_message(span_userdanger("Your [src] explodes!"), MSG_VISUAL, span_warning("You hear a loud *pop*!"), MSG_AUDIBLE)
 	else
 		visible_message(span_danger("[src] explodes!"), span_warning("You hear a loud *pop*!"))
-
-	target.client?.give_award(/datum/award/achievement/misc/clickbait, target)
 
 	if(T)
 		T.hotspot_expose(700,125)

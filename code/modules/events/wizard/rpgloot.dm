@@ -20,17 +20,14 @@
 	var/can_backfire = TRUE
 	var/uses = 1
 
-/obj/item/upgradescroll/afterattack(obj/item/target, mob/user, proximity)
-	. = ..()
-	if(!proximity || !istype(target))
-		return
-
-	target.AddComponent(/datum/component/fantasy, upgrade_amount, null, null, can_backfire, TRUE)
+/obj/item/upgradescroll/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	interacting_with.AddComponent(/datum/component/fantasy, upgrade_amount, null, null, can_backfire, TRUE)
 
 	uses -= 1
 	if(!uses)
 		visible_message(span_warning("[src] vanishes, its magic completely consumed from the fortification."))
 		qdel(src)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/upgradescroll/unlimited
 	name = "unlimited foolproof item fortification scroll"

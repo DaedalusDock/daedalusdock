@@ -10,6 +10,9 @@
 //The complete sprite (displayed when the limb is on the ground) should be named "borg_l_arm".
 //Failure to follow this pattern will cause the hand's icons to be missing due to the way get_limb_icon() works to generate the mob's icons using the aux_zone var.
 
+TYPEINFO_DEF(/obj/item/bodypart/arm/left/robot)
+	default_armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
+
 /obj/item/bodypart/arm/left/robot
 	name = "cyborg left arm"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
@@ -25,7 +28,6 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
 	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 	bodypart_flags = (parent_type::bodypart_flags | BP_NO_PAIN) & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
@@ -36,6 +38,9 @@
 	light_burn_msg = ROBOTIC_LIGHT_BURN_MSG
 	medium_burn_msg = ROBOTIC_MEDIUM_BURN_MSG
 	heavy_burn_msg = ROBOTIC_HEAVY_BURN_MSG
+
+TYPEINFO_DEF(/obj/item/bodypart/arm/right/robot)
+	default_armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 /obj/item/bodypart/arm/right/robot
 	name = "cyborg right arm"
@@ -52,7 +57,6 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
 	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 	bodypart_flags = (parent_type::bodypart_flags | BP_NO_PAIN) & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
@@ -63,6 +67,9 @@
 	light_burn_msg = ROBOTIC_LIGHT_BURN_MSG
 	medium_burn_msg = ROBOTIC_MEDIUM_BURN_MSG
 	heavy_burn_msg = ROBOTIC_HEAVY_BURN_MSG
+
+TYPEINFO_DEF(/obj/item/bodypart/leg/left/robot)
+	default_armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 /obj/item/bodypart/leg/left/robot
 	name = "cyborg left leg"
@@ -79,7 +86,6 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
 	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 	bodypart_flags = (parent_type::bodypart_flags | BP_NO_PAIN) & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
@@ -90,6 +96,9 @@
 	light_burn_msg = ROBOTIC_LIGHT_BURN_MSG
 	medium_burn_msg = ROBOTIC_MEDIUM_BURN_MSG
 	heavy_burn_msg = ROBOTIC_HEAVY_BURN_MSG
+
+TYPEINFO_DEF(/obj/item/bodypart/leg/right/robot)
+	default_armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 /obj/item/bodypart/leg/right/robot
 	name = "cyborg right leg"
@@ -106,7 +115,6 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
 	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 	bodypart_flags = (parent_type::bodypart_flags | BP_NO_PAIN) & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
@@ -117,6 +125,9 @@
 	light_burn_msg = ROBOTIC_LIGHT_BURN_MSG
 	medium_burn_msg = ROBOTIC_MEDIUM_BURN_MSG
 	heavy_burn_msg = ROBOTIC_HEAVY_BURN_MSG
+
+TYPEINFO_DEF(/obj/item/bodypart/chest/robot)
+	default_armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 /obj/item/bodypart/chest/robot
 	name = "cyborg torso"
@@ -132,7 +143,6 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
 	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 	bodypart_flags = (parent_type::bodypart_flags | BP_NO_PAIN) & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
@@ -229,6 +239,9 @@
 	..()
 
 
+TYPEINFO_DEF(/obj/item/bodypart/head/robot)
+	default_armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
+
 /obj/item/bodypart/head/robot
 	name = "cyborg head"
 	desc = "A standard reinforced braincase, with spine-plugged neural socket and sensor gimbals."
@@ -243,7 +256,6 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
 	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 	bodypart_flags = (parent_type::bodypart_flags | BP_NO_PAIN) & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 

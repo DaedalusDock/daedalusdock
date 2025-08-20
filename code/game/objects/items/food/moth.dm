@@ -515,7 +515,7 @@
 
 /obj/item/food/pizza/mothic_margherita
 	name = "mothic margherita pizza"
-	desc = "A key characteristic of mothic pizza is that it's sold by weight- single slices are available for discretionary credits, while a meal ticket can buy a whole pie."
+	desc = "A key characteristic of mothic pizza is that it's sold by weight- single slices are available for discretionary marks, while a meal ticket can buy a whole pie."
 	icon = 'icons/obj/food/moth.dmi'
 	icon_state = "margherita_pizza"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 25, /datum/reagent/consumable/nutriment/protein = 8, /datum/reagent/consumable/tomatojuice = 6, /datum/reagent/consumable/nutriment/vitamin = 5)
@@ -762,7 +762,7 @@
 	name = "\improper Activin 12 Hour medicated gum packet"
 	desc = "Stay awake during long shifts in the maintenance tunnels with Activin! The approval seal of the Mothic Nomad Fleet is emblazoned on the packaging, alongside a litany of health and safety disclaimers in both Mothic and Galactic Common."
 	icon_state = "bubblegum_wake_up"
-	custom_premium_price = PAYCHECK_EASY * 1.5
+	custom_premium_price = PAYCHECK_ASSISTANT * 0.4
 
 /obj/item/storage/box/gum/wake_up/examine_more(mob/user)
 	. = ..()

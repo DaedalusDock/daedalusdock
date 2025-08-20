@@ -24,6 +24,9 @@ DEFINE_BITFIELD(turret_flags, list(
 	"TURRET_FLAG_SHOOT_MANAGEMENT" = TURRET_FLAG_SHOOT_MANAGEMENT,
 ))
 
+TYPEINFO_DEF(/obj/machinery/porta_turret)
+	default_armor = list(BLUNT = 50, PUNCTURE = 30, SLASH = 90, LASER = 30, ENERGY = 30, BOMB = 30, BIO = 0, FIRE = 90, ACID = 90)
+
 /obj/machinery/porta_turret
 	name = "turret"
 	icon = 'icons/obj/turrets.dmi'
@@ -37,7 +40,6 @@ DEFINE_BITFIELD(turret_flags, list(
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.15
 	max_integrity = 160 //the turret's health
 	integrity_failure = 0.5
-	armor = list(BLUNT = 50, PUNCTURE = 30, SLASH = 90, LASER = 30, ENERGY = 30, BOMB = 30, BIO = 0, FIRE = 90, ACID = 90)
 	base_icon_state = "standard"
 	blocks_emissive = EMISSIVE_BLOCK_UNIQUE
 
@@ -90,7 +92,7 @@ DEFINE_BITFIELD(turret_flags, list(
 	/// Determines if our projectiles hit our faction
 	var/ignore_faction = FALSE
 	/// Same faction mobs will never be shot at, no matter the other settings
-	var/list/faction = list("turret")
+	faction = list("turret")
 	/// The spark system, used for generating... sparks?
 	var/datum/effect_system/spark_spread/spark_system
 	/// The turret will try to shoot from a turf in that direction when in a wall
@@ -762,6 +764,9 @@ DEFINE_BITFIELD(turret_flags, list(
 	stun_projectile = /obj/projectile/bullet/syndicate_turret
 	lethal_projectile = /obj/projectile/bullet/syndicate_turret
 
+TYPEINFO_DEF(/obj/machinery/porta_turret/syndicate/shuttle)
+	default_armor = list(BLUNT = 50, PUNCTURE = 30, SLASH = 90, LASER = 30, ENERGY = 30, BOMB = 80, BIO = 0, FIRE = 90, ACID = 90)
+
 /obj/machinery/porta_turret/syndicate/shuttle
 	scan_range = 9
 	shot_delay = 3
@@ -769,7 +774,6 @@ DEFINE_BITFIELD(turret_flags, list(
 	lethal_projectile = /obj/projectile/bullet/p50/penetrator/shuttle
 	lethal_projectile_sound = 'sound/weapons/gun/smg/shot.ogg'
 	stun_projectile_sound = 'sound/weapons/gun/smg/shot.ogg'
-	armor = list(BLUNT = 50, PUNCTURE = 30, SLASH = 90, LASER = 30, ENERGY = 30, BOMB = 80, BIO = 0, FIRE = 90, ACID = 90)
 
 /obj/machinery/porta_turret/syndicate/shuttle/target(atom/movable/target)
 	if(target)
@@ -1029,13 +1033,15 @@ DEFINE_BITFIELD(turret_flags, list(
 	icon_state = "[base_icon_state]_standby"
 	return ..()
 
+TYPEINFO_DEF(/obj/item/wallframe/turret_control)
+	default_materials = list(/datum/material/iron=MINERAL_MATERIAL_AMOUNT)
+
 /obj/item/wallframe/turret_control
 	name = "turret control frame"
 	desc = "Used for building turret control panels."
 	icon = 'icons/obj/machines/turret_control.dmi'
 	icon_state = "control_frame"
 	result_path = /obj/machinery/turretid
-	custom_materials = list(/datum/material/iron=MINERAL_MATERIAL_AMOUNT)
 	pixel_shift = 29
 
 /obj/item/gun/proc/get_turret_properties()

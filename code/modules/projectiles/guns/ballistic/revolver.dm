@@ -19,6 +19,11 @@
 	var/recent_spin = 0
 	var/last_fire = 0
 
+/obj/item/gun/ballistic/revolver/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	. = ..()
+	context[SCREENTIP_CONTEXT_RMB] = "Spin barrel"
+	return CONTEXTUAL_SCREENTIP_SET
+
 /obj/item/gun/ballistic/revolver/do_fire_gun(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
 	. = ..()
 	last_fire = world.time
@@ -37,9 +42,21 @@
 	if(auto_chamber)
 		chamber_round(spin_cylinder = TRUE)
 
-/obj/item/gun/ballistic/revolver/AltClick(mob/user)
-	..()
+/obj/item/gun/ballistic/revolver/attack_self_secondary(mob/user, modifiers)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
 	spin()
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+/obj/item/gun/ballistic/revolver/attack_hand_secondary(mob/user, list/modifiers)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
+	spin()
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/gun/ballistic/revolver/play_fire_sound()
 	var/frequency_to_use = sin((90/magazine?.max_ammo) * get_ammo(TRUE, FALSE)) // fucking REVOLVERS
@@ -61,16 +78,18 @@
 
 	var/mob/M = usr
 
-	if(M.stat || !in_range(M,src))
+	if(M.stat || !M.is_holding(src))
 		return
 
 	if (recent_spin > world.time)
 		return
+
 	recent_spin = world.time + spin_delay
 
 	if(do_spin())
 		playsound(usr, SFX_REVOLVER_SPIN, 30, FALSE)
-		usr.visible_message(span_notice("[usr] spins [src]'s chamber."), span_notice("You spin [src]'s chamber."))
+		usr.visible_message(span_notice("[usr] spins [src]'s chamber."))
+		return TRUE
 	else
 		verbs -= /obj/item/gun/ballistic/revolver/verb/spin
 
@@ -92,7 +111,8 @@
 /obj/item/gun/ballistic/revolver/examine(mob/user)
 	. = ..()
 	var/live_ammo = get_ammo(FALSE, FALSE)
-	. += "[live_ammo ? live_ammo : "None"] of those are live rounds."
+	if(get_ammo(FALSE, TRUE))
+		. += span_notice("[live_ammo ? live_ammo : "None"] of them are live rounds.")
 	if (current_skin)
 		. += "It can be spun with <b>alt+click</b>"
 
@@ -102,7 +122,7 @@
 
 /obj/item/gun/ballistic/revolver/detective
 	name = "\improper Colt Detective Special"
-	desc = "A classic, if not outdated, law enforcement firearm. Uses .38 Special rounds. \nSome spread rumors that if you loosen the barrel with a wrench, you can \"improve\" it."
+	desc = "A classic, if not outdated, law enforcement firearm."
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev38
 	icon_state = "detective"
 	fire_sound = 'sound/weapons/gun/revolver/shot.ogg'
@@ -114,6 +134,26 @@
 	alternative_ammo_misfires = TRUE
 	misfire_probability = 0
 	misfire_percentage_increment = 25 //about 1 in 4 rounds, which increases rapidly every shot
+
+/obj/item/gun/ballistic/revolver/detective/examine(mob/user)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("detgun_examine",)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		. += result.create_tooltip("No mere firearm – a cultural artifact. An all-time classic, chambered in .38 Special and packing six rounds, perfect for six criminals. ", body_only = TRUE)
+
+/obj/item/gun/ballistic/revolver/detective/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	if(user.mind?.assigned_role?.title != JOB_DETECTIVE)
+		return
+
+	var/datum/roll_result/result = user.get_examine_result("detgun_suicide_flavor", /datum/rpg_skill/extrasensory, only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("Your head falls numb as the bullet passes through your skull. Your body looks <b>wrong</b>."),
+		)
 
 /obj/item/gun/ballistic/revolver/syndicate
 	name = "\improper Syndicate Revolver"

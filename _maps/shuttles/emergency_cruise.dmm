@@ -385,7 +385,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 1
 	},
-/obj/machinery/computer/med_data{
+/obj/machinery/computer4/medical{
 	dir = 8
 	},
 /turf/open/floor/iron/white,
@@ -412,7 +412,7 @@
 /area/shuttle/escape)
 "tJ" = (
 /obj/structure/table/reinforced,
-/obj/item/reagent_containers/glass/mug/brit,
+/obj/item/reagent_containers/cup/mug/brit,
 /obj/item/storage/medkit/regular{
 	pixel_x = -9;
 	pixel_y = 3
@@ -766,7 +766,7 @@
 /obj/machinery/door/airlock/command/glass{
 	name = "Cockpit"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
 "Gv" = (
@@ -909,11 +909,11 @@
 /area/shuttle/escape)
 "Lo" = (
 /obj/structure/table/wood/fancy,
-/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass{
+/obj/item/reagent_containers/cup/glass/drinkingglass/shotglass{
 	pixel_x = -3;
 	pixel_y = 6
 	},
-/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass{
+/obj/item/reagent_containers/cup/glass/drinkingglass/shotglass{
 	pixel_x = 6;
 	pixel_y = 14
 	},
@@ -1063,7 +1063,7 @@
 /area/shuttle/escape)
 "UN" = (
 /obj/structure/table/wood/fancy,
-/obj/item/reagent_containers/glass/rag{
+/obj/item/reagent_containers/cup/rag{
 	pixel_y = 7
 	},
 /obj/effect/fun_balloon/sentience/emergency_shuttle{

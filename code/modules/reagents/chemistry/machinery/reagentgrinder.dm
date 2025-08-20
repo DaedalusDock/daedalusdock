@@ -25,7 +25,7 @@
 /obj/machinery/reagentgrinder/Initialize(mapload)
 	. = ..()
 	holdingitems = list()
-	beaker = new /obj/item/reagent_containers/glass/beaker/large(src)
+	beaker = new /obj/item/reagent_containers/cup/beaker/large(src)
 	warn_of_dust()
 
 /// Add a description to the current beaker warning of blended dust, if it doesn't already have that warning.
@@ -144,7 +144,7 @@
 /obj/machinery/reagentgrinder/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/reagentgrinder/attackby(obj/item/I, mob/living/user, params)
 	//You can only screw open empty grinder

@@ -74,19 +74,25 @@
 	else
 		return ..()
 
-/obj/item/autosurgeon/organ/attack(mob/living/target, mob/living/user, params)
-	add_fingerprint(user)
+/obj/item/autosurgeon/organ/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
+
 	user.visible_message(
-		"[user] prepares to use [src] on [target].",
-		"You begin to prepare to use [src] on [target]."
+		"[user] prepares to use [src] on [interacting_with].",
+		"You begin to prepare to use [src] on [interacting_with]."
 	)
-	if(!do_after(user, target, (8 SECONDS * surgery_speed)))
-		return
-	user.visible_message(span_notice("[user] presses a button on [src], and you hear a short mechanical noise."), span_notice("You press a button on [src] as it plunges into [target]'s body."))
-	to_chat(target, span_notice("You feel a sharp sting as something plunges into your body!"))
+
+	if(!do_after(user, interacting_with, (8 SECONDS * surgery_speed)))
+		return ITEM_INTERACT_BLOCKING
+
+	user.visible_message(span_notice("[user] presses a button on [src], and you hear a short mechanical noise."), span_notice("You press a button on [src] as it plunges into [interacting_with]'s body."))
+	to_chat(interacting_with, span_notice("You feel a sharp sting as something plunges into your body!"))
 	playsound(get_turf(user), 'sound/weapons/circsawhit.ogg', 50, vary = TRUE)
-	storedorgan.Insert(target) //let's actually get the organ into the target, yeah?
+	storedorgan.Insert(interacting_with) //let's actually get the organ into the target, yeah?
 	use_autosurgeon()
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/autosurgeon/organ/screwdriver_act(mob/living/user, obj/item/screwtool)
 	if(..())

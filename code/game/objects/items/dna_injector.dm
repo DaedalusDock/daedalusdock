@@ -51,39 +51,50 @@
 		return TRUE
 	return FALSE
 
-/obj/item/dnainjector/attack(mob/target, mob/user)
-	if(!ISADVANCEDTOOLUSER(user))
-		to_chat(user, span_warning("You don't have the dexterity to do this!"))
-		return
-	if(used)
-		to_chat(user, span_warning("This injector is used up!"))
-		return
-	if(ishuman(target))
-		var/mob/living/carbon/human/humantarget = target
-		if (!humantarget.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
-			return
-	log_combat(user, target, "attempted to inject", src)
+/obj/item/dnainjector/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
 
-	if(target != user)
-		target.visible_message(span_danger("[user] is trying to inject [target] with [src]!"), \
-			span_userdanger("[user] is trying to inject you with [src]!"))
-		if(!do_after(user, target, 3 SECONDS, DO_PUBLIC, display = src) || used)
-			return
-		target.visible_message(span_danger("[user] injects [target] with the syringe with [src]!"), \
-						span_userdanger("[user] injects you with the syringe with [src]!"))
+	if(!ISADVANCEDTOOLUSER(user))
+		to_chat(user, span_warning("You don't have the dexterity to do this."))
+		return ITEM_INTERACT_BLOCKING
+
+	if(used)
+		to_chat(user, span_warning("This injector is used up."))
+		return ITEM_INTERACT_BLOCKING
+
+	if(ishuman(interacting_with))
+		var/mob/living/carbon/human/humantarget = interacting_with
+		if (!humantarget.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
+			return ITEM_INTERACT_BLOCKING
+
+	log_combat(user, interacting_with, "attempted to inject", src)
+
+	if(interacting_with != user)
+		interacting_with.visible_message(
+			span_danger("[user] is trying to inject [interacting_with] with [src]."),
+			span_userdanger("[user] is trying to inject you with [src].")
+		)
+		if(!do_after(user, interacting_with, 3 SECONDS, DO_PUBLIC, interaction_key = ref(src), display = src))
+			return ITEM_INTERACT_BLOCKING
+
+		interacting_with.visible_message(
+			span_danger("[user] injects [interacting_with] with the syringe with [src]."),
+			span_userdanger("[user] injects you with the syringe with [src].")
+		)
 
 	else
 		to_chat(user, span_notice("You inject yourself with [src]."))
 
-	log_combat(user, target, "injected", src)
+	log_combat(user, interacting_with, "injected", src)
 
-	if(!inject(target, user)) //Now we actually do the heavy lifting.
-		to_chat(user, span_notice("It appears that [target] does not have compatible DNA."))
+	if(!inject(interacting_with, user)) //Now we actually do the heavy lifting.
+		to_chat(user, span_notice("It appears that [interacting_with] does not have compatible DNA."))
 
 	used = 1
 	icon_state = "dnainjector0"
 	desc += " This one is used up."
-
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/dnainjector/antihulk
 	name = "\improper DNA injector (Anti-Hulk)"

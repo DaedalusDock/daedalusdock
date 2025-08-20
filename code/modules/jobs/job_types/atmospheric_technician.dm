@@ -19,7 +19,7 @@
 		),
 	)
 
-	paycheck = PAYCHECK_MEDIUM
+	paycheck = /datum/job/station_engineer::paycheck
 	paycheck_department = ACCOUNT_ENG
 
 	liver_traits = list(TRAIT_ENGINEER_METABOLISM)
@@ -45,17 +45,14 @@
 	name = "Atmospheric Technician"
 	jobtype = /datum/job/atmospheric_technician
 
-	id_trim = /datum/id_trim/job/atmospheric_technician
+	id_template = /datum/access_template/job/atmospheric_technician
 	uniform = /obj/item/clothing/under/rank/engineering/atmospheric_technician
 	belt = /obj/item/storage/belt/utility/atmostech
 	ears = /obj/item/radio/headset/headset_eng
 	l_pocket = /obj/item/modular_computer/tablet/pda/atmos
 	r_pocket = /obj/item/analyzer
 
-	backpack = /obj/item/storage/backpack/industrial
-	satchel = /obj/item/storage/backpack/satchel/eng
-	duffelbag = /obj/item/storage/backpack/duffelbag/engineering
-
+	back = /obj/item/storage/backpack/industrial
 	box = /obj/item/storage/box/survival/engineer
 	pda_slot = ITEM_SLOT_LPOCKET
 

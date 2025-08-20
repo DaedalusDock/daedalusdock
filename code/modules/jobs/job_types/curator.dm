@@ -4,6 +4,9 @@
 		bookshelves, report on station news."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
+
+	pinpad_key = "power"
+
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"
@@ -34,7 +37,7 @@
 	name = "Curator"
 	jobtype = /datum/job/curator
 
-	id_trim = /datum/id_trim/job/curator
+	id_template = /datum/access_template/job/curator
 	uniform = /obj/item/clothing/under/rank/civilian/curator
 	backpack_contents = list(
 		/obj/item/barcodescanner = 1,

@@ -18,7 +18,7 @@
 		return INITIALIZE_HINT_QDEL
 
 	var/mob/living/wielder = loc
-	RegisterSignal(wielder, COMSIG_MOB_SWAP_HANDS, PROC_REF(try_swap_hands))
+	RegisterSignal(wielder, COMSIG_MOB_SWAPPING_HANDS, PROC_REF(try_swap_hands))
 
 	parent = WEAKREF(parent_item)
 	name = "[parent_item.name] - offhand"

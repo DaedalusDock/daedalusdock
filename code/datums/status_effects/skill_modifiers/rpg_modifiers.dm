@@ -38,7 +38,7 @@
 	var/skill_path
 	/// Amount to modify by
 	var/modify_amt
-	/// A string source like "Incapacitated".
+	/// A string source like "Incapacitated.".
 	var/source
 
 /datum/status_effect/skill_mod/on_apply()

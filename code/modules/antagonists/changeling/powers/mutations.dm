@@ -172,37 +172,44 @@
 		can_drop = TRUE
 	AddComponent(/datum/component/butchering, 60, 80)
 
-/obj/item/melee/arm_blade/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/melee/arm_blade/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(istype(target, /obj/structure/table))
+		user.do_attack_animation(interacting_with, used_item = src)
 		var/obj/structure/table/T = target
 		T.deconstruct(FALSE)
+		return ITEM_INTERACT_SUCCESS
 
-	else if(istype(target, /obj/machinery/computer))
+	if(istype(target, /obj/machinery/computer))
 		var/obj/machinery/computer/C = target
 		C.attack_alien(user) //muh copypasta
+		return ITEM_INTERACT_SUCCESS
 
-	else if(istype(target, /obj/machinery/door/airlock))
+	if(istype(target, /obj/machinery/door/airlock))
 		var/obj/machinery/door/airlock/A = target
 
 		if((!A.requiresID() || A.allowed(user)) && A.hasPower()) //This is to prevent stupid shit like hitting a door with an arm blade, the door opening because you have acces and still getting a "the airlocks motors resist our efforts to force it" message, power requirement is so this doesn't stop unpowered doors from being pried open if you have access
-			return
+			return ITEM_INTERACT_BLOCKING
+
 		if(A.locked)
 			to_chat(user, span_warning("The airlock's bolts prevent it from being forced!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		if(A.hasPower())
 			user.visible_message(span_warning("[user] jams [src] into the airlock and starts prying it open!"), span_warning("We start forcing the [A] open."), \
 			span_hear("You hear a metal screeching sound."))
 			playsound(A, 'sound/machines/airlock_alien_prying.ogg', 100, TRUE)
 			if(!do_after(user, A, 100))
-				return
+				return ITEM_INTERACT_BLOCKING
+
+		user.do_attack_animation(interacting_with, used_item = src)
 		//user.say("Heeeeeeeeeerrre's Johnny!")
 		user.visible_message(span_warning("[user] forces the airlock to open with [user.p_their()] [src]!"), span_warning("We force the [A] to open."), \
 		span_hear("You hear a metal screeching sound."))
 		A.open(2)
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/melee/arm_blade/unequipped(mob/user)
 	..()
@@ -320,7 +327,7 @@
 /obj/projectile/tentacle/proc/tentacle_grab(mob/living/carbon/human/H, mob/living/carbon/C)
 	if(H.Adjacent(C))
 		if(H.get_active_held_item() && !H.get_inactive_held_item())
-			H.swap_hand()
+			H.try_swap_hand()
 		if(H.get_active_held_item())
 			return
 
@@ -467,6 +474,9 @@
 	recharge_slowdown = 0.25
 	blood_on_castoff = 1
 
+TYPEINFO_DEF(/obj/item/clothing/suit/space/changeling)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90)
+
 /obj/item/clothing/suit/space/changeling
 	name = "flesh mass"
 	icon_state = "lingspacesuit"
@@ -474,7 +484,6 @@
 	item_flags = DROPDEL
 	clothing_flags = STOPSPRESSUREDAMAGE //Not THICKMATERIAL because it's organic tissue, so if somebody tries to inject something into it, it still ends up in your blood. (also balance but muh fluff)
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals/emergency_oxygen, /obj/item/tank/internals/oxygen)
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90) //No armor at all.
 	actions_types = list()
 	cell = null
 	show_hud = FALSE
@@ -497,13 +506,15 @@
 		H.reagents.add_reagent(/datum/reagent/medicine/dexalin, 0.2)
 		H.adjust_bodytemperature(temperature_setting - H.bodytemperature) // force changelings to normal temp step mode played badly
 
+TYPEINFO_DEF(/obj/item/clothing/head/helmet/space/changeling)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90)
+
 /obj/item/clothing/head/helmet/space/changeling
 	name = "flesh mass"
 	icon_state = "lingspacehelmet"
 	desc = "A covering of pressure and temperature-resistant organic tissue with a glass-like chitin front."
 	item_flags = DROPDEL
 	clothing_flags = STOPSPRESSUREDAMAGE
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90)
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 
 /obj/item/clothing/head/helmet/space/changeling/Initialize(mapload)
@@ -528,13 +539,15 @@
 	suit_name_simple = "armor"
 	helmet_name_simple = "helmet"
 
+TYPEINFO_DEF(/obj/item/clothing/suit/armor/changeling)
+	default_armor = list(BLUNT = 40, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 50, BOMB = 10, BIO = 4, FIRE = 90, ACID = 90)
+
 /obj/item/clothing/suit/armor/changeling
 	name = "chitinous mass"
 	desc = "A tough, hard covering of black chitin."
 	icon_state = "lingarmor"
 	item_flags = DROPDEL
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	armor = list(BLUNT = 40, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 50, BOMB = 10, BIO = 4, FIRE = 90, ACID = 90)
 	flags_inv = HIDEJUMPSUIT
 	cold_protection = 0
 	heat_protection = 0
@@ -546,12 +559,14 @@
 	if(ismob(loc))
 		loc.visible_message(span_warning("[loc.name]\'s flesh turns black, quickly transforming into a hard, chitinous mass!"), span_warning("We harden our flesh, creating a suit of armor!"), span_hear("You hear organic matter ripping and tearing!"))
 
+TYPEINFO_DEF(/obj/item/clothing/head/helmet/changeling)
+	default_armor = list(BLUNT = 40, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 50, BOMB = 10, BIO = 4, FIRE = 90, ACID = 90)
+
 /obj/item/clothing/head/helmet/changeling
 	name = "chitinous mass"
 	desc = "A tough, hard covering of black chitin with transparent chitin in front."
 	icon_state = "lingarmorhelmet"
 	item_flags = DROPDEL
-	armor = list(BLUNT = 40, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 50, BOMB = 10, BIO = 4, FIRE = 90, ACID = 90)
 	flags_inv = HIDEEARS|HIDEHAIR|HIDEEYES|HIDEFACIALHAIR|HIDEFACE|HIDESNOUT
 
 /obj/item/clothing/head/helmet/changeling/Initialize(mapload)

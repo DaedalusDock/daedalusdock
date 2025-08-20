@@ -1560,27 +1560,6 @@
 		message_admins("[key_name_admin(usr)] has set the self-destruct \
 			code to \"[code]\".")
 
-	else if(href_list["add_station_goal"])
-		if(!check_rights(R_ADMIN))
-			return
-		var/list/type_choices = typesof(/datum/station_goal)
-		var/picked = tgui_input_list(usr, "Choose goal type", "Station Goal", type_choices)
-		if(!picked)
-			return
-		var/datum/station_goal/G = new picked()
-		if(picked == /datum/station_goal)
-			var/newname = input("Enter goal name:") as text|null
-			if(!newname)
-				return
-			G.name = newname
-			var/description = input("Enter CentCom message contents:") as message|null
-			if(!description)
-				return
-			G.report_message = description
-		message_admins("[key_name(usr)] created \"[G.name]\" station goal.")
-		GLOB.station_goals += G
-		modify_goals()
-
 	else if(href_list["change_lag_switch"])
 		if(!check_rights(R_ADMIN))
 			return
@@ -1659,7 +1638,10 @@
 		var/list/dat = list("Related accounts by [uppertext(href_list["showrelatedacc"])]:")
 		dat += thing_to_check
 
-		usr << browse(dat.Join("<br>"), "window=related_[C];size=420x300")
+		var/datum/browser/browser = new(usr, "related_[C]", "Related Accounts: [C.ckey]|[href_list["showrelatedacc"]]", 420, 300)
+		browser.set_content(dat.Join("<br>"))
+		browser.open()
+		return
 
 	else if(href_list["centcomlookup"])
 		if(!check_rights(R_ADMIN))

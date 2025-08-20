@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/structure/displaycase)
+	default_armor = list(BLUNT = 30, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 100)
+
 /obj/structure/displaycase
 	name = "display case"
 	icon = 'icons/obj/stationobjs.dmi'
@@ -6,7 +9,6 @@
 	density = TRUE
 	anchored = TRUE
 	resistance_flags = ACID_PROOF
-	armor = list(BLUNT = 30, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 100)
 	max_integrity = 200
 	integrity_failure = 0.25
 	var/obj/item/showpiece = null
@@ -475,7 +477,7 @@
 				if(payments_acc)
 					payments_acc.adjust_money(sale_price)
 				usr.put_in_hands(showpiece)
-				to_chat(usr, span_notice("You purchase [showpiece] for [sale_price] credits."))
+				to_chat(usr, span_notice("You purchase [showpiece] for [sale_price] marks."))
 				playsound(src, 'sound/effects/cashregister.ogg', 40, TRUE)
 				z_flick("[initial(icon_state)]_vend", src)
 				showpiece = null
@@ -578,7 +580,7 @@
 /obj/structure/displaycase/forsale/examine(mob/user)
 	. = ..()
 	if(showpiece && !open)
-		. += span_notice("[showpiece] is for sale for [sale_price] credits.")
+		. += span_notice("[showpiece] is for sale for [sale_price] marks.")
 	if(broken)
 		. += span_notice("[src] is sparking and the hover field generator seems to be overloaded. Use a multitool to fix it.")
 

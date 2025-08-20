@@ -25,7 +25,7 @@
 		),
 	)
 
-	paycheck = PAYCHECK_COMMAND
+	paycheck = PAYCHECK_ASSISTANT * 10
 	paycheck_department = ACCOUNT_STATION_MASTER
 
 	liver_traits = list(TRAIT_ROYAL_METABOLISM)
@@ -36,12 +36,12 @@
 	)
 
 
-	family_heirlooms = list(/obj/item/reagent_containers/food/drinks/flask/gold, /obj/item/toy/captainsaid/collector)
+	family_heirlooms = list(/obj/item/reagent_containers/cup/glass/flask/gold, /obj/item/toy/captainsaid/collector)
 
 	mail_goodies = list(
 		/obj/item/clothing/mask/cigarette/cigar/havana = 20,
 		/obj/item/storage/fancy/cigarettes/cigars/havana = 15,
-		/obj/item/reagent_containers/food/drinks/bottle/champagne = 10,
+		/obj/item/reagent_containers/cup/glass/bottle/champagne = 10,
 		/obj/item/toy/captainsaid/collector = 20
 	)
 
@@ -60,7 +60,7 @@
 	allow_jumpskirt = FALSE
 
 	id = /obj/item/card/id/advanced/gold
-	id_trim = /datum/id_trim/job/captain
+	id_template = /datum/access_template/job/captain
 	uniform = /obj/item/clothing/under/suit/charcoal
 	backpack_contents = list(
 		/obj/item/assembly/flash/handheld = 1
@@ -71,9 +71,7 @@
 	gloves = /obj/item/clothing/gloves/color/white
 	shoes = /obj/item/clothing/shoes/laceup
 
-	backpack = /obj/item/storage/backpack
-	satchel = /obj/item/storage/backpack/satchel/cap
-	duffelbag = /obj/item/storage/backpack/duffelbag/captain
+	back = /obj/item/storage/backpack
 
 	chameleon_extras = list(
 		/obj/item/gun/energy/e_gun,

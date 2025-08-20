@@ -56,7 +56,7 @@
  *		used in the other power updating procs to then readd the correct power usage.
  *
  *
- *     Default definition uses 'use_power', 'power_channel', 'active_power_usage',
+ * 	default definition uses 'use_power', 'power_channel', 'active_power_usage',
  *     'idle_power_usage', 'powered()', and 'use_power()' implement behavior.
  *
  *  powered(chan = -1)         'modules/power/power.dm'
@@ -75,7 +75,7 @@
  *     contained in the component_parts list. (example: glass and material amounts for
  *     the autolathe)
  *
- *     Default definition does nothing.
+ * 	default definition does nothing.
  *
  *  process()                  'game/machinery/machine.dm'
  *     Called by the 'machinery subsystem' once per machinery tick for each machine that is listed in its 'machines' list.
@@ -125,8 +125,8 @@
 	var/obj/item/disk/data/internal_disk = null
 	/// A design disk that may-or-may-not be inserted into this machine.
 	var/obj/item/disk/data/inserted_disk = null
-	/// Used for data management.
-	var/obj/item/disk/data/selected_disk = null
+	/// Used for data management. Use get_selected_disk() to get the actual disk ref.
+	var/selected_disk = DISK_INTERNAL
 	/// Can insert a disk into this machine
 	var/has_disk_slot = FALSE
 
@@ -176,11 +176,7 @@
 	///Used by SSairmachines for optimizing scrubbers and vent pumps.
 	COOLDOWN_DECLARE(hibernating)
 
-GLOBAL_REAL_VAR(machinery_default_armor) = list()
 /obj/machinery/Initialize(mapload)
-	if(!armor)
-		armor = machinery_default_armor
-
 	. = ..()
 
 	SETUP_SMOOTHING()
@@ -229,7 +225,7 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	QDEL_NULL(circuit)
 	unset_static_power()
 	unlink_from_jack(ignore_check = TRUE)
-	selected_disk = null
+	QDEL_NULL(internal_disk)
 	QDEL_NULL(inserted_disk)
 	return ..()
 
@@ -389,9 +385,9 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
  * * object (obj) The object to be moved in to the users hand.
  * * user (mob/living) The user to recive the object
  */
-/obj/machinery/proc/try_put_in_hand(obj/object, mob/living/user)
-	if(!issilicon(user) && in_range(src, user))
-		user.put_in_hands(object)
+/obj/machinery/proc/try_put_in_hand(obj/item/object, mob/living/user)
+	if(!issilicon(user) && IsReachableBy(user) && user.put_in_hands(object))
+		object.do_pickup_animation(user, get_turf(src))
 	else
 		object.forceMove(drop_location())
 
@@ -713,13 +709,14 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 			)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-/obj/machinery/tool_act(mob/living/user, obj/item/tool, tool_type)
+/obj/machinery/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(SEND_SIGNAL(user, COMSIG_TRY_USE_MACHINE, src) & COMPONENT_CANT_USE_MACHINE_TOOLS)
-		return TOOL_ACT_MELEE_CHAIN_BLOCKING
+		return ITEM_INTERACT_BLOCKING
+
 	. = ..()
-	if(. & TOOL_ACT_SIGNAL_BLOCKING)
-		return
-	update_last_used(user)
+
+	if(.)
+		update_last_used(user)
 
 /obj/machinery/_try_interact(mob/user)
 	if((interaction_flags_machine & INTERACT_MACHINE_WIRES_IF_OPEN) && panel_open && (attempt_wire_interaction(user) == WIRE_INTERACTION_BLOCK))
@@ -748,7 +745,8 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	update_current_power_usage()
 
 	internal_disk = locate() in component_parts
-	selected_disk = internal_disk
+	if(internal_disk)
+		set_internal_disk(internal_disk)
 
 /obj/machinery/proc/default_pry_open(obj/item/crowbar)
 	. = !(state_open || panel_open || is_operational || (flags_1 & NODECONSTRUCT_1)) && crowbar.tool_behaviour == TOOL_CROWBAR
@@ -765,19 +763,22 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	crowbar.play_tool_sound(src, 50)
 	deconstruct(TRUE)
 
-/obj/machinery/deconstruct(disassembled = TRUE)
+/obj/machinery/deconstruct(disassembled = TRUE, mob/user)
 	if(flags_1 & NODECONSTRUCT_1)
 		return ..() //Just delete us, no need to call anything else.
 
 	on_deconstruction()
 	if(!LAZYLEN(component_parts))
 		return ..() //we don't have any parts.
-	spawn_frame(disassembled)
+
+	spawn_frame(disassembled, user)
+
 	for(var/obj/item/part in component_parts)
 		part.forceMove(loc)
-	LAZYCLEARLIST(component_parts)
 
-	internal_disk = null //Component parts removes this.
+	LAZYCLEARLIST(component_parts)
+	if(internal_disk)
+		set_internal_disk(null)
 	eject_disk()
 	return ..()
 
@@ -788,8 +789,9 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
  *
  * Arguments:
  * * disassembled - If FALSE, the machine was destroyed instead of disassembled and the frame spawns at reduced integrity.
+ * * user - The mob that initiated the disassembly, if any.
  */
-/obj/machinery/proc/spawn_frame(disassembled)
+/obj/machinery/proc/spawn_frame(disassembled, mob/user)
 	var/obj/structure/frame/machine/new_frame = new /obj/structure/frame/machine(loc)
 
 	new_frame.state = 2
@@ -840,11 +842,33 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	// The circuit should also be in component parts, so don't early return.
 	if(deleting_atom == circuit)
 		circuit = null
+
+	// The drive should also be in component parts.
+	if(deleting_atom == internal_disk)
+		set_internal_disk(null)
+
 	if((deleting_atom in component_parts) && !QDELETED(src))
 		component_parts.Remove(deleting_atom)
 		// It would be unusual for a component_part to be qdel'd ordinarily.
 		deconstruct(FALSE)
 	return ..()
+
+/**
+ * This should be called before mass qdeling components to make space for replacements.
+ * If not done, things will go awry as Exited() destroys the machine when it detects
+ * even a single component exiting the atom.
+ */
+/obj/machinery/proc/clear_components()
+	if(!component_parts)
+		return
+
+	var/list/old_components = component_parts
+
+	circuit = null
+	component_parts = null
+
+	for(var/atom/atom_part in old_components)
+		qdel(atom_part)
 
 /obj/machinery/proc/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/screwdriver)
 	if((flags_1 & NODECONSTRUCT_1) || screwdriver.tool_behaviour != TOOL_SCREWDRIVER)
@@ -884,21 +908,28 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	if(!anchored && ground.is_blocked_turf(exclude_mobs = TRUE, source_atom = src))
 		to_chat(user, span_notice("You fail to secure [src]."))
 		return CANT_UNFASTEN
+
 	var/can_be_unfasten = can_be_unfasten_wrench(user)
 	if(!can_be_unfasten || can_be_unfasten == FAILED_UNFASTEN)
 		return can_be_unfasten
+
 	if(time)
 		to_chat(user, span_notice("You begin [anchored ? "un" : ""]securing [src]..."))
+
 	wrench.play_tool_sound(src, 50)
+
 	var/prev_anchored = anchored
 	//as long as we're the same anchored state and we're either on a floor or are anchored, toggle our anchored state
 	if(!wrench.use_tool(src, user, time, extra_checks = CALLBACK(src, PROC_REF(unfasten_wrench_check), prev_anchored, user)))
 		return FAILED_UNFASTEN
+
 	if(!anchored && ground.is_blocked_turf(exclude_mobs = TRUE, source_atom = src))
 		to_chat(user, span_notice("You fail to secure [src]."))
 		return CANT_UNFASTEN
+
 	to_chat(user, span_notice("You [anchored ? "un" : ""]secure [src]."))
 	set_anchored(!anchored)
+
 	playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
 	SEND_SIGNAL(src, COMSIG_OBJ_DEFAULT_UNFASTEN_WRENCH, anchored)
 	return SUCCESSFUL_UNFASTEN
@@ -1068,130 +1099,3 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	if(isliving(user))
 		last_used_time = world.time
 		last_user_mobtype = user.type
-
-/obj/machinery/proc/insert_disk(mob/user, obj/item/disk/data/disk)
-	if(!istype(disk))
-		return FALSE
-
-	if(inserted_disk)
-		to_chat(user, span_warning("The machine already has a design disk inserted!"))
-		return FALSE
-
-	if(user && user.transferItemToLoc(disk, src))
-		user.visible_message(
-			span_notice("[user] inserts a floppy disk into [src]."),
-			span_notice("You insert [disk] into [src]."),
-		)
-		inserted_disk = disk
-		updateUsrDialog()
-		return TRUE
-
-	inserted_disk = disk
-	disk.forceMove(src)
-	updateUsrDialog()
-	return TRUE
-
-/// Eject an inserted disk. Pass a user to put the disk in their hands.
-/obj/machinery/proc/eject_disk(mob/user)
-	if(!inserted_disk)
-		return FALSE
-
-	if(user)
-		if(Adjacent(user) && user.put_in_active_hand(inserted_disk))
-			. = inserted_disk
-			inserted_disk = null
-		else
-			return FALSE
-
-	if(!.)
-		inserted_disk.forceMove(drop_location())
-		. = inserted_disk
-
-	if(.)
-		selected_disk = internal_disk
-		updateUsrDialog()
-	return .
-
-/// Toggle the selected disk between internal and inserted.
-/obj/machinery/proc/toggle_disk(mob/user)
-	if(selected_disk == internal_disk)
-		if(inserted_disk)
-			selected_disk = inserted_disk
-			updateUsrDialog()
-			return
-		else if(user)
-			alert(user, "No disk inserted!","ERROR", "OK")
-			return
-
-	if(selected_disk == inserted_disk)
-		selected_disk = internal_disk
-		updateUsrDialog()
-		return
-
-/// Copy data from the internal disk to an inserted one or visa-versa.
-/obj/machinery/proc/disk_copy(mob/user, index, data, unique)
-	if(selected_disk == internal_disk)
-		if(!inserted_disk)
-			alert(user, "No disk to copy to!","ERROR", "OK")
-			return
-		if(!inserted_disk.write(index, data, unique))
-			alert(user, "Failed to write to external disk!","ERROR", "OK")
-			return
-
-		log_game("[key_name(user)] copied [data] from [src] to an external disk ([get_area_name(src)])")
-	else
-		if(!internal_disk.write(index, data, unique))
-			alert(user, "Failed to write to device disk!","ERROR", "OK")
-			return
-
-		log_game("[key_name(user)] copied [data] from an external disk to [src] ([get_area_name(src)])")
-
-/obj/machinery/proc/disk_del(mob/user, index, data)
-	if(alert(user, "Are you sure you want to delete [data]?", "File Operation", "Yes", "No") != "Yes")
-		return
-
-	if(selected_disk == internal_disk)
-		if(!internal_disk.remove(index, data))
-			alert(user, "Failed to delete file!","ERROR", "OK")
-			return
-		else
-			log_game("[key_name(user)] deleted [data] from [src]")
-			return TRUE
-	else
-		if(!internal_disk.remove(index, data))
-			alert(user, "Failed to delete file!","ERROR", "OK")
-			return
-		else
-			log_game("[key_name(user)] deleted [data] from an external disk at [src] ([get_area_name(src)])")
-			return TRUE
-
-/obj/machinery/proc/disk_move(mob/user, index, data, unique)
-	if(selected_disk == internal_disk)
-		if(!inserted_disk)
-			alert(user, "No disk to move to!","ERROR", "OK")
-			return
-		if(!inserted_disk.write(index, data, unique))
-			alert(user, "Failed to write to external disk!","ERROR", "OK")
-			return
-
-		if(!internal_disk.remove(index, data))
-			log_game("[key_name(user)] copied [data] from [src] to an external disk ([get_area_name(src)])")
-			spawn(0)
-				alert(user, "Failed to delete file, resorting to copy","ERROR", "OK")
-			return TRUE
-
-		log_game("[key_name(user)] moved [data] from [src] to an external disk ([get_area_name(src)])")
-		return TRUE
-
-	else
-		if(!internal_disk.write(index, data, unique))
-			alert(user, "Failed to write to device disk!","ERROR", "OK")
-			return
-		if(!inserted_disk.remove(index, data))
-			log_game("[key_name(user)] copied [data] from an external disk to [src] ([get_area_name(src)])")
-			spawn(0)
-				alert(user, "Failed to delete file, resorting to copy","ERROR", "OK")
-			return TRUE
-
-		log_game("[key_name(user)] moved [data] from an external disk to [src] ([get_area_name(src)])")
-		return TRUE

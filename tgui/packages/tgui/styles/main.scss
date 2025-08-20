@@ -52,6 +52,8 @@
 @include meta.load-css('./interfaces/CameraConsole.scss');
 @include meta.load-css('./interfaces/Changelog.scss');
 @include meta.load-css('./interfaces/CrewManifest.scss');
+@include meta.load-css('./interfaces/DiagnosisBook.scss');
+@include meta.load-css('./interfaces/EmbeddedController.scss');
 @include meta.load-css('./interfaces/HellishRunes.scss');
 @include meta.load-css('./interfaces/HotKeysHelp.scss');
 @include meta.load-css('./interfaces/Hypertorus.scss');
@@ -74,4 +76,9 @@
 
 // NT Theme
 .Layout__content {
+  //* background-image: url('../assets/bg-nanotrasen.svg'); *//
+  background-size: 70%;
+  background-size: 70% 70%;
+  background-position: center;
+  background-repeat: no-repeat;
 }

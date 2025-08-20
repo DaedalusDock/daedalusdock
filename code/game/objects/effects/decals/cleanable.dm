@@ -73,7 +73,7 @@
 		return TRUE
 
 /obj/effect/decal/cleanable/attackby(obj/item/W, mob/user, params)
-	if((istype(W, /obj/item/reagent_containers/glass) && !istype(W, /obj/item/reagent_containers/glass/rag)) || istype(W, /obj/item/reagent_containers/food/drinks))
+	if((istype(W, /obj/item/reagent_containers/cup) && !istype(W, /obj/item/reagent_containers/cup/rag)) || istype(W, /obj/item/reagent_containers/cup/glass))
 		if(src.reagents && W.reagents)
 			. = 1 //so the containers don't splash their content on the src while scooping.
 			if(!src.reagents.total_volume)
@@ -109,16 +109,18 @@
 	SIGNAL_HANDLER
 	if(AM == src)
 		return
+	if(HAS_TRAIT(src, TRAIT_MOVABLE_FLUORESCENT))
+		return
+
 	if(iscarbon(AM) && blood_color && bloodiness >= 40)
 		SEND_SIGNAL(AM, COMSIG_STEP_ON_BLOOD, src)
 		update_appearance()
 
 /obj/effect/decal/cleanable/wash(clean_types)
 	. = ..()
-	if (. || (clean_types & clean_type))
+	if (clean_types & clean_type)
 		qdel(src)
 		return TRUE
-	return .
 
 /**
  * Checks if this decal is a valid decal that can be blood crawled in.

@@ -101,22 +101,25 @@
 	icon = 'icons/obj/items_and_weapons.dmi'
 	icon_state = "bear_armor_upgrade"
 
-/obj/item/bear_armor/afterattack(atom/target, mob/user, proximity_flag)
-	. = ..()
-	if(istype(target, /mob/living/simple_animal/hostile/bear) && proximity_flag)
-		var/mob/living/simple_animal/hostile/bear/A = target
-		if(A.armored)
-			to_chat(user, span_warning("[A] has already been armored up!"))
-			return
-		A.armored = TRUE
-		A.maxHealth += 60
-		A.health += 60
-		A.armor_penetration += 20
-		A.melee_damage_lower += 3
-		A.melee_damage_upper += 5
-		A.update_icons()
-		to_chat(user, span_info("You strap the armor plating to [A] and sharpen [A.p_their()] claws with the nail filer. This was a great idea."))
-		qdel(src)
+/obj/item/bear_armor/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!istype(interacting_with, /mob/living/simple_animal/hostile/bear))
+		return NONE
+
+	var/mob/living/simple_animal/hostile/bear/A = interacting_with
+	if(A.armored)
+		to_chat(user, span_warning("[A] has already been armored up!"))
+		return ITEM_INTERACT_BLOCKING
+
+	A.armored = TRUE
+	A.maxHealth += 60
+	A.health += 60
+	A.armor_penetration += 20
+	A.melee_damage_lower += 3
+	A.melee_damage_upper += 5
+	A.update_icons()
+	to_chat(user, span_info("You strap the armor plating to [A] and sharpen [A.p_their()] claws with the nail filer. This was a great idea."))
+	qdel(src)
+	return ITEM_INTERACT_SUCCESS
 
 /mob/living/simple_animal/hostile/bear/butter //The mighty companion to Cak. Several functions used from it.
 	name = "Terrygold"

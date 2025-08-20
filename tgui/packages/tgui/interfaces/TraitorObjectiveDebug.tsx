@@ -1,5 +1,7 @@
+import { Tooltip } from 'tgui-core/components';
+
 import { useBackend, useLocalState } from '../backend';
-import { Box, LabeledList, Stack, Tabs, Tooltip } from '../components';
+import { Box, LabeledList, Stack, Tabs } from '../components';
 import { Window } from '../layouts';
 import { getReputation } from './Uplink/calculateReputationLevel';
 

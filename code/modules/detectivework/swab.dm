@@ -4,7 +4,9 @@
 	icon = 'icons/obj/forensics.dmi'
 	icon_state = "swab"
 
-	item_flags = parent_type::item_flags | NOBLUDGEON | NO_EVIDENCE_ON_ATTACK
+	item_flags = parent_type::item_flags | NOBLUDGEON | NO_EVIDENCE_ON_INTERACTION
+
+	fingerprint_flags_interact_with_atom = NONE
 
 	var/used = FALSE
 
@@ -14,10 +16,22 @@
 /obj/item/swab/Initialize(mapload)
 	. = ..()
 	swabbed_forensics = new()
+	register_item_context()
 
 /obj/item/swab/Destroy(force)
 	QDEL_NULL(swabbed_forensics)
 	return ..()
+
+/obj/item/swab/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	if(used)
+		return
+
+	if(!ATOM_HAS_FIRST_CLASS_INTERACTION(target))
+		context[SCREENTIP_CONTEXT_LMB] = "Swab"
+
+	context[SCREENTIP_CONTEXT_RMB] = "Swab"
+
+	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/swab/update_name(updates)
 	name = "[initial(name)] ([sample_name])"
@@ -28,70 +42,78 @@
 	if(used)
 		icon_state = "swab_used"
 
-/obj/item/swab/attack(mob/living/M, mob/living/user, params)
-	if(!ishuman(M))
-		return ..()
+/obj/item/swab/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(used || ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+		return NONE
 
-	if(used)
-		return
+	if(ishuman(interacting_with))
+		return swab_human(interacting_with, user)
 
-	var/mob/living/carbon/human/target = M
+	return swab_atom(interacting_with, user)
 
+/obj/item/swab/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	if(ishuman(interacting_with))
+		return swab_human(interacting_with, user)
+
+	return swab_atom(interacting_with, user)
+
+/obj/item/swab/proc/swab_human(mob/living/carbon/human/target, mob/living/user)
 	// Resisting
 	if(user != target && (target.combat_mode && target.body_position == STANDING_UP && !target.incapacitated()))
-		user.visible_message(span_warning("[user] tries to swab [target], but they move away."))
-		return
+		user.visible_message(span_warning("<b>[user]</b> tries to swab <b>[target]</b>, but they move away."))
+		return ITEM_INTERACT_BLOCKING
 
 	// Swab their mouth.
 	if(user.zone_selected == BODY_ZONE_PRECISE_MOUTH)
 		if(!target.get_bodypart(BODY_ZONE_HEAD))
 			to_chat(user, span_warning("They have no head."))
-			return TRUE
+			return ITEM_INTERACT_BLOCKING
+
 		if(!target.has_mouth())
 			to_chat(user, span_warning("They have no mouth."))
-			return TRUE
+			return ITEM_INTERACT_BLOCKING
+
 		if(!target.has_dna())
 			to_chat(user, span_warning("You feel like this wouldn't be useful."))
-			return TRUE
+			return ITEM_INTERACT_BLOCKING
 
-		user.visible_message(span_notice("[user] swabs [target]'s mouth."))
+		user.visible_message(span_notice("<b>[user]</b> attempts to insert [src] into <b>[target]</b>'s mouth."))
+		if(!do_after(user, target, 2 SECONDS, DO_PUBLIC|DO_RESTRICT_CLICKING|DO_RESTRICT_USER_DIR_CHANGE, display = src))
+			return ITEM_INTERACT_BLOCKING
+
 		swabbed_forensics.add_trace_DNA(target.get_trace_dna())
 		set_used(target.get_face_name())
-		return TRUE
+		user.do_item_attack_animation(target, used_item = src)
+		return ITEM_INTERACT_SUCCESS
 
 	var/zone = deprecise_zone(user.zone_selected)
 	var/obj/item/bodypart/BP = target.get_bodypart(zone)
 	if(!BP)
 		to_chat(user, span_warning("They don't have \a [zone]"))
-		return TRUE
+		return ITEM_INTERACT_BLOCKING
 
 	if(target.get_item_covering_bodypart(BP))
-		return FALSE
+		to_chat(user, span_warning("[target.p_their(TRUE)] [BP.plaintext_zone] is covered."))
+		return ITEM_INTERACT_BLOCKING
 
 	if(!is_valid_target(target))
 		to_chat(user, span_warning("[target] has nothing to swab on their body."))
-		return TRUE
+		return ITEM_INTERACT_BLOCKING
 
-	return TRUE
-
-/obj/item/swab/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-	if(used)
-		to_chat(user, span_warning("This swab has been used."))
-		return
-
+/obj/item/swab/proc/swab_atom(atom/target, mob/user)
 	if(ishuman(target))
 		var/mob/living/carbon/H = target
 		target = H.get_item_covering_zone(deprecise_zone(user.zone_selected))
 		if(!target)
-			return
+			return ITEM_INTERACT_BLOCKING
+
 		if(!is_valid_target(target))
 			to_chat(user, span_warning("There is no evidence on [H]'s [target]."))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 	if(!is_valid_target(target))
 		to_chat(user, span_warning("There is no evidence on [target]."))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	if(istype(target, /obj/item/reagent_containers/syringe))
 		var/obj/item/reagent_containers/syringe/S = target
@@ -100,9 +122,12 @@
 	swabbed_forensics.add_trace_DNA(target.return_trace_DNA())
 	swabbed_forensics.add_blood_DNA(target.return_blood_DNA())
 	swabbed_forensics.add_gunshot_residue_list(target.return_gunshot_residue())
+
 	set_used(target)
+
+	user.do_item_attack_animation(target, used_item = src)
 	user.visible_message(span_notice("[user] swabs [target]."))
-	return TRUE
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/swab/proc/set_used(sample_name)
 	used = TRUE

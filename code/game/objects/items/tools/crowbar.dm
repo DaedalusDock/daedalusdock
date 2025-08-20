@@ -1,3 +1,7 @@
+TYPEINFO_DEF(/obj/item/crowbar)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
+	default_materials = list(/datum/material/iron=70)
+
 /obj/item/crowbar
 	name = "crowbar"
 	desc = "A steel crowbar for gaining entry into places you should not be."
@@ -21,7 +25,6 @@
 	stamina_critical_chance = 10
 
 	w_class = WEIGHT_CLASS_NORMAL
-	custom_materials = list(/datum/material/iron=70)
 	drop_sound = 'sound/items/handling/crowbar_drop.ogg'
 	pickup_sound = 'sound/items/handling/crowbar_pickup.ogg'
 
@@ -29,7 +32,6 @@
 	attack_verb_simple = list("attack", "bash", "batter", "bludgeon", "whack")
 	tool_behaviour = TOOL_CROWBAR
 	toolspeed = 1
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	var/force_opens = FALSE
 
 /obj/item/crowbar/suicide_act(mob/user)
@@ -49,16 +51,21 @@
 	playsound(loc, 'sound/health/flatline.ogg', 50, FALSE, -1)
 	return (BRUTELOSS)
 
+TYPEINFO_DEF(/obj/item/crowbar/abductor)
+	default_materials = list(/datum/material/iron = 5000, /datum/material/silver = 2500, /datum/material/plasma = 1000, /datum/material/titanium = 2000, /datum/material/diamond = 2000)
+
 /obj/item/crowbar/abductor
 	name = "alien crowbar"
 	desc = "A hard-light crowbar. It appears to pry by itself, without any effort required."
 	icon = 'icons/obj/abductor.dmi'
 	usesound = 'sound/weapons/sonic_jackhammer.ogg'
-	custom_materials = list(/datum/material/iron = 5000, /datum/material/silver = 2500, /datum/material/plasma = 1000, /datum/material/titanium = 2000, /datum/material/diamond = 2000)
 	icon_state = "crowbar"
 	belt_icon_state = "crowbar_alien"
 	toolspeed = 0.1
 
+
+TYPEINFO_DEF(/obj/item/crowbar/pocket)
+	default_materials = list(/datum/material/iron=50)
 
 /obj/item/crowbar/pocket
 	name = "compact crowbar"
@@ -66,7 +73,6 @@
 	force = 10
 	w_class = WEIGHT_CLASS_SMALL
 	throw_range = 7
-	custom_materials = list(/datum/material/iron=50)
 	icon_state = "crowbar"
 	toolspeed = 1.7
 
@@ -88,6 +94,9 @@
 	if(prob(50))
 		icon_state = "crowbar_powergame"
 
+TYPEINFO_DEF(/obj/item/crowbar/power)
+	default_materials = list(/datum/material/iron = 4500, /datum/material/silver = 2500, /datum/material/titanium = 3500)
+
 /obj/item/crowbar/power
 	name = "jaws of life"
 	desc = "A set of jaws of life, compressed through the magic of science."
@@ -96,7 +105,6 @@
 	worn_icon_state = "jawsoflife"
 	lefthand_file = 'icons/mob/inhands/equipment/tools_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/tools_righthand.dmi'
-	custom_materials = list(/datum/material/iron = 4500, /datum/material/silver = 2500, /datum/material/titanium = 3500)
 	usesound = 'sound/items/jaws_pry.ogg'
 	force = 15
 	toolspeed = 0.7

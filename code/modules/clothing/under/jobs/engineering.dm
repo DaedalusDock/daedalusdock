@@ -1,17 +1,21 @@
 //Contains: Engineering department jumpsuits
 
+TYPEINFO_DEF(/obj/item/clothing/under/rank/engineering)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 60, ACID = 20)
+
 /obj/item/clothing/under/rank/engineering
 	icon = 'icons/obj/clothing/under/engineering.dmi'
 	worn_icon = 'icons/mob/clothing/under/engineering.dmi'
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 60, ACID = 20)
 	resistance_flags = NONE
+
+TYPEINFO_DEF(/obj/item/clothing/under/rank/engineering/chief_engineer)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 40)
 
 /obj/item/clothing/under/rank/engineering/chief_engineer
 	desc = "It's a high visibility jumpsuit given to those engineers insane enough to achieve the rank of \"Chief Engineer\". Made from fire resistant materials."
 	name = "chief engineer's jumpsuit"
 	icon_state = "chiefengineer"
 	inhand_icon_state = "gy_suit"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 40)
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/rank/engineering/chief_engineer/skirt

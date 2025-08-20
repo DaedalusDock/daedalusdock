@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/machinery/door/poddoor/shutters)
+	default_armor = list(BLUNT = 20, PUNCTURE = 20, SLASH = 90, LASER = 20, ENERGY = 75, BOMB = 25, BIO = 100, FIRE = 100, ACID = 70)
+
 /obj/machinery/door/poddoor/shutters
 	gender = PLURAL
 	name = "shutters"
@@ -6,7 +9,6 @@
 	layer = SHUTTER_LAYER
 	closingLayer = SHUTTER_LAYER_CLOSED
 	damage_deflection = 5
-	armor = list(BLUNT = 20, PUNCTURE = 20, SLASH = 90, LASER = 20, ENERGY = 75, BOMB = 25, BIO = 100, FIRE = 100, ACID = 70)
 	max_integrity = 100
 	recipe_type = /datum/crafting_recipe/shutters
 

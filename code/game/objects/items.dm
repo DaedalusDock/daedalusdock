@@ -97,6 +97,22 @@ DEFINE_INTERACTABLE(/obj/item)
 	///Item flags for the item
 	var/item_flags = NONE
 
+	/// Determines behavior for how fingerprints are given during interact_with_atom().
+	var/fingerprint_flags_interact_with_atom = ALL
+	/// Determines behavior for how fingerprints are given during attack_self().
+	// Currently unimplemented as attack self is fucked.
+	// var/fingerprint_flags_attack_self = ALL
+	/// Determines behavior for how fingerprints are given during tool_act()
+	var/fingerprint_flags_tool_act = FINGERPRINT_ITEM_SUCCESS | FINGERPRINT_OBJECT_SUCCESS
+
+	/// If set to TRUE, skip item interaction and just attack the target. See ATTACK_IF_COMBAT_MODE()
+	var/combat_mode_force_attack = FALSE
+	/// If set to FALSE, interact_with_atom will not be called when the user has combat mode on.
+	var/has_combat_mode_interaction = FALSE
+
+	/// The type of special attack this item uses, if any.
+	var/special_attack_type
+
 	///Sound played when you hit something with the item
 	var/hitsound
 	var/wielded_hitsound
@@ -795,6 +811,25 @@ DEFINE_INTERACTABLE(/obj/item)
 		block_sound = pick('sound/weapons/block/block1.ogg', 'sound/weapons/block/block2.ogg', 'sound/weapons/block/block3.ogg')
 	playsound(wielder, block_sound, 70, TRUE)
 
+/// Passed flags that describe what happened in the exchange.
+/obj/item/proc/play_combat_sound(combat_result)
+	switch(combat_result)
+		if(MOB_ATTACKEDBY_SUCCESS)
+			playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
+			return TRUE
+
+		if(MOB_ATTACKEDBY_MISS)
+			playsound(loc, get_misssound(), 30, TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
+			return TRUE
+
+		if(MOB_ATTACKEDBY_NO_DAMAGE)
+			playsound(loc, 'sound/weapons/tap.ogg', 50, TRUE, -1)
+			return TRUE
+
+		//if(MOB_ATTACKEDBY_BLOCKED) blocking usually already plays a sound.
+
+	return FALSE
+
 /obj/item/proc/talk_into(mob/M, input, channel, spans, datum/language/language, list/message_mods)
 	if(isnull(language))
 		language = M?.get_selected_language()
@@ -1008,7 +1043,7 @@ DEFINE_INTERACTABLE(/obj/item)
  * * bypass_equip_delay_self for whether we want to bypass the equip delay
  * * ignore_equipped ignores any already equipped items in that slot
  */
-/obj/item/proc/mob_can_equip(mob/living/M, mob/living/equipper, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, ignore_equipped = TRUE)
+/obj/item/proc/mob_can_equip(mob/living/M, mob/living/equipper, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE)
 	if(!M)
 		return FALSE
 	if((item_flags & HAND_ITEM) && slot != ITEM_SLOT_HANDS)
@@ -1036,8 +1071,8 @@ DEFINE_INTERACTABLE(/obj/item)
  *The default action is attack_self().
  *Checks before we get to here are: mob is alive, mob is not restrained, stunned, asleep, resting, laying, item is on the mob.
  */
-/obj/item/proc/ui_action_click(mob/user, actiontype)
-	if(SEND_SIGNAL(src, COMSIG_ITEM_UI_ACTION_CLICK, user, actiontype) & COMPONENT_ACTION_HANDLED)
+/obj/item/proc/ui_action_click(mob/user, datum/action/item_action/used_action)
+	if(SEND_SIGNAL(src, COMSIG_ITEM_UI_ACTION_CLICK, user, used_action) & COMPONENT_ACTION_HANDLED)
 		return
 
 	attack_self(user)
@@ -1050,6 +1085,10 @@ DEFINE_INTERACTABLE(/obj/item)
 		return SLASH
 
 	return BLUNT
+
+/// Returns a special attack datum if applicable.
+/obj/item/proc/get_special_attack()
+	return GLOB.special_attacks[special_attack_type]
 
 ///This proc determines if and at what an object will reflect energy projectiles if it's in l_hand,r_hand or wear_suit
 /obj/item/proc/IsReflect(def_zone)
@@ -1693,7 +1732,16 @@ DEFINE_INTERACTABLE(/obj/item)
 
 // Update icons if this is being carried by a mob
 /obj/item/wash(clean_types)
+	var/was_bloody = !!blood_DNA_length()
 	. = ..()
+
+	var/datum/component/hidden_blood/hidden_blood = GetComponent(/datum/component/hidden_blood)
+	if(clean_types & CLEAN_TYPE_HIDDEN_BLOOD)
+		if(hidden_blood)
+			qdel(hidden_blood)
+
+	else if(!hidden_blood && was_bloody && !blood_DNA_length()) // Blood was removed
+		AddComponent(/datum/component/hidden_blood)
 
 	if(equipped_to)
 		if(equipped_to.is_holding(src))
@@ -1734,20 +1782,25 @@ DEFINE_INTERACTABLE(/obj/item)
 /obj/item/proc/on_outfit_equip(mob/living/carbon/human/outfit_wearer, visuals_only, item_slot)
 	return
 
-/// Whether or not this item can be put into a storage item through attackby
-/obj/item/proc/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
-	return TRUE
-
-/obj/item/proc/do_pickup_animation(atom/target)
-	if(!istype(loc, /turf))
+/obj/item/proc/do_pickup_animation(atom/target, turf/source)
+	if(!source && !isturf(loc))
 		return
-	var/image/pickup_animation = image(icon = src, loc = loc, layer = layer + 0.1)
+
+	source ||= loc
+	if(!in_range(target, source))
+		return
+
+	// If you're at the stage where you're picking up the item, just remove the outline.
+	if(length(filter_data))
+		remove_filter("hover_outline")
+
+	var/image/pickup_animation = image(icon = src)
 	pickup_animation.plane = GAME_PLANE
+	pickup_animation.layer = ABOVE_MOB_LAYER
 	pickup_animation.transform.Scale(0.75)
 	pickup_animation.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 
-	var/turf/current_turf = get_turf(src)
-	var/direction = get_dir(current_turf, target)
+	var/direction = get_dir(source, target)
 	var/to_x = target.base_pixel_x
 	var/to_y = target.base_pixel_y
 
@@ -1763,12 +1816,12 @@ DEFINE_INTERACTABLE(/obj/item)
 		to_y += 10
 		pickup_animation.pixel_x += 6 * (prob(50) ? 1 : -1) //6 to the right or left, helps break up the straight upward move
 
-	flick_overlay(pickup_animation, GLOB.clients, 4)
-	var/matrix/animation_matrix = new(pickup_animation.transform)
+	var/atom/movable/flick_visual/pickup = source.flick_overlay_view(pickup_animation, 0.4 SECONDS)
+	var/matrix/animation_matrix = new(pickup.transform)
 	animation_matrix.Turn(pick(-30, 30))
 	animation_matrix.Scale(0.65)
 
-	animate(pickup_animation, alpha = 175, pixel_x = to_x, pixel_y = to_y, time = 3, transform = animation_matrix, easing = CUBIC_EASING)
+	animate(pickup, alpha = 175, pixel_x = to_x, pixel_y = to_y, time = 3, transform = animation_matrix, easing = CUBIC_EASING)
 	animate(alpha = 0, transform = matrix().Scale(0.7), time = 1)
 
 /obj/item/proc/do_drop_animation(atom/moving_from)
@@ -1938,14 +1991,14 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /// Leave evidence of a user on a target
 /obj/item/proc/leave_evidence(mob/user, atom/target)
-	if(!(item_flags & NO_EVIDENCE_ON_ATTACK))
+	if(!(item_flags & NO_EVIDENCE_ON_INTERACTION))
 		target.add_fingerprint(user)
 	else
 		target.log_touch(user)
 
 /// Returns the sound the item makes when used as a weapon, but missing.
 /obj/item/proc/get_misssound()
-	. = src.miss_sound
+	. = miss_sound
 	if(islist(.))
 		. = pick(miss_sound)
 	else if(isnull(.))
@@ -1962,3 +2015,29 @@ DEFINE_INTERACTABLE(/obj/item)
 /// Returns TRUE if the passed mob can interact with this item's storage via pickpocketing.
 /obj/item/proc/can_pickpocket(mob/living/user)
 	return FALSE
+
+/**
+ * Used to update the weight class of the item in a way that other atoms can react to the change.
+ *
+ * Arguments:
+ * * new_w_class - The new weight class of the item.
+ *
+ * Returns:
+ * * TRUE if weight class was successfully updated
+ * * FALSE otherwise
+ */
+/obj/item/proc/set_weight_class(new_w_class)
+	if(w_class == new_w_class)
+		return FALSE
+
+	var/old_w_class = w_class
+	w_class = new_w_class
+
+	SEND_SIGNAL(src, COMSIG_ITEM_WEIGHT_CLASS_CHANGED, old_w_class, new_w_class)
+	if(!isnull(loc))
+		SEND_SIGNAL(loc, COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED, src, old_w_class, new_w_class)
+	return TRUE
+
+/// Called by the attack chain, returns the item to use for attacking. CAN NOT RETURN NULL.
+/obj/item/proc/get_attacking_item(mob/living/user, atom/target) as /obj/item
+	return src

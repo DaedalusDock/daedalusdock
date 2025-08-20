@@ -171,7 +171,6 @@ GLOBAL_PROTECT(admin_verbs_debug)
 	/client/proc/outfit_manager,
 	/client/proc/open_colorblind_test,
 	/client/proc/generate_wikichem_list,
-	/client/proc/modify_goals,
 	/client/proc/debug_huds,
 	/client/proc/map_template_load,
 	/client/proc/map_template_upload,
@@ -290,7 +289,6 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 
 /client/proc/add_admin_verbs()
 	if(holder)
-		control_freak = CONTROL_FREAK_SKIN | CONTROL_FREAK_MACROS
 
 		var/rights = holder.rank.rights
 		add_verb(src, GLOB.admin_verbs_default)
@@ -795,7 +793,7 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 
 	holder.deactivate()
 
-	to_chat(src, span_interface("You are now a normal player."))
+	to_chat(src, systemtext("You are now a normal player."))
 	log_admin("[src] deadminned themselves.")
 	message_admins("[src] deadminned themselves.")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Deadmin")

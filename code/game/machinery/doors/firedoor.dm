@@ -3,6 +3,9 @@
 #define DEFAULT_STEP_TIME 20 /// default time for each step
 #define DETECT_COOLDOWN_STEP_TIME 5 SECONDS ///Wait time before we can detect an issue again, after a recent clear.
 
+TYPEINFO_DEF(/obj/machinery/door/firedoor)
+	default_armor = list(BLUNT = 10, PUNCTURE = 30, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 30, BIO = 100, FIRE = 95, ACID = 70)
+
 /obj/machinery/door/firedoor
 	name = "firelock"
 	desc = "Apply crowbar."
@@ -20,7 +23,6 @@
 	layer = BELOW_OPEN_DOOR_LAYER
 	closingLayer = CLOSED_FIREDOOR_LAYER
 	assemblytype = /obj/structure/firelock_frame
-	armor = list(BLUNT = 10, PUNCTURE = 30, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 30, BIO = 100, FIRE = 95, ACID = 70)
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_REQUIRES_SILICON | INTERACT_MACHINE_OPEN
 	door_align_type = /obj/machinery/door/firedoor
 
@@ -108,9 +110,6 @@
 		else if(issilicon(living_user))
 			context[SCREENTIP_CONTEXT_LMB] = "Close"
 			return CONTEXTUAL_SCREENTIP_SET
-		return .
-
-	if(!Adjacent(src, living_user))
 		return .
 
 	switch (held_item.tool_behaviour)
@@ -220,17 +219,17 @@
 
 	if(boltslocked)
 		to_chat(user, span_notice("There are screws locking the bolts in place!"))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 	tool.play_tool_sound(src)
 	user.visible_message(span_notice("[user] starts undoing [src]'s bolts..."), \
 		span_notice("You start unfastening [src]'s floor bolts..."))
 	if(!tool.use_tool(src, user, DEFAULT_STEP_TIME))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 	playsound(get_turf(src), 'sound/items/deconstruct.ogg', 50, TRUE)
 	user.visible_message(span_notice("[user] unfastens [src]'s bolts."), \
 		span_notice("You undo [src]'s floor bolts."))
 	deconstruct(TRUE)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/firedoor/screwdriver_act(mob/living/user, obj/item/tool)
 	if(operating || !welded)
@@ -239,7 +238,7 @@
 				span_notice("You [boltslocked ? "unlock" : "lock"] [src]'s floor bolts."))
 	tool.play_tool_sound(src)
 	boltslocked = !boltslocked
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/firedoor/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
 	return

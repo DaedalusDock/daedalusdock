@@ -78,11 +78,29 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 
 	if(prefs.unlock_content)
 		if(prefs.toggles & MEMBER_PUBLIC)
-			keyname = "<font color='[prefs.read_preference(/datum/preference/color/ooc_color) || GLOB.normal_ooc_colour]'>[icon2html('icons/ui_icons/chat/member_content.dmi', world, "blag")][keyname]</font>"
+			keyname = "<font color='[prefs.read_preference(/datum/preference/color/ooc_color) || GLOB.normal_ooc_colour]'>[keyname]</font>"
 
 	if(prefs.hearted)
 		var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/chat)
 		keyname = "[sheet.icon_tag("emoji-heart")][keyname]"
+
+	/// Message sent to non-admins.
+	var/parsed_message_default = span_ooc("<b>OOC/[holder?.fakekey || key]:</b> <span class='message linkify'>[msg]")
+	/// Message sent to admins.
+	var/parsed_message_admin = parsed_message_default
+
+
+	if(holder)
+		if(check_rights_for(src, R_ADMIN))
+			var/ooc_color = prefs.read_preference(/datum/preference/color/ooc_color)
+			parsed_message_admin = span_systemfont(span_adminooc("[CONFIG_GET(flag/allow_admin_ooccolor) && ooc_color ? "<font color=[ooc_color]>" :"" ]<b>OOC/ADMIN/[keyname][holder.fakekey ? "/~[holder.fakekey]" : ""]:</b> <span class='message linkify'>[msg]</span>"))
+			if(!holder.fakekey)
+				parsed_message_default = parsed_message_admin
+
+		else
+			parsed_message_admin = span_systemfont(span_adminobserverooc("<b>OOC/[keyname][holder.fakekey ? "/~[holder.fakekey]" : ""]:</b> <span class='message linkify'>[msg]"))
+			if(!holder.fakekey)
+				parsed_message_default = parsed_message_admin
 
 	//The linkify span classes and linkify=TRUE below make ooc text get clickable chat href links if you pass in something resembling a url
 	for(var/client/receiver as anything in GLOB.clients)
@@ -90,28 +108,15 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 			continue
 		if(!(receiver.prefs.chat_toggles & CHAT_OOC))
 			continue
-		if(holder?.fakekey in receiver.prefs.ignoring)
+		if((holder?.fakekey || key) in receiver.prefs.ignoring)
 			continue
 
 		var/avoid_highlight = receiver == src
-		if(holder)
-			if(!holder.fakekey || receiver.holder)
-				if(check_rights_for(src, R_ADMIN))
-					var/ooc_color = prefs.read_preference(/datum/preference/color/ooc_color)
-					to_chat(receiver, span_adminooc("[CONFIG_GET(flag/allow_admin_ooccolor) && ooc_color ? "<font color=[ooc_color]>" :"" ][span_prefix("OOC:")] <EM>[keyname][holder.fakekey ? "/([holder.fakekey])" : ""]:</EM> <span class='message linkify'>[msg]</span>"), avoid_highlighting = avoid_highlight)
-				else
-					to_chat(receiver, span_adminobserverooc(span_prefix("OOC:</span> <EM>[keyname][holder.fakekey ? "/([holder.fakekey])" : ""]:</EM> <span class='message linkify'>[msg]")), avoid_highlighting = avoid_highlight)
-			else
-				if(GLOB.OOC_COLOR)
-					to_chat(receiver, "<span class='oocplain'><font color='[GLOB.OOC_COLOR]'><b>[span_prefix("OOC:")] <EM>[holder.fakekey ? holder.fakekey : key]:</EM> <span class='message linkify'>[msg]</span></b></font></span>", avoid_highlighting = avoid_highlight)
-				else
-					to_chat(receiver, span_ooc(span_prefix("OOC:</span> <EM>[holder.fakekey ? holder.fakekey : key]:</EM> <span class='message linkify'>[msg]")), avoid_highlighting = avoid_highlight)
-
-		else if(!(key in receiver.prefs.ignoring))
-			if(GLOB.OOC_COLOR)
-				to_chat(receiver, "<span class='oocplain'><font color='[GLOB.OOC_COLOR]'><b>[span_prefix("OOC:")] <EM>[keyname]:</EM> <span class='message linkify'>[msg]</span></b></font></span>", avoid_highlighting = avoid_highlight)
-			else
-				to_chat(receiver, span_ooc(span_prefix("OOC:</span> <EM>[keyname]:</EM> <span class='message linkify'>[msg]")), avoid_highlighting = avoid_highlight)
+		to_chat(
+			receiver,
+			receiver.holder ? parsed_message_admin : parsed_message_default,
+			avoid_highlighting = avoid_highlight
+		)
 
 
 /proc/toggle_ooc(toggle = null)
@@ -358,6 +363,8 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 	SSticker.show_roundend_report(src, report_type = SERVER_LAST_ROUND)
 
 /client/verb/fit_viewport()
+	set waitfor = FALSE
+
 	set name = "Fit Viewport"
 	set category = "OOC"
 	set desc = "Fit the width of the map window to match the viewport"
@@ -437,7 +444,7 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 	if (!prefs.read_preference(/datum/preference/toggle/auto_fit_viewport))
 		return
 	if(fully_created)
-		INVOKE_ASYNC(src, .verb/fit_viewport)
+		fit_viewport()
 	else //Delayed to avoid wingets from Login calls.
 		addtimer(CALLBACK(src, .verb/fit_viewport, 1 SECONDS))
 
@@ -449,7 +456,7 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 	//Collect keywords
 	var/list/keywords = mob.get_policy_keywords()
 	var/header = get_policy(POLICY_VERB_HEADER)
-	var/list/policytext = list(header,"<hr>")
+	var/list/policytext = list("<!DOCTYPE html> [header] <hr>")
 	var/anything = FALSE
 	for(var/keyword in keywords)
 		var/p = get_policy(keyword)

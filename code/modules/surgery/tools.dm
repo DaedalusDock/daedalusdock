@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/retractor)
+	default_materials = list(/datum/material/iron=6000, /datum/material/glass=3000)
+
 /obj/item/retractor
 	name = "retractor"
 	desc = "Retracts stuff."
@@ -6,7 +9,6 @@
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	inhand_icon_state = "clamps"
-	custom_materials = list(/datum/material/iron=6000, /datum/material/glass=3000)
 	flags_1 = CONDUCT_1
 	item_flags = SURGICAL_TOOL
 	w_class = WEIGHT_CLASS_TINY
@@ -18,6 +20,9 @@
 	toolspeed = 0.5
 
 
+TYPEINFO_DEF(/obj/item/hemostat)
+	default_materials = list(/datum/material/iron=5000, /datum/material/glass=2500)
+
 /obj/item/hemostat
 	name = "hemostat"
 	desc = "You think you have seen this before."
@@ -26,7 +31,6 @@
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	inhand_icon_state = "clamps"
-	custom_materials = list(/datum/material/iron=5000, /datum/material/glass=2500)
 	flags_1 = CONDUCT_1
 	item_flags = SURGICAL_TOOL
 	w_class = WEIGHT_CLASS_TINY
@@ -40,6 +44,9 @@
 	toolspeed = 0.5
 
 
+TYPEINFO_DEF(/obj/item/cautery)
+	default_materials = list(/datum/material/iron=2500, /datum/material/glass=750)
+
 /obj/item/cautery
 	name = "cautery"
 	desc = "This stops bleeding."
@@ -48,7 +55,6 @@
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	inhand_icon_state = "cautery"
-	custom_materials = list(/datum/material/iron=2500, /datum/material/glass=750)
 	flags_1 = CONDUCT_1
 	item_flags = SURGICAL_TOOL
 	w_class = WEIGHT_CLASS_TINY
@@ -64,12 +70,14 @@
 	desc = "A heated element that cauterizes wounds."
 	toolspeed = 0.5
 
+TYPEINFO_DEF(/obj/item/cautery/advanced)
+	default_materials = list(/datum/material/iron = 4000, /datum/material/glass = 2000, /datum/material/plasma = 2000, /datum/material/uranium = 3000, /datum/material/titanium = 3000)
+
 /obj/item/cautery/advanced
 	name = "searing tool"
 	desc = "It projects a high power laser used for medical applications."
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "e_cautery"
-	custom_materials = list(/datum/material/iron = 4000, /datum/material/glass = 2000, /datum/material/plasma = 2000, /datum/material/uranium = 3000, /datum/material/titanium = 3000)
 	hitsound = 'sound/items/welder.ogg'
 	toolspeed = 0.7
 	light_system = OVERLAY_LIGHT
@@ -103,6 +111,9 @@
 	. = ..()
 	. += span_notice("It's set to [tool_behaviour == TOOL_CAUTERY ? "mending" : "drilling"] mode.")
 
+TYPEINFO_DEF(/obj/item/surgicaldrill)
+	default_materials = list(/datum/material/iron=10000, /datum/material/glass=6000)
+
 /obj/item/surgicaldrill
 	name = "surgical drill"
 	desc = "You can drill using this item. You dig?"
@@ -111,7 +122,6 @@
 	lefthand_file = 'icons/mob/inhands/equipment/tools_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/tools_righthand.dmi'
 	hitsound = 'sound/weapons/circsawhit.ogg'
-	custom_materials = list(/datum/material/iron=10000, /datum/material/glass=6000)
 	flags_1 = CONDUCT_1
 	item_flags = SURGICAL_TOOL
 	force = 15
@@ -140,6 +150,9 @@
 	toolspeed = 0.5
 
 
+TYPEINFO_DEF(/obj/item/scalpel)
+	default_materials = list(/datum/material/iron=4000, /datum/material/glass=1000)
+
 /obj/item/scalpel
 	name = "scalpel"
 	desc = "Cut, cut, and once more cut."
@@ -160,7 +173,6 @@
 	stamina_cost = 5
 	stamina_critical_chance = 35
 
-	custom_materials = list(/datum/material/iron=4000, /datum/material/glass=1000)
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	hitsound = 'sound/weapons/bladeslice.ogg'
@@ -182,6 +194,9 @@
 	return (BRUTELOSS)
 
 
+TYPEINFO_DEF(/obj/item/circular_saw)
+	default_materials = list(/datum/material/iron=1000)
+
 /obj/item/circular_saw
 	name = "circular saw"
 	desc = "For heavy duty cutting."
@@ -202,7 +217,6 @@
 	stamina_cost = 5
 	stamina_critical_chance = 35
 
-	custom_materials = list(/datum/material/iron=1000)
 	attack_verb_continuous = list("attacks", "slashes", "saws", "cuts")
 	attack_verb_simple = list("attack", "slash", "saw", "cut")
 	sharpness = SHARP_EDGED
@@ -218,12 +232,14 @@
 	w_class = WEIGHT_CLASS_SMALL
 	toolspeed = 0.5
 
+TYPEINFO_DEF(/obj/item/scalpel/advanced)
+	default_materials = list(/datum/material/iron = 6000, /datum/material/glass = 1500, /datum/material/silver = 2000, /datum/material/gold = 1500, /datum/material/diamond = 200, /datum/material/titanium = 4000)
+
 /obj/item/scalpel/advanced
 	name = "laser scalpel"
 	desc = "An advanced scalpel which uses laser technology to cut."
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "e_scalpel"
-	custom_materials = list(/datum/material/iron = 6000, /datum/material/glass = 1500, /datum/material/silver = 2000, /datum/material/gold = 1500, /datum/material/diamond = 200, /datum/material/titanium = 4000)
 	hitsound = 'sound/weapons/blade1.ogg'
 	force = 16
 	toolspeed = 0.7
@@ -267,11 +283,13 @@
 	. = ..()
 	. += span_notice("It's set to [tool_behaviour == TOOL_SCALPEL ? "scalpel" : "saw"] mode.")
 
+TYPEINFO_DEF(/obj/item/retractor/advanced)
+	default_materials = list(/datum/material/iron = 12000, /datum/material/glass = 4000, /datum/material/silver = 4000, /datum/material/titanium = 5000)
+
 /obj/item/retractor/advanced
 	name = "mechanical pinches"
 	desc = "An agglomerate of rods and gears."
 	icon = 'icons/obj/surgery.dmi'
-	custom_materials = list(/datum/material/iron = 12000, /datum/material/glass = 4000, /datum/material/silver = 4000, /datum/material/titanium = 5000)
 	icon_state = "adv_retractor"
 	toolspeed = 0.7
 
@@ -302,6 +320,9 @@
 	. = ..()
 	. += span_notice("It resembles a [tool_behaviour == TOOL_RETRACTOR ? "retractor" : "hemostat"].")
 
+TYPEINFO_DEF(/obj/item/shears)
+	default_materials = list(/datum/material/iron=8000, /datum/material/titanium=6000)
+
 /obj/item/shears
 	name = "amputation shears"
 	desc = "A type of heavy duty surgical shears used for achieving a clean separation between limb and patient. Keeping the patient still is imperative to be able to secure and align the shears."
@@ -314,24 +335,23 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	throwforce = 6
 	throw_range = 5
-	custom_materials = list(/datum/material/iron=8000, /datum/material/titanium=6000)
 	attack_verb_continuous = list("shears", "snips")
 	attack_verb_simple = list("shear", "snip")
 	sharpness = SHARP_EDGED
-	custom_premium_price = PAYCHECK_MEDIUM * 14
+	custom_premium_price = PAYCHECK_ASSISTANT * 21.8
 
-/obj/item/shears/attack(mob/living/amputee, mob/living/user)
-	if(!iscarbon(amputee) || user.combat_mode)
-		return ..()
+/obj/item/shears/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!iscarbon(interacting_with))
+		return NONE
 
 	if(user.zone_selected == BODY_ZONE_CHEST)
-		return ..()
+		return ITEM_INTERACT_BLOCKING
 
-	var/mob/living/carbon/patient = amputee
+	var/mob/living/carbon/patient = interacting_with
 
 	if(HAS_TRAIT(patient, TRAIT_NODISMEMBER))
 		to_chat(user, span_warning("The patient's limbs look too sturdy to amputate."))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	var/candidate_name
 	var/obj/item/organ/tail_snip_candidate
@@ -341,14 +361,14 @@
 		tail_snip_candidate = patient.getorganslot(ORGAN_SLOT_EXTERNAL_TAIL)
 		if(!tail_snip_candidate)
 			to_chat(user, span_warning("[patient] does not have a tail."))
-			return
+			return ITEM_INTERACT_BLOCKING
 		candidate_name = tail_snip_candidate.name
 
 	else
 		limb_snip_candidate = patient.get_bodypart(deprecise_zone(user.zone_selected))
 		if(!limb_snip_candidate)
 			to_chat(user, span_warning("[patient] is already missing that limb, what more do you want?"))
-			return
+			return ITEM_INTERACT_BLOCKING
 		candidate_name = limb_snip_candidate.name
 
 	var/amputation_speed_mod = 1
@@ -360,14 +380,17 @@
 	if(patient.stat != DEAD && patient.has_status_effect(/datum/status_effect/jitter)) //jittering will make it harder to secure the shears, even if you can't otherwise move
 		amputation_speed_mod *= 1.5 //15*0.5*1.5=11.25, so staminacritting someone who's jittering (from, say, a stun baton) won't give you enough time to snip their head off, but staminacritting someone who isn't jittering will
 
-	if(do_after(user, patient, toolspeed * 15 SECONDS * amputation_speed_mod))
-		playsound(get_turf(patient), 'sound/weapons/bladeslice.ogg', 250, TRUE)
-		if(user.zone_selected == BODY_ZONE_PRECISE_GROIN) //OwO
-			tail_snip_candidate.Remove(patient)
-			tail_snip_candidate.forceMove(get_turf(patient))
-		else
-			limb_snip_candidate.dismember()
-		user.visible_message(span_danger("[src] violently slams shut, amputating [patient]'s [candidate_name]."), span_notice("You amputate [patient]'s [candidate_name] with [src]."))
+	if(!do_after(user, patient, toolspeed * 15 SECONDS * amputation_speed_mod))
+		return ITEM_INTERACT_BLOCKING
+
+	playsound(get_turf(patient), 'sound/weapons/bladeslice.ogg', 250, TRUE)
+	if(user.zone_selected == BODY_ZONE_PRECISE_GROIN) //OwO
+		tail_snip_candidate.Remove(patient)
+		tail_snip_candidate.forceMove(get_turf(patient))
+	else
+		limb_snip_candidate.dismember()
+	user.visible_message(span_danger("[src] violently slams shut, amputating [patient]'s [candidate_name]."), span_notice("You amputate [patient]'s [candidate_name] with [src]."))
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/shears/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] is pinching [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -381,6 +404,9 @@
 	sleep(timer)
 	return BRUTELOSS
 
+TYPEINFO_DEF(/obj/item/bonesetter)
+	default_materials = list(/datum/material/iron=5000, /datum/material/glass=2500)
+
 /obj/item/bonesetter
 	name = "bonesetter"
 	desc = "For setting things right."
@@ -388,7 +414,6 @@
 	icon_state = "bone setter"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	custom_materials = list(/datum/material/iron=5000, /datum/material/glass=2500)
 	flags_1 = CONDUCT_1
 	item_flags = SURGICAL_TOOL
 	w_class = WEIGHT_CLASS_SMALL
@@ -397,6 +422,9 @@
 	tool_behaviour = TOOL_BONESET
 	toolspeed = 1
 
+TYPEINFO_DEF(/obj/item/blood_filter)
+	default_materials = list(/datum/material/iron=2000, /datum/material/glass=1500, /datum/material/silver=500)
+
 /obj/item/blood_filter
 	name = "blood filter"
 	desc = "For filtering the blood."
@@ -404,7 +432,6 @@
 	icon_state = "bloodfilter"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	custom_materials = list(/datum/material/iron=2000, /datum/material/glass=1500, /datum/material/silver=500)
 	item_flags = SURGICAL_TOOL
 	w_class = WEIGHT_CLASS_NORMAL
 	attack_verb_continuous = list("pumps", "siphons")

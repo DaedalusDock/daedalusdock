@@ -33,6 +33,9 @@ Possible to do for anyone motivated enough:
 #define HOLOPAD_PASSIVE_POWER_USAGE 1
 #define HOLOGRAM_POWER_USAGE 2
 
+TYPEINFO_DEF(/obj/machinery/holopad)
+	default_armor = list(BLUNT = 50, PUNCTURE = 20, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 0, BIO = 0, FIRE = 50, ACID = 0)
+
 /obj/machinery/holopad
 	name = "holopad"
 	desc = "It's a floor-mounted device for projecting holographic images."
@@ -42,7 +45,6 @@ Possible to do for anyone motivated enough:
 	plane = FLOOR_PLANE
 	req_access = list(ACCESS_KEYCARD_AUTH) //Used to allow for forced connecting to other (not secure) holopads. Anyone can make a call, though.
 	max_integrity = 300
-	armor = list(BLUNT = 50, PUNCTURE = 20, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 0, BIO = 0, FIRE = 50, ACID = 0)
 	circuit = /obj/item/circuitboard/machine/holopad
 	/// associative lazylist of the form: list(mob calling us = hologram representing that mob).
 	/// this is only populated for holopads answering calls from another holopad
@@ -216,7 +218,7 @@ Possible to do for anyone motivated enough:
 /obj/machinery/holopad/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/holopad/attackby(obj/item/P, mob/user, params)
 	if(default_deconstruction_screwdriver(user, "holopad_open", "holopad0", P))

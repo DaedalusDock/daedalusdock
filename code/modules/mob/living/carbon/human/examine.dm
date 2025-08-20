@@ -11,6 +11,7 @@
 	var/t_es = p_es()
 	var/t_s = p_s()
 	var/obscure_name
+	var/adjacent = get_dist(user, src) <= 1
 
 	var/viewer_hallucinating = FALSE
 	if(isliving(user))
@@ -31,7 +32,7 @@
 		if(SScodex.get_codex_entry(get_codex_value(user)))
 			species_text += span_notice(" \[<a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>?</a>\]")
 
-	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"][species_text]!</EM><hr>")
+	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"][species_text].</EM><hr>")
 
 	if(!skipface)
 		var/age_text
@@ -48,7 +49,14 @@
 				age_text = "very old"
 			if(101 to INFINITY)
 				age_text = "withering away"
+
 		. += span_notice("[t_He] appear[t_s] to be [age_text].")
+
+		if(dna.species?.use_skintones && HAS_MIND_TRAIT(user, TRAIT_ADVANCED_RACE_THEORY))
+			var/obj/item/bodypart/head = get_bodypart(BODY_ZONE_HEAD)
+			if(head.skin_tone)
+				var/_skintone = "\improper[head.skin_tone]"
+				. += span_notice("[t_He] appear[t_s] to be \a [_skintone].")
 
 	//uniform
 	if(w_uniform && !(obscured & ITEM_SLOT_ICLOTHING) && !(w_uniform.item_flags & EXAMINE_SKIP))
@@ -84,16 +92,16 @@
 
 	else if(length(forensics?.blood_DNA))
 		if(num_hands)
-			. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a"] blood-stained hand[num_hands > 1 ? "s" : ""]!")
+			. += span_alert("[t_He] [t_has] [num_hands > 1 ? "" : "a"] blood-stained hand[num_hands > 1 ? "s" : ""]!")
 
 	//handcuffed?
 	if(handcuffed)
 		if(istype(handcuffed, /obj/item/restraints/handcuffs/cable))
-			. += span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] restrained with cable!")
+			. += span_alert("[t_He] [t_is] [icon2html(handcuffed, user)] restrained with cable!")
 		else if(istype(handcuffed, /obj/item/restraints/handcuffs/tape))
-			. += span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] bound by tape!")
+			. += span_alert("[t_He] [t_is] [icon2html(handcuffed, user)] bound by tape!")
 		else
-			. += span_warning("[t_He] [t_is] handcuffed with [icon2html(handcuffed, user)] [handcuffed] [EXAMINE_LINK(handcuffed)] !")
+			. += span_alert("[t_He] [t_is] handcuffed with [icon2html(handcuffed, user)] [handcuffed] [EXAMINE_LINK(handcuffed)] !")
 
 	//belt
 	if(belt && !(belt.item_flags & EXAMINE_SKIP))
@@ -114,10 +122,20 @@
 	if(!(obscured & ITEM_SLOT_EYES) )
 		if(glasses  && !(glasses.item_flags & EXAMINE_SKIP))
 			. += "[t_He] [t_has] [glasses.get_examine_string(user)] [EXAMINE_LINK(glasses)] covering [t_his] eyes."
-		else if(HAS_TRAIT(src, TRAIT_UNNATURAL_RED_GLOWY_EYES))
-			. += "<span class='warning'><B>[t_His] eyes are glowing with an unnatural red aura!</B></span>"
-		else if(HAS_TRAIT(src, TRAIT_BLOODSHOT_EYES))
-			. += "<span class='warning'><B>[t_His] eyes are bloodshot!</B></span>"
+
+		else if(getorganslot(ORGAN_SLOT_EYES))
+			if(HAS_TRAIT(src, TRAIT_UNNATURAL_RED_GLOWY_EYES))
+				. += "<span class='alert'><B>[t_His] eyes are glowing red.</B></span>"
+
+			else if(HAS_TRAIT(src, TRAIT_BLOODSHOT_EYES))
+				. += "<span class='alert'><B>[t_His] eyes are bloodshot.</B></span>"
+
+			else if(adjacent)
+				switch(undergoing_jaundice())
+					if(JAUNDICE_EYES)
+						. += span_alert("[t_His] sclerae are slightly yellow.")
+					if(JAUNDICE_SKIN)
+						. += span_alert("[t_His] sclerae are yellowed.")
 
 	//ears
 	if(ears && !(obscured & ITEM_SLOT_EARS) && !(ears.item_flags & EXAMINE_SKIP))
@@ -134,7 +152,6 @@
 		. += status_examines
 
 	var/appears_dead = isobserver(user)
-	var/adjacent = get_dist(user, src) <= 1
 	if(stat != CONSCIOUS || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
 		if(!adjacent)
 			. += span_alert("[t_He] is not moving.")
@@ -147,7 +164,7 @@
 				appears_dead = TRUE
 				. += span_danger("The spark of life has left [t_him].")
 				if(suiciding)
-					. += span_warning("[t_He] appear[t_s] to have committed suicide.")
+					. += span_alert("[t_He] appear[t_s] to have committed suicide.")
 
 	if(get_bodypart(BODY_ZONE_HEAD) && needs_organ(ORGAN_SLOT_BRAIN) && !getorgan(/obj/item/organ/brain))
 		. += span_deadsay("It appears that [t_his] brain is missing...")
@@ -172,16 +189,18 @@
 			var/is_bloody
 			for(var/datum/wound/W as anything in body_part.wounds)
 				if(W.bleeding())
-					msg += span_warning("Blood soaks through [t_his] [body_part.plaintext_zone] covering.\n")
+					msg += span_alert("Blood soaks through [t_his] [body_part.plaintext_zone] covering.\n")
 					is_bloody = TRUE
 					fucked_reasons["The blood soaking through [t_his] [body_part.plaintext_zone] indicates a dire wound."] = 1
 					break
+
 			if(!is_bloody)
 				msg += span_notice("[t_His] [body_part.plaintext_zone] is covered.\n")
 			for(var/string in body_part.mob_examine(viewer_hallucinating, TRUE))
 				msg += "[string]</br>"
 
 			continue
+
 		else
 			visible_bodyparts++
 			if((body_part.brute_dam + body_part.burn_dam) >= body_part.max_damage * 0.8)
@@ -193,34 +212,24 @@
 	for(var/X in disabled)
 		var/obj/item/bodypart/body_part = X
 		var/damage_text
+
 		if(HAS_TRAIT(body_part, TRAIT_DISABLED_BY_WOUND))
 			continue // skip if it's disabled by a wound (cuz we'll be able to see the bone sticking out!)
+
 		if(!(body_part.get_damage() >= body_part.max_damage)) //we don't care if it's stamcritted
 			damage_text = "limp and lifeless"
 		else
 			damage_text = (body_part.brute_dam >= body_part.burn_dam) ? body_part.heavy_brute_msg : body_part.heavy_burn_msg
+
 		msg += "<B>[capitalize(t_his)] [body_part.name] is [damage_text]!</B>\n"
 
 	//stores missing limbs
-	var/l_limbs_missing = 0
-	var/r_limbs_missing = 0
 	for(var/t in missing)
 		if(t==BODY_ZONE_HEAD)
-			msg += "<span class='deadsay'><B>[t_His] [parse_zone(t)] is missing!</B><span class='warning'>\n"
+			msg += "<span class='deadsay'><B>[t_His] [parse_zone(t)] is missing!</B>\n"
 			continue
-		if(t == BODY_ZONE_L_ARM || t == BODY_ZONE_L_LEG)
-			l_limbs_missing++
-		else if(t == BODY_ZONE_R_ARM || t == BODY_ZONE_R_LEG)
-			r_limbs_missing++
 
 		msg += "<B>[capitalize(t_his)] [parse_zone(t)] is missing!</B>\n"
-
-	if(l_limbs_missing >= 2 && r_limbs_missing == 0)
-		msg += "[t_He] look[t_s] all right now.\n"
-	else if(l_limbs_missing == 0 && r_limbs_missing >= 2)
-		msg += "[t_He] really keeps to the left.\n"
-	else if(l_limbs_missing >= 2 && r_limbs_missing >= 2)
-		msg += "[t_He] [p_do()]n't seem all there.\n"
 
 	var/temp
 	temp = getCloneLoss()
@@ -231,7 +240,6 @@
 			msg += "[t_He] [t_has] <b>moderate</b> cellular damage!\n"
 		else
 			msg += "<b>[t_He] [t_has] severe cellular damage!</b>\n"
-
 
 	if(has_status_effect(/datum/status_effect/fire_handler/fire_stacks))
 		msg += "[t_He] [t_is] covered in something flammable.\n"
@@ -311,7 +319,7 @@
 				msg += "[span_deadsay("[t_He] [t_is] totally catatonic. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely.")]\n"
 
 	if (length(msg))
-		. += span_warning("[msg.Join("")]")
+		. += span_alert("[msg.Join("")]")
 
 	var/trait_exam = common_trait_examine()
 	if (!isnull(trait_exam))
@@ -320,24 +328,27 @@
 	var/perpname = get_face_name(get_id_name(""))
 	if(perpname && (HAS_TRAIT(user, TRAIT_SECURITY_HUD) || HAS_TRAIT(user, TRAIT_MEDICAL_HUD)))
 		var/datum/data/record/R = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_STATION)
+		var/datum/data/record/medical_record = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_MEDICAL)
 		if(R)
 			. += "<span class='deptradio'>Rank:</span> [R.fields[DATACORE_RANK]]\n<a href='?src=[REF(src)];hud=1;photo_front=1'>\[Front photo\]</a><a href='?src=[REF(src)];hud=1;photo_side=1'>\[Side photo\]</a>"
+
 		if(HAS_TRAIT(user, TRAIT_MEDICAL_HUD))
 			var/cyberimp_detect
 			for(var/obj/item/organ/cyberimp/CI in processing_organs)
 				if((CI.organ_flags & ORGAN_SYNTHETIC) && !CI.syndicate_implant)
 					cyberimp_detect += "[!cyberimp_detect ? "[CI.get_examine_string(user)]" : ", [CI.get_examine_string(user)]"]"
+
 			if(cyberimp_detect)
 				. += "<span class='notice ml-1'>Detected cybernetic modifications:</span>"
 				. += "<span class='notice ml-2'>[cyberimp_detect]</span>"
-			if(R)
-				var/health_r = R.fields[DATACORE_PHYSICAL_HEALTH]
-				. += "<a href='?src=[REF(src)];hud=m;p_stat=1'>\[[health_r]\]</a>"
-				health_r = R.fields[DATACORE_MENTAL_HEALTH]
-				. += "<a href='?src=[REF(src)];hud=m;m_stat=1'>\[[health_r]\]</a>"
-			R = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_MEDICAL)
-			if(R)
+
+			if(medical_record)
+				var/health_r = medical_record.fields[DATACORE_PHYSICAL_HEALTH]
+				. += "<a href='?src=[REF(src)];hud=m;[DATACORE_PHYSICAL_HEALTH]=1'>\[[health_r]\]</a>"
+				health_r = medical_record.fields[DATACORE_MENTAL_HEALTH]
+				. += "<a href='?src=[REF(src)];hud=m;[DATACORE_MENTAL_HEALTH]=1'>\[[health_r]\]</a>"
 				. += "<a href='?src=[REF(src)];hud=m;evaluation=1'>\[Medical evaluation\]</a><br>"
+
 			. += "<a href='?src=[REF(src)];hud=m;quirk=1'>\[See quirks\]</a>"
 
 		if(HAS_TRAIT(user, TRAIT_SECURITY_HUD))
@@ -393,7 +404,7 @@
 						to_chat(living_user, result.create_tooltip("[t_He] does not look long for this world. [pick_weight(fucked_reasons)]"))
 
 					else
-						to_chat(living_user, result.create_tooltip("[t_He] appears to be in great health, a testament to the endurance of humanity in these trying times."))
+						to_chat(living_user, result.create_tooltip("[t_He] appears to be in great health."))
 
 		living_user.stats.set_cooldown("examine_medical_flavortext_[REF(src)]", 20 MINUTES)
 

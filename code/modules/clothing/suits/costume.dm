@@ -18,11 +18,13 @@
 	desc = "Yarr."
 	icon_state = "pirate"
 	inhand_icon_state = "pirate"
-	allowed = list(/obj/item/melee/energy/sword/pirate, /obj/item/clothing/glasses/eyepatch, /obj/item/reagent_containers/food/drinks/bottle/rum)
+	allowed = list(/obj/item/melee/energy/sword/pirate, /obj/item/clothing/glasses/eyepatch, /obj/item/reagent_containers/cup/glass/bottle/rum)
 
+
+TYPEINFO_DEF(/obj/item/clothing/suit/pirate/armored)
+	default_armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 30, BIO = 30, FIRE = 60, ACID = 75)
 
 /obj/item/clothing/suit/pirate/armored
-	armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 30, BIO = 30, FIRE = 60, ACID = 75)
 	strip_delay = 40
 	equip_delay_other = 20
 
@@ -32,8 +34,10 @@
 	icon_state = "hgpirate"
 	inhand_icon_state = "hgpirate"
 
+TYPEINFO_DEF(/obj/item/clothing/suit/pirate/captain/armored)
+	default_armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 30, BIO = 30, FIRE = 60, ACID = 75)
+
 /obj/item/clothing/suit/pirate/captain/armored
-	armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 30, BIO = 30, FIRE = 60, ACID = 75)
 	strip_delay = 40
 	equip_delay_other = 20
 
@@ -46,13 +50,15 @@
 	fire_resist = T0C+5200
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 
+TYPEINFO_DEF(/obj/item/clothing/suit/justice)
+	default_armor = list(BLUNT = 35, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/suit/justice
 	name = "justice suit"
 	desc = "this pretty much looks ridiculous" //Needs no fixing
 	icon_state = "justice"
 	inhand_icon_state = "justice"
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
-	armor = list(BLUNT = 35, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
 
 /obj/item/clothing/suit/judgerobe
 	name = "judge's robe"
@@ -105,7 +111,7 @@
 	inhand_icon_state = "imperium_monk"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	flags_inv = HIDESHOES|HIDEJUMPSUIT
-	allowed = list(/obj/item/storage/book/bible, /obj/item/nullrod, /obj/item/reagent_containers/food/drinks/bottle/holywater, /obj/item/storage/fancy/candle_box, /obj/item/candle, /obj/item/tank/internals/emergency_oxygen)
+	allowed = list(/obj/item/storage/book/bible, /obj/item/nullrod, /obj/item/reagent_containers/cup/glass/bottle/holywater, /obj/item/storage/fancy/candle_box, /obj/item/candle, /obj/item/tank/internals/emergency_oxygen)
 
 /obj/item/clothing/suit/chickensuit
 	name = "chicken suit"
@@ -247,12 +253,14 @@
 	if (user.head == src)
 		user.faction -= "carp"
 
+TYPEINFO_DEF(/obj/item/clothing/suit/hooded/carp_costume/spaceproof)
+	default_armor = list(BLUNT = -20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 60, ACID = 75)
+
 /obj/item/clothing/suit/hooded/carp_costume/spaceproof
 	name = "carp space suit"
 	desc = "A slimming piece of dubious space carp technology, you suspect it won't stand up to hand-to-hand blows."
 	icon_state = "carp_suit"
 	inhand_icon_state = "space_suit_syndicate"
-	armor = list(BLUNT = -20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 60, ACID = 75) //As whimpy whimpy whoo
 	allowed = list(/obj/item/tank/internals, /obj/item/gun/ballistic/rifle/boltaction/harpoon) //I'm giving you a hint here
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	cold_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
@@ -264,11 +272,13 @@
 	hoodtype = /obj/item/clothing/head/hooded/carp_hood/spaceproof
 	resistance_flags = NONE
 
+TYPEINFO_DEF(/obj/item/clothing/head/hooded/carp_hood/spaceproof)
+	default_armor = list(BLUNT = -20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 60, ACID = 75)
+
 /obj/item/clothing/head/hooded/carp_hood/spaceproof
 	name = "carp helmet"
 	desc = "Spaceworthy and it looks like a space carp's head, smells like one too."
 	icon_state = "carp_helm"
-	armor = list(BLUNT = -20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 60, ACID = 75) //As whimpy as a space carp
 	flags_inv = HIDEEARS|HIDEHAIR|HIDEFACIALHAIR //facial hair will clip with the helm, this'll need a dynamic_fhair_suffix at some point.
 	min_cold_protection_temperature = SPACE_HELM_MIN_TEMP_PROTECT
 	heat_protection = HEAD
@@ -431,12 +441,14 @@
 	inhand_icon_state = "cheongsam_blue"
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS
 
+TYPEINFO_DEF(/obj/item/clothing/suit/bronze)
+	default_armor = list(BLUNT = 5, PUNCTURE = 0, SLASH = 0, LASER = -5, ENERGY = -15, BOMB = 10, BIO = 0, FIRE = 20, ACID = 20)
+
 /obj/item/clothing/suit/bronze
 	name = "bronze suit"
 	desc = "A big and clanky suit made of bronze that offers no protection and looks very unfashionable. Nice."
 	icon = 'icons/obj/clothing/suits.dmi'
 	icon_state = "clockwork_cuirass_old"
-	armor = list(BLUNT = 5, PUNCTURE = 0, SLASH = 0, LASER = -5, ENERGY = -15, BOMB = 10, BIO = 0, FIRE = 20, ACID = 20)
 
 /obj/item/clothing/suit/hooded/mysticrobe
 	name = "mystic's robe"
@@ -456,12 +468,14 @@
 	body_parts_covered = HEAD
 	flags_inv = HIDEHAIR|HIDEEARS|HIDEFACIALHAIR|HIDEFACE|HIDEMASK
 
+TYPEINFO_DEF(/obj/item/clothing/suit/coordinator)
+	default_armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/suit/coordinator
 	name = "coordinator jacket"
 	desc = "A jacket for a party ooordinator, stylish!."
 	icon_state = "capformal"
 	inhand_icon_state = "capspacesuit"
-	armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
 
 /obj/item/clothing/suit/hawaiian
 	name = "hawaiian overshirt"

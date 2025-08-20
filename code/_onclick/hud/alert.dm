@@ -131,6 +131,7 @@
 			reorganize_alerts(M)
 	return 1
 
+DEFINE_INTERACTABLE(/atom/movable/screen/alert)
 /atom/movable/screen/alert
 	icon = 'icons/hud/screen_alert.dmi'
 	icon_state = "default"
@@ -467,27 +468,6 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	add_overlay(receiving)
 	src.receiving = receiving
 	src.offerer = offerer
-
-/// Gives the player the option to succumb while in critical condition
-/atom/movable/screen/alert/succumb
-	name = "Succumb"
-	desc = "Shuffle off this mortal coil."
-	icon_state = ALERT_SUCCUMB
-
-/atom/movable/screen/alert/succumb/Click()
-	. = ..()
-	if(!.)
-		return
-
-	var/mob/living/living_owner = owner
-	var/last_whisper = tgui_input_text(usr, "Do you have any last words?", "Final Words")
-	if (!last_whisper)
-		return
-
-	if (length(last_whisper))
-		living_owner.say("#[last_whisper]")
-
-	living_owner.succumb(whispered = length(last_whisper) > 0)
 
 //ALIENS
 

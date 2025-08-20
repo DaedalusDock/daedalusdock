@@ -17,7 +17,7 @@
 	filename = "medrecords"
 	program_icon = "book-medical"
 	extended_desc = "Allows the user to view several basic medical records from the crew."
-	transfer_access = list(ACCESS_MEDICAL, ACCESS_FLAG_COMMAND)
+	transfer_access = list(ACCESS_MEDICAL)
 	available_on_ntnet = TRUE
 	mode = "medical"
 
@@ -25,7 +25,7 @@
 	filedesc = "Security Records"
 	filename = "secrecords"
 	extended_desc = "Allows the user to view several basic security records from the crew."
-	transfer_access = list(ACCESS_SECURITY, ACCESS_FLAG_COMMAND)
+	transfer_access = list(ACCESS_SECURITY, ACCESS_CAPTAIN)
 	available_on_ntnet = TRUE
 	mode = "security"
 
@@ -58,7 +58,6 @@
 				current_record["bloodtype"] = person.fields[DATACORE_BLOOD_TYPE]
 				current_record["ma_dis"] = person.fields[DATACORE_DISABILITIES]
 				current_record["notes"] = person.fields[DATACORE_NOTES]
-				current_record["cnotes"] = person.fields[DATACORE_NOTES_DETAILS]
 
 				all_records += list(current_record)
 

@@ -27,6 +27,7 @@
 		arm.unarmed_attack_sound = 'sound/weapons/slice.ogg'
 		arm.unarmed_miss_sound = 'sound/weapons/slashmiss.ogg'
 
+	host.client?.give_award(/datum/award/achievement/antag/very_thirsty, host)
 
 /datum/vampire_state/bloodlust/exit_state(mob/living/carbon/human/host)
 	. = ..()

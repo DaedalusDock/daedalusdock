@@ -42,11 +42,12 @@
 
 	UnregisterSignal(user, COMSIG_MOVABLE_PRE_MOVE)
 
-/obj/item/pushbroom/afterattack(atom/A, mob/user, proximity)
-	. = ..()
-	if(!proximity)
+/obj/item/pushbroom/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(user.combat_mode)
 		return
-	sweep(user, A)
+
+	sweep(user, interacting_with)
+	return ITEM_INTERACT_SUCCESS
 
 /**
  * Attempts to push up to BROOM_PUSH_LIMIT atoms from a given location the user's faced direction

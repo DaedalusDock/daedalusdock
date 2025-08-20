@@ -45,6 +45,9 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
  *
  * Captalism in the year 2525, everything in a vending machine, even love
  */
+TYPEINFO_DEF(/obj/machinery/vending)
+	default_armor = list(BLUNT = 20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
+
 /obj/machinery/vending
 	name = "\improper Vendomat"
 	desc = "A generic vending machine."
@@ -57,7 +60,6 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
 	verb_exclaim = "beeps"
 	max_integrity = 300
 	integrity_failure = 0.33
-	armor = list(BLUNT = 20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
 	circuit = /obj/item/circuitboard/machine/vendor
 	payment_department = ACCOUNT_STATION_MASTER
 	light_power = 0.5
@@ -442,7 +444,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 		return FALSE
 	if(default_unfasten_wrench(user, tool, time = 6 SECONDS))
 		unbuckle_all_mobs(TRUE)
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 	return FALSE
 
 /obj/machinery/vending/screwdriver_act(mob/living/user, obj/item/I)
@@ -973,7 +975,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 			D.adjust_money(price_to_use)
 			SSblackbox.record_feedback("amount", "vending_spent", price_to_use)
 			SSeconomy.track_purchase(account, price_to_use, name)
-			log_econ("[price_to_use] credits were inserted into [src] by [account.account_holder] to buy [R].")
+			log_econ("[price_to_use] marks were inserted into [src] by [account.account_holder] to buy [R].")
 
 	if(last_shopper != REF(usr) || purchase_message_cooldown < world.time)
 		say("Thank you for shopping with [src]!")
@@ -996,6 +998,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 	R.amount--
 	if(IsReachableBy(usr) && usr.put_in_hands(vended_item))
 		to_chat(usr, span_notice("You take [R.name] out of the slot."))
+		vended_item.do_pickup_animation(usr, get_turf(src))
 	else
 		to_chat(usr, span_warning("[capitalize(R.name)] falls onto the floor!"))
 	SSblackbox.record_feedback("nested tally", "vending_machine_usage", 1, list("[type]", "[R.product_path]"))
@@ -1256,6 +1259,9 @@ GLOBAL_LIST_EMPTY(vending_products)
 /obj/machinery/vending/custom/proc/vend_act(mob/living/user, choice)
 	if(!vend_ready)
 		return
+
+	user.animate_interact(src)
+
 	var/obj/item/dispensed_item
 	var/obj/item/card/id/id_card = user.get_idcard(TRUE)
 	vend_ready = FALSE
@@ -1263,11 +1269,13 @@ GLOBAL_LIST_EMPTY(vending_products)
 		balloon_alert(usr, "no card found")
 		z_flick(icon_deny, src)
 		return TRUE
+
 	var/datum/bank_account/payee = id_card.registered_account
 	for(var/obj/stock in contents)
 		if(format_text(stock.name) == choice)
 			dispensed_item = stock
 			break
+
 	if(!dispensed_item)
 		return FALSE
 
@@ -1281,11 +1289,11 @@ GLOBAL_LIST_EMPTY(vending_products)
 		payee.adjust_money(-dispensed_item.custom_price)
 		linked_account.adjust_money(dispensed_item.custom_price)
 		linked_account.bank_card_talk("[payee.account_holder] made a [dispensed_item.custom_price] \
-		cr purchase at your custom vendor.")
+		FM purchase at your custom vendor.")
 
 		/// Log the transaction
 		SSblackbox.record_feedback("amount", "vending_spent", dispensed_item.custom_price)
-		log_econ("[dispensed_item.custom_price] credits were spent on [src] buying a \
+		log_econ("[dispensed_item.custom_price] marks were spent on [src] buying a \
 		[dispensed_item] by [payee.account_holder], owned by [linked_account.account_holder].")
 		/// Make an alert
 		if(last_shopper != REF(usr) || purchase_message_cooldown < world.time)
@@ -1328,23 +1336,23 @@ GLOBAL_LIST_EMPTY(vending_products)
 	if(!chosen_price || QDELETED(user) || QDELETED(src) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK) || loc != user)
 		return
 	price = chosen_price
-	to_chat(user, span_notice(" The [src] will now give things a [price] cr tag."))
+	to_chat(user, span_notice(" The [src] will now give things a [price] FM tag."))
 
-/obj/item/price_tagger/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(isitem(target))
-		var/obj/item/I = target
+/obj/item/price_tagger/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(isitem(interacting_with))
+		var/obj/item/I = interacting_with
 		I.custom_price = price
-		to_chat(user, span_notice("You set the price of [I] to [price] cr."))
+		to_chat(user, span_notice("You set the price of [I] to [price] FM."))
+		return ITEM_INTERACT_SUCCESS
+
+TYPEINFO_DEF(/obj/machinery/vending/custom/greed)
+	default_materials = list(/datum/material/gold = MINERAL_MATERIAL_AMOUNT * 5)
 
 /obj/machinery/vending/custom/greed //name and like decided by the spawn
 	icon_state = "greed"
 	icon_deny = "greed-deny"
 	panel_type = "panel4"
 	light_mask = "greed-light-mask"
-	custom_materials = list(/datum/material/gold = MINERAL_MATERIAL_AMOUNT * 5)
 
 /obj/machinery/vending/custom/greed/Initialize(mapload)
 	. = ..()

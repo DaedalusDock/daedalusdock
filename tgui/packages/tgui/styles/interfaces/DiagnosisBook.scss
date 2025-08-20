@@ -1,0 +1,67 @@
+@use '../base.scss';
+@use 'sass:color';
+
+$text-border-color: #454442;
+
+.DiagnosisBook__textFieldContainer {
+  border-bottom: dashed $text-border-color;
+  box-sizing: border-box;
+}
+
+.DiagnosisBook__textAreaInner {
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.DiagnosisBook__patientBlock {
+  border-right: base.em(2px) solid $text-border-color;
+}
+
+.DiagnosisBook__symptomBlockTitle {
+  font-size: 200%;
+  text-align: center;
+  hr {
+    background: linear-gradient(
+      to left,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.2) 10%,
+      rgba(0, 0, 0, 0.8) 50%,
+      rgba(0, 0, 0, 0.2) 90%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    border: 0;
+    border-radius: 5px;
+    height: 4px;
+    margin: 18px 0;
+    position: relative;
+  }
+}
+.DiagnosisBook__conditionBlockContainer {
+  padding-bottom: 1em;
+}
+
+.DiagnosisBook__conditionBlock {
+  box-sizing: border-box;
+  &:hover {
+    outline: dashed #e8e4c9;
+  }
+  &:not(:last-of-type) {
+    margin-bottom: 18px;
+  }
+}
+
+.DiagnosisBook__conditionBlock--selectedCondition {
+  outline: dashed #e8e4c9;
+}
+
+.DiagnosisBook__conditionBlockHeader {
+  margin-left: 6px;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.DiagnosisBook__conditionBlockBody {
+}
+
+.DiagnosisBook__conditionSpacer {
+}

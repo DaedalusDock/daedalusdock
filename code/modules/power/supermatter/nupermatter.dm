@@ -172,9 +172,32 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	if(status >= min_status)
 		if(!current_state)
 			message_admins(message + " [ADMIN_LOOKUPFLW(src)]")
+			if(min_status == SUPERMATTER_DANGER)
+				shivers()
 		return TRUE
 	else
 		return FALSE
+
+/obj/machinery/power/supermatter/proc/shivers()
+	var/list/alerted_jobs = list(JOB_CHIEF_ENGINEER, JOB_STATION_ENGINEER)
+	for(var/mob/living/carbon/human/H in GLOB.player_list)
+		if(!H.client || (H.stat != CONSCIOUS) || !(H.mind?.assigned_role?.title in alerted_jobs))
+			continue
+
+		if(!H.stats.cooldown_finished("supermatter_fuckywucky"))
+			continue
+
+		H.stats.set_cooldown("supermatter_fuckywucky", INFINITY)
+
+		var/datum/roll_result/result = H.stat_roll(16, /datum/rpg_skill/extrasensory)
+		if(result.outcome >= SUCCESS)
+			continue
+
+		result.do_skill_sound(H)
+		to_chat(
+			H,
+			result.create_tooltip("<b>Something is wrong</b>."),
+		)
 
 /obj/machinery/power/supermatter/proc/get_epr()
 	var/turf/T = get_turf(src)

@@ -3,7 +3,7 @@
 	desc = "Used to view and edit personnel's security records."
 	icon_screen = "security"
 	icon_keyboard = "security_key"
-	req_one_access = list(ACCESS_SECURITY, ACCESS_FORENSICS, ACCESS_HOP)
+	req_one_access = list(ACCESS_SECURITY, ACCESS_FORENSICS, ACCESS_DELEGATE)
 	circuit = /obj/item/circuitboard/computer/secure_data
 	light_color = COLOR_SOFT_RED
 	var/rank = null
@@ -341,8 +341,6 @@
 						dat += {"<tr><td>Rank:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=rank'>&nbsp;[active1.fields[DATACORE_RANK]]&nbsp;</A></td></tr>
 						<tr><td>Initial Rank:</td><td>[active1.fields[DATACORE_INITIAL_RANK]]</td>
 						<tr><td>Fingerprint:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=fingerprint'>&nbsp;[active1.fields[DATACORE_FINGERPRINT]]&nbsp;</A></td></tr>
-						<tr><td>Physical Status:</td><td>&nbsp;[active1.fields[DATACORE_PHYSICAL_HEALTH]]&nbsp;</td></tr>
-						<tr><td>Mental Status:</td><td>&nbsp;[active1.fields[DATACORE_MENTAL_HEALTH]]&nbsp;</td></tr>
 						</table></td>
 						<td><table><td align = center><a href='?src=[REF(src)];choice=Edit Field;field=show_photo_front'><img src=photo_front height=96 width=96 border=4 style="-ms-interpolation-mode:nearest-neighbor"></a><br>
 						<a href='?src=[REF(src)];choice=Edit Field;field=print_photo_front'>Print photo</a><br>
@@ -372,10 +370,10 @@
 						for(var/datum/data/crime/c in active2.fields[DATACORE_CITATIONS])
 							var/owed = c.fine - c.paid
 							dat += {"<tr><td>[c.crimeName]</td>
-							<td>[c.fine] cr</td><td>[c.author]</td>
+							<td>[c.fine] FM</td><td>[c.author]</td>
 							<td>[c.time]</td>"}
 							if(owed > 0)
-								dat += "<td>[owed] cr <A href='?src=[REF(src)];choice=Pay;field=citation_pay;cdataid=[c.dataId]'>\[Pay\]</A></td></td>"
+								dat += "<td>[owed] FM <A href='?src=[REF(src)];choice=Pay;field=citation_pay;cdataid=[c.dataId]'>\[Pay\]</A></td></td>"
 							else
 								dat += "<td>All Paid Off</td>"
 							dat += {"<td>
@@ -574,7 +572,7 @@ Gender: [active1.fields[DATACORE_GENDER]]<BR>
 Age: [active1.fields[DATACORE_AGE]]<BR>"}
 
 						P.info += "\nSpecies: [active1.fields[DATACORE_SPECIES]]<BR>"
-						P.info += "\nFingerprint: [active1.fields[DATACORE_FINGERPRINT]]<BR>\nPhysical Status: [active1.fields[DATACORE_PHYSICAL_HEALTH]]<BR>\nMental Status: [active1.fields[DATACORE_MENTAL_HEALTH]]<BR>"
+						P.info += "\nFingerprint: [active1.fields[DATACORE_FINGERPRINT]]<BR>"
 					else
 						P.info += "<B>General Record Lost!</B><BR>"
 					if((istype(active2, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_SECURITY).Find(active2)))
@@ -712,7 +710,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				G.fields[DATACORE_NAME] = "New Record"
 				G.fields[DATACORE_ID] = "[num2hex(rand(1, 1.6777215E7), 6)]"
 				G.fields[DATACORE_RANK] = "Unassigned"
-				G.fields[DATACORE_TRIM] = "Unassigned"
+				G.fields[DATACORE_TEMPLATE_RANK] = "Unassigned"
 				G.fields[DATACORE_INITIAL_RANK] = "Unassigned"
 				G.fields[DATACORE_GENDER] = "Male"
 				G.fields[DATACORE_AGE] = "Unknown"
@@ -720,8 +718,6 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				G.fields["photo_front"] = new /icon()
 				G.fields["photo_side"] = new /icon()
 				G.fields[DATACORE_FINGERPRINT] = "?????"
-				G.fields[DATACORE_PHYSICAL_HEALTH] = "Active"
-				G.fields[DATACORE_MENTAL_HEALTH] = "Stable"
 				SSdatacore.inject_record(G, DATACORE_RECORDS_STATION)
 				active1 = G
 
@@ -743,11 +739,9 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				M.fields[DATACORE_BLOOD_TYPE] = "?"
 				M.fields[DATACORE_BLOOD_DNA] = "?????"
 				M.fields[DATACORE_DISABILITIES] = "None"
-				M.fields[DATACORE_DISABILITIES_DETAILS] = "No disabilities have been declared."
 				M.fields["alg"] = "None"
 				M.fields["alg_d"] = "No allergies have been detected in this patient."
 				M.fields[DATACORE_DISEASES] = "None"
-				M.fields[DATACORE_DISEASES_DETAILS] = "No diseases have been diagnosed at the moment."
 				M.fields[DATACORE_NOTES] = "No notes."
 				SSdatacore.inject_record(M, DATACORE_RECORDS_MEDICAL)
 
@@ -950,7 +944,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 							return
 
 						var/datum/data/crime/crime = SSdatacore.new_crime_entry(t1, "", authenticated, stationtime2text(), fine)
-						var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
+						var/obj/machinery/announcement_system/announcer = pick_safe(GLOB.announcement_systems)
 						if(announcer)
 							announcer.notify_citation(active1.fields[DATACORE_NAME], t1, fine)
 
@@ -1030,7 +1024,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 								var/rank = SSid_access.station_job_templates[path]
 								if(rank)
 									active1.fields[DATACORE_RANK] = rank
-									active1.fields[DATACORE_TRIM] = active1.fields[DATACORE_RANK]
+									active1.fields[DATACORE_TEMPLATE_RANK] = active1.fields[DATACORE_RANK]
 									investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s record: Var: rank | Old value:[active1.fields[DATACORE_RANK]] | New value: [rank].", INVESTIGATE_RECORDS)
 								else
 									message_admins("Warning: possible href exploit by [key_name(usr)] - attempted to set change a crew member rank to an invalid path: [path]")
@@ -1118,12 +1112,14 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 
 	for(var/datum/data/record/security/R in SSdatacore.get_records(DATACORE_RECORDS_SECURITY))
 		if(prob(10/severity))
-			switch(rand(1,8))
+			switch(rand(1,6))
 				if(1)
+					var/generator_type = /datum/name_generator/human
 					if(prob(10))
-						R.fields[DATACORE_NAME] = "[pick(lizard_name(MALE),lizard_name(FEMALE))]"
-					else
-						R.fields[DATACORE_NAME] = "[pick(pick(GLOB.first_names_male), pick(GLOB.first_names_female))] [pick(GLOB.last_names)]"
+						generator_type = pick(subtypesof(/datum/name_generator) - /datum/name_generator/human)
+
+					var/datum/name_generator/name_gen = new generator_type
+					R.fields[DATACORE_NAME] = name_gen.Generate()
 				if(2)
 					R.fields[DATACORE_GENDER] = pick("Male", "Female", "Other")
 				if(3)
@@ -1131,12 +1127,8 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				if(4)
 					R.set_criminal_status(pick(CRIMINAL_NONE, CRIMINAL_WANTED, CRIMINAL_INCARCERATED, CRIMINAL_SUSPECT, CRIMINAL_PAROLE, CRIMINAL_DISCHARGED))
 				if(5)
-					R.fields[DATACORE_PHYSICAL_HEALTH] = pick("*Unconscious*", "Active", "Physically Unfit")
-				if(6)
-					R.fields[DATACORE_MENTAL_HEALTH] = pick("*Insane*", "*Unstable*", "*Watch*", "Stable")
-				if(7)
 					R.fields[DATACORE_SPECIES] = pick(get_selectable_species())
-				if(8)
+				if(6)
 					var/datum/data/record/G = pick(SSdatacore.get_records(DATACORE_RECORDS_STATION))
 					R.fields["photo_front"] = G.fields["photo_front"]
 					R.fields["photo_side"] = G.fields["photo_side"]

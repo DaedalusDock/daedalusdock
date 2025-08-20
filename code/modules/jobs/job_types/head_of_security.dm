@@ -33,7 +33,7 @@
 	mind_traits = list(TRAIT_DONUT_LOVER)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM, TRAIT_ROYAL_METABOLISM)
 
-	paycheck = PAYCHECK_COMMAND
+	paycheck = PAYCHECK_ASSISTANT * 10
 	paycheck_department = ACCOUNT_SEC
 
 	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
@@ -67,7 +67,7 @@
 	jobtype = /datum/job/head_of_security
 
 	id = /obj/item/card/id/advanced/silver
-	id_trim = /datum/id_trim/job/head_of_security
+	id_template = /datum/access_template/job/head_of_security
 	uniform = /obj/item/clothing/under/rank/security/marshal
 	suit = /obj/item/clothing/suit/armor/vest/ballistic
 	suit_store = /obj/item/gun/energy/e_gun
@@ -83,9 +83,7 @@
 	l_pocket = /obj/item/restraints/handcuffs
 	r_pocket = /obj/item/assembly/flash/handheld
 
-	backpack = /obj/item/storage/backpack/security
-	satchel = /obj/item/storage/backpack/satchel/sec
-	duffelbag = /obj/item/storage/backpack/duffelbag/sec
+	back = /obj/item/storage/backpack/security
 
 	box = /obj/item/storage/box/survival/security
 	chameleon_extras = list(

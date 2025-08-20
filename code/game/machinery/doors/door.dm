@@ -1,3 +1,8 @@
+
+
+TYPEINFO_DEF(/obj/machinery/door)
+	default_armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 80, ACID = 70)
+
 DEFINE_INTERACTABLE(/obj/machinery/door)
 /obj/machinery/door
 	name = "door"
@@ -15,7 +20,6 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	power_channel = AREA_USAGE_ENVIRON
 	pass_flags_self = PASSDOORS
 	max_integrity = 350
-	armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 80, ACID = 70)
 	can_atmos_pass = CANPASS_PROC
 	flags_1 = PREVENT_CLICK_UNDER_1
 	receive_ricochet_chance_mod = 0.8
@@ -163,7 +167,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	if(isaicamera(user) || issilicon(user))
 		return .
 
-	if (isnull(held_item) && Adjacent(user))
+	if (isnull(held_item))
 		context[SCREENTIP_CONTEXT_LMB] = "Open"
 		context[SCREENTIP_CONTEXT_RMB] = "Knock"
 		return CONTEXTUAL_SCREENTIP_SET
@@ -292,6 +296,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		return
 
 	add_fingerprint(user)
+	user.animate_interact(src)
 	if(!density || (obj_flags & EMAGGED))
 		return
 
@@ -299,6 +304,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		open()
 	else
 		do_animate("deny")
+		user.client?.give_award(/datum/award/achievement/ai_door, user)
 
 /obj/machinery/door/attack_hand(mob/user, list/modifiers)
 	. = ..()
@@ -326,6 +332,8 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	else
 		add_fingerprint(user)
 
+	user.animate_interact(src)
+
 	if(operating || (obj_flags & EMAGGED) || !can_open_with_hands)
 		return
 
@@ -336,8 +344,10 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		else
 			close()
 		return .
+
 	if(density)
 		do_animate("deny")
+		user.client?.give_award(/datum/award/achievement/ai_door, user)
 
 /obj/machinery/door/allowed(mob/M)
 	if(emergency)
@@ -366,7 +376,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 
 /obj/machinery/door/welder_act(mob/living/user, obj/item/tool)
 	try_to_weld(tool, user)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/crowbar_act(mob/living/user, obj/item/tool)
 	if(user.combat_mode)
@@ -377,7 +387,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		var/obj/item/crowbar/crowbar = tool
 		forced_open = crowbar.force_opens
 	try_to_crowbar(tool, user, forced_open)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/attackby(obj/item/I, mob/living/user, params)
 	if((I.item_flags & NOBLUDGEON) || user.combat_mode)
@@ -394,7 +404,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 
 /obj/machinery/door/welder_act_secondary(mob/living/user, obj/item/tool)
 	try_to_weld_secondary(tool, user)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/crowbar_act_secondary(mob/living/user, obj/item/tool)
 	var/forced_open = FALSE
@@ -402,7 +412,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		var/obj/item/crowbar/crowbar = tool
 		forced_open = crowbar.force_opens
 	try_to_crowbar_secondary(tool, user, forced_open)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
 	. = ..()

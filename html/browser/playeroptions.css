@@ -1,6 +1,5 @@
 .job {
   display: block;
-  width: 173px;
 }
 
 .command {
@@ -14,4 +13,5 @@
 
 .nopositions {
   font-style: italic;
+  color: #a3a3a3;
 }

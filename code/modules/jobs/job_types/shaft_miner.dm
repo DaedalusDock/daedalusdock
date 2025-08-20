@@ -20,7 +20,7 @@
 		),
 	)
 
-	paycheck = PAYCHECK_MEDIUM
+	paycheck = /datum/job/cargo_technician::paycheck
 	paycheck_department = ACCOUNT_CAR
 
 	departments_list = list(
@@ -36,7 +36,7 @@
 	name = JOB_PROSPECTOR
 	jobtype = /datum/job/shaft_miner
 
-	id_trim = /datum/id_trim/job/shaft_miner
+	id_template = /datum/access_template/job/shaft_miner
 	uniform = /obj/item/clothing/under/rank/cargo/miner
 	backpack_contents = list(
 		/obj/item/flashlight/seclite = 1,
@@ -51,9 +51,7 @@
 	l_pocket = /obj/item/reagent_containers/hypospray/medipen/survival
 	r_pocket = /obj/item/storage/bag/ore //causes issues if spawned in backpack
 
-	backpack = /obj/item/storage/backpack/explorer
-	satchel = /obj/item/storage/backpack/satchel/explorer
-	duffelbag = /obj/item/storage/backpack/duffelbag/explorer
+	back = /obj/item/storage/backpack/explorer
 
 	box = /obj/item/storage/box/survival/mining
 

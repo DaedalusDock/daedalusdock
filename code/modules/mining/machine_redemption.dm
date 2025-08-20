@@ -28,10 +28,8 @@
 /obj/machinery/mineral/ore_redemption/Initialize(mapload)
 	. = ..()
 
-	internal_disk.set_data(
-		DATA_IDX_DESIGNS,
-		SStech.fetch_designs(subtypesof(/datum/design/alloy))
-	)
+	var/datum/c4_file/fab_design_bundle/dundle = new(SStech.fetch_designs(subtypesof(/datum/design/alloy)))
+	disk_write_file(dundle, internal_disk)
 	materials = AddComponent(/datum/component/remote_materials, "orm", mapload, mat_container_flags=BREAKDOWN_FLAGS_ORM)
 
 
@@ -167,7 +165,7 @@
 /obj/machinery/mineral/ore_redemption/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/mineral/ore_redemption/attackby(obj/item/W, mob/user, params)
 	if(default_deconstruction_screwdriver(user, "ore_redemption-open", "ore_redemption", W))
@@ -180,7 +178,7 @@
 
 	if(istype(W, /obj/item/disk/data))
 		if(user.transferItemToLoc(W, src))
-			inserted_disk = W
+			set_inserted_disk(W)
 			return TRUE
 
 	var/obj/item/stack/ore/O = W
@@ -240,7 +238,7 @@
 	if(inserted_disk)
 		data["hasDisk"] = TRUE
 		var/index = 1
-		for (var/datum/design/thisdesign in inserted_disk.read(DATA_IDX_DESIGNS))
+		for (var/datum/design/thisdesign in disk_get_designs(FABRICATOR_FILE_NAME, inserted_disk))
 			data["diskDesigns"] += list(list("name" = thisdesign.name, "index" = index, "canupload" = thisdesign.build_type&SMELTER))
 			index++
 	return data
@@ -313,7 +311,12 @@
 		if("diskUpload")
 			var/n = text2num(params["design"])
 			if(inserted_disk)
-				internal_disk.write(DATA_IDX_DESIGNS, inserted_disk.read(DATA_IDX_DESIGNS)[n], TRUE)
+				var/datum/design/to_add = disk_get_designs(FABRICATOR_FILE_NAME, inserted_disk)[n]
+				var/datum/c4_file/fab_design_bundle/dundle = disk_get_file(FABRICATOR_FILE_NAME, internal_disk)
+				if(!istype(dundle))
+					to_chat(usr, span_warning("Internal design database missing or corrupt. Operation failed."))
+				else
+					dundle.included_designs |= to_add
 			return TRUE
 
 		if("Smelt")
@@ -326,7 +329,7 @@
 
 			var/alloy_id = params["id"]
 			var/datum/design/alloy = SStech.designs_by_id[alloy_id]
-			if(!(alloy in internal_disk.read(DATA_IDX_DESIGNS)))
+			if(!(alloy in disk_get_designs(FABRICATOR_FILE_NAME)))
 				CRASH("Attempted to smelt an alloy we don't have a design for. HREF exploit?")
 
 			var/obj/item/card/id/I

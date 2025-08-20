@@ -20,7 +20,7 @@
 		),
 	)
 
-	paycheck = PAYCHECK_MEDIUM
+	paycheck = /datum/job/acolyte::paycheck
 	paycheck_department = ACCOUNT_MED
 
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
@@ -48,23 +48,22 @@
 	jobtype = /datum/job/paramedic
 
 	id = /obj/item/card/id/advanced
-	id_trim = /datum/id_trim/job/paramedic
+	id_template = /datum/access_template/job/paramedic
 	uniform = /obj/item/clothing/under/rank/medical/paramedic
 	suit = /obj/item/clothing/suit/toggle/labcoat/paramedic
 	backpack_contents = list(
 		/obj/item/roller = 1,
 		/obj/item/bodybag/stasis = 1,
-		/obj/item/pager/aether,
+		/obj/item/pager/aether = 1,
+		/obj/item/diagnosis_book = 1,
 	)
 	belt = /obj/item/storage/belt/medical/paramedic
 	ears = /obj/item/radio/headset/headset_med
 	head = /obj/item/clothing/head/soft/paramedic
 	gloves = /obj/item/clothing/gloves/color/latex/nitrile
-	shoes = /obj/item/clothing/shoes/sneakers/blue
+	shoes = /obj/item/clothing/shoes/really_blue_sneakers
 
-	backpack = /obj/item/storage/backpack/medic
-	satchel = /obj/item/storage/backpack/satchel/med
-	duffelbag = /obj/item/storage/backpack/duffelbag/med
+	back = /obj/item/storage/backpack/medic
 
 	box = /obj/item/storage/box/survival/medical
 	chameleon_extras = /obj/item/gun/syringe

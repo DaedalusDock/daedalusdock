@@ -182,9 +182,12 @@
 	///names of modes, ordered first to last
 	var/list/mode_names = list("normal", "classic", "honk", "fafafoggy")
 
-/obj/item/inspector/clown/attack(mob/living/M, mob/living/user)
-	. = ..()
+/obj/item/inspector/clown/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+		return NONE
+
 	print_report(user)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/inspector/clown/screwdriver_act(mob/living/user, obj/item/tool)
 	if(!cell_cover_open)

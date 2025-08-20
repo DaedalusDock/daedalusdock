@@ -39,7 +39,7 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 /// Unlocks special cargo crates
 /datum/adventure_loot_generator/cargo
 	id = "trade_contract"
-	var/static/list/unlockable_packs = list(/datum/supply_pack/exploration/scrapyard,/datum/supply_pack/exploration/catering,/datum/supply_pack/exploration/shrubbery)
+	var/static/list/unlockable_packs = list()
 
 /datum/adventure_loot_generator/cargo/generate()
 	var/list/still_locked_packs = list()
@@ -154,28 +154,26 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 	. = ..()
 	cell = new /obj/item/stock_parts/cell(src)
 
-/obj/item/firelance/attack(mob/living/M, mob/living/user, params)
-	if(!user.combat_mode)
-		return
-	. = ..()
-
 /obj/item/firelance/get_cell()
 	return cell
 
-/obj/item/firelance/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-	if(!HAS_TRAIT(src,TRAIT_WIELDED))
+/obj/item/firelance/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!wielded)
 		to_chat(user,span_notice("You need to wield [src] in two hands before you can fire it."))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(LAZYACCESS(user.do_afters, "firelance"))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(!cell.use(charge_per_use))
 		to_chat(user,span_warning("[src] battery ran dry!"))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	ADD_TRAIT(user,TRAIT_IMMOBILIZED,src)
 	to_chat(user,span_notice("You begin to charge [src]"))
 	inhand_icon_state = "firelance_charging"
 	user.update_held_items()
+
 	if(do_after(user,windup_time,interaction_key="firelance",extra_checks = CALLBACK(src, PROC_REF(windup_checks))))
 		var/turf/start_turf = get_turf(user)
 		var/turf/last_turf = get_ranged_target_turf(start_turf,user.dir,melt_range)
@@ -183,9 +181,11 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 		for(var/turf/turf_to_melt in get_line(start_turf,last_turf))
 			if(turf_to_melt.density)
 				turf_to_melt.Melt()
+
 	inhand_icon_state = initial(inhand_icon_state)
 	user.update_held_items()
 	REMOVE_TRAIT(user,TRAIT_IMMOBILIZED,src)
+	return ITEM_INTERACT_SUCCESS
 
 /// Additional windup checks
 /obj/item/firelance/proc/windup_checks()

@@ -18,7 +18,7 @@
 	head = /obj/item/clothing/head/helmet/swat
 	back = /obj/item/storage/backpack
 	id = /obj/item/card/id/advanced/chameleon
-	id_trim = /datum/id_trim/chameleon/operative
+	id_template = /datum/access_template/chameleon/operative
 
 /obj/effect/mob_spawn/corpse/human/syndicatecommando
 	name = "Syndicate Commando"
@@ -36,7 +36,7 @@
 	back = /obj/item/mod/control/pre_equipped/nuclear
 	r_pocket = /obj/item/tank/internals/emergency_oxygen
 	id = /obj/item/card/id/advanced/chameleon
-	id_trim = /datum/id_trim/chameleon/operative
+	id_template = /datum/access_template/chameleon/operative
 
 
 /obj/effect/mob_spawn/corpse/human/syndicatestormtrooper
@@ -54,11 +54,11 @@
 	mask = /obj/item/clothing/mask/gas/syndicate
 	back = /obj/item/mod/control/pre_equipped/elite
 	id = /obj/item/card/id/advanced/chameleon
-	id_trim = /datum/id_trim/chameleon/operative
+	id_template = /datum/access_template/chameleon/operative
 
 /obj/effect/mob_spawn/corpse/human/pirate
 	name = "Pirate"
-	skin_tone = "caucasian1" //all pirates are white because it's easier that way
+	skin_tone = "Fjällröker" //all pirates are white because it's easier that way
 	outfit = /datum/outfit/piratecorpse
 	hairstyle = "Bald"
 	facial_hairstyle = "Shaved"
@@ -138,7 +138,7 @@
 	hairstyle = "Bald"
 	facial_hairstyle = "Beard (Very Long)"
 	facial_haircolor = COLOR_WHITE
-	skin_tone = "caucasian1"
+	skin_tone = "Fjällröker"
 
 /datum/outfit/wizardcorpse
 	name = "Space Wizard Corpse"
@@ -165,7 +165,7 @@
 	head = /obj/item/clothing/head/helmet/swat/nanotrasen
 	back = /obj/item/storage/backpack/security
 	id = /obj/item/card/id/advanced/centcom
-	id_trim = /datum/id_trim/centcom/corpse/private_security/tradepost_officer
+	id_template = /datum/access_template/centcom/corpse/private_security/tradepost_officer
 
 /obj/effect/mob_spawn/corpse/human/nanotrasenassaultsoldier
 	name = "Nanotrasen Private Security Officer"
@@ -184,13 +184,13 @@
 	head = /obj/item/clothing/head/helmet/swat/nanotrasen
 	back = /obj/item/storage/backpack/security
 	id = /obj/item/card/id/advanced/centcom
-	id_trim = /datum/id_trim/centcom/corpse/assault
+	id_template = /datum/access_template/centcom/corpse/assault
 
 /obj/effect/mob_spawn/corpse/human/cat_butcher
 	name = "The Cat Surgeon"
 	hairstyle = "Cut Hair"
 	facial_hairstyle = "Watson Mustache"
-	skin_tone = "caucasian1"
+	skin_tone = "Fjällröker"
 	outfit = /datum/outfit/cat_butcher
 
 /datum/outfit/cat_butcher
@@ -203,7 +203,7 @@
 	back = /obj/item/storage/backpack/satchel/med
 	id = /obj/item/card/id/advanced
 	glasses = /obj/item/clothing/glasses/hud/health
-	id_trim = /datum/id_trim/away/cat_surgeon
+	id_template = /datum/access_template/away/cat_surgeon
 
 /obj/effect/mob_spawn/corpse/human/bee_terrorist
 	name = "BLF Operative"

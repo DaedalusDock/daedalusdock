@@ -1,0 +1,62 @@
+2025-07-10:
+  Kapu1178:
+  - tweak: Adjusted the in-game year.
+2025-07-11:
+  yyzsong:
+  - spellcheck: fedaration -> Federation
+2025-07-14:
+  Kapu1178:
+  - rscadd: Added significantly more forenames and surnames to the human name generator.
+  - bugfix: Security batons.
+  - bugfix: Eating.
+  - bugfix: Being unable to place beakers and similar items on tables.
+  - bugfix: Inserting items into fabricators/lathes.
+  - bugfix: ThinkDOS commands parsing incorrectly.
+  - bugfix: Interacting with Daedalus employees that was supposed to be secret spamming
+      the chat every 2 seconds.
+  - bugfix: Management now has access to... Management.
+2025-07-18:
+  Kapu1178:
+  - refactor: Rewrote the Jukebox to support multiple jukeboxes on the map.
+  - bugfix: Fixed TGUI assets such as cursors not working.
+2025-07-19:
+  Kapu1178:
+  - bugfix: Overlapping bitflags in AI code
+2025-07-21:
+  Kapu1178:
+  - rscadd: Restyled TGUI
+  - rscadd: Many new screentips.
+  - rscadd: Screentip icons.
+  - bugfix: Fixed many item interactions requiring combat mode.
+  - rscadd: Detective can now enter "Investigation Mode" while wearing his hat.
+2025-07-27:
+  Kapu1178:
+  - bugfix: Fixed the "Set Bone" surgery step not being required for "Repair Bone"
+  - rscdel: Removed the ability to succumb.
+  - rscadd: Using the ghost verb while unconscious now prompts you if you really want
+      to ghost.
+2025-07-28:
+  Kapu1178:
+  - rscadd: ThinkDOS command names are now case insensitive.
+  - bugfix: Corrected an instance of ThinkDOS files being case insensitive.
+  - bugfix: Dry blood puddles no longer contribute to bloody soles.
+  - bugfix: Cigarettes no longer have an equip delay.
+  - bugfix: Soda cans have sprites again.
+  - bugfix: Payroll announcement now correctly identifies the currency as "marks".
+  - bugfix: Personal lockers can be claimed again.
+  - bugfix: Centcomm's doors open when the emergency shuttle docks with it.
+  ToasterBan:
+  - rscadd: Chalk is now edible
+  - bugfix: Crayons are now edible again
+2025-07-30:
+  Francinum:
+  - rscadd: Embedded Controller Pin and ID Access programs
+  - code_imp: Static Pincode System
+  Kapu1178:
+  - rscadd: The Bodyscanner now has a print function.
+  - rscadd: Created a framework for 'Embedded' Computer4 Machines.
+  - rscadd: Embedded Controllers take input from a keybad and are mostly used to control
+      simple equipment.
+  - refactor: This system will eventually obsolete legacy Embedded Controllers, such
+      as those used in the Toxins burn chamber, and Virology.
+  - refactor: Rewrote ~100 items, report any new issues.

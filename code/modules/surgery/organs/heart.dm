@@ -240,13 +240,40 @@
 	if(pulse == PULSE_NONE)
 		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Asystole</span>" : "Asystole"
 
+/obj/item/organ/heart/stethoscope_listen()
+	. = ..()
+
+	if((organ_flags & ORGAN_SYNTHETIC) && is_working())
+		if(passed_low_threshold())
+			. += "a sputtering pump"
+		else
+			. += "the steady whirr of a pump"
+		return
+
+	if((pulse == PULSE_NONE) || HAS_TRAIT(owner, TRAIT_FAKEDEATH))
+		. += "no pulse"
+		return
+
+	var/pulse_sound
+	switch(pulse)
+		if(PULSE_SLOW)
+			pulse_sound = "slow"
+		if(PULSE_FAST)
+			pulse_sound = "fast"
+		if(PULSE_2FAST)
+			pulse_sound = "very fast"
+		if(PULSE_THREADY)
+			pulse_sound = "extremely fast and faint"
+
+	. += "a [passed_low_threshold() ? "irregular" : "steady"][pulse_sound ? " [pulse_sound]" : ""] pulse"
+
 /datum/client_colour/cursed_heart_blood
 	priority = 100 //it's an indicator you're dying, so it's very high priority
 	colour = "red"
 
 /obj/item/organ/heart/cybernetic
 	name = "basic cybernetic heart"
-	desc = "A basic electronic device designed to mimic the functions of an organic human heart."
+	desc = "A basic electronic device designed to mimic the functions of an organic minervan heart."
 	base_icon_state = "heart-c"
 	icon_state = "heart-c-on"
 	organ_flags = ORGAN_SYNTHETIC
@@ -258,7 +285,7 @@
 
 /obj/item/organ/heart/cybernetic/tier2
 	name = "cybernetic heart"
-	desc = "An electronic device designed to mimic the functions of an organic human heart. Also holds an emergency dose of epinephrine, used automatically after facing severe trauma."
+	desc = "An electronic device designed to mimic the functions of an organic minervan heart. Also holds an emergency dose of epinephrine, used automatically after facing severe trauma."
 	icon_state = "heart-c-u-on"
 	base_icon_state = "heart-c-u"
 	maxHealth = 60
@@ -267,7 +294,7 @@
 
 /obj/item/organ/heart/cybernetic/tier3
 	name = "upgraded cybernetic heart"
-	desc = "An electronic device designed to mimic the functions of an organic human heart. Also holds an emergency dose of epinephrine, used automatically after facing severe trauma. This upgraded model can regenerate its dose after use."
+	desc = "An electronic device designed to mimic the functions of an organic minervan heart. Also holds an emergency dose of epinephrine, used automatically after facing severe trauma. This upgraded model can regenerate its dose after use."
 	icon_state = "heart-c-u2-on"
 	base_icon_state = "heart-c-u2"
 	maxHealth = 90
@@ -488,7 +515,7 @@
 	stop_crystalization_process(ethereal)
 
 /obj/item/organ/heart/vox
-	name = "vox heart"
+	name = "voks heart"
 	icon_state = "vox-heart-on"
 	base_icon_state = "vox-heart"
 

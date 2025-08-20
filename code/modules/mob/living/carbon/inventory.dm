@@ -24,6 +24,19 @@
 		legcuffed,
 	)
 
+///Bruteforce check for any type or subtype of an item.
+/mob/living/carbon/proc/is_wearing_item_of_type(type2check)
+	var/found
+	var/list/my_items = get_all_worn_items()
+	if(islist(type2check))
+		for(var/type_iterator in type2check)
+			found = locate(type_iterator) in my_items
+			if(found)
+				return found
+	else
+		found = locate(type2check) in my_items
+		return found
+
 /mob/living/carbon/get_slot_by_item(obj/item/looking_for)
 	if(looking_for == back)
 		return ITEM_SLOT_BACK
@@ -219,7 +232,7 @@
 
 	if(offered)
 		if(offered == src)
-			if(!swap_hand(get_inactive_hand_index())) //have to swap hands first to take something
+			if(!try_swap_hand(get_inactive_hand_index())) //have to swap hands first to take something
 				to_chat(src, span_warning("You try to take [offered_item] from yourself, but fail."))
 				return
 			if(!put_in_active_hand(offered_item))
@@ -282,6 +295,8 @@
 
 	visible_message(span_notice("[src] takes [I] from [offerer]."), \
 					span_notice("You take [I] from [offerer]."))
+
+	I.do_pickup_animation(src, get_turf(src))
 	put_in_hands(I)
 
 ///Returns a list of all body_zones covered by clothing

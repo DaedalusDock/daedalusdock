@@ -4,6 +4,8 @@
 	meat = /obj/item/food/meat/slab/human/mutant/ethereal
 	exotic_blood = /datum/reagent/consumable/liquidelectricity //Liquid Electricity. fuck you think of something better gamer
 
+	name_generator_type = /datum/name_generator/ethereal
+
 	siemens_coeff = 0.5 //They thrive on energy
 	brutemod = 1.25 //They're weak to punches
 
@@ -100,16 +102,6 @@
 	UnregisterSignal(C, COMSIG_LIGHT_EATER_ACT)
 	QDEL_NULL(ethereal_light)
 	return ..()
-
-
-/datum/species/ethereal/random_name(gender,unique,lastname)
-	if(unique)
-		return random_unique_ethereal_name()
-
-	var/randname = ethereal_name()
-
-	return randname
-
 
 /datum/species/ethereal/spec_updatehealth(mob/living/carbon/human/H)
 	. = ..()

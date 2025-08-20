@@ -1,5 +1,8 @@
 #define SPAM_CD 3 SECONDS
 
+TYPEINFO_DEF(/obj/machinery/prisongate)
+	default_armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 80, ACID = 70)
+
 /obj/machinery/prisongate
 	name = "prison gate scanner"
 	desc = "A hardlight gate with an ID scanner attached to the side. Good at deterring even the most persistent temporarily embarrassed employee."
@@ -8,7 +11,6 @@
 	/// roughly the same health/armor as an airlock
 	max_integrity = 450
 	damage_deflection = 30
-	armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 80, ACID = 70)
 	use_power = IDLE_POWER_USE
 	power_channel = AREA_USAGE_EQUIP
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.05
@@ -50,7 +52,7 @@
 		return TRUE
 	for(var/obj/item/card/id/regular_id in the_toucher.get_all_contents())
 		var/list/id_access = regular_id.GetAccess()
-		if(ACCESS_BRIG in id_access)
+		if(ACCESS_SECURITY in id_access)
 			if(COOLDOWN_FINISHED(src, spam_cooldown_time))
 				say("Brig clearance detected. Access granted.")
 				playsound(src, 'sound/machines/chime.ogg', 50, FALSE)

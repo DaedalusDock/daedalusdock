@@ -1,5 +1,6 @@
 /datum/game_mode/one_antag/nuclear_emergency
 	name = "Nuclear Emergency"
+	config_key = "nuclear_emergency"
 
 	weight = GAMEMODE_WEIGHT_EPIC
 	required_enemies = 5

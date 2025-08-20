@@ -3,13 +3,17 @@ SUBSYSTEM_DEF(economy)
 	wait = 5 MINUTES
 	init_order = INIT_ORDER_ECONOMY
 	runlevels = RUNLEVEL_GAME
-	///How many paychecks should players start out the round with?
-	var/roundstart_paychecks = 5
 
 	var/payday_interval = 8 // How many fires between paydays
 
-	/// How many credits to give to each department at round start.
-	var/roundstart_budget_amt = 4000
+	/// How many marks to give to each department at round start.
+	var/roundstart_budget_map = list(
+		ACCOUNT_ENG = 750,
+		ACCOUNT_MED = 750,
+		ACCOUNT_CAR = 2000,
+		ACCOUNT_SEC = 500,
+		ACCOUNT_GOV = 500,
+	)
 
 	var/list/department_id2name = list(
 		ACCOUNT_ENG = ACCOUNT_ENG_NAME,
@@ -44,7 +48,7 @@ SUBSYSTEM_DEF(economy)
 	///List of the departmental budget cards in existance.
 	var/list/dep_cards = list()
 
-	/// A var that collects the total amount of credits owned in player accounts on station, reset and recounted on fire()
+	/// A var that collects the total amount of marks owned in player accounts on station, reset and recounted on fire()
 	var/station_total = 0
 
 	/// Contains the message to send to newscasters about price inflation and earnings, updated on price_update()
@@ -71,9 +75,7 @@ SUBSYSTEM_DEF(economy)
 
 /datum/controller/subsystem/economy/Initialize(timeofday)
 	for(var/dep_id in department_id2name)
-		department_accounts_by_id[dep_id] = new /datum/bank_account/department(dep_id, department_id2name[dep_id], roundstart_budget_amt)
-
-	department_accounts_by_id[ACCOUNT_GOV].account_balance = 1000
+		department_accounts_by_id[dep_id] = new /datum/bank_account/department(dep_id, department_id2name[dep_id], roundstart_budget_map[dep_id] || 0)
 
 	station_master = department_accounts_by_id[ACCOUNT_STATION_MASTER]
 	return ..()
@@ -128,7 +130,7 @@ SUBSYSTEM_DEF(economy)
 				/// We don't use transfering, because we already know there's enough money.
 				bank_account.payday()
 
-			var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
+			var/obj/machinery/announcement_system/announcer = pick_safe(GLOB.announcement_systems)
 			if(!announcer)
 				continue //sucks to suck lmao
 
@@ -143,11 +145,11 @@ SUBSYSTEM_DEF(economy)
 
 				announcer.pda_message(
 					target_id,
-					"Your payroll for this quarter has been processed. A sum of [round(bank_account.account_job.paycheck * bank_account.payday_modifier)] has been deposited into your account.",
+					"Your payroll for this quarter has been processed. A sum of [round(bank_account.account_job.paycheck * bank_account.payday_modifier)] marks has been deposited into your account.",
 				)
 
 		else
-			var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
+			var/obj/machinery/announcement_system/announcer = pick_safe(GLOB.announcement_systems)
 			if(!announcer)
 				continue //sucks to suck lmao
 
@@ -291,21 +293,30 @@ SUBSYSTEM_DEF(economy)
 	if(findtext(paper_contents, "subject_one"))
 		paper_primary_subject = paper_base_subject
 		all_tracked_data += "subject_one"
+
 	if(findtext(paper_contents, "subject_two"))
 		paper_secondary_subject = pick_list(PAPERWORK_FILE, "subject")
 		if(paper_secondary_subject == paper_base_subject) // okay but what are the odds of picking the same name, threee times?
 			paper_secondary_subject = pick_list(PAPERWORK_FILE, "subject")
 		all_tracked_data += "subject_two"
+
 	if(findtext(paper_contents, "victim"))
-		var/list/possible_names = list(
-			"human" = random_unique_name(),
-			"lizard" = random_unique_lizard_name(),
-			"ethereal" = random_unique_ethereal_name(),
-			"moth" = random_unique_moth_name(),
+		var/list/species_to_generator_type = list(
+			/datum/species/human::name = /datum/species/human::name_generator_type,
+			/datum/species/moth::name = /datum/species/moth::name_generator_type,
+			/datum/species/lizard::name = /datum/species/lizard::name_generator_type,
+			/datum/species/vox::name = /datum/species/vox::name_generator_type,
+			/datum/species/teshari::name = /datum/species/teshari::name_generator_type,
+			/datum/species/ethereal::name = /datum/species/ethereal::name_generator_type,
 		)
-		paper_victim_species = pick(possible_names)
-		paper_victim = possible_names[paper_victim_species]
+		var/chosen_species = pick(species_to_generator_type)
+		var/chosen_generator_type = species_to_generator_type[chosen_species]
+		var/datum/name_generator/name_gen = new chosen_generator_type
+
+		paper_victim_species = lowertext(chosen_species)
+		paper_victim = name_gen.Generate()
 		all_tracked_data += "victim"
+
 	if(findtext(paper_contents, "station_name"))
 		paper_station = prob(80) ? "[new_station_name()] Research Station" : "[syndicate_name()] Research Station"
 		all_tracked_data += "station"

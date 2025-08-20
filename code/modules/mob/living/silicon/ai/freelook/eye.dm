@@ -12,6 +12,7 @@
 	hud_possible = list(
 		AI_DETECT_HUD = HUD_LIST_LIST
 	)
+
 	var/list/visibleCameraChunks = list()
 	var/mob/living/silicon/ai/ai = null
 	var/relay_speech = FALSE
@@ -19,6 +20,7 @@
 	var/static_visibility_range = 16
 	var/ai_detector_visible = TRUE
 	var/ai_detector_color = COLOR_RED
+
 	interaction_range = null
 
 /mob/camera/ai_eye/Initialize(mapload)
@@ -39,7 +41,7 @@
 	var/list/old_images = hud_list[AI_DETECT_HUD]
 	if(!ai_detector_visible)
 		hud.remove_atom_from_hud(src)
-		QDEL_LIST(old_images)
+		old_images.Cut()
 		return
 
 	if(!length(hud.hud_users))
@@ -103,7 +105,7 @@
 			var/obj/machinery/holopad/H = ai.current
 			H.move_hologram(ai, destination)
 		if(ai.camera_light_on)
-			ai.light_cameras()
+			ai.update_lit_cameras()
 		if(ai.master_multicam)
 			ai.master_multicam.refresh_view()
 
@@ -122,12 +124,14 @@
 	for(var/V in visibleCameraChunks)
 		var/datum/camerachunk/c = V
 		c.remove(src)
+
 	GLOB.aiEyes -= src
+
 	if(ai_detector_visible)
 		var/datum/atom_hud/ai_detector/hud = GLOB.huds[DATA_HUD_AI_DETECT]
 		hud.remove_atom_from_hud(src)
 		var/list/L = hud_list[AI_DETECT_HUD]
-		QDEL_LIST(L)
+		L.Cut()
 	return ..()
 
 /atom/proc/move_camera_by_click()

@@ -4,6 +4,9 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = null
 	w_class = WEIGHT_CLASS_TINY
+
+	has_combat_mode_interaction = TRUE
+
 	var/amount_per_transfer_from_this = 5
 	var/list/possible_transfer_amounts = list(5,10,15,20,25,30)
 	/// Where we are in the possible transfer amount list.
@@ -21,7 +24,9 @@
 	. = ..()
 	if(isnum(vol) && vol > 0)
 		volume = vol
+
 	create_reagents(volume, reagent_flags)
+
 	if(spawned_disease)
 		var/datum/pathogen/F = new spawned_disease()
 		var/list/data = list("viruses"= list(F))
@@ -45,17 +50,13 @@
 	RegisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_ADD_REAGENT, COMSIG_REAGENTS_DEL_REAGENT, COMSIG_REAGENTS_REM_REAGENT), PROC_REF(on_reagent_change))
 	RegisterSignal(reagents, COMSIG_PARENT_QDELETING, PROC_REF(on_reagents_del))
 
-/obj/item/reagent_containers/pre_attack(atom/A, mob/living/user, params)
-	if (user.combat_mode)
-		if(try_splash(user, A))
-			return TRUE
+/obj/item/reagent_containers/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	if(user.combat_mode)
+		if(try_splash(user, interacting_with))
+			return ITEM_INTERACT_SUCCESS
+		return ITEM_INTERACT_BLOCKING
 
-	return ..()
-
-/obj/item/reagent_containers/attack(mob/living/M, mob/living/user, params)
-	if(!user.combat_mode)
-		return
-	return ..()
+	return NONE
 
 /obj/item/reagent_containers/proc/on_reagents_del(datum/reagents/reagents)
 	SIGNAL_HANDLER
@@ -90,28 +91,20 @@
 	balloon_alert(user, "transferring [amount_per_transfer_from_this]u")
 	mode_change_message(user)
 
-/obj/item/reagent_containers/pre_attack_secondary(atom/target, mob/living/user, params)
-	if (try_splash(user, target))
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-
-	return ..()
-
 /// Tries to splash the target. Used on both right-click and normal click when in combat mode.
 /obj/item/reagent_containers/proc/try_splash(mob/user, atom/target)
 	if (!spillable)
 		return FALSE
 
 	if (!reagents?.total_volume)
-		to_chat(user, span_warning("There are no reagents in this container to splash!"))
+		to_chat(user, span_warning("There are no reagents in this container."))
 		return FALSE
 
 	var/punctuation = ismob(target) ? "!" : "."
 
 	var/reagent_text
 	user.visible_message(
-		span_danger("[user] splashes the contents of [src] onto [target == user ? "themself" : target][punctuation]"),
-		span_danger("You splash the contents of [src] onto [target == user ? "themself" : target][punctuation]"),
-		ignored_mobs = target,
+		span_danger("<b>[user]</b> splashes the contents of [src] onto <b>[target == user ? "themself" : target]</b>[punctuation]"),
 	)
 	if(user != target && ismob(target))
 		var/mob/living/L = target

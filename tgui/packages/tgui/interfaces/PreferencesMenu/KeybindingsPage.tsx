@@ -1,6 +1,7 @@
 import { range, sortBy } from 'common/collections';
 import { isEscape, KEY } from 'common/keys';
 import { Component } from 'react';
+import { Tooltip } from 'tgui-core/components';
 
 import { resolveAsset } from '../../assets';
 import { useBackend } from '../../backend';
@@ -9,7 +10,6 @@ import {
   Button,
   KeyListener,
   Stack,
-  Tooltip,
   TrackOutsideClicks,
 } from '../../components';
 import { KeyEvent } from '../../events';

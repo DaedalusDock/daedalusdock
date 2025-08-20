@@ -1,4 +1,5 @@
 import { toFixed } from 'common/math';
+import { Tooltip } from 'tgui-core/components';
 
 import { useBackend } from '../backend';
 import {
@@ -11,7 +12,6 @@ import {
   LabeledList,
   RoundGauge,
   Section,
-  Tooltip,
 } from '../components';
 import { formatSiUnit } from '../format';
 import { Window } from '../layouts';

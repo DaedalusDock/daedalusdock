@@ -199,10 +199,10 @@
 	toggle_magazine()
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-/obj/item/gun/ballistic/shotgun/bulldog/afterattack_secondary(mob/living/victim, mob/living/user, params)
+/obj/item/gun/ballistic/shotgun/bulldog/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
 	if(secondary_magazine)
 		toggle_magazine()
-	return SECONDARY_ATTACK_CALL_NORMAL
+	return ..()
 
 /obj/item/gun/ballistic/shotgun/bulldog/attackby_secondary(obj/item/weapon, mob/user, params)
 	if(!istype(weapon, secondary_magazine_type))
@@ -295,10 +295,7 @@
 	QDEL_NULL(hook)
 	return ..()
 
-/obj/item/gun/ballistic/shotgun/hook/examine(mob/user)
-	. = ..()
-	. += span_notice("Right-click to shoot the hook.")
-
-/obj/item/gun/ballistic/shotgun/hook/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
-	hook.afterattack(target, user, proximity_flag, click_parameters)
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+/obj/item/gun/ballistic/shotgun/hook/try_fire_gun(atom/target, mob/living/user, params)
+	if(LAZYACCESS(params2list(params), RIGHT_CLICK))
+		return hook.try_fire_gun(target, user, params)
+	return ..()

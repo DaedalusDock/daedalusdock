@@ -125,7 +125,7 @@
 					shuttle_spawns.Add(/mob/living/simple_animal/hostile/syndicate/ranged/infiltrator)
 
 			if(RUSKY_PARTY)
-				var/datum/supply_pack/pack = SSshuttle.supply_packs[/datum/supply_pack/service/party]
+				var/datum/supply_pack/pack = SSshuttle.supply_packs[/datum/supply_pack/misc/party]
 				pack.generate(pick_n_take(empty_shuttle_turfs))
 
 				shuttle_spawns.Add(/mob/living/simple_animal/hostile/russian)
@@ -141,7 +141,7 @@
 				var/turf/T
 				for(var/i in 1 to 10)
 					if(prob(15))
-						shuttle_spawns.Add(/obj/item/reagent_containers/glass/bottle)
+						shuttle_spawns.Add(/obj/item/reagent_containers/cup/bottle)
 					else if(prob(15))
 						shuttle_spawns.Add(/obj/item/reagent_containers/syringe)
 					else if(prob(25))
@@ -149,19 +149,15 @@
 					T = pick_n_take(empty_shuttle_turfs)
 					new infected_assistant(T)
 				shuttle_spawns.Add(/obj/structure/closet/crate)
-				shuttle_spawns.Add(/obj/item/reagent_containers/glass/bottle/pierrot_throat)
-				shuttle_spawns.Add(/obj/item/reagent_containers/glass/bottle/magnitis)
+				shuttle_spawns.Add(/obj/item/reagent_containers/cup/bottle/pierrot_throat)
+				shuttle_spawns.Add(/obj/item/reagent_containers/cup/bottle/magnitis)
 
 			if(DEPARTMENT_RESUPPLY)
 				var/list/crate_types = list(
-					/datum/supply_pack/emergency/equipment,
-					/datum/supply_pack/security/supplies,
-					/datum/supply_pack/organic/food,
-					/datum/supply_pack/emergency/weedcontrol,
+					/datum/supply_pack/emergency/internals,
+					/datum/supply_pack/food/food,
 					/datum/supply_pack/engineering/tools,
 					/datum/supply_pack/engineering/engiequipment,
-					/datum/supply_pack/science/robotics,
-					/datum/supply_pack/science/plasma,
 					/datum/supply_pack/medical/supplies
 					)
 				for(var/crate in crate_types)
@@ -177,7 +173,7 @@
 				for(var/i in 1 to 6)
 					shuttle_spawns.Add(pick(prob(5) ? naughtypizza : nicepizza))
 			if(ITS_HIP_TO)
-				var/datum/supply_pack/pack = SSshuttle.supply_packs[/datum/supply_pack/organic/hydroponics/beekeeping_fullkit]
+				var/datum/supply_pack/pack = SSshuttle.supply_packs[/datum/supply_pack/job_equipment/beekeeping_fullkit]
 				pack.generate(pick_n_take(empty_shuttle_turfs))
 
 				shuttle_spawns.Add(/obj/effect/mob_spawn/corpse/human/bee_terrorist)

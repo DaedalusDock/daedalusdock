@@ -37,35 +37,41 @@
 	/// How much we add to flesh_healing for burn wounds on application
 	var/flesh_regeneration
 
-/obj/item/stack/medical/attack(mob/living/M, mob/user)
-	. = ..()
-	try_heal(M, user)
+/obj/item/stack/medical/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
+	return try_heal(interacting_with, user)
 
 /// In which we print the message that we're starting to heal someone, then we try healing them. Does the do_after whether or not it can actually succeed on a targeted mob
 /obj/item/stack/medical/proc/try_heal(mob/living/patient, mob/user, silent = FALSE)
 	if(!patient.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	if(patient == user)
 		if(!silent)
 			user.visible_message(span_notice("[user] starts to apply [src] on [user.p_them()]self..."), span_notice("You begin applying [src] on yourself..."))
 		if(!do_after(user, patient, self_delay, DO_PUBLIC, extra_checks=CALLBACK(patient, TYPE_PROC_REF(/mob/living, try_inject), user, null, INJECT_TRY_SHOW_ERROR_MESSAGE), display = src))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 	else if(other_delay)
 		if(!silent)
 			user.visible_message(span_notice("[user] starts to apply [src] on [patient]."), span_notice("You begin applying [src] on [patient]..."))
 		if(!do_after(user, patient, other_delay, DO_PUBLIC, extra_checks=CALLBACK(patient, TYPE_PROC_REF(/mob/living, try_inject), user, null, INJECT_TRY_SHOW_ERROR_MESSAGE), display = src))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 	if(use_sound)
 		playsound(loc, use_sound, 50)
 
-	if(heal(patient, user))
-		log_combat(user, patient, "healed", src.name)
-		use(1)
-		if(repeating && amount > 0)
-			try_heal(patient, user, TRUE)
+	if(!heal(patient, user))
+		return ITEM_INTERACT_BLOCKING
+
+	log_combat(user, patient, "healed", src.name)
+	use(1)
+
+	if(repeating && amount > 0)
+		try_heal(patient, user, TRUE)
+	return ITEM_INTERACT_SUCCESS
 
 /// Apply the actual effects of the healing if it's a simple animal, goes to [/obj/item/stack/medical/proc/heal_carbon] if it's a carbon, returns TRUE if it works, FALSE if it doesn't
 /obj/item/stack/medical/proc/heal(mob/living/patient, mob/user)
@@ -398,9 +404,9 @@
 	novariants = TRUE
 	merge_type = /obj/item/stack/medical/bone_gel
 
-/obj/item/stack/medical/bone_gel/attack(mob/living/M, mob/user)
+/obj/item/stack/medical/bone_gel/try_heal(mob/living/patient, mob/user, silent)
 	to_chat(user, span_warning("Bone gel can only be used on fractured limbs!"))
-	return
+	return ITEM_INTERACT_BLOCKING
 
 /obj/item/stack/medical/bone_gel/suicide_act(mob/user)
 	if(!iscarbon(user))

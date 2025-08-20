@@ -2,6 +2,9 @@
 	title = JOB_CLOWN
 	description = "Entertain the crew, make bad jokes, go on a holy quest to find bananium, HONK!"
 	faction = FACTION_STATION
+
+	pinpad_key = "pantomime"
+
 	total_positions = 2
 	spawn_positions = 2
 	exp_granted_type = EXP_TYPE_CREW
@@ -51,7 +54,7 @@
 	name = "Clown"
 	jobtype = /datum/job/clown
 
-	id_trim = /datum/id_trim/job/clown
+	id_template = /datum/access_template/job/clown
 	uniform = /obj/item/clothing/under/rank/civilian/clown
 	backpack_contents = list(
 		/obj/item/stamp/clown = 1,
@@ -65,9 +68,7 @@
 	mask = /obj/item/clothing/mask/gas/clown_hat
 	l_pocket = /obj/item/bikehorn
 
-	backpack = /obj/item/storage/backpack/clown
-	satchel = /obj/item/storage/backpack/clown
-	duffelbag = /obj/item/storage/backpack/duffelbag/clown //strangely has a duffel
+	back = /obj/item/storage/backpack/clown
 
 	box = /obj/item/storage/box/hug/survival
 	chameleon_extras = /obj/item/stamp/clown
@@ -108,12 +109,12 @@
 	name = "Mime"
 	jobtype = /datum/job/clown
 
-	id_trim = /datum/id_trim/job/mime
+	id_template = /datum/access_template/job/mime
 	uniform = /obj/item/clothing/under/rank/civilian/mime
 	suit = /obj/item/clothing/suit/toggle/suspenders
 	backpack_contents = list(
 		/obj/item/book/mimery = 1,
-		/obj/item/reagent_containers/food/drinks/bottle/bottleofnothing = 1,
+		/obj/item/reagent_containers/cup/glass/bottle/bottleofnothing = 1,
 		/obj/item/stamp/mime = 1,
 		)
 	belt = /obj/item/modular_computer/tablet/pda/mime
@@ -123,9 +124,7 @@
 	mask = /obj/item/clothing/mask/gas/mime
 	shoes = /obj/item/clothing/shoes/laceup
 
-	backpack = /obj/item/storage/backpack/mime
-	satchel = /obj/item/storage/backpack/mime
-
+	back = /obj/item/storage/backpack/mime
 	chameleon_extras = /obj/item/stamp/mime
 
 /datum/outfit/job/mime/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)

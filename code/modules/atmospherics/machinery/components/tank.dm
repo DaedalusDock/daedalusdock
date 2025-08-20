@@ -1,5 +1,8 @@
 #define TANK_PLATING_SHEETS 12
 
+TYPEINFO_DEF(/obj/machinery/atmospherics/components/tank)
+	default_materials = list(/datum/material/iron = TANK_PLATING_SHEETS * MINERAL_MATERIAL_AMOUNT)
+
 /obj/machinery/atmospherics/components/tank
 	icon = 'icons/obj/atmospherics/stationary_canisters.dmi'
 	icon_state = "smooth"
@@ -12,7 +15,6 @@
 	density = TRUE
 	layer = ABOVE_WINDOW_LAYER
 
-	custom_materials = list(/datum/material/iron = TANK_PLATING_SHEETS * MINERAL_MATERIAL_AMOUNT) // plasteel is not a material to prevent two bugs: one where the default pressure is 1.5 times higher as plasteel's material modifier is added, and a second one where the tank names could be "plasteel plasteel" tanks
 	material_flags = MATERIAL_EFFECTS | MATERIAL_GREYSCALE | MATERIAL_ADD_PREFIX | MATERIAL_AFFECT_STATISTICS
 
 	pipe_flags = PIPING_ONE_PER_TURF
@@ -63,14 +65,8 @@
 	/// The typecache of types which are allowed to merge internal storage
 	var/static/list/merger_typecache
 
-	/// The window filter icon. This is a static because we dont need to hash an icon every fucking process call.
-	var/static/window_icon
-
 /obj/machinery/atmospherics/components/tank/Initialize(mapload)
 	. = ..()
-
-	if(!window_icon)
-		window_icon = icon('icons/obj/atmospherics/stationary_canisters.dmi', "window-bg")
 
 	if(!knob_overlays)
 		knob_overlays = list()
@@ -326,10 +322,14 @@
 
 	window = image(icon, icon_state = "window-bg", layer = FLOAT_LAYER)
 
+	var/static/alpha_filter
+	if(!alpha_filter)
+		alpha_filter = filter(type="alpha", icon = icon('icons/obj/atmospherics/stationary_canisters.dmi', "window-bg"))
+
 	var/list/new_underlays = list()
 	for(var/obj/effect/gas_overlay/gas as anything in air_contents.returnVisuals())
 		var/image/new_underlay = image(gas.icon, icon_state = gas.icon_state, layer = FLOAT_LAYER)
-		new_underlay.filters = alpha_mask_filter(icon = window_icon)
+		new_underlay.filters = alpha_filter
 		new_underlays += new_underlay
 
 	var/image/foreground = image(icon, icon_state = "window-fg", layer = FLOAT_LAYER)
@@ -489,12 +489,14 @@
 ///////////////////////////////////////////////////////////////////
 // Tank Frame Structure
 
+TYPEINFO_DEF(/obj/structure/tank_frame)
+	default_materials = list(/datum/material/alloy/plasteel = 4 * MINERAL_MATERIAL_AMOUNT)
+
 /obj/structure/tank_frame
 	icon = 'icons/obj/atmospherics/stationary_canisters.dmi'
 	icon_state = "frame"
 	anchored = FALSE
 	density = TRUE
-	custom_materials = list(/datum/material/alloy/plasteel = 4 * MINERAL_MATERIAL_AMOUNT)
 	var/construction_state = TANK_FRAME
 	var/datum/material/material_end_product
 
@@ -539,7 +541,7 @@
 /obj/structure/tank_frame/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool, time = 0.5 SECONDS)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/tank_frame/screwdriver_act_secondary(mob/living/user, obj/item/tool)
 	. = ..()

@@ -8,6 +8,7 @@
 import './styles/main.scss';
 import './styles/themes/rounded_base.scss';
 import './styles/themes/abductor.scss';
+import './styles/themes/book.scss';
 import './styles/themes/cardtable.scss';
 import './styles/themes/crt/crt-blue.scss';
 import './styles/themes/crt/crt-green.scss';
@@ -20,9 +21,11 @@ import './styles/themes/neutral.scss';
 import './styles/themes/ntos.scss';
 import './styles/themes/paper.scss';
 import './styles/themes/retro.scss';
+import './styles/themes/retro-dark.scss';
 import './styles/themes/syndicate.scss';
 import './styles/themes/wizard.scss';
 import './styles/themes/admin.scss';
+import './styles/themes/daedalus.scss';
 
 import { perf } from 'common/perf';
 import { setupHotReloading } from 'tgui-dev-server/link/client.cjs';

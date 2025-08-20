@@ -3,8 +3,12 @@
 	description = "Clean up trash and blood. Replace broken lights. Slip people over."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
+
+	pinpad_key = "REEEEEEEJANNIESGETOUT"
+
 	total_positions = 2
 	spawn_positions = 1
+
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(
@@ -21,7 +25,7 @@
 		/datum/job_department/service,
 		)
 
-	family_heirlooms = list(/obj/item/mop, /obj/item/clothing/suit/caution, /obj/item/reagent_containers/glass/bucket, /obj/item/paper/fluff/stations/soap)
+	family_heirlooms = list(/obj/item/mop, /obj/item/clothing/suit/caution, /obj/item/reagent_containers/cup/bucket, /obj/item/paper/fluff/stations/soap)
 
 	mail_goodies = list(
 		/obj/item/grenade/chem_grenade/cleaner = 30,
@@ -36,10 +40,11 @@
 	name = "Janitor"
 	jobtype = /datum/job/janitor
 
-	id_trim = /datum/id_trim/job/janitor
+	id_template = /datum/access_template/job/janitor
 	uniform = /obj/item/clothing/under/rank/civilian/janitor
 	belt = /obj/item/modular_computer/tablet/pda/janitor
 	ears = /obj/item/radio/headset/headset_srv
+	gloves = /obj/item/clothing/gloves/cleaning
 
 /datum/outfit/job/janitor/pre_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()

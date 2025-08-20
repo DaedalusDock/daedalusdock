@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/machinery/ai_slipper)
+	default_armor = list(BLUNT = 50, PUNCTURE = 20, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
+
 /obj/machinery/ai_slipper
 	name = "foam dispenser"
 	desc = "A remotely-activatable dispenser for crowd-controlling foam."
@@ -7,7 +10,6 @@
 	layer = PROJECTILE_HIT_THRESHHOLD_LAYER
 	plane = FLOOR_PLANE
 	max_integrity = 200
-	armor = list(BLUNT = 50, PUNCTURE = 20, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 
 	var/uses = 20
 	var/cooldown = 0

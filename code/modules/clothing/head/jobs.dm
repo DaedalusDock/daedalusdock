@@ -44,13 +44,15 @@
 	step_towards(L, get_step(L, direction))
 
 //Captain
+TYPEINFO_DEF(/obj/item/clothing/head/caphat)
+	default_armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/head/caphat
 	name = "captain's hat"
 	desc = "It's good being the king."
 	icon_state = "captain"
 	inhand_icon_state = "that"
 	flags_inv = 0
-	armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
 	strip_delay = 60
 	dog_fashion = /datum/dog_fashion/head/captain
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
@@ -72,11 +74,13 @@
 	greyscale_colors = "#0070B7#FFCE5B"
 
 //Head of Personnel
+TYPEINFO_DEF(/obj/item/clothing/head/hopcap)
+	default_armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/clothing/head/hopcap
 	name = "head of personnel's cap"
 	icon_state = "hopcap"
 	desc = "The symbol of true bureaucratic micromanagement."
-	armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
 	dog_fashion = /datum/dog_fashion/head/hop
 
 //Chaplain
@@ -91,39 +95,6 @@
 	name = "bishop mitre"
 	desc = "An opulent hat that functions as a radio to God. Or as a lightning rod, depending on who you ask."
 	icon_state = "bishopmitre"
-
-//Detective
-/obj/item/clothing/head/fedora/det_hat
-	name = "private investigator's fedora"
-	desc = "There's only one man who can sniff out the dirty stench of crime, and he's likely wearing this hat."
-	armor = list(BLUNT = 25, PUNCTURE = 5, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 0, BIO = 0, FIRE = 30, ACID = 50)
-	icon_state = "detective"
-	var/candy_cooldown = 0
-	dog_fashion = /datum/dog_fashion/head/detective
-
-/obj/item/clothing/head/fedora/det_hat/Initialize(mapload)
-	. = ..()
-
-	create_storage(type = /datum/storage/pockets/small/fedora/detective)
-
-	new /obj/item/reagent_containers/food/drinks/flask/det(src)
-
-/obj/item/clothing/head/fedora/det_hat/examine(mob/user)
-	. = ..()
-	. += span_notice("Alt-click to take a candy corn.")
-
-/obj/item/clothing/head/fedora/det_hat/AltClick(mob/user)
-	. = ..()
-	if(loc != user || !user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY|USE_IGNORE_TK))
-		return
-	if(candy_cooldown < world.time)
-		var/obj/item/food/candy_corn/CC = new /obj/item/food/candy_corn(src)
-		user.put_in_hands(CC)
-		to_chat(user, span_notice("You slip a candy corn from your hat."))
-		candy_cooldown = world.time+1200
-	else
-		to_chat(user, span_warning("You just took a candy corn! You should wait a couple minutes, lest you burn through your stash."))
-
 
 //Mime
 
@@ -148,11 +119,13 @@
 	icon_state = "garrison_sec"
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION //need to do these
 
+TYPEINFO_DEF(/obj/item/clothing/head/marshal_hat)
+	default_armor = list(BLUNT = 20, PUNCTURE = 20, SLASH = 20, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/head/marshal_hat
 	name = "marshal's hat"
 	desc = "A wide-brimmed campaign hat with a thin kevlar lining. Don't be a fool, marshal."
 	//Only protects from ballistics, and still worse then a helmet.
-	armor = list(BLUNT = 20, PUNCTURE = 20, SLASH = 20, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	icon_state = "marshalhat"
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION //need to do these
 
@@ -185,20 +158,24 @@
 	name = "syndicate beret"
 	desc = "A black beret with thick armor padding inside. Stylish and robust."
 
+TYPEINFO_DEF(/obj/item/clothing/head/warden)
+	default_armor = list(BLUNT = 40, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 30, ACID = 60)
+
 /obj/item/clothing/head/warden
 	name = "warden's police hat"
 	desc = "It's a special armored hat issued to the Warden of a security force. Protects the head from impacts."
 	icon_state = "policehelm"
-	armor = list(BLUNT = 40, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 30, ACID = 60)
 	strip_delay = 60
 	dog_fashion = /datum/dog_fashion/head/warden
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+
+TYPEINFO_DEF(/obj/item/clothing/head/warden/red)
+	default_armor = list(BLUNT = 40, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 30, ACID = 60)
 
 /obj/item/clothing/head/warden/red
 	name = "warden's hat"
 	desc = "A warden's red hat. Looking at it gives you the feeling of wanting to keep people in cells for as long as possible."
 	icon_state = "wardenhat"
-	armor = list(BLUNT = 40, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 30, ACID = 60)
 	strip_delay = 60
 	dog_fashion = /datum/dog_fashion/head/warden_red
 	supports_variations_flags = NONE
@@ -371,6 +348,9 @@
 	greyscale_config_worn = /datum/greyscale_config/beret/worn
 	greyscale_colors = "#3f3c40"
 
+TYPEINFO_DEF(/obj/item/clothing/head/beret/durathread)
+	default_armor = list(BLUNT = 15, PUNCTURE = 5, SLASH = 0, LASER = 15, ENERGY = 25, BOMB = 10, BIO = 0, FIRE = 30, ACID = 5)
+
 /obj/item/clothing/head/beret/durathread
 	name = "durathread beret"
 	desc = "A beret made from durathread, its resilient fibers provide some protection to the wearer."
@@ -378,7 +358,6 @@
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
 	greyscale_colors = "#C5D4F3#ECF1F8"
-	armor = list(BLUNT = 15, PUNCTURE = 5, SLASH = 0, LASER = 15, ENERGY = 25, BOMB = 10, BIO = 0, FIRE = 30, ACID = 5)
 
 /obj/item/clothing/head/beret/highlander
 	desc = "That was white fabric. <i>Was.</i>"
@@ -391,6 +370,9 @@
 
 //CentCom
 
+TYPEINFO_DEF(/obj/item/clothing/head/beret/centcom_formal)
+	default_armor = list(BLUNT = 80, PUNCTURE = 80, SLASH = 0, LASER = 50, ENERGY = 50, BOMB = 100, BIO = 100, FIRE = 100, ACID = 90)
+
 /obj/item/clothing/head/beret/centcom_formal
 	name = "\improper CentCom Formal Beret"
 	desc = "Sometimes, a compromise between fashion and defense needs to be made. Thanks to Nanotrasen's most recent nano-fabric durability enhancements, this time, it's not the case."
@@ -398,7 +380,6 @@
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
 	greyscale_colors = "#397F3F#FFCE5B"
-	armor = list(BLUNT = 80, PUNCTURE = 80, SLASH = 0, LASER = 50, ENERGY = 50, BOMB = 100, BIO = 100, FIRE = 100, ACID = 90)
 	strip_delay = 10 SECONDS
 
 

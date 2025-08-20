@@ -24,13 +24,15 @@
 		qdel(anomaly)
 
 //Reactive armor
+TYPEINFO_DEF(/obj/item/clothing/suit/armor/reactive)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/item/clothing/suit/armor/reactive
 	name = "reactive armor"
 	desc = "Doesn't seem to do much for some reason."
 	icon_state = "reactiveoff"
 	inhand_icon_state = "reactiveoff"
 	blood_overlay_type = "armor"
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
 	actions_types = list(/datum/action/item_action/toggle)
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	block_chance = 50

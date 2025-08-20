@@ -131,8 +131,10 @@
 	AddElement(/datum/element/spooky)
 
 /obj/item/instrument/trumpet/spectral/attack(mob/living/carbon/C, mob/user)
+	. = ..()
+	if(.)
+		return
 	playsound (src, 'sound/runtime/instruments/trombone/En4.mid', 100,1,-1)
-	..()
 
 /obj/item/instrument/saxophone
 	name = "saxophone"
@@ -155,8 +157,11 @@
 	AddElement(/datum/element/spooky)
 
 /obj/item/instrument/saxophone/spectral/attack(mob/living/carbon/C, mob/user)
-	playsound (src, 'sound/runtime/instruments/saxophone/En4.mid', 100,1,-1)
-	..()
+	. = ..()
+	if(.)
+		return
+
+	playsound(src, 'sound/runtime/instruments/saxophone/En4.mid', 100,1,-1)
 
 /obj/item/instrument/trombone
 	name = "trombone"
@@ -179,8 +184,10 @@
 	AddElement(/datum/element/spooky)
 
 /obj/item/instrument/trombone/spectral/attack(mob/living/carbon/C, mob/user)
-	playsound (src, 'sound/runtime/instruments/trombone/Cn4.mid', 100,1,-1)
-	..()
+	. = ..()
+	if(.)
+		return
+	playsound(src, 'sound/runtime/instruments/trombone/Cn4.mid', 100,1,-1)
 
 /obj/item/instrument/recorder
 	name = "recorder"
@@ -279,5 +286,5 @@
 	w_class = WEIGHT_CLASS_TINY
 	force = 0
 	hitsound = 'sound/voice/moth/scream_moth.ogg'
-	custom_price = PAYCHECK_HARD * 2.37
-	custom_premium_price = PAYCHECK_HARD * 2.37
+	custom_price = PAYCHECK_ASSISTANT * 6.2
+	custom_premium_price = PAYCHECK_ASSISTANT * 8.9

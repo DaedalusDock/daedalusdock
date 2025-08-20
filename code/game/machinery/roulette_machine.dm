@@ -18,6 +18,9 @@
 #define ROULETTE_JACKPOT_AMOUNT 1000
 
 ///Machine that lets you play roulette. Odds are pre-defined to be the same as European Roulette without the "En Prison" rule
+TYPEINFO_DEF(/obj/machinery/roulette)
+	default_armor = list(BLUNT = 45, PUNCTURE = 30, SLASH = 90, LASER = 30, ENERGY = 30, BOMB = 10, BIO = 30, FIRE = 30, ACID = 30)
+
 /obj/machinery/roulette
 	name = "Roulette Table"
 	desc = "A computerized roulette table. Swipe your ID to play or register yourself as owner!"
@@ -26,7 +29,6 @@
 	density = TRUE
 	anchored = FALSE
 	max_integrity = 500
-	armor = list(BLUNT = 45, PUNCTURE = 30, SLASH = 90, LASER = 30, ENERGY = 30, BOMB = 10, BIO = 30, FIRE = 30, ACID = 30)
 	var/static/list/numbers = list("0" = "green", "1" = "red", "3" = "red", "5" = "red", "7" = "red", "9" = "red", "12" = "red", "14" = "red", "16" = "red",\
 	"18" = "red", "19" = "red", "21" = "red", "23" = "red", "25" = "red", "27" = "red", "30" = "red", "32" = "red", "34" = "red", "36" = "red",\
 	"2" = "black", "4" = "black", "6" = "black", "8" = "black", "10" = "black", "11" = "black", "13" = "black", "15" = "black", "17" = "black", "20" = "black",\

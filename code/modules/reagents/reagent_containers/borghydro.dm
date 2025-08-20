@@ -235,23 +235,24 @@ Borg Shaker
 					R.cell.use(charge_cost)
 					RG.add_reagent(reagent_ids[valueofi], 5, reagtemp = dispensed_temperature)
 
-/obj/item/reagent_containers/borghypo/borgshaker/afterattack(obj/target, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/reagent_containers/borghypo/borgshaker/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
 
-	else if(target.is_refillable())
-		var/datum/reagents/R = reagent_list[mode]
-		if(!R.total_volume)
-			to_chat(user, span_warning("[src] is currently out of this ingredient! Please allow some time for the synthesizer to produce more."))
-			return
+	if(!target.is_refillable())
+		return NONE
 
-		if(target.reagents.total_volume >= target.reagents.maximum_volume)
-			to_chat(user, span_notice("[target] is full."))
-			return
+	var/datum/reagents/R = reagent_list[mode]
+	if(!R.total_volume)
+		to_chat(user, span_warning("[src] is currently out of this ingredient! Please allow some time for the synthesizer to produce more."))
+		return ITEM_INTERACT_BLOCKING
 
-		var/trans = R.trans_to(target, amount_per_transfer_from_this, transfered_by = user)
-		to_chat(user, span_notice("You transfer [trans] unit\s of the solution to [target]."))
+	if(target.reagents.total_volume >= target.reagents.maximum_volume)
+		to_chat(user, span_notice("[target] is full."))
+		return ITEM_INTERACT_BLOCKING
+
+	var/trans = R.trans_to(target, amount_per_transfer_from_this, transfered_by = user)
+	to_chat(user, span_notice("You transfer [trans] unit\s of the solution to [target]."))
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/borghypo/borgshaker/DescribeContents()
 	var/datum/reagents/RS = reagent_list[mode]

@@ -21,7 +21,7 @@
 		/obj/item/food/cnds = 6,
 		/obj/item/food/cnds/random = 3,
 		/obj/item/food/semki = 6,
-		/obj/item/reagent_containers/food/drinks/dry_ramen = 3,
+		/obj/item/reagent_containers/cup/glass/dry_ramen = 3,
 		/obj/item/storage/box/gum = 3,
 		/obj/item/food/energybar = 6
 	)
@@ -36,8 +36,8 @@
 	)
 	refill_canister = /obj/item/vending_refill/snack
 	canload_access_list = list(ACCESS_KITCHEN)
-	default_price = PAYCHECK_ASSISTANT * 0.6
-	extra_price = PAYCHECK_EASY
+	default_price = PAYCHECK_ASSISTANT * 0.2
+	extra_price = PAYCHECK_ASSISTANT * 0.5
 	payment_department = ACCOUNT_STATION_MASTER
 	input_display_header = "Chef's Food Selection"
 

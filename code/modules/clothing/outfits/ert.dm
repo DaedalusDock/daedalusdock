@@ -184,7 +184,7 @@
 	name = "CentCom Official"
 
 	id = /obj/item/card/id/advanced/centcom
-	id_trim = /datum/id_trim/centcom/official
+	id_template = /datum/access_template/centcom/official
 	uniform = /obj/item/clothing/under/rank/centcom/officer
 	back = /obj/item/storage/backpack/satchel
 	backpack_contents = list(
@@ -292,7 +292,7 @@
 		/obj/item/grenade/clusterbuster/cleaner = 1,
 		/obj/item/melee/baton/security/loaded = 1,
 		/obj/item/mop/advanced = 1,
-		/obj/item/reagent_containers/glass/bucket = 1,
+		/obj/item/reagent_containers/cup/bucket = 1,
 		/obj/item/storage/box/lights/mixed = 1,
 		/obj/item/storage/box/survival/engineer = 1,
 	)
@@ -358,7 +358,7 @@
 	name = "CentCom Intern"
 
 	id = /obj/item/card/id/advanced/centcom
-	id_trim = /datum/id_trim/centcom/intern
+	id_template = /datum/access_template/centcom/intern
 	uniform = /obj/item/clothing/under/rank/centcom/intern
 	back = /obj/item/storage/backpack/satchel
 	backpack_contents = list(
@@ -416,7 +416,7 @@
 	back = /obj/item/storage/backpack/ert/janitor
 	backpack_contents = list(
 		/obj/item/mop/advanced = 1,
-		/obj/item/reagent_containers/glass/bucket = 1,
+		/obj/item/reagent_containers/cup/bucket = 1,
 		/obj/item/storage/box/lights/mixed = 1,
 		/obj/item/storage/box/survival/engineer = 1,
 	)
@@ -499,7 +499,7 @@
 	name = "Death Commando"
 
 	id = /obj/item/card/id/advanced/black/deathsquad
-	id_trim = /datum/id_trim/centcom/deathsquad
+	id_template = /datum/access_template/centcom/deathsquad
 	uniform = /obj/item/clothing/under/rank/centcom/commander
 	suit_store = /obj/item/tank/internals/oxygen
 	back = /obj/item/mod/control/pre_equipped/apocryphal

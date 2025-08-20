@@ -1,38 +1,3 @@
-//Command
-
-/obj/item/circuitboard/machine/bsa/back
-	name = "Bluespace Artillery Generator (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_COMMAND
-	build_path = /obj/machinery/bsa/back //No freebies!
-	req_components = list(
-		/obj/item/stock_parts/capacitor/quadratic = 5,
-		/obj/item/stack/cable_coil = 2)
-
-/obj/item/circuitboard/machine/bsa/front
-	name = "Bluespace Artillery Bore (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_COMMAND
-	build_path = /obj/machinery/bsa/front
-	req_components = list(
-		/obj/item/stock_parts/manipulator/femto = 5,
-		/obj/item/stack/cable_coil = 2)
-
-/obj/item/circuitboard/machine/bsa/middle
-	name = "Bluespace Artillery Fusor (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_COMMAND
-	build_path = /obj/machinery/bsa/middle
-	req_components = list(
-		/obj/item/stack/ore/bluespace_crystal = 20,
-		/obj/item/stack/cable_coil = 2)
-
-/obj/item/circuitboard/machine/dna_vault
-	name = "DNA Vault (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_COMMAND
-	build_path = /obj/machinery/dna_vault //No freebies!
-	req_components = list(
-		/obj/item/stock_parts/capacitor/super = 5,
-		/obj/item/stock_parts/manipulator/pico = 5,
-		/obj/item/stack/cable_coil = 2)
-
 //Engineering
 
 /obj/item/circuitboard/machine/announcement_system
@@ -54,7 +19,7 @@
 		/obj/item/disk/data = 1
 	)
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/autolathe
+		/obj/item/disk/data = /obj/item/disk/data/fabricator/autolathe
 	)
 
 /obj/item/circuitboard/machine/grounding_rod
@@ -196,7 +161,7 @@
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
 	build_path = /obj/machinery/rnd/production/fabricator/department/engineering
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/engineering
+		/obj/item/disk/data = /obj/item/disk/data/fabricator/engineering
 	)
 
 /obj/item/circuitboard/machine/fabricator/department/civvie
@@ -204,7 +169,7 @@
 	greyscale_colors = CIRCUIT_COLOR_GENERIC
 	build_path = /obj/machinery/rnd/production/fabricator/department/civvie
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/civ
+		/obj/item/disk/data = /obj/item/disk/data/fabricator/civ
 	)
 
 /obj/item/circuitboard/machine/rtg
@@ -341,25 +306,25 @@
 	req_components = list(
 		/obj/item/stock_parts/matter_bin = 1,
 		/obj/item/stock_parts/manipulator = 1,
-		/obj/item/reagent_containers/glass/beaker = 2,
+		/obj/item/reagent_containers/cup/beaker = 2,
 		/obj/item/disk/data = 1
 	)
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/imprinter
+		/obj/item/disk/data = /obj/item/disk/data/fabricator/imprinter
 	)
 
 /obj/item/circuitboard/machine/circuit_imprinter/offstation
 	name = "Ancient Circuit Imprinter (Machine Board)"
 	build_path = /obj/machinery/rnd/production/circuit_imprinter/offstation
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/imprinter/offstation
+		/obj/item/disk/data = /obj/item/disk/data/fabricator/imprinter/offstation
 	)
 
 /obj/item/circuitboard/machine/circuit_imprinter/robotics
 	name = "Circuit Imprinter (Machine Board)"
 	build_path = /obj/machinery/rnd/production/circuit_imprinter/offstation
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/imprinter/robotics
+		/obj/item/disk/data = /obj/item/disk/data/fabricator/imprinter/robotics
 	)
 
 /obj/item/circuitboard/machine/holopad
@@ -402,24 +367,24 @@
 	req_components = list(
 		/obj/item/stock_parts/matter_bin = 2,
 		/obj/item/stock_parts/manipulator = 2,
-		/obj/item/reagent_containers/glass/beaker = 2,
+		/obj/item/reagent_containers/cup/beaker = 2,
 		/obj/item/disk/data = 1
 	)
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/omni
+		/obj/item/disk/data = /obj/item/disk/data/fabricator/omni
 	)
 
 /obj/item/circuitboard/machine/fabricator/omni
 	name = "Omni-Fabricator (Machine Board)"
 	build_path = /obj/machinery/rnd/production/fabricator/omni
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/omni
+		/obj/item/disk/data = /obj/item/disk/data/fabricator/omni
 	)
 /obj/item/circuitboard/machine/fabricator/offstation
 	name = "Ancient Fabricator (Machine Board)"
 	build_path = /obj/machinery/rnd/production/fabricator/offstation
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/offstation
+		/obj/item/disk/data = /obj/item/disk/data/fabricator/offstation
 	)
 /obj/item/circuitboard/machine/fabricator/department
 	name = "Departmental Fabricator (Machine Board)"
@@ -644,7 +609,7 @@
 	build_path = /obj/machinery/chem_master
 	desc = "You can turn the \"mode selection\" dial using a screwdriver."
 	req_components = list(
-		/obj/item/reagent_containers/glass/beaker = 2,
+		/obj/item/reagent_containers/cup/beaker = 2,
 		/obj/item/stock_parts/manipulator = 1,
 		/obj/item/stack/sheet/glass = 1)
 	needs_anchored = FALSE
@@ -690,7 +655,7 @@
 	build_path = /obj/machinery/limbgrower
 	req_components = list(
 		/obj/item/stock_parts/manipulator = 1,
-		/obj/item/reagent_containers/glass/beaker = 2,
+		/obj/item/reagent_containers/cup/beaker = 2,
 		/obj/item/stack/sheet/glass = 1,
 		/obj/item/disk/data = 1
 	)
@@ -704,7 +669,7 @@
 	build_path = /obj/machinery/limbgrower
 	req_components = list(
 		/obj/item/stock_parts/manipulator/femto  = 1,
-		/obj/item/reagent_containers/glass/beaker/bluespace = 2,
+		/obj/item/reagent_containers/cup/beaker/bluespace = 2,
 		/obj/item/stack/sheet/glass = 1,
 		/obj/item/disk/data = 1
 	)
@@ -717,7 +682,7 @@
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
 	build_path = /obj/machinery/rnd/production/fabricator/department/medical
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/medical
+		/obj/item/disk/data = /obj/item/disk/data/fabricator/medical
 	)
 
 /obj/item/circuitboard/machine/sleeper
@@ -895,7 +860,7 @@
 	greyscale_colors = CIRCUIT_COLOR_ROBOTICS
 	build_path = /obj/machinery/rnd/production/fabricator/department/robotics
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/robotics
+		/obj/item/disk/data = /obj/item/disk/data/fabricator/robotics
 	)
 
 //Security
@@ -905,7 +870,7 @@
 	greyscale_colors = CIRCUIT_COLOR_SECURITY
 	build_path = /obj/machinery/rnd/production/fabricator/department/security
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/security
+		/obj/item/disk/data = /obj/item/disk/data/fabricator/security
 	)
 
 /obj/item/circuitboard/machine/recharger
@@ -1045,7 +1010,7 @@
 	greyscale_colors = CIRCUIT_COLOR_SERVICE
 	build_path = /obj/machinery/rnd/production/fabricator/department/service
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/service
+		/obj/item/disk/data = /obj/item/disk/data/fabricator/service
 	)
 
 /obj/item/circuitboard/machine/recycler
@@ -1115,7 +1080,7 @@
 	greyscale_colors = CIRCUIT_COLOR_SUPPLY
 	build_path = /obj/machinery/rnd/production/fabricator/department/cargo
 	def_components = list(
-		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/supply
+		/obj/item/disk/data = /obj/item/disk/data/fabricator/supply
 	)
 
 /obj/item/circuitboard/machine/stacking_machine

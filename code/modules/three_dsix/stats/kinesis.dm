@@ -1,5 +1,5 @@
 /datum/rpg_stat/kinesis
-	name = "kinesis"
+	name = "Kinesis"
 	desc = ""
 
 	value = STATS_BASELINE_VALUE

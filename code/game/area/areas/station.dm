@@ -681,6 +681,11 @@
 	name = "\improper Chapel Funeral Room"
 	icon_state = "chapelfuneral"
 
+/area/station/service/psychology
+	name = "\improper Psychology Office"
+	icon_state = "psychology"
+	ambientsounds = list('sound/ambience/aurora_caelus_short.ogg')
+
 /area/station/service/lawoffice
 	name = "\improper Law Office"
 	icon_state = "law"
@@ -960,6 +965,12 @@
 	name = "\improper Ward (Central)"
 	icon_state = "med_central"
 
+	flavor_texts = list(
+		"A spectral waltz occurs out of sight. The dead walk these halls.",
+		"A masked man turns the corner, and removes his face. You see yourself.",
+		"Many lives have been lost here, yet none, found."
+	)
+
 /area/station/medical/medbay/lobby
 	name = "\improper Ward Foyer"
 	icon_state = "med_lobby"
@@ -1075,10 +1086,9 @@
 	name = "\improper Ward (Treatment Center)"
 	icon_state = "exam_room"
 
-/area/station/medical/psychology
-	name = "\improper Psychology Office"
-	icon_state = "psychology"
-	ambientsounds = list('sound/ambience/aurora_caelus_short.ogg')
+/area/station/medical/disposal
+	name = "\improper Biohazardous Waste Disposal"
+	icon_state = "medical_disposal"
 
 //Security
 

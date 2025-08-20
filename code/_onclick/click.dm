@@ -178,13 +178,7 @@
 			UnarmedAttack(A, TRUE,modifiers)
 	else
 		if(W)
-			if(LAZYACCESS(modifiers, RIGHT_CLICK))
-				var/after_attack_secondary_result = W.afterattack_secondary(A, src, FALSE, params)
-
-				if(after_attack_secondary_result == SECONDARY_ATTACK_CALL_NORMAL)
-					W.afterattack(A, src, FALSE, params)
-			else
-				W.afterattack(A,src, FALSE, params)
+			W.ranged_attack_chain(src, A, modifiers)
 		else
 			if(LAZYACCESS(modifiers, RIGHT_CLICK))
 				ranged_secondary_attack(A, modifiers)
@@ -369,7 +363,7 @@
 	. = SEND_SIGNAL(src, COMSIG_MOB_MIDDLECLICKON, A, params)
 	if(. & COMSIG_MOB_CANCEL_CLICKON)
 		return
-	swap_hand()
+	try_swap_hand()
 
 /**
  * Shift click
@@ -388,6 +382,7 @@
 		return
 
 	user.examinate(src)
+	return TRUE
 
 /**
  * Ctrl click
@@ -592,7 +587,7 @@
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, MIDDLE_CLICK) && iscarbon(usr))
 		var/mob/living/carbon/C = usr
-		C.swap_hand()
+		C.try_swap_hand()
 	else
 		var/turf/click_turf = parse_caught_click_modifiers(modifiers, get_turf(usr.client ? usr.client.eye : usr), usr.client)
 		if (click_turf)

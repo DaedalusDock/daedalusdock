@@ -141,20 +141,20 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	layer = MOB_LAYER
 
-/obj/item/fugu_gland/afterattack(atom/target, mob/user, proximity_flag)
-	. = ..()
-	if(!proximity_flag)
-		return
+/obj/item/fugu_gland/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(!isanimal(target))
-		return
+		return NONE
 	var/mob/living/simple_animal/animal = target
 
 	if(animal.stat == DEAD || HAS_TRAIT(animal, TRAIT_FAKEDEATH))
 		to_chat(user, span_warning("[src] can only multiply strength, not grant it to the dead."))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(HAS_TRAIT(animal, TRAIT_FUGU_GLANDED))
 		to_chat(user, span_warning("[animal] has already been affected by \a [src]."))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	ADD_TRAIT(animal, TRAIT_FUGU_GLANDED, type)
 
@@ -167,3 +167,4 @@
 	animal.environment_smash |= ENVIRONMENT_SMASH_STRUCTURES | ENVIRONMENT_SMASH_RWALLS
 	to_chat(user, span_info("You increase the size of [animal], giving [animal.p_them()] a surge of strength!"))
 	qdel(src)
+	return ITEM_INTERACT_SUCCESS

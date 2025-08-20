@@ -21,7 +21,6 @@
 	var/datum/hud/hud = null
 	/**
 	 * Map name assigned to this object.
-	 * Automatically set by /client/proc/add_obj_to_map.
 	 */
 	var/assigned_map
 	/**
@@ -119,7 +118,7 @@
 
 	if(ismob(usr))
 		var/mob/M = usr
-		M.swap_hand()
+		M.try_swap_hand()
 	return 1
 
 /atom/movable/screen/navigate
@@ -235,7 +234,6 @@
 /atom/movable/screen/inventory/MouseExited()
 	..()
 	cut_overlay(object_overlay)
-	QDEL_NULL(object_overlay)
 
 /atom/movable/screen/inventory/update_icon_state()
 	if(!icon_empty)
@@ -321,7 +319,7 @@
 		if(I)
 			I.Click(location, control, params)
 	else
-		user.swap_hand(held_index)
+		user.try_swap_hand(held_index)
 	return TRUE
 
 /atom/movable/screen/inventory/hand/MouseDroppedOn(atom/dropping, mob/user, params)

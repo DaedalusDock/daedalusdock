@@ -90,7 +90,7 @@
 		/obj/item/storage/box/fingerprints,
 		/obj/item/storage/box/evidence,
 		/obj/item/reagent_containers/syringe,
-		/obj/item/reagent_containers/glass/beaker,
+		/obj/item/reagent_containers/cup/beaker,
 		/obj/item/swab,
 		/obj/item/sample/print,
 		/obj/item/sample/fibers,
@@ -105,7 +105,8 @@
 		/obj/item/storage/scene_cards,
 		/obj/item/modular_computer/tablet,
 		/obj/item/storage/evidencebag,
-		/obj/item/storage/scene_cards
+		/obj/item/storage/scene_cards,
+		/obj/item/reagent_containers/spray,
 	))
 
 /obj/item/storage/briefcase/crimekit/PopulateContents()
@@ -115,3 +116,4 @@
 	new /obj/item/sample_kit/powder(src)
 	new /obj/item/storage/scene_cards(src)
 	new /obj/item/camera(src)
+	new /obj/item/reagent_containers/spray/luminol(src)

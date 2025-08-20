@@ -3,7 +3,8 @@ GLOBAL_REAL(immortals, /list) = list(
 	"OrdoDictionary",
 	"DrSingh",
 	"Desolane900",
-	"Honkertron"
+	"Honkertron",
+	"PWNRA aka Gramps"
 )
 
 /*
@@ -45,12 +46,14 @@ So should you read this and should you get the chance, raise a glass in his memo
 …but be sure to break out the good stuff.
 That’s how he would have wanted it.
 */
+TYPEINFO_DEF(/obj/item/clothing/accessory/medal/gold/ordom)
+	default_materials = list(/datum/material/gold=1000)
+
 /obj/item/clothing/accessory/medal/gold/ordom
 	name = "\proper The OrdoM Memorial Medal For Excellence in Paperwork"
 	desc = "Awarded for outstanding excellence in paperwork, administration, and bureaucracy."
 	icon_state = "medal_paperwork"
 	medaltype = "medal-gold"
-	custom_materials = list(/datum/material/gold=1000)
 
 /*
 

@@ -195,7 +195,8 @@ GLOBAL_LIST_INIT(freq2icon, list(
 	. = TRUE
 
 /datum/signal
-	///The author/sender of this packet.
+	/// The author/sender of this packet.
+	/// This atom will be skipped during packet send.
 	var/datum/weakref/author
 	///The medium of which this packet is travelling
 	var/transmission_method
@@ -226,3 +227,8 @@ GLOBAL_LIST_INIT(freq2icon, list(
 	src.data = data || list()
 	src.transmission_method = transmission_method
 	src.logging_data = logging_data
+
+/// Returns a copy of this signal.
+/datum/signal/proc/Copy()
+	var/datum/signal/clone = new type(author, data, transmission_method, logging_data)
+	return clone

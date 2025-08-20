@@ -132,8 +132,6 @@
 	var/joint_name = "joint"
 	/// The name for the amputation point of the limb
 	var/amputation_point
-	/// Surgical stage. Magic BS. Do not touch
-	var/stage = 0
 
 	///Gradually increases while burning when at full damage, destroys the limb when at 100
 	var/cremation_progress = 0
@@ -147,8 +145,8 @@
 	var/species_color = ""
 	///Limbs need this information as a back-up incase they are generated outside of a carbon (limbgrower)
 	var/should_draw_greyscale = TRUE
-	///An "override" color that can be applied to ANY limb, greyscale or not.
-	var/variable_color = ""
+	/// An assoc list of priority (as a string because byond) -> color, used to override draw_color.
+	var/list/color_overrides
 
 	///whether it can be dismembered with a weapon.
 	var/dismemberable = 1
@@ -237,7 +235,7 @@
 		grind_results = null
 
 	name = "[limb_id] [parse_zone(body_zone)]"
-	update_icon_dropped()
+	update_icon_dropped(update_limb = FALSE)
 	refresh_bleed_rate()
 
 /obj/item/bodypart/Destroy()
@@ -277,22 +275,20 @@
 		return
 	return ..()
 
-/obj/item/bodypart/attack(mob/living/carbon/victim, mob/user)
-	SHOULD_CALL_PARENT(TRUE)
+/obj/item/bodypart/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ishuman(interacting_with) || !HAS_TRAIT(interacting_with, TRAIT_LIMBATTACHMENT))
+		return NONE
 
-	if(!ishuman(victim) || !HAS_TRAIT(victim, TRAIT_LIMBATTACHMENT))
-		return ..()
-
-	var/mob/living/carbon/human/human_victim = victim
+	var/mob/living/carbon/human/human_victim = interacting_with
 	if(human_victim.get_bodypart(body_zone))
-		return ..()
+		return ITEM_INTERACT_BLOCKING
 
 	if(!user.temporarilyRemoveItemFromInventory(src))
-		return ..()
+		return ITEM_INTERACT_BLOCKING
 
-	if(!attach_limb(victim))
-		to_chat(user, span_warning("[human_victim]'s body rejects [src]!"))
-		return
+	if(!attach_limb(human_victim))
+		to_chat(user, span_warning("[human_victim]'s body rejects [src]."))
+		return ITEM_INTERACT_BLOCKING
 
 	if(human_victim == user)
 		human_victim.visible_message(span_warning("[human_victim] jams [src] into [human_victim.p_their()] empty socket!"),\
@@ -301,22 +297,30 @@
 		human_victim.visible_message(span_warning("[user] jams [src] into [human_victim]'s empty socket!"),\
 		span_notice("[user] forces [src] into your empty socket, and it locks into place!"))
 
+	return ITEM_INTERACT_SUCCESS
 
-/obj/item/bodypart/attackby(obj/item/weapon, mob/user, params)
-	SHOULD_CALL_PARENT(TRUE)
+/obj/item/bodypart/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(user.combat_mode)
+		return NONE
 
-	if(weapon.sharpness)
-		weapon.leave_evidence(user, src)
-		if(!contents.len)
-			to_chat(user, span_warning("There is nothing left inside [src]!"))
-			return
-		playsound(loc, 'sound/weapons/slice.ogg', 50, TRUE, -1)
-		user.visible_message(span_warning("[user] begins to cut open [src]."),\
-			span_notice("You begin to cut open [src]..."))
-		if(do_after(user, src, 54))
-			drop_contents(user, TRUE)
-	else
-		return ..()
+	if(!tool.sharpness)
+		return NONE
+
+	if(!contents.len)
+		to_chat(user, span_warning("There is nothing left inside [src]."))
+		return ITEM_INTERACT_BLOCKING
+
+	playsound(loc, 'sound/weapons/slice.ogg', 50, TRUE, -1)
+	user.visible_message(
+		span_warning("[user] begins to cut open [src]."),
+		span_notice("You begin to cut open [src]...")
+	)
+
+	if(!do_after(user, src, 54))
+		return ITEM_INTERACT_BLOCKING
+
+	drop_contents(user, TRUE)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/bodypart/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	SHOULD_CALL_PARENT(TRUE)
@@ -1209,13 +1213,13 @@
 		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL]'>Severed</span>" : "Severed"
 
 	if(check_tendon() & CHECKTENDON_SEVERED)
-		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Severed [tendon_name]</span>" : "Severed [tendon_name]"
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_LIGAMENT]'>Severed [tendon_name]</span>" : "Severed [tendon_name]"
 
 	if(check_artery() & CHECKARTERY_SEVERED)
-		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Severed [artery_name]</span>" : "Severed [artery_name]"
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Ruptured [capitalize(artery_name)]</span>" : "Ruptured [capitalize(artery_name)]"
 
 	if(check_bones() & CHECKBONES_BROKEN)
-		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Fractured</span>" : "Fractured"
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_BROKEN]'>Fractured</span>" : "Fractured"
 
 	if(bodypart_flags & BP_DISLOCATED)
 		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL]'>Dislocated</span>" : "Dislocated"
@@ -1289,48 +1293,6 @@
 				user.visible_message(span_notice("[user] removes [removed] from [owner]'s [plaintext_zone]."))
 		return
 
-/obj/item/bodypart/proc/inspect(mob/user)
-	if(is_stump)
-		to_chat(user, span_notice("[owner] is missing that bodypart."))
-		return
-
-	user.visible_message(span_notice("[user] starts inspecting [owner]'s [plaintext_zone] carefully."))
-	if(LAZYLEN(wounds))
-		to_chat(user, span_warning("You find the following:"))
-		for(var/wound_desc in get_wound_descriptions())
-			to_chat(user, wound_desc)
-
-		var/list/stuff = list()
-		for(var/datum/wound/wound as anything in wounds)
-			if(LAZYLEN(wound.embedded_objects))
-				stuff |= wound.embedded_objects
-
-		if(length(stuff))
-			to_chat(user, span_warning("There's [english_list(stuff)] sticking out of [owner]'s [plaintext_zone]."))
-	else
-		to_chat(user, span_notice("You find no visible wounds."))
-
-	to_chat(user, span_notice("Checking skin now..."))
-
-	if(!do_after(user, owner, 1 SECOND, DO_PUBLIC))
-		return
-
-	to_chat(user, span_notice("Checking bones now..."))
-	if(!do_after(user, owner, 1 SECOND, DO_PUBLIC))
-		return
-
-	if(bodypart_flags & BP_BROKEN_BONES)
-		to_chat(user, span_warning("The [encased ? encased : "bone in the [plaintext_zone]"] moves slightly when you poke it!"))
-		owner.apply_pain(40, body_zone, "Your [plaintext_zone] hurts where it's poked.")
-	else
-		to_chat(user, span_notice("The [encased ? encased : "bones in the [plaintext_zone]"] seem to be fine."))
-
-	if(bodypart_flags & BP_TENDON_CUT)
-		to_chat(user, span_warning("The tendons in the [plaintext_zone] are severed!"))
-	if(bodypart_flags & BP_DISLOCATED)
-		to_chat(user, span_warning("The [joint_name] is dislocated!"))
-	return TRUE
-
 /// Applies all bodypart traits to the target.
 /obj/item/bodypart/proc/apply_traits(mob/target)
 	if(isnull(target))
@@ -1359,3 +1321,7 @@
 
 	for(var/trait in bodypart_traits)
 		REMOVE_TRAIT(target, trait, bodypart_trait_source)
+
+/// Returns TRUE if this limb can be affected by jaundice.
+/obj/item/bodypart/proc/can_be_jaundiced()
+	return IS_ORGANIC_LIMB(src) && skin_tone

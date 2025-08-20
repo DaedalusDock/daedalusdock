@@ -372,24 +372,40 @@
 
 
 	// Damage to internal organs hurts a lot.
+	var/list/organ_pain_zones
 	for(var/obj/item/organ/I as anything in organs)
 		if(istype(I, /obj/item/organ/brain))
 			continue
 
-		if(prob(1) && (!(I.organ_flags & (ORGAN_SYNTHETIC|ORGAN_DEAD)) && I.damage > 5))
-			var/obj/item/bodypart/parent = I.ownerlimb
-			if(parent.bodypart_flags & BP_NO_PAIN)
-				continue
+		if(!I.is_causing_pain())
+			continue
 
-			var/pain_given = 10
-			var/message = "You feel a dull pain in your [parent.plaintext_zone]"
-			if(I.damage > I.low_threshold)
-				pain_given = 25
-				message = "You feel a pain in your [parent.plaintext_zone]"
-			if(I.damage > (I.high_threshold * I.maxHealth))
-				pain_given = 40
-				message = "You feel a sharp pain in your [parent.plaintext_zone]"
-			apply_pain(pain_given, parent.body_zone, message, TRUE)
+		var/obj/item/bodypart/parent = I.ownerlimb
+		if(parent.bodypart_flags & BP_NO_PAIN)
+			continue
+
+		LAZYINITLIST(organ_pain_zones)
+
+		if(I.damage > (I.low_threshold * I.maxHealth))
+			organ_pain_zones[parent] += 25
+		if(I.damage > (I.high_threshold * I.maxHealth))
+			organ_pain_zones[parent] += 40
+		else
+			organ_pain_zones[parent] += 10
+
+
+	for(var/obj/item/bodypart/painful_part as anything in organ_pain_zones)
+		var/organ_pain_applied = organ_pain_zones[painful_part]
+		var/message
+		switch(organ_pain_applied)
+			if(0 to 10)
+				message = "You feel a dull pain in your [painful_part.plaintext_zone]"
+			if(11 to 44)
+				message = "You feel a pain in your [painful_part.plaintext_zone]"
+			else
+				message = "You feel a sharp pain in your [painful_part.plaintext_zone]"
+
+		apply_pain(organ_pain_applied, painful_part, message, TRUE, updating_health = FALSE)
 
 	if(prob(1))
 		var/systemic_organ_failure = getToxLoss()
@@ -404,6 +420,8 @@
 				pain_message("Your whole body hurts badly.", PAIN_AMT_MEDIUM, TRUE)
 			if(100 to INFINITY)
 				pain_message("Your body aches all over, it's driving you mad.", PAIN_AMT_AGONIZING, TRUE)
+
+	update_health_hud()
 
 /// Called by handle_pain() to consider dropping an item based on Willpower.
 /mob/living/carbon/proc/pain_drop_item(pain_amt)
@@ -423,7 +441,7 @@
 			result.do_skill_sound(src)
 			to_chat(src, result.create_tooltip("A streak of pain shoots throughout your whole body."))
 			drop_all_held_items()
-			visible_message(span_warning("<b>[src]</b>'s body spasms, and [p_they()] drop what [p_they()] were holding."), ignored_mobs = list(src))
+			visible_message(span_warning("<b>[src]</b>'s body spasms, and [p_they()] drop[p_s()] what [p_they()] [p_were()] holding."), ignored_mobs = list(src))
 
 		if(FAILURE)
 			COOLDOWN_START(src, pain_cooldowns["drop_item"], 20 SECONDS)

@@ -1,0 +1,45 @@
+2025-08-01:
+  Kapu1178:
+  - rscadd: Guns now have screentips for controls.
+  - tweak: Adjusted gun controls to overlap less.
+2025-08-07:
+  Kapu1178:
+  - rscadd: Independent airlocks are unbolted by default. Except the Private Investigator,
+      he is too paranoid for that.
+2025-08-12:
+  Doctor-Derp:
+  - rscadd: Added a Biohazardous Waste Disposal to Medical.
+  - rscadd: Moved Library to Aft Hallway + gave it a new redesign!
+  - rscadd: Moved Psychology Office to Port Hallway + gave it a new redesign!
+  - rscadd: Added pepperspray tanks to security. Check Security Office and the Armory.
+  - rscadd: Redesigned + Moved the Custodial Closet and Mechanical Storage compartment.
+  - rscdel: Removed Mechanics Storage from Aft Hallway.
+  - bugfix: Fixed out-of-place iron wall near the bar.
+  - bugfix: Fixed mis-mapped disposal pipes in dormitories.
+  - bugfix: Fixed obsolete access codes on virology access panels.
+  - bugfix: Fixed camera blindspots in Security.
+  - code_imp: Added Psychologist Job Pincode code.
+  Kapu1178:
+  - bugfix: Autoclave item insertion.
+  - bugfix: Maybe fixed the crew manifest exploding.
+  - rscadd: Changed how cleaning blood works. Standard cleaners will remove the blood
+      visually, but traces will remain.
+  - rscadd: Added Luminol, a reagent which causes traces of blood to glow a bright
+      blue.
+  - rscadd: Added Sterilizine, an ultra-powerful cleaning reagent that removes traces
+      of blood, and can be used to sterilize wounds.
+  - rscadd: Added Sterilize Wound surgery, which can be performed with Sterilizine
+      or high concentration ethanol.
+  - rscadd: Added a UV Light item, which reveals traces of blood nearby. Can be purchased
+      from cargo for a large amount of marks. (Because it invalidates Luminol)
+  - rscadd: P.I's Investigate Mode reveals traces of blood nearby for the P.I only.
+      Does not reveal blood on items like Luminol or the UV Light.
+  - rscadd: Added a new interaction for Investigate Mode involving a chair.
+  - balance: Rebalances the entire economy.
+2025-08-14:
+  Kapu1178:
+  - rscadd: PWNRA aka Gramps added to the memorial list.
+  - bugfix: A small error in attack code handling.
+2025-08-16:
+  Kapu1178:
+  - tweak: Adjusted the names of skin tones.

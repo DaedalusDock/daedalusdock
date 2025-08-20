@@ -25,7 +25,7 @@
 	user.visible_message(span_suicide("[user] is focusing intently on [src]! It looks like [user.p_theyre()] trying to commit sudoku... until [user.p_their()] eyes light up with realization!"))
 	user.say(";JOURNALISM IS MY CALLING! EVERYBODY APPRECIATES UNBIASED REPORTI-GLORF", forced="newspaper suicide")
 	var/mob/living/carbon/human/H = user
-	var/obj/W = new /obj/item/reagent_containers/food/drinks/bottle/whiskey(H.loc)
+	var/obj/W = new /obj/item/reagent_containers/cup/glass/bottle/whiskey(H.loc)
 	playsound(H.loc, 'sound/items/drink.ogg', rand(10,50), TRUE)
 	W.reagents.trans_to(H, W.reagents.total_volume, transfered_by = user)
 	user.visible_message(span_suicide("[user] downs the contents of [W.name] in one gulp! Shoulda stuck to sudoku!"))
@@ -110,8 +110,10 @@
 				dat+="<BR><I>There is a small scribble near the end of this page... It reads: \"[scribble]\"</I>"
 			dat+= "<HR><DIV STYLE='float:left;'><A href='?src=[REF(src)];prev_page=1'>Previous Page</A></DIV>"
 	dat+="<BR><HR><div align='center'>[curr_page+1]</div>"
-	human_user << browse(dat, "window=newspaper_main;size=300x400")
-	onclose(human_user, "newspaper_main")
+
+	var/datum/browser/browser = new(human_user, "newspaper_main", "Newspaper", 300, 400)
+	browser.set_content(dat)
+	browser.open()
 
 /obj/item/newspaper/proc/notContent(list/L)
 	if(!L.len)

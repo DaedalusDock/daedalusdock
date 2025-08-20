@@ -552,7 +552,7 @@
 		H.remove_status_effect(/datum/status_effect/neck_slice)
 
 	if(prob(10))
-		H.emote(pick("gasp", "gag", "choke"))
+		H.emote(pick(/datum/emote/living/carbon/gasp_air, "gag", "choke"))
 
 /mob/living/proc/apply_necropolis_curse(set_curse)
 	var/datum/status_effect/necropolis_curse/C = has_status_effect(/datum/status_effect/necropolis_curse)
@@ -1256,3 +1256,14 @@
 /datum/status_effect/discoordinated/on_remove()
 	REMOVE_TRAIT(owner, TRAIT_DISCOORDINATED_TOOL_USER, "[type]")
 	return ..()
+
+/// Applied to monkeys to make them attack slower.
+/datum/status_effect/monkey_retardation
+	id = "monkey_retardation"
+	alert_type = null
+	duration = -1
+	status_type = STATUS_EFFECT_UNIQUE
+
+/datum/status_effect/monkey_retardation/nextmove_modifier()
+	return 2
+

@@ -14,6 +14,11 @@
 	else if(dx < 0)
 		. += 360
 
+///returns degrees between two angles
+/proc/get_between_angles(degree_one, degree_two)
+	var/angle = abs(degree_one - degree_two) % 360
+	return angle > 180 ? 360 - angle : angle
+
 ///for getting the angle when animating something's pixel_x and pixel_y
 /proc/get_pixel_angle(y, x)
 	if(!y)
@@ -69,6 +74,77 @@
 			current_y_step += y_distance_sign
 			line += locate(current_x_step, current_y_step, starting_z)
 	return line
+
+/**
+ *	Generates a cone shape. Any other checks should be handled with the resulting list. Can work with up to 359 degrees
+ *	Variables:
+ *	center - where the cone begins, or center of a circle drawn with this
+ *	max_row_count - how many rows are checked
+ *	starting_row - from how far should the turfs start getting included in the cone
+ *	cone_width - big the angle of the cone is
+ *	cone_direction - at what angle should the cone be made, relative to the game board's orientation
+ *	allow_dense - ignores dense objects
+ *  check_passability - checks LinkBlockedWithAccess
+ */
+/proc/get_cone(atom/center, max_row_count = 10, starting_row = 1, cone_width = 60, cone_direction = 0, check_density = FALSE, check_passability = FALSE, check_air_passability = FALSE)
+	var/right_angle = cone_direction + cone_width/2
+	var/left_angle = cone_direction - cone_width/2
+
+	//These are needed because degrees need to be from 0 to 359 for the checks to function
+	if(right_angle >= 360)
+		right_angle -= 360
+
+	if(left_angle < 0)
+		left_angle += 360
+
+	///the 3 directions in the direction on the cone that will be checked
+	var/cardinals = GLOB.alldirs
+	///turfs that are checked whether the cone can continue further from them
+	var/list/turfs_to_check = list(get_turf(center))
+	var/list/cone_turfs = list()
+
+	var/datum/can_pass_info/pass_info = new(no_id = TRUE)
+	for(var/row in 1 to max_row_count)
+		if(row > 2)
+			cardinals = GLOB.cardinals
+
+		for(var/turf/previous_turf as anything in turfs_to_check)
+			for(var/direction in cardinals)
+				var/turf/checking_step = get_step(previous_turf, direction)
+				if(checking_step in cone_turfs)
+					continue
+
+				// Checking step isn't within the given angle.
+				var/turf_angle = get_angle(center, checking_step)
+				if(right_angle > left_angle && (turf_angle > right_angle || turf_angle < left_angle))
+					continue
+
+				if(turf_angle > right_angle && turf_angle < left_angle)
+					continue
+
+				if(check_density)
+					if(checking_step.contains_dense_objects())
+						continue
+
+				if(check_passability && !previous_turf.LinkBlockedWithAccess(checking_step, pass_info))
+					continue
+
+				if(check_air_passability)
+					var/air_passability
+					ATMOS_CANPASS_TURF(air_passability, checking_step, previous_turf)
+					if(air_passability & AIR_BLOCKED)
+						continue
+
+				cone_turfs += checking_step
+				turfs_to_check += checking_step
+
+			turfs_to_check -= previous_turf
+
+	for(var/turf/checked_turf as anything in cone_turfs)
+		if(get_dist(center, checked_turf) < starting_row) //if its before the starting row, ignore it.
+			cone_turfs -= checked_turf
+
+	return	cone_turfs
 
 ///Format a power value in W, kW, MW, or GW.
 /proc/display_power(powerused)

@@ -13,6 +13,9 @@ Slimecrossing Weapons
 
 /obj/item/melee/arm_blade/slime/attack(mob/living/L, mob/user)
 	. = ..()
+	if(.)
+		return
+
 	if(prob(20))
 		user.emote("scream")
 
@@ -27,9 +30,10 @@ Slimecrossing Weapons
 	throwforce = 15
 	damtype = BRUTE
 
-/obj/item/knife/rainbowknife/afterattack(atom/O, mob/user, proximity)
-	if(proximity && istype(O, /mob/living))
+/obj/item/knife/rainbowknife/afterattack(atom/target, mob/user, list/modifiers)
+	if(istype(target, /mob/living))
 		damtype = pick(BRUTE, BURN, TOX, OXY, CLONE)
+
 	switch(damtype)
 		if(BRUTE)
 			hitsound = 'sound/weapons/bladeslice.ogg'
@@ -56,7 +60,6 @@ Slimecrossing Weapons
 			wielded_hitsound = 'sound/items/geiger/ext1.ogg'
 			attack_verb_continuous = string_list(list("irradiates", "mutates", "maligns"))
 			attack_verb_simple = string_list(list("irradiate", "mutate", "malign"))
-	return ..()
 
 //Bloodchiller - Chilling Green
 /obj/item/gun/magic/bloodchill

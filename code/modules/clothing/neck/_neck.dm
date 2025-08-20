@@ -68,41 +68,32 @@
 
 /obj/item/clothing/neck/stethoscope
 	name = "stethoscope"
-	desc = "An outdated medical apparatus for listening to the sounds of the human body. It also makes you look like you know what you're doing."
+	desc = "A tool for auscultation of the body."
 	icon_state = "stethoscope"
 
 /obj/item/clothing/neck/stethoscope/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] puts \the [src] to [user.p_their()] chest! It looks like [user.p_they()] won't hear much!"))
 	return OXYLOSS
 
-/obj/item/clothing/neck/stethoscope/attack(mob/living/M, mob/living/user)
-	if(!ishuman(M) || !isliving(user))
-		return ..()
-	if(user.combat_mode)
-		return
+/obj/item/clothing/neck/stethoscope/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ishuman(interacting_with))
+		return NONE
 
-	var/mob/living/carbon/carbon_patient = M
-	var/body_part = parse_zone(user.zone_selected)
+	var/mob/living/carbon/human/patient = interacting_with
+	var/obj/item/bodypart/listening_to = patient.get_bodypart(user.zone_selected)
 
-	var/heart_strength = span_danger("no")
-	var/lung_strength = span_danger("no")
+	if(!do_after(user, patient, 5 SECONDS, DO_RESTRICT_USER_DIR_CHANGE|DO_PUBLIC, display = src))
+		return ITEM_INTERACT_BLOCKING
 
-	var/obj/item/organ/heart/heart = carbon_patient.getorganslot(ORGAN_SLOT_HEART)
-	var/obj/item/organ/lungs/lungs = carbon_patient.getorganslot(ORGAN_SLOT_LUNGS)
+	user.visible_message(
+		span_subtle("[user] places [src] against [patient]'s [listening_to.plaintext_zone]."),
+	)
 
-	if(carbon_patient.stat != DEAD && !(HAS_TRAIT(carbon_patient, TRAIT_FAKEDEATH)))
-		if(istype(heart))
-			heart_strength = (heart.pulse == PULSE_NORM ? "a healthy" : span_danger("an unstable"))
-		if(istype(lungs))
-			lung_strength = ((carbon_patient.failed_last_breath || carbon_patient.losebreath) ? span_danger("strained") : "healthy")
+	if(user.can_hear())
+		var/list/heard = listening_to.stethoscope_listen()
+		to_chat(user, span_hear("You hear [english_list(heard)]."))
 
-	user.visible_message(span_notice("[user] places [src] against [carbon_patient]'s [body_part] and listens attentively."), ignored_mobs = user)
-
-	var/diagnosis = (body_part == BODY_ZONE_CHEST ? "You hear [heart_strength] pulse and [lung_strength] respiration" : "You faintly hear [heart_strength] pulse")
-	if(!user.can_hear())
-		diagnosis = "You don't hear anything."
-
-	to_chat(user, span_notice("You place [src] against [carbon_patient]'s [body_part]. [diagnosis]."))
+	return ITEM_INTERACT_SUCCESS
 
 ///////////
 //SCARVES//
@@ -225,10 +216,16 @@
 	selling = !selling
 	to_chat(user, span_notice("[src] has been set to [selling ? "'Sell'" : "'Get Price'"] mode."))
 
-/obj/item/clothing/neck/necklace/dope/merchant/afterattack(obj/item/I, mob/user, proximity)
+/obj/item/clothing/neck/necklace/dope/merchant/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	. = ..()
-	if(!proximity)
+	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return
+
+	if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+		return NONE
+
+	var/atom/I = interacting_with // Yes i am supremely lazy
+
 	var/datum/export_report/ex = export_item_and_contents(I, delete_unsold = selling, dry_run = !selling)
 	var/price = 0
 	for(var/x in ex.total_amount)
@@ -236,11 +233,16 @@
 
 	if(price)
 		var/true_price = round(price*profit_scaling)
-		to_chat(user, span_notice("[selling ? "Sold" : "Getting the price of"] [I], value: <b>[true_price]</b> credits[I.contents.len ? " (exportable contents included)" : ""].[profit_scaling < 1 && selling ? "<b>[round(price-true_price)]</b> credit\s taken as processing fee\s." : ""]"))
+		to_chat(user, span_notice("[selling ? "Sold" : "Getting the price of"] [I], value: <b>[true_price]</b> marks[I.contents.len ? " (exportable contents included)" : ""].[profit_scaling < 1 && selling ? "<b>[round(price-true_price)]</b> credit\s taken as processing fee\s." : ""]"))
 		if(selling)
 			SSeconomy.spawn_ones_for_amount(true_price, get_turf(user))
 	else
 		to_chat(user, span_warning("There is no export value for [I] or any items within it."))
+
+	return ITEM_INTERACT_SUCCESS
+
+TYPEINFO_DEF(/obj/item/clothing/neck/beads)
+	default_materials = list(/datum/material/plastic = 500)
 
 /obj/item/clothing/neck/beads
 	name = "plastic bead necklace"
@@ -249,7 +251,6 @@
 	icon_state = "beads"
 	color = "#ffffff"
 	custom_price = PAYCHECK_ASSISTANT * 0.2
-	custom_materials = (list(/datum/material/plastic = 500))
 
 /obj/item/clothing/neck/beads/Initialize(mapload)
 	. = ..()

@@ -10,7 +10,7 @@
 		if(ismovable(target))
 			RegisterSignal(target, COMSIG_MOVABLE_IMPACT, PROC_REF(on_throw_impact))
 			if(isitem(target))
-				RegisterSignal(target, COMSIG_ITEM_AFTERATTACK, PROC_REF(on_afterattack))
+				RegisterSignal(target, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(on_interacting_with))
 				RegisterSignal(target, COMSIG_ITEM_HIT_REACT, PROC_REF(on_hit_reaction))
 			else if(isprojectile(target))
 				RegisterSignal(target, COMSIG_PROJECTILE_ON_HIT, PROC_REF(on_projectile_hit))
@@ -24,7 +24,7 @@
 /datum/element/light_eater/Detach(datum/source)
 	UnregisterSignal(source, list(
 		COMSIG_MOVABLE_IMPACT,
-		COMSIG_ITEM_AFTERATTACK,
+		COMSIG_ITEM_INTERACTING_WITH_ATOM,
 		COMSIG_ITEM_HIT_REACT,
 		COMSIG_PROJECTILE_ON_HIT,
 		COMSIG_REAGENT_EXPOSE_ATOM,
@@ -104,19 +104,27 @@
 	return NONE
 
 /**
- * Called when a target is attacked with a source item
+ * Called when a target is interacted with by a source item
  *
  * Arguments:
  * - [source][/obj/item]: The item what was used to strike the target
- * - [target][/atom]: The atom being struck by the user with the source
  * - [user][/mob/living]: The mob using the source to strike the target
- * - proximity: Whether the strike was in melee range so you can't eat lights from cameras
+ * - [target][/atom]: The atom being struck by the user with the source
  */
-/datum/element/light_eater/proc/on_afterattack(obj/item/source, atom/target, mob/living/user, proximity)
+/datum/element/light_eater/proc/on_interacting_with(obj/item/source, mob/living/user, atom/interacting_with, list/modifiers)
 	SIGNAL_HANDLER
-	if(!proximity)
-		return NONE
-	eat_lights(target, source)
+	if(eat_lights(interacting_with, source))
+		// do a "pretend" attack if we're hitting something that can't normally be
+		if(isobj(interacting_with))
+			var/obj/smacking = interacting_with
+			if(smacking.obj_flags & CAN_BE_HIT)
+				return NONE
+		else if(!isturf(interacting_with))
+			return NONE
+		user.do_attack_animation(interacting_with)
+		user.changeNext_move(CLICK_CD_RAPID)
+		interacting_with.play_attack_sound()
+	// not particularly picky about what happens afterwards in the attack chain
 	return NONE
 
 /**

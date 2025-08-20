@@ -22,37 +22,42 @@
 /obj/item/reagent_containers/hypospray/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
 
-/obj/item/reagent_containers/hypospray/attack(mob/living/affected_mob, mob/user)
-	inject(affected_mob, user)
+/obj/item/reagent_containers/hypospray/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
+	return inject(interacting_with, user)
 
 ///Handles all injection checks, injection and logging.
 /obj/item/reagent_containers/hypospray/proc/inject(mob/living/affected_mob, mob/user)
 	if(!reagents.total_volume)
-		to_chat(user, span_warning("[src] is empty!"))
-		return FALSE
+		to_chat(user, span_warning("[src] is empty."))
+		return ITEM_INTERACT_BLOCKING
+
 	if(!iscarbon(affected_mob))
-		return FALSE
+		return ITEM_INTERACT_BLOCKING
 
 	//Always log attemped injects for admins
 	var/list/injected = list()
 	for(var/datum/reagent/injected_reagent in reagents.reagent_list)
 		injected += injected_reagent.name
+
 	var/contained = english_list(injected)
 
 	log_combat(user, affected_mob, "attempted to inject", src, "([contained])")
 
 	if(!reagents.total_volume)
-		return FALSE
+		return ITEM_INTERACT_BLOCKING
 
 	if(!inject_check(user, affected_mob))
-		return FALSE
+		return ITEM_INTERACT_BLOCKING
 
 	playsound(src, 'sound/effects/autoinjector.ogg', 25)
 	user.changeNext_move(CLICK_CD_RAPID)
 
 	if(time && user != affected_mob && !affected_mob.incapacitated())
 		if(!do_after(user, affected_mob, time, DO_PUBLIC|DO_RESTRICT_USER_DIR_CHANGE, extra_checks = CALLBACK(src, PROC_REF(inject_check), user, affected_mob), interaction_key = src, display = src))
-			return FALSE
+			return ITEM_INTERACT_BLOCKING
 
 	affected_mob.apply_pain(1, BODY_ZONE_CHEST, "You feel a tiny prick.")
 
@@ -73,7 +78,7 @@
 			trans = reagents.copy_to(affected_mob, amount_per_transfer_from_this)
 		to_chat(user, span_obviousnotice("[trans] unit\s injected. [reagents.total_volume] unit\s remaining in [src]."))
 		log_combat(user, affected_mob, "injected", src, "([contained])")
-	return TRUE
+	return ITEM_INTERACT_SUCCESS
 
 
 /obj/item/reagent_containers/hypospray/proc/inject_check(mob/living/user, mob/living/affected_mob)
@@ -145,8 +150,8 @@
 		/datum/reagent/medicine/adenosine = 5,
 	)
 
-	custom_price = PAYCHECK_MEDIUM
-	custom_premium_price = PAYCHECK_HARD
+	custom_price = PAYCHECK_ASSISTANT * 2.2
+	custom_premium_price = PAYCHECK_ASSISTANT * 4
 
 /obj/item/reagent_containers/hypospray/medipen/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins to choke on \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -263,7 +268,12 @@
 	base_icon_state = "stimpen"
 	volume = 30
 	amount_per_transfer_from_this = 30
-	list_reagents = list(/datum/reagent/medicine/synaptizine = 4, /datum/reagent/medicine/dermaline = 8, /datum/reagent/medicine/meralyne = 8, /datum/reagent/medicine/leporazine = 6)
+	list_reagents = list(
+		/datum/reagent/medicine/synaptizine = 4,
+		/datum/reagent/medicine/dermaline = 10,
+		/datum/reagent/medicine/meralyne = 10,
+		/datum/reagent/medicine/leporazine = 6
+	)
 
 /obj/item/reagent_containers/hypospray/medipen/survival/inject(mob/living/affected_mob, mob/user)
 	if(DOING_INTERACTION(user, DOAFTER_SOURCE_SURVIVALPEN))
@@ -280,7 +290,7 @@
 
 /obj/item/reagent_containers/hypospray/medipen/survival/luxury
 	name = "luxury autoinjector"
-	desc = "Cutting edge technology allowed humanity to compact 50u of volume into a single medipen. Contains rare and powerful chemicals used to aid in exploration of very hard enviroments."
+	desc = "Cutting edge technology allowed minervanity to compact 50u of volume into a single medipen. Contains rare and powerful chemicals used to aid in exploration of very hard enviroments."
 	icon_state = "luxpen"
 	inhand_icon_state = "atropen"
 	base_icon_state = "luxpen"

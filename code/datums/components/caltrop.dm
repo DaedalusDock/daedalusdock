@@ -19,6 +19,9 @@
 	///The sound that plays when a caltrop is triggered.
 	var/soundfile
 
+	/// Optional callback to invoke when something triggers the caltrop.
+	var/datum/callback/on_trigger
+
 	///given to connect_loc to listen for something moving over target
 	var/static/list/crossed_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -27,7 +30,7 @@
 	///So we can update ant damage
 	dupe_mode = COMPONENT_DUPE_UNIQUE_PASSARGS
 
-/datum/component/caltrop/Initialize(min_damage = 0, max_damage = 0, probability = 100, flags = NONE, soundfile = null)
+/datum/component/caltrop/Initialize(min_damage = 0, max_damage = 0, probability = 100, flags = NONE, soundfile = null, on_trigger = null)
 	. = ..()
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -37,6 +40,7 @@
 	src.probability = probability
 	src.flags = flags
 	src.soundfile = soundfile
+	src.on_trigger = on_trigger
 
 	if(ismovable(parent))
 		AddComponent(/datum/component/connect_loc_behalf, parent, crossed_connections)
@@ -73,7 +77,7 @@
 	if(HAS_TRAIT(H, TRAIT_PIERCEIMMUNE))
 		return
 
-	if((flags & CALTROP_IGNORE_WALKERS) && H.m_intent == MOVE_INTENT_WALK)
+	if((flags & CALTROP_IGNORE_WALKERS) && (H.m_intent == MOVE_INTENT_WALK) && !(H.body_position == LYING_DOWN))
 		return
 
 	if(H.movement_type & (FLOATING|FLYING)) //check if they are able to pass over us
@@ -106,18 +110,19 @@
 	if(!(flags & CALTROP_SILENT) && !H.has_status_effect(/datum/status_effect/caltropped))
 		H.apply_status_effect(/datum/status_effect/caltropped)
 		H.visible_message(
-			span_danger("[H] steps on [parent]."),
-			span_userdanger("You step on [parent]!")
+			span_danger("<b>[H]</b> steps on [parent]."),
 		)
 
 	H.apply_damage(damage, BRUTE, picked_def_zone)
+	H.apply_pain(damage, O, "A sharp pain shoots through your foot.")
 
 	if(!(flags & CALTROP_NOSTUN)) // Won't set off the paralysis.
 		H.Paralyze(60)
 
-	if(!soundfile)
-		return
-	playsound(H, soundfile, 15, TRUE, -3)
+	if(soundfile)
+		playsound(H, soundfile, 15, TRUE, -3)
+
+	on_trigger?.InvokeAsync(H)
 
 /datum/component/caltrop/UnregisterFromParent()
 	if(ismovable(parent))

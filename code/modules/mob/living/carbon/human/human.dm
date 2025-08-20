@@ -129,6 +129,7 @@
 			return
 
 		var/datum/data/record/general_record = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_STATION)
+		var/datum/data/record/medical_record = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_MEDICAL)
 
 		if(href_list["photo_front"] || href_list["photo_side"])
 			if(!general_record)
@@ -194,32 +195,36 @@
 			if(!H.wear_id) //You require access from here on out.
 				to_chat(H, span_warning("ERROR: Invalid access"))
 				return
+
 			var/list/access = H.wear_id.GetAccess()
 			if(!(ACCESS_MEDICAL in access))
 				to_chat(H, span_warning("ERROR: Invalid access"))
 				return
-			if(href_list["p_stat"])
-				var/health_status = input(usr, "Specify a new physical status for this person.", "Medical HUD", general_record.fields[DATACORE_PHYSICAL_HEALTH]) in list("Active", "Physically Unfit", "*Unconscious*", "*Deceased*", "Cancel")
-				if(!general_record)
+
+			if(href_list[DATACORE_PHYSICAL_HEALTH])
+				var/health_status = input(usr, "Specify a new physical status for this person.", "Medical HUD", medical_record.fields[DATACORE_PHYSICAL_HEALTH]) in list(PHYSHEALTH_OK, PHYSHEALTH_CARE, PHYSHEALTH_DECEASED, "Cancel")
+				if(!medical_record)
 					return
 				if(!H.canUseHUD())
 					return
 				if(!HAS_TRAIT(H, TRAIT_MEDICAL_HUD))
 					return
 				if(health_status && health_status != "Cancel")
-					general_record.fields[DATACORE_PHYSICAL_HEALTH] = health_status
+					medical_record.fields[DATACORE_PHYSICAL_HEALTH] = health_status
 				return
-			if(href_list["m_stat"])
-				var/health_status = input(usr, "Specify a new mental status for this person.", "Medical HUD", general_record.fields[DATACORE_MENTAL_HEALTH]) in list("Stable", "*Watch*", "*Unstable*", "*Insane*", "Cancel")
-				if(!general_record)
+
+			if(href_list[DATACORE_MENTAL_HEALTH])
+				var/health_status = input(usr, "Specify a new mental status for this person.", "Medical HUD", general_record.fields[DATACORE_MENTAL_HEALTH]) in list(MENHEALTH_OK, MENHEALTH_WATCH, MENHEALTH_UNSTABLE, MENHEALTH_INSANE, "Cancel")
+				if(!medical_record)
 					return
 				if(!H.canUseHUD())
 					return
 				if(!HAS_TRAIT(H, TRAIT_MEDICAL_HUD))
 					return
 				if(health_status && health_status != "Cancel")
-					general_record.fields[DATACORE_MENTAL_HEALTH] = health_status
+					medical_record.fields[DATACORE_MENTAL_HEALTH] = health_status
 				return
+
 			if(href_list["quirk"])
 				var/quirkstring = get_quirk_string(TRUE, CAT_QUIRK_ALL)
 				if(quirkstring)
@@ -308,7 +313,7 @@
 					announcer.notify_citation(security_record.fields[DATACORE_NAME], t1, fine)
 				// for (var/obj/item/modular_computer/tablet in GLOB.TabletMessengers)
 				// 	if(tablet.saved_identification == R.fields[DATACORE_NAME])
-				// 		var/message = "You have been fined [fine] credits for '[t1]'. Fines may be paid at security."
+				// 		var/message = "You have been fined [fine] marks for '[t1]'. Fines may be paid at security."
 				// 		var/datum/signal/subspace/messaging/tablet_msg/signal = new(src, list(
 				// 			"name" = "Security Citation",
 				// 			"job" = "Citation Server",
@@ -377,7 +382,7 @@
 				var/counter = 1
 				while(security_record.fields["com_[counter]"])
 					counter++
-				security_record.fields["com_[counter]"] = "Made by [allowed_access] on [stationtime2text()] [time2text(world.realtime, "MMM DD")], [CURRENT_STATION_YEAR]<BR>[t1]"
+				security_record.fields["com_[counter]"] = "Made by [allowed_access] on [stationtime2text()] [time2text(world.realtime, "MMM DD")], '77<BR>[t1]"
 				to_chat(usr, span_notice("Successfully added comment."))
 				return
 
@@ -830,8 +835,8 @@
 /mob/living/carbon/human/vomit(lost_nutrition = 10, blood = FALSE, stun = TRUE, distance = 1, message = TRUE, vomit_type = VOMIT_TOXIC, harm = TRUE, force = FALSE, purge_ratio = 0.1)
 	if(blood && (NOBLOOD in dna.species.species_traits) && !HAS_TRAIT(src, TRAIT_TOXINLOVER))
 		if(message)
-			visible_message(span_warning("[src] dry heaves!"), \
-							span_userdanger("You try to throw up, but there's nothing in your stomach!"))
+			spawn(-1)
+				emote(/datum/emote/living/carbon/gasp_air/dry_heave)
 		if(stun)
 			Paralyze(200)
 		return 1

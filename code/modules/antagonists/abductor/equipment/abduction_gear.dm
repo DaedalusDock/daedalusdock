@@ -6,6 +6,9 @@
 #define MIND_DEVICE_CONTROL 2
 
 //AGENT VEST
+TYPEINFO_DEF(/obj/item/clothing/suit/armor/abductor/vest)
+	default_armor = list(BLUNT = 15, PUNCTURE = 15, SLASH = 0, LASER = 15, ENERGY = 25, BOMB = 15, BIO = 15, FIRE = 70, ACID = 70)
+
 /obj/item/clothing/suit/armor/abductor/vest
 	name = "agent vest"
 	desc = "A vest outfitted with advanced stealth technology. It has two modes - combat and stealth."
@@ -13,7 +16,6 @@
 	icon_state = "vest_stealth"
 	inhand_icon_state = "armor"
 	blood_overlay_type = "armor"
-	armor = list(BLUNT = 15, PUNCTURE = 15, SLASH = 0, LASER = 15, ENERGY = 25, BOMB = 15, BIO = 15, FIRE = 70, ACID = 70)
 	actions_types = list(/datum/action/item_action/hands_free/activate)
 	allowed = list(
 		/obj/item/abductor,
@@ -199,21 +201,19 @@
 			mark(M, user)
 
 
-/obj/item/abductor/gizmo/afterattack(atom/target, mob/living/user, flag, params)
-	. = ..()
-	if(flag)
-		return
-	if(!ScientistCheck(user))
-		return
+/obj/item/abductor/gizmo/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!console)
-		to_chat(user, span_warning("The device is not linked to console!"))
-		return
+		to_chat(user, span_warning("The device is not linked to console."))
+		return ITEM_INTERACT_BLOCKING
+
+	var/atom/target = interacting_with // Yes i am supremely lazy
 
 	switch(mode)
 		if(GIZMO_SCAN)
 			scan(target, user)
 		if(GIZMO_MARK)
 			mark(target, user)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/abductor/gizmo/proc/scan(atom/target, mob/living/user)
 	if(ishuman(target))
@@ -258,13 +258,12 @@
 		return
 	radio_off(M, user)
 
-/obj/item/abductor/silencer/afterattack(atom/target, mob/living/user, flag, params)
-	. = ..()
-	if(flag)
-		return
+/obj/item/abductor/silencer/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!AbductorCheck(user))
-		return
-	radio_off(target, user)
+		return NONE
+
+	radio_off(interacting_with, user)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/abductor/silencer/proc/radio_off(atom/target, mob/living/user)
 	if( !(user in (viewers(7,target))) )
@@ -307,16 +306,16 @@
 		icon_state = "mind_device_message"
 	to_chat(user, span_notice("You switch the device to [mode==MIND_DEVICE_MESSAGE? "TRANSMISSION": "COMMAND"] MODE"))
 
-/obj/item/abductor/mind_device/afterattack(atom/target, mob/living/user, flag, params)
-	. = ..()
+/obj/item/abductor/mind_device/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!ScientistCheck(user))
-		return
+		return NONE
 
 	switch(mode)
 		if(MIND_DEVICE_CONTROL)
-			mind_control(target, user)
+			mind_control(interacting_with, user)
 		if(MIND_DEVICE_MESSAGE)
-			mind_message(target, user)
+			mind_message(interacting_with, user)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/abductor/mind_device/proc/mind_control(atom/target, mob/living/user)
 	if(iscarbon(target))
@@ -654,7 +653,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 
 // Stops humans from disassembling abductor headsets.
 /obj/item/radio/headset/abductor/screwdriver_act(mob/living/user, obj/item/tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/abductor_machine_beacon
 	name = "machine beacon"
@@ -784,6 +783,9 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			new /obj/structure/table/optable/abductor(src.loc)
 			qdel(src)
 
+TYPEINFO_DEF(/obj/structure/table/abductor)
+	default_materials = list(/datum/material/silver = 2000)
+
 /obj/structure/table/abductor
 	name = "alien table"
 	desc = "Advanced flat surface technology at work!"
@@ -797,7 +799,6 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	smoothing_groups = SMOOTH_GROUP_ABDUCTOR_TABLES
 	canSmoothWith = SMOOTH_GROUP_ABDUCTOR_TABLES
 	frame = /obj/structure/table_frame/abductor
-	custom_materials = list(/datum/material/silver = 2000)
 
 /obj/structure/table/optable/abductor
 	name = "alien operating table"
@@ -858,6 +859,9 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	material_type = /obj/item/stack/sheet/mineral/abductor
 	noglass = TRUE
 
+TYPEINFO_DEF(/obj/item/clothing/under/abductor)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 10, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/under/abductor
 	desc = "The most advanced form of jumpsuit known to reality, looks uncomfortable."
 	name = "alien jumpsuit"
@@ -865,5 +869,4 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	icon_state = "abductor"
 	inhand_icon_state = "bl_suit"
 	worn_icon = 'icons/mob/clothing/under/syndicate.dmi'
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 10, FIRE = 0, ACID = 0)
 	can_adjust = FALSE

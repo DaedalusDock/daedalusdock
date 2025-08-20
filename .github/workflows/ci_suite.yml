@@ -88,7 +88,8 @@ jobs:
           extract: true
       - name: Run OpenDream
         run: |
-          ./DMCompiler_linux-x64/DMCompiler daedalus.dme --suppress-unimplemented --define=CIBUILDING
+          source dependencies.sh
+          ./DMCompiler_linux-x64/DMCompiler daedalus.dme --suppress-unimplemented --define=CIBUILDING --version=$BYOND_MAJOR.$BYOND_MINOR
 
   compile_all_maps:
     if: ( !contains(github.event.head_commit.message, '[ci skip]') )
@@ -96,11 +97,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Restore BYOND cache
-        uses: actions/cache@v4
-        with:
-          path: ~/BYOND
-          key: ${{ runner.os }}-byond
+      - name: Prepare BYOND
+        uses: ./.github/actions/restore_or_install_byond
       - name: Compile All Maps
         run: |
           bash tools/ci/install_byond.sh

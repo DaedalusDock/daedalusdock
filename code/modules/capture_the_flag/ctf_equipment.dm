@@ -190,6 +190,9 @@
 
 // SHIELDED VEST
 
+TYPEINFO_DEF(/obj/item/clothing/suit/armor/vest/ctf)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/item/clothing/suit/armor/vest/ctf
 	name = "white shielded vest"
 	desc = "Standard issue vest for playing capture the flag."
@@ -197,7 +200,6 @@
 	worn_icon = 'icons/mob/clothing/suits/ctf.dmi'
 	icon_state = "standard"
 	// Adding TRAIT_NODROP is done when the CTF spawner equips people
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0) // CTF gear gives no protection outside of the shield
 	allowed = null
 	greyscale_config = /datum/greyscale_config/ctf_standard
 	greyscale_config_worn = /datum/greyscale_config/ctf_standard_worn

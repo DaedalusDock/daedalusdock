@@ -21,7 +21,8 @@
 			continue
 			designs += design
 
-	internal_disk.set_data(DATA_IDX_DESIGNS, designs)
+	var/datum/c4_file/fab_design_bundle/dundle = new(designs)
+	disk_write_file(dundle, internal_disk)
 
 
 	materials = AddComponent( \
@@ -110,7 +111,7 @@
 
 	var/list/designs = list()
 
-	for (var/datum/design/design as anything in internal_disk.read(DATA_IDX_DESIGNS))
+	for (var/datum/design/design as anything in disk_get_designs(FABRICATOR_FILE_NAME))
 		if (!(design.build_type & COMPONENT_PRINTER))
 			continue
 

@@ -97,9 +97,6 @@
 	. = BREATH_OKAY
 
 	if(!breath || (breath.total_moles == 0))
-		if(!HAS_TRAIT(breather, TRAIT_NOCRITDAMAGE))
-			breather.adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS)
-
 		breather.failed_last_breath = TRUE
 		if(safe_oxygen_min)
 			breather.throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)
@@ -156,8 +153,6 @@
 			. = BREATH_DAMAGING
 		else
 			breather.failed_last_breath = FALSE
-			if(breather.health >= breather.crit_threshold)
-				breather.adjustOxyLoss(-5)
 			gas_breathed = O2_moles
 			breather.clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 
@@ -187,8 +182,6 @@
 			. = BREATH_DAMAGING
 		else
 			breather.failed_last_breath = FALSE
-			if(breather.health >= breather.crit_threshold)
-				breather.adjustOxyLoss(-5)
 			gas_breathed = N2_moles
 			breather.clear_alert(ALERT_NOT_ENOUGH_NITRO)
 
@@ -224,8 +217,6 @@
 			. = BREATH_DAMAGING
 		else
 			breather.failed_last_breath = FALSE
-			if(breather.health >= breather.crit_threshold)
-				breather.adjustOxyLoss(-5)
 			gas_breathed = CO2_moles
 			breather.clear_alert(ALERT_NOT_ENOUGH_CO2)
 
@@ -257,8 +248,6 @@
 			. = BREATH_DAMAGING
 		else
 			breather.failed_last_breath = FALSE
-			if(breather.health >= breather.crit_threshold)
-				breather.adjustOxyLoss(-5)
 			gas_breathed = plasma_moles
 			breather.clear_alert(ALERT_NOT_ENOUGH_PLASMA)
 
@@ -366,8 +355,41 @@
 
 /obj/item/organ/lungs/check_damage_thresholds(mob/organ_owner)
 	. = ..()
-	if(. == high_threshold_passed && owner)
-		owner.visible_message(span_danger("[owner] grabs at [owner.p_their()] throat, struggling for breath!"), span_userdanger("You suddenly feel like you can't breathe."))
+	if(. < ORGAN_HIGH_THRESHOLD_PASSED)
+		return
+	if((owner?.stat == CONSCIOUS) && owner.needs_organ(ORGAN_SLOT_LUNGS))
+		owner.manual_emote("[owner] begins choking and grabbing at [owner.p_their()] throat!")
+
+/obj/item/organ/lungs/stethoscope_listen()
+	. = ..()
+	if(owner.failed_last_breath)
+		. += "no respiration"
+		return
+
+	if(organ_flags & ORGAN_SYNTHETIC)
+		if(passed_low_threshold())
+			. += "malfunctioning fans"
+		else
+			. += "air flowing"
+		return
+
+	if(passed_low_threshold())
+		. += "[pick("wheezing", "gurgling")] sounds"
+
+	var/list/breath_info = list()
+	if(owner.getOxyLoss() > 50)
+		breath_info += pick("straining","labored")
+
+	if(owner.shock_stage > SHOCK_TIER_3)
+		breath_info += "shallow"
+		breath_info += "rapid"
+
+	if(!length(breath_info))
+		breath_info += "healthy"
+
+	. += "[english_list(breath_info)] breathing"
+
+	return english_list(.)
 
 /obj/item/organ/lungs/slime
 	name = "vacuole"
@@ -447,7 +469,7 @@
 */
 
 /obj/item/organ/lungs/vox
-	name = "Vox lungs"
+	name = "voks lungs"
 	desc = "They're filled with dust....wow."
 	icon_state = "lungs-vox"
 

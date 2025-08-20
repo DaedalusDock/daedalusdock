@@ -55,7 +55,7 @@
 
 /// Handles mood given by nutrition
 /datum/mood/proc/update_nutrition_moodlets()
-	if(HAS_TRAIT(mob_parent, TRAIT_NOHUNGER))
+	if(HAS_TRAIT(mob_parent, TRAIT_NOHUNGER) || CHEM_EFFECT_MAGNITUDE(mob_parent, CE_HIDE_HUNGER))
 		clear_mood_event(MOOD_CATEGORY_NUTRITION)
 		return FALSE
 
@@ -205,9 +205,9 @@
 
 	if(!quiet)
 		if(mood_level > old_mood_level)
-			to_chat(mob_parent, span_notice("I have become less stressed."))
+			to_chat(mob_parent, span_notice("You have become less stressed."))
 		else
-			to_chat(mob_parent, span_warning("I have become more stressed."))
+			to_chat(mob_parent, span_warning("You have become more stressed."))
 
 	update_mood_icon()
 
@@ -294,21 +294,21 @@
 	var/list/msg = list("[span_info("<EM>Current feelings:</EM>")]")
 
 	if(mob_parent.stat != CONSCIOUS)
-		msg += span_grey("I am asleep.")
+		msg += span_grey("You are asleep.")
 		to_chat(user, examine_block(jointext(msg, "<br>")))
 		return
 
 	switch(mood_level)
 		if(MOOD_LEVEL_SAD4)
-			msg += span_alert("<b>I wish I was dead.</b>")
+			msg += span_alert("<b>You wish you were dead.</b>")
 		if(MOOD_LEVEL_SAD2, MOOD_LEVEL_SAD3)
-			msg += span_alert("I am stressed out.")
+			msg += span_alert("You am stressed out.")
 		if(MOOD_LEVEL_NEUTRAL)
-			msg += span_grey("I feel indifferent.")
+			msg += span_grey("You feel indifferent.")
 		if(MOOD_LEVEL_HAPPY2, MOOD_LEVEL_HAPPY3)
 			msg += span_nicegreen("Everything is going to be okay.")
 		if(MOOD_LEVEL_HAPPY4)
-			msg += span_boldnicegreen("I love life!")
+			msg += span_boldnicegreen("You love life!")
 
 	if(mood_events.len)
 		for(var/category in mood_events)

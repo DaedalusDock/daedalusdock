@@ -140,11 +140,9 @@
 	add_overlay(pancake_visual)
 	update_appearance()
 
-/obj/item/food/pancakes/attack(mob/target, mob/living/user, params, stacked = TRUE)
-	if(user.combat_mode || !contents.len || !stacked)
-		return ..()
-	var/obj/item/item = contents[contents.len]
-	. = item.attack(target, user, params, FALSE)
-	update_appearance()
+/obj/item/food/pancakes/get_attacking_item(mob/living/user, atom/target)
+	if(!user.combat_mode && contents.len)
+		return contents[contents.len]
+	return ..()
 
 #undef PANCAKE_MAX_STACK

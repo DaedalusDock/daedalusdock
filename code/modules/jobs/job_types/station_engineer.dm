@@ -37,7 +37,7 @@
 		),
 	)
 
-	paycheck = PAYCHECK_MEDIUM
+	paycheck = PAYCHECK_ASSISTANT * 5
 	paycheck_department = ACCOUNT_ENG
 
 	liver_traits = list(TRAIT_ENGINEER_METABOLISM)
@@ -62,7 +62,7 @@
 	name = "Station Engineer"
 	jobtype = /datum/job/station_engineer
 
-	id_trim = /datum/id_trim/job/station_engineer
+	id_template = /datum/access_template/job/station_engineer
 	uniform = /obj/item/clothing/under/rank/engineering/engineer
 	belt = /obj/item/storage/belt/utility/full/engi
 	ears = /obj/item/radio/headset/headset_eng
@@ -72,9 +72,7 @@
 	l_pocket = /obj/item/modular_computer/tablet/pda/engineering
 	r_pocket = /obj/item/t_scanner
 
-	backpack = /obj/item/storage/backpack/industrial
-	satchel = /obj/item/storage/backpack/satchel/eng
-	duffelbag = /obj/item/storage/backpack/duffelbag/engineering
+	back = /obj/item/storage/backpack/industrial
 
 	box = /obj/item/storage/box/survival/engineer
 	pda_slot = ITEM_SLOT_LPOCKET

@@ -14,3 +14,7 @@
 /datum/chemical_reaction/phenol
 	results = list(/datum/reagent/phenol = 3)
 	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/chlorine = 1, /datum/reagent/fuel/oil = 1)
+
+/datum/chemical_reaction/hydrazine
+	results = list(/datum/reagent/hydrazine = 3)
+	required_reagents = list(/datum/reagent/ammonia = 1, /datum/reagent/hydrogen = 1, /datum/reagent/oxygen = 1)

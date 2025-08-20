@@ -1,5 +1,6 @@
 /datum/game_mode/one_antag/bloodcult
 	name = "Blood Cult"
+	config_key = "bloodcult"
 
 	weight = GAMEMODE_WEIGHT_EPIC
 	min_pop = 30

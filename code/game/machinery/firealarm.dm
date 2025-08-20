@@ -11,6 +11,9 @@
 	pixel_shift = 26
 
 DEFINE_INTERACTABLE(/obj/machinery/firealarm)
+TYPEINFO_DEF(/obj/machinery/firealarm)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
+
 /obj/machinery/firealarm
 	name = "fire alarm"
 	desc = "<i>\"Pull this in case of emergency\"</i>. Thus, keep pulling it forever."
@@ -18,7 +21,6 @@ DEFINE_INTERACTABLE(/obj/machinery/firealarm)
 	icon_state = "fire0"
 	max_integrity = 250
 	integrity_failure = 0.4
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.05
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.02
 	power_channel = AREA_USAGE_ENVIRON
@@ -247,6 +249,8 @@ DEFINE_INTERACTABLE(/obj/machinery/firealarm)
 			else
 				my_area.communicate_fire_alert(FIRE_RAISED_GENERIC)
 				log_game("[user] triggered a fire alarm at [COORD(src)]")
+
+	user.animate_interact(src)
 	return TRUE
 
 /obj/machinery/firealarm/attack_hand_secondary(mob/user, list/modifiers)

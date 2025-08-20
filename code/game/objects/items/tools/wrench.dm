@@ -1,3 +1,7 @@
+TYPEINFO_DEF(/obj/item/wrench)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
+	default_materials = list(/datum/material/iron=150)
+
 /obj/item/wrench
 	name = "wrench"
 	desc = "A wrench with common uses. Can be found in your hand."
@@ -9,7 +13,7 @@
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
 
-	force = 5
+	force = 10
 	throwforce = 7
 	stamina_damage = 40
 	stamina_cost = 14
@@ -17,7 +21,6 @@
 
 	w_class = WEIGHT_CLASS_SMALL
 	usesound = 'sound/items/ratchet.ogg'
-	custom_materials = list(/datum/material/iron=150)
 	drop_sound = 'sound/items/handling/wrench_drop.ogg'
 	pickup_sound = 'sound/items/handling/wrench_pickup.ogg'
 
@@ -25,12 +28,14 @@
 	attack_verb_simple = list("bash", "batter", "bludgeon", "whack")
 	tool_behaviour = TOOL_WRENCH
 	toolspeed = 1
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 
 /obj/item/wrench/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is beating [user.p_them()]self to death with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(loc, 'sound/weapons/genhit.ogg', 50, TRUE, -1)
 	return (BRUTELOSS)
+
+TYPEINFO_DEF(/obj/item/wrench/abductor)
+	default_materials = list(/datum/material/iron = 5000, /datum/material/silver = 2500, /datum/material/plasma = 1000, /datum/material/titanium = 2000, /datum/material/diamond = 2000)
 
 /obj/item/wrench/abductor
 	name = "alien wrench"
@@ -38,7 +43,6 @@
 	icon = 'icons/obj/abductor.dmi'
 	icon_state = "wrench"
 	belt_icon_state = "wrench_alien"
-	custom_materials = list(/datum/material/iron = 5000, /datum/material/silver = 2500, /datum/material/plasma = 1000, /datum/material/titanium = 2000, /datum/material/diamond = 2000)
 	usesound = 'sound/effects/empulse.ogg'
 	toolspeed = 0.1
 

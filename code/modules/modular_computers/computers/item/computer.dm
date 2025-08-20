@@ -3,6 +3,9 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 // This is the base type that does all the hardware stuff.
 // Other types expand it - tablets use a direct subtypes, and
 // consoles and laptops use "procssor" item that is held inside machinery piece
+TYPEINFO_DEF(/obj/item/modular_computer)
+	default_armor = list(BLUNT = 0, PUNCTURE = 20, SLASH = 0, LASER = 20, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/item/modular_computer
 	name = "modular microcomputer"
 	desc = "A small portable microcomputer."
@@ -11,7 +14,6 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	light_on = FALSE
 	integrity_failure = 0.5
 	max_integrity = 100
-	armor = list(BLUNT = 0, PUNCTURE = 20, SLASH = 0, LASER = 20, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	light_system = OVERLAY_LIGHT_DIRECTIONAL
 
 	var/bypass_state = FALSE // bypassing the set icon state
@@ -180,8 +182,8 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 
 	// We have two IDs, pick the one with the most command accesses, preferring the primary slot.
 	if(first_id && second_id)
-		var/first_id_tally = SSid_access.tally_access(first_id, ACCESS_FLAG_COMMAND)
-		var/second_id_tally = SSid_access.tally_access(second_id, ACCESS_FLAG_COMMAND)
+		var/first_id_tally = SSid_access.tally_access(first_id, /datum/access_group/station/management)
+		var/second_id_tally = SSid_access.tally_access(second_id, /datum/access_group/station/management)
 
 		return (first_id_tally >= second_id_tally) ? first_id : second_id
 
@@ -652,66 +654,69 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	return
 
 
-/obj/item/modular_computer/attackby(obj/item/attacking_item, mob/user, params)
+/obj/item/modular_computer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	// Check for ID first
-	if(istype(attacking_item, /obj/item/card/id) && InsertID(attacking_item))
-		return
+	if(istype(tool, /obj/item/card/id) && InsertID(tool))
+		return ITEM_INTERACT_SUCCESS
 
 	// Insert a PAI.
-	if(istype(attacking_item, /obj/item/paicard) && !inserted_pai)
-		if(!user.transferItemToLoc(attacking_item, src))
-			return
-		inserted_pai = attacking_item
+	if(istype(tool, /obj/item/paicard) && !inserted_pai)
+		if(!user.transferItemToLoc(tool, src))
+			return ITEM_INTERACT_BLOCKING
+		inserted_pai = tool
 		inserted_pai.slotted = TRUE
-		to_chat(user, span_notice("You slot \the [attacking_item] into [src]."))
-		return
+		to_chat(user, span_notice("You slot \the [tool] into [src]."))
+		return ITEM_INTERACT_SUCCESS
 
 
 	// Insert items into the components
 	for(var/h in all_components)
 		var/obj/item/computer_hardware/H = all_components[h]
-		if(H.try_insert(attacking_item, user))
-			return
+		if(H.try_insert(tool, user))
+			return ITEM_INTERACT_SUCCESS
 
 	// Insert new hardware
-	if(istype(attacking_item, /obj/item/computer_hardware) && upgradable)
-		if(install_component(attacking_item, user))
+	if(istype(tool, /obj/item/computer_hardware) && upgradable)
+		if(install_component(tool, user))
 			playsound(src, 'sound/machines/card_slide.ogg', 50)
-			return
+			return ITEM_INTERACT_SUCCESS
 
-	if(attacking_item.tool_behaviour == TOOL_WRENCH)
+	if(tool.tool_behaviour == TOOL_WRENCH)
 		if(length(all_components))
-			balloon_alert(user, "remove the other components!")
-			return
-		attacking_item.play_tool_sound(src, user, 20, volume=20)
+			to_chat(user, span_warning("You must remove the other components first."))
+			return ITEM_INTERACT_BLOCKING
+
+		tool.play_tool_sound(src, user, 20, volume=20)
 		new /obj/item/stack/sheet/iron( get_turf(src.loc), steel_sheet_cost )
 		user.balloon_alert(user,"disassembled")
 		relay_qdel()
 		qdel(src)
-		return
+		return ITEM_INTERACT_SUCCESS
 
-	if(attacking_item.tool_behaviour == TOOL_WELDER)
+	if(tool.tool_behaviour == TOOL_WELDER)
 		if(atom_integrity == max_integrity)
 			to_chat(user, span_warning("\The [src] does not require repairs."))
-			return
+			return ITEM_INTERACT_BLOCKING
 
-		if(!attacking_item.tool_start_check(user, amount=1))
-			return
+		if(!tool.tool_start_check(user, amount=1))
+			return ITEM_INTERACT_BLOCKING
 
 		to_chat(user, span_notice("You begin repairing damage to \the [src]..."))
-		if(attacking_item.use_tool(src, user, 20, volume=50, amount=1))
-			atom_integrity = max_integrity
-			to_chat(user, span_notice("You repair \the [src]."))
-			update_appearance()
-		return
+		if(!tool.use_tool(src, user, 20, volume=50, amount=1))
+			return ITEM_INTERACT_BLOCKING
+
+		atom_integrity = max_integrity
+		to_chat(user, span_notice("You repair \the [src]."))
+		update_appearance()
+		return ITEM_INTERACT_SUCCESS
 
 	var/obj/item/computer_hardware/card_slot/card_slot = all_components[MC_CARD]
 	// Check to see if we have an ID inside, and a valid input for money
-	if(card_slot?.GetID() && iscash(attacking_item))
+	if(card_slot?.GetID() && iscash(tool))
 		var/obj/item/card/id/id = card_slot.GetID()
-		id.attackby(attacking_item, user) // If we do, try and put that attacking object in
-		return
-	..()
+		return id.item_interaction(user, tool, modifiers)
+
+	return NONE
 
 // Used by processor to relay qdel() to machinery type.
 /obj/item/modular_computer/proc/relay_qdel()

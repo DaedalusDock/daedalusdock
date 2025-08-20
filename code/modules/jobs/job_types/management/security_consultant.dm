@@ -28,7 +28,7 @@
 // 		/datum/job_department/command,
 // 	)
 
-// 	paycheck = PAYCHECK_COMMAND
+// 	paycheck = PAYCHECK_ASSISTANT * 10
 // 	paycheck_department = ACCOUNT_SEC
 
 // 	liver_traits = list(TRAIT_ROYAL_METABOLISM)
@@ -38,7 +38,7 @@
 // 		/obj/item/stack/sheet/bone = 5
 // 	)
 
-// 	family_heirlooms = list(/obj/item/reagent_containers/food/drinks/trophy/silver_cup)
+// 	family_heirlooms = list(/obj/item/reagent_containers/cup/glass/trophy/silver_cup)
 // 	rpg_title = "Knight"
 // 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
@@ -51,7 +51,7 @@
 // 	allow_jumpskirt = FALSE
 
 // 	id = /obj/item/card/id/advanced/silver
-// 	id_trim = /datum/id_trim/job/head_of_personnel
+// 	id_template = /datum/access_template/job/head_of_personnel
 // 	uniform = /obj/item/clothing/under/suit/burgundy
 // 	suit = /obj/item/clothing/suit/armor/vest/ballistic
 // 	belt = /obj/item/modular_computer/tablet/pda

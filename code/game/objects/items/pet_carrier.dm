@@ -2,6 +2,9 @@
 
 //Used to transport little animals without having to drag them across the station.
 //Comes with a handy lock to prevent them from running off.
+TYPEINFO_DEF(/obj/item/pet_carrier)
+	default_materials = list(/datum/material/iron = 7500, /datum/material/glass = 100)
+
 /obj/item/pet_carrier
 	name = "pet carrier"
 	desc = "A big white-and-blue pet carrier. Good for carrying <s>meat to the chef</s> cute animals around."
@@ -16,7 +19,6 @@
 	attack_verb_simple = list("bash", "carry")
 	w_class = WEIGHT_CLASS_BULKY
 	throw_range = 3
-	custom_materials = list(/datum/material/iron = 7500, /datum/material/glass = 100)
 	var/open = TRUE
 	var/locked = FALSE
 	var/list/occupants = list()
@@ -82,25 +84,29 @@
 		playsound(user, 'sound/machines/boltsup.ogg', 30, TRUE)
 	update_appearance()
 
-/obj/item/pet_carrier/attack(mob/living/target, mob/living/user)
-	if(user.combat_mode)
-		return ..()
+/obj/item/pet_carrier/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
+	var/mob/living/target = interacting_with
+
 	if(!open)
-		to_chat(user, span_warning("You need to open [src]'s door!"))
-		return
+		to_chat(user, span_warning("You need to open [src]'s door."))
+		return ITEM_INTERACT_BLOCKING
 
 	if(target.mob_size > max_occupant_weight)
 		if(ishuman(target))
 			to_chat(user, span_warning("Humans, generally, do not fit into pet carriers."))
 		else
 			to_chat(user, span_warning("You get the feeling [target] isn't meant for a [name]."))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	if(user == target)
 		to_chat(user, span_warning("Why would you ever do that?"))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	load_occupant(user, target)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/pet_carrier/relaymove(mob/living/user, direction)
 	if(open)

@@ -4,7 +4,7 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 /turf/open/space
 	icon = 'icons/turf/space.dmi'
 	icon_state = "0"
-	name = "\proper space"
+	name = "\proper the Great Pool"
 	overfloor_placed = FALSE
 	underfloor_accessibility = UNDERFLOOR_INTERACTABLE
 	z_flags = Z_ATMOS_IN_DOWN|Z_ATMOS_IN_UP|Z_ATMOS_OUT_DOWN|Z_ATMOS_OUT_UP
@@ -74,6 +74,26 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 		I.plane = PLANE_SPACE
 		I.layer = SPACE_LAYER
 		.[i+1] = I
+
+/turf/open/space/get_examine_name(mob/user)
+	return name
+
+/turf/open/space/examine(mob/user)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("space_inline")
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		. += result.create_tooltip("Some people wonder why we ventured beyond Gaia at all.", body_only = TRUE)
+
+/turf/open/space/disco_flavor(mob/living/carbon/human/user, nearby = FALSE, is_station_level = FALSE)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("space_onetime", only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("The Great Pool does not reflect your gaze, instead, a black void stares back. Nothing exists outside this moment."),
+		)
 
 //ATTACK GHOST IGNORING PARENT RETURN VALUE
 /turf/open/space/attack_ghost(mob/dead/observer/user)

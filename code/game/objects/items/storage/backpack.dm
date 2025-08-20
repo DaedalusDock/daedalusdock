@@ -100,6 +100,9 @@
 	resistance_flags = FIRE_PROOF
 	item_flags = NO_MAT_REDEMPTION
 
+TYPEINFO_DEF(/obj/item/storage/backpack/holding)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 60, ACID = 50)
+
 /obj/item/storage/backpack/holding
 	name = "bag of holding"
 	desc = "A backpack that opens into a localized pocket of bluespace."
@@ -107,7 +110,6 @@
 	inhand_icon_state = "holdingpack"
 	resistance_flags = FIRE_PROOF
 	item_flags = NO_MAT_REDEMPTION
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 60, ACID = 50)
 
 /obj/item/storage/backpack/holding/Initialize()
 	. = ..()
@@ -381,7 +383,7 @@
 	atom_storage.set_holdable(cant_hold_list = list(/obj/item/storage/backpack/satchel/flat)) //muh recursive backpacks)
 
 /obj/item/storage/backpack/satchel/flat/PopulateContents()
-	var/datum/supply_pack/costumes_toys/randomised/contraband/C = new
+	var/datum/supply_pack/misc/contraband/C = new
 	for(var/i in 1 to 2)
 		var/ctype = pick(C.contains)
 		new ctype(src)
@@ -718,7 +720,7 @@
 	new /obj/item/gun/ballistic/automatic/pistol/aps(src)
 	new /obj/item/ammo_box/magazine/m9mm_aps/fire(src)
 	new /obj/item/ammo_box/magazine/m9mm_aps/fire(src)
-	new /obj/item/reagent_containers/food/drinks/bottle/vodka/badminka(src)
+	new /obj/item/reagent_containers/cup/glass/bottle/vodka/badminka(src)
 	new /obj/item/reagent_containers/hypospray/medipen/stimulants(src)
 	new /obj/item/grenade/syndieminibomb(src)
 

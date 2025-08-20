@@ -113,19 +113,21 @@
 	desc = "Get someone in an aggressive grab then use this on them to ruin their day."
 	icon_state = "latexballon"
 	inhand_icon_state = "nothing"
+	has_combat_mode_interaction = TRUE
 
-/obj/item/hand_item/noogie/attack(mob/living/carbon/target, mob/living/carbon/human/user)
+/obj/item/hand_item/noogie/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/mob/living/target = interacting_with
 	if(!istype(target))
 		to_chat(user, span_warning("You don't think you can give this a noogie!"))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You can't bring yourself to noogie [target]! You don't want to risk harming anyone..."))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	var/obj/item/hand_item/grab/G = user.is_grabbing(target)
 	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || !G || !(G.current_grab.damage_stage >= GRAB_AGGRESSIVE)|| HAS_TRAIT(user, TRAIT_EXHAUSTED))
-		return FALSE
+		return ITEM_INTERACT_BLOCKING
 
 	// [user] gives [target] a [prefix_desc] noogie[affix_desc]!
 	var/prefix_desc = "rough"
@@ -136,7 +138,8 @@
 		prefix_desc = "violent"
 		affix_desc = "on [target.p_their()] sensitive antennae"
 		affix_desc_target = "on your highly sensitive antennae"
-	if(user.dna?.check_mutation(/datum/mutation/human/hulk))
+
+	if(astype(user, /mob/living/carbon/human)?.dna?.check_mutation(/datum/mutation/human/hulk))
 		prefix_desc = "sickeningly brutal"
 
 	var/message_others = "[prefix_desc] noogie[affix_desc]"
@@ -148,9 +151,10 @@
 	if(!do_after(user, target, 1.5 SECONDS, DO_PUBLIC, display = src))
 		to_chat(user, span_warning("You fail to give [target] a noogie!"))
 		to_chat(target, span_danger("[user] fails to give you a noogie!"))
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	noogie_loop(user, target, 0)
+	return ITEM_INTERACT_SUCCESS
 
 /// The actual meat and bones of the noogie'ing
 /obj/item/hand_item/noogie/proc/noogie_loop(mob/living/carbon/human/user, mob/living/carbon/target, iteration)
@@ -197,10 +201,15 @@
 	attack_verb_continuous = list("slaps")
 	attack_verb_simple = list("slap")
 	hitsound = 'sound/effects/snap.ogg'
+	has_combat_mode_interaction = TRUE
 	/// How many smaller table smacks we can do before we're out
 	var/table_smacks_left = 3
 
-/obj/item/hand_item/slapper/attack(mob/living/slapped, mob/living/carbon/human/user)
+/obj/item/hand_item/slapper/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/mob/living/slapped = interacting_with
+	if(!isliving(slapped))
+		return NONE
+
 	SEND_SIGNAL(user, COMSIG_LIVING_SLAP_MOB, slapped)
 
 	user.do_attack_animation(slapped)
@@ -221,6 +230,7 @@
 		slapped.Paralyze(2.5 SECONDS)
 		slapped.adjust_timed_status_effect(7 SECONDS, /datum/status_effect/confusion)
 		slapped.stamina.adjust(-40)
+
 	else if(user.zone_selected == BODY_ZONE_HEAD || user.zone_selected == BODY_ZONE_PRECISE_MOUTH)
 		if(user == slapped)
 			user.visible_message(
@@ -254,7 +264,7 @@
 			span_hear("You hear a slap."),
 		)
 	playsound(slapped, 'sound/weapons/slap.ogg', slap_volume, TRUE, -1)
-	return
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/hand_item/slapper/attack_obj(obj/O, mob/living/user, params)
 	if(!istype(O, /obj/structure/table))
@@ -404,11 +414,13 @@
 	/// TRUE if the user was aiming anywhere but the mouth when they offer the kiss, if it's offered
 	var/cheek_kiss
 
-/obj/item/hand_item/kisser/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
+/obj/item/hand_item/kisser/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(HAS_TRAIT(user, TRAIT_GARLIC_BREATH))
 		kiss_type = /obj/projectile/kiss/french
+
 	var/obj/projectile/blown_kiss = new kiss_type(get_turf(user))
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	user.visible_message("<b>[user]</b> blows \a [blown_kiss] at [target]!", span_notice("You blow \a [blown_kiss] at [target]!"))
 
 	//Shooting Code:
@@ -419,6 +431,7 @@
 	blown_kiss.preparePixelProjectile(target, user)
 	blown_kiss.fire()
 	qdel(src)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/hand_item/kisser/on_offered(mob/living/carbon/offerer)
 	if(!(locate(/mob/living/carbon) in orange(1, offerer)))

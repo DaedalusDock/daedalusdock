@@ -41,7 +41,7 @@
 	if (group_multiplier != 1)
 		gas[gasid] += QUANTIZE(moles/group_multiplier)
 	else
-		gas[gasid] += moles
+		gas[gasid] += QUANTIZE(moles)
 
 	if(update)
 		garbageCollect()
@@ -50,9 +50,9 @@
 /datum/gas_mixture/proc/setGasMoles(gasid, moles, update = TRUE, divide_among_group = FALSE)
 	//Generally setGasMoles actions pre-calculate, just in case.
 	if(divide_among_group && group_multiplier != 1 && moles != 0)
-		gas[gasid] = moles/group_multiplier
+		gas[gasid] = QUANTIZE(moles/group_multiplier)
 	else
-		gas[gasid] = moles
+		gas[gasid] = QUANTIZE(moles)
 
 	if(update)
 		garbageCollect()
@@ -70,9 +70,9 @@
 			temperature = (temp * giver_heat_capacity + temperature * self_heat_capacity) / combined_heat_capacity
 
 	if (group_multiplier != 1)
-		gas[gasid] += moles/group_multiplier
+		gas[gasid] += QUANTIZE(moles/group_multiplier)
 	else
-		gas[gasid] += moles
+		gas[gasid] += QUANTIZE(moles)
 
 	if(update)
 		garbageCollect()
@@ -112,10 +112,10 @@
 
 	if((group_multiplier != 1)||(giver.group_multiplier != 1))
 		for(var/g in giver.gas)
-			gas[g] += giver.gas[g] * giver.group_multiplier / group_multiplier
+			gas[g] += QUANTIZE(giver.gas[g] * giver.group_multiplier / group_multiplier)
 	else
 		for(var/g in giver.gas)
-			gas[g] += giver.gas[g]
+			gas[g] += QUANTIZE(giver.gas[g])
 
 	garbageCollect()
 	SEND_SIGNAL(src, COMSIG_GASMIX_MERGED)
@@ -128,8 +128,8 @@
 	for(var/g in gas|sharer.gas)
 		var/comb = gas[g] + sharer.gas[g]
 		comb /= volume + sharer.volume
-		gas[g] = comb * volume
-		sharer.gas[g] = comb * sharer.volume
+		gas[g] = QUANTIZE(comb * volume)
+		sharer.gas[g] = QUANTIZE(comb * sharer.volume)
 
 	if(our_heatcap + share_heatcap)
 		temperature = ((temperature * our_heatcap) + (sharer.temperature * share_heatcap)) / (our_heatcap + share_heatcap)
@@ -140,18 +140,9 @@
 
 	return 1
 
-#ifndef ZAS_COMPAT_515
 ///Returns the heat capacity of the gas mix based on the specific heat of the gases.
 /datum/gas_mixture/proc/getHeatCapacity()
 	return values_dot(xgm_gas_data.specific_heat, gas) * group_multiplier
-#else
-///Returns the heat capacity of the gas mix based on the specific heat of the gases.
-/datum/gas_mixture/proc/getHeatCapacity()
-	. = 0
-	for(var/g in gas)
-		. += xgm_gas_data.specific_heat[g] * gas[g]
-	. *= group_multiplier
-#endif
 
 ///Adds or removes thermal energy. Returns the actual thermal energy change, as in the case of removing energy we can't go below TCMB.
 /datum/gas_mixture/proc/adjustThermalEnergy(thermal_energy)
@@ -209,16 +200,10 @@
 	var/safe_temp = max(temperature, TCMB) // We're about to divide by this.
 	return R_IDEAL_GAS_EQUATION * ( log( (IDEAL_GAS_ENTROPY_CONSTANT*volume/(gas[gasid] * safe_temp)) * (molar_mass*specific_heat*safe_temp)**(2/3) + 1 ) +  15 )
 
-#ifndef ZAS_COMPAT_515
 ///Updates the total_moles count and trims any empty gases.
 /datum/gas_mixture/proc/garbageCollect()
 	values_cut_under(gas, ATMOS_PRECISION)
 	total_moles = values_sum(gas)
-#else
-///Updates the total_moles count and trims any empty gases.
-/datum/gas_mixture/proc/garbageCollect()
-	AIR_UPDATE_VALUES(src)
-#endif
 
 ///Returns the pressure of the gas mix.  Only accurate if there have been no gas modifications since updateValues() has been called.
 /datum/gas_mixture/proc/returnPressure()
@@ -430,7 +415,7 @@
 ///Simpler version of merge(), adjusts gas amounts directly and doesn't account for temperature or group_multiplier.
 /datum/gas_mixture/proc/add(datum/gas_mixture/right_side)
 	for(var/g in right_side.gas)
-		gas[g] += right_side.gas[g]
+		gas[g] += QUANTIZE(right_side.gas[g])
 
 	garbageCollect()
 	return 1
@@ -439,7 +424,7 @@
 ///Simpler version of remove(), adjusts gas amounts directly and doesn't account for group_multiplier.
 /datum/gas_mixture/proc/subtract(datum/gas_mixture/right_side)
 	for(var/g in right_side.gas)
-		gas[g] -= right_side.gas[g]
+		gas[g] -= QUANTIZE(right_side.gas[g])
 
 	garbageCollect()
 	return 1

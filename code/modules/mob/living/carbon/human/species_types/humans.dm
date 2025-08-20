@@ -1,5 +1,5 @@
 /datum/species/human
-	name = "\improper Human"
+	name = "\improper Minervan"
 	id = SPECIES_HUMAN
 	default_color = "FFFFFF"
 	species_traits = list(EYECOLOR, HAIR, FACEHAIR, LIPS, BODY_RESIZABLE, HAIRCOLOR, FACEHAIRCOLOR)
@@ -16,17 +16,25 @@
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	job_outfit_type = SPECIES_HUMAN
 
+/datum/species/human/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
+	ADD_TRAIT(C, TRAIT_ADVANCED_RACE_THEORY, SPECIES_TRAIT)
+	return ..()
+
+/datum/species/human/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
+	REMOVE_TRAIT(C, TRAIT_ADVANCED_RACE_THEORY, SPECIES_TRAIT)
+	return ..()
+
 /datum/species/human/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.hairstyle = "Business Hair"
 	human.hair_color = "#bb9966" // brown
 	human.update_body_parts()
 
 /datum/species/human/get_species_mechanics()
-	return "Humans possess no unique traits."
+	return "Minervans possess no unique traits."
 
 /datum/species/human/get_species_lore()
 	return list(
-		"Humanity. Adaptable, numerous, resiliant, and viral.",
+		"Minervans. Adaptable, numerous, resiliant, and viral.",
 	)
 
 /datum/species/human/get_agony_sound(mob/living/carbon/human)

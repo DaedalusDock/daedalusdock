@@ -1,5 +1,8 @@
 //The "pod_landingzone" temp visual is created by anything that "launches" a supplypod. This is what animates the pod and makes the pod forcemove to the station.
 //------------------------------------SUPPLY POD-------------------------------------//
+TYPEINFO_DEF(/obj/structure/closet/supplypod)
+	default_armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 100, BOMB = 100, BIO = 0, FIRE = 100, ACID = 80)
+
 /obj/structure/closet/supplypod
 	name = "supply pod" //Names and descriptions are normally created with the setStyle() proc during initialization, but we have these default values here as a failsafe
 	desc = "A Hermes Galactic Freight Company supply drop pod."
@@ -11,7 +14,6 @@
 	allow_dense = TRUE
 	delivery_icon = null
 	can_weld_shut = FALSE
-	armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 100, BOMB = 100, BIO = 0, FIRE = 100, ACID = 80)
 	anchored = TRUE //So it cant slide around after landing
 	anchorable = FALSE
 	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
@@ -193,9 +195,8 @@
 
 /obj/structure/closet/supplypod/tool_interact(obj/item/W, mob/user)
 	if(bluespace) //We dont want to worry about interacting with bluespace pods, as they are due to delete themselves soon anyways.
-		return FALSE
-	else
-		..()
+		return NONE
+	return ..()
 
 /obj/structure/closet/supplypod/ex_act() //Explosions dont do SHIT TO US! This is because supplypods create explosions when they land.
 	return FALSE

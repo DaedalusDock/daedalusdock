@@ -16,6 +16,17 @@ GLOBAL_LIST_INIT(bitfields, generate_bitfields())
 		bitfields[bitfield.variable] = bitfield.flags
 	return bitfields
 
+/// Returns a list of bitflag names.
+/proc/make_bitfield_readable(bitfield_name, var_value) as /list
+	RETURN_TYPE(/list)
+
+	var/list/flags = list()
+	for (var/i in GLOB.bitfields[bitfield_name])
+		if (var_value & GLOB.bitfields[bitfield_name][i])
+			flags += i
+
+	return flags
+
 DEFINE_BITFIELD(admin_flags, list(
 	"ADMIN" = R_ADMIN,
 	"AUTOLOGIN" = R_AUTOADMIN,
@@ -437,4 +448,27 @@ DEFINE_BITFIELD(obscured_slots, list(
 	"HIDE HEADGEAR" = HIDEHEADGEAR,
 	"HIDE SNOUT" = HIDESNOUT,
 	"HIDE MUTWINGS" = HIDEMUTWINGS
+))
+
+DEFINE_BITFIELD(slot_flags, list(
+	"OCLOTHING" = ITEM_SLOT_OCLOTHING,
+	"ICLOTHING" = ITEM_SLOT_ICLOTHING,
+	"GLOVES" = ITEM_SLOT_GLOVES,
+	"EYES" = ITEM_SLOT_EYES,
+	"EARS" = ITEM_SLOT_EARS,
+	"MASK" = ITEM_SLOT_MASK,
+	"HEAD" = ITEM_SLOT_HEAD,
+	"FEET" = ITEM_SLOT_FEET,
+	"ID" = ITEM_SLOT_ID,
+	"BELT" = ITEM_SLOT_BELT,
+	"BACK" = ITEM_SLOT_BACK,
+	"DEX_STORAGE" = ITEM_SLOT_DEX_STORAGE,
+	"NECK" = ITEM_SLOT_NECK,
+	"HANDS" = ITEM_SLOT_HANDS,
+	"BACKPACK" = ITEM_SLOT_BACKPACK,
+	"SUITSTORE" = ITEM_SLOT_SUITSTORE,
+	"LPOCKET" = ITEM_SLOT_LPOCKET,
+	"RPOCKET" = ITEM_SLOT_RPOCKET,
+	"HANDCUFF" = ITEM_SLOT_HANDCUFFED,
+	"LEGCUFF" = ITEM_SLOT_LEGCUFFED,
 ))

@@ -183,7 +183,7 @@
 
 	remove_splint()
 
-	update_icon_dropped()
+	update_icon_dropped(update_limb = FALSE) // Limb updated above
 	synchronize_bodytypes(phantom_owner)
 
 	phantom_owner.update_health_hud() //update the healthdoll
@@ -387,6 +387,14 @@
 	if(special) //non conventional limb attachment
 		remove_surgeries_from_mob(new_limb_owner)
 		bodypart_flags &= ~BP_CUT_AWAY
+
+	else
+		// Handle jaundiced limbs being dismembered.
+		if(can_be_jaundiced())
+			if(new_limb_owner.undergoing_jaundice() == JAUNDICE_SKIN)
+				add_color_override("#f4e97f", LIMB_COLOR_JAUNDICE)
+			else
+				remove_color_override(LIMB_COLOR_JAUNDICE)
 
 	for(var/obj/item/organ/limb_organ as anything in contained_organs)
 		limb_organ.Insert(new_limb_owner, special)

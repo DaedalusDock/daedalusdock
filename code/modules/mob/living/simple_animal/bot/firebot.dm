@@ -14,7 +14,7 @@
 	health = 25
 	maxHealth = 25
 
-	maints_access_required = list(ACCESS_ROBOTICS, ACCESS_CONSTRUCTION)
+	maints_access_required = list(ACCESS_ROBOTICS, ACCESS_ENGINEERING)
 	radio_key = /obj/item/encryptionkey/headset_eng
 	radio_channel = RADIO_CHANNEL_ENGINEERING
 	bot_type = FIRE_BOT
@@ -42,8 +42,8 @@
 	update_appearance(UPDATE_ICON)
 
 	// Doing this hurts my soul, but simplebot access reworks are for another day.
-	var/datum/id_trim/job/engi_trim = SSid_access.trim_singletons_by_path[/datum/id_trim/job/station_engineer]
-	access_card.add_access(engi_trim.access + engi_trim.wildcard_access)
+	var/datum/access_template/job/engi_trim = SSid_access.template_singletons_by_path[/datum/access_template/job/station_engineer]
+	access_card.add_access(engi_trim.access)
 	prev_access = access_card.access.Copy()
 
 	create_extinguisher()
@@ -69,7 +69,7 @@
 	if(!can_unarmed_attack())
 		return
 	if(internal_ext)
-		internal_ext.afterattack(A, src)
+		internal_ext.ranged_interact_with_atom(A, src)
 	else
 		return ..()
 
@@ -77,7 +77,7 @@
 	if(!(bot_mode_flags & BOT_MODE_ON))
 		return
 	if(internal_ext)
-		internal_ext.afterattack(A, src)
+		internal_ext.ranged_interact_with_atom(A, src)
 	else
 		return ..()
 
@@ -275,7 +275,8 @@
 		z_flick("firebots_use", user)
 	else
 		z_flick("firebot1_use", user)
-	internal_ext.afterattack(target, user, null)
+
+	internal_ext.ranged_interact_with_atom(target, user)
 
 /mob/living/simple_animal/bot/firebot/update_icon_state()
 	. = ..()

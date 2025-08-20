@@ -180,7 +180,10 @@
 ///Heartbeat is gone... He's dead Jim :(
 #define BEAT_NONE 0
 
+/// How much oxyloss is suffered on a failed breath.
 #define HUMAN_FAILBREATH_OXYLOSS 1
+/// How much oxyloss is recovered on a successful breath.
+#define HUMAN_OXYLOSS_RECOVERY -5
 
 #define HEAT_DAMAGE_LEVEL_1 1 //Amount of damage applied when your body temperature just passes the 360.15k safety point
 #define HEAT_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when your body temperature passes the 400K point
@@ -486,6 +489,8 @@
 #define CE_ANTICOAGULANT "anticoagulant"
 /// Enables brain regeneration even in poor circumstances
 #define CE_BRAIN_REGEN "brainregen"
+/// Suppresses the VISIBLE effects of hunger, hunger is still happening tho.
+#define CE_HIDE_HUNGER "hide_hunger"
 
 // Pulse levels, very simplified.
 #define PULSE_NONE 0 // So !M.pulse checks would be possible.
@@ -497,6 +502,10 @@
 #define GETPULSE_HAND 0 // Less accurate. (hand)
 #define GETPULSE_TOOL 1 // More accurate. (med scanner, sleeper, etc.)
 #define PULSE_MAX_BPM 250 // Highest, readable BPM by machines and humans.
+
+/// Jaundice severities.
+#define JAUNDICE_EYES 1
+#define JAUNDICE_SKIN 2
 
 // Partial stasis sources
 #define STASIS_CRYOGENIC_FREEZING "cryo"
@@ -820,13 +829,15 @@ GLOBAL_LIST_INIT(voice_type2sound_ref, voice_type2sound)
 #define BREATH_FAILED -2
 
 /// Attack missed.
-#define MOB_ATTACKEDBY_MISS 3
+#define MOB_ATTACKEDBY_MISS -1
 /// Attack completely failed (missing user, etc)
 #define MOB_ATTACKEDBY_FAIL 0
 /// Attack hit and dealt damage.
 #define MOB_ATTACKEDBY_SUCCESS 1
 /// Attack hit but did no damage.
 #define MOB_ATTACKEDBY_NO_DAMAGE 2
+/// Attack was hit but was blocked.
+#define MOB_ATTACKEDBY_BLOCKED 3
 
 #define BLIND_NOT_BLIND 0
 #define BLIND_PHYSICAL 1

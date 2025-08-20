@@ -155,11 +155,22 @@
 
 	update_appearance()
 	RegisterSignal(src, COMSIG_ITEM_RECHARGED, PROC_REF(instant_reload))
+	register_context()
 
 /obj/item/gun/ballistic/Destroy()
 	QDEL_NULL(magazine)
 	QDEL_NULL(bolt)
 	return ..()
+
+/obj/item/gun/ballistic/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	. = ..()
+	if(istype(bolt,  /datum/gun_bolt/no_bolt))
+		context[SCREENTIP_CONTEXT_ALT_LMB] = "Empty rounds"
+
+	else if(!internal_magazine)
+		context[SCREENTIP_CONTEXT_ALT_LMB] = "Remove magazine"
+
+	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/gun/ballistic/vv_edit_var(vname, vval)
 	. = ..()
@@ -456,25 +467,17 @@
 
 	bolt.after_chambering()
 
-/obj/item/gun/ballistic/attack_hand_secondary(mob/user, list/modifiers)
-	. = ..()
-	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
-		return
-
-	if(modifiers?[RIGHT_CLICK] && !internal_magazine && magazine && user.is_holding(src))
-		unload(user)
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-
 /obj/item/gun/ballistic/AltClick(mob/user)
 	if(!isliving(user) || !user.canUseTopic(src, USE_CLOSE|USE_NEED_HANDS|USE_DEXTERITY))
 		return
 
-	unload(user)
+	if(user.is_holding(src))
+		unload(user)
 
 /obj/item/gun/ballistic/attack_self(mob/living/user)
 	// They need two hands on the gun, or a free hand in general.
 	if(!one_hand_rack && !(wielded || user.get_empty_held_index()))
-		to_chat(user, span_warning("You need a free hand to do that!"))
+		to_chat(user, span_warning("You need a free hand to do that."))
 		return
 
 	if(bolt.attack_self(user))
@@ -486,14 +489,6 @@
 	COOLDOWN_START(src, recent_rack, rack_delay)
 	rack(user)
 	return
-
-/obj/item/gun/ballistic/attack_self_secondary(mob/user, modifiers)
-	. = ..()
-	if(.)
-		return
-
-	unload(user)
-	return TRUE
 
 /obj/item/gun/ballistic/examine(mob/user)
 	. = ..()
@@ -597,7 +592,7 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 		if(handle_modifications)
 			name = "sawn-off [src.name]"
 			desc = sawn_desc
-			w_class = WEIGHT_CLASS_NORMAL
+			set_weight_class(WEIGHT_CLASS_NORMAL)
 			//The file might not have a "gun" icon, let's prepare for this
 			lefthand_file = 'icons/mob/inhands/weapons/guns_lefthand.dmi'
 			righthand_file = 'icons/mob/inhands/weapons/guns_righthand.dmi'

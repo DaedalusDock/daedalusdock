@@ -11,8 +11,8 @@
 	pass_flags = PASSTABLE
 	var/static/list/collectable_items = list(/obj/item/trash/waffles,
 		/obj/item/trash/tray,
-		/obj/item/reagent_containers/glass/bowl,
-		/obj/item/reagent_containers/food/drinks/drinkingglass,
+		/obj/item/reagent_containers/cup/bowl,
+		/obj/item/reagent_containers/cup/glass/drinkingglass,
 		/obj/item/kitchen/fork,
 		/obj/item/shard,
 		/obj/item/broken_bottle)
@@ -49,7 +49,7 @@
 /obj/machinery/dish_drive/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/dish_drive/attackby(obj/item/I, mob/living/user, params)
 	if(is_type_in_list(I, collectable_items) && !user.combat_mode)

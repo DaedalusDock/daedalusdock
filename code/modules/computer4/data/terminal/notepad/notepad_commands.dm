@@ -4,7 +4,7 @@
 
 /datum/shell_command/notepad/edit_cmd/help/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/list/output = list()
-	switch(generate_help(output, arguments, astype(program, /datum/c4_file/terminal_program/notepad).edit_commands, system))
+	switch(generate_help_list(output, arguments, astype(program, /datum/c4_file/terminal_program/notepad).edit_commands, system))
 		if(SHELL_CMD_HELP_GENERIC)
 			output.Insert(1,
 				"Typing text without a '!' prefix will write to the current line.",

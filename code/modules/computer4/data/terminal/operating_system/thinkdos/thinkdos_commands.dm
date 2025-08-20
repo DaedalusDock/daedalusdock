@@ -5,8 +5,14 @@
 	/// How to use this command, usually printed by a "help" command.
 	var/help_text = "N/A"
 
+/datum/shell_command/New()
+	help_text = generate_help_text()
+
+/datum/shell_command/proc/generate_help_text()
+	return help_text
+
 /// Generates an output for a list of help commands.
-/datum/shell_command/proc/generate_help(list/output, list/arguments, list/commands, datum/c4_file/terminal_program/operating_system/system) as /list
+/datum/shell_command/proc/generate_help_list(list/output, list/arguments, list/commands, datum/c4_file/terminal_program/operating_system/system) as /list
 	if(length(arguments))
 		var/searching_for = jointext(arguments, "")
 		for(var/datum/shell_command/command_iter as anything in commands)
@@ -48,7 +54,7 @@
 /datum/shell_command/thinkdos/help/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/list/output = list()
 
-	if(generate_help(output, arguments, system.commands, system) != SHELL_CMD_HELP_ERROR)
+	if(generate_help_list(output, arguments, system.commands, system) != SHELL_CMD_HELP_ERROR)
 		system.println(jointext(output, "<br>"))
 
 /// Clear the screen

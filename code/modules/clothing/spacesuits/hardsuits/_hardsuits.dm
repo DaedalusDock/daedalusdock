@@ -16,7 +16,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/space/hardsuit)
 	siemens_coefficient = 0
 	actions_types = list(/datum/action/item_action/toggle_spacesuit, /datum/action/item_action/toggle_helmet)
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION
-	slowdown = 1
+	worn_movespeed_modifier = -0.5
 
 	var/obj/item/clothing/head/helmet/space/hardsuit/helmet
 	var/helmettype = /obj/item/clothing/head/helmet/space/hardsuit

@@ -14,7 +14,7 @@
 	close_sound = 'sound/machines/crate_close.ogg'
 	open_sound_volume = 35
 	close_sound_volume = 50
-	drag_slowdown = 0
+	drag_movespeed_modifier = 0
 	door_anim_time = 0 // no animation
 	pass_flags_self = PASSSTRUCTURE | LETPASSTHROW
 	var/crate_climb_time = 20

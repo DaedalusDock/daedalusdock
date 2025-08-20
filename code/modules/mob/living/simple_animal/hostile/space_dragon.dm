@@ -34,7 +34,7 @@
 	health = 320
 	damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 1, CLONE = 1, STAMINA = 0.5, OXY = 1)
 	combat_mode = TRUE
-	move_delay_modifier = 0
+	movement_speed_modifier = 0
 	movement_type = FLYING
 	attack_verb_continuous = "chomps"
 	attack_verb_simple = "chomp"

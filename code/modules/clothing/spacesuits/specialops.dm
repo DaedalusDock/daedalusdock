@@ -23,7 +23,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/space/officer)
 	icon_state = "centcom_coat"
 	inhand_icon_state = "centcom"
 	blood_overlay_type = "coat"
-	slowdown = 0
+	worn_movespeed_modifier = 0
 	flags_inv = 0
 	w_class = WEIGHT_CLASS_NORMAL
 	allowed = list(/obj/item/gun, /obj/item/ammo_box, /obj/item/ammo_casing, /obj/item/melee/baton, /obj/item/restraints/handcuffs, /obj/item/tank/internals)

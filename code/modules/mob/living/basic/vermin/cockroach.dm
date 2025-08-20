@@ -8,7 +8,7 @@
 	mob_size = MOB_SIZE_TINY
 	health = 1
 	maxHealth = 1
-	speed = 1.25
+	movement_speed_modifier = -0.6
 	gold_core_spawnable = FRIENDLY_SPAWN
 	pass_flags = PASSTABLE | PASSGRILLE | PASSMOB
 

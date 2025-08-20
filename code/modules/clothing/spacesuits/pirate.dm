@@ -22,6 +22,6 @@ TYPEINFO_DEF(/obj/item/clothing/suit/space/pirate)
 	icon_state = "spacepirate"
 	w_class = WEIGHT_CLASS_NORMAL
 	allowed = list(/obj/item/gun, /obj/item/ammo_box, /obj/item/ammo_casing, /obj/item/melee/baton, /obj/item/restraints/handcuffs, /obj/item/tank/internals, /obj/item/melee/energy/sword/pirate, /obj/item/clothing/glasses/eyepatch, /obj/item/reagent_containers/cup/glass/bottle/rum)
-	slowdown = 0
+	worn_movespeed_modifier = 0
 	strip_delay = 40
 	equip_delay_other = 20

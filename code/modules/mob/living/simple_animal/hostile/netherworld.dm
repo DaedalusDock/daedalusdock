@@ -93,7 +93,7 @@
 	icon_dead = "mi-go-dead"
 	attack_verb_continuous = "lacerates"
 	attack_verb_simple = "lacerate"
-	move_delay_modifier = -0.5
+	movement_speed_modifier = 0.35
 	var/static/list/migo_sounds
 	deathmessage = "wails as its form turns into a pulpy mush."
 	deathsound = 'sound/voice/hiss6.ogg'

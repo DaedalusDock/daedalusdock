@@ -213,7 +213,7 @@
 	. = ..()
 	for(var/sloties in get_equipped_items(FALSE))
 		var/obj/item/thing = sloties
-		. += thing?.slowdown
+		. += thing?.worn_movespeed_modifier
 
 /mob/living/carbon/human/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, use_unequip_delay = FALSE, slot = get_slot_by_item(I))
 	var/index = get_held_index_of_item(I)

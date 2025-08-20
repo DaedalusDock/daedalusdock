@@ -1,7 +1,7 @@
 /turf/closed/wall/flock
 	name = "weird wall"
 	icon = 'goon/icons/turf/flock.dmi'
-	icon_state = "flock0"
+	icon_state = "flock-0"
 	base_icon_state = "flock"
 
 	pathing_pass_method = TURF_PATHING_PASS_PROC

@@ -5,10 +5,9 @@
 
 	//sound = 'sound/magic/exit_blood.ogg'
 
-	invocation = "Kasyah shach hala"
 	invocation_type = INVOCATION_NONE
 	school = SCHOOL_BLOOD
-	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC|SPELL_REQUIRES_HUMAN|SPELL_CASTABLE_WITHOUT_INVOCATION
+	spell_requirements = SPELL_REQUIRES_HUMAN|SPELL_CASTABLE_WITHOUT_INVOCATION
 
 	cooldown_time = 10 SECONDS
 

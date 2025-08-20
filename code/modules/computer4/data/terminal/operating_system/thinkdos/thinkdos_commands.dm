@@ -5,6 +5,30 @@
 	/// How to use this command, usually printed by a "help" command.
 	var/help_text = "N/A"
 
+/// Generates an output for a list of help commands.
+/datum/shell_command/proc/generate_help(list/output, list/arguments, list/commands, datum/c4_file/terminal_program/operating_system/system) as /list
+	if(length(arguments))
+		var/searching_for = jointext(arguments, "")
+		for(var/datum/shell_command/command_iter as anything in commands)
+			if(searching_for in command_iter.aliases)
+				output += "Displaying information for '[command_iter.aliases[1]]':"
+				output += command_iter.help_text
+				return SHELL_CMD_HELP_COMMAND
+
+		system.println("This command is not supported by the help utility. To see a list of commands, type !help.")
+		return SHELL_CMD_HELP_ERROR
+
+	// Listing all commands.
+	for(var/datum/shell_command/command_iter as anything in commands)
+		if(length(command_iter.aliases) == 1)
+			output += command_iter.aliases[1]
+			continue
+
+		output += "[command_iter.aliases[1]] ([jointext(command_iter.aliases.Copy(2), ", ")])"
+
+	sortTim(output, GLOBAL_PROC_REF(cmp_text_asc))
+	return SHELL_CMD_HELP_GENERIC
+
 /// Attempt to execute the command. Return TRUE if *any* action is taken.
 /datum/shell_command/proc/try_exec(command_name, datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!(lowertext(command_name) in aliases))
@@ -24,33 +48,8 @@
 /datum/shell_command/thinkdos/help/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/list/output = list()
 
-	if(length(arguments))
-		var/found = FALSE
-		var/searching_for = jointext(arguments, "")
-		for(var/datum/shell_command/command_iter as anything in system.commands)
-			if(searching_for in command_iter.aliases)
-				found = TRUE
-				output += "Displaying information for '[command_iter.aliases[1]]':"
-				output += command_iter.help_text
-				break
-
-		if(!found)
-			system.print_error("This command is not supported by the help utility. To see a list of commands, type help.")
-			return
-
-	else
-		for(var/datum/shell_command/command_iter as anything in system.commands)
-			if(length(command_iter.aliases) == 1)
-				output += command_iter.aliases[1]
-				continue
-
-			output += "[command_iter.aliases[1]] ([jointext(command_iter.aliases.Copy(2), ", ")])"
-
-		sortTim(output, GLOBAL_PROC_REF(cmp_text_asc))
-		output.Insert(1, "Use help \[command\] to see specific information about a command.", "List of available commands:")
-
-
-	system.println(jointext(output, "<br>"))
+	if(generate_help(output, arguments, system.commands, system) != SHELL_CMD_HELP_ERROR)
+		system.println(jointext(output, "<br>"))
 
 /// Clear the screen
 /datum/shell_command/thinkdos/home

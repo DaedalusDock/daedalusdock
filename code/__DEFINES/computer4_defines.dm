@@ -7,6 +7,12 @@
 #define PERIPHERAL_CMD_RECEIVE_PDP_PACKET "receive_pdp_packet"
 #define PERIPHERAL_CMD_SCAN_CARD "scan_card"
 
+// Shell command macros
+#define SHELL_CMD_HELP_ERROR 1 //! Could not find a command to display information about
+#define SHELL_CMD_HELP_GENERIC 2 //! Generated generic help information
+#define SHELL_CMD_HELP_COMMAND 3 //! Generated information about a command
+
+
 // MedTrak menus
 #define MEDTRAK_MENU_HOME 1
 #define MEDTRAK_MENU_INDEX 2

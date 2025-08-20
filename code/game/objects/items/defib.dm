@@ -588,6 +588,12 @@ TYPEINFO_DEF(/obj/item/defibrillator)
 	user.visible_message(span_notice("[user] places [src] on [H]'s chest."), span_warning("You place [src] on [H]'s chest."))
 	playsound(src, 'sound/machines/defib_charge.ogg', 75, FALSE)
 
+	// Cinematic effect.
+	if((H.stat == UNCONSCIOUS) && H.client)
+		var/sound/patient_sound = sound('sound/machines/defib_charge.ogg', volume = 50)
+		patient_sound.environment = SOUND_ENVIRONMENT_UNDERWATER
+		SEND_SOUND(H, patient_sound)
+
 	// Check to see if the patient's chest is covered or we don't care.
 	if((!combat && !req_defib) || (req_defib && !defib.combat))
 		for(var/obj/item/clothing/C in H.get_equipped_items())
@@ -623,6 +629,16 @@ TYPEINFO_DEF(/obj/item/defibrillator)
 	H.apply_damage(5, BURN, BODY_ZONE_CHEST)
 	do_success() //Deduct charge
 	H.Knockdown(15 SECONDS)
+
+	// Cinematic effect.
+	if(H.stat == UNCONSCIOUS && H.client)
+		var/sound/patient_sound = sound('sound/machines/defib_zap.ogg', volume = 50)
+		patient_sound.environment = SOUND_ENVIRONMENT_UNDERWATER
+		SEND_SOUND(H, patient_sound)
+
+		if(H.client?.prefs?.read_preference(/datum/preference/toggle/darkened_flash) == FALSE)
+			H.overlay_fullscreen("defib_flash", /atom/movable/screen/fullscreen/flash/over_blind)
+			addtimer(CALLBACK(H, TYPE_PROC_REF(/mob, clear_fullscreen), "defib_flash", 1.5 SECONDS), 1 SECOND)
 
 	// Braindead
 	if(H.stat == DEAD)

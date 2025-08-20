@@ -127,5 +127,12 @@
 // -----
 // PDP Port Allocations
 
+// Kapu insisted these be defines "to not be confusing"
+#define PDP_BIND_EPHEMERAL_PORT -1
+#define PDP_FREE_ALL_PORTS -1
+
 #define PDP_MAX_PORT 65535 //! Maximum PDP Port number
-#define PDP_EPHEMERAL_START 64000 //! Start of PDP Ephemeral Range, used for outgoing client connections.
+
+#define PDP_EPHEMERAL_START 49152 //! Start of PDP Ephemeral Range, used for outgoing client connections.
+
+#define PDP_PORT_NETTEST 28910

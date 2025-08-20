@@ -3005,6 +3005,8 @@
 #include "code\modules\computer4\data\terminal\operating_system\thinkdos\thinkdos.dm"
 #include "code\modules\computer4\data\terminal\operating_system\thinkdos\thinkdos_commands.dm"
 #include "code\modules\computer4\data\terminal\operating_system\thinkdos\thinkdos_signals.dm"
+#include "code\modules\computer4\data\terminal\packMAN\packman.dm"
+#include "code\modules\computer4\data\terminal\packMAN\packman_commands.dm"
 #include "code\modules\computer4\data\terminal\probe\probe.dm"
 #include "code\modules\computer4\data\terminal\probe\probe_commands.dm"
 #include "code\modules\computer4\data\terminal\notepad\notepad.dm"

@@ -101,6 +101,12 @@
 	if(.)
 		handle_command_queue()
 
+/datum/c4_file/terminal_program/operating_system/thinkdos/tick(delta_time)
+	for(var/datum/c4_file/terminal_program/program as anything in processing_programs)
+		if(program == src)
+			continue
+
+		program.tick(delta_time)
 
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/handle_command_queue()
 	while(LAZYLEN(queued_commands)) //hmm...

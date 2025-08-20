@@ -13,8 +13,6 @@
 
 /datum/c4_file/terminal_program/probe/execute(datum/c4_file/terminal_program/operating_system/thinkdos/system)
 	. = ..()
-	if(!.)
-		return
 
 	system.println("NetProbe V2.4", FALSE)
 	system.println("Welcome to NetProbe, type 'help' to get started.")

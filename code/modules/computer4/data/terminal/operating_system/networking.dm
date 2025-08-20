@@ -20,7 +20,7 @@
 		if(pdp_port_map["[port_number]"])
 			return FALSE //Port already bound.
 
-	var/datum/pdp_socket/socket = new(port_number, binder)
+	var/datum/pdp_socket/socket = new(port_number, src, binder)
 
 	pdp_port_map["[port_number]"] = socket
 
@@ -44,7 +44,7 @@
 	//else: free all ports therein bound.
 	var/freed_at_least_one = FALSE
 	for(var/port_num, port_socket in pdp_port_map)
-		if(astype(port_socket.owner, /datum/pdp_socket) == binder)
+		if(astype(port_socket, /datum/pdp_socket).owner == binder)
 			pdp_port_map[port_num] = null
 			freed_at_least_one = TRUE
 	return freed_at_least_one
@@ -60,6 +60,7 @@
 	var/obj/item/peripheral/network_card/wireless/wcard = get_computer().get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD)
 	if(!wcard)
 		return //cry
+
 	wcard.post_signal(signal)
 
 /datum/c4_file/terminal_program/operating_system/proc/pdp_incoming(datum/signal/packet)

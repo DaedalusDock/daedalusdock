@@ -21,6 +21,11 @@
 // ITS THREE IN THE MOOOOORNIN' AND YOOUUU'RE EATING ALONE
 #define DIRECTMAN_MENU_NEW_DIRECTIVE 5
 
+// packMAN shit
+#define PACKMAN_MODE_UNDEFINED 0
+#define PACKMAN_MODE_CLIENT 1
+#define PACKMAN_MODE_SERVER 2
+
 // Wireless card incoming filter modes
 #define WIRELESS_FILTER_PROMISC 0 //! Forward all packets
 #define WIRELESS_FILTER_NETADDR 1 //! Forward only bcast/unicast matched GPRS packets

@@ -414,7 +414,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 			if(area_flags & SHOW_NAME)
 				M.client.show_location_blurb(2 SECONDS, FALSE, TRUE)
 
-			if(length(flavor_texts) && ishuman(M))
+			if(flavor_text_key && length(flavor_texts) && ishuman(M))
 				var/mob/living/carbon/human/H = M
 				var/datum/roll_result/result = H.get_examine_result(flavor_text_key, 17)
 				if(result?.outcome >= SUCCESS)
@@ -498,7 +498,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 /// Called when a living mob that spawned here, joining the round, receives the player client.
 /area/proc/on_joining_game(mob/living/boarder)
 	SHOULD_CALL_PARENT(TRUE)
-	if(prob(5) && boarder.client && ishuman(boarder))
+	if(prob(5) && boarder.client && ishuman(boarder) && flavor_text_key && length(flavor_texts))
 		var/mob/living/carbon/human/H = boarder
 		var/datum/roll_result/result = H.get_examine_result(flavor_text_key, modifier = 999)
 		to_chat(H, result.create_tooltip(get_flavor_string()))

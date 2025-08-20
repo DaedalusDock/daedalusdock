@@ -1,7 +1,7 @@
 /datum/shell_command/medtrak/comment/quit
 	aliases = list("quit", "q", "exit")
 
-/datum/shell_command/medtrak/index/quit/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+/datum/shell_command/medtrak/comment/quit/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	system.println("Quitting...")
 	system.unload_program(program)
 

@@ -3,50 +3,19 @@
 	help_text = "Lists all available commands. Use help \[command\] to view information about a specific command."
 
 /datum/shell_command/notepad/edit_cmd/help/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
-	// Stupid fucking byond compiler bug
-#if !defined(SPACEMAN_DMM) && !defined(OPENDREAM)
-#pragma push
-#pragma ignore unused_var
-#endif
-	var/datum/c4_file/terminal_program/notepad/notepad = program
-#if !defined(SPACEMAN_DMM) && !defined(OPENDREAM)
-#pragma pop
-#endif
-
 	var/list/output = list()
-
-	if(length(arguments))
-		var/found = FALSE
-		var/searching_for = jointext(arguments, "")
-		for(var/datum/shell_command/command_iter as anything in notepad.edit_commands)
-			if(searching_for in command_iter.aliases)
-				found = TRUE
-				output += "Displaying information for '[command_iter.aliases[1]]':"
-				output += command_iter.help_text
-				break
-
-		if(!found)
-			system.println("This command is not supported by the help utility. To see a list of commands, type !help.")
-			return
-
-	else
-		for(var/datum/shell_command/command_iter as anything in notepad.edit_commands)
-			if(length(command_iter.aliases) == 1)
-				output += command_iter.aliases[1]
-				continue
-
-			output += "[command_iter.aliases[1]] ([jointext(command_iter.aliases.Copy(2), ", ")])"
-
-		sortTim(output, GLOBAL_PROC_REF(cmp_text_asc))
-		output.Insert(1,
-			"Typing text without a '!' prefix will write to the current line.",
-			"You can change lines by typing '!\[number\]'. Zero will change to highest line number.<br>",
-			"Use help \[command\] to see specific information about a command.",
-			"List of available commands:"
-		)
-
-
-	system.println(jointext(output, "<br>"))
+	switch(generate_help_list(output, arguments, astype(program, /datum/c4_file/terminal_program/notepad).edit_commands, system))
+		if(SHELL_CMD_HELP_GENERIC)
+			output.Insert(1,
+				"Typing text without a '!' prefix will write to the current line.",
+				"You can change lines by typing '!\[number\]'. Zero will change to highest line number.<br>",
+				"Use help \[command\] to see specific information about a command.",
+				"List of available commands:"
+			)
+		if(SHELL_CMD_HELP_ERROR)
+			noop()
+		else
+			system.println(jointext(output, "<br>"))
 
 /datum/shell_command/notepad/edit_cmd/quit
 	aliases = list("quit", "q", "exit")

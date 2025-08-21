@@ -19,8 +19,6 @@
 
 /datum/c4_file/terminal_program/netpage/execute(datum/c4_file/terminal_program/operating_system/thinkdos/system)
 	. = ..()
-	if(.)
-		return
 
 	var/title_text = list(
 		@"<pre style='margin: 0px'>      ___ ___  __        __   ___</pre>",

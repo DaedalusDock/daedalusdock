@@ -2,11 +2,11 @@
 "a" = (
 /turf/cordon,
 /area/misc/cordon)
+"y" = (
+/turf/cordon,
+/area/lucid_world)
 "F" = (
 /turf/open/indestructible/lucid_world,
-/area/lucid_world)
-"Q" = (
-/turf/closed/indestructible/lucid_world,
 /area/lucid_world)
 
 (1,1,1) = {"
@@ -22,79 +22,79 @@ a
 "}
 (2,1,1) = {"
 a
-Q
-Q
-Q
-Q
-Q
-Q
-Q
+F
+F
+F
+F
+F
+F
+F
 a
 "}
 (3,1,1) = {"
 a
-Q
 F
 F
 F
 F
 F
-Q
+F
+F
 a
 "}
 (4,1,1) = {"
 a
-Q
 F
 F
 F
 F
 F
-Q
+F
+F
 a
 "}
 (5,1,1) = {"
 a
-Q
 F
 F
 F
 F
 F
-Q
+F
+F
 a
 "}
 (6,1,1) = {"
 a
-Q
 F
 F
 F
 F
 F
-Q
+F
+F
 a
 "}
 (7,1,1) = {"
 a
-Q
 F
 F
 F
 F
 F
-Q
+F
+F
 a
 "}
 (8,1,1) = {"
 a
-Q
-Q
-Q
-Q
-Q
-Q
-Q
+F
+F
+F
+F
+F
+F
+F
 a
 "}
 (9,1,1) = {"
@@ -103,7 +103,7 @@ a
 a
 a
 a
-a
+y
 a
 a
 a

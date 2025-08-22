@@ -311,7 +311,7 @@ Works together with spawning an observer, noted above.
 	ghost.verb_yell = verb_yell
 
 	ghost.can_reenter_corpse = can_reenter_corpse
-	ghost.key = key
+	ghost.PossessByPlayer(ckey)
 	if(!can_reenter_corpse)
 		ghost.exorcise()
 

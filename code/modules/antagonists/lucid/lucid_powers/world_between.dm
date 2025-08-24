@@ -98,6 +98,8 @@
 	var/mob/living/carbon/human/caster = owner
 	cast_location = get_turf(caster)
 
+	playsound(cast_location, 'sound/effects/abilities/lucid_world/enter.mp3', 50, FALSE)
+
 	var/list/prefab_turfs = spiral_range_turfs(MIRROR_WORLD_COPY_RADIUS, mirror_center)
 
 	var/i = 0
@@ -130,9 +132,11 @@
 
 /datum/action/cooldown/spell/world_between/proc/exit_mirror_world()
 	in_mirror_world = FALSE
+
 	deltimer(force_return_timer_id)
 	free_all_mobs()
 	reset_reservation()
+	playsound(owner, 'sound/effects/abilities/lucid_world/exit.mp3', 50, FALSE)
 
 /// Called when you've been in the mirror world for too long.
 /datum/action/cooldown/spell/world_between/proc/force_exit_from_mirror_world()

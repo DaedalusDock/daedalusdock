@@ -499,7 +499,6 @@
 			/obj/item/clothing/head/sombrero,
 			/obj/item/clothing/head/kitty,
 			/obj/item/clothing/head/rabbitears,
-			/obj/item/clothing/head/festive,
 			/obj/item/clothing/head/powdered_wig,
 			/obj/item/clothing/head/weddingveil,
 			/obj/item/clothing/head/that,

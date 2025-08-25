@@ -282,8 +282,6 @@ structure_check() searches for nearby cultist structures required for the invoca
 		H.remove_status_effect(/datum/status_effect/speech/slurring/cult)
 		H.remove_status_effect(/datum/status_effect/speech/stutter)
 
-		if(prob(1) || SSevents.holidays && SSevents.holidays[APRIL_FOOLS])
-			H.say("You son of a bitch! I'm in.", forced = "That son of a bitch! They're in.")
 	if(isshade(convertee))
 		convertee.icon_state = "shade_cult"
 		convertee.name = convertee.real_name
@@ -529,21 +527,14 @@ structure_check() searches for nearby cultist structures required for the invoca
 	if(!(place in summon_objective.summon_spots))
 		to_chat(user, span_cultlarge("The Geometer can only be summoned where the veil is weak - in [english_list(summon_objective.summon_spots)]!"))
 		return
-	if(locate(/obj/narsie) in SSpoints_of_interest.narsies)
-		for(var/invoker in invokers)
-			to_chat(invoker, span_warning("Nar'Sie is already on this plane!"))
-		log_game("Nar'Sie rune failed - already summoned")
-		return
 
 	//BEGIN THE SUMMONING
 	used = TRUE
 	..()
 	sound_to_playing_players('sound/effects/dimensional_rend.ogg')
-	var/turf/rune_turf = get_turf(src)
 	sleep(4 SECONDS)
 	if(src)
 		color = RUNE_COLOR_RED
-	new /obj/narsie(rune_turf) //Causes Nar'Sie to spawn even if the rune has been removed
 
 //Rite of Resurrection: Requires a dead or inactive cultist. When reviving the dead, you can only perform one revival for every three sacrifices your cult has carried out.
 /obj/effect/rune/raise_dead

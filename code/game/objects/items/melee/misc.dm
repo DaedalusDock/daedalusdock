@@ -164,111 +164,6 @@ TYPEINFO_DEF(/obj/item/melee/sabre)
 	playsound(get_turf(src), get_hitsound(), 75, TRUE, -1)
 	return TOXLOSS
 
-
-/obj/item/melee/supermatter_sword
-	name = "supermatter sword"
-	desc = "In a station full of bad ideas, this might just be the worst."
-	icon = 'icons/obj/items_and_weapons.dmi'
-	icon_state = "supermatter_sword"
-	inhand_icon_state = "supermatter_sword"
-	lefthand_file = 'icons/mob/inhands/weapons/swords_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
-	slot_flags = null
-	w_class = WEIGHT_CLASS_BULKY
-	force = 0.001
-	armor_penetration = 1000
-	force_string = "INFINITE"
-	var/obj/machinery/power/supermatter/shard
-	var/balanced = 1
-
-/obj/item/melee/supermatter_sword/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	return ..()
-
-/obj/item/melee/supermatter_sword/Initialize(mapload)
-	. = ..()
-	shard = new /obj/machinery/power/supermatter/shard(src)
-	START_PROCESSING(SSobj, src)
-	visible_message(span_warning("[src] appears, balanced ever so perfectly on its hilt. This isn't ominous at all."))
-
-/obj/item/melee/supermatter_sword/process()
-	if(balanced || throwing || ismob(src.loc) || isnull(src.loc))
-		return
-	if(!isturf(src.loc))
-		var/atom/target = src.loc
-		forceMove(target.loc)
-		consume_everything(target)
-	else
-		var/turf/turf = get_turf(src)
-		if(!isspaceturf(turf))
-			consume_turf(turf)
-
-/obj/item/melee/supermatter_sword/afterattack(atom/target, mob/user, list/modifiers)
-	. = ..()
-	if(user && target == user)
-		user.dropItemToGround(src)
-
-	consume_everything(target)
-
-/obj/item/melee/supermatter_sword/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
-	..()
-	if(ismob(hit_atom))
-		var/mob/mob = hit_atom
-		if(src.loc == mob)
-			mob.dropItemToGround(src)
-	consume_everything(hit_atom)
-
-/obj/item/melee/supermatter_sword/pickup(user)
-	..()
-	balanced = 0
-
-/obj/item/melee/supermatter_sword/ex_act(severity, target)
-	visible_message(
-		span_danger("The blast wave smacks into [src] and rapidly flashes to ash."),
-		span_hear("You hear a loud crack as you are washed with a wave of heat.")
-	)
-	consume_everything()
-
-/obj/item/melee/supermatter_sword/acid_act()
-	visible_message(span_danger("The acid smacks into [src] and rapidly flashes to ash."),\
-	span_hear("You hear a loud crack as you are washed with a wave of heat."))
-	consume_everything()
-	return TRUE
-
-/obj/item/melee/supermatter_sword/bullet_act(obj/projectile/projectile)
-	visible_message(span_danger("[projectile] smacks into [src] and rapidly flashes to ash."),\
-	span_hear("You hear a loud crack as you are washed with a wave of heat."))
-	consume_everything(projectile)
-	return BULLET_ACT_HIT
-
-/obj/item/melee/supermatter_sword/suicide_act(mob/user)
-	user.visible_message(span_suicide("[user] touches [src]'s blade. It looks like [user.p_theyre()] tired of waiting for the radiation to kill [user.p_them()]!"))
-	user.dropItemToGround(src, TRUE)
-	shard.BumpedBy(user)
-
-/obj/item/melee/supermatter_sword/proc/consume_everything(target)
-	if(isnull(target))
-		shard.Consume()
-	else if(!isturf(target))
-		shard.BumpedBy(target)
-	else
-		consume_turf(target)
-
-/obj/item/melee/supermatter_sword/proc/consume_turf(turf/turf)
-	var/oldtype = turf.type
-	var/turf/newT = turf.ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
-	if(newT.type == oldtype)
-		return
-	playsound(turf, 'sound/effects/supermatter.ogg', 50, TRUE)
-	turf.visible_message(
-		span_danger("[turf] smacks into [src] and rapidly flashes to ash."),
-		span_hear("You hear a loud crack as you are washed with a wave of heat."),
-	)
-	shard.Consume()
-
-/obj/item/melee/supermatter_sword/add_blood_DNA(list/blood_dna)
-	return FALSE
-
 /obj/item/melee/curator_whip
 	name = "curator's whip"
 	desc = "Somewhat eccentric and outdated, it still stings like hell to be hit by."
@@ -314,7 +209,7 @@ TYPEINFO_DEF(/obj/item/melee/sabre)
 /obj/item/melee/roastingstick/Initialize(mapload)
 	. = ..()
 	if (!ovens)
-		ovens = typecacheof(list(/obj/singularity, /obj/energy_ball, /obj/machinery/power/supermatter, /obj/structure/bonfire))
+		ovens = typecacheof(list(/obj/structure/bonfire))
 	AddComponent(/datum/component/transforming, \
 		hitsound_on = hitsound, \
 		clumsy_check = FALSE)
@@ -384,11 +279,6 @@ TYPEINFO_DEF(/obj/item/melee/sabre)
 		return NONE
 	if (!is_type_in_typecache(interacting_with, ovens))
 		return NONE
-	if (istype(interacting_with, /obj/singularity) || istype(interacting_with, /obj/energy_ball) && get_dist(user, interacting_with) < 10)
-		to_chat(user, span_notice("You send [held_sausage] towards [interacting_with]."))
-		beam = user.Beam(interacting_with, icon_state = "rped_upgrade", time = 10 SECONDS)
-		finish_roasting(user, interacting_with)
-		return ITEM_INTERACT_SUCCESS
 	return NONE
 
 /obj/item/melee/roastingstick/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)

@@ -1094,13 +1094,6 @@ DEFINE_INTERACTABLE(/obj/item)
 /obj/item/proc/IsReflect(def_zone)
 	return FALSE
 
-/obj/item/singularity_pull(S, current_size)
-	..()
-	if(current_size >= STAGE_FOUR)
-		throw_at(S,14,3, spin=0)
-	else
-		return
-
 /obj/item/on_exit_storage(datum/storage/master_storage)
 	. = ..()
 	do_drop_animation(master_storage.parent)

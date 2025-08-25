@@ -579,7 +579,6 @@
 /turf/open/floor/engine,
 /area/station/engineering/supermatter)
 "bJ" = (
-/obj/machinery/power/supermatter,
 /turf/open/floor/engine,
 /area/station/engineering/supermatter)
 "bK" = (

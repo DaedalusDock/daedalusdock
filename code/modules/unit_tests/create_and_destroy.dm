@@ -79,8 +79,6 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 	ignore += typesof(/mob/living/silicon/robot/model)
 	//This lad also sleeps
 	ignore += typesof(/obj/item/hilbertshotel)
-	//Stacks baseturfs, can't be tested here
-	ignore += typesof(/obj/effect/landmark/ctf)
 	//Our system doesn't support it without warning spam from unregister calls on things that never registered
 	ignore += typesof(/obj/docking_port)
 	//Asks for a shuttle that may not exist, let's leave it alone

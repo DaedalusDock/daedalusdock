@@ -164,13 +164,6 @@
 	if(istype(M) && M.client && M.machine == src)
 		src.attack_self(M)
 
-/obj/singularity_pull(S, current_size)
-	..()
-	if(move_resist == INFINITY)
-		return
-	if(!anchored || current_size >= STAGE_FIVE)
-		step_towards(src,S)
-
 /obj/get_dumping_location()
 	return get_turf(src)
 

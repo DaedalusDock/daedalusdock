@@ -72,10 +72,6 @@ TYPEINFO_DEF(/obj/structure/lattice)
 			return TRUE
 	return FALSE
 
-/obj/structure/lattice/singularity_pull(S, current_size)
-	if(current_size >= STAGE_FOUR)
-		deconstruct()
-
 /obj/structure/lattice/catwalk
 	name = "catwalk"
 	desc = "A catwalk for easier EVA maneuvering and cable placement."

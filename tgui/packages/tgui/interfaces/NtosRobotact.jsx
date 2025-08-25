@@ -35,7 +35,6 @@ export const NtosRobotactContent = (props) => {
     lampIntensity,
     cover,
     locomotion,
-    wireModule,
     wireCamera,
     wireAI,
     wireLaw,
@@ -260,24 +259,6 @@ export const NtosRobotactContent = (props) => {
                       }
                     >
                       {wireCamera}
-                    </LabeledList.Item>
-                    <LabeledList.Item
-                      label="Module Controller"
-                      color={wireModule === 'FAULT' ? 'red' : 'green'}
-                    >
-                      {wireModule}
-                    </LabeledList.Item>
-                    <LabeledList.Item
-                      label="Motor Controller"
-                      color={
-                        locomotion === 'FAULT'
-                          ? 'red'
-                          : locomotion === 'DISABLED'
-                            ? 'yellow'
-                            : 'green'
-                      }
-                    >
-                      {locomotion}
                     </LabeledList.Item>
                     <LabeledList.Item
                       label="Maintenance Cover"

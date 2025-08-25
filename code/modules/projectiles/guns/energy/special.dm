@@ -364,16 +364,3 @@
 	if(!firing_core)
 		return FALSE
 	return ..()
-
-/obj/item/gun/energy/tesla_cannon
-	name = "tesla cannon"
-	icon_state = "tesla"
-	inhand_icon_state = "tesla"
-	desc = "A gun that shoots balls of \"tesla\", whatever that is."
-	ammo_type = list(/obj/item/ammo_casing/energy/tesla_cannon)
-	shaded_charge = TRUE
-
-/obj/item/gun/energy/tesla_cannon/Initialize(mapload)
-	. = ..()
-	ADD_TRAIT(src, TRAIT_NEEDS_TWO_HANDS, ABSTRACT_ITEM_TRAIT)
-	AddComponent(/datum/component/automatic_fire, 0.1 SECONDS)

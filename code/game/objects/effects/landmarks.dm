@@ -11,9 +11,6 @@
 /obj/effect/landmark/singularity_act()
 	return
 
-/obj/effect/landmark/singularity_pull()
-	return
-
 INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 
 /obj/effect/landmark/Initialize(mapload)

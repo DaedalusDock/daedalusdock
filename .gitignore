@@ -209,7 +209,7 @@ libprof.so
 /artifacts
 
 # Running OpenDream locally
-daedalus.json
+krashlystation.json
 
 # Codex Database
 codex.db

@@ -471,10 +471,3 @@
 	name = "A.P. Surgical Journal, '67 Edition"
 	starting_title = name
 	. = ..()
-
-/obj/item/book/manual/codex/supermatter
-	name = "DSP 200-234-222: Supermatter Operations"
-	starting_title = "DSP 200-234-222: Supermatter Operations"
-	desc = "An entry of the Daedalus Service Practices, This one concerns the operation of supermatter engines."
-	icon_state = "bookdsp"
-	target_entry = "Guide to The Supermatter"

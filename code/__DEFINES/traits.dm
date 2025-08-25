@@ -791,8 +791,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define POWER_LACK_TRAIT "power-lack"
 /// Trait associated to lacking motor movement
 #define MOTOR_LACK_TRAIT "motor-lack"
-/// Trait associated with mafia
-#define MAFIA_TRAIT "mafia"
 /// Trait associated with highlander
 #define HIGHLANDER_TRAIT "highlander"
 /// Trait associated with airflow/spacewind

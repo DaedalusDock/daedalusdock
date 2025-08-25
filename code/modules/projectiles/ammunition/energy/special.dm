@@ -58,12 +58,6 @@
 	select_name = "snare"
 	harmful = FALSE
 
-/obj/item/ammo_casing/energy/tesla_cannon
-	fire_sound = 'sound/magic/lightningshock.ogg'
-	e_cost = 30
-	select_name = "shock"
-	projectile_type = /obj/projectile/energy/tesla_cannon
-
 /obj/item/ammo_casing/energy/shrink
 	projectile_type = /obj/projectile/beam/shrink
 	select_name = "shrink ray"

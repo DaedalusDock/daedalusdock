@@ -17,11 +17,11 @@ cfg
 data
 SQL
 node_modules
-daedalus.dmb
-daedalus.int
-daedalus.rsc
-daedalus.lk
-daedalus.dyn.rsc
+krashlystation.dmb
+krashlystation.int
+krashlystation.rsc
+krashlystation.lk
+krashlystation.dyn.rsc
 *.dll
 Dockerfile
 tools/bootstrap/.cache

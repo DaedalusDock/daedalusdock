@@ -15,7 +15,7 @@
 	if(!length(C.parallax_layers_cached))
 		C.parallax_layers_cached = list()
 		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/layer_1(null, src)
-		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/stars(null, src)
+		// C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/stars(null, src)
 
 	C.parallax_layers = C.parallax_layers_cached.Copy()
 
@@ -314,7 +314,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/parallax_layer)
 
 /atom/movable/screen/parallax_layer/layer_1/Initialize(mapload, mob/owner)
 	. = ..()
-	src.add_atom_colour(global.starlight_color, ADMIN_COLOUR_PRIORITY)
+	// src.add_atom_colour(global.starlight_color, ADMIN_COLOUR_PRIORITY)
 
 /atom/movable/screen/parallax_layer/stars
 	icon_state = "stars"

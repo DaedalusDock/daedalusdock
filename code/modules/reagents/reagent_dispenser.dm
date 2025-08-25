@@ -12,11 +12,6 @@
 	///The ID of the reagent that the dispenser uses
 	var/reagent_id = /datum/reagent/water
 
-/obj/structure/reagent_dispensers/Initialize(mapload)
-	. = ..()
-	if(icon_state == "water" && SSevents.holidays?[APRIL_FOOLS])
-		icon_state = "water_fools"
-
 /obj/structure/reagent_dispensers/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
 	. = ..()
 	if(. && atom_integrity > 0)
@@ -70,12 +65,6 @@
 	desc = "A tank full of industrial welding fuel. Do not consume."
 	icon_state = "fuel"
 	reagent_id = /datum/reagent/fuel
-
-/obj/structure/reagent_dispensers/fueltank/Initialize(mapload)
-	. = ..()
-
-	if(SSevents.holidays?[APRIL_FOOLS])
-		icon_state = "fuel_fools"
 
 /obj/structure/reagent_dispensers/fueltank/boom()
 	var/turf/explode_turf = get_turf(src)

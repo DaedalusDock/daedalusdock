@@ -317,10 +317,6 @@ SUBSYSTEM_DEF(economy)
 		paper_victim = name_gen.Generate()
 		all_tracked_data += "victim"
 
-	if(findtext(paper_contents, "station_name"))
-		paper_station = prob(80) ? "[new_station_name()] Research Station" : "[syndicate_name()] Research Station"
-		all_tracked_data += "station"
-
 	if(redacted_prob)
 		var/data_to_redact = pick(all_tracked_data)
 		switch(data_to_redact)
@@ -328,8 +324,6 @@ SUBSYSTEM_DEF(economy)
 				paper_primary_subject = "\[REDACTED\]"
 			if("subject_two")
 				paper_secondary_subject = "\[REDACTED\]"
-			if("station")
-				paper_station = "\[REDACTED\]"
 			if("victim")
 				paper_victim = "\[REDACTED\]"
 				paper_victim_species = "\[REDACTED\]"

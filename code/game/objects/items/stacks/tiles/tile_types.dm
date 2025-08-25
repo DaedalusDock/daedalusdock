@@ -921,19 +921,6 @@
 /obj/item/stack/tile/carpet/neon/simple/pink/nodots/sixty
 	amount = 60
 
-/obj/item/stack/tile/fakespace
-	name = "astral carpet"
-	singular_name = "astral carpet tile"
-	desc = "A piece of carpet with a convincing star pattern."
-	icon_state = "tile_space"
-	inhand_icon_state = "tile-space"
-	turf_type = /turf/open/floor/fakespace
-	resistance_flags = FLAMMABLE
-	merge_type = /obj/item/stack/tile/fakespace
-
-/obj/item/stack/tile/fakespace/loaded
-	amount = 30
-
 /obj/item/stack/tile/fakepit
 	name = "fake pits"
 	singular_name = "fake pit"

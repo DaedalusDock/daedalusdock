@@ -13,9 +13,6 @@
 	. = ..()
 	set_light(l_outer_range = set_luminosity, l_power = set_cap)
 
-/obj/effect/light_emitter/singularity_pull()
-	return
-
 /obj/effect/light_emitter/singularity_act()
 	return
 

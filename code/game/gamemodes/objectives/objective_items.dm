@@ -243,19 +243,6 @@
 	special_equipment += /obj/item/storage/box/syndie_kit/nuke
 	..()
 
-/datum/objective_item/steal/supermatter
-	name = "a sliver of a supermatter crystal"
-	targetitem = /obj/item/nuke_core/supermatter_sliver
-	valid_containers = list(/obj/item/nuke_core_container/supermatter)
-	difficulty = 15
-
-/datum/objective_item/steal/supermatter/New()
-	special_equipment += /obj/item/storage/box/syndie_kit/supermatter
-	..()
-
-/datum/objective_item/steal/supermatter/TargetExists()
-	return //GLOB.main_supermatter_engine != null
-
 //Items with special checks!
 /datum/objective_item/steal/plasma
 	name = "28 moles of plasma (full tank)"
@@ -344,11 +331,6 @@
 /datum/objective_item/special/ddrill
 	name = "a diamond drill"
 	targetitem = /obj/item/pickaxe/drill/diamonddrill
-	difficulty = 10
-
-/datum/objective_item/special/boh
-	name = "a bag of holding"
-	targetitem = /obj/item/storage/backpack/holding
 	difficulty = 10
 
 /datum/objective_item/special/hypercell

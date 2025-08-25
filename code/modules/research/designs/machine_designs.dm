@@ -363,20 +363,6 @@
 	build_path = /obj/item/circuitboard/machine/mining_equipment_vendor
 	mapload_design_flags = DESIGN_IMPRINTER
 
-/datum/design/board/tesla_coil
-	name = "Machine Board (Tesla Coil Board)"
-	desc = "The circuit board for a tesla coil."
-	id = "tesla_coil"
-	build_path = /obj/item/circuitboard/machine/tesla_coil
-	mapload_design_flags = DESIGN_IMPRINTER
-
-/datum/design/board/grounding_rod
-	name = "Machine Board (Grounding Rod Board)"
-	desc = "The circuit board for a grounding rod."
-	id = "grounding_rod"
-	build_path = /obj/item/circuitboard/machine/grounding_rod
-	mapload_design_flags = DESIGN_IMPRINTER
-
 /datum/design/board/ntnet_relay
 	name = "Machine Board (NTNet Relay Board)"
 	desc = "The circuit board for a wireless network relay."
@@ -531,18 +517,4 @@
 	desc = "The circuit board for exodrone launcher."
 	id = "exodrone_launcher"
 	build_path = /obj/item/circuitboard/machine/exodrone_launcher
-	mapload_design_flags = DESIGN_IMPRINTER
-
-/datum/design/board/component_printer
-	name = "Machine Board (Component Printer)"
-	desc = "The circuit board for a component printer"
-	id = "component_printer"
-	build_path = /obj/item/circuitboard/machine/component_printer
-	mapload_design_flags = DESIGN_IMPRINTER
-
-/datum/design/board/module_printer
-	name = "Machine Board (Module Duplicator)"
-	desc = "The circuit board for a module duplicator"
-	id = "module_duplicator"
-	build_path = /obj/item/circuitboard/machine/module_duplicator
 	mapload_design_flags = DESIGN_IMPRINTER

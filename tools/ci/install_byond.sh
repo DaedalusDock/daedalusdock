@@ -19,7 +19,7 @@ else
   cd "$HOME/BYOND"
   set +e #We need to allow errors for a little bit.
   #Try and grab the file from BYOND itself. We might fail (DoS or simply unavailable), if so we'll error out and go for a backup if one exists.
-  $(curl --fail -H "User-Agent: daedalus/1.0 CI Script" "http://www.byond.com/download/build/${BYOND_MAJOR}/${BYOND_MAJOR}.${BYOND_MINOR}_byond_linux.zip" -o byond.zip)
+  $(curl --fail -H "User-Agent: krashlystation/1.0 CI Script" "http://www.byond.com/download/build/${BYOND_MAJOR}/${BYOND_MAJOR}.${BYOND_MINOR}_byond_linux.zip" -o byond.zip)
   #22 - Unacceptable status code.
   if [ $? -eq 22 ];
   then
@@ -31,7 +31,7 @@ else
       exit 22
     fi
     set -e #Do or die time.
-    curl --fail -H "User-Agent: daedalus/1.0 CI Script" ${FALLBACK_URL} -o byond.zip
+    curl --fail -H "User-Agent: krashlystation/1.0 CI Script" ${FALLBACK_URL} -o byond.zip
   else
     set -e #Unset error allowance.
   fi

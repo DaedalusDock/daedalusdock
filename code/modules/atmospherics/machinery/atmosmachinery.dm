@@ -506,11 +506,6 @@ TYPEINFO_DEF(/obj/machinery/atmospherics)
 		L.ventcrawl_layer = piping_layer
 	return ..()
 
-/obj/machinery/atmospherics/singularity_pull(S, current_size)
-	if(current_size >= STAGE_FIVE)
-		deconstruct(FALSE)
-	return ..()
-
 #define VENT_SOUND_DELAY 30
 
 // Handles mob movement inside a pipenet

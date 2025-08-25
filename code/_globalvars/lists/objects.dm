@@ -5,8 +5,6 @@ GLOBAL_LIST_EMPTY(deliverybeacons)         //list of all MULEbot delivery beacon
 /// List of tags belonging to beacons set to delivery mode
 GLOBAL_LIST_EMPTY(deliverybeacontags)     //list of all tags associated with delivery beacons.
 
-GLOBAL_LIST_EMPTY_TYPED(singularities, /datum/component/singularity) //list of all singularities on the station
-
 GLOBAL_LIST_EMPTY(tech_list) //list of all /datum/tech datums indexed by id.
 GLOBAL_LIST_EMPTY(surgeries_list) //list of all surgeries by name, associated with their path.
 GLOBAL_LIST_EMPTY(crafting_recipes) //list of all table craft recipes

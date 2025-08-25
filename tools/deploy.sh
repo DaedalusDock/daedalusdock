@@ -22,7 +22,7 @@ if [ -d ".git" ]; then
   cp -r .git/logs/* $1/.git/logs/
 fi
 
-cp daedalus.dmb daedalus.rsc $1/
+cp krashlystation.dmb krashlystation.rsc $1/
 cp -r _maps/* $1/_maps/
 cp -r icons/runtime/* $1/icons/runtime/
 cp -r sound/runtime/* $1/sound/runtime/

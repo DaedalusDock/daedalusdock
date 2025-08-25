@@ -22,14 +22,6 @@
 		/obj/item/disk/data = /obj/item/disk/data/fabricator/autolathe
 	)
 
-/obj/item/circuitboard/machine/grounding_rod
-	name = "Grounding Rod (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/power/energy_accumulator/grounding_rod
-	req_components = list(/obj/item/stock_parts/capacitor = 1)
-	needs_anchored = FALSE
-
-
 /obj/item/circuitboard/machine/telecomms/broadcaster
 	name = "Subspace Broadcaster (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
@@ -107,14 +99,6 @@
 		/obj/item/stock_parts/manipulator = 2,
 		/obj/item/stack/cable_coil = 1,
 		/obj/item/stock_parts/subspace/filter = 1)
-
-/obj/item/circuitboard/machine/tesla_coil
-	name = "Tesla Controller (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	desc = "Does not let you shoot lightning from your hands."
-	build_path = /obj/machinery/power/energy_accumulator/tesla_coil
-	req_components = list(/obj/item/stock_parts/capacitor = 1)
-	needs_anchored = FALSE
 
 /obj/item/circuitboard/machine/cell_charger
 	name = "Cell Charger (Machine Board)"

@@ -50,10 +50,8 @@
 #define SMELTER (1<<5) //uses various minerals
 /// Imprinters for offstation roles. More limited tech tree.
 #define AWAY_IMPRINTER (1<<6)
-/// For wiremod/integrated circuits. Uses various minerals.
-#define COMPONENT_PRINTER (1<<7)
 //Note: More than one of these can be added to a design but imprinter and lathe designs are incompatable.
-#define IMPRINTER (1<<8)//temp
+#define IMPRINTER (1<<7)//temp
 
 //Modular computer/NTNet defines
 
@@ -203,7 +201,6 @@
 
 // Design categories
 #define DCAT_COMPUTER_PART "Computer Parts"
-#define DCAT_WIREMOD "Wiremod"
 #define DCAT_POWER "Power Management"
 #define DCAT_AMMO "Ammunition"
 #define DCAT_BASIC_TOOL "Basic Tools"

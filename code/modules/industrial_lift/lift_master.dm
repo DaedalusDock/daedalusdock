@@ -10,7 +10,6 @@ GLOBAL_LIST_EMPTY(active_lifts_by_type)
 
 	/// Typepath list of what to ignore smashing through, controls all lifts
 	var/static/list/ignored_smashthroughs = list(
-		/obj/machinery/power/supermatter,
 		/obj/structure/holosign,
 		/obj/machinery/field,
 	)

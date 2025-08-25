@@ -321,7 +321,6 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 		/obj/item/toy/eightball/haunted,
 		/obj/item/warpwhistle,
 		/obj/machinery/door/airlock/cult,
-		/obj/narsie,
 		/obj/structure/destructible/cult,
 		/obj/structure/spirit_board,
 		/obj/item/toy/cards/deck/tarot,
@@ -452,11 +451,6 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 ))
 
 GLOBAL_LIST_INIT(phobia_turfs, list(
-	"space" = typecacheof(list(
-		/turf/open/floor/fakespace,
-		/turf/open/floor/holofloor/space,
-		/turf/open/space,
-	)),
 	"the supernatural" = typecacheof(list(
 		/turf/closed/wall/mineral/cult,
 		/turf/open/floor/cult,

@@ -55,9 +55,6 @@
 /atom/movable/openspace/ex_act(severity, target)
 	return FALSE
 
-/atom/movable/openspace/singularity_pull()
-	return
-
 /atom/movable/openspace/singularity_act()
 	return
 

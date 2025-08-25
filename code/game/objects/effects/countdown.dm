@@ -60,9 +60,6 @@
 	STOP_PROCESSING(SSfastprocess, src)
 	. = ..()
 
-/obj/effect/countdown/singularity_pull()
-	return
-
 /obj/effect/countdown/singularity_act()
 	return
 
@@ -86,19 +83,6 @@
 		return
 	else if(N.timing)
 		return round(N.get_time_left(), 1)
-
-/obj/effect/countdown/supermatter
-	name = "supermatter damage"
-	text_size = 1
-	color = "#00ff80"
-
-/obj/effect/countdown/supermatter/get_value()
-/*
-	/var/obj/machinery/power/supermatter/S = attached_to
-	if(!istype(S))
-		return
-	return "<div align='center' valign='middle' style='position:relative; top:0px; left:0px'>[round(S.get_integrity_percent(), 1)]%</div>"
-	*/
 
 /obj/effect/countdown/transformer
 	name = "transformer countdown"

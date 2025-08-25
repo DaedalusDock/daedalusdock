@@ -1,18 +1,20 @@
 GLOBAL_REAL_VAR(starlight_color) = pick(COLOR_TEAL, COLOR_GREEN, COLOR_SILVER, COLOR_CYAN, COLOR_ORANGE, COLOR_PURPLE)
-GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 
 /turf/open/space
 	icon = 'icons/turf/space.dmi'
-	icon_state = "0"
-	name = "\proper the Great Pool"
+	icon_state = "im"
+	name = "\proper the Immaterium"
 	overfloor_placed = FALSE
 	underfloor_accessibility = UNDERFLOOR_INTERACTABLE
 	z_flags = Z_ATMOS_IN_DOWN|Z_ATMOS_IN_UP|Z_ATMOS_OUT_DOWN|Z_ATMOS_OUT_UP
 	z_eventually_space = TRUE
-	temperature = TCMB
 	simulated = FALSE
 	explosion_block = 0.5
-	initial_gas = null
+
+	footstep = FOOTSTEP_LAVA
+	barefootstep = FOOTSTEP_LAVA
+	clawfootstep = FOOTSTEP_LAVA
+	heavyfootstep = FOOTSTEP_LAVA
 
 	var/destination_z
 	var/destination_x
@@ -25,10 +27,8 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 	light_outer_range = 10
 	light_falloff_curve = 5
 	always_lit = TRUE
-	bullet_bounce_sound = null
-	vis_flags = VIS_INHERIT_ID //when this be added to vis_contents of something it be associated with something on clicking, important for visualisation of turf in openspace and interraction with openspace that show you turf.
 
-	force_no_gravity = TRUE
+	vis_flags = VIS_INHERIT_ID //when this be added to vis_contents of something it be associated with something on clicking, important for visualisation of turf in openspace and interraction with openspace that show you turf.
 
 /turf/open/space/basic/New() //Do not convert to Initialize
 	//This is used to optimize the map loader
@@ -49,51 +49,15 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 /turf/open/space/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
 
-	appearance = global.space_appearances[(((x + y) ^ ~(x * y) + z) % 25) + 1]
-
 	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 
 	initialized = TRUE
 
-	if(!loc:area_has_base_lighting) //Only provide your own lighting if the area doesn't for you
-		// Intentionally not add_overlay for performance reasons.
-		// add_overlay does a bunch of generic stuff, like creating a new list for overlays,
-		// queueing compile, cloning appearance, etc etc etc that is not necessary here.
-		overlays += global.fullbright_overlay
-		luminosity = TRUE
-
 	return INITIALIZE_HINT_NORMAL
-
-/proc/make_space_appearances()
-	. = new /list(26)
-	for (var/i in 0 to 25)
-		var/image/I = new()
-		I.appearance = /turf/open/space
-		I.icon_state = "[i]"
-		I.plane = PLANE_SPACE
-		I.layer = SPACE_LAYER
-		.[i+1] = I
 
 /turf/open/space/get_examine_name(mob/user)
 	return name
-
-/turf/open/space/examine(mob/user)
-	. = ..()
-	var/datum/roll_result/result = user.get_examine_result("space_inline")
-	if(result?.outcome >= SUCCESS)
-		result.do_skill_sound(user)
-		. += result.create_tooltip("Some people wonder why we ventured beyond Gaia at all.", body_only = TRUE)
-
-/turf/open/space/disco_flavor(mob/living/carbon/human/user, nearby = FALSE, is_station_level = FALSE)
-	. = ..()
-	var/datum/roll_result/result = user.get_examine_result("space_onetime", only_once = TRUE)
-	if(result?.outcome >= SUCCESS)
-		result.do_skill_sound(user)
-		to_chat(
-			user,
-			result.create_tooltip("The Great Pool does not reflect your gaze, instead, a black void stares back. Nothing exists outside this moment."),
-		)
 
 //ATTACK GHOST IGNORING PARENT RETURN VALUE
 /turf/open/space/attack_ghost(mob/dead/observer/user)
@@ -101,14 +65,8 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 		var/turf/T = locate(destination_x, destination_y, destination_z)
 		user.forceMove(T)
 
-/turf/open/space/TakeTemperature(temp)
-
 /turf/open/space/RemoveLattice()
 	return
-
-//IT SHOULD RETURN NULL YOU MONKEY, WHY IN TARNATION WHAT THE FUCKING FUCK
-/turf/open/space/remove_air(amount)
-	return null
 
 /turf/open/space/proc/update_starlight()
 	for(var/t in RANGE_TURFS(1,src)) //RANGE_TURFS is in code\__HELPERS\game.dm
@@ -123,7 +81,7 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 	return attack_hand(user, modifiers)
 
 /turf/open/space/proc/CanBuildHere()
-	return TRUE
+	return
 
 /turf/open/space/handle_slip()
 	return
@@ -187,7 +145,6 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 /turf/open/space/is_transition_turf()
 	if(destination_x || destination_y || destination_z)
 		return TRUE
-
 
 /turf/open/space/acid_act(acidpwr, acid_volume)
 	return FALSE

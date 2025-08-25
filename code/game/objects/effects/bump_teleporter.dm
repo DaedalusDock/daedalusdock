@@ -23,9 +23,6 @@
 /obj/effect/bump_teleporter/singularity_act()
 	return
 
-/obj/effect/bump_teleporter/singularity_pull()
-	return
-
 /obj/effect/bump_teleporter/BumpedBy(atom/movable/AM)
 	if(!ismob(AM))
 		return

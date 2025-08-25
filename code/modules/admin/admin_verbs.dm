@@ -20,7 +20,6 @@ GLOBAL_PROTECT(admin_verbs_default)
 	/client/proc/mark_datum_mapview,
 	/client/proc/tag_datum_mapview,
 	/client/proc/debugstatpanel,
-	/client/proc/fixatmos, /*resets air in designated radius to its default atmos composition*/
 	/client/proc/requests
 	)
 GLOBAL_LIST_INIT(admin_verbs_admin, world.AVerbsAdmin())
@@ -77,7 +76,6 @@ GLOBAL_PROTECT(admin_verbs_admin)
 	/datum/admins/proc/open_shuttlepanel, /* Opens shuttle manipulator UI */
 	/client/proc/respawn_character,
 	/datum/admins/proc/open_borgopanel,
-	/datum/admins/proc/view_all_circuits,
 	/datum/admins/proc/known_alts_panel,
 	/datum/admins/proc/paintings_manager,
 	/datum/admins/proc/display_tags,
@@ -196,7 +194,6 @@ GLOBAL_PROTECT(admin_verbs_debug)
 	/client/proc/check_timer_sources,
 	/client/proc/toggle_cdn,
 	/client/proc/adventure_manager,
-	/client/proc/load_circuit,
 	/client/proc/cmd_admin_debug_traitor_objectives,
 	/client/proc/spawn_debug_full_crew,
 	//ZAS Debug Verbs

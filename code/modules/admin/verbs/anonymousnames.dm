@@ -270,9 +270,3 @@ GLOBAL_DATUM(current_anonymous_theme, /datum/anonymous_theme)
 
 /datum/anonymous_theme/station/announce_to_all_players()
 	priority_announce("Confirmed level 9 reality error event near [station_name()]. All personnel must try their best to carry on, as to not trigger more reality events by accident.", "Central Command Higher Dimensional Affairs", 'sound/misc/notice1.ogg')
-
-/datum/anonymous_theme/station/anonymous_name(mob/target)
-	return new_station_name()
-
-/datum/anonymous_theme/station/anonymous_ai_name(is_ai = FALSE)
-	return new_station_name()

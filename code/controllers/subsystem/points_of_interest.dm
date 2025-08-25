@@ -48,9 +48,6 @@ SUBSYSTEM_DEF(points_of_interest)
 			var/obj/item/disk/nuclear/nuke_disk = new_poi
 			if(!nuke_disk.fake)
 				real_nuclear_disks += nuke_disk
-		// NAR'SIE HELPER
-		else if(istype(new_poi, /obj/narsie))
-			narsies += new_poi
 
 	SEND_SIGNAL(src, COMSIG_ADDED_POINT_OF_INTEREST, new_poi)
 
@@ -74,9 +71,6 @@ SUBSYSTEM_DEF(points_of_interest)
 			var/obj/item/disk/nuclear/nuke_disk = old_poi
 			if(!nuke_disk.fake)
 				real_nuclear_disks -= nuke_disk
-		// NAR'SIE HELPER
-		else if(istype(old_poi, /obj/narsie))
-			narsies -= old_poi
 
 	points_of_interest_by_target_ref -= poi_ref
 

@@ -63,18 +63,6 @@
 	var/mob/dead/observer/G = usr
 	G.register_pai()
 
-/atom/movable/screen/ghost/minigames_menu
-	name ="Minigames"
-	icon_state = "minigames"
-
-/atom/movable/screen/ghost/minigames_menu/Click()
-	. = ..()
-	if(.)
-		return FALSE
-
-	var/mob/dead/observer/observer = usr
-	observer.open_minigames_menu()
-
 /datum/hud/ghost/New(mob/owner)
 	..()
 
@@ -98,10 +86,6 @@
 
 	using = new /atom/movable/screen/ghost/pai(null, src)
 	using.screen_loc = ui_ghost_pai
-	static_inventory += using
-
-	using = new /atom/movable/screen/ghost/minigames_menu(null, src)
-	using.screen_loc = ui_ghost_minigames
 	static_inventory += using
 
 	using = new /atom/movable/screen/language_menu(null, src)

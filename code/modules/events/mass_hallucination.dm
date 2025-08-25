@@ -41,7 +41,6 @@
 		"blob_alert" = "Level 5 Biohazard Announcement",
 		"malf_ai" = "Rampant AI Alert",
 		"meteors" = "Meteor Announcement",
-		"supermatter" = "Supermatter Delamination Sensation"
 	)
 	/// Pool for generic hallucinations. Types can't key lists, so we need to invert the accesses.
 	var/list/generic_pool = list(

@@ -449,41 +449,6 @@
 	trail.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	QDEL_IN(trail, trail_lifespan)
 
-/obj/projectile/magic/aoe/lightning
-	name = "lightning bolt"
-	icon_state = "tesla_projectile" //Better sprites are REALLY needed and appreciated!~
-	damage = 15
-	damage_type = BURN
-	nodamage = FALSE
-	speed = 0.3
-
-	/// The power of the zap itself when it electrocutes someone
-	var/zap_power = 20000
-	/// The range of the zap itself when it electrocutes someone
-	var/zap_range = 15
-	/// The flags of the zap itself when it electrocutes someone
-	var/zap_flags = ZAP_MOB_DAMAGE | ZAP_MOB_STUN | ZAP_OBJ_DAMAGE | ZAP_LOW_POWER_GEN
-	/// A reference to the chain beam between the caster and the projectile
-	var/datum/beam/chain
-
-/obj/projectile/magic/aoe/lightning/fire(setAngle)
-	if(firer)
-		chain = firer.Beam(src, icon_state = "lightning[rand(1, 12)]")
-	return ..()
-
-/obj/projectile/magic/aoe/lightning/on_hit(target)
-	. = ..()
-	tesla_zap(src, zap_range, zap_power, zap_flags)
-
-/obj/projectile/magic/aoe/lightning/Destroy()
-	QDEL_NULL(chain)
-	return ..()
-
-/obj/projectile/magic/aoe/lightning/no_zap
-	zap_power = 10000
-	zap_range = 4
-	zap_flags = ZAP_MOB_DAMAGE | ZAP_OBJ_DAMAGE | ZAP_LOW_POWER_GEN
-
 /obj/projectile/magic/fireball
 	name = "bolt of fireball"
 	icon_state = "fireball"

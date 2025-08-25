@@ -56,11 +56,6 @@
 	if(!QDELETED(src))
 		empty_pod()
 
-/obj/structure/transit_tube_pod/singularity_pull(S, current_size)
-	..()
-	if(current_size >= STAGE_FIVE)
-		deconstruct(FALSE)
-
 /obj/structure/transit_tube_pod/container_resist_act(mob/living/user)
 	if(!user.incapacitated())
 		empty_pod()

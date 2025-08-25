@@ -148,10 +148,6 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 	var/static/list/parts = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG)
 	return parts.Find(limb_one.body_zone) - parts.Find(limb_two.body_zone)
 
-/// Orders by integrated circuit weight
-/proc/cmp_port_order_asc(datum/port/compare1, datum/port/compare2)
-	return compare1.order - compare2.order
-
 /// Orders by uplink category weight
 /proc/cmp_uplink_category_desc(datum/uplink_category/compare1, datum/uplink_category/compare2)
 	return initial(compare2.weight) - initial(compare1.weight)

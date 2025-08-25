@@ -186,6 +186,3 @@
 
 /obj/effect/gateway/singularity_act()
 	return
-
-/obj/effect/gateway/singularity_pull()
-	return

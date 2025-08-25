@@ -104,7 +104,6 @@
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "aB" = (
-/obj/machinery/power/supermatter,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "aD" = (
@@ -193,7 +192,6 @@
 /turf/open/floor/plating/airless,
 /area/shuttle/escape)
 "aV" = (
-/obj/machinery/power/supermatter,
 /turf/open/floor/plating/airless,
 /area/shuttle/escape)
 "aW" = (

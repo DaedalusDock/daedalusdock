@@ -88,43 +88,6 @@
 	. = ..()
 	atom_storage.max_total_storage = 12
 
-/obj/item/bag_of_holding_inert
-	name = "inert bag of holding"
-	desc = "What is currently a just an unwieldly block of metal with a slot ready to accept a bluespace anomaly core."
-	icon = 'icons/obj/storage.dmi'
-	icon_state = "brokenpack"
-	inhand_icon_state = "brokenpack"
-	lefthand_file = 'icons/mob/inhands/equipment/backpack_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/equipment/backpack_righthand.dmi'
-	w_class = WEIGHT_CLASS_BULKY
-	resistance_flags = FIRE_PROOF
-	item_flags = NO_MAT_REDEMPTION
-
-TYPEINFO_DEF(/obj/item/storage/backpack/holding)
-	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 60, ACID = 50)
-
-/obj/item/storage/backpack/holding
-	name = "bag of holding"
-	desc = "A backpack that opens into a localized pocket of bluespace."
-	icon_state = "holdingpack"
-	inhand_icon_state = "holdingpack"
-	resistance_flags = FIRE_PROOF
-	item_flags = NO_MAT_REDEMPTION
-
-/obj/item/storage/backpack/holding/Initialize()
-	. = ..()
-
-	create_storage(max_specific_storage = WEIGHT_CLASS_GIGANTIC, max_total_storage = 35, max_slots = 30, type = /datum/storage/bag_of_holding)
-	atom_storage.allow_big_nesting = TRUE
-
-/obj/item/storage/backpack/holding/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] is jumping into [src]! It looks like [user.p_theyre()] trying to commit suicide."))
-	user.dropItemToGround(src, TRUE)
-	user.Stun(100, ignore_canstun = TRUE)
-	sleep(20)
-	playsound(src, SFX_RUSTLE, 50, TRUE, -5)
-	qdel(user)
-
 /obj/item/storage/backpack/santabag
 	name = "Santa's Gift Bag"
 	desc = "Space Santa uses this to deliver presents to all the nice children in space in Christmas! Wow, it's pretty big!"

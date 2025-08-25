@@ -115,9 +115,6 @@
 /obj/effect/cross_action/singularity_act()
 	return
 
-/obj/effect/cross_action/singularity_pull()
-	return
-
 /obj/effect/cross_action/spacetime_dist/Initialize(mapload, flags = MAGIC_RESISTANCE)
 	. = ..()
 	setDir(pick(GLOB.cardinals))

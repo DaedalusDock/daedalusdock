@@ -98,7 +98,7 @@
 		if(client.view_size)
 			client.view_size.resetToDefault() // Resets the client.view in case it was changed.
 		else
-			client.change_view(getScreenSize(client.prefs.read_preference(/datum/preference/toggle/widescreen)))
+			client.change_view(getScreenSize())
 
 		for(var/datum/action/A in client.persistent_client.player_actions)
 			A.Grant(src)

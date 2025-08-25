@@ -35,7 +35,6 @@ GLOBAL_LIST_INIT(arcade_prize_pool, list(
 		/obj/item/toy/talking/owl = 2,
 		/obj/item/toy/talking/griffin = 2,
 		/obj/item/coin/antagtoken = 2,
-		/obj/item/stack/tile/fakespace/loaded = 2,
 		/obj/item/stack/tile/fakepit/loaded = 2,
 		/obj/item/stack/tile/eighties/loaded = 2,
 		/obj/item/toy/toy_xeno = 2,
@@ -218,26 +217,10 @@ GLOBAL_LIST_INIT(arcade_prize_pool, list(
 	var/name_part1
 	var/name_part2
 
-	if(SSevents.holidays && SSevents.holidays[HALLOWEEN])
-		name_action = pick_list(ARCADE_FILE, "rpg_action_halloween")
-		name_part1 = pick_list(ARCADE_FILE, "rpg_adjective_halloween")
-		name_part2 = pick_list(ARCADE_FILE, "rpg_enemy_halloween")
-		weapons = strings(ARCADE_FILE, "rpg_weapon_halloween")
-	else if(SSevents.holidays && SSevents.holidays[CHRISTMAS])
-		name_action = pick_list(ARCADE_FILE, "rpg_action_xmas")
-		name_part1 = pick_list(ARCADE_FILE, "rpg_adjective_xmas")
-		name_part2 = pick_list(ARCADE_FILE, "rpg_enemy_xmas")
-		weapons = strings(ARCADE_FILE, "rpg_weapon_xmas")
-	else if(SSevents.holidays && SSevents.holidays[VALENTINES])
-		name_action = pick_list(ARCADE_FILE, "rpg_action_valentines")
-		name_part1 = pick_list(ARCADE_FILE, "rpg_adjective_valentines")
-		name_part2 = pick_list(ARCADE_FILE, "rpg_enemy_valentines")
-		weapons = strings(ARCADE_FILE, "rpg_weapon_valentines")
-	else
-		name_action = pick_list(ARCADE_FILE, "rpg_action")
-		name_part1 = pick_list(ARCADE_FILE, "rpg_adjective")
-		name_part2 = pick_list(ARCADE_FILE, "rpg_enemy")
-		weapons = strings(ARCADE_FILE, "rpg_weapon")
+	name_action = pick_list(ARCADE_FILE, "rpg_action")
+	name_part1 = pick_list(ARCADE_FILE, "rpg_adjective")
+	name_part2 = pick_list(ARCADE_FILE, "rpg_enemy")
+	weapons = strings(ARCADE_FILE, "rpg_weapon")
 
 	enemy_name = ("The " + name_part1 + " " + name_part2)
 	name = (name_action + " " + enemy_name)

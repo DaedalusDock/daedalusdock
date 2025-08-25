@@ -357,11 +357,6 @@
 	alpha = 110
 	icon_state = "trimline_box"
 
-/obj/effect/turf_decal/trimline/Initialize(mapload)
-	if(SSevents.holidays && SSevents.holidays[APRIL_FOOLS])
-		color = "#[random_short_color()]"
-	. = ..()
-
 /// White trimlines
 
 /obj/effect/turf_decal/trimline/white

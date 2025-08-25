@@ -283,7 +283,6 @@
 	var/static/possible = list(
 		/obj/item/gun/energy/pulse,
 		/obj/item/book/granter/martial/carp,
-		/obj/item/melee/supermatter_sword,
 		/obj/item/shield/changeling,
 		/obj/item/energy_katana,
 		/obj/item/his_grace,

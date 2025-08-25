@@ -179,13 +179,6 @@ TYPEINFO_DEF(/obj/structure/disposalpipe)
 					P.setDir(D)
 	qdel(src)
 
-
-/obj/structure/disposalpipe/singularity_pull(S, current_size)
-	..()
-	if(current_size >= STAGE_FIVE)
-		deconstruct()
-
-
 // Straight/bent pipe segment
 /obj/structure/disposalpipe/segment
 	icon_state = "pipe"

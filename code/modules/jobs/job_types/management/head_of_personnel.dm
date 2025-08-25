@@ -65,11 +65,6 @@
 		/obj/item/stamp/hop,
 	)
 
-/datum/outfit/job/hop/pre_equip(mob/living/carbon/human/H)
-	..()
-	if(locate(/datum/holiday/ianbirthday) in SSevents.holidays)
-		undershirt = /datum/sprite_accessory/undershirt/ian
-
 //only pet worth reviving
 /datum/job/head_of_personnel/get_mail_goodies(mob/recipient)
 	. = ..()

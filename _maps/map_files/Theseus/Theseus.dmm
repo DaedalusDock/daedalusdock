@@ -51957,7 +51957,6 @@
 /obj/structure/cable/red{
 	icon_state = "1"
 	},
-/obj/machinery/power/supermatter,
 /turf/open/floor/engine/airless,
 /area/station/engineering/supermatter/room)
 "str" = (

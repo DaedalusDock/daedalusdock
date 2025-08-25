@@ -116,10 +116,6 @@
 					COOLDOWN_START(src, mob_cooldowns["check_breath_gasp"], 10 SECONDS)
 			return FALSE
 
-/// Environment handlers for species
-/mob/living/carbon/human/handle_environment(datum/gas_mixture/environment, delta_time, times_fired)
-	return dna.species.handle_environment(src, environment, delta_time, times_fired)
-
 /**
  * Adjust the core temperature of a mob
  *

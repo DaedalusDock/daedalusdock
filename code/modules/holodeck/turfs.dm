@@ -110,31 +110,6 @@
 		icon_state = "basalt[rand(0, 12)]"
 		set_basalt_light(src)
 
-/turf/open/floor/holofloor/space
-	name = "\proper space"
-	icon = 'icons/turf/space.dmi'
-	icon_state = "0"
-
-/turf/open/floor/holofloor/space/Initialize(mapload)
-	appearance = global.space_appearances[(((x + y) ^ ~(x * y) + z) % 25) + 1] // so realistic
-	layer = initial(layer)
-	. = ..()
-
-/turf/open/floor/holofloor/hyperspace
-	name = "\proper hyperspace"
-	icon = 'icons/turf/space.dmi'
-	icon_state = "speedspace_ns_1"
-	bullet_bounce_sound = null
-	tiled_dirt = FALSE
-
-/turf/open/floor/holofloor/hyperspace/Initialize(mapload)
-	icon_state = "speedspace_ns_[(x + 5*y + (y%2+1)*7)%15+1]"
-	. = ..()
-
-/turf/open/floor/holofloor/hyperspace/ns/Initialize(mapload)
-	. = ..()
-	icon_state = "speedspace_ns_[(x + 5*y + (y%2+1)*7)%15+1]"
-
 /turf/open/floor/holofloor/carpet
 	name = "carpet"
 	desc = "Electrically inviting."

@@ -110,10 +110,6 @@
 		deconstruct(TRUE)
 		return TRUE
 
-/obj/structure/overfloor_catwalk/singularity_pull(S, current_size)
-	if(current_size >= STAGE_FOUR)
-		deconstruct(TRUE)
-
 /obj/structure/overfloor_catwalk/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	if(the_rcd.mode == RCD_FLOORWALL)
 		return list("mode" = RCD_FLOORWALL, "delay" = 0, "cost" = 2)

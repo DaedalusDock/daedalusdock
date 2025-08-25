@@ -14,9 +14,6 @@
 	if(initial_duration > 0 SECONDS)
 		QDEL_IN(src, initial_duration)
 
-/obj/effect/forcefield/singularity_pull()
-	return
-
 /// The wizard's forcefield, summoned by forcewall
 /obj/effect/forcefield/wizard
 	/// Flags for what antimagic can just ignore our forcefields

@@ -90,9 +90,6 @@
 /turf/open/lava/singularity_act()
 	return
 
-/turf/open/lava/singularity_pull(S, current_size)
-	return
-
 /turf/open/lava/GetHeatCapacity()
 	. = 700000
 

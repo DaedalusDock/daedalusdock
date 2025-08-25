@@ -71,11 +71,6 @@ TYPEINFO_DEF(/obj/machinery/disposal)
 		stored = null
 		deconstruct(FALSE)
 
-/obj/machinery/disposal/singularity_pull(S, current_size)
-	..()
-	if(current_size >= STAGE_FIVE)
-		deconstruct()
-
 /obj/machinery/disposal/LateInitialize()
 	//this will get a copy of the air turf and take a SEND PRESSURE amount of air from it
 	var/turf/L = loc

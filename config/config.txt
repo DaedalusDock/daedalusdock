@@ -16,13 +16,13 @@ $include pariah/pariah_config.txt
 # There are various options which are hard-locked for security reasons.
 
 ## Server name: This appears at the top of the screen in-game and in the BYOND hub. Uncomment and replace 'tgstation' with the name of your choice.
-SERVERNAME Daedalus Dock
+SERVERNAME Krashly Station
 
 ## Server SQL name: This is the name used to identify the server to the SQL DB, distinct from SERVERNAME as it must be at most 32 characters.
 SERVERSQLNAME daedalusdock
 
 ## Station name: The name of the station as it is referred to in-game. If commented out, the game will generate a random name instead.
-STATIONNAME Daedalus Outpost
+STATIONNAME Sanctuarium
 
 ## Community slug for AffectedArc's Web Map
 #WEBMAP_COMMUNITY DaedalusDock
@@ -302,10 +302,6 @@ GITHUBURL https://github.com/DaedalusDock/Gameserver
 ## Uncomment to give admins the ability to send a maptext popup to players.
 ## Only fires when an admin requests it, not every ahelp.
 POPUP_ADMIN_PM
-
-## Uncomment to allow special 'Easter-egg' events on special holidays such as seasonal holidays and stuff like 'Talk Like a Pirate Day' :3 YAARRR
-ALLOW_HOLIDAYS
-
 
 ## Uncomment to show the names of the admin sending a pm from IRC instead of showing as a stealthmin.
 #SHOW_IRC_NAME

@@ -131,9 +131,6 @@
 /obj/effect/snare/singularity_act()
 	return
 
-/obj/effect/snare/singularity_pull()
-	return
-
 /mob/living/simple_animal/hostile/guardian/ranged/Manifest(forced)
 	if (toggle)
 		incorporeal_move = INCORPOREAL_MOVE_BASIC

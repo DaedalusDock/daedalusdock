@@ -226,16 +226,6 @@
 	construction_time = 100
 	category = list(DCAT_MECHA_OBJ)
 
-/datum/design/mech_tesla
-	name = "Exosuit Weapon (MKI Tesla Cannon)"
-	desc = "Allows for the construction of MKI Tesla Cannon."
-	id = "mech_tesla"
-	build_type = MECHFAB
-	build_path = /obj/item/mecha_parts/mecha_equipment/weapon/energy/tesla
-	materials = list(/datum/material/iron=20000,/datum/material/silver=8000)
-	construction_time = 100
-	category = list(DCAT_MECHA_OBJ)
-
 /datum/design/mech_laser
 	name = "Exosuit Weapon (CH-PS \"Immolator\" Laser)"
 	desc = "Allows for the construction of CH-PS Laser."

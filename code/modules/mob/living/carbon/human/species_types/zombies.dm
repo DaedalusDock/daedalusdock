@@ -66,11 +66,6 @@
 /datum/species/zombie/body_temperature_core(mob/living/carbon/human/humi, delta_time, times_fired)
 	return
 
-/datum/species/zombie/check_roundstart_eligible()
-	if(SSevents.holidays && SSevents.holidays[HALLOWEEN])
-		return TRUE
-	return ..()
-
 // Override for the default temperature perks, so we can establish that they don't care about temperature very much
 /datum/species/zombie/create_pref_temperature_perks()
 	var/list/to_add = list()

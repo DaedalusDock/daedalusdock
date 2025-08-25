@@ -1,5 +1,5 @@
 /atom
-	var/simulated = TRUE
+	var/simulated = FALSE
 	var/can_atmos_pass = CANPASS_ALWAYS
 
 ///Tells ZAS to mark the tile the atom is in to update.

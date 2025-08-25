@@ -16,7 +16,7 @@ cp tools/ci/ci_config.txt ci_test/config/config.txt
 cp _maps/$MAP.json ci_test/data/next_map.json
 
 cd ci_test
-DreamDaemon daedalus.dmb -close -trusted -verbose -params "log-directory=ci"
+DreamDaemon krashlystation.dmb -close -trusted -verbose -params "log-directory=ci"
 cd ..
 
 mkdir -p data/screenshots_new

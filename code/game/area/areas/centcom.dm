@@ -226,51 +226,6 @@ The areas used here are STRICTLY on the CC Z level.
 	name = "Syndicate Elite Squad"
 	icon_state = "syndie-elite"
 
-//CAPTURE THE FLAG
-/area/centcom/ctf
-	name = "Capture the Flag"
-	icon_state = "ctf"
-	requires_power = FALSE
-	area_lighting = AREA_LIGHTING_STATIC
-	has_gravity = STANDARD_GRAVITY
-	flags_1 = NONE
-
-/area/centcom/ctf/control_room
-	name = "Control Room A"
-	icon_state = "ctf_room_a"
-
-/area/centcom/ctf/control_room2
-	name = "Control Room B"
-	icon_state = "ctf_room_b"
-
-/area/centcom/ctf/central
-	name = "Central"
-	icon_state = "ctf_central"
-
-/area/centcom/ctf/main_hall
-	name = "Main Hall A"
-	icon_state = "ctf_hall_a"
-
-/area/centcom/ctf/main_hall2
-	name = "Main Hall B"
-	icon_state = "ctf_hall_b"
-
-/area/centcom/ctf/corridor
-	name = "Corridor A"
-	icon_state = "ctf_corr_a"
-
-/area/centcom/ctf/corridor2
-	name = "Corridor B"
-	icon_state = "ctf_corr_b"
-
-/area/centcom/ctf/flag_room
-	name = "Flag Room A"
-	icon_state = "ctf_flag_a"
-
-/area/centcom/ctf/flag_room2
-	name = "Flag Room B"
-	icon_state = "ctf_flag_b"
-
 // Asteroid area stuff
 /area/centcom/asteroid
 	name = "\improper Asteroid"

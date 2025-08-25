@@ -601,10 +601,6 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 
 	return FALSE
 
-/turf/closed/wall/singularity_pull(S, current_size)
-	..()
-	wall_singularity_pull(current_size)
-
 /turf/closed/wall/proc/wall_singularity_pull(current_size)
 	if(hard_decon)
 		if(current_size >= STAGE_FIVE)

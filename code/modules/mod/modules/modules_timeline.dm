@@ -418,9 +418,6 @@
 /obj/structure/chrono_field/singularity_act()
 	return
 
-/obj/structure/chrono_field/singularity_pull()
-	return
-
 /obj/structure/chrono_field/ex_act()
 	return FALSE
 

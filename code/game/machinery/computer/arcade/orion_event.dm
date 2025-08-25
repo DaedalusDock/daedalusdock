@@ -432,15 +432,6 @@
 	game.set_game_over(usr, "You were swept away into the black hole.")
 	..()
 
-/datum/orion_event/black_hole_death/emag_effect(obj/machinery/computer/arcade/orion_trail/game, mob/living/gamer)
-	if(game.obj_flags & EMAGGED)
-		playsound(game.loc, 'sound/effects/supermatter.ogg', 100, TRUE)
-		game.say("A miniature black hole suddenly appears in front of [game], devouring [gamer] alive!")
-		gamer.Stun(200, ignore_canstun = TRUE) //you can't run :^)
-		var/black_hole = new /obj/singularity/academy(gamer.loc)
-		addtimer(CALLBACK(game, TYPE_PROC_REF(/atom/movable, say), "[black_hole] winks out, just as suddenly as it appeared."), 50)
-		QDEL_IN(black_hole, 5 SECONDS)
-
 #define BUTTON_DOCK "Dock"
 
 ///You found a space port!

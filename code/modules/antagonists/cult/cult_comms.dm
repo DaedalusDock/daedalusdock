@@ -152,11 +152,6 @@
 				to_chat(B.current,span_cultlarge("[Nominee] has won the cult's support and is now their master. Follow [Nominee.p_their()] orders to the best of your ability!"))
 	return TRUE
 
-/datum/action/innate/cult/master/IsAvailable(feedback = FALSE)
-	if(!owner.mind || !owner.mind.has_antag_datum(/datum/antagonist/cult/master) || GLOB.cult_narsie)
-		return FALSE
-	return ..()
-
 /datum/action/innate/cult/master/finalreck
 	name = "Final Reckoning"
 	desc = "A single-use spell that brings the entire cult to the master's location."

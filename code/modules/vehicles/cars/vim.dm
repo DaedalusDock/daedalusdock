@@ -26,14 +26,6 @@ TYPEINFO_DEF(/obj/vehicle/sealed/car/vim)
 	var/maximum_mob_size = MOB_SIZE_SMALL
 	COOLDOWN_DECLARE(sound_cooldown)
 
-/obj/vehicle/sealed/car/vim/Initialize(mapload)
-	. = ..()
-	AddComponent( \
-		/datum/component/shell, \
-		unremovable_circuit_components = list(new /obj/item/circuit_component/vim), \
-		capacity = SHELL_CAPACITY_SMALL, \
-	)
-
 /obj/vehicle/sealed/car/vim/examine(mob/user)
 	. = ..()
 	. += span_notice("[src] can be repaired with a welder.")
@@ -107,43 +99,3 @@ TYPEINFO_DEF(/obj/vehicle/sealed/car/vim)
 		. += piloted_overlay
 	if(headlights_toggle)
 		. += headlights_overlay
-
-/obj/item/circuit_component/vim
-	display_name = "Vim"
-	desc = "An minature exosuit from Nanotrasen, developed to let the irreplacable station pets live a little longer."
-
-	/// Sent when the mech chimes.
-	var/datum/port/output/chime
-	/// Sent when the mech buzzes.
-	var/datum/port/output/buzz
-	/// Whether the mech headlights are currently on.
-	var/datum/port/output/are_headlights_on
-
-/obj/item/circuit_component/vim/populate_ports()
-	are_headlights_on = add_output_port("Are Headlights On", PORT_TYPE_NUMBER)
-	chime = add_output_port("On Chime Used", PORT_TYPE_SIGNAL)
-	buzz = add_output_port("On Buzz Used", PORT_TYPE_SIGNAL)
-
-/obj/item/circuit_component/vim/register_shell(atom/movable/shell)
-	. = ..()
-	RegisterSignal(shell, COMSIG_VIM_HEADLIGHTS_TOGGLED, PROC_REF(on_headlights_toggle))
-	RegisterSignal(shell, COMSIG_VIM_CHIME_USED, PROC_REF(on_chime_used))
-	RegisterSignal(shell, COMSIG_VIM_BUZZ_USED, PROC_REF(on_buzz_used))
-
-/obj/item/circuit_component/vim/unregister_shell(atom/movable/shell)
-	. = ..()
-	UnregisterSignal(shell, COMSIG_VIM_HEADLIGHTS_TOGGLED)
-	UnregisterSignal(shell, COMSIG_VIM_CHIME_USED)
-	UnregisterSignal(shell, COMSIG_VIM_BUZZ_USED)
-
-/obj/item/circuit_component/vim/proc/on_headlights_toggle(datum/source, headlights_on)
-	SIGNAL_HANDLER
-	are_headlights_on.set_output(headlights_on)
-
-/obj/item/circuit_component/vim/proc/on_chime_used()
-	SIGNAL_HANDLER
-	chime.set_output(COMPONENT_SIGNAL)
-
-/obj/item/circuit_component/vim/proc/on_buzz_used()
-	SIGNAL_HANDLER
-	buzz.set_output(COMPONENT_SIGNAL)

@@ -135,13 +135,6 @@ TYPEINFO_DEF(/obj/structure/window)
 /obj/structure/window/narsie_act()
 	add_atom_colour(NARSIE_WINDOW_COLOUR, FIXED_COLOUR_PRIORITY)
 
-/obj/structure/window/singularity_pull(S, current_size)
-	..()
-	if(anchored && current_size >= STAGE_TWO)
-		set_anchored(FALSE)
-	if(current_size >= STAGE_FIVE)
-		deconstruct(FALSE)
-
 /obj/structure/window/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()
 	if(.)

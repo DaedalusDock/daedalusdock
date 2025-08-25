@@ -171,9 +171,6 @@ TYPEINFO_DEF(/obj/machinery/airalarm)
 	update_appearance()
 
 	set_frequency(frequency)
-	AddComponent(/datum/component/usb_port, list(
-		/obj/item/circuit_component/air_alarm,
-	))
 	SSairmachines.start_processing_machine(src)
 
 	return INITIALIZE_HINT_LATELOAD
@@ -1040,81 +1037,6 @@ TYPEINFO_DEF(/obj/machinery/airalarm)
 	req_access = list(ACCESS_AWAY_GENERAL)
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 21)
-
-/obj/item/circuit_component/air_alarm
-	display_name = "Air Alarm"
-	desc = "Controls levels of gases and their temperature as well as all vents and scrubbers in the room."
-
-	var/datum/port/input/option/air_alarm_options
-
-	var/datum/port/input/min_2
-	var/datum/port/input/min_1
-	var/datum/port/input/max_1
-	var/datum/port/input/max_2
-
-	var/datum/port/input/request_data
-
-	var/datum/port/output/pressure
-	var/datum/port/output/gas_amount
-	var/datum/port/output/my_temperature
-
-	var/obj/machinery/airalarm/connected_alarm
-	var/list/options_map
-
-/obj/item/circuit_component/air_alarm/populate_ports()
-	min_2 = add_input_port("Min 2", PORT_TYPE_NUMBER)
-	min_1 = add_input_port("Min 1", PORT_TYPE_NUMBER)
-	max_1 = add_input_port("Max 1", PORT_TYPE_NUMBER)
-	max_2 = add_input_port("Max 2", PORT_TYPE_NUMBER)
-	request_data = add_input_port("Request Atmosphere Data", PORT_TYPE_SIGNAL)
-
-	pressure = add_output_port("Pressure", PORT_TYPE_NUMBER)
-	my_temperature = add_output_port("Temperature", PORT_TYPE_NUMBER)
-	gas_amount = add_output_port("Chosen Gas Amount", PORT_TYPE_NUMBER)
-
-/obj/item/circuit_component/air_alarm/populate_options()
-	var/static/list/component_options
-
-	if(!component_options)
-		component_options = list(
-			"Pressure" = "pressure",
-			"Temperature" = "temperature"
-		)
-
-		for(var/gas_id in ASSORTED_GASES)
-			component_options |= gas_id
-	air_alarm_options = add_option_port("Air Alarm Options", component_options)
-	options_map = component_options
-
-/obj/item/circuit_component/air_alarm/register_usb_parent(atom/movable/shell)
-	. = ..()
-	if(istype(shell, /obj/machinery/airalarm))
-		connected_alarm = shell
-
-/obj/item/circuit_component/air_alarm/unregister_usb_parent(atom/movable/shell)
-	connected_alarm = null
-	return ..()
-
-/obj/item/circuit_component/air_alarm/input_received(datum/port/input/port)
-	if(!connected_alarm || connected_alarm.locked)
-		return
-
-	var/current_option = air_alarm_options.value
-
-	if(COMPONENT_TRIGGERED_BY(request_data, port))
-		var/turf/alarm_turf = get_turf(connected_alarm)
-		var/datum/gas_mixture/environment = alarm_turf.unsafe_return_air()
-		pressure.set_output(round(environment.returnPressure()))
-		my_temperature.set_output(round(environment.temperature))
-		if(ispath(options_map[current_option]))
-			gas_amount.set_output(round(environment.gas[options_map[current_option]]))
-		return
-
-	var/datum/tlv/settings = connected_alarm.TLV[options_map[current_option]]
-	settings.hazard_min = min_2
-	settings.warning_min = min_1
-	settings.warning_max = max_1
-	settings.hazard_max = max_2
 
 /obj/machinery/airalarm/proc/handle_alert(datum/source, code, tier)
 	SIGNAL_HANDLER

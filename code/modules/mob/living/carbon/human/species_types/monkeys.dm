@@ -64,11 +64,6 @@
 	C.butcher_results = null
 	C.dna.remove_mutation(/datum/mutation/human/race)
 
-/datum/species/monkey/check_roundstart_eligible()
-	if(SSevents.holidays && SSevents.holidays[MONKEYDAY])
-		return TRUE
-	return ..()
-
 /datum/species/monkey/get_scream_sound(mob/living/carbon/human/monkey)
 	return pick(
 		'sound/creatures/monkey/monkey_screech_1.ogg',

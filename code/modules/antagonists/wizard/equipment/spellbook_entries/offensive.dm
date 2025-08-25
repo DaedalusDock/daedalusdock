@@ -42,19 +42,6 @@
 	spell_type = /datum/action/cooldown/spell/touch/flesh_to_stone
 	category = "Offensive"
 
-/datum/spellbook_entry/teslablast
-	name = "Tesla Blast"
-	desc = "Charge up a tesla arc and release it at a random nearby target! You can move freely while it charges. The arc jumps between targets and can knock them down."
-	spell_type = /datum/action/cooldown/spell/tesla
-	category = "Offensive"
-
-/datum/spellbook_entry/lightningbolt
-	name = "Lightning Bolt"
-	desc = "Fire a lightning bolt at your foes! It will jump between targets, but can't knock them down."
-	spell_type = /datum/action/cooldown/spell/pointed/projectile/lightningbolt
-	category = "Offensive"
-	cost = 1
-
 /datum/spellbook_entry/infinite_guns
 	name = "Lesser Summon Guns"
 	desc = "Why reload when you have infinite guns? Summons an unending stream of bolt action rifles that deal little damage, but will knock targets down. Requires both hands free to use. Learning this spell makes you unable to learn Arcane Barrage."

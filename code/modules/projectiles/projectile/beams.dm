@@ -137,9 +137,6 @@
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/green_laser
 	light_color = LIGHT_COLOR_GREEN
 
-/obj/projectile/beam/emitter/singularity_pull()
-	return //don't want the emitters to miss
-
 /obj/projectile/beam/emitter/hitscan
 	hitscan = TRUE
 	muzzle_type = /obj/effect/projectile/muzzle/laser/emitter

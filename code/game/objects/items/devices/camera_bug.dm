@@ -160,16 +160,6 @@
 	var/list/seen = get_seens()
 	if(seen && seen.len >= 1)
 		var/list/names = list()
-		for(var/obj/singularity/S in seen) // god help you if you see more than one
-			if(S.name in names)
-				names[S.name]++
-				dat += "[S.name] ([names[S.name]])"
-			else
-				names[S.name] = 1
-				dat += "[S.name]"
-			var/stage = round(S.current_size / 2)+1
-			dat += " (Stage [stage])"
-			dat += " <a href='?[REF(src)];track=[REF(S)]'>\[Track\]</a><br>"
 
 		for(var/obj/vehicle/sealed/mecha/M in seen)
 			if(M.name in names)

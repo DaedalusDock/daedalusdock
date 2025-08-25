@@ -127,7 +127,6 @@ GLOBAL_DATUM_INIT(steal_item_handler, /datum/objective_item_handler, new())
 		/datum/objective_item/steal/hoslaser,
 		/datum/objective_item/steal/caplaser,
 		/datum/objective_item/steal/nuke_core,
-		/datum/objective_item/steal/supermatter,
 	)
 
 /datum/traitor_objective/steal_item/most_risky

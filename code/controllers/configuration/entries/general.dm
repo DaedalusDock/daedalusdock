@@ -231,8 +231,6 @@
 			FPS.ValidateAndSet(10 / config_entry_value)
 		sync_validate = FALSE
 
-/datum/config_entry/flag/allow_holidays
-
 /datum/config_entry/flag/admin_legacy_system //Defines whether the server uses the legacy admin system with admins.txt or the SQL system
 	protection = CONFIG_ENTRY_LOCKED
 

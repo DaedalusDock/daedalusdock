@@ -55,9 +55,6 @@
 /obj/effect/nettingportal/singularity_act()
 	return
 
-/obj/effect/nettingportal/singularity_pull()
-	return
-
 /obj/projectile/energy/trap
 	name = "energy snare"
 	icon_state = "e_snare"

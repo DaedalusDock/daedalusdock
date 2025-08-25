@@ -213,15 +213,6 @@ const HelpfulTab = (props) => {
         <Stack fill>
           <Stack.Item>
             <Button
-              icon="flag"
-              lineHeight={lineHeightNormal}
-              width={buttonWidthNormal}
-              content="Toggle CTF"
-              onClick={() => act('ctfbutton')}
-            />
-          </Stack.Item>
-          <Stack.Item>
-            <Button
               icon="sync-alt"
               lineHeight={lineHeightNormal}
               width={buttonWidthNormal}
@@ -249,15 +240,6 @@ const HelpfulTab = (props) => {
               width={buttonWidthNormal}
               content="Rename Station"
               onClick={() => act('set_name')}
-            />
-          </Stack.Item>
-          <Stack.Item>
-            <Button
-              icon="eraser"
-              lineHeight={lineHeightNormal}
-              width={buttonWidthNormal}
-              content="Default Station Name"
-              onClick={() => act('reset_name')}
             />
           </Stack.Item>
           <Stack.Item>

@@ -748,18 +748,6 @@
 	canSmoothWith = SMOOTH_GROUP_TURF_CHASM
 	tiled_dirt = FALSE
 
-/turf/open/floor/fakespace
-	icon = 'icons/turf/space.dmi'
-	icon_state = "0"
-	floor_tile = /obj/item/stack/tile/fakespace
-	plane = PLANE_SPACE
-	tiled_dirt = FALSE
-
-/turf/open/floor/fakespace/Initialize(mapload)
-	. = ..()
-	appearance = global.space_appearances[(((x + y) ^ ~(x * y) + z) % 25) + 1]
-	layer = initial(layer)
-
 /turf/open/floor/mud
 	name = "mud"
 	desc = "A wet, muddy pool of dirt."

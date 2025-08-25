@@ -73,8 +73,6 @@
 
 	if(BLACKBOX_FEEDBACK_NUM("narsies_spawned") > 0)
 		episode_names += new /datum/episode_name/rare("[pick("NAR-SIE'S DAY OUT", "NAR-SIE'S VACATION", "THE CREW LEARNS ABOUT SACRED GEOMETRY", "REALM OF THE MAD GOD", "THE ONE WITH THE ELDRITCH HORROR", 50;"STUDY HARD, BUT PART-SIE HARDER")]", "Nar-Sie is loose!", 500)
-	if(locate(/datum/holiday/xmas) in SSevents.holidays)
-		episode_names += new /datum/episode_name("A VERY [pick("DAEDALUS", "SPACE", "MARTIAN")] CHRISTMAS", "'Tis the season.", 1000)
 	if(BLACKBOX_FEEDBACK_NUM("guns_spawned") > 0)
 		episode_names += new /datum/episode_name/rare("[pick("GUNS, GUNS EVERYWHERE", "THUNDER GUN EXPRESS", "THE CREW GOES AMERICA ALL OVER EVERYBODY'S ASS")]", "[BLACKBOX_FEEDBACK_NUM("guns_spawned")] guns were spawned this round.", min(750, BLACKBOX_FEEDBACK_NUM("guns_spawned")*25))
 	if(BLACKBOX_FEEDBACK_NUM("heartattacks") > 2)
@@ -301,25 +299,6 @@
 			episode_names += new /datum/episode_name/rare("[pick("THE CREW'S SMALL IQ PROBLEM", "OW! MY BALLS", "BR[pick("AI", "IA")]N DAM[pick("AGE", "GE", "AG")]", "THE VERY SPECIAL CREW OF [uppr_name]")]", "Average of [average_braindamage] brain damage for each human shuttle escapee.", min(1000, average_braindamage*10))
 		if(all_braindamaged && human_escapees > 2)
 			episode_names += new /datum/episode_name/rare("...AND PRAY THERE'S INTELLIGENT LIFE SOMEWHERE OUT IN SPACE, 'CAUSE THERE'S BUGGER ALL DOWN HERE IN [uppr_name]", "Everyone was braindamaged this round.", human_escapees * 500)
-
-	/*var/cowcount = 0
-	for(var/mob/living/simple_animal/cow/C in shuttle)
-		cowcount += 1
-	if(cowcount > 1)
-		episode_names += new /datum/episode_name/rare("'TIL THE COWS COME HOME", "There were [cowcount] cows on the shuttle.", min(1500, cowcount*300))
-
-	var/beecount = 0
-	for(var/mob/living/simple_animal/bee/B in shuttle)
-		beecount += B.bees.len
-	if(beecount > 15)
-		episode_names += new /datum/episode_name/rare("FLIGHT OF THE BUMBLEBEES", "There were [beecount] bees on the shuttle.", min(1500, beecount*25))
-		if(voxcount / human_escapees.len > 0.6)
-			episode_names += new /datum/episode_name/rare("THE BIRD[human_escapees.len == 1 ? "" : "S"] AND THE BEES", "There were [beecount] bees on the shuttle, and most or all of the survivors were Vox.", min(2500, beecount*40 + voxcount*500))
-
-	for(var/obj/machinery/power/supermatter/SM in shuttle)
-		episode_names += new /datum/episode_name/rare("REALM OF THE RAD GOD", "Someone dragged \a [SM] onto the shuttle.", 1500)
-		break
-	*/
 
 /datum/controller/subsystem/credits/proc/draft_spooky_episodes()
 	var/list/areas_spooked = BLACKBOX_FEEDBACK_NESTED_TALLY("ghost_power_used")

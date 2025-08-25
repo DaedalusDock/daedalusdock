@@ -230,26 +230,6 @@
 		return null
 	return new floor_tile(src)
 
-/turf/open/floor/singularity_pull(S, current_size)
-	..()
-	var/sheer = FALSE
-	switch(current_size)
-		if(STAGE_THREE)
-			if(prob(30))
-				sheer = TRUE
-		if(STAGE_FOUR)
-			if(prob(50))
-				sheer = TRUE
-		if(STAGE_FIVE to INFINITY)
-			if(prob(70))
-				sheer = TRUE
-			else if(prob(50) && (/turf/open/space in baseturfs))
-				TryScrapeToLattice()
-	if(sheer)
-		if(has_tile())
-			remove_tile(null, TRUE, TRUE, TRUE)
-
-
 /turf/open/floor/narsie_act(force, ignore_mobs, probability = 20)
 	. = ..()
 	if(.)

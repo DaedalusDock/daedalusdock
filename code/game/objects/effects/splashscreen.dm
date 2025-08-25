@@ -11,7 +11,7 @@
 
 INITIALIZE_IMMEDIATE(/obj/effect/abstract/splashscreen)
 /obj/effect/abstract/splashscreen/master
-	name = "Space Station 13"
+	name = "Krashly Station 13"
 	desc = null
 	icon = null
 	icon_state = null

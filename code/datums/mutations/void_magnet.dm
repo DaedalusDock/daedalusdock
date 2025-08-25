@@ -99,8 +99,5 @@
 	// but regardless block all relayed moves, because no, you cannot move in the void.
 	return
 
-/obj/effect/immortality_talisman/singularity_pull()
-	return
-
 /obj/effect/immortality_talisman/void
 	vanish_description = "is dragged into the void"

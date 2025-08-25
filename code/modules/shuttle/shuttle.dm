@@ -73,8 +73,6 @@
 /obj/docking_port/take_damage()
 	return
 
-/obj/docking_port/singularity_pull()
-	return
 /obj/docking_port/singularity_act()
 	return 0
 /obj/docking_port/shuttleRotate()

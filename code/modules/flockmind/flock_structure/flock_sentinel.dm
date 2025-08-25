@@ -93,7 +93,6 @@
 	charge_status = CHARGING
 	charge.adjust_points(-100)
 
-	tesla_zap_target(src, target, TESLA_MOB_DAMAGE_TO_POWER(damage_per_zap))
 	addtimer(TRAIT_CALLBACK_REMOVE(target, TRAIT_SHOCKED_BY_SENTINEL, ref(src)), 2 SECONDS)
 
 	target.visible_message(
@@ -120,7 +119,6 @@
 			end_of_chain = FALSE
 
 			hit_mobs += M
-			tesla_zap_target(previous_hit, M, TESLA_MOB_DAMAGE_TO_POWER(damage_per_zap * 0.66))
 			target.visible_message(
 				span_danger("<b>[M]</b> is struck by a bolt of energy arcing off of <b>[previous_hit]</b>."),
 				blind_message = span_hear("You hear a loud electrical crackle."),

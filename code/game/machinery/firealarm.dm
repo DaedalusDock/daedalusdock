@@ -71,10 +71,6 @@ TYPEINFO_DEF(/obj/machinery/firealarm)
 	RegisterSignal(src, COMSIG_FIRE_ALERT, PROC_REF(handle_alert))
 	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, PROC_REF(check_security_level))
 
-	AddComponent(/datum/component/usb_port, list(
-		/obj/item/circuit_component/firealarm,
-	))
-
 	AddElement( \
 		/datum/element/contextual_screentip_bare_hands, \
 		lmb_text = "Turn on", \
@@ -388,11 +384,6 @@ TYPEINFO_DEF(/obj/machinery/firealarm)
 			if(prob(33))
 				alarm()
 
-/obj/machinery/firealarm/singularity_pull(S, current_size)
-	if (current_size >= STAGE_FIVE) // If the singulo is strong enough to pull anchored objects, the fire alarm experiences integrity failure
-		deconstruct()
-	return ..()
-
 /obj/machinery/firealarm/atom_break(damage_flag)
 	if(buildstage == 0) //can't break the electronics if there isn't any inside.
 		return
@@ -464,58 +455,3 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/firealarm, 26)
 	if (!party_overlay)
 		party_overlay = iconstate2appearance('icons/area/areas_misc.dmi', "party")
 	area.add_overlay(party_overlay)
-
-/obj/item/circuit_component/firealarm
-	display_name = "Fire Alarm"
-	desc = "Allows you to interface with the Fire Alarm."
-
-	var/datum/port/input/alarm_trigger
-	var/datum/port/input/reset_trigger
-
-	/// Returns a boolean value of 0 or 1 if the fire alarm is on or not.
-	var/datum/port/output/is_on
-	/// Returns when the alarm is turned on
-	var/datum/port/output/triggered
-	/// Returns when the alarm is turned off
-	var/datum/port/output/reset
-
-	var/obj/machinery/firealarm/attached_alarm
-
-/obj/item/circuit_component/firealarm/populate_ports()
-	alarm_trigger = add_input_port("Set", PORT_TYPE_SIGNAL)
-	reset_trigger = add_input_port("Reset", PORT_TYPE_SIGNAL)
-
-	is_on = add_output_port("Is On", PORT_TYPE_NUMBER)
-	triggered = add_output_port("Triggered", PORT_TYPE_SIGNAL)
-	reset = add_output_port("Reset", PORT_TYPE_SIGNAL)
-
-/obj/item/circuit_component/firealarm/register_usb_parent(atom/movable/parent)
-	. = ..()
-	if(istype(parent, /obj/machinery/firealarm))
-		attached_alarm = parent
-		RegisterSignal(parent, COMSIG_FIREALARM_ON_TRIGGER, PROC_REF(on_firealarm_triggered))
-		RegisterSignal(parent, COMSIG_FIREALARM_ON_RESET, PROC_REF(on_firealarm_reset))
-
-/obj/item/circuit_component/firealarm/unregister_usb_parent(atom/movable/parent)
-	attached_alarm = null
-	UnregisterSignal(parent, COMSIG_FIREALARM_ON_TRIGGER)
-	UnregisterSignal(parent, COMSIG_FIREALARM_ON_RESET)
-	return ..()
-
-/obj/item/circuit_component/firealarm/proc/on_firealarm_triggered(datum/source)
-	SIGNAL_HANDLER
-	is_on.set_output(1)
-	triggered.set_output(COMPONENT_SIGNAL)
-
-/obj/item/circuit_component/firealarm/proc/on_firealarm_reset(datum/source)
-	SIGNAL_HANDLER
-	is_on.set_output(0)
-	reset.set_output(COMPONENT_SIGNAL)
-
-
-/obj/item/circuit_component/firealarm/input_received(datum/port/input/port)
-	if(COMPONENT_TRIGGERED_BY(alarm_trigger, port))
-		attached_alarm?.alarm()
-
-	if(COMPONENT_TRIGGERED_BY(reset_trigger, port))
-		attached_alarm?.reset()

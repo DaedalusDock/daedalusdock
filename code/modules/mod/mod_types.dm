@@ -91,7 +91,6 @@
 	initial_modules = list(
 		/obj/item/mod/module/welding,
 		/obj/item/mod/module/flashlight,
-		/obj/item/mod/module/circuit,
 		/obj/item/mod/module/t_ray,
 	)
 

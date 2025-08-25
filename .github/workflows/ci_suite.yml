@@ -56,7 +56,7 @@ jobs:
         run: tools/bootstrap/python -m dmi.test
       - name: Check File Directories
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
-        run: bash tools/ci/check_filedirs.sh daedalus.dme
+        run: bash tools/ci/check_filedirs.sh krashlystation.dme
       - name: Check Changelogs
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
         run: bash tools/ci/check_changelogs.sh
@@ -89,7 +89,7 @@ jobs:
       - name: Run OpenDream
         run: |
           source dependencies.sh
-          ./DMCompiler_linux-x64/DMCompiler daedalus.dme --suppress-unimplemented --define=CIBUILDING --version=$BYOND_MAJOR.$BYOND_MINOR
+          ./DMCompiler_linux-x64/DMCompiler krashlystation.dme --suppress-unimplemented --define=CIBUILDING --version=$BYOND_MAJOR.$BYOND_MINOR
 
   compile_all_maps:
     if: ( !contains(github.event.head_commit.message, '[ci skip]') )

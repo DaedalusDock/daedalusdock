@@ -1,4 +1,4 @@
-environment = "daedalus.dme"
+environment = "krashlystation.dme"
 
 [langserver]
 dreamchecker = true

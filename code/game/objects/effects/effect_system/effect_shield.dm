@@ -21,6 +21,3 @@
 /obj/effect/shield/singularity_act()
 	return
 
-/obj/effect/shield/singularity_pull(S, current_size)
-	return
-

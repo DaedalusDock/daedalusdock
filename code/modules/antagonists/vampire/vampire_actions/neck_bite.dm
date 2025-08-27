@@ -88,13 +88,6 @@
 
 	var/datum/callback/checks_callback = CALLBACK(src, PROC_REF(can_bite), user, victim)
 	var/image/succ_image = image('goon/icons/actions.dmi', "blood")
-	var/sound/panic_loop = sound('sound/effects/abilities/vampire/panic_loop.ogg', repeat = TRUE, wait = FALSE, channel = CHANNEL_PANIC_LOOP, volume = 50)
-	var/sound/null_sound = sound(channel = CHANNEL_PANIC_LOOP)
-
-	var/has_panic_loop = FALSE
-	if(victim.stat == CONSCIOUS)
-		has_panic_loop = TRUE
-		SEND_SOUND(victim, panic_loop)
 
 	while(TRUE)
 		if(!can_bite(user, victim))
@@ -102,15 +95,6 @@
 
 		if(!do_after(user, victim, 1 SECOND, DO_IGNORE_HELD_ITEM|DO_IGNORE_SLOWDOWNS|DO_PUBLIC, extra_checks = checks_callback, display = succ_image))
 			break
-
-		if(victim.stat != CONSCIOUS)
-			if(has_panic_loop)
-				SEND_SOUND(victim, null_sound)
-				has_panic_loop = FALSE
-
-		else if(!has_panic_loop)
-			has_panic_loop = TRUE
-			SEND_SOUND(victim, panic_loop)
 
 		siphon_blood(user, victim)
 
@@ -122,8 +106,6 @@
 
 	REMOVE_TRAIT(victim, TRAIT_MUTE, ref(src))
 	REMOVE_TRAIT(user, TRAIT_MUTE, ref(src))
-
-	SEND_SOUND(victim, null_sound)
 
 /datum/action/cooldown/neck_bite/proc/siphon_blood(mob/living/carbon/human/user, mob/living/victim)
 	var/blood_delta = VAMPIRE_BLOOD_DRAIN_RATE

@@ -18,7 +18,8 @@
 	host.overlay_fullscreen("bloodlust", /atom/movable/screen/fullscreen/curse/bloodlust, 1)
 	ADD_TRAIT(host, TRAIT_STRONG_GRABBER, VAMPIRE_TRAIT)
 
-	SEND_SOUND(host, sound('sound/effects/abilities/vampire/rage_start.ogg', volume = 50))
+	SEND_SOUND(host, sound('sound/effects/abilities/vampire/rage_start.ogg', channel = CHANNEL_PANIC_LOOP, volume = 50))
+	SEND_SOUND(host, sound('sound/effects/abilities/vampire/panic_loop.ogg', repeat = TRUE, wait = TRUE, channel = CHANNEL_PANIC_LOOP, volume = 50))
 
 	for(var/obj/item/bodypart/arm/arm in host.bodyparts)
 		arm_weakrefs += WEAKREF(arm)
@@ -41,7 +42,7 @@
 	host.clear_fullscreen("bloodlust")
 	REMOVE_TRAIT(host, TRAIT_STRONG_GRABBER, VAMPIRE_TRAIT)
 
-	SEND_SOUND(host, sound('sound/effects/abilities/vampire/rage_end.ogg', volume = 50))
+	SEND_SOUND(host, sound('sound/effects/abilities/vampire/rage_end.ogg', channel = CHANNEL_PANIC_LOOP, volume = 50))
 
 	for(var/datum/weakref/W in arm_weakrefs)
 		var/obj/item/bodypart/arm/arm = W.resolve()

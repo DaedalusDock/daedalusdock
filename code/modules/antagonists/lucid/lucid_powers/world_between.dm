@@ -98,7 +98,7 @@
 	var/mob/living/carbon/human/caster = owner
 	cast_location = get_turf(caster)
 
-	playsound(cast_location, 'sound/effects/abilities/lucid_world/enter.mp3', 50, FALSE)
+	playsound(cast_location, 'sound/effects/abilities/lucid_world/enter.ogg', 30, FALSE)
 
 	var/list/prefab_turfs = spiral_range_turfs(MIRROR_WORLD_COPY_RADIUS, mirror_center)
 
@@ -136,7 +136,7 @@
 	deltimer(force_return_timer_id)
 	free_all_mobs()
 	reset_reservation()
-	playsound(owner, 'sound/effects/abilities/lucid_world/exit.mp3', 50, FALSE)
+	playsound(owner, 'sound/effects/abilities/lucid_world/exit.ogg', 30, FALSE)
 
 /// Called when you've been in the mirror world for too long.
 /datum/action/cooldown/spell/world_between/proc/force_exit_from_mirror_world()
@@ -164,6 +164,9 @@
 	if(victim != owner)
 		RegisterSignal(victim, COMSIG_PARENT_PREQDELETED, PROC_REF(abducted_mob_death_or_del))
 
+	var/sound/static_loop = sound('sound/effects/abilities/lucid_world/static_loop.ogg', repeat = TRUE, channel = CHANNEL_LUCID_STATIC, volume = 8)
+	SEND_SOUND(victim, static_loop)
+
 /datum/action/cooldown/spell/world_between/proc/free_all_mobs()
 	for(var/mob/living/L as anything in abducted_mobs)
 		from_whence_thou_came(L, TRUE, TRUE)
@@ -185,6 +188,8 @@
 		))
 
 		returning_mob.remove_client_colour(/datum/client_colour/flockcrazy/lucid_world)
+		var/sound/null_sound = sound(channel = CHANNEL_LUCID_STATIC)
+		SEND_SOUND(returning_mob, null_sound)
 
 	if(QDELETED(returning))
 		return
@@ -208,7 +213,13 @@
 			damage = 50
 			return_destination = cast_location
 
+		to_chat(returning, span_danger("You are ripped back to the pool with soul-shattering force."))
 		astype(returning, /mob/living)?.apply_damage(damage, BRUTE, BODY_ZONE_CHEST, spread_damage = TRUE)
+		if(ishuman(returning))
+			var/mob/living/carbon/human/returning_human = returning
+			spawn(-1)
+				returning_human.pain_emote(PAIN_AMT_AGONIZING)
+			returning_human.Paralyze(8 SECONDS)
 
 	if(retain_grabs)
 		returning.forceMoveWithGroup(return_destination)

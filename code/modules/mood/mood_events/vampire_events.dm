@@ -17,7 +17,7 @@
 	special_screen_obj = "mood_dread"
 
 /datum/mood_event/vampire_bite
-	description = "DID SOMEONE JUST DRINK MY BLOOD?"
+	description = "SOMETHING JUST DRANK MY BLOOD!"
 	mood_change = -100
 	special_screen_obj = "mood_dread"
 

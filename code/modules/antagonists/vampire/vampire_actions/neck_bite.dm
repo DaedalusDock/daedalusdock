@@ -116,6 +116,7 @@
 	var/message = "<b>[user]</b> siphons blood from <b>[victim]</b>."
 	if(victim_is_human)
 		message = "<b>[user]</b> siphons blood from <b>[victim]</b>'s neck."
+		victim.mob_mood?.add_mood_event("vampire_bite_victim", /datum/mood_event/vampire_bite)
 
 	user.visible_message(span_danger("[message]"), vision_distance = COMBAT_MESSAGE_RANGE, ignored_mobs = victim)
 

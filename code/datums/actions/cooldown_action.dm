@@ -296,7 +296,7 @@
 	if(ranged_mousepointer)
 		on_who.client?.mouse_override_icon = ranged_mousepointer
 		on_who.update_mouse_pointer()
-	build_all_button_icons(UPDATE_BUTTON_STATUS)
+	build_all_button_icons(UPDATE_BUTTON_STATUS | UPDATE_BUTTON_OVERLAY)
 	return TRUE
 
 /**
@@ -312,7 +312,7 @@
 	if(ranged_mousepointer)
 		on_who.client?.mouse_override_icon = initial(on_who.client?.mouse_override_icon)
 		on_who.update_mouse_pointer()
-	build_all_button_icons(UPDATE_BUTTON_STATUS)
+	build_all_button_icons(UPDATE_BUTTON_STATUS | UPDATE_BUTTON_OVERLAY)
 	return TRUE
 
 /// Formats the action to be returned to the stat panel.

@@ -60,14 +60,19 @@
 
 	var/obj/item/bodypart/BP = G.get_targeted_bodypart()
 	if(!BP)
-		to_chat(assailant, span_warning("\The [affecting] is missing that body part!"))
+		to_chat(assailant, span_warning("\The [affecting] is missing that body part,"))
+		return FALSE
+
+	if(!BP.can_be_dislocated())
+		to_chat(assailant, span_warning("[affecting] can not be placed into a joint lock."))
 		return FALSE
 
 	assailant.visible_message(span_danger("\The [assailant] begins to [pick("bend", "twist")] \the [affecting]'s [BP.plaintext_zone] into a jointlock!"))
+
 	if(do_after(assailant, affecting, action_cooldown - 1, DO_PUBLIC, display = image('icons/hud/do_after.dmi', "harm")))
 		G.action_used()
 		BP.jointlock(assailant)
-		assailant.visible_message(span_danger("\The [affecting]'s [BP.plaintext_zone] is twisted!"))
+		assailant.visible_message(span_danger("\The [affecting]'s [BP.plaintext_zone] is twisted,"))
 		playsound(assailant.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 		return TRUE
 

@@ -77,6 +77,7 @@
 		message = "<b>[user]</b> bites down on <b>[victim]</b>'s neck."
 
 	user.visible_message(span_danger("[message]"), vision_distance = COMBAT_MESSAGE_RANGE)
+	playsound(victim, 'sound/effects/abilities/vampire/snack.ogg', 50, FALSE, SILENCED_SOUND_EXTRARANGE, ignore_walls = FALSE)
 
 	ADD_TRAIT(user, TRAIT_MUTE, ref(src))
 	ADD_TRAIT(victim, TRAIT_MUTE, ref(src))
@@ -115,6 +116,7 @@
 	var/message = "<b>[user]</b> siphons blood from <b>[victim]</b>."
 	if(victim_is_human)
 		message = "<b>[user]</b> siphons blood from <b>[victim]</b>'s neck."
+		victim.mob_mood?.add_mood_event("vampire_bite_victim", /datum/mood_event/vampire_bite)
 
 	user.visible_message(span_danger("[message]"), vision_distance = COMBAT_MESSAGE_RANGE, ignored_mobs = victim)
 
@@ -124,6 +126,7 @@
 	if(isturf(victim.loc))
 		victim.add_splatter_floor(victim.loc, TRUE)
 
+	playsound(victim, 'sound/effects/abilities/vampire/feed_loop.ogg', 100, FALSE, SILENCED_SOUND_EXTRARANGE, ignore_walls = FALSE)
 	GLOB.blood_controller.drain_blood(victim, victim_is_human ? blood_delta : 20)
 
 	// Take blood from the victim. Or damage them

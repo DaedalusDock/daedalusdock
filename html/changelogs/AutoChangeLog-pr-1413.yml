@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: TGChat settings are no longer shared across servers again.

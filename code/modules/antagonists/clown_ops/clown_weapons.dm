@@ -19,7 +19,7 @@ TYPEINFO_DEF(/obj/item/clothing/shoes/clown_shoes/combat)
 	name = "combat clown shoes"
 	desc = "advanced clown shoes that protect the wearer and render them nearly immune to slipping on their own peels. They also squeak at 100% capacity."
 	clothing_traits = list(TRAIT_NO_SLIP_WATER)
-	slowdown = /obj/item/clothing/shoes::slowdown
+	worn_movespeed_modifier = /obj/item/clothing/shoes::worn_movespeed_modifier
 	strip_delay = 70
 	resistance_flags = NONE
 
@@ -39,7 +39,7 @@ TYPEINFO_DEF(/obj/item/clothing/shoes/clown_shoes/banana_shoes/combat)
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/combat
 	name = "mk-honk combat shoes"
 	desc = "The culmination of years of clown combat research, these shoes leave a trail of chaos in their wake. They will slowly recharge themselves over time, or can be manually charged with bananium."
-	slowdown = /obj/item/clothing/shoes::slowdown
+	worn_movespeed_modifier = /obj/item/clothing/shoes::worn_movespeed_modifier
 	strip_delay = 70
 	resistance_flags = NONE
 	always_noslip = TRUE

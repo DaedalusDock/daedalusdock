@@ -1,9 +1,9 @@
 /datum/movespeed_modifier/strained_muscles
-	slowdown = -0.55
+	modifier = -0.3
 	blacklisted_movetypes = (FLYING|FLOATING)
 
 /datum/movespeed_modifier/pai_spacewalk
-	slowdown = 2
+	modifier = -0.83
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/species
@@ -12,4 +12,4 @@
 
 /datum/movespeed_modifier/dna_vault_speedup
 	blacklisted_movetypes = (FLYING|FLOATING)
-	slowdown = -0.4
+	modifier = 0.27

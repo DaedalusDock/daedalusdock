@@ -150,7 +150,7 @@
 	damaged_icon = 'icons/turf/floors.dmi'
 	broken_blend = BLEND_DEFAULT
 	burned_blend = BLEND_DEFAULT
-	slowdown = -0.3
+	movespeed_modifier = 0.2
 
 /turf/open/floor/noslip/setup_broken_states()
 	return list("noslip-damaged1","noslip-damaged2","noslip-damaged3")
@@ -167,14 +167,14 @@
 	floor_tile = /obj/item/stack/tile/iron/base
 
 /turf/open/floor/bluespace
-	slowdown = -1
+	movespeed_modifier = 0.8
 	icon_state = "bluespace"
 	desc = "Through a series of micro-teleports these tiles let people move at incredible speeds."
 	floor_tile = /obj/item/stack/tile/bluespace
 
 
 /turf/open/floor/sepia
-	slowdown = 2
+	movespeed_modifier = -0.8
 	icon_state = "sepia"
 	desc = "Time seems to flow very slowly around these tiles."
 	floor_tile = /obj/item/stack/tile/sepia

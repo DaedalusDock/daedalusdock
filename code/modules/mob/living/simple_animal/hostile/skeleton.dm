@@ -13,7 +13,7 @@
 	combat_mode = TRUE
 	maxHealth = 40
 	health = 40
-	move_delay_modifier = 1
+	movement_speed_modifier = -0.5
 	harm_intent_damage = 5
 	melee_damage_lower = 15
 	melee_damage_upper = 15
@@ -64,7 +64,7 @@
 	maxHealth = 150
 	health = 150
 	weather_immunities = list(TRAIT_SNOWSTORM_IMMUNE)
-	move_delay_modifier = 2
+	movement_speed_modifier = -0.8
 	speak_chance = 1
 	speak = list("THE GODS WILL IT!","DEUS VULT!","REMOVE KABAB!")
 	damage_coeff = list(BRUTE = 0.5, BURN = 0.5, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0) //trying to simulate actually having armor
@@ -80,7 +80,7 @@
 /mob/living/simple_animal/hostile/skeleton/ice
 	name = "ice skeleton"
 	desc = "A reanimated skeleton protected by a thick sheet of natural ice armor. Looks slow, though."
-	move_delay_modifier = 5
+	movement_speed_modifier = -1.4
 	maxHealth = 75
 	health = 75
 	weather_immunities = list(TRAIT_SNOWSTORM_IMMUNE)

@@ -24,7 +24,7 @@
 	melee_damage_upper = 18
 	health = 50
 	maxHealth = 50
-	move_delay_modifier = 1 SECOND
+	movement_speed_modifier = -1.5
 	held_state = "sloth"
 	///In the case 'melee_damage_upper' is somehow raised above 0
 	attack_verb_continuous = "bites"

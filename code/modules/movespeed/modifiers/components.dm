@@ -1,14 +1,14 @@
 /datum/movespeed_modifier/shrink_ray
 	movetypes = GROUND
-	slowdown = 4
+	modifier = -1.25
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/snail_crawl
-	slowdown = -7
+	modifier = -1.6
 	movetypes = GROUND
 
 /datum/movespeed_modifier/tenacious
-	slowdown = -0.7
+	modifier = 0.5
 	movetypes = GROUND
 
 /datum/movespeed_modifier/sanity
@@ -16,10 +16,10 @@
 	movetypes = (~FLYING)
 
 /datum/movespeed_modifier/sanity/insane
-	slowdown = 1
+	modifier = -0.5
 
 /datum/movespeed_modifier/sanity/crazy
-	slowdown = 0.5
+	modifier = -0.27
 
 /datum/movespeed_modifier/sanity/disturbed
-	slowdown = 0.25
+	modifier = -0.14

@@ -22,4 +22,4 @@ TYPEINFO_DEF(/obj/item/clothing/suit/space/freedom)
 	strip_delay = 130
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	resistance_flags = ACID_PROOF | FIRE_PROOF
-	slowdown = 0
+	worn_movespeed_modifier = 0

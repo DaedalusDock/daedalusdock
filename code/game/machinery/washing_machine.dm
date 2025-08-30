@@ -292,7 +292,7 @@ GLOBAL_LIST_INIT(dye_registry, list(
 /obj/item/clothing/shoes/sneakers/machine_wash(obj/machinery/washing_machine/washer)
 	if(chained)
 		chained = FALSE
-		slowdown = initial(slowdown)
+		worn_movespeed_modifier = initial(worn_movespeed_modifier)
 		new /obj/item/restraints/handcuffs(loc)
 	..()
 

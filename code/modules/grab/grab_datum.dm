@@ -33,7 +33,8 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	/// If the grab acts like cuffs and prevents action from the victim.
 	var/restrains = FALSE
 
-	var/grab_slowdown = 0
+	/// The modifier applied to the grabber, in tiles/second
+	var/grab_movespeed_modifier = 0
 
 	var/shift = 0
 

@@ -167,7 +167,7 @@
 	desc = "Looks cold."
 	icon = 'icons/turf/snow.dmi'
 	icon_state = "snow"
-	slowdown = 2
+	movespeed_modifier = -0.8
 	bullet_sizzle = TRUE
 	bullet_bounce_sound = null
 	tiled_dirt = FALSE

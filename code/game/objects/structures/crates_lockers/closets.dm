@@ -10,7 +10,7 @@ TYPEINFO_DEF(/obj/structure/closet)
 	icon = 'icons/obj/closet.dmi'
 	icon_state = "generic"
 	density = TRUE
-	drag_slowdown = 1.5 // Same as a prone mob
+	drag_movespeed_modifier = PULL_PRONE_MOVESPEED
 	max_integrity = 200
 	integrity_failure = 0.25
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC

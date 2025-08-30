@@ -36,8 +36,10 @@ Key procs
 	var/priority = 0
 	var/flags = NONE
 
-	/// How many deciseconds of delay to add between each movement. Can be negative.
-	var/slowdown = 0
+	/// If TRUE, the modifier is multiplicative instead of additive. Multipliers are always applied last.
+	var/multiply = FALSE
+	/// How many steps-per-second to add or subtract from the final amount. If multiply == TRUE, this is multiplied instead of added or subtracted.
+	var/modifier = 0
 
 	/// Movetypes this applies to
 	var/movetypes = ALL
@@ -112,10 +114,10 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 	1. Ensures type_id_datum one way or another refers to a /variable datum. This makes sure it can't be cached. This includes if it's already in the modification list.
 	2. Instantiate a new datum if type_id_datum isn't already instantiated + in the list, using the type. Obviously, wouldn't work for ID only.
 	3. Add the datum if necessary using the regular add proc
-	4. If any of the rest of the args are not null (see: slowdown), modify the datum
+	4. If any of the rest of the args are not null (see: modifier), modify the datum
 	5. Update if necessary
 */
-/mob/proc/add_or_update_variable_movespeed_modifier(datum/movespeed_modifier/type_id_datum, update = TRUE, slowdown)
+/mob/proc/add_or_update_variable_movespeed_modifier(datum/movespeed_modifier/type_id_datum, update = TRUE, modifier)
 	var/modified = FALSE
 	var/inject = FALSE
 	var/datum/movespeed_modifier/final
@@ -142,8 +144,8 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 			inject = TRUE
 			modified = TRUE
 
-	if(!isnull(slowdown))
-		final.slowdown = slowdown
+	if(!isnull(modifier))
+		final.modifier = modifier
 		modified = TRUE
 
 	if(inject)
@@ -165,29 +167,36 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 		key = datum_type_id.id
 	return LAZYACCESS(movespeed_modification, key)
 
-/// Set or update the global movespeed config on a mob
-/mob/proc/update_config_movespeed()
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/mob_config_speedmod, slowdown = get_config_move_delay())
+/// Applies any default movement speed modifiers to the mob.
+/mob/proc/apply_initial_movespeed()
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/mob_config_speedmod, modifier = get_config_move_delay())
 
 /// Get the global config movespeed of a mob by type
 /mob/proc/get_config_move_delay()
 	if(!islist(GLOB.mob_config_movespeed_type_lookup) || !GLOB.mob_config_movespeed_type_lookup[type])
-		return 0
+		return 1
 	else
 		return GLOB.mob_config_movespeed_type_lookup[type]
 
 /// Go through the list of movespeed modifiers and calculate a final movespeed. ANY ADD/REMOVE DONE IN UPDATE_MOVESPEED MUST HAVE THE UPDATE ARGUMENT SET AS FALSE!
 /mob/proc/update_movespeed()
-	. = 0
+	var/tiles_per_second = 0
 	var/list/conflict_tracker = list()
-	for(var/key in get_movespeed_modifiers())
+	var/list/multiplicative = list()
+
+	var/list/modifier_list = get_movespeed_modifiers()
+	for(var/key in modifier_list)
 		var/datum/movespeed_modifier/M = movespeed_modification[key]
 		if(!(M.movetypes & movement_type)) // We don't affect any of these move types, skip
 			continue
+
 		if(M.blacklisted_movetypes & movement_type) // There's a movetype here that disables this modifier, skip
 			continue
+
+
 		var/conflict = M.conflicts_with
-		var/amt = M.slowdown
+		var/amt = M.modifier
+
 		if(conflict)
 			// Conflicting modifiers prioritize the larger slowdown or the larger speedup
 			// We purposefuly don't handle mixing speedups and slowdowns on the same id
@@ -195,20 +204,28 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 				conflict_tracker[conflict] = amt
 			else
 				continue
-		. += amt
 
-	movement_delay = .
+		if(M.multiply)
+			multiplicative += amt
+		else
+			tiles_per_second += amt
+
+	for(var/multiplier in multiplicative)
+		tiles_per_second = round(tiles_per_second * multiplier, 0.01)
+
+	if(tiles_per_second <= 0)
+		if(length(modifier_list) == 0)
+			movement_delay = 0 // We assume a mob with no modifiers is just moving the max speed.
+		else
+			movement_delay = MOVESPEED_TO_DELAY(MOVESPEED_MINIMUM)
+	else
+		var/delay = round(MOVESPEED_TO_DELAY(tiles_per_second), 0.01)
+		movement_delay = delay <= 0 ? 0 : delay
+		. = movement_delay
+
 	SEND_SIGNAL(src, COMSIG_MOB_MOVESPEED_UPDATED)
 
 /// Get the move speed modifiers list of the mob
 /mob/proc/get_movespeed_modifiers()
 	. = LAZYCOPY(movespeed_modification)
 	(.):Remove(movespeed_mod_immunities)
-
-/// Calculate the total slowdown of all movespeed modifiers
-/mob/proc/total_slowdown()
-	. = 0
-	for(var/id in get_movespeed_modifiers())
-		var/datum/movespeed_modifier/M = movespeed_modification[id]
-		. += M.slowdown
-

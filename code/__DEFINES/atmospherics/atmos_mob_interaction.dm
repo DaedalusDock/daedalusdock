@@ -70,9 +70,6 @@
 /// The temperature the blue icon is displayed.
 #define BODYTEMP_COLD_WARNING_3 (BODYTEMP_COLD_DAMAGE_LIMIT - 150) //120k
 
-/// Humans are slowed by the difference between bodytemp and BODYTEMP_COLD_DAMAGE_LIMIT divided by this
-#define COLD_SLOWDOWN_FACTOR 17
-
 
 //CLOTHES
 

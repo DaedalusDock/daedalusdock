@@ -51,3 +51,6 @@
   - soundadd: Added new sound effects to The Afflicted'sNeck Bite and Bloodlust by
       Hotline.
   - rscadd: Added a moodlet for being vampire chow.
+2025-08-31:
+  Kapu1178:
+  - bugfix: TGChat settings are no longer shared across servers again.

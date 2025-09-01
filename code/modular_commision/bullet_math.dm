@@ -259,7 +259,7 @@ TYPEINFO_DEF(/obj/projectile)
 		qdel(src)
 
 
-// You can balance these by going to their wikipedia page and checking how much kinetic energy they have for the bullet.
+// You can balance these by going to their wikipedia page and checking how much kinetic energy they have for the bullet(for how much the should pen)
 
 // enough to go through 3-4 walls.
 TYPEINFO_DEF(/obj/projectile/bullet/bmg50)

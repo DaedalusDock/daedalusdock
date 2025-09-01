@@ -258,6 +258,9 @@ TYPEINFO_DEF(/obj/projectile)
 	if(speed > BULLET_THRESHOLD_TOOSLOW)
 		qdel(src)
 
+
+// You can balance these by going to their wikipedia page and checking how much kinetic energy they have for the bullet.
+
 // enough to go through 3-4 walls.
 TYPEINFO_DEF(/obj/projectile/bullet/bmg50)
 	default_armor = list(BLUNT = 0, PUNCTURE = 350, SLASH = 0, LASER = 0, ENERGY = 0 , BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)

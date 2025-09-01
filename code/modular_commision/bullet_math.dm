@@ -257,3 +257,20 @@ TYPEINFO_DEF(/obj/projectile)
 	speed = max(speed - value, 0.1)
 	if(speed > BULLET_THRESHOLD_TOOSLOW)
 		qdel(src)
+
+// enough to go through 3-4 walls.
+TYPEINFO_DEF(/obj/projectile/bullet/bmg50)
+	default_armor = list(BLUNT = 0, PUNCTURE = 350, SLASH = 0, LASER = 0, ENERGY = 0 , BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
+/obj/projectile/bullet/bmg50
+	name = ".50 BMG"
+	damage = 60
+	armor_penetration = 50
+
+// very small bullet, unlikely to pen anything
+TYPEINFO_DEF(/obj/projectile/bullet/lr22)
+	default_armor = list(BLUNT = 0, PUNCTURE = 15, SLASH = 0, LASER = 0, ENERGY = 0 , BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
+/obj/projectile/bullet/bmg50
+	name = ".50 BMG"
+	damage = 20

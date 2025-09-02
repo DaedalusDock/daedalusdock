@@ -1,0 +1,7 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Typo in mood.
+  - bugfix: Chickens can be fed wheat again.
+  - bugfix: Prospectors can access the Cargo Bay.
+  - rscadd: More items can fit in "small-skinny" boxes.

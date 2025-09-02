@@ -437,9 +437,11 @@
 		if(abs(wallHitAngle) > 90)
 			ricochetAngle = abs(sign(wallHitAngle) * 180 - wallHitAngle)
 		// scales with angle of attack
+		var/armorDiff = (bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])
+		var/calculatedDamage = (2 - clamp(mult, 0.1, 1))*damage
 		if(mult > 0.4 * ((90 - abs(ricochetAngle))/90 + 1))
 			adjustIntegrity(-0.2*bIntegrity)
-			hitted.bIntegrity = max(hitted.bIntegrity- damage * clamp((bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])/150, 0 , 0.8),0)
+			hitted.bIntegrity = max(hitted.bIntegrity - damage * clamp(armorDiff/150, 0 , 0.8),0)
 			adjustSpeed(-0.4*speed)
 			impacted[A] = TRUE
 			return TRUE

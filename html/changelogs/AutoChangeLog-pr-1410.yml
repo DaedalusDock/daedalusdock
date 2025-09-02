@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: The Scrying Orb allows you to re-enter your body.
+  - rscadd: The Private Investigator gets a negative moodlet for having a nightmare.

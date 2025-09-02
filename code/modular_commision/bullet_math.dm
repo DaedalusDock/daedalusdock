@@ -117,6 +117,12 @@
 
 /atom
 	var/datum/hitbox/atomHitbox = null
+	// the lower clamp for bullet damage. This is reached when the bullet
+	// has a lot of penetration power against this
+	var/minimumBulletOverpenThreshold = 0.1
+	// The threshold reached when the bullet has little penetration power
+	// against this
+	var/maximumBulletOverpenThreshld = 1
 	var/bIntegrity = 100
 
 /turf

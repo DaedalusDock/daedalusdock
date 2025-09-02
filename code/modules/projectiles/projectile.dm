@@ -438,10 +438,10 @@
 			ricochetAngle = abs(sign(wallHitAngle) * 180 - wallHitAngle)
 		// scales with angle of attack
 		var/armorDiff = (bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])
-		var/calculatedDamage = (2 - clamp(mult, 0.1, 1))*damage
+		var/calculatedDamage = (A.maximumBulletOverpenThreshld - clamp(mult, A.minimumBulletOverpenThreshold, A.maximumBulletOverpenThreshld - 0.1))*damage
 		if(mult > 0.4 * ((90 - abs(ricochetAngle))/90 + 1))
 			adjustIntegrity(-0.2*bIntegrity)
-			hitted.bIntegrity = max(hitted.bIntegrity - damage * clamp(armorDiff/150, 0 , 0.8),0)
+			hitted.bIntegrity = max(hitted.bIntegrity - calculatedDamage * clamp(armorDiff/150, 0 , 0.8),0)
 			adjustSpeed(-0.4*speed)
 			impacted[A] = TRUE
 			return TRUE
@@ -457,7 +457,7 @@
 			// set to new starting for new calculations / subsequent ricochets
 			trajectory.starting_x = wx
 			trajectory.starting_y = wy
-			hitted.bIntegrity = max(hitted.bIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])/200, 0 , 0.5),0)
+			hitted.bIntegrity = max(hitted.bIntegrity - calculatedDamage * clamp((bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])/200, 0 , 0.5),0)
 			ricochets++
 			decayedRange = max(0, decayedRange - 1)
 			adjustSpeed(-0.1*speed)
@@ -465,11 +465,11 @@
 			impacted[A] = TRUE
 			return TRUE
 		if(bIntegrity < initial(bIntegrity) * 0.3)
-			hitted.bIntegrity = max(hitted.bIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])/100, 0 , 1),0)
+			hitted.bIntegrity = max(hitted.bIntegrity - calculatedDamage * clamp((bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])/100, 0 , 1),0)
 			return process_hit(A, select_target(A, A, A), A)
 		if(mult < 0 && abs(ricochetAngle) < GLOB.bulletStandardFragmentAngles["[bulletTipType]"][2] && abs(ricochetAngle) > GLOB.bulletStandardFragmentAngles["[bulletTipType]"][1] && canFragment)
 			impacted[A] = TRUE
-			hitted.bIntegrity = max(hitted.bIntegrity - damage * clamp((bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])/200, 0 , 1),0)
+			hitted.bIntegrity = max(hitted.bIntegrity - calculatedDamage * clamp((bulletArmor.vars[bulletArmorType] - targetArmor.vars[bulletArmorType])/200, 0 , 1),0)
 			fragmentTowards(A, BULLET_FRAGMENT_SPAWNCOUNT, abs(ricochetAngle) > 60 ? (ricochetAngle +orig + (abs(ricochetAngle)) + 90) : ricochetAngle + orig - sign(wallHitAngle) * 3, BULLET_FRAGMENT_MAXANGLEVARIATION, abs(ricochetAngle) > 60)
 			qdel(src)
 			return TRUE

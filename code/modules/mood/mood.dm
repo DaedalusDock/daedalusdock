@@ -302,7 +302,7 @@
 		if(MOOD_LEVEL_SAD4)
 			msg += span_alert("<b>You wish you were dead.</b>")
 		if(MOOD_LEVEL_SAD2, MOOD_LEVEL_SAD3)
-			msg += span_alert("You am stressed out.")
+			msg += span_alert("You are stressed out.")
 		if(MOOD_LEVEL_NEUTRAL)
 			msg += span_grey("You feel indifferent.")
 		if(MOOD_LEVEL_HAPPY2, MOOD_LEVEL_HAPPY3)

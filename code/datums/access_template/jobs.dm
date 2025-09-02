@@ -439,8 +439,8 @@
 	assignment = JOB_PROSPECTOR
 	template_state = "trim_shaftminer"
 	sechud_icon_state = SECHUD_SHAFT_MINER
-	extra_access = list(ACCESS_CARGO, ACCESS_MAINT_TUNNELS, ACCESS_QM)
-	minimal_access = list(ACCESS_AUX_BASE, ACCESS_MECH_MINING, ACCESS_MINERAL_STOREROOM)
+	extra_access = list(ACCESS_MAINT_TUNNELS, ACCESS_QM)
+	minimal_access = list(ACCESS_CARGO, ACCESS_AUX_BASE, ACCESS_MECH_MINING, ACCESS_MINERAL_STOREROOM)
 	config_job = "shaft_miner"
 	template_access = list(ACCESS_QM, ACCESS_CHANGE_IDS)
 	job = /datum/job/shaft_miner

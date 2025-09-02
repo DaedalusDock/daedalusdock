@@ -41,35 +41,39 @@
 
 /datum/component/egg_layer/RegisterWithParent()
 	. = ..()
-	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, PROC_REF(feed_food))
+	RegisterSignal(parent, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(feed_food))
 
 /datum/component/egg_layer/UnregisterFromParent()
 	. = ..()
-	UnregisterSignal(parent, COMSIG_PARENT_ATTACKBY)
+	UnregisterSignal(parent, COMSIG_ATOM_ITEM_INTERACTION)
 
 /datum/component/egg_layer/Destroy(force, silent)
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
-/datum/component/egg_layer/proc/feed_food(datum/source, obj/item/food, mob/living/attacker, params)
+/datum/component/egg_layer/proc/feed_food(datum/source, mob/living/user, obj/item/food, list/modifiers)
 	SIGNAL_HANDLER
 
 	var/atom/at_least_atom = parent
 	if(!is_type_in_list(food, food_types))
-		return
+		return NONE
+
 	if(isliving(at_least_atom))
 		var/mob/living/potentially_dead_horse = at_least_atom
 		if(potentially_dead_horse.stat == DEAD)
-			to_chat(attacker, span_warning("[parent] is dead!"))
-			return COMPONENT_CANCEL_ATTACK_CHAIN
+			to_chat(user, span_warning("[parent] is dead."))
+			return ITEM_INTERACT_BLOCKING
+
 	if(eggs_left > max_eggs_held)
-		to_chat(attacker, span_warning("[parent] doesn't seem hungry!"))
-		return COMPONENT_CANCEL_ATTACK_CHAIN
-	attacker.visible_message(span_notice("[attacker] hand-feeds [food] to [parent]."), span_notice("You hand-feed [food] to [parent]."))
+		to_chat(user, span_warning("[parent] doesn't seem hungry."))
+		return ITEM_INTERACT_BLOCKING
+
+	user.visible_message(span_notice("[user] hand feeds [food] to [parent]."))
+
 	at_least_atom.visible_message(pick(feed_messages))
 	qdel(food)
 	eggs_left += min(eggs_left + eggs_added_from_eating, max_eggs_held)
-	return COMPONENT_CANCEL_ATTACK_CHAIN
+	return ITEM_INTERACT_SUCCESS
 
 /datum/component/egg_layer/process(delta_time = SSOBJ_DT)
 
@@ -78,6 +82,7 @@
 		var/mob/living/potentially_dead_horse = at_least_atom
 		if(potentially_dead_horse.stat != CONSCIOUS)
 			return
+
 	if(!eggs_left || !DT_PROB(1.5, delta_time))
 		return
 

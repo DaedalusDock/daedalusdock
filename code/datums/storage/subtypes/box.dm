@@ -12,4 +12,9 @@
 		/obj/item/reagent_containers/hypospray,
 		/obj/item/pen,
 		/obj/item/chalk,
+		/obj/item/toy/crayon,
+		/obj/item/screwdriver,
+		/obj/item/food/lollipop,
+		/obj/item/clothing/mask/cigarette,
+		/obj/item/flashlight/glowstick,
 	))

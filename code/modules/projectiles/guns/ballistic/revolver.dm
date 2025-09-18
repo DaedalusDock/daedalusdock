@@ -122,7 +122,7 @@
 
 /obj/item/gun/ballistic/revolver/detective
 	name = "\improper Colt Detective Special"
-	desc = "A classic, if not outdated, law enforcement firearm."
+	desc = "A revolver with a small horse engraved into it."
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev38
 	icon_state = "detective"
 	fire_sound = 'sound/weapons/gun/revolver/shot.ogg'
@@ -152,7 +152,7 @@
 		result.do_skill_sound(user)
 		to_chat(
 			user,
-			result.create_tooltip("Your head falls numb as the bullet passes through your skull. Your body looks <b>wrong</b>."),
+			result.create_tooltip("You should shoot yourself with it. Preferably in the head."),
 		)
 
 /obj/item/gun/ballistic/revolver/syndicate

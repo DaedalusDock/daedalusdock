@@ -58,8 +58,8 @@
 	SIGNAL_HANDLER
 
 	ADD_TRAIT(src, TRAIT_NO_SPRINT, STAT_TRAIT)
-	stamina.maximum -= 100
-	stamina.regen_rate -= 5
+	stamina.add_max_modifier("softcrit", -100)
+	stamina.add_regen_modifier("softcrit", -5)
 	stamina.process()
 	throw_alert(ALERT_SOFTCRIT, /atom/movable/screen/alert/softcrit)
 	add_movespeed_modifier(/datum/movespeed_modifier/carbon_softcrit)
@@ -68,8 +68,7 @@
 	SIGNAL_HANDLER
 
 	REMOVE_TRAIT(src, TRAIT_NO_SPRINT, STAT_TRAIT)
-	stamina.maximum += 100
-	stamina.regen_rate += 5
-	stamina.process()
+	stamina.remove_regen_modifier("softcrit")
+	stamina.remove_max_modifier("softcrit")
 	clear_alert(ALERT_SOFTCRIT)
 	remove_movespeed_modifier(/datum/movespeed_modifier/carbon_softcrit)

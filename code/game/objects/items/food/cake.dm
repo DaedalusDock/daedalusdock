@@ -6,6 +6,8 @@
 	tastes = list("cake" = 1)
 	foodtypes = GRAIN | DAIRY
 
+	food_buffs = list(/datum/status_effect/food/cold)
+
 /obj/item/food/cake/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/food_storage)

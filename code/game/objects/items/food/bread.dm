@@ -6,6 +6,8 @@
 	foodtypes = GRAIN
 	eat_time = 3 SECONDS
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/bread/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/dunkable, 10)
@@ -25,7 +27,7 @@
 
 /obj/item/food/bread/plain
 	name = "bread"
-	desc = "Some plain old earthen bread."
+	desc = "Some plain old minervan bread."
 	icon_state = "bread"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 10)
 	tastes = list("bread" = 10)
@@ -65,6 +67,7 @@
 	tastes = list("decaying fungus" = 1)
 	foodtypes = GROSS
 	preserved_food = TRUE
+	food_buffs = null
 
 /obj/item/food/breadslice/moldy/bacteria
 	name = "bacteria rich moldy 'bread' slice"

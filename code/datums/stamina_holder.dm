@@ -15,6 +15,9 @@
 	///Every tick, remove this much stamina
 	var/decrement = 0
 
+	var/list/maximum_modifiers
+	var/list/regen_modifiers
+
 /datum/stamina_container/New(parent, maximum = STAMINA_MAX, regen_rate = STAMINA_REGEN)
 	src.parent = parent
 	src.maximum = maximum
@@ -65,4 +68,39 @@
 	///Our parent might want to fuck with these numbers
 	var/modify = parent.pre_stamina_change(amt, forced)
 	current = round(clamp(current + modify, 0, maximum), DAMAGE_PRECISION)
+	process()
+
+/datum/stamina_container/proc/add_regen_modifier(source, amount)
+	LAZYSET(regen_modifiers, source, amount)
+	update_stamina_regen()
+
+/datum/stamina_container/proc/remove_regen_modifier(source)
+	LAZYREMOVE(regen_modifiers, source)
+	update_stamina_regen()
+
+/datum/stamina_container/proc/update_stamina_regen()
+	PRIVATE_PROC(TRUE)
+
+	var/new_regen_rate = initial(regen_rate)
+	for(var/source, value in regen_modifiers)
+		new_regen_rate += value
+
+	regen_rate = max(new_regen_rate, 2)
+
+/datum/stamina_container/proc/add_max_modifier(source, amount)
+	LAZYSET(maximum_modifiers, source, amount)
+	update_maximum()
+
+/datum/stamina_container/proc/remove_max_modifier(source)
+	LAZYREMOVE(maximum_modifiers, source)
+	update_maximum()
+
+/datum/stamina_container/proc/update_maximum()
+	PRIVATE_PROC(TRUE)
+
+	var/new_max_stamina = initial(maximum)
+	for(var/source, value in maximum_modifiers)
+		new_max_stamina += value
+
+	maximum = max(new_max_stamina, 50)
 	process()

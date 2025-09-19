@@ -139,7 +139,7 @@
 			else
 				duration = 1 MINUTE
 
-		eater.adjust_timed_status_effect(duration, status_path, 30 MINUTES)
+		eater.adjust_timed_status_effect(duration, status_path)
 
 /// Called when the food item is fully consumed and is about to be deleted.
 /obj/item/food/proc/on_consume(mob/living/eater, mob/living/feeder)

@@ -5,19 +5,6 @@
 	icon_state = ""
 	bite_consumption = 2
 
-/obj/item/food/deepfryholder/MakeEdible()
-	AddComponent(/datum/component/edible,\
-			initial_reagents = food_reagents,\
-			food_flags = food_flags,\
-			foodtypes = foodtypes,\
-			volume = max_volume,\
-			eat_time = eat_time,\
-			tastes = tastes,\
-			eatverbs = eatverbs,\
-			bite_consumption = bite_consumption,\
-			on_consume = CALLBACK(src, PROC_REF(On_Consume)))
-
-
 /obj/item/food/deepfryholder/Initialize(mapload, obj/item/fried)
 	if(!fried)
 		stack_trace("A deepfried object was created with no fried target")
@@ -52,7 +39,8 @@
 		QDEL_LIST(contents)
 	return ..()
 
-/obj/item/food/deepfryholder/proc/On_Consume(eater, feeder)
+/obj/item/food/deepfryholder/on_consume(mob/living/eater, mob/living/feeder)
+	. = ..()
 	if(contents)
 		QDEL_LIST(contents)
 

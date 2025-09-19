@@ -29,21 +29,8 @@
 	w_class = WEIGHT_CLASS_TINY
 	var/revelation = FALSE
 
-/obj/item/food/candy/bronx/MakeEdible()
-	AddComponent(/datum/component/edible,\
-				initial_reagents = food_reagents,\
-				food_flags = food_flags,\
-				foodtypes = foodtypes,\
-				volume = max_volume,\
-				eat_time = eat_time,\
-				tastes = tastes,\
-				eatverbs = eatverbs,\
-				bite_consumption = bite_consumption,\
-				microwaved_type = microwaved_type,\
-				junkiness = junkiness,\
-				after_eat = CALLBACK(src, PROC_REF(after_eat)))
-
-/obj/item/food/candy/bronx/proc/after_eat(mob/living/eater)
+/obj/item/food/candy/bronx/on_consume(mob/living/eater, mob/living/feeder)
+	. = ..()
 	if(ishuman(eater))
 		var/mob/living/carbon/human/carl = eater
 		var/datum/pathogen/disease = new /datum/pathogen/parasite()

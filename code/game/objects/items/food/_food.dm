@@ -10,6 +10,7 @@
 	righthand_file = 'icons/mob/inhands/misc/food_righthand.dmi'
 	obj_flags = UNIQUE_RENAME
 	grind_results = list()
+
 	///List of reagents this food gets on creation
 	var/list/food_reagents
 	///Extra flags for things such as if the food is in a container or not
@@ -49,6 +50,9 @@
 	///Used to set custom decomposition times for food. Set to 0 to have it automatically set via the food's flags.
 	var/decomposition_time = 0
 
+	/// Status effect type to apply when consumed, if any.
+	var/consumed_status_effect_type
+
 /obj/item/food/Initialize(mapload)
 	. = ..()
 	if(food_reagents)
@@ -59,6 +63,7 @@
 		eatverbs = string_list(eatverbs)
 	if(venue_value)
 		AddElement(/datum/element/venue_price, venue_value)
+
 	MakeEdible()
 	MakeProcessable()
 	MakeLeaveTrash()
@@ -78,7 +83,11 @@
 				eatverbs = eatverbs,\
 				bite_consumption = bite_consumption,\
 				microwaved_type = microwaved_type,\
-				junkiness = junkiness)
+				junkiness = junkiness,\
+				after_eat = CALLBACK(src, PROC_REF(post_bite)),\
+				on_consume = CALLBACK(src, PROC_REF(on_consume)),\
+				check_liked = CALLBACK(src, PROC_REF(check_liked),\
+				))
 
 
 ///This proc handles processable elements, overwrite this if you want to add behavior such as slicing, forking, spooning, whatever, to turn the item into something else
@@ -109,3 +118,15 @@
 /obj/item/food/proc/MakeDecompose(mapload)
 	if(!preserved_food)
 		AddComponent(/datum/component/decomposition, mapload, decomp_req_handle, decomp_flags = foodtypes, decomp_result = decomp_type, ant_attracting = ant_attracting, custom_time = decomposition_time)
+
+/// Called after a bite is taken out of the food.
+/obj/item/food/proc/post_bite(mob/living/eater, mob/living/feeder, bite_count)
+	SHOULD_CALL_PARENT(TRUE)
+
+/// Called when the food item is fully consumed and is about to be deleted.
+/obj/item/food/proc/on_consume(mob/living/eater, mob/living/feeder)
+	SHOULD_CALL_PARENT(TRUE)
+
+/// Called when a bite is being out of the food, returns if the food is liked by the consumer.
+/obj/item/food/proc/check_liked(fraction, mob/living/carbon/human/consumer)
+	return null

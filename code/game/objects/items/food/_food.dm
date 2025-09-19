@@ -19,6 +19,7 @@
 	var/foodtypes
 	///Amount of volume the food can contain
 	var/max_volume
+
 	///How long it will take to eat this food without any other modifiers
 	var/eat_time
 	///Tastes to describe this food
@@ -27,12 +28,17 @@
 	var/list/eatverbs
 	///How much reagents per bite
 	var/bite_consumption
+
 	///What you get if you microwave the food. Use baking for raw things, use microwaving for already cooked things
 	var/microwaved_type
 	///Type of atom thats spawned after eating this item
 	var/trash_type
+
 	///How much junkiness this food has? God I should remove junkiness soon
 	var/junkiness
+	/// The quality of the food item, determines food buff duration.
+	var/quality = 1
+
 	///Will this food turn into badrecipe on a grill? Don't use this for everything; preferably mostly for food that is made on a grill to begin with so it burns after some time
 	var/burns_on_grill = FALSE
 	///Will this food turn into badrecipe in an oven? Don't use this for everything; preferably mostly for food that is made in an oven to begin with so it burns after some time
@@ -50,10 +56,10 @@
 	///Used to set custom decomposition times for food. Set to 0 to have it automatically set via the food's flags.
 	var/decomposition_time = 0
 
-	/// Status effect type to apply when consumed, if any.
-	var/consumed_status_effect_type
+	/// Status effect types to apply when consumed, if any.
+	var/list/food_buffs
 
-/obj/item/food/Initialize(mapload)
+/obj/item/food/Initialize(mapload, datum/plant/grown_from, grown_quality)
 	. = ..()
 	if(food_reagents)
 		food_reagents = string_assoc_list(food_reagents)
@@ -122,6 +128,18 @@
 /// Called after a bite is taken out of the food.
 /obj/item/food/proc/post_bite(mob/living/eater, mob/living/feeder, bite_count)
 	SHOULD_CALL_PARENT(TRUE)
+
+	for(var/status_path in food_buffs)
+		var/duration
+		switch(quality)
+			if(5 to INFINITY)
+				duration = 2 MINUTES
+			if(-INFINITY to 4)
+				duration = 20 SECONDS
+			else
+				duration = 1 MINUTE
+
+		eater.adjust_timed_status_effect(duration, status_path, 30 MINUTES)
 
 /// Called when the food item is fully consumed and is about to be deleted.
 /obj/item/food/proc/on_consume(mob/living/eater, mob/living/feeder)

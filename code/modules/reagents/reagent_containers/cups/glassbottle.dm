@@ -364,18 +364,18 @@
 		LAZYSET(W.data,"vintage",wine_info)
 
 /obj/item/reagent_containers/cup/glass/bottle/wine/proc/generate_vintage()
-	return "[CURRENT_STATION_YEAR] Daedalus Light Red"
+	return "'77 Daedalus Light Red"
 
 /obj/item/reagent_containers/cup/glass/bottle/wine/unlabeled
 	name = "unlabeled wine bottle"
 	desc = "There's no label on this wine bottle."
 
 /obj/item/reagent_containers/cup/glass/bottle/wine/unlabeled/generate_vintage()
-	var/current_year = CURRENT_STATION_YEAR
+	var/current_year = 77
 	var/year = rand(current_year-50,current_year)
 	var/type = pick("Sparkling","Dry White","Sweet White","Rich White","Rose","Light Red","Medium Red","Bold Red","Dessert")
 	var/origin = pick("Ananke", "Daedalus","Syndicate","Local")
-	return "[year] [origin] [type]"
+	return "'[year] [origin] [type]"
 
 /obj/item/reagent_containers/cup/glass/bottle/absinthe
 	name = "extra-strong absinthe"

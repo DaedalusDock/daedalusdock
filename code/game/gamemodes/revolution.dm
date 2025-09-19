@@ -4,6 +4,7 @@
 
 /datum/game_mode/one_antag/revolution
 	name = "Revolution"
+	config_key = "revolution"
 
 	weight = GAMEMODE_WEIGHT_EPIC
 	min_pop = 25

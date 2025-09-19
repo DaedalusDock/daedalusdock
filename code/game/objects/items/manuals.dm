@@ -468,7 +468,7 @@
 
 /obj/item/book/manual/codex/surgery/Initialize()
 	//Station gets the outdated ones :smug:
-	name = "A.P. Surgical Journal, [CURRENT_STATION_YEAR-rand(1,3)] Edition"
+	name = "A.P. Surgical Journal, '67 Edition"
 	starting_title = name
 	. = ..()
 

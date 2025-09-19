@@ -58,3 +58,6 @@
   - rscadd: Wooden stools
   - balance: Chair/stool stuns are now dependant on armor and cannot trigger unless
       you aim for the Head or Chest.
+2025-06-29:
+  francinum:
+  - refactor: Access Helpers have been reorganized to not suck so much ass.

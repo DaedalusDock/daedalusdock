@@ -243,6 +243,8 @@
 #warn IF YOU PUT THIS ON LIVE I WILL FIND YOU AND MAKE YOU WISH YOU WERE NEVE-
 #endif
 
+#define LOWMEMORYMODE 1
+
 #ifdef LOWMEMORYMODE
 #define FORCE_MAP "runtimestation"
 #define FORCE_MAP_DIRECTORY "_maps"

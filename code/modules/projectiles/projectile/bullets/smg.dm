@@ -1,8 +1,13 @@
 // .45 (M1911 & C20r)
+TYPEINFO_DEF(/obj/projectile/bullet/c45)
+	default_armor = list(BLUNT = 0, PUNCTURE = 20, SLASH = 0, LASER = 0, ENERGY = 0 , BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
 /obj/projectile/bullet/c45
 	name = ".45 bullet"
 	damage = 30
+
+TYPEINFO_DEF(/obj/projectile/bullet/c45/ap)
+	default_armor = list(BLUNT = 0, PUNCTURE = 100, SLASH = 0, LASER = 0, ENERGY = 0 , BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
 /obj/projectile/bullet/c45/ap
 	name = ".45 armor-piercing bullet"

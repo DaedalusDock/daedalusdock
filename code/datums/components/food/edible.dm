@@ -81,7 +81,7 @@ Behavior that's still missing from this component that original food items had t
 		RegisterSignal(parent, COMSIG_ATOM_ENTERED, PROC_REF(on_entered))
 
 	if(isitem(parent))
-		RegisterSignal(parent, COMSIG_ITEM_ATTACK, PROC_REF(UseFromHand))
+		RegisterSignal(parent, COMSIG_ITEM_INTERACTING_WITH_ATOM, PROC_REF(UseFromHand))
 		RegisterSignal(parent, COMSIG_ITEM_FRIED, PROC_REF(OnFried))
 		RegisterSignal(parent, COMSIG_GRILL_FOOD, PROC_REF(GrillFood))
 		RegisterSignal(parent, COMSIG_ITEM_MICROWAVE_ACT, PROC_REF(OnMicrowaved))
@@ -167,10 +167,12 @@ Behavior that's still missing from this component that original food items had t
 			else
 				examine_list += span_alert("Something has taken a several of bites out of it.")
 
-/datum/component/edible/proc/UseFromHand(obj/item/source, mob/living/M, mob/living/user)
+/datum/component/edible/proc/UseFromHand(obj/item/source, mob/living/user, atom/interacting_with, list/modifiers)
 	SIGNAL_HANDLER
+	if(!isliving(interacting_with))
+		return NONE
 
-	return TryToEat(M, user)
+	return TryToEat(interacting_with, user)
 
 /datum/component/edible/proc/TryToEatIt(datum/source, mob/user)
 	SIGNAL_HANDLER

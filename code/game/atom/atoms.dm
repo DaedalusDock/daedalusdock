@@ -61,6 +61,7 @@ TYPEINFO_DEF(/atom)
 	var/tmp/datum/component/orbiter/orbiters
 
 	///The custom materials this atom is made of, used by a lot of things like furniture, walls, and floors (if I finish the functionality, that is.)
+	///This is ONLY to be set by set_custom_materials(), if you want to set an initial value, use Typeinfo.
 	///The list referenced by this var can be shared by multiple objects and should not be directly modified. Instead, use [set_custom_materials][/atom/proc/set_custom_materials].
 	var/tmp/list/datum/material/custom_materials
 
@@ -280,11 +281,11 @@ TYPEINFO_DEF(/atom)
 	// Not typeinfo() for speed reasons. Hot ass code!
 	var/datum/typeinfo/atom/typeinfo = __typeinfo_cache[type] ||= new __typeinfo_path
 
-	// apply materials properly from the default custom_materials value
+	// apply materials properly from the default_materials value in typeinfo
 	// This MUST come after atom_integrity is set above, as if old materials get removed,
 	// atom_integrity is checked against max_integrity and can BREAK the atom.
 	// The integrity to max_integrity ratio is still preserved.
-	if(length(typeinfo.default_materials) || islist(custom_materials))
+	if(length(typeinfo.default_materials) && isnull(custom_materials))
 		set_custom_materials(typeinfo.default_materials)
 
 	return INITIALIZE_HINT_NORMAL

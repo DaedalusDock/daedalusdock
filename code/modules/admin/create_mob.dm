@@ -13,8 +13,13 @@
 /proc/randomize_human(mob/living/carbon/human/H)
 	H.gender = pick(MALE, FEMALE)
 	H.physique = H.gender
-	H.set_real_name(random_unique_name(H.gender))
+
+	// Name
+	var/datum/name_generator/name_gen = new H.dna.species.name_generator_type
+	name_gen.ensure_unique = TRUE
+	H.set_real_name(name_gen.Generate())
 	H.name = H.real_name
+
 	H.underwear = random_underwear(H.gender)
 	H.underwear_color = "#[random_color()]"
 	H.skin_tone = random_skin_tone()

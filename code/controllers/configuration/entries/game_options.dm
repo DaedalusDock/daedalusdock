@@ -31,8 +31,6 @@
 
 /datum/config_entry/flag/force_random_names
 
-/datum/config_entry/flag/humans_need_surnames
-
 /datum/config_entry/flag/allow_ai // allow ai job
 	default = TRUE
 
@@ -43,16 +41,6 @@
 /datum/config_entry/flag/disable_peaceborg
 
 /datum/config_entry/flag/disable_warops
-
-/datum/config_entry/number/traitor_scaling_coeff //how much does the amount of players get divided by to determine traitors [UNUSED]
-	default = 6
-	integer = FALSE
-	min_val = 0
-
-/datum/config_entry/number/brother_scaling_coeff //how many players per brother team [UNUSED]
-	default = 25
-	integer = FALSE
-	min_val = 0
 
 /// Determines the ideal player count for maximum progression per minute.
 /datum/config_entry/number/traitor_ideal_player_count

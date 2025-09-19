@@ -1,3 +1,8 @@
+
+
+TYPEINFO_DEF(/turf/closed/wall/r_wall)
+	default_armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 50, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /turf/closed/wall/r_wall
 	name = "reinforced wall"
 	desc = "A huge chunk of reinforced metal used to separate rooms."

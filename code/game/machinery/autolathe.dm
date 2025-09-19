@@ -215,54 +215,42 @@
 	var/datum/component/material_container/materials = GetComponent(/datum/component/material_container)
 	materials.retrieve_all()
 
-/obj/machinery/autolathe/attackby(obj/item/attacking_item, mob/living/user, params)
+/obj/machinery/autolathe/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(machine_stat)
+		return NONE
+
 	if(busy)
-		balloon_alert(user, "it's busy!")
-		return TRUE
+		to_chat(user, span_warning("[src] is busy."))
+		return ITEM_INTERACT_BLOCKING
 
-	if(default_deconstruction_crowbar(attacking_item))
-		return TRUE
+	if(default_deconstruction_crowbar(tool))
+		return ITEM_INTERACT_SUCCESS
 
-	if(panel_open && is_wire_tool(attacking_item))
+	if(panel_open && is_wire_tool(tool))
 		wires.interact(user)
-		return TRUE
-
-	if(user.combat_mode) //so we can hit the machine
-		return ..()
-
-	if(machine_stat)
-		return TRUE
+		return ITEM_INTERACT_SUCCESS
 
 	if(panel_open)
-		balloon_alert(user, "close the panel first!")
-		return FALSE
+		to_chat(user, span_warning("You must close the panel first."))
+		return ITEM_INTERACT_BLOCKING
 
-	if(istype(attacking_item, /obj/item/storage/bag/trash))
-		for(var/obj/item/content_item in attacking_item.contents)
+	if(istype(tool, /obj/item/storage/bag/trash))
+		for(var/obj/item/content_item in tool.contents)
 			if(!do_after(user, src, 0.5 SECONDS))
-				return FALSE
-			attackby(content_item, user)
-		return TRUE
+				return ITEM_INTERACT_BLOCKING
+			item_interaction(user, content_item, modifiers)
+		return ITEM_INTERACT_SUCCESS
 
-	return ..()
-
-/obj/machinery/autolathe/attackby_secondary(obj/item/weapon, mob/living/user, params)
-	. = SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-	if(busy)
-		balloon_alert(user, "it's busy!")
-		return
-
-	if(default_deconstruction_screwdriver(user, "autolathe_t", "autolathe", weapon))
-		return
-
+/obj/machinery/autolathe/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
 	if(machine_stat)
-		return SECONDARY_ATTACK_CALL_NORMAL
+		return NONE
 
-	if(panel_open)
-		balloon_alert(user, "close the panel first!")
-		return
+	if(busy)
+		to_chat(user, span_warning("[src] is busy."))
+		return ITEM_INTERACT_BLOCKING
 
-	return SECONDARY_ATTACK_CALL_NORMAL
+	if(default_deconstruction_screwdriver(user, "autolathe_t", "autolathe", tool))
+		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/autolathe/proc/AfterMaterialInsert(obj/item/item_inserted, id_inserted, amount_inserted)
 	if(istype(item_inserted, /obj/item/stack/ore/bluespace_crystal))

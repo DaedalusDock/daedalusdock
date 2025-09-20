@@ -1250,6 +1250,7 @@
 #include "code\datums\status_effects\food_buffs\_food_buff.dm"
 #include "code\datums\status_effects\food_buffs\energized.dm"
 #include "code\datums\status_effects\food_buffs\healthy.dm"
+#include "code\datums\status_effects\food_buffs\refreshed.dm"
 #include "code\datums\status_effects\food_buffs\temp.dm"
 #include "code\datums\status_effects\skill_modifiers\negative.dm"
 #include "code\datums\status_effects\skill_modifiers\positive.dm"

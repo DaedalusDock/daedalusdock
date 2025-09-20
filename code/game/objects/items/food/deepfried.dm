@@ -5,10 +5,13 @@
 	icon_state = ""
 	bite_consumption = 2
 
+	food_buffs = list(/datum/status_effect/food/warm)
+
 /obj/item/food/deepfryholder/Initialize(mapload, obj/item/fried)
 	if(!fried)
 		stack_trace("A deepfried object was created with no fried target")
 		return INITIALIZE_HINT_QDEL
+
 	. = ..()
 	name = fried.name //We'll determine the other stuff when it's actually removed
 	appearance = fried.appearance

@@ -6,3 +6,6 @@
   - bugfix: Chickens can be fed wheat again.
   - bugfix: Prospectors can access the Cargo Bay.
   - rscadd: More items can fit in "small-skinny" boxes.
+2025-09-21:
+  Kapu1178:
+  - bugfix: Batons have an attack cooldown again.

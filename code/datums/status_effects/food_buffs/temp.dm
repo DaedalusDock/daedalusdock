@@ -18,7 +18,7 @@
 
 /datum/status_effect/food/warm/on_apply()
 	. = ..()
-	owner.add_body_temperature_change(ref(src), 10)
+	owner.add_body_temperature_change(ref(src), 4)
 	to_chat(owner, span_notice("You feel warm."))
 
 /datum/status_effect/food/warm/on_remove()

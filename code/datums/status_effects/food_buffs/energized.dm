@@ -14,4 +14,5 @@
 	owner.stamina?.remove_max_modifier(ref(src))
 
 /datum/status_effect/food/energized/plus
+	id = "energizedplus"
 	stamina_change = 40

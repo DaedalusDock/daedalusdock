@@ -9,6 +9,8 @@
 	foodtypes = GRAIN
 	venue_value = FOOD_PRICE_NORMAL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/pieslice
 	name = "pie slice"
 	icon = 'icons/obj/food/piecake.dmi'
@@ -17,6 +19,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 2)
 	tastes = list("pie" = 1, "uncertainty" = 1)
 	foodtypes = GRAIN | VEGETABLES
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/pie/plain
 	name = "plain pie"

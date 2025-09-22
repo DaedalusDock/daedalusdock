@@ -1,9 +1,11 @@
 /datum/status_effect/food/cold
 	id = "coldfood"
 	max_duration = 5 MINUTES
+	examine_property = PROPERTY_FOOD_COLD
 
 /datum/status_effect/food/cold/on_apply()
 	. = ..()
+	owner.remove_status_effect(/datum/status_effect/food/warm)
 	owner.add_body_temperature_change(ref(src), -5)
 	to_chat(owner, span_notice("You feel chilly."))
 
@@ -15,9 +17,11 @@
 /datum/status_effect/food/warm
 	id = "warmfood"
 	max_duration = 5 MINUTES
+	examine_property = PROPERTY_FOOD_WARM
 
 /datum/status_effect/food/warm/on_apply()
 	. = ..()
+	owner.remove_status_effect(/datum/status_effect/food/cold)
 	owner.add_body_temperature_change(ref(src), 4)
 	to_chat(owner, span_notice("You feel warm."))
 

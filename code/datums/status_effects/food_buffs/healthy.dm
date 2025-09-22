@@ -12,6 +12,7 @@
 // Good for organs!
 /datum/status_effect/food/healthy/organs
 	id = "healthyorgans"
+	examine_property = PROPERTY_FOOD_HEALTHY_ORGANS
 
 /datum/status_effect/food/healthy/organs/tick(delta_time, times_fired)
 	. = ..()
@@ -20,6 +21,7 @@
 // Good for blood!
 /datum/status_effect/food/healthy/blood
 	id = "healthyblood"
+	examine_property = PROPERTY_FOOD_HEALTHY_BLOOD
 
 /datum/status_effect/food/healthy/blood/on_apply()
 	. = ..()

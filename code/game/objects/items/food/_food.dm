@@ -77,6 +77,18 @@
 	MakeDecompose(mapload)
 	MakeBakeable()
 
+/obj/item/food/examine_properties(mob/user)
+	. = ..()
+	if(!ishuman(user))
+		return
+
+	if(!HAS_MIND_TRAIT(astype(user, /mob/living/carbon/human), TRAIT_CHEF))
+		return
+
+	for(var/datum/status_effect/food/food_buff_path as anything in food_buffs)
+		if(initial(food_buff_path.examine_property))
+			. += initial(food_buff_path.examine_property)
+
 ///This proc adds the edible component, overwrite this if you for some reason want to change some specific args like callbacks.
 /obj/item/food/proc/MakeEdible()
 	AddComponent(/datum/component/edible,\

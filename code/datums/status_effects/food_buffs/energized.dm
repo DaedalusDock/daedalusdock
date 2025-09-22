@@ -1,6 +1,7 @@
 /datum/status_effect/food/energized
 	id = "energized"
-
+	examine_property = PROPERTY_FOOD_ENERGIZING
+	overridden_by_type = /datum/status_effect/food/energized/plus
 	var/stamina_change = 25
 
 /datum/status_effect/food/energized/on_apply()
@@ -15,4 +16,6 @@
 
 /datum/status_effect/food/energized/plus
 	id = "energizedplus"
+	examine_property = PROPERTY_FOOD_ENERGIZING_PLUS
+	overrides_type = /datum/status_effect/food/energized
 	stamina_change = 40

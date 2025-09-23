@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Most food now provides effects on consumption. The Chef can see what food
+      provides what benefits.

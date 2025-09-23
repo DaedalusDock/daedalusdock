@@ -12,6 +12,9 @@
 	foodtypes = JUNKFOOD | GRAIN | FRIED | SUGAR | BREAKFAST
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized)
+
 	var/decorated_icon = "donut_homer"
 	var/is_decorated = FALSE
 	var/extra_reagent = null
@@ -22,21 +25,6 @@
 	AddElement(/datum/element/dunkable, amount_per_dunk = 10)
 	if(prob(DONUT_SPRINKLE_CHANCE))
 		decorate_donut()
-
-///Override for checkliked callback
-/obj/item/food/donut/MakeEdible()
-	AddComponent(/datum/component/edible,\
-				initial_reagents = food_reagents,\
-				food_flags = food_flags,\
-				foodtypes = foodtypes,\
-				volume = max_volume,\
-				eat_time = eat_time,\
-				tastes = tastes,\
-				eatverbs = eatverbs,\
-				bite_consumption = bite_consumption,\
-				microwaved_type = microwaved_type,\
-				junkiness = junkiness,\
-				check_liked = CALLBACK(src, PROC_REF(check_liked)))
 
 /obj/item/food/donut/proc/decorate_donut()
 	if(is_decorated || !decorated_icon)
@@ -51,8 +39,7 @@
 /obj/item/food/donut/proc/in_box_sprite()
 	return "[icon_state]_inbox"
 
-///Override for checkliked in edible component, because all cops LOVE donuts
-/obj/item/food/donut/proc/check_liked(fraction, mob/living/carbon/human/consumer)
+/obj/item/food/donut/check_liked(fraction, mob/living/carbon/human/consumer)
 	if(!HAS_TRAIT(consumer, TRAIT_AGEUSIA) && consumer.mind && HAS_TRAIT(consumer.mind, TRAIT_DONUT_LOVER))
 		return FOOD_LIKED
 

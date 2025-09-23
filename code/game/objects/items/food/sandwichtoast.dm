@@ -9,6 +9,8 @@
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/grilled_cheese_sandwich
 	name = "grilled cheese sandwich"
 	desc = "A warm, melty sandwich that goes perfectly with tomato soup."
@@ -21,6 +23,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 	burns_on_grill = TRUE
 
+	food_buffs = list(/datum/status_effect/food/warm, /datum/status_effect/food/energized)
+
 /obj/item/food/cheese_sandwich
 	name = "cheese sandwich"
 	desc = "A light snack for a warm day. ...but what if you grilled it?"
@@ -32,6 +36,8 @@
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 	venue_value = FOOD_PRICE_NORMAL
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/cheese_sandwich/MakeGrillable()
 	AddComponent(/datum/component/grillable, /obj/item/food/grilled_cheese_sandwich, rand(30 SECONDS, 60 SECONDS), TRUE)
@@ -46,6 +52,8 @@
 	foodtypes = GRAIN
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/jellysandwich/slime
 	food_reagents = list(/datum/reagent/consumable/nutriment = 2, /datum/reagent/toxin/slimejelly = 10, /datum/reagent/consumable/nutriment/vitamin = 4)
@@ -77,6 +85,8 @@
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/warm, /datum/status_effect/food/energized)
+
 /obj/item/food/jelliedtoast/cherry
 	food_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/cherryjelly = 8, /datum/reagent/consumable/nutriment/vitamin = 4)
 	foodtypes = GRAIN | FRUIT | SUGAR | BREAKFAST
@@ -96,6 +106,8 @@
 	foodtypes = GRAIN | BREAKFAST
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/warm, /datum/status_effect/food/energized)
 
 /obj/item/food/twobread
 	name = "two bread"
@@ -133,3 +145,5 @@
 	foodtypes = GRAIN | MEAT | VEGETABLES | BREAKFAST
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized)

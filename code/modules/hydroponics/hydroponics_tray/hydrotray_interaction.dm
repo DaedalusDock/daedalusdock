@@ -226,8 +226,8 @@
 	var/quality = 1
 	var/max_yield = HYDRO_MAX_YIELD
 	var/harvest_yield = growing.get_effective_stat(PLANT_STAT_YIELD)
-	// var/potency = growing.get_scaled_potency()
-	// var/endurance = growing.get_effective_stat(PLANT_STAT_ENDURANCE)
+	var/potency = growing.get_scaled_potency()
+	var/endurance = growing.get_effective_stat(PLANT_STAT_ENDURANCE)
 
 	// Bonus yield for a healthy plant
 	if(plant_health > growing.base_health * 2)
@@ -260,13 +260,18 @@
 
 	for(var/i in 1 to harvest_yield)
 		// Quality for whenever food is reworked.
-		// var/unit_quality = quality
-		// unit_quality += rand(-2, 2)
-		// unit_quality += potency / 6
-		// unit_quality += endurance / 6
+		var/unit_quality = quality
+		unit_quality += rand(-2, 2)
+		unit_quality += potency / 6
+		unit_quality += endurance / 6
 
 		var/atom/movable/product = new product_path(T, growing)
 		product.add_fingerprint(user)
+
+		if(istype(product, /obj/item/food))
+			var/obj/item/food/food_product = product
+			food_product.quality = round(unit_quality, 1)
+			food_product.transform = matrix() * clamp((unit_quality + 100) / 100, 0.5, 2)
 
 		// We want to consistently offer seeds, but if harvest_yield is high we want to curb the amount of seeds available to reduce lag.
 		if(can_produce_seed && prob(80 / ceil(harvest_yield / 2)))

@@ -6,6 +6,8 @@
 	foodtypes = GRAIN
 	eat_time = 3 SECONDS
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/bread/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/dunkable, 10)
@@ -25,7 +27,7 @@
 
 /obj/item/food/bread/plain
 	name = "bread"
-	desc = "Some plain old earthen bread."
+	desc = "Plain old minervan bread."
 	icon_state = "bread"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 10)
 	tastes = list("bread" = 10)
@@ -43,7 +45,7 @@
 
 /obj/item/food/breadslice/plain
 	name = "bread slice"
-	desc = "A slice of home."
+	desc = "A slice of minervan bread."
 	icon_state = "breadslice"
 	foodtypes = GRAIN
 	food_reagents = list(/datum/reagent/consumable/nutriment = 2)
@@ -65,6 +67,7 @@
 	tastes = list("decaying fungus" = 1)
 	foodtypes = GROSS
 	preserved_food = TRUE
+	food_buffs = null
 
 /obj/item/food/breadslice/moldy/bacteria
 	name = "bacteria rich moldy 'bread' slice"
@@ -76,7 +79,7 @@
 
 /obj/item/food/bread/meat
 	name = "meatbread loaf"
-	desc = "The culinary base of every self-respecting eloquen/tg/entleman."
+	desc = "A loaf of 50% meat, 50% bread."
 	icon_state = "meatbread"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 20, /datum/reagent/consumable/nutriment/vitamin = 10, /datum/reagent/consumable/nutriment/protein = 12)
 	tastes = list("bread" = 10, "meat" = 10)
@@ -89,7 +92,7 @@
 
 /obj/item/food/breadslice/meat
 	name = "meatbread slice"
-	desc = "A slice of delicious meatbread."
+	desc = "A slice of meatbread."
 	icon_state = "meatbreadslice"
 	foodtypes = GRAIN | MEAT
 	food_reagents = list(/datum/reagent/consumable/nutriment = 4, /datum/reagent/consumable/nutriment/vitamin = 2, /datum/reagent/consumable/nutriment/protein = 2.4)

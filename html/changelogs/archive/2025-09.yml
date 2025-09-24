@@ -9,3 +9,7 @@
 2025-09-21:
   Kapu1178:
   - bugfix: Batons have an attack cooldown again.
+2025-09-24:
+  Kapu1178:
+  - rscadd: Most food now provides effects on consumption. The Chef can see what food
+      provides what benefits.

@@ -1223,6 +1223,7 @@
 #include "code\datums\status_effects\_status_effect.dm"
 #include "code\datums\status_effects\_status_effect_helpers.dm"
 #include "code\datums\status_effects\agent_pinpointer.dm"
+#include "code\datums\status_effects\buckled_to_bed.dm"
 #include "code\datums\status_effects\buffs.dm"
 #include "code\datums\status_effects\drug_effects.dm"
 #include "code\datums\status_effects\flock_signal.dm"

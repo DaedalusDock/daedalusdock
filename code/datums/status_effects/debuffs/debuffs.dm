@@ -202,7 +202,7 @@
 
 /atom/movable/screen/alert/status_effect/asleep
 	name = "Asleep"
-	desc = "You've fallen asleep. Wait a bit and you should wake up. Unless you don't, considering how helpless you are."
+	desc = "You've fallen asleep."
 	icon_state = "asleep"
 
 //STASIS

@@ -38,12 +38,15 @@
 	if(trying_to_sleep)
 		owner.Sleeping(2 SECONDS)
 
-/datum/status_effect/buckled_to_bed/proc/toggle_sleep_intent()
-	if(trying_to_sleep && owner.IsSleeping() && !COOLDOWN_FINISHED(src, try_wakeup_cooldown))
+/datum/status_effect/buckled_to_bed/proc/toggle_sleep_intent(shaken)
+	if(!shaken && trying_to_sleep && owner.IsSleeping() && !COOLDOWN_FINISHED(src, try_wakeup_cooldown))
 		to_chat(owner, span_warning("You can not wake up yet."))
 		return
 
 	trying_to_sleep = !trying_to_sleep
+
+	if(shaken)
+		return
 
 	if(trying_to_sleep)
 		to_chat(owner, span_notice("You are now trying to sleep."))
@@ -53,7 +56,8 @@
 
 /datum/status_effect/buckled_to_bed/proc/on_shaken(datum/source, mob/living/shaker)
 	SIGNAL_HANDLER
-	trying_to_sleep = FALSE
+	if(trying_to_sleep)
+		toggle_sleep_intent(shaken = TRUE)
 
 /datum/status_effect/buckled_to_bed/proc/on_stat_change()
 	SIGNAL_HANDLER

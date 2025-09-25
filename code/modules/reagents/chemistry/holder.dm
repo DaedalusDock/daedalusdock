@@ -712,11 +712,17 @@
 			continue
 		if(keep_liverless && reagent.self_consuming) //Will keep working without a liver
 			continue
+
 		if(!C)
 			C = reagent.holder.my_atom
+
 		if(reagent.metabolizing)
 			reagent.metabolizing = FALSE
 			reagent.on_mob_end_metabolize(C, metabolism_class)
+
+			if(reagent.overdosed)
+				reagent.overdosed = FALSE
+				reagent.overdose_end(C)
 
 /// Handle any reactions possible in this holder
 /// Also UPDATES the reaction list

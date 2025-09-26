@@ -504,7 +504,7 @@
 	return amount
 
 /// Transfer a specific reagent id to the target object. Accepts a reagent instance, but assumes the reagent is in src.
-/datum/reagents/proc/trans_id_to(obj/target, datum/reagent/reagent, amount=1, preserve_data=1)//Not sure why this proc didn't exist before. It does now! /N
+/datum/reagents/proc/trans_id_to(obj/target, datum/reagent/reagent, amount=1, preserve_data = TRUE, no_react = FALSE)//Not sure why this proc didn't exist before. It does now! /N
 	var/list/cached_reagents = reagent_list
 	if (!target)
 		return
@@ -548,7 +548,9 @@
 
 	update_total()
 	holder.update_total()
-	holder.handle_reactions()
+	if(!no_react)
+		handle_reactions()
+		holder.handle_reactions()
 	return amount
 
 /// Copies the reagents to the target object

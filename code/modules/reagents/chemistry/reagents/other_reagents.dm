@@ -13,6 +13,7 @@
 	ingest_met = 2
 
 	boiling_point = 373.15
+	dew_point = 340
 
 /datum/reagent/water/expose_turf(turf/open/exposed_turf, reac_volume, exposed_temperature)
 	. = ..()

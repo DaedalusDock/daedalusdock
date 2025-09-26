@@ -11,11 +11,21 @@
 	fill_icon_state = "f-condenser"
 	fill_icon_thresholds = list(0, 1, 25, 50, 75, 100)
 
+	volume = 60
+
 	/// Cup attached to the assembly
 	var/obj/item/reagent_containers/cup/beaker/output
 
+	/// Holds the vaporized reagent so we can cool it down before passing it onto the output.
+	var/datum/reagents/temp_holder
+
+/obj/item/reagent_containers/cup/condenser/Initialize(mapload, vol)
+	. = ..()
+	temp_holder = new(volume)
+
 /obj/item/reagent_containers/cup/condenser/Destroy(force)
 	QDEL_NULL(output)
+	QDEL_NULL(temp_holder)
 	return ..()
 
 /obj/item/reagent_containers/cup/condenser/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
@@ -86,4 +96,10 @@
 		if(reagents.chem_temp < R.boiling_point)
 			continue
 
-		reagents.trans_id_to(output, R.type, R.boil_off_rate * delta_time)
+		reagents.trans_id_to(temp_holder, R.type, R.boil_off_rate * delta_time, no_react = TRUE)
+		temp_holder.set_temperature(R.dew_point)
+		temp_holder.trans_to(output, temp_holder.maximum_volume, no_react = TRUE)
+
+	reagents.handle_reactions()
+	output.reagents.handle_reactions()
+

@@ -47,8 +47,16 @@
 	thermic_constant = 20 // Harder to ignite plasma
 
 /datum/chemical_reaction/tricordrazine
-	results =  list(/datum/reagent/medicine/tricordrazine = 5)
+	results = list(/datum/reagent/medicine/tricordrazine = 5)
 	required_reagents = list(/datum/reagent/medicine/bicaridine = 1, /datum/reagent/medicine/kelotane = 1, /datum/reagent/medicine/dylovene = 1)
+
+/datum/chemical_reaction/zedaphen
+	results = list(/datum/reagent/medicine/zedaphen = 3)
+	required_reagents = list(
+		/datum/reagent/acetone = 1,
+		/datum/reagent/potassium = 1,
+		/datum/reagent/carbon = 1
+	)
 
 /datum/chemical_reaction/ryetalyn
 	results = list(/datum/reagent/medicine/ryetalyn = 2)

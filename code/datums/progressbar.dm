@@ -210,7 +210,8 @@
 /obj/effect/abstract/progbar
 	icon = 'icons/effects/progessbar.dmi'
 	icon_state = "prog_bar_0"
-	plane = ABOVE_HUD_PLANE
+	plane = GAME_PLANE
+	layer = FLY_LAYER
 	appearance_flags = APPEARANCE_UI | KEEP_APART
 	pixel_y = 32
 	alpha = 0

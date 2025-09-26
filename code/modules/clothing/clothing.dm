@@ -91,21 +91,8 @@
 	/// A weak reference to the clothing that created us
 	var/datum/weakref/clothing
 
-/obj/item/food/clothing/MakeEdible()
-	AddComponent(/datum/component/edible,\
-		initial_reagents = food_reagents,\
-		food_flags = food_flags,\
-		foodtypes = foodtypes,\
-		volume = max_volume,\
-		eat_time = eat_time,\
-		tastes = tastes,\
-		eatverbs = eatverbs,\
-		bite_consumption = bite_consumption,\
-		microwaved_type = microwaved_type,\
-		junkiness = junkiness,\
-		after_eat = CALLBACK(src, PROC_REF(after_eat)))
-
-/obj/item/food/clothing/proc/after_eat(mob/eater)
+/obj/item/food/clothing/post_bite(mob/living/eater, mob/living/feeder, bitecount)
+	. = ..()
 	var/obj/item/clothing/resolved_clothing = clothing.resolve()
 	if (resolved_clothing)
 		resolved_clothing.take_damage(MOTH_EATING_CLOTHING_DAMAGE, sound_effect = FALSE, damage_flag = BOMB, armor_penetration = 100) //This leaves clothing shreds.

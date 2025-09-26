@@ -1044,3 +1044,44 @@
 		C.losebreath += 4
 		C.adjustOxyLoss(rand(5,25), 0)
 	return TRUE
+
+/datum/reagent/medicine/zedaphen
+	name = "Zedaphen"
+	description = "A potent pharmaceutical that promotes body restoration during sleep."
+	reagent_state = LIQUID
+	color = "#dd77a2"
+
+	metabolization_rate = 0.14 // Roughly 5 minutes to metabolize 20 units. I felt that was a good amount.
+
+	overdose_threshold = 20
+
+/datum/reagent/medicine/zedaphen/affect_blood(mob/living/carbon/C, removed)
+	. = ..()
+	if(C.stat != UNCONSCIOUS)
+		return
+
+	if(C.needs_organ(ORGAN_SLOT_HEART) && astype(C.getorganslot(ORGAN_SLOT_HEART), /obj/item/organ/heart)?.is_working())
+		C.adjustBloodVolumeUpTo(round(removed * 5, 0.01)) // Will restore 100 units of blood over 5 minutes at the max dose.
+
+	C.heal_overall_damage(removed * 15, removed * 15, BODYTYPE_ORGANIC, FALSE) // Will restore 300 brute + burn over 5 minutes at max dose.
+	C.adjustToxLoss(removed * 7, FALSE) // Will restore 140 organ health after 5 minutes at max dose.
+	return TRUE
+
+/datum/reagent/medicine/overdose_start(mob/living/carbon/C)
+	if(C.stat != CONSCIOUS)
+		return
+
+	var/datum/roll_result/result = C.stat_roll(13, /datum/rpg_skill/extrasensory)
+	switch(result.outcome)
+		if(SUCCESS, CRIT_SUCCESS)
+			to_chat(C, result.create_tooltip("You feel a deep sense of impending doom."))
+
+/datum/reagent/medicine/zedaphen/overdose_process(mob/living/carbon/C)
+	if(C.stat != UNCONSCIOUS)
+		return
+
+	if(prob(5))
+		C.set_heartattack(TRUE)
+
+	C.adjustToxLoss(1, cause_of_death = "Zedaphen overdose") // Counter-acted by the normal metabolization, resulting in minor organ damage.
+	C.Unconscious(10 SECONDS) // You're in for it now.

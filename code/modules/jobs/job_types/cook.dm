@@ -38,6 +38,7 @@
 		),
 	)
 
+	mind_traits = list(TRAIT_CHEF)
 	liver_traits = list(TRAIT_CULINARY_METABOLISM)
 
 	departments_list = list(

@@ -168,6 +168,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/melee/baton/proc/melee_baton_attack(mob/living/target, mob/living/user)
+	user.changeNext_move(combat_click_delay)
+
 	if(clumsy_check(user, target))
 		return
 

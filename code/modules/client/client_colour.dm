@@ -263,6 +263,18 @@
 
 	fade_out = 10 SECONDS
 
+/datum/client_colour/flockcrazy/lucid_world
+	colour = list(
+		-0.3, -0.3, -0.3, 0.00,
+		-0.3, -0.3, -0.3, 0.00,
+		-0.3, -0.3, -0.3, 0.00,
+		0.00, 0.00, 0.00, 1.00,
+		0.20, 0.80, 0.70, 0.00
+	)
+
+	fade_in = 0
+	fade_out = 1 SECOND
+
 #undef PRIORITY_ABSOLUTE
 #undef PRIORITY_HIGH
 #undef PRIORITY_NORMAL

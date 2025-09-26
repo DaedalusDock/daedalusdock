@@ -3,6 +3,10 @@
 
 	dream_class = DREAM_CLASS_DETECTIVE
 
+/datum/dream/detective_nightmare/OnDreamEnd(mob/living/carbon/dreamer, cut_short)
+	. = ..()
+	dreamer.mob_mood.add_mood_event("nightmare", /datum/mood_event/nightmare)
+
 /datum/dream/detective_nightmare/WrapMessage(mob/living/carbon/dreamer, message)
 	return message
 

@@ -1,0 +1,110 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/cordon,
+/area/misc/cordon)
+"y" = (
+/turf/cordon,
+/area/lucid_world)
+"F" = (
+/turf/open/indestructible/lucid_world,
+/area/lucid_world)
+
+(1,1,1) = {"
+a
+a
+a
+a
+a
+a
+a
+a
+a
+"}
+(2,1,1) = {"
+a
+F
+F
+F
+F
+F
+F
+F
+a
+"}
+(3,1,1) = {"
+a
+F
+F
+F
+F
+F
+F
+F
+a
+"}
+(4,1,1) = {"
+a
+F
+F
+F
+F
+F
+F
+F
+a
+"}
+(5,1,1) = {"
+a
+F
+F
+F
+F
+F
+F
+F
+a
+"}
+(6,1,1) = {"
+a
+F
+F
+F
+F
+F
+F
+F
+a
+"}
+(7,1,1) = {"
+a
+F
+F
+F
+F
+F
+F
+F
+a
+"}
+(8,1,1) = {"
+a
+F
+F
+F
+F
+F
+F
+F
+a
+"}
+(9,1,1) = {"
+a
+a
+a
+a
+a
+y
+a
+a
+a
+"}

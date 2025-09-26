@@ -18,6 +18,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 	venue_value = FOOD_PRICE_NORMAL
 
+	food_buffs = list(/datum/status_effect/food/refreshed)
+
 /obj/item/food/cheesyburrito
 	name = "cheesy burrito"
 	desc = "It's a burrito filled with cheese."
@@ -27,6 +29,8 @@
 	foodtypes = GRAIN | DAIRY
 	w_class = WEIGHT_CLASS_SMALL
 	venue_value = FOOD_PRICE_EXOTIC
+
+	food_buffs = list(/datum/status_effect/food/refreshed/plus)
 
 /obj/item/food/carneburrito
 	name = "carne asada burrito"
@@ -38,6 +42,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 	venue_value = FOOD_PRICE_EXOTIC
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/fuegoburrito
 	name = "fuego plasma burrito"
 	desc = "A super spicy burrito."
@@ -47,6 +53,8 @@
 	foodtypes = GRAIN
 	w_class = WEIGHT_CLASS_SMALL
 	venue_value = FOOD_PRICE_LEGENDARY
+
+	food_buffs = list(/datum/status_effect/food/refreshed/plus)
 
 /obj/item/food/nachos
 	name = "nachos"
@@ -58,6 +66,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 	venue_value = FOOD_PRICE_CHEAP
 
+	food_buffs = list(/datum/status_effect/food/refreshed)
+
 /obj/item/food/cheesynachos
 	name = "cheesy nachos"
 	desc = "The delicious combination of nachos and melting cheese."
@@ -68,6 +78,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 	venue_value = FOOD_PRICE_EXOTIC
 
+	food_buffs = list(/datum/status_effect/food/refreshed/plus)
+
 /obj/item/food/cubannachos
 	name = "Cuban nachos"
 	desc = "That's some dangerously spicy nachos."
@@ -76,6 +88,8 @@
 	tastes = list("nachos" = 2, "hot pepper" = 1)
 	foodtypes = VEGETABLES | FRIED | DAIRY
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/refreshed/plus)
 
 /obj/item/food/taco
 	name = "classic taco"
@@ -86,6 +100,8 @@
 	foodtypes = MEAT | DAIRY | GRAIN | VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
 	venue_value = FOOD_PRICE_NORMAL
+
+	food_buffs = list(/datum/status_effect/food/refreshed/plus)
 
 /obj/item/food/taco/plain
 	name = "plain taco"
@@ -105,6 +121,8 @@
 	tastes = list("hot peppers" = 1, "meat" = 3, "cheese" = 1, "sour cream" = 1)
 	foodtypes = MEAT | GRAIN
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/refreshed/plus)
 
 /obj/item/food/stuffedlegion
 	name = "stuffed legion"

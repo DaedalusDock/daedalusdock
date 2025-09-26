@@ -896,3 +896,20 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	name = "Traumatic Shock"
 	desc = "You've endured a significant amount of pain."
 	icon_state = "convulsing"
+
+/atom/movable/screen/alert/status_effect/sleepy_time
+	name = "Sleep?"
+	desc = "Click to try to sleep."
+	icon_state = "trywakeup"
+
+/atom/movable/screen/alert/status_effect/sleepy_time/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return
+
+	astype(attached_effect, /datum/status_effect/buckled_to_bed).toggle_sleep_intent()
+
+/atom/movable/screen/alert/status_effect/sleepy_time/end
+	name = "Wake up?"
+	desc = "Click to try to wake up."
+	icon_state = "trysleep"

@@ -93,7 +93,7 @@
 
 /obj/item/reagent_containers/cup/condenser/process(delta_time)
 	for(var/datum/reagent/R as anything in reagents.reagent_list)
-		if(reagents.chem_temp < R.boiling_point)
+		if(R.reagent_state != LIQUID || reagents.chem_temp < R.boiling_point)
 			continue
 
 		reagents.trans_id_to(temp_holder, R.type, R.boil_off_rate * delta_time, no_react = TRUE)

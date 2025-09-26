@@ -71,6 +71,7 @@
 	if(!user.pickup_item(output))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
+	output.do_pickup_animation(user, get_turf(src))
 	set_output(null)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 

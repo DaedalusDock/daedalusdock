@@ -1,5 +1,16 @@
+/datum/shell_command/netpage/help
+	aliases = list("help")
+	help_text = "Lists all available commands. Use help \[command\] to view information about a specific command."
+
+/datum/shell_command/netpage/help/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	var/list/output = list()
+
+	if(generate_help_list(output, arguments, astype(program, /datum/c4_file/terminal_program/netpage).commands, system) != SHELL_CMD_HELP_ERROR)
+		system.println(jointext(output, "<br>"))
+
 /datum/shell_command/netpage/quit
 	aliases = list("quit", "q", "exit")
+	help_text = "Exits the program."
 
 /datum/shell_command/netpage/quit/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	system.println("Quitting...")

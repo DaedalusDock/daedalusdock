@@ -5,7 +5,6 @@
 	icon_state = "hotplate"
 
 	w_class = WEIGHT_CLASS_NORMAL
-	heat = 500
 
 	/// Thermal energy coeff
 	var/heater_coefficient = 0.8
@@ -78,22 +77,28 @@
 	if(!container)
 		return
 
-	RegisterSignal(container, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_MOVED), PROC_REF(container_deleted))
+	RegisterSignal(container, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_MOVED), PROC_REF(container_moved_or_deleted))
 	add_viscontents(container)
 	container.pixel_y = 4
 
-/obj/item/hotplate/proc/container_deleted(datum/source)
-	SIGNAL_HANDLER
-	set_container(null)
+/obj/item/hotplate/get_temperature()
+	if(!on)
+		return 0
+
+	// 80% to 110%
+	var/random_mult = rand(8,11) * 0.1
+	var/rampup_coeff = (current_rampup / heat_rampup_time) * heat_rampup_temp
+	return SPECIFIC_HEAT_DEFAULT * rampup_coeff * heater_coefficient * random_mult
 
 /obj/item/hotplate/process(delta_time)
 	if(!container)
 		return
 
-	var/rampup_coeff = (current_rampup / heat_rampup_time) * heat_rampup_temp
-	// 80% to 110%
-	var/random_mult = rand(8,11) * 0.1
-	var/thermal_adjustment = SPECIFIC_HEAT_DEFAULT * delta_time * rampup_coeff * heater_coefficient * random_mult * container.reagents.total_volume
+	var/thermal_adjustment =  get_temperature() * delta_time * container.reagents.total_volume
 
 	container.reagents.adjust_thermal_energy(thermal_adjustment)
 	current_rampup = clamp(current_rampup + delta_time, 0, heat_rampup_time)
+
+/obj/item/hotplate/proc/container_moved_or_deleted(datum/source)
+	SIGNAL_HANDLER
+	set_container(null)

@@ -142,7 +142,7 @@
 	overheat_temp = 500
 	temp_exponent_factor = 0.1
 	thermic_constant = -0.25
-	rate_up_lim = 15
+	base_reaction_rate = 15
 
 /datum/chemical_reaction/ephedrine/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
 	default_explode(holder, equilibrium.reacted_vol, 0, 25)
@@ -183,7 +183,7 @@
 	overheat_temp = 500
 	temp_exponent_factor = 0.35
 	thermic_constant = 20
-	rate_up_lim = 3
+	base_reaction_rate = 3
 
 /datum/chemical_reaction/ipecac
 	results = list(/datum/reagent/medicine/ipecac = 2)

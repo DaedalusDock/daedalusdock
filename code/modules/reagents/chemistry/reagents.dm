@@ -44,8 +44,10 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	var/reagent_state = LIQUID
 	/// Special data associated with the reagent that will be passed on upon transfer to a new holder.
 	var/list/data
+
 	/// increments everytime on_mob_life is called
 	var/current_cycle = 0
+
 	///pretend this is moles
 	var/volume = 0
 	///The molar mass of the reagent - if you're adding a reagent that doesn't have a recipe, just add a random number between 10 - 800. Higher numbers are "harder" but it's mostly arbitary.
@@ -83,10 +85,10 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	var/show_in_codex = TRUE
 
 	///Thermodynamic vars
-	///How hot this reagent burns when it's on fire - null means it can't burn
-	var/burning_temperature = null
-	///How much is consumed when it is burnt per second
-	var/burning_volume = 0.5
+	///How hot this reagent needs to be to begin boiling. null means it will not boil.
+	var/boiling_point = 423
+	/// Units lost per second while boiling.
+	var/boil_off_rate = 5
 
 	///Assoc list with key type of addiction this reagent feeds, and value amount of addiction points added per unit of reagent metabolzied (which means * REAGENTS_METABOLISM every life())
 	var/list/addiction_types = null

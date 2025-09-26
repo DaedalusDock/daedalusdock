@@ -12,6 +12,8 @@
 	metabolization_rate = 2
 	ingest_met = 2
 
+	boiling_point = 373.15
+
 /datum/reagent/water/expose_turf(turf/open/exposed_turf, reac_volume, exposed_temperature)
 	. = ..()
 	if(!istype(exposed_turf))

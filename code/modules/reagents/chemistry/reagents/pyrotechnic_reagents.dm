@@ -211,9 +211,7 @@
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	taste_description = "bitterness"
 	self_consuming = TRUE
-	burning_temperature = null
-	burning_volume = 0.05
-
+	boiling_point = null
 
 /datum/reagent/pyrosium/affect_blood(mob/living/carbon/C, removed)
 	if(holder.has_reagent(/datum/reagent/oxygen))
@@ -222,9 +220,10 @@
 
 /datum/reagent/pyrosium/burn(datum/reagents/holder)
 	if(holder.has_reagent(/datum/reagent/oxygen))
-		burning_temperature = 3500
+		boiling_point = 3500
 		return
-	burning_temperature = null
+
+	boiling_point = null
 
 /datum/reagent/firefighting_foam
 	name = "Firefighting Foam"

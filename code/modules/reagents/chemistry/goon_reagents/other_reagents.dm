@@ -57,8 +57,7 @@
 	reagent_state = LIQUID
 	color = "#2D2D2D"
 	taste_description = "oil"
-	burning_temperature = 1200//Oil is crude
-	burning_volume = 0.05 //but has a lot of hydrocarbons
+	boiling_point = 1200//Oil is crude
 
 	addiction_types = null
 
@@ -83,8 +82,7 @@
 	glass_name = "glass of welder fuel"
 	glass_desc = "Unless you're an industrial tool, this is probably not safe for consumption."
 	penetrates_skin = NONE
-	burning_temperature = 1725 //more refined than oil
-	burning_volume = 0.2
+	boiling_point = 1725 //more refined than oil
 
 	addiction_types = list(/datum/addiction/alcohol = 4)
 

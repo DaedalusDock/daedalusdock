@@ -42,8 +42,9 @@
 
 	/// How much the temperature changes per unit of chem used. without REACTION_HEAT_ARBITARY flag the rate of change depends on the holder heat capacity else results are more accurate
 	var/thermic_constant = 50
-	/// Optimal/max rate possible if all conditions are perfect
-	var/rate_up_lim = 30
+
+	/// When at the optimal temperature, this is the rate at which the reaction occurs per second. Usually this is reagent conversion.
+	var/base_reaction_rate = 30
 
 	/// Affects how reactions occur
 	var/reaction_flags = NONE

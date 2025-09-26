@@ -230,6 +230,7 @@
 	if(!calculate_yield())//So that this can detect if we're missing reagents
 		to_delete = TRUE
 		return
+
 	delta_time = deal_with_time(delta_time)
 
 	delta_t = 0 //how far off optimal temp we care
@@ -266,7 +267,7 @@
 	delta_t *= speed_mod
 
 	//Now we calculate how much to add - this is normalised to the rate up limiter
-	var/delta_chem_factor = reaction.rate_up_lim * delta_t *delta_time //add/remove factor
+	var/delta_chem_factor = reaction.base_reaction_rate * delta_t *delta_time //add/remove factor
 	var/total_step_added = 0
 	//keep limited
 	if(delta_chem_factor > step_target_vol)

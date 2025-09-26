@@ -138,7 +138,7 @@
 	overheat_temp = 575
 	temp_exponent_factor = 0.2
 	thermic_constant = 35 //gives a bonus 15C wiggle room
-	rate_up_lim = 25 //Give a chance to pull back
+	base_reaction_rate = 25 //Give a chance to pull back
 
 /datum/chemical_reaction/nitrous_oxide/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
 	return //This is empty because the explosion reaction will occur instead (see pyrotechnics.dm). This is just here to update the lookup ui.
@@ -585,7 +585,7 @@
 	optimal_temp = 200
 	overheat_temp = 0
 	thermic_constant = 0
-	rate_up_lim = 50
+	base_reaction_rate = 50
 	mix_message = "The solution freezes up into ice!"
 	reaction_flags = REACTION_COMPETITIVE
 
@@ -596,7 +596,7 @@
 	optimal_temp = 350
 	overheat_temp = NO_OVERHEAT
 	thermic_constant = 0
-	rate_up_lim = 50
+	base_reaction_rate = 50
 	mix_message = "The ice melts back into water!"
 
 

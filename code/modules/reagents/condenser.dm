@@ -1,0 +1,71 @@
+/obj/item/reagent_containers/cup/condenser
+	name = "chemical condenser"
+	desc = "TODO"
+
+	icon = 'goon/icons/obj/condenser.dmi'
+	icon_state = "condenser"
+	filling_icon_file = 'goon/icons/obj/condenser.dmi'
+	fill_icon_state = "f-condenser"
+
+	fill_icon_thresholds = list(0, 1, 25, 50, 75, 100)
+
+	/// Cup attached to the assembly
+	var/obj/item/reagent_containers/cup/output
+
+/obj/item/reagent_containers/cup/condenser/Destroy(force)
+	QDEL_NULL(output)
+	return ..()
+
+/obj/item/reagent_containers/cup/condenser/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	if(!istype(tool, /obj/item/reagent_containers/cup))
+		return ..()
+
+	if(output)
+		to_chat(user, span_warning("[src]'s output already has a container."))
+		return ITEM_INTERACT_BLOCKING
+
+	if(!user.transferItemToLoc(tool, src))
+		return ITEM_INTERACT_BLOCKING
+
+	set_output(tool)
+	visible_message("[user] attaches [tool] to [src].")
+	return ITEM_INTERACT_SUCCESS
+
+/obj/item/reagent_containers/cup/condenser/attack_hand_secondary(mob/user, list/modifiers)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
+	if(!output)
+		return
+
+	if(!user.pickup_item(output))
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+	visible_message("[user] removes [output] from [src].")
+	set_output(null)
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+/obj/item/reagent_containers/cup/condenser/proc/set_output(obj/item/reagent_containers/cup/new_output)
+	if(output)
+		UnregisterSignal(output, COMSIG_PARENT_QDELETING)
+
+	output = new_output
+
+	if(!output)
+		STOP_PROCESSING(SSfastprocess, src)
+		return
+
+	RegisterSignal(output, COMSIG_PARENT_QDELETING, PROC_REF(output_deleted))
+	START_PROCESSING(SSfastprocess, src)
+
+/obj/item/reagent_containers/cup/condenser/proc/output_deleted(datum/source)
+	SIGNAL_HANDLER
+	set_output(null)
+
+/obj/item/reagent_containers/cup/condenser/process(delta_time)
+	for(var/datum/reagent/R as anything in reagents.reagent_list)
+		if(reagents.chem_temp < R.boiling_point)
+			continue
+
+		reagents.trans_id_to(output, R.type, R.boil_off_rate * delta_time)

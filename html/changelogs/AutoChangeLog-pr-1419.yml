@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Zedaphen, an extremely powerful drug that heals during sleep.
-  - rscadd: You can manually sleep in beds for any duration.
-  - bugfix: Overdosing on inaprovaline no longer permanently slows you down.

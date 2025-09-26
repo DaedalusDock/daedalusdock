@@ -13,3 +13,8 @@
   Kapu1178:
   - rscadd: Most food now provides effects on consumption. The Chef can see what food
       provides what benefits.
+2025-09-26:
+  Kapu1178:
+  - rscadd: Zedaphen, an extremely powerful drug that heals during sleep.
+  - rscadd: You can manually sleep in beds for any duration.
+  - bugfix: Overdosing on inaprovaline no longer permanently slows you down.

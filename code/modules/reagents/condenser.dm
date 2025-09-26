@@ -4,20 +4,22 @@
 
 	icon = 'goon/icons/obj/condenser.dmi'
 	icon_state = "condenser"
-	filling_icon_file = 'goon/icons/obj/condenser.dmi'
-	fill_icon_state = "f-condenser"
+	inhand_icon_state = "beaker"
+	worn_icon_state = "beaker"
 
+	fill_icon_file = 'goon/icons/obj/condenser.dmi'
+	fill_icon_state = "f-condenser"
 	fill_icon_thresholds = list(0, 1, 25, 50, 75, 100)
 
 	/// Cup attached to the assembly
-	var/obj/item/reagent_containers/cup/output
+	var/obj/item/reagent_containers/cup/beaker/output
 
 /obj/item/reagent_containers/cup/condenser/Destroy(force)
 	QDEL_NULL(output)
 	return ..()
 
 /obj/item/reagent_containers/cup/condenser/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
-	if(!istype(tool, /obj/item/reagent_containers/cup))
+	if(!istype(tool, /obj/item/reagent_containers/cup/beaker))
 		return ..()
 
 	if(output)
@@ -46,7 +48,21 @@
 	set_output(null)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-/obj/item/reagent_containers/cup/condenser/proc/set_output(obj/item/reagent_containers/cup/new_output)
+/obj/item/reagent_containers/cup/condenser/update_overlays()
+	. = ..()
+	if(!output)
+		return
+
+	var/mutable_appearance/output_overlay = new(output)
+	output_overlay.plane = FLOAT_PLANE
+	output_overlay.layer = FLOAT_LAYER
+	output_overlay.pixel_x = 11
+	output_overlay.pixel_y = output.condenser_offset_y
+	. += output_overlay
+
+	. += image(icon, "condenser-pipe")
+
+/obj/item/reagent_containers/cup/condenser/proc/set_output(obj/item/reagent_containers/cup/beaker/new_output)
 	if(output)
 		UnregisterSignal(output, COMSIG_PARENT_QDELETING)
 
@@ -54,10 +70,12 @@
 
 	if(!output)
 		STOP_PROCESSING(SSfastprocess, src)
+		update_appearance(UPDATE_OVERLAYS)
 		return
 
 	RegisterSignal(output, COMSIG_PARENT_QDELETING, PROC_REF(output_deleted))
 	START_PROCESSING(SSfastprocess, src)
+	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/reagent_containers/cup/condenser/proc/output_deleted(datum/source)
 	SIGNAL_HANDLER

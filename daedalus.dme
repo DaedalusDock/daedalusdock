@@ -4331,6 +4331,7 @@
 #include "code\modules\projectiles\projectile\special\wormhole.dm"
 #include "code\modules\reagents\chem_splash.dm"
 #include "code\modules\reagents\condenser.dm"
+#include "code\modules\reagents\hotplate.dm"
 #include "code\modules\reagents\reagent_containers.dm"
 #include "code\modules\reagents\reagent_dispenser.dm"
 #include "code\modules\reagents\chemistry\chem_wiki_render.dm"

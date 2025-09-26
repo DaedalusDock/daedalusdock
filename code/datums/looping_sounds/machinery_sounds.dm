@@ -206,3 +206,8 @@
 	mid_length = 2.1 SECONDS
 	end_sound = 'goon/sounds/phone/remote_pickup.ogg'
 	volume = 10
+
+/datum/looping_sound/boiling
+	mid_sounds = list('sound/effects/bubbles/bubbles2.ogg')
+	mid_length = 7 SECONDS
+	volume = 25

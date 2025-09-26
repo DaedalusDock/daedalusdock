@@ -13,20 +13,37 @@
 
 	volume = 60
 
+	var/tmp/datum/looping_sound/boiling/loop
+
 	/// Cup attached to the assembly
-	var/obj/item/reagent_containers/cup/beaker/output
+	var/tmp/obj/item/reagent_containers/cup/beaker/output
 
 	/// Holds the vaporized reagent so we can cool it down before passing it onto the output.
-	var/datum/reagents/temp_holder
+	var/tmp/datum/reagents/temp_holder
 
 /obj/item/reagent_containers/cup/condenser/Initialize(mapload, vol)
 	. = ..()
 	temp_holder = new(volume)
+	loop = new(src)
+	register_context()
+	START_PROCESSING(SSfastprocess, src)
 
 /obj/item/reagent_containers/cup/condenser/Destroy(force)
+	STOP_PROCESSING(SSfastprocess, src)
 	QDEL_NULL(output)
 	QDEL_NULL(temp_holder)
+	QDEL_NULL(loop)
 	return ..()
+
+/obj/item/reagent_containers/cup/condenser/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	. = ..()
+	if(istype(held_item, /obj/item/reagent_containers/cup/beaker))
+		context[SCREENTIP_CONTEXT_RMB] = "Attach Beaker"
+		. = CONTEXTUAL_SCREENTIP_SET
+
+	else if(isnull(held_item) && output)
+		context[SCREENTIP_CONTEXT_LMB] = "Remove Beaker"
+		. = CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/reagent_containers/cup/condenser/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
 	if(!istype(tool, /obj/item/reagent_containers/cup/beaker))
@@ -54,7 +71,6 @@
 	if(!user.pickup_item(output))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-	visible_message("[user] removes [output] from [src].")
 	set_output(null)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
@@ -79,12 +95,10 @@
 	output = new_output
 
 	if(!output)
-		STOP_PROCESSING(SSfastprocess, src)
 		update_appearance(UPDATE_OVERLAYS)
 		return
 
 	RegisterSignal(output, COMSIG_PARENT_QDELETING, PROC_REF(output_deleted))
-	START_PROCESSING(SSfastprocess, src)
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/item/reagent_containers/cup/condenser/proc/output_deleted(datum/source)
@@ -92,14 +106,26 @@
 	set_output(null)
 
 /obj/item/reagent_containers/cup/condenser/process(delta_time)
+	var/reagents_moved = FALSE
 	for(var/datum/reagent/R as anything in reagents.reagent_list)
 		if(R.reagent_state != LIQUID || reagents.chem_temp < R.boiling_point)
 			continue
 
-		reagents.trans_id_to(temp_holder, R.type, R.boil_off_rate * delta_time, no_react = TRUE)
+		reagents_moved = TRUE
+
+		var/transfer_rate = R.boil_off_rate * delta_time
+		if(!output)
+			reagents.remove_reagent(R.type, transfer_rate)
+			continue
+
+		reagents.trans_id_to(temp_holder, R.type, transfer_rate, no_react = TRUE)
 		temp_holder.set_temperature(R.dew_point)
 		temp_holder.trans_to(output, temp_holder.maximum_volume, no_react = TRUE)
 
-	reagents.handle_reactions()
-	output.reagents.handle_reactions()
+	if(reagents_moved)
+		loop.start()
+		reagents.handle_reactions()
+		output?.reagents.handle_reactions()
+	else
+		loop.stop()
 

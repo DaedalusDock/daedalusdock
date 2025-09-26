@@ -118,7 +118,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 		remove_unique_grab_effects(G.affecting)
 
 	update_stage_effects(G, src, TRUE)
-	G.affecting.update_offsets()
+	G.affecting.update_offsets(TRUE)
 
 	SEND_SIGNAL(G.affecting, COMSIG_ATOM_NO_LONGER_GRABBED, G.assailant)
 	SEND_SIGNAL(G.assailant, COMSIG_LIVING_NO_LONGER_GRABBING, G.affecting)

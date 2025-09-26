@@ -7,7 +7,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 
 	/// Thermal energy coeff
-	var/heater_coefficient = 0.8
+	var/heater_coefficient = 0.5
 	/// At max ramp-up, multiply the thermal energy by this.
 	var/heat_rampup_temp = 10
 	/// How many seconds it takes to reach max heat ramp-up.

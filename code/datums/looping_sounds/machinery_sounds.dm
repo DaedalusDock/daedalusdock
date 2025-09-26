@@ -208,6 +208,6 @@
 	volume = 10
 
 /datum/looping_sound/boiling
-	mid_sounds = list('sound/effects/bubbles/bubbles2.ogg')
+	mid_sounds = list('sound/effects/bubbles2.ogg')
 	mid_length = 7 SECONDS
-	volume = 25
+	volume = 40

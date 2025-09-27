@@ -482,6 +482,7 @@
 * * smoke_range - The range of smoke emitted.
 */
 /datum/chemical_reaction/proc/kapuchem_smoke(datum/reagents/holder, datum/equilibrium/equilibrium, list/reagent_list, smoke_range)
+	smoke_range = floor(smoke_range)
 	if(smoke_range < 1)
 		return
 

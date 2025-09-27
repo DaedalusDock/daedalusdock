@@ -663,6 +663,10 @@
 	boiling_point = 328.6
 	dew_point = 328.6 * 0.9
 
+/datum/reagent/diethylamine/affect_blood(mob/living/carbon/C, removed)
+	C.adjustToxLoss(removed * 2, FALSE, cause_of_death = "Ingesting diethylamine")
+	return TRUE
+
 // This is more bad ass, and pests get hurt by the corrosive nature of it, not the plant. The new trade off is it culls stability.
 /datum/reagent/diethylamine/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
 	. = ..()

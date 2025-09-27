@@ -347,15 +347,24 @@
 	kapuchem_smoke(
 		holder,
 		reaction,
-		list(/datum/reagent/ammonia = round(created_volume * 3 * 0.5, CHEMICAL_VOLUME_ROUNDING)), // For every 9 units, smoke is 1 tile.
-		floor(clamp(created_volume / 3, 0, 3)),
+		list(/datum/reagent/ammonia = round(created_volume * 3 * 0.5, CHEMICAL_VOLUME_ROUNDING)),
+		clamp(created_volume / 3, 0, 3), // For every 9 units, smoke is 1 tile.
 	)
 
 
 /datum/chemical_reaction/diethylamine
 	results = list(/datum/reagent/diethylamine = 2)
 	required_reagents = list (/datum/reagent/ammonia = 1, /datum/reagent/consumable/ethanol = 1)
+	reaction_flags = REACTION_INSTANT
 
+/datum/chemical_reaction/diethylamine/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	. = ..()
+	kapuchem_smoke(
+		holder,
+		reaction,
+		list(/datum/reagent/diethylamine = round(created_volume * 2 * 0.5, CHEMICAL_VOLUME_ROUNDING)),
+		clamp(created_volume / 4, 0, 3), // For every 8 units, smoke is 1 tile.
+	)
 
 /datum/chemical_reaction/plantbgone
 	results = list(/datum/reagent/toxin/plantbgone = 5)
@@ -365,6 +374,16 @@
 /datum/chemical_reaction/weedkiller
 	results = list(/datum/reagent/toxin/plantbgone/weedkiller = 5)
 	required_reagents = list(/datum/reagent/toxin = 1, /datum/reagent/ammonia = 4)
+	reaction_flags = REACTION_INSTANT
+
+/datum/chemical_reaction/weedkiller/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	. = ..()
+	kapuchem_smoke(
+		holder,
+		reaction,
+		list(/datum/reagent/toxin/plantbgone/weedkiller = round(created_volume * 5 * 0.5, CHEMICAL_VOLUME_ROUNDING)),
+		clamp(created_volume / 2, 0, 3), // For every 10 units, smoke is 1 tile.
+	)
 
 /datum/chemical_reaction/pestkiller
 	results = list(/datum/reagent/toxin/pestkiller = 5)

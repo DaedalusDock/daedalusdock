@@ -124,6 +124,16 @@
 /datum/chemical_reaction/alkysine
 	results = list(/datum/reagent/medicine/alkysine = 2)
 	required_reagents = list(/datum/reagent/toxin/acid/hydrochloric = 1, /datum/reagent/ammonia = 1, /datum/reagent/medicine/dylovene = 1)
+	reaction_flags = REACTION_INSTANT
+
+/datum/chemical_reaction/alkysine/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	. = ..()
+	kapuchem_smoke(
+		holder,
+		reaction,
+		list(/datum/reagent/ammonia = round(created_volume, CHEMICAL_VOLUME_ROUNDING)),
+		clamp(created_volume / 5, 0, 3), // For every 10 units, smoke is 1 tile.
+	)
 
 /datum/chemical_reaction/morphine
 	results = list(/datum/reagent/medicine/morphine = 2)

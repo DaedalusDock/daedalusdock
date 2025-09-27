@@ -61,7 +61,6 @@ PROCESSING_SUBSYSTEM_DEF(reagents)
 		if(isabstract(path))//Are we abstract?
 			continue
 		var/datum/reagent/D = new path()
-		D.mass = rand(10, 800) //This is terrible and should be removed ASAP!
 		reagent_list[path] = D
 
 	return reagent_list

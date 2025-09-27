@@ -115,7 +115,7 @@
 		reagents_moved = TRUE
 		var/transfer_rate = R.boil_off_rate * delta_time
 
-		if(!output || (R.state == GAS))
+		if(!output || (R.reagent_state == GAS))
 			reagents.remove_reagent(R.type, transfer_rate)
 			continue
 

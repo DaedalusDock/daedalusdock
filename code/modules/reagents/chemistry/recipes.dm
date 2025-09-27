@@ -15,6 +15,10 @@
 	///Reagents that block the reaction from occuring, like an inverse catalyst.
 	var/list/inhibitors = list()
 
+	/// A nested alist where each pair is a type to another alist, with the alist being a weighted list of modifier -> chance.
+	/// See Bicardine for an example. The modifier should never be greater than 1, if it is, adjust react_timestep() accordingly.
+	var/list/requirement_consumption_modifiers = alist()
+
 	/// the exact container path required for the reaction to happen.
 	var/required_container
 	/// Some stupid magic bullshit for slime reactions. Literally what the fuck.

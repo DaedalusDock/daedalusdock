@@ -15,6 +15,13 @@
 		/datum/reagent/acetone = 1
 	)
 
+	requirement_consumption_modifiers = alist(
+		/datum/reagent/acetone = alist(
+			1 = 20,
+			0.5 = 80
+		),
+	)
+
 /datum/chemical_reaction/meralyne
 	results = list(/datum/reagent/medicine/meralyne = 2)
 	required_reagents = list(

@@ -282,9 +282,34 @@
 	var/required_amount
 	for(var/datum/reagent/requirement as anything in reaction.required_reagents)
 		required_amount = reaction.required_reagents[requirement]
-		if(!holder.remove_reagent(requirement, delta_chem_factor * required_amount))
-			to_delete = TRUE
-			return
+		var/requirement_consumption_chance_list = reaction.requirement_consumption_modifiers[requirement.type]
+		#ifdef UNIT_TESTS
+		requirement_consumption_chance_list = null
+		#endif
+
+		var/real_required_amount = delta_chem_factor * required_amount
+
+		// null is an implicit 100% chance to consume the reagent on reaction.
+		if(isnull(requirement_consumption_chance_list))
+			if(!holder.remove_reagent(requirement, real_required_amount))
+				to_delete = TRUE
+				return
+		else
+			var/reagent_consumption_modifier = pick_weight(requirement_consumption_chance_list)
+			if(reagent_consumption_modifier == 1)
+				if(!holder.remove_reagent(requirement, real_required_amount))
+					to_delete = TRUE
+					return
+
+			else
+				if(!holder.has_reagent(requirement, real_required_amount))
+					to_delete = TRUE
+					return
+
+				var/modified_required_amount = round(real_required_amount * reagent_consumption_modifier, CHEMICAL_VOLUME_ROUNDING)
+				if(modified_required_amount != 0 && !holder.remove_reagent(requirement, modified_required_amount))
+					to_delete = TRUE
+					return
 
 	var/step_add
 	for(var/datum/reagent/product as anything in reaction.results)

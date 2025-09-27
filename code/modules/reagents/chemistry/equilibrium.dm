@@ -282,7 +282,7 @@
 	var/required_amount
 	for(var/datum/reagent/requirement as anything in reaction.required_reagents)
 		required_amount = reaction.required_reagents[requirement]
-		var/requirement_consumption_chance_list = reaction.requirement_consumption_modifiers[requirement.type]
+		var/alist/requirement_consumption_chance_list = reaction.requirement_consumption_modifiers[requirement.type]
 		#ifdef UNIT_TESTS
 		requirement_consumption_chance_list = null
 		#endif
@@ -306,10 +306,10 @@
 					to_delete = TRUE
 					return
 
+				// Modified required amount could be higher than the base consumption amount. In this instance we do NOT want it to fail the reaction
+				// if there isn't enough. That's fine. Otherwise reactions could randomly end and restart and leave players confused.
 				var/modified_required_amount = round(real_required_amount * reagent_consumption_modifier, CHEMICAL_VOLUME_ROUNDING)
-				if(modified_required_amount != 0 && !holder.remove_reagent(requirement, modified_required_amount))
-					to_delete = TRUE
-					return
+				holder.remove_reagent(requirement, modified_required_amount)
 
 	var/step_add
 	for(var/datum/reagent/product as anything in reaction.results)

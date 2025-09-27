@@ -57,7 +57,7 @@
 	reagent_state = LIQUID
 	color = "#2D2D2D"
 	taste_description = "oil"
-	boiling_point = 1200//Oil is crude
+	boiling_point = 1200 //Oil is crude
 
 	addiction_types = null
 

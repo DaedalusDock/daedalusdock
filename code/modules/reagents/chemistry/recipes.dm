@@ -16,7 +16,7 @@
 	var/list/inhibitors = list()
 
 	/// A nested alist where each pair is a type to another alist, with the alist being a weighted list of modifier -> chance.
-	/// See Bicardine for an example. The modifier should never be greater than 1, if it is, adjust react_timestep() accordingly.
+	/// See Bicardine for an example.
 	var/list/requirement_consumption_modifiers = alist()
 
 	/// the exact container path required for the reaction to happen.

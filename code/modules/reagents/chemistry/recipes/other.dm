@@ -348,7 +348,7 @@
 		holder,
 		reaction,
 		list(/datum/reagent/ammonia = round(created_volume * 3 * 0.5, CHEMICAL_VOLUME_ROUNDING)), // For every 9 units, smoke is 1 tile.
-		floor(clamp(created_volume / 3, 0, 3)),s
+		floor(clamp(created_volume / 3, 0, 3)),
 	)
 
 

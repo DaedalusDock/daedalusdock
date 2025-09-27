@@ -109,7 +109,7 @@
 /obj/item/reagent_containers/cup/condenser/process(delta_time)
 	var/reagents_moved = FALSE
 	for(var/datum/reagent/R as anything in reagents.reagent_list)
-		if(R.reagent_state != LIQUID || reagents.chem_temp < R.boiling_point)
+		if(isnull(R.boiling_point) || reagents.chem_temp < R.boiling_point) // Solids can sublimate, theoretically.
 			continue
 
 		reagents_moved = TRUE

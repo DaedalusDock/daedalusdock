@@ -7,6 +7,8 @@
 	color = "#a8a8a8"
 	value = DISPENSER_REAGENT_VALUE
 
+	boiling_point = null
+
 /datum/reagent/ammonia
 	name = "Ammonia"
 	taste_description = "mordant"
@@ -17,6 +19,9 @@
 	metabolization_rate = 0.1
 	overdose_threshold = 5
 	value = DISPENSER_REAGENT_VALUE
+
+	boiling_point = 239
+	dew_point = 239 * 0.9
 
 /datum/reagent/ammonia/affect_blood(mob/living/carbon/C, removed)
 	C.adjustToxLoss(removed * 1.5, FALSE, cause_of_death = "Ingesting ammonia")
@@ -42,6 +47,8 @@
 	ingest_met = 2
 	value = DISPENSER_REAGENT_VALUE
 
+	boiling_point = null
+
 /datum/reagent/carbon/affect_ingest(mob/living/carbon/C, removed)
 	var/datum/reagents/ingested = C.get_ingested_reagents()
 	if (ingested && length(ingested.reagent_list) > 1) // Need to have at least 2 reagents - cabon and something to remove
@@ -64,13 +71,6 @@
 	else
 		dirtoverlay.alpha = min(dirtoverlay.alpha + reac_volume * 30, 255)
 
-/datum/reagent/copper
-	name = "Copper"
-	description = "A highly ductile metal."
-	taste_description = "copper"
-	color = "#6e3b08"
-	value = DISPENSER_REAGENT_VALUE
-
 /datum/reagent/iron
 	name = "Iron"
 	description = "Pure iron is a metal."
@@ -78,6 +78,8 @@
 	reagent_state = SOLID
 	color = "#353535"
 	value = DISPENSER_REAGENT_VALUE
+
+	boiling_point = null
 
 /datum/reagent/iron/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -90,6 +92,8 @@
 	reagent_state = SOLID
 	color = "#808080"
 	value = DISPENSER_REAGENT_VALUE
+
+	boiling_point = null
 
 /datum/reagent/lithium/affect_blood(mob/living/carbon/C, removed)
 	if(!isspaceturf(C.loc))
@@ -106,6 +110,9 @@
 	reagent_state = LIQUID
 	color = "#484848"
 	value = DISPENSER_REAGENT_VALUE
+
+	boiling_point = 630
+	dew_point = 630 * 0.9
 
 /datum/reagent/mercury/affect_blood(mob/living/carbon/C, removed)
 	if(!isspaceturf(C.loc))
@@ -124,6 +131,9 @@
 	color = "#832828"
 	value = DISPENSER_REAGENT_VALUE
 
+	boiling_point = 704
+	dew_point = 704 * 0.9
+
 /datum/reagent/potassium
 	name = "Potassium"
 	description = "A soft, low-melting solid that can easily be cut with a knife. Reacts violently with water."
@@ -131,6 +141,8 @@
 	reagent_state = SOLID
 	color = "#a0a0a0"
 	value = DISPENSER_REAGENT_VALUE
+
+	boiling_point = null
 
 /datum/reagent/potassium/affect_blood(mob/living/carbon/C, removed)
 	if(volume > 10)
@@ -150,6 +162,9 @@
 	var/meltdose = 20 // How much is needed to melt
 	var/max_damage = 40
 	value = DISPENSER_REAGENT_VALUE
+
+	boiling_point = 610
+	dew_point = 610 * 0.9
 
 /datum/reagent/toxin/acid/affect_blood(mob/living/carbon/C, removed)
 	C.adjustFireLoss(removed * acidpwr, FALSE)
@@ -205,12 +220,17 @@
 	max_damage = 30
 	value = DISPENSER_REAGENT_VALUE * 2
 
+	boiling_point = 381
+	dew_point = 381 * 0.9
+
 /datum/reagent/silicon
 	name = "Silicon"
 	description = "A tetravalent metalloid, silicon is less reactive than its chemical analog carbon."
 	reagent_state = SOLID
 	color = "#a8a8a8"
 	value = DISPENSER_REAGENT_VALUE
+
+	boiling_point = null
 
 /datum/reagent/sodium
 	name = "Sodium"
@@ -220,6 +240,8 @@
 	color = "#808080"
 	value = DISPENSER_REAGENT_VALUE
 
+	boiling_point = null
+
 /datum/reagent/sulfur
 	name = "Sulfur"
 	description = "A chemical element with a pungent smell."
@@ -227,6 +249,9 @@
 	reagent_state = SOLID
 	color = "#bf8c00"
 	value = DISPENSER_REAGENT_VALUE
+
+	boiling_point = 717.8
+	dew_point = 717.8 * 0.9
 
 /datum/reagent/tungsten
 	name = "Tungsten"
@@ -236,6 +261,8 @@
 	color = "#dcdcdc"
 	value = DISPENSER_REAGENT_VALUE
 
+	boiling_point = null
+
 /datum/reagent/oxygen
 	name = "Oxygen"
 	description = "A colorless, odorless gas. Grows on trees but is still pretty valuable."
@@ -243,6 +270,8 @@
 	color = "#808080" // rgb: 128, 128, 128
 	taste_mult = 0 // oderless and tasteless
 
+	boiling_point = 90.2
+	dew_point = 90.2 * 0.9
 
 /datum/reagent/oxygen/expose_turf(turf/exposed_turf, reac_volume, exposed_temperature)
 	. = ..()
@@ -257,6 +286,8 @@
 	color = "#808080" // rgb: 128, 128, 128
 	taste_mult = 0
 
+	boiling_point = 77.36
+	dew_point = 77.36 * 0.9
 
 /datum/reagent/nitrogen/expose_turf(turf/open/exposed_turf, reac_volume)
 	. = ..()
@@ -271,6 +302,8 @@
 	color = "#808080" // rgb: 128, 128, 128
 	taste_mult = 0
 
+	boiling_point = 20.28
+	dew_point = 20.28 * 0.9
 
 /datum/reagent/fluorine
 	name = "Fluorine"
@@ -279,6 +312,8 @@
 	color = "#808080" // rgb: 128, 128, 128
 	taste_description = "acid"
 
+	boiling_point = 85.04
+	dew_point = 85.04 * 0.9
 
 // You're an idiot for thinking that one of the most corrosive and deadly gasses would be beneficial
 /datum/reagent/fluorine/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
@@ -298,6 +333,8 @@
 	color = "#80919d"
 	metabolization_rate = 0.15
 
+	boiling_point = null
+
 /datum/reagent/lead/affect_blood(mob/living/carbon/C, removed)
 	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.5)
 
@@ -308,6 +345,8 @@
 	color = "#BC8A00"
 	taste_description = "metal"
 
+	boiling_point = 457.4
+	dew_point = 457.4 * 0.9
 
 /datum/reagent/carbondioxide
 	name = "Carbon Dioxide"
@@ -316,6 +355,8 @@
 	color = "#B0B0B0" // rgb : 192, 192, 192
 	taste_description = "something unknowable"
 
+	boiling_point = 194.7
+	dew_point = 194.8 * 0.9
 
 /datum/reagent/carbondioxide/expose_turf(turf/open/exposed_turf, reac_volume)
 	if(istype(exposed_turf))
@@ -330,7 +371,8 @@
 	color = "#FFFB89" //pale yellow? let's make it light gray
 	taste_description = "chlorine"
 
-
+	boiling_point = 239.11
+	dew_point = 239.11 * 0.9
 
 // You're an idiot for thinking that one of the most corrosive and deadly gasses would be beneficial
 /datum/reagent/chlorine/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
@@ -347,17 +389,24 @@
 	color = "#FFFFFF"
 	reagent_state = SOLID
 
+	boiling_point = null
+
 /datum/reagent/helium
 	name = "Helium"
 	description = "Does not make any sound."
 	reagent_state = GAS
 	color = "#ffffa099"
 
+	boiling_point = 4.22
+	dew_point = 4
+
 /datum/reagent/nickel
 	name = "Nickel"
 	description = "Contrary to popular belief, this is not a currency."
 	reagent_state = SOLID
 	color = "#dcdcdc"
+
+	boiling_point = null
 
 /datum/reagent/copper
 	name = "Copper"
@@ -366,6 +415,7 @@
 	color = "#6E3B08" // rgb: 110, 59, 8
 	taste_description = "metal"
 
+	boiling_point = null
 
 /datum/reagent/copper/expose_obj(obj/exposed_obj, reac_volume, exposed_temperature)
 	. = ..()
@@ -384,3 +434,5 @@
 	color = "#D0D0D0" // rgb: 208, 208, 208
 	taste_description = "expensive yet reasonable metal"
 	material = /datum/material/silver
+
+	boiling_point = null

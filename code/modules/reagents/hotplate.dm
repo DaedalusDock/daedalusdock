@@ -94,6 +94,9 @@
 	if(!container)
 		return
 
+	if(container.reagents.chem_temp >= 800)
+		return
+
 	var/thermal_adjustment =  get_temperature() * delta_time * container.reagents.total_volume
 
 	container.reagents.adjust_thermal_energy(thermal_adjustment)

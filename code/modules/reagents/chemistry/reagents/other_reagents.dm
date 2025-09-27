@@ -12,8 +12,8 @@
 	metabolization_rate = 2
 	ingest_met = 2
 
-	boiling_point = 373.15
-	dew_point = 340
+	boiling_point = BOILING_POINT_WATER
+	dew_point = BOILING_POINT_WATER * 0.9
 
 /datum/reagent/water/expose_turf(turf/open/exposed_turf, reac_volume, exposed_temperature)
 	. = ..()
@@ -660,6 +660,8 @@
 	color = "#604030" // rgb: 96, 64, 48
 	taste_description = "iron"
 
+	boiling_point = 328.6
+	dew_point = 328.6 * 0.9
 
 // This is more bad ass, and pests get hurt by the corrosive nature of it, not the plant. The new trade off is it culls stability.
 /datum/reagent/diethylamine/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)

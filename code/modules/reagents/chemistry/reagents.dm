@@ -86,9 +86,9 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 
 	///Thermodynamic vars
 	///How hot this reagent needs to be to begin boiling. null means it will not boil.
-	var/boiling_point = 423
+	var/boiling_point = BOILING_POINT_WATER + 100 // Arbitrary default that is "more than water".
 	/// When output from a condenser, the reagent will be this temperature.
-	var/dew_point = 380 // Value is arbitrary. About 10% lower than boiling point.
+	var/dew_point = (BOILING_POINT_WATER + 100) * 0.9 // Value is arbitrary.
 
 	/// Units lost per second while boiling.
 	var/boil_off_rate = 2.5

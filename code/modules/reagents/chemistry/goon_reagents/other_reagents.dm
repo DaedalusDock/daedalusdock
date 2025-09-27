@@ -348,6 +348,9 @@
 	metabolization_rate = 0.04
 	value = DISPENSER_REAGENT_VALUE
 
+	boiling_point = 329
+	dew_point = 329 * 0.9
+
 /datum/reagent/acetone/affect_blood(mob/living/carbon/C, removed)
 	C.adjustToxLoss(removed * 3, FALSE, cause_of_death = "Ingesting acetone")
 	return TRUE

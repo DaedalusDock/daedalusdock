@@ -9,11 +9,19 @@
 
 /datum/chemical_reaction/bicaridine
 	results = list(/datum/reagent/medicine/bicaridine = 2)
-	required_reagents = list(/datum/reagent/phosphorus = 1, /datum/reagent/carbon = 1, /datum/reagent/acetone = 1)
+	required_reagents = list(
+		/datum/reagent/phosphorus = 1,
+		/datum/reagent/carbon = 1,
+		/datum/reagent/acetone = 1
+	)
 
 /datum/chemical_reaction/meralyne
 	results = list(/datum/reagent/medicine/meralyne = 2)
-	required_reagents = list(/datum/reagent/medicine/bicaridine = 1, /datum/reagent/medicine/epinephrine = 1, /datum/reagent/acetone = 1)
+	required_reagents = list(
+		/datum/reagent/medicine/bicaridine = 1,
+		/datum/reagent/medicine/epinephrine = 1,
+		/datum/reagent/acetone = 1
+	)
 	inhibitors = list(/datum/reagent/consumable/sugar = 1) // Messes up with inaprovaline
 
 /datum/chemical_reaction/meralyne/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
@@ -84,7 +92,11 @@
 
 /datum/chemical_reaction/tramadol
 	results = list(/datum/reagent/medicine/tramadol = 3)
-	required_reagents = list(/datum/reagent/medicine/epinephrine = 1, /datum/reagent/consumable/ethanol = 1, /datum/reagent/acetone = 1)
+	required_reagents = list(
+		/datum/reagent/medicine/epinephrine = 1,
+		/datum/reagent/consumable/ethanol = 1,
+		/datum/reagent/acetone = 1,
+	)
 
 /datum/chemical_reaction/oxycodone
 	results = list(/datum/reagent/medicine/tramadol/oxycodone = 1)
@@ -167,7 +179,13 @@
 
 /datum/chemical_reaction/atropine
 	results = list(/datum/reagent/medicine/atropine = 4)
-	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/diethylamine = 1, /datum/reagent/acetone = 1, /datum/reagent/phenol = 1, /datum/reagent/toxin/acid = 1)
+	required_reagents = list(
+		/datum/reagent/consumable/ethanol = 1,
+		/datum/reagent/diethylamine = 1,
+		/datum/reagent/acetone = 1,
+		/datum/reagent/phenol = 1,
+		/datum/reagent/toxin/acid = 1
+	)
 	mix_message = "A horrid smell like something died drifts from the mixture."
 
 /datum/chemical_reaction/chlorpromazine

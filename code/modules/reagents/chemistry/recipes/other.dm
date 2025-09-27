@@ -340,6 +340,16 @@
 /datum/chemical_reaction/ammonia
 	results = list(/datum/reagent/ammonia = 3)
 	required_reagents = list(/datum/reagent/hydrogen = 3, /datum/reagent/nitrogen = 1)
+	reaction_flags = REACTION_INSTANT
+
+/datum/chemical_reaction/ammonia/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	. = ..()
+	kapuchem_smoke(
+		holder,
+		reaction,
+		list(/datum/reagent/ammonia = round(created_volume * 3 * 0.5, CHEMICAL_VOLUME_ROUNDING)), // For every 9 units, smoke is 1 tile.
+		floor(clamp(created_volume / 3, 0, 3)),s
+	)
 
 
 /datum/chemical_reaction/diethylamine

@@ -49,7 +49,7 @@
 	var/thermic_constant = 50
 
 	/// When at the optimal temperature, this is the rate at which the reaction occurs per second. Usually this is reagent conversion.
-	var/base_reaction_rate = 30
+	var/base_reaction_rate = 15
 
 	/// Affects how reactions occur
 	var/reaction_flags = NONE
@@ -472,3 +472,41 @@
 		equilibrium.data[id] = 0
 		return TRUE
 	return FALSE
+
+/*
+* Creates smoke of the given reagents if the container is open.
+* Dose not remove reagents from the holder.
+*
+* Arguments:
+* * reagent_list - a k:v list of reagent_type : amount, these are the reagents given to the smoke emitter.
+* * smoke_range - The range of smoke emitted.
+*/
+/datum/chemical_reaction/proc/kapuchem_smoke(datum/reagents/holder, datum/equilibrium/equilibrium, list/reagent_list, smoke_range)
+	if(smoke_range < 1)
+		return
+
+	if(!(holder.flags & OPENCONTAINER))
+		return
+
+	var/atom/movable/AM = holder.my_atom
+	if(!istype(AM))
+		return
+
+	var/turf/smoke_loc = get_turf(AM)
+	if(isnull(smoke_loc))
+		return
+
+	var/datum/reagents/temp_holder = new(100, NO_REACT)
+	temp_holder.add_reagent_list(reagent_list) // Half of the ammonia reaction is lost to the air
+
+	var/datum/effect_system/fluid_spread/smoke/chem/quick/smoke_emitter = new()
+	smoke_emitter.attach(smoke_loc)
+	smoke_emitter.set_up(
+		smoke_range,
+		location = smoke_loc,
+		carry = temp_holder,
+		silent = FALSE,
+	)
+
+	qdel(temp_holder)
+	smoke_emitter.start()

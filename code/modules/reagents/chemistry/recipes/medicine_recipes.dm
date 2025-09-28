@@ -305,3 +305,16 @@
 /datum/chemical_reaction/sterilizine
 	results = list(/datum/reagent/space_cleaner/sterilizine = 3)
 	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/medicine/dylovene = 1, /datum/reagent/toxin/acid/hydrochloric = 1)
+
+/datum/chemical_reaction/shmowder
+	results = list(/datum/reagent/medicine/shmowder = 1)
+	required_reagents = list(
+		/datum/reagent/medicine/bicaridine = 1,
+		/datum/reagent/medicine/meralyne = 1,
+		/datum/reagent/medicine/kelotane = 1,
+		/datum/reagent/medicine/dermaline = 1,
+		/datum/reagent/medicine/dylovene = 1,
+		/datum/reagent/medicine/dexalin = 1,
+		/datum/reagent/medicine/saline_glucose = 1,
+		/datum/reagent/medicine/peridaxon = 1
+	)

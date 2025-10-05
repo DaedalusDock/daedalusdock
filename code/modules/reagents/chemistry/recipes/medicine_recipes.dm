@@ -7,7 +7,7 @@
 	required_reagents = list(
 		/datum/reagent/phosphorus = 1,
 		/datum/reagent/carbon = 1,
-		/datum/reagent/acetone = 1
+		/datum/reagent/acetone = 1 // da solvant
 	)
 
 	requirement_consumption_modifiers = alist(
@@ -22,7 +22,7 @@
 	required_reagents = list(
 		/datum/reagent/medicine/bicaridine = 1,
 		/datum/reagent/medicine/epinephrine = 1,
-		/datum/reagent/acetone = 1
+		/datum/reagent/acetone = 1 // da solvant
 	)
 	inhibitors = list(/datum/reagent/consumable/sugar = 1) // Messes up with inaprovaline
 
@@ -44,8 +44,8 @@
 // Burn chems
 //
 /datum/chemical_reaction/kelotane
-	results = list(/datum/reagent/medicine/kelotane = 2)
-	required_reagents = list(/datum/reagent/silicon = 1, /datum/reagent/carbon = 1)
+	results = list(/datum/reagent/medicine/kelotane = 3)
+	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/silicon = 1, /datum/reagent/carbon = 1)
 	is_cold_recipe = TRUE
 	optimal_temp = (-50 CELSIUS) - 50
 	required_temp = -50 CELSIUS

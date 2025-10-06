@@ -135,7 +135,8 @@
 	if(QDELETED(invoker))
 		return FALSE
 
-	var/static/list/search_dirs = list(EAST, WEST, NORTH, SOUTH, NORTHEAST, SOUTHWEST, NORTHWEST, SOUTHEAST)
+	var/static/list/lateral_search_dirs = list(EAST, WEST, NORTH, SOUTH)
+	var/static/list/all_search_dirs = list(EAST, WEST, NORTH, SOUTH, NORTHEAST, SOUTHWEST, NORTHWEST, SOUTHEAST)
 
 	while(!open_heap.is_empty() && !path)
 		var/list/current_node = open_heap.pop()
@@ -151,7 +152,7 @@
 			return TRUE
 
 		// Scan cardinal turfs for valid movements.
-		for(var/scan_direction in search_dirs)
+		for(var/scan_direction in use_diagonals ? all_search_dirs : lateral_search_dirs)
 			var/turf/searching_turf = get_step(current_node_turf, scan_direction)
 			if(closed[searching_turf] & scan_direction)
 				continue // Turf is known to be blocked from this direction, skip!
@@ -210,7 +211,7 @@
 
 	return TRUE
 
-/// The generic heuristic, chebyshev distance.
+/// The generic heuristic, euclidean distance.
 /datum/pathfind/astar/proc/generic_heuristic(turf/searching_turf, turf/end)
 	return get_dist_euclidean(searching_turf, end)
 
@@ -221,14 +222,7 @@
 	path += iter_turf
 
 	while((unwind_node = unwind_node[PREV_NODE]))
-		var/turf/node_turf = unwind_node[ATURF]
-		if(use_diagonals && unwind_node[PREV_NODE])
-			var/turf/look_ahead_turf = unwind_node[PREV_NODE][ATURF]
-			var/turf/look_behind_turf = path[1]
-			if(get_dist(look_ahead_turf, look_behind_turf) == 1 && ISDIAGONALDIR(get_dir(look_ahead_turf, look_behind_turf)))
-				continue
-
-		path.Insert(1, node_turf)
+		path.Insert(1, unwind_node[ATURF])
 
 #undef ATURF
 #undef TOTAL_COST_F

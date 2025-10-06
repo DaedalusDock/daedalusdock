@@ -255,6 +255,9 @@
 	if(!first_location.z || !second_location.z)
 		return INFINITY
 
+	if(first_location == second_location)
+		return -1
+
 	var/dx = first_location.x - second_location.x
 	var/dy = first_location.y - second_location.y
 

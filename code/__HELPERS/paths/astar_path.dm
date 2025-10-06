@@ -124,8 +124,7 @@
 	if(QDELETED(invoker))
 		return FALSE
 
-	var/static/list/lateral_dirs = list(NORTH, EAST, SOUTH, WEST)
-	var/static/list/diagonal_dirs = list(NORTHEAST, SOUTHEAST, NORTHWEST, SOUTHWEST)
+	var/static/list/lateral_dirs = list(EAST, WEST, NORTH, SOUTH)
 
 	while(!open_heap.is_empty() && !path)
 		var/list/current_node = open_heap.pop()

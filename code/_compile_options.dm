@@ -84,7 +84,7 @@
 
 // If this is uncommented, will attempt to load and initialize prof.dll/libprof.so.
 // We do not ship byond-tracy. Build it yourself here: https://github.com/mafemergency/byond-tracy/
-// #define USE_BYOND_TRACY
+#define USE_BYOND_TRACY
 
 ///Uncomment this to force all verbs to run into overtime all of the time
 ///Essentially negating the reserve 2%
@@ -169,7 +169,7 @@
 /////////////////////// MISC PERFORMANCE
 
 //uncomment this to load centcom and runtime station and thats it.
-// #define LOWMEMORYMODE
+#define LOWMEMORYMODE
 
 //uncomment to enable the spatial grid debug proc.
 // #define SPATIAL_GRID_ZLEVEL_STATS

@@ -270,6 +270,9 @@
 	if(!A.z || !B.z)
 		return INFINITY
 
+	if(A == B)
+		return -1
+
 	return abs(A.x - B.x) + abs(A.y - B.y) + abs(A.z - B.z)
 
 ///Returns a list of turfs around a center based on RANGE_TURFS()

@@ -124,7 +124,7 @@
 	if(QDELETED(invoker))
 		return FALSE
 
-	var/static/list/lateral_dirs = list(EAST, WEST, NORTH, SOUTH)
+	var/static/list/search_dirs = list(EAST, WEST, NORTH, SOUTH, NORTHEAST, SOUTHWEST, NORTHWEST, SOUTHEAST)
 
 	while(!open_heap.is_empty() && !path)
 		var/list/current_node = open_heap.pop()
@@ -140,7 +140,7 @@
 			return TRUE
 
 		// Scan cardinal turfs for valid movements.
-		for(var/scan_direction in lateral_dirs)
+		for(var/scan_direction in search_dirs)
 			var/turf/searching_turf = get_step(current_node_turf, scan_direction)
 			if(closed[searching_turf] & scan_direction)
 				continue // Turf is known to be blocked from this direction, skip!
@@ -150,8 +150,15 @@
 				continue // Turf cannot be entered, atleast from this direction. Skip!
 
 			// At this point we consider this turf a valid node.
+
 			var/list/existing_node = open_turf_to_node[searching_turf]
-			var/distance_g = current_node[DIST_FROM_START_G] + 1
+
+			// Prefer straighter lines for more visual appeal. Penalize changing from cardinal to diagonal, but if you're already diagonal, it's okay.
+			var/distance_g = current_node[DIST_FROM_START_G]
+			if(ISDIAGONALDIR(scan_direction) && (!current_node[PREV_NODE] || ISDIAGONALDIR(get_dir(current_node[PREV_NODE][ATURF], current_node_turf))))
+				distance_g += sqrt(2) // Sqrt 2 const folds! Don't panic!
+			else
+				distance_g += 1
 
 			// If the node already exists, update it to reflect new information. Maybe we found a shorter path to it, or similar.
 			if(existing_node)
@@ -191,7 +198,7 @@
 
 /// The generic heuristic, chebyshev distance.
 /datum/pathfind/astar/proc/generic_heuristic(turf/searching_turf, turf/end)
-	return get_dist(searching_turf, end)
+	return get_dist_euclidean(searching_turf, end)
 
 /// Called when we've hit the goal with the node that represents the last tile, then sets the path var to that path so it can be returned by [datum/pathfind/proc/search]
 /datum/pathfind/astar/proc/unwind_path(list/unwind_node)

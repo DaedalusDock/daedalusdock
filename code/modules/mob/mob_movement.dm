@@ -125,7 +125,7 @@
 
 	//We are now going to move
 	var/add_delay = mob.movement_delay
-	var/new_glide_size = DELAY_TO_GLIDE_SIZE(add_delay * ( (NSCOMPONENT(direct) && EWCOMPONENT(direct)) ? 2 : 1 ) )
+	var/new_glide_size = DELAY_TO_GLIDE_SIZE(add_delay * ( (NSCOMPONENT(direct) && EWCOMPONENT(direct)) ? DIAGONAL_MOVEMENT_MULTIPLIER : 1 ) )
 	mob.set_glide_size(new_glide_size) // set it now in case of pulled objects
 	//If the move was recent, count using old_move_delay
 	//We want fractional behavior and all
@@ -143,7 +143,7 @@
 	. = ..()
 
 	if((direct & (direct - 1)) && mob.loc == new_loc) //moved diagonally successfully
-		add_delay *= 2
+		add_delay *= DIAGONAL_MOVEMENT_MULTIPLIER
 
 	var/after_glide = 0
 	if(visual_delay)

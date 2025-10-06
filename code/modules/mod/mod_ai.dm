@@ -76,7 +76,7 @@
 /obj/item/mod/control/relaymove(mob/user, direction)
 	if((!active && wearer) || get_charge() < CHARGE_PER_STEP  || user != ai || !COOLDOWN_FINISHED(src, cooldown_mod_move) || HAS_TRAIT(wearer, TRAIT_AGGRESSIVE_GRAB))
 		return FALSE
-	var/timemodifier = MOVE_DELAY * (ISDIAGONALDIR(direction) ? 2 : 1) * (wearer ? WEARER_DELAY : LONE_DELAY)
+	var/timemodifier = MOVE_DELAY * (ISDIAGONALDIR(direction) ? DIAGONAL_MOVEMENT_MULTIPLIER : 1) * (wearer ? WEARER_DELAY : LONE_DELAY)
 	if(wearer && !wearer.Process_Spacemove(direction))
 		return FALSE
 	else if(!wearer && (!has_gravity() || !isturf(loc)))

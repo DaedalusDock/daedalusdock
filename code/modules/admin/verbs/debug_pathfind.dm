@@ -2,6 +2,8 @@
 	set name = "Pathfind To..."
 	set category = "Debug"
 
+	if(!check_rights(R_DEBUG))
+		return
 
 	var/method = tgui_input_list(usr, "Pathfinding Method", "Pathfind To...", list("AStar", "JPS"))
 	if(!method)
@@ -69,6 +71,7 @@
 				dir_2 = turn(angle2dir(get_angle(turf_ahead, current_turf)), 180)
 
 			path_display.icon_state = "[dir_1]-[dir_2]"
+			path_display.maptext = MAPTEXT("[index]|[get_dist(current_turf, T)]")
 
 		images += path_display
 		usr.client.images += path_display

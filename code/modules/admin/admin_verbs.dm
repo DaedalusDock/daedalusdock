@@ -210,6 +210,7 @@ GLOBAL_PROTECT(admin_verbs_debug)
 	/client/proc/debug_spell_requirements,
 	/client/proc/analyze_openturf,
 	/client/proc/debug_health,
+	/client/proc/debug_pathfinding,
 )
 
 GLOBAL_LIST_INIT(admin_verbs_possess, list(/proc/possess, GLOBAL_PROC_REF(release)))

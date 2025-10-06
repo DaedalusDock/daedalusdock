@@ -54,3 +54,40 @@ SUBSYSTEM_DEF(pathfinder)
 
 	path.finished()
 	return path.path
+
+/datum/controller/subsystem/pathfinder/proc/astar_pathfind_now(
+	atom/movable/invoker,
+	atom/end,
+	max_distance = 10,
+	mintargetdist,
+	list/access,
+	simulated_only = TRUE,
+	turf/exclude,
+	skip_first = TRUE,
+	use_diagonals = TRUE,
+	datum/callback/heuristic,
+)
+
+	var/datum/pathfind/astar/path = new(
+		invoker,
+		end,
+		access,
+		max_distance,
+		mintargetdist,
+		simulated_only,
+		exclude,
+		skip_first,
+		use_diagonals,
+		null,
+		heuristic,
+	)
+
+	if(!path.start())
+		return FALSE
+
+	if(!path.search_step(FALSE))
+		path.early_exit()
+		return FALSE
+
+	path.finished()
+	return path.path

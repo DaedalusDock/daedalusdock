@@ -181,7 +181,7 @@
 
 			// Check to see if we're close enough to the end destination.
 			if(ASTAR_CLOSE_ENOUGH_TO_END(end, new_node))
-				unwind_path(current_node)
+				unwind_path(new_node)
 				return TRUE
 
 		// Stable, we'll just be back later

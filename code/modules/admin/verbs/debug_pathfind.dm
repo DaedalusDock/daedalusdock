@@ -71,7 +71,7 @@
 				dir_2 = turn(angle2dir(get_angle(turf_ahead, current_turf)), 180)
 
 			path_display.icon_state = "[dir_1]-[dir_2]"
-			path_display.maptext = MAPTEXT("[index]|[get_dist(current_turf, T)]")
+			path_display.maptext = MAPTEXT("[index]|[get_dist_euclidean(current_turf, T)]")
 
 		images += path_display
 		usr.client.images += path_display

@@ -155,8 +155,8 @@
 
 			// Prefer straighter lines for more visual appeal. Penalize changing from cardinal to diagonal, but if you're already diagonal, it's okay.
 			var/distance_g = current_node[DIST_FROM_START_G]
-			if(ISDIAGONALDIR(scan_direction) && (!current_node[PREV_NODE] || ISDIAGONALDIR(get_dir(current_node[PREV_NODE][ATURF], current_node_turf))))
-				distance_g += 2
+			if(ISDIAGONALDIR(scan_direction) && (!current_node[PREV_NODE] || !ISDIAGONALDIR(get_dir(current_node[PREV_NODE][ATURF], current_node_turf))))
+				distance_g += 1.4
 			else
 				distance_g += 1
 

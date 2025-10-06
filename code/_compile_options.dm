@@ -84,7 +84,7 @@
 
 // If this is uncommented, will attempt to load and initialize prof.dll/libprof.so.
 // We do not ship byond-tracy. Build it yourself here: https://github.com/mafemergency/byond-tracy/
-#define USE_BYOND_TRACY
+//#define USE_BYOND_TRACY
 
 ///Uncomment this to force all verbs to run into overtime all of the time
 ///Essentially negating the reserve 2%
@@ -106,9 +106,9 @@
 /// Uncomment this to enable debugging tools for map making.
 //#define DEBUG_MAPS
 
-/// Uncomment this to enable a set of verbs to single-step pathfinding datums
-/// This is a config as it inserts hooks into relatively hot code.
-//#define DEBUG_SINGLESTEP_PATHFINDING
+/// Uncomment this to allow spitting out pathfinding debug information. (for types that support it.)
+/// This has a runtime memory and perf cost.
+// #define DEBUG_PATHFINDING
 
 /// Set this value to FALSE to test job requirements working.
 #define BYPASS_JOB_LIMITS_WHEN_DEBUGGING (TRUE)
@@ -169,7 +169,7 @@
 /////////////////////// MISC PERFORMANCE
 
 //uncomment this to load centcom and runtime station and thats it.
-#define LOWMEMORYMODE
+// #define LOWMEMORYMODE
 
 //uncomment to enable the spatial grid debug proc.
 // #define SPATIAL_GRID_ZLEVEL_STATS

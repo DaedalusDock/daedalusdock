@@ -35,6 +35,12 @@
 	/// An optional callback to invoke to return a positive value to add to the path's distance.
 	var/datum/callback/heuristic
 
+#ifdef DEBUG_PATHFINDING
+	/// List of all nodes we've parsed, used for debug spew.
+	var/list/all_nodes_ever = list()
+#endif
+
+
 /datum/pathfind/astar/New(
 	atom/movable/invoker,
 	atom/goal,
@@ -110,6 +116,11 @@
 		path.Cut(1,2)
 
 	hand_back(path)
+	#ifdef DEBUG_PATHFINDING
+	/// If the global flag is set, replace the current global node spew.
+	if(GLOB.__pathfinding_debug_generate)
+		GLOB.__pathfinding_debug_info = all_nodes_ever
+	#endif
 	return ..()
 
 /**
@@ -156,7 +167,7 @@
 			// Prefer straighter lines for more visual appeal. Penalize changing from cardinal to diagonal, but if you're already diagonal, it's okay.
 			var/distance_g = current_node[DIST_FROM_START_G]
 			if(ISDIAGONALDIR(scan_direction) && (!current_node[PREV_NODE] || !ISDIAGONALDIR(get_dir(current_node[PREV_NODE][ATURF], current_node_turf))))
-				distance_g += 1.4
+				distance_g += 2
 			else
 				distance_g += 1
 
@@ -184,6 +195,9 @@
 			)
 			open_heap.insert(new_node)
 			open_turf_to_node[searching_turf] = new_node
+			#ifdef DEBUG_PATHFINDING
+			all_nodes_ever[++all_nodes_ever.len] = new_node
+			#endif
 
 			// Check to see if we're close enough to the end destination.
 			if(ASTAR_CLOSE_ENOUGH_TO_END(end, new_node))

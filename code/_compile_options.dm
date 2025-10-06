@@ -106,6 +106,10 @@
 /// Uncomment this to enable debugging tools for map making.
 //#define DEBUG_MAPS
 
+/// Uncomment this to enable a set of verbs to single-step pathfinding datums
+/// This is a config as it inserts hooks into relatively hot code.
+//#define DEBUG_SINGLESTEP_PATHFINDING
+
 /// Set this value to FALSE to test job requirements working.
 #define BYPASS_JOB_LIMITS_WHEN_DEBUGGING (TRUE)
 

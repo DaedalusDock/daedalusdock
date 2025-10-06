@@ -23,7 +23,7 @@
 			path = SSpathfinder.astar_pathfind_now(usr, T, 50, 0, access, TRUE, null, FALSE, include_diagonals)
 
 		if("JPS")
-			path = SSpathfinder.pathfind_now(usr, T, 50, 0, access, TRUE, TRUE, FALSE, include_diagonals ? DIAGONAL_REMOVE_CLUNKY : DIAGONAL_REMOVE_ALL)
+			path = SSpathfinder.jps_pathfind_now(usr, T, 50, 0, access, TRUE, TRUE, FALSE, include_diagonals ? DIAGONAL_REMOVE_CLUNKY : DIAGONAL_REMOVE_ALL)
 
 	if(!length(path))
 		to_chat(usr, span_alert("Pathfinding could not be completed."))

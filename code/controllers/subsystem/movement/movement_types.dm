@@ -410,7 +410,7 @@
 	if(!COOLDOWN_FINISHED(src, repath_cooldown))
 		return
 	COOLDOWN_START(src, repath_cooldown, repath_delay)
-	if(SSpathfinder.pathfind(moving, target, max_path_length, minimum_distance, access, simulated_only, avoid, skip_first, diagonal_handling = diagonal_handling, on_finish = on_finish_callback))
+	if(SSpathfinder.jps_pathfind(moving, target, max_path_length, minimum_distance, access, simulated_only, avoid, skip_first, diagonal_handling = diagonal_handling, on_finish = on_finish_callback))
 		is_pathing = TRUE
 		SEND_SIGNAL(src, COMSIG_MOVELOOP_JPS_REPATH)
 

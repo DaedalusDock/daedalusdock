@@ -439,6 +439,7 @@
 #include "code\__HELPERS\paths\astar_path.dm"
 #include "code\__HELPERS\paths\jps_path.dm"
 #include "code\__HELPERS\paths\path.dm"
+#include "code\__HELPERS\paths\pathfinding_helpers.dm"
 #include "code\__HELPERS\sorts\__main.dm"
 #include "code\__HELPERS\sorts\InsertSort.dm"
 #include "code\__HELPERS\sorts\MergeSort.dm"

@@ -177,6 +177,7 @@
 				current_node \
 			)
 			open_heap.insert(new_node)
+			open_turf_to_node[searching_turf] = new_node
 
 			// Check to see if we're close enough to the end destination.
 			if(ASTAR_CLOSE_ENOUGH_TO_END(end, new_node))

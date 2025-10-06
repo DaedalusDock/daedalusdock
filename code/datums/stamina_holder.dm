@@ -15,13 +15,18 @@
 	///Every tick, remove this much stamina
 	var/decrement = 0
 
+	VAR_PRIVATE/default_max
+	VAR_PRIVATE/default_regen
+
 	var/list/maximum_modifiers
 	var/list/regen_modifiers
 
 /datum/stamina_container/New(parent, maximum = STAMINA_MAX, regen_rate = STAMINA_REGEN)
 	src.parent = parent
 	src.maximum = maximum
+	src.default_max = maximum
 	src.regen_rate = regen_rate
+	src.default_regen = regen_rate
 	src.current = maximum
 
 /datum/stamina_container/Destroy()
@@ -81,7 +86,7 @@
 /datum/stamina_container/proc/update_stamina_regen()
 	PRIVATE_PROC(TRUE)
 
-	var/new_regen_rate = initial(regen_rate)
+	var/new_regen_rate = default_regen
 	for(var/source, value in regen_modifiers)
 		new_regen_rate += value
 
@@ -98,7 +103,7 @@
 /datum/stamina_container/proc/update_maximum()
 	PRIVATE_PROC(TRUE)
 
-	var/new_max_stamina = initial(maximum)
+	var/new_max_stamina = default_max
 	for(var/source, value in maximum_modifiers)
 		new_max_stamina += value
 

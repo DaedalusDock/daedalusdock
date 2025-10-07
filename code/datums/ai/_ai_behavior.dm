@@ -47,7 +47,7 @@
 			ideal_atom = A
 			continue
 
-		var/list/path = SSpathfinder.jps_pathfind_now(
+		var/list/path = SSpathfinder.astar_pathfind_now(
 			controller.pawn,
 			A,
 			controller.max_target_distance,

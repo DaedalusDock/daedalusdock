@@ -108,7 +108,7 @@
 
 /// Uncomment this to allow spitting out pathfinding debug information. (for types that support it.)
 /// This has a runtime memory and perf cost.
-// #define DEBUG_PATHFINDING
+#define DEBUG_PATHFINDING
 
 /// Set this value to FALSE to test job requirements working.
 #define BYPASS_JOB_LIMITS_WHEN_DEBUGGING (TRUE)

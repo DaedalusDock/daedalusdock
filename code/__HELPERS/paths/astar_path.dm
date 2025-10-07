@@ -151,10 +151,11 @@
 		// Scan cardinal turfs for valid movements.
 		for(var/scan_direction in use_diagonals ? all_search_dirs : lateral_search_dirs)
 			var/turf/searching_turf = get_step(current_node_turf, scan_direction)
+			var/is_diagonal = ISDIAGONALDIR(scan_direction)
 			if(closed[searching_turf] & scan_direction)
 				continue // Turf is known to be blocked from this direction, skip!
 
-			if(!CAN_STEP(current_node_turf, searching_turf, simulated_only, pass_info, avoid))
+			if(!(is_diagonal ? can_step_diagonal(current_node_turf, searching_turf) : CAN_STEP(current_node_turf, searching_turf, simulated_only, pass_info, avoid)))
 				closed[searching_turf] |= scan_direction
 				continue // Turf cannot be entered, atleast from this direction. Skip!
 
@@ -164,7 +165,7 @@
 
 			// Prefer straighter lines for more visual appeal. Penalize changing from cardinal to diagonal, but if you're already diagonal, it's okay.
 			var/distance_g = current_node[DIST_FROM_START_G]
-			if(ISDIAGONALDIR(scan_direction) && (!current_node[PREV_NODE] || !ISDIAGONALDIR(get_dir(current_node[PREV_NODE][ATURF], current_node_turf))))
+			if(is_diagonal && (!current_node[PREV_NODE] || !ISDIAGONALDIR(get_dir(current_node[PREV_NODE][ATURF], current_node_turf))))
 				distance_g += 2
 			else
 				distance_g += 1
@@ -207,6 +208,23 @@
 			return TRUE
 
 	return TRUE
+
+/datum/pathfind/astar/proc/can_step_diagonal(turf/from_turf, turf/to_turf)
+	var/in_dir = get_dir(from_turf, to_turf) // eg. northwest (1+8) = 9 (00001001)
+	var/first_step_direction_a = in_dir & 3 // eg. north   (1+8)&3 (0000 0011) = 1 (0000 0001)
+	var/first_step_direction_b = in_dir & 12 // eg. west   (1+8)&12 (0000 1100) = 8 (0000 1000)
+
+	for(var/direction in list(first_step_direction_a, first_step_direction_b))
+		var/turf/midpoint = get_step(from_turf, direction)
+		// If the midpoint is known to be inaccessible from the starting direction, no need to check it again.
+		if(closed[midpoint] & direction)
+			continue
+
+		if(CAN_STEP(midpoint, to_turf, simulated_only, pass_info, avoid))
+			return TRUE
+
+	return FALSE
+
 
 /// The generic heuristic, euclidean distance.
 /datum/pathfind/astar/proc/generic_heuristic(turf/searching_turf, turf/end)

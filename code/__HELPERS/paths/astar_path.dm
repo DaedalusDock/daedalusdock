@@ -8,6 +8,16 @@
 #define ASTAR_NODE(turf, dist_from_start, heuristic, prev_node) list(turf, dist_from_start + heuristic, dist_from_start, heuristic, prev_node)
 #define ASTAR_CLOSE_ENOUGH_TO_END(end, checking_turf) (end == checking_turf || (mintargetdist && (get_dist(checking_turf, end) <= mintargetdist)))
 
+#define SORT_TOTAL_COST_F(list) (list[TOTAL_COST_F])
+
+/datum/astar_node
+	var/turf/turf
+	var/total_cost_f
+	var/dist_from_start_g
+	var/heuristic_h
+
+	var/datum/astar_node/prev_node
+
 /datum/pathfind/astar
 	/// The thing that we're actually trying to path for
 	var/atom/movable/invoker
@@ -18,8 +28,8 @@
 
 	/// A k:v list of turf -> directions. The directions are directions the pathfinder attempted to step into the turf but failed.
 	var/list/closed
-	/// The open list/stack we pop nodes out from (TODO: make this a normal list and macro-ize the heap operations to reduce proc overhead)
-	var/datum/heap/astar/open_heap
+	/// A binary search tree containing the discovered nodes.
+	var/list/open_binary_tree
 	/// A k:V list of turf -> astar node
 	var/list/open_turf_to_node
 
@@ -55,7 +65,7 @@
 	src.pass_info = new(invoker, access)
 
 	end = get_turf(goal)
-	open_heap = new /datum/heap/astar()
+	open_binary_tree = new()
 	open_turf_to_node = new()
 	closed = new()
 
@@ -72,7 +82,7 @@
 	. = ..()
 	invoker = null
 	end = null
-	open_heap = null
+	open_binary_tree = null
 	open_turf_to_node = null
 	closed = null
 
@@ -98,16 +108,13 @@
 
 	var/list/start_node = ASTAR_NODE(start, 0, 0, null)
 	open_turf_to_node[start] = start_node
-	open_heap.insert(start_node)
+	open_binary_tree[++open_binary_tree.len] = start_node
 	return TRUE
 
 /**
  * Cleanup pass for the pathfinder. This tidies up the path, and fufills the pathfind's obligations
  */
 /datum/pathfind/astar/finished()
-	//we're done! turn our reversed path (end to start) into a path (start to end)
-	QDEL_NULL(open_heap)
-
 	var/list/path = src.path || list()
 	if(length(path) > 0 && skip_first)
 		path.Cut(1,2)
@@ -135,8 +142,10 @@
 	var/static/list/lateral_search_dirs = list(EAST, WEST, NORTH, SOUTH)
 	var/static/list/all_search_dirs = list(EAST, WEST, NORTH, SOUTH, NORTHEAST, SOUTHWEST, NORTHWEST, SOUTHEAST)
 
-	while(!open_heap.is_empty() && !path)
-		var/list/current_node = open_heap.pop()
+	while(length(open_binary_tree) && !path)
+		var/list/current_node = open_binary_tree[length(open_binary_tree)]
+		open_binary_tree.len--
+
 		var/turf/current_node_turf = current_node[ATURF]
 		closed[current_node[ATURF]] = ALL
 
@@ -176,7 +185,9 @@
 					existing_node[PREV_NODE] = current_node
 					existing_node[DIST_FROM_START_G] = distance_g
 					existing_node[TOTAL_COST_F] = distance_g + existing_node[HEURISTIC_H]
-					open_heap.resort(existing_node)
+					var/insert_item = list(existing_node)
+					open_binary_tree -= insert_item
+					BINARY_INSERT_DEFINE_REVERSE(insert_item, open_binary_tree, SORT_VAR_NO_TYPE, existing_node, SORT_TOTAL_COST_F, COMPARE_KEY)
 				continue
 
 			// The node isn't known to us so we need to check the heuristic.
@@ -192,7 +203,10 @@
 				heuristic_h, \
 				current_node \
 			)
-			open_heap.insert(new_node)
+
+			var/insert_item = list(new_node)
+			BINARY_INSERT_DEFINE_REVERSE(insert_item, open_binary_tree, SORT_VAR_NO_TYPE, new_node, SORT_TOTAL_COST_F, COMPARE_KEY)
+
 			open_turf_to_node[searching_turf] = new_node
 			#ifdef DEBUG_PATHFINDING
 			all_nodes_ever[++all_nodes_ever.len] = new_node
@@ -247,3 +261,5 @@
 
 #undef ASTAR_NODE
 #undef ASTAR_CLOSE_ENOUGH_TO_END
+
+#undef SORT_TOTAL_COST_F

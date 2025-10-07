@@ -187,7 +187,7 @@
 					existing_node[TOTAL_COST_F] = distance_g + existing_node[HEURISTIC_H]
 					var/insert_item = list(existing_node)
 					open_binary_tree -= insert_item
-					BINARY_INSERT_DEFINE_REVERSE(insert_item, open_binary_tree, SORT_VAR_NO_TYPE, existing_node, SORT_TOTAL_COST_F, COMPARE_KEY)
+					binary_insert_node(existing_node)
 				continue
 
 			// The node isn't known to us so we need to check the heuristic.
@@ -204,8 +204,7 @@
 				current_node \
 			)
 
-			var/insert_item = list(new_node)
-			BINARY_INSERT_DEFINE_REVERSE(insert_item, open_binary_tree, SORT_VAR_NO_TYPE, new_node, SORT_TOTAL_COST_F, COMPARE_KEY)
+			binary_insert_node(new_node)
 
 			open_turf_to_node[searching_turf] = new_node
 			#ifdef DEBUG_PATHFINDING
@@ -222,6 +221,10 @@
 			return TRUE
 
 	return TRUE
+
+/datum/pathfind/astar/proc/binary_insert_node(list/node)
+	var/insert_item = list(node)
+	BINARY_INSERT_DEFINE_REVERSE(insert_item, open_binary_tree, SORT_VAR_NO_TYPE, node, SORT_TOTAL_COST_F, COMPARE_KEY)
 
 /datum/pathfind/astar/proc/can_step_diagonal(turf/from_turf, turf/to_turf)
 	var/in_dir = get_dir(from_turf, to_turf) // eg. northwest (1+8) = 9 (00001001)

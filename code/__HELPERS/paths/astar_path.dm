@@ -170,8 +170,14 @@
 
 			// Prefer straighter lines for more visual appeal. Penalize changing from cardinal to diagonal, but if you're already diagonal, it's okay.
 			var/distance_g = current_node.dist_from_start_g
-			if(is_diagonal && (!current_node.prev_node || !ISDIAGONALDIR(get_dir(current_node.prev_node.turf, current_node_turf))))
-				distance_g += 2
+			if(is_diagonal)
+				// Diagonal is not continuing from previous node
+				if(!current_node.prev_node || !ISDIAGONALDIR(get_dir(current_node.prev_node.turf, current_node_turf)))
+					distance_g += 2
+
+				// Diagonal is continuing from previous node
+				else
+					distance_g += sqrt(2) // It const folds dont cry
 			else
 				distance_g += 1
 

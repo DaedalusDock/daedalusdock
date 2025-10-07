@@ -154,9 +154,8 @@ GLOBAL_VAR_INIT(__pathfinding_debug_generate, FALSE)
 	var/list/__pathfinding_debug_info = GLOB.__pathfinding_debug_info
 	to_chat(usr, span_info("Debug Enabled: Nodes Passed: [__pathfinding_debug_info.len]"))
 	//I'm going to just access kapu's stuff by number.
-	for(var/index in 1 to __pathfinding_debug_info.len)
-		var/list/current_node = __pathfinding_debug_info[index]
-		var/image/node_display = image('icons/turf/floors.dmi', current_node[1], "pure_white")
+	for(var/datum/astar_node/current_node in __pathfinding_debug_info)
+		var/image/node_display = image('icons/turf/floors.dmi', current_node.turf, "pure_white")
 		node_display.plane = ABOVE_LIGHTING_PLANE
 		node_display.alpha = 200
 		node_display.layer = 1 //Render on the very bottom.
@@ -164,8 +163,8 @@ GLOBAL_VAR_INIT(__pathfinding_debug_generate, FALSE)
 		images += node_display
 		usr.client.images += node_display
 		// Draw a second, empty image just for the maptext.
-		node_display = image('icons/turf/floors.dmi', current_node[1], "invisible")
-		node_display.maptext = MAPTEXT("H:[truncate("[current_node[4]]",5)]<br>G:[truncate("[current_node[3]]",5)]<br>F:[truncate("[current_node[2]]",5)]")
+		node_display = image('icons/turf/floors.dmi', current_node.turf, "invisible")
+		node_display.maptext = MAPTEXT("H:[truncate("[current_node.heuristic_h]",5)]<br>G:[truncate("[current_node.dist_from_start_g]",5)]<br>F:[truncate("[current_node.total_cost_f]",5)]")
 		node_display.maptext_width = 64
 		node_display.plane = ABOVE_LIGHTING_PLANE
 		node_display.layer = 3 // Render above everything else.

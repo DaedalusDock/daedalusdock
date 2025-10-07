@@ -1,3 +1,4 @@
+// THESE ARE ALSO USED IN HEAP.DM KEEP THEM IN SYNC!
 #define ATURF 1
 #define TOTAL_COST_F 2
 #define DIST_FROM_START_G 3
@@ -6,10 +7,6 @@
 
 #define ASTAR_NODE(turf, dist_from_start, heuristic, prev_node) list(turf, dist_from_start + heuristic, dist_from_start, heuristic, prev_node)
 #define ASTAR_CLOSE_ENOUGH_TO_END(end, checking_turf) (end == checking_turf || (mintargetdist && (get_dist(checking_turf, end) <= mintargetdist)))
-
-/// TODO: Macro this to reduce proc overhead
-/proc/HeapPathAstarWeightCompare(list/a, list/b)
-	return b[TOTAL_COST_F] - a[TOTAL_COST_F]
 
 /datum/pathfind/astar
 	/// The thing that we're actually trying to path for
@@ -22,7 +19,7 @@
 	/// A k:v list of turf -> directions. The directions are directions the pathfinder attempted to step into the turf but failed.
 	var/list/closed
 	/// The open list/stack we pop nodes out from (TODO: make this a normal list and macro-ize the heap operations to reduce proc overhead)
-	var/datum/heap/open_heap
+	var/datum/heap/astar/open_heap
 	/// A k:V list of turf -> astar node
 	var/list/open_turf_to_node
 
@@ -58,7 +55,7 @@
 	src.pass_info = new(invoker, access)
 
 	end = get_turf(goal)
-	open_heap = new /datum/heap(GLOBAL_PROC_REF(HeapPathAstarWeightCompare))
+	open_heap = new /datum/heap/astar()
 	open_turf_to_node = new()
 	closed = new()
 

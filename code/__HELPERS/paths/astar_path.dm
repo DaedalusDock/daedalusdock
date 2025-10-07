@@ -1,14 +1,5 @@
-// THESE ARE ALSO USED IN HEAP.DM KEEP THEM IN SYNC!
-#define ATURF 1
-#define TOTAL_COST_F 2
-#define DIST_FROM_START_G 3
-#define HEURISTIC_H 4
-#define PREV_NODE 5
-
 #define ASTAR_NODE(turf, dist_from_start, heuristic, prev_node) list(turf, dist_from_start + heuristic, dist_from_start, heuristic, prev_node)
 #define ASTAR_CLOSE_ENOUGH_TO_END(end, checking_turf) (end == checking_turf || (mintargetdist && (get_dist(checking_turf, end) <= mintargetdist)))
-
-#define SORT_TOTAL_COST_F(list) (list[TOTAL_COST_F])
 
 /datum/astar_node
 	var/turf/turf
@@ -106,9 +97,14 @@
 	if(max_distance && (max_distance < get_dist_euclidean(start, end))) //if start turf is farther than max_distance from end turf, no need to do anything
 		return FALSE
 
-	var/list/start_node = ASTAR_NODE(start, 0, 0, null)
+	var/datum/astar_node/start_node = new /datum/astar_node
+	start_node.turf = start
+	start_node.total_cost_f = 0
+	start_node.dist_from_start_g = 0
+	start_node.heuristic_h = 0
+
 	open_turf_to_node[start] = start_node
-	open_binary_tree[++open_binary_tree.len] = start_node
+	binary_insert_node(start_node)
 	return TRUE
 
 /**
@@ -143,13 +139,13 @@
 	var/static/list/all_search_dirs = list(EAST, WEST, NORTH, SOUTH, NORTHEAST, SOUTHWEST, NORTHWEST, SOUTHEAST)
 
 	while(length(open_binary_tree) && !path)
-		var/list/current_node = open_binary_tree[length(open_binary_tree)]
+		var/datum/astar_node/current_node = open_binary_tree[length(open_binary_tree)]
 		open_binary_tree.len--
 
-		var/turf/current_node_turf = current_node[ATURF]
-		closed[current_node[ATURF]] = ALL
+		var/turf/current_node_turf = current_node.turf
+		closed[current_node_turf] = ALL
 
-		if(max_distance && current_node[DIST_FROM_START_G] > max_distance)
+		if(max_distance && current_node.dist_from_start_g > max_distance)
 			continue
 
 		// Check to see if we're close enough to the end destination.
@@ -170,23 +166,22 @@
 
 			// At this point we consider this turf a valid node.
 
-			var/list/existing_node = open_turf_to_node[searching_turf]
+			var/datum/astar_node/existing_node = open_turf_to_node[searching_turf]
 
 			// Prefer straighter lines for more visual appeal. Penalize changing from cardinal to diagonal, but if you're already diagonal, it's okay.
-			var/distance_g = current_node[DIST_FROM_START_G]
-			if(is_diagonal && (!current_node[PREV_NODE] || !ISDIAGONALDIR(get_dir(current_node[PREV_NODE][ATURF], current_node_turf))))
+			var/distance_g = current_node.dist_from_start_g
+			if(is_diagonal && (!current_node.prev_node || !ISDIAGONALDIR(get_dir(current_node.prev_node.turf, current_node_turf))))
 				distance_g += 2
 			else
 				distance_g += 1
 
 			// If the node already exists, update it to reflect new information. Maybe we found a shorter path to it, or similar.
 			if(existing_node)
-				if(distance_g < existing_node[DIST_FROM_START_G])
-					existing_node[PREV_NODE] = current_node
-					existing_node[DIST_FROM_START_G] = distance_g
-					existing_node[TOTAL_COST_F] = distance_g + existing_node[HEURISTIC_H]
-					var/insert_item = list(existing_node)
-					open_binary_tree -= insert_item
+				if(distance_g < existing_node.dist_from_start_g)
+					existing_node.prev_node = current_node
+					existing_node.dist_from_start_g = distance_g
+					existing_node.total_cost_f = distance_g + existing_node.heuristic_h
+					open_binary_tree -= existing_node
 					binary_insert_node(existing_node)
 				continue
 
@@ -197,12 +192,12 @@
 				continue
 
 			// Node is not known, create it.
-			var/list/new_node = ASTAR_NODE(\
-				searching_turf, \
-				distance_g, \
-				heuristic_h, \
-				current_node \
-			)
+			var/datum/astar_node/new_node = new /datum/astar_node
+			new_node.turf = searching_turf
+			new_node.total_cost_f = distance_g + heuristic_h
+			new_node.dist_from_start_g = distance_g
+			new_node.heuristic_h = heuristic_h
+			new_node.prev_node = current_node
 
 			binary_insert_node(new_node)
 
@@ -222,9 +217,8 @@
 
 	return TRUE
 
-/datum/pathfind/astar/proc/binary_insert_node(list/node)
-	var/insert_item = list(node)
-	BINARY_INSERT_DEFINE_REVERSE(insert_item, open_binary_tree, SORT_VAR_NO_TYPE, node, SORT_TOTAL_COST_F, COMPARE_KEY)
+/datum/pathfind/astar/proc/binary_insert_node(datum/astar_node/node)
+	BINARY_INSERT_REVERSE(node, open_binary_tree, /datum/astar_node, node, total_cost_f, COMPARE_KEY)
 
 /datum/pathfind/astar/proc/can_step_diagonal(turf/from_turf, turf/to_turf)
 	var/in_dir = get_dir(from_turf, to_turf) // eg. northwest (1+8) = 9 (00001001)
@@ -248,21 +242,18 @@
 	return get_dist_euclidean(searching_turf, end)
 
 /// Called when we've hit the goal with the node that represents the last tile, then sets the path var to that path so it can be returned by [datum/pathfind/proc/search]
-/datum/pathfind/astar/proc/unwind_path(list/unwind_node)
+/datum/pathfind/astar/proc/unwind_path(datum/astar_node/unwind_node)
 	path = new()
-	var/turf/iter_turf = unwind_node[ATURF]
+	var/turf/iter_turf = unwind_node.turf
 	path += iter_turf
 
-	while((unwind_node = unwind_node[PREV_NODE]))
-		path.Insert(1, unwind_node[ATURF])
+	var/datum/astar_node/iter_node = unwind_node.prev_node
+	while(iter_node)
+		path.Insert(1, iter_node.turf)
+		iter_node = iter_node.prev_node
 
-#undef ATURF
-#undef TOTAL_COST_F
-#undef DIST_FROM_START_G
-#undef HEURISTIC_H
-#undef PREV_NODE
+	return path
 
 #undef ASTAR_NODE
 #undef ASTAR_CLOSE_ENOUGH_TO_END
 
-#undef SORT_TOTAL_COST_F

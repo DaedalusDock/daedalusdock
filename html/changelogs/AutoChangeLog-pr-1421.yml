@@ -1,0 +1,5 @@
+author: Kapu1178, Francinum
+delete-after: true
+changes:
+  - rscadd: Re-adds A* pathfinding as another option for more accurate pathing, now
+      rewritten.

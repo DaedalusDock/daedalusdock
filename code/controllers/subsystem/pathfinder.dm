@@ -35,16 +35,86 @@ SUBSYSTEM_DEF(pathfinder)
 		currentrun.len--
 
 /// Initiates a pathfind. Returns true if we're good, FALSE if something's failed
-/datum/controller/subsystem/pathfinder/proc/pathfind(atom/movable/invoker, atom/end, max_distance = 30, mintargetdist, list/access=null, simulated_only = TRUE, turf/exclude, skip_first=TRUE, diagonal_handling=DIAGONAL_REMOVE_CLUNKY, datum/callback/on_finish)
-	var/datum/pathfind/jps/path = new(invoker, end, access, max_distance, mintargetdist, simulated_only, exclude, skip_first, diagonal_handling, on_finish)
+/datum/controller/subsystem/pathfinder/proc/jps_pathfind(atom/movable/invoker, atom/end, max_steps = 30, mintargetdist, list/access=null, simulated_only = TRUE, turf/exclude, skip_first=TRUE, diagonal_handling=DIAGONAL_REMOVE_CLUNKY, datum/callback/on_finish)
+	var/datum/pathfind/jps/path = new(invoker, end, access, max_steps, mintargetdist, simulated_only, exclude, skip_first, diagonal_handling, on_finish)
 	if(path.start())
 		active_pathing += path
 		return TRUE
 	return FALSE
 
 /// Pathfind RIGHT NOW!! Returns a list of turfs if a path was found, or FALSE if it could not find a path.
-/datum/controller/subsystem/pathfinder/proc/pathfind_now(atom/movable/invoker, atom/end, max_distance = 5, mintargetdist, list/access=null, simulated_only = TRUE, turf/exclude, skip_first=TRUE, diagonal_handling=DIAGONAL_REMOVE_CLUNKY)
-	var/datum/pathfind/jps/path = new(invoker, end, access, max_distance, mintargetdist, simulated_only, exclude, skip_first, diagonal_handling, null)
+/datum/controller/subsystem/pathfinder/proc/jps_pathfind_now(atom/movable/invoker, atom/end, max_steps = 14, mintargetdist, list/access=null, simulated_only = TRUE, turf/exclude, skip_first=TRUE, diagonal_handling=DIAGONAL_REMOVE_CLUNKY)
+	var/datum/pathfind/jps/path = new(invoker, end, access, max_steps, mintargetdist, simulated_only, exclude, skip_first, diagonal_handling, null)
+	if(!path.start())
+		return FALSE
+
+	if(!path.search_step(FALSE))
+		path.early_exit()
+		return FALSE
+
+	path.finished()
+	return path.path
+
+/datum/controller/subsystem/pathfinder/proc/astar_pathfind(
+	atom/movable/invoker,
+	atom/end,
+	max_steps = 30,
+	mintargetdist,
+	list/access,
+	simulated_only = TRUE,
+	turf/exclude,
+	skip_first = TRUE,
+	use_diagonals = TRUE,
+	datum/callback/on_finish,
+	datum/callback/heuristic,
+)
+
+	var/datum/pathfind/astar/path = new(
+		invoker,
+		end,
+		access,
+		max_steps,
+		mintargetdist,
+		simulated_only,
+		exclude,
+		skip_first,
+		use_diagonals,
+		on_finish,
+		heuristic,
+	)
+
+	if(path.start())
+		active_pathing += path
+		return TRUE
+	return FALSE
+
+/datum/controller/subsystem/pathfinder/proc/astar_pathfind_now(
+	atom/movable/invoker,
+	atom/end,
+	max_steps = 14,
+	mintargetdist,
+	list/access,
+	simulated_only = TRUE,
+	turf/exclude,
+	skip_first = TRUE,
+	use_diagonals = TRUE,
+	datum/callback/heuristic,
+)
+
+	var/datum/pathfind/astar/path = new(
+		invoker,
+		end,
+		access,
+		max_steps,
+		mintargetdist,
+		simulated_only,
+		exclude,
+		skip_first,
+		use_diagonals,
+		null,
+		heuristic,
+	)
+
 	if(!path.start())
 		return FALSE
 

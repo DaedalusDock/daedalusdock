@@ -228,7 +228,7 @@
 
 	if(target_fire && (get_dist(src, target_fire) > 2))
 		set_mode(BOT_PATHING)
-		path = jps_path_to(src, target_fire, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
+		path = jps_path_to(src, target_fire, max_steps=30, mintargetdist=1, access = access_card?.GetAccess())
 		set_mode(BOT_MOVING)
 		if(!path.len)
 			soft_reset()

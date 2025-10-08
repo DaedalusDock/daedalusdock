@@ -248,9 +248,9 @@
 		if(!length(path))
 			if(!isturf(target))
 				var/turf/TL = get_turf(target)
-				path = jps_path_to(src, TL, max_distance=30, access = access_card?.GetAccess(), simulated_only = FALSE)
+				path = jps_path_to(src, TL, max_steps=30, access = access_card?.GetAccess(), simulated_only = FALSE)
 			else
-				path = jps_path_to(src, target, max_distance=30, access = access_card?.GetAccess(), simulated_only = FALSE)
+				path = jps_path_to(src, target, max_steps=30, access = access_card?.GetAccess(), simulated_only = FALSE)
 
 			if(!bot_move(target))
 				add_to_ignore(target)

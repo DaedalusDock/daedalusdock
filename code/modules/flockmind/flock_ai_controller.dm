@@ -3,7 +3,7 @@
 		/datum/ai_planning_subtree/scored/flock
 	)
 
-	ai_movement = /datum/ai_movement/jps
+	ai_movement = /datum/ai_movement/astar
 
 
 /datum/ai_controller/flock/drone

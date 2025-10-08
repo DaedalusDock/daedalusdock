@@ -27,7 +27,9 @@
 /datum/ai_behavior/proc/score(datum/ai_controller/controller)
 	return BEHAVIOR_SCORE_DEFAULT
 
-/datum/ai_behavior/proc/get_best_target_by_distance_score(datum/ai_controller/controller, list/targets)
+/// Returns the best target by scoring the distance of each possible target.
+/// Takes a list to insert the path into, so it can be handed back and re-used.
+/datum/ai_behavior/proc/get_best_target_by_distance_score(datum/ai_controller/controller, list/targets, set_path = FALSE)
 	if(!length(targets))
 		return null
 
@@ -36,6 +38,7 @@
 
 	var/best_score = -INFINITY
 	var/atom/ideal_atom = null
+	var/list/ideal_path = null
 
 	for(var/atom/A as anything in targets)
 		var/atom_basic_score = score_distance(controller, A)
@@ -59,7 +62,10 @@
 		if(length(path))
 			best_score = atom_basic_score
 			ideal_atom = A
+			ideal_path = path
 
+	if(set_path && length(ideal_path))
+		controller.set_blackboard_key(BB_PATH_TO_USE, ideal_path)
 	return ideal_atom
 
 /// Helper for scoring something based on the distance between it and the pawn.

@@ -21,13 +21,17 @@
 			. += bird
 
 /datum/ai_behavior/flock/find_heal_target/perform(delta_time, datum/ai_controller/controller, ...)
-	var/target = get_best_target_by_distance_score(controller, get_targets(controller))
+	var/target = get_best_target_by_distance_score(controller, get_targets(controller), TRUE)
 	if(!target)
 		return BEHAVIOR_PERFORM_FAILURE
 
 	controller.set_blackboard_key(BB_FLOCK_HEAL_TARGET, target)
 	controller.set_move_target(target)
 	return BEHAVIOR_PERFORM_SUCCESS
+
+/datum/ai_behavior/flock/find_heal_target/finish_action(datum/ai_controller/controller, succeeded, ...)
+	. = ..()
+	controller.clear_blackboard_key(BB_PATH_TO_USE)
 
 /datum/ai_behavior/flock/find_heal_target/next_behavior(datum/ai_controller/controller, success)
 	if(success)

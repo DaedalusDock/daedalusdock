@@ -27,6 +27,29 @@
 /datum/ai_behavior/proc/score(datum/ai_controller/controller)
 	return BEHAVIOR_SCORE_DEFAULT
 
+#define BINARY_INSERT_TARGET(target_list, target, score) \
+	do { \
+		var/length = length(target_list); \
+		if(!length) { \
+			target_list[target] = score; \
+		} else { \
+			var/left = 1; \
+			var/right = length; \
+			var/middle = (left + right) >> 1; \
+			while(left < right) { \
+				if(target_list[target_list[middle]] <= score) { \
+					left = middle + 1; \
+				} else { \
+					right = middle; \
+				}; \
+				middle = (left + right) >> 1; \
+			}; \
+			middle = target_list[target_list[middle]] > score ? middle : middle + 1; \
+			target_list.Insert(middle, target); \
+			target_list[target] = score; \
+		}; \
+	} while(FALSE)
+
 /// Returns the best target by scoring the distance of each possible target.
 /// Takes a list to insert the path into, so it can be handed back and re-used.
 /datum/ai_behavior/proc/get_best_target_by_distance_score(datum/ai_controller/controller, list/targets, set_path = FALSE)
@@ -36,37 +59,50 @@
 	var/atom/movable/pawn = controller.pawn
 	var/list/access = controller.get_access()
 
-	var/best_score = -INFINITY
-	var/atom/ideal_atom = null
-	var/list/ideal_path = null
+	var/list/targets_by_score = list()
+	var/list/reachable_targets = list()
 
+	// Sort targets by their estimated score. The last element in the lists has the highest score.
 	for(var/atom/A as anything in targets)
-		var/atom_basic_score = score_distance(controller, A)
-		if(atom_basic_score < best_score)
-			continue
+		var/score = score_distance(controller, A)
+
+		BINARY_INSERT_TARGET(targets_by_score, A, score)
 
 		if(A.IsReachableBy(pawn))
-			best_score = atom_basic_score
-			ideal_atom = A
-			continue
+			BINARY_INSERT_TARGET(reachable_targets, A, score)
 
-		var/list/path = SSpathfinder.astar_pathfind_now(
-			controller.pawn,
-			A,
-			controller.max_target_distance,
-			required_distance,
-			access,
-			HAS_TRAIT(controller.pawn, TRAIT_FREE_FLOAT_MOVEMENT),
-		)
 
-		if(length(path))
-			best_score = atom_basic_score
-			ideal_atom = A
-			ideal_path = path
+	// Go through our sorted target list until we find a path to one.
+	// Note: This does mean that the found target might not be the ideal one, as it's operating on the estimate
+	// This is a performance thing. We cannot actually use the true best target.
+	var/atom/ideal_atom
+	var/list/ideal_path
+	if(length(reachable_targets))
+		ideal_atom = reachable_targets[length(reachable_targets)]
+	else
+		while(length(targets_by_score))
+			var/atom/candidate = targets_by_score[length(targets_by_score)]
+			targets_by_score.len--
+
+			var/list/path = SSpathfinder.astar_pathfind_now(
+				controller.pawn,
+				candidate,
+				controller.max_target_distance,
+				required_distance,
+				access,
+				HAS_TRAIT(controller.pawn, TRAIT_FREE_FLOAT_MOVEMENT),
+			)
+
+			if(path)
+				ideal_atom = candidate
+				ideal_path = path
+				break
 
 	if(set_path && length(ideal_path))
 		controller.set_blackboard_key(BB_PATH_TO_USE, ideal_path)
 	return ideal_atom
+
+#undef BINARY_INSERT_TARGET
 
 /// Helper for scoring something based on the distance between it and the pawn.
 /datum/ai_behavior/proc/score_distance(datum/ai_controller/controller, atom/target)

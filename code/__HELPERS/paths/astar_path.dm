@@ -5,6 +5,8 @@
 	var/turf/turf
 	var/total_cost_f
 	var/dist_from_start_g
+	/// Distance_g is affected by bias to smooth out diagonals, this tracks the raw number of steps required.
+	var/real_dist_from_start
 	var/heuristic_h
 
 	var/datum/astar_node/prev_node
@@ -43,7 +45,7 @@
 	atom/movable/invoker,
 	atom/goal,
 	access,
-	max_distance,
+	max_steps,
 	mintargetdist,
 	simulated_only,
 	avoid,
@@ -60,7 +62,7 @@
 	open_turf_to_node = new()
 	closed = new()
 
-	src.max_distance = max_distance
+	src.max_steps = max_steps
 	src.mintargetdist = mintargetdist
 	src.simulated_only = simulated_only
 	src.avoid = avoid
@@ -94,7 +96,8 @@
 	if(start.z != end.z || start == end ) //no pathfinding between z levels
 		return FALSE
 
-	if(max_distance && (max_distance < get_dist_euclidean(start, end))) //if start turf is farther than max_distance from end turf, no need to do anything
+	// If the turf is out of the step range we already know it's too far.
+	if(max_steps && (max_steps < get_dist_manhattan(start, end)))
 		return FALSE
 
 	var/datum/astar_node/start_node = new /datum/astar_node
@@ -102,6 +105,7 @@
 	start_node.total_cost_f = 0
 	start_node.dist_from_start_g = 0
 	start_node.heuristic_h = 0
+	start_node.real_dist_from_start = 0
 
 	open_turf_to_node[start] = start_node
 	binary_insert_node(start_node)
@@ -145,7 +149,7 @@
 		var/turf/current_node_turf = current_node.turf
 		closed[current_node_turf] = ALL
 
-		if(max_distance && current_node.dist_from_start_g > max_distance)
+		if(max_steps && current_node.real_dist_from_start > max_steps)
 			continue
 
 		// Check to see if we're close enough to the end destination.
@@ -170,22 +174,27 @@
 
 			// Prefer straighter lines for more visual appeal. Penalize changing from cardinal to diagonal, but if you're already diagonal, it's okay.
 			var/distance_g = current_node.dist_from_start_g
+			var/real_distance = current_node.real_dist_from_start
 			if(is_diagonal)
 				// Diagonal is not continuing from previous node
 				if(!current_node.prev_node || !ISDIAGONALDIR(get_dir(current_node.prev_node.turf, current_node_turf)))
 					distance_g += 2
+					real_distance += 2
 
 				// Diagonal is continuing from previous node
 				else
 					distance_g += sqrt(2) // It const folds dont cry
+					real_distance += 2
 			else
 				distance_g += 1
+				real_distance += 1
 
 			// If the node already exists, update it to reflect new information. Maybe we found a shorter path to it, or similar.
 			if(existing_node)
 				if(distance_g < existing_node.dist_from_start_g)
 					existing_node.prev_node = current_node
 					existing_node.dist_from_start_g = distance_g
+					existing_node.real_dist_from_start = real_distance
 					existing_node.total_cost_f = distance_g + existing_node.heuristic_h
 					open_binary_tree -= existing_node
 					binary_insert_node(existing_node)
@@ -202,6 +211,7 @@
 			new_node.turf = searching_turf
 			new_node.total_cost_f = distance_g + heuristic_h
 			new_node.dist_from_start_g = distance_g
+			new_node.real_dist_from_start = real_distance
 			new_node.heuristic_h = heuristic_h
 			new_node.prev_node = current_node
 

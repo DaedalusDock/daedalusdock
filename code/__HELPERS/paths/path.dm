@@ -13,8 +13,8 @@
 	var/turf/start
 
 	// general pathfinding vars/args
-	/// Limits how far we can search before giving up on a path
-	var/max_distance = 30
+	/// The maximum number of steps a path can be before it is considered too long and ignored. Diagonals are 2 steps, so it's Manhattan distance.
+	var/max_steps = 30
 	/// Space is big and empty, if this is TRUE then we ignore pathing through unsimulated tiles
 	var/simulated_only
 	/// A specific turf we're avoiding, like if a mulebot is being blocked by someone t-posing in a doorway we're trying to get through

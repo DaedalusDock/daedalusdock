@@ -258,7 +258,7 @@
 
 		if(target && path.len == 0 && (get_dist(src,target) > 1))
 			set_mode(BOT_PATHING)
-			path = jps_path_to(src, target, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
+			path = jps_path_to(src, target, max_steps=30, mintargetdist=1, access = access_card?.GetAccess())
 			set_mode(BOT_MOVING)
 			if(length(path) == 0)
 				add_to_ignore(target)

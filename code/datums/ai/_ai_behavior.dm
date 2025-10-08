@@ -68,9 +68,10 @@
 
 		BINARY_INSERT_TARGET(targets_by_score, A, score)
 
-		if(A.IsReachableBy(pawn))
+		// WEE WOO WEE WOO BEHAVIOR-CHANGING MICRO-OPT: we assume turfs further than 1 tile aren't reachable
+		// Because this is true in 99.9999999999999999% of cases
+		if(get_dist(pawn, A) <= 1 && A.IsReachableBy(pawn))
 			BINARY_INSERT_TARGET(reachable_targets, A, score)
-
 
 	// Go through our sorted target list until we find a path to one.
 	// Note: This does mean that the found target might not be the ideal one, as it's operating on the estimate

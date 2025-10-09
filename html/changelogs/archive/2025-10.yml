@@ -1,3 +1,7 @@
 2025-10-07:
   Kapu1178:
   - bugfix: Stamina is back at 250
+2025-10-09:
+  Kapu1178, Francinum:
+  - rscadd: Re-adds A* pathfinding as another option for more accurate pathing, now
+      rewritten.

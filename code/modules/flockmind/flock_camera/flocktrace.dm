@@ -12,7 +12,7 @@
 		/datum/action/cooldown/flock/ping,
 	)
 
-	var/compute_provided = -FLOCK_COMPUTE_COST_FLOCKTRACE
+	var/bandwidth_provided = -FLOCK_COMPUTE_COST_FLOCKTRACE
 
 /mob/camera/flock/trace/Initialize(mapload, join_flock)
 	. = ..()
@@ -26,10 +26,10 @@
 
 /mob/camera/flock/trace/vv_edit_var(var_name, var_value)
 	switch(var_name)
-		if(NAMEOF(src, compute_provided))
-			flock?.compute.adjust_points(-compute_provided)
+		if(NAMEOF(src, bandwidth_provided))
+			flock?.bandwidth.adjust_points(-bandwidth_provided)
 			..()
-			flock?.compute.adjust_points(compute_provided)
+			flock?.bandwidth.adjust_points(bandwidth_provided)
 			return TRUE
 
 	return ..()

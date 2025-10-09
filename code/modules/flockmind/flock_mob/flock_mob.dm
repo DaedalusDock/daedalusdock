@@ -39,7 +39,7 @@
 
 	var/datum/point_holder/resources
 
-	var/compute_provided = 0
+	var/bandwidth_provided = 0
 
 /mob/living/simple_animal/flock/Initialize(mapload, join_flock)
 	. = ..()
@@ -149,10 +149,10 @@
 
 /mob/living/simple_animal/flock/vv_edit_var(var_name, var_value)
 	switch(var_name)
-		if(NAMEOF(src, compute_provided))
-			flock?.compute.adjust_points(-compute_provided)
+		if(NAMEOF(src, bandwidth_provided))
+			flock?.bandwidth.adjust_points(-bandwidth_provided)
 			..()
-			flock?.compute.adjust_points(compute_provided)
+			flock?.bandwidth.adjust_points(bandwidth_provided)
 			return TRUE
 
 	return ..()

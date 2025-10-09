@@ -50,7 +50,7 @@
 
 	if(!ghost_bird.flock.can_afford(FLOCK_COMPUTE_COST_FLOCKTRACE))
 		message_admins("The Flock was unable to support another flocktrace, partition aborted.")
-		to_chat(ghost_bird, span_flocksay("Partition failure: compute required is unavailable."))
+		to_chat(ghost_bird, span_flocksay("Partition failure: bandwidth required is unavailable."))
 		return
 
 

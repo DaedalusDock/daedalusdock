@@ -1,14 +1,14 @@
 /obj/structure/flock/gnesis_turret
 	name = "spiky fluid vat"
 	desc = "A vat of bubbling teal fluid, covered in hollow spikes."
-	flock_desc = "A turret that fires gnesis-filled spikes at enemies, beginning their conversion to Flockbits. Consumes 50 compute passively."
+	flock_desc = "A turret that fires gnesis-filled spikes at enemies, beginning their conversion to Flockbits. Consumes 50 bandwidth passively."
 	icon_state = "teleblocker-off"
 
 	max_integrity = 80
 
 	flock_id = "Gnesis turret"
 	resource_cost = 150
-	active_compute_cost = 50
+	active_bandwidth_cost = 50
 
 	var/range = 8
 	var/projectile_count = 4
@@ -39,10 +39,10 @@
 
 	// // Check if the flock can continue to run the sentinel
 	// if(active)
-	// 	if(flock.available_compute() < 0)
+	// 	if(flock.available_bandwidth() < 0)
 	// 		set_active(FALSE)
 	// else
-	// 	if(flock.can_afford(active_compute_cost))
+	// 	if(flock.can_afford(active_bandwidth_cost))
 	// 		set_active(TRUE)
 
 	if(!active)

@@ -24,13 +24,13 @@ TYPEINFO_DEF(/obj/structure/flock)
 
 	/// world.time this was created at
 	var/spawn_time
-	/// How much compute this structure provides to the Flock.
-	var/compute_provided = 0
+	/// How much bandwidth this structure provides to the Flock.
+	var/bandwidth_provided = 0
 
 	/// Whether or not the turret is active. The state of the Flock can change this.
 	var/active = FALSE
-	/// The compute cost while active
-	var/active_compute_cost = 0
+	/// The bandwidth cost while active
+	var/active_bandwidth_cost = 0
 
 	/// Allows flockdrones to pass through.
 	var/allow_flockpass = TRUE
@@ -68,7 +68,7 @@ TYPEINFO_DEF(/obj/structure/flock)
 	.["ref"] = ref(src)
 	.["name"] = flock_id
 	.["health"] = get_integrity_percentage()
-	.["compute"] = active ? -active_compute_cost : compute_provided
+	.["compute"] = active ? -active_bandwidth_cost : bandwidth_provided
 	.["desc"] = flock_desc
 	.["area"] = get_area_name(src, TRUE) || "???"
 
@@ -137,11 +137,11 @@ TYPEINFO_DEF(/obj/structure/flock)
 	active = new_state
 	update_appearance(UPDATE_ICON_STATE)
 	if(active)
-		flock.remove_compute_influence(compute_provided)
-		flock.add_compute_influence(-active_compute_cost)
+		flock.remove_bandwidth_influence(bandwidth_provided)
+		flock.add_bandwidth_influence(-active_bandwidth_cost)
 	else
-		flock.remove_compute_influence(-active_compute_cost)
-		flock.add_compute_influence(compute_provided)
+		flock.remove_bandwidth_influence(-active_bandwidth_cost)
+		flock.add_bandwidth_influence(bandwidth_provided)
 
 /// Called when an object finishes construction
 /obj/structure/flock/proc/finish_building()

@@ -58,7 +58,7 @@
 	stats_info[++stats_info.len] = list(name = "Partitions divided: ", "value" = stat_traces_made)
 	stats_info[++stats_info.len] = list(name = "Tiles converted: ", "value" = stat_tiles_made)
 	stats_info[++stats_info.len] = list(name = "Structures materialized: ", "value" = stat_structures_made)
-	stats_info[++stats_info.len] = list(name = "Highest compute: ", "value" = stat_highest_compute)
+	stats_info[++stats_info.len] = list(name = "Highest bandwidth: ", "value" = stat_highest_bandwidth)
 
 	return data
 

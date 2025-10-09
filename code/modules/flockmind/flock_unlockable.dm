@@ -12,7 +12,7 @@
 
 /datum/flock_unlockable/New()
 	name = initial(structure_type.flock_id)
-	purchase_cost = initial(structure_type.active_compute_cost)
+	purchase_cost = initial(structure_type.active_bandwidth_cost)
 
 /datum/flock_unlockable/proc/refresh_lock_status(datum/flock/flock, total_compute, available_compute)
 	if(is_unlockable())

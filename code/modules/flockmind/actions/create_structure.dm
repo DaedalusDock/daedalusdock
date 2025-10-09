@@ -34,7 +34,7 @@
 			continue
 		options[unlockable.name] = unlockable
 
-	var/desired = tgui_input_list(ghost_bird, "Select a structure to create. Compute upkeep costs are provided in parenthesis.", "Tealprint Selection", options)
+	var/desired = tgui_input_list(ghost_bird, "Select a structure to create. Bandwidth upkeep costs are provided in parenthesis.", "Tealprint Selection", options)
 	desired = options[desired]
 	if(isnull(desired))
 		return

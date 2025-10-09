@@ -43,9 +43,9 @@
 
 	var/list/datum/flock_unlockable/unlockables
 	/// The total amount of computational power available, before whats being used.
-	var/datum/point_holder/compute
+	var/datum/point_holder/bandwidth
 	/// The computational power being used.
-	var/used_compute = 0
+	var/used_bandwidth = 0
 	/// The maximum amount of traces allowed.
 	var/max_traces = 0
 
@@ -64,12 +64,12 @@
 	var/stat_traces_made = 0
 	var/stat_tiles_made = 0
 	var/stat_structures_made = 0
-	var/stat_highest_compute = 0
+	var/stat_highest_bandwidth = 0
 
 /datum/flock/New()
 	name = flock_realname(FLOCK_TYPE_OVERMIND)
 
-	compute = new
+	bandwidth = new
 	create_hud_images()
 
 	unlockables = list()
@@ -83,7 +83,7 @@
 	if(flock_game_over)
 		return
 
-	stat_highest_compute = max(stat_highest_compute, compute.has_points())
+	stat_highest_bandwidth = max(stat_highest_bandwidth, bandwidth.has_points())
 
 /// Called after everything is setup, and clients are in control of their mobs.
 /datum/flock/proc/start()
@@ -166,7 +166,7 @@
 		traces += unit
 
 		var/mob/camera/flock/trace/ghostbird = unit
-		add_compute_influence(ghostbird.compute_provided)
+		add_bandwidth_influence(ghostbird.bandwidth_provided)
 		return
 
 	if(isflockdrone(unit))
@@ -178,27 +178,27 @@
 	unit.AddComponent(/datum/component/flock_interest, src)
 
 	var/mob/living/simple_animal/flock/bird = unit
-	add_compute_influence(bird.compute_provided)
+	add_bandwidth_influence(bird.bandwidth_provided)
 
 /datum/flock/proc/free_unit(mob/unit)
 	if(isflocktrace(unit))
 		var/mob/camera/flock/trace/ghostbird = unit
 		ghostbird.flock = null
 		traces -= unit
-		remove_compute_influence(ghostbird.compute_provided)
+		remove_bandwidth_influence(ghostbird.bandwidth_provided)
 		return
 
 	else if(isflockdrone(unit))
 		var/mob/living/simple_animal/flock/drone/bird = unit
 		bird.flock = null
 		drones -= unit
-		remove_compute_influence(bird.compute_provided)
+		remove_bandwidth_influence(bird.bandwidth_provided)
 
 	else if(isflockbit(unit))
 		var/mob/living/simple_animal/flock/bit/bitty_bird = unit
 		bitty_bird.flock = null
 		bits -= unit
-		remove_compute_influence(bitty_bird.compute_provided)
+		remove_bandwidth_influence(bitty_bird.bandwidth_provided)
 
 	remove_notice(unit, FLOCK_NOTICE_HEALTH)
 	free_turf(unit)
@@ -210,35 +210,35 @@
 	structures += struct
 	struct.flock = src
 	struct.AddComponent(/datum/component/flock_interest, src)
-	add_compute_influence(struct.compute_provided)
+	add_bandwidth_influence(struct.bandwidth_provided)
 
 /datum/flock/proc/free_structure(obj/structure/flock/struct)
 	structures -= struct
 	qdel(struct.GetComponent(/datum/component/flock_interest))
 	struct.flock = null
 	if(struct.active)
-		remove_compute_influence(-struct.active_compute_cost)
+		remove_bandwidth_influence(-struct.active_bandwidth_cost)
 	else
-		remove_compute_influence(struct.compute_provided)
+		remove_bandwidth_influence(struct.bandwidth_provided)
 
 /datum/flock/proc/create_structure(turf/location, structure_type)
 	new /obj/structure/flock/tealprint(location, structure_type)
 
-/// Wrapper for handling compute alongside used_compute for new mobs
-/datum/flock/proc/add_compute_influence(num)
+/// Wrapper for handling bandwidth alongside used_bandwidth for new mobs
+/datum/flock/proc/add_bandwidth_influence(num)
 	if(num < 0)
-		used_compute += abs(num)
+		used_bandwidth += abs(num)
 	else
-		compute.adjust_points(num)
+		bandwidth.adjust_points(num)
 
 	refresh_unlockables()
 
-/// Wrapper for handling compute alongside used_compute for mobs leaving the flock
-/datum/flock/proc/remove_compute_influence(num)
+/// Wrapper for handling bandwidth alongside used_bandwidth for mobs leaving the flock
+/datum/flock/proc/remove_bandwidth_influence(num)
 	if(num < 0)
-		used_compute -= abs(num)
+		used_bandwidth -= abs(num)
 	else
-		compute.adjust_points(-num)
+		bandwidth.adjust_points(-num)
 
 	refresh_unlockables()
 
@@ -247,19 +247,19 @@
 	if(!flock_started)
 		return
 
-	var/new_total = compute.has_points()
-	var/new_available = available_compute()
+	var/new_total = bandwidth.has_points()
+	var/new_available = available_bandwidth()
 
 	for(var/datum/flock_unlockable/unlockable as anything in unlockables)
 		unlockable.refresh_lock_status(src, new_total, new_available)
 
-/// Returns the amount of available compute. Can return negative if over budget.
-/datum/flock/proc/available_compute()
-	return compute.has_points() - used_compute
+/// Returns the amount of available bandwidth. Can return negative if over budget.
+/datum/flock/proc/available_bandwidth()
+	return bandwidth.has_points() - used_bandwidth
 
-/// Returns TRUE if the flock has the required compute
+/// Returns TRUE if the flock has the required bandwidth
 /datum/flock/proc/can_afford(amt)
-	return amt <= max(available_compute(), 0)
+	return amt <= max(available_bandwidth(), 0)
 
 /// Sets the flock's overmind
 /datum/flock/proc/register_overmind(mob/camera/flock_overmind)

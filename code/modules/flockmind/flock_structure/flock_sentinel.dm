@@ -12,7 +12,7 @@
 	max_integrity = 80
 
 	flock_id = "Sentinel"
-	active_compute_cost = 20
+	active_bandwidth_cost = 20
 
 	/// Attacks require charging
 	var/datum/point_holder/charge = 0
@@ -43,10 +43,10 @@
 
 	// Check if the flock can continue to run the sentinel
 	if(active)
-		if(flock.available_compute() < 0)
+		if(flock.available_bandwidth() < 0)
 			set_active(FALSE)
 	else
-		if(flock.can_afford(active_compute_cost))
+		if(flock.can_afford(active_bandwidth_cost))
 			set_active(TRUE)
 
 	if(!active)

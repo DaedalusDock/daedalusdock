@@ -246,7 +246,7 @@
 			list("name" = "overheat_temp" , "var" = edit_recipe.overheat_temp),
 			list("name" = "temp_exponent_factor" , "var" = edit_recipe.temp_exponent_factor),
 			list("name" = "thermic_constant" , "var" = edit_recipe.thermic_constant),
-			list("name" = "rate_up_lim" , "var" = edit_recipe.rate_up_lim),
+			list("name" = "base_reaction_rate" , "var" = edit_recipe.base_reaction_rate),
 		)
 
 	return data
@@ -338,7 +338,7 @@ optimal_temp = [edit_recipe.optimal_temp]
 overheat_temp = [edit_recipe.overheat_temp]
 temp_exponent_factor = [edit_recipe.temp_exponent_factor]
 thermic_constant = [edit_recipe.thermic_constant]
-rate_up_lim = [edit_recipe.rate_up_lim]"}
+base_reaction_rate = [edit_recipe.base_reaction_rate]"}
 			say(export)
 			text2file(export, "[GLOB.log_directory]/chem_parse.txt")
 

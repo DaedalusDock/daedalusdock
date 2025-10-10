@@ -260,12 +260,17 @@ TYPEINFO_DEF(/obj/item/reagent_containers/cup/beaker)
 	name = "beaker"
 	desc = "A beaker. It can hold up to 60 units."
 	icon = 'icons/obj/chemical.dmi'
+
 	icon_state = "beaker"
 	inhand_icon_state = "beaker"
 	worn_icon_state = "beaker"
+
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
 	possible_transfer_amounts = list(5, 10, 15, 20, 25, 30, 60)
 	volume = 60
+
+	// Used for condenser rendering.
+	var/condenser_offset_y = -3
 
 /obj/item/reagent_containers/cup/beaker/Initialize(mapload)
 	. = ..()

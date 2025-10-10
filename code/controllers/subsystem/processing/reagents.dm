@@ -4,7 +4,7 @@ PROCESSING_SUBSYSTEM_DEF(reagents)
 	name = "Reagents"
 	init_order = INIT_ORDER_REAGENTS
 	priority = FIRE_PRIORITY_REAGENTS
-	wait = 0.25 SECONDS //You might think that rate_up_lim has to be set to half, but since everything is normalised around delta_time, it automatically adjusts it to be per second. Magic!
+	wait = 0.25 SECONDS //You might think that base_reaction_rate has to be set to half, but since everything is normalised around delta_time, it automatically adjusts it to be per second. Magic!
 	flags = SS_KEEP_TIMING | SS_HIBERNATE
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 	///What time was it when we last ticked
@@ -61,7 +61,6 @@ PROCESSING_SUBSYSTEM_DEF(reagents)
 		if(isabstract(path))//Are we abstract?
 			continue
 		var/datum/reagent/D = new path()
-		D.mass = rand(10, 800) //This is terrible and should be removed ASAP!
 		reagent_list[path] = D
 
 	return reagent_list

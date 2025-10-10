@@ -421,6 +421,9 @@
 /obj/effect/particle_effect/fluid/smoke/chem
 	lifetime = 20 SECONDS
 
+/obj/effect/particle_effect/fluid/smoke/chem/transparent
+	make_opaque = FALSE
+
 /obj/effect/particle_effect/fluid/smoke/chem/process(seconds_per_tick)
 	. = ..()
 	if(!.)
@@ -517,3 +520,4 @@
 
 /datum/effect_system/fluid_spread/smoke/chem/quick
 	effect_type = /obj/effect/particle_effect/fluid/smoke/chem/quick
+

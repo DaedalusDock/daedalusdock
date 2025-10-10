@@ -42,7 +42,7 @@
 	for(var/obj/item/hand_item/grab/G in active_grabs)
 		G.move_victim_towards(destination)
 
-/atom/movable/proc/update_offsets()
+/atom/movable/proc/update_offsets(animate = FALSE)
 	var/last_pixel_x = pixel_x
 	var/last_pixel_y = pixel_y
 
@@ -55,7 +55,7 @@
 
 	if(length(buckled_mobs))
 		for(var/mob/M as anything in buckled_mobs)
-			M.update_offsets()
+			M.update_offsets(animate)
 
 	if(isliving(src))
 		var/mob/living/L = src
@@ -67,6 +67,10 @@
 			G.current_grab.get_grab_offsets(G, get_dir(G.assailant, G.affecting), &new_pixel_x, &new_pixel_y)
 
 	if(last_pixel_x != new_pixel_x || last_pixel_y != new_pixel_y)
-		animate(src, pixel_x = new_pixel_x, pixel_y = new_pixel_y, 3, 1, (LINEAR_EASING|EASE_IN))
+		if(animate)
+			animate(src, pixel_x = new_pixel_x, pixel_y = new_pixel_y, 3, 1, (LINEAR_EASING|EASE_IN), flags = ANIMATION_PARALLEL)
+		else
+			pixel_x = new_pixel_x
+			pixel_y = new_pixel_y
 
 	UPDATE_OO_IF_PRESENT

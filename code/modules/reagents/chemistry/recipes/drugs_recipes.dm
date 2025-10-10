@@ -29,7 +29,7 @@
 	overheat_temp = 380
 	temp_exponent_factor = 1
 	thermic_constant = 0.1 //exothermic nature is equal to impurty
-	rate_up_lim = 12.5
+	base_reaction_rate = 12.5
 	reaction_flags = REACTION_HEAT_ARBITARY //Heating up is arbitary because of submechanics of this reaction.
 
 /datum/chemical_reaction/methamphetamine/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)

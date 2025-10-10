@@ -230,6 +230,7 @@
 	if(!calculate_yield())//So that this can detect if we're missing reagents
 		to_delete = TRUE
 		return
+
 	delta_time = deal_with_time(delta_time)
 
 	delta_t = 0 //how far off optimal temp we care
@@ -266,7 +267,7 @@
 	delta_t *= speed_mod
 
 	//Now we calculate how much to add - this is normalised to the rate up limiter
-	var/delta_chem_factor = reaction.rate_up_lim * delta_t *delta_time //add/remove factor
+	var/delta_chem_factor = reaction.base_reaction_rate * delta_t *delta_time //add/remove factor
 	var/total_step_added = 0
 	//keep limited
 	if(delta_chem_factor > step_target_vol)
@@ -281,9 +282,34 @@
 	var/required_amount
 	for(var/datum/reagent/requirement as anything in reaction.required_reagents)
 		required_amount = reaction.required_reagents[requirement]
-		if(!holder.remove_reagent(requirement, delta_chem_factor * required_amount))
-			to_delete = TRUE
-			return
+		var/alist/requirement_consumption_chance_list = reaction.requirement_consumption_modifiers[requirement.type]
+		#ifdef UNIT_TESTS
+		requirement_consumption_chance_list = null
+		#endif
+
+		var/real_required_amount = delta_chem_factor * required_amount
+
+		// null is an implicit 100% chance to consume the reagent on reaction.
+		if(isnull(requirement_consumption_chance_list))
+			if(!holder.remove_reagent(requirement, real_required_amount))
+				to_delete = TRUE
+				return
+		else
+			var/reagent_consumption_modifier = pick_weight(requirement_consumption_chance_list)
+			if(reagent_consumption_modifier == 1)
+				if(!holder.remove_reagent(requirement, real_required_amount))
+					to_delete = TRUE
+					return
+
+			else
+				if(!holder.has_reagent(requirement, real_required_amount))
+					to_delete = TRUE
+					return
+
+				// Modified required amount could be higher than the base consumption amount. In this instance we do NOT want it to fail the reaction
+				// if there isn't enough. That's fine. Otherwise reactions could randomly end and restart and leave players confused.
+				var/modified_required_amount = round(real_required_amount * reagent_consumption_modifier, CHEMICAL_VOLUME_ROUNDING)
+				holder.remove_reagent(requirement, modified_required_amount)
 
 	var/step_add
 	for(var/datum/reagent/product as anything in reaction.results)

@@ -125,7 +125,7 @@
 	M.setDir(dir)
 
 	post_buckle_mob(M)
-	M.update_offsets()
+	M.update_offsets(TRUE)
 
 	SEND_SIGNAL(src, COMSIG_MOVABLE_BUCKLE, M, force)
 	return TRUE
@@ -177,7 +177,7 @@
 			buckled_mob.zFall()
 
 	post_unbuckle_mob(.)
-	buckled_mob.update_offsets()
+	buckled_mob.update_offsets(TRUE)
 
 	if(!QDELETED(buckled_mob) && !buckled_mob.currently_z_moving && isturf(buckled_mob.loc)) // In the case they unbuckled to a flying movable midflight.
 		buckled_mob.zFall()
@@ -362,5 +362,5 @@
 				span_hear("You hear metal clanking."))
 		add_fingerprint(user)
 
-		update_offsets()
+		update_offsets(TRUE)
 	return M

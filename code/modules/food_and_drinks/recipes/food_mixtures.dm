@@ -87,7 +87,7 @@
 	required_reagents = list(/datum/reagent/consumable/caramel = 1)
 	required_temp = 483.15
 	optimal_temp = 1000
-	rate_up_lim = 10
+	base_reaction_rate = 10
 	mob_react = FALSE
 
 /datum/chemical_reaction/food/cheesewheel

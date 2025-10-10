@@ -166,7 +166,7 @@
 				G.downgrade()
 
 			if(moving_diagonally != FIRST_DIAG_STEP)
-				pulling.update_offsets()
+				pulling.update_offsets(TRUE)
 
 	var/list/my_grabs = active_grabs
 	for(var/obj/item/hand_item/grab/G in my_grabs)

@@ -57,3 +57,7 @@
 
 	box = /obj/item/storage/box/survival/medical
 	chameleon_extras = /obj/item/gun/syringe
+
+	backpack_contents = list(
+		/obj/item/clothing/mask/gas,
+	)

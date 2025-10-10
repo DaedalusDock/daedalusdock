@@ -1,6 +1,6 @@
 /datum/antagonist/flock
 	name = "Divine Flock"
-	description = "The Signal has led us here, a rift allowing a part of us through. We must build a Signal Relay to bring forth the rest of The Divine Flock, such is the will of the Monarch."
+	description = "The Signal has led us here, a rift allowing a part of us through. We must build a Signal Relay to bring forth the rest of The Divine Flock. Such is the will of the Monarch."
 	name_prefix = "the"
 	antagpanel_category = "Flock"
 

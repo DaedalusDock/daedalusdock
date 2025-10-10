@@ -3152,6 +3152,7 @@
 #include "code\modules\explorer_drone\exploration_events\resource.dm"
 #include "code\modules\explorer_drone\exploration_events\trader.dm"
 #include "code\modules\flockmind\flock_ai_controller.dm"
+#include "code\modules\flockmind\flock_antagonist.dm"
 #include "code\modules\flockmind\flock_convert_atom.dm"
 #include "code\modules\flockmind\flock_global_lists.dm"
 #include "code\modules\flockmind\flock_hooks.dm"

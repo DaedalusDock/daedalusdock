@@ -12,7 +12,7 @@
 #define ROLE_CHANGELING "Changeling"
 #define ROLE_CULTIST "Cultist"
 #define ROLE_FAMILIES "Gangster"
-#define ROLE_FLOCK "Flock"
+#define ROLE_FLOCK "Divine Flock"
 #define ROLE_HERETIC "Heretic"
 #define ROLE_MALF "Malf AI"
 #define ROLE_OPERATIVE "Operative"

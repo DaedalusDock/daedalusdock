@@ -56,6 +56,8 @@ TYPEINFO_DEF(/obj/structure/flock)
 
 	if(build_time)
 		START_PROCESSING(SSobj, src)
+	else
+		finish_building()
 
 	ADD_TRAIT(src, TRAIT_FLOCK_EXAMINE, INNATE_TRAIT)
 

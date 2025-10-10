@@ -192,8 +192,8 @@
 
 // INTO THE CAGE
 /obj/structure/flock/cage/proc/cage_mob(mob/living/carbon/human/H)
+	H.forceMove(src)
 	set_victim(H)
-	victim.forceMove(src)
 	victim.visible_message(span_danger("A [name] materializes around [victim],"))
 
 /// Spends gnesis on eggs or a cube. Only spends on eggs by default.
@@ -263,3 +263,7 @@
 /obj/structure/flock/cage/proc/target_gone(datum/source)
 	SIGNAL_HANDLER
 	set_eating_target(null)
+
+/mob/living/proc/test_cage()
+	var/obj/structure/flock/cage/cage = new(get_turf(src))
+	cage.cage_mob(src)

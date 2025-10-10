@@ -802,7 +802,8 @@
 		return FALSE
 
 	var/mob/living/carbon/C = usr
-	C.check_self_for_injuries()
+	if(istype(C))
+		C.check_self_for_injuries()
 
 /atom/movable/screen/healthdoll/living
 	icon_state = "fullhealth0"

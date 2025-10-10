@@ -3163,6 +3163,7 @@
 #include "code\modules\flockmind\flock_unlockable.dm"
 #include "code\modules\flockmind\gnesis_reagent.dm"
 #include "code\modules\flockmind\actions\_flock_action.dm"
+#include "code\modules\flockmind\actions\cage_mob.dm"
 #include "code\modules\flockmind\actions\control_drone.dm"
 #include "code\modules\flockmind\actions\control_panel.dm"
 #include "code\modules\flockmind\actions\convert.dm"

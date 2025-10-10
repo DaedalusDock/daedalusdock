@@ -44,7 +44,7 @@
 
 /mob/living/simple_animal/flock/drone/harvest(mob/living/user)
 	var/list/loot = list(
-		/obj/item/stack/gnesis = 1,
+		/obj/item/stack/sheet/gnesis = 1,
 		/obj/item/shard/gnesis_glass = 1,
 	)
 

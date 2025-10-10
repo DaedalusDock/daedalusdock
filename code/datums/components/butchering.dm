@@ -41,7 +41,7 @@
 
 	var/mob/living/M = interacting_with
 
-	if(M.stat == DEAD && (M.butcher_results || M.guaranteed_butcher_results)) //can we butcher it?
+	if(M.stat == DEAD && (M.butcher_results || M.guaranteed_butcher_results || HAS_TRAIT(M, TRAIT_ALWAYS_BUTCHERABLE))) //can we butcher it?
 		if(butchering_enabled && (can_be_blunt || (source.sharpness & SHARP_EDGED)))
 			INVOKE_ASYNC(src, PROC_REF(startButcher), source, M, user)
 			return ITEM_INTERACT_SUCCESS
@@ -99,7 +99,8 @@
 								span_notice("You butcher [meat]."))
 	butcher_callback?.Invoke(butcher, meat)
 	meat.harvest(butcher)
-	meat.gib(FALSE, FALSE, TRUE)
+	if(!QDELING(meat))
+		meat.gib(FALSE, FALSE, TRUE)
 
 ///Special snowflake component only used for the recycler.
 /datum/component/butchering/recycler

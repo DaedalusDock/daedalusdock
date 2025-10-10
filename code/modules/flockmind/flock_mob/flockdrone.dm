@@ -11,6 +11,7 @@
 	flock?.stat_drones_made++
 
 	ADD_TRAIT(src, TRAIT_IMPORTANT_SPEAKER, INNATE_TRAIT)
+	ADD_TRAIT(src, TRAIT_ALWAYS_BUTCHERABLE, INNATE_TRAIT)
 
 	AddComponent(/datum/component/flock_protection, FALSE, TRUE, FALSE, FALSE)
 	set_real_name(flock_realname(FLOCK_TYPE_DRONE))
@@ -40,6 +41,21 @@
 		resources.remove_points(1)
 		if(!resources.has_points(1))
 			stop_flockphase()
+
+/mob/living/simple_animal/flock/drone/harvest(mob/living/user)
+	var/list/loot = list(
+		/obj/item/stack/gnesis = 1,
+		/obj/item/shard/gnesis_glass = 1,
+	)
+
+	for(var/i in 3 to 6)
+		var/path = pick_weight(loot)
+		new path(drop_location())
+
+	playsound(src, SFX_SHATTER, 30, TRUE, SILENCED_SOUND_EXTRARANGE)
+
+	// Spawn flock organs here
+	qdel(src)
 
 /mob/living/simple_animal/flock/drone/get_flock_data()
 	var/list/data = ..()

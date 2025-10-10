@@ -181,6 +181,7 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 #define DITHER_LAYER 3
 #define UI_DAMAGE_LAYER 4
 #define BLIND_LAYER 5
+#define FLOCK_CONVERT_LAYER 5.5
 #define CRIT_LAYER 6
 #define CURSE_LAYER 7
 #define FOV_EFFECTS_LAYER 10000 //Blindness effects are not layer 4, they lie to you

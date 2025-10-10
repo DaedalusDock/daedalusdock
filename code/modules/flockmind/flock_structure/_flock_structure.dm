@@ -63,6 +63,12 @@ TYPEINFO_DEF(/obj/structure/flock)
 /obj/structure/flock/get_flock_id()
 	return flock_id
 
+/obj/structure/flock/cage/do_hurt_animation()
+	for(var/i in 1 to 3)
+		animate(src, pixel_x = rand(-2, 2), pixel_y = rand(-2, 2), time = 0.5, flags = ANIMATION_RELATIVE | ANIMATION_CONTINUE)
+
+	animate(src, pixel_x = base_pixel_x, pixel_y = base_pixel_y, time = 0.5, flags = ANIMATION_CONTINUE)
+
 /obj/structure/flock/proc/get_flock_data()
 	. = list()
 	.["ref"] = ref(src)

@@ -3201,6 +3201,7 @@
 #include "code\modules\flockmind\flock_structure\flock_door.dm"
 #include "code\modules\flockmind\flock_structure\flock_egg.dm"
 #include "code\modules\flockmind\flock_structure\flock_light.dm"
+#include "code\modules\flockmind\flock_structure\flock_relay.dm"
 #include "code\modules\flockmind\flock_structure\flock_rift.dm"
 #include "code\modules\flockmind\flock_structure\flock_sentinel.dm"
 #include "code\modules\flockmind\flock_structure\flock_tealprint.dm"

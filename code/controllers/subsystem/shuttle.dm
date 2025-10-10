@@ -439,9 +439,9 @@ SUBSYSTEM_DEF(shuttle)
 			log_shuttle("There is no means of calling the emergency shuttle anymore. Shuttle automatically called.")
 			message_admins("All the communications consoles were destroyed and all AIs are inactive. Shuttle called.")
 
-/datum/controller/subsystem/shuttle/proc/registerHostileEnvironment(datum/bad)
+/datum/controller/subsystem/shuttle/proc/registerHostileEnvironment(datum/bad, announce = TRUE)
 	hostile_environments[bad] = TRUE
-	checkHostileEnvironment()
+	checkHostileEnvironment(announce)
 
 /datum/controller/subsystem/shuttle/proc/clearHostileEnvironment(datum/bad)
 	hostile_environments -= bad
@@ -471,22 +471,26 @@ SUBSYSTEM_DEF(shuttle)
 		supply.mode = SHUTTLE_DOCKED
 		//Make all cargo consoles speak up
 
-/datum/controller/subsystem/shuttle/proc/checkHostileEnvironment()
+/datum/controller/subsystem/shuttle/proc/checkHostileEnvironment(announce = TRUE)
 	for(var/datum/d in hostile_environments)
 		if(!istype(d) || QDELETED(d))
 			hostile_environments -= d
+
 	emergency_no_escape = hostile_environments.len
 
 	if(emergency_no_escape && (emergency.mode == SHUTTLE_IGNITING))
 		emergency.mode = SHUTTLE_STRANDED
 		emergency.timer = null
 		emergency.sound_played = FALSE
-		priority_announce("Hostile environment detected. \
-			Departure has been postponed indefinitely pending \
-			conflict resolution.",
-			"LRSV Icarus Announcement",
-			do_not_modify = TRUE
-		)
+
+		if(announce)
+			priority_announce("Hostile environment detected. \
+				Departure has been postponed indefinitely pending \
+				conflict resolution.",
+				"LRSV Icarus Announcement",
+				do_not_modify = TRUE
+			)
+
 	if(!emergency_no_escape && (emergency.mode == SHUTTLE_STRANDED))
 		emergency.mode = SHUTTLE_DOCKED
 		emergency.setTimer(emergency_dock_time)

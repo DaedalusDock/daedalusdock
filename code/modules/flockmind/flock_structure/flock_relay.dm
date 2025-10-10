@@ -63,6 +63,7 @@
 
 	var/turf/base = get_turf(src)
 
+	/// Get a chebyshev ring without gigantic list ops.
 	if(!length(turfs_to_convert))
 		for(var/xo in -conversion_radius to conversion_radius)
 			var/turf/potential_turf = locate(base.x + xo, base.y + conversion_radius, base.z)

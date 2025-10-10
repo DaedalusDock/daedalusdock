@@ -721,6 +721,12 @@ TYPEINFO_DEF(/atom)
  * Produces a signal [COMSIG_PARENT_EXAMINE]
  */
 /atom/proc/examine(mob/user)
+	// Ugly but i dont care :)
+	if(HAS_TRAIT(src, TRAIT_FLOCK_EXAMINE) && isflockmob(user))
+		. = call(src, "flock_examine")()
+		if(length(.))
+			return .
+
 	. = list("[get_examine_string(user, TRUE)].")
 	. += get_name_chaser(user)
 

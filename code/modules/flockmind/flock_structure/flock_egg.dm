@@ -12,7 +12,6 @@
 	flock_id = "Second-Stage Assembler"
 	build_time = 6 SECONDS
 
-
 /obj/structure/flock/egg/finish_building()
 	. = ..()
 

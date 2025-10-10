@@ -140,6 +140,23 @@
 		icon_state = "sentinel"
 	return ..()
 
+/obj/structure/flock/sentinel/flock_structure_examine(mob/user)
+	var/charge_status_str
+	switch (charge_status)
+		if (NOT_CHARGED)
+			charge_status_str = "Idle"
+		if (LOSING_CHARGE)
+			charge_status_str = "Losing charge"
+		if (CHARGING)
+			charge_status_str = "Charging"
+		if (CHARGED)
+			charge_status_str = "Charged"
+
+	return list(
+		span_flocksay("<b>Status:</b> [charge_status_str]"),
+		span_flocksay("<b>Charge Percentage: [charge]%"),
+	)
+
 #undef NOT_CHARGED
 #undef LOSING_CHARGE
 #undef CHARGING

@@ -33,3 +33,9 @@
 	flock_talk(src, "Tealprint dematerializing", flock)
 	playsound(src, 'goon/sounds/flockmind/flockdrone_door_deny.ogg', 30, TRUE, extrarange = -10)
 	return ..()
+
+/obj/structure/flock/tealprint/flock_structure_examine(mob/user)
+	return list(
+		span_flocksay("<b>Construction Percentage:</b> [floor(current_materials / materials_required * 100)]"),
+		span_flocksay("<b>Construction Progress:</b> [current_materials] added, [materials_required] needed")
+	)

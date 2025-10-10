@@ -21,6 +21,8 @@ TYPEINFO_DEF(/obj/structure/flock)
 	var/build_time = 0
 	/// Is the tealprint cancellable
 	var/cancellable = TRUE
+	/// Is the structure finished?
+	var/fully_built = FALSE
 
 	/// world.time this was created at
 	var/spawn_time
@@ -54,6 +56,8 @@ TYPEINFO_DEF(/obj/structure/flock)
 
 	if(build_time)
 		START_PROCESSING(SSobj, src)
+
+	ADD_TRAIT(src, TRAIT_FLOCK_EXAMINE, INNATE_TRAIT)
 
 /obj/structure/flock/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -136,6 +140,10 @@ TYPEINFO_DEF(/obj/structure/flock)
 		finish_building()
 		return
 
+/// Returns the number of seconds remaining for the build.
+/obj/structure/flock/proc/build_time_left()
+	return ((spawn_time + build_time) - world.time) / 10
+
 /obj/structure/flock/proc/set_active(new_state)
 	if(active == new_state)
 		return
@@ -153,6 +161,29 @@ TYPEINFO_DEF(/obj/structure/flock)
 /obj/structure/flock/proc/finish_building()
 	SHOULD_CALL_PARENT(TRUE)
 	STOP_PROCESSING(SSobj, src)
+	fully_built = TRUE
+
+/obj/structure/flock/proc/flock_examine(mob/user)
+	SHOULD_NOT_OVERRIDE(TRUE) // Use flock_structure_examine() instead
+
+	. = list(
+		span_flocksay("<b>###=- Ident confirmed, data packet received.</b>"),
+		span_flocksay("<b>ID:</b> [get_flock_id()]"),
+		span_flocksay("<b>Flock:</b> [flock?.name || "N/A"]"),
+		span_flocksay("<b>System Integrity:</b> [get_integrity_percentage()]%"),
+	)
+
+	if(!fully_built)
+		. += span_flocksay("<b>Time Left:</b> [build_time_left()] seconds")
+
+	var/list/additional_lines = flock_structure_examine(user)
+	if(length(additional_lines))
+		. += additional_lines
+
+	. += span_flocksay("<b>###=-</b>")
+
+/obj/structure/flock/proc/flock_structure_examine(mob/user)
+	return
 
 /obj/structure/flock/proc/on_crossed(atom/source, atom/movable/crosser)
 	SIGNAL_HANDLER

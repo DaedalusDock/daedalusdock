@@ -121,6 +121,12 @@
 	take_damage(1, BRUTE)
 	do_hurt_animation()
 
+/obj/structure/flock/cage/flock_structure_examine(mob/user)
+	return list(
+		span_flocksay("<b>Volume:</b> [reagents.get_reagent_amount(/datum/reagent/toxin/gnesis)]"),
+		span_flocksay("<b>Needed volume:</b> [egg_gnesis_cost]<br>"),
+	)
+
 /// Picks an item, organ, or bodypart, to munch on.
 /obj/structure/flock/cage/proc/chew_on_mob()
 	var/list/items = victim.get_all_worn_items()

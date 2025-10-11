@@ -56,10 +56,22 @@
 /obj/structure/flock/relay/do_hurt_animation()
 	return
 
+/obj/structure/flock/relay/take_damage(damage_amount, damage_type, damage_flag, sound_effect, attack_dir, armor_penetration, allow_break)
+	. = ..()
+	if(. >= 5)
+		var/alpha_min = clamp(255 - . * 6, 100, 255)
+		animate(src, time = 0.1 SECONDS, color = list(1.5,0,0,0, 0,1.5,0,0, 0,0,1.5,0, 0,0,0,alpha_min/255, 0,0,0,0))
+		animate(time = 0.3 SECONDS, color = null, alpha = 255)
+
+/obj/structure/flock/relay/examine(mob/user)
+	. = ..()
+	if(flock_won_da_game)
+		. += span_flocksay("Your life flashes before your eyes.")
+
 /obj/structure/flock/relay/process(delta_time)
 	if(world.time >= (spawn_time + build_time + (win_time * 10)))
 		lorimer_burst()
-		return TRUE
+		return PROCESS_KILL
 
 	var/turf/base = get_turf(src)
 
@@ -97,7 +109,7 @@
 	for(var/mob/M as anything in GLOB.player_list)
 		var/turf/mob_turf = get_turf(M)
 		if(mob_turf && (mob_turf.z in z_levels) && M.can_hear())
-			M.playsound_local(loc, 'goon/sounds/flockmind/Flock_Reactor.ogg', 30, FALSE)
+			M.playsound_local(M, 'goon/sounds/flockmind/Flock_Reactor.ogg', 30, FALSE)
 			to_chat(M, span_flocksay("<b>A horrible, otherworldly wave eminates from the <i>[dir2text(get_dir(mob_turf, loc))]</i>."))
 
 /obj/structure/flock/relay/proc/announce_relay()
@@ -113,4 +125,61 @@
 
 /// GG
 /obj/structure/flock/relay/proc/lorimer_burst()
+	set waitfor = FALSE
 	flock_won_da_game = TRUE
+	flock.flock_game_status = FLOCK_ENDGAME_RELAY_ACTIVAING
+
+	log_game("The Flock ([flock?.name || "NULL"]) has successfully broadcast The Signal at [AREACOORD(src)].")
+	add_overlay("structure_relay_sparks")
+
+	flock_talk(null, "!!! TRASMITTING SIGNAL !!!", flock)
+	visible_message(gradient_text("[src] begins sparking wildly! The air is charged with static!", "#3cb5a3", "#124e43"))
+
+	var/sound_len = SSsound_cache.get_sound_length('goon/sounds/flockmind/flock_broadcast_charge.ogg')
+
+	for(var/mob/M as anything in GLOB.player_list)
+		if(M.can_hear())
+			M.playsound_local(M, 'goon/sounds/flockmind/flock_broadcast_charge.ogg', 30, FALSE)
+
+	sleep(sound_len)
+
+	for(var/mob/M as anything in GLOB.player_list)
+		if(M.can_hear())
+			M.playsound_local(M, 'goon/sounds/flockmind/flock_broadcast_kaboom.ogg', 30, FALSE)
+
+		if(isliving(M))
+			var/mob/living/L = M
+			L.flash_act(3, TRUE, TRUE, TRUE, length = 3 SECONDS)
+
+	sleep(2 SECONDS)
+
+	flock.flock_game_status = FLOCK_ENDGAME_VICORY
+	explosion(src, 50, ignorecap = TRUE, explosion_cause = src)
+
+	sleep(2 SECONDS)
+
+	for(var/obj/machinery/telecomms/T in GLOB.telecomms_list)
+		T.emp_act(EMP_HEAVY)
+
+	for(var/obj/item/radio/radio as anything in INSTANCES_OF(/obj/item/radio))
+		radio.emped = INFINITY
+		radio.set_on(FALSE)
+
+		playsound(
+			radio,
+			pick('goon/sounds/radio_sweep1.ogg','goon/sounds/radio_sweep2.ogg','goon/sounds/radio_sweep3.ogg','goon/sounds/radio_sweep4.ogg','goon/sounds/radio_sweep5.ogg'),
+			70,
+			TRUE,
+		)
+
+		if(!radio.equipped_to)
+			continue
+
+		to_chat(radio.equipped_to, span_warning("A final scream of horrific static bursts from your [radio.name]."))
+		if(radio.equipped_to.soundbang_act(3, 0))
+			radio.equipped_to.Disorient(60 SECONDS, 0, TRUE, 6 SECONDS, 3 SECONDS)
+
+		if(prob(20))
+			sleep(0.1 SECONDS)
+
+

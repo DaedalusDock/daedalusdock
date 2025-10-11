@@ -50,8 +50,8 @@
 	var/max_traces = 0
 
 	var/flock_started = FALSE
-	// Did the flock lose?
-	var/flock_game_over = FALSE
+	/// Flock status, won, lost, etc
+	var/flock_game_status = NONE
 
 	/// Current UI tab, saves on data sending.
 	var/ui_tab = FLOCK_UI_DRONES
@@ -80,7 +80,7 @@
 
 // Called by gamemode code
 /datum/flock/process(delta_time)
-	if(flock_game_over)
+	if(flock_game_status == FLOCK_ENDGAME_LOST)
 		return
 
 	stat_highest_bandwidth = max(stat_highest_bandwidth, bandwidth.has_points())
@@ -448,7 +448,7 @@
 
 /// Ends the flock if it is unable to continue spreading.
 /datum/flock/proc/consider_game_over()
-	if(flock_game_over)
+	if(flock_game_status == FLOCK_ENDGAME_LOST)
 		return
 
 	if(length(drones))
@@ -475,7 +475,7 @@
 	if(!completely_destroy)
 		return
 
-	flock_game_over = TRUE
+	flock_game_status = FLOCK_ENDGAME_LOST
 
 	// Kill overmind
 	overmind?.so_very_sad_death() // Overmind can be null here if it died outside of game_over().

@@ -67,6 +67,7 @@
 	RegisterSignal(bird, COMSIG_PARENT_QDELETING, PROC_REF(drone_gone))
 	ADD_TRAIT(bird, TRAIT_AI_DISABLE_PLANNING, FLOCK_CONTROLLED_BY_OVERMIND_SOURCE)
 	bird.ai_controller.CancelActions()
+	bird.cancel_do_afters()
 	bird.say("suspending automated subroutines pending sentient-level instruction", forced = "overmind taking control")
 	bird.AddComponent(/datum/component/flock_ping/selected)
 

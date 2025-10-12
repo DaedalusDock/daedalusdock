@@ -37,17 +37,17 @@
 
 	if(isturf(target))
 		var/turf/T = target
-		if(T.can_flock_convert())
-			selected_bird.ai_controller.queue_behavior(/datum/ai_behavior/flock/find_conversion_target, target)
-			pointer_helper(selected_bird, target, 2 SECONDS)
-			unset_click_ability(owner, performing_task = TRUE)
-			return TRUE
-
-		else if(isflockturf(T))
+		if(isflockturf(T))
 			selected_bird.ai_controller.queue_behavior(/datum/ai_behavior/flock/rally, target)
 			pointer_helper(selected_bird, target, 2 SECONDS)
 			selected_bird.say("Instruction confirmed: rally at location.")
 			free_drone(TRUE)
+			unset_click_ability(owner, performing_task = TRUE)
+			return TRUE
+
+		if(T.can_flock_convert())
+			selected_bird.ai_controller.queue_behavior(/datum/ai_behavior/flock/find_conversion_target, target)
+			pointer_helper(selected_bird, target, 2 SECONDS)
 			unset_click_ability(owner, performing_task = TRUE)
 			return TRUE
 

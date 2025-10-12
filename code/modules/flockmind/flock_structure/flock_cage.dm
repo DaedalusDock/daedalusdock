@@ -209,7 +209,7 @@
 	// Spawn eggs or pool it to the cube
 	for(var/i in 1 to egg_spawn_count)
 		if(length(flock?.drones) <= FLOCK_DRONE_LIMIT)
-			var/obj/structure/flock/egg/egg = new(drop_location())
+			var/obj/structure/flock/egg/egg = new(drop_location(), flock)
 			egg.throw_at(get_edge_target_turf(egg, pick(GLOB.alldirs)), 6, 3)
 		else
 			spend_on_cube += egg_gnesis_cost

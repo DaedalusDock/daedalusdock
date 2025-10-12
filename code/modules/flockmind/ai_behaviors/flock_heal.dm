@@ -21,6 +21,7 @@
 			. += bird
 
 /datum/ai_behavior/flock/find_heal_target/perform(delta_time, datum/ai_controller/controller, ...)
+	..()
 	var/target = get_best_target_by_distance_score(controller, get_targets(controller), TRUE)
 	if(!target)
 		return BEHAVIOR_PERFORM_FAILURE
@@ -42,6 +43,7 @@
 	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT
 
 /datum/ai_behavior/flock/heal/perform(delta_time, datum/ai_controller/controller, ...)
+	..()
 	var/mob/living/simple_animal/flock/drone/bird = controller.pawn
 
 	if(isnull(controller.blackboard[BB_FLOCK_HEAL_FRUSTRATION]))

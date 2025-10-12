@@ -3,6 +3,7 @@
 	required_distance = 0
 
 /datum/ai_behavior/flock/wander/perform(delta_time, datum/ai_controller/controller, ...)
+	..()
 	var/turf/destination = get_destination(controller)
 	if(destination)
 		controller.set_move_target(destination)

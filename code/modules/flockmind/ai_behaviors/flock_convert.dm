@@ -56,6 +56,7 @@
 	return bird_flock.is_turf_free(T)
 
 /datum/ai_behavior/flock/find_conversion_target/perform(delta_time, datum/ai_controller/controller, turf/overmind_target)
+	..()
 	var/turf/target = overmind_target || get_target(controller, TRUE)
 	if(!target)
 		return BEHAVIOR_PERFORM_FAILURE
@@ -85,6 +86,7 @@
 	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT
 
 /datum/ai_behavior/flock/perform_conversion/perform(delta_time, datum/ai_controller/controller, ...)
+	..()
 	var/mob/living/simple_animal/flock/bird = controller.pawn
 	var/turf/target = controller.blackboard[BB_FLOCK_CONVERT_TARGET]
 	if(target)

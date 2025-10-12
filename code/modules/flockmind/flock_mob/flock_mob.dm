@@ -39,6 +39,11 @@
 
 	var/datum/point_holder/resources
 
+	/// Flock ID nametag
+	var/obj/effect/abstract/info_tag/flock/name_tag
+	/// Tag for the mob's current AI task.
+	var/obj/effect/abstract/info_tag/flock/info/task_tag
+
 	var/bandwidth_provided = 0
 
 /mob/living/simple_animal/flock/Initialize(mapload, join_flock)
@@ -57,7 +62,14 @@
 	flock?.add_unit(src)
 
 	resources = new
+	#warn temp: infinite flockmob resources
 	resources.adjust_points(1000000)
+
+	name_tag = new()
+	name_tag.set_parent(src)
+
+	task_tag = new()
+	task_tag.set_parent(src)
 
 	update_health_notice()
 	update_light_state()
@@ -65,6 +77,8 @@
 /mob/living/simple_animal/flock/Destroy()
 	flock?.free_unit(src)
 	flock = null
+	QDEL_NULL(name_tag)
+	QDEL_NULL(task_tag)
 	return ..()
 
 /mob/living/simple_animal/flock/set_stat(new_stat)
@@ -76,6 +90,10 @@
 		else
 			REMOVE_TRAIT(src, TRAIT_MOVE_FLOATING, STAT_TRAIT)
 			ADD_TRAIT(src, TRAIT_NO_FLOATING_ANIM, STAT_TRAIT)
+
+/mob/living/simple_animal/flock/update_name(updates)
+	. = ..()
+	name_tag?.set_text(real_name)
 
 /mob/living/simple_animal/flock/say(message, bubble_type, list/spans, sanitize, datum/language/language, ignore_spam, forced, filterproof, range)
 	. = ..()
@@ -130,6 +148,10 @@
 
 	ai_controller.CancelActions()
 	ai_controller.queue_behavior(/datum/ai_behavior/flock/rally, location)
+
+/// Helper for keeping consistency across tesk name sets.
+/mob/living/simple_animal/flock/proc/set_task_desc(text)
+	task_tag.set_text("Task: [text || "Idle"]")
 
 /// Turn the light on or off, based on if the mob is doing shit or not.
 /mob/living/simple_animal/flock/proc/update_light_state()

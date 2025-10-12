@@ -3,6 +3,7 @@
 
 	bandwidth_provided = FLOCK_COMPUTE_COST_DRONE
 	var/flock_phasing = FALSE
+
 	/// A mob possessing this mob.
 	var/mob/camera/flock/controlled_by
 
@@ -72,6 +73,11 @@
 
 	data["task"] = current_behavior_name || "hibernating"
 	return data
+
+/mob/living/simple_animal/flock/drone/on_ai_status_change(datum/ai_controller/source, ai_status)
+	. = ..()
+	if(ai_status == AI_OFF && controlled_by)
+		task_tag.set_text("Controlled By: [controlled_by.real_name]")
 
 /mob/living/simple_animal/flock/drone/proc/start_flockphase()
 	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))

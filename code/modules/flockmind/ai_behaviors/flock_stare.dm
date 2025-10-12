@@ -17,6 +17,7 @@
 			. += viewer
 
 /datum/ai_behavior/flock/stare/perform(delta_time, datum/ai_controller/controller, ...)
+	..()
 	var/list/targets = get_targets(controller)
 	if(length(targets))
 		controller.set_blackboard_key(BB_FLOCK_STARE_TARGET, pick(targets))
@@ -33,6 +34,7 @@
 	action_cooldown = 1 SECOND
 
 /datum/ai_behavior/flock/stare_at_bird/perform(delta_time, datum/ai_controller/controller, ...)
+	..()
 	var/mob/living/living_pawn = controller.pawn
 	if(!controller.blackboard[BB_FLOCK_STARING_ACTIVE])
 		controller.set_blackboard_key(BB_FLOCK_STARING_ACTIVE, world.time + (10 SECONDS))

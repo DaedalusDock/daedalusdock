@@ -290,7 +290,7 @@ multiple modular subtrees with behaviors
 	var/list/arguments = args.Copy()
 	arguments[1] = src
 	if(!behavior.setup(arglist(arguments)))
-		return
+		return FALSE
 
 	LAZYADD(current_behaviors, behavior)
 	arguments.Cut(1, 2)
@@ -307,6 +307,8 @@ multiple modular subtrees with behaviors
 			var/list/sub_args = args.Copy()
 			sub_args[1] = sub_behavior_type
 			queue_behavior(arglist(sub_args))
+
+	return TRUE
 
 /datum/ai_controller/proc/ProcessBehavior(delta_time, datum/ai_behavior/behavior)
 	DEBUG_AI_LOG(src, "Running [behavior]")

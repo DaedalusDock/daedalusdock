@@ -29,7 +29,7 @@
 	var/image/outline_container = new()
 	outline_container.plane = HUD_PLANE
 	outline_container.loc = target
-	outline_container.appearance_flags = PIXEL_SCALE | RESET_TRANSFORM | RESET_COLOR | KEEP_APART
+	outline_container.appearance_flags = PIXEL_SCALE | RESET_TRANSFORM | RESET_COLOR | KEEP_APART | NO_CLIENT_COLOR
 
 	dummy ||= new()
 	dummy.vis_flags = VIS_INHERIT_PLANE | VIS_INHERIT_LAYER
@@ -56,7 +56,7 @@
 /datum/component/flock_ping/UnregisterFromParent()
 	. = ..()
 	var/atom/movable/target = parent
-	target.remove_alt_appearance("ping")
+	target.remove_alt_appearance(hud_ref.appearance_key)
 
 /datum/component/flock_ping/proc/cleanup()
 	qdel(src)
@@ -64,3 +64,8 @@
 /datum/component/flock_ping/apc_power
 	duration = 5 SECONDS
 	outline_color = "#ffff00"
+
+/datum/component/flock_ping/selected
+	animate = FALSE
+	outline_thickness = 3
+	duration = INFINITY

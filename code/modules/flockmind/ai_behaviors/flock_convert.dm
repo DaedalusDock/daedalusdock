@@ -4,12 +4,13 @@
 /datum/ai_behavior/flock/find_conversion_target/setup(datum/ai_controller/controller, turf/overmind_target)
 	. = ..()
 	if(overmind_target)
+		var/mob/living/simple_animal/flock/drone/bird = controller.pawn
 		if(is_valid_target(overmind_target))
 			controller.set_blackboard_key(BB_FLOCK_OVERMIND_CONTROL, TRUE)
 			controller.set_blackboard_key(BB_PATH_MAX_LENGTH, 200)
+			bird.say("Instruction confirmed: convert object to substrate.")
 		else
-			var/mob/living/simple_animal/flock/drone/bird = controller.pawn
-			bird.say("Invalid conversion target provided by sentient level instruction.")
+			bird.say("Invalid conversion target provided by sentient-level instruction.")
 			return FALSE
 
 /datum/ai_behavior/flock/find_conversion_target/score(datum/ai_controller/controller)

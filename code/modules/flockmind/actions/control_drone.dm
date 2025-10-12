@@ -40,7 +40,7 @@
 		if(isflockturf(T))
 			selected_bird.ai_controller.queue_behavior(/datum/ai_behavior/flock/rally, target)
 			pointer_helper(selected_bird, target, 2 SECONDS)
-			selected_bird.say("Instruction confirmed: rally at location.")
+			selected_bird.say("instruction confirmed: rally at location")
 			free_drone(TRUE)
 			unset_click_ability(owner, performing_task = TRUE)
 			return TRUE
@@ -67,7 +67,7 @@
 	RegisterSignal(bird, COMSIG_PARENT_QDELETING, PROC_REF(drone_gone))
 	ADD_TRAIT(bird, TRAIT_AI_DISABLE_PLANNING, FLOCK_CONTROLLED_BY_OVERMIND_SOURCE)
 	bird.ai_controller.CancelActions()
-	bird.say("Suspending automated subroutines pending sentient-level instruction.", forced = "overmind taking control")
+	bird.say("suspending automated subroutines pending sentient-level instruction", forced = "overmind taking control")
 	bird.AddComponent(/datum/component/flock_ping/selected)
 
 /datum/action/cooldown/flock/control_drone/proc/free_drone(performing_task = TRUE)

@@ -8,9 +8,9 @@
 		if(is_valid_target(overmind_target))
 			controller.set_blackboard_key(BB_FLOCK_OVERMIND_CONTROL, TRUE)
 			controller.set_blackboard_key(BB_PATH_MAX_LENGTH, 200)
-			bird.say("Instruction confirmed: convert object to substrate.")
+			bird.say("instruction confirmed: convert object to substrate")
 		else
-			bird.say("Invalid conversion target provided by sentient-level instruction.")
+			bird.say("invalid conversion target provided by sentient-level instruction")
 			return FALSE
 
 /datum/ai_behavior/flock/find_conversion_target/score(datum/ai_controller/controller)

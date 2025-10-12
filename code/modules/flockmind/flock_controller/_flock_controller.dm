@@ -338,6 +338,8 @@
 /datum/flock/proc/ping(turf/T, mob/camera/flock/pinger)
 	var/message = "System interrupt. Designating new target: [T] in [get_area(T)]."
 	flock_talk(pinger, message, src, TRUE, list("italics"))
+	T.AddComponent(/datum/component/flock_ping, 5 SECONDS)
+
 	for(var/mob/camera/flock/ghost_bird in (traces + overmind))
 		if(isnull(ghost_bird.client))
 			continue
@@ -347,8 +349,6 @@
 			continue
 
 		var/image/pointer = pointer_image_to(ghost_bird, T)
-		//T._AddComponent(list(/datum/component/flock_ping, 5 SECONDS))
-
 		animate(pointer, time = 3 SECONDS, alpha = 0)
 		add_ping_image(ghost_bird.client, pointer, 3 SECONDS)
 

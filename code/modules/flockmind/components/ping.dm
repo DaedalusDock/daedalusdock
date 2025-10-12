@@ -5,6 +5,7 @@
 	var/animate = TRUE
 
 	var/datum/atom_hud/alternate_appearance/basic/flock/hud_ref
+	var/obj/effect/abstract/dummy
 
 /datum/component/flock_ping/Initialize(duration)
 	. = ..()
@@ -14,6 +15,10 @@
 	if(duration)
 		src.duration = duration
 
+/datum/component/flock_ping/Destroy()
+	QDEL_NULL(dummy)
+	return ..()
+
 /datum/component/flock_ping/RegisterWithParent()
 	. = ..()
 	//this cast looks horribly unsafe, but we've guaranteed that parent is a type with vis_contents in Initialize
@@ -21,20 +26,27 @@
 
 	target.render_target = REF(target)
 
-	var/image/outline = new()
-	outline.loc = target
-	outline.render_source = target.render_target
-	outline.render_target = ref(outline)
-	outline.appearance_flags |= KEEP_TOGETHER
-	outline.vis_contents += target
-	outline.filters += outline_filter(size = outline_thickness, color = outline_color)
-	outline.filters += alpha_mask_filter(render_source = outline.render_target, flags = MASK_INVERSE)
+	var/image/outline_container = new()
+	outline_container.plane = HUD_PLANE
+	outline_container.loc = target
+	outline_container.appearance_flags = PIXEL_SCALE | RESET_TRANSFORM | RESET_COLOR | KEEP_APART
+
+	dummy ||= new()
+	dummy.vis_flags = VIS_INHERIT_PLANE | VIS_INHERIT_LAYER
+	dummy.appearance_flags = PIXEL_SCALE | RESET_TRANSFORM | RESET_COLOR | PASS_MOUSE
+	dummy.render_source = REF(target)
+
+	dummy.add_filter("outline", 1, outline_filter(size = outline_thickness, color = outline_color))
+	if (isturf(target))
+		dummy.add_filter("mask", 2, alpha_mask_filter(render_source = target.render_target, flags = MASK_INVERSE))
+
+	outline_container.vis_contents += dummy
 
 	if(animate)
-		animate(outline, time = duration/9, alpha = 100, loop = 10)
-		animate(time = duration/9, alpha = 255)
+		animate(dummy, time = 0.5 SECONDS, alpha = 100, loop = -1)
+		animate(time = 0.5 SECONDS, alpha = 255)
 
-	hud_ref = target.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/flock, "ping", outline)
+	hud_ref = target.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/flock, "ping-[type]-[REF(target)]", outline_container)
 
 	if(duration == INFINITY)
 		return

@@ -10,7 +10,7 @@
 	var/atom/parent
 
 	/// Mobs that see us rn.
-	VAR_PRIVATE/list/mob/viewing_mobs
+	var/list/mob/viewing_mobs
 	/// Images we're inserting into client.images
 	VAR_PRIVATE/image/vis_holder
 
@@ -70,6 +70,6 @@
 
 /obj/effect/abstract/info_tag/flock/info
 	maptext_x = -64
-	maptext_y = -13
+	maptext_y = -14
 	maptext_width = 160
 	maptext_height = 48

@@ -15,7 +15,7 @@
 	active_bandwidth_cost = 20
 
 	/// Attacks require charging
-	var/datum/point_holder/charge = 0
+	var/datum/point_holder/charge
 	/// Charge gained per second while a target is in range
 	var/charge_per_second = 10
 	/// Trend of charge.
@@ -26,10 +26,10 @@
 	var/damage_per_zap = 5
 
 /obj/structure/flock/sentinel/Initialize(mapload, joinflock)
-	. = ..()
-	START_PROCESSING(SSobj, src)
 	charge = new
 	charge.set_max_points(100)
+	. = ..()
+	START_PROCESSING(SSobj, src)
 
 /obj/structure/flock/sentinel/Destroy(force)
 	STOP_PROCESSING(SSobj, src)
@@ -52,6 +52,7 @@
 	if(!active)
 		if(charge.has_points())
 			charge.adjust_points((charge_per_second / 2) * delta_time)
+			update_info_tag()
 			charge_status = LOSING_CHARGE
 		else
 			charge_status = NOT_CHARGED
@@ -61,6 +62,7 @@
 	// Gain more charge
 	if(charge_status != CHARGED)
 		charge.adjust_points(charge_per_second * delta_time)
+		update_info_tag()
 		if(charge.has_points(100))
 			charge_status = CHARGED
 			update_appearance(UPDATE_ICON_STATE)
@@ -92,6 +94,7 @@
 
 	charge_status = CHARGING
 	charge.adjust_points(-100)
+	update_info_tag()
 
 	tesla_zap_target(src, target, TESLA_MOB_DAMAGE_TO_POWER(damage_per_zap))
 	addtimer(TRAIT_CALLBACK_REMOVE(target, TRAIT_SHOCKED_BY_SENTINEL, ref(src)), 2 SECONDS)
@@ -156,6 +159,9 @@
 		span_flocksay("<b>Status:</b> [charge_status_str]"),
 		span_flocksay("<b>Charge Percentage: [charge]%"),
 	)
+
+/obj/structure/flock/sentinel/update_info_tag()
+	info_tag.set_text("Charge: [charge.has_points()]%")
 
 #undef NOT_CHARGED
 #undef LOSING_CHARGE

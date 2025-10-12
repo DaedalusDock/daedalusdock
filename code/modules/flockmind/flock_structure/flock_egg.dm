@@ -18,6 +18,9 @@
 	spawn_mobs()
 	qdel(src)
 
+/obj/structure/flock/egg/update_info_tag()
+	info_tag.set_text("Hatch Time: [build_time_left()] seconds")
+
 /obj/structure/flock/egg/proc/spawn_mobs()
 	new /mob/living/simple_animal/flock/drone(get_turf(src), flock)
 

@@ -32,18 +32,20 @@
 		icon_state = "teleblocker-off"
 	. = ..()
 
+/obj/structure/flock/gnesis_turret/update_info_tag()
+	info_tag.set_text("Gnesis: [reagents.total_volume]/[reagents.maximum_volume]")
+
 /obj/structure/flock/gnesis_turret/process(delta_time)
 	if(isnull(flock))
 		set_active(FALSE)
 		return PROCESS_KILL
 
-	// // Check if the flock can continue to run the sentinel
-	// if(active)
-	// 	if(flock.available_bandwidth() < 0)
-	// 		set_active(FALSE)
-	// else
-	// 	if(flock.can_afford(active_bandwidth_cost))
-	// 		set_active(TRUE)
+	if(active)
+		if(flock.available_bandwidth() < 0)
+			set_active(FALSE)
+	else
+		if(flock.can_afford(active_bandwidth_cost))
+			set_active(TRUE)
 
 	if(!active)
 		return

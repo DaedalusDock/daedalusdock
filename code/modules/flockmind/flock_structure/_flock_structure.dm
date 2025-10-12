@@ -72,6 +72,11 @@ TYPEINFO_DEF(/obj/structure/flock)
 
 	info_tag = new()
 	info_tag.set_parent(src)
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/flock/LateInitialize()
+	. = ..()
+	update_info_tag()
 
 /obj/structure/flock/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -164,8 +169,8 @@ TYPEINFO_DEF(/obj/structure/flock)
 	var/image/I = notice.image
 	I.icon_state = "hp-[get_integrity_percentage()]"
 
-
 /obj/structure/flock/process(delta_time)
+	update_info_tag()
 	if(spawn_time + build_time <= world.time)
 		finish_building()
 		return
@@ -214,6 +219,10 @@ TYPEINFO_DEF(/obj/structure/flock)
 	. += span_flocksay("<b>###=-</b>")
 
 /obj/structure/flock/proc/flock_structure_examine(mob/user)
+	return
+
+/// Stub for children to set their info in process() and initialize()
+/obj/structure/flock/proc/update_info_tag()
 	return
 
 /obj/structure/flock/proc/on_crossed(atom/source, atom/movable/crosser)

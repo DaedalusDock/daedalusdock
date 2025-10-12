@@ -20,18 +20,18 @@
 			unlock(flock)
 
 	else if(unlocked)
-		lock()
+		lock(flock)
 
 /datum/flock_unlockable/proc/is_unlockable(datum/flock/flock, total_compute, available_compute)
 	return TRUE
 
 /datum/flock_unlockable/proc/unlock(datum/flock/flock)
 	unlocked = TRUE
-	flock_talk(null, "New structure devised: [name]", src)
+	flock_talk(null, "New structure devised: [name]", flock)
 
 /datum/flock_unlockable/proc/lock(datum/flock/flock)
 	unlocked = FALSE
-	flock_talk(null, "Alert, structure tealprint disabled: [name]", src)
+	flock_talk(null, "Alert, structure tealprint disabled: [name]", flock)
 
 /datum/flock_unlockable/sentinel
 	structure_type = /obj/structure/flock/sentinel

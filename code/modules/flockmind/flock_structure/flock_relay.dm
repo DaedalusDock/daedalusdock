@@ -30,7 +30,7 @@
 /obj/structure/flock/relay/Initialize(mapload, datum/flock/join_flock)
 	. = ..()
 
-	flock.flock_game_status == FLOCK_ENDGAME_RELAY_BUILDING
+	flock.flock_game_status = FLOCK_ENDGAME_RELAY_BUILDING
 
 	log_game("The Flock ([flock?.name || "NULL"]) has constructed a relay at [AREACOORD(src)].")
 	SSshuttle.registerHostileEnvironment(src, FALSE)

@@ -122,17 +122,15 @@
 /obj/structure/flock/collector/proc/add_flockturfs(list/add)
 	for(var/turf/open/floor/flock/flockturf as anything in add)
 		LAZYADD(flockturf.connected_pylons, src)
-		flockturf.turn_on()
+		flockturf.update_power()
 
 	connected_flockturfs += add
 
 /// Remove turfs from the flockturfs list.
 /obj/structure/flock/collector/proc/remove_flockturfs(list/remove)
 	for(var/turf/open/floor/flock/flockturf as anything in remove)
-		flockturf.turn_off()
 		LAZYREMOVE(flockturf.connected_pylons, src)
-
-		#warn todo: flocktile connections
+		flockturf.update_power()
 
 	tracked_turfs -= remove
 

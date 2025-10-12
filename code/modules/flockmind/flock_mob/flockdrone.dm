@@ -97,7 +97,6 @@
 	if(!HAS_TRAIT(src, TRAIT_FLOCKPHASE))
 		return FALSE
 
-
 	playsound(src, 'goon/sounds/flockmind/flockdrone_floorrun.ogg', 30, TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 
 	REMOVE_TRAIT(src, TRAIT_FLOCKPHASE, INNATE_TRAIT)
@@ -113,7 +112,8 @@
 
 	if(istype(loc, /turf/open/floor/flock))
 		var/turf/open/floor/flock/flockfloor = loc
-		flockfloor.turn_off()
+		LAZYREMOVE(flockfloor.flockrunning_mobs, src)
+		flockfloor.update_power()
 
 	var/turf/turfloc = loc
 	if(turfloc.can_flock_occupy(src))

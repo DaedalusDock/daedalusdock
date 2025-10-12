@@ -15,7 +15,7 @@
 	purchase_cost = initial(structure_type.active_bandwidth_cost)
 
 /datum/flock_unlockable/proc/refresh_lock_status(datum/flock/flock, total_compute, available_compute)
-	if(is_unlockable())
+	if(is_unlockable(flock, total_compute, available_compute))
 		if(!unlocked)
 			unlock(flock)
 

@@ -11,6 +11,11 @@ TYPEINFO_DEF(/obj/structure/flock)
 
 	var/datum/flock/flock
 
+	/// Info tag for the flock name of the structure.
+	var/obj/effect/abstract/info_tag/flock/name_tag
+	/// Info tag for the actual information of the structure.
+	var/obj/effect/abstract/info_tag/flock/info/info_tag
+
 	var/flock_id
 	/// Shown in the flockmind UI
 	var/flock_desc
@@ -61,13 +66,36 @@ TYPEINFO_DEF(/obj/structure/flock)
 
 	ADD_TRAIT(src, TRAIT_FLOCK_EXAMINE, INNATE_TRAIT)
 
+	name_tag = new()
+	name_tag.set_parent(src)
+	name_tag.set_text(flock_id)
+
+	info_tag = new()
+	info_tag.set_parent(src)
+
 /obj/structure/flock/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	flock?.free_structure(src)
+	QDEL_NULL(name_tag)
+	QDEL_NULL(info_tag)
 	return ..()
 
 /obj/structure/flock/get_flock_id()
 	return flock_id
+
+// /obj/structure/flock/on_mouse_enter(client/client)
+// 	. = ..()
+// 	if(client?.keys_held?["Shift"])
+// 		return
+
+// 	var/mob/M = client.mob
+// 	if(info_tag.mob_should_see(M))
+// 		info_tag.show_to(M)
+
+// /obj/structure/flock/MouseExited(location, control, params)
+// 	. = ..()
+// 	if(!usr.client?.keys_held?["Shift"])
+// 		info_tag.hide_from(usr)
 
 /obj/structure/flock/cage/do_hurt_animation()
 	for(var/i in 1 to 3)

@@ -3388,6 +3388,8 @@
 #include "code\modules\industrial_lift\tram_lift_master.dm"
 #include "code\modules\industrial_lift\tram_override_objects.dm"
 #include "code\modules\industrial_lift\tram_walls.dm"
+#include "code\modules\info_tag\info_tag.dm"
+#include "code\modules\info_tag\info_tag_mob.dm"
 #include "code\modules\instruments\items.dm"
 #include "code\modules\instruments\piano_synth.dm"
 #include "code\modules\instruments\stationary.dm"

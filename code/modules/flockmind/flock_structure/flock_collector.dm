@@ -30,6 +30,7 @@
 	. = ..()
 	START_PROCESSING(SSobj, src)
 	update_connections()
+	info_tag.set_text("Bandwidth Provided: [bandwidth_provided]")
 
 /obj/structure/flock/collector/Destroy()
 	remove_flockturfs(connected_flockturfs)
@@ -64,6 +65,7 @@
 		flock.remove_bandwidth_influence(bandwidth_provided)
 		bandwidth_provided = new_bandwidth
 		flock.add_bandwidth_influence(bandwidth_provided)
+		info_tag.set_text("Bandwidth Provided: [bandwidth_provided]")
 
 	if(!COOLDOWN_FINISHED(src, charge_cd))
 		return

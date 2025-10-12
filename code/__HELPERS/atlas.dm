@@ -29,6 +29,7 @@ GLOBAL_REAL_VAR(list/atlas) = list()
 /// Key used for things that can call the shuttle
 #define TRACKING_KEY_SHUTTLE_CALLER "shuttle_caller"
 #define TRACKING_KEY_RCD "rcds"
+#define TRACKING_KEY_FLOCK_INFO_HUDS "flock_info"
 
 /proc/list_debug()
 	var/list/lists = list()

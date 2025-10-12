@@ -253,6 +253,10 @@
 	for(var/datum/flock_unlockable/unlockable as anything in unlockables)
 		unlockable.refresh_lock_status(src, new_total, new_available)
 
+/// Returns the total amount of bandwidth, including bandwidth being used.
+/datum/flock/proc/total_bandwidth()
+	return bandwidth.has_points()
+
 /// Returns the amount of available bandwidth. Can return negative if over budget.
 /datum/flock/proc/available_bandwidth()
 	return bandwidth.has_points() - used_bandwidth

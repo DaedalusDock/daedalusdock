@@ -13,9 +13,16 @@
 	var/health = 50
 	var/is_on = FALSE
 
+	/// List of pylons powering this turf, lazylist.
+	var/list/obj/structure/flock/collector/connected_pylons
+
 /turf/open/floor/flock/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/flock_protection, FALSE, TRUE, FALSE, FALSE)
+
+/turf/open/floor/flock/Destroy(force)
+	connected_pylons = null
+	return ..()
 
 /turf/open/floor/flock/get_flock_id()
 	return "Conduit"

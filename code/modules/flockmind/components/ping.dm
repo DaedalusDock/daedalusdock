@@ -48,3 +48,7 @@
 
 /datum/component/flock_ping/proc/cleanup()
 	qdel(src)
+
+/datum/component/flock_ping/apc_power
+	duration = 5 SECONDS
+	outline_color = "#ffff00"

@@ -35,3 +35,12 @@
 
 /datum/flock_unlockable/sentinel
 	structure_type = /obj/structure/flock/sentinel
+
+/datum/flock_unlockable/collector
+	structure_type = /obj/structure/flock/collector
+
+/datum/flock_unlockable/relay
+	structure_type = /obj/structure/flock/relay
+
+/datum/flock_unlockable/relay/is_unlockable(datum/flock/flock, total_compute, available_compute)
+	return (flock.total_bandwidth() >= 500) && flock.flock_game_status == NONE

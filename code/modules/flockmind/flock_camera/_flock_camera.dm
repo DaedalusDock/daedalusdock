@@ -73,6 +73,9 @@
 	if (href_list["ping"])
 		origin.AddComponent(/datum/component/flock_ping)
 
+/mob/camera/flock/broadcast_examine(atom/examined)
+	return
+
 /mob/camera/flock/proc/update_z(new_z) // 1+ to register, null to unregister
 	if (registered_z != new_z)
 		if (registered_z)

@@ -152,6 +152,7 @@ TYPEINFO_DEF(/obj/structure/flock)
 
 	active = new_state
 	update_appearance(UPDATE_ICON_STATE)
+
 	if(active)
 		flock.remove_bandwidth_influence(bandwidth_provided)
 		flock.add_bandwidth_influence(-active_bandwidth_cost)

@@ -16,7 +16,6 @@
 
 	resource_cost = 750
 
-	build_time = 3 SECONDS
 	allow_flockpass = FALSE
 
 	/// How long it takes until the signal is broadcast and the flock wins :D
@@ -30,6 +29,8 @@
 
 /obj/structure/flock/relay/Initialize(mapload, datum/flock/join_flock)
 	. = ..()
+
+	flock.flock_game_status == FLOCK_ENDGAME_RELAY_BUILDING
 
 	log_game("The Flock ([flock?.name || "NULL"]) has constructed a relay at [AREACOORD(src)].")
 	SSshuttle.registerHostileEnvironment(src, FALSE)
@@ -48,9 +49,13 @@
 /obj/structure/flock/relay/Destroy()
 	SSshuttle.clearHostileEnvironment(src)
 	STOP_PROCESSING(SSprocessing, src)
+
 	if(flock && !flock_won_da_game)
 		flock.game_over(completely_destroy = TRUE)
+
 	turfs_to_convert = null
+	if(flock.flock_game_status == FLOCK_ENDGAME_RELAY_BUILDING)
+		flock.flock_game_status = NONE
 	return ..()
 
 /obj/structure/flock/relay/do_hurt_animation()
@@ -127,7 +132,7 @@
 /obj/structure/flock/relay/proc/lorimer_burst()
 	set waitfor = FALSE
 	flock_won_da_game = TRUE
-	flock.flock_game_status = FLOCK_ENDGAME_RELAY_ACTIVAING
+	flock.flock_game_status = FLOCK_ENDGAME_RELAY_ACTIVATING
 
 	log_game("The Flock ([flock?.name || "NULL"]) has successfully broadcast The Signal at [AREACOORD(src)].")
 	add_overlay("structure_relay_sparks")
@@ -153,7 +158,7 @@
 
 	sleep(2 SECONDS)
 
-	flock.flock_game_status = FLOCK_ENDGAME_VICORY
+	flock.flock_game_status = FLOCK_ENDGAME_VICTORY
 	explosion(src, 50, ignorecap = TRUE, explosion_cause = src)
 
 	sleep(2 SECONDS)
@@ -183,3 +188,4 @@
 			sleep(0.1 SECONDS)
 
 
+#warn relay info hud

@@ -3198,6 +3198,7 @@
 #include "code\modules\flockmind\flock_mob\flockdrone.dm"
 #include "code\modules\flockmind\flock_structure\_flock_structure.dm"
 #include "code\modules\flockmind\flock_structure\flock_cage.dm"
+#include "code\modules\flockmind\flock_structure\flock_collector.dm"
 #include "code\modules\flockmind\flock_structure\flock_door.dm"
 #include "code\modules\flockmind\flock_structure\flock_egg.dm"
 #include "code\modules\flockmind\flock_structure\flock_light.dm"

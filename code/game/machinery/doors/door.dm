@@ -277,7 +277,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return !opacity
 
-/obj/machinery/door/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+/obj/machinery/door/CanAStarPass(to_dir, datum/can_pass_info/pass_info, leaving)
 	. = ..()
 	if(.)
 		return

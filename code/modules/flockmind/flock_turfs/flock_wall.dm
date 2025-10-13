@@ -28,7 +28,7 @@
 		return
 	//playsound here?
 
-/turf/closed/wall/flock/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+/turf/closed/wall/flock/CanAStarPass(to_dir, datum/can_pass_info/pass_info, leaving)
 	. = ..()
 	if(.)
 		return

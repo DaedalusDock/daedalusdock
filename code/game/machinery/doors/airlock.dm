@@ -1308,7 +1308,7 @@
 	assemblytype = initial(airlock.assemblytype)
 	update_appearance()
 
-/obj/machinery/door/airlock/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+/obj/machinery/door/airlock/CanAStarPass(to_dir, datum/can_pass_info/pass_info, leaving)
 	//Airlock is passable if it is open (!density), bot has access, and is not bolted shut or powered off)
 	return !density || (!locked && !pass_info.no_id && check_access_list(pass_info.access) && hasPower())
 

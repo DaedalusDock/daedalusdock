@@ -462,11 +462,15 @@ TYPEINFO_DEF(/obj/structure/window)
 /obj/structure/window/get_dumping_location()
 	return null
 
-/obj/structure/window/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+/obj/structure/window/CanAStarPass(to_dir, datum/can_pass_info/pass_info, leaving)
 	if(!density)
 		return TRUE
+
+	if(fulltile && leaving)
+		return TRUE
+
 	if(fulltile || (dir == to_dir))
-		return FALSE
+		return pass_info && (pass_info.pass_flags & pass_flags_self)
 
 	return TRUE
 

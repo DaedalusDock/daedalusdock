@@ -172,7 +172,7 @@ TYPEINFO_DEF(/obj/machinery/door/window)
 		return ZONE_BLOCKED
 
 //used in the AStar algorithm to determinate if the turf the door is on is passable
-/obj/machinery/door/window/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+/obj/machinery/door/window/CanAStarPass(to_dir, datum/can_pass_info/pass_info, leaving)
 	return !density || (dir != to_dir) || (check_access_list(pass_info.access) && hasPower() && !pass_info.no_id)
 
 /obj/machinery/door/window/proc/on_exit(datum/source, atom/movable/leaving, direction)

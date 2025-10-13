@@ -63,7 +63,11 @@
 	var/list/reachable_targets = list()
 
 	// Sort targets by their estimated score. The last element in the lists has the highest score.
-	for(var/atom/A as anything in targets)
+	while(length(targets))
+		var/index = rand(1, length(targets))
+		var/atom/A = targets[index]
+		targets.Cut(index, index + 1)
+
 		var/score = score_distance(controller, A)
 
 		BINARY_INSERT_TARGET(targets_by_score, A, score)

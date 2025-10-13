@@ -221,7 +221,7 @@
 	if(controlled_by.mind)
 		controlled_by.mind.transfer_to(src)
 	else
-		key = controlled_by.key
+		PossessByPlayer(controlled_by.key)
 
 	if(isflocktrace(controlled_by))
 		flock.add_notice(src, FLOCK_NOTICE_FLOCKTRACE_CONTROL)
@@ -236,7 +236,7 @@
 		return
 
 	var/mob/camera/flock/master_bird = controlled_by
-	master_bird = null
+	controlled_by = null
 
 	if(flock)
 		flock.remove_notice(src, FLOCK_NOTICE_FLOCKMIND_CONTROL)

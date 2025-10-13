@@ -34,6 +34,8 @@
 	stop_automated_movement = TRUE
 	movement_type = FLOATING
 
+	var/icon_dormant = "drone-dormant"
+
 	/// Flock datum. Can be null.
 	var/datum/flock/flock
 
@@ -45,6 +47,9 @@
 	var/obj/effect/abstract/info_tag/flock/info/task_tag
 
 	var/bandwidth_provided = 0
+
+	/// If, while part of an active flock, a flockmob leaves the station, they become dormant.
+	var/dormant = FALSE
 
 /mob/living/simple_animal/flock/Initialize(mapload, join_flock)
 	. = ..()
@@ -108,6 +113,21 @@
 /mob/living/simple_animal/flock/treat_message(message, correct_grammar = FALSE)
 	. = ..()
 
+/mob/living/simple_animal/flock/update_icon_state()
+	if(stat == DEAD)
+		icon_state = icon_dead
+	else
+		if(dormant)
+			icon_state = icon_dormant
+		else
+			icon_state = icon_living
+	return ..()
+
+/mob/living/simple_animal/flock/on_changed_z_level(turf/old_turf, turf/new_turf)
+	. = ..()
+	if(flock && new_turf && !flock.is_on_safe_z(new_turf))
+		dormantize()
+
 /mob/living/simple_animal/flock/updatehealth(cause_of_death)
 	. = ..()
 	update_health_notice()
@@ -128,7 +148,7 @@
 		notice = flock.add_notice(src, FLOCK_NOTICE_HEALTH)
 
 	var/image/I = notice.image
-	I.icon_state = "hp-[getHealthPercent()]"
+	I.icon_state = "hp-[round(getHealthPercent(), 10)]"
 
 /mob/living/simple_animal/flock/proc/get_flock_data()
 	var/list/data = list()
@@ -139,11 +159,25 @@
 	data["ref"] = REF(src)
 	return data
 
+/// Become dormant. A husk. A shell.
+/mob/living/simple_animal/flock/proc/dormantize()
+	if(dormant)
+		return
+
+	dormant = TRUE
+
+	cancel_do_afters()
+	ai_controller.set_ai_status(AI_STATUS_OFF)
+	flock?.free_unit(src)
+	update_light_state()
+
+	update_appearance(UPDATE_ICON_STATE)
+
 /mob/living/simple_animal/flock/proc/rally(turf/location)
 	if(!isturf(location))
 		return
 
-	if(ai_controller.ai_status == AI_OFF || ckey)
+	if(ai_controller.ai_status == AI_STATUS_OFF || ckey)
 		return
 
 	ai_controller.CancelActions()
@@ -155,7 +189,7 @@
 
 /// Turn the light on or off, based on if the mob is doing shit or not.
 /mob/living/simple_animal/flock/proc/update_light_state()
-	if(stat == DEAD)
+	if(stat == DEAD || dormant)
 		set_light_on(FALSE)
 		return
 

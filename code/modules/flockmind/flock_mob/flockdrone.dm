@@ -76,8 +76,17 @@
 
 /mob/living/simple_animal/flock/drone/on_ai_status_change(datum/ai_controller/source, ai_status)
 	. = ..()
-	if(ai_status == AI_OFF && controlled_by)
+	if(ai_status == AI_STATUS_OFF && controlled_by)
 		task_tag.set_text("Controlled By: [controlled_by.real_name]")
+
+/mob/living/simple_animal/flock/drone/dormantize()
+	if(!flock)
+		return
+
+	#warn todo: implement dormantize ejecting the controller correctly
+	spawn(-1)
+		say("error: out of signal range, disconnecting")
+	return ..()
 
 /mob/living/simple_animal/flock/drone/proc/start_flockphase()
 	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))
@@ -201,6 +210,9 @@
 		mind.transfer_to(master_bird)
 
 	flock_talk(null, "Control of [real_name] surrendered.", flock)
+
+	if(!flock)
+		dormantize()
 
 /mob/living/simple_animal/flock/drone/proc/split_into_bits()
 	ai_controller.PauseAi(3 SECONDS)

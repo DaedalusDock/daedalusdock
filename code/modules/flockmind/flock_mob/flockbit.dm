@@ -1,6 +1,7 @@
 /mob/living/simple_animal/flock/bit
 	name = "flockbit"
 	icon_state = "flockbit"
+	icon_dormant = "bit-dormant"
 	maxHealth = 10
 	density = FALSE
 	pass_flags = PASSTABLE

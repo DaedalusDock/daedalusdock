@@ -76,6 +76,16 @@
 /mob/camera/flock/broadcast_examine(atom/examined)
 	return
 
+/mob/camera/flock/on_changed_z_level(turf/old_turf, turf/new_turf, notify_contents)
+	. = ..()
+	update_z(new_turf?.z)
+
+	if(flock && !flock.is_on_safe_z(src))
+		var/turf/destination = get_turf(pick_safe(flock.drones)) || get_safe_random_station_turf()
+
+		forceMove(destination)
+		to_chat(src, span_warning("You feel your consciousness weaking as you are ripped further from your rift, and you retreat back to safety."))
+
 /mob/camera/flock/proc/update_z(new_z) // 1+ to register, null to unregister
 	if (registered_z != new_z)
 		if (registered_z)

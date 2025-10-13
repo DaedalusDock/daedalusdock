@@ -32,7 +32,7 @@
 			continue
 		if(bird.stat != CONSCIOUS)
 			continue
-		if(bird.ai_controller.ai_status == AI_OFF)
+		if(bird.ai_controller.ai_status == AI_STATUS_OFF)
 			continue
 		if(bird.flock != flock)
 			continue

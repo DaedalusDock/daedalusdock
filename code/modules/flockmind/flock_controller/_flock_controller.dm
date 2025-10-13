@@ -376,6 +376,20 @@
 		active_pings -= C
 		UnregisterSignal(C, COMSIG_PARENT_QDELETING)
 
+/// Checks to see if the given atom is allowed to be there. Has lots of behavior like making drones dormant and snapping traces back to the station.
+/datum/flock/proc/is_on_safe_z(atom/A)
+	var/turf/T = get_turf(A)
+	if(!T.z)
+		return FALSE
+
+	if(flock_game_status == FLOCK_ENDGAME_LOST)
+		return TRUE
+
+	if(is_station_level(T.z))
+		return TRUE
+
+	return FALSE
+
 /datum/flock/proc/on_client_gone(client/source)
 	SIGNAL_HANDLER
 	cleanup_ping_images()
@@ -490,7 +504,11 @@
 
 	// Free units
 	for(var/mob/living/simple_animal/flock/bird as anything in (bits + drones))
-		free_unit(bird)
+		bird.dormantize()
+
+	// Blow up structures
+	for(var/obj/structure/flock/structure as anything in structures)
+		structure.deconstruct(FALSE)
 
 	// Remove ignores
 	for(var/mob/M as anything in ignores)

@@ -3177,6 +3177,7 @@
 #include "code\modules\flockmind\actions\partition_mind.dm"
 #include "code\modules\flockmind\actions\ping.dm"
 #include "code\modules\flockmind\actions\radio_blast.dm"
+#include "code\modules\flockmind\actions\release_control.dm"
 #include "code\modules\flockmind\ai_behaviors\_flock_behavior_base.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_convert.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_heal.dm"

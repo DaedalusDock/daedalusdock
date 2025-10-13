@@ -34,6 +34,10 @@
 	stop_automated_movement = TRUE
 	movement_type = FLOATING
 
+	var/list/actions_to_grant = list(
+		/datum/action/cooldown/flock/convert,
+	)
+
 	var/icon_dormant = "drone-dormant"
 
 	/// Flock datum. Can be null.
@@ -55,8 +59,9 @@
 	. = ..()
 	RegisterSignal(ai_controller, COMSIG_AI_STATUS_CHANGE, PROC_REF(on_ai_status_change))
 
-	var/datum/action/cooldown/flock/convert/convert_action = new
-	convert_action.Grant(src)
+	for(var/action_path in actions_to_grant)
+		var/datum/action/action = new action_path
+		action.Grant(src)
 
 	set_combat_mode(TRUE)
 

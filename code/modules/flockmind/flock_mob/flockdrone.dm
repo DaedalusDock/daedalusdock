@@ -1,6 +1,11 @@
 /mob/living/simple_animal/flock/drone
 	ai_controller = /datum/ai_controller/flock/drone
 
+	actions_to_grant = list(
+		/datum/action/cooldown/flock/release_control,
+		/datum/action/cooldown/flock/convert,
+	)
+
 	bandwidth_provided = FLOCK_COMPUTE_COST_DRONE
 	var/flock_phasing = FALSE
 
@@ -42,6 +47,47 @@
 		resources.remove_points(1)
 		if(!resources.has_points(1))
 			stop_flockphase()
+
+/mob/living/simple_animal/flock/drone/MouseDroppedOn(atom/dropping, atom/user)
+	. = ..()
+	if(dropping != user)
+		return
+
+	var/mob/camera/flock/ghost_bird = user
+	if(istype(user) && ghost_bird.flock == flock)
+		take_control(user)
+
+/mob/living/simple_animal/flock/drone/Click(location, control, params)
+	. = ..()
+	var/mob/camera/flock/ghost_bird = usr
+	if(!istype(ghost_bird))
+		return
+
+	var/list/modifiers = params2list(params)
+	if(!modifiers?[RIGHT_CLICK])
+		return
+
+	var/list/choices = list()
+	var/image/I = image('icons/hud/radial.dmi', "radial_use")
+	choices["order"] = I
+
+	I = image('icons/hud/radial.dmi', "radial_control")
+	choices["control"] = I
+
+	var/result = show_radial_menu(usr, get_turf(src), choices, "[REF(usr)]_flock_click")
+	switch(result)
+		if("control")
+			take_control(ghost_bird)
+
+		if("order")
+			var/datum/action/cooldown/flock/control_drone/order_action = locate() in ghost_bird.actions
+			if(order_action)
+				if(order_action.selected_bird)
+					order_action.unset_click_ability(usr)
+				else
+					order_action.set_click_ability(usr)
+					order_action.Trigger(target = src)
+
 
 /mob/living/simple_animal/flock/drone/harvest(mob/living/user)
 	var/list/loot = list(

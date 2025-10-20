@@ -184,7 +184,7 @@ TYPEINFO_DEF(/obj/structure/flock)
 		return
 
 	active = new_state
-	update_appearance(UPDATE_ICON_STATE)
+	update_appearance()
 
 	if(active)
 		flock.remove_bandwidth_influence(bandwidth_provided)
@@ -192,6 +192,8 @@ TYPEINFO_DEF(/obj/structure/flock)
 	else
 		flock.remove_bandwidth_influence(-active_bandwidth_cost)
 		flock.add_bandwidth_influence(bandwidth_provided)
+
+	return new_state
 
 /// Called when an object finishes construction
 /obj/structure/flock/proc/finish_building()

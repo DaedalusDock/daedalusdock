@@ -681,11 +681,14 @@ SUBSYSTEM_DEF(timer)
 /proc/timeleft(id, datum/controller/subsystem/timer/timer_subsystem)
 	if (!id)
 		return null
+
 	if (id == TIMER_ID_NULL)
 		CRASH("Tried to get timeleft of a null timerid. Use TIMER_STOPPABLE flag")
+
 	if (istype(id, /datum/timedevent))
 		var/datum/timedevent/timer = id
 		return timer.timeToRun - world.time
+
 	timer_subsystem = timer_subsystem || SStimer
 	//id is string
 	var/datum/timedevent/timer = timer_subsystem.timer_id_dict[id]

@@ -64,3 +64,8 @@
 	screen_loc = "CENTER:16,SOUTH:5"
 
 	part_type = /datum/flockdrone_part/incapacitator
+
+/atom/movable/screen/flockdrone_part/incapacitator/update_appearance(updates)
+	. = ..()
+	var/datum/flockdrone_part/incapacitator/part = part_ref
+	maptext = MAPTEXT("[part?.shot_count || "0"]")

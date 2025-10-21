@@ -19,8 +19,12 @@
 	if(!COOLDOWN_FINISHED(src, shoot_cd))
 		return FALSE
 
+	shot_count -= 1
+	screen_obj?.update_appearance()
+
 	var/obj/projectile/energy/flock_bolt/bolt = new(get_turf(drone))
 	bolt.preparePixelProjectile(target, drone)
+	bolt.fire()
 	playsound(drone, 'sound/weapons/resonator_fire.ogg', 50, TRUE)
 
 	if(!recharge_timer_id)
@@ -32,6 +36,7 @@
 /// Increments shot count by 1 and starts the recharge timer if necessary.
 /datum/flockdrone_part/incapacitator/proc/recharge()
 	shot_count = min(shot_count + 1, max_shots)
+	screen_obj?.update_appearance()
 
 	if(shot_count == max_shots)
 		recharge_timer_id = null

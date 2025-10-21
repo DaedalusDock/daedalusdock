@@ -11,6 +11,13 @@
 	using = new /atom/movable/screen/flockdrone_part/incapacitator(null, src)
 	static_inventory += using
 
+	healthdoll = new /atom/movable/screen/flockdrone_health(null, src)
+	infodisplay += healthdoll
+
+/atom/movable/screen/flockdrone_health
+	icon = 'goon/icons/hud/flock_ui.dmi'
+	icon_state = "health1"
+
 /atom/movable/screen/flockdrone_part
 	icon = 'goon/icons/hud/flock_ui.dmi'
 	var/active_state = ""

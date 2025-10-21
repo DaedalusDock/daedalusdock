@@ -91,6 +91,9 @@
 	QDEL_NULL(task_tag)
 	return ..()
 
+/mob/living/simple_animal/flock/create_mood()
+	return // THEY DO NOT FEEEEEEEEEEEEEEEL
+
 /mob/living/simple_animal/flock/set_stat(new_stat)
 	. = ..()
 	switch(stat)

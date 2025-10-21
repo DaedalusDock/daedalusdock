@@ -111,6 +111,35 @@
 
 	active_part?.left_click_on(A, FALSE)
 
+/mob/living/simple_animal/update_health_hud()
+	var/severity = 0
+	var/healthpercent = (health/maxHealth) * 100
+	if(hud_used?.healthdoll) //to really put you in the boots of a simplemob
+		var/atom/movable/screen/flockdrone_health/healthdoll = hud_used.healthdoll
+		switch(healthpercent)
+			if(100 to INFINITY)
+				severity = 0
+			if(80 to 100)
+				severity = 1
+			if(60 to 80)
+				severity = 2
+			if(40 to 60)
+				severity = 3
+			if(20 to 40)
+				severity = 4
+			if(1 to 20)
+				severity = 5
+			else
+				severity = 6
+
+		healthdoll.icon_state = "living[severity]"
+
+	if(severity > 0)
+		overlay_fullscreen("brute", /atom/movable/screen/fullscreen/brute, severity)
+	else
+		clear_fullscreen("brute")
+
+
 /mob/living/simple_animal/flock/drone/harvest(mob/living/user)
 	var/list/loot = list(
 		/obj/item/stack/sheet/gnesis = 1,

@@ -67,7 +67,7 @@
 
 /obj/structure/flock/interceptor/proc/begin_charging()
 	is_charged = FALSE
-	recharge_timer_id = addtimer(CALLBACK(src, PROC_REF(ready_to_fire)), recharge_time, TIMER_DELETE_ME)
+	recharge_timer_id = addtimer(CALLBACK(src, PROC_REF(ready_to_fire)), recharge_time, TIMER_DELETE_ME | TIMER_STOPPABLE)
 	update_appearance()
 
 /// Called when recharge_cd is ready to fire

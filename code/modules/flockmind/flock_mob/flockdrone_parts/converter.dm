@@ -1,6 +1,9 @@
 /datum/flockdrone_part/converter
 
-/datum/flockdrone_part/converter/left_click_on(atom/target)
+/datum/flockdrone_part/converter/left_click_on(atom/target, in_reach)
+	if(!in_reach)
+		return
+
 	if(isliving(target))
 		return try_cage(target)
 

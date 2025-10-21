@@ -15,6 +15,6 @@
 /datum/flockdrone_part/proc/is_active()
 	return drone.active_part == src
 
-/// Called when a drone with this part active left clicks on an atom within range.
-/datum/flockdrone_part/proc/left_click_on(atom/target)
+/// Called when a drone with this part active left clicks on an atom. in_reach is TRUE if the target atom is reachable.
+/datum/flockdrone_part/proc/left_click_on(atom/target, in_reach)
 	return

@@ -1,4 +1,5 @@
 /mob/living/simple_animal/flock/drone
+	hud_type = /datum/hud/flockdrone
 	ai_controller = /datum/ai_controller/flock/drone
 
 	actions_to_grant = list(
@@ -35,6 +36,9 @@
 
 	var/datum/action/cooldown/flock/flock_heal/repair = new
 	repair.Grant(src)
+
+	var/datum/action/cooldown/flock/cage_mob/cage = new
+	cage.Grant(src)
 
 /mob/living/simple_animal/flock/drone/Destroy()
 	release_control()
@@ -98,7 +102,14 @@
 					order_action.Trigger(target = src)
 
 /mob/living/simple_animal/flock/drone/resolve_unarmed_attack(atom/attack_target, list/modifiers)
-	active_part?.left_click_on(attack_target)
+	active_part?.left_click_on(attack_target, TRUE)
+
+/mob/living/simple_animal/flock/drone/RangedAttack(atom/A, modifiers)
+	. = ..()
+	if(.)
+		return
+
+	active_part?.left_click_on(A, FALSE)
 
 /mob/living/simple_animal/flock/drone/harvest(mob/living/user)
 	var/list/loot = list(
@@ -156,6 +167,7 @@
 /// Create all of the part datums for this mob.
 /mob/living/simple_animal/flock/drone/proc/create_parts()
 	parts += new /datum/flockdrone_part/converter(src)
+	parts += new /datum/flockdrone_part/incapacitator(src)
 
 /mob/living/simple_animal/flock/drone/proc/start_flockphase()
 	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))

@@ -3,19 +3,26 @@
 
 /datum/hud/flockdrone/New(mob/owner)
 	. = ..()
+	var/atom/movable/screen/using
+
+	using = new /atom/movable/screen/flockdrone_part/converter(null, src)
+	static_inventory += using
+
+	using = new /atom/movable/screen/flockdrone_part/incapacitator(null, src)
+	static_inventory += using
 
 /atom/movable/screen/flockdrone_part
 	icon = 'goon/icons/hud/flock_ui.dmi'
 	var/active_state = ""
 	var/inactive_state = ""
 
-	var/part_path
+	var/part_type
 	var/datum/flockdrone_part/part_ref
 
 /atom/movable/screen/flockdrone_part/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
 	var/mob/living/simple_animal/flock/drone/drone = hud?.mymob
-	part_ref = locate(part_path) in drone?.parts // create n destroy
+	part_ref = locate(part_type) in drone?.parts // create n destroy
 	part_ref?.screen_obj = src
 
 	update_appearance(UPDATE_ICON_STATE)
@@ -41,5 +48,19 @@
 	drone.set_active_part(part_ref)
 
 /atom/movable/screen/flockdrone_part/converter
+	name = "converter"
 	active_state = "converter1"
 	inactive_state = "converter0"
+
+	screen_loc = "CENTER-1:16,SOUTH:5"
+
+	part_type = /datum/flockdrone_part/converter
+
+/atom/movable/screen/flockdrone_part/incapacitator
+	name = "incapacitator"
+	active_state = "incapacitor1"
+	inactive_state = "incapacitor0"
+
+	screen_loc = "CENTER:16,SOUTH:5"
+
+	part_type = /datum/flockdrone_part/incapacitator

@@ -17,6 +17,7 @@
 /atom/movable/screen/flockdrone_health
 	icon = 'goon/icons/hud/flock_ui.dmi'
 	icon_state = "health1"
+	screen_loc = ui_living_healthdoll
 
 /atom/movable/screen/flockdrone_part
 	icon = 'goon/icons/hud/flock_ui.dmi'

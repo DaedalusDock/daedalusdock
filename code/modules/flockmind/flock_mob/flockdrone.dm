@@ -113,29 +113,31 @@
 
 /mob/living/simple_animal/update_health_hud()
 	var/severity = 0
-	var/healthpercent = (health/maxHealth) * 100
+	var/healthpercent = ceil((health/maxHealth) * 100)
 	if(hud_used?.healthdoll) //to really put you in the boots of a simplemob
 		var/atom/movable/screen/flockdrone_health/healthdoll = hud_used.healthdoll
 		switch(healthpercent)
 			if(100 to INFINITY)
 				severity = 0
-			if(80 to 100)
+			if(81 to 99)
 				severity = 1
-			if(60 to 80)
+			if(65 to 80)
 				severity = 2
-			if(40 to 60)
+			if(49 to 64)
 				severity = 3
-			if(20 to 40)
+			if(33 to 48)
 				severity = 4
-			if(1 to 20)
+			if(17 to 32)
 				severity = 5
-			else
+			if(1 to 16)
 				severity = 6
+			else
+				severity = 7
 
-		healthdoll.icon_state = "living[severity]"
+		healthdoll.icon_state = "health[severity]"
 
 	if(severity > 0)
-		overlay_fullscreen("brute", /atom/movable/screen/fullscreen/brute, severity)
+		overlay_fullscreen("brute", /atom/movable/screen/fullscreen/brute, min(severity, 6))
 	else
 		clear_fullscreen("brute")
 

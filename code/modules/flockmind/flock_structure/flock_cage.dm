@@ -70,7 +70,7 @@
 			chew_on_mob(delta_time)
 
 	else
-		eating.take_damage(absorption_rate * delta_time * 25, BRUTE)
+		eating.take_damage(absorption_rate * delta_time * 25, BRUTE, armor_penetration = 100)
 		reagents.add_reagent(/datum/reagent/toxin/gnesis, absorption_rate * delta_time)
 
 	if(victim && COOLDOWN_FINISHED(src, flock_message_cd))

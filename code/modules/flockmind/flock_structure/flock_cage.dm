@@ -10,7 +10,7 @@
 	flock_desc = "Converts organic creatures into Flockdrones."
 	flock_id = "Matter reprocessor"
 
-	var/tmp/mob/living/carbon/human/victim
+	var/tmp/mob/living/victim
 	/// Current item being munched on.
 	var/tmp/obj/item/eating
 
@@ -18,9 +18,6 @@
 	var/egg_gnesis_cost = 100
 	/// Per second, how much gnesis is generated.
 	var/absorption_rate = 2
-
-	/// Set to TRUE if we are unmaking the victim.
-	var/tmp/consuming_victim = FALSE
 
 	COOLDOWN_DECLARE(flock_message_cd)
 	COOLDOWN_DECLARE(resist_cd)
@@ -70,7 +67,7 @@
 				to_chat(victim, span_warning("[eating] begins to melt away."))
 
 		else
-			chew_on_mob()
+			chew_on_mob(delta_time)
 
 	else
 		eating.take_damage(absorption_rate * delta_time * 25, BRUTE, armor_penetration = 100)
@@ -128,41 +125,49 @@
 	)
 
 /// Picks an item, organ, or bodypart, to munch on.
-/obj/structure/flock/cage/proc/chew_on_mob()
-	var/list/items = victim.get_all_worn_items()
+/obj/structure/flock/cage/proc/chew_on_mob(delta_time)
+	if(!ishuman(victim))
+		victim.adjustBruteLoss(absorption_rate * delta_time)
+		if(victim.stat == DEAD)
+			visible_message(span_danger("[src] rips apart what remains of [victim]."))
+			set_victim(null)
+			victim.gib(TRUE, TRUE, TRUE)
+		return
+
+	var/mob/living/carbon/human/human_victim = victim
+	var/list/items = human_victim.get_all_worn_items()
 	if(length(items))
 		while(length(items) && !eating)
 			var/obj/item/candidate = pick_n_take(items)
-			victim.dropItemToGround(candidate, TRUE, TRUE)
+			human_victim.dropItemToGround(candidate, TRUE, TRUE)
 			if(!QDELETED(candidate))
 				set_eating_target(candidate)
 
 		if(eating)
-			visible_message(span_warning("[src] pulls [eating] from [victim] and begins ripping it apart."))
+			visible_message(span_warning("[src] pulls [eating] from [human_victim] and begins ripping it apart."))
 			playsound(src, 'goon/sounds/weapons/nano-blade-1.ogg', 50, TRUE)
 		return
 
-	var/list/bodyparts = victim.bodyparts.Copy()
+	var/list/bodyparts = human_victim.bodyparts.Copy()
 	for(var/obj/item/bodypart/BP in bodyparts)
 		if(BP.body_part & (HEAD | CHEST))
 			bodyparts -= BP
 
 	if(length(bodyparts))
-		consuming_victim = TRUE
-		var/obj/item/bodypart/chest/chest = victim.get_bodypart(BODY_ZONE_CHEST)
+		var/obj/item/bodypart/chest/chest = human_victim.get_bodypart(BODY_ZONE_CHEST)
 		var/obj/item/bodypart/yummy_appendage = pick(bodyparts)
 
-		victim.notify_pain(PAIN_AMT_AGONIZING, "A surge of pain eminates from where your [yummy_appendage.plaintext_zone] used to be.", ignore_cd = TRUE)
+		human_victim.notify_pain(PAIN_AMT_AGONIZING, "A surge of pain eminates from where your [yummy_appendage.plaintext_zone] used to be.", ignore_cd = TRUE)
 		yummy_appendage.dismember(DROPLIMB_EDGE, FALSE)
 		set_eating_target(yummy_appendage)
 		eating.forceMove(src)
 
 		chest.clamp_wounds() // Haha bitch
 
-		visible_message(span_danger("[src] tears [eating] from [victim] and begins ripping it apart."))
+		visible_message(span_danger("[src] tears [eating] from [human_victim] and begins ripping it apart."))
 		return
 
-	var/list/organs = victim.processing_organs.Copy()
+	var/list/organs = human_victim.processing_organs.Copy()
 	var/list/skip_organs = list(ORGAN_SLOT_BRAIN, ORGAN_SLOT_HEART)
 	for(var/obj/item/organ/O in organs)
 		if(O.slot in skip_organs)
@@ -174,26 +179,24 @@
 		organs -= lungs
 
 	if(length(organs))
-		consuming_victim = TRUE
-
 		var/obj/item/organ/yummy_organ = pick(organs)
 		var/organ_loc_str = yummy_organ.ownerlimb.plaintext_zone
 
-		victim.notify_pain(PAIN_AMT_AGONIZING, "Pain explodes from your [organ_loc_str].", ignore_cd = TRUE)
-		yummy_organ.Remove(victim)
+		human_victim.notify_pain(PAIN_AMT_AGONIZING, "Pain explodes from your [organ_loc_str].", ignore_cd = TRUE)
+		yummy_organ.Remove(human_victim)
 		yummy_organ.forceMove(src)
 
-		visible_message(span_danger("[src] tears [eating] from [victim]'s [organ_loc_str] and begins ripping it apart."))
+		visible_message(span_danger("[src] tears [eating] from [human_victim]'s [organ_loc_str] and begins ripping it apart."))
 		return
 
-	visible_message(span_danger("[src] rips apart what remains of [victim]."))
+	visible_message(span_danger("[src] rips apart what remains of [human_victim]."))
 	set_victim(null)
-	victim.gib(TRUE, TRUE, TRUE)
+	human_victim.gib(TRUE, TRUE, TRUE)
 
 // INTO THE CAGE
-/obj/structure/flock/cage/proc/cage_mob(mob/living/carbon/human/H)
-	H.forceMove(src)
-	set_victim(H)
+/obj/structure/flock/cage/proc/cage_mob(mob/living/L)
+	L.forceMove(src)
+	set_victim(L)
 	victim.visible_message(span_danger("A [name] materializes around [victim],"))
 
 /// Spends gnesis on eggs or a cube. Only spends on eggs by default.
@@ -237,10 +240,9 @@
 		return
 
 	RegisterSignal(eating, COMSIG_MOVABLE_MOVED, PROC_REF(target_gone))
-	consuming_victim = FALSE
 
 /// Setter for victim, no side effects.
-/obj/structure/flock/cage/proc/set_victim(mob/living/carbon/human/new_victim)
+/obj/structure/flock/cage/proc/set_victim(mob/living/new_victim)
 	if(victim)
 		UnregisterSignal(victim, COMSIG_MOVABLE_MOVED)
 		victim.clear_fullscreen("flock_convert")

@@ -16,16 +16,19 @@
 	return ..()
 
 /datum/action/cooldown/flock/cage_mob/is_valid_target(atom/cast_on)
-	return ishuman(cast_on)
+	return isliving(cast_on) && !isflockmob(cast_on)
 
 /datum/action/cooldown/flock/cage_mob/Activate(atom/target)
+	if(DOING_INTERACTION(owner, "flock_cage"))
+		return FALSE
+
 	var/mob/living/simple_animal/flock/bird = owner
 	var/turf/T = get_turf(target)
 	ADD_TRAIT(bird, TRAIT_AI_PAUSED, ref(src))
 
 	owner.visible_message(
 		span_notice("<b>[owner]</b> begins forming a cuboid structure around <b>[target]</b>."),
-		blind_message = span_hear("You hear strange building noises."),
+		blind_message = span_hear("You hear a strange synthetic whirring."),
 	)
 
 	T.add_viscontents(turf_effect)
@@ -33,8 +36,10 @@
 		turf_effect.icon_state = "spawn-wall-loop"
 		flick("spawn-wall", turf_effect)
 
+	log_combat(owner, target, "attempted to cage")
+
 	. = TRUE
-	playsound(owner, 'goon/sounds/flockmind/flockdrone_convert.ogg', 30, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE)
+	playsound(owner, 'goon/sounds/flockmind/flockdrone_build.ogg', 30, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE)
 	if(!do_after(owner, target, 4.5 SECONDS, DO_PUBLIC, interaction_key = "flock_cage"))
 		. = FALSE
 
@@ -43,6 +48,9 @@
 	if(!.)
 		return
 
+	log_combat(owner, target, "caged")
+
+	playsound(owner, 'goon/sounds/flockmind/flockdrone_build_complete.ogg', 70, TRUE)
 	var/obj/structure/flock/cage/cage = new(T, bird.flock)
 	cage.cage_mob(target)
 	..()

@@ -7,12 +7,19 @@
 	)
 
 	bandwidth_provided = FLOCK_COMPUTE_COST_DRONE
-	var/flock_phasing = FALSE
+	/// Set to TRUE when actively flockphasing.
+	var/tmp/flock_phasing = FALSE
 
 	/// A mob possessing this mob.
-	var/mob/camera/flock/controlled_by
+	var/tmp/mob/camera/flock/controlled_by
+
+	var/list/datum/flockdrone_part/parts = list()
+	/// Active flockdrone part.
+	var/datum/flockdrone_part/active_part
 
 /mob/living/simple_animal/flock/drone/Initialize(mapload, join_flock)
+	create_parts()
+	set_active_part(parts[1])
 	. = ..()
 	flock?.stat_drones_made++
 
@@ -32,6 +39,8 @@
 /mob/living/simple_animal/flock/drone/Destroy()
 	release_control()
 	QDEL_NULL(resources)
+	QDEL_LIST(parts)
+	active_part = null // whatever was here was qdeleted by qdel_list(parts)
 	return ..()
 
 /mob/living/simple_animal/flock/drone/death(gibbed, cause_of_death)
@@ -50,7 +59,7 @@
 
 /mob/living/simple_animal/flock/drone/MouseDroppedOn(atom/dropping, atom/user)
 	. = ..()
-	if(dropping != user)
+	if(dropping != user || !istype(user, /mob/camera/flock))
 		return
 
 	var/mob/camera/flock/ghost_bird = user
@@ -88,6 +97,8 @@
 					order_action.set_click_ability(usr)
 					order_action.Trigger(target = src)
 
+/mob/living/simple_animal/flock/drone/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	active_part?.left_click_on(attack_target)
 
 /mob/living/simple_animal/flock/drone/harvest(mob/living/user)
 	var/list/loot = list(
@@ -133,6 +144,18 @@
 	spawn(-1)
 		say("error: out of signal range, disconnecting")
 	return ..()
+
+/// Sets the active flockdrone part.
+/mob/living/simple_animal/flock/drone/proc/set_active_part(datum/flockdrone_part/new_part)
+	var/datum/flockdrone_part/old_part = active_part
+	active_part = new_part
+
+	active_part.screen_obj?.update_appearance()
+	old_part?.screen_obj?.update_appearance()
+
+/// Create all of the part datums for this mob.
+/mob/living/simple_animal/flock/drone/proc/create_parts()
+	parts += new /datum/flockdrone_part/converter(src)
 
 /mob/living/simple_animal/flock/drone/proc/start_flockphase()
 	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))

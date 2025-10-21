@@ -1,5 +1,6 @@
 /datum/action/cooldown/flock/flock_heal
 	name = "Repair"
+	render_button = FALSE
 	click_to_activate = TRUE
 
 /datum/action/cooldown/flock/flock_heal/Activate(atom/target)

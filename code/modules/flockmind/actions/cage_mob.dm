@@ -2,6 +2,7 @@
 	name = "Cage"
 	cooldown_time = 5 SECONDS
 	click_to_activate = TRUE
+	render_button = FALSE
 
 	var/obj/effect/abstract/flock_conversion/turf_effect
 

@@ -2,6 +2,7 @@
 	name = "Convert"
 	click_to_activate = TRUE
 	check_flags = AB_CHECK_CONSCIOUS
+	render_button = FALSE
 
 	var/obj/effect/abstract/flock_conversion/turf_effect
 

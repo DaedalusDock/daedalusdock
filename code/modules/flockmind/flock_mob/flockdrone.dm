@@ -5,6 +5,8 @@
 	actions_to_grant = list(
 		/datum/action/cooldown/flock/release_control,
 		/datum/action/cooldown/flock/convert,
+		/datum/action/cooldown/flock/flock_heal,
+		/datum/action/cooldown/flock/cage_mob,
 	)
 
 	bandwidth_provided = FLOCK_COMPUTE_COST_DRONE
@@ -33,12 +35,6 @@
 
 	if(stat == CONSCIOUS)
 		INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, say), pick(GLOB.flockdrone_created_phrases), null, null, null, null, null, "flock spawn")
-
-	var/datum/action/cooldown/flock/flock_heal/repair = new
-	repair.Grant(src)
-
-	var/datum/action/cooldown/flock/cage_mob/cage = new
-	cage.Grant(src)
 
 /mob/living/simple_animal/flock/drone/Destroy()
 	release_control()

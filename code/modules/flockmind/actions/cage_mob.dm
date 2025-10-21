@@ -1,7 +1,5 @@
 /datum/action/cooldown/flock/cage_mob
-	name = "Ping"
-	desc = "Request attention from other elements of the flock."
-	button_icon_state = "ping"
+	name = "Cage"
 	cooldown_time = 5 SECONDS
 	click_to_activate = TRUE
 

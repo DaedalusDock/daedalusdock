@@ -43,7 +43,8 @@
 	/// Flock datum. Can be null.
 	var/datum/flock/flock
 
-	var/datum/point_holder/resources
+	/// Physical resources for constructing structures or flockrunning.
+	var/datum/point_holder/substrate
 
 	/// Flock ID nametag
 	var/obj/effect/abstract/info_tag/flock/name_tag
@@ -71,9 +72,9 @@
 	flock = join_flock || get_default_flock()
 	flock?.add_unit(src)
 
-	resources = new
+	substrate = new
 	#warn temp: infinite flockmob resources
-	resources.adjust_points(1000000)
+	substrate.adjust_points(1000000)
 
 	name_tag = new()
 	name_tag.set_parent(src)
@@ -162,7 +163,7 @@
 	var/list/data = list()
 	data["name"] = real_name
 	data["health"] = getHealthPercent()
-	data["resources"] = resources.has_points()
+	data["resources"] = substrate.has_points()
 	data["area"] = get_area_name(src, TRUE) || "???"
 	data["ref"] = REF(src)
 	return data

@@ -39,7 +39,7 @@
 
 /mob/living/simple_animal/flock/drone/Destroy()
 	release_control()
-	QDEL_NULL(resources)
+	QDEL_NULL(substrate)
 	QDEL_LIST(parts)
 	active_part = null // whatever was here was qdeleted by qdel_list(parts)
 	return ..()
@@ -54,8 +54,8 @@
 /mob/living/simple_animal/flock/drone/Life(delta_time, times_fired)
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))
-		resources.remove_points(1)
-		if(!resources.has_points(1))
+		substrate.remove_points(1)
+		if(!substrate.has_points(1))
 			stop_flockphase()
 
 /mob/living/simple_animal/flock/drone/MouseDroppedOn(atom/dropping, atom/user)
@@ -258,7 +258,7 @@
 	if(length(grabbed_by))
 		return FALSE
 
-	if(!resources.has_points())
+	if(!substrate.has_points())
 		return FALSE
 
 	return TRUE
@@ -267,8 +267,8 @@
 	if(!HAS_TRAIT(src, TRAIT_FLOCKPHASE))
 		return FALSE
 
-	resources.remove_points(1)
-	if(!resources.has_points())
+	substrate.remove_points(1)
+	if(!substrate.has_points())
 		stop_flockphase()
 		return FALSE
 	return TRUE

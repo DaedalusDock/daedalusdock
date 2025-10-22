@@ -6,4 +6,4 @@
 	icon = 'goon/icons/mob/featherzone.dmi'
 
 	/// How much shit in da cube
-	var/resources = 10
+	var/substrate = 10

@@ -57,7 +57,7 @@
 	if(HAS_TRAIT(bird, TRAIT_FLOCKPHASE))
 		return TRUE
 
-	if(bird.resources.has_points())
+	if(bird.substrate.has_points())
 		return TRUE
 
 /turf/closed/wall/flock/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
@@ -67,12 +67,12 @@
 		return
 
 	var/mob/living/simple_animal/flock/drone/bird = arrived
-	if(!HAS_TRAIT(bird, TRAIT_FLOCKPHASE) && bird.resources.has_points())
+	if(!HAS_TRAIT(bird, TRAIT_FLOCKPHASE) && bird.substrate.has_points())
 		bird.start_flockphase()
 
 	if(HAS_TRAIT(bird, TRAIT_FLOCKPHASE))
-		bird.resources.remove_points(1)
-		if(!bird.resources.has_points())
+		bird.substrate.remove_points(1)
+		if(!bird.substrate.has_points())
 			bird.stop_flockphase()
 
 /turf/closed/wall/flock/Exited(atom/movable/gone, direction)

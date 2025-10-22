@@ -226,7 +226,7 @@
 		reagents.remove_reagent(/datum/reagent/toxin/gnesis, spend_on_cube)
 
 		var/obj/item/flock_cube/cube = new
-		cube.resources = spend_on_cube
+		cube.substrate = spend_on_cube
 		cube.forceMove(drop_location())
 
 /// Setter for eating, no side effects.

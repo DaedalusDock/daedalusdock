@@ -125,8 +125,8 @@ TYPEINFO_DEF(/obj/structure/flock)
 	visible_message(span_warning("[src] dissolves into nothingness."))
 	var/refund = round(get_integrity_percentage() * (disassembled ? 1 : 0.5) * resource_cost, 1)
 	if(refund)
-		var/obj/item/flock_cube/cube = new(get_turf(src))
-		cube.resources = refund
+		var/obj/item/flock_cube/cube = new(drop_location())
+		cube.substrate = refund
 
 	return ..()
 

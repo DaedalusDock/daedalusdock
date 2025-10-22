@@ -40,6 +40,9 @@
 ///Does this require the current_movement_target to be adjacent and in reach?
 #define AI_BEHAVIOR_REQUIRE_REACH (1<<5)
 
+/// Magic value to tell the G.O.A.P selector to ignore a behavior.
+#define AI_GOAP_SKIP_BEHAVIOR (-1000001)
+
 
 ///AI flags
 #define STOP_MOVING_WHEN_PULLED (1<<0)

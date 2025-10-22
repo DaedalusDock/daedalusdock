@@ -15,7 +15,7 @@
 		controller.queue_behavior(/datum/ai_behavior/move_to_target/flock_wander)
 		controller.queue_behavior(/datum/ai_behavior/frustration, BB_FLOCK_WANDER_FRUSTRATION, 3 SECONDS)
 
-/datum/ai_behavior/flock/wander/score(datum/ai_controller/controller)
+/datum/ai_behavior/flock/wander/goap_score(datum/ai_controller/controller)
 	return 1
 
 /datum/ai_behavior/flock/wander/proc/get_destination(datum/ai_controller/controller)

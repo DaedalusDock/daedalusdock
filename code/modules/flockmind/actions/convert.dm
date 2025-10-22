@@ -37,6 +37,10 @@
 	playsound(owner, 'goon/sounds/flockmind/flockdrone_convert.ogg', 30, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE)
 
 	var/turf/clicked_atom_turf = get_turf(target)
+	var/mob/living/simple_animal/flock/bird = owner
+
+	if(!bird.substrate.has_points(FLOCK_SUBSTRATE_COST_CONVERT))
+		return FALSE
 
 	if(isfloorturf(clicked_atom_turf) || iswallturf(clicked_atom_turf))
 		return convert_turf(clicked_atom_turf)
@@ -69,6 +73,7 @@
 		return FALSE
 
 	flock_convert_turf(T, bird.flock)
+	bird.substrate.remove_points(FLOCK_SUBSTRATE_COST_CONVERT)
 	return TRUE
 
 /obj/effect/abstract/flock_conversion

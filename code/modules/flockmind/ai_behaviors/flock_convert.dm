@@ -13,7 +13,11 @@
 			bird.say("invalid conversion target provided by sentient-level instruction")
 			return FALSE
 
-/datum/ai_behavior/flock/find_conversion_target/score(datum/ai_controller/controller)
+/datum/ai_behavior/flock/find_conversion_target/goap_precondition(datum/ai_controller/controller)
+	var/mob/living/simple_animal/flock/bird = controller.pawn
+	return bird.substrate.has_points(FLOCK_SUBSTRATE_COST_CONVERT)
+
+/datum/ai_behavior/flock/find_conversion_target/goap_score(datum/ai_controller/controller)
 	return score_distance(controller, get_target(controller))
 
 /datum/ai_behavior/flock/find_conversion_target/score_distance(datum/ai_controller/controller, atom/target)

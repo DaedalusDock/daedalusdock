@@ -22,6 +22,10 @@
 
 /// Amount of substrate to add to a tealprint.
 #define FLOCK_SUBSTRATE_COST_DEPOST_TEALPRINT 10
+/// Amount to convert a turf and it's contents.
+#define FLOCK_SUBSTRATE_COST_CONVERT 20
+/// Amount to repair a flock construct.
+#define FLOCK_SUBSTRATE_COST_REPAIR 10
 
 #define FLOCK_DRONE_LIMIT 50
 

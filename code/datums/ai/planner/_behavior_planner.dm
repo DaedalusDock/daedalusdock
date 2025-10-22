@@ -18,6 +18,9 @@
 
 	for(var/behavior in behavior_cache)
 		var/behavior_score = behavior_cache[behavior]
+		if(behavior_score == AI_GOAP_SKIP_BEHAVIOR)
+			continue
+
 		// Filter out lower scoring behaviors
 		if(score_to_beat > behavior_score)
 			continue
@@ -35,6 +38,9 @@
 
 /datum/ai_planning_subtree/scored/ProcessBehaviorSelection(datum/ai_controller/controller, delta_time)
 	for(var/datum/ai_behavior/behavior in controller.blackboard[BB_PLANNER_BEHAVIORS])
-		controller.set_blackboard_key_assoc(BB_PLANNER_BEHAVIORS, behavior, behavior.score(controller))
+		if(behavior.goap_precondition())
+			controller.set_blackboard_key_assoc(BB_PLANNER_BEHAVIORS, behavior, behavior.goap_score(controller))
+		else
+			controller.set_blackboard_key_assoc(BB_PLANNER_BEHAVIORS, behavior, AI_GOAP_SKIP_BEHAVIOR)
 
 	return ..()

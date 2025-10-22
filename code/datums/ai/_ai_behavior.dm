@@ -23,8 +23,12 @@
 /datum/ai_behavior/proc/next_behavior(datum/ai_controller/controller, success)
 	return null
 
+/// Executed before goap_score(), to see if the behavior should even be considered.
+/datum/ai_behavior/proc/goap_precondition(datum/ai_controller/controller)
+	return TRUE
+
 /// Returns a numerical value that is essentially a priority for planner behaviors.
-/datum/ai_behavior/proc/score(datum/ai_controller/controller)
+/datum/ai_behavior/proc/goap_score(datum/ai_controller/controller)
 	return BEHAVIOR_SCORE_DEFAULT
 
 #define BINARY_INSERT_TARGET(target_list, target, score) \

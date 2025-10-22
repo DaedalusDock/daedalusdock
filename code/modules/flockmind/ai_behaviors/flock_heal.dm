@@ -1,7 +1,11 @@
 /datum/ai_behavior/flock/find_heal_target
 	name = "repairing"
 
-/datum/ai_behavior/flock/find_heal_target/score(datum/ai_controller/controller)
+/datum/ai_behavior/flock/goap_precondition(datum/ai_controller/controller)
+	var/mob/living/simple_animal/flock/drone/bird = controller.pawn
+	return bird.substrate.has_points(FLOCK_SUBSTRATE_COST_REPAIR)
+
+/datum/ai_behavior/flock/find_heal_target/goap_score(datum/ai_controller/controller)
 	var/mob/living/simple_animal/flock/drone/bird = controller.pawn
 	if(!bird.flock)
 		return -INFINITY

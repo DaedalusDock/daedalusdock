@@ -5,6 +5,7 @@
 	actions_to_grant = list(
 		/datum/action/cooldown/flock/release_control,
 		/datum/action/cooldown/flock/convert,
+		/datum/action/cooldown/flock/deconstruct,
 		/datum/action/cooldown/flock/flock_heal,
 		/datum/action/cooldown/flock/cage_mob,
 	)
@@ -98,14 +99,20 @@
 					order_action.Trigger(target = src)
 
 /mob/living/simple_animal/flock/drone/resolve_unarmed_attack(atom/attack_target, list/modifiers)
-	active_part?.left_click_on(attack_target, TRUE)
+	if(modifiers?[RIGHT_CLICK])
+		active_part?.right_click_on(attack_target, TRUE)
+	else
+		active_part?.left_click_on(attack_target, TRUE)
 
 /mob/living/simple_animal/flock/drone/RangedAttack(atom/A, modifiers)
 	. = ..()
 	if(.)
 		return
 
-	active_part?.left_click_on(A, FALSE)
+	if(modifiers?[RIGHT_CLICK])
+		active_part?.right_click_on(A, FALSE)
+	else
+		active_part?.left_click_on(A, FALSE)
 
 /mob/living/simple_animal/update_health_hud()
 	var/severity = 0

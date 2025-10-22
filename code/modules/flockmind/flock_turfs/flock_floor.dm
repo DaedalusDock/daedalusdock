@@ -20,9 +20,12 @@
 
 /turf/open/floor/flock/Initialize(mapload)
 	. = ..()
+	ADD_TRAIT(src, TRAIT_FLOCK_THING, INNATE_TRAIT)
 	AddComponent(/datum/component/flock_protection, FALSE, TRUE, FALSE, FALSE)
 
 /turf/open/floor/flock/Destroy(force)
+	REMOVE_TRAIT(src, TRAIT_FLOCK_NODECON, INNATE_TRAIT) // Turfs dont disappear!!!
+	qdel(GetComponent(/datum/component/flock_protection))
 	connected_pylons = null
 	flockrunning_mobs = null
 	return ..()

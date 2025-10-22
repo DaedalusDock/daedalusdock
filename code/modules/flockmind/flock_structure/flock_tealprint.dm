@@ -3,6 +3,7 @@
 	desc = "It's some weird looking ghost building. Seems like its under construction, You can see faint strands of material floating in it."
 
 	density = FALSE
+	no_flock_decon = TRUE
 
 	var/materials_required = 0
 	var/current_materials = 0

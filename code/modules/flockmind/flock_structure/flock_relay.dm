@@ -17,6 +17,7 @@
 	resource_cost = 750
 
 	allow_flockpass = FALSE
+	no_flock_decon = TRUE
 
 	/// How long it takes until the signal is broadcast and the flock wins :D
 	var/tmp/win_time = 360 SECONDS

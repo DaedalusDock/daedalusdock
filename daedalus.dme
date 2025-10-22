@@ -3171,6 +3171,7 @@
 #include "code\modules\flockmind\actions\convert.dm"
 #include "code\modules\flockmind\actions\create_rift.dm"
 #include "code\modules\flockmind\actions\create_structure.dm"
+#include "code\modules\flockmind\actions\deconstruct.dm"
 #include "code\modules\flockmind\actions\designate_enemy.dm"
 #include "code\modules\flockmind\actions\designate_turf.dm"
 #include "code\modules\flockmind\actions\diffract_drone.dm"

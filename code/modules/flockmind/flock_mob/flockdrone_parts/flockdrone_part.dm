@@ -18,3 +18,7 @@
 /// Called when a drone with this part active left clicks on an atom. in_reach is TRUE if the target atom is reachable.
 /datum/flockdrone_part/proc/left_click_on(atom/target, in_reach)
 	return
+
+/// Called when a drone with this part active right clicks on an atom. in_reach is TRUE if the target atom is reachable.
+/datum/flockdrone_part/proc/right_click_on(atom/target, in_reach)
+	return

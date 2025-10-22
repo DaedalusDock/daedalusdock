@@ -18,6 +18,16 @@
 	uses_integrity = TRUE
 	max_integrity = 250
 
+/turf/closed/wall/flock/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_FLOCK_THING, INNATE_TRAIT)
+	AddComponent(/datum/component/flock_protection, FALSE, TRUE, FALSE, FALSE)
+
+/turf/closed/wall/flock/Destroy(force)
+	REMOVE_TRAIT(src, TRAIT_FLOCK_THING, INNATE_TRAIT) // Turfs are persistent refs
+	qdel(GetComponent(/datum/component/flock_protection))
+	return ..()
+
 /turf/closed/wall/flock/atom_break(damage_flag)
 	. = ..()
 	ScrapeAway()

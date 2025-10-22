@@ -28,6 +28,8 @@ TYPEINFO_DEF(/obj/structure/flock)
 	var/cancellable = TRUE
 	/// Is the structure finished?
 	var/fully_built = FALSE
+	/// If TRUE, flockdrones cannot deconstruct this.
+	var/no_flock_decon = FALSE
 
 	/// world.time this was created at
 	var/spawn_time
@@ -65,6 +67,8 @@ TYPEINFO_DEF(/obj/structure/flock)
 		finish_building()
 
 	ADD_TRAIT(src, TRAIT_FLOCK_EXAMINE, INNATE_TRAIT)
+	if(no_flock_decon)
+		ADD_TRAIT(src, TRAIT_FLOCK_NODECON, INNATE_TRAIT)
 
 	name_tag = new()
 	name_tag.set_parent(src)
@@ -118,7 +122,11 @@ TYPEINFO_DEF(/obj/structure/flock)
 	.["area"] = get_area_name(src, TRUE) || "???"
 
 /obj/structure/flock/deconstruct(disassembled)
-	visible_message(span_alert("[src] dissolves into nothingness."))
+	visible_message(span_warning("[src] dissolves into nothingness."))
+	var/refund = round(get_integrity_percentage() * (disassembled ? 1 : 0.5) * resource_cost, 1)
+	if(refund)
+		var/obj/item/flock_cube/cube = new(get_turf(src))
+		cube.resources = refund
 
 	return ..()
 

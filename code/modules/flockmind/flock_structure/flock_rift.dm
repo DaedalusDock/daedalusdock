@@ -9,6 +9,7 @@
 	max_integrity = 200
 
 	build_time = 10 SECONDS
+	no_flock_decon = TRUE
 
 /obj/structure/flock/rift/update_info_tag()
 	info_tag.set_text("Entry Time: [build_time_left()] seconds")

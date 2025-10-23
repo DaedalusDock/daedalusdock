@@ -1,5 +1,6 @@
 /datum/ai_behavior/flock/find_deconstruct_target
 	name = "deconstructing"
+	goap_weight = FLOCK_BEHAVIOR_WEIGHT_DECONSTRUCT
 
 /datum/ai_behavior/flock/find_deconstruct_target/setup(datum/ai_controller/controller, turf/overmind_target)
 	. = ..()

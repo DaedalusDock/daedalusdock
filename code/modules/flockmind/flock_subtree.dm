@@ -1,4 +1,4 @@
-/datum/ai_planning_subtree/scored/flockdrone
+/datum/ai_planning_subtree/goap/flockdrone
 	possible_behaviors = list(
 		/datum/ai_behavior/flock/stare,
 		/datum/ai_behavior/flock/wander,
@@ -7,7 +7,7 @@
 		/datum/ai_behavior/flock/find_heal_target,
 	)
 
-/datum/ai_planning_subtree/scored/flock
+/datum/ai_planning_subtree/goap/flock
 	possible_behaviors = list(
 		/datum/ai_behavior/flock/stare,
 		/datum/ai_behavior/flock/wander,

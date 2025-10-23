@@ -7,6 +7,9 @@
 	///Cooldown between actions performances, defaults to the value of CLICK_CD_MELEE because that seemed like a nice standard for the speed of AI behavior
 	var/action_cooldown = CLICK_CD_MELEE
 
+	/// A multiplier applied to the behavior's goap_score().
+	var/goap_weight = 1
+
 	/// Behaviors to add upon a successful setup
 	var/list/sub_behaviors
 
@@ -114,6 +117,9 @@
 #undef BINARY_INSERT_TARGET
 
 /// Helper for scoring something based on the distance between it and the pawn.
+/// By default, returns a value between 100 and -INFINITY, where 100 is a distance of 0 steps.
+/// A distance equal to target_search_radius is zero.
+/// A distance greater than target_search_radius is negative.
 /datum/ai_behavior/proc/score_distance(datum/ai_controller/controller, atom/target)
 	var/search_radius = controller.target_search_radius
 	if(isnull(target))

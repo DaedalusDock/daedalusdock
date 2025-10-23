@@ -1,6 +1,7 @@
 /datum/ai_behavior/flock/wander
 	name = "wandering"
 	required_distance = 0
+	goap_weight = FLOCK_BEHAVIOR_WEIGHT_WANDER
 
 /datum/ai_behavior/flock/wander/perform(delta_time, datum/ai_controller/controller, ...)
 	..()

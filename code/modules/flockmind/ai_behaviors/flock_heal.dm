@@ -1,5 +1,6 @@
 /datum/ai_behavior/flock/find_heal_target
 	name = "repairing"
+	goap_weight = FLOCK_BEHAVIOR_WEIGHT_REPAIR
 
 /datum/ai_behavior/flock/goap_precondition(datum/ai_controller/controller)
 	var/mob/living/simple_animal/flock/drone/bird = controller.pawn
@@ -9,7 +10,7 @@
 	var/mob/living/simple_animal/flock/drone/bird = controller.pawn
 	if(!bird.flock)
 		return -INFINITY
-	return 4 * score_distance(controller, get_best_target_by_distance_score(controller, get_targets(controller)))
+	return score_distance(controller, get_best_target_by_distance_score(controller, get_targets(controller)))
 
 /datum/ai_behavior/flock/find_heal_target/proc/get_targets(datum/ai_controller/controller)
 	. = list()

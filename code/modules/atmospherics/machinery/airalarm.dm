@@ -1130,9 +1130,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 21)
 
 	alert_type = code
 
-/obj/machinery/airalarm/try_flock_convert(datum/flock/flock, force)
-	return
-
 #undef AALARM_MODE_SCRUBBING
 #undef AALARM_MODE_VENTING
 #undef AALARM_MODE_PANIC

@@ -40,9 +40,9 @@
 		return FALSE
 
 	// Structures
-	if(isstructure(target))
-		var/obj/structure/structure = target
-		structure.deconstruct(TRUE)
+	if(isobj(target))
+		var/obj/obj_target = target
+		obj_target.deconstruct(TRUE)
 		return TRUE
 
 	else if(isflockturf(target))
@@ -51,4 +51,3 @@
 	else
 		CRASH("Tried to flock deconstruct incompatible object of type: [target.type]")
 	return TRUE
-

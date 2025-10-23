@@ -37,8 +37,13 @@
 
 	var/list/options = list()
 	for(var/atom/A as anything in bird.flock.marked_for_deconstruction)
-		if(get_dist(A, bird) <= controller.max_target_distance)
-			options += A
+		if(get_dist(A, bird) > controller.max_target_distance)
+			continue
+
+		if(bird.flock && !bird.flock.is_turf_free(get_turf(A)))
+			continue
+
+		options += A
 
 	return get_best_target_by_distance_score(controller, options, path_to)
 
@@ -53,11 +58,17 @@
 
 	controller.set_blackboard_key(BB_FLOCK_DECON_TARGET, target)
 	controller.set_move_target(target)
+
+	var/mob/living/simple_animal/flock/bird = controller.pawn
+	if(bird.flock)
+		bird.flock.reserve_turf(bird, get_turf(target))
+
 	return BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/flock/find_deconstruct_target/finish_action(datum/ai_controller/controller, succeeded, turf/overmind_target)
 	. = ..()
 	controller.clear_blackboard_key(BB_PATH_TO_USE)
+
 	if(!succeeded && overmind_target)
 		controller.clear_blackboard_key(BB_PATH_MAX_LENGTH)
 		controller.clear_blackboard_key(BB_FLOCK_OVERMIND_CONTROL)

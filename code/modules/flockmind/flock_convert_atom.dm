@@ -20,34 +20,26 @@
 
 		O.try_flock_convert(flock, force)
 
-/// Attempt to convert an object. Default behavior is to qdel.
+/// Attempt to convert an object. Default behavior is to do nothing.
 /obj/proc/try_flock_convert(datum/flock/flock, force)
-	qdel(src)
-
-// No
-/obj/effect/try_flock_convert(datum/flock/flock, force)
 	return
 
 /obj/machinery/camera/try_flock_convert(datum/flock/flock, force)
 	atom_break()
 
-// No
-/obj/structure/cable/try_flock_convert(datum/flock/flock, force)
-	return
-
-// No
-/obj/machinery/atmospherics/try_flock_convert(datum/flock/flock, force)
-	return
-
 /obj/structure/window/try_flock_convert(datum/flock/flock, force)
 	var/turf/T = loc
+	var/obj/structure/window/flock/new_window
 	qdel(src)
-	if(fulltile)
-		return new /obj/structure/window/flock/fulltile(T)
 
-	var/obj/W = new /obj/structure/window/flock(T)
-	W.dir = dir
-	return W
+	if(fulltile)
+		new_window = new /obj/structure/window/flock/fulltile(T)
+	else
+		new_window = new /obj/structure/window/flock(T)
+		new_window.dir = dir
+
+	new_window.AddComponent(/datum/component/flock_interest, flock)
+	return new_window
 
 /obj/machinery/door/try_flock_convert(datum/flock/flock, force)
 	var/turf/T = loc
@@ -56,6 +48,9 @@
 
 /obj/structure/low_wall/try_flock_convert(datum/flock/flock, force)
 	set_material(/datum/material/gnesis, TRUE)
+	AddComponent(/datum/component/flock_object)
+	AddComponent(/datum/component/flock_protection, report_unarmed=FALSE)
+	AddComponent(/datum/component/flock_interest, flock)
 	return src
 
 /obj/machinery/light/try_flock_convert(datum/flock/flock, force)

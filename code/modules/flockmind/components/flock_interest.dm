@@ -1,6 +1,7 @@
 
 /// Mark a specific flock as interested in this
 /datum/component/flock_interest
+	dupe_mode = COMPONENT_DUPE_UNIQUE
 	/// The flock who is intently interested in this thing.
 	var/datum/flock/flock
 

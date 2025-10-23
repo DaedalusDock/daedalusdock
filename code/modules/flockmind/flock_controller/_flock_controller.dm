@@ -14,6 +14,8 @@
 	/// Cache of images used by notices.
 	var/list/notice_images = list()
 	/// A k:V list of atoms the Overmind has marked for conversion, where the value is TRUE
+	var/list/marked_for_conversion = list()
+	/// A k:v list of atoms the Overmind has marked for deconstruction, where the value is TRUE
 	var/list/marked_for_deconstruction = list()
 	/// A k:V list of reserved_turf = TRUE.
 	var/list/turf_reservations = list()
@@ -146,7 +148,7 @@
 	remove_notice(to_free, FLOCK_NOTICE_PRIORITY)
 	turf_reservations_by_flock -= user
 	turf_reservations -= to_free
-	marked_for_deconstruction -= to_free
+	marked_for_conversion -= to_free
 	UnregisterSignal(to_free, COMSIG_TURF_CHANGE)
 
 /// Returns TRUE if the given turf is not reserved.
@@ -322,6 +324,21 @@
 	remove_notice(ignore, FLOCK_NOTICE_IGNORE)
 	UnregisterSignal(ignore, COMSIG_PARENT_QDELETING)
 
+/// (un)Mark a flock atom for deconstruction. Returns FALSE if it cannot be deconstructed.
+/datum/flock/proc/toggle_deconstruction_mark(atom/A)
+	if(ismob(A) || !HAS_TRAIT(A, TRAIT_FLOCK_THING) || HAS_TRAIT(A, TRAIT_FLOCK_NODECON))
+		return FALSE
+
+	if(marked_for_deconstruction[A])
+		marked_for_deconstruction -= A
+		UnregisterSignal(A, COMSIG_PARENT_QDELETING)
+		remove_notice(A, FLOCK_NOTICE_DECONSTRUCT)
+	else
+		marked_for_deconstruction[A] = TRUE
+		RegisterSignal(A, COMSIG_PARENT_QDELETING, PROC_REF(deconstruct_mark_deleted))
+		add_notice(A, FLOCK_NOTICE_DECONSTRUCT)
+	return TRUE
+
 /datum/flock/proc/add_notice(atom/target, notice_type)
 	var/image/I = image(notice_images[notice_type], loc = target)
 	return target.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/flock, notice_type, I, NONE, src)
@@ -329,11 +346,12 @@
 /datum/flock/proc/remove_notice(atom/target, notice_type)
 	target.remove_alt_appearance(notice_type)
 
+/// Returns a list of turfs marked for conversion, minus turfs that drones have already reserved.
 /datum/flock/proc/get_priority_turfs(mob/living/simple_animal/flock/bird)
-	if(!length(marked_for_deconstruction))
+	if(!length(marked_for_conversion))
 		return null
 
-	return marked_for_deconstruction - turf_reservations
+	return marked_for_conversion - turf_reservations
 
 /datum/flock/proc/ping(turf/T, mob/camera/flock/pinger)
 	var/message = "System interrupt. Designating new target: [T] in [get_area(T)]."
@@ -455,6 +473,14 @@
 		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE | RESET_TRANSFORM;
 	}
 
+	notice_images[FLOCK_NOTICE_DECONSTRUCT] = new /image{
+		icon = 'goon/icons/mob/featherzone.dmi';
+		icon_state = "deconstruct";
+		pixel_y = 16;
+		plane = ABOVE_LIGHTING_PLANE;
+		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE | RESET_TRANSFORM;
+	}
+
 	notice_images[FLOCK_NOTICE_HEALTH] = new /image{
 		icon = 'goon/icons/mob/featherzone.dmi';
 		icon_state = "hp-100";
@@ -517,3 +543,9 @@
 	// Remove enemies
 	for(var/mob/M as anything in enemies)
 		remove_enemy(M, TRUE)
+
+/// Called when an atom marked for deconstruction is qdeleted.
+/datum/flock/proc/deconstruct_mark_deleted(datum/source)
+	SIGNAL_HANDLER
+
+	toggle_deconstruction_mark(source)

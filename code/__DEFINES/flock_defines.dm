@@ -3,13 +3,22 @@
 #define FLOCK_TYPE_DRONE "drone"
 #define FLOCK_TYPE_BIT "bit"
 
+// Turf reserved by a flockdrone
 #define FLOCK_NOTICE_RESERVED "reserved"
+// Turf marked for conversion
 #define FLOCK_NOTICE_PRIORITY "priority"
+// Mob marked as enemy
 #define FLOCK_NOTICE_ENEMY "enemy"
+// Mob marked as ignored
 #define FLOCK_NOTICE_IGNORE "ignore"
+// Flockdrone under flocktrace control
 #define FLOCK_NOTICE_FLOCKTRACE_CONTROL "flocktrace_control"
+// Flockdrone under overmind control
 #define FLOCK_NOTICE_FLOCKMIND_CONTROL "flockmind_control"
+// Flockdrone health bars
 #define FLOCK_NOTICE_HEALTH "flock_health"
+// Atom marked for deconstruction
+#define FLOCK_NOTICE_DECONSTRUCT "flock_deconstruct"
 
 #define FLOCK_UI_DRONES "drones"
 #define FLOCK_UI_TRACES "traces"

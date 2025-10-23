@@ -38,7 +38,7 @@
 
 /datum/ai_planning_subtree/scored/ProcessBehaviorSelection(datum/ai_controller/controller, delta_time)
 	for(var/datum/ai_behavior/behavior in controller.blackboard[BB_PLANNER_BEHAVIORS])
-		if(behavior.goap_precondition())
+		if(behavior.goap_precondition(controller))
 			controller.set_blackboard_key_assoc(BB_PLANNER_BEHAVIORS, behavior, behavior.goap_score(controller))
 		else
 			controller.set_blackboard_key_assoc(BB_PLANNER_BEHAVIORS, behavior, AI_GOAP_SKIP_BEHAVIOR)

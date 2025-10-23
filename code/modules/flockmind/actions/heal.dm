@@ -11,9 +11,11 @@
 	if(isflockmob(target))
 		var/mob/living/simple_animal/flock/bird = target
 		ADD_TRAIT(bird, TRAIT_AI_PAUSED, ref(src))
+
 		if(!do_after(owner, target, 1 SECOND, DO_PUBLIC, interaction_key = "flock_repair"))
 			REMOVE_TRAIT(bird, TRAIT_AI_PAUSED, ref(src))
 			return FALSE
+
 		REMOVE_TRAIT(bird, TRAIT_AI_PAUSED, ref(src))
 		bird.heal_overall_damage(10, 10)
 		this_bird.substrate.remove_points(FLOCK_SUBSTRATE_COST_REPAIR)

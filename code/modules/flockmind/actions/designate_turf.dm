@@ -22,16 +22,16 @@
 		return FALSE
 
 	var/mob/camera/flock/ghost_bird = owner
-	if(!ghost_bird.flock.marked_for_deconstruction[turf_target])
+	if(!ghost_bird.flock.marked_for_conversion[turf_target])
 		if(ghost_bird.flock.turf_reservations[turf_target])
 			to_chat(ghost_bird, span_alert("That tile is already scheduled for conversion."))
 			return FALSE
 
-		ghost_bird.flock.marked_for_deconstruction[turf_target] = TRUE
+		ghost_bird.flock.marked_for_conversion[turf_target] = TRUE
 		ghost_bird.flock.add_notice(turf_target, FLOCK_NOTICE_PRIORITY)
 		return TRUE
 
 	else
-		ghost_bird.flock.marked_for_deconstruction -= turf_target
+		ghost_bird.flock.marked_for_conversion -= turf_target
 		ghost_bird.flock.remove_notice(turf_target, FLOCK_NOTICE_PRIORITY)
 		return TRUE

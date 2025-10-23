@@ -17,6 +17,7 @@
 		/datum/action/cooldown/flock/diffract_drone,
 		/datum/action/cooldown/flock/control_drone,
 		/datum/action/cooldown/flock/designate_tile,
+		/datum/action/cooldown/flock/designate_deconstruct,
 		/datum/action/cooldown/flock/designate_enemy,
 		/datum/action/cooldown/flock/designate_ignore,
 		/datum/action/cooldown/flock/ping,

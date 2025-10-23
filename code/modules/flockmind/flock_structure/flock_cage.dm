@@ -139,7 +139,7 @@
 	if(length(items))
 		while(length(items) && !eating)
 			var/obj/item/candidate = pick_n_take(items)
-			human_victim.dropItemToGround(candidate, TRUE, TRUE)
+			human_victim.transferItemToLoc(candidate, src, TRUE, TRUE)
 			if(!QDELETED(candidate))
 				set_eating_target(candidate)
 

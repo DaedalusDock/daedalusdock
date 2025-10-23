@@ -23,7 +23,7 @@
 /datum/ai_behavior/flock/find_conversion_target/score_distance(datum/ai_controller/controller, atom/target)
 	. = ..()
 	var/mob/living/simple_animal/flock/bird = controller.pawn
-	if(bird.flock?.marked_for_deconstruction[target])
+	if(bird.flock?.marked_for_conversion[target])
 	/*
 	* because the result of scoring is based on max distance,
 	* the score of any given tile is -100 to 0, with 0 being best.
@@ -109,10 +109,9 @@
 	var/mob/living/simple_animal/flock/drone/bird = controller.pawn
 	bird.flock?.free_turf(bird)
 
+	if(!succeeded && controller.blackboard[BB_FLOCK_OVERMIND_CONTROL] && !QDELETED(controller.pawn))
+		bird.say("unable to reach target provided by sentient level instruction, aborting subroutine", forced = "overmind control action cancelled")
+
 	controller.clear_blackboard_key(BB_FLOCK_CONVERT_TARGET)
 	controller.clear_blackboard_key(BB_PATH_MAX_LENGTH)
 	controller.clear_blackboard_key(BB_FLOCK_OVERMIND_CONTROL)
-
-	if(!succeeded && controller.blackboard[BB_FLOCK_OVERMIND_CONTROL] && !QDELETED(controller.pawn))
-		bird.say("Unable to reach target provided by sentient level instruction, aborting subroutine.", forced = "overmind control action cancelled")
-

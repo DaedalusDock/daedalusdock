@@ -11,8 +11,6 @@
 	)
 
 	bandwidth_provided = FLOCK_COMPUTE_COST_DRONE
-	/// Set to TRUE when actively flockphasing.
-	var/tmp/flock_phasing = FALSE
 
 	/// A mob possessing this mob.
 	var/tmp/mob/camera/flock/controlled_by

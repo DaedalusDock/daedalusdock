@@ -51,6 +51,9 @@
 	/// The maximum amount of traces allowed.
 	var/max_traces = 0
 
+	/// The current substrate cost to lay an egg.
+	var/current_egg_cost = FLOCK_SUBSTRATE_COST_LAY_EGG
+
 	var/flock_started = FALSE
 	/// Flock status, won, lost, etc
 	var/flock_game_status = NONE
@@ -173,6 +176,7 @@
 
 	if(isflockdrone(unit))
 		drones += unit
+		update_egg_cost()
 
 	else if(isflockbit(unit))
 		bits += unit
@@ -195,6 +199,7 @@
 		bird.flock = null
 		drones -= unit
 		remove_bandwidth_influence(bird.bandwidth_provided)
+		update_egg_cost()
 
 	else if(isflockbit(unit))
 		var/mob/living/simple_animal/flock/bit/bitty_bird = unit
@@ -214,6 +219,9 @@
 	struct.AddComponent(/datum/component/flock_interest, src)
 	add_bandwidth_influence(struct.bandwidth_provided)
 
+	if(istype(struct, /obj/structure/flock/egg))
+		update_egg_cost()
+
 /datum/flock/proc/free_structure(obj/structure/flock/struct)
 	structures -= struct
 	qdel(struct.GetComponent(/datum/component/flock_interest))
@@ -222,6 +230,9 @@
 		remove_bandwidth_influence(-struct.active_bandwidth_cost)
 	else
 		remove_bandwidth_influence(struct.bandwidth_provided)
+
+	if(istype(struct, /obj/structure/flock/egg))
+		update_egg_cost()
 
 /datum/flock/proc/create_structure(turf/location, structure_type)
 	new /obj/structure/flock/tealprint(location, structure_type)
@@ -266,6 +277,23 @@
 /// Returns TRUE if the flock has the required bandwidth
 /datum/flock/proc/can_afford(amt)
 	return amt <= max(available_bandwidth(), 0)
+
+/// Updates the substrate cost of an egg given the current status of the flock.
+/datum/flock/proc/update_egg_cost()
+	var/egg_count = 0
+	for(var/obj/structure/flock/egg/egg as anything in structures)
+		egg_count++
+
+	var/status_addend = (length(drones) + egg_count) ** sqrt(2)
+	current_egg_cost = round(FLOCK_SUBSTRATE_COST_LAY_EGG + status_addend, 10)
+
+/// Returns the substract requirement to be able to spend substrate on an egg. See above proc.
+/datum/flock/proc/get_egg_elligibility_cost()
+	var/ideal_pop_factor = length(drones) - FLOCK_MIN_DESIRED_POP
+	if(ideal_pop_factor <= 0)
+		return current_egg_cost
+
+	return round(current_egg_cost + (ideal_pop_factor * FLOCK_ADDITIONAL_RESOURCE_RESERVATION_PER_DRONE), 1)
 
 /// Sets the flock's overmind
 /datum/flock/proc/register_overmind(mob/camera/flock_overmind)

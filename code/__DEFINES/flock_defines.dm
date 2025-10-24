@@ -35,7 +35,13 @@
 #define FLOCK_SUBSTRATE_COST_CONVERT 20
 /// Amount to repair a flock construct.
 #define FLOCK_SUBSTRATE_COST_REPAIR 10
+/// BASE amount to lay an egg.
+#define FLOCK_SUBSTRATE_COST_LAY_EGG 100
 
+/// Egg cost does not start scaling until there are this many drones.
+#define FLOCK_MIN_DESIRED_POP 10
+/// Each drone above the min desired pop adds this much to the substrate required to be able to lay an egg.
+#define FLOCK_ADDITIONAL_RESOURCE_RESERVATION_PER_DRONE 8
 #define FLOCK_DRONE_LIMIT 50
 
 #define FLOCK_ENDGAME_LOST 1
@@ -48,4 +54,5 @@
 #define FLOCK_BEHAVIOR_WEIGHT_STARE 1
 #define FLOCK_BEHAVIOR_WEIGHT_CONVERT 1
 #define FLOCK_BEHAVIOR_WEIGHT_REPAIR 4
+#define FLOCK_BEHAVIOR_WEIGHT_NEST 7
 #define FLOCK_BEHAVIOR_WEIGHT_DECONSTRUCT 8

@@ -264,4 +264,5 @@
 #define BB_FLOCK_WANDER_FRUSTRATION "BB_flock_wander_frustration"
 #define BB_FLOCK_HEAL_TARGET "BB_flock_heal_target"
 #define BB_FLOCK_HEAL_FRUSTRATION "BB_flock_heal_frustation"
+#define BB_FLOCK_NEST_TARGET "BB_flock_nest_target"
 #define BB_FLOCK_OVERMIND_CONTROL "BB_flock_overmind_control"

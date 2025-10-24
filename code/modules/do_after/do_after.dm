@@ -12,7 +12,7 @@
  * * max_interact_count: The action will automatically fail if they are already performing this many or more actions with the given interaction_key.
  * * display: An atom or image to display over the user's head. Only works with DO_PUBLIC flag.
  */
-/proc/do_after(atom/movable/user, atom/target, time = 0, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1, image/display)
+/proc/do_after(atom/movable/user, atom/target, time = 0, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1, image/display, action_type = /datum/timed_action)
 	if(!user)
 		return FALSE
 
@@ -43,7 +43,7 @@
 		if(current_interaction_count >= max_interact_count) //We are at our peak
 			return
 
-	var/datum/timed_action/action = new(user, target, time, progress, timed_action_flags, extra_checks, display)
+	var/datum/timed_action/action = new action_type(user, target, time, progress, timed_action_flags, extra_checks, display)
 
 	if(interaction_key)
 		LAZYINITLIST(user.do_afters)

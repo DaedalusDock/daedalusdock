@@ -5,6 +5,7 @@
 		/datum/ai_behavior/flock/find_conversion_target,
 		/datum/ai_behavior/flock/find_deconstruct_target,
 		/datum/ai_behavior/flock/find_heal_target,
+		/datum/ai_behavior/flock/find_nest_location,
 	)
 
 /datum/ai_planning_subtree/goap/flock

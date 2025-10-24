@@ -1,9 +1,10 @@
 /datum/flockdrone_part/absorber
 	var/obj/item/held_item
 
-	var/absorption_rate = 2
+	// Goon numbers: 25 hp / item, 10 hp / sec
+	var/absorption_rate = 5
 	/// Per point of integrity, generate this much substrate.
-	var/integrity_substrate_ratio = 5
+	var/integrity_substrate_ratio = 2
 
 /datum/flockdrone_part/absorber/Destroy(force, ...)
 	QDEL_NULL(held_item)

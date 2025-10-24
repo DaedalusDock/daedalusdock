@@ -14,7 +14,7 @@
 	slot_flags = ITEM_SLOT_BELT
 	attack_verb_continuous = list("whips", "lashes", "disciplines")
 	attack_verb_simple = list("whip", "lash", "discipline")
-	max_integrity = 300
+	max_integrity = 10
 
 	equip_sound = 'sound/items/equip/toolbelt_equip.ogg'
 	equip_delay_self = EQUIP_DELAY_BELT

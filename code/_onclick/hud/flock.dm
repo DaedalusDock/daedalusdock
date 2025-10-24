@@ -11,6 +11,9 @@
 	using = new /atom/movable/screen/flockdrone_part/incapacitator(null, src)
 	static_inventory += using
 
+	using = new /atom/movable/screen/flockdrone_part/absorber(null, src)
+	static_inventory += using
+
 	healthdoll = new /atom/movable/screen/flockdrone_health(null, src)
 	infodisplay += healthdoll
 
@@ -77,3 +80,12 @@
 	. = ..()
 	var/datum/flockdrone_part/incapacitator/part = part_ref
 	maptext = MAPTEXT("[part?.shot_count || "0"]")
+
+/atom/movable/screen/flockdrone_part/absorber
+	name = "material decompiler"
+	active_state = "absorber"
+	inactive_state = "absorber"
+
+	screen_loc = "CENTER+1:16,SOUTH:5"
+
+	part_type = /datum/flockdrone_part/absorber

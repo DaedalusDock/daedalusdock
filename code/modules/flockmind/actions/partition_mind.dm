@@ -5,6 +5,7 @@
 
 	var/awaiting_partition = FALSE
 
+#warn todo: ability descriptions
 /datum/action/cooldown/flock/partition_mind/is_valid_target(atom/cast_on)
 	if(awaiting_partition)
 		return FALSE

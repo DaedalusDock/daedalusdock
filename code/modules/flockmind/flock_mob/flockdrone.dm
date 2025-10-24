@@ -48,6 +48,9 @@
 	say(pick(GLOB.flockdrone_death_phrases))
 	if(flock)
 		flock_talk(null, "Connection to drone [real_name] lost.", flock)
+
+	var/datum/flockdrone_part/absorber/absorber = locate() in parts
+	absorber.try_drop_item()
 	return ..()
 
 /mob/living/simple_animal/flock/drone/Life(delta_time, times_fired)
@@ -201,6 +204,7 @@
 /mob/living/simple_animal/flock/drone/proc/create_parts()
 	parts += new /datum/flockdrone_part/converter(src)
 	parts += new /datum/flockdrone_part/incapacitator(src)
+	parts += new /datum/flockdrone_part/absorber(src)
 
 /mob/living/simple_animal/flock/drone/proc/start_flockphase()
 	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))

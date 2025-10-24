@@ -3206,6 +3206,7 @@
 #include "code\modules\flockmind\flock_mob\flock_mob.dm"
 #include "code\modules\flockmind\flock_mob\flockbit.dm"
 #include "code\modules\flockmind\flock_mob\flockdrone.dm"
+#include "code\modules\flockmind\flock_mob\flockdrone_parts\absorber.dm"
 #include "code\modules\flockmind\flock_mob\flockdrone_parts\converter.dm"
 #include "code\modules\flockmind\flock_mob\flockdrone_parts\flockdrone_part.dm"
 #include "code\modules\flockmind\flock_mob\flockdrone_parts\incapacitator.dm"

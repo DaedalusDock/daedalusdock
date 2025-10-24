@@ -41,20 +41,22 @@
 	var/icon_dormant = "drone-dormant"
 
 	/// Flock datum. Can be null.
-	var/datum/flock/flock
+	var/tmp/datum/flock/flock
 
 	/// Physical resources for constructing structures or flockrunning.
-	var/datum/point_holder/substrate
+	var/tmp/datum/point_holder/substrate
+	/// Type of point holder to use
+	var/point_holder_type = /datum/point_holder
 
 	/// Flock ID nametag
-	var/obj/effect/abstract/info_tag/flock/name_tag
+	var/tmp/obj/effect/abstract/info_tag/flock/name_tag
 	/// Tag for the mob's current AI task.
-	var/obj/effect/abstract/info_tag/flock/info/task_tag
+	var/tmp/obj/effect/abstract/info_tag/flock/info/task_tag
 
 	var/bandwidth_provided = 0
 
 	/// If, while part of an active flock, a flockmob leaves the station, they become dormant.
-	var/dormant = FALSE
+	var/tmp/dormant = FALSE
 
 /mob/living/simple_animal/flock/Initialize(mapload, join_flock)
 	. = ..()
@@ -72,9 +74,9 @@
 	flock = join_flock || get_default_flock()
 	flock?.add_unit(src)
 
-	substrate = new
+	substrate = new point_holder_type
 	#warn temp: infinite flockmob resources
-	substrate.adjust_points(1000000)
+	//substrate.adjust_points(1000000)
 
 	name_tag = new()
 	name_tag.set_parent(src)

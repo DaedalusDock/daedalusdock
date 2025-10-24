@@ -39,3 +39,17 @@
 
 /datum/point_holder/proc/get_max_points()
 	return max_points
+
+/datum/point_holder/infinite
+
+/datum/point_holder/infinite/add_points(num)
+	return TRUE
+
+/datum/point_holder/infinite/has_points(atleast)
+	return INFINITY
+
+/datum/point_holder/infinite/remove_points(num, check_enough)
+	return TRUE
+
+/datum/point_holder/infinite/set_max_points(new_max)
+	max_points = new_max

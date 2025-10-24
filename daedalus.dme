@@ -3188,6 +3188,7 @@
 #include "code\modules\flockmind\ai_behaviors\_flock_behavior_base.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_convert.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_deconstruct.dm"
+#include "code\modules\flockmind\ai_behaviors\flock_harvest.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_heal.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_nest.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_rally.dm"

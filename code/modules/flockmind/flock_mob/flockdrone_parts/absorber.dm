@@ -1,10 +1,9 @@
 /datum/flockdrone_part/absorber
 	var/obj/item/held_item
 
-	// Goon numbers: 25 hp / item, 10 hp / sec
-	var/absorption_rate = 5
+	var/absorption_rate = 4
 	/// Per point of integrity, generate this much substrate.
-	var/integrity_substrate_ratio = 2
+	var/integrity_substrate_ratio = 4
 
 /datum/flockdrone_part/absorber/Destroy(force, ...)
 	QDEL_NULL(held_item)
@@ -12,7 +11,7 @@
 
 /datum/flockdrone_part/absorber/left_click_on(atom/target, in_reach)
 	var/obj/item/I = target
-	if(!istype(I) || !isturf(I.loc))
+	if(!in_reach || !istype(I) || !isturf(I.loc))
 		return
 
 	return try_pickup_item(I)
@@ -28,7 +27,7 @@
 		qdel(cube)
 		to_chat(drone, span_notice("We decompile the resource cache, adding <b>[added]</b> substrate to our reserves."))
 	else
-		added = eating.take_damage(absorption_rate * delta_time, armor_penetration = 100)
+		added = eating.take_damage(absorption_rate * delta_time, BRUTE, ACID, sound_effect = FALSE, armor_penetration = 100)
 		drone.substrate.add_points(added * integrity_substrate_ratio)
 
 	if(!held_item) // if take_damage qdeletes it, it becomes null due to signal stuff.
@@ -37,7 +36,6 @@
 
 	playsound(drone, SFX_SPARKS, 30, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE)
 
-
 /datum/flockdrone_part/absorber/proc/try_pickup_item(obj/item/I)
 	if(held_item)
 		return FALSE
@@ -45,13 +43,14 @@
 	if(I.item_flags & ABSTRACT)
 		return FALSE
 
+	drone.face_atom(I)
 	I.do_pickup_animation(drone, I.loc)
 	I.forceMove(drone)
 	if(QDELETED(I))
 		return FALSE
 
 	held_item = I
-	RegisterSignal(I, COMSIG_MOVABLE_MOVED, PROC_REF(held_item_moved))
+	RegisterSignal(I, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING), PROC_REF(held_item_moved))
 	START_PROCESSING(SSprocessing, src)
 
 	var/matrix/first_matrix = matrix()
@@ -70,7 +69,7 @@
 	if(!held_item)
 		return FALSE
 
-	UnregisterSignal(held_item, COMSIG_MOVABLE_MOVED)
+	UnregisterSignal(held_item, list(COMSIG_MOVABLE_MOVED, COMSIG_PARENT_QDELETING))
 
 	var/obj/item/old_item = held_item
 	animate(held_item, tag = "flockdrone_eat")

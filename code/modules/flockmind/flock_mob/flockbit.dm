@@ -6,6 +6,9 @@
 	density = FALSE
 	pass_flags = PASSTABLE
 
+	// Flockbits don't get specific AI behaviors that would make this broken.
+	point_holder_type = /datum/point_holder/infinite
+
 /mob/living/simple_animal/flock/bit/Initialize(mapload)
 	. = ..()
 	flock?.stat_bits_made++

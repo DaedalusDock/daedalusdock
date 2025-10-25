@@ -41,7 +41,7 @@
 	if(length(priority_turfs))
 		options += priority_turfs
 
-	var/list/turfs = spiral_range_turfs(controller.target_search_radius, bird) & view(controller.target_search_radius, bird)
+	var/list/turfs = view(controller.target_search_radius, bird)
 	for(var/turf/T in turfs)
 		if(is_valid_target(T, bird_flock))
 			options += T
@@ -116,3 +116,35 @@
 	controller.clear_blackboard_key(BB_FLOCK_CONVERT_TARGET)
 	controller.clear_blackboard_key(BB_PATH_MAX_LENGTH)
 	controller.clear_blackboard_key(BB_FLOCK_OVERMIND_CONTROL)
+
+
+//
+// Subtype for creating a nest. Effectively a higher priority convert that only happens when the bird can lay an egg.
+//
+
+/datum/ai_behavior/flock/find_conversion_target/nest
+	name = "nesting"
+	goap_weight = FLOCK_BEHAVIOR_WEIGHT_NEST
+	required_distance = 0
+
+/datum/ai_behavior/flock/find_conversion_target/goap_precondition(datum/ai_controller/controller)
+	var/mob/living/simple_animal/flock/bird = controller.pawn
+	if(!bird.flock)
+		return FALSE
+
+	if(length(bird.flock.drones) > FLOCK_DRONE_LIMIT)
+		return FALSE
+
+	return bird.substrate.has_points(FLOCK_SUBSTRATE_COST_CONVERT + bird.flock.current_egg_cost)
+
+/datum/ai_behavior/flock/find_conversion_target/nest/is_valid_target(turf/T, datum/flock/bird_flock)
+	return ..() && !T.is_blocked_turf(exclude_mobs = TRUE) && !locate(/obj/structure/flock/egg, T)
+
+/datum/ai_behavior/flock/perform_conversion/nest
+	name = "nesting"
+	required_distance = 0
+
+/datum/ai_behavior/flock/perform_conversion/nest/next_behavior(datum/ai_controller/controller, success)
+	. = ..()
+	if(success)
+		controller.queue_behavior(/datum/ai_behavior/flock/find_existing_nest)

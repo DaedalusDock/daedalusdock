@@ -1,6 +1,6 @@
 /datum/action/cooldown/flock/designate_tile
 	name = "Designate Priority Tile"
-	desc = "Add or remove a tile to the urgent tiles the flock should claim."
+	desc = "Add or remove a tile to the urgent tiles the Flock should claim."
 	button_icon_state = "designate_tile"
 
 	click_to_activate = TRUE

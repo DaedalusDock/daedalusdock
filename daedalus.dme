@@ -3218,6 +3218,7 @@
 #include "code\modules\flockmind\flock_structure\flock_collector.dm"
 #include "code\modules\flockmind\flock_structure\flock_door.dm"
 #include "code\modules\flockmind\flock_structure\flock_egg.dm"
+#include "code\modules\flockmind\flock_structure\flock_fabricator.dm"
 #include "code\modules\flockmind\flock_structure\flock_interceptor.dm"
 #include "code\modules\flockmind\flock_structure\flock_light.dm"
 #include "code\modules\flockmind\flock_structure\flock_relay.dm"

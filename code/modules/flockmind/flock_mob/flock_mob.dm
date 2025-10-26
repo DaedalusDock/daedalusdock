@@ -75,8 +75,6 @@
 	flock?.add_unit(src)
 
 	substrate = new point_holder_type
-	#warn temp: infinite flockmob resources
-	//substrate.adjust_points(1000000)
 
 	name_tag = new()
 	name_tag.set_parent(src)

@@ -39,6 +39,12 @@
 /datum/flock_unlockable/collector
 	structure_type = /obj/structure/flock/collector
 
+/datum/flock_unlockable/interceptor
+	structure_type = /obj/structure/flock/interceptor
+
+/datum/flock_unlockable/turret
+	structure_type = /obj/structure/flock/gnesis_turret
+
 /datum/flock_unlockable/relay
 	structure_type = /obj/structure/flock/relay
 

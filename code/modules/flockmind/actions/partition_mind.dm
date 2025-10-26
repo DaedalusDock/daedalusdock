@@ -1,16 +1,17 @@
 /datum/action/cooldown/flock/partition_mind
 	name = "Partition Mind"
+	desc = "Divide our computational power, creating a Flocktrace. Requires " + FLOCK_COMPUTE_COST_FLOCKTRACE + " total bandwidth per trace."
 	button_icon_state = "partition_mind"
 	cooldown_time = 60 SECONDS
 
 	var/awaiting_partition = FALSE
 
-#warn todo: ability descriptions
 /datum/action/cooldown/flock/partition_mind/is_valid_target(atom/cast_on)
+	var/mob/camera/flock/overmind/ghost_bird = owner
 	if(awaiting_partition)
+		to_chat(ghost_bird, span_warning("We are currently partitioning."))
 		return FALSE
 
-	var/mob/camera/flock/overmind/ghost_bird = owner
 	if(!ghost_bird.flock.can_afford(FLOCK_COMPUTE_COST_FLOCKTRACE))
 		to_chat(ghost_bird, span_warning("The Flock does not have enough spare computaional power to support another thread."))
 		return FALSE

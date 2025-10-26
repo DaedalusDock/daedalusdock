@@ -23,5 +23,3 @@
 	SIGNAL_HANDLER
 
 	parent.AddComponent(/datum/component/flock_interest, flock)
-
-#warn add flock fabricator

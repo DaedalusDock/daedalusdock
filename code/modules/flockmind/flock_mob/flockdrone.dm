@@ -45,6 +45,7 @@
 
 /mob/living/simple_animal/flock/drone/death(gibbed, cause_of_death)
 	stop_flockphase()
+	release_control()
 	say(pick(GLOB.flockdrone_death_phrases))
 	if(flock)
 		flock_talk(null, "Connection to drone [real_name] lost.", flock)
@@ -185,9 +186,12 @@
 
 /mob/living/simple_animal/flock/drone/dormantize()
 	if(!flock)
-		return
+		return ..()
 
-	#warn todo: implement dormantize ejecting the controller correctly
+	if(controlled_by)
+		release_control(FALSE)
+		flock_talk(null, "Connection to drone [real_name] lost.", flock)
+
 	spawn(-1)
 		say("error: out of signal range, disconnecting")
 	return ..()
@@ -303,9 +307,17 @@
 	to_chat(src, "<span class='flocksay'><b>\[SYSTEM: Control of drone [real_name] established.\]</b></span>")
 	return TRUE
 
-/mob/living/simple_animal/flock/drone/proc/release_control()
+/mob/living/simple_animal/flock/drone/proc/release_control(go_dormant = FALSE)
 	if(isnull(controlled_by))
 		return
+
+	task_tag.set_text("")
+
+	var/dest_was_safe = TRUE
+	var/turf/destination = get_turf(src)
+	if(!flock.is_on_safe_z(destination))
+		dest_was_safe = FALSE
+		destination = get_turf(pick_safe(flock.drones)) || get_safe_random_station_turf()
 
 	var/mob/camera/flock/master_bird = controlled_by
 	controlled_by = null
@@ -316,20 +328,22 @@
 
 	if(isnull(master_bird) && ckey)
 		if(flock)
-			master_bird = new /mob/camera/flock/trace(src, flock)
+			master_bird = new /mob/camera/flock/trace(destination, flock)
 		else
 			ghostize(FALSE)
 
 	if(!master_bird)
 		return
 
-	master_bird.forceMove(get_turf(src))
+	master_bird.forceMove(destination)
 	if(mind)
 		mind.transfer_to(master_bird)
 
 	flock_talk(null, "Control of [real_name] surrendered.", flock)
+	if(!dest_was_safe)
+		to_chat(master_bird, span_warning("You feel your consciousness weaking as you are ripped further from your rift, and you retreat back to safety."))
 
-	if(!flock)
+	if(!flock && go_dormant)
 		dormantize()
 
 /mob/living/simple_animal/flock/drone/proc/split_into_bits()

@@ -10,4 +10,4 @@
 		to_chat(bird, span_warning("You have no flock to return to."))
 		return
 
-	bird.release_control()
+	bird.release_control(TRUE)

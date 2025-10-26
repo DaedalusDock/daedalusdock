@@ -77,8 +77,8 @@
 		if("jump_to")
 			var/atom/movable/target = locate(params["origin"])
 			var/turf/T = get_turf(target)
-			if(isnull(T) || !is_station_level(T.z))
-				to_chat(user, span_alert("They are beyond your reach."))
+			if(isnull(T) || !is_on_safe_z(target))
+				to_chat(user, span_alert("They are beyond our reach."))
 				return
 
 			if(isflockdrone(user))

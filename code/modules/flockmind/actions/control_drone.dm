@@ -68,6 +68,20 @@
 		unset_click_ability(owner, performing_task = TRUE)
 		return TRUE
 
+	// Attack or convert enemies.
+	else if(ismob(target))
+		var/mob/living/L = target
+		if(L.incapacitated(IGNORE_STASIS | IGNORE_RESTRAINTS | IGNORE_GRAB))
+			if(!selected_bird.ai_controller.queue_behavior(/datum/ai_behavior/flock/find_capture_target, target))
+				return FALSE
+
+			pointer_helper(selected_bird, target, 2 SECONDS)
+			unset_click_ability(owner, performing_task = TRUE)
+			return TRUE
+		else
+			#warn shoot action
+			return TRUE
+
 /datum/action/cooldown/flock/control_drone/unset_click_ability(mob/on_who, refund_cooldown, performing_task = TRUE)
 	. = ..()
 	free_drone(performing_task)

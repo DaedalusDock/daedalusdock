@@ -15,7 +15,7 @@
 
 /datum/ai_behavior/flock/find_existing_nest/proc/get_target(datum/ai_controller/controller, path_to = FALSE)
 	var/list/options = list()
-	for(var/turf/open/floor/flock/T in view(controller.max_target_distance, controller.pawn))
+	for(var/turf/open/floor/flock/T in view(controller.target_search_radius, controller.pawn))
 		if(!T.is_blocked_turf(source_atom = controller.pawn) && !locate(/obj/structure/flock/egg, T))
 			options += T
 

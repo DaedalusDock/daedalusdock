@@ -14,7 +14,7 @@
 	var/mob/living/simple_animal/flock/bird = controller.pawn
 
 	var/list/options = list()
-	for(var/obj/structure/closet/container in view(controller.max_target_distance, bird))
+	for(var/obj/structure/closet/container in view(controller.target_search_radius, bird))
 		if(container.opened || container.welded || container.locked)
 			continue
 

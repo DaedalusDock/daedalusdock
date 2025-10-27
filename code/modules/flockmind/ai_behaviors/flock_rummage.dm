@@ -14,7 +14,7 @@
 	var/mob/living/simple_animal/flock/bird = controller.pawn
 
 	var/list/options = list()
-	for(var/obj/item/storage/item in view(controller.max_target_distance, bird))
+	for(var/obj/item/storage/item in view(controller.target_search_radius, bird))
 		if(!item.atom_storage || item.atom_storage.locked || !length(item.contents))
 			continue
 

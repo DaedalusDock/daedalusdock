@@ -26,7 +26,7 @@
 	var/mob/living/simple_animal/flock/bird = controller.pawn
 
 	var/list/options = list()
-	for(var/obj/item/I in view(controller.max_target_distance, bird))
+	for(var/obj/item/I in view(controller.target_search_radius, bird))
 		if(isturf(I.loc))
 			options += I
 

@@ -3186,6 +3186,7 @@
 #include "code\modules\flockmind\actions\radio_blast.dm"
 #include "code\modules\flockmind\actions\release_control.dm"
 #include "code\modules\flockmind\ai_behaviors\_flock_behavior_base.dm"
+#include "code\modules\flockmind\ai_behaviors\flock_capture.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_convert.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_deconstruct.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_harvest.dm"

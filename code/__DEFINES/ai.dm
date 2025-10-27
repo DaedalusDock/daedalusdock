@@ -270,3 +270,4 @@
 #define BB_FLOCK_OVERMIND_CONTROL "BB_flock_overmind_control"
 #define BB_FLOCK_CONTAINER_TARGET "BB_flock_container_target"
 #define BB_FLOCK_RUMMAGE_TARGET "BB_flock_rummage_target"
+#define BB_FLOCK_CAPTURE_TARGET "BB_flock_capture_target"

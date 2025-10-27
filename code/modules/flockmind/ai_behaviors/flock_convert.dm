@@ -6,7 +6,7 @@
 	. = ..()
 	if(overmind_target)
 		var/mob/living/simple_animal/flock/drone/bird = controller.pawn
-		if(is_valid_target(overmind_target))
+		if(goap_is_valid_target(controller, overmind_target))
 			controller.set_blackboard_key(BB_FLOCK_OVERMIND_CONTROL, TRUE)
 			controller.set_blackboard_key(BB_PATH_MAX_LENGTH, 200)
 			bird.say("instruction confirmed: convert object to substrate")
@@ -17,9 +17,6 @@
 /datum/ai_behavior/flock/find_conversion_target/goap_precondition(datum/ai_controller/controller)
 	var/mob/living/simple_animal/flock/bird = controller.pawn
 	return bird.substrate.has_points(FLOCK_SUBSTRATE_COST_CONVERT)
-
-/datum/ai_behavior/flock/find_conversion_target/goap_score(datum/ai_controller/controller)
-	return score_distance(controller, get_target(controller))
 
 /datum/ai_behavior/flock/find_conversion_target/score_distance(datum/ai_controller/controller, atom/target)
 	. = ..()
@@ -32,37 +29,37 @@
 	*/
 		. += 200
 
-/datum/ai_behavior/flock/find_conversion_target/proc/get_target(datum/ai_controller/controller, path_to = FALSE)
+/datum/ai_behavior/flock/find_conversion_target/goap_get_potential_targets(datum/ai_controller/controller)
 	var/mob/living/simple_animal/flock/bird = controller.pawn
 	var/datum/flock/bird_flock = bird.flock
 
-	var/list/options = list()
+	var/list/options = view(controller.target_search_radius, bird)
 	var/list/priority_turfs = bird_flock?.get_priority_turfs()
 	if(length(priority_turfs))
 		options += priority_turfs
 
-	var/list/turfs = view(controller.target_search_radius, bird)
-	for(var/turf/T in turfs)
-		if(is_valid_target(T, bird_flock))
-			options += T
+	for(var/turf/T as turf in view(controller.target_search_radius, bird))
+		options += T
 
-	return get_best_target_by_distance_score(controller, options, path_to)
+	return options
 
-/datum/ai_behavior/flock/find_conversion_target/proc/is_valid_target(turf/T, datum/flock/bird_flock)
-	if(isflockturf(T))
+/datum/ai_behavior/flock/find_conversion_target/goap_is_valid_target(datum/ai_controller/controller, atom/target)
+	var/turf/T = target
+	if(!isturf(T) || isflockturf(T))
 		return FALSE
 
 	if(!T.can_flock_convert())
 		return FALSE
 
-	if(isnull(bird_flock))
+	var/mob/living/simple_animal/flock/bird = controller.pawn
+	if(isnull(bird.flock))
 		return TRUE
 
-	return bird_flock.is_turf_free(T)
+	return bird.flock.is_turf_free(T)
 
 /datum/ai_behavior/flock/find_conversion_target/perform(delta_time, datum/ai_controller/controller, turf/overmind_target)
 	..()
-	var/turf/target = overmind_target || get_target(controller, TRUE)
+	var/turf/target = overmind_target || goap_get_ideal_target(controller, TRUE)
 	if(!target)
 		return BEHAVIOR_PERFORM_FAILURE
 
@@ -137,7 +134,8 @@
 
 	return bird.substrate.has_points(FLOCK_SUBSTRATE_COST_CONVERT + bird.flock.current_egg_cost)
 
-/datum/ai_behavior/flock/find_conversion_target/nest/is_valid_target(turf/T, datum/flock/bird_flock)
+/datum/ai_behavior/flock/find_conversion_target/nest/goap_is_valid_target(atom/target)
+	var/turf/T = target
 	return ..() && !T.is_blocked_turf(exclude_mobs = TRUE) && !locate(/obj/structure/flock/egg, T)
 
 /datum/ai_behavior/flock/perform_conversion/nest

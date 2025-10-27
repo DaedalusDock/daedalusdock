@@ -18,25 +18,17 @@
 	var/mob/living/simple_animal/flock/drone/bird = controller.pawn
 	return length(bird.flock?.enemies)
 
-/datum/ai_behavior/flock/find_capture_target/goap_score(datum/ai_controller/controller)
-	return score_distance(controller, get_target(controller))
-
-/datum/ai_behavior/flock/find_capture_target/proc/get_target(datum/ai_controller/controller, path_to = FALSE)
+/datum/ai_behavior/flock/find_capture_target/goap_get_potential_targets(datum/ai_controller/controller)
 	var/mob/living/simple_animal/flock/bird = controller.pawn
+	return bird.flock.enemies.Copy()
 
-	var/list/options = list()
-	for(var/mob/living/enemy in bird.flock.enemies)
-		if(is_valid_target(enemy))
-			options += enemy
-
-	return get_best_target_by_distance_score(controller, options, path_to)
-
-/datum/ai_behavior/flock/find_capture_target/proc/is_valid_target(mob/living/target)
-	return target.incapacitated(IGNORE_STASIS | IGNORE_GRAB | IGNORE_RESTRAINTS) && isturf(target.loc)
+/datum/ai_behavior/flock/find_capture_target/goap_is_valid_target(datum/ai_controller/controller, atom/target)
+	var/mob/living/target_mob = target
+	return ismob(target_mob) && isturf(target_mob.loc) && target_mob.incapacitated(IGNORE_STASIS | IGNORE_GRAB | IGNORE_RESTRAINTS)
 
 /datum/ai_behavior/flock/find_capture_target/perform(delta_time, datum/ai_controller/controller, mob/overmind_target)
 	..()
-	var/atom/target = overmind_target || get_target(controller, TRUE)
+	var/atom/target = overmind_target || goap_get_ideal_target(controller, set_path = TRUE)
 	if(!target)
 		return BEHAVIOR_PERFORM_FAILURE
 

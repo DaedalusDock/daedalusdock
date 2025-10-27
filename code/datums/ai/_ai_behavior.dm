@@ -32,7 +32,29 @@
 
 /// Returns a numerical value that is essentially a priority for planner behaviors.
 /datum/ai_behavior/proc/goap_score(datum/ai_controller/controller)
-	return BEHAVIOR_SCORE_DEFAULT
+	return score_distance(controller, goap_get_ideal_target(controller))
+
+/// Returns the ideal target for this behavior.
+/datum/ai_behavior/proc/goap_get_ideal_target(datum/ai_controller/controller, set_path = FALSE)
+	var/list/options = goap_filter_targets(controller)
+	return get_best_target_by_distance_score(controller, options, set_path)
+
+/// Filter through potential targets to find real targets.
+/datum/ai_behavior/proc/goap_filter_targets(datum/ai_controller/controller)
+	var/list/options = list()
+	for(var/atom/potential_target as anything in goap_get_potential_targets(controller))
+		if(goap_is_valid_target(potential_target))
+			options += potential_target
+	return options
+
+/// Returns a list of potential targets to filter through.
+/datum/ai_behavior/proc/goap_get_potential_targets(datum/ai_controller/controller)
+	return null
+
+/// Returns TRUE if the given atom is a valid target for this behavior.
+/datum/ai_behavior/proc/goap_is_valid_target(atom/target)
+	return TRUE
+
 
 #define BINARY_INSERT_TARGET(target_list, target, score) \
 	do { \

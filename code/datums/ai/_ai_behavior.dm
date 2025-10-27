@@ -43,16 +43,16 @@
 /datum/ai_behavior/proc/goap_filter_targets(datum/ai_controller/controller)
 	var/list/options = list()
 	for(var/atom/potential_target as anything in goap_get_potential_targets(controller))
-		if(goap_is_valid_target(potential_target))
+		if(goap_is_valid_target(controller, potential_target))
 			options += potential_target
 	return options
 
 /// Returns a list of potential targets to filter through.
 /datum/ai_behavior/proc/goap_get_potential_targets(datum/ai_controller/controller)
-	return null
+	return list()
 
 /// Returns TRUE if the given atom is a valid target for this behavior.
-/datum/ai_behavior/proc/goap_is_valid_target(atom/target)
+/datum/ai_behavior/proc/goap_is_valid_target(datum/ai_controller/controller, atom/target)
 	return TRUE
 
 

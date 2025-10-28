@@ -24,7 +24,7 @@
 
 /datum/ai_behavior/flock/find_capture_target/goap_is_valid_target(datum/ai_controller/controller, atom/target)
 	var/mob/living/target_mob = target
-	return ismob(target_mob) && isturf(target_mob.loc) && target_mob.incapacitated(IGNORE_STASIS | IGNORE_GRAB | IGNORE_RESTRAINTS)
+	return ismob(target_mob) && isturf(target_mob.loc) && (target_mob.incapacitated(IGNORE_STASIS | IGNORE_GRAB | IGNORE_RESTRAINTS) || target_mob.IsKnockdown())
 
 /datum/ai_behavior/flock/find_capture_target/perform(delta_time, datum/ai_controller/controller, mob/overmind_target)
 	..()
@@ -56,13 +56,13 @@
 	..()
 	var/mob/living/simple_animal/flock/drone/bird = controller.pawn
 	var/mob/living/target = controller.blackboard[BB_FLOCK_CAPTURE_TARGET]
-	if(!isturf(target?.loc) || !target.incapacitated(IGNORE_GRAB | IGNORE_RESTRAINTS | IGNORE_STASIS))
-		return BEHAVIOR_PERFORM_FAILURE
-
-	controller.clear_blackboard_key(BB_FLOCK_CAPTURE_TARGET)
-	var/datum/action/cooldown/flock/cage_mob/cage_action = locate() in bird.actions
-	spawn(-1)
-		cage_action.Trigger(target = target)
+	if(target)
+		if(!isturf(target?.loc) || !(target.incapacitated(IGNORE_GRAB | IGNORE_RESTRAINTS | IGNORE_STASIS) || target.IsKnockdown()))
+			return BEHAVIOR_PERFORM_FAILURE
+		controller.clear_blackboard_key(BB_FLOCK_CAPTURE_TARGET)
+		var/datum/action/cooldown/flock/cage_mob/cage_action = locate() in bird.actions
+		spawn(-1)
+			cage_action.Trigger(target = target)
 
 	if(DOING_INTERACTION(bird, "flock_cage"))
 		return BEHAVIOR_PERFORM_COOLDOWN

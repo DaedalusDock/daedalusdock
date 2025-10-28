@@ -271,3 +271,8 @@
 #define BB_FLOCK_CONTAINER_TARGET "BB_flock_container_target"
 #define BB_FLOCK_RUMMAGE_TARGET "BB_flock_rummage_target"
 #define BB_FLOCK_CAPTURE_TARGET "BB_flock_capture_target"
+#define BB_FLOCK_ATTACK_TARGET "BB_flock_attack_target"
+#define BB_FLOCK_ATTACK_COOLDOWN "BB_flock_attack_cooldown"
+#define BB_FLOCK_ATTACK_RUN_COOLDOWN "BB_flock_attack_run_cooldown"
+#define BB_FLOCK_ATTACK_STRAFE_COOLDOWN "BB_flock_attack_strafe_cooldown"
+#define BB_FLOCK_ATTACK_FRUSTRATION "BB_flock_attack_frustration"

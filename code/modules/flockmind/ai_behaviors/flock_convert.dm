@@ -134,7 +134,7 @@
 
 	return bird.substrate.has_points(FLOCK_SUBSTRATE_COST_CONVERT + bird.flock.current_egg_cost)
 
-/datum/ai_behavior/flock/find_conversion_target/nest/goap_is_valid_target(atom/target)
+/datum/ai_behavior/flock/find_conversion_target/nest/goap_is_valid_target(datum/ai_controller/controller, atom/target)
 	var/turf/T = target
 	return ..() && !T.is_blocked_turf(exclude_mobs = TRUE) && !locate(/obj/structure/flock/egg, T)
 

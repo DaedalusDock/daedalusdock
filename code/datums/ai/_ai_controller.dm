@@ -183,11 +183,11 @@ multiple modular subtrees with behaviors
 			if(behavior_cooldowns[current_behavior] > world.time) //Still on cooldown
 				continue
 			ProcessBehavior(action_seconds_per_tick, current_behavior)
-			return
+			continue
 
 		if(isnull(current_movement_target))
 			fail_behavior(current_behavior)
-			return
+			continue
 
 		///Stops pawns from performing such actions that should require the target to be adjacent.
 		var/atom/movable/moving_pawn = pawn
@@ -199,7 +199,7 @@ multiple modular subtrees with behaviors
 			if(behavior_cooldowns[current_behavior] > world.time) //Still on cooldown
 				continue
 			ProcessBehavior(action_seconds_per_tick, current_behavior)
-			return
+			continue
 
 		if(ai_movement.moving_controllers[src] != current_movement_target) //We're too far, if we're not already moving start doing it.
 			ai_movement.start_moving_towards(src, current_movement_target, current_behavior.required_distance) //Then start moving
@@ -208,7 +208,7 @@ multiple modular subtrees with behaviors
 			if(behavior_cooldowns[current_behavior] > world.time) //Still on cooldown
 				continue
 			ProcessBehavior(action_seconds_per_tick, current_behavior)
-			return
+			continue
 
 ///This is where you decide what actions are taken by the AI.
 /datum/ai_controller/proc/ProcessBehaviorSelection(delta_time)

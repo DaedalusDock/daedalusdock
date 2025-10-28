@@ -72,6 +72,8 @@
 	else
 		eating.take_damage(absorption_rate * delta_time * 25, BRUTE, armor_penetration = 100)
 		reagents.add_reagent(/datum/reagent/toxin/gnesis, absorption_rate * delta_time)
+		if(eating.is_destroyed())
+			QDEL_NULL(eating)
 
 	if(victim && COOLDOWN_FINISHED(src, flock_message_cd))
 		COOLDOWN_START(src, flock_message_cd, rand(10, 25) SECONDS)
@@ -135,7 +137,7 @@
 		return
 
 	var/mob/living/carbon/human/human_victim = victim
-	var/list/items = human_victim.get_all_worn_items()
+	var/list/items = list_clear_nulls(human_victim.get_all_worn_items())
 	if(length(items))
 		while(length(items) && !eating)
 			var/obj/item/candidate = pick_n_take(items)
@@ -184,7 +186,9 @@
 
 		human_victim.notify_pain(PAIN_AMT_AGONIZING, "Pain explodes from your [organ_loc_str].", ignore_cd = TRUE)
 		yummy_organ.Remove(human_victim)
-		yummy_organ.forceMove(src)
+		if(!QDELING(yummy_organ))
+			set_eating_target(yummy_organ)
+			eating.forceMove(src)
 
 		visible_message(span_danger("[src] tears [eating] from [human_victim]'s [organ_loc_str] and begins ripping it apart."))
 		return

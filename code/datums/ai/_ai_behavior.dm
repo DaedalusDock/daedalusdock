@@ -2,6 +2,8 @@
 /datum/ai_behavior
 	///What distance you need to be from the target to perform the action
 	var/required_distance = 1
+	/// If >0, overrides controller.target_search_radius
+	var/search_radius_override = null
 	///Flags for extra behavior
 	var/behavior_flags = NONE
 	///Cooldown between actions performances, defaults to the value of CLICK_CD_MELEE because that seemed like a nice standard for the speed of AI behavior
@@ -143,7 +145,7 @@
 /// A distance equal to target_search_radius is zero.
 /// A distance greater than target_search_radius is negative.
 /datum/ai_behavior/proc/score_distance(datum/ai_controller/controller, atom/target)
-	var/search_radius = controller.target_search_radius
+	var/search_radius = search_radius_override || controller.target_search_radius
 	if(isnull(target))
 		return -INFINITY
 	return 100 * (search_radius - get_dist_manhattan(get_turf(controller.pawn), get_turf(target))) / search_radius

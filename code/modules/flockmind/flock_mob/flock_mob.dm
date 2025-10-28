@@ -194,7 +194,7 @@
 
 /// Helper for keeping consistency across tesk name sets.
 /mob/living/simple_animal/flock/proc/set_task_desc(text)
-	task_tag.set_text("Task: [text || "idling"]")
+	task_tag?.set_text("Task: [text || "idling"]")
 
 /// Turn the light on or off, based on if the mob is doing shit or not.
 /mob/living/simple_animal/flock/proc/update_light_state()

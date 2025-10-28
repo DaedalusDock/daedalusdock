@@ -10,6 +10,8 @@
 		/datum/ai_behavior/flock/find_closed_container,
 		/datum/ai_behavior/flock/find_storage_item,
 		/datum/ai_behavior/flock/find_conversion_target/nest,
+		/datum/ai_behavior/flock/attack_target,
+		/datum/ai_behavior/flock/find_capture_target,
 	)
 
 /datum/ai_planning_subtree/goap/flock

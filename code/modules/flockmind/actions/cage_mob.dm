@@ -15,7 +15,7 @@
 	return ..()
 
 /datum/action/cooldown/flock/cage_mob/is_valid_target(atom/cast_on)
-	return isliving(cast_on) && !isflockmob(cast_on)
+	return isliving(cast_on) && !isflockmob(cast_on) && isturf(cast_on.loc)
 
 /datum/action/cooldown/flock/cage_mob/Activate(atom/target)
 	if(DOING_INTERACTION(owner, "flock_cage"))
@@ -23,7 +23,6 @@
 
 	var/mob/living/simple_animal/flock/bird = owner
 	var/turf/T = get_turf(target)
-	ADD_TRAIT(bird, TRAIT_AI_PAUSED, ref(src))
 
 	owner.visible_message(
 		span_notice("<b>[owner]</b> begins forming a cuboid structure around <b>[target]</b>."),
@@ -42,7 +41,6 @@
 	if(!do_after(owner, target, 4.5 SECONDS, DO_PUBLIC, interaction_key = "flock_cage"))
 		. = FALSE
 
-	REMOVE_TRAIT(bird, TRAIT_AI_PAUSED, ref(src))
 	T.remove_viscontents(turf_effect)
 	if(!.)
 		return

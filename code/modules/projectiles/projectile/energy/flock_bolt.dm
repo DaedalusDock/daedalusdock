@@ -31,7 +31,7 @@
 		return
 
 	var/mob/living/victim = target
-	victim.AdjustKnockdown(2.5 SECONDS)
+	victim.Disorient(2.5 SECONDS, ceil(STAMINA_MAX / 4), knockdown = 2.5 SECONDS, overstam = TRUE)
 
 /obj/projectile/energy/flock_bolt/can_hit_target(atom/target, direct_target, ignore_loc, cross_failed)
 	if(isflockmob(target))

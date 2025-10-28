@@ -2,6 +2,8 @@
 	name = "flockbit"
 	icon_state = "flockbit"
 	icon_dormant = "bit-dormant"
+
+	move_force = MOVE_FORCE_VERY_WEAK
 	maxHealth = 10
 	density = FALSE
 	pass_flags = PASSTABLE

@@ -72,14 +72,44 @@
 	active_state = "incapacitor1"
 	inactive_state = "incapacitor0"
 
+	maptext_x = 6
+	maptext_y = 6
 	screen_loc = "CENTER:16,SOUTH:5"
 
 	part_type = /datum/flockdrone_part/incapacitator
+
+	var/icon/overlay_mask
+	var/obj/effect/abstract/charge_overlay
+
+/atom/movable/screen/flockdrone_part/incapacitator/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	charge_overlay = new()
+	charge_overlay.vis_flags = VIS_INHERIT_ID | VIS_INHERIT_LAYER | VIS_INHERIT_PLANE | VIS_INHERIT_ICON
+	charge_overlay.icon_state = "charge_overlay"
+	add_viscontents(charge_overlay)
+
+	overlay_mask = icon('goon/icons/hud/flock_ui.dmi', "darkener")
+	charge_overlay.add_filter("mask", 1, alpha_mask_filter(0, 0, overlay_mask))
+
+/atom/movable/screen/flockdrone_part/incapacitator/Destroy()
+	QDEL_NULL(charge_overlay)
+	return ..()
 
 /atom/movable/screen/flockdrone_part/incapacitator/update_appearance(updates)
 	. = ..()
 	var/datum/flockdrone_part/incapacitator/part = part_ref
 	maptext = MAPTEXT("[part?.shot_count || "0"]")
+
+	var/datum/flockdrone_part/incapacitator/weapon = part_ref
+	charge_overlay.transition_filter(
+		"mask",
+		0.5 SECONDS,
+		list(
+			"y" = -24 * (1 - round(weapon.shot_count / weapon.max_shots, 0.1))
+		),
+		SINE_EASING,
+		FALSE
+	)
 
 /atom/movable/screen/flockdrone_part/absorber
 	name = "material decompiler"

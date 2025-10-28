@@ -11,12 +11,15 @@
 	var/time_between_shots = 1.2 SECONDS
 
 	/// Time to gain 1 charge.
-	var/recharge_time = 2 SECONDS
+	var/recharge_time = 4 SECONDS
 
 	var/recharge_timer_id
 
 /datum/flockdrone_part/incapacitator/left_click_on(atom/target, in_reach)
 	if(!COOLDOWN_FINISHED(src, shoot_cd))
+		return FALSE
+
+	if(!shot_count)
 		return FALSE
 
 	shot_count -= 1

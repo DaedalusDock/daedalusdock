@@ -36,8 +36,6 @@
 
 	selected_bird.ai_controller.CancelActions()
 
-	#warn todo: repair task
-
 	// Move to turf/structure, or convert turf.
 	if(isturf(target) || istype(target, /obj/structure/flock))
 		if(istype(target, /obj/structure/flock/tealprint))
@@ -93,6 +91,17 @@
 			return TRUE
 
 		return FALSE
+
+	else if(isflockmob(target))
+		var/mob/living/simple_animal/flock/other_bird = target
+		if(other_bird.flock == selected_bird.flock)
+			if(!selected_bird.ai_controller.queue_behavior(/datum/ai_behavior/flock/find_heal_target, target))
+				return FALSE
+
+			pointer_helper(selected_bird, target, 2 SECONDS)
+			unset_click_ability(owner, performing_task = TRUE)
+			return TRUE
+
 
 /datum/action/cooldown/flock/control_drone/unset_click_ability(mob/on_who, refund_cooldown, performing_task = TRUE)
 	. = ..()

@@ -19,8 +19,10 @@
 	return bird.substrate.has_points(FLOCK_SUBSTRATE_COST_DEPOST_TEALPRINT)
 
 /datum/ai_behavior/flock/find_deposit_target/goap_get_potential_targets(datum/ai_controller/controller)
-	var/mob/living/simple_animal/flock/bird = controller.pawn
-	return bird.flock.enemies.Copy()
+	var/list/options = ..()
+	for(var/obj/structure/flock/tealprint in oview(controller.target_search_radius, controller.pawn))
+		options += tealprint
+	return options
 
 /datum/ai_behavior/flock/find_deposit_target/goap_is_valid_target(datum/ai_controller/controller, atom/target)
 	var/obj/structure/flock/tealprint/tealprint = target
@@ -56,7 +58,7 @@
 	name = "depositing"
 	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT | AI_BEHAVIOR_REQUIRE_REACH
 
-/datum/ai_behavior/flock/find_deposit_target/goap_is_valid_target(datum/ai_controller/controller, atom/target)
+/datum/ai_behavior/flock/perform_deposit/goap_is_valid_target(datum/ai_controller/controller, atom/target)
 	var/obj/structure/flock/tealprint/tealprint = target
 	if(!istype(tealprint))
 		return FALSE

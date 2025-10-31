@@ -18,9 +18,8 @@
 		bird.visible_message(span_notice("[bird] deposits materials into [target]."), blind_message = span_hear("You hear an otherwordly whirring."))
 
 		var/obj/structure/flock/tealprint/tealprint = target
-		var/deposit = min(bird.substrate.has_points(), tealprint.materials_required - tealprint.current_materials, FLOCK_SUBSTRATE_COST_DEPOST_TEALPRINT)
+		var/deposit = min(bird.substrate.has_points(), tealprint.substrate.how_empty(), FLOCK_SUBSTRATE_COST_DEPOST_TEALPRINT)
 		bird.substrate.remove_points(deposit)
-		tealprint.current_materials += deposit
-
+		tealprint.substrate.add_points(deposit)
 	return TRUE
 

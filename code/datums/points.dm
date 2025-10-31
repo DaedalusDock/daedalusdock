@@ -7,6 +7,13 @@
 	if(points >= atleast)
 		return points
 
+/datum/point_holder/proc/is_full()
+	return points == max_points
+
+/// Returns the number of points needed to fill the holder.
+/datum/point_holder/proc/how_empty()
+	return max_points - points
+
 /datum/point_holder/proc/adjust_points(num, check_enough)
 	if(num > 0)
 		return add_points(num)

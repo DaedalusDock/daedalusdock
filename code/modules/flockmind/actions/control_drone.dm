@@ -28,9 +28,6 @@
 		return FALSE
 	return TRUE
 
-#warn capture task
-#warn shoot task
-
 /datum/action/cooldown/flock/control_drone/Activate(atom/target)
 	. = ..()
 	if(isnull(selected_bird))
@@ -39,8 +36,18 @@
 
 	selected_bird.ai_controller.CancelActions()
 
+	#warn todo: repair task
+
 	// Move to turf/structure, or convert turf.
 	if(isturf(target) || istype(target, /obj/structure/flock))
+		if(istype(target, /obj/structure/flock/tealprint))
+			if(!selected_bird.ai_controller.queue_behavior(/datum/ai_behavior/flock/find_deposit_target, target))
+				return FALSE
+
+			pointer_helper(selected_bird, target, 2 SECONDS)
+			unset_click_ability(owner, performing_task = TRUE)
+			return TRUE
+
 		var/turf/T = get_turf(target)
 		if(isflockturf(T))
 			if(!selected_bird.ai_controller.queue_behavior(/datum/ai_behavior/flock/rally, target))
@@ -59,6 +66,7 @@
 			unset_click_ability(owner, performing_task = TRUE)
 			return TRUE
 
+
 	// Harvest items
 	else if(isitem(target))
 		if(!selected_bird.ai_controller.queue_behavior(/datum/ai_behavior/flock/find_harvest_target, target))
@@ -69,18 +77,22 @@
 		return TRUE
 
 	// Attack or convert enemies.
-	else if(ismob(target))
+	else if(ismob(target) && selected_bird.flock.is_mob_enemy(target))
 		var/mob/living/L = target
-		if(L.incapacitated(IGNORE_STASIS | IGNORE_RESTRAINTS | IGNORE_GRAB))
+		if(L.incapacitated(IGNORE_STASIS | IGNORE_RESTRAINTS | IGNORE_GRAB) || L.IsKnockdown())
 			if(!selected_bird.ai_controller.queue_behavior(/datum/ai_behavior/flock/find_capture_target, target))
 				return FALSE
 
 			pointer_helper(selected_bird, target, 2 SECONDS)
 			unset_click_ability(owner, performing_task = TRUE)
 			return TRUE
-		else
-			#warn shoot action
+
+		else if(selected_bird.ai_controller.queue_behavior(/datum/ai_behavior/flock/attack_target, target))
+			pointer_helper(selected_bird, target, 2 SECONDS)
+			unset_click_ability(owner, performing_task = TRUE)
 			return TRUE
+
+		return FALSE
 
 /datum/action/cooldown/flock/control_drone/unset_click_ability(mob/on_who, refund_cooldown, performing_task = TRUE)
 	. = ..()

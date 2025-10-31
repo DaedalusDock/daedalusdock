@@ -276,3 +276,4 @@
 #define BB_FLOCK_ATTACK_RUN_COOLDOWN "BB_flock_attack_run_cooldown"
 #define BB_FLOCK_ATTACK_STRAFE_COOLDOWN "BB_flock_attack_strafe_cooldown"
 #define BB_FLOCK_ATTACK_FRUSTRATION "BB_flock_attack_frustration"
+#define BB_FLOCK_DEPOSIT_TARGET "BB_flock_deposit_target"

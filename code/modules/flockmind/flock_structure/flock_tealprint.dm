@@ -5,12 +5,11 @@
 	density = FALSE
 	no_flock_decon = TRUE
 
-	var/materials_required = 0
-	var/current_materials = 0
+	var/datum/point_holder/substrate
 
 	var/obj/structure/flock/building_type = null
 
-/obj/structure/flock/tealprint/Initialize(mapload, datum/flock/join_flock, desired_type)
+/obj/structure/flock/tealprint/Initialize(mapload, datum/flock/join_flock, obj/structure/flock/desired_type)
 	. = ..()
 	var/turf/T = loc
 	if(!T.can_flock_occupy(src))
@@ -23,8 +22,12 @@
 	icon_state = initial(building_type.icon_state)
 	alpha = 104
 
+	substrate = new()
+	substrate.set_max_points(initial(desired_type.resource_cost))
+
 /obj/structure/flock/tealprint/Destroy()
 	UNSET_TRACKING(type)
+	QDEL_NULL(substrate)
 	return ..()
 
 /obj/structure/flock/tealprint/deconstruct(disassembled)
@@ -37,6 +40,7 @@
 
 /obj/structure/flock/tealprint/flock_structure_examine(mob/user)
 	return list(
-		span_flocksay("<b>Construction Percentage:</b> [floor(current_materials / materials_required * 100)]"),
-		span_flocksay("<b>Construction Progress:</b> [current_materials] added, [materials_required] needed")
+		span_flocksay("<b>Construction Percentage:</b> [floor(substrate.has_points() / substrate.get_max_points() * 100)]"),
+		span_flocksay("<b>Construction Progress:</b> [substrate.has_points()] added, [substrate.get_max_points()] needed")
 	)
+

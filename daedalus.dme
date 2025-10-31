@@ -3190,6 +3190,7 @@
 #include "code\modules\flockmind\ai_behaviors\flock_capture.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_convert.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_deconstruct.dm"
+#include "code\modules\flockmind\ai_behaviors\flock_deposit.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_harvest.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_heal.dm"
 #include "code\modules\flockmind\ai_behaviors\flock_open_container.dm"

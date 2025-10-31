@@ -11,5 +11,3 @@
 	. = ..()
 	var/mob/camera/flock/ghost_bird = owner
 	return ghost_bird.flock.toggle_deconstruction_mark(target)
-
-#warn add to flockdrone control

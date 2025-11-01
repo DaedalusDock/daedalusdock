@@ -633,8 +633,6 @@
 	game_over()
 	return TRUE
 
-#warn todo: /obj/flock_structure/compute from computers and shit
-
 /// Kills off the flock. Pass completely_destroy = FALSE to allow the overmind to live on.
 /datum/flock/proc/game_over(completely_destroy = TRUE)
 	set waitfor = FALSE

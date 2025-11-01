@@ -16,6 +16,7 @@
 	lighting_alpha = LIGHTING_PLANE_ALPHA_INVISIBLE
 	sight = SEE_TURFS | SEE_MOBS | SEE_OBJS | SEE_SELF
 
+	hud_type = /datum/hud/flockghost
 	initial_language_holder = /datum/language_holder/flock
 
 	move_on_shuttle = FALSE
@@ -37,6 +38,12 @@
 
 	add_client_colour(/datum/client_colour/flockmind)
 	ADD_TRAIT(src, TRAIT_HEAR_THROUGH_WALLS, INNATE_TRAIT)
+
+/mob/camera/flock/Destroy()
+	if(controlling_bird)
+		controlling_bird.release_control()
+	flock = null
+	return ..()
 
 /mob/camera/flock/Login()
 	. = ..()

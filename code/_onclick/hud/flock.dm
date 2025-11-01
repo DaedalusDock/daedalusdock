@@ -1,6 +1,8 @@
 /datum/hud/flockdrone
 	ui_style = 'goon/icons/hud/flock_ui.dmi'
 
+	var/atom/movable/screen/flock_relay_status/relay_status
+
 /datum/hud/flockdrone/New(mob/owner)
 	. = ..()
 	var/atom/movable/screen/using
@@ -16,6 +18,28 @@
 
 	healthdoll = new /atom/movable/screen/flockdrone_health(null, src)
 	infodisplay += healthdoll
+
+	relay_status = new(null, src)
+	infodisplay += relay_status
+
+/datum/hud/flockdrone/Destroy()
+	QDEL_NULL(relay_status)
+	return ..()
+
+// Used for flock traces and the overmind
+/datum/hud/flockghost
+	ui_style = 'goon/icons/hud/flock_ui.dmi'
+
+	var/atom/movable/screen/flock_relay_status/relay_status
+
+/datum/hud/flockghost/New(mob/owner)
+	. = ..()
+	relay_status = new(null, src)
+	infodisplay += relay_status
+
+/datum/hud/flockghost/Destroy()
+	QDEL_NULL(relay_status)
+	return ..()
 
 /atom/movable/screen/flockdrone_health
 	icon = 'goon/icons/hud/flock_ui.dmi'
@@ -119,3 +143,27 @@
 	screen_loc = "CENTER+1:16,SOUTH:5"
 
 	part_type = /datum/flockdrone_part/absorber
+
+/atom/movable/screen/flock_relay_status
+	name = "relay progress"
+	icon = 'goon/icons/hud/flock_ui.dmi'
+	icon_state = "structure-relay"
+
+	screen_loc = "EAST-1:28,CENTER-2:15"
+	alpha = 0
+
+	/// Tracks the last flock status it was aware of.
+	var/flock_status = NONE
+
+/atom/movable/screen/flock_relay_status/update_icon_state()
+	switch(flock_status)
+		if(NONE)
+			icon_state = "structure-relay"
+		if(FLOCK_ENDGAME_RELAY_BUILT, FLOCK_ENDGAME_RELAY_ACTIVATING, FLOCK_ENDGAME_VICTORY)
+			icon_state = "structure-relay-glow"
+	return ..()
+
+/atom/movable/screen/flock_relay_status/update_overlays()
+	. = ..()
+	if(flock_status == FLOCK_ENDGAME_RELAY_ACTIVATING || flock_status == FLOCK_ENDGAME_VICTORY)
+		. += image(icon, "structure-relay-sparks")

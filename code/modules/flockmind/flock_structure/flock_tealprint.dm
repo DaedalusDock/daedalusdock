@@ -5,7 +5,9 @@
 	density = FALSE
 	no_flock_decon = TRUE
 
-	var/datum/point_holder/substrate
+	flock_id = "Construction Tealprint" // if you change this update Flockpanel.tsx!!!!!
+
+	var/datum/point_holder/tealprint/substrate
 
 	var/obj/structure/flock/building_type = null
 
@@ -24,19 +26,15 @@
 
 	substrate = new()
 	substrate.set_max_points(initial(desired_type.resource_cost))
+	substrate.owner = src
 
 /obj/structure/flock/tealprint/Destroy()
 	UNSET_TRACKING(type)
 	QDEL_NULL(substrate)
 	return ..()
 
-/obj/structure/flock/tealprint/deconstruct(disassembled)
-	if(!initial(building_type.cancellable))
-		return
-
-	flock_talk(src, "Tealprint dematerializing", flock)
-	playsound(src, 'goon/sounds/flockmind/flockdrone_door_deny.ogg', 30, TRUE, extrarange = -10)
-	return ..()
+/obj/structure/flock/tealprint/update_info_tag()
+	info_tag?.set_text("Substrate: [substrate.has_points()] / [substrate.get_max_points()]")
 
 /obj/structure/flock/tealprint/flock_structure_examine(mob/user)
 	return list(
@@ -44,3 +42,33 @@
 		span_flocksay("<b>Construction Progress:</b> [substrate.has_points()] added, [substrate.get_max_points()] needed")
 	)
 
+/obj/structure/flock/tealprint/proc/complete_structure()
+	var/obj/structure/flock/structure = new building_type(get_turf(src))
+	flock_talk(src, "Tealprint for [structure.flock_id] realized.", flock)
+	qdel(src)
+
+/obj/structure/flock/tealprint/proc/cancel_structure()
+	if(!initial(building_type.cancellable))
+		return
+
+	if(substrate.has_points())
+		var/obj/item/flock_cube/cube = new(drop_location())
+		cube.substrate = substrate.has_points()
+
+	flock_talk(src, "Tealprint dematerializing", flock)
+	playsound(src, 'goon/sounds/flockmind/flockdrone_door_deny.ogg', 30, TRUE, extrarange = -10)
+
+/datum/point_holder/tealprint
+	var/obj/structure/flock/tealprint/owner
+
+/datum/point_holder/tealprint/Destroy(force, ...)
+	owner = null
+	return ..()
+
+/datum/point_holder/tealprint/add_points(num)
+	. = ..()
+	if(.)
+		if(is_full())
+			owner.complete_structure()
+		else
+			owner.update_info_tag()

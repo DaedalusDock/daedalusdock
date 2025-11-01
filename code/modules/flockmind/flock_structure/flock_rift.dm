@@ -34,7 +34,7 @@
 	// Convert turfs
 	for(var/turf/open/floor/T as anything in convertable_turfs)
 		if(flock)
-			flock.convert_turf(T)
+			flock.claim_turf(T)
 		else
 			flock_convert_turf(T)
 

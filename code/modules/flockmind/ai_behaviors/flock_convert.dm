@@ -45,15 +45,19 @@
 
 /datum/ai_behavior/flock/find_conversion_target/goap_is_valid_target(datum/ai_controller/controller, atom/target)
 	var/turf/T = target
-	if(!isturf(T) || isflockturf(T))
+	if(!isturf(T))
 		return FALSE
 
-	if(!T.can_flock_convert())
-		return FALSE
 
 	var/mob/living/simple_animal/flock/bird = controller.pawn
 	if(isnull(bird.flock))
 		return TRUE
+
+	if(isflockturf(T) && (bird.flock.claimed_floors[T] || bird.flock.claimed_walls[T]))
+		return FALSE
+
+	if(!T.can_flock_convert())
+		return FALSE
 
 	return bird.flock.is_turf_free(T)
 
@@ -124,7 +128,7 @@
 	goap_weight = FLOCK_BEHAVIOR_WEIGHT_NEST
 	required_distance = 0
 
-/datum/ai_behavior/flock/find_conversion_target/goap_precondition(datum/ai_controller/controller)
+/datum/ai_behavior/flock/find_conversion_target/nest/goap_precondition(datum/ai_controller/controller)
 	var/mob/living/simple_animal/flock/bird = controller.pawn
 	if(!bird.flock)
 		return FALSE

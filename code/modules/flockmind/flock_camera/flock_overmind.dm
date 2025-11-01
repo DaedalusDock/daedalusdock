@@ -13,6 +13,7 @@
 	/// Granted after create_rift is cast.
 	var/list/grant_upon_start = list(
 		/datum/action/cooldown/flock/control_panel,
+		/datum/action/cooldown/flock/create_structure,
 		/datum/action/cooldown/flock/partition_mind,
 		/datum/action/cooldown/flock/diffract_drone,
 		/datum/action/cooldown/flock/control_drone,

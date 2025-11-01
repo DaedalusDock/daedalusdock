@@ -14,6 +14,16 @@
 
 /datum/component/flock_interest/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_FLOCK_PROTECTION_TRIGGER, PROC_REF(handle_flock_attack))
+	if(isturf(parent))
+		RegisterSignal(parent, COMSIG_TURF_CHANGE, PROC_REF(on_turf_change))
+
+/datum/component/flock_interest/UnregisterFromParent()
+	UnregisterSignal(parent, list(COMSIG_FLOCK_PROTECTION_TRIGGER, COMSIG_TURF_CHANGE))
+
+/datum/component/flock_interest/proc/on_turf_change(turf/source, path, new_baseturfs, flags, post_change_callbacks)
+	SIGNAL_HANDLER
+	if(!ispath(path, /turf/open/floor/flock) && !ispath(path, /turf/closed/wall/flock))
+		qdel(src)
 
 /// If flockdrone is in our flock, deny the attack, otherwise scream and cry
 /datum/component/flock_interest/proc/handle_flock_attack(atom/source, atom/attacker, intentional, projectile_attack)

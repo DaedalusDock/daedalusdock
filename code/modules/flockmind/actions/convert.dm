@@ -72,7 +72,11 @@
 	if(!is_valid_target(T))
 		return FALSE
 
-	flock_convert_turf(T, bird.flock)
+	if(bird.flock)
+		bird.flock.claim_turf(T)
+	else
+		flock_convert_turf(T, bird.flock)
+
 	bird.substrate.remove_points(FLOCK_SUBSTRATE_COST_CONVERT)
 	return TRUE
 

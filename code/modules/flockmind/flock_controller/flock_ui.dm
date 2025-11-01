@@ -99,3 +99,21 @@
 			if(istype(bird))
 				bird.rally(get_turf(user))
 				return TRUE
+
+		if("cancel_tealprint")
+			var/obj/structure/flock/tealprint/tealprint = locate(params["origin"])
+			tealprint?.cancel_structure()
+			return TRUE
+
+		if("delete_trace")
+			var/mob/camera/flock/trace/flocktrace = locate(params["origin"])
+			if(!istype(flocktrace))
+				message_admins("Warning: possible href exploit by [key_name(usr)] - attempted to remove a flocktrace that wasn't a flocktrace: [flocktrace]")
+				log_game("Warning: possible href exploit by [key_name(usr)] - attempted to remove a flocktrace that wasn't a flocktrace: [flocktrace]")
+				return TRUE
+
+			if(tgui_alert(user, "This will destroy the Flocktrace. Are you sure you want to do this?", "Confirmation", list("Yes", "No")) == "Yes")
+				flock_talk(null, "Partition [flocktrace.real_name] has been reintegrated into flock background processes.", src)
+				to_chat(flocktrace, span_flocksay("Your higher cognition has been forcibly reintegrated into the collective will of the flock."))
+				flocktrace.so_very_sad_death()
+			return TRUE

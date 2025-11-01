@@ -19,6 +19,8 @@
 	allow_flockpass = FALSE
 	no_flock_decon = TRUE
 
+	/// Time the structure started.
+	var/tmp/started_time
 	/// How long it takes until the signal is broadcast and the flock wins :D
 	var/tmp/win_time = 360 SECONDS
 	var/tmp/flock_won_da_game = FALSE
@@ -31,7 +33,7 @@
 /obj/structure/flock/relay/Initialize(mapload, datum/flock/join_flock)
 	. = ..()
 
-	flock.flock_game_status = FLOCK_ENDGAME_RELAY_BUILDING
+	flock.set_flock_game_status(FLOCK_ENDGAME_RELAY_BUILT)
 
 	log_game("The Flock ([flock?.name || "NULL"]) has constructed a relay at [AREACOORD(src)].")
 	SSshuttle.registerHostileEnvironment(src, FALSE)
@@ -55,8 +57,6 @@
 		flock.game_over(completely_destroy = TRUE)
 
 	turfs_to_convert = null
-	if(flock.flock_game_status == FLOCK_ENDGAME_RELAY_BUILDING)
-		flock.flock_game_status = NONE
 	return ..()
 
 /obj/structure/flock/relay/do_hurt_animation()
@@ -74,10 +74,29 @@
 	if(flock_won_da_game)
 		. += span_flocksay("Your life flashes before your eyes.")
 
+/obj/structure/flock/relay/flock_structure_examine(mob/user)
+	var/timeleft = (started_time + win_time - world.time) / 10
+	if(timeleft)
+		return list(
+			span_flocksay("<b>Broadcast In:</b> [(started_time + win_time - world.time) / 10] second\s.")
+		)
+	else
+		return list(
+			span_flocksay("<b><i>BROADCASTING IN PROGRESS.</i></b>")
+		)
+
+/obj/structure/flock/relay/update_info_tag()
+	if(flock_won_da_game)
+		info_tag?.set_text("Broadcast in:[(started_time + win_time - world.time) / 10] second\s")
+	else
+		info_tag?.set_text("Transmitting")
+
 /obj/structure/flock/relay/process(delta_time)
 	if(world.time >= (spawn_time + build_time + (win_time * 10)))
 		lorimer_burst()
 		return PROCESS_KILL
+
+	update_info_tag()
 
 	var/turf/base = get_turf(src)
 
@@ -108,7 +127,7 @@
 		var/turf/conversion_target = turfs_to_convert[length(turfs_to_convert)]
 		turfs_to_convert.len--
 		if(!isflockturf(conversion_target) && !isspaceturf(conversion_target) && !isopenspaceturf(conversion_target))
-			flock.convert_turf(conversion_target)
+			flock.claim_turf(conversion_target)
 
 /obj/structure/flock/relay/proc/alert_organics()
 	var/list/z_levels = SSmapping.get_zstack(z)
@@ -133,7 +152,7 @@
 /obj/structure/flock/relay/proc/lorimer_burst()
 	set waitfor = FALSE
 	flock_won_da_game = TRUE
-	flock.flock_game_status = FLOCK_ENDGAME_RELAY_ACTIVATING
+	flock.set_flock_game_status(FLOCK_ENDGAME_RELAY_ACTIVATING)
 
 	log_game("The Flock ([flock?.name || "NULL"]) has successfully broadcast The Signal at [AREACOORD(src)].")
 	add_overlay("structure_relay_sparks")
@@ -159,7 +178,7 @@
 
 	sleep(2 SECONDS)
 
-	flock.flock_game_status = FLOCK_ENDGAME_VICTORY
+	flock.set_flock_game_status(FLOCK_ENDGAME_VICTORY)
 	explosion(src, 50, ignorecap = TRUE, explosion_cause = src)
 
 	sleep(2 SECONDS)
@@ -188,5 +207,3 @@
 		if(prob(20))
 			sleep(0.1 SECONDS)
 
-
-#warn relay info hud

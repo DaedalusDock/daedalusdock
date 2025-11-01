@@ -27,7 +27,7 @@
 
 	var/list/options = list()
 	for(var/obj/item/I in view(controller.target_search_radius, bird))
-		if(isturf(I.loc))
+		if(isturf(I.loc) && !I.anchored)
 			options += I
 
 	return get_best_target_by_distance_score(controller, options, path_to)

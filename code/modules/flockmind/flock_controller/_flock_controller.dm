@@ -88,6 +88,7 @@
 	if(flock_game_status == FLOCK_ENDGAME_LOST)
 		return
 
+	update_relay_huds()
 	stat_highest_bandwidth = max(stat_highest_bandwidth, bandwidth.has_points())
 
 /// Called after everything is setup, and clients are in control of their mobs.
@@ -98,29 +99,42 @@
 	flock_started = TRUE
 	refresh_unlockables()
 
-/// Convert a turf and claim it for the flock.
-/datum/flock/proc/convert_turf(turf/T)
+/// Claim it for the flock, optionally converting it. Converting should only be avoided if the turf is already a flockturf.
+/datum/flock/proc/claim_turf(turf/T, convert = TRUE)
 	if(isnull(T))
 		return
 
 	free_turf(T)
-	T = flock_convert_turf(T, src)
+	if(convert)
+		T = flock_convert_turf(T, src)
 
 	if(isnull(T))
 		return
 
-	playsound(T, 'sound/items/deconstruct.ogg', 30, TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
+	if(convert)
+		playsound(T, 'sound/items/deconstruct.ogg', 30, TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 
 	if(iswallturf(T))
-		claimed_walls += T
+		claimed_walls[T] = TRUE
 	else
-		claimed_floors += T
+		claimed_floors[T] = TRUE
 
 	T.AddComponent(/datum/component/flock_interest, src)
+	RegisterSignal(T, COMSIG_TURF_CHANGE, PROC_REF(claimed_turf_change))
 	SEND_SIGNAL(T, COMSIG_TURF_CLAIMED_BY_FLOCK, src)
 
+/// Stop tracking a turf that is in our claimed walls or claimed floors lists.
+/datum/flock/proc/stop_tracking_turf(turf/T)
+	if(iswallturf(T))
+		claimed_walls -= T
+	else
+		claimed_floors -= T
+
+	qdel(T.GetComponent(/datum/component/flock_interest))
+	UnregisterSignal(T, COMSIG_TURF_CHANGE)
+
 /// Reserves a turf, making AI ignore it for the purposes of targetting.
-/datum/flock/proc/reserve_turf(mob/living/simple_animal/flock/user, turf/target)
+/datum/flock/proc/reserve_turf(mob/living/simple_animal/flock/user, turf/target, remove_on_change = TRUE)
 	if(turf_reservations_by_flock[user])
 		return FALSE
 	if(turf_reservations[target])
@@ -129,7 +143,8 @@
 	turf_reservations_by_flock[user] = target
 	turf_reservations[target] = user
 	add_notice(target, FLOCK_NOTICE_RESERVED)
-	RegisterSignal(target, COMSIG_TURF_CHANGE, PROC_REF(reserved_turf_change))
+	if(remove_on_change)
+		RegisterSignal(target, COMSIG_TURF_CHANGE, PROC_REF(reserved_turf_change))
 	return TRUE
 
 /// Free a turf from reservation, allowing AI to target it again. override_turf can be given to lookup the user if there isnt a user in this context.
@@ -166,6 +181,7 @@
 /datum/flock/proc/is_mob_ignored(mob/M)
 	return ignores[M]
 
+/// Adds a unit to the flock and sets up all of the tracking.
 /datum/flock/proc/add_unit(mob/unit)
 	if(isflocktrace(unit))
 		traces += unit
@@ -186,6 +202,7 @@
 	var/mob/living/simple_animal/flock/bird = unit
 	add_bandwidth_influence(bird.bandwidth_provided)
 
+/// Removes a unit from the flock.
 /datum/flock/proc/free_unit(mob/unit)
 	if(isflocktrace(unit))
 		var/mob/camera/flock/trace/ghostbird = unit
@@ -213,6 +230,7 @@
 
 	consider_game_over()
 
+/// Add a structure to the flock.
 /datum/flock/proc/add_structure(obj/structure/flock/struct)
 	structures += struct
 	struct.flock = src
@@ -222,6 +240,7 @@
 	if(istype(struct, /obj/structure/flock/egg))
 		update_egg_cost()
 
+/// Remove a structure from the flock.
 /datum/flock/proc/free_structure(obj/structure/flock/struct)
 	structures -= struct
 	qdel(struct.GetComponent(/datum/component/flock_interest))
@@ -234,8 +253,9 @@
 	if(istype(struct, /obj/structure/flock/egg))
 		update_egg_cost()
 
+/// Wrapper for spawning a tealprint, used by Create Structure
 /datum/flock/proc/create_structure(turf/location, structure_type)
-	new /obj/structure/flock/tealprint(location, structure_type)
+	new /obj/structure/flock/tealprint(location, src, structure_type)
 
 /// Wrapper for handling bandwidth alongside used_bandwidth for new mobs
 /datum/flock/proc/add_bandwidth_influence(num)
@@ -255,8 +275,8 @@
 
 	refresh_unlockables()
 
+/// Refreshes the status of every unlockable.
 /datum/flock/proc/refresh_unlockables()
-	PRIVATE_PROC(TRUE)
 	if(!flock_started)
 		return
 
@@ -315,6 +335,7 @@
 	enemies[enemy] = get_area_name(enemy)
 	return TRUE
 
+/// Removes an atom from the enemies list.
 /datum/flock/proc/remove_enemy(atom/movable/enemy, skip_buckled)
 	if(!skip_buckled)
 		for(var/mob/living/L in enemy.buckled_mobs)
@@ -328,6 +349,7 @@
 	remove_notice(enemy, FLOCK_NOTICE_ENEMY)
 	return
 
+/// Adds a mob to the ignored list.
 /datum/flock/proc/add_ignore(atom/movable/ignore)
 	for(var/mob/living/L in ignore.buckled_mobs)
 		add_ignore(L)
@@ -340,6 +362,7 @@
 		add_notice(ignore, FLOCK_NOTICE_IGNORE)
 	ignores[ignore] = TRUE
 
+/// Removes a mob from the ignore list.
 /datum/flock/proc/remove_ignore(atom/movable/ignore, skip_buckled)
 	if(!skip_buckled)
 		for(var/mob/living/L in ignore.buckled_mobs)
@@ -367,10 +390,12 @@
 		add_notice(A, FLOCK_NOTICE_DECONSTRUCT)
 	return TRUE
 
+/// Places a flock notice on an atom. See flock_defines.dm
 /datum/flock/proc/add_notice(atom/target, notice_type)
 	var/image/I = image(notice_images[notice_type], loc = target)
 	return target.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/flock, notice_type, I, NONE, src)
 
+/// Removes a flock notice from an atom.
 /datum/flock/proc/remove_notice(atom/target, notice_type)
 	target.remove_alt_appearance(notice_type)
 
@@ -381,27 +406,42 @@
 
 	return marked_for_conversion - turf_reservations
 
+/// Pings a location, alerting all flocktraces.
 /datum/flock/proc/ping(turf/T, mob/camera/flock/pinger)
 	var/message = "System interrupt. Designating new target: [T] in [get_area(T)]."
 	flock_talk(pinger, message, src, TRUE, list("italics"))
 	T.AddComponent(/datum/component/flock_ping, 5 SECONDS)
 
 	for(var/mob/camera/flock/ghost_bird in (traces + overmind))
-		if(isnull(ghost_bird.client))
-			continue
+		var/client/target_client = ghost_bird.client
+		if(!target_client)
+			if(!ghost_bird.controlling_bird?.client)
+				continue
+			target_client = ghost_bird.controlling_bird.client
 
-		ghost_bird.playsound_local(null, 'goon/sounds/flockmind/ping.ogg', 50, TRUE)
+		target_client.mob.playsound_local(null, 'goon/sounds/flockmind/ping.ogg', 50, TRUE)
 		if(ghost_bird == pinger)
 			continue
 
-		var/image/pointer = pointer_image_to(ghost_bird, T)
+		var/image/pointer = pointer_image_to(target_client.mob, T)
 		animate(pointer, time = 3 SECONDS, alpha = 0)
-		add_ping_image(ghost_bird.client, pointer, 3 SECONDS)
+		add_ping_image(target_client, pointer, 3 SECONDS)
 
+/// Called when a turf reserved by a flock mob changes.
 /datum/flock/proc/reserved_turf_change(datum/source)
 	SIGNAL_HANDLER
 	free_turf(override_turf = source)
 
+/// Called when a turf owned by the flock changes.
+/datum/flock/proc/claimed_turf_change(turf/source)
+	SIGNAL_HANDLER
+	if(isflockturf(source))
+		stop_tracking_turf(source)
+		claim_turf(source, FALSE) // WAll to floor or visa-versa, keep it updated.
+	else
+		stop_tracking_turf(source)
+
+/// Helper for adding a ping image to a client's screen and handling clean up.
 /datum/flock/proc/add_ping_image(client/C, image/ping, duration)
 	if(isnull(C))
 		return
@@ -411,6 +451,7 @@
 	RegisterSignal(C, COMSIG_PARENT_QDELETING, PROC_REF(on_client_gone), override = TRUE)
 	addtimer(CALLBACK(src, PROC_REF(cleanup_ping_images), C, ping), 3 SECONDS)
 
+/// Called by add_ping_image via timer callback.
 /datum/flock/proc/cleanup_ping_images(client/C, list/images_to_clean)
 	if(isnull(C))
 		return
@@ -436,22 +477,27 @@
 
 	return FALSE
 
+/// Called when a client holding a ping image disconnects.
 /datum/flock/proc/on_client_gone(client/source)
 	SIGNAL_HANDLER
 	cleanup_ping_images()
 
+/// Called when a unit under the flock's control dies.
 /datum/flock/proc/on_unit_death(datum/source)
 	SIGNAL_HANDLER
 	free_unit(source)
 
+/// Called when an enemy atom is deleted.
 /datum/flock/proc/on_enemy_gone(datum/source)
 	SIGNAL_HANDLER
 	remove_enemy(source, TRUE)
 
+/// Called when an ignored mob is deleted.
 /datum/flock/proc/on_ignore_gone(datum/source)
 	SIGNAL_HANDLER
 	remove_ignore(source, TRUE)
 
+/// Instantiates all of the flock notice image singletons.
 /datum/flock/proc/create_hud_images()
 	notice_images[FLOCK_NOTICE_RESERVED] = new /image{
 		icon = 'goon/icons/mob/featherzone.dmi';
@@ -518,20 +564,81 @@
 		appearance_flags = RESET_ALPHA | RESET_COLOR | PIXEL_SCALE | RESET_TRANSFORM;
 	}
 
+/// Setter for flock_game_status.
+/datum/flock/proc/set_flock_game_status(new_status)
+	var/old_status = flock_game_status
+	if(old_status == new_status)
+		return null
+
+	flock_game_status = new_status
+
+	return old_status
+
+/// Update the relay status huds for all flock traces and the overmind.
+/datum/flock/proc/update_relay_huds()
+	var/new_alpha
+
+	switch(flock_game_status)
+		if(NONE)
+			var/percent_avail_bandwidth = min(available_bandwidth() / FLOCK_COMPUTE_COST_RELAY, 1)
+			var/percent_tiles = min((length(claimed_floors) + length(claimed_walls)) / FLOCK_TURFS_FOR_RELAY, 1)
+			new_alpha = round(255 * percent_avail_bandwidth * percent_tiles)
+
+		if(FLOCK_ENDGAME_LOST)
+			new_alpha = 0
+
+		else
+			new_alpha = 255
+
+	var/new_desc
+	switch(flock_game_status)
+		if(NONE)
+			var/percent_avail_bandwidth = min(100, floor(available_bandwidth() / FLOCK_COMPUTE_COST_RELAY * 100))
+			var/percent_tiles = min(100, floor((length(claimed_floors) + length(claimed_walls)) / FLOCK_TURFS_FOR_RELAY * 100))
+			var/percent_total = floor((percent_avail_bandwidth / 100) * (percent_tiles / 100) * 100)
+			new_desc =  "Overall Progress: [percent_total]%</br>Bandwidth: [percent_avail_bandwidth]%</br>Converted: [percent_tiles]%"
+
+		if(FLOCK_ENDGAME_RELAY_BUILT)
+			new_desc = "Time until broadcast: [] seconds."
+
+		if(FLOCK_ENDGAME_RELAY_ACTIVATING, FLOCK_ENDGAME_VICTORY)
+			new_desc = "!!! TRANSMITTING !!!"
+
+	for(var/mob/camera/flock/ghost_bird in (traces + overmind))
+		var/atom/movable/screen/flock_relay_status/status
+		if(ghost_bird.controlling_bird)
+			status = astype(ghost_bird.controlling_bird.hud_used, /datum/hud/flockdrone)?.relay_status
+		else
+			status = astype(ghost_bird.hud_used, /datum/hud/flockghost)?.relay_status
+
+		status.desc = new_desc
+		status.alpha = new_alpha
+		if(status.flock_status == flock_game_status)
+			continue
+
+		status.flock_status = flock_game_status
+		status.update_appearance()
+
 /// Ends the flock if it is unable to continue spreading.
 /datum/flock/proc/consider_game_over()
 	if(flock_game_status == FLOCK_ENDGAME_LOST)
-		return
+		return FALSE
 
 	if(length(drones))
-		return
+		return FALSE
 
 	if(locate(/obj/structure/flock/egg, structures) || locate(/obj/structure/flock/rift, structures))
-		return
+		return FALSE
 
 	game_over()
+	return TRUE
 
+#warn todo: /obj/flock_structure/compute from computers and shit
+
+/// Kills off the flock. Pass completely_destroy = FALSE to allow the overmind to live on.
 /datum/flock/proc/game_over(completely_destroy = TRUE)
+	set waitfor = FALSE
+
 	// Cleanup any pings
 	for(var/client/C in active_pings)
 		cleanup_ping_images(C)
@@ -540,14 +647,16 @@
 	for(var/turf/T as anything in turf_reservations)
 		free_turf(override_turf = T)
 
-	claimed_floors.Cut()
-	claimed_walls.Cut()
+	for(var/turf/flockturf as anything in claimed_floors + claimed_walls)
+		stop_tracking_turf(flockturf)
+		CHECK_TICK
 
 	// Extra lives
 	if(!completely_destroy)
+		refresh_unlockables()
 		return
 
-	flock_game_status = FLOCK_ENDGAME_LOST
+	set_flock_game_status(FLOCK_ENDGAME_LOST)
 
 	// Kill overmind
 	overmind?.so_very_sad_death() // Overmind can be null here if it died outside of game_over().

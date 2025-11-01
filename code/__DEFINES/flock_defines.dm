@@ -29,6 +29,8 @@
 #define FLOCK_COMPUTE_COST_DRONE 10
 #define FLOCK_COMPUTE_COST_RELAY 500
 
+#define FLOCK_TURFS_FOR_RELAY 250
+
 /// Amount of substrate to add to a tealprint.
 #define FLOCK_SUBSTRATE_COST_DEPOST_TEALPRINT 10
 /// Amount to convert a turf and it's contents.
@@ -45,7 +47,7 @@
 #define FLOCK_DRONE_LIMIT 50
 
 #define FLOCK_ENDGAME_LOST 1
-#define FLOCK_ENDGAME_RELAY_BUILDING 2
+#define FLOCK_ENDGAME_RELAY_BUILT 2
 #define FLOCK_ENDGAME_RELAY_ACTIVATING 3
 #define FLOCK_ENDGAME_VICTORY 4
 

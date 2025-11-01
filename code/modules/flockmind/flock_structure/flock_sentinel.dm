@@ -14,6 +14,8 @@
 	flock_id = "Sentinel"
 	active_bandwidth_cost = 20
 
+	resource_cost = 150
+
 	/// Attacks require charging
 	var/datum/point_holder/charge
 	/// Charge gained per second while a target is in range

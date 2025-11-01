@@ -16,7 +16,7 @@
 /obj/structure/flock/fabricator/Initialize(mapload, datum/flock/join_flock)
 	. = ..()
 	substrate_remaining = new()
-	timer_id = addtimer(CALLBACK(src, PROC_REF(produce)), production_interval, TIMER_STOPPABLE | TIMER_DELETE_ME | TIMER_LOOP)
+	timer_id = addtimer(CALLBACK(src, PROC_REF(produce)), production_interval, TIMER_STOPPABLE | TIMER_LOOP)
 
 /obj/structure/flock/fabricator/Destroy()
 	QDEL_NULL(substrate_remaining)

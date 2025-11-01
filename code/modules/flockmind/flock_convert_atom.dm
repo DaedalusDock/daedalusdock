@@ -2,7 +2,10 @@
 	if(!T?.can_flock_convert(force))
 		return
 
-	if(iswallturf(T))
+	if(isflockturf(T))
+		. = T
+
+	else if(iswallturf(T))
 		. = T.ChangeTurf(/turf/closed/wall/flock)
 
 	else if(isfloorturf(T))
@@ -45,6 +48,10 @@
 	var/turf/T = loc
 	qdel(src)
 	return new /obj/machinery/door/flock(T)
+
+// This results in double layered doors
+/obj/machinery/door/firedoor/try_flock_convert(datum/flock/flock, force)
+	return
 
 /obj/structure/low_wall/try_flock_convert(datum/flock/flock, force)
 	set_material(/datum/material/gnesis, TRUE)

@@ -14,7 +14,7 @@
 		return FALSE
 
 	var/area/A = T.loc
-	if((A.area_flags & BLOBS_ALLOWED))
+	if(!(A.area_flags & BLOBS_ALLOWED))
 		to_chat(owner, span_warning("We cannot create a rift here."))
 		return FALSE
 

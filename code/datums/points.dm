@@ -21,24 +21,28 @@
 	else if(num < 0)
 		return remove_points(num, check_enough)
 
-	return TRUE
+	return 0
 
+/// Add points. Returns the number of points added.
 /datum/point_holder/proc/add_points(num)
 	if(points == max_points)
-		return FALSE
+		return 0
 
+	var/old = points
 	points = min(max_points, points + num)
-	return TRUE
+	return points - old
 
+/// Removes points. Returns the number of points removed.
 /datum/point_holder/proc/remove_points(num, check_enough)
 	if(check_enough && (points < num))
-		return FALSE
+		return 0
 
 	if(points == 0)
-		return FALSE
+		return 0
 
+	var/old = points
 	points = max(0, points - num)
-	return TRUE
+	return old - points
 
 /datum/point_holder/proc/set_max_points(new_max)
 	max_points = new_max
@@ -50,13 +54,13 @@
 /datum/point_holder/infinite
 
 /datum/point_holder/infinite/add_points(num)
-	return TRUE
+	return 0
 
 /datum/point_holder/infinite/has_points(atleast)
 	return INFINITY
 
 /datum/point_holder/infinite/remove_points(num, check_enough)
-	return TRUE
+	return 0
 
 /datum/point_holder/infinite/set_max_points(new_max)
 	max_points = new_max

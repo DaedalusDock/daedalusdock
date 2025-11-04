@@ -49,7 +49,7 @@
 	/// The computational power being used.
 	var/used_bandwidth = 0
 	/// The maximum amount of traces allowed.
-	var/max_traces = 0
+	var/max_traces = 10
 
 	/// The current substrate cost to lay an egg.
 	var/current_egg_cost = FLOCK_SUBSTRATE_COST_LAY_EGG

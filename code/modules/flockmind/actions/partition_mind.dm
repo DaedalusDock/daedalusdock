@@ -1,10 +1,13 @@
 /datum/action/cooldown/flock/partition_mind
 	name = "Partition Mind"
-	desc = "Divide our computational power, creating a Flocktrace. Requires " + STRINGIFY(FLOCK_COMPUTE_COST_FLOCKTRACE) + " total bandwidth per trace."
 	button_icon_state = "partition_mind"
 	cooldown_time = 60 SECONDS
 
 	var/awaiting_partition = FALSE
+
+/datum/action/cooldown/flock/partition_mind/New()
+	..()
+	desc = "Divide our computational power, creating a Flocktrace. Requires [FLOCK_COMPUTE_COST_FLOCKTRACE] total bandwidth per trace."
 
 /datum/action/cooldown/flock/partition_mind/is_valid_target(atom/cast_on)
 	var/mob/camera/flock/overmind/ghost_bird = owner

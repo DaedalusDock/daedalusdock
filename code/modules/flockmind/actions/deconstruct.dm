@@ -30,6 +30,7 @@
 /datum/action/cooldown/flock/deconstruct/Activate(atom/target)
 	. = ..()
 	var/mob/living/simple_animal/flock/bird = owner
+	astype(bird, /mob/living/simple_animal/flock/drone)?.stop_flockphase(TRUE)
 	bird.face_atom(target)
 
 	bird.visible_message(span_notice("[bird] begins to deconstruct [target]."), blind_message = span_hear("You hear an otherwordly whirring."))

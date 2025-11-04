@@ -10,6 +10,7 @@
 /datum/action/cooldown/flock/deposit/Activate(atom/target)
 	. = ..()
 	var/mob/living/simple_animal/flock/bird = owner
+	astype(bird, /mob/living/simple_animal/flock/drone)?.stop_flockphase(TRUE)
 	bird.face_atom(target)
 
 	playsound(target, 'goon/sounds/flockmind/flockdrone_quickbuild.ogg', 50, TRUE)

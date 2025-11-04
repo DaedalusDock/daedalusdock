@@ -8,6 +8,8 @@
 	if(!this_bird.substrate.has_points(FLOCK_SUBSTRATE_COST_REPAIR))
 		return FALSE
 
+	astype(this_bird, /mob/living/simple_animal/flock/drone)?.stop_flockphase(TRUE)
+
 	if(isflockmob(target))
 		var/mob/living/simple_animal/flock/bird = target
 		ADD_TRAIT(bird, TRAIT_AI_PAUSED, ref(src))

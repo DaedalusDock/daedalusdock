@@ -38,6 +38,7 @@
 
 	var/turf/clicked_atom_turf = get_turf(target)
 	var/mob/living/simple_animal/flock/bird = owner
+	astype(bird, /mob/living/simple_animal/flock/drone)?.stop_flockphase(TRUE)
 
 	if(!bird.substrate.has_points(FLOCK_SUBSTRATE_COST_CONVERT))
 		return FALSE

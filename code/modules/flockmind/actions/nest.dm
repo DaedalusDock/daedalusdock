@@ -28,6 +28,7 @@
 	. = ..()
 	var/mob/living/simple_animal/flock/drone/bird = owner
 	var/turf/open/floor/flock/flockfloor = get_turf(target)
+	bird.stop_flockphase(TRUE)
 
 	to_chat(bird, span_notice("Our internal fabricators spring into action, we must hold still."))
 

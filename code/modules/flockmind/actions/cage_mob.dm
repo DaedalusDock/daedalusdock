@@ -21,7 +21,8 @@
 	if(DOING_INTERACTION(owner, "flock_cage"))
 		return FALSE
 
-	var/mob/living/simple_animal/flock/bird = owner
+	var/mob/living/simple_animal/flock/drone/bird = owner
+	bird.stop_flockphase(TRUE)
 	var/turf/T = get_turf(target)
 
 	owner.visible_message(

@@ -11,9 +11,9 @@
 		var/datum/action/cooldown/flock/deposit/deposit_action = locate() in drone.actions
 		return deposit_action.Trigger(target = target)
 
-	if(isturf(target))
-		var/datum/action/cooldown/flock/convert/convert_action = locate() in drone.actions
-		return convert_action.Trigger(target = target)
+	var/turf/T = get_turf(target)
+	var/datum/action/cooldown/flock/convert/convert_action = locate() in drone.actions
+	return convert_action.Trigger(target = target)
 
 /datum/flockdrone_part/converter/right_click_on(atom/target, in_reach)
 	if(!in_reach)

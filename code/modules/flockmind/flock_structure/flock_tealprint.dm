@@ -57,6 +57,7 @@
 
 	flock_talk(src, "Tealprint dematerializing", flock)
 	playsound(src, 'goon/sounds/flockmind/flockdrone_door_deny.ogg', 30, TRUE, extrarange = -10)
+	qdel(src)
 
 /datum/point_holder/tealprint
 	var/obj/structure/flock/tealprint/owner

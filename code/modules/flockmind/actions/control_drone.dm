@@ -93,6 +93,10 @@
 		return FALSE
 
 	else if(isflockmob(target))
+		if(istype(target, /mob/living/simple_animal/flock/bit))
+			to_chat(owner, span_warning("Flockbits are too simple to be remotely controlled."))
+			return FALSE
+
 		var/mob/living/simple_animal/flock/other_bird = target
 		if(other_bird.flock == selected_bird.flock)
 			if(!selected_bird.ai_controller.queue_behavior(/datum/ai_behavior/flock/find_heal_target, target))

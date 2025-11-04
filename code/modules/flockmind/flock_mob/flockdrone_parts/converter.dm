@@ -13,7 +13,7 @@
 
 	var/turf/T = get_turf(target)
 	var/datum/action/cooldown/flock/convert/convert_action = locate() in drone.actions
-	return convert_action.Trigger(target = target)
+	return convert_action.Trigger(target = T)
 
 /datum/flockdrone_part/converter/right_click_on(atom/target, in_reach)
 	if(!in_reach)

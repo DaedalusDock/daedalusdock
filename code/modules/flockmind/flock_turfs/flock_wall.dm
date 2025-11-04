@@ -57,32 +57,5 @@
 	if(HAS_TRAIT(bird, TRAIT_FLOCKPHASE))
 		return TRUE
 
-	if(bird.substrate.has_points())
+	if(bird.can_flockphase())
 		return TRUE
-
-/turf/closed/wall/flock/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
-	. = ..()
-
-	if(isnull(old_loc) || !isflockdrone(arrived))
-		return
-
-	var/mob/living/simple_animal/flock/drone/bird = arrived
-	if(!HAS_TRAIT(bird, TRAIT_FLOCKPHASE) && bird.substrate.has_points())
-		bird.start_flockphase()
-
-	if(HAS_TRAIT(bird, TRAIT_FLOCKPHASE))
-		bird.substrate.remove_points(1)
-		if(!bird.substrate.has_points())
-			bird.stop_flockphase()
-
-/turf/closed/wall/flock/Exited(atom/movable/gone, direction)
-	. = ..()
-	if(!isflockdrone(gone))
-		return
-
-	var/mob/living/simple_animal/flock/drone/bird = gone
-	if(!HAS_TRAIT(bird, TRAIT_FLOCKPHASE))
-		return
-
-	if(!isflockturf(get_step(bird, direction)))
-		bird.stop_flockphase()

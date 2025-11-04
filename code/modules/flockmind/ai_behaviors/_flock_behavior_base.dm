@@ -12,7 +12,7 @@
 	. = ..()
 	var/mob/living/simple_animal/flock/drone/bird = controller.pawn
 	if(HAS_TRAIT(controller.pawn, TRAIT_FLOCKPHASE))
-		bird.stop_flockphase()
+		bird.stop_flockphase(FALSE)
 
 	bird.set_task_desc("")
 

@@ -106,8 +106,8 @@
 	var/obj/effect/abstract/charge_overlay
 
 /atom/movable/screen/flockdrone_part/incapacitator/Initialize(mapload, datum/hud/hud_owner)
-	. = ..()
 	charge_overlay = new()
+	. = ..()
 	charge_overlay.vis_flags = VIS_INHERIT_ID | VIS_INHERIT_LAYER | VIS_INHERIT_PLANE | VIS_INHERIT_ICON
 	charge_overlay.icon_state = "charge_overlay"
 	add_viscontents(charge_overlay)

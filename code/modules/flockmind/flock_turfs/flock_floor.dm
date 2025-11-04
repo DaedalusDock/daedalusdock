@@ -27,6 +27,11 @@
 	REMOVE_TRAIT(src, TRAIT_FLOCK_NODECON, INNATE_TRAIT) // Turfs dont disappear!!!
 	qdel(GetComponent(/datum/component/flock_protection))
 	connected_pylons = null
+
+	for(var/mob/living/simple_animal/flock/drone/bird in flockrunning_mobs)
+		if(HAS_TRAIT(bird, TRAIT_FLOCKPHASE))
+			bird.stop_flockphase(TRUE)
+
 	flockrunning_mobs = null
 	return ..()
 
@@ -49,47 +54,10 @@
 			icon_state = base_icon_state
 	return ..()
 
-/turf/open/floor/flock/break_tile()
-	. = ..()
-	for(var/mob/living/simple_animal/flock/drone/bird in src)
-		if(HAS_TRAIT(bird, TRAIT_FLOCKPHASE))
-			bird.stop_flockphase()
-
-/turf/open/floor/flock/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
-	. = ..()
-	if(!isflockdrone(arrived))
-		return
-
-	var/mob/living/simple_animal/flock/drone/bird = arrived
-
-	if(broken)
-		bird.stop_flockphase()
-		return
-
-	if(bird.client?.keys_held["Shift"] && bird.can_flockphase() && bird.flockphase_tax())
-		bird.start_flockphase()
-		LAZYADD(flockrunning_mobs, bird)
-		update_power()
-
-/turf/open/floor/flock/Exited(atom/movable/gone, direction)
-	. = ..()
-	if(!isflockdrone(gone))
-		return
-
-	var/mob/living/simple_animal/flock/drone/bird = gone
-	if(!HAS_TRAIT(bird, TRAIT_FLOCKPHASE) || !(gone in flockrunning_mobs))
-		return
-
-	LAZYREMOVE(flockrunning_mobs, src)
-	update_power()
-
-	if(!isflockturf(bird.loc))
-		bird.stop_flockphase()
-
 /// Turns the tile on or off depending on what state it should be in.
 /turf/open/floor/flock/proc/update_power()
 	var/should_be_on = FALSE
-	if(!broken && length(connected_pylons) || length(flockrunning_mobs))
+	if(!broken && (length(connected_pylons) || length(flockrunning_mobs)))
 		should_be_on = TRUE
 
 	if(should_be_on == is_on)

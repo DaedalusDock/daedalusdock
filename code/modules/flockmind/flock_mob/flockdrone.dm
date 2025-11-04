@@ -46,7 +46,7 @@
 	return ..()
 
 /mob/living/simple_animal/flock/drone/death(gibbed, cause_of_death)
-	stop_flockphase()
+	stop_flockphase(TRUE)
 	release_control()
 	say(pick(GLOB.flockdrone_death_phrases))
 	if(flock)
@@ -59,9 +59,53 @@
 /mob/living/simple_animal/flock/drone/Life(delta_time, times_fired)
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))
-		substrate.remove_points(1)
-		if(!substrate.has_points(1))
+		if(avoid_stop_flockphase())
+			flockphase_tax()
+		else
 			stop_flockphase()
+
+
+/mob/living/simple_animal/flock/drone/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	. = ..()
+
+	// Stop existing flockphasing if we can't flockphase, also update the oldloc if it was a flock floor.
+	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))
+		if(istype(old_loc, /turf/open/floor/flock))
+			var/turf/open/floor/flock/flockfloor = old_loc
+			LAZYREMOVE(flockfloor.flockrunning_mobs, src)
+			flockfloor.update_power()
+
+	// Mob can't flockphase.
+	if(!isflockturf(loc) || !can_flockphase())
+		stop_flockphase(TRUE)
+		return
+
+	// Being in a wall forces flockphase if able.
+	if(istype(loc, /turf/closed/wall/flock))
+		if(flockphase_tax())
+			start_flockphase()
+			return
+		return
+
+	// Either the client wants to flockphase, of if uncliented, already flockphasing.
+	var/wants_to_flockphase = client ? client.keys_held["Shift"] : HAS_TRAIT(src, TRAIT_FLOCKPHASE)
+	if(!wants_to_flockphase)
+		stop_flockphase()
+		return
+
+	if(istype(loc, /turf/open/floor/flock))
+		var/turf/open/floor/flock/flockfloor = loc
+		// Also incapable of flockphasing.
+		if(flockfloor.broken)
+			stop_flockphase(TRUE)
+			return
+
+		if(flockphase_tax())
+			start_flockphase()
+			LAZYADD(flockfloor.flockrunning_mobs, src)
+			flockfloor.update_power()
+			return
+		return
 
 /mob/living/simple_animal/flock/drone/MouseDroppedOn(atom/dropping, atom/user)
 	. = ..()
@@ -232,8 +276,11 @@
 	animate(src, color = color_matrix, transform = shrink, time = 0.5 SECONDS, easing = SINE_EASING)
 	return TRUE
 
-/mob/living/simple_animal/flock/drone/proc/stop_flockphase()
+/mob/living/simple_animal/flock/drone/proc/stop_flockphase(force)
 	if(!HAS_TRAIT(src, TRAIT_FLOCKPHASE))
+		return FALSE
+
+	if(!force && avoid_stop_flockphase())
 		return FALSE
 
 	playsound(src, 'goon/sounds/flockmind/flockdrone_floorrun.ogg', 30, TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
@@ -263,7 +310,22 @@
 			forceMove(T)
 			break
 
+/// Called in stop_flockphase() to attempt stopping flockphase due to being in a wall or something.
+/mob/living/simple_animal/flock/drone/proc/avoid_stop_flockphase()
+	if(!can_flockphase())
+		return FALSE
+
+	if(isclosedturf(loc))
+		return TRUE
+
+	if(client?.keys_held["Shift"])
+		return TRUE
+
+/// Returns TRUE if the drone can flockphase.
 /mob/living/simple_animal/flock/drone/proc/can_flockphase()
+	if(stat != CONSCIOUS)
+		return FALSE
+
 	if(length(grabbed_by))
 		return FALSE
 
@@ -272,13 +334,11 @@
 
 	return TRUE
 
+/// Deducts the substrate tax for flockphasing, ending flockphase if the drone ran out of points.
 /mob/living/simple_animal/flock/drone/proc/flockphase_tax()
-	if(!HAS_TRAIT(src, TRAIT_FLOCKPHASE))
-		return FALSE
-
 	substrate.remove_points(1)
 	if(!substrate.has_points())
-		stop_flockphase()
+		stop_flockphase(TRUE)
 		return FALSE
 	return TRUE
 

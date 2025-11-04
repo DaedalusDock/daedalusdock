@@ -78,6 +78,7 @@
 	open_binary_tree = null
 	open_turf_to_node = null
 	closed = null
+	heuristic = null // hard del generator if using generic_heuristic
 
 /**
  * "starts" off the pathfinding, by storing the values this datum will need to work later on

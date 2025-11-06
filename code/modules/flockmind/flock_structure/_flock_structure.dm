@@ -210,8 +210,9 @@ TYPEINFO_DEF(/obj/structure/flock)
 	STOP_PROCESSING(SSobj, src)
 	fully_built = TRUE
 
-/obj/structure/flock/proc/flock_examine(mob/user)
-	SHOULD_NOT_OVERRIDE(TRUE) // Use flock_structure_examine() instead
+/obj/structure/flock/examine(mob/user)
+	if(!isflockmob(user))
+		return ..()
 
 	. = list(
 		span_flocksay("<b>###=- Ident confirmed, data packet received.</b>"),

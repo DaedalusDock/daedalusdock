@@ -46,6 +46,36 @@
 	active_part = null // whatever was here was qdeleted by qdel_list(parts)
 	return ..()
 
+/mob/living/simple_animal/flock/drone/examine(mob/user)
+	if(!isflockmob(user))
+		return ..()
+
+	var/cognition = "TORPID"
+	if(stat == DEAD)
+		cognition = "DEAD"
+	else if(controlled_by || ckey)
+		cognition = "SAPIENT"
+	else if(dormant)
+		cognition = "ABSENT"
+	else if(HAS_TRAIT(src, TRAIT_AI_PAUSED))
+		cognition = "HIBERNATING"
+
+	. = list(
+		span_flocksay("<b>###=- Ident confirmed, data packet received.</b>"),
+		controlled_by ? span_flocksay("<b>ID:</b> [controlled_by.real_name] (controlling [real_name])") : span_flocksay("<b>ID:</b> [real_name]"),
+		span_flocksay("<b>Flock:</b> [flock?.name || "N/A"]"),
+		span_flocksay("<b>Substrate: [substrate.has_points()]</b>"),
+		span_flocksay("<b>System Integrity: [round(health / maxHealth, 0.1) * 100]</b>"),
+		span_flocksay("<b>Cognition:</b> [cognition]"),
+	)
+
+	if(cognition == "TORPID" && length(ai_controller?.current_behaviors))
+		var/datum/ai_behavior/flock/flock_behavior = locate() in ai_controller.current_behaviors
+		if(istype(flock_behavior))
+			. += span_flocksay("<b>Task: [flock_behavior.name]")
+
+	. += span_flocksay("<b>###=-</b>")
+
 /mob/living/simple_animal/flock/drone/death(gibbed, cause_of_death)
 	stop_flockphase(TRUE)
 	release_control()

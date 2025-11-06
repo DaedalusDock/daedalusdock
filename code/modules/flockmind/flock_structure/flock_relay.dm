@@ -71,7 +71,7 @@
 
 /obj/structure/flock/relay/examine(mob/user)
 	. = ..()
-	if(flock_won_da_game)
+	if(flock_won_da_game && !isflockmob(user))
 		. += span_flocksay("Your life flashes before your eyes.")
 
 /obj/structure/flock/relay/flock_structure_examine(mob/user)

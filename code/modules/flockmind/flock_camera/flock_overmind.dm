@@ -46,6 +46,21 @@
 	var/datum/action/cooldown/flock/control_drone/control_drone = locate() in actions
 	control_drone?.free_drone()
 
+/mob/camera/flock/overmind/examine(mob/user)
+	if(!isflockmob(user))
+		return ..()
+
+	. = list(
+		span_flocksay("<b>###=- Ident confirmed, data packet received.</b>"),
+		span_flocksay("<b>ID:</b> [real_name]"),
+		span_flocksay("<b>Flock:</b> [flock.name || "N/A"]"),
+		span_flocksay("<b>Bandwidth:</b> [flock.bandwidth.has_points()]"),
+		span_flocksay("<b>Substrate:</b> [flock.get_total_substrate()]"),
+		span_flocksay("<b>System Integrity: [flock.get_total_health_percentage()]%</b>"),
+		span_flocksay("<b>Cognition:</b> COMPUTATIONAL NEXUS"),
+		span_flocksay("<b>###=-</b>"),
+	)
+
 /mob/camera/flock/overmind/get_status_tab_items()
 	. = ..()
 	. += ""

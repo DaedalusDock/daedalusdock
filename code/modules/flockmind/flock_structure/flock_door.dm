@@ -8,6 +8,7 @@
 
 /obj/machinery/door/flock/Initialize(mapload)
 	. = ..()
+	ADD_TRAIT(src, TRAIT_FLOCK_EXAMINE, INNATE_TRAIT)
 	AddComponent(/datum/component/flock_object)
 	AddComponent(/datum/component/flock_protection, report_unarmed=FALSE)
 
@@ -28,7 +29,10 @@
 /obj/machinery/door/flock/try_flock_convert(datum/flock/flock, force)
 	return
 
-/obj/machinery/door/flock/proc/flock_examine(mob/user)
+/obj/machinery/door/flock/examine(mob/user)
+	if(!isflockmob(user))
+		return ..()
+
 	. = list(
 		span_flocksay("<b>###=- Ident confirmed, data packet received.</b>"),
 		span_flocksay("<b>ID:</b> [get_flock_id()]"),

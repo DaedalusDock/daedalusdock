@@ -427,6 +427,25 @@
 		animate(pointer, time = 3 SECONDS, alpha = 0)
 		add_ping_image(target_client, pointer, 3 SECONDS)
 
+/// Returns the total percentage of the sum of every mob's health and max health.
+/datum/flock/proc/get_total_health_percentage()
+	var/numerator = 0
+	var/denominator = 0
+	for(var/mob/living/simple_animal/flock/bird as anything in (drones + bits))
+		numerator += bird.health
+		denominator += bird.maxHealth
+
+	if(denominator == 0) // somehow i guess
+		return 0
+
+	return round(numerator / denominator * 100, 0.1)
+
+/// Returns the total amount of substrate by all flock mobs.
+/datum/flock/proc/get_total_substrate()
+	. = 0
+	for(var/mob/living/simple_animal/flock/drone/bird as anything in drones)
+		. += bird.substrate.has_points()
+
 /// Called when a turf reserved by a flock mob changes.
 /datum/flock/proc/reserved_turf_change(datum/source)
 	SIGNAL_HANDLER

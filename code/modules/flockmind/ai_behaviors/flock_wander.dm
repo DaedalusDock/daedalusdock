@@ -8,9 +8,6 @@
 	var/turf/destination = get_destination(controller)
 	if(destination)
 		controller.set_move_target(destination)
-		var/mob/living/simple_animal/flock/drone/bird = controller.pawn
-		if(istype(bird))
-			bird.start_flockphase()
 		return BEHAVIOR_PERFORM_SUCCESS
 	return BEHAVIOR_PERFORM_FAILURE
 

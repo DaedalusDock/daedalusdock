@@ -81,7 +81,7 @@
 	release_control()
 	say(pick(GLOB.flockdrone_death_phrases))
 	if(flock)
-		flock_talk(null, "Connection to drone [real_name] lost.", flock)
+		flock_talk(null, "Connection to drone [real_name] lost.", flock, involuntary = TRUE)
 
 	var/datum/flockdrone_part/absorber/absorber = locate() in parts
 	absorber.try_drop_item()
@@ -271,7 +271,7 @@
 
 	if(controlled_by)
 		release_control(FALSE)
-		flock_talk(null, "Connection to drone [real_name] lost.", flock)
+		flock_talk(null, "Connection to drone [real_name] lost.", flock, involuntary = TRUE)
 
 	spawn(-1)
 		say("error: out of signal range, disconnecting")
@@ -436,7 +436,7 @@
 	if(mind)
 		mind.transfer_to(master_bird)
 
-	flock_talk(null, "Control of [real_name] surrendered.", flock)
+	flock_talk(null, "Control of [real_name] surrendered.", flock, involuntary = TRUE)
 	if(!dest_was_safe)
 		to_chat(master_bird, span_warning("You feel your consciousness weaking as you are ripped further from your rift, and you retreat back to safety."))
 

@@ -45,7 +45,7 @@
 /// Complete the structure.
 /obj/structure/flock/tealprint/proc/complete_structure()
 	var/obj/structure/flock/structure = new building_type(get_turf(src))
-	flock_talk(src, "Tealprint for [structure.flock_id] realized.", flock)
+	flock_talk(src, "Tealprint for [structure.flock_id] realized.", flock, involuntary = TRUE)
 	qdel(src)
 
 /// Attempt to cancel the construction, spitting out the substrate. Some structures cannot be cancelled.
@@ -57,7 +57,7 @@
 		var/obj/item/flock_cube/cube = new(drop_location())
 		cube.substrate = substrate.has_points()
 
-	flock_talk(src, "Tealprint dematerializing", flock)
+	flock_talk(src, "Tealprint dematerializing", flock, involuntary = TRUE)
 	playsound(src, 'goon/sounds/flockmind/flockdrone_door_deny.ogg', 30, TRUE, extrarange = -10)
 	qdel(src)
 	return TRUE

@@ -16,7 +16,7 @@
 /obj/structure/flock/fabricator/Initialize(mapload, datum/flock/join_flock)
 	. = ..()
 	substrate_remaining = new()
-	timer_id = addtimer(CALLBACK(src, PROC_REF(produce)), production_interval, TIMER_STOPPABLE | TIMER_LOOP)
+	timer_id = addtimer(CALLBACK(src, PROC_REF(produce)), production_interval, TIMER_STOPPABLE | TIMER_LOOP | TIMER_DELETE_ME)
 
 /obj/structure/flock/fabricator/Destroy()
 	QDEL_NULL(substrate_remaining)
@@ -39,10 +39,12 @@
 
 /// Called every 10 seconds via looping timer until there's no substrate left.
 /obj/structure/flock/fabricator/proc/produce()
-	var/obj/item/flock_cube/cube = new(drop_location())
-	cube.substrate = min(substrate_remaining.has_points(), substrate_per_interval)
+	if(substrate_remaining.has_points())
+		var/obj/item/flock_cube/cube = new(drop_location())
+		cube.substrate = min(substrate_remaining.has_points(), substrate_per_interval)
 
-	substrate_remaining.remove_points(cube.substrate)
+		substrate_remaining.remove_points(cube.substrate)
+
 	if(!substrate_remaining.has_points())
 		stop_producing()
 
@@ -50,6 +52,7 @@
 
 /obj/structure/flock/fabricator/proc/stop_producing()
 	deltimer(timer_id)
+	timer_id = null
 	if(QDELING(src))
 		return
 

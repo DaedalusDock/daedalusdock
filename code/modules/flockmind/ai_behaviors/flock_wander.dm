@@ -8,6 +8,9 @@
 	var/turf/destination = get_destination(controller)
 	if(destination)
 		controller.set_move_target(destination)
+		var/mob/living/simple_animal/flock/drone/bird = controller.pawn
+		if(istype(bird))
+			bird.start_flockphase()
 		return BEHAVIOR_PERFORM_SUCCESS
 	return BEHAVIOR_PERFORM_FAILURE
 
@@ -50,6 +53,7 @@
 		var/turf/T = pick_n_take(options)
 		var/list/path = SSpathfinder.astar_pathfind_now(controller.pawn, T, 4, access = access, use_diagonals = FALSE)
 		if(path)
+			controller.clear_blackboard_key(BB_PATH_TO_USE)
 			controller.set_blackboard_key(BB_PATH_TO_USE, path)
 			return T
 

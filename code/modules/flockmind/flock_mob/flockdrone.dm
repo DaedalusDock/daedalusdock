@@ -138,6 +138,10 @@
 			return
 		return
 
+/mob/living/simple_animal/flock/drone/get_status_tab_items()
+	. = ..()
+	. += "Substrate: [substrate.has_points()]"
+
 /mob/living/simple_animal/flock/drone/MouseDroppedOn(atom/dropping, atom/user)
 	. = ..()
 	if(dropping != user || !istype(user, /mob/camera/flock))

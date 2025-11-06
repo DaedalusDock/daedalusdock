@@ -102,7 +102,7 @@
 
 		if("cancel_tealprint")
 			var/obj/structure/flock/tealprint/tealprint = locate(params["origin"])
-			tealprint?.cancel_structure()
+			tealprint?.try_cancel_structure()
 			return TRUE
 
 		if("delete_trace")

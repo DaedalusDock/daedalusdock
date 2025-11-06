@@ -9,5 +9,10 @@
 
 /datum/action/cooldown/flock/designate_deconstruct/Activate(atom/target)
 	. = ..()
+
+	if(istype(target, /obj/structure/flock/tealprint))
+		var/obj/structure/flock/tealprint/tealprint = target
+		return tealprint.try_cancel_structure()
+
 	var/mob/camera/flock/ghost_bird = owner
 	return ghost_bird.flock.toggle_deconstruction_mark(target)

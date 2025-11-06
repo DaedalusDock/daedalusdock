@@ -6,7 +6,7 @@
 
 	layer = FLY_LAYER
 	mouse_opacity = MOUSE_OPACITY_ICON
-	invisibility = INVISIBILITY_OBSERVER
+	invisibility = INVISIBILITY_FLOCK
 
 	appearance_flags = parent_type::appearance_flags | RESET_COLOR
 	blend_mode = BLEND_ADD

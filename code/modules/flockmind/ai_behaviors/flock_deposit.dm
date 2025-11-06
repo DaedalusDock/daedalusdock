@@ -6,7 +6,7 @@
 	. = ..()
 	if(overmind_target)
 		var/mob/living/simple_animal/flock/drone/bird = controller.pawn
-		if(goap_is_valid_target(overmind_target))
+		if(goap_is_valid_target(controller, overmind_target))
 			controller.set_blackboard_key(BB_FLOCK_OVERMIND_CONTROL, TRUE)
 			controller.set_blackboard_key(BB_PATH_MAX_LENGTH, 200)
 			bird.say("instruction confirmed: deposit substrate")
@@ -30,7 +30,7 @@
 		return FALSE
 
 	var/mob/living/simple_animal/flock/bird = controller.pawn
-	return (tealprint.flock == bird.flock) && tealprint.substrate.is_full()
+	return (tealprint.flock == bird.flock) && !tealprint.substrate.is_full()
 
 /datum/ai_behavior/flock/find_deposit_target/perform(delta_time, datum/ai_controller/controller, overmind_target)
 	..()
@@ -64,15 +64,16 @@
 		return FALSE
 
 	var/mob/living/simple_animal/flock/bird = controller.pawn
-	return (tealprint.flock == bird.flock) && tealprint.substrate.is_full()
+	return (tealprint.flock == bird.flock) && !tealprint.substrate.is_full()
 
 /datum/ai_behavior/flock/perform_deposit/perform(delta_time, datum/ai_controller/controller, ...)
 	..()
 	var/mob/living/simple_animal/flock/drone/bird = controller.pawn
 	var/obj/structure/flock/tealprint/target = controller.blackboard[BB_FLOCK_DEPOSIT_TARGET]
 	if(target)
-		if(!goap_is_valid_target(target))
+		if(!goap_is_valid_target(controller, target))
 			return BEHAVIOR_PERFORM_FAILURE
+
 		controller.clear_blackboard_key(BB_FLOCK_DEPOSIT_TARGET)
 
 		var/datum/action/cooldown/flock/deposit/deposit_action = locate() in bird.actions

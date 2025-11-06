@@ -11,6 +11,7 @@
 		/datum/action/cooldown/flock/flock_heal,
 		/datum/action/cooldown/flock/cage_mob,
 		/datum/action/cooldown/flock/nest,
+		/datum/action/cooldown/flock/deposit,
 	)
 
 	bandwidth_provided = FLOCK_COMPUTE_COST_DRONE

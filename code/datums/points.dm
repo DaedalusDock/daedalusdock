@@ -14,6 +14,12 @@
 /datum/point_holder/proc/how_empty()
 	return max_points - points
 
+/// Returns the % (0-100) of how full the holder is.
+/datum/point_holder/proc/percent(step = 1)
+	if(max_points == INFINITY)
+		return 0
+	return round((points / max_points) * 100, step)
+
 /datum/point_holder/proc/adjust_points(num, check_enough)
 	if(num > 0)
 		return add_points(num)

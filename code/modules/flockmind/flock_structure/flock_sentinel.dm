@@ -159,7 +159,7 @@
 
 	return list(
 		span_flocksay("<b>Status:</b> [charge_status_str]"),
-		span_flocksay("<b>Charge Percentage: [charge]%"),
+		span_flocksay("<b>Charge Percentage: [charge.has_points()]%"),
 	)
 
 /obj/structure/flock/sentinel/update_info_tag()

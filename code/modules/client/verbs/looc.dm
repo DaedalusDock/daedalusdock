@@ -62,6 +62,9 @@
 		if(ai.client && !(ai in heard) && (ai.eyeobj in heard))
 			heard += ai
 
+	// Observers speak using real_name so they don't get the comically large prefix.
+	var/speaking_name = isobserver(mob) ? mob.real_name : mob.name
+
 	var/list/admin_seen = list()
 	for(var/mob/hearing in heard)
 		if(!hearing.client)
@@ -71,11 +74,11 @@
 			admin_seen[hearing_client] = TRUE
 			continue //they are handled after that
 
-		to_chat(hearing_client, span_looc(span_prefix("LOOC:</span> <EM>[src.mob.name]:</EM> <span class='message'>[msg]")))
+		to_chat(hearing_client, span_looc(span_prefix("LOOC:</span> <EM>[speaking_name]:</EM> <span class='message'>[msg]")))
 
 	for(var/cli in GLOB.admins)
 		var/client/cli_client = cli
 		if (admin_seen[cli_client])
-			to_chat(cli_client, span_looc("[ADMIN_FLW(usr)] <span class='prefix'>LOOC:</span> <EM>[src.key]/[src.mob.name]:</EM> <span class='message'>[msg]</span>"))
+			to_chat(cli_client, span_looc("[ADMIN_FLW(usr)] <span class='prefix'>LOOC:</span> <EM>[src.key]/[speaking_name]:</EM> <span class='message'>[msg]</span>"))
 
 #undef LOOC_RANGE

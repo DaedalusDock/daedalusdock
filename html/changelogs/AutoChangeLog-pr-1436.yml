@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Fixed moths being unable to consume clothing.
+  - tweak: LOOC from observers now strips out the comically large flavor portion of
+      their name.

@@ -107,7 +107,8 @@
 		moth_snack = new
 		moth_snack.name = name
 		moth_snack.clothing = WEAKREF(src)
-	return interacting_with.base_item_interaction(src, user, list2params(modifiers))
+
+	return interacting_with.base_item_interaction(user, moth_snack, modifiers)
 
 /obj/item/clothing/attackby(obj/item/W, mob/user, params)
 	if(!istype(W, repairable_by))

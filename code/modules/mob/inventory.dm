@@ -520,7 +520,7 @@
 	PROTECTED_PROC(TRUE)
 
 	obscured_slots = NONE
-	for(var/obj/item/I in get_all_worn_items(TRUE))
+	for(var/obj/item/I in get_all_worn_items(FALSE))
 		obscured_slots |= I.flags_inv
 
 ///Returns a bitfield of covered item slots.
@@ -529,7 +529,7 @@
 	var/hidden_slots = !isnull(input_slots) ? input_slots : src.obscured_slots
 
 	if(transparent_protection)
-		for(var/obj/item/I in get_all_worn_items(TRUE))
+		for(var/obj/item/I in get_all_worn_items(FALSE))
 			hidden_slots |= I.transparent_protection
 
 	if(hidden_slots & HIDENECK)

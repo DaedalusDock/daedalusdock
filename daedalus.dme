@@ -1372,6 +1372,7 @@
 #include "code\game\gamemodes\dynamic\ruleset_picking.dm"
 #include "code\game\gamemodes\midrounds\_midrounds.dm"
 #include "code\game\gamemodes\objectives\_objective.dm"
+#include "code\game\gamemodes\objectives\flock_objectives.dm"
 #include "code\game\gamemodes\objectives\gimmick.dm"
 #include "code\game\gamemodes\objectives\objective_items.dm"
 #include "code\game\gamemodes\objectives\protect_object.dm"

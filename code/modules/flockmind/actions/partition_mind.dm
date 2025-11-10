@@ -64,3 +64,4 @@
 
 	var/mob/camera/flock/trace/new_ghostbird = new(get_turf(ghost_bird), ghost_bird.flock)
 	new_ghostbird.PossessByPlayer(candidate.key)
+	new_ghostbird.mind.add_antag_datum(/datum/antagonist/flock)

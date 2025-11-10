@@ -4,7 +4,7 @@
 	name_prefix = "the"
 	antagpanel_category = "Flock"
 
-	roundend_category = "The Divine Flock"
+	roundend_category = "Divine Flock"
 	antag_hud_name = null
 	ui_name = null
 	job_rank = ROLE_FLOCK
@@ -16,6 +16,10 @@
 	if(description)
 		out += span_flocksay("<div style='text-align: center'>[description]</div>")
 	return jointext(out, "")
+
+/datum/antagonist/flock/on_gain()
+	add_objective(new /datum/objective/flock_relay)
+	. = ..()
 
 /datum/antagonist/flock/admin_add(datum/mind/new_owner, mob/admin)
 	if(tgui_alert(admin, "Are you sure you want to turn [new_owner.current] ([new_owner.current.ckey]) into [get_name()]?", "Antag Panel", list("Yes", "No")) != "Yes")

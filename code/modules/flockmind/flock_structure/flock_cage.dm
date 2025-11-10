@@ -170,7 +170,7 @@
 		return
 
 	var/list/organs = human_victim.processing_organs.Copy()
-	var/list/skip_organs = list(ORGAN_SLOT_BRAIN, ORGAN_SLOT_HEART)
+	var/list/skip_organs = list(ORGAN_SLOT_BRAIN, ORGAN_SLOT_HEART, ORGAN_SLOT_TONGUE, ORGAN_SLOT_EYES, ORGAN_SLOT_EARS)
 	for(var/obj/item/organ/O in organs)
 		if(O.slot in skip_organs)
 			organs -= O

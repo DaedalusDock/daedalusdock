@@ -142,8 +142,10 @@
 	update_health_notice()
 
 /mob/living/simple_animal/flock/death(gibbed, cause_of_death)
-	. = ..()
-	flock.remove_notice(src, FLOCK_NOTICE_HEALTH)
+	flock?.remove_notice(src, FLOCK_NOTICE_HEALTH)
+	flock?.free_unit(src)
+	flock?.stat_deaths++
+	return ..()
 
 /mob/living/simple_animal/flock/get_flock_id()
 	return real_name

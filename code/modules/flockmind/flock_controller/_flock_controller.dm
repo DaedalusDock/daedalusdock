@@ -1,4 +1,4 @@
-/proc/get_default_flock()
+/proc/get_default_flock() as /datum/flock
 	var/static/datum/flock/flock
 	if(isnull(flock))
 		flock = new
@@ -640,8 +640,14 @@
 
 /// Ends the flock if it is unable to continue spreading.
 /datum/flock/proc/consider_game_over()
-	if(flock_game_status == FLOCK_ENDGAME_LOST)
+	if(!flock_started)
 		return FALSE
+
+	if(flock_game_status == FLOCK_ENDGAME_LOST)
+		return TRUE
+
+	if(flock_game_status == FLOCK_ENDGAME_VICTORY)
+		return TRUE
 
 	if(length(drones))
 		return FALSE

@@ -497,7 +497,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 
 
 /// Applies the preference options to the spawning mob, taking the job into account. Assumes the client has the proper mind.
-/mob/living/proc/apply_prefs_job(client/player_client, datum/job/job)
+/mob/proc/apply_prefs_job(client/player_client, datum/job/job)
 	return
 
 /mob/living/carbon/human/apply_prefs_job(client/player_client, datum/job/job)

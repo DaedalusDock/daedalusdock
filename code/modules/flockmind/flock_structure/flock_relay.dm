@@ -33,9 +33,11 @@
 /obj/structure/flock/relay/Initialize(mapload, datum/flock/join_flock)
 	. = ..()
 
+	started_time = world.time
 	flock.set_flock_game_status(FLOCK_ENDGAME_RELAY_BUILT)
 
 	log_game("The Flock ([flock?.name || "NULL"]) has constructed a relay at [AREACOORD(src)].")
+	message_admins("The Flock has constructed the relay at [ADMIN_VERBOSEJMP(src)].")
 	SSshuttle.registerHostileEnvironment(src, FALSE)
 
 	to_chat(
@@ -44,7 +46,6 @@
 	)
 
 	flock_talk(null, "THE RELAY HAS BEEN CONSTRUCTED! DEFEND IT AT ALL COSTS, BRING FORTH THE FULL BREADTH OF THE DIVINE FLOCK!", flock)
-
 	addtimer(CALLBACK(src, PROC_REF(announce_relay)), 10 SECONDS)
 
 	START_PROCESSING(SSprocessing, src)
@@ -86,13 +87,13 @@
 		)
 
 /obj/structure/flock/relay/update_info_tag()
-	if(flock_won_da_game)
-		info_tag?.set_text("Broadcast in:[(started_time + win_time - world.time) / 10] second\s")
+	if(!flock_won_da_game)
+		info_tag?.set_text("Broadcast in: [(started_time + win_time - world.time) / 10] second\s")
 	else
 		info_tag?.set_text("Transmitting")
 
 /obj/structure/flock/relay/process(delta_time)
-	if(world.time >= (spawn_time + build_time + (win_time * 10)))
+	if(world.time >= (started_time + win_time))
 		lorimer_burst()
 		return PROCESS_KILL
 

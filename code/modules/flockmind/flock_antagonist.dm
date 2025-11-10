@@ -8,6 +8,7 @@
 	antag_hud_name = null
 	ui_name = null
 	job_rank = ROLE_FLOCK
+	assign_job = /datum/job/flock
 
 /datum/antagonist/flock/greeting_header()
 	var/list/out = list()
@@ -40,6 +41,7 @@
 
 /datum/antagonist/flock/overmind
 	name = "Divine Flock Overmind"
+	assign_job = /datum/job/flock/overmind
 
 /datum/antagonist/flock/overmind/adminspawn_flock_mob(turf/spawn_loc)
 	return new /mob/camera/flock/overmind(spawn_loc)

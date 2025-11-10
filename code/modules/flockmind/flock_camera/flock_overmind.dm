@@ -37,8 +37,7 @@
 
 /mob/camera/flock/overmind/Login()
 	. = ..()
-	//remove this when the gamemode is set up
-	flock.start()
+	flock.refresh_unlockables()
 
 /mob/camera/flock/overmind/Logout()
 	. = ..()
@@ -71,7 +70,7 @@
 /mob/camera/flock/overmind/so_very_sad_death()
 	var/datum/flock/old_flock = flock
 	flock = null
-	old_flock?.overmind = null
+	old_flock?.overmind = null // to prevent infinite loop
 	old_flock.game_over()
 	. = ..()
 
@@ -84,3 +83,5 @@
 	for(var/datum/action/A as anything in grant_upon_start)
 		A = new A()
 		A.Grant(src)
+
+	flock.start()

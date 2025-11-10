@@ -88,24 +88,9 @@
 		QDEL_NULL(plant_datum)
 	return ..()
 
-/obj/item/food/grown/MakeEdible()
-	AddComponent(/datum/component/edible,\
-				initial_reagents = food_reagents,\
-				food_flags = food_flags,\
-				foodtypes = foodtypes,\
-				volume = max_volume,\
-				eat_time = eat_time,\
-				tastes = tastes,\
-				eatverbs = eatverbs,\
-				bite_consumption = bite_consumption,\
-				microwaved_type = microwaved_type,\
-				junkiness = junkiness,\
-				on_consume = CALLBACK(src, PROC_REF(on_consume))\
-			)
-
-
 /// Callback for when the food item is FULLY eaten.
-/obj/item/food/grown/proc/on_consume(mob/living/eater, mob/living/feeder)
+/obj/item/food/grown/on_consume(mob/living/eater, mob/living/feeder)
+	. = ..()
 	if(prob(20) && !plant_datum.gene_holder.has_active_gene_of_type(/datum/plant_gene/seedless))
 		var/obj/item/seeds/seed = plant_datum.CopySeed()
 		eater.visible_message(span_notice("</b>[eater]</b> spits out a seed."))

@@ -16,3 +16,9 @@
 	mood_change = -100
 	special_screen_obj = "mood_dread"
 
+/datum/mood_event/vampire_bite
+	description = "SOMETHING JUST DRANK MY BLOOD!"
+	mood_change = -100
+	special_screen_obj = "mood_dread"
+
+	timeout = 5 MINUTES

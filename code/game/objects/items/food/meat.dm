@@ -87,6 +87,8 @@
 	foodtypes = SEAFOOD | VEGETABLES | FRIED
 	venue_value = FOOD_PRICE_NORMAL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/fishfry
 	name = "fish fry"
 	desc = "All that and no bag of chips..."
@@ -511,6 +513,8 @@
 	foodtypes = MEAT | DAIRY | GRAIN
 	w_class = WEIGHT_CLASS_TINY
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/bbqribs
 	name = "bbq ribs"
 	desc = "BBQ ribs, slathered in a healthy coating of BBQ sauce. The least vegan thing to ever exist."
@@ -519,6 +523,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 10, /datum/reagent/consumable/nutriment/vitamin = 3, /datum/reagent/consumable/bbqsauce = 10)
 	tastes = list("meat" = 3, "smokey sauce" = 1)
 	foodtypes = MEAT | SUGAR
+
+	food_buffs = list(/datum/status_effect/food/healthy/blood, /datum/status_effect/food/warm)
 
 /obj/item/food/meatclown
 	name = "meat clown"
@@ -541,6 +547,8 @@
 	foodtypes = MEAT | DAIRY | GRAIN
 	venue_value = FOOD_PRICE_NORMAL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 //////////////////////////////////////////// KEBABS AND OTHER SKEWERS ////////////////////////////////////////////
 
 /obj/item/food/kebab
@@ -558,6 +566,8 @@
 	tastes = list("tender meat" = 3, "metal" = 1)
 	foodtypes = MEAT | GROSS
 	venue_value = FOOD_PRICE_CHEAP
+
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
 
 /obj/item/food/kebab/monkey
 	name = "meat-kebab"
@@ -943,6 +953,8 @@ TYPEINFO_DEF(/obj/item/food/meat)
 	tastes = list("meat" = 1)
 	burns_on_grill = TRUE
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood, /datum/status_effect/food/warm)
+
 /obj/item/food/meat/steak/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_MICROWAVE_COOKED, PROC_REF(OnMicrowaveCooked))
@@ -1140,6 +1152,8 @@ TYPEINFO_DEF(/obj/item/food/meat)
 	foodtypes = MEAT
 	burns_on_grill = TRUE
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/meat/cutlet/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_MICROWAVE_COOKED, PROC_REF(OnMicrowaveCooked))
@@ -1222,6 +1236,8 @@ TYPEINFO_DEF(/obj/item/food/meat)
 	//basic ingredients, but a lot of them. just covering costs here
 	venue_value = FOOD_PRICE_NORMAL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood, /datum/status_effect/food/energized/plus)
+
 /obj/item/food/beef_wellington
 	name = "beef wellington"
 	desc = "A luxurious log of beef, covered in a fine mushroom duxelle and pancetta ham, then bound in puff pastry."
@@ -1231,6 +1247,8 @@ TYPEINFO_DEF(/obj/item/food/meat)
 	foodtypes = MEAT | VEGETABLES | GRAIN
 	w_class = WEIGHT_CLASS_NORMAL
 	venue_value = FOOD_PRICE_EXOTIC
+
+	food_buffs = list(/datum/status_effect/food/healthy/blood, /datum/status_effect/food/energized/plus)
 
 /obj/item/food/beef_wellington/MakeProcessable()
 	AddElement(/datum/element/processable, TOOL_KNIFE,  /obj/item/food/beef_wellington_slice, 3, 30, table_required = TRUE)
@@ -1245,6 +1263,8 @@ TYPEINFO_DEF(/obj/item/food/meat)
 	w_class = WEIGHT_CLASS_SMALL
 	venue_value = FOOD_PRICE_NORMAL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood, /datum/status_effect/food/energized/plus)
+
 /obj/item/food/full_english
 	name = "full english breakfast"
 	desc = "A hearty plate with all the trimmings, representing the pinnacle of the breakfast art."
@@ -1254,3 +1274,5 @@ TYPEINFO_DEF(/obj/item/food/meat)
 	foodtypes = MEAT | VEGETABLES | GRAIN | BREAKFAST
 	w_class = WEIGHT_CLASS_SMALL
 	venue_value = FOOD_PRICE_EXOTIC
+
+	food_buffs = list(/datum/status_effect/food/healthy/blood, /datum/status_effect/food/energized/plus, /datum/status_effect/food/healthy/organs)

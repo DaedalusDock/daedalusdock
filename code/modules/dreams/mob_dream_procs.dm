@@ -38,12 +38,12 @@
 	if(!mind || isipc(src))
 		return null
 
-	var/list/dream_pool
+	var/list/dream_pool = list()
 	if(mind?.assigned_role?.title == JOB_DETECTIVE)
 		dream_pool = GLOB.dream_controller.get_dreams(DREAM_CLASS_DETECTIVE).Copy()
 
 	else if(has_status_effect(/datum/status_effect/grouped/king_in_yellow))
-		dream_pool += GLOB.dream_controller.get_dreams(DREAM_CLASS_KING_IN_YELLOW).Copy()
+		dream_pool = GLOB.dream_controller.get_dreams(DREAM_CLASS_KING_IN_YELLOW).Copy()
 
 	else if(mind && HAS_TRAIT(mind, TRAIT_AETHERITE))
 		dream_pool = GLOB.dream_controller.get_dreams(DREAM_CLASS_AETHERITE).Copy()
@@ -53,6 +53,9 @@
 
 	if(mind.has_antag_datum(/datum/antagonist/vampire) || locate(/datum/pathogen/blood_plague) in diseases)
 		dream_pool += GLOB.dream_controller.get_dreams(DREAM_CLASS_VAMPIRE).Copy()
+
+	if(bloodstream.has_reagent(/datum/reagent/medicine/zedaphen))
+		dream_pool += GLOB.dream_controller.get_dreams(DREAM_CLASS_HATMAN).Copy()
 
 	var/datum/dream/dream
 	while(length(dream_pool))

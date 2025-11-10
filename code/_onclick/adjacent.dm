@@ -146,7 +146,7 @@
 			return FALSE
 	return TRUE
 
-/atom/proc/MultiZAdjacent(atom/neighbor)
+/atom/proc/MultiZAdjacent(atom/neighbor, atom/target, atom/movable/mover)
 	var/turf/T = get_turf(src)
 	var/turf/N = get_turf(neighbor)
 
@@ -156,30 +156,28 @@
 
 	// On the same z-level, we don't need to care about multiz.
 	if(N.z == T.z)
-		return Adjacent(neighbor)
+		return Adjacent(neighbor, target, mover)
 
 	// More than one z-level away from each other.
 	if(abs(N.x - T.x) > 1 || abs(N.y - T.y) > 1 || abs(N.z - T.z) > 1)
 		return FALSE
 
-
 	// Are they below us?
 	if(N.z < T.z && HasBelow(T.z))
 		var/turf/B = GetBelow(T)
-		. = isopenspaceturf(T) && neighbor.Adjacent(B)
+		. = isopenspaceturf(T) && neighbor.Adjacent(B, target, mover)
 		if(!.)
 			B = GetAbove(N)
-			. = isopenspaceturf(B) && src.Adjacent(B)
+			. = isopenspaceturf(B) && src.Adjacent(B, target, mover)
 		return
-
 
 	// Are they above us?
 	if(HasAbove(T.z))
 		var/turf/A = GetAbove(T)
-		. = isopenspaceturf(A) && neighbor.Adjacent(A)
+		. = isopenspaceturf(A) && neighbor.Adjacent(A, target, mover)
 		if(!.)
 			A = GetBelow(N)
-			. = isopenspaceturf(N) && src.Adjacent(A)
+			. = isopenspaceturf(N) && src.Adjacent(A, target, mover)
 		return
 
 	return FALSE

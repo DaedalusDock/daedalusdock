@@ -94,3 +94,6 @@
 
 #define COMSIG_CARBON_PRE_SPRINT "carbon_pre_sprint"
 	#define INTERRUPT_SPRINT (1<<0)
+
+/// Called when the chem effect list is cut, to allow re-insertion if necessary.
+#define COMSIG_CARBON_CHEM_EFFECT_REFRESH "carbon_chem_effect_refresh"

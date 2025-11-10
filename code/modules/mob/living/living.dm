@@ -164,7 +164,7 @@
 	if(!M.buckled && !M.has_buckled_mobs())
 		if(can_mobswap_with(M))
 			//switch our position with M
-			if(loc && !loc.MultiZAdjacent(M.loc))
+			if(!loc?.MultiZAdjacent(M.loc, M, src))
 				return TRUE
 
 			now_pushing = TRUE
@@ -1814,7 +1814,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if(CONSCIOUS)
 			if(. >= UNCONSCIOUS)
 				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
-				mob_mood?.update_mood()
+				mob_mood?.update_mood(quiet = TRUE)
 				blur_eyes(4)
 
 			REMOVE_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)

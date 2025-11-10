@@ -5,3 +5,6 @@
 
 /// Allows discerning the ethnicity of a human. Can be a mind or body trait.
 #define TRAIT_ADVANCED_RACE_THEORY "semenesesupremacy"
+
+/// A trait given to Cooks on job spawn.
+#define TRAIT_CHEF "chef"

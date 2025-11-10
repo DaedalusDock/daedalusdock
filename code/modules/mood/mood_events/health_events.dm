@@ -23,3 +23,9 @@
 	description = "You do not feel your heartbeat."
 	mood_change = -100
 	special_screen_obj = "mood_dread"
+
+// Mental health is health too
+/datum/mood_event/nightmare
+	description = "You experienced a horrid nightmare."
+	mood_change = MOOD_LEVEL_SAD1
+	timeout = 5 MINUTES

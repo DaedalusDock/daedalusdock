@@ -11,6 +11,8 @@
 	eatverbs = list("devour", "nibble", "gnaw", "gobble", "chomp") //who the fuck gnaws and devours on a salad
 	venue_value = FOOD_PRICE_NORMAL
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/salad/aesirsalad
 	name = "\improper Aesir salad"
 	desc = "Probably too incredible for mortal men to fully enjoy."
@@ -19,6 +21,8 @@
 	tastes = list("leaves" = 1)
 	foodtypes = VEGETABLES | FRUIT
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs, /datum/status_effect/food/healthy/blood)
+
 /obj/item/food/salad/herbsalad
 	name = "herb salad"
 	desc = "A tasty salad with apples on top."
@@ -26,6 +30,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 8, /datum/reagent/consumable/nutriment/vitamin = 6)
 	tastes = list("leaves" = 1, "apple" = 1)
 	foodtypes = VEGETABLES | FRUIT
+
+	food_buffs = list(/datum/status_effect/food/healthy/organs, /datum/status_effect/food/healthy/blood)
 
 /obj/item/food/salad/validsalad
 	name = "valid salad"
@@ -43,6 +49,8 @@
 	tastes = list("fruit" = 1)
 	foodtypes = FRUIT
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/salad/jungle
 	name = "jungle salad"
 	desc = "Exotic fruits in a bowl."
@@ -59,6 +67,8 @@
 	tastes = list("sourness" = 1, "leaves" = 1)
 	foodtypes = FRUIT | ORANGES
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/salad/ricebowl
 	name = "ricebowl"
 	desc = "A bowl of raw rice."
@@ -68,6 +78,8 @@
 	tastes = list("rice" = 1)
 	foodtypes = GRAIN | RAW
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/salad/boiledrice
 	name = "boiled rice"
 	desc = "A warm bowl of rice."
@@ -75,6 +87,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/nutriment/vitamin = 2)
 	tastes = list("rice" = 1)
 	foodtypes = GRAIN | BREAKFAST
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/salad/ricepudding
 	name = "rice pudding"
@@ -85,6 +99,8 @@
 	foodtypes = GRAIN | DAIRY | SUGAR
 	venue_value = FOOD_PRICE_NORMAL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/salad/ricepork
 	name = "rice and pork"
 	desc = "Well, it looks like pork..."
@@ -92,6 +108,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/nutriment/protein = 6, /datum/reagent/consumable/nutriment/vitamin = 3)
 	tastes = list("rice" = 1, "meat" = 1)
 	foodtypes = GRAIN | MEAT
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/salad/risotto
 	name = "risotto"
@@ -101,6 +119,8 @@
 	tastes = list("rice" = 1, "cheese" = 1)
 	foodtypes = GRAIN | DAIRY
 	venue_value = FOOD_PRICE_EXOTIC
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/salad/eggbowl
 	name = "egg bowl"
@@ -118,6 +138,8 @@
 	tastes = list("extreme bitterness" = 3, "hope" = 1)
 	foodtypes = VEGETABLES
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/salad/gumbo
 	name = "black eyed gumbo"
 	desc = "A spicy and savory meat and rice dish."
@@ -126,6 +148,7 @@
 	tastes = list("building heat" = 2, "savory meat and vegtables" = 1)
 	foodtypes = GRAIN | MEAT | VEGETABLES
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs, /datum/status_effect/food/healthy/blood)
 
 TYPEINFO_DEF(/obj/item/reagent_containers/cup/bowl)
 	default_materials = list(/datum/material/glass = 500)

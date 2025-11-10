@@ -43,3 +43,14 @@
 2025-08-16:
   Kapu1178:
   - tweak: Adjusted the names of skin tones.
+2025-08-21:
+  Kapu1178:
+  - rscadd: New defibrillator effects for the target.
+2025-08-29:
+  Kapu1178, Hotline:
+  - soundadd: Added new sound effects to The Afflicted'sNeck Bite and Bloodlust by
+      Hotline.
+  - rscadd: Added a moodlet for being vampire chow.
+2025-08-31:
+  Kapu1178:
+  - bugfix: TGChat settings are no longer shared across servers again.

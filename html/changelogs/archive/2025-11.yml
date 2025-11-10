@@ -1,0 +1,5 @@
+2025-11-10:
+  Kapu1178:
+  - bugfix: Fixed moths being unable to consume clothing.
+  - tweak: LOOC from observers now strips out the comically large flavor portion of
+      their name.

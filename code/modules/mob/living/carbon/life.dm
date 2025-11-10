@@ -352,6 +352,7 @@
 
 /mob/living/carbon/handle_chemicals()
 	chem_effects.Cut()
+	SEND_SIGNAL(src, COMSIG_CARBON_CHEM_EFFECT_REFRESH)
 
 	if(status_flags & GODMODE)
 		return

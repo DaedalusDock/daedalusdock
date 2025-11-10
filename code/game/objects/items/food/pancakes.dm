@@ -12,6 +12,8 @@
 	burns_on_grill = TRUE
 	venue_value = FOOD_PRICE_CHEAP
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/pancakes/raw
 	name = "goopy pancake"
 	desc = "A barely cooked mess that some may mistake for a pancake. It longs for the griddle."

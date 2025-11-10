@@ -41,6 +41,8 @@
 	tastes = list("pasta" = 1, "tomato" = 1)
 	foodtypes = GRAIN | VEGETABLES
 
+	food_buffs = list(/datum/status_effect/food/refreshed)
+
 /obj/item/food/spaghetti/copypasta
 	name = "copypasta"
 	desc = "You probably shouldn't try this, you always hear people talking about how bad it is..."
@@ -51,6 +53,8 @@
 	tastes = list("pasta" = 1, "tomato" = 1)
 	foodtypes = GRAIN | VEGETABLES
 
+	food_buffs = list(/datum/status_effect/food/refreshed)
+
 /obj/item/food/spaghetti/meatballspaghetti
 	name = "spaghetti and meatballs"
 	desc = "Now that's a nic'e meatball!"
@@ -59,6 +63,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 4, /datum/reagent/consumable/nutriment/protein = 10, /datum/reagent/consumable/nutriment/vitamin = 2)
 	tastes = list("pasta" = 1, "meat" = 1)
 	foodtypes = GRAIN | MEAT
+
+	food_buffs = list(/datum/status_effect/food/refreshed)
 
 /obj/item/food/spaghetti/spesslaw
 	name = "spesslaw"
@@ -69,6 +75,8 @@
 	tastes = list("pasta" = 1, "meat" = 1)
 	foodtypes = GRAIN | MEAT
 
+	food_buffs = list(/datum/status_effect/food/refreshed)
+
 /obj/item/food/spaghetti/chowmein
 	name = "chow mein"
 	desc = "A nice mix of noodles and fried vegetables."
@@ -77,6 +85,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/nutriment/protein = 2, /datum/reagent/consumable/nutriment/vitamin = 6)
 	tastes = list("noodle" = 1, "tomato" = 1)
 	foodtypes = GRAIN | MEAT | VEGETABLES
+
+	food_buffs = list(/datum/status_effect/food/refreshed)
 
 /obj/item/food/spaghetti/beefnoodle
 	name = "beef noodle"
@@ -87,6 +97,8 @@
 	tastes = list("noodle" = 1, "meat" = 1)
 	foodtypes = GRAIN | MEAT | VEGETABLES
 
+	food_buffs = list(/datum/status_effect/food/refreshed)
+
 /obj/item/food/spaghetti/butternoodles
 	name = "butter noodles"
 	desc = "Noodles covered in savory butter. Simple and slippery, but delicious."
@@ -96,6 +108,8 @@
 	tastes = list("noodle" = 1, "butter" = 1)
 	foodtypes = GRAIN | DAIRY
 
+	food_buffs = list(/datum/status_effect/food/refreshed)
+
 /obj/item/food/spaghetti/mac_n_cheese
 	name = "mac n' cheese"
 	desc = "Made the proper way with only the finest cheese and breadcrumbs. And yet, it can't scratch the same itch as Ready-Donk."
@@ -103,3 +117,5 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 9, /datum/reagent/consumable/nutriment/vitamin = 2)
 	tastes = list("cheese" = 1, "breadcrumbs" = 1, "pasta" = 1)
 	foodtypes = GRAIN | DAIRY
+
+	food_buffs = list(/datum/status_effect/food/refreshed)

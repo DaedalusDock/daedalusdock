@@ -43,7 +43,7 @@
 	RETURN_TYPE(/datum/c4_file/terminal_program/operating_system)
 	return get_computer()?.operating_system
 
-/*
+/**
  * Called by the operating system when a user enters text into the input field.
  * Don't call directly, call os.try_std_in() instead
  */

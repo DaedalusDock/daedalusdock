@@ -7,5 +7,5 @@
 	#define MOVELOOP_SKIP_STEP (1<<0)
 ///from [/datum/move_loop/process] (result, visual_delay): //Result is an enum value. Enums defined in __DEFINES/movement.dm
 #define COMSIG_MOVELOOP_POSTPROCESS "moveloop_postprocess"
-//from [/datum/move_loop/has_target/jps/recalculate_path] ():
-#define COMSIG_MOVELOOP_JPS_REPATH "moveloop_jps_repath"
+//from [/datum/move_loop/has_target/recalculate_path] ():
+#define COMSIG_MOVELOOP_REPATH "moveloop_repath"

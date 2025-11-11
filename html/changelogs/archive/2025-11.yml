@@ -3,3 +3,6 @@
   - bugfix: Fixed moths being unable to consume clothing.
   - tweak: LOOC from observers now strips out the comically large flavor portion of
       their name.
+2025-11-11:
+  Kapu1178:
+  - bugfix: Items in pockets can no longer "cover" bodyparts

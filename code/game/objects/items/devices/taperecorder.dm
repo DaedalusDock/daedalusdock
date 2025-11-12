@@ -271,7 +271,7 @@ TYPEINFO_DEF(/obj/item/taperecorder)
 	update_sound()
 
 	if(mytape.song_currentside)
-		sound_token = new(src, sound(mytape.song_currentside.path), 4, 15, 2)
+		sound_token = new(src, sound(mytape.song_currentside.path), 4, 20, 2)
 		stop_timer_id = addtimer(CALLBACK(src, PROC_REF(stop)), mytape.song_currentside.duration, TIMER_STOPPABLE | TIMER_DELETE_ME | TIMER_CLIENT_TIME)
 		return
 

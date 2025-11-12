@@ -18,3 +18,5 @@
 #define MEDIA_TAG_IS12 "IS12"
 /// White women cassettes.
 #define MEDIA_TAG_WHITEWOMEN "WHITEWOMEN"
+/// Carmen Miranda's Ghost
+#define MEDIA_TAG_CARMEN_MIRANDA "CARMEN"

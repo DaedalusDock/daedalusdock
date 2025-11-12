@@ -2,7 +2,7 @@ TYPEINFO_DEF(/obj/item/taperecorder)
 	default_materials = list(/datum/material/iron=60, /datum/material/glass=30)
 
 /obj/item/taperecorder
-	name = "Fony Strideman R03"
+	name = "\improper Fony Strideman R03"
 	desc = "A device that can record and play magnetic tapes."
 	icon = 'icons/obj/device.dmi'
 	icon_state = "taperecorder_empty"
@@ -28,7 +28,6 @@ TYPEINFO_DEF(/obj/item/taperecorder)
 
 	var/starting_tape_type = /obj/item/tape/random
 
-	var/tmp/open_panel = FALSE
 	var/canprint = FALSE
 
 	var/list/icons_available = list()
@@ -74,8 +73,9 @@ TYPEINFO_DEF(/obj/item/taperecorder)
 /obj/item/taperecorder/examine(mob/user)
 	. = ..()
 	if(in_range(src, user) || isobserver(user))
-		. += span_info("The wire panel is [open_panel ? "opened" : "closed"]. The display reads:")
-		. += "[readout()]"
+		if(mytape)
+			. += span_info("There is \a [mytape.name] loaded.")
+		. += span_info("The display reads: \"[readout()]\"")
 
 /obj/item/taperecorder/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	switch(rand(1, 10))
@@ -580,9 +580,17 @@ TYPEINFO_DEF(/obj/item/tape)
 
 	media_tag = MEDIA_TAG_IS12
 
+
 /obj/item/tape/music/red/Initialize(mapload)
 	. = ..()
 	name = pick("cassette \"RED PRIDE\"", "cassette \"GREAT LEADER MIX\"", "cassette \"ITALIAN HATE SESH\"")
+
+/obj/item/tape/music/carmen
+	name = "cassette \"Carmen Miranda's Ghost\""
+	desc = "An all-time classic album of space-wives' tales."
+	icon_state = "tape_blue"
+
+	media_tag = MEDIA_TAG_CARMEN_MIRANDA
 
 /obj/item/tape/dyed
 	icon_state = "greyscale"

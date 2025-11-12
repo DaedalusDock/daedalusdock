@@ -67,7 +67,7 @@ TYPEINFO_DEF(/obj/structure/plasticflaps)
 		return FALSE
 	return TRUE
 
-/obj/structure/plasticflaps/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+/obj/structure/plasticflaps/CanAStarPass(to_dir, datum/can_pass_info/pass_info, leaving)
 	if(pass_info.is_living)
 		if(pass_info.is_bot)
 			return TRUE

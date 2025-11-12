@@ -38,6 +38,7 @@
 		return
 
 	user.mob.update_mouse_pointer()
+	user.mob.update_info_tags()
 
 /datum/keybinding/rawkey/shift/down(client/user)
 	. = ..()
@@ -45,4 +46,4 @@
 		return
 
 	user.mob.update_mouse_pointer()
-
+	user.mob.update_info_tags()

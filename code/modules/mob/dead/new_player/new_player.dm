@@ -245,15 +245,17 @@
 	var/mob/living/spawning_mob = mind.assigned_role.get_spawn_mob(client, destination)
 	if(QDELETED(src) || !client)
 		return // Disconnected while checking for the appearance ban.
+
 	if(!isAI(spawning_mob)) // Unfortunately there's still snowflake AI code out there.
 		// transfer_to sets mind to null
 		var/datum/mind/preserved_mind = mind
 		preserved_mind.transfer_to(spawning_mob) //won't transfer key since the mind is not active
 		preserved_mind.set_original_character(spawning_mob)
+
 	client.init_verbs()
+
 	. = spawning_mob
 	new_character = .
-
 
 /mob/dead/new_player/proc/transfer_character()
 	new_character.PossessByPlayer(key)

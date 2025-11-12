@@ -495,6 +495,9 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	floating_actions = list()
 	for(var/datum/action/action as anything in mymob.actions)
 		var/atom/movable/screen/movable/action_button/button = action.viewers[src]
+		if(!action.render_button)
+			continue
+
 		if(!button)
 			action.ShowTo(mymob)
 			button = action.viewers[src]

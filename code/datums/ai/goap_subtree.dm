@@ -1,7 +1,7 @@
-/datum/ai_planning_subtree/scored
+/datum/ai_planning_subtree/goap
 	var/list/possible_behaviors = list()
 
-/datum/ai_planning_subtree/scored/setup(datum/ai_controller/controller, ...)
+/datum/ai_planning_subtree/goap/setup(datum/ai_controller/controller, ...)
 	. = ..()
 	controller.set_blackboard_key(BB_PLANNER_BEHAVIORS, list())
 	for(var/behavior_type in possible_behaviors)
@@ -11,13 +11,16 @@
 			continue
 		controller.set_blackboard_key_assoc(BB_PLANNER_BEHAVIORS, behavior, 0)
 
-/datum/ai_planning_subtree/scored/SelectBehaviors(datum/ai_controller/controller, delta_time)
+/datum/ai_planning_subtree/goap/SelectBehaviors(datum/ai_controller/controller, delta_time)
 	var/list/behavior_cache = controller.blackboard[BB_PLANNER_BEHAVIORS]
 	var/datum/ai_behavior/candidate = behavior_cache[1]
 	var/score_to_beat = behavior_cache[candidate]
 
 	for(var/behavior in behavior_cache)
 		var/behavior_score = behavior_cache[behavior]
+		if(behavior_score == AI_GOAP_SKIP_BEHAVIOR)
+			continue
+
 		// Filter out lower scoring behaviors
 		if(score_to_beat > behavior_score)
 			continue
@@ -33,8 +36,11 @@
 		controller.queue_behavior(candidate.type)
 		return SUBTREE_RETURN_FINISH_PLANNING
 
-/datum/ai_planning_subtree/scored/ProcessBehaviorSelection(datum/ai_controller/controller, delta_time)
+/datum/ai_planning_subtree/goap/ProcessBehaviorSelection(datum/ai_controller/controller, delta_time)
 	for(var/datum/ai_behavior/behavior in controller.blackboard[BB_PLANNER_BEHAVIORS])
-		controller.set_blackboard_key_assoc(BB_PLANNER_BEHAVIORS, behavior, behavior.score(controller))
+		if(behavior.goap_precondition(controller))
+			controller.set_blackboard_key_assoc(BB_PLANNER_BEHAVIORS, behavior, behavior.goap_weight * behavior.goap_score(controller))
+		else
+			controller.set_blackboard_key_assoc(BB_PLANNER_BEHAVIORS, behavior, AI_GOAP_SKIP_BEHAVIOR)
 
 	return ..()

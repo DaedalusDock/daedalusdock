@@ -62,11 +62,9 @@
 	if(!can_see(basic_mob, final_target, required_distance))
 		return BEHAVIOR_PERFORM_INSTANT
 
-	//controller.set_blackboard_key(hiding_location_keym, hiding_target)
 	controller.set_blackboard_key(hiding_location_key, hiding_target)
 
 	basic_mob.RangedAttack(final_target)
-
 	return BEHAVIOR_PERFORM_COOLDOWN
 
 /datum/ai_behavior/basic_ranged_attack/finish_action(datum/ai_controller/controller, succeeded, target_key, targeting_strategy_key, hiding_location_key)

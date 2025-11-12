@@ -14,7 +14,7 @@ TYPEINFO_DEF(/obj/item/tail_pin)
 	attack_verb_continuous = list("pokes", "jabs", "pins the tail on")
 	attack_verb_simple = list("poke", "jab")
 	sharpness = SHARP_POINTY
-	max_integrity = 200
+	max_integrity = 1
 	layer = CORGI_ASS_PIN_LAYER
 
 /obj/item/poster/tail_board

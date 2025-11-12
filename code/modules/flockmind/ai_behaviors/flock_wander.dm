@@ -1,8 +1,10 @@
 /datum/ai_behavior/flock/wander
 	name = "wandering"
 	required_distance = 0
+	goap_weight = FLOCK_BEHAVIOR_WEIGHT_WANDER
 
 /datum/ai_behavior/flock/wander/perform(delta_time, datum/ai_controller/controller, ...)
+	..()
 	var/turf/destination = get_destination(controller)
 	if(destination)
 		controller.set_move_target(destination)
@@ -14,7 +16,7 @@
 		controller.queue_behavior(/datum/ai_behavior/move_to_target/flock_wander)
 		controller.queue_behavior(/datum/ai_behavior/frustration, BB_FLOCK_WANDER_FRUSTRATION, 3 SECONDS)
 
-/datum/ai_behavior/flock/wander/score(datum/ai_controller/controller)
+/datum/ai_behavior/flock/wander/goap_score(datum/ai_controller/controller)
 	return 1
 
 /datum/ai_behavior/flock/wander/proc/get_destination(datum/ai_controller/controller)
@@ -48,6 +50,7 @@
 		var/turf/T = pick_n_take(options)
 		var/list/path = SSpathfinder.astar_pathfind_now(controller.pawn, T, 4, access = access, use_diagonals = FALSE)
 		if(path)
+			controller.clear_blackboard_key(BB_PATH_TO_USE)
 			controller.set_blackboard_key(BB_PATH_TO_USE, path)
 			return T
 

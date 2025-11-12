@@ -3,7 +3,7 @@
 /obj/item/clothing
 	name = "clothing"
 	resistance_flags = FLAMMABLE
-	max_integrity = 200
+	max_integrity = 20
 	integrity_failure = 0.4
 
 	stamina_damage = 0

@@ -136,7 +136,7 @@ TYPEINFO_DEF(/obj/structure/projected_forcefield)
 /obj/structure/projected_forcefield/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	playsound(loc, 'sound/weapons/egloves.ogg', 80, TRUE)
 
-/obj/structure/projected_forcefield/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+/obj/structure/projected_forcefield/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir, armor_penetration = 0, allow_break = TRUE)
 	if(sound_effect)
 		play_attack_sound(damage_amount, damage_type, damage_flag)
 	if(generator)

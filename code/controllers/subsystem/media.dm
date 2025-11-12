@@ -184,7 +184,7 @@ SUBSYSTEM_DEF(media)
 				if(!json_data["duration"] && !(get_file_extension(json_data["file"]) in safe_extensions))
 					return list(MEDIA_TAG_JUKEBOX, "Jukebox tracks MUST have a valid duration.")
 
-/datum/controller/subsystem/media/proc/get_track_pool(media_tag)
+/datum/controller/subsystem/media/proc/get_track_pool(media_tag) as /list
 	var/list/pool = tracks_by_tag[media_tag]
 	return LAZYCOPY(pool)
 

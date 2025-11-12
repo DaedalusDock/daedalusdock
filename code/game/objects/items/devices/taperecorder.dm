@@ -63,19 +63,31 @@ TYPEINFO_DEF(/obj/item/taperecorder)
 /obj/item/taperecorder/proc/readout()
 	if(mytape)
 		if(playing)
-			return span_notice("<b>PLAYING</b>")
+			return span_info("<b>PLAYING</b>")
 		else
 			var/time = mytape.used_capacity / 10 //deciseconds / 10 = seconds
 			var/mins = floor(time / 60)
 			var/secs = time - mins * 60
-			return span_notice("<b>[mins]</b>m <b>[secs]</b>s")
-	return span_notice("<b>NO CASSETTE INSERTED</b>")
+			return span_info("<b>[mins]</b>m <b>[secs]</b>s")
+	return span_info("<b>EMPTY</b>")
 
 /obj/item/taperecorder/examine(mob/user)
 	. = ..()
 	if(in_range(src, user) || isobserver(user))
-		. += span_notice("The wire panel is [open_panel ? "opened" : "closed"]. The display reads:")
+		. += span_info("The wire panel is [open_panel ? "opened" : "closed"]. The display reads:")
 		. += "[readout()]"
+
+/obj/item/taperecorder/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	switch(rand(1, 10))
+		if(1 to 4)
+			if(playing || recording)
+				stop()
+		if(5)
+			eject()
+
+		else
+			noop()
+	. = ..()
 
 /obj/item/taperecorder/AltClick(mob/user)
 	. = ..()
@@ -114,7 +126,7 @@ TYPEINFO_DEF(/obj/item/taperecorder)
 		return ITEM_INTERACT_BLOCKING
 
 	mytape = tool
-	user.visible_message(span_notice("[user] inserts [tool] into [src]"), vision_distance = COMBAT_MESSAGE_RANGE)
+	user.visible_message(span_notice("[user] inserts [tool] into [src]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	playsound(src, 'sound/items/taperecorder/taperecorder_close.ogg', 50, FALSE)
 	update_appearance()
 	return ITEM_INTERACT_SUCCESS
@@ -138,12 +150,12 @@ TYPEINFO_DEF(/obj/item/taperecorder)
 		return ..()
 	eject(user)
 
+/// Returns TRUE if given no user or the user is able to interact with this. Stupid legacy bullshit.
 /obj/item/taperecorder/proc/can_use(mob/user)
-	if(user && ismob(user))
-		if(!user.incapacitated())
-			return TRUE
-	return FALSE
+	if(!ismob(user))
+		return TRUE
 
+	return !user.incapacitated()
 
 /obj/item/taperecorder/verb/ejectverb()
 	set name = "Eject Tape"
@@ -155,7 +167,6 @@ TYPEINFO_DEF(/obj/item/taperecorder)
 		return
 
 	eject(usr)
-
 
 /obj/item/taperecorder/update_icon_state()
 	if(!mytape)
@@ -217,12 +228,10 @@ TYPEINFO_DEF(/obj/item/taperecorder)
 
 	stop()
 
-/obj/item/taperecorder/verb/stop()
-	set name = "Stop"
-	set category = "Object"
-
-	if(!can_use(usr))
-		return
+/// Stops playing or recording.
+/obj/item/taperecorder/proc/stop(mob/user)
+	if(!(playing || recording) || !can_use(user))
+		return FALSE
 
 	deltimer(stop_timer_id)
 	stop_timer_id = null
@@ -242,6 +251,7 @@ TYPEINFO_DEF(/obj/item/taperecorder)
 	time_warned = FALSE
 	update_appearance()
 	update_sound()
+	return TRUE
 
 /obj/item/taperecorder/verb/play()
 	set name = "Play Tape"
@@ -262,7 +272,7 @@ TYPEINFO_DEF(/obj/item/taperecorder)
 
 	if(mytape.song_currentside)
 		sound_token = new(src, sound(mytape.song_currentside.path), 4, 15, 2)
-		stop_timer_id = addtimer(CALLBACK(src, nameof(.verb/play)), mytape.song_currentside.duration, TIMER_STOPPABLE | TIMER_DELETE_ME | TIMER_CLIENT_TIME)
+		stop_timer_id = addtimer(CALLBACK(src, PROC_REF(stop)), mytape.song_currentside.duration, TIMER_STOPPABLE | TIMER_DELETE_ME | TIMER_CLIENT_TIME)
 		return
 
 	say("BEGIN PLAYBACK")
@@ -293,8 +303,14 @@ TYPEINFO_DEF(/obj/item/taperecorder)
 
 		i++
 
-	stop()
+	stop(null) // Auto-stop, doesn't care about the user.
 
+/// Wrapper verb for the stop proc.
+/obj/item/taperecorder/verb/stop_verb()
+	set name = "Stop"
+	set category = "Object"
+
+	stop(usr)
 
 /obj/item/taperecorder/attack_self(mob/user)
 	if(!mytape)
@@ -414,6 +430,9 @@ TYPEINFO_DEF(/obj/item/tape)
 	if(icon_state == "tape_greyscale")
 		add_atom_colour("#[mycolor]", FIXED_COLOUR_PRIORITY)
 
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/item/tape/LateInitialize()
 	if(prob(50))
 		tapeflip()
 
@@ -427,7 +446,7 @@ TYPEINFO_DEF(/obj/item/tape)
 /obj/item/tape/examine(mob/user)
 	. = ..()
 	if(desc_song_currentside)
-		. += span_info("This side is labelled [desc_song_currentside].")
+		. += span_info("This side is labelled \"[desc_song_currentside]\".")
 
 /obj/item/tape/attack_self(mob/user)
 	update_available_icons()
@@ -528,19 +547,42 @@ TYPEINFO_DEF(/obj/item/tape)
 	if(song_otherside)
 		used_capacity_otherside = song_otherside.duration
 
-/obj/item/tape/music/random
+/obj/item/tape/music
+	/// The media tag to pull from
 	var/media_tag = MEDIA_TAG_CASSETTE
+	/// If TRUE, will pick_n_take() vs using the first two entries
+	var/random_songs = FALSE
 
-/obj/item/tape/music/random/Initialize(mapload)
+/obj/item/tape/music/Initialize(mapload)
 	var/list/song_pool = SSmedia.get_track_pool(media_tag)
-	song_currentside = pick_n_take(song_pool)
-	song_otherside = pick_n_take(song_pool)
+	if(!length(song_pool))
+		WARNING("Music tape with tag [media_tag] could not load any songs.")
+	else
+		if(random_songs)
+			song_currentside = pick_n_take(song_pool)
+			song_otherside = pick_n_take(song_pool)
+		else
+			song_currentside = song_pool[1]
+			if(length(song_pool) >= 2)
+				song_otherside = song_pool[2]
 	. = ..()
 
-/obj/item/tape/music/random/red
+/obj/item/tape/music/white
+	name = "cassette \"Ghost Gurlz\""
+	icon_state = "tape_white"
+	media_tag = MEDIA_TAG_WHITEWOMEN
+	random_songs = TRUE
+
+/obj/item/tape/music/red
 	name = "cassette \"RED PRIDE\""
 	desc = "A magnetic tape so blisteringly RED it strains your eyes."
+	icon_state = "tape_red"
+
 	media_tag = MEDIA_TAG_IS12
+
+/obj/item/tape/music/red/Initialize(mapload)
+	. = ..()
+	name = pick("cassette \"RED PRIDE\"", "cassette \"GREAT LEADER MIX\"", "cassette \"ITALIAN HATE SESH\"")
 
 /obj/item/tape/dyed
 	icon_state = "greyscale"

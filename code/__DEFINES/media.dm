@@ -16,3 +16,5 @@
 #define MEDIA_TAG_CASSETTE "CASSETTE"
 /// IS12 cassettes.
 #define MEDIA_TAG_IS12 "IS12"
+/// White women cassettes.
+#define MEDIA_TAG_WHITEWOMEN "WHITEWOMEN"

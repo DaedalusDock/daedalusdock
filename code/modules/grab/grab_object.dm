@@ -452,7 +452,7 @@
 		affecting.move_from_pull(assailant, get_turf(assailant))
 		affecting.setDir(assailant.dir)
 
-	affecting.update_offsets()
+	affecting.update_offsets(TRUE)
 	affecting.reset_plane_and_layer()
 
 /obj/item/hand_item/grab/proc/move_victim_towards(atom/destination)
@@ -478,7 +478,7 @@
 	// Okay, now actually try to move
 	. = affecting.Move(get_step(affecting.loc, move_dir), move_dir, glide_size)
 	if(.)
-		affecting.update_offsets()
+		affecting.update_offsets(TRUE)
 
 /// Removes any grabs applied to the affected movable that aren't src
 /obj/item/hand_item/grab/proc/remove_competing_grabs()

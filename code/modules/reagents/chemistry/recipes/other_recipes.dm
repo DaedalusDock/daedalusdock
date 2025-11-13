@@ -138,7 +138,7 @@
 	overheat_temp = 575
 	temp_exponent_factor = 0.2
 	thermic_constant = 35 //gives a bonus 15C wiggle room
-	rate_up_lim = 25 //Give a chance to pull back
+	base_reaction_rate = 25 //Give a chance to pull back
 
 /datum/chemical_reaction/nitrous_oxide/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
 	return //This is empty because the explosion reaction will occur instead (see pyrotechnics.dm). This is just here to update the lookup ui.
@@ -340,12 +340,31 @@
 /datum/chemical_reaction/ammonia
 	results = list(/datum/reagent/ammonia = 3)
 	required_reagents = list(/datum/reagent/hydrogen = 3, /datum/reagent/nitrogen = 1)
+	reaction_flags = REACTION_INSTANT
+
+/datum/chemical_reaction/ammonia/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	. = ..()
+	kapuchem_smoke(
+		holder,
+		reaction,
+		list(/datum/reagent/ammonia = round(created_volume * 3 * 0.5, CHEMICAL_VOLUME_ROUNDING)),
+		clamp(created_volume / 3, 0, 3), // For every 9 units, smoke is 1 tile.
+	)
 
 
 /datum/chemical_reaction/diethylamine
 	results = list(/datum/reagent/diethylamine = 2)
 	required_reagents = list (/datum/reagent/ammonia = 1, /datum/reagent/consumable/ethanol = 1)
+	reaction_flags = REACTION_INSTANT
 
+/datum/chemical_reaction/diethylamine/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	. = ..()
+	kapuchem_smoke(
+		holder,
+		reaction,
+		list(/datum/reagent/diethylamine = round(created_volume * 2 * 0.5, CHEMICAL_VOLUME_ROUNDING)),
+		clamp(created_volume / 4, 0, 3), // For every 8 units, smoke is 1 tile.
+	)
 
 /datum/chemical_reaction/plantbgone
 	results = list(/datum/reagent/toxin/plantbgone = 5)
@@ -355,6 +374,16 @@
 /datum/chemical_reaction/weedkiller
 	results = list(/datum/reagent/toxin/plantbgone/weedkiller = 5)
 	required_reagents = list(/datum/reagent/toxin = 1, /datum/reagent/ammonia = 4)
+	reaction_flags = REACTION_INSTANT
+
+/datum/chemical_reaction/weedkiller/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	. = ..()
+	kapuchem_smoke(
+		holder,
+		reaction,
+		list(/datum/reagent/toxin/plantbgone/weedkiller = round(created_volume * 5 * 0.5, CHEMICAL_VOLUME_ROUNDING)),
+		clamp(created_volume / 2, 0, 3), // For every 10 units, smoke is 1 tile.
+	)
 
 /datum/chemical_reaction/pestkiller
 	results = list(/datum/reagent/toxin/pestkiller = 5)
@@ -362,21 +391,6 @@
 
 
 //////////////////////////////////// Other goon stuff ///////////////////////////////////////////
-
-/datum/chemical_reaction/acetone
-	results = list(/datum/reagent/acetone = 3)
-	required_reagents = list(/datum/reagent/fuel/oil = 1, /datum/reagent/fuel = 1, /datum/reagent/oxygen = 1)
-
-/datum/chemical_reaction/oil
-	results = list(/datum/reagent/fuel/oil = 3)
-	required_reagents = list(/datum/reagent/fuel = 1, /datum/reagent/carbon = 1, /datum/reagent/hydrogen = 1)
-
-
-/datum/chemical_reaction/phenol
-	results = list(/datum/reagent/phenol = 3)
-	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/chlorine = 1, /datum/reagent/fuel/oil = 1)
-
-
 /datum/chemical_reaction/ash
 	results = list(/datum/reagent/ash = 1)
 	required_reagents = list(/datum/reagent/fuel/oil = 1)
@@ -585,7 +599,7 @@
 	optimal_temp = 200
 	overheat_temp = 0
 	thermic_constant = 0
-	rate_up_lim = 50
+	base_reaction_rate = 50
 	mix_message = "The solution freezes up into ice!"
 	reaction_flags = REACTION_COMPETITIVE
 
@@ -596,7 +610,7 @@
 	optimal_temp = 350
 	overheat_temp = NO_OVERHEAT
 	thermic_constant = 0
-	rate_up_lim = 50
+	base_reaction_rate = 50
 	mix_message = "The ice melts back into water!"
 
 

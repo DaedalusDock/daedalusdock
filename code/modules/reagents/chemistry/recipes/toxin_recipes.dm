@@ -7,7 +7,7 @@
 	overheat_temp = 900
 	temp_exponent_factor = 2.5
 	thermic_constant = 150
-	rate_up_lim = 15
+	base_reaction_rate = 15
 
 /datum/chemical_reaction/zombiepowder
 	results = list(/datum/reagent/toxin/zombiepowder = 2)
@@ -35,4 +35,4 @@
 	overheat_temp = 900
 	temp_exponent_factor = 1.6
 	thermic_constant = 250
-	rate_up_lim = 10
+	base_reaction_rate = 10

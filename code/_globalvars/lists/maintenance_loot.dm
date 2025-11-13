@@ -156,6 +156,11 @@ GLOBAL_LIST_INIT(common_loot, list( //common: basic items
 		/obj/item/flashlight = 1,
 		/obj/item/flashlight/flare = 1,
 		) = 1,
+	list( //cassettes
+		/obj/item/tape/music/carmen = 4,
+		/obj/item/tape/music/red = 1,
+		/obj/item/tape/music/white = 1,
+		) = 1,
 	))
 
 

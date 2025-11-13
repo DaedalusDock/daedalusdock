@@ -44,13 +44,13 @@
 	. += span_info("System - <span style='color:[is_operational ? "green" : "red"]'>•</span>")
 	return
 
-
-/obj/machinery/netbridge/attackby(obj/item/weapon, mob/user, params)
-
-	if(default_deconstruction_screwdriver(user, null, null, weapon))
+/obj/machinery/netbridge/screwdriver_act(mob/living/user, obj/item/tool)
+	if(default_deconstruction_screwdriver(user, null, null, tool))
 		update_appearance()
-		return
+		return TRUE
+	return ..()
 
+/obj/machinery/netbridge/wrench_act(mob/living/user, obj/item/tool)
 	if(default_change_direction_wrench(user, weapon))
 		terminal = null
 		var/turf/T = get_step(src, dir)
@@ -59,49 +59,51 @@
 				terminal = term
 				terminal.master = src
 				to_chat(user, span_notice("Terminal found."))
-				break
+				break TRUE
 		if(!terminal)
 			to_chat(user, span_alert("No power terminal found."))
-			return
+			return TRUE
 		set_machine_stat(machine_stat & ~BROKEN)
 		update_appearance()
-		return
+		return TRUE
+	return ..()
 
+/obj/machinery/netbridge/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	//building and linking a terminal
-	if(istype(weapon, /obj/item/stack/cable_coil))
+	if(istype(tool, /obj/item/stack/cable_coil))
 		var/dir = get_dir(user,src)
 		if(dir & (dir-1))//we don't want diagonal click
-			return
+			return NONE //Continue the rest of the chain if diagonal.
 
 		if(terminal) //is there already a terminal ?
 			to_chat(user, span_warning("[src] already has a power terminal!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		if(!panel_open) //is the panel open ?
 			to_chat(user, span_warning("You must open the maintenance panel first!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		var/turf/T = get_turf(user)
 		if (T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE) //can we get to the underfloor?
 			to_chat(user, span_warning("You must first remove the floor plating!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 
-
-		var/obj/item/stack/cable_coil/C = weapon
+		var/obj/item/stack/cable_coil/C = tool
 		if(C.get_amount() < 10)
 			to_chat(user, span_warning("You need more wires!"))
-			return
+			return ITEM_INTERACT_BLOCKING
 
 		to_chat(user, span_notice("You start attaching the terminal..."))
 		playsound(src.loc, 'sound/items/deconstruct.ogg', 50, TRUE)
 
 		if(do_after(user, src, 20))
 			if(C.get_amount() < 10 || !C)
-				return
+				//Amount changed mid do-after, or cable vanished.
+				return ITEM_INTERACT_BLOCKING
 			var/obj/structure/cable/N = T.get_cable_node() //get the connecting node cable, if there's one
 			if (prob(50) && electrocute_mob(usr, N, N, 1, TRUE)) //animate the electrocution if uncautious and unlucky
 				do_sparks(5, TRUE, src)
-				return
+				return ITEM_INTERACT_BLOCKING
 			if(!terminal)
 				C.use(10)
 				user.visible_message(span_notice("[user.name] builds a power terminal."),\
@@ -110,7 +112,7 @@
 				//build the terminal and link it to the network
 				make_terminal(T)
 				terminal.connect_to_network()
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	return ..()
 

@@ -1630,7 +1630,9 @@ TYPEINFO_DEF(/obj/item/storage/box/plastic)
 /obj/item/storage/box/carmen/PopulateContents()
 	var/list/song_pool = SSmedia.get_track_pool(MEDIA_TAG_CARMEN_MIRANDA)
 	if(length(song_pool) < 12)
+		#ifndef UNIT_TESTS
 		stack_trace("Carmen Miranda's Ghost cassette box cannot spawn due to the media not being present.")
+		#endif
 		return
 
 	for(var/i in 1 to 6) // 12 songs, 2 songs per cassette

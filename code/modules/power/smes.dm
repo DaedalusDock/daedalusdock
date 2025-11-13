@@ -22,6 +22,9 @@
 	use_power = NO_POWER_USE
 	circuit = /obj/item/circuitboard/machine/smes
 
+	network_flags = NETWORK_FLAG_GEN_ID //Only visible on supply side.
+	net_class = NETCLASS_SMES
+
 	var/capacity = 10e6 // maximum charge
 	var/charge = 0 // actual charge
 
@@ -409,6 +412,24 @@
 		charge = 0
 	update_appearance()
 	log_smes()
+
+/obj/machinery/power/smes/post_signal(datum/signal/sending_signal, preserve_s_addr)
+	if(isnull(terminal) || isnull(sending_signal)) //nullcheck for sanic speed
+		return //You need a pipe and something to send down it, though.
+	if(!preserve_s_addr)
+		sending_signal.data["s_addr"] = src.net_id
+	sending_signal.transmission_method = TRANSMISSION_WIRE
+	sending_signal.author = WEAKREF(src) // Override the sending signal author.
+	src.terminal.post_signal(sending_signal)
+
+/obj/machinery/power/smes/receive_signal(datum/signal/signal)
+	. = ..()
+	if(. == RECEIVE_SIGNAL_FINISHED)
+		return //Ping packet handled.
+
+
+
+
 
 /obj/machinery/power/smes/engineering
 	input_attempt = FALSE //Don't drain the private loop by default

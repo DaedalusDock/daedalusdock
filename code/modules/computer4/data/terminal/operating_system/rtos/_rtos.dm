@@ -103,7 +103,7 @@
 /** RTOS.h - Post Signal
  *  Follows standard post_signal calling conventions.
  */
-/datum/c4_file/terminal_program/operating_system/rtos/proc/post_signal(datum/signal/sending_signal, filter)
+/datum/c4_file/terminal_program/operating_system/rtos/post_signal(datum/signal/sending_signal, filter)
 	if(!is_operational())
 		return
 

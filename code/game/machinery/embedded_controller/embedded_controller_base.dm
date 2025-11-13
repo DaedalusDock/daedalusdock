@@ -7,7 +7,7 @@
 	master = null
 	. = ..()
 
-/datum/computer/file/embedded_program/proc/post_signal(datum/signal/signal, comm_line)
+/datum/computer/file/embedded_program/post_signal(datum/signal/signal, comm_line)
 	SHOULD_CALL_PARENT(FALSE) // This is more of a relay than anything else.
 	if(master)
 		master.post_signal(signal, comm_line)

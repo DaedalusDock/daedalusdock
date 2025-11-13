@@ -139,10 +139,11 @@ TYPEINFO_DEF(/obj/item/tape)
 
 	current_side = current_side == "A" ? "B" : "A"
 
-	update_appearance()
-
-	animate(src, transform = matrix().Scale(-1, 1), time = 0.4 SECONDS, flags = ANIMATION_PARALLEL)
+	var/spin_time = 0.4 SECONDS
+	animate(src, transform = matrix().Scale(-1, 1), time = spin_time, flags = ANIMATION_PARALLEL)
 	animate(transform = matrix())
+
+	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_appearance), spin_time), TIMER_CLIENT_TIME)
 
 /obj/item/tape/update_icon_state()
 	if(icon_state == "[initial_icon_state]_reverse") // To allow for admin-set icon states to persist.

@@ -58,8 +58,9 @@ TYPEINFO_DEF(/obj/item/tape)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/item/tape/LateInitialize()
+	// This is in late initialize so that all child types don't need to think about the sides changing during ..()
 	if(prob(50))
-		tapeflip()
+		flip_tape()
 
 /obj/item/tape/proc/update_available_icons()
 	icons_available = list()
@@ -86,7 +87,7 @@ TYPEINFO_DEF(/obj/item/tape)
 				if(loc != user)
 					return
 
-				tapeflip()
+				flip_tape()
 				to_chat(user, span_notice("You turn \the [src] over."))
 				playsound(src, 'sound/items/taperecorder/tape_flip.ogg', 70, FALSE)
 
@@ -99,7 +100,7 @@ TYPEINFO_DEF(/obj/item/tape)
 
 /obj/item/tape/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	if(prob(50))
-		tapeflip()
+		flip_tape()
 	. = ..()
 
 /obj/item/tape/proc/unspool()
@@ -114,7 +115,7 @@ TYPEINFO_DEF(/obj/item/tape)
 	unspooled = FALSE
 
 /// Flips the tape, changing all of the relevant values and updating the appearance.
-/obj/item/tape/proc/tapeflip()
+/obj/item/tape/proc/flip_tape()
 	//first we save a copy of our current side
 	var/list/storedinfo_currentside = storedinfo.Copy()
 	var/list/timestamp_currentside = timestamp.Copy()
@@ -139,6 +140,9 @@ TYPEINFO_DEF(/obj/item/tape)
 	current_side = current_side == "A" ? "B" : "A"
 
 	update_appearance()
+
+	animate(src, transform = matrix().Scale(-1, 1), time = 0.4 SECONDS, flags = ANIMATION_PARALLEL)
+	animate(transform = matrix())
 
 /obj/item/tape/update_icon_state()
 	if(icon_state == "[initial_icon_state]_reverse") // To allow for admin-set icon states to persist.

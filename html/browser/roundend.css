@@ -1,14 +1,61 @@
-.greentext {
-	color: #90ee90;
-	font-weight: bold;
+.quantico-regular {
+	font-family: "Quantico", sans-serif;
+	font-weight: 400;
+	font-style: normal;
+	line-height: 1;
 }
 
-.greentext_alt {
-	color: green;
+.quantico-bold {
+	font-family: "Quantico", sans-serif;
+	font-weight: 700;
+	font-style: normal;
 }
-.redtext {
-	color: #ef2f3c;
-	font-weight: bold;
+
+.quantico-regular-italic {
+	font-family: "Quantico", sans-serif;
+	font-weight: 400;
+	font-style: italic;
+	line-height: 1;
+}
+
+.quantico-bold-italic {
+	font-family: "Quantico", sans-serif;
+	font-weight: 700;
+	font-style: italic;
+	line-height: 1;
+}
+
+body {
+	background-color: #272727;
+	color: #efefef;
+	font-family: "Quantico", sans-serif;
+	font-size: 1.2em;
+	line-height: 1;
+}
+
+li {
+	margin-bottom: 0.2rem;
+}
+
+.panel {
+	background-color: #313131;
+	padding: 10px;
+	margin-bottom: 5px;
+}
+
+.personal_header {
+	font-family: "Quantico", sans-serif;
+	text-align: center;
+	font-size: 3em;
+	margin: 0.5em;
+}
+
+.good {
+	color: #03fca1;
+}
+
+.bad {
+	color: #fc4b32;
 }
 
 .bluetext {
@@ -21,15 +68,18 @@
 }
 
 .marooned {
-	color: rgb(109, 109, 255); font-weight: bold;
+	color: rgb(109, 109, 255);
+	font-weight: bold;
 }
 
 .service {
-	color: #6eaa2c; font-weight: bold;
+	color: #6eaa2c;
+	font-weight: bold;
 }
 
 .header {
-	font-size: 24px; font-weight: bold;
+	font-size: 24px;
+	font-weight: bold;
 }
 
 .big {
@@ -41,7 +91,7 @@
 }
 
 .codephrase {
-	color : #ef2f3c;
+	color: #ef2f3c;
 }
 
 .redborder {
@@ -53,27 +103,11 @@
 }
 
 .clockborder {
-	border-bottom: 2px solid #B18B25;
+	border-bottom: 2px solid #b18b25;
 }
 
 .stationborder {
 	border-bottom: 2px solid #add8e6;
-}
-
-li {
-	margin-bottom: 0.2rem;
-}
-
-.panel {
-	background-color: #313131;
-	padding: 10px;
-	border-radius: 10px;
-	margin-bottom: 5px;
-}
-
-body {
-	background-color: #272727;
-	color: #efefef;
 }
 
 .tooltip_container {
@@ -88,15 +122,43 @@ body {
 	z-index: 1;
 	width: 220px;
 	font-size: 14px;
-    border-width: 4px;
+	border-width: 4px;
 	border-style: solid;
 	border-color: #272727;
-    background: #363636;
-    color: white;
-    top: 100%;
+	background: #363636;
+	color: white;
+	top: 100%;
 	left: 30px;
 }
 
 .tooltip_container:hover .tooltip_hover {
 	visibility: visible;
+}
+
+.fill_width {
+	width: 100%;
+}
+
+.fill_height {
+	height: 100%;
+}
+
+.flex_container {
+	display: flex;
+}
+
+.flex_container.horizontal {
+	flex-direction: row;
+}
+
+.flex_container.vertical {
+	flex-direction: column;
+}
+
+.justify_center {
+	justify-content: center;
+}
+
+.align_center {
+	align-items: center;
 }

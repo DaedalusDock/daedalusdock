@@ -19,13 +19,13 @@
 	common_report_html = jointext(common_parts, "")
 	compile_survivor_report(popcount)
 
-/// Generates a personalized report for a client and saves it to their round end file.
-/datum/round_end_report/proc/generate_for_client(client/C, file_path)
-	var/list/report_parts = list(
-		compile_personal_report(C),
-		common_report_html,
-	)
-	return jointext(report_parts, "")
+/// Generates a personalized report for a client, or a generic one if no client is provided.
+/datum/round_end_report/proc/generate_for_client(client/C)
+	. = {"
+		[compile_personal_report(C)]
+		[common_report_html]
+	"}
+
 
 /**
  * Log the round-end report as an HTML file
@@ -39,13 +39,7 @@
 /datum/round_end_report/proc/write_log()
 	var/roundend_file = file("[GLOB.log_directory]/round_end_data.html")
 
-	var/list/parts = list()
-	parts += "<div class='panel stationborder'>"
-	parts += SSticker.round_end_report.survivor_report_html
-	parts += "</div>"
-	parts += common_report_html
-
-	var/content = jointext(parts, "")
+	var/content = generate_for_client(null)
 
 	//Log the rendered HTML in the round log directory
 	fdel(roundend_file)
@@ -56,70 +50,87 @@
 	WRITE_FILE(roundend_file, content)
 
 /datum/round_end_report/proc/compile_personal_report(client/C)
-	var/mob/M = C.mob
 	/// Classes to attach to the containing div
 	var/container_classes = "stationborder"
 	var/header_text = ""
 
-	if(M.mind && !isnewplayer(M))
-		if(M.stat != DEAD && !isbrain(M))
-			if(!EMERGENCY_ESCAPED_OR_ENDGAMED || (M.onCentCom() || M.onSyndieBase())) // Shuttle never came, or they're on centcom/syndie
-				header_text = span_greentext("You managed to survive the events on [station_name()] as [M.real_name].")
-			else
-				header_text = "<span class='marooned'>You managed to survive, but were marooned on [station_name()]...</span>"
+	if(C)
+		var/mob/M = C.mob
 
-		else // Player is dead or a brain.
-			container_classes = "redborder"
-			header_text = span_redtext("You did not survive the events on [station_name()]...")
+		if(M.mind && !isnewplayer(M))
+			if(M.stat != DEAD && !isbrain(M))
+				if(!EMERGENCY_ESCAPED_OR_ENDGAMED || (M.onCentCom() || M.onSyndieBase())) // Shuttle never came, or they're on centcom/syndie
+					header_text = "<span class='good'>[M.real_name] survived the cycle</span>"
+				else
+					header_text = "<span class='marooned'>[M.real_name] was marooned on [station_name()]...</span>"
+
+			else // Player is dead or a brain.
+				container_classes = "redborder"
+				header_text = "<span class='bad'>[M.real_name] perished on [station_name()]</span>"
+
+		if(header_text)
+			header_text = "<div class='personal_header'>[header_text]</div>"
 
 	return {"
 		<div class='panel [container_classes]'>
-			[header_text ? "[header_text]<br>" : ""]
+			[header_text]
 			[survivor_report_html]
 		</div>
 	"}
 
 /datum/round_end_report/proc/compile_survivor_report(list/popcount)
 	var/list/parts = list()
-	var/station_evacuated = EMERGENCY_ESCAPED_OR_ENDGAMED
+
+	#define wrap_info(header, text) {"
+		<div class='flex_container vertical align_center' style='flex: 1'>
+			<div>[header]</div>
+			<div>[text]</div>
+		</div>
+	"}
 
 	if(GLOB.round_id)
 		var/statspage = CONFIG_GET(string/roundstatsurl)
 		var/info = statspage ? "<a href='?action=openLink&link=[url_encode(statspage)][GLOB.round_id]'>[GLOB.round_id]</a>" : GLOB.round_id
-		parts += "[FOURSPACES]Round ID: <b>[info]</b>"
-	parts += "[FOURSPACES]Round Duration: <B>[DisplayTimeText(world.time - SSticker.round_start_time)]</B>"
-	parts += "[FOURSPACES]Station Integrity: <B>[GLOB.station_was_nuked ? span_redtext("Destroyed") : "[popcount["station_integrity"]]%"]</B>"
+		parts += wrap_info("Round ID", "<b>[info]</b>")
+
+	parts += wrap_info("Round Duration", "<B>[DisplayTimeText(world.time - SSticker.round_start_time)]</B>")
+	parts += wrap_info("Station Integrity", "<B>[GLOB.station_was_nuked ? span_redtext("Destroyed") : "[popcount["station_integrity"]]%"]</B>")
+
 	var/total_players = GLOB.joined_player_list.len
 	if(total_players)
-		parts+= "[FOURSPACES]Total Population: <B>[total_players]</B>"
-		if(station_evacuated)
-			parts += "<BR>[FOURSPACES]Evacuation Rate: <B>[popcount[POPCOUNT_ESCAPEES]] ([PERCENT(popcount[POPCOUNT_ESCAPEES]/total_players)]%)</B>"
-			parts += "[FOURSPACES](on emergency shuttle): <B>[popcount[POPCOUNT_SHUTTLE_ESCAPEES]] ([PERCENT(popcount[POPCOUNT_SHUTTLE_ESCAPEES]/total_players)]%)</B>"
-		parts += "[FOURSPACES]Survival Rate: <B>[popcount[POPCOUNT_SURVIVORS]] ([PERCENT(popcount[POPCOUNT_SURVIVORS]/total_players)]%)</B>"
-		if(SSblackbox.first_death)
-			var/list/ded = SSblackbox.first_death
-			if(ded.len)
-				parts += "[FOURSPACES]First Death: <b>[ded["name"]], [ded["role"]], at [ded["area"]]. Damage taken: [ded["damage"]].[ded["last_words"] ? " Their last words were: \"[ded["last_words"]]\"" : ""]</b>"
-			//ignore this comment, it fixes the broken sytax parsing caused by the " above
-			else
-				parts += "[FOURSPACES]<i>Nobody died this round!</i>"
+		parts += wrap_info("Total Population", "<B>[total_players]</B>")
+		parts += wrap_info("Survival Rate", "<B>[popcount[POPCOUNT_SURVIVORS]] ([PERCENT(popcount[POPCOUNT_SURVIVORS]/total_players)]%)</B>")
 
-	if(GAMEMODE_WAS_DYNAMIC)
-		var/datum/game_mode/dynamic/mode = SSticker.mode
-		parts += "[FOURSPACES]Threat level: [mode.threat_level]"
-		parts += "[FOURSPACES]Threat left: [mode.mid_round_budget]"
-		if(mode.roundend_threat_log.len)
-			parts += "[FOURSPACES]Threat edits:"
-			for(var/entry as anything in mode.roundend_threat_log)
-				parts += "[FOURSPACES][FOURSPACES][entry]<BR>"
-		parts += "[FOURSPACES]Executed rules:"
-		for(var/datum/dynamic_ruleset/rule in mode.executed_rules)
-			parts += "[FOURSPACES][FOURSPACES][rule.ruletype] - <b>[rule.name]</b>: -[rule.cost + rule.scaled_times * rule.scaling_cost] threat"
-	else
-		parts += "[FOURSPACES]The gamemode was: [SSticker.mode.name]."
+	parts += wrap_info("Gamemode", "<b>[SSticker.mode.name]</b>")
 
-	survivor_report_html =jointext(parts, "<br>")
+	var/fatality_message = span_good("There were no fatalities on this day.")
+	if(SSblackbox.first_death)
+		var/list/ded = SSblackbox.first_death
+		if(ded.len)
+			fatality_message = {"
+				<div class='bad' style='font-size: 1.4em;margin-bottom: 0.5em'>
+					<b>First Blood!</b>
+				</div>
+				<div>
+					<b>[ded["name"]], [ded["role"]], at [ded["area"]]</b>
+				</div>
+				<div>
+					<b>[ded["damage"]]</b>
+				</div>
+				[ded["last_words"] ? "<div>Their last words were \"[default_encode_emphasis(ded["last_words"])]\"</div>" : ""]
+			"}
+
+	survivor_report_html = {"
+		<div class='flex_container horizontal' style='gap: 0.5em;justify-content: space-evenly;text-align: center'>
+			[jointext(parts, "")]
+		</div>
+		<div style='text-align: center;margin-top: 1em;font-size: 1em'>
+			[fatality_message]
+		</div>
+	"}
 	return survivor_report_html
+
+	#undef wrap_info
 
 /datum/round_end_report/proc/compile_law_report()
 	var/list/parts = list()

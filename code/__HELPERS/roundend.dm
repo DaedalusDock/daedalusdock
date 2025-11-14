@@ -305,10 +305,19 @@
 				CRASH("Attempted to generate a roundend report before the round was over.")
 
 			content = SSticker.round_end_report.generate_for_client(C, filepath)
+			fdel(filepath)
+			text2file(content, filepath)
 		else
 			CRASH("Bad report type: [report_type]")
 
+	var/google_font_shim = {"
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+	"}
+
 	roundend_report.set_content(content)
+	roundend_report.add_head_content(google_font_shim)
 	roundend_report.stylesheets = list()
 	roundend_report.add_stylesheet("roundend", 'html/browser/roundend.css')
 	roundend_report.add_stylesheet("font-awesome", 'html/font-awesome/css/all.min.css')

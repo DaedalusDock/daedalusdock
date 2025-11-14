@@ -1481,6 +1481,7 @@
 #include "code\game\machinery\computer\prisoner\gulag_teleporter.dm"
 #include "code\game\machinery\computer\prisoner\management.dm"
 #include "code\game\machinery\datanet\_networked.dm"
+#include "code\game\machinery\datanet\bridge\netbridge.dm"
 #include "code\game\machinery\datanet\p2p_phones\_p2p_phones.dm"
 #include "code\game\machinery\datanet\p2p_phones\subtypes.dm"
 #include "code\game\machinery\datanet\test_equipment\test_equipment_radio.dm"

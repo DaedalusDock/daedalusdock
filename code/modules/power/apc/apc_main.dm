@@ -63,7 +63,7 @@ DEFINE_INTERACTABLE(/obj/machinery/power/apc)
 	///Is the AI locked from using the APC
 	var/aidisabled = FALSE
 	///Reference to our cable terminal
-	var/obj/machinery/power/terminal/datanet/terminal = null
+	var/obj/machinery/power/terminal/terminal = null
 	///Amount of power used by the lighting channel
 	var/lastused_light = 0
 	///Amount of power used by the equipment channel

@@ -3791,6 +3791,9 @@
 /obj/machinery/holopad,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable/yellow{
+	icon_state = "96"
+	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
 "boP" = (
@@ -6858,6 +6861,9 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "5"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "33"
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
@@ -20084,6 +20090,9 @@
 	pixel_y = -32
 	},
 /obj/effect/turf_decal/tile/neutral,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
 "hev" = (
@@ -42097,6 +42106,9 @@
 /obj/structure/cable/red{
 	icon_state = "3"
 	},
+/obj/structure/cable/red{
+	icon_state = "10"
+	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
 "oRO" = (
@@ -43682,6 +43694,13 @@
 	dir = 6
 	},
 /obj/effect/turf_decal/tile/neutral,
+/obj/effect/landmark/event_spawn,
+/obj/structure/cable/red{
+	icon_state = "4"
+	},
+/obj/machinery/power/terminal{
+	dir = 8
+	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
 "pzy" = (
@@ -47166,6 +47185,9 @@
 "qIK" = (
 /obj/machinery/atmospherics/pipe/smart/simple/supply/hidden,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
+/obj/structure/cable/yellow{
+	icon_state = "96"
+	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
 "qIM" = (
@@ -65892,11 +65914,15 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
 	},
-/obj/effect/landmark/event_spawn,
 /obj/item/radio/intercom/directional/south,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/neutral,
+/obj/structure/cable/yellow{
+	icon_state = "8"
+	},
+/obj/machinery/netbridge,
+/obj/machinery/power/data_terminal,
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
 "xlh" = (
@@ -67648,6 +67674,9 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/neutral,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
 "xTA" = (
@@ -68315,6 +68344,16 @@
 /obj/effect/spawner/random/decoration/ornament,
 /turf/open/floor/iron,
 /area/station/maintenance/port/aft)
+"yfE" = (
+/obj/effect/turf_decal/tile/yellow{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/neutral,
+/obj/structure/cable/yellow{
+	icon_state = "68"
+	},
+/turf/open/floor/iron,
+/area/station/engineering/atmos/storage/gas)
 "yfL" = (
 /turf/open/floor/iron,
 /area/station/security/brig)
@@ -109384,7 +109423,7 @@ gZB
 nwg
 osK
 iCd
-mef
+yfE
 vgq
 guv
 njp

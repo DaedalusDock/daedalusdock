@@ -69,51 +69,50 @@
 
 /obj/machinery/netbridge/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	//building and linking a terminal
-	if(istype(tool, /obj/item/stack/cable_coil))
-		var/dir = get_dir(user,src)
-		if(dir & (dir-1))//we don't want diagonal click
-			return NONE //Continue the rest of the chain if diagonal.
+	if(!istype(tool, /obj/item/stack/cable_coil))
+		return NONE
 
-		if(terminal) //is there already a terminal ?
-			to_chat(user, span_warning("[src] already has a power terminal!"))
-			return ITEM_INTERACT_BLOCKING
+	if(ISDIAGONALDIR(get_dir(user,src)))//we don't want diagonal click
+		return NONE //Continue the rest of the chain if diagonal.
 
-		if(!panel_open) //is the panel open ?
-			to_chat(user, span_warning("You must open the maintenance panel first!"))
-			return ITEM_INTERACT_BLOCKING
-
-		var/turf/T = get_turf(user)
-		if (T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE) //can we get to the underfloor?
-			to_chat(user, span_warning("You must first remove the floor plating!"))
-			return ITEM_INTERACT_BLOCKING
-
-		var/obj/item/stack/cable_coil/C = tool
-		if(C.get_amount() < 10)
-			to_chat(user, span_warning("You need more wires!"))
-			return ITEM_INTERACT_BLOCKING
-
-		to_chat(user, span_notice("You start attaching the terminal..."))
-		playsound(src.loc, 'sound/items/deconstruct.ogg', 50, TRUE)
-
-		if(do_after(user, src, 20))
-			if(C.get_amount() < 10 || !C)
-				//Amount changed mid do-after, or cable vanished.
-				return ITEM_INTERACT_BLOCKING
-			var/obj/structure/cable/N = T.get_cable_node() //get the connecting node cable, if there's one
-			if (prob(50) && electrocute_mob(usr, N, N, 1, TRUE)) //animate the electrocution if uncautious and unlucky
-				do_sparks(5, TRUE, src)
-				return ITEM_INTERACT_BLOCKING
-			if(!terminal)
-				C.use(10)
-				user.visible_message(span_notice("[user.name] builds a power terminal."),\
-					span_notice("You build the power terminal."))
-
-				//build the terminal and link it to the network
-				make_terminal(T)
-				terminal.connect_to_network()
+	if(terminal) //is there already a terminal ?
+		to_chat(user, span_warning("[src] already has a power terminal!"))
 		return ITEM_INTERACT_BLOCKING
 
-	return ..()
+	if(!panel_open) //is the panel open ?
+		to_chat(user, span_warning("You must open the maintenance panel first!"))
+		return ITEM_INTERACT_BLOCKING
+
+	var/turf/T = get_turf(user)
+	if (T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE) //can we get to the underfloor?
+		to_chat(user, span_warning("You must first remove the floor plating!"))
+		return ITEM_INTERACT_BLOCKING
+
+	var/obj/item/stack/cable_coil/C = tool
+	if(C.get_amount() < 10)
+		to_chat(user, span_warning("You need more wires!"))
+		return ITEM_INTERACT_BLOCKING
+
+	to_chat(user, span_notice("You start attaching the terminal..."))
+	playsound(src.loc, 'sound/items/deconstruct.ogg', 50, TRUE)
+
+	if(do_after(user, src, 2 SECONDS, DO_PUBLIC, display = C))
+		if(C?.get_amount() < 10)
+			//Amount changed mid do-after, or cable vanished.
+			return ITEM_INTERACT_BLOCKING
+		var/obj/structure/cable/N = T.get_cable_node() //get the connecting node cable, if there's one
+		if (prob(50) && electrocute_mob(usr, N, N, 1, TRUE)) //animate the electrocution if uncautious and unlucky
+			do_sparks(5, TRUE, src)
+			return ITEM_INTERACT_BLOCKING
+		if(!terminal)
+			C.use(10)
+			user.visible_message(span_notice("[user.name] builds a power terminal."))
+
+			//build the terminal and link it to the network
+			make_terminal(T)
+			terminal.connect_to_network()
+	return ITEM_INTERACT_BLOCKING
+
 
 /obj/machinery/netbridge/multitool_act(mob/living/user, obj/item/tool)
 	. = TRUE

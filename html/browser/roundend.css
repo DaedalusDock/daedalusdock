@@ -28,9 +28,6 @@
 body {
 	background-color: #272727;
 	color: #efefef;
-	font-family: "Quantico", sans-serif;
-	font-size: 1.2em;
-	line-height: 1;
 }
 
 li {
@@ -38,6 +35,9 @@ li {
 }
 
 .panel {
+	font-family: "Quantico", sans-serif;
+	font-size: 2em;
+	line-height: 1;
 	background-color: #313131;
 	padding: 10px;
 	margin-bottom: 5px;
@@ -46,7 +46,7 @@ li {
 .personal_header {
 	font-family: "Quantico", sans-serif;
 	text-align: center;
-	font-size: 3em;
+	font-size: 2em;
 	margin: 0.5em;
 }
 

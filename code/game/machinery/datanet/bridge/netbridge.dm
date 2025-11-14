@@ -51,7 +51,7 @@
 	return ..()
 
 /obj/machinery/netbridge/wrench_act(mob/living/user, obj/item/tool)
-	if(default_change_direction_wrench(user, weapon))
+	if(default_change_direction_wrench(user, tool))
 		terminal = null
 		var/turf/T = get_step(src, dir)
 		for(var/obj/machinery/power/terminal/term in T)
@@ -59,7 +59,7 @@
 				terminal = term
 				terminal.master = src
 				to_chat(user, span_notice("Terminal found."))
-				break TRUE
+				break
 		if(!terminal)
 			to_chat(user, span_alert("No power terminal found."))
 			return TRUE

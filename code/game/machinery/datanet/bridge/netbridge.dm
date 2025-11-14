@@ -48,14 +48,14 @@
 	if(default_deconstruction_screwdriver(user, null, null, tool))
 		update_appearance()
 		return TRUE
-	return ..()
 
 /obj/machinery/netbridge/wrench_act(mob/living/user, obj/item/tool)
 	if(default_change_direction_wrench(user, tool))
+		terminal?.master = null
 		terminal = null
 		var/turf/T = get_step(src, dir)
 		for(var/obj/machinery/power/terminal/term in T)
-			if(term && term.dir == turn(dir, 180))
+			if(term.dir == turn(dir, 180))
 				terminal = term
 				terminal.master = src
 				to_chat(user, span_notice("Terminal found."))
@@ -66,7 +66,6 @@
 		set_machine_stat(machine_stat & ~BROKEN)
 		update_appearance()
 		return TRUE
-	return ..()
 
 /obj/machinery/netbridge/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	//building and linking a terminal

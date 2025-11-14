@@ -91,6 +91,7 @@
 
 	//changing direction using wrench
 	if(default_change_direction_wrench(user, I))
+		terminal?.master = null
 		terminal = null
 		var/turf/T = get_step(src, dir)
 		for(var/obj/machinery/power/terminal/term in T)
@@ -204,10 +205,9 @@
 	set_machine_stat(machine_stat & ~BROKEN)
 
 /obj/machinery/power/smes/disconnect_terminal()
-	if(terminal)
-		terminal.master = null
-		terminal = null
-		atom_break()
+	terminal?.master = null
+	terminal = null
+	atom_break()
 
 
 /obj/machinery/power/smes/update_overlays()

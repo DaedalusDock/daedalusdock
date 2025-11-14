@@ -422,15 +422,6 @@
 	sending_signal.author = WEAKREF(src) // Override the sending signal author.
 	src.terminal.post_signal(sending_signal)
 
-/obj/machinery/power/smes/receive_signal(datum/signal/signal)
-	. = ..()
-	if(. == RECEIVE_SIGNAL_FINISHED)
-		return //Ping packet handled.
-
-
-
-
-
 /obj/machinery/power/smes/engineering
 	input_attempt = FALSE //Don't drain the private loop by default
 	charge = 10e6 // Engineering starts with some charge for singulo //sorry little one, singulo as engine is gone //ZAS supermatter takes longer to set up so you get max.

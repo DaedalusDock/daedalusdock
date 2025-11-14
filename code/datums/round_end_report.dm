@@ -72,7 +72,7 @@
 			header_text = "<div class='personal_header'>[header_text]</div>"
 
 	return {"
-		<div class='panel [container_classes]'>
+		<div class='panel general_panel [container_classes]'>
 			[header_text]
 			[survivor_report_html]
 		</div>
@@ -108,7 +108,7 @@
 		var/list/ded = SSblackbox.first_death
 		if(ded.len)
 			fatality_message = {"
-				<div class='bad' style='font-size: 1.4em;margin-bottom: 0.5em'>
+				<div class='bad' style='font-size: 1.5rem;margin-bottom: 0.5em;font-family: "Special Elite", serif;'>
 					<b>First Blood!</b>
 				</div>
 				<div>
@@ -121,7 +121,7 @@
 			"}
 
 	survivor_report_html = {"
-		<div class='flex_container horizontal' style='gap: 0.5em;justify-content: space-evenly;text-align: center'>
+		<div class='flex_container horizontal' style='gap: 0.5em;justify-content: space-evenly;flex-wrap: wrap;text-align: center'>
 			[jointext(parts, "")]
 		</div>
 		<div style='text-align: center;margin-top: 1em;font-size: 1em'>
@@ -184,37 +184,39 @@
 		all_antagonists |= A
 
 	for(var/datum/team/T in all_teams)
-		result += T.roundend_report()
+		result += "<div>[T.roundend_report()]</div>"
 		for(var/datum/antagonist/X in all_antagonists)
 			if(X.get_team() == T)
 				all_antagonists -= X
-		result += " "//newline between teams
 		CHECK_TICK
-
-	var/currrent_category
-	var/datum/antagonist/previous_category
 
 	sortTim(all_antagonists, GLOBAL_PROC_REF(cmp_antag_category))
 
+	var/list/category_map = list()
 	for(var/datum/antagonist/A in all_antagonists)
 		if(!A.show_in_roundend)
 			continue
-		if(A.roundend_category != currrent_category)
-			if(previous_category)
-				result += previous_category.roundend_report_footer()
-				result += "</div>"
-			result += "<div class='panel redborder'>"
-			result += A.roundend_report_header()
-			currrent_category = A.roundend_category
-			previous_category = A
-		result += A.roundend_report()
-		result += "<br><br>"
-		CHECK_TICK
 
-	if(all_antagonists.len)
-		var/datum/antagonist/last = all_antagonists[all_antagonists.len]
-		result += last.roundend_report_footer()
-		result += "</div>"
+		category_map[A.roundend_category] += list(A)
+
+	for(var/antag_category in category_map)
+		var/datum/antagonist/reference_antag = category_map[antag_category][1] // Use the first one as the reference for the header/footer
+		result += {"
+			<div class='panel redborder antag_report'>
+				[reference_antag.roundend_report_header()]
+		"}
+
+		for(var/datum/antagonist/iter_antag in category_map[antag_category])
+			result += {"
+					<div class='antag_report_body'>[iter_antag.roundend_report()]</div>
+			"}
+
+		result += {"
+				[reference_antag.roundend_report_footer()]
+			</div>
+		"}
+
+		CHECK_TICK
 
 	antag_report_html = jointext(result, "")
 	return antag_report_html

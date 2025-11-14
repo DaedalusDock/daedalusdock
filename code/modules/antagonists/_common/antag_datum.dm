@@ -9,7 +9,10 @@ GLOBAL_LIST_EMPTY(antagonists)
 	var/description = "This role has no defined description, so probably no lore implications."
 
 	///Section of roundend report, datums with same category will be displayed together, also default header for the section
-	var/roundend_category = "other antagonists"
+	var/roundend_category = "other wildcards"
+	/// Color used for the header in the round end report.
+	var/roundend_header_color = "#fc4b32"
+
 	///Set to false to hide the antagonists from roundend report
 	var/show_in_roundend = TRUE
 	///If false, the roundtype will still convert with this antag active
@@ -317,22 +320,22 @@ GLOBAL_LIST_EMPTY(antagonists)
 	if(!owner)
 		CRASH("Antagonist datum without owner")
 
-	report += printplayer(owner)
+	report += "<div>[printplayer(owner)]</div>"
 
 	var/objectives_complete = TRUE
 	if(objectives.len)
-		report += printobjectives(objectives)
+		report += "<div>[printobjectives(objectives)]</div>"
 		for(var/datum/objective/objective in objectives)
 			if(!objective.check_completion())
 				objectives_complete = FALSE
 				break
 
 	if(objectives.len == 0 || objectives_complete)
-		report += "<span class='greentext big'>The [name] was successful!</span>"
+		report += "<div class='good big'>The [name] was successful!</div>"
 	else
-		report += "<span class='redtext big'>The [name] has failed!</span>"
+		report += "<div class='bad big'>The [name] has failed!</div>"
 
-	return report.Join("<br>")
+	return jointext(report, "")
 
 /**
  * Proc that sends string data for the round-end report.
@@ -340,7 +343,8 @@ GLOBAL_LIST_EMPTY(antagonists)
  * Appears at start of roundend_catagory section.
  */
 /datum/antagonist/proc/roundend_report_header()
-	return "<span class='header'>The [roundend_category] were:</span><br>"
+	var/header_text = replacetext(roundend_category, "%STATION%", station_name())
+	return "<div class='header antagonist' style='color: [roundend_header_color]'>[uppertext(header_text)]</div>"
 
 /**
  * Proc that sends string data for the round-end report.

@@ -38,12 +38,12 @@ GLOBAL_LIST_EMPTY(antagonist_teams)
 
 	var/list/report = list()
 
-	report += "<span class='header'>[name]:</span>"
+	report += "<span class='header antagonist'>[name]:</span>"
 	report += "The [member_name]s were:"
 	report += printplayerlist(members)
 
 	if(objectives.len)
-		report += "<span class='header'>Team had following objectives:</span>"
+		report += "<span class='header antagonist'>Team had following objectives:</span>"
 		var/win = TRUE
 		var/objective_count = 1
 		for(var/datum/objective/objective in objectives)

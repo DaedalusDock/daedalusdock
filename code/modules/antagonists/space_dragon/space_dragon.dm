@@ -65,9 +65,9 @@
 				objectives_complete = FALSE
 				break
 	if(objectives_complete)
-		parts += "<span class='greentext big'>The [name] was successful!</span>"
+		parts += "<span class='good big'>The [name] was successful!</span>"
 	else
-		parts += "<span class='redtext big'>The [name] has failed!</span>"
-	parts += "<span class='header'>The [name] was assisted by:</span>"
+		parts += "<span class='bad big'>The [name] has failed!</span>"
+	parts += "<span class='header antagonist'>The [name] was assisted by:</span>"
 	parts += printplayerlist(carp)
 	return "<div class='panel redborder'>[parts.Join("<br>")]</div>"

@@ -313,7 +313,7 @@
 	var/google_font_shim = {"
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 	"}
 
 	roundend_report.set_content(content)
@@ -366,7 +366,9 @@
 	var/jobtext = ""
 	if(!is_unassigned_job(ply.assigned_role))
 		jobtext = " the <b>[ply.assigned_role.title]</b>"
+
 	var/text = "<b>[ply.key]</b> was <b>[ply.name]</b>[jobtext] and"
+
 	if(ply.current)
 		if(ply.current.stat == DEAD)
 			text += " [span_redtext("died")]"

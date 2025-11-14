@@ -451,7 +451,7 @@
 			count++
 
 	if(members.len)
-		parts += "<span class='header'>The cultists were:</span>"
+		parts += "<span class='header antagonist'>The cultists were:</span>"
 		parts += printplayerlist(members)
 
 	return "<div class='panel redborder'>[parts.Join("<br>")]</div>"

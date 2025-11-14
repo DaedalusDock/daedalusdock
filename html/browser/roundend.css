@@ -1,30 +1,3 @@
-.quantico-regular {
-	font-family: "Quantico", sans-serif;
-	font-weight: 400;
-	font-style: normal;
-	line-height: 1;
-}
-
-.quantico-bold {
-	font-family: "Quantico", sans-serif;
-	font-weight: 700;
-	font-style: normal;
-}
-
-.quantico-regular-italic {
-	font-family: "Quantico", sans-serif;
-	font-weight: 400;
-	font-style: italic;
-	line-height: 1;
-}
-
-.quantico-bold-italic {
-	font-family: "Quantico", sans-serif;
-	font-weight: 700;
-	font-style: italic;
-	line-height: 1;
-}
-
 body {
 	background-color: #272727;
 	color: #efefef;
@@ -36,18 +9,33 @@ li {
 
 .panel {
 	font-family: "Quantico", sans-serif;
-	font-size: 2em;
+	font-size: 1rem;
 	line-height: 1;
 	background-color: #313131;
 	padding: 10px;
 	margin-bottom: 5px;
 }
 
+.general_panel {
+	font-size: 1.5rem;
+}
+
+.header {
+	font-size: 2rem;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 2rem;
+}
+
+.header.antagonist {
+	font-family: "Special Elite", serif;
+}
+
 .personal_header {
 	font-family: "Quantico", sans-serif;
 	text-align: center;
-	font-size: 2em;
-	margin: 0.5em;
+	font-size: 3rem;
+	margin: 2rem;
 }
 
 .good {
@@ -77,13 +65,8 @@ li {
 	font-weight: bold;
 }
 
-.header {
-	font-size: 24px;
-	font-weight: bold;
-}
-
 .big {
-	font-size: 24px;
+	font-size: 2em;
 }
 
 .medaltext {

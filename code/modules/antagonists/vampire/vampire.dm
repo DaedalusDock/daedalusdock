@@ -3,7 +3,7 @@
 	name_prefix = "an"
 	description = "You are infected with the Sanguine Plague, and have developed supernatural abilities alongside a thirst for human blood."
 
-	roundend_category = "vampires"
+	roundend_category = "Vampires lurking %STATION%"
 	antagpanel_category = "Vampire"
 	job_rank = ROLE_VAMPIRE
 	antag_hud_name = "vampire"

@@ -344,9 +344,9 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 		count++
 
 	if(wizardwin)
-		parts += span_greentext("The wizard was successful!")
+		parts += "<span class='good'>The wizard was successful!</span>"
 	else
-		parts += span_redtext("The wizard has failed!")
+		parts += "<span class='bad'>The wizard has failed!</span>"
 
 	var/list/purchases = list()
 	for(var/list/log as anything in GLOB.wizard_spellbook_purchases_by_key[owner.key])
@@ -367,10 +367,10 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 /datum/team/wizard/roundend_report()
 	var/list/parts = list()
 
-	parts += "<span class='header'>Wizards/witches of [master_wizard.owner.name] team were:</span>"
+	parts += "<span class='header antagonist'>Wizards/witches of [master_wizard.owner.name] team were:</span>"
 	parts += master_wizard.roundend_report()
 	parts += " "
-	parts += "<span class='header'>[master_wizard.owner.name] apprentices and minions were:</span>"
+	parts += "<span class='header antagonist'>[master_wizard.owner.name] apprentices and minions were:</span>"
 	parts += printplayerlist(members - master_wizard.owner)
 
 	return "<div class='panel redborder'>[parts.Join("<br>")]</div>"

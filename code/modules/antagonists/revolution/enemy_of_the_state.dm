@@ -62,6 +62,6 @@
 			report += "<span class='greentext big'>Minor [name] Victory</span>"
 			report += "<B>[name] has survived as an exile!</B>"
 	else
-		report += "<span class='redtext big'>The [name] has failed!</span>"
+		report += "<span class='bad big'>The [name] has failed!</span>"
 
 	return report.Join("<br>")

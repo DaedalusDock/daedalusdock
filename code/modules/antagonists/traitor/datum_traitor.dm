@@ -1,6 +1,6 @@
 /datum/antagonist/traitor
 	name = "Traitor"
-	roundend_category = "traitors"
+	roundend_category = "Traitors aboard %STATION%"
 	antagpanel_category = "Traitor"
 	job_rank = ROLE_TRAITOR
 	antag_hud_name = "traitor"
@@ -216,23 +216,12 @@
 
 	result += objectives_text
 
-	//PARIAH EDIT REMOVAL
-	/*
-	if(uplink_handler)
-		var/completed_objectives_text = "Completed Uplink Objectives: "
-		for(var/datum/traitor_objective/objective as anything in uplink_handler.completed_objectives)
-			if(objective.objective_state == OBJECTIVE_STATE_COMPLETED)
-				completed_objectives_text += "<br><B>[objective.name]</B> - ([objective.telecrystal_reward] TC, [round(objective.progression_reward/600, 0.1)] Reputation)"
-		result += completed_objectives_text
-	*/
-	//PARIAH EDIT REMOVAL
-
 	var/special_role_text = lowertext(name)
 
 	if(traitor_won)
-		result += span_greentext("The [special_role_text] was successful!")
+		result += "<span class='good'>The [special_role_text] was successful!</span>"
 	else
-		result += span_redtext("The [special_role_text] has failed!")
+		result += "<span class='bad'>The [special_role_text] has failed!</span>"
 		SEND_SOUND(owner.current, 'sound/ambience/ambifailure.ogg')
 
 	return result.Join("<br>")
@@ -242,7 +231,7 @@
 	var/responses = jointext(GLOB.syndicate_code_response, ", ")
 
 	var/message = "<br><b>The code phrases were:</b> <span class='bluetext'>[phrases]</span><br>\
-					<b>The code responses were:</b> [span_redtext("[responses]")]<br>"
+					<b>The code responses were:</b> <span class='bad'>[responses]<br>"
 
 	return message
 

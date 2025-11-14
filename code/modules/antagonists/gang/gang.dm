@@ -192,7 +192,7 @@
 
 /datum/team/gang/roundend_report()
 	var/list/report = list()
-	report += "<span class='header'>[name]:</span>"
+	report += "<span class='header antagonist'>[name]:</span>"
 	if(!members.len)
 		report += span_redtext("The family was wiped out!")
 	if(current_theme.everyone_objective)

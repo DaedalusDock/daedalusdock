@@ -23,6 +23,12 @@
 	terminal.master = src
 	update_appearance()
 
+/obj/machinery/netbridge/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	if(terminal)
+		terminal.master = null
+		terminal = null
+
 /obj/machinery/netbridge/proc/find_and_set_terminal()
 	for(var/direction in GLOB.cardinals)
 		var/turf/T = get_step(src, direction)

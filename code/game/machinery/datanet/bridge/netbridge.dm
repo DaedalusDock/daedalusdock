@@ -28,6 +28,8 @@
 	if(terminal)
 		terminal.master = null
 		terminal = null
+	return ..()
+
 
 /obj/machinery/netbridge/proc/find_and_set_terminal()
 	for(var/direction in GLOB.cardinals)

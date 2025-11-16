@@ -388,7 +388,7 @@
 	else
 		return //Undefined result
 
-/datum/team/nuclear/roundend_report()
+/datum/team/nuclear/roundend_report_article_column_body()
 	var/list/parts = list()
 	parts += "<span class='header antagonist'>[syndicate_name] Operatives:</span>"
 

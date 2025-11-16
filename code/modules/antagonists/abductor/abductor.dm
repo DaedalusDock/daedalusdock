@@ -168,7 +168,7 @@ GLOBAL_LIST_INIT(possible_abductor_names, list("Alpha","Beta","Gamma","Delta","E
 	O.update_explanation_text()
 	objectives += O
 
-/datum/team/abductor_team/roundend_report()
+/datum/team/abductor_team/roundend_report_article_column_body()
 	var/list/result = list()
 
 	var/won = TRUE

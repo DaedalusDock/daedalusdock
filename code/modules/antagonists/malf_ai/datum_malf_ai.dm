@@ -201,7 +201,7 @@
 			module_picker_compactmode = !module_picker_compactmode
 			return TRUE
 
-/datum/antagonist/malf_ai/roundend_report()
+/datum/antagonist/malf_ai/roundend_report_article_column_body()
 	var/list/result = list()
 
 	var/malf_ai_won = TRUE

@@ -429,7 +429,7 @@
 			return CULT_LOSS
 	return CULT_VICTORY
 
-/datum/team/cult/roundend_report()
+/datum/team/cult/roundend_report_article_column_body()
 	var/list/parts = list()
 	var/victory = check_cult_victory()
 

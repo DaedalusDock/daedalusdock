@@ -51,7 +51,7 @@
 	var/datum/antagonist/space_dragon/dragon
 	explanation_text = "Summon and protect the rifts to flood the station with carp."
 
-/datum/antagonist/space_dragon/roundend_report()
+/datum/antagonist/space_dragon/roundend_report_article_column_body()
 	var/list/parts = list()
 	var/datum/objective/summon_carp/S = locate() in objectives
 	if(S.check_completion())

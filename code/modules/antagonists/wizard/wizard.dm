@@ -328,7 +328,7 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	objectives += new_objective
 
 //Solo wizard report
-/datum/antagonist/wizard/roundend_report()
+/datum/antagonist/wizard/roundend_report_article_column_body()
 	var/list/parts = list()
 
 	parts += printplayer(owner)
@@ -364,11 +364,11 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	return parts.Join("<br>")
 
 //Wizard with apprentices report
-/datum/team/wizard/roundend_report()
+/datum/team/wizard/roundend_report_article_column_body()
 	var/list/parts = list()
 
 	parts += "<span class='header antagonist'>Wizards/witches of [master_wizard.owner.name] team were:</span>"
-	parts += master_wizard.roundend_report()
+	parts += master_wizard.roundend_report_article_column_body()
 	parts += " "
 	parts += "<span class='header antagonist'>[master_wizard.owner.name] apprentices and minions were:</span>"
 	parts += printplayerlist(members - master_wizard.owner)

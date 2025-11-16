@@ -33,7 +33,7 @@
 	to_chat(owner, span_boldannounce("You're an enemy of the state to Nanotrasen. You're a loose end to the Syndicate."))
 	to_chat(owner, "<b>It's time to live out your days as an exile... or go out in one last big bang.</b>")
 
-/datum/antagonist/enemy_of_the_state/roundend_report()
+/datum/antagonist/enemy_of_the_state/roundend_report_article_column_body()
 	var/list/report = list()
 
 	if(!owner)

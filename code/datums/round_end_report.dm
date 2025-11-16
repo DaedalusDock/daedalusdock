@@ -171,7 +171,7 @@
 	return law_report_html
 
 /datum/round_end_report/proc/compile_antag_report()
-	var/list/result = list()
+	var/list/articles = list()
 	var/list/all_teams = list()
 	var/list/all_antagonists = list()
 
@@ -183,12 +183,13 @@
 			continue
 		all_antagonists |= A
 
-	for(var/datum/team/T in all_teams)
-		result += "<div>[T.roundend_report()]</div>"
-		for(var/datum/antagonist/X in all_antagonists)
-			if(X.get_team() == T)
-				all_antagonists -= X
-		CHECK_TICK
+	#warn needs rewrite
+	// for(var/datum/team/T in all_teams)
+	// 	result += "<div>[T.roundend_report()]</div>"
+	// 	for(var/datum/antagonist/X in all_antagonists)
+	// 		if(X.get_team() == T)
+	// 			all_antagonists -= X
+	// 	CHECK_TICK
 
 	sortTim(all_antagonists, GLOBAL_PROC_REF(cmp_antag_category))
 
@@ -201,24 +202,18 @@
 
 	for(var/antag_category in category_map)
 		var/datum/antagonist/reference_antag = category_map[antag_category][1] // Use the first one as the reference for the header/footer
-		result += {"
-			<div class='panel redborder antag_report'>
-				[reference_antag.roundend_report_header()]
-		"}
-
-		for(var/datum/antagonist/iter_antag in category_map[antag_category])
-			result += {"
-					<div class='antag_report_body'>[iter_antag.roundend_report()]</div>
-			"}
-
-		result += {"
-				[reference_antag.roundend_report_footer()]
-			</div>
-		"}
-
+		var/list/columns = list()
+		articles += reference_antag.roundend_report_article(category_map[antag_category])
 		CHECK_TICK
 
-	antag_report_html = jointext(result, "")
+	antag_report_html = {"
+		<div class='panel newspaper'>
+			<div class='newspaper_header'>
+				The Colony Echo
+			</div>
+			[jointext(articles, "")]
+		</div>
+	"}
 	return antag_report_html
 
 ///Generate a report for how much money is on station, as well as the richest crewmember on the station.

@@ -151,7 +151,7 @@
 
 	name = last_names.Join(" & ")
 
-/datum/team/brother_team/roundend_report()
+/datum/team/brother_team/roundend_report_article_column_body()
 	var/list/parts = list()
 
 	parts += "<span class='header antagonist'>The blood brothers of [name] were:</span>"

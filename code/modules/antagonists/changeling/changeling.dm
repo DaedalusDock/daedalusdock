@@ -810,7 +810,7 @@
 	new_profile.profile_snapshot = profile_snapshot
 	new_profile.id_icon = id_icon
 
-/datum/antagonist/changeling/roundend_report()
+/datum/antagonist/changeling/roundend_report_article_column_body()
 	var/list/parts = list()
 
 	var/changeling_win = TRUE

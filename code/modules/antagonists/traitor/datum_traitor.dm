@@ -175,12 +175,10 @@
 	data["objectives"] = get_objectives()
 	return data
 
-/datum/antagonist/traitor/roundend_report()
+/datum/antagonist/traitor/roundend_report_article_column_body()
 	var/list/result = list()
 
 	var/traitor_won = TRUE
-
-	result += printplayer(owner)
 
 	var/used_telecrystals = 0
 	var/uplink_owned = FALSE
@@ -219,9 +217,9 @@
 	var/special_role_text = lowertext(name)
 
 	if(traitor_won)
-		result += "<span class='good'>The [special_role_text] was successful!</span>"
+		result += "<div class='highlighter' style='font-size: 1.5em;'>The [special_role_text] succeeded in their mission.</div>"
 	else
-		result += "<span class='bad'>The [special_role_text] has failed!</span>"
+		result += "<div class='highlighter' style='font-size: 1.5em;'>The [special_role_text] failed their mission.</div>"
 		SEND_SOUND(owner.current, 'sound/ambience/ambifailure.ogg')
 
 	return result.Join("<br>")

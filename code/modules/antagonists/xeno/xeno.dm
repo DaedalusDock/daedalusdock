@@ -2,7 +2,7 @@
 	name = "Aliens"
 
 //Simply lists them.
-/datum/team/xeno/roundend_report()
+/datum/team/xeno/roundend_report_article_column_body()
 	var/list/parts = list()
 	parts += "<span class='header antagonist'>The [name] were:</span>"
 	parts += printplayerlist(members)

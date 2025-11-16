@@ -32,7 +32,7 @@ GLOBAL_LIST_EMPTY(antagonist_teams)
 	members -= member
 
 //Display members/victory/failure/objectives for the team
-/datum/team/proc/roundend_report()
+/datum/team/proc/roundend_report_article_column_body()
 	if(!show_roundend_report)
 		return
 

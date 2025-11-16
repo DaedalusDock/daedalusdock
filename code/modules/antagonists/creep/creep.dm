@@ -105,10 +105,7 @@
 	for(var/datum/objective/O in objectives)
 		O.update_explanation_text()
 
-/datum/antagonist/obsessed/roundend_report_header()
-	return "<span class='header antagonist'>Someone became obsessed!</span><br>"
-
-/datum/antagonist/obsessed/roundend_report()
+/datum/antagonist/obsessed/roundend_report_article_column_body()
 	var/list/report = list()
 
 	if(!owner)

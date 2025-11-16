@@ -412,7 +412,7 @@
 		SSticker.mode_result = "loss - rev heads killed"
 		SSticker.news_report = REVS_LOSE
 
-/datum/team/revolution/roundend_report()
+/datum/team/revolution/roundend_report_article_column_body()
 	if(!members.len && !ex_headrevs.len)
 		return
 

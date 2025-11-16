@@ -190,7 +190,7 @@
 /datum/team/gang/proc/rename_gangster(datum/mind/gangster, original_name, starter_gangster)
 	gangster.current.fully_replace_character_name(gangster.current.real_name, original_name)
 
-/datum/team/gang/roundend_report()
+/datum/team/gang/roundend_report_article_column_body()
 	var/list/report = list()
 	report += "<span class='header antagonist'>[name]:</span>"
 	if(!members.len)

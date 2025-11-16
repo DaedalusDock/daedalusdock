@@ -16,3 +16,18 @@ GLOBAL_DATUM_INIT(inventory_state, /datum/ui_state/inventory_state, new)
 	if(!(src_object in user))
 		return UI_CLOSE
 	return user.shared_ui_interaction(src_object)
+
+
+GLOBAL_DATUM_INIT(inventory_or_implant_state, /datum/ui_state/inventory_or_implant_state, new)
+
+/**
+ * tgui state: inventory_or_implant_state
+ *
+ * Checks that the src_object is in the user's top-level
+ * (hand, ear, pocket, belt, etc) inventory OR implanted into them.
+ */
+/datum/ui_state/inventory_or_implant_state/can_use_topic(src_object, mob/user)
+	if(!(src_object in user) && !(src_object in (astype(user, /mob/living)?.implants)))
+		return UI_CLOSE
+
+	return user.shared_ui_interaction(src_object)

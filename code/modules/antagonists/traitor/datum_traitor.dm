@@ -197,16 +197,16 @@
 		var/count = 1
 		for(var/datum/objective/objective in objectives)
 			if(objective.check_completion())
-				objectives_text += "<br><B>Objective #[count]</B>: [objective.explanation_text] [span_greentext("Success!")]"
+				objectives_text += "<div><B>[objective.objective_name] #[count]</B>: [objective.explanation_text] <span class='highlighter'>(Completed)</span></div>"
 			else
-				objectives_text += "<br><B>Objective #[count]</B>: [objective.explanation_text] [span_redtext("Fail.")]"
+				objectives_text += "<div><B>[objective.objective_name] #[count]</B>: [objective.explanation_text] <span class='highlighter'>(Failed)</span></div>"
 				traitor_won = FALSE
 			count++
 
-	result += "<br>[owner.name] <B>[traitor_flavor["roundend_report"]]</B>"
+	result += "<div>[owner.name] [traitor_flavor["roundend_report"]]</div>"
 
 	if(uplink_owned)
-		var/uplink_text = "(used [used_telecrystals] TC) [purchases]"
+		var/uplink_text = "<div>(used [used_telecrystals] TC) [purchases]</div>"
 		if((used_telecrystals == 0) && traitor_won)
 			var/static/icon/badass = icon('icons/ui_icons/antags/badass.dmi', "badass")
 			uplink_text += "<BIG>[icon2html(badass, world)]</BIG>"
@@ -217,12 +217,12 @@
 	var/special_role_text = lowertext(name)
 
 	if(traitor_won)
-		result += "<div class='highlighter' style='font-size: 1.5em;'>The [special_role_text] succeeded in their mission.</div>"
+		result += "<div style='font-size: 1.5em;margin-top: 1em;'><span class='highlighter'>The [special_role_text] succeeded in their mission.</span></div>"
 	else
-		result += "<div class='highlighter' style='font-size: 1.5em;'>The [special_role_text] failed their mission.</div>"
+		result += "<div style='font-size: 1.5em;margin-top: 1em;'><span class='highlighter'>The [special_role_text] failed their mission.</span></div>"
 		SEND_SOUND(owner.current, 'sound/ambience/ambifailure.ogg')
 
-	return result.Join("<br>")
+	return result.Join("")
 
 /datum/antagonist/traitor/roundend_report_footer()
 	var/phrases = jointext(GLOB.syndicate_code_phrase, ", ")

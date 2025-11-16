@@ -55,10 +55,9 @@ li {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: start;
+	overflow-x: hidden; /*I am not sure why this is needed, but removing it causes phantom overflow*/
 }
 .newspaper .column {
-	/* font-size: 14px;
-    line-height: 20px; */
 	width: 31%;
 	display: inline-block;
 	padding: 0 1% 0 1%;
@@ -67,7 +66,6 @@ li {
 }
 
 .newspaper .content {
-	/* display: inline-block; */
 	margin: 1.5rem 2% 0 2%;
 }
 

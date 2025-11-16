@@ -202,24 +202,22 @@
 
 	for(var/antag_category in category_map)
 		var/datum/antagonist/reference_antag = category_map[antag_category][1] // Use the first one as the reference for the header/footer
-		var/list/columns = list()
 		articles += reference_antag.roundend_report_article(category_map[antag_category])
 		CHECK_TICK
 
-	antag_report_html = {"
-		<div class='panel newspaper'>
-			<div class='newspaper_header'>
-				The Colony Echo
+	if(length(articles))
+		antag_report_html = {"
+			<div class='panel newspaper'>
+				<div class='newspaper_header'>
+					The Colony Echo
+				</div>
+				[jointext(articles, "")]
 			</div>
-			[jointext(articles, "")]
-		</div>
-	"}
+		"}
 	return antag_report_html
 
 ///Generate a report for how much money is on station, as well as the richest crewmember on the station.
 /datum/round_end_report/proc/compile_economy_report()
-	var/list/parts = list()
-
 	///This is the richest account on station at roundend.
 	var/datum/bank_account/mr_moneybags
 	var/most_marks
@@ -250,17 +248,49 @@
 			mr_moneybags = current_acc
 			most_marks = mark_sum
 
-
-	parts += "<div class='panel stationborder'><span class='header'>Colony Economic Summary:</span><br>"
-	parts += "<b>General Statistics:</b><br>"
-	parts += "There were [station_vault] marks collected by citizens this round.<br>"
-
+	var/average_wealth = 0
 	if(total_players > 0)
-		parts += "An average of [station_vault/total_players] marks were collected per citizen.<br>"
-		log_econ("Roundend credit total: [station_vault] marks. Average marks: [station_vault/total_players]")
+		average_wealth = station_vault/total_players
 
+	log_econ("Roundend credit total: [station_vault] marks. Average marks: [average_wealth]")
+
+	var/moneybags_column
 	if(mr_moneybags)
-		parts += "The richest motherfucker at round end was <b>[mr_moneybags.account_holder] with [most_marks]</b> fm.</div>"
+		moneybags_column = {"
+		<div class='column' style='min-width: 40%;max-width:80%'>
+			<div class='headline'>
+				Not Your Average Man
+			</div>
+			<div class='headline subhead'>
+			A tale of economic disparity and unfairness.
+			</div>
+			The richest man-or-woman at the end of the cycle was one <span class='highlighter'>[mr_moneybags.account_holder] with [most_marks] Federation marks.</span>
+		</div>
+	"}
 
-	economy_report_html = jointext(parts, "")
+	economy_report_html = {"
+		<div class='panel newspaper'>
+			<div class='newspaper_header'>
+				The Impoverished Informer
+			</div>
+			<div class='newspaper_headline'>
+				Tomorrow's Economy, Yesterday!
+			</div>
+			<div class='content'>
+				<div class='columns' style='justify-content: center'>
+					<div class='column' style='min-width: 40%;max-width:80%'>
+						<div class='headline'>
+							Economic Report
+						</div>
+						<div class='headline subhead'>
+							by Hugh G. Pockets
+						</div>
+						We estimate the total wealth of the station amounted to less than <span class='highlighter'>[station_vault] marks</span>.
+						The average wealth of an individual is estimated to have been just short of [floor(station_vault)] marks.
+					</div>
+					[moneybags_column]
+				</div>
+			</div>
+		</div>
+	"}
 	return economy_report_html

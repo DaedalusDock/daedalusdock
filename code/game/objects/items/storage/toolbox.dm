@@ -217,6 +217,10 @@ TYPEINFO_DEF(/obj/item/storage/toolbox)
 	new /obj/item/stack/cable_coil/cyan(src)
 	new /obj/item/stack/cable_coil/white(src)
 
+/obj/item/storage/toolbox/artistic/update_overlays()
+	. = ..()
+	. += "single_latch"
+
 /obj/item/storage/toolbox/ammo
 	name = "ammo box"
 	icon = 'icons/obj/storage.dmi'

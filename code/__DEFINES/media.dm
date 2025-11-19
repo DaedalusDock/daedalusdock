@@ -12,7 +12,7 @@
 /// Jukebox music.
 #define MEDIA_TAG_JUKEBOX "JUKEBOX"
 
-/// Cassette music.
+/// Cassette music, anything with this tag will be able to be put into random cassettes.
 #define MEDIA_TAG_CASSETTE "CASSETTE"
 /// IS12 cassettes.
 #define MEDIA_TAG_IS12 "IS12"

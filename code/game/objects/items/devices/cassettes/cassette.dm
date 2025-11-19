@@ -51,8 +51,8 @@ TYPEINFO_DEF(/obj/item/tape)
 	. = ..()
 	initial_icon_state = icon_state //random tapes will set this after choosing their icon
 
-	var/mycolor = random_short_color()
 	if(icon_state == "tape_greyscale")
+		var/mycolor = color || random_short_color()
 		add_atom_colour("#[mycolor]", FIXED_COLOUR_PRIORITY)
 
 	return INITIALIZE_HINT_LATELOAD
@@ -210,6 +210,21 @@ TYPEINFO_DEF(/obj/item/tape)
 					song_otherside = song_pool[2]
 	#endif
 	. = ..()
+
+/obj/item/tape/music/roundstart
+	name = "old cassette"
+	desc = "An old magnetic tape. There is no telling what is recorded onto it."
+
+	random_songs = TRUE
+
+/obj/item/tape/music/roundstart/Initialize(mapload)
+	icon_state = "tape_[pick("white", "blue", "red", "yellow", "purple", "greyscale")]"
+	. = ..()
+
+	if(prob(50))
+		desc_song_currentside = "*unintelligible*"
+	if(prob(50))
+		desc_song_otherside = "*unintelligible*"
 
 /obj/item/tape/music/white
 	name = "cassette \"Ghost Gurlz\""

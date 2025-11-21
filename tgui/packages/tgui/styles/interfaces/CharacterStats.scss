@@ -1,7 +1,7 @@
 @use '../base.scss';
 @use 'sass:color';
 
-$health-block-color: rgb(117, 92, 9);
+$health-block-color: #454442;
 
 .CharacterStats__healthBlock {
   height: 100%;
@@ -16,7 +16,8 @@ $health-block-color: rgb(117, 92, 9);
     0 100%
   );
   font-size: 2rem;
-  color: black;
+  font-weight: bold;
+  color: #a3b18a;
   padding: 0.5rem;
   background-color: $health-block-color;
 }
@@ -27,6 +28,7 @@ $health-block-color: rgb(117, 92, 9);
 }
 
 .CharacterStats__healthBlock_entry {
-  font-size: 2rem;
+  font-size: 2.5rem;
   width: 50%;
+  color: #454442;
 }

@@ -41,10 +41,7 @@ enum Page {
 
 export const CharacterStats = (props) => {
   const { act, data } = useBackend<CharacterStatsData>();
-  const [currentPage, setCurrentPage] = useLocalState(
-    'currentPage',
-    Page.Stats,
-  );
+  const [currentPage, setCurrentPage] = useLocalState('currentPage', Page.Body);
 
   let pageContent;
 
@@ -92,7 +89,7 @@ function BodyPage(data: CharacterStatsData) {
       <Flex.Item grow={1}>
         <Flex direction="column" width="100%" height="100%">
           {data.bodyparts
-            .slice(1, 4)
+            .slice(0, 3)
             .map((bodypart) => bodypartEntry(bodypart))}
         </Flex>
       </Flex.Item>

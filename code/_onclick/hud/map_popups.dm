@@ -134,6 +134,9 @@
 
 /// Does what it says on the tin, removes this ui from their screen and removes them from us.
 /atom/movable/screen/map_view/byondui/proc/hide_from_client(client/C)
+	if(!C)
+		return
+
 	C.clear_map(assigned_map)
 	viewing_clients -= C.weak_reference
 

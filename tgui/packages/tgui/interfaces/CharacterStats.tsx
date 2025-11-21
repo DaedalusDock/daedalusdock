@@ -58,7 +58,11 @@ export const CharacterStats = (props) => {
   }
 
   return (
-    <Window width={1200} height={800}>
+    <Window
+      width={1200}
+      height={800}
+      theme={currentPage === Page.Body ? 'book' : ''}
+    >
       <Window.Content>
         <Tabs fluid>
           <Tabs.Tab
@@ -125,30 +129,17 @@ function BodyPage(data: CharacterStatsData) {
 function generalHealthEntry(mob_statuses: Record<string, string>) {
   return (
     <Flex.Item width="100%" grow={1} style={{ padding: '0.5em' }}>
-      <Flex direction="column" height="100%">
-        <Flex.Item
-          fontSize="2rem"
-          color="black"
-          backgroundColor="#03fca1"
-          style={{
-            clipPath:
-              'polygon(0 0, calc(100% - 20px + 2px) 0, 100% calc(20px - 2px), 100% 100%, 0 100%)',
-            padding: '0.5rem',
-          }}
-        >
+      <Flex direction="column" className="CharacterStats__healthBlock">
+        <Flex.Item className="CharacterStats__healthBlock_header">
           General
         </Flex.Item>
-        <Flex.Item
-          grow={1}
-          style={{ border: '4px solid #03fca1', padding: '0.5rem' }}
-        >
+        <Flex.Item grow={1} className="CharacterStats__healthBlock_body">
           <Flex height="100%" direction="column" flexWrap>
             {Object.entries(mob_statuses).map(([status, color], i) => (
               <Flex.Item
                 key={i}
                 color={color}
-                fontSize={'2rem'}
-                style={{ width: '50%' }}
+                className="CharacterStats__healthBlock_entry"
               >
                 {capitalize(status)}
               </Flex.Item>
@@ -162,23 +153,11 @@ function generalHealthEntry(mob_statuses: Record<string, string>) {
 function bodypartHealthEntry(bodypart: Bodypart) {
   return (
     <Flex.Item grow={1} style={{ padding: '0.5em' }}>
-      <Flex direction="column" height="100%">
-        <Flex.Item
-          fontSize="2rem"
-          color="black"
-          backgroundColor="#03fca1"
-          style={{
-            clipPath:
-              'polygon(0 0, calc(100% - 20px + 2px) 0, 100% calc(20px - 2px), 100% 100%, 0 100%)',
-            padding: '0.5rem',
-          }}
-        >
+      <Flex direction="column" className="CharacterStats__healthBlock">
+        <Flex.Item className="CharacterStats__healthBlock_header">
           {bodypart.name}
         </Flex.Item>
-        <Flex.Item
-          grow={1}
-          style={{ border: '4px solid #03fca1', padding: '0.5rem' }}
-        >
+        <Flex.Item className="CharacterStats__healthBlock_body" grow={1}>
           {bodypart.missing ? (
             <Flex
               width="100%"
@@ -196,8 +175,7 @@ function bodypartHealthEntry(bodypart: Bodypart) {
                 <Flex.Item
                   key={i}
                   color={color}
-                  fontSize={'2rem'}
-                  style={{ width: '50%' }}
+                  className="CharacterStats__healthBlock_entry"
                 >
                   {capitalize(status)}
                 </Flex.Item>

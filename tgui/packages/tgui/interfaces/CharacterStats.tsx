@@ -1,10 +1,12 @@
 import { Box, Section, Stack, Tabs } from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
 
 import { useBackend, useLocalState } from '../backend';
 import { ByondUi, Flex } from '../components';
 import { Window } from '../layouts';
 
 type CharacterStatsData = {
+  bodyparts: Bodypart[];
   byondui_map: string;
   default_skill_value: number;
   mob: Mob;
@@ -12,6 +14,11 @@ type CharacterStatsData = {
 };
 
 type Mob = {
+  name: string;
+};
+
+type Bodypart = {
+  missing: BooleanLike;
   name: string;
 };
 
@@ -81,10 +88,19 @@ export const CharacterStats = (props) => {
 
 function BodyPage(data: CharacterStatsData) {
   return (
-    <Flex direction="row" justify="center">
-      <Flex.Item>
+    <Flex direction="row" justify="center" height="100%">
+      <Flex.Item grow={1}>
+        <Flex direction="column" width="100%" height="100%">
+          {data.bodyparts
+            .slice(1, 4)
+            .map((bodypart) => bodypartEntry(bodypart))}
+        </Flex>
+      </Flex.Item>
+      <Flex.Item grow={1}>
         <Flex direction="column" align="center">
-          <Flex.Item fontSize="3rem">{data.mob.name}</Flex.Item>
+          <Flex.Item fontSize="3rem" style={{ marginBottom: '3rem' }}>
+            {data.mob.name}
+          </Flex.Item>
           <Flex.Item>
             <ByondUi
               height="400px"
@@ -94,10 +110,53 @@ function BodyPage(data: CharacterStatsData) {
           </Flex.Item>
         </Flex>
       </Flex.Item>
+      <Flex.Item grow={1}>
+        <Flex direction="column" width="100%" height="100%">
+          {data.bodyparts.slice(3).map((bodypart) => bodypartEntry(bodypart))}
+        </Flex>
+      </Flex.Item>
     </Flex>
   );
 }
 
+function bodypartEntry(bodypart: Bodypart) {
+  return (
+    <Flex.Item grow={1} style={{ padding: '0.5em' }}>
+      <Flex direction="column" height="100%">
+        <Flex.Item
+          fontSize="2rem"
+          color="black"
+          backgroundColor="#03fca1"
+          style={{
+            clipPath:
+              'polygon(0 0, calc(100% - 20px + 2px) 0, 100% calc(20px - 2px), 100% 100%, 0 100%)',
+            padding: '0.5rem',
+          }}
+        >
+          {bodypart.name}
+        </Flex.Item>
+        <Flex.Item
+          grow={1}
+          style={{ border: '4px solid #03fca1', padding: '0.5rem' }}
+        >
+          {bodypart.missing ? (
+            <Box
+              width="100%"
+              color="#fc4b32"
+              height="100%"
+              textAlign="center"
+              verticalAlign="center"
+            >
+              MISSING
+            </Box>
+          ) : (
+            <>Test Content</>
+          )}
+        </Flex.Item>
+      </Flex>
+    </Flex.Item>
+  );
+}
 function StatsPage(data: CharacterStatsData) {
   return (
     <Stack direction="row" wrap height="100%" justify="center" align="center">

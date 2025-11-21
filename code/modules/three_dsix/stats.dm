@@ -70,6 +70,7 @@
 	data["mob"] = mob_data
 	mob_data["name"] = owner.real_name
 
+
 	var/list/skill_data = list()
 	data["skills"] = skill_data
 
@@ -94,6 +95,32 @@
 				"source" = modifier_source,
 				"value" = modifier_value
 			)
+
+	var/list/bodypart_data = list()
+	data["bodyparts"] = bodypart_data
+	if(iscarbon(owner))
+		var/mob/living/carbon/carbon_owner = owner
+		var/list/sorted_parts = list(
+			"Head" = locate(/obj/item/bodypart/head) in carbon_owner.bodyparts,
+			"Right Arm" = locate(/obj/item/bodypart/arm/right) in carbon_owner.bodyparts,
+			"Right Leg" = locate(/obj/item/bodypart/leg/right) in carbon_owner.bodyparts,
+			"Chest" = locate(/obj/item/bodypart/chest) in carbon_owner.bodyparts,
+			"Left Arm" = locate(/obj/item/bodypart/arm/left) in carbon_owner.bodyparts,
+			"Left Leg" = locate(/obj/item/bodypart/leg/left) in carbon_owner.bodyparts,
+		)
+
+		for(var/part_name as anything in sorted_parts)
+			var/list/part_data = list(
+				name = part_name,
+			)
+			bodypart_data[++bodypart_data.len] = part_data
+
+			var/obj/item/bodypart/part = sorted_parts[part_name]
+			if(isnull(part))
+				part_data["missing"] = 1
+				continue
+
+
 	return data
 
 /// Return a given stat value.

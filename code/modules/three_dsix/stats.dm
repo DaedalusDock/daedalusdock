@@ -16,6 +16,8 @@
 	/// A list of weakrefs to examined objects. Used for forensic rolls. THIS DOES JUST KEEP GETTING BIGGER, SO, CAREFUL.
 	var/list/examined_object_weakrefs = list()
 
+	VAR_PRIVATE/atom/movable/screen/map_view/byondui/byondui_screen
+
 /datum/stats/New(owner)
 	. = ..()
 	src.owner = owner
@@ -30,11 +32,69 @@
 			continue
 		skills[path] += new path
 
+	byondui_screen = new
+	byondui_screen.generate_view("byondui_characterstats_[ref(src)]")
+
 /datum/stats/Destroy()
 	owner = null
 	stats = null
 	skills = null
+	QDEL_NULL(byondui_screen)
 	return ..()
+
+/datum/stats/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+
+	var/mutable_appearance/appearance = new(owner)
+	appearance.dir = SOUTH
+	appearance.transform = null
+	remove_non_canon_overlays(appearance)
+	byondui_screen.rendered_atom.appearance = appearance
+
+	if(!ui)
+		ui = new(user, src, "CharacterStats", "Character Sheet")
+		ui.open()
+		// ui.set_autoupdate(FALSE)
+		byondui_screen.render_to_tgui(user.client, ui.window)
+
+/datum/stats/ui_state(mob/user)
+	return GLOB.conscious_state
+
+/datum/stats/ui_data(mob/user)
+	var/list/data = list(
+		"byondui_map" = byondui_screen.assigned_map,
+		"default_skill_value" = STATS_BASELINE_VALUE,
+	)
+
+	var/list/mob_data = list()
+	data["mob"] = mob_data
+	mob_data["name"] = owner.real_name
+
+	var/list/skill_data = list()
+	data["skills"] = skill_data
+
+	for(var/skill_type in skills)
+		var/datum/rpg_skill/skill = skills[skill_type]
+		/// Used as an out-var for get_skill_modifier()
+		var/list/other_skill_modifiers = list()
+		var/list/modifier_data = list()
+
+		skill_data[++skill_data.len] = list(
+			"name" = skill.name,
+			"desc" = skill.desc,
+			"value" = STATS_BASELINE_VALUE + get_skill_modifier(skill_type, other_skill_modifiers),
+			"modifiers" = modifier_data,
+		)
+
+		if(skill.modifiers)
+			other_skill_modifiers += skill.modifiers
+
+		for(var/modifier_source,modifier_value in other_skill_modifiers)
+			modifier_data[++modifier_data.len] = list(
+				"source" = modifier_source,
+				"value" = modifier_value
+			)
+	return data
 
 /// Return a given stat value.
 /datum/stats/proc/get_stat_modifier(stat)
@@ -42,9 +102,9 @@
 	return S.get(owner)
 
 /// Return a given skill value modifier.
-/datum/stats/proc/get_skill_modifier(skill)
+/datum/stats/proc/get_skill_modifier(skill, list/out_sources)
 	var/datum/rpg_skill/S = skills[skill]
-	return S.get(owner)
+	return S.get(owner, out_sources)
 
 /// Add a stat modifier from a given source
 /datum/stats/proc/set_stat_modifier(amount, datum/rpg_stat/stat_path, source)
@@ -161,3 +221,10 @@
 		client?.give_award(/datum/award/achievement/disco_inferno)
 	return returned_result
 
+
+#warn debug
+/mob/living/verb/check_skills()
+	set name = "Check skills"
+	set category = "IC"
+
+	stats.ui_interact(src)

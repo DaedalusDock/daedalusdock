@@ -1,0 +1,138 @@
+import { Box, Section, Stack } from 'tgui-core/components';
+
+import { useBackend, useLocalState } from '../backend';
+import { Flex } from '../components';
+import { Window } from '../layouts';
+
+type CharacterStatsData = {
+  byondui_map: string;
+  default_skill_value: number;
+  mob: Mob;
+  skills: Skill[];
+};
+
+type Mob = {
+  name: string;
+};
+
+type Skill = {
+  desc: string;
+  modifiers: SkillModifier[];
+  name: string;
+  value: number;
+};
+
+type SkillModifier = {
+  source: string;
+  value: number;
+};
+
+enum Page {
+  Body,
+  Stats,
+}
+
+export const CharacterStats = (props) => {
+  const { act, data } = useBackend<CharacterStatsData>();
+  const [currentPage, setCurrentPage] = useLocalState(
+    'currentPage',
+    Page.Stats,
+  );
+
+  let pageContent;
+
+  switch (currentPage) {
+    case Page.Body:
+      pageContent = BodyPage(data);
+      break;
+    case Page.Stats:
+      pageContent = StatsPage(data);
+      break;
+  }
+
+  return (
+    <Window width={1200} height={800}>
+      <Window.Content>{StatsPage(data)}</Window.Content>
+    </Window>
+  );
+};
+
+function BodyPage(data: CharacterStatsData) {}
+
+function StatsPage(data: CharacterStatsData) {
+  const { act } = useBackend();
+  return (
+    <Section scrollableHorizontal fill>
+      <Stack direction="row" wrap height="100%" justify="center" align="center">
+        {data.skills.map((skill, i) => (
+          <Stack.Item
+            key={i}
+            width="23%"
+            height="49%"
+            style={{
+              border: '2px solid #03fca1',
+              marginBottom: '1em',
+              padding: '1em',
+            }}
+          >
+            <Flex direction="column" height="100%">
+              <Flex.Item height="25%">
+                <Box textAlign="center" fontSize="2rem">
+                  {skill.name}
+                </Box>
+                <Box textAlign="center">
+                  <i>{skill.desc}</i>
+                </Box>
+              </Flex.Item>
+              <Flex.Item
+                textAlign="center"
+                fontSize="4rem"
+                style={{ marginTop: '0.5rem' }}
+                color={
+                  skill.value === data.default_skill_value
+                    ? ''
+                    : skill.value >= data.default_skill_value
+                      ? '#03fca1'
+                      : '#fc4b32'
+                }
+              >
+                {skill.value}
+              </Flex.Item>
+              <Flex.Item grow={1} basis={0} style={{ flexShrink: '1' }}>
+                <Section scrollable fill>
+                  {skill.modifiers.map((modifier, i) => (
+                    <Flex
+                      direction="row"
+                      key={i}
+                      justify="center"
+                      align="center"
+                    >
+                      <Flex.Item
+                        width="15%"
+                        fontSize="2rem"
+                        mr="1rem"
+                        textAlign="left"
+                        color={modifier.value > 0 ? '#03fca1' : '#fc4b32'}
+                      >
+                        {modifier.value}
+                      </Flex.Item>
+                      <Flex.Item
+                        inline
+                        width="70%"
+                        fontSize="1.5rem"
+                        textAlign="right"
+                        color={modifier.value > 0 ? '#03fca1' : '#fc4b32'}
+                      >
+                        {modifier.source}
+                      </Flex.Item>
+                    </Flex>
+                  ))}
+                </Section>
+              </Flex.Item>
+            </Flex>
+          </Stack.Item>
+        ))}
+      </Stack>
+    </Section>
+  );
+}

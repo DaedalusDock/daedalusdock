@@ -1,7 +1,7 @@
 import { Box, Section, Stack, Tabs } from 'tgui-core/components';
 
 import { useBackend, useLocalState } from '../backend';
-import { Flex } from '../components';
+import { ByondUi, Flex } from '../components';
 import { Window } from '../layouts';
 
 type CharacterStatsData = {
@@ -71,88 +71,99 @@ export const CharacterStats = (props) => {
             Stats
           </Tabs.Tab>
         </Tabs>
-        {pageContent}
+        <Section fill height="94%">
+          {pageContent}
+        </Section>
       </Window.Content>
     </Window>
   );
 };
 
-function BodyPage(data: CharacterStatsData) {}
+function BodyPage(data: CharacterStatsData) {
+  return (
+    <Flex direction="row" justify="center">
+      <Flex.Item>
+        <Flex direction="column" align="center">
+          <Flex.Item fontSize="3rem">{data.mob.name}</Flex.Item>
+          <Flex.Item>
+            <ByondUi
+              height="400px"
+              width="300px"
+              params={{ id: data.byondui_map, type: 'map' }}
+            />
+          </Flex.Item>
+        </Flex>
+      </Flex.Item>
+    </Flex>
+  );
+}
 
 function StatsPage(data: CharacterStatsData) {
-  const { act } = useBackend();
   return (
-    <Section scrollableHorizontal fill height="94%">
-      <Stack direction="row" wrap height="100%" justify="center" align="center">
-        {data.skills.map((skill, i) => (
-          <Stack.Item
-            key={i}
-            width="23%"
-            height="49%"
-            style={{
-              border: '2px solid #03fca1',
-              marginBottom: '1em',
-              padding: '1em',
-            }}
-          >
-            <Flex direction="column" height="100%">
-              <Flex.Item height="25%">
-                <Box textAlign="center" fontSize="2rem">
-                  {skill.name}
-                </Box>
-                <Box textAlign="center">
-                  <i>{skill.desc}</i>
-                </Box>
-              </Flex.Item>
-              <Flex.Item
-                textAlign="center"
-                fontSize="4rem"
-                style={{ marginTop: '0.5rem' }}
-                color={
-                  skill.value === data.default_skill_value
-                    ? ''
-                    : skill.value >= data.default_skill_value
-                      ? '#03fca1'
-                      : '#fc4b32'
-                }
-              >
-                {skill.value}
-              </Flex.Item>
-              <Flex.Item grow={1} basis={0} style={{ flexShrink: '1' }}>
-                <Section scrollable fill>
-                  {skill.modifiers.map((modifier, i) => (
-                    <Flex
-                      direction="row"
-                      key={i}
-                      justify="center"
-                      align="center"
+    <Stack direction="row" wrap height="100%" justify="center" align="center">
+      {data.skills.map((skill, i) => (
+        <Stack.Item
+          key={i}
+          width="23%"
+          height="49%"
+          style={{
+            border: '2px solid #03fca1',
+            marginBottom: '1em',
+            padding: '1em',
+          }}
+        >
+          <Flex direction="column" height="100%">
+            <Flex.Item height="25%">
+              <Box textAlign="center" fontSize="2rem">
+                {skill.name}
+              </Box>
+              <Box textAlign="center">
+                <i>{skill.desc}</i>
+              </Box>
+            </Flex.Item>
+            <Flex.Item
+              textAlign="center"
+              fontSize="4rem"
+              style={{ marginTop: '0.5rem' }}
+              color={
+                skill.value === data.default_skill_value
+                  ? ''
+                  : skill.value >= data.default_skill_value
+                    ? '#03fca1'
+                    : '#fc4b32'
+              }
+            >
+              {skill.value}
+            </Flex.Item>
+            <Flex.Item grow={1} basis={0} style={{ flexShrink: '1' }}>
+              <Section scrollable fill>
+                {skill.modifiers.map((modifier, i) => (
+                  <Flex direction="row" key={i} justify="center" align="center">
+                    <Flex.Item
+                      width="15%"
+                      fontSize="2rem"
+                      mr="1rem"
+                      textAlign="left"
+                      color={modifier.value > 0 ? '#03fca1' : '#fc4b32'}
                     >
-                      <Flex.Item
-                        width="15%"
-                        fontSize="2rem"
-                        mr="1rem"
-                        textAlign="left"
-                        color={modifier.value > 0 ? '#03fca1' : '#fc4b32'}
-                      >
-                        {modifier.value}
-                      </Flex.Item>
-                      <Flex.Item
-                        inline
-                        width="70%"
-                        fontSize="1.5rem"
-                        textAlign="right"
-                        color={modifier.value > 0 ? '#03fca1' : '#fc4b32'}
-                      >
-                        {modifier.source}
-                      </Flex.Item>
-                    </Flex>
-                  ))}
-                </Section>
-              </Flex.Item>
-            </Flex>
-          </Stack.Item>
-        ))}
-      </Stack>
-    </Section>
+                      {modifier.value}
+                    </Flex.Item>
+                    <Flex.Item
+                      inline
+                      width="70%"
+                      fontSize="1.5rem"
+                      textAlign="right"
+                      color={modifier.value > 0 ? '#03fca1' : '#fc4b32'}
+                    >
+                      {modifier.source}
+                    </Flex.Item>
+                  </Flex>
+                ))}
+              </Section>
+            </Flex.Item>
+          </Flex>
+        </Stack.Item>
+      ))}
+    </Stack>
   );
 }

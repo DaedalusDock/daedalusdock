@@ -45,16 +45,16 @@
 /datum/stats/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 
-	var/mutable_appearance/appearance = new(owner)
+	var/mutable_appearance/appearance = new(owner.appearance)
 	appearance.dir = SOUTH
 	appearance.transform = null
 	remove_non_canon_overlays(appearance)
-	byondui_screen.rendered_atom.appearance = appearance
+	byondui_screen.rendered_atom.appearance = appearance.appearance
 
 	if(!ui)
 		ui = new(user, src, "CharacterStats", "Character Sheet")
 		ui.open()
-		// ui.set_autoupdate(FALSE)
+		ui.set_autoupdate(FALSE)
 		byondui_screen.render_to_tgui(user.client, ui.window)
 
 /datum/stats/ui_state(mob/user)

@@ -1,4 +1,4 @@
-import { Box, Section, Stack } from 'tgui-core/components';
+import { Box, Section, Stack, Tabs } from 'tgui-core/components';
 
 import { useBackend, useLocalState } from '../backend';
 import { Flex } from '../components';
@@ -52,7 +52,27 @@ export const CharacterStats = (props) => {
 
   return (
     <Window width={1200} height={800}>
-      <Window.Content>{StatsPage(data)}</Window.Content>
+      <Window.Content>
+        <Tabs fluid>
+          <Tabs.Tab
+            selected={currentPage === Page.Body}
+            onClick={() => setCurrentPage(Page.Body)}
+            textAlign="center"
+            fontSize="1.4rem"
+          >
+            Body
+          </Tabs.Tab>
+          <Tabs.Tab
+            selected={currentPage === Page.Stats}
+            onClick={() => setCurrentPage(Page.Stats)}
+            textAlign="center"
+            fontSize="1.4rem"
+          >
+            Stats
+          </Tabs.Tab>
+        </Tabs>
+        {pageContent}
+      </Window.Content>
     </Window>
   );
 };
@@ -62,7 +82,7 @@ function BodyPage(data: CharacterStatsData) {}
 function StatsPage(data: CharacterStatsData) {
   const { act } = useBackend();
   return (
-    <Section scrollableHorizontal fill>
+    <Section scrollableHorizontal fill height="94%">
       <Stack direction="row" wrap height="100%" justify="center" align="center">
         {data.skills.map((skill, i) => (
           <Stack.Item

@@ -1,3 +1,4 @@
+import { capitalize } from 'common/string';
 import { Box, Section, Stack, Tabs } from 'tgui-core/components';
 import { BooleanLike } from 'tgui-core/react';
 
@@ -10,6 +11,7 @@ type CharacterStatsData = {
   byondui_map: string;
   default_skill_value: number;
   mob: Mob;
+  mob_statuses: Record<string, string>;
   skills: Skill[];
 };
 
@@ -20,6 +22,7 @@ type Mob = {
 type Bodypart = {
   missing: BooleanLike;
   name: string;
+  statuses: Record<string, string>;
 };
 
 type Skill = {
@@ -90,12 +93,12 @@ function BodyPage(data: CharacterStatsData) {
         <Flex direction="column" width="100%" height="100%">
           {data.bodyparts
             .slice(0, 3)
-            .map((bodypart) => bodypartEntry(bodypart))}
+            .map((bodypart) => bodypartHealthEntry(bodypart))}
         </Flex>
       </Flex.Item>
       <Flex.Item grow={1}>
-        <Flex direction="column" align="center">
-          <Flex.Item fontSize="3rem" style={{ marginBottom: '3rem' }}>
+        <Flex direction="column" align="center" height="100%">
+          <Flex.Item fontSize="3rem" style={{ marginBottom: '1.7rem' }}>
             {data.mob.name}
           </Flex.Item>
           <Flex.Item>
@@ -105,18 +108,58 @@ function BodyPage(data: CharacterStatsData) {
               params={{ id: data.byondui_map, type: 'map' }}
             />
           </Flex.Item>
+          {generalHealthEntry(data.mob_statuses)}
         </Flex>
       </Flex.Item>
       <Flex.Item grow={1}>
         <Flex direction="column" width="100%" height="100%">
-          {data.bodyparts.slice(3).map((bodypart) => bodypartEntry(bodypart))}
+          {data.bodyparts
+            .slice(3)
+            .map((bodypart) => bodypartHealthEntry(bodypart))}
         </Flex>
       </Flex.Item>
     </Flex>
   );
 }
 
-function bodypartEntry(bodypart: Bodypart) {
+function generalHealthEntry(mob_statuses: Record<string, string>) {
+  return (
+    <Flex.Item width="100%" grow={1} style={{ padding: '0.5em' }}>
+      <Flex direction="column" height="100%">
+        <Flex.Item
+          fontSize="2rem"
+          color="black"
+          backgroundColor="#03fca1"
+          style={{
+            clipPath:
+              'polygon(0 0, calc(100% - 20px + 2px) 0, 100% calc(20px - 2px), 100% 100%, 0 100%)',
+            padding: '0.5rem',
+          }}
+        >
+          General
+        </Flex.Item>
+        <Flex.Item
+          grow={1}
+          style={{ border: '4px solid #03fca1', padding: '0.5rem' }}
+        >
+          <Flex height="100%" direction="column" flexWrap>
+            {Object.entries(mob_statuses).map(([status, color], i) => (
+              <Flex.Item
+                key={i}
+                color={color}
+                fontSize={'2rem'}
+                style={{ width: '50%' }}
+              >
+                {capitalize(status)}
+              </Flex.Item>
+            ))}
+          </Flex>
+        </Flex.Item>
+      </Flex>
+    </Flex.Item>
+  );
+}
+function bodypartHealthEntry(bodypart: Bodypart) {
   return (
     <Flex.Item grow={1} style={{ padding: '0.5em' }}>
       <Flex direction="column" height="100%">
@@ -137,17 +180,29 @@ function bodypartEntry(bodypart: Bodypart) {
           style={{ border: '4px solid #03fca1', padding: '0.5rem' }}
         >
           {bodypart.missing ? (
-            <Box
+            <Flex
               width="100%"
               color="#fc4b32"
               height="100%"
-              textAlign="center"
-              verticalAlign="center"
+              justify="center"
+              align="center"
+              fontSize="3rem"
             >
               MISSING
-            </Box>
+            </Flex>
           ) : (
-            <>Test Content</>
+            <Flex height="100%" direction="column" flexWrap>
+              {Object.entries(bodypart.statuses).map(([status, color], i) => (
+                <Flex.Item
+                  key={i}
+                  color={color}
+                  fontSize={'2rem'}
+                  style={{ width: '50%' }}
+                >
+                  {capitalize(status)}
+                </Flex.Item>
+              ))}
+            </Flex>
           )}
         </Flex.Item>
       </Flex>

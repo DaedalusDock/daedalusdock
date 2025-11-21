@@ -54,11 +54,15 @@
 	if(!ui)
 		ui = new(user, src, "CharacterStats", "Character Sheet")
 		ui.open()
-		ui.set_autoupdate(FALSE)
+		// ui.set_autoupdate(FALSE)
 		byondui_screen.render_to_tgui(user.client, ui.window)
 
 /datum/stats/ui_state(mob/user)
-	return GLOB.conscious_state
+	return GLOB.always_state
+
+/datum/stats/ui_close(mob/user)
+	. = ..()
+	byondui_screen.hide_from_client(user.client)
 
 /datum/stats/ui_data(mob/user)
 	var/list/data = list(
@@ -98,15 +102,48 @@
 
 	var/list/bodypart_data = list()
 	data["bodyparts"] = bodypart_data
+
+	var/list/mob_statuses = list()
+	data["mob_statuses"] = mob_statuses
 	if(iscarbon(owner))
-		var/mob/living/carbon/carbon_owner = owner
+		var/mob/living/carbon/human/human_owner = owner
+
+		if(human_owner.stamina.loss)
+			mob_statuses[HAS_TRAIT(human_owner, TRAIT_EXHAUSTED) ? "exhausted" : "fatigued"] = ""
+
+		var/toxloss = human_owner.getToxLoss()
+		if(toxloss > 40)
+			mob_statuses["Systemic illness present"] = COLOR_MEDICAL_TOXIN
+		else if(toxloss > 20)
+			mob_statuses["Unwell"] = COLOR_MEDICAL_TOXIN
+		else if(toxloss > 10)
+			mob_statuses["General malaise"] = COLOR_MEDICAL_TOXIN
+
+		var/oxyloss = human_owner.getOxyLoss()
+		if(oxyloss > 40)
+			mob_statuses["Asphyxiating"] = COLOR_MEDICAL_OXYLOSS
+		else if(oxyloss > 20)
+			mob_statuses["Severe vertigo"] = COLOR_MEDICAL_OXYLOSS
+		else if(oxyloss > 10)
+			mob_statuses["Lightheaded"] = COLOR_MEDICAL_OXYLOSS
+
+		if(!HAS_TRAIT(human_owner, TRAIT_NOHUNGER))
+			switch(human_owner.nutrition)
+				if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_FED)
+					mob_statuses["Hungry"] = COLOR_MEDICAL_BRUTE
+				if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_HUNGRY)
+					mob_statuses["Malnourished"] = COLOR_MEDICAL_BRUTE
+				if(0 to NUTRITION_LEVEL_STARVING)
+					mob_statuses["Starving"] = COLOR_MEDICAL_BRUTE
+
+		// ----- BODYPARTS -----
 		var/list/sorted_parts = list(
-			"Head" = locate(/obj/item/bodypart/head) in carbon_owner.bodyparts,
-			"Right Arm" = locate(/obj/item/bodypart/arm/right) in carbon_owner.bodyparts,
-			"Right Leg" = locate(/obj/item/bodypart/leg/right) in carbon_owner.bodyparts,
-			"Chest" = locate(/obj/item/bodypart/chest) in carbon_owner.bodyparts,
-			"Left Arm" = locate(/obj/item/bodypart/arm/left) in carbon_owner.bodyparts,
-			"Left Leg" = locate(/obj/item/bodypart/leg/left) in carbon_owner.bodyparts,
+			"Head" = locate(/obj/item/bodypart/head) in human_owner.bodyparts,
+			"Right Arm" = locate(/obj/item/bodypart/arm/right) in human_owner.bodyparts,
+			"Right Leg" = locate(/obj/item/bodypart/leg/right) in human_owner.bodyparts,
+			"Chest" = locate(/obj/item/bodypart/chest) in human_owner.bodyparts,
+			"Left Arm" = locate(/obj/item/bodypart/arm/left) in human_owner.bodyparts,
+			"Left Leg" = locate(/obj/item/bodypart/leg/left) in human_owner.bodyparts,
 		)
 
 		for(var/part_name as anything in sorted_parts)
@@ -119,6 +156,53 @@
 			if(isnull(part))
 				part_data["missing"] = 1
 				continue
+
+			var/list/status_strings = list()
+			part_data["statuses"] = status_strings
+
+			var/limb_max_damage = part.max_damage
+			var/perceived_brute = part.brute_dam
+			var/perceived_burn = part.burn_dam
+
+			// Hallucinate more damage.
+			if(human_owner.hallucination)
+				if(prob(30))
+					perceived_brute += rand(30,40)
+				if(prob(30))
+					perceived_burn += rand(30,40)
+
+			if(part.type in human_owner.hal_screwydoll)
+				perceived_brute = (human_owner.hal_screwydoll[part.type] * 0.2) * limb_max_damage
+
+			// Perceived brute damage str
+			if(perceived_brute > (limb_max_damage*0.8))
+				status_strings[part.heavy_brute_msg] = COLOR_MEDICAL_BRUTE
+			else if(perceived_brute > (limb_max_damage*0.4))
+				status_strings[part.medium_brute_msg] = COLOR_MEDICAL_BRUTE
+			else if(perceived_brute > 0)
+				status_strings[part.light_brute_msg] = COLOR_MEDICAL_BRUTE
+
+			// Perceived burn damage str
+			if(perceived_burn > (limb_max_damage*0.8))
+				status_strings[part.heavy_burn_msg] = COLOR_MEDICAL_BURN
+			else if(perceived_burn > (limb_max_damage*0.4))
+				status_strings[part.medium_burn_msg] = COLOR_MEDICAL_BURN
+			else if(perceived_burn > 0)
+				status_strings[part.light_burn_msg] = COLOR_MEDICAL_BURN
+
+			// Disabled
+			if(part.bodypart_disabled && !part.is_stump)
+				status_strings["disabled"] = "grey"
+
+			// Broken
+			if(part.check_bones() & CHECKBONES_BROKEN)
+				status_strings["broken"] = COLOR_MEDICAL_BROKEN
+
+			// Bleeding
+			if(part.get_modified_bleed_rate())
+				status_strings["bleeding"] = "red"
+
+
 
 
 	return data

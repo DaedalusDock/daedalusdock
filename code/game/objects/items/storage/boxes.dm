@@ -1618,3 +1618,26 @@ TYPEINFO_DEF(/obj/item/storage/box/plastic)
 /obj/item/storage/box/chalk/PopulateContents()
 	for(var/i in 1 to 9)
 		new /obj/item/chalk(src)
+
+/obj/item/storage/box/carmen
+	name = "cassette box \"Carmen Miranda's Ghost Ultimate Collector's Edition\""
+	desc = "A box containing 6 cassettes, for the ultimate Carmen Miranda's Ghost listening experience."
+
+	illustration = null
+
+	storage_type = /datum/storage/box/cassette
+
+/obj/item/storage/box/carmen/PopulateContents()
+	var/list/song_pool = SSmedia.get_track_pool(MEDIA_TAG_CARMEN_MIRANDA)
+	if(length(song_pool) < 12)
+		#ifndef UNIT_TESTS
+		stack_trace("Carmen Miranda's Ghost cassette box cannot spawn due to the media not being present.")
+		#endif
+		return
+
+	for(var/i in 1 to 6) // 12 songs, 2 songs per cassette
+		var/a_side = song_pool[1]
+		var/b_side = song_pool[2]
+		song_pool.Cut(1, 3)
+
+		new /obj/item/tape/music/carmen(src, a_side, b_side)

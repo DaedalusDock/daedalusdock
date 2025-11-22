@@ -44,7 +44,7 @@
 	  *
 	  * Format of this list should be: list(path=count,otherpath=count)
 	  */
-	var/list/backpack_contents = null
+	var/list/backpack_contents = list()
 
 	/// Type path of item to go in belt slot
 	var/belt = null
@@ -244,12 +244,10 @@
 			EQUIP_OUTFIT_ITEM(r_pocket, ITEM_SLOT_RPOCKET)
 
 		if(box)
-			if(!backpack_contents)
-				backpack_contents = list()
 			backpack_contents.Insert(1, box)
 			backpack_contents[box] = 1
 
-		if(backpack_contents)
+		if(length(backpack_contents))
 			for(var/path in backpack_contents)
 				var/number = backpack_contents[path]
 				if(!isnum(number))//Default to 1
@@ -434,9 +432,9 @@
 	r_hand = target.r_hand
 	l_hand = target.l_hand
 	internals_slot = target.internals_slot
-	backpack_contents = target.backpack_contents
+	backpack_contents = target.backpack_contents?.Copy()
 	box = target.box
-	implants = target.implants
+	implants = target.implants?.Copy()
 	accessory = target.accessory
 
 /// Prompt the passed in mob client to download this outfit as a json blob

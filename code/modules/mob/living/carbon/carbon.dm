@@ -178,10 +178,11 @@
 	if(neckgrab_throw)
 		power_throw++
 
-	do_attack_animation(target, no_effect = TRUE) //PARIAH EDIT ADDITION - AESTHETICS
-	playsound(loc, 'sound/weapons/punchmiss.ogg', 50, TRUE, -1) //PARIAH EDIT ADDITION - AESTHETICS
-	visible_message(span_danger("[src] throws [thrown_thing][power_throw ? " really hard!" : "."]"), \
-					span_danger("You throw [thrown_thing][power_throw ? " really hard!" : "."]"))
+	do_attack_animation(target, no_effect = TRUE)
+	playsound(loc, 'sound/weapons/punchmiss.ogg', 50, TRUE, -1)
+	visible_message(
+		span_danger("<b>[src]</b> throws [thrown_thing][power_throw ? " really hard!" : "."]"), \
+	)
 	log_message("has thrown [thrown_thing] [power_throw ? "really hard" : ""]", LOG_ATTACK)
 	newtonian_move(get_dir(target, src))
 	thrown_thing.safe_throw_at(target, thrown_thing.throw_range, thrown_thing.throw_speed + power_throw, src, null, null, null, move_force)

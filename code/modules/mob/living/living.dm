@@ -164,7 +164,7 @@
 	if(!M.buckled && !M.has_buckled_mobs())
 		if(can_mobswap_with(M))
 			//switch our position with M
-			if(loc && !loc.MultiZAdjacent(M.loc))
+			if(!loc?.MultiZAdjacent(M.loc, M, src))
 				return TRUE
 
 			now_pushing = TRUE

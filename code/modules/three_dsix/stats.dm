@@ -16,6 +16,8 @@
 	/// A list of weakrefs to examined objects. Used for forensic rolls. THIS DOES JUST KEEP GETTING BIGGER, SO, CAREFUL.
 	var/list/examined_object_weakrefs = list()
 
+	VAR_PRIVATE/atom/movable/screen/map_view/byondui/byondui_screen
+
 /datum/stats/New(owner)
 	. = ..()
 	src.owner = owner
@@ -30,11 +32,209 @@
 			continue
 		skills[path] += new path
 
+	byondui_screen = new
+	byondui_screen.generate_view("byondui_characterstats_[ref(src)]")
+
 /datum/stats/Destroy()
 	owner = null
 	stats = null
 	skills = null
+	QDEL_NULL(byondui_screen)
 	return ..()
+
+/datum/stats/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+
+	var/mutable_appearance/appearance = new(owner.appearance)
+	appearance.dir = SOUTH
+	appearance.transform = null
+	remove_non_canon_overlays(appearance)
+	byondui_screen.rendered_atom.appearance = appearance.appearance
+
+	if(!ui)
+		ui = new(user, src, "CharacterStats", "Character Sheet")
+		ui.open()
+		// ui.set_autoupdate(FALSE)
+		byondui_screen.render_to_tgui(user.client, ui.window)
+
+/datum/stats/ui_state(mob/user)
+	return GLOB.always_state
+
+/datum/stats/ui_close(mob/user)
+	. = ..()
+	byondui_screen.hide_from_client(user.client)
+
+#define STATS_COLOR_NEUTRAL 0
+#define STATS_COLOR_BAD 1
+#define STATS_COLOR_VERY_BAD 2
+
+/datum/stats/ui_data(mob/user)
+	var/list/data = list(
+		"byondui_map" = byondui_screen.assigned_map,
+		"default_skill_value" = STATS_BASELINE_VALUE,
+	)
+
+	var/list/mob_data = list()
+	data["mob"] = mob_data
+	mob_data["name"] = owner.real_name
+
+
+	var/list/skill_data = list()
+	data["skills"] = skill_data
+
+	for(var/skill_type in skills)
+		var/datum/rpg_skill/skill = skills[skill_type]
+		/// Used as an out-var for get_skill_modifier()
+		var/list/other_skill_modifiers = list()
+		var/list/modifier_data = list()
+
+		skill_data[++skill_data.len] = list(
+			"name" = skill.name,
+			"desc" = skill.desc,
+			"value" = STATS_BASELINE_VALUE + get_skill_modifier(skill_type, other_skill_modifiers),
+			"modifiers" = modifier_data,
+		)
+
+		if(skill.modifiers)
+			other_skill_modifiers += skill.modifiers
+
+		for(var/modifier_source,modifier_value in other_skill_modifiers)
+			modifier_data[++modifier_data.len] = list(
+				"source" = modifier_source,
+				"value" = modifier_value
+			)
+
+	var/list/bodypart_data = list()
+	data["bodyparts"] = bodypart_data
+
+	var/list/mob_statuses = list()
+	data["mob_statuses"] = mob_statuses
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+
+		if(human_owner.stamina.loss)
+			if(HAS_TRAIT(human_owner, TRAIT_EXHAUSTED))
+				mob_statuses["exhausted"] = STATS_COLOR_NEUTRAL
+			else
+				mob_statuses["fatigued"] = STATS_COLOR_NEUTRAL
+
+		var/toxloss = human_owner.getToxLoss()
+		if(toxloss > 40)
+			mob_statuses["malaise+++"] = STATS_COLOR_VERY_BAD
+		else if(toxloss > 20)
+			mob_statuses["malaise++"] = STATS_COLOR_BAD
+		else if(toxloss > 10)
+			mob_statuses["malaise"] = STATS_COLOR_BAD
+
+		var/oxyloss = human_owner.getOxyLoss()
+		if(oxyloss > 40)
+			mob_statuses["Asphyxiating++"] = STATS_COLOR_VERY_BAD
+		else if(oxyloss > 20)
+			mob_statuses["Asphyxiating+"] = STATS_COLOR_VERY_BAD
+		else if(oxyloss > 10)
+			mob_statuses["Asphyxiating"] = STATS_COLOR_BAD
+
+		if(!HAS_TRAIT(human_owner, TRAIT_NOHUNGER))
+			switch(human_owner.nutrition)
+				if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_FED)
+					mob_statuses["Hungry"] = STATS_COLOR_NEUTRAL
+				if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_HUNGRY)
+					mob_statuses["Malnourished"] = STATS_COLOR_BAD
+				if(0 to NUTRITION_LEVEL_STARVING)
+					mob_statuses["Starving"] = STATS_COLOR_VERY_BAD
+
+		if(human_owner.undergoing_cardiac_arrest())
+			mob_statuses["Asystole"] = STATS_COLOR_VERY_BAD
+
+		else if(human_owner.needs_organ(ORGAN_SLOT_HEART))
+			var/obj/item/organ/heart/heart = human_owner.getorganslot(ORGAN_SLOT_HEART)
+			if(heart && heart.pulse != PULSE_NORM)
+				mob_statuses[heart.pulse > PULSE_NORM ? "Fast heartbeat" : "Slow heartbeat"] = STATS_COLOR_BAD
+
+		// ----- BODYPARTS -----
+		var/list/sorted_parts = list(
+			"Head" = locate(/obj/item/bodypart/head) in human_owner.bodyparts,
+			"Right Arm" = locate(/obj/item/bodypart/arm/right) in human_owner.bodyparts,
+			"Right Leg" = locate(/obj/item/bodypart/leg/right) in human_owner.bodyparts,
+			"Chest" = locate(/obj/item/bodypart/chest) in human_owner.bodyparts,
+			"Left Arm" = locate(/obj/item/bodypart/arm/left) in human_owner.bodyparts,
+			"Left Leg" = locate(/obj/item/bodypart/leg/left) in human_owner.bodyparts,
+		)
+
+		for(var/part_name as anything in sorted_parts)
+			var/list/part_data = list(
+				name = part_name,
+			)
+			bodypart_data[++bodypart_data.len] = part_data
+
+			var/obj/item/bodypart/part = sorted_parts[part_name]
+			if(isnull(part))
+				part_data["missing"] = 1
+				continue
+
+			var/list/status_strings = list()
+			part_data["statuses"] = status_strings
+
+			var/limb_max_damage = part.max_damage
+			var/perceived_brute = part.brute_dam
+			var/perceived_burn = part.burn_dam
+
+			// Hallucinate more damage.
+			if(human_owner.hallucination)
+				if(prob(30))
+					perceived_brute += rand(30,40)
+				if(prob(30))
+					perceived_burn += rand(30,40)
+
+			if(part.type in human_owner.hal_screwydoll)
+				perceived_brute = (human_owner.hal_screwydoll[part.type] * 0.2) * limb_max_damage
+
+			// Perceived brute damage str
+			if(perceived_brute > (limb_max_damage*0.8))
+				status_strings["trauma++"] = STATS_COLOR_VERY_BAD
+			else if(perceived_brute > (limb_max_damage*0.4))
+				status_strings["trauma+"] = STATS_COLOR_BAD
+			else if(perceived_brute > 0)
+				status_strings["trauma"] = STATS_COLOR_BAD
+
+			// Perceived burn damage str
+			if(perceived_burn > (limb_max_damage*0.8))
+				status_strings["burned++"] = STATS_COLOR_VERY_BAD
+			else if(perceived_burn > (limb_max_damage*0.4))
+				status_strings["burned+"] = STATS_COLOR_BAD
+			else if(perceived_burn > 0)
+				status_strings["burned"] = STATS_COLOR_BAD
+
+			// Disabled
+			if(part.bodypart_disabled && !part.is_stump)
+				status_strings["disabled"] = STATS_COLOR_VERY_BAD
+
+			// Broken
+			if(part.check_bones() & CHECKBONES_BROKEN)
+				status_strings["broken"] = STATS_COLOR_VERY_BAD
+
+			// Bleeding
+			if(part.get_modified_bleed_rate())
+				status_strings["bleeding"] = STATS_COLOR_BAD
+
+			// Bandaged
+			if(part.bandage)
+				status_strings["bandaged"] = STATS_COLOR_NEUTRAL
+
+			// Splinted
+			if(part.splint)
+				status_strings["splinted"] = STATS_COLOR_NEUTRAL
+
+			// Embedded objects
+			for(var/obj/item/embedded as anything in part.embedded_objects)
+				status_strings["embedded [embedded.name]"] = STATS_COLOR_BAD
+
+
+	return data
+
+#undef STATS_COLOR_NEUTRAL
+#undef STATS_COLOR_BAD
+#undef STATS_COLOR_VERY_BAD
 
 /// Return a given stat value.
 /datum/stats/proc/get_stat_modifier(stat)
@@ -42,9 +242,9 @@
 	return S.get(owner)
 
 /// Return a given skill value modifier.
-/datum/stats/proc/get_skill_modifier(skill)
+/datum/stats/proc/get_skill_modifier(skill, list/out_sources)
 	var/datum/rpg_skill/S = skills[skill]
-	return S.get(owner)
+	return S.get(owner, out_sources)
 
 /// Add a stat modifier from a given source
 /datum/stats/proc/set_stat_modifier(amount, datum/rpg_stat/stat_path, source)
@@ -161,3 +361,10 @@
 		client?.give_award(/datum/award/achievement/disco_inferno)
 	return returned_result
 
+
+
+/mob/living/carbon/human/verb/check_skills()
+	set name = "Character Sheet"
+	set category = "IC"
+
+	stats.ui_interact(src)

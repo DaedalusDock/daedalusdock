@@ -685,26 +685,23 @@ TYPEINFO_DEF(/obj/item/storage/belt/champion)
 /obj/item/storage/belt/janitor/Initialize()
 	. = ..()
 	atom_storage.max_slots = 6
-	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL // Set to this so the  light replacer can fit.
 	atom_storage.set_holdable(list(
 		/obj/item/assembly/mousetrap,
-		/obj/item/clothing/gloves,
 		/obj/item/flashlight,
 		/obj/item/forcefield_projector,
 		/obj/item/grenade/chem_grenade,
 		/obj/item/lightreplacer,
-		/obj/item/flashlight,
 		/obj/item/reagent_containers/spray,
 		/obj/item/soap,
 		/obj/item/holosign_creator,
-		/obj/item/forcefield_projector,
 		/obj/item/key/janitor,
 		/obj/item/clothing/gloves,
 		/obj/item/melee/flyswatter,
 		/obj/item/assembly/mousetrap,
 		/obj/item/paint_remover,
-		/obj/item/pushbroom
-		))
+		/obj/item/pushbroom,
+		/obj/item/taperecorder,
+	))
 
 /obj/item/storage/belt/janitor/full/PopulateContents()
 	new /obj/item/lightreplacer(src)

@@ -417,10 +417,6 @@
 	if(SEND_SIGNAL(src, COMSIG_CARBON_PRE_HELP_ACT, helper) & COMPONENT_BLOCK_HELP_ACT)
 		return
 
-	if(helper == src)
-		check_self_for_injuries()
-		return
-
 	if(body_position == LYING_DOWN)
 		if(buckled)
 			to_chat(helper, span_warning("You need to unbuckle [src] first to do that!"))

@@ -11,7 +11,7 @@ type CharacterStatsData = {
   byondui_map: string;
   default_skill_value: number;
   mob: Mob;
-  mob_statuses: Record<string, string>;
+  mob_statuses: Record<string, number>;
   skills: Skill[];
 };
 
@@ -22,7 +22,7 @@ type Mob = {
 type Bodypart = {
   missing: BooleanLike;
   name: string;
-  statuses: Record<string, string>;
+  statuses: Record<string, number>;
 };
 
 type Skill = {
@@ -102,7 +102,7 @@ function BodyPage(data: CharacterStatsData) {
       </Flex.Item>
       <Flex.Item grow={1}>
         <Flex direction="column" align="center" height="100%">
-          <Flex.Item fontSize="3rem" style={{ marginBottom: '1.7rem' }}>
+          <Flex.Item className="CharacterStats__nameHeader">
             {data.mob.name}
           </Flex.Item>
           <Flex.Item>
@@ -126,7 +126,7 @@ function BodyPage(data: CharacterStatsData) {
   );
 }
 
-function generalHealthEntry(mob_statuses: Record<string, string>) {
+function generalHealthEntry(mob_statuses: Record<string, number>) {
   return (
     <Flex.Item width="100%" grow={1} style={{ padding: '0.5em' }}>
       <Flex direction="column" className="CharacterStats__healthBlock">
@@ -134,16 +134,21 @@ function generalHealthEntry(mob_statuses: Record<string, string>) {
           General
         </Flex.Item>
         <Flex.Item grow={1} className="CharacterStats__healthBlock_body">
-          <Flex height="100%" direction="column" flexWrap>
-            {Object.entries(mob_statuses).map(([status, color], i) => (
-              <Flex.Item
-                key={i}
-                color={color}
-                className="CharacterStats__healthBlock_entry"
-              >
-                {capitalize(status)}
-              </Flex.Item>
-            ))}
+          <Flex height="100%" direction="column">
+            {Object.entries(mob_statuses)
+              .sort(
+                ([status_a, severity_a], [status_b, severity_b]) =>
+                  severity_b - severity_a,
+              )
+              .map(([status, severity], i) => (
+                <Flex.Item
+                  key={i}
+                  color={severityColor(severity)}
+                  className="CharacterStats__healthBlock_entry"
+                >
+                  • {capitalize(status)}
+                </Flex.Item>
+              ))}
           </Flex>
         </Flex.Item>
       </Flex>
@@ -170,16 +175,21 @@ function bodypartHealthEntry(bodypart: Bodypart) {
               MISSING
             </Flex>
           ) : (
-            <Flex height="100%" direction="column" flexWrap>
-              {Object.entries(bodypart.statuses).map(([status, color], i) => (
-                <Flex.Item
-                  key={i}
-                  color={color}
-                  className="CharacterStats__healthBlock_entry"
-                >
-                  {capitalize(status)}
-                </Flex.Item>
-              ))}
+            <Flex height="100%" direction="column">
+              {Object.entries(bodypart.statuses)
+                .sort(
+                  ([status_a, severity_a], [status_b, severity_b]) =>
+                    severity_b - severity_a,
+                )
+                .map(([status, severity], i) => (
+                  <Flex.Item
+                    key={i}
+                    color={severityColor(severity)}
+                    className="CharacterStats__healthBlock_entry"
+                  >
+                    • {capitalize(status)}
+                  </Flex.Item>
+                ))}
             </Flex>
           )}
         </Flex.Item>
@@ -255,4 +265,15 @@ function StatsPage(data: CharacterStatsData) {
       ))}
     </Stack>
   );
+}
+
+function severityColor(severity: number): string {
+  switch (severity) {
+    case 1:
+      return '#7D3C3C';
+    case 2:
+      return '#df3e3e';
+    default:
+      return '';
+  }
 }

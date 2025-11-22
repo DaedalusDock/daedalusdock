@@ -287,6 +287,6 @@
 	if(!.)
 		return
 
-	var/mob/living/carbon/carbon_owner = owner
-	carbon_owner.check_self_for_injuries()
+	var/mob/living/carbon/human/human_owner = owner
+	human_owner.stats.ui_interact(owner)
 

@@ -64,8 +64,9 @@
 	. = ..()
 	byondui_screen.hide_from_client(user.client)
 
-#define STATS_COLOR_BAD "#7D3C3C"
-#define STATS_COLOR_VERY_BAD "#df3e3e"
+#define STATS_COLOR_NEUTRAL 0
+#define STATS_COLOR_BAD 1
+#define STATS_COLOR_VERY_BAD 2
 
 /datum/stats/ui_data(mob/user)
 	var/list/data = list(
@@ -108,36 +109,47 @@
 
 	var/list/mob_statuses = list()
 	data["mob_statuses"] = mob_statuses
-	if(iscarbon(owner))
+	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 
 		if(human_owner.stamina.loss)
-			mob_statuses[HAS_TRAIT(human_owner, TRAIT_EXHAUSTED) ? "exhausted" : "fatigued"] = ""
+			if(HAS_TRAIT(human_owner, TRAIT_EXHAUSTED))
+				mob_statuses["exhausted"] = STATS_COLOR_NEUTRAL
+			else
+				mob_statuses["fatigued"] = STATS_COLOR_NEUTRAL
 
 		var/toxloss = human_owner.getToxLoss()
 		if(toxloss > 40)
-			mob_statuses["Systemic illness present"] = STATS_COLOR_VERY_BAD
+			mob_statuses["malaise+++"] = STATS_COLOR_VERY_BAD
 		else if(toxloss > 20)
-			mob_statuses["Unwell"] = STATS_COLOR_BAD
+			mob_statuses["malaise++"] = STATS_COLOR_BAD
 		else if(toxloss > 10)
-			mob_statuses["General malaise"] = STATS_COLOR_BAD
+			mob_statuses["malaise"] = STATS_COLOR_BAD
 
 		var/oxyloss = human_owner.getOxyLoss()
 		if(oxyloss > 40)
-			mob_statuses["Asphyxiating"] = STATS_COLOR_VERY_BAD
+			mob_statuses["Asphyxiating++"] = STATS_COLOR_VERY_BAD
 		else if(oxyloss > 20)
-			mob_statuses["Severe vertigo"] = STATS_COLOR_VERY_BAD
+			mob_statuses["Asphyxiating+"] = STATS_COLOR_VERY_BAD
 		else if(oxyloss > 10)
-			mob_statuses["Lightheaded"] = STATS_COLOR_BAD
+			mob_statuses["Asphyxiating"] = STATS_COLOR_BAD
 
 		if(!HAS_TRAIT(human_owner, TRAIT_NOHUNGER))
 			switch(human_owner.nutrition)
 				if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_FED)
-					mob_statuses["Hungry"] = ""
+					mob_statuses["Hungry"] = STATS_COLOR_NEUTRAL
 				if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_HUNGRY)
 					mob_statuses["Malnourished"] = STATS_COLOR_BAD
 				if(0 to NUTRITION_LEVEL_STARVING)
 					mob_statuses["Starving"] = STATS_COLOR_VERY_BAD
+
+		if(human_owner.undergoing_cardiac_arrest())
+			mob_statuses["Asystole"] = STATS_COLOR_VERY_BAD
+
+		else if(human_owner.needs_organ(ORGAN_SLOT_HEART))
+			var/obj/item/organ/heart/heart = human_owner.getorganslot(ORGAN_SLOT_HEART)
+			if(heart && heart.pulse != PULSE_NORM)
+				mob_status[heart.pulse > PULSE_NORM ? "Fast heartbeat" : "Slow heartbeat"] = STATS_COLOR_BAD
 
 		// ----- BODYPARTS -----
 		var/list/sorted_parts = list(
@@ -179,23 +191,23 @@
 
 			// Perceived brute damage str
 			if(perceived_brute > (limb_max_damage*0.8))
-				status_strings[part.heavy_brute_msg] = STATS_COLOR_VERY_BAD
+				status_strings["trauma++"] = STATS_COLOR_VERY_BAD
 			else if(perceived_brute > (limb_max_damage*0.4))
-				status_strings[part.medium_brute_msg] = STATS_COLOR_BAD
+				status_strings["trauma+"] = STATS_COLOR_BAD
 			else if(perceived_brute > 0)
-				status_strings[part.light_brute_msg] = STATS_COLOR_BAD
+				status_strings["trauma"] = STATS_COLOR_BAD
 
 			// Perceived burn damage str
 			if(perceived_burn > (limb_max_damage*0.8))
-				status_strings[part.heavy_burn_msg] = STATS_COLOR_VERY_BAD
+				status_strings["burned++"] = STATS_COLOR_VERY_BAD
 			else if(perceived_burn > (limb_max_damage*0.4))
-				status_strings[part.medium_burn_msg] = STATS_COLOR_BAD
+				status_strings["burned+"] = STATS_COLOR_BAD
 			else if(perceived_burn > 0)
-				status_strings[part.light_burn_msg] = STATS_COLOR_BAD
+				status_strings["burned"] = STATS_COLOR_BAD
 
 			// Disabled
 			if(part.bodypart_disabled && !part.is_stump)
-				status_strings["disabled"] = "grey"
+				status_strings["disabled"] = STATS_COLOR_VERY_BAD
 
 			// Broken
 			if(part.check_bones() & CHECKBONES_BROKEN)
@@ -203,13 +215,24 @@
 
 			// Bleeding
 			if(part.get_modified_bleed_rate())
-				status_strings["bleeding"] = "red"
+				status_strings["bleeding"] = STATS_COLOR_BAD
 
+			// Bandaged
+			if(part.bandage)
+				status_strings["bandaged"] = STATS_COLOR_NEUTRAL
 
+			// Splinted
+			if(part.splint)
+				status_strings["splinted"] = STATS_COLOR_NEUTRAL
+
+			// Embedded objects
+			for(var/obj/item/embedded as anything in part.embedded_objects)
+				status_strings["embedded [embedded.name]"] = STATS_COLOR_BAD
 
 
 	return data
 
+#undef STATS_COLOR_NEUTRAL
 #undef STATS_COLOR_BAD
 #undef STATS_COLOR_VERY_BAD
 
@@ -339,9 +362,9 @@
 	return returned_result
 
 
-#warn debug
-/mob/living/verb/check_skills()
-	set name = "Check skills"
+
+/mob/living/carbon/human/verb/check_skills()
+	set name = "Character Sheet"
 	set category = "IC"
 
 	stats.ui_interact(src)

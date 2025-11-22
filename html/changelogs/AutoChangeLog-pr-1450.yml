@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Any TGUI interface utilizing double-clicking now works correctly.

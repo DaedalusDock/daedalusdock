@@ -149,7 +149,7 @@
 		else if(human_owner.needs_organ(ORGAN_SLOT_HEART))
 			var/obj/item/organ/heart/heart = human_owner.getorganslot(ORGAN_SLOT_HEART)
 			if(heart && heart.pulse != PULSE_NORM)
-				mob_status[heart.pulse > PULSE_NORM ? "Fast heartbeat" : "Slow heartbeat"] = STATS_COLOR_BAD
+				mob_statuses[heart.pulse > PULSE_NORM ? "Fast heartbeat" : "Slow heartbeat"] = STATS_COLOR_BAD
 
 		// ----- BODYPARTS -----
 		var/list/sorted_parts = list(

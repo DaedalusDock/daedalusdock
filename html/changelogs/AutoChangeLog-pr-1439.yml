@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Cassettes can now actually play music.
+  - rscadd: Music cassettes spawn as maintenance loot.
+  - tweak: SSmedia now loads subdirectories.

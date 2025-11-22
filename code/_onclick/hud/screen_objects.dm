@@ -801,8 +801,8 @@
 	if(.)
 		return FALSE
 
-	var/mob/living/carbon/C = usr
-	C.check_self_for_injuries()
+	var/mob/living/carbon/human/H = usr
+	H.stats.ui_interact(H)
 
 /atom/movable/screen/healthdoll/living
 	icon_state = "fullhealth0"

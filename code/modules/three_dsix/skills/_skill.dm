@@ -10,7 +10,7 @@
 	/// All skills must have a valid parent stat type.
 	var/parent_stat_type = null
 
-/datum/rpg_skill/proc/get(mob/living/user)
+/datum/rpg_skill/proc/get(mob/living/user, list/out_sources)
 	return value
 
 /// Update the modified value with modifiers.

@@ -118,7 +118,6 @@ TYPEINFO_DEF(/obj/item/paint_sprayer)
 	inhand_icon_state = "paintcan"
 	w_class = WEIGHT_CLASS_NORMAL
 	resistance_flags = FLAMMABLE
-	max_integrity = 100
 
 /obj/item/paint_remover/examine(mob/user)
 	. = ..()

@@ -6,7 +6,7 @@
 
 	layer = FLY_LAYER
 	mouse_opacity = MOUSE_OPACITY_ICON
-	invisibility = INVISIBILITY_OBSERVER
+	invisibility = INVISIBILITY_FLOCK
 
 	appearance_flags = parent_type::appearance_flags | RESET_COLOR
 	blend_mode = BLEND_ADD
@@ -16,6 +16,7 @@
 	lighting_alpha = LIGHTING_PLANE_ALPHA_INVISIBLE
 	sight = SEE_TURFS | SEE_MOBS | SEE_OBJS | SEE_SELF
 
+	hud_type = /datum/hud/flockghost
 	initial_language_holder = /datum/language_holder/flock
 
 	move_on_shuttle = FALSE
@@ -37,6 +38,12 @@
 
 	add_client_colour(/datum/client_colour/flockmind)
 	ADD_TRAIT(src, TRAIT_HEAR_THROUGH_WALLS, INNATE_TRAIT)
+
+/mob/camera/flock/Destroy()
+	if(controlling_bird)
+		controlling_bird.release_control()
+	flock = null
+	return ..()
 
 /mob/camera/flock/Login()
 	. = ..()
@@ -72,6 +79,19 @@
 
 	if (href_list["ping"])
 		origin.AddComponent(/datum/component/flock_ping)
+
+/mob/camera/flock/broadcast_examine(atom/examined)
+	return
+
+/mob/camera/flock/on_changed_z_level(turf/old_turf, turf/new_turf, notify_contents)
+	. = ..()
+	update_z(new_turf?.z)
+
+	if(flock && !flock.is_on_safe_z(src))
+		var/turf/destination = get_turf(pick_safe(flock.drones)) || get_safe_random_station_turf()
+
+		forceMove(destination)
+		to_chat(src, span_warning("You feel your consciousness weaking as you are ripped further from your rift, and you retreat back to safety."))
 
 /mob/camera/flock/proc/update_z(new_z) // 1+ to register, null to unregister
 	if (registered_z != new_z)

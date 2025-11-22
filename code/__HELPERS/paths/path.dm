@@ -175,7 +175,7 @@
 
 	if(isflockdrone(construct_from))
 		var/mob/living/simple_animal/flock/drone/bird = construct_from
-		if(HAS_TRAIT(bird, TRAIT_FLOCKPHASE) || bird.resources.has_points(10))
+		if(HAS_TRAIT(bird, TRAIT_FLOCKPHASE) || bird.substrate.has_points(10))
 			able_to_flockphase = TRUE
 
 /// List of vars on /datum/can_pass_info to use when checking two instances for equality

@@ -299,7 +299,7 @@ TYPEINFO_DEF(/obj/item/shard)
 	attack_verb_simple = list("stab", "slash", "slice", "cut")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	resistance_flags = ACID_PROOF
-	max_integrity = 40
+	max_integrity = 3
 	sharpness = SHARP_EDGED
 	var/icon_prefix
 	var/craft_time = 3.5 SECONDS

@@ -23,7 +23,7 @@
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK //ERROOOOO
 	resistance_flags = NONE
-	max_integrity = 300
+	max_integrity = 10
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	storage_type = /datum/storage/backpack
@@ -417,7 +417,7 @@ TYPEINFO_DEF(/obj/item/storage/backpack/holding)
 	inhand_icon_state = "duffel-curse"
 	slowdown = 2
 	item_flags = DROPDEL
-	max_integrity = 100
+	max_integrity = 20
 	///counts time passed since it ate food
 	var/hunger = 0
 	supports_variations_flags = NONE

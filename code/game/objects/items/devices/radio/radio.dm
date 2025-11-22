@@ -84,6 +84,7 @@ TYPEINFO_DEF(/obj/item/radio)
 		wires.cut(WIRE_TX) // OH GOD WHY
 	secure_radio_connections = list()
 	. = ..()
+	SET_TRACKING(__TYPE__)
 
 	for(var/ch_name in channels)
 		secure_radio_connections[ch_name] = add_radio(src, GLOB.radiochannels[ch_name])
@@ -96,6 +97,7 @@ TYPEINFO_DEF(/obj/item/radio)
 	AddElement(/datum/element/empprotection, EMP_PROTECT_WIRES)
 
 /obj/item/radio/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	remove_radio_all(src) //Just to be sure
 	QDEL_NULL(wires)
 	QDEL_NULL(keyslot)

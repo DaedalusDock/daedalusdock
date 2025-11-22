@@ -264,7 +264,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_IMPORTANT_SPEAKER "important_speaker"
 /// This mob automatically succeeds rolls for get_examine_result()
 #define TRAIT_BIGBRAIN "big_brain"
-
+/// Always butcherable even if butcher_results list is empty.
+#define TRAIT_ALWAYS_BUTCHERABLE "always_butcherable"
 // Stops the mob from slipping on water, or banana peels, or pretty much anything that doesn't have [GALOSHES_DONT_HELP] set
 #define TRAIT_NO_SLIP_WATER "NO_SLIP_WATER"
 /// Stops the mob from slipping on permafrost ice (not any other ice) (but anything with [SLIDE_ICE] set)
@@ -1026,7 +1027,12 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define FLOCK_CONTROLLED_BY_OVERMIND_SOURCE "FLOCK_CONTROLLED_BY_OVERMIND_SOURCE"
 
 #define TRAIT_FLOCKPHASE "TRAIT_FLOCKPHASE"
+/// Is a flock object. Because of type fuckery.
 #define TRAIT_FLOCK_THING "TRAIT_FLOCK_THING"
+/// Flockdrones cannot deconstruct this object.
+#define TRAIT_FLOCK_NODECON "TRAIT_FLOCK_NODECON"
+/// Implements flock_examine() proc.
+#define TRAIT_FLOCK_EXAMINE "TRAIT_FLOCK_EXAMINE"
 
 /// Trait from mob/living/update_transform()
 #define UPDATE_TRANSFORM_TRAIT "update_transform"

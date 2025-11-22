@@ -49,6 +49,7 @@
 	hud = null
 	return ..()
 
+// Children should return TRUE to cancel further child calls.
 /atom/movable/screen/Click(location, control, params)
 	SHOULD_CALL_PARENT(TRUE)
 	. = !(TRUE || ..())
@@ -802,7 +803,8 @@
 		return FALSE
 
 	var/mob/living/carbon/C = usr
-	C.check_self_for_injuries()
+	if(istype(C))
+		C.check_self_for_injuries()
 
 /atom/movable/screen/healthdoll/living
 	icon_state = "fullhealth0"

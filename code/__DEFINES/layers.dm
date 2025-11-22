@@ -170,6 +170,9 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 ///Pipecrawling images
 #define PIPECRAWL_IMAGES_PLANE 180
 
+///Info tags, below things like blindness and camera static
+#define INFO_TAG_PLANE 190
+
 ///AI Camera Static
 #define CAMERA_STATIC_PLANE 200
 
@@ -181,6 +184,7 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 #define DITHER_LAYER 3
 #define UI_DAMAGE_LAYER 4
 #define BLIND_LAYER 5
+#define FLOCK_CONVERT_LAYER 5.5
 #define CRIT_LAYER 6
 #define CURSE_LAYER 7
 #define FOV_EFFECTS_LAYER 10000 //Blindness effects are not layer 4, they lie to you
@@ -205,7 +209,6 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 #define RADIAL_BACKGROUND_LAYER 0
 ///1000 is an unimportant number, it's just to normalize copied layers
 #define RADIAL_CONTENT_LAYER 1000
-
 #define ADMIN_POPUP_LAYER 1
 
 ///Layer for screentips

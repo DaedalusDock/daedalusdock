@@ -58,7 +58,7 @@
 	stats_info[++stats_info.len] = list(name = "Partitions divided: ", "value" = stat_traces_made)
 	stats_info[++stats_info.len] = list(name = "Tiles converted: ", "value" = stat_tiles_made)
 	stats_info[++stats_info.len] = list(name = "Structures materialized: ", "value" = stat_structures_made)
-	stats_info[++stats_info.len] = list(name = "Highest compute: ", "value" = stat_highest_compute)
+	stats_info[++stats_info.len] = list(name = "Highest bandwidth: ", "value" = stat_highest_bandwidth)
 
 	return data
 
@@ -77,8 +77,8 @@
 		if("jump_to")
 			var/atom/movable/target = locate(params["origin"])
 			var/turf/T = get_turf(target)
-			if(isnull(T) || !is_station_level(T.z))
-				to_chat(user, span_alert("They are beyond your reach."))
+			if(isnull(T) || !is_on_safe_z(target))
+				to_chat(user, span_alert("They are beyond our reach."))
 				return
 
 			if(isflockdrone(user))
@@ -99,3 +99,21 @@
 			if(istype(bird))
 				bird.rally(get_turf(user))
 				return TRUE
+
+		if("cancel_tealprint")
+			var/obj/structure/flock/tealprint/tealprint = locate(params["origin"])
+			tealprint?.try_cancel_structure()
+			return TRUE
+
+		if("delete_trace")
+			var/mob/camera/flock/trace/flocktrace = locate(params["origin"])
+			if(!istype(flocktrace))
+				message_admins("Warning: possible href exploit by [key_name(usr)] - attempted to remove a flocktrace that wasn't a flocktrace: [flocktrace]")
+				log_game("Warning: possible href exploit by [key_name(usr)] - attempted to remove a flocktrace that wasn't a flocktrace: [flocktrace]")
+				return TRUE
+
+			if(tgui_alert(user, "This will destroy the Flocktrace. Are you sure you want to do this?", "Confirmation", list("Yes", "No")) == "Yes")
+				flock_talk(null, "Partition [flocktrace.real_name] has been reintegrated into flock background processes.", src, involuntary = TRUE)
+				to_chat(flocktrace, span_flocksay("Your higher cognition has been forcibly reintegrated into the collective will of the flock."))
+				flocktrace.so_very_sad_death()
+			return TRUE

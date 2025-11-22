@@ -26,7 +26,7 @@
 	flags_1 = CONDUCT_1 | PREVENT_CONTENTS_EXPLOSION_1 // We detonate upon being exploded.
 	slot_flags = ITEM_SLOT_BELT
 	resistance_flags = FLAMMABLE
-	max_integrity = 40
+	max_integrity = 20
 	/// Bitfields which prevent the grenade from detonating if set. Includes ([GRENADE_DUD]|[GRENADE_USED])
 	var/dud_flags = NONE
 	///Is this grenade currently armed?

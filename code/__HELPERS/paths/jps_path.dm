@@ -428,7 +428,7 @@
 			continue
 		if(!border.density && border.can_astar_pass == CANASTARPASS_DENSITY)
 			continue
-		if(!border.CanAStarPass(actual_dir, pass_info))
+		if(!border.CanAStarPass(actual_dir, pass_info, TRUE))
 			return TRUE
 
 	// Destination blockers check

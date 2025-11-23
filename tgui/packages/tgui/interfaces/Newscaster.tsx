@@ -316,14 +316,14 @@ const NewscasterWantedScreen = (props) => {
                 position="relative"
                 top="20%"
                 left="18%"
-                onClick={() => act('cancelCreation')}
+                onClick={() => setViewingWanted(0)}
               />
             </Box>
             <Section>
               <Box bold>{viewingEntry.criminal}</Box>
               <Box italic>{viewingEntry.crime}</Box>
             </Section>
-            <Image src={viewingEntry.image} />
+            {viewingEntry.image && <Image src={viewingEntry.image} />}
             <Box italic>Posted by {viewingEntry.author || 'N/A'}</Box>
           </Stack.Item>
         </Stack>

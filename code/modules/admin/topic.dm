@@ -1378,57 +1378,58 @@
 		src.admincaster_screen=11
 		src.access_news_network()
 
-	else if(href_list["ac_menu_wanted"])
-		if(!check_rights(R_ADMIN))
-			return
-		var/already_wanted = 0
-		if(GLOB.news_network.wanted_issue.active)
-			already_wanted = 1
+	#warn fix
+	// else if(href_list["ac_menu_wanted"])
+	// 	if(!check_rights(R_ADMIN))
+	// 		return
+	// 	var/already_wanted = 0
+	// 	if(GLOB.news_network.wanted_issue.active)
+	// 		already_wanted = 1
 
-		if(already_wanted)
-			src.admincaster_wanted_message.criminal = GLOB.news_network.wanted_issue.criminal
-			src.admincaster_wanted_message.body = GLOB.news_network.wanted_issue.body
-		src.admincaster_screen = 14
-		src.access_news_network()
+	// 	if(already_wanted)
+	// 		src.admincaster_wanted_message.criminal = GLOB.news_network.wanted_issue.criminal
+	// 		src.admincaster_wanted_message.body = GLOB.news_network.wanted_issue.body
+	// 	src.admincaster_screen = 14
+	// 	src.access_news_network()
 
-	else if(href_list["ac_set_wanted_name"])
-		if(!check_rights(R_ADMIN))
-			return
-		src.admincaster_wanted_message.criminal = adminscrub(stripped_input(usr, "Provide the name of the Wanted person.", "Network Security Handler", ""))
-		src.access_news_network()
+	// else if(href_list["ac_set_wanted_name"])
+	// 	if(!check_rights(R_ADMIN))
+	// 		return
+	// 	src.admincaster_wanted_message.criminal = adminscrub(stripped_input(usr, "Provide the name of the Wanted person.", "Network Security Handler", ""))
+	// 	src.access_news_network()
 
-	else if(href_list["ac_set_wanted_desc"])
-		if(!check_rights(R_ADMIN))
-			return
-		src.admincaster_wanted_message.body = adminscrub(stripped_input(usr, "Provide the a description of the Wanted person and any other details you deem important.", "Network Security Handler", ""))
-		src.access_news_network()
+	// else if(href_list["ac_set_wanted_desc"])
+	// 	if(!check_rights(R_ADMIN))
+	// 		return
+	// 	src.admincaster_wanted_message.body = adminscrub(stripped_input(usr, "Provide the a description of the Wanted person and any other details you deem important.", "Network Security Handler", ""))
+	// 	src.access_news_network()
 
-	else if(href_list["ac_submit_wanted"])
-		if(!check_rights(R_ADMIN))
-			return
-		var/input_param = text2num(href_list["ac_submit_wanted"])
-		if(src.admincaster_wanted_message.criminal == "" || src.admincaster_wanted_message.body == "")
-			src.admincaster_screen = 16
-		else
-			var/choice = tgui_alert(usr,"Please confirm Wanted Issue [(input_param==1) ? ("creation.") : ("edit.")]","Network Security Handler",list("Confirm","Cancel"))
-			if(choice=="Confirm")
-				if(input_param==1)          //If input_param == 1 we're submitting a new wanted issue. At 2 we're just editing an existing one. See the else below
-					GLOB.news_network.submit_wanted(admincaster_wanted_message.criminal, admincaster_wanted_message.body, admin_signature, null, 1, 1)
-					src.admincaster_screen = 15
-				else
-					GLOB.news_network.submit_wanted(admincaster_wanted_message.criminal, admincaster_wanted_message.body, admin_signature)
-					src.admincaster_screen = 19
-				log_admin("[key_name(usr)] issued a Station-wide Wanted Notification for [src.admincaster_wanted_message.criminal]!")
-		src.access_news_network()
+	// else if(href_list["ac_submit_wanted"])
+	// 	if(!check_rights(R_ADMIN))
+	// 		return
+	// 	var/input_param = text2num(href_list["ac_submit_wanted"])
+	// 	if(src.admincaster_wanted_message.criminal == "" || src.admincaster_wanted_message.body == "")
+	// 		src.admincaster_screen = 16
+	// 	else
+	// 		var/choice = tgui_alert(usr,"Please confirm Wanted Issue [(input_param==1) ? ("creation.") : ("edit.")]","Network Security Handler",list("Confirm","Cancel"))
+	// 		if(choice=="Confirm")
+	// 			if(input_param==1)          //If input_param == 1 we're submitting a new wanted issue. At 2 we're just editing an existing one. See the else below
+	// 				GLOB.news_network.submit_wanted(admincaster_wanted_message.criminal, admincaster_wanted_message.body, admin_signature, null, 1, 1)
+	// 				src.admincaster_screen = 15
+	// 			else
+	// 				GLOB.news_network.submit_wanted(admincaster_wanted_message.criminal, admincaster_wanted_message.body, admin_signature)
+	// 				src.admincaster_screen = 19
+	// 			log_admin("[key_name(usr)] issued a Station-wide Wanted Notification for [src.admincaster_wanted_message.criminal]!")
+	// 	src.access_news_network()
 
-	else if(href_list["ac_cancel_wanted"])
-		if(!check_rights(R_ADMIN))
-			return
-		var/choice = tgui_alert(usr,"Please confirm Wanted Issue removal.","Network Security Handler",list("Confirm","Cancel"))
-		if(choice=="Confirm")
-			GLOB.news_network.delete_wanted()
-			src.admincaster_screen=17
-		src.access_news_network()
+	// else if(href_list["ac_cancel_wanted"])
+	// 	if(!check_rights(R_ADMIN))
+	// 		return
+	// 	var/choice = tgui_alert(usr,"Please confirm Wanted Issue removal.","Network Security Handler",list("Confirm","Cancel"))
+	// 	if(choice=="Confirm")
+	// 		GLOB.news_network.delete_wanted()
+	// 		src.admincaster_screen=17
+	// 	src.access_news_network()
 
 	else if(href_list["ac_censor_channel_author"])
 		if(!check_rights(R_ADMIN))

@@ -72,20 +72,23 @@
 
 	//Here is all the UI_data sent about the current wanted issue, as well as making a new one in the UI.
 	data["viewing_wanted"] = viewing_wanted
-	data["making_wanted_issue"] = !(GLOB.news_network.wanted_issue?.active)
 	data["criminal_name"] = criminal_name
 	data["crime_description"] = crime_description
 	var/list/wanted_info = list()
-	if(GLOB.news_network.wanted_issue)
-		if(GLOB.news_network.wanted_issue.img)
-			user << browse_rsc(GLOB.news_network.wanted_issue.img, "wanted_photo.png")
-		wanted_info = list(list(
-			"active" = GLOB.news_network.wanted_issue.active,
-			"criminal" = GLOB.news_network.wanted_issue.criminal,
-			"crime" = GLOB.news_network.wanted_issue.body,
-			"author" = GLOB.news_network.wanted_issue.scanned_user,
-			"image" = "wanted_photo.png"
-		))
+	if(length(GLOB.news_network.wanted_issues))
+		for(var/datum/wanted_message/wanted_issue as anything in GLOB.news_network.wanted_issues)
+			var/image_name = "wanted_photo_[ref(wanted_issue)].png"
+			if(wanted_issue.img)
+				user << browse_rsc(wanted_issue.img, image_name)
+
+			wanted_info += list(list(
+				"active" = wanted_issue.active,
+				"criminal" = wanted_issue.criminal,
+				"crime" = wanted_issue.body,
+				"author" = wanted_issue.scanned_user,
+				"image" = image_name,
+				"id" = wanted_issue.id,
+			))
 
 	//Code breaking down the channels that have been made on-station thus far. ha
 	//Then, breaks down the messages that have been made on those channels.
@@ -370,5 +373,6 @@
 		return TRUE
 
 /datum/newspanel/proc/clear_wanted_issue(user)
-	GLOB.news_network.wanted_issue.active = FALSE
+	#warn fix
+	//GLOB.news_network.wanted_issue.active = FALSE
 	return

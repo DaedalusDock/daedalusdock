@@ -7,6 +7,7 @@
 
 import { decodeHtmlEntities } from 'common/string';
 import { marked } from 'marked';
+import { BooleanLike } from 'tgui-core/react';
 
 import { useBackend, useLocalState, useSharedState } from '../backend';
 import {
@@ -21,16 +22,80 @@ import {
   Tabs,
   TextArea,
 } from '../components';
+import { Image } from '../components/Image';
 import { sanitizeText } from '../sanitize';
 import { BountyBoardContent } from './BountyBoard';
 import { UserDetails } from './Vending';
 
 const CENSOR_MESSAGE =
-  'This channel has been deemed as threatening to \
-  the welfare of the station, and marked with a Nanotrasen D-Notice.';
+  'The contents of this channel or message have been deemed as threatening to the welfare of the colony, and marked with a D-Notice.';
+
+type User = {
+  department: string;
+  job: string;
+  name: string;
+};
+
+type NewscasterData = {
+  bountyText: string;
+  bountyValue: number;
+  channelAuthor: string | undefined;
+  channelCensored: BooleanLike;
+  channelDesc: string | undefined;
+  channelLocked: BooleanLike;
+  channelName: string | undefined;
+  channels: Channel[];
+  creating_channel: BooleanLike;
+  creating_comment: BooleanLike;
+  crime_description: string | undefined;
+  criminal_name: string | undefined;
+  messages: Message[];
+  paper: number;
+  photo_data: BooleanLike;
+  security_mode: BooleanLike;
+  user: User;
+  viewing_channel: number | undefined;
+  viewing_wanted: BooleanLike;
+  wanted: WantedInfo[];
+};
+
+type Channel = {
+  ID: number;
+  author: string;
+  censored: BooleanLike;
+  locked: BooleanLike;
+  name: string;
+};
+
+type Comment = {
+  auth: string;
+  body: string;
+  time: string;
+};
+
+type Message = {
+  ID: number;
+  auth: string;
+  body: string;
+  censored_author: BooleanLike;
+  censored_message: BooleanLike;
+  channel_num: number;
+  comments: Comment[];
+  photo: string;
+  time: string;
+};
+
+type WantedInfo = {
+  active: BooleanLike;
+  author: string;
+  crime: string;
+  criminal: string;
+  id: number;
+  image: string;
+};
 
 export const Newscaster = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<NewscasterData>();
   const NEWSCASTER_SCREEN = 1;
   const BOUNTYBOARD_SCREEN = 2;
   const [screenmode, setScreenmode] = useSharedState(
@@ -72,9 +137,9 @@ export const Newscaster = (props) => {
 
 /** The modal menu that contains the prompts to making new channels. */
 const NewscasterChannelCreation = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<NewscasterData>();
   const [lockedmode, setLockedmode] = useLocalState('lockedmode', 1);
-  const { creating_channel, name, desc } = data;
+  const { creating_channel } = data;
   if (!creating_channel) {
     return null;
   }
@@ -135,12 +200,12 @@ const NewscasterChannelCreation = (props) => {
                 <Button
                   selected={!lockedmode}
                   content="Public"
-                  onClick={() => setLockedmode(false)}
+                  onClick={() => setLockedmode(0)}
                 />
                 <Button
                   selected={!!lockedmode}
                   content="Private"
-                  onClick={() => setLockedmode(true)}
+                  onClick={() => setLockedmode(1)}
                 />
               </Box>
             </Section>
@@ -165,8 +230,8 @@ const NewscasterChannelCreation = (props) => {
 
 /** The modal menu that contains the prompts to making new comments. */
 const NewscasterCommentCreation = (props) => {
-  const { act, data } = useBackend();
-  const { creating_comment, viewing_message } = data;
+  const { act, data } = useBackend<NewscasterData>();
+  const { creating_comment } = data;
   if (!creating_comment) {
     return null;
   }
@@ -205,11 +270,7 @@ const NewscasterCommentCreation = (props) => {
           <Box>
             <Button
               content={'Submit Comment'}
-              onClick={() =>
-                act('createComment', {
-                  messageID: viewing_message,
-                })
-              }
+              onClick={() => act('createComment', {})}
             />
           </Box>
         </Stack.Item>
@@ -219,7 +280,7 @@ const NewscasterCommentCreation = (props) => {
 };
 
 const NewscasterWantedScreen = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<NewscasterData>();
   const {
     viewing_wanted,
     photo_data,
@@ -254,10 +315,7 @@ const NewscasterWantedScreen = (props) => {
                 <Box bold>{activeWanted.criminal}</Box>
                 <Box italic>{activeWanted.crime}</Box>
               </Section>
-              <Box
-                as="img"
-                src={activeWanted.image ? activeWanted.image : null}
-              />
+              <Image src={activeWanted?.image} />
               <Box italic>
                 Posted by {activeWanted.author ? activeWanted.author : 'N/A'}
               </Box>
@@ -312,7 +370,7 @@ const NewscasterWantedScreen = (props) => {
         </>
       ) : (
         <Box>
-          {wanted.active
+          {wanted.length
             ? 'Please contact your local security officer if spotted.'
             : 'No wanted issue posted. Have a secure day.'}
         </Box>
@@ -322,8 +380,8 @@ const NewscasterWantedScreen = (props) => {
 };
 
 const NewscasterContent = (props) => {
-  const { act, data } = useBackend();
-  const { current_channel = {} } = data;
+  const { act, data } = useBackend<NewscasterData>();
+  const { channelAuthor, channelName, channelDesc } = data;
   return (
     <Stack fill vertical>
       <Stack.Item grow>
@@ -336,11 +394,11 @@ const NewscasterContent = (props) => {
               <Stack.Item>
                 <UserDetails />
               </Stack.Item>
-              <Stack.Item grow>
+              <Stack.Item>
                 <NewscasterChannelBox
-                  channelName={current_channel.name}
-                  channelOwner={current_channel.owner}
-                  channelDesc={current_channel.desc}
+                  channelName={channelName}
+                  channelOwner={channelAuthor}
+                  channelDesc={channelDesc}
                 />
               </Stack.Item>
             </Stack>
@@ -356,7 +414,7 @@ const NewscasterContent = (props) => {
 
 /** The Channel Box is the basic channel information where buttons live.*/
 const NewscasterChannelBox = (_) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<NewscasterData>();
   const {
     channelName,
     channelDesc,
@@ -372,7 +430,7 @@ const NewscasterChannelBox = (_) => {
   return (
     <Section fill title={channelName}>
       <Stack fill vertical>
-        <Stack.Item grow>
+        <Stack.Item>
           {channelCensored ? (
             <Section>
               <BlockQuote color="red">
@@ -380,10 +438,10 @@ const NewscasterChannelBox = (_) => {
               </BlockQuote>
             </Section>
           ) : (
-            <Section fill scrollable>
-              <BlockQuote italic fontSize={1.2} wrap>
-                {decodeHtmlEntities(channelDesc)}
-              </BlockQuote>
+            <Section fill scrollable height="8rem">
+              <Box italic fontSize={1.2}>
+                {decodeHtmlEntities(channelDesc || '')}
+              </Box>
             </Section>
           )}
         </Stack.Item>
@@ -413,9 +471,9 @@ const NewscasterChannelBox = (_) => {
               <Button
                 icon="ban"
                 content={'D-Notice'}
-                tooltip="Censor the whole channel and it's \
-                  contents as dangerous to the station. Cannot be undone."
+                tooltip="Censor the whole channel and it's contents as dangerous to the station."
                 disabled={!security_mode || !viewing_channel}
+                selected={!!channelCensored}
                 onClick={() =>
                   act('channelDNotice', {
                     secure: security_mode,
@@ -441,33 +499,33 @@ const NewscasterChannelBox = (_) => {
 
 /** Channel select is the left-hand menu where all the channels are listed. */
 const NewscasterChannelSelector = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<NewscasterData>();
   const { channels = [], viewing_channel, security_mode, wanted = [] } = data;
   return (
-    <Section minHeight="100%" width={window.innerWidth - 410 + 'px'}>
+    <Section height="100%" width={window.innerWidth - 410 + 'px'}>
       <Tabs vertical>
-        {wanted.map((activeWanted) => (
+        {wanted.map((activeWanted, i) => (
           <Tabs.Tab
             pt={0.75}
             pb={0.75}
             mr={1}
-            key={activeWanted.index}
+            key={i}
             icon={activeWanted.active ? 'skull-crossbones' : null}
             textColor={activeWanted.active ? 'red' : 'grey'}
             onClick={() => act('toggleWanted')}
           >
-            Wanted Issue
+            Wanted: {activeWanted.criminal}
           </Tabs.Tab>
         ))}
-        {channels.map((channel) => (
+        {channels.map((channel, i) => (
           <Tabs.Tab
-            key={channel.index}
+            key={i}
             pt={0.75}
             pb={0.75}
             mr={1}
             selected={viewing_channel === channel.ID}
             icon={channel.censored ? 'ban' : null}
-            textColor={channel.censored ? 'red' : 'white'}
+            textColor={channel.censored ? 'red' : 'black'}
             onClick={() =>
               act('setChannel', {
                 channel: channel.ID,
@@ -481,7 +539,7 @@ const NewscasterChannelSelector = (props) => {
           pt={0.75}
           pb={0.75}
           mr={1}
-          textColor="white"
+          textColor="black"
           color="Green"
           onClick={() => act('startCreateChannel')}
         >
@@ -508,7 +566,7 @@ const processedText = (value) => {
 
 /** This is where the channels comments get spangled out (tm) */
 const NewscasterChannelMessages = (_) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<NewscasterData>();
   const {
     messages = [],
     viewing_channel,
@@ -535,13 +593,13 @@ const NewscasterChannelMessages = (_) => {
       {visibleMessages.map((message) => {
         return (
           <Section
-            key={message.index}
+            key={message.ID}
             textColor="white"
             title={
               <i>
                 {message.censored_author ? (
                   <Box textColor="red">
-                    By: [REDACTED]. <b>D-Notice Notice</b> .
+                    By: [REDACTED]. <b>D-Notice</b>.
                   </Box>
                 ) : (
                   <>
@@ -557,6 +615,7 @@ const NewscasterChannelMessages = (_) => {
                     icon="comment-slash"
                     tooltip="Censor Story"
                     disabled={!security_mode}
+                    selected={!!message.censored_message}
                     onClick={() =>
                       act('storyCensor', {
                         messageID: message.ID,
@@ -569,6 +628,7 @@ const NewscasterChannelMessages = (_) => {
                     icon="user-slash"
                     tooltip="Censor Author"
                     disabled={!security_mode}
+                    selected={!!message.censored_author}
                     onClick={() =>
                       act('authorCensor', {
                         messageID: message.ID,
@@ -596,30 +656,27 @@ const NewscasterChannelMessages = (_) => {
           >
             <BlockQuote>
               {message.censored_message ? (
-                <Section textColor="red">
-                  This message was deemed dangerous to the general welfare of
-                  the station and therefore marked with a <b>D-Notice</b>.
-                </Section>
+                <Section textColor="red">{CENSOR_MESSAGE}</Section>
               ) : (
-                <Section
-                  dangerouslySetInnerHTML={processedText(message.body)}
-                  pl={1}
-                />
+                <Section pl={1}>
+                  <Box dangerouslySetInnerHTML={processedText(message.body)} />
+                </Section>
               )}
               {message.photo !== null && !message.censored_message && (
-                <Box as="img" src={message.photo} />
+                <Image src={message.photo} />
               )}
               {!!message.comments && (
                 <Box>
-                  {message.comments.map((comment) => (
-                    <BlockQuote key={comment.index}>
+                  {message.comments.map((comment, i) => (
+                    <BlockQuote key={i}>
                       <Box italic textColor="white">
                         By: {comment.auth} at {comment.time}
                       </Box>
-                      <Section
-                        dangerouslySetInnerHTML={processedText(comment.body)}
-                        ml={2.5}
-                      />
+                      <Section ml={2.5}>
+                        <Box
+                          dangerouslySetInnerHTML={processedText(comment.body)}
+                        />
+                      </Section>
                     </BlockQuote>
                   ))}
                 </Box>

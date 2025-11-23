@@ -83,11 +83,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	. = ..()
 
 	if(!(machine_stat & (NOPOWER|BROKEN)))
-		var/state = "[base_icon_state]_[GLOB.news_network.wanted_issue.active ? "wanted" : "normal"]"
+		var/state = "[base_icon_state]_[length(GLOB.news_network.wanted_issues) ? "wanted" : "normal"]"
 		. += mutable_appearance(icon, state)
 		. += emissive_appearance(icon, state, alpha = 90)
 
-		if(GLOB.news_network.wanted_issue.active && alert)
+		if(length(GLOB.news_network.wanted_issues) && alert)
 			. += mutable_appearance(icon, "[base_icon_state]_alert")
 			. += emissive_appearance(icon, "[base_icon_state]_alert", alpha = 90)
 
@@ -147,20 +147,24 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	data["viewing_wanted"] = viewing_wanted
 
 	//Here is all the UI_data sent about the current wanted issue, as well as making a new one in the UI.
-	data["making_wanted_issue"] = !(GLOB.news_network.wanted_issue?.active)
 	data["criminal_name"] = criminal_name
 	data["crime_description"] = crime_description
 	var/list/wanted_info = list()
-	if(GLOB.news_network.wanted_issue)
-		if(GLOB.news_network.wanted_issue.img)
-			user << browse_rsc(GLOB.news_network.wanted_issue.img, "wanted_photo.png")
-		wanted_info = list(list(
-			"active" = GLOB.news_network.wanted_issue.active,
-			"criminal" = GLOB.news_network.wanted_issue.criminal,
-			"crime" = GLOB.news_network.wanted_issue.body,
-			"author" = GLOB.news_network.wanted_issue.scanned_user,
-			"image" = "wanted_photo.png"
-		))
+
+	if(length(GLOB.news_network.wanted_issues))
+		for(var/datum/wanted_message/wanted_issue as anything in GLOB.news_network.wanted_issues)
+			var/image_name = "wanted_photo_[ref(wanted_issue)].png"
+			if(wanted_issue.img)
+				user << browse_rsc(wanted_issue.img, image_name)
+
+			wanted_info += list(list(
+				"active" = wanted_issue.active,
+				"criminal" = wanted_issue.criminal,
+				"crime" = wanted_issue.body,
+				"author" = wanted_issue.scanned_user,
+				"image" = image_name,
+				"id" = wanted_issue.id,
+			))
 
 	//Code breaking down the channels that have been made on-station thus far. ha
 	//Then, breaks down the messages that have been made on those channels.
@@ -569,16 +573,21 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	if(paper_remaining <= 0)
 		balloon_alert_to_viewers("out of paper!")
 		return TRUE
+
 	SSblackbox.record_feedback("amount", "newspapers_printed", 1)
+
 	var/obj/item/newspaper/new_newspaper = new /obj/item/newspaper
 	for(var/datum/feed_channel/iterated_feed_channel in GLOB.news_network.network_channels)
 		new_newspaper.news_content += iterated_feed_channel
-	if(GLOB.news_network.wanted_issue.active)
-		new_newspaper.wantedAuthor = GLOB.news_network.wanted_issue.scanned_user
-		new_newspaper.wantedCriminal = GLOB.news_network.wanted_issue.criminal
-		new_newspaper.wantedBody = GLOB.news_network.wanted_issue.body
-		if(GLOB.news_network.wanted_issue.img)
-			new_newspaper.wantedPhoto = GLOB.news_network.wanted_issue.img
+
+	#warn make better
+	// if(GLOB.news_network.wanted_issue.active)
+	// 	new_newspaper.wantedAuthor = GLOB.news_network.wanted_issue.scanned_user
+	// 	new_newspaper.wantedCriminal = GLOB.news_network.wanted_issue.criminal
+	// 	new_newspaper.wantedBody = GLOB.news_network.wanted_issue.body
+	// 	if(GLOB.news_network.wanted_issue.img)
+	// 		new_newspaper.wantedPhoto = GLOB.news_network.wanted_issue.img
+
 	new_newspaper.forceMove(drop_location())
 	new_newspaper.creation_time = GLOB.news_network.last_action
 	paper_remaining--
@@ -702,15 +711,21 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 		else
 			balloon_alert(usr, "no photo identified.")
 
-/obj/machinery/newscaster/proc/clear_wanted_issue(user)
+#warn make this work
+/obj/machinery/newscaster/proc/clear_wanted_issue(user, wanted_id)
 	var/obj/item/card/id/id_card
-	if(isliving(usr))
-		var/mob/living/living_user = usr
+	if(isliving(user))
+		var/mob/living/living_user = user
 		id_card = living_user.get_idcard(hand_first = TRUE)
+
 	if(!(ACCESS_ARMORY in id_card?.GetAccess()))
 		say("Clearance not found.")
 		return TRUE
-	GLOB.news_network.wanted_issue.active = FALSE
+
+	for(var/datum/wanted_message/wanted_issue as anything in GLOB.news_network.wanted_issues)
+		if(wanted_issue.id == wanted_id)
+			wanted_issue.active = FALSE
+			break
 	return TRUE
 
 /**

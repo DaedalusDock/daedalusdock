@@ -9,3 +9,10 @@
 2025-11-18:
   francinum:
   - rscadd: There's a new box in the atmos workroom, Don't worry about it.
+2025-11-23:
+  Kapu1178:
+  - rscadd: Cassettes can now actually play music.
+  - rscadd: Music cassettes spawn as maintenance loot.
+  - tweak: SSmedia now loads subdirectories.
+  - rscadd: Replaced "check self for injuries" with a full character sheet UI.
+  - bugfix: Any TGUI interface utilizing double-clicking now works correctly.

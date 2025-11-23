@@ -55,7 +55,6 @@ type NewscasterData = {
   security_mode: BooleanLike;
   user: User;
   viewing_channel: number | undefined;
-  viewing_wanted: BooleanLike;
   wanted: WantedInfo[];
 };
 
@@ -107,6 +106,7 @@ export const Newscaster = (props) => {
       <NewscasterChannelCreation />
       <NewscasterCommentCreation />
       <Stack fill vertical>
+        <NewscasterCreateWanted />
         <NewscasterWantedScreen />
         <Stack.Item>
           <Tabs fluid textAlign="center">
@@ -281,106 +281,129 @@ const NewscasterCommentCreation = (props) => {
 
 const NewscasterWantedScreen = (props) => {
   const { act, data } = useBackend<NewscasterData>();
+  const [viewing_wanted, setViewingWanted] = useLocalState('viewing_wanted', 0);
   const {
-    viewing_wanted,
     photo_data,
     security_mode,
     wanted = [],
     criminal_name,
     crime_description,
   } = data;
+
   if (!viewing_wanted) {
+    return null;
+  }
+
+  const viewingEntry = wanted.find(
+    (wantedEntry) => wantedEntry.id === viewing_wanted,
+  );
+
+  if (!viewingEntry) {
     return null;
   }
   return (
     <Modal textAlign="center" mr={1.5} width={25}>
-      {wanted.map((activeWanted) => (
-        <>
-          <Stack vertical>
-            <Stack.Item>
-              <Box bold color="red">
-                {activeWanted.active
-                  ? 'Active Wanted Issue:'
-                  : 'Dismissed Wanted Issue:'}
-                <Button
-                  content="X"
-                  color="red"
-                  position="relative"
-                  top="20%"
-                  left="18%"
-                  onClick={() => act('cancelCreation')}
-                />
-              </Box>
-              <Section>
-                <Box bold>{activeWanted.criminal}</Box>
-                <Box italic>{activeWanted.crime}</Box>
-              </Section>
-              <Image src={activeWanted?.image} />
-              <Box italic>
-                Posted by {activeWanted.author ? activeWanted.author : 'N/A'}
-              </Box>
-            </Stack.Item>
-          </Stack>
-          <Divider />
-        </>
-      ))}
-      {security_mode ? (
-        <>
-          <LabeledList>
-            <LabeledList.Item label="Criminal Name">
+      <>
+        <Stack vertical>
+          <Stack.Item>
+            <Box bold color="red">
+              {viewingEntry.active
+                ? 'Active Wanted Issue:'
+                : 'Dismissed Wanted Issue:'}
               <Button
-                content={criminal_name ? criminal_name : ' N/A'}
-                disabled={!security_mode}
-                icon="pen"
-                onClick={() => act('setCriminalName')}
+                content="X"
+                color="red"
+                position="relative"
+                top="20%"
+                left="18%"
+                onClick={() => act('cancelCreation')}
               />
-            </LabeledList.Item>
-            <LabeledList.Item label="Criminal Activity">
-              <Button
-                content={crime_description ? crime_description : ' N/A'}
-                nowrap={false}
-                disabled={!security_mode}
-                icon="pen"
-                onClick={() => act('setCrimeData')}
-              />
-            </LabeledList.Item>
-          </LabeledList>
-          <Section>
+            </Box>
+            <Section>
+              <Box bold>{viewingEntry.criminal}</Box>
+              <Box italic>{viewingEntry.crime}</Box>
+            </Section>
+            <Image src={viewingEntry.image} />
+            <Box italic>Posted by {viewingEntry.author || 'N/A'}</Box>
+          </Stack.Item>
+        </Stack>
+        <Divider />
+      </>
+    </Modal>
+  );
+};
+
+const NewscasterCreateWanted = (props) => {
+  const { act, data } = useBackend<NewscasterData>();
+  const [creating_new_wanted, setCreatingNewWanted] = useLocalState(
+    'creating_new_wanted',
+    false,
+  );
+  const { photo_data, security_mode, criminal_name, crime_description } = data;
+
+  if (!creating_new_wanted) {
+    return false;
+  }
+
+  if (!security_mode) {
+    setCreatingNewWanted(false);
+    return null;
+  }
+
+  return (
+    <Modal textAlign="center" mr={1.5} width={25}>
+      <>
+        <LabeledList>
+          <LabeledList.Item label="Criminal Name">
             <Button
-              icon="camera"
-              selected={photo_data}
+              content={criminal_name ? criminal_name : ' N/A'}
               disabled={!security_mode}
-              content={photo_data ? 'Remove photo' : 'Attach photo'}
-              onClick={() => act('togglePhoto')}
+              icon="pen"
+              onClick={() => act('setCriminalName')}
             />
+          </LabeledList.Item>
+          <LabeledList.Item label="Criminal Activity">
             <Button
-              content={'Set Wanted Issue'}
+              content={crime_description ? crime_description : ' N/A'}
+              nowrap={false}
               disabled={!security_mode}
-              icon="volume-up"
-              onClick={() => act('submitWantedIssue')}
+              icon="pen"
+              onClick={() => act('setCrimeData')}
             />
-            <Button
-              content={'Clear Wanted'}
-              disabled={!security_mode}
-              icon="times"
-              color="red"
-              onClick={() => act('clearWantedIssue')}
-            />
-          </Section>
-        </>
-      ) : (
-        <Box>
-          {wanted.length
-            ? 'Please contact your local security officer if spotted.'
-            : 'No wanted issue posted. Have a secure day.'}
-        </Box>
-      )}
+          </LabeledList.Item>
+        </LabeledList>
+        <Section>
+          <Button
+            icon="camera"
+            selected={photo_data}
+            disabled={!security_mode}
+            content={photo_data ? 'Remove photo' : 'Attach photo'}
+            onClick={() => act('togglePhoto')}
+          />
+          <Button
+            content={'Submit'}
+            disabled={!security_mode}
+            icon="volume-up"
+            onClick={() => {
+              act('submitWantedIssue');
+              setCreatingNewWanted(false);
+            }}
+          />
+          <Button
+            content={'Cancel'}
+            disabled={!security_mode}
+            icon="times"
+            color="red"
+            onClick={() => setCreatingNewWanted(false)}
+          />
+        </Section>
+      </>
     </Modal>
   );
 };
 
 const NewscasterContent = (props) => {
-  const { act, data } = useBackend<NewscasterData>();
+  const { data } = useBackend<NewscasterData>();
   const { channelAuthor, channelName, channelDesc } = data;
   return (
     <Stack fill vertical>
@@ -501,20 +524,42 @@ const NewscasterChannelBox = (_) => {
 const NewscasterChannelSelector = (props) => {
   const { act, data } = useBackend<NewscasterData>();
   const { channels = [], viewing_channel, security_mode, wanted = [] } = data;
+  const [viewing_wanted, setViewingWanted] = useLocalState('viewing_wanted', 0);
+  const [creating_new_wanted, setCreatingNewWanted] = useLocalState(
+    'creating_new_wanted',
+    false,
+  );
   return (
     <Section height="100%" width={window.innerWidth - 410 + 'px'}>
       <Tabs vertical>
-        {wanted.map((activeWanted, i) => (
+        {security_mode && (
+          <Tabs.Tab
+            pt={0.75}
+            pb={0.75}
+            mr={1}
+            textColor="grey"
+            selected={creating_new_wanted}
+            onClick={() => {
+              setCreatingNewWanted(true);
+            }}
+          >
+            Create Wanted Notice
+          </Tabs.Tab>
+        )}
+        {wanted.map((wantedEntry, i) => (
           <Tabs.Tab
             pt={0.75}
             pb={0.75}
             mr={1}
             key={i}
-            icon={activeWanted.active ? 'skull-crossbones' : null}
-            textColor={activeWanted.active ? 'red' : 'grey'}
-            onClick={() => act('toggleWanted')}
+            icon={wantedEntry.active ? 'skull-crossbones' : null}
+            textColor={wantedEntry.active ? 'red' : 'grey'}
+            onClick={() => {
+              act('viewWanted');
+              setViewingWanted(wantedEntry.id);
+            }}
           >
-            Wanted: {activeWanted.criminal}
+            Wanted: {wantedEntry.criminal}
           </Tabs.Tab>
         ))}
         {channels.map((channel, i) => (

@@ -31,8 +31,6 @@ TYPEINFO_DEF(/obj/machinery/newscaster)
 	var/datum/picture/current_image
 	///Is there currently an alert on this newscaster that hasn't been seen yet?
 	var/alert = FALSE
-	///Is the current user editing or viewing a new wanted issue at the moment?
-	var/viewing_wanted  = FALSE
 	///Is the current user creating a new channel at the moment?
 	var/creating_channel = FALSE
 	///Is the current user creating a new comment at the moment?
@@ -144,7 +142,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	data["photo_data"] = !isnull(current_image)
 	data["creating_channel"] = creating_channel
 	data["creating_comment"] = creating_comment
-	data["viewing_wanted"] = viewing_wanted
 
 	//Here is all the UI_data sent about the current wanted issue, as well as making a new one in the UI.
 	data["criminal_name"] = criminal_name
@@ -272,13 +269,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 
 		if("createStory")
 			if(!current_channel)
-				balloon_alert(usr, "select a channel first!")
 				return TRUE
 			var/prototype_channel = params["current"]
 			create_story(channel_name = prototype_channel)
 
 		if("togglePhoto")
-			toggle_photo()
+			toggle_photo(usr)
 			return TRUE
 
 		if("startCreateChannel")
@@ -305,7 +301,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 		if("cancelCreation")
 			creating_channel = FALSE
 			creating_comment = FALSE
-			viewing_wanted = FALSE
 			criminal_name = null
 			crime_description = null
 			return TRUE
@@ -377,10 +372,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 			create_comment()
 			return TRUE
 
-		if("toggleWanted")
+		if("viewWanted")
 			alert = FALSE
-			viewing_wanted = TRUE
-			update_overlays()
+			update_appearance()
 			return TRUE
 
 		if("setCriminalName")
@@ -394,21 +388,27 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 			var/temp_desc = tgui_input_text(usr, "Write the Criminal's Crimes", "Warrent Alert Handler", "Unknown", MAX_BROADCAST_LEN, multiline = TRUE)
 			if(!temp_desc)
 				return TRUE
+
 			crime_description = temp_desc
 			return TRUE
 
 		if("submitWantedIssue")
 			if(!crime_description || !criminal_name)
 				return TRUE
+
 			GLOB.news_network.submit_wanted(criminal_name, crime_description, current_user?.account_holder, current_image, adminMsg = FALSE, newMessage = TRUE)
 			current_image = null
+			criminal_name = null
+			crime_description = null
 			return TRUE
 
 		if("clearWantedIssue")
-			clear_wanted_issue(user = usr)
-			for(var/obj/machinery/newscaster/other_newscaster in GLOB.allCasters)
-				other_newscaster.update_appearance()
-				return TRUE
+			var/id = params["id"]
+			if(!id)
+				return
+
+			clear_wanted_issue(usr, id)
+			return TRUE
 
 		if("printNewspaper")
 			print_paper()
@@ -539,31 +539,40 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * *user: The mob who is being checked for a held photo object.
  */
 /obj/machinery/newscaster/proc/attach_photo(mob/user)
-	var/obj/item/photo/photo = user.is_holding_item_of_type(/obj/item/photo)
+	var/obj/item/photo/photo = user?.is_holding_item_of_type(/obj/item/photo)
 	if(photo)
 		current_image = photo.picture
-	if(issilicon(user))
-		var/obj/item/camera/siliconcam/targetcam
-		if(isAI(user))
-			var/mob/living/silicon/ai/R = user
-			targetcam = R.aicamera
-		else if(ispAI(user))
-			var/mob/living/silicon/pai/R = user
-			targetcam = R.aicamera
-		else if(iscyborg(user))
-			var/mob/living/silicon/robot/R = user
-			if(R.connected_ai)
-				targetcam = R.connected_ai.aicamera
-			else
-				targetcam = R.aicamera
+		return TRUE
+
+	if(!issilicon(user))
+		return FALSE
+
+	var/obj/item/camera/siliconcam/targetcam
+	if(isAI(user))
+		var/mob/living/silicon/ai/R = user
+		targetcam = R.aicamera
+	else if(ispAI(user))
+		var/mob/living/silicon/pai/R = user
+		targetcam = R.aicamera
+	else if(iscyborg(user))
+		var/mob/living/silicon/robot/R = user
+		if(R.connected_ai)
+			targetcam = R.connected_ai.aicamera
 		else
-			to_chat(user, span_warning("You cannot interface with silicon photo uploading!"))
-		if(!targetcam.stored.len)
-			to_chat(usr, span_boldannounce("No images saved."))
-			return
-		var/datum/picture/selection = targetcam.selectpicture(user)
-		if(selection)
-			current_image = selection
+			targetcam = R.aicamera
+	else
+		to_chat(user, span_warning("You can not interface with silicon photo uploading."))
+
+	if(!targetcam.stored.len)
+		to_chat(user, span_boldannounce("No images saved."))
+		return
+
+	var/datum/picture/selection = targetcam.selectpicture(user)
+	if(selection)
+		current_image = selection
+		return TRUE
+
+	return FALSE
 
 /**
  * This takes all current feed stories and messages, and prints them onto a newspaper, after checking that the newscaster has been loaded with paper.
@@ -571,7 +580,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  */
 /obj/machinery/newscaster/proc/print_paper()
 	if(paper_remaining <= 0)
-		balloon_alert_to_viewers("out of paper!")
+		visible_message(span_warning("[src]'s printer clunks."), blind_message = span_hear("You hear a mechanical clunk."))
 		return TRUE
 
 	SSblackbox.record_feedback("amount", "newspapers_printed", 1)
@@ -699,19 +708,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  * Selects a currently held photo from the user's hand and makes it the current_image held by the newscaster.
  * If a photo is still held in the newscaster, it will otherwise clear it from the machine.
  */
-/obj/machinery/newscaster/proc/toggle_photo()
+/obj/machinery/newscaster/proc/toggle_photo(mob/user)
 	if(current_image)
-		balloon_alert(usr, "current photo cleared.")
 		current_image = null
 		return TRUE
-	else
-		attach_photo(usr)
-		if(current_image)
-			balloon_alert(usr, "photo selected.")
-		else
-			balloon_alert(usr, "no photo identified.")
 
-#warn make this work
+	if(!attach_photo(user))
+		to_chat(usr, span_warning("There is no photo in [src]."))
+
 /obj/machinery/newscaster/proc/clear_wanted_issue(user, wanted_id)
 	var/obj/item/card/id/id_card
 	if(isliving(user))
@@ -722,10 +726,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 		say("Clearance not found.")
 		return TRUE
 
-	for(var/datum/wanted_message/wanted_issue as anything in GLOB.news_network.wanted_issues)
-		if(wanted_issue.id == wanted_id)
-			wanted_issue.active = FALSE
-			break
+	GLOB.news_network.delete_wanted(wanted_id)
 	return TRUE
 
 /**

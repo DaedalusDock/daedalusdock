@@ -252,8 +252,7 @@ GLOBAL_LIST_EMPTY(request_list)
 
 		for(var/obj/machinery/newscaster/updated_newscaster in GLOB.allCasters)
 			updated_newscaster.update_appearance()
-
-		return
+		return TRUE
 
 /datum/feed_network/proc/save_photo(icon/photo)
 	var/photo_file = copytext_char(md5("\icon[photo]"), 1, 6)

@@ -84,7 +84,7 @@
 		data["user"]["job"] = "N/A"
 		data["user"]["department"] = "N/A"
 
-	data["security_mode"] = (ACCESS_ARMORY in card?.GetAccess())
+	data["security_mode"] = !parent || (ACCESS_ARMORY in card?.GetAccess())
 	data["photo_data"] = !isnull(current_image)
 	data["creating_channel"] = creating_channel
 	data["creating_comment"] = creating_comment

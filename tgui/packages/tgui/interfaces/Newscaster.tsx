@@ -15,6 +15,7 @@ import {
   Box,
   Button,
   Divider,
+  Flex,
   LabeledList,
   Modal,
   Section,
@@ -326,6 +327,20 @@ const NewscasterWantedScreen = (props) => {
             {viewingEntry.image && <Image src={viewingEntry.image} />}
             <Box italic>Posted by {viewingEntry.author || 'N/A'}</Box>
           </Stack.Item>
+          <Stack.Item>
+            <Flex direction="column" justify="center" align="center">
+              {security_mode && (
+                <Button
+                  content="Delete"
+                  color="red"
+                  onClick={() => {
+                    setViewingWanted(0);
+                    act('clearWantedIssue', { id: viewingEntry.id });
+                  }}
+                />
+              )}
+            </Flex>
+          </Stack.Item>
         </Stack>
         <Divider />
       </>
@@ -532,7 +547,7 @@ const NewscasterChannelSelector = (props) => {
   return (
     <Section height="100%" width={window.innerWidth - 410 + 'px'}>
       <Tabs vertical>
-        {security_mode && (
+        {!!security_mode && (
           <Tabs.Tab
             pt={0.75}
             pb={0.75}

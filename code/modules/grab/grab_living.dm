@@ -84,7 +84,7 @@
 
 
 	if(QDELETED(grab))
-		if(original_target != src && ismob(original_target) && original_target.stat == CONSCIOUS)
+		if(original_target != src && ismob(original_target) && astype(original_target, /mob).stat == CONSCIOUS)
 			to_chat(original_target, span_warning("\The [src] tries to grab you, but fails."))
 		return null
 

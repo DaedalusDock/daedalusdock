@@ -70,10 +70,11 @@
 	data["creating_channel"] = creating_channel
 	data["creating_comment"] = creating_comment
 
-	//Here is all the UI_data sent about the current wanted issue, as well as making a new one in the UI.
+	//Here is all the UI_data sent about making a new one in the UI.
 	data["viewing_wanted"] = viewing_wanted
 	data["criminal_name"] = criminal_name
 	data["crime_description"] = crime_description
+
 	var/list/wanted_info = list()
 	if(length(GLOB.news_network.wanted_issues))
 		for(var/datum/wanted_message/wanted_issue as anything in GLOB.news_network.wanted_issues)
@@ -267,7 +268,7 @@
 			return TRUE
 
 		if("clearWantedIssue")
-			clear_wanted_issue(user = usr)
+			clear_wanted_issue(usr, params["id"])
 			return TRUE
 
 	return TRUE
@@ -372,7 +373,6 @@
 		attach_photo(usr)
 		return TRUE
 
-/datum/newspanel/proc/clear_wanted_issue(user)
-	#warn fix
-	//GLOB.news_network.wanted_issue.active = FALSE
+/datum/newspanel/proc/clear_wanted_issue(user, id)
+	GLOB.news_network.delete_wanted(id)
 	return

@@ -589,13 +589,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	for(var/datum/feed_channel/iterated_feed_channel in GLOB.news_network.network_channels)
 		new_newspaper.news_content += iterated_feed_channel
 
-	#warn make better
-	// if(GLOB.news_network.wanted_issue.active)
-	// 	new_newspaper.wantedAuthor = GLOB.news_network.wanted_issue.scanned_user
-	// 	new_newspaper.wantedCriminal = GLOB.news_network.wanted_issue.criminal
-	// 	new_newspaper.wantedBody = GLOB.news_network.wanted_issue.body
-	// 	if(GLOB.news_network.wanted_issue.img)
-	// 		new_newspaper.wantedPhoto = GLOB.news_network.wanted_issue.img
+	// Hello. Kapu here. I just finished adding support for having multiple wanted persons at once to newscasters.
+	// I am not touching newspaper code. Sorry, not sorry!
+	if(length(GLOB.news_network.wanted_issues))
+		var/datum/wanted_message/wanted_person = GLOB.news_network.wanted_issues[1]
+		new_newspaper.wantedAuthor = wanted_person.scanned_user
+		new_newspaper.wantedCriminal = wanted_person.criminal
+		new_newspaper.wantedBody = wanted_person.body
+		if(wanted_person.img)
+			new_newspaper.wantedPhoto = wanted_person.img
 
 	new_newspaper.forceMove(drop_location())
 	new_newspaper.creation_time = GLOB.news_network.last_action

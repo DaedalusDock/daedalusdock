@@ -246,6 +246,10 @@
 		else if(pain < 0.25 * shock_stage)
 			recovery = 3
 
+		// ~25% chance at base to recover twice as fast..
+		if(stat_roll(13, /datum/rpg_skill/willpower).outcome >= SUCCESS)
+			recover *= 2
+
 		shock_stage = max(shock_stage - recovery, 0)
 		if(shock_stage == 0)
 			clear_alert("traumatic shock")

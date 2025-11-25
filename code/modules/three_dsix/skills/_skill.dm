@@ -17,5 +17,4 @@
 /datum/rpg_skill/proc/update_modifiers()
 	SHOULD_NOT_OVERRIDE(TRUE)
 	value = 0
-	for(var/source in modifiers)
-		value += modifiers[source]
+	value += values_sum(modifiers)

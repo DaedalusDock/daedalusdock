@@ -84,23 +84,42 @@
 
 	for(var/skill_type in skills)
 		var/datum/rpg_skill/skill = skills[skill_type]
+		var/datum/rpg_skill/stat = stats[skill.parent_stat_type]
+
 		/// Used as an out-var for get_skill_modifier()
-		var/list/other_skill_modifiers = list()
+		var/list/skill_modifiers = list()
+		var/list/stat_modifiers = list()
+
 		var/list/modifier_data = list()
 
 		skill_data[++skill_data.len] = list(
 			"name" = skill.name,
 			"desc" = skill.desc,
-			"value" = STATS_BASELINE_VALUE + get_skill_modifier(skill_type, other_skill_modifiers),
+			"value" = STATS_BASELINE_VALUE + get_skill_modifier(skill_type, skill_modifiers) + get_stat_modifier(stat.type, stat_modifiers),
 			"modifiers" = modifier_data,
 		)
 
 		if(skill.modifiers)
-			other_skill_modifiers += skill.modifiers
+			skill_modifiers += skill.modifiers
 
-		for(var/modifier_source,modifier_value in other_skill_modifiers)
+		if(stat.modifiers)
+			stat_modifiers += stat.modifiers
+
+		for(var/modifier_source,modifier_value in skill_modifiers)
+			if(modifier_value == 0)
+				continue
+
 			modifier_data[++modifier_data.len] = list(
 				"source" = modifier_source,
+				"value" = modifier_value
+			)
+
+		for(var/modifier_source,modifier_value in stat_modifiers)
+			if(modifier_value == 0)
+				continue
+
+			modifier_data[++modifier_data.len] = list(
+				"source" = "[modifier_source] ([stat.name])",
 				"value" = modifier_value
 			)
 
@@ -237,9 +256,9 @@
 #undef STATS_COLOR_VERY_BAD
 
 /// Return a given stat value.
-/datum/stats/proc/get_stat_modifier(stat)
+/datum/stats/proc/get_stat_modifier(stat, list/out_sources)
 	var/datum/rpg_stat/S = stats[stat]
-	return S.get(owner)
+	return S.get(owner, out_sources)
 
 /// Return a given skill value modifier.
 /datum/stats/proc/get_skill_modifier(skill, list/out_sources)

@@ -43,10 +43,3 @@
 	if(brain && (brain.damage >= (brain.maxHealth * brain.low_threshold)))
 		. -= 3
 		out_sources?["Brain damage"] = -3
-
-	// Drunkeness removes between 1 and 5 points.
-	var/datum/status_effect/inebriated/drunk/drunkness = user.has_status_effect(/datum/status_effect/inebriated/drunk)
-	if(drunkness)
-		var/drunk_effect = min(ceil(drunkness.drunk_value / 20), 5) * -1
-		. += drunk_effect
-		out_sources?["Intoxicated"] = drunk_effect

@@ -4,3 +4,6 @@
 	modify_amt = -2
 
 	source = "Intimidated"
+
+/datum/status_effect/skill_mod/hunger
+	source = "Hunger"

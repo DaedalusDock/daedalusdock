@@ -17,9 +17,13 @@
 		. -= 4
 		out_sources?["Brain damage"] = -4
 
-	// Drunkeness removes between 1 and 5 points.
+	// Drunkeness adds to your psyche stat if you're buzzed, otherwise tanks it.
 	var/datum/status_effect/inebriated/drunk/drunkness = user.has_status_effect(/datum/status_effect/inebriated/drunk)
 	if(drunkness)
-		var/drunk_effect = min(ceil(drunkness.drunk_value / 20), 5) * -1
+		var/drunk_effect = 0
+		if(drunkness.drunk_value < 20)
+			drunk_effect = 3
+		else
+			drunk_effect = min(ceil(drunkness.drunk_value / 5), 10) * -1
 		. += drunk_effect
 		out_sources?["Intoxicated"] = drunk_effect

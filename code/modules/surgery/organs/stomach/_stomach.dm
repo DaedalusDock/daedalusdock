@@ -220,8 +220,6 @@
 /obj/item/organ/stomach/proc/handle_hunger_skill_mods(mob/living/carbon/human/human)
 	var/modifier = 0
 	switch(human.nutrition)
-		if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_FULL-1)
-			modifier = -1
 		if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_HUNGRY)
 			modifier = -3
 		if(0 to NUTRITION_LEVEL_STARVING)

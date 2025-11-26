@@ -67,6 +67,7 @@ export const FONTS_DISABLED = fontHelper('TGUI Default');
 
 export const FONTS: Font[] = [
   DEFAULT_FONT,
+  fontHelper('Yrsa', undefined, ['serif']),
   fontHelper('Times New Roman', undefined, ['serif']),
   fontHelper('Verdana', undefined, ['sans-serif']),
   FONTS_DISABLED,

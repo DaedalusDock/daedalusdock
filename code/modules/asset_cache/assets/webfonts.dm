@@ -26,3 +26,13 @@
 	parents = list(
 		"Jost.css" = file("fonts/Jost.css"),
 	)
+
+/datum/asset/simple/namespaced/yrsa
+	assets = list(
+		"Yrsa.ttf" = file("fonts/Yrsa.ttf"),
+		"Yrsa-Italic.ttf" = file("fonts/Yrsa-Italic.ttf"),
+	)
+
+	parents = list(
+		"Yrsa.css" = file("fonts/Yrsa.css"),
+	)

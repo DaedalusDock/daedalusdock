@@ -34,7 +34,7 @@ export const SettingsPanel = (props) => {
   const activeTab = useSelector(selectActiveTab);
   const dispatch = useDispatch();
   return (
-    <Stack fill>
+    <Stack fill style={{ fontFamily: 'Verdana, sans-serif' }}>
       <Stack.Item>
         <Section fitted fill minHeight="8em">
           <Tabs vertical>

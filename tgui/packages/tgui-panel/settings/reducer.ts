@@ -30,7 +30,7 @@ type ReducerState = {
   matchCase: boolean;
   matchWord: boolean;
   theme: Theme;
-  version: 1;
+  version: number;
   view: {
     activeTab: string;
     visible: boolean;

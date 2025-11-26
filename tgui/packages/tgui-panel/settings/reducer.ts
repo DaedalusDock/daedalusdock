@@ -11,13 +11,37 @@ import {
   toggleSettings,
   updateSettings,
 } from './actions';
-import { DEFAULT_THEME, FONTS, SETTINGS_TABS } from './constants';
+import {
+  DEFAULT_FONT,
+  DEFAULT_FONT_SIZE,
+  DEFAULT_LINE_HEIGHT,
+  DEFAULT_THEME,
+  SETTINGS_TABS,
+  Theme,
+} from './constants';
 
-const initialState = {
+type ReducerState = {
+  adminMusicVolume: number;
+  fontFamily: string;
+  fontSize: number;
+  highlightColor: string;
+  highlightText?: string;
+  lineHeight: number;
+  matchCase: boolean;
+  matchWord: boolean;
+  theme: Theme;
+  version: 1;
+  view: {
+    activeTab: string;
+    visible: boolean;
+  };
+};
+
+const initialState: ReducerState = {
   version: 1,
-  fontSize: 16,
-  fontFamily: FONTS[0],
-  lineHeight: 1.2,
+  fontSize: DEFAULT_FONT_SIZE,
+  fontFamily: DEFAULT_FONT.toCSS(),
+  lineHeight: DEFAULT_LINE_HEIGHT,
   theme: DEFAULT_THEME,
   adminMusicVolume: 0.5,
   highlightText: '',

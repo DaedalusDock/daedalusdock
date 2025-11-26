@@ -23,6 +23,8 @@ export type Font = {
   toCSS: () => string;
 };
 
+/// Chat settings version. If the stored version is below this, nuke the settings.
+export const CHAT_SETTINGS_VERSION = 2;
 /// Default font size.
 export const DEFAULT_FONT_SIZE: number = 14;
 /// Default line height.

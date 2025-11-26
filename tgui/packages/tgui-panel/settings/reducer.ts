@@ -12,6 +12,7 @@ import {
   updateSettings,
 } from './actions';
 import {
+  CHAT_SETTINGS_VERSION,
   DEFAULT_FONT,
   DEFAULT_FONT_SIZE,
   DEFAULT_LINE_HEIGHT,
@@ -22,6 +23,7 @@ import {
 
 type ReducerState = {
   adminMusicVolume: number;
+  chatSettingsVersion: number;
   fontFamily: string;
   fontSize: number;
   highlightColor: string;
@@ -39,6 +41,7 @@ type ReducerState = {
 
 const initialState: ReducerState = {
   version: 1,
+  chatSettingsVersion: CHAT_SETTINGS_VERSION,
   fontSize: DEFAULT_FONT_SIZE,
   fontFamily: DEFAULT_FONT.toCSS(),
   lineHeight: DEFAULT_LINE_HEIGHT,
@@ -67,6 +70,19 @@ export const settingsReducer = (state = initialState, action) => {
     if (!payload?.version) {
       return state;
     }
+
+    if (
+      !payload.chatSettingsVersion ||
+      payload.chatSettingsVersion < state.chatSettingsVersion
+    ) {
+      delete payload.fontFamily;
+      delete payload.fontSize;
+      delete payload.lineHeight;
+      if (payload.chatSettingsVersion) {
+        delete payload.chatSettingsVersion;
+      }
+    }
+
     delete payload.view;
     return {
       ...state,

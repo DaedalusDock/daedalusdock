@@ -28,6 +28,7 @@ type Bodypart = {
 };
 
 type Skill = {
+  color: string;
   desc: string;
   modifiers: SkillModifier[];
   name: string;
@@ -36,6 +37,7 @@ type Skill = {
 };
 
 type Stat = {
+  color: string;
   desc: string;
   modifiers: SkillModifier[];
   name: string;
@@ -240,46 +242,86 @@ function StatRow(relevantStat: Stat, seeingModalOf, setModal) {
   return (
     <Flex.Item className="CharacterStats__statRow">
       <Flex direction="row" width="100%" justify="flex-start" height="100%">
-        {StatOrSkillEntry(relevantStat, seeingModalOf, setModal)}
+        {StatEntry(relevantStat, seeingModalOf, setModal)}
         {relevantSkills.map((skill) =>
-          StatOrSkillEntry(skill, seeingModalOf, setModal),
+          SkillEntry(skill, seeingModalOf, setModal),
         )}
       </Flex>
     </Flex.Item>
   );
 }
 
-function StatOrSkillEntry(still: Stat | Skill, seeingModalOf, setModal) {
+function SkillEntry(skill: Skill, seeingModalOf, setModal) {
   const { data } = useBackend<CharacterStatsData>();
   return (
     <Flex.Item
-      className="CharacterStats__statEntry"
+      className="CharacterStats__statBlock"
       onClick={() => {
-        setModal(still);
+        setModal(skill);
       }}
+      style={{ borderColor: skill.color }}
     >
-      <Flex direction="column" height="100%">
-        <Flex.Item height="60%">
-          <Box textAlign="center" fontSize="2rem">
-            {still.name}
-          </Box>
-          <Box textAlign="center">
-            <i>{still.desc}</i>
-          </Box>
-        </Flex.Item>
+      <Flex direction="column" height="100%" justify="space-between">
         <Flex.Item
           textAlign="center"
           fontSize="3rem"
-          style={{ marginTop: '0.5rem' }}
+          height="60%"
           color={
-            still.value === data.default_skill_value
+            skill.value === data.default_skill_value
               ? ''
-              : still.value >= data.default_skill_value
+              : skill.value >= data.default_skill_value
                 ? '#03fca1'
                 : '#fc4b32'
           }
+          style={{ verticalAlign: 'middle' }}
         >
-          {still.value}
+          {skill.value}
+        </Flex.Item>
+        <Flex.Item>
+          <Box textAlign="center" fontSize="2rem">
+            {skill.name}
+          </Box>
+        </Flex.Item>
+      </Flex>
+    </Flex.Item>
+  );
+}
+
+function StatEntry(stat: Stat, seeingModalOf, setModal) {
+  const { data } = useBackend<CharacterStatsData>();
+  return (
+    <Flex.Item
+      className="CharacterStats__statBlock"
+      onClick={() => {
+        setModal(stat);
+      }}
+      style={{ borderColor: stat.color }}
+    >
+      <Flex direction="column" height="100%" justify="space-between">
+        <Flex.Item
+          textAlign="center"
+          fontSize="4rem"
+          height="40%"
+          color={
+            stat.value === data.default_skill_value
+              ? ''
+              : stat.value >= data.default_skill_value
+                ? '#03fca1'
+                : '#fc4b32'
+          }
+          style={{ verticalAlign: 'middle' }}
+        >
+          {stat.value}
+        </Flex.Item>
+        <hr style={{ width: '50%' }} />
+        <Flex.Item>
+          <Box
+            textAlign="center"
+            fontSize="3rem"
+            fontFamily="Libre Baskerville"
+          >
+            {stat.name}
+          </Box>
         </Flex.Item>
       </Flex>
     </Flex.Item>
@@ -302,6 +344,10 @@ function DetailedStatOrSkillModal(
         height="50rem"
         onClick={() => setModal(undefined)}
         onDimmerClick={() => setModal(undefined)}
+        style={{
+          border: `2px solid ${seeingModalOf.color}`,
+          boxSizing: 'border-box',
+        }}
       >
         <Flex width="100%" height="100%" justify="center">
           <Flex direction="column" height="100%" width="100%">

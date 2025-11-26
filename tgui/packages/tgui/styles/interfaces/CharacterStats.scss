@@ -56,11 +56,13 @@ $stats_count: 4;
   margin: 0.5em 0;
 }
 
-.CharacterStats__statEntry {
+.CharacterStats__statBlock {
   width: calc((100% / $stats-per-row) - (2px * 2));
-  border: 2px solid #03fca1;
+  border: 2px solid black; // Color overriden in TSX
   margin: 0 2px;
   padding: 1em;
   box-sizing: border-box;
   overflow: hidden;
+  font-weight: 600;
+  text-transform: uppercase;
 }

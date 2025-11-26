@@ -4,6 +4,7 @@
 
 	value = STATS_BASELINE_VALUE
 	sound = 'sound/three_dsix/kinesis.ogg'
+	color = "#caa53d"
 
 /datum/rpg_stat/kinesis/get(mob/living/user, list/out_sources)
 	. = ..()

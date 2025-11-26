@@ -87,7 +87,7 @@
 
 	for(var/skill_type in skills)
 		var/datum/rpg_skill/skill = skills[skill_type]
-		var/datum/rpg_skill/stat = stats[skill.parent_stat_type]
+		var/datum/rpg_stat/stat = stats[skill.parent_stat_type]
 
 		/// Used as an out-var for get_skill_modifier()
 		var/list/skill_modifiers = list()
@@ -104,6 +104,7 @@
 			"value" = STATS_BASELINE_VALUE + skill_value + stat_value,
 			"modifiers" = skill_modifier_data,
 			"parent_stat_name" = stat.name,
+			"color" = stat.color,
 		)
 
 		if(!stats_data[stat.name])
@@ -112,6 +113,7 @@
 				"desc" = stat.desc,
 				"value" = STATS_BASELINE_VALUE + stat_value,
 				"modifiers" = stat_modifier_data,
+				"color" = stat.color,
 			)
 
 		if(skill.modifiers)

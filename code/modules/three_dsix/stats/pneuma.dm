@@ -4,3 +4,4 @@
 
 	value = STATS_BASELINE_VALUE
 	sound = 'sound/three_dsix/pneuma.ogg'
+	color = "#03fca1"

@@ -7,6 +7,7 @@
 	var/list/modifiers
 
 	var/sound
+	var/color
 
 /datum/rpg_stat/proc/get(mob/living/user, list/out_sources)
 	return value - STATS_BASELINE_VALUE
